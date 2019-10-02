@@ -25,10 +25,8 @@ const BroadcastTransactionFlow = (props: RouteComponentProps<{}>) => {
   const [receiveAsset, setReceiveAsset] = useState<ISwapAsset>(dummyAssets[4]);
   const [sendAmount, setSendAmount] = useState();
   const [receiveAmount, setReceiveAmount] = useState();
-  const [sendAddress, setSendAddress] = useState();
-  const [receiveAddress, setReceiveAddress] = useState();
-  const [sendAddressManuallySelected, setSendAddressManuallySelected] = useState(true);
-  const [receiveAddressManuallySelected, setReceiveAddressManuallySelected] = useState(true);
+  const [address, setAddress] = useState();
+  const [account, setAccount] = useState();
 
   const steps: TStep[] = [
     {
@@ -37,10 +35,10 @@ const BroadcastTransactionFlow = (props: RouteComponentProps<{}>) => {
       component: SwapAssets
     },
     {
-      title: 'Select Addresses',
-      description: `Where will you be sending ${asset &&
-        asset.symbol} from? Where would you like to receive your ${receiveAsset &&
-        receiveAsset.symbol}?`,
+      title: 'Select Address',
+      description: `Where will you be sending your ${asset &&
+        asset.symbol} from? You will receive  your ${receiveAsset &&
+        receiveAsset.symbol} back to the same address after the swap.`,
       component: SelectAddress
     },
     {
@@ -93,14 +91,10 @@ const BroadcastTransactionFlow = (props: RouteComponentProps<{}>) => {
         assets={dummyAssets}
         asset={asset}
         receiveAsset={receiveAsset}
-        sendAddressManuallySelected={sendAddressManuallySelected}
-        setSendAddressManuallySelected={setSendAddressManuallySelected}
-        receiveAddressManuallySelected={receiveAddressManuallySelected}
-        setReceiveAddressManuallySelected={setReceiveAddressManuallySelected}
-        sendAddress={sendAddress}
-        setSendAddress={setSendAddress}
-        receiveAddress={receiveAddress}
-        setReceiveAddress={setReceiveAddress}
+        address={address}
+        setAddress={setAddress}
+        account={account}
+        setAccount={setAccount}
       />
     </ExtendedContentPanel>
   );

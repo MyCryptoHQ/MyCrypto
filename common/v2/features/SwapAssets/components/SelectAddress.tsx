@@ -1,46 +1,39 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
-import { SwapFromToDiagram, AddressSelector } from './fields';
+import { SwapFromToDiagram } from './fields';
 import { ISwapAsset } from '../types';
+import { AccountDropdown } from 'v2/features/SendAssets/components/fields';
+import { StoreContext } from 'v2';
+import { ExtendedAccount, StoreAccount } from 'v2/types';
 
 const StyledButton = styled(Button)`
   margin-top: 12px;
   width: 100%;
 `;
 interface Props {
-  sendAddressManuallySelected: boolean;
-  receiveAddressManuallySelected: boolean;
-  sendAddress: string;
-  receiveAddress: string;
+  account: StoreAccount;
   asset: ISwapAsset;
   receiveAsset: ISwapAsset;
   sendAmount: string;
   receiveAmount: string;
-  setSendAddress(address: string): void;
-  setReceiveAddress(address: string): void;
-  setSendAddressManuallySelected(manuallySelected: boolean): void;
-  setReceiveAddressManuallySelected(manuallySelected: boolean): void;
+  setAccount(account: ExtendedAccount): void;
   goToNextStep(): void;
 }
 
 export default function SelectAddress(props: Props) {
   const {
     goToNextStep,
-    sendAddressManuallySelected,
-    receiveAddressManuallySelected,
-    setSendAddressManuallySelected,
-    setReceiveAddressManuallySelected,
-    sendAddress,
-    receiveAddress,
-    setSendAddress,
-    setReceiveAddress,
+    account,
+    setAccount,
     asset,
     receiveAsset,
     sendAmount,
     receiveAmount
   } = props;
+
+  const { accounts } = useContext(StoreContext);
 
   return (
     <div>
@@ -50,20 +43,15 @@ export default function SelectAddress(props: Props) {
         fromAmount={sendAmount}
         toAmount={receiveAmount}
       />
-      <AddressSelector
-        label={'Add Sender Address'}
-        address={sendAddress}
-        addressManuallySelected={sendAddressManuallySelected}
-        setAddressManuallySelected={setSendAddressManuallySelected}
-        onAddressChanged={setSendAddress}
+      <AccountDropdown
+        name={'account'}
+        value={account}
+        accounts={accounts}
+        onSelect={(option: ExtendedAccount) => {
+          setAccount(option);
+        }}
       />
-      <AddressSelector
-        label={'Add Receiver Address'}
-        address={receiveAddress}
-        addressManuallySelected={receiveAddressManuallySelected}
-        setAddressManuallySelected={setReceiveAddressManuallySelected}
-        onAddressChanged={setReceiveAddress}
-      />
+
       <StyledButton onClick={goToNextStep}>Next</StyledButton>
     </div>
   );
