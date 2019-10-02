@@ -1,5 +1,6 @@
 export enum WalletId {
   METAMASK = 'METAMASK',
+  TRUST = 'TRUST',
   LEDGER_NANO_S = 'LEDGER_NANO_S',
   TREZOR = 'TREZOR',
   SAFE_T_MINI = 'SAFE_T_MINI',

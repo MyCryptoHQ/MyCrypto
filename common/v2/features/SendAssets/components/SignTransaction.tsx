@@ -18,6 +18,7 @@ type SigningComponents = {
 const SigningComponents: SigningComponents = {
   [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,
   [WalletId.METAMASK]: SignTransactionMetaMask,
+  [WalletId.TRUST]: SignTransactionMetaMask,
   [WalletId.LEDGER_NANO_S]: SignTransactionLedger,
   [WalletId.TREZOR]: SignTransactionTrezor,
   [WalletId.SAFE_T_MINI]: SignTransactionSafeT,
