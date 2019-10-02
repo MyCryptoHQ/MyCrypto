@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import AssetSelectDropdown from './AssetSelectDropdown';
+import { AssetSelectDropdown } from './fields';
 import { InputField } from 'v2/components';
 import { Button } from '@mycrypto/ui';
 import { ISwapAsset } from '../types';

@@ -25,6 +25,10 @@ const BroadcastTransactionFlow = (props: RouteComponentProps<{}>) => {
   const [receiveAsset, setReceiveAsset] = useState<ISwapAsset>(dummyAssets[4]);
   const [sendAmount, setSendAmount] = useState();
   const [receiveAmount, setReceiveAmount] = useState();
+  const [sendAddress, setSendAddress] = useState();
+  const [receiveAddress, setReceiveAddress] = useState();
+  const [sendAddressManuallySelected, setSendAddressManuallySelected] = useState(true);
+  const [receiveAddressManuallySelected, setReceiveAddressManuallySelected] = useState(true);
 
   const steps: TStep[] = [
     {
@@ -34,7 +38,9 @@ const BroadcastTransactionFlow = (props: RouteComponentProps<{}>) => {
     },
     {
       title: 'Select Addresses',
-      description: 'Where will you be sending ETH from? Where would you like to receive your ZRX?',
+      description: `Where will you be sending ${asset &&
+        asset.symbol} from? Where would you like to receive your ${receiveAsset &&
+        receiveAsset.symbol}?`,
       component: SelectAddress
     },
     {
@@ -87,6 +93,14 @@ const BroadcastTransactionFlow = (props: RouteComponentProps<{}>) => {
         assets={dummyAssets}
         asset={asset}
         receiveAsset={receiveAsset}
+        sendAddressManuallySelected={sendAddressManuallySelected}
+        setSendAddressManuallySelected={setSendAddressManuallySelected}
+        receiveAddressManuallySelected={receiveAddressManuallySelected}
+        setReceiveAddressManuallySelected={setReceiveAddressManuallySelected}
+        sendAddress={sendAddress}
+        setSendAddress={setSendAddress}
+        receiveAddress={receiveAddress}
+        setReceiveAddress={setReceiveAddress}
       />
     </ExtendedContentPanel>
   );

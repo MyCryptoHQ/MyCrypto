@@ -18,6 +18,7 @@ function getIconUrl(symbol: TSymbol) {
 
 const SImg = styled('img')`
   height: ${(p: { size: string }) => p.size};
+  width: ${(p: { size: string }) => p.size};
 `;
 
 interface Props {
