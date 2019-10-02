@@ -6,11 +6,8 @@ import { convertToFiat } from 'v2/utils';
 import { AssetWithDetails, TSymbol } from 'v2/types';
 import { AssetIcon, DashboardPanel, Spinner } from 'v2/components';
 import { translateRaw } from 'translations';
-import { BREAK_POINTS } from 'v2/theme';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
-
-const { SCREEN_XS, SCREEN_SM, SCREEN_LG } = BREAK_POINTS;
 
 const TokenListWrapper = styled.div`
   max-height: 313px;
@@ -66,20 +63,6 @@ const SpinnerWrapper = styled.div`
   padding: 32px 0;
 `;
 
-const ButtonsGroup = styled.div`
-  @media (min-width: ${SCREEN_SM}) and (max-width: ${SCREEN_LG}), (max-width: ${SCREEN_XS}) {
-    display: none;
-  }
-`;
-
-const MobileButtonsGroup = styled.div`
-  display: none;
-
-  @media (min-width: ${SCREEN_SM}) and (max-width: ${SCREEN_LG}), (max-width: ${SCREEN_XS}) {
-    display: block;
-  }
-`;
-
 interface TokenListProps {
   isScanning: boolean;
   tokens: AssetWithDetails[];
@@ -102,24 +85,14 @@ export function TokenList(props: TokenListProps) {
     <DashboardPanel
       heading={translateRaw('TOKENS')}
       headingRight={
-        <>
-          <ButtonsGroup>
-            <StyledButton onClick={() => handleScanTokens()}>
-              {translateRaw('SCAN_TOKENS')}
-            </StyledButton>
-            <StyledButton onClick={() => setShowAddToken(true)}>
-              + {translateRaw('ADD_TOKEN')}
-            </StyledButton>
-          </ButtonsGroup>
-          <MobileButtonsGroup>
-            <StyledButton onClick={() => handleScanTokens()}>
-              {translateRaw('SCAN_TOKENS_SHORT')}
-            </StyledButton>
-            <StyledButton onClick={() => setShowAddToken(true)}>
-              + {translateRaw('ADD_TOKEN_SHORT')}
-            </StyledButton>
-          </MobileButtonsGroup>
-        </>
+        <div>
+          <StyledButton onClick={() => handleScanTokens()}>
+            {translateRaw('SCAN_TOKENS_SHORT')}
+          </StyledButton>
+          <StyledButton onClick={() => setShowAddToken(true)}>
+            + {translateRaw('ADD_TOKEN_SHORT')}
+          </StyledButton>
+        </div>
       }
       padChildren={true}
     >

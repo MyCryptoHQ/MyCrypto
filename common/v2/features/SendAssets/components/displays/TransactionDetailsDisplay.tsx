@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Network } from '@mycrypto/ui';
-import { formatEther, bigNumberify } from 'ethers/utils';
+import { bigNumberify } from 'ethers/utils';
 
 import { Asset, ExtendedAccount, Network as INetwork } from 'v2/types';
 import { baseToConvertedUnit, totalTxFeeToString } from 'v2/services/EthService';
@@ -10,6 +10,7 @@ import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 
 import './TransactionDetailsDisplay.scss';
 import { ITxObject } from '../../types';
+import { weiToFloat } from 'v2/utils';
 
 interface Props {
   baseAsset: Asset;
@@ -44,7 +45,7 @@ function TransactionDetailsDisplay({
     return accountAsset.uuid === asset.uuid;
   });
   const userAssetBalance = userAssetToSend
-    ? formatEther(bigNumberify(userAssetToSend.balance))
+    ? weiToFloat(bigNumberify(userAssetToSend.balance), asset.decimal).toFixed(6)
     : 'Unknown Balance';
 
   return (
@@ -66,7 +67,7 @@ function TransactionDetailsDisplay({
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">{`Account Balance (${baseAsset.ticker}):`}</div>
               <div className="TransactionDetails-row-column">
-                {`${formatEther(getBalanceFromAccount(senderAccount))}`}
+                {`${weiToFloat(bigNumberify(getBalanceFromAccount(senderAccount))).toFixed(6)}`}
               </div>
             </div>
             {asset.type === 'erc20' && (

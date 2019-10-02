@@ -10,7 +10,6 @@
 }
 
 .SendAssetsForm {
-  width: 500px;
   label {
     margin-bottom: 8px;
     color: #333333;
@@ -111,7 +110,7 @@
         &-limit {
           flex: 2;
         }
-        
+
         &-limit .label-with-action {
           display: flex;
           align-items: center;
@@ -131,11 +130,10 @@
           flex: 2;
         }
       }
-
     }
   }
   &-next {
-    width: 100%; 
+    width: 100%;
   }
   &-next:disabled {
     background-color: rgba(0, 122, 153, 0.3);

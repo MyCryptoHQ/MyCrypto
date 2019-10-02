@@ -6,16 +6,11 @@ import { ads } from './constants';
 import { BREAK_POINTS } from 'v2/theme';
 import { ANALYTICS_CATEGORIES, AnalyticsService } from 'v2/services';
 
-const { SCREEN_MD, SCREEN_SM } = BREAK_POINTS;
+const { SCREEN_SM } = BREAK_POINTS;
 
 const AdWrapper = styled.div`
   margin-bottom: 14px;
   cursor: pointer;
-
-  @media (max-width: ${SCREEN_MD}) {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
 `;
 
 const BannerImageDesktop = styled.img`

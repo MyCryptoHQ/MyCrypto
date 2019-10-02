@@ -22,17 +22,17 @@ interface State {
   currentAccounts(): StoreAccount[];
   assetTickers(targetAssets?: StoreAsset[]): TTicker[];
   scanTokens(asset?: ExtendedAsset): Promise<void[]>;
+  deleteAccountFromCache(uuid: string): void;
 }
 export const StoreContext = createContext({} as State);
 
 // App Store that combines all data values required by the components such
 // as accounts, currentAccount, tokens, and fiatValues etc.
 export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
-  const { accounts: rawAccounts, updateAccountAssets } = useContext(AccountContext);
+  const { accounts: rawAccounts, updateAccountAssets, deleteAccount } = useContext(AccountContext);
   const { assets } = useContext(AssetContext);
-  const { settings } = useContext(SettingsContext);
+  const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { networks } = useContext(NetworkContext);
-
   // We transform rawAccounts into StoreAccount. Since the operation is exponential to the number of
   // accounts, make sure it is done only when rawAccounts change.
   const storeAccounts = useMemo(() => getStoreAccounts(rawAccounts, assets, networks), [
@@ -86,7 +86,13 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         accounts
           .map(account => updateAccountAssets(account, asset ? [...assets, asset] : assets))
           .map(p => p.catch(e => console.debug(e)))
-      )
+      ),
+    deleteAccountFromCache: (uuid: string) => {
+      deleteAccount(uuid);
+      updateSettingsAccounts(
+        settings.dashboardAccounts.filter(dashboardUUID => dashboardUUID !== uuid)
+      );
+    }
   };
 
   // 1. I actually want to watch all the base and token balance for every

@@ -75,7 +75,7 @@ export default class SignTransactionKeystore extends Component<
     const unlockDisabled = !file || (passReq && !password);
 
     return (
-      <div className="SignTransaction-panel">
+      <>
         <div className="SignTransactionKeystore-title">
           Sign the Transaction with your Keystore File
         </div>
@@ -142,7 +142,7 @@ export default class SignTransactionKeystore extends Component<
             Not working? Here's some troubleshooting tips to try.
           </div>
         </div>
-      </div>
+      </>
     );
   }
 

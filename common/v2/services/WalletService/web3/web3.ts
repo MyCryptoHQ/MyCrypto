@@ -1,12 +1,6 @@
 import { translateRaw } from 'translations';
 
-import {
-  stripWeb3Network,
-  makeWeb3Network,
-  getShepherdManualMode,
-  shepherd,
-  makeProviderConfig
-} from 'libs/nodes';
+import { makeWeb3Network, getShepherdManualMode, shepherd, makeProviderConfig } from 'libs/nodes';
 import { isWeb3Node, setupWeb3Node, Web3Service } from 'v2/services/EthService';
 import { NodeOptions, NodeType, Network } from 'v2/types';
 import {
@@ -46,23 +40,17 @@ export const initWeb3Node = async () => {
   web3Added = true;
   createNode(config, network);
   updateSetting({ ...readAllSettings(), node: 'web3' });
-  return lib;
+  return { nodeLib: lib, network };
 };
 
 export const unlockWeb3 = async () => {
   try {
-    const nodeLib = await initWeb3Node();
+    const { nodeLib, network } = await initWeb3Node();
 
     /*await (action: any) => {
       action.type === configNodesSelectedTypes.ConfigNodesSelectedActions.CHANGE_SUCCEEDED &&
         action.payload.nodeId === 'web3'
     }*/
-
-    const web3Node: any | null = await getWeb3Node();
-    if (!web3Node) {
-      throw Error('Web3 node config not found!');
-    }
-    const network = web3Node.network;
 
     if (!isWeb3Node(nodeLib)) {
       throw new Error('Cannot use Web3 wallet without a Web3 node.');
@@ -73,7 +61,7 @@ export const unlockWeb3 = async () => {
     if (!address) {
       throw new Error('No accounts found in MetaMask / Web3.');
     }
-    return new Web3Wallet(address, stripWeb3Network(network));
+    return new Web3Wallet(address, network.id);
   } catch (err) {
     // unset web3 node so node dropdown isn't disabled
     //configNodesStaticActions.web3UnsetNode();
