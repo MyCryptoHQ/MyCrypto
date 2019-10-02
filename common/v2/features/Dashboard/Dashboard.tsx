@@ -59,6 +59,7 @@ export default function Dashboard() {
             className="Dashboard-mobile-modifiedPanel"
             footerAction={translateRaw('SETTINGS_HEADING')}
             footerActionLink={ROUTE_PATHS.SETTINGS.path}
+            copyable={true}
           />
         </div>
         <BannerAd />
@@ -100,6 +101,7 @@ export default function Dashboard() {
                   </AccountListFooter>
                 }
                 footerActionLink={ROUTE_PATHS.SETTINGS.path}
+                copyable={true}
               />
             </div>
           </div>
