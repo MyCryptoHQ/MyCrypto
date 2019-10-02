@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { convertToFiat } from 'v2/utils';
+import { convertToFiatFromAsset } from 'v2/utils';
 import { AssetWithDetails, TSymbol } from 'v2/types';
 import { AssetIcon, DashboardPanel, Spinner } from 'v2/components';
 import { translateRaw } from 'translations';
@@ -109,7 +109,7 @@ export function TokenList(props: TokenListProps) {
                 <AssetName>{token.name}</AssetName>
               </Asset>
               <TokenValueWrapper>
-                <TokenValue>${convertToFiat(token.balance, token.rate).toFixed(2)}</TokenValue>
+                <TokenValue>${convertToFiatFromAsset(token, token.rate).toFixed(2)}</TokenValue>
                 <MoreIcon
                   src={moreIcon}
                   alt="More"

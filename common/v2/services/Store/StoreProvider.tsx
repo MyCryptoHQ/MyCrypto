@@ -1,7 +1,7 @@
 import React, { useState, useContext, useMemo, createContext, useEffect } from 'react';
 
 import { StoreAccount, StoreAsset, Network, TTicker, ExtendedAsset } from 'v2/types';
-import { isArrayEqual, useInterval, convertToFiat } from 'v2/utils';
+import { isArrayEqual, useInterval, convertToFiatFromAsset } from 'v2/utils';
 
 import { getAccountsAssetsBalances } from './BalanceService';
 import { getStoreAccounts } from './helpers';
@@ -74,7 +74,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       state
         .totals(selectedAccounts)
         .reduce(
-          (sum, asset) => (sum += convertToFiat(asset.balance, getRate(asset.ticker as TTicker))),
+          (sum, asset) => (sum += convertToFiatFromAsset(asset, getRate(asset.ticker as TTicker))),
           0
         ),
     currentAccounts: () => getDashboardAccounts(state.accounts, settings.dashboardAccounts),
