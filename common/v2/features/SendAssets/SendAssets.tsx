@@ -63,11 +63,11 @@ function SendAssets() {
 
   const goToNextStep = () => setStep(Math.min(step + 1, currentPath.length - 1));
   const goToPrevStep = () => setStep(Math.max(0, step - 1));
+  const goToFirstStep = () => setStep(0);
 
   return (
     <ContentPanel
       onBack={goToPrevStep}
-      className="SendAssets"
       heading={label}
       icon={sendIcon}
       stepper={{ current: step + 1, total: currentPath.length - 1 }}
@@ -76,6 +76,7 @@ function SendAssets() {
         txReceipt={txReceiptState}
         txConfig={txConfigState}
         onComplete={(payload: IFormikFields | ITxReceipt) => stepAction(payload, goToNextStep)}
+        resetFlow={goToFirstStep}
       />
     </ContentPanel>
   );

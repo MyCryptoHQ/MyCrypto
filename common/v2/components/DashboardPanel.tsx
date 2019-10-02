@@ -21,6 +21,13 @@ const DHeadingWrapper = styled.div`
   padding: 15px;
 `;
 
+const DFooterWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 15px 0px 15px;
+`;
+
 const DHeading = styled(Heading)`
   && {
     margin: 0;
@@ -72,7 +79,7 @@ export const DashboardPanel = ({
       </DHeadingWrapper>
       {padChildren ? <Content>{children}</Content> : children}
       {footerAction && (
-        <DHeadingWrapper>
+        <DFooterWrapper>
           {footerActionLink ? (
             <Link to={footerActionLink}>
               <DButton basic={true}>{footerAction}</DButton>
@@ -80,7 +87,7 @@ export const DashboardPanel = ({
           ) : (
             footerAction
           )}
-        </DHeadingWrapper>
+        </DFooterWrapper>
       )}
     </DPanel>
   );

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { PieChart, Pie, Sector, Cell } from 'recharts';
 
 import { Balance } from './types';
+import { SMALLEST_CHART_SHARE_SUPPORTED } from './WalletBreakdownView';
 
 const MainWrapper = styled.div`
   width: 100%;
@@ -75,8 +76,8 @@ export default class BreakdownChart extends Component<BreakdownChartProps> {
     const x = percent < 1 ? cx + radius * Math.cos(-midAngle * radian) : cx;
     const y = percent < 1 ? cy + radius * Math.sin(-midAngle * radian) : cy;
 
-    // Don't show the label if percent is 0
-    return percent > 0 ? (
+    // Don't show the label if percent is 3%
+    return percent > SMALLEST_CHART_SHARE_SUPPORTED ? (
       <text x={x} y={y} fill="white" textAnchor={'middle'} dominantBaseline="central">
         {ticker}
       </text>
@@ -115,7 +116,6 @@ export default class BreakdownChart extends Component<BreakdownChartProps> {
   public render() {
     const { balances, selectedAssetIndex } = this.props;
     const COLORS = this.generateColors(balances.length);
-
     return (
       <MainWrapper>
         <PieChart width={400} height={350}>

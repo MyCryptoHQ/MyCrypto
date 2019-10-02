@@ -71,6 +71,7 @@ export interface IStepComponentProps {
   signedTx?: string;
   children?: never;
   onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;
+  resetFlow(): void;
 }
 
 export type TStepAction = (payload: any, after: () => void) => void;

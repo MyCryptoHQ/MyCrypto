@@ -1,5 +1,4 @@
 .SignTransactionMetaMask-title {
-  height: 78px;
   font-family: Lato;
   font-size: 32px;
   font-weight: bold;
@@ -20,9 +19,14 @@
   margin: 2em;
 }
 
+.SignTransactionMetaMask-errors {
+  padding: 1em 0em;
+}
+
 .SignTransactionMetaMask-wrong-address {
   color: red;
   text-align: center;
+  word-break: break-all;
 }
 
 .SignTransactionMetaMask-rejection {

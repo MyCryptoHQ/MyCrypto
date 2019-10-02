@@ -43,7 +43,7 @@ export default class SignTransactionMnemonic extends Component<
     const unlockDisabled = !phrase;
 
     return (
-      <div className="SignTransaction-panel">
+      <>
         <div className="SignTransactionKeystore-title">
           Sign the Transaction with your Mnemonic Phrase
         </div>
@@ -99,7 +99,7 @@ export default class SignTransactionMnemonic extends Component<
             Not working? Here's some troubleshooting tips to try.
           </div>
         </div>
-      </div>
+      </>
     );
   }
 

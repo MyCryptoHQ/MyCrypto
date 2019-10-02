@@ -24,10 +24,6 @@ const SContainer = styled('div')`
   }
 
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    width: 19%;
-  }
-
-  @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
     width: 100%;
     padding-left: 40px;
     padding-right: 35px;
@@ -48,7 +44,7 @@ const SButton = styled(Button)`
     display: block;
   }
 
-  @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     flex-direction: row;
     justify-content: space-between;
     text-align: left;
@@ -63,7 +59,7 @@ const STitle = styled('div')`
   font-weight: bold;
   color: #163150;
 
-  @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     font-size: 14px;
     padding-top: 2px;
 
@@ -85,7 +81,7 @@ const STitle = styled('div')`
 const SDescription = styled('div')`
   display: none;
   font-size: 16px;
-  @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     display: block;
   }
 `;
