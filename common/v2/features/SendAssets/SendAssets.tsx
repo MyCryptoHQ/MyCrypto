@@ -38,14 +38,14 @@ function SendAssets() {
       action: handleConfirmAndSign
     },
     { label: '', component: SignTransaction, action: handleSignedWeb3Tx },
-    { label: 'Transaction Complete', component: TransactionReceipt, action: goToDashoard }
+    { label: 'Transaction Submitted', component: TransactionReceipt, action: goToDashoard }
   ];
 
   const defaultSteps: IPath[] = [
     { label: 'Send Assets', component: SendAssetsForm, action: handleFormSubmit },
     { label: '', component: SignTransaction, action: handleSignedTx },
     { label: 'Confirm Transaction', component: ConfirmTransaction, action: handleConfirmAndSend },
-    { label: 'Transaction Complete', component: TransactionReceipt, action: goToDashoard }
+    { label: 'Transaction Submitted', component: TransactionReceipt, action: goToDashoard }
   ];
 
   const getStep = (walletId: WalletId, stepIndex: number) => {
