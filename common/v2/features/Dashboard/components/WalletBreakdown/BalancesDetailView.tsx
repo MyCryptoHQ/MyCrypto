@@ -3,9 +3,10 @@ import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { translateRaw } from 'translations';
-import { DashboardPanel, CollapsibleTable } from 'v2/components';
+import { DashboardPanel, CollapsibleTable, AssetIcon } from 'v2/components';
 import { WalletBreakdownProps } from './types';
 import { BREAK_POINTS } from 'v2/theme';
+import { TSymbol } from 'v2/types';
 
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
@@ -54,6 +55,15 @@ const RowAlignment = styled.div`
   float: ${(props: { align?: string }) => props.align || 'inherit'};
 `;
 
+const Label = styled.span`
+  display: flex;
+  align-items: center;
+`;
+
+const Icon = styled(AssetIcon)`
+  margin-right: 10px;
+`;
+
 export default function BalancesDetailView({
   balances,
   toggleShowChart,
@@ -75,7 +85,10 @@ export default function BalancesDetailView({
     ],
     body: balances.map((balance, index) => {
       return [
-        balance.name,
+        <Label key={index}>
+          <Icon symbol={balance.ticker as TSymbol} size={'26px'} />
+          {balance.name}
+        </Label>,
         <RowAlignment key={index} align="right">
           {`${balance.amount.toFixed(6)} ${balance.ticker}`}
         </RowAlignment>,
@@ -87,6 +100,11 @@ export default function BalancesDetailView({
     config: {
       primaryColumn: TOKEN,
       sortableColumn: TOKEN,
+      sortFunction: (a: any, b: any) => {
+        const aLabel = a.props.children[1];
+        const bLabel = b.props.children[1];
+        return aLabel === bLabel ? true : aLabel.localeCompare(bLabel);
+      },
       hiddenHeadings: []
     }
   };
