@@ -55,7 +55,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
 
     worker.start();
     return terminateWorker; // make sure we terminate the previous worker on teardown.
-  }, [rawAccounts, Object.keys(rates)]); // only update if an account has been added or removed from LocalStorage.
+  }, [rawAccounts]); // only update if an account has been added or removed from LocalStorage.
 
   const state: State = {
     rates: {},
