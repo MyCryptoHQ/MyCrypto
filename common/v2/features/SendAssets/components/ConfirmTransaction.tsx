@@ -101,11 +101,12 @@ export default function ConfirmTransaction({
         </div>
         <div className="ConfirmTransaction-row-column">
           <Amount
-            assetValue={`${amount} ${asset.ticker}`}
+            assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
             fiatValue={`$${convertToFiat(
               parseFloat(amount),
               getRate(asset.ticker as TTicker)
-            ).toFixed(2)}`}
+            ).toFixed(2)}
+          `}
           />
         </div>
       </div>

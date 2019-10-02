@@ -19,6 +19,7 @@ import sentIcon from 'common/assets/images/icn-sent.svg';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import { fromTxReceiptObj } from '../helpers';
 import { translateRaw } from 'translations';
+import { convertToFiat } from 'v2/utils';
 
 export enum ITxStatus {
   SUCCESS = 'SUCCESS',
@@ -28,11 +29,6 @@ export enum ITxStatus {
 
 const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
-};
-
-const calculateValue = (rate: number | undefined, balance: string) => {
-  if (!rate) return 0;
-  return rate * parseFloat(balance);
 };
 
 export default function TransactionReceipt({
@@ -132,10 +128,12 @@ export default function TransactionReceipt({
         </div>
         <div className="TransactionReceipt-row-column">
           <Amount
-            assetValue={`${assetAmount} ${assetTicker}`}
-            fiatValue={`$${calculateValue(getRate(assetTicker as TTicker), assetAmount).toFixed(
-              2
-            )}`}
+            assetValue={`${parseFloat(assetAmount).toFixed(6)} ${assetTicker}`}
+            fiatValue={`$${convertToFiat(
+              parseFloat(assetAmount),
+              getRate(assetTicker as TTicker)
+            ).toFixed(2)}
+            `}
           />
         </div>
       </div>
