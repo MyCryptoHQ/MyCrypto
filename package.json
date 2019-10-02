@@ -156,7 +156,7 @@
     "jquery": "3.3.1",
     "klaw-sync": "3.0.2",
     "lint-staged": "7.0.5",
-    "local-web-server": "^3.0.7",
+    "local-web-server": "3.0.7",
     "mini-css-extract-plugin": "0.4.0",
     "minimist": "1.2.0",
     "mycrypto-nano-result": "0.0.1",
