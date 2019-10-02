@@ -1,6 +1,7 @@
 /* tslint:disable:no-console */
 import React, { Component } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
 import { Address } from '@mycrypto/ui';
 import { truncate } from 'v2/utils';
 
@@ -12,6 +13,18 @@ Example 3box addresses:
 
 */
 
+const AvatarImage = styled.img`
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+`;
+
+const Avatar = styled.div`
+  width: 60px;
+  height: 60px;
+`;
+
 interface Props {
   address: string;
   label?: string;
@@ -21,6 +34,7 @@ interface State {
   has3Box: boolean;
   name?: string;
   image?: string;
+  location?: string;
 }
 
 export default class Profile extends Component<Props, State> {
@@ -45,7 +59,8 @@ export default class Profile extends Component<Props, State> {
           this.setState({
             has3Box: true,
             name: data.name,
-            image: data.image[0].contentUrl['/']
+            image: data.image[0].contentUrl['/'],
+            location: data.location
           });
         }
       });
@@ -53,7 +68,7 @@ export default class Profile extends Component<Props, State> {
 
   public render() {
     const { address, label } = this.props;
-    const { has3Box, name, image } = this.state;
+    const { has3Box, name, image, location } = this.state;
     if (!has3Box) {
       return <Address address={address} title={label} truncate={truncate} />;
     } else {
@@ -65,8 +80,11 @@ export default class Profile extends Component<Props, State> {
           tooltip={{
             content: (
               <div>
-                <img src={`https://ipfs.io/ipfs/${image}`} />
+                <Avatar>
+                  <AvatarImage src={`https://ipfs.io/ipfs/${image}`} />
+                </Avatar>
                 <p>{name}</p>
+                {location && <p>Location: {location}</p>}
                 <a href={`https://3box.io/${address}`}>View on 3box</a>
               </div>
             )
