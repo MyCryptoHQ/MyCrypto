@@ -78,7 +78,7 @@ export default class SignTransactionMetaMask extends Component<
 
     const { accountMatches, networkMatches, walletState, submitting } = this.state;
     return (
-      <div className="SignTransaction-panel">
+      <>
         <div className="SignTransactionMetaMask-title">Sign the Transaction with MetaMask</div>
         <div className="SignTransactionMetaMask-instructions">
           Sign into MetaMask on your computer and follow the instructions in the MetaMask window.
@@ -93,18 +93,22 @@ export default class SignTransactionMetaMask extends Component<
         ) : null}
 
         <div className="SignTransactionMetaMask-input">
-          {!networkMatches && (
-            <div className="SignTransactionMetaMask-wrong-network">
-              {' '}
-              Please switch the network in MetaMask to {networkName}
-            </div>
-          )}
-          {!accountMatches && (
-            <div className="SignTransactionMetaMask-wrong-address">
-              Please switch the account in MetaMask to {senderAccount.address}
-              <br /> in order to proceed
-            </div>
-          )}
+          <div className="SignTransactionMetaMask-errors">
+            {!networkMatches && (
+              <div className="SignTransactionMetaMask-wrong-network">
+                {' '}
+                Please switch the network in MetaMask to {networkName}
+              </div>
+            )}
+            {!accountMatches && (
+              <div className="SignTransactionMetaMask-wrong-address">
+                Please switch the account in MetaMask to
+                <br />
+                {senderAccount.address}
+                <br /> in order to proceed
+              </div>
+            )}
+          </div>
           {submitting && <div>Submitting transaction now.</div>}
           <div className="SignTransactionMetaMask-description">
             Because we never save, store, or transmit your secret, you need to sign each transaction
@@ -116,7 +120,7 @@ export default class SignTransactionMetaMask extends Component<
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 

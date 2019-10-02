@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 
-import { BREAK_POINTS, MAX_CONTENT_WIDTH } from 'v2/theme';
+import { BREAK_POINTS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING } from 'v2/theme';
 import { DrawerContext } from 'v2/features';
 import Header from './Header';
 import Footer from './Footer';
@@ -24,10 +24,12 @@ const SMain = styled('main')`
 `;
 
 const SContainer = styled('div')`
-  padding: 50px 0;
+  padding: 50px ${MIN_CONTENT_PADDING};
   max-width: ${MAX_CONTENT_WIDTH};
 
-  // This is the moment our header becomes sticky and shrinks in
+  // This is the moment our header becomes sticky and shrinks.
+  // Since it is aboslute positionning we add the extra height to
+  // the padding.
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     padding-top: 120px;
   }

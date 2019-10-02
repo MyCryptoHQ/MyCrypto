@@ -52,7 +52,7 @@ const fiat: Fiat = {
   name: 'US Dollars',
   symbol: '$'
 };
-const numberOfAssetsDisplayed = 4;
+
 let wasNumOfAccountsTracked = false;
 
 export function WalletBreakdown() {
@@ -86,26 +86,6 @@ export function WalletBreakdown() {
     return (sum += asset.fiatValue);
   }, 0);
 
-  /* Construct a finalBalances array which consits of top X assets and a otherTokensAsset
-     which combines the fiat value of all remaining tokens that are in the balances array*/
-  let finalBalances = balances;
-  if (balances.length > numberOfAssetsDisplayed) {
-    const otherBalances = balances.slice(numberOfAssetsDisplayed, balances.length);
-
-    const otherTokensAsset = {
-      name: translateRaw('WALLET_BREAKDOWN_OTHER'),
-      ticker: translateRaw('WALLET_BREAKDOWN_OTHER_TICKER'),
-      isOther: true,
-      amount: 0,
-      fiatValue: otherBalances.reduce((sum, asset) => {
-        return (sum += asset.fiatValue);
-      }, 0)
-    };
-
-    finalBalances = balances.slice(0, numberOfAssetsDisplayed);
-    finalBalances.push(otherTokensAsset);
-  }
-
   const toggleShowChart = () => {
     setShowBalanceDetailView(!showBalanceDetailView);
   };
@@ -133,7 +113,7 @@ export function WalletBreakdown() {
           />
         ) : (
           <WalletBreakdownView
-            balances={finalBalances}
+            balances={balances}
             toggleShowChart={toggleShowChart}
             totalFiatValue={totalFiatValue}
             fiat={fiat}

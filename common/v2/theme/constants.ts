@@ -20,7 +20,8 @@ export const COLORS = {
   PASTEL_RED: '#ef4747',
   WHITE: '#fff',
   SUCCESS_GREEN: '#5dba5a',
-  GOLD: '#FFD166'
+  GOLD: '#FFD166',
+  CLOUDY_BLUE: '#b5bfc7'
 };
 
 export const BREAK_POINTS = {
@@ -33,3 +34,4 @@ export const BREAK_POINTS = {
 };
 
 export const MAX_CONTENT_WIDTH = '1200px';
+export const MIN_CONTENT_PADDING = '15px';

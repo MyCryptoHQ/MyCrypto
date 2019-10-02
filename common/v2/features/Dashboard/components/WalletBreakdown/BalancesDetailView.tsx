@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button, CollapsibleTable } from '@mycrypto/ui';
+import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { translateRaw } from 'translations';
-import { DashboardPanel } from 'v2/components';
+import { DashboardPanel, CollapsibleTable } from 'v2/components';
 import { WalletBreakdownProps } from './types';
 import { BREAK_POINTS } from 'v2/theme';
 
@@ -46,6 +46,14 @@ const BalancesOnlyTotal = styled.div`
   }
 `;
 
+const HeaderAlignment = styled.div`
+  text-align: ${(props: { align?: string }) => props.align || 'inherit'};
+`;
+
+const RowAlignment = styled.div`
+  float: ${(props: { align?: string }) => props.align || 'inherit'};
+`;
+
 export default function BalancesDetailView({
   balances,
   toggleShowChart,
@@ -56,12 +64,24 @@ export default function BalancesDetailView({
   const AMOUNT = translateRaw('WALLET_BREAKDOWN_AMOUNT');
   const BALANCE = translateRaw('WALLET_BREAKDOWN_BALANCE');
   const balancesTable = {
-    head: [TOKEN, AMOUNT, BALANCE],
-    body: balances.map(balance => {
+    head: [
+      TOKEN,
+      <HeaderAlignment key={AMOUNT} align="center">
+        {AMOUNT}
+      </HeaderAlignment>,
+      <HeaderAlignment key={BALANCE} align="center">
+        {BALANCE}
+      </HeaderAlignment>
+    ],
+    body: balances.map((balance, index) => {
       return [
         balance.name,
-        `${balance.amount.toFixed(6)} ${balance.ticker}`,
-        `${fiat.symbol}${balance.fiatValue.toFixed(2)}`
+        <RowAlignment key={index} align="right">
+          {`${balance.amount.toFixed(6)} ${balance.ticker}`}
+        </RowAlignment>,
+        <RowAlignment key={index} align="right">
+          {`${fiat.symbol}${balance.fiatValue.toFixed(2)}`}
+        </RowAlignment>
       ];
     }),
     config: {

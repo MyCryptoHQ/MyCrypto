@@ -13,8 +13,9 @@ interface ContentPanelProps {
 
 const ContentPanelWrapper = styled.div`
   width: ${(props: ContentPanelProps) => props.width};
+  max-width: ${(props: ContentPanelProps) => props.width};
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    max-width: ${(props: ContentPanelProps) => props.mobileMaxWidth};
+    width: ${(props: ContentPanelProps) => props.mobileMaxWidth};
     padding-left: 0px;
     margin-bottom: 1em;
   }
@@ -62,11 +63,7 @@ const ContentPanelTop = styled.div`
   justify-content: ${(props: ContentPanelTopProps) =>
     props.stepperOnly ? 'flex-end' : 'space-between'};
   margin-bottom: 10px;
-  padding: 0 30px;
-
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    padding: 0;
-  }
+  padding: 0;
 `;
 
 interface Props {
@@ -92,8 +89,8 @@ export default function ContentPanel({
   description,
   children,
   className = '',
-  width = '562px',
-  mobileMaxWidth = '450px',
+  width = '550px',
+  mobileMaxWidth = '100%',
   ...rest
 }: Props) {
   return (
