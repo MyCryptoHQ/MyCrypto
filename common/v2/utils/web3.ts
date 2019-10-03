@@ -35,7 +35,7 @@ const WEB3_CONFIGS: {
 };
 
 export function getWeb3ProviderInfo(): Web3ProviderInfo {
-  if (typeof window === 'undefined') {
+  if (!window.web3) {
     return WEB3_CONFIGS.UnIndentifiedWeb3Provider;
   }
 
