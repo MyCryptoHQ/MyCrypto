@@ -24,7 +24,7 @@ const SettingsHeadingIcon = styled.img`
 
 const StyledLayout = styled.div`
   width: 100%;
-  max-width: 700px;
+  max-width: 1000px;
   .Layout-content {
     padding: 0;
     @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {

@@ -91,7 +91,6 @@ const TableContainer = styled.div`
 `;
 
 const TableOverlay = styled.div`
-  max-width: 674px;
   height: 67px;
   display: flex;
   flex-direction: row;
