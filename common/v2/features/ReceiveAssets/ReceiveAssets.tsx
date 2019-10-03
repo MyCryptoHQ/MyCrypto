@@ -229,7 +229,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                 <CodeHeader>
                   <CodeHeading as="h3">{translateRaw('RECEIVE_FORM_CODE_HEADER')}</CodeHeading>
                   <Tooltip tooltip={translate('RECEIVE_FORM_TOOLTIP')}>
-                    {props => <img className="Tool-tip-img" src={questionToolTip} {...props} />}
+                    <img className="Tool-tip-img" src={questionToolTip} />
                   </Tooltip>
                 </CodeHeader>
 

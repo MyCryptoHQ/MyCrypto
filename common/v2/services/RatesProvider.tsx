@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { isEmpty } from 'lodash';
 
-import { StoreContext, AccountContext } from 'v2/services/Store';
+import { StoreContext, AccountContext, SettingsContext } from 'v2/services/Store';
 import { PollingService } from 'v2/workers';
 import { IRates, TTicker } from 'v2/types';
 
@@ -18,11 +19,23 @@ const buildQueryUrl = (assets: TTicker[], currencies: TTicker[]) => `
 `;
 
 export const RatesContext = createContext({} as State);
-
 export function RatesProvider({ children }: { children: React.ReactNode }) {
-  const [rates, setRates] = useState({});
   const { accounts: rawAccounts } = useContext(AccountContext);
   const { assetTickers } = useContext(StoreContext);
+  const { settings, updateSettingsRates } = useContext(SettingsContext);
+  const [rates, setRates] = useState(settings.rates || {});
+  const [isSettingsInitialized, setIsSettingsInitialized] = useState(false);
+
+  useEffect(() => {
+    if (isEmpty(rates) || isSettingsInitialized) return;
+    updateSettingsRates(rates);
+    setIsSettingsInitialized(true);
+  }, [rates, isSettingsInitialized]);
+
+  useEffect(() => {
+    // Save settings rates again when the assets change.
+    setIsSettingsInitialized(false);
+  }, [Object.keys(rates)]);
 
   useEffect(() => {
     // The cryptocompare api that our proxie uses fails gracefully and will return a conversion rate

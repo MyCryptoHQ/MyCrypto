@@ -9,7 +9,8 @@ export const CACHE_INIT_DEV: LocalCache = {
     fiatCurrency: 'USD',
     darkMode: false,
     dashboardAccounts: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
-    inactivityTimer: 1800000
+    inactivityTimer: 1800000,
+    rates: {}
   },
   accounts: {
     '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc': {
@@ -112,7 +113,8 @@ export const CACHE_INIT: LocalCache = {
     fiatCurrency: 'USD',
     darkMode: false,
     dashboardAccounts: [],
-    inactivityTimer: 1800000
+    inactivityTimer: 1800000,
+    rates: {}
   },
   accounts: {},
   assets: {},

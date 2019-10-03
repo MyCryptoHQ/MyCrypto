@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Icon, Copyable, Identicon, Typography, Button } from '@mycrypto/ui';
+import { Icon, Copyable, Identicon, Button } from '@mycrypto/ui';
 
-import { DashboardPanel, CollapsibleTable } from 'v2/components';
+import { DashboardPanel, CollapsibleTable, Typography } from 'v2/components';
 import { ExtendedAddressBook } from 'v2/types';
 import { truncate } from 'v2/utils';
+import { BREAK_POINTS } from 'v2/theme';
 
 interface Props {
   addressBook: ExtendedAddressBook[];
@@ -34,20 +35,22 @@ const BottomRow = styled.div`
 const Label = styled.span`
   display: flex;
   align-items: center;
-  p {
-    margin-right: 27px;
-  }
 `;
 
 const SIdenticon = styled(Identicon)`
   > img {
-    width: 30px;
-    height: 30px;
+    height: 2em;
+  }
+  margin-right: 10px;
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    margin-right: 27px;
   }
 `;
 
 const STypography = styled(Typography)`
-  height: 100%;
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    font-weight: inherit;
+  }
 `;
 
 export default function AddressBook({ addressBook, toggleFlipped, deleteAddressBooks }: Props) {
@@ -57,15 +60,15 @@ export default function AddressBook({ addressBook, toggleFlipped, deleteAddressB
       <Icon key={0} icon="star" />,
       <Label key={1}>
         <SIdenticon address={address} />
-        <STypography>{label}</STypography>
+        <STypography bold={true} value={label} />
       </Label>,
-      <Copyable key={2} text={address} truncate={truncate} />,
-      <Typography key={3}>{notes}</Typography>,
+      <Copyable key={2} text={address} truncate={truncate} isCopyable={true}/>,
+      <Typography key={3} value={notes} />,
       <DeleteButton key={4} onClick={() => deleteAddressBooks(uuid)} icon="exit" />
     ]),
     config: {
-      primaryColumn: 'Address',
-      sortableColumn: 'Address',
+      primaryColumn: 'Label',
+      sortableColumn: 'Label',
       sortFunction: (a: any, b: any) => {
         const aLabel = a.props.label;
         const bLabel = b.props.label;

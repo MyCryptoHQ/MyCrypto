@@ -1323,18 +1323,18 @@
     bignumber.js "^9.0.0"
     isomorphic-fetch "^2.2.1"
 
-"@mycrypto/ui@0.16.2":
-  version "0.16.2"
-  resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.16.2.tgz#d73d0d55f57f789b09e9f088294b0b4896bb233a"
-  integrity sha512-e1NpAM2bsWdXoJyqleXrcBysKUI90/rUaBYznq7BYjeR3Di+la31fkMWrpq6JCzLROM7IxYyQh+iCT2mlwUXLA==
+"@mycrypto/ui@0.18.3":
+  version "0.18.3"
+  resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.18.3.tgz#a3bc6ff3b4a514336256a0d810a6ed03b1d246ab"
+  integrity sha512-innR6NCMbxL7UfJSBvg4tJlWr5pv3m/MsaQsCEyYNQ4mLQqkkPv7WuRGGTTRnCCRu3HmpceMuonIrriU/3V8iw==
   dependencies:
     "@types/dom-clipboard-api" "^1.0.1"
     "@types/lodash.throttle" "^4.1.4"
-    "@types/react-inlinesvg" "^0.8.0"
+    "@types/react-inlinesvg" "^0.8.1"
     ethereum-blockies-base64 "^1.0.2"
     lodash.throttle "^4.1.1"
     polished "^2.2.0"
-    react-inlinesvg "^0.8.3"
+    react-inlinesvg "^0.8.4"
 
 "@parity/erc681@0.1.1":
   version "0.1.1"
@@ -1599,7 +1599,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-inlinesvg@^0.8.0":
+"@types/react-inlinesvg@^0.8.1":
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/@types/react-inlinesvg/-/react-inlinesvg-0.8.1.tgz#c3b9ab683c356a81869b3294dbd3e4f0f191aa4a"
   integrity sha512-pONmeCNqot4diXLhxb+jajDWX57rH/JmMu9H4NQWNMl5WUHAHmcrOfDfB05IgYBfRUX1Cvyjl9EZzKHxSxZpAA==
@@ -13732,7 +13732,7 @@ react-hot-loader@4.8.4:
     shallowequal "^1.0.2"
     source-map "^0.7.3"
 
-react-inlinesvg@^0.8.3:
+react-inlinesvg@^0.8.4:
   version "0.8.4"
   resolved "https://registry.yarnpkg.com/react-inlinesvg/-/react-inlinesvg-0.8.4.tgz#5cdcece95c633d924092fdcabbf4dcab8baef1bd"
   integrity sha512-pMkYa09gsP+5mA5uYDon5TxJbu76rJqdPSQ9nTRZbVacH58Eo3tFxD0Z382cioxNrpeqWHI/hquzt00GaahnkA==

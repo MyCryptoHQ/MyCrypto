@@ -2,9 +2,10 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Address, Button, Copyable } from '@mycrypto/ui';
 
-import { ITxReceipt } from 'v2/types';
+import { ITxReceipt, TTicker } from 'v2/types';
 import { Amount, TimeElapsedCounter } from 'v2/components';
 import { AddressBookContext, AccountContext } from 'v2/services/Store';
+import { RatesContext } from 'v2/services/RatesProvider';
 import {
   ProviderHandler,
   getTimestampFromBlockNum,
@@ -18,6 +19,7 @@ import sentIcon from 'common/assets/images/icn-sent.svg';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import { fromTxReceiptObj } from '../helpers';
 import { translateRaw } from 'translations';
+import { convertToFiat } from 'v2/utils';
 
 export enum ITxStatus {
   SUCCESS = 'SUCCESS',
@@ -34,6 +36,7 @@ export default function TransactionReceipt({
   txConfig,
   resetFlow
 }: IStepComponentProps) {
+  const { getRate } = useContext(RatesContext);
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
   const { addNewTransactionToAccount } = useContext(AccountContext);
   const [txStatus, setTxStatus] = useState(ITxStatus.PENDING);
@@ -93,6 +96,8 @@ export default function TransactionReceipt({
   const senderAccountLabel = senderContact ? senderContact.label : 'Unknown Account';
 
   const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
+  const assetAmount = txReceipt.amount || txConfig.amount;
+  const assetTicker = txReceipt.asset.ticker || txConfig.asset.ticker || 'ETH';
   return (
     <div className="TransactionReceipt">
       <div className="TransactionReceipt-row">
@@ -123,14 +128,12 @@ export default function TransactionReceipt({
         </div>
         <div className="TransactionReceipt-row-column">
           <Amount
-            assetValue={`${txReceipt.amount || txConfig.amount} ${
-              txReceipt.asset
-                ? txReceipt.asset.ticker
-                : txConfig.asset
-                ? txConfig.asset.ticker
-                : 'ETH'
-            }`}
-            fiatValue="$250"
+            assetValue={`${parseFloat(assetAmount).toFixed(6)} ${assetTicker}`}
+            fiatValue={`$${convertToFiat(
+              parseFloat(assetAmount),
+              getRate(assetTicker as TTicker)
+            ).toFixed(2)}
+            `}
           />
         </div>
       </div>
