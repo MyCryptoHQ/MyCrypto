@@ -8,11 +8,12 @@ const { SILVER } = COLORS;
 // Give a height to the input when value is defined
 // Overide custom styles common/sass/styles/overrides/react-select.scss
 interface SProps {
+  value?: string;
   disabled?: boolean;
 }
 
 const SSelect = styled(Select)`
-  height: 54px;
+  height: ${(props: SProps) => (props.value ? 'auto' : '54px')};
   background-color: ${(props: SProps) => (props.disabled ? SILVER : 'default')};
   ${props => props.disabled && '.Select-arrow {display: none};'}
   font-size: 16px;

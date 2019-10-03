@@ -9,7 +9,7 @@ import styled from 'styled-components';
 
 import translate, { translateRaw } from 'translations';
 import { WhenQueryExists } from 'components/renderCbs';
-import { InlineErrorMsg } from 'v2/components';
+import { InlineErrorMsg, AccountDropdown } from 'v2/components';
 import {
   getNetworkById,
   getBaseAssetByNetwork,
@@ -33,7 +33,6 @@ import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 
 import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
 import {
-  AccountDropdown,
   AssetDropdown,
   EthAddressField,
   GasLimitField,
