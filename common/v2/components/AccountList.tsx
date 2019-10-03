@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { Button, Copyable, Identicon } from '@mycrypto/ui';
 
@@ -89,6 +90,40 @@ const TableContainer = styled.div`
   overflow: auto;
 `;
 
+const TableOverlay = styled.div`
+  max-width: 674px;
+  height: 67px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #b5bfc7;
+  color: #fff;
+  padding: 1em;
+`;
+
+const OverlayText = styled(Typography)`
+  color: #fff;
+  flex-grow: 1;
+  text-overflow: hidden;
+  width: 50%;
+`;
+
+const OverlayButtons = styled.div`
+  align-self: flex-end;
+`;
+
+const OverlayDelete = styled(Button)`
+  font-size: 14px;
+  margin-left: 5px;
+`;
+
+const OverlayCancel = styled(Button)`
+  font-size: 14px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin-left: 5px;
+`;
+
 type DeleteAccount = (uuid: string) => void;
 type UpdateAccount = (uuid: string, accountData: ExtendedAccount) => void;
 interface AccountListProps {
@@ -100,10 +135,16 @@ interface AccountListProps {
   copyable?: boolean;
 }
 
+export const screenIsMobileSized = (breakpoint: number): boolean =>
+  window.matchMedia(`(max-width: ${breakpoint}px)`).matches;
+
 export default function AccountList(props: AccountListProps) {
   const { className, currentsOnly, deletable, favoritable, footer, copyable } = props;
   const { currentAccounts, accounts, deleteAccountFromCache } = useContext(StoreContext);
   const { updateAccount } = useContext(AccountContext);
+
+  const [deletingIndex, setDeletingIndex] = useState();
+  const overlayRows = [deletingIndex];
 
   return (
     <DashboardPanel
@@ -126,7 +167,9 @@ export default function AccountList(props: AccountListProps) {
             updateAccount,
             deletable,
             favoritable,
-            copyable
+            copyable,
+            overlayRows,
+            setDeletingIndex
           )}
         />
       </TableContainer>
@@ -140,7 +183,9 @@ function buildAccountTable(
   updateAccount: UpdateAccount,
   deletable?: boolean,
   favoritable?: boolean,
-  copyable?: boolean
+  copyable?: boolean,
+  overlayRows?: number[],
+  setDeletingIndex?: any
 ) {
   const { totalFiat } = useContext(StoreContext);
   const { getRate } = useContext(RatesContext);
@@ -157,6 +202,34 @@ function buildAccountTable(
 
   return {
     head: deletable ? [...columns, translateRaw('ACCOUNT_LIST_DELETE')] : columns,
+    overlay:
+      overlayRows && overlayRows[0] !== undefined ? (
+        <TableOverlay>
+          <OverlayText>
+            Are you sure you want to delete{' '}
+            {getLabelByAccount(accounts[overlayRows[0]], addressBook) !== undefined
+              ? getLabelByAccount(accounts[overlayRows[0]], addressBook)!.label
+              : ''}{' '}
+            account with address: {truncate(accounts[overlayRows[0]].address)}?
+          </OverlayText>
+          <OverlayButtons>
+            <OverlayDelete
+              onClick={() => {
+                deleteAccount(accounts[overlayRows[0]].uuid);
+                setDeletingIndex(undefined);
+              }}
+            >
+              Delete
+            </OverlayDelete>
+            <OverlayCancel secondary={true} onClick={() => setDeletingIndex(undefined)}>
+              Cancel
+            </OverlayCancel>
+          </OverlayButtons>
+        </TableOverlay>
+      ) : (
+        <></>
+      ),
+    overlayRows,
     body: accounts.map((account, index) => {
       const addressCard: AddressBook | undefined = getLabelByAccount(account, addressBook);
       const total = totalFiat([account])(getRate);
@@ -183,7 +256,14 @@ function buildAccountTable(
             ...bodyContent,
             <DeleteButton
               key={index}
-              onClick={handleAccountDelete(deleteAccount, account.uuid)}
+              onClick={() => {
+                if (screenIsMobileSized(breakpointToNumber(BREAK_POINTS.SCREEN_XS)) === false) {
+                  setDeletingIndex(index);
+                }
+                if (screenIsMobileSized(breakpointToNumber(BREAK_POINTS.SCREEN_XS)) === true) {
+                  deleteAccount(account.uuid);
+                }
+              }}
               icon="exit"
             />
           ]
@@ -216,12 +296,4 @@ function buildAccountTable(
       iconColumns: deletable ? [translateRaw('ACCOUNT_LIST_DELETE')] : undefined
     }
   };
-}
-
-/**
- * A higher order function that binds to an account uuid, which returns a handler that will
- * delete the bound account onClick
- */
-function handleAccountDelete(deleteAccount: DeleteAccount, uuid: string) {
-  return () => deleteAccount(uuid);
 }
