@@ -20,6 +20,11 @@ const WEB3_CONFIGS: {
     lid: 'X_METAMASK',
     icon: MetamaskIcon
   },
+  InpageBridge: {
+    // MetaMask Mobile has the web3.currentProvider.constructor.name as InpageBridge
+    lid: 'X_METAMASK',
+    icon: MetamaskIcon
+  },
   EthereumProvider: {
     lid: 'X_MIST',
     icon: MistIcon
@@ -35,7 +40,7 @@ const WEB3_CONFIGS: {
 };
 
 export function getWeb3ProviderInfo(): Web3ProviderInfo {
-  if (!window.web3) {
+  if (typeof window === 'undefined') {
     return WEB3_CONFIGS.UnIndentifiedWeb3Provider;
   }
 
