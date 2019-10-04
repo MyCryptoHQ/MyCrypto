@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { Layout } from 'v2/features/Layout';
 import {
   GetStartedPanel,
   DownloadAppPanel,
@@ -14,10 +13,9 @@ import {
 } from './components';
 import { getFeaturedOS } from 'v2/utils';
 import { GithubService } from 'v2/services/ApiService';
-import { COLORS, BREAK_POINTS } from 'v2/theme';
+import { COLORS } from 'v2/theme';
 import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK, OS } from 'v2/config';
 
-const { SCREEN_SM } = BREAK_POINTS;
 const { SILVER, DARK_SLATE_BLUE, WHITE } = COLORS;
 
 interface SectionProps {
@@ -29,6 +27,7 @@ const HomeWrapper = styled.section`
   flex: 1;
   align-items: center;
   flex-direction: column;
+  width: 100%;
 `;
 
 const Section = styled.section`
@@ -38,20 +37,7 @@ const Section = styled.section`
   justify-content: center;
 `;
 
-// Hack to enforce specificity of our style on base component.
-// https://github.com/styled-components/styled-components/issues/1816#issuecomment-398454088
-const SLayout = styled(Layout)`
-  && {
-    background-color: #fff;
-  }
-`;
-
-const BottomSection = styled(Section)`
-  @media (max-width: ${SCREEN_SM}) {
-    flex-direction: column;
-    align-items: center;
-  }
-`;
+const BottomSection = styled(Section)``;
 
 const OSNames: { [key: string]: string } = {
   [OS.WINDOWS]: 'Windows',
@@ -79,37 +65,32 @@ export default class Home extends Component {
 
   public render() {
     return (
-      <SLayout fluid={true} centered={false}>
-        <HomeWrapper>
-          <Section>
-            <GetStartedPanel />
-          </Section>
-          <Section color={SILVER}>
-            <CompatibleWalletsPanel />
-          </Section>
-          <Section color={WHITE}>
-            <FeaturesPanel />
-          </Section>
-          <Section color={DARK_SLATE_BLUE}>
-            <DownloadAppPanel
-              downloadLink={this.state.appDownloadLink}
-              OSName={this.state.OSName}
-            />
-          </Section>
-          <Section color={SILVER}>
-            <KeepYourAssetsSafePanel />
-          </Section>
-          <Section color={WHITE}>
-            <PeaceOfMindPanel downloadLink={this.state.appDownloadLink} />
-          </Section>
-          <Section color={SILVER}>
-            <TestimonialsPanel />
-          </Section>
-          <BottomSection>
-            <BottomActionPanel />
-          </BottomSection>
-        </HomeWrapper>
-      </SLayout>
+      <HomeWrapper>
+        <Section>
+          <GetStartedPanel />
+        </Section>
+        <Section color={SILVER}>
+          <CompatibleWalletsPanel />
+        </Section>
+        <Section color={WHITE}>
+          <FeaturesPanel />
+        </Section>
+        <Section color={DARK_SLATE_BLUE}>
+          <DownloadAppPanel downloadLink={this.state.appDownloadLink} OSName={this.state.OSName} />
+        </Section>
+        <Section color={SILVER}>
+          <KeepYourAssetsSafePanel />
+        </Section>
+        <Section color={WHITE}>
+          <PeaceOfMindPanel downloadLink={this.state.appDownloadLink} />
+        </Section>
+        <Section color={SILVER}>
+          <TestimonialsPanel />
+        </Section>
+        <BottomSection>
+          <BottomActionPanel />
+        </BottomSection>
+      </HomeWrapper>
     );
   }
 }
