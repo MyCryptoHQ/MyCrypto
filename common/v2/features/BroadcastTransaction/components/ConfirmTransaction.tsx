@@ -9,6 +9,7 @@ import { fromWei, ProviderHandler } from 'v2/services/EthService';
 import { InlineErrorMsg } from 'v2/components/ErrorMessages';
 import { translateRaw } from 'translations';
 import { ITxReceipt, ITxConfig } from 'v2/types';
+import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
 
 const ErrorWrapper = styled(InlineErrorMsg)`
   margin-top: 12px;
@@ -68,8 +69,8 @@ export default function ConfirmTransaction(props: Props) {
     setTxError('');
 
     try {
-      const receipt = await provider.sendRawTx(signedTransaction);
-      setTxReceipt(receipt);
+      const response = await provider.sendRawTx(signedTransaction);
+      setTxReceipt(fromTxReceiptObj(response) || {});
       setTxConfig(txConfig);
       goToNextStep();
     } catch (e) {
@@ -79,7 +80,11 @@ export default function ConfirmTransaction(props: Props) {
 
   return (
     <>
-      <ConfirmTransactionForm onComplete={handleConfirmClick} txConfig={txConfig} />
+      <ConfirmTransactionForm
+        onComplete={handleConfirmClick}
+        resetFlow={handleConfirmClick}
+        txConfig={txConfig}
+      />
       {txError && <ErrorWrapper>{txError}</ErrorWrapper>}
     </>
   );

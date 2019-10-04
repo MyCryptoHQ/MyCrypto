@@ -3,7 +3,7 @@ import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
 import { Button, Input } from '@mycrypto/ui';
 import _ from 'lodash';
-import { BigNumber, formatEther } from 'ethers/utils';
+import { formatEther, bigNumberify } from 'ethers/utils';
 import BN from 'bn.js';
 import styled from 'styled-components';
 
@@ -15,7 +15,8 @@ import {
   getBaseAssetByNetwork,
   getBalanceFromAccount,
   getAccountsByAsset,
-  StoreContext
+  StoreContext,
+  getTokenBalanceFromAccount
 } from 'v2/services/Store';
 import {
   Asset,
@@ -23,7 +24,8 @@ import {
   ExtendedAccount,
   StoreAsset,
   IFormikFields,
-  IStepComponentProps
+  IStepComponentProps,
+  TTicker
 } from 'v2/types';
 import {
   getNonce,
@@ -36,6 +38,14 @@ import {
   isValidPositiveNumber
 } from 'v2/services/EthService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
+import {
+  GAS_LIMIT_LOWER_BOUND,
+  GAS_LIMIT_UPPER_BOUND,
+  GAS_PRICE_GWEI_LOWER_BOUND,
+  GAS_PRICE_GWEI_UPPER_BOUND,
+  DEFAULT_ASSET_DECIMAL
+} from 'v2/config';
+import { RatesContext } from 'v2/services/RatesProvider';
 
 import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
 import {
@@ -57,13 +67,7 @@ import {
   validateAmountField
 } from './validators/validators';
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
-import {
-  GAS_LIMIT_LOWER_BOUND,
-  GAS_LIMIT_UPPER_BOUND,
-  GAS_PRICE_GWEI_LOWER_BOUND,
-  GAS_PRICE_GWEI_UPPER_BOUND,
-  DEFAULT_ASSET_DECIMAL
-} from 'v2/config';
+import { weiToFloat } from 'v2/utils';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;
@@ -133,7 +137,7 @@ export default function SendAssetsForm({
   onComplete
 }: IStepComponentProps) {
   const { accounts, assets } = useContext(StoreContext);
-
+  const { getRate } = useContext(RatesContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingENSName, setIsResolvingENSName] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
@@ -205,24 +209,23 @@ export default function SendAssetsForm({
             if (values.asset && values.account && baseAsset) {
               const isERC20 = isERC20Tx(values.asset);
               const balance = isERC20
-                ? (
-                    values.account.assets.find(
-                      accountAsset => accountAsset.uuid === values.asset.uuid
-                    ) || { balance: '0' }
-                  ).balance
+                ? weiToFloat(
+                    bigNumberify(getTokenBalanceFromAccount(values.account, values.asset)),
+                    values.asset.decimal
+                  ).toString()
                 : formatEther(getBalanceFromAccount(values.account));
               const gasPrice = values.advancedTransaction
                 ? values.gasPriceField
                 : values.gasPriceSlider;
               const amount = isERC20 // subtract gas cost from balance when sending a base asset
-                ? (balance as BigNumber)
+                ? balance
                 : baseToConvertedUnit(
                     new BN(convertedToBaseUnit(balance.toString(), DEFAULT_ASSET_DECIMAL))
                       .sub(gasStringsToMaxGasBN(gasPrice, values.gasLimitField))
                       .toString(),
                     DEFAULT_ASSET_DECIMAL
                   );
-              setFieldValue('amount', amount.toString());
+              setFieldValue('amount', amount);
               handleGasEstimate();
             }
           };
@@ -276,7 +279,7 @@ export default function SendAssetsForm({
                 <label htmlFor="account" className="input-group-header">
                   {translate('X_ADDRESS')}
                 </label>
-                <FastField
+                <Field
                   name="account"
                   value={values.account}
                   component={({ field, form }: FieldProps) => {
@@ -368,7 +371,13 @@ export default function SendAssetsForm({
                     gasPriceToUse={
                       values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider
                     }
-                    fiatAsset={{ fiat: 'USD', value: '250', symbol: '$' }}
+                    fiatAsset={{
+                      fiat: 'USD',
+                      value: (
+                        getRate((baseAsset.ticker as TTicker) || ('ETH' as TTicker)) || 0
+                      ).toString(),
+                      symbol: '$'
+                    }}
                   />
                   {/* TRANSLATE THIS */}
                 </label>

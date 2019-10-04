@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import BN from 'bn.js';
 import { Address, Button } from '@mycrypto/ui';
 
@@ -7,20 +7,17 @@ import sendIcon from 'common/assets/images/icn-send.svg';
 import { AddressBookContext } from 'v2/services/Store';
 import { Amount } from 'v2/components';
 import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from 'v2/services/EthService';
+import { RatesContext } from 'v2/services/RatesProvider';
+import { TTicker, IStepComponentProps } from 'v2/types';
 
-import { IStepComponentProps } from 'v2/types';
 import './ConfirmTransaction.scss';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import TransactionIntermediaryDisplay from './displays/TransactionIntermediaryDisplay';
+import { convertToFiat } from 'v2/utils';
 
 const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
 };
-
-/*
-  Confirm should only display values! There are no data transformations.
-  The currentPath in SendAssets determines which action should be called.
-*/
 
 export default function ConfirmTransaction({
   txConfig,
@@ -28,14 +25,19 @@ export default function ConfirmTransaction({
   signedTx
 }: IStepComponentProps) {
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
+  const [isBroadcastingTx, setIsBroadcastingTx] = useState(false);
+  const handleApprove = () => {
+    setIsBroadcastingTx(true);
+    onComplete(null);
+  };
 
+  const { getRate } = useContext(RatesContext);
   const recipientContact = getContactByAddressAndNetwork(
     txConfig.receiverAddress,
     txConfig.network
   );
   const recipientLabel = recipientContact ? recipientContact.label : 'Unknown Address';
 
-  /* ToDo: Figure out how to extract this */
   const {
     asset,
     gasPrice,
@@ -97,7 +99,14 @@ export default function ConfirmTransaction({
           <img src={sendIcon} alt="Send" /> Send Amount:
         </div>
         <div className="ConfirmTransaction-row-column">
-          <Amount assetValue={`${amount} ${asset.ticker}`} fiatValue="$1" />
+          <Amount
+            assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
+            fiatValue={`$${convertToFiat(
+              parseFloat(amount),
+              getRate(asset.ticker as TTicker)
+            ).toFixed(2)}
+          `}
+          />
         </div>
       </div>
       <div className="ConfirmTransaction-row">
@@ -105,7 +114,13 @@ export default function ConfirmTransaction({
           <img src={feeIcon} alt="Fee" /> Max. Transaction Fee:
         </div>
         <div className="ConfirmTransaction-row-column">
-          <Amount assetValue={`${maxTransactionFeeBase} ${baseAsset.ticker}`} fiatValue="$1" />
+          <Amount
+            assetValue={`${maxTransactionFeeBase} ${baseAsset.ticker}`}
+            fiatValue={`$${convertToFiat(
+              parseFloat(maxTransactionFeeBase),
+              getRate(baseAsset.ticker as TTicker)
+            ).toFixed(2)}`}
+          />
         </div>
       </div>
       <div className="ConfirmTransaction-divider" />
@@ -115,12 +130,21 @@ export default function ConfirmTransaction({
         </div>
         <div className="ConfirmTransaction-row-column">
           {assetType === 'base' ? (
-            <Amount assetValue={`${totalEtherEgress} ${asset.ticker}`} fiatValue="$1" />
+            <Amount
+              assetValue={`${totalEtherEgress} ${asset.ticker}`}
+              fiatValue={`$${convertToFiat(
+                parseFloat(totalEtherEgress),
+                getRate(asset.ticker as TTicker)
+              ).toFixed(2)}`}
+            />
           ) : (
             <Amount
               assetValue={`${amount} ${asset.ticker}`}
               baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
-              fiatValue="$1"
+              fiatValue={`$${(
+                convertToFiat(parseFloat(amount), getRate(asset.ticker as TTicker)) +
+                convertToFiat(parseFloat(totalEtherEgress), getRate(baseAsset.ticker as TTicker))
+              ).toFixed(2)}`}
             />
           )}
         </div>
@@ -137,8 +161,12 @@ export default function ConfirmTransaction({
         rawTransaction={txConfig.rawTransaction}
         signedTransaction={signedTx}
       />
-      <Button onClick={onComplete} className="ConfirmTransaction-button">
-        Confirm and Send
+      <Button
+        onClick={handleApprove}
+        disabled={isBroadcastingTx}
+        className="ConfirmTransaction-button"
+      >
+        {isBroadcastingTx ? 'Submitting...' : 'Confirm and Send'}
       </Button>
     </div>
   );

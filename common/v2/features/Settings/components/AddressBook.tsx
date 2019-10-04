@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Address, Icon, CollapsibleTable, Typography, Button } from '@mycrypto/ui';
+import { Icon, Copyable, Identicon, Button } from '@mycrypto/ui';
 
-import { DashboardPanel } from 'v2/components';
+import { DashboardPanel, CollapsibleTable, Typography } from 'v2/components';
 import { ExtendedAddressBook } from 'v2/types';
 import { truncate } from 'v2/utils';
+import { BREAK_POINTS } from 'v2/theme';
 
 interface Props {
   addressBook: ExtendedAddressBook[];
@@ -13,8 +14,12 @@ interface Props {
 }
 
 const DeleteButton = styled(Button)`
-  align-self: flex-start;
-  margin-left: 1em;
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7em;
+  width: 100%;
 `;
 
 const AddAccountButton = styled(Button)`
@@ -27,18 +32,43 @@ const BottomRow = styled.div`
   text-align: center;
 `;
 
+const Label = styled.span`
+  display: flex;
+  align-items: center;
+`;
+
+const SIdenticon = styled(Identicon)`
+  > img {
+    height: 2em;
+  }
+  margin-right: 10px;
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    margin-right: 27px;
+  }
+`;
+
+const STypography = styled(Typography)`
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    font-weight: inherit;
+  }
+`;
+
 export default function AddressBook({ addressBook, toggleFlipped, deleteAddressBooks }: Props) {
   const addressBookTable = {
-    head: ['Favorite', 'Address', 'Notes', 'Delete'],
+    head: ['Favorite', 'Label', 'Address', 'Notes', 'Delete'],
     body: addressBook.map(({ address, label, notes, uuid }: ExtendedAddressBook) => [
       <Icon key={0} icon="star" />,
-      <Address key={1} title={label} address={address} truncate={truncate} />,
-      <Typography key={2}>{notes}</Typography>,
-      <DeleteButton key={3} onClick={() => deleteAddressBooks(uuid)} icon="exit" />
+      <Label key={1}>
+        <SIdenticon address={address} />
+        <STypography bold={true} value={label} />
+      </Label>,
+      <Copyable key={2} text={address} truncate={truncate} isCopyable={true} />,
+      <Typography key={3} value={notes} />,
+      <DeleteButton key={4} onClick={() => deleteAddressBooks(uuid)} icon="exit" />
     ]),
     config: {
-      primaryColumn: 'Address',
-      sortableColumn: 'Address',
+      primaryColumn: 'Label',
+      sortableColumn: 'Label',
       sortFunction: (a: any, b: any) => {
         const aLabel = a.props.label;
         const bLabel = b.props.label;

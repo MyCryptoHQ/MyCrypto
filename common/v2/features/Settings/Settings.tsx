@@ -3,12 +3,13 @@ import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 import translate from 'translations';
 
+import { IS_MOBILE } from 'v2/utils';
+import { BREAK_POINTS, MIN_CONTENT_PADDING } from 'v2/theme';
+import { AddressBookContext, SettingsContext } from 'v2/services/Store';
 import { AccountList, FlippablePanel, TabsNav } from 'v2/components';
 import { AddressBookPanel, AddToAddressBook, GeneralSettings } from './components';
-import IS_MOBILE from 'utils/isMobile';
 
 import settingsIcon from 'common/assets/images/icn-settings.svg';
-import { AddressBookContext, SettingsContext } from 'v2/services/Store';
 
 const SettingsHeading = styled(Heading)`
   display: flex;
@@ -24,24 +25,24 @@ const SettingsHeadingIcon = styled.img`
 const StyledLayout = styled.div`
   .Layout-content {
     padding: 0;
-    @media (max-width: 850px) {
+    @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
       margin-top: ${IS_MOBILE && '73px'};
     }
   }
 `;
 
-const SettingsContent = styled.div`
-  padding: ${IS_MOBILE ? '0 10px' : '0 80px'};
-`;
-
 const SettingsTabs = styled(TabsNav)`
   margin-top: -44px;
+  margin-left: -${MIN_CONTENT_PADDING};
+  margin-right: -${MIN_CONTENT_PADDING};
 `;
 
 function renderAccountPanel() {
   return (
     <FlippablePanel>
-      {({ flipped }) => (flipped ? <p>Add Account</p> : <AccountList deletable={true} />)}
+      {({ flipped }) =>
+        flipped ? <p>Add Account</p> : <AccountList deletable={true} copyable={true} />
+      }
     </FlippablePanel>
   );
 }
@@ -75,9 +76,9 @@ interface TabOptions {
 }
 
 function renderMobile() {
-  const [tab, setTab] = useState('wallets');
+  const [tab, setTab] = useState('accounts');
   const tabOptions: TabOptions = {
-    ['wallets']: renderAccountPanel(),
+    ['accounts']: renderAccountPanel(),
     ['addresses']: renderAddressPanel(),
     ['general']: renderGeneralSettingsPanel()
   };
@@ -85,8 +86,8 @@ function renderMobile() {
   return (
     <>
       <SettingsTabs>
-        <a href="#" onClick={() => setTab('wallets')}>
-          Your Wallets
+        <a href="#" onClick={() => setTab('accounts')}>
+          Accounts
         </a>
         <a href="#" onClick={() => setTab('addresses')}>
           Addresses
@@ -95,20 +96,14 @@ function renderMobile() {
           General
         </a>
       </SettingsTabs>
-      <SettingsContent>
-        <SettingsHeading>
-          <SettingsHeadingIcon src={settingsIcon} alt="Settings" />
-          {translate('SETTINGS_HEADING')}
-        </SettingsHeading>
-        {currentTab}
-      </SettingsContent>
+      <>{currentTab}</>
     </>
   );
 }
 
 function renderDesktop() {
   return (
-    <SettingsContent>
+    <>
       <SettingsHeading>
         <SettingsHeadingIcon src={settingsIcon} alt="Settings" />
         {translate('SETTINGS_HEADING')}
@@ -116,7 +111,7 @@ function renderDesktop() {
       {renderAccountPanel()}
       {renderAddressPanel()}
       {renderGeneralSettingsPanel()}
-    </SettingsContent>
+    </>
   );
 }
 

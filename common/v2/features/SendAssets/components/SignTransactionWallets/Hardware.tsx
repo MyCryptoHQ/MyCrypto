@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { ExtendedAccount as IExtendedAccount, ITxReceipt, ITxObject, ISignedTx } from 'v2/types';
+import { WALLETS_CONFIG } from 'v2/config';
 import { makeTransaction } from 'v2/services/EthService';
 import { WalletFactory, HardwareWallet } from 'v2/services/WalletService';
 import { InlineErrorMsg } from 'v2/components/ErrorMessages';
@@ -13,7 +14,7 @@ export interface IDestructuredDPath {
 }
 
 export const splitDPath = (fullDPath: string): IDestructuredDPath => {
-  /* 
+  /*
     m/44'/60'/0'/0 => { dpath: "m/44'/60'/0'", index: "0" }
   */
   const dPathArray = fullDPath.split('/');
@@ -97,9 +98,9 @@ export default function HardwareSignTransaction({
     }
   }, [wallet, isRequestingTxSignature]);
   return (
-    <div className="SignTransaction-panel">
+    <>
       <div className="SignTransactionHardware-title">
-        Sign the Transaction with your {senderAccount.wallet} Wallet
+        {`Sign the Transaction with your ${WALLETS_CONFIG[senderAccount.wallet].name} Wallet`}
       </div>
       <div className="SignTransactionHardware-instructions">{signerDescription}</div>
       <div className="SignTransactionHardware-content">
@@ -123,6 +124,6 @@ export default function HardwareSignTransaction({
           <div className="SignTransactionHardware-referal">Need a Hardware? Get one now.</div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -21,6 +21,10 @@ const SettingsHeadingIcon = styled.img`
 const AccountListFooter = styled.div`
   color: #1eb8e7;
 `;
+// Keep the same mobile width as an ActionTile
+const EmptyTile = styled.div`
+  width: 110px;
+`;
 
 export default function Dashboard() {
   const { isDevelopmentMode } = useDevMode();
@@ -36,6 +40,9 @@ export default function Dashboard() {
           {actions.map(action => (
             <ActionTile key={action.title} {...action} />
           ))}
+          {/*In mobile we only have 5 tiles on 2 rows. To allow 'space-between' to handle the gaps, we
+          add a sixth tile with the same width.*/}
+          <EmptyTile />
         </div>
         <div className="Dashboard-mobile-divider" />
         <div className="Dashboard-mobile-group">
@@ -52,6 +59,7 @@ export default function Dashboard() {
             className="Dashboard-mobile-modifiedPanel"
             footerAction={translateRaw('SETTINGS_HEADING')}
             footerActionLink={ROUTE_PATHS.SETTINGS.path}
+            copyable={true}
           />
         </div>
         <BannerAd />
@@ -93,6 +101,7 @@ export default function Dashboard() {
                   </AccountListFooter>
                 }
                 footerActionLink={ROUTE_PATHS.SETTINGS.path}
+                copyable={true}
               />
             </div>
           </div>

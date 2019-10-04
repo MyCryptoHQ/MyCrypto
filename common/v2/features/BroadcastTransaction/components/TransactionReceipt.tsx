@@ -24,6 +24,7 @@ export default function TransactionReceipt(props: Props) {
           txReceipt={txReceipt}
           txConfig={txConfig}
           completeButtonText={translateRaw('BROADCAST_TX_BROADCAST_ANOTHER')}
+          resetFlow={handleTransactionReceiptComplete}
           onComplete={handleTransactionReceiptComplete}
         />
       )}

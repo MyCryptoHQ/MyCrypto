@@ -66,6 +66,7 @@ export interface IStepComponentProps {
   children?: never;
   completeButtonText?: string;
   onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;
+  resetFlow(): void;
 }
 
 interface IReceiverAddress {

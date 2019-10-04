@@ -36,14 +36,14 @@ function SendAssets() {
       action: handleConfirmAndSign
     },
     { label: '', component: SignTransaction, action: handleSignedWeb3Tx },
-    { label: 'Transaction Complete', component: TransactionReceipt, action: goToDashoard }
+    { label: 'Transaction Submitted', component: TransactionReceipt, action: goToDashoard }
   ];
 
   const defaultSteps: IPath[] = [
     { label: 'Send Assets', component: SendAssetsForm, action: handleFormSubmit },
     { label: '', component: SignTransaction, action: handleSignedTx },
     { label: 'Confirm Transaction', component: ConfirmTransaction, action: handleConfirmAndSend },
-    { label: 'Transaction Complete', component: TransactionReceipt, action: goToDashoard }
+    { label: 'Transaction Submitted', component: TransactionReceipt, action: goToDashoard }
   ];
 
   const getStep = (walletId: WalletId, stepIndex: number) => {
@@ -61,11 +61,11 @@ function SendAssets() {
 
   const goToNextStep = () => setStep(Math.min(step + 1, currentPath.length - 1));
   const goToPrevStep = () => setStep(Math.max(0, step - 1));
+  const goToFirstStep = () => setStep(0);
 
   return (
     <ContentPanel
       onBack={goToPrevStep}
-      className="SendAssets"
       heading={label}
       icon={sendIcon}
       stepper={{ current: step + 1, total: currentPath.length - 1 }}
@@ -75,6 +75,7 @@ function SendAssets() {
         txConfig={txConfigState}
         onComplete={(payload: IFormikFields | ITxReceipt) => stepAction(payload, goToNextStep)}
         completeButtonText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
+        resetFlow={goToFirstStep}
       />
     </ContentPanel>
   );

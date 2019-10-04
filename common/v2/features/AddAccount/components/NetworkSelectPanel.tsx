@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
@@ -8,6 +8,7 @@ import { translate } from 'translations';
 import { FormDataActionType as ActionType } from '../types';
 import { FormData } from 'v2/types';
 import { NetworkSelectDropdown } from 'v2/components';
+import { NetworkContext } from 'v2/services/Store';
 
 const NetworkForm = styled.div`
   margin-top: 22px;
@@ -20,6 +21,7 @@ interface Props {
 }
 
 function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
+  const { networks } = useContext(NetworkContext);
   const [network, setNetwork] = useState(formData.network);
 
   const onSubmit = () => {
@@ -29,6 +31,8 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
     });
     goToNextStep();
   };
+
+  const validNetwork = networks.some(n => n.id === network);
 
   return (
     <div className="Panel">
@@ -44,7 +48,7 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
         />
       </NetworkForm>
       <div className="SelectNetworkPanel-button-container">
-        <Button className="SelectNetworkPanel-button" onClick={onSubmit}>
+        <Button className="SelectNetworkPanel-button" disabled={!validNetwork} onClick={onSubmit}>
           {translate('ADD_ACCOUNT_NETWORK_ACTION')}
         </Button>
       </div>

@@ -8,7 +8,6 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    padding: 0 15px;
 
     &-row {
       display: flex;
@@ -17,7 +16,7 @@
   }
   &-divider {
     height: 1px;
-    width: 100vw;
+    width: 100%;
     background: #ddd;
   }
   &-group {
@@ -29,7 +28,7 @@
     }
   }
   &-walletBreakdown {
-    padding: 15px 15px 0 15px;
+    padding-top: 15px;
 
     @media (min-width: 900px) {
       order: 1;
@@ -43,23 +42,21 @@
       margin-top: 15px;
     }
   }
-  &-section {
-    padding: 0 15px;
-  }
 }
 
 .Dashboard-desktop {
   display: block;
   background: #e8eaed;
   font-weight: 300;
-
+  width: 100%;
   &-top {
     display: flex;
     align-items: flex-start;
 
     &-left {
       flex: 1;
-      min-width: 220px;
+      min-width: 287px;
+      max-width: 400px;
       margin-right: 21px;
 
       &-heading {
@@ -70,7 +67,7 @@
     }
     &-right {
       flex: 2;
-      min-width: 781px;
+      min-width: 500px;
       > div {
         margin-bottom: 18px;
       }
