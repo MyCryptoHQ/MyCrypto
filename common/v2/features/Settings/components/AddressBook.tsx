@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Icon, Copyable, Identicon, Button } from '@mycrypto/ui';
 
-import { DashboardPanel, CollapsibleTable, Typography, Network } from 'v2/components';
+import {
+  DashboardPanel,
+  CollapsibleTable,
+  RowDeleteOverlay,
+  Network,
+  Typography
+} from 'v2/components';
 import { ExtendedAddressBook } from 'v2/types';
 import { truncate } from 'v2/utils';
 import { BREAK_POINTS, breakpointToNumber } from 'v2/theme';
@@ -53,39 +59,6 @@ const STypography = styled(Typography)`
   }
 `;
 
-const TableOverlay = styled.div`
-  height: 67px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background-color: #b5bfc7;
-  color: #fff;
-  padding: 1em;
-`;
-
-const OverlayText = styled(Typography)`
-  color: #fff;
-  flex-grow: 1;
-  text-overflow: hidden;
-  width: 50%;
-`;
-
-const OverlayButtons = styled.div`
-  align-self: flex-end;
-`;
-
-const OverlayDelete = styled(Button)`
-  font-size: 14px;
-  margin-left: 5px;
-`;
-
-const OverlayCancel = styled(Button)`
-  font-size: 14px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  margin-left: 5px;
-`;
-
 export const screenIsMobileSized = (breakpoint: number): boolean =>
   window.matchMedia(`(max-width: ${breakpoint}px)`).matches;
 
@@ -98,25 +71,15 @@ export default function AddressBook({ addressBook, toggleFlipped, deleteAddressB
     head: ['Favorite', 'Label', 'Address', 'Network', 'Notes', 'Delete'],
     overlay:
       overlayRows && overlayRows[0] !== undefined ? (
-        <TableOverlay>
-          <OverlayText>
-            Are you sure you want to delete {addressBook[overlayRows[0]].label} address with
-            address: {truncate(addressBook[overlayRows[0]].address)}?
-          </OverlayText>
-          <OverlayButtons>
-            <OverlayDelete
-              onClick={() => {
-                deleteAddressBooks(addressBook[overlayRows[0]].uuid);
-                setDeletingIndex(undefined);
-              }}
-            >
-              Delete
-            </OverlayDelete>
-            <OverlayCancel secondary={true} onClick={() => setDeletingIndex(undefined)}>
-              Cancel
-            </OverlayCancel>
-          </OverlayButtons>
-        </TableOverlay>
+        <RowDeleteOverlay
+          prompt={`Are you sure you want to delete ${addressBook[overlayRows[0]].label} address with
+             address: ${truncate(addressBook[overlayRows[0]].address)}?`}
+          deleteAction={() => {
+            deleteAddressBooks(addressBook[overlayRows[0]].uuid);
+            setDeletingIndex(undefined);
+          }}
+          cancelAction={() => setDeletingIndex(undefined)}
+        />
       ) : (
         <></>
       ),
