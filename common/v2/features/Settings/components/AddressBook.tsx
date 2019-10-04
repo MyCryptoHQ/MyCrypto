@@ -54,7 +54,6 @@ const STypography = styled(Typography)`
 `;
 
 const TableOverlay = styled.div`
-  max-width: 674px;
   height: 67px;
   display: flex;
   flex-direction: row;
