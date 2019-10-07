@@ -51,7 +51,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`
   },
   [WalletId.CIPHER]: {
-    id: WalletId.METAMASK,
+    id: WalletId.CIPHER,
     name: 'Cipher',
     isDeterministic: false,
     isSecure: true,
@@ -63,7 +63,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`
   },
   [WalletId.MIST]: {
-    id: WalletId.METAMASK,
+    id: WalletId.MIST,
     name: 'Mist',
     isDeterministic: false,
     isSecure: true,
@@ -75,7 +75,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`
   },
   [WalletId.FRAME]: {
-    id: WalletId.METAMASK,
+    id: WalletId.FRAME,
     name: 'Frame',
     isDeterministic: false,
     isSecure: true,
