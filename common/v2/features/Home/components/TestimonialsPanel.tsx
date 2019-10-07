@@ -172,7 +172,7 @@ const testimonials = [
   {
     author: 'AtLeastSignificant',
     text:
-      "MyCrypto is the definition of a successful grass-roots movement for the community, by the community. You don't see this in the cryptocurrency space often."
+      "MyCrypto is the definition of a successful grass-roots movement for the community, by the community."
   },
   {
     author: 'Nick Johnson',
@@ -182,22 +182,22 @@ const testimonials = [
   {
     author: 'Raymond Durk',
     text:
-      'MyCrypto has consistently released the perfect balance between personal security, user experience, and new features. They are the gold standard for anyone in the Ethereum community.'
+      'MyCrypto has consistently released the perfect balance between personal security, user experience, and new features.'
   },
   {
     author: 'Andrew Coathup',
     text:
-      'I love the MyCrypto team, with their focus on education and security for the entire community.  Friendly, responsive, passionate and generous.  Thank you for being awesome!'
+      'I love the MyCrypto team, with their focus on education and security for the entire community.  Friendly, responsive, passionate and generous.'
   },
   {
     author: 'James Ryan Moreau',
     text:
-      "MyCrypto is one of the most responsive teams in the entire blockchain space when it comes to thinking about users and their general well-being. They've always prioritized supporting their user base even when times are tough for everyone and the network is at its knees."
+      "MyCrypto is one of the most responsive teams in the entire blockchain space when it comes to thinking about users and their general well-being."
   },
   {
     author: 'Tim Coulter',
     text:
-      "MyCrypto is the leader in blockchain wallets. Their watchful eye on security and their close proximity users put them on the front lines, shepherding users through the new and exciting world of crypto. With MyCrypto you know your funds are safe, and you know at all times that you'll be guided in the right direction. "
+      "MyCrypto is the leader in blockchain wallets. Their watchful eye on security and their close proximity users put them on the front lines, shepherding users through the new and exciting world of crypto."
   }
 ];
 
@@ -241,8 +241,8 @@ export default function TestimonialsPanel() {
         {testimonials.map((testimonial, index) => (
           <TestimonialCard
             key={index}
-            text={testimonial.text}
-            author={testimonial.author}
+            text={`"${testimonial.text}"`}
+            author={`-${testimonial.author}`}
             sparkles={sparkleComponents[index % 3]}
             sparklesPosition={sparklesPositions[index % 3]}
           />
