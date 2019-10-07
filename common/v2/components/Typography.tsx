@@ -15,7 +15,7 @@ const STypography = styled(UITypography)`
   line-height: 1.5;
   vertical-align: middle;
   font-weight: ${(p: Props) => (p.bold ? '600' : '400')};
-  font-size: ${(p: Props) => (p.small ? '0.8em' : '16px')};
+  font-size: ${(p: Props) => (p.small ? '0.8em' : '1rem')} !important;
 `;
 
 function Typography({
