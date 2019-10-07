@@ -4,8 +4,7 @@ import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
 
 import translate, { translateRaw } from 'translations';
 import { GAS_PRICE_DEFAULT } from 'v2/config';
-import { GasEstimates } from 'v2/types';
-import { IFormikFields } from '../../types';
+import { GasEstimates, IFormikFields } from 'v2/types';
 import './GasPriceSlider.scss';
 
 const SliderWithTooltip = createSliderWithTooltip(Slider);

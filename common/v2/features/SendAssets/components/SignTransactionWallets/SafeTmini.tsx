@@ -1,7 +1,7 @@
 import React from 'react';
 
 import SafeTIcon from 'common/assets/images/icn-safet-mini-new.svg';
-import { ISignComponentProps } from '../../types';
+import { ISignComponentProps } from 'v2/types';
 import HardwareSignTransaction from './Hardware';
 
 export default function SignTransactionSafeT({
