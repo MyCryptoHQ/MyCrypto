@@ -5,7 +5,7 @@ import { IStepComponentProps, ISignComponentProps, ISignedTx } from '../types';
 import {
   SignTransactionKeystore,
   SignTransactionLedger,
-  SignTransactionMetaMask,
+  SignTransactionWeb3,
   SignTransactionPrivateKey,
   SignTransactionSafeT,
   SignTransactionTrezor,
@@ -17,8 +17,11 @@ type SigningComponents = {
 };
 const SigningComponents: SigningComponents = {
   [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,
-  [WalletId.METAMASK]: SignTransactionMetaMask,
-  [WalletId.TRUST]: SignTransactionMetaMask,
+  [WalletId.METAMASK]: SignTransactionWeb3,
+  [WalletId.TRUST]: SignTransactionWeb3,
+  [WalletId.CIPHER]: SignTransactionWeb3,
+  [WalletId.MIST]: SignTransactionWeb3,
+  [WalletId.FRAME]: SignTransactionWeb3,
   [WalletId.LEDGER_NANO_S]: SignTransactionLedger,
   [WalletId.TREZOR]: SignTransactionTrezor,
   [WalletId.SAFE_T_MINI]: SignTransactionSafeT,
