@@ -3,7 +3,6 @@ import { ethers, utils } from 'ethers';
 import { Web3Provider } from 'ethers/providers/web3-provider';
 
 import { getNetworkByChainId } from 'v2/services/Store';
-import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
 import './Web3.scss';
 import { ISignComponentProps } from '../../types';
 import { getWeb3Config } from 'v2/utils/web3';
@@ -83,7 +82,7 @@ export default class SignTransactionWeb3 extends Component<ISignComponentProps, 
           {`Sign into ${walletConfig.name} on your computer and follow the instructions in the ${walletConfig.name} window.`}
         </div>
         <div className="SignTransactionWeb3-img">
-          <img src={MetamaskSVG} />
+          <img src={walletConfig.icon} />
         </div>
         {walletState === WalletSigningState.NOT_READY ? (
           <div className="SignTransactionWeb3-rejection">
