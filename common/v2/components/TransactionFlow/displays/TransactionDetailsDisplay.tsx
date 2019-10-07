@@ -2,15 +2,14 @@ import React, { useState } from 'react';
 import { Button, Network } from '@mycrypto/ui';
 import { bigNumberify } from 'ethers/utils';
 
-import { Asset, ExtendedAccount, Network as INetwork } from 'v2/types';
+import { Asset, ExtendedAccount, Network as INetwork, ITxObject } from 'v2/types';
 import { baseToConvertedUnit, totalTxFeeToString } from 'v2/services/EthService';
 import { getBalanceFromAccount } from 'v2/services/Store';
 import { CopyableCodeBlock } from 'v2/components';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
+import { weiToFloat } from 'v2/utils';
 
 import './TransactionDetailsDisplay.scss';
-import { ITxObject } from '../../types';
-import { weiToFloat } from 'v2/utils';
 
 interface Props {
   baseAsset: Asset;
@@ -64,12 +63,14 @@ function TransactionDetailsDisplay({
         </div>
         {showDetails && (
           <div className="TransactionDetails-content">
-            <div className="TransactionDetails-row">
-              <div className="TransactionDetails-row-column">{`Account Balance (${baseAsset.ticker}):`}</div>
-              <div className="TransactionDetails-row-column">
-                {`${weiToFloat(bigNumberify(getBalanceFromAccount(senderAccount))).toFixed(6)}`}
+            {baseAsset && senderAccount.uuid && (
+              <div className="TransactionDetails-row">
+                <div className="TransactionDetails-row-column">{`Account Balance (${baseAsset.ticker}):`}</div>
+                <div className="TransactionDetails-row-column">
+                  {`${weiToFloat(bigNumberify(getBalanceFromAccount(senderAccount))).toFixed(6)}`}
+                </div>
               </div>
-            </div>
+            )}
             {asset.type === 'erc20' && (
               <div className="TransactionDetails-row">
                 <div className="TransactionDetails-row-column">{`Account Balance (${asset.ticker}):`}</div>
@@ -86,13 +87,15 @@ function TransactionDetailsDisplay({
               <div className="TransactionDetails-row-column">Gas Limit:</div>
               <div className="TransactionDetails-row-column">{`${gasLimit}`}</div>
             </div>
-            <div className="TransactionDetails-row">
-              <div className="TransactionDetails-row-column">Gas Price:</div>
-              <div className="TransactionDetails-row-column">{`${baseToConvertedUnit(
-                gasPrice,
-                DEFAULT_ASSET_DECIMAL
-              )} ${baseAsset.ticker} (${baseToConvertedUnit(gasPrice, 9)} gwei)`}</div>
-            </div>
+            {baseAsset && (
+              <div className="TransactionDetails-row">
+                <div className="TransactionDetails-row-column">Gas Price:</div>
+                <div className="TransactionDetails-row-column">{`${baseToConvertedUnit(
+                  gasPrice,
+                  DEFAULT_ASSET_DECIMAL
+                )} ${baseAsset.ticker} (${baseToConvertedUnit(gasPrice, 9)} gwei)`}</div>
+              </div>
+            )}
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">Max TX Fee:</div>
               <div className="TransactionDetails-row-column">{`${maxTransactionFeeBase} ${baseAsset.ticker}`}</div>

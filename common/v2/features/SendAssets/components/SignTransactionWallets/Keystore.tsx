@@ -8,7 +8,7 @@ import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
 import { isKeystorePassRequired } from 'libs/wallet';
 import translate, { translateRaw } from 'translations';
 
-import { ISignComponentProps } from '../../types';
+import { ISignComponentProps } from 'v2/types';
 import './Keystore.scss';
 
 // interface Props {

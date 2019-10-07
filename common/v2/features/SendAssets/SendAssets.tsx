@@ -3,15 +3,13 @@ import React, { useState } from 'react';
 import sendIcon from 'common/assets/images/icn-send.svg';
 import { ContentPanel } from 'v2/components';
 import { useStateReducer } from 'v2/utils';
-import { WalletId, ITxReceipt } from 'v2/types';
-import {
-  ConfirmTransaction,
-  SendAssetsForm,
-  SignTransaction,
-  TransactionReceipt
-} from './components';
+import { WalletId, ITxReceipt, IFormikFields } from 'v2/types';
+import { SendAssetsForm, SignTransaction } from './components';
+
+import { ConfirmTransaction, TransactionReceipt } from 'v2/components/TransactionFlow';
 import { txConfigInitialState, TxConfigFactory } from './stateFactory';
-import { IFormikFields, IPath } from './types';
+import { IPath } from './types';
+import { translateRaw } from 'translations';
 
 function SendAssets() {
   const [step, setStep] = useState(0);
@@ -76,6 +74,7 @@ function SendAssets() {
         txReceipt={txReceiptState}
         txConfig={txConfigState}
         onComplete={(payload: IFormikFields | ITxReceipt) => stepAction(payload, goToNextStep)}
+        completeButtonText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
         resetFlow={goToFirstStep}
       />
     </ContentPanel>

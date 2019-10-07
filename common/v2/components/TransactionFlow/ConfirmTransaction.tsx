@@ -8,9 +8,8 @@ import { AddressBookContext } from 'v2/services/Store';
 import { Amount } from 'v2/components';
 import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from 'v2/services/EthService';
 import { RatesContext } from 'v2/services/RatesProvider';
-import { TTicker } from 'v2/types';
+import { TTicker, IStepComponentProps } from 'v2/types';
 
-import { IStepComponentProps } from '../types';
 import './ConfirmTransaction.scss';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import TransactionIntermediaryDisplay from './displays/TransactionIntermediaryDisplay';

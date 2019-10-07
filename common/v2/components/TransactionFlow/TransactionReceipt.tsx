@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Address, Button, Copyable } from '@mycrypto/ui';
 
-import { ITxReceipt, TTicker } from 'v2/types';
+import { ITxReceipt, IStepComponentProps, TTicker } from 'v2/types';
 import { Amount, TimeElapsedCounter } from 'v2/components';
 import { AddressBookContext, AccountContext } from 'v2/services/Store';
 import { RatesContext } from 'v2/services/RatesProvider';
@@ -12,12 +12,11 @@ import {
   getTransactionReceiptFromHash
 } from 'v2/services/EthService';
 
-import { IStepComponentProps } from '../types';
 import './TransactionReceipt.scss';
 // Legacy
 import sentIcon from 'common/assets/images/icn-sent.svg';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
-import { fromTxReceiptObj } from '../helpers';
+import { fromTxReceiptObj } from './helpers';
 import { translateRaw } from 'translations';
 import { convertToFiat } from 'v2/utils';
 
@@ -31,11 +30,16 @@ const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
 };
 
+interface Props {
+  completeButtonText: string;
+}
+
 export default function TransactionReceipt({
   txReceipt,
   txConfig,
-  resetFlow
-}: IStepComponentProps) {
+  resetFlow,
+  completeButtonText
+}: IStepComponentProps & Props) {
   const { getRate } = useContext(RatesContext);
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
   const { addNewTransactionToAccount } = useContext(AccountContext);
@@ -180,9 +184,11 @@ export default function TransactionReceipt({
       <Link to="/dashboard">
         <Button className="TransactionReceipt-back">Back to Dashboard</Button>
       </Link>
-      <Button onClick={resetFlow} secondary={true} className="TransactionReceipt-another">
-        Send Another Transaction
-      </Button>
+      {completeButtonText && (
+        <Button secondary={true} className="TransactionReceipt-another" onClick={resetFlow}>
+          {completeButtonText}
+        </Button>
+      )}
     </div>
   );
 }
