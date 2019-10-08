@@ -13,7 +13,7 @@ import {
 } from './components';
 import { getFeaturedOS } from 'v2/utils';
 import { GithubService } from 'v2/services/ApiService';
-import { COLORS } from 'v2/theme';
+import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK, OS } from 'v2/config';
 
 const { SILVER, DARK_SLATE_BLUE, WHITE } = COLORS;
@@ -37,7 +37,12 @@ const Section = styled.section`
   justify-content: center;
 `;
 
-const BottomSection = styled(Section)``;
+const BottomSection = styled(Section)`
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    flex-direction: column;
+    align-items: center;
+  }
+`;
 
 const OSNames: { [key: string]: string } = {
   [OS.WINDOWS]: 'Windows',
