@@ -18,7 +18,15 @@ import {
   StoreContext,
   getTokenBalanceFromAccount
 } from 'v2/services/Store';
-import { Asset, Network, ExtendedAccount, StoreAsset, TTicker } from 'v2/types';
+import {
+  Asset,
+  Network,
+  ExtendedAccount,
+  StoreAsset,
+  IFormikFields,
+  IStepComponentProps,
+  TTicker
+} from 'v2/types';
 import {
   getNonce,
   hexToNumber,
@@ -39,7 +47,7 @@ import {
 } from 'v2/config';
 import { RatesContext } from 'v2/services/RatesProvider';
 
-import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
+import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
 import {
   AssetDropdown,
   EthAddressField,
@@ -57,7 +65,6 @@ import {
   validateDataField,
   validateAmountField
 } from './validators/validators';
-import { IFormikFields, IStepComponentProps } from '../types';
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
 import { weiToFloat } from 'v2/utils';
 

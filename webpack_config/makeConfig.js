@@ -295,6 +295,8 @@ module.exports = function(opts = {}) {
     } else {
       devtool = 'cheap-module-eval-source-map';
     }
+  } else {
+    devtool = 'cheap-module-source-map';
   }
 
   // ====================

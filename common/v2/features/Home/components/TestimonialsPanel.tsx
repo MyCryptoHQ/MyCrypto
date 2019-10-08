@@ -168,9 +168,45 @@ const TestimonialCard: React.SFC<TestimonialCardProps> = ({
   );
 };
 
-const randomText =
-  '“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.“';
-const randomAuthor = 'Mary Myers';
+const testimonials = [
+  {
+    author: 'AtLeastSignificant',
+    text:
+      'MyCrypto is the definition of a successful grass-roots movement for the community, by the community.'
+  },
+  {
+    author: 'Nick Johnson',
+    text:
+      'MyCrypto provides some of the best and most carefully thought-through tools available in the Ethereum community.'
+  },
+  {
+    author: 'Raymond Durk',
+    text:
+      'MyCrypto has consistently released the perfect balance between personal security, user experience, and new features.'
+  },
+  {
+    author: 'Andrew Coathup',
+    text:
+      'I love the MyCrypto team, with their focus on education and security for the entire community.  Friendly, responsive, passionate and generous.'
+  },
+  {
+    author: 'James Ryan Moreau',
+    text:
+      'MyCrypto is one of the most responsive teams in the entire blockchain space when it comes to thinking about users and their general well-being.'
+  },
+  {
+    author: 'Tim Coulter',
+    text:
+      'MyCrypto is the leader in blockchain wallets. Their watchful eye on security and their close proximity users put them on the front lines, shepherding users through the new and exciting world of crypto.'
+  }
+];
+
+const sparkleComponents = [
+  <Sparkles1 key={0} src={sparkles1Icon} />,
+  <Sparkles2 key={1} src={sparkles2Icon} />,
+  <Sparkles3 key={2} src={sparkles3Icon} />
+];
+const sparklesPositions = ['top', 'bottom', 'middle'];
 
 export default function TestimonialsPanel() {
   const settings = {
@@ -202,24 +238,15 @@ export default function TestimonialsPanel() {
   return (
     <MainPanel basic={true}>
       <Slider {...settings}>
-        <TestimonialCard
-          text={randomText}
-          author={randomAuthor + ' 1'}
-          sparkles={<Sparkles1 src={sparkles1Icon} />}
-          sparklesPosition="top"
-        />
-        <TestimonialCard
-          text={randomText}
-          author={randomAuthor + ' 2'}
-          sparkles={<Sparkles2 src={sparkles2Icon} />}
-          sparklesPosition="bottom"
-        />
-        <TestimonialCard
-          text={randomText}
-          author={randomAuthor + ' 3'}
-          sparkles={<Sparkles3 src={sparkles3Icon} />}
-          sparklesPosition="middle"
-        />
+        {testimonials.map((testimonial, index) => (
+          <TestimonialCard
+            key={index}
+            text={`"${testimonial.text}"`}
+            author={`-${testimonial.author}`}
+            sparkles={sparkleComponents[index % 3]}
+            sparklesPosition={sparklesPositions[index % 3]}
+          />
+        ))}
       </Slider>
     </MainPanel>
   );

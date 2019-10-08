@@ -9,8 +9,7 @@ import {
   getIsValidENSAddressFunction
 } from 'v2/services/EthService';
 import { InlineErrorMsg, ENSStatus } from 'v2/components';
-import { Network } from 'v2/types';
-import { IFormikFields } from '../../types';
+import { Network, IFormikFields } from 'v2/types';
 
 /*
   Eth address field to be used within a Formik Form
