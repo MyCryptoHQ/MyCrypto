@@ -67,18 +67,3 @@ export const AppRouter = () => {
     </Router>
   );
 };
-
-// <LayoutWithLocation>
-//   <Switch>
-//     <Route path={ROUTE_PATHS.ROOT.path} component={Home} exact={true} />
-//     {/*
-//         The root will redirect to 'dashboard' when the user has an account
-//         For debugging purposes we include 'home' route as well
-//     */}
-//     <Route path={ROUTE_PATHS.HOME.path} component={Home} exact={true} />
-//     {APP_ROUTES.filter(route => !route.seperateLayout).map((config, idx) => (
-//       <PrivateRoute key={idx} {...config} />
-//     ))}
-//     <Route component={PageNotFound} />
-//   </Switch>
-// </LayoutWithLocation>
