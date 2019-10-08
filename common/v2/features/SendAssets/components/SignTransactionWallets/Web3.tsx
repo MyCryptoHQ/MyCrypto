@@ -4,7 +4,7 @@ import { Web3Provider } from 'ethers/providers/web3-provider';
 
 import { getNetworkByChainId } from 'v2/services/Store';
 import './Web3.scss';
-import { ISignComponentProps } from '../../types';
+import { ISignComponentProps } from 'v2/types';
 import { getWeb3Config } from 'v2/utils/web3';
 
 declare global {
