@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ISignComponentProps } from '../../types';
+import { ISignComponentProps } from 'v2/types';
 import ledgerIcon from 'common/assets/images/icn-ledger-nano-large.svg';
 import HardwareSignTransaction from './Hardware';
 

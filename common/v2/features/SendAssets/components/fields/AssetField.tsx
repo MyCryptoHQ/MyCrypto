@@ -3,8 +3,7 @@ import { Field, FieldProps, Formik } from 'formik';
 import { ComboBox } from '@mycrypto/ui';
 
 import { AccountContext, NetworkContext } from 'v2/services/Store';
-import { Network } from 'v2/types';
-import { IFormikFields } from '../../types';
+import { Network, IFormikFields } from 'v2/types';
 
 interface OwnProps {
   handleChange: Formik['handleChange'];

@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 
+import { BannerType } from 'v2/types';
+import { Banner } from 'v2/components';
 import { BREAK_POINTS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING } from 'v2/theme';
 import { DrawerContext } from 'v2/features';
 import Header from './Header';
@@ -23,16 +25,20 @@ const SMain = styled('main')`
   flex-direction: column;
 `;
 
+// This is the moment our header becomes sticky and shrinks.
+// Since it is aboslute positionning we add the extra height to
+// the padding.
+// !WARNING: When we remove the banner we will need to place the
+// same margin on SContainer.
+const SBanner = styled(Banner)`
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    margin-top: 77px;
+  }
+`;
+
 const SContainer = styled('div')`
   padding: 50px ${MIN_CONTENT_PADDING};
   max-width: ${MAX_CONTENT_WIDTH};
-
-  // This is the moment our header becomes sticky and shrinks.
-  // Since it is aboslute positionning we add the extra height to
-  // the padding.
-  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    padding-top: 120px;
-  }
 
   // Necessary to center the mobile layout when below the small screen breakpoint.
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
@@ -56,7 +62,8 @@ const SContainer = styled('div')`
 
 export default function Layout({ centered = true, fluid, className = '', children }: Props) {
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
-
+  const betaAnnouncement =
+    'Heads up: this is a beta version of the new MyCrypto. It has not been audited yet, so please practice safe sending.';
   return (
     <SMain className={className}>
       <Header
@@ -64,6 +71,7 @@ export default function Layout({ centered = true, fluid, className = '', childre
         toggleDrawerVisible={toggleVisible}
         setDrawerScreen={setScreen}
       />
+      <SBanner type={BannerType.ANNOUNCEMENT} value={betaAnnouncement} />
       <SContainer centered={centered} fluid={fluid}>
         {children}
       </SContainer>

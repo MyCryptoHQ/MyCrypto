@@ -1,7 +1,12 @@
 import React from 'react';
 
-import { WalletId, ITxReceipt } from 'v2/types';
-import { IStepComponentProps, ISignComponentProps, ISignedTx } from '../types';
+import {
+  WalletId,
+  ITxReceipt,
+  IStepComponentProps,
+  ISignComponentProps,
+  ISignedTx
+} from 'v2/types';
 import {
   SignTransactionKeystore,
   SignTransactionLedger,

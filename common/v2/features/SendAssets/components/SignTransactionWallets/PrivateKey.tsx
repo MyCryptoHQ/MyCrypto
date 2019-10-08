@@ -6,7 +6,7 @@ import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
 import { isValidPrivKey, isValidEncryptedPrivKey } from 'v2/services/EthService';
-import { ISignComponentProps } from '../../types';
+import { ISignComponentProps } from 'v2/types';
 import './PrivateKey.scss';
 
 export interface SignWithPrivKeyState {
