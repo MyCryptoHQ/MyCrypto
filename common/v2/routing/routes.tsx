@@ -24,7 +24,7 @@ import {
   ZeroEx,
   Home,
   SignAndVerifyMessage,
-  BroadcastTx
+  BroadcastTransactionFlow
 } from 'v2/features';
 import { requiresDesktopApp } from './helpers';
 
@@ -181,6 +181,6 @@ export const APP_ROUTES: IAppRoute[] = [
     name: ROUTE_PATHS.BROADCAST_TX.name,
     title: ROUTE_PATHS.BROADCAST_TX.title,
     path: ROUTE_PATHS.BROADCAST_TX.path,
-    component: BroadcastTx
+    component: BroadcastTransactionFlow
   }
 ];
