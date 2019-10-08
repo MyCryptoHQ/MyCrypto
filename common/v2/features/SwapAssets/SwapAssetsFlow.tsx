@@ -33,7 +33,7 @@ interface TStep {
   component: ReactType;
 }
 
-const BroadcastTransactionFlow = (props: RouteComponentProps<{}>) => {
+const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
   const [step, setStep] = useState(0);
   const [asset, setAsset] = useState<ISwapAsset>();
   const [receiveAsset, setReceiveAsset] = useState<ISwapAsset>(dummyAssets[4]);
@@ -80,7 +80,8 @@ const BroadcastTransactionFlow = (props: RouteComponentProps<{}>) => {
       component: ConfirmSwap
     },
     {
-      component: walletSteps[account!.wallet]!
+      // @ts-ignore
+      component: account && walletSteps[account.wallet]
     },
     {
       title: 'Waiting on Deposit',
@@ -167,7 +168,7 @@ const BroadcastTransactionFlow = (props: RouteComponentProps<{}>) => {
   );
 };
 
-export default withRouter(BroadcastTransactionFlow);
+export default withRouter(SwapAssetsFlow);
 
 const dummyAssets: ISwapAsset[] = [
   { name: 'ETH ', symbol: 'ETH' as TSymbol },
