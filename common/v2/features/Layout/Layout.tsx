@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 
+import { BannerType } from 'v2/types';
+import { Banner } from 'v2/components';
 import { BREAK_POINTS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING } from 'v2/theme';
 import { DrawerContext } from 'v2/features';
 import Header from './Header';
@@ -27,6 +29,17 @@ const SMain = styled('main')`
   min-height: 100%;
   display: flex;
   flex-direction: column;
+`;
+
+// This is the moment our header becomes sticky and shrinks.
+// Since it is aboslute positionning we add the extra height to
+// the padding.
+// !WARNING: When we remove the banner we will need to place the
+// same margin on SContainer.
+const SBanner = styled(Banner)`
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    margin-top: 77px;
+  }
 `;
 
 const SContainer = styled('div')`
@@ -57,7 +70,8 @@ const SContainer = styled('div')`
 export default function Layout({ config = {}, className = '', children }: Props) {
   const { centered = true, fluid, fullW = false, bgColor } = config;
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
-
+  const betaAnnouncement =
+    'Heads up: this is a beta version of the new MyCrypto. It has not been audited yet, so please practice safe sending.';
   return (
     <SMain className={className} bgColor={bgColor}>
       <Header
@@ -65,6 +79,7 @@ export default function Layout({ config = {}, className = '', children }: Props)
         toggleDrawerVisible={toggleVisible}
         setDrawerScreen={setScreen}
       />
+      <SBanner type={BannerType.ANNOUNCEMENT} value={betaAnnouncement} />
       <SContainer centered={centered} fluid={fluid} fullW={fullW}>
         {children}
       </SContainer>

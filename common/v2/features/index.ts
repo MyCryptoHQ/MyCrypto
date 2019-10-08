@@ -27,4 +27,4 @@ export { BuyAndExchange, ShapeShiftAuthorization, ZeroEx } from './BuyAndExchang
 export { default as PageNotFound } from './PageNotFound';
 export { SignAndVerifyMessage } from './SignAndVerifyMessage';
 export { NotificationsProvider } from './NotificationsPanel';
-export { BroadcastTx } from './BroadcastTx';
+export { BroadcastTransactionFlow } from './BroadcastTransaction';

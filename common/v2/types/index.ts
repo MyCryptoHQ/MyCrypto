@@ -44,6 +44,14 @@ export {
   IHexStrWeb3Transaction,
   ITxReceipt
 } from './transaction';
+export {
+  ISignedTx,
+  ITxObject,
+  ITxConfig,
+  IFormikFields,
+  ISignComponentProps,
+  IStepComponentProps
+} from './transactionFlow';
 export { JsonRPCResponse } from './jsonRPCResponse';
 export { INode, TxObj } from './INode';
 export { IAppRoute, IRoutePath, IRoutePaths } from './routes';
@@ -53,3 +61,4 @@ export { IStory } from './story';
 export { FormData } from './formData';
 export { BlockExplorer } from './blockExplorer';
 export { GasPrice, GasEstimates } from './gas';
+export { BannerType } from './banner';

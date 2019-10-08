@@ -62,7 +62,7 @@ export default function AddressBook({ addressBook, toggleFlipped, deleteAddressB
         <SIdenticon address={address} />
         <STypography bold={true} value={label} />
       </Label>,
-      <Copyable key={2} text={address} truncate={truncate} isCopyable={true}/>,
+      <Copyable key={2} text={address} truncate={truncate} isCopyable={true} />,
       <Typography key={3} value={notes} />,
       <DeleteButton key={4} onClick={() => deleteAddressBooks(uuid)} icon="exit" />
     ]),

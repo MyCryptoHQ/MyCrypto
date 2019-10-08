@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ISignComponentProps } from '../../types';
+import { ISignComponentProps } from 'v2/types';
 import ConnectTrezor from 'common/assets/images/icn-connect-trezor-new.svg';
 import HardwareSignTransaction from './Hardware';
 
