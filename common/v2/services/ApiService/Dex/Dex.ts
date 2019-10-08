@@ -32,35 +32,19 @@ export default class DexService {
     }
   };
 
-  public getTokenPrice = async (
-    from: TSymbol,
-    to: TSymbol,
-    fromAmount?: number,
-    toAmount?: number
-  ) => {
-    try {
-      const params = {
-        from,
-        to,
-        fromAmount,
-        toAmount,
-        dex: 'all'
-      };
-      const { data: tokenPrices } = await this.service.get('price', { params });
-
-      return tokenPrices[0].price;
-    } catch (e) {
-      throw e;
-    }
-  };
-
   public getTokenPriceFrom = async (from: TSymbol, to: TSymbol, fromAmount: number) =>
     this.getTokenPrice(from, to, fromAmount);
 
   public getTokenPriceTo = async (from: TSymbol, to: TSymbol, toAmount: number) =>
     this.getTokenPrice(from, to, undefined, toAmount);
 
-  public getOrderDetails = async (
+  public getOrderDetailsFrom = async (from: TSymbol, to: TSymbol, fromAmount: number) =>
+    this.getOrderDetails(from, to, fromAmount);
+
+  public getOrderDetailsTo = async (from: TSymbol, to: TSymbol, toAmount: number) =>
+    this.getOrderDetails(from, to, undefined, toAmount);
+
+  private getOrderDetails = async (
     from: TSymbol,
     to: TSymbol,
     fromAmount?: number,
@@ -83,9 +67,25 @@ export default class DexService {
     }
   };
 
-  public getOrderDetailsFrom = async (from: TSymbol, to: TSymbol, fromAmount: number) =>
-    this.getOrderDetails(from, to, fromAmount);
+  private getTokenPrice = async (
+    from: TSymbol,
+    to: TSymbol,
+    fromAmount?: number,
+    toAmount?: number
+  ) => {
+    try {
+      const params = {
+        from,
+        to,
+        fromAmount,
+        toAmount,
+        dex: 'all'
+      };
+      const { data: tokenPrices } = await this.service.get('price', { params });
 
-  public getOrderDetailsTo = async (from: TSymbol, to: TSymbol, toAmount: number) =>
-    this.getOrderDetails(from, to, undefined, toAmount);
+      return tokenPrices[0].price;
+    } catch (e) {
+      throw e;
+    }
+  };
 }

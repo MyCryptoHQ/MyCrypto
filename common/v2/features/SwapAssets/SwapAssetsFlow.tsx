@@ -11,10 +11,24 @@ import {
 } from './components';
 import { ROUTE_PATHS } from 'v2/config';
 import { ISwapAsset } from './types';
-import { TSymbol } from 'v2/types';
+import { TSymbol, WalletId, StoreAccount, ITxReceipt } from 'v2/types';
+
+import {
+  SignTransactionKeystore,
+  SignTransactionLedger,
+  SignTransactionMetaMask,
+  SignTransactionPrivateKey,
+  SignTransactionSafeT,
+  SignTransactionTrezor,
+  SignTransactionMnemonic
+} from 'v2/features/SendAssets/components/SignTransactionWallets';
+
+import { ISignedTx, ISignComponentProps } from '../SendAssets/types';
+import { getNetworkById, ProviderHandler } from 'v2/services';
+import { fromTxReceiptObj } from '../SendAssets/helpers';
 
 interface TStep {
-  title: string;
+  title?: string;
   description?: string;
   component: ReactType;
 }
@@ -26,7 +40,27 @@ const BroadcastTransactionFlow = (props: RouteComponentProps<{}>) => {
   const [sendAmount, setSendAmount] = useState();
   const [receiveAmount, setReceiveAmount] = useState();
   const [address, setAddress] = useState();
-  const [account, setAccount] = useState();
+  const [account, setAccount] = useState<StoreAccount>();
+  const [dexTrade, setDexTrade] = useState();
+  const [rawTransaction, setRawTransaction] = useState(null);
+  const [txHash, setTxHash] = useState();
+  const [txReceipt, setTxReceipt] = useState();
+
+  type SigningComponents = {
+    readonly [k in WalletId]: React.ComponentType<ISignComponentProps> | null;
+  };
+
+  const walletSteps: SigningComponents = {
+    [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,
+    [WalletId.METAMASK]: SignTransactionMetaMask,
+    [WalletId.LEDGER_NANO_S]: SignTransactionLedger,
+    [WalletId.TREZOR]: SignTransactionTrezor,
+    [WalletId.SAFE_T_MINI]: SignTransactionSafeT,
+    [WalletId.KEYSTORE_FILE]: SignTransactionKeystore,
+    [WalletId.PARITY_SIGNER]: null,
+    [WalletId.MNEMONIC_PHRASE]: SignTransactionMnemonic,
+    [WalletId.VIEW_ONLY]: null
+  };
 
   const steps: TStep[] = [
     {
@@ -44,6 +78,9 @@ const BroadcastTransactionFlow = (props: RouteComponentProps<{}>) => {
     {
       title: 'Confirm Swap',
       component: ConfirmSwap
+    },
+    {
+      component: walletSteps[account!.wallet]!
     },
     {
       title: 'Waiting on Deposit',
@@ -65,6 +102,27 @@ const BroadcastTransactionFlow = (props: RouteComponentProps<{}>) => {
       history.push(ROUTE_PATHS.DASHBOARD.path);
     } else {
       setStep(step - 1);
+    }
+  };
+
+  const onComplete = (signResponse: any) => {
+    if (!account) {
+      return;
+    }
+
+    if (account.wallet === WalletId.METAMASK) {
+      setTxHash(signResponse);
+    } else {
+      const provider = new ProviderHandler(account.network);
+      provider
+        .sendRawTx(signResponse)
+        .then(retrievedTxReceipt => retrievedTxReceipt)
+        .catch(hash => provider.getTransactionByHash(hash))
+        .then(retrievedTransactionReceipt => {
+          const receipt = fromTxReceiptObj(retrievedTransactionReceipt);
+          setTxReceipt(receipt);
+          // console.log('RECEIPT', receipt);
+        });
     }
   };
 
@@ -95,6 +153,15 @@ const BroadcastTransactionFlow = (props: RouteComponentProps<{}>) => {
         setAddress={setAddress}
         account={account}
         setAccount={setAccount}
+        dexTrade={dexTrade}
+        setDexTrade={setDexTrade}
+        network={getNetworkById('Ethereum')}
+        senderAccount={account}
+        rawTransaction={rawTransaction}
+        onSuccess={(payload: ITxReceipt | ISignedTx) => onComplete(payload)}
+        setRawTransaction={setRawTransaction}
+        txHash={txHash}
+        txReceipt={txReceipt}
       />
     </ExtendedContentPanel>
   );
