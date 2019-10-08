@@ -11,7 +11,14 @@ import {
 } from './components';
 import { ROUTE_PATHS } from 'v2/config';
 import { ISwapAsset } from './types';
-import { TSymbol, WalletId, StoreAccount, ITxReceipt } from 'v2/types';
+import {
+  TSymbol,
+  WalletId,
+  StoreAccount,
+  ITxReceipt,
+  ISignedTx,
+  ISignComponentProps
+} from 'v2/types';
 
 import {
   SignTransactionKeystore,
@@ -23,9 +30,8 @@ import {
   SignTransactionMnemonic
 } from 'v2/features/SendAssets/components/SignTransactionWallets';
 
-import { ISignedTx, ISignComponentProps } from '../SendAssets/types';
 import { getNetworkById, ProviderHandler } from 'v2/services';
-import { fromTxReceiptObj } from '../SendAssets/helpers';
+import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
 
 interface TStep {
   title?: string;
