@@ -40,7 +40,9 @@ const SettingsTabs = styled(TabsNav)`
 function renderAccountPanel() {
   return (
     <FlippablePanel>
-      {({ flipped }) => (flipped ? <p>Add Account</p> : <AccountList deletable={true} />)}
+      {({ flipped }) =>
+        flipped ? <p>Add Account</p> : <AccountList deletable={true} copyable={true} />
+      }
     </FlippablePanel>
   );
 }

@@ -9,7 +9,7 @@ import styled from 'styled-components';
 
 import translate, { translateRaw } from 'translations';
 import { WhenQueryExists } from 'components/renderCbs';
-import { InlineErrorMsg } from 'v2/components';
+import { InlineErrorMsg, AccountDropdown } from 'v2/components';
 import {
   getNetworkById,
   getBaseAssetByNetwork,
@@ -18,7 +18,7 @@ import {
   StoreContext,
   getTokenBalanceFromAccount
 } from 'v2/services/Store';
-import { Asset, Network, ExtendedAccount, StoreAsset } from 'v2/types';
+import { Asset, Network, ExtendedAccount, StoreAsset, TTicker } from 'v2/types';
 import {
   getNonce,
   hexToNumber,
@@ -30,10 +30,17 @@ import {
   isValidPositiveNumber
 } from 'v2/services/EthService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
+import {
+  GAS_LIMIT_LOWER_BOUND,
+  GAS_LIMIT_UPPER_BOUND,
+  GAS_PRICE_GWEI_LOWER_BOUND,
+  GAS_PRICE_GWEI_UPPER_BOUND,
+  DEFAULT_ASSET_DECIMAL
+} from 'v2/config';
+import { RatesContext } from 'v2/services/RatesProvider';
 
 import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
 import {
-  AccountDropdown,
   AssetDropdown,
   EthAddressField,
   GasLimitField,
@@ -52,12 +59,6 @@ import {
 } from './validators/validators';
 import { IFormikFields, IStepComponentProps } from '../types';
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
-import {
-  GAS_LIMIT_LOWER_BOUND,
-  GAS_LIMIT_UPPER_BOUND,
-  GAS_PRICE_GWEI_LOWER_BOUND,
-  GAS_PRICE_GWEI_UPPER_BOUND
-} from 'v2/config';
 import { weiToFloat } from 'v2/utils';
 
 export const AdvancedOptionsButton = styled(Button)`
@@ -128,7 +129,7 @@ export default function SendAssetsForm({
   onComplete
 }: IStepComponentProps) {
   const { accounts, assets } = useContext(StoreContext);
-
+  const { getRate } = useContext(RatesContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingENSName, setIsResolvingENSName] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
@@ -211,10 +212,10 @@ export default function SendAssetsForm({
               const amount = isERC20 // subtract gas cost from balance when sending a base asset
                 ? balance
                 : baseToConvertedUnit(
-                    new BN(convertedToBaseUnit(balance.toString(), 18))
+                    new BN(convertedToBaseUnit(balance.toString(), DEFAULT_ASSET_DECIMAL))
                       .sub(gasStringsToMaxGasBN(gasPrice, values.gasLimitField))
                       .toString(),
-                    18
+                    DEFAULT_ASSET_DECIMAL
                   );
               setFieldValue('amount', amount);
               handleGasEstimate();
@@ -270,7 +271,7 @@ export default function SendAssetsForm({
                 <label htmlFor="account" className="input-group-header">
                   {translate('X_ADDRESS')}
                 </label>
-                <FastField
+                <Field
                   name="account"
                   value={values.account}
                   component={({ field, form }: FieldProps) => {
@@ -362,7 +363,13 @@ export default function SendAssetsForm({
                     gasPriceToUse={
                       values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider
                     }
-                    fiatAsset={{ fiat: 'USD', value: '250', symbol: '$' }}
+                    fiatAsset={{
+                      fiat: 'USD',
+                      value: (
+                        getRate((baseAsset.ticker as TTicker) || ('ETH' as TTicker)) || 0
+                      ).toString(),
+                      symbol: '$'
+                    }}
                   />
                   {/* TRANSLATE THIS */}
                 </label>

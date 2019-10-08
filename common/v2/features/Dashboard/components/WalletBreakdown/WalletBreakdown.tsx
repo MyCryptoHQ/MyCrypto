@@ -6,7 +6,7 @@ import { translateRaw } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES, RatesContext } from 'v2/services';
 import { SettingsContext, StoreContext, AccountContext } from 'v2/services/Store';
 import { StoreAsset, TTicker } from 'v2/types';
-import { convertToFiat, weiToFloat } from 'v2/utils';
+import { weiToFloat, convertToFiatFromAsset } from 'v2/utils';
 import { BREAK_POINTS } from 'v2/theme';
 
 import { Balance, Fiat } from './types';
@@ -14,6 +14,7 @@ import AccountDropdown from './AccountDropdown';
 import BalancesDetailView from './BalancesDetailView';
 import WalletBreakdownView from './WalletBreakdownView';
 import NoAccountsSelected from './NoAccountsSelected';
+import {} from 'v2/utils/convert';
 
 const { SCREEN_MD } = BREAK_POINTS;
 
@@ -78,7 +79,7 @@ export function WalletBreakdown() {
       name: asset.name || translateRaw('WALLET_BREAKDOWN_UNKNOWN'),
       ticker: asset.ticker,
       amount: weiToFloat(asset.balance, asset.decimal),
-      fiatValue: convertToFiat(asset.balance, getRate(asset.ticker as TTicker))
+      fiatValue: convertToFiatFromAsset(asset, getRate(asset.ticker as TTicker))
     }))
     .sort((a, b) => b.fiatValue - a.fiatValue);
 

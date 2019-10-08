@@ -1,5 +1,5 @@
 import React, { DetailedHTMLProps, HTMLAttributes, ReactNode } from 'react';
-import styled, { StyledComponentClass } from 'styled-components';
+import styled, { StyledComponentClass, css } from 'styled-components';
 import { Theme, scale } from '@mycrypto/ui';
 
 import Typography from './Typography';
@@ -38,9 +38,30 @@ StackedCardHeading.defaultProps = {
   as: 'header'
 };
 
+// Arbitrary positioning of icons to respect AddressBook and AccountList designs
 const StackedCardIcons = styled.div`
+  height: 100%;
   display: flex;
-  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  > * {
+    width: 15px;
+  }
+  ${props =>
+    props.qty &&
+    css`
+      width: calc(15px * ${props.qty || 1});
+    `}
+  ${(props: { qty: number }) =>
+    props.qty === 2 &&
+    css`
+      > *:first-child {
+        margin-bottom: -2px;
+      }
+      > *:last-child {
+        margin-left: 8px;
+      }
+    `}
 `;
 
 // Arbitrary left margin to allow AccountList rows to align to
@@ -88,12 +109,12 @@ StackedCardValue.defaultProps = {
   as: 'dd'
 };
 
-export const StackedCard = ({ heading, icons, entries, ...rest }: Props) => {
+export const StackedCard = ({ heading, icons = [], entries, ...rest }: Props) => {
   return (
     <StackedCardContainer {...rest}>
       <StackedCardHead>
         <StackedCardHeading>{heading}</StackedCardHeading>
-        <StackedCardIcons>{icons}</StackedCardIcons>
+        <StackedCardIcons qty={icons.length}>{icons}</StackedCardIcons>
       </StackedCardHead>
       <StackedCardBody>
         {entries.map(([label, value], index) => (

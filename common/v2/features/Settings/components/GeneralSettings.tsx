@@ -112,11 +112,9 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
           <SettingsLabel>
             {translate('SETTINGS_HANDLING_LABEL')}
             <Tooltip tooltip={<span>{translate('SETTINGS_TOOLTIP')}</span>}>
-              {props => (
-                <div {...props}>
-                  <SettingsTooltipIcon icon="shape" />
-                </div>
-              )}
+              <div>
+                <SettingsTooltipIcon icon="shape" />
+              </div>
             </Tooltip>
           </SettingsLabel>
           <SettingsControl>

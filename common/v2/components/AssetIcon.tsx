@@ -18,17 +18,19 @@ function getIconUrl(symbol: TSymbol) {
 
 const SImg = styled('img')`
   height: ${(p: { size: string }) => p.size};
+  width: ${(p: { size: string }) => p.size};
 `;
 
 interface Props {
   symbol: TSymbol;
   size?: string;
+  className?: string;
 }
 
-function AssetIcon({ symbol, size = '32px' }: Props) {
+function AssetIcon({ symbol, size = '32px', className }: Props) {
   const iconUrl = getIconUrl(symbol);
 
-  return <SImg src={iconUrl} size={size} />;
+  return <SImg src={iconUrl} size={size} className={className} />;
 }
 
 export default AssetIcon;

@@ -99,10 +99,19 @@ interface AccountListProps {
   favoritable?: boolean;
   footerAction?: string | JSX.Element;
   footerActionLink?: string;
+  copyable?: boolean;
 }
 
 export default function AccountList(props: AccountListProps) {
-  const { className, currentsOnly, deletable, favoritable, footerAction, footerActionLink } = props;
+  const {
+    className,
+    currentsOnly,
+    deletable,
+    favoritable,
+    footerAction,
+    footerActionLink,
+    copyable
+  } = props;
   const { currentAccounts, accounts, deleteAccountFromCache } = useContext(StoreContext);
   const { updateAccount } = useContext(AccountContext);
   const shouldRedirect = accounts === undefined || accounts === null || accounts.length === 0;
@@ -129,7 +138,8 @@ export default function AccountList(props: AccountListProps) {
             deleteAccountFromCache,
             updateAccount,
             deletable,
-            favoritable
+            favoritable,
+            copyable
           )}
         />
       </TableContainer>
@@ -142,7 +152,8 @@ function buildAccountTable(
   deleteAccount: DeleteAccount,
   updateAccount: UpdateAccount,
   deletable?: boolean,
-  favoritable?: boolean
+  favoritable?: boolean,
+  copyable?: boolean
 ) {
   const { totalFiat } = useContext(StoreContext);
   const { getRate } = useContext(RatesContext);
@@ -168,7 +179,7 @@ function buildAccountTable(
           <SIdenticon address={account.address} />
           <STypography bold={true} value={label} />
         </Label>,
-        <Copyable key={index} text={account.address} truncate={truncate} />,
+        <Copyable key={index} text={account.address} truncate={truncate} isCopyable={copyable} />,
         <Network key={index} color="#a682ff">
           {account.networkId}
         </Network>,
