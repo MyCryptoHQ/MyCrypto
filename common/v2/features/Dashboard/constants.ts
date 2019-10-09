@@ -35,7 +35,7 @@ export const actions: Action[] = [
   },
   {
     icon: hardwareWalletIcon,
-    title: 'Get Hardware Wallet',
+    title: 'Get a Wallet',
     link: EXT_URLS.LEDGER_REFERRAL.path,
     description: 'Keep Your Funds Safe Offline'
   }

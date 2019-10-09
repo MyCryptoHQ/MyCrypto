@@ -90,7 +90,7 @@ const trackLinkClicked = (linkName: string): void => {
 
 export default function Linkset() {
   return (
-    <section className="Linkset">
+    <section className="Footer-Linkset">
       {LINK_COLUMNS.map(({ heading, links }) => (
         <section key={heading} className="Linkset-column">
           <h2>{heading}</h2>
