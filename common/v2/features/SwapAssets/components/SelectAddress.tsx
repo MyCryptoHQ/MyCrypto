@@ -24,34 +24,26 @@ const StyledButton = styled(Button)`
 `;
 interface Props {
   account: StoreAccount;
-  asset: ISwapAsset;
-  receiveAsset: ISwapAsset;
-  sendAmount: string;
-  receiveAmount: string;
+  fromAsset: ISwapAsset;
+  toAsset: ISwapAsset;
+  fromAmount: string;
+  toAmount: string;
   setAccount(account: ExtendedAccount): void;
   goToNextStep(): void;
 }
 
 export default function SelectAddress(props: Props) {
-  const {
-    goToNextStep,
-    account,
-    setAccount,
-    asset,
-    receiveAsset,
-    sendAmount,
-    receiveAmount
-  } = props;
+  const { goToNextStep, account, setAccount, fromAsset, toAsset, fromAmount, toAmount } = props;
 
   const { accounts } = useContext(StoreContext);
 
   return (
     <div>
       <SwapFromToDiagram
-        fromSymbol={asset.symbol}
-        toSymbol={receiveAsset.symbol}
-        fromAmount={sendAmount}
-        toAmount={receiveAmount}
+        fromSymbol={fromAsset.symbol}
+        toSymbol={toAsset.symbol}
+        fromAmount={fromAmount}
+        toAmount={toAmount}
       />
       <Label>Select Address</Label>
       <AccountDropdown

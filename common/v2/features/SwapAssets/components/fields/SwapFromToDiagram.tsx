@@ -31,13 +31,15 @@ const AssetWrapper = styled.div`
 const Arrow = styled.img`
   width: 54px;
   height: 38px;
-  margin-bottom: 38px;
+  margin-bottom: 64px;
 `;
 
 const AssetAmount = styled.p`
   font-size: 20px;
   font-weight: bold;
   margin-top: 14px;
+  height: 50px;
+  text-align: center;
 `;
 
 export default function SwapFromToDiagram(props: Props) {
@@ -47,14 +49,14 @@ export default function SwapFromToDiagram(props: Props) {
       <AssetWrapper>
         <AssetIcon symbol={fromSymbol} size={'72px'} />
         <AssetAmount>
-          {fromAmount} {fromSymbol}
+          {Number(fromAmount).toFixed(6)} {fromSymbol}
         </AssetAmount>
       </AssetWrapper>
       <Arrow src={arrowIcon} />
       <AssetWrapper>
         <AssetIcon symbol={toSymbol} size={'72px'} />
         <AssetAmount>
-          {toAmount} {toSymbol}
+          {Number(toAmount).toFixed(6)} {toSymbol}
         </AssetAmount>
       </AssetWrapper>
     </Wrapper>

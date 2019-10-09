@@ -5,23 +5,10 @@ import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
 import { ExtendedContentPanel } from 'v2/components';
-import {
-  SwapAssets,
-  SelectAddress,
-  ConfirmSwap,
-  WaitingDeposit,
-  SwapTransactionReceipt
-} from './components';
+import { SwapAssets, SelectAddress, ConfirmSwap, SwapTransactionReceipt } from './components';
 import { ROUTE_PATHS } from 'v2/config';
-import { ISwapAsset } from './types';
-import {
-  TSymbol,
-  WalletId,
-  StoreAccount,
-  ITxReceipt,
-  ISignedTx,
-  ISignComponentProps
-} from 'v2/types';
+import { ISwapAsset, LAST_CHANGED_AMOUNT } from './types';
+import { WalletId, StoreAccount, ITxReceipt, ISignedTx, ISignComponentProps } from 'v2/types';
 
 import {
   SignTransactionKeystore,
@@ -32,8 +19,9 @@ import {
   SignTransactionTrezor,
   SignTransactionMnemonic
 } from 'v2/features/SendAssets/components/SignTransactionWallets';
+import { DexService } from 'v2/services/ApiService/Dex';
 
-import { getNetworkById, ProviderHandler } from 'v2/services';
+import { getNetworkById, ProviderHandler, getAssetByUUID } from 'v2/services';
 import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
 import { getNonce, hexToNumber, inputGasPriceToHex, hexWeiToString } from 'v2/services/EthService';
 import { getGasEstimate, fetchGasPriceEstimates } from 'v2/services/ApiService';
@@ -53,16 +41,22 @@ const network = getNetworkById('Ethereum');
 
 const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
   const [step, setStep] = useState(0);
-  const [asset, setAsset] = useState<ISwapAsset>();
-  const [receiveAsset, setReceiveAsset] = useState<ISwapAsset>(dummyAssets[4]);
-  const [sendAmount, setSendAmount] = useState();
-  const [receiveAmount, setReceiveAmount] = useState();
+  const [fromAsset, setFromAsset] = useState<ISwapAsset>();
+  const [toAsset, setToAsset] = useState<ISwapAsset>();
+  const [fromAmount, setFromAmount] = useState();
+  const [toAmount, setToAmount] = useState();
   const [address, setAddress] = useState();
   const [account, setAccount] = useState<StoreAccount>();
   const [dexTrade, setDexTrade] = useState();
   const [rawTransaction, setRawTransaction] = useState(null);
   const [txHash, setTxHash] = useState();
   const [txReceipt, setTxReceipt] = useState();
+  const [swapAssets, setSwapAssets] = useState([]);
+  const [swapPrice, setSwapPrice] = useState(0);
+  const [lastChangedAmount, setLastChagedAmount] = useState<LAST_CHANGED_AMOUNT>(
+    LAST_CHANGED_AMOUNT.FROM
+  );
+  const [txConfig, setTxConfig] = useState();
 
   const walletSteps: SigningComponents = {
     [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,
@@ -74,6 +68,10 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     [WalletId.PARITY_SIGNER]: null,
     [WalletId.MNEMONIC_PHRASE]: SignTransactionMnemonic,
     [WalletId.VIEW_ONLY]: null
+  };
+
+  const goToFirstStep = () => {
+    setStep(0);
   };
 
   const goToNextStep = () => {
@@ -158,12 +156,41 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     transaction.value = addHexPrefix(new BN(transaction.value).toString(16));
     transaction.chainId = network.chainId;
 
-    if (account.wallet !== WalletId.METAMASK) {
+    transaction.nonce = await getNonce(network, account);
+    const gasLimit = await getGasEstimate(network, transaction);
+    transaction.gasLimit = hexToNumber(gasLimit);
+
+    if (account.wallet !== WalletId.METAMASK && trade.metadata.input) {
       transaction.from = account.address;
-      transaction.nonce = await getNonce(network, account);
-      const gasLimit = await getGasEstimate(network, transaction);
-      transaction.gasLimit = hexToNumber(gasLimit);
     }
+
+    const txAmount = transaction.value;
+    const txNetwork = account.network;
+    const txBaseAsset = getAssetByUUID(txNetwork.baseAsset)!;
+    const txToAddress = account.address;
+    const txFromAddress = account.address;
+    const txGasPrice = transaction.gasPrice;
+    const txGasLimit = transaction.gasLimit;
+    const txNonce = transaction.nonce;
+    const txValue = transaction.value;
+    const txData = transaction.data;
+
+    const transactionConfig: any = {
+      amount: txAmount,
+      receiverAddress: txToAddress,
+      senderAccount: { address: txFromAddress, assets: [] },
+      network: txNetwork,
+      asset: txBaseAsset,
+      baseAsset: txBaseAsset,
+      gasPrice: txGasPrice,
+      gasLimit: txGasLimit,
+      value: txValue,
+      nonce: txNonce,
+      data: txData,
+      rawTransaction
+    };
+
+    setTxConfig(transactionConfig);
 
     return transaction;
   };
@@ -203,8 +230,17 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
 
     if (account.wallet === WalletId.METAMASK) {
       setTxHash(signResponse);
+      setTxReceipt({ hash: signResponse, asset: {} });
+      goToNextStep();
     } else {
       const provider = new ProviderHandler(account.network);
+
+      /*    provider
+        .getTransactionReceipt('0xc9dff224df247cacf5c2753779f8f66f19e1eccd25ed6409a92664a7a363f5b5')
+        .then(retrievedTransactionReceipt => {
+          setTxReceipt({ hash: retrievedTransactionReceipt.transactionHash, asset: {} });
+          goToNextStep();
+        }); */
       provider
         .sendRawTx(signResponse)
         .then(retrievedTxReceipt => retrievedTxReceipt)
@@ -224,15 +260,10 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
       component: SwapAssets
     },
     {
-      title: 'Swap Assets1',
-      description: 'How much do you want to send and receive?',
-      component: SwapAssets
-    },
-    {
       title: 'Select Address',
-      description: `Where will you be sending your ${asset &&
-        asset.symbol} from? You will receive your ${receiveAsset &&
-        receiveAsset.symbol} back to the same address after the swap.`,
+      description: `Where will you be sending your ${fromAsset &&
+        fromAsset.symbol} from? You will receive your ${toAsset &&
+        toAsset.symbol} back to the same address after the swap.`,
       component: SelectAddress
     },
     {
@@ -254,10 +285,6 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
       action: onComplete
     },
     {
-      title: 'Waiting on Deposit',
-      component: WaitingDeposit
-    },
-    {
       title: 'Transaction Receipt',
       component: SwapTransactionReceipt
     }
@@ -265,6 +292,23 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
 
   const stepObject = steps[step];
   const StepComponent = stepObject.component;
+
+  const fetchSwapAssets = async () => {
+    try {
+      const assets = await DexService.instance.getTokenList();
+      setSwapAssets(assets);
+      if (assets.length > 1) {
+        setFromAsset(assets[0]);
+        setToAsset(assets[1]);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  if (swapAssets.length === 0) {
+    fetchSwapAssets();
+  }
 
   return (
     <ExtendedContentPanel
@@ -278,15 +322,15 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         key={`${stepObject.title}${step}`}
         goToNextStep={goToNextStep}
         setStep={setStep}
-        setAsset={setAsset}
-        setReceiveAsset={setReceiveAsset}
-        setSendAmount={setSendAmount}
-        setReceiveAmount={setReceiveAmount}
-        sendAmount={sendAmount}
-        receiveAmount={receiveAmount}
-        assets={dummyAssets}
-        asset={asset}
-        receiveAsset={receiveAsset}
+        setFromAsset={setFromAsset}
+        setToAsset={setToAsset}
+        setFromAmount={setFromAmount}
+        setToAmount={setToAmount}
+        fromAmount={fromAmount}
+        toAmount={toAmount}
+        assets={swapAssets}
+        fromAsset={fromAsset}
+        toAsset={toAsset}
         address={address}
         setAddress={setAddress}
         account={account}
@@ -302,76 +346,17 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         setRawTransaction={setRawTransaction}
         txHash={txHash}
         txReceipt={txReceipt}
+        lastChangedAmount={lastChangedAmount}
+        setLastChagedAmount={setLastChagedAmount}
+        swapPrice={swapPrice}
+        setSwapPrice={setSwapPrice}
         makeAllowanceTransaction={makeAllowanceTransaction}
         makeTradeTransactionFromDexTrade={makeTradeTransactionFromDexTrade}
+        goToFirstStep={goToFirstStep}
+        txConfig={txConfig}
       />
     </ExtendedContentPanel>
   );
 };
 
 export default withRouter(SwapAssetsFlow);
-
-const dummyAssets: ISwapAsset[] = [
-  { name: 'ETH ', symbol: 'ETH' as TSymbol },
-  { name: 'Dai (DAI)', symbol: 'DAI' as TSymbol },
-  { name: 'Maker (MKR)', symbol: 'MKR' as TSymbol },
-  { name: 'USD Coin (USDC)', symbol: 'USDC' as TSymbol },
-  { name: 'Basic Attention Token (BAT)', symbol: 'BAT' as TSymbol },
-  { name: 'Wrapped Bitcoin (WBTC)', symbol: 'WBTC' as TSymbol },
-  { name: 'Chainlink (LINK)', symbol: 'LINK' as TSymbol },
-  { name: 'Augur (REP)', symbol: 'REP' as TSymbol },
-  { name: '0x (ZRX)', symbol: 'ZRX' as TSymbol },
-  { name: 'Kyber Network (KNC)', symbol: 'KNC' as TSymbol },
-  { name: 'sUSD (SUSD)', symbol: 'SUSD' as TSymbol },
-  { name: 'Synthetix Network Token (SNX)', symbol: 'SNX' as TSymbol },
-  { name: 'Zilliqa (ZIL)', symbol: 'ZIL' as TSymbol },
-  { name: 'cDAI (cDAI)', symbol: 'CDAI' as TSymbol },
-  { name: 'Status (SNT)', symbol: 'SNT' as TSymbol },
-  { name: 'Loom Network (LOOM)', symbol: 'LOOM' as TSymbol },
-  { name: 'OmiseGO (OMG)', symbol: 'OMG' as TSymbol },
-  { name: 'Grid+ (GRID)', symbol: 'GRID' as TSymbol },
-  { name: 'Enjin (ENJ)', symbol: 'ENJ' as TSymbol },
-  { name: 'Golem (GNT)', symbol: 'GNT' as TSymbol },
-  { name: 'Gnosis (GNO)', symbol: 'GNO' as TSymbol },
-  { name: 'Bancor (BNT)', symbol: 'BNT' as TSymbol },
-  { name: 'USDT (USDT)', symbol: 'USDT' as TSymbol },
-  { name: 'TrueUSD (TUSD)', symbol: 'TUSD' as TSymbol },
-  { name: 'Decentraland (MANA)', symbol: 'MANA' as TSymbol },
-  { name: 'district0x (DNT)', symbol: 'DNT' as TSymbol },
-  { name: 'Aragon (ANT)', symbol: 'ANT' as TSymbol },
-  { name: 'Fulcrum iDAI (iDAI)', symbol: 'IDAI' as TSymbol },
-  { name: 'Melon (MLN)', symbol: 'MLN' as TSymbol },
-  { name: 'SpankChain (SPANK)', symbol: 'SPANK' as TSymbol },
-  { name: 'QASH (QASH)', symbol: 'QASH' as TSymbol },
-  { name: 'Ontology Gas (ONG)', symbol: 'ONG' as TSymbol },
-  { name: 'Loopring (LRC)', symbol: 'LRC' as TSymbol },
-  { name: 'Huobi Token (HT)', symbol: 'HT' as TSymbol },
-  { name: 'Waltonchain (WTC)', symbol: 'WTC' as TSymbol },
-  { name: 'Bee Token (BEE)', symbol: 'BEE' as TSymbol },
-  { name: 'Crypto.com (MCO)', symbol: 'MCO' as TSymbol },
-  { name: 'Nexo (NEXO)', symbol: 'NEXO' as TSymbol },
-  { name: 'Raiden Network Token (RDN)', symbol: 'RDN' as TSymbol },
-  { name: 'TokenCard (TKN)', symbol: 'TKN' as TSymbol },
-  { name: 'AMPL (AMPL)', symbol: 'AMPL' as TSymbol },
-  { name: 'FOAM (FOAM)', symbol: 'FOAM' as TSymbol },
-  { name: 'Ren (REN)', symbol: 'REN' as TSymbol },
-  { name: 'WAX (WAX)', symbol: 'WAX' as TSymbol },
-  { name: 'Storj (STORJ)', symbol: 'STORJ' as TSymbol },
-  { name: 'Polymath (POLY)', symbol: 'POLY' as TSymbol },
-  { name: 'Bloom (BLT)', symbol: 'BLT' as TSymbol },
-  { name: 'iExec RLC (RLC)', symbol: 'RLC' as TSymbol },
-  { name: 'QuarkChain (QKC)', symbol: 'QKC' as TSymbol },
-  { name: 'Santiment Network Token (SAN)', symbol: 'SAN' as TSymbol },
-  { name: 'Enigma (ENG)', symbol: 'ENG' as TSymbol },
-  { name: 'SingularityNET (AGI)', symbol: 'AGI' as TSymbol },
-  { name: 'FunFair (FUN)', symbol: 'FUN' as TSymbol },
-  { name: 'Ripio (RCN)', symbol: 'RCN' as TSymbol },
-  { name: 'Civic (CVC)', symbol: 'CVC' as TSymbol },
-  { name: 'Power Ledger (POWR)', symbol: 'POWR' as TSymbol },
-  { name: 'Eidoo (EDO)', symbol: 'EDO' as TSymbol },
-  { name: 'IoTeX (IOTX)', symbol: 'IOTX' as TSymbol },
-  { name: 'Live Peer (LPT)', symbol: 'LPT' as TSymbol },
-  { name: 'Aelf (ELF)', symbol: 'ELF' as TSymbol },
-  { name: 'Pax (PAX)', symbol: 'PAX' as TSymbol },
-  { name: 'Numeraire (NMR)', symbol: 'NMR' as TSymbol }
-];

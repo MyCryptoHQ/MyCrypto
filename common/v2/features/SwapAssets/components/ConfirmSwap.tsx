@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
 import { SwapFromToDiagram, FromToAccount } from './fields';
-import { ISwapAsset } from '../types';
+import { ISwapAsset, LAST_CHANGED_AMOUNT } from '../types';
 import { StoreAccount } from 'v2/types';
 import { COLORS } from 'v2/theme';
 import { DexService } from 'v2/services/ApiService/Dex';
@@ -41,11 +41,13 @@ const LinkLabel = styled.div`
   cursor: pointer;
 `;
 interface Props {
-  asset: ISwapAsset;
-  receiveAsset: ISwapAsset;
-  sendAmount: string;
-  receiveAmount: string;
+  fromAsset: ISwapAsset;
+  toAsset: ISwapAsset;
+  fromAmount: string;
+  toAmount: string;
   account: StoreAccount;
+  swapPrice: number;
+  lastChangedAmount: LAST_CHANGED_AMOUNT;
   setRawTransaction(tx: any): void;
   setDexTrade(trade: any): void;
   goToNextStep(): void;
@@ -55,50 +57,72 @@ interface Props {
 
 export default function ConfirmSwap(props: Props) {
   const {
-    asset,
-    receiveAsset,
-    sendAmount,
-    receiveAmount,
+    fromAsset,
+    toAsset,
+    fromAmount,
+    toAmount,
     account,
     setDexTrade,
     goToNextStep,
     setRawTransaction,
     makeAllowanceTransaction,
-    makeTradeTransactionFromDexTrade
+    makeTradeTransactionFromDexTrade,
+    lastChangedAmount,
+    swapPrice
   } = props;
 
+  const isLastChangedTo = lastChangedAmount === LAST_CHANGED_AMOUNT.TO;
+
+  const [submitting, setSubmitting] = useState(false);
+
   const handleNextClicked = async () => {
-    const trade = await DexService.instance.getOrderDetailsFrom(
-      asset.symbol,
-      receiveAsset.symbol,
-      2
-    );
+    try {
+      const getOrderDetails = isLastChangedTo
+        ? DexService.instance.getOrderDetailsTo
+        : DexService.instance.getOrderDetailsFrom;
 
-    setDexTrade(trade);
+      setSubmitting(true);
 
-    const makeTransaction = trade.metadata.input
-      ? makeAllowanceTransaction
-      : makeTradeTransactionFromDexTrade;
-    const rawTransaction = await makeTransaction(trade);
-    setRawTransaction(rawTransaction);
+      const trade = await getOrderDetails(
+        fromAsset.symbol,
+        toAsset.symbol,
+        isLastChangedTo ? toAmount : fromAmount
+      );
 
-    goToNextStep();
+      setDexTrade(trade);
+
+      const makeTransaction = trade.metadata.input
+        ? makeAllowanceTransaction
+        : makeTradeTransactionFromDexTrade;
+      const rawTransaction = await makeTransaction(trade);
+      setRawTransaction(rawTransaction);
+      setSubmitting(false);
+      goToNextStep();
+    } catch (e) {
+      setSubmitting(false);
+      console.error(e);
+    }
   };
+
+  const conversionRate = lastChangedAmount === LAST_CHANGED_AMOUNT.TO ? 1 / swapPrice : swapPrice;
 
   return (
     <div>
       <SwapFromToDiagram
-        fromSymbol={asset.symbol}
-        toSymbol={receiveAsset.symbol}
-        fromAmount={sendAmount}
-        toAmount={receiveAmount}
+        fromSymbol={fromAsset.symbol}
+        toSymbol={toAsset.symbol}
+        fromAmount={fromAmount}
+        toAmount={toAmount}
       />
       <FromToAccount fromAccount={account} toAccount={account} />
       <LinkLabel>why this rate?</LinkLabel>
       <ConversionRateBox>
-        <ConversionLabel>Conversion Rate</ConversionLabel>1 ETH ≈ 170.2 DAI
+        <ConversionLabel>Conversion Rate</ConversionLabel>
+        {`1 ${fromAsset.symbol} ≈ ${conversionRate} ${toAsset.symbol}`}
       </ConversionRateBox>
-      <StyledButton onClick={handleNextClicked}>Confirm and Send</StyledButton>
+      <StyledButton onClick={handleNextClicked}>
+        {submitting ? 'Submitting...' : 'Confirm and Send'}
+      </StyledButton>
     </div>
   );
 }

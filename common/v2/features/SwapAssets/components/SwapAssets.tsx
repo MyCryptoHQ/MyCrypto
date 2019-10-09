@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { AssetSelectDropdown } from './fields';
 import { InputField } from 'v2/components';
 import { Button } from '@mycrypto/ui';
-import { ISwapAsset } from '../types';
+import { ISwapAsset, LAST_CHANGED_AMOUNT } from '../types';
+import { DexService } from 'v2/services/ApiService/Dex';
 
 const FormWrapper = styled.div`
   margin-top: 20px;
@@ -26,56 +27,150 @@ const StyledButton = styled(Button)`
   margin-top: 12px;
   width: 100%;
 `;
+
 interface Props {
-  sendAmount: string;
-  receiveAmount: string;
-  asset: ISwapAsset;
-  receiveAsset: ISwapAsset;
+  fromAmount: string;
+  toAmount: string;
+  fromAsset: ISwapAsset;
+  toAsset: ISwapAsset;
   assets: ISwapAsset[];
+  setLastChagedAmount(lastChangedAmount: any): void;
   goToNextStep(): void;
-  setAsset(asset: ISwapAsset): void;
-  setReceiveAsset(asset: ISwapAsset): void;
-  setSendAmount(amount: string): void;
-  setReceiveAmount(amount: string): void;
+  setSwapPrice(amount: number): void;
+  setFromAsset(asset: ISwapAsset): void;
+  setToAsset(asset: ISwapAsset): void;
+  setFromAmount(amount: string): void;
+  setToAmount(amount: string): void;
 }
+
+let caculateToAmountTimeout: NodeJS.Timer | null = null;
+let caculateFromAmountTimeout: NodeJS.Timer | null = null;
 
 export default function SwapAssets(props: Props) {
   const {
     goToNextStep,
-    setAsset,
-    setReceiveAsset,
-    setSendAmount,
-    setReceiveAmount,
-    sendAmount,
-    receiveAmount,
-    asset,
-    receiveAsset,
-    assets
+    setFromAsset,
+    setToAsset,
+    setFromAmount,
+    setToAmount,
+    fromAmount,
+    toAmount,
+    fromAsset,
+    toAsset,
+    assets,
+    setLastChagedAmount,
+    setSwapPrice
   } = props;
 
-  const handlAssetSelected = (selectedAsset: ISwapAsset) => {
-    setAsset(selectedAsset);
+  const [isCalculatingFromAmount, setIsCalculatingFromAmount] = useState(false);
+  const [isCalculatingToAmount, setIsCalculatingToAmount] = useState(false);
+
+  // SEND AMOUNT CHANGED
+  const handleFromAmountChanged = (e: any) => {
+    const value = e.target.value;
+    setLastChagedAmount(LAST_CHANGED_AMOUNT.FROM);
+    setFromAmount(value);
+
+    // Calculate new "to amount" 500 ms after user stopped typing
+    if (caculateToAmountTimeout) clearTimeout(caculateToAmountTimeout);
+
+    caculateToAmountTimeout = setTimeout(() => {
+      calculateNewToAmount(value);
+    }, 500);
   };
 
-  const handlReceiveAssetSelected = (selectedAsset: ISwapAsset) => {
-    setReceiveAsset(selectedAsset);
+  // RECEIVE AMOUNT CHANGED
+  const handleToAmountChanged = async (e: any) => {
+    const value = e.target.value;
+    setLastChagedAmount(LAST_CHANGED_AMOUNT.TO);
+    setToAmount(value);
+
+    // Calculate new "from amount" 500 ms after user stopped typing
+    if (caculateFromAmountTimeout) clearTimeout(caculateFromAmountTimeout);
+    caculateFromAmountTimeout = setTimeout(() => {
+      calculateNewFromAmount(value);
+    }, 500);
   };
 
-  const handleSendAmountChange = (e: any) => {
-    setSendAmount(e.target.value);
+  const calculateNewToAmount = async (value: string) => {
+    if (!fromAsset || !toAsset) {
+      return;
+    }
+
+    try {
+      setIsCalculatingToAmount(true);
+      const price = await DexService.instance.getTokenPriceFrom(
+        fromAsset.symbol,
+        toAsset.symbol,
+        value
+      );
+
+      setSwapPrice(price);
+      setToAmount((Number(value) * price).toString());
+      setIsCalculatingToAmount(false);
+    } catch (e) {
+      clearAmounts();
+      setIsCalculatingToAmount(false);
+      console.error(e);
+    }
   };
 
-  const handleReceiveAmountChange = (e: any) => {
-    setReceiveAmount(e.target.value);
+  const calculateNewFromAmount = async (value: string) => {
+    if (!fromAsset || !toAsset) {
+      return;
+    }
+
+    try {
+      setIsCalculatingFromAmount(true);
+      const price = await DexService.instance.getTokenPriceTo(
+        fromAsset.symbol,
+        toAsset.symbol,
+        value
+      );
+
+      setSwapPrice(price);
+      setFromAmount((Number(value) * price).toString());
+      setIsCalculatingFromAmount(false);
+    } catch (e) {
+      clearAmounts();
+      setIsCalculatingFromAmount(false);
+      console.error(e);
+    }
   };
+
+  const handlFromAssetSelected = (selectedAsset: ISwapAsset) => {
+    if (isCalculatingFromAmount || isCalculatingToAmount) {
+      return;
+    }
+    setFromAsset(selectedAsset);
+    clearAmounts();
+  };
+
+  const handlToAssetSelected = (selectedAsset: ISwapAsset) => {
+    setToAsset(selectedAsset);
+  };
+
+  const clearAmounts = () => {
+    setFromAmount('');
+    setToAmount('');
+  };
+
+  // Calculate new "to amount" after "to asset" is selected
+  useEffect(() => {
+    if (!fromAmount) {
+      return;
+    }
+    calculateNewToAmount(fromAmount);
+    setLastChagedAmount(LAST_CHANGED_AMOUNT.FROM);
+  }, [toAsset]);
 
   return (
     <FormWrapper>
       <FormItem>
         <AssetSelectDropdown
-          selectedAsset={asset}
+          selectedAsset={fromAsset}
           assets={assets}
-          onChange={handlAssetSelected}
+          onChange={handlFromAssetSelected}
           label="Select Asset"
           fluid={true}
         />
@@ -84,15 +179,16 @@ export default function SwapAssets(props: Props) {
         <InputWrapper>
           <InputField
             label={'Send Amount'}
-            value={sendAmount}
+            value={fromAmount}
             placeholder="0.00"
-            onChange={handleSendAmountChange}
+            onChange={handleFromAmountChanged}
             type="number"
             height={'54px'}
+            isLoading={isCalculatingFromAmount}
           />
         </InputWrapper>
         <AssetSelectDropdown
-          selectedAsset={asset}
+          selectedAsset={fromAsset}
           assets={assets}
           label="Asset"
           showOnlyTicker={true}
@@ -103,22 +199,29 @@ export default function SwapAssets(props: Props) {
         <InputWrapper>
           <InputField
             label={'Receive Amount'}
-            value={receiveAmount}
+            value={toAmount}
             placeholder="0.00"
-            onChange={handleReceiveAmountChange}
+            onChange={handleToAmountChanged}
             type="number"
             height={'54px'}
+            isLoading={isCalculatingToAmount}
           />
         </InputWrapper>
         <AssetSelectDropdown
-          selectedAsset={receiveAsset}
+          selectedAsset={toAsset}
           assets={assets}
           label="Asset"
-          onChange={handlReceiveAssetSelected}
+          onChange={handlToAssetSelected}
           showOnlyTicker={true}
+          disabled={isCalculatingToAmount || isCalculatingFromAmount}
         />
       </FormItem>
-      <StyledButton onClick={goToNextStep}>Next</StyledButton>
+      <StyledButton
+        onClick={goToNextStep}
+        disabled={isCalculatingToAmount || isCalculatingFromAmount}
+      >
+        Next
+      </StyledButton>
     </FormWrapper>
   );
 }

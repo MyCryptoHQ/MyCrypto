@@ -94,6 +94,7 @@ function AssetSelectDropdown({
         value={selectedAsset && selectedAsset}
         onChange={onChange}
         disabled={disabled}
+        searchable={false}
         optionComponent={showOnlyTicker ? AssetOptionShort : AssetOption}
         valueComponent={({ value: option }: IOption) => (
           <AssetSummary symbol={option.symbol} name={!showOnlyTicker ? option.name : undefined} />
