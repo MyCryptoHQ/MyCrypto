@@ -5,13 +5,7 @@ import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
 import { ExtendedContentPanel } from 'v2/components';
-import {
-  SwapAssets,
-  SelectAddress,
-  ConfirmSwap,
-  WaitingDeposit,
-  SwapTransactionReceipt
-} from './components';
+import { SwapAssets, SelectAddress, ConfirmSwap, SwapTransactionReceipt } from './components';
 import { ROUTE_PATHS } from 'v2/config';
 import { ISwapAsset, LAST_CHANGED_AMOUNT } from './types';
 import { WalletId, StoreAccount, ITxReceipt, ISignedTx, ISignComponentProps } from 'v2/types';
@@ -27,7 +21,7 @@ import {
 } from 'v2/features/SendAssets/components/SignTransactionWallets';
 import { DexService } from 'v2/services/ApiService/Dex';
 
-import { getNetworkById, ProviderHandler } from 'v2/services';
+import { getNetworkById, ProviderHandler, getAssetByUUID } from 'v2/services';
 import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
 import { getNonce, hexToNumber, inputGasPriceToHex, hexWeiToString } from 'v2/services/EthService';
 import { getGasEstimate, fetchGasPriceEstimates } from 'v2/services/ApiService';
@@ -62,6 +56,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
   const [lastChangedAmount, setLastChagedAmount] = useState<LAST_CHANGED_AMOUNT>(
     LAST_CHANGED_AMOUNT.FROM
   );
+  const [txConfig, setTxConfig] = useState();
 
   const walletSteps: SigningComponents = {
     [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,
@@ -73,6 +68,10 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     [WalletId.PARITY_SIGNER]: null,
     [WalletId.MNEMONIC_PHRASE]: SignTransactionMnemonic,
     [WalletId.VIEW_ONLY]: null
+  };
+
+  const goToFirstStep = () => {
+    setStep(0);
   };
 
   const goToNextStep = () => {
@@ -157,12 +156,41 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     transaction.value = addHexPrefix(new BN(transaction.value).toString(16));
     transaction.chainId = network.chainId;
 
-    if (account.wallet !== WalletId.METAMASK) {
+    transaction.nonce = await getNonce(network, account);
+    const gasLimit = await getGasEstimate(network, transaction);
+    transaction.gasLimit = hexToNumber(gasLimit);
+
+    if (account.wallet !== WalletId.METAMASK && trade.metadata.input) {
       transaction.from = account.address;
-      transaction.nonce = await getNonce(network, account);
-      const gasLimit = await getGasEstimate(network, transaction);
-      transaction.gasLimit = hexToNumber(gasLimit);
     }
+
+    const txAmount = transaction.value;
+    const txNetwork = account.network;
+    const txBaseAsset = getAssetByUUID(txNetwork.baseAsset)!;
+    const txToAddress = account.address;
+    const txFromAddress = account.address;
+    const txGasPrice = transaction.gasPrice;
+    const txGasLimit = transaction.gasLimit;
+    const txNonce = transaction.nonce;
+    const txValue = transaction.value;
+    const txData = transaction.data;
+
+    const transactionConfig: any = {
+      amount: txAmount,
+      receiverAddress: txToAddress,
+      senderAccount: { address: txFromAddress, assets: [] },
+      network: txNetwork,
+      asset: txBaseAsset,
+      baseAsset: txBaseAsset,
+      gasPrice: txGasPrice,
+      gasLimit: txGasLimit,
+      value: txValue,
+      nonce: txNonce,
+      data: txData,
+      rawTransaction
+    };
+
+    setTxConfig(transactionConfig);
 
     return transaction;
   };
@@ -202,8 +230,17 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
 
     if (account.wallet === WalletId.METAMASK) {
       setTxHash(signResponse);
+      setTxReceipt({ hash: signResponse, asset: {} });
+      goToNextStep();
     } else {
       const provider = new ProviderHandler(account.network);
+
+      /*    provider
+        .getTransactionReceipt('0xc9dff224df247cacf5c2753779f8f66f19e1eccd25ed6409a92664a7a363f5b5')
+        .then(retrievedTransactionReceipt => {
+          setTxReceipt({ hash: retrievedTransactionReceipt.transactionHash, asset: {} });
+          goToNextStep();
+        }); */
       provider
         .sendRawTx(signResponse)
         .then(retrievedTxReceipt => retrievedTxReceipt)
@@ -219,11 +256,6 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
   const steps: TStep[] = [
     {
       title: 'Swap Assets',
-      description: 'How much do you want to send and receive?',
-      component: SwapAssets
-    },
-    {
-      title: 'Swap Assets1',
       description: 'How much do you want to send and receive?',
       component: SwapAssets
     },
@@ -251,10 +283,6 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
       title: 'Swap assets',
       component: account && walletSteps[account.wallet],
       action: onComplete
-    },
-    {
-      title: 'Waiting on Deposit',
-      component: WaitingDeposit
     },
     {
       title: 'Transaction Receipt',
@@ -324,6 +352,8 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         setSwapPrice={setSwapPrice}
         makeAllowanceTransaction={makeAllowanceTransaction}
         makeTradeTransactionFromDexTrade={makeTradeTransactionFromDexTrade}
+        goToFirstStep={goToFirstStep}
+        txConfig={txConfig}
       />
     </ExtendedContentPanel>
   );

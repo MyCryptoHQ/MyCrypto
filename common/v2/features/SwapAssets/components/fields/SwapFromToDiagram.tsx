@@ -49,14 +49,14 @@ export default function SwapFromToDiagram(props: Props) {
       <AssetWrapper>
         <AssetIcon symbol={fromSymbol} size={'72px'} />
         <AssetAmount>
-          {fromAmount} {fromSymbol}
+          {Number(fromAmount).toFixed(6)} {fromSymbol}
         </AssetAmount>
       </AssetWrapper>
       <Arrow src={arrowIcon} />
       <AssetWrapper>
         <AssetIcon symbol={toSymbol} size={'72px'} />
         <AssetAmount>
-          {toAmount} {toSymbol}
+          {Number(toAmount).toFixed(6)} {toSymbol}
         </AssetAmount>
       </AssetWrapper>
     </Wrapper>

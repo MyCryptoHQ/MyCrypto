@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
@@ -73,26 +73,35 @@ export default function ConfirmSwap(props: Props) {
 
   const isLastChangedTo = lastChangedAmount === LAST_CHANGED_AMOUNT.TO;
 
+  const [submitting, setSubmitting] = useState(false);
+
   const handleNextClicked = async () => {
-    const getOrderDetails = isLastChangedTo
-      ? DexService.instance.getOrderDetailsTo
-      : DexService.instance.getOrderDetailsFrom;
+    try {
+      const getOrderDetails = isLastChangedTo
+        ? DexService.instance.getOrderDetailsTo
+        : DexService.instance.getOrderDetailsFrom;
 
-    const trade = await getOrderDetails(
-      fromAsset.symbol,
-      toAsset.symbol,
-      isLastChangedTo ? toAmount : fromAmount
-    );
+      setSubmitting(true);
 
-    setDexTrade(trade);
+      const trade = await getOrderDetails(
+        fromAsset.symbol,
+        toAsset.symbol,
+        isLastChangedTo ? toAmount : fromAmount
+      );
 
-    const makeTransaction = trade.metadata.input
-      ? makeAllowanceTransaction
-      : makeTradeTransactionFromDexTrade;
-    const rawTransaction = await makeTransaction(trade);
-    setRawTransaction(rawTransaction);
+      setDexTrade(trade);
 
-    goToNextStep();
+      const makeTransaction = trade.metadata.input
+        ? makeAllowanceTransaction
+        : makeTradeTransactionFromDexTrade;
+      const rawTransaction = await makeTransaction(trade);
+      setRawTransaction(rawTransaction);
+      setSubmitting(false);
+      goToNextStep();
+    } catch (e) {
+      setSubmitting(false);
+      console.error(e);
+    }
   };
 
   const conversionRate = lastChangedAmount === LAST_CHANGED_AMOUNT.TO ? 1 / swapPrice : swapPrice;
@@ -111,7 +120,9 @@ export default function ConfirmSwap(props: Props) {
         <ConversionLabel>Conversion Rate</ConversionLabel>
         {`1 ${fromAsset.symbol} ≈ ${conversionRate} ${toAsset.symbol}`}
       </ConversionRateBox>
-      <StyledButton onClick={handleNextClicked}>Confirm and Send</StyledButton>
+      <StyledButton onClick={handleNextClicked}>
+        {submitting ? 'Submitting...' : 'Confirm and Send'}
+      </StyledButton>
     </div>
   );
 }
