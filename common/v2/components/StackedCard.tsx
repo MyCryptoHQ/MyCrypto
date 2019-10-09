@@ -86,7 +86,7 @@ type StyledHTMLElement = StyledComponentClass<
 >;
 
 const StackedCardLabel = styled(Typography)`
-  flex: 1;
+  flex: 0.7;
   margin: 0;
   color: ${props => props.theme.cardText};
   letter-spacing: 0.106875em;

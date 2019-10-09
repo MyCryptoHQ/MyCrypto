@@ -25,11 +25,6 @@ const BackButton = styled(Button)`
   font-weight: bold;
   display: flex;
   align-items: center;
-  font-size: 20px;
-
-  @media (min-width: ${SCREEN_MD}) {
-    font-size: 24px;
-  }
 
   img {
     margin-right: 13px;
@@ -48,7 +43,9 @@ const BalancesOnlyTotal = styled.div`
 `;
 
 const HeaderAlignment = styled.div`
-  text-align: ${(props: { align?: string }) => props.align || 'inherit'};
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    text-align: ${(props: { align?: string }) => props.align || 'inherit'};
+  }
 `;
 
 const RowAlignment = styled.div`
@@ -86,7 +83,7 @@ export default function BalancesDetailView({
     body: balances.map((balance, index) => {
       return [
         <Label key={index}>
-          <Icon symbol={balance.ticker as TSymbol} size={'26px'} />
+          <Icon symbol={balance.ticker as TSymbol} size={'2rem'} />
           {balance.name}
         </Label>,
         <RowAlignment key={index} align="right">
