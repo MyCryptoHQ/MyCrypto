@@ -1,6 +1,6 @@
-import { Account, WalletId } from 'v2/types';
+import { Account /*, WalletId */ } from 'v2/types';
 
-export const accounts: Account[] = [
+export const accounts: Account[] = []; /*
   {
     address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912',
     networkId: 'Ethereum',
@@ -126,4 +126,4 @@ export const accounts: Account[] = [
     mtime: Date.now(),
     favorite: true
   }
-];
+];*/
