@@ -34,7 +34,8 @@ export const STORIES: IStory[] = [
   },
   {
     name: WalletId.PARITY_SIGNER,
-    steps: [NetworkSelectPanel, ParitySignerDecrypt, SaveAndRedirect]
+    steps: [NetworkSelectPanel, ParitySignerDecrypt, SaveAndRedirect],
+    hideFromWalletList: true
   },
   {
     name: WalletId.KEYSTORE_FILE,
