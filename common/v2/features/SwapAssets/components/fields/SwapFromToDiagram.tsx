@@ -31,13 +31,15 @@ const AssetWrapper = styled.div`
 const Arrow = styled.img`
   width: 54px;
   height: 38px;
-  margin-bottom: 38px;
+  margin-bottom: 64px;
 `;
 
 const AssetAmount = styled.p`
   font-size: 20px;
   font-weight: bold;
   margin-top: 14px;
+  height: 50px;
+  text-align: center;
 `;
 
 export default function SwapFromToDiagram(props: Props) {
