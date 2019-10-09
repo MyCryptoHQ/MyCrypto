@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
 import { SwapFromToDiagram, FromToAccount } from './fields';
-import { ISwapAsset } from '../types';
+import { ISwapAsset, LAST_CHANGED_AMOUNT } from '../types';
 import { StoreAccount, Network, WalletId } from 'v2/types';
 import { COLORS } from 'v2/theme';
 import { DexService } from 'v2/services/ApiService/Dex';
@@ -49,6 +49,8 @@ interface Props {
   toAmount: string;
   account: StoreAccount;
   network: Network;
+  swapPrice: number;
+  lastChangedAmount: LAST_CHANGED_AMOUNT;
   setRawTransaction(tx: any): void;
   setDexTrade(trade: any): void;
   goToNextStep(): void;
@@ -64,7 +66,9 @@ export default function ConfirmSwap(props: Props) {
     setDexTrade,
     goToNextStep,
     setRawTransaction,
-    network
+    network,
+    swapPrice,
+    lastChangedAmount
   } = props;
 
   async function getTransactionFromDexTrade(trade: any) {
@@ -108,6 +112,8 @@ export default function ConfirmSwap(props: Props) {
     goToNextStep();
   };
 
+  const conversionRate = lastChangedAmount === LAST_CHANGED_AMOUNT.TO ? 1 / swapPrice : swapPrice;
+
   return (
     <div>
       <SwapFromToDiagram
@@ -119,7 +125,8 @@ export default function ConfirmSwap(props: Props) {
       <FromToAccount fromAccount={account} toAccount={account} />
       <LinkLabel>why this rate?</LinkLabel>
       <ConversionRateBox>
-        <ConversionLabel>Conversion Rate</ConversionLabel>1 ETH ≈ 170.2 DAI
+        <ConversionLabel>Conversion Rate</ConversionLabel>
+        {`1 ${fromAsset.symbol} ≈ ${conversionRate} ${toAsset.symbol}`}
       </ConversionRateBox>
       <StyledButton onClick={handleNextClicked}>Confirm and Send</StyledButton>
     </div>

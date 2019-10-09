@@ -36,6 +36,7 @@ interface Props {
   assets: ISwapAsset[];
   setLastChagedAmount(lastChangedAmount: any): void;
   goToNextStep(): void;
+  setSwapPrice(amount: number): void;
   setFromAsset(asset: ISwapAsset): void;
   setToAsset(asset: ISwapAsset): void;
   setFromAmount(amount: string): void;
@@ -57,7 +58,8 @@ export default function SwapAssets(props: Props) {
     fromAsset,
     toAsset,
     assets,
-    setLastChagedAmount
+    setLastChagedAmount,
+    setSwapPrice
   } = props;
 
   const [isCalculatingFromAmount, setIsCalculatingFromAmount] = useState(false);
@@ -102,6 +104,8 @@ export default function SwapAssets(props: Props) {
         toAsset.symbol,
         value
       );
+
+      setSwapPrice(price);
       setToAmount((value * price).toString());
       setIsCalculatingToAmount(false);
     } catch (e) {
@@ -123,6 +127,8 @@ export default function SwapAssets(props: Props) {
         toAsset.symbol,
         value
       );
+
+      setSwapPrice(price);
       setFromAmount((value * price).toString());
       setIsCalculatingFromAmount(false);
     } catch (e) {

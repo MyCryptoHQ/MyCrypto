@@ -46,6 +46,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
   const [txHash, setTxHash] = useState();
   const [txReceipt, setTxReceipt] = useState();
   const [swapAssets, setSwapAssets] = useState([]);
+  const [swapPrice, setSwapPrice] = useState(0);
   const [lastChangedAmount, setLastChagedAmount] = useState<LAST_CHANGED_AMOUNT>(
     LAST_CHANGED_AMOUNT.FROM
   );
@@ -186,6 +187,8 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         txReceipt={txReceipt}
         lastChangedAmount={lastChangedAmount}
         setLastChagedAmount={setLastChagedAmount}
+        swapPrice={swapPrice}
+        setSwapPrice={setSwapPrice}
       />
     </ExtendedContentPanel>
   );
