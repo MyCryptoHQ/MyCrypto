@@ -4,11 +4,9 @@ import { Button } from '@mycrypto/ui';
 
 import { SwapFromToDiagram, FromToAccount } from './fields';
 import { ISwapAsset } from '../types';
-import { StoreAccount, Network, WalletId } from 'v2/types';
+import { StoreAccount } from 'v2/types';
 import { COLORS } from 'v2/theme';
 import { DexService } from 'v2/services/ApiService/Dex';
-import { getNonce, hexToNumber, inputGasPriceToHex, hexWeiToString } from 'v2/services/EthService';
-import { getGasEstimate, fetchGasPriceEstimates } from 'v2/services/ApiService';
 
 const { SILVER, BRIGHT_SKY_BLUE, GREY } = COLORS;
 
@@ -48,10 +46,11 @@ interface Props {
   sendAmount: string;
   receiveAmount: string;
   account: StoreAccount;
-  network: Network;
   setRawTransaction(tx: any): void;
   setDexTrade(trade: any): void;
   goToNextStep(): void;
+  makeAllowanceTransaction(trade: any): Promise<string>;
+  makeTradeTransactionFromDexTrade(trade: any): Promise<string>;
 }
 
 export default function ConfirmSwap(props: Props) {
@@ -64,45 +63,23 @@ export default function ConfirmSwap(props: Props) {
     setDexTrade,
     goToNextStep,
     setRawTransaction,
-    network
+    makeAllowanceTransaction,
+    makeTradeTransactionFromDexTrade
   } = props;
-
-  async function getTransactionFromDexTrade(trade: any) {
-    const nonce = await getNonce(network, account);
-    const { fast } = await fetchGasPriceEstimates(network.id);
-    let gasPrice = hexWeiToString(inputGasPriceToHex(fast.toString()));
-
-    if (trade.metadata.gasPrice) {
-      gasPrice = trade.metadata.gasPrice;
-    }
-
-    const transaction = trade.trade;
-    let gasLimit = null;
-
-    if (account.wallet !== WalletId.METAMASK) {
-      gasLimit = await getGasEstimate(network, transaction);
-      transaction.gasLimit = hexToNumber(gasLimit);
-      transaction.nonce = nonce;
-      transaction.gasPrice = Number(gasPrice);
-    }
-
-    transaction.value = Number(transaction.value);
-    transaction.chainId = network.chainId;
-    //console.log('TRANSACTION', transaction);
-
-    return transaction;
-  }
 
   const handleNextClicked = async () => {
     const trade = await DexService.instance.getOrderDetailsFrom(
       asset.symbol,
       receiveAsset.symbol,
-      0.0001
+      2
     );
 
     setDexTrade(trade);
 
-    const rawTransaction = await getTransactionFromDexTrade(trade);
+    const makeTransaction = trade.metadata.input
+      ? makeAllowanceTransaction
+      : makeTradeTransactionFromDexTrade;
+    const rawTransaction = await makeTransaction(trade);
     setRawTransaction(rawTransaction);
 
     goToNextStep();
