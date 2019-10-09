@@ -46,13 +46,6 @@ const SContainer = styled('div')`
   padding: 50px ${p => (p.fluid || p.fullW ? 0 : MIN_CONTENT_PADDING)};
   max-width: ${p => (p.fullW ? '100%' : MAX_CONTENT_WIDTH)};
 
-  // This is the moment our header becomes sticky and shrinks.
-  // Since it is aboslute positionning we add the extra height to
-  // the padding.
-  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    padding-top: 120px;
-  }
-
   ${({ centered }: LayoutConfig) =>
     centered &&
     css`
