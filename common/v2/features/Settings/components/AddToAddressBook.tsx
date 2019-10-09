@@ -76,7 +76,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
               <Field
                 name="label"
                 render={({ field }: FieldProps<AddressBook>) => (
-                  <Input {...field} placeholder="Enter Name of Address" />
+                  <Input {...field} placeholder="Enter name of address" />
                 )}
               />
             </AddressFieldset>
@@ -85,7 +85,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
               <Field
                 name="address"
                 render={({ field }: FieldProps<AddressBook>) => (
-                  <Input {...field} placeholder="Enter the Address" />
+                  <Input {...field} placeholder="Enter the address" />
                 )}
               />
             </AddressFieldset>
@@ -105,7 +105,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
               <Field
                 name="notes"
                 render={({ field }: FieldProps<AddressBook>) => (
-                  <Textarea {...field} placeholder="Enter a Note for this Address" />
+                  <Textarea {...field} placeholder="Enter a note for this address" />
                 )}
               />
             </AddressFieldset>

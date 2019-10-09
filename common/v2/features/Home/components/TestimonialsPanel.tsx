@@ -172,7 +172,7 @@ const testimonials = [
   {
     author: 'AtLeastSignificant',
     text:
-      "MyCrypto is the definition of a successful grass-roots movement for the community, by the community."
+      'MyCrypto is the definition of a successful grass-roots movement for the community, by the community.'
   },
   {
     author: 'Nick Johnson',
@@ -192,12 +192,12 @@ const testimonials = [
   {
     author: 'James Ryan Moreau',
     text:
-      "MyCrypto is one of the most responsive teams in the entire blockchain space when it comes to thinking about users and their general well-being."
+      'MyCrypto is one of the most responsive teams in the entire blockchain space when it comes to thinking about users and their general well-being.'
   },
   {
     author: 'Tim Coulter',
     text:
-      "MyCrypto is the leader in blockchain wallets. Their watchful eye on security and their close proximity users put them on the front lines, shepherding users through the new and exciting world of crypto."
+      'MyCrypto is the leader in blockchain wallets. Their watchful eye on security and their close proximity to users put them on the front lines, shepherding users through the new and exciting world of crypto.'
   }
 ];
 
