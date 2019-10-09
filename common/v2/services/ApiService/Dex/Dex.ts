@@ -32,23 +32,23 @@ export default class DexService {
     }
   };
 
-  public getTokenPriceFrom = async (from: TSymbol, to: TSymbol, fromAmount: number) =>
+  public getTokenPriceFrom = async (from: TSymbol, to: TSymbol, fromAmount: string) =>
     this.getTokenPrice(from, to, fromAmount);
 
-  public getTokenPriceTo = async (from: TSymbol, to: TSymbol, toAmount: number) =>
+  public getTokenPriceTo = async (from: TSymbol, to: TSymbol, toAmount: string) =>
     this.getTokenPrice(from, to, undefined, toAmount);
 
-  public getOrderDetailsFrom = async (from: TSymbol, to: TSymbol, fromAmount: number) =>
+  public getOrderDetailsFrom = async (from: TSymbol, to: TSymbol, fromAmount: string) =>
     this.getOrderDetails(from, to, fromAmount);
 
-  public getOrderDetailsTo = async (from: TSymbol, to: TSymbol, toAmount: number) =>
+  public getOrderDetailsTo = async (from: TSymbol, to: TSymbol, toAmount: string) =>
     this.getOrderDetails(from, to, undefined, toAmount);
 
   private getOrderDetails = async (
     from: TSymbol,
     to: TSymbol,
-    fromAmount?: number,
-    toAmount?: number
+    fromAmount?: string,
+    toAmount?: string
   ) => {
     try {
       const params = {
@@ -70,8 +70,8 @@ export default class DexService {
   private getTokenPrice = async (
     from: TSymbol,
     to: TSymbol,
-    fromAmount?: number,
-    toAmount?: number
+    fromAmount?: string,
+    toAmount?: string
   ) => {
     try {
       const params = {

@@ -92,7 +92,7 @@ export default function SwapAssets(props: Props) {
     }, 500);
   };
 
-  const calculateNewToAmount = async (value: number) => {
+  const calculateNewToAmount = async (value: string) => {
     if (!fromAsset || !toAsset) {
       return;
     }
@@ -106,7 +106,7 @@ export default function SwapAssets(props: Props) {
       );
 
       setSwapPrice(price);
-      setToAmount((value * price).toString());
+      setToAmount((Number(value) * price).toString());
       setIsCalculatingToAmount(false);
     } catch (e) {
       clearAmounts();
@@ -115,7 +115,7 @@ export default function SwapAssets(props: Props) {
     }
   };
 
-  const calculateNewFromAmount = async (value: number) => {
+  const calculateNewFromAmount = async (value: string) => {
     if (!fromAsset || !toAsset) {
       return;
     }
@@ -129,7 +129,7 @@ export default function SwapAssets(props: Props) {
       );
 
       setSwapPrice(price);
-      setFromAmount((value * price).toString());
+      setFromAmount((Number(value) * price).toString());
       setIsCalculatingFromAmount(false);
     } catch (e) {
       clearAmounts();
@@ -160,7 +160,7 @@ export default function SwapAssets(props: Props) {
     if (!fromAmount) {
       return;
     }
-    calculateNewToAmount(Number(fromAmount));
+    calculateNewToAmount(fromAmount);
     setLastChagedAmount(LAST_CHANGED_AMOUNT.FROM);
   }, [toAsset]);
 
