@@ -1,7 +1,7 @@
 {
   "code": "en",
   "data": {
-    "ACCOUNTS_DROPDOWN_ALL_WALLETS": "All Wallets",
+    "ACCOUNTS_DROPDOWN_ALL_ACCOUNTS": "All Accounts",
     "ACCOUNTS_DROPDOWN_SOME_WALLETS": "Showing $current of $total accounts",
     "ACCOUNTS_DROPDOWN_ALL_ACCOUNTS": "All Accounts",
     "ACCOUNTS_DROPDOWN_ACTION": "Apply",
