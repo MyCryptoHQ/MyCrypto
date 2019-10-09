@@ -10,7 +10,7 @@ import {
   SwapTransactionReceipt
 } from './components';
 import { ROUTE_PATHS } from 'v2/config';
-import { ISwapAsset } from './types';
+import { ISwapAsset, LAST_CHANGED_AMOUNT } from './types';
 import { WalletId, StoreAccount, ITxReceipt, ISignedTx, ISignComponentProps } from 'v2/types';
 
 import {
@@ -35,10 +35,10 @@ interface TStep {
 
 const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
   const [step, setStep] = useState(0);
-  const [asset, setAsset] = useState<ISwapAsset>();
-  const [receiveAsset, setReceiveAsset] = useState<ISwapAsset>();
-  const [sendAmount, setSendAmount] = useState();
-  const [receiveAmount, setReceiveAmount] = useState();
+  const [fromAsset, setFromAsset] = useState<ISwapAsset>();
+  const [toAsset, setToAsset] = useState<ISwapAsset>();
+  const [fromAmount, setFromAmount] = useState();
+  const [toAmount, setToAmount] = useState();
   const [address, setAddress] = useState();
   const [account, setAccount] = useState<StoreAccount>();
   const [dexTrade, setDexTrade] = useState();
@@ -46,6 +46,9 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
   const [txHash, setTxHash] = useState();
   const [txReceipt, setTxReceipt] = useState();
   const [swapAssets, setSwapAssets] = useState([]);
+  const [lastChangedAmount, setLastChagedAmount] = useState<LAST_CHANGED_AMOUNT>(
+    LAST_CHANGED_AMOUNT.FROM
+  );
 
   type SigningComponents = {
     readonly [k in WalletId]: React.ComponentType<ISignComponentProps> | null;
@@ -71,9 +74,9 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     },
     {
       title: 'Select Address',
-      description: `Where will you be sending your ${asset &&
-        asset.symbol} from? You will receive  your ${receiveAsset &&
-        receiveAsset.symbol} back to the same address after the swap.`,
+      description: `Where will you be sending your ${fromAsset &&
+        fromAsset.symbol} from? You will receive  your ${toAsset &&
+        toAsset.symbol} back to the same address after the swap.`,
       component: SelectAddress
     },
     {
@@ -136,8 +139,8 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
       const assets = await DexService.instance.getTokenList();
       setSwapAssets(assets);
       if (assets.length > 1) {
-        setAsset(assets[0]);
-        setReceiveAsset(assets[1]);
+        setFromAsset(assets[0]);
+        setToAsset(assets[1]);
       }
     } catch (e) {
       console.error(e);
@@ -159,15 +162,15 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
       <StepComponent
         goToNextStep={goToNextStep}
         setStep={setStep}
-        setAsset={setAsset}
-        setReceiveAsset={setReceiveAsset}
-        setSendAmount={setSendAmount}
-        setReceiveAmount={setReceiveAmount}
-        sendAmount={sendAmount}
-        receiveAmount={receiveAmount}
+        setFromAsset={setFromAsset}
+        setToAsset={setToAsset}
+        setFromAmount={setFromAmount}
+        setToAmount={setToAmount}
+        fromAmount={fromAmount}
+        toAmount={toAmount}
         assets={swapAssets}
-        asset={asset}
-        receiveAsset={receiveAsset}
+        fromAsset={fromAsset}
+        toAsset={toAsset}
         address={address}
         setAddress={setAddress}
         account={account}
@@ -181,6 +184,8 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         setRawTransaction={setRawTransaction}
         txHash={txHash}
         txReceipt={txReceipt}
+        lastChangedAmount={lastChangedAmount}
+        setLastChagedAmount={setLastChagedAmount}
       />
     </ExtendedContentPanel>
   );

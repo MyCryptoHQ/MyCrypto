@@ -43,10 +43,10 @@ const LinkLabel = styled.div`
   cursor: pointer;
 `;
 interface Props {
-  asset: ISwapAsset;
-  receiveAsset: ISwapAsset;
-  sendAmount: string;
-  receiveAmount: string;
+  fromAsset: ISwapAsset;
+  toAsset: ISwapAsset;
+  fromAmount: string;
+  toAmount: string;
   account: StoreAccount;
   network: Network;
   setRawTransaction(tx: any): void;
@@ -56,10 +56,10 @@ interface Props {
 
 export default function ConfirmSwap(props: Props) {
   const {
-    asset,
-    receiveAsset,
-    sendAmount,
-    receiveAmount,
+    fromAsset,
+    toAsset,
+    fromAmount,
+    toAmount,
     account,
     setDexTrade,
     goToNextStep,
@@ -88,15 +88,15 @@ export default function ConfirmSwap(props: Props) {
 
     transaction.value = Number(transaction.value);
     transaction.chainId = network.chainId;
-    //console.log('TRANSACTION', transaction);
+    /* console.log('TRANSACTION', transaction); */
 
     return transaction;
   }
 
   const handleNextClicked = async () => {
     const trade = await DexService.instance.getOrderDetailsFrom(
-      asset.symbol,
-      receiveAsset.symbol,
+      fromAsset.symbol,
+      toAsset.symbol,
       0.0001
     );
 
@@ -111,10 +111,10 @@ export default function ConfirmSwap(props: Props) {
   return (
     <div>
       <SwapFromToDiagram
-        fromSymbol={asset.symbol}
-        toSymbol={receiveAsset.symbol}
-        fromAmount={sendAmount}
-        toAmount={receiveAmount}
+        fromSymbol={fromAsset.symbol}
+        toSymbol={toAsset.symbol}
+        fromAmount={fromAmount}
+        toAmount={toAmount}
       />
       <FromToAccount fromAccount={account} toAccount={account} />
       <LinkLabel>why this rate?</LinkLabel>
