@@ -17,11 +17,11 @@ export const links = [
       {
         to: ROUTE_PATHS.RECEIVE_ASSETS.path,
         title: 'Receive Assets'
-      },
-      {
-        to: ROUTE_PATHS.SWAP.path,
-        title: 'Swap Assets'
       }
+      // {
+      //   to: ROUTE_PATHS.SWAP.path,
+      //   title: 'Swap Assets'
+      // }
     ]
   },
   {
@@ -35,10 +35,10 @@ export const links = [
         to: ROUTE_PATHS.VERIFY_MESSAGE.path,
         title: 'Verify Message'
       },
-      {
-        to: '/contracts',
-        title: 'Interact with Contracts'
-      },
+      // {
+      //   to: '/contracts',
+      //   title: 'Interact with Contracts'
+      // },
       {
         to: ROUTE_PATHS.BROADCAST_TX.path,
         title: 'Broadcast Transaction'
