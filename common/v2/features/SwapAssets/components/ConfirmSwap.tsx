@@ -7,6 +7,7 @@ import { ISwapAsset, LAST_CHANGED_AMOUNT } from '../types';
 import { StoreAccount } from 'v2/types';
 import { COLORS } from 'v2/theme';
 import { DexService } from 'v2/services/ApiService/Dex';
+import { toFixedWithoutZero } from 'v2/utils';
 
 const { SILVER, BRIGHT_SKY_BLUE, GREY } = COLORS;
 
@@ -118,7 +119,7 @@ export default function ConfirmSwap(props: Props) {
       <LinkLabel>why this rate?</LinkLabel>
       <ConversionRateBox>
         <ConversionLabel>Conversion Rate</ConversionLabel>
-        {`1 ${fromAsset.symbol} ≈ ${conversionRate} ${toAsset.symbol}`}
+        {`1 ${fromAsset.symbol} ≈ ${toFixedWithoutZero(conversionRate, 8)} ${toAsset.symbol}`}
       </ConversionRateBox>
       <StyledButton onClick={handleNextClicked}>
         {submitting ? 'Submitting...' : 'Confirm and Send'}

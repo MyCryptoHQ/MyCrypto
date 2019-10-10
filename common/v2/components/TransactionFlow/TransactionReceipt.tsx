@@ -18,17 +18,13 @@ import sentIcon from 'common/assets/images/icn-sent.svg';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import { fromTxReceiptObj } from './helpers';
 import { translateRaw } from 'translations';
-import { convertToFiat } from 'v2/utils';
+import { convertToFiat, truncate } from 'v2/utils';
 
 export enum ITxStatus {
   SUCCESS = 'SUCCESS',
   FAILED = 'FAILED',
   PENDING = 'PENDING'
 }
-
-const truncate = (children: string) => {
-  return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
-};
 
 interface Props {
   completeButtonText: string;

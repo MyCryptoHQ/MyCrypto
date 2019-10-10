@@ -4,6 +4,7 @@ import { Address } from '@mycrypto/ui';
 
 import { StoreAccount } from 'v2/types';
 import { COLORS } from 'v2/theme';
+import { truncate } from 'v2/utils';
 
 const { SILVER } = COLORS;
 
@@ -11,6 +12,10 @@ interface Props {
   fromAccount: StoreAccount;
   toAccount: StoreAccount;
 }
+
+const FromWrapper = styled.div`
+  padding-right: 15px;
+`;
 
 const AddressWrapper = styled.div`
   background-color: ${SILVER};
@@ -32,16 +37,12 @@ const Label = styled.div`
   color: ${props => props.theme.text};
 `;
 
-const truncate = (children: string) => {
-  return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
-};
-
 export default function FromToAccount(props: Props) {
   const { fromAccount, toAccount } = props;
 
   return (
     <Addresses>
-      <div>
+      <FromWrapper>
         <Label>From:</Label>
         <AddressWrapper>
           <Address
@@ -50,7 +51,7 @@ export default function FromToAccount(props: Props) {
             truncate={truncate}
           />
         </AddressWrapper>
-      </div>
+      </FromWrapper>
       <div>
         <Label>To:</Label>
         <AddressWrapper>

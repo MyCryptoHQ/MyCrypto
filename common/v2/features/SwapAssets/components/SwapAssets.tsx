@@ -99,10 +99,8 @@ export default function SwapAssets(props: Props) {
 
     try {
       setIsCalculatingToAmount(true);
-      const price = await DexService.instance.getTokenPriceFrom(
-        fromAsset.symbol,
-        toAsset.symbol,
-        value
+      const price = Number(
+        await DexService.instance.getTokenPriceFrom(fromAsset.symbol, toAsset.symbol, value)
       );
 
       setSwapPrice(price);
@@ -122,10 +120,8 @@ export default function SwapAssets(props: Props) {
 
     try {
       setIsCalculatingFromAmount(true);
-      const price = await DexService.instance.getTokenPriceTo(
-        fromAsset.symbol,
-        toAsset.symbol,
-        value
+      const price = Number(
+        await DexService.instance.getTokenPriceTo(fromAsset.symbol, toAsset.symbol, value)
       );
 
       setSwapPrice(price);

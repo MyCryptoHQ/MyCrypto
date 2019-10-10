@@ -13,11 +13,7 @@ import { TTicker, IStepComponentProps } from 'v2/types';
 import './ConfirmTransaction.scss';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import TransactionIntermediaryDisplay from './displays/TransactionIntermediaryDisplay';
-import { convertToFiat } from 'v2/utils';
-
-const truncate = (children: string) => {
-  return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
-};
+import { convertToFiat, truncate } from 'v2/utils';
 
 export default function ConfirmTransaction({
   txConfig,

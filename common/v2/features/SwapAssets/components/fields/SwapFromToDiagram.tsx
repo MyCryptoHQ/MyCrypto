@@ -5,6 +5,7 @@ import { TSymbol } from 'v2/types';
 import { AssetIcon } from 'v2/components';
 
 import arrowIcon from 'assets/images/arrow-right.svg';
+import { toFixedWithoutZero } from 'v2/utils';
 
 interface Props {
   fromSymbol: TSymbol;
@@ -49,14 +50,14 @@ export default function SwapFromToDiagram(props: Props) {
       <AssetWrapper>
         <AssetIcon symbol={fromSymbol} size={'72px'} />
         <AssetAmount>
-          {Number(fromAmount).toFixed(6)} {fromSymbol}
+          {toFixedWithoutZero(fromAmount, 6)} {fromSymbol}
         </AssetAmount>
       </AssetWrapper>
       <Arrow src={arrowIcon} />
       <AssetWrapper>
         <AssetIcon symbol={toSymbol} size={'72px'} />
         <AssetAmount>
-          {Number(toAmount).toFixed(6)} {toSymbol}
+          {toFixedWithoutZero(toAmount, 6)} {toSymbol}
         </AssetAmount>
       </AssetWrapper>
     </Wrapper>
