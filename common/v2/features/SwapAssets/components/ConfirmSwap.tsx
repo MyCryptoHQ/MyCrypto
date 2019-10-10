@@ -8,6 +8,11 @@ import { StoreAccount } from 'v2/types';
 import { COLORS } from 'v2/theme';
 import { DexService } from 'v2/services/ApiService/Dex';
 import { toFixedWithoutZero } from 'v2/utils';
+import {
+  makeAllowanceTransaction,
+  makeTradeTransactionFromDexTrade,
+  makeTxConfigFromTransaction
+} from '../helpers';
 
 const { SILVER, BRIGHT_SKY_BLUE, GREY } = COLORS;
 
@@ -51,9 +56,8 @@ interface Props {
   lastChangedAmount: LAST_CHANGED_AMOUNT;
   setRawTransaction(tx: any): void;
   setDexTrade(trade: any): void;
+  setTxConfig(transaction: any): void;
   goToNextStep(): void;
-  makeAllowanceTransaction(trade: any): Promise<string>;
-  makeTradeTransactionFromDexTrade(trade: any): Promise<string>;
 }
 
 export default function ConfirmSwap(props: Props) {
@@ -66,10 +70,9 @@ export default function ConfirmSwap(props: Props) {
     setDexTrade,
     goToNextStep,
     setRawTransaction,
-    makeAllowanceTransaction,
-    makeTradeTransactionFromDexTrade,
     lastChangedAmount,
-    swapPrice
+    swapPrice,
+    setTxConfig
   } = props;
 
   const isLastChangedTo = lastChangedAmount === LAST_CHANGED_AMOUNT.TO;
@@ -89,13 +92,16 @@ export default function ConfirmSwap(props: Props) {
         toAsset.symbol,
         isLastChangedTo ? toAmount : fromAmount
       );
-
       setDexTrade(trade);
 
       const makeTransaction = trade.metadata.input
         ? makeAllowanceTransaction
         : makeTradeTransactionFromDexTrade;
-      const rawTransaction = await makeTransaction(trade);
+      const rawTransaction = await makeTransaction(trade, account);
+
+      const mergedTxConfig = makeTxConfigFromTransaction(rawTransaction, account, fromAsset);
+      setTxConfig(mergedTxConfig);
+
       setRawTransaction(rawTransaction);
       setSubmitting(false);
       goToNextStep();

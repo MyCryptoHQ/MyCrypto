@@ -3,19 +3,16 @@ import styled from 'styled-components';
 import { Address } from '@mycrypto/ui';
 
 import { StoreAccount } from 'v2/types';
-import { COLORS } from 'v2/theme';
+import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { truncate } from 'v2/utils';
 
 const { SILVER } = COLORS;
+const { SCREEN_XS } = BREAK_POINTS;
 
 interface Props {
   fromAccount: StoreAccount;
   toAccount: StoreAccount;
 }
-
-const FromWrapper = styled.div`
-  padding-right: 15px;
-`;
 
 const AddressWrapper = styled.div`
   background-color: ${SILVER};
@@ -25,6 +22,14 @@ const Addresses = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 56px;
+
+  @media (max-width: ${SCREEN_XS}) {
+    flex-direction: column;
+
+    > div:nth-child(2) {
+      padding-top: 15px;
+    }
+  }
 `;
 
 const Label = styled.div`
@@ -42,7 +47,7 @@ export default function FromToAccount(props: Props) {
 
   return (
     <Addresses>
-      <FromWrapper>
+      <div>
         <Label>From:</Label>
         <AddressWrapper>
           <Address
@@ -51,7 +56,7 @@ export default function FromToAccount(props: Props) {
             truncate={truncate}
           />
         </AddressWrapper>
-      </FromWrapper>
+      </div>
       <div>
         <Label>To:</Label>
         <AddressWrapper>

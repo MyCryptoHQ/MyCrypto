@@ -1,15 +1,18 @@
 import React, { useState, ReactType } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { ethers } from 'ethers';
-import BN from 'bn.js';
-import { addHexPrefix } from 'ethereumjs-util';
 
 import { ExtendedContentPanel } from 'v2/components';
 import { SwapAssets, SelectAddress, ConfirmSwap, SwapTransactionReceipt } from './components';
 import { ROUTE_PATHS } from 'v2/config';
 import { ISwapAsset, LAST_CHANGED_AMOUNT } from './types';
-import { WalletId, StoreAccount, ITxReceipt, ISignedTx, ISignComponentProps } from 'v2/types';
-
+import {
+  WalletId,
+  StoreAccount,
+  ITxReceipt,
+  ISignedTx,
+  ISignComponentProps,
+  ITxConfig
+} from 'v2/types';
 import {
   SignTransactionKeystore,
   SignTransactionLedger,
@@ -20,11 +23,9 @@ import {
   SignTransactionMnemonic
 } from 'v2/features/SendAssets/components/SignTransactionWallets';
 import { DexService } from 'v2/services/ApiService/Dex';
-
-import { getNetworkById, ProviderHandler, getAssetByUUID } from 'v2/services';
+import { ProviderHandler } from 'v2/services';
 import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
-import { getNonce, hexToNumber, inputGasPriceToHex, hexWeiToString } from 'v2/services/EthService';
-import { getGasEstimate, fetchGasPriceEstimates } from 'v2/services/ApiService';
+import { makeTxConfigFromTransaction, makeTradeTransactionFromDexTrade } from './helpers';
 
 interface TStep {
   title?: string;
@@ -37,8 +38,6 @@ type SigningComponents = {
   readonly [k in WalletId]: React.ComponentType<ISignComponentProps> | null;
 };
 
-const network = getNetworkById('Ethereum');
-
 const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
   const [step, setStep] = useState(0);
   const [fromAsset, setFromAsset] = useState<ISwapAsset>();
@@ -48,7 +47,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
   const [address, setAddress] = useState();
   const [account, setAccount] = useState<StoreAccount>();
   const [dexTrade, setDexTrade] = useState();
-  const [rawTransaction, setRawTransaction] = useState(null);
+  const [rawTransaction, setRawTransaction] = useState<ITxConfig>();
   const [txHash, setTxHash] = useState();
   const [txReceipt, setTxReceipt] = useState();
   const [swapAssets, setSwapAssets] = useState([]);
@@ -87,114 +86,6 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     }
   };
 
-  const makeAllowanceTransaction = async (trade: any) => {
-    if (!network || !account) {
-      return false;
-    }
-
-    const { address: to, spender, amount } = trade.metadata.input;
-
-    // First 4 bytes of the hash of "fee()" for the sighash selector
-    const funcHash = ethers.utils.hexDataSlice(ethers.utils.id('approve(address,uint256)'), 0, 4);
-
-    const abi = new ethers.utils.AbiCoder();
-    const inputs = [
-      {
-        name: 'spender',
-        type: 'address'
-      },
-      {
-        name: 'amount',
-        type: 'uint256'
-      }
-    ];
-
-    const params = [spender, amount];
-    const bytes = abi.encode(inputs, params).substr(2);
-
-    // construct approval data from function hash and parameters
-    const inputData = `${funcHash}${bytes}`;
-
-    const { fast } = await fetchGasPriceEstimates(network.id);
-    let gasPrice = hexWeiToString(inputGasPriceToHex(fast.toString()));
-
-    if (trade.metadata.gasPrice) {
-      gasPrice = trade.metadata.gasPrice;
-    }
-
-    const transaction: any = {
-      to,
-      chainId: network.chainId,
-      data: inputData,
-      value: '0x0',
-      gasPrice: addHexPrefix(new BN(gasPrice).toString(16))
-    };
-
-    if (account.wallet !== WalletId.METAMASK) {
-      transaction.nonce = await getNonce(network, account);
-      const gasLimit = await getGasEstimate(network, transaction);
-      transaction.gasLimit = hexToNumber(gasLimit);
-    }
-
-    return transaction;
-  };
-
-  const makeTradeTransactionFromDexTrade = async (trade: any) => {
-    if (!network || !account) {
-      return false;
-    }
-
-    const { fast } = await fetchGasPriceEstimates(network.id);
-    let gasPrice = hexWeiToString(inputGasPriceToHex(fast.toString()));
-
-    if (trade.metadata.gasPrice) {
-      gasPrice = trade.metadata.gasPrice;
-    }
-
-    const transaction = trade.trade;
-    transaction.gasPrice = addHexPrefix(new BN(gasPrice).toString(16));
-    transaction.value = addHexPrefix(new BN(transaction.value).toString(16));
-    transaction.chainId = network.chainId;
-
-    transaction.nonce = await getNonce(network, account);
-    const gasLimit = await getGasEstimate(network, transaction);
-    transaction.gasLimit = hexToNumber(gasLimit);
-
-    if (account.wallet !== WalletId.METAMASK && trade.metadata.input) {
-      transaction.from = account.address;
-    }
-
-    const txAmount = transaction.value;
-    const txNetwork = account.network;
-    const txBaseAsset = getAssetByUUID(txNetwork.baseAsset)!;
-    const txToAddress = account.address;
-    const txFromAddress = account.address;
-    const txGasPrice = transaction.gasPrice;
-    const txGasLimit = transaction.gasLimit;
-    const txNonce = transaction.nonce;
-    const txValue = transaction.value;
-    const txData = transaction.data;
-
-    const transactionConfig: any = {
-      amount: txAmount,
-      receiverAddress: txToAddress,
-      senderAccount: { address: txFromAddress, assets: [] },
-      network: txNetwork,
-      asset: txBaseAsset,
-      baseAsset: txBaseAsset,
-      gasPrice: txGasPrice,
-      gasLimit: txGasLimit,
-      value: txValue,
-      nonce: txNonce,
-      data: txData,
-      rawTransaction
-    };
-
-    setTxConfig(transactionConfig);
-
-    return transaction;
-  };
-
   const onAllowanceSigned = async (signResponse: any) => {
     if (!account) {
       return;
@@ -218,7 +109,13 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     // wait for allowance tx to be mined
     await provider.waitForTransaction(allowanceTxHash);
 
-    const rawAllowanceTransaction = await makeTradeTransactionFromDexTrade(dexTrade);
+    const rawAllowanceTransaction = await makeTradeTransactionFromDexTrade(dexTrade, account);
+    const mergedTxConfig = makeTxConfigFromTransaction(
+      rawAllowanceTransaction,
+      account,
+      fromAsset!
+    );
+    setTxConfig(mergedTxConfig);
     setRawTransaction(rawAllowanceTransaction);
     goToNextStep();
   };
@@ -337,7 +234,6 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         setAccount={setAccount}
         dexTrade={dexTrade}
         setDexTrade={setDexTrade}
-        network={network}
         senderAccount={account}
         rawTransaction={rawTransaction}
         onSuccess={(payload: ITxReceipt | ISignedTx) =>
@@ -350,10 +246,9 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         setLastChagedAmount={setLastChagedAmount}
         swapPrice={swapPrice}
         setSwapPrice={setSwapPrice}
-        makeAllowanceTransaction={makeAllowanceTransaction}
-        makeTradeTransactionFromDexTrade={makeTradeTransactionFromDexTrade}
         goToFirstStep={goToFirstStep}
         txConfig={txConfig}
+        setTxConfig={setTxConfig}
       />
     </ExtendedContentPanel>
   );
