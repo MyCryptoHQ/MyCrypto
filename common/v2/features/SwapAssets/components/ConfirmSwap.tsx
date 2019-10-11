@@ -99,7 +99,12 @@ export default function ConfirmSwap(props: Props) {
         : makeTradeTransactionFromDexTrade;
       const rawTransaction = await makeTransaction(trade, account);
 
-      const mergedTxConfig = makeTxConfigFromTransaction(rawTransaction, account, fromAsset);
+      const mergedTxConfig = makeTxConfigFromTransaction(
+        rawTransaction,
+        account,
+        fromAsset,
+        fromAmount
+      );
       setTxConfig(mergedTxConfig);
 
       setRawTransaction(rawTransaction);

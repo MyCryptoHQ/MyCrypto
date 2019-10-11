@@ -4,9 +4,11 @@ import { Button } from '@mycrypto/ui';
 
 import { SwapFromToDiagram } from './fields';
 import { ISwapAsset } from '../types';
-import { AccountDropdown } from 'v2/components';
-import { StoreContext } from 'v2';
+import { AccountDropdown, InlineErrorMsg } from 'v2/components';
 import { ExtendedAccount, StoreAccount } from 'v2/types';
+import { StoreContext } from 'v2/services';
+import { WALLET_STEPS } from '../helpers';
+import { weiToFloat } from 'v2/utils';
 
 const Label = styled.div`
   font-size: 18px;
@@ -37,6 +39,26 @@ export default function SelectAddress(props: Props) {
 
   const { accounts } = useContext(StoreContext);
 
+  // filter accounts based on wallet type and sufficient balance
+  // TODO: include fees check
+  const filteredAccounts = accounts.filter(acc => {
+    if (!WALLET_STEPS[acc.wallet]) {
+      return false;
+    }
+
+    const asset = acc.assets.find(x => x.ticker === fromAsset.symbol);
+    if (!asset) {
+      return false;
+    }
+
+    const amount = weiToFloat(asset.balance, asset.decimal);
+    if (amount < Number(fromAmount)) {
+      return false;
+    }
+
+    return true;
+  });
+
   return (
     <div>
       <SwapFromToDiagram
@@ -47,15 +69,20 @@ export default function SelectAddress(props: Props) {
       />
       <Label>Select Address</Label>
       <AccountDropdown
-        name={'account'}
+        name="account"
         value={account}
-        accounts={accounts}
+        accounts={filteredAccounts}
         onSelect={(option: ExtendedAccount) => {
           setAccount(option);
         }}
       />
+      {!filteredAccounts.length && (
+        <InlineErrorMsg>You don't have any account with sufficient funds</InlineErrorMsg>
+      )}
 
-      <StyledButton onClick={goToNextStep}>Next</StyledButton>
+      <StyledButton disabled={!account} onClick={goToNextStep}>
+        Next
+      </StyledButton>
     </div>
   );
 }

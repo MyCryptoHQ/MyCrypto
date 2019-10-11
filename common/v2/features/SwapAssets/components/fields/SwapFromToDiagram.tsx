@@ -26,7 +26,7 @@ const AssetWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 0 15px;
-  width: 128px;
+  width: 148px;
 `;
 
 const Arrow = styled.img`

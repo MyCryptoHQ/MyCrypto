@@ -4,7 +4,13 @@ import { addHexPrefix } from 'ethereumjs-util';
 
 import { StoreAccount, WalletId, ITxConfig } from 'v2/types';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
-import { inputGasPriceToHex, hexWeiToString, getNonce, hexToNumber } from 'v2/services/EthService';
+import {
+  inputGasPriceToHex,
+  hexWeiToString,
+  getNonce,
+  hexToNumber,
+  hexToString
+} from 'v2/services/EthService';
 import { getAssetByUUID, getAssetByTicker } from 'v2/services';
 import { ISwapAsset, SigningComponents } from './types';
 import {
@@ -69,7 +75,7 @@ export const makeAllowanceTransaction = async (
     to,
     chainId: network.chainId,
     data: inputData,
-    value: '0',
+    value: 0,
     gasPrice: addHexPrefix(new BN(gasPrice).toString(16))
   };
 
@@ -95,6 +101,9 @@ export const makeTradeTransactionFromDexTrade = async (
   }
 
   const transaction = trade.trade;
+  if (account.wallet !== WalletId.METAMASK && trade.metadata.input) {
+    transaction.from = account.address;
+  }
   transaction.gasPrice = addHexPrefix(new BN(gasPrice).toString(16));
   transaction.value = addHexPrefix(new BN(transaction.value).toString(16));
   transaction.chainId = network.chainId;
@@ -102,10 +111,7 @@ export const makeTradeTransactionFromDexTrade = async (
   transaction.nonce = await getNonce(network, account);
   const gasLimit = await getGasEstimate(network, transaction);
   transaction.gasLimit = hexToNumber(gasLimit);
-
-  if (account.wallet !== WalletId.METAMASK && trade.metadata.input) {
-    transaction.from = account.address;
-  }
+  delete transaction.from;
 
   return transaction;
 };
@@ -113,24 +119,25 @@ export const makeTradeTransactionFromDexTrade = async (
 export const makeTxConfigFromTransaction = (
   transaction: ITxConfig,
   account: StoreAccount,
-  fromAsset: ISwapAsset
+  fromAsset: ISwapAsset,
+  fromAmount: string
 ): ITxConfig => {
-  const { value, gasPrice, gasLimit, nonce, data } = transaction;
+  const { gasPrice, gasLimit, nonce, data } = transaction;
   const { address, network } = account;
   const baseAsset = getAssetByUUID(network.baseAsset)!;
   const asset = getAssetByTicker(fromAsset.symbol) || baseAsset;
 
   const txConfig: ITxConfig = {
     from: address,
-    amount: value,
+    amount: fromAmount,
     receiverAddress: address,
     senderAccount: account,
     network,
     asset,
     baseAsset,
-    gasPrice,
+    gasPrice: hexToString(gasPrice),
     gasLimit,
-    value,
+    value: fromAmount,
     nonce,
     data,
     rawTransaction: Object.assign({}, transaction, { chainId: network.chainId, to: address })

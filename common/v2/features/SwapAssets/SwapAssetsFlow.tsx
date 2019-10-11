@@ -83,14 +83,15 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     const mergedTxConfig = makeTxConfigFromTransaction(
       rawAllowanceTransaction,
       account,
-      fromAsset!
+      fromAsset!,
+      fromAmount
     );
     setTxConfig(mergedTxConfig);
     setRawTransaction(rawAllowanceTransaction);
     goToNextStep();
   };
 
-  const onComplete = (signResponse: any) => {
+  const onComplete = async (signResponse: any) => {
     if (!account) {
       return;
     }
@@ -215,6 +216,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         goToFirstStep={goToFirstStep}
         txConfig={txConfig}
         setTxConfig={setTxConfig}
+        senderAccount={account}
       />
     </ExtendedContentPanel>
   );
