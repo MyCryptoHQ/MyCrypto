@@ -34,7 +34,7 @@ interface Props {
   fromAsset: ISwapAsset;
   toAsset: ISwapAsset;
   assets: ISwapAsset[];
-  setLastChagedAmount(lastChangedAmount: any): void;
+  setLastChagedAmount(lastChangedAmount: LAST_CHANGED_AMOUNT): void;
   goToNextStep(): void;
   setSwapPrice(amount: number): void;
   setFromAsset(asset: ISwapAsset): void;
@@ -134,7 +134,7 @@ export default function SwapAssets(props: Props) {
     }
   };
 
-  const handlFromAssetSelected = (selectedAsset: ISwapAsset) => {
+  const handleFromAssetSelected = (selectedAsset: ISwapAsset) => {
     if (isCalculatingFromAmount || isCalculatingToAmount) {
       return;
     }
@@ -166,7 +166,7 @@ export default function SwapAssets(props: Props) {
         <AssetSelectDropdown
           selectedAsset={fromAsset}
           assets={assets}
-          onChange={handlFromAssetSelected}
+          onChange={handleFromAssetSelected}
           label="Select Asset"
           fluid={true}
         />
@@ -214,7 +214,7 @@ export default function SwapAssets(props: Props) {
       </FormItem>
       <StyledButton
         onClick={goToNextStep}
-        disabled={isCalculatingToAmount || isCalculatingFromAmount}
+        disabled={isCalculatingToAmount || isCalculatingFromAmount || !fromAmount || !toAmount}
       >
         Next
       </StyledButton>
