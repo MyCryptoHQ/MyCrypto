@@ -6,7 +6,29 @@ import { StoreAccount, WalletId, ITxConfig } from 'v2/types';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 import { inputGasPriceToHex, hexWeiToString, getNonce, hexToNumber } from 'v2/services/EthService';
 import { getAssetByUUID, getAssetByTicker } from 'v2/services';
-import { ISwapAsset } from './types';
+import { ISwapAsset, SigningComponents } from './types';
+import {
+  SignTransactionPrivateKey,
+  SignTransactionMetaMask,
+  SignTransactionLedger,
+  SignTransactionTrezor,
+  SignTransactionSafeT,
+  SignTransactionKeystore,
+  SignTransactionParity,
+  SignTransactionMnemonic
+} from '../SendAssets/components/SignTransactionWallets';
+
+export const WALLET_STEPS: SigningComponents = {
+  [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,
+  [WalletId.METAMASK]: SignTransactionMetaMask,
+  [WalletId.LEDGER_NANO_S]: SignTransactionLedger,
+  [WalletId.TREZOR]: SignTransactionTrezor,
+  [WalletId.SAFE_T_MINI]: SignTransactionSafeT,
+  [WalletId.KEYSTORE_FILE]: SignTransactionKeystore,
+  [WalletId.PARITY_SIGNER]: SignTransactionParity,
+  [WalletId.MNEMONIC_PHRASE]: SignTransactionMnemonic,
+  [WalletId.VIEW_ONLY]: null
+};
 
 export const makeAllowanceTransaction = async (
   trade: any,

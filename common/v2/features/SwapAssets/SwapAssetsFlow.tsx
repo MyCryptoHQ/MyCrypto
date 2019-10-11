@@ -1,42 +1,26 @@
-import React, { useState, ReactType } from 'react';
+import React, { useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { ExtendedContentPanel } from 'v2/components';
 import { SwapAssets, SelectAddress, ConfirmSwap, SwapTransactionReceipt } from './components';
 import { ROUTE_PATHS } from 'v2/config';
 import { ISwapAsset, LAST_CHANGED_AMOUNT } from './types';
-import {
-  WalletId,
-  StoreAccount,
-  ITxReceipt,
-  ISignedTx,
-  ISignComponentProps,
-  ITxConfig
-} from 'v2/types';
-import {
-  SignTransactionKeystore,
-  SignTransactionLedger,
-  SignTransactionMetaMask,
-  SignTransactionPrivateKey,
-  SignTransactionSafeT,
-  SignTransactionTrezor,
-  SignTransactionMnemonic
-} from 'v2/features/SendAssets/components/SignTransactionWallets';
+import { WalletId, StoreAccount, ITxReceipt, ISignedTx, ITxConfig } from 'v2/types';
 import { DexService } from 'v2/services/ApiService/Dex';
 import { ProviderHandler } from 'v2/services';
 import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
-import { makeTxConfigFromTransaction, makeTradeTransactionFromDexTrade } from './helpers';
+import {
+  makeTxConfigFromTransaction,
+  makeTradeTransactionFromDexTrade,
+  WALLET_STEPS
+} from './helpers';
 
 interface TStep {
   title?: string;
   description?: string;
-  component: ReactType;
-  action?(signResponse: any): void;
+  component: any;
+  action?(payload: ITxReceipt | ISignedTx): void;
 }
-
-type SigningComponents = {
-  readonly [k in WalletId]: React.ComponentType<ISignComponentProps> | null;
-};
 
 const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
   const [step, setStep] = useState(0);
@@ -44,11 +28,9 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
   const [toAsset, setToAsset] = useState<ISwapAsset>();
   const [fromAmount, setFromAmount] = useState();
   const [toAmount, setToAmount] = useState();
-  const [address, setAddress] = useState();
   const [account, setAccount] = useState<StoreAccount>();
   const [dexTrade, setDexTrade] = useState();
   const [rawTransaction, setRawTransaction] = useState<ITxConfig>();
-  const [txHash, setTxHash] = useState();
   const [txReceipt, setTxReceipt] = useState();
   const [swapAssets, setSwapAssets] = useState([]);
   const [swapPrice, setSwapPrice] = useState(0);
@@ -56,18 +38,6 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     LAST_CHANGED_AMOUNT.FROM
   );
   const [txConfig, setTxConfig] = useState();
-
-  const walletSteps: SigningComponents = {
-    [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,
-    [WalletId.METAMASK]: SignTransactionMetaMask,
-    [WalletId.LEDGER_NANO_S]: SignTransactionLedger,
-    [WalletId.TREZOR]: SignTransactionTrezor,
-    [WalletId.SAFE_T_MINI]: SignTransactionSafeT,
-    [WalletId.KEYSTORE_FILE]: SignTransactionKeystore,
-    [WalletId.PARITY_SIGNER]: null,
-    [WalletId.MNEMONIC_PHRASE]: SignTransactionMnemonic,
-    [WalletId.VIEW_ONLY]: null
-  };
 
   const goToFirstStep = () => {
     setStep(0);
@@ -126,8 +96,9 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     }
 
     if (account.wallet === WalletId.METAMASK) {
-      setTxHash(signResponse);
-      setTxReceipt({ hash: signResponse, asset: {} });
+      const receipt =
+        signResponse && signResponse.hash ? signResponse : { hash: signResponse, asset: {} };
+      setTxReceipt(receipt);
       goToNextStep();
     } else {
       const provider = new ProviderHandler(account.network);
@@ -145,11 +116,24 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         .then(retrievedTransactionReceipt => {
           const receipt = fromTxReceiptObj(retrievedTransactionReceipt);
           setTxReceipt(receipt);
-        });
+        })
+        .finally(goToNextStep);
     }
   };
 
-  // @ts-ignore
+  const fetchSwapAssets = async () => {
+    try {
+      const assets = await DexService.instance.getTokenList();
+      setSwapAssets(assets);
+      if (assets.length > 1) {
+        setFromAsset(assets[0]);
+        setToAsset(assets[1]);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const steps: TStep[] = [
     {
       title: 'Swap Assets',
@@ -171,14 +155,14 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
       ? [
           {
             title: 'Set allowance',
-            component: account && walletSteps[account.wallet],
+            component: account && WALLET_STEPS[account.wallet],
             action: onAllowanceSigned
           }
         ]
       : []),
     {
       title: 'Swap assets',
-      component: account && walletSteps[account.wallet],
+      component: account && WALLET_STEPS[account.wallet],
       action: onComplete
     },
     {
@@ -189,19 +173,6 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
 
   const stepObject = steps[step];
   const StepComponent = stepObject.component;
-
-  const fetchSwapAssets = async () => {
-    try {
-      const assets = await DexService.instance.getTokenList();
-      setSwapAssets(assets);
-      if (assets.length > 1) {
-        setFromAsset(assets[0]);
-        setToAsset(assets[1]);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
 
   if (swapAssets.length === 0) {
     fetchSwapAssets();
@@ -218,7 +189,6 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
       <StepComponent
         key={`${stepObject.title}${step}`}
         goToNextStep={goToNextStep}
-        setStep={setStep}
         setFromAsset={setFromAsset}
         setToAsset={setToAsset}
         setFromAmount={setFromAmount}
@@ -228,19 +198,15 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         assets={swapAssets}
         fromAsset={fromAsset}
         toAsset={toAsset}
-        address={address}
-        setAddress={setAddress}
         account={account}
         setAccount={setAccount}
         dexTrade={dexTrade}
         setDexTrade={setDexTrade}
-        senderAccount={account}
         rawTransaction={rawTransaction}
         onSuccess={(payload: ITxReceipt | ISignedTx) =>
           stepObject.action && stepObject.action(payload)
         }
         setRawTransaction={setRawTransaction}
-        txHash={txHash}
         txReceipt={txReceipt}
         lastChangedAmount={lastChangedAmount}
         setLastChagedAmount={setLastChagedAmount}
