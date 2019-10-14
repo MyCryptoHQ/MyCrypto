@@ -98,7 +98,7 @@ class ViewOnlyDecryptClass extends PureComponent<OwnProps & StateProps, State> {
     if (wallet) {
       e.preventDefault();
       e.stopPropagation();
-      this.props.onUnlock(new WalletService.init(wallet));
+      this.props.onUnlock(WalletService.init(wallet));
     }
   };
 }
