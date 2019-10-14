@@ -197,7 +197,7 @@ const testimonials = [
   {
     author: 'Tim Coulter',
     text:
-      'MyCrypto is the leader in blockchain wallets. Their watchful eye on security and their close proximity users put them on the front lines, shepherding users through the new and exciting world of crypto.'
+      'MyCrypto is the leader in blockchain wallets. Their watchful eye on security and their close proximity to users put them on the front lines, shepherding users through the new and exciting world of crypto.'
   }
 ];
 

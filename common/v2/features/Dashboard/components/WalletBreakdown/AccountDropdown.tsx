@@ -155,7 +155,7 @@ const AccountDropdown = ({ accounts = [], selected = [], onSubmit }: AccountDrop
             name="all-accounts"
             checked={allVisible}
             onChange={toggleAllAccounts}
-            label={`${translateRaw('ACCOUNTS_DROPDOWN_ALL_WALLETS')}`}
+            label={`${translateRaw('ACCOUNTS_DROPDOWN_ALL_ACCOUNTS')}`}
           />
           <Divider />
           {renderAccounts(accounts, draftSelected, addressBook, toggleSingleAccount)}
