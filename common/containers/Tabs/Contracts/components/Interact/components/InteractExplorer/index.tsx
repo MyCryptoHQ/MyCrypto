@@ -18,7 +18,6 @@ import { GenerateTransaction } from 'components/GenerateTransaction';
 import { Input, Dropdown } from 'components/ui';
 import { Fields } from './components';
 import './InteractExplorer.scss';
-import queryString from 'query-string';
 
 interface StateProps {
   nodeLib: INode;
@@ -37,6 +36,7 @@ interface DispatchProps {
 
 interface OwnProps {
   contractFunctions: any;
+  getParamsFromUrl(): (ev: any) => any;
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
@@ -80,7 +80,7 @@ class InteractExplorerClass extends Component<Props, State> {
   };
 
   public setParams = () => {
-    const params = this.getParamsFromUrl();
+    const params = this.props.getParamsFromUrl()(null as any);
     let count = 0;
     Object.keys(params).map((index: any) => {
       const item = params[index];
@@ -135,19 +135,8 @@ class InteractExplorerClass extends Component<Props, State> {
     }
   }
 
-  public getParamsFromUrl = () => {
-    const index = location.href.lastIndexOf('?');
-    if (index !== -1) {
-      const query = location.href.substring(index);
-      const params = queryString.parse(query);
-      return params;
-    } else {
-      return {};
-    }
-  };
-
   public getItem(contractFunctionsOptions: any) {
-    const functionName = this.getParamsFromUrl().functionName;
+    const functionName = this.props.getParamsFromUrl()(null as any).functionName;
 
     let item = null;
     contractFunctionsOptions.map((obj: any) => {

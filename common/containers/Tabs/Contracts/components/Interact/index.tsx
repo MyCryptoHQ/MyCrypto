@@ -6,6 +6,7 @@ import * as selectors from 'features/selectors';
 import { notificationsActions } from 'features/notifications';
 import InteractForm from './components/InteractForm';
 import { InteractExplorer } from './components/InteractExplorer';
+import queryString from 'query-string';
 
 interface State {
   currentContract: Contract | null;
@@ -27,6 +28,17 @@ class InteractClass extends Component<Props, State> {
     showExplorer: false
   };
   public state: State = this.initialState;
+
+  public getParamsFromUrl = () => () => {
+    const index = location.href.lastIndexOf('?');
+    if (index !== -1) {
+      const query = location.href.substring(index);
+      const params = queryString.parse(query);
+      return params;
+    } else {
+      return {};
+    }
+  };
 
   public accessContract = (contractAbi: string) => () => {
     try {
@@ -54,7 +66,8 @@ class InteractClass extends Component<Props, State> {
 
     const interactProps = {
       accessContract: this.accessContract,
-      resetState: this.resetState
+      resetState: this.resetState,
+      getParamsFromUrl: this.getParamsFromUrl
     };
 
     return (
@@ -62,7 +75,10 @@ class InteractClass extends Component<Props, State> {
         <InteractForm {...interactProps} />
         <hr />
         {showExplorer && currentContract && (
-          <InteractExplorer contractFunctions={Contract.getFunctions(currentContract)} />
+          <InteractExplorer
+            {...interactProps}
+            contractFunctions={Contract.getFunctions(currentContract)}
+          />
         )}
       </main>
     );

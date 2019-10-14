@@ -12,7 +12,6 @@ import { configSelectors } from 'features/config';
 import { setCurrentTo, TSetCurrentTo } from 'features/transaction/actions';
 import { Input, TextArea, CodeBlock, Dropdown } from 'components/ui';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
-import queryString from 'query-string';
 
 interface ContractOption {
   name: string;
@@ -28,6 +27,7 @@ interface StateProps {
 interface OwnProps {
   accessContract(contractAbi: string): (ev: any) => void;
   resetState(): void;
+  getParamsFromUrl(): (ev: any) => any;
 }
 
 interface DispatchProps {
@@ -95,21 +95,10 @@ class InteractForm extends Component<Props, State> {
     }
   };
 
-  public getParamsFromUrl = () => {
-    const index = location.href.lastIndexOf('?');
-    if (index !== -1) {
-      const query = location.href.substring(index);
-      const params = queryString.parse(query);
-      return params;
-    } else {
-      return {};
-    }
-  };
-
   public contractSetup = () => {
     const { contracts } = this.props;
     // get contract name from url param
-    const contractName = this.getParamsFromUrl().name;
+    const contractName = this.props.getParamsFromUrl()(null as any).name;
     if (this.isContractsValid()) {
       contracts.map(con => {
         const addr = con.address ? `(${con.address.substr(0, 10)}...)` : '';
@@ -135,7 +124,7 @@ class InteractForm extends Component<Props, State> {
     const showContractAccessButton = validEthAddress && validAbiJson;
     let options: ContractOption[] = [];
 
-    const contractName = this.getParamsFromUrl().name;
+    const contractName = this.props.getParamsFromUrl()(null as any).name;
     let item = null;
 
     if (this.isContractsValid()) {
