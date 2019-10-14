@@ -15,18 +15,22 @@ import { getAssetByUUID, getAssetByTicker } from 'v2/services';
 import { ISwapAsset, SigningComponents } from './types';
 import {
   SignTransactionPrivateKey,
-  SignTransactionMetaMask,
+  SignTransactionWeb3,
   SignTransactionLedger,
   SignTransactionTrezor,
   SignTransactionSafeT,
   SignTransactionKeystore,
   SignTransactionParity,
   SignTransactionMnemonic
-} from '../SendAssets/components/SignTransactionWallets';
+} from 'v2/components';
 
 export const WALLET_STEPS: SigningComponents = {
   [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,
-  [WalletId.METAMASK]: SignTransactionMetaMask,
+  [WalletId.METAMASK]: SignTransactionWeb3,
+  [WalletId.TRUST]: SignTransactionWeb3,
+  [WalletId.CIPHER]: SignTransactionWeb3,
+  [WalletId.MIST]: SignTransactionWeb3,
+  [WalletId.FRAME]: SignTransactionWeb3,
   [WalletId.LEDGER_NANO_S]: SignTransactionLedger,
   [WalletId.TREZOR]: SignTransactionTrezor,
   [WalletId.SAFE_T_MINI]: SignTransactionSafeT,

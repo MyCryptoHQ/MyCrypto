@@ -42,3 +42,4 @@ export { default as CollapsibleTable } from './CollapsibleTable';
 export { default as Network } from './Network';
 export { default as AccountDropdown } from './AccountDropdown';
 export { Banner } from './Banner';
+export * from './SignTransactionWallets';

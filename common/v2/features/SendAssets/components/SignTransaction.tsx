@@ -8,14 +8,14 @@ import {
   ISignedTx
 } from 'v2/types';
 import {
-  SignTransactionKeystore,
-  SignTransactionLedger,
-  SignTransactionWeb3,
   SignTransactionPrivateKey,
-  SignTransactionSafeT,
+  SignTransactionWeb3,
+  SignTransactionLedger,
   SignTransactionTrezor,
+  SignTransactionSafeT,
+  SignTransactionKeystore,
   SignTransactionMnemonic
-} from './SignTransactionWallets';
+} from 'v2/components';
 
 type SigningComponents = {
   readonly [k in WalletId]: React.ComponentType<ISignComponentProps> | null;

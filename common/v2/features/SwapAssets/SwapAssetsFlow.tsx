@@ -3,10 +3,10 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { ExtendedContentPanel } from 'v2/components';
 import { SwapAssets, SelectAddress, ConfirmSwap, SwapTransactionReceipt } from './components';
-import { ROUTE_PATHS } from 'v2/config';
+import { ROUTE_PATHS, WALLETS_CONFIG } from 'v2/config';
 import { ISwapAsset, LAST_CHANGED_AMOUNT } from './types';
-import { WalletId, StoreAccount, ITxReceipt, ISignedTx, ITxConfig } from 'v2/types';
-import { DexService } from 'v2/services/ApiService/Dex';
+import { StoreAccount, ITxReceipt, ISignedTx, ITxConfig, WalletType } from 'v2/types';
+import { DexService } from 'v2/services/ApiService';
 import { ProviderHandler } from 'v2/services';
 import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
 import {
@@ -65,7 +65,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     const provider = new ProviderHandler(account.network);
 
     try {
-      if (account.wallet === WalletId.METAMASK) {
+      if (WALLETS_CONFIG[account.wallet].type === WalletType.WEB3) {
         allowanceTxHash = (signResponse && signResponse.hash) || signResponse;
       } else {
         const tx = await provider.sendRawTx(signResponse);
@@ -96,20 +96,13 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
       return;
     }
 
-    if (account.wallet === WalletId.METAMASK) {
+    if (WALLETS_CONFIG[account.wallet].type === WalletType.WEB3) {
       const receipt =
         signResponse && signResponse.hash ? signResponse : { hash: signResponse, asset: {} };
       setTxReceipt(receipt);
       goToNextStep();
     } else {
       const provider = new ProviderHandler(account.network);
-
-      /*    provider
-        .getTransactionReceipt('0xc9dff224df247cacf5c2753779f8f66f19e1eccd25ed6409a92664a7a363f5b5')
-        .then(retrievedTransactionReceipt => {
-          setTxReceipt({ hash: retrievedTransactionReceipt.transactionHash, asset: {} });
-          goToNextStep();
-        }); */
       provider
         .sendRawTx(signResponse)
         .then(retrievedTxReceipt => retrievedTxReceipt)
@@ -217,6 +210,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         txConfig={txConfig}
         setTxConfig={setTxConfig}
         senderAccount={account}
+        network={account && account.network}
       />
     </ExtendedContentPanel>
   );
