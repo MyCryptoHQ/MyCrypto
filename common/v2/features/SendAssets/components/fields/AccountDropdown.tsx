@@ -3,7 +3,7 @@ import { translateRaw } from 'translations';
 import { formatEther } from 'ethers/utils';
 
 import { AccountSummary, AccountOption, Dropdown } from 'v2/components';
-import { StoreAccount } from 'v2/types';
+import { StoreAccount, WalletId } from 'v2/types';
 import { AddressBookContext, getBaseAsset, getAccountBaseBalance } from 'v2/services/Store';
 
 // Option item displayed in Dropdown menu. Props are passed by react-select Select.
@@ -19,12 +19,14 @@ interface IAccountDropdownProps {
 
 function AccountDropdown({ accounts, name, value, onSelect }: IAccountDropdownProps) {
   const { getAccountLabel } = useContext(AddressBookContext);
-  const relevantAccounts: StoreAccount[] = accounts.map(account => ({
-    ...account,
-    label: getAccountLabel(account),
-    balance: formatEther(getAccountBaseBalance(account)),
-    baseAssetSymbol: getBaseAsset(account)!.ticker
-  }));
+  const relevantAccounts: StoreAccount[] = accounts
+    .filter(account => account.wallet !== WalletId.VIEW_ONLY)
+    .map(account => ({
+      ...account,
+      label: getAccountLabel(account),
+      balance: formatEther(getAccountBaseBalance(account)),
+      baseAssetSymbol: getBaseAsset(account)!.ticker
+    }));
 
   return (
     <Dropdown

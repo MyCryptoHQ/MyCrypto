@@ -53,7 +53,7 @@ function AccountSummary({
 }: Props) {
   return (
     <SAccountWrapper onPointerDown={onClick} selectable={selectable}>
-      <SAddress title={label} truncate={truncate} address={address} />
+      <SAddress title={label} truncate={truncate} address={address} isCopyable={false} />
       <SCurrency
         amount={balance}
         symbol={(baseAssetSymbol as TSymbol) || ('ETH' as TSymbol)}
