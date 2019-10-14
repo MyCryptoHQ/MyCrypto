@@ -3,10 +3,11 @@ import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { ROUTE_PATHS } from 'v2/config';
+import { COLORS } from 'v2/theme';
 import { useDevMode } from 'v2/services';
 import { AccountContext, AddressBookContext } from 'v2/services/Store';
-import { translate, translateRaw } from 'translations';
-import { AccountList, BannerAd, Desktop, Mobile } from 'v2/components';
+import { translate } from 'translations';
+import { AccountList, RouterLink, Typography, BannerAd, Desktop, Mobile } from 'v2/components';
 import { ActionTile, TokenPanel, WalletBreakdown, RecentTransactionList } from './components';
 import { NotificationsPanel } from '../NotificationsPanel';
 import { actions } from './constants';
@@ -14,13 +15,24 @@ import './Dashboard.scss';
 
 import settingsIcon from 'common/assets/images/icn-settings.svg';
 
-const SettingsHeadingIcon = styled.img`
-  margin-right: 12px;
-  height: 1em;
+const AccountListFooterWrapper = styled.div`
+  & * {
+    color: ${COLORS.BRIGHT_SKY_BLUE};
+  }
+  & img {
+    height: 1.1em;
+    margin-right: 0.5em;
+  }s
 `;
-const AccountListFooter = styled.div`
-  color: #1eb8e7;
-`;
+
+const accountListFooter = () => (
+  <AccountListFooterWrapper>
+    <RouterLink to={ROUTE_PATHS.SETTINGS.path}>
+      <img src={settingsIcon} alt={'settings'} />
+      <Typography>{translate('SETTINGS_HEADING')}</Typography>
+    </RouterLink>
+  </AccountListFooterWrapper>
+);
 // Keep the same mobile width as an ActionTile
 const EmptyTile = styled.div`
   width: 110px;
@@ -57,8 +69,7 @@ export default function Dashboard() {
           <AccountList
             currentsOnly={true}
             className="Dashboard-mobile-modifiedPanel"
-            footerAction={translateRaw('SETTINGS_HEADING')}
-            footerActionLink={ROUTE_PATHS.SETTINGS.path}
+            footer={accountListFooter()}
             copyable={true}
           />
         </div>
@@ -94,13 +105,7 @@ export default function Dashboard() {
               <AccountList
                 currentsOnly={true}
                 className="Dashboard-desktop-modifiedPanel"
-                footerAction={
-                  <AccountListFooter>
-                    <SettingsHeadingIcon src={settingsIcon} alt="Settings" />{' '}
-                    {translate('SETTINGS_HEADING')}
-                  </AccountListFooter>
-                }
-                footerActionLink={ROUTE_PATHS.SETTINGS.path}
+                footer={accountListFooter()}
                 copyable={true}
               />
             </div>

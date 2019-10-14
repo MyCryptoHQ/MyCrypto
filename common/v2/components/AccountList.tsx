@@ -97,21 +97,12 @@ interface AccountListProps {
   currentsOnly?: boolean;
   deletable?: boolean;
   favoritable?: boolean;
-  footerAction?: string | JSX.Element;
-  footerActionLink?: string;
+  footer?: JSX.Element;
   copyable?: boolean;
 }
 
 export default function AccountList(props: AccountListProps) {
-  const {
-    className,
-    currentsOnly,
-    deletable,
-    favoritable,
-    footerAction,
-    footerActionLink,
-    copyable
-  } = props;
+  const { className, currentsOnly, deletable, favoritable, footer, copyable } = props;
   const { currentAccounts, accounts, deleteAccountFromCache } = useContext(StoreContext);
   const { updateAccount } = useContext(AccountContext);
   const shouldRedirect = accounts === undefined || accounts === null || accounts.length === 0;
@@ -127,8 +118,7 @@ export default function AccountList(props: AccountListProps) {
       }`}
       actionLink={ROUTE_PATHS.ADD_ACCOUNT.path}
       className={`AccountList ${className}`}
-      footerAction={footerAction}
-      footerActionLink={footerActionLink}
+      footer={footer}
     >
       <TableContainer>
         <CollapsibleTable

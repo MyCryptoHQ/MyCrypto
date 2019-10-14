@@ -20,13 +20,18 @@
 $spacing-sm: 8px;
 $spacing-md: 32px;
 
-.Linkset {
+.Footer-Linkset {
   display: flex;
   flex-direction: column;
   text-align: center;
   margin-bottom: $spacing-md;
 
+  @media (min-width: 800px) {
+    text-align: left;
+  }
+
   &-column {
+    flex: 1;
     &:not(:last-child) {
       margin-bottom: $spacing-md;
 

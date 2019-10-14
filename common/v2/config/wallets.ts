@@ -38,6 +38,54 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     description: 'ADD_WEB3DESC',
     helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`
   },
+  [WalletId.TRUST]: {
+    id: WalletId.TRUST,
+    name: 'Trust',
+    isDeterministic: false,
+    isSecure: true,
+    isDesktopOnly: false,
+    type: WalletType.WEB3,
+    lid: web3ProviderInfo.lid,
+    icon: web3ProviderInfo.icon,
+    description: 'ADD_WEB3DESC',
+    helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`
+  },
+  [WalletId.CIPHER]: {
+    id: WalletId.CIPHER,
+    name: 'Cipher',
+    isDeterministic: false,
+    isSecure: true,
+    isDesktopOnly: false,
+    type: WalletType.WEB3,
+    lid: web3ProviderInfo.lid,
+    icon: web3ProviderInfo.icon,
+    description: 'ADD_WEB3DESC',
+    helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`
+  },
+  [WalletId.MIST]: {
+    id: WalletId.MIST,
+    name: 'Mist',
+    isDeterministic: false,
+    isSecure: true,
+    isDesktopOnly: false,
+    type: WalletType.WEB3,
+    lid: web3ProviderInfo.lid,
+    icon: web3ProviderInfo.icon,
+    description: 'ADD_WEB3DESC',
+    helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`
+  },
+  [WalletId.FRAME]: {
+    id: WalletId.FRAME,
+    name: 'Frame',
+    isDeterministic: false,
+    isSecure: true,
+    isDesktopOnly: false,
+    type: WalletType.WEB3,
+    lid: web3ProviderInfo.lid,
+    icon: web3ProviderInfo.icon,
+    description: 'ADD_WEB3DESC',
+    helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`
+  },
   [WalletId.LEDGER_NANO_S]: {
     id: WalletId.LEDGER_NANO_S,
     name: 'Ledger Nano S',
