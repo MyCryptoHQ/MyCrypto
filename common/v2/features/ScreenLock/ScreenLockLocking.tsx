@@ -1,9 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import translate, { translateRaw } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services/ApiService';
+
+import {
+  SettingsContext
+} from 'v2/services/Store';
 
 const MainWrapper = styled.div`
   display: flex;
@@ -57,6 +61,8 @@ const SecondaryButton = styled(Button)`
   }
 `;
 
+const { settings } = useContext(SettingsContext);
+
 interface LockScreenProps {
   timeLeft: number;
   onScreenLockClicked(): void;
@@ -64,6 +70,7 @@ interface LockScreenProps {
 }
 
 export default class ScreenLockLocking extends Component<LockScreenProps> {
+
   public handleKeepUsingDashboardClicked = () => {
     this.props.onCancelLockCountdown();
     AnalyticsService.instance.track(
@@ -86,7 +93,7 @@ export default class ScreenLockLocking extends Component<LockScreenProps> {
         <ContentWrapper>
           <Title>{translate('SCREEN_LOCK_LOCKING_HEADING')}</Title>
           <Description>
-            {translate('SCREEN_LOCK_LOCKING_DESCRIPTION')}{' '}
+            {translate(`SCREEN_LOCK_LOCKING_DESCRIPTION`, { $inactive_time: ((settings.inactivityTimer/1000)/60).toString() })}{' '}
             <b>
               {translate('SCREEN_LOCK_LOCKING_SECONDS', {
                 $time_left: this.props.timeLeft.toString()
