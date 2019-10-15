@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import CalendarContainer from './CalendarContainer';
 import TimeView from './TimeView';
 import { ClickableWrapper } from './ClickableWrapper';
