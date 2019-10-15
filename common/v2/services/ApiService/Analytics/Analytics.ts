@@ -1,7 +1,12 @@
 import { AxiosInstance } from 'axios';
 import { isDesktop, isDevelopment } from 'v2/utils';
 import { ApiService } from 'v2/services/ApiService';
-import { ANALYTICS_API_URL, ANALYTICS_ID_SITE, ANALYTICS_REC } from './constants';
+import {
+  ANALYTICS_API_URL,
+  ANALYTICS_ID_DESKTOP,
+  ANALYTICS_ID_SITE,
+  ANALYTICS_REC
+} from './constants';
 import { CvarEntry, Params } from './types';
 
 let instantiated: boolean = false;
@@ -33,12 +38,13 @@ export default class AnalyticsService {
     };
 
     const cvar: object = this.mapParamsToCvars(customParams);
+    const analyticsId = isDesktop() ? ANALYTICS_ID_DESKTOP : ANALYTICS_ID_SITE;
 
     const params: object = {
       action_name: eventAction,
       e_c: category,
       e_a: eventAction,
-      idsite: ANALYTICS_ID_SITE,
+      idsite: analyticsId,
       rec: ANALYTICS_REC,
       cvar: JSON.stringify(cvar)
     };
@@ -53,11 +59,12 @@ export default class AnalyticsService {
     };
 
     const cvar: object = this.mapParamsToCvars(customParams);
+    const analyticsId = isDesktop() ? ANALYTICS_ID_DESKTOP : ANALYTICS_ID_SITE;
 
     const params: object = {
       action_name: 'Page navigation',
       url: pageUrl,
-      idsite: ANALYTICS_ID_SITE,
+      idsite: analyticsId,
       rec: ANALYTICS_REC,
       cvar: JSON.stringify(cvar)
     };
