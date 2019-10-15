@@ -11,7 +11,7 @@ import {
   buildEIP681TokenRequest
 } from 'v2/services/EthService/utils/formatters';
 import { ContentPanel, QRCode } from 'v2/components';
-import { AccountContext, AssetContext, getNetworkById } from 'v2/services/Store';
+import { AssetContext, getNetworkById, StoreContext } from 'v2/services/Store';
 import { isValidAmount, truncate } from 'v2/utils';
 import { ExtendedAccount as IExtendedAccount } from 'v2/types';
 import { translate, translateRaw } from 'translations';
@@ -115,7 +115,7 @@ const ErrorMessage = styled.span`
 `;
 
 export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
-  const { accounts } = useContext(AccountContext);
+  const { accounts } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
   const [networkName, setNetworkName] = useState(accounts[0].networkId);
   const network = getNetworkById(networkName);
