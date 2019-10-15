@@ -12,7 +12,7 @@ function AccountDropdown({ accounts, name, value, onSelect }: IAccountDropdown) 
   return (
     <Dropdown
       name={name}
-      placeholder={translateRaw('SEND_ASSETS_ACCOUNT_SELECTION_PLACEHOLDER')}
+      placeholder={translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')}
       options={accounts}
       onChange={option => onSelect(option)}
       optionComponent={AccountOption}

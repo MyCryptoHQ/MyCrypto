@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { Button } from '@mycrypto/ui';
 
 import { AssetSelectDropdown } from './fields';
 import { InputField } from 'v2/components';
-import { Button } from '@mycrypto/ui';
 import { ISwapAsset, LAST_CHANGED_AMOUNT } from '../types';
-import { DexService } from 'v2/services/ApiService/Dex';
+import { DexService } from 'v2/services/ApiService';
+import { translate, translateRaw } from 'translations';
 
 const FormWrapper = styled.div`
   margin-top: 20px;
@@ -43,8 +44,8 @@ interface Props {
   setToAmount(amount: string): void;
 }
 
-let caculateToAmountTimeout: NodeJS.Timer | null = null;
-let caculateFromAmountTimeout: NodeJS.Timer | null = null;
+let calculateToAmountTimeout: NodeJS.Timer | null = null;
+let calculateFromAmountTimeout: NodeJS.Timer | null = null;
 
 export default function SwapAssets(props: Props) {
   const {
@@ -66,28 +67,28 @@ export default function SwapAssets(props: Props) {
   const [isCalculatingToAmount, setIsCalculatingToAmount] = useState(false);
 
   // SEND AMOUNT CHANGED
-  const handleFromAmountChanged = (e: any) => {
+  const handleFromAmountChanged = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     setLastChagedAmount(LAST_CHANGED_AMOUNT.FROM);
     setFromAmount(value);
 
     // Calculate new "to amount" 500 ms after user stopped typing
-    if (caculateToAmountTimeout) clearTimeout(caculateToAmountTimeout);
+    if (calculateToAmountTimeout) clearTimeout(calculateToAmountTimeout);
 
-    caculateToAmountTimeout = setTimeout(() => {
+    calculateToAmountTimeout = setTimeout(() => {
       calculateNewToAmount(value);
     }, 500);
   };
 
   // RECEIVE AMOUNT CHANGED
-  const handleToAmountChanged = async (e: any) => {
+  const handleToAmountChanged = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     setLastChagedAmount(LAST_CHANGED_AMOUNT.TO);
     setToAmount(value);
 
     // Calculate new "from amount" 500 ms after user stopped typing
-    if (caculateFromAmountTimeout) clearTimeout(caculateFromAmountTimeout);
-    caculateFromAmountTimeout = setTimeout(() => {
+    if (calculateFromAmountTimeout) clearTimeout(calculateFromAmountTimeout);
+    calculateFromAmountTimeout = setTimeout(() => {
       calculateNewFromAmount(value);
     }, 500);
   };
@@ -142,10 +143,6 @@ export default function SwapAssets(props: Props) {
     clearAmounts();
   };
 
-  const handlToAssetSelected = (selectedAsset: ISwapAsset) => {
-    setToAsset(selectedAsset);
-  };
-
   const clearAmounts = () => {
     setFromAmount('');
     setToAmount('');
@@ -167,14 +164,14 @@ export default function SwapAssets(props: Props) {
           selectedAsset={fromAsset}
           assets={assets}
           onChange={handleFromAssetSelected}
-          label="Select Asset"
+          label={translateRaw('SWAP_SELECT_ASSET')}
           fluid={true}
         />
       </FormItem>
       <FormItem>
         <InputWrapper>
           <InputField
-            label={'Send Amount'}
+            label={translateRaw('FORM_SEND_AMOUNT')}
             value={fromAmount}
             placeholder="0.00"
             onChange={handleFromAmountChanged}
@@ -186,7 +183,7 @@ export default function SwapAssets(props: Props) {
         <AssetSelectDropdown
           selectedAsset={fromAsset}
           assets={assets}
-          label="Asset"
+          label={translateRaw('ASSET')}
           showOnlyTicker={true}
           disabled={true}
         />
@@ -194,7 +191,7 @@ export default function SwapAssets(props: Props) {
       <FormItem>
         <InputWrapper>
           <InputField
-            label={'Receive Amount'}
+            label={translate('SWAP_RECEIVE_AMOUNT')}
             value={toAmount}
             placeholder="0.00"
             onChange={handleToAmountChanged}
@@ -206,8 +203,8 @@ export default function SwapAssets(props: Props) {
         <AssetSelectDropdown
           selectedAsset={toAsset}
           assets={assets}
-          label="Asset"
-          onChange={handlToAssetSelected}
+          label={translateRaw('ASSET')}
+          onChange={setToAsset}
           showOnlyTicker={true}
           disabled={isCalculatingToAmount || isCalculatingFromAmount}
         />
@@ -216,7 +213,7 @@ export default function SwapAssets(props: Props) {
         onClick={goToNextStep}
         disabled={isCalculatingToAmount || isCalculatingFromAmount || !fromAmount || !toAmount}
       >
-        Next
+        {translate('ACTION_6')}
       </StyledButton>
     </FormWrapper>
   );

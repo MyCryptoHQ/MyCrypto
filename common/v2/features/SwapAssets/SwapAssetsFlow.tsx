@@ -3,9 +3,9 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { ExtendedContentPanel } from 'v2/components';
 import { SwapAssets, SelectAddress, ConfirmSwap, SwapTransactionReceipt } from './components';
-import { ROUTE_PATHS, WALLETS_CONFIG } from 'v2/config';
+import { ROUTE_PATHS } from 'v2/config';
 import { ISwapAsset, LAST_CHANGED_AMOUNT } from './types';
-import { StoreAccount, ITxReceipt, ISignedTx, ITxConfig, WalletType } from 'v2/types';
+import { StoreAccount, ITxReceipt, ISignedTx, ITxConfig } from 'v2/types';
 import { DexService } from 'v2/services/ApiService';
 import { ProviderHandler } from 'v2/services';
 import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
@@ -14,6 +14,8 @@ import {
   makeTradeTransactionFromDexTrade,
   WALLET_STEPS
 } from './helpers';
+import { translateRaw } from 'translations';
+import { isWeb3Wallet } from 'v2/utils/web3';
 
 interface TStep {
   title?: string;
@@ -65,7 +67,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     const provider = new ProviderHandler(account.network);
 
     try {
-      if (WALLETS_CONFIG[account.wallet].type === WalletType.WEB3) {
+      if (isWeb3Wallet(account.wallet)) {
         allowanceTxHash = (signResponse && signResponse.hash) || signResponse;
       } else {
         const tx = await provider.sendRawTx(signResponse);
@@ -91,12 +93,12 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     goToNextStep();
   };
 
-  const onComplete = async (signResponse: any) => {
+  const onTxSigned = async (signResponse: any) => {
     if (!account) {
       return;
     }
 
-    if (WALLETS_CONFIG[account.wallet].type === WalletType.WEB3) {
+    if (isWeb3Wallet(account.wallet)) {
       const receipt =
         signResponse && signResponse.hash ? signResponse : { hash: signResponse, asset: {} };
       setTxReceipt(receipt);
@@ -130,37 +132,38 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
 
   const steps: TStep[] = [
     {
-      title: 'Swap Assets',
-      description: 'How much do you want to send and receive?',
+      title: translateRaw('SWAP_ASSETS_TITLE'),
+      description: translateRaw('SWAP_ASSETS_DESC'),
       component: SwapAssets
     },
     {
-      title: 'Select Address',
-      description: `Where will you be sending your ${fromAsset &&
-        fromAsset.symbol} from? You will receive your ${toAsset &&
-        toAsset.symbol} back to the same address after the swap.`,
+      title: translateRaw('ACCOUNT_SELECTION_PLACEHOLDER'),
+      description: translateRaw('SWAP_ACCOUNT_SELECT_DESC', {
+        $fromAsset: (fromAsset && fromAsset.symbol) || 'ETH',
+        $toAsset: (toAsset && toAsset.symbol) || 'ETH'
+      }),
       component: SelectAddress
     },
     {
-      title: 'Confirm Swap',
+      title: translateRaw('SWAP_CONFIRM_TITLE'),
       component: ConfirmSwap
     },
     ...(dexTrade && dexTrade.metadata.input
       ? [
           {
-            title: 'Set allowance',
+            title: translateRaw('SWAP_ALLOWANCE_TITLE'),
             component: account && WALLET_STEPS[account.wallet],
             action: onAllowanceSigned
           }
         ]
       : []),
     {
-      title: 'Swap assets',
+      title: translateRaw('SWAP_ASSETS_TITLE'),
       component: account && WALLET_STEPS[account.wallet],
-      action: onComplete
+      action: onTxSigned
     },
     {
-      title: 'Transaction Receipt',
+      title: translateRaw('SWAP_RECEIPT_TITLE'),
       component: SwapTransactionReceipt
     }
   ];

@@ -5,6 +5,7 @@ import { Address } from '@mycrypto/ui';
 import { StoreAccount } from 'v2/types';
 import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { truncate } from 'v2/utils';
+import translate, { translateRaw } from 'translations';
 
 const { SILVER } = COLORS;
 const { SCREEN_XS } = BREAK_POINTS;
@@ -44,25 +45,26 @@ const Label = styled.div`
 
 export default function FromToAccount(props: Props) {
   const { fromAccount, toAccount } = props;
+  const noLabel = translateRaw('NO_LABEL');
 
   return (
     <Addresses>
       <div>
-        <Label>From:</Label>
+        <Label>{translate('CONFIRM_TX_FROM')}</Label>
         <AddressWrapper>
           <Address
             address={fromAccount.address}
-            title={fromAccount.label || 'No label'}
+            title={fromAccount.label || noLabel}
             truncate={truncate}
           />
         </AddressWrapper>
       </div>
       <div>
-        <Label>To:</Label>
+        <Label>{translate('CONFIRM_TX_TO')}</Label>
         <AddressWrapper>
           <Address
             address={toAccount.address}
-            title={toAccount.label || 'No label'}
+            title={toAccount.label || noLabel}
             truncate={truncate}
           />
         </AddressWrapper>

@@ -4,7 +4,7 @@ import { Button } from '@mycrypto/ui';
 
 import { SwapFromToDiagram, FromToAccount } from './fields';
 import { ISwapAsset, LAST_CHANGED_AMOUNT } from '../types';
-import { StoreAccount } from 'v2/types';
+import { StoreAccount, ITxConfig } from 'v2/types';
 import { COLORS } from 'v2/theme';
 import { DexService } from 'v2/services/ApiService/Dex';
 import { toFixedWithoutZero } from 'v2/utils';
@@ -13,6 +13,7 @@ import {
   makeTradeTransactionFromDexTrade,
   makeTxConfigFromTransaction
 } from '../helpers';
+import translate from 'translations';
 
 const { SILVER, BRIGHT_SKY_BLUE, GREY } = COLORS;
 
@@ -54,9 +55,9 @@ interface Props {
   account: StoreAccount;
   swapPrice: number;
   lastChangedAmount: LAST_CHANGED_AMOUNT;
-  setRawTransaction(tx: any): void;
+  setRawTransaction(tx: ITxConfig): void;
   setDexTrade(trade: any): void;
-  setTxConfig(transaction: any): void;
+  setTxConfig(transaction: ITxConfig): void;
   goToNextStep(): void;
 }
 
@@ -127,13 +128,13 @@ export default function ConfirmSwap(props: Props) {
         toAmount={toAmount}
       />
       <FromToAccount fromAccount={account} toAccount={account} />
-      <LinkLabel>why this rate?</LinkLabel>
+      <LinkLabel>{translate('SWAP_WHY_RATE')}</LinkLabel>
       <ConversionRateBox>
-        <ConversionLabel>Conversion Rate</ConversionLabel>
+        <ConversionLabel>{translate('SWAP_RATE')}</ConversionLabel>
         {`1 ${fromAsset.symbol} ≈ ${toFixedWithoutZero(conversionRate, 8)} ${toAsset.symbol}`}
       </ConversionRateBox>
       <StyledButton onClick={handleNextClicked}>
-        {submitting ? 'Submitting...' : 'Confirm and Send'}
+        {submitting ? translate('SUBMITTING') : translate('CONFIRM_AND_SEND')}
       </StyledButton>
     </div>
   );

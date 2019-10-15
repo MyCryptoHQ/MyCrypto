@@ -510,7 +510,7 @@ export default function SendAssetsForm({
                 disabled={isEstimatingGasLimit || isResolvingENSName || isEstimatingNonce}
                 className="SendAssetsForm-next"
               >
-                Next{/* TRANSLATE THIS */}
+                {translate('ACTION_6')}
               </Button>
             </Form>
           );

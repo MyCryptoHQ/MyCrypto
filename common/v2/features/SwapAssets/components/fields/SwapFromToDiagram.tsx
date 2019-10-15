@@ -3,9 +3,9 @@ import styled from 'styled-components';
 
 import { TSymbol } from 'v2/types';
 import { AssetIcon } from 'v2/components';
+import { toFixedWithoutZero } from 'v2/utils';
 
 import arrowIcon from 'assets/images/arrow-right.svg';
-import { toFixedWithoutZero } from 'v2/utils';
 
 interface Props {
   fromSymbol: TSymbol;

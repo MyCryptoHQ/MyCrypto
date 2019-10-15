@@ -2,6 +2,7 @@ import React from 'react';
 
 import { TransactionReceipt } from 'v2/components/TransactionFlow';
 import { ITxReceipt, ITxConfig } from 'v2/types';
+import { translateRaw } from 'translations';
 
 interface Props {
   txReceipt: ITxReceipt;
@@ -13,15 +14,12 @@ export default function SwapTransactionReceipt(props: Props) {
   const { txReceipt, goToFirstStep, txConfig } = props;
 
   return (
-    <div>
-      <div>Transaction Receipt</div>
-      <TransactionReceipt
-        txReceipt={txReceipt}
-        txConfig={txConfig}
-        completeButtonText={'Start Another Swap'}
-        resetFlow={goToFirstStep}
-        onComplete={goToFirstStep}
-      />
-    </div>
+    <TransactionReceipt
+      txReceipt={txReceipt}
+      txConfig={txConfig}
+      completeButtonText={translateRaw('SWAP_START_ANOTHER')}
+      resetFlow={goToFirstStep}
+      onComplete={goToFirstStep}
+    />
   );
 }

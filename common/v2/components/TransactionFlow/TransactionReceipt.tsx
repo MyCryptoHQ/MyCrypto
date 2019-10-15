@@ -17,8 +17,9 @@ import './TransactionReceipt.scss';
 import sentIcon from 'common/assets/images/icn-sent.svg';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import { fromTxReceiptObj } from './helpers';
-import { translateRaw } from 'translations';
+import translate, { translateRaw } from 'translations';
 import { convertToFiat, truncate } from 'v2/utils';
+import { ROUTE_PATHS } from 'v2/config';
 
 export enum ITxStatus {
   SUCCESS = 'SUCCESS',
@@ -102,7 +103,7 @@ export default function TransactionReceipt({
     <div className="TransactionReceipt">
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-column">
-          To:
+          {translate('CONFIRM_TX_TO')}
           <div className="TransactionReceipt-addressWrapper">
             <Address
               address={txReceipt.to || txConfig.receiverAddress}
@@ -112,7 +113,7 @@ export default function TransactionReceipt({
           </div>
         </div>
         <div className="TransactionReceipt-row-column">
-          From:
+          {translate('CONFIRM_TX_FROM')}
           <div className="TransactionReceipt-addressWrapper">
             <Address
               address={txReceipt.from || txConfig.senderAccount.address}
@@ -177,7 +178,7 @@ export default function TransactionReceipt({
           rawTransaction={txConfig.rawTransaction}
         />
       </div>
-      <Link to="/dashboard">
+      <Link to={ROUTE_PATHS.DASHBOARD.path}>
         <Button className="TransactionReceipt-back">Back to Dashboard</Button>
       </Link>
       {completeButtonText && (

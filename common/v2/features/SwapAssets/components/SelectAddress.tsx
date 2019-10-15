@@ -9,6 +9,7 @@ import { ExtendedAccount, StoreAccount } from 'v2/types';
 import { StoreContext } from 'v2/services';
 import { WALLET_STEPS } from '../helpers';
 import { weiToFloat } from 'v2/utils';
+import { translate } from 'translations';
 
 const Label = styled.div`
   font-size: 18px;
@@ -67,7 +68,7 @@ export default function SelectAddress(props: Props) {
         fromAmount={fromAmount}
         toAmount={toAmount}
       />
-      <Label>Select Address</Label>
+      <Label>{translate('ACCOUNT_SELECTION_PLACEHOLDER')}</Label>
       <AccountDropdown
         name="account"
         value={account}
@@ -77,11 +78,11 @@ export default function SelectAddress(props: Props) {
         }}
       />
       {!filteredAccounts.length && (
-        <InlineErrorMsg>You don't have any account with sufficient funds</InlineErrorMsg>
+        <InlineErrorMsg>{translate('ACCOUNT_SELECTION_NO_FUNDS')}</InlineErrorMsg>
       )}
 
       <StyledButton disabled={!account} onClick={goToNextStep}>
-        Next
+        {translate('ACTION_6')}
       </StyledButton>
     </div>
   );
