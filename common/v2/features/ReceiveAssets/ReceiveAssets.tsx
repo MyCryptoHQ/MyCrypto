@@ -10,14 +10,13 @@ import {
   buildEIP681EtherRequest,
   buildEIP681TokenRequest
 } from 'v2/services/EthService/utils/formatters';
-import { ContentPanel, QRCode } from 'v2/components';
+import { ContentPanel, QRCode, AccountDropdown } from 'v2/components';
 import { AssetContext, getNetworkById, StoreContext } from 'v2/services/Store';
 import { isValidAmount, truncate } from 'v2/utils';
-import { ExtendedAccount as IExtendedAccount } from 'v2/types';
+import { ExtendedAccount as IExtendedAccount, StoreAccount } from 'v2/types';
 import { translate, translateRaw } from 'translations';
 import questionToolTip from 'common/assets/images/icn-question.svg';
 
-import { AccountDropdown } from './components';
 // Legacy
 import receiveIcon from 'common/assets/images/icn-receive.svg';
 
@@ -134,7 +133,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   const initialValues = {
     amount: '0',
     asset: { label: ethereum!.name, id: ethereum!.uuid },
-    recipientAddress: accounts[0]
+    recipientAddress: {} as StoreAccount
   };
 
   const validateAmount = (amount: any) => {
