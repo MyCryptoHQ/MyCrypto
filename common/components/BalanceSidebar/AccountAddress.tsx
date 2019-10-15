@@ -122,7 +122,7 @@ class AccountAddress extends React.Component<Props, State> {
     const newLabelSameAsPrevious = temporaryLabel === addressLabel;
     const labelInputTouchedWithError = labelInputTouched && !newLabelSameAsPrevious && labelError;
 
-    let labelContent = null;
+    let labelContent: JSX.Element;
 
     if (editingLabel) {
       labelContent = (

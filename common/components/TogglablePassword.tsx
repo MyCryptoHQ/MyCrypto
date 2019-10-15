@@ -6,6 +6,8 @@ import React from 'react';
 
 import { Input, TextArea } from 'components/ui';
 import './TogglablePassword.scss';
+import openEye from 'common/assets/images/icn-show-eye.svg';
+import closedEye from 'common/assets/images/icn-show-closed-eye-svg.svg';
 
 interface Props {
   // Shared props
@@ -106,7 +108,7 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
           role="button"
           className="TogglablePassword-toggle input-group-addon"
         >
-          <i className={`fa fa-${isVisible ? 'eye-slash' : 'eye'}`} />
+          {isVisible ? <img src={closedEye} /> : <img src={openEye} />}
         </span>
       </div>
     );

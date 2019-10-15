@@ -73,7 +73,7 @@ export function* updateWalletValues(): SagaIterator {
       );
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
     yield put(notificationsActions.showNotification('danger', translateRaw('ERROR_32')));
   }
 }
@@ -117,7 +117,7 @@ export function* updateWalletTokenValues(): SagaIterator {
       }
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
     yield put(notificationsActions.showNotification('danger', translateRaw('ERROR_32')));
   }
 }

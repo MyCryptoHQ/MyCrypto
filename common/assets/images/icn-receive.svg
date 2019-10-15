@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60">
+    <defs>
+        <radialGradient id="a" cx="75.338%" cy="19.508%" r="41.208%" fx="75.338%" fy="19.508%" gradientTransform="matrix(.99042 0 0 1 .007 0)">
+            <stop offset="6%" stop-color="#FFEA80"/>
+            <stop offset="11%" stop-color="#FFE77D"/>
+            <stop offset="47%" stop-color="#FFD76C"/>
+            <stop offset="73%" stop-color="#FFD166"/>
+        </radialGradient>
+    </defs>
+    <g fill="none" fill-rule="evenodd" transform="translate(1 3)">
+        <ellipse cx="24.274" cy="31.35" fill="#E09118" stroke="#163150" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.468" rx="12.957" ry="12.833"/>
+        <path fill="#1EB8E7" d="M27.334 11.99l4.27 4.229 14.204-14.08 1.197 11.77-8.86 8.788 4.368 4.326-20.744 5.513z"/>
+        <path fill="#0C9FE1" d="M47.103 13.909l-8.872 8.788 4.38 4.326-20.164 5.341L47.103 7.81z"/>
+        <path stroke="#163150" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.468" d="M47.103.953V13.91l-8.872 8.788 4.38 4.326-20.164 5.341-.58.16L27.42 11.99l4.27 4.217zM57.568 3.386L51.25 9.643"/>
+        <path stroke="#FFD166" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.468" d="M55.877 25.801s-22.73 22-24.791 23.907a18.195 18.195 0 0 1-13.028 4.667 18.163 18.163 0 0 1-12.542-5.828c-6.75-7.31-6.602-17.466 1.173-25.325C7.923 22 29.407 1.932 29.407 1.932"/>
+        <ellipse cx="18.72" cy="36.85" fill="url(#a)" stroke="#163150" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.468" rx="13.574" ry="13.444"/>
+        <ellipse cx="18.72" cy="36.85" fill="#FFC835" stroke="#FFB335" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.974" rx="8.638" ry="8.556"/>
+        <path stroke="#FFAE25" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.974" d="M22.423 36.85h-7.405m3.702 3.667v-7.334"/>
+        <path stroke="#FFD166" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.468" d="M57.26 14.239L46.93 24.457"/>
+    </g>
+</svg>

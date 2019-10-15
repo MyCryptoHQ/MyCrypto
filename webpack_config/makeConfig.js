@@ -31,8 +31,7 @@ module.exports = function(opts = {}) {
   // ====== Entry =======
   // ====================
   const entry = {
-    badBrowserCheckA: './common/badBrowserCheckA.js',
-    badBrowserCheckB: './common/badBrowserCheckB.js',
+    badBrowserCheck: './common/badBrowserCheck.ts',
     client: './common/index.tsx'
   };
 
@@ -89,7 +88,10 @@ module.exports = function(opts = {}) {
     rules.push(
       {
         test: /\.css$/,
-        include: path.resolve(config.path.src, 'vendor'),
+        include: [
+          path.resolve(config.path.src, 'vendor'),
+          path.resolve(__dirname, '../node_modules/typeface-lato')
+        ],
         use: ['style-loader', 'css-loader']
       },
       {
@@ -150,6 +152,13 @@ module.exports = function(opts = {}) {
     loader: 'file-loader'
   });
 
+  // Browser check
+  rules.push({
+    test: /\.modernizrrc\.js$/,
+    loader: 'webpack-modernizr-loader',
+    type: 'javascript/auto'
+  });
+
   // ====================
   // ====== Plugins =====
   // ====================
@@ -167,7 +176,7 @@ module.exports = function(opts = {}) {
         creator: config.twitter.creator
       },
       metaCsp: options.isProduction
-        ? "default-src 'none'; script-src 'self' https://0x.mycrypto.com; worker-src 'self' blob:; style-src 'self' 'unsafe-inline' https://0x.mycrypto.com; manifest-src 'self'; font-src 'self' https://0x.mycrypto.com; img-src 'self' data: https://shapeshift.io; connect-src *; frame-src 'self' https://connect.trezor.io;"
+        ? "default-src 'none'; script-src 'self' https://0x.mycrypto.com; worker-src 'self' blob:; child-src 'self'; style-src 'self' 'unsafe-inline' https://0x.mycrypto.com; manifest-src 'self'; font-src 'self' https://0x.mycrypto.com; img-src 'self' data: https://shapeshift.io https://cdn.mycryptoapi.com/; connect-src *; frame-src 'self' https://connect.trezor.io;"
         : ''
     }),
 
@@ -286,6 +295,8 @@ module.exports = function(opts = {}) {
     } else {
       devtool = 'cheap-module-eval-source-map';
     }
+  } else {
+    devtool = 'cheap-module-source-map';
   }
 
   // ====================
@@ -321,6 +332,13 @@ module.exports = function(opts = {}) {
       chunkModules: false,
       chunkOrigins: false,
       modules: false
-    }
+    },
+    externals: [
+      // This was added because there were build issues with ethers.js
+      // as we included some of the built-in BigNumber and Hex processing functions it provided.
+      {
+        xmlhttprequest: 'XMLHttpRequest'
+      }
+    ]
   };
 };

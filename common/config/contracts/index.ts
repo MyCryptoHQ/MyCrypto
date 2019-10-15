@@ -12,6 +12,16 @@ import ARTIS_SIGMA1 from './artis_sigma1.json';
 import ARTIS_TAU1 from './artis_tau1.json';
 import PIRL from './pirl.json';
 
+export interface Network {
+  name: string;
+  address: string;
+  abi: string;
+}
+
+export interface Networks {
+  [key: string]: [Network];
+}
+
 export default {
   ETC,
   ETH,
@@ -26,4 +36,4 @@ export default {
   ARTIS_SIGMA1,
   ARTIS_TAU1,
   PIRL
-};
+} as Networks;

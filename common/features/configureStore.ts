@@ -5,6 +5,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
 import throttle from 'lodash/throttle';
 
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { loadStatePropertyOrEmptyObject, saveState } from 'utils/localStorage';
 import { gasPriceToBase } from 'libs/units';
 import RootReducer, { AppState } from './reducers';
@@ -16,8 +17,6 @@ import { TransactionsState } from './transactions/types';
 import { INITIAL_STATE as initialTransactionsState } from './transactions/reducer';
 import { WalletState } from './wallet/types';
 import { INITIAL_STATE as initialWalletState } from './wallet/reducer';
-import { OnboardingState } from './onboarding/types';
-import { INITIAL_STATE as initialOnboardingState } from './onboarding/reducer';
 import {
   rehydrateConfigAndCustomTokenState,
   getConfigAndCustomTokensStateToSubscribe
@@ -44,7 +43,6 @@ export default function configureStore() {
   const savedTransactionsState = loadStatePropertyOrEmptyObject<TransactionsState>('transactions');
   const savedAddressBook = loadStatePropertyOrEmptyObject<AddressBookState>('addressBook');
   const savedWalletState = loadStatePropertyOrEmptyObject<WalletState>('wallet');
-  const savedOnboardingState = loadStatePropertyOrEmptyObject<OnboardingState>('onboarding');
 
   const persistedInitialState: Partial<AppState> = {
     transaction: {
@@ -69,14 +67,13 @@ export default function configureStore() {
       ...initialWalletState,
       ...savedWalletState
     },
-    onboarding: {
-      ...initialOnboardingState,
-      ...savedOnboardingState
-    },
     ...rehydrateConfigAndCustomTokenState()
   };
 
   store = createStore<AppState>(RootReducer, persistedInitialState as any, middleware);
+  AnalyticsService.instance.track(ANALYTICS_CATEGORIES.ROOT, 'Language initially loaded', {
+    lang: persistedInitialState.config && persistedInitialState.config.meta.languageSelection
+  });
 
   // Add all of the sagas to the middleware
   Object.keys(sagas).forEach((saga: keyof typeof sagas) => {
@@ -100,7 +97,6 @@ export default function configureStore() {
         wallet: {
           recentAddresses: state.wallet.recentAddresses
         },
-        onboarding: state.onboarding,
         ...getConfigAndCustomTokensStateToSubscribe(state)
       });
     }, 50)

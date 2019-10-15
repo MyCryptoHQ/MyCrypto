@@ -1,25 +1,31 @@
 import React from 'react';
 import html2canvas from 'html2canvas';
 import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
+import styled from 'styled-components';
 
 import notesBg from 'assets/images/notes-bg.png';
 import sidebarImg from 'assets/images/print-sidebar.png';
 import { Identicon, QRCode } from 'components/ui';
 import './index.scss';
 
+const HiddenPaperWallet = styled.div`
+  position: absolute;
+  top: -1000px;
+`;
+
 interface Props {
   address: string;
   privateKey: string;
+  isHidden?: boolean;
 }
 
 export default class PaperWallet extends React.Component<Props, {}> {
   private container: HTMLElement | null;
 
   public render() {
-    const { privateKey } = this.props;
+    const { privateKey, isHidden } = this.props;
     const address = toChecksumAddress(addHexPrefix(this.props.address));
-
-    return (
+    const paperWallet = (
       <div className="PaperWallet" ref={el => (this.container = el)}>
         <img src={sidebarImg} className="PaperWallet-sidebar" alt="MyCrypto Logo" />
 
@@ -65,13 +71,15 @@ export default class PaperWallet extends React.Component<Props, {}> {
         </div>
       </div>
     );
+
+    return isHidden ? <HiddenPaperWallet>{paperWallet}</HiddenPaperWallet> : paperWallet;
   }
 
-  public toPNG = async () => {
+  public toPNG = async (scale: number = 1) => {
     if (!this.container) {
       return '';
     }
-    const canvas = await html2canvas(this.container);
+    const canvas = await html2canvas(this.container, { scale });
     return canvas.toDataURL('image/png');
   };
 }

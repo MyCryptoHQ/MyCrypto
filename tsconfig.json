@@ -12,7 +12,7 @@
       "shared*": ["../shared*"],
       "types*": ["../shared/types*"]
     },
-    "lib": ["es2017", "dom"],
+    "lib": ["esnext", "dom"],
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "esModuleInterop": true,

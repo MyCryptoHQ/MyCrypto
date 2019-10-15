@@ -4,7 +4,6 @@ import { AppState } from 'features/reducers';
 import { IWallet, WalletConfig } from 'libs/wallet';
 
 export const REDUX_STATE = 'REDUX_STATE';
-export const ONBOARD_LOCAL_STORAGE_KEY = 'onboardStatus';
 
 export function loadState<T>(): T | undefined {
   try {
