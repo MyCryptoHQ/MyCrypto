@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
 import noop from 'lodash/noop';
 import { Copyable, Heading, Input, Tooltip } from '@mycrypto/ui';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { withRouter, RouteComponentProps, Redirect } from 'react-router-dom';
 import Select, { Option } from 'react-select';
 import styled from 'styled-components';
 
@@ -116,6 +116,11 @@ const ErrorMessage = styled.span`
 
 export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   const { accounts } = useContext(AccountContext);
+  const shouldRedirect = accounts === undefined || accounts === null || accounts.length === 0;
+  if (shouldRedirect) {
+    return <Redirect to="/no-accounts" />;
+  }
+
   const { assets } = useContext(AssetContext);
   const [networkName, setNetworkName] = useState(accounts[0].networkId);
   const network = getNetworkById(networkName);
