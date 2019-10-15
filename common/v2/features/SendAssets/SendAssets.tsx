@@ -6,6 +6,7 @@ import sendIcon from 'common/assets/images/icn-send.svg';
 import { ContentPanel } from 'v2/components';
 import { useStateReducer } from 'v2/utils';
 import { WalletId, ITxReceipt, IFormikFields } from 'v2/types';
+import { ROUTE_PATHS } from 'v2/config';
 import { SendAssetsForm, SignTransaction } from './components';
 
 import { ConfirmTransaction, TransactionReceipt } from 'v2/components/TransactionFlow';
@@ -65,7 +66,7 @@ function SendAssets({ history }: RouteComponentProps<{}>) {
   const goToPrevStep = () => setStep(Math.max(0, step - 1));
   const goToFirstStep = () => setStep(0);
 
-  const goBack = () => (step === 0 ? history.push('/') : goToPrevStep());
+  const goBack = () => (step === 0 ? history.push(ROUTE_PATHS.DASHBOARD.path) : goToPrevStep());
 
   return (
     <ContentPanel
