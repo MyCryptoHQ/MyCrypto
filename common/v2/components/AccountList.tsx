@@ -104,8 +104,9 @@ interface AccountListProps {
 export default function AccountList(props: AccountListProps) {
   const { className, currentsOnly, deletable, favoritable, footer, copyable } = props;
   const { currentAccounts, accounts, deleteAccountFromCache } = useContext(StoreContext);
-  const { updateAccount } = useContext(AccountContext);
-  const shouldRedirect = accounts === undefined || accounts === null || accounts.length === 0;
+  const { updateAccount, accounts: rawAccounts } = useContext(AccountContext);
+  const shouldRedirect =
+    rawAccounts === undefined || rawAccounts === null || rawAccounts.length === 0;
   if (shouldRedirect) {
     return <Redirect to="/no-accounts" />;
   }
