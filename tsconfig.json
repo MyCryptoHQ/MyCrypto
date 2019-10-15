@@ -24,15 +24,7 @@
     "noImplicitAny": true,
     "skipLibCheck": true
   },
-  "include": [
-    "./scripts",
-    "./common/",
-    "./electron-app/",
-    "./shared/",
-    "spec",
-    "./node_modules/types-rlp/index.d.ts",
-    "./node_modules/mycrypto-shepherd/dist/lib/types/btoa.d.ts"
-  ],
+  "include": ["./scripts", "./common/", "./electron-app/", "./shared/", "spec"],
   "exclude": ["./jest_config/**/*"],
   "awesomeTypescriptLoaderOptions": {
     "transpileOnly": true

@@ -111,4 +111,4 @@ class ScreenLockLocked extends Component<Props> {
   }
 }
 
-export default withRouter<Props>(ScreenLockLocked);
+export default withRouter(ScreenLockLocked);

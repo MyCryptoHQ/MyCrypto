@@ -119,7 +119,7 @@ class AddressInputFactoryClass extends Component<Props> {
         <div className={inputClassName}>
           <Query
             params={['readOnly']}
-            withQuery={({ readOnly }) =>
+            withQuery={({ readOnly }: { readOnly: any }) =>
               withProps({
                 currentTo,
                 isValid,

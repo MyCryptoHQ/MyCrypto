@@ -223,4 +223,4 @@ export class DownloadApp extends Component<Props, State> {
   };
 }
 
-export default withRouter<Props>(DownloadApp);
+export default withRouter(DownloadApp);

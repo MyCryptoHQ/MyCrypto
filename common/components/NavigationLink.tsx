@@ -65,4 +65,4 @@ class NavigationLinkClass extends React.PureComponent<Props, {}> {
 }
 
 // withRouter is a HOC which provides NavigationLink with a react-router location prop
-export default withRouter<Props>(NavigationLinkClass);
+export default withRouter(NavigationLinkClass);
