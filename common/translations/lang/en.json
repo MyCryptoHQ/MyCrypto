@@ -267,6 +267,7 @@
     "SWAP_ACCOUNT_SELECT_DESC": "Where will you be sending your $fromAsset from? You will receive your $toAsset back to the same address after the swap.",
     "SWAP_CONFIRM_TITLE": "Confirm Swap",
     "SWAP_ALLOWANCE_TITLE": "Set allowance",
+    "SWAP_SETTING_ALLOWANCE": "Setting allowance...",
     "SWAP_RECEIPT_TITLE": "Transaction Receipt",
     "MSG_MESSAGE": "Message ",
     "MSG_DATE": "Date ",
