@@ -204,8 +204,6 @@
     "*/**/@types/react": "16.3.11"
   },
   "scripts": {
-    "freezer": "webpack --config=./webpack_config/webpack.freezer.js && node ./dist/freezer.js",
-    "freezer:validate": "npm run freezer -- --validate",
     "db": "nodemon ./db",
     "build": "webpack --mode=production --config webpack_config/webpack.prod.js",
     "prebuild": "check-node-version --package",
@@ -249,12 +247,6 @@
       "git add"
     ]
   },
-  "frozen": [
-    "package.json",
-    "common/freezer.ts",
-    "common/libs/decrypt.ts",
-    "common/libs/signing.ts"
-  ],
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged && yarn tscheck",
