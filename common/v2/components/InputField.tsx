@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import { Icon } from '@mycrypto/ui';
 
 import { COLORS } from 'v2/theme';
-import { InlineErrorMsg } from 'v2/components';
-import { Spinner } from 'components/ui';
+import { InlineErrorMsg, Spinner } from 'v2/components';
 
 const { PASTEL_RED, BRIGHT_SKY_BLUE, DARK_SILVER } = COLORS;
 
