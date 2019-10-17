@@ -23,6 +23,7 @@ import {
   Network,
   ExtendedAccount,
   StoreAsset,
+  WalletId,
   IFormikFields,
   IStepComponentProps,
   TTicker
@@ -283,11 +284,14 @@ export default function SendAssetsForm({
                   value={values.account}
                   component={({ field, form }: FieldProps) => {
                     const accountsWithAsset = getAccountsByAsset(accounts, values.asset);
+                    const relevantAccounts = accountsWithAsset.filter(
+                      account => account.wallet !== WalletId.VIEW_ONLY
+                    );
                     return (
                       <AccountDropdown
                         name={field.name}
                         value={field.value}
-                        accounts={accountsWithAsset}
+                        accounts={relevantAccounts}
                         onSelect={(option: ExtendedAccount) => {
                           form.setFieldValue('account', option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
                           handleNonceEstimate(option);

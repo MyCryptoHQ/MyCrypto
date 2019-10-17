@@ -71,7 +71,8 @@ export default class SignTransactionWeb3 extends Component<ISignComponentProps, 
 
   public render() {
     const { senderAccount, rawTransaction } = this.props;
-    const networkName = rawTransaction.chainId; // @TODO get networkName
+    const detectedNetwork = getNetworkByChainId(rawTransaction.chainId);
+    const networkName = detectedNetwork ? detectedNetwork.name : 'Unknown Network';
     const walletConfig = getWeb3Config();
     const { accountMatches, networkMatches, walletState, submitting } = this.state;
 

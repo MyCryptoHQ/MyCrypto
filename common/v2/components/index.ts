@@ -1,4 +1,5 @@
 export { default as Amount } from './Amount';
+export { default as AccountDropdown } from './AccountDropdown';
 export { default as AccountOption } from './AccountOption';
 export { default as AccountSummary } from './AccountSummary';
 export { default as AccountList } from './AccountList';
@@ -40,6 +41,5 @@ export * from './TransactionFlow';
 export { default as TabsNav } from './TabsNav';
 export { default as CollapsibleTable } from './CollapsibleTable';
 export { default as Network } from './Network';
-export { default as AccountDropdown } from './AccountDropdown';
 export { Banner } from './Banner';
 export * from './SignTransactionWallets';
