@@ -65,12 +65,12 @@ export default function SwapAssets(props: Props) {
 
   const [isCalculatingFromAmount, setIsCalculatingFromAmount] = useState(false);
   const [isCalculatingToAmount, setIsCalculatingToAmount] = useState(false);
-  const [isLastSelectedTo, setIsLastSelectedTo] = useState(false);
 
-  const fromAssets =
-    toAsset && isLastSelectedTo ? assets.filter(x => x.symbol !== toAsset.symbol) : assets;
-  const toAssets =
-    !fromAsset || isLastSelectedTo ? assets : assets.filter(x => x.symbol !== fromAsset.symbol);
+  // show only unused assets
+  const filteredAssets =
+    !toAsset || !fromAsset
+      ? assets
+      : assets.filter(x => fromAsset.symbol !== x.symbol && toAsset.symbol !== x.symbol);
 
   // SEND AMOUNT CHANGED
   const handleFromAmountChanged = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -146,13 +146,7 @@ export default function SwapAssets(props: Props) {
       return;
     }
     setFromAsset(selectedAsset);
-    setIsLastSelectedTo(false);
     clearAmounts();
-  };
-
-  const handleToAssetSelected = (selectedAsset: ISwapAsset) => {
-    setToAsset(selectedAsset);
-    setIsLastSelectedTo(true);
   };
 
   const clearAmounts = () => {
@@ -174,7 +168,7 @@ export default function SwapAssets(props: Props) {
       <FormItem>
         <AssetSelectDropdown
           selectedAsset={fromAsset}
-          assets={fromAssets}
+          assets={filteredAssets}
           onChange={handleFromAssetSelected}
           label={translateRaw('SWAP_SELECT_ASSET')}
           fluid={true}
@@ -194,7 +188,7 @@ export default function SwapAssets(props: Props) {
         </InputWrapper>
         <AssetSelectDropdown
           selectedAsset={fromAsset}
-          assets={fromAssets}
+          assets={filteredAssets}
           label={translateRaw('ASSET')}
           showOnlyTicker={true}
           disabled={true}
@@ -214,9 +208,9 @@ export default function SwapAssets(props: Props) {
         </InputWrapper>
         <AssetSelectDropdown
           selectedAsset={toAsset}
-          assets={toAssets}
+          assets={filteredAssets}
           label={translateRaw('ASSET')}
-          onChange={handleToAssetSelected}
+          onChange={setToAsset}
           showOnlyTicker={true}
           disabled={isCalculatingToAmount || isCalculatingFromAmount}
         />
