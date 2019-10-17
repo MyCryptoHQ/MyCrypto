@@ -65,6 +65,12 @@ export default function SwapAssets(props: Props) {
 
   const [isCalculatingFromAmount, setIsCalculatingFromAmount] = useState(false);
   const [isCalculatingToAmount, setIsCalculatingToAmount] = useState(false);
+  const [isLastSelectedTo, setIsLastSelectedTo] = useState(false);
+
+  const fromAssets =
+    toAsset && isLastSelectedTo ? assets.filter(x => x.symbol !== toAsset.symbol) : assets;
+  const toAssets =
+    !fromAsset || isLastSelectedTo ? assets : assets.filter(x => x.symbol !== fromAsset.symbol);
 
   // SEND AMOUNT CHANGED
   const handleFromAmountChanged = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -140,7 +146,13 @@ export default function SwapAssets(props: Props) {
       return;
     }
     setFromAsset(selectedAsset);
+    setIsLastSelectedTo(false);
     clearAmounts();
+  };
+
+  const handleToAssetSelected = (selectedAsset: ISwapAsset) => {
+    setToAsset(selectedAsset);
+    setIsLastSelectedTo(true);
   };
 
   const clearAmounts = () => {
@@ -162,7 +174,7 @@ export default function SwapAssets(props: Props) {
       <FormItem>
         <AssetSelectDropdown
           selectedAsset={fromAsset}
-          assets={assets}
+          assets={fromAssets}
           onChange={handleFromAssetSelected}
           label={translateRaw('SWAP_SELECT_ASSET')}
           fluid={true}
@@ -182,7 +194,7 @@ export default function SwapAssets(props: Props) {
         </InputWrapper>
         <AssetSelectDropdown
           selectedAsset={fromAsset}
-          assets={assets}
+          assets={fromAssets}
           label={translateRaw('ASSET')}
           showOnlyTicker={true}
           disabled={true}
@@ -202,9 +214,9 @@ export default function SwapAssets(props: Props) {
         </InputWrapper>
         <AssetSelectDropdown
           selectedAsset={toAsset}
-          assets={assets}
+          assets={toAssets}
           label={translateRaw('ASSET')}
-          onChange={setToAsset}
+          onChange={handleToAssetSelected}
           showOnlyTicker={true}
           disabled={isCalculatingToAmount || isCalculatingFromAmount}
         />
