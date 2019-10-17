@@ -42,7 +42,7 @@ module.exports = merge.smart(common, {
           {
             loader: 'sass-loader',
             options: {
-              data: `$is-electron: ${IS_ELECTRON};`
+              prependData: `$is-electron: ${IS_ELECTRON};`
             }
           }
         ]
