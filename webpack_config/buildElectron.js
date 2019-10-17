@@ -6,15 +6,7 @@ const builder = require('electron-builder');
 const config = require('./config');
 
 function shouldBuildOs(os) {
-  const { ELECTRON_OS } = process.env;
-
-  if (ELECTRON_OS === 'JENKINS_LINUX') {
-    return os === 'linux' || os === 'windows';
-  } else if (ELECTRON_OS === 'JENKINS_MAC') {
-    return os === 'mac';
-  } else {
-    return !process.env.ELECTRON_OS || process.env.ELECTRON_OS === os;
-  }
+  return !process.env.ELECTRON_OS || process.env.ELECTRON_OS === os;
 }
 
 async function build() {
