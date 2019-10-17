@@ -101,26 +101,26 @@ export default function TransactionReceipt({
 
   const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
   const assetAmount = txReceipt.amount || txConfig.amount;
-  const assetTicker = txReceipt.asset.ticker || txConfig.asset.ticker || 'ETH';
+  const assetTicker = 'asset' in txReceipt ? txReceipt.asset.ticker : 'ETH';
   return (
     <div className="TransactionReceipt">
       <div className="TransactionReceipt-row">
-        <div className="TransactionReceipt-row-column">
-          To:
-          <div className="TransactionReceipt-addressWrapper">
-            <Address
-              address={txReceipt.to || txConfig.receiverAddress}
-              title={recipientLabel}
-              truncate={truncate}
-            />
-          </div>
-        </div>
         <div className="TransactionReceipt-row-column">
           From:
           <div className="TransactionReceipt-addressWrapper">
             <Address
               address={txReceipt.from || txConfig.senderAccount.address}
               title={senderAccountLabel}
+              truncate={truncate}
+            />
+          </div>
+        </div>
+        <div className="TransactionReceipt-row-column">
+          To:
+          <div className="TransactionReceipt-addressWrapper">
+            <Address
+              address={txReceipt.to || txConfig.receiverAddress}
+              title={recipientLabel}
               truncate={truncate}
             />
           </div>
