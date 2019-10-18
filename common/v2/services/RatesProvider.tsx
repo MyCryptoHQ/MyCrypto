@@ -36,11 +36,11 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
     // Save settings rates again when the assets change.
     setIsSettingsInitialized(false);
   }, [Object.keys(rates)]);
-
+  const currentTickers = assetTickers();
   useEffect(() => {
     // The cryptocompare api that our proxie uses fails gracefully and will return a conversion rate
     // even if some are tickers are invalid (e.g WETH, GoerliETH etc.)
-    const currentTickers = assetTickers();
+
     const worker = new PollingService(
       buildQueryUrl(currentTickers, DEFAULT_FIAT_PAIRS), // @TODO: figure out how to handle the conversion more elegantly then `DEFAULT_FIAT_RATE`
       POLLING_INTERRVAL,
@@ -55,7 +55,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
 
     worker.start();
     return terminateWorker; // make sure we terminate the previous worker on teardown.
-  }, [rawAccounts]); // only update if an account has been added or removed from LocalStorage.
+  }, [rawAccounts, currentTickers.length]); // only update if an account has been added or removed from LocalStorage or if assets have been updated.
 
   const state: State = {
     rates: {},

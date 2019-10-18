@@ -106,21 +106,21 @@ export default function TransactionReceipt({
     <div className="TransactionReceipt">
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-column">
-          To:
-          <div className="TransactionReceipt-addressWrapper">
-            <Address
-              address={txReceipt.to || txConfig.receiverAddress}
-              title={recipientLabel}
-              truncate={truncate}
-            />
-          </div>
-        </div>
-        <div className="TransactionReceipt-row-column">
           From:
           <div className="TransactionReceipt-addressWrapper">
             <Address
               address={txReceipt.from || txConfig.senderAccount.address}
               title={senderAccountLabel}
+              truncate={truncate}
+            />
+          </div>
+        </div>
+        <div className="TransactionReceipt-row-column">
+          To:
+          <div className="TransactionReceipt-addressWrapper">
+            <Address
+              address={txReceipt.to || txConfig.receiverAddress}
+              title={recipientLabel}
               truncate={truncate}
             />
           </div>

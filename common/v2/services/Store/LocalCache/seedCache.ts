@@ -93,6 +93,7 @@ export const initNetworks = () => {
       name: network.name,
       chainId: network.chainId,
       isCustom: network.isCustom,
+      isTestnet: network.isTestnet,
       color: network.color,
       dPaths: {
         ...network.dPaths,

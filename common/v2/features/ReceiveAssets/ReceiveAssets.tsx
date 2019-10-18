@@ -10,14 +10,14 @@ import {
   buildEIP681EtherRequest,
   buildEIP681TokenRequest
 } from 'v2/services/EthService/utils/formatters';
-import { ContentPanel, QRCode } from 'v2/components';
-import { AccountContext, AssetContext, getNetworkById } from 'v2/services/Store';
+import { ContentPanel, QRCode, AccountDropdown } from 'v2/components';
+import { AssetContext, getNetworkById, StoreContext } from 'v2/services/Store';
 import { isValidAmount, truncate } from 'v2/utils';
-import { ExtendedAccount as IExtendedAccount } from 'v2/types';
+import { ExtendedAccount as IExtendedAccount, StoreAccount } from 'v2/types';
+import { ROUTE_PATHS } from 'v2/config';
 import { translate, translateRaw } from 'translations';
 import questionToolTip from 'common/assets/images/icn-question.svg';
 
-import { AccountDropdown } from './components';
 // Legacy
 import receiveIcon from 'common/assets/images/icn-receive.svg';
 
@@ -115,7 +115,7 @@ const ErrorMessage = styled.span`
 `;
 
 export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
-  const { accounts } = useContext(AccountContext);
+  const { accounts } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
   const [networkName, setNetworkName] = useState(accounts[0].networkId);
   const network = getNetworkById(networkName);
@@ -134,7 +134,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   const initialValues = {
     amount: '0',
     asset: { label: ethereum!.name, id: ethereum!.uuid },
-    recipientAddress: accounts[0]
+    recipientAddress: {} as StoreAccount
   };
 
   const validateAmount = (amount: any) => {
@@ -155,7 +155,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
     <ContentPanel
       heading="Receive Assets"
       icon={receiveIcon}
-      onBack={() => history.push('/')}
+      onBack={() => history.push(ROUTE_PATHS.DASHBOARD.path)}
       width="500px;"
       mobileMaxWidth="100%;"
     >
