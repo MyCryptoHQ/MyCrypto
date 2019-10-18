@@ -4,5 +4,6 @@ export {
   getAllAddressLabels,
   getLabelByAddress,
   getLabelByAccount,
+  getLabelByAddressAndNetwork,
   findNextUnusedDefaultLabel
 } from './helpers';

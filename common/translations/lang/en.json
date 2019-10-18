@@ -944,7 +944,7 @@
     "NOTIFICATIONS_ONBOARDING_RESPONSIBLE_MYCRYPTO": "Reducing risk by using the [MyCrypto Desktop App]($link)",
     "WEB3_ONUNLOCK_NOT_FOUND_ERROR": "Please unlock your $walletId before continuing.",
     "YOUR_PRIVATE_KEY": "Your Private Key",
-    "INPUT_PUBLIC_ADDRESS_LABEL": "Select or Input Your Address",
+    "INPUT_PUBLIC_ADDRESS_LABEL": "Add a view-only Address or ENS Name",
     "COINBASE_APP_LABEL": "Coinbase App",
     "TRUST_APP_LABEL": "Trust Wallet App",
     "RECEIVE_FORM_ERROR_TYPE": "Please enter a valid number",

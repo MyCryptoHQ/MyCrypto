@@ -1,5 +1,5 @@
 import { getCache } from '../LocalCache';
-import { Account, AddressBook } from 'v2/types';
+import { Account, AddressBook, Network } from 'v2/types';
 
 export const getAllAddressLabels = (): AddressBook[] => {
   return Object.values(getCache().addressBook);
@@ -18,6 +18,18 @@ export const getLabelByAccount = (
     label =>
       account.address.toLowerCase() === label.address.toLowerCase() &&
       account.networkId === label.network
+  );
+};
+
+export const getLabelByAddressAndNetwork = (
+  address: string,
+  addressLabels: AddressBook[],
+  network: Network | undefined
+): AddressBook | undefined => {
+  return addressLabels.find(
+    label =>
+      address.toLowerCase() === label.address.toLowerCase() &&
+      (network ? network.id === label.network : true)
   );
 };
 
