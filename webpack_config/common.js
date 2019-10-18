@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const config = require('./config');
 
 const IS_DEVELOPMENT = process.env.NODE_ENV !== 'production';
@@ -169,7 +170,16 @@ module.exports = {
     new CopyWebpackPlugin([
       config.path.static,
       path.join(config.path.assets, 'images/link-preview.png')
-    ])
+    ]),
+
+    new ForkTsCheckerWebpackPlugin({
+      tsconfig: path.join(config.path.root, 'tsconfig.json'),
+      tslint: path.join(config.path.root, 'tslint.json'),
+      reportFiles: [
+        '**/*.{ts,tsx}',
+        '!node_modules/**/*'
+      ]
+    })
   ],
 
   stats: {
