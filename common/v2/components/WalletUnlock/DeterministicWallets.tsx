@@ -1,16 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Select, { Option } from 'react-select';
-import { connect } from 'react-redux';
 import { Table, Address, Button } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'translations';
 import { isValidPath } from 'v2/services/EthService/';
-import { AppState } from 'features/reducers';
-import {
-  deterministicWalletsTypes,
-  deterministicWalletsActions
-} from 'features/deterministicWallets';
-import { addressBookSelectors } from 'features/addressBook';
 import { UnitDisplay, Input } from 'components/ui';
 import './DeterministicWallets.scss';
 import { truncate } from 'v2/utils';
@@ -19,7 +12,14 @@ import prevIcon from 'assets/images/previous-page-button.svg';
 import radio from 'assets/images/radio.svg';
 import radioChecked from 'assets/images/radio-checked.svg';
 import { Network } from 'v2/types';
-import { getBaseAssetSymbolByNetwork } from 'v2/services';
+import { getBaseAssetSymbolByNetwork, AddressBookContext } from 'v2/services';
+import {
+  getDeterministicWallets,
+  DeterministicWalletData
+} from 'v2/services/WalletService/deterministic/deterministic';
+import { getLabelByAddressAndNetwork } from 'v2/services/Store/AddressBook/helpers';
+import { getBaseAssetBalances, BalanceMap } from 'v2/services/Store/BalanceService';
+import BN from 'bn.js';
 
 function Radio({ checked }: { checked: boolean }) {
   return <img className="clickable radio-image" src={checked ? radioChecked : radio} />;
@@ -36,195 +36,159 @@ interface OwnProps {
   seed?: string;
 }
 
-interface StateProps {
+/*interface StateProps {
   addressLabels: ReturnType<typeof addressBookSelectors.getAddressLabels>;
-  wallets: AppState['deterministicWallets']['wallets'];
-}
+}*/
 
 interface DispatchProps {
-  getDeterministicWallets(
-    args: deterministicWalletsTypes.GetDeterministicWalletsArgs
-  ): deterministicWalletsTypes.GetDeterministicWalletsAction;
   onCancel(): void;
   onConfirmAddress(address: string, addressIndex: number): void;
   onPathChange(dPath: DPath): void;
 }
 
-type Props = OwnProps & StateProps & DispatchProps;
-
-interface State {
-  currentDPath: DPath;
-  selectedAddress: string;
-  selectedAddrIndex: number;
-  isCustomPath: boolean;
-  customPath: string;
-  page: number;
-}
+type Props = OwnProps /*& StateProps*/ & DispatchProps;
 
 const customDPath: DPath = {
   label: 'custom',
   value: 'custom'
 };
+export function DeterministicWalletsClass({
+  network,
+  dPath,
+  dPaths,
+  publicKey,
+  chainCode,
+  seed,
+  onCancel,
+  onConfirmAddress,
+  onPathChange
+}: Props) {
+  const [selectedAddress, setSelectedAddress] = useState('');
+  const [selectedAddressIndex, setSelectedAddressIndex] = useState(0);
+  const [reqestingBalanceCheck, setReqestingBalanceCheck] = useState(false);
+  const [requestingWallets, setRequestingWallets] = useState(false);
+  const [customPath, setCustomPath] = useState('');
+  const [currentDPath, setCurrentDPath] = useState(dPath);
+  const [page, setPage] = useState(0);
+  const [wallets, setWallets] = useState([] as DeterministicWalletData[]);
+  const { addressBook } = useContext(AddressBookContext);
 
-class DeterministicWalletsClass extends React.PureComponent<Props, State> {
-  public state: State = {
-    selectedAddress: '',
-    selectedAddrIndex: 0,
-    isCustomPath: false,
-    customPath: '',
-    currentDPath: this.props.dPath,
-    page: 0
-  };
+  /* Used to update addresses displayed */
+  useEffect(() => {
+    getAddresses({
+      network,
+      dPath: currentDPath,
+      dPaths,
+      publicKey,
+      chainCode,
+      seed
+    });
+    return () => setReqestingBalanceCheck(true);
+  }, [page, currentDPath]);
 
-  public componentDidMount() {
-    this.getAddresses();
-  }
-
-  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    const { publicKey, chainCode, seed, dPath } = this.props;
-    if (
-      nextProps.publicKey !== publicKey ||
-      nextProps.chainCode !== chainCode ||
-      nextProps.dPath !== dPath ||
-      nextProps.seed !== seed
-    ) {
-      this.getAddresses(nextProps);
+  /* Used to update balances for addresses displayed */
+  useEffect(() => {
+    if (!reqestingBalanceCheck || requestingWallets) {
+      return;
     }
-  }
+    getBaseBalances();
+    return;
+  }, [reqestingBalanceCheck]);
 
-  public render() {
-    const { wallets, network, dPaths, onCancel } = this.props;
-    const { selectedAddress, customPath, page } = this.state;
-    let baseAssetSymbol: string | undefined;
-    if (network) {
-      baseAssetSymbol = getBaseAssetSymbolByNetwork(network);
-    }
-    const symbol: string = baseAssetSymbol ? baseAssetSymbol : 'ETH';
-
-    return (
-      <div className="DW">
-        <form className="DW-path form-group-sm" onSubmit={this.handleSubmitCustomPath}>
-          <div className="DW-header">
-            {' '}
-            <div className="DW-header-title">{translate('DECRYPT_PROMPT_SELECT_ADDRESS')}</div>
-            <div className="DW-header-select">
-              <Select
-                name="fieldDPath"
-                value={this.state.currentDPath}
-                onChange={this.handleChangePath}
-                options={dPaths.concat([customDPath])}
-                optionRenderer={this.renderDPathOption}
-                valueRenderer={this.renderDPathOption}
-                clearable={false}
-                searchable={false}
-              />
-            </div>
-          </div>
-
-          {this.state.currentDPath.label === customDPath.label && (
-            <div className="flex-wrapper">
-              <div className="DW-custom">
-                <Input
-                  isValid={customPath ? isValidPath(customPath) : true}
-                  value={customPath}
-                  placeholder="m/44'/60'/0'/0"
-                  onChange={this.handleChangeCustomPath}
-                />
-              </div>
-              <button
-                className="DW-path-submit btn btn-success"
-                disabled={!isValidPath(customPath)}
-              >
-                <i className="fa fa-check" />
-              </button>
-            </div>
-          )}
-        </form>
-
-        <Table
-          head={['#', 'Address', symbol, translateRaw('ACTION_5')]}
-          body={wallets.map(wallet => this.renderWalletRow(wallet, network, symbol))}
-          config={{ hiddenHeadings: ['#', translateRaw('ACTION_5')] }}
-        />
-
-        <div className="DW-addresses-nav">
-          <img src={prevIcon} onClick={this.prevPage} />
-          <span className="DW-addresses-nav-page">PAGE {page + 1} OF ∞</span>
-          <img className="Identicon-img" src={nextIcon} onClick={this.nextPage} />
-
-          <Button onClick={onCancel} secondary={true}>
-            {translate('ACTION_2')}
-          </Button>
-          <Button onClick={this.handleConfirmAddress} disabled={!selectedAddress}>
-            {translate('ACTION_6')}
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  private getAddresses(props: Props = this.props) {
+  const getAddresses = (props: OwnProps) => {
+    setRequestingWallets(true);
+    // tslint:disable-next-line: no-shadowed-variable
     const { dPath, publicKey, chainCode, seed } = props;
     if (dPath && ((publicKey && chainCode) || seed)) {
       if (isValidPath(dPath.value)) {
-        this.props.getDeterministicWallets({
-          seed,
-          dPath: dPath.value,
-          publicKey,
-          chainCode,
-          limit: WALLETS_PER_PAGE,
-          offset: WALLETS_PER_PAGE * this.state.page
-        });
+        setWallets(
+          getDeterministicWallets({
+            seed,
+            dPath: dPath.value,
+            publicKey,
+            chainCode,
+            limit: WALLETS_PER_PAGE,
+            offset: WALLETS_PER_PAGE * page
+          })
+        );
+        setRequestingWallets(false);
+        setReqestingBalanceCheck(true);
+        return;
       } else {
         console.error('Invalid dPath provided', dPath);
+        setRequestingWallets(false);
+        setReqestingBalanceCheck(true);
+        return;
       }
     }
-  }
+  };
 
-  private handleChangePath = (newPath: DPath) => {
-    if (newPath.value === customDPath.value) {
-      this.setState({ isCustomPath: true, currentDPath: newPath });
-    } else {
-      this.setState({ isCustomPath: false, currentDPath: newPath });
-      this.props.onPathChange(newPath);
+  const getBaseBalances = () => {
+    const addressesToLookup = wallets.map(wallet => wallet.address);
+    try {
+      return getBaseAssetBalances(addressesToLookup, network).then((balanceMapData: BalanceMap) => {
+        const walletsWithBalances: DeterministicWalletData[] = wallets.map(wallet => {
+          const balance = balanceMapData[wallet.address];
+          const value = new BN(balance.toString(10));
+          return {
+            ...wallet,
+            value
+          };
+        });
+        setReqestingBalanceCheck(false);
+        setWallets(walletsWithBalances);
+      });
+    } catch (err) {
+      console.error('getBaseBalance err ', err);
     }
   };
 
-  private handleChangeCustomPath = (ev: React.FormEvent<HTMLInputElement>) => {
-    this.setState({ customPath: ev.currentTarget.value });
+  const handleChangePath = (newPath: DPath) => {
+    if (newPath.value === customDPath.value) {
+      //setIsCustomPath(true);
+      setCurrentDPath(newPath);
+    } else {
+      //setIsCustomPath(false);
+      setCurrentDPath(newPath);
+      onPathChange(newPath);
+    }
   };
 
-  private handleSubmitCustomPath = (ev: React.FormEvent<HTMLFormElement>) => {
-    const { customPath, currentDPath } = this.state;
+  const handleChangeCustomPath = (ev: React.FormEvent<HTMLInputElement>) => {
+    setCustomPath(ev.currentTarget.value);
+  };
+
+  const handleSubmitCustomPath = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
 
     if (currentDPath.value === customDPath.value && isValidPath(customPath)) {
-      this.props.onPathChange({
+      onPathChange({
         label: customDPath.label,
         value: customPath
       });
     }
   };
 
-  private handleConfirmAddress = () => {
-    if (this.state.selectedAddress) {
-      this.props.onConfirmAddress(this.state.selectedAddress, this.state.selectedAddrIndex);
+  const handleConfirmAddress = () => {
+    if (selectedAddress) {
+      onConfirmAddress(selectedAddress, selectedAddressIndex);
     }
   };
 
-  private selectAddress(selectedAddress: string, selectedAddrIndex: number) {
-    this.setState({ selectedAddress, selectedAddrIndex });
-  }
-
-  private nextPage = () => {
-    this.setState({ page: this.state.page + 1 }, this.getAddresses);
+  const selectAddress = (selectedAddr: string, selectedAddrIndex: number) => {
+    setSelectedAddress(selectedAddr);
+    setSelectedAddressIndex(selectedAddrIndex);
   };
 
-  private prevPage = () => {
-    this.setState({ page: Math.max(this.state.page - 1, 0) }, this.getAddresses);
+  const nextPage = () => {
+    setPage(page + 1);
   };
 
-  private renderDPathOption(option: Option) {
+  const prevPage = () => {
+    setPage(Math.max(page - 1, 0));
+  };
+
+  const renderDPathOption = (option: Option) => {
     if (option.value === customDPath.value) {
       return translate('X_CUSTOM');
     }
@@ -234,17 +198,20 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
         {option.label} {option.value && <small>({option.value.toString().replace(' ', '')})</small>}
       </React.Fragment>
     );
-  }
+  };
 
-  private renderWalletRow(
-    wallet: deterministicWalletsTypes.DeterministicWalletData,
+  const renderWalletRow = (
+    wallet: DeterministicWalletData,
+    // tslint:disable-next-line: no-shadowed-variable
     network: Network | undefined,
+    // tslint:disable-next-line: no-shadowed-variable
     symbol: string
-  ) {
-    const { addressLabels } = this.props;
-    const { selectedAddress } = this.state;
-    const label = addressLabels[wallet.address.toLowerCase()];
-
+  ) => {
+    const addrBook = getLabelByAddressAndNetwork(
+      wallet.address.toLowerCase(),
+      addressBook,
+      network
+    );
     let blockExplorer;
     if (network && !network.isCustom && network.blockExplorer) {
       blockExplorer = network.blockExplorer;
@@ -262,7 +229,11 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
         {wallet.index + 1}
         <Radio checked={selectedAddress === wallet.address} />
       </div>,
-      <Address title={label} address={wallet.address} truncate={truncate} />,
+      <Address
+        title={addrBook ? addrBook.label : 'Unknown Address'}
+        address={wallet.address}
+        truncate={truncate}
+      />,
       <UnitDisplay
         unit={'ether'}
         value={wallet.value}
@@ -279,29 +250,88 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
         <i className="DW-addresses-table-more" />
       </a>
     ].map(element => (
-      <div
-        className="clickable"
-        onClick={this.selectAddress.bind(this, wallet.address, wallet.index)}
-      >
+      <div className="clickable" onClick={() => selectAddress(wallet.address, wallet.index)}>
         {element}
       </div>
     ));
     // tslint:enable:jsx-key
-  }
-}
-
-function mapStateToProps(state: AppState): StateProps {
-  return {
-    addressLabels: addressBookSelectors.getAddressLabels(state),
-    wallets: state.deterministicWallets.wallets
   };
+
+  /*public UNSAFE_componentWillReceiveProps(nextProps: Props) {
+    const { publicKey, chainCode, seed, dPath } = this.props;
+    if (
+      nextProps.publicKey !== publicKey ||
+      nextProps.chainCode !== chainCode ||
+      nextProps.dPath !== dPath ||
+      nextProps.seed !== seed
+    ) {
+      this.getAddresses(nextProps);
+    }
+  }*/
+
+  let baseAssetSymbol: string | undefined;
+  if (network) {
+    baseAssetSymbol = getBaseAssetSymbolByNetwork(network);
+  }
+  const symbol: string = baseAssetSymbol ? baseAssetSymbol : 'ETH';
+
+  return (
+    <div className="DW">
+      <form className="DW-path form-group-sm" onSubmit={handleSubmitCustomPath}>
+        <div className="DW-header">
+          {' '}
+          <div className="DW-header-title">{translate('DECRYPT_PROMPT_SELECT_ADDRESS')}</div>
+          <div className="DW-header-select">
+            <Select
+              name="fieldDPath"
+              value={currentDPath}
+              onChange={handleChangePath}
+              options={dPaths.concat([customDPath])}
+              optionRenderer={renderDPathOption}
+              valueRenderer={renderDPathOption}
+              clearable={false}
+              searchable={false}
+            />
+          </div>
+        </div>
+
+        {currentDPath.label === customDPath.label && (
+          <div className="flex-wrapper">
+            <div className="DW-custom">
+              <Input
+                isValid={customPath ? isValidPath(customPath) : true}
+                value={customPath}
+                placeholder="m/44'/60'/0'/0"
+                onChange={handleChangeCustomPath}
+              />
+            </div>
+            <button className="DW-path-submit btn btn-success" disabled={!isValidPath(customPath)}>
+              <i className="fa fa-check" />
+            </button>
+          </div>
+        )}
+      </form>
+
+      <Table
+        head={['#', 'Address', symbol, translateRaw('ACTION_5')]}
+        body={wallets.map(wallet => renderWalletRow(wallet, network, symbol))}
+        config={{ hiddenHeadings: ['#', translateRaw('ACTION_5')] }}
+      />
+
+      <div className="DW-addresses-nav">
+        <img src={prevIcon} onClick={prevPage} />
+        <span className="DW-addresses-nav-page">PAGE {page + 1} OF ∞</span>
+        <img className="Identicon-img" src={nextIcon} onClick={nextPage} />
+
+        <Button onClick={onCancel} secondary={true}>
+          {translate('ACTION_2')}
+        </Button>
+        <Button onClick={handleConfirmAddress} disabled={!selectedAddress}>
+          {translate('ACTION_6')}
+        </Button>
+      </div>
+    </div>
+  );
 }
 
-const DeterministicWallets = connect(
-  mapStateToProps,
-  {
-    getDeterministicWallets: deterministicWalletsActions.getDeterministicWallets
-  }
-)(DeterministicWalletsClass);
-
-export default DeterministicWallets;
+export default DeterministicWalletsClass;

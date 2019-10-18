@@ -1,11 +1,12 @@
-import EthScan, { HttpProvider } from '@mycrypto/eth-scan';
+import EthScan, { HttpProvider, EthersProvider } from '@mycrypto/eth-scan';
 import partition from 'lodash/partition';
 import { bigNumberify, BigNumber } from 'ethers/utils';
 import { default as BN } from 'bignumber.js';
 
 import { ETHSCAN_NETWORKS } from 'v2/config';
-import { TAddress, StoreAccount, StoreAsset, Asset, NodeConfig } from 'v2/types';
+import { TAddress, StoreAccount, StoreAsset, Asset, NodeConfig, Network } from 'v2/types';
 import { ProviderHandler } from 'v2/services/EthService';
+import { FallbackProvider } from 'ethers/providers';
 
 export interface BalanceMap {
   [key: string]: BN | BigNumber;
@@ -17,6 +18,10 @@ const getAssetAddresses = (assets: Asset[] = []): (string | undefined)[] => {
 
 const getScanner = (node: NodeConfig) => {
   return new EthScan(new HttpProvider(node.url));
+};
+
+export const getScannerWithProvider = (provider: FallbackProvider) => {
+  return new EthScan(new EthersProvider(provider));
 };
 
 const addBalancesToAccount = (account: StoreAccount) => ([baseBalance, tokenBalances]: [
@@ -48,9 +53,7 @@ const addBalancesToAccount = (account: StoreAccount) => ([baseBalance, tokenBala
     .map(asset => ({ ...asset, balance: bigNumberify(asset.balance) }))
 });
 
-const getAccountAssetsBalancesWithEthScan = async (
-  account: StoreAccount
-): Promise<StoreAccount> => {
+const getAccountAssetsBalancesWithEthScan = async (account: StoreAccount) => {
   const list = getAssetAddresses(account.assets) as string[];
   const scanner = getScanner(account.network.nodes[0]);
 
@@ -60,6 +63,19 @@ const getAccountAssetsBalancesWithEthScan = async (
   ])
     .then(addBalancesToAccount(account))
     .catch(_ => account);
+};
+
+export const getBaseAssetBalances = async (addresses: string[], network: Network | undefined) => {
+  if (!network) {
+    return ([] as unknown) as BalanceMap;
+  }
+  const scanner = getScannerWithProvider(new ProviderHandler(network).client);
+  return scanner
+    .getEtherBalances(addresses)
+    .then(data => {
+      return data;
+    })
+    .catch(_ => ([] as unknown) as BalanceMap);
 };
 
 // Return an object containing the balance of the different tokens
