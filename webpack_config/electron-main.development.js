@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const config = require('./config');
 
 module.exports = {
@@ -66,6 +67,15 @@ module.exports = {
 
     new webpack.EnvironmentPlugin({
       'NODE_ENV': 'development'
+    }),
+
+    new ForkTsCheckerWebpackPlugin({
+      tsconfig: path.join(config.path.root, 'tsconfig.json'),
+      tslint: path.join(config.path.root, 'tslint.json'),
+      reportFiles: [
+        '**/*.{ts,tsx}',
+        '!node_modules/**/*'
+      ]
     })
   ],
 
