@@ -15,7 +15,7 @@ module.exports = {
 
   output: {
     filename: '[name].js',
-    path: path.join(config.path.output, 'electron-js')
+    path: path.join(config.path.output, 'electron-main')
   },
 
   resolve: {
