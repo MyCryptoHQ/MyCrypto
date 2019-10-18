@@ -1,25 +1,27 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Select, { Option } from 'react-select';
 import { Table, Address, Button } from '@mycrypto/ui';
+import BN from 'bn.js';
 
 import translate, { translateRaw } from 'translations';
-import { isValidPath } from 'v2/services/EthService/';
 import { UnitDisplay, Input } from 'components/ui';
-import './DeterministicWallets.scss';
+
 import { truncate } from 'v2/utils';
+import { Network } from 'v2/types';
+import {
+  getBaseAssetSymbolByNetwork,
+  AddressBookContext,
+  getLabelByAddressAndNetwork,
+  isValidPath
+} from 'v2/services';
 import nextIcon from 'assets/images/next-page-button.svg';
 import prevIcon from 'assets/images/previous-page-button.svg';
 import radio from 'assets/images/radio.svg';
 import radioChecked from 'assets/images/radio-checked.svg';
-import { Network } from 'v2/types';
-import { getBaseAssetSymbolByNetwork, AddressBookContext } from 'v2/services';
-import {
-  getDeterministicWallets,
-  DeterministicWalletData
-} from 'v2/services/WalletService/deterministic/deterministic';
-import { getLabelByAddressAndNetwork } from 'v2/services/Store/AddressBook/helpers';
+
+import './DeterministicWallets.scss';
+import { DeterministicWalletData, getDeterministicWallets } from 'v2/services/WalletService';
 import { getBaseAssetBalances, BalanceMap } from 'v2/services/Store/BalanceService';
-import BN from 'bn.js';
 
 function Radio({ checked }: { checked: boolean }) {
   return <img className="clickable radio-image" src={checked ? radioChecked : radio} />;
@@ -36,17 +38,13 @@ interface OwnProps {
   seed?: string;
 }
 
-/*interface StateProps {
-  addressLabels: ReturnType<typeof addressBookSelectors.getAddressLabels>;
-}*/
-
 interface DispatchProps {
   onCancel(): void;
   onConfirmAddress(address: string, addressIndex: number): void;
   onPathChange(dPath: DPath): void;
 }
 
-type Props = OwnProps /*& StateProps*/ & DispatchProps;
+type Props = OwnProps & DispatchProps;
 
 const customDPath: DPath = {
   label: 'custom',
@@ -145,10 +143,8 @@ export function DeterministicWalletsClass({
 
   const handleChangePath = (newPath: DPath) => {
     if (newPath.value === customDPath.value) {
-      //setIsCustomPath(true);
       setCurrentDPath(newPath);
     } else {
-      //setIsCustomPath(false);
       setCurrentDPath(newPath);
       onPathChange(newPath);
     }
