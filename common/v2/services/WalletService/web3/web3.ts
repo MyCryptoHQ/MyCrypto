@@ -1,6 +1,5 @@
 import { translateRaw } from 'translations';
 
-import { makeWeb3Network, getShepherdManualMode, shepherd, makeProviderConfig } from 'libs/nodes';
 import { isWeb3Node, setupWeb3Node, Web3Service } from 'v2/services/EthService';
 import { NodeOptions, NodeType, Network } from 'v2/types';
 import {
@@ -12,7 +11,8 @@ import {
 } from 'v2/services/Store';
 import { Web3Wallet } from '../non-deterministic';
 
-let web3Added = true;
+const web3NodePrefix = 'WEB3_';
+export const makeWeb3Network = (network: string) => `${web3NodePrefix}${network}`;
 
 export const initWeb3Node = async () => {
   const { chainId, lib } = await setupWeb3Node();
@@ -31,13 +31,6 @@ export const initWeb3Node = async () => {
     hidden: true,
     network: web3Network
   };
-  if (getShepherdManualMode()) {
-    shepherd.auto();
-  }
-  if (!web3Added) {
-    shepherd.useProvider('web3', id, makeProviderConfig({ network: web3Network }));
-  }
-  web3Added = true;
   createNode(config, network);
   updateSetting({ ...readAllSettings(), node: 'web3' });
   return { nodeLib: lib, network };
