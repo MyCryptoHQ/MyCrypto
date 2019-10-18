@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const merge = require('webpack-merge');
 const DelayPlugin = require('./plugins/delay');
 const electronMain = require('./electron-main.development');
@@ -7,7 +8,7 @@ const config = require('./config');
 
 const main = merge.smart(electronMain, {
   mode: 'production',
-  devtool: undefined,
+  devtool: 'none',
 
   plugins: [
     new DelayPlugin(500)
@@ -19,6 +20,8 @@ const main = merge.smart(electronMain, {
 });
 
 const render = merge.smart(electronRender, {
+  target: 'electron-renderer',
+
   output: {
     path: path.join(config.path.output, 'electron-js'),
     publicPath: './'

@@ -7,7 +7,7 @@ const SriPlugin = require('webpack-subresource-integrity');
 const common = require('./common');
 const config = require('./config');
 
-const IS_ELECTRON = process.env.IS_ELECTRON !== undefined;
+const IS_ELECTRON = !!process.env.BUILD_ELECTRON;
 
 module.exports = merge.smart(common, {
   mode: 'production',
