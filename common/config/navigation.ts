@@ -14,7 +14,7 @@ export const navigationLinks: NavigationLink[] = [
   },
   {
     name: 'NAV_GENERATEWALLET',
-    to: '/generate'
+    to: '/create-wallet'
   },
   {
     name: 'NAV_SWAP',

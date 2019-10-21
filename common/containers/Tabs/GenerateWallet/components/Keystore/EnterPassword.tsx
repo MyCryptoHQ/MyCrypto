@@ -54,12 +54,11 @@ export default class EnterPassword extends Component<Props, State> {
                 onChange={this.onPasswordChange}
                 onBlur={this.showFeedback}
               />
-              {!isPasswordValid &&
-                feedback && (
-                  <p className={`EnterPw-password-feedback help-block is-${passwordValidity}`}>
-                    {feedback}
-                  </p>
-                )}
+              {!isPasswordValid && feedback && (
+                <p className={`EnterPw-password-feedback help-block is-${passwordValidity}`}>
+                  {feedback}
+                </p>
+              )}
             </label>
           </div>
 

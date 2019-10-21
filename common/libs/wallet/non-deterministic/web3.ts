@@ -79,9 +79,7 @@ export default class Web3Wallet implements IFullWallet {
       throw new Error(`MyCrypto doesn’t support the network with chain ID '${netId}'`);
     } else if (this.network !== networkConfig.id) {
       throw new Error(
-        `Expected MetaMask / Web3 network to be ${this.network}, but got ${
-          networkConfig.id
-        }. Please change the network or refresh the page.`
+        `Expected MetaMask / Web3 network to be ${this.network}, but got ${networkConfig.id}. Please change the network or refresh the page.`
       );
     }
   }

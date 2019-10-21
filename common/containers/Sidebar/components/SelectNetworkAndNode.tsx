@@ -200,4 +200,7 @@ const mapDispatchToProps = {
   addCustomNode: configNodesCustomActions.addCustomNode
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectNetworkAndNode as any);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SelectNetworkAndNode as any);

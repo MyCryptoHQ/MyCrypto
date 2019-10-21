@@ -14,7 +14,7 @@ const paths = {
 
 module.exports = {
   // Configuration
-  port: process.env.HTTPS ? 3443 : 3000,
+  port: 3000,
   title: 'MyCrypto',
   // description < 200 characters
   description: 'MyCrypto is a free, open-source interface for interacting with the blockchain.',
@@ -40,7 +40,10 @@ module.exports = {
   // File resolution
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss'],
-    modules: [paths.src, paths.modules, paths.root]
+    modules: [paths.src, paths.modules, paths.root],
+    alias: {
+      modernizr$: path.resolve(__dirname, '../.modernizrrc.js')
+    }
   },
 
   // Vendor modules

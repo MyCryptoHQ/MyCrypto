@@ -162,7 +162,9 @@ class AddressBookTable extends React.Component<Props, State> {
   }
 
   private handleAddEntry = () => {
-    const { entry: { temporaryAddress, addressError, labelError } } = this.props;
+    const {
+      entry: { temporaryAddress, addressError, labelError }
+    } = this.props;
 
     if (!temporaryAddress || addressError || temporaryAddress.length === 0) {
       return this.addressInput && this.addressInput.focus();
@@ -311,4 +313,7 @@ const mapDispatchToProps: DispatchProps = {
   removeAddressLabelEntry: addressBookActions.removeAddressLabelEntry
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddressBookTable);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddressBookTable);

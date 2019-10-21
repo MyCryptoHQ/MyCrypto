@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { languages } from 'config';
 import { AppState } from 'features/reducers';
 import { configMetaActions, configMetaSelectors } from 'features/config';
@@ -26,16 +27,16 @@ class LanguageSelect extends React.Component<Props> {
     const { languageSelection } = this.props;
     return (
       <div className="LanguageSelect">
-        {Object.entries(languages).map(lang => (
+        {Object.entries(languages).map(([code, lang]: [string, string]) => (
           <button
-            key={lang[0]}
+            key={code}
             className={classnames({
               'LanguageSelect-language': true,
-              'is-selected': languageSelection === lang[0]
+              'is-selected': languageSelection === code
             })}
-            onClick={() => this.handleLanguageSelect(lang[0])}
+            onClick={() => this.handleLanguageSelect(code)}
           >
-            {lang[1]}
+            {lang}
           </button>
         ))}
       </div>
@@ -45,6 +46,7 @@ class LanguageSelect extends React.Component<Props> {
   private handleLanguageSelect = (lang: string) => {
     this.props.changeLanguage(lang);
     this.props.closePanel();
+    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.SIDEBAR, 'Language changed', { lang });
   };
 }
 

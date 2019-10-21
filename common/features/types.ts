@@ -21,5 +21,5 @@ export interface IGetTransaction {
 export type TransactionFields = AppState['transaction']['fields'];
 
 export type TransactionFieldValues = {
-  [field in keyof TransactionFields]: TransactionFields[field]['value']
+  [field in keyof TransactionFields]: TransactionFields[field]['value'];
 };

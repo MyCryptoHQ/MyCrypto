@@ -90,7 +90,10 @@ function mapStateToProps(state: AppState) {
   return { wallet: state.wallet.inst };
 }
 
-export default connect(mapStateToProps, {
-  resetWallet: walletActions.resetWallet,
-  web3UnsetNode: configNodesStaticActions.web3UnsetNode
-})(withRouter<Props>(LogOutPromptClass));
+export default connect(
+  mapStateToProps,
+  {
+    resetWallet: walletActions.resetWallet,
+    web3UnsetNode: configNodesStaticActions.web3UnsetNode
+  }
+)(withRouter(LogOutPromptClass));

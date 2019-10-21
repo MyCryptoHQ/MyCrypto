@@ -97,7 +97,10 @@ class DeployClass extends Component<DispatchProps> {
   };
 }
 
-export const Deploy = connect(null, {
-  resetWallet: walletActions.resetWallet,
-  resetTransactionRequested: transactionFieldsActions.resetTransactionRequested
-})(DeployClass);
+export const Deploy = connect(
+  null,
+  {
+    resetWallet: walletActions.resetWallet,
+    resetTransactionRequested: transactionFieldsActions.resetTransactionRequested
+  }
+)(DeployClass);

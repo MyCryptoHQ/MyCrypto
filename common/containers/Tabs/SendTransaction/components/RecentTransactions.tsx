@@ -103,7 +103,9 @@ class RecentTransactions extends React.Component<Props> {
   private clearActiveTxHash = () => this.setState({ activeTxHash: '' });
 }
 
-export default connect((state: AppState): StateProps => ({
-  recentTransactions: selectors.getRecentWalletTransactions(state),
-  network: configSelectors.getNetworkConfig(state)
-}))(RecentTransactions);
+export default connect(
+  (state: AppState): StateProps => ({
+    recentTransactions: selectors.getRecentWalletTransactions(state),
+    network: configSelectors.getNetworkConfig(state)
+  })
+)(RecentTransactions);

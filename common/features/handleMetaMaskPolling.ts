@@ -15,8 +15,8 @@ export const getActualChainId = (): Promise<string> =>
       reject('Web3 not found.');
     }
 
-    return web3.version.getNetwork(
-      (err: Error, network: string) => (err ? reject(err) : resolve(network))
+    return web3.version.getNetwork((err: Error, network: string) =>
+      err ? reject(err) : resolve(network)
     );
   });
 

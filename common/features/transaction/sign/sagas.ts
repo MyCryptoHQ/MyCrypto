@@ -188,7 +188,9 @@ function* handleTransactionRequest(action: types.SignTransactionRequestedAction)
 
   const signingHandler = walletType.isWeb3Wallet
     ? signWeb3Transaction
-    : walletType.isParitySignerWallet ? signParitySignerTransaction : signLocalTransaction;
+    : walletType.isParitySignerWallet
+    ? signParitySignerTransaction
+    : signLocalTransaction;
 
   return yield call(signingHandler, action);
 }

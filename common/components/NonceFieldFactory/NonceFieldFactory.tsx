@@ -34,6 +34,9 @@ class NonceFieldClass extends Component<Props> {
   };
 }
 
-export const NonceFieldFactory = connect(null, {
-  inputNonce: transactionFieldsActions.inputNonce
-})(NonceFieldClass);
+export const NonceFieldFactory = connect(
+  null,
+  {
+    inputNonce: transactionFieldsActions.inputNonce
+  }
+)(NonceFieldClass);

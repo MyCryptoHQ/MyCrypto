@@ -6,13 +6,17 @@
 * **Just looking to download?** Grab our [latest release](https://github.com/MyCryptoHQ/MyCrypto/releases).
 * **Looking for the old site?** Check out [https://legacy.mycrypto.com](https://legacy.mycrypto.com) or the source at [MyCryptoHQ/mycrypto.com](https://github.com/MyCryptoHQ/mycrypto.com)
 
+## Verifying our releases
+You can find how to do this on our [support document](https://support.mycrypto.com/staying-safe/verifying-authenticity-of-desktop-app)
+
+
 ## Development / Build Requirements
 
-* Node 8.9.4\*
+* Node 8.16.0\*
 * Yarn >= 1.7.0\*\*
 * Python 2.7.X\*\*\*
 
-<sub>\*Higher versions should work fine, but may cause inconsistencies. It's suggested you run 8.9.4 using `nvm`.</sub>
+<sub>\*Higher versions should work fine, but may cause inconsistencies. It's suggested you run 8.16.0 using `nvm`.</sub>
 <br/>
 <sub>**npm is NOT supported for package management. MyCrypto uses yarn.lock to ensure sub-dependency versions are pinned, so yarn is required to install node_modules</sub>
 <br/>
@@ -30,8 +34,12 @@ Then, you can run various commands depending on what you want to do:
 
 ```bash
 # run app in dev mode in browser, rebuild on file changes
-yarn dev
+yarn start
 ```
+A development server will be available on https://localhost:3000
+If you're using Chrome, you will get a `net::ERR_CERT_AUTHORITY_INVALID` warning.
+To disable it you can your settings in chrome: chrome://flags/#allow-insecure-localhost
+
 
 ```bash
 # run app in dev mode in electron, rebuild on file changes
@@ -74,18 +82,6 @@ yarn test
 yarn test:int
 ```
 
-#### Dev (HTTPS):
-
-Some parts of the site, such as interacting with a Ledger hardware wallet, require an HTTPS environment to work. To develop on HTTPS:
-
-1.  Create your own SSL Certificate (Heroku has a [nice guide here](https://devcenter.heroku.com/articles/ssl-certificate-self))
-2.  Move the `.key` and `.crt` files into `webpack_config/server.*`
-3.  Run the following command:
-
-```bash
-yarn dev:https
-```
-
 #### Address Derivation Checker:
 
 EthereumJS-Util previously contained a bug that would incorrectly derive addresses from private keys with a 1/128 probability of occurring. A summary of this issue can be found [here](https://www.reddit.com/r/ethereum/comments/48rt6n/using_myetherwalletcom_just_burned_me_for/d0m4c6l/).
@@ -124,7 +120,7 @@ yarn test:int
 │   ├── containers - Containers according to "Redux philosophy"
 |   ├── features - State management and async operations, organized per "feature", follows "ducks" philosophy, see: https://github.com/MyCryptoHQ/MyCrypto/issues/1435
 │   ├── libs - Framework-agnostic libraries and business logic
-|       ├── contracts - Takes in a contract interface ABI and returns an object with keys equivalent to the ABI function names that each have `.encodeInput`,  `.decodeInput`, `decodeOutput` methods. 
+|       ├── contracts - Takes in a contract interface ABI and returns an object with keys equivalent to the ABI function names that each have `.encodeInput`,  `.decodeInput`, `decodeOutput` methods.
 |       ├── ens - Basic ENS functions for getting a name hash and mapping returned ENS contract values to human-readable strings
 |       ├── nodes - Configures Shepherd (https://github.com/MyCryptoHQ/shepherd) and exports a singleton provider
 |       ├── scheduling - Functionality for enabling Ethereum Alarm Clock usage for scheduled transactions. See https://github.com/MyCryptoHQ/MyCrypto/pull/1343
@@ -136,7 +132,7 @@ yarn test:int
 |       ├── signing - Message signing and signature verification
 |       ├── units - Helper functions for working with Ethereum / Token units in both base and unit form. Use these instead of using bn.js directly
 |       ├── validators - Validation functions for addresses, hex strings, keys, numbers, derivation paths, EAC values, Ethereum values, etc.
-|       ├── values - Functions for building EIP681 requests, numberical sanitization, string padding, bn.js conversion
+|       ├── values - Functions for building EIP681 requests, numerical sanitization, string padding, bn.js conversion
 │   ├── sass - SCSS styles, variables, mixins
 │   ├── translations - Language JSON dictionaries
 │   ├── typescript - Typescript definition files
@@ -160,7 +156,7 @@ yarn test:int
 - [Adding your Network or Node](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Network-or-Node)
 - [Adding your Web3 Wallet & Logo](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Web3-Wallet)
 - [MyCryptoBuilds](https://github.com/MyCryptoHQ/MyCrypto/wiki/MyCryptoBuilds) - access a build by commithash, PR number, or branch name without building it yourself!
- 
+
 ## Branching Model
 
 MyCrypto is open-source and encourages pull-requests from third-parties. Our branching model is described below.

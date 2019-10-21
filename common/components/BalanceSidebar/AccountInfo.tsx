@@ -207,4 +207,7 @@ function mapStateToProps(state: AppState): StateProps {
 const mapDispatchToProps: DispatchProps = {
   refreshAccountBalance: walletActions.refreshAccountBalance
 };
-export default connect(mapStateToProps, mapDispatchToProps)(AccountInfo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AccountInfo);

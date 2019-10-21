@@ -6,6 +6,7 @@ import Rinkeby from './rinkeby.json';
 import Ropsten from './ropsten.json';
 import Goerli from './goerli.json';
 import RSK from './rsk.json';
+import RSK_TESTNET from './rsk_testnet.json';
 import UBQ from './ubq.json';
 import ESN from './esn.json';
 import ARTIS_SIGMA1 from './artis_sigma1.json';
@@ -20,6 +21,7 @@ export default {
   Ropsten,
   Goerli,
   RSK,
+  RSK_TESTNET,
   UBQ,
   ESN,
   ARTIS_SIGMA1,

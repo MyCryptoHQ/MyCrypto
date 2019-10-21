@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import translate from 'translations';
 import subscribeToMailingList from 'api/emails';
 
@@ -30,6 +31,10 @@ export default class Subscribe extends Component {
           </section>
         </form>
         {submitted && <p style={{ marginTop: '6px' }}>{translate('NEW_FOOTER_TEXT_14')}</p>}
+
+        <p style={{ paddingTop: '1em', fontSize: '70%', fontStyle: 'italic' }}>
+          {translate('NEW_FOOTER_TEXT_15')}
+        </p>
       </section>
     );
   }
@@ -43,5 +48,7 @@ export default class Subscribe extends Component {
     e.preventDefault();
 
     subscribeToMailingList(email).catch(() => this.setState({ submitted: true }));
+
+    AnalyticsService.instance.trackLegacy(ANALYTICS_CATEGORIES.FOOTER, 'Subscribed to MyCrypto');
   };
 }

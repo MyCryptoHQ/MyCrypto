@@ -84,6 +84,9 @@ function mapStateToProps(state: AppState, ownProps: OwnProps): StateProps {
   };
 }
 
-export default connect(mapStateToProps, {
-  fetchTransactionData: transactionsActions.fetchTransactionData
-})(TransactionStatus);
+export default connect(
+  mapStateToProps,
+  {
+    fetchTransactionData: transactionsActions.fetchTransactionData
+  }
+)(TransactionStatus);

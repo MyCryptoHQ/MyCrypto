@@ -267,7 +267,7 @@ export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
 
   let endowment = Wei('0');
 
-  let transactionData = null;
+  let transactionData;
 
   const transactionFullAndValid = isFullTransaction && isSchedulingTransactionValid(state);
 
@@ -392,9 +392,9 @@ export const getValidateScheduleParamsCallPayload = (
   const windowStart = scheduleSelectors.getWindowStart(state);
 
   /*
-     * Checks if any of these values are null or invalid
-     * due to an user input.
-     */
+   * Checks if any of these values are null or invalid
+   * due to an user input.
+   */
   if (
     !currentValue.value ||
     !currentTo.value ||

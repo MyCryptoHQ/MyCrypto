@@ -87,6 +87,8 @@ class CheckTransaction extends React.Component<Props, State> {
   };
 }
 
-export default connect((state: AppState): StateProps => ({
-  network: configSelectors.getNetworkConfig(state)
-}))(CheckTransaction);
+export default connect(
+  (state: AppState): StateProps => ({
+    network: configSelectors.getNetworkConfig(state)
+  })
+)(CheckTransaction);

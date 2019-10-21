@@ -57,6 +57,7 @@ class NetworkSelect extends React.Component<Props, State> {
   };
 }
 
-export default connect(undefined, { addCustomNode: configNodesCustomActions.addCustomNode })(
-  NetworkSelect
-);
+export default connect(
+  undefined,
+  { addCustomNode: configNodesCustomActions.addCustomNode }
+)(NetworkSelect);

@@ -43,7 +43,7 @@ interface OwnProps {
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
-const ENSStatus: React.SFC<{
+export const ENSStatus: React.SFC<{
   isLoading: boolean;
   ensAddress: string;
   rawAddress: string;
@@ -119,7 +119,7 @@ class AddressInputFactoryClass extends Component<Props> {
         <div className={inputClassName}>
           <Query
             params={['readOnly']}
-            withQuery={({ readOnly }) =>
+            withQuery={({ readOnly }: { readOnly: any }) =>
               withProps({
                 currentTo,
                 isValid,
@@ -139,21 +139,19 @@ class AddressInputFactoryClass extends Component<Props> {
               chainId={chainId}
             />
           )}
-          {isFocused &&
-            !isENSAddress && (
-              <AddressFieldDropdown
-                controlled={controlled}
-                value={value}
-                onChangeOverride={onChangeOverride}
-                dropdownThreshold={dropdownThreshold}
-              />
-            )}
-          {showLabelMatch &&
-            label && (
-              <div title={sendingTo} className="AddressInput-input-label">
-                <i className="fa fa-check" /> {sendingTo}
-              </div>
-            )}
+          {isFocused && !isENSAddress && (
+            <AddressFieldDropdown
+              controlled={controlled}
+              value={value}
+              onChangeOverride={onChangeOverride}
+              dropdownThreshold={dropdownThreshold}
+            />
+          )}
+          {showLabelMatch && label && (
+            <div title={sendingTo} className="AddressInput-input-label">
+              <i className="fa fa-check" /> {sendingTo}
+            </div>
+          )}
         </div>
         {showIdenticon && (
           <div className="AddressInput-identicon">

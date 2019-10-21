@@ -50,6 +50,7 @@ class ErrorBoundary extends React.Component<Props> {
   }
 }
 
-export default connect(null, { showNotification: notificationsActions.showNotification })(
-  ErrorBoundary
-);
+export default connect(
+  null,
+  { showNotification: notificationsActions.showNotification }
+)(ErrorBoundary);

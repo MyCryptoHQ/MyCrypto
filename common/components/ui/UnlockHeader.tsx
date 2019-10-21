@@ -38,20 +38,17 @@ export class UnlockHeader extends React.PureComponent<Props, State> {
     return (
       <article className="UnlockHeader">
         {title && <h1 className="UnlockHeader-title">{title}</h1>}
-        {wallet &&
-          !isExpanded && (
-            <button
-              className="UnlockHeader-open btn btn-default btn-smr"
-              onClick={() => history.push('/')}
-            >
-              <span>
-                <span className="hidden-xs UnlockHeader-open-text">
-                  {translate('CHANGE_WALLET')}
-                </span>
-                <i className="fa fa-refresh" />
-              </span>
-            </button>
-          )}
+        {wallet && !isExpanded && (
+          <button
+            className="UnlockHeader-open btn btn-default btn-smr"
+            onClick={() => history.push('/')}
+          >
+            <span>
+              <span className="hidden-xs UnlockHeader-open-text">{translate('CHANGE_WALLET')}</span>
+              <i className="fa fa-refresh" />
+            </span>
+          </button>
+        )}
         <WalletDecrypt
           hidden={!this.state.isExpanded}
           disabledWallets={disabledWallets}

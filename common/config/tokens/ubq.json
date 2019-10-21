@@ -1,14 +1,27 @@
 [
   {
-    "address": "0xd245207cfbf6eb6f34970db2a807ab1d178fde6c",
-    "symbol": "APX",
-    "decimal": 8,
-    "type": "default"
+    "address": "0xFF3bF057ADF3b0E015b6465331a6236e55688274",
+    "symbol": "BEER",
+    "decimal": 0
   },
   {
-    "address": "0x4b4899a10f3e507db207b0ee2426029efa168a67",
+    "address": "0x08533D6A06CE365298b12Ef92eb407cBA8Aa8273",
+    "symbol": "CEFS",
+    "decimal": 8
+  },
+  {
+    "address": "0x94aD7e41c1D44022C4F47cb1Ba019Fd1a022c536",
+    "symbol": "DOT",
+    "decimal": 8
+  },
+  {
+    "address": "0x4b4899a10F3E507DB207b0ee2426029eFa168a67",
     "symbol": "QWARK",
-    "decimal": 8,
-    "type": "default"
+    "decimal": 8
+  },
+  {
+    "address": "0x5e1715bB79805Bd672729760B3f7F34D6f485098",
+    "symbol": "RICKS",
+    "decimal": 8
   }
 ]

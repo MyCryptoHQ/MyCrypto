@@ -37,7 +37,7 @@ interface Query {
   [key: string]: string;
 }
 
-export const Query = withRouter<Props>(
+export const Query = withRouter(
   class extends React.Component<Props, {}> {
     public render() {
       const { withQuery, params, location } = this.props;

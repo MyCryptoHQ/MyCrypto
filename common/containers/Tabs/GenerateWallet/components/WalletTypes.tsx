@@ -173,16 +173,16 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
       )}
 
       <div className="WalletTypes-suggestions">
-        {suggestions.map(sug => (
-          <div className={`WalletSuggestion is-${sug.type}`}>
+        {suggestions.map((sug, idx) => (
+          <div key={idx} className={`WalletSuggestion is-${sug.type}`}>
             <h3 className="WalletSuggestion-name">
               <img className="WalletSuggestion-name-icon" src={sug.icon} />
               {sug.name}
             </h3>
 
             <ul className="WalletSuggestion-features">
-              {sug.bullets.map((b, idx) => (
-                <li key={idx} className="WalletSuggestion-features-feature">
+              {sug.bullets.map((b, index) => (
+                <li key={index} className="WalletSuggestion-features-feature">
                   {b}
                 </li>
               ))}

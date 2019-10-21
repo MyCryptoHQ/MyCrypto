@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { languages } from 'config';
 import { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
@@ -57,7 +58,9 @@ class DesktopHeader extends Component<Props> {
 
   public render() {
     const { nodeLabel, openSidebar, languageSelection, setAccessMessage } = this.props;
-    const { visibleDropdowns: { sendAndReceive, buyAndExchange, tools } } = this.state;
+    const {
+      visibleDropdowns: { sendAndReceive, buyAndExchange, tools }
+    } = this.state;
     const sendAndReceiveIcon = generateCaretIcon(sendAndReceive);
     const buyAndExchangeIcon = generateCaretIcon(buyAndExchange);
     const toolsIcon = generateCaretIcon(tools);
@@ -69,19 +72,35 @@ class DesktopHeader extends Component<Props> {
             <section className="DesktopHeader-top-left">
               <ul className="DesktopHeader-top-links">
                 <li>
-                  <a href="https://support.mycrypto.com/" target="_blank" rel="noopener noreferrer">
+                  <a
+                    onClick={this.trackHelpSupportClick}
+                    href="https://support.mycrypto.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {translateRaw('NEW_HEADER_TEXT_1')} <i className="fa fa-caret-right" />
                   </a>
                 </li>
                 <li>
-                  <a href="https://medium.com/@mycrypto" target="_blank" rel="noopener noreferrer">
+                  <a
+                    onClick={this.trackLatestNewsClick}
+                    href="https://medium.com/@mycrypto"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {translateRaw('NEW_HEADER_TEXT_2')} <i className="fa fa-caret-right" />
                   </a>
                 </li>
               </ul>
             </section>
             <section className="DesktopHeader-top-center">
-              <Link to="/" onClick={() => setAccessMessage('')}>
+              <Link
+                to="/"
+                onClick={() => {
+                  setAccessMessage('');
+                  this.trackHomeIconClick();
+                }}
+              >
                 <img src={logo} alt="Our logo" />
               </Link>
             </section>
@@ -183,6 +202,18 @@ class DesktopHeader extends Component<Props> {
       changeNodeRequestedOneTime(networkParam!);
     }
   };
+
+  private trackHelpSupportClick = (): void => {
+    AnalyticsService.instance.trackLegacy(ANALYTICS_CATEGORIES.HEADER, 'Help & Support clicked');
+  };
+
+  private trackLatestNewsClick = (): void => {
+    AnalyticsService.instance.trackLegacy(ANALYTICS_CATEGORIES.HEADER, 'Latest News clicked');
+  };
+
+  private trackHomeIconClick = (): void => {
+    AnalyticsService.instance.trackLegacy(ANALYTICS_CATEGORIES.HEADER, 'Home Icon clicked');
+  };
 }
 
 const mapStateToProps = (state: AppState, { networkParam }: any) => ({
@@ -199,4 +230,7 @@ const mapDispatchToProps = {
   setAccessMessage: walletActions.setAccessMessage
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DesktopHeader);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DesktopHeader);

@@ -99,21 +99,20 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
         {tokenBalances.length ? (
           <table className="TokenBalances-rows">
             <tbody>
-              {tokenBalances.map(
-                token =>
-                  token ? (
-                    <TokenRow
-                      key={token.symbol}
-                      balance={token.balance}
-                      symbol={token.symbol}
-                      custom={token.custom}
-                      decimal={token.decimal}
-                      tracked={trackedTokens[token.symbol]}
-                      isOffline={isOffline}
-                      toggleTracked={!hasSavedWalletTokens && this.toggleTrack}
-                      onRemove={this.props.onRemoveCustomToken}
-                    />
-                  ) : null
+              {tokenBalances.map(token =>
+                token ? (
+                  <TokenRow
+                    key={token.symbol}
+                    balance={token.balance}
+                    symbol={token.symbol}
+                    custom={token.custom}
+                    decimal={token.decimal}
+                    tracked={trackedTokens[token.symbol]}
+                    isOffline={isOffline}
+                    toggleTracked={!hasSavedWalletTokens && this.toggleTrack}
+                    onRemove={this.props.onRemoveCustomToken}
+                  />
+                ) : null
               )}
             </tbody>
           </table>

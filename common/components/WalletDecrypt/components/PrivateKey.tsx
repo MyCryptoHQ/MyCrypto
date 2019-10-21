@@ -67,22 +67,21 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
             />
           </label>
         </div>
-        {isValidPkey &&
-          isPassRequired && (
-            <div className="input-group-wrapper">
-              <label className="input-group">
-                <div className="input-group-header">{translate('ADD_LABEL_3')}</div>
-                <Input
-                  isValid={password.length > 0}
-                  value={password}
-                  onChange={this.onPasswordChange}
-                  onKeyDown={this.onKeyDown}
-                  placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
-                  type="password"
-                />
-              </label>
-            </div>
-          )}
+        {isValidPkey && isPassRequired && (
+          <div className="input-group-wrapper">
+            <label className="input-group">
+              <div className="input-group-header">{translate('ADD_LABEL_3')}</div>
+              <Input
+                isValid={password.length > 0}
+                value={password}
+                onChange={this.onPasswordChange}
+                onKeyDown={this.onKeyDown}
+                placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
+                type="password"
+              />
+            </label>
+          </div>
+        )}
         <button className="btn btn-block btn-primary" disabled={unlockDisabled}>
           {translate('ADD_LABEL_6_SHORT')}
         </button>

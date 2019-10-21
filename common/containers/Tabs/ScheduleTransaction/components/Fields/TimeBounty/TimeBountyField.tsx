@@ -156,6 +156,9 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-export const TimeBountyField = connect(mapStateToProps, {
-  setTimeBounty: scheduleActions.setCurrentTimeBounty
-})(TimeBountyFieldClass);
+export const TimeBountyField = connect(
+  mapStateToProps,
+  {
+    setTimeBounty: scheduleActions.setCurrentTimeBounty
+  }
+)(TimeBountyFieldClass);

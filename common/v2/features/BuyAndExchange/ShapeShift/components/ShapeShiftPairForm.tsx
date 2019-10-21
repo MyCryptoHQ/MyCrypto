@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage, FormikErrors } from 'formik';
+import { Formik, Form, Field, ErrorMessage, FormikErrors, FormikActions } from 'formik';
 
 import { MarketPairHash } from 'v2/services';
 import { AssetOption } from '../types';
@@ -19,7 +19,7 @@ interface Values {
 interface Props {
   rates: MarketPairHash | null;
   assets: AssetOption[];
-  onSubmit(values: any, bag: any): void;
+  onSubmit(values: Values, bag: FormikActions<Values>): void;
 }
 
 const validate = (values: Values, rates: MarketPairHash): FormikErrors<Values> => {
@@ -53,7 +53,9 @@ const changeOtherAmountField = (
   order: string[],
   otherFieldName: string
 ) => {
-  const { target: { value } } = e;
+  const {
+    target: { value }
+  } = e;
   const pair = order
     .map(name => props.values[name])
     .join('_')
@@ -96,7 +98,9 @@ const handleAssetSelect = (name: string, value: string, props: any) => {
 };
 
 const setFixedFloat = (e: React.ChangeEvent<any>, props: any) => {
-  const { target: { name, value } } = e;
+  const {
+    target: { name, value }
+  } = e;
 
   props.setFieldValue(name, parseFloat(value).toFixed(7));
 };
@@ -110,9 +114,9 @@ export default function ShapeShiftPairForm({ rates, assets, onSubmit }: Props) {
         withdraw: assets[1].ticker,
         withdrawAmount: '0.0000000'
       }}
-      validate={(values: any) => validate(values, rates)}
+      validate={(values: Values) => validate(values, rates)}
       onSubmit={onSubmit}
-      render={(props: any) => {
+      render={props => {
         return (
           <section className="ShapeShiftWidget">
             <Form>
@@ -188,12 +192,11 @@ export default function ShapeShiftPairForm({ rates, assets, onSubmit }: Props) {
                 </button>
               </fieldset>
             </Form>
-            {props.touched.depositAmount &&
-              props.errors.depositAmount && (
-                <Warning highlighted={true}>
-                  <ErrorMessage name="depositAmount" />
-                </Warning>
-              )}
+            {props.touched.depositAmount && props.errors.depositAmount && (
+              <Warning highlighted={true}>
+                <ErrorMessage name="depositAmount" />
+              </Warning>
+            )}
           </section>
         );
       }}

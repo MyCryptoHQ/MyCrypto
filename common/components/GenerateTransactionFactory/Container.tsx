@@ -20,6 +20,9 @@ class Container extends Component<DispatchProps & OwnProps, {}> {
   }
 }
 
-export const WithSigner = connect(null, {
-  signTransactionRequested: transactionSignActions.signTransactionRequested
-})(Container);
+export const WithSigner = connect(
+  null,
+  {
+    signTransactionRequested: transactionSignActions.signTransactionRequested
+  }
+)(Container);

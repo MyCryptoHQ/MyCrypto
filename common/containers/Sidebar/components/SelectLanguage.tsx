@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { languages } from 'config';
 import { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
@@ -29,7 +30,7 @@ class LanguageSelect extends Component<Props> {
           {translateRaw('NEW_SIDEBAR_TEXT_1')}
         </h1>
         <ul className="SidebarScreen-list-full">
-          {Object.entries(languages).map(([code, language]) => (
+          {Object.entries(languages).map(([code, language]: [string, string]) => (
             <li
               key={code}
               className={classnames('SidebarScreen-language', {
@@ -50,6 +51,9 @@ class LanguageSelect extends Component<Props> {
 
     if (code !== languageSelection) {
       changeLanguage(code);
+      AnalyticsService.instance.track(ANALYTICS_CATEGORIES.SIDEBAR, 'Language changed', {
+        lang: code
+      });
     }
 
     closeSidebar();
@@ -65,4 +69,7 @@ const mapDispatchToProps = {
   closeSidebar: sidebarActions.closeSidebar
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LanguageSelect);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LanguageSelect);

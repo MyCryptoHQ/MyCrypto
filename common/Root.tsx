@@ -1,42 +1,29 @@
 import React, { Component } from 'react';
+import { setConfig } from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
+import { connect, Provider } from 'react-redux';
 import { Store } from 'redux';
-import { Provider, connect } from 'react-redux';
-import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-router-dom';
-
-import { AppState } from 'features/reducers';
-import { configSelectors, configMetaSelectors } from 'features/config';
-import { transactionMetaActions } from 'features/transaction';
-import { onboardingSelectors } from 'features/onboarding';
-// Components
-import Contracts from 'containers/Tabs/Contracts';
-import ENS from 'containers/Tabs/ENS';
-import GenerateWallet from 'containers/Tabs/GenerateWallet';
-import SendTransaction from 'containers/Tabs/SendTransaction';
-import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
-import BroadcastTx from 'containers/Tabs/BroadcastTx';
-import CheckTransaction from 'containers/Tabs/CheckTransaction';
-import SupportPage from 'containers/Tabs/SupportPage';
-import ErrorScreen from 'components/ErrorScreen';
-import PageNotFound from 'components/PageNotFound';
-import LogOutPrompt from 'components/LogOutPrompt';
-import QrSignerModal from 'containers/QrSignerModal';
-import OnboardingModal from 'containers/OnboardingModal';
-import NewAppReleaseModal from 'components/NewAppReleaseModal';
-import PalettePage from 'components/Palette';
-import { RouteNotFound } from 'components/RouteNotFound';
-import { RedirectWithQuery } from 'components/RedirectWithQuery';
+import { ThemeProvider } from 'styled-components';
 import { Theme } from 'config';
-import 'what-input';
+import { QrSignerModal } from 'containers';
+import { configMetaSelectors, configSelectors } from 'features/config';
+import { AppState } from 'features/reducers';
+import { transactionMetaActions } from 'features/transaction';
 
 // v2
-import { gatherFeatureRoutes } from 'v2';
+import { GAU_THEME } from 'v2/theme';
+import { IS_DEV, IS_ELECTRON } from 'v2/utils';
+import { NewAppReleaseModal } from 'v2/components';
+import { DevModeProvider, useDevMode } from 'v2/services';
+import { DevTools } from 'v2/features';
+import AppProviders from './AppProviders';
+import { AppRouter } from './AppRouter';
 
 interface OwnProps {
   store: Store<AppState>;
 }
 
 interface StateProps {
-  onboardingActive: ReturnType<typeof onboardingSelectors.getActive>;
   networkUnit: ReturnType<typeof configSelectors.getNetworkUnit>;
   theme: ReturnType<typeof configMetaSelectors.getTheme>;
 }
@@ -47,15 +34,7 @@ interface DispatchProps {
 
 type Props = OwnProps & StateProps & DispatchProps;
 
-interface State {
-  error: Error | null;
-}
-
-class RootClass extends Component<Props, State> {
-  public state = {
-    error: null
-  };
-
+class RootClass extends Component<Props> {
   public componentDidMount() {
     this.props.setUnitMeta(this.props.networkUnit);
     this.addBodyClasses();
@@ -63,7 +42,7 @@ class RootClass extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error) {
-    this.setState({ error });
+    console.error(error);
   }
 
   public componentDidUpdate(prevProps: Props) {
@@ -73,62 +52,36 @@ class RootClass extends Component<Props, State> {
   }
 
   public render() {
-    const { store, onboardingActive } = this.props;
-    const { error } = this.state;
-
-    if (error) {
-      return <ErrorScreen error={error} />;
-    }
-
-    const routes = (
-      <CaptureRouteNotFound>
-        <Switch>
-          {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
-          <Route path="/account" component={SendTransaction} />
-          <Route path="/generate" component={GenerateWallet} />
-          <Route path="/contracts" component={Contracts} />
-          <Route path="/ens" component={ENS} exact={true} />
-          <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
-          <Route path="/tx-status" component={CheckTransaction} exact={true} />
-          <Route path="/pushTx" component={BroadcastTx} />
-          <Route path="/support-us" component={SupportPage} exact={true} />
-          {process.env.NODE_ENV !== 'production' && (
-            <Route path="/dev/palette" component={PalettePage} exact={true} />
-          )}
-          <RedirectWithQuery exactArg={true} from="/" to="/account" pushArg={true} />
-          <RouteNotFound />
-        </Switch>
-      </CaptureRouteNotFound>
-    );
-
-    const Router: any =
-      process.env.BUILD_DOWNLOADABLE && process.env.NODE_ENV === 'production'
-        ? HashRouter
-        : BrowserRouter;
+    const { store } = this.props;
 
     return (
-      <React.Fragment>
-        <Provider store={store}>
-          <Router>
-            <React.Fragment>
-              {onboardingActive && <OnboardingModal />}
-              {routes}
-              <LegacyRoutes />
-              <LogOutPrompt />
+      <DevModeProvider>
+        <ThemeProvider theme={GAU_THEME}>
+          <Provider store={store}>
+            <AppProviders>
+              <AppRouter />
               <QrSignerModal />
-              {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-            </React.Fragment>
-          </Router>
-        </Provider>
-        <div id="ModalContainer" />
-      </React.Fragment>
+              <div id="ModalContainer" />
+              {IS_ELECTRON ? <NewAppReleaseModal /> : <></>}
+              {IS_DEV ? (
+                <>
+                  <DevToolsContainer />
+                  <DevModeToggle />
+                </>
+              ) : (
+                <></>
+              )}
+            </AppProviders>
+          </Provider>
+        </ThemeProvider>
+      </DevModeProvider>
     );
   }
 
   private addBodyClasses() {
-    const classes = [];
+    const classes: string[] = [];
 
-    if (process.env.BUILD_ELECTRON) {
+    if (IS_ELECTRON) {
       classes.push('is-electron');
 
       if (navigator.appVersion.includes('Win')) {
@@ -152,65 +105,42 @@ class RootClass extends Component<Props, State> {
   }
 }
 
-const LegacyRoutes = withRouter(props => {
-  const { history } = props;
-  const { pathname, search } = props.location;
-  let { hash } = props.location;
-
-  if (search.includes('redirectToSignMessage')) {
-    history.push('/sign-and-verify-message');
-    return null;
-  }
-
-  if (pathname === '/') {
-    hash = hash.split('?')[0];
-    switch (hash) {
-      case '#send-transaction':
-      case '#offline-transaction':
-        return <RedirectWithQuery from={pathname} to={'account/send'} />;
-      case '#generate-wallet':
-        history.push('/');
-        break;
-      case '#swap':
-        history.push('/swap');
-        break;
-      case '#contracts':
-        history.push('/contracts');
-        break;
-      case '#ens':
-        history.push('/ens');
-        break;
-      case '#view-wallet-info':
-        history.push('/account/info');
-        break;
-      case '#check-tx-status':
-        return <RedirectWithQuery from={pathname} to={'/tx-status'} />;
-    }
-  }
-
+const DevModeToggle = () => {
+  const { isDevelopmentMode, toggleDevMode } = useDevMode();
   return (
-    <Switch>
-      <RedirectWithQuery from="/signmsg.html" to="/sign-and-verify-message" />
-      <RedirectWithQuery from="/helpers.html" to="/helpers" />
-      <RedirectWithQuery from="/send-transaction" to={'/account/send'} />
-    </Switch>
+    <button
+      onClick={toggleDevMode}
+      style={{
+        position: 'fixed',
+        bottom: 0,
+        right: 0,
+        zIndex: 99,
+        height: '5rem'
+      }}
+    >
+      Development Mode {isDevelopmentMode ? 'On' : 'Off'}
+    </button>
   );
-});
+};
 
-const CaptureRouteNotFound = withRouter(({ children, location }) => {
-  return location && location.state && location.state.error ? (
-    <PageNotFound />
-  ) : (
-    (children as JSX.Element)
-  );
-});
+const DevToolsContainer = () => {
+  const { isDevelopmentMode } = useDevMode();
+  return isDevelopmentMode ? <DevTools /> : <></>;
+};
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  onboardingActive: onboardingSelectors.getActive(state),
   networkUnit: configSelectors.getNetworkUnit(state),
   theme: configMetaSelectors.getTheme(state)
 });
 
-export default connect(mapStateToProps, {
-  setUnitMeta: transactionMetaActions.setUnitMeta
-})(RootClass);
+const ConnectedRoot = connect(
+  mapStateToProps,
+  {
+    setUnitMeta: transactionMetaActions.setUnitMeta
+  }
+)(RootClass);
+
+// Silence RHL 'reconciliation failed' errors
+// https://github.com/gatsbyjs/gatsby/issues/7209#issuecomment-415807021
+setConfig({ logLevel: 'no-errors-please' });
+export default hot(ConnectedRoot);

@@ -153,6 +153,8 @@ class WalletInfo extends React.PureComponent<Props, State> {
   private closePaperWalletModal = () => this.setState({ isPaperWalletModalOpen: false });
 }
 
-export default connect((state: AppState): StateProps => ({
-  toChecksumAddress: configSelectors.getChecksumAddressFn(state)
-}))(WalletInfo);
+export default connect(
+  (state: AppState): StateProps => ({
+    toChecksumAddress: configSelectors.getChecksumAddressFn(state)
+  })
+)(WalletInfo);

@@ -35,8 +35,9 @@ export default class SupportPage extends React.Component<{}, State> {
                 <p className="SupportPage-mycrypto-about">{translate('FOOTER_ABOUT')}</p>
 
                 <div className="SupportPage-mycrypto-social">
-                  {socialMediaLinks.map(link => (
+                  {socialMediaLinks.map((link, idx) => (
                     <NewTabLink
+                      key={idx}
                       className="SupportPage-mycrypto-social-link"
                       href={link.link}
                       aria-label={link.text}
@@ -64,8 +65,9 @@ export default class SupportPage extends React.Component<{}, State> {
               <div className="SupportPage-products Tab-content-pane">
                 <h3 className="SupportPage-products-title">{translate('FOOTER_OTHER_APPS')}</h3>
 
-                {productLinks.map(link => (
+                {productLinks.map((link, idx) => (
                   <NewTabLink
+                    key={idx}
                     className="SupportPage-products-link btn btn-block btn-default"
                     href={link.link}
                   >
@@ -81,8 +83,9 @@ export default class SupportPage extends React.Component<{}, State> {
                   {translate('FOOTER_AFFILIATE_TITLE')}
                 </h3>
 
-                {affiliateLinks.map(link => (
+                {affiliateLinks.map((link, idx) => (
                   <NewTabLink
+                    key={idx}
                     className="SupportPage-affiliates-link btn btn-block btn-default"
                     href={link.link}
                   >
@@ -99,8 +102,8 @@ export default class SupportPage extends React.Component<{}, State> {
                 <h3 className="SupportPage-donate-title">{translate('FOOTER_DONATIONS')}</h3>
 
                 <div className="row">
-                  {donationCurrencies.map(currency => (
-                    <div className="col-sm-6 col-xs-12">
+                  {donationCurrencies.map((currency, idx) => (
+                    <div key={idx} className="col-sm-6 col-xs-12">
                       <div className="SupportPage-donate-type">
                         <div className="SupportPage-donate-type-currency">
                           <span

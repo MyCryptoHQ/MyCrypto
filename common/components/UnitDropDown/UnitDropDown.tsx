@@ -62,6 +62,9 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export const UnitDropDown = connect(mapStateToProps, {
-  setUnitMeta: transactionMetaActions.setUnitMeta
-})(UnitDropdownClass);
+export const UnitDropDown = connect(
+  mapStateToProps,
+  {
+    setUnitMeta: transactionMetaActions.setUnitMeta
+  }
+)(UnitDropdownClass);

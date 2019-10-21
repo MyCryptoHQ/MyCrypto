@@ -36,9 +36,9 @@ export default class DateTimePickerYears extends Component<Props> {
   }
 
   public renderYears(year: number) {
-    let years = [];
+    let years: JSX.Element[] = [];
     let i = -1;
-    const rows = [];
+    const rows: JSX.Element[] = [];
     const renderer = this.props.renderYear || this.renderYear;
     const selectedDate = this.props.selectedDate;
     const isValid: any = this.props.isValidDate || this.alwaysValidDate;

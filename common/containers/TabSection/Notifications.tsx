@@ -32,6 +32,9 @@ const mapStateToProps = (state: AppState) => ({
   notifications: state.notifications
 });
 
-export default connect(mapStateToProps, {
-  closeNotification: notificationsActions.closeNotification
-})(Notifications);
+export default connect(
+  mapStateToProps,
+  {
+    closeNotification: notificationsActions.closeNotification
+  }
+)(Notifications);

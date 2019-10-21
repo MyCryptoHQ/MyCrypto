@@ -10,6 +10,10 @@ const isOwned = (data: IBaseDomainRequest): data is IOwnedDomainRequest => {
   return !!(data as IOwnedDomainRequest).ownerAddress;
 };
 
+const hasResolvedAddress = (data: IBaseDomainRequest): data is IOwnedDomainRequest => {
+  return !!(data as IOwnedDomainRequest).resolvedAddress;
+};
+
 export const getEns = (state: AppState) => state.ens;
 
 export const getCurrentDomainData = (state: AppState) => {
@@ -31,7 +35,7 @@ export const getResolvedAddress = (state: AppState, noGenesisAddress: boolean = 
     return null;
   }
 
-  if (isOwned(data)) {
+  if (isOwned(data) || hasResolvedAddress(data)) {
     const { resolvedAddress } = data;
     if (noGenesisAddress) {
       return !isCreationAddress(resolvedAddress) ? resolvedAddress : null;

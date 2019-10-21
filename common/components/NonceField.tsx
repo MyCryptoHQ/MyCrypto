@@ -87,6 +87,9 @@ const mapStateToProps = (state: AppState): StateProps => {
   };
 };
 
-export default connect(mapStateToProps, {
-  requestNonce: transactionNetworkActions.getNonceRequested
-})(NonceField);
+export default connect(
+  mapStateToProps,
+  {
+    requestNonce: transactionNetworkActions.getNonceRequested
+  }
+)(NonceField);

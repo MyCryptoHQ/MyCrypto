@@ -74,7 +74,9 @@ class ParitySignerDecryptClass extends PureComponent<Props> {
   }
 
   private handleSelectAddressFromBook = (ev: React.FormEvent<HTMLInputElement>) => {
-    const { currentTarget: { value: addressFromBook } } = ev;
+    const {
+      currentTarget: { value: addressFromBook }
+    } = ev;
     this.setState({ addressFromBook }, () => {
       this.props.onUnlock(new ParitySignerWallet(addressFromBook));
     });
@@ -90,7 +92,9 @@ class ParitySignerDecryptClass extends PureComponent<Props> {
   };
 }
 
-export const ParitySignerDecrypt = connect((state: AppState): StateProps => ({
-  showNotification: notificationsActions.showNotification,
-  isValidAddress: configSelectors.getIsValidAddressFn(state)
-}))(ParitySignerDecryptClass);
+export const ParitySignerDecrypt = connect(
+  (state: AppState): StateProps => ({
+    showNotification: notificationsActions.showNotification,
+    isValidAddress: configSelectors.getIsValidAddressFn(state)
+  })
+)(ParitySignerDecryptClass);

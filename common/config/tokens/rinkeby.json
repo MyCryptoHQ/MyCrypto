@@ -1,1 +1,47 @@
-[]
+[
+  {
+    "address": "0x398A7A69f3c59181A1ffe34bed11DCb5DF863A8a",
+    "symbol": "AETH",
+    "decimal": 18
+  },
+  {
+    "address": "0xe27826eE778B6F78a49a686dA7D64f6E7b084a4f",
+    "symbol": "BHNT",
+    "decimal": 0
+  },
+  {
+    "address": "0x8B65d4B7ee3FFFA986C577F0F4b70a21BaE3dD54",
+    "symbol": "CTGA",
+    "decimal": 18
+  },
+  {
+    "address": "0x275A5B346599b56917e7B1C9de019DCf9EaD861a",
+    "symbol": "KC",
+    "decimal": 18
+  },
+  {
+    "address": "0x6475A7FA6Ed2D5180F0e0a07c2d951D12C0EDB91",
+    "symbol": "NONE",
+    "decimal": 0
+  },
+  {
+    "address": "0x12fE174C097F6B3e876B3b060C9061F4B9dEBB80",
+    "symbol": "PPD",
+    "decimal": 18
+  },
+  {
+    "address": "0x3615757011112560521536258c1E7325Ae3b48AE",
+    "symbol": "RDN",
+    "decimal": 18
+  },
+  {
+    "address": "0xf1e6Ad3a7eF0c86c915F0feDF80eD851809bEA90",
+    "symbol": "RLC",
+    "decimal": 9
+  },
+  {
+    "address": "0x0A057a87CE9C56D7e336B417c79cf30E8d27860B",
+    "symbol": "WALL",
+    "decimal": 15
+  }
+]

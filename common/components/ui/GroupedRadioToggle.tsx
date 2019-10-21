@@ -30,7 +30,8 @@ const GroupedRadioToggle: React.SFC<Props> = ({
           value={option}
           onChange={onChangeHandler}
           checked={option === selectedValue}
-        />&nbsp;{option}
+        />
+        &nbsp;{option}
       </label>
     ))}
   </div>

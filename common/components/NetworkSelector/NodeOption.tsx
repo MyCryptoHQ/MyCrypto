@@ -58,6 +58,7 @@ class NodeOption extends React.PureComponent<Props> {
   };
 }
 
-export default connect(undefined, { removeCustomNode: configNodesCustomActions.removeCustomNode })(
-  NodeOption
-);
+export default connect(
+  undefined,
+  { removeCustomNode: configNodesCustomActions.removeCustomNode }
+)(NodeOption);

@@ -6,33 +6,40 @@ type StaticNetworkIds =
   | 'Kovan'
   | 'Rinkeby'
   | 'Goerli'
-  | 'Gangnam'
   | 'ETC'
-  | 'UBQ'
-  | 'EXP'
-  | 'POA'
-  | 'TOMO'
-  | 'ELLA'
-  | 'MUSIC'
-  | 'ETSC'
-  | 'EGEM'
-  | 'CLO'
   | 'RSK'
-  | 'RSK_TESTNET'
-  | 'GO'
-  | 'GO_TESTNET'
-  | 'EOSC'
-  | 'ESN'
-  | 'AQUA'
   | 'AKA'
-  | 'PIRL'
-  | 'ATH'
-  | 'ETHO'
-  | 'MIX'
-  | 'REOSC'
+  | 'AQUA'
   | 'ARTIS_SIGMA1'
   | 'ARTIS_TAU1'
-  | 'THUNDERCORE';
+  | 'ATH'
+  | 'CLO'
+  | 'DEXON'
+  | 'EGEM'
+  | 'ELLA'
+  | 'EOSC'
+  | 'ESN'
+  | 'ETI'
+  | 'ETHO'
+  | 'ETSC'
+  | 'EXP'
+  | 'Gangnam'
+  | 'GO'
+  | 'GO_TESTNET'
+  | 'METADIUM'
+  | 'MIX'
+  | 'MUSIC'
+  | 'PIRL'
+  | 'POA'
+  | 'REOSC'
+  | 'RSK_TESTNET'
+  | 'SOLIDUM'
+  | 'THUNDERCORE'
+  | 'TOMO'
+  | 'UBQ'
+  | 'WEB'
+  | 'AUX'
+  | 'ASK';
 
 export interface BlockExplorerConfig {
   name: string;
@@ -60,6 +67,7 @@ interface DPathFormats {
   safeTmini?: DPath;
   ledgerNanoS?: DPath;
   mnemonicPhrase: DPath;
+  default?: DPath;
 }
 
 export interface GasPriceSetting {

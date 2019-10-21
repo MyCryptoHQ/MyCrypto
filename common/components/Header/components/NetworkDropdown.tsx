@@ -72,7 +72,9 @@ class NetworkDropdown extends React.Component<Props> {
   };
 }
 
-export default connect((state: AppState): StateProps => ({
-  node: configNodesSelectors.getNodeConfig(state),
-  nodeLabel: configSelectors.getSelectedNodeLabel(state)
-}))(NetworkDropdown);
+export default connect(
+  (state: AppState): StateProps => ({
+    node: configNodesSelectors.getNodeConfig(state),
+    nodeLabel: configSelectors.getSelectedNodeLabel(state)
+  })
+)(NetworkDropdown);

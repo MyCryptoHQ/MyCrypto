@@ -113,16 +113,15 @@ class TXMetaDataPanel extends React.Component<Props, State> {
           />
         )}
 
-        {!offline &&
-          !disableToggle && (
-            <div className="help-block">
-              <a className="Gas-toggle" onClick={this.toggleAdvanced}>
-                {showAdvanced
-                  ? `- ${translateRaw('TRANS_SIMPLE')}`
-                  : `+ ${translateRaw('TRANS_ADVANCED')}`}
-              </a>
-            </div>
-          )}
+        {!offline && !disableToggle && (
+          <div className="help-block">
+            <a className="Gas-toggle" onClick={this.toggleAdvanced}>
+              {showAdvanced
+                ? `- ${translateRaw('TRANS_SIMPLE')}`
+                : `+ ${translateRaw('TRANS_ADVANCED')}`}
+            </a>
+          </div>
+        )}
       </div>
     );
   }
@@ -151,10 +150,13 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-export default connect(mapStateToProps, {
-  inputGasPrice: transactionFieldsActions.inputGasPrice,
-  inputGasPriceIntent: transactionFieldsActions.inputGasPriceIntent,
-  fetchCCRates: ratesActions.fetchCCRatesRequested,
-  getNonceRequested: transactionNetworkActions.getNonceRequested,
-  resetTransactionRequested: transactionFieldsActions.resetTransactionRequested
-})(TXMetaDataPanel);
+export default connect(
+  mapStateToProps,
+  {
+    inputGasPrice: transactionFieldsActions.inputGasPrice,
+    inputGasPriceIntent: transactionFieldsActions.inputGasPriceIntent,
+    fetchCCRates: ratesActions.fetchCCRatesRequested,
+    getNonceRequested: transactionNetworkActions.getNonceRequested,
+    resetTransactionRequested: transactionFieldsActions.resetTransactionRequested
+  }
+)(TXMetaDataPanel);

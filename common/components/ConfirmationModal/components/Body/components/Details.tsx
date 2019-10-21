@@ -16,7 +16,9 @@ interface StateProps {
 
 class DetailsClass extends Component<StateProps> {
   public render() {
-    const { node: { network, service } } = this.props;
+    const {
+      node: { network, service }
+    } = this.props;
     return (
       <div className="tx-modal-details">
         <label className="input-group">

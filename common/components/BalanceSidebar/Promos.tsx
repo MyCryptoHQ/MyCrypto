@@ -87,4 +87,7 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-export default connect(mapStateToProps, {})(PromosClass);
+export default connect(
+  mapStateToProps,
+  {}
+)(PromosClass);

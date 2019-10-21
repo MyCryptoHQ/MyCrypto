@@ -39,11 +39,12 @@ export interface IBaseDomainRequest {
 
 export interface IOwnedDomainRequest extends IBaseDomainRequest {
   ownerAddress: string;
+  deedOwnerAddress: string;
   resolvedAddress: string;
 }
 
 export interface IRevealDomainRequest extends IBaseDomainRequest {
-  ownerAddress: string;
+  deedOwnerAddress: string;
 }
 
 export type DomainRequest = IOwnedDomainRequest | IRevealDomainRequest | IBaseDomainRequest;

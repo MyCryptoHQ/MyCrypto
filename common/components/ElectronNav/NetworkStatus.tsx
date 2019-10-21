@@ -47,8 +47,10 @@ const NetworkStatus: React.SFC<StateProps> = ({ isOffline, isChangingNode, netwo
   );
 };
 
-export default connect((state: AppState): StateProps => ({
-  network: configSelectors.getNetworkConfig(state),
-  isOffline: configMetaSelectors.getOffline(state),
-  isChangingNode: configNodesSelectedSelectors.isNodeChanging(state)
-}))(NetworkStatus);
+export default connect(
+  (state: AppState): StateProps => ({
+    network: configSelectors.getNetworkConfig(state),
+    isOffline: configMetaSelectors.getOffline(state),
+    isChangingNode: configNodesSelectedSelectors.isNodeChanging(state)
+  })
+)(NetworkStatus);

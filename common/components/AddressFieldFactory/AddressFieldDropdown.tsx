@@ -10,7 +10,7 @@ import { Address, Identicon } from 'components/ui';
 import './AddressFieldDropdown.scss';
 
 interface Props {
-  addressInput: string;
+  addressInput?: string;
   dropdownThreshold?: number;
   labelAddresses: ReturnType<typeof addressBookSelectors.getLabelAddresses>;
   recentAddresses: ReturnType<typeof walletSelectors.getRecentAddresses>;
@@ -47,9 +47,8 @@ class AddressFieldDropdownClass extends React.Component<Props, State> {
             this.renderDropdownItems()
           ) : (
             <li className="AddressFieldDropdown-dropdown-item AddressFieldDropdown-dropdown-item-no-match">
-              <i className="fa fa-warning" /> {translate('NO_LABEL_FOUND_CONTAINING')} "{
-                addressInput
-              }".
+              <i className="fa fa-warning" /> {translate('NO_LABEL_FOUND_CONTAINING')} "
+              {addressInput}".
             </li>
           )}
         </ul>
@@ -121,7 +120,7 @@ class AddressFieldDropdownClass extends React.Component<Props, State> {
     const formattedRecentAddresses = this.getFormattedRecentAddresses();
 
     return Object.keys({ ...labelAddresses, ...formattedRecentAddresses })
-      .filter(label => label.toLowerCase().includes(addressInput))
+      .filter(label => !addressInput || label.toLowerCase().includes(addressInput))
       .map(label => ({ address: labelAddresses[label] || formattedRecentAddresses[label], label }))
       .slice(0, 5);
   };
@@ -129,7 +128,11 @@ class AddressFieldDropdownClass extends React.Component<Props, State> {
   private getIsVisible = () => {
     const { addressInput, dropdownThreshold = 3 } = this.props;
 
-    return addressInput.length >= dropdownThreshold && this.getFilteredLabels().length > 0;
+    return (
+      addressInput &&
+      addressInput.length >= dropdownThreshold &&
+      this.getFilteredLabels().length > 0
+    );
   };
 
   private setActiveIndex = (activeIndex: number | null) => this.setState({ activeIndex });
@@ -179,7 +182,7 @@ class AddressFieldDropdownClass extends React.Component<Props, State> {
     const filteredLabelCount = this.getFilteredLabels().length;
 
     let activeIndex =
-      previousActiveIndex === null ? filteredLabelCount - 1 : previousActiveIndex - 1;
+      previousActiveIndex === null ? filteredLabelCount - 1 : previousActiveIndex! - 1;
 
     // Loop back to end
     if (activeIndex < 0) {
@@ -193,7 +196,7 @@ class AddressFieldDropdownClass extends React.Component<Props, State> {
     const { activeIndex: previousActiveIndex } = this.state;
     const filteredLabelCount = this.getFilteredLabels().length;
 
-    let activeIndex = previousActiveIndex === null ? 0 : previousActiveIndex + 1;
+    let activeIndex = previousActiveIndex === null ? 0 : previousActiveIndex! + 1;
 
     // Loop back to beginning
     if (activeIndex >= filteredLabelCount) {
@@ -219,11 +222,11 @@ interface FakeFormEvent {
 }
 
 interface UncontrolledAddressFieldDropdownProps {
-  value: string;
+  value?: string;
   labelAddresses: ReturnType<typeof addressBookSelectors.getLabelAddresses>;
   recentAddresses: ReturnType<typeof walletSelectors.getRecentAddresses>;
   dropdownThreshold?: number;
-  onChangeOverride(ev: React.FormEvent<HTMLInputElement> | FakeFormEvent): void;
+  onChangeOverride?(ev: React.FormEvent<HTMLInputElement> | FakeFormEvent): void;
 }
 
 /**
@@ -238,7 +241,8 @@ function RawUncontrolledAddressFieldDropdown({
   recentAddresses,
   dropdownThreshold
 }: UncontrolledAddressFieldDropdownProps) {
-  const onEntryClick = (address: string) => onChangeOverride({ currentTarget: { value: address } });
+  const onEntryClick = (address: string) =>
+    onChangeOverride && onChangeOverride({ currentTarget: { value: address } });
 
   return (
     <AddressFieldDropdownClass
@@ -312,6 +316,6 @@ export default function AddressFieldDropdown({
   ...props
 }: AddressFieldDropdownProps) {
   const Dropdown = controlled ? ControlledAddressFieldDropdown : UncontrolledAddressFieldDropdown;
-
+  // @ts-ignore
   return <Dropdown {...props} />;
 }

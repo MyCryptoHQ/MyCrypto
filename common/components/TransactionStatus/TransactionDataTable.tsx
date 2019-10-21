@@ -76,13 +76,11 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       data: (
         <React.Fragment>
           <strong className={`TxData-row-data-status is-${statusType}`}>{statusMsg}</strong>
-          {statusSeeMore &&
-            explorer.tx &&
-            !network.isCustom && (
-              <NewTabLink className="TxData-row-data-more" href={explorer.tx}>
-                (See more on {network.blockExplorer.name})
-              </NewTabLink>
-            )}
+          {statusSeeMore && explorer.tx && !network.isCustom && (
+            <NewTabLink className="TxData-row-data-more" href={explorer.tx}>
+              (See more on {network.blockExplorer.name})
+            </NewTabLink>
+          )}
         </React.Fragment>
       )
     },
@@ -140,12 +138,11 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
     },
     {
       label: translate('NEW_CONTRACT_ADDR'),
-      data: receipt &&
-        receipt.contractAddress && (
-          <MaybeLink href={explorer.contract}>
-            <Address address={receipt.contractAddress} />
-          </MaybeLink>
-        )
+      data: receipt && receipt.contractAddress && (
+        <MaybeLink href={explorer.contract}>
+          <Address address={receipt.contractAddress} />
+        </MaybeLink>
+      )
     },
     {
       label: translate('OFFLINE_STEP2_LABEL_5'),

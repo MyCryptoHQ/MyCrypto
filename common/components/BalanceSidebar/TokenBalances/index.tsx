@@ -118,10 +118,13 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-export default connect(mapStateToProps, {
-  attemptAddCustomToken: customTokensActions.attemptAddCustomToken,
-  removeCustomToken: customTokensActions.removeCustomToken,
-  scanWalletForTokens: walletActions.scanWalletForTokens,
-  setWalletTokens: walletActions.setWalletTokens,
-  refreshTokenBalances: walletActions.refreshTokenBalances
-})(TokenBalances);
+export default connect(
+  mapStateToProps,
+  {
+    attemptAddCustomToken: customTokensActions.attemptAddCustomToken,
+    removeCustomToken: customTokensActions.removeCustomToken,
+    scanWalletForTokens: walletActions.scanWalletForTokens,
+    setWalletTokens: walletActions.setWalletTokens,
+    refreshTokenBalances: walletActions.refreshTokenBalances
+  }
+)(TokenBalances);

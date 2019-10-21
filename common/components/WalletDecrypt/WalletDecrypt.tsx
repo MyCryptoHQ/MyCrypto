@@ -117,7 +117,7 @@ const MISC_WALLETS = Object.values(MiscWalletName);
 
 const web3info = getWeb3ProviderInfo();
 
-const WalletDecrypt = withRouter<Props>(
+const WalletDecrypt = withRouter(
   class WalletDecryptClass extends Component<RouteComponentProps<{}> & Props, State> {
     // https://github.com/Microsoft/TypeScript/issues/13042
     // index signature should become [key: Wallets] (from config) once typescript bug is fixed
@@ -533,12 +533,15 @@ function mapStateToProps(state: AppState, ownProps: Props) {
   };
 }
 
-export default connect(mapStateToProps, {
-  unlockKeystore: walletActions.unlockKeystore,
-  unlockMnemonic: walletActions.unlockMnemonic,
-  unlockPrivateKey: walletActions.unlockPrivateKey,
-  unlockWeb3: walletActions.unlockWeb3,
-  setWallet: walletActions.setWallet,
-  resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
-  showNotification: notificationsActions.showNotification
-})(WalletDecrypt) as React.ComponentClass<OwnProps>;
+export default connect(
+  mapStateToProps,
+  {
+    unlockKeystore: walletActions.unlockKeystore,
+    unlockMnemonic: walletActions.unlockMnemonic,
+    unlockPrivateKey: walletActions.unlockPrivateKey,
+    unlockWeb3: walletActions.unlockWeb3,
+    setWallet: walletActions.setWallet,
+    resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
+    showNotification: notificationsActions.showNotification
+  }
+)(WalletDecrypt) as React.ComponentClass<OwnProps>;

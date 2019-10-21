@@ -1,14 +1,67 @@
 [
   {
-    "address": "0x3C67f7D4decF7795225f51b54134F81137385f83",
-    "symbol": "GUP",
-    "decimal": 3,
-    "type": "default"
-  },
-  {
     "address": "0x8667559254241ddeD4d11392f868d72092765367",
     "symbol": "Aeternity",
-    "decimal": 18,
-    "type": "default"
+    "decimal": 18
+  },
+  {
+    "address": "0xC4375B7De8af5a38a93548eb8453a498222C4fF2",
+    "symbol": "DAI",
+    "decimal": 18
+  },
+  {
+    "address": "0xeeE3870657E4716670f185dF08652dd848fe8f7e",
+    "symbol": "DGD",
+    "decimal": 18
+  },
+  {
+    "address": "0x4733659a5cB7896A65c918Add6f59C5148FB5ffa",
+    "symbol": "GAV",
+    "decimal": 6
+  },
+  {
+    "address": "0xeF7FfF64389B814A946f3E92105513705CA6B990",
+    "symbol": "GNT",
+    "decimal": 18
+  },
+  {
+    "address": "0x3C67f7D4decF7795225f51b54134F81137385f83",
+    "symbol": "GUP",
+    "decimal": 3
+  },
+  {
+    "address": "0x1Dad4783cf3fe3085C1426157aB175A6119A04bA",
+    "symbol": "MKR",
+    "decimal": 18
+  },
+  {
+    "address": "0xAaF64BFCC32d0F15873a02163e7E500671a4ffcD",
+    "symbol": "MKR (1)",
+    "decimal": 18
+  },
+  {
+    "address": "0x323B5d4C32345ced77393B3530b1EeD0f346429D",
+    "symbol": "MLN",
+    "decimal": 18
+  },
+  {
+    "address": "0xB18845c260F680d5B9D84649638813E342E4F8C9",
+    "symbol": "REP",
+    "decimal": 18
+  },
+  {
+    "address": "0xc57538846Ec405Ea25Deb00e0f9B29a432D53507",
+    "symbol": "RLC",
+    "decimal": 9
+  },
+  {
+    "address": "0x4A6e6C3868A279e1D9047B42C3fB356FF4680003",
+    "symbol": "TIB",
+    "decimal": 18
+  },
+  {
+    "address": "0x6Ff6C0Ff1d68b964901F986d4C9FA3ac68346570",
+    "symbol": "ZRX",
+    "decimal": 18
   }
 ]

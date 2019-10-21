@@ -78,7 +78,9 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
   }
 
   private handleSelectAddressFromBook = (ev: React.FormEvent<HTMLInputElement>) => {
-    const { currentTarget: { value: addressFromBook } } = ev;
+    const {
+      currentTarget: { value: addressFromBook }
+    } = ev;
     this.setState({ addressFromBook }, this.openWallet);
   };
 
@@ -102,8 +104,10 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
   };
 }
 
-export const ViewOnlyDecrypt = connect((state: AppState): StateProps => ({
-  currentAddress: selectors.getCurrentTo(state),
-  isValidAddress: configSelectors.getIsValidAddressFn(state),
-  resolvedAddress: ensSelectors.getResolvedAddress(state)
-}))(ViewOnlyDecryptClass);
+export const ViewOnlyDecrypt = connect(
+  (state: AppState): StateProps => ({
+    currentAddress: selectors.getCurrentTo(state),
+    isValidAddress: configSelectors.getIsValidAddressFn(state),
+    resolvedAddress: ensSelectors.getResolvedAddress(state)
+  })
+)(ViewOnlyDecryptClass);

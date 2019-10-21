@@ -44,9 +44,10 @@ class AmountFieldClass extends Component<Props, {}> {
   };
 }
 
-const AmountField = connect(null, { setCurrentValue: transactionActions.setCurrentValue })(
-  AmountFieldClass
-);
+const AmountField = connect(
+  null,
+  { setCurrentValue: transactionActions.setCurrentValue }
+)(AmountFieldClass);
 
 interface DefaultAmountFieldProps {
   withProps(props: CallbackProps): React.ReactElement<any> | null;

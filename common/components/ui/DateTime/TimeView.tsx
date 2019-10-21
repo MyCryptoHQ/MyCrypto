@@ -38,7 +38,7 @@ export default class DateTimePickerTime extends Component<Props, State> {
 
   public calculateState(props: Props): State {
     const date = props.selectedDate || props.viewDate;
-    const counters = [];
+    const counters: string[] = [];
 
     const { timeFormat } = this.props;
 
@@ -91,7 +91,7 @@ export default class DateTimePickerTime extends Component<Props, State> {
         typeof timeFormat === 'string' &&
         timeFormat.toLowerCase().indexOf(' a') !== -1)
     ) {
-      value = (value - 1) % 12 + 1;
+      value = ((value - 1) % 12) + 1;
 
       if (value === 0) {
         value = 12;
@@ -215,7 +215,7 @@ export default class DateTimePickerTime extends Component<Props, State> {
     this.setState(this.calculateState(this.props));
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     this.setState(this.calculateState(nextProps));
   }
 
