@@ -1,16 +1,11 @@
-import { shepherd, redux } from 'mycrypto-shepherd';
+import { IShepherd } from 'mycrypto-shepherd/dist/lib/types/api';
 import { IProviderConfig } from 'mycrypto-shepherd/dist/lib/ducks/providerConfigs';
 
 import { NodeConfig } from 'types/node';
-import { tokenBalanceHandler } from './tokenBalanceProxy';
-import { NODE_CONFIGS, makeNodeName } from './configs';
+import { makeNodeName } from './configs';
 import { INode } from '.';
 
 type DeepPartial<T> = Partial<{ [key in keyof T]: Partial<T[key]> }>;
-const { selectors, store } = redux;
-const {
-  providerBalancerSelectors: { balancerConfigSelectors }
-} = selectors;
 
 export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): IProviderConfig => {
   const defaultConfig: IProviderConfig = {
@@ -48,21 +43,19 @@ export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): 
   };
 };
 
+// All of the code in this file is non-working legacy, removed for typechecking reasons
+/* tslint:disable */
+let shepherd: IShepherd;
 let shepherdProvider: INode;
-shepherd
-  .init({ queueTimeout: 10000 })
-  .then(
-    provider => (shepherdProvider = (new Proxy(provider, tokenBalanceHandler) as any) as INode)
-  );
+/* tslint:enable */
 
-export const getShepherdManualMode = () => balancerConfigSelectors.getManualMode(store.getState());
+export const getShepherdManualMode = () => undefined;
 
-export const getShepherdOffline = () => balancerConfigSelectors.isOffline(store.getState());
+export const getShepherdOffline = () => undefined;
 
-export const getShepherdNetwork = () => balancerConfigSelectors.getNetwork(store.getState());
+export const getShepherdNetwork = () => undefined;
 
-export const getShepherdPending = () =>
-  balancerConfigSelectors.isSwitchingNetworks(store.getState());
+export const getShepherdPending = () => undefined;
 
 const autoNodeSuffix = 'auto';
 const web3NodePrefix = 'WEB3_';
@@ -72,32 +65,6 @@ export const isAutoNode = (nodeName: string) =>
   nodeName.endsWith(autoNodeSuffix) || nodeName === 'web3';
 export const isAutoNodeConfig = (node: NodeConfig) => !node.isCustom && node.isAuto;
 export const makeAutoNodeName = (network: string) => makeNodeName(network, autoNodeSuffix);
-
-/**
- * Assemble shepherd providers from node configs. Includes pseudo-configs
- */
-const WEB3_NETWORKS = ['ETH', 'Ropsten', 'Kovan', 'Rinkeby', 'ETC', 'Goerli'];
-Object.entries(NODE_CONFIGS).forEach(([network, nodes]) => {
-  const nodeProviderConf = makeProviderConfig({ network });
-  const web3ProviderConf = WEB3_NETWORKS.includes(network)
-    ? makeProviderConfig({
-        network: makeWeb3Network(network),
-        supportedMethods: {
-          sendRawTx: false,
-          sendTransaction: false,
-          signMessage: false,
-          getNetVersion: false
-        }
-      })
-    : null;
-
-  nodes.forEach(n => {
-    shepherd.useProvider(n.type, n.name, nodeProviderConf, n.url);
-    if (web3ProviderConf) {
-      shepherd.useProvider(n.type, `web3_${n.name}`, web3ProviderConf, n.url);
-    }
-  });
-});
 
 export { shepherdProvider, shepherd };
 export * from './INode';
