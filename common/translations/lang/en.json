@@ -263,7 +263,6 @@
     "SWAP_RECEIVE_AMOUNT": "Receive Amount",
     "SWAP_START_ANOTHER": "Start Another Swap",
     "SWAP_ASSETS_TITLE": "Swap Assets",
-    "SWAP_ASSETS_DESC": "How much do you want to send and receive?",
     "SWAP_ACCOUNT_SELECT_DESC": "Where will you be sending your $fromAsset from? You will receive your $toAsset back to the same address after the swap.",
     "SWAP_CONFIRM_TITLE": "Confirm Swap",
     "SWAP_ALLOWANCE_TITLE": "Set allowance",

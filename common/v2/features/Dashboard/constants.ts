@@ -1,9 +1,10 @@
 import { ROUTE_PATHS, EXT_URLS } from 'v2/config';
 import { Action } from './types';
+import { translateRaw } from 'translations';
 
 // Legacy
 import buyIcon from 'common/assets/images/icn-buy.svg';
-// import swapIcon from 'common/assets/images/icn-swap.svg';
+import swapIcon from 'common/assets/images/icn-swap.svg';
 import sendIcon from 'common/assets/images/icn-send.svg';
 import receiveIcon from 'common/assets/images/icn-receive.svg';
 import hardwareWalletIcon from 'common/assets/images/icn-hardware-wallet.svg';
@@ -15,12 +16,12 @@ export const actions: Action[] = [
     link: ROUTE_PATHS.BUY.path,
     description: 'Purchase New Assets'
   },
-  // {
-  //   icon: swapIcon,
-  //   title: 'Swap Assets',
-  //   link: ROUTE_PATHS.SWAP.path,
-  //   description: 'Exchange Assets for Other Assets'
-  // },
+  {
+    icon: swapIcon,
+    title: translateRaw('SWAP_ASSETS_TITLE'),
+    link: ROUTE_PATHS.SWAP.path,
+    description: 'Exchange Assets for Other Assets'
+  },
   {
     icon: sendIcon,
     title: 'Send Assets',

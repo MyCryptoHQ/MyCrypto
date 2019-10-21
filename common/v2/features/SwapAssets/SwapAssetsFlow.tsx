@@ -142,7 +142,6 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
   const steps: TStep[] = [
     {
       title: translateRaw('SWAP_ASSETS_TITLE'),
-      description: translateRaw('SWAP_ASSETS_DESC'),
       component: SwapAssets
     },
     {
