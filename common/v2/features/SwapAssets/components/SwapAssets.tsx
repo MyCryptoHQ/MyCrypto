@@ -181,7 +181,6 @@ export default function SwapAssets(props: Props) {
             value={fromAmount}
             placeholder="0.00"
             onChange={handleFromAmountChanged}
-            type="number"
             height={'54px'}
             isLoading={isCalculatingFromAmount}
           />
@@ -201,7 +200,6 @@ export default function SwapAssets(props: Props) {
             value={toAmount}
             placeholder="0.00"
             onChange={handleToAmountChanged}
-            type="number"
             height={'54px'}
             isLoading={isCalculatingToAmount}
           />
