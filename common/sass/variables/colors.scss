@@ -4,6 +4,11 @@ $brand-success: #5dba5a;
 $brand-warning: #ff9800;
 $brand-danger: #db5846;
 
+$greyish-brown: #424242;
+$dark-slate-blue: #163150;
+$bright-sky-blue: #1eb8e7;
+$silver: #f7f7f7;
+
 $dark-rgb: 0, 0, 0;
 $light-rgb: 255, 255, 255;
 
@@ -18,7 +23,6 @@ $gray-lightest: #fafafa;
 $theme-light: (
   dark-rgb: $dark-rgb,
   light-rgb: $light-rgb,
-
   gray-base: $gray-base,
   gray-darker: $gray-darker,
   gray-dark: $gray-dark,
@@ -26,58 +30,46 @@ $theme-light: (
   gray-light: $gray-light,
   gray-lighter: $gray-lighter,
   gray-lightest: $gray-lightest,
-
   brand-primary: $brand-primary,
   brand-primary-dark: darken($brand-primary, 6%),
   brand-primary-darker: darken($brand-primary, 12%),
   brand-primary-light: lighten($brand-primary, 6%),
   brand-primary-lighter: lighten($brand-primary, 12%),
-
   brand-success: $brand-success,
   brand-success-dark: darken($brand-success, 6%),
   brand-success-darker: darken($brand-success, 12%),
   brand-success-light: lighten($brand-success, 6%),
   brand-success-lighter: lighten($brand-success, 12%),
-
   brand-info: $brand-info,
   brand-info-dark: darken($brand-info, 6%),
   brand-info-darker: darken($brand-info, 12%),
   brand-info-light: lighten($brand-info, 6%),
   brand-info-lighter: lighten($brand-info, 12%),
-
   brand-warning: $brand-warning,
   brand-warning-dark: darken($brand-warning, 6%),
   brand-warning-darker: darken($brand-warning, 12%),
   brand-warning-light: lighten($brand-warning, 6%),
   brand-warning-lighter: lighten($brand-warning, 12%),
-
   brand-danger: $brand-danger,
   brand-danger-dark: darken($brand-danger, 6%),
   brand-danger-darker: darken($brand-danger, 12%),
   brand-danger-light: lighten($brand-danger, 6%),
   brand-danger-lighter: lighten($brand-danger, 12%),
-
   white-clear: rgba(#fff, 0.8),
   white-clearer: rgba(#fff, 0.7),
   white-clearest: rgba(#fff, 0.6),
-
   body-bg: $gray-lightest,
   pane-bg: #fff,
-
   footer-bg: $brand-info,
   footer-border: $brand-primary,
-
   text-color: $gray-dark,
   text-color-inverted: #fff,
-
   link-color: $brand-primary,
   link-hover-color: darken($brand-primary, 10%),
-
   tab-color: $brand-info,
   tab-border: #ececec,
   tab-active-color: $brand-primary,
   tab-active-border: $brand-primary,
-
   control-bg: #fff,
   control-color: $gray-dark,
   control-border: #e5ecf3,
@@ -87,18 +79,14 @@ $theme-light: (
   control-placeholder: rgba($gray-dark, 0.3),
   control-inset-shadow: rgba($gray-base, 0.03),
   control-addon-bg: $gray-lighter,
-
   loader-light: #fff,
   loader-dark: $brand-info,
-
   code-bg: #eff5fe,
   code-border: #e5ecf3,
-
   tooltip-bg: $gray-darker,
   tooltip-color: #fff,
-
   component-active-color: #fff,
-  component-active-bg: $brand-primary,
+  component-active-bg: $brand-primary
 );
 
 $gray-base: #b8bfd0;
@@ -106,13 +94,12 @@ $gray-darker: #8e97a9;
 $gray-dark: #4d5463;
 $gray: #393f4c;
 $gray-light: #333842;
-$gray-lighter: #282C34;
-$gray-lightest: #21252B;
+$gray-lighter: #282c34;
+$gray-lightest: #21252b;
 
 $theme-dark: (
   dark-rgb: $light-rgb,
   light-rgb: $dark-rgb,
-
   gray-base: $gray-base,
   gray-darker: $gray-darker,
   gray-dark: $gray-dark,
@@ -120,79 +107,63 @@ $theme-dark: (
   gray-light: $gray-light,
   gray-lighter: $gray-lighter,
   gray-lightest: $gray-lightest,
-
   brand-primary: lighten($brand-primary, 6%),
   brand-primary-dark: $brand-primary,
   brand-primary-darker: darken($brand-primary, 6%),
   brand-primary-light: lighten($brand-primary, 12%),
   brand-primary-lighter: lighten($brand-primary, 16%),
-
   brand-success: lighten($brand-success, 6%),
   brand-success-dark: $brand-success,
   brand-success-darker: darken($brand-success, 6%),
   brand-success-light: lighten($brand-success, 12%),
   brand-success-lighter: lighten($brand-success, 16%),
-
   brand-info: lighten($brand-info, 6%),
   brand-info-dark: $brand-info,
   brand-info-darker: darken($brand-info, 6%),
   brand-info-light: lighten($brand-info, 12%),
   brand-info-lighter: lighten($brand-info, 16%),
-
   brand-warning: lighten($brand-warning, 6%),
   brand-warning-dark: $brand-warning,
   brand-warning-darker: darken($brand-warning, 6%),
   brand-warning-light: lighten($brand-warning, 12%),
   brand-warning-lighter: lighten($brand-warning, 16%),
-
   brand-danger: saturate(lighten($brand-danger, 6%), 7%),
   brand-danger-dark: saturate($brand-danger, 7%),
   brand-danger-darker: saturate(darken($brand-danger, 6%), 7%),
   brand-danger-light: saturate(lighten($brand-danger, 12%), 7%),
   brand-danger-lighter: saturate(lighten($brand-danger, 16%), 7%),
-
   white-clear: rgba($gray-lightest, 0.9),
   white-clearer: rgba($gray-lightest, 0.8),
   white-clearest: rgba($gray-lightest, 0.7),
-
   body-bg: $gray-lightest,
   pane-bg: $gray-lighter,
-
   footer-bg: $gray-light,
   footer-border: $gray-light,
-
   text-color: #fff,
   text-color-inverted: #fff,
-
   link-color: lighten($brand-primary, 10%),
   link-hover-color: lighten($brand-primary, 20%),
-
   tab-color: $gray-base,
   tab-border: $gray-base,
   tab-active-color: #fff,
   tab-active-border: #fff,
-
   control-bg: $gray,
-  control-color: #FFF,
+  control-color: #fff,
   control-border: $gray-dark,
   control-disabled-bg: rgba($gray-light, 0.5),
   control-disabled-color: #aaa,
   control-disabled-border: rgba($gray-light, 0.5),
-  control-placeholder: rgba(#FFF, 0.3),
-  control-inset-shadow: rgba(#FFF, 0.03),
+  control-placeholder: rgba(#fff, 0.3),
+  control-inset-shadow: rgba(#fff, 0.03),
   control-addon-bg: $gray-dark,
-
   loader-light: #fff,
   loader-dark: #fff,
-
   code-bg: $gray,
   code-border: $gray-dark,
-
   tooltip-bg: #1c1c1c,
-  tooltip-color: #FFF,
-
+  tooltip-color: #fff,
   component-active-color: $gray-light,
-  component-active-bg: $brand-primary,
+  component-active-bg: $brand-primary
 );
 
 $themes: (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage, FormikErrors } from 'formik';
+import { Formik, Form, Field, ErrorMessage, FormikErrors, FieldProps, FormikActions } from 'formik';
 
 import { donationAddressHash } from 'v2/config';
 import { addressValidatorHash } from 'v2/utils';
@@ -7,20 +7,23 @@ import { addressValidatorHash } from 'v2/utils';
 // Legacy
 import { Warning } from 'components/ui';
 
-interface Values {
-  address: string;
-}
+const initialValues = {
+  address: ''
+};
 
 interface Props {
   addressInputRef: React.RefObject<any>;
   asset: string;
-  onSubmit(values: any, bag: any): void;
+  onSubmit(values: typeof initialValues, bag: FormikActions<typeof initialValues>): void;
 }
 
-const validate = (values: Values, asset: string): FormikErrors<Values> => {
+const validate = (
+  values: typeof initialValues,
+  asset: string
+): FormikErrors<typeof initialValues> => {
   const validator = addressValidatorHash[asset];
   const { address } = values;
-  const errors: FormikErrors<Values> = {};
+  const errors: FormikErrors<typeof initialValues> = {};
 
   // Address
   if (!validator(address)) {
@@ -33,12 +36,10 @@ const validate = (values: Values, asset: string): FormikErrors<Values> => {
 export default function ShapeShiftAddressForm({ addressInputRef, asset, onSubmit }: Props) {
   return (
     <Formik
-      initialValues={{
-        address: ''
-      }}
-      validate={(values: any) => validate(values, asset)}
+      initialValues={initialValues}
+      validate={(values: typeof initialValues) => validate(values, asset)}
       onSubmit={onSubmit}
-      render={(props: any) => (
+      render={props => (
         <section className="ShapeShiftWidget">
           <Form>
             <fieldset className="dark">
@@ -46,7 +47,7 @@ export default function ShapeShiftAddressForm({ addressInputRef, asset, onSubmit
               <section className="ShapeShiftWidget-input-wrapper">
                 <Field
                   name="address"
-                  render={({ field, form }: any) => (
+                  render={({ field, form }: FieldProps<typeof initialValues>) => (
                     <input
                       ref={addressInputRef}
                       className="ShapeShiftWidget-input smallest"

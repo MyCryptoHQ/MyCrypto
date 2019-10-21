@@ -1,3 +1,6 @@
+// tslint:disable:no-console
+// See https://github.com/MyCryptoHQ/MyCrypto/pull/448 for more info
+
 import { spawn } from 'child_process';
 import * as path from 'path';
 import * as fs from 'fs';

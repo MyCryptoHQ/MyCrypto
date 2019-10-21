@@ -1,5 +1,6 @@
-export * from './Analytics';
-export * from './API';
-export * from './Cache';
+export * from './ApiService';
+export * from './EthService';
 export * from './ShapeShift';
-export * from './Storage';
+export * from './Store';
+export { RatesContext, RatesProvider } from './RatesProvider';
+export { DevModeContext, DevModeProvider, useDevMode } from './DevModeProvider';

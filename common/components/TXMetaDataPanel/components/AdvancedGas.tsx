@@ -122,6 +122,7 @@ class AdvancedGas extends React.Component<Props, State> {
             <div className="AdvancedGas-gas-limit">
               <GasLimitField
                 customLabel={translateRaw('OFFLINE_STEP2_LABEL_4')}
+                disabled={scheduling}
                 hideGasCalculationSpinner={scheduling}
               />
             </div>

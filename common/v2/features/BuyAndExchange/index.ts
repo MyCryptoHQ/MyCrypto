@@ -1,3 +1,3 @@
 export { default as BuyAndExchange } from './BuyAndExchange';
-export { default as buyAndExchangeRoutes } from './routes';
-export * from './components';
+export { ShapeShiftAuthorization } from './ShapeShift';
+export { ZeroEx } from './ZeroEx';

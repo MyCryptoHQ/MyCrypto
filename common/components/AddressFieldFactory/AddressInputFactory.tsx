@@ -43,7 +43,7 @@ interface OwnProps {
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
-const ENSStatus: React.SFC<{
+export const ENSStatus: React.SFC<{
   isLoading: boolean;
   ensAddress: string;
   rawAddress: string;
@@ -119,7 +119,7 @@ class AddressInputFactoryClass extends Component<Props> {
         <div className={inputClassName}>
           <Query
             params={['readOnly']}
-            withQuery={({ readOnly }) =>
+            withQuery={({ readOnly }: { readOnly: any }) =>
               withProps({
                 currentTo,
                 isValid,

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { languages } from 'config';
 import { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
@@ -50,6 +51,9 @@ class LanguageSelect extends Component<Props> {
 
     if (code !== languageSelection) {
       changeLanguage(code);
+      AnalyticsService.instance.track(ANALYTICS_CATEGORIES.SIDEBAR, 'Language changed', {
+        lang: code
+      });
     }
 
     closeSidebar();

@@ -1,0 +1,83 @@
+.Dashboard-mobile {
+  background: #e8eaed;
+  font-weight: 300;
+
+  &-actions {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+
+    &-row {
+      display: flex;
+      margin-bottom: 15px;
+    }
+  }
+  &-divider {
+    height: 1px;
+    width: 100%;
+    background: #ddd;
+  }
+  &-group {
+    display: flex;
+    flex-direction: column;
+
+    @media (min-width: 900px) {
+      flex-direction: row;
+    }
+  }
+  &-walletBreakdown {
+    padding-top: 15px;
+
+    @media (min-width: 900px) {
+      order: 1;
+      flex: 2;
+    }
+  }
+  &-tokenList {
+    @media (min-width: 900px) {
+      order: 0;
+      flex: 1;
+      margin-top: 15px;
+    }
+  }
+}
+
+.Dashboard-desktop {
+  display: block;
+  background: #e8eaed;
+  font-weight: 300;
+  width: 100%;
+  &-top {
+    display: flex;
+    align-items: flex-start;
+
+    &-left {
+      flex: 1;
+      min-width: 287px;
+      max-width: 400px;
+      margin-right: 21px;
+
+      &-heading {
+        margin-top: 0;
+        margin-bottom: 24px;
+        font-weight: bold;
+      }
+    }
+    &-right {
+      flex: 2;
+      min-width: 500px;
+      > div {
+        margin-bottom: 18px;
+      }
+    }
+  }
+  &-modifiedPanel {
+    padding: 0;
+
+    .DashboardPanel-headingWrapper {
+      padding: 15px;
+    }
+  }
+}

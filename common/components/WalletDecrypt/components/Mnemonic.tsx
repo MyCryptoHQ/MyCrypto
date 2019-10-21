@@ -124,7 +124,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
       const seed = mnemonicToSeed(formattedPhrase, pass).toString('hex');
       this.setState({ seed });
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 

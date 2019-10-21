@@ -3,6 +3,7 @@ import { MapStateToProps, connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
 import { NetworkConfig } from 'types/network';
 import { getKeyByValue } from 'utils/helpers';
@@ -133,6 +134,9 @@ class Header extends Component<Props, State> {
     const key = getKeyByValue(languages, value);
     if (key) {
       this.props.changeLanguage(key);
+      AnalyticsService.instance.track(ANALYTICS_CATEGORIES.SIDEBAR, 'Language changed', {
+        lang: key
+      });
     }
   };
 

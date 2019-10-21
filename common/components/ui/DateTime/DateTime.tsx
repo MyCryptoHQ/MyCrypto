@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import CalendarContainer from './CalendarContainer';
 import TimeView from './TimeView';
 import { ClickableWrapper } from './ClickableWrapper';
@@ -267,7 +267,7 @@ export default class DateTime extends Component<Props, State> {
     return formats as DatepickerFormats;
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const formats = this.getFormats(nextProps);
 
     let updatedState: Partial<State> = {};
@@ -538,7 +538,7 @@ export default class DateTime extends Component<Props, State> {
 
   public localMoment(date?: any, format?: any, props?: any) {
     props = props || this.props;
-    let m = null;
+    let m: moment.Moment;
 
     if (props.utc) {
       m = moment.utc(date, format, props.strictParsing);
