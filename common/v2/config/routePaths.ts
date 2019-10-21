@@ -96,16 +96,6 @@ const PATHS: IRoutePath[] = [
     path: '/swap'
   },
   {
-    name: 'SWAP_SHAPESHIFT',
-    title: 'Buy and Exchange | ShapeShift',
-    path: '/swap/shapeshift'
-  },
-  {
-    name: 'SWAP_0X',
-    title: 'Buy and Exchange | 0x Instant',
-    path: '/swap/0x'
-  },
-  {
     name: 'SIGN_MESSAGE',
     title: 'Sign Message',
     path: '/sign-message'

@@ -1,5 +1,5 @@
 import '@babel/polyfill';
-import { app, ipcMain, BrowserWindow } from 'electron';
+import { app } from 'electron';
 import { registerServer } from 'shared/enclave/server';
 import getWindow from './window';
 
@@ -21,28 +21,6 @@ app.on('activate', () => {
 // Create main BrowserWindow when electron is ready
 app.on('ready', () => {
   getWindow();
-
-  ipcMain.on('shapeshift-authorize', (_: any, url: string) => {
-    const window = new BrowserWindow({
-      backgroundColor: '#fbfbfb',
-      width: 1220,
-      height: process.platform === 'darwin' ? 680 : 720,
-      minWidth: 480,
-      minHeight: 400,
-      titleBarStyle: 'hidden',
-      webPreferences: {
-        devTools: true,
-        nodeIntegration: true,
-        contextIsolation: false
-      }
-    });
-
-    window.loadURL(url);
-  });
-
-  ipcMain.on('shapeshift-token-retrieved', (_: any, token: string) =>
-    getWindow().webContents.send('shapeshift-set-token', token)
-  );
 });
 
 // Register enclave protocol
