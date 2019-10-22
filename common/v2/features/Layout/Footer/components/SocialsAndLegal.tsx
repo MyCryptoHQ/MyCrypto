@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { socialMediaLinks, VERSION } from 'config';
 import { translateRaw } from 'translations';
-import { NewTabLink } from 'components/ui';
-import DisclaimerModal from 'components/DisclaimerModal';
+import { DisclaimerModal, NewTabLink } from 'v2/components';
 import './SocialsAndLegal.scss';
 
 const SocialMediaLink = ({ link, text }: { link: string; text: string }) => {

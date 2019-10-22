@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 
 import translate from 'translations';
-import { NewTabLink } from 'components/ui';
 import { WALLETS_CONFIG, IWalletConfig } from 'v2/config';
 import { WalletId, FormData } from 'v2/types';
-import { InlineErrorMsg } from 'v2/components';
+import { InlineErrorMsg, NewTabLink } from 'v2/components';
 import { WalletFactory } from 'v2/services/WalletService';
 import { FormDataActionType as ActionType } from 'v2/features/AddAccount/types';
 import './Web3Provider.scss';

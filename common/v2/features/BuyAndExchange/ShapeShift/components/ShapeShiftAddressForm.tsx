@@ -5,7 +5,7 @@ import { donationAddressHash } from 'v2/config';
 import { addressValidatorHash } from 'v2/utils';
 
 // Legacy
-import { Warning } from 'components/ui';
+import { Warning } from 'v2/components';
 
 const initialValues = {
   address: ''
