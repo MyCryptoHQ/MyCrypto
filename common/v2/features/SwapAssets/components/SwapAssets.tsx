@@ -65,9 +65,14 @@ export default function SwapAssets(props: Props) {
 
   const [isCalculatingFromAmount, setIsCalculatingFromAmount] = useState(false);
   const [isCalculatingToAmount, setIsCalculatingToAmount] = useState(false);
-
   const [fromAmountError, setFromAmountError] = useState();
   const [toAmountError, setToAmountError] = useState();
+
+  // show only unused assets
+  const filteredAssets =
+    !toAsset || !fromAsset
+      ? assets
+      : assets.filter(x => fromAsset.symbol !== x.symbol && toAsset.symbol !== x.symbol);
 
   // SEND AMOUNT CHANGED
   const handleFromAmountChanged = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -183,7 +188,7 @@ export default function SwapAssets(props: Props) {
       <FormItem>
         <AssetSelectDropdown
           selectedAsset={fromAsset}
-          assets={assets}
+          assets={filteredAssets}
           onChange={handleFromAssetSelected}
           label={translateRaw('SWAP_SELECT_ASSET')}
           fluid={true}
@@ -203,7 +208,7 @@ export default function SwapAssets(props: Props) {
         </InputWrapper>
         <AssetSelectDropdown
           selectedAsset={fromAsset}
-          assets={assets}
+          assets={filteredAssets}
           label={translateRaw('ASSET')}
           showOnlyTicker={true}
           disabled={true}
@@ -223,7 +228,7 @@ export default function SwapAssets(props: Props) {
         </InputWrapper>
         <AssetSelectDropdown
           selectedAsset={toAsset}
-          assets={assets}
+          assets={filteredAssets}
           label={translateRaw('ASSET')}
           onChange={setToAsset}
           showOnlyTicker={true}

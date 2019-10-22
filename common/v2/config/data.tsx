@@ -57,8 +57,6 @@ export const safeTReferralURL =
 export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mycrypto';
 // TODO - Update url, this is MEW's
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';
-// TODO - add the real referral url once you know it
-export const shapeshiftReferralURL = 'https://shapeshift.io';
 export const ethercardReferralURL =
   'https://ether.cards/?utm_source=mycrypto&utm_medium=cpm&utm_campaign=site';
 export const keepkeyReferralURL = 'https://keepkey.go2cloud.org/aff_c?offer_id=1&aff_id=4086';

@@ -69,11 +69,7 @@ export const makeAllowanceTransaction = async (
   const inputData = `${funcHash}${bytes}`;
 
   const { fast } = await fetchGasPriceEstimates(network.id);
-  let gasPrice = hexWeiToString(inputGasPriceToHex(fast.toString()));
-
-  if (trade.metadata.gasPrice) {
-    gasPrice = trade.metadata.gasPrice;
-  }
+  const gasPrice = hexWeiToString(inputGasPriceToHex(fast.toString()));
 
   const transaction: any = {
     to,

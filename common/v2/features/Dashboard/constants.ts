@@ -1,5 +1,6 @@
 import { ROUTE_PATHS, EXT_URLS } from 'v2/config';
 import { Action } from './types';
+import { translateRaw } from 'translations';
 
 // Legacy
 import buyIcon from 'common/assets/images/icn-buy.svg';
@@ -17,7 +18,7 @@ export const actions: Action[] = [
   },
   {
     icon: swapIcon,
-    title: 'Swap Assets',
+    title: translateRaw('SWAP_ASSETS_TITLE'),
     link: ROUTE_PATHS.SWAP.path,
     description: 'Exchange Assets for Other Assets'
   },

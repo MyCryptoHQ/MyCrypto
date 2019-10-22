@@ -20,8 +20,6 @@ import {
   SendAssets,
   ReceiveAssets,
   SwapAssetsFlow,
-  ShapeShiftAuthorization,
-  ZeroEx,
   Home,
   SignAndVerifyMessage,
   BroadcastTransactionFlow
@@ -150,18 +148,6 @@ export const APP_ROUTES: IAppRoute[] = [
     path: ROUTE_PATHS.SWAP.path,
     exact: true,
     component: SwapAssetsFlow
-  },
-  {
-    name: ROUTE_PATHS.SWAP_SHAPESHIFT.name,
-    title: ROUTE_PATHS.SWAP_SHAPESHIFT.title,
-    path: ROUTE_PATHS.SWAP_SHAPESHIFT.path,
-    component: ShapeShiftAuthorization
-  },
-  {
-    name: ROUTE_PATHS.SWAP_0X.name,
-    title: ROUTE_PATHS.SWAP_0X.title,
-    path: ROUTE_PATHS.SWAP_0X.path,
-    component: ZeroEx
   },
   {
     name: ROUTE_PATHS.SIGN_MESSAGE.name,

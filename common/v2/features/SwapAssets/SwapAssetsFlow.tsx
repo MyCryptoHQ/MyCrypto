@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { ExtendedContentPanel } from 'v2/components';
-import { SwapAssets, SelectAddress, ConfirmSwap, SwapTransactionReceipt } from './components';
+import {
+  SwapAssets,
+  SelectAddress,
+  ConfirmSwap,
+  SwapTransactionReceipt,
+  SetAllowance
+} from './components';
 import { ROUTE_PATHS } from 'v2/config';
 import { ISwapAsset, LAST_CHANGED_AMOUNT } from './types';
 import { StoreAccount, ITxReceipt, ISignedTx, ITxConfig } from 'v2/types';
@@ -28,8 +34,8 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
   const [step, setStep] = useState(0);
   const [fromAsset, setFromAsset] = useState<ISwapAsset>();
   const [toAsset, setToAsset] = useState<ISwapAsset>();
-  const [fromAmount, setFromAmount] = useState();
-  const [toAmount, setToAmount] = useState();
+  const [fromAmount, setFromAmount] = useState('');
+  const [toAmount, setToAmount] = useState('');
   const [account, setAccount] = useState<StoreAccount>();
   const [dexTrade, setDexTrade] = useState();
   const [rawTransaction, setRawTransaction] = useState<ITxConfig>();
@@ -40,6 +46,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     LAST_CHANGED_AMOUNT.FROM
   );
   const [txConfig, setTxConfig] = useState();
+  const [isSettingAllowance, setSettingAllowance] = useState<boolean>(false);
 
   const goToFirstStep = () => {
     setStep(0);
@@ -79,6 +86,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     }
 
     // wait for allowance tx to be mined
+    setSettingAllowance(true);
     await provider.waitForTransaction(allowanceTxHash);
 
     const rawAllowanceTransaction = await makeTradeTransactionFromDexTrade(dexTrade, account);
@@ -90,6 +98,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     );
     setTxConfig(mergedTxConfig);
     setRawTransaction(rawAllowanceTransaction);
+    setSettingAllowance(false);
     goToNextStep();
   };
 
@@ -133,7 +142,6 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
   const steps: TStep[] = [
     {
       title: translateRaw('SWAP_ASSETS_TITLE'),
-      description: translateRaw('SWAP_ASSETS_DESC'),
       component: SwapAssets
     },
     {
@@ -152,7 +160,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
       ? [
           {
             title: translateRaw('SWAP_ALLOWANCE_TITLE'),
-            component: account && WALLET_STEPS[account.wallet],
+            component: SetAllowance,
             action: onAllowanceSigned
           }
         ]
@@ -214,6 +222,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         setTxConfig={setTxConfig}
         senderAccount={account}
         network={account && account.network}
+        isSettingAllowance={isSettingAllowance}
       />
     </ExtendedContentPanel>
   );
