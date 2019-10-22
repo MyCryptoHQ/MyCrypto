@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Button } from '@mycrypto/ui';
 
-import { Spinner, NewTabLink } from 'components/ui';
+import { Spinner, NewTabLink } from 'v2/components';
 import translate, { translateRaw } from 'translations';
 import { WalletId, FormData } from 'v2/types';
 import { getDPath, getDPaths } from 'v2/services';

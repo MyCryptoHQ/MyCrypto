@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 
 import translate, { translateRaw } from 'translations';
-import { TogglablePassword } from 'components';
-import { Input } from 'components/ui';
+import { TogglablePassword, Input } from 'v2/components';
 
 import { WalletId } from 'v2/types';
 import { isValidEncryptedPrivKey, isValidPrivKey, stripHexPrefix } from 'v2/services/EthService';

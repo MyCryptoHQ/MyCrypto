@@ -4,8 +4,7 @@ import { Tooltip } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'translations';
 import { formatMnemonic } from 'utils/formatters';
-import { TogglablePassword } from 'components';
-import { Input } from 'components/ui';
+import { TogglablePassword, Input } from 'v2/components';
 
 import { FormData, WalletId } from 'v2/types';
 import { getDPath, getDPaths } from 'v2/services/EthService';

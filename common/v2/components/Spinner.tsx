@@ -17,3 +17,5 @@ export const Spinner = ({ size = 'x1', light = false }: SpinnerProps) => {
     </svg>
   );
 };
+
+export default Spinner;
