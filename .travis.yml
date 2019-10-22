@@ -1,6 +1,4 @@
-
 language: node_js
-
 matrix:
   include:
     - os: osx
@@ -8,48 +6,16 @@ matrix:
       env:
         - ELECTRON_CACHE=$HOME/.cache/electron
         - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
-
-    - os: linux
-      dist: trusty
-      sudo: required
-      services: docker
-
-cache:
-  yarn: true
-  directories:
-    - node_modules
-    - $HOME/.cache/electron
-    - $HOME/.cache/electron-builder
-
-before_cache:
-  - |
-    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      rm -rf $HOME/.cache/electron-builder/wine
-    fi
-
-before_install:
-  - |
-    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      export CHROME_BIN=chromium-browser
-      export DISPLAY=:99.0
-      sh -e /etc/init.d/xvfb start
-      # uncomment once integration tests are included in CI
-      # docker pull dternyak/eth-priv-to-addr:latest
-      sudo apt-get install libusb-1.0
-    fi
-
+  fast_finish: true
 install:
   - yarn --silent
-
 before_script:
-  - chmod +x ./travis-scripts/test-{linux,osx}.sh
-
+  - chmod +x ./travis-scripts/test-osx.sh
 script:
-  - ./travis-scripts/test-linux.sh
-  - ./travis-scripts/test-osx.sh
-
-
+  - './travis-scripts/test-osx.sh'
 notifications:
   email:
     on_success: never
     on_failure: never
+  slack:
+    secure: lVqvDVG3rTCjlpMtnW5Ca4lLLzO2ZvTB6feiQTpcIIu+GINr2q9KcfWUxLt/E5wU371Gua6+mb5SRUCiD/eO+4Dc9Cz+mZLm5wfDjC9Zk6tI1T7AvNfwH/M7bf1PIAPPghXkaVuNN9pcJ7FAd6/sun08syUYEEb94xFePaU2f5uKBV4TqbCIJvGrK3yhsGf8b+GDz0o1+YoO/UQ6WyCisQdgIk2Op09vFAmspZnGXp5tlhhXz1iTHzp54VUAa27NmsoGyEoY55OKSDA6vQkpLi+BLVXo1GyJA/2K+jJIIunyKyxgWwXJTaM4gNBaorfoiGFaUiK078wRkAOeCXJmrQfrXzz9bgFIQV//vxW3j+xU0wa+zRORSFnDfwzSFnliJ168UBlD0eKHT+Z+XADI4wREZtQj5K8IW/Ggu8PI0NCuWPAyfaF2sJUeQjVvVvc9hNRu+sAE7HD36e2/e4/DS25cBKPKIdwokCk+CxuxRAGcWgkWRk3vxsNcOwVrye7IdZd2297Q1xaN4ZKVNg9Fc2u/NLGc2G+xXFYG6OlfBXNn4+uD85xQp4iJ7S8cPUKGNUTAY7JQ9gN2lfEswm9XXv80zkl7IMj1yFgPcl44eb9liG4GdcAHGdDe3YKz101GdQIyJdviHxt29kHXIrMOy5jEK/p+vNlx0VgIeQ6/+JY=

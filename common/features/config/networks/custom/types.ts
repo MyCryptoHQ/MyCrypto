@@ -1,21 +1,21 @@
 import { CustomNetworkConfig } from 'types/network';
 
-export enum CONFIG_NETWORKS_CUSTOM {
+export enum ConfigNetworksCustomActions {
   ADD = 'CONFIG_NETWORKS_CUSTOM_ADD',
   REMOVE = 'CONFIG_NETWORKS_CUSTOM_REMOVE'
 }
 
-export interface CustomNetworksState {
+export interface ConfigCustomNetworksState {
   [customNetworkId: string]: CustomNetworkConfig;
 }
 
 export interface AddCustomNetworkAction {
-  type: CONFIG_NETWORKS_CUSTOM.ADD;
+  type: ConfigNetworksCustomActions.ADD;
   payload: CustomNetworkConfig;
 }
 
 export interface RemoveCustomNetworkAction {
-  type: CONFIG_NETWORKS_CUSTOM.REMOVE;
+  type: ConfigNetworksCustomActions.REMOVE;
   payload: string;
 }
 

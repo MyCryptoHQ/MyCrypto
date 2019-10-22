@@ -9,7 +9,6 @@ import { Address, Wei } from 'libs/units';
 import configuredStore from 'features/store';
 import * as derivedSelectors from 'features/selectors';
 import * as configSelectors from 'features/config/selectors';
-import { scheduleActions } from 'features/schedule';
 import { transactionFieldsActions, transactionFieldsSelectors } from '../fields';
 import * as transactionActions from '../actions';
 import * as transactionSelectors from '../selectors';
@@ -321,16 +320,6 @@ describe('Meta Sagas', () => {
           });
 
           sharedLogicB(gens.gen, input, raw, value, currentUnit, isValid);
-
-          it('should put setSchedulingToogle', () => {
-            expect(gens.gen.next(to).value).toEqual(
-              put(
-                scheduleActions.setSchedulingToggle({
-                  value: false
-                })
-              )
-            );
-          });
 
           it('should put swapEtherToToken', () => {
             const data = encodeTransfer(to.value, value);

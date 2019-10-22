@@ -5,6 +5,7 @@ import EthTx from 'ethereumjs-tx';
 import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
 import { walletSelectors } from 'features/wallet';
+import { Balance } from 'libs/wallet';
 import {
   transactionNetworkSelectors,
   transactionSignSelectors,
@@ -31,6 +32,7 @@ interface StateProps {
 }
 
 interface OwnProps {
+  balance: Balance;
   onlyTransactionParameters?: boolean;
   signing?: boolean;
   Modal: typeof ConfirmationModal;
@@ -49,7 +51,8 @@ export class SendButtonFactoryClass extends Component<Props> {
       serializedTransaction,
       networkRequestPending,
       validGasPrice,
-      validGasLimit
+      validGasLimit,
+      balance
     } = this.props;
 
     // return signing ? true : signedTx ? true : false
@@ -59,7 +62,11 @@ export class SendButtonFactoryClass extends Component<Props> {
           withOnClick={({ openModal, signer }) =>
             this.props.withProps({
               disabled: signing
-                ? !isFullTransaction || networkRequestPending || !validGasPrice || !validGasLimit
+                ? !isFullTransaction ||
+                  networkRequestPending ||
+                  !validGasPrice ||
+                  !validGasLimit ||
+                  balance.isPending
                 : !!(signing && !serializedTransaction),
               signTx: () => signer(transaction),
               openModal
@@ -74,6 +81,7 @@ export class SendButtonFactoryClass extends Component<Props> {
 
 const mapStateToProps = (state: AppState) => {
   return {
+    balance: state.wallet.balance,
     walletType: walletSelectors.getWalletType(state),
     serializedTransaction: derivedSelectors.getSerializedTransaction(state),
     ...derivedSelectors.getTransaction(state),

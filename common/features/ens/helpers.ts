@@ -2,11 +2,11 @@ import { SagaIterator } from 'redux-saga';
 import { select, apply, call } from 'redux-saga/effects';
 import ethUtil from 'ethereumjs-util';
 
-import networkConfigs from 'libs/ens/networkConfigs';
 import { INode } from 'libs/nodes/INode';
 import ENS from 'libs/ens/contracts';
 import { IDomainData, NameState, getNameHash, IBaseDomainRequest } from 'libs/ens';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
+import { getENSTLD, getENSAddresses } from './selectors';
 
 //#region Make & Decode
 interface Params {
@@ -24,20 +24,32 @@ export function* makeEthCallAndDecode({ to, data, decoder }: Params): SagaIterat
 //#endregion Make & Decode
 
 //#region Mode Map
-const { main } = networkConfigs;
-
 function* nameStateOwned({ deedAddress }: IDomainData<NameState.Owned>, nameHash: string) {
+  const ensAddresses = yield select(getENSAddresses);
+
   // Return the owner's address, and the resolved address if it exists
-  const { ownerAddress }: typeof ENS.deed.owner.outputType = yield call(makeEthCallAndDecode, {
+  // NOTE: THE DEED OWNER IS NOT THE OWNER
+  // CHECK LEGACY.MYCRYPTO.COM FOR THE DIFFERENCE BETWEEN DEED OWNER AND OWNER
+  // THIS WILL CAUSE MASS CONFUSION IF WE USE THIS AS THE 'OWNER' FOR MIGRATING TO NEW REGISTRAR
+  // - TAYLOR
+  const { deedOwnerAddress }: typeof ENS.deed.owner.outputType = yield call(makeEthCallAndDecode, {
     to: deedAddress,
     data: ENS.deed.owner.encodeInput(),
     decoder: ENS.deed.owner.decodeOutput
   });
 
+  const { ownerAddress }: typeof ENS.registry.owner.outputType = yield call(makeEthCallAndDecode, {
+    to: ensAddresses.registry,
+    data: ENS.registry.resolver.encodeInput({
+      node: nameHash
+    }),
+    decoder: ENS.registry.owner.decodeOutput
+  });
+
   const { resolverAddress }: typeof ENS.registry.resolver.outputType = yield call(
     makeEthCallAndDecode,
     {
-      to: main.registry,
+      to: ensAddresses.registry,
       decoder: ENS.registry.resolver.decodeOutput,
       data: ENS.registry.resolver.encodeInput({
         node: nameHash
@@ -57,16 +69,16 @@ function* nameStateOwned({ deedAddress }: IDomainData<NameState.Owned>, nameHash
     resolvedAddress = result.ret;
   }
 
-  return { ownerAddress, resolvedAddress };
+  return { ownerAddress, deedOwnerAddress, resolvedAddress };
 }
 
 function* nameStateReveal({ deedAddress }: IDomainData<NameState.Reveal>): SagaIterator {
-  const { ownerAddress }: typeof ENS.deed.owner.outputType = yield call(makeEthCallAndDecode, {
+  const { deedOwnerAddress }: typeof ENS.deed.owner.outputType = yield call(makeEthCallAndDecode, {
     to: deedAddress,
     data: ENS.deed.owner.encodeInput(),
     decoder: ENS.deed.owner.decodeOutput
   });
-  return { ownerAddress };
+  return { deedOwnerAddress };
 }
 
 interface IModeMap {
@@ -76,7 +88,7 @@ interface IModeMap {
     hash?: Buffer
   ) =>
     | {}
-    | { ownerAddress: string; resolvedAddress: string }
+    | { deedOwnerAddress: string; resolvedAddress: string }
     | { auctionCloseTime: string; revealBidTime: string };
 }
 
@@ -90,17 +102,44 @@ const modeMap: IModeMap = {
 };
 
 export function* resolveDomainRequest(name: string): SagaIterator {
-  const hash = ethUtil.sha3(name);
-  const nameHash = getNameHash(`${name}.eth`);
+  const ensAddresses = yield select(getENSAddresses);
+  const ensTLD = yield select(getENSTLD);
+  const lowercaseName = name.toLowerCase();
+  const splitName = lowercaseName.split('.');
+  let hash: Buffer;
+  const nameHash: string = getNameHash(`${lowercaseName}.${ensTLD}`);
 
+  if (splitName.length === 2) {
+    hash = ethUtil.sha3(splitName[1]);
+  } else {
+    hash = ethUtil.sha3(splitName[0]);
+  }
   const domainData: typeof ENS.auction.entries.outputType = yield call(makeEthCallAndDecode, {
-    to: main.public.ethAuction,
+    to: ensAddresses.public.ethAuction,
     data: ENS.auction.entries.encodeInput({ _hash: hash }),
     decoder: ENS.auction.entries.decodeOutput
   });
   const nameStateHandler = modeMap[domainData.mode];
   const result = yield call(nameStateHandler, domainData, nameHash);
 
+  if (!result.hasOwnProperty('resolvedAddress')) {
+    const { resolverAddress }: typeof ENS.registry.resolver.outputType = yield call(
+      makeEthCallAndDecode,
+      {
+        to: ensAddresses.registry,
+        decoder: ENS.registry.resolver.decodeOutput,
+        data: ENS.registry.resolver.encodeInput({
+          node: nameHash
+        })
+      }
+    );
+    const resolvedAddress: typeof ENS.resolver.addr.outputType = yield call(makeEthCallAndDecode, {
+      to: resolverAddress,
+      data: ENS.resolver.addr.encodeInput({ node: nameHash }),
+      decoder: ENS.resolver.addr.decodeOutput
+    });
+    result.resolvedAddress = resolvedAddress.ret;
+  }
   const returnValue: IBaseDomainRequest = {
     name,
     ...domainData,

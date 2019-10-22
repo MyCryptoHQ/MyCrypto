@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import { getNodeConfig, getSelectedNodeLabel } from 'features/config';
+import { configNodesSelectors, configSelectors } from 'features/config';
 import { DropdownShell } from 'components/ui';
 import NetworkSelector from 'components/NetworkSelector';
 import './NetworkDropdown.scss';
@@ -12,8 +12,8 @@ interface OwnProps {
 }
 
 interface StateProps {
-  node: ReturnType<typeof getNodeConfig>;
-  nodeLabel: ReturnType<typeof getSelectedNodeLabel>;
+  node: ReturnType<typeof configNodesSelectors.getNodeConfig>;
+  nodeLabel: ReturnType<typeof configSelectors.getSelectedNodeLabel>;
 }
 
 type Props = OwnProps & StateProps;
@@ -72,7 +72,9 @@ class NetworkDropdown extends React.Component<Props> {
   };
 }
 
-export default connect((state: AppState): StateProps => ({
-  node: getNodeConfig(state),
-  nodeLabel: getSelectedNodeLabel(state)
-}))(NetworkDropdown);
+export default connect(
+  (state: AppState): StateProps => ({
+    node: configNodesSelectors.getNodeConfig(state),
+    nodeLabel: configSelectors.getSelectedNodeLabel(state)
+  })
+)(NetworkDropdown);

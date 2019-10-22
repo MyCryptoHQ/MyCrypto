@@ -1,15 +1,15 @@
-import { Web3setNodeAction, CONFIG_NODES_STATIC, Web3UnsetNodeAction } from './types';
+import * as types from './types';
 
-export function web3SetNode(payload: Web3setNodeAction['payload']): Web3setNodeAction {
+export function web3SetNode(payload: types.Web3setNodeAction['payload']): types.Web3setNodeAction {
   return {
-    type: CONFIG_NODES_STATIC.WEB3_SET,
+    type: types.ConfigStaticNodesActions.WEB3_SET,
     payload
   };
 }
 
 export type TWeb3UnsetNode = typeof web3UnsetNode;
-export function web3UnsetNode(): Web3UnsetNodeAction {
+export function web3UnsetNode(): types.Web3UnsetNodeAction {
   return {
-    type: CONFIG_NODES_STATIC.WEB3_UNSET
+    type: types.ConfigStaticNodesActions.WEB3_UNSET
   };
 }

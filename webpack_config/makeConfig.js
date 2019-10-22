@@ -26,14 +26,12 @@ const DEFAULT_OPTIONS = {
 module.exports = function(opts = {}) {
   const options = Object.assign({}, DEFAULT_OPTIONS, opts);
   const isDownloadable = options.isHTMLBuild || options.isElectronBuild;
-  const commitHash = process.env.npm_package_gitHead;
 
   // ====================
   // ====== Entry =======
   // ====================
   const entry = {
-    badBrowserCheckA: './common/badBrowserCheckA.js',
-    badBrowserCheckB: './common/badBrowserCheckB.js',
+    badBrowserCheck: './common/badBrowserCheck.ts',
     client: './common/index.tsx'
   };
 
@@ -90,12 +88,15 @@ module.exports = function(opts = {}) {
     rules.push(
       {
         test: /\.css$/,
-        include: path.resolve(config.path.src, 'vendor'),
+        include: [
+          path.resolve(config.path.src, 'vendor'),
+          path.resolve(__dirname, '../node_modules/typeface-lato')
+        ],
         use: ['style-loader', 'css-loader']
       },
       {
         test: /\.scss$/,
-        include: ['components', 'containers', 'sass']
+        include: ['components', 'containers', 'sass', 'v2']
           .map(dir => path.resolve(config.path.src, dir))
           .concat([config.path.modules]),
 
@@ -151,6 +152,13 @@ module.exports = function(opts = {}) {
     loader: 'file-loader'
   });
 
+  // Browser check
+  rules.push({
+    test: /\.modernizrrc\.js$/,
+    loader: 'webpack-modernizr-loader',
+    type: 'javascript/auto'
+  });
+
   // ====================
   // ====== Plugins =====
   // ====================
@@ -167,9 +175,9 @@ module.exports = function(opts = {}) {
         site: config.twitter.creator,
         creator: config.twitter.creator
       },
-      metaCsp: options.isProduction 
-        ? "default-src 'none'; script-src 'self'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; manifest-src 'self'; font-src 'self'; img-src 'self' data: https://shapeshift.io; connect-src *;"
-        :  ""
+      metaCsp: options.isProduction
+        ? "default-src 'none'; script-src 'self' https://0x.mycrypto.com; worker-src 'self' blob:; child-src 'self'; style-src 'self' 'unsafe-inline' https://0x.mycrypto.com; manifest-src 'self'; font-src 'self' https://0x.mycrypto.com; img-src 'self' data: https://shapeshift.io https://cdn.mycryptoapi.com/; connect-src *; frame-src 'self' https://connect.trezor.io;"
+        : ''
     }),
 
     new CopyWebpackPlugin([
@@ -242,7 +250,6 @@ module.exports = function(opts = {}) {
           files: ['package.json']
         }
       }),
-      new webpack.HotModuleReplacementPlugin(),
       new FriendlyErrorsPlugin()
     );
   }
@@ -288,6 +295,8 @@ module.exports = function(opts = {}) {
     } else {
       devtool = 'cheap-module-eval-source-map';
     }
+  } else {
+    devtool = 'cheap-module-source-map';
   }
 
   // ====================
@@ -295,7 +304,7 @@ module.exports = function(opts = {}) {
   // ====================
   const output = {
     path: path.resolve(config.path.output, options.outputDir),
-    filename: options.isProduction ? `[name].${commitHash}.js` : '[name].js',
+    filename: options.isProduction ? '[name].[contenthash].js' : '[name].js',
     publicPath: isDownloadable && options.isProduction ? './' : '/',
     crossOriginLoading: 'anonymous',
     // Fix workers & HMR https://github.com/webpack/webpack/issues/6642
@@ -323,6 +332,13 @@ module.exports = function(opts = {}) {
       chunkModules: false,
       chunkOrigins: false,
       modules: false
-    }
+    },
+    externals: [
+      // This was added because there were build issues with ethers.js
+      // as we included some of the built-in BigNumber and Hex processing functions it provided.
+      {
+        xmlhttprequest: 'XMLHttpRequest'
+      }
+    ]
   };
 };

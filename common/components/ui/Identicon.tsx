@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import makeBlockie from 'ethereum-blockies-base64';
 
 import { AppState } from 'features/reducers';
-import { getIsValidAddressFn } from 'features/config';
+import { configSelectors } from 'features/config';
 import './Identicon.scss';
 
 interface OwnProps {
@@ -13,7 +13,7 @@ interface OwnProps {
 }
 
 interface StateProps {
-  isValidAddress: ReturnType<typeof getIsValidAddressFn>;
+  isValidAddress: ReturnType<typeof configSelectors.getIsValidAddressFn>;
 }
 
 type Props = OwnProps & StateProps;
@@ -39,6 +39,8 @@ const Identicon: React.SFC<Props> = props => {
   );
 };
 
-export default connect((state: AppState): StateProps => ({
-  isValidAddress: getIsValidAddressFn(state)
-}))(Identicon);
+export default connect(
+  (state: AppState): StateProps => ({
+    isValidAddress: configSelectors.getIsValidAddressFn(state)
+  })
+)(Identicon);

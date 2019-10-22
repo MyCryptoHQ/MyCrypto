@@ -1,9 +1,9 @@
-import { CustomNodesState } from './custom/types';
-import { StaticNodesState } from './static/types';
-import { SelectedNodeState } from './selected/types';
+import * as configNodesCustomTypes from './custom/types';
+import * as configNodesStaticTypes from './static/types';
+import * as configNodesSelectedTypes from './selected/types';
 
-export interface NodesState {
-  customNodes: CustomNodesState;
-  staticNodes: StaticNodesState;
-  selectedNode: SelectedNodeState;
+export interface ConfigNodesState {
+  customNodes: configNodesCustomTypes.ConfigCustomNodesState;
+  staticNodes: configNodesStaticTypes.ConfigStaticNodesState;
+  selectedNode: configNodesSelectedTypes.ConfigNodesSelectedState;
 }

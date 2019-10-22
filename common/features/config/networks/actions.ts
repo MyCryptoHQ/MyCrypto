@@ -1,11 +1,11 @@
-import { CONFIG_NETWORKS, ChangeNetworkRequestedAction } from './types';
+import * as types from './types';
 
 export type TChangeNetworkRequested = typeof changeNetworkRequested;
 export function changeNetworkRequested(
-  payload: ChangeNetworkRequestedAction['payload']
-): ChangeNetworkRequestedAction {
+  payload: types.ChangeNetworkRequestedAction['payload']
+): types.ChangeNetworkRequestedAction {
   return {
-    type: CONFIG_NETWORKS.CHANGE_NETWORK_REQUESTED,
+    type: types.ConfigNetworksActions.CHANGE_NETWORK_REQUESTED,
     payload
   };
 }

@@ -7,10 +7,10 @@
 
   &-title {
     margin-top: -10px;
-    background: white;
     padding: 0 15px;
     display: block;
     width: 250px;
+    background: color(pane-bg);
   }
 
   &-logo {
@@ -22,6 +22,10 @@
     background-repeat: no-repeat;
     display: block;
     background-size: cover;
+
+    @include theme('dark') {
+      background-image: url('~assets/images/chronologic-logo-dark.svg');
+    }
   }
 
   &-description {

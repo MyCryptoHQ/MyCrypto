@@ -117,3 +117,16 @@
     @content;
   }
 }
+
+/* --- */
+
+@mixin perfectly-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin baby-blue {
+  background: $baby-blue;
+  color: #fff;
+}

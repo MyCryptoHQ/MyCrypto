@@ -6,7 +6,7 @@ import { InsecureWalletName } from 'config';
 import translate, { translateRaw } from 'translations';
 import { formatMnemonic } from 'utils/formatters';
 import { AppState } from 'features/reducers';
-import { getSingleDPath, getPaths } from 'features/config';
+import { configSelectors, configNetworksStaticSelectors } from 'features/config';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
@@ -124,7 +124,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
       const seed = mnemonicToSeed(formattedPhrase, pass).toString('hex');
       this.setState({ seed });
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -158,8 +158,8 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
 function mapStateToProps(state: AppState): StateProps {
   return {
     // Mnemonic dPath is guaranteed to always be provided
-    dPath: getSingleDPath(state, InsecureWalletName.MNEMONIC_PHRASE) as DPath,
-    dPaths: getPaths(state, InsecureWalletName.MNEMONIC_PHRASE)
+    dPath: configSelectors.getSingleDPath(state, InsecureWalletName.MNEMONIC_PHRASE) as DPath,
+    dPaths: configNetworksStaticSelectors.getPaths(state, InsecureWalletName.MNEMONIC_PHRASE)
   };
 }
 

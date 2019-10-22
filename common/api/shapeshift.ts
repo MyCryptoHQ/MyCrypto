@@ -1,13 +1,11 @@
+import axios from 'axios';
 import flatten from 'lodash/flatten';
 import uniqBy from 'lodash/uniqBy';
+import queryString from 'query-string';
 
 import { checkHttpStatus, parseJSON } from 'api/utils';
 
-export const SHAPESHIFT_API_KEY =
-  '8abde0f70ca69d5851702d57b10305705d7333e93263124cc2a2649dab7ff9cf86401fc8de7677e8edcd0e7f1eed5270b1b49be8806937ef95d64839e319e6d9';
-
 export const SHAPESHIFT_BASE_URL = 'https://shapeshift.io';
-
 export const SHAPESHIFT_TOKEN_WHITELIST = [
   'OMG',
   'REP',
@@ -30,6 +28,10 @@ export const SHAPESHIFT_TOKEN_WHITELIST = [
   'GUP'
 ];
 export const SHAPESHIFT_WHITELIST = [...SHAPESHIFT_TOKEN_WHITELIST, 'ETH', 'ETC', 'BTC', 'XMR'];
+export const SHAPESHIFT_ACCESS_TOKEN = 'c640aa85-dd01-4db1-a6f2-ed57e6fd6c54';
+export const SHAPESHIFT_API_URL = 'https://auth.shapeshift.io/oauth/authorize';
+export const SHAPESHIFT_CLIENT_ID = 'c74cd600-2f91-4107-af60-b70954da5ad2';
+export const SHAPESHIFT_REDIRECT_URI = 'https://mycrypto.com/swap';
 
 interface IPairData {
   limit: number;
@@ -95,12 +97,29 @@ interface ShapeshiftOptionMap {
 class ShapeshiftService {
   public whitelist = SHAPESHIFT_WHITELIST;
   private url = SHAPESHIFT_BASE_URL;
-  private apiKey = SHAPESHIFT_API_KEY;
-  private postHeaders = {
-    'Content-Type': 'application/json'
-  };
   private supportedCoinsAndTokens: ShapeshiftCoinInfoMap = {};
   private fetchedSupportedCoinsAndTokens = false;
+  private token: string | null = null;
+
+  public constructor() {
+    this.retrieveAccessTokenFromStorage();
+
+    if (process.env.BUILD_ELECTRON) {
+      const { ipcRenderer } = (window as any).require('electron');
+
+      ipcRenderer.on('shapeshift-set-token', (_: any, token: string) =>
+        this.saveAccessTokenToStorage(token)
+      );
+    }
+  }
+
+  public hasToken() {
+    return !!window.localStorage.getItem(SHAPESHIFT_ACCESS_TOKEN);
+  }
+
+  public urlHasCodeParam() {
+    return !!queryString.parse(window.location.search).code;
+  }
 
   public checkStatus(address: string) {
     return fetch(`${this.url}/txStat/${address}`)
@@ -121,10 +140,9 @@ class ShapeshiftService {
       body: JSON.stringify({
         amount: destinationAmount,
         pair,
-        apiKey: this.apiKey,
         withdrawal
       }),
-      headers: new Headers(this.postHeaders)
+      headers: new Headers(this.getPostHeaders())
     })
       .then(checkHttpStatus)
       .then(parseJSON)
@@ -152,6 +170,43 @@ class ShapeshiftService {
     const allRates = this.addUnavailableCoinsAndTokens(mappedRates);
 
     return allRates;
+  };
+
+  public sendUserToAuthorize = () => {
+    const query = queryString.stringify({
+      client_id: SHAPESHIFT_CLIENT_ID,
+      scope: 'users:read',
+      response_type: 'code',
+      redirect_uri: SHAPESHIFT_REDIRECT_URI
+    });
+    const url = `${SHAPESHIFT_API_URL}?${query}`;
+
+    if (process.env.BUILD_ELECTRON) {
+      const { ipcRenderer } = (window as any).require('electron');
+
+      ipcRenderer.send('shapeshift-authorize', url);
+    } else {
+      window.open(url, '_blank', 'width=800, height=600, menubar=yes');
+    }
+  };
+
+  public requestAccessToken = async () => {
+    const { code } = queryString.parse(window.location.search);
+    const {
+      data: { access_token: token }
+    } = await axios.post('https://proxy.mycryptoapi.com/request-shapeshift-token', {
+      code,
+      grant_type: 'authorization_code'
+    });
+
+    this.token = token;
+    this.saveAccessTokenToStorage(token);
+
+    if (process.env.BUILD_ELECTRON) {
+      const { ipcRenderer } = (window as any).require('electron');
+
+      ipcRenderer.send('shapeshift-token-retrieved', token);
+    }
   };
 
   public addUnavailableCoinsAndTokens = (availableCoinsAndTokens: TokenMap) => {
@@ -210,6 +265,11 @@ class ShapeshiftService {
 
     return availableCoinsAndTokens;
   };
+
+  private getPostHeaders = () => ({
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${this.token}`
+  });
 
   private filterPairs(marketInfo: ShapeshiftMarketInfo[]) {
     return marketInfo.filter(obj => {
@@ -300,6 +360,19 @@ class ShapeshiftService {
     });
     return tokenMap;
   }
+
+  private saveAccessTokenToStorage = (token: string) => {
+    if (window && window.localStorage) {
+      window.localStorage.setItem(SHAPESHIFT_ACCESS_TOKEN, token);
+    }
+  };
+
+  private retrieveAccessTokenFromStorage = () => {
+    if (window && window.localStorage) {
+      const token = window.localStorage.getItem(SHAPESHIFT_ACCESS_TOKEN);
+      this.token = token;
+    }
+  };
 }
 
 const shapeshift = new ShapeshiftService();

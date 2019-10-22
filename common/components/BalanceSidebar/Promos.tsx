@@ -3,7 +3,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import { HardwareWallets, Coinbase, Shapeshift, Simplex } from './PromoComponents';
+import { HardwareWallets, Shapeshift, Simplex } from './PromoComponents';
 import './Promos.scss';
 
 const CarouselAnimation = ({ children, ...props }: any) => (
@@ -12,8 +12,7 @@ const CarouselAnimation = ({ children, ...props }: any) => (
   </CSSTransition>
 );
 
-// Don't change Coinbase index
-const promos = [HardwareWallets, Coinbase, Shapeshift, Simplex];
+const promos = [HardwareWallets, Shapeshift, Simplex];
 
 interface State {
   activePromo: number;
@@ -39,13 +38,9 @@ class PromosClass extends React.PureComponent<StateProps, State> {
 
   public getPromo() {
     const { activePromo } = this.state;
-    const { wallet } = this.props;
+
     if (activePromo === 1) {
-      if (wallet) {
-        return <Coinbase address={wallet.getAddressString()} />;
-      } else {
-        return <Shapeshift />;
-      }
+      return <Shapeshift />;
     } else {
       return promos[activePromo];
     }
@@ -92,4 +87,7 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-export default connect(mapStateToProps, {})(PromosClass);
+export default connect(
+  mapStateToProps,
+  {}
+)(PromosClass);

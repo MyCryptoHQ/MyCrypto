@@ -5,7 +5,7 @@ import translate from 'translations';
 import { Token } from 'types/network';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
-import { getAllTokens, getOffline } from 'features/config';
+import { configSelectors, configMetaSelectors } from 'features/config';
 import { customTokensActions } from 'features/customTokens';
 import { walletTypes, walletActions, walletSelectors } from 'features/wallet';
 import Spinner from 'components/ui/Spinner';
@@ -23,7 +23,7 @@ interface StateProps {
   isOffline: AppState['config']['meta']['offline'];
 }
 interface ActionProps {
-  addCustomToken: customTokensActions.TAddCustomToken;
+  attemptAddCustomToken: customTokensActions.TAttemptAddCustomToken;
   removeCustomToken: customTokensActions.TRemoveCustomToken;
   scanWalletForTokens: walletActions.TScanWalletForTokens;
   setWalletTokens: walletActions.TSetWalletTokens;
@@ -46,11 +46,7 @@ class TokenBalances extends React.Component<Props> {
     const walletTokens = walletConfig ? walletConfig.tokens : [];
 
     let content;
-    if (isOffline) {
-      content = (
-        <div className="TokenBalances-offline well well-sm">{translate('SCAN_TOKENS_OFFLINE')}</div>
-      );
-    } else if (tokensError) {
+    if (tokensError) {
       content = (
         <div className="TokenBalances-error well well-md">
           <h5 className="TokenBalances-error-message">{tokensError}</h5>
@@ -66,7 +62,7 @@ class TokenBalances extends React.Component<Props> {
           <Spinner size="x3" />
         </div>
       );
-    } else if (!walletTokens) {
+    } else if (!walletTokens && !isOffline) {
       content = (
         <button
           className="TokenBalances-scan btn btn-primary btn-block"
@@ -76,7 +72,8 @@ class TokenBalances extends React.Component<Props> {
         </button>
       );
     } else {
-      const shownBalances = tokenBalances.filter(t => walletTokens.includes(t.symbol));
+      const shownBalances =
+        (walletTokens && tokenBalances.filter(t => walletTokens.includes(t.symbol))) || [];
 
       content = (
         <Balances
@@ -85,8 +82,9 @@ class TokenBalances extends React.Component<Props> {
           hasSavedWalletTokens={hasSavedWalletTokens}
           scanWalletForTokens={this.scanWalletForTokens}
           setWalletTokens={this.props.setWalletTokens}
-          onAddCustomToken={this.props.addCustomToken}
+          onAddCustomToken={this.props.attemptAddCustomToken}
           onRemoveCustomToken={this.props.removeCustomToken}
+          isOffline={isOffline}
         />
       );
     }
@@ -111,19 +109,22 @@ function mapStateToProps(state: AppState): StateProps {
   return {
     wallet: walletSelectors.getWalletInst(state),
     walletConfig: walletSelectors.getWalletConfig(state),
-    tokens: getAllTokens(state),
+    tokens: configSelectors.getAllTokens(state),
     tokenBalances: selectors.getTokenBalances(state),
     tokensError: state.wallet.tokensError,
     isTokensLoading: state.wallet.isTokensLoading,
     hasSavedWalletTokens: state.wallet.hasSavedWalletTokens,
-    isOffline: getOffline(state)
+    isOffline: configMetaSelectors.getOffline(state)
   };
 }
 
-export default connect(mapStateToProps, {
-  addCustomToken: customTokensActions.addCustomToken,
-  removeCustomToken: customTokensActions.removeCustomToken,
-  scanWalletForTokens: walletActions.scanWalletForTokens,
-  setWalletTokens: walletActions.setWalletTokens,
-  refreshTokenBalances: walletActions.refreshTokenBalances
-})(TokenBalances);
+export default connect(
+  mapStateToProps,
+  {
+    attemptAddCustomToken: customTokensActions.attemptAddCustomToken,
+    removeCustomToken: customTokensActions.removeCustomToken,
+    scanWalletForTokens: walletActions.scanWalletForTokens,
+    setWalletTokens: walletActions.setWalletTokens,
+    refreshTokenBalances: walletActions.refreshTokenBalances
+  }
+)(TokenBalances);

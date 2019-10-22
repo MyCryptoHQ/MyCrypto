@@ -1,5 +1,6 @@
 declare module '@ledgerhq/hw-app-eth' {
   import LedgerTransport from '@ledgerhq/hw-transport';
+  import { TokenInfo } from '@ledgerhq/hw-app-eth/erc20';
 
   export default class Eth<T extends LedgerTransport<any>> {
     constructor(transport: T);
@@ -56,5 +57,31 @@ declare module '@ledgerhq/hw-app-eth' {
       path: string,
       messageHex: string
     ): Promise<{ v: number; s: string; r: string }>;
+
+    /**
+     * @description provides a trusted description of an ERC-20 token
+     * @param {TokenInfo} tokenInfo
+     * @returns {Promise<boolean>}
+     * @memberOf Eth
+     */
+    public provideERC20TokenInformation(tokenInfo: TokenInfo): Promise<boolean>;
   }
+}
+
+declare module '@ledgerhq/hw-app-eth/erc20' {
+  interface TokenInfo {
+    contractAddress: string;
+    ticker: string;
+    decimals: number;
+    chainId: number;
+    signature: Buffer;
+    data: Buffer;
+  }
+
+  /**
+   * @description retrieve the token information by a given contract address if any
+   * @param {string} address
+   * @returns {TokenInfo | undefined}
+   */
+  export function byContractAddress(address: string): TokenInfo | undefined;
 }

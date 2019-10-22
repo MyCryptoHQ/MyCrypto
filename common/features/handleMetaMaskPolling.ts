@@ -15,8 +15,8 @@ export const getActualChainId = (): Promise<string> =>
       reject('Web3 not found.');
     }
 
-    return web3.version.getNetwork(
-      (err: Error, network: string) => (err ? reject(err) : resolve(network))
+    return web3.version.getNetwork((err: Error, network: string) =>
+      err ? reject(err) : resolve(network)
     );
   });
 
@@ -43,12 +43,12 @@ export default async function handleMetaMaskPolling(store: Store<AppState>): Pro
       actualNetwork &&
       (web3Wallet as Web3Wallet).network !== actualNetwork.id
     ) {
-      window.location.reload();
+      // window.location.reload();
 
       return true;
     }
   } catch (error) {
-    window.location.reload();
+    // window.location.reload();
 
     return true;
   }

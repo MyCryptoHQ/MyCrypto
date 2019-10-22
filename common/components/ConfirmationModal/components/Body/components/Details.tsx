@@ -6,7 +6,7 @@ import translate, { translateRaw } from 'translations';
 import { NodeConfig } from 'types/node';
 import { CodeBlock, Input } from 'components/ui';
 import { AppState } from 'features/reducers';
-import { getNodeConfig } from 'features/config';
+import { configNodesSelectors } from 'features/config';
 import { SerializedTransaction } from 'components/renderCbs';
 import './Details.scss';
 
@@ -16,7 +16,9 @@ interface StateProps {
 
 class DetailsClass extends Component<StateProps> {
   public render() {
-    const { node: { network, service } } = this.props;
+    const {
+      node: { network, service }
+    } = this.props;
     return (
       <div className="tx-modal-details">
         <label className="input-group">
@@ -25,9 +27,9 @@ class DetailsClass extends Component<StateProps> {
             isValid={true}
             showValidAsPlain={true}
             readOnly={true}
-            value={`${network} ${translateRaw('NETWORK_2')} - ${translateRaw(
-              'PROVIDED_BY'
-            )} ${service}`}
+            value={`${translateRaw('NETWORK_2', {
+              $network: network
+            })} - ${translateRaw('PROVIDED_BY', { $service: service })}`}
           />
         </label>
 
@@ -52,6 +54,6 @@ class DetailsClass extends Component<StateProps> {
   }
 }
 
-const mapStateToProps = (state: AppState) => ({ node: getNodeConfig(state) });
+const mapStateToProps = (state: AppState) => ({ node: configNodesSelectors.getNodeConfig(state) });
 
 export const Details = connect(mapStateToProps)(DetailsClass);

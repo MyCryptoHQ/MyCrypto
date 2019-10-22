@@ -76,6 +76,7 @@ export default class DropdownComponent<T> extends PureComponent<Props<T>, State>
         {options
           .filter(option => {
             if (searchable && search.length) {
+              // @ts-ignore
               return option.toString().match(searchRegex);
             }
             return true;

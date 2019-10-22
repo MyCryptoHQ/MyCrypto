@@ -7,12 +7,11 @@ import { CustomNetworkConfig } from 'types/network';
 import { CustomNodeConfig } from 'types/node';
 import { AppState } from 'features/reducers';
 import {
-  getCustomNetworkConfigs,
-  getStaticNetworkConfigs,
-  getCustomNodeConfigs,
-  AddCustomNodeAction,
-  TAddCustomNetwork,
-  addCustomNetwork
+  configNodesCustomSelectors,
+  configNetworksStaticSelectors,
+  configNetworksCustomSelectors,
+  configNetworksCustomActions,
+  configNodesCustomTypes
 } from 'features/config';
 import { Input, Dropdown } from 'components/ui';
 import Modal, { IButton } from 'components/ui/Modal';
@@ -22,12 +21,12 @@ const CUSTOM = { label: 'Custom', value: 'custom' };
 
 interface OwnProps {
   isOpen: boolean;
-  addCustomNode(payload: AddCustomNodeAction['payload']): void;
+  addCustomNode(payload: configNodesCustomTypes.AddCustomNodeAction['payload']): void;
   handleClose(): void;
 }
 
 interface DispatchProps {
-  addCustomNetwork: TAddCustomNetwork;
+  addCustomNetwork: configNetworksCustomActions.TAddCustomNetwork;
 }
 
 interface StateProps {
@@ -271,11 +270,13 @@ class CustomNodeModal extends React.Component<Props, State> {
         return;
       }
       this.setState({
-        defaultNodes: results.filter(r => r.success).map((r, index) => ({
-          ...r,
-          display: `${r.addr}:${r.port}`,
-          index
-        }))
+        defaultNodes: results
+          .filter(r => r.success)
+          .map((r, index) => ({
+            ...r,
+            display: `${r.addr}:${r.port}`,
+            index
+          }))
       });
     }, pollingInterval);
   }
@@ -447,13 +448,16 @@ class CustomNodeModal extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  customNetworks: getCustomNetworkConfigs(state),
-  customNodes: getCustomNodeConfigs(state),
-  staticNetworks: getStaticNetworkConfigs(state)
+  customNetworks: configNetworksCustomSelectors.getCustomNetworkConfigs(state),
+  customNodes: configNodesCustomSelectors.getCustomNodeConfigs(state),
+  staticNetworks: configNetworksStaticSelectors.getStaticNetworkConfigs(state)
 });
 
 const mapDispatchToProps: DispatchProps = {
-  addCustomNetwork
+  addCustomNetwork: configNetworksCustomActions.addCustomNetwork
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomNodeModal);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CustomNodeModal);

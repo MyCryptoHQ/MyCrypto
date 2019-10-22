@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { addHexPrefix } from 'ethereumjs-util';
 
 import translate, { translateRaw } from 'translations';
-import { isValidENSAddress } from 'libs/validators';
 import { Address } from 'libs/units';
 import { ICurrentTo } from 'features/types';
 import { AppState } from 'features/reducers';
@@ -15,6 +14,9 @@ import { Query } from 'components/renderCbs';
 import { CallbackProps } from 'components/AddressFieldFactory';
 import AddressFieldDropdown from './AddressFieldDropdown';
 import './AddressInputFactory.scss';
+import { configSelectors } from 'features/config';
+import { getIsValidENSAddressFunction } from 'libs/validators';
+import { getENSTLDForChain } from 'libs/ens/networkConfigs';
 
 interface StateProps {
   currentTo: ICurrentTo;
@@ -22,12 +24,14 @@ interface StateProps {
   isValid: boolean;
   isLabelEntry: boolean;
   isResolving: boolean;
+  chainId: number;
 }
 
 interface OwnProps {
   isSelfAddress?: boolean;
   showLabelMatch?: boolean;
   showIdenticon?: boolean;
+  showEnsResolution?: boolean;
   isFocused?: boolean;
   className?: string;
   value?: string;
@@ -39,12 +43,15 @@ interface OwnProps {
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
-const ENSStatus: React.SFC<{ isLoading: boolean; ensAddress: string; rawAddress: string }> = ({
-  isLoading,
-  ensAddress,
-  rawAddress
-}) => {
-  const isENS = isValidENSAddress(ensAddress);
+export const ENSStatus: React.SFC<{
+  isLoading: boolean;
+  ensAddress: string;
+  rawAddress: string;
+  chainId: number;
+}> = ({ isLoading, ensAddress, rawAddress, chainId }) => {
+  const isValidENS = getIsValidENSAddressFunction(chainId);
+  const isENS = isValidENS(ensAddress);
+
   const text = translate('LOADING_ENS_ADDRESS');
 
   if (isLoading) {
@@ -78,11 +85,18 @@ class AddressInputFactoryClass extends Component<Props> {
       showIdenticon = true,
       onChangeOverride,
       value,
-      dropdownThreshold
+      dropdownThreshold,
+      showEnsResolution,
+      chainId
     } = this.props;
     const inputClassName = `AddressInput-input ${label ? 'AddressInput-input-with-label' : ''}`;
-    const sendingTo = `${translateRaw('SENDING_TO')} ${label}`;
-    const isENSAddress = currentTo.raw.includes('.eth');
+    const sendingTo = label
+      ? translateRaw('SENDING_TO', {
+          $label: label
+        })
+      : '';
+    const ensTLD = getENSTLDForChain(chainId);
+    const isENSAddress = currentTo.raw.endsWith(`.${ensTLD}`);
 
     /**
      * @desc Initially set the address to the passed value.
@@ -105,7 +119,7 @@ class AddressInputFactoryClass extends Component<Props> {
         <div className={inputClassName}>
           <Query
             params={['readOnly']}
-            withQuery={({ readOnly }) =>
+            withQuery={({ readOnly }: { readOnly: any }) =>
               withProps({
                 currentTo,
                 isValid,
@@ -117,22 +131,27 @@ class AddressInputFactoryClass extends Component<Props> {
               })
             }
           />
-          <ENSStatus ensAddress={currentTo.raw} isLoading={isResolving} rawAddress={addr} />
-          {isFocused &&
-            !isENSAddress && (
-              <AddressFieldDropdown
-                controlled={controlled}
-                value={value}
-                onChangeOverride={onChangeOverride}
-                dropdownThreshold={dropdownThreshold}
-              />
-            )}
-          {showLabelMatch &&
-            label && (
-              <div title={sendingTo} className="AddressInput-input-label">
-                <i className="fa fa-check" /> {sendingTo}
-              </div>
-            )}
+          {showEnsResolution && (
+            <ENSStatus
+              ensAddress={currentTo.raw}
+              isLoading={isResolving}
+              rawAddress={addr}
+              chainId={chainId}
+            />
+          )}
+          {isFocused && !isENSAddress && (
+            <AddressFieldDropdown
+              controlled={controlled}
+              value={value}
+              onChangeOverride={onChangeOverride}
+              dropdownThreshold={dropdownThreshold}
+            />
+          )}
+          {showLabelMatch && label && (
+            <div title={sendingTo} className="AddressInput-input-label">
+              <i className="fa fa-check" /> {sendingTo}
+            </div>
+          )}
         </div>
         {showIdenticon && (
           <div className="AddressInput-identicon">
@@ -162,6 +181,7 @@ export const AddressInputFactory = connect((state: AppState, ownProps: OwnProps)
     label: selectors.getCurrentToLabel(state),
     isResolving: ensSelectors.getResolvingDomain(state),
     isValid: selectors.isValidCurrentTo(state),
-    isLabelEntry: selectors.isCurrentToLabelEntry(state)
+    isLabelEntry: selectors.isCurrentToLabelEntry(state),
+    chainId: configSelectors.getNetworkChainId(state)
   };
 })(AddressInputFactoryClass);

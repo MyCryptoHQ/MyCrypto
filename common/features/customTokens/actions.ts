@@ -1,6 +1,14 @@
 import { Token } from 'types/network';
 import * as types from './types';
 
+export type TAttemptAddCustomToken = typeof attemptAddCustomToken;
+export function attemptAddCustomToken(payload: Token): types.AttemptAddCustomTokenAction {
+  return {
+    type: types.CustomTokensActions.ATTEMPT_ADD,
+    payload
+  };
+}
+
 export type TAddCustomToken = typeof addCustomToken;
 export function addCustomToken(payload: Token): types.AddCustomTokenAction {
   return {

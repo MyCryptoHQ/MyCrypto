@@ -1,16 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Theme } from 'config';
-import { getTheme, changeTheme } from 'features/config';
+import { configMetaActions, configMetaSelectors } from 'features/config';
 import { AppState } from 'features/reducers';
 import './ThemeToggle.scss';
 
 interface ActionProps {
-  changeTheme: typeof changeTheme;
+  changeTheme: typeof configMetaActions.changeTheme;
 }
 
 interface StateProps {
-  theme: ReturnType<typeof getTheme>;
+  theme: ReturnType<typeof configMetaSelectors.getTheme>;
 }
 
 type Props = ActionProps & StateProps;
@@ -35,9 +35,9 @@ class ThemeToggle extends React.Component<Props> {
 
 export default connect(
   (state: AppState) => ({
-    theme: getTheme(state)
+    theme: configMetaSelectors.getTheme(state)
   }),
   {
-    changeTheme
+    changeTheme: configMetaActions.changeTheme
   }
 )(ThemeToggle);

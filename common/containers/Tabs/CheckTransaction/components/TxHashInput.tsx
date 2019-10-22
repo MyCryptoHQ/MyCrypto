@@ -7,7 +7,7 @@ import translate from 'translations';
 import { isValidTxHash } from 'libs/validators';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
-import { getIsValidAddressFn } from 'features/config';
+import { configSelectors } from 'features/config';
 import { Input } from 'components/ui';
 import './TxHashInput.scss';
 
@@ -18,7 +18,7 @@ interface OwnProps {
 
 interface ReduxProps {
   recentTxs: AppState['transactions']['recent'];
-  isValidAddress: ReturnType<typeof getIsValidAddressFn>;
+  isValidAddress: ReturnType<typeof configSelectors.getIsValidAddressFn>;
 }
 
 type Props = OwnProps & ReduxProps;
@@ -123,7 +123,9 @@ class TxHashInput extends React.Component<Props, State> {
   };
 }
 
-export default connect((state: AppState): ReduxProps => ({
-  recentTxs: selectors.getRecentNetworkTransactions(state),
-  isValidAddress: getIsValidAddressFn(state)
-}))(TxHashInput);
+export default connect(
+  (state: AppState): ReduxProps => ({
+    recentTxs: selectors.getRecentNetworkTransactions(state),
+    isValidAddress: configSelectors.getIsValidAddressFn(state)
+  })
+)(TxHashInput);

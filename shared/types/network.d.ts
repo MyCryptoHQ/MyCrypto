@@ -5,22 +5,41 @@ type StaticNetworkIds =
   | 'Ropsten'
   | 'Kovan'
   | 'Rinkeby'
+  | 'Goerli'
   | 'ETC'
-  | 'UBQ'
-  | 'EXP'
-  | 'POA'
-  | 'TOMO'
-  | 'ELLA'
-  | 'MUSIC'
-  | 'ETSC'
-  | 'EGEM'
-  | 'CLO'
   | 'RSK'
-  | 'RSK_TESTNET'
+  | 'AKA'
+  | 'AQUA'
+  | 'ARTIS_SIGMA1'
+  | 'ARTIS_TAU1'
+  | 'ATH'
+  | 'CLO'
+  | 'DEXON'
+  | 'EGEM'
+  | 'ELLA'
+  | 'EOSC'
+  | 'ESN'
+  | 'ETI'
+  | 'ETHO'
+  | 'ETSC'
+  | 'EXP'
+  | 'Gangnam'
   | 'GO'
   | 'GO_TESTNET'
-  | 'EOSC'
-  | 'ESN';
+  | 'METADIUM'
+  | 'MIX'
+  | 'MUSIC'
+  | 'PIRL'
+  | 'POA'
+  | 'REOSC'
+  | 'RSK_TESTNET'
+  | 'SOLIDUM'
+  | 'THUNDERCORE'
+  | 'TOMO'
+  | 'UBQ'
+  | 'WEB'
+  | 'AUX'
+  | 'ASK';
 
 export interface BlockExplorerConfig {
   name: string;
@@ -48,6 +67,7 @@ interface DPathFormats {
   safeTmini?: DPath;
   ledgerNanoS?: DPath;
   mnemonicPhrase: DPath;
+  default?: DPath;
 }
 
 export interface GasPriceSetting {
@@ -75,6 +95,7 @@ interface StaticNetworkConfig {
   gasPriceSettings: GasPriceSetting;
   shouldEstimateGasPrice?: boolean;
   unsupportedTabs?: TAB[];
+  hideEquivalentValues?: boolean;
 }
 
 interface CustomNetworkConfig {
@@ -86,6 +107,7 @@ interface CustomNetworkConfig {
   chainId: number;
   dPathFormats: DPathFormats | null;
   unsupportedTabs?: TAB[];
+  hideEquivalentValues?: boolean;
 }
 
 type NetworkConfig = CustomNetworkConfig | StaticNetworkConfig;

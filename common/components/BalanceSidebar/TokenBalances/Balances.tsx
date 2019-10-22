@@ -10,6 +10,7 @@ interface Props {
   allTokens: Token[];
   tokenBalances: walletTypes.TokenBalance[];
   hasSavedWalletTokens: boolean;
+  isOffline: boolean;
   scanWalletForTokens(): any;
   setWalletTokens(tokens: string[]): any;
   onAddCustomToken(token: Token): any;
@@ -41,7 +42,7 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
   }
 
   public render() {
-    const { allTokens, tokenBalances, hasSavedWalletTokens } = this.props;
+    const { allTokens, tokenBalances, hasSavedWalletTokens, isOffline } = this.props;
     const { showCustomTokenForm, trackedTokens } = this.state;
 
     let bottom;
@@ -64,6 +65,7 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
         <div className="TokenBalances-form">
           <AddCustomTokenForm
             allTokens={allTokens}
+            isOffline={isOffline}
             onSave={this.addCustomToken}
             toggleForm={this.toggleShowCustomTokenForm}
           />
@@ -78,12 +80,14 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
           >
             <span>{translate('SEND_CUSTOM')}</span>
           </button>
-          <button
-            className="TokenBalances-buttons-btn btn btn-default btn-xs"
-            onClick={this.props.scanWalletForTokens}
-          >
-            <span>{translate('SCAN_TOKENS')}</span>
-          </button>
+          {!isOffline && (
+            <button
+              className="TokenBalances-buttons-btn btn btn-default btn-xs"
+              onClick={this.props.scanWalletForTokens}
+            >
+              <span>{translate('SCAN_TOKENS')}</span>
+            </button>
+          )}
         </div>
       );
     }
@@ -95,23 +99,27 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
         {tokenBalances.length ? (
           <table className="TokenBalances-rows">
             <tbody>
-              {tokenBalances.map(
-                token =>
-                  token ? (
-                    <TokenRow
-                      key={token.symbol}
-                      balance={token.balance}
-                      symbol={token.symbol}
-                      custom={token.custom}
-                      decimal={token.decimal}
-                      tracked={trackedTokens[token.symbol]}
-                      toggleTracked={!hasSavedWalletTokens && this.toggleTrack}
-                      onRemove={this.props.onRemoveCustomToken}
-                    />
-                  ) : null
+              {tokenBalances.map(token =>
+                token ? (
+                  <TokenRow
+                    key={token.symbol}
+                    balance={token.balance}
+                    symbol={token.symbol}
+                    custom={token.custom}
+                    decimal={token.decimal}
+                    tracked={trackedTokens[token.symbol]}
+                    isOffline={isOffline}
+                    toggleTracked={!hasSavedWalletTokens && this.toggleTrack}
+                    onRemove={this.props.onRemoveCustomToken}
+                  />
+                ) : null
               )}
             </tbody>
           </table>
+        ) : isOffline ? (
+          <div className="TokenBalances-offline well well-sm text-center">
+            {translate('SCAN_TOKENS_OFFLINE')}
+          </div>
         ) : (
           <div className="well well-sm text-center">{translate('SCAN_TOKENS_FAIL_NO_TOKENS')}</div>
         )}

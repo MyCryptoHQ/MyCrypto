@@ -1,0 +1,20 @@
+.TransactionLabel {
+  display: flex;
+  align-items: center;
+
+  &-image {
+    margin-right: 16px;
+  }
+  &-info {
+    color: #424242;
+
+    &-label {
+      margin: 0;
+      font-size: 20px;
+    }
+    &-stageDate {
+      margin: 0;
+      font-size: 16px;
+    }
+  }
+}

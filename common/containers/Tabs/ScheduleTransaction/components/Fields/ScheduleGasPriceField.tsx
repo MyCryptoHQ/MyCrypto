@@ -32,6 +32,7 @@ class ScheduleGasPriceFieldClass extends React.Component<Props> {
             placeholder="40"
             value={scheduleGasPrice.raw}
             onChange={this.handleGasPriceChange}
+            showInvalidWithoutValue={true}
           />
         </label>
       </div>

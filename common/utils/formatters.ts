@@ -115,7 +115,7 @@ export function bytesToHuman(bytes: number) {
 }
 
 export function ensV3Url(name: string) {
-  return `https://legacy.mycrypto.com/?ensname=${name}#ens`;
+  return `https://manager.ens.domains/name/${name}`;
 }
 
 export function hexToNumber(hex: string) {
@@ -132,4 +132,8 @@ export function getChecksumAddressFunction(chainId: number) {
 
 export function toChecksumAddressByChainId(address: string, chainId: number) {
   return getChecksumAddressFunction(chainId)(address);
+}
+
+export function hexStringToNumber(str: string): number {
+  return parseInt(str, 16);
 }

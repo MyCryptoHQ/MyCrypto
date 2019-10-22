@@ -41,7 +41,7 @@ export function getAllRates() {
       const from = { id: pairName.substring(0, 3) };
       const to = { id: pairName.substring(3, 6) };
       // Check if rate exists= && check if the pair only crypto to crypto, not crypto to fiat, or any other combination
-      if (parseFloat(each.rate_we_sell) && isCryptoPair(from.id, to.id, ['BTC', 'ETH', 'REP'])) {
+      if (parseFloat(each.rate_we_sell) && isCryptoPair(from.id, to.id, ['BTC', 'ETH'])) {
         let fromOptions;
         let toOptions;
         switch (from.id) {

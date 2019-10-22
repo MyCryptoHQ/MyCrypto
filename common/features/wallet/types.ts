@@ -19,6 +19,7 @@ export interface WalletState {
   tokensError: string | null;
   hasSavedWalletTokens: boolean;
   recentAddresses: string[];
+  accessMessage: string;
 }
 
 export enum WalletActions {
@@ -44,7 +45,8 @@ export enum WalletActions {
   RESET = 'WALLET_RESET',
   SET_PASSWORD_PENDING = 'WALLET_SET_PASSWORD_PENDING',
   REFRESH_ACCOUNT_BALANCE = 'WALLET_REFRESH_ACCOUNT_BALANCE',
-  REFRESH_TOKEN_BALANCES = 'WALLET_REFRESH_TOKEN_BALANCES'
+  REFRESH_TOKEN_BALANCES = 'WALLET_REFRESH_TOKEN_BALANCES',
+  SET_ACCESS_MESSAGE = 'SET_ACCESS_MESSAGE'
 }
 
 export interface PrivateKeyUnlockParams {
@@ -173,6 +175,11 @@ export interface RefreshTokenBalancesAction {
   type: WalletActions.REFRESH_TOKEN_BALANCES;
 }
 
+export interface SetAccessMessageAction {
+  type: WalletActions.SET_ACCESS_MESSAGE;
+  payload: string;
+}
+
 export interface TokenBalance {
   symbol: string;
   balance: TokenValue;
@@ -208,4 +215,5 @@ export type WalletAction =
   | SetWalletConfigAction
   | SetPasswordPendingAction
   | RefreshAccountBalanceAction
-  | RefreshTokenBalancesAction;
+  | RefreshTokenBalancesAction
+  | SetAccessMessageAction;

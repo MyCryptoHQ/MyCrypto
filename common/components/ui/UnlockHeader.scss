@@ -9,31 +9,10 @@
     top: 0;
     right: 0;
     padding-right: none;
+    z-index: 30;
 
     &-text {
       padding-right: 8px;
-    }
-  }
-
-  &-close {
-    @include reset-button;
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    margin: 0.5rem 1rem;
-    z-index: 1;
-    line-height: 24px;
-    font-size: 24px;
-    transition: opacity 120ms;
-    opacity: 0.3;
-
-    > img {
-      height: 26px;
-      width: 26px;
-    }
-
-    &:hover {
-      opacity: 0.87;
     }
   }
 }

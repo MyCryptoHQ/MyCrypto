@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import translate, { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
-import { getChecksumAddressFn } from 'features/config';
+import { configSelectors } from 'features/config';
 import {
   addressBookConstants,
   addressBookActions,
@@ -25,7 +25,7 @@ interface StateProps {
   entry: ReturnType<typeof addressBookSelectors.getAddressBookTableEntry>;
   addressLabels: ReturnType<typeof addressBookSelectors.getAddressLabels>;
   labelAddresses: ReturnType<typeof addressBookSelectors.getLabelAddresses>;
-  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
+  toChecksumAddress: ReturnType<typeof configSelectors.getChecksumAddressFn>;
 }
 
 type Props = DispatchProps & StateProps;
@@ -162,7 +162,9 @@ class AddressBookTable extends React.Component<Props, State> {
   }
 
   private handleAddEntry = () => {
-    const { entry: { temporaryAddress, addressError, labelError } } = this.props;
+    const {
+      entry: { temporaryAddress, addressError, labelError }
+    } = this.props;
 
     if (!temporaryAddress || addressError || temporaryAddress.length === 0) {
       return this.addressInput && this.addressInput.focus();
@@ -302,7 +304,7 @@ const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = state => ({
   entry: addressBookSelectors.getAddressBookTableEntry(state),
   addressLabels: addressBookSelectors.getAddressLabels(state),
   labelAddresses: addressBookSelectors.getLabelAddresses(state),
-  toChecksumAddress: getChecksumAddressFn(state)
+  toChecksumAddress: configSelectors.getChecksumAddressFn(state)
 });
 
 const mapDispatchToProps: DispatchProps = {
@@ -311,4 +313,7 @@ const mapDispatchToProps: DispatchProps = {
   removeAddressLabelEntry: addressBookActions.removeAddressLabelEntry
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddressBookTable);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddressBookTable);

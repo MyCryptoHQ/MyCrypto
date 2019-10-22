@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 
-import { customNodesReducer } from './custom/reducer';
-import { staticNodesReducer } from './static/reducer';
-import { selectedNodeReducer } from './selected/reducer';
-import { NodesState } from './types';
+import * as configNodesCustomReducer from './custom/reducer';
+import * as configNodesStaticReducer from './static/reducer';
+import * as configNodesSelectedReducer from './selected/reducer';
+import * as types from './types';
 
-export const nodesReducer = combineReducers<NodesState>({
-  customNodes: customNodesReducer,
-  staticNodes: staticNodesReducer,
-  selectedNode: selectedNodeReducer
+export const nodesReducer = combineReducers<types.ConfigNodesState>({
+  customNodes: configNodesCustomReducer.customNodesReducer,
+  staticNodes: configNodesStaticReducer.staticNodesReducer,
+  selectedNode: configNodesSelectedReducer.selectedNodeReducer
 });

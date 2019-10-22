@@ -8,11 +8,10 @@ import { getTransactionFields } from 'libs/transaction';
 import { NetworkConfig } from 'types/network';
 import { TransactionData, TransactionReceipt, SavedTransaction } from 'types/transactions';
 import { AppState } from 'features/reducers';
-import * as configNodesSelectors from 'features/config/nodes/selectors';
-import * as configSelectors from 'features/config/selectors';
-import { getChecksumAddressFn } from 'features/config';
+import { configSelectors, configNodesSelectors } from 'features/config';
 import { walletSelectors } from 'features/wallet';
-import { transactionBroadcastTypes } from 'features/transaction';
+import { transactionBroadcastTypes, transactionTypes } from 'features/transaction';
+import * as networkActions from '../transaction/network/actions';
 import * as types from './types';
 import * as actions from './actions';
 
@@ -76,6 +75,8 @@ export function* saveBroadcastedTx(
 // Given a serialized transaction, return a transaction we could save in LS
 export function* getSaveableTransaction(tx: EthTx, hash: string): SagaIterator {
   const fields = getTransactionFields(tx);
+  const nonceHex: string = tx.toJSON()[0];
+  const nonce: number = parseInt(nonceHex, 16);
   let from: string = '';
   let chainId: number = 0;
 
@@ -93,11 +94,12 @@ export function* getSaveableTransaction(tx: EthTx, hash: string): SagaIterator {
       from = wallet.getAddressString();
     }
   }
-  const toChecksumAddress = yield select(getChecksumAddressFn);
+  const toChecksumAddress = yield select(configSelectors.getChecksumAddressFn);
   const savableTx: SavedTransaction = {
     hash,
     from,
     chainId,
+    nonce,
     to: toChecksumAddress(fields.to),
     value: fields.value,
     time: Date.now()
@@ -109,11 +111,16 @@ export function* resetTxData() {
   yield put(actions.resetTransactionData());
 }
 
+export function* getNonce() {
+  yield put(networkActions.getNonceRequested());
+}
+
 export function* transactionsSaga(): SagaIterator {
   yield takeEvery(types.TransactionsActions.FETCH_TRANSACTION_DATA, fetchTxData);
   yield takeEvery(
-    transactionBroadcastTypes.TransactionBroadcastActions.TRANSACTION_SUCCEEDED,
+    transactionBroadcastTypes.TransactionBroadcastActions.TRANSACTION_QUEUED,
     saveBroadcastedTx
   );
   yield takeEvery(types.TransactionsActions.RESET_TRANSACTION_DATA, resetTxData);
+  yield takeEvery(transactionTypes.TransactionActions.RESET_SUCCESSFUL, getNonce);
 }

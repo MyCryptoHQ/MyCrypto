@@ -3,28 +3,22 @@ import { MapStateToProps, connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
 import { NetworkConfig } from 'types/network';
 import { getKeyByValue } from 'utils/helpers';
 import logo from 'assets/images/logo-mycrypto.svg';
 import { OldDropDown } from 'components/ui';
 import {
-  AddCustomNodeAction,
-  TAddCustomNetwork,
-  TAddCustomNode,
-  TChangeLanguage,
-  TChangeNodeRequestedOneTime,
-  TRemoveCustomNode,
-  getLanguageSelection,
-  getNetworkConfig,
-  getOffline,
-  isNodeChanging,
-  isStaticNodeId,
-  changeLanguage,
-  changeNodeRequestedOneTime,
-  addCustomNode,
-  removeCustomNode,
-  addCustomNetwork
+  configSelectors,
+  configMetaSelectors,
+  configNodesCustomActions,
+  configMetaActions,
+  configNetworksCustomActions,
+  configNodesSelectedActions,
+  configNodesSelectedSelectors,
+  configNodesStaticSelectors,
+  configNodesCustomTypes
 } from 'features/config';
 import { AppState } from 'features/reducers';
 import { transactionFieldsActions } from 'features/transaction';
@@ -39,20 +33,20 @@ interface OwnProps {
 }
 
 interface DispatchProps {
-  changeLanguage: TChangeLanguage;
-  changeNodeRequestedOneTime: TChangeNodeRequestedOneTime;
+  changeLanguage: configMetaActions.TChangeLanguage;
+  changeNodeRequestedOneTime: configNodesSelectedActions.TChangeNodeRequestedOneTime;
   setGasPriceField: transactionFieldsActions.TSetGasPriceField;
-  addCustomNode: TAddCustomNode;
-  removeCustomNode: TRemoveCustomNode;
-  addCustomNetwork: TAddCustomNetwork;
+  addCustomNode: configNodesCustomActions.TAddCustomNode;
+  removeCustomNode: configNodesCustomActions.TRemoveCustomNode;
+  addCustomNetwork: configNetworksCustomActions.TAddCustomNetwork;
 }
 
 interface StateProps {
   shouldSetNodeFromQS: boolean;
   network: NetworkConfig;
-  languageSelection: ReturnType<typeof getLanguageSelection>;
-  isChangingNode: ReturnType<typeof isNodeChanging>;
-  isOffline: ReturnType<typeof getOffline>;
+  languageSelection: ReturnType<typeof configMetaSelectors.getLanguageSelection>;
+  isChangingNode: ReturnType<typeof configNodesSelectedSelectors.isNodeChanging>;
+  isOffline: ReturnType<typeof configMetaSelectors.getOffline>;
 }
 
 interface State {
@@ -140,6 +134,9 @@ class Header extends Component<Props, State> {
     const key = getKeyByValue(languages, value);
     if (key) {
       this.props.changeLanguage(key);
+      AnalyticsService.instance.track(ANALYTICS_CATEGORIES.SIDEBAR, 'Language changed', {
+        lang: key
+      });
     }
   };
 
@@ -151,7 +148,7 @@ class Header extends Component<Props, State> {
     this.setState({ isAddingCustomNode: false });
   };
 
-  private addCustomNode = (payload: AddCustomNodeAction['payload']) => {
+  private addCustomNode = (payload: configNodesCustomTypes.AddCustomNodeAction['payload']) => {
     this.setState({ isAddingCustomNode: false });
     this.props.addCustomNode(payload);
   };
@@ -168,20 +165,25 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, AppState> = (
   state,
   { networkParam }
 ): StateProps => ({
-  shouldSetNodeFromQS: !!(networkParam && isStaticNodeId(state, networkParam)),
-  isOffline: getOffline(state),
-  isChangingNode: isNodeChanging(state),
-  languageSelection: getLanguageSelection(state),
-  network: getNetworkConfig(state)
+  shouldSetNodeFromQS: !!(
+    networkParam && configNodesStaticSelectors.isStaticNodeId(state, networkParam)
+  ),
+  isOffline: configMetaSelectors.getOffline(state),
+  isChangingNode: configNodesSelectedSelectors.isNodeChanging(state),
+  languageSelection: configMetaSelectors.getLanguageSelection(state),
+  network: configSelectors.getNetworkConfig(state)
 });
 
 const mapDispatchToProps: DispatchProps = {
   setGasPriceField: transactionFieldsActions.setGasPriceField,
-  changeLanguage,
-  changeNodeRequestedOneTime,
-  addCustomNode,
-  removeCustomNode,
-  addCustomNetwork
+  changeLanguage: configMetaActions.changeLanguage,
+  changeNodeRequestedOneTime: configNodesSelectedActions.changeNodeRequestedOneTime,
+  addCustomNode: configNodesCustomActions.addCustomNode,
+  removeCustomNode: configNodesCustomActions.removeCustomNode,
+  addCustomNetwork: configNetworksCustomActions.addCustomNetwork
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Header);

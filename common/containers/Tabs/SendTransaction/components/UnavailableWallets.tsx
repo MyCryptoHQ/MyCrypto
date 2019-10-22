@@ -12,7 +12,7 @@ interface StateProps {
 const content = (
   <div className="Tab-content-pane">
     <h4>Sorry...</h4>
-    <p>MetaMask / Mist wallets are not available in offline mode.</p>
+    <p>MetaMask / Web3 wallets are not available in offline mode.</p>
   </div>
 );
 

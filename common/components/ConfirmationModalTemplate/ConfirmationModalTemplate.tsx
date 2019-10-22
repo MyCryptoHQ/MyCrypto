@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { translateRaw, translate } from 'translations';
 import { AppState } from 'features/reducers';
-import { getLanguageSelection } from 'features/config';
+import { configMetaSelectors } from 'features/config';
 import { transactionBroadcastActions, transactionSelectors } from 'features/transaction';
 import { walletSelectors } from 'features/wallet';
 import Modal, { IButton } from 'components/ui/Modal';
@@ -130,7 +130,7 @@ class ConfirmationModalTemplateClass extends React.Component<Props, State> {
 export const ConfirmationModalTemplate = connect(
   (state: AppState) => ({
     transactionBroadcasting: transactionSelectors.currentTransactionBroadcasting(state),
-    lang: getLanguageSelection(state),
+    lang: configMetaSelectors.getLanguageSelection(state),
     walletTypes: walletSelectors.getWalletType(state)
   }),
   {

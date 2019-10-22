@@ -121,7 +121,7 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
     if (name === 'privateKey') {
       keystoreFile = null;
     }
-    this.setState({ [name as any]: value, keystoreFile });
+    this.setState({ [name as any]: value, keystoreFile } as any);
   };
 
   private handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

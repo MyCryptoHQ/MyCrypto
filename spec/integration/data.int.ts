@@ -61,9 +61,9 @@ function testRpcRequests(node: INode, service: string) {
 }
 
 const mapNodeEndpoints = (nodes: { [key: string]: StaticNodeConfig }) => {
-  const { INodes } = INodeTestConfig;
+  const { RpcNodes } = INodeTestConfig;
 
-  INodes.forEach((n: string) => {
+  RpcNodes.forEach((n: string) => {
     shepherd.manual(n, true);
     testRpcRequests(shepherdProvider, `${nodes[n].service} ${nodes[n].network}`);
   });

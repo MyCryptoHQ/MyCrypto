@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { translateRaw } from 'translations';
-import { TRemoveCustomNode, removeCustomNode } from 'features/config';
+import { configNodesCustomActions } from 'features/config';
 import { NodeConfig } from 'types/node';
 import './NodeOption.scss';
 
@@ -14,7 +14,7 @@ interface OwnProps {
 }
 
 interface DispatchProps {
-  removeCustomNode: TRemoveCustomNode;
+  removeCustomNode: configNodesCustomActions.TRemoveCustomNode;
 }
 
 type Props = OwnProps & DispatchProps;
@@ -58,4 +58,7 @@ class NodeOption extends React.PureComponent<Props> {
   };
 }
 
-export default connect(undefined, { removeCustomNode })(NodeOption);
+export default connect(
+  undefined,
+  { removeCustomNode: configNodesCustomActions.removeCustomNode }
+)(NodeOption);

@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { NetworkConfig } from 'types/network';
 import { calcEACTotalCost } from 'libs/scheduling';
 import { AppState } from 'features/reducers';
-import { getOffline, getNetworkConfig } from 'features/config';
+import { configSelectors, configMetaSelectors } from 'features/config';
 import { gasSelectors } from 'features/gas';
 import { transactionFieldsSelectors } from 'features/transaction';
 import { scheduleSelectors } from 'features/schedule';
@@ -80,15 +80,16 @@ class FeeSummary extends React.Component<Props> {
     const usdBig = network.isTestnet
       ? new BN(0)
       : feeBig && rates[network.unit] && feeBig.muln(rates[network.unit].USD);
-    const usd = isOffline ? null : (
-      <UnitDisplay
-        value={usdBig}
-        unit="ether"
-        displayShortBalance={2}
-        displayTrailingZeroes={true}
-        checkOffline={true}
-      />
-    );
+    const usd =
+      isOffline || network.hideEquivalentValues ? null : (
+        <UnitDisplay
+          value={usdBig}
+          unit="ether"
+          displayShortBalance={2}
+          displayTrailingZeroes={true}
+          checkOffline={true}
+        />
+      );
 
     const feeSummaryClasses = classNames({
       FeeSummary: true,
@@ -126,7 +127,7 @@ class FeeSummary extends React.Component<Props> {
   }
 
   private calculateSchedulingFee() {
-    const { gasPrice, scheduleGasLimit, scheduleGasPrice, timeBounty } = this.props;
+    const { gasLimit, gasPrice, scheduleGasLimit, scheduleGasPrice, timeBounty } = this.props;
 
     return (
       gasPrice.value &&
@@ -136,7 +137,8 @@ class FeeSummary extends React.Component<Props> {
         scheduleGasLimit.value,
         gasPrice.value,
         scheduleGasPrice.value,
-        timeBounty.value
+        timeBounty.value,
+        gasLimit.value
       )
     );
   }
@@ -146,8 +148,8 @@ function mapStateToProps(state: AppState): ReduxStateProps {
   return {
     gasLimit: transactionFieldsSelectors.getGasLimit(state),
     rates: state.rates.rates,
-    network: getNetworkConfig(state),
-    isOffline: getOffline(state),
+    network: configSelectors.getNetworkConfig(state),
+    isOffline: configMetaSelectors.getOffline(state),
     isGasEstimating: gasSelectors.getIsEstimating(state),
     scheduling: scheduleSelectors.getSchedulingToggle(state).value,
     scheduleGasLimit: scheduleSelectors.getScheduleGasLimit(state),

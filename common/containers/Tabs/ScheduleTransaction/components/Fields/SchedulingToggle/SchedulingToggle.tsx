@@ -11,19 +11,19 @@ interface DispatchProps {
 }
 
 interface StateProps {
-  currentSchedulingToggle: scheduleSelectors.ICurrentSchedulingToggle;
+  schedulingToggle: boolean;
 }
 
 type Props = DispatchProps & StateProps;
 
 class SchedulingToggleClass extends Component<Props> {
   public render() {
-    const { currentSchedulingToggle } = this.props;
+    const { schedulingToggle } = this.props;
 
     return (
       <div className="input-group-wrapper">
         <span className="input-group-header">{translate('SCHEDULING_TOGGLE')}</span>
-        <Toggle checked={currentSchedulingToggle.value} onChangeHandler={this.handleOnChange} />
+        <Toggle checked={schedulingToggle} onChangeHandler={this.handleOnChange} />
       </div>
     );
   }
@@ -36,7 +36,7 @@ class SchedulingToggleClass extends Component<Props> {
 
 export const SchedulingToggle = connect(
   (state: AppState) => ({
-    currentSchedulingToggle: scheduleSelectors.getCurrentSchedulingToggle(state)
+    schedulingToggle: scheduleSelectors.getSchedulingToggle(state).value
   }),
   { setSchedulingToggle: scheduleActions.setSchedulingToggle }
 )(SchedulingToggleClass);

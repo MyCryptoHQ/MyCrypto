@@ -173,3 +173,11 @@ export function refreshTokenBalances(): types.RefreshTokenBalancesAction {
     type: types.WalletActions.REFRESH_TOKEN_BALANCES
   };
 }
+
+export type TSetAccessMessage = typeof setAccessMessage;
+export function setAccessMessage(accessMessage: string): types.SetAccessMessageAction {
+  return {
+    type: types.WalletActions.SET_ACCESS_MESSAGE,
+    payload: accessMessage
+  };
+}

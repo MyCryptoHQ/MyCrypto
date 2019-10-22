@@ -113,6 +113,9 @@ function mapStateToProps(state: AppState): PropsClosed | PropsOpen {
   };
 }
 
-export default connect(mapStateToProps, {
-  finalizeSignature: paritySignerActions.finalizeSignature
-})(QrSignerModal);
+export default connect(
+  mapStateToProps,
+  {
+    finalizeSignature: paritySignerActions.finalizeSignature
+  }
+)(QrSignerModal);

@@ -6,7 +6,7 @@ import { Token } from 'types/network';
 import { ICurrentTo } from 'features/types';
 import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
-import { getAllTokens } from 'features/config';
+import { configSelectors } from 'features/config';
 import { walletSelectors } from 'features/wallet';
 import { Address } from 'components/ui';
 
@@ -78,7 +78,8 @@ class CurrentCustomMessageClass extends PureComponent<Props, State> {
               A message regarding{' '}
               <strong>
                 <Address address={address} />
-              </strong>:
+              </strong>
+              :
             </small>
           </p>
           <p>{msg.msg}</p>
@@ -117,8 +118,10 @@ class CurrentCustomMessageClass extends PureComponent<Props, State> {
   }
 }
 
-export const CurrentCustomMessage = connect((state: AppState): ReduxProps => ({
-  currentTo: derivedSelectors.getCurrentTo(state),
-  tokens: getAllTokens(state),
-  wallet: walletSelectors.getWalletInst(state)
-}))(CurrentCustomMessageClass);
+export const CurrentCustomMessage = connect(
+  (state: AppState): ReduxProps => ({
+    currentTo: derivedSelectors.getCurrentTo(state),
+    tokens: configSelectors.getAllTokens(state),
+    wallet: walletSelectors.getWalletInst(state)
+  })
+)(CurrentCustomMessageClass);

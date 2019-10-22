@@ -1,17 +1,17 @@
 {
   "rootDir": "../",
   "transform": {
-    "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    "^.+\\.tsx?$": "ts-jest"
   },
   "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
   "moduleDirectories": ["node_modules", "common"],
-  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "worker.ts"],
+  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "worker.ts", "worker.tsx"],
   "moduleNameMapper": {
     "shared/(.*)": "<rootDir>/shared/$1",
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
       "<rootDir>/jest_config/__mocks__/fileMock.ts",
     "\\.(css|scss)$": "<rootDir>/jest_config/__mocks__/styleMock.ts",
-    "\\.worker.ts": "<rootDir>/jest_config/__mocks__/workerMock.js"
+    "\\.worker.(ts|tsx)": "<rootDir>/jest_config/__mocks__/workerMock.js"
   },
   "testPathIgnorePatterns": ["dist"],
   "coveragePathIgnorePatterns": ["components", "containers", "vendor", "spec"],
@@ -22,5 +22,10 @@
   "automock": false,
   "snapshotSerializers": ["enzyme-to-json/serializer"],
   "browser": true,
-  "collectCoverage": true
+  "collectCoverage": true,
+  "globals": {
+    "ts-jest": {
+      "diagnostics": false
+    }
+  }
 }

@@ -5,8 +5,9 @@ import BN from 'bn.js';
 import { translateRaw } from 'translations';
 import { NetworkConfig } from 'types/network';
 import { Units } from 'libs/units';
+import { isAdvancedQueryTransaction } from 'utils/helpers';
 import { AppState } from 'features/reducers';
-import { getOffline, getNetworkConfig } from 'features/config';
+import { configSelectors, configMetaSelectors } from 'features/config';
 import {
   transactionFieldsActions,
   transactionFieldsSelectors,
@@ -91,7 +92,8 @@ class TXMetaDataPanel extends React.Component<Props, State> {
   public render() {
     const { offline, disableToggle, advancedGasOptions, className = '', scheduling } = this.props;
     const { gasPrice } = this.state;
-    const showAdvanced = this.state.sliderState === 'advanced' || offline;
+    const queryTransaction = isAdvancedQueryTransaction(location.search);
+    const showAdvanced = this.state.sliderState === 'advanced' || queryTransaction || offline;
 
     return (
       <div className={`Gas col-md-12 ${className}`}>
@@ -111,16 +113,15 @@ class TXMetaDataPanel extends React.Component<Props, State> {
           />
         )}
 
-        {!offline &&
-          !disableToggle && (
-            <div className="help-block">
-              <a className="Gas-toggle" onClick={this.toggleAdvanced}>
-                {showAdvanced
-                  ? `- ${translateRaw('TRANS_SIMPLE')}`
-                  : `+ ${translateRaw('TRANS_ADVANCED')}`}
-              </a>
-            </div>
-          )}
+        {!offline && !disableToggle && (
+          <div className="help-block">
+            <a className="Gas-toggle" onClick={this.toggleAdvanced}>
+              {showAdvanced
+                ? `- ${translateRaw('TRANS_SIMPLE')}`
+                : `+ ${translateRaw('TRANS_ADVANCED')}`}
+            </a>
+          </div>
+        )}
       </div>
     );
   }
@@ -144,15 +145,18 @@ class TXMetaDataPanel extends React.Component<Props, State> {
 function mapStateToProps(state: AppState): StateProps {
   return {
     gasPrice: transactionFieldsSelectors.getGasPrice(state),
-    offline: getOffline(state),
-    network: getNetworkConfig(state)
+    offline: configMetaSelectors.getOffline(state),
+    network: configSelectors.getNetworkConfig(state)
   };
 }
 
-export default connect(mapStateToProps, {
-  inputGasPrice: transactionFieldsActions.inputGasPrice,
-  inputGasPriceIntent: transactionFieldsActions.inputGasPriceIntent,
-  fetchCCRates: ratesActions.fetchCCRatesRequested,
-  getNonceRequested: transactionNetworkActions.getNonceRequested,
-  resetTransactionRequested: transactionFieldsActions.resetTransactionRequested
-})(TXMetaDataPanel);
+export default connect(
+  mapStateToProps,
+  {
+    inputGasPrice: transactionFieldsActions.inputGasPrice,
+    inputGasPriceIntent: transactionFieldsActions.inputGasPriceIntent,
+    fetchCCRates: ratesActions.fetchCCRatesRequested,
+    getNonceRequested: transactionNetworkActions.getNonceRequested,
+    resetTransactionRequested: transactionFieldsActions.resetTransactionRequested
+  }
+)(TXMetaDataPanel);

@@ -8,7 +8,7 @@ import { NetworkContract } from 'types/network';
 import { isValidAbiJson } from 'libs/validators';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
-import { getNetworkContracts, getIsValidAddressFn } from 'features/config';
+import { configSelectors } from 'features/config';
 import { setCurrentTo, TSetCurrentTo } from 'features/transaction/actions';
 import { Input, TextArea, CodeBlock, Dropdown } from 'components/ui';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
@@ -21,7 +21,7 @@ interface ContractOption {
 interface StateProps {
   currentTo: ReturnType<typeof selectors.getCurrentTo>;
   contracts: NetworkContract[];
-  isValidAddress: ReturnType<typeof getIsValidAddressFn>;
+  isValidAddress: ReturnType<typeof configSelectors.getIsValidAddressFn>;
 }
 
 interface OwnProps {
@@ -180,7 +180,7 @@ class InteractForm extends Component<Props, State> {
     ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     this.props.resetState();
-    this.setState({ [name]: ev.currentTarget.value });
+    this.setState({ [name]: ev.currentTarget.value } as any);
   };
 
   private handleSelectContract = (contract: ContractOption) => {
@@ -210,9 +210,12 @@ class InteractForm extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  contracts: getNetworkContracts(state) || [],
+  contracts: configSelectors.getNetworkContracts(state) || [],
   currentTo: selectors.getCurrentTo(state),
-  isValidAddress: getIsValidAddressFn(state)
+  isValidAddress: configSelectors.getIsValidAddressFn(state)
 });
 
-export default connect(mapStateToProps, { setCurrentTo })(InteractForm);
+export default connect(
+  mapStateToProps,
+  { setCurrentTo }
+)(InteractForm);

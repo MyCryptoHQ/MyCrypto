@@ -1,8 +1,8 @@
-import { CONFIG, PollOfflineStatus } from './types';
+import * as types from './types';
 
 export type TPollOfflineStatus = typeof pollOfflineStatus;
-export function pollOfflineStatus(): PollOfflineStatus {
+export function pollOfflineStatus(): types.PollOfflineStatus {
   return {
-    type: CONFIG.POLL_OFFLINE_STATUS
+    type: types.ConfigActions.POLL_OFFLINE_STATUS
   };
 }

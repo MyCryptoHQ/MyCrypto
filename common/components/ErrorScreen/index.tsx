@@ -30,7 +30,8 @@ const ErrorScreen: React.SFC<Props> = ({ error }) => {
           an issue on our{' '}
           <NewTabLink href="https://github.com/MyCryptoHQ/MyCrypto/issues">
             GitHub Repository
-          </NewTabLink>. Please attach the following error to help our team solve your issue.
+          </NewTabLink>
+          . Please attach the following error to help our team solve your issue.
         </p>
         <code>{error.message}</code>
         <h5>

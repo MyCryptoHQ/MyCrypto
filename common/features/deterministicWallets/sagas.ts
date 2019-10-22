@@ -8,8 +8,7 @@ import { INode } from 'libs/nodes/INode';
 import { TokenValue } from 'libs/units';
 import { Token } from 'types/network';
 import * as derivedSelectors from 'features/selectors';
-import { getChecksumAddressFn } from 'features/config';
-import * as configNodesSelectors from 'features/config/nodes/selectors';
+import { configSelectors, configNodesSelectors } from 'features/config';
 import { notificationsActions } from 'features/notifications';
 import * as types from './types';
 import * as actions from './actions';
@@ -37,8 +36,8 @@ export function* getDeterministicWalletsSaga(
     return;
   }
   const wallets: types.DeterministicWalletData[] = [];
-  const toChecksumAddress: ReturnType<typeof getChecksumAddressFn> = yield select(
-    getChecksumAddressFn
+  const toChecksumAddress: ReturnType<typeof configSelectors.getChecksumAddressFn> = yield select(
+    configSelectors.getChecksumAddressFn
   );
   for (let i = 0; i < limit; i++) {
     const index = i + offset;
@@ -74,7 +73,7 @@ export function* updateWalletValues(): SagaIterator {
       );
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
     yield put(notificationsActions.showNotification('danger', translateRaw('ERROR_32')));
   }
 }
@@ -118,7 +117,7 @@ export function* updateWalletTokenValues(): SagaIterator {
       }
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
     yield put(notificationsActions.showNotification('danger', translateRaw('ERROR_32')));
   }
 }

@@ -4,7 +4,11 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getOffline, getNetworkConfig, isNodeChanging } from 'features/config';
+import {
+  configMetaSelectors,
+  configSelectors,
+  configNodesSelectedSelectors
+} from 'features/config';
 import './NetworkStatus.scss';
 
 enum NETWORK_STATUS {
@@ -43,8 +47,10 @@ const NetworkStatus: React.SFC<StateProps> = ({ isOffline, isChangingNode, netwo
   );
 };
 
-export default connect((state: AppState): StateProps => ({
-  network: getNetworkConfig(state),
-  isOffline: getOffline(state),
-  isChangingNode: isNodeChanging(state)
-}))(NetworkStatus);
+export default connect(
+  (state: AppState): StateProps => ({
+    network: configSelectors.getNetworkConfig(state),
+    isOffline: configMetaSelectors.getOffline(state),
+    isChangingNode: configNodesSelectedSelectors.isNodeChanging(state)
+  })
+)(NetworkStatus);

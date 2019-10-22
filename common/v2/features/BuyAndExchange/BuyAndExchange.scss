@@ -1,0 +1,26 @@
+.BuyAndExchange {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 1rem 0;
+  text-align: left;
+
+  &-title {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  &-subtitle {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  &-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .Warning {
+      max-width: 500px;
+    }
+  }
+}

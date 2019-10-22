@@ -8,6 +8,7 @@ import { FieldInput } from './FieldInput';
 interface OwnProps {
   address?: string;
   symbolLookup: IGenerateSymbolLookup;
+  isOffline: boolean;
   onChange(symbol: Result<string>): void;
 }
 
@@ -17,7 +18,7 @@ export class SymbolField extends React.Component<OwnProps> {
       <FieldInput
         fieldName={translateRaw('TOKEN_SYMBOL')}
         fieldToFetch={'symbol'}
-        shouldEnableAutoField={req => !req.err()}
+        shouldEnableAutoField={() => false}
         address={this.props.address}
         userInputValidator={this.isValidUserInput}
         fetchedFieldValidator={field =>
@@ -25,6 +26,7 @@ export class SymbolField extends React.Component<OwnProps> {
             ? Result.from({ res: field })
             : Result.from({ err: 'No Symbol found, please input the token symbol manually' })
         }
+        isOffline={this.props.isOffline}
         onChange={this.props.onChange}
       />
     );

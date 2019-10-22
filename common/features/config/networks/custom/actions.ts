@@ -1,21 +1,21 @@
-import { CONFIG_NETWORKS_CUSTOM, AddCustomNetworkAction, RemoveCustomNetworkAction } from './types';
+import * as types from './types';
 
 export type TAddCustomNetwork = typeof addCustomNetwork;
 export function addCustomNetwork(
-  payload: AddCustomNetworkAction['payload']
-): AddCustomNetworkAction {
+  payload: types.AddCustomNetworkAction['payload']
+): types.AddCustomNetworkAction {
   return {
-    type: CONFIG_NETWORKS_CUSTOM.ADD,
+    type: types.ConfigNetworksCustomActions.ADD,
     payload
   };
 }
 
 export type TRemoveCustomNetwork = typeof removeCustomNetwork;
 export function removeCustomNetwork(
-  payload: RemoveCustomNetworkAction['payload']
-): RemoveCustomNetworkAction {
+  payload: types.RemoveCustomNetworkAction['payload']
+): types.RemoveCustomNetworkAction {
   return {
-    type: CONFIG_NETWORKS_CUSTOM.REMOVE,
+    type: types.ConfigNetworksCustomActions.REMOVE,
     payload
   };
 }

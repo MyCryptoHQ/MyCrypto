@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { TAddCustomNode, AddCustomNodeAction, addCustomNode } from 'features/config';
+import { configNodesCustomTypes, configNodesCustomActions } from 'features/config';
 import NetworkSelector from 'components/NetworkSelector';
 import CustomNodeModal from 'components/CustomNodeModal';
 
@@ -10,7 +10,7 @@ interface OwnProps {
 }
 
 interface DispatchProps {
-  addCustomNode: TAddCustomNode;
+  addCustomNode: configNodesCustomActions.TAddCustomNode;
 }
 
 type Props = OwnProps & DispatchProps;
@@ -50,11 +50,14 @@ class NetworkSelect extends React.Component<Props, State> {
     this.setState({ isAddingCustomNode: false });
   };
 
-  private addCustomNode = (payload: AddCustomNodeAction['payload']) => {
+  private addCustomNode = (payload: configNodesCustomTypes.AddCustomNodeAction['payload']) => {
     this.closeCustomNodeModal();
     this.props.addCustomNode(payload);
     this.props.closePanel();
   };
 }
 
-export default connect(undefined, { addCustomNode })(NetworkSelect);
+export default connect(
+  undefined,
+  { addCustomNode: configNodesCustomActions.addCustomNode }
+)(NetworkSelect);

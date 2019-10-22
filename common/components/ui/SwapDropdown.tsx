@@ -136,8 +136,8 @@ class SwapDropdown extends PureComponent<Props, State> {
     });
 
     // Sort non-main coins alphabetically
-    otherOptions = otherOptions.sort(
-      (opt1, opt2) => (opt1.id.toLowerCase() > opt2.id.toLowerCase() ? 1 : -1)
+    otherOptions = otherOptions.sort((opt1, opt2) =>
+      opt1.id.toLowerCase() > opt2.id.toLowerCase() ? 1 : -1
     );
 
     // Sort unavailable options last

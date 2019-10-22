@@ -11,15 +11,14 @@ import {
   InsecureWalletName,
   MiscWalletName,
   WalletName,
-  knowledgeBaseURL,
-  donationAddressMap
+  knowledgeBaseURL
 } from 'config';
 import translate, { translateRaw } from 'translations';
 import { isWeb3NodeAvailable } from 'libs/nodes/web3';
 import { wikiLink as paritySignerHelpLink } from 'libs/wallet/non-deterministic/parity';
 import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
-import { walletActions } from 'features/wallet';
+import { walletActions, walletSelectors } from 'features/wallet';
 import { transactionFieldsActions } from 'features/transaction';
 import { notificationsActions } from 'features/notifications';
 import LedgerIcon from 'assets/images/wallets/ledger.svg';
@@ -27,6 +26,7 @@ import TrezorIcon from 'assets/images/wallets/trezor.svg';
 import SafeTIcon from 'assets/images/wallets/safe-t.svg';
 import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
 import { Errorable } from 'components';
+import { Warning } from 'components/ui';
 import { DisabledWallets } from './disables';
 import { getWeb3ProviderInfo } from 'utils/web3';
 import {
@@ -65,6 +65,7 @@ interface StateProps {
   computedDisabledWallets: DisabledWallets;
   isWalletPending: AppState['wallet']['isWalletPending'];
   isPasswordPending: AppState['wallet']['isPasswordPending'];
+  accessMessage: ReturnType<typeof walletSelectors.getWalletAccessMessage>;
 }
 
 type Props = OwnProps & StateProps & DispatchProps & RouteComponentProps<{}>;
@@ -96,8 +97,9 @@ export interface InsecureWalletInfo extends BaseWalletInfo {
   example: string;
 }
 
-// tslint:disable-next-line:no-empty-interface
-interface MiscWalletInfo extends InsecureWalletInfo {}
+export interface MiscWalletInfo extends BaseWalletInfo {
+  description: string;
+}
 
 type HardwareWallets = { [key in HardwareWalletName]: SecureWalletInfo };
 type SecureWallets = { [key in SecureWalletName]: SecureWalletInfo };
@@ -115,7 +117,7 @@ const MISC_WALLETS = Object.values(MiscWalletName);
 
 const web3info = getWeb3ProviderInfo();
 
-const WalletDecrypt = withRouter<Props>(
+const WalletDecrypt = withRouter(
   class WalletDecryptClass extends Component<RouteComponentProps<{}> & Props, State> {
     // https://github.com/Microsoft/TypeScript/issues/13042
     // index signature should become [key: Wallets] (from config) once typescript bug is fixed
@@ -128,7 +130,7 @@ const WalletDecrypt = withRouter<Props>(
         initialParams: {},
         unlock: this.props.unlockWeb3,
         attemptUnlock: true,
-        helpLink: `${knowledgeBaseURL}/migration/moving-from-private-key-to-metamask`
+        helpLink: `${knowledgeBaseURL}/how-to/migrating/moving-from-mycrypto-to-metamask`
       },
       [SecureWalletName.LEDGER_NANO_S]: {
         lid: 'X_LEDGER',
@@ -137,7 +139,7 @@ const WalletDecrypt = withRouter<Props>(
         component: LedgerNanoSDecrypt,
         initialParams: {},
         unlock: this.props.setWallet,
-        helpLink: 'https://support.ledgerwallet.com/hc/en-us/articles/115005200009'
+        helpLink: 'https://support.ledger.com/hc/en-us/articles/360008268594'
       },
       [SecureWalletName.TREZOR]: {
         lid: 'X_TREZOR',
@@ -146,8 +148,7 @@ const WalletDecrypt = withRouter<Props>(
         component: TrezorDecrypt,
         initialParams: {},
         unlock: this.props.setWallet,
-        helpLink:
-          'https://support.mycrypto.com/accessing-your-wallet/how-to-use-your-trezor-with-mycrypto.html'
+        helpLink: `${knowledgeBaseURL}/how-to/migrating/moving-from-mycrypto-to-trezor`
       },
       [SecureWalletName.SAFE_T]: {
         lid: 'X_SAFE_T',
@@ -177,7 +178,7 @@ const WalletDecrypt = withRouter<Props>(
           password: ''
         },
         unlock: this.props.unlockKeystore,
-        helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
+        helpLink: `${knowledgeBaseURL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
       },
       [InsecureWalletName.MNEMONIC_PHRASE]: {
         lid: 'X_MNEMONIC',
@@ -185,7 +186,7 @@ const WalletDecrypt = withRouter<Props>(
         component: MnemonicDecrypt,
         initialParams: {},
         unlock: this.props.unlockMnemonic,
-        helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
+        helpLink: `${knowledgeBaseURL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
       },
       [InsecureWalletName.PRIVATE_KEY]: {
         lid: 'X_PRIVKEY2',
@@ -196,11 +197,11 @@ const WalletDecrypt = withRouter<Props>(
           password: ''
         },
         unlock: this.props.unlockPrivateKey,
-        helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
+        helpLink: `${knowledgeBaseURL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
       },
       [MiscWalletName.VIEW_ONLY]: {
         lid: 'VIEW_ADDR',
-        example: donationAddressMap.ETH,
+        description: 'ADD_VIEW_ADDRESS_DESC',
         component: ViewOnlyDecrypt,
         initialParams: {},
         unlock: this.props.setWallet,
@@ -216,6 +217,8 @@ const WalletDecrypt = withRouter<Props>(
       value: null
     };
 
+    public exists: boolean = true;
+
     public UNSAFE_componentWillReceiveProps(nextProps: Props) {
       // Reset state when unlock is hidden / revealed
       if (nextProps.hidden !== this.props.hidden) {
@@ -224,6 +227,10 @@ const WalletDecrypt = withRouter<Props>(
           selectedWalletKey: null
         });
       }
+    }
+
+    public componentWillUnmount() {
+      this.exists = false;
     }
 
     public getSelectedWallet() {
@@ -238,6 +245,7 @@ const WalletDecrypt = withRouter<Props>(
     public getDecryptionComponent() {
       const { selectedWalletKey, isInsecureOverridden } = this.state;
       const selectedWallet = this.getSelectedWallet();
+
       if (!selectedWalletKey || !selectedWallet) {
         return null;
       }
@@ -268,8 +276,10 @@ const WalletDecrypt = withRouter<Props>(
             <i className="fa fa-arrow-left" /> {translate('CHANGE_WALLET')}
           </button>
           <h2 className="WalletDecrypt-decrypt-title">
-            {!selectedWallet.isReadOnly && translate('UNLOCK_WALLET')}{' '}
-            {translate(selectedWallet.lid)}
+            {!(selectedWallet.isReadOnly || selectedWallet.lid === 'X_PARITYSIGNER') &&
+              translate('UNLOCK_WALLET', {
+                $wallet: translateRaw(selectedWallet.lid)
+              })}
           </h2>
           <section className="WalletDecrypt-decrypt-form">
             <Errorable
@@ -307,13 +317,17 @@ const WalletDecrypt = withRouter<Props>(
     }
 
     public buildWalletOptions() {
-      const { computedDisabledWallets } = this.props;
+      const { computedDisabledWallets, accessMessage } = this.props;
       const { reasons } = computedDisabledWallets;
 
       return (
         <div className="WalletDecrypt-wallets">
           <h2 className="WalletDecrypt-wallets-title">{translate('DECRYPT_ACCESS')}</h2>
-
+          {accessMessage && (
+            <div className="WalletDecrypt-wallets-row">
+              <Warning>{accessMessage}</Warning>
+            </div>
+          )}
           <div className="WalletDecrypt-wallets-row">
             {HARDWARE_WALLETS.map((walletType: SecureWalletName) => {
               const wallet = this.WALLETS[walletType];
@@ -357,7 +371,7 @@ const WalletDecrypt = withRouter<Props>(
                 <WalletButton
                   key={walletType}
                   name={translateRaw(wallet.lid)}
-                  example={wallet.example}
+                  description={translateRaw(wallet.description)}
                   helpLink={wallet.helpLink}
                   walletType={walletType}
                   isReadOnly={true}
@@ -399,6 +413,7 @@ const WalletDecrypt = withRouter<Props>(
     }
 
     public handleWalletChoice = async (walletType: WalletName) => {
+      const { showNotification } = this.props;
       const wallet = this.WALLETS[walletType];
 
       if (!wallet) {
@@ -407,20 +422,27 @@ const WalletDecrypt = withRouter<Props>(
 
       let timeout = 0;
       if (wallet.attemptUnlock) {
-        const web3Available = await isWeb3NodeAvailable();
-        if (web3Available) {
-          // timeout is only the maximum wait time before secondary view is shown
-          // send view will be shown immediately on web3 resolve
-          timeout = 1500;
-          wallet.unlock();
+        try {
+          const web3Available = await isWeb3NodeAvailable();
+          if (web3Available) {
+            // timeout is only the maximum wait time before secondary view is shown
+            // send view will be shown immediately on web3 resolve
+            timeout = 1500;
+            wallet.unlock();
+          }
+        } catch (e) {
+          // The permissions request for MetaMask was displayed, but permission was denied.
+          showNotification('danger', translateRaw('METAMASK_PERMISSION_DENIED'));
         }
       }
 
       window.setTimeout(() => {
-        this.setState({
-          selectedWalletKey: walletType,
-          value: wallet.initialParams
-        });
+        if (this.exists) {
+          this.setState({
+            selectedWalletKey: walletType,
+            value: wallet.initialParams
+          });
+        }
       }, timeout);
     };
 
@@ -435,6 +457,7 @@ const WalletDecrypt = withRouter<Props>(
       const { hidden } = this.props;
       const selectedWallet = this.getSelectedWallet();
       const decryptionComponent = this.getDecryptionComponent();
+
       return (
         <div>
           {!hidden && (
@@ -505,16 +528,20 @@ function mapStateToProps(state: AppState, ownProps: Props) {
   return {
     computedDisabledWallets,
     isWalletPending: state.wallet.isWalletPending,
-    isPasswordPending: state.wallet.isPasswordPending
+    isPasswordPending: state.wallet.isPasswordPending,
+    accessMessage: walletSelectors.getWalletAccessMessage(state)
   };
 }
 
-export default connect(mapStateToProps, {
-  unlockKeystore: walletActions.unlockKeystore,
-  unlockMnemonic: walletActions.unlockMnemonic,
-  unlockPrivateKey: walletActions.unlockPrivateKey,
-  unlockWeb3: walletActions.unlockWeb3,
-  setWallet: walletActions.setWallet,
-  resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
-  showNotification: notificationsActions.showNotification
-})(WalletDecrypt) as React.ComponentClass<OwnProps>;
+export default connect(
+  mapStateToProps,
+  {
+    unlockKeystore: walletActions.unlockKeystore,
+    unlockMnemonic: walletActions.unlockMnemonic,
+    unlockPrivateKey: walletActions.unlockPrivateKey,
+    unlockWeb3: walletActions.unlockWeb3,
+    setWallet: walletActions.setWallet,
+    resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
+    showNotification: notificationsActions.showNotification
+  }
+)(WalletDecrypt) as React.ComponentClass<OwnProps>;

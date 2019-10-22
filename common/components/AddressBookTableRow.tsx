@@ -29,7 +29,7 @@ class AddressBookTableRow extends React.Component<Props> {
 
   private labelInput: HTMLInputElement | null = null;
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     this.setState({ label: nextProps.label, mostRecentValidLabel: nextProps.label });
   }
 
@@ -77,7 +77,9 @@ class AddressBookTableRow extends React.Component<Props> {
               </label>
               <Input
                 name={labelName}
-                title={`${translateRaw('EDIT_LABEL_FOR')} ${address}`}
+                title={translateRaw('EDIT_LABEL_FOR', {
+                  $address: address
+                })}
                 value={temporaryLabel}
                 onChange={this.handleLabelChange}
                 onKeyDown={this.handleKeyDown}

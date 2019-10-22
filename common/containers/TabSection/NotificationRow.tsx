@@ -34,7 +34,7 @@ export default class NotificationRow extends Component<Props, {}> {
 
         internal = <CustomComponent {...rest} />;
       } else {
-        const BasicComponent = component;
+        const BasicComponent: any = component;
 
         internal = <BasicComponent {...rest}>{msg}</BasicComponent>;
       }

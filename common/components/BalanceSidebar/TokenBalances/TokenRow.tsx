@@ -14,6 +14,7 @@ interface Props {
   custom?: boolean;
   decimal: number;
   tracked: boolean;
+  isOffline: boolean;
   toggleTracked: ToggleTrackedFn | false;
   onRemove(symbol: string): void;
 }
@@ -27,7 +28,7 @@ export default class TokenRow extends React.PureComponent<Props, State> {
   };
 
   public render() {
-    const { balance, symbol, custom, decimal, tracked } = this.props;
+    const { balance, symbol, custom, decimal, tracked, isOffline } = this.props;
     const { showLongBalance } = this.state;
 
     return (
@@ -43,20 +44,22 @@ export default class TokenRow extends React.PureComponent<Props, State> {
             />
           </td>
         )}
-        <td
-          className="TokenRow-balance"
-          title={`${balance.toString()} (Double-Click)`}
-          onDoubleClick={this.toggleShowLongBalance}
-        >
-          <span>
-            <UnitDisplay
-              value={balance}
-              decimal={decimal}
-              displayShortBalance={!showLongBalance}
-              checkOffline={true}
-            />
-          </span>
-        </td>
+        {!isOffline && (
+          <td
+            className="TokenRow-balance"
+            title={`${balance.toString()} (Double-Click)`}
+            onDoubleClick={this.toggleShowLongBalance}
+          >
+            <span>
+              <UnitDisplay
+                value={balance}
+                decimal={decimal}
+                displayShortBalance={!showLongBalance}
+                checkOffline={true}
+              />
+            </span>
+          </td>
+        )}
         <td className="TokenRow-symbol">
           {symbol}
           {!!custom && (

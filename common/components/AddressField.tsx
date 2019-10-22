@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { donationAddressMap } from 'config';
 import translate from 'translations';
 import { AppState } from 'features/reducers';
-import { getChecksumAddressFn } from 'features/config';
+import { configSelectors } from 'features/config';
 import { Input } from 'components/ui';
 import { AddressFieldFactory } from './AddressFieldFactory';
 
@@ -15,6 +15,7 @@ interface OwnProps {
   showLabelMatch?: boolean;
   showIdenticon?: boolean;
   showInputLabel?: boolean;
+  showEnsResolution?: boolean;
   placeholder?: string;
   value?: string;
   dropdownThreshold?: number;
@@ -22,7 +23,7 @@ interface OwnProps {
 }
 
 interface StateProps {
-  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
+  toChecksumAddress: ReturnType<typeof configSelectors.getChecksumAddressFn>;
 }
 
 type Props = OwnProps & StateProps;
@@ -34,16 +35,18 @@ const AddressField: React.SFC<Props> = ({
   showLabelMatch,
   toChecksumAddress,
   showIdenticon,
-  placeholder = donationAddressMap.ETH,
+  placeholder = `donate.mycryptoid.eth or ${donationAddressMap.ETH}`,
   showInputLabel = true,
   onChangeOverride,
   value,
-  dropdownThreshold
+  dropdownThreshold,
+  showEnsResolution = true
 }) => (
   <AddressFieldFactory
     isSelfAddress={isSelfAddress}
     showLabelMatch={showLabelMatch}
     showIdenticon={showIdenticon}
+    showEnsResolution={showEnsResolution}
     onChangeOverride={onChangeOverride}
     value={value}
     dropdownThreshold={dropdownThreshold}
@@ -59,11 +62,12 @@ const AddressField: React.SFC<Props> = ({
             className={`input-group-input ${!isValid && !isLabelEntry ? 'invalid' : ''}`}
             isValid={isValid}
             type="text"
-            value={
-              value != null
-                ? value
-                : isCheckSummed ? toChecksumAddress(currentTo.raw) : currentTo.raw
-            }
+            value={(value != null
+              ? value
+              : isCheckSummed
+              ? toChecksumAddress(currentTo.raw)
+              : currentTo.raw
+            ).trim()}
             placeholder={placeholder}
             readOnly={!!(isReadOnly || readOnly)}
             spellCheck={false}
@@ -77,6 +81,8 @@ const AddressField: React.SFC<Props> = ({
   />
 );
 
-export default connect((state: AppState): StateProps => ({
-  toChecksumAddress: getChecksumAddressFn(state)
-}))(AddressField);
+export default connect(
+  (state: AppState): StateProps => ({
+    toChecksumAddress: configSelectors.getChecksumAddressFn(state)
+  })
+)(AddressField);

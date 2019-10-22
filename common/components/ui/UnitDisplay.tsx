@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { fromTokenBase, getDecimalFromEtherUnit, UnitKey, Wei, TokenValue } from 'libs/units';
 import { formatNumber as format } from 'utils/formatters';
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/config';
+import { configMetaSelectors } from 'features/config';
 import Spinner from 'components/ui/Spinner';
 
 interface Props {
@@ -71,7 +71,7 @@ const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
     element = (
       <span>
         {formattedValue}
-        <span>{symbol ? <>&nbsp;{symbol}</> : ''}</span>
+        <span>{symbol ? ` ${symbol}` : ''}</span>
       </span>
     );
   }
@@ -102,7 +102,7 @@ class OfflineDisplay extends React.Component<OfflineProps> {
 
 function mapStateToOfflineProps(state: AppState) {
   return {
-    offline: getOffline(state)
+    offline: configMetaSelectors.getOffline(state)
   };
 }
 

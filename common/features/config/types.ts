@@ -1,29 +1,35 @@
 import { InsecureWalletName, SecureWalletName } from 'config';
-import { MetaState, MetaAction } from './meta/types';
-import { CustomNetworkAction } from './networks/custom/types';
-import { NetworksState } from './networks/types';
-import { CustomNodeAction } from './nodes/custom/types';
-import { SelectedNodeAction } from './nodes/selected/types';
-import { StaticNodeAction } from './nodes/static/types';
-import { NodesState } from './nodes/types';
+import * as configMetaTypes from './meta/types';
+import * as configNetworksCustomTypes from './networks/custom/types';
+import * as configNetworksTypes from './networks/types';
+import * as configNodesCustomTypes from './nodes/custom/types';
+import * as configNodesSelectedTypes from './nodes/selected/types';
+import * as configNodesStaticTypes from './nodes/static/types';
+import * as configNodesTypes from './nodes/types';
 
-export enum CONFIG {
+export enum ConfigActions {
   POLL_OFFLINE_STATUS = 'CONFIG_POLL_OFFLINE_STATUS'
 }
 
 export interface ConfigState {
-  meta: MetaState;
-  networks: NetworksState;
-  nodes: NodesState;
+  meta: configMetaTypes.ConfigMetaState;
+  networks: configNetworksTypes.ConfigNetworksState;
+  nodes: configNodesTypes.ConfigNodesState;
 }
 
 export interface PollOfflineStatus {
-  type: CONFIG.POLL_OFFLINE_STATUS;
+  type: ConfigActions.POLL_OFFLINE_STATUS;
 }
 
-export type NodeAction = SelectedNodeAction | StaticNodeAction;
+export type NodeAction =
+  | configNodesSelectedTypes.SelectedNodeAction
+  | configNodesStaticTypes.StaticNodeAction;
 
-export type ConfigAction = CustomNetworkAction | CustomNodeAction | NodeAction | MetaAction;
+export type ConfigAction =
+  | configNetworksCustomTypes.CustomNetworkAction
+  | configNodesCustomTypes.CustomNodeAction
+  | NodeAction
+  | configMetaTypes.MetaAction;
 
 export type DPathFormat =
   | SecureWalletName.TREZOR

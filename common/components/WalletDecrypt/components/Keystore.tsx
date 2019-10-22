@@ -39,7 +39,10 @@ export class KeystoreDecrypt extends PureComponent {
   };
 
   public render() {
-    const { isWalletPending, value: { file, password, filename } } = this.props;
+    const {
+      isWalletPending,
+      value: { file, password, filename }
+    } = this.props;
     const passReq = isPassRequired(file);
     const unlockDisabled = !file || (passReq && !password);
 
@@ -111,15 +114,15 @@ export class KeystoreDecrypt extends PureComponent {
 
     fileReader.onload = () => {
       const keystore = fileReader.result;
-      const passReq = isPassRequired(keystore);
+      const passReq = isPassRequired(keystore as any);
 
       this.props.onChange({
         ...this.props.value,
         file: keystore,
-        valid: keystore.length && !passReq,
+        valid: (keystore as any).length && !passReq,
         password: '',
         filename: fileName
-      });
+      } as any);
       this.props.onUnlock();
     };
     if (isValidFile(inputFile)) {

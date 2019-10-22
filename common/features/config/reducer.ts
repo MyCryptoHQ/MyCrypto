@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 
-import { metaReducer } from './meta/reducer';
-import { networksReducer } from './networks/reducer';
-import { nodesReducer } from './nodes/reducer';
-import { ConfigState } from './types';
+import * as configMetaReducer from './meta/reducer';
+import * as configNetworksReducer from './networks/reducer';
+import * as configNodesReducer from './nodes/reducer';
+import * as types from './types';
 
-export const configReducer = combineReducers<ConfigState>({
-  meta: metaReducer,
-  networks: networksReducer,
-  nodes: nodesReducer
+export const configReducer = combineReducers<types.ConfigState>({
+  meta: configMetaReducer.metaReducer,
+  networks: configNetworksReducer.networksReducer,
+  nodes: configNodesReducer.nodesReducer
 });

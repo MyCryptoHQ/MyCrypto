@@ -1,11 +1,5 @@
-import {
-  changeLanguage,
-  setOnline,
-  setOffline,
-  toggleAutoGasLimit,
-  setLatestBlock
-} from './actions';
-import { metaReducer } from './reducer';
+import * as actions from './actions';
+import * as reducer from './reducer';
 import { Theme } from 'config';
 
 describe('meta reducer', () => {
@@ -45,38 +39,41 @@ describe('meta reducer', () => {
     }
   };
 
-  const actions = {
-    changeLangauge: changeLanguage('langaugeToChange'),
-    setOnline: setOnline(),
-    setOffline: setOffline(),
-    toggleAutoGasLimit: toggleAutoGasLimit(),
-    setLatestBlock: setLatestBlock('12345')
+  const actionsToDispatch = {
+    changeLangauge: actions.changeLanguage('langaugeToChange'),
+    setOnline: actions.setOnline(),
+    setOffline: actions.setOffline(),
+    toggleAutoGasLimit: actions.toggleAutoGasLimit(),
+    setLatestBlock: actions.setLatestBlock('12345')
   };
   it('should return the inital state', () =>
-    expect(metaReducer(undefined, {} as any)).toEqual(expectedState.initialState));
+    expect(reducer.metaReducer(undefined, {} as any)).toEqual(expectedState.initialState));
 
   it('should handle toggling to offline', () =>
-    expect(metaReducer(expectedState.initialState, actions.setOffline)).toEqual(
+    expect(reducer.metaReducer(expectedState.initialState, actionsToDispatch.setOffline)).toEqual(
       expectedState.togglingToOffline
     ));
 
   it('should handle toggling back to online', () =>
-    expect(metaReducer(expectedState.togglingToOffline, actions.setOnline)).toEqual(
-      expectedState.togglingToOnline
-    ));
+    expect(
+      reducer.metaReducer(expectedState.togglingToOffline, actionsToDispatch.setOnline)
+    ).toEqual(expectedState.togglingToOnline));
 
   it('should handle toggling to manual gas limit', () =>
-    expect(metaReducer(expectedState.initialState, actions.toggleAutoGasLimit)).toEqual(
-      expectedState.togglingToManualGasLimit
-    ));
+    expect(
+      reducer.metaReducer(expectedState.initialState, actionsToDispatch.toggleAutoGasLimit)
+    ).toEqual(expectedState.togglingToManualGasLimit));
 
   it('should handle toggling back to auto gas limit', () =>
-    expect(metaReducer(expectedState.togglingToManualGasLimit, actions.toggleAutoGasLimit)).toEqual(
-      expectedState.togglingToAutoGasLimit
-    ));
+    expect(
+      reducer.metaReducer(
+        expectedState.togglingToManualGasLimit,
+        actionsToDispatch.toggleAutoGasLimit
+      )
+    ).toEqual(expectedState.togglingToAutoGasLimit));
 
   it('should handle setting the latest block', () =>
-    expect(metaReducer(expectedState.initialState, actions.setLatestBlock)).toEqual(
-      expectedState.settingLatestBlock
-    ));
+    expect(
+      reducer.metaReducer(expectedState.initialState, actionsToDispatch.setLatestBlock)
+    ).toEqual(expectedState.settingLatestBlock));
 });

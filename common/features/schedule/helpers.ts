@@ -1,5 +1,4 @@
-import moment from 'moment';
-import 'moment-timezone';
+import moment from 'moment-timezone';
 import BN from 'bn.js';
 
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
@@ -19,7 +18,7 @@ export const isWindowStartValid = (transactionFields: types.ScheduleState, lates
 export const isScheduleTimestampValid = (transactionFields: types.ScheduleState) => {
   const { scheduleTimestamp, scheduleTimezone } = transactionFields;
   const selectedDate = dateTimeToTimezone(scheduleTimestamp, scheduleTimezone.value);
-  return Boolean(selectedDate >= minFromNow(EAC_SCHEDULING_CONFIG.ALLOW_SCHEDULING_MIN_AFTER_NOW));
+  return Boolean(selectedDate >= minsFromNow(EAC_SCHEDULING_CONFIG.ALLOW_SCHEDULING_MIN_AFTER_NOW));
 };
 
 export const dateTimeToTimezone = (
@@ -31,9 +30,14 @@ export const dateTimeToTimezone = (
 
 export const dateTimeToUnixTimestamp = (dateTime: Date): number => moment(dateTime).unix();
 
-export const minFromNow = (minutes: number): Date =>
+export const minsFromNow = (minutes: number): Date =>
   moment()
     .add(minutes, 'm')
+    .toDate();
+
+export const daysFromNow = (days: number): Date =>
+  moment()
+    .add(days, 'd')
     .toDate();
 
 export const windowSizeBlockToMin = (numberInput: BN | null, scheduleType: string | null) => {

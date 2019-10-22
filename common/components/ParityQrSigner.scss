@@ -2,15 +2,20 @@
 
 .ParityQrSigner {
   display: flex;
+  z-index: 0;
   align-items: center;
   justify-content: center;
-  width: 300px;
-  height: 300px;
+  width: 230px;
+  height: 230px;
   text-align: center;
   margin: 0 auto 1.5em;
   border-radius: 4px;
   overflow: hidden;
-
+  
+  & img {
+    border: solid white 15px;
+  }
+  
   &.is-disabled {
     background: color(gray-lighter);
   }
@@ -26,5 +31,11 @@
       margin-bottom: $space-md;
       opacity: 0.8;
     }
+  }
+}
+
+.Panel-description{
+  &-parity {
+    height: 25px; 
   }
 }

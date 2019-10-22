@@ -6,7 +6,7 @@ import { NetworkConfig } from 'types/network';
 import { IWallet } from 'libs/wallet';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
-import { getNetworkConfig } from 'features/config';
+import { configSelectors } from 'features/config';
 import { TransactionStatus } from 'components';
 import RecentTransaction from './RecentTransaction';
 import './RecentTransactions.scss';
@@ -67,10 +67,12 @@ class RecentTransactions extends React.Component<Props> {
         {recentTransactions.length ? (
           <table className="RecentTxs-txs">
             <thead>
-              <td>{translate('SEND_ADDR')}</td>
-              <td>{translate('SEND_AMOUNT_SHORT')}</td>
-              <td>{translate('SENT')}</td>
-              <td />
+              <tr>
+                <td>{translate('SEND_ADDR')}</td>
+                <td>{translate('SEND_AMOUNT_SHORT')}</td>
+                <td>{translate('SENT')}</td>
+                <td />
+              </tr>
             </thead>
             <tbody>
               {recentTransactions.map(tx => (
@@ -101,7 +103,9 @@ class RecentTransactions extends React.Component<Props> {
   private clearActiveTxHash = () => this.setState({ activeTxHash: '' });
 }
 
-export default connect((state: AppState): StateProps => ({
-  recentTransactions: selectors.getRecentWalletTransactions(state),
-  network: getNetworkConfig(state)
-}))(RecentTransactions);
+export default connect(
+  (state: AppState): StateProps => ({
+    recentTransactions: selectors.getRecentWalletTransactions(state),
+    network: configSelectors.getNetworkConfig(state)
+  })
+)(RecentTransactions);

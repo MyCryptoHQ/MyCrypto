@@ -7,6 +7,7 @@ import { FieldInput } from './FieldInput';
 
 interface OwnProps {
   address?: string;
+  isOffline: boolean;
   onChange(decimals: Result<string>): void;
 }
 
@@ -16,8 +17,9 @@ export class DecimalField extends React.Component<OwnProps> {
       <FieldInput
         fieldName={translateRaw('TOKEN_DEC')}
         fieldToFetch={'decimals'}
-        shouldEnableAutoField={req => !(req.toVal().res === '0')}
+        shouldEnableAutoField={() => false}
         address={this.props.address}
+        isOffline={this.props.isOffline}
         userInputValidator={this.isValidUserInput}
         onChange={this.props.onChange}
       />

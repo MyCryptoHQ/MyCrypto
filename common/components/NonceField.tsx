@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import translate from 'translations';
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/config';
+import { configMetaSelectors } from 'features/config';
 import { transactionNetworkActions, transactionNetworkSelectors } from 'features/transaction';
 import { Spinner, Input } from 'components/ui';
 import Help from 'components/ui/Help';
@@ -45,7 +45,7 @@ class NonceField extends React.Component<Props> {
                   {translate('OFFLINE_STEP2_LABEL_5')}
                   <Help
                     size="x1"
-                    link="https://support.mycrypto.com/transactions/what-is-nonce.html"
+                    link="https://support.mycrypto.com/general-knowledge/ethereum-blockchain/what-is-nonce"
                   />
                 </div>
                 <Input
@@ -82,11 +82,14 @@ class NonceField extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState): StateProps => {
   return {
-    isOffline: getOffline(state),
+    isOffline: configMetaSelectors.getOffline(state),
     noncePending: transactionNetworkSelectors.nonceRequestPending(state)
   };
 };
 
-export default connect(mapStateToProps, {
-  requestNonce: transactionNetworkActions.getNonceRequested
-})(NonceField);
+export default connect(
+  mapStateToProps,
+  {
+    requestNonce: transactionNetworkActions.getNonceRequested
+  }
+)(NonceField);

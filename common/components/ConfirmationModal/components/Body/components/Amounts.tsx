@@ -5,7 +5,7 @@ import translate from 'translations';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
-import { getNetworkConfig } from 'features/config';
+import { configSelectors } from 'features/config';
 import { transactionSignTypes } from 'features/transaction';
 import { UnitDisplay } from 'components/ui';
 import './Amounts.scss';
@@ -47,7 +47,8 @@ class AmountsClass extends Component<StateProps> {
             </td>
             {showConversion && (
               <td>
-                $<UnitDisplay
+                $
+                <UnitDisplay
                   value={valueUSD}
                   unit="ether"
                   displayShortBalance={2}
@@ -69,7 +70,8 @@ class AmountsClass extends Component<StateProps> {
             </td>
             {showConversion && (
               <td>
-                $<UnitDisplay
+                $
+                <UnitDisplay
                   value={feeUSD}
                   unit="ether"
                   displayShortBalance={2}
@@ -92,7 +94,8 @@ class AmountsClass extends Component<StateProps> {
               </td>
               {showConversion && (
                 <td>
-                  $<UnitDisplay
+                  $
+                  <UnitDisplay
                     value={totalUSD}
                     unit="ether"
                     displayShortBalance={2}
@@ -112,7 +115,7 @@ class AmountsClass extends Component<StateProps> {
 const mapStateToProps = (state: AppState): StateProps => ({
   ...derivedSelectors.getParamsFromSerializedTx(state),
   ...derivedSelectors.getAllUSDValuesFromSerializedTx(state),
-  network: getNetworkConfig(state)
+  network: configSelectors.getNetworkConfig(state)
 });
 
 export const Amounts = connect(mapStateToProps)(AmountsClass);
