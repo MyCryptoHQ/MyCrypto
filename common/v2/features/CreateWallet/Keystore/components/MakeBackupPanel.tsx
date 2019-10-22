@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { IV3Wallet } from 'ethereumjs-wallet';
 
 import { ExtendedContentPanel, PrintPaperWalletButton } from 'v2/components';
-import { PanelProps } from '../../CreateWallet';
+import { PanelProps } from 'v2/features/CreateWallet';
 import translate, { translateRaw } from 'translations';
 
 import lockSafetyIcon from 'common/assets/images/icn-lock-safety.svg';

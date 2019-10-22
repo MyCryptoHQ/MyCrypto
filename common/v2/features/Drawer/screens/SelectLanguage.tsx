@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { languages } from 'config';
+import { languages } from 'v2/config';
 import { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
 import { configMetaActions, configMetaSelectors } from 'features/config';
