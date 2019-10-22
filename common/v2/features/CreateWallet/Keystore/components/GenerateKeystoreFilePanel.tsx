@@ -3,12 +3,11 @@ import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 import zxcvbn from 'zxcvbn';
 
-import { ExtendedContentPanel, InputField } from 'v2/components';
+import { ExtendedContentPanel, InputField, Spinner } from 'v2/components';
 import { PanelProps } from '../../CreateWallet';
 import translate, { translateRaw } from 'translations';
 
 // Legacy
-import Spinner from 'components/ui/Spinner';
 
 const DescriptionItem = styled.div`
   margin-top: 18px;

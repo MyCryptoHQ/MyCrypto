@@ -4,7 +4,7 @@ import { Table, Address, Button } from '@mycrypto/ui';
 import BN from 'bn.js';
 
 import translate, { translateRaw } from 'translations';
-import { UnitDisplay, Input } from 'components/ui';
+import { Input, Spinner } from 'v2/components';
 
 import { truncate } from 'v2/utils';
 import { Network } from 'v2/types';
@@ -12,7 +12,8 @@ import {
   getBaseAssetSymbolByNetwork,
   AddressBookContext,
   getLabelByAddressAndNetwork,
-  isValidPath
+  isValidPath,
+  fromWei
 } from 'v2/services';
 import nextIcon from 'assets/images/next-page-button.svg';
 import prevIcon from 'assets/images/previous-page-button.svg';
@@ -230,13 +231,13 @@ export function DeterministicWalletsClass({
         address={wallet.address}
         truncate={truncate}
       />,
-      <UnitDisplay
-        unit={'ether'}
-        value={wallet.value}
-        symbol={symbol}
-        displayShortBalance={true}
-        checkOffline={true}
-      />,
+      <div>
+        {!wallet.value ? (
+          <Spinner />
+        ) : (
+          `${parseFloat(fromWei(wallet.value, 'ether')).toFixed(4)} ${symbol}`
+        )}
+      </div>,
       <a
         target="_blank"
         href={blockExplorer.addressUrl(wallet.address)}

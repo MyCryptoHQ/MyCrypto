@@ -3,7 +3,7 @@ import { Button } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'translations';
 import ConnectTrezor from 'common/assets/images/icn-connect-trezor-new.svg';
-import { Spinner } from 'components/ui';
+import { Spinner } from 'v2/components';
 
 import { WalletId, FormData } from 'v2/types';
 import { NetworkContext } from 'v2/services/Store';

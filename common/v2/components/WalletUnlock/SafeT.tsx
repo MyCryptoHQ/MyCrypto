@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 
 import translate, { translateRaw } from 'translations';
-import { Spinner } from 'components/ui';
+import { Spinner } from 'v2/components';
 
 import { NetworkContext } from 'v2/services/Store';
 import { getDPath, getDPaths } from 'v2/services';

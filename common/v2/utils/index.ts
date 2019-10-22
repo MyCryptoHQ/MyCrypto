@@ -15,3 +15,4 @@ export { useInterval } from './useInterval';
 export * from './useStateReducer';
 export { filterObjectOfObjects } from './filterObjectOfObjects';
 export { default as ScrollToTop } from './scrollToTop';
+export { getParam } from './queries';

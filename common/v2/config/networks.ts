@@ -1,5 +1,5 @@
 // @TODO Used for unsupportedTabs. update to unsupportedPaths
-import { TAB } from 'components/Header/components/constants';
+// import { TAB } from 'components/Header/components/constants';
 
 import { WalletId, NetworkId, NetworkLegacy } from 'v2/types';
 import { makeExplorer } from 'v2/services/EthService/utils/makeExplorer';
@@ -434,7 +434,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       max: 1.5,
       initial: 0.06
     },
-    unsupportedTabs: [TAB.ENS],
+    //unsupportedTabs: [TAB.ENS],
     hideEquivalentValues: true
   },
 
@@ -461,8 +461,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       min: 0.06,
       max: 1.5,
       initial: 0.06
-    },
-    unsupportedTabs: [TAB.ENS]
+    }
+    //unsupportedTabs: [TAB.ENS]
   },
 
   GO: {
