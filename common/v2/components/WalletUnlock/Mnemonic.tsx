@@ -3,7 +3,7 @@ import { mnemonicToSeed, validateMnemonic } from 'bip39';
 import { Tooltip } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'translations';
-import { formatMnemonic } from 'utils/formatters';
+import { formatMnemonic } from 'v2/utils';
 import { TogglablePassword, Input } from 'v2/components';
 
 import { FormData, WalletId } from 'v2/types';

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Button, Link } from 'v2/components';
-import { makeBlob } from 'utils/blob';
+import { makeBlob } from 'v2/utils';
 import translate from 'translations';
 
 interface DownloaderProps {

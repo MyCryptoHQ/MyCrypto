@@ -4,7 +4,7 @@ import { Button } from '@mycrypto/ui';
 import zxcvbn from 'zxcvbn';
 
 import { ExtendedContentPanel, InputField, Spinner } from 'v2/components';
-import { PanelProps } from '../../CreateWallet';
+import { PanelProps } from 'v2/features/CreateWallet';
 import translate, { translateRaw } from 'translations';
 
 // Legacy
