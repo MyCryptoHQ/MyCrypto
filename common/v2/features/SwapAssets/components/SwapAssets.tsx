@@ -65,6 +65,8 @@ export default function SwapAssets(props: Props) {
 
   const [isCalculatingFromAmount, setIsCalculatingFromAmount] = useState(false);
   const [isCalculatingToAmount, setIsCalculatingToAmount] = useState(false);
+  const [fromAmountError, setFromAmountError] = useState();
+  const [toAmountError, setToAmountError] = useState();
 
   // show only unused assets
   const filteredAssets =
@@ -84,6 +86,7 @@ export default function SwapAssets(props: Props) {
     calculateToAmountTimeout = setTimeout(() => {
       calculateNewToAmount(value);
     }, 500);
+    clearErrors();
   };
 
   // RECEIVE AMOUNT CHANGED
@@ -97,6 +100,7 @@ export default function SwapAssets(props: Props) {
     calculateFromAmountTimeout = setTimeout(() => {
       calculateNewFromAmount(value);
     }, 500);
+    clearErrors();
   };
 
   const calculateNewToAmount = async (value: string) => {
@@ -110,11 +114,15 @@ export default function SwapAssets(props: Props) {
         await DexService.instance.getTokenPriceFrom(fromAsset.symbol, toAsset.symbol, value)
       );
 
-      setSwapPrice(price);
-      setToAmount((Number(value) * price).toString());
+      if (fromAmount) {
+        setSwapPrice(price);
+        setToAmount((Number(value) * price).toString());
+      }
+
       setIsCalculatingToAmount(false);
     } catch (e) {
-      clearAmounts();
+      setFromAmountError(translateRaw('INVALID_AMOUNT_ERROR'));
+
       setIsCalculatingToAmount(false);
       console.error(e);
     }
@@ -131,11 +139,15 @@ export default function SwapAssets(props: Props) {
         await DexService.instance.getTokenPriceTo(fromAsset.symbol, toAsset.symbol, value)
       );
 
-      setSwapPrice(price);
-      setFromAmount((Number(value) * price).toString());
+      if (toAmount) {
+        setSwapPrice(price);
+        setFromAmount((Number(value) * price).toString());
+      }
+
       setIsCalculatingFromAmount(false);
     } catch (e) {
-      clearAmounts();
+      setToAmountError(translateRaw('INVALID_AMOUNT_ERROR'));
+
       setIsCalculatingFromAmount(false);
       console.error(e);
     }
@@ -147,11 +159,19 @@ export default function SwapAssets(props: Props) {
     }
     setFromAsset(selectedAsset);
     clearAmounts();
+    clearErrors();
   };
 
   const clearAmounts = () => {
     setFromAmount('');
     setToAmount('');
+  };
+
+  const clearErrors = () => {
+    if (fromAmountError || toAmountError) {
+      setFromAmountError('');
+      setToAmountError('');
+    }
   };
 
   // Calculate new "to amount" after "to asset" is selected
@@ -183,6 +203,7 @@ export default function SwapAssets(props: Props) {
             onChange={handleFromAmountChanged}
             height={'54px'}
             isLoading={isCalculatingFromAmount}
+            inputError={fromAmountError}
           />
         </InputWrapper>
         <AssetSelectDropdown
@@ -202,6 +223,7 @@ export default function SwapAssets(props: Props) {
             onChange={handleToAmountChanged}
             height={'54px'}
             isLoading={isCalculatingToAmount}
+            inputError={toAmountError}
           />
         </InputWrapper>
         <AssetSelectDropdown
@@ -215,7 +237,14 @@ export default function SwapAssets(props: Props) {
       </FormItem>
       <StyledButton
         onClick={goToNextStep}
-        disabled={isCalculatingToAmount || isCalculatingFromAmount || !fromAmount || !toAmount}
+        disabled={
+          isCalculatingToAmount ||
+          isCalculatingFromAmount ||
+          !fromAmount ||
+          !toAmount ||
+          fromAmountError ||
+          toAmountError
+        }
       >
         {translate('ACTION_6')}
       </StyledButton>
