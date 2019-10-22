@@ -79,4 +79,4 @@ class ScreenLockForgotPassword extends Component<Props> {
   }
 }
 
-export default withRouter<Props>(ScreenLockForgotPassword);
+export default withRouter(ScreenLockForgotPassword);

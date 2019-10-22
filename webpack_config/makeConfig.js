@@ -304,7 +304,7 @@ module.exports = function(opts = {}) {
   // ====================
   const output = {
     path: path.resolve(config.path.output, options.outputDir),
-    filename: options.isProduction ? '[name].[hash].js' : '[name].js',
+    filename: options.isProduction ? '[name].[contenthash].js' : '[name].js',
     publicPath: isDownloadable && options.isProduction ? './' : '/',
     crossOriginLoading: 'anonymous',
     // Fix workers & HMR https://github.com/webpack/webpack/issues/6642

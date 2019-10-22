@@ -14,6 +14,7 @@ import { ContentPanel, QRCode, AccountDropdown } from 'v2/components';
 import { AssetContext, getNetworkById, StoreContext } from 'v2/services/Store';
 import { isValidAmount, truncate } from 'v2/utils';
 import { ExtendedAccount as IExtendedAccount, StoreAccount } from 'v2/types';
+import { ROUTE_PATHS } from 'v2/config';
 import { translate, translateRaw } from 'translations';
 import questionToolTip from 'common/assets/images/icn-question.svg';
 
@@ -154,7 +155,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
     <ContentPanel
       heading="Receive Assets"
       icon={receiveIcon}
-      onBack={() => history.push('/')}
+      onBack={() => history.push(ROUTE_PATHS.DASHBOARD.path)}
       width="500px;"
       mobileMaxWidth="100%;"
     >

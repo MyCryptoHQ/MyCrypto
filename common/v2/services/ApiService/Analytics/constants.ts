@@ -1,8 +1,9 @@
 // The root URL for Analytics API requests.
-export const ANALYTICS_API_URL = 'https://d2xxi6ebw5.execute-api.us-west-2.amazonaws.com/latest';
+export const ANALYTICS_API_URL = 'https://analytics.proxy.mycryptoapi.com/';
 
 // The ID of the analytic website.
-export const ANALYTICS_ID_SITE = 4;
+export const ANALYTICS_ID_SITE = 4; // ID could also be 7?
+export const ANALYTICS_ID_DESKTOP = 8;
 
 // Parameter required for tracking, must be set to 1.
 export const ANALYTICS_REC = 1;

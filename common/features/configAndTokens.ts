@@ -1,7 +1,7 @@
 import { dedupeCustomTokens } from 'utils/tokens';
 import { loadStatePropertyOrEmptyObject } from 'utils/localStorage';
 import { CustomNodeConfig } from 'types/node';
-import { shepherd, makeProviderConfig, isAutoNode } from 'libs/nodes';
+import { shepherd, makeProviderConfig } from 'libs/nodes';
 import RootReducer, { AppState } from './reducers';
 import { getLanguageSelection, getTheme } from './config/meta/selectors';
 import { getCustomNetworkConfigs } from './config/networks/custom/selectors';
@@ -141,13 +141,6 @@ function getSavedSelectedNode(
     ? staticNodes[savedNodeId]
     : customNodes[savedNodeId];
 
-  if (nodeConfigExists) {
-    if (isAutoNode(savedNodeId)) {
-      shepherd.switchNetworks(nodeConfigExists.network);
-    } else {
-      shepherd.manual(savedNodeId, false);
-    }
-  }
   const nodeId = nodeConfigExists ? savedNodeId : initialState.nodeId;
   return { nodeId, prevNode: nodeId, pending: false };
 }

@@ -19,6 +19,7 @@ function enclaveOrWallet<T>(type: HardwareWalletId, lib: T) {
 
 export * from './mnemonic';
 export * from './hardware';
+export * from './deterministic';
 export const LedgerWallet = enclaveOrWallet(WalletId.LEDGER_NANO_S, LedgerWalletWeb);
 export const TrezorWallet = enclaveOrWallet(WalletId.TREZOR, TrezorWalletWeb);
 export const SafeTWallet = enclaveOrWallet(WalletId.SAFE_T_MINI, SafeTWalletWeb);

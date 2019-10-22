@@ -4,7 +4,7 @@ import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
 
 import translate, { translateRaw } from 'translations';
 import { GAS_PRICE_DEFAULT } from 'v2/config';
-import { GasEstimates, IFormikFields } from 'v2/types';
+import { GasEstimates, IFormikFields, Network } from 'v2/types';
 import './GasPriceSlider.scss';
 
 const SliderWithTooltip = createSliderWithTooltip(Slider);
@@ -13,6 +13,7 @@ interface OwnProps {
   gasPrice: string;
   handleChange: Formik['handleChange'];
   gasEstimates: GasEstimates;
+  network: Network;
 }
 
 type Props = OwnProps;
@@ -92,8 +93,8 @@ export default class SimpleGas extends Component<Props> {
   };
 
   private formatTooltip = (gas: number) => {
-    const { gasEstimates } = this.props;
-    if (!(gasEstimates && !gasEstimates.isDefault)) {
+    const { gasEstimates, network } = this.props;
+    if (!(gasEstimates && !gasEstimates.isDefault) && !network.isTestnet) {
       return '';
     }
 

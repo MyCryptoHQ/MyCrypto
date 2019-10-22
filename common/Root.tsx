@@ -4,11 +4,9 @@ import { hot } from 'react-hot-loader/root';
 import { connect, Provider } from 'react-redux';
 import { Store } from 'redux';
 import { ThemeProvider } from 'styled-components';
-
 import { Theme } from 'config';
 import { QrSignerModal } from 'containers';
 import { configMetaSelectors, configSelectors } from 'features/config';
-
 import { AppState } from 'features/reducers';
 import { transactionMetaActions } from 'features/transaction';
 

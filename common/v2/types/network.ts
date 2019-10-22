@@ -12,6 +12,7 @@ export interface Network {
   baseAsset: string;
   chainId: number;
   isCustom: boolean;
+  isTestnet?: boolean;
   color: string | undefined;
   blockExplorer?: BlockExplorer;
   tokenExplorer?: {

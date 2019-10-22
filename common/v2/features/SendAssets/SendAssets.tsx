@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 
+import { RouteComponentProps } from 'react-router';
+
 import sendIcon from 'common/assets/images/icn-send.svg';
 import { ContentPanel } from 'v2/components';
 import { useStateReducer } from 'v2/utils';
 import { WalletId, ITxReceipt, IFormikFields } from 'v2/types';
+import { ROUTE_PATHS } from 'v2/config';
 import { SendAssetsForm, SignTransaction } from './components';
 
 import { ConfirmTransaction, TransactionReceipt } from 'v2/components/TransactionFlow';
@@ -11,7 +14,7 @@ import { txConfigInitialState, TxConfigFactory } from './stateFactory';
 import { IPath } from './types';
 import { translateRaw } from 'translations';
 
-function SendAssets() {
+function SendAssets({ history }: RouteComponentProps<{}>) {
   const [step, setStep] = useState(0);
   const {
     handleFormSubmit,
@@ -63,9 +66,11 @@ function SendAssets() {
   const goToPrevStep = () => setStep(Math.max(0, step - 1));
   const goToFirstStep = () => setStep(0);
 
+  const goBack = () => (step === 0 ? history.push(ROUTE_PATHS.DASHBOARD.path) : goToPrevStep());
+
   return (
     <ContentPanel
-      onBack={goToPrevStep}
+      onBack={goBack}
       heading={label}
       icon={sendIcon}
       stepper={{ current: step + 1, total: currentPath.length - 1 }}

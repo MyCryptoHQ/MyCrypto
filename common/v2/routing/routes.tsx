@@ -42,6 +42,7 @@ export const APP_ROUTES: IAppRoute[] = [
     title: ROUTE_PATHS.DASHBOARD.title,
     path: ROUTE_PATHS.DASHBOARD.path,
     exact: true,
+    requireAccounts: true,
     component: Dashboard
   },
   {
@@ -91,6 +92,7 @@ export const APP_ROUTES: IAppRoute[] = [
     title: ROUTE_PATHS.RECEIVE_ASSETS.title,
     path: ROUTE_PATHS.RECEIVE_ASSETS.path,
     exact: true,
+    requireAccounts: true,
     component: ReceiveAssets
   },
   {
@@ -119,6 +121,7 @@ export const APP_ROUTES: IAppRoute[] = [
     title: ROUTE_PATHS.SEND.title,
     path: ROUTE_PATHS.SEND.path,
     exact: true,
+    requireAccounts: true,
     component: SendAssets
   },
   {

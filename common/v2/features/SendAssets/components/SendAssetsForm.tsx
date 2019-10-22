@@ -390,6 +390,7 @@ export default function SendAssetsForm({
                       handleGasEstimate();
                       handleChange(e);
                     }}
+                    network={values.network}
                     gasPrice={values.gasPriceSlider}
                     gasEstimates={values.gasEstimates}
                   />

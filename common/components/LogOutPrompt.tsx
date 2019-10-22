@@ -96,4 +96,4 @@ export default connect(
     resetWallet: walletActions.resetWallet,
     web3UnsetNode: configNodesStaticActions.web3UnsetNode
   }
-)(withRouter<Props>(LogOutPromptClass));
+)(withRouter(LogOutPromptClass));
