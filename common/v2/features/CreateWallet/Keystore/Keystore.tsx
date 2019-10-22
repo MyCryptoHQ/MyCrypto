@@ -3,16 +3,14 @@ import { RouteComponentProps } from 'react-router-dom';
 import { IV3Wallet } from 'ethereumjs-wallet';
 import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 
-import { makeBlob } from 'utils/blob';
-import { N_FACTOR } from 'config';
+import { makeBlob, generateUUID } from 'v2/utils';
 import { generateKeystore, fromV3 } from 'v2/workers';
 import { getNewDefaultAssetTemplateByNetwork, getNetworkByName } from 'v2/services/Store';
 import { stripHexPrefix } from 'v2/services/EthService';
 import { WalletFactory } from 'v2/services/WalletService';
 import { NotificationTemplates } from 'v2/features/NotificationsPanel';
 import { Account, Asset, ISettings, Network, NetworkId, WalletId } from 'v2/types';
-import { generateUUID } from 'v2/utils';
-import { ROUTE_PATHS } from 'v2/config';
+import { ROUTE_PATHS, N_FACTOR } from 'v2/config';
 
 import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';

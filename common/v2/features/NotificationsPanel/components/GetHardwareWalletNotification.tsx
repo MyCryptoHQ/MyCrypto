@@ -4,8 +4,8 @@ import { Button } from '@mycrypto/ui';
 
 import translate from 'translations';
 import { BREAK_POINTS } from 'v2/theme';
+import { ledgerReferralURL, trezorReferralURL } from 'v2/config';
 import NotificationWrapper from './NotificationWrapper';
-import { ledgerReferralURL, trezorReferralURL } from 'config';
 
 // Legacy
 import walletIcon from 'common/assets/images/icn-new-wallet.svg';

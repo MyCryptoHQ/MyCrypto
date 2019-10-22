@@ -1,16 +1,32 @@
 [
   {
-    "address": "0xd245207cfbf6eb6f34970db2a807ab1d178fde6c",
-    "symbol": "APX",
-    "name": "APX",
-    "decimal": 8,
-    "type": "default"
+    "address": "0xFF3bF057ADF3b0E015b6465331a6236e55688274",
+    "symbol": "BEER",
+    "decimal": 0,
+    "uuid": "d074a179-87e7-5a85-b405-622cf9ecadad"
   },
   {
-    "address": "0x4b4899a10f3e507db207b0ee2426029efa168a67",
-    "symbol": "QWARK",
-    "name": "QWARK",
+    "address": "0x08533D6A06CE365298b12Ef92eb407cBA8Aa8273",
+    "symbol": "CEFS",
     "decimal": 8,
-    "type": "default"
+    "uuid": "de746896-7b00-5ac4-9c09-d898c8ca7a36"
+  },
+  {
+    "address": "0x94aD7e41c1D44022C4F47cb1Ba019Fd1a022c536",
+    "symbol": "DOT",
+    "decimal": 8,
+    "uuid": "60d0e0b0-10f3-5fa5-9d4a-6eca7f9c08f6"
+  },
+  {
+    "address": "0x4b4899a10F3E507DB207b0ee2426029eFa168a67",
+    "symbol": "QWARK",
+    "decimal": 8,
+    "uuid": "dbc6bf8c-aa9b-50a8-8b79-0382aea71d7e"
+  },
+  {
+    "address": "0x5e1715bB79805Bd672729760B3f7F34D6f485098",
+    "symbol": "RICKS",
+    "decimal": 8,
+    "uuid": "ce79db73-85d8-5206-a97b-b39817f9ec00"
   }
 ]

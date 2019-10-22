@@ -4,7 +4,7 @@ import BN from 'bn.js';
 
 import { getNetworkByName, getNetworkByChainId, getAssetByUUID } from 'v2/services/Store';
 import { ConfirmTransaction as ConfirmTransactionForm } from 'v2/components/TransactionFlow';
-import { toChecksumAddressByChainId } from 'utils/formatters';
+import { toChecksumAddressByChainId } from 'v2/utils';
 import { fromWei, ProviderHandler } from 'v2/services/EthService';
 import { InlineErrorMsg } from 'v2/components/ErrorMessages';
 import { translateRaw } from 'translations';

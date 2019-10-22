@@ -1,0 +1,62 @@
+[
+  {
+    "address": "0x398A7A69f3c59181A1ffe34bed11DCb5DF863A8a",
+    "symbol": "AETH",
+    "decimal": 18,
+    "uuid": "b2aca215-793b-549e-98e4-9a45f76748f4"
+  },
+  {
+    "address": "0xe27826eE778B6F78a49a686dA7D64f6E7b084a4f",
+    "symbol": "BHNT",
+    "decimal": 0,
+    "uuid": "a2cd0fd6-efc6-51e4-a0fd-41a830f2aa3a"
+  },
+  {
+    "address": "0x8B65d4B7ee3FFFA986C577F0F4b70a21BaE3dD54",
+    "symbol": "CTGA",
+    "decimal": 18,
+    "uuid": "7c1a40a6-53d4-5f71-b5e3-645106eba194"
+  },
+  {
+    "address": "0x275A5B346599b56917e7B1C9de019DCf9EaD861a",
+    "symbol": "KC",
+    "decimal": 18,
+    "uuid": "bf69dfbc-1bea-5bc7-85bc-42e8926b0d95"
+  },
+  {
+    "address": "0x6475A7FA6Ed2D5180F0e0a07c2d951D12C0EDB91",
+    "symbol": "NONE",
+    "decimal": 0,
+    "uuid": "9bc50e55-d1dc-5fd2-883a-c5cdf7324321"
+  },
+  {
+    "address": "0x12fE174C097F6B3e876B3b060C9061F4B9dEBB80",
+    "symbol": "PPD",
+    "decimal": 18,
+    "uuid": "dfd6df1c-f2d2-5187-9237-5d56e3c96ff5"
+  },
+  {
+    "address": "0x2d427D9E535e4382606B93290dcC13a5e9A694Be",
+    "symbol": "qwe",
+    "decimal": 18,
+    "uuid": "dace27f8-b4bb-53a3-83a3-deb5fc8caa6f"
+  },
+  {
+    "address": "0x3615757011112560521536258c1E7325Ae3b48AE",
+    "symbol": "RDN",
+    "decimal": 18,
+    "uuid": "012db7f9-f68a-5388-8897-58d0f039e354"
+  },
+  {
+    "address": "0xf1e6Ad3a7eF0c86c915F0feDF80eD851809bEA90",
+    "symbol": "RLC",
+    "decimal": 9,
+    "uuid": "cdf31133-ffd4-5aa2-9bae-9beb9bb31fb5"
+  },
+  {
+    "address": "0x0A057a87CE9C56D7e336B417c79cf30E8d27860B",
+    "symbol": "WALL",
+    "decimal": 15,
+    "uuid": "bcaa10ad-e8ef-5cce-8c47-86977eec40fd"
+  }
+]

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { socialMediaLinks, VERSION } from 'config';
+import { socialMediaLinks, VERSION } from 'v2/config';
 import { translateRaw } from 'translations';
 import { DisclaimerModal, NewTabLink } from 'v2/components';
 import './SocialsAndLegal.scss';

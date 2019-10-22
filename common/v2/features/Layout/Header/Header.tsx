@@ -10,11 +10,10 @@ import { links } from './constants';
 import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from 'v2/theme';
 import { translate } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { KNOWLEDGE_BASE_URL, ROUTE_PATHS, LATEST_NEWS_URL } from 'v2/config';
+import { KNOWLEDGE_BASE_URL, ROUTE_PATHS, LATEST_NEWS_URL, languages } from 'v2/config';
 
 import { AppState } from 'features/reducers';
 import { configMetaSelectors } from 'features/config';
-import { languages } from 'config';
 
 // Legacy
 import logo from 'assets/images/logo-mycrypto.svg';

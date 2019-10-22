@@ -1,6 +1,6 @@
 import { create, read, update, destroy, readAll } from '../LocalCache';
 import { ExtendedNetwork } from 'v2/types';
-import { makeExplorer } from 'utils/helpers';
+import { makeExplorer } from 'v2/services/EthService';
 
 export const createNetworks = create('networks');
 export const readNetworks = read('networks');
