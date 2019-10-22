@@ -1033,6 +1033,8 @@
     "SUBMITTING": "Submitting...",
     "CONFIRM_AND_SEND": "Confirm and Send",
     "FORM_SEND_AMOUNT": "Send Amount",
-    "ASSET": "Asset"
+    "ASSET": "Asset",
+    "INVALID_AMOUNT_ERROR": "Amount should be a positive number"
+
   }
 }
