@@ -3,8 +3,7 @@ import { stripHexPrefix } from 'ethjs-util';
 import { Button } from '@mycrypto/ui';
 
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
-import { TogglablePassword } from 'components';
-import { Input } from 'components/ui';
+import { TogglablePassword, Input } from 'v2/components';
 import { isValidPrivKey, isValidEncryptedPrivKey } from 'v2/services/EthService';
 import { ISignComponentProps } from 'v2/types';
 import './PrivateKey.scss';

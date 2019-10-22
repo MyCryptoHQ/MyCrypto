@@ -6,7 +6,7 @@ import { formatShapeShiftSupportEmail } from '../helpers';
 import './Support.scss';
 
 // Legacy
-import { TextArea } from 'components/ui';
+import { TextArea } from 'v2/components';
 
 interface Props {
   transaction: SendAmountResponse;

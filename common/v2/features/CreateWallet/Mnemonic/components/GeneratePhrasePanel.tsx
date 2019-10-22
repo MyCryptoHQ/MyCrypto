@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel } from 'v2/components';
+import { ExtendedContentPanel, Spinner } from 'v2/components';
 import { PanelProps } from '../../CreateWallet';
 import translate, { translateRaw } from 'translations';
 
 // Legacy
 import reloadIcon from 'common/assets/images/icn-reload.svg';
-import Spinner from 'components/ui/Spinner';
 
 const DescriptionItem = styled(Typography)`
   margin-top: 18px;

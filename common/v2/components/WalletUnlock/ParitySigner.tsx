@@ -5,8 +5,7 @@ import { translate, translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
 import { configSelectors } from 'features/config';
 import { notificationsActions } from 'features/notifications';
-import { ParityQrSigner } from 'components';
-import { NewTabLink } from 'components/ui';
+import { ParityQrSigner, NewTabLink } from 'v2/components';
 
 import { WalletFactory } from 'v2/services/WalletService';
 import { WalletId } from 'v2/types';

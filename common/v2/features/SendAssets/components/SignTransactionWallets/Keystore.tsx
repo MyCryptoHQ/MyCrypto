@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { ethers, utils } from 'ethers';
 
-import { Input } from 'components/ui';
-import Spinner from 'components/ui/Spinner';
+import { Spinner, Input } from 'v2/components';
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
 // import { notificationsActions } from 'features/notifications';
 import { isKeystorePassRequired } from 'libs/wallet';

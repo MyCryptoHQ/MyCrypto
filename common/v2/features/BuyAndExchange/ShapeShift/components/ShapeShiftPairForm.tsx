@@ -7,7 +7,7 @@ import AssetSelection from './AssetSelection';
 import './ShapeShiftPairForm.scss';
 
 // Legacy
-import { Warning } from 'components/ui';
+import { Warning } from 'v2/components';
 
 interface Values {
   deposit: string;

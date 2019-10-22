@@ -4,7 +4,7 @@ import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
 import { ISignComponentProps } from 'v2/types';
 import { translateRaw } from 'translations';
 import { Spinner } from 'v2/components/Spinner';
-import { Input } from 'components/ui';
+import { Input } from 'v2/components';
 import { ethers, utils } from 'ethers';
 import { isValidMnemonic } from 'ethers/utils/hdnode';
 

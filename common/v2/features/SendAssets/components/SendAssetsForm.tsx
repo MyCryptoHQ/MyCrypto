@@ -8,8 +8,7 @@ import BN from 'bn.js';
 import styled from 'styled-components';
 
 import translate, { translateRaw } from 'translations';
-import { WhenQueryExists } from 'components/renderCbs';
-import { InlineErrorMsg, AccountDropdown } from 'v2/components';
+import { InlineErrorMsg, AccountDropdown, WhenQueryExists } from 'v2/components';
 import {
   getNetworkById,
   getBaseAssetByNetwork,

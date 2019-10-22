@@ -12,7 +12,7 @@ import './ZeroEx.scss';
 
 // Legacy
 import TabSection from 'containers/TabSection';
-import Warning from 'components/ui/Warning';
+import { Warning } from 'v2/components';
 
 export default class ZeroEx extends Component {
   public componentDidMount() {
