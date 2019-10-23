@@ -1,7 +1,6 @@
 import { bigNumberify, BigNumber } from 'ethers/utils';
 import BN from 'bn.js';
 
-import { shepherdProvider } from 'libs/nodes';
 import {
   Account,
   Asset,
@@ -81,10 +80,6 @@ export const updateTokenBalanceByAsset = (
     });
   }
 };
-
-export function getNodeLib(): INode {
-  return shepherdProvider;
-}
 
 export const getAccountBaseBalance = (account: StoreAccount) =>
   account.assets.find(a => a.type === 'base')!.balance;
