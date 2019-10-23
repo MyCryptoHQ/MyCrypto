@@ -1,4 +1,4 @@
-import { WrappedWallet } from 'libs/wallet';
+import { WrappedWallet } from '../helpers';
 
 export interface MnemonicUnlockParams {
   phrase: string;

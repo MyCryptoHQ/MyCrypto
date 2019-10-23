@@ -1,4 +1,4 @@
-import Contract from 'libs/contracts';
+import { Contract } from 'v2/services';
 const auctionABI = require('./auction/auction.json');
 import auctionOutputMappings from './auction/outputMappings';
 import { IAuction } from './auction/auction';
