@@ -1,4 +1,4 @@
-import { IFullWallet } from 'libs/wallet';
+import { IFullWallet } from '../IWallet';
 
 export interface PrivateKeyUnlockParams {
   key: string;
