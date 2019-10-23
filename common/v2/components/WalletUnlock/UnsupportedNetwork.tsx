@@ -1,19 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
-
-import { NetworkConfig } from 'types/network';
-import { AppState } from 'features/reducers';
-import { configSelectors } from 'features/config';
-
-interface StateProps {
-  network: NetworkConfig;
-}
+import { Network } from 'v2/types';
 
 interface OwnProps {
   walletType: string | React.ReactElement<string>;
+  network: Network;
 }
 
-type Props = OwnProps & StateProps;
+type Props = OwnProps;
 
 const UnsupportedNetwork: React.SFC<Props> = ({ walletType, network }) => {
   return (
@@ -23,8 +16,4 @@ const UnsupportedNetwork: React.SFC<Props> = ({ walletType, network }) => {
   );
 };
 
-export default connect(
-  (state: AppState): StateProps => ({
-    network: configSelectors.getNetworkConfig(state)
-  })
-)(UnsupportedNetwork);
+export default UnsupportedNetwork;

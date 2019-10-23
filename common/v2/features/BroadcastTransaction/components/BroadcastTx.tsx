@@ -5,7 +5,6 @@ import EthTx from 'ethereumjs-tx';
 import styled from 'styled-components';
 
 import translate, { translateRaw } from 'translations';
-import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import {
   InputField,
   QRCode,
@@ -13,6 +12,7 @@ import {
   NetworkSelectDropdown,
   InlineErrorMsg
 } from 'v2/components';
+import { getTransactionFields, makeTransaction } from 'v2/services/EthService';
 
 interface State {
   userInput: string;
