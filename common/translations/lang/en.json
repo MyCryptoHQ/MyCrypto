@@ -909,6 +909,8 @@
     "TRUST_DOWNLOAD": "Download Trust",
     "KEYSTORE_HELP": "Not working? [Here's some troubleshooting tips to try](https://support.mycrypto.com/how-to/accessing-wallet/how-to-access-your-wallet-with-keystore-file)",
     "MNEMONIC_HELP": "Not working? [Here's some troubleshooting tips to try](https://support.mycrypto.com/how-to/accessing-wallet/how-to-access-your-wallet-with-mnemonic-phrase)",
+    "LEDGER_NANO_S_HELP": "Not working? [Here's some troubleshooting tips to try](https://support.mycrypto.com/troubleshooting/accessing-wallet/ledger-hardware-wallet-unable-to-connect-on-mycrypto)",
+    "TREZOR_HELP": "Not working? [Here's some troubleshooting tips to try](https://support.mycrypto.com/troubleshooting/hardware-wallets/trezor/unable-to-connect-trezor-hardware-wallet-on-mycrypto)",
     "MNEMONIC_TOOL_TIP": "If you created a Mnemonic Phrase on another website, you may have a password for this account",
     "NOTIFICATIONS_WALLET_CREATED_TITLE": "Your account has been created.",
     "NOTIFICATIONS_WALLET_CREATED_DESCRIPTION": "Your account with the address **$address** has been successfully created!",
