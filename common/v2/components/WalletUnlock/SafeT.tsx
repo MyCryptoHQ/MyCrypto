@@ -48,7 +48,7 @@ class SafeTminiDecryptClass extends PureComponent<OwnProps, State> {
     const network = this.context.getNetworkByName(this.props.formData.network);
 
     if (!dPath) {
-      return <UnsupportedNetwork walletType={translateRaw('X_SAFE_T')} />;
+      return <UnsupportedNetwork walletType={translateRaw('X_SAFE_T')} network={network} />;
     }
 
     if (publicKey && chainCode) {

@@ -51,7 +51,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
     const network = this.context.getNetworkByName(this.props.formData.network);
 
     if (!dPath) {
-      return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} />;
+      return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} network={network} />;
     }
 
     if (!process.env.BUILD_ELECTRON && window.location.protocol !== 'https:') {

@@ -1,7 +1,7 @@
 export * from './data';
 export * from './donations';
 export * from './addressMessages';
-export * from './helpArticles';
+export { knowledgeBaseURL, HELP_ARTICLE } from './helpArticles';
 export * from './links';
 export * from './tokens';
 export { DPaths, dPathRegex } from './dpaths';

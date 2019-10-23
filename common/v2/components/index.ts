@@ -20,7 +20,7 @@ export { default as FlippablePanel } from './FlippablePanel';
 export { default as Link } from './Link';
 export { default as Typography } from './Typography';
 export { default as Modal } from './Modal';
-export { default as LegacyModal, IButton } from './LegacyModal';
+export { IButton, default as LegacyModal } from './LegacyModal';
 export { default as NewAppReleaseModal } from './NewAppReleaseModal';
 export { default as InputField } from './InputField';
 export { default as NetworkSelectDropdown } from './NetworkSelectDropdown';

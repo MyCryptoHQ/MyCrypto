@@ -48,7 +48,7 @@ class TrezorDecryptClass extends PureComponent<OwnProps, State> {
     const network = this.context.getNetworkByName(this.props.formData.network);
 
     if (!dPath) {
-      return <UnsupportedNetwork walletType={translateRaw('x_Trezor')} />;
+      return <UnsupportedNetwork walletType={translateRaw('x_Trezor')} network={network} />;
     }
 
     if (publicKey && chainCode) {
