@@ -454,7 +454,18 @@ export default function SendAssetsForm({
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-nonce">
                         <label htmlFor="nonce" className="input-group-header label-with-action">
-                          <div>Nonce (?)</div>
+                          <div>
+                            Nonce{' '}
+                            <a
+                              href={
+                                'https://support.mycrypto.com/general-knowledge/ethereum-blockchain/what-is-nonce'
+                              }
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              (?)
+                            </a>
+                          </div>
                           <div
                             className="label-action"
                             onClick={() => handleNonceEstimate(values.account)}
