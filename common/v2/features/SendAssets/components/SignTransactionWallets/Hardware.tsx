@@ -122,7 +122,9 @@ export default function HardwareSignTransaction({
           <div className="SignTransactionHardware-help">
             {translate(senderAccount.wallet + '_HELP')}
           </div>
-          <div className="SignTransactionHardware-referal">Need a Hardware? Get one now.</div>
+          <div className="SignTransactionHardware-referal">
+            {translate(senderAccount.wallet + '_REFERRAL')}
+          </div>
         </div>
       </div>
     </>
