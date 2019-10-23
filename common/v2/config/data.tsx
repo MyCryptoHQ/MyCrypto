@@ -47,6 +47,7 @@ export const gasEstimateCacheTime = 60000;
 
 export const MINIMUM_PASSWORD_LENGTH = 12;
 
+export const LATEST_NEWS_URL = 'https://medium.com/@mycrypto';
 export const CRYPTOSCAMDB = 'https://cryptoscamdb.org';
 export const KNOWLEDGE_BASE_URL = 'https://support.mycrypto.com';
 export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/1985?path=/products/';
