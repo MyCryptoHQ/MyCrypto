@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
@@ -7,15 +6,11 @@ import { InputField, CodeBlock, WalletList } from 'v2/components';
 import { BREAK_POINTS } from 'v2/theme';
 import { translate, translateRaw } from 'translations';
 import { ISignedMessage, INode, FormData, WalletId } from 'v2/types';
-import { STORIES } from './stories';
 import { WALLETS_CONFIG } from 'v2/config';
-import { AppState } from 'features/reducers';
 import { setupWeb3Node } from 'v2/services/EthService';
 import { IFullWallet } from 'v2/services/WalletService';
-import { messageToData } from 'features/message/sagas';
-import { paritySignerActions } from 'features/paritySigner';
-
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
+import { STORIES } from './stories';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
@@ -81,16 +76,12 @@ const BackButton = styled(Button)<BackButtonProps>`
   }
 `;
 
-interface DispatchProps {
-  requestParityMessageSignature: paritySignerActions.TRequestMessageSignature;
-}
-
 interface StateProps {
-  paritySig: string;
+  //paritySig: string;
   setShowSubtitle(show: boolean): void;
 }
 
-type Props = DispatchProps & StateProps;
+type Props = StateProps;
 
 function SignMessage(props: Props) {
   const [walletName, setWalletName] = useState<WalletId | undefined>(undefined);
@@ -103,12 +94,12 @@ function SignMessage(props: Props) {
 
   const { setShowSubtitle } = props;
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (props.paritySig && signedMessage && walletName === WalletId.PARITY_SIGNER) {
       setSignedMessage({ ...signedMessage, sig: props.paritySig });
       setIsSigned(true);
     }
-  }, [props.paritySig]);
+  }, [props.paritySig]);*/
 
   const handleSignMessage = async () => {
     try {
@@ -119,16 +110,16 @@ function SignMessage(props: Props) {
       const address = wallet.getAddressString();
       let sig = '';
 
-      if (walletName === WalletId.PARITY_SIGNER) {
+      /*if (walletName === WalletId.PARITY_SIGNER) {
         const data = messageToData(message);
         props.requestParityMessageSignature(address, data);
-      } else {
-        let lib: INode = {} as INode;
-        if (walletName === WalletId.METAMASK) {
-          lib = (await setupWeb3Node()).lib;
-        }
-        sig = await wallet.signMessage(message, lib);
+      } else {*/
+      let lib: INode = {} as INode;
+      if (walletName === WalletId.METAMASK) {
+        lib = (await setupWeb3Node()).lib;
       }
+      sig = await wallet.signMessage(message, lib);
+      //}
 
       const combined = {
         address,
@@ -222,7 +213,8 @@ function SignMessage(props: Props) {
   );
 }
 
-const mapStateToProps = (state: AppState) => ({
+export default SignMessage;
+/*const mapStateToProps = (state: AppState) => ({
   paritySig: state.paritySigner.sig
 });
 
@@ -233,4 +225,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SignMessage);
+)(SignMessage); */

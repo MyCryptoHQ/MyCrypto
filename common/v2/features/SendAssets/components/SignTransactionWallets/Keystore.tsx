@@ -3,23 +3,12 @@ import { ethers, utils } from 'ethers';
 
 import { Spinner, Input } from 'v2/components';
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
-// import { notificationsActions } from 'features/notifications';
-import { isKeystorePassRequired } from 'libs/wallet';
+
 import translate, { translateRaw } from 'translations';
 
 import { ISignComponentProps } from 'v2/types';
 import './Keystore.scss';
-
-// interface Props {
-//   transactionFields: IFormikFields;
-//   wallet: any;
-//   isWalletPending: boolean;
-//   isPasswordPending: boolean;
-//   onChange(value: KeystoreValueState): void;
-//   onUnlock(param: any): void;
-//   showNotification(level: string, message: string): notificationsActions.TShowNotification;
-//   onNext(signedTransaction: string): void;
-// }
+import { isKeystorePassRequired } from 'v2/services/WalletService';
 
 export interface KeystoreValueState {
   file: string;

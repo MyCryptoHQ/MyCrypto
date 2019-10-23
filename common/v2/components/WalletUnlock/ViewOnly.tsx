@@ -17,7 +17,6 @@ interface OwnProps {
 
 interface StateProps {
   formData: FormData;
-  isValidAddress: string; //getIsValidAddressFn;
   currentAddress: string; //ICurrentTo;
   resolvedAddress: string; //getResolvedAddress;
 }

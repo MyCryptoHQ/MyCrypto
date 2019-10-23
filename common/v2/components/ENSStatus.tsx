@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { getIsValidENSAddressFunction } from 'libs/validators';
-
 import translate, { translateRaw } from 'translations';
+import { getIsValidENSAddressFunction } from 'v2/services/EthService';
 import { Spinner } from './Spinner';
 
 export const ENSStatus: React.SFC<{
