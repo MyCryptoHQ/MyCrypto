@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { ExtendedContentPanel, InputField, InlineErrorMsg } from 'v2/components';
 import { PanelProps } from 'v2/features/CreateWallet';
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 
 const ButtonsWrapper = styled.div`
   margin-top: 48px;

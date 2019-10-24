@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { mnemonicToSeed, validateMnemonic } from 'bip39';
 import { Tooltip } from '@mycrypto/ui';
 
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 import { formatMnemonic } from 'v2/utils';
 import { TogglablePassword, Input } from 'v2/components';
 

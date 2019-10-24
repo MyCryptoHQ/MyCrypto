@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { socialMediaLinks, VERSION } from 'v2/config';
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import { DisclaimerModal, NewTabLink } from 'v2/components';
 import './SocialsAndLegal.scss';
 

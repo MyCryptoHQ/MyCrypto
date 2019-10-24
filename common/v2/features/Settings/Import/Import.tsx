@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { ContentPanel } from 'v2/components';
 import { ImportBox, ImportSuccess } from './components';
 import { SettingsContext } from 'v2/services/Store';
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 
 const Content = styled.div`
   display: flex;

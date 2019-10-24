@@ -1,4 +1,4 @@
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import { IHexStrWeb3Transaction, INode } from 'v2/types';
 import {
   isValidSendTransaction,

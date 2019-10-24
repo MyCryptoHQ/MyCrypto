@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import { formatEther } from 'ethers/utils';
 
 import { AccountSummary, AccountOption, Dropdown } from 'v2/components';

@@ -3,7 +3,7 @@ import EthTx, { TxObj } from 'ethereumjs-tx';
 import { addHexPrefix } from 'ethereumjs-util';
 import mapValues from 'lodash/mapValues';
 
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import SafeTConnect from 'vendor/safe-t-connect';
 import { getTransactionFields } from 'v2/services/EthService';
 import { padLeftEven, stripHexPrefixAndLower } from 'v2/services/EthService/utils';

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
 import { ISignComponentProps } from 'v2/types';
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import { Spinner } from 'v2/components/Spinner';
 import { Input } from 'v2/components';
 import { ethers, utils } from 'ethers';

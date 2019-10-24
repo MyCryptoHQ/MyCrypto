@@ -1,12 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
+import { AnalyticsService, ANALYTICS_CATEGORIES, SettingsContext } from 'v2/services';
 import { languages } from 'v2/config';
-import { translateRaw } from 'translations';
-import { AppState } from 'features/reducers';
-import { configMetaActions, configMetaSelectors } from 'features/config';
+import { translateRaw } from 'v2/translations';
 
 const LanguagesList = styled.ul`
   flex-grow: 1;
@@ -33,61 +30,38 @@ const Language = styled.li<LanguageProps>`
   ${props => props.isSelected && 'background: #f2f2f2;'};
 `;
 
-interface StateProps {
-  languageSelection: ReturnType<typeof configMetaSelectors.getLanguageSelection>;
-}
-
-interface DispatchProps {
-  changeLanguage: configMetaActions.TChangeLanguage;
-  onClose(): void;
-}
-
 const handleLanguageSelect = (
   code: string,
-  languageSelection: ReturnType<typeof configMetaSelectors.getLanguageSelection>,
-  changeLanguage: configMetaActions.TChangeLanguage,
-  onClose: () => void
+  languageSelection: string,
+  changeLanguage: (language: string) => void
 ) => {
   if (code !== languageSelection) {
     changeLanguage(code);
     AnalyticsService.instance.track(ANALYTICS_CATEGORIES.SIDEBAR, 'Language changed', {
       lang: code
     });
+    location.reload(); // ToDo: Fix this to reload. There's an issue with nested settings for this i think.
   }
-
-  onClose();
 };
 
-type Props = StateProps & DispatchProps;
-
-function LanguageSelect({ languageSelection, changeLanguage, onClose }: Props) {
+function LanguageSelect() {
+  const { language, updateLanguageSelection } = useContext(SettingsContext);
   return (
     <LanguagesList>
-      {Object.entries(languages).map(([code, language]: [string, string]) => (
+      {Object.entries(languages).map(([code, languageString]: [string, string]) => (
         <Language
-          isSelected={languageSelection === code}
+          isSelected={language === code}
           key={code}
-          onClick={() => handleLanguageSelect(code, languageSelection, changeLanguage, onClose)}
+          onClick={() => handleLanguageSelect(code, language, updateLanguageSelection)}
         >
-          {language}
+          {languageString}
         </Language>
       ))}
     </LanguagesList>
   );
 }
 
-const mapStateToProps = (state: AppState) => ({
-  languageSelection: configMetaSelectors.getLanguageSelection(state)
-});
-
-const mapDispatchToProps = {
-  changeLanguage: configMetaActions.changeLanguage
-};
-
 export default {
   title: translateRaw('NEW_SIDEBAR_TEXT_1'),
-  content: connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(LanguageSelect)
+  content: LanguageSelect
 };

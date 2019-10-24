@@ -92,7 +92,33 @@ export function translate(
   key: string,
   variables?: { [name: string]: string }
 ): React.ReactElement<any> {
-  return <TranslateMarkdown source={translateRaw(key, variables)} />;
+  return <TranslateMarkdown source={translateRawV2(key, undefined, variables)} />;
 }
 
 export default translate;
+
+export const translateRawV2 = (key: string, languageApplied?: string, variables?: { [name: string]: string }): string => {
+  const language = languageApplied || fallbackLanguage
+  const translatedString =
+    (repository[language] && repository[language][key]) || repository[fallbackLanguage][key] || key;
+
+  /** @desc In RegExp, $foo is two "words", but __foo is only one "word."
+   *  Replace all occurences of '$' with '__' in the entire string and each variable,
+   *  then iterate over each variable, replacing the '__variable' in the
+   *  translation key with the variable's value.
+   */
+  if (variables) {
+    let str = translatedString.replace(/\$/g, '__');
+
+    Object.keys(variables).forEach(variable => {
+      const singleWordVariable = variable.replace(/\$/g, '__');
+      const re = new RegExp(`\\b${singleWordVariable}\\b`, 'g');
+
+      str = str.replace(re, variables[variable]);
+    });
+
+    return str;
+  }
+
+  return translatedString;
+};

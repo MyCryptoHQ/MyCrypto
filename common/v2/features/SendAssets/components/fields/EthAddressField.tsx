@@ -3,7 +3,7 @@ import { Input } from '@mycrypto/ui';
 import { FieldProps, Field, FormikTouched } from 'formik';
 import styled from 'styled-components';
 
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import {
   isValidETHAddress,
   getENSTLDForChain,

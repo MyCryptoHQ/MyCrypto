@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 
 import { ExtendedContentPanel, InputField } from 'v2/components';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { translate } from 'translations';
+import { translate } from 'v2/translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { COLORS } from 'v2/theme';
 

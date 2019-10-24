@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 import { ExtendedContentPanel, InlineErrorMsg, NetworkSelectDropdown } from 'v2/components';
 import { WalletId } from 'v2/types';
 import { getNetworkByName } from 'v2/services/Store';

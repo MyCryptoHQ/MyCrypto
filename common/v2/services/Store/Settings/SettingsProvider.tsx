@@ -5,12 +5,14 @@ import { updateSetting, readAllSettings, readStorage, importStorage } from './Se
 
 interface ProviderState {
   settings: ISettings;
+  language: string;
   updateSettings(settingsData: ISettings): void;
   updateSettingsAccounts(accounts: string[]): void;
   readAllSettings(): void;
   getStorage(): void;
   importStorage(importedCache: string): void;
   updateSettingsRates(rates: IRates): void;
+  updateLanguageSelection(language: string): void;
 }
 
 export const SettingsContext = createContext({} as ProviderState);
@@ -18,6 +20,7 @@ export const SettingsContext = createContext({} as ProviderState);
 export class SettingsProvider extends Component {
   public readonly state: ProviderState = {
     settings: readAllSettings() || {},
+    language: readAllSettings().language || '',
     updateSettings: (settings: ISettings): void => {
       this.setState(
         // Update our state to let react trigger changes.
@@ -54,6 +57,11 @@ export class SettingsProvider extends Component {
     updateSettingsRates: rates => {
       const settings = readAllSettings();
       updateSetting({ ...settings, rates });
+      this.getSettings();
+    },
+    updateLanguageSelection: languageToChangeTo => {
+      const settings = readAllSettings();
+      updateSetting({ ...settings, language: languageToChangeTo });
       this.getSettings();
     }
   };

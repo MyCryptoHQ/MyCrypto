@@ -3,5 +3,6 @@ export const settings = {
   darkMode: false,
   dashboardAccounts: [],
   inactivityTimer: 1800000,
-  rates: {}
+  rates: {},
+  language: 'en'
 };

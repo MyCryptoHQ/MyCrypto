@@ -21,6 +21,7 @@ import {
 } from 'v2/types';
 import { hardRefreshCache, getCacheRaw, setCache } from './LocalCache';
 import { CACHE_KEY } from './constants';
+import { updateCacheSettings, cacheSettingsUpdateNeeded } from './updateCache';
 
 /*
    Extracted from LocalCache.ts.
@@ -43,6 +44,8 @@ export const initializeCache = () => {
     if (IS_DEV) {
       initTestAccounts();
     }
+  } else if (cacheSettingsUpdateNeeded()) {
+    updateCacheSettings();
   }
 };
 

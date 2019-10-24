@@ -17,9 +17,9 @@ import './TransactionReceipt.scss';
 import sentIcon from 'common/assets/images/icn-sent.svg';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import { fromTxReceiptObj } from './helpers';
-import translate, { translateRaw } from 'translations';
-import { convertToFiat, truncate } from 'v2/utils';
 import { ROUTE_PATHS } from 'v2/config';
+import translate, { translateRaw } from 'v2/translations';
+import { convertToFiat, truncate } from 'v2/utils';
 
 export enum ITxStatus {
   SUCCESS = 'SUCCESS',

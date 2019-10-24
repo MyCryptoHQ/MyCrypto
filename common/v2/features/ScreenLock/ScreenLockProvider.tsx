@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import CryptoJS, { SHA256, AES } from 'crypto-js';
 
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS } from 'v2/config';
 import { default as ScreenLockLocking } from './ScreenLockLocking';
 import {
