@@ -39,7 +39,6 @@ export default class DrawerProvider extends Component {
   public render() {
     const { children } = this.props;
     const { visible, screen, toggleVisible } = this.state;
-
     return (
       <DrawerContext.Provider value={this.state}>
         {children}
@@ -50,9 +49,12 @@ export default class DrawerProvider extends Component {
           enter={{ right: '0' }}
           leave={{ right: '-500px' }}
         >
-          {show =>
-            show && ((style: any) => <Drawer {...screen} onClose={toggleVisible} style={style} />)
-          }
+          {show => {
+            return (
+              show &&
+              ((style: any) => <Drawer {...screen} onClose={() => toggleVisible} style={style} />)
+            );
+          }}
         </Transition>
       </DrawerContext.Provider>
     );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography } from '@mycrypto/ui';
 
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 import { DOWNLOAD_MYCRYPTO_LINK } from 'v2/config';
 
 import TrustWalletWEBP from 'common/assets/images/wallets/trust-3.webp';

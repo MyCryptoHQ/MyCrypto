@@ -3,7 +3,7 @@ import moment from 'moment';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services/ApiService';
 
 import { SettingsContext } from 'v2/services/Store';

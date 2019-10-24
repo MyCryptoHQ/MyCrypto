@@ -4,7 +4,7 @@ import Slider from 'react-slick';
 import styled from 'styled-components';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { WalletId } from 'v2/types';

@@ -2,7 +2,7 @@ import React from 'react';
 import { Input } from '@mycrypto/ui';
 import { FieldProps, Field, FormikTouched } from 'formik';
 
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import {
   isValidETHAddress,
   getENSTLDForChain,

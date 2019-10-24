@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { ExtendedContentPanel, InlineErrorMsg, PrintPaperWalletButton } from 'v2/components';
 import lockSafetyIcon from 'common/assets/images/icn-lock-safety.svg';
 import { PanelProps } from 'v2/features/CreateWallet';
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 
 const ImageWrapper = styled.div`
   display: flex;

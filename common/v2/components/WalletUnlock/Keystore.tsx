@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 import { notificationsActions } from 'v2/features/NotificationsPanel';
 import { Spinner, Input } from 'v2/components';
 

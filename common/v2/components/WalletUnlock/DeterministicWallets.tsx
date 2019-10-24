@@ -3,7 +3,7 @@ import Select, { Option } from 'react-select';
 import { Table, Address, Button } from '@mycrypto/ui';
 import BN from 'bn.js';
 
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 import { Input, Spinner } from 'v2/components';
 
 import { truncate } from 'v2/utils';

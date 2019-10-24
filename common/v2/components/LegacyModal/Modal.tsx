@@ -3,14 +3,9 @@ import { createPortal } from 'react-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import ModalBody from './ModalBody';
+import { IButton } from './types';
 import './index.scss';
 
-export interface IButton {
-  text: string | React.ReactElement<string>;
-  type?: 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger' | 'link';
-  disabled?: boolean;
-  onClick?(): void;
-}
 interface Props {
   isOpen?: boolean;
   title?: React.ReactNode;

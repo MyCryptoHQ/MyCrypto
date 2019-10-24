@@ -5,7 +5,7 @@ import zxcvbn from 'zxcvbn';
 
 import { ExtendedContentPanel, InputField, Spinner } from 'v2/components';
 import { PanelProps } from 'v2/features/CreateWallet';
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 
 // Legacy
 

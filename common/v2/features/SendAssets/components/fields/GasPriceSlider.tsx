@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Field, FieldProps, Formik } from 'formik';
 import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
 
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 import { GAS_PRICE_DEFAULT } from 'v2/config';
 import { GasEstimates, IFormikFields, Network } from 'v2/types';
 import './GasPriceSlider.scss';

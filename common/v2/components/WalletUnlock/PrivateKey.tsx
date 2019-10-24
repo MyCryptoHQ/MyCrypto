@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 import { TogglablePassword, Input } from 'v2/components';
 
 import { WalletId } from 'v2/types';

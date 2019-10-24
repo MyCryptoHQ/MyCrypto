@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useContext } from 'react';
 import { Icon, Identicon } from '@mycrypto/ui';
 import styled, { StyledFunction } from 'styled-components';
 
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import { Checkbox } from 'v2/components';
 import { useOnClickOutside, truncate } from 'v2/utils';
 import { getLabelByAccount, AddressBookContext } from 'v2/services/Store';

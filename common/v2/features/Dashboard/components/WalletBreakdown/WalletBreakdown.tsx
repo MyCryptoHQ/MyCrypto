@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES, RatesContext } from 'v2/services';
 import { SettingsContext, StoreContext, AccountContext } from 'v2/services/Store';
 import { StoreAsset, TTicker } from 'v2/types';

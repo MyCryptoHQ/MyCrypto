@@ -4,7 +4,7 @@ import { Button } from '@mycrypto/ui';
 
 import { InputField, CodeBlock, WalletList } from 'v2/components';
 import { BREAK_POINTS } from 'v2/theme';
-import { translate, translateRaw } from 'translations';
+import { translate, translateRaw } from 'v2/translations';
 import { ISignedMessage, INode, FormData, WalletId } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
 import { setupWeb3Node } from 'v2/services/EthService';

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { TransactionReceipt as TransactionReceiptForm } from 'v2/components/TransactionFlow';
 import { ITxConfig } from 'v2/types';
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 
 interface Props {
   txReceipt: any;

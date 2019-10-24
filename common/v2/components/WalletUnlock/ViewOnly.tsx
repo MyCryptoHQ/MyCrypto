@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import { WalletId, FormData } from 'v2/types';
 import { AddressField, Button } from 'v2/components';
 import { WalletFactory } from 'v2/services/WalletService';

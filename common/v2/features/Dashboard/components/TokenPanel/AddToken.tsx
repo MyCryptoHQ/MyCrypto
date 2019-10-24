@@ -4,7 +4,7 @@ import { Button } from '@mycrypto/ui';
 
 import { generateUUID } from 'v2/utils';
 import { InputField, NetworkSelectDropdown, DashboardPanel } from 'v2/components';
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import { getNetworkByName, AssetContext } from 'v2/services/Store';
 import { ExtendedAsset, NetworkId } from 'v2/types';
 import { DEFAULT_NETWORK, DEFAULT_ASSET_DECIMAL } from 'v2/config';

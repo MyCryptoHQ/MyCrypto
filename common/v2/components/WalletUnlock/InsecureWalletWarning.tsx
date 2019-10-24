@@ -1,6 +1,6 @@
 import React from 'react';
 
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 import { DOWNLOAD_MYCRYPTO_LINK } from 'v2/config';
 import { NewTabLink } from 'v2/components';
 import { IS_DEV } from 'v2/utils';
