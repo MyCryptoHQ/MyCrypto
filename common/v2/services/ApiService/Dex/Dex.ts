@@ -1,11 +1,15 @@
-import { AxiosInstance } from 'axios';
+import axios, { AxiosInstance } from 'axios';
 
 import { default as ApiService } from '../ApiService';
 import { TSymbol } from 'v2/types';
+import { DEXAG_PROXY_CONTRACT } from 'v2/config';
 
 const DEX_BASE_URL = 'https://api.dex.ag/';
 
 let instantiated: boolean = false;
+
+const CancelToken = axios.CancelToken;
+let cancel: any = null;
 
 export default class DexService {
   public static instance = new DexService();
@@ -56,8 +60,8 @@ export default class DexService {
         to,
         fromAmount,
         toAmount,
-        dex: 'best'
-        // TODO use proxy contract for fees (proxy param)
+        dex: 'best',
+        proxy: DEXAG_PROXY_CONTRACT
       };
       const { data: orderDetails } = await this.service.get('trade', { params });
 
@@ -74,6 +78,10 @@ export default class DexService {
     toAmount?: string
   ) => {
     try {
+      if (cancel) {
+        cancel();
+      }
+
       const params = {
         from,
         to,
@@ -81,10 +89,19 @@ export default class DexService {
         toAmount,
         dex: 'all'
       };
-      const { data: tokenPrices } = await this.service.get('price', { params });
+      const { data: tokenPrices } = await this.service.get('price', {
+        params,
+        cancelToken: new CancelToken(function executor(c) {
+          // An executor function receives a cancel function as a parameter
+          cancel = c;
+        })
+      });
 
       return tokenPrices[0].price;
     } catch (e) {
+      if (axios.isCancel(e)) {
+        e.isCancel = true;
+      }
       throw e;
     }
   };

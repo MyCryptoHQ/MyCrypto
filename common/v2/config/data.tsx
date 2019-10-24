@@ -61,6 +61,7 @@ export const ethercardReferralURL =
   'https://ether.cards/?utm_source=mycrypto&utm_medium=cpm&utm_campaign=site';
 export const keepkeyReferralURL = 'https://keepkey.go2cloud.org/aff_c?offer_id=1&aff_id=4086';
 export const steelyReferralURL = 'https://stee.ly/2Hcl4RE';
+export const DEXAG_PROXY_CONTRACT = '0xA65440C4CC83D70b44cF244a0da5373acA16a9cb';
 
 export enum Theme {
   DARK = 'dark',

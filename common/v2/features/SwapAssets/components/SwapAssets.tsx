@@ -114,17 +114,17 @@ export default function SwapAssets(props: Props) {
         await DexService.instance.getTokenPriceFrom(fromAsset.symbol, toAsset.symbol, value)
       );
 
-      if (fromAmount) {
-        setSwapPrice(price);
-        setToAmount((Number(value) * price).toString());
-      }
-
+      clearErrors();
+      setSwapPrice(price);
+      setToAmount((Number(value) * price).toString());
       setIsCalculatingToAmount(false);
     } catch (e) {
-      setFromAmountError(translateRaw('INVALID_AMOUNT_ERROR'));
+      if (!e.isCancel) {
+        setFromAmountError(translateRaw('INVALID_AMOUNT_ERROR'));
 
-      setIsCalculatingToAmount(false);
-      console.error(e);
+        setIsCalculatingToAmount(false);
+        console.error(e);
+      }
     }
   };
 
@@ -139,17 +139,17 @@ export default function SwapAssets(props: Props) {
         await DexService.instance.getTokenPriceTo(fromAsset.symbol, toAsset.symbol, value)
       );
 
-      if (toAmount) {
-        setSwapPrice(price);
-        setFromAmount((Number(value) * price).toString());
-      }
-
+      clearErrors();
+      setSwapPrice(price);
+      setFromAmount((Number(value) * price).toString());
       setIsCalculatingFromAmount(false);
     } catch (e) {
-      setToAmountError(translateRaw('INVALID_AMOUNT_ERROR'));
+      if (!e.isCancel) {
+        setToAmountError(translateRaw('INVALID_AMOUNT_ERROR'));
 
-      setIsCalculatingFromAmount(false);
-      console.error(e);
+        setIsCalculatingFromAmount(false);
+        console.error(e);
+      }
     }
   };
 
