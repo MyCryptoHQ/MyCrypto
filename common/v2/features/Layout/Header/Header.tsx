@@ -10,7 +10,7 @@ import { links } from './constants';
 import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from 'v2/theme';
 import { translate } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { KNOWLEDGE_BASE_URL, ROUTE_PATHS } from 'v2/config';
+import { KNOWLEDGE_BASE_URL, ROUTE_PATHS, LATEST_NEWS_URL } from 'v2/config';
 
 import { AppState } from 'features/reducers';
 import { configMetaSelectors } from 'features/config';
@@ -405,7 +405,7 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
           {/* Desktop Left */}
           <HeaderTopLeft>
             <li onClick={this.openHelpSupportPage}>{translate('NEW_HEADER_TEXT_1')}</li>
-            <li>Latest News</li>
+            <li onClick={this.openLatestNews}>Latest News</li>
           </HeaderTopLeft>
           <div>
             <Link to={ROUTE_PATHS.ROOT.path}>
@@ -489,6 +489,11 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
         [dropdown]: !prevState.visibleDropdowns[dropdown]
       }
     }));
+
+  private openLatestNews = (): void => {
+    window.open(LATEST_NEWS_URL, '_blank');
+    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HEADER, 'Latest news clicked');
+  };
 
   private openHelpSupportPage = (): void => {
     window.open(KNOWLEDGE_BASE_URL, '_blank');
