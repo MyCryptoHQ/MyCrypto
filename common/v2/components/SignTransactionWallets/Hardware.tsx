@@ -7,6 +7,7 @@ import { WalletFactory, HardwareWallet } from 'v2/services/WalletService';
 import { InlineErrorMsg } from 'v2/components/ErrorMessages';
 
 import './Hardware.scss';
+import translate from 'translations';
 
 export interface IDestructuredDPath {
   dpath: string;
@@ -119,9 +120,11 @@ export default function HardwareSignTransaction({
         </div>
         <div className="SignTransactionHardware-footer">
           <div className="SignTransactionHardware-help">
-            Not working? Here's some troubleshooting tips to try.
+            {translate(senderAccount.wallet + '_HELP')}
           </div>
-          <div className="SignTransactionHardware-referal">Need a Hardware? Get one now.</div>
+          <div className="SignTransactionHardware-referal">
+            {translate(senderAccount.wallet + '_REFERRAL')}
+          </div>
         </div>
       </div>
     </>

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import translate from 'translations';
 import { BREAK_POINTS } from 'v2/theme';
 import NotificationWrapper from './NotificationWrapper';
-import { KNOWLEDGE_BASE_URL } from 'v2/config';
+import { KNOWLEDGE_BASE_URL, HOW_TO_BUY_CRYPTO_URL, DONT_LOSE_CRYPTO_URL } from 'v2/config';
 
 // Legacy
 import sadWalletIcon from 'common/assets/images/icn-sad-wallet.svg';
@@ -57,12 +57,12 @@ const getResources = () => {
       <ResourceItem
         src={howBuyIcon}
         title={translate('NOTIFICATIONS_WALLET_RESOURCE_BUY')}
-        link="/how-to-buy"
+        link={HOW_TO_BUY_CRYPTO_URL}
       />
       <ResourceItem
         src={dontLoseCryptoIcon}
         title={translate('NOTIFICATIONS_WALLET_RESOURCE_LOSE')}
-        link="/dont-lose-crypto"
+        link={DONT_LOSE_CRYPTO_URL}
       />
       <ResourceItem
         src={questionsIcon}
