@@ -4,7 +4,7 @@ import { Button, Identicon } from '@mycrypto/ui';
 import EthTx from 'ethereumjs-tx';
 import styled from 'styled-components';
 
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 import {
   InputField,
   QRCode,

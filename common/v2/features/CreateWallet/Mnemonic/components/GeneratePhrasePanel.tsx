@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { ExtendedContentPanel, Spinner } from 'v2/components';
 import { PanelProps } from 'v2/features/CreateWallet';
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 
 // Legacy
 import reloadIcon from 'common/assets/images/icn-reload.svg';

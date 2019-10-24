@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { ExtendedContentPanel, InlineErrorMsg } from 'v2/components';
 import { PanelProps } from 'v2/features/CreateWallet';
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 
 import keystoreIcon from 'common/assets/images/icn-keystore.svg';
 import downloadIcon from 'common/assets/images/icn-download.svg';

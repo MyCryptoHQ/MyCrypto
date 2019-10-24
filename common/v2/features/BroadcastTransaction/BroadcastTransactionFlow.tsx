@@ -6,7 +6,7 @@ import { ExtendedContentPanel } from 'v2/components';
 import { BroadcastTx, ConfirmTransaction, TransactionReceipt } from './components';
 import { ROUTE_PATHS, DEFAULT_NETWORK } from 'v2/config';
 import { ITxConfig, ITxReceipt } from 'v2/types';
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 
 interface TStep {
   title: string;

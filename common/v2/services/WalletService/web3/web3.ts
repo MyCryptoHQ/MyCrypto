@@ -1,4 +1,4 @@
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 
 import { isWeb3Node, setupWeb3Node, Web3Service } from 'v2/services/EthService';
 import { NodeOptions, NodeType, Network } from 'v2/types';

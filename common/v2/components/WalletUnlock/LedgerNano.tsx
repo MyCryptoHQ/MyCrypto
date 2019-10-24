@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Button } from '@mycrypto/ui';
 
 import { Spinner, NewTabLink } from 'v2/components';
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 import { WalletId, FormData } from 'v2/types';
 import { getDPath, getDPaths } from 'v2/services';
 import { NetworkContext } from 'v2/services/Store';

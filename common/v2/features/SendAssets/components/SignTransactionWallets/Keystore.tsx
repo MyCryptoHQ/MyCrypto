@@ -4,7 +4,7 @@ import { ethers, utils } from 'ethers';
 import { Spinner, Input } from 'v2/components';
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
 
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 
 import { ISignComponentProps } from 'v2/types';
 import './Keystore.scss';

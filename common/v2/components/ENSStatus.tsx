@@ -1,6 +1,6 @@
 import React from 'react';
 
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 import { getIsValidENSAddressFunction } from 'v2/services/EthService';
 import { Spinner } from './Spinner';
 

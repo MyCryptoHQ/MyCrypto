@@ -4,7 +4,7 @@ import { ShapeShiftSendField } from '../components';
 import { ShapeShiftSendRenderProps } from '../types';
 
 // Legacy
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 import { Warning } from 'v2/components';
 
 export const generateSendScreenLayout = (props: ShapeShiftSendRenderProps) => {

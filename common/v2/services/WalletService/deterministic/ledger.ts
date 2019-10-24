@@ -3,7 +3,7 @@ import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
 import LedgerEth from '@ledgerhq/hw-app-eth';
 
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import { getTransactionFields } from 'v2/services/EthService';
 import { HardwareWallet, ChainCodeResponse } from './hardware';
 import { byContractAddress } from '@ledgerhq/hw-app-eth/erc20';

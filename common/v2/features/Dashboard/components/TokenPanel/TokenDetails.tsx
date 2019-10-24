@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import { AssetWithDetails, TSymbol } from 'v2/types';
 import { DashboardPanel, AssetIcon } from 'v2/components';
 import { NETWORKS_CONFIG } from 'v2/config';

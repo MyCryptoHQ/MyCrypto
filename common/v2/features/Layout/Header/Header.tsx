@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useContext } from 'react';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import { Transition } from 'react-spring/renderprops.cjs';
 import { Icon } from '@mycrypto/ui';
@@ -8,12 +7,9 @@ import styled from 'styled-components';
 import { UnlockScreen, SelectLanguage } from 'v2/features/Drawer/screens';
 import { links } from './constants';
 import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from 'v2/theme';
-import { translate } from 'translations';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
+import { AnalyticsService, ANALYTICS_CATEGORIES, SettingsContext } from 'v2/services';
 import { KNOWLEDGE_BASE_URL, ROUTE_PATHS, LATEST_NEWS_URL, languages } from 'v2/config';
-
-import { AppState } from 'features/reducers';
-import { configMetaSelectors } from 'features/config';
+import { translate } from 'v2/translations';
 
 // Legacy
 import logo from 'assets/images/logo-mycrypto.svg';
@@ -273,21 +269,14 @@ const PrefixIcon = styled.img<PrefixIconProps>`
   }
 `;
 
-interface Props {
-  languageSelection: ReturnType<typeof configMetaSelectors.getLanguageSelection>;
+interface OwnProps {
   drawerVisible: boolean;
   toggleDrawerVisible(): void;
   setDrawerScreen(screen: any): void;
 }
 
-interface State {
-  menuOpen: boolean;
-  visibleMenuDropdowns: {
-    [dropdown: string]: boolean;
-  };
-  visibleDropdowns: {
-    [dropdown: string]: boolean;
-  };
+interface DropdownType {
+  [dropdown: string]: boolean;
 }
 
 interface LinkElement {
@@ -296,212 +285,188 @@ interface LinkElement {
   subItems?: LinkElement;
 }
 
-export class Header extends Component<Props & RouteComponentProps<{}>, State> {
-  public state: State = {
-    menuOpen: false,
-    visibleMenuDropdowns: {
-      'Manage Assets': false,
-      Tools: false
-    },
-    visibleDropdowns: {
-      'Manage Assets': false,
-      Tools: false
-    }
+type Props = OwnProps & RouteComponentProps;
+export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, history }: Props) {
+  const { language: languageSelection } = useContext(SettingsContext);
+  const initVisibleMenuDropdowns: DropdownType = {
+    'Manage Assets': false,
+    Tools: false
+  };
+  const initVisibleDropdowns: DropdownType = {
+    'Manage Assets': false,
+    Tools: false
+  };
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [visibleMenuDropdowns, setVisibleMenuDropdowns] = useState(initVisibleMenuDropdowns);
+  const [visibleDropdowns, setVisibleDropdowns] = useState(initVisibleDropdowns);
+
+  const closeMenu = () => setMenuOpen(false);
+
+  const onUnlockClick = () => {
+    closeMenu();
+    drawerVisible ? toggleDrawerVisible() : setDrawerScreen(UnlockScreen);
   };
 
-  public render() {
-    const {
-      history,
-      drawerVisible,
-      toggleDrawerVisible,
-      setDrawerScreen,
-      languageSelection
-    } = this.props;
-    const { menuOpen, visibleMenuDropdowns, visibleDropdowns } = this.state;
-    const onUnlockClick = () => {
-      this.closeMenu();
-      drawerVisible ? toggleDrawerVisible() : setDrawerScreen(UnlockScreen);
-    };
+  const onLanguageClick = () => {
+    closeMenu();
+    drawerVisible ? toggleDrawerVisible() : setDrawerScreen(SelectLanguage);
+  };
 
-    const onLanguageClick = () => {
-      this.closeMenu();
-      drawerVisible ? toggleDrawerVisible() : setDrawerScreen(SelectLanguage);
-    };
-
-    return (
-      <Navbar>
-        {/* Mobile Menu */}
-        <Transition
-          items={menuOpen}
-          from={{ left: '-375px' }}
-          enter={{ left: '0' }}
-          leave={{ left: '-500px' }}
-        >
-          {open =>
-            open &&
-            ((style: any) => (
-              <Menu style={style}>
-                <MenuLinks>
-                  {links.map(({ title, to, subItems, icon }) => {
-                    return (
-                      <li
-                        key={title}
-                        onClick={e => {
-                          e.stopPropagation();
-
-                          if (to) {
-                            history.push(to);
-                            this.toggleMenu();
-                          } else {
-                            this.toggleMenuDropdown(title);
-                          }
-                        }}
-                      >
-                        <TitleIconWrapper>
-                          {icon && <PrefixIcon {...icon} />} {title}
-                          {!icon && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
-                        </TitleIconWrapper>
-                        {subItems && visibleMenuDropdowns[title] && (
-                          <ul>
-                            {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
-                              <li
-                                key={innerTitle}
-                                onClick={() => {
-                                  this.toggleMenu();
-                                  history.push(innerTo);
-                                }}
-                              >
-                                {innerTitle}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </li>
-                    );
-                  })}
-                </MenuLinks>
-                <MenuMid onClick={onLanguageClick}>
-                  {languages[languageSelection]} <IconWrapper subItems={true} icon="navDownCaret" />
-                </MenuMid>
-                <MenuLinks>
-                  <li onClick={this.openHelpSupportPage}>
-                    {translate('NEW_HEADER_TEXT_1')}
-                    <IconWrapper subItems={true} icon="navDownCaret" />
-                  </li>
-                  <li>
-                    Latest News <IconWrapper subItems={true} icon="navDownCaret" />
-                  </li>
-                </MenuLinks>
-              </Menu>
-            ))
-          }
-        </Transition>
-        <HeaderTop>
-          {/* Mobile Left */}
-          <MobileTopLeft role="button" onClick={this.toggleMenu}>
-            <Icon icon={menuOpen ? 'exit' : 'combinedShape'} />
-          </MobileTopLeft>
-          {/* Desktop Left */}
-          <HeaderTopLeft>
-            <li onClick={this.openHelpSupportPage}>{translate('NEW_HEADER_TEXT_1')}</li>
-            <li onClick={this.openLatestNews}>Latest News</li>
-          </HeaderTopLeft>
-          <div>
-            <Link to={ROUTE_PATHS.ROOT.path}>
-              <CenterImg src={logo} alt="Our logo" />
-            </Link>
-          </div>
-          {/* Unlock button hidden for MVP purposes */}
-          {/* Mobile Right */}
-          <MobileTopRight onClick={onUnlockClick}>
-            <Icon icon={drawerVisible ? 'exit' : 'unlock'} />
-          </MobileTopRight>
-          {/* Desktop Right */}
-          <HeaderTopLeft>
-            <Unlock onClick={onUnlockClick}>
-              <IconWrapper icon="unlock" /> Unlock
-            </Unlock>
-            <li onClick={onLanguageClick}>{languages[languageSelection]}</li>
-          </HeaderTopLeft>
-        </HeaderTop>
-        <HeaderBottom>
-          <HeaderBottomLinks>
-            {links.map(({ title, to, subItems, icon }) => {
-              const liProps = to
-                ? { onClick: () => history.push(to) }
-                : {
-                    onMouseEnter: () => this.toggleDropdown(title),
-                    onMouseLeave: () => this.toggleDropdown(title)
-                  };
-
-              return (
-                <li key={title} {...liProps}>
-                  {icon && <PrefixIcon {...icon} />} {title}{' '}
-                  {!icon && subItems && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
-                  {subItems && visibleDropdowns[title] && (
-                    <ul>
-                      {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
-                        <li key={innerTitle} onClick={() => history.push(innerTo)}>
-                          {innerTitle}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              );
-            })}
-          </HeaderBottomLinks>
-        </HeaderBottom>
-      </Navbar>
-    );
-  }
-
-  private toggleMenu = () => {
-    const { drawerVisible, toggleDrawerVisible } = this.props;
-
+  const toggleMenu = () => {
     if (drawerVisible) {
       toggleDrawerVisible();
     }
-
-    this.setState(prevState => ({
-      menuOpen: !prevState.menuOpen
-    }));
+    setMenuOpen(!menuOpen);
   };
 
-  private closeMenu = () =>
-    this.setState({
-      menuOpen: false
+  const toggleMenuDropdown = (dropdown: string) =>
+    setVisibleMenuDropdowns({
+      ...visibleMenuDropdowns,
+      [dropdown]: !visibleMenuDropdowns[dropdown]
     });
 
-  private toggleMenuDropdown = (dropdown: string) =>
-    this.setState(prevState => ({
-      visibleMenuDropdowns: {
-        ...prevState.visibleMenuDropdowns,
-        [dropdown]: !prevState.visibleMenuDropdowns[dropdown]
-      }
-    }));
+  const toggleDropdown = (dropdown: string) =>
+    setVisibleDropdowns({
+      ...visibleDropdowns,
+      [dropdown]: !visibleDropdowns[dropdown]
+    });
 
-  private toggleDropdown = (dropdown: string) =>
-    this.setState(prevState => ({
-      visibleDropdowns: {
-        ...prevState.visibleDropdowns,
-        [dropdown]: !prevState.visibleDropdowns[dropdown]
-      }
-    }));
-
-  private openLatestNews = (): void => {
+  const openLatestNews = (): void => {
     window.open(LATEST_NEWS_URL, '_blank');
     AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HEADER, 'Latest news clicked');
   };
 
-  private openHelpSupportPage = (): void => {
+  const openHelpSupportPage = (): void => {
     window.open(KNOWLEDGE_BASE_URL, '_blank');
     AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HEADER, 'Help & Support clicked');
   };
+
+  return (
+    <Navbar>
+      {/* Mobile Menu */}
+      <Transition
+        items={menuOpen}
+        from={{ left: '-375px' }}
+        enter={{ left: '0' }}
+        leave={{ left: '-500px' }}
+      >
+        {open =>
+          open &&
+          ((style: any) => (
+            <Menu style={style}>
+              <MenuLinks>
+                {links.map(({ title, to, subItems, icon }) => {
+                  return (
+                    <li
+                      key={title}
+                      onClick={e => {
+                        e.stopPropagation();
+
+                        if (to) {
+                          history.push(to);
+                          toggleMenu();
+                        } else {
+                          toggleMenuDropdown(title);
+                        }
+                      }}
+                    >
+                      <TitleIconWrapper>
+                        {icon && <PrefixIcon {...icon} />} {title}
+                        {!icon && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
+                      </TitleIconWrapper>
+                      {subItems && visibleMenuDropdowns[title] && (
+                        <ul>
+                          {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
+                            <li
+                              key={innerTitle}
+                              onClick={() => {
+                                toggleMenu();
+                                history.push(innerTo);
+                              }}
+                            >
+                              {innerTitle}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  );
+                })}
+              </MenuLinks>
+              <MenuMid onClick={onLanguageClick}>
+                {languages[languageSelection]} <IconWrapper subItems={true} icon="navDownCaret" />
+              </MenuMid>
+              <MenuLinks>
+                <li onClick={openHelpSupportPage}>
+                  {translate('NEW_HEADER_TEXT_1')}
+                  <IconWrapper subItems={true} icon="navDownCaret" />
+                </li>
+                <li>
+                  Latest News <IconWrapper subItems={true} icon="navDownCaret" />
+                </li>
+              </MenuLinks>
+            </Menu>
+          ))
+        }
+      </Transition>
+      <HeaderTop>
+        {/* Mobile Left */}
+        <MobileTopLeft role="button" onClick={toggleMenu}>
+          <Icon icon={menuOpen ? 'exit' : 'combinedShape'} />
+        </MobileTopLeft>
+        {/* Desktop Left */}
+        <HeaderTopLeft>
+          <li onClick={openHelpSupportPage}>{translate('NEW_HEADER_TEXT_1')}</li>
+          <li onClick={openLatestNews}>Latest News</li>
+        </HeaderTopLeft>
+        <div>
+          <Link to={ROUTE_PATHS.ROOT.path}>
+            <CenterImg src={logo} alt="Our logo" />
+          </Link>
+        </div>
+        {/* Unlock button hidden for MVP purposes */}
+        {/* Mobile Right */}
+        <MobileTopRight onClick={onUnlockClick}>
+          <Icon icon={drawerVisible ? 'exit' : 'unlock'} />
+        </MobileTopRight>
+        {/* Desktop Right */}
+        <HeaderTopLeft>
+          <Unlock onClick={onUnlockClick}>
+            <IconWrapper icon="unlock" /> Unlock
+          </Unlock>
+          <li onClick={onLanguageClick}>{languages[languageSelection]}</li>
+        </HeaderTopLeft>
+      </HeaderTop>
+      <HeaderBottom>
+        <HeaderBottomLinks>
+          {links.map(({ title, to, subItems, icon }) => {
+            const liProps = to
+              ? { onClick: () => history.push(to) }
+              : {
+                  onMouseEnter: () => toggleDropdown(title),
+                  onMouseLeave: () => toggleDropdown(title)
+                };
+
+            return (
+              <li key={title} {...liProps}>
+                {icon && <PrefixIcon {...icon} />} {title}{' '}
+                {!icon && subItems && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
+                {subItems && visibleDropdowns[title] && (
+                  <ul>
+                    {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
+                      <li key={innerTitle} onClick={() => history.push(innerTo)}>
+                        {innerTitle}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            );
+          })}
+        </HeaderBottomLinks>
+      </HeaderBottom>
+    </Navbar>
+  );
 }
 
-const mapStateToProps = (state: AppState) => ({
-  languageSelection: configMetaSelectors.getLanguageSelection(state)
-});
-
-export default withRouter(connect(mapStateToProps)(Header));
+export default withRouter(Header);

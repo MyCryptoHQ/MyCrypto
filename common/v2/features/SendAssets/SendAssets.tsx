@@ -12,7 +12,7 @@ import { SendAssetsForm, SignTransaction } from './components';
 import { ConfirmTransaction, TransactionReceipt } from 'v2/components/TransactionFlow';
 import { txConfigInitialState, TxConfigFactory } from './stateFactory';
 import { IPath } from './types';
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 
 function SendAssets({ history }: RouteComponentProps<{}>) {
   const [step, setStep] = useState(0);
