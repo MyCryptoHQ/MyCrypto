@@ -16,7 +16,9 @@ import './Web3ProviderInstall.scss';
 function InstallTrunk() {
   return (
     <div className="Panel">
-      <div className="Panel-title">{translate('ADD_ACCOUNT_WEB3_INSTALL_TITLE')}</div>
+      <div className="Panel-title">
+        {translate('ADD_ACCOUNT_WEB3_INSTALL_TITLE', { $walletId: 'Web3 Provider' })}
+      </div>
       <div className="Panel-description">{translate('ADD_ACCOUNT_WEB3_INSTALL_MOBILE_DESC')}</div>
       <div className="Panel-content">
         <div className="Web3-options">
@@ -61,7 +63,9 @@ function InstallTrunk() {
 function InstallMetaMask() {
   return (
     <div className="Panel">
-      <div className="Panel-title">{translate('ADD_ACCOUNT_WEB3_INSTALL_TITLE')}</div>
+      <div className="Panel-title">
+        {translate('ADD_ACCOUNT_WEB3_INSTALL_TITLE', { $walletId: 'Metamask' })}
+      </div>
       <div className="Panel-description">{translate('ADD_ACCOUNT_WEB3_INSTALL_DESC')}</div>
       <div className="Panel-content">
         <div>
