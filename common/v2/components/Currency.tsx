@@ -15,12 +15,25 @@ interface Props {
   decimals?: number;
   icon?: boolean;
   prefix?: boolean;
+  useTypography?: boolean;
 }
 
-function Currency({ amount, symbol, decimals = 5, icon = false, prefix = false, ...props }: Props) {
+function ConditionalTypography({ condition, children }: { condition: boolean; children?: any }) {
+  return condition ? <Typography>{children}</Typography> : children;
+}
+
+function Currency({
+  amount,
+  symbol,
+  decimals = 5,
+  icon = false,
+  prefix = false,
+  useTypography = false,
+  ...props
+}: Props) {
   const format = (value: string, decimalPlaces: number) => {
     const v = parseFloat(value);
-    return Number(v).toFixed(decimalPlaces);
+    return Number(v).toLocaleString(undefined, { maximumFractionDigits: decimalPlaces });
     // const multiplier = Math.pow(10, decimalPlaces);
     // return Math.round(v * multiplier + Number.EPSILON) / multiplier;
   };
@@ -32,11 +45,11 @@ function Currency({ amount, symbol, decimals = 5, icon = false, prefix = false, 
           <img src={getSymbolIcon(symbol)} width={19} alt={symbol} />
         </span>
       )}
-      <Typography>
+      <ConditionalTypography condition={useTypography}>
         {prefix && `${symbol}`}
         {format(amount, decimals)}
         {!prefix && `${symbol}`}
-      </Typography>
+      </ConditionalTypography>
     </SContainer>
   );
 }
