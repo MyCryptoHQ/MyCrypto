@@ -54,6 +54,7 @@ export const HOW_TO_BUY_CRYPTO_URL =
   'https://support.mycrypto.com/how-to/getting-started/how-to-buy-ether-with-usd';
 export const DONT_LOSE_CRYPTO_URL =
   'https://support.mycrypto.com/staying-safe/protecting-yourself-and-your-funds';
+export const STAYING_SAFE_URL = 'https://support.mycrypto.com/staying-safe';
 export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/1985?path=/products/';
 export const trezorReferralURL = 'https://shop.trezor.io/?offer_id=10&aff_id=1735';
 // TODO - Update url
