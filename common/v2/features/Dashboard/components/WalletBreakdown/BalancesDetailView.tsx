@@ -3,7 +3,7 @@ import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { translateRaw } from 'translations';
-import { DashboardPanel, CollapsibleTable, AssetIcon } from 'v2/components';
+import { DashboardPanel, CollapsibleTable, AssetIcon, Currency } from 'v2/components';
 import { WalletBreakdownProps } from './types';
 import { BREAK_POINTS } from 'v2/theme';
 import { TSymbol } from 'v2/types';
@@ -90,7 +90,12 @@ export default function BalancesDetailView({
           {`${balance.amount.toFixed(6)} ${balance.ticker}`}
         </RowAlignment>,
         <RowAlignment key={index} align="right">
-          {`${fiat.symbol}${balance.fiatValue.toFixed(2)}`}
+          <Currency
+            amount={balance.fiatValue.toString()}
+            symbol={fiat.symbol}
+            prefix={fiat.prefix}
+            decimals={2}
+          />
         </RowAlignment>
       ];
     }),
@@ -116,8 +121,12 @@ export default function BalancesDetailView({
         }
         headingRight={
           <BalancesOnlyTotal>
-            {fiat.symbol}
-            {totalFiatValue.toFixed(2)}
+            <Currency
+              amount={totalFiatValue.toString()}
+              symbol={fiat.symbol}
+              prefix={fiat.prefix}
+              decimals={2}
+            />
           </BalancesOnlyTotal>
         }
       >

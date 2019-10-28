@@ -1,4 +1,4 @@
-import { TTicker } from 'v2/types';
+import { Fiat } from 'v2/config';
 
 export interface Balance {
   name: string;
@@ -6,12 +6,6 @@ export interface Balance {
   fiatValue: number;
   ticker: string;
   isOther?: boolean;
-}
-
-export interface Fiat {
-  ticker: TTicker;
-  name: string;
-  symbol: string;
 }
 
 export interface WalletBreakdownProps {

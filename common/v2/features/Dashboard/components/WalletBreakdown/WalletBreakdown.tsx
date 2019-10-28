@@ -8,8 +8,9 @@ import { SettingsContext, StoreContext, AccountContext } from 'v2/services/Store
 import { StoreAsset, TTicker } from 'v2/types';
 import { weiToFloat, convertToFiatFromAsset } from 'v2/utils';
 import { BREAK_POINTS } from 'v2/theme';
+import { Fiats } from 'v2/config';
 
-import { Balance, Fiat } from './types';
+import { Balance } from './types';
 import AccountDropdown from './AccountDropdown';
 import BalancesDetailView from './BalancesDetailView';
 import WalletBreakdownView from './WalletBreakdownView';
@@ -47,13 +48,6 @@ const WalletBreakdownPanel = styled(Panel)`
   }
 `;
 
-//TODO: Get fiat symbol and text
-const fiat: Fiat = {
-  ticker: 'USD' as TTicker,
-  name: 'US Dollars',
-  symbol: '$'
-};
-
 let wasNumOfAccountsTracked = false;
 
 export function WalletBreakdown() {
@@ -90,6 +84,8 @@ export function WalletBreakdown() {
   const toggleShowChart = () => {
     setShowBalanceDetailView(!showBalanceDetailView);
   };
+
+  const fiat = Fiats[settings.fiatCurrency];
 
   return (
     <>
