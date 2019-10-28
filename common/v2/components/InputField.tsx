@@ -97,6 +97,7 @@ const CustomIconWrapper = styled.div`
 `;
 
 interface Props {
+  name?: string;
   type?: string;
   label?: string | JSX.Element;
   value: string;
@@ -120,6 +121,7 @@ export class InputField extends Component<Props> {
 
   public render() {
     const {
+      name,
       value,
       label,
       onChange,
@@ -137,6 +139,7 @@ export class InputField extends Component<Props> {
         <InputWrapper>
           {textarea ? (
             <CustomTextArea
+              name={name}
               value={value}
               onChange={onChange}
               onBlur={onBlur}
@@ -147,6 +150,7 @@ export class InputField extends Component<Props> {
             />
           ) : (
             <CustomInput
+              name={name}
               value={value}
               onChange={onChange}
               onBlur={onBlur}

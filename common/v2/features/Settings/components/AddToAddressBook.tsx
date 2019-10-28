@@ -1,10 +1,10 @@
 import React from 'react';
 import { Formik, Form, Field, FieldProps } from 'formik';
-import { Button, Input, Textarea } from '@mycrypto/ui';
+import { Button, Input } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
-import { DashboardPanel, NetworkSelectDropdown } from 'v2/components';
+import { DashboardPanel, NetworkSelectDropdown, InputField } from 'v2/components';
 import { AddressBook } from 'v2/types';
 
 const AddToAddressBookPanel = styled(DashboardPanel)`
@@ -105,7 +105,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
               <Field
                 name="notes"
                 render={({ field }: FieldProps<AddressBook>) => (
-                  <Textarea {...field} placeholder="Enter a note for this address" />
+                  <InputField {...field} textarea={true} placeholder="Enter a note for this address" />
                 )}
               />
             </AddressFieldset>
