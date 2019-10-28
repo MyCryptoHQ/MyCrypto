@@ -1,9 +1,12 @@
-import React, { Component } from 'react';
+import React, { useContext } from 'react';
+import moment from 'moment';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import translate, { translateRaw } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services/ApiService';
+
+import { SettingsContext } from 'v2/services/Store';
 
 const MainWrapper = styled.div`
   display: flex;
@@ -63,44 +66,50 @@ interface LockScreenProps {
   onCancelLockCountdown(): void;
 }
 
-export default class ScreenLockLocking extends Component<LockScreenProps> {
-  public handleKeepUsingDashboardClicked = () => {
-    this.props.onCancelLockCountdown();
+export default function ScreenLockLocking({
+  timeLeft,
+  onScreenLockClicked,
+  onCancelLockCountdown
+}: LockScreenProps) {
+  const { settings } = useContext(SettingsContext);
+
+  const handleKeepUsingDashboardClicked = () => {
+    onCancelLockCountdown();
     AnalyticsService.instance.track(
       ANALYTICS_CATEGORIES.SCREEN_LOCK,
       'Keep Using MyCrypto button clicked'
     );
   };
 
-  public handleTurnOnScreenLockClick = () => {
-    this.props.onScreenLockClicked();
+  const handleTurnOnScreenLockClick = () => {
+    onScreenLockClicked();
     AnalyticsService.instance.track(
       ANALYTICS_CATEGORIES.SCREEN_LOCK,
       'Turn On Screenlock button clicked'
     );
   };
 
-  public render() {
-    return (
-      <MainWrapper>
-        <ContentWrapper>
-          <Title>{translate('SCREEN_LOCK_LOCKING_HEADING')}</Title>
-          <Description>
-            {translate('SCREEN_LOCK_LOCKING_DESCRIPTION')}{' '}
-            <b>
-              {translate('SCREEN_LOCK_LOCKING_SECONDS', {
-                $time_left: this.props.timeLeft.toString()
-              })}
-            </b>
-          </Description>
-          <PrimaryButton onClick={this.handleKeepUsingDashboardClicked}>
-            {translateRaw('SCREEN_LOCK_LOCKING_KEEP_USING')}
-          </PrimaryButton>
-          <SecondaryButton onClick={this.handleTurnOnScreenLockClick}>
-            {translate('SCREEN_LOCK_LOCKING_TURN_ON_LOCK')}
-          </SecondaryButton>
-        </ContentWrapper>
-      </MainWrapper>
-    );
-  }
+  return (
+    <MainWrapper>
+      <ContentWrapper>
+        <Title>{translate('SCREEN_LOCK_LOCKING_HEADING')}</Title>
+        <Description>
+          {translate(`SCREEN_LOCK_LOCKING_DESCRIPTION`, {
+            $inactive_time: moment.duration(settings.inactivityTimer).humanize()
+          })}{' '}
+          <b>
+            {translate('SCREEN_LOCK_LOCKING_SECONDS', {
+              $time_left: timeLeft.toString()
+            })}
+          </b>
+        </Description>
+        <PrimaryButton onClick={handleKeepUsingDashboardClicked}>
+          {translateRaw('SCREEN_LOCK_LOCKING_KEEP_USING')}
+        </PrimaryButton>
+        <SecondaryButton onClick={handleTurnOnScreenLockClick}>
+          {translate('SCREEN_LOCK_LOCKING_TURN_ON_LOCK')}
+        </SecondaryButton>
+      </ContentWrapper>
+    </MainWrapper>
+  );
 }
