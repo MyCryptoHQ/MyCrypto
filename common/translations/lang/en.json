@@ -1007,7 +1007,7 @@
     "FAILED": "Failed",
     "LATEST_PRICE": "Latest Price",
     "BALANCE": "Balance",
-    "TOKEN_ADDRESS": "Token Address",
+    "TOKEN_ADDRESS": "Token Contract Address",
     "TOKEN_DECIMALS": "Token Decimals",
     "RESOURCES": "Resources",
     "SOCIAL": "Social",
