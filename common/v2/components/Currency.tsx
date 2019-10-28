@@ -15,11 +15,8 @@ interface Props {
   decimals?: number;
   icon?: boolean;
   prefix?: boolean;
-  useTypography?: boolean;
-}
-
-function ConditionalTypography({ condition, children }: { condition: boolean; children?: any }) {
-  return condition ? <Typography>{children}</Typography> : children;
+  bold?: boolean;
+  fontSize?: string;
 }
 
 function Currency({
@@ -28,7 +25,8 @@ function Currency({
   decimals = 5,
   icon = false,
   prefix = false,
-  useTypography = false,
+  bold = false,
+  fontSize,
   ...props
 }: Props) {
   const format = (value: string, decimalPlaces: number) => {
@@ -45,11 +43,11 @@ function Currency({
           <img src={getSymbolIcon(symbol)} width={19} alt={symbol} />
         </span>
       )}
-      <ConditionalTypography condition={useTypography}>
+      <Typography bold={bold} fontSize={fontSize}>
         {prefix && `${symbol}`}
         {format(amount, decimals)}
         {!prefix && `${symbol}`}
-      </ConditionalTypography>
+      </Typography>
     </SContainer>
   );
 }

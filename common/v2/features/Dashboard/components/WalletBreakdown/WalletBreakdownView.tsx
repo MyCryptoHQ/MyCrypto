@@ -7,7 +7,7 @@ import NoAssets from './NoAssets';
 import { WalletBreakdownProps, Balance } from './types';
 import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { TSymbol } from 'v2/types';
-import { AssetIcon, Currency } from 'v2/components';
+import { AssetIcon, Currency, Typography } from 'v2/components';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
 
@@ -50,8 +50,6 @@ const PanelFigure = styled.div``;
 
 const PanelFigureValue = styled.div`
   margin: 0;
-  font-size: 22px;
-  font-weight: bold;
 `;
 
 const PanelFigureLabel = styled.div`
@@ -213,7 +211,11 @@ export default function WalletBreakdownView({
             />
             <PanelFigures>
               <PanelFigure>
-                <PanelFigureValue>{balance.name}</PanelFigureValue>
+                <PanelFigureValue>
+                  <Typography bold={true} fontSize={'1.3rem'}>
+                    {balance.name}
+                  </Typography>
+                </PanelFigureValue>
                 <PanelFigureLabel>
                   {selectedAssetPercentage}
                   {translate('WALLET_BREAKDOWN_PERCENTAGE')}
@@ -226,7 +228,8 @@ export default function WalletBreakdownView({
                     symbol={fiat.symbol}
                     prefix={fiat.prefix}
                     decimals={2}
-                    useTypography={false}
+                    bold={true}
+                    fontSize={'1.3rem'}
                   />
                 </PanelFigureValue>
                 <PanelFigureLabel>
