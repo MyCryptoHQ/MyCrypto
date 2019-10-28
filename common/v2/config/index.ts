@@ -17,6 +17,8 @@ export * from './constants';
 export { NETWORKS_CONFIG } from './networks';
 export { ETHSCAN_NETWORKS } from './ethScan';
 export { Fiats, AssetsData, ContractsData } from './cacheData';
+import { Fiat } from './cacheData';
+export type Fiat = Fiat;
 export {
   GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,

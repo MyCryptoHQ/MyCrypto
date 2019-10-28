@@ -7,7 +7,7 @@ interface Props {
   value?: any;
   children?: any;
   bold?: boolean;
-  small?: boolean;
+  fontSize?: string;
   style?: any;
 }
 
@@ -15,19 +15,12 @@ const STypography = styled(UITypography)`
   line-height: 1.5;
   vertical-align: middle;
   font-weight: ${(p: Props) => (p.bold ? '600' : '400')};
-  font-size: ${(p: Props) => (p.small ? '0.8em' : '1rem')} !important;
+  font-size: ${(p: Props) => p.fontSize} !important;
 `;
 
-function Typography({
-  as = 'span',
-  value,
-  small = false,
-  bold = false,
-  children,
-  ...props
-}: Props) {
+function Typography({ as = 'span', value, fontSize = '1rem', bold, children, ...props }: Props) {
   return (
-    <STypography as={as} bold={bold} small={small} {...props}>
+    <STypography as={as} bold={bold} fontSize={fontSize} {...props}>
       {children ? children : value}
     </STypography>
   );
