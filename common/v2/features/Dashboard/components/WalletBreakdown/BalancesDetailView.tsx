@@ -67,17 +67,18 @@ export default function BalancesDetailView({
   totalFiatValue,
   fiat
 }: WalletBreakdownProps) {
+  const BALANCES = translateRaw('WALLET_BREAKDOWN_BALANCES');
   const TOKEN = translateRaw('WALLET_BREAKDOWN_TOKEN');
-  const AMOUNT = translateRaw('WALLET_BREAKDOWN_AMOUNT');
   const BALANCE = translateRaw('WALLET_BREAKDOWN_BALANCE');
+  const VALUE = translateRaw('WALLET_BREAKDOWN_VALUE');
   const balancesTable = {
     head: [
       TOKEN,
-      <HeaderAlignment key={AMOUNT} align="center">
-        {AMOUNT}
-      </HeaderAlignment>,
       <HeaderAlignment key={BALANCE} align="center">
         {BALANCE}
+      </HeaderAlignment>,
+      <HeaderAlignment key={VALUE} align="center">
+        {VALUE}
       </HeaderAlignment>
     ],
     body: balances.map((balance, index) => {
@@ -116,7 +117,7 @@ export default function BalancesDetailView({
       <DashboardPanel
         heading={
           <BackButton basic={true} onClick={toggleShowChart}>
-            <img src={backArrowIcon} alt="Back arrow" /> {BALANCE}
+            <img src={backArrowIcon} alt="Back arrow" /> {BALANCES}
           </BackButton>
         }
         headingRight={

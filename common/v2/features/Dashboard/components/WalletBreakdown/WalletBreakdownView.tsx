@@ -244,7 +244,7 @@ export default function WalletBreakdownView({
       <VerticalPanelDivider />
       <BreakDownBalances>
         <BreakDownHeadingWrapper>
-          <BreakDownHeading>{translate('WALLET_BREAKDOWN_BALANCE')}</BreakDownHeading>
+          <BreakDownHeading>{translate('WALLET_BREAKDOWN_BALANCES')}</BreakDownHeading>
           <BreakDownMore src={moreIcon} alt="More" onClick={toggleShowChart} />
         </BreakDownHeadingWrapper>
         <BreakDownBalanceList>
