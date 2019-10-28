@@ -7,36 +7,37 @@ import buyIcon from 'common/assets/images/icn-buy.svg';
 import sendIcon from 'common/assets/images/icn-send.svg';
 import receiveIcon from 'common/assets/images/icn-receive.svg';
 import hardwareWalletIcon from 'common/assets/images/icn-hardware-wallet.svg';
+import { translateRaw } from 'translations';
 
 export const actions: Action[] = [
   {
     icon: buyIcon,
-    title: 'Buy Assets',
+    title: translateRaw('DASHBOARD_ACTIONS_BUY_ASSETS_TITLE'),
     link: ROUTE_PATHS.BUY.path,
-    description: 'Purchase New Assets'
+    description: translateRaw('DASHBOARD_ACTIONS_BUY_ASSETS_SUBTITLE')
   },
   // {
   //   icon: swapIcon,
-  //   title: 'Swap Assets',
+  //   title: translateRaw('DASHBOARD_ACTIONS_SWAP_ASSETS_TITLE'),
   //   link: ROUTE_PATHS.SWAP.path,
-  //   description: 'Exchange Assets for Other Assets'
+  //   description: translateRaw('DASHBOARD_ACTIONS_SWAP_ASSETS_SUBTITLE')
   // },
   {
     icon: sendIcon,
-    title: 'Send Assets',
+    title: translateRaw('DASHBOARD_ACTIONS_SEND_ASSETS_TITLE'),
     link: ROUTE_PATHS.SEND.path,
-    description: 'Transfer Assets to Another Wallet'
+    description: translateRaw('DASHBOARD_ACTIONS_SEND_ASSETS_SUBTITLE')
   },
   {
     icon: receiveIcon,
-    title: 'Receive Assets',
+    title: translateRaw('DASHBOARD_ACTIONS_REQUEST_ASSETS_TITLE'),
     link: ROUTE_PATHS.RECEIVE_ASSETS.path,
-    description: 'Transfer Assets to Your Wallet'
+    description: translateRaw('DASHBOARD_ACTIONS_REQUEST_ASSETS_SUBTITLE')
   },
   {
     icon: hardwareWalletIcon,
-    title: 'Get a Wallet',
+    title: translateRaw('DASHBOARD_ACTIONS_GET_WALLET_TITLE'),
     link: EXT_URLS.LEDGER_REFERRAL.path,
-    description: 'Keep Your Funds Safe Offline'
+    description: translateRaw('DASHBOARD_ACTIONS_GET_WALLET_SUBTITLE')
   }
 ];
