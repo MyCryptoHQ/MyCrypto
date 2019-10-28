@@ -975,7 +975,7 @@
     "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_2": "Unlock it now.",
     "SELECT_NETWORK_ERROR": "Please select network.",
     "WALLET_BREAKDOWN_TITLE": "Wallet Breakdown",
-    "WALLET_BREAKDOWN_BALANCE": "Balance",
+    "WALLET_BREAKDOWN_BALANCE": "Balances",
     "WALLET_BREAKDOWN_TOKEN": "Token",
     "WALLET_BREAKDOWN_AMOUNT": "Amount",
     "WALLET_BREAKDOWN_NO_ASSETS": "No Assets Found",
