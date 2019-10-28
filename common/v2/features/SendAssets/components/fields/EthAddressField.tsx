@@ -63,6 +63,7 @@ function ETHAddressField({
         render={({ field, form }: FieldProps) => (
           <>
             <Input
+              data-lpignore="true"
               {...field}
               value={field.value.display}
               placeholder={placeholder}
