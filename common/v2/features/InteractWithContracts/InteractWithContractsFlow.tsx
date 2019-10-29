@@ -3,7 +3,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { ExtendedContentPanel } from 'v2/components';
 import { Interact, InteractionReceipt } from './components';
-import { ROUTE_PATHS } from 'v2/config';
+import { ROUTE_PATHS, DEFAULT_NETWORK } from 'v2/config';
 import { translateRaw } from 'translations';
 
 interface TStep {
@@ -13,6 +13,7 @@ interface TStep {
 
 const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
   const [step, setStep] = useState(0);
+  const [network, setNetwork] = useState(DEFAULT_NETWORK);
 
   const steps: TStep[] = [
     { title: translateRaw('Interact with Contracts'), component: Interact },
@@ -41,9 +42,13 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
       stepper={{ current: step + 1, total: steps.length }}
       width="650px"
       heading={stepObject.title}
-      centered={true}
     >
-      <StepComponent goToNextStep={goToNextStep} setStep={setStep} />
+      <StepComponent
+        goToNextStep={goToNextStep}
+        setStep={setStep}
+        network={network}
+        setNetwork={setNetwork}
+      />
     </ExtendedContentPanel>
   );
 };
