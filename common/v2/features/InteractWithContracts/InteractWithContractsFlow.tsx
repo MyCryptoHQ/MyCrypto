@@ -14,6 +14,8 @@ interface TStep {
 const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
   const [step, setStep] = useState(0);
   const [network, setNetwork] = useState(DEFAULT_NETWORK);
+  const [contractAddress, setContractAddress] = useState('');
+  const [abi, setAbi] = useState('');
 
   const steps: TStep[] = [
     { title: translateRaw('Interact with Contracts'), component: Interact },
@@ -40,7 +42,7 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
     <ExtendedContentPanel
       onBack={goToPreviousStep}
       stepper={{ current: step + 1, total: steps.length }}
-      width="650px"
+      width="750px"
       heading={stepObject.title}
     >
       <StepComponent
@@ -48,6 +50,10 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
         setStep={setStep}
         network={network}
         setNetwork={setNetwork}
+        contractAddress={contractAddress}
+        setContractAddress={setContractAddress}
+        abi={abi}
+        setAbi={setAbi}
       />
     </ExtendedContentPanel>
   );
