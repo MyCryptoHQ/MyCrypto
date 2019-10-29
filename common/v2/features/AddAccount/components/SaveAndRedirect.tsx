@@ -7,9 +7,9 @@ import {
   AccountContext,
   SettingsContext,
   findNextUnusedDefaultLabel,
-  createAddressBook,
   getNewDefaultAssetTemplateByNetwork,
-  getNetworkById
+  getNetworkById,
+  AddressBookContext
 } from 'v2/services/Store';
 import { Account, AddressBook, Asset, Network, FormData } from 'v2/types';
 
@@ -18,6 +18,7 @@ import { Account, AddressBook, Asset, Network, FormData } from 'v2/types';
 */
 function SaveAndRedirect(payload: { formData: FormData }) {
   const { createAccountWithID, getAccountByAddressAndNetworkName } = useContext(AccountContext);
+  const { createAddressBooks } = useContext(AddressBookContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { displayNotification } = useContext(NotificationsContext);
   useEffect(() => {
@@ -49,7 +50,7 @@ function SaveAndRedirect(payload: { formData: FormData }) {
         notes: '',
         network: account.networkId
       };
-      createAddressBook(newLabel);
+      createAddressBooks(newLabel);
       createAccountWithID(account, newUUID);
       updateSettingsAccounts([...settings.dashboardAccounts, newUUID]);
       displayNotification(NotificationTemplates.walletAdded, {

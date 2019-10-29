@@ -877,7 +877,7 @@
     "SCREEN_LOCK_LOCKED_LEARN_MORE": "Learn more.",
     "SCREEN_LOCK_LOCKED_WRONG_PASSWORD": "Sorry, that is not the correct screen lock password. You created this password on MyCrypto when you first set up your Screen Lock. It is not the password you use for your keystore file or mnemonic phrase.",
     "SCREEN_LOCK_LOCKING_HEADING": "Are you still using MyCrypto?",
-    "SCREEN_LOCK_LOCKING_DESCRIPTION": "You’ve been inactive for 5 minutes. In order to keep your funds safe, Your Wallet will be automatically locked in",
+    "SCREEN_LOCK_LOCKING_DESCRIPTION": "You’ve been inactive for $inactive_time. In order to keep your funds safe, Your Wallet will be automatically locked in",
     "SCREEN_LOCK_LOCKING_SECONDS": "$time_left seconds.",
     "SCREEN_LOCK_LOCKING_KEEP_USING": "Keep Using MyCrypto",
     "SCREEN_LOCK_LOCKING_TURN_ON_LOCK": "Turn on Screen Lock",
@@ -1032,7 +1032,16 @@
     "CONFIRM_AND_SEND": "Confirm and Send",
     "FORM_SEND_AMOUNT": "Send Amount",
     "ASSET": "Asset",
-    "INVALID_AMOUNT_ERROR": "Amount should be a positive number"
-
+    "INVALID_AMOUNT_ERROR": "Amount should be a positive number",
+    "DASHBOARD_ACTIONS_BUY_ASSETS_TITLE": "Buy ETH",
+    "DASHBOARD_ACTIONS_BUY_ASSETS_SUBTITLE": "Hassle-free & delivered directly to your address.",
+    "DASHBOARD_ACTIONS_SWAP_ASSETS_TITLE": "Swap Assets",
+    "DASHBOARD_ACTIONS_SWAP_ASSETS_SUBTITLE": "Swap Assets | Exchange instantly without leaving MyCrypto.",
+    "DASHBOARD_ACTIONS_SEND_ASSETS_TITLE": "Send Assets",
+    "DASHBOARD_ACTIONS_SEND_ASSETS_SUBTITLE": "Transfer assets to another account.",
+    "DASHBOARD_ACTIONS_REQUEST_ASSETS_TITLE": "Request Assets",
+    "DASHBOARD_ACTIONS_REQUEST_ASSETS_SUBTITLE": "Request a payment to your address.",
+    "DASHBOARD_ACTIONS_GET_WALLET_TITLE": "Get a Hardware Wallet",
+    "DASHBOARD_ACTIONS_GET_WALLET_SUBTITLE": " Ensure your assets stay safe & offline."
   }
 }

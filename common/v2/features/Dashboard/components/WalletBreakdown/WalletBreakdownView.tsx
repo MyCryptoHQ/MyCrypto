@@ -7,7 +7,7 @@ import NoAssets from './NoAssets';
 import { WalletBreakdownProps, Balance } from './types';
 import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { TSymbol } from 'v2/types';
-import { AssetIcon } from 'v2/components';
+import { AssetIcon, Currency, Typography } from 'v2/components';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
 
@@ -50,8 +50,6 @@ const PanelFigure = styled.div``;
 
 const PanelFigureValue = styled.div`
   margin: 0;
-  font-size: 22px;
-  font-weight: bold;
 `;
 
 const PanelFigureLabel = styled.div`
@@ -213,7 +211,11 @@ export default function WalletBreakdownView({
             />
             <PanelFigures>
               <PanelFigure>
-                <PanelFigureValue>{balance.name}</PanelFigureValue>
+                <PanelFigureValue>
+                  <Typography bold={true} fontSize={'1.3rem'}>
+                    {balance.name}
+                  </Typography>
+                </PanelFigureValue>
                 <PanelFigureLabel>
                   {selectedAssetPercentage}
                   {translate('WALLET_BREAKDOWN_PERCENTAGE')}
@@ -221,8 +223,14 @@ export default function WalletBreakdownView({
               </PanelFigure>
               <PanelFigure>
                 <PanelFigureValue>
-                  {fiat.symbol}
-                  {balance.fiatValue.toFixed(2)}
+                  <Currency
+                    amount={balance.fiatValue.toString()}
+                    symbol={fiat.symbol}
+                    prefix={fiat.prefix}
+                    decimals={2}
+                    bold={true}
+                    fontSize={'1.3rem'}
+                  />
                 </PanelFigureValue>
                 <PanelFigureLabel>
                   {translate('WALLET_BREAKDOWN_VALUE_IN')} {fiat.name}
@@ -254,8 +262,12 @@ export default function WalletBreakdownView({
                 </div>
               </BreakDownBalanceAssetInfo>
               <BreakDownBalanceAssetAmount>
-                {fiat.symbol}
-                {fiatValue.toFixed(2)}
+                <Currency
+                  amount={fiatValue.toString()}
+                  symbol={fiat.symbol}
+                  prefix={fiat.prefix}
+                  decimals={2}
+                />
               </BreakDownBalanceAssetAmount>
             </BreakDownBalance>
           ))}
@@ -268,8 +280,12 @@ export default function WalletBreakdownView({
           <BreakDownBalanceTotal>
             <div>{translate('WALLET_BREAKDOWN_TOTAL')}</div>
             <div>
-              {fiat.symbol}
-              {totalFiatValue.toFixed(2)}
+              <Currency
+                amount={totalFiatValue.toString()}
+                symbol={fiat.symbol}
+                prefix={fiat.prefix}
+                decimals={2}
+              />
             </div>
           </BreakDownBalanceTotal>
         </BalanceTotalWrapper>
