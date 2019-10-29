@@ -28,3 +28,4 @@ export { default as PageNotFound } from './PageNotFound';
 export { SignAndVerifyMessage } from './SignAndVerifyMessage';
 export { NotificationsProvider } from './NotificationsPanel';
 export { BroadcastTransactionFlow } from './BroadcastTransaction';
+export { InteractWithContractsFlow } from './InteractWithContracts';

@@ -44,6 +44,10 @@ export const links = [
         title: 'Broadcast Transaction'
       },
       {
+        to: ROUTE_PATHS.INTERACT_WITH_CONTRACTS.path,
+        title: 'Interact with Contracts'
+      },
+      {
         to: '/helpers',
         title: 'Helpers'
       }

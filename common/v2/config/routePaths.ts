@@ -119,6 +119,11 @@ const PATHS: IRoutePath[] = [
     name: 'BROADCAST_TX',
     title: 'Broadcast Transaction',
     path: '/broadcast-transaction'
+  },
+  {
+    name: 'INTERACT_WITH_CONTRACTS',
+    title: 'Interact With Contracts',
+    path: '/interact-with-contracts'
   }
 ];
 
