@@ -105,7 +105,11 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
               <Field
                 name="notes"
                 render={({ field }: FieldProps<AddressBook>) => (
-                  <InputField {...field} textarea={true} placeholder="Enter a note for this address" />
+                  <InputField
+                    {...field}
+                    textarea={true}
+                    placeholder="Enter a note for this address"
+                  />
                 )}
               />
             </AddressFieldset>
