@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
+import { translateRaw } from 'translations';
+
 import { ExtendedContentPanel } from 'v2/components';
+import { ROUTE_PATHS } from 'v2/config';
+import { StoreAccount, ITxReceipt, ISignedTx, ITxConfig } from 'v2/types';
+import { DexService } from 'v2/services/ApiService';
+import { ProviderHandler } from 'v2/services';
+import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
+import { isWeb3Wallet } from 'v2/utils/web3';
+
 import {
   SwapAssets,
   SelectAddress,
@@ -9,19 +18,12 @@ import {
   SwapTransactionReceipt,
   SetAllowance
 } from './components';
-import { ROUTE_PATHS } from 'v2/config';
 import { ISwapAsset, LAST_CHANGED_AMOUNT } from './types';
-import { StoreAccount, ITxReceipt, ISignedTx, ITxConfig } from 'v2/types';
-import { DexService } from 'v2/services/ApiService';
-import { ProviderHandler } from 'v2/services';
-import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
 import {
   makeTxConfigFromTransaction,
   makeTradeTransactionFromDexTrade,
   WALLET_STEPS
 } from './helpers';
-import { translateRaw } from 'translations';
-import { isWeb3Wallet } from 'v2/utils/web3';
 
 interface TStep {
   title?: string;

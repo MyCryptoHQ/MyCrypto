@@ -2,18 +2,20 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
-import { SwapFromToDiagram, FromToAccount } from './fields';
-import { ISwapAsset, LAST_CHANGED_AMOUNT } from '../types';
+import translate from 'translations';
+
 import { StoreAccount, ITxConfig } from 'v2/types';
 import { COLORS } from 'v2/theme';
 import { DexService } from 'v2/services/ApiService/Dex';
 import { toFixedWithoutZero } from 'v2/utils';
+
 import {
   makeAllowanceTransaction,
   makeTradeTransactionFromDexTrade,
   makeTxConfigFromTransaction
 } from '../helpers';
-import translate from 'translations';
+import { SwapFromToDiagram, FromToAccount } from './fields';
+import { ISwapAsset, LAST_CHANGED_AMOUNT } from '../types';
 
 const { SILVER, BRIGHT_SKY_BLUE, GREY } = COLORS;
 

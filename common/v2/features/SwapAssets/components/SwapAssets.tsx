@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
-import { AssetSelectDropdown } from './fields';
-import { InputField } from 'v2/components';
-import { ISwapAsset, LAST_CHANGED_AMOUNT } from '../types';
-import { DexService } from 'v2/services/ApiService';
 import { translate, translateRaw } from 'translations';
+
+import { InputField } from 'v2/components';
+import { DexService } from 'v2/services/ApiService';
+
+import { ISwapAsset, LAST_CHANGED_AMOUNT } from '../types';
+import { AssetSelectDropdown } from './fields';
 
 const FormWrapper = styled.div`
   margin-top: 20px;

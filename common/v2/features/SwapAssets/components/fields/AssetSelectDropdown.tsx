@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { AssetSummary, Divider, Dropdown } from 'v2/components';
+
 import { ISwapAsset } from '../../types';
 
 const Label = styled.div`

@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const IgnoreNotFoundExportPlugin = require('ignore-not-found-export-webpack-plugin')
+const IgnoreNotFoundExportPlugin = require('ignore-not-found-export-webpack-plugin');
 const config = require('./config');
 
 const IS_DEVELOPMENT = process.env.NODE_ENV !== 'production';
@@ -165,7 +165,7 @@ module.exports = {
       },
       metaCsp: IS_DEVELOPMENT
         ? ''
-        : "default-src 'none'; script-src 'self' https://0x.mycrypto.com; worker-src 'self' blob:; child-src 'self'; style-src 'self' 'unsafe-inline' https://0x.mycrypto.com; manifest-src 'self'; font-src 'self' https://0x.mycrypto.com; img-src 'self' data: https://shapeshift.io https://cdn.mycryptoapi.com/; connect-src *; frame-src 'self' https://connect.trezor.io;"
+        : "default-src 'none'; script-src 'self'; worker-src 'self' blob:; child-src 'self'; style-src 'self' 'unsafe-inline'; manifest-src 'self'; font-src 'self'; img-src 'self' data: https://cdn.mycryptoapi.com/; connect-src *; frame-src 'self' https://connect.trezor.io;"
     }),
 
     new CopyWebpackPlugin([

@@ -2,14 +2,16 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
-import { SwapFromToDiagram } from './fields';
-import { ISwapAsset } from '../types';
+import { translate } from 'translations';
+
 import { AccountDropdown, InlineErrorMsg } from 'v2/components';
 import { ExtendedAccount, StoreAccount } from 'v2/types';
 import { StoreContext } from 'v2/services';
-import { WALLET_STEPS } from '../helpers';
 import { weiToFloat } from 'v2/utils';
-import { translate } from 'translations';
+
+import { WALLET_STEPS } from '../helpers';
+import { SwapFromToDiagram } from './fields';
+import { ISwapAsset } from '../types';
 
 const Label = styled.div`
   font-size: 18px;

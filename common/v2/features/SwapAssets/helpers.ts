@@ -12,7 +12,6 @@ import {
   hexToString
 } from 'v2/services/EthService';
 import { getAssetByUUID, getAssetByTicker } from 'v2/services';
-import { ISwapAsset, SigningComponents } from './types';
 import {
   SignTransactionPrivateKey,
   SignTransactionWeb3,
@@ -23,6 +22,8 @@ import {
   SignTransactionParity,
   SignTransactionMnemonic
 } from 'v2/components';
+
+import { ISwapAsset, SigningComponents } from './types';
 
 export const WALLET_STEPS: SigningComponents = {
   [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,

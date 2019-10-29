@@ -2,10 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { Address } from '@mycrypto/ui';
 
+import translate, { translateRaw } from 'translations';
+
 import { StoreAccount } from 'v2/types';
 import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { truncate } from 'v2/utils';
-import translate, { translateRaw } from 'translations';
 
 const { SILVER } = COLORS;
 const { SCREEN_XS } = BREAK_POINTS;
