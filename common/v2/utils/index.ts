@@ -5,7 +5,6 @@ export * from './platform';
 export * from './validators';
 export * from './constants';
 export { getFeaturedOS } from './getFeaturedOS';
-export { default as getSymbolIcon } from './symbolIcon';
 export { generateUUID } from './generateUUID';
 export { isUrl } from './isUrl';
 export { truncate } from './truncate';
