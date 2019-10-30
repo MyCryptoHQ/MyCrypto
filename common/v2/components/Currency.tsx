@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { TSymbol } from 'v2/types';
-import { getSymbolIcon } from 'v2/utils';
 import { default as Typography } from './Typography';
+import AssetIcon from './AssetIcon';
 
 const SContainer = styled('div')`
   display: inline-flex;
@@ -40,7 +40,7 @@ function Currency({
     <SContainer {...props}>
       {icon && (
         <span>
-          <img src={getSymbolIcon(symbol)} width={19} alt={symbol} />
+          <AssetIcon size={'19px'} symbol={symbol} />
         </span>
       )}
       <Typography bold={bold} fontSize={fontSize}>
