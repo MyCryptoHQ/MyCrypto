@@ -1397,10 +1397,10 @@
     bignumber.js "^9.0.0"
     isomorphic-fetch "^2.2.1"
 
-"@mycrypto/ui@0.18.3":
-  version "0.18.3"
-  resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.18.3.tgz#a3bc6ff3b4a514336256a0d810a6ed03b1d246ab"
-  integrity sha512-innR6NCMbxL7UfJSBvg4tJlWr5pv3m/MsaQsCEyYNQ4mLQqkkPv7WuRGGTTRnCCRu3HmpceMuonIrriU/3V8iw==
+"@mycrypto/ui@0.20.2":
+  version "0.20.2"
+  resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.20.2.tgz#00f1b847cab4d93f819ad86ff45ca7ce8c2a0db1"
+  integrity sha512-JnqgVnDzvttSJ6noQe0BkNAC3Mg6f8WJM+exgloUow5iodju/rd3jo+kPrDFvlalfLLmqWZeug8GMRfSjW8z9w==
   dependencies:
     "@types/dom-clipboard-api" "^1.0.1"
     "@types/lodash.throttle" "^4.1.4"
