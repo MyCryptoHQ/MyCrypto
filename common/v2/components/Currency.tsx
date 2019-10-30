@@ -9,6 +9,11 @@ const SContainer = styled('div')`
   display: inline-flex;
   align-contents: center;
 `;
+
+const SAssetIconContainer = styled('span')`
+  padding-right: 5px;
+`;
+
 interface Props {
   amount: string;
   symbol: TSymbol;
@@ -39,9 +44,9 @@ function Currency({
   return (
     <SContainer {...props}>
       {icon && (
-        <span>
+        <SAssetIconContainer>
           <AssetIcon size={'19px'} symbol={symbol} />
-        </span>
+        </SAssetIconContainer>
       )}
       <Typography bold={bold} fontSize={fontSize}>
         {prefix && `${symbol}`}
