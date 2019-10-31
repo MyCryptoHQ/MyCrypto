@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import './NetworkSelectPanel.scss';
 
-import { translate } from 'v2/translations';
+import translate from 'v2/translations';
 import { FormDataActionType as ActionType } from '../types';
 import { FormData } from 'v2/types';
 import { NetworkSelectDropdown } from 'v2/components';

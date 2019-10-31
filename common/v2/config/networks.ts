@@ -5,7 +5,7 @@ import { WalletId, NetworkId, NetworkLegacy } from 'v2/types';
 import { makeExplorer } from 'v2/services/EthService/utils/makeExplorer';
 import { GAS_PRICE_TESTNET, GAS_PRICE_DEFAULT } from './gasPrice';
 import { ethPlorer, ETHTokenExplorer } from './data';
-import { DPaths } from './dpaths';
+import { DPathsList as DPaths } from './dpaths';
 
 // Temporay type to bridge the difference between v1 and v2 network definitions.
 

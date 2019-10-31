@@ -5,7 +5,7 @@ import { Button } from '@mycrypto/ui';
 import { InputField } from 'v2/components';
 import { verifySignedMessage } from 'v2/services/EthService';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
-import { translate, translateRaw } from 'v2/translations';
+import translate, { translateRaw } from 'v2/translations';
 import { ISignedMessage } from 'v2/types';
 
 const { SCREEN_XS } = BREAK_POINTS;

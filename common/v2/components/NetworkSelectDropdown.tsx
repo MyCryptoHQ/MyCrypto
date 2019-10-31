@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 
 import { OptionComponentProps } from 'react-select';
 import styled from 'styled-components';
-import { translate } from 'v2/translations';
+import translate from 'v2/translations';
 import { NetworkContext, isWalletFormatSupportedOnNetwork } from 'v2/services/Store';
 import { NetworkId, WalletId } from 'v2/types';
 import { DEFAULT_NETWORK } from 'v2/config';
