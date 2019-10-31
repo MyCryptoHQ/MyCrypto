@@ -6,7 +6,7 @@ import { ROUTE_PATHS } from 'v2/config';
 import { COLORS } from 'v2/theme';
 import { useDevTools } from 'v2/services';
 import { AccountContext, AddressBookContext } from 'v2/services/Store';
-import { translate } from 'v2/translations';
+import translate from 'v2/translations';
 import { AccountList, RouterLink, Typography, BannerAd, Desktop, Mobile } from 'v2/components';
 import { ActionTile, TokenPanel, WalletBreakdown, RecentTransactionList } from './components';
 import { NotificationsPanel } from '../NotificationsPanel';

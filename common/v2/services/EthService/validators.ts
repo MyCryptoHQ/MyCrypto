@@ -5,7 +5,7 @@ import { Validator } from 'jsonschema';
 
 import {
   dPathRegex,
-  DPaths,
+  DPathsList as DPaths,
   GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
