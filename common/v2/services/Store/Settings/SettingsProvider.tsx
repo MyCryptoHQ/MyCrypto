@@ -3,7 +3,7 @@ import React, { Component, createContext } from 'react';
 import { ISettings, IRates } from 'v2/types';
 import { updateSetting, readAllSettings, readStorage, importStorage } from './Settings';
 
-interface ProviderState {
+interface ISettingsProvider {
   settings: ISettings;
   language: string;
   updateSettings(settingsData: ISettings): void;
@@ -15,10 +15,10 @@ interface ProviderState {
   updateLanguageSelection(language: string): void;
 }
 
-export const SettingsContext = createContext({} as ProviderState);
+export const SettingsContext = createContext({} as ISettingsProvider);
 
 export class SettingsProvider extends Component {
-  public readonly state: ProviderState = {
+  public readonly state: ISettingsProvider = {
     settings: readAllSettings() || {},
     language: readAllSettings().language || '',
     updateSettings: (settings: ISettings): void => {

@@ -1,4 +1,4 @@
-import { DPaths } from 'v2/config';
+import { DPathsList } from 'v2/config/dpaths';
 import { LocalCache, NodeType, WalletId } from 'v2/types';
 
 export const CACHE_KEY = 'MyCryptoCache';
@@ -77,7 +77,7 @@ export const CACHE_INIT_DEV: LocalCache = {
         }
       ],
       dPaths: {
-        [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_DEFAULT
+        [WalletId.MNEMONIC_PHRASE]: DPathsList.ETH_DEFAULT
       },
       gasPriceSettings: {
         min: 1,

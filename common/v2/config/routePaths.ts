@@ -112,8 +112,6 @@ const PATHS: IRoutePath[] = [
   }
 ];
 
-export const ROUTE_PATHS: IRoutePaths = createNavLinksFromRoutePaths(PATHS);
-
 function createNavLinksFromRoutePaths(paths: IRoutePath[]) {
   return paths.reduce(
     (navLinks, path) => {
@@ -123,3 +121,5 @@ function createNavLinksFromRoutePaths(paths: IRoutePath[]) {
     {} as IRoutePaths
   );
 }
+
+export const ROUTE_PATHS: IRoutePaths = createNavLinksFromRoutePaths(PATHS);

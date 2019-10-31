@@ -9,7 +9,7 @@ import { links } from './constants';
 import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from 'v2/theme';
 import { AnalyticsService, ANALYTICS_CATEGORIES, SettingsContext } from 'v2/services';
 import { KNOWLEDGE_BASE_URL, ROUTE_PATHS, LATEST_NEWS_URL, languages } from 'v2/config';
-import { translate } from 'v2/translations';
+import translate from 'v2/translations';
 
 // Legacy
 import logo from 'assets/images/logo-mycrypto.svg';
