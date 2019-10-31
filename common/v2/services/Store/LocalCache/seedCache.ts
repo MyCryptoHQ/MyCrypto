@@ -1,4 +1,4 @@
-import { isDevelopment, generateUUID } from 'v2/utils';
+import { IS_DEV, generateUUID } from 'v2/utils';
 import {
   Fiats,
   ContractsData,
@@ -40,7 +40,7 @@ export const initializeCache = () => {
     initContracts();
     initAssets();
 
-    if (isDevelopment) {
+    if (IS_DEV) {
       initTestAccounts();
     }
   }

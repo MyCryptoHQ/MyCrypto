@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 
-import { isDevelopment } from 'v2/utils';
+import { IS_DEV } from 'v2/utils';
 import StorageService from './Storage';
 import { CACHE_TIME_TO_LIVE, CACHE_LOCALSTORAGE_KEY } from './constants';
 import { cachedValueIsFresh } from './helpers';
@@ -102,7 +102,7 @@ export default class CacheService extends CacheServiceBase {
       instantiated = true;
     }
 
-    if (isDevelopment()) {
+    if (IS_DEV) {
       (window as any).CacheService = this;
     }
   }
