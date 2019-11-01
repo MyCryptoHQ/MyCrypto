@@ -9,11 +9,11 @@ import 'what-input'; // @TODO: Investigate utility of dependency
 import React from 'react';
 import { render } from 'react-dom';
 
-import Root from './Root';
-import consoleAdvertisement from 'utils/consoleAdvertisement';
-import configuredStore from 'features/store';
+import { consoleAdvertisement } from 'v2/utils';
 
-render(<Root store={configuredStore} />, document.getElementById('app'));
+import Root from './Root';
+
+render(<Root />, document.getElementById('app'));
 
 if (process.env.NODE_ENV === 'production') {
   consoleAdvertisement();

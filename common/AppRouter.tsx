@@ -1,8 +1,6 @@
 import React from 'react';
 import { HashRouter, BrowserRouter, Route, Switch, withRouter } from 'react-router-dom';
 
-import { LogOutPrompt } from 'components';
-import { BroadcastTx, Contracts, GenerateWallet, SendTransaction, SupportPage } from 'containers';
 import { Layout } from 'v2/features/Layout';
 import { Home, PageNotFound, ScreenLockProvider, DrawerProvider } from 'v2/features';
 import { IS_PROD, IS_DOWNLOADABLE, ScrollToTop } from 'v2/utils';
@@ -40,12 +38,6 @@ export const AppRouter = () => {
               <DefaultHomeHandler>
                 <Switch>
                   {/* To avoid fiddling with layout we provide a complete route to home */}
-
-                  <Route path="/account" component={SendTransaction} exact={true} />
-                  <Route path="/generate" component={GenerateWallet} />
-                  <Route path="/contracts" component={Contracts} />
-                  <Route path="/pushTx" component={BroadcastTx} />
-                  <Route path="/support-us" component={SupportPage} exact={true} />
                   <LayoutWithLocation>
                     <Switch>
                       <Route path={ROUTE_PATHS.ROOT.path} component={Home} exact={true} />
@@ -57,7 +49,6 @@ export const AppRouter = () => {
                     </Switch>
                   </LayoutWithLocation>
                 </Switch>
-                <LogOutPrompt />
               </DefaultHomeHandler>
             </PageVisitsAnalytics>
             <LegacyRoutesHandler />
