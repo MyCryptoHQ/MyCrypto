@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 
 import { IS_ELECTRON } from 'v2/utils';
+import TabSection from 'v2/containers';
+import { Warning } from 'v2/components';
+
 import { replaceZeroExContainer } from './helpers';
 import {
   ZEROEX_CONTAINER_ID,
@@ -9,10 +12,6 @@ import {
   ZEROEX_FEE_PERCENTAGE
 } from './constants';
 import './ZeroEx.scss';
-
-// Legacy
-import TabSection from 'containers/TabSection';
-import { Warning } from 'v2/components';
 
 export default class ZeroEx extends Component {
   public componentDidMount() {

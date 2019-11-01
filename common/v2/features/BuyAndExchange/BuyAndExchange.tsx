@@ -10,7 +10,7 @@ import './BuyAndExchange.scss';
 // Legacy
 import shapeshiftLogo from 'assets/images/logo-shapeshift-no-text.svg';
 import zeroExLogo from 'assets/images/logo-zeroex.png';
-import TabSection from 'containers/TabSection';
+import TabSection from 'v2/containers';
 import { Warning } from 'v2/components';
 
 interface State {
