@@ -257,10 +257,10 @@ export default function SendAssetsForm({
                       value={field.value}
                       assets={assets(validAccounts)}
                       onSelect={(option: StoreAsset) => {
-                        form.setFieldValue('asset', option); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
+                        form.setFieldValue('asset', option || {}); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
                         //TODO get assetType onChange
                         handleFieldReset();
-                        if (option.networkId) {
+                        if (option && option.networkId) {
                           fetchGasPriceEstimates(option.networkId).then(data => {
                             form.setFieldValue('gasEstimates', data);
                             form.setFieldValue('gasPriceSlider', data.fast);
