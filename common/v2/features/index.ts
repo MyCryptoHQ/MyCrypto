@@ -5,7 +5,7 @@ export {
   UnlockScreen,
   SelectLanguage
 } from './Drawer';
-export { DevTools } from './DevTools';
+export { DevToolsManager } from './DevTools';
 export { Home } from './Home';
 export { CreateWallet, Mnemonic, Keystore } from './CreateWallet';
 export { Dashboard } from './Dashboard';
