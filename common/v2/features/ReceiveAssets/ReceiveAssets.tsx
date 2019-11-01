@@ -194,6 +194,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                   validate={validateAmount}
                   render={({ field, form }: FieldProps<typeof initialValues>) => (
                     <FullWidthInput
+                      data-lpignore="true"
                       value={field.value}
                       onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
                       placeholder="0.00"
@@ -278,6 +279,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                               amount
                             )
                       }
+                      isCopyable={true}
                       truncate={truncate}
                     />
                   </FieldsetBox>
