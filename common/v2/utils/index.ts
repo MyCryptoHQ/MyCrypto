@@ -23,3 +23,4 @@ export {
   toChecksumAddressByChainId
 } from './formatters';
 export { makeBlob } from './blob';
+export { default as consoleAdvertisement } from './consoleAdvertisement';
