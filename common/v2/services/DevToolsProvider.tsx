@@ -11,6 +11,8 @@ const DevToolsContext = createContext({} as ProviderState);
 class DevToolsProvider extends Component {
   public readonly state: ProviderState = {
     isActive: false,
+    // Example of runtime switchable feature flag in a Trunk Based Develompent environment
+    // https://trunkbaseddevelopment.com/feature-flags/
     displayRecentTransactionList: true,
     toggleDevTools: (): void => this.setState({ isActive: !this.state.isActive })
   };
