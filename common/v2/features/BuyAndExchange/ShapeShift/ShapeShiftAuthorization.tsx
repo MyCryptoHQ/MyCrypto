@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 
 import { ShapeShiftService } from 'v2/services';
+import TabSection from 'v2/containers';
 import ShapeShift from './ShapeShift';
 import { SHAPESHIFT_AUTHORIZATION_CHECK_RATE } from './constants';
 import './ShapeShift.scss';
-
-// Legacy
-import TabSection from 'containers/TabSection';
 
 export default class ShapeShiftAuthorization extends Component {
   public state = {

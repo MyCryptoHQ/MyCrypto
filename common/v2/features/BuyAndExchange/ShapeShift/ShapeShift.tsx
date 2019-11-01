@@ -9,7 +9,7 @@ import './ShapeShift.scss';
 
 // Legacy
 import shapeshiftLogo from 'assets/images/logo-shapeshift-no-text.svg';
-import TabSection from 'containers/TabSection';
+import TabSection from 'v2/containers';
 
 enum Stages {
   Pair,
