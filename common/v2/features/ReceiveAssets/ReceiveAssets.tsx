@@ -3,7 +3,6 @@ import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
 import noop from 'lodash/noop';
 import { Copyable, Heading, Input, Tooltip } from '@mycrypto/ui';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import Select from 'react-select';
 import styled from 'styled-components';
 
 import {
