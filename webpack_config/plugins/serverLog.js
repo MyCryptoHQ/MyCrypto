@@ -3,7 +3,7 @@ const chalk = require('chalk');
 
 const LogPlugin = function(port) {
   this.port = port;
-  this.protocol = process.env.HTTPS ? 'https' : 'http';
+  this.protocol = process.env.HTTPS ? 'https' : 'https';
 };
 
 LogPlugin.prototype.apply = function(compiler) {

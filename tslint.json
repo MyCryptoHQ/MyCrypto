@@ -13,6 +13,7 @@
   "rules": {
     "quotemark": false,
     "trailing-comma": false,
+    "curly": ["true", "same-line-single-line"],
     "object-literal-sort-keys": false,
     "arrow-return-shorthand": true,
     "prefer-method-signature": true,
@@ -22,7 +23,7 @@
     "jsx-no-lambda": false,
     "interface-name": false,
     "no-duplicate-imports": true,
-    "no-console": false,
+    "no-console": [true, "log"],
     "no-var-requires": false,
     "jsx-wrap-multiline": false,
     "comment-format": false,

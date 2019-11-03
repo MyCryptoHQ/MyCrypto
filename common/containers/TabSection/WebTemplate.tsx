@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Transition } from 'react-spring';
+import { Transition } from 'react-spring/renderprops.cjs';
 
 import { makeAutoNodeName } from 'libs/nodes';
 import { AppState } from 'features/reducers';
@@ -41,11 +41,12 @@ class WebTemplate extends Component<Props, {}> {
             )}
           />
           <Transition
+            items={sidebarVisible}
             from={{ right: '-375px' }}
             enter={{ right: '0' }}
             leave={{ right: '-1000px' }}
           >
-            {sidebarVisible && ((style: any) => <Sidebar style={style} />)}
+            {visible => visible && ((style: any) => <Sidebar style={style} />)}
           </Transition>
           <div className="Tab container">
             {isUnavailableOffline && isOffline ? <OfflineTab /> : children}

@@ -46,7 +46,22 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       this.setState({ dPath: nextProps.dPath });
     }
   }
+  //   public componentDidMount = () => {
+  //     this.handleNullConnect();
 
+  //     return
+  // <div>
+  //       {isLoading ? (
+  //         <div className="LedgerDecrypt-message">
+  //           <Spinner light={true} />
+  //           {translate('WALLET_UNLOCKING')}
+  //         </div>
+  //       ) : (
+  //         translate('ADD_LEDGER_SCAN')
+  //       )}
+  //       </div>
+  //     )
+  //   };
   public render() {
     const { network } = this.props;
     const { dPath, publicKey, chainCode, error, isLoading } = this.state;

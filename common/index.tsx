@@ -1,8 +1,10 @@
 // Application styles must come first in order, to allow for overrides
 import 'font-awesome/scss/font-awesome.scss';
 import 'sass/styles.scss';
-import 'babel-polyfill';
-import 'whatwg-fetch';
+import '@babel/polyfill';
+
+import 'whatwg-fetch'; // @TODO: Investigate utility of dependency
+import 'what-input'; // @TODO: Investigate utility of dependency
 
 import React from 'react';
 import { render } from 'react-dom';

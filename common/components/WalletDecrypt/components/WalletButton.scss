@@ -61,10 +61,6 @@
   &.is-disabled {
     cursor: not-allowed;
     @include show-tooltip-on-hover;
-
-    .WalletButton-inner {
-      opacity: 0.3;
-    }
   }
 
   &-inner {
@@ -76,7 +72,6 @@
     justify-content: center;
     align-items: center;
     font-size: $font-size-medium;
-    margin-bottom: $space * 1.25;
     transition: color 150ms ease;
 
     &-icon {

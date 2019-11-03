@@ -10,7 +10,7 @@ import { Address, Identicon } from 'components/ui';
 import './AddressFieldDropdown.scss';
 
 interface Props {
-  addressInput: string;
+  addressInput?: string;
   dropdownThreshold?: number;
   labelAddresses: ReturnType<typeof addressBookSelectors.getLabelAddresses>;
   recentAddresses: ReturnType<typeof walletSelectors.getRecentAddresses>;
@@ -120,7 +120,7 @@ class AddressFieldDropdownClass extends React.Component<Props, State> {
     const formattedRecentAddresses = this.getFormattedRecentAddresses();
 
     return Object.keys({ ...labelAddresses, ...formattedRecentAddresses })
-      .filter(label => label.toLowerCase().includes(addressInput))
+      .filter(label => !addressInput || label.toLowerCase().includes(addressInput))
       .map(label => ({ address: labelAddresses[label] || formattedRecentAddresses[label], label }))
       .slice(0, 5);
   };
@@ -128,7 +128,11 @@ class AddressFieldDropdownClass extends React.Component<Props, State> {
   private getIsVisible = () => {
     const { addressInput, dropdownThreshold = 3 } = this.props;
 
-    return addressInput.length >= dropdownThreshold && this.getFilteredLabels().length > 0;
+    return (
+      addressInput &&
+      addressInput.length >= dropdownThreshold &&
+      this.getFilteredLabels().length > 0
+    );
   };
 
   private setActiveIndex = (activeIndex: number | null) => this.setState({ activeIndex });
@@ -218,11 +222,11 @@ interface FakeFormEvent {
 }
 
 interface UncontrolledAddressFieldDropdownProps {
-  value: string;
+  value?: string;
   labelAddresses: ReturnType<typeof addressBookSelectors.getLabelAddresses>;
   recentAddresses: ReturnType<typeof walletSelectors.getRecentAddresses>;
   dropdownThreshold?: number;
-  onChangeOverride(ev: React.FormEvent<HTMLInputElement> | FakeFormEvent): void;
+  onChangeOverride?(ev: React.FormEvent<HTMLInputElement> | FakeFormEvent): void;
 }
 
 /**
@@ -237,7 +241,8 @@ function RawUncontrolledAddressFieldDropdown({
   recentAddresses,
   dropdownThreshold
 }: UncontrolledAddressFieldDropdownProps) {
-  const onEntryClick = (address: string) => onChangeOverride({ currentTarget: { value: address } });
+  const onEntryClick = (address: string) =>
+    onChangeOverride && onChangeOverride({ currentTarget: { value: address } });
 
   return (
     <AddressFieldDropdownClass
