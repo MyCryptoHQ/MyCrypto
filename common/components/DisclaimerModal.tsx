@@ -2,8 +2,8 @@ import React from 'react';
 
 import { HELP_ARTICLE } from 'config';
 import translate from 'translations';
-import { HelpLink } from 'components/ui';
-import Modal, { IButton } from 'components/ui/Modal';
+
+import { LegacyModal, IButton, HelpLink } from 'components';
 import './DisclaimerModal.scss';
 
 interface Props {
@@ -16,7 +16,7 @@ const DisclaimerModal: React.SFC<Props> = ({ isOpen, handleClose }) => {
     { text: translate('ACTION_10'), type: 'default', onClick: handleClose }
   ];
   return (
-    <Modal isOpen={isOpen} title="Disclaimer" buttons={buttons} handleClose={handleClose}>
+    <LegacyModal isOpen={isOpen} title="Disclaimer" buttons={buttons} handleClose={handleClose}>
       <p>
         <b>Be safe & secure: </b>
         <HelpLink article={HELP_ARTICLE.SECURING_YOUR_ETH}>
@@ -84,7 +84,7 @@ const DisclaimerModal: React.SFC<Props> = ({ isOpen, handleClose }) => {
         OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
         DEALINGS IN THE SOFTWARE.
       </b>
-    </Modal>
+    </LegacyModal>
   );
 };
 

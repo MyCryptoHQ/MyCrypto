@@ -4,7 +4,7 @@
 // yourself, otherwise all visibiility changes are managed in internal state.
 import React from 'react';
 
-import { Input, TextArea } from 'components/ui';
+import { Input, TextArea } from 'components';
 import './TogglablePassword.scss';
 import openEye from 'common/assets/images/icn-show-eye.svg';
 import closedEye from 'common/assets/images/icn-show-closed-eye-svg.svg';

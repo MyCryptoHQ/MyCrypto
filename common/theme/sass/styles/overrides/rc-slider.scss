@@ -1,0 +1,66 @@
+@import 'common/sass/variables';
+
+$rail-height: 4px;
+$handle-size: 22px;
+$speed: 70ms;
+
+@keyframes slider-loading {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.rc-slider {
+  &-rail {
+    background: shade-dark(0.12);
+  }
+
+  &-track {
+    background: color(brand-primary);
+  }
+
+  &-handle {
+    top: 50%;
+    width: $handle-size;
+    height: $handle-size;
+    background: color(brand-primary);
+    margin: 0;
+    border: none;
+    transform: translate(-50%, -50%);
+  }
+
+  &-tooltip {
+    &-arrow {
+      .rc-slider-tooltip-placement-top & {
+        border-top-color: color(tooltip-bg);
+      }
+    }
+
+    &-inner {
+      background: color(tooltip-bg);
+      padding: 7px 8px;
+      height: 26px;
+      box-shadow: none;
+      border-radius: 3px;
+    }
+  }
+
+  // Disabled styles
+  &-disabled {
+    background: none;
+
+    .rc-slider {
+      &-handle,
+      &-track {
+        display: none;
+      }
+
+      &-rail {
+        animation: slider-loading 1s ease infinite;
+      }
+    }
+  }
+}

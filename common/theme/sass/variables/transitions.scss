@@ -1,0 +1,5 @@
+$transition-speed: 120ms;
+$transition: $transition-speed opacity ease,
+             $transition-speed color ease,
+             $transition-speed background-color ease,
+             $transition-speed border-color ease;

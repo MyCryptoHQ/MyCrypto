@@ -3,7 +3,7 @@ import { GitCommit } from './types/GitCommit';
 import { CommitStatus } from './types/CommitStatus';
 import { RawTokenJSON } from './types/TokensJson';
 import { Token } from 'shared/types/network';
-import { ExtendedToken } from 'v2/config/tokens';
+import { ExtendedToken } from 'config/tokens';
 
 const { processTokenJson } = require('./update-tokens-utils');
 const https = require('https');

@@ -1,0 +1,280 @@
+// A fork of bootstrap's buttons to have some custom behavior, and to work with
+// css variables
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+/**********/
+/* Mixins */
+/**********/
+
+@mixin button-variant($color, $background, $border, $background-hover, $border-hover, $background-active, $border-active) {
+  color: $color;
+  background-color: $background;
+  border-color: $border;
+
+  &:focus,
+  &.focus,
+  &:hover,
+  &.hover {
+    color: $color;
+    background-color: $background-hover;
+    border-color: $border-hover;
+  }
+  &:active,
+  &.active {
+    color: $color;
+    background-color: $background-active;
+    border-color: $border-active;
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    &:hover,
+    &:focus,
+    &.focus,
+    &:active,
+    &.active {
+      background-color: $background;
+      border-color: $border;
+    }
+  }
+}
+
+@mixin button-size($padding-vertical, $padding-horizontal, $font-size, $line-height, $border-radius) {
+  padding: $padding-vertical $padding-horizontal;
+  font-size: $font-size;
+  line-height: $line-height;
+  border-radius: $border-radius;
+}
+
+/************/
+/* Defaults */
+/************/
+
+.btn {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  @include user-select(none);
+  @include button-size(
+    $padding-base-vertical,
+    $padding-large-horizontal,
+    $font-size-bump,
+    $line-height-base,
+    $btn-border-radius
+  );
+  transform: translateZ(0);
+  transition: $transition;
+
+  &,
+  &:active,
+  &.active {
+    &:focus,
+    &.focus {
+      @include tab-focus;
+    }
+  }
+
+  &:hover,
+  &:focus,
+  &.focus {
+    color: $btn-default-color;
+    text-decoration: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+
+  &:active,
+  &.active {
+    outline: 0;
+    background-image: none;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    opacity: 0.4;
+    box-shadow: none;
+    cursor: not-allowed;
+
+    @include theme(dark) {
+      opacity: 0.3;
+    }
+  }
+
+  &-link:hover {
+    box-shadow: none;
+  }
+
+  &-block {
+    display: block;
+    width: 100%;
+
+    & + & {
+      margin-top: $space-sm;
+    }
+  }
+}
+
+
+/****************/
+/* Button Sizes */
+/****************/
+
+.btn-lg {
+  // line-height: ensure even-numbered height of button next to large input
+  @include button-size(
+    $padding-large-vertical,
+    $padding-large-horizontal,
+    $font-size-bump-more,
+    $line-height-large,
+    $btn-border-radius
+  );
+}
+.btn-sm {
+  // line-height: ensure proper height of button next to small input
+  @include button-size(
+    $padding-small-vertical,
+    $padding-small-horizontal,
+    $font-size-base,
+    $line-height-base,
+    $btn-border-radius
+  );
+}
+.btn-xs {
+  @include button-size(
+    $padding-xs-vertical,
+    $padding-xs-horizontal,
+    $font-size-small,
+    $line-height-small,
+    $btn-border-radius
+  );
+  padding: 0.1rem 0.6rem 0.2rem;
+}
+// This is a "smaller" small, to accomodate overrides done in v3.
+.btn-smr {
+  @include button-size(
+    0.4rem,
+    1rem,
+    14px,
+    $line-height-base,
+    $btn-border-radius
+  );
+}
+
+
+/*****************/
+/* Button Colors */
+/*****************/
+
+.btn-default {
+  @include button-variant(
+    color(control-color),
+    color(control-bg),
+    color(control-border),
+    color(control-bg),
+    color(control-border),
+    color(control-bg),
+    color(control-border),
+  );
+}
+
+.btn-primary {
+  @include button-variant(
+    color(text-color-inverted),
+    color(brand-primary),
+    color(brand-primary),
+    color(brand-primary-dark),
+    color(brand-primary-dark),
+    color(brand-primary-darker),
+    color(brand-primary-darker),
+  );
+}
+
+.btn-success {
+  @include button-variant(
+    color(text-color-inverted),
+    color(brand-success),
+    color(brand-success),
+    color(brand-success-dark),
+    color(brand-success-dark),
+    color(brand-success-darker),
+    color(brand-success-darker),
+  );
+}
+
+.btn-info {
+  @include button-variant(
+    color(text-color-inverted),
+    color(brand-info),
+    color(brand-info),
+    color(brand-info-dark),
+    color(brand-info-dark),
+    color(brand-info-darker),
+    color(brand-info-darker),
+  );
+}
+
+.btn-warning {
+  @include button-variant(
+    color(text-color-inverted),
+    color(brand-warning),
+    color(brand-warning),
+    color(brand-warning-dark),
+    color(brand-warning-dark),
+    color(brand-warning-darker),
+    color(brand-warning-darker),
+  );
+}
+
+.btn-danger {
+  @include button-variant(
+    color(text-color-inverted),
+    color(brand-danger),
+    color(brand-danger),
+    color(brand-danger-dark),
+    color(brand-danger-dark),
+    color(brand-danger-darker),
+    color(brand-danger-darker),
+  );
+}
+
+.btn-white {
+  @include button-variant(
+    color(control-color),
+    color(white-clear),
+    color(white-clear),
+    color(white-clearer),
+    color(white-clearer),
+    color(white-clearest),
+    color(white-clearest),
+  );
+}
+
+// Custom file button
+.btn-file {
+  position: relative;
+  overflow: hidden;
+
+  input[type='file'] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    opacity: 0;
+    background: red;
+    cursor: inherit;
+    display: block;
+  }
+}

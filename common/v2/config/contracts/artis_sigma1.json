@@ -1,7 +1,0 @@
-[
-  {
-    "name": "lab10 -> ATS swap",
-    "address": "0x583E58e651151157243697116D6bf17761cdEd4b",
-    "abi": "[{\"type\":\"function\",\"stateMutability\":\"nonpayable\",\"payable\":false,\"outputs\":[],\"name\":\"tokensReceived\",\"inputs\":[{\"type\":\"address\",\"name\":\"\"},{\"type\":\"address\",\"name\":\"_from\"},{\"type\":\"address\",\"name\":\"\"},{\"type\":\"uint256\",\"name\":\"_amount\"},{\"type\":\"bytes\",\"name\":\"\"},{\"type\":\"bytes\",\"name\":\"\"}],\"constant\":false},{\"type\":\"function\",\"stateMutability\":\"view\",\"payable\":false,\"outputs\":[{\"type\":\"uint256\",\"name\":\"\"}],\"name\":\"LAB10_ATS_MULTIPLIER\",\"inputs\":[],\"constant\":true},{\"type\":\"function\",\"stateMutability\":\"view\",\"payable\":false,\"outputs\":[{\"type\":\"address\",\"name\":\"\"}],\"name\":\"swappableToken\",\"inputs\":[],\"constant\":true},{\"type\":\"function\",\"stateMutability\":\"view\",\"payable\":false,\"outputs\":[{\"type\":\"address\",\"name\":\"\"}],\"name\":\"owner\",\"inputs\":[],\"constant\":true},{\"type\":\"constructor\",\"stateMutability\":\"nonpayable\",\"payable\":false,\"inputs\":[{\"type\":\"address\",\"name\":\"_swappableToken\"}]},{\"type\":\"fallback\",\"stateMutability\":\"payable\",\"payable\":true},{\"type\":\"event\",\"name\":\"Swapped\",\"inputs\":[{\"type\":\"address\",\"name\":\"account\",\"indexed\":false},{\"type\":\"uint256\",\"name\":\"lab10Amount\",\"indexed\":false},{\"type\":\"uint256\",\"name\":\"atsAmount\",\"indexed\":false}],\"anonymous\":false}]"
-  }
-]

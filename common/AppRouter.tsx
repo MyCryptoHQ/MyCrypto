@@ -1,17 +1,17 @@
 import React from 'react';
 import { HashRouter, BrowserRouter, Route, Switch, withRouter } from 'react-router-dom';
 
-import { Layout } from 'v2/features/Layout';
-import { Home, PageNotFound, ScreenLockProvider, DrawerProvider } from 'v2/features';
-import { IS_PROD, IS_DOWNLOADABLE, ScrollToTop } from 'v2/utils';
-import { ROUTE_PATHS } from 'v2/config/routePaths';
+import { Layout } from 'features/Layout';
+import { Home, PageNotFound, ScreenLockProvider, DrawerProvider } from 'features';
+import { IS_PROD, IS_DOWNLOADABLE, ScrollToTop } from 'utils';
+import { ROUTE_PATHS } from 'config/routePaths';
 import {
   APP_ROUTES,
   PageVisitsAnalytics,
   LegacyRoutesHandler,
   DefaultHomeHandler,
   PrivateRoute
-} from 'v2/routing';
+} from 'routing';
 
 const LayoutWithLocation = withRouter(({ location, children }) => {
   const homeLayout = {

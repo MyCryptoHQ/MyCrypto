@@ -1,0 +1,25 @@
+// Prints out SASS color variables as CSS variables
+@import 'common/sass/variables';
+
+@mixin theme-vars($colors) {
+  @each $name, $color in $colors {
+    #{$color-var-prefix}-#{$name}: $color;
+  }
+}
+
+:root {
+  $i: 0;
+  @each $name, $colors in $themes {
+    // First theme in the list is the default theme
+    @if ($i == 0) {
+      &, &.theme--#{$name} {
+        @include theme-vars($colors);
+      }
+    } @else {
+      &.theme--#{$name} {
+        @include theme-vars($colors);
+      }
+    }
+    $i: $i + 1;
+  }
+}

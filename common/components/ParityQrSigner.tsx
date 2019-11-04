@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import QrSigner from '@parity/qr-signer';
 
 import translate from 'translations';
-import { Spinner } from 'components/ui';
+import { Spinner } from 'components';
 import './ParityQrSigner.scss';
 
 interface State {

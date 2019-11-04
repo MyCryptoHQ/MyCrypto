@@ -1,0 +1,27 @@
+@import 'common/sass/mixins';
+@import 'common/sass/variables';
+
+.Tab {
+  &-content {
+    min-height: 50%;
+
+    &-pane {
+      background: color(pane-bg);
+      min-height: 1.5rem;
+      padding: 1.5rem 2rem;
+      margin: 1rem 0;
+      box-shadow: $tab-box-shadow;
+      border-radius: 2px;
+
+      &.is-full-width {
+        background: none;
+        box-shadow: none;
+        padding: 0;
+      }
+    }
+  }
+}
+
+.Block {
+  @extend .Tab-content-pane;
+}

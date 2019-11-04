@@ -3,11 +3,11 @@ import { setConfig } from 'react-hot-loader';
 import { hot } from 'react-hot-loader/root';
 import { ThemeProvider } from 'styled-components';
 // v2
-import { GAU_THEME } from 'v2/theme';
-import { IS_DEV, IS_ELECTRON } from 'v2/utils';
-import { NewAppReleaseModal } from 'v2/components';
-import { DevModeProvider, useDevMode } from 'v2/services';
-import { DevTools } from 'v2/features';
+import { GAU_THEME } from 'theme';
+import { IS_DEV, IS_ELECTRON } from 'utils';
+import { NewAppReleaseModal } from 'components';
+import { DevModeProvider, useDevMode } from 'services';
+import { DevTools } from 'features';
 import AppProviders from './AppProviders';
 import { AppRouter } from './AppRouter';
 

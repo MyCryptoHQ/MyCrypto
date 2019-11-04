@@ -1,0 +1,26 @@
+$space-xs: 0.25rem;
+$space-sm: 0.5rem;
+$space-md: 0.75rem;
+$space: 1rem;
+$space-lg: 1.5rem;
+$space-xl: 2rem;
+
+$padding-base-vertical: $space * 0.75;
+$padding-base-horizontal: $space-lg;
+
+$padding-large-vertical: $space;
+$padding-large-horizontal: $space-xl;
+
+$padding-small-vertical: $space-sm;
+$padding-small-horizontal: $space;
+
+$padding-xs-vertical: 0.1rem;
+$padding-xs-horizontal: 0.6rem;
+
+$line-height-large: 1.2;
+$line-height-small: 1.5;
+
+$border-radius: 0px;
+
+$caret-width-base: $space-xs;
+$caret-width-large: $space-xs;

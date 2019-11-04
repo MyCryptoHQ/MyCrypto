@@ -4,11 +4,11 @@ import mapValues from 'lodash/mapValues';
 import { addHexPrefix } from 'ethereumjs-util';
 import EthTx from 'ethereumjs-tx';
 import { WalletLib } from 'shared/enclave/types';
-import { padLeftEven } from 'libs/values';
-import { stripHexPrefixAndLower } from 'libs/formatters';
+
 import { showPinPrompt } from '../views/pin';
 import { showPassphrasePrompt } from '../views/passphrase';
 import config from './msg-config';
+import { stripHexPrefixAndLower, padLeftEven } from 'services/EthService/utils';
 
 const deviceList = new DeviceList({ config });
 

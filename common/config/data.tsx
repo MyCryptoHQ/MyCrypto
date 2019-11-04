@@ -1,11 +1,11 @@
 import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
-import { getValues } from '../utils/helpers';
+
+import { makeExplorer } from 'services/EthService/utils/makeExplorer';
 import packageJson from '../../package.json';
-import { GasPriceSetting } from 'types/network';
-import { makeExplorer } from 'utils/helpers';
 import translate from 'translations';
 
 export const languages = require('./languages.json');
+
 export const discordURL = 'https://discord.gg/VSaTXEA';
 
 // Displays in the footer
@@ -44,15 +44,17 @@ export const donationAddressMap = {
 };
 
 export const gasEstimateCacheTime = 60000;
-export const gasPriceDefaults: GasPriceSetting = {
-  min: 1,
-  max: 60,
-  initial: 20
-};
 
 export const MINIMUM_PASSWORD_LENGTH = 12;
 
-export const knowledgeBaseURL = 'https://support.mycrypto.com';
+export const LATEST_NEWS_URL = 'https://medium.com/@mycrypto';
+export const CRYPTOSCAMDB = 'https://cryptoscamdb.org';
+export const KNOWLEDGE_BASE_URL = 'https://support.mycrypto.com';
+export const HOW_TO_BUY_CRYPTO_URL =
+  'https://support.mycrypto.com/how-to/getting-started/how-to-buy-ether-with-usd';
+export const DONT_LOSE_CRYPTO_URL =
+  'https://support.mycrypto.com/staying-safe/protecting-yourself-and-your-funds';
+export const STAYING_SAFE_URL = 'https://support.mycrypto.com/staying-safe';
 export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/1985?path=/products/';
 export const trezorReferralURL = 'https://shop.trezor.io/?offer_id=10&aff_id=1735';
 // TODO - Update url
@@ -67,39 +69,6 @@ export const ethercardReferralURL =
   'https://ether.cards/?utm_source=mycrypto&utm_medium=cpm&utm_campaign=site';
 export const keepkeyReferralURL = 'https://keepkey.go2cloud.org/aff_c?offer_id=1&aff_id=4086';
 export const steelyReferralURL = 'https://stee.ly/2Hcl4RE';
-
-export enum SecureWalletName {
-  WEB3 = 'web3',
-  LEDGER_NANO_S = 'ledgerNanoS',
-  TREZOR = 'trezor',
-  SAFE_T = 'safeTmini',
-  PARITY_SIGNER = 'paritySigner'
-}
-
-export enum HardwareWalletName {
-  LEDGER_NANO_S = 'ledgerNanoS',
-  TREZOR = 'trezor',
-  SAFE_T = 'safeTmini'
-}
-
-export enum InsecureWalletName {
-  PRIVATE_KEY = 'privateKey',
-  KEYSTORE_FILE = 'keystoreFile',
-  MNEMONIC_PHRASE = 'mnemonicPhrase'
-}
-
-export enum MiscWalletName {
-  VIEW_ONLY = 'viewOnly'
-}
-
-export const walletNames = getValues(
-  SecureWalletName,
-  HardwareWalletName,
-  InsecureWalletName,
-  MiscWalletName
-);
-
-export type WalletName = SecureWalletName | InsecureWalletName | MiscWalletName;
 
 export enum Theme {
   DARK = 'dark',

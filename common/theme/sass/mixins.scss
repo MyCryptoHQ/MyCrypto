@@ -1,0 +1,132 @@
+@import './variables';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/mixins';
+
+@mixin reset-button {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@mixin clearfix {
+  &:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+@mixin mono {
+  font-family: $font-family-monospace;
+  font-weight: normal;
+  letter-spacing: 0.02em;
+}
+
+@mixin ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Alpha agreement, noscript, bad browser, etc.
+@mixin cover-message {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+  background: color(brand-info);
+  z-index: $zindex-top;
+
+  &-content {
+    max-width: 580px;
+    padding: 20px;
+    margin: 0 auto;
+    color: color(text-color-inverted);
+    text-shadow: 1px 1px 1px rgba(#000, 0.12);
+    overflow: auto;
+
+    h2 {
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 20px;
+      margin-bottom: 15px;
+
+      a {
+        color: color(text-color-inverted);
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+@mixin triangle($size, $color, $direction) {
+  height: 0;
+  width: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: $size / 2;
+
+  @if $direction == up {
+    border-bottom-color: $color;
+  } @else if $direction == right {
+    border-left-color: $color;
+  } @else if $direction == down {
+    border-top-color: $color;
+  } @else if $direction == left {
+    border-right-color: $color;
+  }
+}
+
+@mixin show-tooltip-on-hover {
+  &:hover .Tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -100%) translateY(-$tooltip-hover-distance);
+    transition-delay: 400ms, 400ms, 300ms;
+
+    &.is-direction-left {
+      transform: translate(-100%, -50%) translateX(-$tooltip-hover-distance);
+    }
+
+    &.is-direction-right {
+      transform: translate(100%, -50%) translateX($tooltip-hover-distance);
+    }
+
+    &.is-direction-bottom {
+      transform: translate(-50%, 100%) translateY($tooltip-hover-distance);
+    }
+  }
+}
+
+@mixin input-shadow($color) {
+  box-shadow: inset 0 1px 1px rgba(black, 0.075), 0 0 1px rgba($color, 0.5);
+}
+
+@mixin input-focus-shadow($color) {
+  box-shadow: inset 0 1px 2px rgba(black, 0.125), 0 0 1px rgba($color, 0.5);
+}
+
+@mixin theme($name) {
+  .theme--#{$name} & {
+    @content;
+  }
+}
+
+/* --- */
+
+@mixin perfectly-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin baby-blue {
+  background: $baby-blue;
+  color: #fff;
+}

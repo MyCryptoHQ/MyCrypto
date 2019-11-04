@@ -1,27 +1,45 @@
 import ETC from './etc.json';
-import ETH from './eth.json';
+import Ethereum from './eth.json';
 import EXP from './exp.json';
 import Kovan from './kovan.json';
 import Rinkeby from './rinkeby.json';
 import Ropsten from './ropsten.json';
 import Goerli from './goerli.json';
 import RSK from './rsk.json';
-import RSK_TESTNET from './rsk_testnet.json';
 import UBQ from './ubq.json';
 import ESN from './esn.json';
 import ARTIS_SIGMA1 from './artis_sigma1.json';
 import ARTIS_TAU1 from './artis_tau1.json';
 
-export default {
+export interface Token {
+  address: string;
+  symbol: string;
+  decimal: number;
+  name: string;
+}
+
+// @TODO[Types]: key should really be a partial of NetworkId
+export interface NetworksAssets {
+  [key: string]: [Token];
+}
+
+export interface ExtendedToken {
+  address: string;
+  symbol: string;
+  decimal: number;
+  name: string;
+  error?: string | null;
+}
+
+export const NetworkAssets: NetworksAssets = {
   ETC,
-  ETH,
+  Ethereum,
   EXP,
   Kovan,
   Rinkeby,
   Ropsten,
   Goerli,
   RSK,
-  RSK_TESTNET,
   UBQ,
   ESN,
   ARTIS_SIGMA1,

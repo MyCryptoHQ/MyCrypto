@@ -1,0 +1,49 @@
+// Form overrides
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+label {
+  margin-bottom: $space-xs;
+
+  &.is-required:after {
+    content: '*';
+    padding-left: 2px;
+    color: color(brand-warning);
+  }
+}
+
+input[type='radio'],
+input[type='checkbox'] {
+  margin: 3px 0 0;
+  line-height: normal;
+}
+
+input[readonly] {
+  background-color: color(control-disabled-bg);
+  cursor: text !important;
+}
+
+.form-group {
+  display: block;
+  margin-bottom: $form-group-margin-bottom;
+}
+
+.radio,
+.checkbox {
+  margin: 15px 0;
+  font-weight: 500;
+}
+
+.help-block {
+  &.is-valid {
+    color: color(brand-success);
+  }
+
+  &.is-invalid {
+    color: color(brand-danger);
+  }
+
+  &.is-semivalid {
+    color: color(brand-warning);
+  }
+}

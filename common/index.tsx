@@ -9,9 +9,18 @@ import 'what-input'; // @TODO: Investigate utility of dependency
 import React from 'react';
 import { render } from 'react-dom';
 
-import { consoleAdvertisement } from 'v2/utils';
+import { consoleAdvertisement } from 'utils';
 
 import Root from './Root';
+
+export * from './features';
+export * from './services';
+export * from './config';
+export * from './translations';
+export * from './containers';
+export * from './components';
+export * from './typeFiles';
+export * from './translations';
 
 render(<Root />, document.getElementById('app'));
 

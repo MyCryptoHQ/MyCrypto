@@ -1,6 +1,6 @@
 import { RawTokenJSON, ValidatedTokenJSON, NormalizedTokenJSON } from './types/TokensJson';
 import { Token } from '../shared/types/network';
-import { ExtendedToken } from 'v2/config/tokens';
+import { ExtendedToken } from 'config/tokens';
 interface StrIdx<T> {
   [key: string]: T;
 }

@@ -1,39 +1,34 @@
+import { IContract } from 'typeFiles';
+
 import ETC from './etc.json';
-import ETH from './eth.json';
+import Ethereum from './eth.json';
 import EXP from './exp.json';
 import Rinkeby from './rinkeby.json';
 import Ropsten from './ropsten.json';
 import Goerli from './goerli.json';
 import RSK from './rsk.json';
-import RSK_TESTNET from './rsk_testnet.json';
 import UBQ from './ubq.json';
 import ESN from './esn.json';
 import ARTIS_SIGMA1 from './artis_sigma1.json';
 import ARTIS_TAU1 from './artis_tau1.json';
 import PIRL from './pirl.json';
 
-export interface Network {
-  name: string;
-  address: string;
-  abi: string;
+// @TODO[Types]: key should really be a partial of NetworkId
+interface Contracts {
+  [key: string]: IContract[];
 }
 
-export interface Networks {
-  [key: string]: [Network];
-}
-
-export default {
+export const Contracts: Contracts = {
   ETC,
-  ETH,
+  Ethereum,
   EXP,
   Rinkeby,
   Ropsten,
   Goerli,
   RSK,
-  RSK_TESTNET,
   UBQ,
   ESN,
   ARTIS_SIGMA1,
   ARTIS_TAU1,
   PIRL
-} as Networks;
+};

@@ -1,0 +1,74 @@
+// Fork of Bootstrap's alert component
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+/************/
+/* Defaults */
+/************/
+
+.alert {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  color: color(text-color-inverted);
+
+  @include theme(dark) {
+    border-radius: 2px;
+    background-color: shade-dark(0.1);
+    color: color(text-color);
+  }
+
+  a {
+    color: #FFF;
+    font-weight: normal;
+    text-decoration: underline;
+
+    &:hover {
+      color: #FFF;
+      opacity: 0.8;
+    }
+  }
+
+  > p,
+  > ul {
+    margin-bottom: 0;
+  }
+
+  > p + p {
+    margin-top: 5px;
+  }
+
+  .btn {
+    @extend .btn-default;
+    text-decoration: none;
+    margin-right: $space-xs;
+  }
+}
+
+/*******************/
+/* Colors Variants */
+/*******************/
+
+@mixin alert-variant($background) {
+  background-color: $background;
+
+  @include theme(dark) {
+    border-bottom: 2px solid $background;
+  }
+}
+
+.alert,
+.alert-info {
+  @include alert-variant(color(brand-info));
+}
+
+.alert-success {
+  @include alert-variant(color(brand-success));
+}
+
+.alert-warning {
+  @include alert-variant(color(brand-warning));
+}
+
+.alert-danger {
+  @include alert-variant(color(brand-danger));
+}

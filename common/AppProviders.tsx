@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { NotificationsProvider } from 'v2/features';
+import { NotificationsProvider } from 'features';
 import {
   AccountProvider,
   AddressBookProvider,
   AssetProvider,
   NetworkProvider,
   SettingsProvider
-} from 'v2/services/Store';
-import { RatesProvider, StoreProvider } from 'v2/services';
+} from 'services/Store';
+import { RatesProvider, StoreProvider } from 'services';
 
 function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | null }) {
   return (

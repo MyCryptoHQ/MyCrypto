@@ -1,0 +1,83 @@
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/variables';
+@import './variables/colors';
+@import './variables/spacing';
+@import './variables/electron';
+@import './variables/grid';
+@import './variables/typography';
+@import './variables/transitions';
+@import './variables/tables';
+@import './variables/tooltips';
+@import './variables/zindex';
+
+// Misc.
+$border-radius-small: 2px;
+$border-radius-base: $border-radius-small;
+$border-radius-large: $border-radius-small;
+$input-border-radius: 2px;
+$input-border-radius-small: $input-border-radius;
+$input-border-radius-large: $input-border-radius;
+$btn-border-radius: 2px;
+
+$input-height-base: 3rem;
+$input-height-large: 4rem;
+$input-height-small: 2rem;
+
+$input-border: color(control-border);
+$input-color: color(control-color);
+$input-group-addon-bg: color(control-addon-bg);
+$input-group-addon-border-color: color(control-addon-bg);
+
+$label-color: #fff;
+$label-link-hover-color: #fff;
+
+$link-hover-decoration: none;
+
+$alert-padding: 1rem;
+$alert-border-radius: $border-radius;
+$alert-link-font-weight: bold;
+
+$alert-success-bg: color(brand-success);
+$alert-success-text: color(text-color-inverted);
+$alert-success-border: $alert-success-bg;
+
+$alert-info-bg: color(brand-primary);
+$alert-info-text: color(text-color-inverted);
+$alert-info-border: $alert-info-bg;
+
+$alert-warning-bg: color(brand-warning);
+$alert-warning-text: color(text-color-inverted);
+$alert-warning-border: $alert-warning-bg;
+
+$alert-danger-bg: color(brand-danger);
+$alert-danger-text: color(text-color-inverted);
+$alert-danger-border: $alert-danger-bg;
+
+$well-bg: color(gray-lightest);
+$well-border: color(gray-lighter);
+
+$tab-box-shadow: 0 1px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.12);
+
+$pre-bg: color(gray-lightest);
+$pre-color: color(gray-dark);
+$pre-border-color: color(gray-lighter);
+$pre-scrollable-max-height: 23rem;
+
+$component-offset-horizontal: 12rem;
+$text-muted: color(gray-light);
+$abbr-border-color: color(gray-light);
+$headings-small-color: inherit;
+$blockquote-small-color: color(gray-light);
+$blockquote-font-size: ($font-size-base * 1.25);
+$blockquote-border-color: color(gray-lighter);
+$page-header-border-color: color(gray-lighter);
+$dl-horizontal-offset: $component-offset-horizontal;
+$dl-horizontal-breakpoint: $grid-float-breakpoint;
+$hr-border: color(gray-lighter);
+$dropdown-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+
+/* --- */
+
+$baby-blue: #1097c0;
+$heading-text-color: #4a4a4a;
+$button-primary: #067997;
+$light-gray: #979797;

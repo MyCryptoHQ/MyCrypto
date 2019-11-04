@@ -1,0 +1,12 @@
+// Bootstrap grid overrides
+@import "common/sass/variables";
+
+.container {
+  width: 100%;
+  max-width: $cont-width;
+  padding: 0 $grid-gutter-width * 2.5;
+
+  @media screen and (max-width: $screen-lg) {
+    padding: 0 3%;
+  }
+}
