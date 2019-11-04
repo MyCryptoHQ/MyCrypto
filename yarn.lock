@@ -11999,7 +11999,7 @@ parse-entities@^1.1.0:
     is-decimal "^1.0.0"
     is-hexadecimal "^1.0.0"
 
-parse-eth-tokens@^0.2.1:
+parse-eth-tokens@0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/parse-eth-tokens/-/parse-eth-tokens-0.2.1.tgz#ea77c6be54334ad965244a70622da456a9012951"
   integrity sha512-BIbS/g6sN6CjprXU+6EJzYIAHEkdFNdT1gHEVFa8audERV9yQOFWVwxZvUVPtRllTz0DVmA3NcOV0IOXm0SXmg==
