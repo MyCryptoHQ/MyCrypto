@@ -2,8 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { TSymbol } from 'v2/types';
-import { AssetIcon } from 'v2/components';
-import { toFixedWithoutZero } from 'v2/utils';
+import { AssetIcon, Currency } from 'v2/components';
 
 import arrowIcon from 'assets/images/arrow-right.svg';
 
@@ -48,16 +47,22 @@ export default function SwapFromToDiagram(props: Props) {
   return (
     <Wrapper>
       <AssetWrapper>
-        <AssetIcon symbol={fromSymbol} size={'72px'} />
+        <AssetIcon symbol={fromSymbol} size="72px" />
         <AssetAmount>
-          {toFixedWithoutZero(fromAmount, 6)} {fromSymbol}
+          <Currency
+            bold={true}
+            fontSize="1em"
+            amount={fromAmount}
+            symbol={fromSymbol}
+            decimals={6}
+          />
         </AssetAmount>
       </AssetWrapper>
       <Arrow src={arrowIcon} />
       <AssetWrapper>
-        <AssetIcon symbol={toSymbol} size={'72px'} />
+        <AssetIcon symbol={toSymbol} size="72px" />
         <AssetAmount>
-          {toFixedWithoutZero(toAmount, 6)} {toSymbol}
+          <Currency bold={true} fontSize="1em" amount={toAmount} symbol={toSymbol} decimals={6} />
         </AssetAmount>
       </AssetWrapper>
     </Wrapper>

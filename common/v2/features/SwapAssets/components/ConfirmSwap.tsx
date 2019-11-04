@@ -7,8 +7,7 @@ import translate from 'translations';
 import { StoreAccount, ITxConfig } from 'v2/types';
 import { COLORS } from 'v2/theme';
 import { DexService } from 'v2/services/ApiService/Dex';
-import { toFixedWithoutZero } from 'v2/utils';
-import { Typography } from 'v2/components';
+import { Typography, Currency } from 'v2/components';
 
 import {
   makeAllowanceTransaction,
@@ -42,12 +41,12 @@ const ConversionLabel = styled(Typography)`
 
 const LinkLabel = styled(Typography)`
   color: ${BRIGHT_SKY_BLUE};
+  cursor: pointer;
 `;
 
 const LinkLabelWrapper = styled.div`
   margin-bottom: 8px;
   text-align: right;
-  cursor: pointer;
 `;
 interface Props {
   fromAsset: ISwapAsset;
@@ -135,7 +134,17 @@ export default function ConfirmSwap(props: Props) {
       </LinkLabelWrapper>
       <ConversionRateBox>
         <ConversionLabel bold={true} value={translate('SWAP_RATE')} fontSize="0.65em" />
-        {`1 ${fromAsset.symbol} ≈ ${toFixedWithoutZero(conversionRate, 8)} ${toAsset.symbol}`}
+        <div>
+          <Currency bold={true} fontSize="1em" amount="1" symbol={fromAsset.symbol} decimals={6} />{' '}
+          ≈{' '}
+          <Currency
+            bold={true}
+            fontSize="1em"
+            amount={conversionRate.toString()}
+            symbol={toAsset.symbol}
+            decimals={8}
+          />
+        </div>
       </ConversionRateBox>
       <StyledButton onClick={handleNextClicked}>
         {submitting ? translate('SUBMITTING') : translate('CONFIRM_AND_SEND')}
