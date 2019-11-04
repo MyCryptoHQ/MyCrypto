@@ -77,9 +77,9 @@ export const makeAllowanceTransaction = async (
     chainId: network.chainId,
     data: inputData,
     value: 0,
-    gasPrice: addHexPrefix(new BN(gasPrice).toString(16))
+    gasPrice: addHexPrefix(new BN(gasPrice).toString(16)),
+    nonce: await getNonce(network, account)
   };
-  transaction.nonce = await getNonce(network, account);
   const gasLimit = await getGasEstimate(network, transaction);
   transaction.gasLimit = hexToNumber(gasLimit);
 
@@ -98,12 +98,16 @@ export const makeTradeTransactionFromDexTrade = async (
     gasPrice = trade.metadata.gasPrice;
   }
 
-  const transaction = trade.trade;
-  transaction.from = account.address;
-  transaction.gasPrice = addHexPrefix(new BN(gasPrice).toString(16));
-  transaction.value = addHexPrefix(new BN(transaction.value).toString(16));
-  transaction.chainId = network.chainId;
-  transaction.nonce = await getNonce(network, account);
+  const { to, data, value } = trade.trade;
+  const transaction: any = {
+    to,
+    data,
+    from: account.address,
+    gasPrice: addHexPrefix(new BN(gasPrice).toString(16)),
+    value: addHexPrefix(new BN(value).toString(16)),
+    chainId: network.chainId,
+    nonce: await getNonce(network, account)
+  };
   const gasLimit = await getGasEstimate(network, transaction);
   transaction.gasLimit = hexToNumber(gasLimit) * 1.2; // use slightly higher gas limit than estimate
   delete transaction.from;
