@@ -8,6 +8,7 @@ import { StoreAccount, ITxConfig } from 'v2/types';
 import { COLORS } from 'v2/theme';
 import { DexService } from 'v2/services/ApiService/Dex';
 import { toFixedWithoutZero } from 'v2/utils';
+import { Typography } from 'v2/components';
 
 import {
   makeAllowanceTransaction,
@@ -35,16 +36,15 @@ const ConversionRateBox = styled.div`
   height: 150px;
 `;
 
-const ConversionLabel = styled.div`
+const ConversionLabel = styled(Typography)`
   color: ${GREY};
-  font-weight: bold;
-  font-size: 13px;
 `;
 
-const LinkLabel = styled.div`
+const LinkLabel = styled(Typography)`
   color: ${BRIGHT_SKY_BLUE};
-  font-weight: normal;
-  font-size: 13px;
+`;
+
+const LinkLabelWrapper = styled.div`
   margin-bottom: 8px;
   text-align: right;
   cursor: pointer;
@@ -130,9 +130,11 @@ export default function ConfirmSwap(props: Props) {
         toAmount={toAmount}
       />
       <FromToAccount fromAccount={account} toAccount={account} />
-      <LinkLabel>{translate('SWAP_WHY_RATE')}</LinkLabel>
+      <LinkLabelWrapper>
+        <LinkLabel value={translate('SWAP_WHY_RATE')} fontSize="0.8em" />
+      </LinkLabelWrapper>
       <ConversionRateBox>
-        <ConversionLabel>{translate('SWAP_RATE')}</ConversionLabel>
+        <ConversionLabel bold={true} value={translate('SWAP_RATE')} fontSize="0.65em" />
         {`1 ${fromAsset.symbol} ≈ ${toFixedWithoutZero(conversionRate, 8)} ${toAsset.symbol}`}
       </ConversionRateBox>
       <StyledButton onClick={handleNextClicked}>

@@ -46,8 +46,8 @@ interface Props {
   setToAmount(amount: string): void;
 }
 
-let calculateToAmountTimeout: NodeJS.Timer | null = null;
-let calculateFromAmountTimeout: NodeJS.Timer | null = null;
+let calculateToAmountTimeout: ReturnType<typeof setTimeout> | null = null;
+let calculateFromAmountTimeout: ReturnType<typeof setTimeout> | null = null;
 
 export default function SwapAssets(props: Props) {
   const {

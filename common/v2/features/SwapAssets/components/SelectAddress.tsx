@@ -4,7 +4,7 @@ import { Button } from '@mycrypto/ui';
 
 import { translate } from 'translations';
 
-import { AccountDropdown, InlineErrorMsg } from 'v2/components';
+import { AccountDropdown, InlineErrorMsg, Typography } from 'v2/components';
 import { ExtendedAccount, StoreAccount } from 'v2/types';
 import { StoreContext } from 'v2/services';
 import { weiToFloat } from 'v2/utils';
@@ -13,14 +13,15 @@ import { WALLET_STEPS } from '../helpers';
 import { SwapFromToDiagram } from './fields';
 import { ISwapAsset } from '../types';
 
-const Label = styled.div`
-  font-size: 18px;
-  width: 100%;
+const Label = styled(Typography)`
   line-height: 1;
-  text-align: left;
-  font-weight: normal;
-  margin-bottom: 9px;
   color: ${props => props.theme.text};
+`;
+
+const LabelWrapper = styled.div`
+  width: 100%;
+  text-align: left;
+  margin-bottom: 9px;
 `;
 
 const StyledButton = styled(Button)`
@@ -70,7 +71,9 @@ export default function SelectAddress(props: Props) {
         fromAmount={fromAmount}
         toAmount={toAmount}
       />
-      <Label>{translate('ACCOUNT_SELECTION_PLACEHOLDER')}</Label>
+      <LabelWrapper>
+        <Label value={translate('ACCOUNT_SELECTION_PLACEHOLDER')} fontSize="1.13em" />
+      </LabelWrapper>
       <AccountDropdown
         name="account"
         value={account}

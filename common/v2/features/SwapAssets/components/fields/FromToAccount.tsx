@@ -7,6 +7,7 @@ import translate, { translateRaw } from 'translations';
 import { StoreAccount } from 'v2/types';
 import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { truncate } from 'v2/utils';
+import { Typography } from 'v2/components';
 
 const { SILVER } = COLORS;
 const { SCREEN_XS } = BREAK_POINTS;
@@ -34,14 +35,15 @@ const Addresses = styled.div`
   }
 `;
 
-const Label = styled.div`
-  font-size: 18px;
-  width: 100%;
-  line-height: 1;
-  text-align: left;
-  font-weight: normal;
-  margin-bottom: 9px;
+const Label = styled(Typography)`
   color: ${props => props.theme.text};
+  line-height: 1;
+`;
+
+const LabelWrapper = styled.div`
+  width: 100%;
+  text-align: left;
+  margin-bottom: 9px;
 `;
 
 export default function FromToAccount(props: Props) {
@@ -51,7 +53,9 @@ export default function FromToAccount(props: Props) {
   return (
     <Addresses>
       <div>
-        <Label>{translate('CONFIRM_TX_FROM')}</Label>
+        <LabelWrapper>
+          <Label value={translate('CONFIRM_TX_FROM')} fontSize="1.13em" />
+        </LabelWrapper>
         <AddressWrapper>
           <Address
             address={fromAccount.address}
@@ -61,7 +65,9 @@ export default function FromToAccount(props: Props) {
         </AddressWrapper>
       </div>
       <div>
-        <Label>{translate('CONFIRM_TX_TO')}</Label>
+        <LabelWrapper>
+          <Label value={translate('CONFIRM_TX_TO')} fontSize="1.13em" />
+        </LabelWrapper>
         <AddressWrapper>
           <Address
             address={toAccount.address}
