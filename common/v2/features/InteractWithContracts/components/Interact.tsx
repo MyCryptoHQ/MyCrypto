@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Identicon, Button } from '@mycrypto/ui';
 
-import { NetworkSelectDropdown, InputField } from 'v2/components';
-import { Dropdown } from 'components/ui';
+import { NetworkSelectDropdown, InputField, Dropdown } from 'v2/components';
 
 import { BREAK_POINTS } from 'v2/theme';
+import { ContractContext, getNetworkById } from 'v2/services/Store';
+import { NetworkId, Contract } from 'v2/types';
+import ContractDropdownOption from './ContractDropdownOption';
+import ContractDropdownValue from './ContractDropdownValue';
 
 const NetworkSelectorWrapper = styled.div`
   margin-bottom: 12px;
@@ -66,10 +69,12 @@ const ButtonWrapper = styled.div`
 `;
 
 interface Props {
-  network: string;
+  networkId: NetworkId;
   contractAddress: string;
   abi: string;
-  setNetwork(network: string): void;
+  contract: Contract;
+  setContract(contract: Contract | undefined): void;
+  setNetworkId(networkId: string): void;
   setContractAddress(address: string): void;
   setAbi(abi: string): void;
   goToNextStep(): void;
@@ -78,13 +83,26 @@ interface Props {
 export default function Interact(props: Props) {
   const {
     goToNextStep,
-    network,
-    setNetwork,
+    networkId,
+    setNetworkId,
     contractAddress,
     setContractAddress,
     abi,
-    setAbi
+    setAbi,
+    contract,
+    setContract
   } = props;
+
+  const customContract: Contract = {
+    name: 'Custom',
+    networkId,
+    address: 'custom',
+    abi: ''
+  };
+
+  const [contracts, setContracts] = useState<Contract[]>([]);
+
+  const { getContractsByIds } = useContext(ContractContext);
 
   const handleContractAddressChanged = ({ currentTarget }: React.FormEvent<HTMLInputElement>) => {
     const { value } = currentTarget;
@@ -96,19 +114,51 @@ export default function Interact(props: Props) {
     setAbi(value);
   };
 
+  const handleContractChange = (selectedContract: Contract) => {
+    setContract(selectedContract);
+
+    if (selectedContract.address === 'custom') {
+      setContractAddress('');
+    } else {
+      setContractAddress(selectedContract.address);
+    }
+
+    setAbi(selectedContract.abi);
+  };
+
+  const clearFields = () => {
+    setContract(undefined);
+    setContractAddress('');
+    setAbi('');
+  };
+
+  useEffect(() => {
+    const contractIds = getNetworkById(networkId)!.contracts;
+    const networkContracts = getContractsByIds(contractIds);
+    setContracts([customContract, ...networkContracts]);
+  }, [networkId]);
+
   return (
     <>
       <NetworkSelectorWrapper>
-        <NetworkSelectDropdown network={network} onChange={setNetwork} />
+        <NetworkSelectDropdown
+          network={networkId}
+          onChange={network => {
+            clearFields();
+            setNetworkId(network);
+          }}
+        />
       </NetworkSelectorWrapper>
       <ContractSelectionWrapper>
         <FieldWrapper>
           <Label>Select Existing Contract</Label>
           <Dropdown
-            value={''}
-            options={[]}
-            clearable={false}
-            onChange={(e: { label: string; value: string }) => this.setState({ network: e.value })}
+            value={contract}
+            options={contracts}
+            onChange={handleContractChange}
+            optionComponent={ContractDropdownOption}
+            valueComponent={ContractDropdownValue}
+            searchable={true}
           />
         </FieldWrapper>
         <Separator />

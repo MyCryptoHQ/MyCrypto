@@ -15,6 +15,8 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
   const [step, setStep] = useState(0);
   const [network, setNetwork] = useState(DEFAULT_NETWORK);
   const [contractAddress, setContractAddress] = useState('');
+  const [contract, setContract] = useState(undefined);
+  const [networkId, setNetworkId] = useState(DEFAULT_NETWORK);
   const [abi, setAbi] = useState('');
 
   const steps: TStep[] = [
@@ -54,6 +56,10 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
         setContractAddress={setContractAddress}
         abi={abi}
         setAbi={setAbi}
+        contract={contract}
+        setContract={setContract}
+        networkId={networkId}
+        setNetworkId={setNetworkId}
       />
     </ExtendedContentPanel>
   );
