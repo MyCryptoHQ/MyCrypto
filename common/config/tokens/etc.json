@@ -2,16 +2,25 @@
   {
     "address": "0x085fb4f24031EAedbC2B611AA528f22343eB52Db",
     "symbol": "BEC",
-    "decimal": 8
+    "decimal": 8,
+    "uuid": "0e1872fc-1382-566c-9bac-870287115ede"
   },
   {
     "address": "0x5acE17f87c7391E5792a7683069A8025B83bbd85",
     "symbol": "PLAY",
-    "decimal": 0
+    "decimal": 0,
+    "uuid": "9ef246c1-1a36-55eb-a1b8-6b33b838b83c"
   },
   {
     "address": "0x6ADa6F48C815689502C43eC1a59F1b5DD3C04E1F",
     "symbol": "UNV",
-    "decimal": 18
+    "decimal": 18,
+    "uuid": "33f3922a-ec5c-5276-93cf-947a7219c412"
+  },
+  {
+    "address": "0x76d0184CF511788032A74a1FB91146e63F43dd53",
+    "symbol": "UVC",
+    "decimal": 5,
+    "uuid": "34ba1c4f-f022-57a4-b797-a58408ffc001"
   }
 ]

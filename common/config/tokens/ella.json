@@ -2,6 +2,7 @@
   {
     "address": "0x991e7Fe4b05f2b3db1D788e705963f5D647b0044",
     "symbol": "MINING",
-    "decimal": 18
+    "decimal": 18,
+    "uuid": "c21cbb94-4cd0-536b-ae29-f80917fa7460"
   }
 ]
