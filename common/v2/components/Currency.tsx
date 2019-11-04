@@ -31,7 +31,10 @@ function Currency({
 }: Props) {
   const format = (value: string, decimalPlaces: number) => {
     const v = parseFloat(value);
-    return Number(v).toLocaleString(undefined, { maximumFractionDigits: decimalPlaces });
+    return Number(v).toLocaleString(undefined, {
+      minimumFractionDigits: decimalPlaces,
+      maximumFractionDigits: decimalPlaces
+    });
     // const multiplier = Math.pow(10, decimalPlaces);
     // return Math.round(v * multiplier + Number.EPSILON) / multiplier;
   };
