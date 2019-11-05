@@ -45,7 +45,7 @@ function SaveAndRedirect(payload: { formData: FormData }) {
         mtime: 0
       };
       const newLabel: AddressBook = {
-        label: findNextUnusedDefaultLabel(account.networkId),
+        label: findNextUnusedDefaultLabel(account.wallet),
         address: account.address,
         notes: '',
         network: account.networkId
