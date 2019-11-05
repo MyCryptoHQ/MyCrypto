@@ -2,31 +2,37 @@
   {
     "address": "0x95D7321EdCe519419ba1DbC60A89bAfbF55EAC0D",
     "symbol": "*PLASMA",
-    "decimal": 6
+    "decimal": 6,
+    "uuid": "c00b7f6a-7d0e-53c8-9aec-1acb4989e230"
   },
   {
     "address": "0xa1bAccA0e12D4091Ec1f92e7CaE3394CC9854D3D",
     "symbol": "dqr30",
-    "decimal": 18
+    "decimal": 18,
+    "uuid": "8932210b-194b-54f6-87e5-186744736ed9"
   },
   {
     "address": "0x6f95a3B682F8e9aacC86D057A6DF88A0E68145A8",
     "symbol": "ILSC",
-    "decimal": 2
+    "decimal": 2,
+    "uuid": "946fa7b0-3465-5241-ba02-243b127d6824"
   },
   {
     "address": "0x4C572Fbc03D4A2B683cF4f10ffdcaFD00885E108",
     "symbol": "MEWV5",
-    "decimal": 9
+    "decimal": 9,
+    "uuid": "5e8a260d-ff54-55ed-a324-6c66a1425e81"
   },
   {
     "address": "0xFD5a69A1309595FF5121553F52C8A5B2B1B31031",
     "symbol": "NONE",
-    "decimal": 0
+    "decimal": 0,
+    "uuid": "90bfbf04-bb63-506d-a5f7-b58238b5d915"
   },
   {
     "address": "0x7314Dc4d7794b5E7894212CA1556ae8e3De58621",
     "symbol": "RLC",
-    "decimal": 9
+    "decimal": 9,
+    "uuid": "3841cfa9-768f-5680-af7e-73afaad05955"
   }
 ]

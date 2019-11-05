@@ -51,7 +51,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Etherscan',
       origin: 'https://ropsten.etherscan.io'
     }),
-    tokens: require('config/tokens/ropsten.json'),
+    tokens: require('config/tokens/rop.json'),
     contracts: require('config/contracts/ropsten.json'),
     isTestnet: true,
     dPaths: {
@@ -73,7 +73,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Etherscan',
       origin: 'https://kovan.etherscan.io'
     }),
-    tokens: require('config/tokens/ropsten.json'),
+    tokens: require('config/tokens/kov.json'),
     contracts: require('config/contracts/ropsten.json'),
     isTestnet: true,
     dPaths: {
@@ -95,7 +95,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Etherscan',
       origin: 'https://rinkeby.etherscan.io'
     }),
-    tokens: require('config/tokens/rinkeby.json'),
+    tokens: require('config/tokens/rin.json'),
     contracts: require('config/contracts/rinkeby.json'),
     isTestnet: true,
     dPaths: {
@@ -117,7 +117,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Etherscan',
       origin: 'https://goerli.etherscan.io/'
     }),
-    tokens: [],
+    tokens: require('config/tokens/gor.json'),
     contracts: [],
     isTestnet: true,
     dPaths: {
