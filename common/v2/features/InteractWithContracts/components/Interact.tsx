@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Identicon, Button } from '@mycrypto/ui';
 
 import { NetworkSelectDropdown, InputField, Dropdown } from 'v2/components';
 
 import { BREAK_POINTS } from 'v2/theme';
-import { ContractContext, getNetworkById } from 'v2/services/Store';
 import { NetworkId, Contract } from 'v2/types';
 import ContractDropdownOption from './ContractDropdownOption';
 import ContractDropdownValue from './ContractDropdownValue';
@@ -73,10 +72,12 @@ interface Props {
   contractAddress: string;
   abi: string;
   contract: Contract;
-  setContract(contract: Contract | undefined): void;
-  setNetworkId(networkId: string): void;
-  setContractAddress(address: string): void;
-  setAbi(abi: string): void;
+  contracts: Contract[];
+  handleContractSelected(contract: Contract | undefined): void;
+  handleNetworkSelected(networkId: string): void;
+  handleContractAddressChanged(address: string): void;
+  handleAbiChanged(abi: string): void;
+  updateNetworkContractOptions(networkId: NetworkId): void;
   goToNextStep(): void;
 }
 
@@ -84,58 +85,19 @@ export default function Interact(props: Props) {
   const {
     goToNextStep,
     networkId,
-    setNetworkId,
     contractAddress,
-    setContractAddress,
     abi,
-    setAbi,
     contract,
-    setContract
+    contracts,
+    handleNetworkSelected,
+    handleContractSelected,
+    handleContractAddressChanged,
+    handleAbiChanged,
+    updateNetworkContractOptions
   } = props;
 
-  const customContract: Contract = {
-    name: 'Custom',
-    networkId,
-    address: 'custom',
-    abi: ''
-  };
-
-  const [contracts, setContracts] = useState<Contract[]>([]);
-
-  const { getContractsByIds } = useContext(ContractContext);
-
-  const handleContractAddressChanged = ({ currentTarget }: React.FormEvent<HTMLInputElement>) => {
-    const { value } = currentTarget;
-    setContractAddress(value);
-  };
-
-  const handleAbiChanged = ({ currentTarget }: React.FormEvent<HTMLInputElement>) => {
-    const { value } = currentTarget;
-    setAbi(value);
-  };
-
-  const handleContractChange = (selectedContract: Contract) => {
-    setContract(selectedContract);
-
-    if (selectedContract.address === 'custom') {
-      setContractAddress('');
-    } else {
-      setContractAddress(selectedContract.address);
-    }
-
-    setAbi(selectedContract.abi);
-  };
-
-  const clearFields = () => {
-    setContract(undefined);
-    setContractAddress('');
-    setAbi('');
-  };
-
   useEffect(() => {
-    const contractIds = getNetworkById(networkId)!.contracts;
-    const networkContracts = getContractsByIds(contractIds);
-    setContracts([customContract, ...networkContracts]);
+    updateNetworkContractOptions(networkId);
   }, [networkId]);
 
   return (
@@ -144,8 +106,7 @@ export default function Interact(props: Props) {
         <NetworkSelectDropdown
           network={networkId}
           onChange={network => {
-            clearFields();
-            setNetworkId(network);
+            handleNetworkSelected(network);
           }}
         />
       </NetworkSelectorWrapper>
@@ -155,7 +116,7 @@ export default function Interact(props: Props) {
           <Dropdown
             value={contract}
             options={contracts}
-            onChange={handleContractChange}
+            onChange={handleContractSelected}
             optionComponent={ContractDropdownOption}
             valueComponent={ContractDropdownValue}
             searchable={true}
@@ -168,7 +129,7 @@ export default function Interact(props: Props) {
               label={'Contract Address'}
               value={contractAddress}
               placeholder="ensdomain.eth or Ox4bbeEB066eDfk..."
-              onChange={handleContractAddressChanged}
+              onChange={({ target: { value } }) => handleContractAddressChanged(value)}
             />
             {contractAddress && <IdenticonIcon address={contractAddress} />}
           </InputWrapper>
@@ -180,7 +141,7 @@ export default function Interact(props: Props) {
             label={'ABI / JSON Interface'}
             value={abi}
             placeholder={`[{"type":"constructor","inputs":[{"name":"param1","type":"uint256","indexed":true}],"name":"Event"},{"type":"function","inputs":[{"name":"a","type":"uint256"}],"name":"foo","outputs":[]}]`}
-            onChange={handleAbiChanged}
+            onChange={({ target: { value } }) => handleAbiChanged(value)}
             textarea={true}
             resizableTextArea={true}
             height={'108px'}

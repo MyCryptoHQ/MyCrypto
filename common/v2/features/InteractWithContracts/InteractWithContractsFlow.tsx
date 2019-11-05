@@ -3,26 +3,33 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { ExtendedContentPanel } from 'v2/components';
 import { Interact, InteractionReceipt } from './components';
-import { ROUTE_PATHS, DEFAULT_NETWORK } from 'v2/config';
+import { ROUTE_PATHS } from 'v2/config';
 import { translateRaw } from 'translations';
+
+import { interactWithContractsInitialState, InteractWithContractsFactory } from './stateFactory';
+import { useStateReducer } from 'v2/utils/useStateReducer';
 
 interface TStep {
   title: string;
   component: ReactType;
+  props: any;
+  actions: any;
 }
 
 const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
   const [step, setStep] = useState(0);
-  const [network, setNetwork] = useState(DEFAULT_NETWORK);
-  const [contractAddress, setContractAddress] = useState('');
-  const [contract, setContract] = useState(undefined);
-  const [networkId, setNetworkId] = useState(DEFAULT_NETWORK);
-  const [abi, setAbi] = useState('');
+  const {
+    interactWithContractsState,
+    handleNetworkSelected,
+    handleContractSelected,
+    handleContractAddressChanged,
+    handleAbiChanged,
+    updateNetworkContractOptions
+  } = useStateReducer(InteractWithContractsFactory, interactWithContractsInitialState);
 
-  const steps: TStep[] = [
-    { title: translateRaw('Interact with Contracts'), component: Interact },
-    { title: translateRaw('Interaction Receipt'), component: InteractionReceipt }
-  ];
+  const goToFirstStep = () => {
+    setStep(0);
+  };
 
   const goToNextStep = () => {
     setStep(step + 1);
@@ -37,8 +44,37 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
     }
   };
 
+  const steps: TStep[] = [
+    {
+      title: translateRaw('Interact with Contracts'),
+      component: Interact,
+      props: (({ networkId, contractAddress, contract, abi, contracts }) => ({
+        networkId,
+        contractAddress,
+        contract,
+        abi,
+        contracts
+      }))(interactWithContractsState),
+      actions: {
+        handleNetworkSelected,
+        handleContractSelected,
+        handleContractAddressChanged,
+        handleAbiChanged,
+        updateNetworkContractOptions
+      }
+    },
+    {
+      title: translateRaw('Interaction Receipt'),
+      component: InteractionReceipt,
+      props: {},
+      actions: { goToFirstStep }
+    }
+  ];
+
   const stepObject = steps[step];
   const StepComponent = stepObject.component;
+  const stepProps = stepObject.props;
+  const stepActions = stepObject.actions;
 
   return (
     <ExtendedContentPanel
@@ -47,20 +83,7 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
       width="750px"
       heading={stepObject.title}
     >
-      <StepComponent
-        goToNextStep={goToNextStep}
-        setStep={setStep}
-        network={network}
-        setNetwork={setNetwork}
-        contractAddress={contractAddress}
-        setContractAddress={setContractAddress}
-        abi={abi}
-        setAbi={setAbi}
-        contract={contract}
-        setContract={setContract}
-        networkId={networkId}
-        setNetworkId={setNetworkId}
-      />
+      <StepComponent goToNextStep={goToNextStep} {...stepProps} {...stepActions} />
     </ExtendedContentPanel>
   );
 };
