@@ -51,7 +51,7 @@ function Currency({
       <Typography bold={bold} fontSize={fontSize}>
         {prefix && `${symbol}`}
         {format(amount, decimals)}
-        {!prefix && `${symbol}`}
+        {!prefix && ` ${symbol}`}
       </Typography>
     </SContainer>
   );
