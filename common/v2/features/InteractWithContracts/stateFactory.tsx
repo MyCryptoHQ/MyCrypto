@@ -1,7 +1,7 @@
 import { TUseStateReducerFactory } from 'v2/utils';
 import { DEFAULT_NETWORK } from 'v2/config';
 import { Contract, NetworkId } from 'v2/types';
-import { getNetworkById, ContractContext } from 'v2/services';
+import { getNetworkById, ContractContext, isValidETHAddress } from 'v2/services';
 import { useContext } from 'react';
 import { customContract } from './constants';
 
@@ -49,22 +49,35 @@ const InteractWithContractsFactory: TUseStateReducerFactory<State> = ({ state, s
 
   const handleContractSelected = (contract: Contract) => {
     let contractAddress = '';
+    let contractAbi = '';
+
     if (contract.address !== 'custom') {
       contractAddress = contract.address;
+      contractAbi = contract.abi;
     }
 
     setState((prevState: State) => ({
       ...prevState,
       contract,
       contractAddress,
-      abi: contract.abi
+      abi: contractAbi
     }));
   };
 
   const handleContractAddressChanged = (contractAddress: string) => {
+    if (isValidETHAddress(contractAddress)) {
+      const existingContract = state.contracts.find(c => c.address === contractAddress);
+      if (existingContract) {
+        handleContractSelected(existingContract);
+        return;
+      }
+    }
+
     setState((prevState: State) => ({
       ...prevState,
-      contractAddress
+      contractAddress,
+      contract: customContract,
+      abi: ''
     }));
   };
 

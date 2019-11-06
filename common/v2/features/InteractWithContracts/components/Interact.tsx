@@ -100,6 +100,8 @@ export default function Interact(props: Props) {
     updateNetworkContractOptions(networkId);
   }, [networkId]);
 
+  const isCustomContract = contract && contract.address === 'custom';
+
   return (
     <>
       <NetworkSelectorWrapper>
@@ -145,6 +147,7 @@ export default function Interact(props: Props) {
             textarea={true}
             resizableTextArea={true}
             height={'108px'}
+            disabled={!isCustomContract}
           />
         </InputWrapper>
       </FieldWrapper>
