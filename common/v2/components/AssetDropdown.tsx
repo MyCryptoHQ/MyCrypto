@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { OptionComponentProps } from 'react-select';
 import styled from 'styled-components';
 
@@ -6,6 +6,7 @@ import { translateRaw } from 'v2/translations';
 import { Asset } from 'v2/types';
 import { AssetSummary, Divider, Dropdown } from 'v2/components';
 
+// Fixes weird placement issues for react-select
 const DropdownContainer = styled('div')`
   .has-value > .Select-control > .Select-multi-value-wrapper > .Select-input:only-child {
     transform: translateY(0%);
@@ -33,9 +34,16 @@ class AssetOption extends React.PureComponent<OptionComponentProps> {
 }
 
 function AssetDropdown({ assets, name, value, onSelect }: Props<Asset>) {
-  const filteredAssets: Asset[] = assets
-    .filter((asset, index) => assets.map(assetObj => assetObj.uuid).indexOf(asset.uuid) >= index)
-    .map(asset => ({ label: asset.name, id: asset.uuid, ...asset })); /* Removes duplicates */
+  const [filteredAssets, setFilteredAssets] = useState([] as Asset[]);
+  useEffect(() => {
+    setFilteredAssets(
+      assets
+        .filter(
+          (asset, index) => assets.map(assetObj => assetObj.uuid).indexOf(asset.uuid) >= index
+        )
+        .map(asset => ({ label: asset.name, id: asset.uuid, ...asset }))
+    ); /* Removes duplicates and maps to format accepted by react-select */
+  }, []);
   return (
     <DropdownContainer>
       <Dropdown

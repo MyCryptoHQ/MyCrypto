@@ -7,8 +7,14 @@ import { formatEther, bigNumberify } from 'ethers/utils';
 import BN from 'bn.js';
 import styled from 'styled-components';
 
+<<<<<<< HEAD
 import translate, { translateRaw } from 'v2/translations';
 import { InlineErrorMsg, AccountDropdown, AmountInput, WhenQueryExists } from 'v2/components';
+=======
+import translate, { translateRaw } from 'translations';
+import { WhenQueryExists } from 'components/renderCbs';
+import { InlineErrorMsg, AccountDropdown, AssetDropdown } from 'v2/components';
+>>>>>>> Fixed a few issues with AssetDropdown
 import {
   getNetworkById,
   getBaseAssetByNetwork,
@@ -49,7 +55,6 @@ import { RatesContext } from 'v2/services/RatesProvider';
 
 import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
 import {
-  AssetDropdown,
   EthAddressField,
   GasLimitField,
   GasPriceField,

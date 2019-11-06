@@ -9,7 +9,7 @@ import {
   buildEIP681EtherRequest,
   buildEIP681TokenRequest
 } from 'v2/services/EthService/utils/formatters';
-import { ContentPanel, QRCode, AccountDropdown } from 'v2/components';
+import { ContentPanel, QRCode, AccountDropdown, AssetDropdown } from 'v2/components';
 import { AssetContext, getNetworkById, StoreContext } from 'v2/services/Store';
 import { isValidAmount, truncate } from 'v2/utils';
 import { ExtendedAccount as IExtendedAccount, StoreAccount } from 'v2/types';
