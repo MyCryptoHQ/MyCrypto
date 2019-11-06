@@ -27,17 +27,17 @@ const LoaderText = styled(Typography)`
 
 interface Props {
   account: StoreAccount;
-  isSettingAllowance: boolean;
+  isSubmitting: boolean;
 }
 
 export default function SetAllowance(props: Props) {
-  const { account, isSettingAllowance } = props;
+  const { account, isSubmitting } = props;
   const Component: any = account && WALLET_STEPS[account.wallet];
 
   return (
     <AllowanceWrapper>
       <Component {...props} />
-      {isSettingAllowance && (
+      {isSubmitting && (
         <Loader>
           <Spinner size={'x2'} />{' '}
           <LoaderText bold={true} fontSize="1.13em" value={translate('SWAP_SETTING_ALLOWANCE')} />

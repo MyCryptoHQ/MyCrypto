@@ -22,6 +22,7 @@ import {
   SignTransactionParity,
   SignTransactionMnemonic
 } from 'v2/components';
+import { weiToFloat } from 'v2/utils';
 
 import { ISwapAsset, SigningComponents } from './types';
 
@@ -144,3 +145,37 @@ export const makeTxConfigFromTransaction = (
 
   return txConfig;
 };
+
+// filter accounts based on wallet type and sufficient balance
+// TODO: include fees check
+export const getAccountsWithAssetBalance = (
+  accounts: StoreAccount[],
+  fromAsset: ISwapAsset,
+  fromAmount: string
+) =>
+  accounts.filter(acc => {
+    if (!WALLET_STEPS[acc.wallet]) {
+      return false;
+    }
+
+    const asset = acc.assets.find(x => x.ticker === fromAsset.symbol);
+    if (!asset) {
+      return false;
+    }
+
+    const amount = weiToFloat(asset.balance, asset.decimal);
+    if (amount < Number(fromAmount)) {
+      return false;
+    }
+
+    return true;
+  });
+
+export const getUnselectedAssets = (
+  assets: ISwapAsset[],
+  fromAsset: ISwapAsset,
+  toAsset: ISwapAsset
+) =>
+  !toAsset || !fromAsset
+    ? assets
+    : assets.filter(x => fromAsset.symbol !== x.symbol && toAsset.symbol !== x.symbol);

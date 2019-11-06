@@ -5,11 +5,10 @@ import { Button } from '@mycrypto/ui';
 import { translate } from 'translations';
 
 import { AccountDropdown, InlineErrorMsg, Typography } from 'v2/components';
-import { ExtendedAccount, StoreAccount } from 'v2/types';
+import { StoreAccount } from 'v2/types';
 import { StoreContext } from 'v2/services';
-import { weiToFloat } from 'v2/utils';
 
-import { WALLET_STEPS } from '../helpers';
+import { getAccountsWithAssetBalance } from '../helpers';
 import { SwapFromToDiagram } from './fields';
 import { ISwapAsset } from '../types';
 
@@ -34,34 +33,23 @@ interface Props {
   toAsset: ISwapAsset;
   fromAmount: string;
   toAmount: string;
-  setAccount(account: ExtendedAccount): void;
-  goToNextStep(): void;
+  handleAccountSelected(account: StoreAccount): void;
+  onSuccess(): void;
 }
 
 export default function SelectAddress(props: Props) {
-  const { goToNextStep, account, setAccount, fromAsset, toAsset, fromAmount, toAmount } = props;
+  const {
+    account,
+    fromAsset,
+    toAsset,
+    fromAmount,
+    toAmount,
+    handleAccountSelected,
+    onSuccess
+  } = props;
 
   const { accounts } = useContext(StoreContext);
-
-  // filter accounts based on wallet type and sufficient balance
-  // TODO: include fees check
-  const filteredAccounts = accounts.filter(acc => {
-    if (!WALLET_STEPS[acc.wallet]) {
-      return false;
-    }
-
-    const asset = acc.assets.find(x => x.ticker === fromAsset.symbol);
-    if (!asset) {
-      return false;
-    }
-
-    const amount = weiToFloat(asset.balance, asset.decimal);
-    if (amount < Number(fromAmount)) {
-      return false;
-    }
-
-    return true;
-  });
+  const filteredAccounts = getAccountsWithAssetBalance(accounts, fromAsset, fromAmount);
 
   return (
     <div>
@@ -78,15 +66,15 @@ export default function SelectAddress(props: Props) {
         name="account"
         value={account}
         accounts={filteredAccounts}
-        onSelect={(option: ExtendedAccount) => {
-          setAccount(option);
+        onSelect={(option: StoreAccount) => {
+          handleAccountSelected(option);
         }}
       />
       {!filteredAccounts.length && (
         <InlineErrorMsg>{translate('ACCOUNT_SELECTION_NO_FUNDS')}</InlineErrorMsg>
       )}
 
-      <StyledButton disabled={!account} onClick={goToNextStep}>
+      <StyledButton disabled={!account} onClick={onSuccess}>
         {translate('ACTION_6')}
       </StyledButton>
     </div>

@@ -5,11 +5,8 @@ import { translateRaw } from 'translations';
 
 import { ExtendedContentPanel } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
-import { StoreAccount, ITxReceipt, ISignedTx, ITxConfig } from 'v2/types';
-import { DexService } from 'v2/services/ApiService';
-import { ProviderHandler } from 'v2/services';
-import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
-import { isWeb3Wallet } from 'v2/utils/web3';
+import { ITxReceipt, ISignedTx } from 'v2/types';
+import { useStateReducer } from 'v2/utils';
 
 import {
   SwapAssets,
@@ -18,37 +15,54 @@ import {
   SwapTransactionReceipt,
   SetAllowance
 } from './components';
-import { ISwapAsset, LAST_CHANGED_AMOUNT } from './types';
-import {
-  makeTxConfigFromTransaction,
-  makeTradeTransactionFromDexTrade,
-  WALLET_STEPS
-} from './helpers';
+import { WALLET_STEPS } from './helpers';
+import { SwapFlowFactory, swapFlowInitialState } from './stateFactory';
+import { SwapState } from './types';
 
 interface TStep {
   title?: string;
   description?: string;
   component: any;
-  action?(payload: ITxReceipt | ISignedTx): void;
+  props: any;
+  actions?: any;
 }
 
 const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
   const [step, setStep] = useState(0);
-  const [fromAsset, setFromAsset] = useState<ISwapAsset>();
-  const [toAsset, setToAsset] = useState<ISwapAsset>();
-  const [fromAmount, setFromAmount] = useState('');
-  const [toAmount, setToAmount] = useState('');
-  const [account, setAccount] = useState<StoreAccount>();
-  const [dexTrade, setDexTrade] = useState();
-  const [rawTransaction, setRawTransaction] = useState<ITxConfig>();
-  const [txReceipt, setTxReceipt] = useState();
-  const [swapAssets, setSwapAssets] = useState([]);
-  const [swapPrice, setSwapPrice] = useState(0);
-  const [lastChangedAmount, setLastChagedAmount] = useState<LAST_CHANGED_AMOUNT>(
-    LAST_CHANGED_AMOUNT.FROM
-  );
-  const [txConfig, setTxConfig] = useState();
-  const [isSettingAllowance, setSettingAllowance] = useState<boolean>(false);
+
+  const {
+    fetchSwapAssets,
+    handleFromAssetSelected,
+    handleToAssetSelected,
+    calculateNewFromAmount,
+    calculateNewToAmount,
+    handleFromAmountChanged,
+    handleToAmountChanged,
+    handleAccountSelected,
+    handleConfirmSwapClicked,
+    handleAllowanceSigned,
+    handleTxSigned,
+    swapState
+  } = useStateReducer(SwapFlowFactory, swapFlowInitialState);
+  const {
+    fromAsset,
+    toAsset,
+    assets,
+    fromAmount,
+    toAmount,
+    isCalculatingFromAmount,
+    isCalculatingToAmount,
+    fromAmountError,
+    toAmountError,
+    account,
+    swapPrice,
+    isSubmitting,
+    lastChangedAmount,
+    dexTrade,
+    txReceipt,
+    txConfig,
+    rawTransaction
+  }: SwapState = swapState;
 
   const goToFirstStep = () => {
     setStep(0);
@@ -67,84 +81,30 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     }
   };
 
-  const onAllowanceSigned = async (signResponse: any) => {
-    if (!account) {
-      return;
-    }
-
-    let allowanceTxHash;
-    const provider = new ProviderHandler(account.network);
-
-    try {
-      if (isWeb3Wallet(account.wallet)) {
-        allowanceTxHash = (signResponse && signResponse.hash) || signResponse;
-      } else {
-        const tx = await provider.sendRawTx(signResponse);
-        allowanceTxHash = tx.hash;
-      }
-    } catch (hash) {
-      const tx = await provider.getTransactionByHash(hash);
-      allowanceTxHash = tx.hash;
-    }
-
-    // wait for allowance tx to be mined
-    setSettingAllowance(true);
-    await provider.waitForTransaction(allowanceTxHash);
-
-    const rawAllowanceTransaction = await makeTradeTransactionFromDexTrade(dexTrade, account);
-    const mergedTxConfig = makeTxConfigFromTransaction(
-      rawAllowanceTransaction,
-      account,
-      fromAsset!,
-      fromAmount
-    );
-    setTxConfig(mergedTxConfig);
-    setRawTransaction(rawAllowanceTransaction);
-    setSettingAllowance(false);
-    goToNextStep();
-  };
-
-  const onTxSigned = async (signResponse: any) => {
-    if (!account) {
-      return;
-    }
-
-    if (isWeb3Wallet(account.wallet)) {
-      const receipt =
-        signResponse && signResponse.hash ? signResponse : { hash: signResponse, asset: {} };
-      setTxReceipt(receipt);
-      goToNextStep();
-    } else {
-      const provider = new ProviderHandler(account.network);
-      provider
-        .sendRawTx(signResponse)
-        .then(retrievedTxReceipt => retrievedTxReceipt)
-        .catch(hash => provider.getTransactionByHash(hash))
-        .then(retrievedTransactionReceipt => {
-          const receipt = fromTxReceiptObj(retrievedTransactionReceipt);
-          setTxReceipt(receipt);
-        })
-        .finally(goToNextStep);
-    }
-  };
-
-  const fetchSwapAssets = async () => {
-    try {
-      const assets = await DexService.instance.getTokenList();
-      setSwapAssets(assets);
-      if (assets.length > 1) {
-        setFromAsset(assets[0]);
-        setToAsset(assets[1]);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   const steps: TStep[] = [
     {
       title: translateRaw('SWAP_ASSETS_TITLE'),
-      component: SwapAssets
+      component: SwapAssets,
+      props: {
+        fromAmount,
+        toAmount,
+        fromAsset,
+        toAsset,
+        assets,
+        isCalculatingFromAmount,
+        isCalculatingToAmount,
+        fromAmountError,
+        toAmountError
+      },
+      actions: {
+        handleFromAssetSelected,
+        handleToAssetSelected,
+        calculateNewFromAmount,
+        calculateNewToAmount,
+        handleFromAmountChanged,
+        handleToAmountChanged,
+        onSuccess: goToNextStep
+      }
     },
     {
       title: translateRaw('ACCOUNT_SELECTION_PLACEHOLDER'),
@@ -152,36 +112,82 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         $fromAsset: (fromAsset && fromAsset.symbol) || 'ETH',
         $toAsset: (toAsset && toAsset.symbol) || 'ETH'
       }),
-      component: SelectAddress
+      component: SelectAddress,
+      props: {
+        account,
+        fromAsset,
+        toAsset,
+        fromAmount,
+        toAmount
+      },
+      actions: {
+        handleAccountSelected,
+        onSuccess: goToNextStep
+      }
     },
     {
       title: translateRaw('SWAP_CONFIRM_TITLE'),
-      component: ConfirmSwap
+      component: ConfirmSwap,
+      props: {
+        fromAsset,
+        toAsset,
+        fromAmount,
+        toAmount,
+        account,
+        swapPrice,
+        lastChangedAmount,
+        isSubmitting
+      },
+      actions: {
+        onSuccess: () => handleConfirmSwapClicked(goToNextStep)
+      }
     },
     ...(dexTrade && dexTrade.metadata.input
       ? [
           {
             title: translateRaw('SWAP_ALLOWANCE_TITLE'),
             component: SetAllowance,
-            action: onAllowanceSigned
+            props: {
+              account,
+              isSubmitting,
+              network: account && account.network,
+              senderAccount: account,
+              rawTransaction
+            },
+            actions: {
+              onSuccess: (payload: ITxReceipt | ISignedTx) =>
+                handleAllowanceSigned(payload, goToNextStep)
+            }
           }
         ]
       : []),
     {
       title: translateRaw('SWAP_ASSETS_TITLE'),
       component: account && WALLET_STEPS[account.wallet],
-      action: onTxSigned
+      props: {
+        network: account && account.network,
+        senderAccount: account,
+        rawTransaction
+      },
+      actions: {
+        onSuccess: (payload: ITxReceipt | ISignedTx) => handleTxSigned(payload, goToNextStep)
+      }
     },
     {
       title: translateRaw('SWAP_RECEIPT_TITLE'),
-      component: SwapTransactionReceipt
+      component: SwapTransactionReceipt,
+      props: {
+        txReceipt,
+        txConfig,
+        onSuccess: goToFirstStep
+      }
     }
   ];
 
   const stepObject = steps[step];
   const StepComponent = stepObject.component;
 
-  if (swapAssets.length === 0) {
+  if (assets.length === 0) {
     fetchSwapAssets();
   }
 
@@ -195,36 +201,8 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     >
       <StepComponent
         key={`${stepObject.title}${step}`}
-        goToNextStep={goToNextStep}
-        setFromAsset={setFromAsset}
-        setToAsset={setToAsset}
-        setFromAmount={setFromAmount}
-        setToAmount={setToAmount}
-        fromAmount={fromAmount}
-        toAmount={toAmount}
-        assets={swapAssets}
-        fromAsset={fromAsset}
-        toAsset={toAsset}
-        account={account}
-        setAccount={setAccount}
-        dexTrade={dexTrade}
-        setDexTrade={setDexTrade}
-        rawTransaction={rawTransaction}
-        onSuccess={(payload: ITxReceipt | ISignedTx) =>
-          stepObject.action && stepObject.action(payload)
-        }
-        setRawTransaction={setRawTransaction}
-        txReceipt={txReceipt}
-        lastChangedAmount={lastChangedAmount}
-        setLastChagedAmount={setLastChagedAmount}
-        swapPrice={swapPrice}
-        setSwapPrice={setSwapPrice}
-        goToFirstStep={goToFirstStep}
-        txConfig={txConfig}
-        setTxConfig={setTxConfig}
-        senderAccount={account}
-        network={account && account.network}
-        isSettingAllowance={isSettingAllowance}
+        {...stepObject.props}
+        {...stepObject.actions}
       />
     </ExtendedContentPanel>
   );

@@ -1,19 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
 import translate from 'translations';
 
-import { StoreAccount, ITxConfig } from 'v2/types';
+import { StoreAccount } from 'v2/types';
 import { COLORS } from 'v2/theme';
-import { DexService } from 'v2/services/ApiService/Dex';
 import { Typography, Currency } from 'v2/components';
 
-import {
-  makeAllowanceTransaction,
-  makeTradeTransactionFromDexTrade,
-  makeTxConfigFromTransaction
-} from '../helpers';
 import { SwapFromToDiagram, FromToAccount } from './fields';
 import { ISwapAsset, LAST_CHANGED_AMOUNT } from '../types';
 
@@ -56,10 +50,8 @@ interface Props {
   account: StoreAccount;
   swapPrice: number;
   lastChangedAmount: LAST_CHANGED_AMOUNT;
-  setRawTransaction(tx: ITxConfig): void;
-  setDexTrade(trade: any): void;
-  setTxConfig(transaction: ITxConfig): void;
-  goToNextStep(): void;
+  isSubmitting: boolean;
+  onSuccess(): void;
 }
 
 export default function ConfirmSwap(props: Props) {
@@ -69,55 +61,11 @@ export default function ConfirmSwap(props: Props) {
     fromAmount,
     toAmount,
     account,
-    setDexTrade,
-    goToNextStep,
-    setRawTransaction,
-    lastChangedAmount,
     swapPrice,
-    setTxConfig
+    lastChangedAmount,
+    isSubmitting,
+    onSuccess
   } = props;
-
-  const isLastChangedTo = lastChangedAmount === LAST_CHANGED_AMOUNT.TO;
-
-  const [submitting, setSubmitting] = useState(false);
-
-  const handleNextClicked = async () => {
-    try {
-      const getOrderDetails = isLastChangedTo
-        ? DexService.instance.getOrderDetailsTo
-        : DexService.instance.getOrderDetailsFrom;
-
-      setSubmitting(true);
-
-      const trade = await getOrderDetails(
-        fromAsset.symbol,
-        toAsset.symbol,
-        isLastChangedTo ? toAmount : fromAmount
-      );
-      setDexTrade(trade);
-
-      const makeTransaction = trade.metadata.input
-        ? makeAllowanceTransaction
-        : makeTradeTransactionFromDexTrade;
-      const rawTransaction = await makeTransaction(trade, account);
-
-      const mergedTxConfig = makeTxConfigFromTransaction(
-        rawTransaction,
-        account,
-        fromAsset,
-        fromAmount
-      );
-      setTxConfig(mergedTxConfig);
-
-      setRawTransaction(rawTransaction);
-      setSubmitting(false);
-      goToNextStep();
-    } catch (e) {
-      setSubmitting(false);
-      console.error(e);
-    }
-  };
-
   const conversionRate = lastChangedAmount === LAST_CHANGED_AMOUNT.TO ? 1 / swapPrice : swapPrice;
 
   return (
@@ -146,8 +94,8 @@ export default function ConfirmSwap(props: Props) {
           />
         </div>
       </ConversionRateBox>
-      <StyledButton onClick={handleNextClicked}>
-        {submitting ? translate('SUBMITTING') : translate('CONFIRM_AND_SEND')}
+      <StyledButton onClick={onSuccess}>
+        {isSubmitting ? translate('SUBMITTING') : translate('CONFIRM_AND_SEND')}
       </StyledButton>
     </div>
   );

@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
 import { translate, translateRaw } from 'translations';
 
 import { InputField } from 'v2/components';
-import { DexService } from 'v2/services/ApiService';
 
-import { ISwapAsset, LAST_CHANGED_AMOUNT } from '../types';
+import { ISwapAsset } from '../types';
 import { AssetSelectDropdown } from './fields';
+import { getUnselectedAssets } from '../helpers';
 
 const FormWrapper = styled.div`
   margin-top: 20px;
@@ -37,13 +37,17 @@ interface Props {
   fromAsset: ISwapAsset;
   toAsset: ISwapAsset;
   assets: ISwapAsset[];
-  setLastChagedAmount(lastChangedAmount: LAST_CHANGED_AMOUNT): void;
-  goToNextStep(): void;
-  setSwapPrice(amount: number): void;
-  setFromAsset(asset: ISwapAsset): void;
-  setToAsset(asset: ISwapAsset): void;
-  setFromAmount(amount: string): void;
-  setToAmount(amount: string): void;
+  isCalculatingFromAmount: boolean;
+  isCalculatingToAmount: boolean;
+  fromAmountError: string;
+  toAmountError: string;
+  onSuccess(): void;
+  handleFromAssetSelected(asset: ISwapAsset): void;
+  handleToAssetSelected(asset: ISwapAsset): void;
+  calculateNewFromAmount(value: string): Promise<void>;
+  calculateNewToAmount(value: string): Promise<void>;
+  handleFromAmountChanged(value: string): void;
+  handleToAmountChanged(value: string): void;
 }
 
 let calculateToAmountTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -51,36 +55,31 @@ let calculateFromAmountTimeout: ReturnType<typeof setTimeout> | null = null;
 
 export default function SwapAssets(props: Props) {
   const {
-    goToNextStep,
-    setFromAsset,
-    setToAsset,
-    setFromAmount,
-    setToAmount,
     fromAmount,
     toAmount,
     fromAsset,
     toAsset,
     assets,
-    setLastChagedAmount,
-    setSwapPrice
+    isCalculatingFromAmount,
+    isCalculatingToAmount,
+    fromAmountError,
+    toAmountError,
+    onSuccess,
+    handleFromAssetSelected,
+    handleToAssetSelected,
+    calculateNewFromAmount,
+    calculateNewToAmount,
+    handleFromAmountChanged,
+    handleToAmountChanged
   } = props;
 
-  const [isCalculatingFromAmount, setIsCalculatingFromAmount] = useState(false);
-  const [isCalculatingToAmount, setIsCalculatingToAmount] = useState(false);
-  const [fromAmountError, setFromAmountError] = useState();
-  const [toAmountError, setToAmountError] = useState();
-
   // show only unused assets
-  const filteredAssets =
-    !toAsset || !fromAsset
-      ? assets
-      : assets.filter(x => fromAsset.symbol !== x.symbol && toAsset.symbol !== x.symbol);
+  const filteredAssets = getUnselectedAssets(assets, fromAsset, toAsset);
 
   // SEND AMOUNT CHANGED
-  const handleFromAmountChanged = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleFromAmountChangedEvent = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    setLastChagedAmount(LAST_CHANGED_AMOUNT.FROM);
-    setFromAmount(value);
+    handleFromAmountChanged(value);
 
     // Calculate new "to amount" 500 ms after user stopped typing
     if (calculateToAmountTimeout) clearTimeout(calculateToAmountTimeout);
@@ -88,92 +87,18 @@ export default function SwapAssets(props: Props) {
     calculateToAmountTimeout = setTimeout(() => {
       calculateNewToAmount(value);
     }, 500);
-    clearErrors();
   };
 
   // RECEIVE AMOUNT CHANGED
-  const handleToAmountChanged = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleToAmountChangedEvent = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    setLastChagedAmount(LAST_CHANGED_AMOUNT.TO);
-    setToAmount(value);
+    handleToAmountChanged(value);
 
     // Calculate new "from amount" 500 ms after user stopped typing
     if (calculateFromAmountTimeout) clearTimeout(calculateFromAmountTimeout);
     calculateFromAmountTimeout = setTimeout(() => {
       calculateNewFromAmount(value);
     }, 500);
-    clearErrors();
-  };
-
-  const calculateNewToAmount = async (value: string) => {
-    if (!fromAsset || !toAsset) {
-      return;
-    }
-
-    try {
-      setIsCalculatingToAmount(true);
-      const price = Number(
-        await DexService.instance.getTokenPriceFrom(fromAsset.symbol, toAsset.symbol, value)
-      );
-
-      clearErrors();
-      setSwapPrice(price);
-      setToAmount((Number(value) * price).toString());
-      setIsCalculatingToAmount(false);
-    } catch (e) {
-      if (!e.isCancel) {
-        setFromAmountError(translateRaw('INVALID_AMOUNT_ERROR'));
-
-        setIsCalculatingToAmount(false);
-        console.error(e);
-      }
-    }
-  };
-
-  const calculateNewFromAmount = async (value: string) => {
-    if (!fromAsset || !toAsset) {
-      return;
-    }
-
-    try {
-      setIsCalculatingFromAmount(true);
-      const price = Number(
-        await DexService.instance.getTokenPriceTo(fromAsset.symbol, toAsset.symbol, value)
-      );
-
-      clearErrors();
-      setSwapPrice(price);
-      setFromAmount((Number(value) * price).toString());
-      setIsCalculatingFromAmount(false);
-    } catch (e) {
-      if (!e.isCancel) {
-        setToAmountError(translateRaw('INVALID_AMOUNT_ERROR'));
-
-        setIsCalculatingFromAmount(false);
-        console.error(e);
-      }
-    }
-  };
-
-  const handleFromAssetSelected = (selectedAsset: ISwapAsset) => {
-    if (isCalculatingFromAmount || isCalculatingToAmount) {
-      return;
-    }
-    setFromAsset(selectedAsset);
-    clearAmounts();
-    clearErrors();
-  };
-
-  const clearAmounts = () => {
-    setFromAmount('');
-    setToAmount('');
-  };
-
-  const clearErrors = () => {
-    if (fromAmountError || toAmountError) {
-      setFromAmountError('');
-      setToAmountError('');
-    }
   };
 
   // Calculate new "to amount" after "to asset" is selected
@@ -181,8 +106,8 @@ export default function SwapAssets(props: Props) {
     if (!fromAmount) {
       return;
     }
+
     calculateNewToAmount(fromAmount);
-    setLastChagedAmount(LAST_CHANGED_AMOUNT.FROM);
   }, [toAsset]);
 
   return (
@@ -202,7 +127,7 @@ export default function SwapAssets(props: Props) {
             label={translateRaw('FORM_SEND_AMOUNT')}
             value={fromAmount}
             placeholder="0.00"
-            onChange={handleFromAmountChanged}
+            onChange={handleFromAmountChangedEvent}
             height={'54px'}
             isLoading={isCalculatingFromAmount}
             inputError={fromAmountError}
@@ -222,7 +147,7 @@ export default function SwapAssets(props: Props) {
             label={translate('SWAP_RECEIVE_AMOUNT')}
             value={toAmount}
             placeholder="0.00"
-            onChange={handleToAmountChanged}
+            onChange={handleToAmountChangedEvent}
             height={'54px'}
             isLoading={isCalculatingToAmount}
             inputError={toAmountError}
@@ -232,20 +157,20 @@ export default function SwapAssets(props: Props) {
           selectedAsset={toAsset}
           assets={filteredAssets}
           label={translateRaw('ASSET')}
-          onChange={setToAsset}
+          onChange={handleToAssetSelected}
           showOnlyTicker={true}
           disabled={isCalculatingToAmount || isCalculatingFromAmount}
         />
       </FormItem>
       <StyledButton
-        onClick={goToNextStep}
+        onClick={onSuccess}
         disabled={
           isCalculatingToAmount ||
           isCalculatingFromAmount ||
           !fromAmount ||
           !toAmount ||
-          fromAmountError ||
-          toAmountError
+          !!fromAmountError ||
+          !!toAmountError
         }
       >
         {translate('ACTION_6')}

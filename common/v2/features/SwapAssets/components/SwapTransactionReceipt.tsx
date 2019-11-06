@@ -8,19 +8,19 @@ import { ITxReceipt, ITxConfig } from 'v2/types';
 interface Props {
   txReceipt: ITxReceipt;
   txConfig: ITxConfig;
-  goToFirstStep(): void;
+  onSuccess(): void;
 }
 
 export default function SwapTransactionReceipt(props: Props) {
-  const { txReceipt, goToFirstStep, txConfig } = props;
+  const { txReceipt, onSuccess, txConfig } = props;
 
   return (
     <TransactionReceipt
       txReceipt={txReceipt}
       txConfig={txConfig}
       completeButtonText={translateRaw('SWAP_START_ANOTHER')}
-      resetFlow={goToFirstStep}
-      onComplete={goToFirstStep}
+      resetFlow={onSuccess}
+      onComplete={onSuccess}
     />
   );
 }
