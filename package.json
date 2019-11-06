@@ -205,7 +205,7 @@
   },
   "scripts": {
     "db": "nodemon ./db",
-    "build": "webpack --config webpack_config/production.js",
+    "build": "cross-env NODE_ENV=production webpack --config webpack_config/production.js",
     "prebuild": "check-node-version --package",
     "build:downloadable": "cross-env NODE_ENV=production webpack --config webpack_config/downloadable.js",
     "prebuild:downloadable": "check-node-version --package",
