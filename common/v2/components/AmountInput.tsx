@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import { Input } from '@mycrypto/ui';
 import { Asset } from 'v2/types';
-import { monospace } from 'v2/theme';
 import { TSymbol } from 'v2/types/symbols';
 import AssetIcon from './AssetIcon';
 import Typography from './Typography';
@@ -15,17 +14,13 @@ interface Props {
   onBlur?(event: any): void;
 }
 
-const SInput = styled(Input)`
-  font-family: ${monospace};
-`;
-
 const SAssetIcon = styled(AssetIcon)`
   margin-right: 16px;
 `;
 
 function AmountInput({ asset, value, onChange, onBlur, placeholder, ...props }: Props) {
   return (
-    <SInput
+    <Input
       {...props}
       value={value}
       onChange={onChange}
