@@ -1,3 +1,4 @@
+@import 'common/sass/variables';
 @mixin perfectly-centered {
   display: flex;
   align-items: center;
@@ -6,6 +7,7 @@
 
 $footer-background: #163150;
 $footer-text-color: #fff;
+$footer-link-color: color(text-color-inverted);
 
 .mobile-only {
   display: block;
@@ -95,5 +97,21 @@ $footer-text-color: #fff;
   }
   @media (min-width: 1050px) {
     padding-bottom: 0;
+  }
+}
+
+.SocialMediaLink {
+  transition: opacity 0.3s;
+  color: $footer-link-color;
+  margin: 0.55rem;
+
+  > i {
+    font-size: 1.15rem;
+  }
+
+  &:hover,
+  &:focus {
+    opacity: 0.8;
+    color: $footer-link-color;
   }
 }

@@ -24,6 +24,13 @@ $spacing-md: 15px;
       width: 152px;
       height: 38px;
     }
+    &-toggle {
+      display: none;
+
+      @media (min-width: 800px) {
+        display: block;
+      }
+    }
 
     @media (min-width: 800px) {
       justify-content: space-between;
@@ -42,6 +49,11 @@ $spacing-md: 15px;
 
     @media (min-width: 800px) {
       justify-content: flex-start;
+    }
+  }
+  &-toggle {
+    @media (min-width: 800px) {
+      display: none;
     }
   }
   &-socials-legal {
