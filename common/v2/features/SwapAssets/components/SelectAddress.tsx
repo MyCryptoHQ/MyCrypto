@@ -48,7 +48,7 @@ export default function SelectAddress(props: Props) {
     onSuccess
   } = props;
 
-  const { accounts } = useContext(StoreContext);
+  const { accounts, assets } = useContext(StoreContext);
   const filteredAccounts = getAccountsWithAssetBalance(accounts, fromAsset, fromAmount);
 
   return (
@@ -69,6 +69,7 @@ export default function SelectAddress(props: Props) {
         onSelect={(option: StoreAccount) => {
           handleAccountSelected(option);
         }}
+        asset={assets().find(x => x.ticker === fromAsset.symbol)}
       />
       {!filteredAccounts.length && (
         <InlineErrorMsg>{translate('ACCOUNT_SELECTION_NO_FUNDS')}</InlineErrorMsg>
