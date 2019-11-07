@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
-import { Button, Input } from '@mycrypto/ui';
+import { Button } from '@mycrypto/ui';
 import _ from 'lodash';
 import { formatEther, bigNumberify } from 'ethers/utils';
 import BN from 'bn.js';
@@ -9,7 +9,7 @@ import styled from 'styled-components';
 
 import translate, { translateRaw } from 'translations';
 import { WhenQueryExists } from 'components/renderCbs';
-import { InlineErrorMsg, AccountDropdown } from 'v2/components';
+import { InlineErrorMsg, AccountDropdown, AmountInput } from 'v2/components';
 import {
   getNetworkById,
   getBaseAssetByNetwork,
@@ -331,8 +331,9 @@ export default function SendAssetsForm({
                   render={({ field, form }: FieldProps) => {
                     return (
                       <>
-                        <Input
+                        <AmountInput
                           {...field}
+                          asset={values.asset}
                           value={field.value}
                           onBlur={() => {
                             form.setFieldTouched('amount');
