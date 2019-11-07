@@ -51,8 +51,7 @@ export default class DrawerProvider extends Component {
         >
           {show => {
             return (
-              show &&
-              ((style: any) => <Drawer {...screen} onClose={() => toggleVisible} style={style} />)
+              show && ((style: any) => <Drawer {...screen} onClose={toggleVisible} style={style} />)
             );
           }}
         </Transition>

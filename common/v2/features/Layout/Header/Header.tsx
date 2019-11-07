@@ -443,8 +443,8 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
             const liProps = to
               ? { onClick: () => history.push(to) }
               : {
-                  onMouseEnter: () => toggleDropdown(title),
-                  onMouseLeave: () => toggleDropdown(title)
+                  onMouseOver: () => toggleDropdown(title),
+                  onMouseOut: () => toggleDropdown(title)
                 };
 
             return (
