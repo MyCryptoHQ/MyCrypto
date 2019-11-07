@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import queryString from 'query-string';
 
-import { logError, isDesktop } from 'v2/utils';
+import { logError, IS_ELECTRON } from 'v2/utils';
 import { ApiService } from 'v2/services/ApiService';
 import { CacheService } from '../Store';
 import {
@@ -47,7 +47,7 @@ export class ShapeShiftServiceBase {
 
     code ? this.requestAccessToken(code) : this.authorize();
 
-    if (isDesktop()) {
+    if (IS_ELECTRON) {
       const { ipcRenderer } = (window as any).require('electron');
 
       ipcRenderer.on('shapeshift-set-token', (_: any, token: string) => this.authorize(token));
@@ -236,7 +236,7 @@ export class ShapeShiftServiceBase {
     });
     const url = `${SHAPESHIFT_AUTHORIZATION_URL}?${query}`;
 
-    if (isDesktop()) {
+    if (IS_ELECTRON) {
       const { ipcRenderer } = (window as any).require('electron');
 
       ipcRenderer.send('shapeshift-authorize', url);
@@ -280,7 +280,7 @@ export class ShapeShiftServiceBase {
 
     this.authorize(token);
 
-    if (isDesktop()) {
+    if (IS_ELECTRON) {
       const { ipcRenderer } = (window as any).require('electron');
 
       ipcRenderer.send('shapeshift-token-retrieved', token);

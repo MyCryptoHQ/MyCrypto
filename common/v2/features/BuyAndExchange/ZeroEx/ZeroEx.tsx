@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { isDesktop } from 'v2/utils';
+import { IS_ELECTRON } from 'v2/utils';
 import { replaceZeroExContainer } from './helpers';
 import {
   ZEROEX_CONTAINER_ID,
@@ -16,7 +16,7 @@ import Warning from 'components/ui/Warning';
 
 export default class ZeroEx extends Component {
   public componentDidMount() {
-    if (!isDesktop()) {
+    if (!IS_ELECTRON) {
       this.renderZeroExInstant();
     }
   }
@@ -24,7 +24,7 @@ export default class ZeroEx extends Component {
   public render() {
     return (
       <TabSection>
-        {isDesktop() ? (
+        {IS_ELECTRON ? (
           <Warning>
             0x Instant functionality is currently unavailable on the MyCrypto Desktop App. This
             functionality will be available in a future update -- stay tuned!
