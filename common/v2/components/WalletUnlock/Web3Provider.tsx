@@ -70,7 +70,6 @@ class Web3ProviderDecrypt extends Component<Props, State> {
               content={translate('ADD_ACCOUNT_WEB3_HELP', { $walletId: provider.name })}
               href={`${provider.helpLink}`}
             />
-            d
           </div>
         </div>
       </div>
