@@ -2,13 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { TSymbol } from 'v2/types';
-import { getSymbolIcon } from 'v2/utils';
 import { default as Typography } from './Typography';
+import AssetIcon from './AssetIcon';
 
 const SContainer = styled('div')`
   display: inline-flex;
   align-contents: center;
 `;
+
+const SAssetIconContainer = styled('span')`
+  padding-right: 5px;
+`;
+
 interface Props {
   amount: string;
   symbol: TSymbol;
@@ -31,7 +36,10 @@ function Currency({
 }: Props) {
   const format = (value: string, decimalPlaces: number) => {
     const v = parseFloat(value);
-    return Number(v).toLocaleString(undefined, { maximumFractionDigits: decimalPlaces });
+    return Number(v).toLocaleString(undefined, {
+      minimumFractionDigits: decimalPlaces,
+      maximumFractionDigits: decimalPlaces
+    });
     // const multiplier = Math.pow(10, decimalPlaces);
     // return Math.round(v * multiplier + Number.EPSILON) / multiplier;
   };
@@ -39,14 +47,14 @@ function Currency({
   return (
     <SContainer {...props}>
       {icon && (
-        <span>
-          <img src={getSymbolIcon(symbol)} width={19} alt={symbol} />
-        </span>
+        <SAssetIconContainer>
+          <AssetIcon size={'19px'} symbol={symbol} />
+        </SAssetIconContainer>
       )}
       <Typography bold={bold} fontSize={fontSize}>
         {prefix && `${symbol}`}
         {format(amount, decimals)}
-        {!prefix && `${symbol}`}
+        {!prefix && ` ${symbol}`}
       </Typography>
     </SContainer>
   );

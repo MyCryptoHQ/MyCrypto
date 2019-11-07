@@ -1,5 +1,6 @@
 import { getCache } from '../LocalCache';
-import { Account, AddressBook, Network } from 'v2/types';
+import { Account, AddressBook, Network, WalletId } from 'v2/types';
+import { WALLETS_CONFIG } from 'v2/config';
 
 export const getAllAddressLabels = (): AddressBook[] => {
   return Object.values(getCache().addressBook);
@@ -39,14 +40,14 @@ export const getLabelByAddressAndNetwork = (
 / that they can change later which differentiates between accounts.
 / `New Ethereum Account 1` vs `New Ethereum Account 2` vs `New Ethereum Classic Account 1`
 */
-export const findNextUnusedDefaultLabel = (networkName: string): string => {
+export const findNextUnusedDefaultLabel = (wallet: WalletId): string => {
   const addressLabels: AddressBook[] = getAllAddressLabels();
   let index = 0;
   let isFound: AddressBook | undefined;
   let unusedLabel: string;
   do {
     index += 1;
-    unusedLabel = `${networkName} Account ${index}`;
+    unusedLabel = `${WALLETS_CONFIG[wallet].name} Account ${index}`;
     isFound = addressLabels.find(label => label.label === unusedLabel);
   } while (isFound);
 

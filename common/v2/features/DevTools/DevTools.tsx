@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import { DEFAULT_NETWORK } from 'v2/config';
 import { AccountContext, getLabelByAccount, AddressBookContext } from 'v2/services/Store';
+import { useDevTools } from 'v2/services';
 import { Account, AddressBook, ExtendedAccount, WalletId } from 'v2/types';
 
 import ToolsNotifications from './ToolsNotifications';
@@ -131,4 +132,32 @@ const DevTools = () => {
   );
 };
 
-export default DevTools;
+const DevToolsToggle = () => {
+  const { isActive, toggleDevTools } = useDevTools();
+  return (
+    <button
+      onClick={toggleDevTools}
+      style={{
+        position: 'fixed',
+        bottom: 0,
+        right: 0,
+        zIndex: 99,
+        height: '5rem'
+      }}
+    >
+      Development Mode {isActive ? 'On' : 'Off'}
+    </button>
+  );
+};
+
+const DevToolsManager = () => {
+  const { isActive } = useDevTools();
+  return (
+    <>
+      <DevToolsToggle />
+      {isActive && <DevTools />}
+    </>
+  );
+};
+
+export { DevToolsManager };

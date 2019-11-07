@@ -2,11 +2,13 @@
   {
     "address": "0x72ea3508D9d817A91465aBb59bE10FEF9857A055",
     "symbol": "DGT",
-    "decimal": 0
+    "decimal": 0,
+    "uuid": "6971f971-ae86-55e4-83ff-11e4808797c1"
   },
   {
     "address": "0x0146B9dCd9FB2ABC1b5B136C28D20d0037526961",
     "symbol": "TOPM",
-    "decimal": 18
+    "decimal": 18,
+    "uuid": "f12d75b9-eafa-5a98-975d-ce5b50993a8f"
   }
 ]

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
-import { Button, Input } from '@mycrypto/ui';
+import { Button } from '@mycrypto/ui';
 import _ from 'lodash';
 import { formatEther, bigNumberify } from 'ethers/utils';
 import BN from 'bn.js';
@@ -9,7 +9,7 @@ import styled from 'styled-components';
 
 import translate, { translateRaw } from 'translations';
 import { WhenQueryExists } from 'components/renderCbs';
-import { InlineErrorMsg, AccountDropdown } from 'v2/components';
+import { InlineErrorMsg, AccountDropdown, AmountInput } from 'v2/components';
 import {
   getNetworkById,
   getBaseAssetByNetwork,
@@ -239,6 +239,9 @@ export default function SendAssetsForm({
             setFieldValue('nonceField', nonce.toString());
             setIsEstimatingNonce(false);
           };
+
+          const validAccounts = accounts.filter(account => account.wallet !== WalletId.VIEW_ONLY);
+
           return (
             <Form className="SendAssetsForm">
               <QueryWarning />
@@ -253,7 +256,7 @@ export default function SendAssetsForm({
                     <AssetDropdown
                       name={field.name}
                       value={field.value}
-                      assets={assets()}
+                      assets={assets(validAccounts)}
                       onSelect={(option: StoreAsset) => {
                         form.setFieldValue('asset', option); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
                         //TODO get assetType onChange
@@ -297,6 +300,7 @@ export default function SendAssetsForm({
                           handleNonceEstimate(option);
                           handleGasEstimate();
                         }}
+                        asset={values.asset}
                       />
                     );
                   }}
@@ -331,8 +335,9 @@ export default function SendAssetsForm({
                   render={({ field, form }: FieldProps) => {
                     return (
                       <>
-                        <Input
+                        <AmountInput
                           {...field}
+                          asset={values.asset}
                           value={field.value}
                           onBlur={() => {
                             form.setFieldTouched('amount');

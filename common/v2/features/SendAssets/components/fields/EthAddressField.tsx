@@ -1,6 +1,7 @@
 import React from 'react';
 import { Input } from '@mycrypto/ui';
 import { FieldProps, Field, FormikTouched } from 'formik';
+import styled from 'styled-components';
 
 import { translateRaw } from 'translations';
 import {
@@ -10,6 +11,7 @@ import {
 } from 'v2/services/EthService';
 import { InlineErrorMsg, ENSStatus } from 'v2/components';
 import { Network, IFormikFields } from 'v2/types';
+import { monospace } from 'v2/theme';
 
 /*
   Eth address field to be used within a Formik Form
@@ -27,6 +29,10 @@ interface Props {
   handleGasEstimate(): Promise<void>;
   handleENSResolve?(name: string): Promise<void>;
 }
+
+const SInput = styled(Input)`
+  font-family: ${monospace};
+`;
 
 function ETHAddressField({
   fieldName,
@@ -62,7 +68,8 @@ function ETHAddressField({
         validateOnChange={false}
         render={({ field, form }: FieldProps) => (
           <>
-            <Input
+            <SInput
+              data-lpignore="true"
               {...field}
               value={field.value.display}
               placeholder={placeholder}

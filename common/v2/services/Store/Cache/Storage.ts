@@ -1,4 +1,4 @@
-import { isDevelopment } from 'v2/utils';
+import { IS_DEV } from 'v2/utils';
 
 // tslint:disable-next-line
 const noop = () => {};
@@ -62,7 +62,7 @@ export default class StorageService extends StorageServiceBase {
       instantiated = true;
     }
 
-    if (isDevelopment()) {
+    if (IS_DEV) {
       (window as any).StorageService = this;
     }
   }

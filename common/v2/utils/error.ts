@@ -1,7 +1,7 @@
-import { isDevelopment } from './environment';
+import { IS_DEV } from './environment';
 
 export const logError = (name: string, error: Error): void => {
-  if (isDevelopment()) {
+  if (IS_DEV) {
     console.error(name, error);
   }
 };

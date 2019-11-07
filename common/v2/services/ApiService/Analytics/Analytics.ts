@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { isDesktop, isDevelopment } from 'v2/utils';
+import { IS_ELECTRON, IS_DEV } from 'v2/utils';
 import { ApiService } from 'v2/services/ApiService';
 import {
   ANALYTICS_API_URL,
@@ -32,13 +32,13 @@ export default class AnalyticsService {
 
   public track(category: string, eventAction: string, eventParams?: object): Promise<any> {
     const customParams: Params = {
-      local: isDevelopment().toString(),
-      desktop: isDesktop().toString(),
+      local: IS_DEV.toString(),
+      desktop: IS_ELECTRON.toString(),
       ...eventParams
     };
 
     const cvar: object = this.mapParamsToCvars(customParams);
-    const analyticsId = isDesktop() ? ANALYTICS_ID_DESKTOP : ANALYTICS_ID_SITE;
+    const analyticsId = IS_ELECTRON ? ANALYTICS_ID_DESKTOP : ANALYTICS_ID_SITE;
 
     const params: object = {
       action_name: eventAction,
@@ -54,12 +54,12 @@ export default class AnalyticsService {
 
   public trackPageVisit(pageUrl: string): Promise<any> {
     const customParams: Params = {
-      local: isDevelopment().toString(),
-      desktop: isDesktop().toString()
+      local: IS_DEV.toString(),
+      desktop: IS_ELECTRON.toString()
     };
 
     const cvar: object = this.mapParamsToCvars(customParams);
-    const analyticsId = isDesktop() ? ANALYTICS_ID_DESKTOP : ANALYTICS_ID_SITE;
+    const analyticsId = IS_ELECTRON ? ANALYTICS_ID_DESKTOP : ANALYTICS_ID_SITE;
 
     const params: object = {
       action_name: 'Page navigation',

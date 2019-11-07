@@ -109,7 +109,9 @@ export default function AccountList(props: AccountListProps) {
     <DashboardPanel
       heading={translateRaw('ACCOUNT_LIST_TABLE_ACCOUNTS')}
       headingRight={`+ ${
-        IS_MOBILE ? translateRaw('ACCOUNT_LIST_TABLE_ADD') : translateRaw('ACCOUNT_LIST_TABLE_ADD')
+        IS_MOBILE
+          ? translateRaw('ACCOUNT_LIST_TABLE_ADD')
+          : translateRaw('ACCOUNT_LIST_TABLE_ADD_ACCOUNT')
       }`}
       actionLink={ROUTE_PATHS.ADD_ACCOUNT.path}
       className={`AccountList ${className}`}

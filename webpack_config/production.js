@@ -28,10 +28,7 @@ module.exports = merge.smart(common, {
     rules: [
       {
         test: /\.css$/,
-        use: [
-          MiniCSSExtractPlugin.loader,
-          'css-loader'
-        ]
+        use: [MiniCSSExtractPlugin.loader, 'css-loader']
       },
 
       {
@@ -72,9 +69,7 @@ module.exports = merge.smart(common, {
       enabled: true
     }),
 
-    new webpack.ProgressPlugin(),
-
-    new webpack.EnvironmentPlugin({ NODE_ENV: 'production'})
+    new webpack.ProgressPlugin()
   ],
 
   optimization: {
@@ -86,5 +81,5 @@ module.exports = merge.smart(common, {
 
   performance: {
     hints: 'warning'
-  },
+  }
 });

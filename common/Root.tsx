@@ -14,8 +14,7 @@ import { transactionMetaActions } from 'features/transaction';
 import { GAU_THEME } from 'v2/theme';
 import { IS_DEV, IS_ELECTRON } from 'v2/utils';
 import { NewAppReleaseModal } from 'v2/components';
-import { DevModeProvider, useDevMode } from 'v2/services';
-import { DevTools } from 'v2/features';
+import { DevToolsManager } from 'v2/features';
 import AppProviders from './AppProviders';
 import { AppRouter } from './AppRouter';
 
@@ -55,26 +54,17 @@ class RootClass extends Component<Props> {
     const { store } = this.props;
 
     return (
-      <DevModeProvider>
-        <ThemeProvider theme={GAU_THEME}>
-          <Provider store={store}>
-            <AppProviders>
-              <AppRouter />
-              <QrSignerModal />
-              <div id="ModalContainer" />
-              {IS_ELECTRON ? <NewAppReleaseModal /> : <></>}
-              {IS_DEV ? (
-                <>
-                  <DevToolsContainer />
-                  <DevModeToggle />
-                </>
-              ) : (
-                <></>
-              )}
-            </AppProviders>
-          </Provider>
-        </ThemeProvider>
-      </DevModeProvider>
+      <ThemeProvider theme={GAU_THEME}>
+        <Provider store={store}>
+          <AppProviders>
+            <AppRouter />
+            <QrSignerModal />
+            <div id="ModalContainer" />
+            {IS_ELECTRON ? <NewAppReleaseModal /> : <></>}
+            {IS_DEV ? <DevToolsManager /> : <></>}
+          </AppProviders>
+        </Provider>
+      </ThemeProvider>
     );
   }
 
@@ -104,29 +94,6 @@ class RootClass extends Component<Props> {
     root.classList.add(`theme--${theme}`);
   }
 }
-
-const DevModeToggle = () => {
-  const { isDevelopmentMode, toggleDevMode } = useDevMode();
-  return (
-    <button
-      onClick={toggleDevMode}
-      style={{
-        position: 'fixed',
-        bottom: 0,
-        right: 0,
-        zIndex: 99,
-        height: '5rem'
-      }}
-    >
-      Development Mode {isDevelopmentMode ? 'On' : 'Off'}
-    </button>
-  );
-};
-
-const DevToolsContainer = () => {
-  const { isDevelopmentMode } = useDevMode();
-  return isDevelopmentMode ? <DevTools /> : <></>;
-};
 
 const mapStateToProps = (state: AppState): StateProps => ({
   networkUnit: configSelectors.getNetworkUnit(state),
