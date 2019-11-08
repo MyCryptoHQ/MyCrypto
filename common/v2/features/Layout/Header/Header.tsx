@@ -327,7 +327,6 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
 
   const toggleDropdown = (dropdown: string) =>
     setVisibleDropdowns({
-      ...visibleDropdowns,
       [dropdown]: !visibleDropdowns[dropdown]
     });
 
@@ -443,8 +442,8 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
             const liProps = to
               ? { onClick: () => history.push(to) }
               : {
-                  onMouseOver: () => toggleDropdown(title),
-                  onMouseOut: () => toggleDropdown(title)
+                  onMouseEnter: () => toggleDropdown(title),
+                  onMouseLeave: () => toggleDropdown(title)
                 };
 
             return (
