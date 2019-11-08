@@ -23,8 +23,8 @@ export {
 } from './ScreenLock';
 export { SendAssets } from './SendAssets';
 export { ReceiveAssets } from './ReceiveAssets';
-export { BuyAndExchange, ShapeShiftAuthorization, ZeroEx } from './BuyAndExchange';
 export { default as PageNotFound } from './PageNotFound';
 export { SignAndVerifyMessage } from './SignAndVerifyMessage';
 export { NotificationsProvider } from './NotificationsPanel';
 export { BroadcastTransactionFlow } from './BroadcastTransaction';
+export { SwapAssetsFlow } from './SwapAssets';

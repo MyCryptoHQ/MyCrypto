@@ -84,6 +84,10 @@ export class ProviderHandler {
     return this.client.sendTransaction(signedTx);
   }
 
+  public waitForTransaction(txHash: string, confirmations?: number): Promise<TransactionReceipt> {
+    return this.client.waitForTransaction(txHash, confirmations);
+  }
+
   /* TODO: Needs handling for web3 providers. */
   private fetchProvider(network: Network): FallbackProvider {
     return EthersJS.getEthersInstance(network);

@@ -44,3 +44,4 @@ export { default as TabsNav } from './TabsNav';
 export { default as CollapsibleTable } from './CollapsibleTable';
 export { default as Network } from './Network';
 export { Banner } from './Banner';
+export * from './SignTransactionWallets';
