@@ -1,4 +1,4 @@
-import { getCache } from '../LocalCache';
+import { getCache } from '../Cache';
 import { Account, AddressBook, Network, WalletId } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
 

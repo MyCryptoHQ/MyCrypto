@@ -16,7 +16,7 @@ import {
   getNetworkById,
   getNodesByNetwork
 } from 'v2/services/Store';
-import { getCache } from '../LocalCache';
+import { getCache } from '../Cache';
 import { RPCNode, ProviderHandler } from 'v2/services/EthService';
 
 export const getCurrentsFromContext = (

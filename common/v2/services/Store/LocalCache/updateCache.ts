@@ -1,4 +1,4 @@
-import { getCacheRaw, setCache } from './LocalCache';
+/**import { getCacheRaw, setCache } from '../Cache';
 import { testSettings as defaultCacheSettings } from 'v2/config';
 
 export const updateCacheSettings = () => {
@@ -15,3 +15,4 @@ export const cacheSettingsUpdateNeeded = () => {
     ? false
     : true;
 };
+**/

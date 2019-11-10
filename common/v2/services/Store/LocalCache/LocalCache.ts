@@ -5,7 +5,7 @@ import { initializeCache } from './seedCache';
 import { CACHE_INIT, CACHE_KEY, ENCRYPTED_CACHE_KEY } from './constants';
 
 // Low level operations
-export const hardRefreshCache = () => {
+/**export const hardRefreshCache = () => {
   setCache(CACHE_INIT);
 };
 
@@ -118,4 +118,4 @@ export const readAll = <K extends CollectionKey>(key: K) => () => {
   const section: LocalCache[K] = getCache()[key];
   const sectionEntries: [string, LocalCache[K][string]][] = Object.entries(section);
   return sectionEntries.map(([uuid, value]) => ({ ...value, uuid }));
-};
+};**/
