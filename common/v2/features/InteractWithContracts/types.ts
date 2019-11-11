@@ -14,11 +14,11 @@ export enum ABIFieldType {
 }
 
 export interface ABIField {
-  id?: string;
   name: string;
   type: ABIFieldType;
   value?: string;
   indexed?: boolean;
+  displayName?: string;
 }
 
 export enum StateMutabilityType {

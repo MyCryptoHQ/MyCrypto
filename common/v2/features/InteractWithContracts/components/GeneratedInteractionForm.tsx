@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { sortBy } from 'lodash';
 
 import { InputField, Dropdown, Button } from 'v2/components';
 
 import FunctionDropdownOption from './FunctionDropdownOption';
 import FunctionDropdownValue from './FunctionDropdownValue';
-import { ABIItem, ABIItemType, ABIField } from '../types';
-import { isReadOperation } from '../helpers';
+import { ABIItem, ABIField } from '../types';
+import {
+  isReadOperation,
+  generateFunctionInputDisplayNames,
+  getFunctionsFromABI
+} from '../helpers';
 
 const Wrapper = styled.div`
   margin-top: 16px;
@@ -51,12 +54,6 @@ interface Props {
 }
 
 export default function GeneratedInteractionForm({ abi }: Props) {
-  const getFunctionsFromABI = (pAbi: ABIItem[]) => {
-    return sortBy(pAbi.filter(x => x.type === ABIItemType.FUNCTION), item => {
-      return item.name.toLowerCase();
-    });
-  };
-
   const [functions, setFunctions] = useState(getFunctionsFromABI(abi));
   const [currentFunction, setCurrentFunction] = useState<ABIItem | undefined>(undefined);
 
@@ -66,13 +63,13 @@ export default function GeneratedInteractionForm({ abi }: Props) {
   }, [abi]);
 
   const handleFunctionSelected = (selectedFunction: ABIItem) => {
-    setCurrentFunction(selectedFunction);
+    setCurrentFunction(generateFunctionInputDisplayNames(selectedFunction));
   };
 
   const handleInputChange = (fieldName: string, value: string) => {
     const updatedFunction = Object.assign({}, currentFunction);
-    const indexToChange = updatedFunction.inputs.findIndex(x => x.name === fieldName);
-    updatedFunction.inputs[indexToChange].value = value;
+    const inputIndexToChange = updatedFunction.inputs.findIndex(x => x.name === fieldName);
+    updatedFunction.inputs[inputIndexToChange].value = value;
     setCurrentFunction(updatedFunction);
   };
 
@@ -107,9 +104,9 @@ export default function GeneratedInteractionForm({ abi }: Props) {
             <div>
               {inputs.map((field, index) => {
                 return (
-                  <FieldWrapper key={`${field.name}${index}`}>
+                  <FieldWrapper key={`${field.displayName}${index}`}>
                     <InputField
-                      label={`${field.name || 'Input'} (${field.type})`}
+                      label={`${field.displayName} (${field.type})`}
                       value={field.value}
                       onChange={({ target: { value } }) => handleInputChange(field.name, value)}
                     />
