@@ -51,9 +51,10 @@ const ButtonWrapper = styled.div`
 
 interface Props {
   abi: ABIItem[];
+  handleInteractionFormSubmit(submitedFunction: ABIItem): void;
 }
 
-export default function GeneratedInteractionForm({ abi }: Props) {
+export default function GeneratedInteractionForm({ abi, handleInteractionFormSubmit }: Props) {
   const [functions, setFunctions] = useState(getFunctionsFromABI(abi));
   const [currentFunction, setCurrentFunction] = useState<ABIItem | undefined>(undefined);
 
@@ -131,8 +132,12 @@ export default function GeneratedInteractionForm({ abi }: Props) {
             </div>
           )}
           <ButtonWrapper>
-            {isRead && inputs.length > 0 && <Button>Read</Button>}
-            {!isRead && <Button>Write</Button>}
+            {isRead && inputs.length > 0 && (
+              <Button onClick={() => handleInteractionFormSubmit(currentFunction)}>Read</Button>
+            )}
+            {!isRead && (
+              <Button onClick={() => handleInteractionFormSubmit(currentFunction)}>Write</Button>
+            )}
           </ButtonWrapper>
         </>
       )}

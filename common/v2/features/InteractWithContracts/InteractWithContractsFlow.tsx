@@ -26,7 +26,8 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
     handleContractAddressChanged,
     handleAbiChanged,
     updateNetworkContractOptions,
-    setGeneratedFormVisible
+    setGeneratedFormVisible,
+    handleInteractionFormSubmit
   } = useStateReducer(InteractWithContractsFactory, interactWithContractsInitialState);
 
   const goToFirstStep = () => {
@@ -64,7 +65,8 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
         handleContractAddressChanged,
         handleAbiChanged,
         updateNetworkContractOptions,
-        setGeneratedFormVisible
+        setGeneratedFormVisible,
+        handleInteractionFormSubmit
       }
     },
     {

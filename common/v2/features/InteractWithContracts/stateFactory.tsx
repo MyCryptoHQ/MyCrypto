@@ -6,6 +6,7 @@ import { Contract, NetworkId } from 'v2/types';
 import { getNetworkById, ContractContext, isValidETHAddress } from 'v2/services';
 
 import { customContract, CUSTOM_CONTRACT_ADDRESS } from './constants';
+import { ABIItem } from './types';
 
 const interactWithContractsInitialState = {
   networkId: DEFAULT_NETWORK,
@@ -13,7 +14,8 @@ const interactWithContractsInitialState = {
   contract: undefined,
   contracts: [],
   abi: '',
-  showGeneratedForm: false
+  showGeneratedForm: false,
+  submitedFunction: undefined
 };
 
 interface State {
@@ -23,6 +25,7 @@ interface State {
   contracts: Contract[];
   abi: string;
   showGeneratedForm: boolean;
+  submitedFunction: ABIItem;
 }
 
 const InteractWithContractsFactory: TUseStateReducerFactory<State> = ({ state, setState }) => {
@@ -98,6 +101,13 @@ const InteractWithContractsFactory: TUseStateReducerFactory<State> = ({ state, s
     }));
   };
 
+  const handleInteractionFormSubmit = (submitedFunction: ABIItem) => {
+    setState((prevState: State) => ({
+      ...prevState,
+      submitedFunction
+    }));
+  };
+
   return {
     handleNetworkSelected,
     handleContractAddressChanged,
@@ -105,6 +115,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<State> = ({ state, s
     handleAbiChanged,
     updateNetworkContractOptions,
     setGeneratedFormVisible,
+    handleInteractionFormSubmit,
     interactWithContractsState: state
   };
 };

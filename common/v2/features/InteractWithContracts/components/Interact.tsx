@@ -9,6 +9,7 @@ import ContractDropdownOption from './ContractDropdownOption';
 import ContractDropdownValue from './ContractDropdownValue';
 import GeneratedInteractionForm from './GeneratedInteractionForm';
 import { CUSTOM_CONTRACT_ADDRESS } from '../constants';
+import { ABIItem } from '../types';
 
 const NetworkSelectorWrapper = styled.div`
   margin-bottom: 12px;
@@ -77,6 +78,7 @@ interface Props {
   handleAbiChanged(abi: string): void;
   updateNetworkContractOptions(networkId: NetworkId): void;
   setGeneratedFormVisible(visible: boolean): void;
+  handleInteractionFormSubmit(submitedFunction: ABIItem): void;
   goToNextStep(): void;
 }
 
@@ -93,7 +95,8 @@ export default function Interact(props: Props) {
     handleContractAddressChanged,
     handleAbiChanged,
     updateNetworkContractOptions,
-    setGeneratedFormVisible
+    setGeneratedFormVisible,
+    handleInteractionFormSubmit
   } = props;
 
   useEffect(() => {
@@ -158,7 +161,12 @@ export default function Interact(props: Props) {
       <ButtonWrapper>
         <Button onClick={() => setGeneratedFormVisible(true)}>Interact with Contract</Button>
       </ButtonWrapper>
-      {showGeneratedForm && abi && <GeneratedInteractionForm abi={JSON.parse(abi)} />}
+      {showGeneratedForm && abi && (
+        <GeneratedInteractionForm
+          abi={JSON.parse(abi)}
+          handleInteractionFormSubmit={handleInteractionFormSubmit}
+        />
+      )}
     </>
   );
 }
