@@ -100,7 +100,7 @@ const CustomIconWrapper = styled.div`
 interface Props {
   type?: string;
   label?: string | JSX.Element;
-  value: string;
+  value: string | undefined;
   inputError?: string | undefined;
   showEye?: boolean;
   textarea?: boolean;
@@ -108,7 +108,7 @@ interface Props {
   height?: string;
   resizableTextArea?: boolean;
   disabled?: boolean;
-  onChange(event: any): void;
+  onChange?(event: any): void;
   onBlur?(event: any): void;
   validate?(): void | undefined;
 }

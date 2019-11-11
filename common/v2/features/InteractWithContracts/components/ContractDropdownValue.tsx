@@ -1,21 +1,14 @@
 import React from 'react';
-import styled from 'styled-components';
 
-import { COLORS } from 'v2/theme';
+import { Contract } from 'v2/types';
 
-const { SILVER } = COLORS;
-const OptionWrapper = styled.div`
-  padding: 12px 15px;
+import ContractDropdownItem from './ContractDropdownItem';
 
-  &:hover {
-    background-color: ${SILVER};
-  }
-`;
+interface Props {
+  value: Contract;
+}
 
-export default function ContractDropdownValue(props: { value: { name: string } }) {
-  const {
-    value: { name }
-  } = props;
-
-  return <OptionWrapper>{name}</OptionWrapper>;
+export default function ContractDropdownValue(props: Props) {
+  const { value } = props;
+  return <ContractDropdownItem option={value} />;
 }
