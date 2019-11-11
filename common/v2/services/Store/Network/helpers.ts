@@ -3,14 +3,13 @@ import {
   Asset,
   Account,
   DPathFormat,
-  LocalCache,
   Network,
   NetworkId,
   NodeOptions,
   WalletId
 } from 'v2/types';
 import { HD_WALLETS } from 'v2/config';
-import { getCache, setCache, readAll, read, update } from '../Cache';
+import { readAll, read, update } from '../Cache';
 
 export const getAllNetworks = () => {
   return readAll('networks')();

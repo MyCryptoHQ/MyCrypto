@@ -5,7 +5,7 @@ import StorageService from './Storage';
 import { CACHE_TIME_TO_LIVE, CACHE_LOCALSTORAGE_KEY, ENCRYPTED_CACHE_KEY, CACHE_INIT } from './constants';
 import { cachedValueIsFresh } from './helpers';
 import { Cache, NewCacheEntry } from './types';
-import { initializeCache } from '../LocalCache/seedCache';
+import { initializeCache } from './seedCache';
 
 export class CacheServiceBase {
   private cache: Cache = {};

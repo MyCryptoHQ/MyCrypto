@@ -19,10 +19,9 @@ import {
   NetworkId,
   WalletId
 } from 'v2/types';
-import { hardRefreshCache, getCacheRaw, createWithID, create, update, read, updateAll, readAll, getCache } from '../Cache';
-import { CACHE_LOCALSTORAGE_KEY } from '../Cache/constants';
-import uuid from 'uuid';
-import { readSection } from '../Cache/Cache';
+import { hardRefreshCache, updateAll, readAll, getCache } from '../Cache';
+import { CACHE_LOCALSTORAGE_KEY } from './constants';
+import { readSection } from './Cache';
 
 /*
    Extracted from LocalCache.ts.
@@ -121,22 +120,22 @@ export const initNetworks = () => {
 };
 
 export const initAssets = () => {
-  const newStorage = getCache();
   const networks = readSection('networks')();
+  const cachedAssets = readSection('assets')();
   const assets = AssetsData();
   Object.keys(assets).map(en => {
     if (assets[en] && assets[en].networkId) {
       const uuid = generateUUID();
       const networkName = assets[en].networkId;
       // @ts-ignore readonly
-      newStorage.assets[uuid] = assets[en];
+      cachedAssets[uuid] = assets[en];
       if (networkName) {
         networks[networkName].assets.push(uuid);
       }
     }
   });
   updateAll('networks')(networks);
-  updateAll('assets')(newStorage.assets);
+  updateAll('assets')(cachedAssets);
 };
 
 export const initContracts = () => {
@@ -168,7 +167,7 @@ export const initFiatCurrencies = () => {
 };
 
 export const initTestAccounts = () => {
-  const newStorage = getCacheRaw();
+  const newStorage = getCache();
   const settings = readSection('settings')();
   const newAccounts = testAccounts;
   const newAssets = testAssets;
@@ -202,10 +201,10 @@ export const initTestAccounts = () => {
   Object.keys(newLabels).map(labelId => {
     newStorage.addressBook[labelId] = newLabels[labelId];
   });
+  console.log(newStorage.accounts);
   updateAll('accounts')(newStorage.accounts);
   updateAll('settings')(settings);
   updateAll('addressBook')(newStorage.addressBook);
-  //setCache(newStorage);
 };
 
 /* Not deleting in case we need it later.

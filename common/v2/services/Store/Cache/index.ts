@@ -16,7 +16,8 @@ export {
     update,
     updateAll,
     destroy,
-    readAll
+    readAll,
+    readSection
 } from './Cache';
 export * from './constants';
 export * from './helpers';
