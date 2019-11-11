@@ -1,13 +1,14 @@
 import React, { useState, ReactType } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { ExtendedContentPanel } from 'v2/components';
-import { Interact, InteractionReceipt } from './components';
-import { ROUTE_PATHS } from 'v2/config';
 import { translateRaw } from 'translations';
 
-import { interactWithContractsInitialState, InteractWithContractsFactory } from './stateFactory';
+import { ExtendedContentPanel } from 'v2/components';
+import { ROUTE_PATHS } from 'v2/config';
 import { useStateReducer } from 'v2/utils/useStateReducer';
+
+import { interactWithContractsInitialState, InteractWithContractsFactory } from './stateFactory';
+import { Interact, InteractionReceipt } from './components';
 
 interface TStep {
   title: string;
@@ -24,7 +25,8 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
     handleContractSelected,
     handleContractAddressChanged,
     handleAbiChanged,
-    updateNetworkContractOptions
+    updateNetworkContractOptions,
+    setGeneratedFormVisible
   } = useStateReducer(InteractWithContractsFactory, interactWithContractsInitialState);
 
   const goToFirstStep = () => {
@@ -48,19 +50,21 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
     {
       title: translateRaw('Interact with Contracts'),
       component: Interact,
-      props: (({ networkId, contractAddress, contract, abi, contracts }) => ({
+      props: (({ networkId, contractAddress, contract, abi, contracts, showGeneratedForm }) => ({
         networkId,
         contractAddress,
         contract,
         abi,
-        contracts
+        contracts,
+        showGeneratedForm
       }))(interactWithContractsState),
       actions: {
         handleNetworkSelected,
         handleContractSelected,
         handleContractAddressChanged,
         handleAbiChanged,
-        updateNetworkContractOptions
+        updateNetworkContractOptions,
+        setGeneratedFormVisible
       }
     },
     {

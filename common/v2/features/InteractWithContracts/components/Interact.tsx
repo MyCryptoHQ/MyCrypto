@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import { Identicon, Button } from '@mycrypto/ui';
 
 import { NetworkSelectDropdown, InputField, Dropdown } from 'v2/components';
-
-import { BREAK_POINTS } from 'v2/theme';
 import { NetworkId, Contract } from 'v2/types';
+
 import ContractDropdownOption from './ContractDropdownOption';
 import ContractDropdownValue from './ContractDropdownValue';
+import GeneratedInteractionForm from './GeneratedInteractionForm';
+import { CUSTOM_CONTRACT_ADDRESS } from '../constants';
 
 const NetworkSelectorWrapper = styled.div`
   margin-bottom: 12px;
@@ -18,12 +19,8 @@ const NetworkSelectorWrapper = styled.div`
 
 const ContractSelectionWrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
-
-  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    flex-direction: column;
-  }
 `;
 
 const FieldWrapper = styled.div`
@@ -64,7 +61,7 @@ const InputWrapper = styled.div`
 const ButtonWrapper = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: left;
 `;
 
 interface Props {
@@ -73,34 +70,41 @@ interface Props {
   abi: string;
   contract: Contract;
   contracts: Contract[];
+  showGeneratedForm: boolean;
   handleContractSelected(contract: Contract | undefined): void;
   handleNetworkSelected(networkId: string): void;
   handleContractAddressChanged(address: string): void;
   handleAbiChanged(abi: string): void;
   updateNetworkContractOptions(networkId: NetworkId): void;
+  setGeneratedFormVisible(visible: boolean): void;
   goToNextStep(): void;
 }
 
 export default function Interact(props: Props) {
   const {
-    goToNextStep,
     networkId,
     contractAddress,
     abi,
     contract,
     contracts,
+    showGeneratedForm,
     handleNetworkSelected,
     handleContractSelected,
     handleContractAddressChanged,
     handleAbiChanged,
-    updateNetworkContractOptions
+    updateNetworkContractOptions,
+    setGeneratedFormVisible
   } = props;
 
   useEffect(() => {
     updateNetworkContractOptions(networkId);
   }, [networkId]);
 
-  const isCustomContract = contract && contract.address === 'custom';
+  useEffect(() => {
+    setGeneratedFormVisible(false);
+  }, [abi]);
+
+  const isCustomContract = contract && contract.address === CUSTOM_CONTRACT_ADDRESS;
 
   return (
     <>
@@ -152,8 +156,9 @@ export default function Interact(props: Props) {
         </InputWrapper>
       </FieldWrapper>
       <ButtonWrapper>
-        <Button onClick={goToNextStep}>Access</Button>
+        <Button onClick={() => setGeneratedFormVisible(true)}>Interact with Contract</Button>
       </ButtonWrapper>
+      {showGeneratedForm && abi && <GeneratedInteractionForm abi={JSON.parse(abi)} />}
     </>
   );
 }

@@ -1,25 +1,28 @@
+import { useContext } from 'react';
+
 import { TUseStateReducerFactory } from 'v2/utils';
 import { DEFAULT_NETWORK } from 'v2/config';
 import { Contract, NetworkId } from 'v2/types';
 import { getNetworkById, ContractContext, isValidETHAddress } from 'v2/services';
-import { useContext } from 'react';
-import { customContract } from './constants';
+
+import { customContract, CUSTOM_CONTRACT_ADDRESS } from './constants';
 
 const interactWithContractsInitialState = {
   networkId: DEFAULT_NETWORK,
   contractAddress: '',
   contract: undefined,
   contracts: [],
-  abi: ''
+  abi: '',
+  showGeneratedForm: false
 };
 
 interface State {
   networkId: NetworkId;
-  contractSelectionForm: any;
   contractAddress: string;
   contract: Contract | undefined;
   contracts: Contract[];
   abi: string;
+  showGeneratedForm: boolean;
 }
 
 const InteractWithContractsFactory: TUseStateReducerFactory<State> = ({ state, setState }) => {
@@ -51,7 +54,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<State> = ({ state, s
     let contractAddress = '';
     let contractAbi = '';
 
-    if (contract.address !== 'custom') {
+    if (contract.address !== CUSTOM_CONTRACT_ADDRESS) {
       contractAddress = contract.address;
       contractAbi = contract.abi;
     }
@@ -88,12 +91,20 @@ const InteractWithContractsFactory: TUseStateReducerFactory<State> = ({ state, s
     }));
   };
 
+  const setGeneratedFormVisible = (visible: boolean) => {
+    setState((prevState: State) => ({
+      ...prevState,
+      showGeneratedForm: visible
+    }));
+  };
+
   return {
     handleNetworkSelected,
     handleContractAddressChanged,
     handleContractSelected,
     handleAbiChanged,
     updateNetworkContractOptions,
+    setGeneratedFormVisible,
     interactWithContractsState: state
   };
 };
