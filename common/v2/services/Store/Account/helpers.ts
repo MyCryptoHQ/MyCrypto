@@ -125,8 +125,8 @@ export const getBaseAssetFromAccount = (account: ExtendedAccount): Asset | undef
   }
 };
 
-export const getAllAccounts = (): Account[] => {
-  return Object.values(readSection('accounts')());
+export const getAllAccounts = (): Record<string, Account> => {
+  return readSection('accounts')();
 };
 
 export const getAllAccountKeys = (): string[] => {

@@ -8,8 +8,6 @@ export {
     getEncryptedCache,
     setEncryptedCache,
     destroyEncryptedCache,
-    readSettings,
-    updateSettings,
     create,
     createWithID,
     read,

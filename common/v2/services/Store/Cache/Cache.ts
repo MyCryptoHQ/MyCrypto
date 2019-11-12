@@ -4,7 +4,7 @@ import { IS_DEV, generateUUID } from 'v2/utils';
 import StorageService from './Storage';
 import { CACHE_TIME_TO_LIVE, CACHE_LOCALSTORAGE_KEY, ENCRYPTED_CACHE_KEY, CACHE_INIT } from './constants';
 import { cachedValueIsFresh } from './helpers';
-import { Cache, NewCacheEntry, CacheEntry } from './types';
+import { Cache, NewCacheEntry } from './types';
 import { initializeCache } from './seedCache';
 import { LocalCache } from 'v2/types';
 
@@ -52,8 +52,6 @@ export class CacheServiceBase {
   }
 
   public setEntry(identifier: string, entries: NewCacheEntry, useTTL?: boolean) {
-    //console.log("Set "+ identifier)
-    //console.log(entries);
     this.ensureSubcache(identifier);
 
     Object.entries(entries).forEach(
@@ -85,7 +83,11 @@ export class CacheServiceBase {
       }
     }
     
-    return this.objectMap(entry, e => e.value);
+    // Extracts the actual cached values for every entry
+    return Object.keys(entry).reduce(function(result, key) {
+      result[key] = (entry[key].value)
+      return result
+    }, {})
   }
 
   public clearEntry(identifier: string, key: string) {
@@ -109,14 +111,6 @@ export class CacheServiceBase {
 
   private updatePersistedCache() {
     StorageService.instance.setEntry(CACHE_LOCALSTORAGE_KEY, this.cache);
-  }
-
-  // Utility function for getEntries
-  private objectMap(object: CacheEntry, mapFn) {
-    return Object.keys(object).reduce(function(result, key) {
-      result[key] = mapFn(object[key])
-      return result
-    }, {})
   }
 }
 
@@ -178,18 +172,6 @@ export const destroyEncryptedCache = () => {
   localStorage.removeItem(ENCRYPTED_CACHE_KEY);
 };
 
-// Settings operations
-
-type SettingsKey = 'settings' | 'screenLockSettings' | 'networks';
-
-export const readSettings = <K extends SettingsKey>(key: K) => () => {
-  return readSection(key)();
-};
-
-export const updateSettings = <K extends SettingsKey>(key: K) => (value: LocalCache[K]) => {
-  updateAll(key)(value);
-};
-
 // Collection operations
 
 type CollectionKey =
@@ -198,7 +180,9 @@ type CollectionKey =
   | 'assets'
   | 'contracts'
   | 'networks'
-  | 'notifications';
+  | 'notifications'
+  | 'settings' 
+  | 'screenLockSettings';
 
 export const create = <K extends CollectionKey>(key: K) => (
   value: NewCacheEntry

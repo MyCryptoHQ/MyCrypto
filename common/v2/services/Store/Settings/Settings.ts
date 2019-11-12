@@ -1,7 +1,7 @@
-import { CACHE_LOCALSTORAGE_KEY, readSettings, updateSettings } from '../Cache';
+import { CACHE_LOCALSTORAGE_KEY, updateAll, readSection } from '../Cache';
 
-export const updateSetting = updateSettings('settings');
-export const readAllSettings = readSettings('settings');
+export const updateSetting = updateAll('settings');
+export const readAllSettings = readSection('settings');
 
 export const readStorage = () => {
   const currentLocalStorage: string = localStorage.getItem(CACHE_LOCALSTORAGE_KEY) || '[]';

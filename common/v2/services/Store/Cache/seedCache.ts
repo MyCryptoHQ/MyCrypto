@@ -19,9 +19,8 @@ import {
   NetworkId,
   WalletId
 } from 'v2/types';
-import { hardRefreshCache, updateAll, readAll, getCache } from '../Cache';
+import { hardRefreshCache, updateAll, getCache, readSection } from '../Cache';
 import { CACHE_LOCALSTORAGE_KEY } from './constants';
-import { readSection } from './Cache';
 
 /*
    Extracted from LocalCache.ts.
