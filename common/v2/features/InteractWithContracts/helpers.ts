@@ -1,4 +1,4 @@
-import { sortBy } from 'lodash';
+import { sortBy, cloneDeep } from 'lodash';
 import { StateMutabilityType, ABIItem, ABIItemType } from './types';
 
 export const isReadOperation = (abiFunction: ABIItem) => {
@@ -13,8 +13,8 @@ export const isReadOperation = (abiFunction: ABIItem) => {
   }
 };
 
-export const generateFunctionInputDisplayNames = (abiFunction: ABIItem) => {
-  const tempFunction = Object.assign({}, abiFunction);
+export const generateFunctionFieldsDisplayNames = (abiFunction: ABIItem) => {
+  const tempFunction = cloneDeep(abiFunction);
 
   tempFunction.inputs.forEach((input, index) => {
     if (input.displayName) {
@@ -27,6 +27,29 @@ export const generateFunctionInputDisplayNames = (abiFunction: ABIItem) => {
     } else {
       input.displayName = input.name;
     }
+  });
+
+  tempFunction.outputs.forEach((output, index) => {
+    if (output.displayName) {
+      return;
+    }
+
+    if (output.name === '') {
+      output.name = index.toString();
+      output.displayName = `Output#${index}`;
+    } else {
+      output.displayName = output.name;
+    }
+  });
+
+  return tempFunction;
+};
+
+export const setFunctionOutputValues = (abiFunction: ABIItem, outputValues: any) => {
+  const tempFunction = cloneDeep(abiFunction);
+
+  tempFunction.outputs.forEach(output => {
+    output.value = outputValues[output.name];
   });
 
   return tempFunction;

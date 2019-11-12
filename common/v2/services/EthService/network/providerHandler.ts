@@ -18,7 +18,7 @@ export class ProviderHandler {
   }
 
   public call(txObj: TxObj): Promise<string> {
-    return this.client.call(this.requests.ethCall(txObj));
+    return this.client.call(txObj);
   }
 
   /* Tested */

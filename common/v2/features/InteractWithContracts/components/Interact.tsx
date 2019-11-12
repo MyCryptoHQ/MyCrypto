@@ -78,7 +78,7 @@ interface Props {
   handleAbiChanged(abi: string): void;
   updateNetworkContractOptions(networkId: NetworkId): void;
   setGeneratedFormVisible(visible: boolean): void;
-  handleInteractionFormSubmit(submitedFunction: ABIItem): void;
+  handleInteractionFormSubmit(submitedFunction: ABIItem): any;
   goToNextStep(): void;
 }
 

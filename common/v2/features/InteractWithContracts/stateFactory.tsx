@@ -3,10 +3,11 @@ import { useContext } from 'react';
 import { TUseStateReducerFactory } from 'v2/utils';
 import { DEFAULT_NETWORK } from 'v2/config';
 import { Contract, NetworkId } from 'v2/types';
-import { getNetworkById, ContractContext, isValidETHAddress } from 'v2/services';
+import { getNetworkById, ContractContext, isValidETHAddress, ProviderHandler } from 'v2/services';
 
 import { customContract, CUSTOM_CONTRACT_ADDRESS } from './constants';
 import { ABIItem } from './types';
+import { AbiFunction } from 'v2/services/EthService/contracts/ABIFunction';
 
 const interactWithContractsInitialState = {
   networkId: DEFAULT_NETWORK,
@@ -101,11 +102,23 @@ const InteractWithContractsFactory: TUseStateReducerFactory<State> = ({ state, s
     }));
   };
 
-  const handleInteractionFormSubmit = (submitedFunction: ABIItem) => {
-    setState((prevState: State) => ({
-      ...prevState,
-      submitedFunction
-    }));
+  const handleInteractionFormSubmit = async (submitedFunction: ABIItem) => {
+    const { encodeInput, decodeOutput } = new AbiFunction(submitedFunction, []);
+
+    const parsedInputs = submitedFunction.inputs.reduce(
+      (accu, input) => ({ ...accu, [input.name]: input.value }),
+      {}
+    );
+
+    const { networkId, contractAddress } = state;
+
+    const network = getNetworkById(networkId)!;
+    const providerHandler = new ProviderHandler(network);
+    const data = { to: contractAddress, data: encodeInput(parsedInputs) };
+
+    const result = await providerHandler.call(data);
+
+    return decodeOutput(result, network.chainId);
   };
 
   return {

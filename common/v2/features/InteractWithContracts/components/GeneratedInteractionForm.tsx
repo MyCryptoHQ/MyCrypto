@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { InputField, Dropdown, Button } from 'v2/components';
+import { InputField, Dropdown, Button, Spinner } from 'v2/components';
 
 import FunctionDropdownOption from './FunctionDropdownOption';
 import FunctionDropdownValue from './FunctionDropdownValue';
 import { ABIItem, ABIField } from '../types';
 import {
   isReadOperation,
-  generateFunctionInputDisplayNames,
-  getFunctionsFromABI
+  generateFunctionFieldsDisplayNames,
+  getFunctionsFromABI,
+  setFunctionOutputValues
 } from '../helpers';
 
 const Wrapper = styled.div`
@@ -49,22 +50,29 @@ const ButtonWrapper = styled.div`
   margin-top: 9px;
 `;
 
+const SpinnerWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 interface Props {
   abi: ABIItem[];
-  handleInteractionFormSubmit(submitedFunction: ABIItem): void;
+  handleInteractionFormSubmit(submitedFunction: ABIItem): Promise<object>;
 }
 
 export default function GeneratedInteractionForm({ abi, handleInteractionFormSubmit }: Props) {
-  const [functions, setFunctions] = useState(getFunctionsFromABI(abi));
+  const [loadingOutputs, setLoadingOutputs] = useState(false);
   const [currentFunction, setCurrentFunction] = useState<ABIItem | undefined>(undefined);
 
-  useEffect(() => {
-    setFunctions(getFunctionsFromABI(abi));
-    setCurrentFunction(undefined);
-  }, [abi]);
+  const functions = getFunctionsFromABI(abi);
 
   const handleFunctionSelected = (selectedFunction: ABIItem) => {
-    setCurrentFunction(generateFunctionInputDisplayNames(selectedFunction));
+    const newFunction = generateFunctionFieldsDisplayNames(selectedFunction);
+    setCurrentFunction(newFunction);
+
+    if (isReadOperation(newFunction) && newFunction.inputs.length === 0) {
+      submitForm(newFunction);
+    }
   };
 
   const handleInputChange = (fieldName: string, value: string) => {
@@ -72,6 +80,18 @@ export default function GeneratedInteractionForm({ abi, handleInteractionFormSub
     const inputIndexToChange = updatedFunction.inputs.findIndex(x => x.name === fieldName);
     updatedFunction.inputs[inputIndexToChange].value = value;
     setCurrentFunction(updatedFunction);
+  };
+
+  const submitForm = async (submitedFunction: ABIItem) => {
+    if (!submitedFunction) {
+      return;
+    }
+    setLoadingOutputs(true);
+    const outputValues = await handleInteractionFormSubmit(submitedFunction);
+    setLoadingOutputs(false);
+
+    const functionWithOutputValues = setFunctionOutputValues(submitedFunction, outputValues);
+    setCurrentFunction(functionWithOutputValues);
   };
 
   let isRead;
@@ -105,7 +125,7 @@ export default function GeneratedInteractionForm({ abi, handleInteractionFormSub
             <div>
               {inputs.map((field, index) => {
                 return (
-                  <FieldWrapper key={`${field.displayName}${index}`}>
+                  <FieldWrapper key={`${field.displayName}${index}${currentFunction.name}`}>
                     <InputField
                       label={`${field.displayName} (${field.type})`}
                       value={field.value}
@@ -121,9 +141,12 @@ export default function GeneratedInteractionForm({ abi, handleInteractionFormSub
             <div>
               {outputs.map((field, index) => {
                 return (
-                  <FieldWrapper isOutput={true} key={`${field.name}${index}`}>
+                  <FieldWrapper
+                    isOutput={true}
+                    key={`${field.displayName}${index}${currentFunction.name}`}
+                  >
                     <InputField
-                      label={`↳ ${field.name || 'Output'} (${field.type})`}
+                      label={`↳ ${field.displayName} (${field.type})`}
                       value={field.value}
                     />
                   </FieldWrapper>
@@ -131,13 +154,13 @@ export default function GeneratedInteractionForm({ abi, handleInteractionFormSub
               })}
             </div>
           )}
+          <SpinnerWrapper>{loadingOutputs && <Spinner size="x2" />}</SpinnerWrapper>
           <ButtonWrapper>
-            {isRead && inputs.length > 0 && (
-              <Button onClick={() => handleInteractionFormSubmit(currentFunction)}>Read</Button>
-            )}
-            {!isRead && (
-              <Button onClick={() => handleInteractionFormSubmit(currentFunction)}>Write</Button>
-            )}
+            {isRead &&
+              (inputs.length > 0 && (
+                <Button onClick={() => submitForm(currentFunction)}>Read</Button>
+              ))}
+            {!isRead && <Button onClick={() => submitForm(currentFunction)}>Write</Button>}
           </ButtonWrapper>
         </>
       )}
