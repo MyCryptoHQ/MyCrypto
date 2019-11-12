@@ -3,78 +3,91 @@
     "address": "0x8667559254241ddeD4d11392f868d72092765367",
     "symbol": "Aeternity",
     "decimal": 18,
-    "uuid": "b863a6c4-eaf9-5064-becf-60543666ce90"
+    "name": "Aeternity",
+    "uuid": "049f2ccf-640d-5af6-8d06-54e72d2d2b8d"
   },
   {
     "address": "0xC4375B7De8af5a38a93548eb8453a498222C4fF2",
     "symbol": "DAI",
     "decimal": 18,
-    "uuid": "2f43c0f7-9136-54eb-b08c-b45297a658e1"
+    "name": "RadarRelay test Dai Stablecoin v1.0",
+    "uuid": "d86ae91f-1f60-5fb4-baf2-c53529d16f2a"
   },
   {
     "address": "0xeeE3870657E4716670f185dF08652dd848fe8f7e",
     "symbol": "DGD",
     "decimal": 18,
-    "uuid": "24b01063-0d06-5e81-9af3-f8f9116e9c4b"
+    "name": "RadarRelay test Digix DAO Token",
+    "uuid": "97cecb3d-b56b-5a6c-a149-99a9c703bb2f"
   },
   {
     "address": "0x4733659a5cB7896A65c918Add6f59C5148FB5ffa",
     "symbol": "GAV",
     "decimal": 6,
-    "uuid": "fe809a00-cc6c-5f5c-8517-bc08a9ac4abb"
+    "name": "GavCoin",
+    "uuid": "d609bc0d-cdf8-58bf-aa25-babdb6afb0f4"
   },
   {
     "address": "0xeF7FfF64389B814A946f3E92105513705CA6B990",
     "symbol": "GNT",
     "decimal": 18,
-    "uuid": "641cc5d2-967a-5d8b-b4c5-9d1df83713d9"
+    "name": "RadarRelay test Golem Network Token",
+    "uuid": "14386781-df33-5547-b91f-ed8d45df68b9"
   },
   {
     "address": "0x3C67f7D4decF7795225f51b54134F81137385f83",
     "symbol": "GUP",
     "decimal": 3,
-    "uuid": "ff81cdac-9310-5bf7-9e06-387603276e13"
+    "name": "GUP",
+    "uuid": "a928b678-e9bd-56f5-ae7d-f58e23c8234a"
   },
   {
     "address": "0x1Dad4783cf3fe3085C1426157aB175A6119A04bA",
     "symbol": "MKR",
     "decimal": 18,
-    "uuid": "bd231ce3-27c4-55ee-86d0-6748e17910a0"
+    "name": "RadarRelay test MakerDAO",
+    "uuid": "8d29ef65-e8b7-586c-8d61-b1c2807011b3"
   },
   {
     "address": "0xAaF64BFCC32d0F15873a02163e7E500671a4ffcD",
     "symbol": "MKR (1)",
     "decimal": 18,
-    "uuid": "bd231ce3-27c4-55ee-86d0-6748e17910a0"
+    "name": "MakerDAO",
+    "uuid": "42fc1235-426e-51bf-97b7-c8d400ffa040"
   },
   {
     "address": "0x323B5d4C32345ced77393B3530b1EeD0f346429D",
     "symbol": "MLN",
     "decimal": 18,
-    "uuid": "b31f66f3-394a-5264-95a1-85bfe11cf8bd"
+    "name": "RadarRelay test Melon Tokens",
+    "uuid": "45be6ca2-b7e9-5f18-a18e-7f869b9150c3"
   },
   {
     "address": "0xB18845c260F680d5B9D84649638813E342E4F8C9",
     "symbol": "REP",
     "decimal": 18,
-    "uuid": "90880b81-1239-5c24-8a8a-b2a22b64a76c"
+    "name": "RadarRelay test Augur Reputation Token",
+    "uuid": "45b1a4fb-aaf7-571d-9bc1-caf132dfef18"
   },
   {
     "address": "0xc57538846Ec405Ea25Deb00e0f9B29a432D53507",
     "symbol": "RLC",
     "decimal": 9,
-    "uuid": "5068205a-8691-5169-9db8-52b0889898e0"
+    "name": "iExec RLC",
+    "uuid": "1ca0176c-88d7-580b-be3e-54c23038578e"
   },
   {
     "address": "0x4A6e6C3868A279e1D9047B42C3fB356FF4680003",
     "symbol": "TIB",
     "decimal": 18,
-    "uuid": "b6cd9395-33f3-5404-bb5b-e1a66d676b85"
+    "name": "ThibCoin",
+    "uuid": "4943c6b4-c73e-52df-9378-9cb511b5d506"
   },
   {
     "address": "0x6Ff6C0Ff1d68b964901F986d4C9FA3ac68346570",
     "symbol": "ZRX",
     "decimal": 18,
-    "uuid": "7b951ca1-b9e3-5d2b-9894-6f12fa444387"
+    "name": "RadarRelay test 0x Protocol Token",
+    "uuid": "42aa2ea1-8080-58bd-a39c-0eb47aafd7bb"
   }
 ]

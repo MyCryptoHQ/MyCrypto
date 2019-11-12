@@ -166,7 +166,7 @@
     "mycrypto-nano-result": "0.0.1",
     "node-sass": "4.12.0",
     "nodemon": "1.17.3",
-    "parse-eth-tokens": "0.2.1",
+    "parse-eth-tokens": "0.3.0",
     "prettier": "1.18.2",
     "raw-loader": "3.1.0",
     "react-test-renderer": "16.3.2",
