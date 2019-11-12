@@ -3,60 +3,70 @@
     "address": "0x398A7A69f3c59181A1ffe34bed11DCb5DF863A8a",
     "symbol": "AETH",
     "decimal": 18,
-    "uuid": "b2aca215-793b-549e-98e4-9a45f76748f4"
+    "name": "AKASHA Tokens",
+    "uuid": "f69b8485-ca9e-59f7-8501-fa372dc0163c"
   },
   {
     "address": "0xe27826eE778B6F78a49a686dA7D64f6E7b084a4f",
     "symbol": "BHNT",
     "decimal": 0,
-    "uuid": "a2cd0fd6-efc6-51e4-a0fd-41a830f2aa3a"
+    "name": "Berlin Hack&Tell winner token",
+    "uuid": "d3f31f66-aaac-547f-b403-7904cce9654e"
   },
   {
     "address": "0x8B65d4B7ee3FFFA986C577F0F4b70a21BaE3dD54",
     "symbol": "CTGA",
     "decimal": 18,
-    "uuid": "7c1a40a6-53d4-5f71-b5e3-645106eba194"
+    "name": "Convenient To Go",
+    "uuid": "2745424d-c4d4-53da-8217-7488230338e5"
   },
   {
     "address": "0x275A5B346599b56917e7B1C9de019DCf9EaD861a",
     "symbol": "KC",
     "decimal": 18,
-    "uuid": "bf69dfbc-1bea-5bc7-85bc-42e8926b0d95"
+    "name": "Karma Token",
+    "uuid": "8bb7e713-6514-5778-a7a4-293f1fef0f7f"
   },
   {
     "address": "0x6475A7FA6Ed2D5180F0e0a07c2d951D12C0EDB91",
     "symbol": "NONE",
     "decimal": 0,
-    "uuid": "9bc50e55-d1dc-5fd2-883a-c5cdf7324321"
+    "name": "None",
+    "uuid": "b2b5bebe-b912-5a41-9f9c-6125d2216ab6"
   },
   {
     "address": "0x12fE174C097F6B3e876B3b060C9061F4B9dEBB80",
     "symbol": "PPD",
     "decimal": 18,
-    "uuid": "dfd6df1c-f2d2-5187-9237-5d56e3c96ff5"
+    "name": "PP Donation",
+    "uuid": "cd6504f3-1fba-5591-8d5f-f76a03d7ba23"
   },
   {
     "address": "0x2d427D9E535e4382606B93290dcC13a5e9A694Be",
     "symbol": "qwe",
     "decimal": 18,
-    "uuid": "dace27f8-b4bb-53a3-83a3-deb5fc8caa6f"
+    "name": "qweToken",
+    "uuid": "fe67699a-dde2-5d81-a6b2-90b06c342766"
   },
   {
     "address": "0x3615757011112560521536258c1E7325Ae3b48AE",
     "symbol": "RDN",
     "decimal": 18,
-    "uuid": "012db7f9-f68a-5388-8897-58d0f039e354"
+    "name": "Raiden",
+    "uuid": "fb4c2da7-0cde-5f5e-85b6-bff70332586a"
   },
   {
     "address": "0xf1e6Ad3a7eF0c86c915F0feDF80eD851809bEA90",
     "symbol": "RLC",
     "decimal": 9,
-    "uuid": "cdf31133-ffd4-5aa2-9bae-9beb9bb31fb5"
+    "name": "iExec RLC",
+    "uuid": "2ed4bd88-b8e9-5661-930a-358d9bcc24c4"
   },
   {
     "address": "0x0A057a87CE9C56D7e336B417c79cf30E8d27860B",
     "symbol": "WALL",
     "decimal": 15,
-    "uuid": "bcaa10ad-e8ef-5cce-8c47-86977eec40fd"
+    "name": "WALLETH Community-Token",
+    "uuid": "4ef21708-7154-5108-9309-678f52267a54"
   }
 ]
