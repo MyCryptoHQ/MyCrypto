@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { InputField, Dropdown, Button, Spinner } from 'v2/components';
+import { InputField, Dropdown, Button, Spinner, InlineErrorMsg } from 'v2/components';
 
 import FunctionDropdownOption from './FunctionDropdownOption';
 import FunctionDropdownValue from './FunctionDropdownValue';
@@ -63,6 +63,7 @@ interface Props {
 export default function GeneratedInteractionForm({ abi, handleInteractionFormSubmit }: Props) {
   const [loadingOutputs, setLoadingOutputs] = useState(false);
   const [currentFunction, setCurrentFunction] = useState<ABIItem | undefined>(undefined);
+  const [error, setError] = useState(undefined);
 
   const functions = getFunctionsFromABI(abi);
 
@@ -86,12 +87,17 @@ export default function GeneratedInteractionForm({ abi, handleInteractionFormSub
     if (!submitedFunction) {
       return;
     }
-    setLoadingOutputs(true);
-    const outputValues = await handleInteractionFormSubmit(submitedFunction);
-    setLoadingOutputs(false);
-
-    const functionWithOutputValues = setFunctionOutputValues(submitedFunction, outputValues);
-    setCurrentFunction(functionWithOutputValues);
+    setError(undefined);
+    try {
+      setLoadingOutputs(true);
+      const outputValues = await handleInteractionFormSubmit(submitedFunction);
+      const functionWithOutputValues = setFunctionOutputValues(submitedFunction, outputValues);
+      setCurrentFunction(functionWithOutputValues);
+    } catch (e) {
+      setError(e.toString());
+    } finally {
+      setLoadingOutputs(false);
+    }
   };
 
   let isRead;
@@ -155,6 +161,7 @@ export default function GeneratedInteractionForm({ abi, handleInteractionFormSub
             </div>
           )}
           <SpinnerWrapper>{loadingOutputs && <Spinner size="x2" />}</SpinnerWrapper>
+          {error && <InlineErrorMsg>{error}</InlineErrorMsg>}
           <ButtonWrapper>
             {isRead &&
               (inputs.length > 0 && (
