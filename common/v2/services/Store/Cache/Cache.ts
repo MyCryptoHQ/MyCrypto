@@ -4,8 +4,9 @@ import { IS_DEV, generateUUID } from 'v2/utils';
 import StorageService from './Storage';
 import { CACHE_TIME_TO_LIVE, CACHE_LOCALSTORAGE_KEY, ENCRYPTED_CACHE_KEY, CACHE_INIT } from './constants';
 import { cachedValueIsFresh } from './helpers';
-import { Cache, NewCacheEntry } from './types';
+import { Cache, NewCacheEntry, CacheEntry } from './types';
 import { initializeCache } from './seedCache';
+import { LocalCache } from 'v2/types';
 
 export class CacheServiceBase {
   private cache: Cache = {};
@@ -85,14 +86,6 @@ export class CacheServiceBase {
     }
     
     return this.objectMap(entry, e => e.value);
-    /**if (cachedValueIsFresh(entry)) {
-      return entry.map(e => e.value);
-    } else {
-      //this.clearEntry(identifier, entryKey);
-      this.updatePersistedCache();
-
-      return null;
-    }**/
   }
 
   public clearEntry(identifier: string, key: string) {
@@ -119,7 +112,7 @@ export class CacheServiceBase {
   }
 
   // Utility function for getEntries
-  private objectMap(object, mapFn) {
+  private objectMap(object: CacheEntry, mapFn) {
     return Object.keys(object).reduce(function(result, key) {
       result[key] = mapFn(object[key])
       return result
@@ -163,7 +156,7 @@ export const getCache = (): LocalCache => {
   return getCacheRaw();
 };
 
-export const setCache = (newCache: LocalCache) => {
+export const setCache = (newCache: Cache) => {
   localStorage.setItem(CACHE_LOCALSTORAGE_KEY, JSON.stringify(newCache));
   CacheService.instance.initializeCache(newCache);
 };
@@ -258,14 +251,12 @@ export const destroy = <K extends CollectionKey>(key: K) => (uuid: string) => {
 };
 
 export const readAll = <K extends CollectionKey>(key: K) => () => {
-  //const section: LocalCache[K] = getCache()[key].map(e => e.value);
   const section: LocalCache[K] = readSection(key)();
   const sectionEntries: [string, LocalCache[K][string]][] = Object.entries(section);
   return sectionEntries.map(([uuid, value]) => ({ ...value, uuid }));
 };
 
 export const readSection = <K extends CollectionKey>(key: K) => () => {
-  //const section: LocalCache[K] = getCache()[key].map(e => e.value);
   initializeCache();
   const section: LocalCache[K] = CacheService.instance.getEntries(key);
   return section;

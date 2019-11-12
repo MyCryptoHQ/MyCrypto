@@ -42,15 +42,12 @@ export const initializeCache = () => {
     initAssets();
 
     if (IS_DEV) {
-      initTestAccounts();
+      //initTestAccounts();
     }
   }
 };
 
 export const initSettings = () => {
-  /**const newStorage = getCacheRaw();
-  newStorage.settings = testSettings;**/
-  //setCache(newStorage);
   updateAll('settings')(testSettings);
 };
 
@@ -74,13 +71,14 @@ export const initNodeOptions = () => {
 
 export const initNetworks = () => {
   const newStorage = getCache();
+  const assets = readSection('assets')();
   const allNetworks: NetworkId[] = Object.keys(NETWORKS_CONFIG) as NetworkId[];
   allNetworks.map((networkId: NetworkId) => {
-    const newContracts: [string, Contract][] = Object.entries(newStorage.contracts | {}).filter(
+    const newContracts: [string, Contract][] = Object.entries(newStorage.contracts).filter(
       ([, contract]) => contract.networkId === networkId
     );
 
-    const newAssets: [string, Asset][] = Object.entries(newStorage.assets | {}).filter(
+    const newAssets: [string, Asset][] = Object.entries(newStorage.assets).filter(
       ([, asset]) => asset.networkId === networkId
     );
 
@@ -113,10 +111,10 @@ export const initNetworks = () => {
       decimal: 18
     };
     newStorage.networks[networkId] = newLocalNetwork;
-    newStorage.assets[baseAssetID] = newLocalAssetOption;
+    assets[baseAssetID] = newLocalAssetOption;
   });
   updateAll('networks')(newStorage.networks);
-  updateAll('assets')(newStorage.assets);
+  updateAll('assets')(assets);
 };
 
 export const initAssets = () => {
@@ -125,9 +123,8 @@ export const initAssets = () => {
   const assets = AssetsData();
   Object.keys(assets).map(en => {
     if (assets[en] && assets[en].networkId) {
-      const uuid = generateUUID();
       const networkName = assets[en].networkId;
-      // @ts-ignore readonly
+      const uuid = assets[en].uuid;
       cachedAssets[uuid] = assets[en];
       if (networkName) {
         networks[networkName].assets.push(uuid);
@@ -151,7 +148,7 @@ export const initContracts = () => {
 };
 
 export const initFiatCurrencies = () => {
-  const assets = readAll('assets')();
+  const assets = readSection('assets')();
   Object.values(Fiats).map(en => {
     const uuid = generateUUID();
     assets[uuid] = {
@@ -201,7 +198,6 @@ export const initTestAccounts = () => {
   Object.keys(newLabels).map(labelId => {
     newStorage.addressBook[labelId] = newLabels[labelId];
   });
-  console.log(newStorage.accounts);
   updateAll('accounts')(newStorage.accounts);
   updateAll('settings')(settings);
   updateAll('addressBook')(newStorage.addressBook);
