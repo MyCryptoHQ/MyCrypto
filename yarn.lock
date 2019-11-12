@@ -11999,10 +11999,10 @@ parse-entities@^1.1.0:
     is-decimal "^1.0.0"
     is-hexadecimal "^1.0.0"
 
-parse-eth-tokens@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/parse-eth-tokens/-/parse-eth-tokens-0.2.1.tgz#ea77c6be54334ad965244a70622da456a9012951"
-  integrity sha512-BIbS/g6sN6CjprXU+6EJzYIAHEkdFNdT1gHEVFa8audERV9yQOFWVwxZvUVPtRllTz0DVmA3NcOV0IOXm0SXmg==
+parse-eth-tokens@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/parse-eth-tokens/-/parse-eth-tokens-0.3.0.tgz#eb53a785f252703aef25fa412d9d7eb98e6d8de8"
+  integrity sha512-fIcfJq5JSRTwa2RKAD+rn1opm9oi+4iR1Mf13IlqyGRxDQVaBAhMqKl395jW/emey4+7Jkup3UW9S5jC7aNxvA==
   dependencies:
     "@hapi/joi" "^16.1.4"
     commander "^3.0.2"

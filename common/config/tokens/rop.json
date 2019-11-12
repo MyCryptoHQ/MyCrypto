@@ -3,36 +3,42 @@
     "address": "0x95D7321EdCe519419ba1DbC60A89bAfbF55EAC0D",
     "symbol": "*PLASMA",
     "decimal": 6,
-    "uuid": "c00b7f6a-7d0e-53c8-9aec-1acb4989e230"
+    "name": "*PLASMA",
+    "uuid": "e0977bcb-30be-53cf-99d2-e5f031e8624b"
   },
   {
     "address": "0xa1bAccA0e12D4091Ec1f92e7CaE3394CC9854D3D",
     "symbol": "dqr30",
     "decimal": 18,
-    "uuid": "8932210b-194b-54f6-87e5-186744736ed9"
+    "name": "DQR",
+    "uuid": "8fa21ab1-48ac-544a-b13c-69d86528d126"
   },
   {
     "address": "0x6f95a3B682F8e9aacC86D057A6DF88A0E68145A8",
     "symbol": "ILSC",
     "decimal": 2,
-    "uuid": "946fa7b0-3465-5241-ba02-243b127d6824"
+    "name": "IsraCoin",
+    "uuid": "3849a248-49b4-5e85-91cb-0f9f97eaa0c9"
   },
   {
     "address": "0x4C572Fbc03D4A2B683cF4f10ffdcaFD00885E108",
     "symbol": "MEWV5",
     "decimal": 9,
-    "uuid": "5e8a260d-ff54-55ed-a324-6c66a1425e81"
+    "name": "MEW V5 Test Token",
+    "uuid": "528fb72f-8536-5219-8b65-20fbd0e4355d"
   },
   {
     "address": "0xFD5a69A1309595FF5121553F52C8A5B2B1B31031",
     "symbol": "NONE",
     "decimal": 0,
-    "uuid": "90bfbf04-bb63-506d-a5f7-b58238b5d915"
+    "name": "None",
+    "uuid": "4f6380d2-303e-5fe4-8f0b-25f944e5dc84"
   },
   {
     "address": "0x7314Dc4d7794b5E7894212CA1556ae8e3De58621",
     "symbol": "RLC",
     "decimal": 9,
-    "uuid": "3841cfa9-768f-5680-af7e-73afaad05955"
+    "name": "iExec RLC",
+    "uuid": "39a543b0-ac4f-5b14-9467-86fd6538a6a2"
   }
 ]

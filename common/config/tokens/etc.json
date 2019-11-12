@@ -3,24 +3,28 @@
     "address": "0x085fb4f24031EAedbC2B611AA528f22343eB52Db",
     "symbol": "BEC",
     "decimal": 8,
-    "uuid": "0e1872fc-1382-566c-9bac-870287115ede"
+    "name": "BEC",
+    "uuid": "b35b19f9-fc86-5868-b73e-158f97d9d597"
   },
   {
     "address": "0x5acE17f87c7391E5792a7683069A8025B83bbd85",
     "symbol": "PLAY",
     "decimal": 0,
-    "uuid": "9ef246c1-1a36-55eb-a1b8-6b33b838b83c"
+    "name": "Smart Billions",
+    "uuid": "7dc69de9-43a4-59e5-af8e-be24a2b56e87"
   },
   {
     "address": "0x6ADa6F48C815689502C43eC1a59F1b5DD3C04E1F",
     "symbol": "UNV",
     "decimal": 18,
-    "uuid": "33f3922a-ec5c-5276-93cf-947a7219c412"
+    "name": "UniversalCoin",
+    "uuid": "96fac482-bffe-5560-b9db-1695d868f496"
   },
   {
     "address": "0x76d0184CF511788032A74a1FB91146e63F43dd53",
     "symbol": "UVC",
     "decimal": 5,
-    "uuid": "34ba1c4f-f022-57a4-b797-a58408ffc001"
+    "name": "UniversalCoin",
+    "uuid": "01dbee9f-4e8d-5319-8cff-acbc39c00aa0"
   }
 ]
