@@ -2,7 +2,12 @@ import get from 'lodash/get';
 
 import { IS_DEV, generateUUID } from 'v2/utils';
 import StorageService from './Storage';
-import { CACHE_TIME_TO_LIVE, CACHE_LOCALSTORAGE_KEY, ENCRYPTED_CACHE_KEY, CACHE_INIT } from './constants';
+import {
+  CACHE_TIME_TO_LIVE,
+  CACHE_LOCALSTORAGE_KEY,
+  ENCRYPTED_CACHE_KEY,
+  CACHE_INIT
+} from './constants';
 import { cachedValueIsFresh } from './helpers';
 import { Cache, NewCacheEntry } from './types';
 import { initializeCache } from './seedCache';
@@ -82,12 +87,12 @@ export class CacheServiceBase {
         (this.cache as any)[identifier] = entry;
       }
     }
-    
+
     // Extracts the actual cached values for every entry
-    return Object.keys(entry).reduce(function(result, key) {
-      result[key] = (entry[key].value)
-      return result
-    }, {})
+    return Object.keys(entry).reduce((result, key) => {
+      result[key] = entry[key].value;
+      return result;
+    }, {});
   }
 
   public clearEntry(identifier: string, key: string) {
@@ -181,14 +186,12 @@ type CollectionKey =
   | 'contracts'
   | 'networks'
   | 'notifications'
-  | 'settings' 
+  | 'settings'
   | 'screenLockSettings';
 
-export const create = <K extends CollectionKey>(key: K) => (
-  value: NewCacheEntry
-) => {
+export const create = <K extends CollectionKey>(key: K) => (value: NewCacheEntry) => {
   const uuid = generateUUID();
-  let obj = {}
+  const obj = {};
   // @ts-ignore ie. https://app.clubhouse.io/mycrypto/story/2376/remove-ts-ignore-from-common-v2-services-store-localcache-localcache-ts
   obj[uuid] = value;
   CacheService.instance.setEntry(key, obj);
@@ -200,7 +203,7 @@ export const createWithID = <K extends CollectionKey>(key: K) => (
 ) => {
   const uuid = id;
   if (CacheService.instance.getEntry(key, uuid) === null) {
-    let obj = {}
+    const obj = {};
     // @ts-ignore ie. https://app.clubhouse.io/mycrypto/story/2376/remove-ts-ignore-from-common-v2-services-store-localcache-localcache-ts
     obj[uuid] = value;
     CacheService.instance.setEntry(key, obj);
@@ -214,19 +217,14 @@ export const read = <K extends CollectionKey>(key: K) => (uuid: string): LocalCa
   return CacheService.instance.getEntry(key, uuid);
 };
 
-export const update = <K extends CollectionKey>(key: K) => (
-  uuid: string,
-  value: NewCacheEntry
-) => {
-  let obj = {}
+export const update = <K extends CollectionKey>(key: K) => (uuid: string, value: NewCacheEntry) => {
+  const obj = {};
   // @ts-ignore ie. https://app.clubhouse.io/mycrypto/story/2376/remove-ts-ignore-from-common-v2-services-store-localcache-localcache-ts
   obj[uuid] = value;
   CacheService.instance.setEntry(key, obj);
 };
 
-export const updateAll = <K extends CollectionKey>(key: K) => (
-  value: NewCacheEntry
-) => {
+export const updateAll = <K extends CollectionKey>(key: K) => (value: NewCacheEntry) => {
   CacheService.instance.setEntry(key, value);
 };
 

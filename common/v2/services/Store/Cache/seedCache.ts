@@ -159,7 +159,7 @@ export const initFiatCurrencies = () => {
       decimal: 0
     };
   });
-  updateAll('assets')(assets)
+  updateAll('assets')(assets);
 };
 
 export const initTestAccounts = () => {

@@ -61,7 +61,7 @@ export const AssetsData = (): Record<string, Asset> => {
     nextData.map((entry: Token) => {
       const uuid: string = entry.uuid;
       outData[uuid] = {
-        uuid: uuid,
+        uuid,
         name: entry.name,
         contractAddress: entry.address,
         decimal: entry.decimal,
