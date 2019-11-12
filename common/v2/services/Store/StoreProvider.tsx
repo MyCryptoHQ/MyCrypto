@@ -3,7 +3,7 @@ import React, { useState, useContext, useMemo, createContext, useEffect } from '
 import { StoreAccount, StoreAsset, Network, TTicker, ExtendedAsset } from 'v2/types';
 import { isArrayEqual, useInterval, convertToFiatFromAsset } from 'v2/utils';
 
-import { getAccountsAssetsBalances } from './BalanceService';
+import { getAccountsAssetsBalances, getAccountsUnlockVIPStatus } from './BalanceService';
 import { getStoreAccounts } from './helpers';
 import { AssetContext, getTotalByAsset } from './Asset';
 import { AccountContext, getDashboardAccounts } from './Account';
@@ -13,6 +13,7 @@ import { NetworkContext } from './Network';
 interface State {
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
+  readonly isUnlockVIP: boolean;
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
@@ -33,6 +34,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const { assets } = useContext(AssetContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { networks } = useContext(NetworkContext);
+
   // We transform rawAccounts into StoreAccount. Since the operation is exponential to the number of
   // accounts, make sure it is done only when rawAccounts change.
   const storeAccounts = useMemo(() => getStoreAccounts(rawAccounts, assets, networks), [
@@ -41,6 +43,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     networks
   ]);
   const [accounts, setAccounts] = useState(storeAccounts);
+  const [isUnlockVIP, setIsUnlockVerified] = useState(false);
   useEffect(() => {
     setAccounts(storeAccounts);
   }, [storeAccounts]);
@@ -51,6 +54,13 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       getAccountsAssetsBalances(accounts).then((accountsWithBalances: StoreAccount[]) => {
         // Avoid the state change if the balances are identical.
         if (isArrayEqual(accounts, accountsWithBalances)) return;
+        const accountsToCheck = accounts.filter(account => account.networkId === 'Ethereum');
+        getAccountsUnlockVIPStatus(accountsToCheck).then(unlockAccounts => {
+          if (!unlockAccounts || unlockAccounts.length === 0) {
+            return;
+          }
+          setIsUnlockVerified(true);
+        });
         setAccounts(accountsWithBalances);
       });
     },
@@ -62,6 +72,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const state: State = {
     accounts,
     networks,
+    isUnlockVIP,
     assets: (selectedAccounts = state.accounts) =>
       selectedAccounts.flatMap((account: StoreAccount) => account.assets),
     tokens: (selectedAssets = state.assets()) =>

@@ -13,3 +13,5 @@ export const DEFAULT_NETWORK_FOR_FALLBACK = 'ropsten';
 export const DEFAULT_NETWORK: NetworkId = 'Ethereum';
 
 export const DEFAULT_ASSET_DECIMAL = 18;
+
+export const MYCRYPTO_UNLOCK_CONTRACT_ADDRESS = '0x14e81196e60b128527db03d40bdba00710777805';

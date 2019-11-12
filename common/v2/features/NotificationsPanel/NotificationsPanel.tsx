@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
@@ -9,6 +9,7 @@ import { notificationsConfigs, NotificationTemplates } from './constants';
 
 // Legacy
 import closeIcon from 'common/assets/images/icn-close.svg';
+import { StoreContext } from 'v2/services';
 
 const { SCREEN_MD } = BREAK_POINTS;
 
@@ -45,6 +46,14 @@ const NotificationsPanel = ({ accounts }: Props) => {
     currentNotification,
     dismissCurrentNotification
   } = useContext(NotificationsContext);
+  const { isUnlockVIP } = useContext(StoreContext);
+
+  useEffect(() => {
+    /* All other notifications take precedence over Thank You notification. */
+    if (isUnlockVIP && !currentNotification) {
+      displayNotification(NotificationTemplates.unlockVIPDetected);
+    }
+  }, [isUnlockVIP]);
 
   const handleCloseClick = () => {
     if (!currentNotification) {

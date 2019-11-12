@@ -3,7 +3,7 @@ import partition from 'lodash/partition';
 import { bigNumberify, BigNumber } from 'ethers/utils';
 import { default as BN } from 'bignumber.js';
 
-import { ETHSCAN_NETWORKS } from 'v2/config';
+import { ETHSCAN_NETWORKS, MYCRYPTO_UNLOCK_CONTRACT_ADDRESS } from 'v2/config';
 import { TAddress, StoreAccount, StoreAsset, Asset, NodeConfig, Network } from 'v2/types';
 import { ProviderHandler } from 'v2/services/EthService';
 import { FallbackProvider } from 'ethers/providers';
@@ -135,4 +135,23 @@ export const getAllTokensBalancesOfAccount = async (account: StoreAccount, asset
   } catch (err) {
     throw new Error(err);
   }
+};
+
+export const getAccountsTokenBalance = async (accounts: StoreAccount[], tokenContract: string) => {
+  const scanner = getScanner(accounts[0].network.nodes[0]);
+  try {
+    return scanner.getTokenBalances(accounts.map(account => account.address), tokenContract);
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+export const getAccountsUnlockVIPStatus = async (accounts: StoreAccount[]) => {
+  return getAccountsTokenBalance(accounts, MYCRYPTO_UNLOCK_CONTRACT_ADDRESS)
+    .then(unlockStatusBalanceMap =>
+      Object.keys(unlockStatusBalanceMap).filter(accountAddress =>
+        unlockStatusBalanceMap[accountAddress].isGreaterThan(new BN(0))
+      )
+    )
+    .catch(err => console.error(err));
 };
