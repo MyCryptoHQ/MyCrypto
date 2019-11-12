@@ -1,6 +1,6 @@
 import React, { useState, useContext, useMemo, createContext, useEffect } from 'react';
 
-import { StoreAccount, StoreAsset, Network, TTicker, ExtendedAsset } from 'v2/types';
+import { StoreAccount, StoreAsset, Network, TTicker, ExtendedAsset, WalletId } from 'v2/types';
 import { isArrayEqual, useInterval, convertToFiatFromAsset } from 'v2/utils';
 
 import { getAccountsAssetsBalances, getAccountsUnlockVIPStatus } from './BalanceService';
@@ -54,8 +54,10 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       getAccountsAssetsBalances(accounts).then((accountsWithBalances: StoreAccount[]) => {
         // Avoid the state change if the balances are identical.
         if (isArrayEqual(accounts, accountsWithBalances)) return;
-        const accountsToCheck = accounts.filter(account => account.networkId === 'Ethereum');
-        getAccountsUnlockVIPStatus(accountsToCheck).then(unlockAccounts => {
+        const accountsToCheck = accounts
+          .filter(account => account.networkId === 'Ethereum')
+          .filter(account => account.wallet !== WalletId.VIEW_ONLY);
+        getAccountsUnlockVIPStatus(accountsToCheck).then((unlockAccounts: string[]) => {
           if (!unlockAccounts || unlockAccounts.length === 0) {
             return;
           }

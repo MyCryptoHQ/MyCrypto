@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 import translate from 'translations';
 import { BREAK_POINTS } from 'v2/theme';
-import NotificationWrapper from './NotificationWrapper';
 import { KNOWLEDGE_BASE_URL, HOW_TO_BUY_CRYPTO_URL, DONT_LOSE_CRYPTO_URL } from 'v2/config';
+import NotificationWrapper from './NotificationWrapper';
 
 // Legacy
 import champagneIcon from 'common/assets/images/icn-champagne-2.svg';
