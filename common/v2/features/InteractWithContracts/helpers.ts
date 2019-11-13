@@ -55,8 +55,7 @@ export const setFunctionOutputValues = (abiFunction: ABIItem, outputValues: any)
   return tempFunction;
 };
 
-export const getFunctionsFromABI = (pAbi: ABIItem[]) => {
-  return sortBy(pAbi.filter(x => x.type === ABIItemType.FUNCTION), item => {
-    return item.name.toLowerCase();
-  });
-};
+export const getFunctionsFromABI = (pAbi: ABIItem[]) =>
+  sortBy(pAbi.filter(x => x.type === ABIItemType.FUNCTION), item => item.name.toLowerCase()).map(
+    x => Object.assign(x, { label: x.name })
+  );

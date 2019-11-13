@@ -21,10 +21,17 @@ interface FieldWraperProps {
   isOutput?: boolean;
 }
 
+// TODO: Fix the dropdown component instead of overriding styles
 const DropdownWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
+
+  .is-open > .Select-control > .Select-multi-value-wrapper > .Select-input:only-child {
+    transform: translateY(0%);
+    padding: 12px 15px;
+    position: inherit;
+  }
 `;
 
 const FieldWrapper = styled.div<FieldWraperProps>`
@@ -68,6 +75,10 @@ export default function GeneratedInteractionForm({ abi, handleInteractionFormSub
   const functions = getFunctionsFromABI(abi);
 
   const handleFunctionSelected = (selectedFunction: ABIItem) => {
+    if (!selectedFunction) {
+      return;
+    }
+
     const newFunction = generateFunctionFieldsDisplayNames(selectedFunction);
     setCurrentFunction(newFunction);
 

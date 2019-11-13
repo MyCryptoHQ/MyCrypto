@@ -65,6 +65,15 @@ const ButtonWrapper = styled.div`
   justify-content: left;
 `;
 
+// TODO: Fix the dropdown component instead of overriding styles
+const DropdownContainer = styled('div')`
+  .is-open > .Select-control > .Select-multi-value-wrapper > .Select-input:only-child {
+    transform: translateY(0%);
+    padding: 12px 15px;
+    position: inherit;
+  }
+`;
+
 interface Props {
   networkId: NetworkId;
   contractAddress: string;
@@ -122,14 +131,17 @@ export default function Interact(props: Props) {
       <ContractSelectionWrapper>
         <FieldWrapper>
           <Label>Select Existing Contract</Label>
-          <Dropdown
-            value={contract}
-            options={contracts}
-            onChange={handleContractSelected}
-            optionComponent={ContractDropdownOption}
-            valueComponent={ContractDropdownValue}
-            searchable={true}
-          />
+
+          <DropdownContainer>
+            <Dropdown
+              value={contract}
+              options={contracts}
+              onChange={handleContractSelected}
+              optionComponent={ContractDropdownOption}
+              valueComponent={ContractDropdownValue}
+              searchable={true}
+            />
+          </DropdownContainer>
         </FieldWrapper>
         <Separator />
         <FieldWrapper>
