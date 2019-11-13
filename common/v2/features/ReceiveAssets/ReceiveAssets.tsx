@@ -3,14 +3,13 @@ import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
 import noop from 'lodash/noop';
 import { Copyable, Heading, Input, Tooltip } from '@mycrypto/ui';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import Select, { Option } from 'react-select';
 import styled from 'styled-components';
 
 import {
   buildEIP681EtherRequest,
   buildEIP681TokenRequest
 } from 'v2/services/EthService/utils/formatters';
-import { ContentPanel, QRCode, AccountDropdown } from 'v2/components';
+import { ContentPanel, QRCode, AccountDropdown, AssetDropdown } from 'v2/components';
 import { AssetContext, getNetworkById, StoreContext } from 'v2/services/Store';
 import { isValidAmount, truncate } from 'v2/utils';
 import { ExtendedAccount as IExtendedAccount, StoreAccount } from 'v2/types';
@@ -62,13 +61,6 @@ const Divider = styled.div`
 
 const FullWidthInput = styled(Input)`
   width: 100%;
-`;
-
-const StyledSelect = styled(Select)`
-  width: 100%;
-  border-radius: 0.125em;
-  border: 0.125em solid rgba(63, 63, 68, 0.05);
-  outline: 0 0 0 0.25em rgba(0, 122, 153, 0.65);
 `;
 
 const Amount = styled.div`
@@ -124,9 +116,13 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
         .filter(asset => asset.networkId === network.id)
         .filter(asset => asset.type === 'base' || asset.type === 'erc20')
     : [];
-  const assetOptions = filteredAssets.map(asset => ({ label: asset.name, id: asset.uuid }));
+  const assetOptions = filteredAssets.map(asset => ({
+    label: asset.name,
+    id: asset.uuid,
+    ...asset
+  }));
 
-  const [chosenAssetName, setAssetName] = useState(assetOptions[0].label);
+  const [chosenAssetName, setAssetName] = useState(filteredAssets[0].name);
   const selectedAsset = filteredAssets.find(asset => asset.name === chosenAssetName);
 
   const ethereum = assets.find(asset => asset.name === 'Ethereum');
@@ -194,6 +190,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                   validate={validateAmount}
                   render={({ field, form }: FieldProps<typeof initialValues>) => (
                     <FullWidthInput
+                      data-lpignore="true"
                       value={field.value}
                       onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
                       placeholder="0.00"
@@ -206,16 +203,15 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                 <SLabel htmlFor="asset">Asset</SLabel>
                 <Field
                   name="asset"
-                  render={({ field, form }: FieldProps<typeof initialValues>) => (
-                    <StyledSelect
-                      name="Assets"
-                      className="select-container"
-                      options={assetOptions}
+                  component={({ field, form }: FieldProps) => (
+                    <AssetDropdown
+                      name={field.name}
                       value={field.value}
-                      onChange={(option: Option) => {
+                      assets={assetOptions}
+                      onSelect={option => {
                         form.setFieldValue(field.name, option);
-                        if (option.label) {
-                          setAssetName(option.label);
+                        if (option.name) {
+                          setAssetName(option.name);
                         }
                       }}
                     />
@@ -278,6 +274,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                               amount
                             )
                       }
+                      isCopyable={true}
                       truncate={truncate}
                     />
                   </FieldsetBox>
