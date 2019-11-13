@@ -62,7 +62,6 @@ export default function TransactionReceipt({
           setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
           provider.getTransactionByHash(txReceipt.hash).then(transactionReceipt => {
             const receipt = fromTxReceiptObj(transactionReceipt) as ITxReceipt;
-            addNewTransactionToAccount(senderAccount, receipt);
             setDisplayTxReceipt(receipt);
           });
         });
@@ -75,6 +74,11 @@ export default function TransactionReceipt({
     if (timestamp === 0 && blockNumber !== 0) {
       const timestampInterval = setInterval(() => {
         getTimestampFromBlockNum(blockNumber, provider).then(transactionTimestamp => {
+          addNewTransactionToAccount(senderAccount, {
+            ...displayTxReceipt,
+            timestamp: transactionTimestamp || 0,
+            stage: txStatus === 'SUCCESS' ? 'completed' : 'failed'
+          });
           setTimestamp(transactionTimestamp || 0);
         });
       }, 1000);

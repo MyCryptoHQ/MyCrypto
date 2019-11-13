@@ -26,7 +26,7 @@ export default function TransactionLabel({ image, label, stage, date }: Props) {
       <div className="TransactionLabel-info">
         <Typography className="TransactionLabel-info-label">{label}</Typography>
         <Typography className="TransactionLabel-info-stageDate">
-          {capitalize(stage)} - {formatDate(date)}
+          {`${capitalize(stage)} ${date ? ` - ${formatDate(date)}` : ''}`}
         </Typography>
       </div>
     </div>

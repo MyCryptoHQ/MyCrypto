@@ -1,27 +1,25 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
 import { Address, CollapsibleTable } from '@mycrypto/ui';
 
-import { Amount, DashboardPanel } from 'v2/components';
+import { Amount, DashboardPanel, NewTabLink } from 'v2/components';
 import TransactionLabel from './TransactionLabel';
 import './RecentTransactionList.scss';
 
 import newWindowIcon from 'common/assets/images/icn-new-window.svg';
-import { truncate } from 'v2/utils';
-import { ExtendedAccount, AddressBook } from 'v2/types';
+import { truncate, convertToFiat } from 'v2/utils';
+import { ExtendedAccount, ITxReceipt, TTicker } from 'v2/types';
 import { translateRaw } from 'translations';
+import { RatesContext, AddressBookContext, getLabelByAddressAndNetwork } from 'v2/services';
+import NoTransactions from './NoTransactions';
 
 interface Props {
   className?: string;
   accountsList: ExtendedAccount[];
-  readAddressBook(uuid: string): AddressBook;
 }
 
-export default function RecentTransactionList({
-  accountsList,
-  readAddressBook,
-  className = ''
-}: Props) {
+export default function RecentTransactionList({ accountsList, className = '' }: Props) {
+  const { addressBook } = useContext(AddressBookContext);
+  const { getRate } = useContext(RatesContext);
   const noLabel = translateRaw('NO_LABEL');
   const transactions = accountsList.flatMap(account => account.transactions);
 
@@ -29,51 +27,65 @@ export default function RecentTransactionList({
 
   const pending = transactions.filter(tx => tx.stage === 'pending');
   const completed = transactions.filter(tx => tx.stage === 'completed');
+
   const createEntries = (_: string, collection: typeof transactions) =>
-    collection.map(({ label, stage, date, from, to, value, fiatValue }) => [
-      <TransactionLabel
-        key={0}
-        image="https://placehold.it/45x45"
-        label={label}
-        stage={stage}
-        date={date}
-      />,
-      <Address
-        key={1}
-        title={
-          readAddressBook(from.toLowerCase()) ? readAddressBook(from.toLowerCase()).label : noLabel
-        }
-        truncate={truncate}
-        address={from}
-      />,
-      <Address
-        key={2}
-        title={
-          readAddressBook(to.toLowerCase()) ? readAddressBook(to.toLowerCase()).label : noLabel
-        }
-        truncate={truncate}
-        address={to}
-      />,
-      <Amount key={3} assetValue={value.toString()} fiatValue={fiatValue.USD} />,
-      <Link key={4} to={`/dashboard/transactions/${'transactionuuid'}`}>
-        {' '}
-        {/* TODO - fix this.*/}
-        <img src={newWindowIcon} alt="View more information about this transaction" />
-      </Link>
-    ]);
+    collection.map(
+      ({ timestamp, label, hash, stage, from, to, amount, asset, network }: ITxReceipt) => [
+        <TransactionLabel
+          key={0}
+          image="https://placehold.it/45x45"
+          label={label}
+          stage={stage}
+          date={timestamp}
+        />,
+        <Address
+          key={1}
+          title={
+            getLabelByAddressAndNetwork(from.toLowerCase(), addressBook, network)!.label || noLabel
+          }
+          truncate={truncate}
+          address={from}
+        />,
+        <Address
+          key={2}
+          title={
+            getLabelByAddressAndNetwork(to.toLowerCase(), addressBook, network)!.label || noLabel
+          }
+          truncate={truncate}
+          address={to}
+        />,
+        <Amount
+          key={3}
+          assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
+          fiatValue={`$${convertToFiat(
+            parseFloat(amount),
+            getRate(asset.ticker as TTicker)
+          ).toFixed(2)}
+      `}
+        />,
+        <NewTabLink key={4} href={`https://etherscan.io/tx/${hash}`}>
+          {' '}
+          <img src={newWindowIcon} alt="View more information about this transaction" />
+        </NewTabLink>
+      ]
+    );
+
+  const groups = [
+    {
+      title: 'Pending',
+      entries: createEntries('pending', pending)
+    },
+    {
+      title: 'Completed',
+      entries: createEntries('completed', completed)
+    }
+  ];
+  const filteredGroups = groups.filter(group => group.entries.length !== 0);
+
   const recentTransactionsTable = {
     head: ['Date', 'From Address', 'To Address', 'Amount', 'View More'],
     body: [],
-    groups: [
-      {
-        title: 'Pending',
-        entries: createEntries('pending', pending)
-      },
-      {
-        title: 'Completed',
-        entries: createEntries('completed', completed)
-      }
-    ],
+    groups: filteredGroups,
     config: {
       primaryColumn: 'Date',
       sortableColumn: 'Date',
@@ -85,11 +97,15 @@ export default function RecentTransactionList({
   return (
     <DashboardPanel
       heading="Recent Transactions"
-      headingRight="Export"
-      actionLink="/dashboard/recent-transactions"
+      //headingRight="Export"
+      //actionLink="/dashboard/recent-transactions"
       className={`RecentTransactionsList ${className}`}
     >
-      <CollapsibleTable breakpoint={1000} {...recentTransactionsTable} />
+      {filteredGroups.length >= 1 ? (
+        <CollapsibleTable breakpoint={1000} {...recentTransactionsTable} />
+      ) : (
+        NoTransactions()
+      )}
     </DashboardPanel>
   );
 }

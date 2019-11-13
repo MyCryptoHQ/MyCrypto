@@ -105,7 +105,10 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
       .catch(txHash => provider.getTransactionByHash(txHash))
       .then(retrievedTransactionReceipt => {
         const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt);
-        addNewTransactionToAccount(state.txConfig.senderAccount, txReceipt || {});
+        addNewTransactionToAccount(
+          state.txConfig.senderAccount,
+          { ...txReceipt, stage: 'pending' } || {}
+        );
         setState((prevState: State) => ({
           ...prevState,
           txReceipt
@@ -154,8 +157,19 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
 
   const handleSignedWeb3Tx: TStepAction = (payload: ITxReceipt | string, after) => {
     // Payload is tx hash or receipt
-    const txReceipt = typeof payload === 'string' ? { hash: payload } : fromTxReceiptObj(payload);
-    addNewTransactionToAccount(state.txConfig.senderAccount, txReceipt || {});
+    const txReceipt =
+      typeof payload === 'string'
+        ? {
+            hash: payload,
+            to: state.txConfig.senderAccount.address,
+            from: state.txConfig.receiverAddress,
+            ...state.txConfig
+          }
+        : fromTxReceiptObj(payload);
+    addNewTransactionToAccount(
+      state.txConfig.senderAccount,
+      { ...txReceipt, stage: 'pending' } || {}
+    );
     setState((prevState: State) => ({
       ...prevState,
       txReceipt

@@ -42,7 +42,6 @@ export default function Dashboard() {
   const { isActive: isDevToolsActive, displayRecentTransactionList } = useDevTools();
   const { isUnlockVIP } = useContext(StoreContext);
   const { accounts } = useContext(AccountContext);
-  const { readAddressBook } = useContext(AddressBookContext);
 
   return (
     <div>
@@ -75,9 +74,9 @@ export default function Dashboard() {
           />
         </div>
         {!isUnlockVIP && <BannerAd />}
-        {isDevToolsActive && displayRecentTransactionList && (
+        {isDevToolsActive && (
           <div className="Dashboard-mobile-section">
-            <RecentTransactionList accountsList={accounts} readAddressBook={readAddressBook} />
+            <RecentTransactionList accountsList={accounts} />
           </div>
         )}
       </Mobile>
@@ -116,7 +115,6 @@ export default function Dashboard() {
         {isDevToolsActive && displayRecentTransactionList && (
           <div className="Dashboard-desktop-bottom">
             <RecentTransactionList
-              readAddressBook={readAddressBook}
               accountsList={accounts}
               className="Dashboard-desktop-modifiedPanel"
             />
