@@ -219,7 +219,6 @@
     "test:unit": "jest --config=jest_config/jest.config.json --coverage",
     "test:int": "jest --config=jest_config/jest.int.config.json --coverage",
     "report-coverage": " cat ./coverage/lcov.info | coveralls",
-    "updateSnapshot": "jest --config=jest_config/jest.config.json --updateSnapshot",
     "pretest": "check-node-version --package",
     "predev": "check-node-version --package",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack_config/development.js",

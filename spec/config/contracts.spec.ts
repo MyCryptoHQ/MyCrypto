@@ -1,34 +1,24 @@
-import configuredStore from 'features/store';
-import CONTRACTS from 'config/contracts';
-import { isValidETHAddress } from 'libs/validators';
+import { Contracts as CONTRACTS } from 'v2/config/contracts';
+import { isValidETHAddress } from 'v2/services/EthService';
 
-configuredStore.getState();
-
-describe('Contracts JSON', () => {
+describe('Contracts have a valid Address', () => {
   Object.keys(CONTRACTS).forEach(network => {
-    it(`${network} contracts array properly formatted`, () => {
-      const contracts: any = (CONTRACTS as any)[network];
-      const addressCollisionMap: any = {};
+    const contracts: any = (CONTRACTS as any)[network];
+    const addressCollisionMap: any = {};
 
-      contracts.forEach((contract: any) => {
-        if (contract.address && !isValidETHAddress(contract.address)) {
-          throw Error(`Contract '${contract.name}' has invalid address '${contract.address}'`);
-        }
-        if (addressCollisionMap[contract.address]) {
-          throw Error(
-            `Contract '${contract.name}' has the same address as ${
-              addressCollisionMap[contract.address]
-            }`
-          );
-        }
+    contracts.forEach((contract: any) => {
+      it(`${network} - ${contract.name} contains a valid addresses`, () => {
+        expect(isValidETHAddress(contract.address)).toBeTruthy();
+      });
 
-        try {
-          JSON.stringify(contract.abi);
-        } catch (err) {
-          throw Error(`Contract '${contract.name}' has invalid JSON ABI`);
-        }
-
+      it(`${network} - ${contract.name} address have no collusions`, () => {
+        expect(addressCollisionMap[contract.address]).toBeUndefined();
         addressCollisionMap[contract.address] = contract.name;
+      });
+
+      it(`${network} - ${contract.name} has a vaild abi`, () => {
+        const parseJson = () => JSON.stringify(contract.abi);
+        expect(parseJson).not.toThrow();
       });
     });
   });
