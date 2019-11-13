@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import { Redirect } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { Button, Copyable, Identicon } from '@mycrypto/ui';
 
@@ -171,7 +170,7 @@ function buildAccountTable(
     overlay:
       overlayRows && overlayRows[0] !== undefined ? (
         <RowDeleteOverlay
-          prompt={`Are you sure you want to delete 
+          prompt={`Are you sure you want to delete
               ${
                 getLabelByAccount(accounts[overlayRows[0]], addressBook) !== undefined
                   ? getLabelByAccount(accounts[overlayRows[0]], addressBook)!.label
