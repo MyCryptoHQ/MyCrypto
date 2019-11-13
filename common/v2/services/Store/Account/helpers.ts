@@ -16,8 +16,8 @@ import {
   getNetworkById,
   getNodesByNetwork
 } from 'v2/services/Store';
-import { getCache } from '../LocalCache';
 import { RPCNode, ProviderHandler } from 'v2/services/EthService';
+import { readSection } from '../Cache';
 
 export const getCurrentsFromContext = (
   accounts: ExtendedAccount[],
@@ -104,8 +104,9 @@ export const getAccountBalance = async (
 // Returns an account if it exists
 export const getAccountByAddress = (address: string): ExtendedAccount | undefined => {
   const accountKeys = getAllAccountKeys();
+  const accounts = getAllAccounts();
   accountKeys.map(key => {
-    const account: Account = getCache().accounts[key];
+    const account: Account = accounts[key];
     if (account.address === address) {
       const newAccount: ExtendedAccount = {
         ...account,
@@ -124,12 +125,12 @@ export const getBaseAssetFromAccount = (account: ExtendedAccount): Asset | undef
   }
 };
 
-export const getAllAccounts = (): Account[] => {
-  return Object.values(getCache().accounts);
+export const getAllAccounts = (): Record<string, Account> => {
+  return readSection('accounts')();
 };
 
 export const getAllAccountKeys = (): string[] => {
-  return Object.keys(getCache().accounts);
+  return Object.keys(readSection('accounts')());
 };
 
 export const getAccountByAddressAndNetworkName = (
@@ -137,7 +138,7 @@ export const getAccountByAddressAndNetworkName = (
   networkName: string
 ): ExtendedAccount | undefined => {
   const accountKeys = getAllAccountKeys();
-  const accounts = getCache().accounts;
+  const accounts = readSection('accounts')();
   accountKeys.map(key => {
     const account: Account = accounts[key];
     if (

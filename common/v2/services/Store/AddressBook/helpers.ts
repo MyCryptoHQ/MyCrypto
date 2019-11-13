@@ -1,9 +1,9 @@
-import { getCache } from '../LocalCache';
+import { readSection } from '../Cache';
 import { Account, AddressBook, Network, WalletId } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
 
 export const getAllAddressLabels = (): AddressBook[] => {
-  return Object.values(getCache().addressBook);
+  return Object.values(readSection('addressBook')());
 };
 
 export const getLabelByAddress = (address: string): AddressBook | undefined => {

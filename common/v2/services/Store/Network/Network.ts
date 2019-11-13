@@ -1,4 +1,4 @@
-import { create, read, update, destroy, readAll } from '../LocalCache';
+import { create, read, update, destroy, readAll } from '../Cache';
 import { ExtendedNetwork } from 'v2/types';
 import { makeExplorer } from 'v2/services/EthService';
 

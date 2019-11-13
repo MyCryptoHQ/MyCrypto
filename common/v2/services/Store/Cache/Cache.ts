@@ -1,10 +1,17 @@
 import get from 'lodash/get';
 
-import { IS_DEV } from 'v2/utils';
+import { IS_DEV, generateUUID } from 'v2/utils';
 import StorageService from './Storage';
-import { CACHE_TIME_TO_LIVE, CACHE_LOCALSTORAGE_KEY } from './constants';
+import {
+  CACHE_TIME_TO_LIVE,
+  CACHE_LOCALSTORAGE_KEY,
+  ENCRYPTED_CACHE_KEY,
+  CACHE_INIT
+} from './constants';
 import { cachedValueIsFresh } from './helpers';
 import { Cache, NewCacheEntry } from './types';
+import { initializeCache } from './seedCache';
+import { LocalCache } from 'v2/types';
 
 export class CacheServiceBase {
   private cache: Cache = {};
@@ -49,18 +56,44 @@ export class CacheServiceBase {
     }
   }
 
-  public setEntry(identifier: string, entries: NewCacheEntry) {
+  public setEntry(identifier: string, entries: NewCacheEntry, useTTL?: boolean) {
     this.ensureSubcache(identifier);
 
     Object.entries(entries).forEach(
       ([key, value]) =>
         (this.cache[identifier][key] = {
           value,
-          ttl: Date.now() + CACHE_TIME_TO_LIVE
+          ttl: useTTL ? Date.now() + CACHE_TIME_TO_LIVE : -1
         })
     );
 
     this.updatePersistedCache();
+  }
+
+  public getEntries(identifier: string): any {
+    this.ensureSubcache(identifier);
+
+    // First, try retrieving the value from the in-memory cache.
+    let entry = get(this.cache, `${identifier}`);
+
+    // If that fails, try retrieving it from LocalStorage.
+    if (!entry) {
+      const storage = StorageService.instance.getEntry(CACHE_LOCALSTORAGE_KEY);
+
+      if (storage && storage[identifier]) {
+        entry = storage[identifier];
+
+        // If it existed in LocalStorage but not in memory, add it to memory.
+        (this.cache as any)[identifier] = entry;
+      }
+    }
+
+    // Extracts the actual cached values for every entry
+    return Object.keys(entry).reduce((result, key) => {
+      // @ts-ignore
+      result[key] = entry[key].value;
+      return result;
+    }, {});
   }
 
   public clearEntry(identifier: string, key: string) {
@@ -107,3 +140,109 @@ export default class CacheService extends CacheServiceBase {
     }
   }
 }
+
+// Low level operations
+export const hardRefreshCache = () => {
+  // @ts-ignore Let us set the initial cache values - is rarely used
+  setCache(CACHE_INIT);
+};
+
+export const getCacheRaw = (): LocalCache => {
+  const c = StorageService.instance.getEntry(CACHE_LOCALSTORAGE_KEY);
+  return c ? c : CACHE_INIT;
+};
+
+export const getCache = (): LocalCache => {
+  initializeCache();
+  return getCacheRaw();
+};
+
+export const setCache = (newCache: Cache) => {
+  localStorage.setItem(CACHE_LOCALSTORAGE_KEY, JSON.stringify(newCache));
+  CacheService.instance.initializeCache(newCache);
+};
+
+export const destroyCache = () => {
+  localStorage.removeItem(CACHE_LOCALSTORAGE_KEY);
+  CacheService.instance.initializeCache({});
+};
+
+export const getEncryptedCache = (): string => {
+  return localStorage.getItem(ENCRYPTED_CACHE_KEY) || '';
+};
+
+export const setEncryptedCache = (newEncryptedCache: string) => {
+  localStorage.setItem(ENCRYPTED_CACHE_KEY, newEncryptedCache);
+};
+
+export const destroyEncryptedCache = () => {
+  localStorage.removeItem(ENCRYPTED_CACHE_KEY);
+};
+
+// Collection operations
+
+type CollectionKey =
+  | 'addressBook'
+  | 'accounts'
+  | 'assets'
+  | 'contracts'
+  | 'networks'
+  | 'notifications';
+
+type SettingsKey = 'settings' | 'screenLockSettings';
+
+export const create = <K extends CollectionKey>(key: K) => (value: NewCacheEntry) => {
+  const uuid = generateUUID();
+  const obj = {};
+  // @ts-ignore ie. https://app.clubhouse.io/mycrypto/story/2376/remove-ts-ignore-from-common-v2-services-store-localcache-localcache-ts
+  obj[uuid] = value;
+  CacheService.instance.setEntry(key, obj);
+};
+
+export const createWithID = <K extends CollectionKey>(key: K) => (
+  value: NewCacheEntry,
+  id: string
+) => {
+  const uuid = id;
+  if (CacheService.instance.getEntry(key, uuid) === null) {
+    const obj = {};
+    // @ts-ignore ie. https://app.clubhouse.io/mycrypto/story/2376/remove-ts-ignore-from-common-v2-services-store-localcache-localcache-ts
+    obj[uuid] = value;
+    CacheService.instance.setEntry(key, obj);
+  } else {
+    console.error(`Error: key ${id} already exists in createWithID`);
+  }
+};
+
+export const read = <K extends CollectionKey>(key: K) => (uuid: string): LocalCache[K][string] => {
+  return CacheService.instance.getEntry(key, uuid);
+};
+
+export const update = <K extends CollectionKey>(key: K) => (uuid: string, value: NewCacheEntry) => {
+  const obj = {};
+  // @ts-ignore ie. https://app.clubhouse.io/mycrypto/story/2376/remove-ts-ignore-from-common-v2-services-store-localcache-localcache-ts
+  obj[uuid] = value;
+  CacheService.instance.setEntry(key, obj);
+};
+
+export const updateAll = <K extends CollectionKey | SettingsKey>(key: K) => (
+  value: NewCacheEntry
+) => {
+  CacheService.instance.setEntry(key, value);
+};
+
+export const destroy = <K extends CollectionKey>(key: K) => (uuid: string) => {
+  CacheService.instance.clearEntry(key, uuid);
+};
+
+export const readAll = <K extends CollectionKey>(key: K) => () => {
+  const section: LocalCache[K] = readSection(key)();
+  const sectionEntries: [string, LocalCache[K][string]][] = Object.entries(section);
+  return sectionEntries.map(([uuid, value]) => ({ ...value, uuid }));
+};
+
+export const readSection = <K extends CollectionKey | SettingsKey>(key: K) => () => {
+  initializeCache();
+  const section: LocalCache[K] = CacheService.instance.getEntries(key);
+  return section;
+};

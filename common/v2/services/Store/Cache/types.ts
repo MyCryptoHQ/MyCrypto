@@ -7,6 +7,13 @@ export interface Cache {
   };
 }
 
+export interface CacheEntry {
+  [entry: string]: {
+    value: any;
+    ttl: number;
+  };
+}
+
 export interface NewCacheEntry {
   [key: string]: any;
 }

@@ -19,9 +19,8 @@ import {
   NetworkId,
   WalletId
 } from 'v2/types';
-import { hardRefreshCache, getCacheRaw, setCache } from './LocalCache';
-import { CACHE_KEY } from './constants';
-import { updateCacheSettings, cacheSettingsUpdateNeeded } from './updateCache';
+import { hardRefreshCache, updateAll, getCache, readSection } from '../Cache';
+import { CACHE_LOCALSTORAGE_KEY } from './constants';
 
 /*
    Extracted from LocalCache.ts.
@@ -31,7 +30,7 @@ import { updateCacheSettings, cacheSettingsUpdateNeeded } from './updateCache';
 
 // Initialization
 export const initializeCache = () => {
-  const check = localStorage.getItem(CACHE_KEY);
+  const check = localStorage.getItem(CACHE_LOCALSTORAGE_KEY);
   if (!check || check === '[]' || check === '{}') {
     hardRefreshCache();
     initFiatCurrencies();
@@ -42,21 +41,17 @@ export const initializeCache = () => {
     initAssets();
 
     if (IS_DEV) {
-      initTestAccounts();
+      //initTestAccounts();
     }
-  } else if (cacheSettingsUpdateNeeded()) {
-    updateCacheSettings();
   }
 };
 
 export const initSettings = () => {
-  const newStorage = getCacheRaw();
-  newStorage.settings = testSettings;
-  setCache(newStorage);
+  updateAll('settings')(testSettings);
 };
 
 export const initNodeOptions = () => {
-  const newStorage = getCacheRaw();
+  const networks = readSection('networks')();
   const nodeData: Record<string, NodeOptions[]> = NODES_CONFIG;
   Object.keys(nodeData).map(en => {
     const networkNodes = nodeData[en];
@@ -67,14 +62,15 @@ export const initNodeOptions = () => {
         service: entry.service,
         url: entry.url
       };
-      newStorage.networks[en].nodes.push(newNode);
+      networks[en].nodes.push(newNode);
     });
   });
-  setCache(newStorage);
+  updateAll('networks')(networks);
 };
 
 export const initNetworks = () => {
-  const newStorage = getCacheRaw();
+  const newStorage = getCache();
+  const assets = readSection('assets')();
   const allNetworks: NetworkId[] = Object.keys(NETWORKS_CONFIG) as NetworkId[];
   allNetworks.map((networkId: NetworkId) => {
     const newContracts: [string, Contract][] = Object.entries(newStorage.contracts).filter(
@@ -114,44 +110,47 @@ export const initNetworks = () => {
       decimal: 18
     };
     newStorage.networks[networkId] = newLocalNetwork;
-    newStorage.assets[baseAssetID] = newLocalAssetOption;
+    assets[baseAssetID] = newLocalAssetOption;
   });
-  setCache(newStorage);
+  updateAll('networks')(newStorage.networks);
+  updateAll('assets')(assets);
 };
 
 export const initAssets = () => {
-  const newStorage = getCacheRaw();
+  const networks = readSection('networks')();
+  const cachedAssets = readSection('assets')();
   const assets = AssetsData();
   Object.keys(assets).map(en => {
     if (assets[en] && assets[en].networkId) {
-      const uuid = generateUUID();
       const networkName = assets[en].networkId;
-      // @ts-ignore readonly
-      assets[en].uuid = uuid;
-      newStorage.assets[uuid] = assets[en];
+      const uuid = assets[en].uuid;
+      cachedAssets[uuid] = assets[en];
       if (networkName) {
-        newStorage.networks[networkName].assets.push(uuid);
+        networks[networkName].assets.push(uuid);
       }
     }
   });
-  setCache(newStorage);
+  updateAll('networks')(networks);
+  updateAll('assets')(cachedAssets);
 };
 
 export const initContracts = () => {
-  const newStorage = getCacheRaw();
+  const newStorage = getCache();
+  const networks = readSection('networks')();
   const contracts = ContractsData();
   Object.keys(contracts).map(en => {
     newStorage.contracts[en] = contracts[en];
-    newStorage.networks[contracts[en].networkId].contracts.push(en);
+    networks[contracts[en].networkId].contracts.push(en);
   });
-  setCache(newStorage);
+  updateAll('contracts')(newStorage.contracts);
+  updateAll('networks')(networks);
 };
 
 export const initFiatCurrencies = () => {
-  const newStorage = getCacheRaw();
+  const assets = readSection('assets')();
   Object.values(Fiats).map(en => {
     const uuid = generateUUID();
-    newStorage.assets[uuid] = {
+    assets[uuid] = {
       uuid,
       ticker: en.code,
       name: en.name,
@@ -160,11 +159,12 @@ export const initFiatCurrencies = () => {
       decimal: 0
     };
   });
-  setCache(newStorage);
+  updateAll('assets')(assets);
 };
 
 export const initTestAccounts = () => {
-  const newStorage = getCacheRaw();
+  const newStorage = getCache();
+  const settings = readSection('settings')();
   const newAccounts = testAccounts;
   const newAssets = testAssets;
   const newLabels = testAddressBook;
@@ -192,12 +192,14 @@ export const initTestAccounts = () => {
       }
     });
     newStorage.accounts[uuid] = accountToAdd;
-    newStorage.settings.dashboardAccounts.push(uuid);
+    settings.dashboardAccounts.push(uuid);
   });
   Object.keys(newLabels).map(labelId => {
     newStorage.addressBook[labelId] = newLabels[labelId];
   });
-  setCache(newStorage);
+  updateAll('accounts')(newStorage.accounts);
+  updateAll('settings')(settings);
+  updateAll('addressBook')(newStorage.addressBook);
 };
 
 /* Not deleting in case we need it later.
