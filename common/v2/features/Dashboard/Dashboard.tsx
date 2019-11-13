@@ -4,9 +4,9 @@ import styled from 'styled-components';
 
 import { ROUTE_PATHS } from 'v2/config';
 import { COLORS } from 'v2/theme';
-import { useDevMode } from 'v2/services';
+import { useDevTools } from 'v2/services';
 import { AccountContext, AddressBookContext } from 'v2/services/Store';
-import { translate } from 'translations';
+import translate from 'v2/translations';
 import { AccountList, RouterLink, Typography, BannerAd, Desktop, Mobile } from 'v2/components';
 import { ActionTile, TokenPanel, WalletBreakdown, RecentTransactionList } from './components';
 import { NotificationsPanel } from '../NotificationsPanel';
@@ -39,7 +39,7 @@ const EmptyTile = styled.div`
 `;
 
 export default function Dashboard() {
-  const { isDevelopmentMode } = useDevMode();
+  const { isActive: isDevToolsActive, displayRecentTransactionList } = useDevTools();
   const { accounts } = useContext(AccountContext);
   const { readAddressBook } = useContext(AddressBookContext);
 
@@ -74,7 +74,7 @@ export default function Dashboard() {
           />
         </div>
         <BannerAd />
-        {isDevelopmentMode && (
+        {isDevToolsActive && displayRecentTransactionList && (
           <div className="Dashboard-mobile-section">
             <RecentTransactionList accountsList={accounts} readAddressBook={readAddressBook} />
           </div>
@@ -112,7 +112,7 @@ export default function Dashboard() {
           </div>
         </div>
         <BannerAd />
-        {isDevelopmentMode && (
+        {isDevToolsActive && displayRecentTransactionList && (
           <div className="Dashboard-desktop-bottom">
             <RecentTransactionList
               readAddressBook={readAddressBook}

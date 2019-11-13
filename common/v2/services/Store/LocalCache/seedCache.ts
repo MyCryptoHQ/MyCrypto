@@ -1,4 +1,4 @@
-import { isDevelopment, generateUUID } from 'v2/utils';
+import { IS_DEV, generateUUID } from 'v2/utils';
 import {
   Fiats,
   ContractsData,
@@ -21,6 +21,7 @@ import {
 } from 'v2/types';
 import { hardRefreshCache, getCacheRaw, setCache } from './LocalCache';
 import { CACHE_KEY } from './constants';
+import { updateCacheSettings, cacheSettingsUpdateNeeded } from './updateCache';
 
 /*
    Extracted from LocalCache.ts.
@@ -40,9 +41,11 @@ export const initializeCache = () => {
     initContracts();
     initAssets();
 
-    if (isDevelopment) {
+    if (IS_DEV) {
       initTestAccounts();
     }
+  } else if (cacheSettingsUpdateNeeded()) {
+    updateCacheSettings();
   }
 };
 

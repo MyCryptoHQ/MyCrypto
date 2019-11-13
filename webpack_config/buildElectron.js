@@ -6,25 +6,28 @@ const builder = require('electron-builder');
 const config = require('./config');
 
 function shouldBuildOs(os) {
-  const { ELECTRON_OS } = process.env;
-
-  if (ELECTRON_OS === 'JENKINS_LINUX') {
-    return os === 'linux' || os === 'windows';
-  } else if (ELECTRON_OS === 'JENKINS_MAC') {
-    return os === 'mac';
-  } else {
-    return !process.env.ELECTRON_OS || process.env.ELECTRON_OS === os;
-  }
+  return !process.env.ELECTRON_OS || process.env.ELECTRON_OS === os;
 }
 
 async function build() {
   console.log('Beginning Electron build process...');
+  const mainBuildDir = path.join(config.path.output, 'electron-main');
   const jsBuildDir = path.join(config.path.output, 'electron-js');
   const electronBuildsDir = path.join(config.path.output, 'electron-builds');
   const compression = 'store';
 
   console.log('Clearing out old builds...');
   rimraf.sync(electronBuildsDir);
+
+  fs.copyFileSync(
+    path.join(mainBuildDir, 'main.js'),
+    path.join(jsBuildDir, 'main.js')
+  );
+
+  fs.copyFileSync(
+    path.join(mainBuildDir, 'preload.js'),
+    path.join(jsBuildDir, 'preload.js')
+  );
 
   // Builder requires package.json be in the app directory, so copy it in
   fs.copyFileSync(

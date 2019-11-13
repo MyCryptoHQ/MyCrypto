@@ -21,11 +21,11 @@ MyCrypto looks forward to working with the security community to find security v
         
 2.  Other instances running our software (private or public forks, domains that are not listed in  **“In Scope”**  but are running our software) are not in scope - only the code under the  `mycryptohq`  namespace on GitHub.com is (with a select few other projects under the MyCrypto banner but a different namespace) - see the  **"In Scope"**  section for more information.
     
-3.  Bounties and disclosure process will be run under our  [HackerOne program](https://hackerone.com/mycrypto "https://hackerone.com/mycrypto").
+3.  The disclosure process will be run under our  [HackerOne program](https://hackerone.com/mycrypto "https://hackerone.com/mycrypto").
     
-    -   Anyone who emails a matter that is eligible for a bounty / public disclosure to [security@mycrypto.com](mailto:security@mycrypto.com) (or the other emails listed below in **"Avenues to Contact"**) will be directed to open a ticket with our  [HackerOne program](https://hackerone.com/mycrypto "https://hackerone.com/mycrypto")  or a ticket will be opened on their behalf.
+    -   Anyone who submits a matter that is eligible for a vulnerability disclosure to [security@mycrypto.com](mailto:security@mycrypto.com) (or the other emails listed below in **"Avenues to Contact"**) will be directed to open a ticket with our  [HackerOne program](https://hackerone.com/mycrypto "https://hackerone.com/mycrypto")  or a ticket will be opened on their behalf.
         
-4.  Bounties (if applicable) will not be rewarded if the vulnerability / exploit is made public before:
+4.  Any ticket that we have agreed to award swag for will not be rewarded if the vulnerability / exploit is made public before:
     
     -   It has been made known to us through the  [HackerOne program](https://hackerone.com/mycrypto "https://hackerone.com/mycrypto").
         
@@ -124,14 +124,14 @@ Please also refer to [HackerOne Disclosure Guidelines](https://www.hackerone.com
             
         -   Any mitigating factors (e.g., the vulnerability is only present in non-default configurations on a specific environment)
             
-3.  If a bounty is applicable, the bounty process will be started.
+3.  If we have decided to reward a user with swag, we will notify them and the reward will be processed through the HackerOne swag system.
     
 
-### Bounty Distribution
+### Swag Distribution
 
-MyCrypto has not set standards for bounty rewards, whether they be monetary, "swag," or otherwise. Bounty rewards, when applicable, will be considered on a case-by-case basis and are at the sole discretion of MyCrypto.
+MyCrypto has not set standards for swag rewards. Swag rewards, when applicable, will be considered on a case-by-case basis and are at the sole discretion of MyCrypto.
 
-If your report has been considered for a bounty, this will be communicated to you on HackerOne and handled off-channel (usually via e-mail) to get the reporters details (either shipping details for swag rewards or details to send a monetary bounty.)
+If your report has been considered for a swag reward, this will be communicated to you on HackerOne and handled via the HackerOne Swag Reward feature.
 
 ### In Scope
 

@@ -1,11 +1,11 @@
 // @TODO Used for unsupportedTabs. update to unsupportedPaths
-import { TAB } from 'components/Header/components/constants';
+// import { TAB } from 'components/Header/components/constants';
 
 import { WalletId, NetworkId, NetworkLegacy } from 'v2/types';
 import { makeExplorer } from 'v2/services/EthService/utils/makeExplorer';
 import { GAS_PRICE_TESTNET, GAS_PRICE_DEFAULT } from './gasPrice';
 import { ethPlorer, ETHTokenExplorer } from './data';
-import { DPaths } from './dpaths';
+import { DPathsList as DPaths } from './dpaths';
 
 // Temporay type to bridge the difference between v1 and v2 network definitions.
 
@@ -29,8 +29,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: ethPlorer,
       address: ETHTokenExplorer
     },
-    tokens: require('config/tokens/eth.json'),
-    contracts: require('config/contracts/eth.json'),
+    tokens: require('v2/config/tokens/eth.json'),
+    contracts: require('v2/config/contracts/eth.json'),
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TREZOR,
       [WalletId.SAFE_T_MINI]: DPaths.ETH_SAFE_T,
@@ -51,8 +51,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Etherscan',
       origin: 'https://ropsten.etherscan.io'
     }),
-    tokens: require('config/tokens/ropsten.json'),
-    contracts: require('config/contracts/ropsten.json'),
+    tokens: require('v2/config/tokens/rop.json'),
+    contracts: require('v2/config/contracts/ropsten.json'),
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,
@@ -73,8 +73,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Etherscan',
       origin: 'https://kovan.etherscan.io'
     }),
-    tokens: require('config/tokens/ropsten.json'),
-    contracts: require('config/contracts/ropsten.json'),
+    tokens: require('v2/config/tokens/kov.json'),
+    contracts: require('v2/config/contracts/ropsten.json'),
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,
@@ -95,8 +95,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Etherscan',
       origin: 'https://rinkeby.etherscan.io'
     }),
-    tokens: require('config/tokens/rinkeby.json'),
-    contracts: require('config/contracts/rinkeby.json'),
+    tokens: require('v2/config/tokens/rin.json'),
+    contracts: require('v2/config/contracts/rinkeby.json'),
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,
@@ -117,7 +117,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Etherscan',
       origin: 'https://goerli.etherscan.io/'
     }),
-    tokens: [],
+    tokens: require('config/tokens/gor.json'),
     contracts: [],
     isTestnet: true,
     dPaths: {
@@ -140,8 +140,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       origin: 'https://gastracker.io',
       addressPath: 'addr'
     }),
-    tokens: require('config/tokens/etc.json'),
-    contracts: require('config/contracts/etc.json'),
+    tokens: require('v2/config/tokens/etc.json'),
+    contracts: require('v2/config/contracts/etc.json'),
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETC_TREZOR,
       [WalletId.SAFE_T_MINI]: DPaths.ETH_SAFE_T,
@@ -165,8 +165,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Ubiqscan',
       origin: 'https://ubiqscan.io'
     }),
-    tokens: require('config/tokens/ubq.json'),
-    contracts: require('config/contracts/ubq.json'),
+    tokens: require('v2/config/tokens/ubq.json'),
+    contracts: require('v2/config/contracts/ubq.json'),
     dPaths: {
       [WalletId.TREZOR]: DPaths.UBQ_DEFAULT,
       [WalletId.SAFE_T_MINI]: DPaths.UBQ_DEFAULT,
@@ -190,8 +190,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Gander',
       origin: 'https://www.gander.tech'
     }),
-    tokens: require('config/tokens/exp.json'),
-    contracts: require('config/contracts/exp.json'),
+    tokens: require('v2/config/tokens/exp.json'),
+    contracts: require('v2/config/contracts/exp.json'),
     dPaths: {
       [WalletId.TREZOR]: DPaths.EXP_DEFAULT,
       [WalletId.SAFE_T_MINI]: DPaths.EXP_DEFAULT,
@@ -268,7 +268,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Ellaism Explorer',
       origin: 'https://explorer.ellaism.org'
     }),
-    tokens: require('config/tokens/ella.json'),
+    tokens: require('v2/config/tokens/ella.json'),
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ELLA_DEFAULT,
@@ -421,8 +421,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'RSK Explorer',
       origin: 'https://explorer.rsk.co'
     }),
-    tokens: require('config/tokens/rsk.json'),
-    contracts: require('config/contracts/rsk.json'),
+    tokens: require('v2/config/tokens/rsk.json'),
+    contracts: require('v2/config/contracts/rsk.json'),
     isTestnet: false,
     dPaths: {
       [WalletId.TREZOR]: DPaths.RSK_MAINNET,
@@ -434,7 +434,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       max: 1.5,
       initial: 0.06
     },
-    unsupportedTabs: [TAB.ENS],
+    //unsupportedTabs: [TAB.ENS],
     hideEquivalentValues: true
   },
 
@@ -449,8 +449,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'RSK Testnet Explorer',
       origin: 'https://explorer.testnet.rsk.co'
     }),
-    tokens: require('config/tokens/rsk_testnet.json'),
-    contracts: require('config/contracts/rsk_testnet.json'),
+    tokens: require('v2/config/tokens/rsk_testnet.json'),
+    contracts: require('v2/config/contracts/rsk_testnet.json'),
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.RSK_TESTNET,
@@ -461,8 +461,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       min: 0.06,
       max: 1.5,
       initial: 0.06
-    },
-    unsupportedTabs: [TAB.ENS]
+    }
+    //unsupportedTabs: [TAB.ENS]
   },
 
   GO: {
@@ -554,8 +554,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'ESN Explorer',
       origin: 'https://ethersocial.net'
     }),
-    tokens: require('config/tokens/esn.json'),
-    contracts: require('config/contracts/esn.json'),
+    tokens: require('v2/config/tokens/esn.json'),
+    contracts: require('v2/config/contracts/esn.json'),
     dPaths: {
       [WalletId.TREZOR]: DPaths.ESN_DEFAULT,
       [WalletId.SAFE_T_MINI]: DPaths.ESN_DEFAULT,
@@ -628,7 +628,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       origin: 'https://devexplorer.pirl.io'
     }),
     tokens: [],
-    contracts: require('config/contracts/pirl.json'),
+    contracts: require('v2/config/contracts/pirl.json'),
     dPaths: {
       [WalletId.TREZOR]: DPaths.PIRL_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.PIRL_DEFAULT,

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Typography } from '@mycrypto/ui';
 
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 import { ContentPanel, Button, RouterLink } from 'v2/components';
 import { SettingsContext } from 'v2/services/Store';
 import Downloader from './Downloader';

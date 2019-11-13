@@ -13,11 +13,8 @@ import { TTicker, IStepComponentProps } from 'v2/types';
 import './ConfirmTransaction.scss';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import TransactionIntermediaryDisplay from './displays/TransactionIntermediaryDisplay';
-import { convertToFiat } from 'v2/utils';
-
-const truncate = (children: string) => {
-  return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
-};
+import { convertToFiat, truncate } from 'v2/utils';
+import translate from 'translations';
 
 export default function ConfirmTransaction({
   txConfig,
@@ -69,7 +66,7 @@ export default function ConfirmTransaction({
     <div className="ConfirmTransaction">
       <div className="ConfirmTransaction-row">
         <div className="ConfirmTransaction-row-column">
-          From:
+          {translate('CONFIRM_TX_FROM')}
           <div className="ConfirmTransaction-addressWrapper">
             <Address
               address={senderAccount ? senderAccount.address : 'Unknown'}
@@ -79,7 +76,7 @@ export default function ConfirmTransaction({
           </div>
         </div>
         <div className="ConfirmTransaction-row-column">
-          To:
+          {translate('CONFIRM_TX_TO')}
           <div className="ConfirmTransaction-addressWrapper">
             <Address
               address={receiverAddress || 'Unknown'}
@@ -96,7 +93,7 @@ export default function ConfirmTransaction({
       )}
       <div className="ConfirmTransaction-row">
         <div className="ConfirmTransaction-row-column">
-          <img src={sendIcon} alt="Send" /> Send Amount:
+          <img src={sendIcon} alt="Send" /> {translate('FORM_SEND_AMOUNT')}:
         </div>
         <div className="ConfirmTransaction-row-column">
           <Amount
@@ -166,7 +163,7 @@ export default function ConfirmTransaction({
         disabled={isBroadcastingTx}
         className="ConfirmTransaction-button"
       >
-        {isBroadcastingTx ? 'Submitting...' : 'Confirm and Send'}
+        {isBroadcastingTx ? translate('SUBMITTING') : translate('CONFIRM_AND_SEND')}
       </Button>
     </div>
   );

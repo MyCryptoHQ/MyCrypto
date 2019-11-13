@@ -2,8 +2,8 @@ import React from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { translateRaw } from 'translations';
-import { DashboardPanel, CollapsibleTable, AssetIcon } from 'v2/components';
+import { translateRaw } from 'v2/translations';
+import { DashboardPanel, CollapsibleTable, AssetIcon, Currency } from 'v2/components';
 import { WalletBreakdownProps } from './types';
 import { BREAK_POINTS } from 'v2/theme';
 import { TSymbol } from 'v2/types';
@@ -67,17 +67,18 @@ export default function BalancesDetailView({
   totalFiatValue,
   fiat
 }: WalletBreakdownProps) {
+  const BALANCES = translateRaw('WALLET_BREAKDOWN_BALANCES');
   const TOKEN = translateRaw('WALLET_BREAKDOWN_TOKEN');
-  const AMOUNT = translateRaw('WALLET_BREAKDOWN_AMOUNT');
   const BALANCE = translateRaw('WALLET_BREAKDOWN_BALANCE');
+  const VALUE = translateRaw('WALLET_BREAKDOWN_VALUE');
   const balancesTable = {
     head: [
       TOKEN,
-      <HeaderAlignment key={AMOUNT} align="center">
-        {AMOUNT}
-      </HeaderAlignment>,
       <HeaderAlignment key={BALANCE} align="center">
         {BALANCE}
+      </HeaderAlignment>,
+      <HeaderAlignment key={VALUE} align="center">
+        {VALUE}
       </HeaderAlignment>
     ],
     body: balances.map((balance, index) => {
@@ -90,7 +91,12 @@ export default function BalancesDetailView({
           {`${balance.amount.toFixed(6)} ${balance.ticker}`}
         </RowAlignment>,
         <RowAlignment key={index} align="right">
-          {`${fiat.symbol}${balance.fiatValue.toFixed(2)}`}
+          <Currency
+            amount={balance.fiatValue.toString()}
+            symbol={fiat.symbol}
+            prefix={fiat.prefix}
+            decimals={2}
+          />
         </RowAlignment>
       ];
     }),
@@ -111,13 +117,17 @@ export default function BalancesDetailView({
       <DashboardPanel
         heading={
           <BackButton basic={true} onClick={toggleShowChart}>
-            <img src={backArrowIcon} alt="Back arrow" /> {BALANCE}
+            <img src={backArrowIcon} alt="Back arrow" /> {BALANCES}
           </BackButton>
         }
         headingRight={
           <BalancesOnlyTotal>
-            {fiat.symbol}
-            {totalFiatValue.toFixed(2)}
+            <Currency
+              amount={totalFiatValue.toString()}
+              symbol={fiat.symbol}
+              prefix={fiat.prefix}
+              decimals={2}
+            />
           </BalancesOnlyTotal>
         }
       >

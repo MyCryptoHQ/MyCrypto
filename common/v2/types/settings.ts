@@ -7,4 +7,5 @@ export interface ISettings {
   inactivityTimer: number;
   node?: string;
   rates: IRates;
+  language: string; // Todo: Change to enum
 }

@@ -15,3 +15,5 @@ export enum HELP_ARTICLE {
   WHAT_IS_NONCE = 'general-knowledge/ethereum-blockchain/what-is-nonce',
   WHAT_IS_GAS = 'general-knowledge/ethereum-blockchain/what-is-gas'
 }
+
+export const knowledgeBaseURL = 'https://support.mycrypto.com';

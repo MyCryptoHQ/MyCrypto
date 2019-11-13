@@ -4,8 +4,7 @@ import { Button, Identicon } from '@mycrypto/ui';
 import EthTx from 'ethereumjs-tx';
 import styled from 'styled-components';
 
-import translate, { translateRaw } from 'translations';
-import { getTransactionFields, makeTransaction } from 'libs/transaction';
+import translate, { translateRaw } from 'v2/translations';
 import {
   InputField,
   QRCode,
@@ -13,6 +12,7 @@ import {
   NetworkSelectDropdown,
   InlineErrorMsg
 } from 'v2/components';
+import { getTransactionFields, makeTransaction } from 'v2/services/EthService';
 
 interface State {
   userInput: string;
@@ -142,6 +142,8 @@ class BroadcastTx extends Component<Props> {
           <InputField
             label={translateRaw('SEND_SIGNED')}
             value={userInput}
+            textarea={true}
+            height={'250px'}
             placeholder="0xf86b0284ee6b2800825208944bbeeb066ed09b7aed07bf39eee0460dfa26152088016345785d8a00008029a03ba7a0cc6d1756cd771f2119cf688b6d4dc9d37096089f0331fe0de0d1cc1254a02f7bcd19854c8d46f8de09e457aec25b127ab4328e1c0d24bfbff8702ee1f474"
             onChange={this.handleChange}
             onBlur={this.validateField}

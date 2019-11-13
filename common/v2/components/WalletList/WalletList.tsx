@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 import { WalletButton } from './WalletButton';
 import { WalletId, IStory } from 'v2/types';
 import { WALLETS_CONFIG, ROUTE_PATHS } from 'v2/config';

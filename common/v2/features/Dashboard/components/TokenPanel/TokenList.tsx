@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { convertToFiatFromAsset } from 'v2/utils';
 import { AssetWithDetails, TSymbol } from 'v2/types';
 import { AssetIcon, DashboardPanel, Spinner } from 'v2/components';
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
 

@@ -1,11 +1,9 @@
-export * from './environment';
 export * from './error';
 export * from './typeGuards';
-export * from './platform';
 export * from './validators';
-export * from './constants';
+export { IS_ELECTRON, IS_MOBILE, IS_DOWNLOADABLE } from './platform';
+export { HAS_WEB3_PROVIDER, IS_DEV, IS_PROD } from './environment';
 export { getFeaturedOS } from './getFeaturedOS';
-export { default as getSymbolIcon } from './symbolIcon';
 export { generateUUID } from './generateUUID';
 export { isUrl } from './isUrl';
 export { truncate } from './truncate';
@@ -17,3 +15,12 @@ export { useInterval } from './useInterval';
 export * from './useStateReducer';
 export { filterObjectOfObjects } from './filterObjectOfObjects';
 export { default as ScrollToTop } from './scrollToTop';
+export { getParam } from './queries';
+export {
+  formatGasLimit,
+  formatNumber,
+  formatMnemonic,
+  toChecksumAddressByChainId
+} from './formatters';
+export { makeBlob } from './blob';
+export { default as consoleAdvertisement } from './consoleAdvertisement';

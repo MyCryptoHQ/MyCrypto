@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Icon } from '@mycrypto/ui';
 
 import { COLORS } from 'v2/theme';
-import { InlineErrorMsg } from 'v2/components';
+import { InlineErrorMsg, Spinner } from 'v2/components';
 
 const { PASTEL_RED, BRIGHT_SKY_BLUE, DARK_SILVER } = COLORS;
 
@@ -98,6 +98,7 @@ const CustomIconWrapper = styled.div`
 `;
 
 interface Props {
+  name?: string;
   type?: string;
   label?: string | JSX.Element;
   value: string | undefined;
@@ -108,6 +109,7 @@ interface Props {
   height?: string;
   resizableTextArea?: boolean;
   disabled?: boolean;
+  isLoading?: boolean;
   onChange?(event: any): void;
   onBlur?(event: any): void;
   validate?(): void | undefined;
@@ -123,6 +125,7 @@ export class InputField extends Component<Props> {
 
   public render() {
     const {
+      name,
       value,
       label,
       onChange,
@@ -134,7 +137,8 @@ export class InputField extends Component<Props> {
       placeholder,
       height,
       resizableTextArea,
-      disabled
+      disabled,
+      isLoading
     } = this.props;
     return (
       <MainWrapper>
@@ -142,6 +146,7 @@ export class InputField extends Component<Props> {
         <InputWrapper>
           {textarea ? (
             <CustomTextArea
+              name={name}
               value={value}
               onChange={onChange}
               onBlur={onBlur}
@@ -154,6 +159,7 @@ export class InputField extends Component<Props> {
             />
           ) : (
             <CustomInput
+              name={name}
               value={value}
               onChange={onChange}
               onBlur={onBlur}
@@ -163,12 +169,19 @@ export class InputField extends Component<Props> {
               type={this.state.showPassword ? 'text' : type ? type : 'text'}
               placeholder={placeholder ? placeholder : ''}
               height={height}
+              disabled={isLoading}
             />
           )}
 
           {showEye && (
             <CustomIconWrapper onClick={this.handleEyeClick}>
               <CustomIcon icon={'showNetworks'} showPassword={this.state.showPassword} />
+            </CustomIconWrapper>
+          )}
+
+          {isLoading && (
+            <CustomIconWrapper>
+              <Spinner />
             </CustomIconWrapper>
           )}
         </InputWrapper>

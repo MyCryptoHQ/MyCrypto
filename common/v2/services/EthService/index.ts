@@ -35,7 +35,8 @@ export {
   getTimestampFromBlockNum,
   getTransactionReceiptFromHash,
   gasStringsToMaxGasBN,
-  convertedToBaseUnit
+  convertedToBaseUnit,
+  messageToData
 } from './utils';
 export {
   isValidPath,

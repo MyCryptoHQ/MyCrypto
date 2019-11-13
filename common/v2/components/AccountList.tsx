@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 import { Button, Copyable, Identicon } from '@mycrypto/ui';
 
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS, Fiats } from 'v2/config';
 import { CollapsibleTable, Network } from 'v2/components';
 import { default as Typography } from 'v2/components/Typography'; // @TODO solve Circular Dependency issue
@@ -109,7 +109,9 @@ export default function AccountList(props: AccountListProps) {
     <DashboardPanel
       heading={translateRaw('ACCOUNT_LIST_TABLE_ACCOUNTS')}
       headingRight={`+ ${
-        IS_MOBILE ? translateRaw('ACCOUNT_LIST_TABLE_ADD') : translateRaw('ACCOUNT_LIST_TABLE_ADD')
+        IS_MOBILE
+          ? translateRaw('ACCOUNT_LIST_TABLE_ADD')
+          : translateRaw('ACCOUNT_LIST_TABLE_ADD_ACCOUNT')
       }`}
       actionLink={ROUTE_PATHS.ADD_ACCOUNT.path}
       className={`AccountList ${className}`}

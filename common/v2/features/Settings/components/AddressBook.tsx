@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Icon, Copyable, Identicon, Button } from '@mycrypto/ui';
 
-import { DashboardPanel, CollapsibleTable, Typography } from 'v2/components';
+import { DashboardPanel, CollapsibleTable, Typography, Network } from 'v2/components';
 import { ExtendedAddressBook } from 'v2/types';
 import { truncate } from 'v2/utils';
 import { BREAK_POINTS } from 'v2/theme';
@@ -55,16 +55,19 @@ const STypography = styled(Typography)`
 
 export default function AddressBook({ addressBook, toggleFlipped, deleteAddressBooks }: Props) {
   const addressBookTable = {
-    head: ['Favorite', 'Label', 'Address', 'Notes', 'Delete'],
-    body: addressBook.map(({ address, label, notes, uuid }: ExtendedAddressBook) => [
+    head: ['Favorite', 'Label', 'Address', 'Network', 'Notes', 'Delete'],
+    body: addressBook.map(({ address, label, network, notes, uuid }: ExtendedAddressBook) => [
       <Icon key={0} icon="star" />,
       <Label key={1}>
         <SIdenticon address={address} />
         <STypography bold={true} value={label} />
       </Label>,
       <Copyable key={2} text={address} truncate={truncate} isCopyable={true} />,
-      <Typography key={3} value={notes} />,
-      <DeleteButton key={4} onClick={() => deleteAddressBooks(uuid)} icon="exit" />
+      <Network key={3} color="#a682ff">
+        {network}
+      </Network>,
+      <Typography key={4} value={notes} />,
+      <DeleteButton key={5} onClick={() => deleteAddressBooks(uuid)} icon="exit" />
     ]),
     config: {
       primaryColumn: 'Label',

@@ -5,7 +5,6 @@ export {
   getBalanceFromAccount,
   getTokenBalanceFromAccount,
   updateTokenBalanceByAsset,
-  getNodeLib,
   getAccountBalance,
   getAccountByAddress,
   getBaseAsset,

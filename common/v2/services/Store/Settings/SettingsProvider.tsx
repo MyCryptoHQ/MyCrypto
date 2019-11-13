@@ -3,21 +3,24 @@ import React, { Component, createContext } from 'react';
 import { ISettings, IRates } from 'v2/types';
 import { updateSetting, readAllSettings, readStorage, importStorage } from './Settings';
 
-interface ProviderState {
+interface ISettingsProvider {
   settings: ISettings;
+  language: string;
   updateSettings(settingsData: ISettings): void;
   updateSettingsAccounts(accounts: string[]): void;
   readAllSettings(): void;
   getStorage(): void;
   importStorage(importedCache: string): void;
   updateSettingsRates(rates: IRates): void;
+  updateLanguageSelection(language: string): void;
 }
 
-export const SettingsContext = createContext({} as ProviderState);
+export const SettingsContext = createContext({} as ISettingsProvider);
 
 export class SettingsProvider extends Component {
-  public readonly state: ProviderState = {
+  public readonly state: ISettingsProvider = {
     settings: readAllSettings() || {},
+    language: readAllSettings().language || '',
     updateSettings: (settings: ISettings): void => {
       this.setState(
         // Update our state to let react trigger changes.
@@ -54,6 +57,11 @@ export class SettingsProvider extends Component {
     updateSettingsRates: rates => {
       const settings = readAllSettings();
       updateSetting({ ...settings, rates });
+      this.getSettings();
+    },
+    updateLanguageSelection: languageToChangeTo => {
+      const settings = readAllSettings();
+      updateSetting({ ...settings, language: languageToChangeTo });
       this.getSettings();
     }
   };

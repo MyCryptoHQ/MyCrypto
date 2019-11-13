@@ -197,7 +197,7 @@ const AUX_DEFAULT: DPath = {
   value: "m/44'/344'/0'/0"
 };
 
-export const DPaths = {
+export const DPathsList = {
   ETH_DEFAULT,
   ETH_TREZOR,
   ETH_SAFE_T,

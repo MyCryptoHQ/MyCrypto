@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 
-import translate, { translateRaw } from 'translations';
-import { Spinner } from 'components/ui';
+import translate, { translateRaw } from 'v2/translations';
+import { Spinner } from 'v2/components';
 
 import { NetworkContext } from 'v2/services/Store';
 import { getDPath, getDPaths } from 'v2/services';
@@ -48,7 +48,7 @@ class SafeTminiDecryptClass extends PureComponent<OwnProps, State> {
     const network = this.context.getNetworkByName(this.props.formData.network);
 
     if (!dPath) {
-      return <UnsupportedNetwork walletType={translateRaw('X_SAFE_T')} />;
+      return <UnsupportedNetwork walletType={translateRaw('X_SAFE_T')} network={network} />;
     }
 
     if (publicKey && chainCode) {

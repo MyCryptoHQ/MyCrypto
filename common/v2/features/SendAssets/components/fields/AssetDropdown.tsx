@@ -1,7 +1,7 @@
 import React from 'react';
 import { OptionComponentProps } from 'react-select';
 
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import { Asset } from 'v2/types';
 import { AssetSummary, Divider, Dropdown } from 'v2/components';
 

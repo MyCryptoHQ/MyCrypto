@@ -4,7 +4,7 @@ import {
   LedgerNanoSDecrypt,
   KeystoreDecrypt,
   MnemonicDecrypt,
-  ParitySignerDecrypt,
+  //ParitySignerDecrypt,
   PrivateKeyDecrypt,
   Web3ProviderDecrypt,
   Web3ProviderInstall
@@ -19,10 +19,10 @@ export const STORIES: IStory[] = [
     name: WalletId.LEDGER_NANO_S,
     steps: [LedgerNanoSDecrypt]
   },
-  {
+  /*{
     name: WalletId.PARITY_SIGNER,
     steps: [ParitySignerDecrypt]
-  },
+  },*/
   {
     name: WalletId.KEYSTORE_FILE,
     steps: [KeystoreDecrypt],

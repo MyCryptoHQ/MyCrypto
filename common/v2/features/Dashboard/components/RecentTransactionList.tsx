@@ -9,6 +9,7 @@ import './RecentTransactionList.scss';
 import newWindowIcon from 'common/assets/images/icn-new-window.svg';
 import { truncate } from 'v2/utils';
 import { ExtendedAccount, AddressBook } from 'v2/types';
+import { translateRaw } from 'translations';
 
 interface Props {
   className?: string;
@@ -21,6 +22,7 @@ export default function RecentTransactionList({
   readAddressBook,
   className = ''
 }: Props) {
+  const noLabel = translateRaw('NO_LABEL');
   const transactions = accountsList.flatMap(account => account.transactions);
 
   // TODO: Sort by relevant transactions
@@ -39,9 +41,7 @@ export default function RecentTransactionList({
       <Address
         key={1}
         title={
-          readAddressBook(from.toLowerCase())
-            ? readAddressBook(from.toLowerCase()).label
-            : 'No Label'
+          readAddressBook(from.toLowerCase()) ? readAddressBook(from.toLowerCase()).label : noLabel
         }
         truncate={truncate}
         address={from}
@@ -49,7 +49,7 @@ export default function RecentTransactionList({
       <Address
         key={2}
         title={
-          readAddressBook(to.toLowerCase()) ? readAddressBook(to.toLowerCase()).label : 'No Label'
+          readAddressBook(to.toLowerCase()) ? readAddressBook(to.toLowerCase()).label : noLabel
         }
         truncate={truncate}
         address={to}

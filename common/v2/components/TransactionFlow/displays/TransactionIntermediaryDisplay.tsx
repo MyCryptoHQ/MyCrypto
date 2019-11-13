@@ -40,10 +40,6 @@ const IntermediaryDisplayContract = styled(Copyable)`
   color: #282d32;
 `;
 
-const truncate = (children: string) => {
-  return children; //[children.substring(0, 8), '…', children.substring(children.length - 6)].join('');
-};
-
 function TransactionIntermediaryDisplay({ asset }: Props) {
   return (
     <>
@@ -52,7 +48,7 @@ function TransactionIntermediaryDisplay({ asset }: Props) {
           <IntermediaryDisplay>
             <IntermediaryDisplayBox>
               <IntermediaryDisplayLabel>{`Transaction performed via ${asset.ticker} contract:`}</IntermediaryDisplayLabel>
-              <IntermediaryDisplayContract text={asset.contractAddress} truncate={truncate} />
+              <IntermediaryDisplayContract text={asset.contractAddress} />
             </IntermediaryDisplayBox>
           </IntermediaryDisplay>
         </div>

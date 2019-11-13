@@ -188,7 +188,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('EGEM', 'egem'),
       type: 'rpc',
       service: 'egem.io',
-      url: 'https://jsonrpc.egem.io/custom'
+      url: 'https://lb.rpc.egem.io'
     }
   ],
 

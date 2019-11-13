@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 
-import translate, { translateRaw } from 'translations';
-import { notificationsActions } from 'features/notifications';
-import Spinner from 'components/ui/Spinner';
-import { Input } from 'components/ui';
+import translate, { translateRaw } from 'v2/translations';
+import { notificationsActions } from 'v2/features/NotificationsPanel';
+import { Spinner, Input } from 'v2/components';
 
 import { WalletId } from 'v2/types';
 import { WalletFactory, isKeystorePassRequired } from 'v2/services/WalletService';

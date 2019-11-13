@@ -5,7 +5,7 @@ import TrustIcon from 'assets/images/wallets/trust.svg';
 import Web3DefaultIcon from 'assets/images/wallets/web3-default.svg';
 import FrameIcon from 'assets/images/wallets/frame.svg';
 import { IWalletConfig, WALLETS_CONFIG } from 'v2/config';
-import { WalletId } from 'v2/types';
+import { WalletId, WalletType } from 'v2/types';
 
 interface Web3ProviderInfo {
   lid: string;
@@ -69,4 +69,8 @@ export function getWeb3ProviderInfo(): Web3ProviderInfo {
 
 export const getWeb3Config = (): IWalletConfig => {
   return WALLETS_CONFIG[getWeb3ProviderInfo().walletId];
+};
+
+export const isWeb3Wallet = (walletId: WalletId): boolean => {
+  return WALLETS_CONFIG[walletId].type === WalletType.WEB3;
 };

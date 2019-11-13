@@ -92,18 +92,8 @@ const PATHS: IRoutePath[] = [
   },
   {
     name: 'SWAP',
-    title: 'Buy and Exchange | Select Exchange',
+    title: 'Buy and Exchange',
     path: '/swap'
-  },
-  {
-    name: 'SWAP_SHAPESHIFT',
-    title: 'Buy and Exchange | ShapeShift',
-    path: '/swap/shapeshift'
-  },
-  {
-    name: 'SWAP_0X',
-    title: 'Buy and Exchange | 0x Instant',
-    path: '/swap/0x'
   },
   {
     name: 'SIGN_MESSAGE',
@@ -127,8 +117,6 @@ const PATHS: IRoutePath[] = [
   }
 ];
 
-export const ROUTE_PATHS: IRoutePaths = createNavLinksFromRoutePaths(PATHS);
-
 function createNavLinksFromRoutePaths(paths: IRoutePath[]) {
   return paths.reduce(
     (navLinks, path) => {
@@ -138,3 +126,5 @@ function createNavLinksFromRoutePaths(paths: IRoutePath[]) {
     {} as IRoutePaths
   );
 }
+
+export const ROUTE_PATHS: IRoutePaths = createNavLinksFromRoutePaths(PATHS);
