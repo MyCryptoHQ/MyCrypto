@@ -1,13 +1,17 @@
 import { Contracts as CONTRACTS } from 'v2/config/contracts';
 import { isValidETHAddress } from 'v2/services/EthService';
 
-describe('Contracts have a valid Address', () => {
+describe('Contracts JSON', () => {
   Object.keys(CONTRACTS).forEach(network => {
     const contracts: any = (CONTRACTS as any)[network];
     const addressCollisionMap: any = {};
 
     contracts.forEach((contract: any) => {
       it(`${network} - ${contract.name} contains a valid addresses`, () => {
+        // Mist's multisig is a factory-generated standard contract,
+        // so it's okay that it doesn't have an address.
+        // the user inputs it to interact with their mist multisig
+        if (contract.name === "Mist's Multisig Contract") return;
         expect(isValidETHAddress(contract.address)).toBeTruthy();
       });
 
