@@ -39,8 +39,8 @@ const EmptyTile = styled.div`
 `;
 
 export default function Dashboard() {
-  const { isActive: isDevToolsActive, displayRecentTransactionList } = useDevTools();
   const { isUnlockVIP } = useContext(StoreContext);
+  const { isActive: isDevToolsActive } = useDevTools();
   const { accounts } = useContext(AccountContext);
 
   return (
@@ -112,14 +112,12 @@ export default function Dashboard() {
           </div>
         </div>
         {!isUnlockVIP && <BannerAd />}
-        {isDevToolsActive && displayRecentTransactionList && (
-          <div className="Dashboard-desktop-bottom">
-            <RecentTransactionList
-              accountsList={accounts}
-              className="Dashboard-desktop-modifiedPanel"
-            />
-          </div>
-        )}
+        <div className="Dashboard-desktop-bottom">
+          <RecentTransactionList
+            accountsList={accounts}
+            className="Dashboard-desktop-modifiedPanel"
+          />
+        </div>
       </Desktop>
     </div>
   );
