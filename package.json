@@ -164,6 +164,7 @@
     "mini-css-extract-plugin": "0.8.0",
     "minimist": "1.2.0",
     "mycrypto-nano-result": "0.0.1",
+    "nock": "11.7.0",
     "node-sass": "4.12.0",
     "nodemon": "1.17.3",
     "parse-eth-tokens": "0.3.0",
