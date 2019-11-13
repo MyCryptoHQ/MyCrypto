@@ -90,6 +90,7 @@ export class CacheServiceBase {
 
     // Extracts the actual cached values for every entry
     return Object.keys(entry).reduce((result, key) => {
+      // @ts-ignore
       result[key] = entry[key].value;
       return result;
     }, {});
@@ -142,6 +143,7 @@ export default class CacheService extends CacheServiceBase {
 
 // Low level operations
 export const hardRefreshCache = () => {
+  // @ts-ignore Let us set the initial cache values - is rarely used
   setCache(CACHE_INIT);
 };
 
@@ -185,9 +187,9 @@ type CollectionKey =
   | 'assets'
   | 'contracts'
   | 'networks'
-  | 'notifications'
-  | 'settings'
-  | 'screenLockSettings';
+  | 'notifications';
+
+type SettingsKey = 'settings' | 'screenLockSettings';
 
 export const create = <K extends CollectionKey>(key: K) => (value: NewCacheEntry) => {
   const uuid = generateUUID();
@@ -213,7 +215,6 @@ export const createWithID = <K extends CollectionKey>(key: K) => (
 };
 
 export const read = <K extends CollectionKey>(key: K) => (uuid: string): LocalCache[K][string] => {
-  // @ts-ignore ie. https://app.clubhouse.io/mycrypto/story/2376/remove-ts-ignore-from-common-v2-services-store-localcache-localcache-ts
   return CacheService.instance.getEntry(key, uuid);
 };
 
@@ -224,7 +225,9 @@ export const update = <K extends CollectionKey>(key: K) => (uuid: string, value:
   CacheService.instance.setEntry(key, obj);
 };
 
-export const updateAll = <K extends CollectionKey>(key: K) => (value: NewCacheEntry) => {
+export const updateAll = <K extends CollectionKey | SettingsKey>(key: K) => (
+  value: NewCacheEntry
+) => {
   CacheService.instance.setEntry(key, value);
 };
 
@@ -238,7 +241,7 @@ export const readAll = <K extends CollectionKey>(key: K) => () => {
   return sectionEntries.map(([uuid, value]) => ({ ...value, uuid }));
 };
 
-export const readSection = <K extends CollectionKey>(key: K) => () => {
+export const readSection = <K extends CollectionKey | SettingsKey>(key: K) => () => {
   initializeCache();
   const section: LocalCache[K] = CacheService.instance.getEntries(key);
   return section;
