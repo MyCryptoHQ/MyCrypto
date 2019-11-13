@@ -27,9 +27,10 @@ export default class AnalyticsService {
     }
   }
 
-  public trackPageVisit(pageUrl: string): Promise<any> {
+  public trackPageVisit(pageUrl: string, network: string): Promise<any> {
     const customParams: Params = {
-      local: isDevelopment().toString()
+      local: isDevelopment().toString(),
+      node_id: network
     };
 
     const cvar = this.mapParamsToCvars(customParams);

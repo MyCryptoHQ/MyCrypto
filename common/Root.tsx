@@ -57,6 +57,10 @@ interface DispatchProps {
 
 type Props = OwnProps & StateProps & DispatchProps;
 
+type PageVisitsAnalyticsProps = RouteComponentProps<{}> & {
+  network: string;
+};
+
 interface State {
   error: Error | null;
 }
@@ -118,12 +122,11 @@ class RootClass extends Component<Props, State> {
       process.env.BUILD_DOWNLOADABLE && process.env.NODE_ENV === 'production'
         ? HashRouter
         : BrowserRouter;
-
     return (
       <React.Fragment>
         <Provider store={store}>
           <Router>
-            <PageVisitsAnalytics>
+            <PageVisitsAnalytics network={store.getState().config.nodes.selectedNode.nodeId}>
               {onboardingActive && <OnboardingModal />}
               {routes}
               <LegacyRoutes />
@@ -168,11 +171,11 @@ class RootClass extends Component<Props, State> {
 let previousURL = '';
 const PageVisitsAnalytics = withRouter(
   // tslint:disable-next-line: max-classes-per-file
-  class extends Component<RouteComponentProps<{}>> {
+  class extends Component<PageVisitsAnalyticsProps> {
     public componentDidMount() {
       this.props.history.listen(() => {
         if (previousURL !== window.location.href) {
-          AnalyticsService.instance.trackPageVisit(window.location.href);
+          AnalyticsService.instance.trackPageVisit(window.location.href, this.props.network);
           previousURL = window.location.href;
         }
       });
