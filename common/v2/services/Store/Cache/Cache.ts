@@ -4,8 +4,8 @@ import { IS_DEV, generateUUID } from 'v2/utils';
 import StorageService from './Storage';
 import {
   CACHE_TIME_TO_LIVE,
-  CACHE_LOCALSTORAGE_KEY,
-  ENCRYPTED_CACHE_KEY,
+  LOCALSTORAGE_KEY,
+  ENCRYPTED_STORAGE_KEY,
   CACHE_INIT
 } from './constants';
 import { cachedValueIsFresh } from './helpers';
@@ -17,7 +17,7 @@ export class CacheServiceBase {
   private cache: Cache = {};
 
   public constructor() {
-    const persistedCache = StorageService.instance.getEntry(CACHE_LOCALSTORAGE_KEY);
+    const persistedCache = StorageService.instance.getEntry(LOCALSTORAGE_KEY);
 
     if (persistedCache) {
       this.initializeCache(persistedCache);
@@ -36,7 +36,7 @@ export class CacheServiceBase {
 
     // If that fails, try retrieving it from LocalStorage.
     if (!entry) {
-      const storage = StorageService.instance.getEntry(CACHE_LOCALSTORAGE_KEY);
+      const storage = StorageService.instance.getEntry(LOCALSTORAGE_KEY);
 
       if (storage && storage[identifier]) {
         entry = storage[identifier][entryKey];
@@ -78,7 +78,7 @@ export class CacheServiceBase {
 
     // If that fails, try retrieving it from LocalStorage.
     if (!entry) {
-      const storage = StorageService.instance.getEntry(CACHE_LOCALSTORAGE_KEY);
+      const storage = StorageService.instance.getEntry(LOCALSTORAGE_KEY);
 
       if (storage && storage[identifier]) {
         entry = storage[identifier];
@@ -116,7 +116,7 @@ export class CacheServiceBase {
   }
 
   private updatePersistedCache() {
-    StorageService.instance.setEntry(CACHE_LOCALSTORAGE_KEY, this.cache);
+    StorageService.instance.setEntry(LOCALSTORAGE_KEY, this.cache);
   }
 }
 
@@ -148,7 +148,7 @@ export const hardRefreshCache = () => {
 };
 
 export const getCacheRaw = (): LocalCache => {
-  const c = StorageService.instance.getEntry(CACHE_LOCALSTORAGE_KEY);
+  const c = StorageService.instance.getEntry(LOCALSTORAGE_KEY);
   return c ? c : CACHE_INIT;
 };
 
@@ -158,25 +158,25 @@ export const getCache = (): LocalCache => {
 };
 
 export const setCache = (newCache: Cache) => {
-  localStorage.setItem(CACHE_LOCALSTORAGE_KEY, JSON.stringify(newCache));
+  localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(newCache));
   CacheService.instance.initializeCache(newCache);
 };
 
 export const destroyCache = () => {
-  localStorage.removeItem(CACHE_LOCALSTORAGE_KEY);
+  localStorage.removeItem(LOCALSTORAGE_KEY);
   CacheService.instance.initializeCache({});
 };
 
 export const getEncryptedCache = (): string => {
-  return localStorage.getItem(ENCRYPTED_CACHE_KEY) || '';
+  return localStorage.getItem(ENCRYPTED_STORAGE_KEY) || '';
 };
 
 export const setEncryptedCache = (newEncryptedCache: string) => {
-  localStorage.setItem(ENCRYPTED_CACHE_KEY, newEncryptedCache);
+  localStorage.setItem(ENCRYPTED_STORAGE_KEY, newEncryptedCache);
 };
 
 export const destroyEncryptedCache = () => {
-  localStorage.removeItem(ENCRYPTED_CACHE_KEY);
+  localStorage.removeItem(ENCRYPTED_STORAGE_KEY);
 };
 
 // Collection operations
