@@ -175,7 +175,7 @@ function buildAccountTable(
                 getLabelByAccount(accounts[overlayRows[0]], addressBook) !== undefined
                   ? getLabelByAccount(accounts[overlayRows[0]], addressBook)!.label
                   : ''
-              } account with address: ${truncate(accounts[overlayRows[0]].address)} ?`}
+              } account with address: ${accounts[overlayRows[0]].address} ?`}
           deleteAction={() => {
             deleteAccount(accounts[overlayRows[0]].uuid);
             setDeletingIndex(undefined);
@@ -213,12 +213,7 @@ function buildAccountTable(
             <DeleteButton
               key={index}
               onClick={() => {
-                if (screenIsMobileSized(breakpointToNumber(BREAK_POINTS.SCREEN_XS)) === false) {
-                  setDeletingIndex(index);
-                }
-                if (screenIsMobileSized(breakpointToNumber(BREAK_POINTS.SCREEN_XS)) === true) {
-                  deleteAccount(account.uuid);
-                }
+                setDeletingIndex(index);
               }}
               icon="exit"
             />

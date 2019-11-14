@@ -245,33 +245,9 @@ class AbstractTable extends Component<Props, State> {
           {/* Ungrouped rows are placed on top of grouped rows. */}
           {body.map((row, rowIndex) => (
             <TableRow key={rowIndex}>
-              {overlay ? (
-                overlayRows ? (
-                  // Render overlay component for any row in the overlay list
-                  overlayRows.includes(rowIndex) ? (
-                    <td colSpan={head.length}>{overlay}</td>
-                  ) : (
-                    row.map((cell, cellIndex) => (
-                      <TableCell
-                        key={cellIndex}
-                        isReversed={isReversedColumn(head[cellIndex])}
-                        data-testid={`ungrouped-${rowIndex}-${cellIndex}`}
-                      >
-                        {cell}
-                      </TableCell>
-                    ))
-                  )
-                ) : (
-                  row.map((cell, cellIndex) => (
-                    <TableCell
-                      key={cellIndex}
-                      isReversed={isReversedColumn(head[cellIndex])}
-                      data-testid={`ungrouped-${rowIndex}-${cellIndex}`}
-                    >
-                      {cell}
-                    </TableCell>
-                  ))
-                )
+              {overlay && overlayRows!.includes(rowIndex) ? (
+                // TODO: Solve jump in th width when the overlay is toggled.
+                <td colSpan={head.length}>{overlay}</td>
               ) : (
                 row.map((cell, cellIndex) => (
                   <TableCell

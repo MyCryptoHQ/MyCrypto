@@ -129,6 +129,17 @@ const GroupHeadingCaret = styled(Icon)<Flippable>`
   `};
 `;
 
+const StackedCardContainer = styled.div`
+  position: relative;
+`;
+const StackedCardOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+`;
+
 export class CollapsibleTable extends Component<Props, State> {
   public static defaultProps = {
     head: [],
@@ -161,6 +172,7 @@ export class CollapsibleTable extends Component<Props, State> {
 
   public render() {
     const { mode, collapsedGroups } = this.state;
+    const { overlay, overlayRows } = this.props;
 
     return mode === CollapsibleTableModes.Mobile ? (
       transformTableToCards(this.props, collapsedGroups).map((cardData, index) =>
@@ -172,7 +184,12 @@ export class CollapsibleTable extends Component<Props, State> {
           </GroupHeading>
         ) : (
           // The element being iterated on is table data.
-          <StackedCard key={index} {...cardData} />
+          <StackedCardContainer>
+            <StackedCard key={index} {...cardData} />
+            {overlay && overlayRows!.includes(index) && (
+              <StackedCardOverlay>{overlay}</StackedCardOverlay>
+            )}
+          </StackedCardContainer>
         )
       )
     ) : (
