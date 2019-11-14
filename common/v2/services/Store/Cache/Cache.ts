@@ -184,7 +184,7 @@ export const create = <K extends CollectionKey>(key: K) => (value: DataEntry) =>
 
 export const createWithID = <K extends CollectionKey>(key: K) => (value: DataEntry, id: string) => {
   const uuid = id;
-  if (CacheService.instance.getEntry(key, uuid) === null) {
+  if (CacheService.instance.getEntry(key, uuid) === undefined) {
     const obj = {};
     // @ts-ignore ie. https://app.clubhouse.io/mycrypto/story/2376/remove-ts-ignore-from-common-v2-services-store-localcache-localcache-ts
     obj[uuid] = value;
