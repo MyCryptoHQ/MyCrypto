@@ -41,7 +41,7 @@ export const initializeCache = () => {
     initAssets();
 
     if (IS_DEV) {
-      //initTestAccounts();
+      initTestAccounts();
     }
   }
 };
