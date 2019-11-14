@@ -20,7 +20,7 @@ import {
   WalletId
 } from 'v2/types';
 import { hardRefreshCache, updateAll, getCache, readSection } from '../Cache';
-import { CACHE_LOCALSTORAGE_KEY } from './constants';
+import { LOCALSTORAGE_KEY } from './constants';
 
 /*
    Extracted from LocalCache.ts.
@@ -30,7 +30,7 @@ import { CACHE_LOCALSTORAGE_KEY } from './constants';
 
 // Initialization
 export const initializeCache = () => {
-  const check = localStorage.getItem(CACHE_LOCALSTORAGE_KEY);
+  const check = localStorage.getItem(LOCALSTORAGE_KEY);
   if (!check || check === '[]' || check === '{}') {
     hardRefreshCache();
     initFiatCurrencies();
