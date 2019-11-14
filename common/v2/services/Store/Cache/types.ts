@@ -1,19 +1,9 @@
-export interface Cache {
+export interface DataCache {
   [identifier: string]: {
-    [entry: string]: {
-      value: any;
-      ttl: number;
-    };
+    [entry: string]: any;
   };
 }
 
-export interface CacheEntry {
-  [entry: string]: {
-    value: any;
-    ttl: number;
-  };
-}
-
-export interface NewCacheEntry {
+export interface DataEntry {
   [key: string]: any;
 }
