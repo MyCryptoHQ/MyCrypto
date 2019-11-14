@@ -210,13 +210,7 @@ function buildAccountTable(
       return deletable
         ? [
             ...bodyContent,
-            <DeleteButton
-              key={index}
-              onClick={() => {
-                setDeletingIndex(index);
-              }}
-              icon="exit"
-            />
+            <DeleteButton key={index} onClick={() => setDeletingIndex(index)} icon="exit" />
           ]
         : favoritable
         ? [

@@ -11,7 +11,7 @@ import {
 } from 'v2/components';
 import { ExtendedAddressBook } from 'v2/types';
 import { truncate } from 'v2/utils';
-import { BREAK_POINTS, breakpointToNumber } from 'v2/theme';
+import { BREAK_POINTS } from 'v2/theme';
 
 interface Props {
   addressBook: ExtendedAddressBook[];
@@ -84,32 +84,19 @@ export default function AddressBook({ addressBook, toggleFlipped, deleteAddressB
         <></>
       ),
     overlayRows,
-    body: addressBook.map(
-      ({ address, label, network, notes, uuid }: ExtendedAddressBook, index) => [
-        <Icon key={0} icon="star" />,
-        <Label key={1}>
-          <SIdenticon address={address} />
-          <STypography bold={true} value={label} />
-        </Label>,
-        <Copyable key={2} text={address} truncate={truncate} isCopyable={true} />,
-        <Network key={3} color="#a682ff">
-          {network}
-        </Network>,
-        <Typography key={4} value={notes} />,
-        <DeleteButton
-          key={5}
-          onClick={() => {
-            if (screenIsMobileSized(breakpointToNumber(BREAK_POINTS.SCREEN_XS)) === false) {
-              setDeletingIndex(index);
-            }
-            if (screenIsMobileSized(breakpointToNumber(BREAK_POINTS.SCREEN_XS)) === true) {
-              deleteAddressBooks(uuid);
-            }
-          }}
-          icon="exit"
-        />
-      ]
-    ),
+    body: addressBook.map(({ address, label, network, notes }: ExtendedAddressBook, index) => [
+      <Icon key={0} icon="star" />,
+      <Label key={1}>
+        <SIdenticon address={address} />
+        <STypography bold={true} value={label} />
+      </Label>,
+      <Copyable key={2} text={address} truncate={truncate} isCopyable={true} />,
+      <Network key={3} color="#a682ff">
+        {network}
+      </Network>,
+      <Typography key={4} value={notes} />,
+      <DeleteButton key={5} onClick={() => setDeletingIndex(index)} icon="exit" />
+    ]),
     config: {
       primaryColumn: 'Label',
       sortableColumn: 'Label',
