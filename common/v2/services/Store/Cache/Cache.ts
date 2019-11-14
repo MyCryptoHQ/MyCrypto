@@ -2,17 +2,14 @@ import get from 'lodash/get';
 
 import { IS_DEV, generateUUID } from 'v2/utils';
 import StorageService from './Storage';
-import {
-  CACHE_TIME_TO_LIVE,
-  LOCALSTORAGE_KEY,
-  ENCRYPTED_STORAGE_KEY,
-  CACHE_INIT
-} from './constants';
-import { cachedValueIsFresh } from './helpers';
+import { LOCALSTORAGE_KEY, ENCRYPTED_STORAGE_KEY, CACHE_INIT } from './constants';
 import { Cache, NewCacheEntry } from './types';
 import { initializeCache } from './seedCache';
 import { LocalCache } from 'v2/types';
 
+// Keep an in Memory copy of LocalStorage.
+// If usefull we can restore ttl checks for stale cache by checking
+// https://github.com/MyCryptoHQ/MyCrypto/commit/d10b804e35bb44ce72b8d7d0363b0bbd0ebf7a73
 export class CacheServiceBase {
   private cache: Cache = {};
 
@@ -46,26 +43,13 @@ export class CacheServiceBase {
       }
     }
 
-    if (cachedValueIsFresh(entry)) {
-      return entry.value;
-    } else {
-      this.clearEntry(identifier, entryKey);
-      this.updatePersistedCache();
-
-      return null;
-    }
+    return entry;
   }
 
-  public setEntry(identifier: string, entries: NewCacheEntry, useTTL?: boolean) {
+  public setEntry(identifier: string, entries: NewCacheEntry) {
     this.ensureSubcache(identifier);
 
-    Object.entries(entries).forEach(
-      ([key, value]) =>
-        (this.cache[identifier][key] = {
-          value,
-          ttl: useTTL ? Date.now() + CACHE_TIME_TO_LIVE : -1
-        })
-    );
+    Object.entries(entries).forEach(([key, value]) => (this.cache[identifier][key] = value));
 
     this.updatePersistedCache();
   }
@@ -89,9 +73,8 @@ export class CacheServiceBase {
     }
 
     // Extracts the actual cached values for every entry
-    return Object.keys(entry).reduce((result, key) => {
-      // @ts-ignore
-      result[key] = entry[key].value;
+    return Object.keys(entry).reduce((result: NewCacheEntry, key) => {
+      result[key] = entry[key];
       return result;
     }, {});
   }
