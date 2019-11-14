@@ -22,7 +22,8 @@ import {
   SwapAssetsFlow,
   Home,
   SignAndVerifyMessage,
-  BroadcastTransactionFlow
+  BroadcastTransactionFlow,
+  InteractWithContractsFlow
 } from 'v2/features';
 import { requiresDesktopApp } from './helpers';
 
@@ -171,5 +172,11 @@ export const APP_ROUTES: IAppRoute[] = [
     title: ROUTE_PATHS.BROADCAST_TX.title,
     path: ROUTE_PATHS.BROADCAST_TX.path,
     component: BroadcastTransactionFlow
+  },
+  {
+    name: ROUTE_PATHS.INTERACT_WITH_CONTRACTS.name,
+    title: ROUTE_PATHS.INTERACT_WITH_CONTRACTS.title,
+    path: ROUTE_PATHS.INTERACT_WITH_CONTRACTS.path,
+    component: InteractWithContractsFlow
   }
 ];
