@@ -50,7 +50,8 @@ export {
   ITxConfig,
   IFormikFields,
   ISignComponentProps,
-  IStepComponentProps
+  IStepComponentProps,
+  SigningComponents
 } from './transactionFlow';
 export { JsonRPCResponse } from './jsonRPCResponse';
 export { INode, TxObj } from './INode';

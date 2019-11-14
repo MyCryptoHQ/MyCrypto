@@ -5,7 +5,8 @@ import {
   ITxReceipt,
   IStepComponentProps,
   ISignComponentProps,
-  ISignedTx
+  ISignedTx,
+  SigningComponents
 } from 'v2/types';
 import {
   SignTransactionPrivateKey,
@@ -17,9 +18,6 @@ import {
   SignTransactionMnemonic
 } from 'v2/components';
 
-type SigningComponents = {
-  readonly [k in WalletId]: React.ComponentType<ISignComponentProps> | null;
-};
 const SigningComponents: SigningComponents = {
   [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,
   [WalletId.METAMASK]: SignTransactionWeb3,
