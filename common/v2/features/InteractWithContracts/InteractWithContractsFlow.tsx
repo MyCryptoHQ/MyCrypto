@@ -1,4 +1,4 @@
-import React, { useState, ReactType } from 'react';
+import React, { useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { translateRaw } from 'translations';
@@ -9,10 +9,13 @@ import { useStateReducer } from 'v2/utils/useStateReducer';
 
 import { interactWithContractsInitialState, InteractWithContractsFactory } from './stateFactory';
 import { Interact, InteractionReceipt } from './components';
+import { ABIItem, InteractWithContractState } from './types';
+import { ITxReceipt, ISignedTx } from 'v2/types';
+import { WALLET_STEPS } from './helpers';
 
 interface TStep {
   title: string;
-  component: ReactType;
+  component: any;
   props: any;
   actions: any;
 }
@@ -27,8 +30,12 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
     handleAbiChanged,
     updateNetworkContractOptions,
     setGeneratedFormVisible,
-    handleInteractionFormSubmit
+    handleInteractionFormSubmit,
+    handleInteractionFormWriteSubmit,
+    handleAccountSelected,
+    handleTxSigned
   } = useStateReducer(InteractWithContractsFactory, interactWithContractsInitialState);
+  const { account }: InteractWithContractState = interactWithContractsState;
 
   const goToFirstStep = () => {
     setStep(0);
@@ -57,7 +64,8 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
         contract,
         abi,
         contracts,
-        showGeneratedForm
+        showGeneratedForm,
+        account
       }))(interactWithContractsState),
       actions: {
         handleNetworkSelected,
@@ -66,7 +74,22 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
         handleAbiChanged,
         updateNetworkContractOptions,
         setGeneratedFormVisible,
-        handleInteractionFormSubmit
+        handleInteractionFormSubmit,
+        handleInteractionFormWriteSubmit: (payload: ABIItem) =>
+          handleInteractionFormWriteSubmit(payload, goToNextStep),
+        handleAccountSelected
+      }
+    },
+    {
+      title: 'Sign write transaction',
+      component: account && WALLET_STEPS[account.wallet],
+      props: (({ rawTransaction }) => ({
+        network: account && account.network,
+        senderAccount: account,
+        rawTransaction
+      }))(interactWithContractsState),
+      actions: {
+        onSuccess: (payload: ITxReceipt | ISignedTx) => handleTxSigned(payload, goToNextStep)
       }
     },
     {

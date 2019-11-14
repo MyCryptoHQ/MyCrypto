@@ -1,5 +1,16 @@
 import { sortBy, cloneDeep } from 'lodash';
 import { StateMutabilityType, ABIItem, ABIItemType } from './types';
+import { WalletId, SigningComponents, StoreAccount, NetworkId } from 'v2/types';
+import {
+  SignTransactionPrivateKey,
+  SignTransactionWeb3,
+  SignTransactionLedger,
+  SignTransactionTrezor,
+  SignTransactionSafeT,
+  SignTransactionKeystore,
+  SignTransactionParity,
+  SignTransactionMnemonic
+} from 'v2/components';
 
 export const isReadOperation = (abiFunction: ABIItem) => {
   const { stateMutability } = abiFunction;
@@ -59,3 +70,22 @@ export const getFunctionsFromABI = (pAbi: ABIItem[]) =>
   sortBy(pAbi.filter(x => x.type === ABIItemType.FUNCTION), item => item.name.toLowerCase()).map(
     x => Object.assign(x, { label: x.name })
   );
+
+export const WALLET_STEPS: SigningComponents = {
+  [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,
+  [WalletId.METAMASK]: SignTransactionWeb3,
+  [WalletId.TRUST]: SignTransactionWeb3,
+  [WalletId.CIPHER]: SignTransactionWeb3,
+  [WalletId.MIST]: SignTransactionWeb3,
+  [WalletId.FRAME]: SignTransactionWeb3,
+  [WalletId.LEDGER_NANO_S]: SignTransactionLedger,
+  [WalletId.TREZOR]: SignTransactionTrezor,
+  [WalletId.SAFE_T_MINI]: SignTransactionSafeT,
+  [WalletId.KEYSTORE_FILE]: SignTransactionKeystore,
+  [WalletId.PARITY_SIGNER]: SignTransactionParity,
+  [WalletId.MNEMONIC_PHRASE]: SignTransactionMnemonic,
+  [WalletId.VIEW_ONLY]: null
+};
+
+export const getAccountsInNetwork = (accounts: StoreAccount[], networkId: NetworkId) =>
+  accounts.filter(acc => acc.networkId === networkId && WALLET_STEPS[acc.wallet]);

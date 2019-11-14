@@ -6,7 +6,7 @@ import {
   IStepComponentProps,
   ISignComponentProps,
   ISignedTx,
-  SigningComponents
+  SigningComponents as SigningComponentsType
 } from 'v2/types';
 import {
   SignTransactionPrivateKey,
@@ -18,7 +18,7 @@ import {
   SignTransactionMnemonic
 } from 'v2/components';
 
-const SigningComponents: SigningComponents = {
+const SigningComponents: SigningComponentsType = {
   [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,
   [WalletId.METAMASK]: SignTransactionWeb3,
   [WalletId.TRUST]: SignTransactionWeb3,
