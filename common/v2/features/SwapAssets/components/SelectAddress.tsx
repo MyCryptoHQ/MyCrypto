@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
-import { translate } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 
 import { AccountDropdown, InlineErrorMsg, Typography } from 'v2/components';
 import { StoreAccount } from 'v2/types';
@@ -60,7 +60,7 @@ export default function SelectAddress(props: Props) {
         toAmount={toAmount}
       />
       <LabelWrapper>
-        <Label value={translate('ACCOUNT_SELECTION_PLACEHOLDER')} fontSize="1.13em" />
+        <Label value={translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')} fontSize="1.13em" />
       </LabelWrapper>
       <AccountDropdown
         name="account"

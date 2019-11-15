@@ -7,7 +7,7 @@ import { WalletFactory, HardwareWallet } from 'v2/services/WalletService';
 import { InlineErrorMsg } from 'v2/components/ErrorMessages';
 
 import './Hardware.scss';
-import translate from 'translations';
+import translate from 'v2/translations';
 
 export interface IDestructuredDPath {
   dpath: string;

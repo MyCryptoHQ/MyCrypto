@@ -9,7 +9,7 @@ import './RecentTransactionList.scss';
 import newWindowIcon from 'common/assets/images/icn-new-window.svg';
 import { truncate } from 'v2/utils';
 import { ExtendedAccount, AddressBook } from 'v2/types';
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 
 interface Props {
   className?: string;

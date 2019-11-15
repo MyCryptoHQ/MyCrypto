@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import translate from 'translations';
+import translate from 'v2/translations';
 import { WALLETS_CONFIG, IWalletConfig } from 'v2/config';
 import { WalletId, FormData } from 'v2/types';
 import { InlineErrorMsg, NewTabLink } from 'v2/components';
