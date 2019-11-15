@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { InputField, Dropdown, Button, Spinner, InlineErrorMsg } from 'v2/components';
+import { COLORS, monospace } from 'v2/theme';
 
 import FunctionDropdownOption from './FunctionDropdownOption';
 import FunctionDropdownValue from './FunctionDropdownValue';
@@ -12,6 +13,9 @@ import {
   getFunctionsFromABI,
   setFunctionOutputValues
 } from '../helpers';
+import { FieldLabel, BooleanField } from './fields';
+
+const { LIGHT_GREY } = COLORS;
 
 const Wrapper = styled.div`
   margin-top: 16px;
@@ -60,6 +64,15 @@ const ButtonWrapper = styled.div`
 const SpinnerWrapper = styled.div`
   display: flex;
   justify-content: center;
+`;
+
+const FormFieldsWrapper = styled.div`
+  input {
+    font-family: ${monospace};
+    :disabled {
+      background-color: ${LIGHT_GREY};
+    }
+  }
 `;
 
 interface Props {
@@ -136,52 +149,69 @@ export default function GeneratedInteractionForm({ abi, handleInteractionFormSub
         />
       </DropdownWrapper>
 
-      {currentFunction && (
-        <>
-          {inputs.length > 0 && (
-            <div>
-              {inputs.map((field, index) => {
-                return (
-                  <FieldWrapper key={`${field.displayName}${index}${currentFunction.name}`}>
-                    <InputField
-                      label={`${field.displayName} (${field.type})`}
-                      value={field.value}
-                      onChange={({ target: { value } }) => handleInputChange(field.name, value)}
-                    />
-                  </FieldWrapper>
-                );
-              })}
-            </div>
-          )}
+      <FormFieldsWrapper>
+        {currentFunction && (
+          <>
+            {inputs.length > 0 && (
+              <div>
+                {inputs.map((field, index) => {
+                  return (
+                    <FieldWrapper key={`${field.displayName}${index}${currentFunction.name}`}>
+                      <InputField
+                        label={<FieldLabel fieldName={field.displayName!} fieldType={field.type} />}
+                        value={field.value}
+                        onChange={({ target: { value } }) => handleInputChange(field.name, value)}
+                      />
+                    </FieldWrapper>
+                  );
+                })}
+              </div>
+            )}
 
-          {isRead && (
-            <div>
-              {outputs.map((field, index) => {
-                return (
-                  <FieldWrapper
-                    isOutput={true}
-                    key={`${field.displayName}${index}${currentFunction.name}`}
-                  >
-                    <InputField
-                      label={`↳ ${field.displayName} (${field.type})`}
-                      value={field.value}
-                    />
-                  </FieldWrapper>
-                );
-              })}
-            </div>
-          )}
-          <SpinnerWrapper>{loadingOutputs && <Spinner size="x2" />}</SpinnerWrapper>
-          {error && <InlineErrorMsg>{error}</InlineErrorMsg>}
-          <ButtonWrapper>
-            {isRead &&
-              (inputs.length > 0 && (
-                <Button onClick={() => submitForm(currentFunction)}>Read</Button>
-              ))}
-            {!isRead && <Button onClick={() => submitForm(currentFunction)}>Write</Button>}
-          </ButtonWrapper>
-        </>
-      )}
+            {isRead && (
+              <div>
+                {outputs.map((field, index) => {
+                  return (
+                    <FieldWrapper
+                      isOutput={true}
+                      key={`${field.displayName}${index}${currentFunction.name}`}
+                    >
+                      {field.value !== undefined && field.type === 'bool' ? (
+                        <BooleanField
+                          fieldName={field.displayName!}
+                          fieldType={field.type}
+                          fieldValue={field.value}
+                        />
+                      ) : (
+                        <InputField
+                          label={
+                            <FieldLabel
+                              fieldName={field.displayName!}
+                              fieldType={field.type}
+                              isOutput={true}
+                            />
+                          }
+                          value={field.value}
+                          disabled={true}
+                        />
+                      )}
+                    </FieldWrapper>
+                  );
+                })}
+              </div>
+            )}
+            <SpinnerWrapper>{loadingOutputs && <Spinner size="x2" />}</SpinnerWrapper>
+            {error && <InlineErrorMsg>{error}</InlineErrorMsg>}
+            <ButtonWrapper>
+              {isRead &&
+                (inputs.length > 0 && (
+                  <Button onClick={() => submitForm(currentFunction)}>Read</Button>
+                ))}
+              {!isRead && <Button onClick={() => submitForm(currentFunction)}>Write</Button>}
+            </ButtonWrapper>
+          </>
+        )}
+      </FormFieldsWrapper>
     </Wrapper>
   );
 }
