@@ -146,12 +146,20 @@ export const getAccountsTokenBalance = async (accounts: StoreAccount[], tokenCon
   }
 };
 
-export const getAccountsUnlockVIPStatus = async (accounts: StoreAccount[]) => {
-  return getAccountsTokenBalance(accounts, MYCRYPTO_UNLOCK_CONTRACT_ADDRESS)
+// Unlock Token getBalance will return 0 if no valid unlock token is found for the address.
+// If there is an Unlock token found, it will return the id of the token.
+export const getAccountsUnlockVIPAddresses = async (accounts: StoreAccount[]) =>
+  getAccountsTokenBalance(accounts, MYCRYPTO_UNLOCK_CONTRACT_ADDRESS)
     .then(unlockStatusBalanceMap =>
-      Object.keys(unlockStatusBalanceMap).filter(accountAddress =>
-        unlockStatusBalanceMap[accountAddress].isGreaterThan(new BN(0))
+      Object.keys(unlockStatusBalanceMap).filter(address =>
+        unlockStatusBalanceMap[address].isGreaterThan(new BN(0))
       )
     )
     .catch(err => console.error(err));
-};
+
+export const accountUnlockVIPDetected = async (accounts: StoreAccount[]) =>
+  !accounts || !(accounts.length > 0)
+    ? false
+    : getAccountsUnlockVIPAddresses(accounts)
+        .then((unlockAccounts: string[]) => !(!unlockAccounts || unlockAccounts.length === 0))
+        .catch(_ => false);

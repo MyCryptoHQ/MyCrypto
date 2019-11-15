@@ -3,7 +3,7 @@ import React, { useState, useContext, useMemo, createContext, useEffect } from '
 import { StoreAccount, StoreAsset, Network, TTicker, ExtendedAsset, WalletId } from 'v2/types';
 import { isArrayEqual, useInterval, convertToFiatFromAsset } from 'v2/utils';
 
-import { getAccountsAssetsBalances, getAccountsUnlockVIPStatus } from './BalanceService';
+import { getAccountsAssetsBalances, accountUnlockVIPDetected } from './BalanceService';
 import { getStoreAccounts } from './helpers';
 import { AssetContext, getTotalByAsset } from './Asset';
 import { AccountContext, getDashboardAccounts } from './Account';
@@ -47,24 +47,20 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     setAccounts(storeAccounts);
   }, [storeAccounts]);
-
   // Naive polling to get the Balances of baseAsset and tokens for each account.
   useInterval(
     () => {
-      getAccountsAssetsBalances(accounts).then((accountsWithBalances: StoreAccount[]) => {
-        // Avoid the state change if the balances are identical.
-        if (isArrayEqual(accounts, accountsWithBalances)) return;
-        const accountsToCheck = accounts
-          .filter(account => account.networkId === 'Ethereum')
-          .filter(account => account.wallet !== WalletId.VIEW_ONLY);
-        getAccountsUnlockVIPStatus(accountsToCheck).then((unlockAccounts: string[]) => {
-          if (!unlockAccounts || unlockAccounts.length === 0) {
-            return;
-          }
-          setIsUnlockVerified(true);
-        });
-        setAccounts(accountsWithBalances);
-      });
+      getAccountsAssetsBalances(accounts)
+        .then((accountsWithBalances: StoreAccount[]) => {
+          // Avoid the state change if the balances are identical.
+          if (isArrayEqual(accounts, accountsWithBalances)) return;
+          setAccounts(accountsWithBalances);
+          return accounts
+            .filter(account => account.networkId === 'Ethereum')
+            .filter(account => account.wallet !== WalletId.VIEW_ONLY);
+        })
+        .then(accountUnlockVIPDetected)
+        .then(setIsUnlockVerified);
     },
     60000,
     true,

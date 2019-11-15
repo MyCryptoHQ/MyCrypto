@@ -15,7 +15,7 @@ import {
   WalletNotAddedNotification,
   OnboardingPleaseUnderstandNotification,
   OnboardingResponsibleNotification,
-  UnlockVIPDetected
+  UnlockVIPNotification
 } from './components';
 
 export const NotificationTemplates = {
@@ -83,7 +83,7 @@ export const notificationsConfigs: NotificationsConfigsProps = {
   },
   [NotificationTemplates.unlockVIPDetected]: {
     analyticsEvent: 'UnlockVIP Detected',
-    layout: UnlockVIPDetected,
+    layout: UnlockVIPNotification,
     showOneTime: true,
     dismissOnOverwrite: true
   }
