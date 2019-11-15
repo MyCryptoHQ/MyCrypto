@@ -1,6 +1,7 @@
 import { TransactionReceipt } from 'ethers/providers';
 
 import { ProviderHandler } from '../network/providerHandler';
+import { ITxStatus } from 'v2/components/TransactionFlow/TransactionReceipt';
 
 export const getStatusFromHash = async (
   txHash: string,
@@ -38,3 +39,13 @@ export const getTransactionReceiptFromHash = async (
     .catch(_ => {
       return undefined;
     });
+
+export const getTxStatus = (providerInstance: ProviderHandler, txHash: string) =>
+  getTransactionReceiptFromHash(txHash, providerInstance).then(transactionOutcome => {
+    if (!transactionOutcome) {
+      return;
+    }
+    const transactionStatus =
+      transactionOutcome.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
+    return transactionStatus;
+  });

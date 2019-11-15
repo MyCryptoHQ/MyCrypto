@@ -45,14 +45,11 @@ export default function TransactionReceipt({
   const [blockNumber, setBlockNumber] = useState(0);
   const [timestamp, setTimestamp] = useState(0);
 
-  if (!txReceipt) {
-    return <div>Tx Receipt could not be found.</div>;
-  }
   useEffect(() => {
     const provider = new ProviderHandler(displayTxReceipt.network || txConfig.network);
-    if (blockNumber === 0 && txReceipt.hash) {
+    if (blockNumber === 0 && displayTxReceipt.hash) {
       const blockNumInterval = setInterval(() => {
-        getTransactionReceiptFromHash(txReceipt.hash, provider).then(transactionOutcome => {
+        getTransactionReceiptFromHash(displayTxReceipt.hash, provider).then(transactionOutcome => {
           if (!transactionOutcome) {
             return;
           }
@@ -60,7 +57,7 @@ export default function TransactionReceipt({
             transactionOutcome.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
           setTxStatus(prevStatusState => transactionStatus || prevStatusState);
           setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
-          provider.getTransactionByHash(txReceipt.hash).then(transactionReceipt => {
+          provider.getTransactionByHash(displayTxReceipt.hash).then(transactionReceipt => {
             const receipt = fromTxReceiptObj(transactionReceipt) as ITxReceipt;
             setDisplayTxReceipt(receipt);
           });
@@ -77,7 +74,7 @@ export default function TransactionReceipt({
           addNewTransactionToAccount(senderAccount, {
             ...displayTxReceipt,
             timestamp: transactionTimestamp || 0,
-            stage: txStatus === 'SUCCESS' ? 'completed' : 'failed'
+            stage: txStatus
           });
           setTimestamp(transactionTimestamp || 0);
         });
@@ -101,8 +98,8 @@ export default function TransactionReceipt({
   const senderAccountLabel = senderContact ? senderContact.label : 'Unknown Account';
 
   const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
-  const assetAmount = txReceipt.amount || txConfig.amount;
-  const assetTicker = 'asset' in txReceipt ? txReceipt.asset.ticker : 'ETH';
+  const assetAmount = displayTxReceipt.amount || txConfig.amount;
+  const assetTicker = 'asset' in displayTxReceipt ? displayTxReceipt.asset.ticker : 'ETH';
   return (
     <div className="TransactionReceipt">
       <div className="TransactionReceipt-row">
@@ -110,7 +107,7 @@ export default function TransactionReceipt({
           {translate('CONFIRM_TX_FROM')}
           <div className="TransactionReceipt-addressWrapper">
             <Address
-              address={txReceipt.from || txConfig.senderAccount.address}
+              address={displayTxReceipt.from || txConfig.senderAccount.address}
               title={senderAccountLabel}
               truncate={truncate}
             />
@@ -120,7 +117,7 @@ export default function TransactionReceipt({
           {translate('CONFIRM_TX_TO')}
           <div className="TransactionReceipt-addressWrapper">
             <Address
-              address={txReceipt.to || txConfig.receiverAddress}
+              address={displayTxReceipt.to || txConfig.receiverAddress}
               title={recipientLabel}
               truncate={truncate}
             />
@@ -147,7 +144,7 @@ export default function TransactionReceipt({
         <div className="TransactionReceipt-details-row">
           <div className="TransactionReceipt-details-row-column">Transaction ID:</div>
           <div className="TransactionReceipt-details-row-column">
-            <Copyable text={txReceipt.hash} truncate={truncate} />
+            <Copyable text={displayTxReceipt.hash} truncate={truncate} />
           </div>
         </div>
 

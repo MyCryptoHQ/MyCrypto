@@ -30,6 +30,7 @@ import { TStepAction } from './types';
 
 import { processFormDataToTx, decodeTransaction } from './helpers';
 import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
+import { ITxStatus } from 'v2/components/TransactionFlow/TransactionReceipt';
 
 const txConfigInitialState = {
   tx: {
@@ -107,7 +108,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
         const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt);
         addNewTransactionToAccount(
           state.txConfig.senderAccount,
-          { ...txReceipt, stage: 'pending' } || {}
+          { ...txReceipt, stage: ITxStatus.PENDING } || {}
         );
         setState((prevState: State) => ({
           ...prevState,
@@ -168,8 +169,9 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
         : fromTxReceiptObj(payload);
     addNewTransactionToAccount(
       state.txConfig.senderAccount,
-      { ...txReceipt, stage: 'pending' } || {}
+      { ...txReceipt, stage: ITxStatus.PENDING } || {}
     );
+
     setState((prevState: State) => ({
       ...prevState,
       txReceipt

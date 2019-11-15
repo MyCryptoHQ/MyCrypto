@@ -1,7 +1,10 @@
 import React, { useState, useContext, useMemo, createContext, useEffect } from 'react';
 
-import { StoreAccount, StoreAsset, Network, TTicker, ExtendedAsset, WalletId } from 'v2/types';
+import { StoreAccount, StoreAsset, Network, TTicker, ExtendedAsset, WalletId, ITxReceipt } from 'v2/types';
 import { isArrayEqual, useInterval, convertToFiatFromAsset } from 'v2/utils';
+import { ITxStatus } from 'v2/components/TransactionFlow/TransactionReceipt';
+import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from 'v2/services/EthService';
+import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
 
 import { getAccountsAssetsBalances, accountUnlockVIPDetected } from './BalanceService';
 import { getStoreAccounts } from './helpers';
@@ -30,11 +33,17 @@ export const StoreContext = createContext({} as State);
 // App Store that combines all data values required by the components such
 // as accounts, currentAccount, tokens, and fiatValues etc.
 export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
-  const { accounts: rawAccounts, updateAccountAssets, deleteAccount } = useContext(AccountContext);
+  const {
+    accounts: rawAccounts,
+    addNewTransactionToAccount,
+    getAccountByAddressAndNetworkName,
+    updateAccountAssets,
+    deleteAccount
+  } = useContext(AccountContext);
   const { assets } = useContext(AssetContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { networks } = useContext(NetworkContext);
-
+  const [pendingTransactions, setPendingTransactions] = useState([] as ITxReceipt[]);
   // We transform rawAccounts into StoreAccount. Since the operation is exponential to the number of
   // accounts, make sure it is done only when rawAccounts change.
   const storeAccounts = useMemo(() => getStoreAccounts(rawAccounts, assets, networks), [
@@ -42,6 +51,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     assets,
     networks
   ]);
+
   const [accounts, setAccounts] = useState(storeAccounts);
   const [isUnlockVIP, setIsUnlockVerified] = useState(false);
   useEffect(() => {
@@ -66,6 +76,67 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     true,
     [accounts]
   );
+
+  useEffect(() => {
+    setPendingTransactions(
+      accounts
+        .map(account =>
+          account.transactions.map(tx => {
+            return { ...tx, network: account.network };
+          })
+        )
+        .flatMap(tx => tx)
+        .filter((txObject: ITxReceipt) => txObject.stage === ITxStatus.PENDING) || []
+    );
+  }, [accounts]);
+
+  // A pending transaction is detected.
+  useEffect(() => {
+    if (pendingTransactions.length <= 0) {
+      return;
+    }
+    // This interval is used to poll for status of txs.
+    const blockNumInterval = setInterval(() => {
+      pendingTransactions.forEach((pendingTransactionObj: any) => {
+        const network: Network = pendingTransactionObj.network;
+        if (!network) {
+          return;
+        }
+        const provider = new ProviderHandler(network);
+
+        provider.getTransactionByHash(pendingTransactionObj.hash).then(transactionReceipt => {
+          if (!transactionReceipt) {
+            return;
+          }
+          const receipt = fromTxReceiptObj(transactionReceipt);
+          if (!receipt) {
+            return;
+          }
+
+          // Get block tx success/fail and timestamp for block number, then overwrite existing tx in account.
+          Promise.all([
+            getTxStatus(provider, receipt.hash),
+            getTimestampFromBlockNum(receipt.blockNumber, provider)
+          ]).then(values => {
+            const txStatus = values[0];
+            const txTimestamp = values[1];
+            if (!txStatus || !txTimestamp) {
+              return;
+            }
+            const senderAccount =
+              pendingTransactionObj.senderAccount ||
+              getAccountByAddressAndNetworkName(receipt.from, pendingTransactionObj.network.id);
+            addNewTransactionToAccount(senderAccount, {
+              ...receipt,
+              timestamp: txTimestamp,
+              stage: txStatus
+            });
+          });
+        });
+      });
+    }, 3000); // Period to reset interval on
+    return () => clearInterval(blockNumInterval);
+  }, [pendingTransactions]);
 
   const state: State = {
     accounts,

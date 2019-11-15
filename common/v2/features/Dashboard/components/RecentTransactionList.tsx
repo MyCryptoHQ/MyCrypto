@@ -8,8 +8,10 @@ import './RecentTransactionList.scss';
 import newWindowIcon from 'common/assets/images/icn-new-window.svg';
 import { truncate, convertToFiat } from 'v2/utils';
 import { ExtendedAccount, ITxReceipt, TTicker } from 'v2/types';
-import { translateRaw } from 'translations';
 import { RatesContext, AddressBookContext, getLabelByAddressAndNetwork } from 'v2/services';
+import { ITxStatus } from 'v2/components/TransactionFlow/TransactionReceipt';
+import { translateRaw } from 'translations';
+
 import NoTransactions from './NoTransactions';
 
 interface Props {
@@ -25,8 +27,9 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
 
   // TODO: Sort by relevant transactions
 
-  const pending = transactions.filter(tx => tx.stage === 'pending');
-  const completed = transactions.filter(tx => tx.stage === 'completed');
+  const pending = transactions.filter(tx => tx.stage === ITxStatus.PENDING);
+  const completed = transactions.filter(tx => tx.stage === ITxStatus.SUCCESS);
+  const failed = transactions.filter(tx => tx.stage === ITxStatus.FAILED);
 
   const createEntries = (_: string, collection: typeof transactions) =>
     collection.map(
@@ -73,11 +76,15 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
   const groups = [
     {
       title: 'Pending',
-      entries: createEntries('pending', pending)
+      entries: createEntries(ITxStatus.PENDING, pending)
     },
     {
       title: 'Completed',
-      entries: createEntries('completed', completed)
+      entries: createEntries(ITxStatus.SUCCESS, completed)
+    },
+    {
+      title: 'Failed',
+      entries: createEntries(ITxStatus.FAILED, failed)
     }
   ];
   const filteredGroups = groups.filter(group => group.entries.length !== 0);
