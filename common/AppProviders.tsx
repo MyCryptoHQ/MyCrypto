@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { NotificationsProvider } from 'v2/features';
+import { NotificationsProvider, ToastProvider } from 'v2/features';
 import {
   AccountProvider,
   AddressBookProvider,
@@ -17,15 +17,17 @@ function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | nu
         <AddressBookProvider>
           <AccountProvider>
             <NotificationsProvider>
-              <NetworkProvider>
-                <AssetProvider>
-                  {/* StoreProvider relies on the others Providers */}
-                  <StoreProvider>
-                    {/* RatesProvider relies on the Store */}
-                    <RatesProvider>{children}</RatesProvider>
-                  </StoreProvider>
-                </AssetProvider>
-              </NetworkProvider>
+              <ToastProvider>
+                <NetworkProvider>
+                  <AssetProvider>
+                    {/* StoreProvider relies on the others Providers */}
+                    <StoreProvider>
+                      {/* RatesProvider relies on the Store */}
+                      <RatesProvider>{children}</RatesProvider>
+                    </StoreProvider>
+                  </AssetProvider>
+                </NetworkProvider>
+              </ToastProvider>
             </NotificationsProvider>
           </AccountProvider>
         </AddressBookProvider>
