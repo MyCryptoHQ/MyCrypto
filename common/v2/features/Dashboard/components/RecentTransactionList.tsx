@@ -7,15 +7,21 @@ import './RecentTransactionList.scss';
 
 import newWindowIcon from 'common/assets/images/icn-new-window.svg';
 import { truncate, convertToFiat } from 'v2/utils';
-import { ExtendedAccount, ITxReceipt, TTicker, ITxStatus } from 'v2/types';
+import { ITxReceipt, TTicker, ITxStatus, StoreAccount } from 'v2/types';
 import { RatesContext, AddressBookContext, getLabelByAddressAndNetwork } from 'v2/services';
 import { translateRaw } from 'translations';
 
 import NoTransactions from './NoTransactions';
+import {
+  getTxsFromAccount,
+  txIsFailed,
+  txIsPending,
+  txIsSuccessful
+} from 'v2/services/Store/helpers';
 
 interface Props {
   className?: string;
-  accountsList: ExtendedAccount[];
+  accountsList: StoreAccount[];
 }
 
 export default function RecentTransactionList({ accountsList, className = '' }: Props) {
@@ -23,12 +29,12 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
   const { getRate } = useContext(RatesContext);
   const noLabel = translateRaw('NO_LABEL');
   const transactions = accountsList.flatMap(account => account.transactions);
-
+  const accountTxs = getTxsFromAccount(accountsList);
   // TODO: Sort by relevant transactions
 
-  const pending = transactions.filter(tx => tx.stage === ITxStatus.PENDING);
-  const completed = transactions.filter(tx => tx.stage === ITxStatus.SUCCESS);
-  const failed = transactions.filter(tx => tx.stage === ITxStatus.FAILED);
+  const pending = accountTxs.filter(txIsPending);
+  const completed = accountTxs.filter(txIsSuccessful);
+  const failed = accountTxs.filter(txIsFailed);
 
   const createEntries = (_: string, collection: typeof transactions) =>
     collection.map(
@@ -67,7 +73,11 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
         />,
         <NewTabLink
           key={4}
-          href={network.blockExplorer.txUrl(hash) || `https://etherscan.io/tx/${hash}`}
+          href={
+            network && 'blockExplorer' in network
+              ? network.blockExplorer.txUrl(hash)
+              : `https://etherscan.io/tx/${hash}`
+          }
         >
           {' '}
           <img src={newWindowIcon} alt="View more information about this transaction" />

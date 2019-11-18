@@ -38,9 +38,9 @@ const EmptyTile = styled.div`
 `;
 
 export default function Dashboard() {
-  const { isUnlockVIP } = useContext(StoreContext);
+  const { isUnlockVIP, currentAccounts } = useContext(StoreContext);
   const { accounts } = useContext(AccountContext);
-
+  const storeAccounts = currentAccounts();
   return (
     <div>
       {/* Mobile only */}
@@ -73,7 +73,7 @@ export default function Dashboard() {
         </div>
         {!isUnlockVIP && <BannerAd />}
         <div className="Dashboard-mobile-section">
-          <RecentTransactionList accountsList={accounts} />
+          <RecentTransactionList accountsList={storeAccounts} />
         </div>
       </Mobile>
       {/* Desktop only */}
@@ -110,7 +110,7 @@ export default function Dashboard() {
         {!isUnlockVIP && <BannerAd />}
         <div className="Dashboard-desktop-bottom">
           <RecentTransactionList
-            accountsList={accounts}
+            accountsList={storeAccounts}
             className="Dashboard-desktop-modifiedPanel"
           />
         </div>

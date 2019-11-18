@@ -7,15 +7,14 @@ import {
   TTicker,
   ExtendedAsset,
   WalletId,
-  ITxReceipt,
-  ITxStatus
+  ITxReceipt
 } from 'v2/types';
 import { isArrayEqual, useInterval, convertToFiatFromAsset } from 'v2/utils';
 import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from 'v2/services/EthService';
 import { fromTxReceiptObj } from 'v2/components';
 
 import { getAccountsAssetsBalances, accountUnlockVIPDetected } from './BalanceService';
-import { getStoreAccounts } from './helpers';
+import { getStoreAccounts, getPendingTransactionsFromAccounts } from './helpers';
 import { AssetContext, getTotalByAsset } from './Asset';
 import { AccountContext, getDashboardAccounts } from './Account';
 import { SettingsContext } from './Settings';
@@ -86,16 +85,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   );
 
   useEffect(() => {
-    setPendingTransactions(
-      accounts
-        .map(account =>
-          account.transactions.map(tx => {
-            return { ...tx, network: account.network };
-          })
-        )
-        .flatMap(tx => tx)
-        .filter((txObject: ITxReceipt) => txObject.stage === ITxStatus.PENDING) || []
-    );
+    setPendingTransactions(getPendingTransactionsFromAccounts(accounts));
   }, [accounts]);
 
   // A pending transaction is detected.
