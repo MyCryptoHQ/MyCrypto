@@ -14,6 +14,7 @@ export { default as Checkbox } from './Checkbox';
 export { default as CopyableCodeBlock } from './CopyableCodeBlock';
 export { default as ContentPanel } from './ContentPanel';
 export { default as Currency } from './Currency';
+export { default as RowDeleteOverlay } from './RowDeleteOverlay';
 export { default as Divider } from './Divider';
 export { default as Dropdown } from './Dropdown';
 export { default as ExtendedContentPanel } from './ExtendedContentPanel';

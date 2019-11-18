@@ -23,9 +23,15 @@ const SettingsHeadingIcon = styled.img`
 `;
 
 const StyledLayout = styled.div`
+  width: 960px;
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    width: 100%;
+  }
   .Layout-content {
     padding: 0;
-    @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+  }
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    .Layout-content {
       margin-top: ${IS_MOBILE && '73px'};
     }
   }

@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Button, Copyable, Identicon } from '@mycrypto/ui';
 
 import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS, Fiats } from 'v2/config';
-import { CollapsibleTable, Network } from 'v2/components';
+import { CollapsibleTable, Network, RowDeleteOverlay } from 'v2/components';
 import { default as Typography } from 'v2/components/Typography'; // @TODO solve Circular Dependency issue
 import { truncate, IS_MOBILE } from 'v2/utils';
 import { BREAK_POINTS, COLORS, breakpointToNumber } from 'v2/theme';
@@ -100,10 +100,16 @@ interface AccountListProps {
   copyable?: boolean;
 }
 
+export const screenIsMobileSized = (breakpoint: number): boolean =>
+  window.matchMedia(`(max-width: ${breakpoint}px)`).matches;
+
 export default function AccountList(props: AccountListProps) {
   const { className, currentsOnly, deletable, favoritable, footer, copyable } = props;
   const { currentAccounts, accounts, deleteAccountFromCache } = useContext(StoreContext);
   const { updateAccount } = useContext(AccountContext);
+
+  const [deletingIndex, setDeletingIndex] = useState();
+  const overlayRows = [deletingIndex];
 
   return (
     <DashboardPanel
@@ -126,7 +132,9 @@ export default function AccountList(props: AccountListProps) {
             updateAccount,
             deletable,
             favoritable,
-            copyable
+            copyable,
+            overlayRows,
+            setDeletingIndex
           )}
         />
       </TableContainer>
@@ -140,7 +148,9 @@ function buildAccountTable(
   updateAccount: UpdateAccount,
   deletable?: boolean,
   favoritable?: boolean,
-  copyable?: boolean
+  copyable?: boolean,
+  overlayRows?: number[],
+  setDeletingIndex?: any
 ) {
   const { totalFiat } = useContext(StoreContext);
   const { getRate } = useContext(RatesContext);
@@ -157,6 +167,25 @@ function buildAccountTable(
 
   return {
     head: deletable ? [...columns, translateRaw('ACCOUNT_LIST_DELETE')] : columns,
+    overlay:
+      overlayRows && overlayRows[0] !== undefined ? (
+        <RowDeleteOverlay
+          prompt={`Are you sure you want to delete
+              ${
+                getLabelByAccount(accounts[overlayRows[0]], addressBook) !== undefined
+                  ? getLabelByAccount(accounts[overlayRows[0]], addressBook)!.label
+                  : ''
+              } account with address: ${accounts[overlayRows[0]].address} ?`}
+          deleteAction={() => {
+            deleteAccount(accounts[overlayRows[0]].uuid);
+            setDeletingIndex(undefined);
+          }}
+          cancelAction={() => setDeletingIndex(undefined)}
+        />
+      ) : (
+        <></>
+      ),
+    overlayRows,
     body: accounts.map((account, index) => {
       const addressCard: AddressBook | undefined = getLabelByAccount(account, addressBook);
       const total = totalFiat([account])(getRate);
@@ -181,11 +210,7 @@ function buildAccountTable(
       return deletable
         ? [
             ...bodyContent,
-            <DeleteButton
-              key={index}
-              onClick={handleAccountDelete(deleteAccount, account.uuid)}
-              icon="exit"
-            />
+            <DeleteButton key={index} onClick={() => setDeletingIndex(index)} icon="exit" />
           ]
         : favoritable
         ? [
@@ -216,12 +241,4 @@ function buildAccountTable(
       iconColumns: deletable ? [translateRaw('ACCOUNT_LIST_DELETE')] : undefined
     }
   };
-}
-
-/**
- * A higher order function that binds to an account uuid, which returns a handler that will
- * delete the bound account onClick
- */
-function handleAccountDelete(deleteAccount: DeleteAccount, uuid: string) {
-  return () => deleteAccount(uuid);
 }
