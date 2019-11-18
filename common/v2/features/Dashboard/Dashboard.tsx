@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { ROUTE_PATHS } from 'v2/config';
 import { COLORS } from 'v2/theme';
 import { useDevTools } from 'v2/services';
-import { AccountContext, AddressBookContext } from 'v2/services/Store';
+import { AccountContext, AddressBookContext, StoreContext } from 'v2/services/Store';
 import translate from 'v2/translations';
 import { AccountList, RouterLink, Typography, BannerAd, Desktop, Mobile } from 'v2/components';
 import { ActionTile, TokenPanel, WalletBreakdown, RecentTransactionList } from './components';
@@ -40,6 +40,7 @@ const EmptyTile = styled.div`
 
 export default function Dashboard() {
   const { isActive: isDevToolsActive, displayRecentTransactionList } = useDevTools();
+  const { isUnlockVIP } = useContext(StoreContext);
   const { accounts } = useContext(AccountContext);
   const { readAddressBook } = useContext(AddressBookContext);
 
@@ -73,7 +74,7 @@ export default function Dashboard() {
             copyable={true}
           />
         </div>
-        <BannerAd />
+        {!isUnlockVIP && <BannerAd />}
         {isDevToolsActive && displayRecentTransactionList && (
           <div className="Dashboard-mobile-section">
             <RecentTransactionList accountsList={accounts} readAddressBook={readAddressBook} />
@@ -111,7 +112,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        <BannerAd />
+        {!isUnlockVIP && <BannerAd />}
         {isDevToolsActive && displayRecentTransactionList && (
           <div className="Dashboard-desktop-bottom">
             <RecentTransactionList
