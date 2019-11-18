@@ -1,13 +1,28 @@
 import { useContext } from 'react';
+import BN from 'bn.js';
+import { addHexPrefix } from 'ethereumjs-util';
 
 import { TUseStateReducerFactory } from 'v2/utils';
 import { DEFAULT_NETWORK } from 'v2/config';
-import { Contract, NetworkId } from 'v2/types';
-import { getNetworkById, ContractContext, isValidETHAddress, ProviderHandler } from 'v2/services';
+import { Contract, StoreAccount } from 'v2/types';
+import {
+  getNetworkById,
+  ContractContext,
+  isValidETHAddress,
+  ProviderHandler,
+  getNonce,
+  inputGasPriceToHex,
+  fetchGasPriceEstimates,
+  hexWeiToString,
+  getGasEstimate,
+  hexToNumber
+} from 'v2/services';
+import { AbiFunction } from 'v2/services/EthService/contracts/ABIFunction';
+import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
+import { isWeb3Wallet } from 'v2/utils/web3';
 
 import { customContract, CUSTOM_CONTRACT_ADDRESS } from './constants';
-import { ABIItem } from './types';
-import { AbiFunction } from 'v2/services/EthService/contracts/ABIFunction';
+import { ABIItem, InteractWithContractState } from './types';
 
 const interactWithContractsInitialState = {
   networkId: DEFAULT_NETWORK,
@@ -16,24 +31,20 @@ const interactWithContractsInitialState = {
   contracts: [],
   abi: '',
   showGeneratedForm: false,
-  submitedFunction: undefined
+  submitedFunction: undefined,
+  data: undefined,
+  account: undefined,
+  rawTransaction: undefined
 };
 
-interface State {
-  networkId: NetworkId;
-  contractAddress: string;
-  contract: Contract | undefined;
-  contracts: Contract[];
-  abi: string;
-  showGeneratedForm: boolean;
-  submitedFunction: ABIItem;
-}
-
-const InteractWithContractsFactory: TUseStateReducerFactory<State> = ({ state, setState }) => {
+const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContractState> = ({
+  state,
+  setState
+}) => {
   const { getContractsByIds } = useContext(ContractContext);
 
   const handleNetworkSelected = (networkId: any) => {
-    setState((prevState: State) => ({
+    setState((prevState: InteractWithContractState) => ({
       ...prevState,
       networkId,
       contract: undefined,
@@ -53,7 +64,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<State> = ({ state, s
       Object.assign(x, { label: x.name })
     );
 
-    setState((prevState: State) => ({
+    setState((prevState: InteractWithContractState) => ({
       ...prevState,
       contracts
     }));
@@ -68,7 +79,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<State> = ({ state, s
       contractAbi = contract.abi;
     }
 
-    setState((prevState: State) => ({
+    setState((prevState: InteractWithContractState) => ({
       ...prevState,
       contract,
       contractAddress,
@@ -85,7 +96,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<State> = ({ state, s
       }
     }
 
-    setState((prevState: State) => ({
+    setState((prevState: InteractWithContractState) => ({
       ...prevState,
       contractAddress,
       contract: customContract,
@@ -94,14 +105,14 @@ const InteractWithContractsFactory: TUseStateReducerFactory<State> = ({ state, s
   };
 
   const handleAbiChanged = (abi: string) => {
-    setState((prevState: State) => ({
+    setState((prevState: InteractWithContractState) => ({
       ...prevState,
       abi
     }));
   };
 
   const setGeneratedFormVisible = (visible: boolean) => {
-    setState((prevState: State) => ({
+    setState((prevState: InteractWithContractState) => ({
       ...prevState,
       showGeneratedForm: visible
     }));
@@ -126,6 +137,80 @@ const InteractWithContractsFactory: TUseStateReducerFactory<State> = ({ state, s
     return decodeOutput(result, network.chainId);
   };
 
+  const handleInteractionFormWriteSubmit = async (submitedFunction: ABIItem, after: () => void) => {
+    const { encodeInput } = new AbiFunction(submitedFunction, []);
+
+    const parsedInputs = submitedFunction.inputs.reduce(
+      (accu, input) => ({ ...accu, [input.name]: input.value }),
+      {}
+    );
+
+    const { networkId, contractAddress, account } = state;
+
+    const network = getNetworkById(networkId)!;
+
+    const { fast } = await fetchGasPriceEstimates(network.id);
+    const gasPrice = hexWeiToString(inputGasPriceToHex(fast.toString()));
+
+    const data = encodeInput(parsedInputs);
+
+    const rawTransaction: any = {
+      to: contractAddress,
+      data,
+      from: account.address,
+      gasPrice: addHexPrefix(new BN(gasPrice).toString(16)),
+      value: 0, // use correct value
+      chainId: network.chainId,
+      nonce: await getNonce(network, account)
+    };
+    const gasLimit = await getGasEstimate(network, rawTransaction);
+    rawTransaction.gasLimit = hexToNumber(gasLimit);
+    delete rawTransaction.from;
+
+    setState((prevState: InteractWithContractState) => ({
+      ...prevState,
+      rawTransaction
+    }));
+
+    after();
+  };
+
+  const handleAccountSelected = (account: StoreAccount) => {
+    setState((prevState: InteractWithContractState) => ({
+      ...prevState,
+      account
+    }));
+  };
+
+  const handleTxSigned = async (signResponse: any, after: () => void) => {
+    const { account } = state;
+
+    if (isWeb3Wallet(account.wallet)) {
+      const txReceipt =
+        signResponse && signResponse.hash ? signResponse : { hash: signResponse, asset: {} };
+      setState((prevState: InteractWithContractState) => ({
+        ...prevState,
+        txReceipt
+      }));
+
+      after();
+    } else {
+      const provider = new ProviderHandler(account.network);
+      provider
+        .sendRawTx(signResponse)
+        .then(retrievedTxReceipt => retrievedTxReceipt)
+        .catch(hash => provider.getTransactionByHash(hash))
+        .then(retrievedTransactionReceipt => {
+          const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt);
+          setState((prevState: InteractWithContractState) => ({
+            ...prevState,
+            txReceipt
+          }));
+        })
+        .finally(after);
+    }
+  };
+
   return {
     handleNetworkSelected,
     handleContractAddressChanged,
@@ -134,6 +219,9 @@ const InteractWithContractsFactory: TUseStateReducerFactory<State> = ({ state, s
     updateNetworkContractOptions,
     setGeneratedFormVisible,
     handleInteractionFormSubmit,
+    handleInteractionFormWriteSubmit,
+    handleAccountSelected,
+    handleTxSigned,
     interactWithContractsState: state
   };
 };

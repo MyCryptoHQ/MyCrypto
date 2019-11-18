@@ -59,9 +59,9 @@ export const AssetsData = (): Record<string, Asset> => {
   data.map((en: string) => {
     const nextData: Token[] = NetworkAssets[en];
     nextData.map((entry: Token) => {
-      const uuid: string = entry.symbol;
+      const uuid: string = entry.uuid;
       outData[uuid] = {
-        uuid: '',
+        uuid,
         name: entry.name,
         contractAddress: entry.address,
         decimal: entry.decimal,

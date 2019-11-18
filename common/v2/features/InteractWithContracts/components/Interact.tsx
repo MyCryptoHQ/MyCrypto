@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Identicon, Button } from '@mycrypto/ui';
 
 import { NetworkSelectDropdown, InputField, Dropdown } from 'v2/components';
-import { NetworkId, Contract } from 'v2/types';
+import { NetworkId, Contract, StoreAccount } from 'v2/types';
 
 import ContractDropdownOption from './ContractDropdownOption';
 import ContractDropdownValue from './ContractDropdownValue';
@@ -81,6 +81,7 @@ interface Props {
   contract: Contract;
   contracts: Contract[];
   showGeneratedForm: boolean;
+  account: StoreAccount;
   handleContractSelected(contract: Contract | undefined): void;
   handleNetworkSelected(networkId: string): void;
   handleContractAddressChanged(address: string): void;
@@ -89,6 +90,8 @@ interface Props {
   setGeneratedFormVisible(visible: boolean): void;
   handleInteractionFormSubmit(submitedFunction: ABIItem): any;
   goToNextStep(): void;
+  handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<object>;
+  handleAccountSelected(account: StoreAccount): void;
 }
 
 export default function Interact(props: Props) {
@@ -105,7 +108,10 @@ export default function Interact(props: Props) {
     handleAbiChanged,
     updateNetworkContractOptions,
     setGeneratedFormVisible,
-    handleInteractionFormSubmit
+    handleInteractionFormSubmit,
+    account,
+    handleAccountSelected,
+    handleInteractionFormWriteSubmit
   } = props;
 
   useEffect(() => {
@@ -177,6 +183,10 @@ export default function Interact(props: Props) {
         <GeneratedInteractionForm
           abi={JSON.parse(abi)}
           handleInteractionFormSubmit={handleInteractionFormSubmit}
+          account={account}
+          handleAccountSelected={handleAccountSelected}
+          handleInteractionFormWriteSubmit={handleInteractionFormWriteSubmit}
+          networkId={networkId}
         />
       )}
     </>

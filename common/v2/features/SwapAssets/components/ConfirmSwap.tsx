@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
-import translate from 'translations';
+import translate from 'v2/translations';
 
 import { StoreAccount } from 'v2/types';
 import { COLORS } from 'v2/theme';

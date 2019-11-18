@@ -20,7 +20,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['.ts', '.js', '.json'],
+    extensions: ['.ts', '.tsx', '.js', '.json'],
     modules: [
       config.path.src,
       config.path.modules,
@@ -50,6 +50,55 @@ module.exports = {
           config.path.electron
         ],
         exclude: /node_modules/,
+      },
+
+      /**
+       * Images
+       */
+      {
+        test: /\.(gif|png|jpe?g|svg)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              hash: 'sha512',
+              digest: 'hex',
+              name: 'common/assets/[name].[contenthash].[ext]'
+            }
+          },
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              bypassOnDebug: true,
+              optipng: {
+                optimizationLevel: 4
+              },
+              gifsicle: {
+                interlaced: true
+              },
+              mozjpeg: {
+                quality: 80
+              },
+              svgo: {
+                plugins: [
+                  {
+                    removeViewBox: true
+                  },
+                  {
+                    removeEmptyAttrs: false
+                  },
+                  {
+                    sortAttrs: true
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        include: [
+          config.path.assets,
+          config.path.modules
+        ]
       },
 
       /**

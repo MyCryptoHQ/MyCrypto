@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import translate from 'translations';
+import translate from 'v2/translations';
 
 import { Button, RouterLink } from 'v2/components';
 

@@ -12,6 +12,7 @@ import ARTIS_SIGMA1 from './artis_sigma1.json';
 import ARTIS_TAU1 from './artis_tau1.json';
 
 export interface Token {
+  uuid: string;
   address: string;
   symbol: string;
   decimal: number;

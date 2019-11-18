@@ -1,4 +1,4 @@
-import { readSettings, updateSettings } from '../LocalCache';
+import { updateAll, readSection } from '../Cache';
 
-export const updateScreenLockSettings = updateSettings('screenLockSettings');
-export const readScreenLockSettings = readSettings('screenLockSettings');
+export const updateScreenLockSettings = updateAll('screenLockSettings');
+export const readScreenLockSettings = readSection('screenLockSettings');

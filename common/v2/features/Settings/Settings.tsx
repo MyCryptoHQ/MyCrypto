@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
-import translate from 'translations';
+import translate from 'v2/translations';
 
 import { IS_MOBILE } from 'v2/utils';
 import { BREAK_POINTS, MIN_CONTENT_PADDING } from 'v2/theme';

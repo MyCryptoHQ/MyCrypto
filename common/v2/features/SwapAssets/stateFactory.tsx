@@ -1,5 +1,4 @@
-import { translateRaw } from 'translations';
-
+import { translateRaw } from 'v2/translations';
 import { TUseStateReducerFactory } from 'v2/utils';
 import { DexService, ProviderHandler } from 'v2/services';
 import { StoreAccount } from 'v2/types';

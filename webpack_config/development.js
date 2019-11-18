@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const common = require('./common');
 const config = require('./config');
@@ -20,7 +19,7 @@ module.exports = merge.smart(common, {
     hot: true,
     https: !IS_ELECTRON,
     port: HTTP_PORT,
-    clientLogLevel: 'warning',  // Silence [WDS] && [HMR] output in console
+    clientLogLevel: 'warning', // Silence [WDS] && [HMR] output in console
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': '*',
@@ -41,10 +40,7 @@ module.exports = merge.smart(common, {
     rules: [
       {
         test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader'
-        ],
+        use: ['style-loader', 'css-loader'],
         include: [
           path.join(config.path.src, 'vendor'),
           path.join(config.path.root, 'node_modules/typeface-lato')
@@ -68,19 +64,11 @@ module.exports = merge.smart(common, {
   },
 
   plugins: [
-    new HardSourceWebpackPlugin({
-      environmentHash: {
-        root: process.cwd(),
-        directories: ['common/webpack_config'],
-        files: ['package.json']
-      }
-    }),
-
     new FriendlyErrorsPlugin({
       clearConsole: false
     }),
 
-    new webpack.EnvironmentPlugin({ NODE_ENV: 'development'}),
+    new webpack.EnvironmentPlugin({ NODE_ENV: 'development' }),
 
     new webpack.HotModuleReplacementPlugin()
   ]

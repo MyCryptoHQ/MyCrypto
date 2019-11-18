@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Address } from '@mycrypto/ui';
 
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 
 import { StoreAccount } from 'v2/types';
 import { COLORS, BREAK_POINTS } from 'v2/theme';

@@ -8,7 +8,13 @@ import BN from 'bn.js';
 import styled from 'styled-components';
 
 import translate, { translateRaw } from 'v2/translations';
-import { InlineErrorMsg, AccountDropdown, AmountInput, WhenQueryExists } from 'v2/components';
+import {
+  InlineErrorMsg,
+  AccountDropdown,
+  AmountInput,
+  AssetDropdown,
+  WhenQueryExists
+} from 'v2/components';
 import {
   getNetworkById,
   getBaseAssetByNetwork,
@@ -49,7 +55,6 @@ import { RatesContext } from 'v2/services/RatesProvider';
 
 import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
 import {
-  AssetDropdown,
   EthAddressField,
   GasLimitField,
   GasPriceField,
@@ -257,10 +262,10 @@ export default function SendAssetsForm({
                       value={field.value}
                       assets={assets(validAccounts)}
                       onSelect={(option: StoreAsset) => {
-                        form.setFieldValue('asset', option); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
+                        form.setFieldValue('asset', option || {}); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
                         //TODO get assetType onChange
                         handleFieldReset();
-                        if (option.networkId) {
+                        if (option && option.networkId) {
                           fetchGasPriceEstimates(option.networkId).then(data => {
                             form.setFieldValue('gasEstimates', data);
                             form.setFieldValue('gasPriceSlider', data.fast);

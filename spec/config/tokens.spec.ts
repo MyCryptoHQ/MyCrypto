@@ -1,8 +1,5 @@
-import configuredStore from 'features/store';
-import TOKENS from 'config/tokens';
-import { isValidETHAddress } from 'libs/validators';
-
-configuredStore.getState();
+import { NetworkAssets as TOKENS } from 'v2/config/tokens';
+import { isValidETHAddress } from 'v2/services/EthService';
 
 describe('Tokens JSON', () => {
   Object.keys(TOKENS).forEach(network => {
@@ -41,9 +38,8 @@ describe('Tokens JSON', () => {
         addressCollisionMap[token.address] = token.symbol;
         symbolCollisionMap[token.symbol] = token.address;
       });
-      if (validationErrors.length > 0) {
-        throw Error(validationErrors.join('\n'));
-      }
+
+      expect(validationErrors.length).toBe(0);
     });
   });
 });

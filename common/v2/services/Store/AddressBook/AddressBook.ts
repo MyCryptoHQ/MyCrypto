@@ -1,4 +1,4 @@
-import { create, destroy, read, readAll, update } from '../LocalCache';
+import { create, destroy, read, readAll, update } from '../Cache';
 
 export const createAddressBook = create('addressBook');
 export const readAddressBook = read('addressBook');
