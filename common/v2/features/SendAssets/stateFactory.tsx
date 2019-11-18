@@ -8,7 +8,8 @@ import {
   ITxConfig,
   IFormikFields,
   ISignedTx,
-  ITxObject
+  ITxObject,
+  ITxStatus
 } from 'v2/types';
 import {
   getNetworkByChainId,
@@ -23,14 +24,13 @@ import {
   getBaseAssetByNetwork,
   AccountContext
 } from 'v2/services';
+import { fromTxReceiptObj } from 'v2/components';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { ProviderHandler } from 'v2/services/EthService';
 
 import { TStepAction } from './types';
 
 import { processFormDataToTx, decodeTransaction } from './helpers';
-import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
-import { ITxStatus } from 'v2/components/TransactionFlow/TransactionReceipt';
 
 const txConfigInitialState = {
   tx: {
@@ -161,10 +161,10 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
     const txReceipt =
       typeof payload === 'string'
         ? {
+            ...state.txConfig,
             hash: payload,
             to: state.txConfig.senderAccount.address,
-            from: state.txConfig.receiverAddress,
-            ...state.txConfig
+            from: state.txConfig.receiverAddress
           }
         : fromTxReceiptObj(payload);
     addNewTransactionToAccount(

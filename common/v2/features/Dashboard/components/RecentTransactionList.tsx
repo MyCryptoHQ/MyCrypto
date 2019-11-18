@@ -7,9 +7,8 @@ import './RecentTransactionList.scss';
 
 import newWindowIcon from 'common/assets/images/icn-new-window.svg';
 import { truncate, convertToFiat } from 'v2/utils';
-import { ExtendedAccount, ITxReceipt, TTicker } from 'v2/types';
+import { ExtendedAccount, ITxReceipt, TTicker, ITxStatus } from 'v2/types';
 import { RatesContext, AddressBookContext, getLabelByAddressAndNetwork } from 'v2/services';
-import { ITxStatus } from 'v2/components/TransactionFlow/TransactionReceipt';
 import { translateRaw } from 'translations';
 
 import NoTransactions from './NoTransactions';
@@ -66,7 +65,10 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           ).toFixed(2)}
       `}
         />,
-        <NewTabLink key={4} href={`https://etherscan.io/tx/${hash}`}>
+        <NewTabLink
+          key={4}
+          href={network.blockExplorer.txUrl(hash) || `https://etherscan.io/tx/${hash}`}
+        >
           {' '}
           <img src={newWindowIcon} alt="View more information about this transaction" />
         </NewTabLink>

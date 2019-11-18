@@ -48,6 +48,7 @@ export {
   ISignedTx,
   ITxObject,
   ITxConfig,
+  ITxStatus,
   IFormikFields,
   ISignComponentProps,
   IStepComponentProps

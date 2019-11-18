@@ -1,10 +1,18 @@
 import React, { useState, useContext, useMemo, createContext, useEffect } from 'react';
 
-import { StoreAccount, StoreAsset, Network, TTicker, ExtendedAsset, WalletId, ITxReceipt } from 'v2/types';
+import {
+  StoreAccount,
+  StoreAsset,
+  Network,
+  TTicker,
+  ExtendedAsset,
+  WalletId,
+  ITxReceipt,
+  ITxStatus
+} from 'v2/types';
 import { isArrayEqual, useInterval, convertToFiatFromAsset } from 'v2/utils';
-import { ITxStatus } from 'v2/components/TransactionFlow/TransactionReceipt';
 import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from 'v2/services/EthService';
-import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
+import { fromTxReceiptObj } from 'v2/components';
 
 import { getAccountsAssetsBalances, accountUnlockVIPDetected } from './BalanceService';
 import { getStoreAccounts } from './helpers';

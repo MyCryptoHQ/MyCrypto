@@ -9,7 +9,7 @@ import { fromWei, ProviderHandler } from 'v2/services/EthService';
 import { InlineErrorMsg } from 'v2/components/ErrorMessages';
 import { translateRaw } from 'v2/translations';
 import { ITxReceipt, ITxConfig } from 'v2/types';
-import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
+import { fromTxReceiptObj } from 'v2/components';
 
 const ErrorWrapper = styled(InlineErrorMsg)`
   margin-top: 12px;

@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Address, Button, Copyable } from '@mycrypto/ui';
 
-import { ITxReceipt, IStepComponentProps, TTicker } from 'v2/types';
+import { ITxReceipt, ITxStatus, IStepComponentProps, TTicker } from 'v2/types';
 import { Amount, TimeElapsedCounter } from 'v2/components';
 import { AddressBookContext, AccountContext } from 'v2/services/Store';
 import { RatesContext } from 'v2/services/RatesProvider';
@@ -20,12 +20,6 @@ import { fromTxReceiptObj } from './helpers';
 import { ROUTE_PATHS } from 'v2/config';
 import translate, { translateRaw } from 'v2/translations';
 import { convertToFiat, truncate } from 'v2/utils';
-
-export enum ITxStatus {
-  SUCCESS = 'SUCCESS',
-  FAILED = 'FAILED',
-  PENDING = 'PENDING'
-}
 
 interface Props {
   completeButtonText: string;

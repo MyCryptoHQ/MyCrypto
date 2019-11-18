@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import { ROUTE_PATHS } from 'v2/config';
 import { COLORS } from 'v2/theme';
-import { useDevTools } from 'v2/services';
 import { AccountContext, StoreContext } from 'v2/services/Store';
 import translate from 'v2/translations';
 import { AccountList, RouterLink, Typography, BannerAd, Desktop, Mobile } from 'v2/components';
@@ -40,7 +39,6 @@ const EmptyTile = styled.div`
 
 export default function Dashboard() {
   const { isUnlockVIP } = useContext(StoreContext);
-  const { isActive: isDevToolsActive } = useDevTools();
   const { accounts } = useContext(AccountContext);
 
   return (
@@ -74,11 +72,9 @@ export default function Dashboard() {
           />
         </div>
         {!isUnlockVIP && <BannerAd />}
-        {isDevToolsActive && (
-          <div className="Dashboard-mobile-section">
-            <RecentTransactionList accountsList={accounts} />
-          </div>
-        )}
+        <div className="Dashboard-mobile-section">
+          <RecentTransactionList accountsList={accounts} />
+        </div>
       </Mobile>
       {/* Desktop only */}
       <Desktop className="Dashboard-desktop">

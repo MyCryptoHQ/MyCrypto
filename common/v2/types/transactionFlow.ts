@@ -73,3 +73,9 @@ interface IReceiverAddress {
   display: string;
   value: string;
 }
+
+export enum ITxStatus {
+  SUCCESS = 'SUCCESS',
+  FAILED = 'FAILED',
+  PENDING = 'PENDING'
+}
