@@ -21,7 +21,7 @@ import {
   setFunctionOutputValues,
   getAccountsInNetwork
 } from '../helpers';
-import { FieldLabel, BooleanField } from './fields';
+import { FieldLabel, BooleanOutputField } from './fields';
 
 import { StoreAccount, NetworkId } from 'v2/types';
 import { StoreContext } from 'v2/services';
@@ -94,11 +94,11 @@ const HorizontalLine = styled.div`
   color: #000;
   background-color: ${LIGHT_GREY};
   width: 100%;
-  margin: 30px 0;
+  margin: 20px 0;
 `;
 
 const ActionButton = styled(Button)`
-  margin-top: 16px;
+  margin-top: 18px;
   width: fit-content;
 `;
 
@@ -202,11 +202,17 @@ export default function GeneratedInteractionForm({
                 {inputs.map((field, index) => {
                   return (
                     <FieldWrapper key={`${field.displayName}${index}${currentFunction.name}`}>
-                      <InputField
-                        label={<FieldLabel fieldName={field.displayName!} fieldType={field.type} />}
-                        value={field.value}
-                        onChange={({ target: { value } }) => handleInputChange(field.name, value)}
-                      />
+                      {field.type === 'bool' ? (
+                        <div>DROP DOWN BOOL SELECTOR</div>
+                      ) : (
+                        <InputField
+                          label={
+                            <FieldLabel fieldName={field.displayName!} fieldType={field.type} />
+                          }
+                          value={field.value}
+                          onChange={({ target: { value } }) => handleInputChange(field.name, value)}
+                        />
+                      )}
                     </FieldWrapper>
                   );
                 })}
@@ -222,7 +228,7 @@ export default function GeneratedInteractionForm({
                       key={`${field.displayName}${index}${currentFunction.name}`}
                     >
                       {field.value !== undefined && field.type === 'bool' ? (
-                        <BooleanField
+                        <BooleanOutputField
                           fieldName={field.displayName!}
                           fieldType={field.type}
                           fieldValue={field.value}

@@ -1,2 +1,2 @@
 export { default as FieldLabel } from './FieldLabel';
-export { default as BooleanField } from './BooleanField';
+export { default as BooleanOutputField } from './BooleanOutputField';
