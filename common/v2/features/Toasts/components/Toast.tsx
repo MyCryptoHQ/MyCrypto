@@ -1,14 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { IToast, ToastType } from 'v2/types/toast';
 import { Typography } from 'v2/components';
 import { IS_MOBILE } from 'v2/utils';
 
+import { ToastConfig, ToastType } from '../types';
+
+import successIcon from 'assets/images/icn-toast-success.svg';
+import infoIcon from 'assets/images/icn-toast-alert.svg';
+import errorIcon from 'assets/images/icn-toast-error.svg';
+import progressIcon from 'assets/images/icn-toast-progress.svg';
+import swapIcon from 'assets/images/icn-toast-swap.svg';
 import closeIcon from 'assets/images/close.svg';
 
+interface ToastProp extends ToastConfig {
+  templateData?: any;
+}
+
 interface Props {
-  toast: IToast;
+  toast: ToastProp;
   onClose(): void;
 }
 
@@ -57,15 +67,15 @@ const colors = {
   ERROR: '#DD544E',
   INFO: '#333333',
   ONGOING: '#F8D277',
-  COMPLETE: '#A086F7'
+  SWAP: '#A086F7'
 };
 
 const icons = {
-  SUCCESS: '',
-  ERROR: '',
-  INFO: '',
-  ONGOING: '',
-  COMPLETE: ''
+  SUCCESS: successIcon,
+  ERROR: errorIcon,
+  INFO: infoIcon,
+  ONGOING: progressIcon,
+  SWAP: swapIcon
 };
 
 export default function Toast({ toast, onClose }: Props) {
@@ -77,7 +87,7 @@ export default function Toast({ toast, onClose }: Props) {
           <Typography as={'div'} bold={true}>
             {toast.header}
           </Typography>
-          <Typography as={'div'}>{toast.message}</Typography>
+          <Typography as={'div'}>{toast.message(toast.templateData)}</Typography>
         </Text>
         <Close>
           <img src={closeIcon} onClick={onClose} />
