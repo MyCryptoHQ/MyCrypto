@@ -7,7 +7,8 @@ import {
   Button,
   Spinner,
   InlineErrorMsg,
-  AccountDropdown
+  AccountDropdown,
+  Typography
 } from 'v2/components';
 
 import FunctionDropdownOption from './FunctionDropdownOption';
@@ -27,10 +28,6 @@ import { StoreContext } from 'v2/services';
 import { COLORS, monospace } from 'v2/theme';
 
 const { LIGHT_GREY } = COLORS;
-
-const Wrapper = styled.div`
-  margin-top: 16px;
-`;
 
 interface FieldWraperProps {
   isOutput?: boolean;
@@ -60,16 +57,16 @@ const FieldWrapper = styled.div<FieldWraperProps>`
   }
 `;
 
-const Label = styled.p`
+const Label = styled(Typography)`
   line-height: 1;
   margin-bottom: 9px;
+  font-weight: bold;
 `;
 
-const ButtonWrapper = styled.div`
+const ActionWrapper = styled.div`
   display: flex;
   width: 100%;
   justify-content: left;
-  margin-top: 9px;
 `;
 
 const SpinnerWrapper = styled.div`
@@ -84,6 +81,29 @@ const FormFieldsWrapper = styled.div`
       background-color: ${LIGHT_GREY};
     }
   }
+`;
+
+const WriteActionWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+const HorizontalLine = styled.div`
+  height: 1px;
+  color: #000;
+  background-color: ${LIGHT_GREY};
+  width: 100%;
+  margin: 30px 0;
+`;
+
+const ActionButton = styled(Button)`
+  margin-top: 16px;
+  width: fit-content;
+`;
+
+const AccountDropdownWrapper = styled.div`
+  margin-top: 8px;
 `;
 
 interface Props {
@@ -118,6 +138,7 @@ export default function GeneratedInteractionForm({
 
     const newFunction = generateFunctionFieldsDisplayNames(selectedFunction);
     setCurrentFunction(newFunction);
+    setError(undefined);
 
     if (isReadOperation(newFunction) && newFunction.inputs.length === 0) {
       submitForm(newFunction);
@@ -159,8 +180,8 @@ export default function GeneratedInteractionForm({
   }
 
   return (
-    <Wrapper>
-      <hr />
+    <>
+      <HorizontalLine />
       <DropdownWrapper>
         <Label>Read / Write Contract</Label>
         <Dropdown
@@ -226,30 +247,35 @@ export default function GeneratedInteractionForm({
             )}
             <SpinnerWrapper>{loadingOutputs && <Spinner size="x2" />}</SpinnerWrapper>
             {error && <InlineErrorMsg>{error}</InlineErrorMsg>}
-            <ButtonWrapper>
+            <ActionWrapper>
               {isRead &&
                 (inputs.length > 0 && (
-                  <Button onClick={() => submitForm(currentFunction)}>Read</Button>
+                  <ActionButton onClick={() => submitForm(currentFunction)}>Read</ActionButton>
                 ))}
               {!isRead && (
-                <>
-                  <AccountDropdown
-                    name="account"
-                    value={account}
-                    accounts={filteredAccount}
-                    onSelect={(option: StoreAccount) => {
-                      handleAccountSelected(option);
-                    }}
-                  />
-                  <Button onClick={() => handleInteractionFormWriteSubmit(currentFunction)}>
+                <WriteActionWrapper>
+                  <HorizontalLine />
+                  <FieldLabel fieldName="Account" />
+                  <AccountDropdownWrapper>
+                    <AccountDropdown
+                      name="account"
+                      value={account}
+                      accounts={filteredAccount}
+                      onSelect={(option: StoreAccount) => {
+                        handleAccountSelected(option);
+                      }}
+                    />
+                  </AccountDropdownWrapper>
+
+                  <ActionButton onClick={() => handleInteractionFormWriteSubmit(currentFunction)}>
                     Write
-                  </Button>
-                </>
+                  </ActionButton>
+                </WriteActionWrapper>
               )}
-            </ButtonWrapper>
+            </ActionWrapper>
           </>
         )}
       </FormFieldsWrapper>
-    </Wrapper>
+    </>
   );
 }

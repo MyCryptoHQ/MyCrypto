@@ -18,7 +18,7 @@ const LabelWraper = styled(Typography)`
 
 interface Props {
   fieldName: string;
-  fieldType: string;
+  fieldType?: string;
   isOutput?: boolean;
 }
 
@@ -30,7 +30,7 @@ export default function FieldLabel(props: Props) {
         {isOutput && '↳ '}
         {fieldName}
       </b>
-      <LabelWraper>{fieldType}</LabelWraper>
+      {fieldType && <LabelWraper>{fieldType}</LabelWraper>}
     </Wrapper>
   );
 }
