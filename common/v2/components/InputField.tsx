@@ -26,6 +26,7 @@ interface CustomInputProps {
   inputError?: string;
   showEye?: boolean;
   height?: string;
+  resizable?: boolean;
 }
 
 const CustomInput = styled.input<CustomInputProps>`
@@ -63,7 +64,7 @@ const CustomTextArea = styled.textarea<CustomInputProps>`
     opacity: 1;
   }
   border-color: ${props => (props.inputError ? PASTEL_RED : '')};
-  resize: none;
+  resize:  ${props => (props.resizable ? 'default' : 'none')};
   ${props => props.height && `height: ${props.height}`}
 `;
 
@@ -100,14 +101,16 @@ interface Props {
   name?: string;
   type?: string;
   label?: string | JSX.Element;
-  value: string;
+  value: string | undefined;
   inputError?: string | undefined;
   showEye?: boolean;
   textarea?: boolean;
   placeholder?: string;
   height?: string;
+  resizableTextArea?: boolean;
+  disabled?: boolean;
   isLoading?: boolean;
-  onChange(event: any): void;
+  onChange?(event: any): void;
   onBlur?(event: any): void;
   validate?(): void | undefined;
 }
@@ -133,6 +136,8 @@ export class InputField extends Component<Props> {
       textarea,
       placeholder,
       height,
+      resizableTextArea,
+      disabled,
       isLoading
     } = this.props;
     return (
@@ -149,6 +154,8 @@ export class InputField extends Component<Props> {
               onKeyUp={this.handleKeyUp}
               placeholder={placeholder ? placeholder : ''}
               height={height}
+              resizable={resizableTextArea}
+              disabled={disabled}
             />
           ) : (
             <CustomInput
@@ -162,7 +169,7 @@ export class InputField extends Component<Props> {
               type={this.state.showPassword ? 'text' : type ? type : 'text'}
               placeholder={placeholder ? placeholder : ''}
               height={height}
-              disabled={isLoading}
+              disabled={isLoading || disabled}
             />
           )}
 

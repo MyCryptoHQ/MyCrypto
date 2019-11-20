@@ -9,6 +9,7 @@ export interface ProviderState {
   readContracts(uuid: string): Contract;
   deleteContracts(uuid: string): void;
   updateContracts(uuid: string, contractsData: ExtendedContract): void;
+  getContractsByIds(uuids: string[]): Contract[];
 }
 
 export const ContractContext = createContext({} as ProviderState);
@@ -30,6 +31,10 @@ export class ContractProvider extends Component {
     updateContracts: (uuid: string, contractsData: ExtendedContract) => {
       service.updateContracts(uuid, contractsData);
       this.getContracts();
+    },
+    getContractsByIds: (uuids: string[]) => {
+      const newContracts = uuids.map(contractId => service.readContracts(contractId));
+      return newContracts;
     }
   };
 
