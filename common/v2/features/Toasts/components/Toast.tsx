@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Typography } from 'v2/components';
+import { BREAK_POINTS, COLORS } from 'v2/theme';
 
 import { ToastConfig, ToastType } from '../types';
 
@@ -36,7 +37,7 @@ const ToastWrapper = styled.div`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   text-align: left;
 
-  @media (max-width: 586px) {
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: 100%;
   }
 `;
@@ -48,7 +49,7 @@ const IconWrapper = styled.div<IconProps>`
   align-items: center;
   background-color: ${props => colors[props.type]};
 
-  @media (max-width: 586px) {
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: 14px;
   }
 `;
@@ -57,7 +58,7 @@ const IconImage = styled.img`
   width: 30px;
   height: 30px;
 
-  @media (max-width: 586px) {
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: 0;
     height: 0;
     visibility: hidden;
@@ -118,7 +119,7 @@ export default function Toast({ toast, onClose }: Props) {
           <Typography as={'div'} bold={true}>
             {toast.header}
           </Typography>
-          <Typography as={'div'} style={{ color: '#99968C' }}>
+          <Typography as={'div'} style={{ color: COLORS.DARK_SILVER }}>
             {toast.message(toast.templateData)}
           </Typography>
         </Text>
