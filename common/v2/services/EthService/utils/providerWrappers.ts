@@ -41,11 +41,7 @@ export const getTransactionReceiptFromHash = async (
     });
 
 export const getTxStatus = (providerInstance: ProviderHandler, txHash: string) =>
-  getTransactionReceiptFromHash(txHash, providerInstance).then(transactionOutcome => {
-    if (!transactionOutcome) {
-      return;
-    }
-    const transactionStatus =
-      transactionOutcome.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
-    return transactionStatus;
+  getTransactionReceiptFromHash(txHash, providerInstance).then(({ status }: any) => {
+    if (!status) return;
+    return status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
   });

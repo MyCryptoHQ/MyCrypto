@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { TUseStateReducerFactory } from 'v2/utils';
+import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
 import {
   Asset,
   Network,
@@ -24,12 +24,10 @@ import {
   getBaseAssetByNetwork,
   AccountContext
 } from 'v2/services';
-import { fromTxReceiptObj } from 'v2/components';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { ProviderHandler } from 'v2/services/EthService';
 
 import { TStepAction } from './types';
-
 import { processFormDataToTx, decodeTransaction } from './helpers';
 
 const txConfigInitialState = {

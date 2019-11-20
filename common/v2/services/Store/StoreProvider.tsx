@@ -9,9 +9,8 @@ import {
   WalletId,
   ITxReceipt
 } from 'v2/types';
-import { isArrayEqual, useInterval, convertToFiatFromAsset } from 'v2/utils';
+import { isArrayEqual, useInterval, convertToFiatFromAsset, fromTxReceiptObj } from 'v2/utils';
 import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from 'v2/services/EthService';
-import { fromTxReceiptObj } from 'v2/components';
 
 import { getAccountsAssetsBalances, accountUnlockVIPDetected } from './BalanceService';
 import { getStoreAccounts, getPendingTransactionsFromAccounts } from './helpers';
@@ -103,28 +102,20 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         const provider = new ProviderHandler(network);
 
         provider.getTransactionByHash(pendingTransactionObj.hash).then(transactionReceipt => {
-          if (!transactionReceipt) {
-            return;
-          }
+          if (!transactionReceipt) return;
           const receipt = fromTxReceiptObj(transactionReceipt);
-          if (!receipt) {
-            return;
-          }
+          if (!receipt) return;
 
           // Get block tx success/fail and timestamp for block number, then overwrite existing tx in account.
           Promise.all([
             getTxStatus(provider, receipt.hash),
             getTimestampFromBlockNum(receipt.blockNumber, provider)
-          ]).then(values => {
-            const txStatus = values[0];
-            const txTimestamp = values[1];
-            if (!txStatus || !txTimestamp) {
-              return;
-            }
-            const senderAccount =
+          ]).then(([txStatus, txTimestamp]) => {
+            if (!txStatus || !txTimestamp) return;
+            const senderAddress =
               pendingTransactionObj.senderAccount ||
               getAccountByAddressAndNetworkName(receipt.from, pendingTransactionObj.network.id);
-            addNewTransactionToAccount(senderAccount, {
+            addNewTransactionToAccount(senderAddress, {
               ...receipt,
               timestamp: txTimestamp,
               stage: txStatus
