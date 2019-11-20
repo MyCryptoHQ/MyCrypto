@@ -64,13 +64,16 @@ const SAssetIcon = styled(AssetIcon)`
   filter: gray; /* IE6-9 */
   filter: grayscale(1); /* W3C */
   position: absolute;
-  //outline: 6px solid white;
+  border: 3px solid white;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
 `;
 
 const CCircle = styled('div')`
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: -14px;
+  right: -14px;
   z-index: 2;
   height: 32px;
   width: 32px;
@@ -79,27 +82,15 @@ const SCombinedCircle = (asset: Asset) => {
   return (
     <CCircle>
       <SAssetIcon symbol={asset.ticker as TSymbol} />
-      <CircleIt />
     </CCircle>
   );
 };
-const SCircle = () => {
-  return (
-    <svg>
-      <circle r="16" fill="none" cx="16" cy="16" stroke-width="3" stroke="black" />
-    </svg>
-  );
-};
-
-const CircleIt = styled(SCircle)`
-  position: absolute;
-`;
 
 export const makeTxIcon = (type: ITxType, asset: Asset) => {
   const greyscaleIcon = asset && <>{SCombinedCircle(asset)}</>;
   const baseIcon = (
     <div className="TransactionLabel-image">
-      <img src={getTxIcon(type)} />
+      <img src={getTxIcon(type)} width="56px" height="56px"/>
       {greyscaleIcon}
     </div>
   );
