@@ -11,7 +11,7 @@ import infoIcon from 'assets/images/icn-toast-alert.svg';
 import errorIcon from 'assets/images/icn-toast-error.svg';
 import progressIcon from 'assets/images/icn-toast-progress.svg';
 import swapIcon from 'assets/images/icn-toast-swap.svg';
-import closeIcon from 'assets/images/close.svg';
+import closeIcon from 'assets/images/icn-toast-close.svg';
 
 interface ToastProp extends ToastConfig {
   templateData?: any;
@@ -28,23 +28,47 @@ interface IconProps {
 
 const ToastWrapper = styled.div`
   display: flex;
-  width: 400px;
-
+  width: 586px;
+  min-height: 77px;
   background: #ffffff;
   /* LIGHT GREY */
   /* Toast Shadow */
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
   text-align: left;
+
+  @media (max-width: 586px) {
+    width: 100%;
+  }
 `;
 
-const Icon = styled.div<IconProps>`
-  width: 0.5em;
+const IconWrapper = styled.div<IconProps>`
+  display: flex;
+  width: 69px;
+  justify-content: center;
+  align-items: center;
   background-color: ${props => colors[props.type]};
+
+  @media (max-width: 586px) {
+    width: 14px;
+  }
+`;
+
+const IconImage = styled.img`
+  width: 30px;
+  height: 30px;
+
+  @media (max-width: 586px) {
+    width: 0;
+    height: 0;
+    visibility: hidden;
+  }
 `;
 
 const Text = styled.div`
-  padding: 1em;
+  margin-top: 13px;
+  margin-bottom: 12px;
+  margin-left: 16px;
+  flex: 1 1 auto;
 `;
 
 const Border = styled.div`
@@ -55,11 +79,16 @@ const Border = styled.div`
   box-sizing: border-box;
 `;
 
-const Close = styled.div`
+const CloseWrapper = styled.div`
   display: flex;
-  width: 24px;
-  vertical-align: middle;
+  width: 64px;
+  justify-content: center;
   align-items: center;
+`;
+
+const CloseImage = styled.img`
+  width: 18px;
+  height: 20px;
 `;
 
 const colors = {
@@ -81,17 +110,21 @@ const icons = {
 export default function Toast({ toast, onClose }: Props) {
   return (
     <ToastWrapper>
-      <Icon type={toast.type}>{!IS_MOBILE && <img src={icons[toast.type]} />}</Icon>
+      <IconWrapper type={toast.type}>
+        {!IS_MOBILE && <IconImage src={icons[toast.type]} />}
+      </IconWrapper>
       <Border>
         <Text>
           <Typography as={'div'} bold={true}>
             {toast.header}
           </Typography>
-          <Typography as={'div'}>{toast.message(toast.templateData)}</Typography>
+          <Typography as={'div'} style={{ color: '#99968C' }}>
+            {toast.message(toast.templateData)}
+          </Typography>
         </Text>
-        <Close>
-          <img src={closeIcon} onClick={onClose} />
-        </Close>
+        <CloseWrapper>
+          <CloseImage src={closeIcon} onClick={onClose} />
+        </CloseWrapper>
       </Border>
     </ToastWrapper>
   );
