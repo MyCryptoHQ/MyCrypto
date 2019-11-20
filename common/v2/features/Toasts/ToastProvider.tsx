@@ -36,7 +36,7 @@ export class ToastProvider extends Component {
           onClose={onClose}
         />
       ),
-      { position: template.position }
+      { position: template.position, duration: template.duration }
     );
   };
 }

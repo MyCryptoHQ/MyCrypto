@@ -16,6 +16,7 @@ export interface ToastConfig {
 
 export interface ToastDisplayOptions extends ToastConfig {
   position: PositionsType;
+  duration?: number | null;
 }
 
 export interface ToastConfigsProps {

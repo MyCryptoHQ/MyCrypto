@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Typography } from 'v2/components';
-import { IS_MOBILE } from 'v2/utils';
 
 import { ToastConfig, ToastType } from '../types';
 
@@ -30,6 +29,7 @@ const ToastWrapper = styled.div`
   display: flex;
   width: 586px;
   min-height: 77px;
+  margin: 8px;
   background: #ffffff;
   /* LIGHT GREY */
   /* Toast Shadow */
@@ -111,7 +111,7 @@ export default function Toast({ toast, onClose }: Props) {
   return (
     <ToastWrapper>
       <IconWrapper type={toast.type}>
-        {!IS_MOBILE && <IconImage src={icons[toast.type]} />}
+        <IconImage src={icons[toast.type]} />
       </IconWrapper>
       <Border>
         <Text>
