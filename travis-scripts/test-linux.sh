@@ -7,6 +7,4 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
   yarn report-coverage
   yarn tslint
   yarn tscheck
-  yarn freezer
-  yarn freezer:validate
 fi
