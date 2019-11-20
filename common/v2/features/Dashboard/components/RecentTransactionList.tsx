@@ -1,13 +1,12 @@
 import React, { useContext } from 'react';
 import { Address, CollapsibleTable } from '@mycrypto/ui';
 
-import { Amount, DashboardPanel, NewTabLink } from 'v2/components';
+import { Amount, DashboardPanel, NewTabLink, AssetIcon } from 'v2/components';
 import TransactionLabel from './TransactionLabel';
 import './RecentTransactionList.scss';
 
-import newWindowIcon from 'common/assets/images/icn-new-window.svg';
 import { truncate, convertToFiat } from 'v2/utils';
-import { ITxReceipt, TTicker, ITxStatus, StoreAccount } from 'v2/types';
+import { ITxReceipt, TTicker, ITxStatus, StoreAccount, Asset, TSymbol } from 'v2/types';
 import { RatesContext, AddressBookContext, getLabelByAddressAndNetwork } from 'v2/services';
 import { translateRaw } from 'translations';
 
@@ -18,18 +17,104 @@ import {
   txIsPending,
   txIsSuccessful
 } from 'v2/services/Store/helpers';
+import newWindowIcon from 'common/assets/images/icn-new-window.svg';
+import transfer from 'common/assets/images/transactions/transfer.svg';
+import inbound from 'common/assets/images/transactions/inbound.svg';
+import outbound from 'common/assets/images/transactions/outbound.svg';
+import styled from 'styled-components';
 
 interface Props {
   className?: string;
   accountsList: StoreAccount[];
 }
 
+enum ITxType {
+  TRANSFER = 'TRANSFER',
+  OUTBOUND = 'OUTBOUND',
+  INBOUND = 'INBOUND'
+}
+
+export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt) => {
+  const fromAccount = accountsList.find(
+    account => account.address.toLowerCase() === tx.from.toLowerCase()
+  );
+  const toAccount = accountsList.find(
+    account => account.address.toLowerCase() === tx.to.toLowerCase()
+  );
+  return !fromAccount || !toAccount
+    ? fromAccount
+      ? ITxType.OUTBOUND
+      : ITxType.INBOUND
+    : ITxType.TRANSFER;
+};
+
+export const getTxIcon = (type: ITxType) => {
+  switch (type) {
+    case ITxType.TRANSFER:
+      return transfer;
+    case ITxType.INBOUND:
+      return inbound;
+    case ITxType.OUTBOUND:
+      return outbound;
+  }
+};
+
+const SAssetIcon = styled(AssetIcon)`
+  -webkit-filter: grayscale(1); /* Webkit */
+  filter: gray; /* IE6-9 */
+  filter: grayscale(1); /* W3C */
+  position: absolute;
+  //outline: 6px solid white;
+`;
+
+const CCircle = styled('div')`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 2;
+  height: 32px;
+  width: 32px;
+`;
+const SCombinedCircle = (asset: Asset) => {
+  return (
+    <CCircle>
+      <SAssetIcon symbol={asset.ticker as TSymbol} />
+      <CircleIt />
+    </CCircle>
+  );
+};
+const SCircle = () => {
+  return (
+    <svg>
+      <circle r="16" fill="none" cx="16" cy="16" stroke-width="3" stroke="black" />
+    </svg>
+  );
+};
+
+const CircleIt = styled(SCircle)`
+  position: absolute;
+`;
+
+export const makeTxIcon = (type: ITxType, asset: Asset) => {
+  const greyscaleIcon = asset && <>{SCombinedCircle(asset)}</>;
+  const baseIcon = (
+    <div className="TransactionLabel-image">
+      <img src={getTxIcon(type)} />
+      {greyscaleIcon}
+    </div>
+  );
+  return baseIcon;
+};
+
 export default function RecentTransactionList({ accountsList, className = '' }: Props) {
   const { addressBook } = useContext(AddressBookContext);
   const { getRate } = useContext(RatesContext);
   const noLabel = translateRaw('NO_LABEL');
   const transactions = accountsList.flatMap(account => account.transactions);
-  const accountTxs = getTxsFromAccount(accountsList);
+  const accountTxs: ITxReceipt = getTxsFromAccount(accountsList).map((tx: ITxReceipt) => ({
+    ...tx,
+    txType: deriveTxType(accountsList, tx)
+  }));
   // TODO: Sort by relevant transactions
 
   const pending = accountTxs.filter(txIsPending);
@@ -38,10 +123,10 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
 
   const createEntries = (_: string, collection: typeof transactions) =>
     collection.map(
-      ({ timestamp, label, hash, stage, from, to, amount, asset, network }: ITxReceipt) => [
+      ({ timestamp, label, hash, stage, from, to, amount, asset, network, txType }: ITxReceipt) => [
         <TransactionLabel
           key={0}
-          image="https://placehold.it/45x45"
+          image={makeTxIcon(txType, asset)}
           label={label}
           stage={stage}
           date={timestamp}

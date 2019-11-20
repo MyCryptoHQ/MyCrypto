@@ -5,7 +5,7 @@ import { Typography } from '@mycrypto/ui';
 import './TransactionLabel.scss';
 
 interface Props {
-  image: string;
+  image: JSX.Element;
   label: string;
   stage: string;
   date: number;
@@ -22,7 +22,7 @@ const formatDate = (date: number): string => moment.unix(date).format('MM/DD/YY 
 export default function TransactionLabel({ image, label, stage, date }: Props) {
   return (
     <div className="TransactionLabel">
-      <img src={image} className="TransactionLabel-image" alt={label} />
+      {image}
       <div className="TransactionLabel-info">
         <Typography className="TransactionLabel-info-label">{label}</Typography>
         <Typography className="TransactionLabel-info-stageDate">
