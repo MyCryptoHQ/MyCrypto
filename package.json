@@ -7,7 +7,7 @@
   "repository": "https://github.com/MyCryptoHQ/MyCrypto",
   "engines": {
     "node": ">= 8.16.0",
-    "npm": ">= 5.0.0"
+    "npm": ">= 6.4.1"
   },
   "dependencies": {
     "@hot-loader/react-dom": "16.8.6",
