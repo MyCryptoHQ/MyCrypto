@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 const PROJECT_BASE = path.resolve('./');
-const ORACLE_BRANCH = 'develop';
+const ORACLE_BRANCH = 'legacy';
 const GET_PACKAGE_CMD = `git show ${ORACLE_BRANCH}:package.json`;
 const GET_DIFF_CMD = `git diff origin/${ORACLE_BRANCH}`;
 
