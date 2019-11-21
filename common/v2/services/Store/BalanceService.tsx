@@ -77,43 +77,6 @@ export const getBaseAssetBalances = async (addresses: string[], network: Network
     .catch(_ => ([] as unknown) as BalanceMap);
 }; // Return an object containing the balance of the different tokens
 
-/*
-interface shitObject {
-  obj: {
-    networkId: string;
-    addresses: string[];
-  };
-  account: StoreAccount;
-}
-const groupByNetwork = (accounts: StoreAccount[]) => {
-  /*const accountNetworkIDs = accounts.map(account => account.networkId)
-  const accountsByNetwork = accounts.map(account => )
-
-  const groupToValues = accounts.reduce(({obj, account}: shitObject) => {
-    obj[account.networkId] = obj[account.networkId] || [];
-    obj[account.networkId].push(account.address);
-    return obj;
-  }, {});
-
-  const groups = Object.keys(groupToValues).map(function (key) {
-    return { networkId: key, addresses: groupToValues[key] };
-  });
-}*/
-
-/*const getAccountsAssetsBalancesWithEthScan = async (
-  accounts: StoreAccount[]
-): Promise<StoreAccount> => {
-  Get list of accounts assets for each network 
-  const accountsAssets = accounts.flatMap(account => account.assets)
-  const list = getAssetAddresses(accountsAssets) as string[];
-  const scanner = getScannerWithProvider(new ProviderHandler(account.network).client);
-  return Promise.all([
-    scanner.getEtherBalances(accounts.map(account => account.address)),
-    () => scanner.getTokensBalance(account.address, list)
-  ])
-    .then(addBalancesToAccount(account))
-    .catch(_ => account);
-};*/ // e.g { TOKEN_CONTRACT_ADDRESS: <balance> }
 const getTokenBalances = (
   provider: ProviderHandler,
   address: TAddress,

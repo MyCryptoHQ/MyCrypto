@@ -26,13 +26,8 @@ interface AssetMappingListObject {
 const DEFAULT_FIAT_PAIRS = ['USD', 'EUR'] as TTicker[];
 const DEFAULT_FIAT_RATE = 0;
 const POLLING_INTERRVAL = 60000;
-//const RATES_URL = 'https://proxy.mycryptoapi.com/cc/multi'
-const ASSET_ID_MAPPING_URL =
-  'https://raw.githubusercontent.com/MyCryptoHQ/assets/master/assets/assets.json';
+const ASSET_ID_MAPPING_URL = 'https://price.mycryptoapi.com/';
 const TOKEN_RATES_URL = 'https://api.coingecko.com/api/v3/simple/price';
-/*const buildQueryUrl = (assets: TTicker[], currencies: TTicker[]) => `
-  ${RATES_URL}/?fsyms=${assets.join(',')}tsyms=${currencies.join(',')}
-`;*/
 const buildTokenQueryUrl = (assets: TTicker[], currencies: TTicker[]) => `
   ${TOKEN_RATES_URL}/?ids=${assets.join('%2C')}&vs_currencies=${currencies.join('%2c')}
 `;
@@ -103,7 +98,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
       worker.start();
       return terminateWorker; // make sure we terminate the previous worker on teardown.
     });
-  }, [rawAccounts]); // only update if an account has been added or removed from LocalStorage.
+  }, [rawAccounts, currentAssetIDs.length]); // only update if an account has been added or removed from LocalStorage.
 
   const state: State = {
     rates: {},
