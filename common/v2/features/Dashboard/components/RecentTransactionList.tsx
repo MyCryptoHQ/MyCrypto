@@ -1,27 +1,26 @@
 import React, { useContext } from 'react';
 import { Address } from '@mycrypto/ui';
+import styled from 'styled-components';
 
 import { Amount, DashboardPanel, NewTabLink, AssetIcon, CollapsibleTable } from 'v2/components';
-import TransactionLabel from './TransactionLabel';
-import './RecentTransactionList.scss';
-
 import { truncate, convertToFiat } from 'v2/utils';
 import { ITxReceipt, TTicker, ITxStatus, StoreAccount, Asset, TSymbol } from 'v2/types';
 import { RatesContext, AddressBookContext, getLabelByAddressAndNetwork } from 'v2/services';
 import { translateRaw } from 'v2/translations';
-
-import NoTransactions from './NoTransactions';
 import {
   getTxsFromAccount,
   txIsFailed,
   txIsPending,
   txIsSuccessful
 } from 'v2/services/Store/helpers';
+
+import NoTransactions from './NoTransactions';
+import TransactionLabel from './TransactionLabel';
+import './RecentTransactionList.scss';
 import newWindowIcon from 'common/assets/images/icn-new-window.svg';
 import transfer from 'common/assets/images/transactions/transfer.svg';
 import inbound from 'common/assets/images/transactions/inbound.svg';
 import outbound from 'common/assets/images/transactions/outbound.svg';
-import styled from 'styled-components';
 
 interface Props {
   className?: string;

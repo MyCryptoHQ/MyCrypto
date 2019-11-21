@@ -1,7 +1,8 @@
 import { TransactionReceipt } from 'ethers/providers';
 
-import { ProviderHandler } from '../network/providerHandler';
 import { ITxStatus } from 'v2/types';
+
+import { ProviderHandler } from '../network/providerHandler';
 
 export const getStatusFromHash = async (
   txHash: string,

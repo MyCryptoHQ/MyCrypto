@@ -1,10 +1,11 @@
 import React from 'react';
 import moment from 'moment';
 import { Typography } from '@mycrypto/ui';
+import styled from 'styled-components';
+
 import { ITxStatus } from 'v2/types';
 
 import './TransactionLabel.scss';
-import styled from 'styled-components';
 
 interface Props {
   image: JSX.Element;

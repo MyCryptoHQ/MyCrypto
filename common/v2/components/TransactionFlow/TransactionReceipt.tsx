@@ -11,15 +11,14 @@ import {
   getTimestampFromBlockNum,
   getTransactionReceiptFromHash
 } from 'v2/services/EthService';
+import { ROUTE_PATHS } from 'v2/config';
+import translate, { translateRaw } from 'v2/translations';
+import { convertToFiat, truncate, fromTxReceiptObj } from 'v2/utils';
 
 import './TransactionReceipt.scss';
 // Legacy
 import sentIcon from 'common/assets/images/icn-sent.svg';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
-
-import { ROUTE_PATHS } from 'v2/config';
-import translate, { translateRaw } from 'v2/translations';
-import { convertToFiat, truncate, fromTxReceiptObj } from 'v2/utils';
 
 interface Props {
   completeButtonText: string;
