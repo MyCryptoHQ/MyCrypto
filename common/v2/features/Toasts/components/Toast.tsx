@@ -119,7 +119,7 @@ export default function Toast({ toast, onClose }: Props) {
           <Typography as={'div'} bold={true}>
             {toast.header}
           </Typography>
-          <Typography as={'div'} style={{ color: COLORS.DARK_SILVER }}>
+          <Typography as={'div'} style={{ color: COLORS.LEMON_GRASS }}>
             {toast.message(toast.templateData)}
           </Typography>
         </Text>
