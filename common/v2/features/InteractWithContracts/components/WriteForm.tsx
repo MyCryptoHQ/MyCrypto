@@ -45,7 +45,7 @@ interface Props {
   networkId: NetworkId;
   currentFunction: ABIItem;
   handleAccountSelected(account: StoreAccount): void;
-  handleSubmit(submitedFunction: ABIItem): Promise<object>;
+  handleSubmit(submitedFunction: ABIItem): void;
 }
 
 export default function WriteForm(props: Props) {

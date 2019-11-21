@@ -104,7 +104,7 @@ export default function GeneratedInteractionForm({
   handleAccountSelected,
   handleInteractionFormWriteSubmit
 }: Props) {
-  const [loadingOutputs, setLoadingOutputs] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentFunction, setCurrentFunction] = useState<ABIItem | undefined>(undefined);
   const [error, setError] = useState(undefined);
 
@@ -121,7 +121,7 @@ export default function GeneratedInteractionForm({
     setError(undefined);
 
     if (isReadOperation(newFunction) && newFunction.inputs.length === 0) {
-      submitForm(newFunction);
+      submitFormRead(newFunction);
     }
   };
 
@@ -132,20 +132,35 @@ export default function GeneratedInteractionForm({
     setCurrentFunction(updatedFunction);
   };
 
-  const submitForm = async (submitedFunction: ABIItem) => {
+  const submitFormRead = async (submitedFunction: ABIItem) => {
     if (!submitedFunction) {
       return;
     }
     setError(undefined);
     try {
-      setLoadingOutputs(true);
+      setIsLoading(true);
       const outputValues = await handleInteractionFormSubmit(submitedFunction);
       const functionWithOutputValues = setFunctionOutputValues(submitedFunction, outputValues);
       setCurrentFunction(functionWithOutputValues);
     } catch (e) {
       setError(e.toString());
     } finally {
-      setLoadingOutputs(false);
+      setIsLoading(false);
+    }
+  };
+
+  const submitFormWrite = async (submitedFunction: ABIItem) => {
+    if (!submitedFunction) {
+      return;
+    }
+    setError(undefined);
+    try {
+      setIsLoading(true);
+      await handleInteractionFormWriteSubmit(submitedFunction);
+    } catch (e) {
+      setError(e.toString());
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -231,19 +246,19 @@ export default function GeneratedInteractionForm({
                 })}
               </div>
             )}
-            <SpinnerWrapper>{loadingOutputs && <Spinner size="x2" />}</SpinnerWrapper>
+            <SpinnerWrapper>{isLoading && <Spinner size="x2" />}</SpinnerWrapper>
             {error && <InlineErrorMsg>{error}</InlineErrorMsg>}
             <ActionWrapper>
               {isRead &&
                 (inputs.length > 0 && (
-                  <ActionButton onClick={() => submitForm(currentFunction)}>Read</ActionButton>
+                  <ActionButton onClick={() => submitFormRead(currentFunction)}>Read</ActionButton>
                 ))}
               {!isRead && (
                 <WriteForm
                   account={account}
                   networkId={networkId}
                   handleAccountSelected={handleAccountSelected}
-                  handleSubmit={handleInteractionFormWriteSubmit}
+                  handleSubmit={submitFormWrite}
                   currentFunction={currentFunction}
                 />
               )}

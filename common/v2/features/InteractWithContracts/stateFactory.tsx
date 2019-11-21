@@ -140,52 +140,56 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
 
   const handleInteractionFormWriteSubmit = async (submitedFunction: ABIItem, after: () => void) => {
     if (!state.account) {
-      return;
+      throw new Error('No account selected');
     }
 
-    const { encodeInput } = new AbiFunction(submitedFunction, []);
+    try {
+      const { encodeInput } = new AbiFunction(submitedFunction, []);
 
-    const parsedInputs = submitedFunction.inputs.reduce(
-      (accu, input) => ({ ...accu, [input.name]: input.value }),
-      {}
-    );
+      const parsedInputs = submitedFunction.inputs.reduce(
+        (accu, input) => ({ ...accu, [input.name]: input.value }),
+        {}
+      );
 
-    const { networkId, contractAddress, account } = state;
+      const { networkId, contractAddress, account } = state;
 
-    const network = getNetworkById(networkId)!;
+      const network = getNetworkById(networkId)!;
 
-    const { fast } = await fetchGasPriceEstimates(network.id);
-    const gasPrice = hexWeiToString(inputGasPriceToHex(fast.toString()));
+      const { fast } = await fetchGasPriceEstimates(network.id);
+      const gasPrice = hexWeiToString(inputGasPriceToHex(fast.toString()));
 
-    const data = encodeInput(parsedInputs);
+      const data = encodeInput(parsedInputs);
 
-    const rawTransaction: any = {
-      to: contractAddress,
-      data,
-      from: account.address,
-      gasPrice: addHexPrefix(new BN(gasPrice).toString(16)),
-      value: 0, // use correct value
-      chainId: network.chainId,
-      nonce: await getNonce(network, account)
-    };
-    const gasLimit = await getGasEstimate(network, rawTransaction);
-    rawTransaction.gasLimit = hexToNumber(gasLimit);
-    delete rawTransaction.from;
+      const rawTransaction: any = {
+        to: contractAddress,
+        data,
+        from: account.address,
+        gasPrice: addHexPrefix(new BN(gasPrice).toString(16)),
+        value: 0, // use correct value
+        chainId: network.chainId,
+        nonce: await getNonce(network, account)
+      };
+      const gasLimit = await getGasEstimate(network, rawTransaction);
+      rawTransaction.gasLimit = hexToNumber(gasLimit);
+      delete rawTransaction.from;
 
-    const txConfig = makeTxConfigFromTransaction(
-      rawTransaction,
-      account,
-      { name: 'Ethereum', symbol: 'ETH' as TSymbol },
-      '0'
-    );
+      const txConfig = makeTxConfigFromTransaction(
+        rawTransaction,
+        account,
+        { name: 'Ethereum', symbol: 'ETH' as TSymbol },
+        '0'
+      );
 
-    setState((prevState: InteractWithContractState) => ({
-      ...prevState,
-      rawTransaction,
-      txConfig
-    }));
+      setState((prevState: InteractWithContractState) => ({
+        ...prevState,
+        rawTransaction,
+        txConfig
+      }));
 
-    after();
+      after();
+    } catch (e) {
+      throw e;
+    }
   };
 
   const handleAccountSelected = (account: StoreAccount | undefined) => {
