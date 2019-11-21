@@ -87,21 +87,21 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     setPendingTransactions(getPendingTransactionsFromAccounts(accounts));
   }, [accounts]);
 
-  // A pending transaction is detected.
+  // A change to pending txs is detected
   useEffect(() => {
-    if (pendingTransactions.length <= 0) {
-      return;
-    }
+    // A pending transaction is detected.
+    if (pendingTransactions.length <= 0) return;
     // This interval is used to poll for status of txs.
     const txStatusLookupInterval = setInterval(() => {
-      pendingTransactions.forEach((pendingTransactionObj: ITxReceipt) => {
-        const network: Network = pendingTransactionObj.network;
-        if (!network) {
-          return;
-        }
+      pendingTransactions.forEach((pendingTransactionObject: ITxReceipt) => {
+        const network: Network = pendingTransactionObject.network;
+        // If network is not found in the pendingTransactionObject, we cannot continue.
+        if (!network) return;
         const provider = new ProviderHandler(network);
 
-        provider.getTransactionByHash(pendingTransactionObj.hash).then(transactionReceipt => {
+        provider.getTransactionByHash(pendingTransactionObject.hash).then(transactionReceipt => {
+          // Fail out if tx receipt cant be found.
+          // This initial check stops us from spamming node for data before there is data to fetch.
           if (!transactionReceipt) return;
           const receipt = fromTxReceiptObj(transactionReceipt);
 
@@ -115,10 +115,11 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
           ]).then(([txStatus, txTimestamp]) => {
             // txStatus and txTimestamp return undefined on failed lookups.
             if (!txStatus || !txTimestamp) return;
-            const senderAddress =
-              pendingTransactionObj.senderAccount ||
-              getAccountByAddressAndNetworkName(receipt.from, pendingTransactionObj.network.id);
-            addNewTransactionToAccount(senderAddress, {
+            const senderAccount =
+              pendingTransactionObject.senderAccount ||
+              getAccountByAddressAndNetworkName(receipt.from, pendingTransactionObject.network.id);
+
+            addNewTransactionToAccount(senderAccount, {
               ...receipt,
               timestamp: txTimestamp,
               stage: txStatus
