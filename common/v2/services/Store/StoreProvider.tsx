@@ -93,8 +93,8 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       return;
     }
     // This interval is used to poll for status of txs.
-    const blockNumInterval = setInterval(() => {
-      pendingTransactions.forEach((pendingTransactionObj: any) => {
+    const txStatusLookupInterval = setInterval(() => {
+      pendingTransactions.forEach((pendingTransactionObj: ITxReceipt) => {
         const network: Network = pendingTransactionObj.network;
         if (!network) {
           return;
@@ -104,6 +104,8 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         provider.getTransactionByHash(pendingTransactionObj.hash).then(transactionReceipt => {
           if (!transactionReceipt) return;
           const receipt = fromTxReceiptObj(transactionReceipt);
+
+          // fromTxReceiptObj will return undefined if a network config could not be found with the transaction's chainId
           if (!receipt) return;
 
           // Get block tx success/fail and timestamp for block number, then overwrite existing tx in account.
@@ -111,6 +113,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
             getTxStatus(provider, receipt.hash),
             getTimestampFromBlockNum(receipt.blockNumber, provider)
           ]).then(([txStatus, txTimestamp]) => {
+            // txStatus and txTimestamp return undefined on failed lookups.
             if (!txStatus || !txTimestamp) return;
             const senderAddress =
               pendingTransactionObj.senderAccount ||
@@ -123,8 +126,8 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
           });
         });
       });
-    }, 3000); // Period to reset interval on
-    return () => clearInterval(blockNumInterval);
+    }, 5 * 1000); // Period to reset interval on
+    return () => clearInterval(txStatusLookupInterval);
   }, [pendingTransactions]);
 
   const state: State = {

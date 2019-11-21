@@ -8,7 +8,7 @@ import './RecentTransactionList.scss';
 import { truncate, convertToFiat } from 'v2/utils';
 import { ITxReceipt, TTicker, ITxStatus, StoreAccount, Asset, TSymbol } from 'v2/types';
 import { RatesContext, AddressBookContext, getLabelByAddressAndNetwork } from 'v2/services';
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 
 import NoTransactions from './NoTransactions';
 import {
@@ -86,7 +86,7 @@ const SCombinedCircle = (asset: Asset) => {
   );
 };
 
-export const makeTxIcon = (type: ITxType, asset: Asset) => {
+const makeTxIcon = (type: ITxType, asset: Asset) => {
   const greyscaleIcon = asset && <>{SCombinedCircle(asset)}</>;
   const baseIcon = (
     <div className="TransactionLabel-image">
@@ -95,6 +95,19 @@ export const makeTxIcon = (type: ITxType, asset: Asset) => {
     </div>
   );
   return baseIcon;
+};
+
+const makeTxLabel = (type: ITxType, asset: Asset) => {
+  switch (type) {
+    case ITxType.TRANSFER:
+      return translateRaw('RECENT_TX_LIST_LABEL_TRANSFERRED', {
+        $ticker: asset.ticker || 'Unknown'
+      });
+    case ITxType.OUTBOUND:
+      return translateRaw('RECENT_TX_LIST_LABEL_SENT', { $ticker: asset.ticker || 'Unknown' });
+    case ITxType.INBOUND:
+      return translateRaw('RECENT_TX_LIST_LABEL_RECEIVED', { $ticker: asset.ticker || 'Unknown' });
+  }
 };
 
 export default function RecentTransactionList({ accountsList, className = '' }: Props) {
@@ -114,51 +127,59 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
 
   const createEntries = (_: string, collection: typeof transactions) =>
     collection.map(
-      ({ timestamp, label, hash, stage, from, to, amount, asset, network, txType }: ITxReceipt) => [
-        <TransactionLabel
-          key={0}
-          image={makeTxIcon(txType, asset)}
-          label={label}
-          stage={stage}
-          date={timestamp}
-        />,
-        <Address
-          key={1}
-          title={
-            getLabelByAddressAndNetwork(from.toLowerCase(), addressBook, network)!.label || noLabel
-          }
-          truncate={truncate}
-          address={from}
-        />,
-        <Address
-          key={2}
-          title={
-            getLabelByAddressAndNetwork(to.toLowerCase(), addressBook, network)!.label || noLabel
-          }
-          truncate={truncate}
-          address={to}
-        />,
-        <Amount
-          key={3}
-          assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
-          fiatValue={`$${convertToFiat(
-            parseFloat(amount),
-            getRate(asset.ticker as TTicker)
-          ).toFixed(2)}
-      `}
-        />,
-        <NewTabLink
-          key={4}
-          href={
-            network && 'blockExplorer' in network
-              ? network.blockExplorer.txUrl(hash)
-              : `https://etherscan.io/tx/${hash}`
-          }
-        >
-          {' '}
-          <img src={newWindowIcon} alt="View more information about this transaction" />
-        </NewTabLink>
-      ]
+      ({ timestamp, hash, stage, from, to, amount, asset, network, txType }: ITxReceipt) => {
+        const toAddressBookEntry = getLabelByAddressAndNetwork(
+          to.toLowerCase(),
+          addressBook,
+          network
+        );
+        const fromAddressBookEntry = getLabelByAddressAndNetwork(
+          from.toLowerCase(),
+          addressBook,
+          network
+        );
+        return [
+          <TransactionLabel
+            key={0}
+            image={makeTxIcon(txType, asset)}
+            label={makeTxLabel(txType, asset)}
+            stage={stage}
+            date={timestamp}
+          />,
+          <Address
+            key={1}
+            title={fromAddressBookEntry ? fromAddressBookEntry.label : noLabel}
+            truncate={truncate}
+            address={from}
+          />,
+          <Address
+            key={2}
+            title={toAddressBookEntry ? toAddressBookEntry.label : noLabel}
+            truncate={truncate}
+            address={to}
+          />,
+          <Amount
+            key={3}
+            assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
+            fiatValue={`$${convertToFiat(
+              parseFloat(amount),
+              getRate(asset.ticker as TTicker)
+            ).toFixed(2)}
+        `}
+          />,
+          <NewTabLink
+            key={4}
+            href={
+              network && 'blockExplorer' in network
+                ? network.blockExplorer.txUrl(hash)
+                : `https://etherscan.io/tx/${hash}`
+            }
+          >
+            {' '}
+            <img src={newWindowIcon} alt="View more information about this transaction" />
+          </NewTabLink>
+        ];
+      }
     );
 
   const groups = [
