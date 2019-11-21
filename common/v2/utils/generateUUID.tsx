@@ -1,4 +1,6 @@
 import * as crypto from 'crypto';
+import getUuid from 'uuid-by-string';
+import { toChecksumAddress } from 'ethereumjs-util';
 
 // TODO: If used for anything other than generating public ids, look up a more-secure way to do this.
 export const generateUUID = (): string => {
@@ -15,3 +17,6 @@ export const generateUUID = (): string => {
     hexstring.substring(20);
   return uuid;
 };
+
+export const getUUIDForAsset = (chainId: string | number, address?: string) =>
+  address ? getUuid(`${chainId}-${toChecksumAddress(address)}`) : getUuid(chainId.toString());

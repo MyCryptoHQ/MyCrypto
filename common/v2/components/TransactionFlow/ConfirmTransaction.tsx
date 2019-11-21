@@ -8,7 +8,7 @@ import { AddressBookContext } from 'v2/services/Store';
 import { Amount } from 'v2/components';
 import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from 'v2/services/EthService';
 import { RatesContext } from 'v2/services/RatesProvider';
-import { TTicker, IStepComponentProps } from 'v2/types';
+import { IStepComponentProps } from 'v2/types';
 
 import './ConfirmTransaction.scss';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
@@ -28,7 +28,7 @@ export default function ConfirmTransaction({
     onComplete(null);
   };
 
-  const { getRate } = useContext(RatesContext);
+  const { getRateFromAsset } = useContext(RatesContext);
   const recipientContact = getContactByAddressAndNetwork(
     txConfig.receiverAddress,
     txConfig.network
@@ -98,10 +98,7 @@ export default function ConfirmTransaction({
         <div className="ConfirmTransaction-row-column">
           <Amount
             assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
-            fiatValue={`$${convertToFiat(
-              parseFloat(amount),
-              getRate(asset.ticker as TTicker)
-            ).toFixed(2)}
+            fiatValue={`$${convertToFiat(parseFloat(amount), getRateFromAsset(asset)).toFixed(2)}
           `}
           />
         </div>
@@ -115,7 +112,7 @@ export default function ConfirmTransaction({
             assetValue={`${maxTransactionFeeBase} ${baseAsset.ticker}`}
             fiatValue={`$${convertToFiat(
               parseFloat(maxTransactionFeeBase),
-              getRate(baseAsset.ticker as TTicker)
+              getRateFromAsset(baseAsset)
             ).toFixed(2)}`}
           />
         </div>
@@ -131,7 +128,7 @@ export default function ConfirmTransaction({
               assetValue={`${totalEtherEgress} ${asset.ticker}`}
               fiatValue={`$${convertToFiat(
                 parseFloat(totalEtherEgress),
-                getRate(asset.ticker as TTicker)
+                getRateFromAsset(asset)
               ).toFixed(2)}`}
             />
           ) : (
@@ -139,8 +136,8 @@ export default function ConfirmTransaction({
               assetValue={`${amount} ${asset.ticker}`}
               baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
               fiatValue={`$${(
-                convertToFiat(parseFloat(amount), getRate(asset.ticker as TTicker)) +
-                convertToFiat(parseFloat(totalEtherEgress), getRate(baseAsset.ticker as TTicker))
+                convertToFiat(parseFloat(amount), getRateFromAsset(asset)) +
+                convertToFiat(parseFloat(totalEtherEgress), getRateFromAsset(baseAsset))
               ).toFixed(2)}`}
             />
           )}

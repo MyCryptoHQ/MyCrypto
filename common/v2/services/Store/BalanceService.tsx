@@ -5,7 +5,7 @@ import { FallbackProvider } from 'ethers/providers';
 import { default as BN } from 'bignumber.js';
 
 import { ETHSCAN_NETWORKS, MYCRYPTO_UNLOCK_CONTRACT_ADDRESS } from 'v2/config';
-import { TAddress, StoreAccount, StoreAsset, Asset, NodeConfig } from 'v2/types';
+import { TAddress, StoreAccount, StoreAsset, Asset, NodeConfig, Network } from 'v2/types';
 import { ProviderHandler } from 'v2/services/EthService';
 
 export interface BalanceMap {
@@ -62,7 +62,22 @@ const getAccountAssetsBalancesWithEthScan = async (account: StoreAccount) => {
   ])
     .then(addBalancesToAccount(account))
     .catch(_ => account);
-}; /*
+};
+
+export const getBaseAssetBalances = async (addresses: string[], network: Network | undefined) => {
+  if (!network) {
+    return ([] as unknown) as BalanceMap;
+  }
+  const scanner = getScannerWithProvider(new ProviderHandler(network).client);
+  return scanner
+    .getEtherBalances(addresses)
+    .then(data => {
+      return data;
+    })
+    .catch(_ => ([] as unknown) as BalanceMap);
+}; // Return an object containing the balance of the different tokens
+
+/*
 interface shitObject {
   obj: {
     networkId: string;
@@ -98,8 +113,7 @@ const groupByNetwork = (accounts: StoreAccount[]) => {
   ])
     .then(addBalancesToAccount(account))
     .catch(_ => account);
-};*/ // Return an object containing the balance of the different tokens
-// e.g { TOKEN_CONTRACT_ADDRESS: <balance> }
+};*/ // e.g { TOKEN_CONTRACT_ADDRESS: <balance> }
 const getTokenBalances = (
   provider: ProviderHandler,
   address: TAddress,
