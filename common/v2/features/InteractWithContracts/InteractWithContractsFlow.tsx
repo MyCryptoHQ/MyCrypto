@@ -12,6 +12,7 @@ import { Interact, InteractionReceipt } from './components';
 import { ABIItem, InteractWithContractState } from './types';
 import { ITxReceipt, ISignedTx } from 'v2/types';
 import { WALLET_STEPS } from './helpers';
+import InteractionConfirm from './components/InteractionConfirm';
 
 interface TStep {
   title: string;
@@ -81,6 +82,12 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
       }
     },
     {
+      title: 'Confirm Transaction',
+      component: InteractionConfirm,
+      props: (({ txConfig }) => ({ txConfig }))(interactWithContractsState),
+      actions: { goToNextStep }
+    },
+    {
       title: 'Sign write transaction',
       component: account && WALLET_STEPS[account.wallet],
       props: (({ rawTransaction }) => ({
@@ -95,7 +102,7 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
     {
       title: translateRaw('Interaction Receipt'),
       component: InteractionReceipt,
-      props: {},
+      props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(interactWithContractsState),
       actions: { goToFirstStep }
     }
   ];

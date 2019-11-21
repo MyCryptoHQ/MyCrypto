@@ -50,6 +50,6 @@ export interface InteractWithContractState {
   showGeneratedForm: boolean;
   submitedFunction: ABIItem;
   data: string;
-  account: StoreAccount;
+  account: StoreAccount | undefined;
   rawTransaction: ITxConfig;
 }

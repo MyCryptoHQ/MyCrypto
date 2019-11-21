@@ -4,7 +4,7 @@ import { addHexPrefix } from 'ethereumjs-util';
 
 import { TUseStateReducerFactory } from 'v2/utils';
 import { DEFAULT_NETWORK } from 'v2/config';
-import { Contract, StoreAccount } from 'v2/types';
+import { Contract, StoreAccount, TSymbol } from 'v2/types';
 import {
   getNetworkById,
   ContractContext,
@@ -23,6 +23,7 @@ import { isWeb3Wallet } from 'v2/utils/web3';
 
 import { customContract, CUSTOM_CONTRACT_ADDRESS } from './constants';
 import { ABIItem, InteractWithContractState } from './types';
+import { makeTxConfigFromTransaction } from '../SwapAssets/helpers';
 
 const interactWithContractsInitialState = {
   networkId: DEFAULT_NETWORK,
@@ -138,6 +139,10 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   };
 
   const handleInteractionFormWriteSubmit = async (submitedFunction: ABIItem, after: () => void) => {
+    if (!state.account) {
+      return;
+    }
+
     const { encodeInput } = new AbiFunction(submitedFunction, []);
 
     const parsedInputs = submitedFunction.inputs.reduce(
@@ -167,15 +172,23 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     rawTransaction.gasLimit = hexToNumber(gasLimit);
     delete rawTransaction.from;
 
+    const txConfig = makeTxConfigFromTransaction(
+      rawTransaction,
+      account,
+      { name: 'Ethereum', symbol: 'ETH' as TSymbol },
+      '0'
+    );
+
     setState((prevState: InteractWithContractState) => ({
       ...prevState,
-      rawTransaction
+      rawTransaction,
+      txConfig
     }));
 
     after();
   };
 
-  const handleAccountSelected = (account: StoreAccount) => {
+  const handleAccountSelected = (account: StoreAccount | undefined) => {
     setState((prevState: InteractWithContractState) => ({
       ...prevState,
       account
@@ -184,6 +197,10 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
 
   const handleTxSigned = async (signResponse: any, after: () => void) => {
     const { account } = state;
+
+    if (!account) {
+      return;
+    }
 
     if (isWeb3Wallet(account.wallet)) {
       const txReceipt =

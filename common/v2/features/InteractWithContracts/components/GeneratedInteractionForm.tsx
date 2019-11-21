@@ -1,15 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import {
-  InputField,
-  Dropdown,
-  Button,
-  Spinner,
-  InlineErrorMsg,
-  AccountDropdown,
-  Typography
-} from 'v2/components';
+import { InputField, Dropdown, Button, Spinner, InlineErrorMsg, Typography } from 'v2/components';
 
 import FunctionDropdownOption from './FunctionDropdownOption';
 import FunctionDropdownValue from './FunctionDropdownValue';
@@ -18,14 +10,13 @@ import {
   isReadOperation,
   generateFunctionFieldsDisplayNames,
   getFunctionsFromABI,
-  setFunctionOutputValues,
-  getAccountsInNetwork
+  setFunctionOutputValues
 } from '../helpers';
 import { FieldLabel, BooleanOutputField } from './fields';
 
 import { StoreAccount, NetworkId } from 'v2/types';
-import { StoreContext } from 'v2/services';
 import { COLORS, monospace } from 'v2/theme';
+import WriteForm from './WriteForm';
 
 const { LIGHT_GREY } = COLORS;
 
@@ -83,12 +74,6 @@ const FormFieldsWrapper = styled.div`
   }
 `;
 
-const WriteActionWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;
-
 const HorizontalLine = styled.div`
   height: 1px;
   color: #000;
@@ -102,17 +87,13 @@ const ActionButton = styled(Button)`
   width: fit-content;
 `;
 
-const AccountDropdownWrapper = styled.div`
-  margin-top: 8px;
-`;
-
 interface Props {
   abi: ABIItem[];
   account: StoreAccount;
   networkId: NetworkId;
   handleInteractionFormSubmit(submitedFunction: ABIItem): Promise<object>;
   handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<object>;
-  handleAccountSelected(account: StoreAccount): void;
+  handleAccountSelected(account: StoreAccount | undefined): void;
 }
 
 export default function GeneratedInteractionForm({
@@ -127,8 +108,6 @@ export default function GeneratedInteractionForm({
   const [currentFunction, setCurrentFunction] = useState<ABIItem | undefined>(undefined);
   const [error, setError] = useState(undefined);
 
-  const { accounts } = useContext(StoreContext);
-  const filteredAccount = getAccountsInNetwork(accounts, networkId);
   const functions = getFunctionsFromABI(abi);
 
   const handleFunctionSelected = (selectedFunction: ABIItem) => {
@@ -138,6 +117,7 @@ export default function GeneratedInteractionForm({
 
     const newFunction = generateFunctionFieldsDisplayNames(selectedFunction);
     setCurrentFunction(newFunction);
+    handleAccountSelected(undefined);
     setError(undefined);
 
     if (isReadOperation(newFunction) && newFunction.inputs.length === 0) {
@@ -259,24 +239,13 @@ export default function GeneratedInteractionForm({
                   <ActionButton onClick={() => submitForm(currentFunction)}>Read</ActionButton>
                 ))}
               {!isRead && (
-                <WriteActionWrapper>
-                  <HorizontalLine />
-                  <FieldLabel fieldName="Account" />
-                  <AccountDropdownWrapper>
-                    <AccountDropdown
-                      name="account"
-                      value={account}
-                      accounts={filteredAccount}
-                      onSelect={(option: StoreAccount) => {
-                        handleAccountSelected(option);
-                      }}
-                    />
-                  </AccountDropdownWrapper>
-
-                  <ActionButton onClick={() => handleInteractionFormWriteSubmit(currentFunction)}>
-                    Write
-                  </ActionButton>
-                </WriteActionWrapper>
+                <WriteForm
+                  account={account}
+                  networkId={networkId}
+                  handleAccountSelected={handleAccountSelected}
+                  handleSubmit={handleInteractionFormWriteSubmit}
+                  currentFunction={currentFunction}
+                />
               )}
             </ActionWrapper>
           </>
