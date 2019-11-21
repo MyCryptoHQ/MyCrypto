@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import { Address, CollapsibleTable } from '@mycrypto/ui';
+import { Address } from '@mycrypto/ui';
 
-import { Amount, DashboardPanel, NewTabLink, AssetIcon } from 'v2/components';
+import { Amount, DashboardPanel, NewTabLink, AssetIcon, CollapsibleTable } from 'v2/components';
 import TransactionLabel from './TransactionLabel';
 import './RecentTransactionList.scss';
 
@@ -90,7 +90,7 @@ export const makeTxIcon = (type: ITxType, asset: Asset) => {
   const greyscaleIcon = asset && <>{SCombinedCircle(asset)}</>;
   const baseIcon = (
     <div className="TransactionLabel-image">
-      <img src={getTxIcon(type)} width="56px" height="56px"/>
+      <img src={getTxIcon(type)} width="56px" height="56px" />
       {greyscaleIcon}
     </div>
   );
