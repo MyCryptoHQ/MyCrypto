@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 
 import { TransactionReceipt } from 'v2/components/TransactionFlow';
 import { ITxReceipt, ITxConfig } from 'v2/types';

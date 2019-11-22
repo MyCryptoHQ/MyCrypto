@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { translate } from 'translations';
+import translate from 'v2/translations';
 
 import { StoreAccount } from 'v2/types';
 import { Spinner, Typography } from 'v2/components';

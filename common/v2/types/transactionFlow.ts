@@ -4,7 +4,8 @@ import {
   Network as INetwork,
   GasEstimates,
   ExtendedAccount,
-  ITxReceipt
+  ITxReceipt,
+  WalletId
 } from 'v2/types';
 
 export type ISignedTx = string;
@@ -73,3 +74,7 @@ interface IReceiverAddress {
   display: string;
   value: string;
 }
+
+export type SigningComponents = {
+  readonly [k in WalletId]: React.ComponentType<ISignComponentProps> | null;
+};

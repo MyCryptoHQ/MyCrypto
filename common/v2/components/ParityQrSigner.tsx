@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import QrSigner from '@parity/qr-signer';
 
-import translate from 'translations';
+import translate from 'v2/translations';
 import { Spinner } from 'v2/components';
 import './ParityQrSigner.scss';
 

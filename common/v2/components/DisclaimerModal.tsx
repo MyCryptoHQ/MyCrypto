@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { HELP_ARTICLE } from 'v2/config';
-import translate from 'translations';
+import translate from 'v2/translations';
 
 import { LegacyModal, IButton, HelpLink } from 'v2/components';
 import './DisclaimerModal.scss';

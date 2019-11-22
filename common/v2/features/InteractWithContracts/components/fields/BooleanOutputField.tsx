@@ -36,7 +36,7 @@ interface Props {
   fieldValue: string;
 }
 
-export default function BooleanField(props: Props) {
+export default function BooleanOutputField(props: Props) {
   const { fieldName, fieldType, fieldValue } = props;
 
   const isTrue = fieldValue === 'true';

@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
 import styled from 'styled-components';
+import React, { useState } from 'react';
 
-import { InputField, Dropdown, Button, Spinner, InlineErrorMsg } from 'v2/components';
-import { COLORS, monospace } from 'v2/theme';
+import { InputField, Dropdown, Button, Spinner, InlineErrorMsg, Typography } from 'v2/components';
 
 import FunctionDropdownOption from './FunctionDropdownOption';
 import FunctionDropdownValue from './FunctionDropdownValue';
@@ -13,13 +12,14 @@ import {
   getFunctionsFromABI,
   setFunctionOutputValues
 } from '../helpers';
-import { FieldLabel, BooleanField } from './fields';
+import { FieldLabel, BooleanOutputField } from './fields';
+
+import { StoreAccount, NetworkId } from 'v2/types';
+import { COLORS, monospace } from 'v2/theme';
+import WriteForm from './WriteForm';
+import BooleanSelector from './fields/BooleanSelector';
 
 const { LIGHT_GREY } = COLORS;
-
-const Wrapper = styled.div`
-  margin-top: 16px;
-`;
 
 interface FieldWraperProps {
   isOutput?: boolean;
@@ -49,16 +49,16 @@ const FieldWrapper = styled.div<FieldWraperProps>`
   }
 `;
 
-const Label = styled.p`
+const Label = styled(Typography)`
   line-height: 1;
   margin-bottom: 9px;
+  font-weight: bold;
 `;
 
-const ButtonWrapper = styled.div`
+const ActionWrapper = styled.div`
   display: flex;
   width: 100%;
   justify-content: left;
-  margin-top: 9px;
 `;
 
 const SpinnerWrapper = styled.div`
@@ -75,15 +75,46 @@ const FormFieldsWrapper = styled.div`
   }
 `;
 
+const HorizontalLine = styled.div`
+  height: 1px;
+  color: #000;
+  background-color: ${LIGHT_GREY};
+  width: 100%;
+  margin: 20px 0;
+`;
+
+const ActionButton = styled(Button)`
+  margin-top: 18px;
+  width: fit-content;
+`;
+
+const WriteFormWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
 interface Props {
   abi: ABIItem[];
+  account: StoreAccount;
+  networkId: NetworkId;
   handleInteractionFormSubmit(submitedFunction: ABIItem): Promise<object>;
+  handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<object>;
+  handleAccountSelected(account: StoreAccount | undefined): void;
 }
 
-export default function GeneratedInteractionForm({ abi, handleInteractionFormSubmit }: Props) {
-  const [loadingOutputs, setLoadingOutputs] = useState(false);
+export default function GeneratedInteractionForm({
+  abi,
+  handleInteractionFormSubmit,
+  account,
+  networkId,
+  handleAccountSelected,
+  handleInteractionFormWriteSubmit
+}: Props) {
+  const [isLoading, setIsLoading] = useState(false);
   const [currentFunction, setCurrentFunction] = useState<ABIItem | undefined>(undefined);
+
   const [error, setError] = useState(undefined);
+  const [payAmount, setPayAmount] = useState(0);
 
   const functions = getFunctionsFromABI(abi);
 
@@ -94,9 +125,11 @@ export default function GeneratedInteractionForm({ abi, handleInteractionFormSub
 
     const newFunction = generateFunctionFieldsDisplayNames(selectedFunction);
     setCurrentFunction(newFunction);
+    handleAccountSelected(undefined);
+    setError(undefined);
 
     if (isReadOperation(newFunction) && newFunction.inputs.length === 0) {
-      submitForm(newFunction);
+      submitFormRead(newFunction);
     }
   };
 
@@ -107,20 +140,36 @@ export default function GeneratedInteractionForm({ abi, handleInteractionFormSub
     setCurrentFunction(updatedFunction);
   };
 
-  const submitForm = async (submitedFunction: ABIItem) => {
+  const submitFormRead = async (submitedFunction: ABIItem) => {
     if (!submitedFunction) {
       return;
     }
     setError(undefined);
     try {
-      setLoadingOutputs(true);
+      setIsLoading(true);
       const outputValues = await handleInteractionFormSubmit(submitedFunction);
       const functionWithOutputValues = setFunctionOutputValues(submitedFunction, outputValues);
       setCurrentFunction(functionWithOutputValues);
     } catch (e) {
       setError(e.toString());
     } finally {
-      setLoadingOutputs(false);
+      setIsLoading(false);
+    }
+  };
+
+  const submitFormWrite = async (submitedFunction: ABIItem) => {
+    if (!submitedFunction) {
+      return;
+    }
+    setError(undefined);
+    try {
+      setIsLoading(true);
+      submitedFunction.payAmount = payAmount;
+      await handleInteractionFormWriteSubmit(submitedFunction);
+    } catch (e) {
+      setError(e.toString());
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -135,8 +184,8 @@ export default function GeneratedInteractionForm({ abi, handleInteractionFormSub
   }
 
   return (
-    <Wrapper>
-      <hr />
+    <>
+      <HorizontalLine />
       <DropdownWrapper>
         <Label>Read / Write Contract</Label>
         <Dropdown
@@ -157,11 +206,23 @@ export default function GeneratedInteractionForm({ abi, handleInteractionFormSub
                 {inputs.map((field, index) => {
                   return (
                     <FieldWrapper key={`${field.displayName}${index}${currentFunction.name}`}>
-                      <InputField
-                        label={<FieldLabel fieldName={field.displayName!} fieldType={field.type} />}
-                        value={field.value}
-                        onChange={({ target: { value } }) => handleInputChange(field.name, value)}
-                      />
+                      {field.type === 'bool' ? (
+                        <BooleanSelector
+                          fieldName={field.name}
+                          fieldType={field.type}
+                          fieldDisplayName={field.displayName!}
+                          handleInputChange={handleInputChange}
+                          value={field.value}
+                        />
+                      ) : (
+                        <InputField
+                          label={
+                            <FieldLabel fieldName={field.displayName!} fieldType={field.type} />
+                          }
+                          value={field.value}
+                          onChange={({ target: { value } }) => handleInputChange(field.name, value)}
+                        />
+                      )}
                     </FieldWrapper>
                   );
                 })}
@@ -177,7 +238,7 @@ export default function GeneratedInteractionForm({ abi, handleInteractionFormSub
                       key={`${field.displayName}${index}${currentFunction.name}`}
                     >
                       {field.value !== undefined && field.type === 'bool' ? (
-                        <BooleanField
+                        <BooleanOutputField
                           fieldName={field.displayName!}
                           fieldType={field.type}
                           fieldValue={field.value}
@@ -200,18 +261,38 @@ export default function GeneratedInteractionForm({ abi, handleInteractionFormSub
                 })}
               </div>
             )}
-            <SpinnerWrapper>{loadingOutputs && <Spinner size="x2" />}</SpinnerWrapper>
+            <SpinnerWrapper>{isLoading && <Spinner size="x2" />}</SpinnerWrapper>
             {error && <InlineErrorMsg>{error}</InlineErrorMsg>}
-            <ButtonWrapper>
+            <ActionWrapper>
               {isRead &&
                 (inputs.length > 0 && (
-                  <Button onClick={() => submitForm(currentFunction)}>Read</Button>
+                  <ActionButton onClick={() => submitFormRead(currentFunction)}>Read</ActionButton>
                 ))}
-              {!isRead && <Button onClick={() => submitForm(currentFunction)}>Write</Button>}
-            </ButtonWrapper>
+              {!isRead && (
+                <WriteFormWrapper>
+                  <HorizontalLine />
+                  {currentFunction.payable && (
+                    <FieldWrapper>
+                      <InputField
+                        label="Value"
+                        value={payAmount.toString()}
+                        onChange={({ target: { value } }) => setPayAmount(value)}
+                      />
+                    </FieldWrapper>
+                  )}
+                  <WriteForm
+                    account={account}
+                    networkId={networkId}
+                    handleAccountSelected={handleAccountSelected}
+                    handleSubmit={submitFormWrite}
+                    currentFunction={currentFunction}
+                  />
+                </WriteFormWrapper>
+              )}
+            </ActionWrapper>
           </>
         )}
       </FormFieldsWrapper>
-    </Wrapper>
+    </>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import translate from 'translations';
+import translate from 'v2/translations';
 import { BREAK_POINTS } from 'v2/theme';
 import NotificationWrapper from './NotificationWrapper';
 import { KNOWLEDGE_BASE_URL, HOW_TO_BUY_CRYPTO_URL, DONT_LOSE_CRYPTO_URL } from 'v2/config';
