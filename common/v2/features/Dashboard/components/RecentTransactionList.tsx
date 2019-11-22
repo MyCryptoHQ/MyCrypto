@@ -33,6 +33,39 @@ enum ITxType {
   INBOUND = 'INBOUND'
 }
 
+interface ITxTypeConfigObj {
+  icon: any;
+  label(asset: Asset): string;
+}
+
+type ITxTypeConfig = {
+  [txType in ITxType]: ITxTypeConfigObj;
+};
+
+const TxTypeConfig: ITxTypeConfig = {
+  [ITxType.INBOUND]: {
+    label: (asset: Asset) =>
+      translateRaw('RECENT_TX_LIST_LABEL_RECEIVED', {
+        $ticker: asset.ticker || 'Unknown'
+      }),
+    icon: inbound
+  },
+  [ITxType.OUTBOUND]: {
+    label: (asset: Asset) =>
+      translateRaw('RECENT_TX_LIST_LABEL_SENT', {
+        $ticker: asset.ticker || 'Unknown'
+      }),
+    icon: outbound
+  },
+  [ITxType.TRANSFER]: {
+    label: (asset: Asset) =>
+      translateRaw('RECENT_TX_LIST_LABEL_TRANSFERRED', {
+        $ticker: asset.ticker || 'Unknown'
+      }),
+    icon: transfer
+  }
+};
+
 export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt) => {
   const fromAccount = accountsList.find(
     account => account.address.toLowerCase() === tx.from.toLowerCase()
@@ -45,17 +78,6 @@ export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt) => {
       ? ITxType.OUTBOUND
       : ITxType.INBOUND
     : ITxType.TRANSFER;
-};
-
-export const getTxIcon = (type: ITxType) => {
-  switch (type) {
-    case ITxType.TRANSFER:
-      return transfer;
-    case ITxType.INBOUND:
-      return inbound;
-    case ITxType.OUTBOUND:
-      return outbound;
-  }
 };
 
 const SAssetIcon = styled(AssetIcon)`
@@ -89,24 +111,11 @@ const makeTxIcon = (type: ITxType, asset: Asset) => {
   const greyscaleIcon = asset && <>{SCombinedCircle(asset)}</>;
   const baseIcon = (
     <div className="TransactionLabel-image">
-      <img src={getTxIcon(type)} width="56px" height="56px" />
+      <img src={TxTypeConfig[type].icon} width="56px" height="56px" />
       {greyscaleIcon}
     </div>
   );
   return baseIcon;
-};
-
-const makeTxLabel = (type: ITxType, asset: Asset) => {
-  switch (type) {
-    case ITxType.TRANSFER:
-      return translateRaw('RECENT_TX_LIST_LABEL_TRANSFERRED', {
-        $ticker: asset.ticker || 'Unknown'
-      });
-    case ITxType.OUTBOUND:
-      return translateRaw('RECENT_TX_LIST_LABEL_SENT', { $ticker: asset.ticker || 'Unknown' });
-    case ITxType.INBOUND:
-      return translateRaw('RECENT_TX_LIST_LABEL_RECEIVED', { $ticker: asset.ticker || 'Unknown' });
-  }
 };
 
 export default function RecentTransactionList({ accountsList, className = '' }: Props) {
@@ -141,7 +150,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           <TransactionLabel
             key={0}
             image={makeTxIcon(txType, asset)}
-            label={makeTxLabel(txType, asset)}
+            label={TxTypeConfig[txType as ITxType].label(asset)}
             stage={stage}
             date={timestamp}
           />,

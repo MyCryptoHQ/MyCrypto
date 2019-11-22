@@ -26,28 +26,31 @@ const capitalize = (word: string): string =>
 
 const formatDate = (date: number): string => moment.unix(date).format('MM/DD/YY h:mm A');
 
-const getColor = (txStatus: ITxStatus) => {
-  switch (txStatus) {
-    case ITxStatus.FAILED:
-      return '#F05424';
-    case ITxStatus.SUCCESS:
-      return '#75b433';
-    case ITxStatus.PENDING:
-      return '#424242';
-  }
+interface ITxStatusObject {
+  color: string;
+}
+
+type ITxStatusConfig = {
+  [key in ITxStatus]: ITxStatusObject;
 };
 
-const getConfig = (txStatus: ITxStatus): Config => {
-  return {
-    color: getColor(txStatus)
-  };
+const txStatusConfig: ITxStatusConfig = {
+  [ITxStatus.FAILED]: {
+    color: '#F05424'
+  },
+  [ITxStatus.SUCCESS]: {
+    color: '#75b433'
+  },
+  [ITxStatus.PENDING]: {
+    color: '#424242'
+  }
 };
 
 const SStage = styled(Typography)`
   color: ${(p: { config: Config }) => p.config.color || 'transparent'};
 `;
 export default function TransactionLabel({ image, label, stage, date }: Props) {
-  const config = getConfig(stage);
+  const config = txStatusConfig[stage];
   return (
     <div className="TransactionLabel">
       {image}
