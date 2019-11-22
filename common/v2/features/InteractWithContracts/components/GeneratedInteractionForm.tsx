@@ -17,6 +17,7 @@ import { FieldLabel, BooleanOutputField } from './fields';
 import { StoreAccount, NetworkId } from 'v2/types';
 import { COLORS, monospace } from 'v2/theme';
 import WriteForm from './WriteForm';
+import BooleanSelector from './fields/BooleanSelector';
 
 const { LIGHT_GREY } = COLORS;
 
@@ -206,7 +207,13 @@ export default function GeneratedInteractionForm({
                   return (
                     <FieldWrapper key={`${field.displayName}${index}${currentFunction.name}`}>
                       {field.type === 'bool' ? (
-                        <div>DROP DOWN BOOL SELECTOR</div>
+                        <BooleanSelector
+                          fieldName={field.name}
+                          fieldType={field.type}
+                          fieldDisplayName={field.displayName!}
+                          handleInputChange={handleInputChange}
+                          value={field.value}
+                        />
                       ) : (
                         <InputField
                           label={
