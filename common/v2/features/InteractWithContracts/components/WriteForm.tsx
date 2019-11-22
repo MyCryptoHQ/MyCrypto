@@ -5,26 +5,15 @@ import styled from 'styled-components';
 import { AccountDropdown, Button, Typography } from 'v2/components';
 import { StoreAccount, NetworkId } from 'v2/types';
 import { StoreContext } from 'v2/services';
-import { COLORS } from 'v2/theme';
 
 import { getAccountsInNetwork } from '../helpers';
 import GasSelector from './GasSelector';
 import { ABIItem } from '../types';
 
-const { LIGHT_GREY } = COLORS;
-
 const WriteActionWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-`;
-
-const HorizontalLine = styled.div`
-  height: 1px;
-  color: #000;
-  background-color: ${LIGHT_GREY};
-  width: 100%;
-  margin: 20px 0;
 `;
 
 const AccountDropdownWrapper = styled.div`
@@ -72,7 +61,6 @@ export default function WriteForm(props: Props) {
 
   return (
     <WriteActionWrapper>
-      <HorizontalLine />
       <CustomLabel>Account</CustomLabel>
       <AccountDropdownWrapper>
         <AccountDropdown

@@ -140,7 +140,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
 
   const handleInteractionFormWriteSubmit = async (submitedFunction: ABIItem, after: () => void) => {
     if (!state.account) {
-      throw new Error('No account selected');
+      throw new Error('No account selected.');
     }
 
     try {

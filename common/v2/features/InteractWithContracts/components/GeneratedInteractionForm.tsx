@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import styled from 'styled-components';
+import React, { useState } from 'react';
 
 import { InputField, Dropdown, Button, Spinner, InlineErrorMsg, Typography } from 'v2/components';
 
@@ -87,6 +87,11 @@ const ActionButton = styled(Button)`
   width: fit-content;
 `;
 
+const WriteFormWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
 interface Props {
   abi: ABIItem[];
   account: StoreAccount;
@@ -106,7 +111,9 @@ export default function GeneratedInteractionForm({
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [currentFunction, setCurrentFunction] = useState<ABIItem | undefined>(undefined);
+
   const [error, setError] = useState(undefined);
+  const [payAmount, setPayAmount] = useState(0);
 
   const functions = getFunctionsFromABI(abi);
 
@@ -156,6 +163,7 @@ export default function GeneratedInteractionForm({
     setError(undefined);
     try {
       setIsLoading(true);
+      submitedFunction.payAmount = payAmount;
       await handleInteractionFormWriteSubmit(submitedFunction);
     } catch (e) {
       setError(e.toString());
@@ -254,13 +262,25 @@ export default function GeneratedInteractionForm({
                   <ActionButton onClick={() => submitFormRead(currentFunction)}>Read</ActionButton>
                 ))}
               {!isRead && (
-                <WriteForm
-                  account={account}
-                  networkId={networkId}
-                  handleAccountSelected={handleAccountSelected}
-                  handleSubmit={submitFormWrite}
-                  currentFunction={currentFunction}
-                />
+                <WriteFormWrapper>
+                  <HorizontalLine />
+                  {currentFunction.payable && (
+                    <FieldWrapper>
+                      <InputField
+                        label="Value"
+                        value={payAmount.toString()}
+                        onChange={({ target: { value } }) => setPayAmount(value)}
+                      />
+                    </FieldWrapper>
+                  )}
+                  <WriteForm
+                    account={account}
+                    networkId={networkId}
+                    handleAccountSelected={handleAccountSelected}
+                    handleSubmit={submitFormWrite}
+                    currentFunction={currentFunction}
+                  />
+                </WriteFormWrapper>
               )}
             </ActionWrapper>
           </>
