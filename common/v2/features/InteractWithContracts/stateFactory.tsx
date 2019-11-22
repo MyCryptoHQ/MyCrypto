@@ -4,7 +4,7 @@ import { addHexPrefix } from 'ethereumjs-util';
 
 import { TUseStateReducerFactory } from 'v2/utils';
 import { DEFAULT_NETWORK } from 'v2/config';
-import { Contract, StoreAccount, TSymbol } from 'v2/types';
+import { Contract, StoreAccount } from 'v2/types';
 import {
   getNetworkById,
   ContractContext,
@@ -15,7 +15,8 @@ import {
   fetchGasPriceEstimates,
   hexWeiToString,
   getGasEstimate,
-  hexToNumber
+  hexToNumber,
+  inputValueToHex
 } from 'v2/services';
 import { AbiFunction } from 'v2/services/EthService/contracts/ABIFunction';
 import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
@@ -23,7 +24,7 @@ import { isWeb3Wallet } from 'v2/utils/web3';
 
 import { customContract, CUSTOM_CONTRACT_ADDRESS } from './constants';
 import { ABIItem, InteractWithContractState } from './types';
-import { makeTxConfigFromTransaction } from '../SwapAssets/helpers';
+import { makeTxConfigFromTransaction } from './helpers';
 
 const interactWithContractsInitialState = {
   networkId: DEFAULT_NETWORK,
@@ -165,7 +166,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
         data,
         from: account.address,
         gasPrice: addHexPrefix(new BN(gasPrice).toString(16)),
-        value: 0, // use correct value
+        value: inputValueToHex(submitedFunction.payAmount),
         chainId: network.chainId,
         nonce: await getNonce(network, account)
       };
@@ -176,8 +177,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       const txConfig = makeTxConfigFromTransaction(
         rawTransaction,
         account,
-        { name: 'Ethereum', symbol: 'ETH' as TSymbol },
-        '0'
+        submitedFunction.payAmount
       );
 
       setState((prevState: InteractWithContractState) => ({

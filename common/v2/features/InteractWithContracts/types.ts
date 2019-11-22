@@ -37,7 +37,7 @@ export interface ABIItem {
   payable?: boolean; // Deprecated, use stateMutability
   constant?: boolean; // Deprecated, use stateMutability
   anonymous?: boolean;
-  payAmount?: number;
+  payAmount: string;
   inputs: ABIField[];
   outputs: ABIField[];
 }

@@ -114,7 +114,7 @@ export default function GeneratedInteractionForm({
   const [currentFunction, setCurrentFunction] = useState<ABIItem | undefined>(undefined);
 
   const [error, setError] = useState(undefined);
-  const [payAmount, setPayAmount] = useState(0);
+  const [payAmount, setPayAmount] = useState('0');
 
   const functions = getFunctionsFromABI(abi);
 
@@ -125,6 +125,7 @@ export default function GeneratedInteractionForm({
 
     const newFunction = generateFunctionFieldsDisplayNames(selectedFunction);
     setCurrentFunction(newFunction);
+    setPayAmount('0');
     handleAccountSelected(undefined);
     setError(undefined);
 
@@ -275,7 +276,7 @@ export default function GeneratedInteractionForm({
                     <FieldWrapper>
                       <InputField
                         label="Value"
-                        value={payAmount.toString()}
+                        value={payAmount}
                         onChange={({ target: { value } }) => setPayAmount(value)}
                       />
                     </FieldWrapper>
