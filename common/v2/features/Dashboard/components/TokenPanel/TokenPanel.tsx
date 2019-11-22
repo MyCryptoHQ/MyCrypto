@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 
 import { StoreContext, RatesContext, TokenInfoService } from 'v2/services';
-import { TTicker, AssetWithDetails, ExtendedAsset } from 'v2/types';
+import { AssetWithDetails, ExtendedAsset } from 'v2/types';
 import { TokenList } from './TokenList';
 import { TokenDetails } from './TokenDetails';
 import { AddToken } from './AddToken';
@@ -14,7 +14,7 @@ export function TokenPanel() {
   const [isScanning, setIsScanning] = useState(false);
 
   const { accounts, totals, currentAccounts, scanTokens } = useContext(StoreContext);
-  const { getRate, rates } = useContext(RatesContext);
+  const { getRateFromAsset, rates } = useContext(RatesContext);
 
   const handleScanTokens = async (asset?: ExtendedAsset) => {
     try {
@@ -43,7 +43,7 @@ export function TokenPanel() {
           : [
               ...tokens,
               Object.assign(asset, {
-                rate: getRate(asset.ticker as TTicker) || 0,
+                rate: getRateFromAsset(asset) || 0,
                 details:
                   tokensDetails.find(details => details.address === asset.contractAddress) || {}
               })
