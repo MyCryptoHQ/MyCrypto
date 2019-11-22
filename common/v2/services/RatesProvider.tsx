@@ -26,8 +26,7 @@ interface AssetMappingListObject {
 const DEFAULT_FIAT_PAIRS = ['USD', 'EUR'] as TTicker[];
 const DEFAULT_FIAT_RATE = 0;
 const POLLING_INTERRVAL = 60000;
-const ASSET_ID_MAPPING_URL =
-  'https://raw.githubusercontent.com/MyCryptoHQ/assets/master/assets/assets.json';
+const ASSET_ID_MAPPING_URL = 'https://price.mycryptoapi.com/';
 const TOKEN_RATES_URL = 'https://api.coingecko.com/api/v3/simple/price';
 const buildTokenQueryUrl = (assets: TTicker[], currencies: TTicker[]) => `
   ${TOKEN_RATES_URL}/?ids=${assets.join('%2C')}&vs_currencies=${currencies.join('%2c')}
