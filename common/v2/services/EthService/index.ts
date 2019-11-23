@@ -34,6 +34,7 @@ export {
   getStatusFromHash,
   getTimestampFromBlockNum,
   getTransactionReceiptFromHash,
+  getTxStatus,
   gasStringsToMaxGasBN,
   convertedToBaseUnit,
   messageToData

@@ -24,3 +24,4 @@ export {
 } from './formatters';
 export { makeBlob } from './blob';
 export { default as consoleAdvertisement } from './consoleAdvertisement';
+export { fromTxReceiptObj } from './transaction';

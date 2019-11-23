@@ -1,4 +1,4 @@
-import React, { Component, createContext } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import unionBy from 'lodash/unionBy';
 import BigNumber from 'bignumber.js';
 
@@ -13,8 +13,9 @@ import {
 } from 'v2/types';
 import { getAllTokensBalancesOfAccount } from '../BalanceService';
 
-export interface ProviderState {
+export interface State {
   accounts: ExtendedAccount[];
+
   createAccount(accountData: Account): void;
   createAccountWithID(accountData: Account, uuid: string): void;
   deleteAccount(uuid: string): void;
@@ -24,26 +25,38 @@ export interface ProviderState {
   updateAccountAssets(account: StoreAccount, assets: Asset[]): Promise<void>;
 }
 
-export const AccountContext = createContext({} as ProviderState);
+export const AccountContext = createContext({} as State);
 
-export class AccountProvider extends Component {
-  public readonly state: ProviderState = {
-    accounts: service.readAccounts() || [],
+export const AccountProvider = ({ children }: { children: React.ReactNode }) => {
+  const fetchedAccounts = service.readAccounts();
+  const [accounts, setAccounts] = useState(fetchedAccounts || []);
+  const [isUpdateNeeded, setIsUpdateNeeded] = useState(false);
+  useEffect(() => {
+    if (!isUpdateNeeded) {
+      return;
+    }
+    const accs = service.readAccounts() || [];
+    setAccounts(accs);
+    setIsUpdateNeeded(false);
+  }, [isUpdateNeeded]);
+
+  const state: State = {
+    accounts,
     createAccount: (accountData: Account) => {
       service.createAccount(accountData);
-      this.getAccounts();
+      setIsUpdateNeeded(true);
     },
     createAccountWithID: (accountData: Account, uuid: string) => {
       service.createAccountWithID(accountData, uuid);
-      this.getAccounts();
+      setIsUpdateNeeded(true);
     },
     deleteAccount: (uuid: string) => {
       service.deleteAccount(uuid);
-      this.getAccounts();
+      setIsUpdateNeeded(true);
     },
     updateAccount: (uuid: string, accountData: ExtendedAccount) => {
       service.updateAccount(uuid, accountData);
-      this.getAccounts();
+      setIsUpdateNeeded(true);
     },
     addNewTransactionToAccount: (accountData, newTransaction) => {
       const { network, ...newTxWithoutNetwork } = newTransaction;
@@ -55,10 +68,9 @@ export class AccountProvider extends Component {
         ]
       };
       service.updateAccount(accountData.uuid, newAccountData);
-      this.getAccounts();
+      setIsUpdateNeeded(true);
     },
     getAccountByAddressAndNetworkName: (address, network): ExtendedAccount | undefined => {
-      const { accounts } = this.state;
       return accounts.find(
         account =>
           account.address.toLowerCase() === address.toLowerCase() && account.networkId === network
@@ -71,7 +83,7 @@ export class AccountProvider extends Component {
         ([_, value]) => !value.isZero()
       );
 
-      const existingAccount = this.state.accounts.find(x => x.uuid === storeAccount.uuid);
+      const existingAccount = accounts.find(x => x.uuid === storeAccount.uuid);
 
       if (existingAccount) {
         const newAssets: AssetBalanceObject[] = positiveAssetBalances.reduce(
@@ -90,18 +102,10 @@ export class AccountProvider extends Component {
         );
 
         existingAccount.assets = unionBy(newAssets, existingAccount.assets, 'uuid');
-        this.state.updateAccount(existingAccount.uuid, existingAccount);
+        service.updateAccount(existingAccount.uuid, existingAccount);
+        setIsUpdateNeeded(true);
       }
     }
   };
-
-  public render() {
-    const { children } = this.props;
-    return <AccountContext.Provider value={this.state}>{children}</AccountContext.Provider>;
-  }
-
-  private getAccounts = () => {
-    const accounts: ExtendedAccount[] = service.readAccounts() || [];
-    this.setState({ accounts });
-  };
-}
+  return <AccountContext.Provider value={state}>{children}</AccountContext.Provider>;
+};

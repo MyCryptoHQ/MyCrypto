@@ -4,12 +4,11 @@ import BN from 'bn.js';
 
 import { getNetworkByName, getNetworkByChainId, getAssetByUUID } from 'v2/services/Store';
 import { ConfirmTransaction as ConfirmTransactionForm } from 'v2/components/TransactionFlow';
-import { toChecksumAddressByChainId } from 'v2/utils';
+import { toChecksumAddressByChainId, fromTxReceiptObj } from 'v2/utils';
 import { fromWei, ProviderHandler } from 'v2/services/EthService';
 import { InlineErrorMsg } from 'v2/components/ErrorMessages';
 import { translateRaw } from 'v2/translations';
 import { ITxReceipt, ITxConfig } from 'v2/types';
-import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
 
 const ErrorWrapper = styled(InlineErrorMsg)`
   margin-top: 12px;

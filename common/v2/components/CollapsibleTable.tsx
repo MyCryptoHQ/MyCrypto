@@ -110,7 +110,6 @@ const GroupHeading = styled(Typography)`
   text-transform: uppercase;
   font-size: ${scale(2)};
   cursor: pointer;
-  background-color: red;
 ` as StyledHTMLElement;
 
 GroupHeading.defaultProps = {

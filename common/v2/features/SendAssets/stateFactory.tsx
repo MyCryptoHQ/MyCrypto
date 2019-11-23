@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { TUseStateReducerFactory } from 'v2/utils';
+import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
 import {
   Asset,
   Network,
@@ -8,7 +8,8 @@ import {
   ITxConfig,
   IFormikFields,
   ISignedTx,
-  ITxObject
+  ITxObject,
+  ITxStatus
 } from 'v2/types';
 import {
   getNetworkByChainId,
@@ -27,9 +28,7 @@ import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { ProviderHandler } from 'v2/services/EthService';
 
 import { TStepAction } from './types';
-
 import { processFormDataToTx, decodeTransaction } from './helpers';
-import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
 
 const txConfigInitialState = {
   tx: {
@@ -105,7 +104,10 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
       .catch(txHash => provider.getTransactionByHash(txHash))
       .then(retrievedTransactionReceipt => {
         const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt);
-        addNewTransactionToAccount(state.txConfig.senderAccount, txReceipt || {});
+        addNewTransactionToAccount(
+          state.txConfig.senderAccount,
+          { ...txReceipt, stage: ITxStatus.PENDING } || {}
+        );
         setState((prevState: State) => ({
           ...prevState,
           txReceipt
@@ -154,8 +156,20 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
 
   const handleSignedWeb3Tx: TStepAction = (payload: ITxReceipt | string, after) => {
     // Payload is tx hash or receipt
-    const txReceipt = typeof payload === 'string' ? { hash: payload } : fromTxReceiptObj(payload);
-    addNewTransactionToAccount(state.txConfig.senderAccount, txReceipt || {});
+    const txReceipt =
+      typeof payload === 'string'
+        ? {
+            ...state.txConfig,
+            hash: payload,
+            to: state.txConfig.senderAccount.address,
+            from: state.txConfig.receiverAddress
+          }
+        : fromTxReceiptObj(payload);
+    addNewTransactionToAccount(
+      state.txConfig.senderAccount,
+      { ...txReceipt, stage: ITxStatus.PENDING } || {}
+    );
+
     setState((prevState: State) => ({
       ...prevState,
       txReceipt
