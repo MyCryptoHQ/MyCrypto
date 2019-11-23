@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Typography } from 'v2/components';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 
-import { ToastConfig, ToastType } from '../types';
+import { ToastConfig, ToastType } from 'v2/services/Toasts';
 
 import successIcon from 'assets/images/icn-toast-success.svg';
 import infoIcon from 'assets/images/icn-toast-alert.svg';

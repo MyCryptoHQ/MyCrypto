@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 import { DashboardPanel, NetworkSelectDropdown, InputField } from 'v2/components';
 import { AddressBook } from 'v2/types';
-import { ToastContext, ToastTemplates } from 'v2/features/Toasts';
+import { ToastContext, ToastTemplates } from 'v2/services/Toasts';
 
 const AddToAddressBookPanel = styled(DashboardPanel)`
   padding: 24px 30px;

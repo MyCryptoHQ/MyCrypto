@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { NotificationsProvider, ToastProvider } from 'v2/features';
+import { NotificationsProvider } from 'v2/features';
 import {
   AccountProvider,
   AddressBookProvider,
@@ -8,7 +8,7 @@ import {
   NetworkProvider,
   SettingsProvider
 } from 'v2/services/Store';
-import { DevToolsProvider, RatesProvider, StoreProvider } from 'v2/services';
+import { DevToolsProvider, RatesProvider, StoreProvider, ToastProvider } from 'v2/services';
 
 function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | null }) {
   return (

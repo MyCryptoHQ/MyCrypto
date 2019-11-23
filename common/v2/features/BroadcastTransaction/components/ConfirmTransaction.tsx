@@ -10,7 +10,7 @@ import { InlineErrorMsg } from 'v2/components/ErrorMessages';
 import { translateRaw } from 'v2/translations';
 import { ITxReceipt, ITxConfig } from 'v2/types';
 import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
-import { ToastTemplates, ToastContext } from 'v2/features/Toasts';
+import { ToastTemplates, ToastContext } from 'v2/services/Toasts';
 
 const ErrorWrapper = styled(InlineErrorMsg)`
   margin-top: 12px;

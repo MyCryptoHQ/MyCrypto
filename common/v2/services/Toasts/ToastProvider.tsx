@@ -1,10 +1,10 @@
 import React, { Component, createContext } from 'react';
 import toast from 'toasted-notes';
 
-import { default as ToastComponent } from './components/Toast';
+import { default as ToastComponent } from 'v2/components/Toast';
 import { toastConfigs } from './constants';
 
-export interface ProviderState {
+interface ProviderState {
   displayToast(templateName: string, templateData?: object): void;
 }
 
