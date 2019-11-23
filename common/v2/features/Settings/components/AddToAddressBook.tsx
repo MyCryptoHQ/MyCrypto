@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 import { DashboardPanel, NetworkSelectDropdown, InputField } from 'v2/components';
 import { AddressBook } from 'v2/types';
-import { ToastContext, ToastTemplates } from 'v2/services/Toasts';
+import { ToastContext } from 'v2/services/Toasts';
 
 const AddToAddressBookPanel = styled(DashboardPanel)`
   padding: 24px 30px;
@@ -45,7 +45,7 @@ interface Props {
 }
 
 export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: Props) {
-  const { displayToast } = useContext(ToastContext);
+  const { displayToast, toastTemplates } = useContext(ToastContext);
   return (
     <AddToAddressBookPanel
       heading={
@@ -68,7 +68,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
         onSubmit={(values: AddressBook, { setSubmitting }) => {
           createAddressBooks(values);
           setSubmitting(false);
-          displayToast(ToastTemplates.addedAddress, { label: values.label });
+          displayToast(toastTemplates.addedAddress, { label: values.label });
           toggleFlipped();
         }}
       >

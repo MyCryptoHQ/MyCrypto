@@ -10,7 +10,7 @@ import { InlineErrorMsg } from 'v2/components/ErrorMessages';
 import { translateRaw } from 'v2/translations';
 import { ITxReceipt, ITxConfig } from 'v2/types';
 import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
-import { ToastTemplates, ToastContext } from 'v2/services/Toasts';
+import { ToastContext } from 'v2/services/Toasts';
 
 const ErrorWrapper = styled(InlineErrorMsg)`
   margin-top: 12px;
@@ -28,7 +28,7 @@ interface Props {
 
 export default function ConfirmTransaction(props: Props) {
   const [txError, setTxError] = useState('');
-  const { displayToast } = useContext(ToastContext);
+  const { displayToast, toastTemplates } = useContext(ToastContext);
 
   const { transaction, signedTransaction, network, goToNextStep } = props;
   const { from, to, value, _chainId, gasPrice, gasLimit, nonce, data } = transaction;
@@ -77,7 +77,7 @@ export default function ConfirmTransaction(props: Props) {
       goToNextStep();
     } catch (e) {
       setTxError(e.toString());
-      displayToast(ToastTemplates.failedTransaction);
+      displayToast(toastTemplates.failedTransaction);
     }
   };
 

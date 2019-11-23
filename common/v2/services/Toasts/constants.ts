@@ -1,4 +1,4 @@
-import { ToastConfigsProps, ToastType } from './types';
+import { ToastConfigsProps, ToastType } from 'v2/types';
 
 export const ToastTemplates = {
   addedAddress: 'added-address',

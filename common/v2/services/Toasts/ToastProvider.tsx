@@ -2,9 +2,14 @@ import React, { Component, createContext } from 'react';
 import toast from 'toasted-notes';
 
 import { default as ToastComponent } from 'v2/components/Toast';
-import { toastConfigs } from './constants';
+import { toastConfigs, ToastTemplates } from './constants';
+
+interface Templates {
+  [key: string]: any;
+}
 
 interface ProviderState {
+  toastTemplates: Templates;
   displayToast(templateName: string, templateData?: object): void;
 }
 
@@ -12,6 +17,7 @@ export const ToastContext = createContext({} as ProviderState);
 
 export class ToastProvider extends Component {
   public state: ProviderState = {
+    toastTemplates: ToastTemplates,
     displayToast: (templateName: string, templateData?: object) =>
       this.displayToast(templateName, templateData)
   };
