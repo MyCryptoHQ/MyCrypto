@@ -1,79 +1,215 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Address, CollapsibleTable } from '@mycrypto/ui';
+import React, { useContext } from 'react';
+import { Address } from '@mycrypto/ui';
+import styled from 'styled-components';
 
-import { Amount, DashboardPanel } from 'v2/components';
+import { Amount, DashboardPanel, NewTabLink, AssetIcon, CollapsibleTable } from 'v2/components';
+import { truncate, convertToFiat } from 'v2/utils';
+import { ITxReceipt, TTicker, ITxStatus, StoreAccount, Asset, TSymbol } from 'v2/types';
+import { RatesContext, AddressBookContext, getLabelByAddressAndNetwork } from 'v2/services';
+import { translateRaw } from 'v2/translations';
+import {
+  getTxsFromAccount,
+  txIsFailed,
+  txIsPending,
+  txIsSuccessful
+} from 'v2/services/Store/helpers';
+
+import NoTransactions from './NoTransactions';
 import TransactionLabel from './TransactionLabel';
 import './RecentTransactionList.scss';
-
 import newWindowIcon from 'common/assets/images/icn-new-window.svg';
-import { truncate } from 'v2/utils';
-import { ExtendedAccount, AddressBook } from 'v2/types';
-import { translateRaw } from 'translations';
+import transfer from 'common/assets/images/transactions/transfer.svg';
+import inbound from 'common/assets/images/transactions/inbound.svg';
+import outbound from 'common/assets/images/transactions/outbound.svg';
 
 interface Props {
   className?: string;
-  accountsList: ExtendedAccount[];
-  readAddressBook(uuid: string): AddressBook;
+  accountsList: StoreAccount[];
 }
 
-export default function RecentTransactionList({
-  accountsList,
-  readAddressBook,
-  className = ''
-}: Props) {
+enum ITxType {
+  TRANSFER = 'TRANSFER',
+  OUTBOUND = 'OUTBOUND',
+  INBOUND = 'INBOUND'
+}
+
+interface ITxTypeConfigObj {
+  icon: any;
+  label(asset: Asset): string;
+}
+
+type ITxTypeConfig = {
+  [txType in ITxType]: ITxTypeConfigObj;
+};
+
+const TxTypeConfig: ITxTypeConfig = {
+  [ITxType.INBOUND]: {
+    label: (asset: Asset) =>
+      translateRaw('RECENT_TX_LIST_LABEL_RECEIVED', {
+        $ticker: asset.ticker || 'Unknown'
+      }),
+    icon: inbound
+  },
+  [ITxType.OUTBOUND]: {
+    label: (asset: Asset) =>
+      translateRaw('RECENT_TX_LIST_LABEL_SENT', {
+        $ticker: asset.ticker || 'Unknown'
+      }),
+    icon: outbound
+  },
+  [ITxType.TRANSFER]: {
+    label: (asset: Asset) =>
+      translateRaw('RECENT_TX_LIST_LABEL_TRANSFERRED', {
+        $ticker: asset.ticker || 'Unknown'
+      }),
+    icon: transfer
+  }
+};
+
+export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt) => {
+  const fromAccount = accountsList.find(
+    account => account.address.toLowerCase() === tx.from.toLowerCase()
+  );
+  const toAccount = accountsList.find(
+    account => account.address.toLowerCase() === tx.to.toLowerCase()
+  );
+  return !fromAccount || !toAccount
+    ? fromAccount
+      ? ITxType.OUTBOUND
+      : ITxType.INBOUND
+    : ITxType.TRANSFER;
+};
+
+const SAssetIcon = styled(AssetIcon)`
+  -webkit-filter: grayscale(1); /* Webkit */
+  filter: gray; /* IE6-9 */
+  filter: grayscale(1); /* W3C */
+  position: absolute;
+  border: 3px solid white;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+`;
+
+const CCircle = styled('div')`
+  position: absolute;
+  bottom: -14px;
+  right: -14px;
+  z-index: 2;
+  height: 32px;
+  width: 32px;
+`;
+const SCombinedCircle = (asset: Asset) => {
+  return (
+    <CCircle>
+      <SAssetIcon symbol={asset.ticker as TSymbol} />
+    </CCircle>
+  );
+};
+
+const makeTxIcon = (type: ITxType, asset: Asset) => {
+  const greyscaleIcon = asset && <>{SCombinedCircle(asset)}</>;
+  const baseIcon = (
+    <div className="TransactionLabel-image">
+      <img src={TxTypeConfig[type].icon} width="56px" height="56px" />
+      {greyscaleIcon}
+    </div>
+  );
+  return baseIcon;
+};
+
+export default function RecentTransactionList({ accountsList, className = '' }: Props) {
+  const { addressBook } = useContext(AddressBookContext);
+  const { getRate } = useContext(RatesContext);
   const noLabel = translateRaw('NO_LABEL');
   const transactions = accountsList.flatMap(account => account.transactions);
-
+  const accountTxs: ITxReceipt = getTxsFromAccount(accountsList).map((tx: ITxReceipt) => ({
+    ...tx,
+    txType: deriveTxType(accountsList, tx)
+  }));
   // TODO: Sort by relevant transactions
 
-  const pending = transactions.filter(tx => tx.stage === 'pending');
-  const completed = transactions.filter(tx => tx.stage === 'completed');
+  const pending = accountTxs.filter(txIsPending);
+  const completed = accountTxs.filter(txIsSuccessful);
+  const failed = accountTxs.filter(txIsFailed);
+
   const createEntries = (_: string, collection: typeof transactions) =>
-    collection.map(({ label, stage, date, from, to, value, fiatValue }) => [
-      <TransactionLabel
-        key={0}
-        image="https://placehold.it/45x45"
-        label={label}
-        stage={stage}
-        date={date}
-      />,
-      <Address
-        key={1}
-        title={
-          readAddressBook(from.toLowerCase()) ? readAddressBook(from.toLowerCase()).label : noLabel
-        }
-        truncate={truncate}
-        address={from}
-      />,
-      <Address
-        key={2}
-        title={
-          readAddressBook(to.toLowerCase()) ? readAddressBook(to.toLowerCase()).label : noLabel
-        }
-        truncate={truncate}
-        address={to}
-      />,
-      <Amount key={3} assetValue={value.toString()} fiatValue={fiatValue.USD} />,
-      <Link key={4} to={`/dashboard/transactions/${'transactionuuid'}`}>
-        {' '}
-        {/* TODO - fix this.*/}
-        <img src={newWindowIcon} alt="View more information about this transaction" />
-      </Link>
-    ]);
+    collection.map(
+      ({ timestamp, hash, stage, from, to, amount, asset, network, txType }: ITxReceipt) => {
+        const toAddressBookEntry = getLabelByAddressAndNetwork(
+          to.toLowerCase(),
+          addressBook,
+          network
+        );
+        const fromAddressBookEntry = getLabelByAddressAndNetwork(
+          from.toLowerCase(),
+          addressBook,
+          network
+        );
+        return [
+          <TransactionLabel
+            key={0}
+            image={makeTxIcon(txType, asset)}
+            label={TxTypeConfig[txType as ITxType].label(asset)}
+            stage={stage}
+            date={timestamp}
+          />,
+          <Address
+            key={1}
+            title={fromAddressBookEntry ? fromAddressBookEntry.label : noLabel}
+            truncate={truncate}
+            address={from}
+          />,
+          <Address
+            key={2}
+            title={toAddressBookEntry ? toAddressBookEntry.label : noLabel}
+            truncate={truncate}
+            address={to}
+          />,
+          <Amount
+            key={3}
+            assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
+            fiatValue={`$${convertToFiat(
+              parseFloat(amount),
+              getRate(asset.ticker as TTicker)
+            ).toFixed(2)}
+        `}
+          />,
+          <NewTabLink
+            key={4}
+            href={
+              network && 'blockExplorer' in network
+                ? network.blockExplorer.txUrl(hash)
+                : `https://etherscan.io/tx/${hash}`
+            }
+          >
+            {' '}
+            <img src={newWindowIcon} alt="View more information about this transaction" />
+          </NewTabLink>
+        ];
+      }
+    );
+
+  const groups = [
+    {
+      title: 'Pending',
+      entries: createEntries(ITxStatus.PENDING, pending)
+    },
+    {
+      title: 'Completed',
+      entries: createEntries(ITxStatus.SUCCESS, completed)
+    },
+    {
+      title: 'Failed',
+      entries: createEntries(ITxStatus.FAILED, failed)
+    }
+  ];
+  const filteredGroups = groups.filter(group => group.entries.length !== 0);
+
   const recentTransactionsTable = {
     head: ['Date', 'From Address', 'To Address', 'Amount', 'View More'],
     body: [],
-    groups: [
-      {
-        title: 'Pending',
-        entries: createEntries('pending', pending)
-      },
-      {
-        title: 'Completed',
-        entries: createEntries('completed', completed)
-      }
-    ],
+    groups: filteredGroups,
     config: {
       primaryColumn: 'Date',
       sortableColumn: 'Date',
@@ -85,11 +221,15 @@ export default function RecentTransactionList({
   return (
     <DashboardPanel
       heading="Recent Transactions"
-      headingRight="Export"
-      actionLink="/dashboard/recent-transactions"
+      //headingRight="Export"
+      //actionLink="/dashboard/recent-transactions"
       className={`RecentTransactionsList ${className}`}
     >
-      <CollapsibleTable breakpoint={1000} {...recentTransactionsTable} />
+      {filteredGroups.length >= 1 ? (
+        <CollapsibleTable breakpoint={1000} {...recentTransactionsTable} />
+      ) : (
+        NoTransactions()
+      )}
     </DashboardPanel>
   );
 }

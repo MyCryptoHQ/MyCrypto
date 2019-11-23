@@ -98,6 +98,8 @@ export const initNetworks = () => {
         ...network.dPaths,
         default: network.dPaths[WalletId.MNEMONIC_PHRASE]
       },
+      blockExplorer: network.blockExplorer,
+      tokenExplorer: network.tokenExplorer,
       gasPriceSettings: network.gasPriceSettings,
       shouldEstimateGasPrice: network.shouldEstimateGasPrice
     };

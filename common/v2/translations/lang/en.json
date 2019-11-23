@@ -141,7 +141,7 @@
     "SEND_AMOUNT": "Amount to Send ",
     "SEND_AMOUNT_SHORT": "Amount",
     "SEND_CUSTOM": "Add Custom Token",
-    "SEND_ASSETS_ACCOUNT_SELECTION_PLACEHOLDER": "Select Account",
+    "ACCOUNT_SELECTION_PLACEHOLDER": "Select Account",
     "SEND_ASSETS_AMOUNT_LABEL": "Amount",
     "SEND_ASSETS_AMOUNT_LABEL_ACTION": "Send max",
     "SCAN_TOKENS": "Scan For Tokens",
@@ -1032,6 +1032,12 @@
     "DASHBOARD_ACTIONS_REQUEST_ASSETS_TITLE": "Request Assets",
     "DASHBOARD_ACTIONS_REQUEST_ASSETS_SUBTITLE": "Request a payment to your address.",
     "DASHBOARD_ACTIONS_GET_WALLET_TITLE": "Get a Hardware Wallet",
-    "DASHBOARD_ACTIONS_GET_WALLET_SUBTITLE": " Ensure your assets stay safe & offline."
+    "DASHBOARD_ACTIONS_GET_WALLET_SUBTITLE": " Ensure your assets stay safe & offline.",
+    "RECENT_TX_LIST_NO_TRANSACTIONS": "Your MyCrypto Transactions Will Appear Here!",
+    "RECENT_TX_LIST_NO_TRANSACTIONS_MORE": "You can send ETH or Tokens with any of your accounts on MyCrypto to see your transactions.",
+    "RECENT_TX_LIST_LABEL_SENT": "$ticker Sent",
+    "RECENT_TX_LIST_LABEL_RECEIVED": "$ticker Received",
+    "RECENT_TX_LIST_LABEL_TRANSFERRED": "$ticker Transferred",
+    "NO_LABEL": "Unknown Account"
   }
 }

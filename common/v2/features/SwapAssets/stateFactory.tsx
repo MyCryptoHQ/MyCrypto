@@ -1,10 +1,9 @@
 import { translateRaw } from 'translations';
 
-import { TUseStateReducerFactory } from 'v2/utils';
+import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
 import { DexService, ProviderHandler } from 'v2/services';
 import { StoreAccount } from 'v2/types';
 import { isWeb3Wallet } from 'v2/utils/web3';
-import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
 
 import { ISwapAsset, LAST_CHANGED_AMOUNT, SwapState } from './types';
 import {
