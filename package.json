@@ -55,6 +55,7 @@
     "qrcode": "1.2.0",
     "qrcode.react": "0.8.0",
     "query-string": "6.0.0",
+    "rc-collapse": "1.11.7",
     "rc-slider": "8.6.0",
     "react": "16.8.6",
     "react-copy-to-clipboard": "5.0.1",

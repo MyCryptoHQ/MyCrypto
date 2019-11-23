@@ -109,6 +109,11 @@ const PATHS: IRoutePath[] = [
     name: 'BROADCAST_TX',
     title: 'Broadcast Transaction',
     path: '/broadcast-transaction'
+  },
+  {
+    name: 'HELPERS',
+    title: 'Helpers',
+    path: '/helpers'
   }
 ];
 
