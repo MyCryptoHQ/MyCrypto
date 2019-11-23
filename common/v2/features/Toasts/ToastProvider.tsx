@@ -1,7 +1,7 @@
 import React, { Component, createContext } from 'react';
 import toast from 'toasted-notes';
 
-import { default as ToastComponent } from 'v2/components/Toast';
+import { default as ToastComponent } from './components/Toast';
 import { toastConfigs, ToastTemplates } from './constants';
 
 interface Templates {
