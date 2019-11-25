@@ -26,7 +26,8 @@ interface AssetMappingListObject {
 const DEFAULT_FIAT_PAIRS = ['USD', 'EUR'] as TTicker[];
 const DEFAULT_FIAT_RATE = 0;
 const POLLING_INTERRVAL = 60000;
-const ASSET_ID_MAPPING_URL = 'https://price.mycryptoapi.com/';
+const ASSET_ID_MAPPING_URL =
+  'https://raw.githubusercontent.com/MyCryptoHQ/assets/master/assets/assets.json';
 const TOKEN_RATES_URL = 'https://api.coingecko.com/api/v3/simple/price';
 const buildTokenQueryUrl = (assets: TTicker[], currencies: TTicker[]) => `
   ${TOKEN_RATES_URL}/?ids=${assets.join('%2C')}&vs_currencies=${currencies.join('%2c')}
@@ -59,7 +60,10 @@ const pullCoinGeckoIDs = (assetMap: AssetMappingListObject, uuids: string[]): st
     .map((uuid: string) => (!assetMap || !assetMap[uuid] ? undefined : assetMap[uuid].coinGeckoId))
     .filter(notUndefined);
 
+type IWorker = PollingService | undefined;
+
 export const RatesContext = createContext({} as State);
+
 export function RatesProvider({ children }: { children: React.ReactNode }) {
   const { accounts: rawAccounts } = useContext(AccountContext);
   const { assetIDs } = useContext(StoreContext);
@@ -67,6 +71,8 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
   const { getNetworkByName } = useContext(NetworkContext);
   const [rates, setRates] = useState(settings.rates || {});
   const [isSettingsInitialized, setIsSettingsInitialized] = useState(false);
+  const [worker, setWorker] = useState(undefined as IWorker);
+
   useEffect(() => {
     if (isEmpty(rates) || isSettingsInitialized) return;
     updateSettingsRates(rates);
@@ -77,25 +83,49 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
     // Save settings rates again when the assets change.
     setIsSettingsInitialized(false);
   }, [Object.keys(rates)]);
+
+  useEffect(() => {
+    if (!worker) return;
+    worker.start();
+  }, [worker]);
+
   const currentAssetIDs = assetIDs();
   useEffect(() => {
     // The cryptocompare api that our proxie uses fails gracefully and will return a conversion rate
     // even if some are tickers are invalid (e.g WETH, GoerliETH etc.)
     fetchAssetMappingList().then((coinMappingObj: AssetMappingListObject) => {
       const formattedCoinGeckoIds = pullCoinGeckoIDs(coinMappingObj, currentAssetIDs as string[]);
-      const worker = new PollingService(
-        buildTokenQueryUrl(formattedCoinGeckoIds, DEFAULT_FIAT_PAIRS), // @TODO: figure out how to handle the conversion more elegantly then `DEFAULT_FIAT_RATE`
-        POLLING_INTERRVAL,
-        (data: IRates) => setRates({ ...rates, ...destructureCoinGeckoIds(data, coinMappingObj) }),
-        err => console.debug('[RatesProvider]', err)
-      );
+
+      const createWorker = () => {
+        setWorker(
+          new PollingService(
+            buildTokenQueryUrl(formattedCoinGeckoIds, DEFAULT_FIAT_PAIRS), // @TODO: figure out how to handle the conversion more elegantly then `DEFAULT_FIAT_RATE`
+            POLLING_INTERRVAL,
+            (data: IRates) =>
+              setRates({ ...rates, ...destructureCoinGeckoIds(data, coinMappingObj) }),
+            err => {
+              console.debug('[RatesProvider]', err);
+              terminateWorker();
+            }
+          )
+        );
+      };
+
+      if (!worker) {
+        createWorker();
+        return;
+      }
 
       const terminateWorker = () => {
         worker.stop();
         worker.close();
       };
 
-      worker.start();
+      // Stop old worker
+      terminateWorker();
+      // Create new worker.
+      createWorker();
+
       return terminateWorker; // make sure we terminate the previous worker on teardown.
     });
   }, [rawAccounts, currentAssetIDs.length]); // only update if an account has been added or removed from LocalStorage.
