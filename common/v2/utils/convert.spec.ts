@@ -1,6 +1,6 @@
 import { convertToFiatFromAsset } from './convert';
 import { BigNumber } from 'ethers/utils';
-import { StoreAsset, TAssetType } from 'v2/types';
+import { StoreAsset, TAssetType, TUuid } from 'v2/types';
 
 describe('it converts balance to fiat', () => {
   it('converts some balance to fiat', () => {
@@ -8,7 +8,7 @@ describe('it converts balance to fiat', () => {
     const rate = 0.00008434;
     const assetObject: StoreAsset = {
       name: 'FakeToken',
-      uuid: 'FakeTokenUUID',
+      uuid: 'FakeTokenUUID' as TUuid,
       type: 'erc20' as TAssetType,
       ticker: 'FTKN',
       mtime: new Date().valueOf(),
@@ -24,7 +24,7 @@ describe('it converts balance to fiat', () => {
     const rate = 0.001867;
     const assetObject: StoreAsset = {
       name: 'FakeToken',
-      uuid: 'FakeTokenUUID',
+      uuid: 'FakeTokenUUID' as TUuid,
       type: 'erc20' as TAssetType,
       ticker: 'FTKN',
       mtime: new Date().valueOf(),
@@ -40,7 +40,7 @@ describe('it converts balance to fiat', () => {
     const rate = 169.48;
     const assetObject: StoreAsset = {
       name: 'FakeToken',
-      uuid: 'FakeTokenUUID',
+      uuid: 'FakeTokenUUID' as TUuid,
       type: 'erc20' as TAssetType,
       ticker: 'FTKN',
       mtime: new Date().valueOf(),

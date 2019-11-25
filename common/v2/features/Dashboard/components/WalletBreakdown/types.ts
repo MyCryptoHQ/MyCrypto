@@ -1,5 +1,5 @@
-import { Fiat } from 'v2/config';
-import { ExtendedAccount } from 'v2/types';
+
+import { ExtendedAccount, Fiat } from 'v2/types';
 
 export interface Balance {
   name: string;

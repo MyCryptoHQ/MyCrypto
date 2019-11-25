@@ -224,7 +224,6 @@ const CenterImg = styled.img`
 `;
 
 const Unlock = styled.li`
-  visibility: hidden;
   display: flex;
   align-items: center;
   border-left: 1px solid #3e546d;

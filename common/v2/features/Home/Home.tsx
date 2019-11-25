@@ -58,14 +58,24 @@ export default class Home extends Component {
     OSName: OSNames[featuredOS]
   };
 
+  private isMounted = false;
+
   public componentDidMount = async () => {
+    // @TODO: isMounted move to AbortController
+    this.isMounted = true;
     try {
       const { releaseUrls } = await GithubService.instance.getReleasesInfo();
       const currentPlatformURL = releaseUrls[featuredOS] || DEFAULT_LINK;
-      this.setState({ appDownloadLink: currentPlatformURL });
+      if (this.isMounted) {
+        this.setState({ appDownloadLink: currentPlatformURL });
+      }
     } catch (e) {
       console.error(e);
     }
+  };
+
+  public componentWillUnmount = () => {
+    this.isMounted = false;
   };
 
   public render() {

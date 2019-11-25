@@ -1,26 +1,25 @@
 import React, { Component, createContext } from 'react';
 
-import { Contract, ExtendedContract } from 'v2/types';
-import * as service from './Contract';
+import { ExtendedContract, LSKeys } from 'v2/types';
+import { DataContext } from '../DataManager';
 
 export interface ProviderState {
   contracts: ExtendedContract[];
   createContract(contractsData: ExtendedContract): void;
   createContractWithId(contractsData: ExtendedContract, id: string): void;
-  readContracts(uuid: string): Contract;
+  readContracts(uuid: string): ExtendedContract;
   deleteContracts(uuid: string): void;
   updateContracts(uuid: string, contractsData: ExtendedContract): void;
-  getContractsByIds(uuids: string[]): Contract[];
+  getContractsByIds(uuids: string[]): ExtendedContract[];
 }
 
 export const ContractContext = createContext({} as ProviderState);
 
 export class ContractProvider extends Component {
   public readonly state: ProviderState = {
-    contracts: service.readAllContracts() || [],
+    contracts: this.context.contracts,
     createContract: (contractsData: ExtendedContract) => {
-      service.createContract(contractsData);
-      this.getContracts();
+      this.model.create(contractsData);
     },
     createContractWithId: (contractsData: ExtendedContract, id: string) => {
       service.createContractWithId(contractsData, id);
@@ -41,13 +40,12 @@ export class ContractProvider extends Component {
       uuids.map(contractId => service.readContracts(contractId))
   };
 
+  private model = this.context.createActions(LSKeys.CONTRACTS);
+
   public render() {
     const { children } = this.props;
     return <ContractContext.Provider value={this.state}>{children}</ContractContext.Provider>;
   }
-
-  private getContracts = () => {
-    const contracts: ExtendedContract[] = service.readAllContracts() || [];
-    this.setState({ contracts });
-  };
 }
+
+ContractProvider.contextType = DataContext;

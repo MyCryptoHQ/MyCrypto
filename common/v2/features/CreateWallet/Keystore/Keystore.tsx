@@ -2,10 +2,17 @@ import React, { Component, ReactType } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { IV3Wallet } from 'ethereumjs-wallet';
 import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
+import * as R from 'ramda';
 
-import { makeBlob, generateUUID } from 'v2/utils';
+import { withContext, makeBlob, generateUUID } from 'v2/utils';
 import { generateKeystore, fromV3 } from 'v2/workers';
-import { getNewDefaultAssetTemplateByNetwork, getNetworkByName } from 'v2/services/Store';
+import {
+  INetworkContext,
+  NetworkContext,
+  AssetContext,
+  IAssetContext,
+  getNewDefaultAssetTemplateByNetwork
+} from 'v2/services/Store';
 import { stripHexPrefix } from 'v2/services/EthService';
 import { WalletFactory } from 'v2/services/WalletService';
 import { NotificationTemplates } from 'v2/features/NotificationsPanel';
@@ -35,7 +42,7 @@ interface Props extends RouteComponentProps<{}> {
 
 const WalletService = WalletFactory(WalletId.KEYSTORE_FILE);
 
-class CreateKeystore extends Component<Props, State> {
+class CreateKeystore extends Component<Props & INetworkContext & IAssetContext, State> {
   public state: State = {
     password: '',
     privateKey: '',
@@ -98,7 +105,9 @@ class CreateKeystore extends Component<Props, State> {
       createAccountWithID,
       updateSettingsAccounts,
       createAssetWithID,
-      displayNotification
+      displayNotification,
+      getNetworkByName,
+      assets
     } = this.props;
     const { keystore, network, accountType } = this.state;
 
@@ -106,8 +115,8 @@ class CreateKeystore extends Component<Props, State> {
     if (!keystore || !accountNetwork) {
       return;
     }
-    const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(accountNetwork);
-    const newAssetID: string = generateUUID();
+    const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(assets)(accountNetwork);
+    const newAssetID = generateUUID();
     const newUUID = generateUUID();
     const account: Account = {
       address: toChecksumAddress(addHexPrefix(keystore.address)),
@@ -171,4 +180,8 @@ class CreateKeystore extends Component<Props, State> {
   };
 }
 
-export default withAccountAndNotificationsContext(CreateKeystore);
+export default R.pipe(
+  withAccountAndNotificationsContext,
+  withContext(NetworkContext),
+  withContext(AssetContext)
+)(CreateKeystore);

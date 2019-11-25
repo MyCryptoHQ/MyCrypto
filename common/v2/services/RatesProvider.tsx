@@ -64,19 +64,12 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
   const { assetUUIDs } = useContext(StoreContext);
   const { settings, updateSettingsRates } = useContext(SettingsContext);
   const [rates, setRates] = useState(settings.rates || ({} as IRates));
-  const [isSettingsInitialized, setIsSettingsInitialized] = useState(false);
   const [worker, setWorker] = useState(undefined as IWorker);
 
   useEffect(() => {
-    if (isEmpty(rates) || isSettingsInitialized) return;
+    if (isEmpty(rates)) return;
     updateSettingsRates(rates);
-    setIsSettingsInitialized(true);
-  }, [rates, isSettingsInitialized]);
-
-  useEffect(() => {
-    // Save settings rates again when the assets change.
-    setIsSettingsInitialized(false);
-  }, [Object.keys(rates)]);
+  }, [rates]);
 
   // On changes to the worker, and worker exists then start the worker.
   useEffect(() => {
@@ -88,6 +81,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
 
   // If account assetUUIDs changes, we'll need to create a new worker.
   useEffect(() => {
+    let isMounted = true;
     // The cryptocompare api that our proxie uses fails gracefully and will return a conversion rate
     // even if some are tickers are invalid (e.g WETH, GoerliETH etc.)
     fetchAssetMappingList().then((coinMappingObj: AssetMappingListObject) => {
@@ -99,10 +93,14 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
       const createWorker = () => {
         setWorker(
           new PollingService(
-            buildAssetQueryUrl(formattedCoinGeckoIds, DEFAULT_FIAT_PAIRS), // @TODO: figure out how to handle the conversion more elegantly then `DEFAULT_FIAT_RATE`
+            // @TODO: figure out how to handle the conversion more elegantly
+            // then `DEFAULT_FIAT_RATE`
+            buildAssetQueryUrl(formattedCoinGeckoIds, DEFAULT_FIAT_PAIRS),
             POLLING_INTERRVAL,
-            (data: IRates) =>
-              setRates({ ...rates, ...destructureCoinGeckoIds(data, coinMappingObj) }),
+            (data: IRates) => {
+              if (!isMounted) return;
+              setRates({ ...rates, ...destructureCoinGeckoIds(data, coinMappingObj) });
+            },
             err => {
               console.debug('[RatesProvider]', err);
               terminateWorker();
@@ -111,6 +109,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
         );
       };
       const terminateWorker = () => {
+        isMounted = false;
         if (!worker) return;
         worker.stop();
         worker.close();

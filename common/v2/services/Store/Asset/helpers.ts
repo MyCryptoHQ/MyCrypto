@@ -1,19 +1,15 @@
-import { readAll } from '../Cache';
-import { Asset, Network, StoreAsset } from 'v2/types';
+import { Asset, ExtendedAsset, Network, StoreAsset } from 'v2/types';
 import { generateUUID } from 'v2/utils';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 
-export const getAllAssets = () => {
-  return readAll('assets')();
-};
-
-export const getAssetByTicker = (symbol: string): Asset | undefined => {
-  const assets: Asset[] = getAllAssets();
+export const getAssetByTicker = (assets: Asset[]) => (symbol: string): Asset | undefined => {
   return assets.find(asset => asset.ticker.toLowerCase() === symbol.toLowerCase());
 };
 
-export const getNewDefaultAssetTemplateByNetwork = (network: Network): Asset => {
-  const baseAssetOfNetwork: Asset | undefined = getAssetByUUID(network.baseAsset);
+export const getNewDefaultAssetTemplateByNetwork = (assets: Asset[]) => (
+  network: Network
+): Asset => {
+  const baseAssetOfNetwork: Asset | undefined = getAssetByUUID(assets)(network.baseAsset);
   if (!baseAssetOfNetwork) {
     return {
       uuid: generateUUID(),
@@ -35,25 +31,18 @@ export const getNewDefaultAssetTemplateByNetwork = (network: Network): Asset => 
   }
 };
 
-export const getAssetByName = (name: string): Asset | undefined => {
-  const allAssets = getAllAssets();
-  return allAssets.find(asset => asset.name === name);
-};
-
-export const getAssetByUUID = (uuid: string): Asset | undefined => {
-  const allAssets = getAllAssets();
-  return allAssets.find(asset => asset.uuid === uuid);
+export const getAssetByUUID = (assets: Asset[]) => (uuid: string): Asset | undefined => {
+  return assets.find(asset => asset.uuid === uuid);
 };
 
 export const getAssetByContractAndNetwork = (
   contractAddress: string | undefined,
   network: Network | undefined
-): Asset | undefined => {
+) => (assets: ExtendedAsset[]): Asset | undefined => {
   if (!network || !contractAddress) {
     return undefined;
   }
-  const allAssets = getAllAssets();
-  return allAssets
+  return assets
     .filter(asset => asset.networkId && asset.contractAddress)
     .filter(asset => asset.networkId === network.id)
     .find(asset => asset.contractAddress === contractAddress);

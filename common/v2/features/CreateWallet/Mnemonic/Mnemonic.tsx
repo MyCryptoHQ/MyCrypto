@@ -4,13 +4,21 @@ import { generateMnemonic, mnemonicToSeed } from 'bip39';
 import { addHexPrefix, toChecksumAddress, privateToAddress } from 'ethereumjs-util';
 import HDkey from 'hdkey';
 import { uniq } from 'lodash';
+import * as R from 'ramda';
 
 import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './constants';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
 import { NotificationTemplates } from 'v2/features/NotificationsPanel';
 import { Account, Asset, DPathFormat, ISettings, WalletId, Network, NetworkId } from 'v2/types';
-import { generateUUID } from 'v2/utils';
-import { getNewDefaultAssetTemplateByNetwork, getNetworkById } from 'v2/services/Store';
+import { generateUUID, withContext } from 'v2/utils';
+import {
+  NetworkContext,
+  AssetContext,
+  IAssetContext,
+  INetworkContext,
+  getNewDefaultAssetTemplateByNetwork,
+  getNetworkById
+} from 'v2/services/Store';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from 'v2/config';
 
 interface Props extends RouteComponentProps<{}> {
@@ -30,7 +38,7 @@ interface State {
   address: string;
 }
 
-class CreateMnemonic extends Component<Props> {
+class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> {
   public state: State = {
     stage: MnemonicStages.SelectNetwork,
     words: [],
@@ -106,7 +114,7 @@ class CreateMnemonic extends Component<Props> {
   };
 
   private selectNetwork = async (network: NetworkId) => {
-    const accountNetwork: Network | undefined = getNetworkById(network);
+    const accountNetwork: Network | undefined = getNetworkById(network, this.props.networks);
     const pathFormat = accountNetwork && accountNetwork.dPaths[this.state.accountType];
     const path = (pathFormat && pathFormat.value) || '';
     this.setState({ network, path });
@@ -135,12 +143,12 @@ class CreateMnemonic extends Component<Props> {
     } = this.props;
     const { network, accountType, address, path } = this.state;
 
-    const accountNetwork: Network | undefined = getNetworkById(network);
+    const accountNetwork: Network | undefined = getNetworkById(network, this.props.networks);
     if (!accountNetwork) {
       return;
     }
-    const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(accountNetwork);
-    const newAssetID: string = generateUUID();
+    const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(this.props.assets)(accountNetwork);
+    const newAssetID = generateUUID();
     const newUUID = generateUUID();
     const account: Account = {
       address: toChecksumAddress(addHexPrefix(address)),
@@ -163,4 +171,8 @@ class CreateMnemonic extends Component<Props> {
   };
 }
 
-export default withAccountAndNotificationsContext(CreateMnemonic);
+export default R.pipe(
+  withAccountAndNotificationsContext,
+  withContext(AssetContext),
+  withContext(NetworkContext)
+)(CreateMnemonic);

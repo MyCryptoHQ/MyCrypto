@@ -1,7 +1,7 @@
 import { bigNumberify } from 'ethers/utils';
 
+import { getNetworkById } from './Network';
 import {
-  NetworkId,
   Network,
   AssetBalanceObject,
   Asset,
@@ -11,10 +11,6 @@ import {
   ITxStatus,
   ITxReceipt
 } from 'v2/types';
-
-const getNetworkById = (targetNetwork: NetworkId, networks: Network[]): Network => {
-  return networks.find(n => n.id === targetNetwork || n.name === targetNetwork) as Network;
-};
 
 const getAssetsByUuid = (accountAssets: AssetBalanceObject[], assets: Asset[]): StoreAsset[] =>
   accountAssets
@@ -43,10 +39,13 @@ export const txIsPending = ({ stage }: { stage: ITxStatus }) => stage === ITxSta
 export const txIsSuccessful = ({ stage }: { stage: ITxStatus }) => stage === ITxStatus.SUCCESS;
 export const txIsFailed = ({ stage }: { stage: ITxStatus }) => stage === ITxStatus.FAILED;
 
-export const getTxsFromAccount = (accounts: StoreAccount[]): ITxReceipt[] =>
-  accounts.flatMap(({ transactions: txs, network }: { transactions: any; network: any }) =>
-    txs.map((tx: any) => ({ ...tx, network }))
-  );
+export const getTxsFromAccount = (accounts: StoreAccount[]): ITxReceipt[] => {
+  return accounts
+    .filter(Boolean)
+    .flatMap(({ transactions: txs, network }: { transactions: any; network: any }) =>
+      txs.map((tx: any) => ({ ...tx, network }))
+    );
+};
 
 export const getPendingTransactionsFromAccounts = (accounts: StoreAccount[]): ITxReceipt[] =>
   getTxsFromAccount(accounts).filter(txIsPending);

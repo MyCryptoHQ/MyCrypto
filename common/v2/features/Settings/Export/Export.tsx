@@ -27,17 +27,17 @@ const CacheDisplay = styled.code`
 export function Export(props: RouteComponentProps<{}>) {
   const { history } = props;
   const onBack = history.goBack;
-  const { getStorage } = useContext(SettingsContext);
-  const store = String(getStorage());
+  const { exportStorage } = useContext(SettingsContext);
+  const store = String(exportStorage());
   return (
     <CenteredContentPanel onBack={onBack} heading={translateRaw('SETTINGS_EXPORT_HEADING')}>
       <ImportSuccessContainer>
         <Typography>{translate('SETTINGS_EXPORT_INFO')}</Typography>
         <CacheDisplay>{store}</CacheDisplay>
-        <RouterLink fullWidth={true} to="/settings">
-          <Button fullWidth={true}>{translate('SETTINGS_EXPORT_LEAVE')}</Button>
+        <RouterLink fullwidth={true} to="/settings">
+          <Button fullwidth={true}>{translate('SETTINGS_EXPORT_LEAVE')}</Button>
         </RouterLink>
-        <Downloader getStorage={getStorage} />
+        <Downloader getStorage={exportStorage} />
       </ImportSuccessContainer>
     </CenteredContentPanel>
   );

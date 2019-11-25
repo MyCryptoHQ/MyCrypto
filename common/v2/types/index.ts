@@ -1,4 +1,5 @@
 import { TAddress } from './address';
+import { TUuid } from './uuid';
 import { TSymbol } from './symbols';
 import { IRates } from './rates';
 import { NodeConfig, CustomNodeConfig, NodeOptions } from './node';
@@ -10,12 +11,14 @@ export type NodeOptions = NodeOptions;
 export type TSymbol = TSymbol;
 export type IRates = IRates;
 export type TAddress = TAddress;
+export type TUuid = TUuid;
 
 export { HardwareWalletId, InsecureWalletId, SecureWalletId, HDWalletId } from './walletSubTypes';
 export { WalletType } from './wallet';
 export { WalletId } from './walletId';
 export { WalletService } from './walletService';
 export {
+  Fiat,
   Asset,
   ExtendedAsset,
   IAsset,
@@ -25,16 +28,17 @@ export {
   StoreAsset,
   AssetWithDetails
 } from './asset';
-export { Account, ExtendedAccount, StoreAccount } from './account';
+import { StoreAccount } from './account';
+export { Account, ExtendedAccount } from './account';
+export type StoreAccount = StoreAccount;
 export { AddressBook, ExtendedAddressBook } from './addressBook';
 export { Contract, ExtendedContract } from './contract';
-export { ExtendedNetwork, Network, NetworkLegacy } from './network';
+export { Network, NetworkLegacy, AssetLegacy, ContractLegacy } from './network';
 export { NetworkId } from './networkId';
 export { NodeType } from './node';
 export { DPathFormat } from './dPath';
 export { ISettings } from './settings';
-export { ScreenLockSettings } from './screenLock';
-export { LocalCache } from './store';
+export { LocalStorage, LSKeys, DataStore, DataStoreItem, DataStoreEntry } from './store';
 export { Notification, ExtendedNotification } from './notification';
 export { IERC20 } from './erc20';
 export { ABIFunc, ABIFuncParamless } from './abiFunc';

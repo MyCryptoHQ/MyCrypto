@@ -1,6 +1,6 @@
 export { getNonce } from './nonce';
 export { Contract, ERC20, encodeTransfer, decodeTransfer } from './contracts';
-export { Web3Node, isWeb3Node, Web3Service, setupWeb3Node, RPCRequests, RPCNode } from './nodes';
+export { Web3Node, isWeb3Node, setupWeb3Node, RPCRequests, RPCNode } from './nodes';
 export {
   makeExplorer,
   stripHexPrefix,

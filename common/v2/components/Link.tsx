@@ -1,12 +1,12 @@
 import styled, { css } from 'styled-components';
 
 interface LinkProps {
-  fullWidth?: boolean;
+  fullwidth?: boolean;
 }
 
 const StyledLink = styled.a<LinkProps>`
   ${props =>
-    props.fullWidth === true &&
+    props.fullwidth === true &&
     css`
       width: 100%;
     `}

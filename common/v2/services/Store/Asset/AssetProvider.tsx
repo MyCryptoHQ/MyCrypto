@@ -1,57 +1,23 @@
-import React, { Component, createContext } from 'react';
+import React, { useContext, createContext } from 'react';
 
-import { Asset, ExtendedAsset } from 'v2/types';
-import {
-  readAssets,
-  readAsset,
-  createAsset,
-  deleteAsset,
-  updateAsset,
-  createAssetWithID
-} from './Asset';
+import { ExtendedAsset, LSKeys, TUuid } from 'v2/types';
+import { DataContext } from '../DataManager';
 
-export interface ProviderState {
+export interface IAssetContext {
   assets: ExtendedAsset[];
-  createAsset(assetData: ExtendedAsset): void;
-  createAssetWithID(assetData: ExtendedAsset, id: string): void;
-  readAsset(uuid: string): Asset;
-  deleteAsset(uuid: string): void;
-  updateAsset(uuid: string, assetData: ExtendedAsset): void;
+  createAssetWithID(assetData: ExtendedAsset, id: TUuid): void;
 }
 
-export const AssetContext = createContext({} as ProviderState);
+export const AssetContext = createContext({} as IAssetContext);
 
-export class AssetProvider extends Component {
-  public readonly state: ProviderState = {
-    assets: readAssets() || [],
-    createAsset: (assetData: ExtendedAsset) => {
-      createAsset(assetData);
-      this.getAssets();
-    },
-    createAssetWithID: (assetData: ExtendedAsset, id: string) => {
-      createAssetWithID(assetData, id);
-      this.getAssets();
-    },
-    readAsset: (uuid: string) => {
-      return readAsset(uuid);
-    },
-    deleteAsset: (uuid: string) => {
-      deleteAsset(uuid);
-      this.getAssets();
-    },
-    updateAsset: (uuid: string, assetData: ExtendedAsset) => {
-      updateAsset(uuid, assetData);
-      this.getAssets();
-    }
+export const AssetProvider: React.FC = ({ children }) => {
+  const { createActions, assets } = useContext(DataContext);
+  const model = createActions(LSKeys.ASSETS);
+
+  const state: IAssetContext = {
+    assets,
+    createAssetWithID: model.createWithID
   };
 
-  public render() {
-    const { children } = this.props;
-    return <AssetContext.Provider value={this.state}>{children}</AssetContext.Provider>;
-  }
-
-  private getAssets = () => {
-    const assets: ExtendedAsset[] = readAssets() || [];
-    this.setState({ assets });
-  };
-}
+  return <AssetContext.Provider value={state}>{children}</AssetContext.Provider>;
+};

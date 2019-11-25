@@ -72,7 +72,6 @@ export default class Web3Wallet implements IFullWallet {
 
   private async networkCheck(lib: Web3Node, networkConfig: any) {
     const netId = await lib.getNetVersion();
-    // const networkConfig = getNetworkByChainId(configuredStore.getState(), netId);
 
     if (!networkConfig) {
       throw new Error(`MyCrypto doesn’t support the network with chain ID '${netId}'`);

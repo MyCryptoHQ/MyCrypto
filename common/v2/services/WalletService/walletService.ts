@@ -1,4 +1,4 @@
-import { TAddress, WalletId, WalletService } from 'v2/types';
+import { TAddress, WalletId, WalletService, Network } from 'v2/types';
 import {
   // EncryptedPrivateKeyWallet,
   // PresaleWallet,
@@ -29,7 +29,9 @@ export const WalletFactory = (walletId: WalletId): WalletService | any => {
     case WalletId.WEB3:
     case WalletId.TRUST:
       return {
-        init: unlockWeb3
+        init: (networks: Network[], onSuccess: (args: any) => any) => {
+          return unlockWeb3(onSuccess)(networks);
+        }
       };
     case WalletId.LEDGER_NANO_S:
       return {

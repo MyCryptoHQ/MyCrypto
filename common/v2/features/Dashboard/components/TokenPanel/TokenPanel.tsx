@@ -12,10 +12,9 @@ export function TokenPanel() {
   const [currentToken, setCurrentToken] = useState<AssetWithDetails>();
   const [allTokens, setAllTokens] = useState<AssetWithDetails[]>([]);
   const [isScanning, setIsScanning] = useState(false);
-  const [tokenData, setTokenData] = useState([] as any[]);
 
-  const { accounts, totals, currentAccounts, scanTokens } = useContext(StoreContext);
-  const { getAssetRate, rates } = useContext(RatesContext);
+  const { totals, currentAccounts, scanTokens } = useContext(StoreContext);
+  const { getAssetRate } = useContext(RatesContext);
 
   const handleScanTokens = async (asset?: ExtendedAsset) => {
     try {
@@ -27,18 +26,7 @@ export function TokenPanel() {
     }
   };
 
-  useEffect(() => {
-    // Fetches token details by contract address
-    const fetchTokenDetails = async () => {
-      const tokens = totals(currentAccounts())
-        .map(x => x.contractAddress!)
-        .filter(x => x);
-      TokenInfoService.instance.getTokensInfo(tokens).then(setTokenData);
-    };
-    fetchTokenDetails();
-  }, [accounts]);
-
-  const addDetailsToTokens = (totalStoreAssets: StoreAsset[], tokenInfoData: any[]) =>
+  const addDetailsToTokens = (totalStoreAssets: StoreAsset[]) => (tokenInfoData: any[]) =>
     totalStoreAssets.reduce((tokens: AssetWithDetails[], asset) => {
       return !asset.contractAddress
         ? tokens
@@ -55,9 +43,22 @@ export function TokenPanel() {
     }, []);
 
   useEffect(() => {
-    const tokensWithDetails = addDetailsToTokens(totals(currentAccounts()), tokenData);
-    setAllTokens(tokensWithDetails);
-  }, [accounts, rates, tokenData]);
+    const tokens = totals(currentAccounts);
+    const tokenAddresses = tokens.map(x => x.contractAddress!).filter(x => x);
+
+    // Fetches token details by contract address
+    // Don't evoke setState in case the component is unMounted during fetch:
+    // https://juliangaramendy.dev/use-promise-subscription/
+    let isSubscribed = true;
+    TokenInfoService.instance
+      .getTokensInfo(tokenAddresses)
+      .then(addDetailsToTokens(tokens))
+      .then(t => (isSubscribed ? setAllTokens(t) : t));
+
+    return () => {
+      isSubscribed = false;
+    };
+  }, [currentAccounts]);
 
   return showDetailsView && currentToken ? (
     <TokenDetails currentToken={currentToken} setShowDetailsView={setShowDetailsView} />

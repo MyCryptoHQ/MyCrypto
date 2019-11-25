@@ -20,8 +20,8 @@ const Downloader = (props: DownloaderProps) => {
   };
 
   return (
-    <Link fullWidth={true} href={blob} download={name} onClick={handleDownload}>
-      <Button fullWidth={true}>{translate('SETTINGS_EXPORT_DOWNLOAD')}</Button>
+    <Link fullwidth={true} href={blob} download={name} onClick={handleDownload}>
+      <Button fullwidth={true}>{translate('SETTINGS_EXPORT_DOWNLOAD')}</Button>
     </Link>
   );
 };

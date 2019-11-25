@@ -1,21 +1,51 @@
+import { SymmetricDifference, ValuesType, $ElementType } from 'utility-types';
 import {
-  Account,
   Asset,
   AddressBook,
-  Contract,
+  ExtendedContract,
   ISettings,
   Network,
-  ScreenLockSettings,
-  Notification
+  Notification,
+  ExtendedAddressBook,
+  ExtendedAccount,
+  ExtendedAsset,
+  ExtendedNotification,
+  TUuid,
+  NetworkId
 } from 'v2/types';
 
-export interface LocalCache {
-  settings: ISettings;
-  accounts: Record<string, Account>;
-  assets: Record<string, Asset>;
-  networks: Record<string, Network>;
-  contracts: Record<string, Contract>;
-  addressBook: Record<string, AddressBook>;
-  notifications: Record<string, Notification>;
-  screenLockSettings?: Partial<ScreenLockSettings>;
+export enum LSKeys {
+  ADDRESS_BOOK = 'addressBook',
+  ACCOUNTS = 'accounts',
+  ASSETS = 'assets',
+  CONTRACTS = 'contracts',
+  NETWORKS = 'networks',
+  NOTIFICATIONS = 'notifications',
+  SETTINGS = 'settings'
 }
+
+export interface LocalStorage {
+  readonly [LSKeys.SETTINGS]: ISettings;
+  readonly [LSKeys.ACCOUNTS]: Record<TUuid, ExtendedAccount>;
+  readonly [LSKeys.ASSETS]: Record<TUuid, Asset>;
+  readonly [LSKeys.NETWORKS]: Record<NetworkId, Network>;
+  readonly [LSKeys.CONTRACTS]: Record<TUuid, ExtendedContract>;
+  readonly [LSKeys.ADDRESS_BOOK]: Record<TUuid, AddressBook>;
+  readonly [LSKeys.NOTIFICATIONS]: Record<TUuid, Notification>;
+}
+
+export interface DataStore {
+  readonly [LSKeys.ACCOUNTS]: ExtendedAccount[];
+  readonly [LSKeys.ASSETS]: ExtendedAsset[];
+  readonly [LSKeys.NETWORKS]: Network[];
+  readonly [LSKeys.CONTRACTS]: ExtendedContract[];
+  readonly [LSKeys.ADDRESS_BOOK]: ExtendedAddressBook[];
+  readonly [LSKeys.NOTIFICATIONS]: ExtendedNotification[];
+  readonly [LSKeys.SETTINGS]: ISettings;
+}
+
+export type DataStoreEntry = ValuesType<DataStore>;
+
+export type DataStoreItem =
+  | $ElementType<SymmetricDifference<DataStoreEntry, ISettings>, number>
+  | ISettings;

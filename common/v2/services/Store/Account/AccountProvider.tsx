@@ -1,63 +1,47 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useContext } from 'react';
 import unionBy from 'lodash/unionBy';
 import BigNumber from 'bignumber.js';
 
-import * as service from './Account';
 import {
   Account,
   ExtendedAccount,
   ITxReceipt,
   StoreAccount,
   Asset,
-  AssetBalanceObject
+  AssetBalanceObject,
+  LSKeys,
+  TUuid
 } from 'v2/types';
+import { DataContext } from '../DataManager';
+import { SettingsContext } from '../Settings';
+import { getAccountByAddressAndNetworkName } from './helpers';
 import { getAllTokensBalancesOfAccount } from '../BalanceService';
 
-export interface State {
+export interface IAccountContext {
   accounts: ExtendedAccount[];
-
-  createAccount(accountData: Account): void;
-  createAccountWithID(accountData: Account, uuid: string): void;
-  deleteAccount(uuid: string): void;
-  updateAccount(uuid: string, accountData: ExtendedAccount): void;
+  createAccountWithID(accountData: Account, uuid: TUuid): void;
+  deleteAccount(account: ExtendedAccount): void;
+  updateAccount(uuid: TUuid, accountData: ExtendedAccount): void;
   addNewTransactionToAccount(account: ExtendedAccount, transaction: ITxReceipt): void;
   getAccountByAddressAndNetworkName(address: string, network: string): ExtendedAccount | undefined;
   updateAccountAssets(account: StoreAccount, assets: Asset[]): Promise<void>;
 }
 
-export const AccountContext = createContext({} as State);
+export const AccountContext = createContext({} as IAccountContext);
 
-export const AccountProvider = ({ children }: { children: React.ReactNode }) => {
-  const fetchedAccounts = service.readAccounts();
-  const [accounts, setAccounts] = useState(fetchedAccounts || []);
-  const [isUpdateNeeded, setIsUpdateNeeded] = useState(false);
-  useEffect(() => {
-    if (!isUpdateNeeded) {
-      return;
-    }
-    const accs = service.readAccounts() || [];
-    setAccounts(accs);
-    setIsUpdateNeeded(false);
-  }, [isUpdateNeeded]);
+export const AccountProvider: React.FC = ({ children }) => {
+  const { createActions, accounts } = useContext(DataContext);
+  const { addAccountToFavorites } = useContext(SettingsContext);
+  const model = createActions(LSKeys.ACCOUNTS);
 
-  const state: State = {
+  const state: IAccountContext = {
     accounts,
-    createAccount: (accountData: Account) => {
-      service.createAccount(accountData);
-      setIsUpdateNeeded(true);
+    createAccountWithID: (item, uuid) => {
+      addAccountToFavorites(uuid);
+      model.create({ ...item, uuid });
     },
-    createAccountWithID: (accountData: Account, uuid: string) => {
-      service.createAccountWithID(accountData, uuid);
-      setIsUpdateNeeded(true);
-    },
-    deleteAccount: (uuid: string) => {
-      service.deleteAccount(uuid);
-      setIsUpdateNeeded(true);
-    },
-    updateAccount: (uuid: string, accountData: ExtendedAccount) => {
-      service.updateAccount(uuid, accountData);
-      setIsUpdateNeeded(true);
-    },
+    deleteAccount: model.destroy,
+    updateAccount: (uuid, a) => model.update(uuid, a),
     addNewTransactionToAccount: (accountData, newTransaction) => {
       const { network, ...newTxWithoutNetwork } = newTransaction;
       const newAccountData = {
@@ -67,15 +51,9 @@ export const AccountProvider = ({ children }: { children: React.ReactNode }) => 
           newTxWithoutNetwork
         ]
       };
-      service.updateAccount(accountData.uuid, newAccountData);
-      setIsUpdateNeeded(true);
+      state.updateAccount(accountData.uuid, newAccountData);
     },
-    getAccountByAddressAndNetworkName: (address, network): ExtendedAccount | undefined => {
-      return accounts.find(
-        account =>
-          account.address.toLowerCase() === address.toLowerCase() && account.networkId === network
-      );
-    },
+    getAccountByAddressAndNetworkName: getAccountByAddressAndNetworkName(accounts),
     updateAccountAssets: async (storeAccount, assets) => {
       // Find all tokens with a positive balance for given account, and add those tokens to the assets array of the account
       const assetBalances = await getAllTokensBalancesOfAccount(storeAccount, assets);
@@ -102,8 +80,7 @@ export const AccountProvider = ({ children }: { children: React.ReactNode }) => 
         );
 
         existingAccount.assets = unionBy(newAssets, existingAccount.assets, 'uuid');
-        service.updateAccount(existingAccount.uuid, existingAccount);
-        setIsUpdateNeeded(true);
+        state.updateAccount(existingAccount.uuid, existingAccount);
       }
     }
   };
