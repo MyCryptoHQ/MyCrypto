@@ -28,6 +28,7 @@ export function TokenPanel() {
   };
 
   useEffect(() => {
+    // Fetches token details by contract address
     const fetchTokenDetails = async () => {
       const selectedAccounts = currentAccounts();
       const tokenTotals = totals(selectedAccounts);
@@ -40,26 +41,22 @@ export function TokenPanel() {
   }, [accounts]);
 
   useEffect(() => {
-    const getTokensWithDetails = async () => {
-      const selectedAccounts = currentAccounts();
+    const selectedAccounts = currentAccounts();
 
-      // Add token details and token rate info to all assets that have  a contractAddress
-      const tempTokens = totals(selectedAccounts).reduce((tokens: AssetWithDetails[], asset) => {
-        return !asset.contractAddress
-          ? tokens
-          : [
-              ...tokens,
-              Object.assign(asset, {
-                rate: getRateFromAsset(asset) || 0,
-                details: tokenData.find(details => details.address === asset.contractAddress) || {}
-              })
-            ];
-      }, []);
+    // Add token details and token rate info to all assets that have a contractAddress
+    const tempTokens = totals(selectedAccounts).reduce((tokens: AssetWithDetails[], asset) => {
+      return !asset.contractAddress
+        ? tokens
+        : [
+            ...tokens,
+            Object.assign(asset, {
+              rate: getRateFromAsset(asset) || 0,
+              details: tokenData.find(details => details.address === asset.contractAddress) || {}
+            })
+          ];
+    }, []);
 
-      setAllTokens(tempTokens);
-    };
-
-    getTokensWithDetails();
+    setAllTokens(tempTokens);
   }, [accounts, rates]);
 
   return showDetailsView && currentToken ? (

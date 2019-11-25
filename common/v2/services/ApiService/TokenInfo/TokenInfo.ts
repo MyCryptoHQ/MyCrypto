@@ -51,7 +51,7 @@ const spliceContractAddresses = (contractAddresses: string[]): string[][] => {
   return splicedContractAddressArrays;
 };
 
-export const createParams = (contractAddresses: string[]) => {
+const createParams = (contractAddresses: string[]) => {
   const params = new URLSearchParams();
   contractAddresses.forEach(address => params.append('contractAddress', address));
   return params;
