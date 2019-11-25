@@ -12,6 +12,7 @@ export function TokenPanel() {
   const [currentToken, setCurrentToken] = useState<AssetWithDetails>();
   const [allTokens, setAllTokens] = useState<AssetWithDetails[]>([]);
   const [isScanning, setIsScanning] = useState(false);
+  const [tokenData, setTokenData] = useState([] as any[]);
 
   const { accounts, totals, currentAccounts, scanTokens } = useContext(StoreContext);
   const { getRateFromAsset, rates } = useContext(RatesContext);
@@ -27,14 +28,20 @@ export function TokenPanel() {
   };
 
   useEffect(() => {
-    const getTokensWithDetails = async () => {
+    const fetchTokenDetails = async () => {
       const selectedAccounts = currentAccounts();
       const tokenTotals = totals(selectedAccounts);
-
-      // Fetch details for all tokens of selected accounts
-      const tokensDetails: any[] = await TokenInfoService.instance.getTokensInfo(
+      const detailedTokenData: any[] = await TokenInfoService.instance.getTokensInfo(
         tokenTotals.map(x => x.contractAddress!).filter(x => x)
       );
+      setTokenData(detailedTokenData);
+    };
+    fetchTokenDetails();
+  }, [accounts]);
+
+  useEffect(() => {
+    const getTokensWithDetails = async () => {
+      const selectedAccounts = currentAccounts();
 
       // Add token details and token rate info to all assets that have  a contractAddress
       const tempTokens = totals(selectedAccounts).reduce((tokens: AssetWithDetails[], asset) => {
@@ -44,8 +51,7 @@ export function TokenPanel() {
               ...tokens,
               Object.assign(asset, {
                 rate: getRateFromAsset(asset) || 0,
-                details:
-                  tokensDetails.find(details => details.address === asset.contractAddress) || {}
+                details: tokenData.find(details => details.address === asset.contractAddress) || {}
               })
             ];
       }, []);
