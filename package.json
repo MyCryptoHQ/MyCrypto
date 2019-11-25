@@ -80,6 +80,7 @@
     "semver": "5.5.0",
     "slick-carousel": "1.8.1",
     "styled-components": "4.0.2",
+    "toasted-notes": "3.0.0",
     "trezor-connect": "7.0.1",
     "trezor.js": "6.17.5",
     "uuid": "3.2.1",

@@ -1490,6 +1490,24 @@
     qrcode-generator "1.4.0"
     react-qr-reader "2.1.0"
 
+"@reach/alert@^0.1.2":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@reach/alert/-/alert-0.1.5.tgz#4da79add0055fa4295f51e5295ed3b80257e9153"
+  integrity sha512-Ow+SB7rokGWxmm+AdOpf4eo29OaEYDqlJ1Kc9qulVX2cKjYiHQqAvkiCkSaIPkQbbyNmEXJ0c/rVpzPVvCVIAw==
+  dependencies:
+    "@reach/component-component" "^0.1.3"
+    "@reach/visually-hidden" "^0.1.4"
+
+"@reach/component-component@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@reach/component-component/-/component-component-0.1.3.tgz#5d156319572dc38995b246f81878bc2577c517e5"
+  integrity sha512-a1USH7L3bEfDdPN4iNZGvMEFuBfkdG+QNybeyDv8RloVFgZYRoM+KGXyy2KOfEnTUM8QWDRSROwaL3+ts5Angg==
+
+"@reach/visually-hidden@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@reach/visually-hidden/-/visually-hidden-0.1.4.tgz#0dc4ecedf523004337214187db70a46183bd945b"
+  integrity sha512-QHbzXjflSlCvDd6vJwdwx16mSB+vUCCQMiU/wK/CgVNPibtpEiIbisyxkpZc55DyDFNUIqP91rSUsNae+ogGDQ==
+
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@samverschueren/stream-to-observable/-/stream-to-observable-0.3.0.tgz#ecdf48d532c58ea477acfcab80348424f8d0662f"
@@ -1791,6 +1809,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-dom@^16.8.3":
+  version "16.9.4"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.9.4.tgz#0b58df09a60961dcb77f62d4f1832427513420df"
+  integrity sha512-fya9xteU/n90tda0s+FtN5Ym4tbgxpq/hb/Af24dvs6uYnYn+fspaxw5USlw0R8apDNwxsqumdRoCoKitckQqw==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-inlinesvg@^0.8.1":
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/@types/react-inlinesvg/-/react-inlinesvg-0.8.1.tgz#c3b9ab683c356a81869b3294dbd3e4f0f191aa4a"
@@ -1861,7 +1886,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@16.3.11":
+"@types/react@*", "@types/react@16.3.11", "@types/react@^16.8.10":
   version "16.3.11"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.3.11.tgz#345a17f1c96420f10b9f0dc696c31091ff9d66ea"
   integrity sha512-F0ZqVldV6l7FObRPfkgXg4GwWJa4tGrh1glydmx+OMOdU4K5lUnh2rlj/4uO6RnuN2OBVCzo2XiyIifEZPkCXw==
@@ -15622,6 +15647,15 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     extend-shallow "^3.0.2"
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
+
+toasted-notes@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/toasted-notes/-/toasted-notes-3.0.0.tgz#ad72e9e601d658b301117d84c5ab431bfb75e1fa"
+  integrity sha512-gjL18/1aNP+bgipt1YbCBFeinFYExubltm8HIAJIYmlzDquC+YpajYOfhVysUCnBGwkX0w1V1AF5whpHGqohkQ==
+  dependencies:
+    "@reach/alert" "^0.1.2"
+    "@types/react" "^16.8.10"
+    "@types/react-dom" "^16.8.3"
 
 toggle-selection@^1.0.6:
   version "1.0.6"

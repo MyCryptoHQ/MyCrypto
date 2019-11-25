@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import BN from 'bn.js';
 
@@ -9,6 +9,7 @@ import { fromWei, ProviderHandler } from 'v2/services/EthService';
 import { InlineErrorMsg } from 'v2/components/ErrorMessages';
 import { translateRaw } from 'v2/translations';
 import { ITxReceipt, ITxConfig } from 'v2/types';
+import { ToastContext } from 'v2/features/Toasts';
 
 const ErrorWrapper = styled(InlineErrorMsg)`
   margin-top: 12px;
@@ -26,6 +27,7 @@ interface Props {
 
 export default function ConfirmTransaction(props: Props) {
   const [txError, setTxError] = useState('');
+  const { displayToast, toastTemplates } = useContext(ToastContext);
 
   const { transaction, signedTransaction, network, goToNextStep } = props;
   const { from, to, value, _chainId, gasPrice, gasLimit, nonce, data } = transaction;
@@ -74,6 +76,7 @@ export default function ConfirmTransaction(props: Props) {
       goToNextStep();
     } catch (e) {
       setTxError(e.toString());
+      displayToast(toastTemplates.failedTransaction);
     }
   };
 
