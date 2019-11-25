@@ -89,7 +89,7 @@ export default function ContentPanel({
   description,
   children,
   className = '',
-  width = '550px',
+  width = '650px',
   mobileMaxWidth = '100%',
   ...rest
 }: Props) {
