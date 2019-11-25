@@ -1,4 +1,4 @@
-import { NetworkId, Contract, StoreAccount, ITxConfig } from 'v2/types';
+import { NetworkId, Contract, StoreAccount, ITxConfig, ITxReceipt } from 'v2/types';
 
 export enum ABIItemType {
   FUNCTION = 'function',
@@ -53,4 +53,6 @@ export interface InteractWithContractState {
   data: string;
   account: StoreAccount | undefined;
   rawTransaction: ITxConfig;
+  txConfig: ITxConfig;
+  txReceipt: ITxReceipt | undefined;
 }

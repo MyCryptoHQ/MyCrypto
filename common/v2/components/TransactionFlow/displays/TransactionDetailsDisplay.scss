@@ -1,9 +1,7 @@
 .TransactionDetails {
   margin-bottom: 25px;
   display: block;
-  @media (min-width: 700px) {
-    max-width: 560px;
-  }
+
   &-row {
     display: flex;
     align-items: center;

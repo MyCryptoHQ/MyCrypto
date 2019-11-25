@@ -36,7 +36,9 @@ const interactWithContractsInitialState = {
   submitedFunction: undefined,
   data: undefined,
   account: undefined,
-  rawTransaction: undefined
+  rawTransaction: undefined,
+  txConfig: undefined,
+  txReceipt: undefined
 };
 
 const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContractState> = ({
@@ -200,7 +202,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   };
 
   const handleTxSigned = async (signResponse: any, after: () => void) => {
-    const { account } = state;
+    const { account, txConfig } = state;
 
     if (!account) {
       return;
@@ -208,7 +210,9 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
 
     if (isWeb3Wallet(account.wallet)) {
       const txReceipt =
-        signResponse && signResponse.hash ? signResponse : { hash: signResponse, asset: {} };
+        signResponse && signResponse.hash
+          ? signResponse
+          : { hash: signResponse, asset: txConfig.asset };
       setState((prevState: InteractWithContractState) => ({
         ...prevState,
         txReceipt
