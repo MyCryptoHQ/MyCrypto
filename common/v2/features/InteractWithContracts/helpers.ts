@@ -61,6 +61,7 @@ export const generateFunctionFieldsDisplayNames = (abiFunction: ABIItem) => {
     }
   });
 
+  tempFunction.payAmount = '0';
   return tempFunction;
 };
 

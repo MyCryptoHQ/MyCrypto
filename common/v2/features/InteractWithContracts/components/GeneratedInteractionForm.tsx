@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import React, { useState } from 'react';
 
 import { InputField, Dropdown, Button, Spinner, InlineErrorMsg, Typography } from 'v2/components';
+import { StoreAccount, NetworkId, ITxConfig } from 'v2/types';
+import { COLORS, monospace } from 'v2/theme';
 
 import FunctionDropdownOption from './FunctionDropdownOption';
 import FunctionDropdownValue from './FunctionDropdownValue';
@@ -13,9 +15,6 @@ import {
   setFunctionOutputValues
 } from '../helpers';
 import { FieldLabel, BooleanOutputField } from './fields';
-
-import { StoreAccount, NetworkId } from 'v2/types';
-import { COLORS, monospace } from 'v2/theme';
 import WriteForm from './WriteForm';
 import BooleanSelector from './fields/BooleanSelector';
 
@@ -97,9 +96,12 @@ interface Props {
   abi: ABIItem[];
   account: StoreAccount;
   networkId: NetworkId;
+  rawTransaction: ITxConfig;
   handleInteractionFormSubmit(submitedFunction: ABIItem): Promise<object>;
   handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<object>;
   handleAccountSelected(account: StoreAccount | undefined): void;
+  estimateGas(submitedFunction: ABIItem): Promise<void>;
+  handleGasSelectorChange(payload: ITxConfig): void;
 }
 
 export default function GeneratedInteractionForm({
@@ -107,16 +109,29 @@ export default function GeneratedInteractionForm({
   handleInteractionFormSubmit,
   account,
   networkId,
+  rawTransaction,
   handleAccountSelected,
-  handleInteractionFormWriteSubmit
+  handleInteractionFormWriteSubmit,
+  estimateGas,
+  handleGasSelectorChange
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [currentFunction, setCurrentFunction] = useState<ABIItem | undefined>(undefined);
 
   const [error, setError] = useState(undefined);
-  const [payAmount, setPayAmount] = useState('0');
+  const [isAutoGasSet, setIsAutoGasSet] = useState(true);
 
   const functions = getFunctionsFromABI(abi);
+
+  const estimateGasHandle = (forceEstimate: boolean = false) => {
+    if (!currentFunction) {
+      return;
+    }
+
+    if (isAutoGasSet || forceEstimate) {
+      estimateGas(currentFunction);
+    }
+  };
 
   const handleFunctionSelected = (selectedFunction: ABIItem) => {
     if (!selectedFunction) {
@@ -125,7 +140,7 @@ export default function GeneratedInteractionForm({
 
     const newFunction = generateFunctionFieldsDisplayNames(selectedFunction);
     setCurrentFunction(newFunction);
-    setPayAmount('0');
+    setIsAutoGasSet(true);
     handleAccountSelected(undefined);
     setError(undefined);
 
@@ -165,7 +180,6 @@ export default function GeneratedInteractionForm({
     setError(undefined);
     try {
       setIsLoading(true);
-      submitedFunction.payAmount = payAmount;
       await handleInteractionFormWriteSubmit(submitedFunction);
     } catch (e) {
       setError(e.toString());
@@ -174,7 +188,7 @@ export default function GeneratedInteractionForm({
     }
   };
 
-  let isRead;
+  let isRead: boolean = true;
   let inputs: ABIField[] = [];
   let outputs: ABIField[] = [];
 
@@ -222,6 +236,7 @@ export default function GeneratedInteractionForm({
                           }
                           value={field.value}
                           onChange={({ target: { value } }) => handleInputChange(field.name, value)}
+                          validate={!isRead ? estimateGasHandle : undefined}
                         />
                       )}
                     </FieldWrapper>
@@ -276,8 +291,14 @@ export default function GeneratedInteractionForm({
                     <FieldWrapper>
                       <InputField
                         label="Value"
-                        value={payAmount}
-                        onChange={({ target: { value } }) => setPayAmount(value)}
+                        value={currentFunction.payAmount}
+                        onChange={({ target: { value } }) =>
+                          setCurrentFunction({
+                            ...currentFunction,
+                            payAmount: value
+                          })
+                        }
+                        validate={estimateGasHandle}
                       />
                     </FieldWrapper>
                   )}
@@ -287,6 +308,11 @@ export default function GeneratedInteractionForm({
                     handleAccountSelected={handleAccountSelected}
                     handleSubmit={submitFormWrite}
                     currentFunction={currentFunction}
+                    isAutoGasSet={isAutoGasSet}
+                    setIsAutoGasSet={setIsAutoGasSet}
+                    estimateGasHandle={estimateGasHandle}
+                    rawTransaction={rawTransaction}
+                    handleGasSelectorChange={handleGasSelectorChange}
                   />
                 </WriteFormWrapper>
               )}

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import styled from 'styled-components';
+
 import { InputField, Typography } from 'v2/components';
 
 const Wrapper = styled.div`
@@ -19,9 +20,12 @@ interface Props {
   gasPrice: string;
   gasLimit: string;
   nonce: string;
+  isAutoGasSet: boolean;
   handleGasPriceChange(e: React.KeyboardEvent<HTMLInputElement>): void;
   handleGasLimitChange(e: React.KeyboardEvent<HTMLInputElement>): void;
   handleNonceChange(e: React.KeyboardEvent<HTMLInputElement>): void;
+  estimateGasHandle(forceEstimate?: boolean): void;
+  setIsAutoGasSet(value: boolean): void;
 }
 
 export default function GasSelector(props: Props) {
@@ -29,13 +33,29 @@ export default function GasSelector(props: Props) {
     gasPrice,
     gasLimit,
     nonce,
+    isAutoGasSet,
     handleGasPriceChange,
     handleGasLimitChange,
-    handleNonceChange
+    handleNonceChange,
+    setIsAutoGasSet,
+    estimateGasHandle
   } = props;
+
+  useEffect(() => {
+    estimateGasHandle();
+  }, []);
+
+  const setAutoGasSet = () => {
+    if (!isAutoGasSet) {
+      estimateGasHandle(true);
+    }
+
+    setIsAutoGasSet(!isAutoGasSet);
+  };
 
   return (
     <Wrapper>
+      <div onClick={setAutoGasSet}>{isAutoGasSet ? 'TRUE' : 'FALSE'}</div>
       <FieldWrapper>
         <InputField
           label={<CustomLabel>Gas Price</CustomLabel>}
@@ -48,6 +68,7 @@ export default function GasSelector(props: Props) {
           label={<CustomLabel>Gas Limit</CustomLabel>}
           value={gasLimit}
           onChange={handleGasLimitChange}
+          disabled={isAutoGasSet}
         />
       </FieldWrapper>
       <FieldWrapper>

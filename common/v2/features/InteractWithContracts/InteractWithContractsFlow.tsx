@@ -2,15 +2,14 @@ import React, { useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { translateRaw } from 'v2/translations';
-
 import { ExtendedContentPanel } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
-import { useStateReducer } from 'v2/utils/useStateReducer';
+import { useStateReducer } from 'v2/utils';
+import { ITxReceipt, ISignedTx } from 'v2/types';
 
 import { interactWithContractsInitialState, InteractWithContractsFactory } from './stateFactory';
 import { Interact, InteractionReceipt } from './components';
 import { ABIItem, InteractWithContractState } from './types';
-import { ITxReceipt, ISignedTx } from 'v2/types';
 import { WALLET_STEPS } from './helpers';
 import InteractionConfirm from './components/InteractionConfirm';
 
@@ -34,7 +33,9 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
     handleInteractionFormSubmit,
     handleInteractionFormWriteSubmit,
     handleAccountSelected,
-    handleTxSigned
+    handleTxSigned,
+    estimateGas,
+    handleGasSelectorChange
   } = useStateReducer(InteractWithContractsFactory, interactWithContractsInitialState);
   const { account }: InteractWithContractState = interactWithContractsState;
 
@@ -59,14 +60,23 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
     {
       title: translateRaw('Interact with Contracts'),
       component: Interact,
-      props: (({ networkId, contractAddress, contract, abi, contracts, showGeneratedForm }) => ({
+      props: (({
         networkId,
         contractAddress,
         contract,
         abi,
         contracts,
         showGeneratedForm,
-        account
+        rawTransaction
+      }) => ({
+        networkId,
+        contractAddress,
+        contract,
+        abi,
+        contracts,
+        showGeneratedForm,
+        account,
+        rawTransaction
       }))(interactWithContractsState),
       actions: {
         handleNetworkSelected,
@@ -78,7 +88,9 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
         handleInteractionFormSubmit,
         handleInteractionFormWriteSubmit: (payload: ABIItem) =>
           handleInteractionFormWriteSubmit(payload, goToNextStep),
-        handleAccountSelected
+        handleAccountSelected,
+        estimateGas,
+        handleGasSelectorChange
       }
     },
     {
