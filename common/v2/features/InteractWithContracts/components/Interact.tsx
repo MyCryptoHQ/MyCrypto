@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Identicon, Button } from '@mycrypto/ui';
 
-import { NetworkSelectDropdown, InputField, Dropdown } from 'v2/components';
+import { NetworkSelectDropdown, InputField, Dropdown, InlineErrorMsg } from 'v2/components';
 import { NetworkId, Contract, StoreAccount, ITxConfig } from 'v2/types';
 
 import ContractDropdownOption from './ContractDropdownOption';
@@ -65,13 +65,32 @@ const ButtonWrapper = styled.div`
   justify-content: left;
 `;
 
+const SaveContractWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const SaveButtonWrapper = styled.div`
+  width: 300px;
+  display: flex;
+  align-items: center;
+  padding-top: 10px;
+  padding-left: 8px;
+  justify-content: flex-end;
+`;
+
 // TODO: Fix the dropdown component instead of overriding styles
-const DropdownContainer = styled('div')`
+const DropdownContainer = styled.div`
   .is-open > .Select-control > .Select-multi-value-wrapper > .Select-input:only-child {
     transform: translateY(0%);
     padding: 12px 15px;
     position: inherit;
   }
+`;
+
+const ErrorWrapper = styled.div`
+  margin-bottom: 12px;
 `;
 
 interface Props {
@@ -82,17 +101,20 @@ interface Props {
   contracts: Contract[];
   showGeneratedForm: boolean;
   account: StoreAccount;
+  customContractName: string;
   rawTransaction: ITxConfig;
   handleContractSelected(contract: Contract | undefined): void;
   handleNetworkSelected(networkId: string): void;
   handleContractAddressChanged(address: string): void;
   handleAbiChanged(abi: string): void;
+  handleCustomContractNameChanged(customContractName: string): void;
   updateNetworkContractOptions(networkId: NetworkId): void;
   setGeneratedFormVisible(visible: boolean): void;
   handleInteractionFormSubmit(submitedFunction: ABIItem): any;
   goToNextStep(): void;
   handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<object>;
   handleAccountSelected(account: StoreAccount): void;
+  handleSaveContractSubmit(): void;
   estimateGas(submitedFunction: ABIItem): Promise<void>;
   handleGasSelectorChange(payload: ITxConfig): void;
 }
@@ -109,16 +131,21 @@ export default function Interact(props: Props) {
     handleContractSelected,
     handleContractAddressChanged,
     handleAbiChanged,
+    handleCustomContractNameChanged,
     updateNetworkContractOptions,
     setGeneratedFormVisible,
     handleInteractionFormSubmit,
     account,
+    customContractName,
     handleAccountSelected,
     handleInteractionFormWriteSubmit,
+    handleSaveContractSubmit,
     estimateGas,
     rawTransaction,
     handleGasSelectorChange
   } = props;
+
+  const [error, setError] = useState(undefined);
 
   useEffect(() => {
     updateNetworkContractOptions(networkId);
@@ -127,6 +154,24 @@ export default function Interact(props: Props) {
   useEffect(() => {
     setGeneratedFormVisible(false);
   }, [abi]);
+
+  const saveContract = () => {
+    setError(undefined);
+    try {
+      handleSaveContractSubmit();
+    } catch (e) {
+      setError(e.message);
+    }
+  };
+
+  const submitInteract = () => {
+    setError(undefined);
+    try {
+      setGeneratedFormVisible(true);
+    } catch (e) {
+      setError(e.message);
+    }
+  };
 
   const isCustomContract = contract && contract.address === CUSTOM_CONTRACT_ADDRESS;
 
@@ -143,7 +188,6 @@ export default function Interact(props: Props) {
       <ContractSelectionWrapper>
         <FieldWrapper>
           <Label>Select Existing Contract</Label>
-
           <DropdownContainer>
             <Dropdown
               value={contract}
@@ -181,9 +225,32 @@ export default function Interact(props: Props) {
             disabled={!isCustomContract}
           />
         </InputWrapper>
+        {isCustomContract && (
+          <>
+            <SaveContractWrapper>
+              <InputField
+                label={'Contract name'}
+                value={customContractName}
+                placeholder="Custom contract name"
+                onChange={({ target: { value } }) => handleCustomContractNameChanged(value)}
+              />
+              <SaveButtonWrapper>
+                <Button large={false} secondary={true} onClick={saveContract}>
+                  Save contract
+                </Button>
+              </SaveButtonWrapper>
+            </SaveContractWrapper>
+            {error && (
+              <ErrorWrapper>
+                <InlineErrorMsg>{error}</InlineErrorMsg>
+              </ErrorWrapper>
+            )}
+          </>
+        )}
       </FieldWrapper>
+
       <ButtonWrapper>
-        <Button onClick={() => setGeneratedFormVisible(true)}>Interact with Contract</Button>
+        <Button onClick={submitInteract}>Interact with Contract</Button>
       </ButtonWrapper>
       {showGeneratedForm && abi && (
         <GeneratedInteractionForm

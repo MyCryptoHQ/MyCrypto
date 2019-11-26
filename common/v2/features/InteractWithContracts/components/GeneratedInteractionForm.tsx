@@ -134,7 +134,7 @@ export default function GeneratedInteractionForm({
         setIsLoading(true);
         await estimateGas(currentFunction);
       } catch (e) {
-        setError(e.toString());
+        setError(e.message);
       } finally {
         setIsLoading(false);
       }
@@ -175,7 +175,7 @@ export default function GeneratedInteractionForm({
       const functionWithOutputValues = setFunctionOutputValues(submitedFunction, outputValues);
       setCurrentFunction(functionWithOutputValues);
     } catch (e) {
-      setError(e.toString());
+      setError(e.message);
     } finally {
       setIsLoading(false);
     }
@@ -193,7 +193,7 @@ export default function GeneratedInteractionForm({
       }
       await handleInteractionFormWriteSubmit(submitedFunction);
     } catch (e) {
-      setError(e.toString());
+      setError(e.message);
     } finally {
       setIsLoading(false);
     }

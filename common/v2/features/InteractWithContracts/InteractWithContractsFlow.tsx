@@ -28,15 +28,18 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
     handleContractSelected,
     handleContractAddressChanged,
     handleAbiChanged,
+    handleCustomContractNameChanged,
     updateNetworkContractOptions,
     setGeneratedFormVisible,
     handleInteractionFormSubmit,
     handleInteractionFormWriteSubmit,
     handleAccountSelected,
     handleTxSigned,
+    handleSaveContractSubmit,
     estimateGas,
     handleGasSelectorChange
   } = useStateReducer(InteractWithContractsFactory, interactWithContractsInitialState);
+
   const { account }: InteractWithContractState = interactWithContractsState;
 
   const goToFirstStep = () => {
@@ -67,6 +70,7 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
         abi,
         contracts,
         showGeneratedForm,
+        customContractName,
         rawTransaction
       }) => ({
         networkId,
@@ -76,6 +80,7 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
         contracts,
         showGeneratedForm,
         account,
+        customContractName,
         rawTransaction
       }))(interactWithContractsState),
       actions: {
@@ -83,9 +88,11 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
         handleContractSelected,
         handleContractAddressChanged,
         handleAbiChanged,
+        handleCustomContractNameChanged,
         updateNetworkContractOptions,
         setGeneratedFormVisible,
         handleInteractionFormSubmit,
+        handleSaveContractSubmit,
         handleInteractionFormWriteSubmit: (payload: ABIItem) =>
           handleInteractionFormWriteSubmit(payload, goToNextStep),
         handleAccountSelected,

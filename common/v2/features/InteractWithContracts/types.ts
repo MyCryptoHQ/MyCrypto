@@ -48,6 +48,7 @@ export interface InteractWithContractState {
   contract: Contract | undefined;
   contracts: Contract[];
   abi: string;
+  customContractName: string;
   showGeneratedForm: boolean;
   submitedFunction: ABIItem;
   data: string;
