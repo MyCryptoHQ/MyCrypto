@@ -322,11 +322,8 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       const nonce = await getNonce(network, account);
 
       let data = '0x';
-      try {
-        data = encodeInput(parsedInputs);
-      } catch (e) {
-        console.debug(e);
-      }
+
+      data = encodeInput(parsedInputs);
 
       Object.assign(rawTransactionCopy, {
         to: contractAddress,

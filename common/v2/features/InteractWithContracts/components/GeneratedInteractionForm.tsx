@@ -134,7 +134,7 @@ export default function GeneratedInteractionForm({
         setIsLoading(true);
         await estimateGas(currentFunction);
       } catch (e) {
-        setError(e.toString());
+        setError(e.message);
       } finally {
         setIsLoading(false);
       }
