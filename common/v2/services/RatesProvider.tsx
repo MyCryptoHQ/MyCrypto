@@ -42,17 +42,18 @@ const fetchAssetMappingList = async (): Promise<AssetMappingListObject | any> =>
 };
 
 const destructureCoinGeckoIds = (rates: IRates, assetMap: AssetMappingListObject): IRates => {
-  Object.keys(rates).forEach(rateKey => {
-    const rateObject = rates[rateKey];
-    delete rates[rateKey];
-    const detectedAssetUUID = Object.keys(assetMap)
-      .filter(assetMapKey => assetMap[assetMapKey].coinGeckoId)
-      .find(assetMapKey => assetMap[assetMapKey].coinGeckoId === rateKey);
-    if (detectedAssetUUID) {
-      rates[detectedAssetUUID] = rateObject;
-    }
-  });
-  return rates;
+  /* {
+    "ETH":{ "usd": 123.45,"eur": 234.56 }
+  } => {
+    [uuid for coinGeckoId: = "ETH"]: { "usd": 123.45, "eur": 234.56 }
+  } */
+  const updateRateObj = (acc: any, curValue: any): IRates => {
+    const data: any = Object.keys(assetMap).find(uuid => assetMap[uuid].coinGeckoId === curValue);
+    acc[data] = rates[curValue];
+    return acc;
+  };
+
+  return Object.keys(rates).reduce(updateRateObj, {} as IRates);
 };
 
 const pullCoinGeckoIDs = (assetMap: AssetMappingListObject, uuids: string[]): string[] =>
