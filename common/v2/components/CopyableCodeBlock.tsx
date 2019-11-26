@@ -24,7 +24,6 @@ const CopyableCodeBlockWrapper = styled('div')`
 const CodeDisplay = styled('pre')`
   font-weight: 400;
   font-size: 1rem;
-  background-color: #ffffff;
   padding: 0.75rem 1rem;
   margin: 0;
   font-size: 1rem;
@@ -36,12 +35,6 @@ const CodeDisplay = styled('pre')`
     text-align: left;
     max-height: 320px;
     font-size: 14px;
-    white-space: pre;
-  }
-  &.wrap {
-    & > code {
-      white-space: normal;
-    }
   }
 `;
 
