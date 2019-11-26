@@ -13,6 +13,7 @@ import { Query } from 'components/renderCbs';
 import Notifications from './Notifications';
 import OfflineTab from './OfflineTab';
 import './WebTemplate.scss';
+import { Banner, ANNOUNCEMENT_MSG } from 'components/Banner';
 
 interface StateProps {
   isOffline: AppState['config']['meta']['offline'];
@@ -40,6 +41,7 @@ class WebTemplate extends Component<Props, {}> {
               <NewHeader networkParam={network && makeAutoNodeName(network)} />
             )}
           />
+          <Banner value={ANNOUNCEMENT_MSG()} />
           <Transition
             from={{ right: '-375px' }}
             enter={{ right: '0' }}
