@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import styled from 'styled-components';
 
-import { InputField, Typography } from 'v2/components';
+import { InputField, Typography, Checkbox } from 'v2/components';
 
 const Wrapper = styled.div`
   display: flex;
@@ -24,7 +24,7 @@ interface Props {
   handleGasPriceChange(e: React.KeyboardEvent<HTMLInputElement>): void;
   handleGasLimitChange(e: React.KeyboardEvent<HTMLInputElement>): void;
   handleNonceChange(e: React.KeyboardEvent<HTMLInputElement>): void;
-  estimateGasHandle(forceEstimate?: boolean): void;
+  estimateGasHandle(forceEstimate?: boolean): Promise<void>;
   setIsAutoGasSet(value: boolean): void;
 }
 
@@ -55,7 +55,12 @@ export default function GasSelector(props: Props) {
 
   return (
     <Wrapper>
-      <div onClick={setAutoGasSet}>{isAutoGasSet ? 'TRUE' : 'FALSE'}</div>
+      <Checkbox
+        onChange={setAutoGasSet}
+        checked={isAutoGasSet}
+        name="autoGasSet"
+        label="Automatically Calculate Gas Limit"
+      />
       <FieldWrapper>
         <InputField
           label={<CustomLabel>Gas Price</CustomLabel>}

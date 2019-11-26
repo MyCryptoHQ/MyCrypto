@@ -45,7 +45,7 @@ interface Props {
   isAutoGasSet: boolean;
   handleAccountSelected(account: StoreAccount): void;
   handleSubmit(submitedFunction: ABIItem): void;
-  estimateGasHandle(forceEstimate?: boolean): void;
+  estimateGasHandle(forceEstimate?: boolean): Promise<void>;
   setIsAutoGasSet(value: boolean): void;
   handleGasSelectorChange(payload: ITxConfig): void;
 }
@@ -71,7 +71,7 @@ export default function WriteForm(props: Props) {
 
   const handleGasPriceChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
     let value = (e.target as HTMLTextAreaElement).value;
-    if (value.length !== 0) {
+    if (value.length) {
       value = hexWeiToString(inputGasPriceToHex(value));
       value = addHexPrefix(new BN(value).toString(16));
     }

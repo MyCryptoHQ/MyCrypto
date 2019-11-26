@@ -123,13 +123,21 @@ export default function GeneratedInteractionForm({
 
   const functions = getFunctionsFromABI(abi);
 
-  const estimateGasHandle = (forceEstimate: boolean = false) => {
+  const estimateGasHandle = async (forceEstimate: boolean = false) => {
     if (!currentFunction) {
       return;
     }
 
     if (isAutoGasSet || forceEstimate) {
-      estimateGas(currentFunction);
+      setError(undefined);
+      try {
+        setIsLoading(true);
+        await estimateGas(currentFunction);
+      } catch (e) {
+        setError(e.toString());
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -180,6 +188,9 @@ export default function GeneratedInteractionForm({
     setError(undefined);
     try {
       setIsLoading(true);
+      if (isAutoGasSet) {
+        await estimateGas(submitedFunction);
+      }
       await handleInteractionFormWriteSubmit(submitedFunction);
     } catch (e) {
       setError(e.toString());

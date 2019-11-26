@@ -276,7 +276,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       rawTransactionCopy.gasLimit = hexToNumber(gasLimit);
       delete rawTransactionCopy.from;
     } catch (e) {
-      console.debug(e);
+      throw e;
     }
     setState((prevState: InteractWithContractState) => ({
       ...prevState,
