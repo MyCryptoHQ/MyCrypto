@@ -5278,13 +5278,6 @@
     "uuid": "9f563cf7-f883-5459-845e-5021a2f58629"
   },
   {
-    "address": "0x5a276Aeb77bCfDAc8Ac6f31BBC7416AE1A85eEF2",
-    "symbol": "LOVE",
-    "decimal": 0,
-    "name": "Love",
-    "uuid": "1e917c91-e52b-5997-af67-2ffd01843701"
-  },
-  {
     "address": "0x58b6A8A3302369DAEc383334672404Ee733aB239",
     "symbol": "LPT",
     "decimal": 18,
