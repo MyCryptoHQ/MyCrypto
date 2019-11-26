@@ -67,12 +67,14 @@ async function build() {
         // IMPORTANT: Prevents from auto publishing to GitHub in CI environments
         publish: null,
         // IMPORTANT: Prevents extending configs in node_modules
-        extends: null
+        extends: null,
+        // IMPORTANT: Prevents build issues for Github Actions
+        npmRebuild: false,
       }
     });
 
     console.info(`Electron builds are finished! Available at ${electronBuildsDir}`);
-  } catch(err) {
+  } catch (err) {
     console.error(err);
     process.exit(1);
   }
