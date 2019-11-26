@@ -29,6 +29,8 @@ const CodeDisplay = styled('pre')`
   font-size: 1rem;
   border: none;
   overflow: hidden;
+  white-space: normal;
+  background: none;
   & > code {
     display: block;
     border: none;
