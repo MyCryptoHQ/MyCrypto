@@ -1,5 +1,6 @@
 import { sortBy, cloneDeep } from 'lodash';
-import { StateMutabilityType, ABIItem, ABIItemType } from './types';
+import { bufferToHex } from 'ethereumjs-util';
+
 import {
   WalletId,
   SigningComponents,
@@ -19,6 +20,8 @@ import {
   SignTransactionMnemonic
 } from 'v2/components';
 import { getAssetByUUID, hexToString, hexWeiToString } from 'v2/services';
+
+import { StateMutabilityType, ABIItem, ABIItemType } from './types';
 
 export const isReadOperation = (abiFunction: ABIItem) => {
   const { stateMutability } = abiFunction;
@@ -69,7 +72,14 @@ export const setFunctionOutputValues = (abiFunction: ABIItem, outputValues: any)
   const tempFunction = cloneDeep(abiFunction);
 
   tempFunction.outputs.forEach(output => {
-    output.value = outputValues[output.name];
+    let outputValue = outputValues[output.name];
+    if (Buffer.isBuffer(outputValue)) {
+      outputValue = bufferToHex(outputValue);
+    } else if (Array.isArray(outputValue)) {
+      outputValue = JSON.stringify(outputValue);
+    }
+
+    output.value = outputValue;
   });
 
   return tempFunction;
@@ -126,3 +136,13 @@ export const makeTxConfigFromTransaction = (
 
   return txConfig;
 };
+
+export const reduceInputParams = (submitedFunction: ABIItem) =>
+  submitedFunction.inputs.reduce((accu, input) => {
+    let inputValue = input.value;
+    if (inputValue && ['[', ']'].every(x => input.type.includes(x))) {
+      inputValue = JSON.parse(inputValue);
+    }
+
+    return { ...accu, [input.name]: input.value };
+  }, {});

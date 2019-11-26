@@ -25,7 +25,7 @@ import { isWeb3Wallet } from 'v2/utils/web3';
 
 import { customContract, CUSTOM_CONTRACT_ADDRESS } from './constants';
 import { ABIItem, InteractWithContractState } from './types';
-import { makeTxConfigFromTransaction } from './helpers';
+import { makeTxConfigFromTransaction, reduceInputParams } from './helpers';
 
 const interactWithContractsInitialState = {
   networkId: DEFAULT_NETWORK,
@@ -192,15 +192,9 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   };
 
   const handleInteractionFormSubmit = async (submitedFunction: ABIItem) => {
-    const { encodeInput, decodeOutput } = new AbiFunction(submitedFunction, []);
-
-    const parsedInputs = submitedFunction.inputs.reduce(
-      (accu, input) => ({ ...accu, [input.name]: input.value }),
-      {}
-    );
-
     const { networkId, contractAddress } = state;
-
+    const { encodeInput, decodeOutput } = new AbiFunction(submitedFunction, []);
+    const parsedInputs = reduceInputParams(submitedFunction);
     const network = getNetworkById(networkId)!;
     const providerHandler = new ProviderHandler(network);
     const data = { to: contractAddress, data: encodeInput(parsedInputs) };
@@ -219,12 +213,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
 
     try {
       const { encodeInput } = new AbiFunction(submitedFunction, []);
-
-      const parsedInputs = submitedFunction.inputs.reduce(
-        (accu, input) => ({ ...accu, [input.name]: input.value }),
-        {}
-      );
-
+      const parsedInputs = reduceInputParams(submitedFunction);
       const network = getNetworkById(networkId)!;
       const data = encodeInput(parsedInputs);
       const { gasPrice, gasLimit, nonce } = rawTransaction;
@@ -309,21 +298,12 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
 
     try {
       const { encodeInput } = new AbiFunction(submitedFunction, []);
-
-      const parsedInputs = submitedFunction.inputs.reduce(
-        (accu, input) => ({ ...accu, [input.name]: input.value }),
-        {}
-      );
-
+      const parsedInputs = reduceInputParams(submitedFunction);
       const network = getNetworkById(networkId)!;
-
       const { fast } = await fetchGasPriceEstimates(network.id);
       const gasPrice = hexWeiToString(inputGasPriceToHex(fast.toString()));
       const nonce = await getNonce(network, account);
-
-      let data = '0x';
-
-      data = encodeInput(parsedInputs);
+      const data = encodeInput(parsedInputs);
 
       Object.assign(rawTransactionCopy, {
         to: contractAddress,
