@@ -27,10 +27,10 @@
     padding: 12px;
     background: #f8f8f8;
   }
-  &-column:first-child &-addressWrapper {
+  &-row-column:first-child &-addressWrapper {
     margin-left: 0;
   }    
-  &-column:last-child &-addressWrapper {
+  &-row-column:last-child &-addressWrapper {
     margin-right: 0;
   }      
   &-divider {
