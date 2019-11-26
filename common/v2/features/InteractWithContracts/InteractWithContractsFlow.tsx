@@ -29,13 +29,16 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
     handleContractSelected,
     handleContractAddressChanged,
     handleAbiChanged,
+    handleCustomContractNameChanged,
     updateNetworkContractOptions,
     setGeneratedFormVisible,
     handleInteractionFormSubmit,
     handleInteractionFormWriteSubmit,
     handleAccountSelected,
-    handleTxSigned
+    handleTxSigned,
+    handleSaveContractSubmit
   } = useStateReducer(InteractWithContractsFactory, interactWithContractsInitialState);
+
   const { account }: InteractWithContractState = interactWithContractsState;
 
   const goToFirstStep = () => {
@@ -59,23 +62,34 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
     {
       title: translateRaw('Interact with Contracts'),
       component: Interact,
-      props: (({ networkId, contractAddress, contract, abi, contracts, showGeneratedForm }) => ({
+      props: (({
         networkId,
         contractAddress,
         contract,
         abi,
         contracts,
         showGeneratedForm,
-        account
+        customContractName
+      }) => ({
+        networkId,
+        contractAddress,
+        contract,
+        abi,
+        contracts,
+        showGeneratedForm,
+        account,
+        customContractName
       }))(interactWithContractsState),
       actions: {
         handleNetworkSelected,
         handleContractSelected,
         handleContractAddressChanged,
         handleAbiChanged,
+        handleCustomContractNameChanged,
         updateNetworkContractOptions,
         setGeneratedFormVisible,
         handleInteractionFormSubmit,
+        handleSaveContractSubmit,
         handleInteractionFormWriteSubmit: (payload: ABIItem) =>
           handleInteractionFormWriteSubmit(payload, goToNextStep),
         handleAccountSelected

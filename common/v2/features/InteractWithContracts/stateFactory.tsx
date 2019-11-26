@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
-import { TUseStateReducerFactory } from 'v2/utils';
+import { TUseStateReducerFactory, generateUUID } from 'v2/utils';
 import { DEFAULT_NETWORK } from 'v2/config';
 import { Contract, StoreAccount, TSymbol } from 'v2/types';
 import {
@@ -15,7 +15,8 @@ import {
   fetchGasPriceEstimates,
   hexWeiToString,
   getGasEstimate,
-  hexToNumber
+  hexToNumber,
+  updateNetworks
 } from 'v2/services';
 import { AbiFunction } from 'v2/services/EthService/contracts/ABIFunction';
 import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
@@ -29,6 +30,7 @@ const interactWithContractsInitialState = {
   networkId: DEFAULT_NETWORK,
   contractAddress: '',
   contract: undefined,
+  customContractName: '',
   contracts: [],
   abi: '',
   showGeneratedForm: false,
@@ -42,7 +44,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   state,
   setState
 }) => {
-  const { getContractsByIds } = useContext(ContractContext);
+  const { getContractsByIds, createContractWithId } = useContext(ContractContext);
 
   const handleNetworkSelected = (networkId: any) => {
     setState((prevState: InteractWithContractState) => ({
@@ -50,7 +52,8 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       networkId,
       contract: undefined,
       contractAddress: '',
-      abi: ''
+      abi: '',
+      customContractName: ''
     }));
   };
 
@@ -84,17 +87,16 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       ...prevState,
       contract,
       contractAddress,
-      abi: contractAbi
+      abi: contractAbi,
+      customContractName: ''
     }));
   };
 
   const handleContractAddressChanged = (contractAddress: string) => {
-    if (isValidETHAddress(contractAddress)) {
-      const existingContract = state.contracts.find(c => c.address === contractAddress);
-      if (existingContract) {
-        handleContractSelected(existingContract);
-        return;
-      }
+    const existingContract = state.contracts.find(c => c.address === contractAddress);
+    if (existingContract) {
+      handleContractSelected(existingContract);
+      return;
     }
 
     setState((prevState: InteractWithContractState) => ({
@@ -112,7 +114,70 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     }));
   };
 
+  const handleCustomContractNameChanged = (customContractName: string) => {
+    setState((prevState: InteractWithContractState) => ({
+      ...prevState,
+      customContractName
+    }));
+  };
+
+  const handleSaveContractSubmit = () => {
+    const uuid = generateUUID();
+
+    if (!state.contractAddress || !state.customContractName || !state.abi) {
+      throw new Error('Please enter contract name, address and ABI.');
+    }
+
+    if (!isValidETHAddress(state.contractAddress)) {
+      throw new Error('Please enter a valid contract address.');
+    }
+
+    try {
+      JSON.parse(state.abi);
+    } catch (e) {
+      throw new Error(`ABI Error: ${e.message}`);
+    }
+
+    if (state.contracts.find(item => item.name === state.customContractName)) {
+      throw new Error('Contract name already exists.');
+    }
+
+    const newContract = {
+      abi: state.abi,
+      address: state.contractAddress,
+      name: state.customContractName,
+      label: state.customContractName,
+      networkId: state.networkId,
+      uuid
+    };
+
+    createContractWithId(newContract, uuid);
+    const network = getNetworkById(state.networkId)!;
+    network.contracts.unshift(uuid);
+    updateNetworks(state.networkId, network);
+    updateNetworkContractOptions(state.networkId);
+    handleContractSelected(newContract);
+  };
+
   const setGeneratedFormVisible = (visible: boolean) => {
+    if (visible) {
+      if (!state.contractAddress || !state.abi) {
+        throw new Error(
+          'Please select an existing contract or enter custom contract address and ABI.'
+        );
+      }
+
+      if (!isValidETHAddress(state.contractAddress)) {
+        throw new Error('Please enter a valid contract address.');
+      }
+
+      try {
+        JSON.parse(state.abi);
+      } catch (e) {
+        throw new Error(`ABI Error: ${e.message}`);
+      }
+    }
+
     setState((prevState: InteractWithContractState) => ({
       ...prevState,
       showGeneratedForm: visible
@@ -237,6 +302,8 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     handleContractAddressChanged,
     handleContractSelected,
     handleAbiChanged,
+    handleCustomContractNameChanged,
+    handleSaveContractSubmit,
     updateNetworkContractOptions,
     setGeneratedFormVisible,
     handleInteractionFormSubmit,
