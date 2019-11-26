@@ -1043,6 +1043,9 @@
     "DASHBOARD_ACTIONS_REQUEST_ASSETS_TITLE": "Request Assets",
     "DASHBOARD_ACTIONS_REQUEST_ASSETS_SUBTITLE": "Request a payment to your address.",
     "DASHBOARD_ACTIONS_GET_WALLET_TITLE": "Get a Hardware Wallet",
-    "DASHBOARD_ACTIONS_GET_WALLET_SUBTITLE": " Ensure your assets stay safe & offline."
+    "DASHBOARD_ACTIONS_GET_WALLET_SUBTITLE": " Ensure your assets stay safe & offline.",
+    "UNLOCK_PROTOCOL_DONATOR_TITLE": "Thank you for donating to MyCrypto!",
+    "UNLOCK_PROTOCOL_DONATOR_DESCRIPTION": "Your donation will go towards maintaining and upgrading this website as well as our other products!",
+    "UNLOCK_PROTOCOL_DONATOR_DESCRIPTION_ADD": "Are you confused? We noticed that you donated to us using [Unlock Protocol](https://unlock-protocol.com). In the future, we will make features just for you and philanthropists like you!"
   }
 }

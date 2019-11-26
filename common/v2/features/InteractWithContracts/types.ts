@@ -1,4 +1,4 @@
-import { NetworkId, Contract, StoreAccount, ITxConfig } from 'v2/types';
+import { NetworkId, Contract, StoreAccount, ITxConfig, ITxReceipt } from 'v2/types';
 
 export enum ABIItemType {
   FUNCTION = 'function',
@@ -37,7 +37,7 @@ export interface ABIItem {
   payable?: boolean; // Deprecated, use stateMutability
   constant?: boolean; // Deprecated, use stateMutability
   anonymous?: boolean;
-  payAmount?: number;
+  payAmount: string;
   inputs: ABIField[];
   outputs: ABIField[];
 }
@@ -54,4 +54,6 @@ export interface InteractWithContractState {
   data: string;
   account: StoreAccount | undefined;
   rawTransaction: ITxConfig;
+  txConfig: ITxConfig;
+  txReceipt: ITxReceipt | undefined;
 }

@@ -37,6 +37,8 @@ export interface TableContent {
 
 export interface TableData extends TableContent {
   head: (string | JSX.Element)[];
+  overlay?: ReactNode;
+  overlayRows?: number[];
   config?: TableConfig;
 }
 
@@ -201,7 +203,7 @@ class AbstractTable extends Component<Props, State> {
   }
 
   public render() {
-    const { head, config, ...rest } = this.props;
+    const { head, config, overlay, overlayRows, ...rest } = this.props;
     const { collapsedGroups, sortedColumnDirection } = this.state;
     const { body, groups } = this.getSortedLayout();
 
@@ -243,15 +245,20 @@ class AbstractTable extends Component<Props, State> {
           {/* Ungrouped rows are placed on top of grouped rows. */}
           {body.map((row, rowIndex) => (
             <TableRow key={rowIndex}>
-              {row.map((cell, cellIndex) => (
-                <TableCell
-                  key={cellIndex}
-                  isReversed={isReversedColumn(head[cellIndex])}
-                  data-testid={`ungrouped-${rowIndex}-${cellIndex}`}
-                >
-                  {cell}
-                </TableCell>
-              ))}
+              {overlay && overlayRows!.includes(rowIndex) ? (
+                // TODO: Solve jump in th width when the overlay is toggled.
+                <td colSpan={head.length}>{overlay}</td>
+              ) : (
+                row.map((cell, cellIndex) => (
+                  <TableCell
+                    key={cellIndex}
+                    isReversed={isReversedColumn(head[cellIndex])}
+                    data-testid={`ungrouped-${rowIndex}-${cellIndex}`}
+                  >
+                    {cell}
+                  </TableCell>
+                ))
+              )}
             </TableRow>
           ))}
           {groups!.map(({ title, entries, offset = 0 }) => (

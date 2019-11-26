@@ -156,7 +156,7 @@
     "image-webpack-loader": "4.2.0",
     "isomorphic-fetch": "2.2.1",
     "jest": "24.1.0",
-    "jquery": "3.3.1",
+    "jquery": "3.4.0",
     "klaw-sync": "3.0.2",
     "lint-staged": "9.4.2",
     "local-web-server": "3.0.7",

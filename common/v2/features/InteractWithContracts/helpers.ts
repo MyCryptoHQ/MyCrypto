@@ -1,6 +1,13 @@
 import { sortBy, cloneDeep } from 'lodash';
 import { StateMutabilityType, ABIItem, ABIItemType } from './types';
-import { WalletId, SigningComponents, StoreAccount, NetworkId } from 'v2/types';
+import {
+  WalletId,
+  SigningComponents,
+  StoreAccount,
+  NetworkId,
+  ITxConfig,
+  ITxObject
+} from 'v2/types';
 import {
   SignTransactionPrivateKey,
   SignTransactionWeb3,
@@ -11,6 +18,7 @@ import {
   SignTransactionParity,
   SignTransactionMnemonic
 } from 'v2/components';
+import { getAssetByUUID, hexToString, hexWeiToString } from 'v2/services';
 
 export const isReadOperation = (abiFunction: ABIItem) => {
   const { stateMutability } = abiFunction;
@@ -53,6 +61,7 @@ export const generateFunctionFieldsDisplayNames = (abiFunction: ABIItem) => {
     }
   });
 
+  tempFunction.payAmount = '0';
   return tempFunction;
 };
 
@@ -89,3 +98,31 @@ export const WALLET_STEPS: SigningComponents = {
 
 export const getAccountsInNetwork = (accounts: StoreAccount[], networkId: NetworkId) =>
   accounts.filter(acc => acc.networkId === networkId && WALLET_STEPS[acc.wallet]);
+
+export const makeTxConfigFromTransaction = (
+  rawTransaction: ITxObject,
+  account: StoreAccount,
+  amount: string
+): ITxConfig => {
+  const { gasPrice, gasLimit, nonce, data, to, value } = rawTransaction;
+  const { address, network } = account;
+  const baseAsset = getAssetByUUID(network.baseAsset)!;
+
+  const txConfig: ITxConfig = {
+    from: address,
+    amount,
+    receiverAddress: to,
+    senderAccount: account,
+    network,
+    asset: baseAsset,
+    baseAsset,
+    gasPrice: hexToString(gasPrice),
+    gasLimit,
+    value: hexWeiToString(value),
+    nonce,
+    data,
+    rawTransaction
+  };
+
+  return txConfig;
+};

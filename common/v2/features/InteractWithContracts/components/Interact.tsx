@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Identicon, Button } from '@mycrypto/ui';
 
 import { NetworkSelectDropdown, InputField, Dropdown, InlineErrorMsg } from 'v2/components';
-import { NetworkId, Contract, StoreAccount } from 'v2/types';
+import { NetworkId, Contract, StoreAccount, ITxConfig } from 'v2/types';
 
 import ContractDropdownOption from './ContractDropdownOption';
 import ContractDropdownValue from './ContractDropdownValue';
@@ -102,6 +102,7 @@ interface Props {
   showGeneratedForm: boolean;
   account: StoreAccount;
   customContractName: string;
+  rawTransaction: ITxConfig;
   handleContractSelected(contract: Contract | undefined): void;
   handleNetworkSelected(networkId: string): void;
   handleContractAddressChanged(address: string): void;
@@ -114,6 +115,8 @@ interface Props {
   handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<object>;
   handleAccountSelected(account: StoreAccount): void;
   handleSaveContractSubmit(): void;
+  estimateGas(submitedFunction: ABIItem): Promise<void>;
+  handleGasSelectorChange(payload: ITxConfig): void;
 }
 
 export default function Interact(props: Props) {
@@ -136,7 +139,10 @@ export default function Interact(props: Props) {
     customContractName,
     handleAccountSelected,
     handleInteractionFormWriteSubmit,
-    handleSaveContractSubmit
+    handleSaveContractSubmit,
+    estimateGas,
+    rawTransaction,
+    handleGasSelectorChange
   } = props;
 
   const [error, setError] = useState(undefined);
@@ -254,6 +260,9 @@ export default function Interact(props: Props) {
           handleAccountSelected={handleAccountSelected}
           handleInteractionFormWriteSubmit={handleInteractionFormWriteSubmit}
           networkId={networkId}
+          estimateGas={estimateGas}
+          rawTransaction={rawTransaction}
+          handleGasSelectorChange={handleGasSelectorChange}
         />
       )}
     </>

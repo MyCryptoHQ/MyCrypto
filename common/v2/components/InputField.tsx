@@ -112,7 +112,7 @@ interface Props {
   isLoading?: boolean;
   onChange?(event: any): void;
   onBlur?(event: any): void;
-  validate?(): void | undefined;
+  validate?(): Promise<void> | void | undefined;
 }
 
 export class InputField extends Component<Props> {

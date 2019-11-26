@@ -2,29 +2,26 @@ import get from 'lodash/get';
 
 import { IS_DEV, generateUUID } from 'v2/utils';
 import StorageService from './Storage';
-import {
-  CACHE_TIME_TO_LIVE,
-  CACHE_LOCALSTORAGE_KEY,
-  ENCRYPTED_CACHE_KEY,
-  CACHE_INIT
-} from './constants';
-import { cachedValueIsFresh } from './helpers';
-import { Cache, NewCacheEntry } from './types';
+import { LOCALSTORAGE_KEY, ENCRYPTED_STORAGE_KEY, CACHE_INIT } from './constants';
+import { DataCache, DataEntry } from './types';
 import { initializeCache } from './seedCache';
 import { LocalCache } from 'v2/types';
 
+// Keep an in Memory copy of LocalStorage.
+// If usefull we can restore ttl checks for stale cache by checking
+// https://github.com/MyCryptoHQ/MyCrypto/commit/d10b804e35bb44ce72b8d7d0363b0bbd0ebf7a73
 export class CacheServiceBase {
-  private cache: Cache = {};
+  private cache: DataCache = {};
 
   public constructor() {
-    const persistedCache = StorageService.instance.getEntry(CACHE_LOCALSTORAGE_KEY);
+    const persistedCache = StorageService.instance.getEntry(LOCALSTORAGE_KEY);
 
     if (persistedCache) {
       this.initializeCache(persistedCache);
     }
   }
 
-  public initializeCache(cache: Cache) {
+  public initializeCache(cache: DataCache) {
     this.cache = cache;
   }
 
@@ -36,7 +33,7 @@ export class CacheServiceBase {
 
     // If that fails, try retrieving it from LocalStorage.
     if (!entry) {
-      const storage = StorageService.instance.getEntry(CACHE_LOCALSTORAGE_KEY);
+      const storage = StorageService.instance.getEntry(LOCALSTORAGE_KEY);
 
       if (storage && storage[identifier]) {
         entry = storage[identifier][entryKey];
@@ -46,26 +43,13 @@ export class CacheServiceBase {
       }
     }
 
-    if (cachedValueIsFresh(entry)) {
-      return entry.value;
-    } else {
-      this.clearEntry(identifier, entryKey);
-      this.updatePersistedCache();
-
-      return null;
-    }
+    return entry;
   }
 
-  public setEntry(identifier: string, entries: NewCacheEntry, useTTL?: boolean) {
+  public setEntry(identifier: string, entries: DataEntry) {
     this.ensureSubcache(identifier);
 
-    Object.entries(entries).forEach(
-      ([key, value]) =>
-        (this.cache[identifier][key] = {
-          value,
-          ttl: useTTL ? Date.now() + CACHE_TIME_TO_LIVE : -1
-        })
-    );
+    Object.entries(entries).forEach(([key, value]) => (this.cache[identifier][key] = value));
 
     this.updatePersistedCache();
   }
@@ -78,7 +62,7 @@ export class CacheServiceBase {
 
     // If that fails, try retrieving it from LocalStorage.
     if (!entry) {
-      const storage = StorageService.instance.getEntry(CACHE_LOCALSTORAGE_KEY);
+      const storage = StorageService.instance.getEntry(LOCALSTORAGE_KEY);
 
       if (storage && storage[identifier]) {
         entry = storage[identifier];
@@ -89,9 +73,8 @@ export class CacheServiceBase {
     }
 
     // Extracts the actual cached values for every entry
-    return Object.keys(entry).reduce((result, key) => {
-      // @ts-ignore
-      result[key] = entry[key].value;
+    return Object.keys(entry).reduce((result: DataEntry, key) => {
+      result[key] = entry[key];
       return result;
     }, {});
   }
@@ -116,7 +99,7 @@ export class CacheServiceBase {
   }
 
   private updatePersistedCache() {
-    StorageService.instance.setEntry(CACHE_LOCALSTORAGE_KEY, this.cache);
+    StorageService.instance.setEntry(LOCALSTORAGE_KEY, this.cache);
   }
 }
 
@@ -148,7 +131,7 @@ export const hardRefreshCache = () => {
 };
 
 export const getCacheRaw = (): LocalCache => {
-  const c = StorageService.instance.getEntry(CACHE_LOCALSTORAGE_KEY);
+  const c = StorageService.instance.getEntry(LOCALSTORAGE_KEY);
   return c ? c : CACHE_INIT;
 };
 
@@ -157,26 +140,26 @@ export const getCache = (): LocalCache => {
   return getCacheRaw();
 };
 
-export const setCache = (newCache: Cache) => {
-  localStorage.setItem(CACHE_LOCALSTORAGE_KEY, JSON.stringify(newCache));
-  CacheService.instance.initializeCache(newCache);
+export const setCache = (newCache: LocalCache) => {
+  localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(newCache));
+  CacheService.instance.initializeCache((newCache as unknown) as DataCache);
 };
 
 export const destroyCache = () => {
-  localStorage.removeItem(CACHE_LOCALSTORAGE_KEY);
+  localStorage.removeItem(LOCALSTORAGE_KEY);
   CacheService.instance.initializeCache({});
 };
 
 export const getEncryptedCache = (): string => {
-  return localStorage.getItem(ENCRYPTED_CACHE_KEY) || '';
+  return localStorage.getItem(ENCRYPTED_STORAGE_KEY) || '';
 };
 
 export const setEncryptedCache = (newEncryptedCache: string) => {
-  localStorage.setItem(ENCRYPTED_CACHE_KEY, newEncryptedCache);
+  localStorage.setItem(ENCRYPTED_STORAGE_KEY, newEncryptedCache);
 };
 
 export const destroyEncryptedCache = () => {
-  localStorage.removeItem(ENCRYPTED_CACHE_KEY);
+  localStorage.removeItem(ENCRYPTED_STORAGE_KEY);
 };
 
 // Collection operations
@@ -191,7 +174,7 @@ type CollectionKey =
 
 type SettingsKey = 'settings' | 'screenLockSettings';
 
-export const create = <K extends CollectionKey>(key: K) => (value: NewCacheEntry) => {
+export const create = <K extends CollectionKey>(key: K) => (value: DataEntry) => {
   const uuid = generateUUID();
   const obj = {};
   // @ts-ignore ie. https://app.clubhouse.io/mycrypto/story/2376/remove-ts-ignore-from-common-v2-services-store-localcache-localcache-ts
@@ -199,12 +182,9 @@ export const create = <K extends CollectionKey>(key: K) => (value: NewCacheEntry
   CacheService.instance.setEntry(key, obj);
 };
 
-export const createWithID = <K extends CollectionKey>(key: K) => (
-  value: NewCacheEntry,
-  id: string
-) => {
+export const createWithID = <K extends CollectionKey>(key: K) => (value: DataEntry, id: string) => {
   const uuid = id;
-  if (CacheService.instance.getEntry(key, uuid) === null) {
+  if (CacheService.instance.getEntry(key, uuid) === undefined) {
     const obj = {};
     // @ts-ignore ie. https://app.clubhouse.io/mycrypto/story/2376/remove-ts-ignore-from-common-v2-services-store-localcache-localcache-ts
     obj[uuid] = value;
@@ -218,16 +198,14 @@ export const read = <K extends CollectionKey>(key: K) => (uuid: string): LocalCa
   return CacheService.instance.getEntry(key, uuid);
 };
 
-export const update = <K extends CollectionKey>(key: K) => (uuid: string, value: NewCacheEntry) => {
+export const update = <K extends CollectionKey>(key: K) => (uuid: string, value: DataEntry) => {
   const obj = {};
   // @ts-ignore ie. https://app.clubhouse.io/mycrypto/story/2376/remove-ts-ignore-from-common-v2-services-store-localcache-localcache-ts
   obj[uuid] = value;
   CacheService.instance.setEntry(key, obj);
 };
 
-export const updateAll = <K extends CollectionKey | SettingsKey>(key: K) => (
-  value: NewCacheEntry
-) => {
+export const updateAll = <K extends CollectionKey | SettingsKey>(key: K) => (value: DataEntry) => {
   CacheService.instance.setEntry(key, value);
 };
 

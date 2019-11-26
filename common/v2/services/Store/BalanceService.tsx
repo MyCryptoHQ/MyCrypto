@@ -3,7 +3,7 @@ import partition from 'lodash/partition';
 import { bigNumberify, BigNumber } from 'ethers/utils';
 import { default as BN } from 'bignumber.js';
 
-import { ETHSCAN_NETWORKS } from 'v2/config';
+import { ETHSCAN_NETWORKS, MYCRYPTO_UNLOCK_CONTRACT_ADDRESS } from 'v2/config';
 import { TAddress, StoreAccount, StoreAsset, Asset, NodeConfig, Network } from 'v2/types';
 import { ProviderHandler } from 'v2/services/EthService';
 import { FallbackProvider } from 'ethers/providers';
@@ -136,3 +136,30 @@ export const getAllTokensBalancesOfAccount = async (account: StoreAccount, asset
     throw new Error(err);
   }
 };
+
+export const getAccountsTokenBalance = async (accounts: StoreAccount[], tokenContract: string) => {
+  const scanner = getScanner(accounts[0].network.nodes[0]);
+  try {
+    return scanner.getTokenBalances(accounts.map(account => account.address), tokenContract);
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+// Unlock Token getBalance will return 0 if no valid unlock token is found for the address.
+// If there is an Unlock token found, it will return the id of the token.
+export const getAccountsUnlockVIPAddresses = async (accounts: StoreAccount[]) =>
+  getAccountsTokenBalance(accounts, MYCRYPTO_UNLOCK_CONTRACT_ADDRESS)
+    .then(unlockStatusBalanceMap =>
+      Object.keys(unlockStatusBalanceMap).filter(address =>
+        unlockStatusBalanceMap[address].isGreaterThan(new BN(0))
+      )
+    )
+    .catch(err => console.error(err));
+
+export const accountUnlockVIPDetected = async (accounts: StoreAccount[]) =>
+  !accounts || !(accounts.length > 0)
+    ? false
+    : getAccountsUnlockVIPAddresses(accounts)
+        .then((unlockAccounts: string[]) => !(!unlockAccounts || unlockAccounts.length === 0))
+        .catch(_ => false);
