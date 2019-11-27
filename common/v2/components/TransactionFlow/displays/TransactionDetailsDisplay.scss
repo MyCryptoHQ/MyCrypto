@@ -1,14 +1,24 @@
 .TransactionDetails {
   margin-bottom: 25px;
   display: block;
-  @media (min-width: 700px) {
-    max-width: 560px;
-  }
   &-row {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
-
+    &.stacked {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    &:nth-child(even) {
+      //should actually pull SILVER from v2/theme
+      background: #f8f8f8;
+    }
+    & > div {
+      padding: 7px 10px;
+    }
+    &.stacked &-column + &-data {
+      // yay vertical rhymth!
+      padding-top: 0px;
+    }     
     &-column {
       flex: 1;
       &:first-child {
@@ -18,15 +28,12 @@
         text-align: right;
       }
     }
-
     &-data {
       width: 100%;
       display: inline-block;
       overflow-wrap: break-word;
-      //overflow-wrap: break-word;
-    }
+    }   
   }
-
   &-detailButton {
     width: 100%;
     align-items: center;
