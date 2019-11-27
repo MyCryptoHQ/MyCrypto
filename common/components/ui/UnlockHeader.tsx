@@ -5,13 +5,11 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import translate from 'translations';
 import { IWallet } from 'libs/wallet/IWallet';
 import { AppState } from 'features/reducers';
-import WalletDecrypt, { DisabledWallets } from 'components/WalletDecrypt';
 import './UnlockHeader.scss';
 
 interface OwnProps {
   title?: string;
   wallet: IWallet;
-  disabledWallets?: DisabledWallets;
   showGenerateLink?: boolean;
 }
 
@@ -32,7 +30,7 @@ export class UnlockHeader extends React.PureComponent<Props, State> {
   }
 
   public render() {
-    const { title, wallet, disabledWallets, showGenerateLink, history } = this.props;
+    const { title, wallet, history } = this.props;
     const { isExpanded } = this.state;
 
     return (
@@ -49,11 +47,6 @@ export class UnlockHeader extends React.PureComponent<Props, State> {
             </span>
           </button>
         )}
-        <WalletDecrypt
-          hidden={!this.state.isExpanded}
-          disabledWallets={disabledWallets}
-          showGenerateLink={showGenerateLink}
-        />
       </article>
     );
   }

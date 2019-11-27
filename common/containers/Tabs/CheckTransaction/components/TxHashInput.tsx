@@ -6,7 +6,6 @@ import moment from 'moment';
 import translate from 'translations';
 import { isValidTxHash } from 'libs/validators';
 import { AppState } from 'features/reducers';
-import * as selectors from 'features/selectors';
 import { configSelectors } from 'features/config';
 import { Input } from 'components/ui';
 import './TxHashInput.scss';
@@ -17,7 +16,7 @@ interface OwnProps {
 }
 
 interface ReduxProps {
-  recentTxs: AppState['transactions']['recent'];
+  recentTxs: any[];
   isValidAddress: ReturnType<typeof configSelectors.getIsValidAddressFn>;
 }
 
@@ -125,7 +124,7 @@ class TxHashInput extends React.Component<Props, State> {
 
 export default connect(
   (state: AppState): ReduxProps => ({
-    recentTxs: selectors.getRecentNetworkTransactions(state),
+    recentTxs: [],
     isValidAddress: configSelectors.getIsValidAddressFn(state)
   })
 )(TxHashInput);

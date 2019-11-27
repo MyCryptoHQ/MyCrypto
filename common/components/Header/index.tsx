@@ -21,7 +21,6 @@ import {
   configNodesCustomTypes
 } from 'features/config';
 import { AppState } from 'features/reducers';
-import { transactionFieldsActions } from 'features/transaction';
 import CustomNodeModal from 'components/CustomNodeModal';
 import NetworkDropdown from './components/NetworkDropdown';
 import Navigation from './components/Navigation';
@@ -35,7 +34,6 @@ interface OwnProps {
 interface DispatchProps {
   changeLanguage: configMetaActions.TChangeLanguage;
   changeNodeRequestedOneTime: configNodesSelectedActions.TChangeNodeRequestedOneTime;
-  setGasPriceField: transactionFieldsActions.TSetGasPriceField;
   addCustomNode: configNodesCustomActions.TAddCustomNode;
   removeCustomNode: configNodesCustomActions.TRemoveCustomNode;
   addCustomNetwork: configNetworksCustomActions.TAddCustomNetwork;
@@ -175,7 +173,6 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, AppState> = (
 });
 
 const mapDispatchToProps: DispatchProps = {
-  setGasPriceField: transactionFieldsActions.setGasPriceField,
   changeLanguage: configMetaActions.changeLanguage,
   changeNodeRequestedOneTime: configNodesSelectedActions.changeNodeRequestedOneTime,
   addCustomNode: configNodesCustomActions.addCustomNode,
