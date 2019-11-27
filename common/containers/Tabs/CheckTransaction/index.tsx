@@ -8,7 +8,6 @@ import { getParamFromURL } from 'utils/helpers';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
 import { configSelectors } from 'features/config';
-import { TransactionStatus as TransactionStatusComponent } from 'components';
 import TabSection from 'containers/TabSection';
 import TxHashInput from './components/TxHashInput';
 import './index.scss';
@@ -68,12 +67,6 @@ class CheckTransaction extends React.Component<Props, State> {
             </p>
             <TxHashInput hash={hash} onSubmit={this.handleHashSubmit} />
           </section>
-
-          {hash && (
-            <section className="CheckTransaction-tx Tab-content-pane">
-              <TransactionStatusComponent key={network.chainId} txHash={hash} />
-            </section>
-          )}
         </div>
       </TabSection>
     );

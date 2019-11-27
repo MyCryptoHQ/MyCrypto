@@ -1,6 +1,5 @@
-import { Wei, toTokenBase } from 'libs/units';
+import { Wei } from 'libs/units';
 import { addHexPrefix } from 'ethereumjs-util';
-import { AppState } from 'features/reducers';
 
 export function toHexWei(weiString: string): string {
   return addHexPrefix(Wei(weiString).toString(16));
@@ -14,26 +13,6 @@ export function sanitizeHex(hex: string) {
   const hexStr = hex.substring(0, 2) === '0x' ? hex.substring(2) : hex;
   return hex !== '' ? `0x${padLeftEven(hexStr)}` : '';
 }
-
-export const buildEIP681EtherRequest = (
-  recipientAddr: string,
-  chainId: number,
-  etherValue: AppState['transaction']['fields']['value']
-) => `ethereum:${recipientAddr}${chainId !== 1 ? `@${chainId}` : ''}?value=${etherValue.raw}e18`;
-
-export const buildEIP681TokenRequest = (
-  recipientAddr: string,
-  contractAddr: string,
-  chainId: number,
-  tokenValue: AppState['transaction']['meta']['tokenTo'],
-  decimal: number,
-  gasLimit: AppState['transaction']['fields']['gasLimit']
-) =>
-  `ethereum:${contractAddr}${
-    chainId !== 1 ? `@${chainId}` : ''
-  }/transfer?address=${recipientAddr}&uint256=${toTokenBase(tokenValue.raw, decimal)}&gas=${
-    gasLimit.raw
-  }`;
 
 export const sanitizeNumericalInput = (input: string): string => {
   const inputFloat = Number(input);
