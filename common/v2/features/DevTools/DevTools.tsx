@@ -107,7 +107,6 @@ const DevTools = () => {
                           )}
                         />
                       </fieldset>
-                      Current dev-mode only features
                       <br />
                       Current dev-mode only features
                       <ul>
