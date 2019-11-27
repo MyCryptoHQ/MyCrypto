@@ -1,14 +1,33 @@
 import React, { Component } from 'react';
 import { setConfig } from 'react-hot-loader';
 import { hot } from 'react-hot-loader/root';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 // v2
-import { GAU_THEME } from 'v2/theme';
+import { BREAK_POINTS, GAU_THEME } from 'v2/theme';
 import { IS_DEV, IS_ELECTRON } from 'v2/utils';
 import { NewAppReleaseModal } from 'v2/components';
 import { DevToolsManager } from 'v2/features';
 import AppProviders from './AppProviders';
 import { AppRouter } from './AppRouter';
+
+const AppProvidersInnerContainer = styled.div`
+  display: flex;
+`;
+const AppRouterContainer = styled.div`
+  flex: 1;
+  overflow: auto;
+  max-height: 100vh;
+`;
+const DevToolsManagerContainer = styled.div`
+  overflow: auto;
+  max-height: 100vh;
+
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    position: absolute;
+    z-index: 100;
+    width: 100vw;
+  }
+`;
 
 class RootClass extends Component {
   public componentDidMount() {
@@ -23,10 +42,19 @@ class RootClass extends Component {
     return (
       <ThemeProvider theme={GAU_THEME}>
         <AppProviders>
-          <AppRouter />
-          <div id="ModalContainer" />
-          {IS_ELECTRON ? <NewAppReleaseModal /> : <></>}
-          {IS_DEV ? <DevToolsManager /> : <></>}
+          <AppProvidersInnerContainer>
+            {/* DevToolsManager */}
+            <DevToolsManagerContainer>
+              {IS_DEV ? <DevToolsManager /> : <></>}
+            </DevToolsManagerContainer>
+
+            {/* Router */}
+            <AppRouterContainer>
+              <AppRouter />
+              <div id="ModalContainer" />
+              {IS_ELECTRON ? <NewAppReleaseModal /> : <></>}
+            </AppRouterContainer>
+          </AppProvidersInnerContainer>
         </AppProviders>
       </ThemeProvider>
     );
