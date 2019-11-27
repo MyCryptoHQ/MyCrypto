@@ -17,7 +17,8 @@ import {
   getGasEstimate,
   hexToNumber,
   updateNetworks,
-  inputValueToHex
+  inputValueToHex,
+  deleteContracts
 } from 'v2/services';
 import { AbiFunction } from 'v2/services/EthService/contracts/ABIFunction';
 import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
@@ -155,6 +156,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       name: state.customContractName,
       label: state.customContractName,
       networkId: state.networkId,
+      isCustom: true,
       uuid
     };
 
@@ -164,6 +166,15 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     updateNetworks(state.networkId, network);
     updateNetworkContractOptions(state.networkId);
     handleContractSelected(newContract);
+  };
+
+  const handleDeleteContract = (contractUuid: string) => {
+    deleteContracts(contractUuid);
+    const network = getNetworkById(state.networkId)!;
+    network.contracts = network.contracts.filter(item => item !== contractUuid);
+    updateNetworks(state.networkId, network);
+    updateNetworkContractOptions(state.networkId);
+    handleContractSelected(customContract);
   };
 
   const setGeneratedFormVisible = (visible: boolean) => {
@@ -368,6 +379,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     handleTxSigned,
     estimateGas,
     handleGasSelectorChange,
+    handleDeleteContract,
     interactWithContractsState: state
   };
 };

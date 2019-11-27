@@ -9,4 +9,5 @@ export interface Contract {
 
 export interface ExtendedContract extends Contract {
   uuid: string;
+  isCustom?: boolean;
 }

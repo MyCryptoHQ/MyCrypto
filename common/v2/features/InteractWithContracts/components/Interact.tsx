@@ -3,13 +3,16 @@ import styled from 'styled-components';
 import { Identicon, Button } from '@mycrypto/ui';
 
 import { NetworkSelectDropdown, InputField, Dropdown, InlineErrorMsg } from 'v2/components';
-import { NetworkId, Contract, StoreAccount, ITxConfig } from 'v2/types';
+import { NetworkId, Contract, StoreAccount, ITxConfig, ExtendedContract } from 'v2/types';
+import { COLORS } from 'v2/theme';
 
 import ContractDropdownOption from './ContractDropdownOption';
 import ContractDropdownValue from './ContractDropdownValue';
 import GeneratedInteractionForm from './GeneratedInteractionForm';
 import { CUSTOM_CONTRACT_ADDRESS } from '../constants';
 import { ABIItem } from '../types';
+
+const { BRIGHT_SKY_BLUE } = COLORS;
 
 const NetworkSelectorWrapper = styled.div`
   margin-bottom: 12px;
@@ -93,11 +96,21 @@ const ErrorWrapper = styled.div`
   margin-bottom: 12px;
 `;
 
+const ContractSelectLabelWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const DeleteLabel = styled(Label)`
+  color: ${BRIGHT_SKY_BLUE};
+  cursor: pointer;
+`;
+
 interface Props {
   networkId: NetworkId;
   contractAddress: string;
   abi: string;
-  contract: Contract;
+  contract: ExtendedContract;
   contracts: Contract[];
   showGeneratedForm: boolean;
   account: StoreAccount;
@@ -117,6 +130,7 @@ interface Props {
   handleSaveContractSubmit(): void;
   estimateGas(submitedFunction: ABIItem): Promise<void>;
   handleGasSelectorChange(payload: ITxConfig): void;
+  handleDeleteContract(contractUuid: string): void;
 }
 
 export default function Interact(props: Props) {
@@ -142,7 +156,8 @@ export default function Interact(props: Props) {
     handleSaveContractSubmit,
     estimateGas,
     rawTransaction,
-    handleGasSelectorChange
+    handleGasSelectorChange,
+    handleDeleteContract
   } = props;
 
   const [error, setError] = useState(undefined);
@@ -173,7 +188,7 @@ export default function Interact(props: Props) {
     }
   };
 
-  const isCustomContract = contract && contract.address === CUSTOM_CONTRACT_ADDRESS;
+  const customEditingMode = contract && contract.address === CUSTOM_CONTRACT_ADDRESS;
 
   return (
     <>
@@ -187,7 +202,13 @@ export default function Interact(props: Props) {
       </NetworkSelectorWrapper>
       <ContractSelectionWrapper>
         <FieldWrapper>
-          <Label>Select Existing Contract</Label>
+          <ContractSelectLabelWrapper>
+            <Label>Select Existing Contract</Label>{' '}
+            {contract && contract.isCustom && (
+              <DeleteLabel onClick={() => handleDeleteContract(contract.uuid)}>Delete</DeleteLabel>
+            )}
+          </ContractSelectLabelWrapper>
+
           <DropdownContainer>
             <Dropdown
               value={contract}
@@ -222,10 +243,10 @@ export default function Interact(props: Props) {
             textarea={true}
             resizableTextArea={true}
             height={'108px'}
-            disabled={!isCustomContract}
+            disabled={!customEditingMode}
           />
         </InputWrapper>
-        {isCustomContract && (
+        {customEditingMode && (
           <>
             <SaveContractWrapper>
               <InputField

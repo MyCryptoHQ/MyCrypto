@@ -37,7 +37,8 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
     handleTxSigned,
     handleSaveContractSubmit,
     estimateGas,
-    handleGasSelectorChange
+    handleGasSelectorChange,
+    handleDeleteContract
   } = useStateReducer(InteractWithContractsFactory, interactWithContractsInitialState);
 
   const { account }: InteractWithContractState = interactWithContractsState;
@@ -97,7 +98,8 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
           handleInteractionFormWriteSubmit(payload, goToNextStep),
         handleAccountSelected,
         estimateGas,
-        handleGasSelectorChange
+        handleGasSelectorChange,
+        handleDeleteContract
       }
     },
     {
