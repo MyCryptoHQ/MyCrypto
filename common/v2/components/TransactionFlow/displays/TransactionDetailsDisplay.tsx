@@ -57,7 +57,7 @@ function TransactionDetailsDisplay({
               onClick={() => setShowDetails(!showDetails)}
               className="TransactionDetails-detailButton"
             >
-              {showDetails ? 'Hide' : 'Show'} Details
+              {showDetails ? '- Hide' : '+ Show'} Details
             </Button>
           </div>
         </div>
@@ -65,16 +65,24 @@ function TransactionDetailsDisplay({
           <div className="TransactionDetails-content">
             {baseAsset && senderAccount.uuid && (
               <div className="TransactionDetails-row">
-                <div className="TransactionDetails-row-column">{`Account Balance (${baseAsset.ticker}):`}</div>
                 <div className="TransactionDetails-row-column">
-                  {`${weiToFloat(bigNumberify(getBalanceFromAccount(senderAccount))).toFixed(6)}`}
+                  {`Account Balance (${baseAsset.ticker}):`}
                 </div>
+                <div className="TransactionDetails-row-column">{`
+                  ${weiToFloat(bigNumberify(getBalanceFromAccount(senderAccount))).toFixed(6)}
+                  ${baseAsset.ticker}
+                `}</div>
               </div>
             )}
             {asset.type === 'erc20' && (
               <div className="TransactionDetails-row">
-                <div className="TransactionDetails-row-column">{`Account Balance (${asset.ticker}):`}</div>
-                <div className="TransactionDetails-row-column">{`${userAssetBalance}`}</div>
+                <div className="TransactionDetails-row-column">
+                  {`Account Balance (${asset.ticker}):`}
+                </div>
+                <div className="TransactionDetails-row-column">{`
+                  ${userAssetBalance}
+                  ${baseAsset.ticker}
+                `}</div>
               </div>
             )}
             <div className="TransactionDetails-row">
@@ -90,10 +98,10 @@ function TransactionDetailsDisplay({
             {baseAsset && (
               <div className="TransactionDetails-row">
                 <div className="TransactionDetails-row-column">Gas Price:</div>
-                <div className="TransactionDetails-row-column">{`${baseToConvertedUnit(
-                  gasPrice,
-                  DEFAULT_ASSET_DECIMAL
-                )} ${baseAsset.ticker} (${baseToConvertedUnit(gasPrice, 9)} gwei)`}</div>
+                <div className="TransactionDetails-row-column">{`
+                  ${baseToConvertedUnit(gasPrice, 9)} gwei
+                  (${baseToConvertedUnit(gasPrice, DEFAULT_ASSET_DECIMAL)} ${baseAsset.ticker})
+                `}</div>
               </div>
             )}
             <div className="TransactionDetails-row">
@@ -106,20 +114,16 @@ function TransactionDetailsDisplay({
             </div>
             {data !== '0x0' && (
               <>
-                <div className="TransactionDetails-row">
+                <div className="TransactionDetails-row stacked">
                   <div className="TransactionDetails-row-column">Data:</div>
-                </div>
-                <div className="TransactionDetails-row">
                   <div className="TransactionDetails-row-data">{data}</div>
                 </div>
               </>
             )}
             {rawTransaction && (
               <>
-                <div className="TransactionDetails-row">
+                <div className="TransactionDetails-row stacked">
                   <div className="TransactionDetails-row-column">Raw Transaction:</div>
-                </div>
-                <div className="TransactionDetails-row">
                   <div className="TransactionDetails-row-data">
                     <CopyableCodeBlock>{JSON.stringify(rawTransaction)}</CopyableCodeBlock>
                   </div>
@@ -128,10 +132,8 @@ function TransactionDetailsDisplay({
             )}
             {signedTransaction && (
               <>
-                <div className="TransactionDetails-row">
+                <div className="TransactionDetails-row stacked">
                   <div className="TransactionDetails-row-column">Signed Transaction:</div>
-                </div>
-                <div className="TransactionDetails-row">
                   <div className="TransactionDetails-row-data">
                     <CopyableCodeBlock>{signedTransaction}></CopyableCodeBlock>
                   </div>
