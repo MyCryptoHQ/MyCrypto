@@ -17,7 +17,6 @@ import {
   configNodesSelectedActions
 } from 'features/config';
 import { sidebarActions } from 'features/sidebar';
-import { walletActions } from 'features/wallet';
 import logo from 'assets/images/logo-mycrypto.svg';
 import { LINKSET } from '../constants';
 import { generateMenuIcon, generateCaretIcon } from '../helpers';
@@ -36,7 +35,6 @@ interface StateProps {
 interface DispatchProps {
   openSidebar: sidebarActions.TOpenSidebar;
   changeNodeRequestedOneTime: configNodesSelectedActions.TChangeNodeRequestedOneTime;
-  setAccessMessage: walletActions.TSetAccessMessage;
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -63,7 +61,7 @@ class MobileHeader extends Component<Props> {
   }
 
   public render() {
-    const { nodeLabel, openSidebar, languageSelection, setAccessMessage } = this.props;
+    const { nodeLabel, openSidebar, languageSelection } = this.props;
     const {
       menuVisible,
       visibleDropdowns: { sendAndReceive, buyAndExchange, tools }
@@ -83,7 +81,6 @@ class MobileHeader extends Component<Props> {
             <Link
               to="/"
               onClick={() => {
-                setAccessMessage('');
                 this.trackHomeIconClick();
               }}
             >
@@ -110,9 +107,7 @@ class MobileHeader extends Component<Props> {
                       <ul className="MobileHeader-menu-subitems">
                         {LINKSET.SEND_AND_RECEIVE.map(item => (
                           <li key={item.to} onClick={this.toggleMenu}>
-                            <Link to={item.to} onClick={() => setAccessMessage(item.accessMessage)}>
-                              {item.title}
-                            </Link>
+                            <Link to={item.to}>{item.title}</Link>
                           </li>
                         ))}
                       </ul>
@@ -124,9 +119,7 @@ class MobileHeader extends Component<Props> {
                       <ul className="MobileHeader-menu-subitems">
                         {LINKSET.BUY_AND_EXCHANGE.map(item => (
                           <li key={item.to} onClick={this.toggleMenu}>
-                            <Link to={item.to} onClick={() => setAccessMessage('')}>
-                              {item.title}
-                            </Link>
+                            <Link to={item.to}>{item.title}</Link>
                           </li>
                         ))}
                       </ul>
@@ -139,9 +132,7 @@ class MobileHeader extends Component<Props> {
                       <ul className="MobileHeader-menu-subitems">
                         {LINKSET.TOOLS.map(item => (
                           <li key={item.to} onClick={this.toggleMenu}>
-                            <Link to={item.to} onClick={() => setAccessMessage('')}>
-                              {item.title}
-                            </Link>
+                            <Link to={item.to}>{item.title}</Link>
                           </li>
                         ))}
                       </ul>
@@ -249,8 +240,7 @@ const mapStateToProps = (state: AppState, { networkParam }: any) => ({
 
 const mapDispatchToProps = {
   openSidebar: sidebarActions.openSidebar,
-  changeNodeRequestedOneTime: configNodesSelectedActions.changeNodeRequestedOneTime,
-  setAccessMessage: walletActions.setAccessMessage
+  changeNodeRequestedOneTime: configNodesSelectedActions.changeNodeRequestedOneTime
 };
 
 export default connect(

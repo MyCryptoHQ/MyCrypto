@@ -5,14 +5,9 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
 
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { loadStatePropertyOrEmptyObject } from 'utils/localStorage';
 import RootReducer, { AppState } from './reducers';
 import sagas from './sagas';
-import { AddressBookState } from './addressBook/types';
-import { WalletState } from './wallet/types';
-import { INITIAL_STATE as initialWalletState } from './wallet/reducer';
 import { rehydrateConfigAndCustomTokenState } from './configAndTokens';
-import rehydrateAddressBook from './rehydrateAddressBook';
 
 export default function configureStore() {
   const logger = createLogger({
@@ -30,15 +25,7 @@ export default function configureStore() {
     middleware = applyMiddleware(sagaMiddleware, routerMiddleware(history as any));
   }
 
-  const savedAddressBook = loadStatePropertyOrEmptyObject<AddressBookState>('addressBook');
-  const savedWalletState = loadStatePropertyOrEmptyObject<WalletState>('wallet');
-
   const persistedInitialState: Partial<AppState> = {
-    addressBook: rehydrateAddressBook(savedAddressBook),
-    wallet: {
-      ...initialWalletState,
-      ...savedWalletState
-    },
     ...rehydrateConfigAndCustomTokenState()
   };
 

@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { shepherdProvider, getShepherdPending, getShepherdOffline } from 'libs/nodes';
 import { configMetaActions, configMetaSelectors } from 'features/config';
 import { notificationsActions } from 'features/notifications';
-import handleMetaMaskPolling, { METAMASK_POLLING_INTERVAL } from './handleMetaMaskPolling';
 import configureStore from './configureStore';
 
 const store = configureStore();
@@ -90,10 +89,5 @@ window.addEventListener('load', () => {
     }
   });
 });
-
-/** @desc When MetaMask is loaded as an extension, watch for network changes. */
-if ((window as any).web3) {
-  setInterval(handleMetaMaskPolling.bind(null, store), METAMASK_POLLING_INTERVAL);
-}
 
 export default store;
