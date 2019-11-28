@@ -319,11 +319,12 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       delete rawTransactionCopy.from;
     } catch (e) {
       throw e;
+    } finally {
+      setState((prevState: InteractWithContractState) => ({
+        ...prevState,
+        rawTransaction: rawTransactionCopy
+      }));
     }
-    setState((prevState: InteractWithContractState) => ({
-      ...prevState,
-      rawTransaction: rawTransactionCopy
-    }));
   };
 
   const handleGasSelectorChange = (payload: ITxConfig) => {

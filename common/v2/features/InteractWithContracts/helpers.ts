@@ -75,8 +75,6 @@ export const setFunctionOutputValues = (abiFunction: ABIItem, outputValues: any)
     let outputValue = outputValues[output.name];
     if (Buffer.isBuffer(outputValue)) {
       outputValue = bufferToHex(outputValue);
-    } else if (Array.isArray(outputValue)) {
-      outputValue = JSON.stringify(outputValue);
     }
 
     output.value = outputValue;
