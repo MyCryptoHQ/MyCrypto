@@ -35,7 +35,7 @@ const ActionButton = styled(Button)`
 `;
 
 const CustomLabel = styled(Typography)`
-  font-size: 16px;
+  font-size: 1em;
 `;
 
 interface Props {

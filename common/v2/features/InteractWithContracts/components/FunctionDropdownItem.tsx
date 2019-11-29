@@ -59,7 +59,9 @@ export default function FunctionDropdownItem(props: Props) {
       isSelectable={!!onSelect}
     >
       {option.name}
-      <Sticker isRead={isRead}>{isRead ? translateRaw('READ') : translateRaw('WRITE')}</Sticker>
+      <Sticker isRead={isRead}>
+        {isRead ? translateRaw('READ').toUpperCase() : translateRaw('WRITE').toUpperCase()}
+      </Sticker>
     </OptionWrapper>
   );
 }

@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 `;
 
 const CustomLabel = styled(Typography)`
-  font-size: 16px;
+  font-size: 1em;
 `;
 
 const FieldWrapper = styled.div``;

@@ -35,7 +35,7 @@ const FieldWrapper = styled.div`
   margin-top: 12px;
   flex: 1;
   p {
-    font-size: 16px;
+    font-size: 1em;
   }
 `;
 
@@ -43,7 +43,7 @@ const Separator = styled.div`
   width: 22px;
 `;
 
-const Label = styled.p`
+const Label = styled.div`
   line-height: 1;
   margin-bottom: 9px;
 `;

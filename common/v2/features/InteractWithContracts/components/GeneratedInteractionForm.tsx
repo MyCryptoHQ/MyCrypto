@@ -45,7 +45,7 @@ const FieldWrapper = styled.div<FieldWraperProps>`
 
   flex: 1;
   p {
-    font-size: 16px;
+    font-size: 1em;
   }
 `;
 
@@ -132,12 +132,9 @@ export default function GeneratedInteractionForm({
     if (isAutoGasSet || forceEstimate) {
       setError(undefined);
       try {
-        setIsLoading(true);
         await estimateGas(currentFunction);
       } catch (e) {
         setError(e.message);
-      } finally {
-        setIsLoading(false);
       }
     }
   };
