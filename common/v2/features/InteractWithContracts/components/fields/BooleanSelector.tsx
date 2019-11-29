@@ -5,7 +5,7 @@ import { Dropdown } from 'v2/components';
 
 import ContractDropdownOption from '../ContractDropdownOption';
 import ContractDropdownValue from '../ContractDropdownValue';
-import { FieldLabel } from '.';
+import FieldLabel from './FieldLabel';
 
 const Wrapper = styled.div`
   display: flex;

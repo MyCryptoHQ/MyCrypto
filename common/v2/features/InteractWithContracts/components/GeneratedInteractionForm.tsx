@@ -14,9 +14,8 @@ import {
   getFunctionsFromABI,
   setFunctionOutputValues
 } from '../helpers';
-import { FieldLabel, BooleanOutputField } from './fields';
+import { FieldLabel, BooleanOutputField, BooleanSelector } from './fields';
 import WriteForm from './WriteForm';
-import BooleanSelector from './fields/BooleanSelector';
 
 const { LIGHT_GREY } = COLORS;
 

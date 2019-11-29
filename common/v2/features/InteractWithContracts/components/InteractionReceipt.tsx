@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { TransactionReceipt } from 'v2/components/TransactionFlow';
 import { ITxReceipt, ITxConfig } from 'v2/types';
 

@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
-import { TUseStateReducerFactory, generateUUID } from 'v2/utils';
+import { TUseStateReducerFactory, generateUUID, fromTxReceiptObj } from 'v2/utils';
 import { DEFAULT_NETWORK } from 'v2/config';
 import { Contract, StoreAccount, ITxConfig } from 'v2/types';
 import {
@@ -20,7 +20,6 @@ import {
   inputValueToHex
 } from 'v2/services';
 import { AbiFunction } from 'v2/services/EthService/contracts/ABIFunction';
-import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
 import { isWeb3Wallet } from 'v2/utils/web3';
 
 import { customContract, CUSTOM_CONTRACT_ADDRESS } from './constants';

@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-
 import styled from 'styled-components';
 
 import { InputField, Typography, Checkbox } from 'v2/components';
