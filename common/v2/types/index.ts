@@ -48,6 +48,7 @@ export {
   ISignedTx,
   ITxObject,
   ITxConfig,
+  ITxStatus,
   IFormikFields,
   ISignComponentProps,
   IStepComponentProps,
@@ -63,3 +64,4 @@ export { FormData } from './formData';
 export { BlockExplorer } from './blockExplorer';
 export { GasPrice, GasEstimates } from './gas';
 export { BannerType } from './banner';
+export { ToastConfig, ToastType, ToastConfigsProps } from './toast';

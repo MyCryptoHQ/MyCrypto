@@ -4,8 +4,7 @@ import styled from 'styled-components';
 
 import { ROUTE_PATHS } from 'v2/config';
 import { COLORS } from 'v2/theme';
-import { useDevTools } from 'v2/services';
-import { AccountContext, AddressBookContext, StoreContext } from 'v2/services/Store';
+import { AccountContext, StoreContext } from 'v2/services/Store';
 import translate from 'v2/translations';
 import { AccountList, RouterLink, Typography, BannerAd, Desktop, Mobile } from 'v2/components';
 import { ActionTile, TokenPanel, WalletBreakdown, RecentTransactionList } from './components';
@@ -39,11 +38,9 @@ const EmptyTile = styled.div`
 `;
 
 export default function Dashboard() {
-  const { isActive: isDevToolsActive, displayRecentTransactionList } = useDevTools();
-  const { isUnlockVIP } = useContext(StoreContext);
+  const { isUnlockVIP, currentAccounts } = useContext(StoreContext);
   const { accounts } = useContext(AccountContext);
-  const { readAddressBook } = useContext(AddressBookContext);
-
+  const storeAccounts = currentAccounts();
   return (
     <div>
       {/* Mobile only */}
@@ -75,11 +72,9 @@ export default function Dashboard() {
           />
         </div>
         {!isUnlockVIP && <BannerAd />}
-        {isDevToolsActive && displayRecentTransactionList && (
-          <div className="Dashboard-mobile-section">
-            <RecentTransactionList accountsList={accounts} readAddressBook={readAddressBook} />
-          </div>
-        )}
+        <div className="Dashboard-mobile-section">
+          <RecentTransactionList accountsList={storeAccounts} />
+        </div>
       </Mobile>
       {/* Desktop only */}
       <Desktop className="Dashboard-desktop">
@@ -113,15 +108,12 @@ export default function Dashboard() {
           </div>
         </div>
         {!isUnlockVIP && <BannerAd />}
-        {isDevToolsActive && displayRecentTransactionList && (
-          <div className="Dashboard-desktop-bottom">
-            <RecentTransactionList
-              readAddressBook={readAddressBook}
-              accountsList={accounts}
-              className="Dashboard-desktop-modifiedPanel"
-            />
-          </div>
-        )}
+        <div className="Dashboard-desktop-bottom">
+          <RecentTransactionList
+            accountsList={storeAccounts}
+            className="Dashboard-desktop-modifiedPanel"
+          />
+        </div>
       </Desktop>
     </div>
   );

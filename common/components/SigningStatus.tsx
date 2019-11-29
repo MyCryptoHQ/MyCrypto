@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
 import { translate } from 'translations';
-import { AppState } from 'features/reducers';
-import * as selectors from 'features/selectors';
 import { Spinner } from 'components/ui';
 import './SigningStatus.scss';
 
@@ -32,6 +29,4 @@ class SigningStatusClass extends Component<StateProps> {
   }
 }
 
-export const SigningStatus = connect((state: AppState) => selectors.signaturePending(state))(
-  SigningStatusClass
-);
+export const SigningStatus = SigningStatusClass;

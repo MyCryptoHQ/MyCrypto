@@ -11,14 +11,6 @@ import { Account, AddressBook, ExtendedAccount, WalletId } from 'v2/types';
 import ToolsNotifications from './ToolsNotifications';
 import ToolsAccountList from './ToolsAccountList';
 
-const DevToolsContainer = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  z-index: 99;
-  border: 1px solid gray;
-`;
-
 const DevToolsInput = styled(Input)`
   font-size: 1em;
 `;
@@ -29,10 +21,15 @@ const DevTools = () => {
     <AccountContext.Consumer>
       {({ accounts, createAccount, deleteAccount }) => (
         <React.Fragment>
-          <DevToolsContainer>
-            <Panel>
-              <ToolsNotifications />
-              <ToolsAccountList accounts={accounts} deleteAccount={deleteAccount} />
+          <Panel style={{ marginBottom: 0, paddingTop: 50 }}>
+            {/* Dashboard notifications */}
+            <ToolsNotifications />
+
+            {/* Accounts list */}
+            <ToolsAccountList accounts={accounts} deleteAccount={deleteAccount} />
+
+            {/* Form */}
+            <>
               <div className="Settings-heading">Enter a new Account</div>
               <Formik
                 initialValues={{
@@ -110,7 +107,6 @@ const DevTools = () => {
                           )}
                         />
                       </fieldset>
-                      Current dev-mode only features
                       <br />
                       Current dev-mode only features
                       <ul>
@@ -124,8 +120,8 @@ const DevTools = () => {
                   );
                 }}
               </Formik>
-            </Panel>
-          </DevToolsContainer>
+            </>
+          </Panel>
         </React.Fragment>
       )}
     </AccountContext.Consumer>
@@ -139,13 +135,13 @@ const DevToolsToggle = () => {
       onClick={toggleDevTools}
       style={{
         position: 'fixed',
-        bottom: 0,
-        right: 0,
+        top: 0,
+        left: 0,
         zIndex: 99,
-        height: '5rem'
+        width: 112
       }}
     >
-      Development Mode {isActive ? 'On' : 'Off'}
+      {isActive ? 'DevMode On' : 'DevMode Off'}
     </button>
   );
 };
@@ -153,10 +149,10 @@ const DevToolsToggle = () => {
 const DevToolsManager = () => {
   const { isActive } = useDevTools();
   return (
-    <>
+    <div>
       <DevToolsToggle />
       {isActive && <DevTools />}
-    </>
+    </div>
   );
 };
 

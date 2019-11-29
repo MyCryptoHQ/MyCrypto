@@ -2,7 +2,6 @@ import React, { Component, createContext } from 'react';
 
 export interface ProviderState {
   isActive: boolean;
-  displayRecentTransactionList: boolean;
   toggleDevTools(): void;
 }
 
@@ -13,7 +12,6 @@ class DevToolsProvider extends Component {
     isActive: false,
     // Example of runtime switchable feature flag in a Trunk Based Develompent environment
     // https://trunkbaseddevelopment.com/feature-flags/
-    displayRecentTransactionList: true,
     toggleDevTools: (): void => this.setState({ isActive: !this.state.isActive })
   };
 

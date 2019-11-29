@@ -13,7 +13,6 @@ import {
   configNodesSelectedActions
 } from 'features/config';
 import { sidebarActions } from 'features/sidebar';
-import { walletActions } from 'features/wallet';
 import logo from 'assets/images/logo-mycrypto.svg';
 import { LINKSET } from '../constants';
 import { generateCaretIcon } from '../helpers';
@@ -32,7 +31,6 @@ interface StateProps {
 interface DispatchProps {
   openSidebar: sidebarActions.TOpenSidebar;
   changeNodeRequestedOneTime: configNodesSelectedActions.TChangeNodeRequestedOneTime;
-  setAccessMessage: walletActions.TSetAccessMessage;
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -57,7 +55,7 @@ class DesktopHeader extends Component<Props> {
   }
 
   public render() {
-    const { nodeLabel, openSidebar, languageSelection, setAccessMessage } = this.props;
+    const { nodeLabel, openSidebar, languageSelection } = this.props;
     const {
       visibleDropdowns: { sendAndReceive, buyAndExchange, tools }
     } = this.state;
@@ -97,7 +95,7 @@ class DesktopHeader extends Component<Props> {
               <Link
                 to="/"
                 onClick={() => {
-                  setAccessMessage('');
+                  //setAccessMessage('');
                   this.trackHomeIconClick();
                 }}
               >
@@ -127,9 +125,7 @@ class DesktopHeader extends Component<Props> {
                   <ul className="DesktopHeader-bottom-links-dropdown">
                     {LINKSET.SEND_AND_RECEIVE.map(item => (
                       <li key={item.to} onClick={this.toggleSendAndReceive}>
-                        <Link to={item.to} onClick={() => setAccessMessage(item.accessMessage)}>
-                          {item.title}
-                        </Link>
+                        <Link to={item.to}>{item.title}</Link>
                       </li>
                     ))}
                   </ul>
@@ -145,9 +141,7 @@ class DesktopHeader extends Component<Props> {
                   <ul className="DesktopHeader-bottom-links-dropdown">
                     {LINKSET.BUY_AND_EXCHANGE.map(item => (
                       <li key={item.to}>
-                        <Link to={item.to} onClick={() => setAccessMessage('')}>
-                          {item.title}
-                        </Link>
+                        <Link to={item.to}>{item.title}</Link>
                       </li>
                     ))}
                   </ul>
@@ -163,9 +157,7 @@ class DesktopHeader extends Component<Props> {
                   <ul className="DesktopHeader-bottom-links-dropdown">
                     {LINKSET.TOOLS.map(item => (
                       <li key={item.to} onClick={this.toggleTools}>
-                        <Link to={item.to} onClick={() => setAccessMessage('')}>
-                          {item.title}
-                        </Link>
+                        <Link to={item.to}>{item.title}</Link>
                       </li>
                     ))}
                   </ul>
@@ -226,8 +218,7 @@ const mapStateToProps = (state: AppState, { networkParam }: any) => ({
 
 const mapDispatchToProps = {
   openSidebar: sidebarActions.openSidebar,
-  changeNodeRequestedOneTime: configNodesSelectedActions.changeNodeRequestedOneTime,
-  setAccessMessage: walletActions.setAccessMessage
+  changeNodeRequestedOneTime: configNodesSelectedActions.changeNodeRequestedOneTime
 };
 
 export default connect(

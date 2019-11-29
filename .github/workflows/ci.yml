@@ -1,0 +1,249 @@
+name: CI
+
+on: [push]
+
+jobs:
+## Windows pre-build is functional uncomment it for later usage
+## WINDOWS-PREBUILD START ##
+#   pre-build-and-build-windows:
+#     name: Build el:win
+#     runs-on: ${{ matrix.os }}
+#     strategy:
+#       matrix:
+#         os: [windows-latest]
+#     steps:
+#       ## actions/checkout@v1 retrieves project from the git branch
+#       - uses: actions/checkout@v1
+#       - name: Retrieve node version from .nvmrc
+#         id: nvm
+#         run: $nvm = Get-Content .nvmrc; Write-Output "##[set-output name=NVMRC;]$($nvm)"
+#       - uses: actions/setup-node@master
+#         with:
+#           node-version: ${{ steps.version.outputs.NVMRC }}
+#       - name: install node tools
+#         run: npm install --global --production windows-build-tools@4.0.0
+#       - name: install node-gyp
+#         run: npm install --global node-gyp@latest
+#       - name: Set node config to use python2.7
+#         run: npm config set python python2.7
+#       - name: Set node config to set msvs_version to 2015
+#         run: npm config set msvs_version 2015
+#       - name: Work around for Windows Server 2019
+#         run: set path=%path%;'C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin'
+
+#       - name: Cache node modules
+#         id: cache
+#         uses: actions/cache@v1
+#         with:
+#           path: node_modules
+#           ## Check cache based on yarn.lock hashfile
+#           key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+#           restore-keys: |
+#             ${{ runner.OS }}-build-${{ env.cache-name }}-
+#             ${{ runner.OS }}-build-
+#             ${{ runner.OS }}-
+
+#       - name: Install Dependencies
+#         ## If no cache is found, install dependencies
+#         if: steps.cache.outputs.cache-hit != 'true'
+#         run: yarn install
+
+#       - name: yarn tslint
+#         run: yarn tslint
+
+#       - name: yarn tscheck
+#         run: yarn tscheck
+
+#       - name: yarn test:coverage -- --maxWorkers=2
+#         run: yarn test:coverage -- --maxWorkers=2
+
+# ##    NOT WORKING
+# #     - name: yarn report-coverage
+# #       run: yarn report-coverage
+
+#       - name: yarn build:electron:windows
+#         run: yarn build:electron:windows
+
+#       - name: ls dist/electron-builds
+#         run: ls dist/electron-builds
+
+#       - name: Read MyCrypto version from package.json
+#         id: version
+#         run: $json = Get-Content package.json | ConvertFrom-Json; Write-Output "##[set-output name=VERSION;]$($json.version)"
+
+#       - name: Save windows_${{ steps.version.outputs.VERSION }}_MyCrypto.exe to artifacts
+#         uses: actions/upload-artifact@v1
+#         with:
+#           name: "windows_${{ steps.version.outputs.VERSION }}_MyCrypto.exe"
+#           path: "dist/electron-builds/MyCrypto Setup ${{ steps.version.outputs.VERSION }}.exe"
+## WINDOWS-PREBUILD END ##
+
+  pre-build:
+    name: Pre-build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macOS-latest, ubuntu-latest]
+    env:
+      ELECTRON_CACHE: $HOME/.cache/electron
+      ELECTRON_BUILDER_CACHE: $HOME/.cache/electron-builder
+    steps:
+    ## actions/checkout@v1 retrieves project from the git branch
+    - uses: actions/checkout@v1
+
+    - name: Read .nvmrc
+      run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
+      id: nvm
+
+    - name: Setup node ${{ steps.nvm.outputs.NVMRC }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: "${{ steps.nvm.outputs.NVMRC }}"
+
+    - run: node --version; npm --version; yarn --version
+
+    - name: Cache node modules
+      id: cache
+      uses: actions/cache@v1
+      with:
+        path: node_modules
+        ## Check cache based on yarn.lock hashfile
+        key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.OS }}-build-${{ env.cache-name }}-
+          ${{ runner.OS }}-build-
+          ${{ runner.OS }}-
+
+    - name: Install Dependencies
+      ## If no cache is found, install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: yarn install
+
+    - name: yarn tslint
+      run: yarn tslint
+
+    - name: yarn tscheck
+      run: yarn tscheck
+
+    - name: yarn test:coverage -- --maxWorkers=2
+      run: yarn test:coverage -- --maxWorkers=2
+
+##    NOT WORKING
+#     - name: yarn report-coverage
+#       run: yarn report-coverage
+
+  electron-osx:
+    name: Build el:osx
+    ## Executes only if pre-build is true
+    needs: [pre-build]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macOS-latest]
+    env:
+      ELECTRON_CACHE: $HOME/.cache/electron
+      ELECTRON_BUILDER_CACHE: $HOME/.cache/electron-builder
+
+    steps:
+    ## actions/checkout@v1 retrieves project from the git branch
+    - uses: actions/checkout@v1
+
+    - name: Retrieve node version from .nvmrc
+      run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
+      id: nvm
+
+    - name: Setup node ${{ steps.nvm.outputs.NVMRC }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: "${{ steps.nvm.outputs.NVMRC }}"
+
+    - name: Restoring node modules
+      uses: actions/cache@v1
+      with:
+        path: node_modules
+        key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+
+    - name: yarn build:electron:osx
+      run: yarn build:electron:osx
+
+    - name: ls -la dist/electron-builds
+      run: ls -la dist/electron-builds
+
+    - name: Read app version
+      id: version
+      run:  echo "##[set-output name=VERSION;]$(cat package.json | grep -m1 version | sed 's/...version....//' | sed 's/.\{2\}$//')"
+
+    - name: "Save standalone_${{ steps.version.outputs.VERSION }}_MyCrypto.zip to artifacts"
+      uses: actions/upload-artifact@v1
+      with:
+        name: "standalone_${{ steps.version.outputs.VERSION }}_MyCrypto.zip"
+        path: "dist/electron-builds/MyCrypto-${{ steps.version.outputs.VERSION }}-mac.zip"
+    - name: "Save mac_${{ steps.version.outputs.VERSION }}_MyCrypto.dmg to artifacts"
+      uses: actions/upload-artifact@v1
+      with:
+        name: "mac_${{ steps.version.outputs.VERSION }}_MyCrypto.dmg"
+        path: "dist/electron-builds/MyCrypto-${{ steps.version.outputs.VERSION }}.dmg"
+
+  electron-linux:
+    name: Build el:linux
+    # Executes only if pre-build is true
+    needs: [pre-build]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [
+          ## Uncomment to run linux build on macOS
+          # macOS-latest,
+          ubuntu-latest
+        ]
+    env:
+      ELECTRON_CACHE: $HOME/.cache/electron
+      ELECTRON_BUILDER_CACHE: $HOME/.cache/electron-builder
+
+    steps:
+    ## actions/checkout@v1 retrieves project from the git branch
+    - uses: actions/checkout@v1
+
+    - name: Retrieve node version from .nvmrc
+      run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
+      id: nvm
+
+    - name: Setup node ${{ steps.nvm.outputs.NVMRC }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: "${{ steps.nvm.outputs.NVMRC }}"
+
+    - name: Cache node modules
+      uses: actions/cache@v1
+      with:
+        path: node_modules
+        ## Check cache based on yarn.lock hashfile
+        key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.OS }}-build-${{ env.cache-name }}-
+          ${{ runner.OS }}-build-
+          ${{ runner.OS }}-
+
+    - name: yarn build:electron:linux
+      run: yarn build:electron:linux
+
+    - name: ls -la dist/electron-builds
+      run: ls -la dist/electron-builds
+
+    - name: Read app version
+      id: version
+      run:  echo "##[set-output name=VERSION;]$(cat package.json | grep -m1 version | sed 's/...version....//' | sed 's/.\{2\}$//')"
+
+    - name: "Save linux-i386_${{ steps.version.outputs.VERSION }}_MyCrypto.AppImage to artifacts"
+      uses: actions/upload-artifact@v1
+      with:
+        name: "linux-i386_${{ steps.version.outputs.VERSION }}_MyCrypto.AppImage"
+        path: "dist/electron-builds/MyCrypto-${{ steps.version.outputs.VERSION }}-i386.AppImage"
+
+    - name: "Save linus-x86-64_${{ steps.version.outputs.VERSION }}-MyCrypto.AppImage to artifacts"
+      uses: actions/upload-artifact@v1
+      with:
+        name: "linus-x86-64_${{ steps.version.outputs.VERSION }}-MyCrypto.AppImage"
+        path: "dist/electron-builds/MyCrypto-${{ steps.version.outputs.VERSION }}.AppImage"
+
+##   TODO: Add "build electron:windows from Mac or Linux"

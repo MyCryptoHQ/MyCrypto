@@ -152,7 +152,6 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
       heading="Receive Assets"
       icon={receiveIcon}
       onBack={() => history.push(ROUTE_PATHS.DASHBOARD.path)}
-      width="500px;"
       mobileMaxWidth="100%;"
     >
       <Formik

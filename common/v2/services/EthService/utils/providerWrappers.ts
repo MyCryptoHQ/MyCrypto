@@ -1,5 +1,7 @@
 import { TransactionReceipt } from 'ethers/providers';
 
+import { ITxStatus } from 'v2/types';
+
 import { ProviderHandler } from '../network/providerHandler';
 
 export const getStatusFromHash = async (
@@ -38,3 +40,11 @@ export const getTransactionReceiptFromHash = async (
     .catch(_ => {
       return undefined;
     });
+
+export const getTxStatus = (providerInstance: ProviderHandler, txHash: string) =>
+  getTransactionReceiptFromHash(txHash, providerInstance).then(({ status }: any) => {
+    // Status will return 0 or 1 which is used to indicate success or failure of tx.
+    // If tx is not found, no `status` is returned, leaving this as undefined.
+    if (![0, 1].includes(status)) return;
+    return status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
+  });
