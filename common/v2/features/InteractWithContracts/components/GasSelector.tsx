@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { InputField, Typography, Checkbox } from 'v2/components';
+import { translateRaw } from 'v2/translations';
 
 const Wrapper = styled.div`
   display: flex;
@@ -59,18 +60,18 @@ export default function GasSelector(props: Props) {
         onChange={setAutoGasSet}
         checked={isAutoGasSet}
         name="autoGasSet"
-        label="Automatically Calculate Gas Limit"
+        label={translateRaw('TRANS_AUTO_GAS_TOGGLE')}
       />
       <FieldWrapper>
         <InputField
-          label={<CustomLabel>Gas Price</CustomLabel>}
+          label={<CustomLabel>{translateRaw('OFFLINE_STEP2_LABEL_3')}</CustomLabel>}
           value={gasPrice}
           onChange={handleGasPriceChange}
         />
       </FieldWrapper>
       <FieldWrapper>
         <InputField
-          label={<CustomLabel>Gas Limit</CustomLabel>}
+          label={<CustomLabel>{translateRaw('OFFLINE_STEP2_LABEL_4')}</CustomLabel>}
           value={gasLimit}
           onChange={handleGasLimitChange}
           disabled={isAutoGasSet}
@@ -78,7 +79,7 @@ export default function GasSelector(props: Props) {
       </FieldWrapper>
       <FieldWrapper>
         <InputField
-          label={<CustomLabel>Nonce</CustomLabel>}
+          label={<CustomLabel>{translateRaw('OFFLINE_STEP2_LABEL_5')}</CustomLabel>}
           value={nonce}
           onChange={handleNonceChange}
         />

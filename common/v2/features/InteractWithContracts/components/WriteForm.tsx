@@ -13,6 +13,7 @@ import {
   inputGasPriceToHex,
   hexWeiToString
 } from 'v2/services';
+import { translateRaw } from 'v2';
 
 import { getAccountsInNetwork } from '../helpers';
 import GasSelector from './GasSelector';
@@ -91,7 +92,7 @@ export default function WriteForm(props: Props) {
 
   return (
     <WriteActionWrapper>
-      <CustomLabel>Account</CustomLabel>
+      <CustomLabel>{translateRaw('ACCOUNT')}</CustomLabel>
       <AccountDropdownWrapper>
         <AccountDropdown
           name="account"
@@ -116,7 +117,9 @@ export default function WriteForm(props: Props) {
         )}
       </AccountDropdownWrapper>
 
-      <ActionButton onClick={() => handleSubmit(currentFunction)}>Write</ActionButton>
+      <ActionButton onClick={() => handleSubmit(currentFunction)}>
+        {translateRaw('ACTION_17')}
+      </ActionButton>
     </WriteActionWrapper>
   );
 }

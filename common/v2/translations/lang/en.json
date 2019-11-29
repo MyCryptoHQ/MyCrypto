@@ -526,6 +526,9 @@
     "ACTION_12": "Download",
     "ACTION_13": "Download $thing",
     "ACTION_14": "Continue",
+    "ACTION_15": "Delete",
+    "ACTION_16": "Read",
+    "ACTION_17": "Write",
     "DOWNLOAD_PHONE_APP": "Download for $os",
     "CONFIRM_HARDWARE_WALLET_TRANSACTION": "Confirm transaction on hardware wallet",
     "WALLET_LOGOUT_MODAL_TITLE": "You are about to log out",
@@ -1043,6 +1046,22 @@
     "DASHBOARD_ACTIONS_REQUEST_ASSETS_TITLE": "Request Assets",
     "DASHBOARD_ACTIONS_REQUEST_ASSETS_SUBTITLE": "Request a payment to your address.",
     "DASHBOARD_ACTIONS_GET_WALLET_TITLE": "Get a Hardware Wallet",
-    "DASHBOARD_ACTIONS_GET_WALLET_SUBTITLE": " Ensure your assets stay safe & offline."
+    "DASHBOARD_ACTIONS_GET_WALLET_SUBTITLE": " Ensure your assets stay safe & offline.",
+    "CONTRACT_NAME": "Contract Name",
+    "CONTRACT_NAME_PLACEHOLDER": "Custom contract name",
+    "SAVE_CONTRACT": "Save Contract",
+    "CONTRACT_ADDRESS_PLACEHOLDER": "ensdomain.eth or Ox4bbeEB066eDfk...",
+    "INTERACT_WITH_CONTRACT": "Interact with Contract",
+    "VALUE": "Value",
+    "INTERACT_SIGN_WRITE": "Sign write transaction",
+    "INTERACT_RECEIPT": "Interaction Receipt",
+    "INTERACT_ANOTHER": "Another Interaction",
+    "READ": "Read",
+    "WRITE": "Write",
+    "INTERACT_WRITE_ERROR_MISSING_DATA": "Please enter contract name, address and ABI.",
+    "INTERACT_ERROR_INVALID_ADDRESS": "Please enter a valid contract address.",
+    "INTERACT_SAVE_ERROR_NAME_EXISTS": "Contract name already exists.",
+    "INTERACT_ERROR_NO_CONTRACT_SELECTED": "Please select an existing contract or enter custom contract address and ABI.",
+    "INTERACT_WRITE_ERROR_NO_ACCOUNT": "No account selected."
   }
 }

@@ -4,7 +4,8 @@ import { Identicon, Button } from '@mycrypto/ui';
 
 import { NetworkSelectDropdown, InputField, Dropdown, InlineErrorMsg } from 'v2/components';
 import { NetworkId, Contract, StoreAccount, ITxConfig, ExtendedContract } from 'v2/types';
-import { COLORS } from 'v2/theme';
+import { COLORS, BREAK_POINTS } from 'v2/theme';
+import { translateRaw } from 'v2/translations';
 
 import ContractDropdownOption from './ContractDropdownOption';
 import ContractDropdownValue from './ContractDropdownValue';
@@ -13,6 +14,7 @@ import { CUSTOM_CONTRACT_ADDRESS } from '../constants';
 import { ABIItem } from '../types';
 
 const { BRIGHT_SKY_BLUE } = COLORS;
+const { SCREEN_SM } = BREAK_POINTS;
 
 const NetworkSelectorWrapper = styled.div`
   margin-bottom: 12px;
@@ -72,15 +74,25 @@ const SaveContractWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: ${SCREEN_SM}) {
+    flex-direction: column;
+  }
 `;
 
 const SaveButtonWrapper = styled.div`
-  width: 300px;
+  width: 310px;
   display: flex;
   align-items: center;
   padding-top: 10px;
   padding-left: 8px;
   justify-content: flex-end;
+
+  @media (max-width: ${SCREEN_SM}) {
+    justify-content: flex-start;
+    padding-left: 0px;
+    padding-bottom: 8px;
+  }
 `;
 
 // TODO: Fix the dropdown component instead of overriding styles
@@ -203,9 +215,11 @@ export default function Interact(props: Props) {
       <ContractSelectionWrapper>
         <FieldWrapper>
           <ContractSelectLabelWrapper>
-            <Label>Select Existing Contract</Label>{' '}
+            <Label>{translateRaw('CONTRACT_TITLE_2')}</Label>
             {contract && contract.isCustom && (
-              <DeleteLabel onClick={() => handleDeleteContract(contract.uuid)}>Delete</DeleteLabel>
+              <DeleteLabel onClick={() => handleDeleteContract(contract.uuid)}>
+                {translateRaw('ACTION_15')}
+              </DeleteLabel>
             )}
           </ContractSelectLabelWrapper>
 
@@ -224,9 +238,9 @@ export default function Interact(props: Props) {
         <FieldWrapper>
           <InputWrapper>
             <InputField
-              label={'Contract Address'}
+              label={translateRaw('CONTRACT_TITLE')}
               value={contractAddress}
-              placeholder="ensdomain.eth or Ox4bbeEB066eDfk..."
+              placeholder={translateRaw('CONTRACT_ADDRESS_PLACEHOLDER')}
               onChange={({ target: { value } }) => handleContractAddressChanged(value)}
             />
             {contractAddress && <IdenticonIcon address={contractAddress} />}
@@ -236,7 +250,7 @@ export default function Interact(props: Props) {
       <FieldWrapper>
         <InputWrapper>
           <InputField
-            label={'ABI / JSON Interface'}
+            label={translateRaw('CONTRACT_JSON')}
             value={abi}
             placeholder={`[{"type":"constructor","inputs":[{"name":"param1","type":"uint256","indexed":true}],"name":"Event"},{"type":"function","inputs":[{"name":"a","type":"uint256"}],"name":"foo","outputs":[]}]`}
             onChange={({ target: { value } }) => handleAbiChanged(value)}
@@ -250,14 +264,14 @@ export default function Interact(props: Props) {
           <>
             <SaveContractWrapper>
               <InputField
-                label={'Contract name'}
+                label={translateRaw('CONTRACT_NAME')}
                 value={customContractName}
-                placeholder="Custom contract name"
+                placeholder={translateRaw('CONTRACT_NAME_PLACEHOLDER')}
                 onChange={({ target: { value } }) => handleCustomContractNameChanged(value)}
               />
               <SaveButtonWrapper>
                 <Button large={false} secondary={true} onClick={saveContract}>
-                  Save contract
+                  {translateRaw('SAVE_CONTRACT')}
                 </Button>
               </SaveButtonWrapper>
             </SaveContractWrapper>
@@ -271,7 +285,7 @@ export default function Interact(props: Props) {
       </FieldWrapper>
 
       <ButtonWrapper>
-        <Button onClick={submitInteract}>Interact with Contract</Button>
+        <Button onClick={submitInteract}>{translateRaw('INTERACT_WITH_CONTRACT')}</Button>
       </ButtonWrapper>
       {showGeneratedForm && abi && (
         <GeneratedInteractionForm

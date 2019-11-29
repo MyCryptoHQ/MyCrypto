@@ -62,7 +62,7 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
 
   const steps: TStep[] = [
     {
-      title: translateRaw('Interact with Contracts'),
+      title: translateRaw('NEW_HEADER_TEXT_14'),
       component: Interact,
       props: (({
         networkId,
@@ -103,13 +103,13 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
       }
     },
     {
-      title: 'Confirm Transaction',
+      title: translateRaw('CONFIRM_TX_MODAL_TITLE'),
       component: InteractionConfirm,
       props: (({ txConfig }) => ({ txConfig }))(interactWithContractsState),
       actions: { goToNextStep }
     },
     {
-      title: 'Sign write transaction',
+      title: translateRaw('INTERACT_SIGN_WRITE'),
       component: account && WALLET_STEPS[account.wallet],
       props: (({ rawTransaction }) => ({
         network: account && account.network,
@@ -121,7 +121,7 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
       }
     },
     {
-      title: translateRaw('Interaction Receipt'),
+      title: translateRaw('INTERACT_RECEIPT'),
       component: InteractionReceipt,
       props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(interactWithContractsState),
       actions: { goToFirstStep }

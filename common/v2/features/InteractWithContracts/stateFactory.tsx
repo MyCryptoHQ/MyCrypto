@@ -23,6 +23,7 @@ import {
 import { AbiFunction } from 'v2/services/EthService/contracts/ABIFunction';
 import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
 import { isWeb3Wallet } from 'v2/utils/web3';
+import { translateRaw } from 'v2';
 
 import { customContract, CUSTOM_CONTRACT_ADDRESS } from './constants';
 import { ABIItem, InteractWithContractState } from './types';
@@ -133,11 +134,11 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     const uuid = generateUUID();
 
     if (!state.contractAddress || !state.customContractName || !state.abi) {
-      throw new Error('Please enter contract name, address and ABI.');
+      throw new Error(translateRaw('INTERACT_WRITE_ERROR_MISSING_DATA'));
     }
 
     if (!isValidETHAddress(state.contractAddress)) {
-      throw new Error('Please enter a valid contract address.');
+      throw new Error(translateRaw('INTERACT_ERROR_INVALID_ADDRESS'));
     }
 
     try {
@@ -147,7 +148,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     }
 
     if (state.contracts.find(item => item.name === state.customContractName)) {
-      throw new Error('Contract name already exists.');
+      throw new Error(translateRaw('INTERACT_SAVE_ERROR_NAME_EXISTS'));
     }
 
     const newContract = {
@@ -180,13 +181,11 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   const setGeneratedFormVisible = (visible: boolean) => {
     if (visible) {
       if (!state.contractAddress || !state.abi) {
-        throw new Error(
-          'Please select an existing contract or enter custom contract address and ABI.'
-        );
+        throw new Error(translateRaw('INTERACT_ERROR_NO_CONTRACT_SELECTED'));
       }
 
       if (!isValidETHAddress(state.contractAddress)) {
-        throw new Error('Please enter a valid contract address.');
+        throw new Error(translateRaw('INTERACT_ERROR_INVALID_ADDRESS'));
       }
 
       try {
@@ -225,7 +224,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     const { networkId, contractAddress, account, rawTransaction } = state;
 
     if (!account) {
-      throw new Error('No account selected.');
+      throw new Error(translateRaw('INTERACT_WRITE_ERROR_NO_ACCOUNT'));
     }
 
     try {
