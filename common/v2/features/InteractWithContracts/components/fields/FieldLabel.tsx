@@ -9,7 +9,7 @@ const { GREY } = COLORS;
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  font-size: 16px;
+  font-size: 1em;
 `;
 
 const LabelWraper = styled(Typography)`

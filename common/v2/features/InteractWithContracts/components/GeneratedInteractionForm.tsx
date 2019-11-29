@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { InputField, Dropdown, Button, Spinner, InlineErrorMsg, Typography } from 'v2/components';
 import { StoreAccount, NetworkId, ITxConfig } from 'v2/types';
 import { COLORS, monospace } from 'v2/theme';
+import { translateRaw } from 'v2/translations';
 
 import FunctionDropdownOption from './FunctionDropdownOption';
 import FunctionDropdownValue from './FunctionDropdownValue';
@@ -43,7 +44,7 @@ const FieldWrapper = styled.div<FieldWraperProps>`
 
   flex: 1;
   p {
-    font-size: 16px;
+    font-size: 1em;
   }
 `;
 
@@ -130,12 +131,9 @@ export default function GeneratedInteractionForm({
     if (isAutoGasSet || forceEstimate) {
       setError(undefined);
       try {
-        setIsLoading(true);
         await estimateGas(currentFunction);
       } catch (e) {
         setError(e.message);
-      } finally {
-        setIsLoading(false);
       }
     }
   };
@@ -212,7 +210,7 @@ export default function GeneratedInteractionForm({
     <>
       <HorizontalLine />
       <DropdownWrapper>
-        <Label>Read / Write Contract</Label>
+        <Label>{translateRaw('CONTRACT_INTERACT_TITLE')}</Label>
         <Dropdown
           value={currentFunction}
           options={functions}
@@ -292,7 +290,9 @@ export default function GeneratedInteractionForm({
             <ActionWrapper>
               {isRead &&
                 (inputs.length > 0 && (
-                  <ActionButton onClick={() => submitFormRead(currentFunction)}>Read</ActionButton>
+                  <ActionButton onClick={() => submitFormRead(currentFunction)}>
+                    {translateRaw('ACTION_16')}
+                  </ActionButton>
                 ))}
               {!isRead && (
                 <WriteFormWrapper>
@@ -300,7 +300,7 @@ export default function GeneratedInteractionForm({
                   {currentFunction.payable && (
                     <FieldWrapper>
                       <InputField
-                        label="Value"
+                        label={translateRaw('VALUE')}
                         value={currentFunction.payAmount}
                         onChange={({ target: { value } }) =>
                           setCurrentFunction({

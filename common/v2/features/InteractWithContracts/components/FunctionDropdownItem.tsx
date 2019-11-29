@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { COLORS } from 'v2/theme';
+import { translateRaw } from 'v2';
 
 import { ABIItem } from '../types';
 import { isReadOperation } from '../helpers';
@@ -58,7 +59,9 @@ export default function FunctionDropdownItem(props: Props) {
       isSelectable={!!onSelect}
     >
       {option.name}
-      <Sticker isRead={isRead}>{isRead ? 'READ' : 'WRITE'}</Sticker>
+      <Sticker isRead={isRead}>
+        {isRead ? translateRaw('READ').toUpperCase() : translateRaw('WRITE').toUpperCase()}
+      </Sticker>
     </OptionWrapper>
   );
 }
