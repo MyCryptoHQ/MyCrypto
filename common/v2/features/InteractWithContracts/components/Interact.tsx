@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Identicon, Button } from '@mycrypto/ui';
+import { Identicon } from '@mycrypto/ui';
 
-import { NetworkSelectDropdown, InputField, Dropdown, InlineErrorMsg } from 'v2/components';
+import { NetworkSelectDropdown, InputField, Dropdown, InlineErrorMsg, Button } from 'v2/components';
 import { NetworkId, Contract, StoreAccount, ITxConfig } from 'v2/types';
 
 import ContractDropdownOption from './ContractDropdownOption';
@@ -146,13 +146,16 @@ export default function Interact(props: Props) {
   } = props;
 
   const [error, setError] = useState(undefined);
+  const [wasContractInteracted, setWasContractInteracted] = useState(false);
 
   useEffect(() => {
     updateNetworkContractOptions(networkId);
+    setWasContractInteracted(false);
   }, [networkId]);
 
   useEffect(() => {
     setGeneratedFormVisible(false);
+    setWasContractInteracted(false);
   }, [abi]);
 
   const saveContract = () => {
@@ -168,8 +171,17 @@ export default function Interact(props: Props) {
     setError(undefined);
     try {
       setGeneratedFormVisible(true);
+      setWasContractInteracted(true);
     } catch (e) {
       setError(e.message);
+    }
+  };
+
+  const tryAbiParse = () => {
+    try {
+      return JSON.parse(abi);
+    } catch (e) {
+      return [];
     }
   };
 
@@ -250,11 +262,13 @@ export default function Interact(props: Props) {
       </FieldWrapper>
 
       <ButtonWrapper>
-        <Button onClick={submitInteract}>Interact with Contract</Button>
+        <Button disabled={wasContractInteracted} onClick={submitInteract}>
+          Interact with Contract
+        </Button>
       </ButtonWrapper>
       {showGeneratedForm && abi && (
         <GeneratedInteractionForm
-          abi={JSON.parse(abi)}
+          abi={tryAbiParse()}
           handleInteractionFormSubmit={handleInteractionFormSubmit}
           account={account}
           handleAccountSelected={handleAccountSelected}
