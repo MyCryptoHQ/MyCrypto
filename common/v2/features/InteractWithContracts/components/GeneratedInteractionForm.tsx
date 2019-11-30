@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { InputField, Dropdown, Button, Spinner, InlineErrorMsg, Typography } from 'v2/components';
 import { StoreAccount, NetworkId, ITxConfig } from 'v2/types';
@@ -13,7 +13,8 @@ import {
   isReadOperation,
   generateFunctionFieldsDisplayNames,
   getFunctionsFromABI,
-  setFunctionOutputValues
+  setFunctionOutputValues,
+  constructGasCallProps
 } from '../helpers';
 import { FieldLabel, BooleanOutputField, BooleanSelector } from './fields';
 import WriteForm from './WriteForm';
@@ -97,10 +98,10 @@ interface Props {
   account: StoreAccount;
   networkId: NetworkId;
   rawTransaction: ITxConfig;
+  contractAddress: string;
   handleInteractionFormSubmit(submitedFunction: ABIItem): Promise<object>;
   handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<object>;
   handleAccountSelected(account: StoreAccount | undefined): void;
-  estimateGas(submitedFunction: ABIItem): Promise<void>;
   handleGasSelectorChange(payload: ITxConfig): void;
 }
 
@@ -110,32 +111,28 @@ export default function GeneratedInteractionForm({
   account,
   networkId,
   rawTransaction,
+  contractAddress,
   handleAccountSelected,
   handleInteractionFormWriteSubmit,
-  estimateGas,
   handleGasSelectorChange
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [currentFunction, setCurrentFunction] = useState<ABIItem | undefined>(undefined);
-
   const [error, setError] = useState(undefined);
-  const [isAutoGasSet, setIsAutoGasSet] = useState(true);
+  const [gasCallProps, setGasCallProps] = useState({});
 
   const functions = getFunctionsFromABI(abi);
 
-  const estimateGasHandle = async (forceEstimate: boolean = false) => {
-    if (!currentFunction) {
+  useEffect(() => {
+    updateGasCallProps();
+  }, [account]);
+
+  const updateGasCallProps = () => {
+    if (!account || !currentFunction) {
       return;
     }
 
-    if (isAutoGasSet || forceEstimate) {
-      setError(undefined);
-      try {
-        await estimateGas(currentFunction);
-      } catch (e) {
-        setError(e.message);
-      }
-    }
+    setGasCallProps(constructGasCallProps(contractAddress, currentFunction, account));
   };
 
   const handleFunctionSelected = (selectedFunction: ABIItem) => {
@@ -145,7 +142,6 @@ export default function GeneratedInteractionForm({
 
     const newFunction = generateFunctionFieldsDisplayNames(selectedFunction);
     setCurrentFunction(newFunction);
-    setIsAutoGasSet(true);
     handleAccountSelected(undefined);
     setError(undefined);
 
@@ -185,9 +181,6 @@ export default function GeneratedInteractionForm({
     setError(undefined);
     try {
       setIsLoading(true);
-      if (isAutoGasSet) {
-        await estimateGas(submitedFunction);
-      }
       await handleInteractionFormWriteSubmit(submitedFunction);
     } catch (e) {
       setError(e.message);
@@ -244,7 +237,7 @@ export default function GeneratedInteractionForm({
                           }
                           value={field.value}
                           onChange={({ target: { value } }) => handleInputChange(field.name, value)}
-                          validate={!isRead ? estimateGasHandle : undefined}
+                          validate={updateGasCallProps}
                         />
                       )}
                     </FieldWrapper>
@@ -308,7 +301,7 @@ export default function GeneratedInteractionForm({
                             payAmount: value
                           })
                         }
-                        validate={estimateGasHandle}
+                        validate={updateGasCallProps}
                       />
                     </FieldWrapper>
                   )}
@@ -318,11 +311,9 @@ export default function GeneratedInteractionForm({
                     handleAccountSelected={handleAccountSelected}
                     handleSubmit={submitFormWrite}
                     currentFunction={currentFunction}
-                    isAutoGasSet={isAutoGasSet}
-                    setIsAutoGasSet={setIsAutoGasSet}
-                    estimateGasHandle={estimateGasHandle}
                     rawTransaction={rawTransaction}
                     handleGasSelectorChange={handleGasSelectorChange}
+                    estimateGasCallProps={gasCallProps}
                   />
                 </WriteFormWrapper>
               )}

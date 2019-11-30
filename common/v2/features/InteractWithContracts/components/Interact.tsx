@@ -140,7 +140,6 @@ interface Props {
   handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<object>;
   handleAccountSelected(account: StoreAccount): void;
   handleSaveContractSubmit(): void;
-  estimateGas(submitedFunction: ABIItem): Promise<void>;
   handleGasSelectorChange(payload: ITxConfig): void;
   handleDeleteContract(contractUuid: string): void;
 }
@@ -166,7 +165,6 @@ export default function Interact(props: Props) {
     handleAccountSelected,
     handleInteractionFormWriteSubmit,
     handleSaveContractSubmit,
-    estimateGas,
     rawTransaction,
     handleGasSelectorChange,
     handleDeleteContract
@@ -309,9 +307,9 @@ export default function Interact(props: Props) {
           handleAccountSelected={handleAccountSelected}
           handleInteractionFormWriteSubmit={handleInteractionFormWriteSubmit}
           networkId={networkId}
-          estimateGas={estimateGas}
           rawTransaction={rawTransaction}
           handleGasSelectorChange={handleGasSelectorChange}
+          contractAddress={contractAddress}
         />
       )}
     </>

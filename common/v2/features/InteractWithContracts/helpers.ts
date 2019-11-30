@@ -19,7 +19,8 @@ import {
   SignTransactionParity,
   SignTransactionMnemonic
 } from 'v2/components';
-import { getAssetByUUID, hexToString, hexWeiToString } from 'v2/services';
+import { getAssetByUUID, hexToString, hexWeiToString, inputValueToHex } from 'v2/services';
+import { AbiFunction } from 'v2/services/EthService/contracts/ABIFunction';
 
 import { StateMutabilityType, ABIItem, ABIItemType } from './types';
 
@@ -144,3 +145,24 @@ export const reduceInputParams = (submitedFunction: ABIItem) =>
 
     return { ...accu, [input.name]: input.value };
   }, {});
+
+export const constructGasCallProps = (
+  contractAddress: string,
+  currentFunction: ABIItem,
+  account: StoreAccount
+) => {
+  try {
+    const { encodeInput } = new AbiFunction(currentFunction, []);
+    const parsedInputs = reduceInputParams(currentFunction);
+    const data = encodeInput(parsedInputs);
+
+    return {
+      from: account.address,
+      to: contractAddress,
+      value: inputValueToHex(currentFunction.payAmount),
+      data
+    };
+  } catch (e) {
+    return {};
+  }
+};

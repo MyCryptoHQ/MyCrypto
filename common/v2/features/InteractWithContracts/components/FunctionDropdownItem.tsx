@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { COLORS } from 'v2/theme';
-import { translateRaw } from 'v2';
+import { translateRaw } from 'v2/translations';
 
 import { ABIItem } from '../types';
 import { isReadOperation } from '../helpers';

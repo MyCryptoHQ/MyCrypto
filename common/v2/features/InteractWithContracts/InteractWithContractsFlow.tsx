@@ -36,7 +36,6 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
     handleAccountSelected,
     handleTxSigned,
     handleSaveContractSubmit,
-    estimateGas,
     handleGasSelectorChange,
     handleDeleteContract
   } = useStateReducer(InteractWithContractsFactory, interactWithContractsInitialState);
@@ -97,7 +96,6 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
         handleInteractionFormWriteSubmit: (payload: ABIItem) =>
           handleInteractionFormWriteSubmit(payload, goToNextStep),
         handleAccountSelected,
-        estimateGas,
         handleGasSelectorChange,
         handleDeleteContract
       }

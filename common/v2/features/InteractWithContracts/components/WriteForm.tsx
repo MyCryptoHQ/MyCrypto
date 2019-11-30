@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
-import { AccountDropdown, Button, Typography } from 'v2/components';
+import { AccountDropdown, Button, Typography, GasSelector } from 'v2/components';
 import { StoreAccount, NetworkId, ITxConfig } from 'v2/types';
 import {
   StoreContext,
@@ -13,10 +13,9 @@ import {
   inputGasPriceToHex,
   hexWeiToString
 } from 'v2/services';
-import { translateRaw } from 'v2';
+import { translateRaw } from 'v2/translations';
 
 import { getAccountsInNetwork } from '../helpers';
-import GasSelector from './GasSelector';
 import { ABIItem } from '../types';
 
 const WriteActionWrapper = styled.div`
@@ -43,12 +42,10 @@ interface Props {
   networkId: NetworkId;
   currentFunction: ABIItem;
   rawTransaction: ITxConfig;
-  isAutoGasSet: boolean;
+  estimateGasCallProps: object;
   handleAccountSelected(account: StoreAccount): void;
   handleSubmit(submitedFunction: ABIItem): void;
-  estimateGasHandle(forceEstimate?: boolean): Promise<void>;
-  setIsAutoGasSet(value: boolean): void;
-  handleGasSelectorChange(payload: ITxConfig): void;
+  handleGasSelectorChange(payload: any): void;
 }
 
 export default function WriteForm(props: Props) {
@@ -57,11 +54,9 @@ export default function WriteForm(props: Props) {
     networkId,
     currentFunction,
     rawTransaction,
-    isAutoGasSet,
+    estimateGasCallProps,
     handleAccountSelected,
     handleSubmit,
-    estimateGasHandle,
-    setIsAutoGasSet,
     handleGasSelectorChange
   } = props;
 
@@ -70,24 +65,23 @@ export default function WriteForm(props: Props) {
   const { accounts } = useContext(StoreContext);
   const filteredAccounts = getAccountsInNetwork(accounts, networkId);
 
-  const handleGasPriceChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    let value = (e.target as HTMLTextAreaElement).value;
-    if (value.length) {
-      value = hexWeiToString(inputGasPriceToHex(value));
-      value = addHexPrefix(new BN(value).toString(16));
+  const handleGasPriceChange = (val: string) => {
+    if (val.length) {
+      val = hexWeiToString(inputGasPriceToHex(val));
+      val = addHexPrefix(new BN(val).toString(16));
     }
-    handleGasSelectorChange({ gasPrice: value } as ITxConfig);
+    handleGasSelectorChange({ gasPrice: val } as ITxConfig);
   };
 
   const formatGasPrice = () =>
     gasPrice.length ? baseToConvertedUnit(hexToString(gasPrice), 9) : gasPrice;
 
-  const handleGasLimitChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    handleGasSelectorChange({ gasLimit: (e.target as HTMLTextAreaElement).value } as ITxConfig);
+  const handleGasLimitChange = (val: string) => {
+    handleGasSelectorChange({ gasLimit: Number(val) });
   };
 
-  const handleNonceChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    handleGasSelectorChange({ nonce: (e.target as HTMLTextAreaElement).value } as ITxConfig);
+  const handleNonceChange = (val: string) => {
+    handleGasSelectorChange({ nonce: Number(val) });
   };
 
   return (
@@ -107,12 +101,11 @@ export default function WriteForm(props: Props) {
             gasPrice={formatGasPrice()}
             gasLimit={gasLimit}
             nonce={nonce}
-            handleGasPriceChange={handleGasPriceChange}
-            handleGasLimitChange={handleGasLimitChange}
-            handleNonceChange={handleNonceChange}
-            isAutoGasSet={isAutoGasSet}
-            setIsAutoGasSet={setIsAutoGasSet}
-            estimateGasHandle={estimateGasHandle}
+            account={account}
+            setGasPrice={handleGasPriceChange}
+            setGasLimit={handleGasLimitChange}
+            setNonce={handleNonceChange}
+            estimateGasCallProps={estimateGasCallProps}
           />
         )}
       </AccountDropdownWrapper>

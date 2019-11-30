@@ -1,32 +1,24 @@
 import { useContext } from 'react';
-import BN from 'bn.js';
-import { addHexPrefix } from 'ethereumjs-util';
 
 import { TUseStateReducerFactory, generateUUID, fromTxReceiptObj } from 'v2/utils';
 import { DEFAULT_NETWORK } from 'v2/config';
-import { Contract, StoreAccount, ITxConfig } from 'v2/types';
+import { Contract, StoreAccount } from 'v2/types';
 import {
   getNetworkById,
   ContractContext,
   isValidETHAddress,
   ProviderHandler,
-  getNonce,
-  inputGasPriceToHex,
-  fetchGasPriceEstimates,
-  hexWeiToString,
   getGasEstimate,
-  hexToNumber,
   updateNetworks,
-  inputValueToHex,
   deleteContracts
 } from 'v2/services';
 import { AbiFunction } from 'v2/services/EthService/contracts/ABIFunction';
 import { isWeb3Wallet } from 'v2/utils/web3';
-import { translateRaw } from 'v2';
+import { translateRaw } from 'v2/translations';
 
 import { customContract, CUSTOM_CONTRACT_ADDRESS } from './constants';
 import { ABIItem, InteractWithContractState } from './types';
-import { makeTxConfigFromTransaction, reduceInputParams } from './helpers';
+import { makeTxConfigFromTransaction, reduceInputParams, constructGasCallProps } from './helpers';
 
 const interactWithContractsInitialState = {
   networkId: DEFAULT_NETWORK,
@@ -214,27 +206,27 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   };
 
   const handleInteractionFormWriteSubmit = async (submitedFunction: ABIItem, after: () => void) => {
-    const { networkId, contractAddress, account, rawTransaction } = state;
+    const { contractAddress, account, rawTransaction } = state;
 
     if (!account) {
       throw new Error(translateRaw('INTERACT_WRITE_ERROR_NO_ACCOUNT'));
     }
 
     try {
-      const { encodeInput } = new AbiFunction(submitedFunction, []);
-      const parsedInputs = reduceInputParams(submitedFunction);
-      const network = getNetworkById(networkId)!;
-      const data = encodeInput(parsedInputs);
+      const { network } = account;
       const { gasPrice, gasLimit, nonce } = rawTransaction;
-      const transaction: any = {
-        to: contractAddress,
-        data,
-        gasPrice,
-        gasLimit,
-        value: inputValueToHex(submitedFunction.payAmount),
-        chainId: network.chainId,
-        nonce
-      };
+      const transaction: any = Object.assign(
+        constructGasCallProps(contractAddress, submitedFunction, account),
+        {
+          gasPrice,
+          chainId: network.chainId,
+          nonce
+        }
+      );
+      // check if transaction fails everytime
+      await getGasEstimate(network, transaction);
+      transaction.gasLimit = gasLimit;
+      delete transaction.from;
 
       const txConfig = makeTxConfigFromTransaction(
         transaction,
@@ -296,47 +288,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     }
   };
 
-  const estimateGas = async (submitedFunction: ABIItem) => {
-    const { account, rawTransaction, networkId, contractAddress } = state;
-
-    if (!account) {
-      return;
-    }
-
-    const rawTransactionCopy: any = Object.assign({}, rawTransaction);
-
-    try {
-      const { encodeInput } = new AbiFunction(submitedFunction, []);
-      const parsedInputs = reduceInputParams(submitedFunction);
-      const network = getNetworkById(networkId)!;
-      const { fast } = await fetchGasPriceEstimates(network.id);
-      const gasPrice = hexWeiToString(inputGasPriceToHex(fast.toString()));
-      const nonce = await getNonce(network, account);
-      const data = encodeInput(parsedInputs);
-
-      Object.assign(rawTransactionCopy, {
-        to: contractAddress,
-        data,
-        from: account.address,
-        gasPrice: addHexPrefix(new BN(gasPrice).toString(16)),
-        value: inputValueToHex(submitedFunction.payAmount),
-        chainId: network.chainId,
-        nonce
-      });
-      const gasLimit = await getGasEstimate(network, rawTransactionCopy);
-      rawTransactionCopy.gasLimit = hexToNumber(gasLimit);
-      delete rawTransactionCopy.from;
-    } catch (e) {
-      throw e;
-    } finally {
-      setState((prevState: InteractWithContractState) => ({
-        ...prevState,
-        rawTransaction: rawTransactionCopy
-      }));
-    }
-  };
-
-  const handleGasSelectorChange = (payload: ITxConfig) => {
+  const handleGasSelectorChange = (payload: any) => {
     setState((prevState: InteractWithContractState) => ({
       ...prevState,
       rawTransaction: { ...prevState.rawTransaction, ...payload }
@@ -356,7 +308,6 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     handleInteractionFormWriteSubmit,
     handleAccountSelected,
     handleTxSigned,
-    estimateGas,
     handleGasSelectorChange,
     handleDeleteContract,
     interactWithContractsState: state
