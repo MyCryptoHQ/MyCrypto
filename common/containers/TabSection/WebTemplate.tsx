@@ -7,7 +7,6 @@ import { configMetaSelectors } from 'features/config';
 import { sidebarSelectors } from 'features/sidebar';
 import Sidebar from 'containers/Sidebar';
 import NewFooter from 'components/Footer/NewFooter/NewFooter';
-import Notifications from './Notifications';
 import OfflineTab from './OfflineTab';
 import './WebTemplate.scss';
 
@@ -44,7 +43,6 @@ class WebTemplate extends Component<Props, {}> {
           </div>
           <div className="WebTemplate-spacer" />
           <NewFooter />
-          <Notifications />
         </div>
       </React.Fragment>
     );

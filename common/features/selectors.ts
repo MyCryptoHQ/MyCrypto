@@ -1,9 +1,7 @@
 import BN from 'bn.js';
 
-import { Wei } from 'libs/units';
 import { SecureWalletName, WalletName } from 'config';
 import { AppState } from './reducers';
-import { ratesSelectors } from './rates';
 import * as configMetaSelectors from './config/meta/selectors';
 import * as configSelectors from './config/selectors';
 
@@ -57,33 +55,6 @@ export function getDisabledWallets(state: AppState): any {
 
   return disabledWallets;
 }
-
-const getUSDConversionRate = (state: AppState, unit: string) => {
-  const { isTestnet, hideEquivalentValues } = configSelectors.getNetworkConfig(state);
-  const { rates } = ratesSelectors.getRates(state);
-  if (isTestnet || hideEquivalentValues) {
-    return null;
-  }
-
-  const conversionRate = rates[unit];
-
-  if (!conversionRate) {
-    return null;
-  }
-  return conversionRate.USD;
-};
-
-export const getTransactionFeeInUSD = (state: AppState, fee: Wei) => {
-  const { unit } = configSelectors.getNetworkConfig(state);
-  const conversionRate = getUSDConversionRate(state, unit);
-
-  if (!conversionRate) {
-    return null;
-  }
-
-  const feeValueUSD = fee.muln(conversionRate);
-  return feeValueUSD;
-};
 
 export interface AllUSDValues {
   valueUSD: BN | null;
