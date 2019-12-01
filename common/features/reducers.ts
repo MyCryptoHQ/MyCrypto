@@ -15,8 +15,6 @@ import { ParitySignerState } from './paritySigner/types';
 import { paritySignerReducer } from './paritySigner/reducer';
 import { RatesState } from './rates/types';
 import { ratesReducer } from './rates/reducer';
-import { SidebarState } from './sidebar/types';
-import { sidebarReducer } from './sidebar/reducer';
 
 export interface AppState {
   // Custom reducers
@@ -27,7 +25,6 @@ export interface AppState {
   rates: RatesState;
   paritySigner: ParitySignerState;
   gas: GasState;
-  sidebar: SidebarState;
   // Third party reducers (TODO: Fill these out)
   routing: any;
 }
@@ -40,6 +37,5 @@ export default combineReducers<AppState>({
   rates: ratesReducer,
   paritySigner: paritySignerReducer,
   gas: gasReducer,
-  sidebar: sidebarReducer,
   routing: routerReducer
 });
