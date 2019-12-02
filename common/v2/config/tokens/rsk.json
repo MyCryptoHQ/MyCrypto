@@ -4,5 +4,11 @@
         "symbol": "RIF",
         "name": "RIF",
         "decimal": 18
+    },
+    {
+        "address": "0xe0cff8a40f540657c62eb4cac34b915e5ed8d8ff",
+        "symbol": "INV",
+        "name": "Invecoin",
+        "decimal": 18
     }
 ]
