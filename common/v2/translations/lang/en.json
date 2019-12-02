@@ -1067,6 +1067,7 @@
     "INTERACT_ERROR_INVALID_ADDRESS": "Please enter a valid contract address.",
     "INTERACT_SAVE_ERROR_NAME_EXISTS": "Contract name already exists.",
     "INTERACT_ERROR_NO_CONTRACT_SELECTED": "Please select an existing contract or enter custom contract address and ABI.",
-    "INTERACT_WRITE_ERROR_NO_ACCOUNT": "No account selected."
+    "INTERACT_WRITE_ERROR_NO_ACCOUNT": "No account selected.",
+    "INTERACT_RESOLVED_ADDRESS": "Resolved Address:"
   }
 }

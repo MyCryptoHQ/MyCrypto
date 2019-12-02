@@ -10,7 +10,8 @@ import {
   ProviderHandler,
   getGasEstimate,
   updateNetworks,
-  deleteContracts
+  deleteContracts,
+  getResolvedENSAddress
 } from 'v2/services';
 import { AbiFunction } from 'v2/services/EthService/contracts/ABIFunction';
 import { isWeb3Wallet } from 'v2/utils/web3';
@@ -18,10 +19,19 @@ import { translateRaw } from 'v2/translations';
 
 import { customContract, CUSTOM_CONTRACT_ADDRESS } from './constants';
 import { ABIItem, InteractWithContractState } from './types';
-import { makeTxConfigFromTransaction, reduceInputParams, constructGasCallProps } from './helpers';
+import {
+  makeTxConfigFromTransaction,
+  reduceInputParams,
+  constructGasCallProps,
+  isValidETHDomain
+} from './helpers';
+
+import { debounce } from 'lodash';
 
 const interactWithContractsInitialState = {
   networkId: DEFAULT_NETWORK,
+  addressOrDomainInput: '',
+  resolvingDomain: false,
   contractAddress: '',
   contract: undefined,
   customContractName: '',
@@ -52,6 +62,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       networkId,
       contract: undefined,
       contractAddress: '',
+      addressOrDomainInput: '',
       abi: '',
       customContractName: ''
     }));
@@ -76,10 +87,12 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
 
   const handleContractSelected = (contract: Contract) => {
     let contractAddress = '';
+    let addressOrDomainInput = '';
     let contractAbi = '';
 
     if (contract.address !== CUSTOM_CONTRACT_ADDRESS) {
       contractAddress = contract.address;
+      addressOrDomainInput = contract.address;
       contractAbi = contract.abi;
     }
 
@@ -87,9 +100,55 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       ...prevState,
       contract,
       contractAddress,
+      addressOrDomainInput,
       abi: contractAbi,
       customContractName: ''
     }));
+  };
+
+  const handleAddressOrDomainChanged = (value: string) => {
+    const existingContract = state.contracts.find(c => c.address === value);
+    if (existingContract) {
+      handleContractSelected(existingContract);
+      return;
+    }
+
+    setState((prevState: InteractWithContractState) => ({
+      ...prevState,
+      addressOrDomainInput: value,
+      contractAddress: value,
+      contract: customContract,
+      abi: ''
+    }));
+
+    if (isValidETHDomain(value)) {
+      debounce(() => resolveAddressFromDomain(value), 800)();
+    }
+  };
+
+  const resolveAddressFromDomain = async (domain: string) => {
+    const network = getNetworkById(state.networkId)!;
+
+    setState((prevState: InteractWithContractState) => ({
+      ...prevState,
+      resolvingDomain: true
+    }));
+
+    const resolvedAddress =
+      (await getResolvedENSAddress(network, domain)) ||
+      '0x0000000000000000000000000000000000000000';
+
+    setState((prevState: InteractWithContractState) => ({
+      ...prevState,
+      contractAddress: resolvedAddress,
+      resolvingDomain: false
+    }));
+
+    const existingContract = state.contracts.find(c => c.address === resolvedAddress);
+    if (existingContract) {
+      handleContractSelected(existingContract);
+      return;
+    }
   };
 
   const handleContractAddressChanged = (contractAddress: string) => {
@@ -298,6 +357,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   return {
     handleNetworkSelected,
     handleContractAddressChanged,
+    handleAddressOrDomainChanged,
     handleContractSelected,
     handleAbiChanged,
     handleCustomContractNameChanged,

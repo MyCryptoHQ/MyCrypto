@@ -6,6 +6,7 @@ import { NetworkSelectDropdown, InputField, Dropdown, InlineErrorMsg, Button } f
 import { NetworkId, Contract, StoreAccount, ITxConfig, ExtendedContract } from 'v2/types';
 import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { translateRaw } from 'v2/translations';
+import { isValidETHAddress, isCreationAddress } from 'v2/services/EthService/validators';
 
 import ContractDropdownOption from './ContractDropdownOption';
 import ContractDropdownValue from './ContractDropdownValue';
@@ -121,6 +122,8 @@ const DeleteLabel = styled(Label)`
 interface Props {
   networkId: NetworkId;
   contractAddress: string;
+  addressOrDomainInput: string;
+  resolvingDomain: boolean;
   abi: string;
   contract: ExtendedContract;
   contracts: Contract[];
@@ -131,6 +134,7 @@ interface Props {
   handleContractSelected(contract: Contract | undefined): void;
   handleNetworkSelected(networkId: string): void;
   handleContractAddressChanged(address: string): void;
+  handleAddressOrDomainChanged(value: string): void;
   handleAbiChanged(abi: string): void;
   handleCustomContractNameChanged(customContractName: string): void;
   updateNetworkContractOptions(networkId: NetworkId): void;
@@ -152,9 +156,11 @@ export default function Interact(props: Props) {
     contract,
     contracts,
     showGeneratedForm,
+    addressOrDomainInput,
+    resolvingDomain,
     handleNetworkSelected,
     handleContractSelected,
-    handleContractAddressChanged,
+    handleAddressOrDomainChanged,
     handleAbiChanged,
     handleCustomContractNameChanged,
     updateNetworkContractOptions,
@@ -182,6 +188,10 @@ export default function Interact(props: Props) {
     setGeneratedFormVisible(false);
     setWasContractInteracted(false);
   }, [abi]);
+
+  useEffect(() => {
+    setError(undefined);
+  }, [contract]);
 
   const saveContract = () => {
     setError(undefined);
@@ -249,12 +259,22 @@ export default function Interact(props: Props) {
           <InputWrapper>
             <InputField
               label={translateRaw('CONTRACT_TITLE')}
-              value={contractAddress}
+              value={addressOrDomainInput}
               placeholder={translateRaw('CONTRACT_ADDRESS_PLACEHOLDER')}
-              onChange={({ target: { value } }) => handleContractAddressChanged(value)}
+              isLoading={resolvingDomain}
+              onChange={({ target: { value } }) => handleAddressOrDomainChanged(value)}
             />
-            {contractAddress && <IdenticonIcon address={contractAddress} />}
+            {contractAddress && isValidETHAddress(contractAddress) && (
+              <IdenticonIcon address={contractAddress} />
+            )}
           </InputWrapper>
+          {contractAddress &&
+            (isValidETHAddress(contractAddress) || isCreationAddress(contractAddress)) &&
+            !isValidETHAddress(addressOrDomainInput) && (
+              <div>
+                {translateRaw('INTERACT_RESOLVED_ADDRESS')} {contractAddress}
+              </div>
+            )}
         </FieldWrapper>
       </ContractSelectionWrapper>
       <FieldWrapper>

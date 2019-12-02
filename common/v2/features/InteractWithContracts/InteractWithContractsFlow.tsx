@@ -27,6 +27,7 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
     handleNetworkSelected,
     handleContractSelected,
     handleContractAddressChanged,
+    handleAddressOrDomainChanged,
     handleAbiChanged,
     handleCustomContractNameChanged,
     updateNetworkContractOptions,
@@ -71,7 +72,9 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
         contracts,
         showGeneratedForm,
         customContractName,
-        rawTransaction
+        rawTransaction,
+        addressOrDomainInput,
+        resolvingDomain
       }) => ({
         networkId,
         contractAddress,
@@ -81,12 +84,15 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
         showGeneratedForm,
         account,
         customContractName,
-        rawTransaction
+        rawTransaction,
+        addressOrDomainInput,
+        resolvingDomain
       }))(interactWithContractsState),
       actions: {
         handleNetworkSelected,
         handleContractSelected,
         handleContractAddressChanged,
+        handleAddressOrDomainChanged,
         handleAbiChanged,
         handleCustomContractNameChanged,
         updateNetworkContractOptions,
