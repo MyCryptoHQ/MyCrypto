@@ -10,5 +10,11 @@
         "symbol": "INV",
         "name": "Invecoin",
         "decimal": 18
+    },
+    {
+        "address": "0xe700691da7b9851f2f35f8b8182c69c53ccad9db",
+        "symbol": "DOC",
+        "name": "Dollar on Chain",
+        "decimal": 18
     }
 ]
