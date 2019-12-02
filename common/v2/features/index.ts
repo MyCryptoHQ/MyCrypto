@@ -29,4 +29,5 @@ export { NotificationsProvider } from './NotificationsPanel';
 export { BroadcastTransactionFlow } from './BroadcastTransaction';
 export { SwapAssetsFlow } from './SwapAssets';
 export { InteractWithContractsFlow } from './InteractWithContracts';
+export { DeployContractsFlow } from './DeployContracts';
 export { ToastProvider } from './Toasts';

@@ -37,10 +37,6 @@ export const links = [
         to: ROUTE_PATHS.VERIFY_MESSAGE.path,
         title: 'Verify Message'
       },
-      // {
-      //   to: '/contracts',
-      //   title: 'Interact with Contracts'
-      // },
       {
         to: ROUTE_PATHS.BROADCAST_TX.path,
         title: 'Broadcast Transaction'
@@ -48,6 +44,10 @@ export const links = [
       {
         to: ROUTE_PATHS.INTERACT_WITH_CONTRACTS.path,
         title: 'Interact with Contracts'
+      },
+      {
+        to: ROUTE_PATHS.DEPLOY_CONTRACTS.path,
+        title: 'Deploy Contracts'
       },
       {
         to: '/helpers',

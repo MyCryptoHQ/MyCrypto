@@ -115,17 +115,19 @@ const PATHS: IRoutePath[] = [
     name: 'INTERACT_WITH_CONTRACTS',
     title: 'Interact With Contracts',
     path: '/interact-with-contracts'
+  },
+  {
+    name: 'DEPLOY_CONTRACTS',
+    title: 'Deploy Contracts',
+    path: '/deploy-contracts'
   }
 ];
 
 function createNavLinksFromRoutePaths(paths: IRoutePath[]) {
-  return paths.reduce(
-    (navLinks, path) => {
-      navLinks[path.name] = path;
-      return navLinks;
-    },
-    {} as IRoutePaths
-  );
+  return paths.reduce((navLinks, path) => {
+    navLinks[path.name] = path;
+    return navLinks;
+  }, {} as IRoutePaths);
 }
 
 export const ROUTE_PATHS: IRoutePaths = createNavLinksFromRoutePaths(PATHS);

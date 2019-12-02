@@ -23,7 +23,8 @@ import {
   Home,
   SignAndVerifyMessage,
   BroadcastTransactionFlow,
-  InteractWithContractsFlow
+  InteractWithContractsFlow,
+  DeployContractsFlow
 } from 'v2/features';
 import { requiresDesktopApp } from './helpers';
 
@@ -178,5 +179,11 @@ export const APP_ROUTES: IAppRoute[] = [
     title: ROUTE_PATHS.INTERACT_WITH_CONTRACTS.title,
     path: ROUTE_PATHS.INTERACT_WITH_CONTRACTS.path,
     component: InteractWithContractsFlow
+  },
+  {
+    name: ROUTE_PATHS.DEPLOY_CONTRACTS.name,
+    title: ROUTE_PATHS.DEPLOY_CONTRACTS.title,
+    path: ROUTE_PATHS.DEPLOY_CONTRACTS.path,
+    component: DeployContractsFlow
   }
 ];
