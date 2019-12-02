@@ -6,7 +6,6 @@ import { createLogger } from 'redux-logger';
 
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import RootReducer, { AppState } from './reducers';
-import sagas from './sagas';
 import { rehydrateConfigAndCustomTokenState } from './configAndTokens';
 
 export default function configureStore() {
@@ -32,11 +31,6 @@ export default function configureStore() {
   store = createStore<AppState>(RootReducer, persistedInitialState as any, middleware);
   AnalyticsService.instance.track(ANALYTICS_CATEGORIES.ROOT, 'Language initially loaded', {
     lang: persistedInitialState.config && persistedInitialState.config.meta.languageSelection
-  });
-
-  // Add all of the sagas to the middleware
-  Object.keys(sagas).forEach((saga: keyof typeof sagas) => {
-    sagaMiddleware.run(sagas[saga]);
   });
 
   return store;

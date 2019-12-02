@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
 import { configMetaSelectors } from 'features/config';
-import Notifications from './Notifications';
 import OfflineTab from './OfflineTab';
 import './WebTemplate.scss';
 
@@ -30,7 +29,6 @@ class WebTemplate extends Component<Props, {}> {
             {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
           </div>
           <div className="WebTemplate-spacer" />
-          <Notifications />
         </div>
       </React.Fragment>
     );

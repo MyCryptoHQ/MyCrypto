@@ -1,12 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { notificationsActions } from 'features/notifications';
-
-interface DispatchProps {
-  showNotification: notificationsActions.TShowNotification;
-}
-
 interface OwnProps {
   /**
    * Optional custom error message to display when a error is caught, otherwise the
@@ -27,19 +21,18 @@ interface OwnProps {
   onError?(): void;
 }
 
-type Props = DispatchProps & OwnProps;
+type Props = OwnProps;
 
 class ErrorBoundary extends React.Component<Props> {
   public componentDidCatch(error: Error, info: any) {
     console.error(error);
     console.error(info);
-    const { errorMessage, onError, shouldCatch } = this.props;
+    const { onError, shouldCatch } = this.props;
 
     if (shouldCatch === false) {
       throw error;
     }
 
-    this.props.showNotification('danger', errorMessage || error.message);
     if (onError) {
       onError();
     }
@@ -52,5 +45,5 @@ class ErrorBoundary extends React.Component<Props> {
 
 export default connect(
   null,
-  { showNotification: notificationsActions.showNotification }
+  {}
 )(ErrorBoundary);
