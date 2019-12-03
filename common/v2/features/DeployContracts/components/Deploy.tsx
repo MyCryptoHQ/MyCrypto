@@ -1,7 +1,8 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
+import { debounce } from 'lodash';
 
 import {
   NetworkSelectDropdown,
@@ -97,16 +98,28 @@ export default function Interact(props: Props) {
   const filteredAccounts = getAccountsInNetwork(accounts, networkId);
 
   useEffect(() => {
-    updateGasCallProps();
+    debouncedUpdateGasCall.current(account, byteCode);
   }, [account]);
 
-  const updateGasCallProps = () => {
-    if (!account) {
+  const byteCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { value }
+    } = e;
+    handleByteCodeChanged(value);
+    debouncedUpdateGasCall.current(account, value);
+  };
+
+  const updateGasCallProps = (acc: StoreAccount, byteCodeVal: string) => {
+    if (!acc) {
       return;
     }
 
-    setGasCallProps(constructGasCallProps(byteCode, account));
+    setGasCallProps(constructGasCallProps(byteCodeVal, acc));
   };
+
+  const debouncedUpdateGasCall = useRef(
+    debounce((acc: StoreAccount, byteCodeVal: string) => updateGasCallProps(acc, byteCodeVal), 700)
+  );
 
   const deploySubmit = async () => {
     setError(undefined);
@@ -152,11 +165,10 @@ export default function Interact(props: Props) {
             label={translateRaw('CONTRACT_BYTECODE')}
             value={byteCode}
             placeholder="0x8f87a973e..."
-            onChange={({ target: { value } }) => handleByteCodeChanged(value)}
+            onChange={byteCodeChange}
             textarea={true}
             resizableTextArea={true}
             height={'108px'}
-            validate={updateGasCallProps}
           />
         </InputWrapper>
       </FieldWrapper>

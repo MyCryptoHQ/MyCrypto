@@ -1,5 +1,5 @@
 import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
-import { StoreAccount } from 'v2/types';
+import { StoreAccount, NetworkId } from 'v2/types';
 import { ProviderHandler, getGasEstimate } from 'v2/services';
 import { isWeb3Wallet } from 'v2/utils/web3';
 import { translateRaw } from 'v2/translations';
@@ -16,18 +16,20 @@ const deployContractsInitialState = {
   },
   txConfig: undefined,
   txReceipt: undefined,
-  byteCode: ''
+  byteCode: '',
+  networkId: undefined
 };
 
 const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
   state,
   setState
 }) => {
-  const handleNetworkSelected = (networkId: any) => {
+  const handleNetworkSelected = (networkId: NetworkId) => {
     setState((prevState: DeployContractsState) => ({
       ...prevState,
       networkId,
-      account: undefined
+      account: undefined,
+      byteCode: ''
     }));
   };
 

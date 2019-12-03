@@ -35,6 +35,7 @@ const DeployContractsFlow = (props: RouteComponentProps<{}>) => {
 
   const goToFirstStep = () => {
     setStep(0);
+    handleNetworkSelected(undefined);
   };
 
   const goToNextStep = () => {

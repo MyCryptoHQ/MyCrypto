@@ -178,12 +178,11 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           <NewTabLink
             key={4}
             href={
-              network && 'blockExplorer' in network
+              network && network.blockExplorer
                 ? network.blockExplorer.txUrl(hash)
                 : `https://etherscan.io/tx/${hash}`
             }
           >
-            {' '}
             <img src={newWindowIcon} alt="View more information about this transaction" />
           </NewTabLink>
         ];

@@ -14,6 +14,9 @@ import {
   hexToNumber
 } from 'v2/services';
 import { StoreAccount } from 'v2/types';
+import { COLORS, monospace } from 'v2/theme';
+
+const { LIGHT_GREY } = COLORS;
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,7 +29,15 @@ const CustomLabel = styled(Typography)`
   font-size: 1em;
 `;
 
-const FieldWrapper = styled.div``;
+const FieldWrapper = styled.div`
+  input {
+    font-family: ${monospace};
+    :disabled {
+      background-color: ${LIGHT_GREY};
+    }
+  }
+`;
+
 interface Props {
   gasPrice: string;
   gasLimit: string;
