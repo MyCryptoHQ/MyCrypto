@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
-import translate from 'translations';
+import translate from 'v2/translations';
 import { BREAK_POINTS } from 'v2/theme';
 import { ledgerReferralURL, trezorReferralURL } from 'v2/config';
 import NotificationWrapper from './NotificationWrapper';

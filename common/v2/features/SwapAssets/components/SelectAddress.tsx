@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
-import { translate } from 'translations';
+import translate from 'v2/translations';
 
 import { AccountDropdown, InlineErrorMsg, Typography } from 'v2/components';
 import { StoreAccount } from 'v2/types';

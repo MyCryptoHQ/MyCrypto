@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 
 import { ExtendedContentPanel } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';

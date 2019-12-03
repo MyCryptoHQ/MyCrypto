@@ -14,7 +14,7 @@ import './ConfirmTransaction.scss';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import TransactionIntermediaryDisplay from './displays/TransactionIntermediaryDisplay';
 import { convertToFiat, truncate } from 'v2/utils';
-import translate from 'translations';
+import translate from 'v2/translations';
 
 export default function ConfirmTransaction({
   txConfig,

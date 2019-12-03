@@ -8,7 +8,7 @@ import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { GITHUB_RELEASE_NOTES_URL, OS, VERSION as currentVersion } from 'v2/config';
 import { getFeaturedOS } from 'v2/utils';
 import { AnalyticsService, ANALYTICS_CATEGORIES, GithubService } from 'v2/services/ApiService';
-import translate from 'translations';
+import translate from 'v2/translations';
 
 // Legacy
 import closeIcon from 'common/assets/images/icn-close.svg';

@@ -1,5 +1,5 @@
 import { ROUTE_PATHS } from 'v2/config';
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 
 import dashboardIcon from 'common/assets/images/icn-dashboard.svg';
 
