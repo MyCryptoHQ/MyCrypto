@@ -384,7 +384,7 @@ export default function SendAssetsForm({
                     }
                     fiatAsset={{
                       fiat: 'USD',
-                      value: (getAssetRate(baseAsset || undefined) || 0).toString(),
+                      rate: (getAssetRate(baseAsset || undefined) || 0).toString(),
                       symbol: '$'
                     }}
                   />

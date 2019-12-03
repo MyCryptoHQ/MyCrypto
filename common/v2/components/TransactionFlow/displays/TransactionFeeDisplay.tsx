@@ -7,14 +7,14 @@ interface Props {
   baseAsset: Asset;
   gasLimitToUse: string;
   gasPriceToUse: string;
-  fiatAsset: { fiat: string; value: string; symbol: string };
+  fiatAsset: { fiat: string; rate: string; symbol: string };
 }
 
 function TransactionFeeDisplay({ baseAsset, gasLimitToUse, gasPriceToUse, fiatAsset }: Props) {
   const transactionFeeETH: number = gasStringsToMaxGasNumber(gasPriceToUse, gasLimitToUse);
   const baseAssetSymbol: string = baseAsset.ticker || 'ETH';
 
-  const fiatValue: string = (parseFloat(fiatAsset.value) * transactionFeeETH).toFixed(4);
+  const fiatValue: string = (parseFloat(fiatAsset.rate) * transactionFeeETH).toFixed(4);
 
   return (
     <React.Fragment>

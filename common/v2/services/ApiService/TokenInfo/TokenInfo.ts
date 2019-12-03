@@ -23,8 +23,7 @@ export default class TokenInfoService {
 
   public getTokensInfo = async (contractAddresses: string[]) => {
     // Splices contract addresses for large sets of contracts to break up the calls into manageable chunks
-    const splicedContractAddressArrays = spliceContractAddresses(contractAddresses);
-    const paramsArray = splicedContractAddressArrays.map(contractAddressArray =>
+    const paramsArray = _.chunk(contractAddresses, 20).map(contractAddressArray =>
       createParams(contractAddressArray)
     );
 
@@ -39,17 +38,6 @@ export default class TokenInfoService {
     }
   };
 }
-
-const spliceContractAddresses = (contractAddresses: string[]): string[][] => {
-  const lengthToSplitOn = 20;
-  const splicedContractAddressArrays = [];
-  do {
-    splicedContractAddressArrays.push([...contractAddresses.splice(0, lengthToSplitOn)]);
-  } while (contractAddresses.length >= lengthToSplitOn);
-
-  splicedContractAddressArrays.push([...contractAddresses]);
-  return splicedContractAddressArrays;
-};
 
 const createParams = (contractAddresses: string[]) => {
   const params = new URLSearchParams();

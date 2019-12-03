@@ -62,6 +62,10 @@ export default function ConfirmTransaction({
   const senderContact = getContactByAccount(senderAccount);
   const senderAccountLabel = senderContact ? senderContact.label : 'Unknown Account';
 
+  /* Get Rates */
+  const assetRate = getAssetRate(asset);
+  const baseAssetRate = getAssetRate(baseAsset);
+
   return (
     <div className="ConfirmTransaction">
       <div className="ConfirmTransaction-row">
@@ -98,7 +102,7 @@ export default function ConfirmTransaction({
         <div className="ConfirmTransaction-row-column">
           <Amount
             assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
-            fiatValue={`$${convertToFiat(parseFloat(amount), getAssetRate(asset)).toFixed(2)}
+            fiatValue={`$${convertToFiat(parseFloat(amount), assetRate).toFixed(2)}
           `}
           />
         </div>
@@ -110,10 +114,9 @@ export default function ConfirmTransaction({
         <div className="ConfirmTransaction-row-column">
           <Amount
             assetValue={`${maxTransactionFeeBase} ${baseAsset.ticker}`}
-            fiatValue={`$${convertToFiat(
-              parseFloat(maxTransactionFeeBase),
-              getAssetRate(baseAsset)
-            ).toFixed(2)}`}
+            fiatValue={`$${convertToFiat(parseFloat(maxTransactionFeeBase), baseAssetRate).toFixed(
+              2
+            )}`}
           />
         </div>
       </div>
@@ -126,18 +129,15 @@ export default function ConfirmTransaction({
           {assetType === 'base' ? (
             <Amount
               assetValue={`${totalEtherEgress} ${asset.ticker}`}
-              fiatValue={`$${convertToFiat(
-                parseFloat(totalEtherEgress),
-                getAssetRate(asset)
-              ).toFixed(2)}`}
+              fiatValue={`$${convertToFiat(parseFloat(totalEtherEgress), assetRate).toFixed(2)}`}
             />
           ) : (
             <Amount
               assetValue={`${amount} ${asset.ticker}`}
               baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
               fiatValue={`$${(
-                convertToFiat(parseFloat(amount), getAssetRate(asset)) +
-                convertToFiat(parseFloat(totalEtherEgress), getAssetRate(baseAsset))
+                convertToFiat(parseFloat(amount), assetRate) +
+                convertToFiat(parseFloat(totalEtherEgress), baseAssetRate)
               ).toFixed(2)}`}
             />
           )}
