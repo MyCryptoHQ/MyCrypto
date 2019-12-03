@@ -23,16 +23,14 @@ export default class TokenInfoService {
 
   public getTokensInfo = async (contractAddresses: string[]) => {
     // Splices contract addresses for large sets of contracts to break up the calls into manageable chunks
-    const paramsArray = _.chunk(contractAddresses, 20).map(contractAddressArray =>
+    const queryParams = _.chunk(contractAddresses, 20).map(contractAddressArray =>
       createParams(contractAddressArray)
     );
 
     try {
       return Promise.all(
-        paramsArray.map(async (params: any) => this.service.get('', { params }))
-      ).then((returnedArray: AxiosResponse[]) =>
-        _.union(...returnedArray.map(returnObject => returnObject.data))
-      );
+        queryParams.map(async (params: any) => this.service.get('', { params }))
+      ).then((res: AxiosResponse[]) => _.union(...res.map(r => r.data)));
     } catch (e) {
       throw e;
     }
