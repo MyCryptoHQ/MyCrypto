@@ -28,7 +28,7 @@ export default function ConfirmTransaction({
     onComplete(null);
   };
 
-  const { getRateFromAsset } = useContext(RatesContext);
+  const { getAssetRate } = useContext(RatesContext);
   const recipientContact = getContactByAddressAndNetwork(
     txConfig.receiverAddress,
     txConfig.network
@@ -98,7 +98,7 @@ export default function ConfirmTransaction({
         <div className="ConfirmTransaction-row-column">
           <Amount
             assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
-            fiatValue={`$${convertToFiat(parseFloat(amount), getRateFromAsset(asset)).toFixed(2)}
+            fiatValue={`$${convertToFiat(parseFloat(amount), getAssetRate(asset)).toFixed(2)}
           `}
           />
         </div>
@@ -112,7 +112,7 @@ export default function ConfirmTransaction({
             assetValue={`${maxTransactionFeeBase} ${baseAsset.ticker}`}
             fiatValue={`$${convertToFiat(
               parseFloat(maxTransactionFeeBase),
-              getRateFromAsset(baseAsset)
+              getAssetRate(baseAsset)
             ).toFixed(2)}`}
           />
         </div>
@@ -128,7 +128,7 @@ export default function ConfirmTransaction({
               assetValue={`${totalEtherEgress} ${asset.ticker}`}
               fiatValue={`$${convertToFiat(
                 parseFloat(totalEtherEgress),
-                getRateFromAsset(asset)
+                getAssetRate(asset)
               ).toFixed(2)}`}
             />
           ) : (
@@ -136,8 +136,8 @@ export default function ConfirmTransaction({
               assetValue={`${amount} ${asset.ticker}`}
               baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
               fiatValue={`$${(
-                convertToFiat(parseFloat(amount), getRateFromAsset(asset)) +
-                convertToFiat(parseFloat(totalEtherEgress), getRateFromAsset(baseAsset))
+                convertToFiat(parseFloat(amount), getAssetRate(asset)) +
+                convertToFiat(parseFloat(totalEtherEgress), getAssetRate(baseAsset))
               ).toFixed(2)}`}
             />
           )}

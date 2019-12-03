@@ -10,7 +10,7 @@ import {
   Asset,
   ITxReceipt
 } from 'v2/types';
-import { isArrayEqual, useInterval, convertToFiatFromAsset, getUUIDForAsset, fromTxReceiptObj } from 'v2/utils';
+import { isArrayEqual, useInterval, convertToFiatFromAsset, fromTxReceiptObj } from 'v2/utils';
 import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from 'v2/services/EthService';
 
 import { getAccountsAssetsBalances, accountUnlockVIPDetected } from './BalanceService';
@@ -29,10 +29,10 @@ interface State {
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totalFiat(
     selectedAccounts?: StoreAccount[]
-  ): (getRateFromAsset: (asset: Asset) => number | undefined) => number;
+  ): (getAssetRate: (asset: Asset) => number | undefined) => number;
   currentAccounts(): StoreAccount[];
   assetTickers(targetAssets?: StoreAsset[]): TTicker[];
-  assetIDs(targetAssets?: StoreAsset[]): any[];
+  assetUUIDs(targetAssets?: StoreAsset[]): any[];
   scanTokens(asset?: ExtendedAsset): Promise<void[]>;
   deleteAccountFromCache(uuid: string): void;
 }
@@ -50,7 +50,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   } = useContext(AccountContext);
   const { assets } = useContext(AssetContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
-  const { networks, getNetworkByName } = useContext(NetworkContext);
+  const { networks } = useContext(NetworkContext);
   const [pendingTransactions, setPendingTransactions] = useState([] as ITxReceipt[]);
   // We transform rawAccounts into StoreAccount. Since the operation is exponential to the number of
   // accounts, make sure it is done only when rawAccounts change.
@@ -144,27 +144,17 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     totals: (selectedAccounts = state.accounts) =>
       Object.values(getTotalByAsset(state.assets(selectedAccounts))),
     totalFiat: (selectedAccounts = state.accounts) => (
-      getRateFromAsset: (asset: Asset) => number | undefined
+      getAssetRate: (asset: Asset) => number | undefined
     ) =>
       state
         .totals(selectedAccounts)
-        .reduce((sum, asset) => (sum += convertToFiatFromAsset(asset, getRateFromAsset(asset))), 0),
+        .reduce((sum, asset) => (sum += convertToFiatFromAsset(asset, getAssetRate(asset))), 0),
     currentAccounts: () => getDashboardAccounts(state.accounts, settings.dashboardAccounts),
     assetTickers: (targetAssets = state.assets()) => [
       ...new Set(targetAssets.map(a => a.ticker as TTicker))
     ],
-    assetIDs: (targetAssets = state.assets()) => [
-      ...new Set(
-        targetAssets
-          .map((a: StoreAsset) => {
-            const network = getNetworkByName(a.networkId || '');
-            const chainId = network ? network.chainId : 1;
-            return { address: a.contractAddress, chainId };
-          })
-          .map(({ address, chainId }: { address: string; chainId: number }) =>
-            getUUIDForAsset(chainId, address)
-          )
-      )
+    assetUUIDs: (targetAssets = state.assets()) => [
+      ...new Set(targetAssets.map((a: StoreAsset) => a.uuid))
     ],
     scanTokens: async (asset?: ExtendedAsset) =>
       Promise.all(

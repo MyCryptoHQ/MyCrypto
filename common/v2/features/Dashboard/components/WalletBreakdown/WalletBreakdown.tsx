@@ -55,7 +55,7 @@ export function WalletBreakdown() {
   const { totals, currentAccounts } = useContext(StoreContext);
   const { accounts } = useContext(AccountContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
-  const { getRateFromAsset } = useContext(RatesContext);
+  const { getAssetRate } = useContext(RatesContext);
 
   // Track number of accounts that user has only once per session
   if (!wasNumOfAccountsTracked) {
@@ -73,7 +73,7 @@ export function WalletBreakdown() {
       name: asset.name || translateRaw('WALLET_BREAKDOWN_UNKNOWN'),
       ticker: asset.ticker,
       amount: weiToFloat(asset.balance, asset.decimal),
-      fiatValue: convertToFiatFromAsset(asset, getRateFromAsset(asset))
+      fiatValue: convertToFiatFromAsset(asset, getAssetRate(asset))
     }))
     .sort((a, b) => b.fiatValue - a.fiatValue);
 

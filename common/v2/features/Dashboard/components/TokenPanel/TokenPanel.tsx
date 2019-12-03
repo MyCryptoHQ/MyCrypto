@@ -15,7 +15,7 @@ export function TokenPanel() {
   const [tokenData, setTokenData] = useState([] as any[]);
 
   const { accounts, totals, currentAccounts, scanTokens } = useContext(StoreContext);
-  const { getRateFromAsset, rates } = useContext(RatesContext);
+  const { getAssetRate, rates } = useContext(RatesContext);
 
   const handleScanTokens = async (asset?: ExtendedAsset) => {
     try {
@@ -50,7 +50,7 @@ export function TokenPanel() {
         : [
             ...tokens,
             Object.assign(asset, {
-              rate: getRateFromAsset(asset) || 0,
+              rate: getAssetRate(asset) || 0,
               details: tokenData.find(details => details.address === asset.contractAddress) || {}
             })
           ];

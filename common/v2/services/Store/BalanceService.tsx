@@ -75,7 +75,7 @@ export const getBaseAssetBalances = async (addresses: string[], network: Network
       return data;
     })
     .catch(_ => ([] as unknown) as BalanceMap);
-}; // Return an object containing the balance of the different tokens
+};
 
 const getTokenBalances = (
   provider: ProviderHandler,

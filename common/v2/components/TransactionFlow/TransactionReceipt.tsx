@@ -30,7 +30,7 @@ export default function TransactionReceipt({
   resetFlow,
   completeButtonText
 }: IStepComponentProps & Props) {
-  const { getRateFromAsset } = useContext(RatesContext);
+  const { getAssetRate } = useContext(RatesContext);
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
   const { addNewTransactionToAccount } = useContext(AccountContext);
   const [txStatus, setTxStatus] = useState(ITxStatus.PENDING);
@@ -127,7 +127,7 @@ export default function TransactionReceipt({
             assetValue={`${parseFloat(assetAmount).toFixed(6)} ${assetTicker}`}
             fiatValue={`$${convertToFiat(
               parseFloat(assetAmount),
-              getRateFromAsset(assetForRateFetch)
+              getAssetRate(assetForRateFetch)
             ).toFixed(2)}
             `}
           />

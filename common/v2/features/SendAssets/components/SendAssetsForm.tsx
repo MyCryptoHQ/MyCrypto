@@ -140,7 +140,7 @@ export default function SendAssetsForm({
   onComplete
 }: IStepComponentProps) {
   const { accounts, assets } = useContext(StoreContext);
-  const { getRateFromAsset } = useContext(RatesContext);
+  const { getAssetRate } = useContext(RatesContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingENSName, setIsResolvingENSName] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
@@ -384,7 +384,7 @@ export default function SendAssetsForm({
                     }
                     fiatAsset={{
                       fiat: 'USD',
-                      value: (getRateFromAsset(baseAsset || undefined) || 0).toString(),
+                      value: (getAssetRate(baseAsset || undefined) || 0).toString(),
                       symbol: '$'
                     }}
                   />
