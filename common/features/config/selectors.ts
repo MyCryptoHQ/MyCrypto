@@ -2,19 +2,10 @@ import difference from 'lodash/difference';
 
 import { InsecureWalletName, SecureWalletName, WalletName, walletNames } from 'config';
 import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
-import { stripWeb3Network, isAutoNodeConfig } from 'libs/nodes';
-import { getIsValidAddressFunction, getIsValidENSAddressFunction } from 'libs/validators';
-import { CustomNodeConfig, StaticNodeConfig, StaticNodeId, NodeConfig } from 'types/node';
-import {
-  CustomNetworkConfig,
-  StaticNetworkConfig,
-  StaticNetworkIds,
-  NetworkContract,
-  Token
-} from 'types/network';
+import { CustomNodeConfig, StaticNodeId, NodeConfig } from 'types/node';
+import { CustomNetworkConfig, StaticNetworkConfig, NetworkContract, Token } from 'types/network';
 import { getChecksumAddressFunction } from 'utils/formatters';
 import { AppState } from 'features/reducers';
-import * as configNetworksSelectors from './networks/selectors';
 import * as configNetworksStaticSelectors from './networks/static/selectors';
 import * as configNetworksCustomSelectors from './networks/custom/selectors';
 import * as configNodesSelectors from './nodes/selectors';
@@ -45,8 +36,12 @@ export interface CustomNodeOption {
 export const getConfig = (state: AppState) => state.config;
 
 //#region Network
-export const getSelectedNetwork = (state: AppState) =>
-  stripWeb3Network(configNodesSelectors.getNodeConfig(state).network);
+export const getSelectedNetwork = (state: AppState) => {
+  if (state) {
+    return undefined;
+  }
+  return undefined;
+};
 
 export const getNetworkConfig = (state: AppState): StaticNetworkConfig | CustomNetworkConfig => {
   const config = getStaticNetworkConfig(state) || getCustomNetworkConfig(state);
@@ -62,21 +57,17 @@ export const getNetworkConfig = (state: AppState): StaticNetworkConfig | CustomN
 };
 
 export const getStaticNetworkConfig = (state: AppState): StaticNetworkConfig | undefined => {
-  const selectedNetwork = getSelectedNetwork(state);
-
-  const { staticNetworks } = configNetworksSelectors.getNetworks(state);
-
-  const defaultNetwork = configNetworksStaticSelectors.isStaticNetworkId(state, selectedNetwork)
-    ? staticNetworks[selectedNetwork]
-    : undefined;
-  return defaultNetwork;
+  if (state) {
+    return undefined;
+  }
+  return undefined;
 };
 
 export const getCustomNetworkConfig = (state: AppState): CustomNetworkConfig | undefined => {
-  const selectedNetwork = getSelectedNetwork(state);
-  const { customNetworks } = configNetworksSelectors.getNetworks(state);
-  const customNetwork = customNetworks[selectedNetwork];
-  return customNetwork;
+  if (state) {
+    return undefined;
+  }
+  return undefined;
 };
 
 export const getNetworkUnit = (state: AppState): string => {
@@ -88,13 +79,17 @@ export const getNetworkChainId = (state: AppState) => {
 };
 
 export const getIsValidAddressFn = (state: AppState) => {
-  const chainId = getNetworkChainId(state);
-  return getIsValidAddressFunction(chainId);
+  if (state) {
+    return undefined;
+  }
+  return undefined;
 };
 
 export const getIsValidENSAddressFn = (state: AppState) => {
-  const chainId = getNetworkChainId(state);
-  return getIsValidENSAddressFunction(chainId);
+  if (state) {
+    return undefined;
+  }
+  return undefined;
 };
 
 export const getChecksumAddressFn = (state: AppState) => {
@@ -203,27 +198,6 @@ export const getAllNetworkConfigs = (state: AppState) => ({
 export const getStaticNodeFromId = (state: AppState, nodeId: StaticNodeId) =>
   configNodesStaticSelectors.getStaticNodeConfigs(state)[nodeId];
 
-export function getStaticNodeOptions(state: AppState): NodeOption[] {
-  const staticNetworkConfigs = configNetworksStaticSelectors.getStaticNetworkConfigs(state);
-  return Object.entries(configNodesStaticSelectors.getStaticNodes(state)).map(
-    ([nodeId, node]: [string, StaticNodeConfig]) => {
-      const associatedNetwork =
-        staticNetworkConfigs[stripWeb3Network(node.network) as StaticNetworkIds];
-      const opt: NodeOption = {
-        isCustom: node.isCustom,
-        value: nodeId,
-        label: {
-          network: stripWeb3Network(node.network),
-          service: node.service
-        },
-        color: associatedNetwork.color,
-        hidden: node.hidden
-      };
-      return opt;
-    }
-  );
-}
-
 export function getCustomNodeOptions(state: AppState): CustomNodeOption[] {
   const staticNetworkConfigs = configNetworksStaticSelectors.getStaticNetworkConfigs(state);
   const customNetworkConfigs = configNetworksCustomSelectors.getCustomNetworkConfigs(state);
@@ -250,7 +224,7 @@ export function getCustomNodeOptions(state: AppState): CustomNodeOption[] {
 }
 
 export function getNodeOptions(state: AppState) {
-  return [...getStaticNodeOptions(state), ...getCustomNodeOptions(state)];
+  return [...getCustomNodeOptions(state)];
 }
 
 export function getAllNodes(state: AppState): { [key: string]: NodeConfig } {
@@ -266,29 +240,11 @@ export interface INodeLabel {
 }
 
 export function getSelectedNodeLabel(state: AppState): INodeLabel {
-  const allNodes = getAllNodes(state);
   const node = configNodesSelectors.getNodeConfig(state);
   const network = getNetworkConfig(state);
   let info;
 
-  if (node.isCustom) {
-    // Custom nodes have names
-    info = node.name;
-  } else if (node.isAuto) {
-    // Auto nodes should show the count of all nodes it uses. If only one,
-    // show the service name of the node.
-    const networkNodes = Object.values(allNodes).filter(
-      n => !isAutoNodeConfig(n) && n.network === node.network
-    );
-
-    if (networkNodes.length > 1) {
-      info = 'AUTO';
-    } else {
-      info = networkNodes[0].service;
-    }
-  } else {
-    info = node.service;
-  }
+  info = node.service;
 
   return {
     network: network.name,

@@ -20,8 +20,8 @@ type Props = OwnProps & StateProps;
 
 const Identicon: React.SFC<Props> = props => {
   const size = props.size || '4rem';
-  const { address, isValidAddress, className = '' } = props;
-  const identiconDataUrl = isValidAddress(address) ? makeBlockie(address) : '';
+  const { address, className = '' } = props;
+  const identiconDataUrl = true ? makeBlockie(address) : '';
 
   return (
     // Use inline styles for printable wallets

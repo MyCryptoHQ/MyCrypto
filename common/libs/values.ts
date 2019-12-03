@@ -1,10 +1,3 @@
-import { Wei } from 'libs/units';
-import { addHexPrefix } from 'ethereumjs-util';
-
-export function toHexWei(weiString: string): string {
-  return addHexPrefix(Wei(weiString).toString(16));
-}
-
 export function padLeftEven(hex: string) {
   return hex.length % 2 !== 0 ? `0${hex}` : hex;
 }

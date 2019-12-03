@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { IWallet } from 'libs/wallet';
 import { BlockExplorerConfig } from 'types/network';
 import { AppState } from 'features/reducers';
 import { configSelectors } from 'features/config';
@@ -10,7 +9,7 @@ import NewTabLink from './NewTabLink';
 interface BaseProps {
   explorer?: BlockExplorerConfig | null;
   address?: string | null;
-  wallet?: IWallet | null;
+  wallet?: null;
 }
 
 interface StateProps {
@@ -26,7 +25,7 @@ export class Address extends React.PureComponent<Props> {
     if (address !== null && address !== undefined) {
       renderAddress = address;
     } else {
-      renderAddress = wallet !== null && wallet !== undefined ? wallet.getAddressString() : '';
+      renderAddress = wallet !== null && wallet !== undefined ? wallet : '';
     }
     renderAddress = toChecksumAddress(renderAddress);
 

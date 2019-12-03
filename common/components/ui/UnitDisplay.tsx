@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { fromTokenBase, getDecimalFromEtherUnit, UnitKey, Wei, TokenValue } from 'libs/units';
 import { formatNumber as format } from 'utils/formatters';
 import { AppState } from 'features/reducers';
 import { configMetaSelectors } from 'features/config';
@@ -13,7 +12,7 @@ interface Props {
    * @type {TokenValue | Wei}
    * @memberof Props
    */
-  value?: TokenValue | Wei | null;
+  value?: null;
   /**
    * @description Symbol to display to the right of the value, such as 'ETH'
    * @type {string}
@@ -31,14 +30,11 @@ interface Props {
 }
 
 interface EthProps extends Props {
-  unit: UnitKey;
+  unit: string;
 }
 interface TokenProps extends Props {
   decimal: number;
 }
-
-const isEthereumUnit = (param: EthProps | TokenProps): param is EthProps =>
-  !!(param as EthProps).unit;
 
 const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
   const { value, symbol, displayShortBalance, displayTrailingZeroes, checkOffline } = params;
@@ -47,9 +43,7 @@ const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
   if (!value) {
     element = <Spinner size="x1" />;
   } else {
-    const convertedValue = isEthereumUnit(params)
-      ? fromTokenBase(value, getDecimalFromEtherUnit(params.unit))
-      : fromTokenBase(value, params.decimal);
+    const convertedValue = value;
 
     let formattedValue;
 
