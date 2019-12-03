@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { isEmpty } from 'lodash';
 
-import { StoreContext, AccountContext, SettingsContext } from 'v2/services/Store';
+import { StoreContext, SettingsContext } from 'v2/services/Store';
 import { PollingService } from 'v2/workers';
 import { IRates, TTicker, Asset } from 'v2/types';
 import { notUndefined } from 'v2/utils';
@@ -67,7 +67,6 @@ type IWorker = PollingService | undefined;
 export const RatesContext = createContext({} as State);
 
 export function RatesProvider({ children }: { children: React.ReactNode }) {
-  const { accounts: rawAccounts } = useContext(AccountContext);
   const { assetUUIDs } = useContext(StoreContext);
   const { settings, updateSettingsRates } = useContext(SettingsContext);
   const [rates, setRates] = useState(settings.rates || ({} as IRates));
@@ -85,17 +84,23 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
     setIsSettingsInitialized(false);
   }, [Object.keys(rates)]);
 
+  // On changes to the worker, and worker exists then start the worker.
   useEffect(() => {
     if (!worker) return;
     worker.start();
   }, [worker]);
 
-  const currentAssetIDs = assetUUIDs();
+  const currentAssetUUIDs = assetUUIDs();
+
+  // If account assetUUIDs changes, we'll need to create a new worker.
   useEffect(() => {
     // The cryptocompare api that our proxie uses fails gracefully and will return a conversion rate
     // even if some are tickers are invalid (e.g WETH, GoerliETH etc.)
     fetchAssetMappingList().then((coinMappingObj: AssetMappingListObject) => {
-      const formattedCoinGeckoIds = pullCoinGeckoIDs(coinMappingObj, currentAssetIDs as TTicker[]);
+      const formattedCoinGeckoIds = pullCoinGeckoIDs(
+        coinMappingObj,
+        currentAssetUUIDs as TTicker[]
+      );
 
       const createWorker = () => {
         setWorker(
@@ -111,25 +116,22 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
           )
         );
       };
-
-      if (!worker) {
-        createWorker();
-        return;
-      }
-
       const terminateWorker = () => {
+        if (!worker) return;
         worker.stop();
         worker.close();
       };
 
-      // Stop old worker
-      terminateWorker();
-      // Create new worker.
-      createWorker();
+      // If a worker exists already, terminate the previous worker
+      if (worker) {
+        terminateWorker();
+      }
 
-      return terminateWorker; // make sure we terminate the previous worker on teardown.
+      // Then create a worker
+      createWorker();
+      return terminateWorker;
     });
-  }, [rawAccounts, currentAssetIDs.length]); // only update if an account has been added or removed from LocalStorage.
+  }, [currentAssetUUIDs.length]);
 
   const state: State = {
     rates: {},
