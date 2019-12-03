@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import translate from 'translations';
+import translate from 'v2/translations';
 import { subscribeToMailingList } from 'v2/services/ApiService';
 
 export default class Subscribe extends Component {
