@@ -168,6 +168,5 @@ export const constructGasCallProps = (
 };
 
 export const isValidETHDomain = (domain: string) => {
-  const domainEnd = domain.substr(-4);
-  return domainEnd === '.eth' || domainEnd === '.xyz';
+  return domain.includes('.');
 };

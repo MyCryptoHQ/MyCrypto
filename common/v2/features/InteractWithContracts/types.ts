@@ -56,4 +56,5 @@ export interface InteractWithContractState {
   rawTransaction: ITxConfig;
   txConfig: ITxConfig;
   txReceipt: ITxReceipt | undefined;
+  addressOrDomainInput: string;
 }

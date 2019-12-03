@@ -144,7 +144,7 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
       width="750px"
       heading={stepObject.title}
     >
-      <StepComponent goToNextStep={goToNextStep} {...stepProps} {...stepActions} />
+      <StepComponent {...stepProps} {...stepActions} />
     </ExtendedContentPanel>
   );
 };
