@@ -1,4 +1,5 @@
 import { IRoutePath, IRoutePaths } from 'v2/types';
+import { translateRaw } from 'v2/translations';
 
 const PATHS: IRoutePath[] = [
   {
@@ -7,37 +8,37 @@ const PATHS: IRoutePath[] = [
   },
   {
     name: 'BUY',
-    title: 'Buy Crypto',
+    title: translateRaw('BUY'),
     path: 'https://buy.mycrypto.com/'
   },
   {
     name: 'HOME',
-    title: 'home',
+    title: translateRaw('HOME'),
     path: '/home'
   },
   {
     name: 'DASHBOARD',
-    title: 'Dashboard',
+    title: translateRaw('DASHBOARD'),
     path: '/dashboard'
   },
   {
     name: 'ADD_ACCOUNT',
-    title: 'Add Account',
+    title: translateRaw('ADD_ACCOUNT'),
     path: '/add-account'
   },
   {
     name: 'CREATE_WALLET',
-    title: 'Create Wallet',
+    title: translateRaw('CREATE_WALLET'),
     path: '/create-wallet'
   },
   {
     name: 'CREATE_WALLET_MNEMONIC',
-    title: 'Mnemonic',
+    title: translateRaw('CREATE_WALLET_MNEMONIC'),
     path: '/create-wallet/mnemonic'
   },
   {
     name: 'CREATE_WALLET_KEYSTORE',
-    title: 'Keystore',
+    title: translateRaw('CREATE_WALLET_KEYSTORE'),
     path: '/create-wallet/keystore'
   },
   {
@@ -52,7 +53,7 @@ const PATHS: IRoutePath[] = [
   },
   {
     name: 'REQUEST_ASSETS',
-    title: 'Request Assets',
+    title: translateRaw('REQUEST'),
     path: '/request'
   },
   {

@@ -78,11 +78,13 @@ interface Props {
   };
   width?: string;
   mobileMaxWidth?: string;
+  backBtnText?: string;
   onBack?(): void | null;
 }
 
 export default function ContentPanel({
   onBack,
+  backBtnText,
   stepper,
   heading,
   icon,
@@ -99,7 +101,8 @@ export default function ContentPanel({
         <ContentPanelTop stepperOnly={stepper !== undefined && !onBack}>
           {onBack && (
             <BackButton basic={true} onClick={onBack}>
-              <img src={backArrowIcon} alt="Back arrow" /> Back
+              <img src={backArrowIcon} alt="Back arrow" />{' '}
+              {backBtnText ? `Back : ${backBtnText}` : `Back`}
             </BackButton>
           )}
           {stepper && <Stepper current={stepper.current} total={stepper.total} />}

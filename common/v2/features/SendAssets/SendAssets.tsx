@@ -73,6 +73,10 @@ function SendAssets({ history }: RouteComponentProps<{}>) {
     senderAccount ? senderAccount.wallet : undefined,
     step
   );
+  const getBackBtnLabel = () =>
+    Math.max(-1, step - 1) === -1
+      ? translateRaw('DASHBOARD')
+      : getStep(senderAccount ? senderAccount.wallet : undefined, Math.max(0, step - 1)).label;
 
   const goToNextStep = () => setStep(Math.min(step + 1, currentPath.length - 1));
   const goToPrevStep = () => setStep(Math.max(0, step - 1));
@@ -83,6 +87,7 @@ function SendAssets({ history }: RouteComponentProps<{}>) {
   return (
     <ContentPanel
       onBack={goBack}
+      backBtnText={getBackBtnLabel()}
       heading={label}
       icon={sendIcon}
       stepper={{ current: step + 1, total: currentPath.length - 1 }}
