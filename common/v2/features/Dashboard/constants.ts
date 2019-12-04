@@ -1,4 +1,4 @@
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS, EXT_URLS } from 'v2/config';
 import { Action } from './types';
 

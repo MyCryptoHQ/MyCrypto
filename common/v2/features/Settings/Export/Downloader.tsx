@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Button, Link } from 'v2/components';
 import { makeBlob } from 'v2/utils';
-import translate from 'translations';
+import translate from 'v2/translations';
 
 interface DownloaderProps {
   getStorage(): void;

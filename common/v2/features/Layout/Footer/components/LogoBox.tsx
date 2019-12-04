@@ -1,6 +1,6 @@
 import React from 'react';
 
-import translate from 'translations';
+import translate from 'v2/translations';
 import logo from 'assets/images/logo-mycrypto.svg';
 import SocialsAndLegal from './SocialsAndLegal';
 import './LogoBox.scss';

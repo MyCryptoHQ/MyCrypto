@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import translate from 'translations';
+import translate from 'v2/translations';
 
 const FilePicker = styled.label`
   background: none;

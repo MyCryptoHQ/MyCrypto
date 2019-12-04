@@ -1,7 +1,6 @@
 import React from 'react';
 import { ConfigState } from 'features/config/types';
 import { loadStatePropertyOrEmptyObject } from 'utils/localStorage';
-import TranslateMarkdown from 'components/Translate';
 
 const fallbackLanguage = 'en';
 const repository: {
@@ -87,15 +86,6 @@ export function translateRaw(key: string, variables?: { [name: string]: string }
 
   return translatedString;
 }
-
-export function translate(
-  key: string,
-  variables?: { [name: string]: string }
-): React.ReactElement<any> {
-  return <TranslateMarkdown source={translateRawV2(key, undefined, variables)} />;
-}
-
-export default translate;
 
 export const translateRawV2 = (key: string, languageApplied?: string, variables?: { [name: string]: string }): string => {
   const language = languageApplied || fallbackLanguage

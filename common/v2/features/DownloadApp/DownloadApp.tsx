@@ -9,7 +9,7 @@ import { AnalyticsService, ANALYTICS_CATEGORIES, GithubService } from 'v2/servic
 import { GITHUB_RELEASE_NOTES_URL, DOWNLOAD_MYCRYPTO_LINK, OS } from 'v2/config';
 import { getFeaturedOS } from 'v2/utils';
 import { AppDownloadItem } from './types';
-import translate from 'translations';
+import translate from 'v2/translations';
 
 // Legacy
 import desktopAppIcon from 'common/assets/images/icn-desktop-app.svg';

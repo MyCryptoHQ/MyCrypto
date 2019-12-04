@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Panel } from '@mycrypto/ui';
 
-import translate from 'translations';
+import translate from 'v2/translations';
 import { COLORS, BREAK_POINTS } from 'v2/theme';
 
 import manageWalletsImage from 'common/assets/images/manage-your-wallets.svg';
