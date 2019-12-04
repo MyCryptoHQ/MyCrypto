@@ -110,8 +110,9 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
               )}
             </div>
             <div className="LedgerPanel-footer">
-              {translate('LEDGER_REFERRAL_2')} <br />
-              {translate('LEDGER_HELP_LINK')}
+              {translate('LEDGER_REFERRAL_2')}
+              {/*<br />
+              {translate('LEDGER_HELP_LINK')} */}
             </div>
           </div>
         </div>

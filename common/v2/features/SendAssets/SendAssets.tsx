@@ -34,19 +34,31 @@ function SendAssets({ history }: RouteComponentProps<{}>) {
   const web3Steps: IPath[] = [
     { label: 'Send Assets', component: SendAssetsForm, action: handleFormSubmit },
     {
-      label: 'Confirm Transaction',
+      label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
       component: ConfirmTransaction,
       action: handleConfirmAndSign
     },
     { label: '', component: SignTransaction, action: handleSignedWeb3Tx },
-    { label: 'Transaction Submitted', component: TransactionReceipt, action: goToDashoard }
+    {
+      label: translateRaw('TRANSACTION_BROADCASTED'),
+      component: TransactionReceipt,
+      action: goToDashoard
+    }
   ];
 
   const defaultSteps: IPath[] = [
     { label: 'Send Assets', component: SendAssetsForm, action: handleFormSubmit },
     { label: '', component: SignTransaction, action: handleSignedTx },
-    { label: 'Confirm Transaction', component: ConfirmTransaction, action: handleConfirmAndSend },
-    { label: 'Transaction Submitted', component: TransactionReceipt, action: goToDashoard }
+    {
+      label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
+      component: ConfirmTransaction,
+      action: handleConfirmAndSend
+    },
+    {
+      label: translateRaw('TRANSACTION_BROADCASTED'),
+      component: TransactionReceipt,
+      action: goToDashoard
+    }
   ];
 
   const getStep = (walletId: WalletId, stepIndex: number) => {
@@ -61,6 +73,10 @@ function SendAssets({ history }: RouteComponentProps<{}>) {
     senderAccount ? senderAccount.wallet : undefined,
     step
   );
+  const getBackBtnLabel = () =>
+    Math.max(-1, step - 1) === -1
+      ? translateRaw('DASHBOARD')
+      : getStep(senderAccount ? senderAccount.wallet : undefined, Math.max(0, step - 1)).label;
 
   const goToNextStep = () => setStep(Math.min(step + 1, currentPath.length - 1));
   const goToPrevStep = () => setStep(Math.max(0, step - 1));
@@ -71,6 +87,7 @@ function SendAssets({ history }: RouteComponentProps<{}>) {
   return (
     <ContentPanel
       onBack={goBack}
+      backBtnText={getBackBtnLabel()}
       heading={label}
       icon={sendIcon}
       stepper={{ current: step + 1, total: currentPath.length - 1 }}
