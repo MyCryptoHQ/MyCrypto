@@ -1,5 +1,5 @@
 // Ref: https://github.com/ethereum/wiki/wiki/JSON-RPC
-import { hexEncodeQuantity, hexEncodeData } from 'libs/nodes/rpc/utils';
+import { hexEncodeQuantity, hexEncodeData } from 'v2/services/EthService';
 import BN from 'bn.js';
 
 // 0x41 (65 in decimal)

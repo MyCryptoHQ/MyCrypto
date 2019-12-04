@@ -6,9 +6,9 @@ import {
   toTokenBase,
   fromTokenBase,
   getDecimalFromEtherUnit,
-  convertTokenBase,
   TokenValue
-} from 'libs/units';
+} from 'v2/services/EthService';
+import { convertTokenBase } from 'v2/services/EthService/utils/units';
 
 configuredStore.getState();
 
