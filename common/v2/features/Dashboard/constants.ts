@@ -31,7 +31,7 @@ export const actions: Action[] = [
   {
     icon: receiveIcon,
     title: translateRaw('DASHBOARD_ACTIONS_REQUEST_ASSETS_TITLE'),
-    link: ROUTE_PATHS.RECEIVE_ASSETS.path,
+    link: ROUTE_PATHS.REQUEST_ASSETS.path,
     description: translateRaw('DASHBOARD_ACTIONS_REQUEST_ASSETS_SUBTITLE')
   },
   {

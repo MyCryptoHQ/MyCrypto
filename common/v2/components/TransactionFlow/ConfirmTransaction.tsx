@@ -108,7 +108,7 @@ export default function ConfirmTransaction({
       </div>
       <div className="ConfirmTransaction-row">
         <div className="ConfirmTransaction-row-column">
-          <img src={feeIcon} alt="Fee" /> Max. Transaction Fee:
+          <img src={feeIcon} alt="Fee" /> {translate('MAX_TX_FEE')}:
         </div>
         <div className="ConfirmTransaction-row-column">
           <Amount
@@ -123,7 +123,7 @@ export default function ConfirmTransaction({
       <div className="ConfirmTransaction-divider" />
       <div className="ConfirmTransaction-row">
         <div className="ConfirmTransaction-row-column">
-          <img src={sendIcon} alt="Total" /> Total:
+          <img src={sendIcon} alt="Total" /> {translate('TOTAL')}
         </div>
         <div className="ConfirmTransaction-row-column">
           {assetType === 'base' ? (

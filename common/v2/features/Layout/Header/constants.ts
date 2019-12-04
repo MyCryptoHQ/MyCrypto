@@ -17,8 +17,8 @@ export const links = [
         title: 'Send Assets'
       },
       {
-        to: ROUTE_PATHS.RECEIVE_ASSETS.path,
-        title: 'Receive Assets'
+        to: ROUTE_PATHS.REQUEST_ASSETS.path,
+        title: 'Request Assets'
       },
       {
         to: ROUTE_PATHS.SWAP.path,

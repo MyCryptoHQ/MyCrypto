@@ -34,19 +34,31 @@ function SendAssets({ history }: RouteComponentProps<{}>) {
   const web3Steps: IPath[] = [
     { label: 'Send Assets', component: SendAssetsForm, action: handleFormSubmit },
     {
-      label: 'Confirm Transaction',
+      label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
       component: ConfirmTransaction,
       action: handleConfirmAndSign
     },
     { label: '', component: SignTransaction, action: handleSignedWeb3Tx },
-    { label: 'Transaction Submitted', component: TransactionReceipt, action: goToDashoard }
+    {
+      label: translateRaw('TRANSACTION_BROADCASTED'),
+      component: TransactionReceipt,
+      action: goToDashoard
+    }
   ];
 
   const defaultSteps: IPath[] = [
     { label: 'Send Assets', component: SendAssetsForm, action: handleFormSubmit },
     { label: '', component: SignTransaction, action: handleSignedTx },
-    { label: 'Confirm Transaction', component: ConfirmTransaction, action: handleConfirmAndSend },
-    { label: 'Transaction Submitted', component: TransactionReceipt, action: goToDashoard }
+    {
+      label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
+      component: ConfirmTransaction,
+      action: handleConfirmAndSend
+    },
+    {
+      label: translateRaw('TRANSACTION_BROADCASTED'),
+      component: TransactionReceipt,
+      action: goToDashoard
+    }
   ];
 
   const getStep = (walletId: WalletId, stepIndex: number) => {

@@ -138,9 +138,9 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
     if (selectedAsset) {
       const { decimal } = selectedAsset;
       if (isNaN(amount)) {
-        error = translateRaw('RECEIVE_FORM_ERROR_TYPE');
+        error = translateRaw('REQUEST_FORM_ERROR_TYPE');
       } else if (decimal && !isValidAmount(decimal)(amount)) {
-        error = translateRaw('RECEIVE_FORM_ERROR_AMOUNT');
+        error = translateRaw('REQUEST_FORM_ERROR_AMOUNT');
       }
     }
 
@@ -149,7 +149,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
 
   return (
     <ContentPanel
-      heading="Receive Assets"
+      heading="Request Assets"
       icon={receiveIcon}
       onBack={() => history.push(ROUTE_PATHS.DASHBOARD.path)}
       mobileMaxWidth="100%;"
@@ -222,8 +222,8 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
               <>
                 <Divider />
                 <CodeHeader>
-                  <CodeHeading as="h3">{translateRaw('RECEIVE_FORM_CODE_HEADER')}</CodeHeading>
-                  <Tooltip tooltip={translate('RECEIVE_FORM_TOOLTIP')}>
+                  <CodeHeading as="h3">{translateRaw('REQUEST_FORM_CODE_HEADER')}</CodeHeading>
+                  <Tooltip tooltip={translate('REQUEST_FORM_TOOLTIP')}>
                     <img className="Tool-tip-img" src={questionToolTip} />
                   </Tooltip>
                 </CodeHeader>

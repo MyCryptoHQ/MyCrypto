@@ -88,9 +88,9 @@ export const APP_ROUTES: IAppRoute[] = [
     component: NoAccounts
   },
   {
-    name: ROUTE_PATHS.RECEIVE_ASSETS.name,
-    title: ROUTE_PATHS.RECEIVE_ASSETS.title,
-    path: ROUTE_PATHS.RECEIVE_ASSETS.path,
+    name: ROUTE_PATHS.REQUEST_ASSETS.name,
+    title: ROUTE_PATHS.REQUEST_ASSETS.title,
+    path: ROUTE_PATHS.REQUEST_ASSETS.path,
     exact: true,
     requireAccounts: true,
     component: ReceiveAssets

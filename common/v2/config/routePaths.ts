@@ -51,9 +51,9 @@ const PATHS: IRoutePath[] = [
     path: '/no-accounts'
   },
   {
-    name: 'RECEIVE_ASSETS',
-    title: 'Receive Assets',
-    path: '/receive'
+    name: 'REQUEST_ASSETS',
+    title: 'Request Assets',
+    path: '/request'
   },
   {
     name: 'SCREEN_LOCK_NEW',
