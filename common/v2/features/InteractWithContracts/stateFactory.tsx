@@ -1,4 +1,4 @@
-import { useContext, useRef } from 'react';
+import { useContext, useCallback } from 'react';
 import { debounce } from 'lodash';
 
 import { TUseStateReducerFactory, generateUUID, fromTxReceiptObj } from 'v2/utils';
@@ -108,8 +108,9 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     }));
   };
 
-  const debouncedResolveAddressFromDomain = useRef(
-    debounce((value: string) => resolveAddressFromDomain(value), 1500)
+  const debouncedResolveAddressFromDomain = useCallback(
+    debounce((value: string) => resolveAddressFromDomain(value), 1500),
+    [state.contracts]
   );
   const handleAddressOrDomainChanged = (value: string) => {
     if (checkForExistingContract(value)) {
@@ -125,7 +126,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     }));
 
     if (isValidETHDomain(value)) {
-      debouncedResolveAddressFromDomain.current(value);
+      debouncedResolveAddressFromDomain(value);
     }
 
     if (isValidETHAddress(value)) {
@@ -151,7 +152,8 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       resolvingDomain: false
     }));
 
-    if (!checkForExistingContract(resolvedAddress)) {
+    const exists = checkForExistingContract(resolvedAddress);
+    if (!exists) {
       fetchABI(resolvedAddress);
     }
   };

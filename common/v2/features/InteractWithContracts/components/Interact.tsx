@@ -285,8 +285,9 @@ export default function Interact(props: Props) {
             placeholder={`[{"type":"constructor","inputs":[{"name":"param1","type":"uint256","indexed":true}],"name":"Event"},{"type":"function","inputs":[{"name":"a","type":"uint256"}],"name":"foo","outputs":[]}]`}
             onChange={({ target: { value } }) => handleAbiChanged(value)}
             textarea={true}
-            resizableTextArea={true}
+            resizableTextArea={!showGeneratedForm}
             height={'108px'}
+            maxHeight={showGeneratedForm ? '108px' : 'none'}
             disabled={!customEditingMode}
           />
         </InputWrapper>
