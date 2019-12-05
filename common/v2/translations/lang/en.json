@@ -1072,7 +1072,7 @@
     "SIGN_TX_YOUR_WALLET": "Your $walletName",
     "SIGN_TX_YOUR_PASSWORD": "Your $password",
     "SIGN_TX_EXPLANATION": "Because we never save, store, or transmit your secret, you need to sign each transaction in order to send it. MyCrypto puts YOU in control of your assets.",
-    "SIGN_TX_FAILED_1": "You denied the transaction signature request, or the transaction signature request timed out. Please confirm the transaction signature.",
+    "SIGN_TX_HARDWARE_FAILED_1": "You denied the transaction signature request, or the transaction signature request timed out. Please confirm the transaction signature.",
     "SIGN_TX_LEDGER_DESCRIPTION": "Connect your Ledger to your computer and select the Network application to sign your transaction.",
     "SIGN_TX_TREZOR_DESCRIPTION": "Connect your Trezor to your computer and enter your Trezor PIN when prompted to sign your transaction.",
     "SIGN_TX_SAFE_T_MINI_DESCRIPTION": "Connect your Safe-T Mini to your computer and enter your Safe-T Mini PIN when prompted to sign your transaction.",

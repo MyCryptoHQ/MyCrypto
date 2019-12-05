@@ -86,7 +86,7 @@ export default class SignTransactionKeystore extends Component<
               ) : null}
               {hasCorrectPassword === false ? (
                 <div className="SignTransactionKeystore-error">
-                  {translate('SIGN_TX_KEYSTORE_WRONG_PASSWORD')}
+                  {translateRaw('SIGN_TX_KEYSTORE_WRONG_PASSWORD')}
                 </div>
               ) : null}
               <label>
@@ -96,7 +96,7 @@ export default class SignTransactionKeystore extends Component<
               </label>
               <label htmlFor="fselector" style={{ width: '100%' }}>
                 <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
-                  {translate('ADD_RADIO_2_SHORT')}
+                  {translateRaw('ADD_RADIO_2_SHORT')}
                 </a>
                 <label className="WalletDecrypt-decrypt-label" hidden={!file}>
                   <span>{filename}</span>

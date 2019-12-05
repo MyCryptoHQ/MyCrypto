@@ -101,7 +101,7 @@ export default function HardwareSignTransaction({
   return (
     <>
       <div className="SignTransactionHardware-title">
-        {translateRaw('SIGN_TX_TITLE', {
+        {translate('SIGN_TX_TITLE', {
           $walletName: WALLETS_CONFIG[senderAccount.wallet].name || 'Hardware Wallet'
         })}
       </div>
@@ -111,17 +111,17 @@ export default function HardwareSignTransaction({
           <img src={walletIcon} />
         </div>
         <div className="SignTransactionHardware-description">
-          {translate('SIGN_TX_EXPLANATION')}
+          {translateRaw('SIGN_TX_EXPLANATION')}
           {isTxSignatureRequestDenied && (
-            <InlineErrorMsg>{translate('SIGN_TX_FAILED_1')}</InlineErrorMsg>
+            <InlineErrorMsg>{translateRaw('SIGN_TX_HARDWARE_FAILED_1')}</InlineErrorMsg>
           )}
         </div>
         <div className="SignTransactionHardware-footer">
           <div className="SignTransactionHardware-help">
-            {translate(senderAccount.wallet + '_HELP')}
+            {translateRaw(senderAccount.wallet + '_HELP')}
           </div>
           <div className="SignTransactionHardware-referal">
-            {translate(senderAccount.wallet + '_REFERRAL')}
+            {translateRaw(senderAccount.wallet + '_REFERRAL')}
           </div>
         </div>
       </div>
