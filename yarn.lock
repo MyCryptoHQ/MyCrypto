@@ -5731,10 +5731,10 @@ electron-updater@4.2.0:
     pako "^1.0.10"
     semver "^6.3.0"
 
-electron@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-3.0.0.tgz#d41e671b1057aee12021c63a5db242075d6dc685"
-  integrity sha512-QN9X5vYa4kzJKniwhXlJwioX9qw2fDehdqxN/00KCLz/qnOz/IHLAHGikFjRwfEF2xnkmHxf61F8wn2LePPXXQ==
+electron@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-3.1.0.tgz#5e36ba4c24926c7cf80eccf6f8361b3cad409f17"
+  integrity sha512-FnHH3T7aQGAjw5h8//9BNLZBByP/gnEGP3sQH5if7HVe6Znz5KcsRbIdxLYVH9DXJFoJ2SArP+UiAAYQIdVQJQ==
   dependencies:
     "@types/node" "^8.0.24"
     electron-download "^4.1.0"
