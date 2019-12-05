@@ -25,16 +25,16 @@ export default function(mainWindow: BrowserWindow) {
   hasRunUpdater = true;
 
   autoUpdater.on(AutoUpdaterEvents.UPDATE_AVAILABLE, (info: UpdateInfo) => {
-    dialog.showMessageBox(
-      {
+    dialog
+      .showMessageBox(mainWindow, {
         type: 'question',
         buttons: ['Yes, start downloading', 'Maybe later'],
         title: `An Update is Available (v${info.version})`,
         message: `An Update is Available (v${info.version})`,
         detail:
           'A new version has been released. Would you like to start downloading the update? You will be notified when the download is finished.'
-      },
-      response => {
+      })
+      .then(({ response }) => {
         if (response === 0) {
           if (shouldMockUpdate) {
             mockDownload();
@@ -42,8 +42,7 @@ export default function(mainWindow: BrowserWindow) {
             autoUpdater.downloadUpdate();
           }
         }
-      }
-    );
+      });
     hasStartedUpdating = true;
   });
 
@@ -54,15 +53,15 @@ export default function(mainWindow: BrowserWindow) {
 
   autoUpdater.on(AutoUpdaterEvents.UPDATE_DOWNLOADED, () => {
     resetWindowFromUpdates(mainWindow);
-    dialog.showMessageBox(
-      {
+    dialog
+      .showMessageBox(mainWindow, {
         type: 'question',
         buttons: ['Yes, restart now', 'Maybe later'],
         title: 'Update Has Been Downloaded',
         message: 'Download complete!',
         detail: `The new version of ${APP_TITLE} has finished downloading. Would you like to restart to complete the installation?`
-      },
-      response => {
+      })
+      .then(({ response }) => {
         if (response === 0) {
           if (shouldMockUpdate) {
             app.quit();
@@ -70,8 +69,7 @@ export default function(mainWindow: BrowserWindow) {
             autoUpdater.quitAndInstall();
           }
         }
-      }
-    );
+      });
   });
 
   autoUpdater.on(AutoUpdaterEvents.ERROR, (err: Error) => {
@@ -86,9 +84,7 @@ export default function(mainWindow: BrowserWindow) {
     resetWindowFromUpdates(mainWindow);
     dialog.showErrorBox(
       'Downloading Update has Failed',
-      `The update could not be downloaded. Restart the app and try again later, or manually install the new update at ${REPOSITORY}/releases\n\n(${
-        err.name
-      }: ${err.message})`
+      `The update could not be downloaded. Restart the app and try again later, or manually install the new update at ${REPOSITORY}/releases\n\n(${err.name}: ${err.message})`
     );
   });
 
