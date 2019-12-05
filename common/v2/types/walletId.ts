@@ -1,4 +1,5 @@
 export enum WalletId {
+  WEB3 = 'WEB3',
   METAMASK = 'METAMASK',
   TRUST = 'TRUST',
   CIPHER = 'CIPHER',

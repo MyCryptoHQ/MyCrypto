@@ -8,6 +8,7 @@ import { InlineErrorMsg } from 'v2/components/ErrorMessages';
 
 import './Hardware.scss';
 import translate from 'v2/translations';
+import { translateRaw } from 'translations';
 
 export interface IDestructuredDPath {
   dpath: string;
@@ -101,7 +102,9 @@ export default function HardwareSignTransaction({
   return (
     <>
       <div className="SignTransactionHardware-title">
-        {`Sign the Transaction with your ${WALLETS_CONFIG[senderAccount.wallet].name} Wallet`}
+        {translateRaw('SIGN_TX_HARDWARE_REQUEST', {
+          $walletName: WALLETS_CONFIG[senderAccount.wallet].name || 'Hardware Wallet'
+        })}
       </div>
       <div className="SignTransactionHardware-instructions">{signerDescription}</div>
       <div className="SignTransactionHardware-content">
@@ -109,13 +112,9 @@ export default function HardwareSignTransaction({
           <img src={walletIcon} />
         </div>
         <div className="SignTransactionHardware-description">
-          Because we never save, store, or transmit your secret, you need to sign each transaction
-          in order to send it. MyCrypto puts YOU in control of your assets.
+          {translate('SIGN_TX_EXPLANATION')}
           {isTxSignatureRequestDenied && (
-            <InlineErrorMsg>
-              You denied the transaction signature request, or the transaction signature request
-              timed out. Please confirm the transaction signature.
-            </InlineErrorMsg>
+            <InlineErrorMsg>{translate('SIGN_TX_FAILED_1')}</InlineErrorMsg>
           )}
         </div>
         <div className="SignTransactionHardware-footer">
