@@ -1,8 +1,10 @@
 import React from 'react';
 
-import SafeTIcon from 'common/assets/images/icn-safet-mini-new.svg';
 import { ISignComponentProps } from 'v2/types';
+import { translateRaw } from 'v2/translations';
+
 import HardwareSignTransaction from './Hardware';
+import SafeTIcon from 'common/assets/images/icn-safet-mini-new.svg';
 
 export default function SignTransactionSafeT({
   senderAccount,
@@ -12,9 +14,7 @@ export default function SignTransactionSafeT({
   return (
     <HardwareSignTransaction
       walletIcon={SafeTIcon}
-      signerDescription={
-        'Connect your Safe-T Mini to your computer and enter your Safe-T Mini PIN when prompted to sign your transaction.'
-      }
+      signerDescription={translateRaw('SIGN_TX_SAFE_T_MINI_DESCRIPTION')}
       senderAccount={senderAccount}
       rawTransaction={rawTransaction}
       onSuccess={onSuccess}

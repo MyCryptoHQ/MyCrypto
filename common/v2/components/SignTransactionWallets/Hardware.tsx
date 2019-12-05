@@ -5,10 +5,9 @@ import { WALLETS_CONFIG } from 'v2/config';
 import { makeTransaction } from 'v2/services/EthService';
 import { WalletFactory, HardwareWallet } from 'v2/services/WalletService';
 import { InlineErrorMsg } from 'v2/components/ErrorMessages';
+import translate, { translateRaw } from 'v2/translations';
 
 import './Hardware.scss';
-import translate from 'v2/translations';
-import { translateRaw } from 'translations';
 
 export interface IDestructuredDPath {
   dpath: string;
@@ -102,7 +101,7 @@ export default function HardwareSignTransaction({
   return (
     <>
       <div className="SignTransactionHardware-title">
-        {translateRaw('SIGN_TX_HARDWARE_REQUEST', {
+        {translateRaw('SIGN_TX_TITLE', {
           $walletName: WALLETS_CONFIG[senderAccount.wallet].name || 'Hardware Wallet'
         })}
       </div>
