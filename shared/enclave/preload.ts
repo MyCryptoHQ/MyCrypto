@@ -1,7 +1,9 @@
-import { webFrame } from 'electron';
+import { protocol } from 'electron';
 import { PROTOCOL_NAME } from 'shared/enclave/utils';
 
 export function registerProtocol() {
   // Whitelist custom protocol
-  webFrame.registerURLSchemeAsPrivileged(PROTOCOL_NAME);
+  protocol.registerSchemesAsPrivileged([
+    { scheme: PROTOCOL_NAME, privileges: { standard: true, secure: true } }
+  ]);
 }
