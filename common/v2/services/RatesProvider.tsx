@@ -5,7 +5,7 @@ import { StoreContext, SettingsContext } from 'v2/services/Store';
 import { PollingService } from 'v2/workers';
 import { IRates, TTicker, Asset } from 'v2/types';
 import { notUndefined } from 'v2/utils';
-import { checkHttpStatus, parseJSON } from './ApiService/utils';
+import { AssetMapService } from './ApiService';
 
 interface State {
   rates: IRates;
@@ -26,20 +26,14 @@ interface AssetMappingListObject {
 const DEFAULT_FIAT_PAIRS = ['USD', 'EUR'] as TTicker[];
 const DEFAULT_FIAT_RATE = 0;
 const POLLING_INTERRVAL = 60000;
-const ASSET_ID_MAPPING_URL =
-  'https://raw.githubusercontent.com/MyCryptoHQ/assets/master/assets/assets.json';
+
 const ASSET_RATES_URL = 'https://api.coingecko.com/api/v3/simple/price';
 const buildAssetQueryUrl = (assets: string[], currencies: string[]) => `
   ${ASSET_RATES_URL}/?ids=${assets}&vs_currencies=${currencies}
 `;
 
-const fetchAssetMappingList = async (): Promise<AssetMappingListObject | any> => {
-  return fetch(ASSET_ID_MAPPING_URL, {
-    mode: 'cors'
-  })
-    .then(checkHttpStatus)
-    .then(parseJSON);
-};
+const fetchAssetMappingList = async (): Promise<AssetMappingListObject | any> =>
+  AssetMapService.instance.getAssetMap();
 
 const destructureCoinGeckoIds = (rates: IRates, assetMap: AssetMappingListObject): IRates => {
   /* {

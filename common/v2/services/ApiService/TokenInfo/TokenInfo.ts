@@ -28,7 +28,7 @@ export default class TokenInfoService {
     );
 
     try {
-      return Promise.all(
+      return await Promise.all(
         queryParams.map(async (params: any) => this.service.get('', { params }))
       ).then((res: AxiosResponse[]) => _.union(...res.map(r => r.data)));
     } catch (e) {
