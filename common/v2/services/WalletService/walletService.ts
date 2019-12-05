@@ -26,7 +26,7 @@ import { unlockWeb3 } from './web3';
 
 export const WalletFactory = (walletId: WalletId): WalletService | any => {
   switch (walletId) {
-    case WalletId.METAMASK:
+    case WalletId.WEB3:
     case WalletId.TRUST:
       return {
         init: unlockWeb3
