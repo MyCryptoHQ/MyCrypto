@@ -1,15 +1,13 @@
 import EthTx from 'ethereumjs-tx';
 
-import { Address, Wei, TokenValue } from 'libs/units';
-
 export interface ICurrentValue {
   raw: string;
-  value: TokenValue | Wei | null;
+  value: null;
 }
 
 export interface ICurrentTo {
   raw: string;
-  value: Address | null;
+  value: null;
 }
 
 export interface IGetTransaction {

@@ -1,8 +1,5 @@
-import BN from 'bn.js';
 import { toChecksumAddress as toETHChecksumAddress } from 'ethereumjs-util';
 import { toChecksumAddress as toRSKChecksumAddress } from 'rskjs-util';
-import { Wei } from 'libs/units';
-import { stripHexPrefix } from 'libs/formatters';
 
 export function toFixedIfLarger(num: number, fixedSize: number = 6): string {
   return parseFloat(num.toFixed(fixedSize)).toString();
@@ -74,29 +71,6 @@ export function formatNumber(num: string, digits?: number): string {
   return parts.join('.');
 }
 
-// TODO: Comment up this function to make it clear what's happening here.
-export function formatGasLimit(limit: Wei, transactionUnit: string = 'ETH') {
-  let limitStr = limit.toString();
-
-  // I'm guessing this is some known off-by-one-error from the node?
-  // 21k is only the limit for ethereum though, so make sure they're
-  // sending ether if we're going to fix it for them.
-  if (limitStr === '21001' && transactionUnit === 'ETH') {
-    limitStr = '21000';
-  }
-
-  // If they've exceeded the gas limit per block, make it -1
-  // TODO: Explain why not cap at limit?
-  // TODO: Make this dynamic, potentially. Would require promisifying this fn.
-  // TODO: Figure out if this is only true for ether. Do other currencies have
-  //       this limit?
-  if (limit.gten(4000000)) {
-    limitStr = '-1';
-  }
-
-  return limitStr;
-}
-
 // Regex modified from this stackoverflow answer
 // https://stackoverflow.com/a/10805198, with the comma character added as a
 // delimiter (in the case of csv style mnemonic phrases) as well as any stray
@@ -116,10 +90,6 @@ export function bytesToHuman(bytes: number) {
 
 export function ensV3Url(name: string) {
   return `https://manager.ens.domains/name/${name}`;
-}
-
-export function hexToNumber(hex: string) {
-  return new BN(stripHexPrefix(hex)).toNumber();
 }
 
 // Checksumming split into two functions so it's shared by network selector

@@ -1,6 +1,5 @@
 import configuredStore from 'features/store';
-import { toWei } from 'libs/units';
-import ERC20 from 'libs/erc20';
+import { ERC20, toWei } from 'v2/services/EthService';
 
 configuredStore.getState();
 

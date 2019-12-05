@@ -1,14 +1,14 @@
-import { NODE_CONFIGS } from 'libs/nodes';
 import { NodeAction } from '../../types';
 import * as types from './types';
 import { makeStateFromNodeConfigs } from './helpers';
 
-export const CONFIG_STATIC_NODES_INITIAL_STATE: types.ConfigStaticNodesState = Object.keys(
-  NODE_CONFIGS
-).reduce(makeStateFromNodeConfigs, {});
+export const CONFIG_STATIC_NODES_INITIAL_STATE = Object.keys([]).reduce(
+  makeStateFromNodeConfigs,
+  {}
+);
 
 export function staticNodesReducer(
-  state: types.ConfigStaticNodesState = CONFIG_STATIC_NODES_INITIAL_STATE,
+  state: types.ConfigStaticNodesState = CONFIG_STATIC_NODES_INITIAL_STATE as types.ConfigStaticNodesState,
   action: NodeAction
 ) {
   switch (action.type) {

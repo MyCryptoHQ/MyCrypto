@@ -1,7 +1,6 @@
 import { dedupeCustomTokens } from 'utils/tokens';
 import { loadStatePropertyOrEmptyObject } from 'utils/localStorage';
 import { CustomNodeConfig } from 'types/node';
-import { shepherd, makeProviderConfig } from 'libs/nodes';
 import RootReducer, { AppState } from './reducers';
 import { getLanguageSelection, getTheme } from './config/meta/selectors';
 import { getCustomNetworkConfigs } from './config/networks/custom/selectors';
@@ -158,13 +157,6 @@ function rehydrateCustomNodes(
       if (!networkExists(configToHydrate.network)) {
         return hydratedNodes;
       }
-
-      shepherd.useProvider(
-        'myccustom',
-        configToHydrate.id,
-        makeProviderConfig({ network: configToHydrate.network }),
-        configToHydrate
-      );
 
       const hydratedNode: CustomNodeConfig = { ...configToHydrate };
       return { ...hydratedNodes, [customNodeId]: hydratedNode };

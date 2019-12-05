@@ -1,7 +1,4 @@
-import { sha256 } from 'ethereumjs-util';
-
 import { AppState } from 'features/reducers';
-import { IWallet, WalletConfig } from 'libs/wallet';
 
 export const REDUX_STATE = 'REDUX_STATE';
 
@@ -34,30 +31,6 @@ export function loadStatePropertyOrEmptyObject<T>(key: keyof AppState): T | unde
     }
   }
   return undefined;
-}
-
-export function saveWalletConfig(wallet: IWallet, state: Partial<WalletConfig>): WalletConfig {
-  const oldState = loadWalletConfig(wallet);
-  const newState = { ...oldState, ...state };
-  const key = getWalletConfigKey(wallet);
-  localStorage.setItem(key, JSON.stringify(newState));
-  return newState;
-}
-
-export function loadWalletConfig(wallet: IWallet): WalletConfig {
-  try {
-    const key = getWalletConfigKey(wallet);
-    const state = localStorage.getItem(key);
-    return state ? JSON.parse(state) : {};
-  } catch (err) {
-    console.error('Failed to load wallet state', err);
-    return {};
-  }
-}
-
-function getWalletConfigKey(wallet: IWallet): string {
-  const address = wallet.getAddressString();
-  return sha256(`${address}-mycrypto`).toString('hex');
 }
 
 export function isBetaUser() {
