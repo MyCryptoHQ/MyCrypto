@@ -5723,10 +5723,10 @@ electron-updater@4.2.0:
     pako "^1.0.10"
     semver "^6.3.0"
 
-electron@4.10.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-4.1.0.tgz#ecba9c83de271e8ba7637332ece9ed023c6ea3f0"
-  integrity sha512-q/yTi9dT5UEFK/s+vOQaHNkTHWiRK9kEBYVJt34nmWc9piW42hXT+nhKUEHHhccMPr3q18gG0iPZqeR+LG76ow==
+electron@4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-4.2.0.tgz#6066c7660597020365ee4427aa35260f23a678c9"
+  integrity sha512-bn41xAekJ8h4QfMwmlsL3Qx1xUloTwVHBEKRg8hGDhecfdPgDdps60gfoZOhdL88avimahrP01Bd7Aijsyywdg==
   dependencies:
     "@types/node" "^10.12.18"
     electron-download "^4.1.0"
