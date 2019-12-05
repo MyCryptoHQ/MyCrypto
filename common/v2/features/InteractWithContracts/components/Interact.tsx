@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Identicon } from '@mycrypto/ui';
 
 import { NetworkSelectDropdown, InputField, Dropdown, InlineErrorMsg, Button } from 'v2/components';
-import { NetworkId, Contract, StoreAccount, ITxConfig, ExtendedContract } from 'v2/types';
+import { Contract, StoreAccount, ITxConfig, ExtendedContract, Network } from 'v2/types';
 import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { translateRaw } from 'v2/translations';
 import { isValidETHAddress, isCreationAddress } from 'v2/services/EthService/validators';
@@ -120,7 +120,7 @@ const DeleteLabel = styled(Label)`
 `;
 
 interface Props {
-  networkId: NetworkId;
+  network: Network;
   contractAddress: string;
   addressOrDomainInput: string;
   resolvingDomain: boolean;
@@ -137,7 +137,7 @@ interface Props {
   handleAddressOrDomainChanged(value: string): void;
   handleAbiChanged(abi: string): void;
   handleCustomContractNameChanged(customContractName: string): void;
-  updateNetworkContractOptions(networkId: NetworkId): void;
+  updateNetworkContractOptions(): void;
   setGeneratedFormVisible(visible: boolean): void;
   handleInteractionFormSubmit(submitedFunction: ABIItem): any;
   goToNextStep(): void;
@@ -150,7 +150,7 @@ interface Props {
 
 export default function Interact(props: Props) {
   const {
-    networkId,
+    network,
     contractAddress,
     abi,
     contract,
@@ -180,9 +180,9 @@ export default function Interact(props: Props) {
   const [wasContractInteracted, setWasContractInteracted] = useState(false);
 
   useEffect(() => {
-    updateNetworkContractOptions(networkId);
+    updateNetworkContractOptions();
     setWasContractInteracted(false);
-  }, [networkId]);
+  }, [network]);
 
   useEffect(() => {
     setGeneratedFormVisible(false);
@@ -226,9 +226,9 @@ export default function Interact(props: Props) {
     <>
       <NetworkSelectorWrapper>
         <NetworkSelectDropdown
-          network={networkId}
-          onChange={network => {
-            handleNetworkSelected(network);
+          network={network.id}
+          onChange={networkId => {
+            handleNetworkSelected(networkId);
           }}
         />
       </NetworkSelectorWrapper>
@@ -327,7 +327,7 @@ export default function Interact(props: Props) {
           account={account}
           handleAccountSelected={handleAccountSelected}
           handleInteractionFormWriteSubmit={handleInteractionFormWriteSubmit}
-          networkId={networkId}
+          network={network}
           rawTransaction={rawTransaction}
           handleGasSelectorChange={handleGasSelectorChange}
           contractAddress={contractAddress}

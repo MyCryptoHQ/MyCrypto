@@ -5,7 +5,7 @@ import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
 import { AccountDropdown, Button, Typography, GasSelector } from 'v2/components';
-import { StoreAccount, NetworkId, ITxConfig } from 'v2/types';
+import { StoreAccount, ITxConfig, Network } from 'v2/types';
 import {
   StoreContext,
   hexToString,
@@ -39,7 +39,7 @@ const CustomLabel = styled(Typography)`
 
 interface Props {
   account: StoreAccount;
-  networkId: NetworkId;
+  network: Network;
   currentFunction: ABIItem;
   rawTransaction: ITxConfig;
   estimateGasCallProps: object;
@@ -51,7 +51,7 @@ interface Props {
 export default function WriteForm(props: Props) {
   const {
     account,
-    networkId,
+    network,
     currentFunction,
     rawTransaction,
     estimateGasCallProps,
@@ -63,7 +63,7 @@ export default function WriteForm(props: Props) {
   const { gasPrice, gasLimit, nonce } = rawTransaction;
 
   const { accounts } = useContext(StoreContext);
-  const filteredAccounts = getAccountsInNetwork(accounts, networkId);
+  const filteredAccounts = getAccountsInNetwork(accounts, network.id);
 
   const handleGasPriceChange = (val: string) => {
     if (val.length) {

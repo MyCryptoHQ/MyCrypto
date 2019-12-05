@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import React, { useState, useEffect } from 'react';
 
 import { InputField, Dropdown, Button, Spinner, InlineErrorMsg, Typography } from 'v2/components';
-import { StoreAccount, NetworkId, ITxConfig } from 'v2/types';
+import { StoreAccount, ITxConfig, Network } from 'v2/types';
 import { COLORS, monospace } from 'v2/theme';
 import { translateRaw } from 'v2/translations';
 
@@ -96,7 +96,7 @@ const WriteFormWrapper = styled.div`
 interface Props {
   abi: ABIItem[];
   account: StoreAccount;
-  networkId: NetworkId;
+  network: Network;
   rawTransaction: ITxConfig;
   contractAddress: string;
   handleInteractionFormSubmit(submitedFunction: ABIItem): Promise<object>;
@@ -109,7 +109,7 @@ export default function GeneratedInteractionForm({
   abi,
   handleInteractionFormSubmit,
   account,
-  networkId,
+  network,
   rawTransaction,
   contractAddress,
   handleAccountSelected,
@@ -307,7 +307,7 @@ export default function GeneratedInteractionForm({
                   )}
                   <WriteForm
                     account={account}
-                    networkId={networkId}
+                    network={network}
                     handleAccountSelected={handleAccountSelected}
                     handleSubmit={submitFormWrite}
                     currentFunction={currentFunction}

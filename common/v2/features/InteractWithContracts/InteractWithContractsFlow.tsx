@@ -65,7 +65,7 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
       title: translateRaw('NEW_HEADER_TEXT_14'),
       component: Interact,
       props: (({
-        networkId,
+        network,
         contractAddress,
         contract,
         abi,
@@ -76,7 +76,7 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
         addressOrDomainInput,
         resolvingDomain
       }) => ({
-        networkId,
+        network,
         contractAddress,
         contract,
         abi,

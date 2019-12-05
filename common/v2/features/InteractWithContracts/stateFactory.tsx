@@ -29,7 +29,7 @@ import {
 } from './helpers';
 
 const interactWithContractsInitialState = {
-  networkId: DEFAULT_NETWORK,
+  network: getNetworkById(DEFAULT_NETWORK)!,
   addressOrDomainInput: '',
   resolvingDomain: false,
   contractAddress: '',
@@ -59,7 +59,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   const handleNetworkSelected = (networkId: any) => {
     setState((prevState: InteractWithContractState) => ({
       ...prevState,
-      networkId,
+      network: getNetworkById(networkId)!,
       contract: undefined,
       contractAddress: '',
       addressOrDomainInput: '',
@@ -69,12 +69,12 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     }));
   };
 
-  const updateNetworkContractOptions = (networkId: any) => {
+  const updateNetworkContractOptions = () => {
     // Get contracts for selected network
-    const contractIds = getNetworkById(networkId)!.contracts;
+    const contractIds = state.network.contracts;
     const networkContracts = getContractsByIds(contractIds);
 
-    const customContractOption = Object.assign(customContract, { networkId });
+    const customContractOption = Object.assign(customContract, { networkId: state.network.id });
 
     const contracts = [customContractOption, ...networkContracts].map(x =>
       Object.assign(x, { label: x.name })
@@ -135,15 +135,13 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   };
 
   const resolveAddressFromDomain = async (domain: string) => {
-    const network = getNetworkById(state.networkId)!;
-
     setState((prevState: InteractWithContractState) => ({
       ...prevState,
       resolvingDomain: true
     }));
 
     const resolvedAddress =
-      (await getResolvedENSAddress(network, domain)) ||
+      (await getResolvedENSAddress(state.network, domain)) ||
       '0x0000000000000000000000000000000000000000';
 
     setState((prevState: InteractWithContractState) => ({
@@ -168,7 +166,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   };
 
   const fetchABI = async (address: string) => {
-    const fetchedAbi = await EtherscanService.instance.getContractAbi(address, state.networkId);
+    const fetchedAbi = await EtherscanService.instance.getContractAbi(address, state.network.id);
     if (fetchedAbi) {
       setState((prevState: InteractWithContractState) => ({
         ...prevState,
@@ -217,25 +215,25 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       address: state.contractAddress,
       name: state.customContractName,
       label: state.customContractName,
-      networkId: state.networkId,
+      networkId: state.network.id,
       isCustom: true,
       uuid
     };
 
     createContractWithId(newContract, uuid);
-    const network = getNetworkById(state.networkId)!;
+    const network = Object.assign({}, state.network);
     network.contracts.unshift(uuid);
-    updateNetworks(state.networkId, network);
-    updateNetworkContractOptions(state.networkId);
+    updateNetworks(network.id, network);
+    updateNetworkContractOptions();
     handleContractSelected(newContract);
   };
 
   const handleDeleteContract = (contractUuid: string) => {
     deleteContracts(contractUuid);
-    const network = getNetworkById(state.networkId)!;
+    const network = state.network;
     network.contracts = network.contracts.filter(item => item !== contractUuid);
-    updateNetworks(state.networkId, network);
-    updateNetworkContractOptions(state.networkId);
+    updateNetworks(network.id, network);
+    updateNetworkContractOptions();
     handleContractSelected(customContract);
   };
 
@@ -263,10 +261,10 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   };
 
   const handleInteractionFormSubmit = async (submitedFunction: ABIItem) => {
-    const { networkId, contractAddress } = state;
+    const { network, contractAddress } = state;
     const { encodeInput, decodeOutput } = new AbiFunction(submitedFunction, []);
     const parsedInputs = reduceInputParams(submitedFunction);
-    const network = getNetworkById(networkId)!;
+
     const providerHandler = new ProviderHandler(network);
     const data = { to: contractAddress, data: encodeInput(parsedInputs) };
 
