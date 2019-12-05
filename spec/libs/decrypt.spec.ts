@@ -5,7 +5,7 @@ import {
   evp_kdf,
   decipherBuffer,
   decryptMnemonicToPrivKey
-} from 'libs/decrypt';
+} from 'v2/services/EthService/utils/decrypt';
 
 configuredStore.getState();
 

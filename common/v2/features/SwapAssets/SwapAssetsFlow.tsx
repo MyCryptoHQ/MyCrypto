@@ -83,7 +83,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
 
   const steps: TStep[] = [
     {
-      title: translateRaw('SWAP_ASSETS_TITLE'),
+      title: translateRaw('SWAP'),
       component: SwapAssets,
       props: {
         fromAmount,
@@ -162,7 +162,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         ]
       : []),
     {
-      title: translateRaw('SWAP_ASSETS_TITLE'),
+      title: translateRaw('SWAP'),
       component: account && WALLET_STEPS[account.wallet],
       props: {
         network: account && account.network,

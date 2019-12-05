@@ -1,7 +1,6 @@
 import uniqBy from 'lodash/uniqBy';
 
 import { EXTRA_PATHS } from 'config/dpaths';
-import { stripWeb3Network } from 'libs/nodes';
 import { StaticNetworkIds } from 'types/network';
 import { AppState } from 'features/reducers';
 import * as types from './types';
@@ -18,7 +17,7 @@ export function isStaticNetworkId(
   state: AppState,
   networkId: string
 ): networkId is StaticNetworkIds {
-  return Object.keys(getStaticNetworkConfigs(state)).includes(stripWeb3Network(networkId));
+  return Object.keys(getStaticNetworkConfigs(state)).includes(networkId);
 }
 
 export function getPaths(state: AppState, pathType: types.PathType): DPath[] {

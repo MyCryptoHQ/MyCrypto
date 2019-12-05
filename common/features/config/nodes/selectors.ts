@@ -1,4 +1,3 @@
-import { shepherdProvider, INode } from 'libs/nodes';
 import { CustomNodeConfig, StaticNodeConfig } from 'types/node';
 import { AppState } from 'features/reducers';
 import * as configNodesCustomSelectors from './custom/selectors';
@@ -27,8 +26,8 @@ export function getIsWeb3Node(state: AppState): boolean {
   return configNodesSelectedSelectors.getNodeId(state) === 'web3';
 }
 
-export function getNodeLib(_: AppState): INode {
-  return shepherdProvider;
+export function getNodeLib(_: AppState) {
+  return undefined;
 }
 
 export function getNodeConfig(state: AppState): StaticNodeConfig | CustomNodeConfig {

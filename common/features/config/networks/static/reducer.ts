@@ -1,4 +1,3 @@
-import { TAB } from 'components/Header/components/constants';
 import {
   ethPlorer,
   ETHTokenExplorer,
@@ -477,7 +476,6 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       max: 1.5,
       initial: 0.06
     },
-    unsupportedTabs: [TAB.ENS],
     hideEquivalentValues: true
   },
 
@@ -504,8 +502,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       min: 0.06,
       max: 1.5,
       initial: 0.06
-    },
-    unsupportedTabs: [TAB.ENS]
+    }
   },
 
   GO: {

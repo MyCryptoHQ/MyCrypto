@@ -1,16 +1,13 @@
 import configuredStore from 'features/store';
+import { DPaths } from 'config/dpaths';
+import { valid, invalid } from '../utils/testStrings';
 import {
   isValidBTCAddress,
   isValidETHAddress,
   isValidPath,
   isValidPrivKey,
-  isLabelWithoutENS,
-  isValidAddressLabel,
   isValidAddress
-} from 'libs/validators';
-import { translateRaw } from 'translations';
-import { DPaths } from 'config/dpaths';
-import { valid, invalid } from '../utils/testStrings';
+} from 'v2/services/EthService/validators';
 configuredStore.getState();
 
 const VALID_BTC_ADDRESS = '1MEWT2SGbqtz6mPCgFcnea8XmWV5Z4Wc6';
@@ -93,88 +90,5 @@ describe('Validator', () => {
   });
   it('should validate BIP49 DPaths as true', () => {
     expect(isValidPath(BIP49_DPATH)).toBeTruthy();
-  });
-});
-
-describe('isLabelWithoutENS', () => {
-  it('should return false if the label contains an ENS TLD', () => {
-    expect(isLabelWithoutENS('Foo.eth', ETH_CHAIN_ID)).toEqual(false);
-    expect(isLabelWithoutENS('Foo.test', ETH_CHAIN_ID)).toEqual(false);
-    expect(isLabelWithoutENS('Foo.reverse', ETH_CHAIN_ID)).toEqual(false);
-  });
-  it('should return true if a label does not contain an ENS TLD', () => {
-    expect(isLabelWithoutENS('Foo', ETH_CHAIN_ID)).toEqual(true);
-  });
-
-  it('should return false if the label contains an RNS TLD', () => {
-    expect(isLabelWithoutENS('Foo.rsk', RSK_MAINNET_CHAIN_ID)).toEqual(false);
-  });
-  it('should return true if a label does not contain an ENS TLD', () => {
-    expect(isLabelWithoutENS('Foo', RSK_MAINNET_CHAIN_ID)).toEqual(true);
-  });
-});
-
-describe('isValidAddressLabel', () => {
-  const validAddress = '0x081f37708032d0a7b3622591a8959b213fb47d6f';
-  const otherValidAddress = '0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0';
-  const addresses = {
-    [validAddress]: 'Foo'
-  };
-  const labels = {
-    Foo: validAddress
-  };
-
-  describe('Happy path', () => {
-    it('should return valid', () => {
-      expect(isValidAddressLabel(validAddress, 'Foo', {}, {}, 1).isValid).toEqual(true);
-    });
-  });
-  describe('Invalid cases', () => {
-    it('should return invalid when the provided address is invalid', () => {
-      const { isValid, addressError } = isValidAddressLabel('derp', 'Foo', {}, {}, 1);
-
-      expect(isValid).toEqual(false);
-      expect(addressError).toEqual(translateRaw('INVALID_ADDRESS'));
-    });
-
-    it('should return invalid if the address already exists', () => {
-      const { isValid, addressError } = isValidAddressLabel(
-        validAddress,
-        'Foo',
-        addresses,
-        labels,
-        1
-      );
-
-      expect(isValid).toEqual(false);
-      expect(addressError).toEqual(translateRaw('ADDRESS_ALREADY_EXISTS'));
-    });
-
-    it('should return invalid if the label is not of correct length', () => {
-      const { isValid, labelError } = isValidAddressLabel(validAddress, 'X', {}, {}, 1);
-
-      expect(isValid).toEqual(false);
-      expect(labelError).toEqual(translateRaw('INVALID_LABEL_LENGTH'));
-    });
-
-    it('should return invalid if the label contains an ENS TLD', () => {
-      const { isValid, labelError } = isValidAddressLabel(validAddress, 'Foo.eth', {}, {}, 1);
-
-      expect(isValid).toEqual(false);
-      expect(labelError).toEqual(translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX'));
-    });
-
-    it('should return invalid if the label already exists', () => {
-      const { isValid, labelError } = isValidAddressLabel(
-        otherValidAddress,
-        'Foo',
-        addresses,
-        labels,
-        1
-      );
-
-      expect(isValid).toEqual(false);
-      expect(labelError).toEqual(translateRaw('LABEL_ALREADY_EXISTS'));
-    });
   });
 });

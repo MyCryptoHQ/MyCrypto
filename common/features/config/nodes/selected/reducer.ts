@@ -1,9 +1,8 @@
-import { makeAutoNodeName } from 'libs/nodes';
 import * as types from './types';
 
 export const SELECTED_NODE_INITIAL_STATE: types.ConfigNodesSelectedState = {
-  nodeId: makeAutoNodeName('ETH'),
-  prevNode: makeAutoNodeName('ETH'),
+  nodeId: 'ETH',
+  prevNode: 'ETH',
   pending: false
 };
 

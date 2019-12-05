@@ -408,7 +408,8 @@ export default function SendAssetsForm({
               {/* Advanced Options */}
               <div className="SendAssetsForm-advancedOptions">
                 <AdvancedOptionsButton basic={true} onClick={toggleAdvancedOptions}>
-                  {values.advancedTransaction ? 'Hide' : 'Show'} Advanced Options
+                  {values.advancedTransaction ? 'Hide' : 'Show'}{' '}
+                  {translate('ADVANCED_OPTIONS_LABEL')}
                 </AdvancedOptionsButton>
                 {values.advancedTransaction && (
                   <div className="SendAssetsForm-advancedOptions-content">

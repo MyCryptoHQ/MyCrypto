@@ -10,6 +10,7 @@ import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { weiToFloat } from 'v2/utils';
 
 import './TransactionDetailsDisplay.scss';
+import translate from 'v2/translations';
 
 interface Props {
   baseAsset: Asset;
@@ -57,7 +58,7 @@ function TransactionDetailsDisplay({
               onClick={() => setShowDetails(!showDetails)}
               className="TransactionDetails-detailButton"
             >
-              {showDetails ? '- Hide' : '+ Show'} Details
+              {showDetails ? '- Hide' : '+ See More'} {translate('ACTION_8')}
             </Button>
           </div>
         </div>
