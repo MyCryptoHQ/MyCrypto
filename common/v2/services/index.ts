@@ -1,3 +1,4 @@
+export * from './3Box';
 export * from './ApiService';
 export * from './EthService';
 export * from './ShapeShift';

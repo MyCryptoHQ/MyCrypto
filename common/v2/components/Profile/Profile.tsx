@@ -1,17 +1,8 @@
-/* tslint:disable:no-console */
 import React, { Component } from 'react';
-import axios from 'axios';
 import styled from 'styled-components';
 import { Address } from '@mycrypto/ui';
 import { truncate } from 'v2/utils';
-
-/* 
-Example 3box addresses:
-
-- 0x6b44862103b8a45f5ec701b69ec28a5d6d304950
-- 0xbaebb7d18f8b16b0a970fda91f1efa626d67423e
-
-*/
+import { get3BoxProfile, ThreeBoxProfile } from 'v2/services';
 
 const AvatarImage = styled.img`
   height: 100%;
@@ -31,10 +22,7 @@ interface Props {
 }
 
 interface State {
-  has3Box: boolean;
-  name?: string;
-  image?: string;
-  location?: string;
+  profile: ThreeBoxProfile;
 }
 
 export default class Profile extends Component<Props, State> {
@@ -42,34 +30,23 @@ export default class Profile extends Component<Props, State> {
     super(props);
 
     this.state = {
-      has3Box: false
+      profile: false
     };
   }
 
   public componentDidMount() {
     const { address } = this.props;
-    axios
-      .get(`https://ipfs.3box.io/profile?address=${address}`, {
-        validateStatus: () => true
-      })
-      .then(result => {
-        const { data, status } = result;
-        if (status === 200) {
-          console.log(data);
-          this.setState({
-            has3Box: true,
-            name: data.name,
-            image: data.image[0].contentUrl['/'],
-            location: data.location
-          });
-        }
+    get3BoxProfile(address).then(result => {
+      this.setState({
+        profile: result
       });
+    });
   }
 
   public render() {
     const { address, label } = this.props;
-    const { has3Box, name, image, location } = this.state;
-    if (!has3Box) {
+    const { profile } = this.state;
+    if (!profile) {
       return <Address address={address} title={label} truncate={truncate} />;
     } else {
       return (
@@ -81,10 +58,10 @@ export default class Profile extends Component<Props, State> {
             content: (
               <div>
                 <Avatar>
-                  <AvatarImage src={`https://ipfs.io/ipfs/${image}`} />
+                  <AvatarImage src={profile.image} />
                 </Avatar>
-                <p>{name}</p>
-                {location && <p>Location: {location}</p>}
+                <p>{profile.name}</p>
+                {profile.location && <p>Location: {profile.location}</p>}
                 <a href={`https://3box.io/${address}`}>View on 3box</a>
               </div>
             )
