@@ -17,6 +17,10 @@ const SSelect = styled(Select)`
   background-color: ${(props: SProps) => (props.disabled ? SILVER : 'default')};
   ${props => props.disabled && '.Select-arrow {display: none};'}
   font-size: 16px;
+
+  .Select-menu {
+    max-height: 20em !important;
+  }
 `;
 
 interface Props<T> {
