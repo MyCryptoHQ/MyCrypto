@@ -78,7 +78,7 @@ interface Props {
   handleByteCodeChanged(byteCode: string): void;
 }
 
-export default function Interact(props: Props) {
+export default function Deploy(props: Props) {
   const {
     networkId,
     byteCode,

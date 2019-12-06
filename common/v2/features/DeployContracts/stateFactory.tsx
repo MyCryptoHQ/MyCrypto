@@ -1,3 +1,5 @@
+import { isHexString } from 'ethjs-util';
+
 import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
 import { StoreAccount, NetworkId } from 'v2/types';
 import { ProviderHandler, getGasEstimate } from 'v2/services';
@@ -43,8 +45,8 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
   const handleDeploySubmit = async (after: () => void) => {
     const { account, rawTransaction, byteCode } = state;
 
-    if (!byteCode) {
-      throw new Error(translateRaw('DEPLOY_ERROR_MISSING_DATA'));
+    if (!byteCode || !isHexString(byteCode)) {
+      throw new Error(translateRaw('DEPLOY_ERROR_INVALID_DATA'));
     }
 
     if (!account) {

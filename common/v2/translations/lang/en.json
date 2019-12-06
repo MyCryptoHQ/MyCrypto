@@ -524,7 +524,7 @@
     "SIGN_TX_KEYSTORE_WRONG_FILE": "The uploaded keystore file's public address does not match transaction's sender address, please upload correct keystore file.",
     "SIGN_TX_KEYSTORE_WRONG_PASSWORD": "Incorrect Keystore File Password.",
     "DEPLOY_ERROR_NO_ACCOUNT": "No account selected.",
-    "DEPLOY_ERROR_MISSING_DATA": "Please enter valid byte code.",
+    "DEPLOY_ERROR_INVALID_DATA": "Please enter valid byte code.",
     "DEPLOY_ANOTHER": "Deploy another Contract",
     "DEPLOY_CONTRACTS": "Deploy Contracts",
     "DEPLOY_SIGN": "Sign deploy contract transaction",
