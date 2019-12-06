@@ -5,9 +5,9 @@ import { WALLETS_CONFIG } from 'v2/config';
 import { makeTransaction } from 'v2/services/EthService';
 import { WalletFactory, HardwareWallet } from 'v2/services/WalletService';
 import { InlineErrorMsg } from 'v2/components/ErrorMessages';
+import translate, { translateRaw } from 'v2/translations';
 
 import './Hardware.scss';
-import translate from 'v2/translations';
 
 export interface IDestructuredDPath {
   dpath: string;
@@ -101,7 +101,9 @@ export default function HardwareSignTransaction({
   return (
     <>
       <div className="SignTransactionHardware-title">
-        {`Sign the Transaction with your ${WALLETS_CONFIG[senderAccount.wallet].name} Wallet`}
+        {translate('SIGN_TX_TITLE', {
+          $walletName: WALLETS_CONFIG[senderAccount.wallet].name || 'Hardware Wallet'
+        })}
       </div>
       <div className="SignTransactionHardware-instructions">{signerDescription}</div>
       <div className="SignTransactionHardware-content">
@@ -109,21 +111,17 @@ export default function HardwareSignTransaction({
           <img src={walletIcon} />
         </div>
         <div className="SignTransactionHardware-description">
-          Because we never save, store, or transmit your secret, you need to sign each transaction
-          in order to send it. MyCrypto puts YOU in control of your assets.
+          {translateRaw('SIGN_TX_EXPLANATION')}
           {isTxSignatureRequestDenied && (
-            <InlineErrorMsg>
-              You denied the transaction signature request, or the transaction signature request
-              timed out. Please confirm the transaction signature.
-            </InlineErrorMsg>
+            <InlineErrorMsg>{translateRaw('SIGN_TX_HARDWARE_FAILED_1')}</InlineErrorMsg>
           )}
         </div>
         <div className="SignTransactionHardware-footer">
           <div className="SignTransactionHardware-help">
-            {translate(senderAccount.wallet + '_HELP')}
+            {translateRaw(senderAccount.wallet + '_HELP')}
           </div>
           <div className="SignTransactionHardware-referal">
-            {translate(senderAccount.wallet + '_REFERRAL')}
+            {translateRaw(senderAccount.wallet + '_REFERRAL')}
           </div>
         </div>
       </div>

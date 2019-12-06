@@ -21,7 +21,7 @@ interface State {
   web3ProviderSettings: IWalletConfig;
 }
 
-const WalletService = WalletFactory(WalletId.METAMASK);
+const WalletService = WalletFactory(WalletId.WEB3);
 
 class Web3ProviderDecrypt extends Component<Props, State> {
   constructor(props: Props) {
@@ -80,7 +80,7 @@ class Web3ProviderDecrypt extends Component<Props, State> {
     try {
       const walletPayload = await WalletService.init();
       if (!walletPayload) {
-        throw new Error('Failed to unlock web3');
+        throw new Error('Failed to unlock web3 wallet');
       }
       // If accountType is defined, we are in the AddAccountFlow
       if (this.props.formData.accountType) {
@@ -100,7 +100,7 @@ class Web3ProviderDecrypt extends Component<Props, State> {
     if (window.web3) {
       return getWeb3Config();
     }
-    return WALLETS_CONFIG[WalletId.METAMASK]; //Default to MetaMask
+    return WALLETS_CONFIG[WalletId.WEB3]; //Default to Web3
   }
 }
 

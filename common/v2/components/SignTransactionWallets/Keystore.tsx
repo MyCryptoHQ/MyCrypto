@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { ethers, utils } from 'ethers';
 
 import { Spinner, Input } from 'v2/components';
-import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
-
 import translate, { translateRaw } from 'v2/translations';
-
 import { ISignComponentProps } from 'v2/types';
-import './Keystore.scss';
 import { isKeystorePassRequired } from 'v2/services/WalletService';
+import { WALLETS_CONFIG } from 'v2/config';
+
+import './Keystore.scss';
+import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
 
 export interface KeystoreValueState {
   file: string;
@@ -65,7 +65,7 @@ export default class SignTransactionKeystore extends Component<
     return (
       <>
         <div className="SignTransactionKeystore-title">
-          Sign the Transaction with your Keystore File
+          {translate('SIGN_TX_TITLE', { $walletName: WALLETS_CONFIG.KEYSTORE_FILE.name })}
         </div>
         <div className="Keystore">
           <form onSubmit={this.unlock}>
@@ -81,26 +81,31 @@ export default class SignTransactionKeystore extends Component<
               />
               {walletState === WalletSigningState.NOT_READY ? (
                 <div className="SignTransactionKeystore-error">
-                  Keystore File Public Address does not match Account's sender Address, please
-                  upload correct Keystore File.
+                  {translateRaw('SIGN_TX_KEYSTORE_WRONG_FILE')}
                 </div>
               ) : null}
               {hasCorrectPassword === false ? (
                 <div className="SignTransactionKeystore-error">
-                  Incorrect Keystore File Password.
+                  {translateRaw('SIGN_TX_KEYSTORE_WRONG_PASSWORD')}
                 </div>
               ) : null}
-              <label>Your Keystore File</label>
+              <label>
+                {translate('SIGN_TX_YOUR_WALLET', {
+                  $walletName: WALLETS_CONFIG.KEYSTORE_FILE.name
+                })}
+              </label>
               <label htmlFor="fselector" style={{ width: '100%' }}>
                 <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
-                  {translate('ADD_RADIO_2_SHORT')}
+                  {translateRaw('ADD_RADIO_2_SHORT')}
                 </a>
                 <label className="WalletDecrypt-decrypt-label" hidden={!file}>
                   <span>{filename}</span>
                 </label>
               </label>
 
-              <label className="SignTransactionKeystore-password">Your Password</label>
+              <label className="SignTransactionKeystore-password">
+                {translateRaw('SIGN_TX_YOUR_PASSWORD')}
+              </label>
               <Input
                 isValid={password ? password.length > 0 : false}
                 className={`${file.length && isWalletPending ? 'hidden' : ''}`}
@@ -113,22 +118,23 @@ export default class SignTransactionKeystore extends Component<
               />
             </div>
             <div className="SignTransactionKeystore-description">
-              Because we never save, store, or transmit your secret, you need to sign each
-              transaction in order to send it. MyCrypto puts YOU in control of your assets.
+              {translateRaw('SIGN_TX_EXPLANATION')}
             </div>
             <div className="SignTransactionKeystore-spinner">
               {isSigning ? (
                 <Spinner />
               ) : (
                 <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
-                  Sign Transaction
+                  {translateRaw('DEP_SIGNTX')}
                 </button>
               )}
             </div>
           </form>
-          <div className="SignTransactionKeystore-help">
-            Not working? Here's some troubleshooting tips to try.
-          </div>
+          {WALLETS_CONFIG.KEYSTORE_FILE.helpLink && (
+            <div className="SignTransactionKeystore-help">
+              {translate('SIGN_TX_HELP_LINK', { $helpLink: WALLETS_CONFIG.KEYSTORE_FILE.helpLink })}
+            </div>
+          )}
         </div>
       </>
     );

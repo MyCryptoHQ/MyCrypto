@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import { stripHexPrefix } from 'ethjs-util';
 import { Button } from '@mycrypto/ui';
 
-import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
 import { TogglablePassword, Input } from 'v2/components';
 import { isValidPrivKey, isValidEncryptedPrivKey } from 'v2/services/EthService';
 import { ISignComponentProps } from 'v2/types';
+import translate, { translateRaw } from 'v2/translations';
+import { WALLETS_CONFIG } from 'v2/config';
+
 import './PrivateKey.scss';
+import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
 
 export interface SignWithPrivKeyState {
   key: string;
@@ -58,7 +61,7 @@ export default class SignTransactionPrivateKey extends Component<
     return (
       <>
         <div className="SignTransactionPrivateKey-title">
-          Sign the Transaction with your Private Key
+          {translate('SIGN_TX_TITLE', { $walletName: WALLETS_CONFIG.PRIVATE_KEY.name })}
         </div>
         <div
           className={'SignTransactionPrivateKey-' + (isPassRequired ? 'with-pass' : 'without-pass')}
@@ -67,7 +70,9 @@ export default class SignTransactionPrivateKey extends Component<
             <img src={PrivateKeyicon} />
           </div>
           <div className="SignTransactionPrivateKey-input">
-            <label className="SignTransactionPrivateKey-label">Your Private Key</label>
+            <label className="SignTransactionPrivateKey-label">
+              {translate('SIGN_TX_YOUR_WALLET', { $walletName: WALLETS_CONFIG.PRIVATE_KEY.name })}
+            </label>
             <TogglablePassword
               value={key}
               isValid={isValidPkey}
@@ -78,27 +83,30 @@ export default class SignTransactionPrivateKey extends Component<
 
             {isValidPkey && isPassRequired && (
               <label className="SignTransactionPrivateKey-label">
-                Your Password
+                {translateRaw('SIGN_TX_YOUR_PASSWORD')}
                 <Input
                   isValid={password.length > 0}
                   value={password}
                   onChange={this.onPasswordChange}
                   onKeyDown={this.onKeyDown}
-                  placeholder="Password"
+                  placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
                   type="password"
                 />
               </label>
             )}
           </div>
           <div className="SignTransactionPrivateKey-description">
-            Because we never save, store, or transmit your secret, you need to sign each transaction
-            in order to send it. MyCrypto puts YOU in control of your assets.
+            {translateRaw('SIGN_TX_EXPLANATION')}
           </div>
           <div className="SignTransactionPrivateKey-footer">
-            <Button className="SignTransactionPrivateKey-button"> Sign Transaction</Button>
-            <div className="SignTransactionPrivateKey-help">
-              Not working? Here's some troubleshooting tips to try
-            </div>
+            <Button className="SignTransactionPrivateKey-button">
+              {translateRaw('DEP_SIGNTX')}
+            </Button>
+            {WALLETS_CONFIG.PRIVATE_KEY.helpLink && (
+              <div className="SignTransactionPrivateKey-help">
+                {translate('SIGN_TX_HELP_LINK', { $helpLink: WALLETS_CONFIG.PRIVATE_KEY.helpLink })}
+              </div>
+            )}
           </div>
         </div>
       </>

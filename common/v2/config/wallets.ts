@@ -26,6 +26,18 @@ export interface IWalletConfig {
 }
 
 export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
+  [WalletId.WEB3]: {
+    id: WalletId.WEB3,
+    name: 'Web3',
+    isDeterministic: false,
+    isSecure: true,
+    isDesktopOnly: false,
+    type: WalletType.WEB3,
+    lid: web3ProviderInfo.lid,
+    icon: web3ProviderInfo.icon,
+    description: 'ADD_WEB3DESC',
+    helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`
+  },
   [WalletId.METAMASK]: {
     id: WalletId.METAMASK,
     name: 'MetaMask',

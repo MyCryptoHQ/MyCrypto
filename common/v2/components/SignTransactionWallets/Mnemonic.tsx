@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-
-import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
-import { ISignComponentProps } from 'v2/types';
-import { translateRaw } from 'v2/translations';
-import { Spinner } from 'v2/components/Spinner';
-import { Input } from 'v2/components';
 import { ethers, utils } from 'ethers';
 import { isValidMnemonic } from 'ethers/utils/hdnode';
+
+import { ISignComponentProps } from 'v2/types';
+import translate, { translateRaw } from 'v2/translations';
+import { Spinner } from 'v2/components/Spinner';
+import { Input } from 'v2/components';
+import { WALLETS_CONFIG } from 'v2/config';
+
+import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
 
 interface MnemonicValueState {
   seed: string;
@@ -45,7 +47,7 @@ export default class SignTransactionMnemonic extends Component<
     return (
       <>
         <div className="SignTransactionKeystore-title">
-          Sign the Transaction with your Mnemonic Phrase
+          {translate('SIGN_TX_TITLE', { $walletName: WALLETS_CONFIG.MNEMONIC_PHRASE.name })}
         </div>
         <div className="Keystore">
           <form onSubmit={this.unlock}>
@@ -60,7 +62,7 @@ export default class SignTransactionMnemonic extends Component<
                   Address, please try again.
                 </div>
               ) : null}
-              <label>Your Mnemonic Phrase</label>
+              <label>{translate('SIGN_TX_YOUR_WALLET', { $walletName: 'Mnemonic Phrase' })}</label>
               <Input
                 isValid={phrase && phrase.length > 0 ? isValidMnemonic(phrase) : false}
                 type="text"
@@ -69,7 +71,9 @@ export default class SignTransactionMnemonic extends Component<
                 value={phrase}
               />
 
-              <label className="SignTransactionKeystore-password">Your Password</label>
+              <label className="SignTransactionKeystore-password">
+                {translateRaw('SIGN_TX_YOUR_PASSWORD')}
+              </label>
               <Input
                 isValid={pass ? pass.length > 0 : false}
                 className={`${phrase.length && isWalletPending ? 'hidden' : ''}`}
@@ -82,22 +86,25 @@ export default class SignTransactionMnemonic extends Component<
               />
             </div>
             <div className="SignTransactionKeystore-description">
-              Because we never save, store, or transmit your secret, you need to sign each
-              transaction in order to send it. MyCrypto puts YOU in control of your assets.
+              {translateRaw('SIGN_TX_EXPLANATION')}
             </div>
             <div className="SignTransactionKeystore-spinner">
               {isSigning ? (
                 <Spinner />
               ) : (
                 <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
-                  Sign Transaction
+                  {translateRaw('DEP_SIGNTX')}
                 </button>
               )}
             </div>
           </form>
-          <div className="SignTransactionKeystore-help">
-            Not working? Here's some troubleshooting tips to try.
-          </div>
+          {WALLETS_CONFIG.MNEMONIC_PHRASE.helpLink && (
+            <div className="SignTransactionKeystore-help">
+              {translate('SIGN_TX_HELP_LINK', {
+                $helpLink: WALLETS_CONFIG.MNEMONIC_PHRASE.helpLink
+              })}
+            </div>
+          )}
         </div>
       </>
     );
