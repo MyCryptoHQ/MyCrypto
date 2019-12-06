@@ -1,4 +1,3 @@
-import configuredStore from 'features/store';
 import { DPaths } from 'config/dpaths';
 import { valid, invalid } from '../utils/testStrings';
 import {
@@ -8,7 +7,6 @@ import {
   isValidPrivKey,
   isValidAddress
 } from 'v2/services/EthService/validators';
-configuredStore.getState();
 
 const VALID_BTC_ADDRESS = '1MEWT2SGbqtz6mPCgFcnea8XmWV5Z4Wc6';
 const VALID_ETH_ADDRESS = '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8';
