@@ -7,6 +7,7 @@ import {
   TTicker,
   ExtendedAsset,
   WalletId,
+  Asset,
   ITxReceipt
 } from 'v2/types';
 import { isArrayEqual, useInterval, convertToFiatFromAsset, fromTxReceiptObj } from 'v2/utils';
@@ -28,9 +29,10 @@ interface State {
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totalFiat(
     selectedAccounts?: StoreAccount[]
-  ): (getRate: (ticker: TTicker) => number | undefined) => number;
+  ): (getAssetRate: (asset: Asset) => number | undefined) => number;
   currentAccounts(): StoreAccount[];
   assetTickers(targetAssets?: StoreAsset[]): TTicker[];
+  assetUUIDs(targetAssets?: StoreAsset[]): any[];
   scanTokens(asset?: ExtendedAsset): Promise<void[]>;
   deleteAccountFromCache(uuid: string): void;
 }
@@ -142,17 +144,17 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     totals: (selectedAccounts = state.accounts) =>
       Object.values(getTotalByAsset(state.assets(selectedAccounts))),
     totalFiat: (selectedAccounts = state.accounts) => (
-      getRate: (ticker: TTicker) => number | undefined
+      getAssetRate: (asset: Asset) => number | undefined
     ) =>
       state
         .totals(selectedAccounts)
-        .reduce(
-          (sum, asset) => (sum += convertToFiatFromAsset(asset, getRate(asset.ticker as TTicker))),
-          0
-        ),
+        .reduce((sum, asset) => (sum += convertToFiatFromAsset(asset, getAssetRate(asset))), 0),
     currentAccounts: () => getDashboardAccounts(state.accounts, settings.dashboardAccounts),
     assetTickers: (targetAssets = state.assets()) => [
       ...new Set(targetAssets.map(a => a.ticker as TTicker))
+    ],
+    assetUUIDs: (targetAssets = state.assets()) => [
+      ...new Set(targetAssets.map((a: StoreAsset) => a.uuid))
     ],
     scanTokens: async (asset?: ExtendedAsset) =>
       Promise.all(

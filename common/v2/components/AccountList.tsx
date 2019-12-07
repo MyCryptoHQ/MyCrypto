@@ -153,7 +153,7 @@ function buildAccountTable(
   setDeletingIndex?: any
 ) {
   const { totalFiat } = useContext(StoreContext);
-  const { getRate } = useContext(RatesContext);
+  const { getAssetRate } = useContext(RatesContext);
   const { settings } = useContext(SettingsContext);
   const { addressBook } = useContext(AddressBookContext);
   const columns = [
@@ -188,7 +188,7 @@ function buildAccountTable(
     overlayRows,
     body: accounts.map((account, index) => {
       const addressCard: AddressBook | undefined = getLabelByAccount(account, addressBook);
-      const total = totalFiat([account])(getRate);
+      const total = totalFiat([account])(getAssetRate);
       const label = addressCard ? addressCard.label : 'Unknown Account';
       const bodyContent = [
         <Label key={index}>

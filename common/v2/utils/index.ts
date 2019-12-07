@@ -4,7 +4,7 @@ export * from './validators';
 export { IS_ELECTRON, IS_MOBILE, IS_DOWNLOADABLE } from './platform';
 export { HAS_WEB3_PROVIDER, IS_DEV, IS_PROD } from './environment';
 export { getFeaturedOS } from './getFeaturedOS';
-export { generateUUID } from './generateUUID';
+export { generateUUID, generateAssetUUID } from './generateUUID';
 export { isUrl } from './isUrl';
 export { truncate } from './truncate';
 export { useOnClickOutside } from './useOnClickOutside';
