@@ -192,7 +192,7 @@
     "sass-extract-loader": "1.1.0",
     "sass-loader": "8.0.0",
     "style-loader": "1.0.0",
-    "ts-jest": "24.0.0",
+    "ts-jest": "24.2.0",
     "ts-node": "5.0.1",
     "tslint": "5.20.1",
     "tslint-config-prettier": "1.18.0",
