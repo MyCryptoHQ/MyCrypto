@@ -207,7 +207,7 @@
     "webpack-merge": "4.2.1",
     "webpack-modernizr-loader": "5.0.0",
     "webpack-subresource-integrity": "1.3.4",
-    "what-input": "5.0.5",
+    "what-input": "5.2.6",
     "worker-loader": "2.0.0"
   },
   "resolutions": {
