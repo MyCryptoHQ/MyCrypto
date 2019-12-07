@@ -11037,11 +11037,6 @@ mycrypto-eth-exists@1.0.0:
     isomorphic-ws "^4.0.1"
     toml "^2.3.3"
 
-mycrypto-nano-result@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/mycrypto-nano-result/-/mycrypto-nano-result-0.0.1.tgz#c1d3208458dc485441b0230c69948f62344f9d5a"
-  integrity sha512-QIzFjMlVjsyzGXWhI/3PTKoOdjlxjSp8YX3ksMDwrciow+rFTRTu0qfM72tYiADBdDgCu7vQxOnNd0F0BP0LFA==
-
 mycrypto-shepherd@1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/mycrypto-shepherd/-/mycrypto-shepherd-1.4.0.tgz#ad86e0f18040da524631bf471bce03ba65c165a3"
