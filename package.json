@@ -200,7 +200,7 @@
     "u2f-api": "1.0.6",
     "uglifyjs-webpack-plugin": "1.2.4",
     "url-search-params-polyfill": "3.0.0",
-    "utility-types": "3.7.0",
+    "utility-types": "3.10.0",
     "webpack": "4.41.2",
     "webpack-cli": "3.3.10",
     "webpack-dev-server": "3.9.0",
