@@ -201,7 +201,6 @@
     "types-rlp": "0.0.1",
     "typescript": "3.5.1",
     "u2f-api": "1.0.6",
-    "uglifyjs-webpack-plugin": "1.2.4",
     "webpack": "4.41.2",
     "webpack-cli": "3.3.10",
     "webpack-dev-server": "3.9.0",
