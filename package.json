@@ -202,7 +202,7 @@
     "url-search-params-polyfill": "3.0.0",
     "utility-types": "3.7.0",
     "webpack": "4.41.2",
-    "webpack-cli": "3.3.9",
+    "webpack-cli": "3.3.10",
     "webpack-dev-server": "3.9.0",
     "webpack-merge": "4.2.2",
     "webpack-modernizr-loader": "5.0.0",
