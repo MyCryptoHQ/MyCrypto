@@ -172,7 +172,7 @@
     "jest": "24.1.0",
     "jquery": "3.4.0",
     "klaw-sync": "3.0.2",
-    "lint-staged": "9.4.2",
+    "lint-staged": "9.5.0",
     "mini-css-extract-plugin": "0.8.0",
     "nock": "11.7.0",
     "node-sass": "4.13.0",
