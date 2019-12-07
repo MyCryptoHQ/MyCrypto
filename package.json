@@ -204,7 +204,7 @@
     "webpack": "4.41.2",
     "webpack-cli": "3.3.9",
     "webpack-dev-server": "3.8.2",
-    "webpack-merge": "4.2.1",
+    "webpack-merge": "4.2.2",
     "webpack-modernizr-loader": "5.0.0",
     "webpack-subresource-integrity": "1.3.4",
     "what-input": "5.2.6",
