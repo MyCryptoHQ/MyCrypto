@@ -1,8 +1,5 @@
-import configuredStore from 'features/store';
 import { Wei } from 'v2/services';
 import { toFixedIfLarger, formatNumber, formatGasLimit, formatMnemonic } from 'v2/utils/formatters';
-
-configuredStore.getState();
 
 describe('toFixedIfLarger', () => {
   it('should return same value if decimal isnt longer than default', () => {
