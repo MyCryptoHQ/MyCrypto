@@ -117,7 +117,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Etherscan',
       origin: 'https://goerli.etherscan.io/'
     }),
-    tokens: require('config/tokens/gor.json'),
+    tokens: require('v2/config/tokens/gor.json'),
     contracts: [],
     isTestnet: true,
     dPaths: {
