@@ -5,7 +5,7 @@ import { addHexPrefix } from 'ethereumjs-util';
 import EthTx from 'ethereumjs-tx';
 import { WalletLib } from 'shared/enclave/types';
 import { padLeftEven } from 'v2/services/EthService/utils';
-import { stripHexPrefixAndLower } from 'v2/services';
+import { stripHexPrefixAndLower } from 'v2/services/EthService';
 import { showPinPrompt } from '../views/pin';
 import { showPassphrasePrompt } from '../views/passphrase';
 import config from './msg-config';
