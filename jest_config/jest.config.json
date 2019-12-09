@@ -20,6 +20,7 @@
     "<rootDir>/jest_config/__mocks__/localStorage.ts"
   ],
   "automock": false,
+  "snapshotSerializers": ["enzyme-to-json/serializer"],
   "browser": true,
   "collectCoverage": true,
   "globals": {
