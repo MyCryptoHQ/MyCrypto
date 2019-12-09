@@ -17,7 +17,7 @@ import {
 
 export const STORIES: IStory[] = [
   {
-    name: WalletId.METAMASK,
+    name: WalletId.WEB3,
     steps: HAS_WEB3_PROVIDER ? [Web3ProviderDecrypt, SaveAndRedirect] : [Web3ProviderInstall]
   },
   {

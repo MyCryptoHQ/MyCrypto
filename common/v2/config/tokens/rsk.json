@@ -3,5 +3,17 @@
         "address": "0x2acc95758f8b5f583470ba265eb685a8f45fc9d5",
         "symbol": "RIF",
         "decimal": 18
+    },
+    {
+        "address": "0xe0cff8a40f540657c62eb4cac34b915e5ed8d8ff",
+        "symbol": "INV",
+        "name": "Invecoin",
+        "decimal": 18
+    },
+    {
+        "address": "0xe700691da7b9851f2f35f8b8182c69c53ccad9db",
+        "symbol": "DOC",
+        "name": "Dollar on Chain",
+        "decimal": 18
     }
 ]

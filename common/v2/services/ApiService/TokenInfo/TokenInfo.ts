@@ -1,7 +1,8 @@
-import { AxiosInstance } from 'axios';
+import { AxiosInstance, AxiosResponse } from 'axios';
 
 import { default as ApiService } from '../ApiService';
 import { TOKEN_INFO_URL } from 'v2/config';
+import _ from 'lodash';
 
 let instantiated: boolean = false;
 
@@ -21,14 +22,23 @@ export default class TokenInfoService {
   }
 
   public getTokensInfo = async (contractAddresses: string[]) => {
-    const params = new URLSearchParams();
-    contractAddresses.forEach(address => params.append('contractAddress', address));
+    // Splices contract addresses for large sets of contracts to break up the calls into manageable chunks
+    const queryParams = _.chunk(contractAddresses, 20).map(contractAddressArray =>
+      createParams(contractAddressArray)
+    );
 
     try {
-      const response = await this.service.get('', { params });
-      return response.data;
+      return await Promise.all(
+        queryParams.map(async (params: any) => this.service.get('', { params }))
+      ).then((res: AxiosResponse[]) => _.union(...res.map(r => r.data)));
     } catch (e) {
       throw e;
     }
   };
 }
+
+const createParams = (contractAddresses: string[]) => {
+  const params = new URLSearchParams();
+  contractAddresses.forEach(address => params.append('contractAddress', address));
+  return params;
+};

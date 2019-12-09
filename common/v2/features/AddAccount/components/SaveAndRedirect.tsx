@@ -11,7 +11,8 @@ import {
   getNetworkById,
   AddressBookContext
 } from 'v2/services/Store';
-import { Account, AddressBook, Asset, Network, FormData } from 'v2/types';
+import { Account, AddressBook, Asset, Network, FormData, WalletId } from 'v2/types';
+import { getWeb3Config } from 'v2/utils/web3';
 
 /*
   Create a new account in localStorage and redirect to dashboard.
@@ -32,12 +33,16 @@ function SaveAndRedirect(payload: { formData: FormData }) {
         address: payload.formData.account
       });
     } else {
+      const walletType =
+        payload.formData.accountType! === WalletId.WEB3
+          ? WalletId[getWeb3Config().id]
+          : payload.formData.accountType!;
       const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(network);
       const newUUID = generateUUID();
       const account: Account = {
         address: payload.formData.account,
         networkId: payload.formData.network,
-        wallet: payload.formData.accountType!,
+        wallet: walletType,
         dPath: payload.formData.derivationPath,
         assets: [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
         transactions: [],

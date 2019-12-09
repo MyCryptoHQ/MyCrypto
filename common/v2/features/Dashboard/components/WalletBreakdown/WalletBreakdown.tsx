@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { translateRaw } from 'v2/translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES, RatesContext } from 'v2/services';
 import { SettingsContext, StoreContext, AccountContext } from 'v2/services/Store';
-import { StoreAsset, TTicker } from 'v2/types';
+import { StoreAsset } from 'v2/types';
 import { weiToFloat, convertToFiatFromAsset } from 'v2/utils';
 import { BREAK_POINTS } from 'v2/theme';
 import { Fiats } from 'v2/config';
@@ -55,7 +55,7 @@ export function WalletBreakdown() {
   const { totals, currentAccounts } = useContext(StoreContext);
   const { accounts } = useContext(AccountContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
-  const { getRate } = useContext(RatesContext);
+  const { getAssetRate } = useContext(RatesContext);
 
   // Track number of accounts that user has only once per session
   if (!wasNumOfAccountsTracked) {
@@ -73,7 +73,7 @@ export function WalletBreakdown() {
       name: asset.name || translateRaw('WALLET_BREAKDOWN_UNKNOWN'),
       ticker: asset.ticker,
       amount: weiToFloat(asset.balance, asset.decimal),
-      fiatValue: convertToFiatFromAsset(asset, getRate(asset.ticker as TTicker))
+      fiatValue: convertToFiatFromAsset(asset, getAssetRate(asset))
     }))
     .sort((a, b) => b.fiatValue - a.fiatValue);
 

@@ -42,7 +42,7 @@ const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
     case WalletId.VIEW_ONLY:
     case WalletId.KEYSTORE_FILE:
     case WalletId.PRIVATE_KEY:
-    case WalletId.METAMASK:
+    case WalletId.WEB3:
       return {
         account: payload.getAddressString(),
         derivationPath: ''

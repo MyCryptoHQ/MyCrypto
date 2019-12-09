@@ -1,4 +1,7 @@
 import * as crypto from 'crypto';
+import getUuid from 'uuid-by-string';
+import { toChecksumAddress } from 'ethereumjs-util';
+import { TTicker } from 'v2/types';
 
 // TODO: If used for anything other than generating public ids, look up a more-secure way to do this.
 export const generateUUID = (): string => {
@@ -15,3 +18,8 @@ export const generateUUID = (): string => {
     hexstring.substring(20);
   return uuid;
 };
+
+export const generateAssetUUID = (chainId: string | number, address?: string): TTicker =>
+  address
+    ? (getUuid(`${chainId}-${toChecksumAddress(address)}`) as TTicker)
+    : (getUuid(chainId.toString()) as TTicker);

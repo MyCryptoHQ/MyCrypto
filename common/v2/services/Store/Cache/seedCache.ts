@@ -1,4 +1,4 @@
-import { IS_DEV, generateUUID } from 'v2/utils';
+import { IS_DEV, generateUUID, generateAssetUUID } from 'v2/utils';
 import {
   Fiats,
   ContractsData,
@@ -81,8 +81,8 @@ export const initNetworks = () => {
       ([, asset]) => asset.networkId === networkId
     );
 
-    const baseAssetID = generateUUID();
     const network: NetworkLegacy = NETWORKS_CONFIG[networkId];
+    const baseAssetID = generateAssetUUID(network.chainId);
     const newLocalNetwork: Network = {
       contracts: Object.keys(newContracts),
       assets: Object.keys(newAssets),

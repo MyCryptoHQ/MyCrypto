@@ -1,12 +1,12 @@
 import EthScan, { HttpProvider, EthersProvider } from '@mycrypto/eth-scan';
 import partition from 'lodash/partition';
 import { bigNumberify, BigNumber } from 'ethers/utils';
+import { FallbackProvider } from 'ethers/providers';
 import { default as BN } from 'bignumber.js';
 
 import { ETHSCAN_NETWORKS, MYCRYPTO_UNLOCK_CONTRACT_ADDRESS } from 'v2/config';
 import { TAddress, StoreAccount, StoreAsset, Asset, NodeConfig, Network } from 'v2/types';
 import { ProviderHandler } from 'v2/services/EthService';
-import { FallbackProvider } from 'ethers/providers';
 
 export interface BalanceMap {
   [key: string]: BN | BigNumber;
@@ -20,7 +20,7 @@ const getScanner = (node: NodeConfig) => {
   return new EthScan(new HttpProvider(node.url));
 };
 
-export const getScannerWithProvider = (provider: FallbackProvider) => {
+const getScannerWithProvider = (provider: FallbackProvider) => {
   return new EthScan(new EthersProvider(provider));
 };
 
@@ -55,8 +55,7 @@ const addBalancesToAccount = (account: StoreAccount) => ([baseBalance, tokenBala
 
 const getAccountAssetsBalancesWithEthScan = async (account: StoreAccount) => {
   const list = getAssetAddresses(account.assets) as string[];
-  const scanner = getScanner(account.network.nodes[0]);
-
+  const scanner = getScannerWithProvider(new ProviderHandler(account.network).client);
   return Promise.all([
     scanner.getEtherBalances([account.address]),
     scanner.getTokensBalance(account.address, list)
@@ -78,8 +77,6 @@ export const getBaseAssetBalances = async (addresses: string[], network: Network
     .catch(_ => ([] as unknown) as BalanceMap);
 };
 
-// Return an object containing the balance of the different tokens
-// e.g { TOKEN_CONTRACT_ADDRESS: <balance> }
 const getTokenBalances = (
   provider: ProviderHandler,
   address: TAddress,

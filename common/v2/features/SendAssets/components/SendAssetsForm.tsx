@@ -30,8 +30,7 @@ import {
   StoreAsset,
   WalletId,
   IFormikFields,
-  IStepComponentProps,
-  TTicker
+  IStepComponentProps
 } from 'v2/types';
 import {
   getNonce,
@@ -141,7 +140,7 @@ export default function SendAssetsForm({
   onComplete
 }: IStepComponentProps) {
   const { accounts, assets } = useContext(StoreContext);
-  const { getRate } = useContext(RatesContext);
+  const { getAssetRate } = useContext(RatesContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingENSName, setIsResolvingENSName] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
@@ -385,9 +384,7 @@ export default function SendAssetsForm({
                     }
                     fiatAsset={{
                       fiat: 'USD',
-                      value: (
-                        getRate((baseAsset.ticker as TTicker) || ('ETH' as TTicker)) || 0
-                      ).toString(),
+                      rate: (getAssetRate(baseAsset || undefined) || 0).toString(),
                       symbol: '$'
                     }}
                   />

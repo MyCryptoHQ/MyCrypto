@@ -1,4 +1,3 @@
-import configuredStore from 'features/store';
 import {
   decryptPrivKey,
   decodeCryptojsSalt,
@@ -6,8 +5,6 @@ import {
   decipherBuffer,
   decryptMnemonicToPrivKey
 } from 'v2/services/EthService/utils/decrypt';
-
-configuredStore.getState();
 
 // Elements of a V1 encrypted priv key
 const v1 = {

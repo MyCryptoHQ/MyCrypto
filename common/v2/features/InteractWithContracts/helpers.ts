@@ -91,6 +91,7 @@ export const getFunctionsFromABI = (pAbi: ABIItem[]) =>
 
 export const WALLET_STEPS: SigningComponents = {
   [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,
+  [WalletId.WEB3]: SignTransactionWeb3,
   [WalletId.METAMASK]: SignTransactionWeb3,
   [WalletId.TRUST]: SignTransactionWeb3,
   [WalletId.CIPHER]: SignTransactionWeb3,

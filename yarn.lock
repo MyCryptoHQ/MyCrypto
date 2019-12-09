@@ -16412,6 +16412,14 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
+uuid-by-string@3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/uuid-by-string/-/uuid-by-string-3.0.2.tgz#40e7a2049224715f566a13169f1f178aee42ac00"
+  integrity sha512-XA0BuWgMte7RcwEdM+AJOtQWVogkpQkWGX6bEgnYFWSkp4yebZTeapNvGZWZUX+T1/lo6kL+8nY7AczLI+Bjfw==
+  dependencies:
+    js-md5 "^0.7.3"
+    js-sha1 "^0.6.0"
+
 uuid-by-string@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/uuid-by-string/-/uuid-by-string-3.0.1.tgz#c5dcfc6b978f459d6a62d9c0d51e7e9b95d3707d"

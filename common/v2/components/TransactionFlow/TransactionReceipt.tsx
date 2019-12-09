@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Address, Button, Copyable } from '@mycrypto/ui';
 
-import { ITxReceipt, ITxStatus, IStepComponentProps, TTicker } from 'v2/types';
+import { ITxReceipt, ITxStatus, IStepComponentProps } from 'v2/types';
 import { Amount, TimeElapsedCounter } from 'v2/components';
 import { AddressBookContext, AccountContext } from 'v2/services/Store';
 import { RatesContext } from 'v2/services/RatesProvider';
@@ -30,7 +30,7 @@ export default function TransactionReceipt({
   resetFlow,
   completeButtonText
 }: IStepComponentProps & Props) {
-  const { getRate } = useContext(RatesContext);
+  const { getAssetRate } = useContext(RatesContext);
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
   const { addNewTransactionToAccount } = useContext(AccountContext);
   const [txStatus, setTxStatus] = useState(ITxStatus.PENDING);
@@ -93,6 +93,7 @@ export default function TransactionReceipt({
   const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
   const assetAmount = displayTxReceipt.amount || txConfig.amount;
   const assetTicker = 'asset' in displayTxReceipt ? displayTxReceipt.asset.ticker : 'ETH';
+  const assetForRateFetch = 'asset' in displayTxReceipt ? displayTxReceipt.asset : undefined;
   return (
     <div className="TransactionReceipt">
       <div className="TransactionReceipt-row">
@@ -126,7 +127,7 @@ export default function TransactionReceipt({
             assetValue={`${parseFloat(assetAmount).toFixed(6)} ${assetTicker}`}
             fiatValue={`$${convertToFiat(
               parseFloat(assetAmount),
-              getRate(assetTicker as TTicker)
+              getAssetRate(assetForRateFetch)
             ).toFixed(2)}
             `}
           />

@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { ethers, utils } from 'ethers';
 import { Web3Provider } from 'ethers/providers/web3-provider';
 
+import { WALLETS_CONFIG } from 'v2/config';
+import { ISignComponentProps } from 'v2/types';
+import translate, { translateRaw } from 'v2/translations';
+import { getWeb3Config } from 'v2/utils/web3';
 import { getNetworkByChainId } from 'v2/services/Store';
 import './Web3.scss';
-import { ISignComponentProps } from 'v2/types';
-import { getWeb3Config } from 'v2/utils/web3';
 
 declare global {
   interface Window {
@@ -78,42 +80,52 @@ export default class SignTransactionWeb3 extends Component<ISignComponentProps, 
 
     return (
       <>
-        <div className="SignTransactionWeb3-title">{`Sign the Transaction with ${walletConfig.name}`}</div>
+        <div className="SignTransactionWeb3-title">
+          {translate('SIGN_TX_TITLE', {
+            $walletName: walletConfig.name || WALLETS_CONFIG.WEB3.name
+          })}
+        </div>
         <div className="SignTransactionWeb3-instructions">
-          {`Sign into ${walletConfig.name} on your computer and follow the instructions in the ${walletConfig.name} window.`}
+          {translate('SIGN_TX_WEB3_PROMPT', {
+            $walletName: walletConfig.name || WALLETS_CONFIG.WEB3.name
+          })}
         </div>
         <div className="SignTransactionWeb3-img">
           <img src={walletConfig.icon} />
         </div>
         {walletState === WalletSigningState.NOT_READY ? (
-          <div className="SignTransactionWeb3-rejection">
-            Transaction has been rejected or there was an error. Please restart send-flow
-          </div>
+          <div className="SignTransactionWeb3-rejection">{translate('SIGN_TX_WEB3_REJECTED')}</div>
         ) : null}
 
         <div className="SignTransactionWeb3-input">
           <div className="SignTransactionWeb3-errors">
             {!networkMatches && (
               <div className="SignTransactionWeb3-wrong-network">
-                {`Please switch the network in ${walletConfig.name} to ${networkName}`}
+                {translate('SIGN_TX_WEB3_FAILED_NETWORK', {
+                  $walletName: walletConfig.name,
+                  $networkName: networkName
+                })}
               </div>
             )}
             {!accountMatches && (
               <div className="SignTransactionWeb3-wrong-address">
-                {`Please switch the account in ${walletConfig.name} to
-                ${senderAccount.address} in order to proceed`}
+                {translate('SIGN_TX_WEB3_FAILED_ACCOUNT', {
+                  $walletName: walletConfig.name,
+                  $address: senderAccount.address
+                })}
               </div>
             )}
           </div>
-          {submitting && <div>Submitting transaction now.</div>}
+          {submitting && translate('SIGN_TX_SUBMITTING_PENDING')}
           <div className="SignTransactionWeb3-description">
-            Because we never save, store, or transmit your secret, you need to sign each transaction
-            in order to send it. MyCrypto puts YOU in control of your assets.
+            {translateRaw('SIGN_TX_EXPLANATION')}
           </div>
           <div className="SignTransactionWeb3-footer">
-            <div className="SignTransactionWeb3-help">
-              Not working? Here's some troubleshooting tips to try
-            </div>
+            {walletConfig.helpLink && (
+              <div className="SignTransactionWeb3-help">
+                {translate('SIGN_TX_HELP_LINK', { $helpLink: walletConfig.helpLink })}
+              </div>
+            )}
           </div>
         </div>
       </>
