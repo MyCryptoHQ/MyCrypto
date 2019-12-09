@@ -1,4 +1,4 @@
-import { DPaths } from 'config/dpaths';
+import { DPathsList } from 'v2/config/dpaths';
 import { valid, invalid } from '../utils/testStrings';
 import {
   isValidBTCAddress,
@@ -82,7 +82,7 @@ describe('Validator', () => {
     });
   });
   it('should validate hardcoded DPaths as true', () => {
-    DPaths.forEach(DPath => {
+    Object.values(DPathsList).forEach(DPath => {
       expect(isValidPath(DPath.value)).toBeTruthy();
     });
   });
