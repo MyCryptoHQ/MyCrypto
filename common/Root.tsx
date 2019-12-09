@@ -170,10 +170,10 @@ class RootClass extends Component<Props, State> {
 }
 
 let previousURL = '';
-const PageVisitsAnalytics = connect((state: AppState) => ({
-  network: configSelectors.getNetworkConfig(state)
-}))(
-  withRouter(
+const PageVisitsAnalytics = withRouter(
+  connect((state: AppState) => ({
+    network: configSelectors.getNetworkConfig(state)
+  }))(
     // tslint:disable-next-line: max-classes-per-file
     class extends Component<PageVisitsAnalyticsProps> {
       public componentDidMount() {
