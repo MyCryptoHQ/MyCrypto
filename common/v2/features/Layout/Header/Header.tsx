@@ -47,6 +47,9 @@ const HeaderTop = styled.div`
   padding: 0 ${MIN_CONTENT_PADDING};
   border-bottom: 1px solid #3e546d;
 
+  /* Enables window dragging on macOS desktop app */
+  -webkit-app-region: drag;
+
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     padding: 0;
   }
