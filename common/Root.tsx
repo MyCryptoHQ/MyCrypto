@@ -17,6 +17,7 @@ import { AppState } from 'features/reducers';
 import { configSelectors, configMetaSelectors } from 'features/config';
 import { transactionMetaActions } from 'features/transaction';
 import { onboardingSelectors } from 'features/onboarding';
+import { StaticNetworkConfig, CustomNetworkConfig } from 'types/network';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
@@ -58,7 +59,7 @@ interface DispatchProps {
 type Props = OwnProps & StateProps & DispatchProps;
 
 type PageVisitsAnalyticsProps = RouteComponentProps<{}> & {
-  network: string;
+  network: StaticNetworkConfig | CustomNetworkConfig;
 };
 
 interface State {
@@ -126,7 +127,7 @@ class RootClass extends Component<Props, State> {
       <React.Fragment>
         <Provider store={store}>
           <Router>
-            <PageVisitsAnalytics network={store.getState().config.nodes.selectedNode.nodeId}>
+            <PageVisitsAnalytics>
               {onboardingActive && <OnboardingModal />}
               {routes}
               <LegacyRoutes />
@@ -169,22 +170,26 @@ class RootClass extends Component<Props, State> {
 }
 
 let previousURL = '';
-const PageVisitsAnalytics = withRouter(
-  // tslint:disable-next-line: max-classes-per-file
-  class extends Component<PageVisitsAnalyticsProps> {
-    public componentDidMount() {
-      this.props.history.listen(() => {
-        if (previousURL !== window.location.href) {
-          AnalyticsService.instance.trackPageVisit(window.location.href, this.props.network);
-          previousURL = window.location.href;
-        }
-      });
-    }
+const PageVisitsAnalytics = connect((state: AppState) => ({
+  network: configSelectors.getNetworkConfig(state)
+}))(
+  withRouter(
+    // tslint:disable-next-line: max-classes-per-file
+    class extends Component<PageVisitsAnalyticsProps> {
+      public componentDidMount() {
+        this.props.history.listen(() => {
+          if (previousURL !== window.location.href) {
+            AnalyticsService.instance.trackPageVisit(window.location.href, this.props.network.id);
+            previousURL = window.location.href;
+          }
+        });
+      }
 
-    public render() {
-      return this.props.children;
+      public render() {
+        return this.props.children;
+      }
     }
-  }
+  )
 );
 
 const LegacyRoutes = withRouter(props => {
