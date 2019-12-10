@@ -1,7 +1,7 @@
 import { IWalletConfig, WALLETS_CONFIG } from 'v2/config';
 import { WalletId, WalletType } from 'v2/types';
 
-import MetamaskIcon from 'common/assets/images/wallets/metamask-2.svg';
+import MetamaskIcon from 'common/assets/images/wallets/metamask.svg';
 import MistIcon from 'assets/images/wallets/mist.svg';
 import CipherIcon from 'assets/images/wallets/cipher.svg';
 import TrustIcon from 'assets/images/wallets/trust.svg';
