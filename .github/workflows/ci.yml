@@ -39,8 +39,8 @@ jobs:
           node-version: ${{ steps.engines.outputs.NODE_VERSION }}
 
       - run: node -v
-      # - name: install node tools
-      #   run: npm install --global --production windows-build-tools@4.0.0
+      - name: install node tools
+        run: npm install --global --production windows-build-tools@4.0.0
       - name: install node-gyp
         run: npm install --global node-gyp@latest
       - name: Set node config to use python2.7
