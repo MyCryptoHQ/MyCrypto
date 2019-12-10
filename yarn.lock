@@ -1678,18 +1678,10 @@
   dependencies:
     "@types/enzyme" "*"
 
-"@types/enzyme@*":
+"@types/enzyme@*", "@types/enzyme@3.10.4":
   version "3.10.4"
   resolved "https://registry.yarnpkg.com/@types/enzyme/-/enzyme-3.10.4.tgz#dd4961042381a7c0f6637ce25fec3f773ce489dd"
   integrity sha512-P5XpxcIt9KK8QUH4al4ttfJfIHg6xmN9ZjyUzRSzAsmDYwRXLI05ng/flZOPXrEXmp8ZYiN8/tEXYK5KSOQk3w==
-  dependencies:
-    "@types/cheerio" "*"
-    "@types/react" "*"
-
-"@types/enzyme@3.1.8":
-  version "3.1.8"
-  resolved "https://registry.yarnpkg.com/@types/enzyme/-/enzyme-3.1.8.tgz#e0a4492994fafb2fccc1726f8b4d9960097a4a8c"
-  integrity sha512-HNOmXnm6RvyzVJRue3Ebrb1f609BQ0Lf5eNRCENPD95r6JKTTOwfDDpPE5tVp/fhJiBtvZ3To8a8E1Hq8eExNg==
   dependencies:
     "@types/cheerio" "*"
     "@types/react" "*"
