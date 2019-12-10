@@ -109,7 +109,7 @@
     "@types/enzyme": "3.1.8",
     "@types/enzyme-adapter-react-16": "1.0.1",
     "@types/ethereumjs-abi": "0.6.3",
-    "@types/events": "1.2.0",
+    "@types/events": "3.0.0",
     "@types/hdkey": "0.7.1",
     "@types/history": "4.7.3",
     "@types/html2canvas": "0.0.35",
