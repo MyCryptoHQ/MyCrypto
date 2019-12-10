@@ -90,7 +90,7 @@ function SendAssets({ history }: RouteComponentProps<{}>) {
       backBtnText={getBackBtnLabel()}
       heading={label}
       icon={sendIcon}
-      stepper={{ current: step + 1, total: currentPath.length - 1 }}
+      stepper={{ current: step + 1, total: currentPath.length }}
     >
       <Step
         txReceipt={txReceiptState}
