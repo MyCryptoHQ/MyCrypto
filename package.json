@@ -135,7 +135,7 @@
     "@types/react-router-redux": "5.0.13",
     "@types/react-select": "1.2.6",
     "@types/react-slick": "0.23.4",
-    "@types/react-transition-group": "2.9.0",
+    "@types/react-transition-group": "4.2.3",
     "@types/recharts": "1.8.3",
     "@types/redux-logger": "3.0.7",
     "@types/semver": "6.2.0",
