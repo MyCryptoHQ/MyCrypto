@@ -1945,10 +1945,10 @@
     "@types/react" "*"
     redux "^3.6.0"
 
-"@types/react-responsive@3.0.3":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@types/react-responsive/-/react-responsive-3.0.3.tgz#a31b599c7cfe4135c5cc2f45d0b71df64803b23f"
-  integrity sha512-paTAvXIFgv/jG60d7WSV0+yWCjqJ05cG+KOV48SiqYGjGi9kFdss9QnVTTLnFJmbUwWnoM+VD1Iyay1JBy/HPQ==
+"@types/react-responsive@8.0.2":
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/@types/react-responsive/-/react-responsive-8.0.2.tgz#959fdc32f72e38b807e32be617a74be2c315081b"
+  integrity sha512-DTvm3Hb77v0hme7L4GYzRjLQqlZP+zNImFBzdKbSH7CsQ5c7QebGnSQX2Xf3BaA0rm/TQE57eFMhMGLcMe/A9w==
   dependencies:
     "@types/react" "*"
 
