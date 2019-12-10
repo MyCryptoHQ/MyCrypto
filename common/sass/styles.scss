@@ -39,6 +39,8 @@
 @import './fonts';
 @import './styles/react-datetime';
 
+/* suppress focus ring on form controls for mouse users */
+// 'what-input' package / https://github.com/ten1seven/what-input#basic-styling
 [data-whatintent='mouse'] *:focus {
   outline: none;
 }
