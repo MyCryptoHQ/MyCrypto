@@ -1,98 +1,132 @@
-name: CI
+name: GitHub CI
 
 on: [push]
 
 jobs:
-## Windows pre-build is functional uncomment it for later usage
 ## WINDOWS-PREBUILD START ##
-#   pre-build-and-build-windows:
-#     name: Build el:win
-#     runs-on: ${{ matrix.os }}
-#     strategy:
-#       matrix:
-#         os: [windows-latest]
-#     steps:
-#       ## actions/checkout@v1 retrieves project from the git branch
-#       - uses: actions/checkout@v1
-#       - name: Retrieve node version from .nvmrc
-#         id: nvm
-#         run: $nvm = Get-Content .nvmrc; Write-Output "##[set-output name=NVMRC;]$($nvm)"
-#       - uses: actions/setup-node@master
-#         with:
-#           node-version: ${{ steps.version.outputs.NVMRC }}
-#       - name: install node tools
-#         run: npm install --global --production windows-build-tools@4.0.0
-#       - name: install node-gyp
-#         run: npm install --global node-gyp@latest
-#       - name: Set node config to use python2.7
-#         run: npm config set python python2.7
-#       - name: Set node config to set msvs_version to 2015
-#         run: npm config set msvs_version 2015
-#       - name: Work around for Windows Server 2019
-#         run: set path=%path%;'C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin'
+  pre-build-and-build-windows:
+    name: Build el:win
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest]
+    steps:
+      - name: Retrieve project from the git branch
+        uses: actions/checkout@v1
 
-#       - name: Cache node modules
-#         id: cache
-#         uses: actions/cache@v1
-#         with:
-#           path: node_modules
-#           ## Check cache based on yarn.lock hashfile
-#           key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
-#           restore-keys: |
-#             ${{ runner.OS }}-build-${{ env.cache-name }}-
-#             ${{ runner.OS }}-build-
-#             ${{ runner.OS }}-
+      - name: Print current engines' versions
+        run: >
+          echo "node: $(node -v)";
+          echo "npm: $(npm -v)";
+          echo "yarn: $(yarn -v)";
+          echo "python: $(python -V)";
 
-#       - name: Install Dependencies
-#         ## If no cache is found, install dependencies
-#         if: steps.cache.outputs.cache-hit != 'true'
-#         run: yarn install
+      - name: Retrieve engines' versions from package.json to env variables
+        id: engines
+        run: >
+          $hashtable = Get-Content -Raw -Path ./package.json | ConvertFrom-Json -AsHashtable;
+          echo $hashtable.engines;
+          $nodeVersion = $hashtable.engines.node;
+          $npmVersion = $hashtable.engines.npm;
+          $yarnVersion = $hashtable.engines.yarn;
+          Write-Output "##[set-output name=NODE_VERSION;]$($nodeVersion)";
+          Write-Output "##[set-output name=NPM_VERSION;]$($npmVersion)";
+          Write-Output "##[set-output name=YARN_VERSION;]$($yarnVersion)";
 
-#       - name: yarn tslint
-#         run: yarn tslint
+      - name: Setup node ${{ steps.engines.outputs.NODE_VERSION }}
+        uses: actions/setup-node@master
+        with:
+          node-version: ${{ steps.engines.outputs.NODE_VERSION }}
 
-#       - name: yarn tscheck
-#         run: yarn tscheck
+      - run: node -v
+      - name: install node tools
+        run: npm install --global --production windows-build-tools@4.0.0
+      - name: install node-gyp
+        run: npm install --global node-gyp@latest
+      - name: Set node config to use python2.7
+        run: npm config set python python2.7
+      - name: Set node config to set msvs_version to 2015
+        run: npm config set msvs_version 2015
+      - name: Work around for Windows Server 2019
+        run: set path=%path%;'C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin'
 
-#       - name: yarn test:coverage -- --maxWorkers=2
-#         run: yarn test:coverage -- --maxWorkers=2
+      - name: Cache node modules
+        id: cache
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          ## Check cache based on yarn.lock hashfile
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-${{ env.cache-name }}-
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
 
-# ##    NOT WORKING
-# #     - name: yarn report-coverage
-# #       run: yarn report-coverage
+      - name: Install Dependencies
+        ## If no cache is found, install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn install
 
-#       - name: yarn build:electron:windows
-#         run: yarn build:electron:windows
+      - name: yarn tslint
+        run: yarn tslint
 
-#       - name: ls dist/electron-builds
-#         run: ls dist/electron-builds
+      - name: yarn tscheck
+        run: yarn tscheck
 
-#       - name: Read MyCrypto version from package.json
-#         id: version
-#         run: $json = Get-Content package.json | ConvertFrom-Json; Write-Output "##[set-output name=VERSION;]$($json.version)"
+      - name: yarn test:coverage -- --maxWorkers=2
+        run: yarn test:coverage -- --maxWorkers=2
 
-#       - name: Save windows_${{ steps.version.outputs.VERSION }}_MyCrypto.exe to artifacts
-#         uses: actions/upload-artifact@v1
-#         with:
-#           name: "windows_${{ steps.version.outputs.VERSION }}_MyCrypto.exe"
-#           path: "dist/electron-builds/MyCrypto Setup ${{ steps.version.outputs.VERSION }}.exe"
-## WINDOWS-PREBUILD END ##
+##    NOT WORKING
+#     - name: yarn report-coverage
+#       run: yarn report-coverage
+
+      - name: yarn build:electron:windows
+        run: yarn build:electron:windows
+
+      - name: ls dist/electron-builds
+        run: ls dist/electron-builds
+
+      - name: Read MyCrypto version from package.json
+        id: version
+        run: $json = Get-Content package.json | ConvertFrom-Json; Write-Output "##[set-output name=VERSION;]$($json.version)"
+
+      - name: Save windows_${{ steps.version.outputs.VERSION }}_MyCrypto.exe to artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: "windows_${{ steps.version.outputs.VERSION }}_MyCrypto.exe"
+          path: "dist/electron-builds/MyCrypto Setup ${{ steps.version.outputs.VERSION }}.exe"
+# ## WINDOWS-PREBUILD END ##
 
   pre-build:
     name: Pre-build
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macOS-latest, ubuntu-latest]
+        os: [
+          macOS-latest,
+          ubuntu-latest
+        ]
     env:
       ELECTRON_CACHE: $HOME/.cache/electron
       ELECTRON_BUILDER_CACHE: $HOME/.cache/electron-builder
     steps:
-    ## actions/checkout@v1 retrieves project from the git branch
-    - uses: actions/checkout@v1
+    - name: Retrieves project from the git branch
+      uses: actions/checkout@v1
+
+#     - name: Slack Notification
+#       if: matrix.os == 'ubuntu-latest'
+#       uses: rtCamp/action-slack-notify@master
+#       env:
+# #         SLACK_CHANNEL: general
+#         SLACK_COLOR: '#3278BD'
+# #         SLACK_ICON: https://github.com/rtCamp.png?size=48
+#         SLACK_MESSAGE: 'Post Content :rocket:'
+#         SLACK_TITLE: Post Title
+#         SLACK_USERNAME: rtCamp
+#         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
     - name: Read .nvmrc
-      run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
+      run: echo "##[set-output name=NVMRC;]$(cat package.json | grep '\"node\":' | sed 's/^ *//;s/ *$//;s/\"node\":\ \"//;s/\",//' )"
       id: nvm
 
     - name: Setup node ${{ steps.nvm.outputs.NVMRC }}
@@ -145,11 +179,11 @@ jobs:
       ELECTRON_BUILDER_CACHE: $HOME/.cache/electron-builder
 
     steps:
-    ## actions/checkout@v1 retrieves project from the git branch
-    - uses: actions/checkout@v1
+    - name: Retrieves project from the git branch
+      uses: actions/checkout@v1
 
     - name: Retrieve node version from .nvmrc
-      run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
+      run: echo "##[set-output name=NVMRC;]$(cat package.json | grep '\"node\":' | sed 's/^ *//;s/ *$//;s/\"node\":\ \"//;s/\",//')"
       id: nvm
 
     - name: Setup node ${{ steps.nvm.outputs.NVMRC }}
@@ -201,11 +235,11 @@ jobs:
       ELECTRON_BUILDER_CACHE: $HOME/.cache/electron-builder
 
     steps:
-    ## actions/checkout@v1 retrieves project from the git branch
-    - uses: actions/checkout@v1
+    - name: Retrieves project from the git branch
+      uses: actions/checkout@v1
 
     - name: Retrieve node version from .nvmrc
-      run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
+      run: echo "##[set-output name=NVMRC;]$(cat package.json | grep '\"node\":' | sed 's/^ *//;s/ *$//;s/\"node\":\ \"//;s/\",//')"
       id: nvm
 
     - name: Setup node ${{ steps.nvm.outputs.NVMRC }}
