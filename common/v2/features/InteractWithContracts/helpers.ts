@@ -167,7 +167,3 @@ export const constructGasCallProps = (
     return {};
   }
 };
-
-export const isValidETHDomain = (domain: string) => {
-  return domain.includes('.');
-};

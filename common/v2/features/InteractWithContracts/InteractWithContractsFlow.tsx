@@ -31,7 +31,7 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
     handleAbiChanged,
     handleCustomContractNameChanged,
     updateNetworkContractOptions,
-    setGeneratedFormVisible,
+    displayGeneratedForm,
     handleInteractionFormSubmit,
     handleInteractionFormWriteSubmit,
     handleAccountSelected,
@@ -96,7 +96,7 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
         handleAbiChanged,
         handleCustomContractNameChanged,
         updateNetworkContractOptions,
-        setGeneratedFormVisible,
+        displayGeneratedForm,
         handleInteractionFormSubmit,
         handleSaveContractSubmit,
         handleInteractionFormWriteSubmit: (payload: ABIItem) =>

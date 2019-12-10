@@ -13,7 +13,8 @@ import {
   updateNetworks,
   deleteContracts,
   getResolvedENSAddress,
-  EtherscanService
+  EtherscanService,
+  getIsValidENSAddressFunction
 } from 'v2/services';
 import { AbiFunction } from 'v2/services/EthService/contracts/ABIFunction';
 import { isWeb3Wallet } from 'v2/utils/web3';
@@ -21,12 +22,7 @@ import { translateRaw } from 'v2/translations';
 
 import { customContract, CUSTOM_CONTRACT_ADDRESS } from './constants';
 import { ABIItem, InteractWithContractState } from './types';
-import {
-  makeTxConfigFromTransaction,
-  reduceInputParams,
-  constructGasCallProps,
-  isValidETHDomain
-} from './helpers';
+import { makeTxConfigFromTransaction, reduceInputParams, constructGasCallProps } from './helpers';
 
 const interactWithContractsInitialState = {
   network: getNetworkById(DEFAULT_NETWORK)!,
@@ -125,7 +121,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       abi: ''
     }));
 
-    if (isValidETHDomain(value)) {
+    if (getIsValidENSAddressFunction(state.network.chainId)(value)) {
       debouncedResolveAddressFromDomain(value);
     }
 
@@ -237,7 +233,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     handleContractSelected(customContract);
   };
 
-  const setGeneratedFormVisible = (visible: boolean) => {
+  const displayGeneratedForm = (visible: boolean) => {
     if (visible) {
       if (!state.contractAddress || !state.abi) {
         throw new Error(translateRaw('INTERACT_ERROR_NO_CONTRACT_SELECTED'));
@@ -371,7 +367,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     handleCustomContractNameChanged,
     handleSaveContractSubmit,
     updateNetworkContractOptions,
-    setGeneratedFormVisible,
+    displayGeneratedForm,
     handleInteractionFormSubmit,
     handleInteractionFormWriteSubmit,
     handleAccountSelected,

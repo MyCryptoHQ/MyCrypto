@@ -123,22 +123,15 @@ export default function GeneratedInteractionForm({
 
   const functions = getFunctionsFromABI(abi);
 
-  useEffect(() => {
-    updateGasCallProps();
-  }, [account]);
-
   const updateGasCallProps = () => {
-    if (!account || !currentFunction) {
-      return;
-    }
-
+    if (!account || !currentFunction) return;
     setGasCallProps(constructGasCallProps(contractAddress, currentFunction, account));
   };
 
+  useEffect(updateGasCallProps, [account]);
+
   const handleFunctionSelected = (selectedFunction: ABIItem) => {
-    if (!selectedFunction) {
-      return;
-    }
+    if (!selectedFunction) return;
 
     const newFunction = generateFunctionFieldsDisplayNames(selectedFunction);
     setCurrentFunction(newFunction);
@@ -158,9 +151,8 @@ export default function GeneratedInteractionForm({
   };
 
   const submitFormRead = async (submitedFunction: ABIItem) => {
-    if (!submitedFunction) {
-      return;
-    }
+    if (!submitedFunction) return;
+
     setError(undefined);
     try {
       setIsLoading(true);
@@ -175,9 +167,8 @@ export default function GeneratedInteractionForm({
   };
 
   const submitFormWrite = async (submitedFunction: ABIItem) => {
-    if (!submitedFunction) {
-      return;
-    }
+    if (!submitedFunction) return;
+
     setError(undefined);
     try {
       setIsLoading(true);

@@ -56,13 +56,9 @@ export default function GasSelector(props: Props) {
     if (isAutoGasSet) {
       estimateGas();
     }
-  }, [estimateGasCallProps]);
+  }, [estimateGasCallProps, isAutoGasSet]);
 
-  const setAutoGasSet = () => {
-    if (!isAutoGasSet) {
-      estimateGas();
-    }
-
+  const toggleIsAutoGasSet = () => {
     setIsAutoGasSet(!isAutoGasSet);
   };
 
@@ -106,7 +102,7 @@ export default function GasSelector(props: Props) {
   return (
     <Wrapper>
       <Checkbox
-        onChange={setAutoGasSet}
+        onChange={toggleIsAutoGasSet}
         checked={isAutoGasSet}
         name="autoGasSet"
         label={translateRaw('TRANS_AUTO_GAS_TOGGLE')}

@@ -18,6 +18,7 @@ const SSelect = styled(Select)`
   ${props => props.disabled && '.Select-arrow {display: none};'}
   font-size: 16px;
 
+  /* Set max-height to prevent the dropdown form overflowing the footer. */
   .Select-menu {
     max-height: 20em !important;
   }

@@ -37,10 +37,8 @@ export class ContractProvider extends Component {
       service.updateContracts(uuid, contractsData);
       this.getContracts();
     },
-    getContractsByIds: (uuids: string[]) => {
-      const newContracts = uuids.map(contractId => service.readContracts(contractId));
-      return newContracts;
-    }
+    getContractsByIds: (uuids: string[]) =>
+      uuids.map(contractId => service.readContracts(contractId))
   };
 
   public render() {

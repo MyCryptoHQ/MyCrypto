@@ -1,8 +1,13 @@
+import { NetworkId } from 'v2/types';
+
 export const ETHERSCAN_DEFAULT_URL = 'https://api.etherscan.io/api';
 
-interface ApiURLS {
-  [key: string]: string;
-}
+type ApiURLS = Partial<
+  {
+    [key in NetworkId]: string;
+  }
+>;
+
 export const ETHERSCAN_API_URLS: ApiURLS = {
   Ethereum: 'https://api.etherscan.io/api',
   Ropsten: 'https://api-ropsten.etherscan.io/api',

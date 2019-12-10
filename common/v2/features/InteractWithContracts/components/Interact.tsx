@@ -138,7 +138,7 @@ interface Props {
   handleAbiChanged(abi: string): void;
   handleCustomContractNameChanged(customContractName: string): void;
   updateNetworkContractOptions(): void;
-  setGeneratedFormVisible(visible: boolean): void;
+  displayGeneratedForm(visible: boolean): void;
   handleInteractionFormSubmit(submitedFunction: ABIItem): any;
   goToNextStep(): void;
   handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<object>;
@@ -164,7 +164,7 @@ export default function Interact(props: Props) {
     handleAbiChanged,
     handleCustomContractNameChanged,
     updateNetworkContractOptions,
-    setGeneratedFormVisible,
+    displayGeneratedForm,
     handleInteractionFormSubmit,
     account,
     customContractName,
@@ -185,7 +185,7 @@ export default function Interact(props: Props) {
   }, [network]);
 
   useEffect(() => {
-    setGeneratedFormVisible(false);
+    displayGeneratedForm(false);
     setWasContractInteracted(false);
   }, [abi]);
 
@@ -205,16 +205,16 @@ export default function Interact(props: Props) {
   const submitInteract = () => {
     setError(undefined);
     try {
-      setGeneratedFormVisible(true);
+      displayGeneratedForm(true);
       setWasContractInteracted(true);
     } catch (e) {
       setError(e.message);
     }
   };
 
-  const tryAbiParse = () => {
+  const tryAbiParse = (value: string) => {
     try {
-      return JSON.parse(abi);
+      return JSON.parse(value);
     } catch (e) {
       return [];
     }
@@ -322,7 +322,7 @@ export default function Interact(props: Props) {
       </ButtonWrapper>
       {showGeneratedForm && abi && (
         <GeneratedInteractionForm
-          abi={tryAbiParse()}
+          abi={tryAbiParse(abi)}
           handleInteractionFormSubmit={handleInteractionFormSubmit}
           account={account}
           handleAccountSelected={handleAccountSelected}
