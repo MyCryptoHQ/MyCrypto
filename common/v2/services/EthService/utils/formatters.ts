@@ -1,14 +1,6 @@
 import { toTokenBase } from './units';
 import { padLeftEven } from './padLeftEven';
 
-export function stripHexPrefix(value: string) {
-  return value.replace('0x', '');
-}
-
-export function stripHexPrefixAndLower(value: string): string {
-  return stripHexPrefix(value).toLowerCase();
-}
-
 export const buildEIP681EtherRequest = (
   recipientAddr: string,
   chainId: number,
