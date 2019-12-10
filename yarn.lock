@@ -2108,10 +2108,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/webpack-env@1.13.4":
-  version "1.13.4"
-  resolved "https://registry.yarnpkg.com/@types/webpack-env/-/webpack-env-1.13.4.tgz#ca3578299323f4fbec770bb32ed581198f0a8ed9"
-  integrity sha512-nPwZDLIb4I9OeTMrVmLlZ2bVSev36teBzsG0WWzcU4+qWVCKm3QRILA+HLzkJXfR6MWYYSbaHZpDI4wXulDbrQ==
+"@types/webpack-env@1.14.1":
+  version "1.14.1"
+  resolved "https://registry.yarnpkg.com/@types/webpack-env/-/webpack-env-1.14.1.tgz#0d8a53f308f017c53a5ddc3d07f4d6fa76b790d7"
+  integrity sha512-0Ki9jAAhKDSuLDXOIMADg54Hu60SuBTEsWaJGGy5cV+SSUQ63J2a+RrYYGrErzz39fXzTibhKrAQJAb8M7PNcA==
 
 "@types/webpack-sources@*":
   version "0.1.5"
