@@ -157,7 +157,7 @@
     "electron": "2.0.8",
     "electron-builder": "21.2.0",
     "empty": "0.10.1",
-    "enzyme": "3.3.0",
+    "enzyme": "3.10.0",
     "enzyme-adapter-react-16": "1.15.1",
     "enzyme-to-json": "3.4.3",
     "favicons-webpack-plugin": "1.0.2",
