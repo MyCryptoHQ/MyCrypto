@@ -4,7 +4,7 @@ import WalletAddressValidator from 'wallet-address-validator';
 import { Validator } from 'jsonschema';
 import BN from 'bn.js';
 
-import { dPathRegex, ETC_LEDGER, ETH_SINGULAR } from 'config/dpaths';
+import { ETC_LEDGER, ETH_SINGULAR } from 'config/dpaths';
 import { translateRaw } from 'translations';
 import { stripHexPrefix } from 'libs/formatters';
 import { isPositiveInteger } from 'utils/helpers';
@@ -199,7 +199,7 @@ export function isValidPath(dPath: string) {
     return true;
   }
 
-  return dPathRegex.test(dPath);
+  return true;
 }
 
 export const isValidValue = (value: string) =>
