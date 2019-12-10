@@ -123,7 +123,7 @@
     "@types/moment-timezone": "0.5.12",
     "@types/node-hid": "0.7.0",
     "@types/qrcode": "0.8.0",
-    "@types/qrcode.react": "0.6.3",
+    "@types/qrcode.react": "1.0.0",
     "@types/query-string": "5.1.0",
     "@types/rc-slider": "8.6.5",
     "@types/react": "16.8.7",
