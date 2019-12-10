@@ -1961,15 +1961,15 @@
     "@types/react" "*"
     "@types/react-router" "*"
 
-"@types/react-router-redux@5.0.13":
-  version "5.0.13"
-  resolved "https://registry.yarnpkg.com/@types/react-router-redux/-/react-router-redux-5.0.13.tgz#46dc040afc150ff7bbc8bb837b14ef4fa6a0b07e"
-  integrity sha512-nLKmRnGH5xRgtrJ5X2ItlDt/dIQ0veLekAJU35M91xhMTHvwt66dt5CWghcKAL56h1+33jPGJAR7RXSR/+UOeQ==
+"@types/react-router-redux@5.0.18":
+  version "5.0.18"
+  resolved "https://registry.yarnpkg.com/@types/react-router-redux/-/react-router-redux-5.0.18.tgz#5f28d5f7387fa71e33f602ccf9269e1609d47b8b"
+  integrity sha512-5SI69Virpmo+5HXWXKIzSt5hsnV7TTidL3Ddmbi+PH1CIdi40wthJwjFoqiE+gRQANur5WhjEtfyPorJ4zymHA==
   dependencies:
     "@types/history" "*"
     "@types/react" "*"
     "@types/react-router" "*"
-    redux "^3.7.2"
+    redux ">= 3.7.2"
 
 "@types/react-router@*":
   version "5.1.3"
@@ -12275,7 +12275,7 @@ redux@3.7.2, redux@^3.6.0, redux@^3.7.2:
     loose-envify "^1.1.0"
     symbol-observable "^1.0.3"
 
-redux@^4.0.0:
+"redux@>= 3.7.2", redux@^4.0.0:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.4.tgz#4ee1aeb164b63d6a1bcc57ae4aa0b6e6fa7a3796"
   integrity sha512-vKv4WdiJxOWKxK0yRoaK3Y4pxxB0ilzVx6dszU2W8wLxlb2yikRph4iV/ymtdJ6ZxpBLFbyrxklnT5yBbQSl3Q==
