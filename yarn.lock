@@ -1671,10 +1671,10 @@
   resolved "https://registry.yarnpkg.com/@types/dom-clipboard-api/-/dom-clipboard-api-1.0.1.tgz#e08b96ee9b590f487bacaafbd03944687969dae4"
   integrity sha512-tELeN5A5SeB1CMv8g+z76Ryi2x/HqcdTTAAIpLz/iB1ObkYniQ/xbn1YoDHgKX7E65w5TvJLvbiBosQ6hoR5wQ==
 
-"@types/enzyme-adapter-react-16@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@types/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.0.1.tgz#cb93338ccf6cd1b8fdda91027c4ffe56583537b5"
-  integrity sha512-XqKrLYUnZnhJMIPfMyxDSBjvpvnMTM/mtqJdZdNbOzuY2S2gHnqFD0JHiPDuy5Mxq4xU06sQPwR5e8Hm+VAXEA==
+"@types/enzyme-adapter-react-16@1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@types/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.0.5.tgz#1bf30a166f49be69eeda4b81e3f24113c8b4e9d5"
+  integrity sha512-K7HLFTkBDN5RyRmU90JuYt8OWEY2iKUn43SDWEoBOXd/PowUWjLZ3Q6qMBiQuZeFYK/TOstaZxsnI0fXoAfLpg==
   dependencies:
     "@types/enzyme" "*"
 
