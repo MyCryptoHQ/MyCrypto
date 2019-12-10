@@ -151,7 +151,7 @@
     "clean-webpack-plugin": "3.0.0",
     "concurrently": "4.1.0",
     "copy-webpack-plugin": "4.5.1",
-    "coveralls": "3.0.0",
+    "coveralls": "3.0.9",
     "cross-env": "6.0.3",
     "css-loader": "3.3.0",
     "electron": "2.0.8",
