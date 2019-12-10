@@ -27,14 +27,14 @@ export default class TokenInfoService {
       createParams(contractAddressArray)
     );
 
-try {
-  return await Promise.all(
-    queryParams.map(async (params: any) => this.service.get('', { params }))
-    ).then((res: AxiosResponse[]) => _.union(...res.map(r => r.data)));
-  } catch (e) {
-    throw e;
-  }
-};
+    try {
+      return await Promise.all(
+        queryParams.map(async (params: any) => this.service.get('', { params }))
+      ).then((res: AxiosResponse[]) => _.union(...res.map(r => r.data)));
+    } catch (e) {
+      throw e;
+    }
+  };
 }
 
 const createParams = (contractAddresses: string[]) => {
