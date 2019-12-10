@@ -121,7 +121,7 @@
     "@types/lodash": "4.14.107",
     "@types/modernizr": "3.5.3",
     "@types/moment-timezone": "0.5.12",
-    "@types/node-hid": "0.7.0",
+    "@types/node-hid": "0.7.3",
     "@types/qrcode": "0.8.0",
     "@types/qrcode.react": "1.0.0",
     "@types/query-string": "5.1.0",
