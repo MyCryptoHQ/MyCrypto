@@ -88,6 +88,7 @@
     "wallet-address-validator": "0.2.4",
     "what-input": "5.2.6",
     "whatwg-fetch": "2.0.3",
+    "ws": "7.2.0",
     "yup": "0.27.0",
     "zxcvbn": "4.4.2"
   },
@@ -202,6 +203,8 @@
     "worker-loader": "2.0.0"
   },
   "resolutions": {
+    "@types/react": "16.3.11",
+    "favicons-webpack-plugin/favicons/jimp/**/**/core-js": "3"
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config webpack_config/production.js",
