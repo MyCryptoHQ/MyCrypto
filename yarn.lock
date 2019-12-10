@@ -2037,10 +2037,10 @@
     "@types/react" "*"
     "@types/recharts-scale" "*"
 
-"@types/redux-logger@3.0.5":
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/@types/redux-logger/-/redux-logger-3.0.5.tgz#d1a02758f90845899cd304aa0912daeba2028eb6"
-  integrity sha512-9pgzzRGW8ul5+d9CXCy83OwHNcEJwY1tb8Nv3MW8LZQWfDKtildzlCXIUmaMrEmCUFfmxURV1XY0a8QIKO6HOQ==
+"@types/redux-logger@3.0.7":
+  version "3.0.7"
+  resolved "https://registry.yarnpkg.com/@types/redux-logger/-/redux-logger-3.0.7.tgz#163f6f6865c69c21d56f9356dc8d741718ec0db0"
+  integrity sha512-oV9qiCuowhVR/ehqUobWWkXJjohontbDGLV88Be/7T4bqMQ3kjXwkFNL7doIIqlbg3X2PC5WPziZ8/j/QHNQ4A==
   dependencies:
     redux "^3.6.0"
 

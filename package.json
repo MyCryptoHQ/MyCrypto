@@ -137,7 +137,7 @@
     "@types/react-slick": "0.23.4",
     "@types/react-transition-group": "2.9.0",
     "@types/recharts": "1.8.3",
-    "@types/redux-logger": "3.0.5",
+    "@types/redux-logger": "3.0.7",
     "@types/semver": "6.2.0",
     "@types/styled-components": "4.0.3",
     "@types/uuid": "3.4.6",
