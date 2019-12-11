@@ -2,7 +2,7 @@ import { useContext, useCallback } from 'react';
 import { debounce } from 'lodash';
 
 import { TUseStateReducerFactory, generateUUID, fromTxReceiptObj } from 'v2/utils';
-import { DEFAULT_NETWORK } from 'v2/config';
+import { DEFAULT_NETWORK, CREATION_ADDRESS } from 'v2/config';
 import { Contract, StoreAccount } from 'v2/types';
 import {
   getNetworkById,
@@ -70,10 +70,10 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     const contractIds = state.network.contracts;
     const networkContracts = getContractsByIds(contractIds);
 
-    const customContractOption = Object.assign(customContract, { networkId: state.network.id });
+    const customContractOption = Object.assign({}, customContract, { networkId: state.network.id });
 
     const contracts = [customContractOption, ...networkContracts].map(x =>
-      Object.assign(x, { label: x.name })
+      Object.assign({}, x, { label: x.name })
     );
 
     setState((prevState: InteractWithContractState) => ({
@@ -109,7 +109,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     [state.contracts]
   );
   const handleAddressOrDomainChanged = (value: string) => {
-    if (checkForExistingContract(value)) {
+    if (selectExistingContract(value)) {
       return;
     }
 
@@ -137,8 +137,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     }));
 
     const resolvedAddress =
-      (await getResolvedENSAddress(state.network, domain)) ||
-      '0x0000000000000000000000000000000000000000';
+      (await getResolvedENSAddress(state.network, domain)) || CREATION_ADDRESS;
 
     setState((prevState: InteractWithContractState) => ({
       ...prevState,
@@ -146,13 +145,13 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       resolvingDomain: false
     }));
 
-    const exists = checkForExistingContract(resolvedAddress);
+    const exists = selectExistingContract(resolvedAddress);
     if (!exists) {
       fetchABI(resolvedAddress);
     }
   };
 
-  const checkForExistingContract = (address: string) => {
+  const selectExistingContract = (address: string) => {
     const existingContract = state.contracts.find(c => c.address === address);
     if (existingContract) {
       handleContractSelected(existingContract);

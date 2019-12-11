@@ -48,7 +48,8 @@ import {
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
   GAS_PRICE_GWEI_UPPER_BOUND,
-  DEFAULT_ASSET_DECIMAL
+  DEFAULT_ASSET_DECIMAL,
+  CREATION_ADDRESS
 } from 'v2/config';
 import { RatesContext } from 'v2/services/RatesProvider';
 
@@ -197,8 +198,7 @@ export default function SendAssetsForm({
             }
             setIsResolvingENSName(true);
             const resolvedAddress =
-              (await getResolvedENSAddress(values.network, name)) ||
-              '0x0000000000000000000000000000000000000000';
+              (await getResolvedENSAddress(values.network, name)) || CREATION_ADDRESS;
             setIsResolvingENSName(false);
             setFieldValue('receiverAddress', { ...values.receiverAddress, value: resolvedAddress });
             setIsResolvingENSName(false);
