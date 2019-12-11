@@ -1,4 +1,4 @@
-import Tx from 'ethereumjs-tx';
+import { Transaction as Tx } from 'ethereumjs-tx';
 import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
 import { bigNumberify, formatEther, BigNumber } from 'ethers/utils';
 

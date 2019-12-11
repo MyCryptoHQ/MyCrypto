@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import classnames from 'classnames';
 
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';

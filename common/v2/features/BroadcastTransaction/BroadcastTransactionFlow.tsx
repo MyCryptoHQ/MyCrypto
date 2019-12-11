@@ -1,5 +1,5 @@
 import React, { useState, ReactType } from 'react';
-import EthTx from 'ethereumjs-tx';
+import { Transaction as EthTx } from 'ethereumjs-tx';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { ExtendedContentPanel } from 'v2/components';
