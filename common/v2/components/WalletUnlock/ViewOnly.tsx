@@ -6,7 +6,7 @@ import { translateRaw } from 'v2/translations';
 import { WalletId, FormData } from 'v2/types';
 import { AddressField, Button } from 'v2/components';
 import { WalletFactory } from 'v2/services/WalletService';
-import { getResolvedENSAddress } from 'v2/services/EthService';
+import { getResolvedENSAddress, isValidETHAddress } from 'v2/services/EthService';
 import { NetworkContext } from 'v2/services/Store';
 
 import './ViewOnly.scss';
@@ -59,7 +59,7 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
         onSubmit={fields => {
           onUnlock(fields);
         }}
-        render={({ errors, setFieldValue, touched, values }) => {
+        render={({ errors, setFieldValue, setFieldError, touched, values }) => {
           const handleSubmit = (e: React.SyntheticEvent<HTMLElement>) => {
             const wallet = values.addressObject.value;
 
@@ -80,7 +80,11 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
               (await getResolvedENSAddress(network, name)) ||
               '0x0000000000000000000000000000000000000000';
             setIsResolvingENSName(false);
-            setFieldValue('addressObject', { ...values.addressObject, value: resolvedAddress });
+            if (isValidETHAddress(resolvedAddress)) {
+              setFieldValue('addressObject', { ...values.addressObject, value: resolvedAddress });
+            } else {
+              setFieldError('addressObject', translateRaw('TO_FIELD_ERROR'));
+            }
             setIsResolvingENSName(false);
           };
           return (

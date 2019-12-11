@@ -158,6 +158,7 @@ export default function SendAssetsForm({
           errors,
           setFieldValue,
           setFieldTouched,
+          setFieldError,
           touched,
           values,
           handleChange,
@@ -200,7 +201,14 @@ export default function SendAssetsForm({
               (await getResolvedENSAddress(values.network, name)) ||
               '0x0000000000000000000000000000000000000000';
             setIsResolvingENSName(false);
-            setFieldValue('receiverAddress', { ...values.receiverAddress, value: resolvedAddress });
+            if (isValidETHAddress(resolvedAddress)) {
+              setFieldValue('receiverAddress', {
+                ...values.receiverAddress,
+                value: resolvedAddress
+              });
+            } else {
+              setFieldError('receiverAddress', translateRaw('TO_FIELD_ERROR'));
+            }
             setIsResolvingENSName(false);
           };
 
