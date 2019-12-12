@@ -64,3 +64,4 @@ export { default as EthAddress } from './EthAddress';
 export { default as EditableText } from './EditableText';
 export { default as Account } from './Account';
 export { default as GeneralStepper } from './GeneralStepper';
+export { default as WalletConnectQr } from './WalletConnectQr';
