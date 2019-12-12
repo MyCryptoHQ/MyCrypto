@@ -1759,14 +1759,6 @@
     "@types/ledgerhq__hw-transport" "*"
     "@types/node" "*"
 
-"@types/ledgerhq__hw-transport-webusb@4.70.0":
-  version "4.70.0"
-  resolved "https://registry.yarnpkg.com/@types/ledgerhq__hw-transport-webusb/-/ledgerhq__hw-transport-webusb-4.70.0.tgz#8e03b1f8bec52a8291ef41b00470b07f28285788"
-  integrity sha512-7YY+q85pwZfja9foc0RxmcgMwsxbBo9u/Qe9BFg0uKVcF6TZFcBT99+AHWj+40EmXL3BxzK3QB+aoSNed+v8Gg==
-  dependencies:
-    "@types/ledgerhq__hw-transport" "*"
-    "@types/node" "*"
-
 "@types/ledgerhq__hw-transport@*", "@types/ledgerhq__hw-transport@4.21.2":
   version "4.21.2"
   resolved "https://registry.yarnpkg.com/@types/ledgerhq__hw-transport/-/ledgerhq__hw-transport-4.21.2.tgz#92eaea9e4669df2c8ec5292b694097d1629b05c1"
@@ -1800,13 +1792,6 @@
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/@types/modernizr/-/modernizr-3.5.3.tgz#8ef99e6252191c1d88647809109dc29884ba6d7a"
   integrity sha512-jhMOZSS0UGYTS9pqvt6q3wtT3uvOSve5piTEmTMx3zzTuBLvSIMxSIBIc3d5lajVD5h4xc41AMZD2M5orN3PxA==
-
-"@types/moment-timezone@0.5.12":
-  version "0.5.12"
-  resolved "https://registry.yarnpkg.com/@types/moment-timezone/-/moment-timezone-0.5.12.tgz#0fb680c03db194fe8ff4551eaeb1eec8d3d80e9f"
-  integrity sha512-hnHH2+Efg2vExr/dSz+IX860nSiyk9Sk4pJF2EmS11lRpMcNXeB4KBW5xcgw2QPsb9amTXdsVNEe5IoJXiT0uw==
-  dependencies:
-    moment ">=2.14.0"
 
 "@types/node-hid@0.7.0":
   version "0.7.0"
@@ -1842,13 +1827,6 @@
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.2.tgz#690a1475b84f2a884fd07cd797c00f5f31356ea8"
   integrity sha512-ce5d3q03Ex0sy4R14722Rmt6MT07Ua+k4FwDfdcToYJcMKNtRVQvJ6JCAPdAmAnbRb6CsX6aYb9m96NGod9uTw==
-
-"@types/qrcode.react@0.6.3":
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/@types/qrcode.react/-/qrcode.react-0.6.3.tgz#c0950902987b12bce342802adcf6d5ce7ad07294"
-  integrity sha512-LjaTX61WlfxL6W2wMiPQ3zBW82xYMkzHMvcVJjCm+KCc46s0t44V4D/YH4zpJto/vInU2NYxmegJGBDCrEesmw==
-  dependencies:
-    "@types/react" "*"
 
 "@types/qrcode@0.8.0":
   version "0.8.0"
@@ -1921,16 +1899,6 @@
     "@types/react" "*"
     "@types/react-router" "*"
 
-"@types/react-router-redux@5.0.13":
-  version "5.0.13"
-  resolved "https://registry.yarnpkg.com/@types/react-router-redux/-/react-router-redux-5.0.13.tgz#46dc040afc150ff7bbc8bb837b14ef4fa6a0b07e"
-  integrity sha512-nLKmRnGH5xRgtrJ5X2ItlDt/dIQ0veLekAJU35M91xhMTHvwt66dt5CWghcKAL56h1+33jPGJAR7RXSR/+UOeQ==
-  dependencies:
-    "@types/history" "*"
-    "@types/react" "*"
-    "@types/react-router" "*"
-    redux "^3.7.2"
-
 "@types/react-router@*":
   version "5.1.3"
   resolved "https://registry.yarnpkg.com/@types/react-router/-/react-router-5.1.3.tgz#7c7ca717399af64d8733d8cb338dd43641b96f2d"
@@ -1989,13 +1957,6 @@
     "@types/react" "*"
     "@types/recharts-scale" "*"
 
-"@types/redux-logger@3.0.5":
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/@types/redux-logger/-/redux-logger-3.0.5.tgz#d1a02758f90845899cd304aa0912daeba2028eb6"
-  integrity sha512-9pgzzRGW8ul5+d9CXCy83OwHNcEJwY1tb8Nv3MW8LZQWfDKtildzlCXIUmaMrEmCUFfmxURV1XY0a8QIKO6HOQ==
-  dependencies:
-    redux "^3.6.0"
-
 "@types/semver@5.5.0":
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/@types/semver/-/semver-5.5.0.tgz#146c2a29ee7d3bae4bf2fcb274636e264c813c45"
@@ -2040,13 +2001,6 @@
   integrity sha512-SudIN9TRJ+v8g5pTG8RRCqfqTMNqgWCKKd3vtynhGzkIIjxaicNAMuY5TRadJ6tzDu3Dotf3ngaMILtmOdmWEQ==
   dependencies:
     source-map "^0.6.1"
-
-"@types/uuid@3.4.3":
-  version "3.4.3"
-  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-3.4.3.tgz#121ace265f5569ce40f4f6d0ff78a338c732a754"
-  integrity sha512-5fRLCYhLtDb3hMWqQyH10qtF+Ud2JnNCXTCZ+9ktNdCcgslcuXkDTkFcJNk++MT29yDntDnlF1+jD+uVGumsbw==
-  dependencies:
-    "@types/node" "*"
 
 "@types/webpack-env@1.13.4":
   version "1.13.4"
@@ -10899,11 +10853,6 @@ moment@2.22.1:
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.1.tgz#529a2e9bf973f259c9643d237fda84de3a26e8ad"
   integrity sha512-shJkRTSebXvsVqk56I+lkb2latjBs8I+pc2TzWc545y2iFnSjm7Wg0QMh+ZWcdSLQyGEau5jI8ocnmkyTgr9YQ==
 
-moment@>=2.14.0:
-  version "2.24.0"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
-  integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
-
 moo@^0.4.3:
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/moo/-/moo-0.4.3.tgz#3f847a26f31cf625a956a87f2b10fbc013bfd10e"
@@ -13377,22 +13326,12 @@ reduce-function-call@^1.0.1:
   dependencies:
     balanced-match "^1.0.0"
 
-redux-devtools-extension@2.13.2:
-  version "2.13.2"
-  resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.2.tgz#e0f9a8e8dfca7c17be92c7124958a3b94eb2911d"
-  integrity sha1-4Pmo6N/KfBe+kscSSVijuU6ykR0=
-
 redux-saga@0.16.0:
   version "0.16.0"
   resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-0.16.0.tgz#0a231db0a1489301dd980f6f2f88d8ced418f724"
   integrity sha1-CiMdsKFIkwHdmA9vL4jYztQY9yQ=
 
-redux-test-utils@0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/redux-test-utils/-/redux-test-utils-0.2.2.tgz#593213f30173c5908f72315f08b705e1606094fe"
-  integrity sha512-+YsUHpzZJ7G85wYgllmGLJ75opIlWrCuKThaVTsHW5xLOrzaLE4abQ3AbYcHkx/vFOReG2D8XUwMfGnFKH8hGw==
-
-redux@3.7.2, redux@^3.6.0, redux@^3.7.2:
+redux@3.7.2, redux@^3.6.0:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/redux/-/redux-3.7.2.tgz#06b73123215901d25d065be342eb026bc1c8537b"
   integrity sha512-pNqnf9q1hI5HHZRBkj3bAngGZW/JMCmexDlOxw4XagXY2o1327nHH54LoTjiPJ0gizoqPDRqWyX/00g0hD6w+A==
