@@ -6,7 +6,7 @@ import { translateRaw } from 'v2/translations';
 import { WalletId, FormData } from 'v2/types';
 import { AddressField, Button } from 'v2/components';
 import { WalletFactory } from 'v2/services/WalletService';
-import { getResolvedENSAddress, isValidETHAddress } from 'v2/services/EthService';
+import { getResolvedENSAddress, isValidETHAddress, isValidENSName } from 'v2/services/EthService';
 import { NetworkContext } from 'v2/services/Store';
 
 import './ViewOnly.scss';
@@ -34,9 +34,11 @@ const WalletService = WalletFactory(WalletId.VIEW_ONLY);
 
 const ViewOnlyFormSchema = Yup.object().shape({
   addressObject: Yup.object({
-    value: Yup.string()
-      .max(42, translateRaw('TO_FIELD_ERROR'))
-      .min(42, translateRaw('TO_FIELD_ERROR'))
+    value: Yup.string().test(
+      'check-eth-address',
+      translateRaw('TO_FIELD_ERROR'),
+      value => isValidETHAddress(value) || isValidENSName(value)
+    )
   }).required(translateRaw('REQUIRED'))
 });
 
@@ -62,8 +64,12 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
         render={({ errors, setFieldValue, setFieldError, touched, values }) => {
           const handleSubmit = (e: React.SyntheticEvent<HTMLElement>) => {
             const wallet = values.addressObject.value;
+            const isValid =
+              Object.values(errors).filter(
+                error => error !== undefined && error.value !== undefined
+              ).length === 0;
 
-            if (wallet) {
+            if (wallet && isValid) {
               e.preventDefault();
               e.stopPropagation();
               onUnlock(WalletService.init(wallet));
