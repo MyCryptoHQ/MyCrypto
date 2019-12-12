@@ -40,6 +40,7 @@ export const WALLET_STEPS: SigningComponents = {
   [WalletId.KEYSTORE_FILE]: SignTransactionKeystore,
   [WalletId.PARITY_SIGNER]: SignTransactionParity,
   [WalletId.MNEMONIC_PHRASE]: SignTransactionMnemonic,
+  [WalletId.WALLETCONNECT]: null,
   [WalletId.VIEW_ONLY]: null
 };
 

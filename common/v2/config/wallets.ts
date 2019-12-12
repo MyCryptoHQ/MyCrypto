@@ -13,6 +13,7 @@ import TrustIcon from 'common/assets/images/wallets/trust-3.svg';
 import Web3DefaultIcon from 'assets/images/wallets/web3-default.svg';
 import FrameIcon from 'assets/images/wallets/frame.svg';
 import CoinbaseWalletIcon from 'common/assets/images/wallets/coinbase.svg';
+import WalletConnectSVG from 'assets/images/wallets/walletconnect.svg';
 
 export interface IWalletConfig {
   id: WalletId;
@@ -199,6 +200,17 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     type: WalletType.MISC,
     lid: 'VIEW_ADDR',
     description: 'ADD_VIEW_ADDRESS_DESC'
+  },
+  [WalletId.WALLETCONNECT]: {
+    id: WalletId.WALLETCONNECT,
+    name: 'WalletConnect',
+    isDeterministic: false,
+    isSecure: true,
+    isDesktopOnly: false,
+    type: WalletType.WALLETCONNECT,
+    lid: 'ʇɔǝuuoɔʇǝʃʃɐʍ',
+    icon: WalletConnectSVG,
+    description: 'ADD_WALLETCONNECTDESC'
   }
 };
 
