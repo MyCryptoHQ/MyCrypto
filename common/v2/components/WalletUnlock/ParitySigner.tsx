@@ -55,7 +55,9 @@ export function ParitySignerDecrypt({ formData, onUnlock }: OwnProps & StateProp
       <div className="ParitySigner">
         {/* <div className="ParitySigner-title">{translate('SIGNER_SELECT_WALLET')}</div> */}
         <section className="ParitySigner-fields">
-          <section className="Panel-description">{translate('SIGNER_SELECT_WALLET_QR')}</section>
+          <section className="Panel-description">
+            {translate('SIGNER_SELECT_WALLET_QR', { $walletId: translateRaw('X_PARITYSIGNER') })}
+          </section>
           <section className="ParitySigner-fields-field">
             <ParityQrSigner scan={true} onScan={unlockAddress} />
           </section>

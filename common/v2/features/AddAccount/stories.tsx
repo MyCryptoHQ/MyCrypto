@@ -12,7 +12,8 @@ import {
   TrezorDecrypt,
   Web3ProviderDecrypt,
   Web3ProviderInstall,
-  ViewOnlyDecrypt
+  ViewOnlyDecrypt,
+  WalletConnectProviderDecrypt
 } from 'v2/components';
 
 // This const is used to hideFromWalletList
@@ -40,6 +41,10 @@ export const getStories = (): IStory[] => [
     name: WalletId.PARITY_SIGNER,
     steps: [NetworkSelectPanel, ParitySignerDecrypt, SaveAndRedirect],
     hideFromWalletList: true
+  },
+  {
+    name: WalletId.WALLETCONNECT,
+    steps: [NetworkSelectPanel, WalletConnectProviderDecrypt, SaveAndRedirect]
   },
   {
     name: WalletId.KEYSTORE_FILE,
