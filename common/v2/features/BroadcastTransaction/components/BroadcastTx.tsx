@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { toBuffer } from 'ethereumjs-util';
 import { Button, Identicon } from '@mycrypto/ui';
-import EthTx from 'ethereumjs-tx';
+import { Transaction as EthTx } from 'ethereumjs-tx';
 import styled from 'styled-components';
 
 import translate, { translateRaw } from 'v2/translations';
@@ -153,7 +153,7 @@ class BroadcastTx extends Component<Props> {
         </InputWrapper>
         {stateTransaction && (
           <React.Fragment>
-            {this.state.transaction && !this.state.transaction._chainId && (
+            {this.state.transaction && !this.state.transaction.getChainId() && (
               <NetworkSelectWrapper>
                 <NetworkSelectDropdown network={network} onChange={selectNetwork} />
                 {this.state.networkSelectError && (

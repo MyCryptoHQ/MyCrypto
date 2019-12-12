@@ -1,5 +1,5 @@
 import BN from 'bn.js';
-import EthTx, { TxObj } from 'ethereumjs-tx';
+import { Transaction as EthTx, TxData } from 'ethereumjs-tx';
 import { addHexPrefix } from 'ethereumjs-util';
 import mapValues from 'lodash/mapValues';
 
@@ -55,7 +55,7 @@ export class SafeTWallet extends HardwareWallet {
 
           // TODO: Explain what's going on here? Add tests? Adapted from:
           // https://github.com/kvhnuke/etherwallet/blob/v3.10.2.6/app/scripts/uiFuncs.js#L24
-          const txToSerialize: TxObj = {
+          const txToSerialize: TxData = {
             ...strTx,
             v: addHexPrefix(new BN(result.v).toString(16)),
             r: addHexPrefix(result.r.toString()),

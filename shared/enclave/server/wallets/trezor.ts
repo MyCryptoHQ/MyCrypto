@@ -2,7 +2,7 @@ import BN from 'bn.js';
 import { DeviceList, Session } from 'trezor.js';
 import mapValues from 'lodash/mapValues';
 import { addHexPrefix } from 'ethereumjs-util';
-import EthTx from 'ethereumjs-tx';
+import { Transaction as EthTx } from 'ethereumjs-tx';
 import { WalletLib } from 'shared/enclave/types';
 import { padLeftEven } from 'v2/services/EthService/utils/padLeftEven';
 import { stripHexPrefixAndLower } from 'v2/services/EthService/utils/stripHexPrefix';

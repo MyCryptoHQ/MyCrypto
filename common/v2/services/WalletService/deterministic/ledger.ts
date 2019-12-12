@@ -1,4 +1,4 @@
-import EthTx, { TxObj } from 'ethereumjs-tx';
+import { Transaction as EthTx, TxData } from 'ethereumjs-tx';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
 import LedgerEth from '@ledgerhq/hw-app-eth';
@@ -46,7 +46,7 @@ export class LedgerWallet extends HardwareWallet {
 
   public async signRawTransaction(t: EthTx): Promise<Buffer> {
     const txFields = getTransactionFields(t);
-    t.v = toBuffer(t._chainId);
+    t.v = toBuffer(t.getChainId());
     t.r = toBuffer(0);
     t.s = toBuffer(0);
 
@@ -63,12 +63,12 @@ export class LedgerWallet extends HardwareWallet {
       const result = await ethApp.signTransaction(this.getPath(), t.serialize().toString('hex'));
 
       let v = result.v;
-      if (t._chainId > 0) {
+      if (t.getChainId() > 0) {
         // EIP155 support. check/recalc signature v value.
         // Please see https://github.com/LedgerHQ/blue-app-eth/commit/8260268b0214810872dabd154b476f5bb859aac0
         // currently, ledger returns only 1-byte truncated signatur_v
         const rv = parseInt(v, 16);
-        let cv = t._chainId * 2 + 35; // calculated signature v, without signature bit.
+        let cv = t.getChainId() * 2 + 35; // calculated signature v, without signature bit.
         /* tslint:disable no-bitwise */
         if (rv !== cv && (rv & cv) !== rv) {
           // (rv !== cv) : for v is truncated byte case
@@ -79,7 +79,7 @@ export class LedgerWallet extends HardwareWallet {
         v = cv.toString(16);
       }
 
-      const txToSerialize: TxObj = {
+      const txToSerialize: TxData = {
         ...txFields,
         v: addHexPrefix(v),
         r: addHexPrefix(result.r),

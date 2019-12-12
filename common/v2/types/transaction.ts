@@ -6,8 +6,8 @@ import { Wei, Address } from 'v2/services/EthService';
 export interface ITransaction {
   to: Address;
   from?: Address;
-  value?: Wei | null;
-  data?: Buffer | null;
+  value?: Wei | undefined;
+  data?: Buffer | undefined;
   gasLimit: Wei;
   gasPrice: Wei;
   nonce: BN;

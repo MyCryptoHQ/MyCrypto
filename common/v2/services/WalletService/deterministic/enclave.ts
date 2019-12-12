@@ -1,4 +1,4 @@
-import EthTx from 'ethereumjs-tx';
+import { Transaction as EthTx } from 'ethereumjs-tx';
 
 import EnclaveAPI, { WalletTypes } from 'shared/enclave/client';
 import { translateRaw } from 'v2/translations';
