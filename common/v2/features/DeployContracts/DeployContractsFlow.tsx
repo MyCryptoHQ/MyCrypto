@@ -1,16 +1,24 @@
 import React, { useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
-import { ExtendedContentPanel } from 'v2/components';
+import { ExtendedContentPanel, Tabs } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
 import { useStateReducer } from 'v2/utils';
-import { ITxReceipt, ISignedTx } from 'v2/types';
+import { ITxReceipt, ISignedTx, Tab } from 'v2/types';
+import { BREAK_POINTS } from 'v2/theme';
 
 import { deployContractsInitialState, DeployContractsFactory } from './stateFactory';
 import { Deploy, DeployConfirm, DeployReceipt } from './components';
 import { DeployContractsState } from './types';
 import { WALLET_STEPS } from './helpers';
+
+const { SCREEN_XS } = BREAK_POINTS;
+
+interface ExtendedTab extends Tab {
+  path: string;
+}
 
 interface TStep {
   title: string;
@@ -18,6 +26,24 @@ interface TStep {
   props: any;
   actions: any;
 }
+
+const Heading = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  align-items: center;
+
+  @media (max-width: ${SCREEN_XS}) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+`;
+
+const TabsWrapper = styled.div`
+  margin-top: 8px;
+  width: fit-content;
+`;
 
 const DeployContractsFlow = (props: RouteComponentProps<{}>) => {
   const [step, setStep] = useState(0);
@@ -50,6 +76,26 @@ const DeployContractsFlow = (props: RouteComponentProps<{}>) => {
       setStep(step - 1);
     }
   };
+
+  const tabClickRedirect = (url: string): void => {
+    const { history } = props;
+    history.push(url);
+  };
+
+  const tabs: ExtendedTab[] = [
+    {
+      title: translateRaw('CONTRACTS_INTERACT'),
+      path: ROUTE_PATHS.INTERACT_WITH_CONTRACTS.path,
+      onClick: () => tabClickRedirect(ROUTE_PATHS.INTERACT_WITH_CONTRACTS.path)
+    },
+    {
+      title: translateRaw('CONTRACTS_DEPLOY'),
+      path: ROUTE_PATHS.DEPLOY_CONTRACTS.path,
+      onClick: () => tabClickRedirect(ROUTE_PATHS.DEPLOY_CONTRACTS.path)
+    }
+  ];
+
+  const currentRoute = tabs.find(tab => tab.path === location.pathname);
 
   const steps: TStep[] = [
     {
@@ -105,7 +151,17 @@ const DeployContractsFlow = (props: RouteComponentProps<{}>) => {
       onBack={goToPreviousStep}
       stepper={{ current: step + 1, total: steps.length }}
       width="750px"
-      heading={stepObject.title}
+      heading={
+        <Heading>
+          {stepObject.title}
+          <TabsWrapper>
+            <Tabs
+              tabs={tabs}
+              selectedIndex={tabs.findIndex(tab => tab.path === currentRoute!.path)}
+            />
+          </TabsWrapper>
+        </Heading>
+      }
     >
       <StepComponent {...stepProps} {...stepActions} />
     </ExtendedContentPanel>
