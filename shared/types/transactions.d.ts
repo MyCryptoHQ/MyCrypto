@@ -1,15 +1,5 @@
 import { Wei } from 'libs/units';
 
-export interface SavedTransaction {
-  hash: string;
-  to: string;
-  from: string;
-  nonce: number;
-  value: string;
-  chainId: number;
-  time: number;
-}
-
 export interface TransactionData {
   hash: string;
   nonce: number;
@@ -35,11 +25,4 @@ export interface TransactionReceipt {
   logs: string[];
   logsBloom: string;
   status: number;
-}
-
-export interface TransactionState {
-  data: TransactionData | null;
-  receipt: TransactionReceipt | null;
-  error: string | null;
-  isLoading: boolean;
 }
