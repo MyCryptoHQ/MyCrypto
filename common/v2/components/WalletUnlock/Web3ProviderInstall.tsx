@@ -6,7 +6,7 @@ import { DOWNLOAD_MYCRYPTO_LINK } from 'v2/config';
 
 import TrustWalletWEBP from 'common/assets/images/wallets/trust-3.webp';
 import CoinbaseWalletJPG from 'common/assets/images/wallets/coinbase.jpg';
-import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
+import MetamaskSVG from 'common/assets/images/wallets/metamask.svg';
 import AppStoreBadgeIMG from 'assets/images/mobile/app-store-badge.png';
 import GooglePlayBadgeIMG from 'assets/images/mobile/google-play-badge.png';
 import { NewTabLink } from 'v2/components';

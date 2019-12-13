@@ -3,7 +3,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const IgnoreNotFoundExportPlugin = require('ignore-not-found-export-webpack-plugin');
 const config = require('./config');
 
 const IS_DEVELOPMENT = process.env.NODE_ENV !== 'production';
@@ -180,9 +179,7 @@ module.exports = {
         '**/*.{ts,tsx}',
         '!node_modules/**/*'
       ]
-    }),
-
-    new IgnoreNotFoundExportPlugin()
+    })
   ],
 
   stats: {

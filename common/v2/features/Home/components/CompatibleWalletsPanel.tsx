@@ -10,7 +10,7 @@ import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { WalletId } from 'v2/types';
 import './SliderImports.scss';
 
-import metamaskIcon from 'common/assets/images/wallets/metamask-2.svg';
+import metamaskIcon from 'common/assets/images/wallets/metamask.svg';
 import trustIcon from 'common/assets/images/wallets/trust-2.svg';
 import ledgerIcon from 'common/assets/images/wallets/ledger.svg';
 import trezorIcon from 'common/assets/images/wallets/trezor.svg';
