@@ -29,7 +29,7 @@ function SendAssets({ history }: RouteComponentProps<{}>) {
 
   // Due to MetaMask deprecating eth_sign method,
   // it has different step order, where sign and send are one panel
-  const web3Steps: IPath[] = [
+  const alternativeSteps: IPath[] = [
     { label: 'Send Assets', component: SendAssetsForm, action: handleFormSubmit },
     {
       label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
@@ -58,9 +58,17 @@ function SendAssets({ history }: RouteComponentProps<{}>) {
       action: goToDashoard
     }
   ];
+  const alternativeStepsWallets = [
+    WalletId.WEB3,
+    WalletId.CIPHER,
+    WalletId.FRAME,
+    WalletId.WALLETCONNECT,
+    WalletId.METAMASK,
+    WalletId.TRUST
+  ];
 
   const getStep = (walletId: WalletId, stepIndex: number) => {
-    const path = walletId === WalletId.METAMASK ? web3Steps : defaultSteps;
+    const path = alternativeStepsWallets.includes(walletId) ? alternativeSteps : defaultSteps;
     const { label, component, action } = path[stepIndex]; // tslint:disable-line
     return { currentPath: path, label, Step: component, stepAction: action };
   };

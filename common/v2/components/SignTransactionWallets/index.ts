@@ -6,4 +6,5 @@ export { default as SignTransactionParity } from './Parity';
 export { default as SignTransactionPrivateKey } from './PrivateKey';
 export { default as SignTransactionSafeT } from './SafeTmini';
 export { default as SignTransactionTrezor } from './Trezor';
+export { default as SignTransactionWalletConnect } from './WalletConnect';
 export { default as HardwareSignTransaction } from './Hardware';

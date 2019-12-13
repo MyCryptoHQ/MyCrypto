@@ -1,8 +1,8 @@
 import WalletConnect from '@walletconnect/browser';
-import { ITxObject } from 'v2/types';
 import { WalletConnectSingleton } from '../walletconnect/walletConnectSingleton';
+import { ITxData } from '@walletconnect/types';
 
-export default class WalletConnectItem {
+export default class WalletConnectService {
   private walletConnector: WalletConnect | undefined;
   private isInitializing = false;
 
@@ -17,7 +17,7 @@ export default class WalletConnectItem {
 
   public getAllAccounts() {
     // ToDo: Swap this to be the relevant account, not all accounts
-    return this.walletConnector!.accounts;
+    return this.walletConnector ? this.walletConnector.accounts : undefined;
   }
 
   public getWalletConnector() {
@@ -28,11 +28,12 @@ export default class WalletConnectItem {
     return this.walletConnector!.uri || undefined;
   }
 
-  public signRawTransaction(tx: ITxObject) {
-    return this.walletConnector!.signTransaction({
-      from: this.walletConnector!.accounts[0],
-      ...tx
-    });
+  public signTransaction(tx: ITxData) {
+    return this.walletConnector!.signTransaction(tx);
+  }
+
+  public sendTransaction(tx: ITxData) {
+    return this.walletConnector!.sendTransaction(tx);
   }
 
   public async signMessage() {
