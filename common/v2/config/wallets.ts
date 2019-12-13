@@ -208,7 +208,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isSecure: true,
     isDesktopOnly: false,
     type: WalletType.WALLETCONNECT,
-    lid: 'ʇɔǝuuoɔʇǝʃʃɐʍ',
+    lid: 'X_WALLETCONNECT',
     icon: WalletConnectSVG,
     description: 'ADD_WALLETCONNECTDESC'
   }
