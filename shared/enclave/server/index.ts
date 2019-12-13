@@ -6,7 +6,9 @@ import handlers from './handlers';
 
 export function registerServer(app: App) {
   // Register protocol scheme
-  protocol.registerStandardSchemes([PROTOCOL_NAME]);
+  protocol.registerSchemesAsPrivileged([
+    { scheme: PROTOCOL_NAME, privileges: { standard: true, secure: true } }
+  ]);
 
   app.on('ready', () => {
     // Register custom protocol behavior

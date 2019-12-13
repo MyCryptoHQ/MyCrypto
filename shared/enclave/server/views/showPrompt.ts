@@ -1,4 +1,4 @@
-import { BrowserWindow, ipcMain, IpcMessageEvent } from 'electron';
+import { BrowserWindow, ipcMain, IpcMainEvent, IpcMessageEvent } from 'electron';
 
 export default function showPrompt(template: string, event: string): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -24,19 +24,23 @@ export default function showPrompt(template: string, event: string): Promise<str
       reject(new Error('ENCLAVE_TREZOR_CANCELED'));
     });
 
-    ipcMain.once(event, (_: IpcMessageEvent, value: string) => {
-      try {
-        resolve(value);
-        hasResolved = true;
-        window.close();
-      } catch (e) {
-        /**
-         * @desc The window.close call sometimes fails
-         *  if the window has already been destroyed.
-         */
-        console.error(e);
+    ipcMain.once(
+      '',
+      // tslint:disable-next-line:variable-name
+      (_event: IpcMainEvent, _: IpcMessageEvent, value: string) => {
+        try {
+          resolve(value);
+          hasResolved = true;
+          window.close();
+        } catch (e) {
+          /**
+           * @desc The window.close call sometimes fails
+           *  if the window has already been destroyed.
+           */
+          console.error(e);
+        }
       }
-    });
+    );
 
     window.loadURL(`data:text/html;charset=UTF-8,${encodeURIComponent(html)}`);
     window.show();
