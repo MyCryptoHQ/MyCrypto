@@ -179,7 +179,11 @@ const PageVisitsAnalytics = withRouter(
       public componentDidMount() {
         this.props.history.listen(() => {
           if (previousURL !== window.location.href) {
-            AnalyticsService.instance.trackPageVisit(window.location.href, this.props.network.id);
+            AnalyticsService.instance.trackPageVisit(
+              window.location.href,
+              window.location.hash,
+              this.props.network.id
+            );
             previousURL = window.location.href;
           }
         });
