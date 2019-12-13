@@ -30,6 +30,7 @@
     "X_KEEPKEY": "KeepKey",
     "UNLOCK_WALLET": "Connect and Unlock",
     "SIGNER_SELECT_WALLET": "Connect and Unlock with $walletId",
+    "SIGNER_SELECT_WALLETCONNECT": "Connect and Unlock your $walletId App",
     "SIGNER_SELECT_WALLET_QR": "Open your $walletId app on your phone and scan the QR code.",
     "SIGNER_SELECT_WALLET_LIST": "Use a recent account",
     "X_SAFE_T": "Safe-T Mini ",
@@ -40,7 +41,7 @@
     "X_SENDER": "Sender",
     "X_RECIPIENT": "Recipient",
     "X_AMOUNT": "Amount",
-    "X_WALLETCONNECT": "Wallet Connect ",
+    "X_WALLETCONNECT": "WalletConnect",
     "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address ",
     "ADD_PARITY_DESC": "Connect & sign via your Parity Signer mobile app ",
     "ADD_PARITY_2": "Download the app ",
@@ -143,7 +144,6 @@
     "CONFIRM_TX_FEE": "Transaction Fee",
     "CONFIRM_TX_FROM": "From",
     "CONFIRM_TX_TO": "To",
-    "CONFIRM_TX_FEE": "Transaction Fee",
     "TOTAL": "Total",
     "INSECURE_WALLET_TYPE_TITLE": "$wallet_type wallets are disabled online",
     "INSECURE_WALLET_TYPE_DESC": "Entering your $wallet_type on any website is dangerous. If MyCrypto.com was compromised, or you accidentally visited a phishing website, you could lose your funds. Because of that, we have disabled the use of $wallet_type wallets through the website. In order to access your account, please download MyCrypto and run it locally.",
@@ -551,6 +551,9 @@
     "CONTRACT_BYTECODE": "Byte Code ",
     "NAV_DEPLOYCONTRACT": "Deploy Contract ",
     "CONFIRM_TX_SENDING": "You'll Send",
-    "GENERIC_ERROR": "Something went wrong! Please [email us]($link) so we can help you and fix this."
+    "GENERIC_ERROR": "Something went wrong! Please [email us]($link) so we can help you and fix this.",
+    "SIGN_TX_WALLETCONNECT_FAILED_ACCOUNT": "Please switch the account in your $walletName app to $address in order to proceed.",
+    "SIGN_TX_WALLETCONNECT_FAILED_NETWORK": "Please switch the network in your $walletName app to $networkName in order to proceed.",
+    "SIGN_TX_WALLETCONNECT_REJECTED": "Transaction has been rejected or there was an error. If you rejected the tx, please approve it. Otherwise, please restart the Send Assets flow."
   }
 }

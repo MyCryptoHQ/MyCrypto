@@ -27,7 +27,7 @@ function SendAssets() {
 
   // Due to MetaMask deprecating eth_sign method,
   // it has different step order, where sign and send are one panel
-  const web3Steps: IStepperPath[] = [
+  const alternativeSteps: IStepperPath[] = [
     {
       label: 'Send Assets',
       component: SendAssetsForm,
@@ -80,11 +80,18 @@ function SendAssets() {
       props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(txFactoryState)
     }
   ];
+  const alternativeStepsWallets = [
+    WalletId.WEB3,
+    WalletId.FRAME,
+    WalletId.WALLETCONNECT,
+    WalletId.METAMASK,
+    WalletId.TRUST
+  ];
 
   const { senderAccount } = txFactoryState && txFactoryState.txConfig;
 
   const walletId = senderAccount ? senderAccount.wallet : undefined;
-  const steps = walletId === WalletId.METAMASK ? web3Steps : defaultSteps;
+  const steps = alternativeStepsWallets.includes(walletId) ? alternativeSteps : defaultSteps;
 
   return (
     <GeneralStepper
