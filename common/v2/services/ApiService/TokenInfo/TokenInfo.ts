@@ -38,6 +38,7 @@ export default class TokenInfoService {
 }
 
 const createParams = (contractAddresses: string[]) => {
+  // URLSearchParams needs `url-search-params-polyfill` dependency
   const params = new URLSearchParams();
   contractAddresses.forEach(address => params.append('contractAddress', address));
   return params;
