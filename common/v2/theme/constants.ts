@@ -16,6 +16,7 @@ export const COLORS = {
   BRIGHT_SKY_BLUE: '#1eb8e7',
   SILVER: '#f7f7f7',
   DARK_SILVER: '#ccc',
+  LIGHT_GREY: '#ededed',
   GREY: '#7b8695',
   DARK_GREY: '#e5ecf3',
   PASTEL_RED: '#ef4747',

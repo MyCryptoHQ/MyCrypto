@@ -8,6 +8,7 @@ import { AddressField, Button } from 'v2/components';
 import { WalletFactory } from 'v2/services/WalletService';
 import { getResolvedENSAddress } from 'v2/services/EthService';
 import { NetworkContext } from 'v2/services/Store';
+import { CREATION_ADDRESS } from 'v2/config';
 
 import './ViewOnly.scss';
 
@@ -77,8 +78,7 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
             }
             setIsResolvingENSName(true);
             const resolvedAddress =
-              (await getResolvedENSAddress(network, name)) ||
-              '0x0000000000000000000000000000000000000000';
+              (await getResolvedENSAddress(network, name)) || CREATION_ADDRESS;
             setIsResolvingENSName(false);
             setFieldValue('addressObject', { ...values.addressObject, value: resolvedAddress });
             setIsResolvingENSName(false);

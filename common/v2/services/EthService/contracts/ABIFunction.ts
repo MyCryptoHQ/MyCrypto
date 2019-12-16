@@ -89,7 +89,9 @@ export class AbiFunction {
 
   private parsePostDecodedValue = (type: string, value: any, chainId: number) => {
     const valueMapping: ITypeMapping = {
-      address: (val: any) => toChecksumAddressByChainId(val.toString(16), chainId)
+      address: (val: any) => toChecksumAddressByChainId(val.toString(16), chainId),
+      'address[]': (val: any) =>
+        val.map((x: any) => toChecksumAddressByChainId(x.toString(16), chainId))
     };
 
     const mapppedType = valueMapping[type];

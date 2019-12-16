@@ -1,5 +1,4 @@
 import { translateRaw } from 'v2/translations';
-
 import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
 import { DexService, ProviderHandler } from 'v2/services';
 import { StoreAccount } from 'v2/types';
@@ -254,11 +253,13 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
   };
 
   const handleTxSigned = async (signResponse: any, after: () => void) => {
-    const { account } = state;
+    const { account, txConfig } = state;
 
     if (isWeb3Wallet(account.wallet)) {
       const txReceipt =
-        signResponse && signResponse.hash ? signResponse : { hash: signResponse, asset: {} };
+        signResponse && signResponse.hash
+          ? signResponse
+          : { hash: signResponse, asset: txConfig.asset };
       setState((prevState: SwapState) => ({
         ...prevState,
         txReceipt

@@ -18,7 +18,7 @@
     &.stacked &-column + &-data {
       // yay vertical rhymth!
       padding-top: 0px;
-    }     
+    }
     &-column {
       flex: 1;
       &:first-child {
@@ -32,7 +32,7 @@
       width: 100%;
       display: inline-block;
       overflow-wrap: break-word;
-    }   
+    }
   }
   &-detailButton {
     width: 100%;

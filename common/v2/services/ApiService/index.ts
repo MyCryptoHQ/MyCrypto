@@ -6,4 +6,5 @@ export { AssetMapService } from './AssetMap';
 export { GithubService } from './Github';
 export { TokenInfoService } from './TokenInfo';
 export { DexService } from './Dex';
+export { EtherscanService } from './Etherscan';
 export * from './constants';

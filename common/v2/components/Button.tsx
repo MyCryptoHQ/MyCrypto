@@ -3,6 +3,7 @@ import { Button } from '@mycrypto/ui';
 
 interface ButtonProps {
   fullWidth?: boolean;
+  disabled?: boolean;
 }
 
 const StyledButton = styled(Button)<ButtonProps>`
@@ -12,6 +13,10 @@ const StyledButton = styled(Button)<ButtonProps>`
       width: 100%;
       margin-top: 1rem;
     `}
+
+  :disabled {
+    opacity: 0.4;
+  }
 `;
 
 export default StyledButton;

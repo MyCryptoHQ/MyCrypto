@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
-import { StoreAccount, WalletId, ITxConfig } from 'v2/types';
+import { StoreAccount, WalletId, ITxConfig, SigningComponents } from 'v2/types';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 import {
   inputGasPriceToHex,
@@ -24,7 +24,7 @@ import {
 } from 'v2/components';
 import { weiToFloat } from 'v2/utils';
 
-import { ISwapAsset, SigningComponents } from './types';
+import { ISwapAsset } from './types';
 
 export const WALLET_STEPS: SigningComponents = {
   [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,

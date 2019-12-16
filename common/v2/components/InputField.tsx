@@ -26,6 +26,8 @@ interface CustomInputProps {
   inputError?: string;
   showEye?: boolean;
   height?: string;
+  maxHeight?: string;
+  resizable?: boolean;
 }
 
 const CustomInput = styled.input<CustomInputProps>`
@@ -63,8 +65,9 @@ const CustomTextArea = styled.textarea<CustomInputProps>`
     opacity: 1;
   }
   border-color: ${props => (props.inputError ? PASTEL_RED : '')};
-  resize: none;
-  ${props => props.height && `height: ${props.height}`}
+  resize:  ${props => (props.resizable ? 'default' : 'none')};
+  ${props => props.height && `height: ${props.height}`};
+  ${props => props.maxHeight && `max-height: ${props.maxHeight}`};
 `;
 
 const InputWrapper = styled.div`
@@ -100,16 +103,19 @@ interface Props {
   name?: string;
   type?: string;
   label?: string | JSX.Element;
-  value: string;
+  value: string | undefined;
   inputError?: string | undefined;
   showEye?: boolean;
   textarea?: boolean;
   placeholder?: string;
   height?: string;
+  maxHeight?: string;
+  resizableTextArea?: boolean;
+  disabled?: boolean;
   isLoading?: boolean;
-  onChange(event: any): void;
+  onChange?(event: any): void;
   onBlur?(event: any): void;
-  validate?(): void | undefined;
+  validate?(): Promise<void> | void | undefined;
 }
 
 export class InputField extends Component<Props> {
@@ -133,7 +139,10 @@ export class InputField extends Component<Props> {
       textarea,
       placeholder,
       height,
-      isLoading
+      resizableTextArea,
+      disabled,
+      isLoading,
+      maxHeight
     } = this.props;
     return (
       <MainWrapper>
@@ -149,6 +158,9 @@ export class InputField extends Component<Props> {
               onKeyUp={this.handleKeyUp}
               placeholder={placeholder ? placeholder : ''}
               height={height}
+              resizable={resizableTextArea}
+              disabled={disabled}
+              maxHeight={maxHeight}
             />
           ) : (
             <CustomInput
@@ -162,7 +174,7 @@ export class InputField extends Component<Props> {
               type={this.state.showPassword ? 'text' : type ? type : 'text'}
               placeholder={placeholder ? placeholder : ''}
               height={height}
-              disabled={isLoading}
+              disabled={isLoading || disabled}
             />
           )}
 

@@ -6,9 +6,11 @@ import * as service from './Contract';
 export interface ProviderState {
   contracts: ExtendedContract[];
   createContract(contractsData: ExtendedContract): void;
+  createContractWithId(contractsData: ExtendedContract, id: string): void;
   readContracts(uuid: string): Contract;
   deleteContracts(uuid: string): void;
   updateContracts(uuid: string, contractsData: ExtendedContract): void;
+  getContractsByIds(uuids: string[]): Contract[];
 }
 
 export const ContractContext = createContext({} as ProviderState);
@@ -18,6 +20,10 @@ export class ContractProvider extends Component {
     contracts: service.readAllContracts() || [],
     createContract: (contractsData: ExtendedContract) => {
       service.createContract(contractsData);
+      this.getContracts();
+    },
+    createContractWithId: (contractsData: ExtendedContract, id: string) => {
+      service.createContractWithId(contractsData, id);
       this.getContracts();
     },
     readContracts: (uuid: string) => {
@@ -30,7 +36,9 @@ export class ContractProvider extends Component {
     updateContracts: (uuid: string, contractsData: ExtendedContract) => {
       service.updateContracts(uuid, contractsData);
       this.getContracts();
-    }
+    },
+    getContractsByIds: (uuids: string[]) =>
+      uuids.map(contractId => service.readContracts(contractId))
   };
 
   public render() {

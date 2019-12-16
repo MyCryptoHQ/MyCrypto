@@ -9,7 +9,8 @@ import {
   GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
-  GAS_PRICE_GWEI_UPPER_BOUND
+  GAS_PRICE_GWEI_UPPER_BOUND,
+  CREATION_ADDRESS
 } from 'v2/config';
 import { JsonRPCResponse } from 'v2/types';
 import { stripHexPrefix } from './utils';
@@ -44,7 +45,7 @@ function getIsValidAddressFunction(chainId: number) {
 }
 
 function isValidETHLikeAddress(address: string, extraChecks?: () => boolean): boolean {
-  if (address === '0x0000000000000000000000000000000000000000') {
+  if (address === CREATION_ADDRESS) {
     return false;
   }
   if (address.substring(0, 2) !== '0x') {
@@ -67,7 +68,7 @@ export function isValidETHAddress(address: string): boolean {
 }
 
 export const isCreationAddress = (address: string): boolean =>
-  address === '0x0' || address === '0x0000000000000000000000000000000000000000';
+  address === '0x0' || address === CREATION_ADDRESS;
 
 export function isValidBTCAddress(address: string): boolean {
   return WalletAddressValidator.validate(address, 'BTC');
