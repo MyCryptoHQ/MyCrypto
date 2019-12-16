@@ -163,10 +163,12 @@ module.exports = {
         creator: config.twitter.creator
       },
       metaCsp: IS_DEVELOPMENT
-        ? ''
+      ? ''
+      /* TODO: 'unsafe-eval' should be deleted, but right now it prevents Electron from having a blank screen */
+      /* TODO: 'unsafe-inline' should be deleted */
         : `
         default-src 'none';
-        script-src 'self';
+        script-src 'self' 'unsafe-eval';
         worker-src 'self' blob:;
         child-src 'self';
         style-src 'self' 'unsafe-inline';
