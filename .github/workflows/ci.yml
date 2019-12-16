@@ -103,8 +103,8 @@ jobs:
     strategy:
       matrix:
         os: [
-          macOS-latest,
-          ubuntu-latest
+          macOS-latest
+          # ubuntu-latest
         ]
     env:
       ELECTRON_CACHE: $HOME/.cache/electron
@@ -227,8 +227,8 @@ jobs:
       matrix:
         os: [
           ## Uncomment to run linux build on macOS
-          # macOS-latest,
-          ubuntu-latest
+          macOS-latest
+          # ubuntu-latest
         ]
     env:
       ELECTRON_CACHE: $HOME/.cache/electron
