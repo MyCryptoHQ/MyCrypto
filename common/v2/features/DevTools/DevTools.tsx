@@ -84,6 +84,9 @@ const renderAccountForm = (addressBook: ExtendedAddressBook[]) => ({
   );
 };
 
+const SLink = styled(Link)`
+  font-weight: 600;
+`;
 const DBTools = () => {
   const { resetAppDb, addSeedData, removeSeedData } = useContext(DataContext);
   return (
@@ -92,9 +95,9 @@ const DBTools = () => {
       <p style={{ fontWeight: 600 }}>DB Tools</p>
       <div>
         You can choose to
-        <Link onClick={() => resetAppDb()}> Reset</Link> the database to it's default values. or you
-        can <Link onClick={() => addSeedData()}>add seed accounts</Link> to your existing DB, or
-        revert the process by <Link onClick={() => removeSeedData()}>removing</Link> the dev
+        <SLink onClick={() => resetAppDb()}> Reset</SLink> the database to it's default values. or
+        you can <SLink onClick={() => addSeedData()}>add seed accounts</SLink> to your existing DB,
+        or revert the process by <SLink onClick={() => removeSeedData()}>removing</SLink> the dev
         accounts.
       </div>
     </div>
