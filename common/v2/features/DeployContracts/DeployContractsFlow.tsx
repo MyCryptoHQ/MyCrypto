@@ -58,6 +58,7 @@ const DeployContractsFlow = (props: RouteComponentProps<{}>) => {
   } = useStateReducer(DeployContractsFactory, deployContractsInitialState);
 
   const { account }: DeployContractsState = deployContractsState;
+  const { history, location } = props;
 
   const goToFirstStep = () => {
     setStep(0);
@@ -69,7 +70,6 @@ const DeployContractsFlow = (props: RouteComponentProps<{}>) => {
   };
 
   const goToPreviousStep = () => {
-    const { history } = props;
     if (step === 0) {
       history.push(ROUTE_PATHS.DASHBOARD.path);
     } else {
@@ -78,7 +78,6 @@ const DeployContractsFlow = (props: RouteComponentProps<{}>) => {
   };
 
   const tabClickRedirect = (url: string): void => {
-    const { history } = props;
     history.push(url);
   };
 

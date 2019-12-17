@@ -54,11 +54,7 @@ const ButtonWrapper = styled.div`
   justify-content: left;
 `;
 
-const ErrorWrapper = styled.div`
-  margin-bottom: 12px;
-`;
-
-const AccountDropdownWrapper = styled.div`
+const MarginWrapper = styled.div`
   margin-bottom: 12px;
 `;
 
@@ -110,9 +106,7 @@ export default function Deploy(props: Props) {
   };
 
   const updateGasCallProps = (acc: StoreAccount, byteCodeVal: string) => {
-    if (!acc) {
-      return;
-    }
+    if (!acc) return;
 
     setGasCallProps(constructGasCallProps(byteCodeVal, acc));
   };
@@ -174,7 +168,7 @@ export default function Deploy(props: Props) {
       </FieldWrapper>
 
       <CustomLabel>{translateRaw('ACCOUNT')}</CustomLabel>
-      <AccountDropdownWrapper>
+      <MarginWrapper>
         <AccountDropdown
           name="account"
           value={account}
@@ -195,12 +189,12 @@ export default function Deploy(props: Props) {
             estimateGasCallProps={gasCallProps}
           />
         )}
-      </AccountDropdownWrapper>
+      </MarginWrapper>
 
       {error && (
-        <ErrorWrapper>
+        <MarginWrapper>
           <InlineErrorMsg>{error}</InlineErrorMsg>
-        </ErrorWrapper>
+        </MarginWrapper>
       )}
 
       <ButtonWrapper>
