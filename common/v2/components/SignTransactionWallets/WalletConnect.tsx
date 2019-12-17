@@ -36,8 +36,6 @@ export function SignTransactionWalletConnect({
   const [isCorrectNetwork, setIsCorrectNetwork] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [detectedAddress, setDetectedAddress] = useState('');
-  //const [promptSignedTransaction] = useState(false);
-  //const [signedTransaction, setSignedTransaction] = useState('');
   const [signingError, setSigningError] = useState('');
   const [walletSigningState, setWalletSigningState] = useState(WalletSigningState.UNKNOWN);
 
@@ -51,12 +49,10 @@ export function SignTransactionWalletConnect({
       currentWalletConnectAddress.toLowerCase() === senderAccount.address.toLowerCase()
     );
     setIsCorrectNetwork(currentWalletConnectChainId === rawTransaction.chainId);
-    // console.log('detected: ', currentWalletConnectAddress, currentWalletConnectChainId)
-    // console.log('compared to: ', senderAccount.address, rawTransaction.chainId)
   };
 
   const promptSignTransaction = async () => {
-    if (!isConnected) return;
+    if (!isConnected || !isCorrectNetwork || !isCorrectAddress) return;
     WalletConnectService.sendTransaction({ from: detectedAddress, ...rawTransaction })
       .then(txHash => {
         onSuccess(txHash);
@@ -69,6 +65,7 @@ export function SignTransactionWalletConnect({
   // Used to prompt for signature
   useEffect(() => {
     if (!isCorrectAddress || !isCorrectNetwork || !isConnected) {
+      setSigningError('');
       return;
     }
     setWalletSigningState(WalletSigningState.READY);
@@ -83,6 +80,16 @@ export function SignTransactionWalletConnect({
     }, 2000);
     return () => clearInterval(walletSigner);
   });
+
+  // Used to retrigger sign request
+  useEffect(() => {
+    if (signingError === '') return;
+    const retriggerTimer = setTimeout(() => {
+      setSigningError('');
+    }, 4000);
+
+    return () => clearTimeout(retriggerTimer);
+  }, [signingError]);
 
   return (
     <div className="WalletConnectPanel">

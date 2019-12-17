@@ -137,7 +137,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
             ...state.txConfig,
             hash: payload,
             to: state.txConfig.receiverAddress,
-            from: state.txConfig.senderAccount.address as string
+            from: state.txConfig.senderAccount.address
           }
         : fromTxReceiptObj(payload);
     addNewTransactionToAccount(
