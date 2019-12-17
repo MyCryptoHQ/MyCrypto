@@ -46,7 +46,6 @@ export default function TransactionReceipt({
   const [displayTxReceipt, setDisplayTxReceipt] = useState(txReceipt as ITxReceipt);
   const [blockNumber, setBlockNumber] = useState(0);
   const [timestamp, setTimestamp] = useState(0);
-
   useEffect(() => {
     const provider = new ProviderHandler(displayTxReceipt.network || txConfig.network);
     if (blockNumber === 0 && displayTxReceipt.hash) {
@@ -103,6 +102,7 @@ export default function TransactionReceipt({
   const assetAmount = displayTxReceipt.amount || txConfig.amount;
   const assetTicker = 'asset' in displayTxReceipt ? displayTxReceipt.asset.ticker : 'ETH';
   const assetForRateFetch = 'asset' in displayTxReceipt ? displayTxReceipt.asset : undefined;
+
   return (
     <div className="TransactionReceipt">
       <div className="TransactionReceipt-row">
