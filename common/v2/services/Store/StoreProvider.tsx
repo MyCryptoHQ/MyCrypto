@@ -1,5 +1,4 @@
 import React, { useState, useContext, useMemo, createContext, useEffect } from 'react';
-import * as R from 'ramda';
 
 import {
   Account,
@@ -51,6 +50,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     addNewTransactionToAccount,
     getAccountByAddressAndNetworkName,
     updateAccountAssets,
+    updateAccountsBalances,
     deleteAccount
   } = useContext(AccountContext);
   const { assets } = useContext(AssetContext);
@@ -72,12 +72,6 @@ export const StoreProvider: React.FC = ({ children }) => {
 
   const [isUnlockVIP, setIsUnlockVerified] = useState(false);
 
-  const updateAccounts = (toUpdate: StoreAccount[]) => {
-    const set = R.unionWith(R.eqBy(R.prop('uuid')), toUpdate, accounts).filter(Boolean);
-    // Create and call updateAccountBalance from AccountContext
-    console.debug('Update accounts balance here', toUpdate, set);
-  };
-
   // Naive polling to get the Balances of baseAsset and tokens for each account.
   useInterval(
     () => {
@@ -91,7 +85,7 @@ export const StoreProvider: React.FC = ({ children }) => {
           // Avoid the state change if the balances are identical.
           if (isArrayEqual(currentAccounts, accountsWithBalances.filter(Boolean))) return;
           if (isMounted) {
-            updateAccounts(accountsWithBalances);
+            updateAccountsBalances(accountsWithBalances);
           }
           return currentAccounts
             .filter(account => account.networkId === 'Ethereum')
