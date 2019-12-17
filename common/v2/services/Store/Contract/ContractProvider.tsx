@@ -7,7 +7,6 @@ export interface ProviderState {
   contracts: ExtendedContract[];
   createContract(contractsData: ExtendedContract): void;
   createContractWithId(contractsData: ExtendedContract, id: string): void;
-  readContracts(uuid: string): ExtendedContract;
   deleteContracts(uuid: string): void;
   updateContracts(uuid: string, contractsData: ExtendedContract): void;
   getContractsByIds(uuids: string[]): ExtendedContract[];
@@ -22,22 +21,17 @@ export class ContractProvider extends Component {
       this.model.create(contractsData);
     },
     createContractWithId: (contractsData: ExtendedContract, id: string) => {
-      service.createContractWithId(contractsData, id);
-      this.getContracts();
+      this.model.createContractWithId(contractsData, id);
     },
-    readContracts: (uuid: string) => {
-      return service.readContracts(uuid);
-    },
+
     deleteContracts: (uuid: string) => {
-      service.deleteContracts(uuid);
-      this.getContracts();
+      this.model.delete(uuid);
     },
     updateContracts: (uuid: string, contractsData: ExtendedContract) => {
-      service.updateContracts(uuid, contractsData);
-      this.getContracts();
+      this.model.update(uuid, contractsData);
     },
     getContractsByIds: (uuids: string[]) =>
-      uuids.map(contractId => service.readContracts(contractId))
+      uuids.map(contractId => this.state.contracts.find(c => c.uuid === contractId)!)
   };
 
   private model = this.context.createActions(LSKeys.CONTRACTS);

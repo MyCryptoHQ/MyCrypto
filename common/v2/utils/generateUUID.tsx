@@ -23,3 +23,5 @@ export const generateAssetUUID = (chainId: string | number, address?: string): T
   address
     ? (getUuid(`${chainId}-${toChecksumAddress(address)}`) as TTicker)
     : (getUuid(chainId.toString()) as TTicker);
+
+export const generateContractUUID = (abi: string) => getUuid(abi) as TUuid;

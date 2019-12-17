@@ -42,21 +42,25 @@ export const DataProvider: React.FC = ({ children }) => {
     db, // Initial state
     marshallState // method to run on initial state
   );
-  const resetAppDb = (newDb = defaultSchema) => {
-    resetDb(newDb); // Reset the persistence layer
-    dispatch({
-      type: ActionT.RESET,
-      payload: { data: marshallState(newDb) } as ActionPayload<DataStore>
-    }); // Reset the Context
-  };
+
+  const resetAppDb = useCallback(
+    (newDb = defaultSchema) => {
+      resetDb(newDb); // Reset the persistence layer
+      dispatch({
+        type: ActionT.RESET,
+        payload: { data: marshallState(newDb) } as ActionPayload<DataStore>
+      }); // Reset the Context
+    },
+    [defaultSchema]
+  );
 
   /*
    * Manage sync between appState an db
    */
-  const syncDb = () => {
+  const syncDb = useCallback(() => {
     console.debug('Updating LocalStorage');
     setDb(deMarshallState(appState));
-  };
+  }, [appState]);
   // By default we sync no more than once a minute
   useThrottleFn(syncDb, 60000, [appState]);
   // In any case we sync before the tab is closed

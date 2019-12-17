@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { generateUUID, generateAssetUUID } from 'v2/utils';
+import { generateUUID, generateAssetUUID, generateContractUUID } from 'v2/utils';
 import { Fiats, DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { NODES_CONFIG, NETWORKS_CONFIG } from '../data';
 import {
@@ -54,7 +54,7 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: SeedData) => {
 const addContracts = add(LSKeys.CONTRACTS)(
   (networks: Record<NetworkId, NetworkLegacy>, store: LocalStorage) => {
     const formatContract = (id: NetworkId) => (c: ContractLegacy): ExtendedContract => ({
-      uuid: generateUUID(),
+      uuid: generateContractUUID(c.abi),
       name: c.name,
       address: c.address,
       abi: c.abi,

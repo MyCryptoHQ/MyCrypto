@@ -92,9 +92,10 @@ const DBTools = () => {
       <p style={{ fontWeight: 600 }}>DB Tools</p>
       <div>
         You can choose to
-        <Link onClick={resetAppDb}> Reset</Link> the database to it's default values. or you can{' '}
-        <Link onClick={addSeedData}>add seed accounts</Link> to your existing DB, or revert the
-        process by <Link onClick={removeSeedData}>removing</Link> the dev accounts.
+        <Link onClick={() => resetAppDb()}> Reset</Link> the database to it's default values. or you
+        can <Link onClick={() => addSeedData()}>add seed accounts</Link> to your existing DB, or
+        revert the process by <Link onClick={() => removeSeedData()}>removing</Link> the dev
+        accounts.
       </div>
     </div>
   );
