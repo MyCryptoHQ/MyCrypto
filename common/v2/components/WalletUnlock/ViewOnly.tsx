@@ -62,12 +62,12 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
           onUnlock(fields);
         }}
         render={({ errors, setFieldValue, setFieldError, touched, values }) => {
+          const isValid =
+            Object.values(errors).filter(error => error !== undefined && error.value !== undefined)
+              .length === 0;
+
           const handleSubmit = (e: React.SyntheticEvent<HTMLElement>) => {
             const wallet = values.addressObject.value;
-            const isValid =
-              Object.values(errors).filter(
-                error => error !== undefined && error.value !== undefined
-              ).length === 0;
 
             if (wallet && isValid) {
               e.preventDefault();
@@ -104,6 +104,7 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
                     touched={touched}
                     network={network}
                     isLoading={isResolvingENSName}
+                    isError={!isValid}
                     placeholder="Enter an Address or Contact"
                   />
                 </section>

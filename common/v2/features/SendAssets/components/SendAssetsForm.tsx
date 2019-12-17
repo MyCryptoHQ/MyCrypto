@@ -259,6 +259,9 @@ export default function SendAssetsForm({
           };
 
           const validAccounts = accounts.filter(account => account.wallet !== WalletId.VIEW_ONLY);
+          const isValidAddress =
+            !errors.receiverAddress ||
+            Object.values(errors.receiverAddress).filter(e => e !== undefined).length === 0;
 
           return (
             <Form className="SendAssetsForm">
@@ -336,6 +339,7 @@ export default function SendAssetsForm({
                   handleGasEstimate={handleGasEstimate}
                   network={values.network}
                   isLoading={isResolvingENSName}
+                  isError={!isValidAddress}
                   placeholder="Enter an Address or Contact"
                 />
               </fieldset>
