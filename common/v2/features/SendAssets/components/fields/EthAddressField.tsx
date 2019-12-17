@@ -26,6 +26,7 @@ interface Props {
   placeholder?: string;
   network?: Network;
   isLoading: boolean;
+  isError: boolean;
   handleGasEstimate(): Promise<void>;
   handleENSResolve?(name: string): Promise<void>;
 }
@@ -41,6 +42,7 @@ function ETHAddressField({
   network,
   placeholder = 'ETH Address or ENS Name',
   isLoading,
+  isError,
   handleENSResolve,
   handleGasEstimate
 }: Props) {
@@ -100,6 +102,7 @@ function ETHAddressField({
               rawAddress={form.values.receiverAddress.value}
               chainId={network ? network.chainId : 1}
               isLoading={isLoading}
+              isError={isError}
             />
             {error && touched && touched.receiverAddress ? (
               <InlineErrorMsg className="SendAssetsForm-errors">{error}</InlineErrorMsg>

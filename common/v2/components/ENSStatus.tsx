@@ -6,10 +6,11 @@ import { Spinner } from './Spinner';
 
 export const ENSStatus: React.SFC<{
   isLoading: boolean;
+  isError: boolean;
   ensName: string;
   rawAddress: string;
   chainId: number;
-}> = ({ isLoading, ensName, rawAddress, chainId }) => {
+}> = ({ isLoading, isError, ensName, rawAddress, chainId }) => {
   const isValidENS = getIsValidENSAddressFunction(chainId);
   const isENS = isValidENS(ensName);
   const isResolvedENS = !isValidENS(rawAddress);
@@ -29,6 +30,8 @@ export const ENSStatus: React.SFC<{
       </React.Fragment>
     );
   } else {
-    return isENS ? <React.Fragment>{`${resolverText}: ${rawAddress}`}</React.Fragment> : null;
+    return isENS && !isError ? (
+      <React.Fragment>{`${resolverText}: ${rawAddress}`}</React.Fragment>
+    ) : null;
   }
 };

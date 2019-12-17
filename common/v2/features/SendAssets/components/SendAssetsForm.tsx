@@ -40,7 +40,8 @@ import {
   gasStringsToMaxGasBN,
   convertedToBaseUnit,
   baseToConvertedUnit,
-  isValidPositiveNumber
+  isValidPositiveNumber,
+  isValidENSName
 } from 'v2/services/EthService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 import {
@@ -121,7 +122,13 @@ const SendAssetsSchema = Yup.object().shape({
     .min(0, translateRaw('ERROR_0'))
     .required(translateRaw('REQUIRED')),
   account: Yup.object().required(translateRaw('REQUIRED')),
-  receiverAddress: Yup.object().required(translateRaw('REQUIRED')),
+  receiverAddress: Yup.object({
+    value: Yup.string().test(
+      'check-eth-address',
+      translateRaw('TO_FIELD_ERROR'),
+      value => isValidETHAddress(value) || isValidENSName(value)
+    )
+  }).required(translateRaw('REQUIRED')),
   gasLimitField: Yup.number()
     .min(GAS_LIMIT_LOWER_BOUND, translateRaw('ERROR_8'))
     .max(GAS_LIMIT_UPPER_BOUND, translateRaw('ERROR_8'))
@@ -159,6 +166,7 @@ export default function SendAssetsForm({
           errors,
           setFieldValue,
           setFieldTouched,
+          setFieldError,
           touched,
           values,
           handleChange,
@@ -200,7 +208,14 @@ export default function SendAssetsForm({
             const resolvedAddress =
               (await getResolvedENSAddress(values.network, name)) || CREATION_ADDRESS;
             setIsResolvingENSName(false);
-            setFieldValue('receiverAddress', { ...values.receiverAddress, value: resolvedAddress });
+            if (isValidETHAddress(resolvedAddress)) {
+              setFieldValue('receiverAddress', {
+                ...values.receiverAddress,
+                value: resolvedAddress
+              });
+            } else {
+              setFieldError('receiverAddress', translateRaw('TO_FIELD_ERROR'));
+            }
             setIsResolvingENSName(false);
           };
 
@@ -244,6 +259,9 @@ export default function SendAssetsForm({
           };
 
           const validAccounts = accounts.filter(account => account.wallet !== WalletId.VIEW_ONLY);
+          const isValidAddress =
+            !errors.receiverAddress ||
+            Object.values(errors.receiverAddress).filter(e => e !== undefined).length === 0;
 
           return (
             <Form className="SendAssetsForm">
@@ -316,11 +334,12 @@ export default function SendAssetsForm({
                 <EthAddressField
                   fieldName="receiverAddress.display"
                   handleENSResolve={handleENSResolve}
-                  error={errors && errors.receiverAddress && errors.receiverAddress.display}
+                  error={errors && errors.receiverAddress && errors.receiverAddress.value}
                   touched={touched}
                   handleGasEstimate={handleGasEstimate}
                   network={values.network}
                   isLoading={isResolvingENSName}
+                  isError={!isValidAddress}
                   placeholder="Enter an Address or Contact"
                 />
               </fieldset>
@@ -528,7 +547,10 @@ export default function SendAssetsForm({
               <Button
                 type="submit"
                 onClick={() => {
-                  submitForm();
+                  const isValid = Object.values(errors).filter(e => e !== undefined).length === 0;
+                  if (isValid) {
+                    submitForm();
+                  }
                 }}
                 disabled={isEstimatingGasLimit || isResolvingENSName || isEstimatingNonce}
                 className="SendAssetsForm-next"

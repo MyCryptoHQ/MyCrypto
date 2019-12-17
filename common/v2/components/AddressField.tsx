@@ -24,6 +24,7 @@ interface Props {
   placeholder?: string;
   network?: Network;
   isLoading: boolean;
+  isError: boolean;
   handleENSResolve?(name: string): Promise<void>;
 }
 
@@ -34,6 +35,7 @@ function ETHAddressField({
   network,
   placeholder = 'ETH Address or ENS Name',
   isLoading,
+  isError,
   handleENSResolve
 }: Props) {
   const validateEthAddress = (value: any) => {
@@ -89,6 +91,7 @@ function ETHAddressField({
               rawAddress={form.values.addressObject.value}
               chainId={network ? network.chainId : 1}
               isLoading={isLoading}
+              isError={isError}
             />
             {error && touched && touched.addressObject ? (
               <InlineErrorMsg className="ViewOnlyForm-errors">{error}</InlineErrorMsg>
