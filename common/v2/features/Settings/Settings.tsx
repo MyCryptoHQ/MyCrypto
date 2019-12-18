@@ -7,7 +7,7 @@ import { IS_MOBILE } from 'v2/utils';
 import { BREAK_POINTS, MIN_CONTENT_PADDING } from 'v2/theme';
 import { AddressBookContext, SettingsContext, StoreContext } from 'v2/services/Store';
 import { AccountList, FlippablePanel, TabsNav } from 'v2/components';
-import { AddressBookPanel, AddToAddressBook, GeneralSettings } from './components';
+import { AddressBookPanel, AddToAddressBook, GeneralSettings, DangerZone } from './components';
 
 import settingsIcon from 'common/assets/images/icn-settings.svg';
 
@@ -79,7 +79,12 @@ function renderAddressPanel() {
 
 function renderGeneralSettingsPanel() {
   const { updateSettings, settings } = useContext(SettingsContext);
-  return <GeneralSettings updateGlobalSettings={updateSettings} globalSettings={settings} />;
+  return (
+    <>
+      <GeneralSettings updateGlobalSettings={updateSettings} globalSettings={settings} />
+      <DangerZone />
+    </>
+  );
 }
 
 interface TabOptions {
