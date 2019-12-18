@@ -70,11 +70,11 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}> & IDataContex
   };
 
   public decryptWithPassword = async (password: string): Promise<boolean> => {
-    const { destroyEncryptedCache, getEncryptedCache } = this.props;
+    const { destroyEncryptedCache, encryptedDb } = this.props;
     try {
       const passwordHash = SHA256(password).toString();
       // Decrypt the data and store it to the MyCryptoCache
-      const decryptedData = await AES.decrypt(getEncryptedCache(), passwordHash).toString(
+      const decryptedData = await AES.decrypt(encryptedDb, passwordHash).toString(
         CryptoJS.enc.Utf8
       );
 
@@ -95,7 +95,7 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}> & IDataContex
 
   public componentDidMount() {
     //Determine if screen is locked and set "locked" state accordingly
-    const { createActions, getEncryptedCache } = this.props;
+    const { createActions, encryptedDb } = this.props;
     const ts = createActions((null as unknown) as LSKeys); // we don't need a named model
     this.model = {
       import: ts.importStorage,
@@ -103,7 +103,7 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}> & IDataContex
       destroy: ts.destroyStorage
     };
 
-    if (getEncryptedCache()) {
+    if (encryptedDb) {
       this.lockScreen();
     }
     this.trackInactivity();
@@ -210,7 +210,4 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}> & IDataContex
   }
 }
 
-export default R.pipe(
-  withRouter,
-  withContext(DataContext)
-)(ScreenLockProvider);
+export default R.pipe(withRouter, withContext(DataContext))(ScreenLockProvider);

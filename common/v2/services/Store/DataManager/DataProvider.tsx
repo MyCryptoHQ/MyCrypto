@@ -1,10 +1,9 @@
 import React, { createContext, Dispatch, useReducer, useCallback } from 'react';
 
 import { DataStore, LSKeys } from 'v2/types';
-import { useThrottleFn, useEvent } from 'v2/vendor';
+import { useThrottleFn, useLocalStorage, useEvent } from 'v2/vendor';
 import { addDevSeedToSchema, removeSeedDataFromSchema } from 'v2/database';
 import { ENCRYPTED_STORAGE_KEY } from './constants';
-import { StorageService } from './LocalStorage';
 import { appDataReducer, ActionV, ActionT, ActionPayload } from './reducer';
 import { ActionFactory } from './actions';
 import { deMarshallState, marshallState } from './utils';
@@ -18,15 +17,13 @@ export interface DataCacheManager extends DataStore {
 }
 
 interface EncryptedStorage {
-  getEncryptedCache(): string;
+  encryptedDb: any;
   setEncryptedCache(ls: string): void;
   destroyEncryptedCache(): void;
   setUnlockPassword(pwd: string): void;
   getUnlockPassword(): string;
 }
 export type IDataContext = DataCacheManager & EncryptedStorage;
-
-const encyrptedStorage = new StorageService(ENCRYPTED_STORAGE_KEY);
 
 export const DataContext = createContext({} as IDataContext);
 
@@ -77,17 +74,18 @@ export const DataProvider: React.FC = ({ children }) => {
     resetAppDb(removeSeedDataFromSchema(db));
   }, []);
 
-  // Helpers to handle encrypted LS during screen lock
-  const getEncryptedCache = (): string => encyrptedStorage.getEntry();
-  const setEncryptedCache = (ls: string) => encyrptedStorage.setEntry({ data: ls });
-  const destroyEncryptedCache = () => encyrptedStorage.clearEntry();
-  const setUnlockPassword = (pwd: string) => {
-    const data = encyrptedStorage.getEntry();
-    encyrptedStorage.setEntry({ ...data, password: pwd });
+  /*
+   *  Handle db encryption on ScreenLock
+   */
+  const [encryptedDb, setEncryptedDb] = useLocalStorage(ENCRYPTED_STORAGE_KEY);
+  const setEncryptedCache = (data: string) => setEncryptedDb({ ...encryptedDb, data });
+  const destroyEncryptedCache = () => {
+    const { data, ...rest } = encryptedDb;
+    setEncryptedDb({ ...rest }); // Keep the password field
   };
-  const getUnlockPassword = () => {
-    const { password } = encyrptedStorage.getEntry();
-    return password;
+  const getUnlockPassword = () => encryptedDb.password;
+  const setUnlockPassword = (password: string) => {
+    setEncryptedDb({ ...encryptedDb, password });
   };
 
   const stateContext: IDataContext = {
@@ -96,7 +94,7 @@ export const DataProvider: React.FC = ({ children }) => {
     resetAppDb,
     removeSeedData,
     addSeedData,
-    getEncryptedCache,
+    encryptedDb,
     setEncryptedCache,
     destroyEncryptedCache,
     setUnlockPassword,
