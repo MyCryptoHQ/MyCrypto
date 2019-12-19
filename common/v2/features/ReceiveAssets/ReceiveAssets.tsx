@@ -163,7 +163,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
         }: FormikProps<typeof initialValues>) => (
           <Form>
             <Fieldset>
-              <SLabel htmlFor="recipientAddress">Recipient Address</SLabel>
+              <SLabel htmlFor="recipientAddress">{translate('X_RECIPIENT')}</SLabel>
               <Field
                 name="recipientAddress"
                 component={({ field, form }: FieldProps) => (
