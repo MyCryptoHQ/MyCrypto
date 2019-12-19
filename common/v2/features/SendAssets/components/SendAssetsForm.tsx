@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { formatEther, bigNumberify } from 'ethers/utils';
 import BN from 'bn.js';
 import styled from 'styled-components';
+import questionSVG from 'assets/images/icn-question.svg';
 
 import translate, { translateRaw } from 'v2/translations';
 import {
@@ -488,7 +489,7 @@ export default function SendAssetsForm({
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              (?)
+                              <img src={questionSVG} alt="Help" />{' '}
                             </a>
                           </div>
                           <div
