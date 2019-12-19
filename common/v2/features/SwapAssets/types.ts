@@ -14,11 +14,11 @@ export interface SwapState {
   assets: ISwapAsset[];
   fromAsset: ISwapAsset;
   fromAmount: string;
-  fromAmountError: string;
+  fromAmountError: string | JSX.Element;
   isCalculatingFromAmount: boolean;
   toAsset: ISwapAsset;
   toAmount: string;
-  toAmountError: string;
+  toAmountError: string | JSX.Element;
   isCalculatingToAmount: boolean;
   lastChangedAmount: LAST_CHANGED_AMOUNT;
   swapPrice: number;

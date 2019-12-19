@@ -1,5 +1,5 @@
-import { translateRaw } from 'v2/translations';
-import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
+import translate from 'v2/translations';
+import { TUseStateReducerFactory, fromTxReceiptObj, formatErrorEmailMarkdown } from 'v2/utils';
 import { DexService, ProviderHandler } from 'v2/services';
 import { StoreAccount } from 'v2/types';
 import { isWeb3Wallet } from 'v2/utils/web3';
@@ -100,7 +100,9 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         setState((prevState: SwapState) => ({
           ...prevState,
           isCalculatingFromAmount: false,
-          toAmountError: translateRaw('INVALID_AMOUNT_ERROR')
+          toAmountError: translate('UNEXPECTED_ERROR', {
+            $link: formatErrorEmailMarkdown('Swap Error', e)
+          })
         }));
         console.error(e);
       }
@@ -137,7 +139,9 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         setState((prevState: SwapState) => ({
           ...prevState,
           isCalculatingToAmount: false,
-          fromAmountError: translateRaw('INVALID_AMOUNT_ERROR')
+          fromAmountError: translate('UNEXPECTED_ERROR', {
+            $link: formatErrorEmailMarkdown('Swap Error', e)
+          })
         }));
         console.error(e);
       }
