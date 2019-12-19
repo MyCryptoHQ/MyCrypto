@@ -125,7 +125,8 @@ export default class SignTransactionMnemonic extends Component<
   private async getPublicKey() {
     this.setState({ isSigning: true });
     try {
-      const wallet = await ethers.Wallet.fromMnemonic(this.state.phrase, this.state.selectedDPath);
+      const { senderAccount } = this.props;
+      const wallet = await ethers.Wallet.fromMnemonic(this.state.phrase, senderAccount.dPath);
       const checkSumAddress = utils.getAddress(wallet.address);
       this.checkPublicKeyMatchesCache(checkSumAddress);
     } catch (err) {
