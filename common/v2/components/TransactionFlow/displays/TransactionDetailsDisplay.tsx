@@ -82,7 +82,7 @@ function TransactionDetailsDisplay({
                 </div>
                 <div className="TransactionDetails-row-column">{`
                   ${userAssetBalance}
-                  ${baseAsset.ticker}
+                  ${asset.ticker}
                 `}</div>
               </div>
             )}
