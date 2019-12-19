@@ -527,6 +527,7 @@
     "WALLET_LOGOUT_MODAL_DESC": "Leaving this page will log you out. Are you sure you want to continue?",
     "CONFIRM_TX_MODAL_TITLE": "Confirm Send",
     "CONFIRM_TX_SENDING": "You'll Send",
+    "CONFIRM_TX_SENT": "You Sent",    
     "CONFIRM_TX_FEE": "Transaction Fee",
     "CONFIRM_TX_TOTAL": "Total",
     "CONFIRM_TX_VIA_CONTRACT": "via the $unit contract",
