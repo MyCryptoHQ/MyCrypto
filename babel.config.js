@@ -5,7 +5,10 @@ module.exports = {
     [
       '@babel/preset-env',
       {
-        'modules': false
+        // The following plugin fixes false warnings
+        // "export '...' was not found in '...' "
+        // https://github.com/webpack-contrib/imports-loader/issues/68
+        'modules': ['commonjs'],
       }
     ]
   ],
@@ -14,6 +17,6 @@ module.exports = {
     '@babel/plugin-proposal-class-properties',
     '@babel/plugin-proposal-object-rest-spread',
     '@babel/plugin-syntax-dynamic-import',
-    'react-hot-loader/babel'
+    'react-hot-loader/babel',
   ]
 };
