@@ -49,6 +49,11 @@ export default class AnalyticsService {
       cvar: JSON.stringify(cvar)
     };
 
+    if (IS_DEV) {
+      // Disables Analytics for Dev mode
+      return Promise.resolve(200);
+    }
+
     return this.service.get('', { params }).catch();
   }
 
@@ -68,6 +73,11 @@ export default class AnalyticsService {
       rec: ANALYTICS_REC,
       cvar: JSON.stringify(cvar)
     };
+
+    if (IS_DEV) {
+      // Disables Analytics for Dev mode
+      return Promise.resolve(200);
+    }
 
     return this.service.get('', { params }).catch();
   }
