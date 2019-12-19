@@ -1,3 +1,5 @@
+import { getCacheRaw } from 'v2/services/Store';
+
 const fallbackLanguage = 'en';
 const repository: {
   [language: string]: {
@@ -54,8 +56,9 @@ export function getTranslators() {
 }
 
 export function translateRaw(key: string, variables?: { [name: string]: string }): string {
-  // redux store isn't initialized in time which throws errors, instead we get the language selection from localstorage
-  const language = fallbackLanguage;
+  // we cannot access language from settings context, instead we get the language selection from localstorage
+  const { settings } = getCacheRaw();
+  const language = settings.language || fallbackLanguage;
   const translatedString =
     (repository[language] && repository[language][key]) || repository[fallbackLanguage][key] || key;
 
