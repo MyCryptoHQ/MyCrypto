@@ -155,7 +155,7 @@
     "BULK_SUCCESSMSG": "Perfetto! I tuoi portafogli sono stati generati. ",
     "X_RECIPIENT": "Indirizzo destinatario ",
     "SEND_AMOUNT": "Importo da inviare ",
-    "SEND_AMOUNT_SHORT": "Importo ",
+    "X_AMOUNT": "Importo ",
     "SEND_CUSTOM": "Aggiungi altro token ",
     "SEND_GAS": "Gas ",
     "SEND_GENERATE": "Genera transazione ",

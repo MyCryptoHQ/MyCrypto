@@ -135,7 +135,7 @@
     "X_RECIPIENT": "받는 주소 ",
     "CONFIRM_TX_TO": "주소 ",
     "SEND_AMOUNT": "보낼 수량 ",
-    "SEND_AMOUNT_SHORT": "수량 ",
+    "X_AMOUNT": "수량 ",
     "SEND_CUSTOM": "사용자 정의 토큰 추가 ",
     "SCAN_TOKENS": "토큰 스캔",
     "SCAN_TOKENS_FAIL": "토큰 값을 불러오지 못함",

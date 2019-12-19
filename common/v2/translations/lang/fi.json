@@ -155,7 +155,7 @@
     "BULK_SUCCESSMSG": "Onnistui! Sinun lompakkosi on luotu. ",
     "X_RECIPIENT": "Osoitteeseen ",
     "SEND_AMOUNT": "Summa Joka Lähetetään ",
-    "SEND_AMOUNT_SHORT": "Summa ",
+    "X_AMOUNT": "Summa ",
     "SEND_CUSTOM": "Mukautettu ",
     "SEND_GAS": "Gas ",
     "SEND_TRANSFERTOTAL": "Lähetä Koko Saldo ",

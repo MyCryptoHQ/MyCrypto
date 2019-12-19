@@ -154,7 +154,7 @@
     "BULK_SUCCESSMSG": "Ví của bạn đã được tạo thành công. ",
     "X_RECIPIENT": "Địa Chỉ Đến ",
     "SEND_AMOUNT": "Số Lượng Cần Gửi ",
-    "SEND_AMOUNT_SHORT": "Số Lượng ",
+    "X_AMOUNT": "Số Lượng ",
     "SEND_CUSTOM": "Token được yêu cầu! ",
     "SEND_GAS": "Gas ",
     "SEND_TRANSFERTOTAL": "Gửi Hết Số Dư Hiện Có ",

@@ -154,7 +154,7 @@
     "BULK_SUCCESSMSG": "¡Enhorabuena! Se han generado tus carteras. ",
     "X_RECIPIENT": "Dirección de destino ",
     "SEND_AMOUNT": "Cantidad a enviar ",
-    "SEND_AMOUNT_SHORT": "Cantidad ",
+    "X_AMOUNT": "Cantidad ",
     "SEND_GAS": "Gas ",
     "SEND_TRANSFERTOTAL": "Enviar todo el saldo ",
     "SEND_GENERATE": "Generar transacción ",

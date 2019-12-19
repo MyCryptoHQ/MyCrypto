@@ -178,7 +178,7 @@
     "BULK_SUCCESSMSG": "Sukses! Dompet sudah berhasil dibuat. ",
     "X_RECIPIENT": "Alamat tujuan ",
     "SEND_AMOUNT": "Jumlah untuk dikirim ",
-    "SEND_AMOUNT_SHORT": "Jumlah ",
+    "X_AMOUNT": "Jumlah ",
     "SEND_CUSTOM": "Tambahkan \"Custom Token\" ",
     "SEND_GAS": "Gas ",
     "SEND_TRANSFERTOTAL": "Kirim seluruh Saldo ",

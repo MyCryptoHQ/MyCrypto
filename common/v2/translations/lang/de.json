@@ -154,7 +154,7 @@
     "BULK_SUCCESSMSG": "Erfolgreich! Deine Wallets wurden erstellt. ",
     "X_RECIPIENT": "An Adresse ",
     "SEND_AMOUNT": "Zu sendender Betrag ",
-    "SEND_AMOUNT_SHORT": "Betrag ",
+    "X_AMOUNT": "Betrag ",
     "SEND_GAS": "Gas ",
     "SEND_TRANSFERTOTAL": "Gesamten verfügbaren Saldo übertragen ",
     "SEND_GENERATE": "Erzeuge Transaktion ",

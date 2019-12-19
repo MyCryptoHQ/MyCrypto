@@ -179,7 +179,7 @@
     "BULK_SUCCESSMSG": "Success! Your wallets have been generated. ",
     "X_RECIPIENT": "To Address ",
     "SEND_AMOUNT": "Amount to Send ",
-    "SEND_AMOUNT_SHORT": "Amount ",
+    "X_AMOUNT": "Amount ",
     "SEND_CUSTOM": "Add Custom Token ",
     "SEND_GAS": "Gas ",
     "SEND_TRANSFERTOTAL": "Send Entire Balance ",

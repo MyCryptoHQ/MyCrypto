@@ -138,7 +138,7 @@
     "X_RECIPIENT": "Adresse de destination ",
     "CONFIRM_TX_TO": "À ",
     "SEND_AMOUNT": "Montant à envoyer ",
-    "SEND_AMOUNT_SHORT": "Montant ",
+    "X_AMOUNT": "Montant ",
     "SEND_CUSTOM": "Token spécifique ",
     "SCAN_TOKENS": "Actualiser mes Tokens",
     "SCAN_TOKENS_FAIL": "Échec lors de la récupération de la valeur des tokens",

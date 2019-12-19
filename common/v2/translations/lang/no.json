@@ -173,7 +173,7 @@
     "BULK_SUCCESSMSG": "Suksess! Lommebøkene dine har blitt opprettet. ",
     "X_RECIPIENT": "Til-adresse ",
     "SEND_AMOUNT": "Beløp som skal sendes ",
-    "SEND_AMOUNT_SHORT": "Beløp ",
+    "X_AMOUNT": "Beløp ",
     "SEND_GAS": "Gas ",
     "SEND_TRANSFERTOTAL": "Overfør total tilgjengelig saldo ",
     "SEND_GENERATE": "Generer transaksjon ",

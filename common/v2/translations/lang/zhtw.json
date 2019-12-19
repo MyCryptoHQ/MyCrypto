@@ -191,7 +191,7 @@
     "BULK_SUCCESSMSG": "成功！ 你的所有錢包皆已被產生。 ",
     "X_RECIPIENT": "給地址 ",
     "SEND_AMOUNT": "要發送的數量 ",
-    "SEND_AMOUNT_SHORT": "數量 ",
+    "X_AMOUNT": "數量 ",
     "SEND_CUSTOM": "新增其他代幣 ",
     "SEND_GAS": "Gas ",
     "SEND_TRANSFERTOTAL": "送出所有餘額 ",

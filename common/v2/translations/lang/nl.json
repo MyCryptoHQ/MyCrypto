@@ -191,7 +191,7 @@
     "BULK_SUCCESSMSG": "Gelukt! Je wallets zijn gegenereerd. ",
     "X_RECIPIENT": "Aan Adres ",
     "SEND_AMOUNT": "Te verzenden bedrag ",
-    "SEND_AMOUNT_SHORT": "Bedrag ",
+    "X_AMOUNT": "Bedrag ",
     "SEND_CUSTOM": "Aangepast Token ",
     "SEND_GAS": "Gas ",
     "SEND_TRANSFERTOTAL": "Verzend volledig saldo ",

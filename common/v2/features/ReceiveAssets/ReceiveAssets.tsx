@@ -183,7 +183,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
             </Fieldset>
             <AssetFields>
               <Amount>
-                <SLabel htmlFor="amount">{translate('SEND_AMOUNT_SHORT')}</SLabel>
+                <SLabel htmlFor="amount">{translate('X_AMOUNT')}</SLabel>
                 <Field
                   name="amount"
                   validate={validateAmount}

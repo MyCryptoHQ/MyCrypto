@@ -156,7 +156,7 @@
     "BULK_SUCCESSMSG": "Поздравляем! Ваши кошельки успешно созданы. ",
     "X_RECIPIENT": "Адрес получателя ",
     "SEND_AMOUNT": "Сумма перевода ",
-    "SEND_AMOUNT_SHORT": "Сумма ",
+    "X_AMOUNT": "Сумма ",
     "SEND_CUSTOM": "Добавить свой токен ",
     "SEND_GAS": "Газ ",
     "SEND_TRANSFERTOTAL": "Перевести весь доступный баланс ",

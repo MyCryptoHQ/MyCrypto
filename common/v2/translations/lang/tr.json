@@ -156,7 +156,7 @@
     "BULK_SUCCESSMSG": "Başarı! Cüzdanlarin olusturuldu. ",
     "X_RECIPIENT": "Bu Adrese gönder ",
     "SEND_AMOUNT": "Gönderilecek miktar ",
-    "SEND_AMOUNT_SHORT": "Miktar ",
+    "X_AMOUNT": "Miktar ",
     "SEND_CUSTOM": "Özel Token Ekle ",
     "SEND_GAS": "Gas ",
     "SEND_TRANSFERTOTAL": "Tüm dengeyi gönder ",

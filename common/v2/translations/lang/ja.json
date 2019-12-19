@@ -110,7 +110,7 @@
     "X_RECIPIENT": "宛先アドレス： ",
     "CONFIRM_TX_TO": "To ",
     "SEND_AMOUNT": "送出数量： ",
-    "SEND_AMOUNT_SHORT": "数量 ",
+    "X_AMOUNT": "数量 ",
     "SEND_CUSTOM": "カスタムトークンを追加 ",
     "SCAN_TOKENS": "トークンをスキャン",
     "SCAN_TOKENS_FAIL": "トークン価の取得に失敗",

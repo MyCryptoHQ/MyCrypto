@@ -155,7 +155,7 @@
     "BULK_SUCCESSMSG": "成功！你的钱包生成好了。 ",
     "X_RECIPIENT": "发送至地址： ",
     "SEND_AMOUNT": "转账数额： ",
-    "SEND_AMOUNT_SHORT": "数额 ",
+    "X_AMOUNT": "数额 ",
     "SEND_GAS": "Gas ",
     "SEND_TRANSFERTOTAL": "发送所有余额 ",
     "SEND_GENERATE": "生成交易 ",

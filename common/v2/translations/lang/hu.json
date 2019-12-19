@@ -156,7 +156,7 @@
     "BULK_SUCCESSMSG": "Sikerült! A tárcáid legenerálódtak. ",
     "X_RECIPIENT": "Erre a címre ",
     "SEND_AMOUNT": "Küldendő összeg ",
-    "SEND_AMOUNT_SHORT": "Összeg ",
+    "X_AMOUNT": "Összeg ",
     "SEND_CUSTOM": "Saját Token ",
     "SEND_GAS": "Gas ",
     "SEND_TRANSFERTOTAL": "Teljes egyenleg küldése ",
