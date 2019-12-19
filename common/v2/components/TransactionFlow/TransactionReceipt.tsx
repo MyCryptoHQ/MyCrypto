@@ -120,7 +120,8 @@ export default function TransactionReceipt({
       </div>
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-column">
-          <img src={sentIcon} alt="Sent" /> You Sent:
+          <img src={sentIcon} alt="Sent" />
+          {translate('CONFIRM_TX_SENT')}
         </div>
         <div className="TransactionReceipt-row-column">
           <Amount
