@@ -117,14 +117,14 @@ export default function SwapAssets(props: Props) {
           selectedAsset={fromAsset}
           assets={filteredAssets}
           onChange={handleFromAssetSelected}
-          label={translateRaw('SWAP_SELECT_ASSET')}
+          label={translateRaw('X_ASSET')}
           fluid={true}
         />
       </FormItem>
       <FormItem>
         <InputWrapper>
           <InputField
-            label={translateRaw('FORM_SEND_AMOUNT')}
+            label={translateRaw('SWAP_SEND_AMOUNT')}
             value={fromAmount}
             placeholder="0.00"
             onChange={handleFromAmountChangedEvent}

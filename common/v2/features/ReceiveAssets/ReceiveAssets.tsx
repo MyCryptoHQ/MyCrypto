@@ -149,7 +149,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
 
   return (
     <ContentPanel
-      heading="Request Assets"
+      heading={translateRaw('REQUEST')}
       icon={receiveIcon}
       onBack={() => history.push(ROUTE_PATHS.DASHBOARD.path)}
       mobileMaxWidth="100%;"
@@ -163,7 +163,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
         }: FormikProps<typeof initialValues>) => (
           <Form>
             <Fieldset>
-              <SLabel htmlFor="recipientAddress">Recipient Address</SLabel>
+              <SLabel htmlFor="recipientAddress">{translate('X_RECIPIENT')}</SLabel>
               <Field
                 name="recipientAddress"
                 component={({ field, form }: FieldProps) => (
@@ -183,7 +183,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
             </Fieldset>
             <AssetFields>
               <Amount>
-                <SLabel htmlFor="amount">Amount</SLabel>
+                <SLabel htmlFor="amount">{translate('X_AMOUNT')}</SLabel>
                 <Field
                   name="amount"
                   validate={validateAmount}
@@ -199,7 +199,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
               </Amount>
               {errors.amount && <ErrorMessage>{errors.amount}</ErrorMessage>}
               <Asset>
-                <SLabel htmlFor="asset">Asset</SLabel>
+                <SLabel htmlFor="asset">{translate('X_ASSET')}</SLabel>
                 <Field
                   name="asset"
                   component={({ field, form }: FieldProps) => (
@@ -229,7 +229,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                 </CodeHeader>
 
                 <Fieldset>
-                  <SLabel>QR Code</SLabel>
+                  <SLabel>{translate('REQUEST_QR_CODE')}</SLabel>
                   <QRDisplay>
                     <QRCode
                       data={
@@ -253,7 +253,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                   </QRDisplay>
                 </Fieldset>
                 <Fieldset>
-                  <SLabel>Payment Code</SLabel>
+                  <SLabel>{translate('REQUEST_PAYMENT_CODE')}</SLabel>
                   <FieldsetBox>
                     <Copyable
                       text={

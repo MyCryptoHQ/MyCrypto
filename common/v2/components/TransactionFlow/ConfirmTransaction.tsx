@@ -97,7 +97,7 @@ export default function ConfirmTransaction({
       )}
       <div className="ConfirmTransaction-row">
         <div className="ConfirmTransaction-row-column">
-          <img src={sendIcon} alt="Send" /> {translate('FORM_SEND_AMOUNT')}:
+          <img src={sendIcon} alt="Send" /> {translate('CONFIRM_TX_SENDING')}
         </div>
         <div className="ConfirmTransaction-row-column">
           <Amount
@@ -109,7 +109,7 @@ export default function ConfirmTransaction({
       </div>
       <div className="ConfirmTransaction-row">
         <div className="ConfirmTransaction-row-column">
-          <img src={feeIcon} alt="Fee" /> {translate('MAX_TX_FEE')}:
+          <img src={feeIcon} alt="Fee" /> {translate('MAX_TX_FEE')}
         </div>
         <div className="ConfirmTransaction-row-column">
           <Amount

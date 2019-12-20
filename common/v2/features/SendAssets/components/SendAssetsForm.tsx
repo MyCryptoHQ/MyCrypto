@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { formatEther, bigNumberify } from 'ethers/utils';
 import BN from 'bn.js';
 import styled from 'styled-components';
+import questionSVG from 'assets/images/icn-question.svg';
 
 import translate, { translateRaw } from 'v2/translations';
 import {
@@ -301,7 +302,7 @@ export default function SendAssetsForm({
               {/* Sender Address */}
               <fieldset className="SendAssetsForm-fieldset">
                 <label htmlFor="account" className="input-group-header">
-                  {translate('X_ADDRESS')}
+                  {translate('X_SENDER')}
                 </label>
                 <Field
                   name="account"
@@ -329,7 +330,7 @@ export default function SendAssetsForm({
               </fieldset>
               <fieldset className="SendAssetsForm-fieldset">
                 <label htmlFor="receiverAddress" className="input-group-header">
-                  {translate('SEND_ADDR')}
+                  {translate('X_RECIPIENT')}
                 </label>
                 <EthAddressField
                   fieldName="receiverAddress.display"
@@ -393,8 +394,7 @@ export default function SendAssetsForm({
               {/* Transaction Fee */}
               <fieldset className="SendAssetsForm-fieldset">
                 <label htmlFor="transactionFee" className="SendAssetsForm-fieldset-transactionFee">
-                  <div>Transaction Fee</div>
-                  {/* TRANSLATE THIS */}
+                  <div>{translate('CONFIRM_TX_FEE')}</div>
                   <TransactionFeeDisplay
                     baseAsset={baseAsset}
                     gasLimitToUse={values.gasLimitField}
@@ -489,7 +489,7 @@ export default function SendAssetsForm({
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              (?)
+                              <img src={questionSVG} alt="Help" />{' '}
                             </a>
                           </div>
                           <div
@@ -522,7 +522,7 @@ export default function SendAssetsForm({
                     <fieldset className="SendAssetsForm-fieldset">
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                         <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-data">
-                          <label htmlFor="data">Data{/* TRANSLATE THIS */}</label>
+                          <label htmlFor="data">{translate('TRANS_DATA')}</label>
                           <Field
                             name="txDataField"
                             validate={validateDataField}
