@@ -39,7 +39,7 @@ export interface ITxConfig {
 
 export interface IFormikFields {
   asset: Asset;
-  receiverAddress: IReceiverAddress;
+  address: IReceiverAddress;
   amount: string;
   account: IExtendedAccount;
   txDataField: string;
@@ -70,7 +70,7 @@ export interface IStepComponentProps {
   resetFlow(): void;
 }
 
-interface IReceiverAddress {
+export interface IReceiverAddress {
   display: string;
   value: string;
 }

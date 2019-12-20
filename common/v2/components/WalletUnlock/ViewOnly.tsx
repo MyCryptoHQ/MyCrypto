@@ -3,7 +3,7 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 
 import { translateRaw } from 'v2/translations';
-import { WalletId, FormData } from 'v2/types';
+import { WalletId, FormData, IReceiverAddress } from 'v2/types';
 import { AddressField, Button } from 'v2/components';
 import { WalletFactory } from 'v2/services/WalletService';
 import { getResolvedENSAddress, isValidETHAddress, isValidENSName } from 'v2/services/EthService';
@@ -24,17 +24,10 @@ interface StateProps {
 
 type Props = OwnProps & StateProps;
 
-export interface IViewOnlyFormikValues {
-  addressObject: {
-    display: string;
-    value: string;
-  };
-}
-
 const WalletService = WalletFactory(WalletId.VIEW_ONLY);
 
 const ViewOnlyFormSchema = Yup.object().shape({
-  addressObject: Yup.object({
+  address: Yup.object({
     value: Yup.string().test(
       'check-eth-address',
       translateRaw('TO_FIELD_ERROR'),
@@ -44,8 +37,8 @@ const ViewOnlyFormSchema = Yup.object().shape({
 });
 
 export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
-  const initialFormikValues: IViewOnlyFormikValues = {
-    addressObject: {
+  const initialFormikValues: { address: IReceiverAddress } = {
+    address: {
       display: '',
       value: ''
     }
@@ -68,7 +61,7 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
               .length === 0;
 
           const handleSubmit = (e: React.SyntheticEvent<HTMLElement>) => {
-            const wallet = values.addressObject.value;
+            const wallet = values.address.value;
 
             if (wallet && isValid) {
               e.preventDefault();
@@ -87,9 +80,9 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
               (await getResolvedENSAddress(network, name)) || CREATION_ADDRESS;
             setIsResolvingENSName(false);
             if (isValidETHAddress(resolvedAddress)) {
-              setFieldValue('addressObject', { ...values.addressObject, value: resolvedAddress });
+              setFieldValue('address', { ...values.address, value: resolvedAddress });
             } else {
-              setFieldError('addressObject', translateRaw('TO_FIELD_ERROR'));
+              setFieldError('address', translateRaw('TO_FIELD_ERROR'));
             }
             setIsResolvingENSName(false);
           };
@@ -98,9 +91,9 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
               <section className="ViewOnly-fields">
                 <section className="ViewOnly-fields-field">
                   <AddressField
-                    fieldName="addressObject"
+                    fieldName="address"
                     handleENSResolve={handleENSResolve}
-                    error={errors && errors.addressObject && errors.addressObject.value}
+                    error={errors && errors.address && errors.address.value}
                     touched={touched}
                     network={network}
                     isLoading={isResolvingENSName}

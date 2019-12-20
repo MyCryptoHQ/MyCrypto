@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
-import _ from 'lodash';
+import _, { isEmpty } from 'lodash';
 import { formatEther, bigNumberify } from 'ethers/utils';
 import BN from 'bn.js';
 import styled from 'styled-components';
@@ -14,7 +14,8 @@ import {
   AccountDropdown,
   AmountInput,
   AssetDropdown,
-  WhenQueryExists
+  WhenQueryExists,
+  AddressField
 } from 'v2/components';
 import {
   getNetworkById,
@@ -56,14 +57,7 @@ import {
 import { RatesContext } from 'v2/services/RatesProvider';
 
 import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
-import {
-  EthAddressField,
-  GasLimitField,
-  GasPriceField,
-  GasPriceSlider,
-  NonceField,
-  DataField
-} from './fields';
+import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
 import './SendAssetsForm.scss';
 import {
   validateGasLimitField,
@@ -82,7 +76,7 @@ export const AdvancedOptionsButton = styled(Button)`
 `;
 
 const initialFormikValues: IFormikFields = {
-  receiverAddress: {
+  address: {
     value: '',
     display: ''
   },
@@ -123,7 +117,7 @@ const SendAssetsSchema = Yup.object().shape({
     .min(0, translateRaw('ERROR_0'))
     .required(translateRaw('REQUIRED')),
   account: Yup.object().required(translateRaw('REQUIRED')),
-  receiverAddress: Yup.object({
+  address: Yup.object({
     value: Yup.string().test(
       'check-eth-address',
       translateRaw('TO_FIELD_ERROR'),
@@ -170,8 +164,7 @@ export default function SendAssetsForm({
           setFieldError,
           touched,
           values,
-          handleChange,
-          submitForm
+          handleChange
         }) => {
           const toggleAdvancedOptions = () => {
             setFieldValue('advancedTransaction', !values.advancedTransaction);
@@ -183,8 +176,8 @@ export default function SendAssetsForm({
                 !values ||
                 !values.network ||
                 !values.asset ||
-                !values.receiverAddress ||
-                !isValidETHAddress(values.receiverAddress.value) ||
+                !values.address ||
+                !isValidETHAddress(values.address.value) ||
                 !values.account ||
                 !isValidPositiveNumber(values.amount)
               )
@@ -210,12 +203,12 @@ export default function SendAssetsForm({
               (await getResolvedENSAddress(values.network, name)) || CREATION_ADDRESS;
             setIsResolvingENSName(false);
             if (isValidETHAddress(resolvedAddress)) {
-              setFieldValue('receiverAddress', {
-                ...values.receiverAddress,
+              setFieldValue('address', {
+                ...values.address,
                 value: resolvedAddress
               });
             } else {
-              setFieldError('receiverAddress', translateRaw('TO_FIELD_ERROR'));
+              setFieldError('address', translateRaw('TO_FIELD_ERROR'));
             }
             setIsResolvingENSName(false);
           };
@@ -261,8 +254,11 @@ export default function SendAssetsForm({
 
           const validAccounts = accounts.filter(account => account.wallet !== WalletId.VIEW_ONLY);
           const isValidAddress =
-            !errors.receiverAddress ||
-            Object.values(errors.receiverAddress).filter(e => e !== undefined).length === 0;
+            !errors.address ||
+            Object.values(errors.address).filter(e => e !== undefined).length === 0;
+          const isValid =
+            Object.values(errors).filter(error => error !== undefined && !isEmpty(error)).length ===
+            0;
 
           return (
             <Form className="SendAssetsForm">
@@ -329,15 +325,15 @@ export default function SendAssetsForm({
                 />
               </fieldset>
               <fieldset className="SendAssetsForm-fieldset">
-                <label htmlFor="receiverAddress" className="input-group-header">
+                <label htmlFor="address" className="input-group-header">
                   {translate('X_RECIPIENT')}
                 </label>
-                <EthAddressField
-                  fieldName="receiverAddress.display"
+                <AddressField
+                  fieldName="address"
                   handleENSResolve={handleENSResolve}
-                  error={errors && errors.receiverAddress && errors.receiverAddress.value}
+                  onBlur={handleGasEstimate}
+                  error={errors && errors.address && errors.address.value}
                   touched={touched}
-                  handleGasEstimate={handleGasEstimate}
                   network={values.network}
                   isLoading={isResolvingENSName}
                   isError={!isValidAddress}
@@ -547,12 +543,13 @@ export default function SendAssetsForm({
               <Button
                 type="submit"
                 onClick={() => {
-                  const isValid = Object.values(errors).filter(e => e !== undefined).length === 0;
                   if (isValid) {
-                    submitForm();
+                    onComplete(values);
                   }
                 }}
-                disabled={isEstimatingGasLimit || isResolvingENSName || isEstimatingNonce}
+                disabled={
+                  isEstimatingGasLimit || isResolvingENSName || isEstimatingNonce || !isValid
+                }
                 className="SendAssetsForm-next"
               >
                 {translate('ACTION_6')}

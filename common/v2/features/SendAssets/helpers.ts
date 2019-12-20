@@ -54,7 +54,7 @@ export async function getNetworkNameFromSignedTx(signedTx: string) {
 const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
   const { network } = formData;
   return {
-    to: formData.receiverAddress.value,
+    to: formData.address.value,
     value: formData.amount ? inputValueToHex(formData.amount) : '0x0',
     data: formData.txDataField ? formData.txDataField : '0x0',
     gasLimit: formData.gasLimitField,
@@ -73,7 +73,7 @@ const createERC20TxObject = (formData: IFormikFields): IHexStrTransaction => {
     value: '0x0',
     data: bufferToHex(
       encodeTransfer(
-        Address(formData.receiverAddress.value),
+        Address(formData.address.value),
         formData.amount !== '' ? toWei(formData.amount, asset.decimal!) : TokenValue(new BN(0))
       )
     ),
