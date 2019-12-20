@@ -403,7 +403,8 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
                   <IconWrapper subItems={true} icon="navDownCaret" />
                 </li>
                 <li>
-                  Latest News <IconWrapper subItems={true} icon="navDownCaret" />
+                  {translate('NEW_HEADER_TEXT_2')}
+                  <IconWrapper subItems={true} icon="navDownCaret" />
                 </li>
               </MenuLinks>
             </Menu>
@@ -418,7 +419,7 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
         {/* Desktop Left */}
         <HeaderTopLeft>
           <li onClick={openHelpSupportPage}>{translate('NEW_HEADER_TEXT_1')}</li>
-          <li onClick={openLatestNews}>Latest News</li>
+          <li onClick={openLatestNews}>{translate('NEW_HEADER_TEXT_2')}</li>
         </HeaderTopLeft>
         <div>
           <Link to={ROUTE_PATHS.ROOT.path}>

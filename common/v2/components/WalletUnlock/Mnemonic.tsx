@@ -118,7 +118,7 @@ class MnemonicDecryptClass extends PureComponent<OwnProps, State> {
                   {translate('MNEMONIC_CHOOSE_ADDR')}
                 </button>
               </div>
-              <div className="Mnemonic-help">{translate('KEYSTORE_HELP')}</div>
+              <div className="Mnemonic-help">{translate('MNEMONIC_HELP')}</div>
             </div>
           </div>
         </div>
