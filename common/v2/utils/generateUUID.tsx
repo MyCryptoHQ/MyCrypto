@@ -1,7 +1,7 @@
 import * as crypto from 'crypto';
 import getUuid from 'uuid-by-string';
 import { toChecksumAddress } from 'ethereumjs-util';
-import { TTicker, TUuid } from 'v2/types';
+import { TUuid } from 'v2/types';
 
 // TODO: If used for anything other than generating public ids, look up a more-secure way to do this.
 export const generateUUID = (): TUuid => {
@@ -19,9 +19,9 @@ export const generateUUID = (): TUuid => {
   return uuid as TUuid;
 };
 
-export const generateAssetUUID = (chainId: string | number, address?: string): TTicker =>
+export const generateAssetUUID = (chainId: string | number, address?: string): TUuid =>
   address
-    ? (getUuid(`${chainId}-${toChecksumAddress(address)}`) as TTicker)
-    : (getUuid(chainId.toString()) as TTicker);
+    ? (getUuid(`${chainId}-${toChecksumAddress(address)}`) as TUuid)
+    : (getUuid(chainId.toString()) as TUuid);
 
 export const generateContractUUID = (abi: string) => getUuid(abi) as TUuid;

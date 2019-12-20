@@ -1,5 +1,5 @@
 import { Asset, ExtendedAsset, Network, StoreAsset } from 'v2/types';
-import { generateUUID } from 'v2/utils';
+import { generateAssetUUID } from 'v2/utils';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 
 export const getAssetByTicker = (assets: Asset[]) => (symbol: string): Asset | undefined => {
@@ -12,7 +12,7 @@ export const getNewDefaultAssetTemplateByNetwork = (assets: Asset[]) => (
   const baseAssetOfNetwork: Asset | undefined = getAssetByUUID(assets)(network.baseAsset);
   if (!baseAssetOfNetwork) {
     return {
-      uuid: generateUUID(),
+      uuid: generateAssetUUID(network.chainId),
       name: network.name,
       networkId: network.id,
       type: 'base',
@@ -49,18 +49,15 @@ export const getAssetByContractAndNetwork = (
 };
 
 export const getTotalByAsset = (assets: StoreAsset[]) =>
-  assets.reduce(
-    (dict, asset) => {
-      const prev = dict[asset.name];
-      if (prev) {
-        dict[asset.name] = {
-          ...prev,
-          balance: prev.balance.add(asset.balance)
-        };
-      } else {
-        dict[asset.name] = asset;
-      }
-      return dict;
-    },
-    {} as { [key: string]: StoreAsset }
-  );
+  assets.reduce((dict, asset) => {
+    const prev = dict[asset.name];
+    if (prev) {
+      dict[asset.name] = {
+        ...prev,
+        balance: prev.balance.add(asset.balance)
+      };
+    } else {
+      dict[asset.name] = asset;
+    }
+    return dict;
+  }, {} as { [key: string]: StoreAsset });
