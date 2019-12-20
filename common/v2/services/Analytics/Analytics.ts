@@ -41,7 +41,8 @@ export default class AnalyticsService {
 
     const analyticsId = isDesktop() ? ANALYTICS_ID_DESKTOP : ANALYTICS_ID_SITE;
 
-    const url = isDesktop() ? 'https://desktop.app' + pathHash.substr(1) : pageUrl;
+    const desktopString = 'https://desktop.app';
+    const url = isDesktop() ? desktopString + pathHash.substr(1) : pageUrl;
 
     const params = {
       action_name: 'Page navigation',
