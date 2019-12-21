@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input } from '@mycrypto/ui';
+import { Input, Identicon } from '@mycrypto/ui';
 import { FieldProps, Field, FormikTouched } from 'formik';
 import styled from 'styled-components';
 
@@ -30,6 +30,20 @@ interface Props {
   handleENSResolve?(name: string): Promise<void>;
   onBlur?(ev: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>): void;
 }
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  > div:nth-child(2) {
+    flex: 1;
+  }
+`;
+
+const IdenticonWrapper = styled.div`
+  width: 45px;
+  margin-right: 0.5em;
+`;
 
 const SInput = styled(Input)`
   font-family: ${monospace};
@@ -69,7 +83,10 @@ function ETHAddressField({
         validate={validateEthAddress}
         validateOnChange={false}
         render={({ field, form }: FieldProps) => (
-          <>
+          <Wrapper>
+            <IdenticonWrapper>
+              {field.value.value && <Identicon address={field.value.value} />}
+            </IdenticonWrapper>
             <SInput
               data-lpignore="true"
               {...field}
@@ -109,7 +126,7 @@ function ETHAddressField({
             {error && touched && touched.address ? (
               <InlineErrorMsg className="SendAssetsForm-errors">{error}</InlineErrorMsg>
             ) : null}
-          </>
+          </Wrapper>
         )}
       />
     </>
