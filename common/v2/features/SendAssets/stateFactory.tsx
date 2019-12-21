@@ -62,7 +62,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
         rawTransaction,
         amount: payload.amount,
         senderAccount: payload.account,
-        receiverAddress: payload.receiverAddress.value,
+        receiverAddress: payload.address.value,
         network: payload.network,
         asset: payload.asset,
         baseAsset: baseAsset || ({} as Asset),

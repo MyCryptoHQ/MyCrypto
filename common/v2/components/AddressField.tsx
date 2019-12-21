@@ -1,6 +1,7 @@
 import React from 'react';
 import { Input } from '@mycrypto/ui';
 import { FieldProps, Field, FormikTouched } from 'formik';
+import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
 import {
@@ -8,8 +9,9 @@ import {
   getENSTLDForChain,
   getIsValidENSAddressFunction
 } from 'v2/services/EthService';
-import { InlineErrorMsg, ENSStatus, IViewOnlyFormikValues } from 'v2/components';
-import { Network } from 'v2/types';
+import { InlineErrorMsg, ENSStatus } from 'v2/components';
+import { Network, IFormikFields } from 'v2/types';
+import { monospace } from 'v2/theme';
 
 /*
   Eth address field to be used within a Formik Form
@@ -20,13 +22,18 @@ import { Network } from 'v2/types';
 interface Props {
   error?: string;
   fieldName: string;
-  touched?: FormikTouched<IViewOnlyFormikValues>;
+  touched?: FormikTouched<IFormikFields>;
   placeholder?: string;
   network?: Network;
   isLoading: boolean;
   isError: boolean;
   handleENSResolve?(name: string): Promise<void>;
+  onBlur?(ev: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>): void;
 }
+
+const SInput = styled(Input)`
+  font-family: ${monospace};
+`;
 
 function ETHAddressField({
   fieldName,
@@ -36,7 +43,8 @@ function ETHAddressField({
   placeholder = 'ETH Address or ENS Name',
   isLoading,
   isError,
-  handleENSResolve
+  handleENSResolve,
+  onBlur
 }: Props) {
   const validateEthAddress = (value: any) => {
     let errorMsg;
@@ -51,6 +59,7 @@ function ETHAddressField({
     }
     return errorMsg;
   };
+
   // By destructuring 'field' in the rendered component we are mapping
   // the Inputs 'value' and 'onChange' props to Formiks handlers.
   return (
@@ -61,7 +70,8 @@ function ETHAddressField({
         validateOnChange={false}
         render={({ field, form }: FieldProps) => (
           <>
-            <Input
+            <SInput
+              data-lpignore="true"
               {...field}
               value={field.value.display}
               placeholder={placeholder}
@@ -84,17 +94,20 @@ function ETHAddressField({
                         form.setFieldValue(fieldName, { display: address, value: address });
                 await action(e.currentTarget.value);
                 form.setFieldTouched(fieldName);
+                if (onBlur) {
+                  onBlur(e);
+                }
               }}
             />
             <ENSStatus
-              ensName={form.values.addressObject.display}
-              rawAddress={form.values.addressObject.value}
+              ensName={form.values[fieldName].display}
+              rawAddress={form.values[fieldName].value}
               chainId={network ? network.chainId : 1}
               isLoading={isLoading}
               isError={isError}
             />
-            {error && touched && touched.addressObject ? (
-              <InlineErrorMsg className="ViewOnlyForm-errors">{error}</InlineErrorMsg>
+            {error && touched && touched.address ? (
+              <InlineErrorMsg className="SendAssetsForm-errors">{error}</InlineErrorMsg>
             ) : null}
           </>
         )}
