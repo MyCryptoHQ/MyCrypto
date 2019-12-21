@@ -45,6 +45,14 @@ const IdenticonWrapper = styled.div`
   margin-right: 0.5em;
 `;
 
+const EmptyIdenticon = styled.span`
+  display: block;
+  width: 45px;
+  height: 45px;
+  background-color: #f7f7f7;
+  border-radius: 50%;
+`;
+
 const SInput = styled(Input)`
   font-family: ${monospace};
 `;
@@ -86,7 +94,7 @@ function ETHAddressField({
           <div>
             <Wrapper>
               <IdenticonWrapper>
-                {field.value.value && <Identicon address={field.value.value} />}
+                {field.value.value ? <Identicon address={field.value.value} /> : <EmptyIdenticon />}
               </IdenticonWrapper>
               <SInput
                 data-lpignore="true"
