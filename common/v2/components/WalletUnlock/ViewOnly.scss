@@ -2,7 +2,6 @@
 @import 'common/sass/mixins';
 
 .ViewOnly {
-  width: 425px;
   height: 600px;
 
   @media (max-width: 700px) {
