@@ -2,8 +2,7 @@ import React, { createContext, Dispatch, useReducer, useCallback } from 'react';
 
 import { DataStore, LSKeys } from 'v2/types';
 import { useThrottleFn, useLocalStorage, useEvent } from 'v2/vendor';
-import { addDevSeedToSchema, removeSeedDataFromSchema } from 'v2/database';
-import { ENCRYPTED_STORAGE_KEY } from './constants';
+import { addDevSeedToSchema, removeSeedDataFromSchema, getCurrentDBConfig } from 'v2/database';
 import { appDataReducer, ActionV, ActionT, ActionPayload } from './reducer';
 import { ActionFactory } from './actions';
 import { deMarshallState, marshallState } from './utils';
@@ -32,7 +31,7 @@ export const DataProvider: React.FC = ({ children }) => {
    *  Create the our master store, sync with persistance layer,
    *  Provide lj
    */
-  const { db, setDb, resetDb, defaultSchema } = useDatabase();
+  const { db, setDb, resetDb, defaultValues } = useDatabase();
 
   const [appState, dispatch]: [DataStore, Dispatch<ActionV>] = useReducer(
     appDataReducer,
@@ -41,14 +40,14 @@ export const DataProvider: React.FC = ({ children }) => {
   );
 
   const resetAppDb = useCallback(
-    (newDb = defaultSchema) => {
+    (newDb = defaultValues) => {
       resetDb(newDb); // Reset the persistence layer
       dispatch({
         type: ActionT.RESET,
         payload: { data: marshallState(newDb) } as ActionPayload<DataStore>
       }); // Reset the Context
     },
-    [defaultSchema]
+    [defaultValues]
   );
 
   /*
@@ -77,7 +76,7 @@ export const DataProvider: React.FC = ({ children }) => {
   /*
    *  Handle db encryption on ScreenLock
    */
-  const [encryptedDb, setEncryptedDb] = useLocalStorage(ENCRYPTED_STORAGE_KEY);
+  const [encryptedDb, setEncryptedDb] = useLocalStorage(getCurrentDBConfig().vault);
   const setEncryptedCache = (data: string) => setEncryptedDb({ ...encryptedDb, data });
   const destroyEncryptedCache = () => {
     const { data, ...rest } = encryptedDb;

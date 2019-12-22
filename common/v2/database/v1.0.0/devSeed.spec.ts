@@ -1,14 +1,14 @@
 import { LocalStorage, LSKeys } from 'v2/types';
 import { toArray } from 'v2/utils';
 import { SCHEMA_BASE } from './schema';
-import { createSchema } from './migration';
+import { createDefaultValues } from './generateDefaultValues';
 import { addDevSeedToSchema } from './devSeed';
 
 describe('Data Seed', () => {
   let testData: LocalStorage;
 
   beforeAll(() => {
-    const db = createSchema(SCHEMA_BASE);
+    const db = createDefaultValues(SCHEMA_BASE);
     testData = addDevSeedToSchema(db);
   });
 

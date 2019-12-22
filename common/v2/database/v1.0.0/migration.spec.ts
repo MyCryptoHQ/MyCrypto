@@ -1,87 +1,85 @@
-import { LocalStorage, LSKeys } from 'v2/types';
-import { toArray } from 'v2/utils';
-import { createSchema } from './migration';
-import { SCHEMA_BASE } from './schema';
+import { migrate } from './migration';
+import { LocalStorage } from 'v2/types';
 
-describe('Schema', () => {
-  let defaultData: LocalStorage;
+describe('Migrate to v1.0.0', () => {
+  const getPrev = ({ assets = {}, ...rest }: any = {}) =>
+    (({
+      ...rest,
+      settings: {},
+      assets: Object.assign({}, assets)
+    } as unknown) as LocalStorage);
 
-  beforeAll(() => {
-    defaultData = createSchema(SCHEMA_BASE);
+  const getCurr = ({ assets = {}, ...rest }: any = {}) =>
+    (({
+      ...rest,
+      assets: Object.assign({}, assets, {
+        newUUID: {
+          ticker: 'GOA',
+          uuid: 'newUUID',
+          networkId: 'Ropsten'
+        }
+      })
+    } as unknown) as LocalStorage);
+
+  it('modifies only accounts and settings', () => {
+    const prev = getPrev();
+    const curr = getCurr();
+    const res = migrate(prev, curr);
+    expect(Object.keys(res)).toContain('settings');
+    expect(Object.keys(res)).toContain('accounts');
   });
-
-  it('defaultData has with valid properties', () => {
-    const ref = Object.keys(SCHEMA_BASE);
-    const real = Object.keys(defaultData);
-    expect(ref).toEqual(real);
+  it('ignores old keys', () => {
+    const prev = getPrev();
+    const curr = getCurr();
+    const res = migrate(prev, curr);
+    expect(Object.keys(res)).not.toContain('useless');
   });
-
-  it('excludes testAccounts by default', () => {
-    const accounts = toArray(defaultData[LSKeys.ACCOUNTS]);
-    expect(accounts.length).toEqual(0);
+  it('returns a new object', () => {
+    const prev = getPrev();
+    const curr = getCurr();
+    const res = migrate(prev, curr);
+    expect(res).not.toBe(curr); // checek by reference
   });
-
-  describe('Seed: Contracts', () => {
-    it('add Contracts to Store', () => {
-      const contracts = toArray(defaultData[LSKeys.CONTRACTS]);
-      expect(contracts.length).toBeGreaterThanOrEqual(70);
-    });
+  it('includes previous accounts', () => {
+    const prev = getPrev({ accounts: { '0x01': { uuid: '0x01' } } });
+    const curr = getCurr();
+    const res = migrate(prev, curr);
+    expect(Object.keys(res.accounts)).toContain('0x01');
   });
-
-  describe('Seed: Networks', () => {
-    it('adds Contracts to Networks', () => {
-      const contracts = toArray(defaultData[LSKeys.NETWORKS]).flatMap(n => n.contracts);
-      expect(contracts.length).toBeGreaterThanOrEqual(70);
+  it('adds account uuids to labels', () => {
+    const prev = getPrev({
+      accounts: {
+        '0x01': { uuid: '0x01', assets: [{ balance: 3, uuid: 'oldUuid' }] }
+      }
     });
-
-    it('adds Nodes to each Network', () => {
-      const nodes = toArray(defaultData[LSKeys.NETWORKS]).flatMap(n => n.nodes);
-      expect(nodes.length).toBe(43);
-    });
-
-    it('adds BaseAssets to Networks', () => {
-      const networkBaseAssets = toArray(defaultData[LSKeys.NETWORKS]).map(
-        ({ baseAsset }) => baseAsset
-      );
-      const networkAssets = toArray(defaultData[LSKeys.NETWORKS]).flatMap(({ assets }) => assets);
-
-      networkBaseAssets.forEach(baseAsset => {
-        const match = networkAssets.findIndex(aUuid => aUuid === baseAsset);
-        expect(match).toBeGreaterThanOrEqual(0);
-      });
-    });
-
-    it('adds Tokens to Networks', () => {
-      const allAssets = defaultData[LSKeys.ASSETS];
-      const tokens = toArray(allAssets)
-        .filter(({ type }) => type === 'erc20')
-        .filter(Boolean);
-      const networkAssets = toArray(defaultData[LSKeys.NETWORKS])
-        .flatMap(({ assets }) => assets)
-        // @ts-ignore
-        .filter(uuid => allAssets[uuid].type === 'erc20')
-        .filter(Boolean); // Not all networks have assets!
-
-      expect(networkAssets.length).toBeGreaterThan(1);
-      expect(networkAssets.length).toEqual(tokens.length);
-    });
+    const curr = getCurr();
+    const res = migrate(prev, curr);
+    expect(res.settings.dashboardAccounts).toEqual(['0x01']);
   });
-
-  describe('Seed: Assets', () => {
-    it("adds each Network's baseAsset to Assets", () => {
-      const networks = toArray(defaultData[LSKeys.NETWORKS]);
-      const baseAssets = toArray(defaultData[LSKeys.ASSETS]).filter(({ type }) => type === 'base');
-      expect(baseAssets.length).toEqual(networks.length);
+  it('updates accounts asset uuids', () => {
+    const prev = getPrev({
+      accounts: {
+        '0x01': {
+          uuid: '0x01',
+          assets: [{ balance: 3, uuid: 'oldUuid' }],
+          networkId: 'Ropsten'
+        }
+      },
+      assets: {
+        oldUuid: {
+          ticker: 'GOA',
+          uuid: 'oldUuid',
+          networkId: 'Ropsten'
+        }
+      }
     });
-
-    it('adds default Fiats as Assets', () => {
-      const fiats = toArray(defaultData[LSKeys.ASSETS]).filter(({ type }) => type === 'fiat');
-      expect(fiats.length).toBeGreaterThanOrEqual(3);
-    });
-
-    it('adds Tokens to Assets', () => {
-      const tokens = toArray(defaultData[LSKeys.ASSETS]).filter(({ type }) => type === 'erc20');
-      expect(tokens.length).toEqual(1451);
+    const curr = getCurr();
+    const res = migrate(prev, curr);
+    // @ts-ignore
+    const account = res.accounts['0x01'];
+    expect(account.assets).toContainEqual({
+      uuid: 'newUUID',
+      balance: 3
     });
   });
 });

@@ -124,6 +124,7 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
             <Link to={ROUTE_PATHS.SETTINGS_EXPORT.path}>
               <SettingsButton secondary={true}>{translate('SETTINGS_EXPORT_LABEL')}</SettingsButton>
             </Link>
+            ]
           </SettingsControl>
         </SettingsField>
         <SettingsField>
