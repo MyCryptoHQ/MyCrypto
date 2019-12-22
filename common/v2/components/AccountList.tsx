@@ -6,7 +6,7 @@ import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS, Fiats } from 'v2/config';
 import { CollapsibleTable, Network, RowDeleteOverlay } from 'v2/components';
 import { default as Typography } from 'v2/components/Typography'; // @TODO solve Circular Dependency issue
-import { truncate, IS_MOBILE } from 'v2/utils';
+import { truncate } from 'v2/utils';
 import { BREAK_POINTS, COLORS, breakpointToNumber } from 'v2/theme';
 import { ExtendedAccount, AddressBook, StoreAccount } from 'v2/types';
 import {
@@ -98,28 +98,29 @@ interface AccountListProps {
   favoritable?: boolean;
   footer?: JSX.Element;
   copyable?: boolean;
+  dashboard?: boolean;
 }
 
 export const screenIsMobileSized = (breakpoint: number): boolean =>
   window.matchMedia(`(max-width: ${breakpoint}px)`).matches;
 
 export default function AccountList(props: AccountListProps) {
-  const { className, currentsOnly, deletable, favoritable, footer, copyable } = props;
+  const { className, currentsOnly, deletable, favoritable, footer, copyable, dashboard } = props;
   const { currentAccounts, accounts, deleteAccountFromCache } = useContext(StoreContext);
   const { updateAccount } = useContext(AccountContext);
 
   const [deletingIndex, setDeletingIndex] = useState();
   const overlayRows = [deletingIndex];
 
+  // Verify if AccountList is used in Dashboard to display Settings button
+  const headingRight = dashboard ? translateRaw('SETTINGS_HEADING') : undefined;
+  const actionLink = dashboard ? ROUTE_PATHS.SETTINGS.path : undefined;
+
   return (
     <DashboardPanel
       heading={translateRaw('ACCOUNT_LIST_TABLE_ACCOUNTS')}
-      headingRight={`+ ${
-        IS_MOBILE
-          ? translateRaw('ACCOUNT_LIST_TABLE_ADD')
-          : translateRaw('ACCOUNT_LIST_TABLE_ADD_ACCOUNT')
-      }`}
-      actionLink={ROUTE_PATHS.ADD_ACCOUNT.path}
+      headingRight={headingRight}
+      actionLink={actionLink}
       className={`AccountList ${className}`}
       footer={footer}
     >

@@ -14,8 +14,9 @@ import React, {
 import styled, { StyledComponentClass } from 'styled-components';
 import { Theme } from '@mycrypto/ui';
 
+import chevronIcon from 'assets/images/chevron-right.svg';
+
 import { default as Typography } from './Typography';
-import { default as IconCaret } from './IconCaret';
 
 export interface TableGroup {
   title: string;
@@ -112,14 +113,12 @@ const TableGroupHead = styled(TableRow)`
   cursor: pointer;
 `;
 
-const TableCaret = styled(IconCaret)<{ isFlipped?: boolean }>`
+const TableCaret = styled.img<{ isFlipped?: boolean }>`
   margin-left: 0.5em;
   ${props =>
     props.isFlipped &&
     `
-    svg {
       transform: rotateX(180deg);
-    }
   `};
 `;
 
@@ -232,7 +231,7 @@ class AbstractTable extends Component<Props, State> {
                   {heading}
                   {isSortableColumn && (
                     <TableCaret
-                      icon="navDownCaret"
+                      src={chevronIcon}
                       isFlipped={sortedColumnDirection === ColumnDirections.Reverse}
                     />
                   )}
@@ -270,7 +269,7 @@ class AbstractTable extends Component<Props, State> {
                 ))}
                 <TableHeading colSpan={head.length - offset}>
                   {title}
-                  <TableCaret icon="navDownCaret" isFlipped={collapsedGroups[title]} />
+                  <TableCaret src={chevronIcon} isFlipped={collapsedGroups[title]} />
                 </TableHeading>
               </TableGroupHead>
               {/* Display group rows if not collapsed. */}
