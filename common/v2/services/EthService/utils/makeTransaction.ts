@@ -10,7 +10,14 @@ import { hexEncodeQuantity } from './hexEncode';
 
 export const makeTransaction = (
   t: Partial<Tx> | Partial<ITransaction> | Partial<IHexStrTransaction> | Buffer | string
-) => new Tx(t);
+) => {
+  if (typeof t === 'object' && t.hasOwnProperty('chainId')) {
+    // @ts-ignore
+    return new Tx(t, { chain: t.chainId });
+  } else {
+    return new Tx(t);
+  }
+};
 
 /* region:start User Input to Hex */
 export const inputGasPriceToHex = (gasPriceGwei: string): string /* Converts to wei from gwei */ =>
