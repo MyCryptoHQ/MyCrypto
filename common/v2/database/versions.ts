@@ -43,7 +43,7 @@ export const getData = () => {
   } else if (staleExists) {
     // if outdated perform migrations & destroy previous db
     console.debug(`Perfoming migration from ${previousDB.version} to ${latestDB.version}`);
-    return latestDB.migrate(localStorage[previousDB.main], latestDB.defaultValues);
+    return latestDB.migrate(JSON.parse(localStorage[previousDB.main]), latestDB.defaultValues);
   } else {
     // if empty return default
     return latestDB.defaultValues;
