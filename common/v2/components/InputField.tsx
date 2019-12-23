@@ -23,7 +23,7 @@ const Label = styled.p`
 `;
 
 interface CustomInputProps {
-  inputError?: string;
+  inputError?: string | JSX.Element;
   showEye?: boolean;
   height?: string;
   maxHeight?: string;
@@ -104,7 +104,7 @@ interface Props {
   type?: string;
   label?: string | JSX.Element;
   value: string | undefined;
-  inputError?: string | undefined;
+  inputError?: string | JSX.Element | undefined;
   showEye?: boolean;
   textarea?: boolean;
   placeholder?: string;

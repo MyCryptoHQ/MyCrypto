@@ -272,6 +272,7 @@
     "VIEWWALLET_SHOWPRIVKEY": "(show)",
     "VIEWWALLET_HIDEPRIVKEY": "(hide)",
     "CX_QUICKSEND": "QuickSend ",
+    "UNEXPECTED_ERROR": "Something went wrong. Please refresh this page and try again or contact us at $link",
     "ERROR_0": "Please enter a valid amount (Must be a number greater than or equal to 0) ",
     "ERROR_1": "Your password must be at least 9 characters. Please ensure it is a strong password. ",
     "ERROR_2": "Sorry! We don't recognize this type of wallet file. ",
