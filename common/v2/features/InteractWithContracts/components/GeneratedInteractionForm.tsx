@@ -210,6 +210,10 @@ export default function GeneratedInteractionForm({
         handleInputChange(inputFromURL.name, inputFromURL.value);
       });
       setIsFormFilledFromURL(true);
+      //if all inputs are prefilled then trigger read button
+      if (isRead && currentFunction.inputs.every(input => input.value)) {
+        submitFormRead(currentFunction);
+      }
     }
   }, [currentFunction]);
 
