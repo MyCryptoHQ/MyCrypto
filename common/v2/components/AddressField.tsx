@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input } from '@mycrypto/ui';
+import { Input, Identicon } from '@mycrypto/ui';
 import { FieldProps, Field, FormikTouched } from 'formik';
 import styled from 'styled-components';
 
@@ -30,6 +30,28 @@ interface Props {
   handleENSResolve?(name: string): Promise<void>;
   onBlur?(ev: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>): void;
 }
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  > div:nth-child(2) {
+    flex: 1;
+  }
+`;
+
+const IdenticonWrapper = styled.div`
+  width: 45px;
+  margin-right: 0.5em;
+`;
+
+const EmptyIdenticon = styled.span`
+  display: block;
+  width: 45px;
+  height: 45px;
+  background-color: #f7f7f7;
+  border-radius: 50%;
+`;
 
 const SInput = styled(Input)`
   font-family: ${monospace};
@@ -69,36 +91,41 @@ function ETHAddressField({
         validate={validateEthAddress}
         validateOnChange={false}
         render={({ field, form }: FieldProps) => (
-          <>
-            <SInput
-              data-lpignore="true"
-              {...field}
-              value={field.value.display}
-              placeholder={placeholder}
-              onChange={e => {
-                form.setFieldValue(fieldName, {
-                  display: e.currentTarget.value,
-                  value: e.currentTarget.value
-                });
-              }}
-              onBlur={async e => {
-                if (!network || !network.chainId) {
-                  return;
-                }
-                const ensTLD = getENSTLDForChain(network.chainId);
-                const isENSAddress = e.currentTarget.value.endsWith(`.${ensTLD}`);
-                const action =
-                  isENSAddress && handleENSResolve
-                    ? (ensName: string) => handleENSResolve(ensName)
-                    : (address: string) =>
-                        form.setFieldValue(fieldName, { display: address, value: address });
-                await action(e.currentTarget.value);
-                form.setFieldTouched(fieldName);
-                if (onBlur) {
-                  onBlur(e);
-                }
-              }}
-            />
+          <div>
+            <Wrapper>
+              <IdenticonWrapper>
+                {field.value.value ? <Identicon address={field.value.value} /> : <EmptyIdenticon />}
+              </IdenticonWrapper>
+              <SInput
+                data-lpignore="true"
+                {...field}
+                value={field.value.display}
+                placeholder={placeholder}
+                onChange={e => {
+                  form.setFieldValue(fieldName, {
+                    display: e.currentTarget.value,
+                    value: e.currentTarget.value
+                  });
+                }}
+                onBlur={async e => {
+                  if (!network || !network.chainId) {
+                    return;
+                  }
+                  const ensTLD = getENSTLDForChain(network.chainId);
+                  const isENSAddress = e.currentTarget.value.endsWith(`.${ensTLD}`);
+                  const action =
+                    isENSAddress && handleENSResolve
+                      ? (ensName: string) => handleENSResolve(ensName)
+                      : (address: string) =>
+                          form.setFieldValue(fieldName, { display: address, value: address });
+                  await action(e.currentTarget.value);
+                  form.setFieldTouched(fieldName);
+                  if (onBlur) {
+                    onBlur(e);
+                  }
+                }}
+              />
+            </Wrapper>
             <ENSStatus
               ensName={form.values[fieldName].display}
               rawAddress={form.values[fieldName].value}
@@ -109,7 +136,7 @@ function ETHAddressField({
             {error && touched && touched.address ? (
               <InlineErrorMsg className="SendAssetsForm-errors">{error}</InlineErrorMsg>
             ) : null}
-          </>
+          </div>
         )}
       />
     </>
