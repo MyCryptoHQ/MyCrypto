@@ -14,7 +14,8 @@ import {
   generateFunctionFieldsDisplayNames,
   getFunctionsFromABI,
   setFunctionOutputValues,
-  constructGasCallProps
+  constructGasCallProps,
+  isPayable
 } from '../helpers';
 import { FieldLabel, BooleanOutputField, BooleanSelector } from './fields';
 import WriteForm from './WriteForm';
@@ -272,16 +273,15 @@ export default function GeneratedInteractionForm({
             <SpinnerWrapper>{isLoading && <Spinner size="x2" />}</SpinnerWrapper>
             {error && <InlineErrorMsg>{error}</InlineErrorMsg>}
             <ActionWrapper>
-              {isRead &&
-                (inputs.length > 0 && (
-                  <ActionButton onClick={() => submitFormRead(currentFunction)}>
-                    {translateRaw('ACTION_16')}
-                  </ActionButton>
-                ))}
+              {isRead && inputs.length > 0 && (
+                <ActionButton onClick={() => submitFormRead(currentFunction)}>
+                  {translateRaw('ACTION_16')}
+                </ActionButton>
+              )}
               {!isRead && (
                 <WriteFormWrapper>
                   <HorizontalLine />
-                  {currentFunction.payable && (
+                  {isPayable(currentFunction) && (
                     <FieldWrapper>
                       <InputField
                         label={translateRaw('VALUE')}
