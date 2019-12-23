@@ -1,5 +1,5 @@
 import { Transaction as EthTx, TxData } from 'ethereumjs-tx';
-import { addHexPrefix } from 'ethereumjs-util';
+import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
 import LedgerEth from '@ledgerhq/hw-app-eth';
 
@@ -45,10 +45,12 @@ export class LedgerWallet extends HardwareWallet {
   }
 
   public async signRawTransaction(t: EthTx): Promise<Buffer> {
+    // Disable EIP155 in Ethereumjs-tx since it conflicts with Ledger
+    t = new EthTx(t, { chain: t.getChainId(), hardfork: 'tangerineWhistle' });
     const txFields = getTransactionFields(t);
-    //t.v = toBuffer(t.getChainId());
-    //t.r = toBuffer(0);
-    //t.s = toBuffer(0);
+    t.v = toBuffer(t.getChainId());
+    t.r = toBuffer(0);
+    t.s = toBuffer(0);
 
     try {
       const ethApp = await makeApp();
@@ -62,14 +64,31 @@ export class LedgerWallet extends HardwareWallet {
 
       const result = await ethApp.signTransaction(this.getPath(), t.serialize().toString('hex'));
 
+      let v = result.v;
+      if (t.getChainId() > 0) {
+        // EIP155 support. check/recalc signature v value.
+        // Please see https://github.com/LedgerHQ/blue-app-eth/commit/8260268b0214810872dabd154b476f5bb859aac0
+        // currently, ledger returns only 1-byte truncated signatur_v
+        const rv = parseInt(v, 16);
+        let cv = t.getChainId() * 2 + 35; // calculated signature v, without signature bit.
+        /* tslint:disable no-bitwise */
+        if (rv !== cv && (rv & cv) !== rv) {
+          // (rv !== cv) : for v is truncated byte case
+          // (rv & cv): make cv to truncated byte
+          // (rv & cv) !== rv: signature v bit needed
+          cv += 1; // add signature v bit.
+        }
+        v = cv.toString(16);
+      }
+
       const txToSerialize: TxData = {
         ...txFields,
-        v: addHexPrefix(result.v),
+        v: addHexPrefix(v),
         r: addHexPrefix(result.r),
         s: addHexPrefix(result.s)
       };
 
-      return new EthTx(txToSerialize).serialize();
+      return new EthTx(txToSerialize, { chain: txFields.chainId }).serialize();
     } catch (err) {
       throw Error(err + '. Check to make sure contract data is on');
     }
