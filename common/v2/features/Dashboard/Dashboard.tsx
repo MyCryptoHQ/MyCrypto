@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import { AccountContext, StoreContext } from 'v2/services/Store';
 import { AccountList, BannerAd, Desktop, Mobile } from 'v2/components';
-import AccountListFooter from 'v2/components/AccountListFooter';
 import { ActionTile, TokenPanel, WalletBreakdown, RecentTransactionList } from './components';
 import { NotificationsPanel } from '../NotificationsPanel';
 import { actions } from './constants';
@@ -45,7 +44,6 @@ export default function Dashboard() {
           <AccountList
             currentsOnly={true}
             className="Dashboard-mobile-modifiedPanel"
-            footer={<AccountListFooter />}
             copyable={true}
             dashboard={true}
           />
@@ -80,7 +78,6 @@ export default function Dashboard() {
               <AccountList
                 currentsOnly={true}
                 className="Dashboard-desktop-modifiedPanel"
-                footer={<AccountListFooter />}
                 copyable={true}
                 dashboard={true}
               />

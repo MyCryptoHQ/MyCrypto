@@ -7,7 +7,6 @@ import { IS_MOBILE } from 'v2/utils';
 import { BREAK_POINTS, MIN_CONTENT_PADDING } from 'v2/theme';
 import { AddressBookContext, SettingsContext } from 'v2/services/Store';
 import { AccountList, FlippablePanel, TabsNav } from 'v2/components';
-import AccountListFooter from 'v2/components/AccountListFooter';
 import { AddressBookPanel, AddToAddressBook, GeneralSettings } from './components';
 
 import settingsIcon from 'common/assets/images/icn-settings.svg';
@@ -48,11 +47,7 @@ function renderAccountPanel() {
   return (
     <FlippablePanel>
       {({ flipped }) =>
-        flipped ? (
-          <p>Add Account</p>
-        ) : (
-          <AccountList deletable={true} copyable={true} footer={<AccountListFooter />} />
-        )
+        flipped ? <p>Add Account</p> : <AccountList deletable={true} copyable={true} />
       }
     </FlippablePanel>
   );

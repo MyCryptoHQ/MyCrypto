@@ -15,7 +15,7 @@ export const SMALLEST_CHART_SHARE_SUPPORTED = 0.03; // 3%
 export const NUMBER_OF_ASSETS_DISPLAYED = 4;
 
 const { BRIGHT_SKY_BLUE } = COLORS;
-const { SCREEN_MD } = BREAK_POINTS;
+const { SCREEN_MD, SCREEN_XS } = BREAK_POINTS;
 
 const BreakDownHeading = styled.div`
   display: flex;
@@ -26,7 +26,7 @@ const BreakDownHeading = styled.div`
   font-weight: bold;
   color: #424242;
 
-  @media (min-width: ${SCREEN_MD}) {
+  @media (min-width: ${SCREEN_XS}) {
     font-size: 24px;
     flex-direction: row;
   }
@@ -34,12 +34,12 @@ const BreakDownHeading = styled.div`
 
 const BreakDownLabel = styled.div`
   color: #b5bfc7;
-  font-size: 12px;
+  font-size: 16px;
   font-style: italic;
   font-weight: normal;
   margin: 5px 0 0 0;
 
-  @media (min-width: ${SCREEN_MD}) {
+  @media (min-width: ${SCREEN_XS}) {
     margin: 0 0 0 5px;
   }
 `;
@@ -206,9 +206,7 @@ export default function WalletBreakdownView({
   const breakdownBalances =
     balances.length > NUMBER_OF_ASSETS_DISPLAYED ? createBreakdownBalances(balances) : balances;
 
-  const handleMouseOver = (_: any, index: number) => {
-    setSelectedAssetIndex(index);
-  };
+  const handleMouseOver = (_: any, index: number) => setSelectedAssetIndex(index);
 
   const allVisible = accounts.length !== 0 && accounts.length === selected.length;
 
@@ -283,12 +281,7 @@ export default function WalletBreakdownView({
         </BreakDownHeadingWrapper>
         <BreakDownBalanceList>
           {breakdownBalances.map(({ name, amount, fiatValue, ticker, isOther }, index) => (
-            <BreakDownBalance
-              key={name}
-              onMouseOver={e => {
-                handleMouseOver(e, index);
-              }}
-            >
+            <BreakDownBalance key={name} onMouseOver={e => handleMouseOver(e, index)}>
               <BreakDownBalanceAssetInfo>
                 <div>
                   <BreakDownBalanceAssetIcon symbol={ticker as TSymbol} size={'26px'} />

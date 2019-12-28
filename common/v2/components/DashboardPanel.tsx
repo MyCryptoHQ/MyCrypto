@@ -1,13 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Heading } from '@mycrypto/ui';
-import Typography from './Typography';
+
 import { COLORS } from 'v2/theme';
 
-import RouterLink from './RouterLink';
 import settingsIcon from 'common/assets/images/icn-settings.svg';
 
 import { Panel } from './Panel';
+import RouterLink from './RouterLink';
+import Typography from './Typography';
 
 const Content = styled.div`
   padding-left: 15px;
@@ -49,11 +50,6 @@ const DHeading = styled(Heading)`
   }
 `;
 
-// const DButton = styled(Button)`
-//   padding: 9px 16px;
-//   font-size: 18px;
-// `;
-
 interface Props {
   heading: any;
   children: any;
@@ -81,7 +77,7 @@ export const DashboardPanel = ({
         {headingRight &&
           (actionLink ? (
             <RouterLink to={actionLink}>
-              <img src={settingsIcon} alt={'settings'} />
+              <img src={settingsIcon} alt={'settings'} width={32} />
               <Typography>{headingRight}</Typography>
             </RouterLink>
           ) : (
