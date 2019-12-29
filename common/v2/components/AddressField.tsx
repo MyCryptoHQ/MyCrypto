@@ -21,6 +21,7 @@ import { monospace } from 'v2/theme';
 
 interface Props {
   error?: string;
+  className?: string;
   fieldName: string;
   touched?: FormikTouched<IFormikFields>;
   placeholder?: string;
@@ -58,6 +59,7 @@ const SInput = styled(Input)`
 `;
 
 function ETHAddressField({
+  className,
   fieldName,
   touched,
   error,
@@ -91,7 +93,7 @@ function ETHAddressField({
         validate={validateEthAddress}
         validateOnChange={false}
         render={({ field, form }: FieldProps) => (
-          <div>
+          <div className={className}>
             <Wrapper>
               <IdenticonWrapper>
                 {field.value.value ? <Identicon address={field.value.value} /> : <EmptyIdenticon />}
