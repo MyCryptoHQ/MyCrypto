@@ -3,12 +3,7 @@ import { Input, Identicon } from '@mycrypto/ui';
 import { FieldProps, Field, FormikTouched } from 'formik';
 import styled from 'styled-components';
 
-import { translateRaw } from 'v2/translations';
-import {
-  isValidETHAddress,
-  getENSTLDForChain,
-  getIsValidENSAddressFunction
-} from 'v2/services/EthService';
+import { getENSTLDForChain } from 'v2/services/EthService';
 import { InlineErrorMsg, ENSStatus } from 'v2/components';
 import { Network, IFormikFields } from 'v2/types';
 import { monospace } from 'v2/theme';
@@ -30,9 +25,14 @@ interface Props {
   isError: boolean;
   handleENSResolve?(name: string): Promise<void>;
   onBlur?(ev: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>): void;
+  onChange?(event: any): void;
 }
 
 const Wrapper = styled.div`
+  width: 100%;
+`;
+
+const InputWrapper = styled.div`
   display: flex;
   align-items: center;
 
@@ -68,33 +68,20 @@ function ETHAddressField({
   isLoading,
   isError,
   handleENSResolve,
-  onBlur
+  onBlur,
+  onChange
 }: Props) {
-  const validateEthAddress = (value: any) => {
-    let errorMsg;
-    if (!value) {
-      errorMsg = translateRaw('REQUIRED');
-    } else if (!isValidETHAddress(value)) {
-      const networkId = network && network.chainId ? network.chainId : 1;
-      const isValidENSName = getIsValidENSAddressFunction(networkId);
-      if (!isValidENSName(value)) {
-        errorMsg = translateRaw('TO_FIELD_ERROR');
-      }
-    }
-    return errorMsg;
-  };
-
   // By destructuring 'field' in the rendered component we are mapping
   // the Inputs 'value' and 'onChange' props to Formiks handlers.
   return (
     <>
       <Field
         name={fieldName}
-        validate={validateEthAddress}
+        //validate={validateEthAddress}
         validateOnChange={false}
         render={({ field, form }: FieldProps) => (
-          <div className={className}>
-            <Wrapper>
+          <Wrapper className={className}>
+            <InputWrapper>
               <IdenticonWrapper>
                 {field.value.value ? <Identicon address={field.value.value} /> : <EmptyIdenticon />}
               </IdenticonWrapper>
@@ -108,6 +95,9 @@ function ETHAddressField({
                     display: e.currentTarget.value,
                     value: e.currentTarget.value
                   });
+                  if (onChange) {
+                    onChange(e);
+                  }
                 }}
                 onBlur={async e => {
                   if (!network || !network.chainId) {
@@ -127,18 +117,20 @@ function ETHAddressField({
                   }
                 }}
               />
-            </Wrapper>
-            <ENSStatus
-              ensName={form.values[fieldName].display}
-              rawAddress={form.values[fieldName].value}
-              chainId={network ? network.chainId : 1}
-              isLoading={isLoading}
-              isError={isError}
-            />
+            </InputWrapper>
+            {handleENSResolve && (
+              <ENSStatus
+                ensName={form.values[fieldName].display}
+                rawAddress={form.values[fieldName].value}
+                chainId={network ? network.chainId : 1}
+                isLoading={isLoading}
+                isError={isError}
+              />
+            )}
             {error && touched && touched.address ? (
               <InlineErrorMsg className="SendAssetsForm-errors">{error}</InlineErrorMsg>
             ) : null}
-          </div>
+          </Wrapper>
         )}
       />
     </>
