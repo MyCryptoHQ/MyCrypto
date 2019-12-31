@@ -15,7 +15,7 @@ import styled, { StyledComponentClass } from 'styled-components';
 import { Theme } from '@mycrypto/ui';
 
 import { default as Typography } from './Typography';
-import { default as IconCaret } from './IconCaret';
+import { default as IconArrow } from './IconArrow';
 
 export interface TableGroup {
   title: string;
@@ -110,17 +110,6 @@ const TableRow = styled.tr`
 const TableGroupHead = styled(TableRow)`
   text-transform: uppercase;
   cursor: pointer;
-`;
-
-const TableCaret = styled(IconCaret)<{ isFlipped?: boolean }>`
-  margin-left: 0.5em;
-  ${props =>
-    props.isFlipped &&
-    `
-    svg {
-      transform: rotateX(180deg);
-    }
-  `};
 `;
 
 const TableCell = styled(Typography)`
@@ -231,10 +220,7 @@ class AbstractTable extends Component<Props, State> {
                 >
                   {heading}
                   {isSortableColumn && (
-                    <TableCaret
-                      icon="navDownCaret"
-                      isFlipped={sortedColumnDirection === ColumnDirections.Reverse}
-                    />
+                    <IconArrow isFlipped={sortedColumnDirection === ColumnDirections.Reverse} />
                   )}
                 </TableHeading>
               );
@@ -270,7 +256,7 @@ class AbstractTable extends Component<Props, State> {
                 ))}
                 <TableHeading colSpan={head.length - offset}>
                   {title}
-                  <TableCaret icon="navDownCaret" isFlipped={collapsedGroups[title]} />
+                  <IconArrow isFlipped={collapsedGroups[title]} />
                 </TableHeading>
               </TableGroupHead>
               {/* Display group rows if not collapsed. */}

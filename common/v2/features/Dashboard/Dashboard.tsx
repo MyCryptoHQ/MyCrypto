@@ -2,36 +2,13 @@ import React, { useContext } from 'react';
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ROUTE_PATHS } from 'v2/config';
-import { COLORS } from 'v2/theme';
 import { AccountContext, StoreContext } from 'v2/services/Store';
-import translate from 'v2/translations';
-import { AccountList, RouterLink, Typography, BannerAd, Desktop, Mobile } from 'v2/components';
+import { AccountList, BannerAd, Desktop, Mobile } from 'v2/components';
 import { ActionTile, TokenPanel, WalletBreakdown, RecentTransactionList } from './components';
 import { NotificationsPanel } from '../NotificationsPanel';
 import { actions } from './constants';
 import './Dashboard.scss';
 
-import settingsIcon from 'common/assets/images/icn-settings.svg';
-
-const AccountListFooterWrapper = styled.div`
-  & * {
-    color: ${COLORS.BRIGHT_SKY_BLUE};
-  }
-  & img {
-    height: 1.1em;
-    margin-right: 0.5em;
-  }s
-`;
-
-const accountListFooter = () => (
-  <AccountListFooterWrapper>
-    <RouterLink to={ROUTE_PATHS.SETTINGS.path}>
-      <img src={settingsIcon} alt={'settings'} />
-      <Typography>{translate('SETTINGS_HEADING')}</Typography>
-    </RouterLink>
-  </AccountListFooterWrapper>
-);
 // Keep the same mobile width as an ActionTile
 const EmptyTile = styled.div`
   width: 110px;
@@ -67,8 +44,8 @@ export default function Dashboard() {
           <AccountList
             currentsOnly={true}
             className="Dashboard-mobile-modifiedPanel"
-            footer={accountListFooter()}
             copyable={true}
+            dashboard={true}
           />
         </div>
         {!isUnlockVIP && <BannerAd />}
@@ -101,8 +78,8 @@ export default function Dashboard() {
               <AccountList
                 currentsOnly={true}
                 className="Dashboard-desktop-modifiedPanel"
-                footer={accountListFooter()}
                 copyable={true}
+                dashboard={true}
               />
             </div>
           </div>

@@ -107,6 +107,8 @@ export function WalletBreakdown() {
             toggleShowChart={toggleShowChart}
             totalFiatValue={totalFiatValue}
             fiat={fiat}
+            accounts={accounts}
+            selected={settings.dashboardAccounts}
           />
         ) : (
           <WalletBreakdownView
@@ -114,6 +116,8 @@ export function WalletBreakdown() {
             toggleShowChart={toggleShowChart}
             totalFiatValue={totalFiatValue}
             fiat={fiat}
+            accounts={accounts}
+            selected={settings.dashboardAccounts}
           />
         )}
       </WalletBreakdownPanel>

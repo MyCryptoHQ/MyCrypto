@@ -1,9 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button, Heading } from '@mycrypto/ui';
+import { Heading } from '@mycrypto/ui';
+
+import { COLORS } from 'v2/theme';
+
+import settingsIcon from 'common/assets/images/icn-settings.svg';
 
 import { Panel } from './Panel';
+import RouterLink from './RouterLink';
+import Typography from './Typography';
 
 const Content = styled.div`
   padding-left: 15px;
@@ -11,10 +16,17 @@ const Content = styled.div`
 `;
 
 const DPanel = styled(Panel)`
-  padding: 0 0 15px 0;
+  padding: 0;
 `;
 
 const DHeadingWrapper = styled.div`
+  & span {
+    color: ${COLORS.BRIGHT_SKY_BLUE};
+    padding-right: 15px;
+  }
+  & img {
+    margin-right: 0.5em;
+  }
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -24,8 +36,9 @@ const DHeadingWrapper = styled.div`
 const DFooterWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 15px 15px 0px 15px;
+  justify-content: center;
+  padding: 30px 0;
+  background: #fafcfc;
 `;
 
 const DHeading = styled(Heading)`
@@ -35,11 +48,6 @@ const DHeading = styled(Heading)`
     font-weight: bold;
     color: #424242;
   }
-`;
-
-const DButton = styled(Button)`
-  padding: 9px 16px;
-  font-size: 18px;
 `;
 
 interface Props {
@@ -68,9 +76,10 @@ export const DashboardPanel = ({
         <DHeading>{heading}</DHeading>
         {headingRight &&
           (actionLink ? (
-            <Link to={actionLink}>
-              <DButton>{headingRight}</DButton>
-            </Link>
+            <RouterLink to={actionLink}>
+              <img src={settingsIcon} alt={'settings'} width={32} />
+              <Typography>{headingRight}</Typography>
+            </RouterLink>
           ) : (
             headingRight
           ))}

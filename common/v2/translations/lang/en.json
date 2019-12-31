@@ -4,6 +4,8 @@
     "ACCOUNTS_DROPDOWN_ALL_ACCOUNTS": "All Accounts",
     "ACCOUNTS_DROPDOWN_SOME_WALLETS": "Showing $current of $total accounts",
     "ACCOUNTS_DROPDOWN_ACTION": "Apply",
+    "WALLET_BREAKDOWN_ALL_ACCOUNTS": "Viewing All Accounts",
+    "WALLET_BREAKDOWN_SOME_WALLETS": "Viewing $current of $total accounts",
     "LABEL": "Label",
     "CONFIRM_TX_FROM": "From",
     "CONFIRM_TX_TO": "To",

@@ -15,16 +15,32 @@ export const SMALLEST_CHART_SHARE_SUPPORTED = 0.03; // 3%
 export const NUMBER_OF_ASSETS_DISPLAYED = 4;
 
 const { BRIGHT_SKY_BLUE } = COLORS;
-const { SCREEN_MD } = BREAK_POINTS;
+const { SCREEN_MD, SCREEN_XS } = BREAK_POINTS;
 
 const BreakDownHeading = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
   margin: 0;
   font-size: 20px;
   font-weight: bold;
   color: #424242;
 
-  @media (min-width: ${SCREEN_MD}) {
+  @media (min-width: ${SCREEN_XS}) {
     font-size: 24px;
+    flex-direction: row;
+  }
+`;
+
+const BreakDownLabel = styled.div`
+  color: #b5bfc7;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: normal;
+  margin: 5px 0 0 0;
+
+  @media (min-width: ${SCREEN_XS}) {
+    margin: 0 0 0 5px;
   }
 `;
 
@@ -144,6 +160,7 @@ const BreakDownBalanceAssetInfo = styled.div`
 
 const BreakDownBalanceAssetName = styled.div`
   margin: 0;
+  cursor: pointer;
 `;
 
 const BreakDownBalanceAssetAmount = styled(BreakDownBalanceAssetName)`
@@ -178,14 +195,27 @@ export default function WalletBreakdownView({
   balances,
   toggleShowChart,
   totalFiatValue,
-  fiat
+  fiat,
+  accounts,
+  selected
 }: WalletBreakdownProps) {
-  const [selectedAssetIndex, setSelectedAssetIndex] = useState(0);
+  const [selectedAssetIndex, setSelectedAssetIndex] = useState();
   const [previousBalances, setPreviousBalances] = useState<Balance[]>([]);
 
   const chartBalances = createChartBalances(balances, totalFiatValue);
   const breakdownBalances =
     balances.length > NUMBER_OF_ASSETS_DISPLAYED ? createBreakdownBalances(balances) : balances;
+
+  const handleMouseOver = (_: any, index: number) => setSelectedAssetIndex(index);
+
+  const allVisible = accounts.length !== 0 && accounts.length === selected.length;
+
+  const label = allVisible
+    ? translateRaw('WALLET_BREAKDOWN_ALL_ACCOUNTS')
+    : translateRaw('WALLET_BREAKDOWN_SOME_WALLETS', {
+        $current: `${selected.length}`,
+        $total: `${accounts.length}`
+      });
 
   const shownSelectedIndex = chartBalances.length > selectedAssetIndex ? selectedAssetIndex : 0;
   const balance = chartBalances[shownSelectedIndex];
@@ -193,13 +223,15 @@ export default function WalletBreakdownView({
     ((balance.fiatValue / totalFiatValue) * 100).toFixed(2)
   );
   if (chartBalances.length !== previousBalances.length) {
-    setSelectedAssetIndex(0);
     setPreviousBalances(chartBalances);
   }
   return (
     <>
       <BreakDownChartWrapper>
-        <BreakDownHeading>{translate('WALLET_BREAKDOWN_TITLE')}</BreakDownHeading>
+        <BreakDownHeading>
+          {translate('WALLET_BREAKDOWN_TITLE')}
+          <BreakDownLabel>({label})</BreakDownLabel>
+        </BreakDownHeading>
         {totalFiatValue === 0 ? (
           <NoAssets />
         ) : (
@@ -248,8 +280,8 @@ export default function WalletBreakdownView({
           <BreakDownMore src={moreIcon} alt="More" onClick={toggleShowChart} />
         </BreakDownHeadingWrapper>
         <BreakDownBalanceList>
-          {breakdownBalances.map(({ name, amount, fiatValue, ticker, isOther }) => (
-            <BreakDownBalance key={name}>
+          {breakdownBalances.map(({ name, amount, fiatValue, ticker, isOther }, index) => (
+            <BreakDownBalance key={name} onMouseOver={e => handleMouseOver(e, index)}>
               <BreakDownBalanceAssetInfo>
                 <div>
                   <BreakDownBalanceAssetIcon symbol={ticker as TSymbol} size={'26px'} />

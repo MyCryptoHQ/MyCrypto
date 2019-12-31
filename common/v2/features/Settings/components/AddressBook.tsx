@@ -31,6 +31,7 @@ const DeleteButton = styled(Button)`
 const AddAccountButton = styled(Button)`
   color: #1eb8e7;
   font-weight: bold;
+  margin-bottom: 15px;
 `;
 
 const BottomRow = styled.div`
