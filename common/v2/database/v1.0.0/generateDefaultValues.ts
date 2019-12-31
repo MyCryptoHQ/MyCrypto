@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { generateUUID, generateAssetUUID, generateContractUUID } from 'v2/utils';
+import { generateAssetUUID, generateContractUUID } from 'v2/utils';
 import { Fiats, DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { NODES_CONFIG, NETWORKS_CONFIG } from '../data';
 import {
@@ -23,7 +23,7 @@ import { toArray, toObject, add } from './helpers';
 /* Transducers */
 const addNetworks = add(LSKeys.NETWORKS)((networks: SeedData) => {
   const formatNetwork = (n: NetworkLegacy): Network => {
-    const baseAssetUuid = generateUUID();
+    const baseAssetUuid = generateAssetUUID(n.chainId);
     return {
       // Also availbale are: blockExplorer, tokenExplorer, tokens aka assets, contracts
       id: n.id,
@@ -106,7 +106,7 @@ const addBaseAssetsToAssets = add(LSKeys.ASSETS)((_, store: LocalStorage) => {
 
 const addFiatsToAssets = add(LSKeys.ASSETS)((fiats: Fiat[], store: LocalStorage) => {
   const formatFiat = ({ code, name }: Fiat): ExtendedAsset => ({
-    uuid: generateUUID(),
+    uuid: generateAssetUUID(code, name),
     name,
     ticker: code,
     networkId: undefined,
