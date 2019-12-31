@@ -9,7 +9,8 @@ import {
   findNextUnusedDefaultLabel,
   getNewDefaultAssetTemplateByNetwork,
   getNetworkById,
-  AddressBookContext
+  AddressBookContext,
+  StoreContext
 } from 'v2/services/Store';
 import { Account, AddressBook, Asset, Network, FormData, WalletId } from 'v2/types';
 import { getWeb3Config } from 'v2/utils/web3';
@@ -22,6 +23,7 @@ function SaveAndRedirect(payload: { formData: FormData }) {
   const { createAddressBooks } = useContext(AddressBookContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { displayNotification } = useContext(NotificationsContext);
+  const { scanTokens } = useContext(StoreContext);
   useEffect(() => {
     const network: Network | undefined = getNetworkById(payload.formData.network);
     if (
@@ -57,6 +59,7 @@ function SaveAndRedirect(payload: { formData: FormData }) {
       };
       createAddressBooks(newLabel);
       createAccountWithID(account, newUUID);
+      scanTokens();
       updateSettingsAccounts([...settings.dashboardAccounts, newUUID]);
       displayNotification(NotificationTemplates.walletAdded, {
         address: account.address
