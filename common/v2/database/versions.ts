@@ -4,16 +4,16 @@ import { noOp } from 'v2/utils';
 import { SCHEMA_DEFAULT, migrate } from './v1.0.0';
 
 export const dbVersions = {
-  'v1.0.0': {
-    version: 'v1.0.0',
-    main: 'MYCStorage_v1.0.0',
-    vault: 'MYCVault_v1.0.0',
+  'v0.2.0': {
+    version: 'v0.2.0',
+    main: 'MYC_Storage_v0.2.0',
+    vault: 'MYC_Vault_v0.2.0',
     defaultValues: SCHEMA_DEFAULT,
     schema: {},
     migrate: (prev: LocalStorage, curr: LocalStorage) => migrate(prev, curr)
   },
-  'v0.0.1': {
-    version: 'v0.0.1',
+  'v0.1.0': {
+    version: 'v0.1.0',
     main: 'MyCryptoStorage',
     vault: 'MyCryptoEncrypted',
     schema: {},
@@ -21,7 +21,7 @@ export const dbVersions = {
   }
 };
 
-export const dbHistory = ['v1.0.0', 'v0.0.1'];
+export const dbHistory = ['v0.2.0', 'v0.1.0'];
 
 // @ts-ignore
 export const getCurrentDBConfig = () => dbVersions[dbHistory[0]];
