@@ -21,10 +21,17 @@ const isValidImport = (importedCache: string, localStorage: string) => {
     const parsedImport = JSON.parse(importedCache);
     const parsedLocalStorage = JSON.parse(localStorage);
 
+    if (parsedImport.version !== parsedLocalStorage.version) {
+      throw new Error(
+        `Outdated version detected. Cannot import ${parsedImport.version} into ${parsedLocalStorage.version}`
+      );
+    }
+
     const oldKeys = Object.keys(parsedImport).sort();
     const newKeys = Object.keys(parsedLocalStorage).sort();
     return JSON.stringify(oldKeys) === JSON.stringify(newKeys);
   } catch (error) {
+    console.debug(error);
     return false;
   }
 };
