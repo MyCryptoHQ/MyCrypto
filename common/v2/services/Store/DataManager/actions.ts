@@ -90,7 +90,7 @@ export function ActionFactory(model: LSKeys, dispatch: Dispatch<ActionV>, state:
 
   // DataContext state is our Single source of truth,
   // so we use it for our exporting.
-  const exportStorage = (): LocalStorage => {
+  const exportStorage = (): Omit<LocalStorage, 'mtime'> => {
     return deMarshallState(state);
   };
 

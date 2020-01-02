@@ -2,6 +2,8 @@ import { LSKeys, LocalStorage } from 'v2/types';
 import { defaultSettings } from '../data';
 
 export const SCHEMA_BASE: LocalStorage = {
+  version: 'v1.0.0',
+  mtime: new Date('01/01/2020').valueOf(),
   [LSKeys.ACCOUNTS]: {},
   [LSKeys.ADDRESS_BOOK]: {},
   [LSKeys.ASSETS]: {},

@@ -25,6 +25,8 @@ export enum LSKeys {
 }
 
 export interface LocalStorage {
+  readonly version: string;
+  readonly mtime: number;
   readonly [LSKeys.SETTINGS]: ISettings;
   readonly [LSKeys.ACCOUNTS]: Record<TUuid, ExtendedAccount>;
   readonly [LSKeys.ASSETS]: Record<TUuid, Asset>;
@@ -35,6 +37,7 @@ export interface LocalStorage {
 }
 
 export interface DataStore {
+  readonly version: string;
   readonly [LSKeys.ACCOUNTS]: ExtendedAccount[];
   readonly [LSKeys.ASSETS]: ExtendedAsset[];
   readonly [LSKeys.NETWORKS]: Network[];
@@ -44,7 +47,7 @@ export interface DataStore {
   readonly [LSKeys.SETTINGS]: ISettings;
 }
 
-export type DataStoreEntry = ValuesType<DataStore>;
+export type DataStoreEntry = ValuesType<Omit<DataStore, 'version'>>;
 
 export type DataStoreItem =
   | $ElementType<SymmetricDifference<DataStoreEntry, ISettings>, number>

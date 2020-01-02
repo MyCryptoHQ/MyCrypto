@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { ValuesType } from 'utility-types';
+import { Omit, ValuesType } from 'utility-types';
 
 import {
   DataStore,
@@ -29,6 +29,7 @@ const memoizeArrayToObj = (key: string) => R.memoizeWith(createArrHash, arrayToO
 // From LocalStorage to the state we want to use within the app.
 export function marshallState(ls: LocalStorage): DataStore {
   return {
+    version: ls.version,
     [LSKeys.ACCOUNTS]: Object.values(ls[LSKeys.ACCOUNTS]),
     [LSKeys.ADDRESS_BOOK]: Object.entries(ls[LSKeys.ADDRESS_BOOK]).reduce(
       (acc, [uuid, contact]: [TUuid, ExtendedAddressBook]) => {
@@ -53,8 +54,10 @@ export function marshallState(ls: LocalStorage): DataStore {
 }
 
 // From convert back to the LocalStorage format.
-export function deMarshallState(st: DataStore): LocalStorage {
+// The mtime and version are handled by useDatabase
+export function deMarshallState(st: DataStore): Omit<LocalStorage, 'mtime'> {
   return {
+    version: st.version,
     [LSKeys.ACCOUNTS]: st[LSKeys.ACCOUNTS].reduce(
       (acc, curr) => ({ ...acc, [curr.uuid]: curr }),
       {}

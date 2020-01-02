@@ -31,7 +31,7 @@ export const DataProvider: React.FC = ({ children }) => {
    *  Create the our master store, sync with persistance layer,
    *  Provide lj
    */
-  const { db, setDb, resetDb, defaultValues } = useDatabase();
+  const { db, updateDb, resetDb, defaultValues } = useDatabase();
 
   const [appState, dispatch]: [DataStore, Dispatch<ActionV>] = useReducer(
     appDataReducer,
@@ -55,7 +55,7 @@ export const DataProvider: React.FC = ({ children }) => {
    */
   const syncDb = useCallback(() => {
     console.debug('Updating LocalStorage');
-    setDb(deMarshallState(appState));
+    updateDb(deMarshallState(appState));
   }, [appState]);
   // By default we sync no more than once a minute
   useThrottleFn(syncDb, 60000, [appState]);

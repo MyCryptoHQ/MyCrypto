@@ -1,2 +1,2 @@
 export * from './v1.0.0';
-export { getCurrentDBConfig, getData } from './versions';
+export { getCurrentDBConfig, getExportFileName, getData } from './versions';

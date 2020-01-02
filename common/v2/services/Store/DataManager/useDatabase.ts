@@ -16,7 +16,13 @@ export function useDatabase() {
 
   return {
     db,
-    setDb,
+    updateDb: (data: Omit<LocalStorage, 'mtime'>) => {
+      const newDb: LocalStorage = {
+        mtime: Date.now(),
+        ...data
+      };
+      setDb(newDb);
+    },
     resetDb,
     defaultValues: currentDB.defaultValues
   };
