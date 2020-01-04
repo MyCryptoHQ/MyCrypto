@@ -115,16 +115,17 @@ const CustomIconWrapper = styled.div`
   height: 100%;
   align-items: center;
   position: absolute;
-  right: 6px;
+  right: 10px;
   top: 0;
 `;
 
 const CustomIcon = styled.span`
+  display: flex;
   border-left: 1px solid #d6dce5;
   img {
-    margin-left: 5px;
-    width: 23px;
-    height: 23px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 8px;
     color: ${BRIGHT_SKY_BLUE}};
     cursor: pointer;
     user-select: none;

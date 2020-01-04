@@ -3,7 +3,7 @@ import InputField from './InputField';
 import Typography from './Typography';
 import styled from 'styled-components';
 
-import checkmark from 'assets/images/checkmark_outline.svg';
+import checkmark from 'common/assets/images/icn-checkmark.svg';
 import editIcon from 'common/assets/images/icn-edit.svg';
 
 const Wrapper = styled.div`
@@ -37,7 +37,7 @@ function EditableText({ saveValue, value, className, bold }: Props) {
         <InputField
           value={editValue}
           onChange={e => setEditValue(e.currentTarget.value)}
-          height={'2rem'}
+          height={'1.5rem'}
           marginBottom={'0'}
           customIcon={() => (
             <img
