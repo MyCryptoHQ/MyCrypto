@@ -15,6 +15,7 @@ import { DataContext } from '../DataManager';
 interface IAddressBookContext {
   addressBook: ExtendedAddressBook[];
   createAddressBooks(addressBooksData: AddressBook): void;
+  updateAddressBooks(uuid: TUuid, addressBooksData: ExtendedAddressBook): void;
   deleteAddressBooks(uuid: TUuid): void;
   getContactByAddress(address: string): ExtendedAddressBook | undefined;
   getContactByAddressAndNetwork(address: string, network: Network): ExtendedAddressBook | undefined;
@@ -32,6 +33,7 @@ export const AddressBookProvider: React.FC = ({ children }) => {
   const state: IAddressBookContext = {
     addressBook,
     createAddressBooks: (item: AddressBook) => model.create({ ...item, uuid: generateUUID() }),
+    updateAddressBooks: (uuid: TUuid, item: ExtendedAddressBook) => model.update(uuid, item),
     deleteAddressBooks: (uuid: TUuid) =>
       model.destroy(addressBook.find(a => a.uuid === uuid) as ExtendedAddressBook),
     getContactByAddress: address => {

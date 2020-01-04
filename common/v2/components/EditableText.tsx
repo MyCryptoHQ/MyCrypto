@@ -23,7 +23,7 @@ interface Props {
   saveValue(value: string): void;
 }
 
-export default function EditableText({ saveValue, value, className, bold }: Props) {
+function EditableText({ saveValue, value, className, bold }: Props) {
   const [editMode, setEditMode] = useState(false);
   const [editValue, setEditValue] = useState('');
 
@@ -63,3 +63,5 @@ export default function EditableText({ saveValue, value, className, bold }: Prop
     </Wrapper>
   );
 }
+
+export default EditableText;
