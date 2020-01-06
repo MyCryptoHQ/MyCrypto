@@ -40,12 +40,17 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
   const fetchSwapAssets = async () => {
     try {
       const assets = await DexService.instance.getTokenList();
+      const fromAsset = assets[0];
+      const sortedAssets = assets.sort((asset1: ISwapAsset, asset2: ISwapAsset) =>
+        (asset1.symbol as string).localeCompare(asset2.symbol)
+      );
+      const toAsset = assets[0];
       if (assets.length > 1) {
         setState((prevState: SwapState) => ({
           ...prevState,
-          assets,
-          fromAsset: assets[0],
-          toAsset: assets[1]
+          assets: sortedAssets,
+          fromAsset,
+          toAsset
         }));
       }
     } catch (e) {
