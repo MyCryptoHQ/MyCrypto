@@ -1,5 +1,3 @@
-import { getCacheRaw } from 'v2/services/Store';
-
 const fallbackLanguage = 'en';
 const repository: {
   [language: string]: {
@@ -56,8 +54,9 @@ export function getTranslators() {
 }
 
 export function translateRaw(key: string, variables?: { [name: string]: string }): string {
-  // we cannot access language from settings context, instead we get the language selection from localstorage
-  const { settings } = getCacheRaw();
+  // TODO: Either find an appropriate way to share the users language setting without needing to update all our translateRaw calls.
+  // In the mean time we default to english.
+  const settings = { language: 'en' };
   const language = settings.language || fallbackLanguage;
   const translatedString =
     (repository[language] && repository[language][key]) || repository[fallbackLanguage][key] || key;
