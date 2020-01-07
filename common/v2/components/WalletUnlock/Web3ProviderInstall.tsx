@@ -30,29 +30,39 @@ function InstallTrunk() {
             </NewTabLink>
 
             <Typography>{translateRaw('TRUST_APP_LABEL')}</Typography>
-            <NewTabLink href="https://itunes.apple.com/us/app/trust-ethereum-wallet/id1288339409">
+            <NewTabLink
+              className="download-option"
+              href="https://itunes.apple.com/us/app/trust-ethereum-wallet/id1288339409"
+            >
               <img src={AppStoreBadgeIMG} />
             </NewTabLink>
-            <NewTabLink href="https://play.google.com/store/apps/details?id=com.wallet.crypto.trustapp">
+            <NewTabLink
+              className="download-option"
+              href="https://play.google.com/store/apps/details?id=com.wallet.crypto.trustapp"
+            >
               <img src={GooglePlayBadgeIMG} />
             </NewTabLink>
           </div>
 
           <div className="CoinbaseWallet-container">
-            <div className="download-option">
-              <NewTabLink href="https://www.coinbase.com/mobile" target="_blank">
-                <div className="CoinbaseWallet-img">
-                  <img src={CoinbaseWalletJPG} />
-                </div>
-              </NewTabLink>
-              <Typography>{translateRaw('COINBASE_APP_LABEL')}</Typography>
-              <NewTabLink href="https://itunes.apple.com/us/app/coinbase-bitcoin-wallet/id886427730?mt=8">
-                <img src={AppStoreBadgeIMG} />
-              </NewTabLink>
-              <NewTabLink href="https://play.google.com/store/apps/details?id=com.coinbase.android">
-                <img src={GooglePlayBadgeIMG} />
-              </NewTabLink>
-            </div>
+            <NewTabLink href="https://www.coinbase.com/mobile" target="_blank">
+              <div className="CoinbaseWallet-img">
+                <img src={CoinbaseWalletJPG} />
+              </div>
+            </NewTabLink>
+            <Typography>{translateRaw('COINBASE_APP_LABEL')}</Typography>
+            <NewTabLink
+              className="download-option"
+              href="https://itunes.apple.com/us/app/coinbase-bitcoin-wallet/id886427730?mt=8"
+            >
+              <img src={AppStoreBadgeIMG} />
+            </NewTabLink>
+            <NewTabLink
+              className="download-option"
+              href="https://play.google.com/store/apps/details?id=com.coinbase.android"
+            >
+              <img src={GooglePlayBadgeIMG} />
+            </NewTabLink>
           </div>
         </div>
       </div>
