@@ -26,13 +26,13 @@ const LoaderText = styled(Typography)`
 `;
 
 interface Props {
-  account: StoreAccount;
+  senderAccount: StoreAccount;
   isSubmitting: boolean;
 }
 
 export default function SetAllowance(props: Props) {
-  const { account, isSubmitting } = props;
-  const Component: any = account && WALLET_STEPS[account.wallet];
+  const { senderAccount, isSubmitting } = props;
+  const Component: any = WALLET_STEPS[senderAccount.wallet];
 
   return (
     <AllowanceWrapper>

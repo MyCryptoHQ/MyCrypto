@@ -25,6 +25,7 @@ interface TStep {
   component: any;
   props: any;
   actions?: any;
+  backBtnText: string;
 }
 
 const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
@@ -84,6 +85,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
   const steps: TStep[] = [
     {
       title: translateRaw('SWAP'),
+      backBtnText: translateRaw('DASHBOARD'),
       component: SwapAssets,
       props: {
         fromAmount,
@@ -108,6 +110,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     },
     {
       title: translateRaw('ACCOUNT_SELECTION_PLACEHOLDER'),
+      backBtnText: translateRaw('SWAP'),
       description: translateRaw('SWAP_ACCOUNT_SELECT_DESC', {
         $fromAsset: (fromAsset && fromAsset.symbol) || 'ETH',
         $toAsset: (toAsset && toAsset.symbol) || 'ETH'
@@ -127,6 +130,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     },
     {
       title: translateRaw('SWAP_CONFIRM_TITLE'),
+      backBtnText: translateRaw('ACCOUNT_SELECTION_PLACEHOLDER'),
       component: ConfirmSwap,
       props: {
         fromAsset,
@@ -146,9 +150,9 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
       ? [
           {
             title: translateRaw('SWAP_ALLOWANCE_TITLE'),
+            backBtnText: translateRaw('SWAP_CONFIRM_TITLE'),
             component: SetAllowance,
             props: {
-              account,
               isSubmitting,
               network: account && account.network,
               senderAccount: account,
@@ -163,6 +167,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
       : []),
     {
       title: translateRaw('SWAP'),
+      backBtnText: translateRaw('SWAP_CONFIRM_TITLE'),
       component: account && WALLET_STEPS[account.wallet],
       props: {
         network: account && account.network,
@@ -175,6 +180,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     },
     {
       title: translateRaw('SWAP_RECEIPT_TITLE'),
+      backBtnText: translateRaw('DEP_SIGNTX'),
       component: SwapTransactionReceipt,
       props: {
         txReceipt,
@@ -198,6 +204,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
       width="650px"
       heading={stepObject.title}
       description={stepObject.description}
+      backBtnText={stepObject.backBtnText}
     >
       <StepComponent
         key={`${stepObject.title}${step}`}
