@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
+import * as R from 'ramda';
 
 import translate from 'v2/translations';
 import { WALLETS_CONFIG, IWalletConfig } from 'v2/config';
-import { WalletId, FormData } from 'v2/types';
+import { WalletId, FormData, Network } from 'v2/types';
 import { InlineErrorMsg, NewTabLink } from 'v2/components';
+import { withContext } from 'v2/utils';
+import {
+  SettingsContext,
+  ISettingsContext,
+  INetworkContext,
+  NetworkContext
+} from 'v2/services/Store';
 import { WalletFactory } from 'v2/services/WalletService';
 import { FormDataActionType as ActionType } from 'v2/features/AddAccount/types';
 import './Web3Provider.scss';
@@ -23,8 +31,8 @@ interface State {
 
 const WalletService = WalletFactory(WalletId.WEB3);
 
-class Web3ProviderDecrypt extends Component<Props, State> {
-  constructor(props: Props) {
+class Web3ProviderDecrypt extends Component<Props & ISettingsContext & INetworkContext, State> {
+  constructor(props: Props & ISettingsContext & INetworkContext) {
     super(props);
     this.state = {
       web3Unlocked: undefined,
@@ -77,8 +85,14 @@ class Web3ProviderDecrypt extends Component<Props, State> {
   }
 
   public async unlockWallet() {
+    const { updateSettingsNode, addNodeToNetwork, createWeb3Node, networks } = this.props;
+    const handleUnlock = (network: Network) => {
+      updateSettingsNode('web3');
+      addNodeToNetwork(createWeb3Node(network.id), network);
+    };
+
     try {
-      const walletPayload = await WalletService.init();
+      const walletPayload = await WalletService.init(networks, handleUnlock);
       if (!walletPayload) {
         throw new Error('Failed to unlock web3 wallet');
       }
@@ -104,4 +118,7 @@ class Web3ProviderDecrypt extends Component<Props, State> {
   }
 }
 
-export default Web3ProviderDecrypt;
+export default R.pipe(
+  withContext(SettingsContext),
+  withContext(NetworkContext)
+)(Web3ProviderDecrypt);

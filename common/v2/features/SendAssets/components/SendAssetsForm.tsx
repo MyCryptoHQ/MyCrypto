@@ -3,7 +3,7 @@ import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
 import _, { isEmpty } from 'lodash';
-import { formatEther, bigNumberify } from 'ethers/utils';
+import { formatEther } from 'ethers/utils';
 import BN from 'bn.js';
 import styled from 'styled-components';
 import questionSVG from 'assets/images/icn-question.svg';
@@ -20,10 +20,9 @@ import {
 import {
   getNetworkById,
   getBaseAssetByNetwork,
-  getBalanceFromAccount,
   getAccountsByAsset,
   StoreContext,
-  getTokenBalanceFromAccount
+  getAccountBalance
 } from 'v2/services/Store';
 import {
   Asset,
@@ -142,7 +141,7 @@ export default function SendAssetsForm({
   // txConfig // @TODO Use prop in case goToPrevStep or URI prefill.
   onComplete
 }: IStepComponentProps) {
-  const { accounts, assets } = useContext(StoreContext);
+  const { accounts, assets, networks, getAccount } = useContext(StoreContext);
   const { getAssetRate } = useContext(RatesContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
@@ -218,14 +217,15 @@ export default function SendAssetsForm({
           };
 
           const setAmountFieldToAssetMax = () => {
-            if (values.asset && values.account && baseAsset) {
+            const account = getAccount(values.account);
+            if (values.asset && account && baseAsset) {
               const isERC20 = isERC20Tx(values.asset);
               const balance = isERC20
                 ? weiToFloat(
-                    bigNumberify(getTokenBalanceFromAccount(values.account, values.asset)),
+                    getAccountBalance(account, values.asset),
                     values.asset.decimal
                   ).toString()
-                : formatEther(getBalanceFromAccount(values.account));
+                : formatEther(getAccountBalance(account).toString());
               const gasPrice = values.advancedTransaction
                 ? values.gasPriceField
                 : values.gasPriceSlider;
@@ -280,14 +280,17 @@ export default function SendAssetsForm({
                         //TODO get assetType onChange
                         handleFieldReset();
                         if (option && option.networkId) {
-                          fetchGasPriceEstimates(option.networkId).then(data => {
+                          const network = getNetworkById(option.networkId, networks);
+                          fetchGasPriceEstimates(network).then(data => {
                             form.setFieldValue('gasEstimates', data);
                             form.setFieldValue('gasPriceSlider', data.fast);
                           });
-                          const network = getNetworkById(option.networkId);
                           form.setFieldValue('network', network || {});
                           if (network) {
-                            setBaseAsset(getBaseAssetByNetwork(network) || ({} as Asset));
+                            setBaseAsset(
+                              getBaseAssetByNetwork({ network, assets: assets(validAccounts) }) ||
+                                ({} as Asset)
+                            );
                           }
                         }
                       }}

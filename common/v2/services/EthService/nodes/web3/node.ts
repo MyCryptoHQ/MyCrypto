@@ -56,8 +56,6 @@ export function isWeb3Node(nodeLib: INode | Web3Node): nodeLib is Web3Node {
   return nodeLib instanceof Web3Node;
 }
 
-export const Web3Service = 'MetaMask / Web3';
-
 export async function getChainIdAndLib() {
   const lib = new Web3Node();
   const chainId = await lib.getNetVersion();

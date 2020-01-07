@@ -81,7 +81,7 @@ export default function GasSelector(props: Props) {
 
     try {
       const { network } = account;
-      const { fast } = await fetchGasPriceEstimates(network.id);
+      const { fast } = await fetchGasPriceEstimates(network);
       setGasPrice(fast.toString());
       const fetchedGasPrice = hexWeiToString(inputGasPriceToHex(fast.toString()));
       const fetchedNonce = await getNonce(network, account);

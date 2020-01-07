@@ -20,9 +20,10 @@ import {
   getDecimalFromEtherUnit,
   gasPriceToBase,
   hexWeiToString,
-  getAccountByAddressAndNetworkName,
   getBaseAssetByNetwork,
-  AccountContext
+  AccountContext,
+  AssetContext,
+  NetworkContext
 } from 'v2/services';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { ProviderHandler } from 'v2/services/EthService';
@@ -52,10 +53,18 @@ interface State {
 }
 
 const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) => {
-  const { addNewTransactionToAccount } = useContext(AccountContext);
+  const { assets } = useContext(AssetContext);
+  const { networks } = useContext(NetworkContext);
+
+  const { addNewTransactionToAccount, getAccountByAddressAndNetworkName } = useContext(
+    AccountContext
+  );
   const handleFormSubmit: TStepAction = (payload: IFormikFields, after) => {
     const rawTransaction: ITxObject = processFormDataToTx(payload);
-    const baseAsset: Asset | undefined = getBaseAssetByNetwork(payload.network);
+    const baseAsset: Asset | undefined = getBaseAssetByNetwork({
+      network: payload.network,
+      assets
+    });
     setState((prevState: State) => ({
       ...prevState,
       txConfig: {
@@ -103,7 +112,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
       .then(retrievedTxReceipt => retrievedTxReceipt)
       .catch(txHash => provider.getTransactionByHash(txHash))
       .then(retrievedTransactionReceipt => {
-        const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt);
+        const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(assets, networks);
         addNewTransactionToAccount(
           state.txConfig.senderAccount,
           { ...txReceipt, stage: ITxStatus.PENDING } || {}
@@ -118,9 +127,14 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
 
   const handleSignedTx: TStepAction = (payload: ISignedTx, after) => {
     const decodedTx = decodeTransaction(payload);
-    const networkDetected = getNetworkByChainId(decodedTx.chainId);
-    const contractAsset = getAssetByContractAndNetwork(decodedTx.to || undefined, networkDetected);
-    const baseAsset = getBaseAssetByNetwork(networkDetected || ({} as Network));
+    const networkDetected = getNetworkByChainId(decodedTx.chainId, networks);
+    const contractAsset = getAssetByContractAndNetwork(decodedTx.to || undefined, networkDetected)(
+      assets
+    );
+    const baseAsset = getBaseAssetByNetwork({
+      network: networkDetected || ({} as Network),
+      assets
+    });
 
     setState((prevState: State) => ({
       ...prevState,

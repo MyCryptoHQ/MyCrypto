@@ -1,6 +1,5 @@
 import { GAS_PRICE_DEFAULT } from 'v2/config';
 import { GasEstimates, Network, IHexStrWeb3Transaction } from 'v2/types';
-import { getNetworkByName } from 'v2/services/Store';
 import { ProviderHandler } from 'v2/services/EthService';
 import { fetchGasEstimates } from './gas';
 
@@ -33,9 +32,8 @@ export function getDefaultEstimates(network: Network | undefined) {
   }
 }
 
-export async function fetchGasPriceEstimates(networkId: string): Promise<GasEstimates> {
+export async function fetchGasPriceEstimates(network: Network): Promise<GasEstimates> {
   // Don't try on non-estimating network
-  const network = getNetworkByName(networkId);
   if (!network || network.isCustom || !network.shouldEstimateGasPrice) {
     const defaultEstimates: GasEstimates = getDefaultEstimates(network);
     return defaultEstimates;

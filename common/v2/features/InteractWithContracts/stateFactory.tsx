@@ -2,16 +2,15 @@ import { useContext, useCallback } from 'react';
 import { debounce } from 'lodash';
 
 import { TUseStateReducerFactory, generateUUID, fromTxReceiptObj } from 'v2/utils';
-import { DEFAULT_NETWORK, CREATION_ADDRESS } from 'v2/config';
-import { Contract, StoreAccount } from 'v2/types';
+import { CREATION_ADDRESS } from 'v2/config';
+import { NetworkId, Contract, StoreAccount } from 'v2/types';
 import {
   getNetworkById,
   ContractContext,
+  NetworkContext,
   isValidETHAddress,
   ProviderHandler,
   getGasEstimate,
-  updateNetworks,
-  deleteContracts,
   getResolvedENSAddress,
   EtherscanService,
   getIsValidENSAddressFunction
@@ -25,7 +24,7 @@ import { ABIItem, InteractWithContractState } from './types';
 import { makeTxConfigFromTransaction, reduceInputParams, constructGasCallProps } from './helpers';
 
 const interactWithContractsInitialState = {
-  network: getNetworkById(DEFAULT_NETWORK)!,
+  network: {},
   addressOrDomainInput: '',
   resolvingDomain: false,
   contractAddress: '',
@@ -50,12 +49,13 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   state,
   setState
 }) => {
-  const { getContractsByIds, createContractWithId } = useContext(ContractContext);
+  const { getContractsByIds, createContractWithId, deleteContracts } = useContext(ContractContext);
+  const { networks, updateNetwork } = useContext(NetworkContext);
 
-  const handleNetworkSelected = (networkId: any) => {
+  const handleNetworkSelected = (networkId: NetworkId) => {
     setState((prevState: InteractWithContractState) => ({
       ...prevState,
-      network: getNetworkById(networkId)!,
+      network: getNetworkById(networkId, networks),
       contract: undefined,
       contractAddress: '',
       addressOrDomainInput: '',
@@ -218,7 +218,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     createContractWithId(newContract, uuid);
     const network = Object.assign({}, state.network);
     network.contracts.unshift(uuid);
-    updateNetworks(network.id, network);
+    updateNetwork(network.id, network);
     updateNetworkContractOptions();
     handleContractSelected(newContract);
   };
@@ -227,7 +227,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     deleteContracts(contractUuid);
     const network = state.network;
     network.contracts = network.contracts.filter(item => item !== contractUuid);
-    updateNetworks(network.id, network);
+    updateNetwork(network.id, network);
     updateNetworkContractOptions();
     handleContractSelected(customContract);
   };

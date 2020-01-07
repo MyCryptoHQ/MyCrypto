@@ -10,7 +10,6 @@ import {
   IHexStrWeb3Transaction
 } from 'v2/types';
 
-import { getNetworkByChainId } from 'v2/services/Store';
 import {
   bigNumGasPriceToViewableGwei,
   bigNumGasLimitToViewable,
@@ -41,14 +40,6 @@ export function decodeTransaction(signedTx: string) {
     data: decodedTransaction.data,
     chainId: decodedTransaction.chainId
   };
-}
-
-export async function getNetworkNameFromSignedTx(signedTx: string) {
-  const decodedTransaction = utils.parseTransaction(signedTx);
-  const chainId = decodedTransaction.chainId.toString();
-  const network = await getNetworkByChainId(parseFloat(chainId));
-
-  return network ? network.name : undefined;
 }
 
 const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {

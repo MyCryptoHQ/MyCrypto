@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { translateRaw } from 'v2/translations';
 import { ExtendedContentPanel } from 'v2/components';
-import { ROUTE_PATHS } from 'v2/config';
+import { ROUTE_PATHS, DEFAULT_NETWORK } from 'v2/config';
 import { useStateReducer } from 'v2/utils';
 import { ITxReceipt, ISignedTx } from 'v2/types';
+import { getNetworkById, NetworkContext } from 'v2/services/Store';
 
 import { interactWithContractsInitialState, InteractWithContractsFactory } from './stateFactory';
 import { Interact, InteractionReceipt } from './components';
@@ -22,6 +23,12 @@ interface TStep {
 
 const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
   const [step, setStep] = useState(0);
+
+  const { networks } = useContext(NetworkContext);
+  const initialState = {
+    ...interactWithContractsInitialState,
+    network: getNetworkById(DEFAULT_NETWORK, networks)
+  };
   const {
     interactWithContractsState,
     handleNetworkSelected,
@@ -39,7 +46,7 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
     handleSaveContractSubmit,
     handleGasSelectorChange,
     handleDeleteContract
-  } = useStateReducer(InteractWithContractsFactory, interactWithContractsInitialState);
+  } = useStateReducer(InteractWithContractsFactory, initialState);
 
   const { account }: InteractWithContractState = interactWithContractsState;
 

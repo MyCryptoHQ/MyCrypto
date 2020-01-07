@@ -4,15 +4,18 @@ import {
   getAssetByContractAndNetwork
 } from 'v2/services/Store';
 import { ERC20, fromWei, fromTokenBase, Wei, hexWeiToString } from 'v2/services/EthService';
-import { ITxReceipt } from 'v2/types';
+import { ITxReceipt, ExtendedAsset, Network } from 'v2/types';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 
-export function fromTxReceiptObj(txReceipt: ITxReceipt): ITxReceipt | undefined {
+export const fromTxReceiptObj = (txReceipt: ITxReceipt) => (
+  assets: ExtendedAsset[],
+  networks: Network[]
+): ITxReceipt | undefined => {
   const chainId: number = txReceipt.networkId || txReceipt.chainId;
-  const networkDetected = getNetworkByChainId(chainId);
+  const networkDetected = getNetworkByChainId(chainId, networks);
   if (networkDetected) {
-    const contractAsset = getAssetByContractAndNetwork(txReceipt.to, networkDetected);
-    const baseAsset = getBaseAssetByNetwork(networkDetected);
+    const contractAsset = getAssetByContractAndNetwork(txReceipt.to, networkDetected)(assets);
+    const baseAsset = getBaseAssetByNetwork({ network: networkDetected, assets });
     return {
       blockNumber: txReceipt.blockNumber,
       network: networkDetected,
@@ -34,4 +37,4 @@ export function fromTxReceiptObj(txReceipt: ITxReceipt): ITxReceipt | undefined 
     };
   }
   return;
-}
+};

@@ -5,8 +5,8 @@ import { Web3Provider } from 'ethers/providers/web3-provider';
 import { WALLETS_CONFIG } from 'v2/config';
 import { ISignComponentProps } from 'v2/types';
 import translate, { translateRaw } from 'v2/translations';
-import { getWeb3Config } from 'v2/utils/web3';
-import { getNetworkByChainId } from 'v2/services/Store';
+import { withContext, getWeb3Config } from 'v2/utils';
+import { getNetworkByChainId, INetworkContext, NetworkContext } from 'v2/services/Store';
 import './Web3.scss';
 
 declare global {
@@ -41,7 +41,7 @@ async function getWeb3Provider() {
   return new ethers.providers.Web3Provider(ethereumProvider);
 }
 
-export default class SignTransactionWeb3 extends Component<ISignComponentProps, Web3UserState> {
+class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContext, Web3UserState> {
   public state: Web3UserState = {
     account: undefined,
     network: undefined,
@@ -51,7 +51,7 @@ export default class SignTransactionWeb3 extends Component<ISignComponentProps, 
     walletState: WalletSigningState.UNKNOWN
   };
 
-  constructor(props: ISignComponentProps) {
+  constructor(props: ISignComponentProps & INetworkContext) {
     super(props);
     this.getWeb3Account = this.getWeb3Account.bind(this);
   }
@@ -72,8 +72,8 @@ export default class SignTransactionWeb3 extends Component<ISignComponentProps, 
   }
 
   public render() {
-    const { senderAccount, rawTransaction } = this.props;
-    const detectedNetwork = getNetworkByChainId(rawTransaction.chainId);
+    const { senderAccount, rawTransaction, networks } = this.props;
+    const detectedNetwork = getNetworkByChainId(rawTransaction.chainId, networks);
     const networkName = detectedNetwork ? detectedNetwork.name : 'Unknown Network';
     const walletConfig = getWeb3Config();
     const { accountMatches, networkMatches, walletState, submitting } = this.state;
@@ -163,8 +163,11 @@ export default class SignTransactionWeb3 extends Component<ISignComponentProps, 
   }
 
   private checkNetworkMatches(Web3Network: ethers.utils.Network) {
-    const { name: networkName } = this.props.network;
-    const getWeb3NetworkbyChainId = getNetworkByChainId(Web3Network.chainId);
+    const {
+      network: { name: networkName },
+      networks
+    } = this.props;
+    const getWeb3NetworkbyChainId = getNetworkByChainId(Web3Network.chainId, networks);
     if (!getWeb3NetworkbyChainId) {
       return;
     }
@@ -207,3 +210,5 @@ export default class SignTransactionWeb3 extends Component<ISignComponentProps, 
     }
   }
 }
+
+export default withContext(NetworkContext)(SignTransactionWeb3);

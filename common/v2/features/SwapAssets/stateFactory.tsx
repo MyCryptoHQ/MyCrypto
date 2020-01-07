@@ -1,6 +1,8 @@
+import { useContext } from 'react';
+
 import translate from 'v2/translations';
 import { TUseStateReducerFactory, fromTxReceiptObj, formatErrorEmailMarkdown } from 'v2/utils';
-import { DexService, ProviderHandler } from 'v2/services';
+import { DexService, ProviderHandler, AssetContext, NetworkContext } from 'v2/services';
 import { StoreAccount } from 'v2/types';
 import { isWeb3Wallet } from 'v2/utils/web3';
 
@@ -32,6 +34,9 @@ const swapFlowInitialState = {
 };
 
 const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }) => {
+  const { assets: userAssets } = useContext(AssetContext);
+  const { networks } = useContext(NetworkContext);
+
   const fetchSwapAssets = async () => {
     try {
       const assets = await DexService.instance.getTokenList();
@@ -200,7 +205,12 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         : makeTradeTransactionFromDexTrade;
       const rawTransaction = await makeTransaction(dexTrade, account);
 
-      const txConfig = makeTxConfigFromTransaction(rawTransaction, account, fromAsset, fromAmount);
+      const txConfig = makeTxConfigFromTransaction(userAssets)(
+        rawTransaction,
+        account,
+        fromAsset,
+        fromAmount
+      );
 
       setState((prevState: SwapState) => ({
         ...prevState,
@@ -245,7 +255,12 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
     await provider.waitForTransaction(allowanceTxHash);
 
     const rawTransaction = await makeTradeTransactionFromDexTrade(dexTrade, account);
-    const txConfig = makeTxConfigFromTransaction(rawTransaction, account, fromAsset, fromAmount);
+    const txConfig = makeTxConfigFromTransaction(userAssets)(
+      rawTransaction,
+      account,
+      fromAsset,
+      fromAmount
+    );
     setState((prevState: SwapState) => ({
       ...prevState,
       isSubmitting: false,
@@ -277,7 +292,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         .then(retrievedTxReceipt => retrievedTxReceipt)
         .catch(hash => provider.getTransactionByHash(hash))
         .then(retrievedTransactionReceipt => {
-          const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt);
+          const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(userAssets, networks);
           setState((prevState: SwapState) => ({
             ...prevState,
             txReceipt

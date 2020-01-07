@@ -7,14 +7,14 @@ import { Checkbox } from 'v2/components';
 import { useOnClickOutside, truncate } from 'v2/utils';
 import { getLabelByAccount, AddressBookContext } from 'v2/services/Store';
 import { COLORS } from 'v2/theme';
-import { ExtendedAccount, ExtendedAddressBook } from 'v2/types';
+import { ExtendedAccount, ExtendedAddressBook, TUuid } from 'v2/types';
 
 const { BRIGHT_SKY_BLUE } = COLORS;
 
 interface AccountDropdownProps {
   accounts: ExtendedAccount[];
-  selected: string[];
-  onSubmit(selected: string[]): void;
+  selected: TUuid[];
+  onSubmit(selected: TUuid[]): void;
 }
 
 interface SDropdownProps {
@@ -107,7 +107,7 @@ const AccountDropdown = ({ accounts = [], selected = [], onSubmit }: AccountDrop
   const { addressBook } = useContext(AddressBookContext);
   const ref = useRef<HTMLElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [draftSelected, setDraftSelected] = useState<string[]>([]);
+  const [draftSelected, setDraftSelected] = useState<TUuid[]>([]);
 
   useOnClickOutside(ref, () => setIsOpen(false));
 
@@ -134,10 +134,10 @@ const AccountDropdown = ({ accounts = [], selected = [], onSubmit }: AccountDrop
     onSubmit(changed);
   };
 
-  const toggleSingleAccount = (uuid: string) => {
+  const toggleSingleAccount = (uuid: TUuid) => {
     const changed = draftSelected.includes(uuid)
       ? draftSelected.filter(entry => entry !== uuid)
-      : draftSelected.concat(uuid);
+      : draftSelected.concat([uuid]);
     setDraftSelected(changed);
     onSubmit(changed);
   };

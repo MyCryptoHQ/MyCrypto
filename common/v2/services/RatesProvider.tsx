@@ -1,10 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { isEmpty } from 'lodash';
 
+import { usePromise, useEffectOnce } from 'v2/vendor';
 import { StoreContext, SettingsContext } from 'v2/services/Store';
 import { PollingService } from 'v2/workers';
 import { IRates, TTicker, Asset } from 'v2/types';
 import { notUndefined } from 'v2/utils';
+
 import { AssetMapService } from './ApiService';
 
 interface State {
@@ -36,12 +38,8 @@ const fetchAssetMappingList = async (): Promise<AssetMappingListObject | any> =>
   AssetMapService.instance.getAssetMap();
 
 const destructureCoinGeckoIds = (rates: IRates, assetMap: AssetMappingListObject): IRates => {
-  /* {
-    "ethereum":{ "usd": 123.45,"eur": 234.56 }
-  } => {
-    [uuid for coinGeckoId "ethereum"]: { "usd": 123.45, "eur": 234.56 }
-  } */
-
+  // From: { ["ethereum"]: { "usd": 123.45,"eur": 234.56 } }
+  // To: { [uuid for coinGeckoId "ethereum"]: { "usd": 123.45, "eur": 234.56 } }
   const updateRateObj = (acc: any, curValue: TTicker): IRates => {
     const data: any = Object.keys(assetMap).find(uuid => assetMap[uuid].coinGeckoId === curValue);
     acc[data] = rates[curValue];
@@ -56,86 +54,67 @@ const pullCoinGeckoIDs = (assetMap: AssetMappingListObject, uuids: TTicker[]): s
     .map((uuid: TTicker) => (!assetMap || !assetMap[uuid] ? undefined : assetMap[uuid].coinGeckoId))
     .filter(notUndefined);
 
-type IWorker = PollingService | undefined;
-
 export const RatesContext = createContext({} as State);
 
 export function RatesProvider({ children }: { children: React.ReactNode }) {
   const { assetUUIDs } = useContext(StoreContext);
   const { settings, updateSettingsRates } = useContext(SettingsContext);
-  const [rates, setRates] = useState(settings.rates || ({} as IRates));
-  const [isSettingsInitialized, setIsSettingsInitialized] = useState(false);
-  const [worker, setWorker] = useState(undefined as IWorker);
+  const [assetMapping, setAssetMapping] = useState({});
 
-  useEffect(() => {
-    if (isEmpty(rates) || isSettingsInitialized) return;
-    updateSettingsRates(rates);
-    setIsSettingsInitialized(true);
-  }, [rates, isSettingsInitialized]);
-
-  useEffect(() => {
-    // Save settings rates again when the assets change.
-    setIsSettingsInitialized(false);
-  }, [Object.keys(rates)]);
-
-  // On changes to the worker, and worker exists then start the worker.
-  useEffect(() => {
-    if (!worker) return;
-    worker.start();
-  }, [worker]);
+  // Get our asset dict which maps myc_uuids to coingecko_ids
+  const mounted = usePromise();
+  useEffectOnce(() => {
+    (async () => {
+      // The cryptocompare api that our proxie uses fails gracefully and will return a conversion rate
+      // even if some are tickers are invalid (e.g WETH, GoerliETH etc.)
+      const value = await mounted(
+        fetchAssetMappingList().then(e => {
+          return e;
+        })
+      );
+      setAssetMapping(value);
+    })();
+  });
 
   const currentAssetUUIDs = assetUUIDs();
 
-  // If account assetUUIDs changes, we'll need to create a new worker.
   useEffect(() => {
-    // The cryptocompare api that our proxie uses fails gracefully and will return a conversion rate
-    // even if some are tickers are invalid (e.g WETH, GoerliETH etc.)
-    fetchAssetMappingList().then((coinMappingObj: AssetMappingListObject) => {
-      const formattedCoinGeckoIds = pullCoinGeckoIDs(
-        coinMappingObj,
-        currentAssetUUIDs as TTicker[]
-      );
+    // Wait till we have fetched our asset mapping
+    if (isEmpty(assetMapping)) return;
 
-      const createWorker = () => {
-        setWorker(
-          new PollingService(
-            buildAssetQueryUrl(formattedCoinGeckoIds, DEFAULT_FIAT_PAIRS), // @TODO: figure out how to handle the conversion more elegantly then `DEFAULT_FIAT_RATE`
-            POLLING_INTERRVAL,
-            (data: IRates) =>
-              setRates({ ...rates, ...destructureCoinGeckoIds(data, coinMappingObj) }),
-            err => {
-              console.debug('[RatesProvider]', err);
-              terminateWorker();
-            }
-          )
-        );
-      };
-      const terminateWorker = () => {
-        if (!worker) return;
-        worker.stop();
-        worker.close();
-      };
+    const coinMappingObj: AssetMappingListObject = assetMapping;
+    const formattedCoinGeckoIds = pullCoinGeckoIDs(coinMappingObj, currentAssetUUIDs as TTicker[]);
 
-      // If a worker exists already, terminate the previous worker
-      if (worker) {
-        terminateWorker();
-      }
+    const worker = new PollingService(
+      buildAssetQueryUrl(formattedCoinGeckoIds, DEFAULT_FIAT_PAIRS), // @TODO: More elegant conversion then `DEFAULT_FIAT_RATE`
+      POLLING_INTERRVAL,
+      (data: IRates) => {
+        updateSettingsRates({ ...state.rates, ...destructureCoinGeckoIds(data, coinMappingObj) });
+      },
+      err => console.debug('[RatesProvider]', err)
+    );
 
-      // Then create a worker
-      createWorker();
-      return terminateWorker;
-    });
-  }, [currentAssetUUIDs.length]);
+    // Start Polling service
+    worker.start();
+
+    // Make sure to close the worker onUnMount.
+    return () => {
+      worker.stop();
+      worker.close();
+    };
+  }, [assetMapping, currentAssetUUIDs.length]); //
 
   const state: State = {
-    rates: {},
+    get rates() {
+      return settings.rates;
+    },
     getRate: (ticker: TTicker) => {
       // @ts-ignore until we find a solution for TS7053 error
-      return rates[ticker] ? rates[ticker].usd : DEFAULT_FIAT_RATE;
+      return state.rates[ticker] ? state.rates[ticker].usd : DEFAULT_FIAT_RATE;
     },
     getAssetRate: (asset: Asset) => {
       const uuid = asset.uuid;
-      return rates[uuid] ? rates[uuid].usd : DEFAULT_FIAT_RATE;
+      return state.rates[uuid] ? state.rates[uuid].usd : DEFAULT_FIAT_RATE;
     }
   };
 

@@ -1,11 +1,13 @@
 import React, { useState, useContext, useMemo, createContext, useEffect } from 'react';
 
 import {
+  Account,
   StoreAccount,
   StoreAsset,
   Network,
   TTicker,
   ExtendedAsset,
+  ExtendedAccount,
   WalletId,
   Asset,
   ITxReceipt
@@ -15,7 +17,7 @@ import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from 'v2/servi
 
 import { getAccountsAssetsBalances, accountUnlockVIPDetected } from './BalanceService';
 import { getStoreAccounts, getPendingTransactionsFromAccounts } from './helpers';
-import { AssetContext, getTotalByAsset } from './Asset';
+import { AssetContext, getTotalByAsset, getAssetByTicker } from './Asset';
 import { AccountContext, getDashboardAccounts } from './Account';
 import { SettingsContext } from './Settings';
 import { NetworkContext } from './Network';
@@ -24,75 +26,96 @@ interface State {
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
   readonly isUnlockVIP: boolean;
+  readonly currentAccounts: StoreAccount[];
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totalFiat(
     selectedAccounts?: StoreAccount[]
   ): (getAssetRate: (asset: Asset) => number | undefined) => number;
-  currentAccounts(): StoreAccount[];
   assetTickers(targetAssets?: StoreAsset[]): TTicker[];
   assetUUIDs(targetAssets?: StoreAsset[]): any[];
   scanTokens(asset?: ExtendedAsset): Promise<void[]>;
-  deleteAccountFromCache(uuid: string): void;
+  deleteAccountFromCache(account: ExtendedAccount): void;
+  getAssetByTicker(symbol: string): Asset | undefined;
+  getAccount(a: Account): StoreAccount | undefined;
 }
 export const StoreContext = createContext({} as State);
 
 // App Store that combines all data values required by the components such
 // as accounts, currentAccount, tokens, and fiatValues etc.
-export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
+export const StoreProvider: React.FC = ({ children }) => {
   const {
     accounts: rawAccounts,
     addNewTransactionToAccount,
     getAccountByAddressAndNetworkName,
     updateAccountAssets,
+    updateAccountsBalances,
     deleteAccount
   } = useContext(AccountContext);
   const { assets } = useContext(AssetContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { networks } = useContext(NetworkContext);
+
   const [pendingTransactions, setPendingTransactions] = useState([] as ITxReceipt[]);
   // We transform rawAccounts into StoreAccount. Since the operation is exponential to the number of
   // accounts, make sure it is done only when rawAccounts change.
-  const storeAccounts = useMemo(() => getStoreAccounts(rawAccounts, assets, networks), [
+  const accounts = useMemo(() => getStoreAccounts(rawAccounts, assets, networks), [
     rawAccounts,
     assets,
     networks
   ]);
+  const currentAccounts = useMemo(
+    () => getDashboardAccounts(accounts, settings.dashboardAccounts),
+    [rawAccounts, settings.dashboardAccounts]
+  );
 
-  const [accounts, setAccounts] = useState(storeAccounts);
   const [isUnlockVIP, setIsUnlockVerified] = useState(false);
-  useEffect(() => {
-    setAccounts(storeAccounts);
-  }, [storeAccounts]);
+
   // Naive polling to get the Balances of baseAsset and tokens for each account.
   useInterval(
     () => {
-      getAccountsAssetsBalances(accounts)
+      // Pattern to cancel setState call if ever the component is unmounted
+      // before the async requests completes.
+      // @TODO: extract into seperate hook e.g. react-use
+      // https://www.robinwieruch.de/react-hooks-fetch-data
+      let isMounted = true;
+      getAccountsAssetsBalances(currentAccounts)
         .then((accountsWithBalances: StoreAccount[]) => {
           // Avoid the state change if the balances are identical.
-          if (isArrayEqual(accounts, accountsWithBalances)) return;
-          setAccounts(accountsWithBalances);
-          return accounts
+          if (isArrayEqual(currentAccounts, accountsWithBalances.filter(Boolean))) return;
+          if (isMounted) {
+            updateAccountsBalances(accountsWithBalances);
+          }
+          return currentAccounts
             .filter(account => account.networkId === 'Ethereum')
             .filter(account => account.wallet !== WalletId.VIEW_ONLY);
         })
         .then(accountUnlockVIPDetected)
-        .then(setIsUnlockVerified);
+        .then(e => {
+          if (!isMounted) return;
+          setIsUnlockVerified(e);
+        });
+
+      return () => {
+        isMounted = false;
+      };
     },
     60000,
     true,
-    [accounts]
+    [currentAccounts]
   );
 
   useEffect(() => {
-    setPendingTransactions(getPendingTransactionsFromAccounts(accounts));
-  }, [accounts]);
+    setPendingTransactions(getPendingTransactionsFromAccounts(currentAccounts));
+  }, [currentAccounts]);
 
   // A change to pending txs is detected
   useEffect(() => {
     // A pending transaction is detected.
     if (pendingTransactions.length <= 0) return;
+
+    let isMounted = true;
     // This interval is used to poll for status of txs.
     const txStatusLookupInterval = setInterval(() => {
       pendingTransactions.forEach((pendingTransactionObject: ITxReceipt) => {
@@ -105,7 +128,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
           // Fail out if tx receipt cant be found.
           // This initial check stops us from spamming node for data before there is data to fetch.
           if (!transactionReceipt) return;
-          const receipt = fromTxReceiptObj(transactionReceipt);
+          const receipt = fromTxReceiptObj(transactionReceipt)(assets, networks);
 
           // fromTxReceiptObj will return undefined if a network config could not be found with the transaction's chainId
           if (!receipt) return;
@@ -116,7 +139,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
             getTimestampFromBlockNum(receipt.blockNumber, provider)
           ]).then(([txStatus, txTimestamp]) => {
             // txStatus and txTimestamp return undefined on failed lookups.
-            if (!txStatus || !txTimestamp) return;
+            if (!isMounted || !txStatus || !txTimestamp) return;
             const senderAccount =
               pendingTransactionObject.senderAccount ||
               getAccountByAddressAndNetworkName(receipt.from, pendingTransactionObject.network.id);
@@ -130,13 +153,17 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         });
       });
     }, 5 * 1000); // Period to reset interval on
-    return () => clearInterval(txStatusLookupInterval);
+    return () => {
+      isMounted = false;
+      clearInterval(txStatusLookupInterval);
+    };
   }, [pendingTransactions]);
 
   const state: State = {
     accounts,
     networks,
     isUnlockVIP,
+    currentAccounts,
     assets: (selectedAccounts = state.accounts) =>
       selectedAccounts.flatMap((account: StoreAccount) => account.assets),
     tokens: (selectedAssets = state.assets()) =>
@@ -149,46 +176,29 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       state
         .totals(selectedAccounts)
         .reduce((sum, asset) => (sum += convertToFiatFromAsset(asset, getAssetRate(asset))), 0),
-    currentAccounts: () => getDashboardAccounts(state.accounts, settings.dashboardAccounts),
+
     assetTickers: (targetAssets = state.assets()) => [
       ...new Set(targetAssets.map(a => a.ticker as TTicker))
     ],
-    assetUUIDs: (targetAssets = state.assets()) => [
-      ...new Set(targetAssets.map((a: StoreAsset) => a.uuid))
-    ],
+    assetUUIDs: (targetAssets = state.assets()) => {
+      return [...new Set(targetAssets.map((a: StoreAsset) => a.uuid))];
+    },
     scanTokens: async (asset?: ExtendedAsset) =>
       Promise.all(
         accounts
           .map(account => updateAccountAssets(account, asset ? [...assets, asset] : assets))
           .map(p => p.catch(e => console.debug(e)))
       ),
-    deleteAccountFromCache: (uuid: string) => {
-      deleteAccount(uuid);
+    deleteAccountFromCache: account => {
+      deleteAccount(account);
       updateSettingsAccounts(
-        settings.dashboardAccounts.filter(dashboardUUID => dashboardUUID !== uuid)
+        settings.dashboardAccounts.filter(dashboardUUID => dashboardUUID !== account.uuid)
       );
-    }
+    },
+    getAssetByTicker: getAssetByTicker(assets),
+    getAccount: ({ address, networkId }) =>
+      accounts.find(a => a.address === address && a.networkId === networkId)
   };
-
-  // 1. I actually want to watch all the base and token balance for every
-  // account, so the service should receive a list of accounts
-  // and return an object of accounts with the updated balances.
-  // 2. The store should save the updated accounts.
-  // 3. The polling should run every minute.
-  // ! Make sure to set the ethScan contractAddress to the correct value per network.
-  // 4. With memozation.
-  // 5. If it there is a change we update the store.
-  // 6. At a different time we decompose accounts object and save it into LocalStorage
-
-  // - [x] getBalances should be able to receive just address ? For AddAccount
-  // - [x] getBalances network selection with fallbacks ?
-  // - [x] update account.asset types
-  // - [x] handle ethScan polling.
-  // - [x] handle ethScan accepted networks
-  // - [x] handle other networks...
-  // - [x] connect to view.
-  // - [ ] worry about error handling.
-  // - [ ] save to local storage
 
   return <StoreContext.Provider value={state}>{children}</StoreContext.Provider>;
 };

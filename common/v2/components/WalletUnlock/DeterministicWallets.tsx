@@ -9,12 +9,13 @@ import { Input, Spinner } from 'v2/components';
 import { truncate } from 'v2/utils';
 import { Network } from 'v2/types';
 import {
-  getBaseAssetSymbolByNetwork,
+  getBaseAssetByNetwork,
   AddressBookContext,
   getLabelByAddressAndNetwork,
   isValidPath,
   fromWei
 } from 'v2/services';
+import { AssetContext } from 'v2/services/Store';
 import nextIcon from 'assets/images/next-page-button.svg';
 import prevIcon from 'assets/images/previous-page-button.svg';
 import radio from 'assets/images/radio.svg';
@@ -71,6 +72,7 @@ export function DeterministicWalletsClass({
   const [page, setPage] = useState(0);
   const [wallets, setWallets] = useState([] as DeterministicWalletData[]);
   const { addressBook } = useContext(AddressBookContext);
+  const { assets } = useContext(AssetContext);
 
   /* Used to update addresses displayed */
   useEffect(() => {
@@ -268,7 +270,7 @@ export function DeterministicWalletsClass({
 
   let baseAssetSymbol: string | undefined;
   if (network) {
-    baseAssetSymbol = getBaseAssetSymbolByNetwork(network);
+    baseAssetSymbol = getBaseAssetByNetwork({ network, assets })!.ticker;
   }
   const symbol: string = baseAssetSymbol ? baseAssetSymbol : 'ETH';
 

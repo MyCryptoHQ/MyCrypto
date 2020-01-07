@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
-import { StoreAccount, WalletId, ITxConfig, SigningComponents } from 'v2/types';
+import { Asset, StoreAccount, WalletId, ITxConfig, SigningComponents } from 'v2/types';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 import {
   inputGasPriceToHex,
@@ -70,8 +70,7 @@ export const makeAllowanceTransaction = async (
 
   // construct approval data from function hash and parameters
   const inputData = `${funcHash}${bytes}`;
-
-  const { fast } = await fetchGasPriceEstimates(network.id);
+  const { fast } = await fetchGasPriceEstimates(network);
   const gasPrice = hexWeiToString(inputGasPriceToHex(fast.toString()));
 
   const transaction: any = {
@@ -93,7 +92,7 @@ export const makeTradeTransactionFromDexTrade = async (
   account: StoreAccount
 ): Promise<ITxConfig> => {
   const network = account.network;
-  const { fast } = await fetchGasPriceEstimates(network.id);
+  const { fast } = await fetchGasPriceEstimates(network);
   let gasPrice = hexWeiToString(inputGasPriceToHex(fast.toString()));
 
   if (trade.metadata.gasPrice) {
@@ -117,7 +116,7 @@ export const makeTradeTransactionFromDexTrade = async (
   return transaction;
 };
 
-export const makeTxConfigFromTransaction = (
+export const makeTxConfigFromTransaction = (assets: Asset[]) => (
   transaction: ITxConfig,
   account: StoreAccount,
   fromAsset: ISwapAsset,
@@ -125,8 +124,8 @@ export const makeTxConfigFromTransaction = (
 ): ITxConfig => {
   const { gasPrice, gasLimit, nonce, data } = transaction;
   const { address, network } = account;
-  const baseAsset = getAssetByUUID(network.baseAsset)!;
-  const asset = getAssetByTicker(fromAsset.symbol) || baseAsset;
+  const baseAsset = getAssetByUUID(assets)(network.baseAsset)!;
+  const asset = getAssetByTicker(assets)(fromAsset.symbol) || baseAsset;
 
   const txConfig: ITxConfig = {
     from: address,

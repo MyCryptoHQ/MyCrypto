@@ -4,7 +4,12 @@ import { Address, Button, Copyable } from '@mycrypto/ui';
 
 import { ITxReceipt, ITxStatus, IStepComponentProps } from 'v2/types';
 import { Amount, TimeElapsedCounter } from 'v2/components';
-import { AddressBookContext, AccountContext } from 'v2/services/Store';
+import {
+  AddressBookContext,
+  AccountContext,
+  AssetContext,
+  NetworkContext
+} from 'v2/services/Store';
 import { RatesContext } from 'v2/services/RatesProvider';
 import {
   ProviderHandler,
@@ -33,6 +38,8 @@ export default function TransactionReceipt({
   const { getAssetRate } = useContext(RatesContext);
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
   const { addNewTransactionToAccount } = useContext(AccountContext);
+  const { assets } = useContext(AssetContext);
+  const { networks } = useContext(NetworkContext);
   const [txStatus, setTxStatus] = useState(ITxStatus.PENDING);
   const [displayTxReceipt, setDisplayTxReceipt] = useState(txReceipt as ITxReceipt);
   const [blockNumber, setBlockNumber] = useState(0);
@@ -51,7 +58,7 @@ export default function TransactionReceipt({
           setTxStatus(prevStatusState => transactionStatus || prevStatusState);
           setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
           provider.getTransactionByHash(displayTxReceipt.hash).then(transactionReceipt => {
-            const receipt = fromTxReceiptObj(transactionReceipt) as ITxReceipt;
+            const receipt = fromTxReceiptObj(transactionReceipt)(assets, networks) as ITxReceipt;
             setDisplayTxReceipt(receipt);
           });
         });

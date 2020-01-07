@@ -1,21 +1,14 @@
 import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import CryptoJS, { SHA256, AES } from 'crypto-js';
+import * as R from 'ramda';
 
 import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS } from 'v2/config';
+import { withContext } from 'v2/utils';
+import { LSKeys } from 'v2/types';
+import { DataContext, IDataContext } from 'v2/services/Store';
 import { default as ScreenLockLocking } from './ScreenLockLocking';
-import {
-  readAllSettings,
-  getCache,
-  setEncryptedCache,
-  destroyCache,
-  getEncryptedCache,
-  setCache,
-  destroyEncryptedCache,
-  updateScreenLockSettings,
-  readScreenLockSettings
-} from 'v2/services/Store';
 
 interface State {
   locking: boolean;
@@ -24,6 +17,13 @@ interface State {
   encryptWithPassword(password: string, hashed: boolean): void;
   decryptWithPassword(password: string): void;
 }
+
+interface Model {
+  import(ls: string): void;
+  export(): string;
+  destroy(): void;
+}
+
 export const ScreenLockContext = React.createContext({} as State);
 
 let inactivityTimer: any = null;
@@ -33,7 +33,8 @@ const countDownDuration: number = 59;
 // Would be better to have in services/Store but circular dependencies breaks
 // Jest test. Consider adopting such as importing from a 'internal.js'
 // https://medium.com/visual-development/how-to-fix-nasty-circular-dependency-issues-once-and-for-all-in-javascript-typescript-a04c987cf0de
-class ScreenLockProvider extends Component<RouteComponentProps<{}>, State> {
+class ScreenLockProvider extends Component<RouteComponentProps<{}> & IDataContext, State> {
+  public model: Model;
   public state: State = {
     locking: false,
     locked: false,
@@ -44,6 +45,7 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}>, State> {
   };
 
   public encryptWithPassword = async (password: string, hashed: boolean) => {
+    const { setEncryptedCache, setUnlockPassword } = this.props;
     try {
       let passwordHash;
 
@@ -55,12 +57,12 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}>, State> {
       }
 
       // Store the password into the local cache
-      updateScreenLockSettings({ password: passwordHash });
+      setUnlockPassword(passwordHash);
 
       // Encrypt the local cache
-      const encryptedData = await AES.encrypt(JSON.stringify(getCache()), passwordHash).toString();
+      const encryptedData = await AES.encrypt(this.model.export(), passwordHash).toString();
       setEncryptedCache(encryptedData);
-      destroyCache();
+      this.model.destroy();
       this.lockScreen();
     } catch (error) {
       console.error(error);
@@ -68,14 +70,15 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}>, State> {
   };
 
   public decryptWithPassword = async (password: string): Promise<boolean> => {
+    const { destroyEncryptedCache, encryptedDb } = this.props;
     try {
       const passwordHash = SHA256(password).toString();
       // Decrypt the data and store it to the MyCryptoCache
-      const decryptedData = await AES.decrypt(getEncryptedCache(), passwordHash).toString(
+      const decryptedData = await AES.decrypt(encryptedDb, passwordHash).toString(
         CryptoJS.enc.Utf8
       );
 
-      setCache(JSON.parse(decryptedData));
+      this.model.import(decryptedData);
       destroyEncryptedCache();
 
       // Navigate to the dashboard and reset inactivity timer
@@ -92,7 +95,15 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}>, State> {
 
   public componentDidMount() {
     //Determine if screen is locked and set "locked" state accordingly
-    if (getEncryptedCache()) {
+    const { createActions, encryptedDb } = this.props;
+    const ts = createActions((null as unknown) as LSKeys); // we don't need a named model
+    this.model = {
+      import: ts.importStorage,
+      export: () => JSON.stringify(ts.exportStorage()),
+      destroy: ts.destroyStorage
+    };
+
+    if (encryptedDb) {
       this.lockScreen();
     }
     this.trackInactivity();
@@ -107,8 +118,9 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}>, State> {
   };
 
   public resetInactivityTimer = () => {
+    const { settings } = this.props;
     clearTimeout(inactivityTimer);
-    inactivityTimer = setTimeout(this.startLockCountdown, readAllSettings().inactivityTimer);
+    inactivityTimer = setTimeout(this.startLockCountdown, settings.inactivityTimer);
   };
 
   public startLockCountdown = () => {
@@ -144,12 +156,13 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}>, State> {
   public handleCountdownEnded = () => {
     /*Check if user has already set up the password. In that case encrypt the cache and navigate to "/screen-lock/locked".
       If user has not setup the password yet, just navigate to "/screen-lock/new. */
-    const screenLockSettings = readScreenLockSettings();
+    const { getUnlockPassword } = this.props;
+    const password = getUnlockPassword();
     clearInterval(countDownTimer);
 
-    if (screenLockSettings && screenLockSettings.password) {
+    if (password) {
       this.setState({ locking: false, locked: true });
-      this.encryptWithPassword(screenLockSettings.password, true);
+      this.encryptWithPassword(password, true);
     } else {
       this.setState({ locking: false, locked: false });
       document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
@@ -196,4 +209,5 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}>, State> {
     );
   }
 }
-export default withRouter(ScreenLockProvider);
+
+export default R.pipe(withRouter, withContext(DataContext))(ScreenLockProvider);
