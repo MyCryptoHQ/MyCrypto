@@ -24,7 +24,7 @@ import { AbiFunction } from 'v2/services/EthService/contracts/ABIFunction';
 
 import { StateMutabilityType, ABIItem, ABIItemType } from './types';
 
-export const isReadOperation = (abiFunction: ABIItem) => {
+export const isReadOperation = (abiFunction: ABIItem): boolean => {
   const { stateMutability } = abiFunction;
 
   if (stateMutability) {
@@ -34,6 +34,11 @@ export const isReadOperation = (abiFunction: ABIItem) => {
   } else {
     return !!abiFunction.constant;
   }
+};
+
+export const isPayable = (abiFunction: ABIItem): boolean => {
+  const { stateMutability } = abiFunction;
+  return stateMutability ? stateMutability === StateMutabilityType.PAYABLE : !!abiFunction.payable;
 };
 
 export const generateFunctionFieldsDisplayNames = (abiFunction: ABIItem) => {
