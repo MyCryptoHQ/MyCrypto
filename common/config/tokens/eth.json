@@ -6020,6 +6020,13 @@
     "uuid": "d14dc620-27b4-54a2-8d03-8a3fbaef6d73"
   },
   {
+    "address": "0x5Cf04716BA20127F1E2297AdDCf4B5035000c9eb",
+    "symbol": "NKN",
+    "decimal": 18,
+    "name": "NKN",
+    "uuid": "fd6d2243-b89d-586c-b5b0-da93544d9ea4"
+  },
+  {
     "address": "0xCeE4019Fd41ECDc8bae9EFDd20510f4b6FAA6197",
     "symbol": "NLYA",
     "decimal": 18,
@@ -8659,6 +8666,13 @@
     "uuid": "f3ba06cb-721b-5304-ae74-2f7667b0cf78"
   },
   {
+    "address": "0x679131F591B4f369acB8cd8c51E68596806c3916",
+    "symbol": "TLN",
+    "decimal": 18,
+    "name": "Trustlines Network Token",
+    "uuid": "ac045880-5da9-50bf-8da8-9fdc1cf27b19"
+  },
+  {
     "address": "0xb3616550aBc8AF79c7A5902DEF9Efa3bC9A95200",
     "symbol": "TLX",
     "decimal": 8,
@@ -9667,6 +9681,13 @@
     "uuid": "da41fe2d-ff3e-5b9a-8437-019add450fe5"
   },
   {
+    "address": "0xD3c625F54dec647DB8780dBBe0E880eF21BA4329",
+    "symbol": "XHT",
+    "decimal": 18,
+    "name": "HollaEx",
+    "uuid": "60a1419f-14df-5975-ab8f-c65e3d13c843"
+  },
+  {
     "address": "0xB110eC7B1dcb8FAB8dEDbf28f53Bc63eA5BEdd84",
     "symbol": "XID",
     "decimal": 8,
@@ -9777,6 +9798,13 @@
     "decimal": 18,
     "name": "Xpayment",
     "uuid": "fd9fe535-7b02-5af0-9b23-f6ebd9a79f48"
+  },
+  {
+    "address": "0x08Aa0ed0040736dd28d4c8B16Ab453b368248d19",
+    "symbol": "XPT",
+    "decimal": 18,
+    "name": "Cryptobuyer Token",
+    "uuid": "c1d86494-6048-5cb9-8e1c-3b65892fb240"
   },
   {
     "address": "0xB24754bE79281553dc1adC160ddF5Cd9b74361a4",
