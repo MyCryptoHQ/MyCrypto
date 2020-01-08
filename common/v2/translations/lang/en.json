@@ -566,6 +566,9 @@
     "ACCOUNT_LIST_PRIVATE_TOOLTIP": "This will label an account as \"Private\" which will provide you some tips on how to keep this account pseudonymous.",
     "SIGN_TX_WALLETCONNECT_FAILED_ACCOUNT": "Please switch the account in your $walletName app to $address in order to proceed.",
     "SIGN_TX_WALLETCONNECT_FAILED_NETWORK": "Please switch the network in your $walletName app to $networkName in order to proceed.",
-    "SIGN_TX_WALLETCONNECT_REJECTED": "Transaction has been rejected or there was an error. If you rejected the tx, please approve it. Otherwise, please restart the Send Assets flow."
+    "SIGN_TX_WALLETCONNECT_REJECTED": "Transaction has been rejected or there was an error. If you rejected the tx, please approve it. Otherwise, please restart the Send Assets flow.",
+    "SIGN_TX_WALLETCONNECT_PENDING": "Attempting to sign the transaction with account $address.",
+    "SIGN_TX_WALLETCONNECT_HIDE_QR": "Hide QR Code -",
+    "SIGN_TX_WALLETCONNECT_SHOW_QR": "Show QR Code +"
   }
 }
