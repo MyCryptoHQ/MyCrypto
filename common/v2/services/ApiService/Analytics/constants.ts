@@ -4,6 +4,7 @@ export const ANALYTICS_API_URL = 'https://analytics.proxy.mycryptoapi.com/';
 // The ID of the analytic website.
 export const ANALYTICS_ID_SITE = 4; // ID could also be 7?
 export const ANALYTICS_ID_DESKTOP = 8;
+export const ANALYTICS_ID_DESKTOP_DEV = 11;
 
 // Parameter required for tracking, must be set to 1.
 export const ANALYTICS_REC = 1;
