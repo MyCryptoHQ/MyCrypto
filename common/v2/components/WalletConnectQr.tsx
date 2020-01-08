@@ -13,41 +13,61 @@ interface ScanProps {
 
 export const WalletConnectQr = ({ onScan }: ScanProps) => {
   const [walletConnectWallet] = useState(new WalletConnectItem());
-  const [isWalletConnectSessionActive, setIsWalletConnectSessionActive] = useState(
-    walletConnectWallet.getWalletConnector() ? true : false
+
+  const [walletConnectSession, setWalletConnectSession] = useState(
+    walletConnectWallet.getWalletConnector()
   );
-  const walletConnectorURI =
-    isWalletConnectSessionActive && walletConnectWallet.getWalletConnector()
-      ? walletConnectWallet.getWalletConnectorUri()
-      : undefined;
+
+  const [isInitialized, setIsInitialized] = useState(walletConnectSession ? true : false);
+
   useEffect(() => {
-    if (isWalletConnectSessionActive) {
+    if (isInitialized) {
+      return;
+    }
+    if (walletConnectSession) {
+      walletConnectWallet.killSession();
+      setIsInitialized(true);
+    } else {
+      setIsInitialized(true);
+    }
+  });
+
+  useEffect(() => {
+    if (walletConnectSession || !isInitialized) {
       return;
     }
     setTimeout(() => {
-      setIsWalletConnectSessionActive(walletConnectWallet.getWalletConnector() ? true : false);
-    }, 500); // If session doesn't exist, create it. This is an async since it uses cryptography.
+      setWalletConnectSession(walletConnectWallet.getWalletConnector());
+    }, 500);
   });
 
-  if (isWalletConnectSessionActive) {
+  const walletConnectorURI =
+    walletConnectSession && walletConnectWallet.getWalletConnector()
+      ? walletConnectWallet.getWalletConnectorUri()
+      : undefined;
+
+  if (walletConnectSession && isInitialized) {
     // Fetch walletConnector webhook and start watching for connection requests
     const walletConnector = walletConnectWallet.getWalletConnector();
-    walletConnector!.on('connect', (error, payload) => {
-      if (error) {
-        throw error;
-      }
-      // Determine provided accounts and chainId
-      const { accounts, chainId } = payload.params[0];
-      // Only add the first-listed account
-      setIsWalletConnectSessionActive(false);
-      walletConnectWallet.killSession();
-      onScan({ address: accounts[0], chainId });
-    });
+    if (walletConnector) {
+      walletConnector.on('connect', (error, payload) => {
+        if (error) {
+          throw error;
+        }
+        // Determine provided accounts and chainId
+        const { accounts, chainId } = payload.params[0];
+        // Only add the first-listed account
+        setWalletConnectSession(undefined);
+        walletConnectWallet.killSession();
+
+        onScan({ address: accounts[0], chainId });
+      });
+    }
   }
 
   return (
     <div>
-      {isWalletConnectSessionActive && walletConnectorURI ? (
+      {walletConnectSession && isInitialized && walletConnectorURI ? (
         <QRCode data={walletConnectorURI} />
       ) : (
         <Spinner />
