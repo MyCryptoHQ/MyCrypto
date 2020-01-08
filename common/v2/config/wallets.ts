@@ -23,6 +23,7 @@ export interface IWalletConfig {
   icon?: string;
   description: string;
   helpLink?: string;
+  getItLink?: string;
 }
 
 export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
@@ -48,7 +49,8 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     lid: web3ProviderInfo.lid,
     icon: web3ProviderInfo.icon,
     description: 'ADD_WEB3DESC',
-    helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`
+    helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`,
+    getItLink: 'https://metamask.io'
   },
   [WalletId.TRUST]: {
     id: WalletId.TRUST,
@@ -60,7 +62,8 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     lid: web3ProviderInfo.lid,
     icon: web3ProviderInfo.icon,
     description: 'ADD_WEB3DESC',
-    helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`
+    helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`,
+    getItLink: 'https://trustwallet.com'
   },
   [WalletId.CIPHER]: {
     id: WalletId.CIPHER,
@@ -96,7 +99,8 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     lid: web3ProviderInfo.lid,
     icon: web3ProviderInfo.icon,
     description: 'ADD_WEB3DESC',
-    helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`
+    helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`,
+    getItLink: 'https://frame.sh/'
   },
   [WalletId.LEDGER_NANO_S]: {
     id: WalletId.LEDGER_NANO_S,

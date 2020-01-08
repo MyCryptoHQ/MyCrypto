@@ -5,7 +5,7 @@ import translate, { translateRaw } from 'v2/translations';
 import { WALLETS_CONFIG, IWalletConfig } from 'v2/config';
 import { WalletId, FormData, Network } from 'v2/types';
 import { InlineErrorMsg, NewTabLink } from 'v2/components';
-import { withContext } from 'v2/utils';
+import { withContext, HAS_WEB3_PROVIDER, IS_MOBILE } from 'v2/utils';
 import {
   SettingsContext,
   ISettingsContext,
@@ -16,7 +16,6 @@ import { WalletFactory } from 'v2/services/WalletService';
 import { FormDataActionType as ActionType } from 'v2/features/AddAccount/types';
 import './Web3Provider.scss';
 import { getWeb3Config } from 'v2/utils/web3';
-import { HAS_WEB3_PROVIDER, IS_MOBILE } from 'v2/utils';
 
 interface Props {
   formDispatch: any;
@@ -76,11 +75,15 @@ class Web3ProviderDecrypt extends Component<Props & ISettingsContext & INetworkC
             })}{' '}
             <NewTabLink
               content={translate(`ADD_ACCOUNT_WEB3_FOOTER_LINK`, { $walletId: provider.name })}
-              href={translateRaw(
-                IS_MOBILE
-                  ? `ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_MOBILE`
-                  : `ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_DESKTOP`
-              )}
+              href={
+                provider.getItLink
+                  ? provider.getItLink
+                  : translateRaw(
+                      IS_MOBILE
+                        ? `ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_MOBILE`
+                        : `ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_DESKTOP`
+                    )
+              }
             />
           </div>
           <div>
