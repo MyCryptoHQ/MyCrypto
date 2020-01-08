@@ -4,12 +4,15 @@ import { ApiService } from 'v2/services/ApiService';
 import {
   ANALYTICS_API_URL,
   ANALYTICS_ID_DESKTOP,
+  ANALYTICS_ID_DESKTOP_DEV,
   ANALYTICS_ID_SITE,
   ANALYTICS_REC
 } from './constants';
 import { CvarEntry, Params } from './types';
 
 let instantiated: boolean = false;
+let analyticsId: number = IS_ELECTRON ? ANALYTICS_ID_DESKTOP : ANALYTICS_ID_SITE;
+
 export default class AnalyticsService {
   public static instance = new AnalyticsService();
 
@@ -23,6 +26,10 @@ export default class AnalyticsService {
       throw new Error(`AnalyticsService has already been instantiated.`);
     } else {
       instantiated = true;
+    }
+
+    if (IS_DEV) {
+      analyticsId = ANALYTICS_ID_DESKTOP_DEV;
     }
   }
 
@@ -38,7 +45,6 @@ export default class AnalyticsService {
     };
 
     const cvar: object = this.mapParamsToCvars(customParams);
-    const analyticsId = IS_ELECTRON ? ANALYTICS_ID_DESKTOP : ANALYTICS_ID_SITE;
 
     const params: object = {
       action_name: eventAction,
@@ -48,11 +54,6 @@ export default class AnalyticsService {
       rec: ANALYTICS_REC,
       cvar: JSON.stringify(cvar)
     };
-
-    if (IS_DEV) {
-      // Disables Analytics for Dev mode
-      return Promise.resolve(200);
-    }
 
     return this.service.get('', { params }).catch();
   }
@@ -64,7 +65,6 @@ export default class AnalyticsService {
     };
 
     const cvar: object = this.mapParamsToCvars(customParams);
-    const analyticsId = IS_ELECTRON ? ANALYTICS_ID_DESKTOP : ANALYTICS_ID_SITE;
 
     const params: object = {
       action_name: 'Page navigation',
@@ -73,11 +73,6 @@ export default class AnalyticsService {
       rec: ANALYTICS_REC,
       cvar: JSON.stringify(cvar)
     };
-
-    if (IS_DEV) {
-      // Disables Analytics for Dev mode
-      return Promise.resolve(200);
-    }
 
     return this.service.get('', { params }).catch();
   }
