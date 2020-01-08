@@ -274,6 +274,8 @@
     "ADD_ACCOUNT_WEB3_FOOTER": "Don't have $walletId?",
     "ADD_ACCOUNT_WEB3_FOOTER_DEFAULT": "Don't have a Web3 Provider?",
     "ADD_ACCOUNT_WEB3_FOOTER_LINK": "Get it now",
+    "ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_DESKTOP": "https://metamask.io",
+    "ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_MOBILE": "https://trustwallet.com",
     "ADD_ACCOUNT_WEB3_HELP": "Learn how $walletId works with MyCrypto",
     "ADD_ACCOUNT_WEB3_INSTALL_TITLE": "Install $walletId to continue",
     "ADD_ACCOUNT_WEB3_INSTALL_DESC": "Our recommended desktop Web3Provider is the Metamask.io browser extension. Download now to get started!",

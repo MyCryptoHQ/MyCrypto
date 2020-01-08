@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as R from 'ramda';
 
-import translate from 'v2/translations';
+import translate, { translateRaw } from 'v2/translations';
 import { WALLETS_CONFIG, IWalletConfig } from 'v2/config';
 import { WalletId, FormData, Network } from 'v2/types';
 import { InlineErrorMsg, NewTabLink } from 'v2/components';
@@ -16,6 +16,7 @@ import { WalletFactory } from 'v2/services/WalletService';
 import { FormDataActionType as ActionType } from 'v2/features/AddAccount/types';
 import './Web3Provider.scss';
 import { getWeb3Config } from 'v2/utils/web3';
+import { HAS_WEB3_PROVIDER, IS_MOBILE } from 'v2/utils';
 
 interface Props {
   formDispatch: any;
@@ -75,7 +76,11 @@ class Web3ProviderDecrypt extends Component<Props & ISettingsContext & INetworkC
             })}{' '}
             <NewTabLink
               content={translate(`ADD_ACCOUNT_WEB3_FOOTER_LINK`, { $walletId: provider.name })}
-              href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en"
+              href={translateRaw(
+                IS_MOBILE
+                  ? `ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_MOBILE`
+                  : `ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_DESKTOP`
+              )}
             />
           </div>
           <div>
@@ -116,7 +121,7 @@ class Web3ProviderDecrypt extends Component<Props & ISettingsContext & INetworkC
   }
 
   private getWeb3Provider() {
-    if (window.web3) {
+    if (HAS_WEB3_PROVIDER) {
       return getWeb3Config();
     }
     return WALLETS_CONFIG[WalletId.WEB3]; //Default to Web3
