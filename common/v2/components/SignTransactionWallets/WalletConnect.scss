@@ -8,6 +8,9 @@
   position: relative;
   justify-content: center;
   text-align: center;
+  &-qr-code-option {
+    color: #55B6E2;
+  }
   &-img {
     display: flex;
     justify-content: center;
@@ -23,6 +26,12 @@
   &-fields {
     display: flex;
     flex-direction: column;
+    margin: 0 1em;
+    text-overflow: ellipsis;
+
+    &-status {
+      margin: 0 1em;
+    };
 
     &-field {
       display: flex;

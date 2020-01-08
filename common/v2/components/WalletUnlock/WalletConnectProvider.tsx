@@ -43,7 +43,6 @@ export function WalletConnectDecrypt({ formData, onUnlock }: OwnProps & StatePro
       this.props.showNotification('danger', 'Not a valid address!');
       return;
     }
-
     onUnlock(WalletService.init(content.address));
   };
   return (

@@ -17,7 +17,8 @@ import {
   SignTransactionSafeT,
   SignTransactionKeystore,
   SignTransactionParity,
-  SignTransactionMnemonic
+  SignTransactionMnemonic,
+  SignTransactionWalletConnect
 } from 'v2/components';
 import { getAssetByUUID, hexToString, hexWeiToString, inputValueToHex } from 'v2/services';
 import { AbiFunction } from 'v2/services/EthService/contracts/ABIFunction';
@@ -108,6 +109,7 @@ export const WALLET_STEPS: SigningComponents = {
   [WalletId.KEYSTORE_FILE]: SignTransactionKeystore,
   [WalletId.PARITY_SIGNER]: SignTransactionParity,
   [WalletId.MNEMONIC_PHRASE]: SignTransactionMnemonic,
+  [WalletId.WALLETCONNECT]: SignTransactionWalletConnect,
   [WalletId.VIEW_ONLY]: null
 };
 
