@@ -8693,15 +8693,13 @@ js-levenshtein@^1.1.3:
   resolved "https://registry.yarnpkg.com/js-levenshtein/-/js-levenshtein-1.1.6.tgz#c6cee58eb3550372df8deb85fad5ce66ce01d59d"
   integrity sha512-X2BB11YZtrRqY4EnQcLX5Rh373zbK4alC1FW7D7MBhL2gtcC17cTnr6DmfHZeS0s2rTHjUTMMHfG7gO8SSdw+g==
 
-js-md5@^0.7.3:
+js-md5@MyCryptoHQ/js-md5#b300da8:
   version "0.7.3"
-  resolved "https://registry.yarnpkg.com/js-md5/-/js-md5-0.7.3.tgz#b4f2fbb0b327455f598d6727e38ec272cd09c3f2"
-  integrity sha512-ZC41vPSTLKGwIRjqDh8DfXoCrdQIyBgspJVPXHBGu4nZlAEvG3nf+jO9avM9RmLiGakg7vz974ms99nEV0tmTQ==
+  resolved "https://codeload.github.com/MyCryptoHQ/js-md5/tar.gz/b300da833e5e2c83dae186359b72c69e1711acd2"
 
-js-sha1@^0.6.0:
+js-sha1@MyCryptoHQ/js-sha1#7474a64:
   version "0.6.0"
-  resolved "https://registry.yarnpkg.com/js-sha1/-/js-sha1-0.6.0.tgz#adbee10f0e8e18aa07cdea807cf08e9183dbc7f9"
-  integrity sha512-01gwBFreYydzmU9BmZxpVk6svJJHrVxEN3IOiGl6VO93bVKYETJ0sIth6DASI6mIFdt7NmfX9UiByRzsYHGU9w==
+  resolved "https://codeload.github.com/MyCryptoHQ/js-sha1/tar.gz/7474a6478649ff9a784e565a71c2c97ab18ef634"
 
 js-sha3@0.5.7:
   version "0.5.7"
@@ -14495,13 +14493,12 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
-uuid-by-string@3.0.2, uuid-by-string@^3.0.1:
+uuid-by-string@MyCryptoHQ/uuid-by-string#36afddc, uuid-by-string@^3.0.1:
   version "3.0.2"
-  resolved "https://registry.yarnpkg.com/uuid-by-string/-/uuid-by-string-3.0.2.tgz#40e7a2049224715f566a13169f1f178aee42ac00"
-  integrity sha512-XA0BuWgMte7RcwEdM+AJOtQWVogkpQkWGX6bEgnYFWSkp4yebZTeapNvGZWZUX+T1/lo6kL+8nY7AczLI+Bjfw==
+  resolved "https://codeload.github.com/MyCryptoHQ/uuid-by-string/tar.gz/36afddcb930e9934ecc5b7fca85ca8036613e6dc"
   dependencies:
-    js-md5 "^0.7.3"
-    js-sha1 "^0.6.0"
+    js-md5 MyCryptoHQ/js-md5#b300da8
+    js-sha1 MyCryptoHQ/js-sha1#7474a64
 
 uuid@2.0.1:
   version "2.0.1"
