@@ -4,6 +4,28 @@
     display: flex;
     flex-direction: column;
 
+    &-from-to {
+      justify-content: space-between;
+      @media (min-width: 550px) {
+        > div {
+          max-width: 48%;
+        }
+      }
+    }
+
+    &-desc {
+      margin-bottom: 24px;
+
+      @media (min-width: 550px) {
+        margin-bottom: 0px;
+      }
+
+      a {
+        color: #1eb8e7;
+        font-weight: bold;
+      }
+    }
+
     @media (min-width: 550px) {
       flex-direction: row;
       align-items: center;
@@ -65,12 +87,12 @@
       }
     }
   }
-  &-back {
+  &-another {
     width: 100%;
     margin-top: 20px;
     margin-bottom: 15px;
   }
-  &-another {
+  &-back {
     width: 100%;
     margin-bottom: 25px;
   }

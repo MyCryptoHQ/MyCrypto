@@ -179,10 +179,14 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
       }
     },
     {
-      title: translateRaw('SWAP_RECEIPT_TITLE'),
+      title: translateRaw('TRANSACTION_BROADCASTED'),
       backBtnText: translateRaw('DEP_SIGNTX'),
       component: SwapTransactionReceipt,
       props: {
+        fromAsset,
+        toAsset,
+        fromAmount,
+        toAmount,
         txReceipt,
         txConfig,
         onSuccess: goToFirstStep
