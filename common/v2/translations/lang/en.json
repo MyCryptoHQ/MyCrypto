@@ -277,7 +277,7 @@
     "ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_DESKTOP": "https://metamask.io",
     "ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_MOBILE": "https://trustwallet.com",
     "ADD_ACCOUNT_WEB3_HELP": "Learn how $walletId works with MyCrypto",
-    "ADD_ACCOUNT_WEB3_INSTALL_TITLE": "Install $walletId to continue",
+    "ADD_ACCOUNT_WEB3_INSTALL_TITLE": "Install a Web3 Provider / Dapp Browser to continue",
     "ADD_ACCOUNT_WEB3_INSTALL_DESC": "Our recommended desktop Web3Provider is the Metamask.io browser extension. Download now to get started!",
     "ADD_ACCOUNT_WEB3_INSTALL_FOOTER": "Using a Keystore File or a Mnemonic Phrase?",
     "ADD_ACCOUNT_WEB3_INSTALL_FOOTER_LINK": "Download the Desktop App to unlock your wallet",
