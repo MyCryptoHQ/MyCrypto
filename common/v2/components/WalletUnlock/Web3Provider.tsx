@@ -43,20 +43,23 @@ class Web3ProviderDecrypt extends Component<Props & ISettingsContext & INetworkC
 
   public render() {
     const { web3Unlocked, web3ProviderSettings: provider } = this.state;
+    const isDefault = provider.id === WalletId.WEB3;
     return (
       <div className="Panel">
         <div className="Panel-title">
-          {translate(`ADD_ACCOUNT_WEB3_TITLE`, { $walletId: provider.name })}
+          {translate(isDefault ? 'ADD_ACCOUNT_WEB3_TITLE_DEFAULT' : 'ADD_ACCOUNT_WEB3_TITLE', {
+            $walletId: provider.name
+          })}
         </div>
         <div className="Panel-description">{translate(`ADD_ACCOUNT_WEB3_DESC`)}</div>
         <div className="Panel-content">
           <div className="Web3-img-container">
-            <div className="Web3-img">
+            <div className={isDefault ? 'Web3-img-default' : 'Web3-img'}>
               <img src={provider.icon} />
             </div>
           </div>
           <button className="btn btn-primary btn-lg btn-block" onClick={this.unlockWallet}>
-            {translate(`ADD_WEB3`, { $walletId: provider.name })}
+            {translate(isDefault ? 'ADD_WEB3_DEFAULT' : 'ADD_WEB3', { $walletId: provider.name })}
           </button>
 
           {web3Unlocked === false && (
@@ -67,7 +70,9 @@ class Web3ProviderDecrypt extends Component<Props & ISettingsContext & INetworkC
         </div>
         <div className="Web3-footer">
           <div>
-            {translate(`ADD_ACCOUNT_WEB3_FOOTER`, { $walletId: provider.name })}{' '}
+            {translate(isDefault ? 'ADD_ACCOUNT_WEB3_FOOTER_DEFAULT' : 'ADD_ACCOUNT_WEB3_FOOTER', {
+              $walletId: provider.name
+            })}{' '}
             <NewTabLink
               content={translate(`ADD_ACCOUNT_WEB3_FOOTER_LINK`, { $walletId: provider.name })}
               href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en"
