@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
 import { AssetWithDetails, TSymbol } from 'v2/types';
 import { DashboardPanel, AssetIcon } from 'v2/components';
-import { NETWORKS_CONFIG } from 'v2/config';
+import { getNetworkById, StoreContext } from 'v2/services/Store';
 
 import socialTelegram from 'common/assets/images/social-icons/social-telegram.svg';
 import socialTwitter from 'common/assets/images/social-icons/social-twitter.svg';
@@ -149,10 +149,11 @@ interface Props {
 
 export function TokenDetails(props: Props) {
   const { currentToken, setShowDetailsView } = props;
-  const { details } = currentToken;
-  const tokenContract = Object.values(NETWORKS_CONFIG).find(x => x.id === currentToken.networkId);
+  const { details, networkId } = currentToken;
+  const { networks } = useContext(StoreContext);
+  const network = getNetworkById(networkId!, networks);
   const contractUrl = `${
-    tokenContract && tokenContract.blockExplorer ? tokenContract.blockExplorer.origin : etherscanUrl
+    network && network.blockExplorer ? network.blockExplorer.origin : etherscanUrl
   }/token/${currentToken.contractAddress}`;
 
   interface ISocial {

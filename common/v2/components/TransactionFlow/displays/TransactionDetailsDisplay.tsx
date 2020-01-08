@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Network } from '@mycrypto/ui';
 import { bigNumberify } from 'ethers/utils';
 
-import { Asset, ExtendedAccount, Network as INetwork, ITxObject } from 'v2/types';
+import { Asset, StoreAccount, ExtendedAccount, Network as INetwork, ITxObject } from 'v2/types';
 import { baseToConvertedUnit, totalTxFeeToString } from 'v2/services/EthService';
-import { getBalanceFromAccount } from 'v2/services/Store';
+import { getAccountBalance, StoreContext } from 'v2/services/Store';
 import { CopyableCodeBlock } from 'v2/components';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { weiToFloat } from 'v2/utils';
@@ -38,6 +38,7 @@ function TransactionDetailsDisplay({
   signedTransaction
 }: Props) {
   const [showDetails, setShowDetails] = useState(false);
+  const { getAccount } = useContext(StoreContext);
 
   const maxTransactionFeeBase: string = totalTxFeeToString(gasPrice, gasLimit);
   const networkName = network ? network.name : undefined;
@@ -70,7 +71,9 @@ function TransactionDetailsDisplay({
                   {`Account Balance (${baseAsset.ticker}):`}
                 </div>
                 <div className="TransactionDetails-row-column">{`
-                  ${weiToFloat(bigNumberify(getBalanceFromAccount(senderAccount))).toFixed(6)}
+                  ${weiToFloat(
+                    getAccountBalance(getAccount(senderAccount) as StoreAccount)
+                  ).toFixed(6)}
                   ${baseAsset.ticker}
                 `}</div>
               </div>

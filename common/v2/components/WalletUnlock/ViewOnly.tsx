@@ -47,8 +47,8 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
   const [isResolvingENSName, setIsResolvingENSName] = useState(false);
   const [network] = useState(getNetworkByName(formData.network));
   return (
-    <div className="ViewOnly">
-      <div className="ViewOnly-title"> {translateRaw('INPUT_PUBLIC_ADDRESS_LABEL')}</div>
+    <div className="Panel">
+      <div className="Panel-title"> {translateRaw('INPUT_PUBLIC_ADDRESS_LABEL')}</div>
       <Formik
         initialValues={initialFormikValues}
         validationSchema={ViewOnlyFormSchema}
@@ -91,6 +91,7 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
               <section className="ViewOnly-fields">
                 <section className="ViewOnly-fields-field">
                   <AddressField
+                    className="AddressField"
                     fieldName="address"
                     handleENSResolve={handleENSResolve}
                     error={errors && errors.address && errors.address.value}
@@ -109,7 +110,7 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
                   disabled={isResolvingENSName}
                   className="ViewOnly-submit"
                 >
-                  Next{/* TRANSLATE THIS */}
+                  {translateRaw('ACTION_6')}
                 </Button>
               </section>
             </Form>

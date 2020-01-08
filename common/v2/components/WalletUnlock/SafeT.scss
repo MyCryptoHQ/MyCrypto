@@ -13,10 +13,6 @@
     justify-content: center;
     text-align: center;
     align-content: center;
-
-    &-footer {
-      margin-top: -20px;
-    }
   }
   &-img {
     margin: 3em;
@@ -31,7 +27,6 @@
     justify-content: center;  
     position: relative;
     width: 420px;
-    bottom: -25px;
   }
 
   &-help {

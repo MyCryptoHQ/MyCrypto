@@ -1,8 +1,15 @@
 import { BigNumber } from 'ethers/utils';
-import { NetworkId, TSymbol } from 'v2/types';
+import { NetworkId, TSymbol, TUuid } from 'v2/types';
 
 enum TickerBrand {}
 export type TTicker = TickerBrand & string;
+
+export interface Fiat {
+  code: string;
+  name: string;
+  symbol: TSymbol;
+  prefix?: boolean;
+}
 
 export interface IAsset {
   symbol: TSymbol;
@@ -13,7 +20,7 @@ export interface IAsset {
 export type TAssetType = 'base' | 'erc20' | 'fiat';
 
 export interface Asset {
-  readonly uuid: string;
+  readonly uuid: TUuid;
   readonly name: string;
   readonly networkId?: NetworkId;
   readonly ticker: string;
@@ -24,12 +31,12 @@ export interface Asset {
 }
 
 export interface ExtendedAsset extends Asset {
-  uuid: string;
+  uuid: TUuid;
 }
 
 // Used to reference an Asset in a storage Account
 export interface AssetBalanceObject {
-  readonly uuid: string;
+  readonly uuid: TUuid;
   balance: BigNumber | string;
   mtime: number;
 }

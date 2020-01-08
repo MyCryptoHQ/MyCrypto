@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { Button, Link } from 'v2/components';
+import { getExportFileName } from 'v2/database';
 import { makeBlob } from 'v2/utils';
 import translate from 'v2/translations';
 
@@ -10,18 +11,18 @@ interface DownloaderProps {
 
 const Downloader = (props: DownloaderProps) => {
   const [blob, setBlob] = useState('');
-  const [name, setName] = useState('');
+  const [fileName, setFileName] = useState('');
 
   const handleDownload = () => {
     const cache = String(props.getStorage());
     const settingsBlob = makeBlob('text/json;charset=UTF-8', cache);
     setBlob(settingsBlob);
-    setName('MyCryptoSettings.json');
+    setFileName(getExportFileName());
   };
 
   return (
-    <Link fullWidth={true} href={blob} download={name} onClick={handleDownload}>
-      <Button fullWidth={true}>{translate('SETTINGS_EXPORT_DOWNLOAD')}</Button>
+    <Link fullwidth={true} href={blob} download={fileName} onClick={handleDownload}>
+      <Button fullwidth={true}>{translate('SETTINGS_EXPORT_DOWNLOAD')}</Button>
     </Link>
   );
 };

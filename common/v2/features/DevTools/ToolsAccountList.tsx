@@ -18,7 +18,7 @@ const DeleteButton = styled(Button)`
 
 export interface AccountListProps {
   accounts: ExtendedAccount[];
-  deleteAccount(uuid: string): void;
+  deleteAccount(account: ExtendedAccount): void;
 }
 
 const ToolsAccountList: React.FC<AccountListProps> = props => {
@@ -30,7 +30,7 @@ const ToolsAccountList: React.FC<AccountListProps> = props => {
     return (
       <AccountContainer key={index}>
         <Address title={label} address={account.address} truncate={truncate} />
-        <DeleteButton onClick={() => deleteAccount(account.uuid)} icon="exit" />
+        <DeleteButton onClick={() => deleteAccount(account)} icon="exit" />
       </AccountContainer>
     );
   });

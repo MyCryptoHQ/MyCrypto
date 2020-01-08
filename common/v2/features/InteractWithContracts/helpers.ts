@@ -24,7 +24,7 @@ import { AbiFunction } from 'v2/services/EthService/contracts/ABIFunction';
 
 import { StateMutabilityType, ABIItem, ABIItemType } from './types';
 
-export const isReadOperation = (abiFunction: ABIItem) => {
+export const isReadOperation = (abiFunction: ABIItem): boolean => {
   const { stateMutability } = abiFunction;
 
   if (stateMutability) {
@@ -34,6 +34,11 @@ export const isReadOperation = (abiFunction: ABIItem) => {
   } else {
     return !!abiFunction.constant;
   }
+};
+
+export const isPayable = (abiFunction: ABIItem): boolean => {
+  const { stateMutability } = abiFunction;
+  return stateMutability ? stateMutability === StateMutabilityType.PAYABLE : !!abiFunction.payable;
 };
 
 export const generateFunctionFieldsDisplayNames = (abiFunction: ABIItem) => {
@@ -85,9 +90,10 @@ export const setFunctionOutputValues = (abiFunction: ABIItem, outputValues: any)
 };
 
 export const getFunctionsFromABI = (pAbi: ABIItem[]) =>
-  sortBy(pAbi.filter(x => x.type === ABIItemType.FUNCTION), item => item.name.toLowerCase()).map(
-    x => Object.assign(x, { label: x.name })
-  );
+  sortBy(
+    pAbi.filter(x => x.type === ABIItemType.FUNCTION),
+    item => item.name.toLowerCase()
+  ).map(x => Object.assign(x, { label: x.name }));
 
 export const WALLET_STEPS: SigningComponents = {
   [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,
@@ -116,7 +122,7 @@ export const makeTxConfigFromTransaction = (
 ): ITxConfig => {
   const { gasPrice, gasLimit, nonce, data, to, value } = rawTransaction;
   const { address, network } = account;
-  const baseAsset = getAssetByUUID(network.baseAsset)!;
+  const baseAsset = getAssetByUUID(account.assets)(network.baseAsset)!;
 
   const txConfig: ITxConfig = {
     from: address,

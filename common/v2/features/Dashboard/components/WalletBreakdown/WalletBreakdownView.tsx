@@ -209,7 +209,7 @@ export default function WalletBreakdownView({
   const handleMouseOver = (_: any, index: number) => setSelectedAssetIndex(index);
 
   const handleMouseLeave = (_: any) => setSelectedAssetIndex(-1);
-
+      
   const allVisible = accounts.length !== 0 && accounts.length === selected.length;
 
   const label = allVisible

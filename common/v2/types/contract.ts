@@ -1,4 +1,5 @@
 import { NetworkId } from './networkId';
+import { TUuid } from './uuid';
 
 export interface Contract {
   name: string;
@@ -8,6 +9,6 @@ export interface Contract {
 }
 
 export interface ExtendedContract extends Contract {
-  uuid: string;
+  uuid: TUuid;
   isCustom?: boolean;
 }

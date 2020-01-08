@@ -1,3 +1,5 @@
+import { TUuid } from './uuid';
+
 export interface Notification {
   template: string;
   templateData?: { [key: string]: any };
@@ -7,5 +9,5 @@ export interface Notification {
 }
 
 export interface ExtendedNotification extends Notification {
-  uuid: string;
+  uuid: TUuid;
 }

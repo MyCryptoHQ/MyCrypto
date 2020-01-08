@@ -113,15 +113,15 @@ export default function HardwareSignTransaction({
         <div className="SignTransactionHardware-description">
           {translateRaw('SIGN_TX_EXPLANATION')}
           {isTxSignatureRequestDenied && (
-            <InlineErrorMsg>{translateRaw('SIGN_TX_HARDWARE_FAILED_1')}</InlineErrorMsg>
+            <InlineErrorMsg>{translate('SIGN_TX_HARDWARE_FAILED_1')}</InlineErrorMsg>
           )}
         </div>
         <div className="SignTransactionHardware-footer">
           <div className="SignTransactionHardware-help">
-            {translateRaw(senderAccount.wallet + '_HELP')}
+            {translate(senderAccount.wallet + '_HELP')}
           </div>
           <div className="SignTransactionHardware-referal">
-            {translateRaw(senderAccount.wallet + '_REFERRAL')}
+            {translate(senderAccount.wallet + '_REFERRAL')}
           </div>
         </div>
       </div>

@@ -54,8 +54,10 @@ export function getTranslators() {
 }
 
 export function translateRaw(key: string, variables?: { [name: string]: string }): string {
-  // redux store isn't initialized in time which throws errors, instead we get the language selection from localstorage
-  const language = fallbackLanguage;
+  // TODO: Either find an appropriate way to share the users language setting without needing to update all our translateRaw calls.
+  // In the mean time we default to english.
+  const settings = { language: 'en' };
+  const language = settings.language || fallbackLanguage;
   const translatedString =
     (repository[language] && repository[language][key]) || repository[fallbackLanguage][key] || key;
 

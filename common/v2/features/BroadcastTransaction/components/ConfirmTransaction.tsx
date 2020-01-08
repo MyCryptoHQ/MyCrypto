@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import BN from 'bn.js';
 
-import { getNetworkByName, getNetworkByChainId, getAssetByUUID } from 'v2/services/Store';
+import { getAssetByUUID, AssetContext, NetworkContext } from 'v2/services/Store';
 import { ConfirmTransaction as ConfirmTransactionForm } from 'v2/components/TransactionFlow';
 import { toChecksumAddressByChainId, fromTxReceiptObj } from 'v2/utils';
 import { fromWei, ProviderHandler } from 'v2/services/EthService';
@@ -28,6 +28,8 @@ interface Props {
 export default function ConfirmTransaction(props: Props) {
   const [txError, setTxError] = useState('');
   const { displayToast, toastTemplates } = useContext(ToastContext);
+  const { assets } = useContext(AssetContext);
+  const { networks, getNetworkByChainId, getNetworkByName } = useContext(NetworkContext);
 
   const { transaction, signedTransaction, network, goToNextStep } = props;
   const { from, to, value, _chainId, gasPrice, gasLimit, nonce, data } = transaction;
@@ -41,7 +43,7 @@ export default function ConfirmTransaction(props: Props) {
   }
 
   const txAmount = fromWei(new BN(value, 16), 'ether');
-  const txBaseAsset = getAssetByUUID(txNetwork.baseAsset)!;
+  const txBaseAsset = getAssetByUUID(assets)(txNetwork.baseAsset)!;
   const txToAddress = toChecksumAddressByChainId(to.toString('hex'), _chainId);
   const txFromAddress = toChecksumAddressByChainId(from.toString('hex'), _chainId);
   const txGasPrice = new BN(gasPrice, 16).toString();
@@ -71,7 +73,7 @@ export default function ConfirmTransaction(props: Props) {
 
     try {
       const response = await provider.sendRawTx(signedTransaction);
-      setTxReceipt(fromTxReceiptObj(response) || {});
+      setTxReceipt(fromTxReceiptObj(response)(assets, networks) || {});
       setTxConfig(txConfig);
       goToNextStep();
     } catch (e) {

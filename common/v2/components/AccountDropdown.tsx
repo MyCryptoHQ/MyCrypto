@@ -4,12 +4,7 @@ import { formatEther } from 'ethers/utils';
 
 import { AccountSummary, AccountOption, Dropdown } from 'v2/components';
 import { StoreAccount, Asset } from 'v2/types';
-import {
-  AddressBookContext,
-  getBaseAsset,
-  getAccountBaseBalance,
-  getTokenBalanceFromAccount
-} from 'v2/services/Store';
+import { AddressBookContext, getAccountBalance, getBaseAsset } from 'v2/services/Store';
 
 // Option item displayed in Dropdown menu. Props are passed by react-select Select.
 // To know: Select needs to receive a class in order to attach refs https://github.com/JedWatson/react-select/issues/2459
@@ -28,9 +23,7 @@ function AccountDropdown({ accounts, name, value, onSelect, asset }: IAccountDro
   const relevantAccounts: StoreAccount[] = accounts.map(account => ({
     ...account,
     label: getAccountLabel(account),
-    balance: formatEther(
-      asset ? getTokenBalanceFromAccount(account, asset) : getAccountBaseBalance(account)
-    ),
+    balance: formatEther(asset ? getAccountBalance(account, asset) : getAccountBalance(account)),
     assetSymbol: asset ? asset.ticker : getBaseAsset(account)!.ticker
   }));
 

@@ -1,15 +1,28 @@
-import { Subtract } from 'utility-types';
+import { Subtract, Omit, Overwrite } from 'utility-types';
 
 import { NodeOptions } from './node';
 import { BlockExplorer } from './blockExplorer';
 import { GasPrice } from './gas';
 import { DPathFormats } from './dPath';
 import { NetworkId } from './networkId';
+import { TUuid } from './uuid';
+import { TSymbol } from './symbols';
+import { Contract } from './contract';
+import { Asset } from './asset';
+import { TAddress } from './address';
+
+type AssetPropsMissingInLegacy = Pick<Asset, 'networkId'> | Pick<Asset, 'contractAddress'>;
+interface AssetPropsInLegacy {
+  address: TAddress;
+}
+export type AssetLegacy = Subtract<Asset, AssetPropsMissingInLegacy> & AssetPropsInLegacy;
+export type ContractLegacy = Omit<Contract, 'networkId'>;
 
 export interface Network {
   id: NetworkId;
   name: string;
-  baseAsset: string;
+  baseAsset: TUuid;
+  baseUnit: TSymbol;
   chainId: number;
   isCustom: boolean;
   isTestnet?: boolean;
@@ -19,32 +32,31 @@ export interface Network {
     name: string;
     address(address: string): string;
   };
-  assets: string[];
-  contracts: string[];
+  assets: TUuid[];
+  contracts: TUuid[];
   dPaths: DPathFormats;
   gasPriceSettings: GasPrice;
   shouldEstimateGasPrice?: boolean;
   nodes: NodeOptions[];
 }
 
-export interface ExtendedNetwork extends Network {
-  uuid: string;
-}
-
 interface NetworkPropsMissingInLegacy {
-  uuid: string;
   nodes: NodeOptions[];
   assets: string[];
-  baseAsset: string;
+  baseAsset: TUuid;
+  baseUnit: TSymbol;
 }
 
 interface NetworkUnusedLegacyProps {
-  unit: string;
-  tokens: string[];
+  tokens: AssetLegacy[];
   isTestnet?: boolean;
   unsupportedTabs?: any[];
   hideEquivalentValues?: boolean;
+  unit: TSymbol;
 }
 
-export type NetworkLegacy = Subtract<ExtendedNetwork, NetworkPropsMissingInLegacy> &
+export type NetworkLegacy = Subtract<
+  Overwrite<Network, { contracts: ContractLegacy[] }>,
+  NetworkPropsMissingInLegacy
+> &
   NetworkUnusedLegacyProps;

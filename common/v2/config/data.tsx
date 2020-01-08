@@ -47,6 +47,7 @@ export const gasEstimateCacheTime = 60000;
 
 export const MINIMUM_PASSWORD_LENGTH = 12;
 
+export const SUPPORT_EMAIL = 'support@mycrypto.com';
 export const LATEST_NEWS_URL = 'https://medium.com/@mycrypto';
 export const CRYPTOSCAMDB = 'https://cryptoscamdb.org';
 export const KNOWLEDGE_BASE_URL = 'https://support.mycrypto.com';

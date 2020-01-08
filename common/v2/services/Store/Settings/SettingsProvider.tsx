@@ -1,89 +1,78 @@
-import React, { Component, createContext } from 'react';
+import React, { useContext, createContext, useMemo } from 'react';
 
-import { ISettings, IRates } from 'v2/types';
-import { updateSetting, readAllSettings, readStorage, importStorage } from './Settings';
+import { ISettings, IRates, LSKeys, TUuid } from 'v2/types';
+import { DataContext } from '../DataManager';
 
-interface ISettingsProvider {
+export interface ISettingsContext {
   settings: ISettings;
   language: string;
-  updateSettings(settingsData: ISettings): void;
-  updateSettingsAccounts(accounts: string[]): void;
-  readAllSettings(): void;
-  getStorage(): void;
+  addAccountToFavorites(uuid: TUuid): void;
+  updateSettings(settings: ISettings): void;
+  updateSettingsAccounts(accounts: TUuid[]): void;
+  updateSettingsNode(nodeId: string): void;
+  exportStorage(): string;
   importStorage(importedCache: string): void;
   updateSettingsRates(rates: IRates): void;
   updateLanguageSelection(language: string): void;
 }
 
-export const SettingsContext = createContext({} as ISettingsProvider);
+const isValidImport = (importedCache: string, localStorage: string) => {
+  try {
+    const parsedImport = JSON.parse(importedCache);
+    const parsedLocalStorage = JSON.parse(localStorage);
 
-export class SettingsProvider extends Component {
-  public readonly state: ISettingsProvider = {
-    settings: readAllSettings() || {},
-    language: readAllSettings().language || '',
-    updateSettings: (settings: ISettings): void => {
-      this.setState(
-        // Update our state to let react trigger changes.
-        {
-          settings
-        },
-        // Save to localStorage
-        () => updateSetting(this.state.settings)
+    if (parsedImport.version !== parsedLocalStorage.version) {
+      throw new Error(
+        `Outdated version detected. Cannot import ${parsedImport.version} into ${parsedLocalStorage.version}`
       );
+    }
+
+    const oldKeys = Object.keys(parsedImport).sort();
+    const newKeys = Object.keys(parsedLocalStorage).sort();
+    return JSON.stringify(oldKeys) === JSON.stringify(newKeys);
+  } catch (error) {
+    console.debug(error);
+    return false;
+  }
+};
+
+export const SettingsContext = createContext({} as ISettingsContext);
+
+export const SettingsProvider: React.FC = ({ children }) => {
+  const { createActions, settings } = useContext(DataContext);
+  const model = useMemo(() => createActions(LSKeys.SETTINGS), []);
+
+  const state: ISettingsContext = {
+    settings,
+    language: settings.language || '',
+    updateSettings: model.updateAll,
+    exportStorage: () => JSON.stringify(model.exportStorage()),
+    importStorage: (toImport: string) => {
+      const ls = state.exportStorage();
+      if (!isValidImport(toImport, String(ls))) return false;
+      return model.importStorage(toImport);
     },
-    getStorage: () => {
-      return readStorage();
+    addAccountToFavorites: (account: TUuid): void => {
+      state.updateSettings({
+        ...settings,
+        dashboardAccounts: [...settings.dashboardAccounts, account]
+      });
     },
-    importStorage: (importedCache: string) => {
-      const localStorage = this.state.getStorage();
-      if (this.isValidImport(importedCache, String(localStorage))) {
-        importStorage(importedCache);
-        this.getSettings();
-        // We're missing a service method to update all the components.
-        // While waiting we can just trigger a page refresh from Settings when this returns true.
-        return true;
-      }
-      return false;
+    updateSettingsAccounts: (accounts: TUuid[]): void => {
+      state.updateSettings({ ...settings, dashboardAccounts: accounts });
     },
-    updateSettingsAccounts: (accounts: string[]): void => {
-      const settings = readAllSettings();
-      updateSetting({ ...settings, dashboardAccounts: accounts });
-      this.getSettings();
+
+    updateSettingsNode: (nodeId: string): void => {
+      state.updateSettings({ ...settings, node: nodeId });
     },
-    readAllSettings: () => {
-      readAllSettings();
-      this.getSettings();
-    },
+
     updateSettingsRates: rates => {
-      const settings = readAllSettings();
-      updateSetting({ ...settings, rates });
-      this.getSettings();
+      state.updateSettings({ ...settings, rates });
     },
     updateLanguageSelection: languageToChangeTo => {
-      const settings = readAllSettings();
-      updateSetting({ ...settings, language: languageToChangeTo });
-      this.getSettings();
+      state.updateSettings({ ...settings, language: languageToChangeTo });
     }
   };
 
-  public render() {
-    const { children } = this.props;
-    return <SettingsContext.Provider value={this.state}>{children}</SettingsContext.Provider>;
-  }
-  private isValidImport(importedCache: string, localStorage: string) {
-    try {
-      const parsedImport = JSON.parse(importedCache);
-      const parsedLocalStorage = JSON.parse(localStorage);
-
-      const oldKeys = Object.keys(parsedImport).sort();
-      const newKeys = Object.keys(parsedLocalStorage).sort();
-      return JSON.stringify(oldKeys) === JSON.stringify(newKeys);
-    } catch (error) {
-      return false;
-    }
-  }
-  private getSettings = () => {
-    const settings: ISettings = readAllSettings() || [];
-    this.setState({ settings });
-  };
-}
+  return <SettingsContext.Provider value={state}>{children}</SettingsContext.Provider>;
+};

@@ -2,12 +2,12 @@ import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 interface RouterLinkProps {
-  fullWidth?: boolean;
+  fullwidth?: boolean;
 }
 
 const StyledRouterLink = styled(Link)<RouterLinkProps>`
   ${props =>
-    props.fullWidth === true &&
+    props.fullwidth === true &&
     css`
       width: 100%;
     `}

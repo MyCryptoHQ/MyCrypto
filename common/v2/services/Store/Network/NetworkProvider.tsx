@@ -1,59 +1,49 @@
-import React, { Component, createContext } from 'react';
-import * as service from './Network';
-import { Network, ExtendedNetwork, NodeOptions } from 'v2/types';
+import React, { useContext, createContext } from 'react';
 
-export interface ProviderState {
-  networks: ExtendedNetwork[];
-  createNetworks(networksData: ExtendedNetwork): void;
-  readNetworks(uuid: string): Network;
-  deleteNetworks(uuid: string): void;
-  createNetworksNode(uuid: string, nodeData: NodeOptions): void;
-  updateNetworks(uuid: string, networksData: ExtendedNetwork): void;
+import { Network, NetworkId, NodeType, NodeOptions, LSKeys } from 'v2/types';
+import { DataContext } from '../DataManager';
+
+export interface INetworkContext {
+  networks: Network[];
+  updateNetwork(id: NetworkId, item: Network): void;
   getNetworkByName(name: string): Network | undefined;
+  getNetworkByChainId(chainId: number): Network | undefined;
+  addNodeToNetwork(node: NodeOptions, network: Network): void;
+  createWeb3Node(networkId: NetworkId): NodeOptions;
 }
 
-export const NetworkContext = createContext({} as ProviderState);
+export const NetworkContext = createContext({} as INetworkContext);
 
-export class NetworkProvider extends Component {
-  public readonly state: ProviderState = {
-    networks: service.readAllNetworks() || [],
-    createNetworks: (networksData: ExtendedNetwork) => {
-      service.createNetworks(networksData);
-      this.getNetworks();
-    },
-    readNetworks: (uuid: string) => {
-      return service.readNetworks(uuid);
-    },
-    deleteNetworks: (uuid: string) => {
-      service.deleteNetworks(uuid);
-      this.getNetworks();
-    },
-    createNetworksNode: (uuid: string, nodeData: NodeOptions) => {
-      const networkCurrentData: Network = service.readNetworks(uuid);
-      const newNetworkData: Network = {
-        ...networkCurrentData,
-        nodes: [...networkCurrentData.nodes, nodeData]
-      };
-      service.updateNetworks(uuid, newNetworkData);
-      this.getNetworks();
-    },
-    updateNetworks: (uuid: string, networksData: ExtendedNetwork) => {
-      service.updateNetworks(uuid, networksData);
-      this.getNetworks();
-    },
-    getNetworkByName: (name: string): Network | undefined => {
-      const { networks } = this.state;
+export const NetworkProvider: React.FC = ({ children }) => {
+  const { createActions, networks } = useContext(DataContext);
+  const model = createActions(LSKeys.NETWORKS);
+
+  const state: INetworkContext = {
+    networks,
+    updateNetwork: model.update,
+    getNetworkByName: name => {
       return networks.find((network: Network) => network.name === name);
-    }
+    },
+    getNetworkByChainId: chainId => {
+      return networks.find((network: Network) => network.chainId === chainId);
+    },
+    addNodeToNetwork: (node: NodeOptions, network: Network) => {
+      const n = {
+        ...network,
+        nodes: [...network.nodes, node]
+      };
+      state.updateNetwork(network.id, n);
+    },
+    createWeb3Node: (networkId: NetworkId): NodeOptions => ({
+      name: 'web3',
+      isCustom: false,
+      type: NodeType.WEB3,
+      url: '',
+      service: 'MetaMask / Web3',
+      hidden: true,
+      network: `WEB3_${networkId}`
+    })
   };
 
-  public render() {
-    const { children } = this.props;
-    return <NetworkContext.Provider value={this.state}>{children}</NetworkContext.Provider>;
-  }
-
-  private getNetworks = () => {
-    const networks: ExtendedNetwork[] = service.readAllNetworks() || [];
-    this.setState({ networks });
-  };
-}
+  return <NetworkContext.Provider value={state}>{children}</NetworkContext.Provider>;
+};

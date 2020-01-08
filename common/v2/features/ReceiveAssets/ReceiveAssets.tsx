@@ -107,10 +107,11 @@ const ErrorMessage = styled.span`
 `;
 
 export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
-  const { accounts } = useContext(StoreContext);
+  const { accounts, networks } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
   const [networkName, setNetworkName] = useState(accounts[0].networkId);
-  const network = getNetworkById(networkName);
+  // @TODO: StoreAccount contains it's Network. This can be cleanedup.
+  const network = getNetworkById(networkName, networks);
   const filteredAssets = network
     ? assets
         .filter(asset => asset.networkId === network.id)
@@ -125,7 +126,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   const [chosenAssetName, setAssetName] = useState(filteredAssets[0].name);
   const selectedAsset = filteredAssets.find(asset => asset.name === chosenAssetName);
 
-  const ethereum = assets.find(asset => asset.name === 'Ethereum');
+  const ethereum = assets.find(asset => asset.networkId === 'Ethereum');
 
   const initialValues = {
     amount: '0',

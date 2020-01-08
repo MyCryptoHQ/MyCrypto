@@ -5,11 +5,12 @@ import { NotificationsContext, NotificationTemplates } from 'v2/features/Notific
 import { generateUUID } from 'v2/utils';
 import {
   AccountContext,
-  SettingsContext,
+  AssetContext,
   findNextUnusedDefaultLabel,
   getNewDefaultAssetTemplateByNetwork,
   getNetworkById,
-  AddressBookContext
+  AddressBookContext,
+  StoreContext,
 } from 'v2/services/Store';
 import { Account, AddressBook, Asset, Network, FormData, WalletId } from 'v2/types';
 import { getWeb3Config } from 'v2/utils/web3';
@@ -19,11 +20,13 @@ import { getWeb3Config } from 'v2/utils/web3';
 */
 function SaveAndRedirect(payload: { formData: FormData }) {
   const { createAccountWithID, getAccountByAddressAndNetworkName } = useContext(AccountContext);
-  const { createAddressBooks } = useContext(AddressBookContext);
-  const { settings, updateSettingsAccounts } = useContext(SettingsContext);
+  const { createAddressBooks, addressBook } = useContext(AddressBookContext);
   const { displayNotification } = useContext(NotificationsContext);
+  const { scanTokens, networks } = useContext(StoreContext);
+  const { assets } = useContext(AssetContext);
+
   useEffect(() => {
-    const network: Network | undefined = getNetworkById(payload.formData.network);
+    const network: Network | undefined = getNetworkById(payload.formData.network, networks);
     if (
       !network ||
       !payload.formData.account ||
@@ -37,7 +40,7 @@ function SaveAndRedirect(payload: { formData: FormData }) {
         payload.formData.accountType! === WalletId.WEB3
           ? WalletId[getWeb3Config().id]
           : payload.formData.accountType!;
-      const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(network);
+      const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(assets)(network);
       const newUUID = generateUUID();
       const account: Account = {
         address: payload.formData.account,
@@ -50,14 +53,14 @@ function SaveAndRedirect(payload: { formData: FormData }) {
         mtime: 0
       };
       const newLabel: AddressBook = {
-        label: findNextUnusedDefaultLabel(account.wallet),
+        label: findNextUnusedDefaultLabel(account.wallet)(addressBook),
         address: account.address,
         notes: '',
         network: account.networkId
       };
       createAddressBooks(newLabel);
       createAccountWithID(account, newUUID);
-      updateSettingsAccounts([...settings.dashboardAccounts, newUUID]);
+      scanTokens();
       displayNotification(NotificationTemplates.walletAdded, {
         address: account.address
       });

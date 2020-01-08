@@ -15,7 +15,7 @@ export default function ImportSuccess() {
     <ImportSuccessContainer>
       {translate('SETTINGS_IMPORT_SUCCESS')}
       <RouterLink to="/settings">
-        <Button fullWidth={true} secondary={true}>
+        <Button fullwidth={true} secondary={true}>
           {translate('SETTINGS_IMPORT_COMPLETE')}
         </Button>
       </RouterLink>
