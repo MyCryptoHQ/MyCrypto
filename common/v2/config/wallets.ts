@@ -203,3 +203,6 @@ export const INSECURE_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS_CON
 export const HARDWARE_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS_CONFIG)(
   ({ type }: { type: WalletType }) => type === WalletType.HARDWARE
 );
+export const WEB3_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS_CONFIG)(
+  ({ type }: { type: WalletType }) => type === WalletType.WEB3
+);
