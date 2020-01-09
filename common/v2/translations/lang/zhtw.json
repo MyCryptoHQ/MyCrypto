@@ -49,6 +49,9 @@
     "ERROR_11": "無效的nonce值。(Must be integer.)",
     "ERROR_14": "找不到錢包。 ",
     "WARN_SEND_LINK": "你藉由一條連結到達此頁面，且該連結已幫你將地址、金額、gas和data欄位或交易類別(傳送模式)填好。 送出前你可以自由更改其中的值。 首先先解鎖你的錢包。 ",
-    "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address "
+    "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address ",
+    "CONTRACT_BYTECODE": "合約的程式碼 ",
+    "NAV_DEPLOYCONTRACT": "部署合約 ",
+    "TRANS_DATA": "交易的Data "
   }
 }

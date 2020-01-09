@@ -67,12 +67,11 @@ const TxTypeConfig: ITxTypeConfig = {
 };
 
 export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt) => {
-  const fromAccount = accountsList.find(
-    account => account.address.toLowerCase() === tx.from.toLowerCase()
-  );
-  const toAccount = accountsList.find(
-    account => account.address.toLowerCase() === tx.to.toLowerCase()
-  );
+  const fromAccount =
+    tx.from &&
+    accountsList.find(account => account.address.toLowerCase() === tx.from.toLowerCase());
+  const toAccount =
+    tx.to && accountsList.find(account => account.address.toLowerCase() === tx.to.toLowerCase());
   return !fromAccount || !toAccount
     ? fromAccount
       ? ITxType.OUTBOUND
@@ -136,16 +135,8 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
   const createEntries = (_: string, collection: typeof transactions) =>
     collection.map(
       ({ timestamp, hash, stage, from, to, amount, asset, network, txType }: ITxReceipt) => {
-        const toAddressBookEntry = getLabelByAddressAndNetwork(
-          to.toLowerCase(),
-          addressBook,
-          network
-        );
-        const fromAddressBookEntry = getLabelByAddressAndNetwork(
-          from.toLowerCase(),
-          addressBook,
-          network
-        );
+        const toAddressBookEntry = to && getLabelByAddressAndNetwork(to, addressBook, network);
+        const fromAddressBookEntry = getLabelByAddressAndNetwork(from, addressBook, network);
         return [
           <TransactionLabel
             key={0}
@@ -160,12 +151,14 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
             truncate={truncate}
             address={from}
           />,
-          <Address
-            key={2}
-            title={toAddressBookEntry ? toAddressBookEntry.label : noLabel}
-            truncate={truncate}
-            address={to}
-          />,
+          to && (
+            <Address
+              key={2}
+              title={toAddressBookEntry ? toAddressBookEntry.label : noLabel}
+              truncate={truncate}
+              address={to}
+            />
+          ),
           <Amount
             key={3}
             assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
@@ -178,12 +171,11 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           <NewTabLink
             key={4}
             href={
-              network && 'blockExplorer' in network
+              network && network.blockExplorer
                 ? network.blockExplorer.txUrl(hash)
                 : `https://etherscan.io/tx/${hash}`
             }
           >
-            {' '}
             <img src={newWindowIcon} alt="View more information about this transaction" />
           </NewTabLink>
         ];

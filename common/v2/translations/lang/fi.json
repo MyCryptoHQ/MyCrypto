@@ -49,6 +49,8 @@
     "ERROR_10": "Virheellinen gasin määrä. (Must be integer. Try 20 GWEI / 20000000000 WEI.) ",
     "ERROR_11": "Virheellinen nonce. (Must be integer.) ",
     "ERROR_14": "Lompakkoa ei löytynyt. ",
-    "WARN_SEND_LINK": "You arrived via a link that has the address, value, gas, data fields, or transaction type (send mode) filled in for you. You can change any information before sending. Unlock your wallet to get started. "
+    "WARN_SEND_LINK": "You arrived via a link that has the address, value, gas, data fields, or transaction type (send mode) filled in for you. You can change any information before sending. Unlock your wallet to get started. ",
+    "NAV_DEPLOYCONTRACT": "Ota Käyttöön Sopimus ",
+    "TRANS_DATA": "Tiedot "
   }
 }

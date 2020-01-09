@@ -1,20 +1,18 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
 import { ExtendedContentPanel, Tabs } from 'v2/components';
-import { ROUTE_PATHS, DEFAULT_NETWORK } from 'v2/config';
+import { ROUTE_PATHS } from 'v2/config';
 import { useStateReducer } from 'v2/utils';
 import { ITxReceipt, ISignedTx, Tab } from 'v2/types';
-import { getNetworkById, NetworkContext } from 'v2/services/Store';
 import { BREAK_POINTS } from 'v2/theme';
 
-import { interactWithContractsInitialState, InteractWithContractsFactory } from './stateFactory';
-import { Interact, InteractionReceipt } from './components';
-import { ABIItem, InteractWithContractState } from './types';
+import { deployContractsInitialState, DeployContractsFactory } from './stateFactory';
+import { Deploy, DeployConfirm, DeployReceipt } from './components';
+import { DeployContractsState } from './types';
 import { WALLET_STEPS } from './helpers';
-import InteractionConfirm from './components/InteractionConfirm';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
@@ -47,38 +45,24 @@ const TabsWrapper = styled.div`
   width: fit-content;
 `;
 
-const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
+const DeployContractsFlow = (props: RouteComponentProps<{}>) => {
   const [step, setStep] = useState(0);
-
-  const { networks } = useContext(NetworkContext);
-  const initialState = {
-    ...interactWithContractsInitialState,
-    network: getNetworkById(DEFAULT_NETWORK, networks)
-  };
   const {
-    interactWithContractsState,
     handleNetworkSelected,
-    handleContractSelected,
-    handleContractAddressChanged,
-    handleAddressOrDomainChanged,
-    handleAbiChanged,
-    handleCustomContractNameChanged,
-    updateNetworkContractOptions,
-    displayGeneratedForm,
-    handleInteractionFormSubmit,
-    handleInteractionFormWriteSubmit,
+    handleDeploySubmit,
+    handleByteCodeChanged,
     handleAccountSelected,
     handleTxSigned,
-    handleSaveContractSubmit,
     handleGasSelectorChange,
-    handleDeleteContract
-  } = useStateReducer(InteractWithContractsFactory, initialState);
+    deployContractsState
+  } = useStateReducer(DeployContractsFactory, deployContractsInitialState);
 
-  const { account }: InteractWithContractState = interactWithContractsState;
+  const { account }: DeployContractsState = deployContractsState;
   const { history, location } = props;
 
   const goToFirstStep = () => {
     setStep(0);
+    handleNetworkSelected(undefined);
   };
 
   const goToNextStep = () => {
@@ -114,72 +98,44 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
 
   const steps: TStep[] = [
     {
-      title: translateRaw('NEW_HEADER_TEXT_14'),
-      component: Interact,
-      props: (({
-        network,
-        contractAddress,
-        contract,
-        abi,
-        contracts,
-        showGeneratedForm,
-        customContractName,
-        rawTransaction,
-        addressOrDomainInput,
-        resolvingDomain
-      }) => ({
-        network,
-        contractAddress,
-        contract,
-        abi,
-        contracts,
-        showGeneratedForm,
+      title: translateRaw('DEPLOY_CONTRACTS'),
+      component: Deploy,
+      props: (({ networkId, byteCode, rawTransaction }) => ({
         account,
-        customContractName,
-        rawTransaction,
-        addressOrDomainInput,
-        resolvingDomain
-      }))(interactWithContractsState),
+        networkId,
+        byteCode,
+        rawTransaction
+      }))(deployContractsState),
       actions: {
+        handleByteCodeChanged,
         handleNetworkSelected,
-        handleContractSelected,
-        handleContractAddressChanged,
-        handleAddressOrDomainChanged,
-        handleAbiChanged,
-        handleCustomContractNameChanged,
-        updateNetworkContractOptions,
-        displayGeneratedForm,
-        handleInteractionFormSubmit,
-        handleSaveContractSubmit,
-        handleInteractionFormWriteSubmit: (payload: ABIItem) =>
-          handleInteractionFormWriteSubmit(payload, goToNextStep),
+        handleDeploySubmit: () => handleDeploySubmit(goToNextStep),
         handleAccountSelected,
-        handleGasSelectorChange,
-        handleDeleteContract
+        handleGasSelectorChange
       }
     },
     {
       title: translateRaw('CONFIRM_TX_MODAL_TITLE'),
-      component: InteractionConfirm,
-      props: (({ txConfig }) => ({ txConfig }))(interactWithContractsState),
+      component: DeployConfirm,
+      props: (({ txConfig }) => ({ txConfig }))(deployContractsState),
       actions: { goToNextStep }
     },
     {
-      title: translateRaw('INTERACT_SIGN_WRITE'),
+      title: translateRaw('DEPLOY_SIGN'),
       component: account && WALLET_STEPS[account.wallet],
       props: (({ rawTransaction }) => ({
         network: account && account.network,
         senderAccount: account,
         rawTransaction
-      }))(interactWithContractsState),
+      }))(deployContractsState),
       actions: {
         onSuccess: (payload: ITxReceipt | ISignedTx) => handleTxSigned(payload, goToNextStep)
       }
     },
     {
-      title: translateRaw('INTERACT_RECEIPT'),
-      component: InteractionReceipt,
-      props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(interactWithContractsState),
+      title: translateRaw('DEPLOY_RECEIPT'),
+      component: DeployReceipt,
+      props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(deployContractsState),
       actions: { goToFirstStep }
     }
   ];
@@ -211,4 +167,4 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
   );
 };
 
-export default withRouter(InteractWithContractsFlow);
+export default withRouter(DeployContractsFlow);

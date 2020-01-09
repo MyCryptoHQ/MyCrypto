@@ -49,6 +49,8 @@
     "ERROR_9": "Please enter a valid data value (Must be hex). ",
     "ERROR_10": "Please enter a valid gas price. (Must be integer. Try 20 GWEI (20000000000 WEI)",
     "ERROR_11": "Please enter a valid nonce      (Must be integer).",
-    "ERROR_14": "Wallet not found. "
+    "ERROR_14": "Wallet not found. ",
+    "NAV_DEPLOYCONTRACT": "Implantar Contrato ",
+    "TRANS_DATA": "Dados "
   }
 }

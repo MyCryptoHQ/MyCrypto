@@ -18,7 +18,9 @@ export {
   GAS_PRICE_GWEI_LOWER_BOUND,
   GAS_PRICE_GWEI_UPPER_BOUND,
   GAS_PRICE_DEFAULT,
-  GAS_PRICE_TESTNET
+  GAS_PRICE_TESTNET,
+  DEFAULT_NONCE,
+  GAS_PRICE_GWEI_DEFAULT_HEX
 } from './gasPrice';
 export { OS } from './operatingSystems';
 export {

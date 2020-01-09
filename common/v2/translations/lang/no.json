@@ -49,6 +49,7 @@
     "ERROR_10": "Ugyldig gas-mengde. (Må være heltall. Prøv 20 GWEI / 20000000000 WEI.) ",
     "ERROR_11": "Ugyldig nonce. (Må være heltall.) ",
     "ERROR_14": "Lommebok ikke funnet. ",
-    "WARN_SEND_LINK": "Du ankom via en lenke hvor adresse, verdi, gas, datafelt og/eller transaksjonstype (sendingsmodus) var ferdigutfylt. Du kan endre denne informasjonen før du sender. Lås opp lommeboken din for å komme i gang. "
+    "WARN_SEND_LINK": "Du ankom via en lenke hvor adresse, verdi, gas, datafelt og/eller transaksjonstype (sendingsmodus) var ferdigutfylt. Du kan endre denne informasjonen før du sender. Lås opp lommeboken din for å komme i gang. ",
+    "NAV_DEPLOYCONTRACT": "Utplasser kontrakt "
   }
 }

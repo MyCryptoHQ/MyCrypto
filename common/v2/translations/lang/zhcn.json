@@ -49,6 +49,8 @@
     "ERROR_11": "无效nonce。(Must be integer.)",
     "ERROR_14": "找不到钱包。 ",
     "WARN_SEND_LINK": "You arrived via a link that has the address, value, gas, data fields, or transaction type (send mode) filled in for you. You can change any information before sending. Unlock your wallet to get started. ",
-    "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address "
+    "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address ",
+    "NAV_DEPLOYCONTRACT": "部署合约 ",
+    "TRANS_DATA": "数据： "
   }
 }

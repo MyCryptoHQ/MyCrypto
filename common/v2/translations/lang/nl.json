@@ -49,6 +49,7 @@
     "ERROR_10": "Ongeldige gas bedrag. (Moet een getal zijn. Probeer 20 GWEI / 20000000000 WEI.) ",
     "ERROR_11": "Ongeldige nonce. (Moet een getal zijn.) ",
     "ERROR_14": "Wallet niet gevonden. ",
-    "WARN_SEND_LINK": "Je bent hier gekomen via een link waarbij het adres, bedrag, gas of data velden al ingevuld zijn. Indien gewenst kun je elk veld nog aanpassen voor het verzenden. Ontgrendel je wallet on te beginnen. "
+    "WARN_SEND_LINK": "Je bent hier gekomen via een link waarbij het adres, bedrag, gas of data velden al ingevuld zijn. Indien gewenst kun je elk veld nog aanpassen voor het verzenden. Ontgrendel je wallet on te beginnen. ",
+    "NAV_DEPLOYCONTRACT": "Publiceer Contract "
   }
 }

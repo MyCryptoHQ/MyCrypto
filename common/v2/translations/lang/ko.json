@@ -111,6 +111,13 @@
     "VIEW_ADDR": "주소 보기",
     "ENCLAVE_LEDGER_FAIL": "Ledger 지갑 연결을 실패했습니다",
     "ENCLAVE_LEDGER_IN_USE": "현재 다른 앱에서 Ledger 지갑을 사용중입니다. 기다리시거나 사용 중인 다른 지갑 앱을 종료한 후 다시 시도해주세요.",
-    "LOADING_ENS_ADDRESS": "주소 읽기..."
+    "LOADING_ENS_ADDRESS": "주소 읽기...",
+    "CONTRACT_BYTECODE": "Byte 코드 ",
+    "CONTRACTS_DEPLOY": "배포",
+    "CONTRACTS_INTERACT": "상호 작용",
+    "NAV_DEPLOYCONTRACT": "컨트랙트 배포 ",
+    "CONFIRM_TX_SENDING": "송금 예정",
+    "CONFIRM_TX_FEE": "트랜잭션 수수료",
+    "TRANS_DATA": "데이터 "
   }
 }
