@@ -106,11 +106,15 @@ export default class BreakdownChart extends Component<BreakdownChartProps> {
 
   public handleMouseEnter = (_: any, index: number) => {
     // Ignore mouse enter while animating the chart
-    if (this.isChartAnimating) {
-      return;
-    }
+    if (this.isChartAnimating) return;
 
     this.props.setSelectedAssetIndex(index);
+  };
+
+  public handleMouseLeave = (_: any) => {
+    if (this.isChartAnimating) return;
+
+    this.props.setSelectedAssetIndex(-1);
   };
 
   public render() {
@@ -131,6 +135,7 @@ export default class BreakdownChart extends Component<BreakdownChartProps> {
             labelLine={false}
             dataKey="fiatValue"
             onMouseEnter={this.handleMouseEnter}
+            onMouseLeave={this.handleMouseLeave}
             animationDuration={800}
             onAnimationStart={() => (this.isChartAnimating = true)}
             onAnimationEnd={() => (this.isChartAnimating = false)}

@@ -1,4 +1,3 @@
-
 import { ExtendedAccount, Fiat } from 'v2/types';
 
 export interface Balance {
