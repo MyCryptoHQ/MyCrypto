@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 import { Identicon } from '@mycrypto/ui';
 
@@ -7,12 +8,14 @@ import { Contract, StoreAccount, ITxConfig, ExtendedContract, Network } from 'v2
 import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { translateRaw } from 'v2/translations';
 import { isValidETHAddress, isCreationAddress } from 'v2/services/EthService/validators';
+import { getNetworkById, NetworkContext } from 'v2/services';
 
 import ContractDropdownOption from './ContractDropdownOption';
 import ContractDropdownValue from './ContractDropdownValue';
 import GeneratedInteractionForm from './GeneratedInteractionForm';
 import { CUSTOM_CONTRACT_ADDRESS } from '../constants';
 import { ABIItem } from '../types';
+import { getParsedQueryString } from '../utils';
 
 const { BRIGHT_SKY_BLUE } = COLORS;
 const { SCREEN_SM } = BREAK_POINTS;
@@ -148,7 +151,9 @@ interface Props {
   handleDeleteContract(contractUuid: string): void;
 }
 
-export default function Interact(props: Props) {
+type CombinedProps = RouteComponentProps<{}> & Props;
+
+function Interact(props: CombinedProps) {
   const {
     network,
     contractAddress,
@@ -176,8 +181,17 @@ export default function Interact(props: Props) {
     handleDeleteContract
   } = props;
 
-  const [error, setError] = useState(undefined);
+  const [error, setError] = useState<string | undefined>(undefined);
+  const [areFieldsPopulatedFromUrl, setAreFieldsPopulatedFromUrl] = useState(false);
+  const [wasAbiEditedManually, setWasAbiEditedManually] = useState(false);
   const [wasContractInteracted, setWasContractInteracted] = useState(false);
+  const [interactionDataFromURL, setInteractionDataFromURL] = useState<any>({});
+  const { networks } = useContext(NetworkContext);
+  const { networkIdFromUrl, addressFromUrl, functionFromUrl, inputsFromUrl } = getParsedQueryString(
+    props.location.search
+  );
+  const networkAndAddressMatchURL =
+    network.id === networkIdFromUrl && contractAddress === addressFromUrl;
 
   useEffect(() => {
     updateNetworkContractOptions();
@@ -187,9 +201,23 @@ export default function Interact(props: Props) {
   useEffect(() => {
     displayGeneratedForm(false);
     setWasContractInteracted(false);
+
+    if (areFieldsPopulatedFromUrl && networkAndAddressMatchURL && !wasAbiEditedManually) {
+      submitInteract();
+      setInteractionDataFromURL({
+        ...interactionDataFromURL,
+        functionName: functionFromUrl,
+        inputs: inputsFromUrl
+      });
+    }
   }, [abi]);
 
   useEffect(() => {
+    // If contract network id doesn't match the selected network id, set contract to custom and keep the address from the URL.
+    if (contract && contract.networkId !== network.id) {
+      handleAddressOrDomainChanged(contractAddress);
+    }
+
     setError(undefined);
   }, [contract]);
 
@@ -219,6 +247,30 @@ export default function Interact(props: Props) {
       return [];
     }
   };
+
+  useEffect(() => {
+    if (getNetworkById(networkIdFromUrl, networks)) {
+      handleNetworkSelected(networkIdFromUrl);
+    } else if (networkIdFromUrl) {
+      setError(translateRaw('INTERACT_ERROR_INVALID_NETWORK'));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (
+      !getNetworkById(networkIdFromUrl, networks) ||
+      areFieldsPopulatedFromUrl ||
+      contracts.length === 0 ||
+      !addressFromUrl
+    ) {
+      return;
+    }
+
+    if (addressFromUrl) {
+      handleAddressOrDomainChanged(addressFromUrl);
+    }
+    setAreFieldsPopulatedFromUrl(true);
+  }, [contracts]);
 
   const customEditingMode = contract && contract.address === CUSTOM_CONTRACT_ADDRESS;
 
@@ -283,7 +335,10 @@ export default function Interact(props: Props) {
             label={translateRaw('CONTRACT_JSON')}
             value={abi}
             placeholder={`[{"type":"constructor","inputs":[{"name":"param1","type":"uint256","indexed":true}],"name":"Event"},{"type":"function","inputs":[{"name":"a","type":"uint256"}],"name":"foo","outputs":[]}]`}
-            onChange={({ target: { value } }) => handleAbiChanged(value)}
+            onChange={({ target: { value } }) => {
+              handleAbiChanged(value);
+              setWasAbiEditedManually(true);
+            }}
             textarea={true}
             resizableTextArea={true}
             height={'108px'}
@@ -306,12 +361,12 @@ export default function Interact(props: Props) {
                 </Button>
               </SaveButtonWrapper>
             </SaveContractWrapper>
-            {error && (
-              <ErrorWrapper>
-                <InlineErrorMsg>{error}</InlineErrorMsg>
-              </ErrorWrapper>
-            )}
           </>
+        )}
+        {error && (
+          <ErrorWrapper>
+            <InlineErrorMsg>{error}</InlineErrorMsg>
+          </ErrorWrapper>
         )}
       </FieldWrapper>
 
@@ -331,8 +386,11 @@ export default function Interact(props: Props) {
           rawTransaction={rawTransaction}
           handleGasSelectorChange={handleGasSelectorChange}
           contractAddress={contractAddress}
+          interactionDataFromURL={interactionDataFromURL}
         />
       )}
     </>
   );
 }
+
+export default withRouter(Interact);

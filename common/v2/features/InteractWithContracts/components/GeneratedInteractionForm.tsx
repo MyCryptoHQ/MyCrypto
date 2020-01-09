@@ -100,6 +100,7 @@ interface Props {
   network: Network;
   rawTransaction: ITxConfig;
   contractAddress: string;
+  interactionDataFromURL: { functionName?: string; inputs: { name: string; value: string }[] };
   handleInteractionFormSubmit(submitedFunction: ABIItem): Promise<object>;
   handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<object>;
   handleAccountSelected(account: StoreAccount | undefined): void;
@@ -115,13 +116,14 @@ export default function GeneratedInteractionForm({
   contractAddress,
   handleAccountSelected,
   handleInteractionFormWriteSubmit,
-  handleGasSelectorChange
+  handleGasSelectorChange,
+  interactionDataFromURL
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [currentFunction, setCurrentFunction] = useState<ABIItem | undefined>(undefined);
   const [error, setError] = useState(undefined);
   const [gasCallProps, setGasCallProps] = useState({});
-
+  const [isFormFilledFromURL, setIsFormFilledFromURL] = useState(false);
   const functions = getFunctionsFromABI(abi);
 
   const updateGasCallProps = () => {
@@ -147,7 +149,11 @@ export default function GeneratedInteractionForm({
   const handleInputChange = (fieldName: string, value: string) => {
     const updatedFunction = Object.assign({}, currentFunction);
     const inputIndexToChange = updatedFunction.inputs.findIndex(x => x.name === fieldName);
-    updatedFunction.inputs[inputIndexToChange].value = value;
+
+    if (updatedFunction.inputs[inputIndexToChange]) {
+      updatedFunction.inputs[inputIndexToChange].value = value;
+    }
+
     setCurrentFunction(updatedFunction);
   };
 
@@ -191,6 +197,26 @@ export default function GeneratedInteractionForm({
     outputs = currentFunction.outputs;
   }
 
+  const { functionName: functionNameFromURL, inputs: inputsFromURL } = interactionDataFromURL;
+  const functionFromURL = functions.find(x => x.name === functionNameFromURL);
+
+  if (functionFromURL && !currentFunction) {
+    handleFunctionSelected(functionFromURL);
+  }
+
+  useEffect(() => {
+    if (!isFormFilledFromURL && currentFunction && functionNameFromURL === currentFunction.name) {
+      inputsFromURL.forEach(inputFromURL => {
+        handleInputChange(inputFromURL.name, inputFromURL.value);
+      });
+      setIsFormFilledFromURL(true);
+      //if all inputs are prefilled then trigger read button
+      if (isRead && currentFunction.inputs.every(input => input.value)) {
+        submitFormRead(currentFunction);
+      }
+    }
+  }, [currentFunction]);
+
   return (
     <>
       <HorizontalLine />
@@ -199,7 +225,9 @@ export default function GeneratedInteractionForm({
         <Dropdown
           value={currentFunction}
           options={functions}
-          onChange={handleFunctionSelected}
+          onChange={selectedFunction => {
+            handleFunctionSelected(selectedFunction);
+          }}
           optionComponent={FunctionDropdownOption}
           valueComponent={FunctionDropdownValue}
           searchable={true}
