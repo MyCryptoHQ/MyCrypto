@@ -102,6 +102,13 @@
     "OR": "or",
     "BROADCAST_TX_TITLE": "署名済みのトランザクションを一斉同報",
     "BROADCAST_TX_DESCRIPTION": "署名したトランザクションを上書きして、『トランザクションの送出』をクリック",
-    "VIEW_ADDR": "アドレスを表示"
+    "VIEW_ADDR": "アドレスを表示",
+    "CONTRACT_BYTECODE": "バイトコード ",
+    "CONTRACTS_DEPLOY": "展開",
+    "CONTRACTS_INTERACT": "操作",
+    "NAV_DEPLOYCONTRACT": "契約を展開 ",
+    "CONFIRM_TX_SENDING": "これから送出",
+    "CONFIRM_TX_FEE": "処理料金",
+    "TRANS_DATA": "データ： "
   }
 }

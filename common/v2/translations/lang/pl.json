@@ -49,6 +49,9 @@
     "ERROR_10": "Błędna ilość paliwa. (Must be integer. Try 20 GWEI / 20000000000 WEI.) ",
     "ERROR_11": "Błędny wyróżnik. (Must be integer.) ",
     "ERROR_14": "Nie znaleziono portfela. ",
-    "WARN_SEND_LINK": "Znalazłeś się tu przez odnośnik, który zawiera wstępnie uzupełniony adres, kwotę, paliwo lub dane transakcji. Możesz zmienić dowolne parametry transakcji zanim ją zatwierdzisz. Odblokuj portfel aby kontynuować. "
+    "WARN_SEND_LINK": "Znalazłeś się tu przez odnośnik, który zawiera wstępnie uzupełniony adres, kwotę, paliwo lub dane transakcji. Możesz zmienić dowolne parametry transakcji zanim ją zatwierdzisz. Odblokuj portfel aby kontynuować. ",
+    "CONTRACT_BYTECODE": "Kod Bajtowy ",
+    "NAV_DEPLOYCONTRACT": "Wyślij Kontrakt ",
+    "TRANS_DATA": "Dane "
   }
 }

@@ -49,6 +49,8 @@
     "ERROR_9": "Érvénytelen adatérték. (Must be hex.) ",
     "ERROR_10": "Érvénytelen gas összeg. (Must be integer. Try 20 GWEI / 20000000000 WEI.) ",
     "ERROR_11": "Érvénytelen nonce. (Must be integer.) ",
-    "ERROR_14": "Tárca nem található. "
+    "ERROR_14": "Tárca nem található. ",
+    "NAV_DEPLOYCONTRACT": "Kontraktus Telepítése ",
+    "TRANS_DATA": "Adat "
   }
 }

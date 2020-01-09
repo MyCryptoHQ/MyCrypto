@@ -49,6 +49,8 @@
     "ERROR_10": "Inserisci prezzo valido per il gas. (Deve essere un intero. Prova 20 GWEI / 20000000000 WEI.) ",
     "ERROR_11": "Inserisci un nonce valido. (Deve essere un intero.) ",
     "ERROR_14": "Portafoglio non trovato. ",
-    "WARN_SEND_LINK": "Sei arrivato qui da un link che ha riempito per te i campi indirizzo, importo, gas, dati o tipo di transazione (modalità di invio). Puoi cambiare queste informazioni prima di inviare. Sblocca il tuo portafoglio per iniziare. "
+    "WARN_SEND_LINK": "Sei arrivato qui da un link che ha riempito per te i campi indirizzo, importo, gas, dati o tipo di transazione (modalità di invio). Puoi cambiare queste informazioni prima di inviare. Sblocca il tuo portafoglio per iniziare. ",
+    "NAV_DEPLOYCONTRACT": "Pubblica contratto ",
+    "TRANS_DATA": "Dati "
   }
 }

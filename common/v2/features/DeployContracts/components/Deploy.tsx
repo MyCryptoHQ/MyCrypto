@@ -62,6 +62,9 @@ const CustomLabel = styled(Typography)`
   font-size: 1em;
 `;
 
+const formatGasPrice = (gasPrice: string) =>
+  gasPrice.length ? baseToConvertedUnit(hexToString(gasPrice), 9) : gasPrice;
+
 interface Props {
   networkId: NetworkId;
   byteCode: string;
@@ -94,25 +97,16 @@ export default function Deploy(props: Props) {
   const filteredAccounts = getAccountsInNetwork(accounts, networkId);
 
   useEffect(() => {
+    if (!account) return;
     debouncedUpdateGasCall.current(account, byteCode);
-  }, [account]);
-
-  const byteCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { value }
-    } = e;
-    handleByteCodeChanged(value);
-    debouncedUpdateGasCall.current(account, value);
-  };
-
-  const updateGasCallProps = (acc: StoreAccount, byteCodeVal: string) => {
-    if (!acc) return;
-
-    setGasCallProps(constructGasCallProps(byteCodeVal, acc));
-  };
+  }, [account, byteCode]);
 
   const debouncedUpdateGasCall = useRef(
-    debounce((acc: StoreAccount, byteCodeVal: string) => updateGasCallProps(acc, byteCodeVal), 700)
+    debounce(
+      (acc: StoreAccount, byteCodeVal: string) =>
+        setGasCallProps(constructGasCallProps(byteCodeVal, acc)),
+      700
+    )
   );
 
   const deploySubmit = async () => {
@@ -131,9 +125,6 @@ export default function Deploy(props: Props) {
     }
     handleGasSelectorChange({ gasPrice: val } as ITxConfig);
   };
-
-  const formatGasPrice = () =>
-    gasPrice.length ? baseToConvertedUnit(hexToString(gasPrice), 9) : gasPrice;
 
   const handleGasLimitChange = (val: string) => {
     handleGasSelectorChange({ gasLimit: Number(val) });
@@ -159,7 +150,7 @@ export default function Deploy(props: Props) {
             label={translateRaw('CONTRACT_BYTECODE')}
             value={byteCode}
             placeholder="0x8f87a973e..."
-            onChange={byteCodeChange}
+            onChange={({ target: { value } }) => handleByteCodeChanged(value)}
             textarea={true}
             resizableTextArea={true}
             height={'108px'}
@@ -179,7 +170,7 @@ export default function Deploy(props: Props) {
         />
         {account && (
           <GasSelector
-            gasPrice={formatGasPrice()}
+            gasPrice={formatGasPrice(gasPrice)}
             gasLimit={gasLimit}
             nonce={nonce}
             account={account}

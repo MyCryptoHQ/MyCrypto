@@ -45,7 +45,7 @@ export const makeTxConfigFromTransaction = (
 ): ITxConfig => {
   const { gasPrice, gasLimit, nonce, data, to, value } = rawTransaction;
   const { address, network } = account;
-  const baseAsset = getAssetByUUID(network.baseAsset)!;
+  const baseAsset = getAssetByUUID(account.assets)(network.baseAsset)!;
 
   const txConfig: ITxConfig = {
     from: address,

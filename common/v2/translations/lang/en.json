@@ -62,6 +62,7 @@
     "SEND_TRANS": "Send Transaction ",
     "TOKEN_SYMBOL": "Token Symbol ",
     "TOKEN_DEC": "Decimals ",
+    "TRANS_DATA": "Data ",
     "TRANS_AUTO_GAS_TOGGLE": "Automatically Calculate Gas Limit",
     "OFFLINE_STEP2_LABEL_3": "Gas Price (gwei) ",
     "OFFLINE_STEP2_LABEL_4": "Gas Limit ",
@@ -135,6 +136,7 @@
     "ACTION_17": "Write",
     "CONFIRM_TX_MODAL_TITLE": "Confirm Send",
     "CONFIRM_TX_SENT": "You Sent",
+    "CONFIRM_TX_FEE": "Transaction Fee",
     "CONFIRM_TX_FROM": "From",
     "CONFIRM_TX_TO": "To",
     "MAX_TX_FEE": "Transaction Fee",
@@ -528,6 +530,11 @@
     "DEPLOY_ANOTHER": "Deploy another Contract",
     "DEPLOY_CONTRACTS": "Deploy Contracts",
     "DEPLOY_SIGN": "Sign deploy contract transaction",
-    "DEPLOY_RECEIPT": "Deploy contract Receipt"
+    "DEPLOY_RECEIPT": "Deploy contract Receipt",
+    "CONTRACTS_INTERACT": "Interact",
+    "CONTRACTS_DEPLOY": "Deploy",
+    "CONTRACT_BYTECODE": "Byte Code ",
+    "NAV_DEPLOYCONTRACT": "Deploy Contract ",
+    "CONFIRM_TX_SENDING": "You'll Send"
   }
 }

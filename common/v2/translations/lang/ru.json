@@ -49,6 +49,9 @@
     "ERROR_9": "Недопустимые данные. (Must be hex.) ",
     "ERROR_10": "Некорректно указано количество газа. (Must be integer. Try 20 GWEI / 20000000000 WEI.) ",
     "ERROR_11": "Неверный номер перевода (nonce). (Must be integer.) ",
-    "ERROR_14": "Кошелёк не найден. "
+    "ERROR_14": "Кошелёк не найден. ",
+    "CONTRACT_BYTECODE": "Байткод ",
+    "NAV_DEPLOYCONTRACT": "Опубликовать контракт ",
+    "TRANS_DATA": "Данные "
   }
 }

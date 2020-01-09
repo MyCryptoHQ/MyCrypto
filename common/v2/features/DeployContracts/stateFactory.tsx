@@ -5,6 +5,7 @@ import { StoreAccount, NetworkId } from 'v2/types';
 import { ProviderHandler, getGasEstimate } from 'v2/services';
 import { isWeb3Wallet } from 'v2/utils/web3';
 import { translateRaw } from 'v2/translations';
+import { DEFAULT_NONCE, GAS_LIMIT_LOWER_BOUND, GAS_PRICE_GWEI_DEFAULT_HEX } from 'v2/config';
 
 import { DeployContractsState } from './types';
 import { makeTxConfigFromTransaction, constructGasCallProps } from './helpers';
@@ -12,9 +13,9 @@ import { makeTxConfigFromTransaction, constructGasCallProps } from './helpers';
 const deployContractsInitialState = {
   account: undefined,
   rawTransaction: {
-    gasPrice: '0xee6b2800',
-    gasLimit: 21000,
-    nonce: 0
+    gasPrice: GAS_PRICE_GWEI_DEFAULT_HEX,
+    gasLimit: GAS_LIMIT_LOWER_BOUND,
+    nonce: DEFAULT_NONCE
   },
   txConfig: undefined,
   txReceipt: undefined,
@@ -90,9 +91,7 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
   const handleTxSigned = async (signResponse: any, after: () => void) => {
     const { account, txConfig } = state;
 
-    if (!account) {
-      return;
-    }
+    if (!account) return;
 
     if (isWeb3Wallet(account.wallet)) {
       const txReceipt =

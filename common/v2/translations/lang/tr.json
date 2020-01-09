@@ -49,6 +49,8 @@
     "ERROR_10": "Yetersiz gas. (Must be integer. Try 20 GWEI / 20000000000 WEI.) ",
     "ERROR_11": "Geçersiz veri. (Must be integer.) ",
     "ERROR_14": "Cüzdan bulunmadi. ",
-    "WARN_SEND_LINK": "Işlem türü (gönderme modu), adres, miktar, gaz ve veri alanları sizin için doldurulmus olan bir bağlantı'ile geldiniz. Göndermeden önce herhangi bir bilgiyi değiştirebilirsiniz. Başlamak için cüzdanınızı açın. "
+    "WARN_SEND_LINK": "Işlem türü (gönderme modu), adres, miktar, gaz ve veri alanları sizin için doldurulmus olan bir bağlantı'ile geldiniz. Göndermeden önce herhangi bir bilgiyi değiştirebilirsiniz. Başlamak için cüzdanınızı açın. ",
+    "NAV_DEPLOYCONTRACT": "Sözleşme kur ",
+    "TRANS_DATA": "Veri "
   }
 }
