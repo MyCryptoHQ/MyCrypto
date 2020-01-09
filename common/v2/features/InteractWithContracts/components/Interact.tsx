@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
-import * as qs from 'query-string';
 import { Identicon } from '@mycrypto/ui';
 
 import { NetworkSelectDropdown, InputField, Dropdown, InlineErrorMsg, Button } from 'v2/components';
@@ -9,13 +8,14 @@ import { Contract, StoreAccount, ITxConfig, ExtendedContract, Network } from 'v2
 import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { translateRaw } from 'v2/translations';
 import { isValidETHAddress, isCreationAddress } from 'v2/services/EthService/validators';
-import { getNetworkById } from 'v2/services';
+import { getNetworkById, NetworkContext } from 'v2/services';
 
 import ContractDropdownOption from './ContractDropdownOption';
 import ContractDropdownValue from './ContractDropdownValue';
 import GeneratedInteractionForm from './GeneratedInteractionForm';
 import { CUSTOM_CONTRACT_ADDRESS } from '../constants';
 import { ABIItem } from '../types';
+import { getParsedQueryString } from '../utils';
 
 const { BRIGHT_SKY_BLUE } = COLORS;
 const { SCREEN_SM } = BREAK_POINTS;
@@ -186,7 +186,10 @@ function Interact(props: CombinedProps) {
   const [wasAbiEditedManually, setWasAbiEditedManually] = useState(false);
   const [wasContractInteracted, setWasContractInteracted] = useState(false);
   const [interactionDataFromURL, setInteractionDataFromURL] = useState<any>({});
-  const { network: networkIdFromUrl, address: addressFromUrl } = qs.parse(props.location.search);
+  const { networks } = useContext(NetworkContext);
+  const { networkIdFromUrl, addressFromUrl, functionFromUrl, inputsFromUrl } = getParsedQueryString(
+    props.location.search
+  );
   const networkAndAddressMatchURL =
     network.id === networkIdFromUrl && contractAddress === addressFromUrl;
 
@@ -201,15 +204,6 @@ function Interact(props: CombinedProps) {
 
     if (areFieldsPopulatedFromUrl && networkAndAddressMatchURL && !wasAbiEditedManually) {
       submitInteract();
-      const { function: functionFromUrl, input } = qs.parse(props.location.search);
-
-      const inputsArray: string[] = !input ? [] : Array.isArray(input) ? input : [input];
-
-      const inputsFromUrl = inputsArray.map(i => ({
-        name: i.includes(':') ? i.substr(0, i.indexOf(':')) : '',
-        value: i.includes(':') ? i.substr(i.indexOf(':') + 1, i.length) : ''
-      }));
-
       setInteractionDataFromURL({
         ...interactionDataFromURL,
         functionName: functionFromUrl,
@@ -255,7 +249,7 @@ function Interact(props: CombinedProps) {
   };
 
   useEffect(() => {
-    if (getNetworkById(networkIdFromUrl)) {
+    if (getNetworkById(networkIdFromUrl, networks)) {
       handleNetworkSelected(networkIdFromUrl);
     } else if (networkIdFromUrl) {
       setError(translateRaw('INTERACT_ERROR_INVALID_NETWORK'));
@@ -264,7 +258,7 @@ function Interact(props: CombinedProps) {
 
   useEffect(() => {
     if (
-      !getNetworkById(networkIdFromUrl) ||
+      !getNetworkById(networkIdFromUrl, networks) ||
       areFieldsPopulatedFromUrl ||
       contracts.length === 0 ||
       !addressFromUrl
