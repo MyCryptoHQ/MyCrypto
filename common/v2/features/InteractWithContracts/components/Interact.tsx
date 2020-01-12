@@ -170,7 +170,6 @@ const FormSchema = Yup.object().shape({
 type CombinedProps = RouteComponentProps<{}> & Props;
 
 function Interact(props: CombinedProps) {
-
   const {
     network,
     contractAddress,
@@ -298,17 +297,16 @@ function Interact(props: CombinedProps) {
     }
   };
 
-  
   return (
     <Formik
-    initialValues={initialFormikValues}
-    validationSchema={FormSchema}
-    // Hack as we don't really use Formik for this flow
-    onSubmit={() => undefined}
-    render={({ errors, touched, setFieldValue }) => {
-      const isValid =
-        Object.values(errors).filter(e => e !== undefined && e.value !== undefined).length === 0;
-      return (
+      initialValues={initialFormikValues}
+      validationSchema={FormSchema}
+      // Hack as we don't really use Formik for this flow
+      onSubmit={() => undefined}
+      render={({ errors, touched, setFieldValue }) => {
+        const isValid =
+          Object.values(errors).filter(e => e !== undefined && e.value !== undefined).length === 0;
+        return (
           <>
             <NetworkSelectorWrapper>
               <NetworkSelectDropdown
@@ -408,35 +406,35 @@ function Interact(props: CombinedProps) {
                       </Button>
                     </SaveButtonWrapper>
                   </SaveContractWrapper>
-                  </>
-        )}
-        {error && (
-          <ErrorWrapper>
-            <InlineErrorMsg>{error}</InlineErrorMsg>
-          </ErrorWrapper>
-        )}
-      </FieldWrapper>
+                </>
+              )}
+              {error && (
+                <ErrorWrapper>
+                  <InlineErrorMsg>{error}</InlineErrorMsg>
+                </ErrorWrapper>
+              )}
+            </FieldWrapper>
 
-      <ButtonWrapper>
-        <Button disabled={wasContractInteracted} onClick={submitInteract}>
-          {translateRaw('INTERACT_WITH_CONTRACT')}
-        </Button>
-      </ButtonWrapper>
-      {showGeneratedForm && abi && (
-        <GeneratedInteractionForm
-          abi={tryAbiParse(abi)}
-          handleInteractionFormSubmit={handleInteractionFormSubmit}
-          account={account}
-          handleAccountSelected={handleAccountSelected}
-          handleInteractionFormWriteSubmit={handleInteractionFormWriteSubmit}
-          network={network}
-          rawTransaction={rawTransaction}
-          handleGasSelectorChange={handleGasSelectorChange}
-          contractAddress={contractAddress}
-          interactionDataFromURL={interactionDataFromURL}
-        />
-      )}
-    </>
+            <ButtonWrapper>
+              <Button disabled={wasContractInteracted} onClick={submitInteract}>
+                {translateRaw('INTERACT_WITH_CONTRACT')}
+              </Button>
+            </ButtonWrapper>
+            {showGeneratedForm && abi && (
+              <GeneratedInteractionForm
+                abi={tryAbiParse(abi)}
+                handleInteractionFormSubmit={handleInteractionFormSubmit}
+                account={account}
+                handleAccountSelected={handleAccountSelected}
+                handleInteractionFormWriteSubmit={handleInteractionFormWriteSubmit}
+                network={network}
+                rawTransaction={rawTransaction}
+                handleGasSelectorChange={handleGasSelectorChange}
+                contractAddress={contractAddress}
+                interactionDataFromURL={interactionDataFromURL}
+              />
+            )}
+          </>
         );
       }}
     />
