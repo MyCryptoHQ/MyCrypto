@@ -22,7 +22,7 @@ export const IS_NOT_ELECTRON_AND_IS_NOT_DEV: boolean = !IS_ELECTRON && !IS_DEV;
 export const getStories = (): IStory[] => [
   {
     name: WalletId.WEB3,
-    steps: HAS_WEB3_PROVIDER ? [Web3ProviderDecrypt, SaveAndRedirect] : [Web3ProviderInstall]
+    steps: HAS_WEB3_PROVIDER() ? [Web3ProviderDecrypt, SaveAndRedirect] : [Web3ProviderInstall]
   },
   {
     name: WalletId.LEDGER_NANO_S,

@@ -13,7 +13,7 @@ import {
 export const getStories = (): IStory[] => [
   {
     name: WalletId.METAMASK,
-    steps: HAS_WEB3_PROVIDER ? [Web3ProviderDecrypt] : [Web3ProviderInstall]
+    steps: HAS_WEB3_PROVIDER() ? [Web3ProviderDecrypt] : [Web3ProviderInstall]
   },
   {
     name: WalletId.LEDGER_NANO_S,

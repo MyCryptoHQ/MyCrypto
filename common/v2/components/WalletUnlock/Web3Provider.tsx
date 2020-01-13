@@ -124,7 +124,7 @@ class Web3ProviderDecrypt extends Component<Props & ISettingsContext & INetworkC
   }
 
   private getWeb3Provider() {
-    if (HAS_WEB3_PROVIDER) {
+    if (HAS_WEB3_PROVIDER()) {
       return getWeb3Config();
     }
     return WALLETS_CONFIG[WalletId.WEB3]; //Default to Web3
