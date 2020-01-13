@@ -107,7 +107,7 @@
     "LEDGER_REFERRAL_1": "Buy a Ledger Wallet",
     "LEDGER_HELP_LINK": "[Learn how Ledger works with MyCrypto] (https://support.mycrypto.com/how-to/migrating/moving-from-mycrypto-to-ledger)",
     "LEDGER_REFERRAL_2": "Don’t have a Ledger? [Get one now!](https://www.ledgerwallet.com/r/1985?path=/products/)",
-    "LEDGER_TIP": "Please open the Ethereum app on your Ledger device and follow the on-screen instructions to add this account.If you are unable to do so, please see our [comprehensive troubleshooting guide](https://support.mycrypto.com/troubleshooting/accessing-wallet/ledger-hardware-wallet-unable-to-connect-on-mycrypto).",
+    "LEDGER_TIP": "Please open the Ethereum app on your Ledger device and follow the on-screen instructions to add this account. If you are unable to do so, please see our [comprehensive troubleshooting guide](https://support.mycrypto.com/troubleshooting/accessing-wallet/ledger-hardware-wallet-unable-to-connect-on-mycrypto).",
     "CONFIRM_AND_SEND": "Confirm and Send",
     "LEDGER_TIMEOUT": "The request timed out",
     "LEDGER_WRONG_APP": "Wrong application selected on your device",
