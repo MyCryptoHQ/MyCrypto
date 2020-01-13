@@ -80,7 +80,7 @@ export function SignTransactionWalletConnect({
     if (walletSigningState !== WalletSigningState.READY) return;
     // Resubmits the transaction for signature on tx rejection.
     const walletSigner = setInterval(() => {
-      if (!isPendingTx) return;
+      if (isPendingTx) return;
       promptSignTransaction();
     }, 3000);
     return () => clearInterval(walletSigner);
@@ -101,20 +101,21 @@ export function SignTransactionWalletConnect({
                   $address: detectedAddress
                 })}
               </div>
-              <div>
-                <div className="WalletConnect-fields-field-margin">
-                  {signingError !== '' ? (
-                    <InlineErrorMsg>
-                      {translate('SIGN_TX_WALLETCONNECT_REJECTED', {
-                        $walletName: translateRaw('X_WALLETCONNECT'),
-                        $address: senderAccount.address
-                      })}
-                    </InlineErrorMsg>
-                  ) : (
-                    <>{isPendingTx && <Spinner />}</>
-                  )}
-                </div>
+              <div className="WalletConnect-fields">
+                {signingError !== '' && (
+                  <InlineErrorMsg>
+                    {translate('SIGN_TX_WALLETCONNECT_REJECTED', {
+                      $walletName: translateRaw('X_WALLETCONNECT'),
+                      $address: senderAccount.address
+                    })}
+                  </InlineErrorMsg>
+                )}
               </div>
+              {isPendingTx && (
+                <div className="WalletConnect-fields-spinner">
+                  <Spinner />
+                </div>
+              )}
             </>
           )}
 
@@ -165,7 +166,7 @@ export function SignTransactionWalletConnect({
             </section>
           </>
         )}
-        {wikiLink && <p>{translate('ADD_PARITY_4', { $wiki_link: wikiLink })}</p>}
+        {wikiLink && <p>{translate('ADD_WALLETCONNECT_LINK', { $wiki_link: wikiLink })}</p>}
       </div>
     </div>
   );

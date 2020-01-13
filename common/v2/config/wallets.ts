@@ -210,7 +210,8 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     type: WalletType.WALLETCONNECT,
     lid: 'X_WALLETCONNECT',
     icon: WalletConnectSVG,
-    description: 'ADD_WALLETCONNECTDESC'
+    description: 'ADD_WALLETCONNECTDESC',
+    helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/what-is-walletconnect`
   }
 };
 

@@ -60,7 +60,7 @@ export function WalletConnectDecrypt({ formData, onUnlock }: OwnProps & StatePro
             <WalletConnectQr scan={true} onScan={unlockAddress} />
           </section>
         </section>
-        {wikiLink && <p>{translate('ADD_PARITY_4', { $wiki_link: wikiLink })}</p>}
+        {wikiLink && <p>{translate('ADD_WALLETCONNECT_LINK', { $wiki_link: wikiLink })}</p>}
       </div>
     </div>
   );

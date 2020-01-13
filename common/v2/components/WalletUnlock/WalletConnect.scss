@@ -26,12 +26,8 @@
       align-items: center;
       justify-content: center;
       flex: 1;
-
-      &-margin {
-        margin-top: calc(1rem + 15px);
-        margin-bottom: calc(1rem + 15px);
-        font-size: 1.2rem;
-      }
+      margin-top: calc(1rem + 15px);
+      margin-bottom: calc(1rem + 15px);
 
       & .AddressField {
         width: 100%;
