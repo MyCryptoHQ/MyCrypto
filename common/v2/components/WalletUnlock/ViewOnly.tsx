@@ -44,7 +44,7 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
     }
   };
   const { getNetworkByName } = useContext(NetworkContext);
-  const [isResolvingENSName, setIsResolvingENSName] = useState(false);
+  const [isResolvingDomain, setIsResolvingDomain] = useState(false);
   const [network] = useState(getNetworkByName(formData.network));
   return (
     <div className="Panel">
@@ -70,21 +70,21 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
             }
           };
 
-          const handleENSResolve = async (name: string) => {
+          const handleDomainResolve = async (name: string) => {
             if (!values || !network) {
-              setIsResolvingENSName(false);
+              setIsResolvingDomain(false);
               return;
             }
-            setIsResolvingENSName(true);
+            setIsResolvingDomain(true);
             const resolvedAddress =
               (await getResolvedENSAddress(network, name)) || CREATION_ADDRESS;
-            setIsResolvingENSName(false);
+            setIsResolvingDomain(false);
             if (isValidETHAddress(resolvedAddress)) {
               setFieldValue('address', { ...values.address, value: resolvedAddress });
             } else {
               setFieldError('address', translateRaw('TO_FIELD_ERROR'));
             }
-            setIsResolvingENSName(false);
+            setIsResolvingDomain(false);
           };
           return (
             <Form>
@@ -93,11 +93,11 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
                   <AddressField
                     className="AddressField"
                     fieldName="address"
-                    handleENSResolve={handleENSResolve}
+                    handleDomainResolve={handleDomainResolve}
                     error={errors && errors.address && errors.address.value}
                     touched={touched}
                     network={network}
-                    isLoading={isResolvingENSName}
+                    isLoading={isResolvingDomain}
                     isError={!isValid}
                     placeholder="Enter an Address or Contact"
                   />
@@ -107,7 +107,7 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
                 <Button
                   type="submit"
                   onClick={handleSubmit}
-                  disabled={isResolvingENSName}
+                  disabled={isResolvingDomain}
                   className="ViewOnly-submit"
                 >
                   {translateRaw('ACTION_6')}

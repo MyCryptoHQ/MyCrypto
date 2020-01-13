@@ -116,7 +116,7 @@
     "VIEW_ADDR": "Voir adresse",
     "ENCLAVE_LEDGER_FAIL": "Échec de connexion au Ledger",
     "ENCLAVE_LEDGER_IN_USE": "Votre Ledger est en cours d'utilisation par une autre application. Veuillez patienter, ou fermer les autres applications portefeuilles avant de réessayer.",
-    "LOADING_ENS_ADDRESS": "Chargement de l'adresse...",
+    "LOADING_ADDRESS": "Chargement de l'adresse...",
     "ANNOUNCEMENT_MESSAGE": "Bienvenue sur le nouveau MyCrypto. Nous espérons qu'il vous plaît ! Si vous avez besoin de l'ancien site pour une urgence, vous pouvez toujours accéder à [MyCrypto Legacy](https://legacy.mycrypto.com)",
     "U2F_NOT_SUPPORTED": "Le standard U2F que les portefeuilles physiques utilisent ne semble pas supporté par votre navigateur. Veuillez réessayer en utilisant Google Chrome.",
     "CONTRACTS_DEPLOY": "Déployer",
