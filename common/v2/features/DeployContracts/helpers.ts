@@ -14,7 +14,8 @@ import {
   SignTransactionSafeT,
   SignTransactionKeystore,
   SignTransactionParity,
-  SignTransactionMnemonic
+  SignTransactionMnemonic,
+  SignTransactionWalletConnect
 } from 'v2/components';
 import { getAssetByUUID, hexToString, hexWeiToString } from 'v2/services';
 
@@ -30,6 +31,7 @@ export const WALLET_STEPS: SigningComponents = {
   [WalletId.SAFE_T_MINI]: SignTransactionSafeT,
   [WalletId.KEYSTORE_FILE]: SignTransactionKeystore,
   [WalletId.PARITY_SIGNER]: SignTransactionParity,
+  [WalletId.WALLETCONNECT]: SignTransactionWalletConnect,
   [WalletId.MNEMONIC_PHRASE]: SignTransactionMnemonic,
   [WalletId.VIEW_ONLY]: null
 };
