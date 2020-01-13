@@ -19,7 +19,7 @@ import {
 // only if it is not the Desktop App and not the Dev environment
 export const IS_NOT_ELECTRON_AND_IS_NOT_DEV: boolean = !IS_ELECTRON && !IS_DEV;
 
-export const STORIES: IStory[] = [
+export const getStories = (): IStory[] => [
   {
     name: WalletId.WEB3,
     steps: HAS_WEB3_PROVIDER ? [Web3ProviderDecrypt, SaveAndRedirect] : [Web3ProviderInstall]

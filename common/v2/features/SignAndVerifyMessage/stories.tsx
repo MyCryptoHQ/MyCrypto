@@ -10,7 +10,7 @@ import {
   Web3ProviderInstall
 } from 'v2/components';
 
-export const STORIES: IStory[] = [
+export const getStories = (): IStory[] => [
   {
     name: WalletId.METAMASK,
     steps: HAS_WEB3_PROVIDER ? [Web3ProviderDecrypt] : [Web3ProviderInstall]
