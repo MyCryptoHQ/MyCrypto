@@ -33,6 +33,10 @@
       margin: 0 1em;
     };
 
+    &-spinner {
+      margin-top: calc(1rem + 15px);
+    }
+
     &-field {
       display: flex;
       flex-direction: column;
