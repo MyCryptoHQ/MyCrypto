@@ -55,6 +55,7 @@
     "ADD_LABEL_8": "Your Password (optional) ",
     "ADD_WEB3DESC": "Connect & sign via your browser or extension",
     "ADD_WALLETCONNECTDESC": "Connect your WalletConnect device",
+    "ADD_WALLETCONNECT_LINK": "Not working? [Here are some troubleshooting tips to try]($wiki_link).",
     "ADD_HARDWAREDESC": "Connect & sign via your hardware wallet",
     "ACCOUNT_SELECTION_PLACEHOLDER": "Select Account",
     "ACCOUNT_SELECTION_NO_FUNDS": "You don't have an account with sufficient funds.",
