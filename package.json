@@ -177,7 +177,7 @@
     "utility-types": "3.10.0",
     "webpack": "4.41.2",
     "webpack-cli": "3.3.10",
-    "webpack-dev-server": "3.9.0",
+    "webpack-dev-server": "3.10.1",
     "webpack-merge": "4.2.2",
     "webpack-modernizr-loader": "5.0.0",
     "webpack-subresource-integrity": "1.4.0",
