@@ -175,7 +175,7 @@
     "types-rlp": "0.0.1",
     "typescript": "3.5.1",
     "utility-types": "3.10.0",
-    "webpack": "4.41.2",
+    "webpack": "4.41.5",
     "webpack-cli": "3.3.10",
     "webpack-dev-server": "3.10.1",
     "webpack-merge": "4.2.2",
