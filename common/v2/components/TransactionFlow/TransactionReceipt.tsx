@@ -27,7 +27,7 @@ import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 
 interface Props {
   completeButtonText: string;
-  swapInfo?: JSX.Element;
+  customDetails?: JSX.Element;
 }
 
 export default function TransactionReceipt({
@@ -35,7 +35,7 @@ export default function TransactionReceipt({
   txConfig,
   resetFlow,
   completeButtonText,
-  swapInfo
+  customDetails
 }: IStepComponentProps & Props) {
   const { getAssetRate } = useContext(RatesContext);
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
@@ -110,7 +110,7 @@ export default function TransactionReceipt({
           {translate('TRANSACTION_BROADCASTED_DESC')}
         </div>
       </div>
-      {swapInfo && <div className="TransactionReceipt-row">{swapInfo}</div>}
+      {customDetails && <div className="TransactionReceipt-row">{customDetails}</div>}
       <div className="TransactionReceipt-row TransactionReceipt-row-from-to">
         <div className="TransactionReceipt-row-column">
           {translate('CONFIRM_TX_FROM')}
@@ -133,7 +133,7 @@ export default function TransactionReceipt({
           </div>
         </div>
       </div>
-      {!swapInfo && (
+      {!customDetails && (
         <div className="TransactionReceipt-row">
           <div className="TransactionReceipt-row-column">
             <img src={sentIcon} alt="Sent" />

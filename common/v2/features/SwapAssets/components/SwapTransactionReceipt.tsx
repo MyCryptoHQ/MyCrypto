@@ -27,7 +27,7 @@ export default function SwapTransactionReceipt(props: Props) {
       completeButtonText={translateRaw('SWAP_START_ANOTHER')}
       resetFlow={onSuccess}
       onComplete={onSuccess}
-      swapInfo={
+      customDetails={
         <SwapFromToDiagram
           fromSymbol={fromAsset.symbol}
           toSymbol={toAsset.symbol}

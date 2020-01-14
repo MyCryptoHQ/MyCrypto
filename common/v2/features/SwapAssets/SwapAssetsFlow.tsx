@@ -7,6 +7,7 @@ import { ExtendedContentPanel } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
 import { ITxReceipt, ISignedTx } from 'v2/types';
 import { useStateReducer } from 'v2/utils';
+import { useEffectOnce, usePromise } from 'v2/vendor';
 
 import {
   SwapAssets,
@@ -33,6 +34,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
 
   const {
     fetchSwapAssets,
+    setSwapAssets,
     handleFromAssetSelected,
     handleToAssetSelected,
     calculateNewFromAmount,
@@ -197,9 +199,13 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
   const stepObject = steps[step];
   const StepComponent = stepObject.component;
 
-  if (assets.length === 0) {
-    fetchSwapAssets();
-  }
+  const mounted = usePromise();
+  useEffectOnce(() => {
+    (async () => {
+      const [fetchedAssets, fetchedFromAsset, fetchedToAsset] = await mounted(fetchSwapAssets());
+      setSwapAssets(fetchedAssets, fetchedFromAsset, fetchedToAsset);
+    })();
+  });
 
   return (
     <ExtendedContentPanel
