@@ -8,15 +8,15 @@ This repo stores both the beta and production versions of the MyCrypto codebase.
 #### The `legacy` branch represents the production code hosted on [mycrypto.com](https://mycrypto.com)
 #### Documentation can be found in [our wiki](https://github.com/MyCryptoHQ/MyCrypto/wiki)
 
-- [Getting your token added to MyCrypto](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Adding-Tokens)	
-- [Adding your Network or Node](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Network-or-Node)	
-- [Adding your Web3 Wallet & Logo](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Web3-Wallet)	
+- [Getting your token added to MyCrypto](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Adding-Tokens)
+- [Adding your Network or Node](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Network-or-Node)
+- [Adding your Web3 Wallet & Logo](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Web3-Wallet)
 - [MyCryptoBuilds](https://github.com/MyCryptoHQ/MyCrypto/wiki/MyCryptoBuilds) - access a build by commithash, PR number, or branch name without building it yourself!
 
 ## Development / Build Requirements
 
-* Node 10.13.0\*
-* Yarn >= 1.7.0\*\*
+* Node 12.14.1\*
+* Yarn >= 1.19.1\*\*
 * Python 2.7.X\*\*\*
 
 <sub>\*Higher versions should work fine, but may cause inconsistencies. It's suggested you run 8.16.0 using `nvm`.</sub>
