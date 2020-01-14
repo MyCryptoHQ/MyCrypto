@@ -15,6 +15,10 @@ import {
   ViewOnlyDecrypt
 } from 'v2/components';
 
+// This const is used to hideFromWalletList
+// only if it is not the Desktop App and not the Dev environment
+export const IS_NOT_ELECTRON_AND_IS_NOT_DEV: boolean = !IS_ELECTRON && !IS_DEV;
+
 export const STORIES: IStory[] = [
   {
     name: WalletId.WEB3,
@@ -44,7 +48,7 @@ export const STORIES: IStory[] = [
       IS_DEV || IS_ELECTRON ? KeystoreDecrypt : InsecureWalletWarning,
       SaveAndRedirect
     ],
-    hideFromWalletList: IS_DEV ? IS_ELECTRON : !IS_ELECTRON
+    hideFromWalletList: IS_NOT_ELECTRON_AND_IS_NOT_DEV
   },
   {
     name: WalletId.MNEMONIC_PHRASE,
@@ -53,7 +57,7 @@ export const STORIES: IStory[] = [
       IS_DEV || IS_ELECTRON ? MnemonicDecrypt : InsecureWalletWarning,
       SaveAndRedirect
     ],
-    hideFromWalletList: IS_DEV ? IS_ELECTRON : !IS_ELECTRON
+    hideFromWalletList: IS_NOT_ELECTRON_AND_IS_NOT_DEV
   },
   {
     name: WalletId.PRIVATE_KEY,
@@ -62,7 +66,7 @@ export const STORIES: IStory[] = [
       IS_DEV || IS_ELECTRON ? PrivateKeyDecrypt : InsecureWalletWarning,
       SaveAndRedirect
     ],
-    hideFromWalletList: IS_DEV ? IS_ELECTRON : !IS_ELECTRON
+    hideFromWalletList: IS_NOT_ELECTRON_AND_IS_NOT_DEV
   },
   {
     name: WalletId.VIEW_ONLY,
