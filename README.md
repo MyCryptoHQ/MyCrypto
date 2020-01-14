@@ -15,7 +15,7 @@ This repo stores both the beta and production versions of the MyCrypto codebase.
 
 ## Development / Build Requirements
 
-* Node 10.13.0\*
+* Node 12.14.1\*
 * Yarn >= 1.19.1\*\*
 * Python 2.7.X\*\*\*
 
