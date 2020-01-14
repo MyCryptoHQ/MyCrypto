@@ -1,54 +1,120 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { isEmpty } from 'lodash';
 
-import { StoreContext, AccountContext } from 'v2/services/Store';
+import { usePromise, useEffectOnce } from 'v2/vendor';
+import { StoreContext, SettingsContext } from 'v2/services/Store';
 import { PollingService } from 'v2/workers';
-import { IRates, TTicker } from 'v2/types';
+import { IRates, TTicker, Asset } from 'v2/types';
+import { notUndefined } from 'v2/utils';
+
+import { AssetMapService } from './ApiService';
 
 interface State {
   rates: IRates;
   getRate(ticker: TTicker): number | undefined;
+  getAssetRate(asset: Asset): number | undefined;
+}
+
+interface AssetMappingObject {
+  coinGeckoId?: string;
+  cryptoCompareId?: string;
+  coinCapId?: string;
+}
+
+interface AssetMappingListObject {
+  [key: string]: AssetMappingObject;
 }
 
 const DEFAULT_FIAT_PAIRS = ['USD', 'EUR'] as TTicker[];
 const DEFAULT_FIAT_RATE = 0;
 const POLLING_INTERRVAL = 60000;
-const RATES_URL = 'https://proxy.mycryptoapi.com/cc/multi';
-const buildQueryUrl = (assets: TTicker[], currencies: TTicker[]) => `
-  ${RATES_URL}/?fsyms=${assets.join(',')}&tsyms=${currencies.join(',')}
+
+const ASSET_RATES_URL = 'https://api.coingecko.com/api/v3/simple/price';
+const buildAssetQueryUrl = (assets: string[], currencies: string[]) => `
+  ${ASSET_RATES_URL}/?ids=${assets}&vs_currencies=${currencies}
 `;
+
+const fetchAssetMappingList = async (): Promise<AssetMappingListObject | any> =>
+  AssetMapService.instance.getAssetMap();
+
+const destructureCoinGeckoIds = (rates: IRates, assetMap: AssetMappingListObject): IRates => {
+  // From: { ["ethereum"]: { "usd": 123.45,"eur": 234.56 } }
+  // To: { [uuid for coinGeckoId "ethereum"]: { "usd": 123.45, "eur": 234.56 } }
+  const updateRateObj = (acc: any, curValue: TTicker): IRates => {
+    const data: any = Object.keys(assetMap).find(uuid => assetMap[uuid].coinGeckoId === curValue);
+    acc[data] = rates[curValue];
+    return acc;
+  };
+
+  return Object.keys(rates).reduce(updateRateObj, {} as IRates);
+};
+
+const pullCoinGeckoIDs = (assetMap: AssetMappingListObject, uuids: TTicker[]): string[] =>
+  uuids
+    .map((uuid: TTicker) => (!assetMap || !assetMap[uuid] ? undefined : assetMap[uuid].coinGeckoId))
+    .filter(notUndefined);
 
 export const RatesContext = createContext({} as State);
 
 export function RatesProvider({ children }: { children: React.ReactNode }) {
-  const [rates, setRates] = useState({});
-  const { accounts: rawAccounts } = useContext(AccountContext);
-  const { assetTickers } = useContext(StoreContext);
+  const { assetUUIDs } = useContext(StoreContext);
+  const { settings, updateSettingsRates } = useContext(SettingsContext);
+  const [assetMapping, setAssetMapping] = useState({});
+
+  // Get our asset dict which maps myc_uuids to coingecko_ids
+  const mounted = usePromise();
+  useEffectOnce(() => {
+    (async () => {
+      // The cryptocompare api that our proxie uses fails gracefully and will return a conversion rate
+      // even if some are tickers are invalid (e.g WETH, GoerliETH etc.)
+      const value = await mounted(
+        fetchAssetMappingList().then(e => {
+          return e;
+        })
+      );
+      setAssetMapping(value);
+    })();
+  });
+
+  const currentAssetUUIDs = assetUUIDs();
 
   useEffect(() => {
-    // The cryptocompare api that our proxie uses fails gracefully and will return a conversion rate
-    // even if some are tickers are invalid (e.g WETH, GoerliETH etc.)
-    const currentTickers = assetTickers();
+    // Wait till we have fetched our asset mapping
+    if (isEmpty(assetMapping)) return;
+
+    const coinMappingObj: AssetMappingListObject = assetMapping;
+    const formattedCoinGeckoIds = pullCoinGeckoIDs(coinMappingObj, currentAssetUUIDs as TTicker[]);
+
     const worker = new PollingService(
-      buildQueryUrl(currentTickers, DEFAULT_FIAT_PAIRS), // @TODO: figure out how to handle the conversion more elegantly then `DEFAULT_FIAT_RATE`
+      buildAssetQueryUrl(formattedCoinGeckoIds, DEFAULT_FIAT_PAIRS), // @TODO: More elegant conversion then `DEFAULT_FIAT_RATE`
       POLLING_INTERRVAL,
-      (data: IRates) => setRates(data),
+      (data: IRates) => {
+        updateSettingsRates({ ...state.rates, ...destructureCoinGeckoIds(data, coinMappingObj) });
+      },
       err => console.debug('[RatesProvider]', err)
     );
 
-    const terminateWorker = () => {
+    // Start Polling service
+    worker.start();
+
+    // Make sure to close the worker onUnMount.
+    return () => {
       worker.stop();
       worker.close();
     };
-
-    worker.start();
-    return terminateWorker; // make sure we terminate the previous worker on teardown.
-  }, [rawAccounts]); // only update if an account has been added or removed from LocalStorage.
+  }, [assetMapping, currentAssetUUIDs.length]); //
 
   const state: State = {
-    rates: {},
+    get rates() {
+      return settings.rates;
+    },
     getRate: (ticker: TTicker) => {
       // @ts-ignore until we find a solution for TS7053 error
-      return rates[ticker] ? rates[ticker].USD : DEFAULT_FIAT_RATE;
+      return state.rates[ticker] ? state.rates[ticker].usd : DEFAULT_FIAT_RATE;
+    },
+    getAssetRate: (asset: Asset) => {
+      const uuid = asset.uuid;
+      return state.rates[uuid] ? state.rates[uuid].usd : DEFAULT_FIAT_RATE;
     }
   };
 

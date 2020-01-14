@@ -1,5 +1,3 @@
-import { TTicker } from './asset';
-
 // We use the response from the api which takes the form of
 // {
 //   ETH: {
@@ -8,5 +6,5 @@ import { TTicker } from './asset';
 //   }
 // }
 export type IRates = {
-  [k in TTicker]: any;
+  [k in string]: any;
 };

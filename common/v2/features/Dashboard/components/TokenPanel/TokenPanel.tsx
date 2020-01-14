@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 
 import { StoreContext, RatesContext, TokenInfoService } from 'v2/services';
-import { TTicker, AssetWithDetails, ExtendedAsset } from 'v2/types';
+import { AssetWithDetails, ExtendedAsset, StoreAsset } from 'v2/types';
 import { TokenList } from './TokenList';
 import { TokenDetails } from './TokenDetails';
 import { AddToken } from './AddToken';
@@ -13,8 +13,8 @@ export function TokenPanel() {
   const [allTokens, setAllTokens] = useState<AssetWithDetails[]>([]);
   const [isScanning, setIsScanning] = useState(false);
 
-  const { accounts, totals, currentAccounts, scanTokens } = useContext(StoreContext);
-  const { getRate, rates } = useContext(RatesContext);
+  const { totals, currentAccounts, scanTokens } = useContext(StoreContext);
+  const { getAssetRate } = useContext(RatesContext);
 
   const handleScanTokens = async (asset?: ExtendedAsset) => {
     try {
@@ -26,35 +26,39 @@ export function TokenPanel() {
     }
   };
 
+  const addDetailsToTokens = (totalStoreAssets: StoreAsset[]) => (tokenInfoData: any[]) =>
+    totalStoreAssets.reduce((tokens: AssetWithDetails[], asset) => {
+      return !asset.contractAddress
+        ? tokens
+        : [
+            ...tokens,
+            Object.assign({}, asset, {
+              rate: getAssetRate(asset) || 0,
+              details:
+                tokenInfoData.find(
+                  details => details.address.toLowerCase() === asset.contractAddress!.toLowerCase()
+                ) || {}
+            })
+          ];
+    }, []);
+
   useEffect(() => {
-    const getTokensWithDetails = async () => {
-      const selectedAccounts = currentAccounts();
-      const tokenTotals = totals(selectedAccounts);
+    const tokens = totals(currentAccounts);
+    const tokenAddresses = tokens.map(x => x.contractAddress!).filter(x => x);
 
-      // Fetch details for all tokens of selected accounts
-      const tokensDetails: any[] = await TokenInfoService.instance.getTokensInfo(
-        tokenTotals.map(x => x.contractAddress!).filter(x => x)
-      );
+    // Fetches token details by contract address
+    // Don't evoke setState in case the component is unMounted during fetch:
+    // https://juliangaramendy.dev/use-promise-subscription/
+    let isSubscribed = true;
+    TokenInfoService.instance
+      .getTokensInfo(tokenAddresses)
+      .then(addDetailsToTokens(tokens))
+      .then(t => (isSubscribed ? setAllTokens(t) : t));
 
-      // Add token details and token rate info to all assets that have  a contractAddress
-      const tempTokens = totals(selectedAccounts).reduce((tokens: AssetWithDetails[], asset) => {
-        return !asset.contractAddress
-          ? tokens
-          : [
-              ...tokens,
-              Object.assign(asset, {
-                rate: getRate(asset.ticker as TTicker) || 0,
-                details:
-                  tokensDetails.find(details => details.address === asset.contractAddress) || {}
-              })
-            ];
-      }, []);
-
-      setAllTokens(tempTokens);
+    return () => {
+      isSubscribed = false;
     };
-
-    getTokensWithDetails();
-  }, [accounts, rates]);
+  }, [currentAccounts]);
 
   return showDetailsView && currentToken ? (
     <TokenDetails currentToken={currentToken} setShowDetailsView={setShowDetailsView} />

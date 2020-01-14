@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import translate from 'translations';
+import translate from 'v2/translations';
 
 const FilePicker = styled.label`
   background: none;
@@ -34,6 +34,7 @@ interface ImportProps {
 
 export default class ImportBox extends React.Component<ImportProps> {
   public state = { badImport: false, dragging: false };
+
   public submit = (importedCache: string) => {
     const importSuccess = this.props.importCache(importedCache);
     if (Boolean(importSuccess) === false) {

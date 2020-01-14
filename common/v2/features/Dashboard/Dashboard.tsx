@@ -2,35 +2,21 @@ import React, { useContext } from 'react';
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ROUTE_PATHS } from 'v2/config';
-import { useDevMode } from 'v2/services';
-import { AccountContext, AddressBookContext } from 'v2/services/Store';
-import { translate, translateRaw } from 'translations';
+import { AccountContext, StoreContext } from 'v2/services/Store';
 import { AccountList, BannerAd, Desktop, Mobile } from 'v2/components';
 import { ActionTile, TokenPanel, WalletBreakdown, RecentTransactionList } from './components';
 import { NotificationsPanel } from '../NotificationsPanel';
 import { actions } from './constants';
 import './Dashboard.scss';
 
-import settingsIcon from 'common/assets/images/icn-settings.svg';
-
-const SettingsHeadingIcon = styled.img`
-  margin-right: 12px;
-  height: 1em;
-`;
-const AccountListFooter = styled.div`
-  color: #1eb8e7;
-`;
 // Keep the same mobile width as an ActionTile
 const EmptyTile = styled.div`
   width: 110px;
 `;
 
 export default function Dashboard() {
-  const { isDevelopmentMode } = useDevMode();
+  const { isUnlockVIP, currentAccounts } = useContext(StoreContext);
   const { accounts } = useContext(AccountContext);
-  const { readAddressBook } = useContext(AddressBookContext);
-
   return (
     <div>
       {/* Mobile only */}
@@ -55,18 +41,16 @@ export default function Dashboard() {
         </div>
         <div className="Dashboard-mobile-section">
           <AccountList
-            currentsOnly={true}
+            accounts={currentAccounts}
             className="Dashboard-mobile-modifiedPanel"
-            footerAction={translateRaw('SETTINGS_HEADING')}
-            footerActionLink={ROUTE_PATHS.SETTINGS.path}
+            copyable={true}
+            dashboard={true}
           />
         </div>
-        <BannerAd />
-        {isDevelopmentMode && (
-          <div className="Dashboard-mobile-section">
-            <RecentTransactionList accountsList={accounts} readAddressBook={readAddressBook} />
-          </div>
-        )}
+        {!isUnlockVIP && <BannerAd />}
+        <div className="Dashboard-mobile-section">
+          <RecentTransactionList accountsList={currentAccounts} />
+        </div>
       </Mobile>
       {/* Desktop only */}
       <Desktop className="Dashboard-desktop">
@@ -91,29 +75,21 @@ export default function Dashboard() {
             </div>
             <div>
               <AccountList
-                currentsOnly={true}
+                accounts={currentAccounts}
                 className="Dashboard-desktop-modifiedPanel"
-                footerAction={
-                  <AccountListFooter>
-                    <SettingsHeadingIcon src={settingsIcon} alt="Settings" />{' '}
-                    {translate('SETTINGS_HEADING')}
-                  </AccountListFooter>
-                }
-                footerActionLink={ROUTE_PATHS.SETTINGS.path}
+                copyable={true}
+                dashboard={true}
               />
             </div>
           </div>
         </div>
-        <BannerAd />
-        {isDevelopmentMode && (
-          <div className="Dashboard-desktop-bottom">
-            <RecentTransactionList
-              readAddressBook={readAddressBook}
-              accountsList={accounts}
-              className="Dashboard-desktop-modifiedPanel"
-            />
-          </div>
-        )}
+        {!isUnlockVIP && <BannerAd />}
+        <div className="Dashboard-desktop-bottom">
+          <RecentTransactionList
+            accountsList={currentAccounts}
+            className="Dashboard-desktop-modifiedPanel"
+          />
+        </div>
       </Desktop>
     </div>
   );

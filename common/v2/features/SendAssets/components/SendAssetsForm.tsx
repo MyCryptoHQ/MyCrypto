@@ -1,24 +1,38 @@
 import React, { useContext, useState } from 'react';
 import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
-import { Button, Input } from '@mycrypto/ui';
-import _ from 'lodash';
-import { formatEther, bigNumberify } from 'ethers/utils';
+import { Button } from '@mycrypto/ui';
+import _, { isEmpty } from 'lodash';
+import { formatEther } from 'ethers/utils';
 import BN from 'bn.js';
 import styled from 'styled-components';
+import questionSVG from 'assets/images/icn-question.svg';
 
-import translate, { translateRaw } from 'translations';
-import { WhenQueryExists } from 'components/renderCbs';
-import { InlineErrorMsg } from 'v2/components';
+import translate, { translateRaw } from 'v2/translations';
+import {
+  InlineErrorMsg,
+  AccountDropdown,
+  AmountInput,
+  AssetDropdown,
+  WhenQueryExists,
+  AddressField
+} from 'v2/components';
 import {
   getNetworkById,
   getBaseAssetByNetwork,
-  getBalanceFromAccount,
   getAccountsByAsset,
   StoreContext,
-  getTokenBalanceFromAccount
+  getAccountBalance
 } from 'v2/services/Store';
-import { Asset, Network, ExtendedAccount, StoreAsset } from 'v2/types';
+import {
+  Asset,
+  Network,
+  ExtendedAccount,
+  StoreAsset,
+  WalletId,
+  IFormikFields,
+  IStepComponentProps
+} from 'v2/types';
 import {
   getNonce,
   hexToNumber,
@@ -27,21 +41,22 @@ import {
   gasStringsToMaxGasBN,
   convertedToBaseUnit,
   baseToConvertedUnit,
-  isValidPositiveNumber
+  isValidPositiveNumber,
+  isValidENSName
 } from 'v2/services/EthService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
-
-import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
 import {
-  AccountDropdown,
-  AssetDropdown,
-  EthAddressField,
-  GasLimitField,
-  GasPriceField,
-  GasPriceSlider,
-  NonceField,
-  DataField
-} from './fields';
+  GAS_LIMIT_LOWER_BOUND,
+  GAS_LIMIT_UPPER_BOUND,
+  GAS_PRICE_GWEI_LOWER_BOUND,
+  GAS_PRICE_GWEI_UPPER_BOUND,
+  DEFAULT_ASSET_DECIMAL,
+  CREATION_ADDRESS
+} from 'v2/config';
+import { RatesContext } from 'v2/services/RatesProvider';
+
+import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
+import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
 import './SendAssetsForm.scss';
 import {
   validateGasLimitField,
@@ -50,14 +65,7 @@ import {
   validateDataField,
   validateAmountField
 } from './validators/validators';
-import { IFormikFields, IStepComponentProps } from '../types';
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
-import {
-  GAS_LIMIT_LOWER_BOUND,
-  GAS_LIMIT_UPPER_BOUND,
-  GAS_PRICE_GWEI_LOWER_BOUND,
-  GAS_PRICE_GWEI_UPPER_BOUND
-} from 'v2/config';
 import { weiToFloat } from 'v2/utils';
 
 export const AdvancedOptionsButton = styled(Button)`
@@ -67,7 +75,7 @@ export const AdvancedOptionsButton = styled(Button)`
 `;
 
 const initialFormikValues: IFormikFields = {
-  receiverAddress: {
+  address: {
     value: '',
     display: ''
   },
@@ -108,7 +116,13 @@ const SendAssetsSchema = Yup.object().shape({
     .min(0, translateRaw('ERROR_0'))
     .required(translateRaw('REQUIRED')),
   account: Yup.object().required(translateRaw('REQUIRED')),
-  receiverAddress: Yup.object().required(translateRaw('REQUIRED')),
+  address: Yup.object({
+    value: Yup.string().test(
+      'check-eth-address',
+      translateRaw('TO_FIELD_ERROR'),
+      value => isValidETHAddress(value) || isValidENSName(value)
+    )
+  }).required(translateRaw('REQUIRED')),
   gasLimitField: Yup.number()
     .min(GAS_LIMIT_LOWER_BOUND, translateRaw('ERROR_8'))
     .max(GAS_LIMIT_UPPER_BOUND, translateRaw('ERROR_8'))
@@ -127,8 +141,8 @@ export default function SendAssetsForm({
   // txConfig // @TODO Use prop in case goToPrevStep or URI prefill.
   onComplete
 }: IStepComponentProps) {
-  const { accounts, assets } = useContext(StoreContext);
-
+  const { accounts, assets, networks, getAccount } = useContext(StoreContext);
+  const { getAssetRate } = useContext(RatesContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingENSName, setIsResolvingENSName] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
@@ -146,10 +160,10 @@ export default function SendAssetsForm({
           errors,
           setFieldValue,
           setFieldTouched,
+          setFieldError,
           touched,
           values,
-          handleChange,
-          submitForm
+          handleChange
         }) => {
           const toggleAdvancedOptions = () => {
             setFieldValue('advancedTransaction', !values.advancedTransaction);
@@ -161,8 +175,8 @@ export default function SendAssetsForm({
                 !values ||
                 !values.network ||
                 !values.asset ||
-                !values.receiverAddress ||
-                !isValidETHAddress(values.receiverAddress.value) ||
+                !values.address ||
+                !isValidETHAddress(values.address.value) ||
                 !values.account ||
                 !isValidPositiveNumber(values.amount)
               )
@@ -185,10 +199,16 @@ export default function SendAssetsForm({
             }
             setIsResolvingENSName(true);
             const resolvedAddress =
-              (await getResolvedENSAddress(values.network, name)) ||
-              '0x0000000000000000000000000000000000000000';
+              (await getResolvedENSAddress(values.network, name)) || CREATION_ADDRESS;
             setIsResolvingENSName(false);
-            setFieldValue('receiverAddress', { ...values.receiverAddress, value: resolvedAddress });
+            if (isValidETHAddress(resolvedAddress)) {
+              setFieldValue('address', {
+                ...values.address,
+                value: resolvedAddress
+              });
+            } else {
+              setFieldError('address', translateRaw('TO_FIELD_ERROR'));
+            }
             setIsResolvingENSName(false);
           };
 
@@ -197,24 +217,25 @@ export default function SendAssetsForm({
           };
 
           const setAmountFieldToAssetMax = () => {
-            if (values.asset && values.account && baseAsset) {
+            const account = getAccount(values.account);
+            if (values.asset && account && baseAsset) {
               const isERC20 = isERC20Tx(values.asset);
               const balance = isERC20
                 ? weiToFloat(
-                    bigNumberify(getTokenBalanceFromAccount(values.account, values.asset)),
+                    getAccountBalance(account, values.asset),
                     values.asset.decimal
                   ).toString()
-                : formatEther(getBalanceFromAccount(values.account));
+                : formatEther(getAccountBalance(account).toString());
               const gasPrice = values.advancedTransaction
                 ? values.gasPriceField
                 : values.gasPriceSlider;
               const amount = isERC20 // subtract gas cost from balance when sending a base asset
                 ? balance
                 : baseToConvertedUnit(
-                    new BN(convertedToBaseUnit(balance.toString(), 18))
+                    new BN(convertedToBaseUnit(balance.toString(), DEFAULT_ASSET_DECIMAL))
                       .sub(gasStringsToMaxGasBN(gasPrice, values.gasLimitField))
                       .toString(),
-                    18
+                    DEFAULT_ASSET_DECIMAL
                   );
               setFieldValue('amount', amount);
               handleGasEstimate();
@@ -230,6 +251,15 @@ export default function SendAssetsForm({
             setFieldValue('nonceField', nonce.toString());
             setIsEstimatingNonce(false);
           };
+
+          const validAccounts = accounts.filter(account => account.wallet !== WalletId.VIEW_ONLY);
+          const isValidAddress =
+            !errors.address ||
+            Object.values(errors.address).filter(e => e !== undefined).length === 0;
+          const isValid =
+            Object.values(errors).filter(error => error !== undefined && !isEmpty(error)).length ===
+            0;
+
           return (
             <Form className="SendAssetsForm">
               <QueryWarning />
@@ -244,20 +274,23 @@ export default function SendAssetsForm({
                     <AssetDropdown
                       name={field.name}
                       value={field.value}
-                      assets={assets()}
+                      assets={assets(validAccounts)}
                       onSelect={(option: StoreAsset) => {
-                        form.setFieldValue('asset', option); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
+                        form.setFieldValue('asset', option || {}); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
                         //TODO get assetType onChange
                         handleFieldReset();
-                        if (option.networkId) {
-                          fetchGasPriceEstimates(option.networkId).then(data => {
+                        if (option && option.networkId) {
+                          const network = getNetworkById(option.networkId, networks);
+                          fetchGasPriceEstimates(network).then(data => {
                             form.setFieldValue('gasEstimates', data);
                             form.setFieldValue('gasPriceSlider', data.fast);
                           });
-                          const network = getNetworkById(option.networkId);
                           form.setFieldValue('network', network || {});
                           if (network) {
-                            setBaseAsset(getBaseAssetByNetwork(network) || ({} as Asset));
+                            setBaseAsset(
+                              getBaseAssetByNetwork({ network, assets: assets(validAccounts) }) ||
+                                ({} as Asset)
+                            );
                           }
                         }
                       }}
@@ -268,40 +301,45 @@ export default function SendAssetsForm({
               {/* Sender Address */}
               <fieldset className="SendAssetsForm-fieldset">
                 <label htmlFor="account" className="input-group-header">
-                  {translate('X_ADDRESS')}
+                  {translate('X_SENDER')}
                 </label>
-                <FastField
+                <Field
                   name="account"
                   value={values.account}
                   component={({ field, form }: FieldProps) => {
                     const accountsWithAsset = getAccountsByAsset(accounts, values.asset);
+                    const relevantAccounts = accountsWithAsset.filter(
+                      account => account.wallet !== WalletId.VIEW_ONLY
+                    );
                     return (
                       <AccountDropdown
                         name={field.name}
                         value={field.value}
-                        accounts={accountsWithAsset}
+                        accounts={relevantAccounts}
                         onSelect={(option: ExtendedAccount) => {
                           form.setFieldValue('account', option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
                           handleNonceEstimate(option);
                           handleGasEstimate();
                         }}
+                        asset={values.asset}
                       />
                     );
                   }}
                 />
               </fieldset>
               <fieldset className="SendAssetsForm-fieldset">
-                <label htmlFor="receiverAddress" className="input-group-header">
-                  {translate('SEND_ADDR')}
+                <label htmlFor="address" className="input-group-header">
+                  {translate('X_RECIPIENT')}
                 </label>
-                <EthAddressField
-                  fieldName="receiverAddress.display"
+                <AddressField
+                  fieldName="address"
                   handleENSResolve={handleENSResolve}
-                  error={errors && errors.receiverAddress && errors.receiverAddress.display}
+                  onBlur={handleGasEstimate}
+                  error={errors && errors.address && errors.address.value}
                   touched={touched}
-                  handleGasEstimate={handleGasEstimate}
                   network={values.network}
                   isLoading={isResolvingENSName}
+                  isError={!isValidAddress}
                   placeholder="Enter an Address or Contact"
                 />
               </fieldset>
@@ -319,8 +357,9 @@ export default function SendAssetsForm({
                   render={({ field, form }: FieldProps) => {
                     return (
                       <>
-                        <Input
+                        <AmountInput
                           {...field}
+                          asset={values.asset}
                           value={field.value}
                           onBlur={() => {
                             form.setFieldTouched('amount');
@@ -354,15 +393,18 @@ export default function SendAssetsForm({
               {/* Transaction Fee */}
               <fieldset className="SendAssetsForm-fieldset">
                 <label htmlFor="transactionFee" className="SendAssetsForm-fieldset-transactionFee">
-                  <div>Transaction Fee</div>
-                  {/* TRANSLATE THIS */}
+                  <div>{translate('CONFIRM_TX_FEE')}</div>
                   <TransactionFeeDisplay
                     baseAsset={baseAsset}
                     gasLimitToUse={values.gasLimitField}
                     gasPriceToUse={
                       values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider
                     }
-                    fiatAsset={{ fiat: 'USD', value: '250', symbol: '$' }}
+                    fiatAsset={{
+                      fiat: 'USD',
+                      rate: (getAssetRate(baseAsset || undefined) || 0).toString(),
+                      symbol: '$'
+                    }}
                   />
                   {/* TRANSLATE THIS */}
                 </label>
@@ -372,6 +414,7 @@ export default function SendAssetsForm({
                       handleGasEstimate();
                       handleChange(e);
                     }}
+                    network={values.network}
                     gasPrice={values.gasPriceSlider}
                     gasEstimates={values.gasEstimates}
                   />
@@ -380,7 +423,8 @@ export default function SendAssetsForm({
               {/* Advanced Options */}
               <div className="SendAssetsForm-advancedOptions">
                 <AdvancedOptionsButton basic={true} onClick={toggleAdvancedOptions}>
-                  {values.advancedTransaction ? 'Hide' : 'Show'} Advanced Options
+                  {values.advancedTransaction ? 'Hide' : 'Show'}{' '}
+                  {translate('ADVANCED_OPTIONS_LABEL')}
                 </AdvancedOptionsButton>
                 {values.advancedTransaction && (
                   <div className="SendAssetsForm-advancedOptions-content">
@@ -435,7 +479,18 @@ export default function SendAssetsForm({
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-nonce">
                         <label htmlFor="nonce" className="input-group-header label-with-action">
-                          <div>Nonce (?)</div>
+                          <div>
+                            Nonce{' '}
+                            <a
+                              href={
+                                'https://support.mycrypto.com/general-knowledge/ethereum-blockchain/what-is-nonce'
+                              }
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <img src={questionSVG} alt="Help" />{' '}
+                            </a>
+                          </div>
                           <div
                             className="label-action"
                             onClick={() => handleNonceEstimate(values.account)}
@@ -466,7 +521,7 @@ export default function SendAssetsForm({
                     <fieldset className="SendAssetsForm-fieldset">
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                         <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-data">
-                          <label htmlFor="data">Data{/* TRANSLATE THIS */}</label>
+                          <label htmlFor="data">{translate('TRANS_DATA')}</label>
                           <Field
                             name="txDataField"
                             validate={validateDataField}
@@ -491,12 +546,16 @@ export default function SendAssetsForm({
               <Button
                 type="submit"
                 onClick={() => {
-                  submitForm();
+                  if (isValid) {
+                    onComplete(values);
+                  }
                 }}
-                disabled={isEstimatingGasLimit || isResolvingENSName || isEstimatingNonce}
+                disabled={
+                  isEstimatingGasLimit || isResolvingENSName || isEstimatingNonce || !isValid
+                }
                 className="SendAssetsForm-next"
               >
-                Next{/* TRANSLATE THIS */}
+                {translate('ACTION_6')}
               </Button>
             </Form>
           );

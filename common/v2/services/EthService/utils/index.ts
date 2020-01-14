@@ -1,7 +1,8 @@
 export { decryptPrivKey, decryptMnemonicToPrivKey } from './decrypt';
 export { makeExplorer } from './makeExplorer';
 export { signMessageWithPrivKeyV2, signRawTxWithPrivKey, verifySignedMessage } from './signing';
-export { stripHexPrefix, stripHexPrefixAndLower } from './formatters';
+export { messageToData } from './formatters';
+export { stripHexPrefix, stripHexPrefixAndLower } from './stripHexPrefix';
 export {
   gasPriceToBase,
   fromWei,

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { ROUTE_PATHS } from 'v2/config';

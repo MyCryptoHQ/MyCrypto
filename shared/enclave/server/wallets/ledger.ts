@@ -1,4 +1,4 @@
-import EthTx from 'ethereumjs-tx';
+import { Transaction as EthTx } from 'ethereumjs-tx';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 import LedgerTransport from '@ledgerhq/hw-transport';
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid-noevents';

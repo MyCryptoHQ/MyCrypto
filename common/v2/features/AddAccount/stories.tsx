@@ -17,7 +17,7 @@ import {
 
 export const STORIES: IStory[] = [
   {
-    name: WalletId.METAMASK,
+    name: WalletId.WEB3,
     steps: HAS_WEB3_PROVIDER ? [Web3ProviderDecrypt, SaveAndRedirect] : [Web3ProviderInstall]
   },
   {
@@ -34,7 +34,8 @@ export const STORIES: IStory[] = [
   },
   {
     name: WalletId.PARITY_SIGNER,
-    steps: [NetworkSelectPanel, ParitySignerDecrypt, SaveAndRedirect]
+    steps: [NetworkSelectPanel, ParitySignerDecrypt, SaveAndRedirect],
+    hideFromWalletList: true
   },
   {
     name: WalletId.KEYSTORE_FILE,

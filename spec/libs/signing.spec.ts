@@ -1,5 +1,6 @@
-import { getPrivKeyWallet } from 'libs/wallet';
-import { signMessageWithPrivKeyV2, verifySignedMessage } from 'libs/signing';
+import { verifySignedMessage } from 'v2/services/EthService';
+import { getPrivKeyWallet } from 'v2/services/WalletService';
+import { signMessageWithPrivKeyV2 } from 'v2/services/EthService/utils';
 
 describe('lib/signing', () => {
   const msgToSign = 'Testing your code is great!';

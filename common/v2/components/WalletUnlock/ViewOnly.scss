@@ -2,11 +2,9 @@
 @import 'common/sass/mixins';
 
 .ViewOnly {
-  width: 425px;
   height: 600px;
 
   @media (max-width: 700px) {
-    width: 375px;
     height: 450px;
     padding: 1em; 
   }
@@ -22,11 +20,7 @@
   &-submit {
     position: relative;
     bottom: -4em;
-    width: 420px;
-
-    @media (max-width: 700px) {
-      width:345px;
-    }
+    width: 100%;
   }
   &-fields {
     display: flex;

@@ -1,50 +1,49 @@
-import React, { Component, createContext } from 'react';
+import React, { createContext, useContext } from 'react';
 import unionBy from 'lodash/unionBy';
 import BigNumber from 'bignumber.js';
+import * as R from 'ramda';
 
-import * as service from './Account';
 import {
   Account,
   ExtendedAccount,
   ITxReceipt,
   StoreAccount,
   Asset,
-  AssetBalanceObject
+  AssetBalanceObject,
+  LSKeys,
+  TUuid
 } from 'v2/types';
+import { DataContext } from '../DataManager';
+import { SettingsContext } from '../Settings';
+import { getAccountByAddressAndNetworkName } from './helpers';
 import { getAllTokensBalancesOfAccount } from '../BalanceService';
 
-export interface ProviderState {
+export interface IAccountContext {
   accounts: ExtendedAccount[];
-  createAccount(accountData: Account): void;
-  createAccountWithID(accountData: Account, uuid: string): void;
-  deleteAccount(uuid: string): void;
-  updateAccount(uuid: string, accountData: ExtendedAccount): void;
+  createAccountWithID(accountData: Account, uuid: TUuid): void;
+  deleteAccount(account: ExtendedAccount): void;
+  updateAccount(uuid: TUuid, accountData: ExtendedAccount): void;
   addNewTransactionToAccount(account: ExtendedAccount, transaction: ITxReceipt): void;
   getAccountByAddressAndNetworkName(address: string, network: string): ExtendedAccount | undefined;
   updateAccountAssets(account: StoreAccount, assets: Asset[]): Promise<void>;
+  updateAccountsBalances(toUpate: ExtendedAccount[]): void;
 }
 
-export const AccountContext = createContext({} as ProviderState);
+export const AccountContext = createContext({} as IAccountContext);
 
-export class AccountProvider extends Component {
-  public readonly state: ProviderState = {
-    accounts: service.readAccounts() || [],
-    createAccount: (accountData: Account) => {
-      service.createAccount(accountData);
-      this.getAccounts();
+export const AccountProvider: React.FC = ({ children }) => {
+  const { createActions, accounts } = useContext(DataContext);
+  const { addAccountToFavorites } = useContext(SettingsContext);
+  const model = createActions(LSKeys.ACCOUNTS);
+
+  const state: IAccountContext = {
+    accounts,
+    createAccountWithID: (item, uuid) => {
+      addAccountToFavorites(uuid);
+      model.create({ ...item, uuid });
     },
-    createAccountWithID: (accountData: Account, uuid: string) => {
-      service.createAccountWithID(accountData, uuid);
-      this.getAccounts();
-    },
-    deleteAccount: (uuid: string) => {
-      service.deleteAccount(uuid);
-      this.getAccounts();
-    },
-    updateAccount: (uuid: string, accountData: ExtendedAccount) => {
-      service.updateAccount(uuid, accountData);
-      this.getAccounts();
-    },
+    deleteAccount: model.destroy,
+    updateAccount: (uuid, a) => model.update(uuid, a),
     addNewTransactionToAccount: (accountData, newTransaction) => {
       const { network, ...newTxWithoutNetwork } = newTransaction;
       const newAccountData = {
@@ -54,16 +53,9 @@ export class AccountProvider extends Component {
           newTxWithoutNetwork
         ]
       };
-      service.updateAccount(accountData.uuid, newAccountData);
-      this.getAccounts();
+      state.updateAccount(accountData.uuid, newAccountData);
     },
-    getAccountByAddressAndNetworkName: (address, network): ExtendedAccount | undefined => {
-      const { accounts } = this.state;
-      return accounts.find(
-        account =>
-          account.address.toLowerCase() === address.toLowerCase() && account.networkId === network
-      );
-    },
+    getAccountByAddressAndNetworkName: getAccountByAddressAndNetworkName(accounts),
     updateAccountAssets: async (storeAccount, assets) => {
       // Find all tokens with a positive balance for given account, and add those tokens to the assets array of the account
       const assetBalances = await getAllTokensBalancesOfAccount(storeAccount, assets);
@@ -71,7 +63,7 @@ export class AccountProvider extends Component {
         ([_, value]) => !value.isZero()
       );
 
-      const existingAccount = this.state.accounts.find(x => x.uuid === storeAccount.uuid);
+      const existingAccount = accounts.find(x => x.uuid === storeAccount.uuid);
 
       if (existingAccount) {
         const newAssets: AssetBalanceObject[] = positiveAssetBalances.reduce(
@@ -90,18 +82,15 @@ export class AccountProvider extends Component {
         );
 
         existingAccount.assets = unionBy(newAssets, existingAccount.assets, 'uuid');
-        this.state.updateAccount(existingAccount.uuid, existingAccount);
+        state.updateAccount(existingAccount.uuid, existingAccount);
       }
+    },
+    updateAccountsBalances: toUpdate => {
+      const newAccounts = R.unionWith(R.eqBy(R.prop('uuid')), toUpdate, state.accounts).filter(
+        Boolean
+      );
+      model.updateAll(newAccounts);
     }
   };
-
-  public render() {
-    const { children } = this.props;
-    return <AccountContext.Provider value={this.state}>{children}</AccountContext.Provider>;
-  }
-
-  private getAccounts = () => {
-    const accounts: ExtendedAccount[] = service.readAccounts() || [];
-    this.setState({ accounts });
-  };
-}
+  return <AccountContext.Provider value={state}>{children}</AccountContext.Provider>;
+};

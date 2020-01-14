@@ -1,4 +1,4 @@
-import EthTx from 'ethereumjs-tx';
+import { Transaction as EthTx } from 'ethereumjs-tx';
 
 import { IFullWallet } from '../IWallet';
 import { DeterministicWallet } from './deterministic';

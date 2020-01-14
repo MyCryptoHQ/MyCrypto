@@ -1,4 +1,3 @@
-import configuredStore from 'features/store';
 import {
   fromWei,
   Wei,
@@ -6,11 +5,9 @@ import {
   toTokenBase,
   fromTokenBase,
   getDecimalFromEtherUnit,
-  convertTokenBase,
   TokenValue
-} from 'libs/units';
-
-configuredStore.getState();
+} from 'v2/services/EthService';
+import { convertTokenBase } from 'v2/services/EthService/utils/units';
 
 const Units = {
   wei: '1',

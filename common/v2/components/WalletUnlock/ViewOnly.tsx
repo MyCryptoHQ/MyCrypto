@@ -1,16 +1,15 @@
-import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useContext } from 'react';
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
 
-import translate, { translateRaw } from 'translations';
-import { AppState } from 'features/reducers';
-import * as selectors from 'features/selectors';
-import { ICurrentTo } from 'features/types';
-import { configSelectors } from 'features/config';
-import { ensSelectors } from 'features/ens';
-import { AddressField } from 'components';
-
-import { WalletId } from 'v2/types';
+import { translateRaw } from 'v2/translations';
+import { WalletId, FormData, IReceiverAddress } from 'v2/types';
+import { AddressField, Button } from 'v2/components';
 import { WalletFactory } from 'v2/services/WalletService';
+import { getResolvedENSAddress, isValidETHAddress, isValidENSName } from 'v2/services/EthService';
+import { NetworkContext } from 'v2/services/Store';
+import { CREATION_ADDRESS } from 'v2/config';
+
 import './ViewOnly.scss';
 
 interface OwnProps {
@@ -18,95 +17,113 @@ interface OwnProps {
 }
 
 interface StateProps {
-  isValidAddress: ReturnType<typeof configSelectors.getIsValidAddressFn>;
-  currentAddress: ICurrentTo;
-  resolvedAddress: ReturnType<typeof ensSelectors.getResolvedAddress>;
+  formData: FormData;
+  currentAddress: string; //ICurrentTo;
+  resolvedAddress: string; //getResolvedAddress;
 }
 
-interface State {
-  addressFromBook: string;
-}
+type Props = OwnProps & StateProps;
 
 const WalletService = WalletFactory(WalletId.VIEW_ONLY);
 
-class ViewOnlyDecryptClass extends PureComponent<OwnProps & StateProps, State> {
-  public state: State = {
-    addressFromBook: ''
-  };
+const ViewOnlyFormSchema = Yup.object().shape({
+  address: Yup.object({
+    value: Yup.string().test(
+      'check-eth-address',
+      translateRaw('TO_FIELD_ERROR'),
+      value => isValidETHAddress(value) || isValidENSName(value)
+    )
+  }).required(translateRaw('REQUIRED'))
+});
 
-  public render() {
-    const { isValidAddress, currentAddress, resolvedAddress } = this.props;
-    const { addressFromBook } = this.state;
-    const isValid =
-      isValidAddress(currentAddress.raw) || (resolvedAddress && isValidAddress(resolvedAddress));
-
-    return (
-      <div className="ViewOnly">
-        <div className="ViewOnly-title"> {translateRaw('INPUT_PUBLIC_ADDRESS_LABEL')}</div>
-        <form className="form-group" onSubmit={this.handleSubmit}>
-          <section className="ViewOnly-fields">
-            <section className="ViewOnly-fields-field">
-              <AddressField
-                value={addressFromBook}
-                showInputLabel={false}
-                showIdenticon={false}
-                showEnsResolution={false}
-                placeholder={translateRaw('SELECT_FROM_ADDRESS_BOOK')}
-                onChangeOverride={this.handleSelectAddressFromBook}
-                dropdownThreshold={0}
-              />
-            </section>
-            <section className="ViewOnly-fields-field">
-              <em>{translate('OR')}</em>
-            </section>
-            <section className="ViewOnly-fields-field">
-              <AddressField
-                showInputLabel={false}
-                showIdenticon={false}
-                placeholder={translateRaw('VIEW_ONLY_ENTER')}
-              />
-              <button className="ViewOnly-submit btn btn-primary btn-block" disabled={!isValid}>
-                {translate('VIEW_ADDR')}
-              </button>
-            </section>
-          </section>
-        </form>
-      </div>
-    );
-  }
-
-  private handleSelectAddressFromBook = (ev: React.FormEvent<HTMLInputElement>) => {
-    const {
-      currentTarget: { value: addressFromBook }
-    } = ev;
-    this.setState({ addressFromBook });
-  };
-
-  private handleSubmit = (e: React.SyntheticEvent<HTMLElement>) => {
-    const { isValidAddress, currentAddress, resolvedAddress } = this.props;
-    const { addressFromBook } = this.state;
-    let wallet;
-
-    if (isValidAddress(addressFromBook)) {
-      wallet = addressFromBook;
-    } else if (isValidAddress(currentAddress.raw)) {
-      wallet = currentAddress.raw;
-    } else if (resolvedAddress && isValidAddress(resolvedAddress)) {
-      wallet = resolvedAddress;
-    }
-
-    if (wallet) {
-      e.preventDefault();
-      e.stopPropagation();
-      this.props.onUnlock(new WalletService.init(wallet));
+export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
+  const initialFormikValues: { address: IReceiverAddress } = {
+    address: {
+      display: '',
+      value: ''
     }
   };
+  const { getNetworkByName } = useContext(NetworkContext);
+  const [isResolvingENSName, setIsResolvingENSName] = useState(false);
+  const [network] = useState(getNetworkByName(formData.network));
+  return (
+    <div className="Panel">
+      <div className="Panel-title"> {translateRaw('INPUT_PUBLIC_ADDRESS_LABEL')}</div>
+      <Formik
+        initialValues={initialFormikValues}
+        validationSchema={ViewOnlyFormSchema}
+        onSubmit={fields => {
+          onUnlock(fields);
+        }}
+        render={({ errors, setFieldValue, setFieldError, touched, values }) => {
+          const isValid =
+            Object.values(errors).filter(error => error !== undefined && error.value !== undefined)
+              .length === 0;
+
+          const handleSubmit = (e: React.SyntheticEvent<HTMLElement>) => {
+            const wallet = values.address.value;
+
+            if (wallet && isValid) {
+              e.preventDefault();
+              e.stopPropagation();
+              onUnlock(WalletService.init(wallet));
+            }
+          };
+
+          const handleENSResolve = async (name: string) => {
+            if (!values || !network) {
+              setIsResolvingENSName(false);
+              return;
+            }
+            setIsResolvingENSName(true);
+            const resolvedAddress =
+              (await getResolvedENSAddress(network, name)) || CREATION_ADDRESS;
+            setIsResolvingENSName(false);
+            if (isValidETHAddress(resolvedAddress)) {
+              setFieldValue('address', { ...values.address, value: resolvedAddress });
+            } else {
+              setFieldError('address', translateRaw('TO_FIELD_ERROR'));
+            }
+            setIsResolvingENSName(false);
+          };
+          return (
+            <Form>
+              <section className="ViewOnly-fields">
+                <section className="ViewOnly-fields-field">
+                  <AddressField
+                    className="AddressField"
+                    fieldName="address"
+                    handleENSResolve={handleENSResolve}
+                    error={errors && errors.address && errors.address.value}
+                    touched={touched}
+                    network={network}
+                    isLoading={isResolvingENSName}
+                    isError={!isValid}
+                    placeholder="Enter an Address or Contact"
+                  />
+                </section>
+              </section>
+              <section className="ViewOnly-fields-field">
+                <Button
+                  type="submit"
+                  onClick={handleSubmit}
+                  disabled={isResolvingENSName}
+                  className="ViewOnly-submit"
+                >
+                  {translateRaw('ACTION_6')}
+                </Button>
+              </section>
+            </Form>
+          );
+        }}
+      />
+    </div>
+  );
+
+  // private handleSelectAddressFromBook = (ev: React.FormEvent<HTMLInputElement>) => {
+  //   const {
+  //     currentTarget: { value: addressFromBook }
+  //   } = ev;
+  //   this.setState({ addressFromBook });
+  // };
 }
-
-export const ViewOnlyDecrypt = connect(
-  (state: AppState): StateProps => ({
-    currentAddress: selectors.getCurrentTo(state),
-    isValidAddress: configSelectors.getIsValidAddressFn(state),
-    resolvedAddress: ensSelectors.getResolvedAddress(state)
-  })
-)(ViewOnlyDecryptClass);

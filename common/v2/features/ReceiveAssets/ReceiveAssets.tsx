@@ -3,21 +3,20 @@ import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
 import noop from 'lodash/noop';
 import { Copyable, Heading, Input, Tooltip } from '@mycrypto/ui';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import Select, { Option } from 'react-select';
 import styled from 'styled-components';
 
 import {
   buildEIP681EtherRequest,
   buildEIP681TokenRequest
 } from 'v2/services/EthService/utils/formatters';
-import { ContentPanel, QRCode } from 'v2/components';
-import { AccountContext, AssetContext, getNetworkById } from 'v2/services/Store';
+import { ContentPanel, QRCode, AccountDropdown, AssetDropdown } from 'v2/components';
+import { AssetContext, getNetworkById, StoreContext } from 'v2/services/Store';
 import { isValidAmount, truncate } from 'v2/utils';
-import { ExtendedAccount as IExtendedAccount } from 'v2/types';
-import { translate, translateRaw } from 'translations';
+import { ExtendedAccount as IExtendedAccount, StoreAccount } from 'v2/types';
+import { ROUTE_PATHS } from 'v2/config';
+import translate, { translateRaw } from 'v2/translations';
 import questionToolTip from 'common/assets/images/icn-question.svg';
 
-import { AccountDropdown } from './components';
 // Legacy
 import receiveIcon from 'common/assets/images/icn-receive.svg';
 
@@ -64,13 +63,6 @@ const FullWidthInput = styled(Input)`
   width: 100%;
 `;
 
-const StyledSelect = styled(Select)`
-  width: 100%;
-  border-radius: 0.125em;
-  border: 0.125em solid rgba(63, 63, 68, 0.05);
-  outline: 0 0 0 0.25em rgba(0, 122, 153, 0.65);
-`;
-
 const Amount = styled.div`
   width: 100%;
 `;
@@ -115,26 +107,31 @@ const ErrorMessage = styled.span`
 `;
 
 export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
-  const { accounts } = useContext(AccountContext);
+  const { accounts, networks } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
   const [networkName, setNetworkName] = useState(accounts[0].networkId);
-  const network = getNetworkById(networkName);
+  // @TODO: StoreAccount contains it's Network. This can be cleanedup.
+  const network = getNetworkById(networkName, networks);
   const filteredAssets = network
     ? assets
         .filter(asset => asset.networkId === network.id)
         .filter(asset => asset.type === 'base' || asset.type === 'erc20')
     : [];
-  const assetOptions = filteredAssets.map(asset => ({ label: asset.name, id: asset.uuid }));
+  const assetOptions = filteredAssets.map(asset => ({
+    label: asset.name,
+    id: asset.uuid,
+    ...asset
+  }));
 
-  const [chosenAssetName, setAssetName] = useState(assetOptions[0].label);
+  const [chosenAssetName, setAssetName] = useState(filteredAssets[0].name);
   const selectedAsset = filteredAssets.find(asset => asset.name === chosenAssetName);
 
-  const ethereum = assets.find(asset => asset.name === 'Ethereum');
+  const ethereum = assets.find(asset => asset.networkId === 'Ethereum');
 
   const initialValues = {
     amount: '0',
     asset: { label: ethereum!.name, id: ethereum!.uuid },
-    recipientAddress: accounts[0]
+    recipientAddress: {} as StoreAccount
   };
 
   const validateAmount = (amount: any) => {
@@ -142,9 +139,9 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
     if (selectedAsset) {
       const { decimal } = selectedAsset;
       if (isNaN(amount)) {
-        error = translateRaw('RECEIVE_FORM_ERROR_TYPE');
+        error = translateRaw('REQUEST_FORM_ERROR_TYPE');
       } else if (decimal && !isValidAmount(decimal)(amount)) {
-        error = translateRaw('RECEIVE_FORM_ERROR_AMOUNT');
+        error = translateRaw('REQUEST_FORM_ERROR_AMOUNT');
       }
     }
 
@@ -153,10 +150,9 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
 
   return (
     <ContentPanel
-      heading="Receive Assets"
+      heading={translateRaw('REQUEST')}
       icon={receiveIcon}
-      onBack={() => history.push('/')}
-      width="500px;"
+      onBack={() => history.push(ROUTE_PATHS.DASHBOARD.path)}
       mobileMaxWidth="100%;"
     >
       <Formik
@@ -168,7 +164,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
         }: FormikProps<typeof initialValues>) => (
           <Form>
             <Fieldset>
-              <SLabel htmlFor="recipientAddress">Recipient Address</SLabel>
+              <SLabel htmlFor="recipientAddress">{translate('X_RECIPIENT')}</SLabel>
               <Field
                 name="recipientAddress"
                 component={({ field, form }: FieldProps) => (
@@ -188,12 +184,13 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
             </Fieldset>
             <AssetFields>
               <Amount>
-                <SLabel htmlFor="amount">Amount</SLabel>
+                <SLabel htmlFor="amount">{translate('X_AMOUNT')}</SLabel>
                 <Field
                   name="amount"
                   validate={validateAmount}
                   render={({ field, form }: FieldProps<typeof initialValues>) => (
                     <FullWidthInput
+                      data-lpignore="true"
                       value={field.value}
                       onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
                       placeholder="0.00"
@@ -203,19 +200,18 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
               </Amount>
               {errors.amount && <ErrorMessage>{errors.amount}</ErrorMessage>}
               <Asset>
-                <SLabel htmlFor="asset">Asset</SLabel>
+                <SLabel htmlFor="asset">{translate('X_ASSET')}</SLabel>
                 <Field
                   name="asset"
-                  render={({ field, form }: FieldProps<typeof initialValues>) => (
-                    <StyledSelect
-                      name="Assets"
-                      className="select-container"
-                      options={assetOptions}
+                  component={({ field, form }: FieldProps) => (
+                    <AssetDropdown
+                      name={field.name}
                       value={field.value}
-                      onChange={(option: Option) => {
+                      assets={assetOptions}
+                      onSelect={option => {
                         form.setFieldValue(field.name, option);
-                        if (option.label) {
-                          setAssetName(option.label);
+                        if (option.name) {
+                          setAssetName(option.name);
                         }
                       }}
                     />
@@ -227,14 +223,14 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
               <>
                 <Divider />
                 <CodeHeader>
-                  <CodeHeading as="h3">{translateRaw('RECEIVE_FORM_CODE_HEADER')}</CodeHeading>
-                  <Tooltip tooltip={translate('RECEIVE_FORM_TOOLTIP')}>
+                  <CodeHeading as="h3">{translateRaw('REQUEST_FORM_CODE_HEADER')}</CodeHeading>
+                  <Tooltip tooltip={translate('REQUEST_FORM_TOOLTIP')}>
                     <img className="Tool-tip-img" src={questionToolTip} />
                   </Tooltip>
                 </CodeHeader>
 
                 <Fieldset>
-                  <SLabel>QR Code</SLabel>
+                  <SLabel>{translate('REQUEST_QR_CODE')}</SLabel>
                   <QRDisplay>
                     <QRCode
                       data={
@@ -258,7 +254,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                   </QRDisplay>
                 </Fieldset>
                 <Fieldset>
-                  <SLabel>Payment Code</SLabel>
+                  <SLabel>{translate('REQUEST_PAYMENT_CODE')}</SLabel>
                   <FieldsetBox>
                     <Copyable
                       text={
@@ -278,6 +274,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                               amount
                             )
                       }
+                      isCopyable={true}
                       truncate={truncate}
                     />
                   </FieldsetBox>

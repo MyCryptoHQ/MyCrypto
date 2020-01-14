@@ -1,4 +1,4 @@
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import { IHexStrWeb3Transaction, INode } from 'v2/types';
 import {
   isValidSendTransaction,
@@ -10,7 +10,7 @@ import { RPCNode } from '../rpc';
 import Web3Client from './client';
 import Web3Requests from './requests';
 
-const METAMASK_PERMISSION_DENIED_ERROR = translateRaw('METAMASK_PERMISSION_DENIED');
+//const METAMASK_PERMISSION_DENIED_ERROR = ;
 
 export class Web3Node extends RPCNode {
   // @ts-ignore
@@ -56,8 +56,6 @@ export function isWeb3Node(nodeLib: INode | Web3Node): nodeLib is Web3Node {
   return nodeLib instanceof Web3Node;
 }
 
-export const Web3Service = 'MetaMask / Web3';
-
 export async function getChainIdAndLib() {
   const lib = new Web3Node();
   const chainId = await lib.getNetVersion();
@@ -88,7 +86,7 @@ export async function setupWeb3Node() {
       return getChainIdAndLib();
     } catch (e) {
       // Permission was denied; handle appropriately.
-      throw new Error(METAMASK_PERMISSION_DENIED_ERROR);
+      throw new Error(translateRaw('METAMASK_PERMISSION_DENIED'));
     }
   } else if ((window as any).web3) {
     // Legacy handling; will become unavailable 11/2.
@@ -111,7 +109,7 @@ export async function isWeb3NodeAvailable(): Promise<boolean> {
   } catch (e) {
     // If the specific error is that the request for MetaMask permission was denied,
     // re-throw the error and allow the caller to handle it.
-    if (e.message === METAMASK_PERMISSION_DENIED_ERROR) {
+    if (e.message === translateRaw('METAMASK_PERMISSION_DENIED')) {
       throw e;
     }
 

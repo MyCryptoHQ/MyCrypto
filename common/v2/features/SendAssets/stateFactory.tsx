@@ -1,7 +1,16 @@
 import { useContext } from 'react';
 
-import { TUseStateReducerFactory } from 'v2/utils';
-import { Asset, Network, ITxReceipt } from 'v2/types';
+import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
+import {
+  Asset,
+  Network,
+  ITxReceipt,
+  ITxConfig,
+  IFormikFields,
+  ISignedTx,
+  ITxObject,
+  ITxStatus
+} from 'v2/types';
 import {
   getNetworkByChainId,
   getAssetByContractAndNetwork,
@@ -11,15 +20,16 @@ import {
   getDecimalFromEtherUnit,
   gasPriceToBase,
   hexWeiToString,
-  getAccountByAddressAndNetworkName,
   getBaseAssetByNetwork,
-  AccountContext
+  AccountContext,
+  AssetContext,
+  NetworkContext
 } from 'v2/services';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { ProviderHandler } from 'v2/services/EthService';
 
-import { ITxConfig, IFormikFields, TStepAction, ISignedTx, ITxObject } from './types';
-import { processFormDataToTx, decodeTransaction, fromTxReceiptObj } from './helpers';
+import { TStepAction } from './types';
+import { processFormDataToTx, decodeTransaction } from './helpers';
 
 const txConfigInitialState = {
   tx: {
@@ -43,17 +53,25 @@ interface State {
 }
 
 const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) => {
-  const { addNewTransactionToAccount } = useContext(AccountContext);
+  const { assets } = useContext(AssetContext);
+  const { networks } = useContext(NetworkContext);
+
+  const { addNewTransactionToAccount, getAccountByAddressAndNetworkName } = useContext(
+    AccountContext
+  );
   const handleFormSubmit: TStepAction = (payload: IFormikFields, after) => {
     const rawTransaction: ITxObject = processFormDataToTx(payload);
-    const baseAsset: Asset | undefined = getBaseAssetByNetwork(payload.network);
+    const baseAsset: Asset | undefined = getBaseAssetByNetwork({
+      network: payload.network,
+      assets
+    });
     setState((prevState: State) => ({
       ...prevState,
       txConfig: {
         rawTransaction,
         amount: payload.amount,
         senderAccount: payload.account,
-        receiverAddress: payload.receiverAddress.value,
+        receiverAddress: payload.address.value,
         network: payload.network,
         asset: payload.asset,
         baseAsset: baseAsset || ({} as Asset),
@@ -94,8 +112,11 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
       .then(retrievedTxReceipt => retrievedTxReceipt)
       .catch(txHash => provider.getTransactionByHash(txHash))
       .then(retrievedTransactionReceipt => {
-        const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt);
-        addNewTransactionToAccount(state.txConfig.senderAccount, txReceipt || {});
+        const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(assets, networks);
+        addNewTransactionToAccount(
+          state.txConfig.senderAccount,
+          { ...txReceipt, stage: ITxStatus.PENDING } || {}
+        );
         setState((prevState: State) => ({
           ...prevState,
           txReceipt
@@ -106,9 +127,14 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
 
   const handleSignedTx: TStepAction = (payload: ISignedTx, after) => {
     const decodedTx = decodeTransaction(payload);
-    const networkDetected = getNetworkByChainId(decodedTx.chainId);
-    const contractAsset = getAssetByContractAndNetwork(decodedTx.to || undefined, networkDetected);
-    const baseAsset = getBaseAssetByNetwork(networkDetected || ({} as Network));
+    const networkDetected = getNetworkByChainId(decodedTx.chainId, networks);
+    const contractAsset = getAssetByContractAndNetwork(decodedTx.to || undefined, networkDetected)(
+      assets
+    );
+    const baseAsset = getBaseAssetByNetwork({
+      network: networkDetected || ({} as Network),
+      assets
+    });
 
     setState((prevState: State) => ({
       ...prevState,
@@ -144,8 +170,20 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
 
   const handleSignedWeb3Tx: TStepAction = (payload: ITxReceipt | string, after) => {
     // Payload is tx hash or receipt
-    const txReceipt = typeof payload === 'string' ? { hash: payload } : fromTxReceiptObj(payload);
-    addNewTransactionToAccount(state.txConfig.senderAccount, txReceipt || {});
+    const txReceipt =
+      typeof payload === 'string'
+        ? {
+            ...state.txConfig,
+            hash: payload,
+            to: state.txConfig.senderAccount.address,
+            from: state.txConfig.receiverAddress
+          }
+        : fromTxReceiptObj(payload);
+    addNewTransactionToAccount(
+      state.txConfig.senderAccount,
+      { ...txReceipt, stage: ITxStatus.PENDING } || {}
+    );
+
     setState((prevState: State) => ({
       ...prevState,
       txReceipt

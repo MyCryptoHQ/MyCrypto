@@ -7,7 +7,7 @@ import { AssetIcon, Typography } from 'v2/components';
 const SContainer = styled('div')`
   display: flex;
   flex-direction: row;
-  padding: 16px 15px 16px 15px;
+  padding: 14px 15px 14px 15px;
 
   &:hover {
     background-color: ${(p: { selectable: boolean }) =>
@@ -19,7 +19,7 @@ function AssetSummary({ symbol, name, onClick, selectable = false }: Props) {
   return (
     <SContainer {...(onClick ? { onPointerDown: onClick } : null)} selectable={selectable}>
       <AssetIcon symbol={symbol} size={'1.5rem'} />
-      <Typography bold={true} value={symbol} style={{ marginLeft: '16px' }} />
+      <Typography bold={true} value={symbol} style={{ marginLeft: '6px', paddingRight: '12px' }} />
       {name && <span>&nbsp; - &nbsp;</span>}
       <Typography value={name} />
     </SContainer>

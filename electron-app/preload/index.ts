@@ -1,2 +1,5 @@
 import { registerProtocol } from 'shared/enclave/preload';
-registerProtocol();
+
+process.once('loaded', () => {
+  registerProtocol();
+});

@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import { Button } from '@mycrypto/ui';
 
-import translate, { translateRaw } from 'translations';
+import translate, { translateRaw } from 'v2/translations';
 import ConnectTrezor from 'common/assets/images/icn-connect-trezor-new.svg';
-import { Spinner } from 'components/ui';
+import { Spinner } from 'v2/components';
 
 import { WalletId, FormData } from 'v2/types';
 import { NetworkContext } from 'v2/services/Store';
@@ -48,7 +48,7 @@ class TrezorDecryptClass extends PureComponent<OwnProps, State> {
     const network = this.context.getNetworkByName(this.props.formData.network);
 
     if (!dPath) {
-      return <UnsupportedNetwork walletType={translateRaw('x_Trezor')} />;
+      return <UnsupportedNetwork walletType={translateRaw('x_Trezor')} network={network} />;
     }
 
     if (publicKey && chainCode) {

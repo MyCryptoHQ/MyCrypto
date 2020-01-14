@@ -1,7 +1,7 @@
-import EthTx, { TxObj } from 'ethereumjs-tx';
+import { Transaction as EthTx, TxData } from 'ethereumjs-tx';
 import mapValues from 'lodash/mapValues';
 
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import TrezorConnect from 'trezor-connect';
 import { getTransactionFields } from 'v2/services/EthService';
 import { stripHexPrefixAndLower, padLeftEven } from 'v2/services/EthService/utils';
@@ -60,7 +60,7 @@ export class TrezorWallet extends HardwareWallet {
 
         // TODO: Explain what's going on here? Add tests? Adapted from:
         // https://github.com/kvhnuke/etherwallet/blob/v3.10.2.6/app/scripts/uiFuncs.js#L24
-        const txToSerialize: TxObj = {
+        const txToSerialize: TxData = {
           ...strTx,
           v: res.payload.v,
           r: res.payload.r,

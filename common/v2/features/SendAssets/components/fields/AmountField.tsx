@@ -1,7 +1,7 @@
 import React, { ChangeEvent, Component } from 'react';
 import { Field, FieldProps, Formik } from 'formik';
 import { Input } from '@mycrypto/ui';
-import { IFormikFields } from '../../types';
+import { IFormikFields } from 'v2/types';
 //import { donationAddressMap } from '';
 
 interface OwnProps {

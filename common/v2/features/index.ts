@@ -5,7 +5,7 @@ export {
   UnlockScreen,
   SelectLanguage
 } from './Drawer';
-export { DevTools } from './DevTools';
+export { DevToolsManager } from './DevTools';
 export { Home } from './Home';
 export { CreateWallet, Mnemonic, Keystore } from './CreateWallet';
 export { Dashboard } from './Dashboard';
@@ -23,8 +23,11 @@ export {
 } from './ScreenLock';
 export { SendAssets } from './SendAssets';
 export { ReceiveAssets } from './ReceiveAssets';
-export { BuyAndExchange, ShapeShiftAuthorization, ZeroEx } from './BuyAndExchange';
 export { default as PageNotFound } from './PageNotFound';
 export { SignAndVerifyMessage } from './SignAndVerifyMessage';
 export { NotificationsProvider } from './NotificationsPanel';
-export { BroadcastTx } from './BroadcastTx';
+export { BroadcastTransactionFlow } from './BroadcastTransaction';
+export { SwapAssetsFlow } from './SwapAssets';
+export { InteractWithContractsFlow } from './InteractWithContracts';
+export { DeployContractsFlow } from './DeployContracts';
+export { ToastProvider } from './Toasts';

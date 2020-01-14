@@ -1,15 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES, RatesContext } from 'v2/services';
 import { SettingsContext, StoreContext, AccountContext } from 'v2/services/Store';
-import { StoreAsset, TTicker } from 'v2/types';
-import { convertToFiat, weiToFloat } from 'v2/utils';
+import { StoreAsset, TUuid } from 'v2/types';
+import { weiToFloat, convertToFiatFromAsset } from 'v2/utils';
 import { BREAK_POINTS } from 'v2/theme';
+import { Fiats } from 'v2/config';
 
-import { Balance, Fiat } from './types';
+import { Balance } from './types';
 import AccountDropdown from './AccountDropdown';
 import BalancesDetailView from './BalancesDetailView';
 import WalletBreakdownView from './WalletBreakdownView';
@@ -46,13 +47,6 @@ const WalletBreakdownPanel = styled(Panel)`
   }
 `;
 
-//TODO: Get fiat symbol and text
-const fiat: Fiat = {
-  ticker: 'USD' as TTicker,
-  name: 'US Dollars',
-  symbol: '$'
-};
-
 let wasNumOfAccountsTracked = false;
 
 export function WalletBreakdown() {
@@ -60,25 +54,25 @@ export function WalletBreakdown() {
   const { totals, currentAccounts } = useContext(StoreContext);
   const { accounts } = useContext(AccountContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
-  const { getRate } = useContext(RatesContext);
+  const { getAssetRate } = useContext(RatesContext);
 
   // Track number of accounts that user has only once per session
-  if (!wasNumOfAccountsTracked) {
-    wasNumOfAccountsTracked = true;
-    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.WALLET_BREAKDOWN, `User has accounts`, {
-      numOfAccounts: accounts.length
-    });
-  }
-
-  const selectedAccounts = currentAccounts();
+  useEffect(() => {
+    if (!wasNumOfAccountsTracked) {
+      wasNumOfAccountsTracked = true;
+      AnalyticsService.instance.track(ANALYTICS_CATEGORIES.WALLET_BREAKDOWN, `User has accounts`, {
+        numOfAccounts: accounts.length
+      });
+    }
+  }, []);
 
   // Adds/updates an asset in array of balances, which are later displayed in the chart, balance list and in the secondary view
-  const balances: Balance[] = totals(selectedAccounts)
+  const balances: Balance[] = totals(currentAccounts)
     .map((asset: StoreAsset) => ({
       name: asset.name || translateRaw('WALLET_BREAKDOWN_UNKNOWN'),
       ticker: asset.ticker,
       amount: weiToFloat(asset.balance, asset.decimal),
-      fiatValue: convertToFiat(asset.balance, getRate(asset.ticker as TTicker))
+      fiatValue: convertToFiatFromAsset(asset, getAssetRate(asset))
     }))
     .sort((a, b) => b.fiatValue - a.fiatValue);
 
@@ -90,6 +84,8 @@ export function WalletBreakdown() {
     setShowBalanceDetailView(!showBalanceDetailView);
   };
 
+  const fiat = Fiats[settings.fiatCurrency];
+
   return (
     <>
       <WalletBreakdownTop>
@@ -97,12 +93,14 @@ export function WalletBreakdown() {
           <AccountDropdown
             accounts={accounts}
             selected={settings.dashboardAccounts}
-            onSubmit={(selected: string[]) => updateSettingsAccounts(selected)}
+            onSubmit={(selected: TUuid[]) => {
+              updateSettingsAccounts(selected);
+            }}
           />
         </AccountDropdownWrapper>
       </WalletBreakdownTop>
       <WalletBreakdownPanel>
-        {selectedAccounts.length === 0 ? (
+        {currentAccounts.length === 0 ? (
           <NoAccountsSelected />
         ) : showBalanceDetailView ? (
           <BalancesDetailView
@@ -110,6 +108,8 @@ export function WalletBreakdown() {
             toggleShowChart={toggleShowChart}
             totalFiatValue={totalFiatValue}
             fiat={fiat}
+            accounts={accounts}
+            selected={settings.dashboardAccounts}
           />
         ) : (
           <WalletBreakdownView
@@ -117,6 +117,8 @@ export function WalletBreakdown() {
             toggleShowChart={toggleShowChart}
             totalFiatValue={totalFiatValue}
             fiat={fiat}
+            accounts={accounts}
+            selected={settings.dashboardAccounts}
           />
         )}
       </WalletBreakdownPanel>

@@ -2,7 +2,7 @@ import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
 
 import { makeExplorer } from 'v2/services/EthService/utils/makeExplorer';
 import packageJson from '../../../package.json';
-import translate from 'translations';
+import translate from 'v2/translations';
 
 export const languages = require('./languages.json');
 
@@ -47,8 +47,15 @@ export const gasEstimateCacheTime = 60000;
 
 export const MINIMUM_PASSWORD_LENGTH = 12;
 
+export const SUPPORT_EMAIL = 'support@mycrypto.com';
+export const LATEST_NEWS_URL = 'https://medium.com/@mycrypto';
 export const CRYPTOSCAMDB = 'https://cryptoscamdb.org';
 export const KNOWLEDGE_BASE_URL = 'https://support.mycrypto.com';
+export const HOW_TO_BUY_CRYPTO_URL =
+  'https://support.mycrypto.com/how-to/getting-started/how-to-buy-ether-with-usd';
+export const DONT_LOSE_CRYPTO_URL =
+  'https://support.mycrypto.com/staying-safe/protecting-yourself-and-your-funds';
+export const STAYING_SAFE_URL = 'https://support.mycrypto.com/staying-safe';
 export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/1985?path=/products/';
 export const trezorReferralURL = 'https://shop.trezor.io/?offer_id=10&aff_id=1735';
 // TODO - Update url
@@ -57,12 +64,11 @@ export const safeTReferralURL =
 export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mycrypto';
 // TODO - Update url, this is MEW's
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';
-// TODO - add the real referral url once you know it
-export const shapeshiftReferralURL = 'https://shapeshift.io';
 export const ethercardReferralURL =
   'https://ether.cards/?utm_source=mycrypto&utm_medium=cpm&utm_campaign=site';
 export const keepkeyReferralURL = 'https://keepkey.go2cloud.org/aff_c?offer_id=1&aff_id=4086';
 export const steelyReferralURL = 'https://stee.ly/2Hcl4RE';
+export const DEXAG_PROXY_CONTRACT = '0xA65440C4CC83D70b44cF244a0da5373acA16a9cb';
 
 export enum Theme {
   DARK = 'dark',

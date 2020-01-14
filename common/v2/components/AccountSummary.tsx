@@ -9,7 +9,7 @@ import Currency from './Currency';
 interface Props {
   address: string;
   balance: string;
-  baseAssetSymbol?: string;
+  assetSymbol?: string;
   label?: string;
   selectable?: boolean;
   onClick?(): void;
@@ -46,17 +46,17 @@ const SAccountWrapper = styled('div')`
 function AccountSummary({
   address,
   balance,
-  baseAssetSymbol,
+  assetSymbol,
   label,
   selectable = true,
   onClick
 }: Props) {
   return (
     <SAccountWrapper onPointerDown={onClick} selectable={selectable}>
-      <SAddress title={label} truncate={truncate} address={address} />
+      <SAddress title={label} truncate={truncate} address={address} isCopyable={false} />
       <SCurrency
         amount={balance}
-        symbol={(baseAssetSymbol as TSymbol) || ('ETH' as TSymbol)}
+        symbol={(assetSymbol as TSymbol) || ('ETH' as TSymbol)}
         decimals={4}
         icon={true}
       />

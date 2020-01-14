@@ -14,8 +14,9 @@ import React, {
 import styled, { StyledComponentClass } from 'styled-components';
 import { Theme } from '@mycrypto/ui';
 
+import { noOp } from 'v2/utils';
 import { default as Typography } from './Typography';
-import { default as IconCaret } from './IconCaret';
+import { default as IconArrow } from './IconArrow';
 
 export interface TableGroup {
   title: string;
@@ -37,6 +38,8 @@ export interface TableContent {
 
 export interface TableData extends TableContent {
   head: (string | JSX.Element)[];
+  overlay?: ReactNode;
+  overlayRows?: number[];
   config?: TableConfig;
 }
 
@@ -110,17 +113,6 @@ const TableGroupHead = styled(TableRow)`
   cursor: pointer;
 `;
 
-const TableCaret = styled(IconCaret)<{ isFlipped?: boolean }>`
-  margin-left: 0.5em;
-  ${props =>
-    props.isFlipped &&
-    `
-    svg {
-      transform: rotateX(180deg);
-    }
-  `};
-`;
-
 const TableCell = styled(Typography)`
   ${sharedCellProperties};
 ` as StyledComponentClass<
@@ -134,9 +126,6 @@ const TableCell = styled(Typography)`
 TableCell.defaultProps = {
   as: 'td'
 };
-
-// tslint:disable-next-line
-const noop = () => {};
 
 export const defaultColumnSort = (a: any, b: any): number => {
   try {
@@ -201,7 +190,7 @@ class AbstractTable extends Component<Props, State> {
   }
 
   public render() {
-    const { head, config, ...rest } = this.props;
+    const { head, config, overlay, overlayRows, ...rest } = this.props;
     const { collapsedGroups, sortedColumnDirection } = this.state;
     const { body, groups } = this.getSortedLayout();
 
@@ -220,7 +209,7 @@ class AbstractTable extends Component<Props, State> {
               return (
                 <TableHeading
                   key={index}
-                  onClick={isSortableColumn ? this.toggleSortedColumnDirection : noop}
+                  onClick={isSortableColumn ? this.toggleSortedColumnDirection : noOp}
                   role={isSortableColumn ? 'button' : ''}
                   isSortable={isSortableColumn}
                   isHidden={isHiddenHeading}
@@ -229,10 +218,7 @@ class AbstractTable extends Component<Props, State> {
                 >
                   {heading}
                   {isSortableColumn && (
-                    <TableCaret
-                      icon="navDownCaret"
-                      isFlipped={sortedColumnDirection === ColumnDirections.Reverse}
-                    />
+                    <IconArrow isFlipped={sortedColumnDirection === ColumnDirections.Reverse} />
                   )}
                 </TableHeading>
               );
@@ -243,15 +229,20 @@ class AbstractTable extends Component<Props, State> {
           {/* Ungrouped rows are placed on top of grouped rows. */}
           {body.map((row, rowIndex) => (
             <TableRow key={rowIndex}>
-              {row.map((cell, cellIndex) => (
-                <TableCell
-                  key={cellIndex}
-                  isReversed={isReversedColumn(head[cellIndex])}
-                  data-testid={`ungrouped-${rowIndex}-${cellIndex}`}
-                >
-                  {cell}
-                </TableCell>
-              ))}
+              {overlay && overlayRows!.includes(rowIndex) ? (
+                // TODO: Solve jump in th width when the overlay is toggled.
+                <td colSpan={head.length}>{overlay}</td>
+              ) : (
+                row.map((cell, cellIndex) => (
+                  <TableCell
+                    key={cellIndex}
+                    isReversed={isReversedColumn(head[cellIndex])}
+                    data-testid={`ungrouped-${rowIndex}-${cellIndex}`}
+                  >
+                    {cell}
+                  </TableCell>
+                ))
+              )}
             </TableRow>
           ))}
           {groups!.map(({ title, entries, offset = 0 }) => (
@@ -263,7 +254,7 @@ class AbstractTable extends Component<Props, State> {
                 ))}
                 <TableHeading colSpan={head.length - offset}>
                   {title}
-                  <TableCaret icon="navDownCaret" isFlipped={collapsedGroups[title]} />
+                  <IconArrow isFlipped={collapsedGroups[title]} />
                 </TableHeading>
               </TableGroupHead>
               {/* Display group rows if not collapsed. */}

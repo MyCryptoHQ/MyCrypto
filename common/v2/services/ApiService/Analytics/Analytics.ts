@@ -1,10 +1,18 @@
 import { AxiosInstance } from 'axios';
-import { isDesktop, isDevelopment } from 'v2/utils';
+import { IS_ELECTRON, IS_DEV } from 'v2/utils';
 import { ApiService } from 'v2/services/ApiService';
-import { ANALYTICS_API_URL, ANALYTICS_ID_SITE, ANALYTICS_REC } from './constants';
+import {
+  ANALYTICS_API_URL,
+  ANALYTICS_ID_DESKTOP,
+  ANALYTICS_ID_DESKTOP_DEV,
+  ANALYTICS_ID_SITE,
+  ANALYTICS_REC
+} from './constants';
 import { CvarEntry, Params } from './types';
 
 let instantiated: boolean = false;
+let analyticsId: number = IS_ELECTRON ? ANALYTICS_ID_DESKTOP : ANALYTICS_ID_SITE;
+
 export default class AnalyticsService {
   public static instance = new AnalyticsService();
 
@@ -19,6 +27,10 @@ export default class AnalyticsService {
     } else {
       instantiated = true;
     }
+
+    if (IS_DEV) {
+      analyticsId = ANALYTICS_ID_DESKTOP_DEV;
+    }
   }
 
   public trackLegacy(category: string, eventAction: string, eventParams?: object): Promise<any> {
@@ -27,8 +39,8 @@ export default class AnalyticsService {
 
   public track(category: string, eventAction: string, eventParams?: object): Promise<any> {
     const customParams: Params = {
-      local: isDevelopment().toString(),
-      desktop: isDesktop().toString(),
+      local: IS_DEV.toString(),
+      desktop: IS_ELECTRON.toString(),
       ...eventParams
     };
 
@@ -38,7 +50,7 @@ export default class AnalyticsService {
       action_name: eventAction,
       e_c: category,
       e_a: eventAction,
-      idsite: ANALYTICS_ID_SITE,
+      idsite: analyticsId,
       rec: ANALYTICS_REC,
       cvar: JSON.stringify(cvar)
     };
@@ -48,8 +60,8 @@ export default class AnalyticsService {
 
   public trackPageVisit(pageUrl: string): Promise<any> {
     const customParams: Params = {
-      local: isDevelopment().toString(),
-      desktop: isDesktop().toString()
+      local: IS_DEV.toString(),
+      desktop: IS_ELECTRON.toString()
     };
 
     const cvar: object = this.mapParamsToCvars(customParams);
@@ -57,7 +69,7 @@ export default class AnalyticsService {
     const params: object = {
       action_name: 'Page navigation',
       url: pageUrl,
-      idsite: ANALYTICS_ID_SITE,
+      idsite: analyticsId,
       rec: ANALYTICS_REC,
       cvar: JSON.stringify(cvar)
     };

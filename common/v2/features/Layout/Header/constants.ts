@@ -1,4 +1,6 @@
 import { ROUTE_PATHS } from 'v2/config';
+import { translateRaw } from 'v2/translations';
+
 import dashboardIcon from 'common/assets/images/icn-dashboard.svg';
 
 export const links = [
@@ -12,15 +14,15 @@ export const links = [
     subItems: [
       {
         to: ROUTE_PATHS.SEND.path,
-        title: 'Send Assets'
+        title: translateRaw('SEND')
       },
       {
-        to: ROUTE_PATHS.RECEIVE_ASSETS.path,
-        title: 'Receive Assets'
+        to: ROUTE_PATHS.REQUEST_ASSETS.path,
+        title: translateRaw('REQUEST')
       },
       {
         to: ROUTE_PATHS.SWAP.path,
-        title: 'Swap Assets'
+        title: translateRaw('SWAP')
       }
     ]
   },
@@ -36,12 +38,16 @@ export const links = [
         title: 'Verify Message'
       },
       {
-        to: '/contracts',
+        to: ROUTE_PATHS.BROADCAST_TX.path,
+        title: 'Broadcast Transaction'
+      },
+      {
+        to: ROUTE_PATHS.INTERACT_WITH_CONTRACTS.path,
         title: 'Interact with Contracts'
       },
       {
-        to: ROUTE_PATHS.BROADCAST_TX.path,
-        title: 'Broadcast Transaction'
+        to: ROUTE_PATHS.DEPLOY_CONTRACTS.path,
+        title: 'Deploy Contracts'
       },
       {
         to: '/helpers',

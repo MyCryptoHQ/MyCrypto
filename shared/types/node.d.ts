@@ -23,15 +23,4 @@ interface StaticNodeConfig {
   hidden?: boolean;
 }
 
-interface RawNodeConfig {
-  name: string;
-  type: 'rpc' | 'etherscan' | 'infura' | 'web3' | 'myccustom';
-  service: string;
-  url: string;
-}
-
-type StaticNodeId = string;
-
-type StaticNodeConfigs = { [id: string]: StaticNodeConfig } & { web3?: StaticNodeConfig };
-
 type NodeConfig = StaticNodeConfig | CustomNodeConfig;

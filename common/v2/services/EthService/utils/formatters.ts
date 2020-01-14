@@ -1,12 +1,5 @@
 import { toTokenBase } from './units';
-
-export function stripHexPrefix(value: string) {
-  return value.replace('0x', '');
-}
-
-export function stripHexPrefixAndLower(value: string): string {
-  return stripHexPrefix(value).toLowerCase();
-}
+import { padLeftEven } from './padLeftEven';
 
 export const buildEIP681EtherRequest = (
   recipientAddr: string,
@@ -25,3 +18,12 @@ export const buildEIP681TokenRequest = (
     chainId !== 1 ? `@${chainId}` : ''
   }/transfer?address=${recipientAddr}&uint256=${toTokenBase(tokenValue, decimal)}
   }`;
+
+export function messageToData(messageToTransform: string): string {
+  return (
+    '0x' +
+    Array.from(Buffer.from(messageToTransform, 'utf8'))
+      .map(n => padLeftEven(n.toString(16)))
+      .join('')
+  );
+}

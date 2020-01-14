@@ -5,8 +5,8 @@ import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { ExtendedContentPanel, InlineErrorMsg } from 'v2/components';
-import { PanelProps } from '../../CreateWallet';
-import { translateRaw } from 'translations';
+import { PanelProps } from 'v2/features/CreateWallet';
+import { translateRaw } from 'v2/translations';
 
 const ActiveWords = styled.div`
   height: 200px;

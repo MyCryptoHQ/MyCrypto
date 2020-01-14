@@ -1,13 +1,12 @@
-import React, { useContext } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Button, Copyable, Identicon } from '@mycrypto/ui';
 
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS, Fiats } from 'v2/config';
-import { CollapsibleTable, Network } from 'v2/components';
+import { CollapsibleTable, Network, RowDeleteOverlay, RouterLink } from 'v2/components';
 import { default as Typography } from 'v2/components/Typography'; // @TODO solve Circular Dependency issue
-import { truncate, IS_MOBILE } from 'v2/utils';
+import { truncate } from 'v2/utils';
 import { BREAK_POINTS, COLORS, breakpointToNumber } from 'v2/theme';
 import { ExtendedAccount, AddressBook, StoreAccount } from 'v2/types';
 import {
@@ -21,6 +20,7 @@ import { DashboardPanel } from './DashboardPanel';
 import './AccountList.scss';
 import { RatesContext } from 'v2/services';
 import { default as Currency } from './Currency';
+import { TUuid } from 'v2/types/uuid';
 
 const Label = styled.span`
   display: flex;
@@ -90,46 +90,70 @@ const TableContainer = styled.div`
   overflow: auto;
 `;
 
-type DeleteAccount = (uuid: string) => void;
-type UpdateAccount = (uuid: string, accountData: ExtendedAccount) => void;
+const AccountListFooterWrapper = styled.div`
+  & * {
+    color: ${COLORS.BRIGHT_SKY_BLUE};
+  }
+  & img {
+    height: 1.1em;
+    margin-right: 0.5em;
+  }s
+`;
+
 interface AccountListProps {
+  accounts: StoreAccount[];
   className?: string;
   currentsOnly?: boolean;
   deletable?: boolean;
   favoritable?: boolean;
-  footerAction?: string | JSX.Element;
-  footerActionLink?: string;
+  copyable?: boolean;
+  dashboard?: boolean;
 }
 
+export const screenIsMobileSized = (breakpoint: number): boolean =>
+  window.matchMedia(`(max-width: ${breakpoint}px)`).matches;
+
 export default function AccountList(props: AccountListProps) {
-  const { className, currentsOnly, deletable, favoritable, footerAction, footerActionLink } = props;
-  const { currentAccounts, accounts, deleteAccountFromCache } = useContext(StoreContext);
+  const { accounts: displayAccounts, className, deletable, favoritable, copyable, dashboard } = props;
+  const { deleteAccountFromCache } = useContext(StoreContext);
   const { updateAccount } = useContext(AccountContext);
-  const shouldRedirect = accounts === undefined || accounts === null || accounts.length === 0;
-  if (shouldRedirect) {
-    return <Redirect to="/no-accounts" />;
-  }
+  const [deletingIndex, setDeletingIndex] = useState();
+  const overlayRows = [deletingIndex];
+
+  // Verify if AccountList is used in Dashboard to display Settings button
+  const headingRight = dashboard ? translateRaw('SETTINGS_HEADING') : undefined;
+  const actionLink = dashboard ? ROUTE_PATHS.SETTINGS.path : undefined;
+
+  const Footer = () => {
+    return (
+      <AccountListFooterWrapper>
+        <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
+          <Typography>{`+ ${translateRaw('ACCOUNT_LIST_TABLE_ADD_ACCOUNT')}`}</Typography>
+        </RouterLink>
+      </AccountListFooterWrapper>
+    );
+  };
 
   return (
     <DashboardPanel
       heading={translateRaw('ACCOUNT_LIST_TABLE_ACCOUNTS')}
-      headingRight={`+ ${
-        IS_MOBILE ? translateRaw('ACCOUNT_LIST_TABLE_ADD') : translateRaw('ACCOUNT_LIST_TABLE_ADD')
-      }`}
-      actionLink={ROUTE_PATHS.ADD_ACCOUNT.path}
+      headingRight={headingRight}
+      actionLink={actionLink}
       className={`AccountList ${className}`}
-      footerAction={footerAction}
-      footerActionLink={footerActionLink}
+      footer={<Footer />}
     >
       <TableContainer>
         <CollapsibleTable
           breakpoint={breakpointToNumber(BREAK_POINTS.SCREEN_XS)}
           {...buildAccountTable(
-            currentsOnly ? currentAccounts() : accounts,
+            displayAccounts,
             deleteAccountFromCache,
             updateAccount,
             deletable,
-            favoritable
+            favoritable,
+            copyable,
+            overlayRows,
+            setDeletingIndex
           )}
         />
       </TableContainer>
@@ -139,15 +163,19 @@ export default function AccountList(props: AccountListProps) {
 
 function buildAccountTable(
   accounts: StoreAccount[],
-  deleteAccount: DeleteAccount,
-  updateAccount: UpdateAccount,
+  deleteAccount: (a: ExtendedAccount) => void,
+  updateAccount: (u: TUuid, a: ExtendedAccount) => void,
   deletable?: boolean,
-  favoritable?: boolean
+  favoritable?: boolean,
+  copyable?: boolean,
+  overlayRows?: number[],
+  setDeletingIndex?: any
 ) {
   const { totalFiat } = useContext(StoreContext);
-  const { getRate } = useContext(RatesContext);
+  const { getAssetRate } = useContext(RatesContext);
   const { settings } = useContext(SettingsContext);
   const { addressBook } = useContext(AddressBookContext);
+
   const columns = [
     translateRaw('ACCOUNT_LIST_LABEL'),
     translateRaw('ACCOUNT_LIST_ADDRESS'),
@@ -159,16 +187,35 @@ function buildAccountTable(
 
   return {
     head: deletable ? [...columns, translateRaw('ACCOUNT_LIST_DELETE')] : columns,
+    overlay:
+      overlayRows && overlayRows[0] !== undefined ? (
+        <RowDeleteOverlay
+          prompt={`Are you sure you want to delete
+              ${
+                getLabelByAccount(accounts[overlayRows[0]], addressBook) !== undefined
+                  ? getLabelByAccount(accounts[overlayRows[0]], addressBook)!.label
+                  : ''
+              } account with address: ${accounts[overlayRows[0]].address} ?`}
+          deleteAction={() => {
+            deleteAccount(accounts[overlayRows[0]]);
+            setDeletingIndex(undefined);
+          }}
+          cancelAction={() => setDeletingIndex(undefined)}
+        />
+      ) : (
+        <></>
+      ),
+    overlayRows,
     body: accounts.map((account, index) => {
       const addressCard: AddressBook | undefined = getLabelByAccount(account, addressBook);
-      const total = totalFiat([account])(getRate);
+      const total = totalFiat([account])(getAssetRate);
       const label = addressCard ? addressCard.label : 'Unknown Account';
       const bodyContent = [
         <Label key={index}>
           <SIdenticon address={account.address} />
           <STypography bold={true} value={label} />
         </Label>,
-        <Copyable key={index} text={account.address} truncate={truncate} />,
+        <Copyable key={index} text={account.address} truncate={truncate} isCopyable={copyable} />,
         <Network key={index} color="#a682ff">
           {account.networkId}
         </Network>,
@@ -183,11 +230,7 @@ function buildAccountTable(
       return deletable
         ? [
             ...bodyContent,
-            <DeleteButton
-              key={index}
-              onClick={handleAccountDelete(deleteAccount, account.uuid)}
-              icon="exit"
-            />
+            <DeleteButton key={index} onClick={() => setDeletingIndex(index)} icon="exit" />
           ]
         : favoritable
         ? [
@@ -218,12 +261,4 @@ function buildAccountTable(
       iconColumns: deletable ? [translateRaw('ACCOUNT_LIST_DELETE')] : undefined
     }
   };
-}
-
-/**
- * A higher order function that binds to an account uuid, which returns a handler that will
- * delete the bound account onClick
- */
-function handleAccountDelete(deleteAccount: DeleteAccount, uuid: string) {
-  return () => deleteAccount(uuid);
 }

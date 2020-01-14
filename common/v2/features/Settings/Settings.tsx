@@ -1,13 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
-import translate from 'translations';
+import translate from 'v2/translations';
 
 import { IS_MOBILE } from 'v2/utils';
 import { BREAK_POINTS, MIN_CONTENT_PADDING } from 'v2/theme';
-import { AddressBookContext, SettingsContext } from 'v2/services/Store';
+import { AddressBookContext, SettingsContext, StoreContext } from 'v2/services/Store';
 import { AccountList, FlippablePanel, TabsNav } from 'v2/components';
-import { AddressBookPanel, AddToAddressBook, GeneralSettings } from './components';
+import { AddressBookPanel, AddToAddressBook, GeneralSettings, DangerZone } from './components';
 
 import settingsIcon from 'common/assets/images/icn-settings.svg';
 
@@ -23,9 +23,15 @@ const SettingsHeadingIcon = styled.img`
 `;
 
 const StyledLayout = styled.div`
+  width: 960px;
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    width: 100%;
+  }
   .Layout-content {
     padding: 0;
-    @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+  }
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    .Layout-content {
       margin-top: ${IS_MOBILE && '73px'};
     }
   }
@@ -38,9 +44,16 @@ const SettingsTabs = styled(TabsNav)`
 `;
 
 function renderAccountPanel() {
+  const { accounts } = useContext(StoreContext);
   return (
     <FlippablePanel>
-      {({ flipped }) => (flipped ? <p>Add Account</p> : <AccountList deletable={true} />)}
+      {({ flipped }) =>
+        flipped ? (
+          <p>Add Account</p>
+        ) : (
+          <AccountList accounts={accounts} deletable={true} copyable={true} />
+        )
+      }
     </FlippablePanel>
   );
 }
@@ -66,7 +79,12 @@ function renderAddressPanel() {
 
 function renderGeneralSettingsPanel() {
   const { updateSettings, settings } = useContext(SettingsContext);
-  return <GeneralSettings updateGlobalSettings={updateSettings} globalSettings={settings} />;
+  return (
+    <>
+      <GeneralSettings updateGlobalSettings={updateSettings} globalSettings={settings} />
+      <DangerZone />
+    </>
+  );
 }
 
 interface TabOptions {

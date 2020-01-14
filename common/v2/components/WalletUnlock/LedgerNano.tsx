@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import { Button } from '@mycrypto/ui';
 
-import { Spinner, NewTabLink } from 'components/ui';
-import translate, { translateRaw } from 'translations';
+import { Spinner, NewTabLink } from 'v2/components';
+import translate, { translateRaw } from 'v2/translations';
 import { WalletId, FormData } from 'v2/types';
 import { getDPath, getDPaths } from 'v2/services';
 import { NetworkContext } from 'v2/services/Store';
@@ -51,7 +51,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
     const network = this.context.getNetworkByName(this.props.formData.network);
 
     if (!dPath) {
-      return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} />;
+      return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} network={network} />;
     }
 
     if (!process.env.BUILD_ELECTRON && window.location.protocol !== 'https:') {
@@ -110,8 +110,9 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
               )}
             </div>
             <div className="LedgerPanel-footer">
-              {translate('LEDGER_REFERRAL_2')} <br />
-              {translate('LEDGER_HELP_LINK')}
+              {translate('LEDGER_REFERRAL_2')}
+              {/*<br />
+              {translate('LEDGER_HELP_LINK')} */}
             </div>
           </div>
         </div>

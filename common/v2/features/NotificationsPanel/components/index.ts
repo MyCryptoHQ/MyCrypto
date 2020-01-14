@@ -8,3 +8,4 @@ export {
   default as OnboardingPleaseUnderstandNotification
 } from './OnboardingPleaseUnderstandNotification';
 export { default as OnboardingResponsibleNotification } from './OnboardingResponsibleNotification';
+export { default as UnlockVIPNotification } from './UnlockVIPDetected';

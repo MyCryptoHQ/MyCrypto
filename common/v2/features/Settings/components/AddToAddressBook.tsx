@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Formik, Form, Field, FieldProps } from 'formik';
-import { Button, Input, Textarea } from '@mycrypto/ui';
+import { Button, Input } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
-import { DashboardPanel, NetworkSelectDropdown } from 'v2/components';
+import { DashboardPanel, NetworkSelectDropdown, InputField } from 'v2/components';
 import { AddressBook } from 'v2/types';
+import { ToastContext } from 'v2/features/Toasts';
 
 const AddToAddressBookPanel = styled(DashboardPanel)`
   padding: 24px 30px;
@@ -44,6 +45,7 @@ interface Props {
 }
 
 export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: Props) {
+  const { displayToast, toastTemplates } = useContext(ToastContext);
   return (
     <AddToAddressBookPanel
       heading={
@@ -66,6 +68,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
         onSubmit={(values: AddressBook, { setSubmitting }) => {
           createAddressBooks(values);
           setSubmitting(false);
+          displayToast(toastTemplates.addedAddress, { label: values.label });
           toggleFlipped();
         }}
       >
@@ -76,7 +79,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
               <Field
                 name="label"
                 render={({ field }: FieldProps<AddressBook>) => (
-                  <Input {...field} placeholder="Enter Name of Address" />
+                  <Input {...field} placeholder="Enter name of address" />
                 )}
               />
             </AddressFieldset>
@@ -85,7 +88,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
               <Field
                 name="address"
                 render={({ field }: FieldProps<AddressBook>) => (
-                  <Input {...field} placeholder="Enter the Address" />
+                  <Input {...field} placeholder="Enter the address" />
                 )}
               />
             </AddressFieldset>
@@ -105,7 +108,11 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
               <Field
                 name="notes"
                 render={({ field }: FieldProps<AddressBook>) => (
-                  <Textarea {...field} placeholder="Enter a Note for this Address" />
+                  <InputField
+                    {...field}
+                    textarea={true}
+                    placeholder="Enter a note for this address"
+                  />
                 )}
               />
             </AddressFieldset>

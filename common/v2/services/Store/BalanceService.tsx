@@ -1,10 +1,11 @@
-import EthScan, { HttpProvider } from '@mycrypto/eth-scan';
+import EthScan, { HttpProvider, EthersProvider } from '@mycrypto/eth-scan';
 import partition from 'lodash/partition';
 import { bigNumberify, BigNumber } from 'ethers/utils';
+import { FallbackProvider } from 'ethers/providers';
 import { default as BN } from 'bignumber.js';
 
-import { ETHSCAN_NETWORKS } from 'v2/config';
-import { TAddress, StoreAccount, StoreAsset, Asset, NodeConfig } from 'v2/types';
+import { ETHSCAN_NETWORKS, MYCRYPTO_UNLOCK_CONTRACT_ADDRESS } from 'v2/config';
+import { TAddress, StoreAccount, StoreAsset, Asset, NodeConfig, Network } from 'v2/types';
 import { ProviderHandler } from 'v2/services/EthService';
 
 export interface BalanceMap {
@@ -17,6 +18,10 @@ const getAssetAddresses = (assets: Asset[] = []): (string | undefined)[] => {
 
 const getScanner = (node: NodeConfig) => {
   return new EthScan(new HttpProvider(node.url));
+};
+
+const getScannerWithProvider = (provider: FallbackProvider) => {
+  return new EthScan(new EthersProvider(provider));
 };
 
 const addBalancesToAccount = (account: StoreAccount) => ([baseBalance, tokenBalances]: [
@@ -48,12 +53,9 @@ const addBalancesToAccount = (account: StoreAccount) => ([baseBalance, tokenBala
     .map(asset => ({ ...asset, balance: bigNumberify(asset.balance) }))
 });
 
-const getAccountAssetsBalancesWithEthScan = async (
-  account: StoreAccount
-): Promise<StoreAccount> => {
+const getAccountAssetsBalancesWithEthScan = async (account: StoreAccount) => {
   const list = getAssetAddresses(account.assets) as string[];
-  const scanner = getScanner(account.network.nodes[0]);
-
+  const scanner = getScannerWithProvider(new ProviderHandler(account.network).client);
   return Promise.all([
     scanner.getEtherBalances([account.address]),
     scanner.getTokensBalance(account.address, list)
@@ -62,8 +64,19 @@ const getAccountAssetsBalancesWithEthScan = async (
     .catch(_ => account);
 };
 
-// Return an object containing the balance of the different tokens
-// e.g { TOKEN_CONTRACT_ADDRESS: <balance> }
+export const getBaseAssetBalances = async (addresses: string[], network: Network | undefined) => {
+  if (!network) {
+    return ([] as unknown) as BalanceMap;
+  }
+  const scanner = getScannerWithProvider(new ProviderHandler(network).client);
+  return scanner
+    .getEtherBalances(addresses)
+    .then(data => {
+      return data;
+    })
+    .catch(_ => ([] as unknown) as BalanceMap);
+};
+
 const getTokenBalances = (
   provider: ProviderHandler,
   address: TAddress,
@@ -120,3 +133,30 @@ export const getAllTokensBalancesOfAccount = async (account: StoreAccount, asset
     throw new Error(err);
   }
 };
+
+export const getAccountsTokenBalance = async (accounts: StoreAccount[], tokenContract: string) => {
+  const scanner = getScanner(accounts[0].network.nodes[0]);
+  try {
+    return scanner.getTokenBalances(accounts.map(account => account.address), tokenContract);
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+// Unlock Token getBalance will return 0 if no valid unlock token is found for the address.
+// If there is an Unlock token found, it will return the id of the token.
+export const getAccountsUnlockVIPAddresses = async (accounts: StoreAccount[]) =>
+  getAccountsTokenBalance(accounts, MYCRYPTO_UNLOCK_CONTRACT_ADDRESS)
+    .then(unlockStatusBalanceMap =>
+      Object.keys(unlockStatusBalanceMap).filter(address =>
+        unlockStatusBalanceMap[address].isGreaterThan(new BN(0))
+      )
+    )
+    .catch(err => console.error(err));
+
+export const accountUnlockVIPDetected = async (accounts: StoreAccount[]) =>
+  !accounts || !(accounts.length > 0)
+    ? false
+    : getAccountsUnlockVIPAddresses(accounts)
+        .then((unlockAccounts: string[]) => !(!unlockAccounts || unlockAccounts.length === 0))
+        .catch(_ => false);

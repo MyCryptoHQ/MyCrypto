@@ -16,12 +16,15 @@ export const COLORS = {
   BRIGHT_SKY_BLUE: '#1eb8e7',
   SILVER: '#f7f7f7',
   DARK_SILVER: '#ccc',
+  LIGHT_GREY: '#ededed',
+  GREY: '#7b8695',
   DARK_GREY: '#e5ecf3',
   PASTEL_RED: '#ef4747',
   WHITE: '#fff',
   SUCCESS_GREEN: '#5dba5a',
   GOLD: '#FFD166',
-  CLOUDY_BLUE: '#b5bfc7'
+  CLOUDY_BLUE: '#b5bfc7',
+  LEMON_GRASS: '#99968C'
 };
 
 export const BREAK_POINTS = {

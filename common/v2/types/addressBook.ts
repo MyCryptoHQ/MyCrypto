@@ -1,4 +1,5 @@
 import { NetworkId } from './networkId';
+import { TUuid } from './uuid';
 
 export interface AddressBook {
   address: string;
@@ -8,5 +9,5 @@ export interface AddressBook {
 }
 
 export interface ExtendedAddressBook extends AddressBook {
-  uuid: string;
+  uuid: TUuid;
 }

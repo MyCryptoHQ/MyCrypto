@@ -1,4 +1,4 @@
-import { TTicker } from 'v2/types';
+import { ExtendedAccount, Fiat } from 'v2/types';
 
 export interface Balance {
   name: string;
@@ -8,15 +8,11 @@ export interface Balance {
   isOther?: boolean;
 }
 
-export interface Fiat {
-  ticker: TTicker;
-  name: string;
-  symbol: string;
-}
-
 export interface WalletBreakdownProps {
   balances: Balance[];
   totalFiatValue: number;
   fiat: Fiat;
+  accounts: ExtendedAccount[];
+  selected: string[];
   toggleShowChart(): void;
 }

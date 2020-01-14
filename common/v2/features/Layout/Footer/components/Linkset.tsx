@@ -2,7 +2,7 @@ import React from 'react';
 
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { KNOWLEDGE_BASE_URL, CRYPTOSCAMDB } from 'v2/config';
-import { translateRaw } from 'translations';
+import { translateRaw } from 'v2/translations';
 import './Linkset.scss';
 
 const LINK_COLUMNS = [
@@ -90,7 +90,7 @@ const trackLinkClicked = (linkName: string): void => {
 
 export default function Linkset() {
   return (
-    <section className="Linkset">
+    <section className="Footer-Linkset">
       {LINK_COLUMNS.map(({ heading, links }) => (
         <section key={heading} className="Linkset-column">
           <h2>{heading}</h2>

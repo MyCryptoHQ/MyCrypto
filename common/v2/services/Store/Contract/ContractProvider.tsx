@@ -1,45 +1,45 @@
 import React, { Component, createContext } from 'react';
 
-import { Contract, ExtendedContract } from 'v2/types';
-import * as service from './Contract';
+import { ExtendedContract, LSKeys } from 'v2/types';
+import { DataContext } from '../DataManager';
 
 export interface ProviderState {
   contracts: ExtendedContract[];
   createContract(contractsData: ExtendedContract): void;
-  readContracts(uuid: string): Contract;
+  createContractWithId(contractsData: ExtendedContract, id: string): void;
   deleteContracts(uuid: string): void;
   updateContracts(uuid: string, contractsData: ExtendedContract): void;
+  getContractsByIds(uuids: string[]): ExtendedContract[];
 }
 
 export const ContractContext = createContext({} as ProviderState);
 
 export class ContractProvider extends Component {
   public readonly state: ProviderState = {
-    contracts: service.readAllContracts() || [],
+    contracts: this.context.contracts,
     createContract: (contractsData: ExtendedContract) => {
-      service.createContract(contractsData);
-      this.getContracts();
+      this.model.create(contractsData);
     },
-    readContracts: (uuid: string) => {
-      return service.readContracts(uuid);
+    createContractWithId: (contractsData: ExtendedContract, id: string) => {
+      this.model.createContractWithId(contractsData, id);
     },
+
     deleteContracts: (uuid: string) => {
-      service.deleteContracts(uuid);
-      this.getContracts();
+      this.model.delete(uuid);
     },
     updateContracts: (uuid: string, contractsData: ExtendedContract) => {
-      service.updateContracts(uuid, contractsData);
-      this.getContracts();
-    }
+      this.model.update(uuid, contractsData);
+    },
+    getContractsByIds: (uuids: string[]) =>
+      uuids.map(contractId => this.state.contracts.find(c => c.uuid === contractId)!)
   };
+
+  private model = this.context.createActions(LSKeys.CONTRACTS);
 
   public render() {
     const { children } = this.props;
     return <ContractContext.Provider value={this.state}>{children}</ContractContext.Provider>;
   }
-
-  private getContracts = () => {
-    const contracts: ExtendedContract[] = service.readAllContracts() || [];
-    this.setState({ contracts });
-  };
 }
+
+ContractProvider.contextType = DataContext;

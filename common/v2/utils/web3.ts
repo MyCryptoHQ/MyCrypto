@@ -1,12 +1,17 @@
-import MetamaskIcon from 'common/assets/images/wallets/metamask-2.svg';
+import { IWalletConfig, WALLETS_CONFIG } from 'v2/config';
+import { WalletId, WalletType } from 'v2/types';
+
+import MetamaskIcon from 'common/assets/images/wallets/metamask.svg';
 import MistIcon from 'assets/images/wallets/mist.svg';
 import CipherIcon from 'assets/images/wallets/cipher.svg';
 import TrustIcon from 'assets/images/wallets/trust.svg';
 import Web3DefaultIcon from 'assets/images/wallets/web3-default.svg';
+import FrameIcon from 'assets/images/wallets/frame.svg';
 
 interface Web3ProviderInfo {
   lid: string;
   icon: string;
+  walletId: WalletId;
 }
 
 const WEB3_CONFIGS: {
@@ -14,35 +19,60 @@ const WEB3_CONFIGS: {
 } = {
   CipherProvider: {
     lid: 'X_CIPHER',
-    icon: CipherIcon
+    icon: CipherIcon,
+    walletId: WalletId.CIPHER
   },
   MetamaskInpageProvider: {
     lid: 'X_METAMASK',
-    icon: MetamaskIcon
+    icon: MetamaskIcon,
+    walletId: WalletId.METAMASK
+  },
+  InpageBridge: {
+    // MetaMask Mobile has the web3.currentProvider.constructor.name as InpageBridge
+    lid: 'X_METAMASK',
+    icon: MetamaskIcon,
+    walletId: WalletId.METAMASK
   },
   EthereumProvider: {
     lid: 'X_MIST',
-    icon: MistIcon
+    icon: MistIcon,
+    walletId: WalletId.MIST
   },
   TrustWeb3Provider: {
     lid: 'X_TRUST',
-    icon: TrustIcon
+    icon: TrustIcon,
+    walletId: WalletId.TRUST
+  },
+  a: {
+    lid: 'X_FRAME',
+    icon: FrameIcon,
+    walletId: WalletId.FRAME
   },
   UnIndentifiedWeb3Provider: {
     lid: 'X_WEB3_DEFAULT',
-    icon: Web3DefaultIcon
+    icon: Web3DefaultIcon,
+    walletId: WalletId.WEB3 // Default to metamask handler?
   }
 };
 
 export function getWeb3ProviderInfo(): Web3ProviderInfo {
-  if (typeof window === 'undefined') {
+  if (
+    typeof window === 'undefined' ||
+    (typeof window.ethereum === 'undefined' && typeof window.web3 === 'undefined')
+  ) {
     return WEB3_CONFIGS.UnIndentifiedWeb3Provider;
   }
-
-  const className =
-    ((window as any).web3 && (window as any).web3.currentProvider.constructor.name) || undefined;
+  // Web3 browser user detected. You can now use the provider.
+  const provider = window.ethereum || window.web3.currentProvider;
+  const className = provider.constructor.name;
 
   return className && WEB3_CONFIGS[className]
     ? WEB3_CONFIGS[className]
     : WEB3_CONFIGS.UnIndentifiedWeb3Provider;
 }
+
+export const getWeb3Config = (): IWalletConfig => WALLETS_CONFIG[getWeb3ProviderInfo().walletId];
+
+export const isWeb3Wallet = (walletId: WalletId): boolean => {
+  return WALLETS_CONFIG[walletId].type === WalletType.WEB3;
+};

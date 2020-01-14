@@ -1,4 +1,5 @@
 import { IRoutePath, IRoutePaths } from 'v2/types';
+import { translateRaw } from 'v2/translations';
 
 const PATHS: IRoutePath[] = [
   {
@@ -7,37 +8,37 @@ const PATHS: IRoutePath[] = [
   },
   {
     name: 'BUY',
-    title: 'Buy Crypto',
+    title: translateRaw('BUY'),
     path: 'https://buy.mycrypto.com/'
   },
   {
     name: 'HOME',
-    title: 'home',
+    title: translateRaw('HOME'),
     path: '/home'
   },
   {
     name: 'DASHBOARD',
-    title: 'Dashboard',
+    title: translateRaw('DASHBOARD'),
     path: '/dashboard'
   },
   {
     name: 'ADD_ACCOUNT',
-    title: 'Add Account',
+    title: translateRaw('ADD_ACCOUNT'),
     path: '/add-account'
   },
   {
     name: 'CREATE_WALLET',
-    title: 'Create Wallet',
+    title: translateRaw('CREATE_WALLET'),
     path: '/create-wallet'
   },
   {
     name: 'CREATE_WALLET_MNEMONIC',
-    title: 'Mnemonic',
+    title: translateRaw('CREATE_WALLET_MNEMONIC'),
     path: '/create-wallet/mnemonic'
   },
   {
     name: 'CREATE_WALLET_KEYSTORE',
-    title: 'Keystore',
+    title: translateRaw('CREATE_WALLET_KEYSTORE'),
     path: '/create-wallet/keystore'
   },
   {
@@ -51,9 +52,9 @@ const PATHS: IRoutePath[] = [
     path: '/no-accounts'
   },
   {
-    name: 'RECEIVE_ASSETS',
-    title: 'Receive Assets',
-    path: '/receive'
+    name: 'REQUEST_ASSETS',
+    title: translateRaw('REQUEST'),
+    path: '/request'
   },
   {
     name: 'SCREEN_LOCK_NEW',
@@ -92,18 +93,8 @@ const PATHS: IRoutePath[] = [
   },
   {
     name: 'SWAP',
-    title: 'Buy and Exchange | Select Exchange',
+    title: 'Buy and Exchange',
     path: '/swap'
-  },
-  {
-    name: 'SWAP_SHAPESHIFT',
-    title: 'Buy and Exchange | ShapeShift',
-    path: '/swap/shapeshift'
-  },
-  {
-    name: 'SWAP_0X',
-    title: 'Buy and Exchange | 0x Instant',
-    path: '/swap/0x'
   },
   {
     name: 'SIGN_MESSAGE',
@@ -119,17 +110,24 @@ const PATHS: IRoutePath[] = [
     name: 'BROADCAST_TX',
     title: 'Broadcast Transaction',
     path: '/broadcast-transaction'
+  },
+  {
+    name: 'INTERACT_WITH_CONTRACTS',
+    title: 'Interact With Contracts',
+    path: '/interact-with-contracts'
+  },
+  {
+    name: 'DEPLOY_CONTRACTS',
+    title: 'Deploy Contracts',
+    path: '/deploy-contracts'
   }
 ];
 
-export const ROUTE_PATHS: IRoutePaths = createNavLinksFromRoutePaths(PATHS);
-
 function createNavLinksFromRoutePaths(paths: IRoutePath[]) {
-  return paths.reduce(
-    (navLinks, path) => {
-      navLinks[path.name] = path;
-      return navLinks;
-    },
-    {} as IRoutePaths
-  );
+  return paths.reduce((navLinks, path) => {
+    navLinks[path.name] = path;
+    return navLinks;
+  }, {} as IRoutePaths);
 }
+
+export const ROUTE_PATHS: IRoutePaths = createNavLinksFromRoutePaths(PATHS);

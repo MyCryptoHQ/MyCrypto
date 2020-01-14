@@ -4,7 +4,8 @@ import path from 'path';
 import MENU from './menu';
 import popupContextMenu from './contextMenu';
 import { APP_TITLE } from '../constants';
-const isDevelopment = process.env.NODE_ENV !== 'production';
+
+const IS_DEV: boolean = process.env.NODE_ENV === 'development' || !process.env.NODE_ENV;
 
 // Cached reference, preventing recreations
 let window: BrowserWindow | null;
@@ -25,13 +26,16 @@ export default function getWindow() {
     titleBarStyle: 'hidden',
     webPreferences: {
       devTools: true,
-      nodeIntegration: true,
-      contextIsolation: false,
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
+
+      // For security reasons the following params should not be modified
+      // https://electronjs.org/docs/tutorial/security#isolation-for-untrusted-content
+      nodeIntegration: false,
+      contextIsolation: true
     }
   });
 
-  const appUrl = isDevelopment ? `http://localhost:3000` : `file://${__dirname}/index.html`;
+  const appUrl = IS_DEV ? `http://localhost:3000` : `file://${__dirname}/index.html`;
   window.loadURL(appUrl);
 
   window.on('closed', () => {
@@ -52,7 +56,7 @@ export default function getWindow() {
   });
 
   window.webContents.on('context-menu', (_, props) => {
-    popupContextMenu(window!, isDevelopment, props);
+    popupContextMenu(window!, IS_DEV, props);
   });
 
   window.webContents.on('devtools-opened', () => {
@@ -66,7 +70,7 @@ export default function getWindow() {
     event.preventDefault();
   });
 
-  if (isDevelopment) {
+  if (IS_DEV) {
     window.webContents.on('did-fail-load', () => {
       setTimeout(() => {
         if (window && window.webContents) {

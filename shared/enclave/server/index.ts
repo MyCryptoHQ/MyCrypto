@@ -6,7 +6,9 @@ import handlers from './handlers';
 
 export function registerServer(app: App) {
   // Register protocol scheme
-  protocol.registerStandardSchemes([PROTOCOL_NAME]);
+  protocol.registerSchemesAsPrivileged([
+    { scheme: PROTOCOL_NAME, privileges: { standard: true, secure: true } }
+  ]);
 
   app.on('ready', () => {
     // Register custom protocol behavior
@@ -34,7 +36,7 @@ export function registerServer(app: App) {
   });
 }
 
-function getMethod(req: Electron.RegisterStringProtocolRequest): EnclaveMethods {
+function getMethod(req: Electron.Request): EnclaveMethods {
   const urlSplit = req.url.split(`${PROTOCOL_NAME}://`);
 
   if (!urlSplit[1]) {
@@ -49,10 +51,7 @@ function getMethod(req: Electron.RegisterStringProtocolRequest): EnclaveMethods 
   return method;
 }
 
-function getParams(
-  method: EnclaveMethods,
-  req: Electron.RegisterStringProtocolRequest
-): EnclaveMethodParams {
+function getParams(method: EnclaveMethods, req: Electron.Request): EnclaveMethodParams {
   const data = req.uploadData.find(d => !!d.bytes);
 
   if (!data) {

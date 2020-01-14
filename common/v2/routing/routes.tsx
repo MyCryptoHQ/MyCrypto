@@ -19,12 +19,12 @@ import {
   ScreenLockForgotPassword,
   SendAssets,
   ReceiveAssets,
-  BuyAndExchange,
-  ShapeShiftAuthorization,
-  ZeroEx,
+  SwapAssetsFlow,
   Home,
   SignAndVerifyMessage,
-  BroadcastTx
+  BroadcastTransactionFlow,
+  InteractWithContractsFlow,
+  DeployContractsFlow
 } from 'v2/features';
 import { requiresDesktopApp } from './helpers';
 
@@ -44,6 +44,7 @@ export const APP_ROUTES: IAppRoute[] = [
     title: ROUTE_PATHS.DASHBOARD.title,
     path: ROUTE_PATHS.DASHBOARD.path,
     exact: true,
+    requireAccounts: true,
     component: Dashboard
   },
   {
@@ -89,10 +90,11 @@ export const APP_ROUTES: IAppRoute[] = [
     component: NoAccounts
   },
   {
-    name: ROUTE_PATHS.RECEIVE_ASSETS.name,
-    title: ROUTE_PATHS.RECEIVE_ASSETS.title,
-    path: ROUTE_PATHS.RECEIVE_ASSETS.path,
+    name: ROUTE_PATHS.REQUEST_ASSETS.name,
+    title: ROUTE_PATHS.REQUEST_ASSETS.title,
+    path: ROUTE_PATHS.REQUEST_ASSETS.path,
     exact: true,
+    requireAccounts: true,
     component: ReceiveAssets
   },
   {
@@ -121,6 +123,7 @@ export const APP_ROUTES: IAppRoute[] = [
     title: ROUTE_PATHS.SEND.title,
     path: ROUTE_PATHS.SEND.path,
     exact: true,
+    requireAccounts: true,
     component: SendAssets
   },
   {
@@ -149,19 +152,7 @@ export const APP_ROUTES: IAppRoute[] = [
     title: ROUTE_PATHS.SWAP.title,
     path: ROUTE_PATHS.SWAP.path,
     exact: true,
-    component: BuyAndExchange
-  },
-  {
-    name: ROUTE_PATHS.SWAP_SHAPESHIFT.name,
-    title: ROUTE_PATHS.SWAP_SHAPESHIFT.title,
-    path: ROUTE_PATHS.SWAP_SHAPESHIFT.path,
-    component: ShapeShiftAuthorization
-  },
-  {
-    name: ROUTE_PATHS.SWAP_0X.name,
-    title: ROUTE_PATHS.SWAP_0X.title,
-    path: ROUTE_PATHS.SWAP_0X.path,
-    component: ZeroEx
+    component: SwapAssetsFlow
   },
   {
     name: ROUTE_PATHS.SIGN_MESSAGE.name,
@@ -181,6 +172,18 @@ export const APP_ROUTES: IAppRoute[] = [
     name: ROUTE_PATHS.BROADCAST_TX.name,
     title: ROUTE_PATHS.BROADCAST_TX.title,
     path: ROUTE_PATHS.BROADCAST_TX.path,
-    component: BroadcastTx
+    component: BroadcastTransactionFlow
+  },
+  {
+    name: ROUTE_PATHS.INTERACT_WITH_CONTRACTS.name,
+    title: ROUTE_PATHS.INTERACT_WITH_CONTRACTS.title,
+    path: ROUTE_PATHS.INTERACT_WITH_CONTRACTS.path,
+    component: InteractWithContractsFlow
+  },
+  {
+    name: ROUTE_PATHS.DEPLOY_CONTRACTS.name,
+    title: ROUTE_PATHS.DEPLOY_CONTRACTS.title,
+    path: ROUTE_PATHS.DEPLOY_CONTRACTS.path,
+    component: DeployContractsFlow
   }
 ];

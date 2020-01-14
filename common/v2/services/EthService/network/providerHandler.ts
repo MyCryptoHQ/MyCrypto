@@ -18,7 +18,7 @@ export class ProviderHandler {
   }
 
   public call(txObj: TxObj): Promise<string> {
-    return this.client.call(this.requests.ethCall(txObj));
+    return this.client.call(txObj);
   }
 
   /* Tested */
@@ -82,6 +82,10 @@ export class ProviderHandler {
 
   public sendRawTx(signedTx: string): Promise<TransactionResponse> {
     return this.client.sendTransaction(signedTx);
+  }
+
+  public waitForTransaction(txHash: string, confirmations?: number): Promise<TransactionReceipt> {
+    return this.client.waitForTransaction(txHash, confirmations);
   }
 
   /* TODO: Needs handling for web3 providers. */

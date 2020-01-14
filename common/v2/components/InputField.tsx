@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Icon } from '@mycrypto/ui';
 
 import { COLORS } from 'v2/theme';
-import { InlineErrorMsg } from 'v2/components';
+import { InlineErrorMsg, Spinner } from 'v2/components';
 
 const { PASTEL_RED, BRIGHT_SKY_BLUE, DARK_SILVER } = COLORS;
 
@@ -23,9 +23,11 @@ const Label = styled.p`
 `;
 
 interface CustomInputProps {
-  inputError?: string;
+  inputError?: string | JSX.Element;
   showEye?: boolean;
   height?: string;
+  maxHeight?: string;
+  resizable?: boolean;
 }
 
 const CustomInput = styled.input<CustomInputProps>`
@@ -63,8 +65,9 @@ const CustomTextArea = styled.textarea<CustomInputProps>`
     opacity: 1;
   }
   border-color: ${props => (props.inputError ? PASTEL_RED : '')};
-  resize: none;
-  ${props => props.height && `height: ${props.height}`}
+  resize:  ${props => (props.resizable ? 'default' : 'none')};
+  ${props => props.height && `height: ${props.height}`};
+  ${props => props.maxHeight && `max-height: ${props.maxHeight}`};
 `;
 
 const InputWrapper = styled.div`
@@ -97,17 +100,22 @@ const CustomIconWrapper = styled.div`
 `;
 
 interface Props {
+  name?: string;
   type?: string;
   label?: string | JSX.Element;
-  value: string;
-  inputError?: string | undefined;
+  value: string | undefined;
+  inputError?: string | JSX.Element | undefined;
   showEye?: boolean;
   textarea?: boolean;
   placeholder?: string;
   height?: string;
-  onChange(event: any): void;
+  maxHeight?: string;
+  resizableTextArea?: boolean;
+  disabled?: boolean;
+  isLoading?: boolean;
+  onChange?(event: any): void;
   onBlur?(event: any): void;
-  validate?(): void | undefined;
+  validate?(): Promise<void> | void | undefined;
 }
 
 export class InputField extends Component<Props> {
@@ -120,6 +128,7 @@ export class InputField extends Component<Props> {
 
   public render() {
     const {
+      name,
       value,
       label,
       onChange,
@@ -129,7 +138,11 @@ export class InputField extends Component<Props> {
       showEye,
       textarea,
       placeholder,
-      height
+      height,
+      resizableTextArea,
+      disabled,
+      isLoading,
+      maxHeight
     } = this.props;
     return (
       <MainWrapper>
@@ -137,6 +150,7 @@ export class InputField extends Component<Props> {
         <InputWrapper>
           {textarea ? (
             <CustomTextArea
+              name={name}
               value={value}
               onChange={onChange}
               onBlur={onBlur}
@@ -144,9 +158,13 @@ export class InputField extends Component<Props> {
               onKeyUp={this.handleKeyUp}
               placeholder={placeholder ? placeholder : ''}
               height={height}
+              resizable={resizableTextArea}
+              disabled={disabled}
+              maxHeight={maxHeight}
             />
           ) : (
             <CustomInput
+              name={name}
               value={value}
               onChange={onChange}
               onBlur={onBlur}
@@ -156,12 +174,19 @@ export class InputField extends Component<Props> {
               type={this.state.showPassword ? 'text' : type ? type : 'text'}
               placeholder={placeholder ? placeholder : ''}
               height={height}
+              disabled={isLoading || disabled}
             />
           )}
 
           {showEye && (
             <CustomIconWrapper onClick={this.handleEyeClick}>
               <CustomIcon icon={'showNetworks'} showPassword={this.state.showPassword} />
+            </CustomIconWrapper>
+          )}
+
+          {isLoading && (
+            <CustomIconWrapper>
+              <Spinner />
             </CustomIconWrapper>
           )}
         </InputWrapper>

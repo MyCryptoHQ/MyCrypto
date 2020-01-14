@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Icon, Copyable, Typography, Button } from '@mycrypto/ui';
 
 import { DashboardPanel, CollapsibleTable, Profile } from 'v2/components';
 import { ExtendedAddressBook } from 'v2/types';
 import { truncate } from 'v2/utils';
+import { BREAK_POINTS } from 'v2/theme';
 
 interface Props {
   addressBook: ExtendedAddressBook[];
@@ -24,6 +25,7 @@ const DeleteButton = styled(Button)`
 const AddAccountButton = styled(Button)`
   color: #1eb8e7;
   font-weight: bold;
+  margin-bottom: 15px;
 `;
 
 const BottomRow = styled.div`
@@ -34,26 +36,45 @@ const BottomRow = styled.div`
 const Label = styled.span`
   display: flex;
   align-items: center;
-  p {
-    margin-right: 27px;
-  }
 `;
 
 export default function AddressBook({ addressBook, toggleFlipped, deleteAddressBooks }: Props) {
+  const [deletingIndex, setDeletingIndex] = useState();
+
+  const overlayRows = [deletingIndex];
+
   const addressBookTable = {
-    head: ['Favorite', 'Label', 'Address', 'Notes', 'Delete'],
-    body: addressBook.map(({ address, label, notes, uuid }: ExtendedAddressBook) => [
+    head: ['Favorite', 'Label', 'Address', 'Network', 'Notes', 'Delete'],
+    overlay:
+      overlayRows && overlayRows[0] !== undefined ? (
+        <RowDeleteOverlay
+          prompt={`Are you sure you want to delete ${addressBook[overlayRows[0]].label} address with
+             address: ${truncate(addressBook[overlayRows[0]].address)}?`}
+          deleteAction={() => {
+            deleteAddressBooks(addressBook[overlayRows[0]].uuid);
+            setDeletingIndex(undefined);
+          }}
+          cancelAction={() => setDeletingIndex(undefined)}
+        />
+      ) : (
+        <></>
+      ),
+    overlayRows,
+    body: addressBook.map(({ address, label, network, notes }: ExtendedAddressBook, index) => [
       <Icon key={0} icon="star" />,
       <Label key={1}>
         <Profile address={address} label={label} />
       </Label>,
-      <Copyable key={2} text={address} truncate={truncate} />,
-      <Typography key={3}>{notes}</Typography>,
-      <DeleteButton key={4} onClick={() => deleteAddressBooks(uuid)} icon="exit" />
+      <Copyable key={2} text={address} truncate={truncate} isCopyable={true} />,
+      <Network key={3} color="#a682ff">
+        {network}
+      </Network>,
+      <Typography key={4} value={notes} />,
+      <DeleteButton key={5} onClick={() => setDeletingIndex(index)} icon="exit" />
     ]),
     config: {
-      primaryColumn: 'Address',
-      sortableColumn: 'Address',
+      primaryColumn: 'Label',
+      sortableColumn: 'Label',
       sortFunction: (a: any, b: any) => {
         const aLabel = a.props.label;
         const bLabel = b.props.label;

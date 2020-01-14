@@ -1,0 +1,35 @@
+import { useEffect, useRef, useState } from 'react';
+import useUnmount from './useUnMount';
+
+const useThrottleFn = <T, U extends any[]>(fn: (...args: U) => T, ms: number = 200, args: U) => {
+  const [state, setState] = useState<T | null>(null);
+  const timeout = useRef<ReturnType<typeof setTimeout>>();
+  const nextArgs = useRef<U>();
+
+  useEffect(() => {
+    if (!timeout.current) {
+      setState(fn(...args));
+      const timeoutCallback = () => {
+        if (nextArgs.current) {
+          setState(fn(...nextArgs.current));
+          nextArgs.current = undefined;
+          timeout.current = setTimeout(timeoutCallback, ms);
+        } else {
+          timeout.current = undefined;
+        }
+      };
+      timeout.current = setTimeout(timeoutCallback, ms);
+    } else {
+      nextArgs.current = args;
+    }
+  }, args);
+
+  useUnmount(() => {
+    // tslint:disable-next-line:no-unused-expression e.g https://github.com/palantir/tslint/issues/4021
+    timeout.current && clearTimeout(timeout.current);
+  });
+
+  return state;
+};
+
+export default useThrottleFn;

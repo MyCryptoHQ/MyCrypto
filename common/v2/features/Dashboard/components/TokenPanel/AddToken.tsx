@@ -4,8 +4,8 @@ import { Button } from '@mycrypto/ui';
 
 import { generateUUID } from 'v2/utils';
 import { InputField, NetworkSelectDropdown, DashboardPanel } from 'v2/components';
-import { translateRaw } from 'translations';
-import { getNetworkByName, AssetContext } from 'v2/services/Store';
+import { translateRaw } from 'v2/translations';
+import { AssetContext, NetworkContext } from 'v2/services/Store';
 import { ExtendedAsset, NetworkId } from 'v2/types';
 import { DEFAULT_NETWORK, DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { isValidAddress } from 'v2/services';
@@ -50,6 +50,7 @@ export function AddToken(props: Props) {
   const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
 
   const { createAssetWithID } = useContext(AssetContext);
+  const { getNetworkByName } = useContext(NetworkContext);
 
   const { setShowAddToken, scanTokens, setShowDetailsView } = props;
 

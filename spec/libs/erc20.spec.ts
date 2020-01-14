@@ -1,8 +1,4 @@
-import configuredStore from 'features/store';
-import { toWei } from 'libs/units';
-import ERC20 from 'libs/erc20';
-
-configuredStore.getState();
+import { ERC20, toWei } from 'v2/services/EthService';
 
 const MYCRYPTO_ADDRESS = '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8';
 

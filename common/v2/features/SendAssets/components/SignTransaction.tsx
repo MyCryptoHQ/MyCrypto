@@ -1,23 +1,31 @@
 import React from 'react';
 
-import { WalletId, ITxReceipt } from 'v2/types';
-import { IStepComponentProps, ISignComponentProps, ISignedTx } from '../types';
 import {
-  SignTransactionKeystore,
-  SignTransactionLedger,
-  SignTransactionMetaMask,
+  WalletId,
+  ITxReceipt,
+  IStepComponentProps,
+  ISignComponentProps,
+  ISignedTx,
+  SigningComponents as SigningComponentsType
+} from 'v2/types';
+import {
   SignTransactionPrivateKey,
-  SignTransactionSafeT,
+  SignTransactionWeb3,
+  SignTransactionLedger,
   SignTransactionTrezor,
+  SignTransactionSafeT,
+  SignTransactionKeystore,
   SignTransactionMnemonic
-} from './SignTransactionWallets';
+} from 'v2/components';
 
-type SigningComponents = {
-  readonly [k in WalletId]: React.ComponentType<ISignComponentProps> | null;
-};
-const SigningComponents: SigningComponents = {
+const SigningComponents: SigningComponentsType = {
   [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,
-  [WalletId.METAMASK]: SignTransactionMetaMask,
+  [WalletId.WEB3]: SignTransactionWeb3,
+  [WalletId.METAMASK]: SignTransactionWeb3,
+  [WalletId.TRUST]: SignTransactionWeb3,
+  [WalletId.CIPHER]: SignTransactionWeb3,
+  [WalletId.MIST]: SignTransactionWeb3,
+  [WalletId.FRAME]: SignTransactionWeb3,
   [WalletId.LEDGER_NANO_S]: SignTransactionLedger,
   [WalletId.TREZOR]: SignTransactionTrezor,
   [WalletId.SAFE_T_MINI]: SignTransactionSafeT,
