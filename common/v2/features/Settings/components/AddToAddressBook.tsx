@@ -120,7 +120,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
               <Button type="button" secondary={true} onClick={toggleFlipped}>
                 Cancel
               </Button>
-              <Button type="Submit" disabled={isSubmitting}>
+              <Button type="submit" disabled={isSubmitting}>
                 Add Address
               </Button>
             </AddressBookButtons>
