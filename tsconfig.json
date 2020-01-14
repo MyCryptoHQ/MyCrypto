@@ -10,7 +10,8 @@
     "baseUrl": "./common/",
     "paths": {
       "shared*": ["../shared*"],
-      "types*": ["../shared/types*"]
+      "types*": ["../shared/types*"],
+      "test-utils": ["../jest_config/test-utils"]
     },
     "lib": ["esnext", "dom"],
     "allowSyntheticDefaultImports": true,
