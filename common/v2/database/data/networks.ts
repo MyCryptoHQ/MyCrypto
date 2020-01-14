@@ -139,9 +139,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     isCustom: false,
     color: '#669073',
     blockExplorer: makeExplorer({
-      name: 'GasTracker',
-      origin: 'https://gastracker.io',
-      addressPath: 'addr'
+      name: 'BlockScout',
+      origin: 'https://blockscout.com/etc/mainnet',
+      addressPath: 'address'
     }),
     tokens: require('./tokens/etc.json'),
     contracts: require('./contracts/etc.json'),
