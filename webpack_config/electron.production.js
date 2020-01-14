@@ -20,7 +20,7 @@ const main = merge.smart(electronMain, {
 });
 
 const render = merge.smart(electronRender, {
-  target: 'electron-renderer',
+  target: 'web',
 
   output: {
     path: path.join(config.path.output, 'electron-js'),
