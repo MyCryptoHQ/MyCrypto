@@ -253,6 +253,7 @@ function buildAccountTable(
             </div>
           </LabelWithWallet>
           <EditableText
+            truncate={true}
             saveValue={value => {
               if (addressCard) {
                 updateAddressBooks(addressCard.uuid, { ...addressCard, label: value });

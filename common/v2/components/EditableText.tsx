@@ -20,10 +20,11 @@ interface Props {
   value: string;
   className?: string;
   bold?: boolean;
+  truncate?: boolean;
   saveValue(value: string): void;
 }
 
-function EditableText({ saveValue, value, className, bold }: Props) {
+function EditableText({ saveValue, value, className, bold, truncate }: Props) {
   const [editMode, setEditMode] = useState(false);
   const [editValue, setEditValue] = useState('');
 
@@ -51,7 +52,9 @@ function EditableText({ saveValue, value, className, bold }: Props) {
         />
       ) : (
         <>
-          <Typography bold={bold}>{value}</Typography>
+          <Typography bold={bold} truncate={truncate}>
+            {value}
+          </Typography>
           <EditIcon
             onClick={() => {
               setEditMode(true);
