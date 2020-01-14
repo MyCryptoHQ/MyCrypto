@@ -6,6 +6,9 @@ import _, { isEmpty } from 'lodash';
 import { formatEther } from 'ethers/utils';
 import BN from 'bn.js';
 import styled from 'styled-components';
+import * as R from 'ramda';
+import { ValuesType } from 'utility-types';
+
 import questionSVG from 'assets/images/icn-question.svg';
 
 import translate, { translateRaw } from 'v2/translations';
@@ -31,7 +34,8 @@ import {
   StoreAsset,
   WalletId,
   IFormikFields,
-  IStepComponentProps
+  IStepComponentProps,
+  ITxConfig
 } from 'v2/types';
 import {
   getNonce,
@@ -74,7 +78,7 @@ export const AdvancedOptionsButton = styled(Button)`
   text-align: center;
 `;
 
-const initialFormikValues: IFormikFields = {
+export const initialFormikValues: IFormikFields = {
   address: {
     value: '',
     display: ''
@@ -99,6 +103,24 @@ const initialFormikValues: IFormikFields = {
   gasLimitField: '21000',
   advancedTransaction: false,
   nonceField: '0'
+};
+
+// To preserve form state between steps, we prefil the fields with state
+// values when they exits.
+type FieldValue = ValuesType<IFormikFields>;
+export const getInitialFormikValues = (s: ITxConfig): IFormikFields => {
+  const state: Partial<IFormikFields> = {
+    amount: s.amount,
+    account: s.senderAccount,
+    network: s.network,
+    asset: s.asset,
+    nonceField: s.nonce,
+    txDataField: s.data,
+    address: { value: s.receiverAddress, display: s.receiverAddress }
+  };
+
+  const preferValueFromState = (l: FieldValue, r: FieldValue): FieldValue => (isEmpty(r) ? l : r);
+  return R.mergeDeepWith(preferValueFromState, initialFormikValues, state);
 };
 
 const QueryWarning: React.SFC<{}> = () => (
@@ -137,10 +159,7 @@ const SendAssetsSchema = Yup.object().shape({
     .required(translateRaw('REQUIRED'))
 });
 
-export default function SendAssetsForm({
-  // txConfig // @TODO Use prop in case goToPrevStep or URI prefill.
-  onComplete
-}: IStepComponentProps) {
+export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentProps) {
   const { accounts, assets, networks, getAccount } = useContext(StoreContext);
   const { getAssetRate } = useContext(RatesContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
@@ -151,7 +170,7 @@ export default function SendAssetsForm({
   return (
     <div className="SendAssetsForm">
       <Formik
-        initialValues={initialFormikValues}
+        initialValues={getInitialFormikValues(txConfig)}
         validationSchema={SendAssetsSchema}
         onSubmit={fields => {
           onComplete(fields);
