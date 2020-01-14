@@ -7,6 +7,7 @@ import { ExtendedContentPanel } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
 import { ITxReceipt, ISignedTx } from 'v2/types';
 import { useStateReducer } from 'v2/utils';
+import { useEffectOnce, usePromise } from 'v2/vendor';
 
 import {
   SwapAssets,
@@ -25,6 +26,7 @@ interface TStep {
   component: any;
   props: any;
   actions?: any;
+  backBtnText: string;
 }
 
 const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
@@ -32,6 +34,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
 
   const {
     fetchSwapAssets,
+    setSwapAssets,
     handleFromAssetSelected,
     handleToAssetSelected,
     calculateNewFromAmount,
@@ -84,6 +87,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
   const steps: TStep[] = [
     {
       title: translateRaw('SWAP'),
+      backBtnText: translateRaw('DASHBOARD'),
       component: SwapAssets,
       props: {
         fromAmount,
@@ -108,6 +112,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     },
     {
       title: translateRaw('ACCOUNT_SELECTION_PLACEHOLDER'),
+      backBtnText: translateRaw('SWAP'),
       description: translateRaw('SWAP_ACCOUNT_SELECT_DESC', {
         $fromAsset: (fromAsset && fromAsset.symbol) || 'ETH',
         $toAsset: (toAsset && toAsset.symbol) || 'ETH'
@@ -127,6 +132,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     },
     {
       title: translateRaw('SWAP_CONFIRM_TITLE'),
+      backBtnText: translateRaw('ACCOUNT_SELECTION_PLACEHOLDER'),
       component: ConfirmSwap,
       props: {
         fromAsset,
@@ -146,9 +152,9 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
       ? [
           {
             title: translateRaw('SWAP_ALLOWANCE_TITLE'),
+            backBtnText: translateRaw('SWAP_CONFIRM_TITLE'),
             component: SetAllowance,
             props: {
-              account,
               isSubmitting,
               network: account && account.network,
               senderAccount: account,
@@ -163,6 +169,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
       : []),
     {
       title: translateRaw('SWAP'),
+      backBtnText: translateRaw('SWAP_CONFIRM_TITLE'),
       component: account && WALLET_STEPS[account.wallet],
       props: {
         network: account && account.network,
@@ -174,9 +181,14 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
       }
     },
     {
-      title: translateRaw('SWAP_RECEIPT_TITLE'),
+      title: translateRaw('TRANSACTION_BROADCASTED'),
+      backBtnText: translateRaw('DEP_SIGNTX'),
       component: SwapTransactionReceipt,
       props: {
+        fromAsset,
+        toAsset,
+        fromAmount,
+        toAmount,
         txReceipt,
         txConfig,
         onSuccess: goToFirstStep
@@ -187,9 +199,13 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
   const stepObject = steps[step];
   const StepComponent = stepObject.component;
 
-  if (assets.length === 0) {
-    fetchSwapAssets();
-  }
+  const mounted = usePromise();
+  useEffectOnce(() => {
+    (async () => {
+      const [fetchedAssets, fetchedFromAsset, fetchedToAsset] = await mounted(fetchSwapAssets());
+      setSwapAssets(fetchedAssets, fetchedFromAsset, fetchedToAsset);
+    })();
+  });
 
   return (
     <ExtendedContentPanel
@@ -198,6 +214,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
       width="650px"
       heading={stepObject.title}
       description={stepObject.description}
+      backBtnText={stepObject.backBtnText}
     >
       <StepComponent
         key={`${stepObject.title}${step}`}

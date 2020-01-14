@@ -115,6 +115,7 @@ interface Props {
   };
   centered?: boolean;
   width?: string;
+  backBtnText?: string;
   onBack?(): void;
 }
 
@@ -130,6 +131,7 @@ export default function ExtendedContentPanel({
   children,
   className = '',
   width,
+  backBtnText,
   ...rest
 }: Props) {
   return (
@@ -138,7 +140,8 @@ export default function ExtendedContentPanel({
         <ContentPanelTop stepperOnly={stepper !== undefined && !onBack}>
           {onBack && (
             <BackButton basic={true} onClick={onBack}>
-              <img src={backArrowIcon} alt="Back arrow" /> Back
+              <img src={backArrowIcon} alt="Back arrow" />{' '}
+              {backBtnText ? `Back: ${backBtnText}` : `Back`}
             </BackButton>
           )}
           {stepper && <Stepper current={stepper.current} total={stepper.total} />}

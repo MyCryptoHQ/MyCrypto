@@ -27,13 +27,15 @@ import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 
 interface Props {
   completeButtonText: string;
+  customDetails?: JSX.Element;
 }
 
 export default function TransactionReceipt({
   txReceipt,
   txConfig,
   resetFlow,
-  completeButtonText
+  completeButtonText,
+  customDetails
 }: IStepComponentProps & Props) {
   const { getAssetRate } = useContext(RatesContext);
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
@@ -104,6 +106,12 @@ export default function TransactionReceipt({
   return (
     <div className="TransactionReceipt">
       <div className="TransactionReceipt-row">
+        <div className="TransactionReceipt-row-desc">
+          {translate('TRANSACTION_BROADCASTED_DESC')}
+        </div>
+      </div>
+      {customDetails && <div className="TransactionReceipt-row">{customDetails}</div>}
+      <div className="TransactionReceipt-row TransactionReceipt-row-from-to">
         <div className="TransactionReceipt-row-column">
           {translate('CONFIRM_TX_FROM')}
           <div className="TransactionReceipt-addressWrapper">
@@ -125,22 +133,24 @@ export default function TransactionReceipt({
           </div>
         </div>
       </div>
-      <div className="TransactionReceipt-row">
-        <div className="TransactionReceipt-row-column">
-          <img src={sentIcon} alt="Sent" />
-          {translate('CONFIRM_TX_SENT')}
-        </div>
-        <div className="TransactionReceipt-row-column">
-          <Amount
-            assetValue={`${parseFloat(assetAmount).toFixed(6)} ${assetTicker}`}
-            fiatValue={`$${convertToFiat(
-              parseFloat(assetAmount),
-              getAssetRate(assetForRateFetch)
-            ).toFixed(2)}
+      {!customDetails && (
+        <div className="TransactionReceipt-row">
+          <div className="TransactionReceipt-row-column">
+            <img src={sentIcon} alt="Sent" />
+            {translate('CONFIRM_TX_SENT')}
+          </div>
+          <div className="TransactionReceipt-row-column">
+            <Amount
+              assetValue={`${parseFloat(assetAmount).toFixed(6)} ${assetTicker}`}
+              fiatValue={`$${convertToFiat(
+                parseFloat(assetAmount),
+                getAssetRate(assetForRateFetch)
+              ).toFixed(2)}
             `}
-          />
+            />
+          </div>
         </div>
-      </div>
+      )}
       <div className="TransactionReceipt-divider" />
       <div className="TransactionReceipt-details">
         <div className="TransactionReceipt-details-row">
@@ -181,14 +191,14 @@ export default function TransactionReceipt({
           rawTransaction={txConfig.rawTransaction}
         />
       </div>
-      <Link to={ROUTE_PATHS.DASHBOARD.path}>
-        <Button className="TransactionReceipt-back">Back to Dashboard</Button>
-      </Link>
       {completeButtonText && (
         <Button secondary={true} className="TransactionReceipt-another" onClick={resetFlow}>
           {completeButtonText}
         </Button>
       )}
+      <Link to={ROUTE_PATHS.DASHBOARD.path}>
+        <Button className="TransactionReceipt-back">Back to Dashboard</Button>
+      </Link>
     </div>
   );
 }

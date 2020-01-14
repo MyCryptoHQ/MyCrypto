@@ -20,14 +20,26 @@ interface Props {
 const AddressWrapper = styled.div`
   background-color: ${SILVER};
   padding: 10px;
+
+  img {
+    max-width: fit-content;
+  }
 `;
 const Addresses = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 56px;
 
+  > div {
+    max-width: 48%;
+  }
+
   @media (max-width: ${SCREEN_XS}) {
     flex-direction: column;
+
+    > div {
+      max-width: 100%;
+    }
 
     > div:nth-child(2) {
       padding-top: 15px;

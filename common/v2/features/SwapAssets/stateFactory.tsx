@@ -2,9 +2,16 @@ import { useContext } from 'react';
 
 import translate from 'v2/translations';
 import { TUseStateReducerFactory, fromTxReceiptObj, formatErrorEmailMarkdown } from 'v2/utils';
-import { DexService, ProviderHandler, AssetContext, NetworkContext } from 'v2/services';
+import {
+  DexService,
+  ProviderHandler,
+  AssetContext,
+  NetworkContext,
+  getNetworkById
+} from 'v2/services';
 import { StoreAccount } from 'v2/types';
 import { isWeb3Wallet } from 'v2/utils/web3';
+import { DEFAULT_NETWORK } from 'v2/config';
 
 import { ISwapAsset, LAST_CHANGED_AMOUNT, SwapState } from './types';
 import {
@@ -40,17 +47,28 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
   const fetchSwapAssets = async () => {
     try {
       const assets = await DexService.instance.getTokenList();
-      if (assets.length > 1) {
-        setState((prevState: SwapState) => ({
-          ...prevState,
-          assets,
-          fromAsset: assets[0],
-          toAsset: assets[1]
-        }));
-      }
+      if (assets.length < 1) return;
+      // sort assets alphabetically
+      assets.sort((asset1: ISwapAsset, asset2: ISwapAsset) =>
+        (asset1.symbol as string).localeCompare(asset2.symbol)
+      );
+      // set fromAsset to default (ETH)
+      const network = getNetworkById(DEFAULT_NETWORK, networks);
+      const fromAsset = assets.find((x: ISwapAsset) => x.symbol === network.baseUnit);
+      const toAsset = assets[0];
+      return [assets, fromAsset, toAsset];
     } catch (e) {
       console.error(e);
     }
+  };
+
+  const setSwapAssets = (assets: ISwapAsset[], fromAsset: ISwapAsset, toAsset: ISwapAsset) => {
+    setState((prevState: SwapState) => ({
+      ...prevState,
+      assets,
+      fromAsset,
+      toAsset
+    }));
   };
 
   const handleFromAssetSelected = (fromAsset: ISwapAsset) => {
@@ -304,6 +322,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
 
   return {
     fetchSwapAssets,
+    setSwapAssets,
     handleFromAssetSelected,
     handleToAssetSelected,
     calculateNewFromAmount,
