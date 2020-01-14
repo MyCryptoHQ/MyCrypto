@@ -20,7 +20,7 @@ const main = merge.smart(electronMain, {
 });
 
 const render = merge.smart(electronRender, {
-  target: 'electron-renderer',
+  target: 'web', // 'web' generates bundle that does not use Node.js functions (require, Buffer...) which would cause error when 'nodeIntegration' is disabled. (https://webpack.js.org/configuration/target/)
 
   output: {
     path: path.join(config.path.output, 'electron-js'),
