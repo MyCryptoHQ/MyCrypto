@@ -20,7 +20,10 @@
     "<rootDir>/jest_config/__mocks__/localStorage.ts"
   ],
   "automock": false,
+<<<<<<< HEAD
   "snapshotSerializers": [],
+=======
+>>>>>>> Remove Enyzme from project
   "browser": true,
   "collectCoverage": true,
   "globals": {
