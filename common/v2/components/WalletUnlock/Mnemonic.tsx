@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { mnemonicToSeed, validateMnemonic } from 'bip39';
+import { mnemonicToSeedSync, validateMnemonic } from 'bip39';
 import { Tooltip } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'v2/translations';
@@ -146,7 +146,7 @@ class MnemonicDecryptClass extends PureComponent<OwnProps, State> {
       return;
     }
 
-    const seed = await mnemonicToSeed(formattedPhrase, pass).toString('hex');
+    const seed = await mnemonicToSeedSync(formattedPhrase, pass).toString('hex');
     this.setState({ seed });
   };
 

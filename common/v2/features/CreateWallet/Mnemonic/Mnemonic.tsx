@@ -1,6 +1,6 @@
 import React, { Component, ReactType } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { generateMnemonic, mnemonicToSeed } from 'bip39';
+import { generateMnemonic, mnemonicToSeedSync } from 'bip39';
 import { addHexPrefix, toChecksumAddress, privateToAddress } from 'ethereumjs-util';
 import HDkey from 'hdkey';
 import { uniq } from 'lodash';
@@ -124,7 +124,7 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
     const { words, path } = this.state;
 
     const phrase = words.join(' ').trim();
-    const seed = mnemonicToSeed(phrase);
+    const seed = mnemonicToSeedSync(phrase);
     const derived = HDkey.fromMasterSeed(seed).derive(path);
     const privateKey = derived.privateKey;
     const address = privateToAddress(privateKey).toString('hex');
