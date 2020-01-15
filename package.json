@@ -123,7 +123,7 @@
     "@types/semver": "6.2.0",
     "@types/styled-components": "4.0.3",
     "@types/webpack-env": "1.15.0",
-    "@types/yup": "0.26.26",
+    "@types/yup": "0.26.27",
     "@types/zxcvbn": "4.4.0",
     "aws-sdk": "2.603.0",
     "babel-loader": "8.0.6",
