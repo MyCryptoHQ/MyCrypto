@@ -134,7 +134,7 @@
     "copy-webpack-plugin": "5.1.0",
     "coveralls": "3.0.9",
     "cross-env": "6.0.3",
-    "css-loader": "3.3.0",
+    "css-loader": "3.4.2",
     "electron": "7.1.9",
     "electron-builder": "22.2.0",
     "empty": "0.10.1",
