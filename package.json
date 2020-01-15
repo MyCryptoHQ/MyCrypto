@@ -108,7 +108,7 @@
     "@types/node-hid": "0.7.3",
     "@types/qrcode": "0.8.0",
     "@types/query-string": "5.1.0",
-    "@types/ramda": "0.26.35",
+    "@types/ramda": "0.26.39",
     "@types/rc-slider": "8.6.5",
     "@types/react": "16.9.17",
     "@types/react-copy-to-clipboard": "4.3.0",
