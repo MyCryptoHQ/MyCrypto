@@ -219,6 +219,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     const network = Object.assign({}, state.network);
     network.contracts.unshift(uuid);
     updateNetwork(network.id, network);
+    // TODO: This still fails due to LS bugs
     updateNetworkContractOptions();
     handleContractSelected(newContract);
   };
