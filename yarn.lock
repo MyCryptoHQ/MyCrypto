@@ -1757,10 +1757,15 @@
   dependencies:
     "@types/node" "*"
 
-"@types/history@*", "@types/history@4.7.3":
+"@types/history@*":
   version "4.7.3"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.3.tgz#856c99cdc1551d22c22b18b5402719affec9839a"
   integrity sha512-cS5owqtwzLN5kY+l+KgKdRJ/Cee8tlmQoGQuIE9tWnSmS3JMKzmxo2HIAk2wODMifGwO20d62xZQLYz+RLfXmw==
+
+"@types/history@4.7.4":
+  version "4.7.4"
+  resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.4.tgz#06cbceb0ace6a342a9aafcb655a688cf38f6150d"
+  integrity sha512-+o2igcuZA3xtOoFH56s+MCZVidwlJNcJID57DSCyawS2i910yG9vkwehCjJNZ6ImhCR5S9DbvIJKyYHcMyOfMw==
 
 "@types/hoist-non-react-statics@^3.3.0":
   version "3.3.1"
