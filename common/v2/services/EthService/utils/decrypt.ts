@@ -1,4 +1,4 @@
-import { mnemonicToSeed, validateMnemonic } from 'bip39';
+import { mnemonicToSeedSync, validateMnemonic } from 'bip39';
 import { createDecipheriv, createHash } from 'crypto';
 import { privateToAddress } from 'ethereumjs-util';
 import HDkey from 'hdkey';
@@ -83,7 +83,7 @@ export function decryptMnemonicToPrivKey(
     throw new Error('Invalid mnemonic');
   }
 
-  const seed = mnemonicToSeed(phrase, pass);
+  const seed = mnemonicToSeedSync(phrase, pass);
   const derived = HDkey.fromMasterSeed(seed).derive(path);
   const dPrivKey = derived.privateKey;
   const dAddress = privateToAddress(dPrivKey).toString('hex');
