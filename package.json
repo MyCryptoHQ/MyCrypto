@@ -178,7 +178,6 @@
     "worker-loader": "2.0.0"
   },
   "resolutions": {
-    "@types/react": "16.3.11"
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config webpack_config/production.js",
