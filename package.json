@@ -16,7 +16,7 @@
     "@ledgerhq/hw-transport-node-hid-noevents": "4.48.0",
     "@ledgerhq/hw-transport-u2f": "4.46.0",
     "@mycrypto/eth-scan": "1.1.0",
-    "@mycrypto/ui": "0.20.3",
+    "@mycrypto/ui": "0.21.1",
     "@parity/qr-signer": "0.3.1",
     "axios": "0.18.1",
     "bip39": "2.5.0",
