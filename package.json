@@ -124,7 +124,6 @@
     "@types/webpack-env": "1.15.0",
     "@types/yup": "0.26.27",
     "@types/zxcvbn": "4.4.0",
-    "aws-sdk": "2.603.0",
     "babel-loader": "8.0.6",
     "babel-plugin-styled-components": "1.10.6",
     "check-node-version": "4.0.2",
