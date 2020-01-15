@@ -122,7 +122,7 @@
     "@types/recharts": "1.8.3",
     "@types/semver": "6.2.0",
     "@types/styled-components": "4.0.3",
-    "@types/webpack-env": "1.14.1",
+    "@types/webpack-env": "1.15.0",
     "@types/yup": "0.26.26",
     "@types/zxcvbn": "4.4.0",
     "aws-sdk": "2.603.0",
