@@ -1897,12 +1897,12 @@
   resolved "https://registry.yarnpkg.com/@types/query-string/-/query-string-5.1.0.tgz#7f40cdea49ddafa0ea4f3db35fb6c24d3bfd4dcc"
   integrity sha512-9/sJK+T04pNq7uwReR0CLxqXj1dhxiTapZ1tIxA0trEsT6FRS0bz09YMcMb7tsVBTm4RJ0NEBYGsAjoEmqoFXg==
 
-"@types/ramda@0.26.35":
-  version "0.26.35"
-  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.26.35.tgz#7f047d5a4fc55470f9fa32876dc066fb7a2c7266"
-  integrity sha512-vbzC2BzFn8hE80JG11O0QLoruvtqRIMB7eRpsfMI3pJk6p9zgGi+FEs49m/xvHW1IgibnhEUo8g6rBo0U/xZJg==
+"@types/ramda@0.26.39":
+  version "0.26.39"
+  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.26.39.tgz#bb392cdb4d431cf6884b3ef11bef635c5d20274f"
+  integrity sha512-3bu32X02VpjJhsYPUWkdOQGoBXjb/UveZgGg4IYMm+SPAXio96BOYrRhVELfM4AoP00sxoi/f2tqrXdwtR4jjg==
   dependencies:
-    ts-toolbelt "^4.10.7"
+    ts-toolbelt "^4.12.0"
 
 "@types/rc-slider@8.6.5":
   version "8.6.5"
@@ -13699,10 +13699,10 @@ ts-jest@24.3.0:
     semver "^5.5"
     yargs-parser "10.x"
 
-ts-toolbelt@^4.10.7:
-  version "4.13.5"
-  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-4.13.5.tgz#0d05d77a37a53d871502a44967e472ba1550a9c3"
-  integrity sha512-qe2/3hXY+wyKTt4Pge/YKkoOED2UiKbHgZgEb3jkS3KBJVyVWMNyb90Kzp7C3KFWcc+QkeifNO7MRwXWhNW+Mw==
+ts-toolbelt@^4.12.0:
+  version "4.14.6"
+  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-4.14.6.tgz#9a232f62276caeee4fa9e81e0c4bffa047de0765"
+  integrity sha512-SONcnRd93+LuYGfn/CZg5A5qhCODohZslAVZKHHu5bnwUxoXLqd2k2VIdwRUXYfKnY+UCeNbI2pTPz+Dno6Mpg==
 
 tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
   version "1.10.0"
