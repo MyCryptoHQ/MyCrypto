@@ -2,6 +2,9 @@ import '@babel/polyfill';
 import { app } from 'electron';
 import { registerServer } from 'shared/enclave/server';
 import getWindow from './window';
+import { registerProtocol } from 'shared/enclave/preload';
+
+registerProtocol(); // Needs be called before 'ready' event is emitted
 
 // Quit application when all windows are closed
 app.on('window-all-closed', () => {
@@ -20,7 +23,7 @@ app.on('activate', () => {
 
 // Create main BrowserWindow when electron is ready
 app.on('ready', () => {
-  getWindow();
+  getWindow().webContents.openDevTools();
 });
 
 // Register enclave protocol

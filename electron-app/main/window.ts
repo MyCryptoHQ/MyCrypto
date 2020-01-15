@@ -1,6 +1,5 @@
 import { BrowserWindow, Menu, shell } from 'electron';
 import { URL } from 'url';
-import path from 'path';
 import MENU from './menu';
 import popupContextMenu from './contextMenu';
 import { APP_TITLE } from '../constants';
@@ -26,7 +25,6 @@ export default function getWindow() {
     titleBarStyle: 'hidden',
     webPreferences: {
       devTools: true,
-      preload: path.join(__dirname, 'preload.js'),
 
       // For security reasons the following params should not be modified
       // https://electronjs.org/docs/tutorial/security#isolation-for-untrusted-content

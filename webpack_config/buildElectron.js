@@ -24,11 +24,6 @@ async function build() {
     path.join(jsBuildDir, 'main.js')
   );
 
-  fs.copyFileSync(
-    path.join(mainBuildDir, 'preload.js'),
-    path.join(jsBuildDir, 'preload.js')
-  );
-
   // Builder requires package.json be in the app directory, so copy it in
   fs.copyFileSync(
     path.join(config.path.root, 'package.json'),
