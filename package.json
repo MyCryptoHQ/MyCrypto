@@ -11,7 +11,7 @@
     "yarn": ">= 1.19.1"
   },
   "dependencies": {
-    "@hot-loader/react-dom": "16.8.6",
+    "@hot-loader/react-dom": "16.11.0",
     "@ledgerhq/hw-app-eth": "4.48.0",
     "@ledgerhq/hw-transport-node-hid-noevents": "4.48.0",
     "@ledgerhq/hw-transport-u2f": "4.46.0",
