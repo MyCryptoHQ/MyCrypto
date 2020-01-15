@@ -1067,7 +1067,7 @@
     "address": "0x1F573D6Fb3F13d689FF844B4cE37794d79a7FF1C",
     "symbol": "BNT",
     "decimal": 18,
-    "name": "Bancor",
+    "name": "Bancor Network Token",
     "uuid": "778541d2-65e6-5c57-b083-aa3129eb91c8"
   },
   {
@@ -3213,6 +3213,13 @@
     "uuid": "f69e3a98-2fb8-5448-b65a-878d3af4f8e3"
   },
   {
+    "address": "0xb1CD6e4153B2a390Cf00A6556b0fC1458C4A5533",
+    "symbol": "ETHBNT",
+    "decimal": 18,
+    "name": "Bancor ETH/BNT Liquidity Pool",
+    "uuid": "fb02de36-b41b-52c9-85c5-3c13580848db"
+  },
+  {
     "address": "0xdbFb423E9bBF16294388e07696A5120E4CeBA0C5",
     "symbol": "ETHD",
     "decimal": 18,
@@ -4261,6 +4268,13 @@
     "decimal": 18,
     "name": "HeroNode",
     "uuid": "ec9a8d15-6545-5ac5-a73c-e4763e0b239f"
+  },
+  {
+    "address": "0x96006F60B452526481a26eab55265ECdf82E7361",
+    "symbol": "HEX",
+    "decimal": 18,
+    "name": "HollaEx",
+    "uuid": "b80908dd-0550-57a2-b4ac-98549a391919"
   },
   {
     "address": "0xe9C9e7E1DaBea830C958C39D6b25964a6F52143A",
@@ -6006,6 +6020,13 @@
     "uuid": "d14dc620-27b4-54a2-8d03-8a3fbaef6d73"
   },
   {
+    "address": "0x5Cf04716BA20127F1E2297AdDCf4B5035000c9eb",
+    "symbol": "NKN",
+    "decimal": 18,
+    "name": "NKN",
+    "uuid": "fd6d2243-b89d-586c-b5b0-da93544d9ea4"
+  },
+  {
     "address": "0xCeE4019Fd41ECDc8bae9EFDd20510f4b6FAA6197",
     "symbol": "NLYA",
     "decimal": 18,
@@ -7630,6 +7651,13 @@
     "uuid": "145f98b8-58e1-5687-bcb8-96c9cf61e4f6"
   },
   {
+    "address": "0xed0849BF46CfB9845a2d900A0A4E593F2dD3673c",
+    "symbol": "SGA",
+    "decimal": 18,
+    "name": "SGA Token",
+    "uuid": "a260b72d-1b44-57be-a3b3-b550f9ee4cc2"
+  },
+  {
     "address": "0xa1ccc166faf0E998b3E33225A1A0301B1C86119D",
     "symbol": "SGEL",
     "decimal": 18,
@@ -8638,6 +8666,13 @@
     "uuid": "f3ba06cb-721b-5304-ae74-2f7667b0cf78"
   },
   {
+    "address": "0x679131F591B4f369acB8cd8c51E68596806c3916",
+    "symbol": "TLN",
+    "decimal": 18,
+    "name": "Trustlines Network Token",
+    "uuid": "ac045880-5da9-50bf-8da8-9fdc1cf27b19"
+  },
+  {
     "address": "0xb3616550aBc8AF79c7A5902DEF9Efa3bC9A95200",
     "symbol": "TLX",
     "decimal": 8,
@@ -9576,6 +9611,20 @@
     "uuid": "8af0b8ee-1d32-5514-903c-09973c4bc97f"
   },
   {
+    "address": "0x7C5Cf2f624182D6b019470c7cffF8Ad27AAB51A8",
+    "symbol": "xDOT",
+    "decimal": 18,
+    "name": "Polkadot DOT Futures",
+    "uuid": "08631a0a-c9f1-5c49-a8f3-7f6c1ac244f5"
+  },
+  {
+    "address": "0xf75AAcB3c9ab1b14c01C8840370aC2F2B34779D3",
+    "symbol": "xEDG",
+    "decimal": 18,
+    "name": "Edgeware EDG Futures",
+    "uuid": "98d6c258-4b47-5db4-9116-fd203ad80513"
+  },
+  {
     "address": "0xA017ac5faC5941f95010b12570B812C974469c2C",
     "symbol": "XES",
     "decimal": 18,
@@ -9611,6 +9660,13 @@
     "uuid": "624e8e81-d66c-5829-b422-da46b9affce6"
   },
   {
+    "address": "0xD85DAf0C8B54D8BCEc96cfB90731B8851f98572E",
+    "symbol": "xGRAM",
+    "decimal": 18,
+    "name": "Telegram TON GRAM Futures",
+    "uuid": "ace4dcc3-e16f-522d-b66a-a56358a3251a"
+  },
+  {
     "address": "0x30f4A3e0aB7a76733D8b60b89DD93c3D0b4c9E2f",
     "symbol": "XGT",
     "decimal": 18,
@@ -9618,11 +9674,39 @@
     "uuid": "df23d7b4-1a7a-5baf-9514-263f16e5b7fd"
   },
   {
+    "address": "0x147c9130C5809367c5f2da7be0D6355D2795B081",
+    "symbol": "xHNS",
+    "decimal": 18,
+    "name": "Handshake HNS Futures",
+    "uuid": "da41fe2d-ff3e-5b9a-8437-019add450fe5"
+  },
+  {
+    "address": "0xD3c625F54dec647DB8780dBBe0E880eF21BA4329",
+    "symbol": "XHT",
+    "decimal": 18,
+    "name": "HollaEx",
+    "uuid": "60a1419f-14df-5975-ab8f-c65e3d13c843"
+  },
+  {
     "address": "0xB110eC7B1dcb8FAB8dEDbf28f53Bc63eA5BEdd84",
     "symbol": "XID",
     "decimal": 8,
     "name": "Sphere Identity",
     "uuid": "1cfaa8e9-82c2-560e-a342-bc364abafbd8"
+  },
+  {
+    "address": "0xfb96a8d7F1D7e1D7bce03903E49f45b123501e26",
+    "symbol": "xKDA",
+    "decimal": 18,
+    "name": "Kadena KDA Futures",
+    "uuid": "244bb04c-97aa-5e21-a0a2-84dd5ca1ac29"
+  },
+  {
+    "address": "0x2DdF7E8f8e406acC999c8827092d154B67CD41fA",
+    "symbol": "xKLAY",
+    "decimal": 18,
+    "name": "Klaytn KLAY Futures",
+    "uuid": "ad3bd54e-c895-5279-b9e9-8141d7f373a8"
   },
   {
     "address": "0x1d086b868d78040635CB8600bA733f12DB48cB42",
@@ -9637,6 +9721,13 @@
     "decimal": 18,
     "name": "XMED Chain",
     "uuid": "06aac312-0aae-5478-820c-1a274f88d5a1"
+  },
+  {
+    "address": "0xbd7D6a2183335eA25af2AF22c1F169FB0f6395f7",
+    "symbol": "xMOBILECOIN",
+    "decimal": 18,
+    "name": "MobileCoin MOBILECOIN Futures",
+    "uuid": "d9d661f5-0561-5e9d-987c-a27d5f9731f8"
   },
   {
     "address": "0x0f8c45B896784A1E408526B9300519ef8660209c",
@@ -9667,11 +9758,25 @@
     "uuid": "ccfcf5ac-67e3-57f2-aed8-35ec248c341f"
   },
   {
+    "address": "0x46F6Df27e472Ec0c949b8D3359A2814e89E290A6",
+    "symbol": "xNU",
+    "decimal": 18,
+    "name": "NuCypher NU Futures",
+    "uuid": "637a552c-ad07-5eea-bc1a-89ec50d85808"
+  },
+  {
     "address": "0x153eD9CC1b792979d2Bde0BBF45CC2A7e436a5F9",
     "symbol": "XOV",
     "decimal": 18,
     "name": "XOVBank",
     "uuid": "f0ec5261-72b1-5998-93c3-0023a5f7f352"
+  },
+  {
+    "address": "0x744eC1d45545DcEBb45fAa142Fa9E1B9D86d4527",
+    "symbol": "xOXT",
+    "decimal": 18,
+    "name": "Orchid OXT Futures",
+    "uuid": "b521371f-4b2a-564d-9083-3c714c723d73"
   },
   {
     "address": "0x90528aeb3a2B736B780fD1B6C478bB7E1d643170",
@@ -9695,6 +9800,13 @@
     "uuid": "fd9fe535-7b02-5af0-9b23-f6ebd9a79f48"
   },
   {
+    "address": "0x08Aa0ed0040736dd28d4c8B16Ab453b368248d19",
+    "symbol": "XPT",
+    "decimal": 18,
+    "name": "Cryptobuyer Token",
+    "uuid": "c1d86494-6048-5cb9-8e1c-3b65892fb240"
+  },
+  {
     "address": "0xB24754bE79281553dc1adC160ddF5Cd9b74361a4",
     "symbol": "XRL",
     "decimal": 9,
@@ -9707,6 +9819,13 @@
     "decimal": 18,
     "name": "XSC",
     "uuid": "9b616c0e-3cc7-5138-989f-79b75aa4033c"
+  },
+  {
+    "address": "0x22c421BA4717EDaF6b6BDA424207A7335e8f0e52",
+    "symbol": "xSOL",
+    "decimal": 18,
+    "name": "Solana SOL Futures",
+    "uuid": "e34a5db8-e9ec-5d7e-a69c-03bea35fe6f1"
   },
   {
     "address": "0x55296f69f40Ea6d20E478533C15A6B08B654E758",
