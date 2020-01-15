@@ -5821,9 +5821,9 @@ ethereum-blockies-base64@^1.0.2:
   dependencies:
     pnglib "0.0.1"
 
-"ethereumjs-abi@git://github.com/ethereumjs/ethereumjs-abi.git#09c3c48fd3bed143df7fa8f36f6f164205e23796":
+ethereumjs-abi@ethereumjs/ethereumjs-abi#09c3c48:
   version "0.6.5"
-  resolved "git://github.com/ethereumjs/ethereumjs-abi.git#09c3c48fd3bed143df7fa8f36f6f164205e23796"
+  resolved "https://codeload.github.com/ethereumjs/ethereumjs-abi/tar.gz/09c3c48fd3bed143df7fa8f36f6f164205e23796"
   dependencies:
     bn.js "^4.10.0"
     ethereumjs-util "^5.0.0"
