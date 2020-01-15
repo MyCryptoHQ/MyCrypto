@@ -15,11 +15,12 @@
     "\\.(css|scss)$": "<rootDir>/jest_config/__mocks__/styleMock.ts",
     "\\.worker.(ts|tsx)": "<rootDir>/jest_config/__mocks__/workerMock.js"
   },
-  "testPathIgnorePatterns": ["node_modules", "dist"],
+  "testPathIgnorePatterns": [ "node_modules",  "dist" ],
   "coveragePathIgnorePatterns": ["node_modules", "components", "containers", "vendor", "spec"],
   "setupFiles": [
     "<rootDir>/jest_config/setupJest.js",
-    "<rootDir>/jest_config/__mocks__/localStorage.ts"
+    "<rootDir>/jest_config/__mocks__/localStorage.ts",
+    "jest-canvas-mock"
   ],
   "automock": false,
 <<<<<<< HEAD
