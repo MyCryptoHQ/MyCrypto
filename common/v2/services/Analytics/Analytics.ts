@@ -28,7 +28,7 @@ export default class AnalyticsService {
     }
   }
 
-  public trackPageVisit(pageUrl: string, network: string): Promise<any> {
+  public trackPageVisit(pageUrl: string, pathHash: string, network: string): Promise<any> {
     const customParamsView: Params = {
       local: isDevelopment().toString()
     };
@@ -41,9 +41,12 @@ export default class AnalyticsService {
 
     const analyticsId = isDesktop() ? ANALYTICS_ID_DESKTOP : ANALYTICS_ID_SITE;
 
+    const desktopString = 'https://desktop.app';
+    const url = isDesktop() ? desktopString + pathHash.substr(1) : pageUrl;
+
     const params = {
       action_name: 'Page navigation',
-      url: pageUrl,
+      url,
       idsite: analyticsId,
       rec: ANALYTICS_REC,
       _cvar: JSON.stringify(this.mapParamsToCvars(customParamsVisit)),
