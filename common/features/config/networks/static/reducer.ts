@@ -179,9 +179,9 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     isCustom: false,
     color: '#669073',
     blockExplorer: makeExplorer({
-      name: 'GasTracker',
-      origin: 'https://gastracker.io',
-      addressPath: 'addr'
+      name: 'BlockScout',
+      origin: 'https://blockscout.com/etc/mainnet',
+      addressPath: 'address'
     }),
     tokens: require('config/tokens/etc.json'),
     contracts: require('config/contracts/etc.json'),
