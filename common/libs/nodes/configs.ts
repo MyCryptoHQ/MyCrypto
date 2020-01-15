@@ -196,8 +196,8 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     {
       name: makeNodeName('ELLA', 'ellaism'),
       type: 'rpc',
-      service: 'ellaism.io',
-      url: 'https://jsonrpc.ellaism.io'
+      service: 'ellaism.org',
+      url: 'https://jsonrpc.ellaism.org'
     }
   ],
 

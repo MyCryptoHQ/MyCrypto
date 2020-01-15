@@ -309,7 +309,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     color: '#046111',
     blockExplorer: makeExplorer({
       name: 'Ellaism Explorer',
-      origin: 'https://explorer.ellaism.io'
+      origin: 'https://explorer.ellaism.org'
     }),
     tokens: require('config/tokens/ella.json'),
     contracts: [],
