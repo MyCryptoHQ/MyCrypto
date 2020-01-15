@@ -11,7 +11,6 @@ module.exports = {
 
   entry: {
     main: path.join(config.path.electron, 'main/index.ts'),
-    preload: path.join(config.path.electron, 'preload/index.ts')
   },
 
   output: {
