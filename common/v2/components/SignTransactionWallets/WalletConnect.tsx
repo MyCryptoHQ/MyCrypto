@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import translate, { translateRaw } from 'v2/translations';
 
+import translate, { translateRaw } from 'v2/translations';
 import { WalletConnectQr, Button, Spinner } from 'v2/components';
-//import { WalletFactory } from 'v2/services/WalletService';
 import { WalletId, ISignComponentProps } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
 import WalletConnectItem from 'v2/services/WalletService/walletconnect/walletConnect';
@@ -22,7 +21,6 @@ enum WalletSigningState {
 
 export type WalletConnectQrContent = WalletConnectAddress;
 
-//const WalletService = WalletFactory(WalletId.WALLETCONNECT);
 const wikiLink = WALLETS_CONFIG[WalletId.WALLETCONNECT].helpLink!;
 
 export function SignTransactionWalletConnect({
@@ -92,7 +90,6 @@ export function SignTransactionWalletConnect({
         {translate('SIGNER_SELECT_WALLETCONNECT', { $walletId: translateRaw('X_WALLETCONNECT') })}
       </div>
       <div className="WalletConnect">
-        {/* <div className="WalletConnect-title">{translate('SIGNER_SELECT_WALLET')}</div> */}
         <section className="WalletConnect-fields">
           {walletSigningState === WalletSigningState.READY && (
             <>
