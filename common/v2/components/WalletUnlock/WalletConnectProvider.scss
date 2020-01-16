@@ -26,8 +26,7 @@
       align-items: center;
       justify-content: center;
       flex: 1;
-      margin-top: calc(1rem + 15px);
-      margin-bottom: calc(1rem + 15px);
+      margin-top: 15px;
 
       & .AddressField {
         width: 100%;
@@ -42,5 +41,8 @@
     font-family: Lato;
     font-size: 32px;
     font-weight: bold;
+  }
+  &-wiki-link {
+    margin-top: 15px;
   }
 }

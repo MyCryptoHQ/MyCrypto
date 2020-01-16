@@ -1,15 +1,14 @@
 import React, { useContext, useState } from 'react';
-import translate, { translateRaw } from 'v2/translations';
 
-import { notificationsActions } from 'v2/features/NotificationsPanel';
+import translate, { translateRaw } from 'v2/translations';
+import { NetworkContext, isValidAddress } from 'v2/services';
 import { WalletConnectQr } from 'v2/components';
-import { WalletFactory } from 'v2/services/WalletService';
-import { isValidAddress } from 'v2/services/EthService';
 import { WalletId, FormData } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
+import { notificationsActions } from 'v2/features/NotificationsPanel';
+import { WalletFactory } from 'v2/services/WalletService';
 
-import './WalletConnect.scss';
-import { NetworkContext } from 'v2/services';
+import './WalletConnectProvider.scss';
 
 interface OwnProps {
   formData: FormData;
@@ -60,7 +59,11 @@ export function WalletConnectDecrypt({ formData, onUnlock }: OwnProps & StatePro
             <WalletConnectQr scan={true} onScan={unlockAddress} />
           </section>
         </section>
-        {wikiLink && <p>{translate('ADD_WALLETCONNECT_LINK', { $wiki_link: wikiLink })}</p>}
+        {wikiLink && (
+          <p className="WalletConnect-wiki-link">
+            {translate('ADD_WALLETCONNECT_LINK', { $wiki_link: wikiLink })}
+          </p>
+        )}
       </div>
     </div>
   );
