@@ -29,12 +29,22 @@
     margin: 0 1em;
     text-overflow: ellipsis;
 
+    &-error {
+      margin-top: 15px;
+      padding-left: 8px;
+      padding-right: 8px;
+      line-height: 21px;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+    }
+
     &-status {
       margin: 0 1em;
     };
 
     &-spinner {
-      margin-top: calc(1rem + 15px);
+      margin-top: 15px;
     }
 
     &-field {
@@ -43,10 +53,10 @@
       align-items: center;
       justify-content: center;
       flex: 1;
+      margin-top: 15px;
 
       &-margin {
-        margin-top: calc(1rem + 15px);
-        margin-bottom: calc(1rem + 15px);
+        margin-bottom: 15px;
         font-size: 1.2rem;
       }
 
@@ -63,6 +73,9 @@
     font-family: Lato;
     font-size: 32px;
     font-weight: bold;
+  }
+  &-wiki-link {
+    margin-top: 15px;
   }
 }
 

@@ -5,8 +5,8 @@ import { WalletConnectQr, Button, Spinner } from 'v2/components';
 import { WalletId, ISignComponentProps } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
 import WalletConnectItem from 'v2/services/WalletService/walletconnect/walletConnect';
-import { InlineErrorMsg } from '../ErrorMessages';
 
+import { InlineErrorMsg } from '../ErrorMessages';
 import './WalletConnect.scss';
 
 interface WalletConnectAddress {
@@ -89,6 +89,13 @@ export function SignTransactionWalletConnect({
       <div className="Panel-title">
         {translate('SIGNER_SELECT_WALLETCONNECT', { $walletId: translateRaw('X_WALLETCONNECT') })}
       </div>
+      {walletSigningState !== WalletSigningState.READY && !isCorrectAddress && !isCorrectNetwork && (
+        <section className="Panel-description">
+          {translate('SIGNER_SELECT_WALLET_QR', {
+            $walletId: translateRaw('X_WALLETCONNECT')
+          })}
+        </section>
+      )}
       <div className="WalletConnect">
         <section className="WalletConnect-fields">
           {walletSigningState === WalletSigningState.READY && (
@@ -98,16 +105,16 @@ export function SignTransactionWalletConnect({
                   $address: detectedAddress
                 })}
               </div>
-              <div className="WalletConnect-fields">
-                {signingError !== '' && (
+              {signingError !== '' && (
+                <div className="WalletConnect-fields-error">
                   <InlineErrorMsg>
                     {translate('SIGN_TX_WALLETCONNECT_REJECTED', {
                       $walletName: translateRaw('X_WALLETCONNECT'),
                       $address: senderAccount.address
                     })}
                   </InlineErrorMsg>
-                )}
-              </div>
+                </div>
+              )}
               {isPendingTx && (
                 <div className="WalletConnect-fields-spinner">
                   <Spinner />
@@ -144,7 +151,7 @@ export function SignTransactionWalletConnect({
                   : translateRaw('SIGN_TX_WALLETCONNECT_SHOW_QR')}
               </Button>
               {displaySignReadyQR && (
-                <section className="WalletConnect-fields-field-margin">
+                <section className="WalletConnect-fields-field">
                   <WalletConnectQr scan={true} onScan={detectAddress} />
                 </section>
               )}
@@ -152,18 +159,15 @@ export function SignTransactionWalletConnect({
           )}
         </section>
         {!(walletSigningState === WalletSigningState.READY) && (
-          <>
-            <section className="Panel-description">
-              {translate('SIGNER_SELECT_WALLET_QR', {
-                $walletId: translateRaw('X_WALLETCONNECT')
-              })}
-            </section>
-            <section className="WalletConnect-fields-field">
-              <WalletConnectQr scan={true} onScan={detectAddress} />
-            </section>
-          </>
+          <section className="WalletConnect-fields-field">
+            <WalletConnectQr scan={true} onScan={detectAddress} />
+          </section>
         )}
-        {wikiLink && <p>{translate('ADD_WALLETCONNECT_LINK', { $wiki_link: wikiLink })}</p>}
+        {wikiLink && (
+          <p className="WalletConnect-wiki-link">
+            {translate('ADD_WALLETCONNECT_LINK', { $wiki_link: wikiLink })}
+          </p>
+        )}
       </div>
     </div>
   );
