@@ -163,6 +163,7 @@
     "sass-extract-loader": "1.1.0",
     "sass-loader": "8.0.2",
     "style-loader": "1.1.2",
+    "ts-jest": "24.3.0",
     "tslint": "5.20.1",
     "tslint-config-prettier": "1.18.0",
     "tslint-microsoft-contrib": "6.2.0",
