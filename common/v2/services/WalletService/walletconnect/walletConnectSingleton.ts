@@ -2,7 +2,7 @@ import WalletConnect from '@walletconnect/browser';
 
 export const walletConnectBridgeURI = 'https://bridge.walletconnect.org';
 
-// Singleton that handles the WalletConnect session singleton
+// Singleton that handles the WalletConnect session
 export class WalletConnectSingleton {
   public static async getWalletConnectSession(): Promise<WalletConnect> {
     // If there is no current active bridge, create one
@@ -20,11 +20,11 @@ export class WalletConnectSingleton {
   }
 
   // This method allows us to do back-to-back AddAccount flow walkthroughs.
-  // This is meant to simulate how other wallets work.
+  // This is meant to simulate how other wallets work, allowing us to refresh the WalletConnectSession
   public static async refreshWalletConnectSession(): Promise<WalletConnect> {
     // If a session exists, kill it
     if (this.instance.session) {
-      this.instance.killSession();
+      await this.instance.killSession();
     }
     // Start a new session
     this.instance = new WalletConnect({

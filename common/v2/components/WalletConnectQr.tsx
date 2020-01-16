@@ -5,70 +5,86 @@ import { WalletConnectQrContent } from './WalletUnlock/WalletConnectProvider';
 import QRCode from './QRCode';
 import Spinner from './Spinner';
 import WalletConnectItem from 'v2/services/WalletService/walletconnect/walletConnect';
+import WalletConnect from '@walletconnect/browser';
 
 interface ScanProps {
   scan: true;
   onScan(data: WalletConnectQrContent): void;
 }
 
-export const WalletConnectQr = ({ onScan }: ScanProps) => {
-  const [walletConnectWallet] = useState(new WalletConnectItem());
+enum WalletSigningState {
+  READY, // use when walletConnect session is created
+  NOT_READY, // use when walletConnect session needs to be created
+  UNKNOWN // used upon component initialization when walletconnect status is not determined
+}
 
+export const WalletConnectQr = ({ onScan }: ScanProps) => {
+  const [walletSigningState, setWalletSigningState] = useState(WalletSigningState.UNKNOWN);
+  const [walletConnectWallet, setWalletConnectWallet] = useState(new WalletConnectItem());
   const [walletConnectSession, setWalletConnectSession] = useState(
-    walletConnectWallet.getWalletConnector()
+    undefined as undefined | WalletConnect
   );
 
-  const [isInitialized, setIsInitialized] = useState(walletConnectSession ? true : false);
-
+  // If the setup hasn't been initialized, but a WalletConnect session already exists kill it.
   useEffect(() => {
-    if (isInitialized) {
+    if (walletSigningState !== WalletSigningState.UNKNOWN) {
       return;
     }
-    if (walletConnectSession) {
-      walletConnectWallet.killSession();
-      setIsInitialized(true);
-    } else {
-      setIsInitialized(true);
-    }
-  });
-
-  useEffect(() => {
-    if (walletConnectSession || !isInitialized) {
-      return;
-    }
-    setTimeout(() => {
-      setWalletConnectSession(walletConnectWallet.getWalletConnector());
-    }, 500);
-  });
-
-  const walletConnectorURI =
-    walletConnectSession && walletConnectWallet.getWalletConnector()
-      ? walletConnectWallet.getWalletConnectorUri()
-      : undefined;
-
-  if (walletConnectSession && isInitialized) {
-    // Fetch walletConnector webhook and start watching for connection requests
-    const walletConnector = walletConnectWallet.getWalletConnector();
-    if (walletConnector) {
-      walletConnector.on('connect', (error, payload) => {
-        if (error) {
-          throw error;
-        }
-        // Determine provided accounts and chainId
-        const { accounts, chainId } = payload.params[0];
-        // Only add the first-listed account
-        setWalletConnectSession(undefined);
-        walletConnectWallet.killSession();
-
-        onScan({ address: accounts[0], chainId });
+    // DETECT IF WALLETCONNECT SESSION EXISTS
+    if (window.localStorage.getItem('walletconnect') || walletConnectSession) {
+      walletConnectWallet.killSession().then(() => {
+        setWalletSigningState(WalletSigningState.NOT_READY);
       });
+    } else {
+      setWalletSigningState(WalletSigningState.NOT_READY);
     }
+  });
+
+  // If a WalletConnect session already exist, or setup isnt initialized, exit.
+  // Otherwise, generate a new session.
+  useEffect(() => {
+    if (walletSigningState !== WalletSigningState.NOT_READY || walletConnectSession) {
+      return;
+    }
+    const walletConnectSessionInterval = setInterval(() => {
+      setWalletConnectWallet(new WalletConnectItem());
+      const walletConnector = walletConnectWallet.getWalletConnector();
+      if (!walletConnector) return;
+      setWalletConnectSession(walletConnector);
+    }, 250);
+    return () => clearInterval(walletConnectSessionInterval);
+  });
+
+  // Set WalletSigningState to ready if walletConnectSession exists. This renders qr code.
+  useEffect(() => {
+    if (!walletConnectSession) return;
+    setWalletSigningState(WalletSigningState.READY);
+  }, [walletConnectSession]);
+
+  if (walletConnectSession && walletSigningState === WalletSigningState.READY) {
+    walletConnectSession.on('connect', (error, payload) => {
+      if (error) {
+        throw error;
+      }
+      // Determine provided accounts and chainId
+      const { accounts, chainId } = payload.params[0];
+      onScan({ address: accounts[0], chainId });
+    });
+
+    walletConnectSession.on('session_update', (error, payload) => {
+      if (error) {
+        throw error;
+      }
+      // Determine provided accounts and chainId
+      const { accounts, chainId } = payload.params[0];
+      onScan({ address: accounts[0], chainId });
+    });
   }
 
   return (
     <div>
-      {walletConnectSession && isInitialized && walletConnectorURI ? (
-        <QRCode data={walletConnectorURI} />
+      {walletSigningState === WalletSigningState.READY && walletConnectSession ? (
+        <QRCode data={walletConnectSession.uri} />
       ) : (
         <Spinner />
       )}

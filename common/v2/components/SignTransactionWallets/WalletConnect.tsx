@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import translate, { translateRaw } from 'v2/translations';
 
-import { WalletConnectSignQr, Button, Spinner } from 'v2/components';
+import { WalletConnectQr, Button, Spinner } from 'v2/components';
 //import { WalletFactory } from 'v2/services/WalletService';
 import { WalletId, ISignComponentProps } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
@@ -148,7 +148,7 @@ export function SignTransactionWalletConnect({
               </Button>
               {displaySignReadyQR && (
                 <section className="WalletConnect-fields-field-margin">
-                  <WalletConnectSignQr scan={true} onScan={detectAddress} />
+                  <WalletConnectQr scan={true} onScan={detectAddress} />
                 </section>
               )}
             </div>
@@ -162,7 +162,7 @@ export function SignTransactionWalletConnect({
               })}
             </section>
             <section className="WalletConnect-fields-field">
-              <WalletConnectSignQr scan={true} onScan={detectAddress} />
+              <WalletConnectQr scan={true} onScan={detectAddress} />
             </section>
           </>
         )}

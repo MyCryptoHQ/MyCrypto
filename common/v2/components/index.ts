@@ -60,4 +60,3 @@ export { default as ParityQrSigner } from './ParityQrSigner';
 export { default as TranslateMarkdown } from './TranslateMarkdown';
 export { default as GasSelector } from './GasSelector';
 export { default as WalletConnectQr } from './WalletConnectQr';
-export { default as WalletConnectSignQr } from './WalletConnectSignQr';
