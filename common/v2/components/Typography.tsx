@@ -11,16 +11,18 @@ interface Props {
   style?: any;
 }
 
+type SProps = Props & { forwardedAs: string };
+
 const STypography = styled(UITypography)`
   line-height: 1.5;
   vertical-align: middle;
-  font-weight: ${(p: Props) => (p.bold ? '600' : '400')};
-  font-size: ${(p: Props) => p.fontSize} !important;
+  font-weight: ${(p: SProps) => (p.bold ? '600' : '400')};
+  font-size: ${(p: SProps) => p.fontSize} !important;
 `;
 
 function Typography({ as = 'span', value, fontSize = '1rem', bold, children, ...props }: Props) {
   return (
-    <STypography as={as} bold={bold} fontSize={fontSize} {...props}>
+    <STypography forwardedAs={as} bold={bold} fontSize={fontSize} {...props}>
       {children ? children : value}
     </STypography>
   );

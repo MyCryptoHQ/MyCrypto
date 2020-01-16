@@ -1,6 +1,6 @@
 import React, { Component, SetStateAction, Dispatch } from 'react';
 import styled from 'styled-components';
-import { PieChart, Pie, Sector, Cell } from 'recharts';
+import { PieChart, Pie, Sector, Cell, PieLabelRenderProps } from 'recharts';
 
 import { Balance } from './types';
 import { SMALLEST_CHART_SHARE_SUPPORTED } from './WalletBreakdownView';
@@ -19,7 +19,7 @@ interface BreakdownChartProps {
   selectedAssetIndex: number;
   setSelectedAssetIndex: Dispatch<SetStateAction<number>>;
 }
-interface CustomLabelProps {
+interface CustomLabelProps extends PieLabelRenderProps {
   cx: number;
   cy: number;
   midAngle: number;
@@ -27,7 +27,7 @@ interface CustomLabelProps {
   outerRadius: number;
   percent: number;
   name: string;
-  ticker: string;
+  ticker?: string;
   index: number;
 }
 interface ActiveSectionProps {
@@ -63,7 +63,7 @@ export default class BreakdownChart extends Component<BreakdownChartProps> {
     );
   };
 
-  public CustomLabel = (labelProps: CustomLabelProps) => {
+  public CustomLabel = (labelProps: CustomLabelProps): React.ReactElement<any> => {
     const { cx, cy, midAngle, innerRadius, outerRadius, percent, ticker, index } = labelProps;
     const { selectedAssetIndex } = this.props;
 
@@ -131,7 +131,7 @@ export default class BreakdownChart extends Component<BreakdownChartProps> {
             cy={200}
             innerRadius={0}
             outerRadius={110}
-            label={this.CustomLabel}
+            label={p => this.CustomLabel(p as CustomLabelProps)}
             labelLine={false}
             dataKey="fiatValue"
             onMouseEnter={this.handleMouseEnter}
