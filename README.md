@@ -49,3 +49,9 @@ To disable it you can your settings in chrome: chrome://flags/#allow-insecure-lo
 yarn dev:electron
 ```
 
+#### Staging
+
+```bash
+# builds production app version used on mycryptobuilds.com 
+yarn build:downloadable
+```
