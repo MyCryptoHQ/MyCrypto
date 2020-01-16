@@ -127,17 +127,10 @@ module.exports = {
     })
   ],
 
-  externals: [
-    {
-      'node-hid': 'commonjs node-hid',
-      usb: 'commonjs usb'
-    },
-    {
-      // The following line removes the need to add the aws-sdk in the package.json
-      // https://medium.com/@sheepsteak/excluding-the-aws-sdk-from-a-serverless-package-8dcad2f31954
-      "aws-sdk": "commonjs aws-sdk"
-    }
-  ],
+  externals: {
+    'node-hid': 'commonjs node-hid',
+    usb: 'commonjs usb'
+  },
 
   node: {
     __dirname: false,
