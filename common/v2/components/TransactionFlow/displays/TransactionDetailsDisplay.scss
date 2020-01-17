@@ -32,6 +32,9 @@
       width: 100%;
       display: inline-block;
       overflow-wrap: break-word;
+      &-empty {
+        width: auto;
+      }
     }
   }
   &-detailButton {
