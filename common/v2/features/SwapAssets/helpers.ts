@@ -3,6 +3,7 @@ import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
 import { Asset, StoreAccount, WalletId, ITxConfig, SigningComponents } from 'v2/types';
+import { DEXAG_PROXY_CONTRACT } from 'v2/config';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 import {
   inputGasPriceToHex,
@@ -47,7 +48,7 @@ export const makeAllowanceTransaction = async (
   trade: any,
   account: StoreAccount
 ): Promise<ITxConfig> => {
-  const { address: to, spender, amount } = trade.metadata.input;
+  const { address: to, amount } = trade.metadata.input;
   const network = account.network;
 
   // First 4 bytes of the hash of "fee()" for the sighash selector
@@ -65,7 +66,7 @@ export const makeAllowanceTransaction = async (
     }
   ];
 
-  const params = [spender, amount];
+  const params = [DEXAG_PROXY_CONTRACT, amount];
   const bytes = abi.encode(inputs, params).substr(2);
 
   // construct approval data from function hash and parameters
