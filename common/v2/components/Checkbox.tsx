@@ -7,6 +7,7 @@ interface CheckboxProps {
   label: string;
   checked: boolean;
   icon?: any;
+  className?: string;
   onChange(): void;
 }
 
@@ -108,9 +109,16 @@ const SLabelContainer = styled('div')`
   padding: 7px 0;
 `;
 
-export default function Checkbox({ name, label, checked, onChange, icon }: CheckboxProps) {
+export default function Checkbox({
+  className,
+  name,
+  label,
+  checked,
+  onChange,
+  icon
+}: CheckboxProps) {
   return (
-    <SContainer onClick={onChange}>
+    <SContainer className={className} onClick={onChange}>
       <SLabel key={name} htmlFor={name}>
         <input
           data-for="hidden-checkbox"

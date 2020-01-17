@@ -5,7 +5,7 @@ import { Icon } from '@mycrypto/ui';
 import { COLORS } from 'v2/theme';
 import { InlineErrorMsg, Spinner } from 'v2/components';
 
-const { PASTEL_RED, BRIGHT_SKY_BLUE, DARK_SILVER } = COLORS;
+const { PASTEL_RED, BRIGHT_SKY_BLUE, DARK_SILVER, LIGHT_GREY } = COLORS;
 
 const MainWrapper = styled.div`
   margin-bottom: 15px;
@@ -73,6 +73,12 @@ const CustomTextArea = styled.textarea<CustomInputProps>`
 const InputWrapper = styled.div`
   position: relative;
   width: 100%;
+
+  input {
+    :disabled {
+      background-color: ${LIGHT_GREY};
+    }
+  }
 `;
 
 interface CustomIconProps {

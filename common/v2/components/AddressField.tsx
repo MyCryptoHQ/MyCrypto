@@ -54,8 +54,13 @@ const EmptyIdenticon = styled.span`
   border-radius: 50%;
 `;
 
-const SInput = styled(Input)`
-  font-family: ${monospace};
+interface InputProps {
+  value: string;
+}
+
+const SInput = styled(Input)<InputProps>`
+  ${props => props.value && `font-family: ${monospace};`}
+  font-size: 1rem !important; // to override Typography from mycrypto/ui
 `;
 
 function ETHAddressField({
