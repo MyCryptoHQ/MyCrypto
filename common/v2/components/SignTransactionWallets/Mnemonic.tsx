@@ -14,7 +14,6 @@ interface MnemonicValueState {
   seed: string;
   phrase: string;
   pass: string;
-  selectedDPath: string;
   walletState: WalletSigningState;
   isSigning: boolean;
 }
@@ -33,7 +32,6 @@ export default class SignTransactionMnemonic extends Component<
     seed: '',
     phrase: '',
     pass: '',
-    selectedDPath: '',
     walletState: WalletSigningState.UNKNOWN,
     isSigning: false
   };
@@ -125,7 +123,8 @@ export default class SignTransactionMnemonic extends Component<
   private async getPublicKey() {
     this.setState({ isSigning: true });
     try {
-      const wallet = await ethers.Wallet.fromMnemonic(this.state.phrase, this.state.selectedDPath);
+      const { senderAccount } = this.props;
+      const wallet = await ethers.Wallet.fromMnemonic(this.state.phrase, senderAccount.dPath);
       const checkSumAddress = utils.getAddress(wallet.address);
       this.checkPublicKeyMatchesCache(checkSumAddress);
     } catch (err) {
@@ -148,12 +147,9 @@ export default class SignTransactionMnemonic extends Component<
   }
 
   private async signTransaction() {
-    const { rawTransaction } = this.props;
+    const { rawTransaction, senderAccount } = this.props;
 
-    const signerWallet = await ethers.Wallet.fromMnemonic(
-      this.state.phrase,
-      this.state.selectedDPath
-    );
+    const signerWallet = await ethers.Wallet.fromMnemonic(this.state.phrase, senderAccount.dPath);
     const rawSignedTransaction: any = await signerWallet.sign(rawTransaction);
     this.props.onSuccess(rawSignedTransaction);
   }
