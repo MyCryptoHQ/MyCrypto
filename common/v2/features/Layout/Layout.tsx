@@ -43,8 +43,12 @@ const SBanner = styled(Banner)`
 `;
 
 const SContainer = styled('div')`
-  padding: 50px ${p => (p.fluid || p.fullW ? 0 : MIN_CONTENT_PADDING)};
+  padding: 15px 0;
   max-width: ${p => (p.fullW ? '100%' : MAX_CONTENT_WIDTH)};
+
+  @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
+    padding: 50px ${p => (p.fluid || p.fullW ? 0 : MIN_CONTENT_PADDING)};
+  }
 
   ${({ centered }: LayoutConfig) =>
     centered &&
@@ -52,6 +56,7 @@ const SContainer = styled('div')`
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: center:
       flex: 1;
       // Necessary to center the mobile layout when below the small screen breakpoint.
       @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
