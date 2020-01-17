@@ -1,10 +1,25 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
-import { Identicon } from '@mycrypto/ui';
+import * as Yup from 'yup';
+import { Formik } from 'formik';
 
-import { NetworkSelectDropdown, InputField, Dropdown, InlineErrorMsg, Button } from 'v2/components';
-import { Contract, StoreAccount, ITxConfig, ExtendedContract, Network } from 'v2/types';
+import {
+  NetworkSelectDropdown,
+  InputField,
+  Dropdown,
+  InlineErrorMsg,
+  Button,
+  AddressField
+} from 'v2/components';
+import {
+  Contract,
+  StoreAccount,
+  ITxConfig,
+  ExtendedContract,
+  Network,
+  IReceiverAddress
+} from 'v2/types';
 import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { translateRaw } from 'v2/translations';
 import { isValidETHAddress, isCreationAddress } from 'v2/services/EthService/validators';
@@ -16,6 +31,7 @@ import GeneratedInteractionForm from './GeneratedInteractionForm';
 import { CUSTOM_CONTRACT_ADDRESS } from '../constants';
 import { ABIItem } from '../types';
 import { getParsedQueryString } from '../utils';
+import { isValidENSName } from 'v2/services/EthService';
 
 const { BRIGHT_SKY_BLUE } = COLORS;
 const { SCREEN_SM } = BREAK_POINTS;
@@ -50,16 +66,6 @@ const Separator = styled.div`
 const Label = styled.div`
   line-height: 1;
   margin-bottom: 9px;
-`;
-const IdenticonIcon = styled(Identicon)`
-  margin-left: 12px;
-  margin-top: 8px;
-
-  img {
-    width: 48px;
-    height: 48px;
-    max-width: none;
-  }
 `;
 
 const InputWrapper = styled.div`
@@ -150,6 +156,16 @@ interface Props {
   handleGasSelectorChange(payload: ITxConfig): void;
   handleDeleteContract(contractUuid: string): void;
 }
+
+const FormSchema = Yup.object().shape({
+  address: Yup.object({
+    value: Yup.string().test(
+      'check-eth-address',
+      translateRaw('TO_FIELD_ERROR'),
+      value => isValidETHAddress(value) || isValidENSName(value)
+    )
+  }).required(translateRaw('REQUIRED'))
+});
 
 type CombinedProps = RouteComponentProps<{}> & Props;
 
@@ -274,122 +290,154 @@ function Interact(props: CombinedProps) {
 
   const customEditingMode = contract && contract.address === CUSTOM_CONTRACT_ADDRESS;
 
+  const initialFormikValues: { address: IReceiverAddress } = {
+    address: {
+      display: '',
+      value: ''
+    }
+  };
+
   return (
-    <>
-      <NetworkSelectorWrapper>
-        <NetworkSelectDropdown
-          network={network.id}
-          onChange={networkId => {
-            handleNetworkSelected(networkId);
-          }}
-        />
-      </NetworkSelectorWrapper>
-      <ContractSelectionWrapper>
-        <FieldWrapper>
-          <ContractSelectLabelWrapper>
-            <Label>{translateRaw('CONTRACT_TITLE_2')}</Label>
-            {contract && contract.isCustom && (
-              <DeleteLabel onClick={() => handleDeleteContract(contract.uuid)}>
-                {translateRaw('ACTION_15')}
-              </DeleteLabel>
-            )}
-          </ContractSelectLabelWrapper>
-
-          <DropdownContainer>
-            <Dropdown
-              value={contract}
-              options={contracts}
-              onChange={handleContractSelected}
-              optionComponent={ContractDropdownOption}
-              valueComponent={ContractDropdownValue}
-              searchable={true}
-            />
-          </DropdownContainer>
-        </FieldWrapper>
-        <Separator />
-        <FieldWrapper>
-          <InputWrapper>
-            <InputField
-              label={translateRaw('CONTRACT_TITLE')}
-              value={addressOrDomainInput}
-              placeholder={translateRaw('CONTRACT_ADDRESS_PLACEHOLDER')}
-              isLoading={resolvingDomain}
-              onChange={({ target: { value } }) => handleAddressOrDomainChanged(value)}
-            />
-            {contractAddress && isValidETHAddress(contractAddress) && (
-              <IdenticonIcon address={contractAddress} />
-            )}
-          </InputWrapper>
-          {contractAddress &&
-            (isValidETHAddress(contractAddress) || isCreationAddress(contractAddress)) &&
-            !isValidETHAddress(addressOrDomainInput) && (
-              <div>
-                {translateRaw('INTERACT_RESOLVED_ADDRESS')} {contractAddress}
-              </div>
-            )}
-        </FieldWrapper>
-      </ContractSelectionWrapper>
-      <FieldWrapper>
-        <InputWrapper onClick={() => setWasContractInteracted(false)}>
-          <InputField
-            label={translateRaw('CONTRACT_JSON')}
-            value={abi}
-            placeholder={`[{"type":"constructor","inputs":[{"name":"param1","type":"uint256","indexed":true}],"name":"Event"},{"type":"function","inputs":[{"name":"a","type":"uint256"}],"name":"foo","outputs":[]}]`}
-            onChange={({ target: { value } }) => {
-              handleAbiChanged(value);
-              setWasAbiEditedManually(true);
-            }}
-            textarea={true}
-            resizableTextArea={true}
-            height={'108px'}
-            maxHeight={wasContractInteracted ? '108px' : 'none'}
-            disabled={!customEditingMode}
-          />
-        </InputWrapper>
-        {customEditingMode && (
+    <Formik
+      initialValues={initialFormikValues}
+      validationSchema={FormSchema}
+      // Hack as we don't really use Formik for this flow
+      onSubmit={() => undefined}
+      render={({ errors, touched, setFieldValue }) => {
+        const isValid =
+          Object.values(errors).filter(e => e !== undefined && e.value !== undefined).length === 0;
+        return (
           <>
-            <SaveContractWrapper>
-              <InputField
-                label={translateRaw('CONTRACT_NAME')}
-                value={customContractName}
-                placeholder={translateRaw('CONTRACT_NAME_PLACEHOLDER')}
-                onChange={({ target: { value } }) => handleCustomContractNameChanged(value)}
+            <NetworkSelectorWrapper>
+              <NetworkSelectDropdown
+                network={network.id}
+                onChange={networkId => {
+                  handleNetworkSelected(networkId);
+                }}
               />
-              <SaveButtonWrapper>
-                <Button large={false} secondary={true} onClick={saveContract}>
-                  {translateRaw('SAVE_CONTRACT')}
-                </Button>
-              </SaveButtonWrapper>
-            </SaveContractWrapper>
-          </>
-        )}
-        {error && (
-          <ErrorWrapper>
-            <InlineErrorMsg>{error}</InlineErrorMsg>
-          </ErrorWrapper>
-        )}
-      </FieldWrapper>
+            </NetworkSelectorWrapper>
+            <ContractSelectionWrapper>
+              <FieldWrapper>
+                <ContractSelectLabelWrapper>
+                  <Label>{translateRaw('CONTRACT_TITLE_2')}</Label>
+                  {contract && contract.isCustom && (
+                    <DeleteLabel onClick={() => handleDeleteContract(contract.uuid)}>
+                      {translateRaw('ACTION_15')}
+                    </DeleteLabel>
+                  )}
+                </ContractSelectLabelWrapper>
 
-      <ButtonWrapper>
-        <Button disabled={wasContractInteracted} onClick={submitInteract}>
-          {translateRaw('INTERACT_WITH_CONTRACT')}
-        </Button>
-      </ButtonWrapper>
-      {showGeneratedForm && abi && (
-        <GeneratedInteractionForm
-          abi={tryAbiParse(abi)}
-          handleInteractionFormSubmit={handleInteractionFormSubmit}
-          account={account}
-          handleAccountSelected={handleAccountSelected}
-          handleInteractionFormWriteSubmit={handleInteractionFormWriteSubmit}
-          network={network}
-          rawTransaction={rawTransaction}
-          handleGasSelectorChange={handleGasSelectorChange}
-          contractAddress={contractAddress}
-          interactionDataFromURL={interactionDataFromURL}
-        />
-      )}
-    </>
+                <DropdownContainer>
+                  <Dropdown
+                    value={contract}
+                    options={contracts}
+                    onChange={option => {
+                      if (option.address !== 'custom') {
+                        setFieldValue('address', {
+                          display: option.address,
+                          value: option.address
+                        });
+                      } else {
+                        setFieldValue('address', initialFormikValues.address);
+                      }
+                      handleContractSelected(option);
+                    }}
+                    optionComponent={ContractDropdownOption}
+                    valueComponent={ContractDropdownValue}
+                    searchable={true}
+                  />
+                </DropdownContainer>
+              </FieldWrapper>
+              <Separator />
+              <FieldWrapper>
+                <label htmlFor="address" className="input-group-header">
+                  {translateRaw('CONTRACT_TITLE')}
+                </label>
+                <InputWrapper>
+                  <AddressField
+                    fieldName="address"
+                    error={errors && errors.address && errors.address.value}
+                    network={network}
+                    placeholder={translateRaw('CONTRACT_ADDRESS_PLACEHOLDER')}
+                    isLoading={resolvingDomain}
+                    touched={touched}
+                    onChange={({ target: { value } }) => handleAddressOrDomainChanged(value)}
+                    isError={!isValid}
+                  />
+                </InputWrapper>
+                {contractAddress &&
+                  (isValidETHAddress(contractAddress) || isCreationAddress(contractAddress)) &&
+                  !isValidETHAddress(addressOrDomainInput) && (
+                    <div>
+                      {translateRaw('INTERACT_RESOLVED_ADDRESS')} {contractAddress}
+                    </div>
+                  )}
+              </FieldWrapper>
+            </ContractSelectionWrapper>
+            <FieldWrapper>
+              <InputWrapper onClick={() => setWasContractInteracted(false)}>
+                <InputField
+                  label={translateRaw('CONTRACT_JSON')}
+                  value={abi}
+                  placeholder={`[{"type":"constructor","inputs":[{"name":"param1","type":"uint256","indexed":true}],"name":"Event"},{"type":"function","inputs":[{"name":"a","type":"uint256"}],"name":"foo","outputs":[]}]`}
+                  onChange={({ target: { value } }) => {
+                    handleAbiChanged(value);
+                    setWasAbiEditedManually(true);
+                  }}
+                  textarea={true}
+                  resizableTextArea={true}
+                  height={'108px'}
+                  maxHeight={wasContractInteracted ? '108px' : 'none'}
+                  disabled={!customEditingMode}
+                />
+              </InputWrapper>
+              {customEditingMode && (
+                <>
+                  <SaveContractWrapper>
+                    <InputField
+                      label={translateRaw('CONTRACT_NAME')}
+                      value={customContractName}
+                      placeholder={translateRaw('CONTRACT_NAME_PLACEHOLDER')}
+                      onChange={({ target: { value } }) => handleCustomContractNameChanged(value)}
+                    />
+                    <SaveButtonWrapper>
+                      <Button large={false} secondary={true} onClick={saveContract}>
+                        {translateRaw('SAVE_CONTRACT')}
+                      </Button>
+                    </SaveButtonWrapper>
+                  </SaveContractWrapper>
+                </>
+              )}
+              {error && (
+                <ErrorWrapper>
+                  <InlineErrorMsg>{error}</InlineErrorMsg>
+                </ErrorWrapper>
+              )}
+            </FieldWrapper>
+
+            <ButtonWrapper>
+              <Button disabled={wasContractInteracted} onClick={submitInteract}>
+                {translateRaw('INTERACT_WITH_CONTRACT')}
+              </Button>
+            </ButtonWrapper>
+            {showGeneratedForm && abi && (
+              <GeneratedInteractionForm
+                abi={tryAbiParse(abi)}
+                handleInteractionFormSubmit={handleInteractionFormSubmit}
+                account={account}
+                handleAccountSelected={handleAccountSelected}
+                handleInteractionFormWriteSubmit={handleInteractionFormWriteSubmit}
+                network={network}
+                rawTransaction={rawTransaction}
+                handleGasSelectorChange={handleGasSelectorChange}
+                contractAddress={contractAddress}
+                interactionDataFromURL={interactionDataFromURL}
+              />
+            )}
+          </>
+        );
+      }}
+    />
   );
 }
 
