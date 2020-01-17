@@ -16,6 +16,7 @@ import { WalletFactory } from 'v2/services/WalletService';
 import { FormDataActionType as ActionType } from 'v2/features/AddAccount/types';
 import './Web3Provider.scss';
 import { getWeb3Config } from 'v2/utils/web3';
+import { ANALYTICS_CATEGORIES, AnalyticsService } from 'v2/services';
 
 interface Props {
   formDispatch: any;
@@ -44,6 +45,11 @@ class Web3ProviderDecrypt extends Component<Props & ISettingsContext & INetworkC
   public render() {
     const { web3Unlocked, web3ProviderSettings: provider } = this.state;
     const isDefault = provider.id === WalletId.WEB3;
+    AnalyticsService.instance.track(
+      ANALYTICS_CATEGORIES.ADD_WEB3_ACCOUNT,
+      `${provider.name} detected`
+    );
+
     return (
       <div className="Panel">
         <div className="Panel-title">

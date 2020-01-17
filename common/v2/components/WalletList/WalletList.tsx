@@ -8,6 +8,7 @@ import { WalletId, IStory } from 'v2/types';
 import { ROUTE_PATHS, getWalletConfig } from 'v2/config';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { IS_ELECTRON, getWeb3Config } from 'v2/utils';
+import { ANALYTICS_CATEGORIES, AnalyticsService } from 'v2/services';
 
 const { SCREEN_XS } = BREAK_POINTS;
 const { BLUE_BRIGHT } = COLORS;
@@ -86,6 +87,10 @@ interface Props {
 }
 
 export const WalletList = ({ wallets, onSelect, showHeader, calculateMargin }: Props) => {
+  const onWalletClick = (name: WalletId) => {
+    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.ADD_ACCOUNT, `${name} clicked`);
+    onSelect(name);
+  };
   return (
     <div>
       {showHeader && (
@@ -105,7 +110,8 @@ export const WalletList = ({ wallets, onSelect, showHeader, calculateMargin }: P
               icon={walletInfo.icon}
               description={translateRaw(walletInfo.description)}
               margin={calculateMargin && calculateMargin(index)}
-              onClick={() => onSelect(wallet.name)}
+              // onClick={() => onSelect(wallet.name)}
+              onClick={() => onWalletClick(wallet.name)}
               isDisabled={wallet.isDisabled}
             />
           );
