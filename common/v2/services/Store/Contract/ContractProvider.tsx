@@ -33,7 +33,7 @@ export const ContractProvider: React.FC = ({ children }) => {
       model.update(uuid, contractsData);
     },
     getContractsByIds: (uuids: string[]) =>
-      uuids.map(contractId => contracts.find(c => c.uuid === contractId)!)
+      uuids.map(contractId => contracts.find(c => c.uuid === contractId)!).filter(Boolean)
   };
   return <ContractContext.Provider value={state}>{children}</ContractContext.Provider>;
 };
