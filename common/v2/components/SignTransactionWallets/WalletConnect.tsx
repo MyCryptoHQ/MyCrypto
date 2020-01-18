@@ -1,7 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 
 import translate, { translateRaw } from 'v2/translations';
-import { WalletConnectQr, Button, Spinner } from 'v2/components';
+import {
+  WalletConnectQr,
+  Button,
+  Spinner,
+  walletConnectReducer,
+  WalletConnectReducer
+} from 'v2/components';
 import { WalletId, ISignComponentProps } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
 import WalletConnectItem from 'v2/services/WalletService/walletconnect/walletConnect';
@@ -14,10 +20,32 @@ interface WalletConnectAddress {
   chainId: number;
 }
 
-enum WalletSigningState {
+export enum WalletSigningState {
   READY, // when signerWallet is ready to sendTransaction
   UNKNOWN // used upon component initialization when wallet status is not determined
 }
+
+export interface IWalletConnectState {
+  isCorrectAddress: boolean;
+  isCorrectNetwork: boolean;
+  detectedAddress: string;
+  signingError: string;
+  walletSigningState: WalletSigningState;
+  displaySignReadyQR: boolean;
+  isPendingTx: boolean;
+  isConnected: boolean;
+}
+
+export const initialWalletConnectState: IWalletConnectState = {
+  isCorrectAddress: false,
+  isCorrectNetwork: false,
+  detectedAddress: '',
+  signingError: '',
+  walletSigningState: WalletSigningState.UNKNOWN,
+  displaySignReadyQR: false,
+  isPendingTx: false,
+  isConnected: false
+};
 
 export type WalletConnectQrContent = WalletConnectAddress;
 
@@ -29,58 +57,65 @@ export function SignTransactionWalletConnect({
   onSuccess
 }: ISignComponentProps) {
   const WalletConnectService = new WalletConnectItem();
-  const [isCorrectAddress, setIsCorrectAddress] = useState(false);
-  const [isCorrectNetwork, setIsCorrectNetwork] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
-  const [detectedAddress, setDetectedAddress] = useState('');
-  const [signingError, setSigningError] = useState('');
-  const [walletSigningState, setWalletSigningState] = useState(WalletSigningState.UNKNOWN);
+
+  const [state, dispatch] = useReducer(walletConnectReducer, initialWalletConnectState);
   const [displaySignReadyQR, setDisplaySignReadyQR] = useState(false);
-  const [isPendingTx, setIsPendingTx] = useState(false);
 
   const detectAddress = ({
     address: currentWalletConnectAddress,
     chainId: currentWalletConnectChainId
   }: WalletConnectQrContent) => {
-    setIsConnected(true);
-    setDetectedAddress(currentWalletConnectAddress);
-    setIsCorrectAddress(
-      currentWalletConnectAddress.toLowerCase() === senderAccount.address.toLowerCase()
-    );
-    setIsCorrectNetwork(currentWalletConnectChainId === rawTransaction.chainId);
+    dispatch({
+      type: WalletConnectReducer.DETECT_ADDRESS,
+      payload: {
+        address: currentWalletConnectAddress,
+        chainId: currentWalletConnectChainId,
+        senderAccount,
+        rawTransaction
+      }
+    });
   };
 
   const promptSignTransaction = async () => {
-    if (!isConnected || !isCorrectNetwork || !isCorrectAddress) return;
-    setIsPendingTx(true);
-    WalletConnectService.sendTransaction({ from: detectedAddress, ...rawTransaction })
-      .then(txHash => {
-        setIsPendingTx(false);
+    if (!state.isConnected || !state.isCorrectNetwork || !state.isCorrectAddress) return;
+    dispatch({
+      type: WalletConnectReducer.BROADCAST_SIGN_TX,
+      payload: { isPendingTx: true }
+    });
+    WalletConnectService.sendTransaction({ from: state.detectedAddress, ...rawTransaction })
+      .then((txHash: string) => {
         onSuccess(txHash);
       })
       .catch((err: any) => {
-        setIsPendingTx(false);
-        setSigningError(err.message);
+        dispatch({
+          type: WalletConnectReducer.BROADCAST_SIGN_TX_ERROR,
+          payload: { errMsg: err.message }
+        });
       });
   };
 
   // Used to prompt for signature
   useEffect(() => {
-    if (!isCorrectAddress || !isCorrectNetwork || !isConnected) {
-      setSigningError('');
+    if (
+      !state.isCorrectAddress ||
+      !state.isCorrectNetwork ||
+      !state.isConnected ||
+      state.walletSigningState === WalletSigningState.READY
+    )
       return;
-    }
-    setWalletSigningState(WalletSigningState.READY);
+    dispatch({
+      type: WalletConnectReducer.SET_WALLET_SIGNING_STATE_READY
+    });
   });
 
   // Used to trigger signTransaction
   useEffect(() => {
-    if (walletSigningState !== WalletSigningState.READY) return;
+    if (state.walletSigningState !== WalletSigningState.READY) return;
     // Resubmits the transaction for signature on tx rejection.
     const walletSigner = setInterval(() => {
-      if (isPendingTx) return;
+      if (state.isPendingTx) return;
       promptSignTransaction();
-    }, 3000);
+    }, 2000);
     return () => clearInterval(walletSigner);
   });
 
@@ -89,23 +124,25 @@ export function SignTransactionWalletConnect({
       <div className="Panel-title">
         {translate('SIGNER_SELECT_WALLETCONNECT', { $walletId: translateRaw('X_WALLETCONNECT') })}
       </div>
-      {walletSigningState !== WalletSigningState.READY && !isCorrectAddress && !isCorrectNetwork && (
-        <section className="Panel-description">
-          {translate('SIGNER_SELECT_WALLET_QR', {
-            $walletId: translateRaw('X_WALLETCONNECT')
-          })}
-        </section>
-      )}
+      {state.walletSigningState !== WalletSigningState.READY &&
+        !state.isCorrectAddress &&
+        !state.isCorrectNetwork && (
+          <section className="Panel-description">
+            {translate('SIGNER_SELECT_WALLET_QR', {
+              $walletId: translateRaw('X_WALLETCONNECT')
+            })}
+          </section>
+        )}
       <div className="WalletConnect">
         <section className="WalletConnect-fields">
-          {walletSigningState === WalletSigningState.READY && (
+          {state.walletSigningState === WalletSigningState.READY && (
             <>
               <div className="WalletConnect-fields-field">
                 {translate('SIGN_TX_WALLETCONNECT_PENDING', {
-                  $address: detectedAddress
+                  $address: state.detectedAddress
                 })}
               </div>
-              {signingError !== '' && (
+              {state.signingError !== '' && (
                 <div className="WalletConnect-fields-error">
                   <InlineErrorMsg>
                     {translate('SIGN_TX_WALLETCONNECT_REJECTED', {
@@ -115,7 +152,7 @@ export function SignTransactionWalletConnect({
                   </InlineErrorMsg>
                 </div>
               )}
-              {isPendingTx && (
+              {state.isPendingTx && (
                 <div className="WalletConnect-fields-spinner">
                   <Spinner />
                 </div>
@@ -123,7 +160,7 @@ export function SignTransactionWalletConnect({
             </>
           )}
 
-          {isConnected && !isCorrectAddress && (
+          {state.isConnected && !state.isCorrectAddress && (
             <div className="WalletConnect-fields-field">
               {translate('SIGN_TX_WALLETCONNECT_FAILED_ACCOUNT', {
                 $walletName: translateRaw('X_WALLETCONNECT'),
@@ -131,7 +168,7 @@ export function SignTransactionWalletConnect({
               })}
             </div>
           )}
-          {isConnected && !isCorrectNetwork && (
+          {state.isConnected && !state.isCorrectNetwork && (
             <div className="WalletConnect-fields-field">
               {translate('SIGN_TX_WALLETCONNECT_FAILED_NETWORK', {
                 $walletName: translateRaw('X_WALLETCONNECT'),
@@ -139,7 +176,7 @@ export function SignTransactionWalletConnect({
               })}
             </div>
           )}
-          {walletSigningState === WalletSigningState.READY && (
+          {state.walletSigningState === WalletSigningState.READY && (
             <div className="WalletConnect-fields-field">
               <Button
                 basic={true}
@@ -150,7 +187,7 @@ export function SignTransactionWalletConnect({
                   ? translateRaw('SIGN_TX_WALLETCONNECT_HIDE_QR')
                   : translateRaw('SIGN_TX_WALLETCONNECT_SHOW_QR')}
               </Button>
-              {displaySignReadyQR && (
+              {state.displaySignReadyQR && (
                 <section className="WalletConnect-fields-field">
                   <WalletConnectQr scan={true} onScan={detectAddress} />
                 </section>
@@ -158,7 +195,7 @@ export function SignTransactionWalletConnect({
             </div>
           )}
         </section>
-        {!(walletSigningState === WalletSigningState.READY) && (
+        {!(state.walletSigningState === WalletSigningState.READY) && (
           <section className="WalletConnect-fields-field">
             <WalletConnectQr scan={true} onScan={detectAddress} />
           </section>
