@@ -26,3 +26,5 @@ export const WALLET_STEPS: SigningComponents = {
   [WalletId.WALLETCONNECT]: SignTransactionWalletConnect,
   [WalletId.VIEW_ONLY]: null
 };
+export { default as HardwareSignTransaction } from './Hardware';
+export * from './WalletConnect.reducer';
