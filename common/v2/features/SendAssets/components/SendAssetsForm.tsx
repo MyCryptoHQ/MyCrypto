@@ -314,9 +314,8 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                   name="asset" // Need a way to spread option, name, symbol on sharedConfig for assets
                   component={({ field, form }: FieldProps) => (
                     <AssetDropdown
-                      name={field.name}
-                      value={field.value}
-                      assets={validAssets}
+                      selectedAsset={field.value}
+                      assets={assets(validAccounts)}
                       onSelect={(option: StoreAsset) => {
                         form.setFieldValue('asset', option || {}); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
                         //TODO get assetType onChange

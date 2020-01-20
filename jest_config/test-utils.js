@@ -1,6 +1,6 @@
 // Setup react-testing-library
 // https://testing-library.com/docs/react-testing-library/setup#custom-render
-import { render } from '@testing-library/react'
+import { render } from '@testing-library/react';
 
 // Mock for features used by react-slider
 window.matchMedia =

@@ -7,6 +7,7 @@
   "moduleNameMapper": {
     "shared/(.*)": "<rootDir>/shared/$1",
     "test-utils": "<rootDir>/jest_config/test-utils",
+    "fixtures": "<rootDir>/jest_config/__fixtures__",
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/jest_config/__mocks__/fileMock.ts",
     "\\.(css|scss)$": "<rootDir>/jest_config/__mocks__/styleMock.ts",
     "\\.worker.(ts|tsx)": "<rootDir>/jest_config/__mocks__/workerMock.js"

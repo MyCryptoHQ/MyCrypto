@@ -205,8 +205,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                   name="asset"
                   component={({ field, form }: FieldProps) => (
                     <AssetDropdown
-                      name={field.name}
-                      value={field.value}
+                      selectedAsset={field.value}
                       assets={assetOptions}
                       onSelect={option => {
                         form.setFieldValue(field.name, option);
