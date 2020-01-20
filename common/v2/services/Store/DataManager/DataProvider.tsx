@@ -53,17 +53,20 @@ export const DataProvider: React.FC = ({ children }) => {
   /*
    * Manage sync between appState an db
    */
-  const syncDb = useCallback(() => {
-    console.debug('Updating LocalStorage');
-    updateDb(deMarshallState(appState));
-  }, [appState]);
+  const syncDb = useCallback(
+    state => {
+      console.debug('Updating LocalStorage');
+      updateDb(deMarshallState(state));
+    },
+    [appState]
+  );
   // By default we sync no more than once a minute
   useThrottleFn(syncDb, 60000, [appState]);
   // In any case, we sync before the tab is closed
   // https://developers.google.com/web/updates/2018/07/page-lifecycle-api
   useEvent('visibilitychange', () => {
     if (document.hidden) {
-      syncDb();
+      syncDb(appState);
     }
   });
 

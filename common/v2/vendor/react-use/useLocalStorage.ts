@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { noOp } from 'v2/utils';
 
 import { isClient } from './util';
-import { noOp } from 'v2/utils';
 
 type Dispatch<A> = (value: A) => void;
 type SetStateAction<S> = S | ((prevState: S) => S);
@@ -16,7 +15,7 @@ const useLocalStorage = <T>(
     return [initialValue as T, noOp];
   }
 
-  const [state, setState] = useState<T>(() => {
+  const getDb = () => {
     try {
       const localStorageValue = localStorage.getItem(key);
       if (typeof localStorageValue !== 'string') {
@@ -31,19 +30,19 @@ const useLocalStorage = <T>(
       // can throw, too.
       return initialValue;
     }
-  });
+  };
 
-  useEffect(() => {
+  const setDb = (db: T) => {
     try {
-      const serializedState = raw ? String(state) : JSON.stringify(state);
+      const serializedState = raw ? String(db) : JSON.stringify(db);
       localStorage.setItem(key, serializedState);
     } catch {
       // If user is in private mode or has storage restriction
       // localStorage can throw. Also JSON.stringify can throw.
     }
-  }, [state]);
+  };
 
-  return [state, setState];
+  return [getDb(), setDb];
 };
 
 export default useLocalStorage;

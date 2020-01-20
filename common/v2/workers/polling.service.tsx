@@ -34,6 +34,7 @@ class PollingService implements IPollingService {
   private interval: number;
   private url: string;
   private canTerminate = false;
+  private successHandler: (data: {}) => void;
 
   constructor(
     url: string,
@@ -45,6 +46,7 @@ class PollingService implements IPollingService {
     this.url = url;
     this.worker = new PollingWorker();
     this.worker.onerror = errorHandler ? err => errorHandler(err) : null;
+    this.successHandler = successHandler;
     this.worker.onmessage = (message: MessageEvent) => {
       const { data } = message;
       // make sure it is set for each msg
@@ -53,7 +55,7 @@ class PollingService implements IPollingService {
       // we also use 'onmessage' to confirm the polling has stopped.
       // to avoid any confusion we only call successHandler if polling is still active.
       if (!this.canTerminate) {
-        successHandler(message.data);
+        this.successHandler(message.data);
       }
     };
   }
@@ -80,6 +82,10 @@ class PollingService implements IPollingService {
     }
     this.worker.terminate();
   }
+
+  public setSuccessHandler = (successHandler: (data: {}) => void) => {
+    this.successHandler = successHandler;
+  };
 }
 
 export default PollingService;
