@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-import { AssetSummary, Divider, Dropdown } from 'v2/components';
+import { AssetDropdownItem, Divider, Dropdown } from 'v2/components';
 
 import { ISwapAsset } from '../../types';
 
@@ -46,7 +46,7 @@ function AssetOption(props: IAssetOptionProps) {
   const { name, symbol } = option;
   return (
     <>
-      <AssetSummary
+      <AssetDropdownItem
         symbol={symbol}
         name={name}
         onClick={() => onSelect(option)}
@@ -62,7 +62,7 @@ function AssetOptionShort(props: IAssetOptionProps) {
   const { symbol } = option;
   return (
     <>
-      <AssetSummary symbol={symbol} onClick={() => onSelect(option)} selectable={true} />
+      <AssetDropdownItem symbol={symbol} onClick={() => onSelect(option)} selectable={true} />
       <Divider />
     </>
   );
@@ -98,7 +98,10 @@ function AssetSelectDropdown({
         searchable={false}
         optionComponent={showOnlyTicker ? AssetOptionShort : AssetOption}
         valueComponent={({ value: option }: IOption) => (
-          <AssetSummary symbol={option.symbol} name={!showOnlyTicker ? option.name : undefined} />
+          <AssetDropdownItem
+            symbol={option.symbol}
+            name={!showOnlyTicker ? option.name : undefined}
+          />
         )}
       />
     </DropdownWrapper>
