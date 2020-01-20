@@ -1,6 +1,7 @@
 import React from 'react';
 import { OptionComponentProps } from 'react-select';
 import styled from 'styled-components';
+import * as R from 'ramda';
 
 import { translateRaw } from 'v2/translations';
 import { Asset, TSymbol } from 'v2/types';
@@ -93,7 +94,7 @@ function AssetDropdown({
         searchable={searchable}
         onChange={(option: Asset) => onSelect && onSelect(option)}
         optionComponent={showOnlyTicker ? AssetOptionShort : AssetOption}
-        value={selectedAsset && selectedAsset}
+        value={!R.isEmpty(selectedAsset) && selectedAsset}
         valueComponent={({ value: option }) => {
           const { ticker, symbol, name } = option;
           const ref = ticker ? ticker : symbol;

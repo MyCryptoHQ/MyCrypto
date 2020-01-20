@@ -23,6 +23,11 @@ function getComponent(props: Props<Asset | { name: string; symbol: TSymbol }>) {
 describe('AssetDropdown', () => {
   test('it displays placeholder text when selectedAsset is undefined', async () => {
     const { getByText } = getComponent(defaultProps);
-    expect(getByText('Select an Asset').textContent).toBe('Select an Asset');
+    expect(getByText('Select an Asset').textContent).toBeDefined();
+  });
+  test('it displays placeholder text when selectedAsset is empty object', async () => {
+    const props = Object.assign({}, defaultProps, { selectedAsset: {} });
+    const { getByText } = getComponent(props);
+    expect(getByText('Select an Asset').textContent).toBeDefined();
   });
 });
