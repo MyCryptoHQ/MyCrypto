@@ -21,7 +21,11 @@ window.requestAnimationFrame =
 
 // Create custom renderer to share setup between component tests.
 const AllTheProviders = ({ children }) => {
-  return (<></>)
+  return (
+    <>
+
+    </>
+  )
 }
 
 const customRender = (ui, options) => render(ui, { wrapper: AllTheProviders, ...options })
