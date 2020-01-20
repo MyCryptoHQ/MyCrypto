@@ -7,6 +7,7 @@ import { FormDataActionType as ActionType } from '../types';
 import { FormData } from 'v2/types';
 import { NetworkSelectDropdown } from 'v2/components';
 import { NetworkContext } from 'v2/services/Store';
+import { ANALYTICS_CATEGORIES, AnalyticsService } from 'v2/services';
 
 const NetworkForm = styled.div`
   margin-top: 22px;
@@ -41,6 +42,8 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
       type: ActionType.SELECT_NETWORK,
       payload: { network }
     });
+
+    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.SELECT_NETWORK, network);
     goToNextStep();
   };
 

@@ -25,7 +25,8 @@ export enum ANALYTICS_CATEGORIES {
   AD = 'Ad',
   TOKEN_SCANNER = 'Token Scanner',
   ADD_ACCOUNT = 'Add Account',
-  ADD_WEB3_ACCOUNT = 'Add web3 account'
+  ADD_WEB3_ACCOUNT = 'Add web3 account',
+  SELECT_NETWORK = 'Select network'
 }
 
 /* Previous Params from 'develop'
