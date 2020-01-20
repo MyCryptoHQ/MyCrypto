@@ -5,7 +5,7 @@ export { default as AccountOption } from './AccountOption';
 export { default as AccountSummary } from './AccountSummary';
 export { default as AccountList } from './AccountList';
 export { default as AmountInput } from './AmountInput';
-export { default as AssetSummary } from './AssetSummary';
+export { default as AssetDropdownItem } from './AssetDropdownItem';
 export { default as AssetIcon } from './AssetIcon';
 export { default as AssetDropdown } from './AssetDropdown';
 export { default as Button } from './Button';
