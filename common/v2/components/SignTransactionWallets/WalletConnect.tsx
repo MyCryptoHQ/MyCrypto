@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useState, useContext } from 'react';
 
 import translate, { translateRaw } from 'v2/translations';
 import {
@@ -10,10 +10,10 @@ import {
 } from 'v2/components';
 import { WalletId, ISignComponentProps } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
-import WalletConnectItem from 'v2/services/WalletService/walletconnect/walletConnect';
 
 import { InlineErrorMsg } from '../ErrorMessages';
 import './WalletConnect.scss';
+import { WalletConnectContext } from 'v2/services/WalletService';
 
 interface WalletConnectAddress {
   address: string;
@@ -56,8 +56,7 @@ export function SignTransactionWalletConnect({
   rawTransaction,
   onSuccess
 }: ISignComponentProps) {
-  const WalletConnectService = new WalletConnectItem();
-
+  const { sendTransaction } = useContext(WalletConnectContext);
   const [state, dispatch] = useReducer(walletConnectReducer, initialWalletConnectState);
   const [displaySignReadyQR, setDisplaySignReadyQR] = useState(false);
 
@@ -82,7 +81,7 @@ export function SignTransactionWalletConnect({
       type: WalletConnectReducer.BROADCAST_SIGN_TX,
       payload: { isPendingTx: true }
     });
-    WalletConnectService.sendTransaction({ from: state.detectedAddress, ...rawTransaction })
+    sendTransaction({ from: state.detectedAddress, ...rawTransaction })
       .then((txHash: string) => {
         onSuccess(txHash);
       })
@@ -187,7 +186,7 @@ export function SignTransactionWalletConnect({
                   ? translateRaw('SIGN_TX_WALLETCONNECT_HIDE_QR')
                   : translateRaw('SIGN_TX_WALLETCONNECT_SHOW_QR')}
               </Button>
-              {state.displaySignReadyQR && (
+              {displaySignReadyQR && (
                 <section className="WalletConnect-fields-field">
                   <WalletConnectQr scan={true} onScan={detectAddress} />
                 </section>

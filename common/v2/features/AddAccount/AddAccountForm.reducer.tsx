@@ -47,6 +47,11 @@ const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
         account: payload.getAddressString(),
         derivationPath: ''
       };
+    case WalletId.WALLETCONNECT:
+      return {
+        account: payload.address,
+        derivationPath: ''
+      };
     case WalletId.PARITY_SIGNER:
       return {
         account: payload.address,
@@ -55,11 +60,6 @@ const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
     case WalletId.MNEMONIC_PHRASE:
     case WalletId.LEDGER_NANO_S:
     case WalletId.TREZOR:
-    case WalletId.WALLETCONNECT:
-      return {
-        account: payload.address,
-        derivationPath: ''
-      };
     case WalletId.SAFE_T_MINI:
       return {
         account: payload.address,

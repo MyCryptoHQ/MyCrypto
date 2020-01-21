@@ -11,6 +11,7 @@ import {
   DataProvider
 } from 'v2/services/Store';
 import { DevToolsProvider, RatesProvider, StoreProvider } from 'v2/services';
+import { WalletConnectProvider } from 'v2/services/WalletService';
 
 function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | null }) {
   return (
@@ -27,7 +28,9 @@ function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | nu
                         {/* StoreProvider relies on the others Providers */}
                         <StoreProvider>
                           {/* RatesProvider relies on the Store */}
-                          <RatesProvider>{children}</RatesProvider>
+                          <RatesProvider>
+                            <WalletConnectProvider>{children}</WalletConnectProvider>
+                          </RatesProvider>
                         </StoreProvider>
                       </AssetProvider>
                     </ContractProvider>
