@@ -2,11 +2,11 @@ import React, { useEffect, useReducer, useState, useContext } from 'react';
 
 import translate, { translateRaw } from 'v2/translations';
 import {
-  WalletConnectQr,
   Button,
   Spinner,
   walletConnectReducer,
-  WalletConnectReducer
+  WalletConnectReducer,
+  WalletConnectReadOnlyQr
 } from 'v2/components';
 import { WalletId, ISignComponentProps } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
@@ -22,6 +22,7 @@ interface WalletConnectAddress {
 
 export enum WalletSigningState {
   READY, // when signerWallet is ready to sendTransaction
+  AWAITING_LOGIN, // used when component is awaiting login.
   UNKNOWN // used upon component initialization when wallet status is not determined
 }
 
@@ -47,6 +48,12 @@ export const initialWalletConnectState: IWalletConnectState = {
   isConnected: false
 };
 
+enum WalletQRState {
+  READY, // use when walletConnect session is created
+  NOT_READY, // use when walletConnect session needs to be created
+  UNKNOWN // used upon component initialization when walletconnect status is not determined
+}
+
 export type WalletConnectQrContent = WalletConnectAddress;
 
 const wikiLink = WALLETS_CONFIG[WalletId.WALLETCONNECT].helpLink!;
@@ -59,6 +66,8 @@ export function SignTransactionWalletConnect({
   const { sendTransaction } = useContext(WalletConnectContext);
   const [state, dispatch] = useReducer(walletConnectReducer, initialWalletConnectState);
   const [displaySignReadyQR, setDisplaySignReadyQR] = useState(false);
+  const [walletSigningState, setWalletSigningState] = useState(WalletQRState.UNKNOWN);
+  const { session, refreshSession, fetchWalletConnectSession } = useContext(WalletConnectContext);
 
   const detectAddress = ({
     address: currentWalletConnectAddress,
@@ -117,6 +126,61 @@ export function SignTransactionWalletConnect({
     }, 2000);
     return () => clearInterval(walletSigner);
   });
+
+  /* start:wallet-login-state */
+  useEffect(() => {
+    if (walletSigningState !== WalletQRState.UNKNOWN) {
+      return;
+    }
+    // DETECT IF WALLETCONNECT SESSION EXISTS
+    if (window.localStorage.getItem('walletconnect') || session) {
+      refreshSession().then(() => {
+        setWalletSigningState(WalletQRState.NOT_READY);
+      });
+    } else {
+      setWalletSigningState(WalletQRState.NOT_READY);
+    }
+  });
+
+  // If a WalletConnect session already exist, or setup isnt initialized, exit.
+  // Otherwise, generate a new session.
+  useEffect(() => {
+    if (walletSigningState !== WalletQRState.NOT_READY || session) {
+      return;
+    }
+    const walletConnectSessionInterval = setInterval(() => {
+      const walletConnector = fetchWalletConnectSession();
+      if (!walletConnector) return;
+    }, 250);
+    return () => clearInterval(walletConnectSessionInterval);
+  });
+
+  // Set WalletSigningState to ready if walletConnectSession exists. This renders qr code.
+  useEffect(() => {
+    if (!session) return;
+    setWalletSigningState(WalletQRState.READY);
+  }, [session]);
+
+  if (session && walletSigningState === WalletQRState.READY) {
+    session.on('connect', (error, payload) => {
+      if (error) {
+        throw error;
+      }
+      // Determine provided accounts and chainId
+      const { accounts, chainId } = payload.params[0];
+      detectAddress({ address: accounts[0], chainId });
+    });
+
+    session.on('session_update', (error, payload) => {
+      if (error) {
+        throw error;
+      }
+      // Determine provided accounts and chainId
+      const { accounts, chainId } = payload.params[0];
+      detectAddress({ address: accounts[0], chainId });
+    });
+  }
+  /* end:wallet-login-state */
 
   return (
     <div className="WalletConnectPanel">
@@ -186,17 +250,17 @@ export function SignTransactionWalletConnect({
                   ? translateRaw('SIGN_TX_WALLETCONNECT_HIDE_QR')
                   : translateRaw('SIGN_TX_WALLETCONNECT_SHOW_QR')}
               </Button>
-              {displaySignReadyQR && (
+              {displaySignReadyQR && session && session.uri && (
                 <section className="WalletConnect-fields-field">
-                  <WalletConnectQr scan={true} onScan={detectAddress} />
+                  <WalletConnectReadOnlyQr sessionUri={session.uri} />
                 </section>
               )}
             </div>
           )}
         </section>
-        {!(state.walletSigningState === WalletSigningState.READY) && (
+        {!(state.walletSigningState === WalletSigningState.READY) && session && session.uri && (
           <section className="WalletConnect-fields-field">
-            <WalletConnectQr scan={true} onScan={detectAddress} />
+            <WalletConnectReadOnlyQr sessionUri={session.uri} />
           </section>
         )}
         {wikiLink && (
