@@ -20,6 +20,7 @@ enum WalletSigningState {
 export const WalletConnectQr = ({ onScan }: ScanProps) => {
   const [walletSigningState, setWalletSigningState] = useState(WalletSigningState.UNKNOWN);
   const { session, refreshSession, fetchWalletConnectSession } = useContext(WalletConnectContext);
+
   // If the setup hasn't been initialized, but a WalletConnect session already exists kill it.
   useEffect(() => {
     if (walletSigningState !== WalletSigningState.UNKNOWN) {
