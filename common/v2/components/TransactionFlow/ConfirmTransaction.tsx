@@ -29,7 +29,7 @@ const RowWrapper = Styled.div<{ stack?: boolean }>`
   margin-bottom: 24px;
   flex-direction: ${props => (props.stack ? 'column' : 'row')};
   @media (min-width: ${SCREEN_XS}) {
-    flex-direction: row
+    flex-direction: row;
     align-items: center;
   }
 `;
