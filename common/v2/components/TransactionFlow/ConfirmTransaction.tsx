@@ -71,22 +71,10 @@ const AmountWrapper = Styled(ColumnWrapper)`
   justify-content: flex-end;
   align-items: flex-start;
   img {
-    margin-right: 10px;
-    @media (max-width: ${SCREEN_XS}) {
-      display: none;
-    }
-  }
-  .Amount {
-    @media (max-width: ${SCREEN_XS}) {
-      flex-direction: column;
-      align-items: flex-end;
-  }
-  .Amount-asset {
-    font-size: 18px;
-    font-weight: ${props => (props.bold ? 'bold' : 'normal')};
-    @media (max-width: ${SCREEN_XS}) {
-      font-size: 16px;
-      margin: 0;
+    display: none;
+    @media (min-width: ${SCREEN_XS}) {
+      margin-right: 10px;
+      display: block;
     }
   }
 `;
@@ -209,7 +197,7 @@ export default function ConfirmTransaction({
           <img src={walletIcon} alt="Total" />
           {translate('TOTAL')}
         </ColumnWrapper>
-        <AmountWrapper bold={true}>
+        <AmountWrapper>
           {assetType === 'base' ? (
             <>
               <AssetIcon symbol={asset.ticker as TSymbol} size={'30px'} />
@@ -223,6 +211,7 @@ export default function ConfirmTransaction({
               <AssetIcon symbol={asset.ticker as TSymbol} size={'30px'} />
               <Amount
                 assetValue={`${amount} ${asset.ticker}`}
+                bold={true}
                 baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
                 fiatValue={`$${(
                   convertToFiat(parseFloat(amount), assetRate) +
