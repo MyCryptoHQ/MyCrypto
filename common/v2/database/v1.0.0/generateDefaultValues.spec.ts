@@ -81,7 +81,7 @@ describe('Schema', () => {
 
     it('adds Tokens to Assets', () => {
       const tokens = toArray(defaultData[LSKeys.ASSETS]).filter(({ type }) => type === 'erc20');
-      expect(tokens.length).toEqual(1451);
+      expect(tokens.length).toEqual(1482);
     });
   });
 });
