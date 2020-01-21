@@ -53,14 +53,21 @@ const ColumnWrapper = Styled.div<{ bold?: boolean }>`
 
 const AddressWrapper = Styled(ColumnWrapper)<{ position: string }>`
   font-size: 16px;
-  margin: 0 10px 0 10px;
   & > div {
     margin: 10px 0 10px 0;
     padding: 12px;
     background: #f8f8f8;
+    font-size: 16px;
   }
   @media (min-width: ${SCREEN_XS}) {
+    margin: 0 10px 0 10px;
     ${props => `margin-${props.position}: 0;`}
+  }
+
+  // Ensure that label and address are stacked vertically
+  & > div > div {
+    display: flex;
+    flex-direction: column;
   }
 }
 `;
