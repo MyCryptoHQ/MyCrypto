@@ -11,6 +11,7 @@ import {
   DataProvider
 } from 'v2/services/Store';
 import { DevToolsProvider, RatesProvider, StoreProvider } from 'v2/services';
+import { WalletConnectProvider } from 'v2/services/WalletService';
 
 function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | null }) {
   return (

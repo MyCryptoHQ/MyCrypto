@@ -44,19 +44,19 @@ const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
         address: payload.getAddressString(),
         derivationPath: ''
       };
-    case WalletId.PARITY_SIGNER:
+    case WalletId.WALLETCONNECT:
       return {
         address: payload.address,
+        derivationPath: ''
+      };
+    case WalletId.PARITY_SIGNER:
+      return {
+        account: payload.address,
         derivationPath: ''
       };
     case WalletId.MNEMONIC_PHRASE:
     case WalletId.LEDGER_NANO_S:
     case WalletId.TREZOR:
-    case WalletId.WALLETCONNECT:
-      return {
-        account: payload.address,
-        derivationPath: ''
-      };
     case WalletId.SAFE_T_MINI:
       return {
         address: payload.address,
