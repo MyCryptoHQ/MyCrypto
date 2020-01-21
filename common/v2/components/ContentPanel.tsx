@@ -62,7 +62,7 @@ const ContentPanelTop = styled.div`
   align-items: center;
   justify-content: ${(props: ContentPanelTopProps) =>
     props.stepperOnly ? 'flex-end' : 'space-between'};
-  margin-bottom: 10px;
+  margin: 0 30px 10px 30px;
   padding: 0;
 `;
 

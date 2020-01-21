@@ -116,14 +116,18 @@ function TransactionDetailsDisplay({
               <div className="TransactionDetails-row-column">Nonce:</div>
               <div className="TransactionDetails-row-column">{nonce}</div>
             </div>
-            {data !== '0x0' && (
-              <>
-                <div className="TransactionDetails-row stacked">
-                  <div className="TransactionDetails-row-column">Data:</div>
+            <div className="TransactionDetails-row">
+              <div className="TransactionDetails-row-column">Data:</div>
+              {data !== '0x0' && data !== '0x' && data !== '0x00' ? (
+                <>
                   <div className="TransactionDetails-row-data">{data}</div>
-                </div>
-              </>
-            )}
+                </>
+              ) : (
+                <>
+                  <div className="TransactionDetails-row-data-empty">(none)</div>
+                </>
+              )}
+            </div>
             {rawTransaction && (
               <>
                 <div className="TransactionDetails-row stacked">

@@ -1,20 +1,100 @@
 import React, { useContext, useState } from 'react';
+import Styled from 'styled-components';
 import BN from 'bn.js';
 import { Address, Button } from '@mycrypto/ui';
 
 import feeIcon from 'common/assets/images/icn-fee.svg';
 import sendIcon from 'common/assets/images/icn-send.svg';
+import walletIcon from 'common/assets/images/icn-wallet.svg';
 import { AddressBookContext } from 'v2/services/Store';
-import { Amount } from 'v2/components';
+import { Amount, AssetIcon } from 'v2/components';
 import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from 'v2/services/EthService';
 import { RatesContext } from 'v2/services/RatesProvider';
 import { IStepComponentProps } from 'v2/types';
+import { BREAK_POINTS } from 'v2/theme';
 
-import './ConfirmTransaction.scss';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import TransactionIntermediaryDisplay from './displays/TransactionIntermediaryDisplay';
 import { convertToFiat, truncate } from 'v2/utils';
 import translate from 'v2/translations';
+import { TSymbol } from 'v2/types/symbols';
+const { SCREEN_XS } = BREAK_POINTS;
+
+const ConfirmTransactionWrapper = Styled.div`
+  text-align: left;
+`;
+
+const RowWrapper = Styled.div<{ stack?: boolean }>`
+  display: flex;
+  margin-bottom: 24px;
+  flex-direction: ${props => (props.stack ? 'column' : 'row')};
+  @media (min-width: ${SCREEN_XS}) {
+    flex-direction: row;
+    align-items: center;
+  }
+`;
+
+const ColumnWrapper = Styled.div<{ bold?: boolean }>`
+  font-size: 16px;
+  flex: 1;
+  font-weight: ${props => (props.bold ? 'bold' : 'normal')};
+  @media (min-width: ${SCREEN_XS}) {
+    margin-bottom: 0;
+  }
+  @media (min-width: ${SCREEN_XS}) {
+    font-size: 18px;
+  }
+  img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+`;
+
+const AddressWrapper = Styled(ColumnWrapper)<{ position: string }>`
+  font-size: 16px;
+  & > div {
+    margin: 10px 0 10px 0;
+    padding: 12px;
+    background: #f8f8f8;
+    font-size: 16px;
+  }
+  @media (min-width: ${SCREEN_XS}) {
+    margin: 0 10px 0 10px;
+    ${props => `margin-${props.position}: 0;`}
+  }
+
+  // Ensure that label and address are stacked vertically
+  & > div > div {
+    display: flex;
+    flex-direction: column;
+  }
+}
+`;
+
+const AmountWrapper = Styled(ColumnWrapper)`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-start;
+  img {
+    display: none;
+    @media (min-width: ${SCREEN_XS}) {
+      margin-right: 10px;
+      display: block;
+    }
+  }
+`;
+
+const Divider = Styled.div`
+  height: 1px;
+  margin-bottom: 20px;
+  background: #e3edff;
+`;
+
+const SendButton = Styled(Button)`
+  width: 100%;
+`;
 
 export default function ConfirmTransaction({
   txConfig,
@@ -67,82 +147,88 @@ export default function ConfirmTransaction({
   const baseAssetRate = getAssetRate(baseAsset);
 
   return (
-    <div className="ConfirmTransaction">
-      <div className="ConfirmTransaction-row">
-        <div className="ConfirmTransaction-row-column">
+    <ConfirmTransactionWrapper>
+      <RowWrapper stack={true}>
+        <AddressWrapper position={'left'}>
           {translate('CONFIRM_TX_FROM')}
-          <div className="ConfirmTransaction-addressWrapper">
-            <Address
-              address={senderAccount ? senderAccount.address : 'Unknown'}
-              title={senderAccountLabel}
-              truncate={truncate}
-            />
-          </div>
-        </div>
-        <div className="ConfirmTransaction-row-column">
+          <Address
+            address={senderAccount ? senderAccount.address : 'Unknown'}
+            title={senderAccountLabel}
+            truncate={truncate}
+          />
+        </AddressWrapper>
+        <AddressWrapper position={'right'}>
           {translate('CONFIRM_TX_TO')}
-          <div className="ConfirmTransaction-addressWrapper">
-            <Address
-              address={receiverAddress || 'Unknown'}
-              title={recipientLabel}
-              truncate={truncate}
-            />
-          </div>
-        </div>
-      </div>
+          <Address
+            address={receiverAddress || 'Unknown'}
+            title={recipientLabel}
+            truncate={truncate}
+          />
+        </AddressWrapper>
+      </RowWrapper>
       {assetType === 'erc20' && (
-        <div className="ConfirmTransaction-row">
+        <RowWrapper>
           <TransactionIntermediaryDisplay asset={asset} />
-        </div>
+        </RowWrapper>
       )}
-      <div className="ConfirmTransaction-row">
-        <div className="ConfirmTransaction-row-column">
+      <RowWrapper>
+        <ColumnWrapper>
           <img src={sendIcon} alt="Send" /> {translate('CONFIRM_TX_SENDING')}
-        </div>
-        <div className="ConfirmTransaction-row-column">
+        </ColumnWrapper>
+        <AmountWrapper>
+          <AssetIcon symbol={asset.ticker as TSymbol} size={'30px'} />
           <Amount
             assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
             fiatValue={`$${convertToFiat(parseFloat(amount), assetRate).toFixed(2)}
           `}
           />
-        </div>
-      </div>
-      <div className="ConfirmTransaction-row">
-        <div className="ConfirmTransaction-row-column">
+        </AmountWrapper>
+      </RowWrapper>
+      <RowWrapper>
+        <ColumnWrapper>
           <img src={feeIcon} alt="Fee" /> {translate('CONFIRM_TX_FEE')}
-        </div>
-        <div className="ConfirmTransaction-row-column">
+        </ColumnWrapper>
+        <AmountWrapper>
+          <AssetIcon symbol={asset.ticker as TSymbol} size={'30px'} />
           <Amount
             assetValue={`${maxTransactionFeeBase} ${baseAsset.ticker}`}
             fiatValue={`$${convertToFiat(parseFloat(maxTransactionFeeBase), baseAssetRate).toFixed(
               2
             )}`}
           />
-        </div>
-      </div>
-      <div className="ConfirmTransaction-divider" />
-      <div className="ConfirmTransaction-row">
-        <div className="ConfirmTransaction-row-column">
-          <img src={sendIcon} alt="Total" /> {translate('TOTAL')}
-        </div>
-        <div className="ConfirmTransaction-row-column">
+        </AmountWrapper>
+      </RowWrapper>
+      <Divider />
+      <RowWrapper>
+        <ColumnWrapper bold={true}>
+          <img src={walletIcon} alt="Total" />
+          {translate('TOTAL')}
+        </ColumnWrapper>
+        <AmountWrapper>
           {assetType === 'base' ? (
-            <Amount
-              assetValue={`${totalEtherEgress} ${asset.ticker}`}
-              fiatValue={`$${convertToFiat(parseFloat(totalEtherEgress), assetRate).toFixed(2)}`}
-            />
+            <>
+              <AssetIcon symbol={asset.ticker as TSymbol} size={'30px'} />
+              <Amount
+                assetValue={`${totalEtherEgress} ${asset.ticker}`}
+                fiatValue={`$${convertToFiat(parseFloat(totalEtherEgress), assetRate).toFixed(2)}`}
+              />
+            </>
           ) : (
-            <Amount
-              assetValue={`${amount} ${asset.ticker}`}
-              baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
-              fiatValue={`$${(
-                convertToFiat(parseFloat(amount), assetRate) +
-                convertToFiat(parseFloat(totalEtherEgress), baseAssetRate)
-              ).toFixed(2)}`}
-            />
+            <>
+              <AssetIcon symbol={asset.ticker as TSymbol} size={'30px'} />
+              <Amount
+                assetValue={`${amount} ${asset.ticker}`}
+                bold={true}
+                baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
+                fiatValue={`$${(
+                  convertToFiat(parseFloat(amount), assetRate) +
+                  convertToFiat(parseFloat(totalEtherEgress), baseAssetRate)
+                ).toFixed(2)}`}
+              />
+            </>
           )}
-        </div>
-      </div>
+        </AmountWrapper>
+      </RowWrapper>
       <TransactionDetailsDisplay
         baseAsset={baseAsset}
         asset={asset}
@@ -152,16 +238,15 @@ export default function ConfirmTransaction({
         gasLimit={gasLimit}
         gasPrice={gasPrice}
         nonce={nonce}
-        rawTransaction={txConfig.rawTransaction}
         signedTransaction={signedTx}
       />
-      <Button
+      <SendButton
         onClick={handleApprove}
         disabled={isBroadcastingTx}
         className="ConfirmTransaction-button"
       >
         {isBroadcastingTx ? translate('SUBMITTING') : translate('CONFIRM_AND_SEND')}
-      </Button>
-    </div>
+      </SendButton>
+    </ConfirmTransactionWrapper>
   );
 }

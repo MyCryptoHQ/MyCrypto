@@ -24,7 +24,8 @@ export const COLORS = {
   SUCCESS_GREEN: '#5dba5a',
   GOLD: '#FFD166',
   CLOUDY_BLUE: '#b5bfc7',
-  LEMON_GRASS: '#99968C'
+  LEMON_GRASS: '#99968C',
+  DARK_BLUE: '#1c314e'
 };
 
 export const BREAK_POINTS = {
