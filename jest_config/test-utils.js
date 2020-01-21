@@ -2,14 +2,14 @@
 // https://testing-library.com/docs/react-testing-library/setup#custom-render
 import { render } from '@testing-library/react';
 
-// Mock for features used by react-slider
+// Mock features used by react-slider
 window.matchMedia =
   window.matchMedia ||
   function () {
     return {
       matches: false,
-      addListener: function () { },
-      removeListener: function () { }
+      addListener: function () {},    // tslint:disable-line
+      removeListener: function () {}  // tslint:disable-line
     };
   };
 
@@ -22,9 +22,7 @@ window.requestAnimationFrame =
 // Create custom renderer to share setup between component tests.
 const AllTheProviders = ({ children }) => {
   return (
-    <>
-
-    </>
+    <></>
   )
 }
 
