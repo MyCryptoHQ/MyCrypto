@@ -250,7 +250,9 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
           };
 
           const handleFieldReset = () => {
-            setFieldValue('account', undefined);
+            const { account, amount } = initialFormikValues;
+            setFieldValue('account', account);
+            setFieldValue('amount', amount);
           };
 
           const setAmountFieldToAssetMax = () => {
