@@ -63,6 +63,7 @@
     "TOKEN_SYMBOL": "Token Symbol ",
     "TOKEN_DEC": "Decimals ",
     "TRANS_DATA": "Data ",
+    "TRANS_DATA_NONE": "(none)",
     "TRANS_AUTO_GAS_TOGGLE": "Automatically Calculate Gas Limit",
     "OFFLINE_STEP2_LABEL_3": "Gas Price (gwei) ",
     "OFFLINE_STEP2_LABEL_4": "Gas Limit ",

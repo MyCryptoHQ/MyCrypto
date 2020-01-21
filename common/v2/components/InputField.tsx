@@ -122,6 +122,7 @@ interface Props {
   onChange?(event: any): void;
   onBlur?(event: any): void;
   validate?(): Promise<void> | void | undefined;
+  onFocus?(event: any): void;
 }
 
 export class InputField extends Component<Props> {
@@ -139,6 +140,7 @@ export class InputField extends Component<Props> {
       label,
       onChange,
       onBlur,
+      onFocus,
       inputError,
       type,
       showEye,
@@ -160,6 +162,7 @@ export class InputField extends Component<Props> {
               value={value}
               onChange={onChange}
               onBlur={onBlur}
+              onFocus={onFocus}
               inputError={inputError}
               onKeyUp={this.handleKeyUp}
               placeholder={placeholder ? placeholder : ''}
@@ -174,6 +177,7 @@ export class InputField extends Component<Props> {
               value={value}
               onChange={onChange}
               onBlur={onBlur}
+              onFocus={onFocus}
               inputError={inputError}
               onKeyUp={this.handleKeyUp}
               showEye={showEye}

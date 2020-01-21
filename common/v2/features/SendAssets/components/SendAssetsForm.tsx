@@ -550,27 +550,29 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                       </div>
                     </div>
 
-                    <fieldset className="SendAssetsForm-fieldset">
-                      <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
-                        <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-data">
-                          <label htmlFor="data">{translate('TRANS_DATA')}</label>
-                          <Field
-                            name="txDataField"
-                            validate={validateDataField}
-                            render={({ field, form }: FieldProps<IFormikFields>) => (
-                              <DataField
-                                onChange={(option: string) => {
-                                  form.setFieldValue('txDataField', option);
-                                }}
-                                errors={errors.txDataField}
-                                name={field.name}
-                                value={field.value}
-                              />
-                            )}
-                          />
+                    {!isERC20Tx(values.asset) && (
+                      <fieldset className="SendAssetsForm-fieldset">
+                        <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
+                          <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-data">
+                            <label htmlFor="data">{translate('TRANS_DATA')}</label>
+                            <Field
+                              name="txDataField"
+                              validate={(value: string) => value !== '' && validateDataField(value)}
+                              render={({ field, form }: FieldProps<IFormikFields>) => (
+                                <DataField
+                                  onChange={(option: string) => {
+                                    form.setFieldValue('txDataField', option);
+                                  }}
+                                  errors={errors.txDataField}
+                                  name={field.name}
+                                  value={field.value}
+                                />
+                              )}
+                            />
+                          </div>
                         </div>
-                      </div>
-                    </fieldset>
+                      </fieldset>
+                    )}
                   </div>
                 )}
               </div>
