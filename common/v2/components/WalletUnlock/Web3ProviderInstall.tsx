@@ -4,7 +4,7 @@ import { Typography } from '@mycrypto/ui';
 import translate, { translateRaw } from 'v2/translations';
 import { DOWNLOAD_MYCRYPTO_LINK } from 'v2/config';
 
-import TrustWalletWEBP from 'common/assets/images/wallets/trust-3.webp';
+import TrustWalletSVG from 'common/assets/images/wallets/trust-3.svg';
 import CoinbaseWalletJPG from 'common/assets/images/wallets/coinbase.jpg';
 import MetamaskSVG from 'common/assets/images/wallets/metamask.svg';
 import AppStoreBadgeIMG from 'assets/images/mobile/app-store-badge.png';
@@ -25,7 +25,7 @@ function InstallTrunk() {
           <div className="TrustWallet-container">
             <NewTabLink href="https://trustwallet.com/dapp">
               <div className="TrustWallet-img">
-                <img src={TrustWalletWEBP} />
+                <img src={TrustWalletSVG} />
               </div>
             </NewTabLink>
 
