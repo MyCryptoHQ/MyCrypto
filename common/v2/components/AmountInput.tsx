@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-
 import { Input } from '@mycrypto/ui';
+
 import { Asset } from 'v2/types';
 import { TSymbol } from 'v2/types/symbols';
+
 import AssetIcon from './AssetIcon';
 import Typography from './Typography';
 interface Props {
@@ -14,13 +15,17 @@ interface Props {
   onBlur?(event: any): void;
 }
 
+const SInput = styled(Input)`
+  font-size: 1rem !important; // to override Typography from mycrypto/ui
+`;
+
 const SAssetIcon = styled(AssetIcon)`
   margin-right: 16px;
 `;
 
 function AmountInput({ asset, value, onChange, onBlur, placeholder, ...props }: Props) {
   return (
-    <Input
+    <SInput
       {...props}
       value={value}
       onChange={onChange}

@@ -18,7 +18,8 @@ import {
   AmountInput,
   AssetDropdown,
   WhenQueryExists,
-  AddressField
+  AddressField,
+  Checkbox
 } from 'v2/components';
 import {
   getNetworkById,
@@ -78,7 +79,11 @@ export const AdvancedOptionsButton = styled(Button)`
   text-align: center;
 `;
 
-export const initialFormikValues: IFormikFields = {
+const NoMarginCheckbox = styled(Checkbox)`
+  margin-bottom: 0px;
+`;
+
+const initialFormikValues: IFormikFields = {
   address: {
     value: '',
     display: ''
@@ -102,7 +107,8 @@ export const initialFormikValues: IFormikFields = {
   gasPriceField: '20',
   gasLimitField: '21000',
   advancedTransaction: false,
-  nonceField: '0'
+  nonceField: '0',
+  isAutoGasSet: true
 };
 
 // To preserve form state between steps, we prefil the fields with state
@@ -167,6 +173,9 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
   const [isResolvingENSName, setIsResolvingENSName] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
   const [baseAsset, setBaseAsset] = useState({} as Asset);
 
+  const validAccounts = accounts.filter(account => account.wallet !== WalletId.VIEW_ONLY);
+  const validAssets = assets(validAccounts);
+
   return (
     <div className="SendAssetsForm">
       <Formik
@@ -184,21 +193,30 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
           values,
           handleChange
         }) => {
+          const toggleIsAutoGasSet = () => {
+            // save value because setFieldValue method is async and values are not yet updated
+            const isEnablingAutoGas = !values.isAutoGasSet;
+            setFieldValue('isAutoGasSet', !values.isAutoGasSet);
+
+            if (isEnablingAutoGas) {
+              handleGasEstimate(true);
+            }
+          };
+
           const toggleAdvancedOptions = () => {
             setFieldValue('advancedTransaction', !values.advancedTransaction);
           };
 
-          const handleGasEstimate = async () => {
+          const handleGasEstimate = async (forceEstimate: boolean = false) => {
             if (
-              !(
-                !values ||
-                !values.network ||
-                !values.asset ||
-                !values.address ||
-                !isValidETHAddress(values.address.value) ||
-                !values.account ||
-                !isValidPositiveNumber(values.amount)
-              )
+              values &&
+              values.network &&
+              values.asset &&
+              values.address &&
+              isValidETHAddress(values.address.value) &&
+              values.account &&
+              isValidPositiveNumber(values.amount) &&
+              (values.isAutoGasSet || forceEstimate)
             ) {
               setIsEstimatingGasLimit(true);
               const finalTx = processFormForEstimateGas(values);
@@ -232,7 +250,13 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
           };
 
           const handleFieldReset = () => {
-            setFieldValue('account', undefined);
+            const resetFields: (keyof IFormikFields)[] = [
+              'account',
+              'amount',
+              'txDataField',
+              'advancedTransaction'
+            ];
+            resetFields.forEach(field => setFieldValue(field, initialFormikValues[field]));
           };
 
           const setAmountFieldToAssetMax = () => {
@@ -271,7 +295,6 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
             setIsEstimatingNonce(false);
           };
 
-          const validAccounts = accounts.filter(account => account.wallet !== WalletId.VIEW_ONLY);
           const isValidAddress =
             !errors.address ||
             Object.values(errors.address).filter(e => e !== undefined).length === 0;
@@ -293,7 +316,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                     <AssetDropdown
                       name={field.name}
                       value={field.value}
-                      assets={assets(validAccounts)}
+                      assets={validAssets}
                       onSelect={(option: StoreAsset) => {
                         form.setFieldValue('asset', option || {}); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
                         //TODO get assetType onChange
@@ -307,7 +330,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                           form.setFieldValue('network', network || {});
                           if (network) {
                             setBaseAsset(
-                              getBaseAssetByNetwork({ network, assets: assets(validAccounts) }) ||
+                              getBaseAssetByNetwork({ network, assets: validAssets }) ||
                                 ({} as Asset)
                             );
                           }
@@ -326,15 +349,12 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                   name="account"
                   value={values.account}
                   component={({ field, form }: FieldProps) => {
-                    const accountsWithAsset = getAccountsByAsset(accounts, values.asset);
-                    const relevantAccounts = accountsWithAsset.filter(
-                      account => account.wallet !== WalletId.VIEW_ONLY
-                    );
+                    const accountsWithAsset = getAccountsByAsset(validAccounts, values.asset);
                     return (
                       <AccountDropdown
                         name={field.name}
                         value={field.value}
-                        accounts={relevantAccounts}
+                        accounts={accountsWithAsset}
                         onSelect={(option: ExtendedAccount) => {
                           form.setFieldValue('account', option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
                           handleNonceEstimate(option);
@@ -353,7 +373,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                 <AddressField
                   fieldName="address"
                   handleENSResolve={handleENSResolve}
-                  onBlur={handleGasEstimate}
+                  onBlur={() => handleGasEstimate()}
                   error={errors && errors.address && errors.address.value}
                   touched={touched}
                   network={values.network}
@@ -448,6 +468,37 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                 {values.advancedTransaction && (
                   <div className="SendAssetsForm-advancedOptions-content">
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
+                      <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-limit">
+                        <label htmlFor="gasLimit" className="input-group-header label-with-action">
+                          <div>{translate('OFFLINE_STEP2_LABEL_4')}</div>
+                          <NoMarginCheckbox
+                            onChange={toggleIsAutoGasSet}
+                            checked={values.isAutoGasSet}
+                            name="autoGasSet"
+                            label={translateRaw('TRANS_AUTO_GAS_TOGGLE')}
+                          />
+                        </label>
+
+                        <Field
+                          name="gasLimitField"
+                          validate={validateGasLimitField}
+                          render={({ field, form }: FieldProps<IFormikFields>) => (
+                            <GasLimitField
+                              onChange={(option: string) => {
+                                form.setFieldValue('gasLimitField', option);
+                              }}
+                              name={field.name}
+                              value={field.value}
+                              disabled={values.isAutoGasSet}
+                            />
+                          )}
+                        />
+                        {errors && errors.gasLimitField && (
+                          <InlineErrorMsg>{errors.gasLimitField}</InlineErrorMsg>
+                        )}
+                      </div>
+                    </div>
+                    <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-price">
                         <label htmlFor="gasPrice">{translate('OFFLINE_STEP2_LABEL_3')}</label>
                         <Field
@@ -469,35 +520,8 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                       </div>
                     </div>
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
-                      <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-limit">
-                        <label htmlFor="gasLimit" className="input-group-header label-with-action">
-                          <div>{translate('OFFLINE_STEP2_LABEL_4')}</div>
-                          <div className="label-action" onClick={handleGasEstimate}>
-                            Estimate
-                          </div>
-                        </label>
-
-                        <Field
-                          name="gasLimitField"
-                          validate={validateGasLimitField}
-                          render={({ field, form }: FieldProps<IFormikFields>) => (
-                            <GasLimitField
-                              onChange={(option: string) => {
-                                form.setFieldValue('gasLimitField', option);
-                              }}
-                              name={field.name}
-                              value={field.value}
-                            />
-                          )}
-                        />
-                        {errors && errors.gasLimitField && (
-                          <InlineErrorMsg>{errors.gasLimitField}</InlineErrorMsg>
-                        )}
-                      </div>
-                    </div>
-                    <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-nonce">
-                        <label htmlFor="nonce" className="input-group-header label-with-action">
+                        <label htmlFor="nonce">
                           <div>
                             Nonce{' '}
                             <a
@@ -510,14 +534,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                               <img src={questionSVG} alt="Help" />{' '}
                             </a>
                           </div>
-                          <div
-                            className="label-action"
-                            onClick={() => handleNonceEstimate(values.account)}
-                          >
-                            Estimate
-                          </div>
                         </label>
-
                         <Field
                           name="nonceField"
                           validate={validateNonceField}
@@ -537,27 +554,29 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                       </div>
                     </div>
 
-                    <fieldset className="SendAssetsForm-fieldset">
-                      <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
-                        <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-data">
-                          <label htmlFor="data">{translate('TRANS_DATA')}</label>
-                          <Field
-                            name="txDataField"
-                            validate={validateDataField}
-                            render={({ field, form }: FieldProps<IFormikFields>) => (
-                              <DataField
-                                onChange={(option: string) => {
-                                  form.setFieldValue('txDataField', option);
-                                }}
-                                errors={errors.txDataField}
-                                name={field.name}
-                                value={field.value}
-                              />
-                            )}
-                          />
+                    {!isERC20Tx(values.asset) && (
+                      <fieldset className="SendAssetsForm-fieldset">
+                        <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
+                          <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-data">
+                            <label htmlFor="data">{translate('TRANS_DATA')}</label>
+                            <Field
+                              name="txDataField"
+                              validate={(value: string) => value !== '' && validateDataField(value)}
+                              render={({ field, form }: FieldProps<IFormikFields>) => (
+                                <DataField
+                                  onChange={(option: string) => {
+                                    form.setFieldValue('txDataField', option);
+                                  }}
+                                  errors={errors.txDataField}
+                                  name={field.name}
+                                  value={field.value}
+                                />
+                              )}
+                            />
+                          </div>
                         </div>
-                      </div>
-                    </fieldset>
+                      </fieldset>
+                    )}
                   </div>
                 )}
               </div>

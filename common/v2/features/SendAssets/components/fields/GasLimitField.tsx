@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Input } from '@mycrypto/ui';
+import { InputField } from 'v2/components';
 
-export function GasLimitField({ value, name, onChange }: IGasLimitField) {
+export function GasLimitField({ value, name, onChange, disabled }: IGasLimitField) {
   return (
     <div>
-      <Input
+      <InputField
         {...value}
         name={name}
         value={value}
@@ -13,6 +13,7 @@ export function GasLimitField({ value, name, onChange }: IGasLimitField) {
         onChange={e => onChange(e.target.value)}
         placeholder="21000"
         className="SendAssetsForm-fieldset-input"
+        disabled={disabled}
       />
     </div>
   );
@@ -21,6 +22,7 @@ export function GasLimitField({ value, name, onChange }: IGasLimitField) {
 interface IGasLimitField {
   value: string;
   name: string;
+  disabled?: boolean;
   onChange(entry: string): void;
 }
 

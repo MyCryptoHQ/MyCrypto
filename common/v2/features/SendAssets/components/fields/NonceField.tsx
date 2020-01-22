@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Input } from '@mycrypto/ui';
+import { InputField } from 'v2/components';
 
 export function NonceField({ value, name, onChange }: INonceField) {
   return (
     <div>
-      <Input
+      <InputField
         {...value}
         name={name}
         value={value}

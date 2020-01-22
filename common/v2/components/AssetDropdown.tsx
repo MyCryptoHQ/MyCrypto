@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { OptionComponentProps } from 'react-select';
 import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
 import { Asset } from 'v2/types';
 import { AssetSummary, Divider, Dropdown } from 'v2/components';
+import { useEffectOnce } from 'v2/vendor';
 
 // Fixes weird placement issues for react-select
 const DropdownContainer = styled('div')`
@@ -35,15 +36,19 @@ class AssetOption extends React.PureComponent<OptionComponentProps> {
 
 function AssetDropdown({ assets, name, value, onSelect }: Props<Asset>) {
   const [filteredAssets, setFilteredAssets] = useState([] as Asset[]);
-  useEffect(() => {
-    setFilteredAssets(
-      assets
-        .filter(
-          (asset, index) => assets.map(assetObj => assetObj.uuid).indexOf(asset.uuid) >= index
-        )
-        .map(asset => ({ label: asset.name, id: asset.uuid, ...asset }))
-    ); /* Removes duplicates and maps to format accepted by react-select */
-  }, []);
+  useEffectOnce(() => {
+    /* Removes duplicates and maps to format accepted by react-select */
+    const filtered = assets
+      .filter((asset, index) => assets.map(assetObj => assetObj.uuid).indexOf(asset.uuid) >= index)
+      .map(asset => ({ label: asset.name, id: asset.uuid, ...asset }));
+    setFilteredAssets(filtered);
+
+    // preselect first value from options
+    if ((!value || !value.ticker) && filtered.length > 0) {
+      onSelect(filtered[0]);
+    }
+  });
+
   return (
     <DropdownContainer>
       <Dropdown

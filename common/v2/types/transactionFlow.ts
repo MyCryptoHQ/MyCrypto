@@ -50,6 +50,7 @@ export interface IFormikFields {
   nonceField: string; // Use only if user has input a manual nonce value.
   network: INetwork;
   advancedTransaction: boolean;
+  isAutoGasSet: boolean;
 }
 
 export interface ISignComponentProps {

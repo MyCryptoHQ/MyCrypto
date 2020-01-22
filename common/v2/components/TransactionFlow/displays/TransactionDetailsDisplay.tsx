@@ -7,10 +7,10 @@ import { baseToConvertedUnit, totalTxFeeToString } from 'v2/services/EthService'
 import { getAccountBalance, StoreContext } from 'v2/services/Store';
 import { CopyableCodeBlock } from 'v2/components';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
-import { weiToFloat } from 'v2/utils';
+import { weiToFloat, isTransactionDataEmpty } from 'v2/utils';
+import translate from 'v2/translations';
 
 import './TransactionDetailsDisplay.scss';
-import translate from 'v2/translations';
 
 interface Props {
   baseAsset: Asset;
@@ -118,14 +118,12 @@ function TransactionDetailsDisplay({
             </div>
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">Data:</div>
-              {data !== '0x0' && data !== '0x' && data !== '0x00' ? (
-                <>
-                  <div className="TransactionDetails-row-data">{data}</div>
-                </>
+              {!isTransactionDataEmpty(data) ? (
+                <div className="TransactionDetails-row-data">{data}</div>
               ) : (
-                <>
-                  <div className="TransactionDetails-row-data-empty">(none)</div>
-                </>
+                <div className="TransactionDetails-row-data-empty">
+                  {translate('TRANS_DATA_NONE')}
+                </div>
               )}
             </div>
             {rawTransaction && (

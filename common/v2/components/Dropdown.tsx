@@ -1,6 +1,7 @@
 import React from 'react';
-import Select, { OptionComponentProps } from 'react-select';
+import Select, { OptionComponentProps, ArrowRendererProps } from 'react-select';
 import styled from 'styled-components';
+import { Icon } from '@mycrypto/ui';
 
 import { COLORS } from 'v2/theme';
 
@@ -38,6 +39,14 @@ interface Props<T> {
   onChange?(option: T): void;
 }
 
+const Chevron = styled(Icon)`
+  font-size: 0.75rem;
+`;
+
+const DropdownIndicator = (props: ArrowRendererProps) => (
+  <Chevron icon={props.isOpen ? 'chevronUp' : 'chevronDown'} />
+);
+
 export default function Dropdown({
   onChange,
   options,
@@ -51,6 +60,7 @@ export default function Dropdown({
 }: Props<any>) {
   return (
     <SSelect
+      arrowRenderer={DropdownIndicator}
       clearable={false}
       menuContainerStyle={{ maxHeight: '65vh', borderTop: '1px solid #ececec' }}
       menuStyle={{ maxHeight: '65vh' }}
