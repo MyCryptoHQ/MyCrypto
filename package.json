@@ -39,7 +39,7 @@
     "idna-uts46": "1.1.0",
     "jsonschema": "1.2.4",
     "jspdf": "1.5.3",
-    "lodash": "4.17.13",
+    "lodash": "4.17.15",
     "moment": "2.22.1",
     "qrcode": "1.4.4",
     "query-string": "6.0.0",
