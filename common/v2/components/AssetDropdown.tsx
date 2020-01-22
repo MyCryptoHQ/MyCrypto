@@ -71,16 +71,16 @@ function AssetDropdown({
   assets,
   selectedAsset,
   onSelect,
-  showOnlyTicker,
+  showOnlyTicker = false,
   searchable = false,
   disabled = false,
   fluid = false,
   label
 }: Props<Asset | { name: string; symbol: TSymbol }>) {
   useEffectOnce(() => {
-    // preselect first value from options
-    if (!R.isNil(onSelect) || !selectedAsset || R.isEmpty(assets)) {
-      onSelect!(assets[0]);
+    // Preselect first value when not provided
+    if (R.isEmpty(selectedAsset) && onSelect && !R.isEmpty(assets)) {
+      onSelect(assets[0]);
     }
   });
 
