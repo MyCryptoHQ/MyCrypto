@@ -50,14 +50,14 @@ export const getAssetByContractAndNetwork = (
 
 export const getTotalByAsset = (assets: StoreAsset[]) =>
   assets.reduce((dict, asset) => {
-    const prev = dict[asset.name];
+    const prev = dict[asset.uuid];
     if (prev) {
-      dict[asset.name] = {
+      dict[asset.uuid] = {
         ...prev,
         balance: prev.balance.add(asset.balance)
       };
     } else {
-      dict[asset.name] = asset;
+      dict[asset.uuid] = asset;
     }
     return dict;
   }, {} as { [key: string]: StoreAsset });
