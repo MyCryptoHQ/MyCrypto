@@ -204,6 +204,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                     <AssetDropdown
                       selectedAsset={field.value}
                       assets={assetOptions}
+                      searchable={true}
                       onSelect={option => {
                         form.setFieldValue(field.name, option);
                         if (option.name) {
