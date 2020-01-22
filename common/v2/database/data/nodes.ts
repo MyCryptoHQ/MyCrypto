@@ -80,7 +80,7 @@ export const NODES_CONFIG: { [key in NetworkId]: NodeConfig[] } = {
       name: makeNodeName('ETC', 'etccooperative'),
       type: NodeType.RPC,
       service: 'ETC Cooperative',
-      url: 'https://ethereumclassic.network'
+      url: 'https://www.ethercluster.com/etc'
     }
   ],
 
