@@ -100,8 +100,6 @@ export const WALLET_STEPS: SigningComponents = {
   [WalletId.WEB3]: SignTransactionWeb3,
   [WalletId.METAMASK]: SignTransactionWeb3,
   [WalletId.TRUST]: SignTransactionWeb3,
-  [WalletId.CIPHER]: SignTransactionWeb3,
-  [WalletId.MIST]: SignTransactionWeb3,
   [WalletId.FRAME]: SignTransactionWeb3,
   [WalletId.LEDGER_NANO_S]: SignTransactionLedger,
   [WalletId.TREZOR]: SignTransactionTrezor,

@@ -2,8 +2,6 @@ export enum WalletId {
   WEB3 = 'WEB3',
   METAMASK = 'METAMASK',
   TRUST = 'TRUST',
-  CIPHER = 'CIPHER',
-  MIST = 'MIST',
   FRAME = 'FRAME',
   LEDGER_NANO_S = 'LEDGER_NANO_S',
   TREZOR = 'TREZOR',

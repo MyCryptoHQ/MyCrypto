@@ -1,6 +1,5 @@
 import { KNOWLEDGE_BASE_URL as KB_URL } from 'v2/config';
 import { filterObjectOfObjects } from 'v2/utils/filterObjectOfObjects';
-import { getWeb3ProviderInfo } from 'v2/utils/web3';
 import { WalletType, WalletId } from 'v2/types';
 
 // @ADD_ACCOUNT_TODO: Icons really belongs to the WalletButton or a WalletIcon
@@ -9,8 +8,10 @@ import LedgerSVG from 'common/assets/images/wallets/ledger.svg';
 import TrezorSVG from 'common/assets/images/wallets/trezor.svg';
 import SafeTSVG from 'common/assets/images/wallets/safe-t.png';
 import ParitySignerSVG from 'common/assets/images/wallets/parity-signer.svg';
-
-const web3ProviderInfo = getWeb3ProviderInfo();
+import MetamaskIcon from 'common/assets/images/wallets/metamask.svg';
+import TrustIcon from 'assets/images/wallets/trust.svg';
+import Web3DefaultIcon from 'assets/images/wallets/web3-default.svg';
+import FrameIcon from 'assets/images/wallets/frame.svg';
 
 export interface IWalletConfig {
   id: WalletId;
@@ -34,8 +35,8 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isSecure: true,
     isDesktopOnly: false,
     type: WalletType.WEB3,
-    lid: web3ProviderInfo.lid,
-    icon: web3ProviderInfo.icon,
+    lid: 'X_WEB3_DEFAULT',
+    icon: Web3DefaultIcon,
     description: 'ADD_WEB3DESC',
     helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`
   },
@@ -46,8 +47,8 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isSecure: true,
     isDesktopOnly: false,
     type: WalletType.WEB3,
-    lid: web3ProviderInfo.lid,
-    icon: web3ProviderInfo.icon,
+    lid: 'X_METAMASK',
+    icon: MetamaskIcon,
     description: 'ADD_WEB3DESC',
     helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`,
     getItLink: 'https://metamask.io'
@@ -59,35 +60,11 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isSecure: true,
     isDesktopOnly: false,
     type: WalletType.WEB3,
-    lid: web3ProviderInfo.lid,
-    icon: web3ProviderInfo.icon,
+    lid: 'X_TRUST',
+    icon: TrustIcon,
     description: 'ADD_WEB3DESC',
     helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`,
     getItLink: 'https://trustwallet.com'
-  },
-  [WalletId.CIPHER]: {
-    id: WalletId.CIPHER,
-    name: 'Cipher',
-    isDeterministic: false,
-    isSecure: true,
-    isDesktopOnly: false,
-    type: WalletType.WEB3,
-    lid: web3ProviderInfo.lid,
-    icon: web3ProviderInfo.icon,
-    description: 'ADD_WEB3DESC',
-    helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`
-  },
-  [WalletId.MIST]: {
-    id: WalletId.MIST,
-    name: 'Mist',
-    isDeterministic: false,
-    isSecure: true,
-    isDesktopOnly: false,
-    type: WalletType.WEB3,
-    lid: web3ProviderInfo.lid,
-    icon: web3ProviderInfo.icon,
-    description: 'ADD_WEB3DESC',
-    helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`
   },
   [WalletId.FRAME]: {
     id: WalletId.FRAME,
@@ -96,8 +73,8 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isSecure: true,
     isDesktopOnly: false,
     type: WalletType.WEB3,
-    lid: web3ProviderInfo.lid,
-    icon: web3ProviderInfo.icon,
+    lid: 'X_FRAME',
+    icon: FrameIcon,
     description: 'ADD_WEB3DESC',
     helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`,
     getItLink: 'https://frame.sh/'
