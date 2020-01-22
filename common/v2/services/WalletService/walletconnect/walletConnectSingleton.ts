@@ -23,7 +23,7 @@ export class WalletConnectSingleton {
   // This is meant to simulate how other wallets work, allowing us to refresh the WalletConnectSession
   public static async refreshWalletConnectSession(): Promise<WalletConnectInstance> {
     // If a session exists, kill it
-    if (this.instance.session) {
+    if (window.localStorage.getItem('walletconnect') || this.instance.session) {
       await this.instance.killSession();
     }
     // Start a new session

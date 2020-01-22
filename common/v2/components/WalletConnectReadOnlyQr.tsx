@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './WalletConnectQr.scss';
+import './WalletConnectReadOnlyQr.scss';
 import QRCode from './QRCode';
 import Spinner from './Spinner';
 

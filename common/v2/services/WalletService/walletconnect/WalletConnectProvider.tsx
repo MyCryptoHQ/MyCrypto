@@ -12,7 +12,6 @@ export interface WalletConnectProviderState extends WalletConnectState {
   fetchWalletConnectSession(): Promise<WalletConnect> | undefined;
   refreshSession(): Promise<WalletConnect>;
   sendTransaction(tx: ITxData): Promise<any>;
-  getWalletConnectorUri(): string | undefined;
 }
 
 export const initWalletConnectState: WalletConnectState = {
@@ -48,14 +47,11 @@ export const WalletConnectProvider = ({ children }: any) => {
 
   const sendTransaction = (tx: ITxData) => state.session.sendTransaction(tx);
 
-  const getWalletConnectorUri = () => state.session.uri || undefined;
-
   const stateContext: WalletConnectProviderState = {
     ...state,
     fetchWalletConnectSession,
     refreshSession,
-    sendTransaction,
-    getWalletConnectorUri
+    sendTransaction
   };
 
   return (
