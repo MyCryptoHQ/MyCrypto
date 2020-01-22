@@ -378,6 +378,20 @@
     "uuid": "c2f7cc40-0f78-5a26-94c3-a2746f6dcac7"
   },
   {
+    "address": "0xc36e2C02e64585c15794B8e25E826d50b15fd878",
+    "symbol": "ANIME",
+    "decimal": 8,
+    "name": "Animeyen",
+    "uuid": "a612b9c0-ab58-5df9-9572-3ad575167f83"
+  },
+  {
+    "address": "0xcD62b1C403fa761BAadFC74C525ce2B51780b184",
+    "symbol": "ANJ",
+    "decimal": 18,
+    "name": "Aragon Network Juror",
+    "uuid": "9978e92f-dc71-5176-862f-7d9a4dacd153"
+  },
+  {
     "address": "0x960b236A07cf122663c4303350609A66A7B288C0",
     "symbol": "ANT",
     "decimal": 18,
@@ -439,6 +453,13 @@
     "decimal": 18,
     "name": "Accord",
     "uuid": "fc07a1ad-4879-560a-92af-623a098476a6"
+  },
+  {
+    "address": "0x92afBa413BF9E5DA3919A522E371884bEAC76309",
+    "symbol": "ARE",
+    "decimal": 8,
+    "name": "Aurei",
+    "uuid": "2daec69d-8d37-5c37-a430-93669457cd41"
   },
   {
     "address": "0xBA5F11b16B155792Cf3B2E6880E8706859A8AEB6",
@@ -1060,7 +1081,7 @@
     "address": "0x1F573D6Fb3F13d689FF844B4cE37794d79a7FF1C",
     "symbol": "BNT",
     "decimal": 18,
-    "name": "Bancor",
+    "name": "Bancor Network Token",
     "uuid": "778541d2-65e6-5c57-b083-aa3129eb91c8"
   },
   {
@@ -1097,6 +1118,13 @@
     "decimal": 18,
     "name": "Blockium",
     "uuid": "6621726d-31ad-5e20-9279-39e0fe120933"
+  },
+  {
+    "address": "0xEfE98765Da3824eF4a5358bA798cec87c13D8C62",
+    "symbol": "BOL",
+    "decimal": 18,
+    "name": "Freight Trust Protocol",
+    "uuid": "eeb6a955-9e2b-54a8-907a-ca1b5859aaac"
   },
   {
     "address": "0x9F235D23354857EfE6c541dB92a9eF1877689BCB",
@@ -2310,11 +2338,11 @@
     "uuid": "78d54eba-c431-5fe0-9382-91626dcdb7ba"
   },
   {
-    "address": "0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359",
+    "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
     "symbol": "DAI",
     "decimal": 18,
-    "name": "Dai Stablecoin v1.0",
-    "uuid": "53306efd-fb16-5e9a-b6d0-fc0e9713da40"
+    "name": "Dai Stablecoin v2.0",
+    "uuid": "e1f698bf-cb85-5405-b563-14774af14bf1"
   },
   {
     "address": "0x07D9e49Ea402194bf48A8276dAfB16E4eD633317",
@@ -3206,6 +3234,13 @@
     "uuid": "f69e3a98-2fb8-5448-b65a-878d3af4f8e3"
   },
   {
+    "address": "0xb1CD6e4153B2a390Cf00A6556b0fC1458C4A5533",
+    "symbol": "ETHBNT",
+    "decimal": 18,
+    "name": "Bancor ETH/BNT Liquidity Pool",
+    "uuid": "fb02de36-b41b-52c9-85c5-3c13580848db"
+  },
+  {
     "address": "0xdbFb423E9bBF16294388e07696A5120E4CeBA0C5",
     "symbol": "ETHD",
     "decimal": 18,
@@ -3470,6 +3505,13 @@
     "decimal": 18,
     "name": "Fidelium",
     "uuid": "afab5a05-056b-5a2d-aaac-893537696099"
+  },
+  {
+    "address": "0x2A73CB91ED8983398F83082c093ac306cac209FF",
+    "symbol": "FIG",
+    "decimal": 18,
+    "name": "Fanboys Interactive",
+    "uuid": "486c9d06-a227-594a-8722-aa99336e3d35"
   },
   {
     "address": "0xdfC3e857c8cCEA7657E0ed98AB92e048e38deE0f",
@@ -4242,11 +4284,32 @@
     "uuid": "f3f321d2-e673-5129-9ece-6b7a22418daf"
   },
   {
+    "address": "0x19747816A030fECDa3394C6062CDF6b9B4dB0E0b",
+    "symbol": "HEM",
+    "decimal": 8,
+    "name": "Hemelios",
+    "uuid": "e0c044b2-5a01-5d86-b565-73f23e13608b"
+  },
+  {
     "address": "0x491C9A23DB85623EEd455a8EfDd6AbA9b911C5dF",
     "symbol": "HER",
     "decimal": 18,
     "name": "HeroNode",
     "uuid": "ec9a8d15-6545-5ac5-a73c-e4763e0b239f"
+  },
+  {
+    "address": "0x2b591e99afE9f32eAA6214f7B7629768c40Eeb39",
+    "symbol": "HEX",
+    "decimal": 8,
+    "name": "HEX",
+    "uuid": "f0656669-66a1-5475-af6e-aeb454251845"
+  },
+  {
+    "address": "0x96006F60B452526481a26eab55265ECdf82E7361",
+    "symbol": "HEX (1)",
+    "decimal": 18,
+    "name": "HollaEx",
+    "uuid": "b80908dd-0550-57a2-b4ac-98549a391919"
   },
   {
     "address": "0xe9C9e7E1DaBea830C958C39D6b25964a6F52143A",
@@ -4324,6 +4387,13 @@
     "decimal": 8,
     "name": "Humaniq",
     "uuid": "b7f30066-9f24-57be-b154-3bbd6887eba5"
+  },
+  {
+    "address": "0xD6Cb175719365a2ea630f266C53dDfBe4e468e25",
+    "symbol": "HNI",
+    "decimal": 18,
+    "name": "Hunimal Token",
+    "uuid": "19952c7f-a5e9-50be-bbbb-f2c9f6176df2"
   },
   {
     "address": "0x9C9Fe3bD60b22A9735908B9589011E78F2025C11",
@@ -5257,13 +5327,6 @@
     "uuid": "9f563cf7-f883-5459-845e-5021a2f58629"
   },
   {
-    "address": "0x5a276Aeb77bCfDAc8Ac6f31BBC7416AE1A85eEF2",
-    "symbol": "LOVE",
-    "decimal": 0,
-    "name": "Love",
-    "uuid": "1e917c91-e52b-5997-af67-2ffd01843701"
-  },
-  {
     "address": "0x58b6A8A3302369DAEc383334672404Ee733aB239",
     "symbol": "LPT",
     "decimal": 18,
@@ -5831,6 +5894,20 @@
     "uuid": "e0f6ec32-ba36-5d75-acb4-bd13c44d0694"
   },
   {
+    "address": "0xA79e0012bb3379f8509a5ab49caB7e6Abb49701D",
+    "symbol": "NAMTC",
+    "decimal": 18,
+    "name": "NAMTANCOIN",
+    "uuid": "76162f17-a925-54c0-8a19-e78fcd2b6dc3"
+  },
+  {
+    "address": "0x9025f9A59694dd939739e05beB2502a567e8326f",
+    "symbol": "NAMTT",
+    "decimal": 18,
+    "name": "NamTanToken",
+    "uuid": "1534b6bd-0bbb-5534-9ca4-2ef896c8e113"
+  },
+  {
     "address": "0xFFE02ee4C69eDf1b340fCaD64fbd6b37a7b9e265",
     "symbol": "NANJ",
     "decimal": 8,
@@ -5978,6 +6055,13 @@
     "uuid": "d14dc620-27b4-54a2-8d03-8a3fbaef6d73"
   },
   {
+    "address": "0x5Cf04716BA20127F1E2297AdDCf4B5035000c9eb",
+    "symbol": "NKN",
+    "decimal": 18,
+    "name": "NKN",
+    "uuid": "fd6d2243-b89d-586c-b5b0-da93544d9ea4"
+  },
+  {
     "address": "0xCeE4019Fd41ECDc8bae9EFDd20510f4b6FAA6197",
     "symbol": "NLYA",
     "decimal": 18,
@@ -6083,11 +6167,25 @@
     "uuid": "62526f42-c093-512f-873f-77e7e0bf2ede"
   },
   {
+    "address": "0xc58c0Fca06908E66540102356f2E91edCaEB8D81",
+    "symbol": "NUKE",
+    "decimal": 18,
+    "name": "HalfLife",
+    "uuid": "64ad09da-516c-52a3-849f-9daad5364d99"
+  },
+  {
     "address": "0xB91318F35Bdb262E9423Bc7c7c2A3A93DD93C92C",
     "symbol": "NULS",
     "decimal": 18,
     "name": "NULS",
     "uuid": "563bc456-acb5-519a-b037-a38e033f09b8"
+  },
+  {
+    "address": "0x303D396bB1E2A73b1536665964aa9f5AA0f7f9cA",
+    "symbol": "NUMA",
+    "decimal": 0,
+    "name": "Numisma Coin",
+    "uuid": "d7e58fe4-f69e-517f-8aa5-9e98600ed2cd"
   },
   {
     "address": "0x0C6144c16af288948C8fdB37fD8fEc94bfF3d1d9",
@@ -7126,6 +7224,13 @@
     "uuid": "581d9bc9-0697-5610-9821-eecac607c063"
   },
   {
+    "address": "0xd967d9F941CD316Ab238d3EE761F80b7cAec7819",
+    "symbol": "RDV",
+    "decimal": 18,
+    "name": "Rendezvous",
+    "uuid": "02f21ce2-2cb8-5542-a560-7baaf4d0f3e4"
+  },
+  {
     "address": "0x767bA2915EC344015a7938E3eEDfeC2785195D05",
     "symbol": "REA",
     "decimal": 18,
@@ -7483,6 +7588,13 @@
     "uuid": "ac4c4537-9030-5e52-bdb8-613530334191"
   },
   {
+    "address": "0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359",
+    "symbol": "SAI",
+    "decimal": 18,
+    "name": "Dai Stablecoin v1.0",
+    "uuid": "53306efd-fb16-5e9a-b6d0-fc0e9713da40"
+  },
+  {
     "address": "0x4156D3342D5c385a87D264F90653733592000581",
     "symbol": "SALT",
     "decimal": 8,
@@ -7572,6 +7684,13 @@
     "decimal": 18,
     "name": "Sexy Token",
     "uuid": "145f98b8-58e1-5687-bcb8-96c9cf61e4f6"
+  },
+  {
+    "address": "0xed0849BF46CfB9845a2d900A0A4E593F2dD3673c",
+    "symbol": "SGA",
+    "decimal": 18,
+    "name": "SGA Token",
+    "uuid": "a260b72d-1b44-57be-a3b3-b550f9ee4cc2"
   },
   {
     "address": "0xa1ccc166faf0E998b3E33225A1A0301B1C86119D",
@@ -8582,6 +8701,13 @@
     "uuid": "f3ba06cb-721b-5304-ae74-2f7667b0cf78"
   },
   {
+    "address": "0x679131F591B4f369acB8cd8c51E68596806c3916",
+    "symbol": "TLN",
+    "decimal": 18,
+    "name": "Trustlines Network Token",
+    "uuid": "ac045880-5da9-50bf-8da8-9fdc1cf27b19"
+  },
+  {
     "address": "0xb3616550aBc8AF79c7A5902DEF9Efa3bC9A95200",
     "symbol": "TLX",
     "decimal": 8,
@@ -9107,6 +9233,13 @@
     "uuid": "b7f51edd-9e7d-5f68-8389-ac5fa77be2b6"
   },
   {
+    "address": "0x00eA6f91B00E080e816f1bB2faD71b0fe1528983",
+    "symbol": "VN",
+    "decimal": 18,
+    "name": "VCOIN",
+    "uuid": "a232870a-0d80-5ebb-833c-587433e5f0b1"
+  },
+  {
     "address": "0xC650f5514AE1A3a27930922145ce49E8A91b91AB",
     "symbol": "VNTY",
     "decimal": 18,
@@ -9513,6 +9646,20 @@
     "uuid": "8af0b8ee-1d32-5514-903c-09973c4bc97f"
   },
   {
+    "address": "0x7C5Cf2f624182D6b019470c7cffF8Ad27AAB51A8",
+    "symbol": "xDOT",
+    "decimal": 18,
+    "name": "Polkadot DOT Futures",
+    "uuid": "08631a0a-c9f1-5c49-a8f3-7f6c1ac244f5"
+  },
+  {
+    "address": "0xf75AAcB3c9ab1b14c01C8840370aC2F2B34779D3",
+    "symbol": "xEDG",
+    "decimal": 18,
+    "name": "Edgeware EDG Futures",
+    "uuid": "98d6c258-4b47-5db4-9116-fd203ad80513"
+  },
+  {
     "address": "0xA017ac5faC5941f95010b12570B812C974469c2C",
     "symbol": "XES",
     "decimal": 18,
@@ -9548,6 +9695,13 @@
     "uuid": "624e8e81-d66c-5829-b422-da46b9affce6"
   },
   {
+    "address": "0xD85DAf0C8B54D8BCEc96cfB90731B8851f98572E",
+    "symbol": "xGRAM",
+    "decimal": 18,
+    "name": "Telegram TON GRAM Futures",
+    "uuid": "ace4dcc3-e16f-522d-b66a-a56358a3251a"
+  },
+  {
     "address": "0x30f4A3e0aB7a76733D8b60b89DD93c3D0b4c9E2f",
     "symbol": "XGT",
     "decimal": 18,
@@ -9555,11 +9709,39 @@
     "uuid": "df23d7b4-1a7a-5baf-9514-263f16e5b7fd"
   },
   {
+    "address": "0x147c9130C5809367c5f2da7be0D6355D2795B081",
+    "symbol": "xHNS",
+    "decimal": 18,
+    "name": "Handshake HNS Futures",
+    "uuid": "da41fe2d-ff3e-5b9a-8437-019add450fe5"
+  },
+  {
+    "address": "0xD3c625F54dec647DB8780dBBe0E880eF21BA4329",
+    "symbol": "XHT",
+    "decimal": 18,
+    "name": "HollaEx",
+    "uuid": "60a1419f-14df-5975-ab8f-c65e3d13c843"
+  },
+  {
     "address": "0xB110eC7B1dcb8FAB8dEDbf28f53Bc63eA5BEdd84",
     "symbol": "XID",
     "decimal": 8,
     "name": "Sphere Identity",
     "uuid": "1cfaa8e9-82c2-560e-a342-bc364abafbd8"
+  },
+  {
+    "address": "0xfb96a8d7F1D7e1D7bce03903E49f45b123501e26",
+    "symbol": "xKDA",
+    "decimal": 18,
+    "name": "Kadena KDA Futures",
+    "uuid": "244bb04c-97aa-5e21-a0a2-84dd5ca1ac29"
+  },
+  {
+    "address": "0x2DdF7E8f8e406acC999c8827092d154B67CD41fA",
+    "symbol": "xKLAY",
+    "decimal": 18,
+    "name": "Klaytn KLAY Futures",
+    "uuid": "ad3bd54e-c895-5279-b9e9-8141d7f373a8"
   },
   {
     "address": "0x1d086b868d78040635CB8600bA733f12DB48cB42",
@@ -9574,6 +9756,13 @@
     "decimal": 18,
     "name": "XMED Chain",
     "uuid": "06aac312-0aae-5478-820c-1a274f88d5a1"
+  },
+  {
+    "address": "0xbd7D6a2183335eA25af2AF22c1F169FB0f6395f7",
+    "symbol": "xMOBILECOIN",
+    "decimal": 18,
+    "name": "MobileCoin MOBILECOIN Futures",
+    "uuid": "d9d661f5-0561-5e9d-987c-a27d5f9731f8"
   },
   {
     "address": "0x0f8c45B896784A1E408526B9300519ef8660209c",
@@ -9604,11 +9793,25 @@
     "uuid": "ccfcf5ac-67e3-57f2-aed8-35ec248c341f"
   },
   {
+    "address": "0x46F6Df27e472Ec0c949b8D3359A2814e89E290A6",
+    "symbol": "xNU",
+    "decimal": 18,
+    "name": "NuCypher NU Futures",
+    "uuid": "637a552c-ad07-5eea-bc1a-89ec50d85808"
+  },
+  {
     "address": "0x153eD9CC1b792979d2Bde0BBF45CC2A7e436a5F9",
     "symbol": "XOV",
     "decimal": 18,
     "name": "XOVBank",
     "uuid": "f0ec5261-72b1-5998-93c3-0023a5f7f352"
+  },
+  {
+    "address": "0x744eC1d45545DcEBb45fAa142Fa9E1B9D86d4527",
+    "symbol": "xOXT",
+    "decimal": 18,
+    "name": "Orchid OXT Futures",
+    "uuid": "b521371f-4b2a-564d-9083-3c714c723d73"
   },
   {
     "address": "0x90528aeb3a2B736B780fD1B6C478bB7E1d643170",
@@ -9632,6 +9835,13 @@
     "uuid": "fd9fe535-7b02-5af0-9b23-f6ebd9a79f48"
   },
   {
+    "address": "0x08Aa0ed0040736dd28d4c8B16Ab453b368248d19",
+    "symbol": "XPT",
+    "decimal": 18,
+    "name": "Cryptobuyer Token",
+    "uuid": "c1d86494-6048-5cb9-8e1c-3b65892fb240"
+  },
+  {
     "address": "0xB24754bE79281553dc1adC160ddF5Cd9b74361a4",
     "symbol": "XRL",
     "decimal": 9,
@@ -9644,6 +9854,13 @@
     "decimal": 18,
     "name": "XSC",
     "uuid": "9b616c0e-3cc7-5138-989f-79b75aa4033c"
+  },
+  {
+    "address": "0x22c421BA4717EDaF6b6BDA424207A7335e8f0e52",
+    "symbol": "xSOL",
+    "decimal": 18,
+    "name": "Solana SOL Futures",
+    "uuid": "e34a5db8-e9ec-5d7e-a69c-03bea35fe6f1"
   },
   {
     "address": "0x55296f69f40Ea6d20E478533C15A6B08B654E758",
