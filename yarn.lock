@@ -1802,10 +1802,10 @@
   dependencies:
     "@types/sizzle" "*"
 
-"@types/jspdf@1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@types/jspdf/-/jspdf-1.3.0.tgz#4c336ec6c0547343e032d6d48ab75112e3c2535b"
-  integrity sha512-lbOCtX/1mANeb5Apf9QfQ/n3guPf+NzCvdNuRnPZpG3lXiG/e1Cr+Pv2AoCVu8+h8NtYczO6ftezeP4DDHrq4g==
+"@types/jspdf@1.3.3":
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/@types/jspdf/-/jspdf-1.3.3.tgz#6940e892da69fdbe0969b742c6bdd9e4c5da320b"
+  integrity sha512-DqwyAKpVuv+7DniCp2Deq1xGvfdnKSNgl9Agun2w6dFvR5UKamiv4VfYUgcypd8S9ojUyARFIlZqBrYrBMQlew==
 
 "@types/ledgerhq__hw-transport-u2f@4.21.1":
   version "4.21.1"
@@ -1977,10 +1977,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-slick@0.23.3":
-  version "0.23.3"
-  resolved "https://registry.yarnpkg.com/@types/react-slick/-/react-slick-0.23.3.tgz#c9d14323a75f54f46a652fb745fe553aad091ce0"
-  integrity sha512-B6wU5ynINOolrByhoeJ448qZPjCFPcuhyQI5sjihjG8gQJuoTH6a4YQhuDm4umvbRVielJQANhptc8hmxA85IA==
+"@types/react-slick@0.23.4":
+  version "0.23.4"
+  resolved "https://registry.yarnpkg.com/@types/react-slick/-/react-slick-0.23.4.tgz#c97e2a9e7e3d1933c68593b8e82752fab1e8ce53"
+  integrity sha512-vXoIy4GUfB7/YgqubR4H7RALo+pRdMYCeLgWwV3MPwl5pggTlEkFBTF19R7u+LJc85uMqC7RfsbkqPLMQ4ab+A==
   dependencies:
     "@types/react" "*"
 
@@ -2004,10 +2004,10 @@
   resolved "https://registry.yarnpkg.com/@types/recharts-scale/-/recharts-scale-1.0.0.tgz#348c9220d6d9062c44a9d585d686644a97f7e25d"
   integrity sha512-HR/PrCcxYb2YHviTqH7CMdL1TUhUZLTUKzfrkMhxm1HTa5mg/QtP8XMiuSPz6dZ6wecazAOu8aYZ5DqkNlgHHQ==
 
-"@types/recharts@1.1.17":
-  version "1.1.17"
-  resolved "https://registry.yarnpkg.com/@types/recharts/-/recharts-1.1.17.tgz#a5aa5791f0592d77d9c98a2c5ae1ae2af341730c"
-  integrity sha512-8cuyExlDcCV33jivuwRGxN2qLlaP3xgCAR/c+boJPpRa3fYhuQJML28vJnsVcDWWHi+6YL7n6lR+7q+jPccP6g==
+"@types/recharts@1.8.5":
+  version "1.8.5"
+  resolved "https://registry.yarnpkg.com/@types/recharts/-/recharts-1.8.5.tgz#5436ae742485cd033910c611eeb9e4c13cbf55f7"
+  integrity sha512-3h/hVNnyOxDyAGhzRpa5y/QBp30vqDw7mUyV0JNoxWnjKM1h8SdgoYru3robamxsXkVa18rz/SVJ+MWDQw8GLg==
   dependencies:
     "@types/d3-shape" "*"
     "@types/react" "*"
