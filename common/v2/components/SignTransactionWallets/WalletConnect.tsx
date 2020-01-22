@@ -14,6 +14,8 @@ import { WALLETS_CONFIG } from 'v2/config';
 import { InlineErrorMsg } from '../ErrorMessages';
 import './WalletConnect.scss';
 import { WalletConnectContext } from 'v2/services/WalletService';
+import { walletConnectUnlock } from 'v2/utils';
+import { WalletConnectQRState } from '../WalletUnlock/WalletConnectProvider';
 
 interface WalletConnectAddress {
   address: string;
@@ -48,12 +50,6 @@ export const initialWalletConnectState: IWalletConnectState = {
   isConnected: false
 };
 
-enum WalletQRState {
-  READY, // use when walletConnect session is created
-  NOT_READY, // use when walletConnect session needs to be created
-  UNKNOWN // used upon component initialization when walletconnect status is not determined
-}
-
 export type WalletConnectQrContent = WalletConnectAddress;
 
 const wikiLink = WALLETS_CONFIG[WalletId.WALLETCONNECT].helpLink!;
@@ -66,7 +62,7 @@ export function SignTransactionWalletConnect({
   const { sendTransaction } = useContext(WalletConnectContext);
   const [state, dispatch] = useReducer(walletConnectReducer, initialWalletConnectState);
   const [displaySignReadyQR, setDisplaySignReadyQR] = useState(false);
-  const [walletSigningState, setWalletSigningState] = useState(WalletQRState.UNKNOWN);
+  const [walletSigningState, setWalletSigningState] = useState(WalletConnectQRState.UNKNOWN);
   const { session, refreshSession, fetchWalletConnectSession } = useContext(WalletConnectContext);
 
   const detectAddress = ({
@@ -128,40 +124,14 @@ export function SignTransactionWalletConnect({
   });
 
   /* start:wallet-login-state */
-  useEffect(() => {
-    if (walletSigningState !== WalletQRState.UNKNOWN) {
-      return;
-    }
-    // DETECT IF WALLETCONNECT SESSION EXISTS
-    if (window.localStorage.getItem('walletconnect') || session) {
-      refreshSession().then(() => {
-        setWalletSigningState(WalletQRState.NOT_READY);
-      });
-    } else {
-      setWalletSigningState(WalletQRState.NOT_READY);
-    }
+  walletConnectUnlock({
+    walletSigningState,
+    session,
+    setWalletSigningState,
+    refreshSession,
+    fetchWalletConnectSession
   });
-
-  // If a WalletConnect session already exist, or setup isnt initialized, exit.
-  // Otherwise, generate a new session.
-  useEffect(() => {
-    if (walletSigningState !== WalletQRState.NOT_READY || session) {
-      return;
-    }
-    const walletConnectSessionInterval = setInterval(() => {
-      const walletConnector = fetchWalletConnectSession();
-      if (!walletConnector) return;
-    }, 250);
-    return () => clearInterval(walletConnectSessionInterval);
-  });
-
-  // Set WalletSigningState to ready if walletConnectSession exists. This renders qr code.
-  useEffect(() => {
-    if (!session) return;
-    setWalletSigningState(WalletQRState.READY);
-  }, [session]);
-
-  if (session && walletSigningState === WalletQRState.READY) {
+  if (session && walletSigningState === WalletConnectQRState.READY) {
     session.on('connect', (error, payload) => {
       if (error) {
         throw error;
@@ -170,7 +140,6 @@ export function SignTransactionWalletConnect({
       const { accounts, chainId } = payload.params[0];
       detectAddress({ address: accounts[0], chainId });
     });
-
     session.on('session_update', (error, payload) => {
       if (error) {
         throw error;
