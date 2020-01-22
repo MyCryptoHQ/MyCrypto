@@ -5,7 +5,7 @@ import translate, { translateRaw } from 'v2/translations';
 import { WALLETS_CONFIG, IWalletConfig } from 'v2/config';
 import { WalletId, FormData, Network } from 'v2/types';
 import { InlineErrorMsg, NewTabLink } from 'v2/components';
-import { withContext, HAS_WEB3_PROVIDER, IS_MOBILE } from 'v2/utils';
+import { withContext, hasWeb3Provider, IS_MOBILE } from 'v2/utils';
 import {
   SettingsContext,
   ISettingsContext,
@@ -124,7 +124,7 @@ class Web3ProviderDecrypt extends Component<Props & ISettingsContext & INetworkC
   }
 
   private getWeb3Provider() {
-    if (HAS_WEB3_PROVIDER()) {
+    if (hasWeb3Provider()) {
       return getWeb3Config();
     }
     return WALLETS_CONFIG[WalletId.WEB3]; //Default to Web3
