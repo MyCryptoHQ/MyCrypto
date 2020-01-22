@@ -250,9 +250,13 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
           };
 
           const handleFieldReset = () => {
-            const { account, amount } = initialFormikValues;
-            setFieldValue('account', account);
-            setFieldValue('amount', amount);
+            const resetFields: (keyof IFormikFields)[] = [
+              'account',
+              'amount',
+              'txDataField',
+              'advancedTransaction'
+            ];
+            resetFields.forEach(field => setFieldValue(field, initialFormikValues[field]));
           };
 
           const setAmountFieldToAssetMax = () => {

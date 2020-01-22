@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 
 import { InputField } from 'v2/components';
 import { translateRaw } from 'v2/translations';
+import { isTransactionDataEmpty } from 'v2/utils';
 
-const getSanitizedData = (data: string) => (['', '0x', '0x0', '0x00'].includes(data) ? '' : data);
+const getNonEmptyData = (data: string) => (isTransactionDataEmpty(data) ? '' : data);
 
 export function DataField({ value, errors, name, onChange }: IDataField) {
-  const [displayed, setDisplayed] = useState(getSanitizedData(value));
+  const [displayed, setDisplayed] = useState(getNonEmptyData(value));
 
   return (
     <InputField
@@ -21,7 +22,7 @@ export function DataField({ value, errors, name, onChange }: IDataField) {
       className="SendAssetsForm-fieldset-input"
       inputError={errors}
       onFocus={() => setDisplayed(value)}
-      onBlur={() => setDisplayed(getSanitizedData(value))}
+      onBlur={() => setDisplayed(getNonEmptyData(value))}
     />
   );
 }
