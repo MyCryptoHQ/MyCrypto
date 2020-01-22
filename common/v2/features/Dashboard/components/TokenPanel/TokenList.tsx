@@ -103,7 +103,7 @@ export function TokenList(props: TokenListProps) {
       ) : (
         <TokenListWrapper>
           {tokens.map(token => (
-            <Token key={token.name}>
+            <Token key={token.uuid}>
               <Asset>
                 <AssetIcon symbol={token.ticker as TSymbol} size={'26px'} />
                 <AssetName>{token.name}</AssetName>
