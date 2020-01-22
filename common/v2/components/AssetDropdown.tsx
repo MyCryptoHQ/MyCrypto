@@ -79,8 +79,8 @@ function AssetDropdown({
 }: Props<Asset | { name: string; symbol: TSymbol }>) {
   useEffectOnce(() => {
     // preselect first value from options
-    if ((!selectedAsset || !selectedAsset.ticker) && assets.length > 0) {
-      onSelect(assets[0]);
+    if (!R.isNil(onSelect) || !selectedAsset || R.isEmpty(assets)) {
+      onSelect!(assets[0]);
     }
   });
 
@@ -113,7 +113,7 @@ export interface Props<T> {
   fluid?: boolean;
   searchable?: boolean;
   label?: string;
-  onSelect  (option: T): void;
+  onSelect?(option: T): void;
 }
 
 export default AssetDropdown;
