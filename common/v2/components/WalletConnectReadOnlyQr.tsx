@@ -1,8 +1,8 @@
 import React from 'react';
 
-import './WalletConnectReadOnlyQr.scss';
 import QRCode from './QRCode';
 import Spinner from './Spinner';
+import './WalletConnectReadOnlyQr.scss';
 
 interface ScanProps {
   sessionUri: string;

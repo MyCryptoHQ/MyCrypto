@@ -1,56 +1,47 @@
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useState } from 'react';
 import WalletConnect from '@walletconnect/browser';
-import { walletConnectSessionReducer, WalletConnectServiceActions } from './reducer';
 import { ITxData } from '@walletconnect/types';
 import { WalletConnectSingleton } from './walletConnectSingleton';
 
-export interface WalletConnectState {
-  session: undefined | WalletConnect;
-}
+type TWalletConnectSession = undefined | WalletConnect;
 
-export interface WalletConnectProviderState extends WalletConnectState {
+interface WalletConnectProviderState {
+  session: TWalletConnectSession;
   fetchWalletConnectSession(): Promise<void>;
   refreshSession(): Promise<void>;
   sendTransaction(tx: ITxData): Promise<any>;
 }
 
-export const initWalletConnectState = (): WalletConnectState => {
+const initWalletConnectState = (): TWalletConnectSession => {
   const wcLocalStorage = window.localStorage.getItem('walletconnect');
   const wcSessionInfo = wcLocalStorage && JSON.parse(wcLocalStorage);
-  return {
-    session: WalletConnectSingleton.initializeWalletConnectSession(wcSessionInfo || undefined)
-  };
+  return WalletConnectSingleton.initializeWalletConnectSession(wcSessionInfo || undefined);
 };
 
 export const WalletConnectContext = createContext({} as WalletConnectProviderState);
 
 export const WalletConnectProvider = ({ children }: any) => {
-  const [state, dispatch] = useReducer(walletConnectSessionReducer, initWalletConnectState());
-
+  const [session, setSession] = useState(initWalletConnectState());
   const fetchWalletConnectSession = async () => {
-    if (!state.session) {
-      dispatch({
-        type: WalletConnectServiceActions.CREATE_SESSION,
-        payload: {
-          session: await WalletConnectSingleton.getWalletConnectSession()
-        }
-      });
+    if (!session) {
+      setSession(await WalletConnectSingleton.getWalletConnectSession());
     }
   };
 
   const refreshSession = async () => {
-    dispatch({
-      type: WalletConnectServiceActions.REFRESH_SESSION,
-      payload: {
-        session: await WalletConnectSingleton.refreshWalletConnectSession()
-      }
-    });
+    setSession(await WalletConnectSingleton.refreshWalletConnectSession());
   };
 
-  const sendTransaction = (tx: ITxData) => state.session.sendTransaction(tx);
+  const sendTransaction = (tx: ITxData) => {
+    if (!session)
+      throw new Error(
+        "[WalletConnectProvider]: Cannot send a transaction because session doesn't exist"
+      );
+    return session.sendTransaction(tx);
+  };
 
   const stateContext: WalletConnectProviderState = {
-    ...state,
+    session,
     fetchWalletConnectSession,
     refreshSession,
     sendTransaction
@@ -60,3 +51,5 @@ export const WalletConnectProvider = ({ children }: any) => {
     <WalletConnectContext.Provider value={stateContext}>{children}</WalletConnectContext.Provider>
   );
 };
+
+export default WalletConnectProvider;
