@@ -1,16 +1,16 @@
 import React, { useContext, useState } from 'react';
 
 import translate, { translateRaw } from 'v2/translations';
+import { walletConnectUnlock } from 'v2/utils';
 import { NetworkContext, isValidAddress } from 'v2/services';
 import { WalletId, FormData } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
 import { notificationsActions } from 'v2/features/NotificationsPanel';
 import { WalletFactory, WalletConnectContext } from 'v2/services/WalletService';
 
-import './WalletConnectProvider.scss';
 import { Spinner } from '../Spinner';
 import WalletConnectReadOnlyQr from '../WalletConnectReadOnlyQr';
-import { walletConnectUnlock } from 'v2/utils';
+import './WalletConnectProvider.scss';
 
 interface OwnProps {
   formData: FormData;

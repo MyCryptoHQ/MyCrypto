@@ -10,12 +10,12 @@ import {
 } from 'v2/components';
 import { WalletId, ISignComponentProps } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
+import { walletConnectUnlock } from 'v2/utils';
+import { WalletConnectContext } from 'v2/services/WalletService';
 
+import { WalletConnectQRState } from '../WalletUnlock/WalletConnectProvider';
 import { InlineErrorMsg } from '../ErrorMessages';
 import './WalletConnect.scss';
-import { WalletConnectContext } from 'v2/services/WalletService';
-import { walletConnectUnlock } from 'v2/utils';
-import { WalletConnectQRState } from '../WalletUnlock/WalletConnectProvider';
 
 interface WalletConnectAddress {
   address: string;

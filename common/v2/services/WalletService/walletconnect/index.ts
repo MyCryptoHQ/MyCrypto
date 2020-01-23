@@ -1,4 +1,2 @@
-export * from './walletConnectSingleton';
-export * from './WalletConnectProvider';
-export * from './types';
-export * from './reducer';
+export { default as WalletConnectSingleton } from './walletConnectSingleton';
+export { default as WalletConnectProvider, WalletConnectContext } from './WalletConnectProvider';
