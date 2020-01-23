@@ -60,7 +60,6 @@ function SendAssets({ history }: RouteComponentProps<{}>) {
   ];
   const alternativeStepsWallets = [
     WalletId.WEB3,
-    WalletId.CIPHER,
     WalletId.FRAME,
     WalletId.WALLETCONNECT,
     WalletId.METAMASK,
