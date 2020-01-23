@@ -24,6 +24,7 @@ const SigningComponents: SigningComponentsType = {
   [WalletId.METAMASK]: SignTransactionWeb3,
   [WalletId.TRUST]: SignTransactionWeb3,
   [WalletId.FRAME]: SignTransactionWeb3,
+  [WalletId.COINBASE]: SignTransactionWeb3,
   [WalletId.LEDGER_NANO_S]: SignTransactionLedger,
   [WalletId.TREZOR]: SignTransactionTrezor,
   [WalletId.SAFE_T_MINI]: SignTransactionSafeT,

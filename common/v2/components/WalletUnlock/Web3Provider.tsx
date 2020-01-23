@@ -76,8 +76,8 @@ class Web3ProviderDecrypt extends Component<Props & ISettingsContext & INetworkC
             <NewTabLink
               content={translate(`ADD_ACCOUNT_WEB3_FOOTER_LINK`, { $walletId: provider.name })}
               href={
-                provider.getItLink
-                  ? provider.getItLink
+                provider.install
+                  ? provider.install.getItLink
                   : translateRaw(
                       IS_MOBILE
                         ? `ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_MOBILE`

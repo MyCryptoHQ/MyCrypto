@@ -17,6 +17,8 @@ export function getWeb3Config(): IWalletConfig {
 
   if (provider.isTrust) return WALLETS_CONFIG.TRUST;
 
+  if (provider.isToshi) return WALLETS_CONFIG.COINBASE;
+
   return WALLETS_CONFIG.WEB3;
 }
 

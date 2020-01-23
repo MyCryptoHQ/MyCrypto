@@ -9,9 +9,10 @@ import TrezorSVG from 'common/assets/images/wallets/trezor.svg';
 import SafeTSVG from 'common/assets/images/wallets/safe-t.png';
 import ParitySignerSVG from 'common/assets/images/wallets/parity-signer.svg';
 import MetamaskIcon from 'common/assets/images/wallets/metamask.svg';
-import TrustIcon from 'assets/images/wallets/trust.svg';
+import TrustIcon from 'common/assets/images/wallets/trust-3.svg';
 import Web3DefaultIcon from 'assets/images/wallets/web3-default.svg';
 import FrameIcon from 'assets/images/wallets/frame.svg';
+import CoinbaseWalletIcon from 'common/assets/images/wallets/coinbase.svg';
 
 export interface IWalletConfig {
   id: WalletId;
@@ -24,7 +25,11 @@ export interface IWalletConfig {
   icon?: string;
   description: string;
   helpLink?: string;
-  getItLink?: string;
+  install?: {
+    getItLink?: string;
+    googlePlay?: string;
+    appStore?: string;
+  };
 }
 
 export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
@@ -51,7 +56,9 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     icon: MetamaskIcon,
     description: 'ADD_WEB3DESC',
     helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`,
-    getItLink: 'https://metamask.io'
+    install: {
+      getItLink: 'https://metamask.io'
+    }
   },
   [WalletId.TRUST]: {
     id: WalletId.TRUST,
@@ -64,7 +71,11 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     icon: TrustIcon,
     description: 'ADD_WEB3DESC',
     helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`,
-    getItLink: 'https://trustwallet.com'
+    install: {
+      getItLink: 'https://trustwallet.com',
+      appStore: 'https://itunes.apple.com/us/app/trust-ethereum-wallet/id1288339409',
+      googlePlay: 'https://play.google.com/store/apps/details?id=com.wallet.crypto.trustapp'
+    }
   },
   [WalletId.FRAME]: {
     id: WalletId.FRAME,
@@ -77,7 +88,26 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     icon: FrameIcon,
     description: 'ADD_WEB3DESC',
     helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`,
-    getItLink: 'https://frame.sh/'
+    install: {
+      getItLink: 'https://frame.sh/'
+    }
+  },
+  [WalletId.COINBASE]: {
+    id: WalletId.COINBASE,
+    name: 'Coinbase Wallet',
+    isDeterministic: false,
+    isSecure: true,
+    isDesktopOnly: false,
+    type: WalletType.WEB3,
+    lid: 'X_COINBASE',
+    icon: CoinbaseWalletIcon,
+    description: 'ADD_WEB3DESC',
+    helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`,
+    install: {
+      getItLink: 'https://wallet.coinbase.com/',
+      appStore: 'https://itunes.apple.com/app/coinbase-wallet/id1278383455?ls=1&mt=8',
+      googlePlay: 'https://play.google.com/store/apps/details?id=org.toshi'
+    }
   },
   [WalletId.LEDGER_NANO_S]: {
     id: WalletId.LEDGER_NANO_S,
