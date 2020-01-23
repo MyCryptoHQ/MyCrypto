@@ -80,7 +80,7 @@ const Info = styled.div<InfoProps>`
 `;
 
 interface Props {
-  wallets: any[];
+  wallets: IStory[];
   showHeader?: boolean;
   onSelect(name: WalletId): void;
 }
