@@ -6,12 +6,12 @@ import { ROUTE_PATHS, WALLETS_CONFIG } from 'v2/config';
 import { WalletId } from 'v2/types';
 import { ContentPanel, WalletList } from 'v2/components';
 import { FormDataActionType as ActionType } from './types';
-import { STORIES } from './stories';
+import { getStories } from './stories';
 import { formReducer, initialState } from './AddAccountForm.reducer';
 import './AddAccountFlow.scss';
 
 export const getStory = (storyName: WalletId | undefined): any => {
-  return STORIES.filter(selected => selected.name === storyName)[0];
+  return getStories().filter(selected => selected.name === storyName)[0];
 };
 
 export const getStorySteps = (storyName: WalletId | undefined) => {
@@ -99,7 +99,7 @@ const AddAccountFlow = withRouter(props => {
       <ContentPanel>
         <TransitionGroup>
           <CSSTransition classNames="DecryptContent" timeout={500}>
-            <WalletList wallets={STORIES} onSelect={onWalletSelection} showHeader={true} />
+            <WalletList wallets={getStories()} onSelect={onWalletSelection} showHeader={true} />
           </CSSTransition>
         </TransitionGroup>
       </ContentPanel>

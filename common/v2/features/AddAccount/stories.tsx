@@ -1,5 +1,5 @@
 import { IStory, WalletId } from 'v2/types';
-import { IS_DEV, IS_ELECTRON, HAS_WEB3_PROVIDER } from 'v2/utils';
+import { IS_DEV, IS_ELECTRON, hasWeb3Provider } from 'v2/utils';
 import { NetworkSelectPanel, SaveAndRedirect } from './components';
 import {
   InsecureWalletWarning,
@@ -19,10 +19,10 @@ import {
 // only if it is not the Desktop App and not the Dev environment
 export const IS_NOT_ELECTRON_AND_IS_NOT_DEV: boolean = !IS_ELECTRON && !IS_DEV;
 
-export const STORIES: IStory[] = [
+export const getStories = (): IStory[] => [
   {
     name: WalletId.WEB3,
-    steps: HAS_WEB3_PROVIDER ? [Web3ProviderDecrypt, SaveAndRedirect] : [Web3ProviderInstall]
+    steps: hasWeb3Provider() ? [Web3ProviderDecrypt, SaveAndRedirect] : [Web3ProviderInstall]
   },
   {
     name: WalletId.LEDGER_NANO_S,

@@ -10,7 +10,7 @@ import { WALLETS_CONFIG } from 'v2/config';
 import { setupWeb3Node } from 'v2/services/EthService';
 import { IFullWallet } from 'v2/services/WalletService';
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
-import { STORIES } from './stories';
+import { getStories } from './stories';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
@@ -162,7 +162,7 @@ function SignMessage(props: Props) {
     setShowSubtitle(true);
   };
 
-  const story = STORIES.find(x => x.name === walletName);
+  const story = getStories().find(x => x.name === walletName);
   const Step = story && story.steps[0];
 
   return (
@@ -182,7 +182,7 @@ function SignMessage(props: Props) {
           )}
         </>
       ) : (
-        <WalletList wallets={STORIES} onSelect={onSelect} />
+        <WalletList wallets={getStories()} onSelect={onSelect} />
       )}
 
       {unlocked && walletName && (

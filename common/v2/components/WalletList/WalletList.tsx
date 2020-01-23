@@ -7,7 +7,7 @@ import { WalletButton } from './WalletButton';
 import { WalletId, IStory } from 'v2/types';
 import { WALLETS_CONFIG, ROUTE_PATHS } from 'v2/config';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
-import { IS_ELECTRON } from 'v2/utils';
+import { IS_ELECTRON, getWeb3Config } from 'v2/utils';
 
 const { SCREEN_XS } = BREAK_POINTS;
 const { BRIGHT_SKY_BLUE } = COLORS;
@@ -80,7 +80,7 @@ const Info = styled.div<InfoProps>`
 `;
 
 interface Props {
-  wallets: any[];
+  wallets: IStory[];
   showHeader?: boolean;
   onSelect(name: WalletId): void;
 }
@@ -99,7 +99,9 @@ export default class WalletList extends PureComponent<Props> {
         )}
         <WalletsContainer>
           {validWallets.map((wallet: IStory) => {
-            const walletInfo = WALLETS_CONFIG[wallet.name];
+            const walletInfo =
+              wallet.name === WalletId.WEB3 ? getWeb3Config() : WALLETS_CONFIG[wallet.name];
+
             return (
               <WalletButton
                 key={`wallet-icon-${wallet.name}`}

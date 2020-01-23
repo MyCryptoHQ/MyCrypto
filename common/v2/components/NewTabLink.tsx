@@ -30,7 +30,7 @@ export interface AAttributes {
 }
 
 interface NewTabLinkProps extends AAttributes {
-  href: string;
+  href: string | undefined;
   content?:
     | React.ReactElement<any>
     | string
