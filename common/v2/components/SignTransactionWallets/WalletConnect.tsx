@@ -134,6 +134,7 @@ export function SignTransactionWalletConnect({
   if (session && walletSigningState === WalletConnectQRState.READY) {
     session.on('connect', (error, payload) => {
       if (error) {
+        console.debug('[SignTransactionWalletConnect]: Error with session connect: ', error);
         throw error;
       }
       // Determine provided accounts and chainId
@@ -142,6 +143,7 @@ export function SignTransactionWalletConnect({
     });
     session.on('session_update', (error, payload) => {
       if (error) {
+        console.debug('[SignTransactionWalletConnect]: Error with session update', error);
         throw error;
       }
       // Determine provided accounts and chainId

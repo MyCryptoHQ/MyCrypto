@@ -6,8 +6,8 @@ export interface WalletConnectUnlockProps {
   walletSigningState: WalletConnectQRState;
   session: WalletConnect | undefined;
   setWalletSigningState(state: WalletConnectQRState): void;
-  refreshSession(): Promise<WalletConnect>;
-  fetchWalletConnectSession(): Promise<WalletConnect> | undefined;
+  refreshSession(): Promise<void>;
+  fetchWalletConnectSession(): Promise<void>;
 }
 
 export const walletConnectUnlock = ({
@@ -38,8 +38,9 @@ export const walletConnectUnlock = ({
       return;
     }
     const walletConnectSessionInterval = setInterval(() => {
-      const walletConnector = fetchWalletConnectSession();
-      if (!walletConnector) return;
+      fetchWalletConnectSession().then(() => {
+        return;
+      });
     }, 250);
     return () => clearInterval(walletConnectSessionInterval);
   });
