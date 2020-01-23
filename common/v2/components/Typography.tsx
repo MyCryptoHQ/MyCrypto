@@ -14,10 +14,13 @@ interface Props {
 type SProps = Props & { forwardedAs: string };
 
 const STypography = styled(UITypography)`
-  line-height: 1.5;
+  line-height: 24px;
   vertical-align: middle;
   font-weight: ${(p: SProps) => (p.bold ? '600' : '400')};
   font-size: ${(p: SProps) => p.fontSize} !important;
+  // UITypography component defaults to a 'p' tag with a margin-bottom.
+  // To facilitate text and icon alignement we remove it here once and for all.
+  margin-bottom: 0px;
 `;
 
 function Typography({ as = 'span', value, fontSize = '1rem', bold, children, ...props }: Props) {
