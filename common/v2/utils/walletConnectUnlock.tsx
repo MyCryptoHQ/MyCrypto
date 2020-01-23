@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { WalletConnectQRState } from 'v2/components/WalletUnlock/WalletConnectProvider';
 import WalletConnect from '@walletconnect/browser';
+
+import { WalletConnectQRState } from 'v2/components/WalletUnlock/WalletConnectProvider';
 
 export interface WalletConnectUnlockProps {
   walletSigningState: WalletConnectQRState;

@@ -1,6 +1,6 @@
 import { default as WalletConnectInstance } from '@walletconnect/browser';
 
-export const walletConnectBridgeURI = 'https://bridge.walletconnect.org';
+const walletConnectBridgeURI = 'https://bridge.walletconnect.org';
 
 // Singleton that handles the WalletConnect session
 export class WalletConnectSingleton {
@@ -43,3 +43,5 @@ export class WalletConnectSingleton {
 
   private constructor() {}
 }
+
+export default WalletConnectSingleton;
