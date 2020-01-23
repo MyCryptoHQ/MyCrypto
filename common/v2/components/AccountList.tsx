@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { Button, Copyable, Identicon } from '@mycrypto/ui';
+import { Button, Identicon } from '@mycrypto/ui';
 
 import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS, Fiats } from 'v2/config';
-import { CollapsibleTable, Network, RowDeleteOverlay, RouterLink } from 'v2/components';
+import { EthAddress, CollapsibleTable, Network, RowDeleteOverlay, RouterLink } from 'v2/components';
 import { default as Typography } from 'v2/components/Typography'; // @TODO solve Circular Dependency issue
 import { truncate } from 'v2/utils';
 import { BREAK_POINTS, COLORS, breakpointToNumber } from 'v2/theme';
@@ -114,7 +114,14 @@ export const screenIsMobileSized = (breakpoint: number): boolean =>
   window.matchMedia(`(max-width: ${breakpoint}px)`).matches;
 
 export default function AccountList(props: AccountListProps) {
-  const { accounts: displayAccounts, className, deletable, favoritable, copyable, dashboard } = props;
+  const {
+    accounts: displayAccounts,
+    className,
+    deletable,
+    favoritable,
+    copyable,
+    dashboard
+  } = props;
   const { deleteAccountFromCache } = useContext(StoreContext);
   const { updateAccount } = useContext(AccountContext);
   const [deletingIndex, setDeletingIndex] = useState();
@@ -215,7 +222,12 @@ function buildAccountTable(
           <SIdenticon address={account.address} />
           <STypography bold={true} value={label} />
         </Label>,
-        <Copyable key={index} text={account.address} truncate={truncate} isCopyable={copyable} />,
+        <EthAddress
+          key={index}
+          address={account.address}
+          truncate={truncate}
+          isCopyable={copyable}
+        />,
         <Network key={index} color="#a682ff">
           {account.networkId}
         </Network>,
