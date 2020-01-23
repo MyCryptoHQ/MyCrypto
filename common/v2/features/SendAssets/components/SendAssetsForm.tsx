@@ -165,8 +165,11 @@ const SendAssetsSchema = Yup.object().shape({
     .required(translateRaw('REQUIRED'))
 });
 
-export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentProps) {
-  const { accounts, assets, networks, getAccount } = useContext(StoreContext);
+export default function SendAssetsForm({
+  txConfig,
+  onComplete
+}: IStepComponentProps) {
+  const { accounts, userAssets, networks, getAccount } = useContext(StoreContext);
   const { getAssetRate } = useContext(RatesContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
@@ -174,7 +177,6 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
   const [baseAsset, setBaseAsset] = useState({} as Asset);
 
   const validAccounts = accounts.filter(account => account.wallet !== WalletId.VIEW_ONLY);
-  const validAssets = assets(validAccounts);
 
   return (
     <div className="SendAssetsForm">
@@ -314,9 +316,8 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                   name="asset" // Need a way to spread option, name, symbol on sharedConfig for assets
                   component={({ field, form }: FieldProps) => (
                     <AssetDropdown
-                      name={field.name}
-                      value={field.value}
-                      assets={validAssets}
+                      selectedAsset={field.value}
+                      assets={userAssets}
                       onSelect={(option: StoreAsset) => {
                         form.setFieldValue('asset', option || {}); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
                         //TODO get assetType onChange
@@ -330,7 +331,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                           form.setFieldValue('network', network || {});
                           if (network) {
                             setBaseAsset(
-                              getBaseAssetByNetwork({ network, assets: validAssets }) ||
+                              getBaseAssetByNetwork({ network, assets: userAssets }) ||
                                 ({} as Asset)
                             );
                           }

@@ -22,7 +22,9 @@ const STypography = styled(UITypography)`
 
 function Typography({ as = 'span', value, fontSize = '1rem', bold, children, ...props }: Props) {
   return (
-    <STypography forwardedAs={as} bold={bold} fontSize={fontSize} {...props}>
+    // @ts-ignore: forwardedAs is not respected so use SC as
+    // https://styled-components.com/docs/api#forwardedas-prop
+    <STypography as={as} bold={bold} fontSize={fontSize} {...props}>
       {children ? children : value}
     </STypography>
   );

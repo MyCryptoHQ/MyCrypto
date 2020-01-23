@@ -1,5 +1,5 @@
 import React, { useState, useContext, useMemo, createContext, useEffect } from 'react';
-
+import * as R from 'ramda';
 import {
   Account,
   StoreAccount,
@@ -27,6 +27,7 @@ interface State {
   readonly networks: Network[];
   readonly isUnlockVIP: boolean;
   readonly currentAccounts: StoreAccount[];
+  readonly userAssets: Asset[];
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
@@ -164,6 +165,13 @@ export const StoreProvider: React.FC = ({ children }) => {
     networks,
     isUnlockVIP,
     currentAccounts,
+    get userAssets() {
+      const userAssets = state.accounts
+        .filter((a: StoreAccount) => a.wallet !== WalletId.VIEW_ONLY)
+        .flatMap((a: StoreAccount) => a.assets);
+      const uniq = R.uniqBy(R.prop('uuid'), userAssets);
+      return R.sortBy(R.prop('ticker'), uniq);
+    },
     assets: (selectedAccounts = state.accounts) =>
       selectedAccounts.flatMap((account: StoreAccount) => account.assets),
     tokens: (selectedAssets = state.assets()) =>

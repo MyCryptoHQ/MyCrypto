@@ -1,31 +1,64 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { OptionComponentProps } from 'react-select';
 import styled from 'styled-components';
+import * as R from 'ramda';
 
 import { translateRaw } from 'v2/translations';
-import { Asset } from 'v2/types';
-import { AssetSummary, Divider, Dropdown } from 'v2/components';
+import { Asset, TSymbol } from 'v2/types';
+import { AssetDropdownItem, Divider, Dropdown } from 'v2/components';
 import { useEffectOnce } from 'v2/vendor';
+
+const Label = styled.div`
+  font-size: 18px;
+  width: 100%;
+  line-height: 1;
+  text-align: left;
+  font-weight: normal;
+  margin-bottom: 9px;
+  color: ${props => props.theme.text};
+`;
 
 // Fixes weird placement issues for react-select
 const DropdownContainer = styled('div')`
+  width: ${(props: { fluid: boolean }) => (props.fluid ? '100%' : 'default')};
+
   .has-value > .Select-control > .Select-multi-value-wrapper > .Select-input:only-child {
     transform: translateY(0%);
     padding: 16px 15px 16px 15px;
     position: inherit;
   }
 `;
-
+// Class component to avoid 'Function components cannot be given refs' error
 class AssetOption extends React.PureComponent<OptionComponentProps> {
   public render() {
     const { option, onSelect } = this.props;
-    const { ticker, name } = option;
+    const { ticker, symbol, name } = option;
+    const ref = ticker ? ticker : symbol;
     return (
       <>
-        <AssetSummary
-          symbol={ticker}
+        <AssetDropdownItem
+          symbol={ref}
           name={name}
-          onClick={() => onSelect!(option, null)}
+          onClick={() => onSelect && onSelect(option, null)}
+          selectable={true}
+        />
+        <Divider />
+      </>
+    );
+  }
+}
+// Class component to avoid 'Function components cannot be given refs' error
+// tslint:disable:max-classes-per-file
+class AssetOptionShort extends React.PureComponent<OptionComponentProps> {
+  public render() {
+    const { option, onSelect } = this.props;
+    const { ticker, symbol } = option;
+    const ref = ticker ? ticker : symbol;
+    return (
+      <>
+        <AssetDropdownItem
+          symbol={ref}
+          onClick={() => onSelect && onSelect(option, null)}
           selectable={true}
         />
         <Divider />
@@ -34,43 +67,53 @@ class AssetOption extends React.PureComponent<OptionComponentProps> {
   }
 }
 
-function AssetDropdown({ assets, name, value, onSelect }: Props<Asset>) {
-  const [filteredAssets, setFilteredAssets] = useState([] as Asset[]);
+function AssetDropdown({
+  assets,
+  selectedAsset,
+  onSelect,
+  showOnlyTicker = false,
+  searchable = false,
+  disabled = false,
+  fluid = false,
+  label
+}: Props<Asset | { name: string; symbol: TSymbol }>) {
   useEffectOnce(() => {
-    /* Removes duplicates and maps to format accepted by react-select */
-    const filtered = assets
-      .filter((asset, index) => assets.map(assetObj => assetObj.uuid).indexOf(asset.uuid) >= index)
-      .map(asset => ({ label: asset.name, id: asset.uuid, ...asset }));
-    setFilteredAssets(filtered);
-
-    // preselect first value from options
-    if ((!value || !value.ticker) && filtered.length > 0) {
-      onSelect(filtered[0]);
+    // Preselect first value when not provided
+    if (R.isEmpty(selectedAsset) && onSelect && !R.isEmpty(assets)) {
+      onSelect(assets[0]);
     }
   });
 
   return (
-    <DropdownContainer>
+    <DropdownContainer fluid={fluid}>
+      {label && <Label>{label}</Label>}
       <Dropdown
-        name={name}
         placeholder={translateRaw('SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER')}
-        options={filteredAssets}
-        onChange={(option: Asset) => onSelect(option)}
-        optionComponent={AssetOption}
-        value={value && value.ticker ? value : undefined}
-        valueComponent={({ value: option }) => (
-          <AssetSummary symbol={option.ticker} name={option.name} />
-        )}
+        options={assets}
+        disabled={disabled}
+        searchable={searchable}
+        onChange={(option: Asset) => onSelect && onSelect(option)}
+        optionComponent={showOnlyTicker ? AssetOptionShort : AssetOption}
+        value={!R.isEmpty(selectedAsset) && selectedAsset}
+        valueComponent={({ value: option }) => {
+          const { ticker, symbol, name } = option;
+          const ref = ticker ? ticker : symbol;
+          return <AssetDropdownItem symbol={ref} name={!showOnlyTicker ? name : undefined} />;
+        }}
       />
     </DropdownContainer>
   );
 }
 
-interface Props<T> {
+export interface Props<T> {
   assets: T[];
-  name: string;
-  value: T;
-  onSelect(option: T): void;
+  selectedAsset?: T;
+  showOnlyTicker?: boolean;
+  disabled?: boolean;
+  fluid?: boolean;
+  searchable?: boolean;
+  label?: string;
+  onSelect?(option: T): void;
 }
 
 export default AssetDropdown;

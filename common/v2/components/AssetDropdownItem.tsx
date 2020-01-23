@@ -7,6 +7,7 @@ import { AssetIcon, Typography } from 'v2/components';
 const SContainer = styled('div')`
   display: flex;
   flex-direction: row;
+  align-items: center;
   padding: 14px 15px 14px 15px;
 
   &:hover {
@@ -15,22 +16,22 @@ const SContainer = styled('div')`
   }
 `;
 
-function AssetSummary({ symbol, name, onClick, selectable = false }: Props) {
+function AssetDropdownItem({ symbol, name, onClick, selectable = false }: Props) {
   return (
     <SContainer {...(onClick ? { onPointerDown: onClick } : null)} selectable={selectable}>
       <AssetIcon symbol={symbol} size={'1.5rem'} />
-      <Typography bold={true} value={symbol} style={{ marginLeft: '6px' }} />
+      <Typography bold={true} value={symbol} style={{ marginLeft: '10px' }} />
       {name && <span>&nbsp; - &nbsp;</span>}
       <Typography value={name} />
     </SContainer>
   );
 }
 
-interface Props {
+export interface Props {
   symbol: TSymbol;
   name?: string;
   selectable?: boolean;
   onClick?(): void;
 }
 
-export default AssetSummary;
+export default AssetDropdownItem;

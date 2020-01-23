@@ -109,9 +109,8 @@ const ErrorMessage = styled.span`
 export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   const { accounts, networks } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
-  const [networkName, setNetworkName] = useState(accounts[0].networkId);
-  // @TODO: StoreAccount contains it's Network. This can be cleanedup.
-  const network = getNetworkById(networkName, networks);
+  const [networkId, setNetworkId] = useState(accounts[0].networkId);
+  const network = getNetworkById(networkId, networks);
   const filteredAssets = network
     ? assets
         .filter(asset => asset.networkId === network.id)
@@ -126,11 +125,9 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   const [chosenAssetName, setAssetName] = useState(filteredAssets[0].name);
   const selectedAsset = filteredAssets.find(asset => asset.name === chosenAssetName);
 
-  const ethereum = assets.find(asset => asset.networkId === 'Ethereum');
-
   const initialValues = {
-    amount: '0',
-    asset: { label: ethereum!.name, id: ethereum!.uuid },
+    amount: '',
+    asset: {},
     recipientAddress: {} as StoreAccount
   };
 
@@ -175,7 +172,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                     onSelect={(option: IExtendedAccount) => {
                       form.setFieldValue(field.name, option);
                       if (option.networkId) {
-                        setNetworkName(option.networkId);
+                        setNetworkId(option.networkId);
                       }
                     }}
                   />
@@ -205,9 +202,9 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                   name="asset"
                   component={({ field, form }: FieldProps) => (
                     <AssetDropdown
-                      name={field.name}
-                      value={field.value}
+                      selectedAsset={field.value}
                       assets={assetOptions}
+                      searchable={true}
                       onSelect={option => {
                         form.setFieldValue(field.name, option);
                         if (option.name) {

@@ -11,7 +11,8 @@
     "paths": {
       "shared*": ["../shared*"],
       "types*": ["../shared/types*"],
-      "test-utils": ["../jest_config/test-utils"]
+      "test-utils": ["../jest_config/test-utils"],
+      "fixtures": ["../jest_config/__fixtures__"]
     },
     "lib": ["esnext", "dom"],
     "allowSyntheticDefaultImports": true,
