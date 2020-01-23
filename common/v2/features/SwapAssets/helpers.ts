@@ -21,7 +21,8 @@ import {
   SignTransactionSafeT,
   SignTransactionKeystore,
   SignTransactionParity,
-  SignTransactionMnemonic
+  SignTransactionMnemonic,
+  SignTransactionWalletConnect
 } from 'v2/components';
 import { weiToFloat } from 'v2/utils';
 
@@ -40,7 +41,7 @@ export const WALLET_STEPS: SigningComponents = {
   [WalletId.KEYSTORE_FILE]: SignTransactionKeystore,
   [WalletId.PARITY_SIGNER]: SignTransactionParity,
   [WalletId.MNEMONIC_PHRASE]: SignTransactionMnemonic,
-  [WalletId.WALLETCONNECT]: null,
+  [WalletId.WALLETCONNECT]: SignTransactionWalletConnect,
   [WalletId.VIEW_ONLY]: null
 };
 
