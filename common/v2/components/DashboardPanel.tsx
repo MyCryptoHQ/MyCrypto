@@ -10,6 +10,20 @@ import { Panel } from './Panel';
 import RouterLink from './RouterLink';
 import Typography from './Typography';
 
+const SRouterLink = styled(RouterLink)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  & span,
+  p,
+  div {
+    color: ${COLORS.BRIGHT_SKY_BLUE};
+  }
+  & img {
+    margin-right: 0.5em;
+  }
+`;
+
 const Content = styled.div`
   padding-left: 15px;
   padding-right: 15px;
@@ -20,13 +34,6 @@ const DPanel = styled(Panel)`
 `;
 
 const DHeadingWrapper = styled.div`
-  & span {
-    color: ${COLORS.BRIGHT_SKY_BLUE};
-    padding-right: 15px;
-  }
-  & img {
-    margin-right: 0.5em;
-  }
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -76,10 +83,10 @@ export const DashboardPanel = ({
         <DHeading>{heading}</DHeading>
         {headingRight &&
           (actionLink ? (
-            <RouterLink to={actionLink}>
+            <SRouterLink to={actionLink}>
               <img src={settingsIcon} alt={'settings'} width={32} />
               <Typography>{headingRight}</Typography>
-            </RouterLink>
+            </SRouterLink>
           ) : (
             headingRight
           ))}
