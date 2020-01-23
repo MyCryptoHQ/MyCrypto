@@ -15,10 +15,8 @@ export interface WalletConnectProviderState extends WalletConnectState {
 }
 
 export const initWalletConnectState = (): WalletConnectState => {
-  console.debug('Got here?');
   const wcLocalStorage = window.localStorage.getItem('walletconnect');
   const wcSessionInfo = wcLocalStorage && JSON.parse(wcLocalStorage);
-  console.debug('wcSessionInfo: ', wcSessionInfo);
   return {
     session: WalletConnectSingleton.initializeWalletConnectSession(wcSessionInfo || undefined)
   };
