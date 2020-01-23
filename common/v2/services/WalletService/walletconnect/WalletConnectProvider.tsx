@@ -9,21 +9,27 @@ export interface WalletConnectState {
 }
 
 export interface WalletConnectProviderState extends WalletConnectState {
-  fetchWalletConnectSession(): Promise<WalletConnect> | undefined;
-  refreshSession(): Promise<WalletConnect>;
+  fetchWalletConnectSession(): Promise<void>;
+  refreshSession(): Promise<void>;
   sendTransaction(tx: ITxData): Promise<any>;
 }
 
-export const initWalletConnectState: WalletConnectState = {
-  session: undefined
+export const initWalletConnectState = (): WalletConnectState => {
+  console.debug('Got here?');
+  const wcLocalStorage = window.localStorage.getItem('walletconnect');
+  const wcSessionInfo = wcLocalStorage && JSON.parse(wcLocalStorage);
+  console.debug('wcSessionInfo: ', wcSessionInfo);
+  return {
+    session: WalletConnectSingleton.initializeWalletConnectSession(wcSessionInfo || undefined)
+  };
 };
 
 export const WalletConnectContext = createContext({} as WalletConnectProviderState);
 
 export const WalletConnectProvider = ({ children }: any) => {
-  const [state, dispatch] = useReducer(walletConnectSessionReducer, initWalletConnectState);
+  const [state, dispatch] = useReducer(walletConnectSessionReducer, initWalletConnectState());
 
-  const fetchWalletConnectSession = async (): Promise<WalletConnect> => {
+  const fetchWalletConnectSession = async () => {
     if (!state.session) {
       dispatch({
         type: WalletConnectServiceActions.CREATE_SESSION,
@@ -32,7 +38,6 @@ export const WalletConnectProvider = ({ children }: any) => {
         }
       });
     }
-    return state.session;
   };
 
   const refreshSession = async () => {
@@ -42,7 +47,6 @@ export const WalletConnectProvider = ({ children }: any) => {
         session: await WalletConnectSingleton.refreshWalletConnectSession()
       }
     });
-    return state.session;
   };
 
   const sendTransaction = (tx: ITxData) => state.session.sendTransaction(tx);
