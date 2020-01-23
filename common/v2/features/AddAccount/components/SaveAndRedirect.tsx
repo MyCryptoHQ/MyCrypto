@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { Route, Redirect } from 'react-router';
 
 import { NotificationsContext, NotificationTemplates } from 'v2/features/NotificationsPanel';
@@ -10,22 +10,27 @@ import {
   getNewDefaultAssetTemplateByNetwork,
   getNetworkById,
   AddressBookContext,
-  StoreContext,
+  StoreContext
 } from 'v2/services/Store';
 import { Account, AddressBook, Asset, Network, FormData, WalletId } from 'v2/types';
 import { getWeb3Config } from 'v2/utils/web3';
+import { useEffectOnce, useUpdateEffect } from 'v2/vendor';
+import { ROUTE_PATHS } from 'v2/config';
 
 /*
   Create a new account in localStorage and redirect to dashboard.
 */
 function SaveAndRedirect(payload: { formData: FormData }) {
-  const { createAccountWithID, getAccountByAddressAndNetworkName } = useContext(AccountContext);
+  const { accounts, createAccountWithID, getAccountByAddressAndNetworkName } = useContext(
+    AccountContext
+  );
   const { createAddressBooks, addressBook } = useContext(AddressBookContext);
   const { displayNotification } = useContext(NotificationsContext);
   const { scanTokens, networks } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
+  const [shouldRedirect, setShouldRedirect] = useState(false);
 
-  useEffect(() => {
+  useEffectOnce(() => {
     const network: Network | undefined = getNetworkById(payload.formData.network, networks);
     if (
       !network ||
@@ -35,6 +40,7 @@ function SaveAndRedirect(payload: { formData: FormData }) {
       displayNotification(NotificationTemplates.walletNotAdded, {
         address: payload.formData.account
       });
+      setShouldRedirect(true); // there was an error, redirect immediately
     } else {
       const walletType =
         payload.formData.accountType! === WalletId.WEB3
@@ -60,17 +66,26 @@ function SaveAndRedirect(payload: { formData: FormData }) {
       };
       createAddressBooks(newLabel);
       createAccountWithID(account, newUUID);
-      scanTokens();
       displayNotification(NotificationTemplates.walletAdded, {
         address: account.address
       });
     }
   });
 
-  return (
+  useUpdateEffect(() => {
+    // wait for account to be added and context refreshed
+    if (!!getAccountByAddressAndNetworkName(payload.formData.account, payload.formData.network)) {
+      scanTokens();
+      setShouldRedirect(true);
+    }
+  }, [accounts]);
+
+  return shouldRedirect ? (
     <Route>
-      <Redirect to="/dashboard" />
+      <Redirect to={ROUTE_PATHS.DASHBOARD.path} />
     </Route>
+  ) : (
+    <></>
   );
 }
 

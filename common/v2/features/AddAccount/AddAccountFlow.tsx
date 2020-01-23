@@ -8,6 +8,7 @@ import { ContentPanel, WalletList } from 'v2/components';
 import { FormDataActionType as ActionType } from './types';
 import { getStories } from './stories';
 import { formReducer, initialState } from './AddAccountForm.reducer';
+import { SaveAndRedirect } from './components';
 import './AddAccountFlow.scss';
 
 export const getStory = (storyName: WalletId | undefined): any => {
@@ -34,6 +35,7 @@ const AddAccountFlow = withRouter(props => {
   const [storyName, setStoryName] = useState<WalletId | undefined>(); // The Wallet Story that we are tracking.
   const [step, setStep] = useState(0); // The current Step inside the Wallet Story.
   const [formData, updateFormState] = useReducer(formReducer, initialState); // The data that we want to save at the end.
+  const [renderRedirect, setRenderRedirect] = useState(false);
 
   const isDefaultView = storyName === undefined;
 
@@ -42,11 +44,13 @@ const AddAccountFlow = withRouter(props => {
     setStep(0);
     setStoryName(undefined);
     updateFormState({ type: ActionType.RESET_FORM, payload: '' });
+    setRenderRedirect(false);
   };
 
   const goToNextStep = () => {
     const nextStep = Math.min(step + 1, getStorySteps(storyName!).length - 1);
     setStep(nextStep);
+    setRenderRedirect(false);
   };
 
   const goToPreviousStep = () => {
@@ -60,8 +64,8 @@ const AddAccountFlow = withRouter(props => {
     // 1. Let reducer handle the differences. Infact this updateFormState could
     // be simplified by having each component call `updateFormState` themselves.
     await updateFormState({ type: ActionType.ON_UNLOCK, payload });
-    // 2. continue once it's done.
-    goToNextStep();
+    // 2. render redirect component
+    setRenderRedirect(true);
   };
 
   // Read the walletName parameter from the URL
@@ -114,14 +118,17 @@ const AddAccountFlow = withRouter(props => {
       <ContentPanel onBack={goToPreviousStep} stepper={{ current: step + 1, total: steps.length }}>
         <TransitionGroup>
           <CSSTransition classNames="DecryptContent" timeout={500}>
-            <Step
-              wallet={getWalletInfo(storyName!)}
-              goToStart={goToStart}
-              goToNextStep={goToNextStep}
-              onUnlock={onUnlock}
-              formData={formData}
-              formDispatch={updateFormState}
-            />
+            <>
+              <Step
+                wallet={getWalletInfo(storyName!)}
+                goToStart={goToStart}
+                goToNextStep={goToNextStep}
+                onUnlock={onUnlock}
+                formData={formData}
+                formDispatch={updateFormState}
+              />
+              {renderRedirect && <SaveAndRedirect formData={formData} />}
+            </>
           </CSSTransition>
         </TransitionGroup>
       </ContentPanel>

@@ -9,3 +9,4 @@ export { default as useThrottleFn } from './useThrottleFn';
 export { default as useEvent } from './useEvent';
 export { default as useEffectOnce } from './useEffectOnce';
 export { isClient } from './util';
+export { default as useUpdateEffect } from './useUpdateEffect';
