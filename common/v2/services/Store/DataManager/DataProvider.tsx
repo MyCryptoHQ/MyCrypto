@@ -1,12 +1,18 @@
-import React, { createContext, Dispatch, useReducer, useCallback } from 'react';
+import React, { createContext, Dispatch, useReducer, useCallback, useMemo } from 'react';
 
 import { DataStore, LSKeys } from 'v2/types';
-import { useThrottleFn, useLocalStorage, useEvent } from 'v2/vendor';
-import { addDevSeedToSchema, removeSeedDataFromSchema, getCurrentDBConfig } from 'v2/database';
+import { useThrottleFn, useEvent } from 'v2/vendor';
+import {
+  addDevSeedToSchema,
+  removeSeedDataFromSchema,
+  getCurrentDBConfig,
+  getData
+} from 'v2/database';
+
 import { appDataReducer, ActionV, ActionT, ActionPayload } from './reducer';
 import { ActionFactory } from './actions';
 import { deMarshallState, marshallState } from './utils';
-import { useDatabase } from './useDatabase';
+import { DatabaseService } from './DatabaseService';
 
 export interface DataCacheManager extends DataStore {
   createActions(k: LSKeys): ReturnType<typeof ActionFactory>;
@@ -31,7 +37,13 @@ export const DataProvider: React.FC = ({ children }) => {
    *  Create the our master store, sync with persistance layer,
    *  Provide lj
    */
-  const { db, updateDb, resetDb, defaultValues } = useDatabase();
+  const currentDB = useMemo(() => getCurrentDBConfig(), []);
+  const currentDBValues = useMemo(() => getData(), []);
+  const { db, updateDb, resetDb, defaultValues } = DatabaseService(
+    currentDB.main,
+    currentDBValues,
+    currentDB.defaultValues
+  );
 
   const [appState, dispatch]: [DataStore, Dispatch<ActionV>] = useReducer(
     appDataReducer,
@@ -53,17 +65,17 @@ export const DataProvider: React.FC = ({ children }) => {
   /*
    * Manage sync between appState an db
    */
-  const syncDb = useCallback(() => {
+  const syncDb = (state: DataStore) => {
     console.debug('Updating LocalStorage');
-    updateDb(deMarshallState(appState));
-  }, [appState]);
+    updateDb(deMarshallState(state));
+  };
   // By default we sync no more than once a minute
-  useThrottleFn(syncDb, 60000, [appState]);
+  useThrottleFn(syncDb, 30000, [appState]);
   // In any case, we sync before the tab is closed
   // https://developers.google.com/web/updates/2018/07/page-lifecycle-api
   useEvent('visibilitychange', () => {
     if (document.hidden) {
-      syncDb();
+      syncDb(appState);
     }
   });
 
@@ -81,7 +93,7 @@ export const DataProvider: React.FC = ({ children }) => {
   /*
    *  Handle db encryption on ScreenLock
    */
-  const [encryptedDb, setEncryptedDb] = useLocalStorage(getCurrentDBConfig().vault);
+  const { db: encryptedDb, updateDb: setEncryptedDb } = DatabaseService(currentDB.vault);
   const setEncryptedCache = (data: string) => setEncryptedDb({ ...encryptedDb, data });
   const destroyEncryptedCache = () => {
     const { data, ...rest } = encryptedDb;

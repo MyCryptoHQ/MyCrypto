@@ -1,22 +1,22 @@
-import { useEffect, useState } from 'react';
-
-import { isClient } from './util';
 import { noOp } from 'v2/utils';
+import { isClient } from 'v2/vendor';
 
-type Dispatch<A> = (value: A) => void;
-type SetStateAction<S> = S | ((prevState: S) => S);
-
-// Ref https://github.com/streamich/react-use/blob/master/src/useLocalStorage.ts
-const useLocalStorage = <T>(
+export const DatabaseService = <T>(
   key: string,
   initialValue?: T,
+  defaultValues?: T,
   raw?: boolean
-): [T, Dispatch<SetStateAction<T>>] => {
+) => {
   if (!isClient) {
-    return [initialValue as T, noOp];
+    return {
+      db: initialValue,
+      updateDb: noOp,
+      resetDb: noOp,
+      defaultValues
+    };
   }
 
-  const [state, setState] = useState<T>(() => {
+  const getDb = () => {
     try {
       const localStorageValue = localStorage.getItem(key);
       if (typeof localStorageValue !== 'string') {
@@ -31,19 +31,31 @@ const useLocalStorage = <T>(
       // can throw, too.
       return initialValue;
     }
-  });
+  };
 
-  useEffect(() => {
+  const setDb = (db: T | undefined) => {
     try {
-      const serializedState = raw ? String(state) : JSON.stringify(state);
+      const serializedState = raw ? String(db) : JSON.stringify(db);
       localStorage.setItem(key, serializedState);
     } catch {
       // If user is in private mode or has storage restriction
       // localStorage can throw. Also JSON.stringify can throw.
     }
-  }, [state]);
+  };
 
-  return [state, setState];
+  // Provide a method for the caller to reset the db.
+  const resetDb = (newDb = defaultValues) => setDb(newDb);
+
+  return {
+    db: getDb(),
+    updateDb: (data: T) => {
+      const newDb: T = {
+        ...data,
+        mtime: Date.now()
+      };
+      setDb(newDb);
+    },
+    resetDb,
+    defaultValues
+  };
 };
-
-export default useLocalStorage;

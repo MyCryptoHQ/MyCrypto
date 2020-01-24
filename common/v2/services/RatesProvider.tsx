@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { isEmpty } from 'lodash';
 
 import { usePromise, useEffectOnce } from 'v2/vendor';
@@ -60,6 +60,17 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
   const { assetUUIDs } = useContext(StoreContext);
   const { settings, updateSettingsRates } = useContext(SettingsContext);
   const [assetMapping, setAssetMapping] = useState({});
+  const worker = useRef<undefined | PollingService>();
+
+  const updateRates = (data: IRates) =>
+    updateSettingsRates({ ...state.rates, ...destructureCoinGeckoIds(data, assetMapping) });
+
+  // update rate worker success handler with updated settings context
+  useEffect(() => {
+    if (worker.current) {
+      worker.current.setSuccessHandler(updateRates);
+    }
+  }, [settings]);
 
   // Get our asset dict which maps myc_uuids to coingecko_ids
   const mounted = usePromise();
@@ -82,25 +93,23 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
     // Wait till we have fetched our asset mapping
     if (isEmpty(assetMapping)) return;
 
-    const coinMappingObj: AssetMappingListObject = assetMapping;
-    const formattedCoinGeckoIds = pullCoinGeckoIDs(coinMappingObj, currentAssetUUIDs as TTicker[]);
+    const formattedCoinGeckoIds = pullCoinGeckoIDs(assetMapping, currentAssetUUIDs as TTicker[]);
 
-    const worker = new PollingService(
+    worker.current = new PollingService(
       buildAssetQueryUrl(formattedCoinGeckoIds, DEFAULT_FIAT_PAIRS), // @TODO: More elegant conversion then `DEFAULT_FIAT_RATE`
       POLLING_INTERRVAL,
-      (data: IRates) => {
-        updateSettingsRates({ ...state.rates, ...destructureCoinGeckoIds(data, coinMappingObj) });
-      },
+      updateRates,
       err => console.debug('[RatesProvider]', err)
     );
 
     // Start Polling service
-    worker.start();
+    worker.current.start();
 
     // Make sure to close the worker onUnMount.
     return () => {
-      worker.stop();
-      worker.close();
+      if (!worker.current) return;
+      worker.current.stop();
+      worker.current.close();
     };
   }, [assetMapping, currentAssetUUIDs.length]); //
 
