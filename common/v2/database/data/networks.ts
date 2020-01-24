@@ -983,5 +983,29 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       max: 40,
       initial: 4
     }
+  },
+  ERE: {
+    id: 'ERE',
+    name: 'EtherCore',
+    unit: 'ERE' as TSymbol,
+    chainId: 466,
+    isCustom: false,
+    color: '#3a6ea7',
+    blockExplorer: makeExplorer({
+      name: 'EtherCore Explorer',
+      origin: 'https://explorer.ethercore.org'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DPaths.ERE_DEFAULT,
+      [WalletId.SAFE_T]: DPaths.ERE_DEFAULT,
+      [WalletId.MNEMONIC_PHRASE]: DPaths.ERE_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 0.1,
+      max: 60,
+      initial: 1
+    }
   }
 };
