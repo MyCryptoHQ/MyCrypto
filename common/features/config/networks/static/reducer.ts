@@ -45,7 +45,8 @@ import {
   TOMO_DEFAULT,
   UBQ_DEFAULT,
   WEB_DEFAULT,
-  AUX_DEFAULT
+  AUX_DEFAULT,
+  ERE_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import * as types from './types';
@@ -1022,6 +1023,30 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       min: 0.1,
       max: 40,
       initial: 4
+    }
+  },
+  ERE: {
+    id: 'ERE',
+    name: 'EtherCore',
+    unit: 'ERE',
+    chainId: 466,
+    isCustom: false,
+    color: '#3a6ea7',
+    blockExplorer: makeExplorer({
+      name: 'EtherCore Explorer',
+      origin: 'https://explorer.ethercore.org'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ERE_DEFAULT,
+      [SecureWalletName.SAFE_T]: ERE_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ERE_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 0,
+      max: 60,
+      initial: 1
     }
   }
 };

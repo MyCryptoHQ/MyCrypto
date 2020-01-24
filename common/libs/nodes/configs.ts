@@ -402,6 +402,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'auxilium.global',
       url: 'https://rpc.auxilium.global'
     }
+  ],
+
+  ERE: [
+    {
+      name: makeNodeName('ERE', 'ethercore'),
+      type: 'rpc',
+      service: 'ethercore.org',
+      url: 'https://rpc.ethercore.org'
+    }
   ]
 };
 
