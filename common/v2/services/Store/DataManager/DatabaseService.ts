@@ -1,18 +1,19 @@
 import { noOp } from 'v2/utils';
+import { isClient } from 'v2/vendor';
 
-import { isClient } from './util';
-
-type Dispatch<A> = (value: A) => void;
-type SetStateAction<S> = S | ((prevState: S) => S);
-
-// Ref https://github.com/streamich/react-use/blob/master/src/useLocalStorage.ts
-const useLocalStorage = <T>(
+export const DatabaseService = <T>(
   key: string,
   initialValue?: T,
+  defaultValues?: T,
   raw?: boolean
-): [T, Dispatch<SetStateAction<T>>] => {
+) => {
   if (!isClient) {
-    return [initialValue as T, noOp];
+    return {
+      db: initialValue,
+      updateDb: noOp,
+      resetDb: noOp,
+      defaultValues
+    };
   }
 
   const getDb = () => {
@@ -32,7 +33,7 @@ const useLocalStorage = <T>(
     }
   };
 
-  const setDb = (db: T) => {
+  const setDb = (db: T | undefined) => {
     try {
       const serializedState = raw ? String(db) : JSON.stringify(db);
       localStorage.setItem(key, serializedState);
@@ -42,7 +43,19 @@ const useLocalStorage = <T>(
     }
   };
 
-  return [getDb(), setDb];
-};
+  // Provide a method for the caller to reset the db.
+  const resetDb = (newDb = defaultValues) => setDb(newDb);
 
-export default useLocalStorage;
+  return {
+    db: getDb(),
+    updateDb: (data: T) => {
+      const newDb: T = {
+        ...data,
+        mtime: Date.now()
+      };
+      setDb(newDb);
+    },
+    resetDb,
+    defaultValues
+  };
+};
