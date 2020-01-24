@@ -10,10 +10,8 @@ import {
 } from 'v2/components';
 import { WalletId, ISignComponentProps } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
-import { walletConnectUnlock } from 'v2/utils';
 import { WalletConnectContext } from 'v2/services/WalletService';
 
-import { WalletConnectQRState } from '../WalletUnlock/WalletConnectProvider';
 import { InlineErrorMsg } from '../ErrorMessages';
 import './WalletConnect.scss';
 
@@ -61,9 +59,10 @@ export function SignTransactionWalletConnect({
 }: ISignComponentProps) {
   const { sendTransaction } = useContext(WalletConnectContext);
   const [state, dispatch] = useReducer(walletConnectReducer, initialWalletConnectState);
+  // This qrcode trigger is to handle user accessing the incorrect account on their WalletConnect device
   const [displaySignReadyQR, setDisplaySignReadyQR] = useState(false);
-  const [walletSigningState, setWalletSigningState] = useState(WalletConnectQRState.UNKNOWN);
-  const { session, refreshSession, fetchWalletConnectSession } = useContext(WalletConnectContext);
+  const { session, handleUnlock, handleReset } = useContext(WalletConnectContext);
+  const [isReady, setIsReady] = useState(false);
 
   const detectAddress = ({
     address: currentWalletConnectAddress,
@@ -79,6 +78,21 @@ export function SignTransactionWalletConnect({
       }
     });
   };
+
+  /* start:wallet-login-state */
+  // Used to reset the walletconnect session
+  useEffect(() => {
+    if (isReady) return;
+    setIsReady(true);
+    handleReset();
+  });
+
+  // Once walletconnect session is queued to reset, start unlock flow
+  useEffect(() => {
+    if (!isReady) return;
+    handleUnlock(detectAddress);
+  });
+  /* end:wallet-login-state */
 
   const promptSignTransaction = async () => {
     if (!state.isConnected || !state.isCorrectNetwork || !state.isCorrectAddress) return;
@@ -122,36 +136,6 @@ export function SignTransactionWalletConnect({
     }, 2000);
     return () => clearInterval(walletSigner);
   });
-
-  /* start:wallet-login-state */
-  walletConnectUnlock({
-    walletSigningState,
-    session,
-    setWalletSigningState,
-    refreshSession,
-    fetchWalletConnectSession
-  });
-  if (session && walletSigningState === WalletConnectQRState.READY) {
-    session.on('connect', (error, payload) => {
-      if (error) {
-        console.debug('[SignTransactionWalletConnect]: Error with session connect: ', error);
-        throw error;
-      }
-      // Determine provided accounts and chainId
-      const { accounts, chainId } = payload.params[0];
-      detectAddress({ address: accounts[0], chainId });
-    });
-    session.on('session_update', (error, payload) => {
-      if (error) {
-        console.debug('[SignTransactionWalletConnect]: Error with session update', error);
-        throw error;
-      }
-      // Determine provided accounts and chainId
-      const { accounts, chainId } = payload.params[0];
-      detectAddress({ address: accounts[0], chainId });
-    });
-  }
-  /* end:wallet-login-state */
 
   return (
     <div className="WalletConnectPanel">

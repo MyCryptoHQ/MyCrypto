@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 
 import translate, { translateRaw } from 'v2/translations';
-import { walletConnectUnlock } from 'v2/utils';
 import { NetworkContext, isValidAddress } from 'v2/services';
 import { WalletId, FormData } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
@@ -29,7 +28,7 @@ interface WalletConnectAddress {
 
 export enum WalletConnectQRState {
   READY, // use when walletConnect session is created
-  NOT_READY, // use when walletConnect session needs to be created
+  CONNECTING, // use when walletConnect session needs to be created
   UNKNOWN // used upon component initialization when walletconnect status is not determined
 }
 
@@ -41,8 +40,8 @@ const wikiLink = WALLETS_CONFIG[WalletId.WALLETCONNECT].helpLink!;
 export function WalletConnectDecrypt({ formData, onUnlock }: OwnProps & StateProps) {
   const { getNetworkByName } = useContext(NetworkContext);
   const [network] = useState(getNetworkByName(formData.network));
-  const [walletSigningState, setWalletSigningState] = useState(WalletConnectQRState.UNKNOWN);
-  const { session, refreshSession, fetchWalletConnectSession } = useContext(WalletConnectContext);
+  const { session, handleUnlock, handleReset } = useContext(WalletConnectContext);
+  const [isReady, setIsReady] = useState(false);
 
   const unlockAddress = (content: WalletConnectQrContent) => {
     if (
@@ -56,23 +55,18 @@ export function WalletConnectDecrypt({ formData, onUnlock }: OwnProps & StatePro
   };
 
   /* start:wallet-login-state */
-  walletConnectUnlock({
-    walletSigningState,
-    session,
-    setWalletSigningState,
-    refreshSession,
-    fetchWalletConnectSession
+  // Used to reset the walletconnect session
+  useEffect(() => {
+    if (isReady) return;
+    setIsReady(true);
+    handleReset();
   });
-  if (session && walletSigningState === WalletConnectQRState.READY) {
-    session.on('connect', (error, payload) => {
-      if (error) {
-        throw error;
-      }
-      // Determine provided accounts and chainId
-      const { accounts, chainId } = payload.params[0];
-      unlockAddress({ address: accounts[0], chainId });
-    });
-  }
+
+  // Once walletconnect session is queued to reset, start unlock flow
+  useEffect(() => {
+    if (!isReady) return;
+    handleUnlock(unlockAddress);
+  });
   /* end:wallet-login-state */
 
   return (

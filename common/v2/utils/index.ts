@@ -31,4 +31,3 @@ export { formatEmailMarkdown, formatErrorEmailMarkdown } from './emailFormatter'
 export { withContext } from './withContext';
 export { getWeb3Config } from './web3';
 export { toArray } from './toArray';
-export * from './walletConnectUnlock';
