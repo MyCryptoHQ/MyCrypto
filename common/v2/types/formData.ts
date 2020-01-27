@@ -3,7 +3,7 @@ import { NetworkId } from './networkId';
 
 export interface FormData {
   network: NetworkId;
-  account: string;
+  address: string;
   accountType: WalletId | undefined;
   label: string;
   derivationPath: string;

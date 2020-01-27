@@ -14,10 +14,9 @@ import { getStories } from './stories';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
-export const defaultFormData: FormData = {
+export const defaultFormData: Omit<FormData, 'address'> = {
   network: 'Ethereum',
   accountType: undefined,
-  account: '',
   label: 'New Account',
   derivationPath: ''
 };
