@@ -10,17 +10,32 @@ import {
   ExtendedAccount,
   WalletId,
   Asset,
-  ITxReceipt
+  ITxReceipt,
+  NetworkId,
+  AddressBook
 } from 'v2/types';
-import { isArrayEqual, useInterval, convertToFiatFromAsset, fromTxReceiptObj } from 'v2/utils';
+import {
+  isArrayEqual,
+  useInterval,
+  convertToFiatFromAsset,
+  fromTxReceiptObj,
+  getWeb3Config,
+  generateUUID
+} from 'v2/utils';
 import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from 'v2/services/EthService';
 
 import { getAccountsAssetsBalances, accountUnlockVIPDetected } from './BalanceService';
 import { getStoreAccounts, getPendingTransactionsFromAccounts } from './helpers';
-import { AssetContext, getTotalByAsset, getAssetByTicker } from './Asset';
+import {
+  AssetContext,
+  getTotalByAsset,
+  getAssetByTicker,
+  getNewDefaultAssetTemplateByNetwork
+} from './Asset';
 import { AccountContext, getDashboardAccounts } from './Account';
 import { SettingsContext } from './Settings';
-import { NetworkContext } from './Network';
+import { NetworkContext, getNetworkById } from './Network';
+import { findNextUnusedDefaultLabel, AddressBookContext } from './AddressBook';
 
 interface State {
   readonly accounts: StoreAccount[];
@@ -38,6 +53,12 @@ interface State {
   assetUUIDs(targetAssets?: StoreAsset[]): any[];
   scanTokens(asset?: ExtendedAsset): Promise<void[]>;
   deleteAccountFromCache(account: ExtendedAccount): void;
+  addAccount(
+    networkId: NetworkId,
+    address: string,
+    accountType: WalletId | undefined,
+    dPath: string
+  ): Account | undefined;
   getAssetByTicker(symbol: string): Asset | undefined;
   getAccount(a: Account): StoreAccount | undefined;
 }
@@ -52,11 +73,13 @@ export const StoreProvider: React.FC = ({ children }) => {
     getAccountByAddressAndNetworkName,
     updateAccountAssets,
     updateAccountsBalances,
-    deleteAccount
+    deleteAccount,
+    createAccountWithID
   } = useContext(AccountContext);
   const { assets } = useContext(AssetContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { networks } = useContext(NetworkContext);
+  const { createAddressBooks, addressBook } = useContext(AddressBookContext);
 
   const [pendingTransactions, setPendingTransactions] = useState([] as ITxReceipt[]);
   // We transform rawAccounts into StoreAccount. Since the operation is exponential to the number of
@@ -202,6 +225,40 @@ export const StoreProvider: React.FC = ({ children }) => {
       updateSettingsAccounts(
         settings.dashboardAccounts.filter(dashboardUUID => dashboardUUID !== account.uuid)
       );
+    },
+    addAccount: (
+      networkId: NetworkId,
+      address: string,
+      accountType: WalletId | undefined,
+      dPath: string
+    ) => {
+      const network: Network | undefined = getNetworkById(networkId, networks);
+      if (!network || !address || !!getAccountByAddressAndNetworkName(address, networkId)) return;
+
+      const walletType =
+        accountType! === WalletId.WEB3 ? WalletId[getWeb3Config().id] : accountType!;
+      const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(assets)(network);
+      const newUUID = generateUUID();
+      const account: Account = {
+        address,
+        networkId,
+        wallet: walletType,
+        dPath,
+        assets: [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
+        transactions: [],
+        favorite: false,
+        mtime: 0
+      };
+      const newLabel: AddressBook = {
+        label: findNextUnusedDefaultLabel(account.wallet)(addressBook),
+        address: account.address,
+        notes: '',
+        network: account.networkId
+      };
+      createAddressBooks(newLabel);
+      createAccountWithID(account, newUUID);
+
+      return account;
     },
     getAssetByTicker: getAssetByTicker(assets),
     getAccount: ({ address, networkId }) =>

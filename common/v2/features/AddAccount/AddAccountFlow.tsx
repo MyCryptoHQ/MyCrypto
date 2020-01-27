@@ -1,10 +1,13 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState, useReducer, useEffect, useContext } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter } from 'react-router-dom';
 
 import { ROUTE_PATHS, WALLETS_CONFIG } from 'v2/config';
 import { WalletId } from 'v2/types';
 import { ContentPanel, WalletList } from 'v2/components';
+import { StoreContext, AccountContext } from 'v2/services';
+
+import { NotificationsContext, NotificationTemplates } from '../NotificationsPanel';
 import { FormDataActionType as ActionType } from './types';
 import { getStories } from './stories';
 import { formReducer, initialState } from './AddAccountForm.reducer';
@@ -34,6 +37,32 @@ const AddAccountFlow = withRouter(props => {
   const [storyName, setStoryName] = useState<WalletId | undefined>(); // The Wallet Story that we are tracking.
   const [step, setStep] = useState(0); // The current Step inside the Wallet Story.
   const [formData, updateFormState] = useReducer(formReducer, initialState); // The data that we want to save at the end.
+  const { scanTokens, addAccount, accounts } = useContext(StoreContext);
+  const { displayNotification } = useContext(NotificationsContext);
+  const { getAccountByAddressAndNetworkName } = useContext(AccountContext);
+
+  useEffect(() => {
+    const { network, address, accountType, derivationPath } = formData;
+    // try to add an account after unlocking the wallet
+    if (address && !addAccount(network, address, accountType, derivationPath)) {
+      displayNotification(NotificationTemplates.walletNotAdded, {
+        address
+      });
+      props.history.replace(ROUTE_PATHS.DASHBOARD.path);
+    }
+  }, [formData.address]);
+
+  useEffect(() => {
+    const { network, address } = formData;
+    // wait for account to be added and context refreshed
+    if (!!getAccountByAddressAndNetworkName(address, network)) {
+      displayNotification(NotificationTemplates.walletAdded, {
+        address
+      });
+      scanTokens();
+      props.history.replace(ROUTE_PATHS.DASHBOARD.path);
+    }
+  }, [accounts]);
 
   const isDefaultView = storyName === undefined;
 
@@ -54,14 +83,6 @@ const AddAccountFlow = withRouter(props => {
       return goToStart();
     }
     setStep(step - 1);
-  };
-
-  const onUnlock = async (payload: any) => {
-    // 1. Let reducer handle the differences. Infact this updateFormState could
-    // be simplified by having each component call `updateFormState` themselves.
-    await updateFormState({ type: ActionType.ON_UNLOCK, payload });
-    // 2. continue once it's done.
-    goToNextStep();
   };
 
   // Read the walletName parameter from the URL
@@ -118,7 +139,7 @@ const AddAccountFlow = withRouter(props => {
               wallet={getWalletInfo(storyName!)}
               goToStart={goToStart}
               goToNextStep={goToNextStep}
-              onUnlock={onUnlock}
+              onUnlock={(payload: any) => updateFormState({ type: ActionType.ON_UNLOCK, payload })}
               formData={formData}
               formDispatch={updateFormState}
             />

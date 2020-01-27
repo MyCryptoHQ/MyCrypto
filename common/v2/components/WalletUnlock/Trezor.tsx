@@ -140,7 +140,6 @@ class TrezorDecryptClass extends PureComponent<OwnProps, State> {
 
   private handleUnlock = (address: string, index: number) => {
     this.props.onUnlock(WalletService.init(address, this.state.dPath.value, index));
-    this.reset();
   };
 
   private handleNullConnect = (): void => {
