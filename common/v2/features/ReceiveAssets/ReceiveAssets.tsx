@@ -11,7 +11,7 @@ import {
 } from 'v2/services/EthService/utils/formatters';
 import { ContentPanel, QRCode, AccountDropdown, AssetDropdown } from 'v2/components';
 import { AssetContext, getNetworkById, StoreContext } from 'v2/services/Store';
-import { isValidAmount, truncate } from 'v2/utils';
+import { isValidAmount } from 'v2/utils';
 import { ExtendedAccount as IExtendedAccount, StoreAccount } from 'v2/types';
 import { ROUTE_PATHS } from 'v2/config';
 import translate, { translateRaw } from 'v2/translations';
@@ -272,7 +272,6 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                             )
                       }
                       isCopyable={true}
-                      truncate={truncate}
                     />
                   </FieldsetBox>
                 </Fieldset>
