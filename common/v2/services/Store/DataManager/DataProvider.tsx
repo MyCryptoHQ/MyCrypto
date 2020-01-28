@@ -69,7 +69,7 @@ export const DataProvider: React.FC = ({ children }) => {
     console.debug('Updating LocalStorage');
     updateDb(deMarshallState(state));
   };
-  // By default we sync no more than once a minute
+  // By default we sync no more than once a 30 seconds
   useThrottleFn(syncDb, 30000, [appState]);
   // In any case, we sync before the tab is closed
   // https://developers.google.com/web/updates/2018/07/page-lifecycle-api
