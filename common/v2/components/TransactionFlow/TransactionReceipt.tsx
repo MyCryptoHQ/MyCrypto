@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Address, Button, Copyable } from '@mycrypto/ui';
+import { Address, Button } from '@mycrypto/ui';
 
-import { ITxReceipt, ITxStatus, IStepComponentProps } from 'v2/types';
-import { Amount, TimeElapsedCounter } from 'v2/components';
+import { ITxReceipt, ITxStatus, IStepComponentProps, TSymbol } from 'v2/types';
+import { Amount, TimeElapsedCounter, AssetIcon, LinkOut } from 'v2/components';
 import {
   AddressBookContext,
   AccountContext,
@@ -103,6 +103,8 @@ export default function TransactionReceipt({
   const assetAmount = displayTxReceipt.amount || txConfig.amount;
   const assetTicker = 'asset' in displayTxReceipt ? displayTxReceipt.asset.ticker : 'ETH';
   const assetForRateFetch = 'asset' in displayTxReceipt ? displayTxReceipt.asset : undefined;
+
+  const txUrl = displayTxReceipt.network.blockExplorer.txUrl(displayTxReceipt.hash);
   return (
     <div className="TransactionReceipt">
       <div className="TransactionReceipt-row">
@@ -139,7 +141,8 @@ export default function TransactionReceipt({
             <img src={sentIcon} alt="Sent" />
             {translate('CONFIRM_TX_SENT')}
           </div>
-          <div className="TransactionReceipt-row-column">
+          <div className="TransactionReceipt-row-column-amount">
+            <AssetIcon symbol={asset.ticker as TSymbol} size={'24px'} />
             <Amount
               assetValue={`${parseFloat(assetAmount).toFixed(6)} ${assetTicker}`}
               fiatValue={`$${convertToFiat(
@@ -156,7 +159,7 @@ export default function TransactionReceipt({
         <div className="TransactionReceipt-details-row">
           <div className="TransactionReceipt-details-row-column">Transaction ID:</div>
           <div className="TransactionReceipt-details-row-column">
-            <Copyable text={displayTxReceipt.hash} truncate={truncate} />
+            <LinkOut text={displayTxReceipt.hash} truncate={truncate} link={txUrl} />
           </div>
         </div>
 
