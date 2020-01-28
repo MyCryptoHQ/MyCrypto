@@ -1,6 +1,6 @@
 import { IFullWallet } from '../IWallet';
 
-export default class WalletConnectSigner implements IFullWallet {
+export default class WalletConnectWallet implements IFullWallet {
   public address: string;
 
   constructor(address: string) {

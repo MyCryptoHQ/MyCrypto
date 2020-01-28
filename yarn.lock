@@ -3160,7 +3160,7 @@
     js-sha3 "0.8.0"
     node-fetch "2.6.0"
 
-"@walletconnect/browser@^1.0.0-beta.39":
+"@walletconnect/browser@1.0.0-beta.39":
   version "1.0.0-beta.39"
   resolved "https://registry.yarnpkg.com/@walletconnect/browser/-/browser-1.0.0-beta.39.tgz#db46d57e78d7a5e0be75c349821ef7c873e87b61"
   integrity sha512-u6DI2atFSCUquvXd86p+EY/TVqg9iZf3MYMVbnht2hxmuypBwZvfLkqSxqP/98bmOwUrOwbAt3/fK8vZoSfXiA==
@@ -3176,6 +3176,11 @@
   dependencies:
     "@walletconnect/types" "^1.0.0-beta.39"
     "@walletconnect/utils" "^1.0.0-beta.39"
+
+"@walletconnect/types@1.0.0-beta.47":
+  version "1.0.0-beta.47"
+  resolved "https://registry.yarnpkg.com/@walletconnect/types/-/types-1.0.0-beta.47.tgz#d790b33902629e05d7e18f6cbb6774c4a2f0619f"
+  integrity sha512-lxjBiNLLDOsyEaoB1nlBDrgznV0477udMfN4zvEuv+bNL+dxH27yQI1mM1VqIKIhrEaibjswLJGaweEMzgynoQ==
 
 "@walletconnect/types@^1.0.0-beta.39":
   version "1.0.0-beta.39"

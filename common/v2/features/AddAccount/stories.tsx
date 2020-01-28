@@ -12,7 +12,7 @@ import {
   Web3ProviderDecrypt,
   Web3ProviderInstall,
   ViewOnlyDecrypt,
-  WalletConnectProviderDecrypt
+  WalletConnectDecrypt
 } from 'v2/components';
 
 import { NetworkSelectPanel } from './components';
@@ -45,7 +45,7 @@ export const getStories = (): IStory[] => [
   },
   {
     name: WalletId.WALLETCONNECT,
-    steps: [NetworkSelectPanel, WalletConnectProviderDecrypt, SaveAndRedirect]
+    steps: [NetworkSelectPanel, WalletConnectDecrypt]
   },
   {
     name: WalletId.KEYSTORE_FILE,

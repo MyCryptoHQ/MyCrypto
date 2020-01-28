@@ -6,7 +6,8 @@ export const ToastTemplates = {
   pleaseReload: 'please-reload',
   offline: 'offline',
   somethingWentWrong: 'something-went-wrong',
-  online: 'online'
+  online: 'online',
+  walletConnectReject: 'wallet-connect-reject'
 };
 
 export const toastConfigs: ToastConfigsProps = {
@@ -44,6 +45,15 @@ export const toastConfigs: ToastConfigsProps = {
     header: 'You’re online!',
     message: () => 'All systems good to go.',
     type: ToastType.SUCCESS,
+    position: 'top-left'
+  },
+  [ToastTemplates.walletConnectReject]: {
+    header: 'Connection request rejected',
+    message: () => `
+      The connection request failed.
+      Please try again.
+    `,
+    type: ToastType.ERROR,
     position: 'top-left'
   }
 };

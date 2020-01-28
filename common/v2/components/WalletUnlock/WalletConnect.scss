@@ -1,0 +1,39 @@
+.WalletConnectPanel {
+  margin: 1em;
+}
+
+.WalletConnect {
+  position: relative;
+  justify-content: center;
+  text-align: center;
+
+  &-fields {
+    display: flex;
+    flex-direction: column;
+
+    &-field {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      margin-top: 15px;
+    }
+  }
+}
+.wc-center {
+  margin: 0 auto;
+}
+
+.wc-description {
+  margin: 2em 0;
+}
+
+.wc-qr-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 415px;
+  width: 415px;
+  position: relative;
+}

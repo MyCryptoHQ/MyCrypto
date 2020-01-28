@@ -1,5 +1,8 @@
 import React from 'react';
 import QRCodeLib from 'qrcode';
+import styled from 'styled-components';
+
+import Spinner from './Spinner';
 
 // FIXME should store limited amount if history
 // data -> qr cache
@@ -69,3 +72,34 @@ export default class QRCode extends React.PureComponent<Props, State> {
     );
   }
 }
+
+interface QRCodeContainerProps {
+  size?: string;
+  disableSpinner?: boolean;
+  data?: string;
+}
+
+const SQRCodeContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: ${(props: { size: string }) => props.size};
+  min-width: ${(props: { size: string }) => props.size};
+  min-height: ${(props: { size: string }) => props.size};
+  & img {
+    border: solid white 15px;
+  }
+`;
+
+export const QRCodeContainer = ({
+  disableSpinner = false,
+  data,
+  size = '415px'
+}: QRCodeContainerProps) => {
+  return (
+    <SQRCodeContainer size={size}>
+      {!data && !disableSpinner && <Spinner />}
+      {data && <QRCode data={data} />}
+    </SQRCodeContainer>
+  );
+};

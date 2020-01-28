@@ -23,7 +23,7 @@ import { unlockKeystore, KeystoreUnlockParams } from './keystore';
 import { unlockMnemonic, MnemonicUnlockParams } from './mnemonic';
 import { unlockPrivateKey, PrivateKeyUnlockParams } from './privatekey';
 import { unlockWeb3 } from './web3';
-import WalletConnectWallet from './non-deterministic/walletConnect';
+import { WalletConnectWallet } from './walletconnect';
 
 export const WalletFactory = (walletId: WalletId): WalletService | any => {
   switch (walletId) {

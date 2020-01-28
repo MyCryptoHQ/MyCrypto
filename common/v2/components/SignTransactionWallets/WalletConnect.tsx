@@ -1,229 +1,177 @@
-import React, { useEffect, useReducer, useState, useContext } from 'react';
+import React from 'react';
+import styled from 'styled-components';
+import * as R from 'ramda';
 
 import translate, { translateRaw } from 'v2/translations';
-import {
-  Button,
-  Spinner,
-  walletConnectReducer,
-  WalletConnectReducer,
-  WalletConnectReadOnlyQr
-} from 'v2/components';
-import { WalletId, ISignComponentProps } from 'v2/types';
+import { Button, CodeBlock, QRCodeContainer, Typography, Overlay, Spinner } from 'v2/components';
+import { WalletId, ISignComponentProps, TAddress } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
-import { WalletConnectContext } from 'v2/services/WalletService';
+import { COLORS } from 'v2/theme';
+import { useUpdateEffect } from 'v2/vendor';
+import { noOp } from 'v2/utils';
+import { useWalletConnect, WcReducer, TActionError, ITxData } from 'v2/services/WalletService';
 
-import { InlineErrorMsg } from '../ErrorMessages';
 import './WalletConnect.scss';
 
-interface WalletConnectAddress {
-  address: string;
-  chainId: number;
+const SContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: ${COLORS.WHITE};
+`;
+
+const toString = (obj = {}) => JSON.stringify(obj, null, 2);
+const helpLink = WALLETS_CONFIG[WalletId.WALLETCONNECT].helpLink!;
+
+interface ErrorProps {
+  address: TAddress;
+  network: string;
+  onClick(): void;
 }
 
-export enum WalletSigningState {
-  READY, // when signerWallet is ready to sendTransaction
-  AWAITING_LOGIN, // used when component is awaiting login.
-  UNKNOWN // used upon component initialization when wallet status is not determined
-}
-
-export interface IWalletConnectState {
-  isCorrectAddress: boolean;
-  isCorrectNetwork: boolean;
-  detectedAddress: string;
-  signingError: string;
-  walletSigningState: WalletSigningState;
-  displaySignReadyQR: boolean;
-  isPendingTx: boolean;
-  isConnected: boolean;
-}
-
-export const initialWalletConnectState: IWalletConnectState = {
-  isCorrectAddress: false,
-  isCorrectNetwork: false,
-  detectedAddress: '',
-  signingError: '',
-  walletSigningState: WalletSigningState.UNKNOWN,
-  displaySignReadyQR: false,
-  isPendingTx: false,
-  isConnected: false
+const ErrorHandlers: { [K in TActionError]: React.SFC<ErrorProps> } = {
+  WRONG_ADDRESS: ({ address }) => (
+    <Typography style={{ color: 'white', textAlign: 'center', padding: '0 2em' }}>
+      {translateRaw('SIGN_TX_WALLETCONNECT_FAILED_ACCOUNT', {
+        $walletName: translateRaw('X_WALLETCONNECT'),
+        $address: address
+      })}
+    </Typography>
+  ),
+  WRONG_NETWORK: ({ network }) => (
+    <Typography style={{ color: 'white', textAlign: 'center', padding: '0 2em' }}>
+      {translateRaw('SIGN_TX_WALLETCONNECT_FAILED_NETWORK', {
+        $walletName: translateRaw('X_WALLETCONNECT'),
+        $network: network
+      })}
+    </Typography>
+  ),
+  CONNECTION_REJECTED: ({ onClick }) => (
+    <>
+      <Typography style={{ color: 'white', textAlign: 'center' }}>Session Rejected</Typography>
+      <div style={{ marginTop: '1em' }}>
+        <Button onClick={onClick}>Try Again</Button>
+      </div>
+    </>
+  ),
+  SIGN_REJECTED: ({ onClick }) => (
+    <>
+      <Typography style={{ color: 'white', textAlign: 'center' }}>Transaction Rejected</Typography>
+      <div style={{ marginTop: '1em' }}>
+        <Button onClick={onClick}>Try Again</Button>
+      </div>
+    </>
+  )
 };
-
-export type WalletConnectQrContent = WalletConnectAddress;
-
-const wikiLink = WALLETS_CONFIG[WalletId.WALLETCONNECT].helpLink!;
 
 export function SignTransactionWalletConnect({
   senderAccount,
   rawTransaction,
+  network,
   onSuccess
 }: ISignComponentProps) {
-  const { sendTransaction } = useContext(WalletConnectContext);
-  const [state, dispatch] = useReducer(walletConnectReducer, initialWalletConnectState);
-  // This qrcode trigger is to handle user accessing the incorrect account on their WalletConnect device
-  const [displaySignReadyQR, setDisplaySignReadyQR] = useState(false);
-  const { session, handleUnlock, handleReset } = useContext(WalletConnectContext);
-  const [isReady, setIsReady] = useState(false);
+  const { state, requestConnection, requestSign } = useWalletConnect();
 
-  const detectAddress = ({
-    address: currentWalletConnectAddress,
-    chainId: currentWalletConnectChainId
-  }: WalletConnectQrContent) => {
-    dispatch({
-      type: WalletConnectReducer.DETECT_ADDRESS,
-      payload: {
-        address: currentWalletConnectAddress,
-        chainId: currentWalletConnectChainId,
-        senderAccount,
-        rawTransaction
+  const sendTx = () =>
+    requestSign({
+      from: senderAccount.address as TAddress,
+      ...rawTransaction
+    })
+      .then((txHash: ITxData) => onSuccess(txHash))
+      .catch(console.debug);
+
+  const getErrorMessage = (code: TActionError) => {
+    const getAction = () => {
+      switch (code) {
+        case WcReducer.errorCodes.SIGN_REJECTED:
+          return sendTx;
+        case WcReducer.errorCodes.CONNECTION_REJECTED:
+          return requestConnection;
+        default:
+          return noOp;
       }
+    };
+    return ErrorHandlers[code]({
+      address: senderAccount.address as TAddress,
+      network: network.name,
+      onClick: getAction()
     });
   };
 
-  /* start:wallet-login-state */
-  // Used to reset the walletconnect session
-  useEffect(() => {
-    if (isReady) return;
-    setIsReady(true);
-    handleReset();
-  });
-
-  // Once walletconnect session is queued to reset, start unlock flow
-  useEffect(() => {
-    if (!isReady) return;
-    handleUnlock(detectAddress);
-  });
-  /* end:wallet-login-state */
-
-  const promptSignTransaction = async () => {
-    if (!state.isConnected || !state.isCorrectNetwork || !state.isCorrectAddress) return;
-    dispatch({
-      type: WalletConnectReducer.BROADCAST_SIGN_TX,
-      payload: { isPendingTx: true }
-    });
-    sendTransaction({ from: state.detectedAddress, ...rawTransaction })
-      .then((txHash: string) => {
-        onSuccess(txHash);
-      })
-      .catch((err: any) => {
-        dispatch({
-          type: WalletConnectReducer.BROADCAST_SIGN_TX_ERROR,
-          payload: { errMsg: err.message }
-        });
-      });
-  };
-
-  // Used to prompt for signature
-  useEffect(() => {
-    if (
-      !state.isCorrectAddress ||
-      !state.isCorrectNetwork ||
-      !state.isConnected ||
-      state.walletSigningState === WalletSigningState.READY
-    )
-      return;
-    dispatch({
-      type: WalletConnectReducer.SET_WALLET_SIGNING_STATE_READY
-    });
-  });
-
-  // Used to trigger signTransaction
-  useEffect(() => {
-    if (state.walletSigningState !== WalletSigningState.READY) return;
-    // Resubmits the transaction for signature on tx rejection.
-    const walletSigner = setInterval(() => {
-      if (state.isPendingTx) return;
-      promptSignTransaction();
-    }, 2000);
-    return () => clearInterval(walletSigner);
-  });
+  // Once we have a valid session we ask the user to sign the tx.
+  // 1. Make sure a session exists
+  // 2. When 'promptSignRetry' is true, we are waiting for a user confirmation,
+  //    so we bail in the meantime.
+  useUpdateEffect(() => {
+    if (!state.isConnected || state.promptSignRetry || !R.isEmpty(state.errors)) return;
+    sendTx();
+  }, [state.isConnected, state.promptSignRetry, state.errors]);
 
   return (
-    <div className="WalletConnectPanel">
-      <div className="Panel-title">
+    <div>
+      <div className="wc-title">
         {translate('SIGNER_SELECT_WALLETCONNECT', { $walletId: translateRaw('X_WALLETCONNECT') })}
       </div>
-      {state.walletSigningState !== WalletSigningState.READY &&
-        !state.isCorrectAddress &&
-        !state.isCorrectNetwork && (
-          <section className="Panel-description">
-            {translate('SIGNER_SELECT_WALLET_QR', {
-              $walletId: translateRaw('X_WALLETCONNECT')
-            })}
-          </section>
-        )}
-      <div className="WalletConnect">
-        <section className="WalletConnect-fields">
-          {state.walletSigningState === WalletSigningState.READY && (
+      <section className="wc-container">
+        <div className="wc-content">
+          {state.isConnected ? (
             <>
-              <div className="WalletConnect-fields-field">
-                {translate('SIGN_TX_WALLETCONNECT_PENDING', {
-                  $address: state.detectedAddress
-                })}
+              <div>
+                <Typography>Session Connected to:</Typography>
+                <CodeBlock>
+                  {toString({
+                    address: state.detectedAddress,
+                    chainId: state.detectedChainId
+                  })}
+                </CodeBlock>
               </div>
-              {state.signingError !== '' && (
-                <div className="WalletConnect-fields-error">
-                  <InlineErrorMsg>
-                    {translate('SIGN_TX_WALLETCONNECT_REJECTED', {
-                      $walletName: translateRaw('X_WALLETCONNECT'),
-                      $address: senderAccount.address
-                    })}
-                  </InlineErrorMsg>
-                </div>
-              )}
-              {state.isPendingTx && (
-                <div className="WalletConnect-fields-spinner">
-                  <Spinner />
-                </div>
-              )}
+              <div className="wc-content">
+                <Typography>Requesting signature for transcation:</Typography>
+                <CodeBlock>{toString(rawTransaction)}</CodeBlock>
+              </div>
+            </>
+          ) : (
+            <>
+              <div style={{ padding: '0 15px' }}>
+                <Typography as="div">
+                  1. Open the wallet containing the account {senderAccount.address}
+                </Typography>
+                <Typography as="div">2. Select the {senderAccount.networkId} network</Typography>
+                <Typography as="div">3. Scan the QRCode below</Typography>
+              </div>
             </>
           )}
-
-          {state.isConnected && !state.isCorrectAddress && (
-            <div className="WalletConnect-fields-field">
-              {translate('SIGN_TX_WALLETCONNECT_FAILED_ACCOUNT', {
-                $walletName: translateRaw('X_WALLETCONNECT'),
-                $address: senderAccount.address
-              })}
-            </div>
-          )}
-          {state.isConnected && !state.isCorrectNetwork && (
-            <div className="WalletConnect-fields-field">
-              {translate('SIGN_TX_WALLETCONNECT_FAILED_NETWORK', {
-                $walletName: translateRaw('X_WALLETCONNECT'),
-                $network: senderAccount.networkId
-              })}
-            </div>
-          )}
-          {state.walletSigningState === WalletSigningState.READY && (
-            <div className="WalletConnect-fields-field">
-              <Button
-                basic={true}
-                className="WalletConnect-qr-code-option"
-                onClick={() => setDisplaySignReadyQR(!displaySignReadyQR)}
-              >
-                {displaySignReadyQR
-                  ? translateRaw('SIGN_TX_WALLETCONNECT_HIDE_QR')
-                  : translateRaw('SIGN_TX_WALLETCONNECT_SHOW_QR')}
-              </Button>
-              {displaySignReadyQR && session && session.uri && (
-                <section className="WalletConnect-fields-field">
-                  <WalletConnectReadOnlyQr sessionUri={session.uri} />
-                </section>
+        </div>
+      </section>
+      <section className="wc-container">
+        <div className="wc-qr-container">
+          <Overlay
+            absolute={true}
+            center={true}
+            show={state.isConnected || !R.isEmpty(state.errors)}
+          >
+            <SContainer>
+              {!R.isEmpty(state.errors) ? (
+                getErrorMessage(state.errors![0])
+              ) : (
+                <>
+                  <Typography style={{ color: 'white' }}>Pending Confirmation</Typography>
+                  <div style={{ marginTop: '1em' }}>
+                    <Spinner />
+                  </div>
+                  <Typography style={{ color: 'white' }}>
+                    Confirm the transaction on your wallet
+                  </Typography>
+                </>
               )}
-            </div>
-          )}
-        </section>
-        {!(state.walletSigningState === WalletSigningState.READY) && session && session.uri && (
-          <section className="WalletConnect-fields-field">
-            <WalletConnectReadOnlyQr sessionUri={session.uri} />
-          </section>
-        )}
-        {wikiLink && (
-          <p className="WalletConnect-wiki-link">
-            {translate('ADD_WALLETCONNECT_LINK', { $wiki_link: wikiLink })}
-          </p>
-        )}
-      </div>
+            </SContainer>
+          </Overlay>
+          <QRCodeContainer data={state.uri} disableSpinner={true} />
+        </div>
+        <div style={{ margin: '1em auto', textAlign: 'center' }}>
+          {translate('ADD_WALLETCONNECT_LINK', { $wiki_link: helpLink })}
+        </div>
+      </section>
     </div>
   );
 }
