@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Icon, Copyable, Identicon, Button } from '@mycrypto/ui';
+import { Icon, Identicon, Button } from '@mycrypto/ui';
 
 import {
   DashboardPanel,
   CollapsibleTable,
   RowDeleteOverlay,
   Network,
-  Typography
+  Typography,
+  EthAddress
 } from 'v2/components';
 import { ExtendedAddressBook } from 'v2/types';
 import { truncate } from 'v2/utils';
@@ -91,7 +92,7 @@ export default function AddressBook({ addressBook, toggleFlipped, deleteAddressB
         <SIdenticon address={address} />
         <STypography bold={true} value={label} />
       </Label>,
-      <Copyable key={2} text={address} truncate={truncate} isCopyable={true} />,
+      <EthAddress key={2} address={address} truncate={truncate} isCopyable={true} />,
       <Network key={3} color="#a682ff">
         {network}
       </Network>,

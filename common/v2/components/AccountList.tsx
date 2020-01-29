@@ -1,11 +1,17 @@
 import React, { useContext, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { Button, Copyable, Identicon } from '@mycrypto/ui';
+import { Button, Identicon } from '@mycrypto/ui';
 
 import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS, Fiats } from 'v2/config';
-import { CollapsibleTable, Network, RowDeleteOverlay, RouterLink } from 'v2/components';
-import { default as Typography } from 'v2/components/Typography'; // @TODO solve Circular Dependency issue
+import {
+  EthAddress,
+  CollapsibleTable,
+  Network,
+  RowDeleteOverlay,
+  RouterLink,
+  Typography
+} from 'v2/components';
 import { truncate } from 'v2/utils';
 import { BREAK_POINTS, COLORS, breakpointToNumber } from 'v2/theme';
 import { ExtendedAccount, AddressBook, StoreAccount } from 'v2/types';
@@ -17,7 +23,6 @@ import {
   AddressBookContext
 } from 'v2/services/Store';
 import { DashboardPanel } from './DashboardPanel';
-import './AccountList.scss';
 import { RatesContext } from 'v2/services';
 import { default as Currency } from './Currency';
 import { TUuid } from 'v2/types/uuid';
@@ -25,21 +30,18 @@ import { TUuid } from 'v2/types/uuid';
 const Label = styled.span`
   display: flex;
   align-items: center;
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM} {
+    font-weight: bold;
+  })
 `;
 
 const SIdenticon = styled(Identicon)`
   img {
     height: 2em;
   }
-  margin-right: 10px;
+  margin-right: 0.8em;
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    margin-right: 27px;
-  }
-`;
-
-const STypography = styled(Typography)`
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    font-weight: inherit;
+    margin-right: 1em;
   }
 `;
 
@@ -80,8 +82,11 @@ const FavoriteButton = styled(Button)`
 
 const DeleteButton = styled(Button)`
   align-self: flex-end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 0.7em;
-  width: 20px;
+  width: 100%;
 `;
 
 const TableContainer = styled.div`
@@ -114,7 +119,14 @@ export const screenIsMobileSized = (breakpoint: number): boolean =>
   window.matchMedia(`(max-width: ${breakpoint}px)`).matches;
 
 export default function AccountList(props: AccountListProps) {
-  const { accounts: displayAccounts, className, deletable, favoritable, copyable, dashboard } = props;
+  const {
+    accounts: displayAccounts,
+    className,
+    deletable,
+    favoritable,
+    copyable,
+    dashboard
+  } = props;
   const { deleteAccountFromCache } = useContext(StoreContext);
   const { updateAccount } = useContext(AccountContext);
   const [deletingIndex, setDeletingIndex] = useState();
@@ -182,11 +194,14 @@ function buildAccountTable(
     translateRaw('ACCOUNT_LIST_NETWORK'),
     <HeaderAlignment key={'ACCOUNT_LIST_VALUE'} align="center">
       {translateRaw('ACCOUNT_LIST_VALUE')}
+    </HeaderAlignment>,
+    <HeaderAlignment key={'ACCOUNT_LIST_DELETE'} align="center">
+      {translateRaw('ACCOUNT_LIST_DELETE')}
     </HeaderAlignment>
   ];
 
   return {
-    head: deletable ? [...columns, translateRaw('ACCOUNT_LIST_DELETE')] : columns,
+    head: deletable ? columns : columns.slice(0, columns.length - 1),
     overlay:
       overlayRows && overlayRows[0] !== undefined ? (
         <RowDeleteOverlay
@@ -213,9 +228,14 @@ function buildAccountTable(
       const bodyContent = [
         <Label key={index}>
           <SIdenticon address={account.address} />
-          <STypography bold={true} value={label} />
+          <Typography value={label} />
         </Label>,
-        <Copyable key={index} text={account.address} truncate={truncate} isCopyable={copyable} />,
+        <EthAddress
+          key={index}
+          address={account.address}
+          truncate={truncate}
+          isCopyable={copyable}
+        />,
         <Network key={index} color="#a682ff">
           {account.networkId}
         </Network>,
@@ -256,9 +276,7 @@ function buildAccountTable(
         const aLabel = a.props.label;
         const bLabel = b.props.label;
         return aLabel === bLabel ? true : aLabel.localeCompare(bLabel);
-      },
-      hiddenHeadings: deletable ? [translateRaw('ACCOUNT_LIST_DELETE')] : undefined,
-      iconColumns: deletable ? [translateRaw('ACCOUNT_LIST_DELETE')] : undefined
+      }
     }
   };
 }
