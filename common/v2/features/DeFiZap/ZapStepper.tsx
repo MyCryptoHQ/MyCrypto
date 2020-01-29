@@ -5,6 +5,9 @@ import { ZapForm, ConfirmZapInteraction, ZapInteractionReceipt } from './compone
 import { GeneralStepper, IStepperPath } from 'v2/components/GeneralStepper';
 import { ROUTE_PATHS } from 'v2/config';
 import ZapInteractionFactory from './stateFactory';
+import { translateRaw } from 'v2/translations';
+import { WALLET_STEPS } from './helpers';
+import { ITxReceipt, ISignedTx, WalletId } from 'v2/types';
 
 const initialZapFlowState = (initialZapSelected: IZapConfig) => ({
   zapSelected: initialZapSelected,
@@ -17,20 +20,39 @@ interface Props {
 }
 
 const ZapStepper = ({ selectedZap }: Props) => {
-  const { zapFlowState } = useStateReducer(ZapInteractionFactory, initialZapFlowState(selectedZap));
+  const { zapFlowState, handleUserInputFormSubmit, handleTxSigned } = useStateReducer(
+    ZapInteractionFactory,
+    initialZapFlowState(selectedZap)
+  );
 
-  console.debug('[DeFiZapFlow]: Refresh -> ', zapFlowState);
+  console.debug('[DeFiZapStepper]: Refresh -> ', zapFlowState);
 
   const steps: IStepperPath[] = [
     {
       label: 'Zap Form',
       component: ZapForm,
-      props: (state => state)(zapFlowState)
+      props: (state => state)(zapFlowState),
+      actions: { handleUserInputFormSubmit }
     },
     {
       label: 'Confirm Transaction',
       component: ConfirmZapInteraction,
       props: (({ txConfig }) => ({ txConfig }))(zapFlowState)
+    },
+    {
+      label: translateRaw('INTERACT_SIGN_WRITE'),
+      component:
+        zapFlowState.txConfig &&
+        zapFlowState.txConfig.senderAccount &&
+        WALLET_STEPS[zapFlowState.txConfig.senderAccount.wallet as WalletId],
+      props: (({ rawTransaction }) => ({
+        network: zapFlowState.txConfig && zapFlowState.txConfig.network,
+        senderAccount: zapFlowState.txConfig.senderAccount,
+        rawTransaction
+      }))(zapFlowState),
+      actions: {
+        onSuccess: (payload: ITxReceipt | ISignedTx) => handleTxSigned(payload)
+      }
     },
     {
       label: 'Zap Receipt',

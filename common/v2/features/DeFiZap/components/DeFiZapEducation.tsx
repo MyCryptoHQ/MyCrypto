@@ -18,7 +18,8 @@ const DeFiZapEducation = withRouter(({ history }) => {
   return (
     <ContentPanel heading={'DeFi Zap Education'}>
       This will eventually be the education panel for defizap, and the selection of zap for the rest
-      of the flow.
+      of the flow. For now, it's just a dropdown to allow for us to test the rest of the flow.
+      <br />
       <div>
         <div>
           Select a Zap:
