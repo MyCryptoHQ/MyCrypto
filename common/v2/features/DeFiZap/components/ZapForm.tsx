@@ -1,11 +1,16 @@
 import React from 'react';
-import { IDeFiStepComponentProps } from '../types';
 import { Button } from 'v2/components';
+import { IZapConfig } from '../config';
 
-const ZapSelection = ({ onComplete }: IDeFiStepComponentProps) => {
+interface Props {
+  zapSelected: IZapConfig;
+  onComplete(): void;
+}
+
+const ZapSelection = ({ onComplete }: Props) => {
   return (
     <>
-      mehhhForm
+      Form
       <div>
         <Button onClick={onComplete}>Continue on!</Button>
       </div>
