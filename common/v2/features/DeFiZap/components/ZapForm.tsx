@@ -1,21 +1,24 @@
 import React from 'react';
 import { Button } from 'v2/components';
-import { IZapConfig } from '../config';
+import { ZapInteractionState } from '../types';
 
-interface Props {
-  zapSelected: IZapConfig;
+interface Props extends ZapInteractionState {
   onComplete(): void;
 }
 
-const ZapSelection = ({ onComplete }: Props) => {
+const ZapForm = (props: Props) => {
+  console.debug('[ZapSelection]: here -> ', props);
   return (
     <>
       Form
       <div>
-        <Button onClick={onComplete}>Continue on!</Button>
+        <span>{JSON.stringify(props, null, 4)}</span>
+      </div>
+      <div>
+        <Button onClick={props.onComplete}>Continue on!</Button>
       </div>
     </>
   );
 };
 
-export default ZapSelection;
+export default ZapForm;

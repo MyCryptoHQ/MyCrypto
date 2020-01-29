@@ -8,8 +8,12 @@ export interface IZapConfig {
   minimumGasLimit: number;
 }
 
-export const ZAPS_CONFIG: IZapConfig[] = [
-  {
+export interface IZapConfigObject {
+  [key: string]: IZapConfig;
+}
+
+export const ZAPS_CONFIG: IZapConfigObject = {
+  unipoolseth: {
     name: 'sETH Unipool',
     key: 'unipoolseth',
     contractAddress: '0xd3EBA712988df0F8A7e5073719A40cE4cbF60b33',
@@ -19,7 +23,7 @@ export const ZAPS_CONFIG: IZapConfig[] = [
     link: 'https://defizap.com/zaps/unipoolseth',
     minimumGasLimit: 1500000
   },
-  {
+  lender: {
     name: 'Lender Pool',
     key: 'lender',
     contractAddress: '0xEbD5E23927891FBfDa10487cCC9A1a1a7b9a4210',
@@ -29,4 +33,4 @@ export const ZAPS_CONFIG: IZapConfig[] = [
     link: 'https://defizap.com/zaps/lender',
     minimumGasLimit: 1500000
   }
-];
+};

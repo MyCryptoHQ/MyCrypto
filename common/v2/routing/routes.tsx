@@ -217,7 +217,7 @@ export const STATIC_APP_ROUTES: IAppRoute[] = [
   {
     name: ROUTE_PATHS.DEFIZAP.name,
     title: ROUTE_PATHS.DEFIZAP.title,
-    path: ROUTE_PATHS.DEFIZAP.path,
+    path: `${ROUTE_PATHS.DEFIZAP.path}/:zapName?`,
     exact: true,
     requireAccounts: true,
     component: DeFiZapFlow

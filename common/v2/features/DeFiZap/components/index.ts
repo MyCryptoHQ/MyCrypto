@@ -1,4 +1,3 @@
-export { default as ZapSelection } from './ZapSelection';
 export { default as DeFiZapEducation } from './DeFiZapEducation';
 export { default as ZapForm } from './ZapForm';
 export { default as ConfirmZapInteraction } from './ConfirmZapInteraction';
