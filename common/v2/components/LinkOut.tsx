@@ -33,7 +33,7 @@ interface Props {
 const LinkOut = ({ text, link, truncate }: Props) => {
   const content = truncate ? truncate(text) : text;
   return (
-    <LinkOutWrapper href={link} target="_blank">
+    <LinkOutWrapper href={link} target="_blank" rel="noreferrer">
       <Typography fontSize={'16px'}>{content}</Typography>
       <OutIcon src={LinkOutIcon} />
     </LinkOutWrapper>

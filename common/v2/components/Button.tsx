@@ -9,19 +9,15 @@ interface ButtonProps {
 
 const StyledButton = styled(Button)<ButtonProps>`
   ${props =>
-    props.fullwidth === true &&
-    css`
-      width: 100%;
-      margin-top: 1rem;
-    `}
-  ${props =>
-    props.color &&
-    css`
-      color: ${props.color};
-    `}
+      props.fullwidth === true &&
+      css`
+        width: 100%;
+        margin-top: 1rem;
+      `}
     :disabled {
     opacity: 0.4;
   }
+  color: ${props => (props.color ? props.color : 'inherit')};
 `;
 
 export default StyledButton;
