@@ -385,6 +385,13 @@
     "uuid": "a612b9c0-ab58-5df9-9572-3ad575167f83"
   },
   {
+    "address": "0xcD62b1C403fa761BAadFC74C525ce2B51780b184",
+    "symbol": "ANJ",
+    "decimal": 18,
+    "name": "Aragon Network Juror",
+    "uuid": "9978e92f-dc71-5176-862f-7d9a4dacd153"
+  },
+  {
     "address": "0x960b236A07cf122663c4303350609A66A7B288C0",
     "symbol": "ANT",
     "decimal": 18,
@@ -446,6 +453,13 @@
     "decimal": 18,
     "name": "Accord",
     "uuid": "fc07a1ad-4879-560a-92af-623a098476a6"
+  },
+  {
+    "address": "0x92afBa413BF9E5DA3919A522E371884bEAC76309",
+    "symbol": "ARE",
+    "decimal": 8,
+    "name": "Aurei",
+    "uuid": "2daec69d-8d37-5c37-a430-93669457cd41"
   },
   {
     "address": "0xBA5F11b16B155792Cf3B2E6880E8706859A8AEB6",
@@ -1104,6 +1118,13 @@
     "decimal": 18,
     "name": "Blockium",
     "uuid": "6621726d-31ad-5e20-9279-39e0fe120933"
+  },
+  {
+    "address": "0xEfE98765Da3824eF4a5358bA798cec87c13D8C62",
+    "symbol": "BOL",
+    "decimal": 18,
+    "name": "Freight Trust Protocol",
+    "uuid": "eeb6a955-9e2b-54a8-907a-ca1b5859aaac"
   },
   {
     "address": "0x9F235D23354857EfE6c541dB92a9eF1877689BCB",
@@ -4263,6 +4284,13 @@
     "uuid": "f3f321d2-e673-5129-9ece-6b7a22418daf"
   },
   {
+    "address": "0x19747816A030fECDa3394C6062CDF6b9B4dB0E0b",
+    "symbol": "HEM",
+    "decimal": 8,
+    "name": "Hemelios",
+    "uuid": "e0c044b2-5a01-5d86-b565-73f23e13608b"
+  },
+  {
     "address": "0x491C9A23DB85623EEd455a8EfDd6AbA9b911C5dF",
     "symbol": "HER",
     "decimal": 18,
@@ -4270,8 +4298,15 @@
     "uuid": "ec9a8d15-6545-5ac5-a73c-e4763e0b239f"
   },
   {
-    "address": "0x96006F60B452526481a26eab55265ECdf82E7361",
+    "address": "0x2b591e99afE9f32eAA6214f7B7629768c40Eeb39",
     "symbol": "HEX",
+    "decimal": 8,
+    "name": "HEX",
+    "uuid": "f0656669-66a1-5475-af6e-aeb454251845"
+  },
+  {
+    "address": "0x96006F60B452526481a26eab55265ECdf82E7361",
+    "symbol": "HEX (1)",
     "decimal": 18,
     "name": "HollaEx",
     "uuid": "b80908dd-0550-57a2-b4ac-98549a391919"
