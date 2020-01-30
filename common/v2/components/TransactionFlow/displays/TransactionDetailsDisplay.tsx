@@ -1,16 +1,19 @@
 import React, { useState, useContext } from 'react';
-import { Button, Network } from '@mycrypto/ui';
+import { Network } from '@mycrypto/ui';
 import { bigNumberify } from 'ethers/utils';
 
 import { Asset, StoreAccount, ExtendedAccount, Network as INetwork, ITxObject } from 'v2/types';
 import { baseToConvertedUnit, totalTxFeeToString } from 'v2/services/EthService';
 import { getAccountBalance, StoreContext } from 'v2/services/Store';
-import { CopyableCodeBlock } from 'v2/components';
+import { CopyableCodeBlock, Button } from 'v2/components';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { weiToFloat, isTransactionDataEmpty } from 'v2/utils';
 import translate from 'v2/translations';
+import { COLORS } from 'v2/theme';
 
 import './TransactionDetailsDisplay.scss';
+
+const { BRIGHT_SKY_BLUE } = COLORS;
 
 interface Props {
   baseAsset: Asset;
@@ -56,6 +59,7 @@ function TransactionDetailsDisplay({
           <div className="TransactionDetails-row-column">
             <Button
               basic={true}
+              color={BRIGHT_SKY_BLUE}
               onClick={() => setShowDetails(!showDetails)}
               className="TransactionDetails-detailButton"
             >

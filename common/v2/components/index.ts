@@ -59,4 +59,5 @@ export { default as HelpLink } from './HelpLink';
 export { default as ParityQrSigner } from './ParityQrSigner';
 export { default as TranslateMarkdown } from './TranslateMarkdown';
 export { default as GasSelector } from './GasSelector';
+export { default as LinkOut } from './LinkOut';
 export { default as EthAddress } from './EthAddress';
