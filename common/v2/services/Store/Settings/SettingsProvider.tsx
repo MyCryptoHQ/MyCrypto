@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useMemo } from 'react';
+import React, { useContext, createContext } from 'react';
 
 import { ISettings, IRates, LSKeys, TUuid } from 'v2/types';
 import { DataContext } from '../DataManager';
@@ -11,7 +11,7 @@ export interface ISettingsContext {
   updateSettingsAccounts(accounts: TUuid[]): void;
   updateSettingsNode(nodeId: string): void;
   exportStorage(): string;
-  importStorage(importedCache: string): void;
+  importStorage(importedCache: string): boolean;
   updateSettingsRates(rates: IRates): void;
   updateLanguageSelection(language: string): void;
 }
@@ -40,17 +40,19 @@ export const SettingsContext = createContext({} as ISettingsContext);
 
 export const SettingsProvider: React.FC = ({ children }) => {
   const { createActions, settings } = useContext(DataContext);
-  const model = useMemo(() => createActions(LSKeys.SETTINGS), []);
+  const model = createActions(LSKeys.SETTINGS);
 
   const state: ISettingsContext = {
     settings,
     language: settings.language || '',
     updateSettings: model.updateAll,
     exportStorage: () => JSON.stringify(model.exportStorage()),
-    importStorage: (toImport: string) => {
+    importStorage: (toImport: string): boolean => {
       const ls = state.exportStorage();
       if (!isValidImport(toImport, String(ls))) return false;
-      return model.importStorage(toImport);
+
+      model.importStorage(toImport);
+      return true;
     },
     addAccountToFavorites: (account: TUuid): void => {
       state.updateSettings({

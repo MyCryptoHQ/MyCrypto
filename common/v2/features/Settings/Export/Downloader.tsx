@@ -6,7 +6,7 @@ import { makeBlob } from 'v2/utils';
 import translate from 'v2/translations';
 
 interface DownloaderProps {
-  getStorage(): void;
+  appStore: string;
 }
 
 const Downloader = (props: DownloaderProps) => {
@@ -14,8 +14,7 @@ const Downloader = (props: DownloaderProps) => {
   const [fileName, setFileName] = useState('');
 
   const handleDownload = () => {
-    const cache = String(props.getStorage());
-    const settingsBlob = makeBlob('text/json;charset=UTF-8', cache);
+    const settingsBlob = makeBlob('text/json;charset=UTF-8', props.appStore);
     setBlob(settingsBlob);
     setFileName(getExportFileName());
   };

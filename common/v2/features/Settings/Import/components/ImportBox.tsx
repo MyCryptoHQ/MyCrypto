@@ -28,7 +28,7 @@ const ErrorMessage = styled.span`
 `;
 
 interface ImportProps {
-  importCache(importedCache: any): void;
+  importCache(importedCache: string): boolean;
   onNext(): void;
 }
 
@@ -37,10 +37,9 @@ export default class ImportBox extends React.Component<ImportProps> {
 
   public submit = (importedCache: string) => {
     const importSuccess = this.props.importCache(importedCache);
-    if (Boolean(importSuccess) === false) {
+    if (!importSuccess) {
       this.setState({ badImport: true });
-    }
-    if (Boolean(importSuccess) === true) {
+    } else {
       this.props.onNext();
     }
   };
