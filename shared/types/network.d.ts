@@ -39,6 +39,7 @@ type StaticNetworkIds =
   | 'UBQ'
   | 'WEB'
   | 'AUX'
+  | 'ERE'
   | 'ASK';
 
 export interface BlockExplorerConfig {

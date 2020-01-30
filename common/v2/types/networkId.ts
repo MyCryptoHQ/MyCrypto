@@ -37,4 +37,5 @@ export type NetworkId =
   | 'UBQ'
   | 'WEB'
   | 'AUX'
+  | 'ERE'
   | 'ASK';
