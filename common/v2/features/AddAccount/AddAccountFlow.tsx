@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext, useReducer } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter } from 'react-router-dom';
-import * as R from 'ramda';
 
 import { useUpdateEffect } from 'v2/vendor';
 import { ROUTE_PATHS, WALLETS_CONFIG, IWalletConfig } from 'v2/config';
@@ -73,12 +72,12 @@ const AddAccountFlow = withRouter(({ history, match }) => {
     const { walletId } = match.params; // Read the walletName parameter from the URL
     if (!walletId) {
       return;
-    } else if (!isValidWalletId(R.toUpper(walletId))) {
+    } else if (!isValidWalletId(walletId.toUpperCase())) {
       goToStart();
-    } else if (!R.equals(R.toUpper(walletId), storyName)) {
+    } else if (walletId.toUpperCase() !== storyName) {
       updateFormState({
         type: ActionType.SELECT_ACCOUNT_TYPE,
-        payload: { accountType: R.toUpper(walletId) }
+        payload: { accountType: walletId.toUpperCase() }
       });
     }
   }, [match.params]);
