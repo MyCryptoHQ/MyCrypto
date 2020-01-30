@@ -5,17 +5,13 @@ import { ITxConfig } from 'v2/types';
 
 interface Props {
   txConfig: ITxConfig;
-  goToNextStep(): void;
+  onSuccess(): void;
 }
 
 export default function ConfirmZapInteraction(props: Props) {
-  const { txConfig, goToNextStep } = props;
+  const { txConfig, onSuccess } = props;
 
   return (
-    <ConfirmTransactionForm
-      onComplete={goToNextStep}
-      resetFlow={goToNextStep}
-      txConfig={txConfig}
-    />
+    <ConfirmTransactionForm onComplete={onSuccess} resetFlow={onSuccess} txConfig={txConfig} />
   );
 }

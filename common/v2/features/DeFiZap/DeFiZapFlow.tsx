@@ -9,7 +9,6 @@ export const DeFiZapFlow = withRouter(({ match }) => {
   const { zapName: zapId } = match.params;
   const selectedZap: IZapConfig | undefined = zapId ? ZAPS_CONFIG[zapId] : undefined;
 
-  console.debug('[DeFiZapFlow]: selectedZap: ', selectedZap);
   return <>{selectedZap ? <ZapStepper selectedZap={selectedZap} /> : <DeFiZapEducation />}</>;
 });
 

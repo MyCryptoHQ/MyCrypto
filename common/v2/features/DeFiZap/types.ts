@@ -18,7 +18,7 @@ export interface ZapInteractionState {
 export interface ISimpleTxForm {
   address: string; // simple eth address
   amount: string; // in ether - ex: 1
-  gasLimit: string; // number - ex: 1,500,000
+  gasLimit: string | number; // number - ex: 1,500,000
   gasPrice: string; // gwei
   nonce: string; // number - ex: 55
   account: ExtendedAccount;

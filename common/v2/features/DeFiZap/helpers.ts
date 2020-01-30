@@ -17,7 +17,7 @@ export const createSimpleTxObject = (formData: ISimpleTxForm): IHexStrTransactio
   return {
     to: formData.address,
     value: inputValueToHex(formData.amount),
-    data: '0x0',
+    data: '0x',
     gasLimit: formData.gasLimit,
     gasPrice: inputGasPriceToHex(formData.gasPrice),
     nonce: inputNonceToHex(formData.nonce),

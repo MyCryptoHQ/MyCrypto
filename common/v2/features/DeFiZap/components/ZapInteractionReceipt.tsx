@@ -7,19 +7,19 @@ import { translateRaw } from 'v2/translations';
 interface Props {
   txReceipt: ITxReceipt;
   txConfig: ITxConfig;
-  goToFirstStep(): void;
+  onSuccess(): void;
 }
 
 export default function ZapInteractionReceipt(props: Props) {
-  const { txReceipt, txConfig, goToFirstStep } = props;
+  const { txReceipt, txConfig, onSuccess } = props;
 
   return (
     <TransactionReceipt
       txReceipt={txReceipt}
       txConfig={txConfig}
       completeButtonText={translateRaw('INTERACT_ANOTHER')}
-      resetFlow={goToFirstStep}
-      onComplete={goToFirstStep}
+      resetFlow={onSuccess}
+      onComplete={onSuccess}
     />
   );
 }

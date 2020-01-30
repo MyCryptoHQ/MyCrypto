@@ -9,7 +9,7 @@ import { StoreContext, AssetContext, getNonce, NetworkContext, fetchGasPriceEsti
 import { validateAmountField } from 'v2/features/SendAssets/components/validators/validators';
 
 interface Props extends ZapInteractionState {
-  onComplete(): void;
+  onSuccess(fields: any): void;
   handleUserInputFormSubmit(fields: any): void;
 }
 
@@ -20,11 +20,9 @@ const UserInputForm = styled.div`
 export const EtherUUID = '356a192b-7913-504c-9457-4d18c28d46e6';
 
 const ZapForm = (props: Props) => {
-  console.debug('[ZapSelection]: here -> ', props);
   const { accounts } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
-  console.debug('[ZapForm]: Accounts -> ', accounts);
   const ethAsset = assets.find(asset => asset.uuid === EtherUUID) as ExtendedAsset;
   const network = networks.find(n => n.baseAsset === EtherUUID) as Network;
 
@@ -47,10 +45,8 @@ const ZapForm = (props: Props) => {
         <Formik
           initialValues={initialFormikValues}
           onSubmit={fields => {
-            console.debug('[ZapForm]: OnSubmit fields', fields);
             fetchGasPriceEstimates(fields.network).then(({ fast }) => {
-              props.handleUserInputFormSubmit({ ...fields, gasPrice: fast });
-              props.onComplete();
+              props.onSuccess({ ...fields, gasPrice: fast });
             });
           }}
           render={({ values, errors, touched, setFieldValue }) => {

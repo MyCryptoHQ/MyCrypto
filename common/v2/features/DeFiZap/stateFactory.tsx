@@ -1,29 +1,18 @@
 import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
 
 import { isWeb3Wallet } from 'v2/utils/web3';
-import { ITxObject, Asset } from 'v2/types';
+import { Asset } from 'v2/types';
 import { hexWeiToString, ProviderHandler } from 'v2/services/EthService';
 import { createSimpleTxObject } from './helpers';
 import { ZapInteractionState, TStepAction, ISimpleTxFormFull } from './types';
-import { IZapConfig } from './config';
 
 const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
   state,
   setState
 }) => {
-  const handleZapSelection = (zapSelected: IZapConfig) => {
-    setState({
-      ...state,
-      zapSelected
-    });
-  };
-
-  const handleTxSigned = async (signResponse: any, after: () => void) => {
+  const handleTxSigned = async (signResponse: any, cb: any) => {
     const { txConfig } = state;
-
-    if (!txConfig.senderAccount) {
-      return;
-    }
+    if (!txConfig.senderAccount) return;
 
     if (isWeb3Wallet(txConfig.senderAccount.wallet)) {
       const txReceipt =
@@ -34,8 +23,7 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
         ...prevState,
         txReceipt
       }));
-
-      after();
+      cb();
     } else {
       const provider = new ProviderHandler(txConfig.network);
       provider
@@ -48,16 +36,16 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
             ...prevState,
             txReceipt
           }));
-        })
-        .finally(after);
+          cb();
+        });
     }
   };
 
-  const handleUserInputFormSubmit: TStepAction = (payload: ISimpleTxFormFull) => {
-    console.debug('[ZapInteractionFactory]: fields: ', payload);
-    const rawTransaction: ITxObject = createSimpleTxObject({
+  const handleUserInputFormSubmit: TStepAction = (payload: ISimpleTxFormFull, cb: any) => {
+    const rawTransaction = createSimpleTxObject({
       ...payload,
-      gasLimit: state.zapSelected!.minimumGasLimit.toString()
+      address: state.zapSelected!.contractAddress,
+      gasLimit: state.zapSelected!.minimumGasLimit
     });
 
     const txConfig = {
@@ -72,18 +60,17 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
       gasPrice: hexWeiToString(rawTransaction.gasPrice),
       gasLimit: state.zapSelected!.minimumGasLimit.toString(),
       nonce: payload.nonce,
-      data: rawTransaction.data,
+      data: '0x',
       value: hexWeiToString(rawTransaction.value)
     };
-    console.debug('[ZapInteractionFactory]: processed: ', txConfig);
     setState({
       ...state,
       txConfig
     });
+    cb();
   };
 
   return {
-    handleZapSelection,
     handleUserInputFormSubmit,
     handleTxSigned,
     zapFlowState: state
