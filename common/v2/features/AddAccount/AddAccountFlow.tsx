@@ -70,7 +70,7 @@ const AddAccountFlow = withRouter(({ history, match }) => {
 
   // If there is a valid walletName parameter in the URL, update state and let router effect redirect to that wallet
   useEffect(() => {
-    const { walletName: walletId } = match.params; // Read the walletName parameter from the URL
+    const { walletId } = match.params; // Read the walletName parameter from the URL
     if (!walletId) {
       return;
     } else if (!isValidWalletId(R.toUpper(walletId))) {

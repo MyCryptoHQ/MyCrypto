@@ -50,7 +50,7 @@ export const APP_ROUTES: IAppRoute[] = [
   {
     name: ROUTE_PATHS.ADD_ACCOUNT.name,
     title: ROUTE_PATHS.ADD_ACCOUNT.title,
-    path: `${ROUTE_PATHS.ADD_ACCOUNT.path}/:walletName?`,
+    path: `${ROUTE_PATHS.ADD_ACCOUNT.path}/:walletId?`,
     exact: true,
     component: AddAccountFlow
   },
