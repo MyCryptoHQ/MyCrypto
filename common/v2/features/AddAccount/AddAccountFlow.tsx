@@ -1,11 +1,12 @@
-import React, { useState, useReducer, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useReducer } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter } from 'react-router-dom';
 
-import { ROUTE_PATHS, WALLETS_CONFIG } from 'v2/config';
-import { WalletId } from 'v2/types';
+import { useUpdateEffect } from 'v2/vendor';
+import { ROUTE_PATHS, WALLETS_CONFIG, IWalletConfig } from 'v2/config';
+import { WalletId, IStory } from 'v2/types';
 import { ContentPanel, WalletList } from 'v2/components';
-import { StoreContext, AccountContext } from 'v2/services';
+import { StoreContext, AccountContext } from 'v2/services/Store';
 
 import { NotificationsContext, NotificationTemplates } from '../NotificationsPanel';
 import { FormDataActionType as ActionType } from './types';
@@ -13,107 +14,100 @@ import { getStories } from './stories';
 import { formReducer, initialState } from './AddAccountForm.reducer';
 import './AddAccountFlow.scss';
 
-export const getStory = (storyName: WalletId | undefined): any => {
+export const getStory = (storyName: WalletId): IStory => {
   return getStories().filter(selected => selected.name === storyName)[0];
 };
 
-export const getStorySteps = (storyName: WalletId | undefined) => {
-  return getStory(storyName).steps;
+export const getStorySteps = (storyName: WalletId) => {
+  return getStory(storyName.toUpperCase() as WalletId).steps;
 };
 
-export const getWalletInfo = (storyName: WalletId): any => {
-  return WALLETS_CONFIG[storyName];
+export const getWalletInfo = (storyName: WalletId): IWalletConfig => {
+  return WALLETS_CONFIG[storyName.toUpperCase() as WalletId];
+};
+
+export const isValidWalletId = (id: WalletId | string | undefined) => {
+  return !!(id && Object.values(WalletId).includes(id as WalletId));
 };
 
 /*
-  Flow to add an account to localStorage. The default view of the component
+  Flow to add an account to database. The default view of the component
   displays a list of wallets (e.g. stories) that each posses their own number
   of steps.
     - AddAccountFlow handles the stepper
-    - AddAccountFormProvider handles the form state and is accessed by each
-    story.
+    - AddAccountFormProvider handles the form state and is accessed by each story.
 */
-const AddAccountFlow = withRouter(props => {
-  const [storyName, setStoryName] = useState<WalletId | undefined>(); // The Wallet Story that we are tracking.
+const AddAccountFlow = withRouter(({ history, match }) => {
   const [step, setStep] = useState(0); // The current Step inside the Wallet Story.
   const [formData, updateFormState] = useReducer(formReducer, initialState); // The data that we want to save at the end.
   const { scanTokens, addAccount, accounts } = useContext(StoreContext);
   const { displayNotification } = useContext(NotificationsContext);
   const { getAccountByAddressAndNetworkName } = useContext(AccountContext);
 
+  const storyName: WalletId = formData.accountType; // The Wallet Story that we are tracking.
+  const isDefaultView = storyName === undefined;
+
+  // Try to add an account after unlocking the wallet
+  // If we have completed the form, and add account fails we return to dashboard
   useEffect(() => {
     const { network, address, accountType, derivationPath } = formData;
-    // try to add an account after unlocking the wallet
     if (address && !addAccount(network, address, accountType, derivationPath)) {
-      displayNotification(NotificationTemplates.walletNotAdded, {
-        address
-      });
-      props.history.replace(ROUTE_PATHS.DASHBOARD.path);
+      displayNotification(NotificationTemplates.walletNotAdded, { address });
+      history.push(ROUTE_PATHS.DASHBOARD.path);
     }
   }, [formData.address]);
 
+  // If add account succeeds, accounts is updated and we can return to dashboard
   useEffect(() => {
     const { network, address } = formData;
-    // wait for account to be added and context refreshed
     if (!!getAccountByAddressAndNetworkName(address, network)) {
-      displayNotification(NotificationTemplates.walletAdded, {
-        address
-      });
+      displayNotification(NotificationTemplates.walletAdded, { address });
       scanTokens();
-      props.history.replace(ROUTE_PATHS.DASHBOARD.path);
+      history.push(ROUTE_PATHS.DASHBOARD.path);
     }
   }, [accounts]);
 
-  const isDefaultView = storyName === undefined;
+  // If there is a valid walletName parameter in the URL, update state and let router effect redirect to that wallet
+  useEffect(() => {
+    const { walletId } = match.params; // Read the walletName parameter from the URL
+    if (!walletId) {
+      return;
+    } else if (!isValidWalletId(walletId.toUpperCase())) {
+      goToStart();
+    } else if (walletId.toUpperCase() !== storyName) {
+      updateFormState({
+        type: ActionType.SELECT_ACCOUNT_TYPE,
+        payload: { accountType: walletId.toUpperCase() }
+      });
+    }
+  }, [match.params]);
+
+  // Update the url when we select a specific story. Since the storyName is always undefined on first mount,
+  // we run the effect only on update.
+  useUpdateEffect(() => {
+    isValidWalletId(storyName)
+      ? history.replace(`${ROUTE_PATHS.ADD_ACCOUNT.path}/${storyName.toLowerCase()}`)
+      : history.replace(`${ROUTE_PATHS.ADD_ACCOUNT.path}`);
+  }, [formData.accountType]);
 
   const goToStart = () => {
-    props.history.replace(ROUTE_PATHS.ADD_ACCOUNT.path);
     setStep(0);
-    setStoryName(undefined);
     updateFormState({ type: ActionType.RESET_FORM, payload: '' });
   };
 
   const goToNextStep = () => {
-    const nextStep = Math.min(step + 1, getStorySteps(storyName!).length - 1);
+    const nextStep = Math.min(step + 1, getStorySteps(storyName).length - 1);
     setStep(nextStep);
   };
 
   const goToPreviousStep = () => {
-    if (step === 0) {
-      return goToStart();
-    }
+    if (step === 0) return goToStart();
     setStep(step - 1);
   };
 
-  // Read the walletName parameter from the URL
-  const {
-    match: {
-      params: { walletName: walletNameFromURL }
-    }
-  } = props;
-
   const onWalletSelection = (name: WalletId) => {
-    // If wallet has been selected manually by user click, add the wallet name to the URL for consistency
-    if (name) {
-      props.history.replace(`${ROUTE_PATHS.ADD_ACCOUNT.path}/${name}`);
-    }
-
-    setStoryName(name);
-    // @ADD_ACCOUNT_TODO: This is equivalent to formDispatch call.
-    // Maybe we can merge story and accountType to use only one?
     updateFormState({ type: ActionType.SELECT_ACCOUNT_TYPE, payload: { accountType: name } });
   };
-
-  // If there is a valid walletName parameter in the URL, redirect to that wallet
-  if (walletNameFromURL) {
-    if (!WalletId[walletNameFromURL.toUpperCase()]) {
-      props.history.replace(ROUTE_PATHS.ADD_ACCOUNT.path);
-    } else {
-      if (storyName !== walletNameFromURL) {
-        onWalletSelection(walletNameFromURL);
-      }
-    }
-  }
 
   const renderDefault = () => {
     return (
@@ -136,7 +130,7 @@ const AddAccountFlow = withRouter(props => {
         <TransitionGroup>
           <CSSTransition classNames="DecryptContent" timeout={500}>
             <Step
-              wallet={getWalletInfo(storyName!)}
+              wallet={getWalletInfo(storyName)}
               goToStart={goToStart}
               goToNextStep={goToNextStep}
               onUnlock={(payload: any) => updateFormState({ type: ActionType.ON_UNLOCK, payload })}
