@@ -8,6 +8,7 @@ import { ROUTE_PATHS, WALLETS_CONFIG, IWalletConfig } from 'v2/config';
 import { WalletId, IStory } from 'v2/types';
 import { ContentPanel, WalletList } from 'v2/components';
 import { StoreContext, AccountContext } from 'v2/services/Store';
+
 import { NotificationsContext, NotificationTemplates } from '../NotificationsPanel';
 import { FormDataActionType as ActionType } from './types';
 import { getStories } from './stories';
