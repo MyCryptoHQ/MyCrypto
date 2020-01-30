@@ -85,11 +85,9 @@ const AddAccountFlow = withRouter(({ history, match }) => {
   // Update the url when we select a specific story. Since the storyName is always undefined on first mount,
   // we run the effect only on update.
   useUpdateEffect(() => {
-    if (isValidWalletId(storyName)) {
-      history.replace(`${ROUTE_PATHS.ADD_ACCOUNT.path}/${storyName.toLowerCase()}`);
-    } else {
-      history.replace(`${ROUTE_PATHS.ADD_ACCOUNT.path}`);
-    }
+    isValidWalletId(storyName)
+      ? history.replace(`${ROUTE_PATHS.ADD_ACCOUNT.path}/${storyName.toLowerCase()}`)
+      : history.replace(`${ROUTE_PATHS.ADD_ACCOUNT.path}`);
   }, [formData.accountType]);
 
   const goToStart = () => {
