@@ -20,7 +20,7 @@ describe('helpers selector', () => {
     ...state.transaction,
     meta: {
       ...state.transaction.meta,
-      unit: 'ETH'
+      unit: 'NRG'
     },
     fields: {
       to: {
@@ -180,8 +180,8 @@ describe('current selector', () => {
     },
     meta: {
       ...state.transaction.meta,
-      unit: 'ETH',
-      previousUnit: 'ETH'
+      unit: 'NRG',
+      previousUnit: 'NRG'
     }
   };
 
@@ -315,8 +315,8 @@ describe('fields selector', () => {
 describe('meta tests', () => {
   const state = { ...initialState };
   (state.transaction.meta = {
-    unit: 'ETH',
-    previousUnit: 'ETH',
+    unit: 'NRG',
+    previousUnit: 'NRG',
     decimal: 18,
     tokenValue: {
       raw: '',

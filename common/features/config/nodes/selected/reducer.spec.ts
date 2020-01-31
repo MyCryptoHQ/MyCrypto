@@ -4,7 +4,7 @@ import { selectedNodeReducer } from './reducer';
 
 export const expectedState = {
   initialState: { nodeId: 'eth_mycrypto', prevNode: 'eth_mycrypto', pending: false },
-  nodeChange: { nodeId: 'nodeToChangeTo', prevNode: 'eth_auto', pending: false },
+  nodeChange: { nodeId: 'nodeToChangeTo', prevNode: 'nrg_auto', pending: false },
   nodeChangeIntent: { nodeId: 'eth_mycrypto', prevNode: 'eth_mycrypto', pending: true }
 };
 
