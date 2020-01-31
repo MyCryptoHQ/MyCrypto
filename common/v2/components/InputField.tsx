@@ -121,7 +121,7 @@ const CustomIconWrapper = styled.div`
 
 const CustomIcon = styled.span`
   display: flex;
-  border-left: 1px solid #d6dce5;
+  border-left: 1px solid ${COLORS.GEYSER_GREY};
   img {
     margin-top: 2px;
     margin-bottom: 2px;
