@@ -92,26 +92,30 @@ export default function AddressBook({
         <></>
       ),
     overlayRows,
-    body: addressBook.map(({ uuid, address, label, network, notes }: ExtendedAddressBook, index) => [
-      <Icon key={0} icon="star" />,
-      <Label key={1}>
-        <SIdenticon address={address} />
-        <SEditableText
+    body: addressBook.map(
+      ({ uuid, address, label, network, notes }: ExtendedAddressBook, index) => [
+        <Icon key={0} icon="star" />,
+        <Label key={1}>
+          <SIdenticon address={address} />
+          <SEditableText
+            truncate={true}
             value={label}
             saveValue={value => updateAddressBooks(uuid, { address, label: value, network, notes })}
-        />
-      </Label>,
-      <EthAddress key={2} address={address} truncate={truncate} isCopyable={true} />,
-      <Network key={3} color="#a682ff">
-        {network}
-      </Network>,
+          />
+        </Label>,
+        <EthAddress key={2} address={address} truncate={truncate} isCopyable={true} />,
+        <Network key={3} color="#a682ff">
+          {network}
+        </Network>,
         <EditableText
-        key={4}
-        value={notes}
-        saveValue={value => updateAddressBooks(uuid, { address, label, network, notes: value })}
-      />,
-      <DeleteButton key={5} onClick={() => setDeletingIndex(index)} icon="exit" />
-    ]),
+          key={4}
+          truncate={true}
+          value={notes}
+          saveValue={value => updateAddressBooks(uuid, { address, label, network, notes: value })}
+        />,
+        <DeleteButton key={5} onClick={() => setDeletingIndex(index)} icon="exit" />
+      ]
+    ),
     config: {
       primaryColumn: 'Label',
       sortableColumn: 'Label',

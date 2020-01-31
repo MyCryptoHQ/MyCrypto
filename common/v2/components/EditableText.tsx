@@ -69,11 +69,11 @@ function EditableText({ saveValue, value, className, bold, truncate }: Props) {
     <Wrapper className={className}>
       {editMode ? (
         <SInputField
+          autoFocus={true}
           value={editValue}
           onChange={e => setEditValue(e.currentTarget.value)}
           onBlur={save}
           onKeyDown={handleKeyDown}
-          height={'1.5rem'}
         />
       ) : (
         <>
