@@ -62,3 +62,6 @@ package-lock.json
 
 # MacOSX
 .DS_Store
+
+# FutoIn
+.package.checksums

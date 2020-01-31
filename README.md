@@ -1,5 +1,25 @@
-# MyCrypto Web & Desktop Apps
+# MyCrypto Web & Desktop Apps (Energi Cryptocurrency edition
 
+## The standard FutoIn CID workflow:
+
+```bash
+
+# Development
+cid prepare
+cid build
+cid devserve
+# http://localhost:8080
+
+# Staging builds (legacy branch)
+cid ci_build legacy staging
+
+# production builds (legacy branch)
+cid tag legacy
+cid ci_build NEW_TAG prod
+```
+
+
+<!--
 [![Build Status](https://travis-ci.org/MyCryptoHQ/MyCrypto.svg?branch=develop)](https://travis-ci.org/MyCryptoHQ/MyCrypto)
 [![Coverage Status](https://coveralls.io/repos/github/MyCryptoHQ/MyCrypto/badge.svg?branch=develop)](https://coveralls.io/github/MyCryptoHQ/MyCrypto?branch=develop)
 
@@ -8,7 +28,7 @@
 
 ## Verifying our releases
 You can find how to do this on our [support document](https://support.mycrypto.com/staying-safe/verifying-authenticity-of-desktop-app)
-
+-->
 
 ## Development / Build Requirements
 
