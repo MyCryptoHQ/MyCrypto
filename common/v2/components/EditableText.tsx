@@ -19,6 +19,7 @@ const SInputField = styled.input`
   border: 1px solid ${COLORS.ATHENS_GREY};
   border-radius: 6px;
   padding: 6px 6px;
+  font-weight: 400;
 `;
 
 const STypography = styled(Typography)`
