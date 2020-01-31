@@ -18,6 +18,7 @@ const EditIcon = styled.img`
 const SInputField = styled.input`
   border: 1px solid #e8eaed;
   border-radius: 6px;
+  padding: 6px 6px;
 `;
 
 const STypography = styled(Typography)`

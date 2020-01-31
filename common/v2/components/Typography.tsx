@@ -29,6 +29,8 @@ const STypography = styled(UITypography)`
 
   ${(p: SProps) =>
     p.truncate &&
+    ((p.children && p.children.length >= TRUNCATE_CHARACTERS) ||
+      (p.value && p.value.length >= TRUNCATE_CHARACTERS)) &&
     `
   text-overflow: ellipsis;
   overflow: hidden;
