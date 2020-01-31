@@ -13,6 +13,7 @@ interface Props {
   fontSize?: string;
   style?: any;
   truncate?: boolean;
+  inheritFontWeight?: boolean;
   onClick?(): void;
 }
 
@@ -21,7 +22,7 @@ type SProps = Props & { forwardedAs: string };
 const STypography = styled(UITypography)`
   line-height: 24px;
   vertical-align: middle;
-  font-weight: ${(p: SProps) => (p.bold ? '600' : '400')};
+  ${(p: SProps) => !p.inheritFontWeight && `font-weight: ${p.bold ? '600' : '400'};`}
   font-size: ${(p: SProps) => p.fontSize} !important;
   // UITypography component defaults to a 'p' tag with a margin-bottom.
   // To facilitate text and icon alignement we remove it here once and for all.

@@ -78,7 +78,7 @@ function EditableText({ saveValue, value, className, bold, truncate }: Props) {
         />
       ) : (
         <>
-          <STypography bold={bold} truncate={truncate} onClick={edit}>
+          <STypography bold={bold} truncate={truncate} inheritFontWeight={true} onClick={edit}>
             {value}
           </STypography>
           <EditIcon onClick={edit} src={editIcon} />
