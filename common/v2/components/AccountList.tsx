@@ -247,27 +247,26 @@ function buildAccountTable(
         <Label key={index}>
           <SIdenticon address={account.address} />
           <LabelWithWallet>
-            <Typography value={label} />
+            <EditableText
+              truncate={true}
+              saveValue={value => {
+                if (addressCard) {
+                  updateAddressBooks(addressCard.uuid, { ...addressCard, label: value });
+                } else {
+                  createAddressBooks({
+                    address: account.address,
+                    label: value,
+                    network: account.networkId,
+                    notes: ''
+                  });
+                }
+              }}
+              value={label}
+            />
             <div>
               <WalletTypeLabel>{WALLETS_CONFIG[account.wallet].name}</WalletTypeLabel>
             </div>
           </LabelWithWallet>
-          <EditableText
-            truncate={true}
-            saveValue={value => {
-              if (addressCard) {
-                updateAddressBooks(addressCard.uuid, { ...addressCard, label: value });
-              } else {
-                createAddressBooks({
-                  address: account.address,
-                  label: value,
-                  network: account.networkId,
-                  notes: ''
-                });
-              }
-            }}
-            value={label}
-          />
         </Label>,
         <EthAddress
           key={index}
