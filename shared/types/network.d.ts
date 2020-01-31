@@ -39,7 +39,9 @@ type StaticNetworkIds =
   | 'UBQ'
   | 'WEB'
   | 'AUX'
-  | 'ASK';
+  | 'ASK'
+  | 'NRG'
+  | 'NRG_TESTNET';
 
 export interface BlockExplorerConfig {
   name: string;

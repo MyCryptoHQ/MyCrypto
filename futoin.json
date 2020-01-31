@@ -1,0 +1,40 @@
+{
+  "name": "energi3-mycrypto",
+  "version": "0.0.1",
+  "vcs": "git",
+  "rms": "aws",
+  "rmsRepo": "s3://download.energi.software/internal/gen3/mycrypto",
+  "tools": {
+    "node": "8",
+    "yarn": "*"
+  },
+  "entryPoints": {
+    "web": {
+      "tool": "nginx",
+      "path": "dist/prod",
+      "tune": {
+        "socketPort": 8080,
+        "socketType": "tcp"
+      }
+    }
+  },
+  "webcfg": {
+    "root": "dist/prod",
+    "mounts": {
+      "/": {
+        "static": true,
+        "tune": {
+          "expires": "epoch",
+          "pattern": true,
+          "staticGzip": true
+        }
+      }
+    }
+  },
+  "actions": {
+    "build": "@cte yarn build"
+  },
+  "package": [
+    "dist/prod"
+  ]
+}

@@ -1,5 +1,25 @@
-# MyCrypto Web & Desktop Apps
+# MyCrypto Web & Desktop Apps (Energi Cryptocurrency edition
 
+## The standard FutoIn CID workflow:
+
+```bash
+
+# Development
+cid prepare
+cid build
+cid devserve
+# http://localhost:8080
+
+# Staging builds (legacy branch)
+cid ci_build legacy staging
+
+# production builds (legacy branch)
+cid tag legacy
+cid ci_build NEW_TAG prod
+```
+
+
+<!--
 [![Build Status](https://travis-ci.org/MyCryptoHQ/MyCrypto.svg?branch=develop)](https://travis-ci.org/MyCryptoHQ/MyCrypto)
 [![Coverage Status](https://coveralls.io/repos/github/MyCryptoHQ/MyCrypto/badge.svg?branch=develop)](https://coveralls.io/github/MyCryptoHQ/MyCrypto?branch=develop)
 
@@ -8,7 +28,7 @@
 
 ## Verifying our releases
 You can find how to do this on our [support document](https://support.mycrypto.com/staying-safe/verifying-authenticity-of-desktop-app)
-
+-->
 
 ## Development / Build Requirements
 
@@ -23,6 +43,8 @@ You can find how to do this on our [support document](https://support.mycrypto.c
 <sub>\***Python 3 is **not** supported, since our dependencies use `node-gyp`.</sub>
 <br/>
 <sub>\***For users trying to build with WSL, you'll need to have install libpng via `sudo apt-get install libpng16-dev`.</sub>
+<br/>
+<sub>linpng12 is required for Ubuntu 18.04 LTS and newer: `wget http://security.ubuntu.com/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1.1_amd64.deb && sudo dpkg -i libpng12-0_1.2.54-1ubuntu1.1_amd64.deb`</sub>
 
 ## Running the App
 

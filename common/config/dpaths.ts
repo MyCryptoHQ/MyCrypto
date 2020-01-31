@@ -197,6 +197,16 @@ export const AUX_DEFAULT: DPath = {
   value: "m/44'/344'/0'/0"
 };
 
+export const NRG_DEFAULT: DPath = {
+  label: 'Default (NRG)',
+  value: "m/44'/39797'/0'/0"
+};
+
+export const NRG_TESTNET: DPath = {
+  label: 'Testnet (NRG)',
+  value: "m/44'/49797'/0'/0"
+};
+
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -236,7 +246,9 @@ export const DPaths: DPath[] = [
   DEXON_DEFAULT,
   ASK_DEFAULT,
   ASK_TREZOR,
-  AUX_DEFAULT
+  AUX_DEFAULT,
+  NRG_DEFAULT,
+  NRG_TESTNET
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT
