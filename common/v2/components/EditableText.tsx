@@ -29,7 +29,7 @@ const STypography = styled(Typography)`
   }
 `;
 
-interface Props {
+export interface Props {
   value: string;
   className?: string;
   bold?: boolean;
