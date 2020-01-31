@@ -999,7 +999,6 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ERE_DEFAULT,
-      [WalletId.SAFE_T_MINI]: DPaths.ERE_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.ERE_DEFAULT
     },
     gasPriceSettings: {
