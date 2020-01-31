@@ -13,6 +13,7 @@ interface Props {
   fontSize?: string;
   style?: any;
   truncate?: boolean;
+  onClick?(): void;
 }
 
 type SProps = Props & { forwardedAs: string };

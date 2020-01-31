@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import InputField from './InputField';
 import Typography from './Typography';
 import styled from 'styled-components';
 
-import checkmark from 'common/assets/images/icn-checkmark.svg';
 import editIcon from 'common/assets/images/icn-edit.svg';
+import { COLORS } from 'v2/theme';
 
 const Wrapper = styled.div`
   display: flex;
@@ -14,6 +13,18 @@ const Wrapper = styled.div`
 
 const EditIcon = styled.img`
   margin-left: 3px;
+`;
+
+const SInputField = styled.input`
+  border: 1px solid #e8eaed;
+  border-radius: 6px;
+`;
+
+const STypography = styled(Typography)`
+  &:hover {
+    cursor: pointer;
+    border-bottom: 1px ${COLORS.CLOUDY_BLUE} dashed;
+  }
 `;
 
 interface Props {
@@ -28,39 +39,48 @@ function EditableText({ saveValue, value, className, bold, truncate }: Props) {
   const [editMode, setEditMode] = useState(false);
   const [editValue, setEditValue] = useState('');
 
+  const handleKeyDown = ({ key }: { key: string }) => {
+    if (key === 'Escape') {
+      cancel();
+    } else if (key === 'Enter') {
+      save();
+    }
+  };
+
   useEffect(() => {
     setEditValue(value);
   }, [value]);
 
+  const edit = () => {
+    setEditMode(true);
+  };
+
+  const cancel = () => {
+    setEditMode(false);
+    setEditValue(value);
+  };
+
+  const save = () => {
+    saveValue(editValue);
+    setEditMode(false);
+  };
+
   return (
     <Wrapper className={className}>
       {editMode ? (
-        <InputField
+        <SInputField
           value={editValue}
           onChange={e => setEditValue(e.currentTarget.value)}
+          onBlur={save}
+          onKeyDown={handleKeyDown}
           height={'1.5rem'}
-          marginBottom={'0'}
-          customIcon={() => (
-            <img
-              src={checkmark}
-              onClick={() => {
-                saveValue(editValue);
-                setEditMode(false);
-              }}
-            />
-          )}
         />
       ) : (
         <>
-          <Typography bold={bold} truncate={truncate}>
+          <STypography bold={bold} truncate={truncate} onClick={edit}>
             {value}
-          </Typography>
-          <EditIcon
-            onClick={() => {
-              setEditMode(true);
-            }}
-            src={editIcon}
-          />
+          </STypography>
+          <EditIcon onClick={edit} src={editIcon} />
         </>
       )}
     </Wrapper>
