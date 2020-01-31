@@ -23,6 +23,8 @@ You can find how to do this on our [support document](https://support.mycrypto.c
 <sub>\***Python 3 is **not** supported, since our dependencies use `node-gyp`.</sub>
 <br/>
 <sub>\***For users trying to build with WSL, you'll need to have install libpng via `sudo apt-get install libpng16-dev`.</sub>
+<br/>
+<sub>linpng12 is required for Ubuntu 18.04 LTS and newer: `wget http://security.ubuntu.com/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1.1_amd64.deb && sudo dpkg -i libpng12-0_1.2.54-1ubuntu1.1_amd64.deb`</sub>
 
 ## Running the App
 
