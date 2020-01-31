@@ -43,21 +43,14 @@ const LabelWithWallet = styled.span`
   }
 `;
 
-const WalletTypeLabelContainer = styled.div`
-  display: block;
-`;
-
-const WalletTypeLabel = styled.p`
-  background: #b7bfc6;
+const WalletTypeLabel = styled.div`
+  background: ${COLORS.MIDDLE_GREY};
   display: inline-block;
   text-align: center;
   border-radius: 600px;
-  font-size: 0.8rem;
+  font-size: 0.6em;
   padding: 3px 6px;
   color: ${COLORS.WHITE};
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    font-size: 0.6rem;
-  }
 `;
 
 const SIdenticon = styled(Identicon)`
@@ -255,9 +248,9 @@ function buildAccountTable(
           <SIdenticon address={account.address} />
           <LabelWithWallet>
             <Typography value={label} />
-            <WalletTypeLabelContainer>
+            <div>
               <WalletTypeLabel>{WALLETS_CONFIG[account.wallet].name}</WalletTypeLabel>
-            </WalletTypeLabelContainer>
+            </div>
           </LabelWithWallet>
         </Label>,
         <EthAddress
