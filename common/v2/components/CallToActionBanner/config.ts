@@ -1,4 +1,3 @@
-import { ROUTE_PATHS } from 'v2/config';
 import CTABannerVariantOne from './variants/CTABannerOne';
 import { CTAVariant, CTAVariantComponentType, ICTAConfigObject } from './types';
 
@@ -9,7 +8,7 @@ export const CTAVariantComponent: CTAVariantComponentType = {
 export const DeFiZapCTAConfig: ICTAConfigObject = {
   title: 'Invest wisely',
   description: 'Use MyCrypto and DefiZap to invest in crypto wisely!',
-  link: ROUTE_PATHS.DEFIZAP.path,
+  link: '/defi/zap', // TODO: Change this to ROUTE_PATHS.DEFIZAP.path when it exists.
   buttonText: 'Invest now!',
   id: CTAVariant.DefiZap,
   CTAVariant: CTAVariantComponent[CTAVariant.DefiZap]
