@@ -31,6 +31,6 @@ export const ZAPS_CONFIG: IZapConfigObject = {
       'Converts 90% to Dai and contributes it to Compound protocol to generate interest. The remaining 10% is used to open a 2x long ETH position on Fulcrum',
     outlook: 'bearish',
     link: 'https://defizap.com/zaps/lender',
-    minimumGasLimit: 1500000
+    minimumGasLimit: 7000000
   }
 };

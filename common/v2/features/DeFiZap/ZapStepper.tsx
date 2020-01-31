@@ -5,8 +5,8 @@ import { ZapForm, ConfirmZapInteraction, ZapInteractionReceipt } from './compone
 import { GeneralStepper, IStepperPath } from 'v2/components/GeneralStepper';
 import { ROUTE_PATHS } from 'v2/config';
 import ZapInteractionFactory from './stateFactory';
-import { WALLET_STEPS } from './helpers';
-import { ITxReceipt, ISignedTx, WalletId } from 'v2/types';
+import { ITxReceipt, ISignedTx } from 'v2/types';
+import { SignTransaction } from '../SendAssets/components';
 
 const initialZapFlowState = (initialZapSelected: IZapConfig) => ({
   zapSelected: initialZapSelected,
@@ -40,15 +40,8 @@ const ZapStepper = ({ selectedZap }: Props) => {
     },
     {
       label: '',
-      component:
-        zapFlowState.txConfig &&
-        zapFlowState.txConfig.senderAccount &&
-        WALLET_STEPS[zapFlowState.txConfig.senderAccount.wallet as WalletId],
-      props: (({ txConfig }) => ({
-        network: txConfig && txConfig.network,
-        senderAccount: txConfig && txConfig.senderAccount,
-        rawTransaction: txConfig && txConfig.rawTransaction
-      }))(zapFlowState),
+      component: SignTransaction,
+      props: (({ txConfig }) => ({ txConfig }))(zapFlowState),
       actions: (payload: ITxReceipt | ISignedTx, cb: any) => handleTxSigned(payload, cb)
     },
     {

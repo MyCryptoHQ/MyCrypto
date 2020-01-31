@@ -9,7 +9,7 @@ import { StoreContext, AssetContext, getNonce, NetworkContext, fetchGasPriceEsti
 import { validateAmountField } from 'v2/features/SendAssets/components/validators/validators';
 
 interface Props extends ZapInteractionState {
-  onSuccess(fields: any): void;
+  onComplete(fields: any): void;
   handleUserInputFormSubmit(fields: any): void;
 }
 
@@ -46,7 +46,8 @@ const ZapForm = (props: Props) => {
           initialValues={initialFormikValues}
           onSubmit={fields => {
             fetchGasPriceEstimates(fields.network).then(({ fast }) => {
-              props.onSuccess({ ...fields, gasPrice: fast });
+              console.debug('[here?]: ', fast);
+              props.onComplete({ ...fields, gasPrice: fast.toString() });
             });
           }}
           render={({ values, errors, touched, setFieldValue }) => {
