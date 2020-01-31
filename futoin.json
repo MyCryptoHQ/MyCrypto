@@ -26,7 +26,8 @@
         "tune": {
           "expires": "epoch",
           "pattern": true,
-          "staticGzip": true
+          "staticGzip": true,
+          "spaRoutes": true
         }
       }
     }
