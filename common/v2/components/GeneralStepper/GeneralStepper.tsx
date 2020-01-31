@@ -22,9 +22,13 @@ export function GeneralStepper({
 }: StepperProps) {
   const history = useHistory();
   const [step, setStep] = useState(0);
-  console.debug('[GeneralStepper]: Refresh -> step: ', step);
-  const goToPrevStep = () => setStep(Math.max(0, step - 1));
-  const goToFirstStep = () => setStep(0);
+
+  const goToPrevStep = () => {
+    return setStep(Math.max(0, step - 1));
+  };
+  const goToFirstStep = () => {
+    return setStep(0);
+  };
 
   const goBack = () =>
     step === 0 ? history.push(defaultBackPath || ROUTE_PATHS.DASHBOARD.path) : goToPrevStep();
@@ -42,15 +46,19 @@ export function GeneralStepper({
       ? defaultBackPathLabel || translateRaw('DASHBOARD')
       : getStep(Math.max(0, step - 1)).label;
 
-  const goToNextStep = () => {
-    console.debug('[GeneralStepper]: Trigger goToNextStep');
-    return setStep(Math.min(step + 1, currentPath.length - 1));
-  };
+  const goToNextStep = () => setStep(Math.min(step + 1, currentPath.length - 1));
 
   const stepObject = steps[step];
   const stepProps = stepObject.props;
   const stepActions = stepObject.actions;
-
+  console.debug(
+    '[GeneralStepper]: Rendering stepObject: ',
+    stepObject,
+    ' props: ',
+    stepProps,
+    ' actions: ',
+    stepActions
+  );
   return (
     <ContentPanel
       onBack={goBack}
@@ -60,7 +68,7 @@ export function GeneralStepper({
     >
       <Step
         onComplete={(payload: any) =>
-          stepAction ? stepAction(payload, goToNextStep(), goToPrevStep()) : goToNextStep()
+          stepAction ? stepAction(payload, goToNextStep, goToPrevStep) : goToNextStep()
         }
         completeButtonText={completeBtnText || translateRaw('SEND_ASSETS_SEND_ANOTHER')}
         resetFlow={goToFirstStep}

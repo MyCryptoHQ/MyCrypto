@@ -59,7 +59,8 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
   const { addNewTransactionToAccount, getAccountByAddressAndNetworkName } = useContext(
     AccountContext
   );
-  const handleFormSubmit: TStepAction = (payload: IFormikFields, after) => {
+
+  const handleFormSubmit: TStepAction = (payload: IFormikFields, cb: any) => {
     const rawTransaction: ITxObject = processFormDataToTx(payload);
     const baseAsset: Asset | undefined = getBaseAssetByNetwork({
       network: payload.network,
@@ -84,22 +85,21 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
       }
     }));
 
-    after();
+    cb();
   };
 
   // For Metamask
-  const handleConfirmAndSign: TStepAction = (payload: ITxConfig, after) => {
+  const handleConfirmAndSign: TStepAction = (payload: ITxConfig, cb) => {
     setState((prevState: State) => ({
       ...prevState,
       txReceipt: payload
     }));
-
-    after();
+    cb();
   };
 
   // For Other Wallets
   // tslint:disable-next-line
-  const handleConfirmAndSend: TStepAction = (_, after) => {
+  const handleConfirmAndSend: TStepAction = (_, cb) => {
     const { signedTx } = state;
     if (!signedTx) {
       return;
@@ -122,15 +122,16 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
           txReceipt
         }));
       })
-      .finally(after);
+      .finally(cb);
   };
 
-  const handleSignedTx: TStepAction = (payload: ISignedTx, after) => {
+  const handleSignedTx: TStepAction = (payload: ISignedTx, cb) => {
     const decodedTx = decodeTransaction(payload);
     const networkDetected = getNetworkByChainId(decodedTx.chainId, networks);
-    const contractAsset = getAssetByContractAndNetwork(decodedTx.to || undefined, networkDetected)(
-      assets
-    );
+    const contractAsset = getAssetByContractAndNetwork(
+      decodedTx.to || undefined,
+      networkDetected
+    )(assets);
     const baseAsset = getBaseAssetByNetwork({
       network: networkDetected || ({} as Network),
       assets
@@ -165,10 +166,10 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
       }
     }));
 
-    after();
+    cb();
   };
 
-  const handleSignedWeb3Tx: TStepAction = (payload: ITxReceipt | string, after) => {
+  const handleSignedWeb3Tx: TStepAction = (payload: ITxReceipt | string, cb) => {
     // Payload is tx hash or receipt
     const txReceipt =
       typeof payload === 'string'
@@ -188,7 +189,12 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
       ...prevState,
       txReceipt
     }));
-    after();
+    cb();
+  };
+
+  const txFactoryState = {
+    txConfig: state.txConfig,
+    txReceipt: state.txReceipt
   };
 
   return {
@@ -197,8 +203,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
     handleConfirmAndSend,
     handleSignedTx,
     handleSignedWeb3Tx,
-    txConfig: state.txConfig,
-    txReceipt: state.txReceipt
+    txFactoryState
   };
 };
 
