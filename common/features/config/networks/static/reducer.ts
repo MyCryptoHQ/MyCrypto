@@ -35,6 +35,8 @@ import {
   METADIUM_DEFAULT,
   MIX_DEFAULT,
   MUSIC_DEFAULT,
+  NRG_DEFAULT,
+  NRG_TESTNET,
   PIRL_DEFAULT,
   POA_DEFAULT,
   REOSC_DEFAULT,
@@ -1023,6 +1025,64 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       max: 40,
       initial: 4
     }
+  },
+
+  NRG: {
+    id: 'NRG',
+    name: 'Energi',
+    unit: 'NRG',
+    chainId: 39797,
+    color: '#00e676',
+    isCustom: false,
+    blockExplorer: makeExplorer({
+      name: 'Energi Explorer',
+      origin: 'https://explorer.gen3.energi.network'
+    }),
+    tokens: require('config/tokens/nrg.json'),
+    contracts: require('config/contracts/nrg.json'),
+    isTestnet: false,
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: NRG_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: NRG_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: NRG_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 100,
+      initial: 10
+    },
+    shouldEstimateGasPrice: true,
+    unsupportedTabs: [TAB.ENS],
+    hideEquivalentValues: true
+  },
+
+  NRG_TESTNET: {
+    id: 'NRG_TESTNET',
+    name: 'Energi Testnet',
+    unit: 'tNRG',
+    chainId: 49797,
+    color: '#e60076',
+    isCustom: false,
+    blockExplorer: makeExplorer({
+      name: 'Energi Testnet Explorer',
+      origin: 'https://explorer.test3.energi.network'
+    }),
+    tokens: require('config/tokens/nrg.json'),
+    contracts: require('config/contracts/nrg.json'),
+    isTestnet: true,
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: NRG_TESTNET,
+      [SecureWalletName.LEDGER_NANO_S]: NRG_TESTNET,
+      [InsecureWalletName.MNEMONIC_PHRASE]: NRG_TESTNET
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 100,
+      initial: 10
+    },
+    shouldEstimateGasPrice: true,
+    unsupportedTabs: [TAB.ENS],
+    hideEquivalentValues: true
   }
 };
 

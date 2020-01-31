@@ -402,6 +402,24 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'auxilium.global',
       url: 'https://rpc.auxilium.global'
     }
+  ],
+
+  NRG: [
+    {
+      name: makeNodeName('NRG', 'energi.network'),
+      type: 'rpc',
+      service: 'gen3.energi.network',
+      url: 'https://nodeapi.gen3.energi.network'
+    }
+  ],
+
+  NRG_TESTNET: [
+    {
+      name: makeNodeName('NRG_TESTNET', 'test.energi.network'),
+      type: 'rpc',
+      service: 'test3.energi.network',
+      url: 'https://nodeapi.test3.energi.network'
+    }
   ]
 };
 
