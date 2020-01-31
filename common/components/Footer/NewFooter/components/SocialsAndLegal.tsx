@@ -39,7 +39,10 @@ class Legal extends Component {
     return (
       <React.Fragment>
         <section className="Legal">
-          <p>© {new Date().getFullYear()} MyCrypto, Inc.</p>
+          <p>
+            © {new Date().getFullYear()} MyCrypto, Inc.
+            <br />© {new Date().getFullYear()} Energi Core Ltd.
+          </p>
           <a onClick={this.toggleModal}>{translateRaw('DISCLAIMER')}</a>
           <p>{VERSION}</p>
         </section>

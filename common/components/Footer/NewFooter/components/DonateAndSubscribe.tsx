@@ -40,7 +40,7 @@ class Donate extends Component {
 
     return (
       <section className="Donate">
-        <h2>{translate('NEW_FOOTER_TEXT_1')}</h2>
+        <h2>{translate('NEW_FOOTER_TEXT_1')} MyCrypto Inc.</h2>
         <section className="Donate-buttons">
           <CopyToClipboard text={donationAddressMap.ETH} onCopy={this.displayMessage}>
             <DonationButton icon={ether} title="Ethereum" />

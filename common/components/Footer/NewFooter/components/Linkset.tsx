@@ -8,9 +8,19 @@ const LINK_COLUMNS = [
     heading: translateRaw('NEW_FOOTER_TEXT_6'),
     links: [
       {
+        title: translateRaw('ENERGI_WEBSITE'),
+        link: 'https://www.energi.world/'
+      },
+      {
+        title: translateRaw('ORIG_MYCRYPTO'),
+        link: 'https://mycrypto.com/'
+      },
+      /*
+      {
         title: 'MyCrypto.com',
         link: 'https://www.mycrypto.com/'
       },
+*/
       {
         title: translateRaw('NEW_FOOTER_TEXT_7'),
         link: 'https://support.mycrypto.com/'
@@ -19,10 +29,12 @@ const LINK_COLUMNS = [
         title: translateRaw('NEW_FOOTER_TEXT_8'),
         link: 'https://about.mycrypto.com/'
       },
+      /*
       {
         title: translateRaw('NEW_FOOTER_TEXT_9'),
         link: 'mailto:press@mycrypto.com'
       },
+*/
       {
         title: translateRaw('NEW_FOOTER_TEXT_10'),
         link: 'https://about.mycrypto.com/privacy/'
@@ -50,6 +62,11 @@ const LINK_COLUMNS = [
     heading: translateRaw('NEW_FOOTER_TEXT_12'),
     links: [
       {
+        title: translateRaw('ENERGI_EXPLORER'),
+        link: 'https://explorer.gen3.energi.network/'
+      },
+      /*
+      {
         title: 'EtherAddressLookup',
         link:
           'https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn'
@@ -62,14 +79,17 @@ const LINK_COLUMNS = [
         title: 'MoneroVision',
         link: 'https://monerovision.com/'
       },
+*/
       {
-        title: 'MyCrypto Desktop App',
-        link: 'https://download.mycrypto.com'
-      },
+        title: 'Energi MyCrypto Desktop App',
+        link: 'https://github.com/energicryptocurrency/energi3-mycrypto/releases'
+      }
+      /*
       {
         title: 'Ambo Mobile App',
         link: 'https://ambo.io'
       }
+*/
     ]
   }
 ];

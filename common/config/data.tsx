@@ -6,7 +6,9 @@ import { makeExplorer } from 'utils/helpers';
 import translate from 'translations';
 
 export const languages = require('./languages.json');
-export const discordURL = 'https://discord.gg/VSaTXEA';
+// Energi re-branding
+//export const discordURL = 'https://discord.gg/VSaTXEA';
+export const discordURL = 'https://discordapp.com/invite/sCtgNC3';
 
 // Displays in the footer
 export const VERSION = packageJson.version;

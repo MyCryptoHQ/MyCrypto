@@ -95,7 +95,7 @@ class SelectNetworkAndNode extends Component<Props, State> {
               />
             );
           })}
-          <li onClick={this.toggleShowingSecondaryNetworks}>
+          <li onClick={this.toggleShowingSecondaryNetworks} style={{ display: 'none' }}>
             <section className="NewNetworkOption no-top-border">
               <section className="NewNetworkOption-name">
                 <img src={show} alt="Toggle showing all networks" />

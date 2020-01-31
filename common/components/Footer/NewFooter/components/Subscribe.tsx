@@ -11,29 +11,33 @@ export default class Subscribe extends Component {
 
     return (
       <section className="Subscribe">
-        <h2>{translate('NEW_FOOTER_TEXT_3')}</h2>
-        <p>{translate('NEW_FOOTER_TEXT_4')}</p>
-        <form onSubmit={this.subscribe} className="Subscribe-input-wrapper">
-          <section className="Subscribe-input-wrapper-input">
-            <input
-              type="email"
-              placeholder="Email address"
-              onChange={this.handleChange}
-              disabled={submitted}
-              value={submitted ? '' : email}
-            />
-          </section>
-          <section className="Subscribe-input-wrapper-button">
-            <button disabled={submitted} type="submit">
-              {translate('NEW_FOOTER_TEXT_5')}
-            </button>
-          </section>
-        </form>
-        {submitted && <p style={{ marginTop: '6px' }}>{translate('NEW_FOOTER_TEXT_14')}</p>}
+        {false && (
+          <div>
+            <h2>{translate('NEW_FOOTER_TEXT_3')}</h2>
+            <p>{translate('NEW_FOOTER_TEXT_4')}</p>
+            <form onSubmit={this.subscribe} className="Subscribe-input-wrapper">
+              <section className="Subscribe-input-wrapper-input">
+                <input
+                  type="email"
+                  placeholder="Email address"
+                  onChange={this.handleChange}
+                  disabled={submitted}
+                  value={submitted ? '' : email}
+                />
+              </section>
+              <section className="Subscribe-input-wrapper-button">
+                <button disabled={submitted} type="submit">
+                  {translate('NEW_FOOTER_TEXT_5')}
+                </button>
+              </section>
+            </form>
+            {submitted && <p style={{ marginTop: '6px' }}>{translate('NEW_FOOTER_TEXT_14')}</p>}
 
-        <p style={{ paddingTop: '1em', fontSize: '70%', fontStyle: 'italic' }}>
-          {translate('NEW_FOOTER_TEXT_15')}
-        </p>
+            <p style={{ paddingTop: '1em', fontSize: '70%', fontStyle: 'italic' }}>
+              {translate('NEW_FOOTER_TEXT_15')}
+            </p>
+          </div>
+        )}
       </section>
     );
   }

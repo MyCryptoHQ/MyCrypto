@@ -14,7 +14,9 @@ import {
 import NetworkOption from './NetworkOption';
 import './NetworkSelector.scss';
 
-const CORE_NETWORKS = ['ETH', 'Ropsten', 'Kovan', 'Rinkeby', 'Goerli', 'ETC', 'RSK'];
+// Energi re-branding
+//const CORE_NETWORKS = ['ETH', 'Ropsten', 'Kovan', 'Rinkeby', 'Goerli', 'ETC', 'RSK'];
+const CORE_NETWORKS = ['NRG', 'NRG_TESTNET'];
 
 interface OwnProps {
   openCustomNodeModal(): void;

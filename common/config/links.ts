@@ -14,31 +14,32 @@ interface Link {
   text: string;
 }
 
-export const DOWNLOAD_MYCRYPTO_LINK = 'https://download.mycrypto.com/';
+export const DOWNLOAD_MYCRYPTO_LINK =
+  'https://github.com/energicryptocurrency/energi3-mycrypto/releases';
 
 export const socialMediaLinks: Link[] = [
   {
-    link: 'https://twitter.com/mycrypto',
+    link: 'https://twitter.com/Energicrypto',
     text: 'twitter'
   },
   {
-    link: 'https://www.facebook.com/mycryptoHQ/',
+    link: 'https://www.facebook.com/energicrypto/',
     text: 'facebook'
   },
   {
-    link: 'https://medium.com/@mycrypto',
+    link: 'https://medium.com/energi',
     text: 'medium'
   },
   {
-    link: 'https://www.linkedin.com/company/mycrypto',
+    link: 'https://www.linkedin.com/company/energi-core/',
     text: 'linkedin'
   },
   {
-    link: 'https://github.com/MyCryptoHQ',
+    link: 'https://github.com/energicryptocurrency',
     text: 'github'
   },
   {
-    link: 'https://www.reddit.com/r/mycrypto/',
+    link: 'https://www.reddit.com/r/energicryptocurrency',
     text: 'reddit'
   },
   {
@@ -49,9 +50,18 @@ export const socialMediaLinks: Link[] = [
 
 export const productLinks: Link[] = [
   {
-    link: 'https://legacy.mycrypto.com/',
-    text: translateRaw('OLD_MYCRYPTO')
+    link: 'https://explorer.gen3.energi.network/',
+    text: translateRaw('ENERGI_EXPLORER')
   },
+  {
+    link: 'https://www.energi.world/',
+    text: translateRaw('ENERGI_WEBSITE')
+  },
+  {
+    link: 'https://mycrypto.com/',
+    text: translateRaw('ORIG_MYCRYPTO')
+  }
+  /*
   {
     link:
       'https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn',
@@ -74,6 +84,7 @@ export const productLinks: Link[] = [
     link: 'https://hackerone.com/mycrypto',
     text: translateRaw('FOOTER_HACKERONE')
   }
+*/
 ];
 
 export const affiliateLinks: Link[] = [
@@ -104,6 +115,7 @@ export const affiliateLinks: Link[] = [
 ];
 
 export const partnerLinks: Link[] = [
+  /*
   {
     link: 'https://metamask.io/',
     text: 'MetaMask'
@@ -120,4 +132,5 @@ export const partnerLinks: Link[] = [
     link: 'https://etherchain.org/',
     text: 'Etherchain'
   }
+*/
 ];
