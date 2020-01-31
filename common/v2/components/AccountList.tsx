@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { Button, Identicon } from '@mycrypto/ui';
 
 import { translateRaw } from 'v2/translations';
-import { ROUTE_PATHS, Fiats } from 'v2/config';
+import { ROUTE_PATHS, Fiats, WALLETS_CONFIG } from 'v2/config';
 import {
   EthAddress,
   CollapsibleTable,
@@ -30,9 +30,27 @@ import { TUuid } from 'v2/types/uuid';
 const Label = styled.span`
   display: flex;
   align-items: center;
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM} {
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     font-weight: bold;
-  })
+  }
+`;
+
+const LabelWithWallet = styled.span`
+  display: flex;
+  flex-direction: column;
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    font-weight: bold;
+  }
+`;
+
+const WalletTypeLabel = styled.div`
+  background: ${COLORS.MIDDLE_GREY};
+  display: inline-block;
+  text-align: center;
+  border-radius: 600px;
+  font-size: 0.6em;
+  padding: 3px 6px;
+  color: ${COLORS.WHITE};
 `;
 
 const SIdenticon = styled(Identicon)`
@@ -102,7 +120,7 @@ const AccountListFooterWrapper = styled.div`
   & img {
     height: 1.1em;
     margin-right: 0.5em;
-  }s
+  }
 `;
 
 interface AccountListProps {
@@ -228,7 +246,12 @@ function buildAccountTable(
       const bodyContent = [
         <Label key={index}>
           <SIdenticon address={account.address} />
-          <Typography value={label} />
+          <LabelWithWallet>
+            <Typography value={label} />
+            <div>
+              <WalletTypeLabel>{WALLETS_CONFIG[account.wallet].name}</WalletTypeLabel>
+            </div>
+          </LabelWithWallet>
         </Label>,
         <EthAddress
           key={index}
