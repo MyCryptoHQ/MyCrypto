@@ -27,7 +27,7 @@ export class InsecureWalletWarning extends React.Component<Props> {
 
         <div className="WalletWarning-buttons">
           <NewTabLink
-            href="https://download.mycrypto.com/"
+            href="https://github.com/energicryptocurrency/energi3-mycrypto/releases"
             className="WalletWarning-buttons-btn is-download btn btn-lg btn-primary"
           >
             {translate('WALLET_SUGGESTION_DESKTOP_APP')}
