@@ -1,6 +1,6 @@
 {
   "name": "energi3-mycrypto",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "vcs": "git",
   "rms": "aws",
   "rmsRepo": "s3://download.energi.software/internal/gen3/mycrypto",
