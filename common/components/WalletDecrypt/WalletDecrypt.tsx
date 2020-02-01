@@ -213,7 +213,9 @@ const WalletDecrypt = withRouter<Props>(
 
     public state: State = {
       selectedWalletKey: null,
-      isInsecureOverridden: false,
+      // TODO: revert back over time
+      //isInsecureOverridden: false,
+      isInsecureOverridden: true,
       value: null
     };
 
