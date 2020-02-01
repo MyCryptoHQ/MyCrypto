@@ -10,11 +10,12 @@ import {
   Network,
   RowDeleteOverlay,
   RouterLink,
-  Typography
+  Typography,
+  EditableText
 } from 'v2/components';
 import { truncate } from 'v2/utils';
 import { BREAK_POINTS, COLORS, breakpointToNumber } from 'v2/theme';
-import { ExtendedAccount, AddressBook, StoreAccount } from 'v2/types';
+import { ExtendedAccount, StoreAccount, ExtendedAddressBook } from 'v2/types';
 import {
   AccountContext,
   getLabelByAccount,
@@ -204,8 +205,7 @@ function buildAccountTable(
   const { totalFiat } = useContext(StoreContext);
   const { getAssetRate } = useContext(RatesContext);
   const { settings } = useContext(SettingsContext);
-  const { addressBook } = useContext(AddressBookContext);
-
+  const { addressBook, updateAddressBooks, createAddressBooks } = useContext(AddressBookContext);
   const columns = [
     translateRaw('ACCOUNT_LIST_LABEL'),
     translateRaw('ACCOUNT_LIST_ADDRESS'),
@@ -240,14 +240,29 @@ function buildAccountTable(
       ),
     overlayRows,
     body: accounts.map((account, index) => {
-      const addressCard: AddressBook | undefined = getLabelByAccount(account, addressBook);
+      const addressCard: ExtendedAddressBook | undefined = getLabelByAccount(account, addressBook);
       const total = totalFiat([account])(getAssetRate);
       const label = addressCard ? addressCard.label : 'Unknown Account';
       const bodyContent = [
         <Label key={index}>
           <SIdenticon address={account.address} />
           <LabelWithWallet>
-            <Typography value={label} />
+            <EditableText
+              truncate={true}
+              saveValue={value => {
+                if (addressCard) {
+                  updateAddressBooks(addressCard.uuid, { ...addressCard, label: value });
+                } else {
+                  createAddressBooks({
+                    address: account.address,
+                    label: value,
+                    network: account.networkId,
+                    notes: ''
+                  });
+                }
+              }}
+              value={label}
+            />
             <div>
               <WalletTypeLabel>{WALLETS_CONFIG[account.wallet].name}</WalletTypeLabel>
             </div>
