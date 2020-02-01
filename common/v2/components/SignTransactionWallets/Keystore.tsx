@@ -216,8 +216,6 @@ export default class SignTransactionKeystore extends Component<
 
     if (isValidFile(inputFile)) {
       fileReader.readAsText(inputFile, 'utf-8');
-    } else {
-      // this.props.showNotification('danger', translateRaw('ERROR_3'));
     }
   };
 }

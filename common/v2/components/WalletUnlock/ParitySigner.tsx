@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import translate, { translateRaw } from 'v2/translations';
 
-import { notificationsActions } from 'v2/features/NotificationsPanel';
 import { ParityQrSigner, NewTabLink } from 'v2/components';
 import { WalletFactory } from 'v2/services/WalletService';
 import { isValidAddress } from 'v2/services/EthService';
@@ -19,7 +18,6 @@ interface OwnProps {
 }
 
 interface StateProps {
-  showNotification: notificationsActions.TShowNotification;
   isValidAddress: string; //getIsValidAddressFn;
 }
 
@@ -41,7 +39,6 @@ export function ParitySignerDecrypt({ formData, onUnlock }: OwnProps & StateProp
       typeof content === 'string' ||
       !isValidAddress(content.address, !network ? 1 : network.chainId)
     ) {
-      this.props.showNotification('danger', 'Not a valid address!');
       return;
     }
 
