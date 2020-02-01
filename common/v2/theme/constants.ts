@@ -28,7 +28,8 @@ export const COLORS = {
   LEMON_GRASS: '#99968C',
   DARK_BLUE: '#1c314e',
   ATHENS_GREY: '#e8eaed',
-  GEYSER_GREY: '#d6dce5'
+  GEYSER_GREY: '#d6dce5',
+  ERROR_RED: '#FF5050'
 };
 
 export const BREAK_POINTS = {

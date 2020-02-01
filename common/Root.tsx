@@ -34,10 +34,6 @@ class RootClass extends Component {
     this.addBodyClasses();
   }
 
-  public componentDidCatch(error: Error) {
-    console.error(error);
-  }
-
   public render() {
     return (
       <ThemeProvider theme={GAU_THEME}>

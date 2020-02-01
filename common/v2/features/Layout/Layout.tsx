@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import { BannerType } from 'v2/types';
 import { Banner } from 'v2/components';
 import { BREAK_POINTS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING } from 'v2/theme';
-import { DrawerContext } from 'v2/features';
+import { DrawerContext, ErrorContext } from 'v2/features';
 import Header from './Header';
 import Footer from './Footer';
 
@@ -68,10 +68,12 @@ const SContainer = styled('div')`
 export default function Layout({ config = {}, className = '', children }: Props) {
   const { centered = true, fluid, fullW = false, bgColor } = config;
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
+  const { error, getErrorMessage } = useContext(ErrorContext);
   const betaAnnouncement =
     'Heads up: this is a beta version of the new MyCrypto. It has not been audited yet, so please practice safe sending.';
   return (
     <SMain className={className} bgColor={bgColor}>
+      {error && <SBanner type={BannerType.ERROR} value={getErrorMessage(error)} />}
       <Header
         drawerVisible={visible}
         toggleDrawerVisible={toggleVisible}
