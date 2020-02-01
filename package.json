@@ -58,8 +58,6 @@
     "react-spring": "v8.0",
     "react-transition-group": "4.0.0",
     "recharts": "1.6.2",
-    "redux": "3.7.2",
-    "redux-saga": "0.16.0",
     "rskjs-util": "1.0.3",
     "semver": "5.5.0",
     "slick-carousel": "1.8.1",
