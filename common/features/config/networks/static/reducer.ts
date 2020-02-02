@@ -1044,14 +1044,15 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     dPathFormats: {
       [SecureWalletName.TREZOR]: NRG_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: NRG_DEFAULT,
+      [SecureWalletName.SAFE_T]: NRG_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: NRG_DEFAULT
     },
     gasPriceSettings: {
-      min: 1,
+      min: 10,
       max: 100,
       initial: 10
     },
-    shouldEstimateGasPrice: true,
+    shouldEstimateGasPrice: false,
     unsupportedTabs: [TAB.ENS],
     hideEquivalentValues: true
   },
@@ -1073,14 +1074,15 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     dPathFormats: {
       [SecureWalletName.TREZOR]: NRG_TESTNET,
       [SecureWalletName.LEDGER_NANO_S]: NRG_TESTNET,
+      [SecureWalletName.SAFE_T]: NRG_TESTNET,
       [InsecureWalletName.MNEMONIC_PHRASE]: NRG_TESTNET
     },
     gasPriceSettings: {
-      min: 1,
+      min: 10,
       max: 100,
       initial: 10
     },
-    shouldEstimateGasPrice: true,
+    shouldEstimateGasPrice: false,
     unsupportedTabs: [TAB.ENS],
     hideEquivalentValues: true
   }
