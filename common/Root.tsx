@@ -178,7 +178,7 @@ const PageVisitsAnalytics = withRouter(
     class extends Component<PageVisitsAnalyticsProps> {
       public componentDidMount() {
         this.props.history.listen(() => {
-          if (previousURL !== window.location.href) {
+          if (false && previousURL !== window.location.href) {
             AnalyticsService.instance.trackPageVisit(
               window.location.href,
               window.location.hash,

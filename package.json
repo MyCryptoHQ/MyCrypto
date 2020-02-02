@@ -1,10 +1,10 @@
 {
-  "name": "MyCrypto",
-  "author": "MyCryptoHQ",
+  "name": "EnergiWallet",
+  "author": "Energi Core & MyCryptoHQ",
   "version": "1.1.0",
   "main": "main.js",
   "description": "MyCrypto is a free, open-source interface for interacting with the blockchain",
-  "repository": "https://github.com/MyCryptoHQ/MyCrypto",
+  "repository": "https://github.com/energicryptocurrency/energi3-mycrypto",
   "engines": {
     "node": ">= 8.16.0",
     "npm": ">= 5.0.0"

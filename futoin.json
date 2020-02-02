@@ -24,16 +24,56 @@
       "/": {
         "static": true,
         "tune": {
-          "expires": "epoch",
+          "etag": true,
           "pattern": true,
           "staticGzip": true,
           "spaRoutes": true
+        }
+      },
+      "~ \\.(woff|woff2|eot|ttf)$": {
+        "static": true,
+        "tune": {
+          "expires": "max",
+          "pattern": true
+        }
+      },
+      "~ \\.(js|css)$": {
+        "static": true,
+        "tune": {
+          "expires": "max",
+          "pattern": true,
+          "staticGzip": true
+        }
+      },
+      "/common/assets/": {
+        "static": true,
+        "tune": {
+          "expires": "max",
+          "pattern": true
+        }
+      },
+      "/common/assets/images/": {
+        "static": true,
+        "tune": {
+          "etag": "on",
+          "pattern": true
+        }
+      },
+      "/node_modules": {
+        "static": true,
+        "tune": {
+          "etag": "on",
+          "pattern": true,
+          "staticGzip": true
         }
       }
     }
   },
   "actions": {
-    "build": "@cte yarn build"
+    "build": [
+      "@cte yarn build",
+      "@cid tool build gzip"
+    ]
   },
   "package": [
     "dist/prod"

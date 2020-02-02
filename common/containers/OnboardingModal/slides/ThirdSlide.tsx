@@ -34,7 +34,7 @@ export default function ThirdSlide() {
             </li>
             <li>
               {translate('ONBOARDING_TEXT_24', {
-                $link: 'https://download.mycrypto.com/'
+                $link: 'https://github.com/energicryptocurrency/energi3-mycrypto/releases'
               })}
             </li>
           </ul>

@@ -14,7 +14,7 @@ import {
 } from 'features/config';
 import { sidebarActions } from 'features/sidebar';
 import { walletActions } from 'features/wallet';
-import logo from 'assets/images/logo-mycrypto.svg';
+import logo from 'assets/images/logo-energi-white.svg';
 import { LINKSET } from '../constants';
 import { generateMenuIcon, generateCaretIcon } from '../helpers';
 import './MobileHeader.scss';
@@ -158,7 +158,7 @@ class MobileHeader extends Component<Props> {
                 <ul className="MobileHeader-menu-bottom">
                   <li>
                     <a
-                      href="https://support.mycrypto.com/"
+                      href="https://www.energi.world/faq/"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -166,11 +166,7 @@ class MobileHeader extends Component<Props> {
                     </a>
                   </li>
                   <li>
-                    <a
-                      href="https://medium.com/@mycrypto"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a href="https://medium.com/energi" target="_blank" rel="noopener noreferrer">
                       {translateRaw('NEW_HEADER_TEXT_2')} <i className="fa fa-caret-right" />
                     </a>
                   </li>

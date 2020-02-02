@@ -125,7 +125,9 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
     }
   ];
 
-  if (process.env.BUILD_DOWNLOADABLE) {
+  // TODO: remove after some time for web version
+  if (true || process.env.BUILD_DOWNLOADABLE) {
+    const metamask = suggestions[1];
     suggestions[1] = {
       name: translate('NAV_GENERATEWALLET'),
       type: 'generate',
@@ -147,6 +149,13 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
         }
       ]
     };
+
+    // TODO: remove after some time
+    // Add extra option for web wallet
+    if (!process.env.BUILD_DOWNLOADABLE) {
+      suggestions.push(suggestions[1]);
+      suggestions[1] = metamask;
+    }
   }
 
   return (
@@ -158,7 +167,7 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
         <React.Fragment>
           <div className="WalletTypes-download">
             <NewTabLink
-              href="https://download.mycrypto.com"
+              href="https://github.com/energicryptocurrency/energi3-mycrypto/releases"
               className="WalletTypes-download-button btn btn-primary btn-lg"
             >
               {translate('WALLET_SUGGESTION_DESKTOP_APP')}
