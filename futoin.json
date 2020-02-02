@@ -49,14 +49,8 @@
         "static": true,
         "tune": {
           "expires": "max",
-          "pattern": true
-        }
-      },
-      "/common/assets/images/": {
-        "static": true,
-        "tune": {
-          "etag": "on",
-          "pattern": true
+          "pattern": true,
+          "staticGzip": true
         }
       },
       "/node_modules": {
