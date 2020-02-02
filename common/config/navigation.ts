@@ -24,10 +24,12 @@ export const navigationLinks: NavigationLink[] = [
     name: 'NAV_CONTRACTS',
     to: '/contracts'
   },
+  /*
   {
     name: 'NAV_ENS',
     to: '/ens'
   },
+*/
   {
     name: 'NAV_SIGN',
     to: '/sign-and-verify-message'
