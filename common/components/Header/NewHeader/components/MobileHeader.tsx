@@ -158,7 +158,7 @@ class MobileHeader extends Component<Props> {
                 <ul className="MobileHeader-menu-bottom">
                   <li>
                     <a
-                      href="https://support.mycrypto.com/"
+                      href="https://www.energi.world/faq/"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -167,7 +167,7 @@ class MobileHeader extends Component<Props> {
                   </li>
                   <li>
                     <a
-                      href="https://medium.com/@mycrypto"
+                      href="https://medium.com/energi"
                       target="_blank"
                       rel="noopener noreferrer"
                     >

@@ -22,9 +22,9 @@ const ErrorScreen: React.SFC<Props> = ({ error }) => {
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href={`mailto:support@mycrypto.com?Subject=${SUBJECT}&body=${DESCRIPTION}`}
+            href={`mailto:support@energi.world?Subject=${SUBJECT}&body=${DESCRIPTION}`}
           >
-            support@mycrypto.com
+            support@energi.world
           </a>{' '}
           if a refresh doesn't fix it (or click it anyway to open a ticket 😊). You can also submit
           an issue on our{' '}
