@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
 import { NetworkConfig } from 'types/network';
 import { getKeyByValue } from 'utils/helpers';
-import logo from 'assets/images/logo-mycrypto.svg';
+import logo from 'assets/images/logo-energi-white.svg';
 import { OldDropDown } from 'components/ui';
 import {
   configSelectors,
@@ -85,7 +85,7 @@ class Header extends Component<Props, State> {
                 src={logo}
                 height="64px"
                 width="245px"
-                alt="MyCrypto logo"
+                alt="Energi logo"
               />
             </Link>
             <div className="Header-branding-right">

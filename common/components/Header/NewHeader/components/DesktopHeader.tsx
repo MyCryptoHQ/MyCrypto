@@ -13,7 +13,7 @@ import {
 } from 'features/config';
 import { sidebarActions } from 'features/sidebar';
 import { walletActions } from 'features/wallet';
-import logo from 'assets/images/logo-mycrypto.svg';
+import logo from 'assets/images/logo-energi-white.svg';
 import { LINKSET } from '../constants';
 import { generateCaretIcon } from '../helpers';
 import './DesktopHeader.scss';
