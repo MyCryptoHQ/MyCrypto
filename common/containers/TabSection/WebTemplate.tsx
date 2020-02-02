@@ -41,7 +41,7 @@ class WebTemplate extends Component<Props, {}> {
               <NewHeader networkParam={network && makeAutoNodeName(network)} />
             )}
           />
-          <Banner value={ANNOUNCEMENT_MSG()} />
+          {false && <Banner value={ANNOUNCEMENT_MSG()} />}
           <Transition
             from={{ right: '-375px' }}
             enter={{ right: '0' }}
