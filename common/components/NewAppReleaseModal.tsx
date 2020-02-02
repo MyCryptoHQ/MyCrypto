@@ -70,6 +70,6 @@ export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
   };
 
   private openRelease() {
-    window.open('https://github.com/MyCryptoHQ/MyCrypto/releases/latest');
+    window.open('https://github.com/energicryptocurrency/energi3-mycrypto/releases/latest');
   }
 }

@@ -191,7 +191,7 @@
     "DEP_INTERFACE": "生成されたインターフェース ",
     "NODE_TITLE": "カスタムノードをセットアップ",
     "NODE_SUBTITLE": "ローカルノードに接続するには...",
-    "NODE_WARNING": "MyCrypto.com 経由で接続するためには、HTTPSノードが必要です。[MyCryptoをレポジトリからダウンロードして、手元で走らせ、](https//github.com/MyCryptoHQ/MyCrypto/releases/latest)いずれかのノードに接続することもできます。 あるいは、無料のSSL証明書を[LetsEncrypt](https//letsencrypt.org/)から入手してください",
+    "NODE_WARNING": "MyCrypto.com 経由で接続するためには、HTTPSノードが必要です。[MyCryptoをレポジトリからダウンロードして、手元で走らせ、](https//github.com/energicryptocurrency/energi3-mycrypto/releases/latest)いずれかのノードに接続することもできます。 あるいは、無料のSSL証明書を[LetsEncrypt](https//letsencrypt.org/)から入手してください",
     "NODE_NAME": "ノード名",
     "NODE_PORT": "ノードポート",
     "NODE_CTA": "保存してカスタムノードを使用",

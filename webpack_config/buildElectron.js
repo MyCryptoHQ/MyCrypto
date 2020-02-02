@@ -41,8 +41,8 @@ async function build() {
       x64: true,
       ia32: true,
       config: {
-        appId: 'com.github.mycrypto.mycryptohq',
-        productName: 'MyCrypto',
+        appId: 'network.energi.wallet',
+        productName: 'EnergiWallet',
         directories: {
           app: jsBuildDir,
           output: electronBuildsDir

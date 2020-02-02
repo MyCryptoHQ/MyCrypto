@@ -585,7 +585,7 @@
     "HELP_8_DESC_3":
       "You can import your unencrypted private key and your Geth/Mist Format (encrypted) files directly into geth / Ethereum Wallet / Mist very easily now. See question #12 below. ",
     "HELP_8_DESC_4":
-      "In addition, the likelihood of us taking MyCrypto down is slim to none. It costs us almost nothing to maintain as we aren't storing any information. If we do take the domain down, it still is, and always will be, publicly available at [https://github.com/MyCryptoHQ/MyCrypto](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages). You can download the ZIP there and run it locally. ",
+      "In addition, the likelihood of us taking MyCrypto down is slim to none. It costs us almost nothing to maintain as we aren't storing any information. If we do take the domain down, it still is, and always will be, publicly available at [https://github.com/MyCryptoHQ/MyCrypto](https://github.com/energicryptocurrency/energi3-mycrypto/tree/gh-pages). You can download the ZIP there and run it locally. ",
     "HELP_8CX_TITLE": "8) What happens if MyCrypto CX disappears? ",
     "HELP_8CX_DESC_1":
       "First, all data is saved on your computer, not our servers. I know it can be confusing, but when you look at the Chrome Extension, you are NOT looking at stuff saved on our servers somewhere - it's all saved on your own computer. ",
@@ -719,7 +719,7 @@
     "HELP_SEC_DESC_3":
       "We aren't going to take your money or steal your private key(s). There is no malicious code on this site. In fact the \"GENERATE WALLET\" pages are completely client-side. That means that all the code is executed on ** your computer** and it is never saved and transmitted anywhere. ",
     "HELP_SEC_DESC_4":
-      "Check the URL -- This site is being served through GitHub and you can see the source code here: [https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages) to [https://www.mycrypto.com](https://www.mycrypto.com). ",
+      "Check the URL -- This site is being served through GitHub and you can see the source code here: [https://github.com/energicryptocurrency/energi3-mycrypto/tree/gh-pages](https://github.com/energicryptocurrency/energi3-mycrypto/tree/gh-pages) to [https://www.mycrypto.com](https://www.mycrypto.com). ",
     "HELP_SEC_DESC_5":
       "For generating wallets, you can download the [source code and run it locally](https://github.com/energicryptocurrency/energi3-mycrypto/releases). See #5 above. ",
     "HELP_SEC_DESC_6":

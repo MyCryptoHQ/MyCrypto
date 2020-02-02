@@ -28,7 +28,7 @@ const ErrorScreen: React.SFC<Props> = ({ error }) => {
           </a>{' '}
           if a refresh doesn't fix it (or click it anyway to open a ticket 😊). You can also submit
           an issue on our{' '}
-          <NewTabLink href="https://github.com/MyCryptoHQ/MyCrypto/issues">
+          <NewTabLink href="https://github.com/energicryptocurrency/energi3-mycrypto/issues">
             GitHub Repository
           </NewTabLink>
           . Please attach the following error to help our team solve your issue.
