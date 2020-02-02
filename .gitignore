@@ -65,3 +65,4 @@ package-lock.json
 
 # FutoIn
 .package.checksums
+*.gz
