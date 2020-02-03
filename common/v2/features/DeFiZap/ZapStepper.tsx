@@ -7,6 +7,7 @@ import { ROUTE_PATHS } from 'v2/config';
 import ZapInteractionFactory from './stateFactory';
 import { ITxReceipt, ISignedTx } from 'v2/types';
 import { SignTransaction } from '../SendAssets/components';
+import { ISimpleTxFormFull } from './types';
 
 const initialZapFlowState = (initialZapSelected: IZapConfig) => ({
   zapSelected: initialZapSelected,
@@ -24,14 +25,12 @@ const ZapStepper = ({ selectedZap }: Props) => {
     initialZapFlowState(selectedZap)
   );
 
-  console.debug('[DeFiZapStepper]: Refresh occurred ', zapFlowState);
-
   const steps: IStepperPath[] = [
     {
       label: 'Zap Form',
       component: ZapForm,
       props: (state => state)(zapFlowState),
-      actions: (zapSelected: IZapConfig, cb: any) => handleUserInputFormSubmit(zapSelected, cb)
+      actions: (formData: ISimpleTxFormFull, cb: any) => handleUserInputFormSubmit(formData, cb)
     },
     {
       label: 'Confirm Transaction',
