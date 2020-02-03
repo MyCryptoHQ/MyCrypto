@@ -65,11 +65,8 @@ module.exports = {
     'react',
     'react-dom',
     'react-markdown',
-    'react-redux',
     'react-router-dom',
     'react-transition-group',
-    'redux',
-    'redux-saga',
     'uuid',
     'wallet-address-validator',
     'whatwg-fetch'

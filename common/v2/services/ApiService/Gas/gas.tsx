@@ -1,5 +1,3 @@
-import { Omit } from 'react-redux';
-
 import { GasEstimates } from 'v2/types';
 import { checkHttpStatus, parseJSON } from '../utils';
 

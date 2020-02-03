@@ -1,5 +1,4 @@
 import { RouteComponentProps } from 'react-router-dom';
-import { Omit } from 'react-redux';
 
 interface IProps {
   match: RouteComponentProps<any>['match'];

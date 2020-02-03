@@ -1,12 +1,11 @@
 import React, { PureComponent } from 'react';
 
 import translate, { translateRaw } from 'v2/translations';
-import { notificationsActions } from 'v2/features/NotificationsPanel';
 import { Spinner, Input } from 'v2/components';
-
 import { WalletId } from 'v2/types';
 import { WalletFactory, isKeystorePassRequired } from 'v2/services/WalletService';
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
+
 import './Keystore.scss';
 
 export interface KeystoreValue {
@@ -40,7 +39,6 @@ export class KeystoreDecrypt extends PureComponent {
     isPasswordPending: boolean;
     onChange(value: KeystoreValue): void;
     onUnlock(param: any): void;
-    showNotification(level: string, message: string): notificationsActions.TShowNotification;
   };
 
   public state: KeystoreValue = {
@@ -151,8 +149,6 @@ export class KeystoreDecrypt extends PureComponent {
 
     if (isValidFile(inputFile)) {
       fileReader.readAsText(inputFile, 'utf-8');
-    } else {
-      this.props.showNotification('danger', translateRaw('ERROR_3'));
     }
   };
 }

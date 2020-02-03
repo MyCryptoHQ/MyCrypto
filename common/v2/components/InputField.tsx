@@ -7,10 +7,14 @@ import { InlineErrorMsg, Spinner } from 'v2/components';
 
 const { PASTEL_RED, BRIGHT_SKY_BLUE, DARK_SILVER, LIGHT_GREY } = COLORS;
 
-const MainWrapper = styled.div`
-  margin-bottom: 15px;
+const MainWrapper = styled.div<WrapperProps>`
+  margin-bottom: ${props => props.marginBottom};
   width: 100%;
 `;
+
+interface WrapperProps {
+  marginBottom?: string;
+}
 
 const Label = styled.p`
   font-size: 18px;
@@ -25,6 +29,7 @@ const Label = styled.p`
 interface CustomInputProps {
   inputError?: string | JSX.Element;
   showEye?: boolean;
+  customIcon?: React.ReactType;
   height?: string;
   maxHeight?: string;
   resizable?: boolean;
@@ -35,7 +40,7 @@ const CustomInput = styled.input<CustomInputProps>`
   background: ${props => props.theme.controlBackground};
   border: 0.125em solid ${props => props.theme.controlBorder};
   border-radius: 0.125em;
-  padding: ${props => (props.showEye ? '12px 36px 12px 12px' : '12px 12px')};
+  padding: ${props => (props.showEye || props.customIcon ? '12px 36px 12px 12px' : '12px 12px')};
   display: flex;
   :focus-within {
     outline: none;
@@ -85,7 +90,7 @@ interface CustomIconProps {
   showPassword?: boolean;
 }
 
-const CustomIcon = styled(Icon)`
+const EyeIcon = styled(Icon)`
   svg {
     margin-top: 6px;
     width: 23px;
@@ -94,6 +99,15 @@ const CustomIcon = styled(Icon)`
     cursor: pointer;
     user-select: none;
   }
+`;
+
+const DefaultIconWrapper = styled.div`
+  display: flex;
+  height: 100%;
+  align-items: center;
+  position: absolute;
+  right: 10px;
+  top: 0;
 `;
 
 const CustomIconWrapper = styled.div`
@@ -105,6 +119,19 @@ const CustomIconWrapper = styled.div`
   top: 0;
 `;
 
+const CustomIcon = styled.span`
+  display: flex;
+  border-left: 1px solid ${COLORS.GEYSER_GREY};
+  img {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 8px;
+    color: ${BRIGHT_SKY_BLUE}};
+    cursor: pointer;
+    user-select: none;
+  }
+`;
+
 interface Props {
   name?: string;
   type?: string;
@@ -112,10 +139,12 @@ interface Props {
   value: string | undefined;
   inputError?: string | JSX.Element | undefined;
   showEye?: boolean;
+  customIcon?: React.ElementType;
   textarea?: boolean;
   placeholder?: string;
   height?: string;
   maxHeight?: string;
+  marginBottom?: string;
   resizableTextArea?: boolean;
   disabled?: boolean;
   isLoading?: boolean;
@@ -144,16 +173,21 @@ export class InputField extends Component<Props> {
       inputError,
       type,
       showEye,
+      customIcon,
       textarea,
       placeholder,
       height,
       resizableTextArea,
       disabled,
       isLoading,
-      maxHeight
+      maxHeight,
+      marginBottom = '15px'
     } = this.props;
+
+    const IconComponent = customIcon as React.ElementType;
+
     return (
-      <MainWrapper>
+      <MainWrapper marginBottom={marginBottom}>
         {label && <Label>{label}</Label>}
         <InputWrapper>
           {textarea ? (
@@ -181,6 +215,7 @@ export class InputField extends Component<Props> {
               inputError={inputError}
               onKeyUp={this.handleKeyUp}
               showEye={showEye}
+              customIcon={customIcon}
               type={this.state.showPassword ? 'text' : type ? type : 'text'}
               placeholder={placeholder ? placeholder : ''}
               height={height}
@@ -188,16 +223,24 @@ export class InputField extends Component<Props> {
             />
           )}
 
-          {showEye && (
-            <CustomIconWrapper onClick={this.handleEyeClick}>
-              <CustomIcon icon={'showNetworks'} showPassword={this.state.showPassword} />
+          {customIcon && (
+            <CustomIconWrapper>
+              <CustomIcon>
+                <IconComponent />
+              </CustomIcon>
             </CustomIconWrapper>
           )}
 
+          {showEye && (
+            <DefaultIconWrapper onClick={this.handleEyeClick}>
+              <EyeIcon icon={'showNetworks'} showPassword={this.state.showPassword} />
+            </DefaultIconWrapper>
+          )}
+
           {isLoading && (
-            <CustomIconWrapper>
+            <DefaultIconWrapper>
               <Spinner />
-            </CustomIconWrapper>
+            </DefaultIconWrapper>
           )}
         </InputWrapper>
 
