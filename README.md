@@ -1,5 +1,7 @@
 # MyCrypto Beta Web App
 
+Minor change
+
 [![Build Status](https://travis-ci.org/MyCryptoHQ/MyCrypto.svg?branch=master)](https://travis-ci.org/MyCryptoHQ/MyCrypto)
 [![Coverage Status](https://coveralls.io/repos/github/MyCryptoHQ/MyCrypto/badge.svg?branch=master)](https://coveralls.io/github/MyCryptoHQ/MyCrypto?branch=develop)
 
@@ -52,6 +54,6 @@ yarn dev:electron
 #### Staging
 
 ```bash
-# builds production app version used on mycryptobuilds.com 
+# builds production app version used on mycryptobuilds.com
 yarn build:downloadable
 ```
