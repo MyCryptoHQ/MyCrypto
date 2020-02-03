@@ -50,10 +50,10 @@ export const LINKSET = {
     {
       to: '/pushTx',
       title: translateRaw('NEW_HEADER_TEXT_16')
-    },
-    {
-      to: '/ens',
-      title: translateRaw('NEW_HEADER_TEXT_17')
     }
+    //{
+    //to: '/ens',
+    //title: translateRaw('NEW_HEADER_TEXT_17')
+    //}
   ]
 };
