@@ -77,8 +77,7 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}> & IDataContex
     if (
       (this.state.shouldAutoLock || !prevProps.password) &&
       this.props.password &&
-      this.props.encryptedDbState &&
-      !this.props.encryptedDbState.data
+      !this.props.encryptedDbState
     ) {
       const unenc = this.model.export();
       const encryptedData = await AES.encrypt(unenc, this.props.password).toString();
