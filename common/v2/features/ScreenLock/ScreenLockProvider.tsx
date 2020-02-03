@@ -9,6 +9,7 @@ import { withContext } from 'v2/utils';
 import { LSKeys } from 'v2/types';
 import { DataContext, IDataContext } from 'v2/services/Store';
 import { default as ScreenLockLocking } from './ScreenLockLocking';
+import { settings } from 'v2/database/data/settings';
 
 interface State {
   locking: boolean;
@@ -28,7 +29,7 @@ export const ScreenLockContext = React.createContext({} as State);
 
 let inactivityTimer: any = null;
 let countDownTimer: any = null;
-const countDownDuration: number = 3;
+const countDownDuration: number = 59;
 
 // Would be better to have in services/Store but circular dependencies breaks
 // Jest test. Consider adopting such as importing from a 'internal.js'
@@ -136,7 +137,7 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}> & IDataContex
 
   public resetInactivityTimer = () => {
     clearTimeout(inactivityTimer);
-    inactivityTimer = setTimeout(this.startLockCountdown, 3000);
+    inactivityTimer = setTimeout(this.startLockCountdown, settings.inactivityTimer);
   };
 
   public startLockCountdown = () => {
