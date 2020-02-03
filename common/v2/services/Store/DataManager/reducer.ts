@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 
-import { LSKeys, DataStore, DataStoreEntry, DataStoreItem, TUuid, Network } from 'v2/types';
+import { LSKeys, DataStoreEntry, DataStoreItem, TUuid, Network } from 'v2/types';
+import { EncryptedDataStore, DataStoreWithPassword } from 'v2/types/store';
 
 export enum ActionT {
   ADD_ITEM = 'ADD_ITEM',
@@ -18,15 +19,31 @@ export interface ActionPayload<T> {
 
 export interface ActionV {
   type: keyof typeof ActionT;
-  payload: ActionPayload<DataStoreItem | DataStoreEntry | DataStore> | ActionPayload<TUuid>;
+  payload:
+    | ActionPayload<DataStoreItem | DataStoreEntry | DataStoreWithPassword | string>
+    | ActionPayload<TUuid>;
+}
+
+export enum ActionY {
+  CLEAR_DATA = 'CLEAR_DATA',
+  SET_DATA = 'SET_DATA'
+}
+
+export interface EncryptedDbActionPayload<T> {
+  data?: T;
+}
+
+export interface ActionZ {
+  type: keyof typeof ActionY;
+  payload: EncryptedDbActionPayload<string>;
 }
 
 // Handler to facilitate initial store state and reset.
-export function init(initialState: DataStore) {
+export function init(initialState: DataStoreWithPassword) {
   return initialState;
 }
 
-export function appDataReducer(state: DataStore, { type, payload }: ActionV) {
+export function appDataReducer(state: DataStoreWithPassword, { type, payload }: ActionV) {
   switch (type) {
     case ActionT.ADD_ITEM: {
       const { model, data } = payload;
@@ -84,10 +101,31 @@ export function appDataReducer(state: DataStore, { type, payload }: ActionV) {
     }
     case ActionT.RESET: {
       const { data } = payload;
-      return init(data as DataStore);
+      return init(data as DataStoreWithPassword);
     }
     default: {
       throw new Error('[AppReducer]: missing action type');
+    }
+  }
+}
+
+export function encryptedDbReducer(
+  state: EncryptedDataStore,
+  { type, payload }: ActionZ
+): EncryptedDataStore {
+  switch (type) {
+    case ActionY.SET_DATA: {
+      return {
+        ...state,
+        ...payload
+      };
+    }
+    case ActionY.CLEAR_DATA: {
+      return {};
+    }
+
+    default: {
+      throw new Error('[EncryptedDbReducer]: missing action type');
     }
   }
 }

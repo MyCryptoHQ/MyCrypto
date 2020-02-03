@@ -13,6 +13,7 @@ import { default as ScreenLockLocking } from './ScreenLockLocking';
 interface State {
   locking: boolean;
   locked: boolean;
+  shouldAutoLock: boolean;
   timeLeft: number;
   encryptWithPassword(password: string, hashed: boolean): void;
   decryptWithPassword(password: string): void;
@@ -21,14 +22,13 @@ interface State {
 interface Model {
   import(ls: string): void;
   export(): string;
-  destroy(): void;
 }
 
 export const ScreenLockContext = React.createContext({} as State);
 
 let inactivityTimer: any = null;
 let countDownTimer: any = null;
-const countDownDuration: number = 59;
+const countDownDuration: number = 3;
 
 // Would be better to have in services/Store but circular dependencies breaks
 // Jest test. Consider adopting such as importing from a 'internal.js'
@@ -38,46 +38,65 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}> & IDataContex
   public state: State = {
     locking: false,
     locked: false,
+    shouldAutoLock: false,
     timeLeft: countDownDuration,
     encryptWithPassword: (password: string, hashed: boolean) =>
-      this.encryptWithPassword(password, hashed),
+      this.setPasswordAndInitiateEncryption(password, hashed),
     decryptWithPassword: (password: string) => this.decryptWithPassword(password)
   };
 
-  public encryptWithPassword = async (password: string, hashed: boolean) => {
-    const { setEncryptedCache, setUnlockPassword } = this.props;
+  // causes prop changes that are being observed in componentDidUpdate
+  public setPasswordAndInitiateEncryption = async (password: string, hashed: boolean) => {
+    const { setUnlockPassword } = this.props;
     try {
       let passwordHash;
 
       // If password is not hashed yet, hash it
       if (!hashed) {
         passwordHash = SHA256(password).toString();
+        setUnlockPassword(passwordHash);
       } else {
-        passwordHash = password;
+        // If password is already set initate encryption in componentDidUpdate
+        this.setState({ shouldAutoLock: true });
       }
-
-      // Store the password into the local cache
-      setUnlockPassword(passwordHash);
-
-      // Encrypt the local cache
-      const encryptedData = await AES.encrypt(this.model.export(), passwordHash).toString();
-      setEncryptedCache(encryptedData);
-      this.model.destroy();
-      this.lockScreen();
     } catch (error) {
       console.error(error);
     }
   };
 
+  public async componentDidUpdate(prevProps: IDataContext) {
+    const ts = this.props.createActions((null as unknown) as LSKeys); // we don't need a named model
+    this.model = {
+      import: ts.importStorage,
+      export: () => JSON.stringify(ts.exportStorage())
+    };
+
+    // locks screen after calling setPasswordAndInitiateEncryption which causes one of these cases:
+    //  - password was just set (props.password goes from undefined to defined) and enrypted local storage data does not exist
+    //  - password was already set and auto lock should happen (shouldAutoLock) and enrypted local storage data does not exist
+    if (
+      (this.state.shouldAutoLock || !prevProps.password) &&
+      this.props.password &&
+      this.props.encryptedDbState &&
+      !this.props.encryptedDbState.data
+    ) {
+      const unenc = this.model.export();
+      const encryptedData = await AES.encrypt(unenc, this.props.password).toString();
+      this.props.setEncryptedCache(encryptedData);
+      this.props.destroyUnencryptedCache();
+      this.lockScreen();
+      this.setState({ shouldAutoLock: false });
+    }
+  }
+
   public decryptWithPassword = async (password: string): Promise<boolean> => {
-    const { destroyEncryptedCache, encryptedDb } = this.props;
+    const { destroyEncryptedCache, encryptedDbState } = this.props;
     try {
       const passwordHash = SHA256(password).toString();
       // Decrypt the data and store it to the MyCryptoCache
-      const decryptedData = await AES.decrypt(encryptedDb, passwordHash).toString(
+      const decryptedData = await AES.decrypt(encryptedDbState.data, passwordHash).toString(
         CryptoJS.enc.Utf8
       );
-
       this.model.import(decryptedData);
       destroyEncryptedCache();
 
@@ -95,15 +114,14 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}> & IDataContex
 
   public componentDidMount() {
     //Determine if screen is locked and set "locked" state accordingly
-    const { createActions, encryptedDb } = this.props;
+    const { createActions, encryptedDbState } = this.props;
     const ts = createActions((null as unknown) as LSKeys); // we don't need a named model
     this.model = {
       import: ts.importStorage,
-      export: () => JSON.stringify(ts.exportStorage()),
-      destroy: ts.destroyStorage
+      export: () => JSON.stringify(ts.exportStorage())
     };
 
-    if (encryptedDb) {
+    if (encryptedDbState) {
       this.lockScreen();
     }
     this.trackInactivity();
@@ -118,9 +136,8 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}> & IDataContex
   };
 
   public resetInactivityTimer = () => {
-    const { settings } = this.props;
     clearTimeout(inactivityTimer);
-    inactivityTimer = setTimeout(this.startLockCountdown, settings.inactivityTimer);
+    inactivityTimer = setTimeout(this.startLockCountdown, 3000);
   };
 
   public startLockCountdown = () => {
@@ -159,10 +176,9 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}> & IDataContex
     const { getUnlockPassword } = this.props;
     const password = getUnlockPassword();
     clearInterval(countDownTimer);
-
     if (password) {
       this.setState({ locking: false, locked: true });
-      this.encryptWithPassword(password, true);
+      this.setPasswordAndInitiateEncryption(password, true);
     } else {
       this.setState({ locking: false, locked: false });
       document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
@@ -178,6 +194,7 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}> & IDataContex
     if (
       this.props.location.pathname.includes(ROUTE_PATHS.DASHBOARD.path) ||
       this.props.location.pathname.includes(ROUTE_PATHS.SCREEN_LOCK_NEW.path) ||
+      this.props.location.pathname.includes(ROUTE_PATHS.NO_ACCOUNTS.path) ||
       this.props.location.pathname === ROUTE_PATHS.ROOT.path
     ) {
       this.props.history.push(ROUTE_PATHS.SCREEN_LOCK_LOCKED.path);

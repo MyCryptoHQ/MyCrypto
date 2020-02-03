@@ -3,7 +3,6 @@ import { SymmetricDifference } from 'utility-types';
 import {
   LSKeys,
   TUuid,
-  DataStore,
   DataStoreEntry,
   DataStoreItem,
   Network,
@@ -11,13 +10,18 @@ import {
   ISettings,
   LocalStorage
 } from 'v2/types';
+import { DataStoreWithPassword } from 'v2/types/store';
 import { ActionPayload, ActionV, ActionT } from './reducer';
 import { marshallState, deMarshallState } from './utils';
 
 type createPayload = (m: LSKeys) => <T>(v: T) => ActionPayload<T>;
 const createPayload: createPayload = model => v => ({ model, data: v });
 
-export function ActionFactory(model: LSKeys, dispatch: Dispatch<ActionV>, state: DataStore) {
+export function ActionFactory(
+  model: LSKeys,
+  dispatch: Dispatch<ActionV>,
+  state: DataStoreWithPassword
+) {
   const generatePayload = createPayload(model);
 
   const create = (item: DataStoreItem): void => {
@@ -75,10 +79,6 @@ export function ActionFactory(model: LSKeys, dispatch: Dispatch<ActionV>, state:
     });
   };
 
-  const destroyStorage = () => {
-    console.debug('Destroy Storage');
-  };
-
   const importStorage = (data: string) => {
     const d = JSON.parse(data);
     // @TODO: perfom version and validity check.
@@ -101,7 +101,6 @@ export function ActionFactory(model: LSKeys, dispatch: Dispatch<ActionV>, state:
     updateAll,
     destroy,
     exportStorage,
-    importStorage,
-    destroyStorage
+    importStorage
   };
 }
