@@ -82,6 +82,7 @@
     "SWAP_CONFIRM_TITLE": "Confirm Swap",
     "SWAP_ALLOWANCE_TITLE": "Set allowance",
     "SWAP_SETTING_ALLOWANCE": "Setting allowance...",
+    "SWAP_ZERO_VALUE": "Make sure you are inputting a value greater than 0.",
     "MSG_MESSAGE": "Message ",
     "MSG_DATE": "Date ",
     "MSG_SIGNATURE": "Signature ",
