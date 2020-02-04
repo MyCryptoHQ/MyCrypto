@@ -7,6 +7,7 @@ import translate from 'v2/translations';
 import { ExtendedAccount, ExtendedAsset, Network } from 'v2/types';
 import { StoreContext, AssetContext, getNonce, NetworkContext, fetchGasPriceEstimates } from 'v2';
 import { validateAmountField } from 'v2/features/SendAssets/components/validators/validators';
+import { isEthereumAccount } from 'v2/services/Store/Account/helpers';
 
 interface Props extends ZapInteractionState {
   onComplete(fields: any): void;
@@ -37,11 +38,11 @@ const ZapForm = (props: Props) => {
     network
   };
 
+  const relevantAccounts = accounts.filter(isEthereumAccount);
+
   return (
     <>
-      Form
       <UserInputForm>
-        blahh
         <Formik
           initialValues={initialFormikValues}
           onSubmit={fields => {
@@ -69,7 +70,7 @@ const ZapForm = (props: Props) => {
                       <AccountDropdown
                         name={field.name}
                         value={field.value}
-                        accounts={accounts}
+                        accounts={relevantAccounts}
                         onSelect={(option: ExtendedAccount) => {
                           form.setFieldValue('account', option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
                           handleNonceEstimate(option);
