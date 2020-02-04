@@ -11,6 +11,9 @@ interface IError {
 
 interface ProviderState {
   error?: IError;
+  suppressErrors: boolean;
+  toggleSuppressErrors(): void;
+  shouldShowError(): boolean;
   getErrorMessage(error: IError): React.ReactElement<any>;
 }
 
@@ -19,6 +22,15 @@ export const ErrorContext = createContext({} as ProviderState);
 export class ErrorProvider extends Component {
   public state: ProviderState = {
     error: undefined,
+    suppressErrors: false,
+    toggleSuppressErrors: () => {
+      this.setState((prevState: ProviderState) => {
+        return { suppressErrors: !prevState.suppressErrors };
+      });
+    },
+    shouldShowError: () => {
+      return this.shouldShowError();
+    },
     getErrorMessage: (error: IError) => {
       return this.getErrorMessage(error);
     }
@@ -36,6 +48,10 @@ export class ErrorProvider extends Component {
       error: { error, path }
     });
   }
+
+  private shouldShowError = () => {
+    return this.state.error !== undefined && !this.state.suppressErrors;
+  };
 
   private getErrorMessage = (error: IError) => {
     return translate('GENERIC_ERROR', {

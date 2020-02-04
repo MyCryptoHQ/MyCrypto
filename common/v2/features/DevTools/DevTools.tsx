@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Formik, Field, Form, FieldProps, FormikProps } from 'formik';
 import { Panel, Input } from '@mycrypto/ui';
-import { Button, Link } from 'v2/components';
+import { Button, Link, Checkbox } from 'v2/components';
 import styled from 'styled-components';
 
 import { DEFAULT_NETWORK } from 'v2/config';
@@ -17,6 +17,7 @@ import { Account, AddressBook, WalletId, AssetBalanceObject, ExtendedAddressBook
 
 import ToolsNotifications from './ToolsNotifications';
 import ToolsAccountList from './ToolsAccountList';
+import { ErrorContext } from '../ErrorHandling';
 
 const DevToolsInput = styled(Input)`
   font-size: 1em;
@@ -72,11 +73,6 @@ const renderAccountForm = (addressBook: ExtendedAddressBook[]) => ({
         />
       </fieldset>
       <br />
-      Current dev-mode only features
-      <ul>
-        <li>Recent Transactions panel (Dashboard)</li>
-        <li>Error page disabled</li>
-      </ul>
       <Button type="submit" disabled={isSubmitting}>
         Submit
       </Button>
@@ -100,6 +96,21 @@ const DBTools = () => {
         or revert the process by <SLink onClick={() => removeSeedData()}>removing</SLink> the dev
         accounts.
       </div>
+    </div>
+  );
+};
+
+const ErrorTools = () => {
+  const { suppressErrors, toggleSuppressErrors } = useContext(ErrorContext);
+  return (
+    <div style={{ marginBottom: '1em' }}>
+      <p style={{ fontWeight: 600 }}>Error Tools</p>
+      <Checkbox
+        name={'suppress_errors'}
+        label={'Suppress Errors'}
+        checked={suppressErrors}
+        onChange={() => toggleSuppressErrors()}
+      />
     </div>
   );
 };
@@ -131,6 +142,9 @@ const DevTools = () => {
       <Panel style={{ marginBottom: 0, paddingTop: 50 }}>
         {/* DB tools*/}
         <DBTools />
+        {/* Error handling tools */}
+        <ErrorTools />
+
         {/* Dashboard notifications */}
         <ToolsNotifications />
 

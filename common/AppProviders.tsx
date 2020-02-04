@@ -14,8 +14,8 @@ import { DevToolsProvider, RatesProvider, StoreProvider } from 'v2/services';
 
 function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | null }) {
   return (
-    <ErrorProvider>
-      <DevToolsProvider>
+    <DevToolsProvider>
+      <ErrorProvider>
         <DataProvider>
           <SettingsProvider>
             <AddressBookProvider>
@@ -39,8 +39,8 @@ function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | nu
             </AddressBookProvider>
           </SettingsProvider>
         </DataProvider>
-      </DevToolsProvider>
-    </ErrorProvider>
+      </ErrorProvider>
+    </DevToolsProvider>
   );
 }
 
