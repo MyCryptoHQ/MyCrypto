@@ -6,8 +6,7 @@ import * as R from 'ramda';
 import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS } from 'v2/config';
 import { withContext } from 'v2/utils';
-import { LSKeys } from 'v2/types';
-import { DataContext, IDataContext } from 'v2/services/Store';
+import { DataContext, IDataContext, SettingsContext, ISettingsContext } from 'v2/services/Store';
 import { default as ScreenLockLocking } from './ScreenLockLocking';
 import { isEmpty } from 'lodash';
 
@@ -20,11 +19,6 @@ interface State {
   decryptWithPassword(password: string): void;
 }
 
-interface Model {
-  import(ls: string): void;
-  export(): string;
-}
-
 export const ScreenLockContext = React.createContext({} as State);
 
 let inactivityTimer: any = null;
@@ -34,8 +28,10 @@ const countDownDuration: number = 59;
 // Would be better to have in services/Store but circular dependencies breaks
 // Jest test. Consider adopting such as importing from a 'internal.js'
 // https://medium.com/visual-development/how-to-fix-nasty-circular-dependency-issues-once-and-for-all-in-javascript-typescript-a04c987cf0de
-class ScreenLockProvider extends Component<RouteComponentProps<{}> & IDataContext, State> {
-  public model: Model;
+class ScreenLockProvider extends Component<
+  RouteComponentProps<{}> & IDataContext & ISettingsContext,
+  State
+> {
   public state: State = {
     locking: false,
     locked: false,
@@ -66,12 +62,6 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}> & IDataContex
   };
 
   public async componentDidUpdate(prevProps: IDataContext) {
-    const ts = this.props.createActions((null as unknown) as LSKeys); // we don't need a named model
-    this.model = {
-      import: ts.importStorage,
-      export: () => JSON.stringify(ts.exportStorage())
-    };
-
     // locks screen after calling setPasswordAndInitiateEncryption which causes one of these cases:
     //  - password was just set (props.password goes from undefined to defined) and enrypted local storage data does not exist
     //  - password was already set and auto lock should happen (shouldAutoLock) and enrypted local storage data does not exist
@@ -80,7 +70,10 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}> & IDataContex
       this.props.password &&
       isEmpty(this.props.encryptedDbState)
     ) {
-      const encryptedData = await AES.encrypt(this.model.export(), this.props.password).toString();
+      const encryptedData = await AES.encrypt(
+        this.props.exportStorage(),
+        this.props.password
+      ).toString();
       this.props.setEncryptedCache(encryptedData);
       this.props.resetAppDb();
       this.lockScreen();
@@ -89,14 +82,15 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}> & IDataContex
   }
 
   public decryptWithPassword = async (password: string): Promise<boolean> => {
-    const { destroyEncryptedCache, encryptedDbState } = this.props;
+    const { destroyEncryptedCache, encryptedDbState, importStorage } = this.props;
     try {
       const passwordHash = SHA256(password).toString();
       // Decrypt the data and store it to the MyCryptoCache
       const decryptedData = await AES.decrypt(encryptedDbState.data, passwordHash).toString(
         CryptoJS.enc.Utf8
       );
-      this.model.import(decryptedData);
+      importStorage(decryptedData);
+
       destroyEncryptedCache();
 
       // Navigate to the dashboard and reset inactivity timer
@@ -113,12 +107,7 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}> & IDataContex
 
   public componentDidMount() {
     //Determine if screen is locked and set "locked" state accordingly
-    const { createActions, encryptedDbState } = this.props;
-    const ts = createActions((null as unknown) as LSKeys); // we don't need a named model
-    this.model = {
-      import: ts.importStorage,
-      export: () => JSON.stringify(ts.exportStorage())
-    };
+    const { encryptedDbState } = this.props;
 
     if (encryptedDbState) {
       this.lockScreen();
@@ -227,4 +216,8 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}> & IDataContex
   }
 }
 
-export default R.pipe(withRouter, withContext(DataContext))(ScreenLockProvider);
+export default R.pipe(
+  withRouter,
+  withContext(DataContext),
+  withContext(SettingsContext)
+)(ScreenLockProvider);
