@@ -11,7 +11,7 @@ import {
   LSKeys,
   TUuid
 } from 'v2/types';
-import { DataStoreWithPassword } from 'v2/types/store';
+import { DataStore } from 'v2/types/store';
 import { makeExplorer } from 'v2/services/EthService';
 
 const createObjHash = (obj: object): string => Object.keys(obj).length.toString();
@@ -27,7 +27,7 @@ const memoizeObjToArray = R.memoizeWith(createObjHash, objToArray);
 const memoizeArrayToObj = (key: string) => R.memoizeWith(createArrHash, arrayToObj(key));
 
 // From LocalStorage to the state we want to use within the app.
-export function marshallState(ls: LocalStorage): DataStoreWithPassword {
+export function marshallState(ls: LocalStorage): DataStore {
   return {
     version: ls.version,
     [LSKeys.ACCOUNTS]: Object.values(ls[LSKeys.ACCOUNTS]),
@@ -56,7 +56,7 @@ export function marshallState(ls: LocalStorage): DataStoreWithPassword {
 
 // From convert back to the LocalStorage format.
 // The mtime and version are handled by useDatabase
-export function deMarshallState(st: DataStoreWithPassword): Omit<LocalStorage, 'mtime'> {
+export function deMarshallState(st: DataStore): Omit<LocalStorage, 'mtime'> {
   return {
     version: st.version,
     [LSKeys.ACCOUNTS]: st[LSKeys.ACCOUNTS].reduce(

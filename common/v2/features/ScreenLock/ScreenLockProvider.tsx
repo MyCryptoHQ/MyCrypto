@@ -9,7 +9,7 @@ import { withContext } from 'v2/utils';
 import { LSKeys } from 'v2/types';
 import { DataContext, IDataContext } from 'v2/services/Store';
 import { default as ScreenLockLocking } from './ScreenLockLocking';
-import { settings } from 'v2/database/data/settings';
+import { isEmpty } from 'lodash';
 
 interface State {
   locking: boolean;
@@ -78,12 +78,11 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}> & IDataContex
     if (
       (this.state.shouldAutoLock || !prevProps.password) &&
       this.props.password &&
-      !this.props.encryptedDbState
+      isEmpty(this.props.encryptedDbState)
     ) {
-      const unenc = this.model.export();
-      const encryptedData = await AES.encrypt(unenc, this.props.password).toString();
+      const encryptedData = await AES.encrypt(this.model.export(), this.props.password).toString();
       this.props.setEncryptedCache(encryptedData);
-      this.props.destroyUnencryptedCache();
+      this.props.resetAppDb();
       this.lockScreen();
       this.setState({ shouldAutoLock: false });
     }
@@ -136,6 +135,7 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}> & IDataContex
   };
 
   public resetInactivityTimer = () => {
+    const { settings } = this.props;
     clearTimeout(inactivityTimer);
     inactivityTimer = setTimeout(this.startLockCountdown, settings.inactivityTimer);
   };

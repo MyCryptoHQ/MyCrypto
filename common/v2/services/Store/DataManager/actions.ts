@@ -10,18 +10,14 @@ import {
   ISettings,
   LocalStorage
 } from 'v2/types';
-import { DataStoreWithPassword } from 'v2/types/store';
+import { DataStore } from 'v2/types/store';
 import { ActionPayload, ActionV, ActionT } from './reducer';
 import { marshallState, deMarshallState } from './utils';
 
 type createPayload = (m: LSKeys) => <T>(v: T) => ActionPayload<T>;
 const createPayload: createPayload = model => v => ({ model, data: v });
 
-export function ActionFactory(
-  model: LSKeys,
-  dispatch: Dispatch<ActionV>,
-  state: DataStoreWithPassword
-) {
+export function ActionFactory(model: LSKeys, dispatch: Dispatch<ActionV>, state: DataStore) {
   const generatePayload = createPayload(model);
 
   const create = (item: DataStoreItem): void => {
