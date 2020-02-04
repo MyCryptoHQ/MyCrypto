@@ -19,8 +19,7 @@ const SettingsField = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 29px;
-  padding: 0 30px;
+  padding: 0 30px 29px 30px;
 
   @media (max-width: 700px) {
     display: block;
