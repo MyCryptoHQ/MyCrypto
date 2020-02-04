@@ -3,6 +3,7 @@ import translate from 'v2/translations';
 import { formatErrorEmail } from 'v2/utils';
 import { ROUTE_PATHS } from 'v2/config';
 import { IRoutePath } from 'v2/types';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 interface IError {
   error: Error;
@@ -19,7 +20,7 @@ interface ProviderState {
 
 export const ErrorContext = createContext({} as ProviderState);
 
-export class ErrorProvider extends Component {
+class ErrorProvider extends Component<RouteComponentProps<{}>> {
   public state: ProviderState = {
     error: undefined,
     suppressErrors: false,
@@ -44,6 +45,7 @@ export class ErrorProvider extends Component {
   public componentDidCatch(error: Error) {
     const path = Object.values(ROUTE_PATHS).find(p => p.path === window.location.pathname);
     console.error(error);
+    this.props.history.replace(ROUTE_PATHS.HOME.path);
     this.setState({
       error: { error, path }
     });
@@ -59,3 +61,5 @@ export class ErrorProvider extends Component {
     });
   };
 }
+
+export default withRouter(ErrorProvider);
