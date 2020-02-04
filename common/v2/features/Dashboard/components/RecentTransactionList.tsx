@@ -205,7 +205,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
     config: {
       primaryColumn: 'Date',
       sortableColumn: 'Date',
-      sortFunction: (a: any, b: any) => a.props.date - b.props.date,
+      sortFunction: (a: any, b: any) => b.props.date - a.props.date,
       hiddenHeadings: ['View More'],
       iconColumns: ['View More']
     }
