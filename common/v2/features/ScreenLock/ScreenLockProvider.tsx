@@ -17,13 +17,14 @@ interface State {
   timeLeft: number;
   encryptWithPassword(password: string, hashed: boolean): void;
   decryptWithPassword(password: string): void;
+  startLockCountdown(coundownDuration: number): void;
 }
 
 export const ScreenLockContext = React.createContext({} as State);
 
 let inactivityTimer: any = null;
 let countDownTimer: any = null;
-const countDownDuration: number = 59;
+const defaultCountDownDuration: number = 59;
 
 // Would be better to have in services/Store but circular dependencies breaks
 // Jest test. Consider adopting such as importing from a 'internal.js'
@@ -36,10 +37,11 @@ class ScreenLockProvider extends Component<
     locking: false,
     locked: false,
     shouldAutoLock: false,
-    timeLeft: countDownDuration,
+    timeLeft: defaultCountDownDuration,
     encryptWithPassword: (password: string, hashed: boolean) =>
       this.setPasswordAndInitiateEncryption(password, hashed),
-    decryptWithPassword: (password: string) => this.decryptWithPassword(password)
+    decryptWithPassword: (password: string) => this.decryptWithPassword(password),
+    startLockCountdown: (coundownDuration: number) => this.startLockCountdown(coundownDuration)
   };
 
   // causes prop changes that are being observed in componentDidUpdate
@@ -129,7 +131,7 @@ class ScreenLockProvider extends Component<
     inactivityTimer = setTimeout(this.startLockCountdown, settings.inactivityTimer);
   };
 
-  public startLockCountdown = () => {
+  public startLockCountdown = (countdownDurationSeconds: number = defaultCountDownDuration) => {
     //Start the lock screen countdown only if user is on one of the dashboard pages
     if (!this.props.location.pathname.includes(ROUTE_PATHS.DASHBOARD.path)) {
       return;
@@ -138,7 +140,7 @@ class ScreenLockProvider extends Component<
       return;
     }
 
-    this.setState({ locking: true, timeLeft: countDownDuration });
+    this.setState({ locking: true, timeLeft: countdownDurationSeconds });
     const appContext = this;
 
     countDownTimer = setInterval(() => {

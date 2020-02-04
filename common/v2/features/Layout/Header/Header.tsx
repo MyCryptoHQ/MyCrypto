@@ -4,7 +4,7 @@ import { Transition } from 'react-spring/renderprops.cjs';
 import { Icon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { UnlockScreen, SelectLanguage } from 'v2/features/Drawer/screens';
+import { SelectLanguage } from 'v2/features/Drawer/screens';
 import { links } from './constants';
 import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from 'v2/theme';
 import { AnalyticsService, ANALYTICS_CATEGORIES, SettingsContext } from 'v2/services';
@@ -13,6 +13,7 @@ import translate from 'v2/translations';
 
 // Legacy
 import logo from 'assets/images/logo-mycrypto.svg';
+import { ScreenLockContext } from 'v2/features/ScreenLock/ScreenLockProvider';
 
 const { BRIGHT_SKY_BLUE } = COLORS;
 
@@ -239,7 +240,7 @@ interface IconWrapperProps {
 }
 
 // prettier-ignore
-const IconWrapper = styled(Icon)<IconWrapperProps>`
+const IconWrapper = styled(Icon) <IconWrapperProps>`
   margin: 0;
   margin-left: 6px;
   font-size: 0.75rem;
@@ -290,6 +291,7 @@ interface LinkElement {
 type Props = OwnProps & RouteComponentProps;
 export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, history }: Props) {
   const { language: languageSelection } = useContext(SettingsContext);
+  const { startLockCountdown } = useContext(ScreenLockContext);
   const initVisibleMenuDropdowns: DropdownType = {
     'Manage Assets': false,
     Tools: false
@@ -306,7 +308,7 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
 
   const onUnlockClick = () => {
     closeMenu();
-    drawerVisible ? toggleDrawerVisible() : setDrawerScreen(UnlockScreen);
+    startLockCountdown(5); // when locking on demand, use 5 seconds countdown
   };
 
   const onLanguageClick = () => {
@@ -434,7 +436,7 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
         {/* Desktop Right */}
         <HeaderTopLeft>
           <Unlock onClick={onUnlockClick}>
-            <IconWrapper icon="unlock" /> Unlock
+            <IconWrapper icon="unlock" /> {translate('LOCK')}
           </Unlock>
           <li onClick={onLanguageClick}>{languages[languageSelection]}</li>
         </HeaderTopLeft>
