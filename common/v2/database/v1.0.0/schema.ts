@@ -11,5 +11,5 @@ export const SCHEMA_BASE: LocalStorage = {
   [LSKeys.NETWORKS]: {} as LocalStorage[LSKeys.NETWORKS],
   [LSKeys.NOTIFICATIONS]: {},
   [LSKeys.SETTINGS]: defaultSettings,
-  [LSKeys.PASSWORD]: undefined
+  [LSKeys.PASSWORD]: ''
 };

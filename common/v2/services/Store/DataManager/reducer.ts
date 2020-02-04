@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 
 import { LSKeys, DataStoreEntry, DataStoreItem, TUuid, Network } from 'v2/types';
-import { EncryptedDataStore, DataStoreWithPassword } from 'v2/types/store';
+import { EncryptedDataStore, DataStore } from 'v2/types/store';
 
 export enum ActionT {
   ADD_ITEM = 'ADD_ITEM',
@@ -20,7 +20,7 @@ export interface ActionPayload<T> {
 export interface ActionV {
   type: keyof typeof ActionT;
   payload:
-    | ActionPayload<DataStoreItem | DataStoreEntry | DataStoreWithPassword | string>
+    | ActionPayload<DataStoreItem | DataStoreEntry | DataStore | string>
     | ActionPayload<TUuid>;
 }
 
@@ -39,11 +39,11 @@ export interface ActionZ {
 }
 
 // Handler to facilitate initial store state and reset.
-export function init(initialState: DataStoreWithPassword) {
+export function init(initialState: DataStore) {
   return initialState;
 }
 
-export function appDataReducer(state: DataStoreWithPassword, { type, payload }: ActionV) {
+export function appDataReducer(state: DataStore, { type, payload }: ActionV) {
   switch (type) {
     case ActionT.ADD_ITEM: {
       const { model, data } = payload;
@@ -66,7 +66,7 @@ export function appDataReducer(state: DataStoreWithPassword, { type, payload }: 
 
       return {
         ...state,
-        [model]: R.symmetricDifferenceWith(predicate, [data], state[model])
+        [model]: R.symmetricDifferenceWith(predicate, [data], state[model] as any)
       };
     }
     case ActionT.UPDATE_ITEM: {
@@ -78,7 +78,7 @@ export function appDataReducer(state: DataStoreWithPassword, { type, payload }: 
       return {
         ...state,
         // Find item in array by uuid and replace.
-        [model]: R.unionWith(predicate, [data], state[model])
+        [model]: R.unionWith(predicate, [data], state[model] as any)
       };
     }
     case ActionT.UPDATE_NETWORK: {
@@ -101,7 +101,7 @@ export function appDataReducer(state: DataStoreWithPassword, { type, payload }: 
     }
     case ActionT.RESET: {
       const { data } = payload;
-      return init(data as DataStoreWithPassword);
+      return init(data as DataStore);
     }
     default: {
       throw new Error('[AppReducer]: missing action type');
