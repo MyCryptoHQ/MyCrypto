@@ -1,6 +1,8 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import BN from 'bn.js';
+import { Transaction } from 'ethereumjs-tx';
+import { addHexPrefix } from 'ethereumjs-util';
 
 import { getAssetByUUID, AssetContext, NetworkContext } from 'v2/services/Store';
 import { ConfirmTransaction as ConfirmTransactionForm } from 'v2/components/TransactionFlow';
@@ -16,7 +18,7 @@ const ErrorWrapper = styled(InlineMessage)`
 `;
 
 interface Props {
-  transaction: any;
+  transaction: Transaction;
   signedTransaction: string;
   network: string;
   goToNextStep(): void;
@@ -32,11 +34,11 @@ export default function ConfirmTransaction(props: Props) {
   const { networks, getNetworkByChainId, getNetworkByName } = useContext(NetworkContext);
 
   const { transaction, signedTransaction, network, goToNextStep } = props;
-  const { from, to, value, _chainId, gasPrice, gasLimit, nonce, data } = transaction;
+  const { to, value, gasPrice, gasLimit, nonce, data } = transaction;
+  const chainId = transaction.getChainId();
+  const from = transaction.getSenderAddress();
 
-  const txNetwork = transaction._chainId
-    ? getNetworkByChainId(transaction._chainId)
-    : getNetworkByName(network);
+  const txNetwork = chainId ? getNetworkByChainId(chainId) : getNetworkByName(network);
 
   if (!txNetwork) {
     return <InlineMessage>{translateRaw('BROADCAST_TX_INVALID_CHAIN_ID')}</InlineMessage>;
@@ -44,13 +46,13 @@ export default function ConfirmTransaction(props: Props) {
 
   const txAmount = fromWei(new BN(value, 16), 'ether');
   const txBaseAsset = getAssetByUUID(assets)(txNetwork.baseAsset)!;
-  const txToAddress = toChecksumAddressByChainId(to.toString('hex'), _chainId);
-  const txFromAddress = toChecksumAddressByChainId(from.toString('hex'), _chainId);
+  const txToAddress = toChecksumAddressByChainId(to.toString('hex'), chainId);
+  const txFromAddress = toChecksumAddressByChainId(from.toString('hex'), chainId);
   const txGasPrice = new BN(gasPrice, 16).toString();
   const txGasLimit = new BN(gasLimit, 16).toString();
   const txValue = new BN(value, 16).toString();
   const txNonce = new BN(nonce, 16).toString();
-  const txData = data.toString('hex');
+  const txData = addHexPrefix(data.toString('hex'));
 
   const txConfig: any = {
     amount: txAmount,

@@ -3,7 +3,7 @@ import {
   addHexPrefix,
   ecsign,
   ecrecover,
-  sha3,
+  keccak,
   hashPersonalMessage,
   toBuffer,
   pubToAddress
@@ -41,7 +41,7 @@ export function verifySignedMessage({ address, msg, sig, version }: ISignedMessa
   }
   //TODO: explain what's going on here
   sigb[64] = sigb[64] === 0 || sigb[64] === 1 ? sigb[64] + 27 : sigb[64];
-  const hash = version === '2' ? hashPersonalMessage(toBuffer(msg)) : sha3(msg);
+  const hash = version === '2' ? hashPersonalMessage(toBuffer(msg)) : keccak(msg);
   const pubKey = ecrecover(hash, sigb[64], sigb.slice(0, 32), sigb.slice(32, 64));
 
   return stripHexPrefixAndLower(address) === pubToAddress(pubKey).toString('hex');

@@ -3,10 +3,11 @@ import { toBuffer } from 'ethereumjs-util';
 import { Button, Identicon } from '@mycrypto/ui';
 import { Transaction as EthTx } from 'ethereumjs-tx';
 import styled from 'styled-components';
+import { parseTransaction, Transaction } from 'ethers/utils';
 
 import translate, { translateRaw } from 'v2/translations';
 import { InputField, QRCode, CodeBlock, NetworkSelectDropdown, InlineMessage } from 'v2/components';
-import { getTransactionFields, makeTransaction } from 'v2/services/EthService';
+import { getTransactionFields } from 'v2/services/EthService';
 
 interface State {
   userInput: string;
@@ -100,8 +101,7 @@ const NetworkSelectWrapper = styled.div`
   width: 100%;
 `;
 
-const getStringifiedTx = (serializedTx: Buffer) =>
-  JSON.stringify(getTransactionFields(makeTransaction(serializedTx)), null, 2);
+const getStringifiedTx = (tx: EthTx) => JSON.stringify(getTransactionFields(tx), null, 2);
 
 class BroadcastTx extends Component<Props> {
   public state: State = {
@@ -184,9 +184,10 @@ class BroadcastTx extends Component<Props> {
     setSignedTransaction(value);
 
     const bufferTransaction = toBuffer(value);
-    const tx = new EthTx(bufferTransaction);
+    const decoded: Transaction = parseTransaction(bufferTransaction);
+    const tx = new EthTx(bufferTransaction, { chain: decoded.chainId });
     if (tx.verifySignature()) {
-      const stringifiedTransaction = getStringifiedTx(bufferTransaction);
+      const stringifiedTransaction = getStringifiedTx(tx);
       this.setState({ stringifiedTransaction, transaction: tx });
     }
   };
