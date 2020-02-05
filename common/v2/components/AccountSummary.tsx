@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Address } from '@mycrypto/ui';
 
 import { truncate } from 'v2/utils';
 import { TSymbol } from 'v2/types';
 import Currency from './Currency';
+import TitledAddress from './TitledAddress';
 
 interface Props {
   address: string;
@@ -24,7 +24,7 @@ const SCurrency = styled(Currency)`
 `;
 // To change the hover behavior on Address, we need it to be a SC.
 // https://www.styled-components.com/docs/advanced#caveat
-const SAddress = styled(Address)``;
+const SAddress = styled(TitledAddress)``;
 
 const SAccountWrapper = styled('div')`
   display: flex;
