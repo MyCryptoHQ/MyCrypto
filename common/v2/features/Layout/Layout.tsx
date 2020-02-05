@@ -73,14 +73,14 @@ export default function Layout({ config = {}, className = '', children }: Props)
     'Heads up: this is a beta version of the new MyCrypto. It has not been audited yet, so please practice safe sending.';
   return (
     <SMain className={className} bgColor={bgColor}>
-      {shouldShowError() && error && (
-        <SBanner type={BannerType.ERROR} value={getErrorMessage(error)} />
-      )}
       <Header
         drawerVisible={visible}
         toggleDrawerVisible={toggleVisible}
         setDrawerScreen={setScreen}
       />
+      {shouldShowError() && error && (
+        <SBanner type={BannerType.ERROR} value={getErrorMessage(error)} />
+      )}
       <SBanner type={BannerType.ANNOUNCEMENT} value={betaAnnouncement} />
       <SContainer centered={centered} fluid={fluid} fullW={fullW}>
         {children}
