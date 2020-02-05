@@ -3,12 +3,26 @@ import React from 'react';
 import { simpleRender, fireEvent } from 'test-utils';
 
 import GeneralStepper, { StepperProps } from '../GeneralStepper';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Switch, Route } from 'react-router-dom';
 
 const ExampleButtonComponent = ({ onComplete, onCompleteText }: any) => {
   return (
     <>
-      <button onClick={onComplete(onCompleteText)}>Click Me</button>
+      <button onClick={() => onComplete(onCompleteText)}>Click Me</button>
+    </>
+  );
+};
+
+const ExampleButtonFinalComponent = ({
+  onComplete,
+  onCompleteText,
+  resetFlow,
+  completeButtonText
+}: any) => {
+  return (
+    <>
+      <button onClick={() => onComplete(onCompleteText)}>Click Me</button>
+      <button onClick={() => resetFlow()}>{completeButtonText}</button>
     </>
   );
 };
@@ -26,7 +40,7 @@ const testSteps = [
   },
   {
     label: 'Test Component 2',
-    component: ExampleButtonComponent,
+    component: ExampleButtonFinalComponent,
     props: { onCompleteText: 'Finished this2' },
     actions: (payload: any, cb: any) => functionTest(payload, cb)
   }
@@ -44,9 +58,18 @@ const defaultProps: StepperProps = {
 };
 
 describe('GeneralStepper', () => {
+  let location: any;
   const StepperComponent = (props: StepperProps, path?: any) => (
     <MemoryRouter initialEntries={path ? [path] : undefined}>
-      <GeneralStepper {...props} />
+      <Switch>
+        <Route
+          path="*"
+          render={renderProps => {
+            location = renderProps.location;
+            return <GeneralStepper {...props} />;
+          }}
+        />
+      </Switch>
     </MemoryRouter>
   );
   const renderComponent = (props: StepperProps) => simpleRender(<StepperComponent {...props} />);
@@ -55,6 +78,17 @@ describe('GeneralStepper', () => {
     const { getByText } = renderComponent(defaultProps);
     const text = getByText('Test Component 1'); // The header for step 1
     expect(text).toBeInTheDocument();
+  });
+  test('it renders step 1 back button correctly', async () => {
+    const { getByText } = renderComponent(defaultProps);
+    const text = getByText(`Back : ${defaultBackPathLabel}`); // The back button from step 1
+    expect(text).toBeInTheDocument();
+  });
+  test('it correctly reroutes on step 1 back button click', async () => {
+    const { getByText } = renderComponent(defaultProps);
+    const text = getByText(`Back : ${defaultBackPathLabel}`); // The back button from step 1
+    fireEvent.click(text);
+    expect(location.pathname).toEqual(defaultBackPath);
   });
   test('it renders step 2 when goToNext is clicked in step 1', async () => {
     const { getByText } = renderComponent(defaultProps);
@@ -67,8 +101,18 @@ describe('GeneralStepper', () => {
     const { getByText } = renderComponent(defaultProps);
     const text = getByText('Click Me');
     fireEvent.click(text); // Go to step 2
-    const goBackButton = getByText('Back : Test Component 1'); // The back button when step 2 is rendered
+    const goBackButton = getByText(`Back : Test Component 1`); // The back button when step 2 is rendered
     fireEvent.click(goBackButton);
+    const stepOneText = getByText('Test Component 1'); // The header for step 1
+    expect(stepOneText).toBeInTheDocument();
+  });
+  test('it resets flow when resetFlow button is clicked from final component', async () => {
+    const { getByText } = renderComponent(defaultProps);
+    const text = getByText('Click Me');
+    fireEvent.click(text); // Go to step 2
+
+    const resetFlowButton = getByText(completeBtnText); // The back button when step 2 is rendered
+    fireEvent.click(resetFlowButton);
     const stepOneText = getByText('Test Component 1'); // The header for step 1
     expect(stepOneText).toBeInTheDocument();
   });
