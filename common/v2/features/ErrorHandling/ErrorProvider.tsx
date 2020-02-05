@@ -18,6 +18,9 @@ interface ProviderState {
   getErrorMessage(error: IError): React.ReactElement<any>;
 }
 
+const ERROR_TIMEOUT_MS = 60 * 1000;
+let errorTimer: any = null;
+
 export const ErrorContext = createContext({} as ProviderState);
 
 class ErrorProvider extends Component<RouteComponentProps<{}>> {
@@ -49,6 +52,10 @@ class ErrorProvider extends Component<RouteComponentProps<{}>> {
     this.setState({
       error: { error, path }
     });
+    clearTimeout(errorTimer);
+    errorTimer = setTimeout(() => {
+      this.setState({ error: undefined });
+    }, ERROR_TIMEOUT_MS);
   }
 
   private shouldShowError = () => {
