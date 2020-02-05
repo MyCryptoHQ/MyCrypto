@@ -9,6 +9,6 @@ export interface IStepperComponentProps {
 export interface IStepperPath {
   label: string;
   component: any;
-  actions?: any;
   props?: any;
+  actions?(payload?: any, cb?: any, cbTwo?: any): any;
 }

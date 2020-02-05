@@ -43,31 +43,28 @@ const defaultProps: StepperProps = {
   completeBtnText
 };
 
-const StepperComponent = (props: StepperProps, path?: any) => (
-  <MemoryRouter initialEntries={path ? [path] : undefined}>
-    <GeneralStepper {...props} />
-  </MemoryRouter>
-);
-
-function getComponent(props: StepperProps) {
-  return simpleRender(<StepperComponent {...props} />);
-}
-
 describe('GeneralStepper', () => {
+  const StepperComponent = (props: StepperProps, path?: any) => (
+    <MemoryRouter initialEntries={path ? [path] : undefined}>
+      <GeneralStepper {...props} />
+    </MemoryRouter>
+  );
+  const renderComponent = (props: StepperProps) => simpleRender(<StepperComponent {...props} />);
+
   test('it renders step 1 correctly first', async () => {
-    const { getByText } = getComponent(defaultProps);
+    const { getByText } = renderComponent(defaultProps);
     const text = getByText('Test Component 1'); // The header for step 1
     expect(text).toBeInTheDocument();
   });
   test('it renders step 2 when goToNext is clicked in step 1', async () => {
-    const { getByText } = getComponent(defaultProps);
+    const { getByText } = renderComponent(defaultProps);
     const text = getByText('Click Me');
     fireEvent.click(text); // Go to step 2
     const newText = getByText('Test Component 2'); // The header for step 2
     expect(newText).toBeInTheDocument();
   });
   test('it renders step 1 when back button is clicked from step 2', async () => {
-    const { getByText } = getComponent(defaultProps);
+    const { getByText } = renderComponent(defaultProps);
     const text = getByText('Click Me');
     fireEvent.click(text); // Go to step 2
     const goBackButton = getByText('Back : Test Component 1'); // The back button when step 2 is rendered
