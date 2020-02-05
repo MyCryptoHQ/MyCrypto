@@ -46,6 +46,25 @@ const Icon = styled.img`
   max-width: 24px;
 `;
 
+interface BannerTypographyProps {
+  color: string;
+}
+
+const STypography = styled(Typography)<BannerTypographyProps>`
+  color: ${props => props.color};
+
+  a {
+    color: ${props => props.color};
+    text-decoration: underline;
+    font-weight: normal;
+  }
+
+  a:hover {
+    color: ${props => props.color};
+    font-weight: bold;
+  }
+`;
+
 const bannerConfig = (type: BannerType): Config => {
   switch (type) {
     default:
@@ -69,7 +88,7 @@ export const Banner = ({ value, type, ...props }: Props) => {
   return (
     <Container config={config} {...props}>
       <Icon src={config.icon} alt={type} />
-      <Typography value={value} style={{ color: config.color }} />
+      <STypography value={value} color={config.color} />
     </Container>
   );
 };
