@@ -1,3 +1,4 @@
 export enum BannerType {
-  ANNOUNCEMENT = 'announcement'
+  ANNOUNCEMENT = 'announcement',
+  ERROR = 'error'
 }

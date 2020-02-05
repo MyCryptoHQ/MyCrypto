@@ -31,3 +31,4 @@ export { SwapAssetsFlow } from './SwapAssets';
 export { InteractWithContractsFlow } from './InteractWithContracts';
 export { DeployContractsFlow } from './DeployContracts';
 export { ToastProvider } from './Toasts';
+export { ErrorProvider, ErrorContext } from './ErrorHandling';
