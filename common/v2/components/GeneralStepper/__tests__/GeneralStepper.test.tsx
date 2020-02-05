@@ -54,25 +54,25 @@ function getComponent(props: StepperProps) {
 }
 
 describe('GeneralStepper', () => {
-  test('it renders the steps correctly with the continue on button rendered.', async () => {
+  test('it renders step 1 correctly first', async () => {
     const { getByText } = getComponent(defaultProps);
-    const text = getByText('Test Component 1');
+    const text = getByText('Test Component 1'); // The header for step 1
     expect(text).toBeInTheDocument();
   });
-  test('it renders step two when goToNext is clicked', async () => {
+  test('it renders step 2 when goToNext is clicked in step 1', async () => {
     const { getByText } = getComponent(defaultProps);
     const text = getByText('Click Me');
-    fireEvent.click(text);
-    const newText = getByText('Test Component 2');
+    fireEvent.click(text); // Go to step 2
+    const newText = getByText('Test Component 2'); // The header for step 2
     expect(newText).toBeInTheDocument();
   });
-  test('it renders step 1 when goBack is clicked from step 2', async () => {
+  test('it renders step 1 when back button is clicked from step 2', async () => {
     const { getByText } = getComponent(defaultProps);
     const text = getByText('Click Me');
-    fireEvent.click(text);
-    const goBackButton = getByText('Back : Test Component 1');
+    fireEvent.click(text); // Go to step 2
+    const goBackButton = getByText('Back : Test Component 1'); // The back button when step 2 is rendered
     fireEvent.click(goBackButton);
-    const stepOneText = getByText('Test Component 1');
+    const stepOneText = getByText('Test Component 1'); // The header for step 1
     expect(stepOneText).toBeInTheDocument();
   });
 });
