@@ -33,14 +33,14 @@ const Address = styled(EthAddress)`
 `;
 
 const SAvatar = styled(Avatar)`
-  img {
+  &&& img {
     height: 45px;
     width: 44px;
   }
 `;
 
 const SIdenticon = styled(Identicon)`
-  img {
+  &&& img {
     height: 45px;
     width: 44px;
   }
