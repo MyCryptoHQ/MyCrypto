@@ -32,6 +32,20 @@ const Address = styled(EthAddress)`
   font-size: ${scale(0.25)};
 `;
 
+const SAvatar = styled(Avatar)`
+  img {
+    height: 45px;
+    width: 44px;
+  }
+`;
+
+const SIdenticon = styled(Identicon)`
+  img {
+    height: 45px;
+    width: 44px;
+  }
+`;
+
 interface TooltipType {
   image?: string;
   content: ReactNode | string;
@@ -57,7 +71,7 @@ export default function Account({
 }: Props) {
   const TitleComponent = title ? Title : MissingTitle;
   const ImageComponent = () =>
-    tooltip && tooltip.image ? <Avatar src={tooltip.image} /> : <Identicon address={address} />;
+    tooltip && tooltip.image ? <SAvatar src={tooltip.image} /> : <SIdenticon address={address} />;
 
   const renderAddressContent = () => (
     <Flex className={className}>
