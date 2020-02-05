@@ -18,7 +18,7 @@ interface ProviderState {
   getErrorMessage(error: IError): React.ReactElement<any>;
 }
 
-const ERROR_TIMEOUT_MS = 60 * 1000;
+const ERROR_TIMEOUT_MS = 30 * 1000;
 let errorTimer: any = null;
 
 export const ErrorContext = createContext({} as ProviderState);
