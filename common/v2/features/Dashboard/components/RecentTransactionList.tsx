@@ -7,7 +7,7 @@ import {
   NewTabLink,
   AssetIcon,
   CollapsibleTable,
-  TitledAddress
+  Account
 } from 'v2/components';
 import { truncate, convertToFiat } from 'v2/utils';
 import { ITxReceipt, TTicker, ITxStatus, StoreAccount, Asset, TSymbol } from 'v2/types';
@@ -151,14 +151,14 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
             stage={stage}
             date={timestamp}
           />,
-          <TitledAddress
+          <Account
             key={1}
             title={fromAddressBookEntry ? fromAddressBookEntry.label : noLabel}
             truncate={truncate}
             address={from}
           />,
           to && (
-            <TitledAddress
+            <Account
               key={2}
               title={toAddressBookEntry ? toAddressBookEntry.label : noLabel}
               truncate={truncate}

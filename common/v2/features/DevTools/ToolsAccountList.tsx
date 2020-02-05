@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { AddressBook, ExtendedAccount } from 'v2/types';
 import { truncate } from 'v2/utils';
 import { getLabelByAccount, AddressBookContext } from 'v2/services/Store';
-import { TitledAddress } from 'v2/components';
+import { Account } from 'v2/components';
 
 const AccountContainer = styled.div`
   display: flex;
@@ -30,7 +30,7 @@ const ToolsAccountList: React.FC<AccountListProps> = props => {
     const label = detectedLabel ? detectedLabel.label : 'Unknown Account';
     return (
       <AccountContainer key={index}>
-        <TitledAddress title={label} address={account.address} truncate={truncate} />
+        <Account title={label} address={account.address} truncate={truncate} />
         <DeleteButton onClick={() => deleteAccount(account)} icon="exit" />
       </AccountContainer>
     );

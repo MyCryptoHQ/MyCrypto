@@ -47,7 +47,7 @@ interface Props {
   truncate?(text: string): string;
 }
 
-export default function TitledAddress({
+export default function Account({
   title,
   address,
   isCopyable = true,

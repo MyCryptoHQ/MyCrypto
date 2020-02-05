@@ -6,7 +6,7 @@ import translate, { translateRaw } from 'v2/translations';
 import { StoreAccount } from 'v2/types';
 import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { truncate } from 'v2/utils';
-import { Typography, TitledAddress } from 'v2/components';
+import { Typography, Account } from 'v2/components';
 
 const { SILVER } = COLORS;
 const { SCREEN_XS } = BREAK_POINTS;
@@ -68,7 +68,7 @@ export default function FromToAccount(props: Props) {
           <Label value={translate('CONFIRM_TX_FROM')} fontSize="1.13em" />
         </LabelWrapper>
         <AddressWrapper>
-          <TitledAddress
+          <Account
             address={fromAccount.address}
             title={fromAccount.label || noLabel}
             truncate={truncate}
@@ -80,7 +80,7 @@ export default function FromToAccount(props: Props) {
           <Label value={translate('CONFIRM_TX_TO')} fontSize="1.13em" />
         </LabelWrapper>
         <AddressWrapper>
-          <TitledAddress
+          <Account
             address={toAccount.address}
             title={toAccount.label || noLabel}
             truncate={truncate}

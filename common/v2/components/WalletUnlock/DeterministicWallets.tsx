@@ -24,7 +24,7 @@ import radioChecked from 'assets/images/radio-checked.svg';
 import './DeterministicWallets.scss';
 import { DeterministicWalletData, getDeterministicWallets } from 'v2/services/WalletService';
 import { getBaseAssetBalances, BalanceMap } from 'v2/services/Store/BalanceService';
-import TitledAddress from '../TitledAddress';
+import Account from '../Account';
 
 function Radio({ checked }: { checked: boolean }) {
   return <img className="clickable radio-image" src={checked ? radioChecked : radio} />;
@@ -229,7 +229,7 @@ export function DeterministicWalletsClass({
         {wallet.index + 1}
         <Radio checked={selectedAddress === wallet.address} />
       </div>,
-      <TitledAddress
+      <Account
         title={addrBook ? addrBook.label : 'Unknown Address'}
         address={wallet.address}
         truncate={truncate}

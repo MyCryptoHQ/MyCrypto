@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { truncate } from 'v2/utils';
 import { TSymbol } from 'v2/types';
 import Currency from './Currency';
-import TitledAddress from './TitledAddress';
+import Account from './Account';
 
 interface Props {
   address: string;
@@ -24,7 +24,7 @@ const SCurrency = styled(Currency)`
 `;
 // To change the hover behavior on Address, we need it to be a SC.
 // https://www.styled-components.com/docs/advanced#caveat
-const SAddress = styled(TitledAddress)``;
+const SAddress = styled(Account)``;
 
 const SAccountWrapper = styled('div')`
   display: flex;

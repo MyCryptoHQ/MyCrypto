@@ -18,7 +18,7 @@ import TransactionIntermediaryDisplay from './displays/TransactionIntermediaryDi
 import { convertToFiat, truncate } from 'v2/utils';
 import translate from 'v2/translations';
 import { TSymbol } from 'v2/types/symbols';
-import TitledAddress from '../TitledAddress';
+import Account from '../Account';
 const { SCREEN_XS } = BREAK_POINTS;
 
 const ConfirmTransactionWrapper = Styled.div`
@@ -152,7 +152,7 @@ export default function ConfirmTransaction({
       <RowWrapper stack={true}>
         <AddressWrapper position={'left'}>
           {translate('CONFIRM_TX_FROM')}
-          <TitledAddress
+          <Account
             address={senderAccount ? senderAccount.address : 'Unknown'}
             title={senderAccountLabel}
             truncate={truncate}
@@ -160,7 +160,7 @@ export default function ConfirmTransaction({
         </AddressWrapper>
         <AddressWrapper position={'right'}>
           {translate('CONFIRM_TX_TO')}
-          <TitledAddress
+          <Account
             address={receiverAddress || 'Unknown'}
             title={recipientLabel}
             truncate={truncate}
