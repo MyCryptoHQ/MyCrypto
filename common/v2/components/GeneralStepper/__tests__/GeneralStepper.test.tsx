@@ -1,31 +1,26 @@
 import React from 'react';
-
+import { MemoryRouter, Switch, Route } from 'react-router-dom';
 import { simpleRender, fireEvent } from 'test-utils';
 
 import GeneralStepper, { StepperProps } from '../GeneralStepper';
-import { MemoryRouter, Switch, Route } from 'react-router-dom';
 
-const ExampleButtonComponent = ({ onComplete, onCompleteText }: any) => {
-  return (
-    <>
-      <button onClick={() => onComplete(onCompleteText)}>Click Me</button>
-    </>
-  );
-};
+const ExampleButtonComponent = ({ onComplete, onCompleteText }: any) => (
+  <>
+    <button onClick={() => onComplete(onCompleteText)}>Click Me</button>
+  </>
+);
 
 const ExampleButtonFinalComponent = ({
   onComplete,
   onCompleteText,
   resetFlow,
   completeButtonText
-}: any) => {
-  return (
-    <>
-      <button onClick={() => onComplete(onCompleteText)}>Click Me</button>
-      <button onClick={() => resetFlow()}>{completeButtonText}</button>
-    </>
-  );
-};
+}: any) => (
+  <>
+    <button onClick={() => onComplete(onCompleteText)}>Click Me</button>
+    <button onClick={() => resetFlow()}>{completeButtonText}</button>
+  </>
+);
 
 const functionTest = (textTriggered: string, cb: any) => {
   console.debug('textTriggered: ', textTriggered);
