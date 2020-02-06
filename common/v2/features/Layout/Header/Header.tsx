@@ -4,7 +4,7 @@ import { Transition } from 'react-spring/renderprops.cjs';
 import { Icon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { UnlockScreen, SelectLanguage } from 'v2/features/Drawer/screens';
+import { SelectLanguage } from 'v2/features/Drawer/screens';
 import { links } from './constants';
 import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from 'v2/theme';
 import { AnalyticsService, ANALYTICS_CATEGORIES, SettingsContext } from 'v2/services';
@@ -13,6 +13,7 @@ import translate from 'v2/translations';
 
 // Legacy
 import logo from 'assets/images/logo-mycrypto.svg';
+import { ScreenLockContext } from 'v2/features/ScreenLock/ScreenLockProvider';
 
 const { BRIGHT_SKY_BLUE } = COLORS;
 
@@ -214,16 +215,12 @@ const MobileTopLeft = styled.div`
   }
 `;
 
-const MobileTopRight = styled(MobileTopLeft)`
-  visibility: hidden;
-`;
-
 const CenterImg = styled.img`
   width: 160px;
   height: 39px;
 `;
 
-const Unlock = styled.li`
+const Lock = styled.li`
   display: flex;
   align-items: center;
   border-left: 1px solid #3e546d;
@@ -239,7 +236,7 @@ interface IconWrapperProps {
 }
 
 // prettier-ignore
-const IconWrapper = styled(Icon)<IconWrapperProps>`
+const IconWrapper = styled(Icon) <IconWrapperProps>`
   margin: 0;
   margin-left: 6px;
   font-size: 0.75rem;
@@ -290,6 +287,7 @@ interface LinkElement {
 type Props = OwnProps & RouteComponentProps;
 export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, history }: Props) {
   const { language: languageSelection } = useContext(SettingsContext);
+  const { startLockCountdown } = useContext(ScreenLockContext);
   const initVisibleMenuDropdowns: DropdownType = {
     'Manage Assets': false,
     Tools: false
@@ -304,9 +302,9 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
 
   const closeMenu = () => setMenuOpen(false);
 
-  const onUnlockClick = () => {
+  const onLockClick = () => {
     closeMenu();
-    drawerVisible ? toggleDrawerVisible() : setDrawerScreen(UnlockScreen);
+    startLockCountdown(true);
   };
 
   const onLanguageClick = () => {
@@ -426,16 +424,15 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
             <CenterImg src={logo} alt="Our logo" />
           </Link>
         </div>
-        {/* Unlock button hidden for MVP purposes */}
         {/* Mobile Right */}
-        <MobileTopRight onClick={onUnlockClick}>
-          <Icon icon={drawerVisible ? 'exit' : 'unlock'} />
-        </MobileTopRight>
+        <MobileTopLeft onClick={onLockClick}>
+          <Icon icon={drawerVisible ? 'exit' : 'lock'} />
+        </MobileTopLeft>
         {/* Desktop Right */}
         <HeaderTopLeft>
-          <Unlock onClick={onUnlockClick}>
-            <IconWrapper icon="unlock" /> Unlock
-          </Unlock>
+          <Lock onClick={onLockClick}>
+            <IconWrapper icon="lock" /> {translate('LOCK')}
+          </Lock>
           <li onClick={onLanguageClick}>{languages[languageSelection]}</li>
         </HeaderTopLeft>
       </HeaderTop>

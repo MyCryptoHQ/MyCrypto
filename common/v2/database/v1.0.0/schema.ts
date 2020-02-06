@@ -10,5 +10,6 @@ export const SCHEMA_BASE: LocalStorage = {
   [LSKeys.CONTRACTS]: {},
   [LSKeys.NETWORKS]: {} as LocalStorage[LSKeys.NETWORKS],
   [LSKeys.NOTIFICATIONS]: {},
-  [LSKeys.SETTINGS]: defaultSettings
+  [LSKeys.SETTINGS]: defaultSettings,
+  [LSKeys.PASSWORD]: ''
 };

@@ -21,7 +21,8 @@ export enum LSKeys {
   CONTRACTS = 'contracts',
   NETWORKS = 'networks',
   NOTIFICATIONS = 'notifications',
-  SETTINGS = 'settings'
+  SETTINGS = 'settings',
+  PASSWORD = 'password'
 }
 
 export interface LocalStorage {
@@ -34,6 +35,7 @@ export interface LocalStorage {
   readonly [LSKeys.CONTRACTS]: Record<TUuid, ExtendedContract>;
   readonly [LSKeys.ADDRESS_BOOK]: Record<TUuid, AddressBook>;
   readonly [LSKeys.NOTIFICATIONS]: Record<TUuid, Notification>;
+  readonly [LSKeys.PASSWORD]: string;
 }
 
 export interface DataStore {
@@ -45,9 +47,14 @@ export interface DataStore {
   readonly [LSKeys.ADDRESS_BOOK]: ExtendedAddressBook[];
   readonly [LSKeys.NOTIFICATIONS]: ExtendedNotification[];
   readonly [LSKeys.SETTINGS]: ISettings;
+  readonly [LSKeys.PASSWORD]: string;
 }
 
-export type DataStoreEntry = ValuesType<Omit<DataStore, 'version'>>;
+export interface EncryptedDataStore {
+  readonly data?: string;
+}
+
+export type DataStoreEntry = ValuesType<Omit<DataStore, 'version' | 'password'>>;
 
 export type DataStoreItem =
   | $ElementType<SymmetricDifference<DataStoreEntry, ISettings>, number>

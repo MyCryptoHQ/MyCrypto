@@ -3,9 +3,9 @@ import { SymmetricDifference } from 'utility-types';
 import {
   LSKeys,
   TUuid,
-  DataStore,
   DataStoreEntry,
   DataStoreItem,
+  DataStore,
   Network,
   NetworkId,
   ISettings,
@@ -75,10 +75,6 @@ export function ActionFactory(model: LSKeys, dispatch: Dispatch<ActionV>, state:
     });
   };
 
-  const destroyStorage = () => {
-    console.debug('Destroy Storage');
-  };
-
   const importStorage = (data: string) => {
     const d = JSON.parse(data);
     // @TODO: perfom version and validity check.
@@ -101,7 +97,6 @@ export function ActionFactory(model: LSKeys, dispatch: Dispatch<ActionV>, state:
     updateAll,
     destroy,
     exportStorage,
-    importStorage,
-    destroyStorage
+    importStorage
   };
 }
