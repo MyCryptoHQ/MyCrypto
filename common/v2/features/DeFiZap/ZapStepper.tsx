@@ -2,7 +2,7 @@ import React from 'react';
 import { useStateReducer } from 'v2/utils';
 import { IZapConfig } from './config';
 import { ZapForm, ConfirmZapInteraction, ZapInteractionReceipt } from './components';
-import { GeneralStepper, IStepperPath } from 'v2/components/GeneralStepper';
+import { default as GeneralStepper, IStepperPath } from 'v2/components/GeneralStepper';
 import { ROUTE_PATHS } from 'v2/config';
 import ZapInteractionFactory from './stateFactory';
 import { ITxReceipt, ISignedTx } from 'v2/types';
