@@ -51,14 +51,7 @@ export function GeneralStepper({
   const stepObject = steps[step];
   const stepProps = stepObject.props;
   const stepActions = stepObject.actions;
-  console.debug(
-    '[GeneralStepper]: Rendering stepObject: ',
-    stepObject,
-    ' props: ',
-    stepProps,
-    ' actions: ',
-    stepActions
-  );
+
   return (
     <ContentPanel
       onBack={goBack}

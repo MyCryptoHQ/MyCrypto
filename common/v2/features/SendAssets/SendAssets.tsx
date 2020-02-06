@@ -22,7 +22,7 @@ function SendAssets() {
   } = useStateReducer(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: null });
 
   // tslint:disable-next-line
-  const goToDashoard = () => {};
+  const goToDashboard = () => {};
 
   // Due to MetaMask deprecating eth_sign method,
   // it has different step order, where sign and send are one panel
@@ -48,7 +48,7 @@ function SendAssets() {
     {
       label: translateRaw('TRANSACTION_BROADCASTED'),
       component: TransactionReceipt,
-      actions: () => goToDashoard,
+      actions: () => goToDashboard,
       props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(txFactoryState)
     }
   ];
@@ -75,7 +75,7 @@ function SendAssets() {
     {
       label: translateRaw('TRANSACTION_BROADCASTED'),
       component: TransactionReceipt,
-      actions: goToDashoard,
+      actions: goToDashboard,
       props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(txFactoryState)
     }
   ];

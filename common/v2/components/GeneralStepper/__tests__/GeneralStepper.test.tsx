@@ -22,8 +22,7 @@ const ExampleButtonFinalComponent = ({
   </>
 );
 
-const functionTest = (textTriggered: string, cb: any) => {
-  console.debug('textTriggered: ', textTriggered);
+const functionTest = (_: string, cb: any) => {
   cb();
 };
 const testSteps = [
