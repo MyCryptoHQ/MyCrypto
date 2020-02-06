@@ -136,6 +136,13 @@ class ScreenLockProvider extends Component<
   };
 
   public startLockCountdown = (lockingOnDemand = false) => {
+    const appContext = this;
+
+    // Lock immediately if password is already set after clicking "Lock" button
+    if (lockingOnDemand && this.props.getUnlockPassword()) {
+      appContext.handleCountdownEnded();
+      return;
+    }
     //Start the lock screen countdown only if user is on one of the dashboard pages
     if (!this.props.location.pathname.includes(ROUTE_PATHS.DASHBOARD.path)) {
       return;
@@ -149,7 +156,6 @@ class ScreenLockProvider extends Component<
       timeLeft: lockingOnDemand ? onDemandLockCountDownDuration : defaultCountDownDuration,
       lockingOnDemand
     });
-    const appContext = this;
 
     countDownTimer = setInterval(() => {
       if (appContext.state.timeLeft === 1) {
