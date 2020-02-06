@@ -550,6 +550,7 @@
     "CONTRACT_BYTECODE": "Byte Code ",
     "NAV_DEPLOYCONTRACT": "Deploy Contract ",
     "CONFIRM_TX_SENDING": "You'll Send",
-    "GENERIC_ERROR": "Something went wrong! Please [email us]($link) so we can help you and fix this."
+    "GENERIC_ERROR": "Something went wrong! Please [email us]($link) so we can help you and fix this.",
+    "CHECKSUM_ERROR": "This address is not [checksummed](https://support.mycrypto.com/troubleshooting/sending/not-checksummed-shows-when-i-enter-an-address). Please ensure you have copied & pasted the address. Never hand-type addresses."
   }
 }

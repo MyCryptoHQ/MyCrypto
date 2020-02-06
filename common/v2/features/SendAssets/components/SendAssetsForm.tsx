@@ -71,6 +71,7 @@ import {
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
 import { weiToFloat } from 'v2/utils';
 import { ResolutionError } from '@unstoppabledomains/resolution';
+import { isValidChecksumAddress } from 'ethereumjs-util';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;
@@ -141,9 +142,20 @@ const QueryWarning: React.SFC<{}> = () => (
 const SendAssetsSchema = Yup.object().shape({
   amount: Yup.number()
     .min(0, translateRaw('ERROR_0'))
-    .required(translateRaw('REQUIRED')),
+    .required(translateRaw('REQUIRED'))
+    .typeError(translateRaw('ERROR_0')),
   account: Yup.object().required(translateRaw('REQUIRED')),
-  address: Yup.object().required(translateRaw('REQUIRED')),
+  address: Yup.object({
+    value: Yup.string()
+      .test('checksum-address', translateRaw('CHECKSUM_ERROR'), value =>
+        isValidChecksumAddress(value)
+      )
+      .test(
+        'check-eth-address',
+        translateRaw('TO_FIELD_ERROR'),
+        value => isValidETHAddress(value) || UnstoppableResolution.isValidDomain(value)
+      )
+  }).required(translateRaw('REQUIRED')),
   gasLimitField: Yup.number()
     .min(GAS_LIMIT_LOWER_BOUND, translateRaw('ERROR_8'))
     .max(GAS_LIMIT_UPPER_BOUND, translateRaw('ERROR_8'))

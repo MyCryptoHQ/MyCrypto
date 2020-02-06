@@ -1,1 +1,1 @@
-export * from './InlineErrors';
+export { default as InlineErrorMsg } from './InlineErrors';

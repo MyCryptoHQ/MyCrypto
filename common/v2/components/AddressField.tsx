@@ -1,14 +1,12 @@
 import React from 'react';
 import { Input, Identicon } from '@mycrypto/ui';
-import { FieldProps, Field, FormikTouched, FormikErrors } from 'formik';
+import { FieldProps, Field, FormikTouched } from 'formik';
 import styled from 'styled-components';
 
-import { translateRaw } from 'v2/translations';
 import { InlineErrorMsg, DomainStatus } from 'v2/components';
 import { Network, IFormikFields } from 'v2/types';
 import { monospace } from 'v2/theme';
 import { ResolutionError } from '@unstoppabledomains/resolution';
-import UnstoppableResolution from 'v2/services/UnstoppableService';
 /*
   Eth address field to be used within a Formik Form
   - the 'fieldname' must exist wihtin the Formik default fields
@@ -79,18 +77,12 @@ function ETHAddressField({
   onBlur,
   onChange
 }: Props) {
-  const validate = (value: string): FormikErrors<string> =>
-    value && !UnstoppableResolution.isValidDomain(value)
-      ? translateRaw('TO_FIELD_ERROR')
-      : translateRaw('REQUIRED');
-
   // By destructuring 'field' in the rendered component we are mapping
   // the Inputs 'value' and 'onChange' props to Formiks handlers.
   return (
     <>
       <Field
         name={fieldName}
-        validate={validate}
         validateOnChange={false}
         render={({ field, form }: FieldProps) => (
           <Wrapper className={className}>
