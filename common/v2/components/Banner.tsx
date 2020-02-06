@@ -5,9 +5,10 @@ import { BannerType } from 'v2/types';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { default as Typography } from './Typography';
 import announcementSVG from 'assets/images/icn-announcement.svg';
+import errorSVG from 'assets/images/icn-toast-error.svg';
 
 interface Props {
-  value: string;
+  value: string | React.ReactElement<any>;
   type: BannerType;
 }
 
@@ -41,6 +42,29 @@ const Container = styled.div`
   }
 `;
 
+const Icon = styled.img`
+  max-width: 24px;
+`;
+
+interface BannerTypographyProps {
+  color: string;
+}
+
+const STypography = styled(Typography)<BannerTypographyProps>`
+  color: ${props => props.color};
+
+  a {
+    color: ${props => props.color};
+    text-decoration: underline;
+    font-weight: normal;
+  }
+
+  a:hover {
+    color: ${props => props.color};
+    font-weight: bold;
+  }
+`;
+
 const bannerConfig = (type: BannerType): Config => {
   switch (type) {
     default:
@@ -50,6 +74,12 @@ const bannerConfig = (type: BannerType): Config => {
         bgColor: COLORS.BRIGHT_SKY_BLUE,
         icon: announcementSVG
       };
+    case BannerType.ERROR:
+      return {
+        color: COLORS.WHITE,
+        bgColor: COLORS.ERROR_RED,
+        icon: errorSVG
+      };
   }
 };
 
@@ -57,8 +87,8 @@ export const Banner = ({ value, type, ...props }: Props) => {
   const config = bannerConfig(type);
   return (
     <Container config={config} {...props}>
-      <img src={config.icon} alt="Announcmenent" />
-      <Typography value={value} style={{ color: config.color }} />
+      <Icon src={config.icon} alt={type} />
+      <STypography value={value} color={config.color} />
     </Container>
   );
 };

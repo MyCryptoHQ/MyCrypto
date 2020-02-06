@@ -545,6 +545,7 @@
     "CONTRACTS_DEPLOY": "Deploy",
     "CONTRACT_BYTECODE": "Byte Code ",
     "NAV_DEPLOYCONTRACT": "Deploy Contract ",
-    "CONFIRM_TX_SENDING": "You'll Send"
+    "CONFIRM_TX_SENDING": "You'll Send",
+    "GENERIC_ERROR": "Something went wrong! Please [email us]($link) so we can help you and fix this."
   }
 }
