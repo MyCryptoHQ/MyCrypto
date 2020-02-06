@@ -215,16 +215,12 @@ const MobileTopLeft = styled.div`
   }
 `;
 
-const MobileTopRight = styled(MobileTopLeft)`
-  visibility: hidden;
-`;
-
 const CenterImg = styled.img`
   width: 160px;
   height: 39px;
 `;
 
-const Unlock = styled.li`
+const Lock = styled.li`
   display: flex;
   align-items: center;
   border-left: 1px solid #3e546d;
@@ -306,7 +302,7 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
 
   const closeMenu = () => setMenuOpen(false);
 
-  const onUnlockClick = () => {
+  const onLockClick = () => {
     closeMenu();
     startLockCountdown(5); // when locking on demand, use 5 seconds countdown
   };
@@ -428,16 +424,15 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
             <CenterImg src={logo} alt="Our logo" />
           </Link>
         </div>
-        {/* Unlock button hidden for MVP purposes */}
         {/* Mobile Right */}
-        <MobileTopRight onClick={onUnlockClick}>
-          <Icon icon={drawerVisible ? 'exit' : 'unlock'} />
-        </MobileTopRight>
+        <MobileTopLeft onClick={onLockClick}>
+          <Icon icon={drawerVisible ? 'exit' : 'lock'} />
+        </MobileTopLeft>
         {/* Desktop Right */}
         <HeaderTopLeft>
-          <Unlock onClick={onUnlockClick}>
-            <IconWrapper icon="unlock" /> {translate('LOCK')}
-          </Unlock>
+          <Lock onClick={onLockClick}>
+            <IconWrapper icon="lock" /> {translate('LOCK')}
+          </Lock>
           <li onClick={onLanguageClick}>{languages[languageSelection]}</li>
         </HeaderTopLeft>
       </HeaderTop>

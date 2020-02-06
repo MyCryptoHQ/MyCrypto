@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import CryptoJS, { SHA256, AES } from 'crypto-js';
 import * as R from 'ramda';
+import { isEmpty } from 'lodash';
 
 import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS } from 'v2/config';
 import { withContext } from 'v2/utils';
 import { DataContext, IDataContext, SettingsContext, ISettingsContext } from 'v2/services/Store';
 import { default as ScreenLockLocking } from './ScreenLockLocking';
-import { isEmpty } from 'lodash';
 
 interface State {
   locking: boolean;
@@ -88,9 +88,10 @@ class ScreenLockProvider extends Component<
     try {
       const passwordHash = SHA256(password).toString();
       // Decrypt the data and store it to the MyCryptoCache
-      const decryptedData = await AES.decrypt(encryptedDbState.data, passwordHash).toString(
-        CryptoJS.enc.Utf8
-      );
+      const decryptedData = await AES.decrypt(
+        encryptedDbState.data as string,
+        passwordHash
+      ).toString(CryptoJS.enc.Utf8);
       importStorage(decryptedData);
 
       destroyEncryptedCache();

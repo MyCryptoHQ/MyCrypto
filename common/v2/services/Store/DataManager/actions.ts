@@ -5,12 +5,12 @@ import {
   TUuid,
   DataStoreEntry,
   DataStoreItem,
+  DataStore,
   Network,
   NetworkId,
   ISettings,
   LocalStorage
 } from 'v2/types';
-import { DataStore } from 'v2/types/store';
 import { ActionPayload, ActionV, ActionT } from './reducer';
 import { marshallState, deMarshallState } from './utils';
 

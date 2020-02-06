@@ -9,9 +9,9 @@ import {
   ExtendedAddressBook,
   ExtendedNotification,
   LSKeys,
-  TUuid
+  TUuid,
+  DataStore
 } from 'v2/types';
-import { DataStore } from 'v2/types/store';
 import { makeExplorer } from 'v2/services/EthService';
 
 const createObjHash = (obj: object): string => Object.keys(obj).length.toString();
