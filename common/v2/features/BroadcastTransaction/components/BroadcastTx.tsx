@@ -180,15 +180,20 @@ class BroadcastTx extends Component<Props> {
   protected handleChange = ({ currentTarget }: React.FormEvent<HTMLInputElement>) => {
     const { setSignedTransaction } = this.props;
     const { value } = currentTarget;
+    const trimmedValue = value.trim();
     this.setState({ userInput: value, inputError: '', stringifiedTransaction: '' });
-    setSignedTransaction(value);
+    setSignedTransaction(trimmedValue);
 
-    const bufferTransaction = toBuffer(value);
-    const decoded: Transaction = parseTransaction(bufferTransaction);
-    const tx = new EthTx(bufferTransaction, { chain: decoded.chainId });
-    if (tx.verifySignature()) {
-      const stringifiedTransaction = getStringifiedTx(tx);
-      this.setState({ stringifiedTransaction, transaction: tx });
+    try {
+      const bufferTransaction = toBuffer(trimmedValue);
+      const decoded: Transaction = parseTransaction(bufferTransaction);
+      const tx = new EthTx(bufferTransaction, { chain: decoded.chainId });
+      if (tx.verifySignature()) {
+        const stringifiedTransaction = getStringifiedTx(tx);
+        this.setState({ stringifiedTransaction, transaction: tx });
+      }
+    } catch (err) {
+      console.debug(`[BroadcastTx] ${err}`);
     }
   };
 }
