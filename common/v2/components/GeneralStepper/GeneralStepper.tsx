@@ -26,6 +26,7 @@ export function GeneralStepper({
   const goToPrevStep = () => {
     return setStep(Math.max(0, step - 1));
   };
+
   const goToFirstStep = () => {
     return setStep(0);
   };
@@ -41,6 +42,9 @@ export function GeneralStepper({
 
   const { currentPath, label, Step, stepAction } = getStep(step);
 
+  // Creates the label for the btn that sends user to the previous step.
+  // If there is no previous step, you'll be going to either the default location (dashboard), or a user-specified location.
+  // If there is a previous step, you'll go to that step and it's title is used as the back btn label.
   const getBackBtnLabel = () =>
     Math.max(-1, step - 1) === -1
       ? defaultBackPathLabel || translateRaw('DASHBOARD')

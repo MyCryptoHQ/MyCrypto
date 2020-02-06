@@ -21,6 +21,7 @@ function SendAssets() {
     txFactoryState
   } = useStateReducer(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: null });
 
+  // goToDashboard is defaulted to do-nothing, because goToNextStep handles redirect location.
   // tslint:disable-next-line
   const goToDashboard = () => {};
 
@@ -48,7 +49,7 @@ function SendAssets() {
     {
       label: translateRaw('TRANSACTION_BROADCASTED'),
       component: TransactionReceipt,
-      actions: () => goToDashboard,
+      actions: goToDashboard,
       props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(txFactoryState)
     }
   ];
