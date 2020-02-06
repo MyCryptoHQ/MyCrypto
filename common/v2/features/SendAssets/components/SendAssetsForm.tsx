@@ -258,7 +258,15 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
         onSubmit={fields => {
           onComplete(fields);
         }}
-        render={({ errors, setFieldValue, setFieldTouched, touched, values, handleChange }) => {
+        render={({
+          errors,
+          setFieldValue,
+          setFieldError,
+          setFieldTouched,
+          touched,
+          values,
+          handleChange
+        }) => {
           const toggleAdvancedOptions = () => {
             setFieldValue('advancedTransaction', !values.advancedTransaction);
           };
@@ -310,6 +318,12 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                 value: unstoppableAddress
               });
             } catch (err) {
+              // Force the field value to error so that isValidAddress is triggered!
+              setFieldValue('address', {
+                ...values.address,
+                value: ''
+              });
+              setFieldError('address', translateRaw('TO_FIELD_ERROR'));
               if (UnstoppableResolution.isResolutionError(err)) {
                 setResolutionError(err);
               } else throw err;
