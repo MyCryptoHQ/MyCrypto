@@ -1,8 +1,14 @@
 import React, { useContext } from 'react';
-import { Address } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { Amount, DashboardPanel, NewTabLink, AssetIcon, CollapsibleTable } from 'v2/components';
+import {
+  Amount,
+  DashboardPanel,
+  NewTabLink,
+  AssetIcon,
+  CollapsibleTable,
+  Account
+} from 'v2/components';
 import { truncate, convertToFiat } from 'v2/utils';
 import { ITxReceipt, TTicker, ITxStatus, StoreAccount, Asset, TSymbol } from 'v2/types';
 import { RatesContext, AddressBookContext, getLabelByAddressAndNetwork } from 'v2/services';
@@ -145,14 +151,14 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
             stage={stage}
             date={timestamp}
           />,
-          <Address
+          <Account
             key={1}
             title={fromAddressBookEntry ? fromAddressBookEntry.label : noLabel}
             truncate={truncate}
             address={from}
           />,
           to && (
-            <Address
+            <Account
               key={2}
               title={toAddressBookEntry ? toAddressBookEntry.label : noLabel}
               truncate={truncate}

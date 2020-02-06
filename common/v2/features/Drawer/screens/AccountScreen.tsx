@@ -1,5 +1,5 @@
 import React from 'react';
-import { Address, Button, Heading, Typography } from '@mycrypto/ui';
+import { Button, Heading, Typography } from '@mycrypto/ui';
 
 import { ROUTE_PATHS } from 'v2/config';
 import './AccountScreen.scss';
@@ -9,13 +9,14 @@ import addIcon from 'common/assets/images/icn-add.svg';
 import settingsIcon from 'common/assets/images/icn-settings.svg';
 import unlockIcon from 'common/assets/images/icn-unlock.svg';
 import { truncate } from 'v2/utils';
+import { Account } from 'v2/components';
 
 export default {
   title: 'Current Account',
   content: (
     <section className="AccountScreen">
       <div className="AccountScreen-current">
-        <Address
+        <Account
           title="Example #1"
           address="0x80200997f095da94E404F7E0d581AAb1fFba9f7d"
           truncate={truncate}

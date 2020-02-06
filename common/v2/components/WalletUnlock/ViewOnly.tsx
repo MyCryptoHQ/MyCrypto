@@ -11,6 +11,7 @@ import { NetworkContext } from 'v2/services/Store';
 import { CREATION_ADDRESS } from 'v2/config';
 
 import './ViewOnly.scss';
+import { COLORS } from 'v2/theme';
 
 interface OwnProps {
   onUnlock(param: any): void;
@@ -109,6 +110,7 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
                   onClick={handleSubmit}
                   disabled={isResolvingENSName}
                   className="ViewOnly-submit"
+                  color={COLORS.WHITE}
                 >
                   {translateRaw('ACTION_6')}
                 </Button>

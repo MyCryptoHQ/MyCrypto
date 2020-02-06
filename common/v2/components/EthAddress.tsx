@@ -2,11 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import { Copyable } from '@mycrypto/ui';
 
-import { COLORS } from 'v2/theme';
+import { COLORS, monospace } from 'v2/theme';
 
 // Override styles of @mycrypto/ui in order to vertically align text and icon.
 // Ensure the icon uses the discrete color.
 const Overrides = styled.div`
+  * {
+    font-family: ${monospace};
+  }
+
   & button {
     vertical-align: middle;
     font-size: 1em;

@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Address, Button } from '@mycrypto/ui';
+import { Button } from '@mycrypto/ui';
 
 import { ITxReceipt, ITxStatus, IStepComponentProps, TSymbol } from 'v2/types';
-import { Amount, TimeElapsedCounter, AssetIcon, LinkOut } from 'v2/components';
+import { Amount, TimeElapsedCounter, AssetIcon, LinkOut, Account } from 'v2/components';
 import {
   AddressBookContext,
   AccountContext,
@@ -117,7 +117,7 @@ export default function TransactionReceipt({
         <div className="TransactionReceipt-row-column">
           {translate('CONFIRM_TX_FROM')}
           <div className="TransactionReceipt-addressWrapper">
-            <Address
+            <Account
               address={displayTxReceipt.from || txConfig.senderAccount.address}
               title={senderAccountLabel}
               truncate={truncate}
@@ -127,7 +127,7 @@ export default function TransactionReceipt({
         <div className="TransactionReceipt-row-column">
           {translate('CONFIRM_TX_TO')}
           <div className="TransactionReceipt-addressWrapper">
-            <Address
+            <Account
               address={displayTxReceipt.to || txConfig.receiverAddress}
               title={recipientLabel}
               truncate={truncate}

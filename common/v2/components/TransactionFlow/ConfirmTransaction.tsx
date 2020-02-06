@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import Styled from 'styled-components';
 import BN from 'bn.js';
-import { Address, Button } from '@mycrypto/ui';
+import { Button } from '@mycrypto/ui';
 
 import feeIcon from 'common/assets/images/icn-fee.svg';
 import sendIcon from 'common/assets/images/icn-send.svg';
@@ -18,6 +18,7 @@ import TransactionIntermediaryDisplay from './displays/TransactionIntermediaryDi
 import { convertToFiat, truncate } from 'v2/utils';
 import translate from 'v2/translations';
 import { TSymbol } from 'v2/types/symbols';
+import Account from '../Account';
 const { SCREEN_XS } = BREAK_POINTS;
 
 const ConfirmTransactionWrapper = Styled.div`
@@ -151,7 +152,7 @@ export default function ConfirmTransaction({
       <RowWrapper stack={true}>
         <AddressWrapper position={'left'}>
           {translate('CONFIRM_TX_FROM')}
-          <Address
+          <Account
             address={senderAccount ? senderAccount.address : 'Unknown'}
             title={senderAccountLabel}
             truncate={truncate}
@@ -159,7 +160,7 @@ export default function ConfirmTransaction({
         </AddressWrapper>
         <AddressWrapper position={'right'}>
           {translate('CONFIRM_TX_TO')}
-          <Address
+          <Account
             address={receiverAddress || 'Unknown'}
             title={recipientLabel}
             truncate={truncate}
