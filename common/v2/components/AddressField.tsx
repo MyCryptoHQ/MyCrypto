@@ -3,8 +3,9 @@ import { Identicon } from '@mycrypto/ui';
 import { FieldProps, Field } from 'formik';
 import styled from 'styled-components';
 
-import { DomainStatus } from 'v2/components';
 import { Network, InlineMessageType } from 'v2/types';
+import { DomainStatus } from 'v2/components';
+import { getIsValidENSAddressFunction } from 'v2/services/EthService';
 import { monospace } from 'v2/theme';
 import { ResolutionError } from '@unstoppabledomains/resolution';
 import InputField from './InputField';
@@ -117,10 +118,13 @@ function ETHAddressField({
                   if (!network || !network.chainId) {
                     return;
                   }
-                  const action = handleDomainResolve
-                    ? (domainName: string) => handleDomainResolve(domainName)
-                    : (address: string) =>
-                        form.setFieldValue(fieldName, { display: address, value: address });
+                  const isValidENSAddress = getIsValidENSAddressFunction(network.chainId);
+                  const isENSAddress = isValidENSAddress(e.currentTarget.value);
+                  const action =
+                    isENSAddress && handleDomainResolve
+                      ? (domainName: string) => handleDomainResolve(domainName)
+                      : (address: string) =>
+                          form.setFieldValue(fieldName, { display: address, value: address });
                   await action(e.currentTarget.value);
                   form.setFieldTouched(fieldName);
                   if (onBlur) {

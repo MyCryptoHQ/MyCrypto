@@ -26,9 +26,7 @@ export function getValidTLDsForChain(chainId: number): ITLDCollection {
 
 export function isValidENSName(str: string) {
   try {
-    return (
-      str.includes('.') && normalise(str) !== ''
-    );
+    return str.includes('.') && normalise(str) !== '';
   } catch (e) {
     return false;
   }
