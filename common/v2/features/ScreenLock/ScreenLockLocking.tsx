@@ -62,6 +62,7 @@ const SecondaryButton = styled(Button)`
 
 interface LockScreenProps {
   timeLeft: number;
+  lockingOnDemand: boolean;
   onScreenLockClicked(): void;
   onCancelLockCountdown(): void;
 }
@@ -69,7 +70,8 @@ interface LockScreenProps {
 export default function ScreenLockLocking({
   timeLeft,
   onScreenLockClicked,
-  onCancelLockCountdown
+  onCancelLockCountdown,
+  lockingOnDemand
 }: LockScreenProps) {
   const { settings } = useContext(SettingsContext);
 
@@ -94,9 +96,14 @@ export default function ScreenLockLocking({
       <ContentWrapper>
         <Title>{translate('SCREEN_LOCK_LOCKING_HEADING')}</Title>
         <Description>
-          {translate(`SCREEN_LOCK_LOCKING_DESCRIPTION`, {
-            $inactive_time: moment.duration(settings.inactivityTimer).humanize()
-          })}{' '}
+          {translate(
+            lockingOnDemand
+              ? `SCREEN_LOCK_LOCKING_ON_DEMAND_DESCRIPTION`
+              : `SCREEN_LOCK_LOCKING_DESCRIPTION`,
+            {
+              $inactive_time: moment.duration(settings.inactivityTimer).humanize()
+            }
+          )}{' '}
           <b>
             {translate('SCREEN_LOCK_LOCKING_SECONDS', {
               $time_left: timeLeft.toString()

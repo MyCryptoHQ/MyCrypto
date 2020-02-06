@@ -304,7 +304,7 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
 
   const onLockClick = () => {
     closeMenu();
-    startLockCountdown(5); // when locking on demand, use 5 seconds countdown
+    startLockCountdown(true);
   };
 
   const onLanguageClick = () => {
