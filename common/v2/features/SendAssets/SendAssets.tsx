@@ -1,102 +1,98 @@
-import React, { useState } from 'react';
-import { RouteComponentProps } from 'react-router';
+import React from 'react';
 
-import { ContentPanel } from 'v2/components';
+import { GeneralStepper } from 'v2/components';
 import { useStateReducer } from 'v2/utils';
-import { WalletId, ITxReceipt, IFormikFields } from 'v2/types';
-import { ROUTE_PATHS } from 'v2/config';
+import { WalletId, ITxReceipt, ISignedTx, IFormikFields, ITxConfig } from 'v2/types';
 import { ConfirmTransaction, TransactionReceipt } from 'v2/components/TransactionFlow';
 import { translateRaw } from 'v2/translations';
 
 import { SendAssetsForm, SignTransaction } from './components';
 import { txConfigInitialState, TxConfigFactory } from './stateFactory';
-import { IPath } from './types';
+import { IStepperPath } from 'v2/components/GeneralStepper/types';
+import { ROUTE_PATHS } from 'v2/config';
 
-function SendAssets({ history }: RouteComponentProps<{}>) {
-  const [step, setStep] = useState(0);
+function SendAssets() {
   const {
     handleFormSubmit,
     handleConfirmAndSign,
     handleConfirmAndSend,
     handleSignedTx,
     handleSignedWeb3Tx,
-    txConfig: txConfigState,
-    txReceipt: txReceiptState
+    txFactoryState
   } = useStateReducer(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: null });
 
+  // goToDashboard is defaulted to do-nothing, because goToNextStep handles redirect location.
   // tslint:disable-next-line
-  const goToDashoard = () => {};
+  const goToDashboard = () => {};
 
   // Due to MetaMask deprecating eth_sign method,
   // it has different step order, where sign and send are one panel
-  const web3Steps: IPath[] = [
-    { label: 'Send Assets', component: SendAssetsForm, action: handleFormSubmit },
+  const web3Steps: IStepperPath[] = [
     {
-      label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
-      component: ConfirmTransaction,
-      action: handleConfirmAndSign
+      label: 'Send Assets',
+      component: SendAssetsForm,
+      props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
+      actions: (payload: IFormikFields, cb: any) => handleFormSubmit(payload, cb)
     },
-    { label: '', component: SignTransaction, action: handleSignedWeb3Tx },
-    {
-      label: translateRaw('TRANSACTION_BROADCASTED'),
-      component: TransactionReceipt,
-      action: goToDashoard
-    }
-  ];
-
-  const defaultSteps: IPath[] = [
-    { label: 'Send Assets', component: SendAssetsForm, action: handleFormSubmit },
-    { label: '', component: SignTransaction, action: handleSignedTx },
     {
       label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
       component: ConfirmTransaction,
-      action: handleConfirmAndSend
+      props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
+      actions: (payload: ITxConfig, cb: any) => handleConfirmAndSign(payload, cb)
+    },
+    {
+      label: '',
+      component: SignTransaction,
+      props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
+      actions: (payload: ITxReceipt | ISignedTx, cb: any) => handleSignedWeb3Tx(payload, cb)
     },
     {
       label: translateRaw('TRANSACTION_BROADCASTED'),
       component: TransactionReceipt,
-      action: goToDashoard
+      actions: goToDashboard,
+      props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(txFactoryState)
     }
   ];
 
-  const getStep = (walletId: WalletId, stepIndex: number) => {
-    const path = walletId === WalletId.METAMASK ? web3Steps : defaultSteps;
-    const { label, component, action } = path[stepIndex]; // tslint:disable-line
-    return { currentPath: path, label, Step: component, stepAction: action };
-  };
+  const defaultSteps: IStepperPath[] = [
+    {
+      label: 'Send Assets',
+      component: SendAssetsForm,
+      props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
+      actions: (payload: IFormikFields, cb: any) => handleFormSubmit(payload, cb)
+    },
+    {
+      label: '',
+      component: SignTransaction,
+      props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
+      actions: (payload: ITxConfig | ISignedTx, cb: any) => handleSignedTx(payload, cb)
+    },
+    {
+      label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
+      component: ConfirmTransaction,
+      props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
+      actions: (payload: ITxConfig | ISignedTx, cb: any) => handleConfirmAndSend(payload, cb)
+    },
+    {
+      label: translateRaw('TRANSACTION_BROADCASTED'),
+      component: TransactionReceipt,
+      actions: goToDashboard,
+      props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(txFactoryState)
+    }
+  ];
 
-  const { senderAccount } = txConfigState;
+  const { senderAccount } = txFactoryState && txFactoryState.txConfig;
 
-  const { currentPath, label, Step, stepAction } = getStep(
-    senderAccount ? senderAccount.wallet : undefined,
-    step
-  );
-  const getBackBtnLabel = () =>
-    Math.max(-1, step - 1) === -1
-      ? translateRaw('DASHBOARD')
-      : getStep(senderAccount ? senderAccount.wallet : undefined, Math.max(0, step - 1)).label;
-
-  const goToNextStep = () => setStep(Math.min(step + 1, currentPath.length - 1));
-  const goToPrevStep = () => setStep(Math.max(0, step - 1));
-  const goToFirstStep = () => setStep(0);
-
-  const goBack = () => (step === 0 ? history.push(ROUTE_PATHS.DASHBOARD.path) : goToPrevStep());
+  const walletId = senderAccount ? senderAccount.wallet : undefined;
+  const steps = walletId === WalletId.METAMASK ? web3Steps : defaultSteps;
 
   return (
-    <ContentPanel
-      onBack={goBack}
-      backBtnText={getBackBtnLabel()}
-      heading={label}
-      stepper={{ current: step + 1, total: currentPath.length }}
-    >
-      <Step
-        txReceipt={txReceiptState}
-        txConfig={txConfigState}
-        onComplete={(payload: IFormikFields | ITxReceipt) => stepAction(payload, goToNextStep)}
-        completeButtonText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
-        resetFlow={goToFirstStep}
-      />
-    </ContentPanel>
+    <GeneralStepper
+      steps={steps}
+      defaultBackPath={ROUTE_PATHS.DASHBOARD.path}
+      defaultBackPathLabel={translateRaw('DASHBOARD')}
+      completeBtnText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
+    />
   );
 }
 
