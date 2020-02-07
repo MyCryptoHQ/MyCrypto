@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { BREAK_POINTS, SPACING } from 'v2/theme';
+import { SPACING } from 'v2/theme';
 import { ExtendedAccount } from 'v2/types';
 import { NotificationsContext } from './NotificationsProvider';
 import { notificationsConfigs, NotificationTemplates } from './constants';
