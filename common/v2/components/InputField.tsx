@@ -93,7 +93,7 @@ const EyeIcon = styled(Icon)`
     margin-top: 6px;
     width: 23px;
     height: 23px;
-    color: ${(props: CustomIconProps) => (props.showPassword ? COLORS.BRIGHT_SKY_BLUE : '')};
+    color: ${(props: CustomIconProps) => (props.showPassword ? COLORS.BLUE_BRIGHT : '')};
     cursor: pointer;
     user-select: none;
   }
@@ -124,7 +124,7 @@ const CustomIcon = styled.span`
     margin-top: 2px;
     margin-bottom: 2px;
     margin-left: 8px;
-    color: ${COLORS.BRIGHT_SKY_BLUE}};
+    color: ${COLORS.BLUE_BRIGHT}};
     cursor: pointer;
     user-select: none;
   }

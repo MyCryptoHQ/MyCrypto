@@ -29,7 +29,7 @@ interface StickerProps {
 }
 
 const Sticker = styled.div<StickerProps>`
-  background-color: ${props => (props.isRead ? COLORS.SUCCESS_GREEN : COLORS.BRIGHT_SKY_BLUE)};
+  background-color: ${props => (props.isRead ? COLORS.SUCCESS_GREEN : COLORS.BLUE_BRIGHT)};
   border-radius: 28px;
   color: ${COLORS.WHITE};
   padding: 2px 8px;

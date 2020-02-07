@@ -10,7 +10,7 @@ import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { IS_ELECTRON, getWeb3Config } from 'v2/utils';
 
 const { SCREEN_XS } = BREAK_POINTS;
-const { BRIGHT_SKY_BLUE } = COLORS;
+const { BLUE_BRIGHT } = COLORS;
 
 const Heading = styled.p`
   font-size: 34px;
@@ -75,7 +75,7 @@ const Info = styled.div<InfoProps>`
   }
 
   a {
-    color: ${BRIGHT_SKY_BLUE};
+    color: ${BLUE_BRIGHT};
   }
 `;
 

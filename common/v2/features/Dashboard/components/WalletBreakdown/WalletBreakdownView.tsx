@@ -164,7 +164,7 @@ const BreakDownBalanceAssetName = styled.div`
 
 const BreakDownBalanceAssetAmount = styled(BreakDownBalanceAssetName)`
   a {
-    color: ${COLORS.BRIGHT_SKY_BLUE};
+    color: ${COLORS.BLUE_BRIGHT};
   }
   ${(props: { silent?: boolean }) =>
     props.silent === true &&
@@ -186,7 +186,7 @@ const BreakDownBalanceTotal = styled.div`
 `;
 
 const ViewDetailsLink = styled.a`
-  color: ${COLORS.BRIGHT_SKY_BLUE};
+  color: ${COLORS.BLUE_BRIGHT};
 `;
 
 const PoweredBy = styled.div`

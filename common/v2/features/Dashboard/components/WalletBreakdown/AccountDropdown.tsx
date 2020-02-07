@@ -9,7 +9,7 @@ import { getLabelByAccount, AddressBookContext } from 'v2/services/Store';
 import { COLORS } from 'v2/theme';
 import { ExtendedAccount, ExtendedAddressBook, TUuid } from 'v2/types';
 
-const { BRIGHT_SKY_BLUE } = COLORS;
+const { BLUE_BRIGHT } = COLORS;
 
 interface AccountDropdownProps {
   accounts: ExtendedAccount[];
@@ -76,7 +76,7 @@ const IconWrapper = styled(Icon)`
   font-size: 0.75rem;
 
   svg {
-    color: ${BRIGHT_SKY_BLUE};
+    color: ${BLUE_BRIGHT};
   }
 `;
 

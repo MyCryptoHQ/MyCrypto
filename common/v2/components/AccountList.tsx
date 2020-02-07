@@ -115,7 +115,7 @@ const TableContainer = styled.div`
 
 const AccountListFooterWrapper = styled.div`
   & * {
-    color: ${COLORS.BRIGHT_SKY_BLUE};
+    color: ${COLORS.BLUE_BRIGHT};
   }
   & img {
     height: 1.1em;
@@ -124,7 +124,7 @@ const AccountListFooterWrapper = styled.div`
 `;
 
 const AddAccountButton = styled(Button)`
-  color: ${COLORS.BRIGHT_SKY_BLUE};
+  color: ${COLORS.BLUE_BRIGHT};
   padding: ${SPACING.BASE};
   opacity: 1;
   &:hover {

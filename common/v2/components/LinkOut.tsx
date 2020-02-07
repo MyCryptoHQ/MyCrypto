@@ -5,7 +5,7 @@ import { COLORS } from 'v2/theme';
 
 import LinkOutIcon from 'assets/images/link-out.svg';
 
-const { BRIGHT_SKY_BLUE } = COLORS;
+const { BLUE_BRIGHT } = COLORS;
 
 const LinkOutWrapper = styled.a`
   display: flex;
@@ -18,7 +18,7 @@ const LinkOutWrapper = styled.a`
 `;
 
 const OutIcon = styled.img`
-  color: ${BRIGHT_SKY_BLUE};
+  color: ${BLUE_BRIGHT};
   width: 18px;
   height: 18px;
   margin-left: 10px;
