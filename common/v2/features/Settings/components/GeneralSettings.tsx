@@ -3,6 +3,7 @@ import { Button, Tooltip, Icon } from '@mycrypto/ui';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { COLORS, SPACING, BREAK_POINTS, FONT_SIZE } from 'v2/theme';
 import translate from 'v2/translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { ISettings } from 'v2/types';
@@ -12,7 +13,7 @@ import { ROUTE_PATHS } from 'v2/config';
 const Divider = styled.div`
   height: 2px;
   margin-bottom: 15px;
-  background: #e8eaed;
+  background: ${COLORS.GREY_ATHENS};
 `;
 
 const SettingsField = styled.div`
@@ -29,8 +30,8 @@ const SettingsField = styled.div`
 const SettingsLabel = styled.div`
   display: flex;
   align-items: center;
-  font-size: 20px;
   @media (max-width: 700px) {
+  font-size: ${FONT_SIZE.LG};
     width: 100%;
   }
 `;

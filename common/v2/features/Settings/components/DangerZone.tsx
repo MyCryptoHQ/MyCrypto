@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
+import { COLORS, SPACING, BREAK_POINTS, FONT_SIZE } from 'v2/theme';
 import translate from 'v2/translations';
 import { DataContext } from 'v2/services/Store';
 import { DashboardPanel } from 'v2/components';
@@ -9,7 +10,7 @@ import { DashboardPanel } from 'v2/components';
 const Divider = styled.div`
   height: 2px;
   margin-bottom: 15px;
-  background: #e8eaed;
+  background: ${COLORS.GREY_ATHENS};
 `;
 
 const SettingsField = styled.div`
@@ -25,8 +26,8 @@ const SettingsField = styled.div`
 const SettingsLabel = styled.div`
   display: flex;
   align-items: center;
-  font-size: 20px;
   @media (max-width: 700px) {
+  font-size: ${FONT_SIZE.LG};
     width: 100%;
   }
 `;

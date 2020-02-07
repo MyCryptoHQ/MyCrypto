@@ -5,6 +5,7 @@ import { translateRaw } from 'v2/translations';
 import { AssetWithDetails, TSymbol } from 'v2/types';
 import { DashboardPanel, AssetIcon } from 'v2/components';
 import { getNetworkById, StoreContext } from 'v2/services/Store';
+import { COLORS, FONT_SIZE, SPACING } from 'v2/theme';
 
 import socialTelegram from 'common/assets/images/social-icons/social-telegram.svg';
 import socialTwitter from 'common/assets/images/social-icons/social-twitter.svg';
@@ -28,14 +29,14 @@ const InfoWrapper = styled.div`
 `;
 
 const InfoTitle = styled.div`
-  font-size: 13px;
+  font-size: ${FONT_SIZE.XS};
   font-weight: 900;
-  color: #000;
+  color: ${COLORS.GREY_DARKER};
   text-transform: uppercase;
 `;
 
 const InfoValue = styled.div`
-  font-size: 18px;
+  font-size: ${FONT_SIZE.MD};
   font-weight: normal;
   word-break: break-all;
 `;

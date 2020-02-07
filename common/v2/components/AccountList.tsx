@@ -14,7 +14,7 @@ import {
   EditableText
 } from 'v2/components';
 import { truncate } from 'v2/utils';
-import { BREAK_POINTS, COLORS, breakpointToNumber } from 'v2/theme';
+import { BREAK_POINTS, COLORS, SPACING, breakpointToNumber } from 'v2/theme';
 import { ExtendedAccount, StoreAccount, ExtendedAddressBook } from 'v2/types';
 import {
   AccountContext,
@@ -45,13 +45,13 @@ const LabelWithWallet = styled.span`
 `;
 
 const WalletTypeLabel = styled.div`
-  background: ${COLORS.MIDDLE_GREY};
   display: inline-block;
   text-align: center;
+  background: ${COLORS.GREY};
   border-radius: 600px;
+  color: ${COLORS.WHITE};
   font-size: 0.6em;
   padding: 3px 6px;
-  color: ${COLORS.WHITE};
 `;
 
 const SIdenticon = styled(Identicon)`
@@ -89,8 +89,8 @@ const FavoriteButton = styled(Button)`
     span {
       svg {
         path {
-          fill: ${(props: IFavoriteProps) => (props.favorited ? COLORS.GOLD : 'white')};
-          stroke: ${(props: IFavoriteProps) => (props.favorited ? COLORS.GOLD : '#7b8695')};
+          fill: ${(props: IFavoriteProps) => (props.favorited ? COLORS.GOLD : COLORS.WHITE)};
+          stroke: ${(props: IFavoriteProps) => (props.favorited ? COLORS.GOLD : COLORS.GREY)};
         }
       }
     }

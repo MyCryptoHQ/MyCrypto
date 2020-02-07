@@ -7,6 +7,8 @@ import { AssetWithDetails, TSymbol } from 'v2/types';
 import { AssetIcon, DashboardPanel, Spinner } from 'v2/components';
 import { translateRaw } from 'v2/translations';
 
+import { FONT_SIZE, SPACING } from 'v2/theme';
+
 import moreIcon from 'common/assets/images/icn-more.svg';
 
 const TokenListWrapper = styled.div`
@@ -31,7 +33,7 @@ const Asset = styled.div`
 const AssetName = styled(Typography)`
   margin: 0 0 0 15px !important;
   font-weight: normal;
-  font-size: 14px;
+  font-size: ${FONT_SIZE.SM};
 `;
 
 const TokenValueWrapper = styled.div`
@@ -43,7 +45,7 @@ const TokenValueWrapper = styled.div`
 const TokenValue = styled(Typography)`
   margin: 0 15px 0 0 !important;
   font-weight: normal;
-  font-size: 16px;
+  font-size: ${FONT_SIZE.BASE};
 `;
 
 const MoreIcon = styled.img`
@@ -52,7 +54,7 @@ const MoreIcon = styled.img`
 
 const StyledButton = styled(Button)`
   padding: 9px 16px;
-  font-size: 18px;
+  font-size: ${FONT_SIZE.MD};
   margin-left: 8px;
 `;
 

@@ -62,7 +62,7 @@ const SContainer = styled('div')`
       @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
         align-self: center;
       }
-    `}
+    `};
 `;
 
 export default function Layout({ config = {}, className = '', children }: Props) {

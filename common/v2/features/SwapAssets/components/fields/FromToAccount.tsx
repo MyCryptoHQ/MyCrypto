@@ -8,16 +8,13 @@ import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { truncate } from 'v2/utils';
 import { Typography, Account } from 'v2/components';
 
-const { SILVER } = COLORS;
-const { SCREEN_XS } = BREAK_POINTS;
-
 interface Props {
   fromAccount: StoreAccount;
   toAccount: StoreAccount;
 }
 
 const AddressWrapper = styled.div`
-  background-color: ${SILVER};
+  background-color: ${COLORS.GREY_LIGHTEST};
   padding: 10px;
 
   img {
@@ -33,7 +30,7 @@ const Addresses = styled.div`
     max-width: 48%;
   }
 
-  @media (max-width: ${SCREEN_XS}) {
+  @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
     flex-direction: column;
 
     > div {

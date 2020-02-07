@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Heading } from '@mycrypto/ui';
 
-import { COLORS } from 'v2/theme';
+import { COLORS, FONT_SIZE, SPACING } from 'v2/theme';
 
 import settingsIcon from 'common/assets/images/icn-settings.svg';
 
@@ -45,15 +45,15 @@ const DFooterWrapper = styled.div`
   align-items: center;
   justify-content: center;
   padding: 30px 0;
-  background: #fafcfc;
+  background: ${COLORS.BLUE_GREY_LIGHTEST};
 `;
 
 const DHeading = styled(Heading)`
   && {
     margin: 0;
-    font-size: 24px;
+    font-size: ${FONT_SIZE.XL};
     font-weight: bold;
-    color: #424242;
+    color: ${COLORS.BLUE_DARK_SLATE};
   }
 `;
 

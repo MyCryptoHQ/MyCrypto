@@ -12,7 +12,7 @@ import swooshIcon from 'common/assets/images/icn-purple-swoosh.svg';
 import sparklesIcon from 'common/assets/images/icn-sparkles-4.svg';
 
 const { SCREEN_SM } = BREAK_POINTS;
-const { DARK_SLATE_BLUE, BRIGHT_SKY_BLUE } = COLORS;
+const { BLUE_DARK_SLATE, BRIGHT_SKY_BLUE } = COLORS;
 
 const MainPanel = styled(Panel)`
   padding: 84px 84px 46px 84px;
@@ -26,7 +26,7 @@ const Title = styled.div`
   text-align: center;
   font-weight: bold;
   line-height: normal;
-  color: ${DARK_SLATE_BLUE};
+  color: ${BLUE_DARK_SLATE};
   position: relative;
 
   @media (max-width: ${SCREEN_SM}) {

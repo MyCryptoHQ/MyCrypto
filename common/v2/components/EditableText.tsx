@@ -16,16 +16,17 @@ const EditIcon = styled.img`
 `;
 
 const SInputField = styled.input`
-  border: 1px solid ${COLORS.ATHENS_GREY};
   border-radius: 6px;
   padding: 6px 6px;
+  border: 2px solid ${COLORS.GREY_ATHENS};
   font-weight: 400;
 `;
 
 const STypography = styled(Typography)`
+  border-color: transparent;
   &:hover {
+    border-bottom: 1px ${COLORS.BLUE_GREY} dashed;
     cursor: pointer;
-    border-bottom: 1px ${COLORS.CLOUDY_BLUE} dashed;
   }
 `;
 

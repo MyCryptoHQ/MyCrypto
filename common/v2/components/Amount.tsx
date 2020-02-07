@@ -19,18 +19,18 @@ const Asset = styled(Typography)<{ discrete?: boolean }>`
   ${props =>
     props.discrete
       ? css`
-        color: ${COLORS.CLOUDY_BLUE};
+        color: ${COLORS.BLUE_GREY};
         font-size: 0.9em;
         @media(min-width: ${BREAK_POINTS.SCREEN_XS} {
           font-size: 1em;
         })
       `
-      : ``}
+      : ``};
 `;
 
 const Fiat = styled(Typography)`
   font-size: 0.9em;
-  color: ${COLORS.CLOUDY_BLUE};
+  color: ${COLORS.BLUE_GREY};
   @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
     font-size: 1em;
   }

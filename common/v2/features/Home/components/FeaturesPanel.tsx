@@ -14,7 +14,7 @@ import viewDashboardImageMobile from 'common/assets/images/view-dashboard-mobile
 import yourCryptoImageMobile from 'common/assets/images/control-crypto-mobile.svg';
 
 const { SCREEN_SM, SCREEN_MD, SCREEN_LG, SCREEN_XL, SCREEN_XXL } = BREAK_POINTS;
-const { DARK_SLATE_BLUE } = COLORS;
+const { BLUE_DARK_SLATE } = COLORS;
 
 const MainPanel = styled(Panel)`
   display: flex;
@@ -40,7 +40,7 @@ const TitleArea = styled.div`
 const Title = styled.p`
   font-size: 35px;
   font-weight: bold;
-  color: ${DARK_SLATE_BLUE};
+  color: ${BLUE_DARK_SLATE};
   line-height: 1.5;
 
   @media (max-width: ${SCREEN_SM}) {
@@ -53,7 +53,7 @@ const Description = styled.p`
   line-height: 1.5;
   margin-top: 8px;
   font-weight: normal;
-  color: ${DARK_SLATE_BLUE};
+  color: ${BLUE_DARK_SLATE};
 
   @media (max-width: ${SCREEN_SM}) {
     font-size: 16px;
@@ -108,7 +108,7 @@ const FeatureCaptions = styled.div`
 const FeatureTitle = styled.p`
   font-size: 30px;
   font-weight: bold;
-  color: ${DARK_SLATE_BLUE};
+  color: ${BLUE_DARK_SLATE};
   line-height: normal;
 
   @media (min-width: ${SCREEN_XL}) {
@@ -131,7 +131,7 @@ const FeatureDescription = styled.p`
   line-height: 1.5;
   margin-top: 8px;
   font-weight: normal;
-  color: ${DARK_SLATE_BLUE};
+  color: ${BLUE_DARK_SLATE};
 
   @media (min-width: ${SCREEN_XL}) {
     font-size: 21px;
