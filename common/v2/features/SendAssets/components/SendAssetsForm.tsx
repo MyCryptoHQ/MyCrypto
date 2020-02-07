@@ -41,22 +41,20 @@ import {
 import {
   getNonce,
   hexToNumber,
-  getResolvedENSAddress,
   isValidETHAddress,
   gasStringsToMaxGasBN,
   convertedToBaseUnit,
   baseToConvertedUnit,
-  isValidPositiveNumber,
-  isValidENSName
+  isValidPositiveNumber
 } from 'v2/services/EthService';
+import UnstoppableResolution from 'v2/services/UnstoppableService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 import {
   GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
   GAS_PRICE_GWEI_UPPER_BOUND,
-  DEFAULT_ASSET_DECIMAL,
-  CREATION_ADDRESS
+  DEFAULT_ASSET_DECIMAL
 } from 'v2/config';
 import { RatesContext } from 'v2/services/RatesProvider';
 
@@ -72,6 +70,7 @@ import {
 } from './validators/validators';
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
 import { weiToFloat } from 'v2/utils';
+import { ResolutionError } from '@unstoppabledomains/resolution';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;
@@ -144,13 +143,7 @@ const SendAssetsSchema = Yup.object().shape({
     .min(0, translateRaw('ERROR_0'))
     .required(translateRaw('REQUIRED')),
   account: Yup.object().required(translateRaw('REQUIRED')),
-  address: Yup.object({
-    value: Yup.string().test(
-      'check-eth-address',
-      translateRaw('TO_FIELD_ERROR'),
-      value => isValidETHAddress(value) || isValidENSName(value)
-    )
-  }).required(translateRaw('REQUIRED')),
+  address: Yup.object().required(translateRaw('REQUIRED')),
   gasLimitField: Yup.number()
     .min(GAS_LIMIT_LOWER_BOUND, translateRaw('ERROR_8'))
     .max(GAS_LIMIT_UPPER_BOUND, translateRaw('ERROR_8'))
@@ -165,19 +158,15 @@ const SendAssetsSchema = Yup.object().shape({
     .required(translateRaw('REQUIRED'))
 });
 
-export default function SendAssetsForm({
-  txConfig,
-  onComplete
-}: IStepComponentProps) {
+export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentProps) {
   const { accounts, userAssets, networks, getAccount } = useContext(StoreContext);
   const { getAssetRate } = useContext(RatesContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
-  const [isResolvingENSName, setIsResolvingENSName] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
+  const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
   const [baseAsset, setBaseAsset] = useState({} as Asset);
-
+  const [resolutionError, setResolutionError] = useState<ResolutionError>();
   const validAccounts = accounts.filter(account => account.wallet !== WalletId.VIEW_ONLY);
-
   return (
     <div className="SendAssetsForm">
       <Formik
@@ -186,29 +175,18 @@ export default function SendAssetsForm({
         onSubmit={fields => {
           onComplete(fields);
         }}
-        render={({
-          errors,
-          setFieldValue,
-          setFieldTouched,
-          setFieldError,
-          touched,
-          values,
-          handleChange
-        }) => {
+        render={({ errors, setFieldValue, setFieldTouched, touched, values, handleChange }) => {
+          const toggleAdvancedOptions = () => {
+            setFieldValue('advancedTransaction', !values.advancedTransaction);
+          };
           const toggleIsAutoGasSet = () => {
-            // save value because setFieldValue method is async and values are not yet updated
+            // save value because setFieldValue method is async and values are not yet updated	            // save value because setFieldValue method is async and values are not yet updated
             const isEnablingAutoGas = !values.isAutoGasSet;
             setFieldValue('isAutoGasSet', !values.isAutoGasSet);
-
             if (isEnablingAutoGas) {
               handleGasEstimate(true);
             }
           };
-
-          const toggleAdvancedOptions = () => {
-            setFieldValue('advancedTransaction', !values.advancedTransaction);
-          };
-
           const handleGasEstimate = async (forceEstimate: boolean = false) => {
             if (
               values &&
@@ -231,24 +209,30 @@ export default function SendAssetsForm({
             }
           };
 
-          const handleENSResolve = async (name: string) => {
+          const handleDomainResolve = async (name: string) => {
             if (!values || !values.network) {
-              setIsResolvingENSName(false);
+              setIsResolvingDomain(false);
+              setResolutionError(undefined);
               return;
             }
-            setIsResolvingENSName(true);
-            const resolvedAddress =
-              (await getResolvedENSAddress(values.network, name)) || CREATION_ADDRESS;
-            setIsResolvingENSName(false);
-            if (isValidETHAddress(resolvedAddress)) {
+            setIsResolvingDomain(true);
+            setResolutionError(undefined);
+            try {
+              const unstoppableAddress = await UnstoppableResolution.getResolvedAddress(
+                name,
+                values.asset.ticker
+              );
               setFieldValue('address', {
                 ...values.address,
-                value: resolvedAddress
+                value: unstoppableAddress
               });
-            } else {
-              setFieldError('address', translateRaw('TO_FIELD_ERROR'));
+            } catch (err) {
+              if (UnstoppableResolution.isResolutionError(err)) {
+                setResolutionError(err);
+              } else throw err;
+            } finally {
+              setIsResolvingDomain(false);
             }
-            setIsResolvingENSName(false);
           };
 
           const handleFieldReset = () => {
@@ -373,13 +357,14 @@ export default function SendAssetsForm({
                 </label>
                 <AddressField
                   fieldName="address"
-                  handleENSResolve={handleENSResolve}
+                  handleDomainResolve={handleDomainResolve}
                   onBlur={() => handleGasEstimate()}
                   error={errors && errors.address && errors.address.value}
                   touched={touched}
                   network={values.network}
-                  isLoading={isResolvingENSName}
+                  isLoading={isResolvingName}
                   isError={!isValidAddress}
+                  resolutionError={resolutionError}
                   placeholder="Enter an Address or Contact"
                 />
               </fieldset>
@@ -589,9 +574,7 @@ export default function SendAssetsForm({
                     onComplete(values);
                   }
                 }}
-                disabled={
-                  isEstimatingGasLimit || isResolvingENSName || isEstimatingNonce || !isValid
-                }
+                disabled={isEstimatingGasLimit || isResolvingName || isEstimatingNonce || !isValid}
                 className="SendAssetsForm-next"
               >
                 {translate('ACTION_6')}

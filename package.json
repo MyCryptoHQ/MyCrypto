@@ -18,6 +18,7 @@
     "@mycrypto/eth-scan": "1.1.0",
     "@mycrypto/ui": "0.21.1",
     "@parity/qr-signer": "0.3.1",
+    "@unstoppabledomains/resolution": "1.0.24",
     "axios": "0.18.1",
     "bip39": "3.0.2",
     "bn.js": "4.11.8",

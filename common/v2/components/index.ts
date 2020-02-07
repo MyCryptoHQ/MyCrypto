@@ -40,7 +40,7 @@ export { Panel } from './Panel';
 export { DashboardPanel } from './DashboardPanel';
 export { Desktop, Mobile } from './ResponsiveLayout';
 export * from './ErrorMessages';
-export { ENSStatus } from './ENSStatus';
+export { DomainStatus } from './DomainStatus';
 export { default as Tabs } from './Tabs';
 export { default as CodeBlock } from './CodeBlock';
 export { default as WalletList } from './WalletList';
