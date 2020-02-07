@@ -2,15 +2,13 @@ import React, { useContext } from 'react';
 import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { BREAK_POINTS } from 'v2/theme';
+import { BREAK_POINTS, SPACING } from 'v2/theme';
 import { ExtendedAccount } from 'v2/types';
 import { NotificationsContext } from './NotificationsProvider';
 import { notificationsConfigs, NotificationTemplates } from './constants';
 
 // Legacy
 import closeIcon from 'common/assets/images/icn-close.svg';
-
-const { SCREEN_MD } = BREAK_POINTS;
 
 const MainPanel = styled(Panel)`
   position: relative;
@@ -19,9 +17,6 @@ const MainPanel = styled(Panel)`
   padding-left: 25px;
   padding-right: 25px;
 
-  @media (min-width: ${SCREEN_MD}) {
-    margin: 0 0 50px 0;
-  }
 `;
 
 const CloseButton = styled(Button)`

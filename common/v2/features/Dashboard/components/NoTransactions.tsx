@@ -10,11 +10,11 @@ import addIcon from 'common/assets/images/icn-add-assets.svg';
 const { BRIGHT_SKY_BLUE } = COLORS;
 
 const NoTransactionsWrapper = styled.div`
-  height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 0 ${SPACING.BASE} ${SPACING.BASE} ${SPACING.BASE};
   width: 100%;
 `;
 
@@ -44,8 +44,8 @@ const NoTransactionsDescription = styled.div`
 `;
 
 const PlusIcon = styled.img`
-  width: 75px;
-  height: 75px;
+  width: 60px;
+  height: 60px;
 `;
 
 function NoTransactions() {

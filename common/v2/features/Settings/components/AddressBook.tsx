@@ -32,14 +32,20 @@ const DeleteButton = styled(Button)`
 `;
 
 const AddAccountButton = styled(Button)`
-  font-weight: bold;
   margin-bottom: 15px;
   color: ${COLORS.BRIGHT_SKY_BLUE};
+  opacity: 1;
+  &:hover {
+    transition: 200ms ease all;
+    transform: scale(1.02);
+    opacity: 0.7;
+  }
 `;
 
 const BottomRow = styled.div`
   margin-top: 0.875rem;
   text-align: center;
+  background: ${COLORS.BLUE_GREY_LIGHTEST};
 `;
 
 const Label = styled.span`
