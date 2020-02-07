@@ -3,7 +3,7 @@ import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
 import _, { isEmpty } from 'lodash';
-import { formatEther } from 'ethers/utils';
+import { formatEther, parseEther } from 'ethers/utils';
 import BN from 'bn.js';
 import styled from 'styled-components';
 import * as R from 'ramda';
@@ -139,49 +139,6 @@ const QueryWarning: React.SFC<{}> = () => (
   />
 );
 
-const SendAssetsSchema = Yup.object().shape({
-  amount: Yup.number()
-    .min(0, translateRaw('ERROR_0'))
-    .required(translateRaw('REQUIRED'))
-    .typeError(translateRaw('ERROR_0'))
-    .test('check-amount', translateRaw('BALANCE_TOO_LOW_ERROR'), function(value) {
-      const account = this.parent.account;
-      const asset = this.parent.asset;
-      return value >= getAccountBalance(account, asset.type === 'base' ? undefined : asset);
-    }),
-  account: Yup.object().required(translateRaw('REQUIRED')),
-  address: Yup.object({
-    value: Yup.string()
-      .test('checksum-address', translateRaw('CHECKSUM_ERROR'), value =>
-        isValidChecksumAddress(value)
-      )
-      .test(
-        'check-eth-address',
-        translateRaw('TO_FIELD_ERROR'),
-        value => isValidETHAddress(value) || UnstoppableResolution.isValidDomain(value)
-      )
-  }).required(translateRaw('REQUIRED')),
-  gasLimitField: Yup.number()
-    .min(GAS_LIMIT_LOWER_BOUND, translateRaw('ERROR_8'))
-    .max(GAS_LIMIT_UPPER_BOUND, translateRaw('ERROR_8'))
-    .required(translateRaw('REQUIRED'))
-    .typeError(translateRaw('ERROR_8')),
-  gasPriceField: Yup.number()
-    .min(GAS_PRICE_GWEI_LOWER_BOUND, translateRaw('ERROR_10'))
-    .max(GAS_PRICE_GWEI_UPPER_BOUND, translateRaw('ERROR_10'))
-    .required(translateRaw('REQUIRED'))
-    .typeError(translateRaw('GASPRICE_ERROR')),
-  nonceField: Yup.number()
-    .integer(translateRaw('ERROR_11'))
-    .min(0, translateRaw('ERROR_11'))
-    .required(translateRaw('REQUIRED'))
-    .typeError(translateRaw('ERROR_11'))
-    .test('check-nonce', translateRaw('NONCE_ERROR'), async function(value) {
-      const nonce = await getNonce(this.parent.network, this.parent.account);
-      return Math.abs(value - nonce) < 10;
-    })
-});
-
 export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentProps) {
   const { accounts, userAssets, networks, getAccount } = useContext(StoreContext);
   const { getAssetRate } = useContext(RatesContext);
@@ -190,6 +147,57 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
   const [baseAsset, setBaseAsset] = useState({} as Asset);
   const [resolutionError, setResolutionError] = useState<ResolutionError>();
+  const [selectedAsset, setAsset] = useState({} as Asset);
+
+  const SendAssetsSchema = Yup.object().shape({
+    amount: Yup.number()
+      .min(0, translateRaw('ERROR_0'))
+      .required(translateRaw('REQUIRED'))
+      .typeError(translateRaw('ERROR_0'))
+      .test(
+        'check-amount',
+        translateRaw('BALANCE_TOO_LOW_ERROR', { $asset: selectedAsset.ticker }),
+        function(value) {
+          const account = this.parent.account;
+          const asset = this.parent.asset;
+          return getAccountBalance(account, asset.type === 'base' ? undefined : asset).gte(
+            parseEther(value.toString())
+          );
+        }
+      ),
+    account: Yup.object().required(translateRaw('REQUIRED')),
+    address: Yup.object({
+      value: Yup.string()
+        .test('checksum-address', translateRaw('CHECKSUM_ERROR'), value =>
+          isValidChecksumAddress(value)
+        )
+        .test(
+          'check-eth-address',
+          translateRaw('TO_FIELD_ERROR'),
+          value => isValidETHAddress(value) || UnstoppableResolution.isValidDomain(value)
+        )
+    }).required(translateRaw('REQUIRED')),
+    gasLimitField: Yup.number()
+      .min(GAS_LIMIT_LOWER_BOUND, translateRaw('ERROR_8'))
+      .max(GAS_LIMIT_UPPER_BOUND, translateRaw('ERROR_8'))
+      .required(translateRaw('REQUIRED'))
+      .typeError(translateRaw('ERROR_8')),
+    gasPriceField: Yup.number()
+      .min(GAS_PRICE_GWEI_LOWER_BOUND, translateRaw('ERROR_10'))
+      .max(GAS_PRICE_GWEI_UPPER_BOUND, translateRaw('ERROR_10'))
+      .required(translateRaw('REQUIRED'))
+      .typeError(translateRaw('GASPRICE_ERROR')),
+    nonceField: Yup.number()
+      .integer(translateRaw('ERROR_11'))
+      .min(0, translateRaw('ERROR_11'))
+      .required(translateRaw('REQUIRED'))
+      .typeError(translateRaw('ERROR_11'))
+      .test('check-nonce', translateRaw('NONCE_ERROR'), async function(value) {
+        const nonce = await getNonce(this.parent.network, this.parent.account);
+        return Math.abs(value - nonce) < 10;
+      })
+  });
+
   const validAccounts = accounts.filter(account => account.wallet !== WalletId.VIEW_ONLY);
   return (
     <div className="SendAssetsForm">
@@ -337,6 +345,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                             form.setFieldValue('gasPriceSlider', data.fast);
                           });
                           form.setFieldValue('network', network || {});
+                          setAsset(option);
                           if (network) {
                             setBaseAsset(
                               getBaseAssetByNetwork({ network, assets: userAssets }) ||
