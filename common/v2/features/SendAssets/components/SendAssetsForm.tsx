@@ -143,7 +143,12 @@ const SendAssetsSchema = Yup.object().shape({
   amount: Yup.number()
     .min(0, translateRaw('ERROR_0'))
     .required(translateRaw('REQUIRED'))
-    .typeError(translateRaw('ERROR_0')),
+    .typeError(translateRaw('ERROR_0'))
+    .test('check-amount', translateRaw('BALANCE_TOO_LOW_ERROR'), function(value) {
+      const account = this.parent.account;
+      const asset = this.parent.asset;
+      return value >= getAccountBalance(account, asset.type === 'base' ? undefined : asset);
+    }),
   account: Yup.object().required(translateRaw('REQUIRED')),
   address: Yup.object({
     value: Yup.string()
@@ -159,15 +164,22 @@ const SendAssetsSchema = Yup.object().shape({
   gasLimitField: Yup.number()
     .min(GAS_LIMIT_LOWER_BOUND, translateRaw('ERROR_8'))
     .max(GAS_LIMIT_UPPER_BOUND, translateRaw('ERROR_8'))
-    .required(translateRaw('REQUIRED')),
+    .required(translateRaw('REQUIRED'))
+    .typeError(translateRaw('ERROR_8')),
   gasPriceField: Yup.number()
     .min(GAS_PRICE_GWEI_LOWER_BOUND, translateRaw('ERROR_10'))
     .max(GAS_PRICE_GWEI_UPPER_BOUND, translateRaw('ERROR_10'))
-    .required(translateRaw('REQUIRED')),
+    .required(translateRaw('REQUIRED'))
+    .typeError(translateRaw('GASPRICE_ERROR')),
   nonceField: Yup.number()
     .integer(translateRaw('ERROR_11'))
     .min(0, translateRaw('ERROR_11'))
     .required(translateRaw('REQUIRED'))
+    .typeError(translateRaw('ERROR_11'))
+    .test('check-nonce', translateRaw('NONCE_ERROR'), async function(value) {
+      const nonce = await getNonce(this.parent.network, this.parent.account);
+      return Math.abs(value - nonce) < 10;
+    })
 });
 
 export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentProps) {
