@@ -13,7 +13,7 @@ import {
   CREATION_ADDRESS
 } from 'v2/config';
 import { JsonRPCResponse } from 'v2/types';
-import { stripHexPrefix } from './utils';
+import { stripHexPrefix, gasStringsToMaxGasNumber } from './utils';
 
 export const isValidPositiveOrZeroInteger = (value: number | string) =>
   isValidPositiveNumber(value) && isInteger(value);
@@ -126,6 +126,19 @@ export function isValidPath(dPath: string) {
 
   return dPathRegex.test(dPath);
 }
+
+export const isTransactionFeeHigh = (
+  amount: string,
+  assetRate: string,
+  isERC20: boolean,
+  gasLimit: string,
+  gasPrice: string
+) => {
+  const transactionFee = gasStringsToMaxGasNumber(gasPrice, gasLimit);
+  const fiatValue = parseFloat(assetRate) * transactionFee;
+  // For now transaction fees are too high if they are more than $10 fiat or more than the sent amount
+  return (!isERC20 && parseFloat(amount) < transactionFee) || fiatValue > 10;
+};
 
 export const gasLimitValidator = (gasLimit: number | string) => {
   const gasLimitFloat = Number(gasLimit);

@@ -63,7 +63,8 @@ export {
   isValidSignMessage,
   isValidGetAccounts,
   isValidGetNetVersion,
-  isValidAddress
+  isValidAddress,
+  isTransactionFeeHigh
 } from './validators';
 export { ProviderHandler, getDPath, getDPaths } from './network';
 export { getResolvedENSAddress } from './ens';

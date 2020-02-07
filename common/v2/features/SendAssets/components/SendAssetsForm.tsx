@@ -45,7 +45,8 @@ import {
   gasStringsToMaxGasBN,
   convertedToBaseUnit,
   baseToConvertedUnit,
-  isValidPositiveNumber
+  isValidPositiveNumber,
+  isTransactionFeeHigh
 } from 'v2/services/EthService';
 import UnstoppableResolution from 'v2/services/UnstoppableService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
@@ -486,6 +487,13 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                     gasEstimates={values.gasEstimates}
                   />
                 )}
+                {isTransactionFeeHigh(
+                  values.amount,
+                  (getAssetRate(baseAsset || undefined) || 0).toString(),
+                  isERC20Tx(values.asset),
+                  values.gasLimitField,
+                  values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider
+                ) && <InlineMessage value={translate('HIGH_TRANSACTION_FEE')} />}
               </fieldset>
               {/* Advanced Options */}
               <div className="SendAssetsForm-advancedOptions">
