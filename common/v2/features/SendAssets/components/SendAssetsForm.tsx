@@ -160,9 +160,13 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
         function(value) {
           const account = this.parent.account;
           const asset = this.parent.asset;
-          return getAccountBalance(account, asset.type === 'base' ? undefined : asset).gte(
-            parseEther(value.toString())
-          );
+          const val = value ? value : 0;
+          if (!isEmpty(account)) {
+            return getAccountBalance(account, asset.type === 'base' ? undefined : asset).gte(
+              parseEther(val.toString())
+            );
+          }
+          return true;
         }
       ),
     account: Yup.object().required(translateRaw('REQUIRED')),
@@ -193,8 +197,13 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
       .required(translateRaw('REQUIRED'))
       .typeError(translateRaw('ERROR_11'))
       .test('check-nonce', translateRaw('NONCE_ERROR'), async function(value) {
-        const nonce = await getNonce(this.parent.network, this.parent.account);
-        return Math.abs(value - nonce) < 10;
+        const account = this.parent.account;
+        const network = this.parent.network;
+        if (!isEmpty(account)) {
+          const nonce = await getNonce(network, account);
+          return Math.abs(value - nonce) < 10;
+        }
+        return true;
       })
   });
 
