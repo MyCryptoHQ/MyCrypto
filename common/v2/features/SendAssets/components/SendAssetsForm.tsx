@@ -13,7 +13,7 @@ import questionSVG from 'assets/images/icn-question.svg';
 
 import translate, { translateRaw } from 'v2/translations';
 import {
-  InlineErrorMsg,
+  InlineMessage,
   AccountDropdown,
   AmountInput,
   AssetDropdown,
@@ -405,9 +405,9 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                           placeholder={'0.00'}
                         />
                         {errors && touched && touched.amount ? (
-                          <InlineErrorMsg className="SendAssetsForm-errors">
+                          <InlineMessage className="SendAssetsForm-errors">
                             {errors.amount}
-                          </InlineErrorMsg>
+                          </InlineMessage>
                         ) : null}
                       </>
                     );
@@ -492,7 +492,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                           )}
                         />
                         {errors && errors.gasLimitField && (
-                          <InlineErrorMsg>{errors.gasLimitField}</InlineErrorMsg>
+                          <InlineMessage>{errors.gasLimitField}</InlineMessage>
                         )}
                       </div>
                     </div>
@@ -513,7 +513,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                           )}
                         />
                         {errors && errors.gasPriceField && (
-                          <InlineErrorMsg>{errors.gasPriceField}</InlineErrorMsg>
+                          <InlineMessage>{errors.gasPriceField}</InlineMessage>
                         )}
                       </div>
                     </div>
@@ -547,7 +547,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                           )}
                         />
                         {errors && errors.nonceField && (
-                          <InlineErrorMsg>{errors.nonceField}</InlineErrorMsg>
+                          <InlineMessage>{errors.nonceField}</InlineMessage>
                         )}
                       </div>
                     </div>

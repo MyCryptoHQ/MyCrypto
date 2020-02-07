@@ -8,7 +8,7 @@ import {
   NetworkSelectDropdown,
   InputField,
   Dropdown,
-  InlineErrorMsg,
+  InlineMessage,
   Button,
   AddressField
 } from 'v2/components';
@@ -410,7 +410,7 @@ function Interact(props: CombinedProps) {
               )}
               {error && (
                 <ErrorWrapper>
-                  <InlineErrorMsg>{error}</InlineErrorMsg>
+                  <InlineMessage>{error}</InlineMessage>
                 </ErrorWrapper>
               )}
             </FieldWrapper>

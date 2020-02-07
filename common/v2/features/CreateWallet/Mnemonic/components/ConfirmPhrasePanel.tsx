@@ -4,7 +4,7 @@ import shuffle from 'lodash/shuffle';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel, InlineErrorMsg } from 'v2/components';
+import { ExtendedContentPanel, InlineMessage } from 'v2/components';
 import { PanelProps } from 'v2/features/CreateWallet';
 import { translateRaw } from 'v2/translations';
 
@@ -143,7 +143,7 @@ export default class ConfirmPhrasePanel extends Component<Props> {
         </div>
         {this.state.doneClicked && this.state.error && (
           <ErrorWrapper>
-            <InlineErrorMsg>{translateRaw('MNEMONIC_VERIFY_ERROR')}</InlineErrorMsg>
+            <InlineMessage>{translateRaw('MNEMONIC_VERIFY_ERROR')}</InlineMessage>
           </ErrorWrapper>
         )}
         <StyledButton onClick={this.handleDoneClicked}>

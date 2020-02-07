@@ -5,13 +5,7 @@ import { Transaction as EthTx } from 'ethereumjs-tx';
 import styled from 'styled-components';
 
 import translate, { translateRaw } from 'v2/translations';
-import {
-  InputField,
-  QRCode,
-  CodeBlock,
-  NetworkSelectDropdown,
-  InlineErrorMsg
-} from 'v2/components';
+import { InputField, QRCode, CodeBlock, NetworkSelectDropdown, InlineMessage } from 'v2/components';
 import { getTransactionFields, makeTransaction } from 'v2/services/EthService';
 
 interface State {
@@ -157,7 +151,7 @@ class BroadcastTx extends Component<Props> {
               <NetworkSelectWrapper>
                 <NetworkSelectDropdown network={network} onChange={selectNetwork} />
                 {this.state.networkSelectError && (
-                  <InlineErrorMsg>{this.state.networkSelectError}</InlineErrorMsg>
+                  <InlineMessage>{this.state.networkSelectError}</InlineMessage>
                 )}
               </NetworkSelectWrapper>
             )}

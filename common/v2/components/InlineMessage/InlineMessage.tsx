@@ -1,14 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import { COLORS } from 'v2/theme';
-import { InlineErrorType } from 'v2/types/inlineErrors';
+import { InlineMessageType } from 'v2/types/inlineMessages';
 import Typography from '../Typography';
-import announcementSVG from 'assets/images/icn-announcement.svg';
-import errorSVG from 'assets/images/icn-toast-error.svg';
+import infoSVG from 'assets/images/icn-info.svg';
+import warningSVG from 'assets/images/icn-warning.svg';
 
 interface Props {
-  type: InlineErrorType;
-  value: any;
+  type?: InlineMessageType;
+  value?: any;
+  children?: any;
+  className?: string;
 }
 
 interface Config {
@@ -45,28 +47,34 @@ const STypography = styled(Typography)<BannerTypographyProps>`
 const Icon = styled.img`
   color: ${props => props.color};
   max-width: 24px;
+  margin-right: 6px;
 `;
 
-const errorConfig = (type: InlineErrorType): Config => {
+const messageConfig = (type: InlineMessageType): Config => {
   switch (type) {
     default:
-    case InlineErrorType.ERROR:
+    case InlineMessageType.ERROR:
       return {
         color: COLORS.PASTEL_RED,
-        icon: errorSVG
+        icon: warningSVG
       };
-    case InlineErrorType.INFO:
+    case InlineMessageType.INFO:
       return {
         color: COLORS.WHITE,
-        icon: announcementSVG
+        icon: infoSVG
       };
   }
 };
 
-export default function InlineErrorMsg({ type, value, children }: Props) {
-  const config = errorConfig(type);
+export default function InlineMessage({
+  type = InlineMessageType.ERROR,
+  value,
+  children,
+  className
+}: Props) {
+  const config = messageConfig(type);
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <Icon src={config.icon} color={config.color} alt={type} />
       <STypography value={value || children} color={config.color} />
     </Wrapper>

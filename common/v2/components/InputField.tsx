@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Icon } from '@mycrypto/ui';
 
 import { COLORS } from 'v2/theme';
-import { InlineErrorMsg, Spinner } from 'v2/components';
+import { InlineMessage, Spinner } from 'v2/components';
 
 const MainWrapper = styled.div<WrapperProps>`
   margin-bottom: ${props => props.marginBottom};
@@ -242,7 +242,7 @@ export class InputField extends Component<Props> {
           )}
         </InputWrapper>
 
-        {inputError && <InlineErrorMsg>{inputError}</InlineErrorMsg>}
+        {inputError && <InlineMessage>{inputError}</InlineMessage>}
       </MainWrapper>
     );
   }

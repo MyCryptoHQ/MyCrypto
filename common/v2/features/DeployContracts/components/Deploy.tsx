@@ -8,7 +8,7 @@ import {
   NetworkSelectDropdown,
   InputField,
   Button,
-  InlineErrorMsg,
+  InlineMessage,
   AccountDropdown,
   Typography,
   GasSelector
@@ -184,7 +184,7 @@ export default function Deploy(props: Props) {
 
       {error && (
         <MarginWrapper>
-          <InlineErrorMsg>{error}</InlineErrorMsg>
+          <InlineMessage>{error}</InlineMessage>
         </MarginWrapper>
       )}
 

@@ -3,7 +3,7 @@ import { Input, Identicon } from '@mycrypto/ui';
 import { FieldProps, Field, FormikTouched } from 'formik';
 import styled from 'styled-components';
 
-import { InlineErrorMsg, DomainStatus } from 'v2/components';
+import { InlineMessage, DomainStatus } from 'v2/components';
 import { Network, IFormikFields } from 'v2/types';
 import { monospace } from 'v2/theme';
 import { ResolutionError } from '@unstoppabledomains/resolution';
@@ -128,7 +128,7 @@ function ETHAddressField({
               resolutionError={resolutionError}
             />
             {error && touched && touched.address ? (
-              <InlineErrorMsg className="SendAssetsForm-errors">{error}</InlineErrorMsg>
+              <InlineMessage className="SendAssetsForm-errors" value={error} />
             ) : null}
           </Wrapper>
         )}
