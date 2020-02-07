@@ -509,12 +509,10 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                               name={field.name}
                               value={field.value}
                               disabled={values.isAutoGasSet}
+                              error={errors && errors.gasLimitField}
                             />
                           )}
                         />
-                        {errors && errors.gasLimitField && (
-                          <InlineMessage>{errors.gasLimitField}</InlineMessage>
-                        )}
                       </div>
                     </div>
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
@@ -530,12 +528,10 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                               }}
                               name={field.name}
                               value={field.value}
+                              error={errors && errors.gasPriceField}
                             />
                           )}
                         />
-                        {errors && errors.gasPriceField && (
-                          <InlineMessage>{errors.gasPriceField}</InlineMessage>
-                        )}
                       </div>
                     </div>
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
@@ -564,12 +560,10 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                               }}
                               name={field.name}
                               value={field.value}
+                              error={errors && errors.nonceField}
                             />
                           )}
                         />
-                        {errors && errors.nonceField && (
-                          <InlineMessage>{errors.nonceField}</InlineMessage>
-                        )}
                       </div>
                     </div>
 
