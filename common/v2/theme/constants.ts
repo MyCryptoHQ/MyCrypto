@@ -35,7 +35,8 @@ export const COLORS = {
 
   GREY_GEYSER: '#d6dce5',
   GREY_ATHENS: '#e8eaed',
-  GREYISH_BROWN: '#424242'
+  GREYISH_BROWN: '#424242',
+  PURPLE: '#A086F7'
 };
 
 export const BREAK_POINTS = {

@@ -5,6 +5,7 @@ import { InlineMessageType } from 'v2/types/inlineMessages';
 import Typography from '../Typography';
 import infoSVG from 'assets/images/icn-info.svg';
 import warningSVG from 'assets/images/icn-warning.svg';
+import arrowSVG from 'assets/images/icn-arrow-purple.svg';
 
 interface Props {
   type?: InlineMessageType;
@@ -58,10 +59,15 @@ const messageConfig = (type: InlineMessageType): Config => {
         color: COLORS.PASTEL_RED,
         icon: warningSVG
       };
-    case InlineMessageType.INFO:
+    case InlineMessageType.INFO_CIRCLE:
       return {
         color: COLORS.WHITE,
         icon: infoSVG
+      };
+    case InlineMessageType.INFO_ARROW:
+      return {
+        color: COLORS.PURPLE,
+        icon: arrowSVG
       };
   }
 };

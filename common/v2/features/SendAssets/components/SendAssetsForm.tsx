@@ -404,7 +404,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                           }}
                           placeholder={'0.00'}
                         />
-                        {errors && touched && touched.amount ? (
+                        {errors && errors.amount && touched && touched.amount ? (
                           <InlineMessage className="SendAssetsForm-errors">
                             {errors.amount}
                           </InlineMessage>

@@ -1,4 +1,5 @@
 export enum InlineMessageType {
   ERROR = 'error',
-  INFO = 'info'
+  INFO_CIRCLE = 'info_circle',
+  INFO_ARROW = 'info_arrow'
 }
