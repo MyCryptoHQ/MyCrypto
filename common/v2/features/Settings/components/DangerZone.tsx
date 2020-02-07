@@ -54,7 +54,14 @@ const DangerZone: React.FC = () => {
     <DashboardPanel heading={translate('SETTINGS_DANGER_ZONE')}>
       <Divider style={{ borderBottom: '1px solid red' }} />
       <SettingsField>
-        <SettingsLabel>{translate('SETTINGS_DB_RESET_LABEL')}</SettingsLabel>
+        <SettingsLabel>
+          {translate('SETTINGS_DB_RESET_LABEL')}{' '}
+          <Tooltip tooltip={<span>{translate('SETTINGS_DANGER_ZONE_TOOLTIP')}</span>}>
+            <div>
+              <SettingsTooltipIcon icon="shape" />
+            </div>
+          </Tooltip>
+        </SettingsLabel>
         <SettingsControl>
           <SettingsButton secondary={true} onClick={() => resetAppDb()}>
             {translate('SETTINGS_DB_RESET_ACTION')}

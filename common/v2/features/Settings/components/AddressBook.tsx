@@ -13,6 +13,7 @@ import {
 import { ExtendedAddressBook, AddressBook as IAddressBook } from 'v2/types';
 import { truncate } from 'v2/utils';
 import { COLORS, SPACING, BREAK_POINTS } from 'v2/theme';
+import { translateRaw } from 'v2/translations';
 
 interface Props {
   addressBook: ExtendedAddressBook[];
@@ -133,7 +134,7 @@ export default function AddressBook({
       <CollapsibleTable breakpoint={450} {...addressBookTable} />
       <BottomRow>
         <AddAccountButton onClick={toggleFlipped} basic={true}>
-          + Add Address
+          {`+ ${translateRaw('ACCOUNT_LIST_TABLE_ADD_ACCOUNT')}`}
         </AddAccountButton>
       </BottomRow>
     </DashboardPanel>

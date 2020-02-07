@@ -10,7 +10,6 @@ import {
   Network,
   RowDeleteOverlay,
   RouterLink,
-  Typography,
   EditableText
 } from 'v2/components';
 import { truncate } from 'v2/utils';
@@ -124,6 +123,17 @@ const AccountListFooterWrapper = styled.div`
   }
 `;
 
+const AddAccountButton = styled(Button)`
+  color: ${COLORS.BRIGHT_SKY_BLUE};
+  padding: ${SPACING.BASE};
+  opacity: 1;
+  &:hover {
+    transition: 200ms ease all;
+    transform: scale(1.02);
+    opacity: 0.7;
+  }
+`;
+
 interface AccountListProps {
   accounts: StoreAccount[];
   className?: string;
@@ -159,7 +169,9 @@ export default function AccountList(props: AccountListProps) {
     return (
       <AccountListFooterWrapper>
         <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
-          <Typography>{`+ ${translateRaw('ACCOUNT_LIST_TABLE_ADD_ACCOUNT')}`}</Typography>
+          <AddAccountButton basic={true}>{`+ ${translateRaw(
+            'ACCOUNT_LIST_TABLE_ADD_ACCOUNT'
+          )}`}</AddAccountButton>
         </RouterLink>
       </AccountListFooterWrapper>
     );

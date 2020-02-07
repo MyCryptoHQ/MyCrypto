@@ -134,7 +134,14 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
           </SettingsControl>
         </SettingsField>
         <SettingsField>
-          <SettingsLabel>{translate('SETTINGS_INACTIVITY_LABEL')}</SettingsLabel>
+          <SettingsLabel>
+            {translate('SETTINGS_INACTIVITY_LABEL')}{' '}
+            <Tooltip tooltip={<span>{translate('SETTINGS_INACTIVITY_TOOLTIP')}</span>}>
+              <div>
+                <SettingsTooltipIcon icon="shape" />
+              </div>
+            </Tooltip>
+          </SettingsLabel>
           <SettingsControl>
             <SelectContainer>
               <select onChange={this.changeTimer} value={String(globalSettings.inactivityTimer)}>
