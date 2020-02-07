@@ -109,8 +109,8 @@ const DeleteButton = styled(Button)`
 
 const TableContainer = styled.div`
   display: block;
-  max-height: 394px;
   overflow: auto;
+  flex: 1;
 `;
 
 const AccountListFooterWrapper = styled.div`

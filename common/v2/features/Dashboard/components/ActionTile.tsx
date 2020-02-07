@@ -12,19 +12,25 @@ const SContainer = styled('div')`
   background: ${COLORS.WHITE};
   border-radius: 5px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.07);
-  padding: 8px;
   display: flex;
   justify-content: center;
   margin-bottom: ${SPACING.BASE};
+  padding: ${SPACING.BASE};
 
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    width: 110px;
+    width: 30%;
   }
 
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: 100%;
-    padding-left: 40px;
-    padding-right: 35px;
+  }
+
+  transition: 200ms ease all;
+  opacity: 1;
+  &:hover {
+    transition: 200ms ease all;
+    transform: scale(1.02);
+    opacity: 0.7;
   }
 `;
 
@@ -57,22 +63,21 @@ const STitle = styled('div')`
   margin: 0;
   font-weight: bold;
   color: ${COLORS.BLUE_DARK_SLATE};
+  line-height: 1.4;
 
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    padding-top: 2px;
-
     font-size: ${FONT_SIZE.SM};
+    height: 2.8em;
+    padding-top: ${SPACING.XS};
     // The link for 'Get Hardware Wallet' is too long to use a line per word.
     word-spacing: ${({ isLonger }: { isLonger: boolean }) => (isLonger ? 'inherit' : '9999px')};
   }
 
   @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
-    padding-top: 0px;
     font-size: ${FONT_SIZE.BASE};
   }
 
   @media (min-width: ${BREAK_POINTS.SCREEN_LG}) {
-    padding-top: 0px;
     font-size: ${FONT_SIZE.XL};
   }
 `;

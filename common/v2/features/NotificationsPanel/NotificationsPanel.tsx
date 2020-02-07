@@ -12,11 +12,8 @@ import closeIcon from 'common/assets/images/icn-close.svg';
 
 const MainPanel = styled(Panel)`
   position: relative;
-  margin-left: 15px;
-  margin-right: 15px;
-  padding-left: 25px;
-  padding-right: 25px;
-
+  padding: ${SPACING.BASE};
+  margin-bottom: ${SPACING.BASE};
 `;
 
 const CloseButton = styled(Button)`

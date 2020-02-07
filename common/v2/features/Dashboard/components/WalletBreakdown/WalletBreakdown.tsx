@@ -30,7 +30,11 @@ const WalletBreakdownTop = styled.div`
 const AccountDropdownWrapper = styled.div`
   width: 100%;
   max-width: 480px;
-  margin-bottom: 30px;
+  margin-bottom: ${SPACING.SM};
+
+  @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
+    margin-bottom: ${SPACING.BASE};
+  }
 `;
 
 const WalletBreakdownPanel = styled(Panel)`

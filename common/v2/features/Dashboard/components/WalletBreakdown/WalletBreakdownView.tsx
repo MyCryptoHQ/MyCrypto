@@ -45,13 +45,13 @@ const BreakDownLabel = styled.div`
 const BreakDownChartWrapper = styled.div`
   position: relative;
   flex: 1;
-  padding-left: 15px;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-left: ${SPACING.BASE};
+  padding-top: ${SPACING.BASE};
+  padding-bottom: ${SPACING.BASE};
   height: 530px;
 
-    padding-right: 15px;
   @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+    padding-right: ${SPACING.BASE};
   }
 `;
 
@@ -80,8 +80,8 @@ interface PanelDividerProps {
 
 const PanelDivider = styled.div<PanelDividerProps>`
   height: 1px;
-  margin-bottom: 15px;
-  margin-top: 15px;
+  margin-bottom: ${SPACING.BASE};
+  margin-top: ${SPACING.BASE};
   background: #ddd;
   display: block;
 
@@ -95,7 +95,7 @@ const PanelDivider = styled.div<PanelDividerProps>`
 
 const VerticalPanelDivider = styled.div`
   width: 1px;
-  margin: 0 15px;
+  margin: 0 ${SPACING.BASE};
   background: ${COLORS.GREY_LIGHT};
   display: none;
 
@@ -105,16 +105,15 @@ const VerticalPanelDivider = styled.div`
 `;
 
 const BreakDownBalances = styled.div`
-  padding-right: 15px;
-  padding-top: 15px;
-  padding-bottom: 15px;
-
   display: flex;
   flex-direction: column;
   flex: 1;
+  padding-bottom: ${SPACING.BASE};
+  padding-right: ${SPACING.BASE};
+  padding-top: ${SPACING.BASE};
 
-    padding-left: 15px;
   @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+    padding-left: ${SPACING.BASE};
   }
 `;
 

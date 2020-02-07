@@ -14,13 +14,14 @@ import moreIcon from 'common/assets/images/icn-more.svg';
 const TokenListWrapper = styled.div`
   max-height: 313px;
   overflow-y: auto;
+  padding: 0 ${SPACING.BASE} ${SPACING.BASE} ${SPACING.BASE};
 `;
 
 const Token = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px 0;
+  padding: ${SPACING.SM} 0;
   margin-right: 8px;
 `;
 
@@ -31,7 +32,7 @@ const Asset = styled.div`
 `;
 
 const AssetName = styled(Typography)`
-  margin: 0 0 0 15px !important;
+  margin: 0 0 0 ${SPACING.SM} !important;
   font-weight: normal;
   font-size: ${FONT_SIZE.SM};
 `;
@@ -43,7 +44,7 @@ const TokenValueWrapper = styled.div`
 `;
 
 const TokenValue = styled(Typography)`
-  margin: 0 15px 0 0 !important;
+  margin: 0 ${SPACING.SM} 0 0 !important;
   font-weight: normal;
   font-size: ${FONT_SIZE.BASE};
 `;
@@ -96,7 +97,7 @@ export function TokenList(props: TokenListProps) {
           </StyledButton>
         </div>
       }
-      padChildren={true}
+      padChildren={false}
     >
       {isScanning ? (
         <SpinnerWrapper>

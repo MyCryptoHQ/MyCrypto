@@ -32,8 +32,8 @@ const DeleteButton = styled(Button)`
 `;
 
 const AddAccountButton = styled(Button)`
-  margin-bottom: 15px;
   color: ${COLORS.BRIGHT_SKY_BLUE};
+  padding: ${SPACING.BASE};
   opacity: 1;
   &:hover {
     transition: 200ms ease all;
@@ -43,7 +43,6 @@ const AddAccountButton = styled(Button)`
 `;
 
 const BottomRow = styled.div`
-  margin-top: 0.875rem;
   text-align: center;
   background: ${COLORS.BLUE_GREY_LIGHTEST};
 `;

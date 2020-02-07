@@ -24,6 +24,8 @@ const NoTransactionsCenter = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-top: ${SPACING.BASE};
+  margin-bottom: ${SPACING.LG};
 `;
 
 const NoTransactionsHeading = styled.div`
@@ -31,6 +33,8 @@ const NoTransactionsHeading = styled.div`
   font-size: ${FONT_SIZE.XL};
   font-weight: bold;
   text-align: center;
+  margin-top: ${SPACING.SM};
+  margin-bottom: ${SPACING.SM};
 `;
 
 const NoTransactionsDescription = styled.div`
