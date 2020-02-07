@@ -53,7 +53,7 @@ const SIdenticon = styled(Identicon)`
   }
   margin-right: ${SPACING.SM};
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    margin-right: 27px;
+    margin-right: ${SPACING.MD};
   }
 `;
 

@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { Button } from '@mycrypto/ui';
-
+import { Button, Tooltip, Icon } from '@mycrypto/ui';
 import { COLORS, SPACING, BREAK_POINTS, FONT_SIZE } from 'v2/theme';
 import translate from 'v2/translations';
 import { DataContext } from 'v2/services/Store';
@@ -9,7 +8,7 @@ import { DashboardPanel } from 'v2/components';
 
 const Divider = styled.div`
   height: 2px;
-  margin-bottom: 15px;
+  margin-bottom: ${SPACING.BASE};
   background: ${COLORS.GREY_ATHENS};
 `;
 
@@ -17,8 +16,8 @@ const SettingsField = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 30px 29px 30px;
-  @media (max-width: 700px) {
+  padding: 0 ${SPACING.BASE} ${SPACING.BASE} ${SPACING.BASE};
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     display: block;
   }
 `;
@@ -26,25 +25,30 @@ const SettingsField = styled.div`
 const SettingsLabel = styled.div`
   display: flex;
   align-items: center;
-  @media (max-width: 700px) {
   font-size: ${FONT_SIZE.LG};
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: 100%;
   }
 `;
 
 const SettingsControl = styled.div`
   button {
-    margin-left: 15px;
+    margin-left: ${SPACING.SM};
   }
-  @media (max-width: 700px) {
-    margin-top: 15px;
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    margin-top: ${SPACING.SM};
     width: 100%;
   }
 `;
 
 const SettingsButton = styled(Button)`
-  width: 105px;
-  padding: 12px 12px;
+  width: 125px;
+  padding: ${SPACING.SM};
+`;
+
+const SettingsTooltipIcon = styled(Icon)`
+  margin-left: ${SPACING.SM};
+  height: 1em;
 `;
 
 const DangerZone: React.FC = () => {

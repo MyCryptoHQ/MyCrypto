@@ -37,7 +37,7 @@ const DHeadingWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px;
+  padding: ${SPACING.BASE};
 `;
 
 const DFooterWrapper = styled.div`
