@@ -1,10 +1,10 @@
 import React from 'react';
-import { Input, Identicon } from '@mycrypto/ui';
-import { FieldProps, Field, FormikTouched } from 'formik';
+import { Identicon } from '@mycrypto/ui';
+import { FieldProps, Field } from 'formik';
 import styled from 'styled-components';
 
-import { InlineMessage, DomainStatus } from 'v2/components';
-import { Network, IFormikFields } from 'v2/types';
+import { DomainStatus, InputField } from 'v2/components';
+import { Network } from 'v2/types';
 import { monospace } from 'v2/theme';
 import { ResolutionError } from '@unstoppabledomains/resolution';
 /*
@@ -17,7 +17,6 @@ interface Props {
   error?: string;
   className?: string;
   fieldName: string;
-  touched?: FormikTouched<IFormikFields>;
   placeholder?: string;
   network?: Network;
   isLoading: boolean;
@@ -34,7 +33,6 @@ const Wrapper = styled.div`
 
 const InputWrapper = styled.div`
   display: flex;
-  align-items: center;
 
   > div:nth-child(2) {
     flex: 1;
@@ -58,7 +56,7 @@ interface InputProps {
   value: string;
 }
 
-const SInput = styled(Input)<InputProps>`
+const SInput = styled(InputField)<InputProps>`
   ${props => props.value && `font-family: ${monospace};`}
   font-size: 1rem !important; // to override Typography from mycrypto/ui
 `;
@@ -66,7 +64,6 @@ const SInput = styled(Input)<InputProps>`
 function ETHAddressField({
   className,
   fieldName,
-  touched,
   error,
   network,
   placeholder = 'ETH Address or blockchain domain',
@@ -93,6 +90,8 @@ function ETHAddressField({
               <SInput
                 data-lpignore="true"
                 {...field}
+                inputError={error}
+                marginBottom={'0'}
                 value={field.value.display}
                 placeholder={placeholder}
                 onChange={e => {
@@ -127,9 +126,6 @@ function ETHAddressField({
               isError={isError}
               resolutionError={resolutionError}
             />
-            {error && touched && touched.address ? (
-              <InlineMessage className="SendAssetsForm-errors" value={error} />
-            ) : null}
           </Wrapper>
         )}
       />

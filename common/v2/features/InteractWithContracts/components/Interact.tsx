@@ -356,11 +356,10 @@ function Interact(props: CombinedProps) {
                 <InputWrapper>
                   <AddressField
                     fieldName="address"
-                    error={errors && errors.address && errors.address.value}
+                    error={errors && touched.address && errors.address && errors.address.value}
                     network={network}
                     placeholder={translateRaw('CONTRACT_ADDRESS_PLACEHOLDER')}
                     isLoading={resolvingDomain}
-                    touched={touched}
                     onChange={({ target: { value } }) => handleAddressOrDomainChanged(value)}
                     isError={!isValid}
                   />

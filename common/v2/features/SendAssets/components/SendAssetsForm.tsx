@@ -402,8 +402,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                   fieldName="address"
                   handleDomainResolve={handleDomainResolve}
                   onBlur={() => handleGasEstimate()}
-                  error={errors && errors.address && errors.address.value}
-                  touched={touched}
+                  error={errors && touched.address && errors.address && errors.address.value}
                   network={values.network}
                   isLoading={isResolvingName}
                   isError={!isValidAddress}
