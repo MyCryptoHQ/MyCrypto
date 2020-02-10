@@ -10,6 +10,7 @@ import { TSymbol } from 'v2/types';
 import { AssetIcon, Currency, Typography } from 'v2/components';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
+import coinGeckoIcon from 'common/assets/images/credits/credits-coingecko.png'
 
 export const SMALLEST_CHART_SHARE_SUPPORTED = 0.03; // 3%
 export const NUMBER_OF_ASSETS_DISPLAYED = 4;
@@ -45,6 +46,7 @@ const BreakDownLabel = styled.div`
 `;
 
 const BreakDownChartWrapper = styled.div`
+  position: relative;
   flex: 1;
   padding-left: 15px;
   padding-top: 15px;
@@ -191,6 +193,18 @@ const ViewDetailsLink = styled.a`
   color: #1eb8e7;
 `;
 
+const PoweredBy = styled.div`
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  font-size: 14px;
+  color: #b5bfc8;
+
+  > img {
+    height: 25px;
+  }
+`;
+
 export default function WalletBreakdownView({
   balances,
   toggleShowChart,
@@ -276,6 +290,9 @@ export default function WalletBreakdownView({
             )}
           </>
         )}
+        <PoweredBy>
+          Powered by <img src={coinGeckoIcon} title="CoinGecko" alt="CoinGecko" />
+        </PoweredBy>
       </BreakDownChartWrapper>
       <PanelDivider mobileOnly={true} />
       <VerticalPanelDivider />
