@@ -61,7 +61,7 @@ const messageConfig = (type: InlineMessageType): Config => {
       };
     case InlineMessageType.INFO_CIRCLE:
       return {
-        color: COLORS.WHITE,
+        color: COLORS.ORANGE,
         icon: infoSVG
       };
     case InlineMessageType.INFO_ARROW:

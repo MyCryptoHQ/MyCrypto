@@ -29,8 +29,15 @@ const isPositiveNonZeroNumber = (value: number | string) => Number(value) > 0;
 const isInteger = (value: number | string) =>
   Number.isInteger(typeof value === 'string' ? Number(value) : value);
 
-function isChecksumAddress(address: string): boolean {
+export function isChecksumAddress(address: string): boolean {
   return address === toChecksumAddress(address);
+}
+
+export function isBurnAddress(address: string): boolean {
+  return (
+    address === '0x0000000000000000000000000000000000000000' ||
+    address === '0x000000000000000000000000000000000000dead'
+  );
 }
 
 function isValidRSKAddress(address: string, chainId: number): boolean {
@@ -45,9 +52,6 @@ function getIsValidAddressFunction(chainId: number) {
 }
 
 function isValidETHLikeAddress(address: string, extraChecks?: () => boolean): boolean {
-  if (address === CREATION_ADDRESS) {
-    return false;
-  }
   if (address.substring(0, 2) !== '0x') {
     return false;
   } else if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {

@@ -4,6 +4,7 @@ import { Icon } from '@mycrypto/ui';
 
 import { COLORS } from 'v2/theme';
 import { InlineMessage, Spinner } from 'v2/components';
+import { InlineMessageType } from 'v2/types/inlineMessages';
 
 const MainWrapper = styled.div<WrapperProps>`
   margin-bottom: ${props => props.marginBottom};
@@ -137,6 +138,7 @@ interface Props {
   label?: string | JSX.Element;
   value: string | undefined;
   inputError?: string | JSX.Element | undefined;
+  inputErrorType?: InlineMessageType;
   inputErrorBorder?: boolean;
   showEye?: boolean;
   customIcon?: React.ElementType;
@@ -171,6 +173,7 @@ export class InputField extends Component<Props> {
       onBlur,
       onFocus,
       inputError,
+      inputErrorType,
       inputErrorBorder = false,
       type,
       showEye,
@@ -246,7 +249,7 @@ export class InputField extends Component<Props> {
           )}
         </InputWrapper>
 
-        {inputError && <InlineMessage>{inputError}</InlineMessage>}
+        {inputError && <InlineMessage type={inputErrorType}>{inputError}</InlineMessage>}
       </MainWrapper>
     );
   }

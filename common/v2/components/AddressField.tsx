@@ -4,7 +4,7 @@ import { FieldProps, Field } from 'formik';
 import styled from 'styled-components';
 
 import { DomainStatus, InputField } from 'v2/components';
-import { Network } from 'v2/types';
+import { Network, InlineMessageType } from 'v2/types';
 import { monospace } from 'v2/theme';
 import { ResolutionError } from '@unstoppabledomains/resolution';
 /*
@@ -13,8 +13,13 @@ import { ResolutionError } from '@unstoppabledomains/resolution';
   - validation of the field is handled here.
 */
 
+interface ErrorObject {
+  type: InlineMessageType;
+  message: string | JSX.Element;
+}
+
 interface Props {
-  error?: string;
+  error?: string | ErrorObject;
   className?: string;
   fieldName: string;
   placeholder?: string;
@@ -74,6 +79,9 @@ function ETHAddressField({
   onBlur,
   onChange
 }: Props) {
+  const errorMessage = typeof error === 'object' ? error.message : error;
+  const errorType = typeof error === 'object' ? error.type : undefined;
+
   // By destructuring 'field' in the rendered component we are mapping
   // the Inputs 'value' and 'onChange' props to Formiks handlers.
   return (
@@ -90,7 +98,8 @@ function ETHAddressField({
               <SInput
                 data-lpignore="true"
                 {...field}
-                inputError={error}
+                inputErrorType={errorType}
+                inputError={errorMessage}
                 marginBottom={'0'}
                 value={field.value.display}
                 placeholder={placeholder}

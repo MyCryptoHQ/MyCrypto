@@ -46,7 +46,9 @@ import {
   convertedToBaseUnit,
   baseToConvertedUnit,
   isValidPositiveNumber,
-  isTransactionFeeHigh
+  isTransactionFeeHigh,
+  isChecksumAddress,
+  isBurnAddress
 } from 'v2/services/EthService';
 import UnstoppableResolution from 'v2/services/UnstoppableService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
@@ -72,7 +74,7 @@ import {
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
 import { weiToFloat } from 'v2/utils';
 import { ResolutionError } from '@unstoppabledomains/resolution';
-import { isValidChecksumAddress } from 'ethereumjs-util';
+import { InlineMessageType } from 'v2/types/inlineMessages';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;
@@ -173,14 +175,47 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
     account: Yup.object().required(translateRaw('REQUIRED')),
     address: Yup.object({
       value: Yup.string()
-        .test('checksum-address', translateRaw('CHECKSUM_ERROR'), value =>
-          isValidChecksumAddress(value)
-        )
         .test(
           'check-eth-address',
           translateRaw('TO_FIELD_ERROR'),
           value => isValidETHAddress(value) || UnstoppableResolution.isValidDomain(value)
         )
+        // @ts-ignore Hack as Formik doesn't officially support warnings
+        // tslint:disable-next-line
+        .test('is-checksummed', translate('CHECKSUM_ERROR'), function(value) {
+          if (!isChecksumAddress(value)) {
+            return {
+              name: 'ValidationError',
+              type: InlineMessageType.INFO_CIRCLE,
+              message: translate('CHECKSUM_ERROR')
+            };
+          }
+          return true;
+        })
+        // @ts-ignore Hack as Formik doesn't officially support warnings
+        .test('check-sending-to-yourself', translateRaw('SENDING_TO_YOURSELF'), function(value) {
+          const account = this.parent.account;
+          if (!isEmpty(account) && account.address === value) {
+            return {
+              name: 'ValidationError',
+              type: InlineMessageType.INFO_CIRCLE,
+              message: translateRaw('SENDING_TO_YOURSELF')
+            };
+          }
+          return true;
+        })
+        // @ts-ignore Hack as Formik doesn't officially support warnings
+        // tslint:disable-next-line
+        .test('check-sending-to-burn', translateRaw('SENDING_TO_BURN_ADDRESS'), function(value) {
+          if (isBurnAddress(value)) {
+            return {
+              name: 'ValidationError',
+              type: InlineMessageType.INFO_CIRCLE,
+              message: translateRaw('SENDING_TO_BURN_ADDRESS')
+            };
+          }
+          return true;
+        })
     }).required(translateRaw('REQUIRED')),
     gasLimitField: Yup.number()
       .min(GAS_LIMIT_LOWER_BOUND, translateRaw('ERROR_8'))
