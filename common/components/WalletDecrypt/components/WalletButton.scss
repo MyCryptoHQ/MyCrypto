@@ -22,7 +22,7 @@
   margin: 0 $space-md $space;
 
   background: color(control-bg);
-  box-shadow: 0 1px 4px rgba(#000, 0.2);
+  box-shadow: 0 1px 4px color(wallet-button-box-shadow);
   border-radius: 8px;
   text-align: center;
   cursor: pointer;
@@ -41,7 +41,7 @@
     &:focus {
       transform: translateY(-2px);
       z-index: 2;
-      box-shadow: 0 1px 4px rgba(#000, 0.12), 0 4px 6px rgba(#000, 0.12);
+      box-shadow: 0 1px 4px color(box-shadow), 0 4px 6px color(box-shadow);
 
       .WalletButton-title {
         color: color(brand-primary);
@@ -54,7 +54,7 @@
 
     &:active {
       transform: translateY(-1px);
-      box-shadow: 0 1px 2px rgba(#000, 0.2), 0 3px 4px rgba(#000, 0.2);
+      box-shadow: 0 1px 2px color(wallet-button-box-shadow), 0 3px 4px color(wallet-button-box-shadow);
     }
   }
 
@@ -78,6 +78,7 @@
     font-size: $font-size-medium;
     margin-bottom: $space * 1.25;
     transition: color 150ms ease;
+    color: color(gray-base);
 
     &-icon {
       margin-right: 8px;
@@ -100,11 +101,13 @@
     color: shade-dark(0.65);
     font-size: $font-size-small;
     font-weight: lighter;
+    color: color(gray-base);
+    opacity: 70%;
   }
 
   &-example {
     font-size: $font-size-xs;
-    color: color(brand-danger-light);
+    color: color(brand-warning);
     @include ellipsis;
   }
 
@@ -137,7 +140,7 @@
 
         &-question-circle,
         &-eye {
-          color: shade-dark(0.5);
+          color: color(gray);
         }
 
         &-question-circle:hover {
@@ -208,7 +211,7 @@
         margin: 0;
         width: 48px;
         text-align: center;
-        border-left: 1px solid rgba(0, 0, 0, 0.1);
+        border-left: 1px solid color(mobile-wallet-icon-border);
 
         a {
           position: absolute;

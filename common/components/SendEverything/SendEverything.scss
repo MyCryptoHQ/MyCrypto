@@ -21,7 +21,7 @@ $default-opacity: 0.4;
   width: $width;
   margin-left: -$width;
   font-size: 1.4rem;
-  border-left: 1px solid #e5ecf3;
+  border-left: 1px solid color(code-border);
   opacity: $default-opacity;
   transition: $transition;
   animation: send-everything-enter 200ms ease 1;

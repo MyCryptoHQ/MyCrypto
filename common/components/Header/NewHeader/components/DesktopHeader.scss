@@ -1,16 +1,14 @@
-$header-background-color: #163150;
-$header-icon-color: #1eb8e7;
-$dropdown-background-color: #0f253f;
+@import 'common/sass/variables';
 
 .DesktopHeader {
   display: flex;
   flex-direction: column;
-  background: $header-background-color;
-  color: #fff;
-  border-bottom: 1px solid #3e546d;
+  background: color(header-bg);
+  color: color(white-clear);
+  border-bottom: 1px solid color(header-border);
 
   i {
-    color: $header-icon-color;
+    color: color(header-icons);
     width: 12px;
     height: 12px;
   }
@@ -18,7 +16,7 @@ $dropdown-background-color: #0f253f;
     display: flex;
     align-items: center;
     padding: 12px 50px;
-    border-bottom: 1px solid #3e546d;
+    border-bottom: 1px solid color(header-border);
     font-size: 14px;
     text-transform: uppercase;
 
@@ -34,9 +32,10 @@ $dropdown-background-color: #0f253f;
         display: inline;
         font-weight: bold;
         letter-spacing: 1px;
+        color: color(white-clear);
 
         a {
-          color: #fff;
+          color: color(white-clear);
         }
       }
     }
@@ -78,6 +77,7 @@ $dropdown-background-color: #0f253f;
         margin: 0;
         font-weight: bold;
         letter-spacing: 1px;
+        color: color(white-clear);
       }
       &-item {
         position: relative;
@@ -88,11 +88,11 @@ $dropdown-background-color: #0f253f;
         height: 58px;
 
         a {
-          color: #fff;
+          color: color(white-clear);
         }
         i {
           margin-left: 5px;
-
+          color: color(header-icons);
           &.create-icon {
             margin-right: 5px;
             margin-left: 0;
@@ -106,8 +106,8 @@ $dropdown-background-color: #0f253f;
         width: 200px;
         margin: 0;
         padding: 0;
-        background: $dropdown-background-color;
-        border: 1px solid #3e546d;
+        background: color(header-bg);
+        border: 1px solid color(header-border);
         text-transform: initial;
         list-style-type: none;
         cursor: initial;
@@ -118,12 +118,12 @@ $dropdown-background-color: #0f253f;
 
           a {
             display: block;
-            color: #fff;
+            color: color(white-clear);
             font-weight: normal;
             padding: 12px 8px;
 
             &:hover {
-              background: #293f59;
+              background: color(header-dropdown-hover);
             }
           }
         }

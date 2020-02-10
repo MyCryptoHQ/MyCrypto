@@ -28,7 +28,7 @@
     min-width: 360px;
     color: white;
     padding: 1rem;
-    background-color: #185475;
+    background-color: color(ens-bg);
 
     p,
     h4 {
@@ -36,7 +36,7 @@
     }
 
     &.is-light {
-      background-color: #1e92ba;
+      background-color: color(ens-light-bg);
     }
   }
 }

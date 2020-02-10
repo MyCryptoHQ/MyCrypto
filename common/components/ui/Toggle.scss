@@ -40,13 +40,9 @@ $travel-distance: 38px;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: color(slider-bg);
     -webkit-transition: $transition-time;
     transition: $transition-time;
-
-    @include theme('dark') {
-      background: #393f4c;
-    }
 
     &.round {
       border-radius: 34px;
@@ -63,7 +59,7 @@ $travel-distance: 38px;
       width: $slider-radius;
       left: 4px;
       bottom: 4px;
-      background-color: white;
+      background-color: color(slider);
       -webkit-transition: $transition-time;
       transition: $transition-time;
     }

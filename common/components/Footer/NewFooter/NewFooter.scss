@@ -1,11 +1,13 @@
+@import 'common/sass/variables';
+
 @mixin perfectly-centered {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-$footer-background: #163150;
-$footer-text-color: #fff;
+$footer-background: color(footer-bg-new);
+$footer-text-color: color(white-base);
 
 .mobile-only {
   display: block;
@@ -42,7 +44,7 @@ $footer-text-color: #fff;
   &-line {
     width: 150px;
     height: 2px;
-    background: #3f546c;
+    background: color(footer-rule);
   }
 
   @media (min-width: 800px) {
@@ -57,7 +59,7 @@ $footer-text-color: #fff;
   &-line {
     width: 2px;
     height: 220px;
-    background: #3f546c;
+    background: color(footer-rule);
   }
 
   @media (min-width: 800px) {
@@ -73,7 +75,7 @@ $footer-text-color: #fff;
   align-items: center;
   justify-content: center;
   background: $footer-background;
-  border-top: 1px solid #3e546d;
+  border-top: 1px solid color(footer-border-new);
 }
 
 .NewFooter {
