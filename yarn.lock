@@ -1842,10 +1842,10 @@
   dependencies:
     "@types/sizzle" "*"
 
-"@types/jspdf@1.3.3":
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/@types/jspdf/-/jspdf-1.3.3.tgz#6940e892da69fdbe0969b742c6bdd9e4c5da320b"
-  integrity sha512-DqwyAKpVuv+7DniCp2Deq1xGvfdnKSNgl9Agun2w6dFvR5UKamiv4VfYUgcypd8S9ojUyARFIlZqBrYrBMQlew==
+"@types/jspdf@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@types/jspdf/-/jspdf-1.3.0.tgz#4c336ec6c0547343e032d6d48ab75112e3c2535b"
+  integrity sha512-lbOCtX/1mANeb5Apf9QfQ/n3guPf+NzCvdNuRnPZpG3lXiG/e1Cr+Pv2AoCVu8+h8NtYczO6ftezeP4DDHrq4g==
 
 "@types/ledgerhq__hw-transport-u2f@4.21.1":
   version "4.21.1"
@@ -2002,10 +2002,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-slick@0.23.4":
-  version "0.23.4"
-  resolved "https://registry.yarnpkg.com/@types/react-slick/-/react-slick-0.23.4.tgz#c97e2a9e7e3d1933c68593b8e82752fab1e8ce53"
-  integrity sha512-vXoIy4GUfB7/YgqubR4H7RALo+pRdMYCeLgWwV3MPwl5pggTlEkFBTF19R7u+LJc85uMqC7RfsbkqPLMQ4ab+A==
+"@types/react-slick@0.23.3":
+  version "0.23.3"
+  resolved "https://registry.yarnpkg.com/@types/react-slick/-/react-slick-0.23.3.tgz#c9d14323a75f54f46a652fb745fe553aad091ce0"
+  integrity sha512-B6wU5ynINOolrByhoeJ448qZPjCFPcuhyQI5sjihjG8gQJuoTH6a4YQhuDm4umvbRVielJQANhptc8hmxA85IA==
   dependencies:
     "@types/react" "*"
 
@@ -2036,10 +2036,10 @@
   resolved "https://registry.yarnpkg.com/@types/recharts-scale/-/recharts-scale-1.0.0.tgz#348c9220d6d9062c44a9d585d686644a97f7e25d"
   integrity sha512-HR/PrCcxYb2YHviTqH7CMdL1TUhUZLTUKzfrkMhxm1HTa5mg/QtP8XMiuSPz6dZ6wecazAOu8aYZ5DqkNlgHHQ==
 
-"@types/recharts@1.8.5":
-  version "1.8.5"
-  resolved "https://registry.yarnpkg.com/@types/recharts/-/recharts-1.8.5.tgz#5436ae742485cd033910c611eeb9e4c13cbf55f7"
-  integrity sha512-3h/hVNnyOxDyAGhzRpa5y/QBp30vqDw7mUyV0JNoxWnjKM1h8SdgoYru3robamxsXkVa18rz/SVJ+MWDQw8GLg==
+"@types/recharts@1.1.17":
+  version "1.1.17"
+  resolved "https://registry.yarnpkg.com/@types/recharts/-/recharts-1.1.17.tgz#a5aa5791f0592d77d9c98a2c5ae1ae2af341730c"
+  integrity sha512-8cuyExlDcCV33jivuwRGxN2qLlaP3xgCAR/c+boJPpRa3fYhuQJML28vJnsVcDWWHi+6YL7n6lR+7q+jPccP6g==
   dependencies:
     "@types/d3-shape" "*"
     "@types/react" "*"
@@ -2163,7 +2163,6 @@
   resolved "https://registry.yarnpkg.com/@types/zxcvbn/-/zxcvbn-4.4.0.tgz#fbc1d941cc6d9d37d18405c513ba6b294f89b609"
   integrity sha512-GQLOT+SN20a+AI51y3fAimhyTF4Y0RG+YP3gf91OibIZ7CJmPFgoZi+ZR5a+vRbS01LbQosITWum4ATmJ1Z6Pg==
 
-<<<<<<< HEAD
 "@unstoppabledomains/resolution@1.0.24":
   version "1.0.24"
   resolved "https://registry.yarnpkg.com/@unstoppabledomains/resolution/-/resolution-1.0.24.tgz#7506d20e956104116d746d19d32b42a6b74fb421"
@@ -2177,10 +2176,8 @@
     idna-uts46-hx "^3.2.2"
     js-sha3 "0.8.0"
     node-fetch "2.6.0"
-"@walletconnect/browser@^1.0.0-beta.39":
-=======
+
 "@walletconnect/browser@1.0.0-beta.39":
->>>>>>> fixed ux bugs with signing and rendering of tx table
   version "1.0.0-beta.39"
   resolved "https://registry.yarnpkg.com/@walletconnect/browser/-/browser-1.0.0-beta.39.tgz#db46d57e78d7a5e0be75c349821ef7c873e87b61"
   integrity sha512-u6DI2atFSCUquvXd86p+EY/TVqg9iZf3MYMVbnht2hxmuypBwZvfLkqSxqP/98bmOwUrOwbAt3/fK8vZoSfXiA==

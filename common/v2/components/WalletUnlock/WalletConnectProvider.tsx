@@ -4,7 +4,6 @@ import translate, { translateRaw } from 'v2/translations';
 import { NetworkContext, isValidAddress } from 'v2/services';
 import { WalletId, FormData } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
-import { notificationsActions } from 'v2/features/NotificationsPanel';
 import { WalletFactory, WalletConnectContext } from 'v2/services/WalletService';
 
 import { Spinner } from '../Spinner';
@@ -17,7 +16,6 @@ interface OwnProps {
 }
 
 interface StateProps {
-  showNotification: notificationsActions.TShowNotification;
   isValidAddress: string; //getIsValidAddressFn;
 }
 
@@ -48,7 +46,6 @@ export function WalletConnectDecrypt({ formData, onUnlock }: OwnProps & StatePro
       typeof content === 'string' ||
       !isValidAddress(content.address, !network ? 1 : network.chainId)
     ) {
-      this.props.showNotification('danger', 'Not a valid address!');
       return;
     }
     onUnlock(WalletService.init(content.address));

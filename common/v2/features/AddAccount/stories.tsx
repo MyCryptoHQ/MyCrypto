@@ -45,7 +45,7 @@ export const getStories = (): IStory[] => [
   },
   {
     name: WalletId.WALLETCONNECT,
-    steps: [NetworkSelectPanel, WalletConnectProviderDecrypt, SaveAndRedirect]
+    steps: [NetworkSelectPanel, WalletConnectProviderDecrypt]
   },
   {
     name: WalletId.KEYSTORE_FILE,
