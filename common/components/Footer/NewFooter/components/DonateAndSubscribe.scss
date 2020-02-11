@@ -1,3 +1,5 @@
+@import 'common/sass/variables';
+
 @mixin no-margin-padding {
   margin: 0;
   padding: 0;
@@ -7,14 +9,14 @@
   font-family: Lato;
   font-size: 16px;
   font-weight: 500;
-  color: #fff;
+  color: color(white-base);
 }
 
 @mixin text {
   font-family: Lato;
   font-size: 14px;
   font-weight: 300;
-  color: #bbc2cb;
+  color: color(footer-text);
 }
 
 @mixin perfectly-centered {
@@ -39,11 +41,11 @@ $input-border-radius: 3px;
   justify-content: center;
   min-width: 110px;
   height: 32px;
-  box-shadow: 0 1px 1px 0 rgba(232, 234, 237, 0.5), inset 0 1px 3px 0 rgba(232, 234, 237, 0.5);
-  background-color: #344b64;
-  border: 1px solid #4a5d75;
+  box-shadow: 0 1px 1px 0 color(donation-button-shadow), inset 0 1px 3px 0 color(donation-button-shadow);
+  background-color: color(donation-button-bg);
+  border: 1px solid color(donation-button-border);
   border-radius: 6px;
-  color: #fff;
+  color: color(white-base);
 
   &:not(:last-of-type) {
     margin-bottom: $spacing-md;
@@ -96,7 +98,7 @@ $input-border-radius: 3px;
         height: 14px;
         margin-right: $spacing-sm;
         font-size: 14px;
-        color: #7ad832;
+        color: color(donate-button-check);
       }
 
       @media (min-width: 800px) {
@@ -146,24 +148,24 @@ $input-border-radius: 3px;
       input {
         height: $input-height;
         padding: $spacing-sm;
-        background: #142c46;
-        border: 1px solid #4d5f74;
+        background: color(subscribe-input-bg);
+        border: 1px solid color(subscribe-input-border);
         border-radius: $input-border-radius;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
         border-right: none;
-        color: #fff;
+        color: color(white-base);
       }
     }
     &-button {
       button {
         height: $input-height;
-        background: #027796;
+        background: color(subscribe-button-bg);
         border: none;
         border-radius: $input-border-radius;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
-        color: #fff;
+        color: color(white-base);
       }
     }
 

@@ -13,6 +13,11 @@
 
     &-text {
       padding-right: 8px;
+      color: color(text-color);
+    }
+
+    i {
+      color: color(text-color);
     }
   }
 }

@@ -8,11 +8,13 @@ $divider-size: 60px;
 
   &-title {
     margin-bottom: $space;
+    color: color(gray-base);
   }
 
   &-subtitle {
     max-width: 1040px;
     margin: 0 auto $space * 2;
+    color: color(gray-base);
   }
 
   &-suggestions {
@@ -21,6 +23,7 @@ $divider-size: 60px;
     justify-content: center;
     margin: $space 0;
     text-align: left;
+    color: color(gray-base);
   }
 
   &-types {
@@ -66,6 +69,13 @@ $divider-size: 60px;
   &-download {
     padding-bottom: $space;
 
+    a {
+      color: color(gray-light);
+    }
+    p {
+      color: color(gray);
+    }
+
     &-button {
       font-size: $font-size-medium-bump;
       border-radius: 4px;
@@ -93,14 +103,14 @@ $divider-size: 60px;
   display: flex;
   flex-direction: column;
   border: 1px solid shade-dark(0.12);
-  box-shadow: 0 3px 2px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 3px 2px color(box-shadow);
   background: color(control-bg);
   border-radius: 4px;
   transition: transform 100ms ease, box-shadow 100ms ease;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 4px 8px color(box-shadow);
   }
 }
 
@@ -114,18 +124,18 @@ $divider-size: 60px;
   border-top: 3px solid;
 
   &.is-hardware {
-    border-top-color: #41ccb4;
+    border-top-color: color(hardware-wallet-card-top-border);
   }
 
   &.is-metamask {
-    border-top-color: #f79220;
+    border-top-color: color(metamask-card-top-border);
   }
 
   &.is-parity {
-    border-top-color: #444;
+    border-top-color: color(parity-card-top-border);
 
     @include theme(dark) {
-      border-top-color: #FFF;
+      border-top-color: color(white-base);
     }
   }
 
@@ -142,7 +152,7 @@ $divider-size: 60px;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 4px 8px color(box-shadow);
   }
 
   &-name {
@@ -185,6 +195,7 @@ $divider-size: 60px;
     &-button {
       flex: 1;
       margin-bottom: $space-sm;
+      color: color(gray-base);
 
       &:last-child {
         margin: 0;

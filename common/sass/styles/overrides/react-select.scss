@@ -98,6 +98,7 @@
       top: 50%;
       transform: translateY(-50%);
       display: block;
+      color: color(text-color) !important;
     }
   }
   &-multi-value-wrapper {

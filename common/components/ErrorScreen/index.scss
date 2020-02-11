@@ -8,8 +8,8 @@
   code {
     display: block;
     word-wrap: break-word;
-    background: rgba(#fff, 0.25);
-    border: 1px solid rgba(#fff, 0.6);
+    background: color(error-code-bg);
+    border: 1px solid color(error-code-border);
     color: #FFF;
     width: 100%;
     padding: 10px;

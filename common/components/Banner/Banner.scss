@@ -1,19 +1,21 @@
+@import 'common/sass/variables';
+
 .BannerContainer {
-  background-color: #1eb8e7;
+  background-color: color(banner-bg);
   color: 'inherit';
   padding: 15px 10px;
   padding-right: 30px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  color: white;
+  color: color(white-base);
   & > img {
     vertical-align: top;
     margin-right: 15px;
     margin-top: 5px;
   }
   a {
-    color: white;
+    color: color(white-base);
     font-weight: 600;
     text-decoration: underline; 
   }  

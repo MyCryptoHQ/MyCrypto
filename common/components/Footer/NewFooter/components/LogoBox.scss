@@ -1,7 +1,9 @@
+@import 'common/sass/variables';
+
 @mixin logo-text {
   font-family: Lato;
   font-size: 10px;
-  color: #fff;
+  color: color(white-base);
 }
 
 @mixin perfectly-centered {

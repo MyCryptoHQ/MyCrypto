@@ -1,6 +1,4 @@
-$header-background-color: #163150;
-$header-icon-color: #1eb8e7;
-$dropdown-background-color: #0f253f;
+@import 'common/sass/variables';
 
 @mixin mobile-header-menu-segment {
   margin: 0;
@@ -25,9 +23,9 @@ $dropdown-background-color: #0f253f;
   width: 100%;
   min-width: 340px;
   padding: 19px 40px;
-  background: $header-background-color;
-  border-bottom: 1px solid #3e546d;
-  color: #fff;
+  background: color(header-bg);
+  border-bottom: 1px solid color(header-border);
+  color: color(white-clear);
 
   &-top {
     display: flex;
@@ -58,17 +56,17 @@ $dropdown-background-color: #0f253f;
     left: 0;
     width: 320px;
     height: calc(100vh - 80px);
-    border-top: 1px solid #3e546d;
-    border-right: 1px solid #3e546d;
-    background: $header-background-color;
-    color: #fff;
+    border-top: 1px solid color(header-border);
+    border-right: 1px solid color(header-border);
+    background: color(header-bg);
+    color: color(white-clear);
     overflow: auto;
 
     i {
-      color: $header-icon-color;
+      color: color(header-icons);
     }
     a {
-      color: #fff;
+      color: color(white-clear);
     }
     ul {
       list-style-type: none;
@@ -76,12 +74,12 @@ $dropdown-background-color: #0f253f;
     &-top {
       @include mobile-header-menu-segment;
 
-      border-bottom: 1px solid #3e546d;
+      border-bottom: 1px solid color(header-border);
     }
     &-mid {
       @include mobile-header-menu-segment;
 
-      border-bottom: 1px solid #3e546d;
+      border-bottom: 1px solid color(header-border);
     }
     &-bottom {
       @include mobile-header-menu-segment;
@@ -97,9 +95,10 @@ $dropdown-background-color: #0f253f;
         a {
           display: block;
           padding: 10px;
+          color: color(white-clear);
 
           &:hover {
-            background: #293f59;
+            background: color(header-dropdown-hover);
           }
         }
       }
