@@ -4,40 +4,44 @@ import styled from 'styled-components';
 import { Button, Typography } from '@mycrypto/ui';
 
 import { isUrl } from 'v2/utils';
-import { BREAK_POINTS } from 'v2/theme';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from 'v2/theme';
 import { Action } from '../types';
 
 const SContainer = styled('div')`
-  display: flex;
   align-items: center;
-  justify-content: center;
-  min-height: 120px;
-
-  margin-bottom: 20px;
+  background: ${COLORS.WHITE};
+  border-radius: 5px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.07);
-  border-radius: 3px;
-  background: #fff;
-  padding: 8px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: ${SPACING.BASE};
+  padding: ${SPACING.BASE};
 
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    width: 110px;
+    width: 30%;
   }
 
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: 100%;
-    padding-left: 40px;
-    padding-right: 35px;
+  }
+
+  transition: 200ms ease all;
+  opacity: 1;
+  &:hover {
+    transition: 200ms ease all;
+    transform: scale(1.02);
+    opacity: 0.7;
   }
 `;
 
 const SButton = styled(Button)<{ faded?: boolean }>`
+  align-items: center;
   display: flex;
   flex-direction: column;
+  height: 100%;
   justify-content: center;
-  align-items: center;
   text-align: center;
   width: 100%;
-  height: 100%;
   word-wrap: word-break;
   & > img {
     height: 50px;
@@ -58,30 +62,29 @@ const SButton = styled(Button)<{ faded?: boolean }>`
 const STitle = styled('div')`
   margin: 0;
   font-weight: bold;
-  color: #163150;
+  color: ${COLORS.BLUE_DARK_SLATE};
+  line-height: 1.4;
 
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    font-size: 14px;
-    padding-top: 2px;
-
+    font-size: ${FONT_SIZE.SM};
+    height: 2.8em;
+    padding-top: ${SPACING.XS};
     // The link for 'Get Hardware Wallet' is too long to use a line per word.
     word-spacing: ${({ isLonger }: { isLonger: boolean }) => (isLonger ? 'inherit' : '9999px')};
   }
 
   @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
-    padding-top: 0px;
-    font-size: 16px;
+    font-size: ${FONT_SIZE.BASE};
   }
 
   @media (min-width: ${BREAK_POINTS.SCREEN_LG}) {
-    padding-top: 0px;
-    font-size: 24px;
+    font-size: ${FONT_SIZE.XL};
   }
 `;
 
 const SDescription = styled('div')`
   display: none;
-  font-size: 16px;
+  font-size: ${FONT_SIZE.BASE};
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     display: block;
   }

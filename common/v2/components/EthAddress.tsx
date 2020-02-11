@@ -26,7 +26,7 @@ const Overrides = styled.div`
   }
   & button svg {
     height: 0.8em;
-    color: ${COLORS.CLOUDY_BLUE};
+    color: ${COLORS.BLUE_GREY};
   }
 `;
 interface Props {

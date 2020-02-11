@@ -11,7 +11,7 @@ import './Dashboard.scss';
 
 // Keep the same mobile width as an ActionTile
 const EmptyTile = styled.div`
-  width: 110px;
+  width: 30%;
 `;
 
 export default function Dashboard() {
@@ -65,7 +65,7 @@ export default function Dashboard() {
                 <ActionTile key={action.title} {...action} />
               ))}
             </div>
-            <div>
+            <div className="Dashboard-desktop-top-left-tokens">
               <TokenPanel />
             </div>
           </div>

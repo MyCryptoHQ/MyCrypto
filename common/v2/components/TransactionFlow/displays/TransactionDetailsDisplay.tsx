@@ -13,7 +13,7 @@ import { COLORS } from 'v2/theme';
 
 import './TransactionDetailsDisplay.scss';
 
-const { BRIGHT_SKY_BLUE } = COLORS;
+const { BLUE_BRIGHT } = COLORS;
 
 interface Props {
   baseAsset: Asset;
@@ -59,7 +59,7 @@ function TransactionDetailsDisplay({
           <div className="TransactionDetails-row-column">
             <Button
               basic={true}
-              color={BRIGHT_SKY_BLUE}
+              color={BLUE_BRIGHT}
               onClick={() => setShowDetails(!showDetails)}
               className="TransactionDetails-detailButton"
             >

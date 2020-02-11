@@ -33,7 +33,7 @@ import { ABIItem } from '../types';
 import { getParsedQueryString } from '../utils';
 import { isValidENSName } from 'v2/services/EthService';
 
-const { BRIGHT_SKY_BLUE } = COLORS;
+const { BLUE_BRIGHT } = COLORS;
 const { SCREEN_SM } = BREAK_POINTS;
 
 const NetworkSelectorWrapper = styled.div`
@@ -124,7 +124,7 @@ const ContractSelectLabelWrapper = styled.div`
 `;
 
 const DeleteLabel = styled(Label)`
-  color: ${BRIGHT_SKY_BLUE};
+  color: ${BLUE_BRIGHT};
   cursor: pointer;
 `;
 

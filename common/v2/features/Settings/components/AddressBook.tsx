@@ -12,7 +12,8 @@ import {
 } from 'v2/components';
 import { ExtendedAddressBook, AddressBook as IAddressBook } from 'v2/types';
 import { truncate } from 'v2/utils';
-import { BREAK_POINTS } from 'v2/theme';
+import { COLORS, SPACING, BREAK_POINTS } from 'v2/theme';
+import { translateRaw } from 'v2/translations';
 
 interface Props {
   addressBook: ExtendedAddressBook[];
@@ -22,23 +23,28 @@ interface Props {
 }
 
 const DeleteButton = styled(Button)`
+  align-items: center;
   align-self: flex-end;
   display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 0.7em;
+  justify-content: center;
   width: 100%;
 `;
 
 const AddAccountButton = styled(Button)`
-  color: #1eb8e7;
-  font-weight: bold;
-  margin-bottom: 15px;
+  color: ${COLORS.BLUE_BRIGHT};
+  padding: ${SPACING.BASE};
+  opacity: 1;
+  &:hover {
+    transition: 200ms ease all;
+    transform: scale(1.02);
+    opacity: 0.7;
+  }
 `;
 
 const BottomRow = styled.div`
-  margin-top: 0.875rem;
   text-align: center;
+  background: ${COLORS.BLUE_GREY_LIGHTEST};
 `;
 
 const Label = styled.span`
@@ -50,9 +56,9 @@ const SIdenticon = styled(Identicon)`
   > img {
     height: 2em;
   }
-  margin-right: 10px;
+  margin-right: ${SPACING.SM};
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    margin-right: 27px;
+    margin-right: ${SPACING.MD};
   }
 `;
 
@@ -133,7 +139,7 @@ export default function AddressBook({
       <CollapsibleTable breakpoint={450} {...addressBookTable} />
       <BottomRow>
         <AddAccountButton onClick={toggleFlipped} basic={true}>
-          + Add Address
+          {`+ ${translateRaw('ACCOUNT_LIST_TABLE_ADD_ACCOUNT')}`}
         </AddAccountButton>
       </BottomRow>
     </DashboardPanel>

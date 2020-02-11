@@ -15,7 +15,7 @@ import translate from 'v2/translations';
 import logo from 'assets/images/logo-mycrypto.svg';
 import { ScreenLockContext } from 'v2/features/ScreenLock/ScreenLockProvider';
 
-const { BRIGHT_SKY_BLUE } = COLORS;
+const { BLUE_BRIGHT } = COLORS;
 
 const Navbar = styled.nav`
   position: fixed;
@@ -242,7 +242,7 @@ const IconWrapper = styled(Icon) <IconWrapperProps>`
   font-size: 0.75rem;
 
   svg {
-    color: ${BRIGHT_SKY_BLUE};
+    color: ${BLUE_BRIGHT};
     ${props => props.subItems && 'transform: rotate(270deg);'};
   }
 `;
@@ -264,7 +264,7 @@ const PrefixIcon = styled.img<PrefixIconProps>`
   margin-right: 3px;
 
   svg {
-    color: ${BRIGHT_SKY_BLUE};
+    color: ${BLUE_BRIGHT};
   }
 `;
 

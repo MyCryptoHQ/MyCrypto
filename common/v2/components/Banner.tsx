@@ -71,7 +71,7 @@ const bannerConfig = (type: BannerType): Config => {
     case BannerType.ANNOUNCEMENT:
       return {
         color: COLORS.WHITE,
-        bgColor: COLORS.BRIGHT_SKY_BLUE,
+        bgColor: COLORS.BLUE_BRIGHT,
         icon: announcementSVG
       };
     case BannerType.ERROR:

@@ -5,8 +5,6 @@ import { Icon } from '@mycrypto/ui';
 import { COLORS } from 'v2/theme';
 import { InlineErrorMsg, Spinner } from 'v2/components';
 
-const { PASTEL_RED, BRIGHT_SKY_BLUE, DARK_SILVER, LIGHT_GREY } = COLORS;
-
 const MainWrapper = styled.div<WrapperProps>`
   margin-bottom: ${props => props.marginBottom};
   width: 100%;
@@ -47,11 +45,11 @@ const CustomInput = styled.input<CustomInputProps>`
     box-shadow: ${props => props.theme.outline};
   }
   ::placeholder {
-    color: ${DARK_SILVER};
+    color: ${COLORS.GREY_LIGHT};
     opacity: 1;
   }
-  border-color: ${props => (props.inputError ? PASTEL_RED : '')};
-  ${props => props.height && `height: ${props.height}`}
+  border-color: ${props => (props.inputError ? COLORS.PASTEL_RED : '')};
+  ${props => props.height && `height: ${props.height}`};
 `;
 
 const CustomTextArea = styled.textarea<CustomInputProps>`
@@ -66,10 +64,10 @@ const CustomTextArea = styled.textarea<CustomInputProps>`
     box-shadow: ${props => props.theme.outline};
   }
   ::placeholder {
-    color: ${DARK_SILVER};
+    color: ${COLORS.GREY_LIGHT};
     opacity: 1;
   }
-  border-color: ${props => (props.inputError ? PASTEL_RED : '')};
+  border-color: ${props => (props.inputError ? COLORS.PASTEL_RED : '')};
   resize:  ${props => (props.resizable ? 'default' : 'none')};
   ${props => props.height && `height: ${props.height}`};
   ${props => props.maxHeight && `max-height: ${props.maxHeight}`};
@@ -81,7 +79,7 @@ const InputWrapper = styled.div`
 
   input {
     :disabled {
-      background-color: ${LIGHT_GREY};
+      background-color: ${COLORS.GREY_LIGHTER};
     }
   }
 `;
@@ -95,7 +93,7 @@ const EyeIcon = styled(Icon)`
     margin-top: 6px;
     width: 23px;
     height: 23px;
-    color: ${(props: CustomIconProps) => (props.showPassword ? BRIGHT_SKY_BLUE : '')};
+    color: ${(props: CustomIconProps) => (props.showPassword ? COLORS.BLUE_BRIGHT : '')};
     cursor: pointer;
     user-select: none;
   }
@@ -121,12 +119,12 @@ const CustomIconWrapper = styled.div`
 
 const CustomIcon = styled.span`
   display: flex;
-  border-left: 1px solid ${COLORS.GEYSER_GREY};
+  border-left: 1px solid ${COLORS.GREY_GEYSER};
   img {
     margin-top: 2px;
     margin-bottom: 2px;
     margin-left: 8px;
-    color: ${BRIGHT_SKY_BLUE}};
+    color: ${COLORS.BLUE_BRIGHT}};
     cursor: pointer;
     user-select: none;
   }

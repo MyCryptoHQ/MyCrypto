@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 import { BannerType } from 'v2/types';
 import { Banner } from 'v2/components';
-import { BREAK_POINTS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING } from 'v2/theme';
+import { BREAK_POINTS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from 'v2/theme';
 import { DrawerContext, ErrorContext } from 'v2/features';
 import Header from './Header';
 import Footer from './Footer';
@@ -43,11 +43,11 @@ const SBanner = styled(Banner)`
 `;
 
 const SContainer = styled('div')`
-  padding: 15px 0;
+  padding: ${SPACING.BASE};
   max-width: ${p => (p.fullW ? '100%' : MAX_CONTENT_WIDTH)};
 
   @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
-    padding: 50px ${p => (p.fluid || p.fullW ? 0 : MIN_CONTENT_PADDING)};
+    padding: ${SPACING.MD} ${p => (p.fluid || p.fullW ? 0 : MIN_CONTENT_PADDING)};
   }
 
   ${({ centered }: LayoutConfig) =>
@@ -62,7 +62,7 @@ const SContainer = styled('div')`
       @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
         align-self: center;
       }
-    `}
+  `}
 `;
 
 export default function Layout({ config = {}, className = '', children }: Props) {

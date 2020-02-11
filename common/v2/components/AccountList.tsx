@@ -10,11 +10,10 @@ import {
   Network,
   RowDeleteOverlay,
   RouterLink,
-  Typography,
   EditableText
 } from 'v2/components';
 import { truncate } from 'v2/utils';
-import { BREAK_POINTS, COLORS, breakpointToNumber } from 'v2/theme';
+import { BREAK_POINTS, COLORS, SPACING, breakpointToNumber } from 'v2/theme';
 import { ExtendedAccount, StoreAccount, ExtendedAddressBook } from 'v2/types';
 import {
   AccountContext,
@@ -45,13 +44,13 @@ const LabelWithWallet = styled.span`
 `;
 
 const WalletTypeLabel = styled.div`
-  background: ${COLORS.MIDDLE_GREY};
   display: inline-block;
   text-align: center;
+  background: ${COLORS.GREY};
   border-radius: 600px;
+  color: ${COLORS.WHITE};
   font-size: 0.6em;
   padding: 3px 6px;
-  color: ${COLORS.WHITE};
 `;
 
 const SIdenticon = styled(Identicon)`
@@ -89,8 +88,8 @@ const FavoriteButton = styled(Button)`
     span {
       svg {
         path {
-          fill: ${(props: IFavoriteProps) => (props.favorited ? COLORS.GOLD : 'white')};
-          stroke: ${(props: IFavoriteProps) => (props.favorited ? COLORS.GOLD : '#7b8695')};
+          fill: ${(props: IFavoriteProps) => (props.favorited ? COLORS.GOLD : COLORS.WHITE)};
+          stroke: ${(props: IFavoriteProps) => (props.favorited ? COLORS.GOLD : COLORS.GREY)};
         }
       }
     }
@@ -110,17 +109,28 @@ const DeleteButton = styled(Button)`
 
 const TableContainer = styled.div`
   display: block;
-  max-height: 394px;
   overflow: auto;
+  flex: 1;
 `;
 
 const AccountListFooterWrapper = styled.div`
   & * {
-    color: ${COLORS.BRIGHT_SKY_BLUE};
+    color: ${COLORS.BLUE_BRIGHT};
   }
   & img {
     height: 1.1em;
     margin-right: 0.5em;
+  }
+`;
+
+const AddAccountButton = styled(Button)`
+  color: ${COLORS.BLUE_BRIGHT};
+  padding: ${SPACING.BASE};
+  opacity: 1;
+  &:hover {
+    transition: 200ms ease all;
+    transform: scale(1.02);
+    opacity: 0.7;
   }
 `;
 
@@ -159,7 +169,9 @@ export default function AccountList(props: AccountListProps) {
     return (
       <AccountListFooterWrapper>
         <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
-          <Typography>{`+ ${translateRaw('ACCOUNT_LIST_TABLE_ADD_ACCOUNT')}`}</Typography>
+          <AddAccountButton basic={true}>{`+ ${translateRaw(
+            'ACCOUNT_LIST_TABLE_ADD_ACCOUNT'
+          )}`}</AddAccountButton>
         </RouterLink>
       </AccountListFooterWrapper>
     );

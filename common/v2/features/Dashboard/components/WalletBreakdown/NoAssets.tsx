@@ -7,7 +7,7 @@ import { COLORS } from 'v2/theme';
 
 import addIcon from 'common/assets/images/icn-add-assets.svg';
 
-const { BRIGHT_SKY_BLUE } = COLORS;
+const { BLUE_BRIGHT } = COLORS;
 
 const NoAssetsWrapper = styled.div`
   width: 100%;
@@ -43,7 +43,7 @@ const NoAssetsDescription = styled.div`
   font-weight: normal;
 
   > a {
-    color: ${BRIGHT_SKY_BLUE};
+    color: ${BLUE_BRIGHT};
   }
 `;
 

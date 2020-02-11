@@ -7,7 +7,7 @@ import { AnalyticsService, ANALYTICS_CATEGORIES, RatesContext } from 'v2/service
 import { SettingsContext, StoreContext, AccountContext } from 'v2/services/Store';
 import { StoreAsset, TUuid } from 'v2/types';
 import { weiToFloat, convertToFiatFromAsset } from 'v2/utils';
-import { BREAK_POINTS } from 'v2/theme';
+import { BREAK_POINTS, SPACING } from 'v2/theme';
 import { Fiats } from 'v2/config';
 
 import { Balance } from './types';
@@ -16,13 +16,11 @@ import BalancesDetailView from './BalancesDetailView';
 import WalletBreakdownView from './WalletBreakdownView';
 import NoAccountsSelected from './NoAccountsSelected';
 
-const { SCREEN_MD } = BREAK_POINTS;
-
 const WalletBreakdownTop = styled.div`
   display: flex;
   flex-direction: column;
 
-  @media (min-width: ${SCREEN_MD}) {
+  @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
@@ -32,16 +30,20 @@ const WalletBreakdownTop = styled.div`
 const AccountDropdownWrapper = styled.div`
   width: 100%;
   max-width: 480px;
-  margin-bottom: 30px;
+  margin-bottom: ${SPACING.SM};
+
+  @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
+    margin-bottom: ${SPACING.BASE};
+  }
 `;
 
 const WalletBreakdownPanel = styled(Panel)`
   display: flex;
   flex-direction: column;
-  margin-top: 5px;
+  margin-top: ${SPACING.XS};
   padding: 0;
 
-  @media (min-width: ${SCREEN_MD}) {
+  @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
     flex-direction: row;
     margin-top: 0;
   }

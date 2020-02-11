@@ -19,7 +19,7 @@ import paritySignerIcon from 'common/assets/images/wallets/parity-signer.svg';
 import safeTIcon from 'common/assets/images/wallets/safe-t.png';
 
 const { SCREEN_SM, SCREEN_LG, SCREEN_XXL } = BREAK_POINTS;
-const { DARK_SLATE_BLUE, GREYISH_BROWN } = COLORS;
+const { BLUE_DARK_SLATE, GREYISH_BROWN } = COLORS;
 
 const MainPanel = styled(Panel)`
   padding: 25px 148px;
@@ -151,7 +151,7 @@ const WalletCardImg = styled.img`
 const WalletCardDescription = styled.p`
   font-size: 13px;
   font-weight: normal;
-  color: ${DARK_SLATE_BLUE};
+  color: ${BLUE_DARK_SLATE};
   margin-top: 5px;
 `;
 

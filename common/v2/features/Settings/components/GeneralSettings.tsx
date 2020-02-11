@@ -3,6 +3,7 @@ import { Button, Tooltip, Icon } from '@mycrypto/ui';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { COLORS, SPACING, BREAK_POINTS, FONT_SIZE } from 'v2/theme';
 import translate from 'v2/translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { ISettings } from 'v2/types';
@@ -11,17 +12,16 @@ import { ROUTE_PATHS } from 'v2/config';
 
 const Divider = styled.div`
   height: 2px;
-  margin-bottom: 15px;
-  background: #e8eaed;
+  margin-bottom: ${SPACING.BASE};
+  background: ${COLORS.GREY_ATHENS};
 `;
 
 const SettingsField = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 30px 29px 30px;
-
-  @media (max-width: 700px) {
+  padding: 0 ${SPACING.BASE} ${SPACING.BASE} ${SPACING.BASE};
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     display: block;
   }
 `;
@@ -29,25 +29,30 @@ const SettingsField = styled.div`
 const SettingsLabel = styled.div`
   display: flex;
   align-items: center;
-  font-size: 20px;
-  @media (max-width: 700px) {
+  font-size: ${FONT_SIZE.LG};
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: 100%;
   }
-`;
-
-const SettingsTooltipIcon = styled(Icon)`
-  margin-left: 10px;
-  height: 1em;
 `;
 
 const SettingsControl = styled.div`
   button {
-    margin-left: 15px;
+    margin-left: ${SPACING.SM};
   }
-  @media (max-width: 700px) {
-    margin-top: 15px;
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    margin-top: ${SPACING.SM};
     width: 100%;
   }
+`;
+
+const SettingsButton = styled(Button)`
+  width: 125px;
+  padding: ${SPACING.SM};
+`;
+
+const SettingsTooltipIcon = styled(Icon)`
+  margin-left: ${SPACING.SM};
+  height: 1em;
 `;
 
 const SelectContainer = styled.div`
@@ -60,11 +65,6 @@ const SelectContainer = styled.div`
     height: 2em;
     background: none;
   }
-`;
-
-const SettingsButton = styled(Button)`
-  width: 105px;
-  padding: 12px 12px;
 `;
 
 interface SettingsProps {
@@ -133,7 +133,14 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
           </SettingsControl>
         </SettingsField>
         <SettingsField>
-          <SettingsLabel>{translate('SETTINGS_INACTIVITY_LABEL')}</SettingsLabel>
+          <SettingsLabel>
+            {translate('SETTINGS_INACTIVITY_LABEL')}{' '}
+            <Tooltip tooltip={<span>{translate('SETTINGS_INACTIVITY_TOOLTIP')}</span>}>
+              <div>
+                <SettingsTooltipIcon icon="shape" />
+              </div>
+            </Tooltip>
+          </SettingsLabel>
           <SettingsControl>
             <SelectContainer>
               <select onChange={this.changeTimer} value={String(globalSettings.inactivityTimer)}>

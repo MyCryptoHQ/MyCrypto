@@ -3,7 +3,7 @@ import Typography from './Typography';
 import styled from 'styled-components';
 
 import editIcon from 'common/assets/images/icn-edit.svg';
-import { COLORS } from 'v2/theme';
+import { COLORS, SPACING } from 'v2/theme';
 
 const Wrapper = styled.div`
   display: flex;
@@ -12,20 +12,30 @@ const Wrapper = styled.div`
 `;
 
 const EditIcon = styled.img`
-  margin-left: 3px;
+  cursor: pointer;
+  padding: ${SPACING.XS} ${SPACING.SM};
+  opacity: 1;
+  &:hover {
+    transition: 200ms ease all;
+    transform: scale(1.02);
+    opacity: 0.7;
+  }
 `;
 
 const SInputField = styled.input`
-  border: 1px solid ${COLORS.ATHENS_GREY};
   border-radius: 6px;
-  padding: 6px 6px;
+  border: 2px solid ${COLORS.GREY_ATHENS};
   font-weight: 400;
+  width: auto;
+  padding: ${SPACING.XS};
 `;
 
 const STypography = styled(Typography)`
+  border-color: transparent;
+  line-height: 1.4;
   &:hover {
+    border-bottom: 1px ${COLORS.BLUE_GREY} dashed;
     cursor: pointer;
-    border-bottom: 1px ${COLORS.CLOUDY_BLUE} dashed;
   }
 `;
 

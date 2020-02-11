@@ -15,7 +15,6 @@ import existingWalletIcon from 'common/assets/images/icn-existing-wallet.svg';
 import signInIcon from 'common/assets/images/returning.svg';
 
 const { SCREEN_SM, SCREEN_LG, SCREEN_XL, SCREEN_XXL } = BREAK_POINTS;
-const { GREYISH_BROWN, SILVER } = COLORS;
 
 const MainPanel = styled(Panel)`
   padding-left: 148px;
@@ -72,7 +71,7 @@ const Title = styled.p`
   font-size: 3.1vw;
   font-weight: 900;
   line-height: normal;
-  color: ${GREYISH_BROWN};
+  color: ${COLORS.GREYISH_BROWN};
   @media (max-width: ${SCREEN_SM}) {
     font-size: 25px;
   }
@@ -88,7 +87,7 @@ const Description = styled.p`
   margin-top: 8px;
   font-weight: normal;
   max-width: 400px;
-  color: ${GREYISH_BROWN};
+  color: ${COLORS.GREYISH_BROWN};
   white-space: pre-line;
 
   @media (max-width: ${SCREEN_SM}) {
@@ -125,7 +124,7 @@ const ActionCardWrapper = styled.div`
   margin-bottom: 15px;
   border-radius: 3px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.07);
-  border: solid 1px ${SILVER};
+  border: solid 1px ${COLORS.GREY_LIGHTEST};
   cursor: pointer;
   width: 30vw;
   max-width: 450px;
@@ -168,7 +167,7 @@ const ActionName = styled.p`
   font-size: 1.6vw;
   font-weight: bold;
   margin-bottom: 0;
-  color: ${GREYISH_BROWN};
+  color: ${COLORS.GREYISH_BROWN};
 
   @media (max-width: ${SCREEN_SM}) {
     font-size: 16px;
@@ -182,7 +181,7 @@ const ActionName = styled.p`
 const ActionDescription = styled.p`
   font-size: 1.1vw;
   font-weight: normal;
-  color: ${GREYISH_BROWN};
+  color: ${COLORS.GREYISH_BROWN};
 
   @media (max-width: ${SCREEN_SM}) {
     margin-top: 5px;

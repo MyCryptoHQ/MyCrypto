@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Heading } from '@mycrypto/ui';
 
-import { COLORS } from 'v2/theme';
+import { COLORS, FONT_SIZE, SPACING } from 'v2/theme';
 
 import settingsIcon from 'common/assets/images/icn-settings.svg';
 
@@ -17,7 +17,7 @@ const SRouterLink = styled(RouterLink)`
   & span,
   p,
   div {
-    color: ${COLORS.BRIGHT_SKY_BLUE};
+    color: ${COLORS.BLUE_BRIGHT};
   }
   & img {
     margin-right: 0.5em;
@@ -25,11 +25,14 @@ const SRouterLink = styled(RouterLink)`
 `;
 
 const Content = styled.div`
-  padding-left: 15px;
-  padding-right: 15px;
+  padding: ${SPACING.BASE};
 `;
 
 const DPanel = styled(Panel)`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin: 0 0 ${SPACING.BASE} 0;
   padding: 0;
 `;
 
@@ -37,23 +40,22 @@ const DHeadingWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px;
+  padding: ${SPACING.BASE};
 `;
 
 const DFooterWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 30px 0;
-  background: #fafcfc;
+  background: ${COLORS.BLUE_GREY_LIGHTEST};
 `;
 
 const DHeading = styled(Heading)`
   && {
     margin: 0;
-    font-size: 24px;
+    font-size: ${FONT_SIZE.XL};
     font-weight: bold;
-    color: #424242;
+    color: ${COLORS.BLUE_DARK_SLATE};
   }
 `;
 
