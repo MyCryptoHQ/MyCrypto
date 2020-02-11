@@ -88,7 +88,7 @@ export function TokenList(props: TokenListProps) {
     <DashboardPanel
       heading={translateRaw('TOKENS')}
       headingRight={
-        <div>
+        <div style={{ minWidth: '170px', textAlign: 'right' }}>
           <StyledButton onClick={() => handleScanTokens()}>
             {translateRaw('SCAN_TOKENS_SHORT')}
           </StyledButton>
