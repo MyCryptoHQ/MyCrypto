@@ -25,7 +25,8 @@ const TabWrapper = styled.div<TabWrapperProps>`
   ${props =>
     props.selected &&
     `background-color: ${BLUE_BRIGHT};
-     color: ${WHITE};`} padding: 12px 20px;
+     color: ${WHITE};`}
+  padding: 12px 20px;
   text-align: center;
   display: flex;
   justify-content: center;
