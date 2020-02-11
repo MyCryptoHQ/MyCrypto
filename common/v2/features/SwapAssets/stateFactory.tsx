@@ -100,7 +100,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       return;
     }
 
-    if(value.length === 0) {
+    if (value.length === 0) {
       setState((prevState: SwapState) => ({
         ...prevState,
         toAmount: '',
@@ -109,7 +109,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       return;
     }
 
-    if(parseFloat(value)<=0) {
+    if (parseFloat(value) <= 0) {
       setState((prevState: SwapState) => ({
         ...prevState,
         isCalculatingFromAmount: false,
@@ -131,7 +131,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       setState((prevState: SwapState) => ({
         ...prevState,
         isCalculatingFromAmount: false,
-        fromAmount: (Number(value) * price).toString(),
+        fromAmount: (Number(value) * price + Number(value) * price * 0.025).toString(),
         fromAmountError: '',
         toAmountError: '',
         swapPrice: price
@@ -156,7 +156,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       return;
     }
 
-    if(value.length === 0) {
+    if (value.length === 0) {
       setState((prevState: SwapState) => ({
         ...prevState,
         toAmount: '',
@@ -165,7 +165,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       return;
     }
 
-    if(parseFloat(value)<=0) {
+    if (parseFloat(value) <= 0) {
       setState((prevState: SwapState) => ({
         ...prevState,
         isCalculatingToAmount: false,
@@ -188,7 +188,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       setState((prevState: SwapState) => ({
         ...prevState,
         isCalculatingToAmount: false,
-        toAmount: (Number(value) * price).toString(),
+        toAmount: ((Number(value) - Number(value) * 0.025) * price).toString(),
         fromAmountError: '',
         toAmountError: '',
         swapPrice: price
