@@ -30,6 +30,7 @@ import { ProviderHandler } from 'v2/services/EthService';
 
 import { TStepAction } from './types';
 import { processFormDataToTx, decodeTransaction } from './helpers';
+import { bufferToHex } from 'ethereumjs-util';
 
 const txConfigInitialState = {
   tx: {
@@ -125,7 +126,14 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
       .finally(cb);
   };
 
-  const handleSignedTx: TStepAction = (payload: ISignedTx, cb) => {
+  const handleSignedTx: TStepAction = (payload: any, cb) => {
+    let signedTx = payload;
+    // Used when signedTx is a buffer instead of a string.
+    // Hardware wallets return a buffer.
+    if (typeof signedTx === 'object') {
+      signedTx = bufferToHex(signedTx);
+    }
+
     const decodedTx = decodeTransaction(payload);
     const networkDetected = getNetworkByChainId(decodedTx.chainId, networks);
     const contractAsset = getAssetByContractAndNetwork(
@@ -139,7 +147,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
 
     setState((prevState: State) => ({
       ...prevState,
-      signedTx: payload, // keep a reference to signedTx;
+      signedTx, // keep a reference to signedTx;
       txConfig: {
         rawTransaction: prevState.txConfig.rawTransaction,
         receiverAddress: contractAsset ? decodeTransfer(decodedTx.data)._to : decodedTx.to,
@@ -194,7 +202,8 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
 
   const txFactoryState = {
     txConfig: state.txConfig,
-    txReceipt: state.txReceipt
+    txReceipt: state.txReceipt,
+    signedTx: state.signedTx
   };
 
   return {

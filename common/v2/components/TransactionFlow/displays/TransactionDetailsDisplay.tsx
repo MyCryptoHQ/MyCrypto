@@ -145,7 +145,7 @@ function TransactionDetailsDisplay({
                 <div className="TransactionDetails-row stacked">
                   <div className="TransactionDetails-row-column">Signed Transaction:</div>
                   <div className="TransactionDetails-row-data">
-                    <CopyableCodeBlock>{signedTransaction}></CopyableCodeBlock>
+                    <CopyableCodeBlock>{signedTransaction}</CopyableCodeBlock>
                   </div>
                 </div>
               </>
