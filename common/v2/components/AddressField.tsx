@@ -3,10 +3,11 @@ import { Identicon } from '@mycrypto/ui';
 import { FieldProps, Field } from 'formik';
 import styled from 'styled-components';
 
-import { DomainStatus, InputField } from 'v2/components';
+import { DomainStatus } from 'v2/components';
 import { Network, InlineMessageType } from 'v2/types';
 import { monospace } from 'v2/theme';
 import { ResolutionError } from '@unstoppabledomains/resolution';
+import InputField from './InputField';
 /*
   Eth address field to be used within a Formik Form
   - the 'fieldname' must exist wihtin the Formik default fields

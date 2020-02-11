@@ -4,7 +4,7 @@ import { Icon } from '@mycrypto/ui';
 
 import { COLORS } from 'v2/theme';
 import { InlineMessage, Spinner } from 'v2/components';
-import { InlineMessageType } from 'v2/types/inlineMessages';
+import { InlineMessageType } from 'v2/types';
 
 const MainWrapper = styled.div<WrapperProps>`
   margin-bottom: ${props => props.marginBottom};

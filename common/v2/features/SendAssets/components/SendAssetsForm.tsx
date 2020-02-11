@@ -72,7 +72,7 @@ import {
   validateAmountField
 } from './validators/validators';
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
-import { weiToFloat } from 'v2/utils';
+import { weiToFloat, formatSupportEmail } from 'v2/utils';
 import { ResolutionError } from '@unstoppabledomains/resolution';
 import { InlineMessageType } from 'v2/types/inlineMessages';
 
@@ -195,7 +195,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
         // @ts-ignore Hack as Formik doesn't officially support warnings
         .test('check-sending-to-yourself', translateRaw('SENDING_TO_YOURSELF'), function(value) {
           const account = this.parent.account;
-          if (!isEmpty(account) && account.address === value) {
+          if (!isEmpty(account) && account.address.toLowerCase() === value.toLowerCase()) {
             return {
               name: 'ValidationError',
               type: InlineMessageType.INFO_CIRCLE,
@@ -232,15 +232,21 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
       .min(0, translateRaw('ERROR_11'))
       .required(translateRaw('REQUIRED'))
       .typeError(translateRaw('ERROR_11'))
-      .test('check-nonce', translateRaw('NONCE_ERROR'), async function(value) {
-        const account = this.parent.account;
-        const network = this.parent.network;
-        if (!isEmpty(account)) {
-          const nonce = await getNonce(network, account);
-          return Math.abs(value - nonce) < 10;
+      .test(
+        'check-nonce',
+        // @ts-ignore Hack to allow for returning of Markdown
+        translate('NONCE_ERROR', { $link: formatSupportEmail('Send Page: Nonce Error') }),
+        // @ts-ignore Hack to allow for returning of Markdown
+        async function(value) {
+          const account = this.parent.account;
+          const network = this.parent.network;
+          if (!isEmpty(account)) {
+            const nonce = await getNonce(network, account);
+            return Math.abs(value - nonce) < 10;
+          }
+          return true;
         }
-        return true;
-      })
+      )
   });
 
   const validAccounts = accounts.filter(account => account.wallet !== WalletId.VIEW_ONLY);
