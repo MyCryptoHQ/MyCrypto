@@ -48,7 +48,8 @@ import {
   isValidPositiveNumber,
   isTransactionFeeHigh,
   isChecksumAddress,
-  isBurnAddress
+  isBurnAddress,
+  isValidENSName
 } from 'v2/services/EthService';
 import UnstoppableResolution from 'v2/services/UnstoppableService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
@@ -178,7 +179,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
         .test(
           'check-eth-address',
           translateRaw('TO_FIELD_ERROR'),
-          value => isValidETHAddress(value) || UnstoppableResolution.isValidDomain(value)
+          value => isValidETHAddress(value) || isValidENSName(value)
         )
         // @ts-ignore Hack as Formik doesn't officially support warnings
         // tslint:disable-next-line
@@ -258,15 +259,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
         onSubmit={fields => {
           onComplete(fields);
         }}
-        render={({
-          errors,
-          setFieldValue,
-          setFieldError,
-          setFieldTouched,
-          touched,
-          values,
-          handleChange
-        }) => {
+        render={({ errors, setFieldValue, setFieldTouched, touched, values, handleChange }) => {
           const toggleAdvancedOptions = () => {
             setFieldValue('advancedTransaction', !values.advancedTransaction);
           };
@@ -323,7 +316,6 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                 ...values.address,
                 value: ''
               });
-              setFieldError('address', translateRaw('TO_FIELD_ERROR'));
               if (UnstoppableResolution.isResolutionError(err)) {
                 setResolutionError(err);
               } else throw err;
