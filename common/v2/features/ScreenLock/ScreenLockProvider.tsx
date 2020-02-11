@@ -73,7 +73,6 @@ class ScreenLockProvider extends Component<
     if (
       (this.state.shouldAutoLock || !prevProps.password) &&
       this.props.password &&
-      this.props.password !== '' &&
       isEmpty(this.props.encryptedDbState)
     ) {
       const encryptedData = await AES.encrypt(
