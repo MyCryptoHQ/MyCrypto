@@ -49,12 +49,10 @@ export const DatabaseService = <T>(
   return {
     db: getDb(),
     updateDb: (data: T) => {
-      if (!data) return;
       const newDb: T = {
         ...data,
         mtime: Date.now()
       };
-
       setDb(newDb);
     },
     resetDb,
