@@ -9,6 +9,7 @@ import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { ISettings } from 'v2/types';
 import { DashboardPanel } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
+import { COLORS } from 'v2/theme';
 
 const Divider = styled.div`
   height: 2px;
@@ -56,7 +57,7 @@ const SettingsTooltipIcon = styled(Icon)`
 `;
 
 const SelectContainer = styled.div`
-  border: 0.125em solid #007896;
+  border: 0.125em solid ${COLORS.BRAND_PRIMARY};
   padding: 0.6rem;
   width: 205px;
   text-align: center;

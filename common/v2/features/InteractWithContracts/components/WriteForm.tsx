@@ -14,6 +14,7 @@ import {
   hexWeiToString
 } from 'v2/services';
 import { translateRaw } from 'v2/translations';
+import { COLORS } from 'v2/theme';
 
 import { getAccountsInNetwork } from '../helpers';
 import { ABIItem } from '../types';
@@ -110,7 +111,7 @@ export default function WriteForm(props: Props) {
         )}
       </AccountDropdownWrapper>
 
-      <ActionButton onClick={() => handleSubmit(currentFunction)}>
+      <ActionButton color={COLORS.WHITE} onClick={() => handleSubmit(currentFunction)}>
         {translateRaw('ACTION_17')}
       </ActionButton>
     </WriteActionWrapper>
