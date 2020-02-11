@@ -10,24 +10,25 @@ import receiveIcon from 'common/assets/images/icn-receive.svg';
 import ledgerIcon from 'common/assets/images/wallets/ledger.svg';
 import trezorIcon from 'common/assets/images/wallets/trezor.svg';
 
-const randomWallet = () => {
-  const hardwareWallets = [
-    {
-      icon: ledgerIcon,
-      title: translateRaw('DASHBOARD_ACTIONS_GET_WALLET_TITLE'),
-      link: EXT_URLS.LEDGER_REFERRAL.path,
-      description: translateRaw('DASHBOARD_ACTIONS_GET_WALLET_SUBTITLE', { $wallet: 'Ledger' })
-    },
-    {
-      icon: trezorIcon,
-      title: translateRaw('DASHBOARD_ACTIONS_GET_WALLET_TITLE'),
-      link: EXT_URLS.TREZOR_REFERRAL.path,
-      description: translateRaw('DASHBOARD_ACTIONS_GET_WALLET_SUBTITLE', { $wallet: 'Trezor' })
-    }
-  ];
+const selectRandomAction = (actionsList: Action[]) =>
+  actionsList[Math.floor(Math.random() * actionsList.length)];
 
-  return hardwareWallets[Math.floor(Math.random() * hardwareWallets.length)];
-};
+const hardwareWallets: Action[] = [
+  {
+    icon: ledgerIcon,
+    faded: true,
+    title: translateRaw('DASHBOARD_ACTIONS_GET_WALLET_TITLE'),
+    link: EXT_URLS.LEDGER_REFERRAL.path,
+    description: translateRaw('DASHBOARD_ACTIONS_GET_WALLET_SUBTITLE', { $wallet: 'Ledger' })
+  },
+  {
+    icon: trezorIcon,
+    faded: true,
+    title: translateRaw('DASHBOARD_ACTIONS_GET_WALLET_TITLE'),
+    link: EXT_URLS.TREZOR_REFERRAL.path,
+    description: translateRaw('DASHBOARD_ACTIONS_GET_WALLET_SUBTITLE', { $wallet: 'Trezor' })
+  }
+];
 
 export const actions: Action[] = [
   {
@@ -54,5 +55,5 @@ export const actions: Action[] = [
     link: ROUTE_PATHS.REQUEST_ASSETS.path,
     description: translateRaw('DASHBOARD_ACTIONS_REQUEST_ASSETS_SUBTITLE')
   },
-  randomWallet()
+  selectRandomAction(hardwareWallets)
 ];
