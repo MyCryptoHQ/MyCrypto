@@ -480,7 +480,7 @@
     "DASHBOARD_ACTIONS_REQUEST_ASSETS_TITLE": "Request Assets",
     "DASHBOARD_ACTIONS_REQUEST_ASSETS_SUBTITLE": "Request a payment to your account",
     "DASHBOARD_ACTIONS_GET_WALLET_TITLE": "Get a Hardware Wallet",
-    "DASHBOARD_ACTIONS_GET_WALLET_SUBTITLE": " Ensure your assets stay safe & offline",
+    "DASHBOARD_ACTIONS_GET_WALLET_SUBTITLE": " Protect your founds with $wallet",
     "RECENT_TX_LIST_NO_TRANSACTIONS": "Your MyCrypto Transactions Will Appear Here!",
     "RECENT_TX_LIST_NO_TRANSACTIONS_MORE": "You can send ETH or Tokens with any of your accounts on MyCrypto to see your transactions.",
     "RECENT_TX_LIST_LABEL_SENT": "$ticker Sent",

@@ -30,7 +30,7 @@ const SContainer = styled('div')`
   }
 `;
 
-const SButton = styled(Button)`
+const SButton = styled(Button)<{ faded?: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -40,7 +40,7 @@ const SButton = styled(Button)`
   height: 100%;
   word-wrap: word-break;
   & > img {
-    width: 50px;
+    height: 50px;
     display: block;
   }
 
@@ -49,7 +49,8 @@ const SButton = styled(Button)`
     justify-content: space-between;
     text-align: left;
     & > img {
-      width: 54px;
+      opacity: ${props => (props.faded ? '.8' : 'inherit')};
+      height: 54px;
       order: 1;
     }
 `;
@@ -87,7 +88,7 @@ const SDescription = styled('div')`
 `;
 
 type Props = RouteComponentProps<{}> & Action;
-function ActionTile({ icon, title, description, link, history }: Props) {
+function ActionTile({ icon, faded, title, description, link, history }: Props) {
   const goToExternalLink = (url: string) => window.open(url, '_blank');
   const goToAppRouter = (path: string) => history.push(path);
 
@@ -95,7 +96,12 @@ function ActionTile({ icon, title, description, link, history }: Props) {
 
   return (
     <SContainer className="ActionTile">
-      <SButton basic={true} className="ActionTile-button" onClick={() => action(link)}>
+      <SButton
+        basic={true}
+        faded={faded}
+        className="ActionTile-button"
+        onClick={() => action(link)}
+      >
         <img className="ActionTile-button-icon" src={icon} alt={title} />
         <Typography as="div">
           <STitle isLonger={title.length > 15}>{title}</STitle>
