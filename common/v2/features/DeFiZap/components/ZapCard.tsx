@@ -5,7 +5,11 @@ import { RouterLink } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
 
 import { fetchRiskText } from '../config';
-import { COLORS } from 'v2/theme';
+import moderateRisk from 'assets/images/defizap/moderateRisk.svg';
+import conservativeRisk from 'assets/images/defizap/conservativeRisk.svg';
+import insaneRisk from 'assets/images/defizap/insaneRisk.svg';
+import ludicrousRisk from 'assets/images/defizap/ludicrousRisk.svg';
+import { COLORS, BREAK_POINTS } from 'v2/theme';
 
 const ZapCardContainer = styled('li')`
   background: #ffffff;
@@ -16,7 +20,14 @@ const ZapCardContainer = styled('li')`
   flex: 1;
   margin-bottom: 0px;
   &:not(:last-child) {
-    margin-right: 15px;
+    margin-bottom: 15px;
+  }
+
+  @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
+    &:not(:last-child) {
+      margin-right: 15px;
+      margin-bottom: 0px;
+    }
   }
 `;
 
@@ -33,7 +44,7 @@ const ZapCardHeader = styled('div')`
 const ZapCardContent = styled('div')`
   display: flex;
   flex: 1;
-  padding: 15px 15px 0 15px;
+  padding: 0px 15px 0 15px;
   flex-direction: column;
 `;
 
@@ -46,10 +57,11 @@ const ZapCardContentRow = styled('div')`
 
 const ZapCardContentBottom = styled('div')`
   display: flex;
-  padding: 30px 0;
+  padding: 30px 15px;
   height: 24px;
   flex-direction: row;
   align-items: center;
+  text-align: center;
   justify-content: center;
   color: #1eb8e7;
   font-weight: normal;
@@ -93,15 +105,15 @@ const ZapCard = ({ config }: any) => {
   const selectImageGivenRisk = (risk: number) => {
     switch (risk) {
       case 1:
-        return 'https://via.placeholder.com/32';
+        return conservativeRisk;
       case 2:
-        return 'https://via.placeholder.com/32';
+        return moderateRisk;
       case 3:
-        return 'https://via.placeholder.com/32';
+        return moderateRisk;
       case 4:
-        return 'https://via.placeholder.com/32';
+        return insaneRisk;
       case 5:
-        return 'https://via.placeholder.com/32';
+        return ludicrousRisk;
     }
   };
 
@@ -117,8 +129,8 @@ const ZapCard = ({ config }: any) => {
             <img src={'https://via.placeholder.com/52'} />
           </ZapCardImgSection>
           <ZapCardNameSection>
-            <h5>{config.name}</h5>
-            <p>{config.key}</p>
+            <h5>{config.title}</h5>
+            <p>{config.name}</p>
           </ZapCardNameSection>
         </ZapCardContentHeaderRow>
         <ZapCardContentRow>

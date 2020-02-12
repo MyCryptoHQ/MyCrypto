@@ -48,6 +48,9 @@ export default function Dashboard() {
             dashboard={true}
           />
         </div>
+        <div className="Dashboard-mobile-section">
+          <DashboardZapCTA className="Dashboard-mobile-modifiedPanel" />
+        </div>
         {!isUnlockVIP && <BannerAd />}
         <div className="Dashboard-mobile-section">
           <RecentTransactionList accountsList={currentAccounts} />

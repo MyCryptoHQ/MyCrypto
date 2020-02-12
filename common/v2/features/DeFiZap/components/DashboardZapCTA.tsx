@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { DashboardPanel, Typography, RouterLink } from 'v2/components';
-import { COLORS } from 'v2/theme';
+import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { ROUTE_PATHS } from 'v2/config';
 
 import { ZAPS_CONFIG } from '../config';
@@ -13,9 +13,17 @@ const CTAContent = styled('ul')`
   display: flex;
   padding: 0px 15px;
   margin: 0px;
+  flex-direction: column;
+  @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
+    flex-direction: row;
+  }
 `;
 
 const FooterWrapper = styled.div`
+  height: 67px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   & * {
     color: ${COLORS.BLUE_BRIGHT};
   }
