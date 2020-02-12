@@ -17,7 +17,7 @@ const CTAContent = styled('ul')`
 
 const FooterWrapper = styled.div`
   & * {
-    color: ${COLORS.BRIGHT_SKY_BLUE};
+    color: ${COLORS.BLUE_BRIGHT};
   }
   & img {
     height: 1.1em;

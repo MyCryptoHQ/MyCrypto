@@ -75,7 +75,7 @@ const ZapCardNameSection = styled('div')`
     font-weight: bold;
   }
   & p {
-    color: ${COLORS.MIDDLE_GREY};
+    color: ${COLORS.GREY};
   }
 `;
 

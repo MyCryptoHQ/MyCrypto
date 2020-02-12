@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Button, AccountDropdown, InlineErrorMsg, AmountInput } from 'v2/components';
+import { Button, AccountDropdown, InlineMessage, AmountInput } from 'v2/components';
 import { ZapInteractionState, ISimpleTxFormFull } from '../types';
 import styled from 'styled-components';
 import { Formik, Form, Field, FieldProps } from 'formik';
@@ -100,9 +100,9 @@ const ZapForm = (props: Props) => {
                             placeholder={'0.00'}
                           />
                           {errors && touched && touched.amount ? (
-                            <InlineErrorMsg className="SendAssetsForm-errors">
+                            <InlineMessage className="SendAssetsForm-errors">
                               {errors.amount}
-                            </InlineErrorMsg>
+                            </InlineMessage>
                           ) : null}
                         </>
                       );
