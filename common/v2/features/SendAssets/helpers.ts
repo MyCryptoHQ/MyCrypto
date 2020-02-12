@@ -24,7 +24,7 @@ import {
   encodeTransfer
 } from 'v2/services/EthService';
 
-export function decodeTransaction(signedTx: string) {
+export function decodeTransaction(signedTx: utils.Arrayish) {
   const decodedTransaction = utils.parseTransaction(signedTx);
   const gasLimit = bigNumGasLimitToViewable(decodedTransaction.gasLimit);
   const gasPriceGwei = bigNumGasPriceToViewableGwei(decodedTransaction.gasPrice);

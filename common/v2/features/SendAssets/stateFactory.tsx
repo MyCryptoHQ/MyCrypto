@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { bufferToHex } from 'ethereumjs-util';
+import { Arrayish, hexlify } from 'ethers/utils';
 
 import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
 import {
@@ -126,13 +126,10 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
       .finally(cb);
   };
 
-  const handleSignedTx: TStepAction = (payload: any, cb) => {
-    let signedTx = payload;
+  const handleSignedTx: TStepAction = (payload: Arrayish, cb) => {
+    const signedTx = hexlify(payload);
     // Used when signedTx is a buffer instead of a string.
     // Hardware wallets return a buffer.
-    if (typeof signedTx === 'object') {
-      signedTx = bufferToHex(signedTx);
-    }
 
     const decodedTx = decodeTransaction(payload);
     const networkDetected = getNetworkByChainId(decodedTx.chainId, networks);
@@ -200,7 +197,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
     cb();
   };
 
-  const txFactoryState = {
+  const txFactoryState: State = {
     txConfig: state.txConfig,
     txReceipt: state.txReceipt,
     signedTx: state.signedTx
