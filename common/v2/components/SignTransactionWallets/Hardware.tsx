@@ -4,7 +4,7 @@ import { ExtendedAccount as IExtendedAccount, ITxReceipt, ITxObject, ISignedTx }
 import { WALLETS_CONFIG } from 'v2/config';
 import { makeTransaction } from 'v2/services/EthService';
 import { WalletFactory, HardwareWallet } from 'v2/services/WalletService';
-import { InlineErrorMsg } from 'v2/components/ErrorMessages';
+import { InlineMessage } from 'v2/components';
 import translate, { translateRaw } from 'v2/translations';
 
 import './Hardware.scss';
@@ -113,7 +113,7 @@ export default function HardwareSignTransaction({
         <div className="SignTransactionHardware-description">
           {translateRaw('SIGN_TX_EXPLANATION')}
           {isTxSignatureRequestDenied && (
-            <InlineErrorMsg>{translate('SIGN_TX_HARDWARE_FAILED_1')}</InlineErrorMsg>
+            <InlineMessage value={translate('SIGN_TX_HARDWARE_FAILED_1')} />
           )}
         </div>
         <div className="SignTransactionHardware-footer">

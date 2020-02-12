@@ -4,7 +4,7 @@ import * as R from 'ramda';
 import translate, { translateRaw } from 'v2/translations';
 import { WALLETS_CONFIG, IWalletConfig } from 'v2/config';
 import { WalletId, FormData, Network } from 'v2/types';
-import { InlineErrorMsg, NewTabLink } from 'v2/components';
+import { InlineMessage, NewTabLink } from 'v2/components';
 import { withContext, hasWeb3Provider, IS_MOBILE } from 'v2/utils';
 import {
   SettingsContext,
@@ -63,9 +63,9 @@ class Web3ProviderDecrypt extends Component<Props & ISettingsContext & INetworkC
           </button>
 
           {web3Unlocked === false && (
-            <InlineErrorMsg>
+            <InlineMessage>
               {translate('WEB3_ONUNLOCK_NOT_FOUND_ERROR', { $walletId: provider.name })}
-            </InlineErrorMsg>
+            </InlineMessage>
           )}
         </div>
         <div className="Web3-footer">

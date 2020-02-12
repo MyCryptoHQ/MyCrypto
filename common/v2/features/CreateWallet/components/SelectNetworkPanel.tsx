@@ -3,7 +3,7 @@ import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import translate, { translateRaw } from 'v2/translations';
-import { ExtendedContentPanel, InlineErrorMsg, NetworkSelectDropdown } from 'v2/components';
+import { ExtendedContentPanel, InlineMessage, NetworkSelectDropdown } from 'v2/components';
 import { WalletId } from 'v2/types';
 import { NetworkContext } from 'v2/services/Store';
 import { PanelProps } from '../CreateWallet';
@@ -68,7 +68,7 @@ export default class SelectNetworkPanel extends Component<Props> {
 
         {this.state.error && (
           <ErrorWrapper>
-            <InlineErrorMsg>{translateRaw('SELECT_NETWORK_ERROR')}</InlineErrorMsg>
+            <InlineMessage>{translateRaw('SELECT_NETWORK_ERROR')}</InlineMessage>
           </ErrorWrapper>
         )}
         <SubmitButton onClick={this.handleSubmitClick}>{translateRaw('ACTION_6')}</SubmitButton>

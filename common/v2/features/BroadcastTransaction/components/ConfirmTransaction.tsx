@@ -6,12 +6,12 @@ import { getAssetByUUID, AssetContext, NetworkContext } from 'v2/services/Store'
 import { ConfirmTransaction as ConfirmTransactionForm } from 'v2/components/TransactionFlow';
 import { toChecksumAddressByChainId, fromTxReceiptObj } from 'v2/utils';
 import { fromWei, ProviderHandler } from 'v2/services/EthService';
-import { InlineErrorMsg } from 'v2/components/ErrorMessages';
+import { InlineMessage } from 'v2/components/InlineMessage';
 import { translateRaw } from 'v2/translations';
 import { ITxReceipt, ITxConfig } from 'v2/types';
 import { ToastContext } from 'v2/features/Toasts';
 
-const ErrorWrapper = styled(InlineErrorMsg)`
+const ErrorWrapper = styled(InlineMessage)`
   margin-top: 12px;
 `;
 
@@ -39,7 +39,7 @@ export default function ConfirmTransaction(props: Props) {
     : getNetworkByName(network);
 
   if (!txNetwork) {
-    return <InlineErrorMsg>{translateRaw('BROADCAST_TX_INVALID_CHAIN_ID')}</InlineErrorMsg>;
+    return <InlineMessage>{translateRaw('BROADCAST_TX_INVALID_CHAIN_ID')}</InlineMessage>;
   }
 
   const txAmount = fromWei(new BN(value, 16), 'ether');

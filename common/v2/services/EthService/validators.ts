@@ -10,10 +10,12 @@ import {
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
   GAS_PRICE_GWEI_UPPER_BOUND,
-  CREATION_ADDRESS
+  CREATION_ADDRESS,
+  DEFAULT_ASSET_DECIMAL
 } from 'v2/config';
 import { JsonRPCResponse } from 'v2/types';
-import { stripHexPrefix } from './utils';
+import { stripHexPrefix, gasStringsToMaxGasBN, convertedToBaseUnit } from './utils';
+import { bigNumberify } from 'ethers/utils';
 
 export const isValidPositiveOrZeroInteger = (value: number | string) =>
   isValidPositiveNumber(value) && isInteger(value);
@@ -29,8 +31,15 @@ const isPositiveNonZeroNumber = (value: number | string) => Number(value) > 0;
 const isInteger = (value: number | string) =>
   Number.isInteger(typeof value === 'string' ? Number(value) : value);
 
-function isChecksumAddress(address: string): boolean {
+export function isChecksumAddress(address: string): boolean {
   return address === toChecksumAddress(address);
+}
+
+export function isBurnAddress(address: string): boolean {
+  return (
+    address === '0x0000000000000000000000000000000000000000' ||
+    address === '0x000000000000000000000000000000000000dead'
+  );
 }
 
 function isValidRSKAddress(address: string, chainId: number): boolean {
@@ -45,9 +54,6 @@ function getIsValidAddressFunction(chainId: number) {
 }
 
 function isValidETHLikeAddress(address: string, extraChecks?: () => boolean): boolean {
-  if (address === CREATION_ADDRESS) {
-    return false;
-  }
   if (address.substring(0, 2) !== '0x') {
     return false;
   } else if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
@@ -126,6 +132,26 @@ export function isValidPath(dPath: string) {
 
   return dPathRegex.test(dPath);
 }
+
+export const isTransactionFeeHigh = (
+  amount: string,
+  assetRate: number,
+  isERC20: boolean,
+  gasLimit: string,
+  gasPrice: string
+) => {
+  const amountBN = bigNumberify(convertedToBaseUnit(amount, DEFAULT_ASSET_DECIMAL));
+  if (amountBN.lt(bigNumberify(convertedToBaseUnit('0.000001', DEFAULT_ASSET_DECIMAL)))) {
+    return false;
+  }
+  const transactionFee = bigNumberify(gasStringsToMaxGasBN(gasPrice, gasLimit).toString());
+  const fiatValue = bigNumberify(assetRate.toFixed(0)).mul(transactionFee);
+  // For now transaction fees are too high if they are more than $10 fiat or more than the sent amount
+  return (
+    (!isERC20 && amountBN.lt(transactionFee)) ||
+    fiatValue.gt(bigNumberify(convertedToBaseUnit('10', DEFAULT_ASSET_DECIMAL)))
+  );
+};
 
 export const gasLimitValidator = (gasLimit: number | string) => {
   const gasLimitFloat = Number(gasLimit);

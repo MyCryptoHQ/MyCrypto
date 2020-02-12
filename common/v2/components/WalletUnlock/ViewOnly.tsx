@@ -95,9 +95,7 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
                     className="AddressField"
                     fieldName="address"
                     handleDomainResolve={handleDomainResolve}
-                    error={errors && errors.address && errors.address.value}
-                    touched={touched}
-                    network={network}
+                    error={errors && touched.address && errors.address && errors.address.value}
                     isLoading={isResolvingDomain}
                     isError={!isValid}
                     placeholder="Enter an Address or Contact"

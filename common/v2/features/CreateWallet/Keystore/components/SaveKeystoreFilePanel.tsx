@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel, InlineErrorMsg } from 'v2/components';
+import { ExtendedContentPanel, InlineMessage } from 'v2/components';
 import { PanelProps } from 'v2/features/CreateWallet';
 import translate, { translateRaw } from 'v2/translations';
 
@@ -111,7 +111,7 @@ export default class SaveKeystorePanel extends Component<Props, State> {
         <ButtonsWrapper>
           {this.state.error && (
             <ErrorWrapper>
-              <InlineErrorMsg>{translate('SAVE_KEYSTORE_ERROR')}</InlineErrorMsg>
+              <InlineMessage>{translate('SAVE_KEYSTORE_ERROR')}</InlineMessage>
             </ErrorWrapper>
           )}
 

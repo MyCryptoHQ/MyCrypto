@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { Icon } from '@mycrypto/ui';
 
 import { COLORS } from 'v2/theme';
-import { InlineErrorMsg, Spinner } from 'v2/components';
+import { InlineMessage, Spinner } from 'v2/components';
+import { InlineMessageType } from 'v2/types';
 
 const MainWrapper = styled.div<WrapperProps>`
   margin-bottom: ${props => props.marginBottom};
@@ -26,6 +27,7 @@ const Label = styled.p`
 
 interface CustomInputProps {
   inputError?: string | JSX.Element;
+  inputErrorBorder?: boolean;
   showEye?: boolean;
   customIcon?: React.ReactType;
   height?: string;
@@ -48,7 +50,7 @@ const CustomInput = styled.input<CustomInputProps>`
     color: ${COLORS.GREY_LIGHT};
     opacity: 1;
   }
-  border-color: ${props => (props.inputError ? COLORS.PASTEL_RED : '')};
+  border-color: ${props => (props.inputError && props.inputErrorBorder ? COLORS.PASTEL_RED : '')};
   ${props => props.height && `height: ${props.height}`};
 `;
 
@@ -136,6 +138,8 @@ interface Props {
   label?: string | JSX.Element;
   value: string | undefined;
   inputError?: string | JSX.Element | undefined;
+  inputErrorType?: InlineMessageType;
+  inputErrorBorder?: boolean;
   showEye?: boolean;
   customIcon?: React.ElementType;
   textarea?: boolean;
@@ -169,6 +173,8 @@ export class InputField extends Component<Props> {
       onBlur,
       onFocus,
       inputError,
+      inputErrorType,
+      inputErrorBorder = false,
       type,
       showEye,
       customIcon,
@@ -211,6 +217,7 @@ export class InputField extends Component<Props> {
               onBlur={onBlur}
               onFocus={onFocus}
               inputError={inputError}
+              inputErrorBorder={inputErrorBorder}
               onKeyUp={this.handleKeyUp}
               showEye={showEye}
               customIcon={customIcon}
@@ -242,7 +249,7 @@ export class InputField extends Component<Props> {
           )}
         </InputWrapper>
 
-        {inputError && <InlineErrorMsg>{inputError}</InlineErrorMsg>}
+        {inputError && <InlineMessage type={inputErrorType}>{inputError}</InlineMessage>}
       </MainWrapper>
     );
   }

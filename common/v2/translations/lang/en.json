@@ -88,12 +88,12 @@
     "MSG_SIGNATURE": "Signature ",
     "MSG_VERIFY": "Verify Message ",
     "UNEXPECTED_ERROR": "Something went wrong. Please refresh this page and try again or contact us at $link",
-    "ERROR_0": "Please enter a valid amount (Must be a number greater than or equal to 0) ",
+    "ERROR_0": "Please enter a valid amount (number) you wish to send.",
     "ERROR_3": "This is not a valid wallet file. ",
     "ERROR_6": "Please enter a valid password",
-    "ERROR_8": "Please enter a valid gas limit (Must be an integer between 21000 and 8000000) ",
+    "ERROR_8": "Please enter a gas limit between 21000 and ~800000.",
     "ERROR_9": "Please enter a valid data value (Must be valid hexadecimal with `0x` appended) ",
-    "ERROR_10": "Please enter a valid gas price in gwei (Must be a number between 0.1 and 3000) ",
+    "ERROR_10": "This seems like a very high gas price. Are you sure you know what you are doing?",
     "ERROR_11": "Please enter a valid nonce (Must be a positive integer) ",
     "ERROR_14": "Wallet not found. ",
     "ERROR_38": "Invalid signed message. ",
@@ -550,6 +550,13 @@
     "CONTRACT_BYTECODE": "Byte Code ",
     "NAV_DEPLOYCONTRACT": "Deploy Contract ",
     "CONFIRM_TX_SENDING": "You'll Send",
-    "GENERIC_ERROR": "Something went wrong! Please [email us]($link) so we can help you and fix this."
+    "GENERIC_ERROR": "Something went wrong! Please [email us]($link) so we can help you and fix this.",
+    "CHECKSUM_ERROR": "This address is not [checksummed](https://support.mycrypto.com/troubleshooting/sending/not-checksummed-shows-when-i-enter-an-address). Please ensure you have copied & pasted the address. Never hand-type addresses.",
+    "GASPRICE_ERROR": "Please enter a valid gas price in gwei (Must be a number between 0.1 and 3000)",
+    "BALANCE_TOO_LOW_ERROR": "You are trying to send more $asset than you current have. Click “send max” if you want to send your entire available balance",
+    "NONCE_ERROR": "Please double-check your nonce. If this error persists, please email [support@mycrypto.com]($link)",
+    "HIGH_TRANSACTION_FEE": "This seems like a very high transaction fee. Are you sure you know what you are doing?",
+    "SENDING_TO_YOURSELF": "You are sending to yourself. Are you sure you want to do that?",
+    "SENDING_TO_BURN_ADDRESS": "This address appears to be a “burn” address. Please be absolutely sure you wish to send to this address. There is no way to reverse a transaction."
   }
 }
