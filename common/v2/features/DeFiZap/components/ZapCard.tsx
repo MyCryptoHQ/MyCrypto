@@ -5,6 +5,7 @@ import { RouterLink } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
 
 import { fetchRiskText } from '../config';
+import { COLORS } from 'v2/theme';
 
 const ZapCardContainer = styled('li')`
   background: #ffffff;
@@ -67,10 +68,15 @@ const ZapCardContentHeaderRow = styled('div')`
 `;
 const ZapCardNameSection = styled('div')`
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: left;
   flex-direction: column;
   margin-left: 1em;
+  & h5 {
+    font-weight: bold;
+  }
+  & p {
+    color: ${COLORS.MIDDLE_GREY};
+  }
 `;
 
 const ZapCardImgSection = styled('div')`
