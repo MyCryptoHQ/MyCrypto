@@ -8,6 +8,7 @@ import { ActionTile, TokenPanel, WalletBreakdown, RecentTransactionList } from '
 import { NotificationsPanel } from '../NotificationsPanel';
 import { actions } from './constants';
 import './Dashboard.scss';
+import { DashboardZapCTA } from '../DeFiZap';
 
 // Keep the same mobile width as an ActionTile
 const EmptyTile = styled.div`
@@ -72,6 +73,9 @@ export default function Dashboard() {
           <div className="Dashboard-desktop-top-right">
             <div>
               <WalletBreakdown />
+            </div>
+            <div>
+              <DashboardZapCTA className="Dashboard-desktop-modifiedPanel" />
             </div>
             <div>
               <AccountList
