@@ -10,10 +10,12 @@ import {
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
   GAS_PRICE_GWEI_UPPER_BOUND,
-  CREATION_ADDRESS
+  CREATION_ADDRESS,
+  DEFAULT_ASSET_DECIMAL
 } from 'v2/config';
 import { JsonRPCResponse } from 'v2/types';
-import { stripHexPrefix, gasStringsToMaxGasNumber } from './utils';
+import { stripHexPrefix, gasStringsToMaxGasBN, convertedToBaseUnit } from './utils';
+import { bigNumberify } from 'ethers/utils';
 
 export const isValidPositiveOrZeroInteger = (value: number | string) =>
   isValidPositiveNumber(value) && isInteger(value);
@@ -133,15 +135,22 @@ export function isValidPath(dPath: string) {
 
 export const isTransactionFeeHigh = (
   amount: string,
-  assetRate: string,
+  assetRate: number,
   isERC20: boolean,
   gasLimit: string,
   gasPrice: string
 ) => {
-  const transactionFee = gasStringsToMaxGasNumber(gasPrice, gasLimit);
-  const fiatValue = parseFloat(assetRate) * transactionFee;
+  const amountBN = bigNumberify(convertedToBaseUnit(amount, DEFAULT_ASSET_DECIMAL));
+  if (amountBN.lt(bigNumberify(convertedToBaseUnit('0.000001', DEFAULT_ASSET_DECIMAL)))) {
+    return false;
+  }
+  const transactionFee = bigNumberify(gasStringsToMaxGasBN(gasPrice, gasLimit).toString());
+  const fiatValue = bigNumberify(assetRate.toFixed(0)).mul(transactionFee);
   // For now transaction fees are too high if they are more than $10 fiat or more than the sent amount
-  return (!isERC20 && parseFloat(amount) < transactionFee) || fiatValue > 10;
+  return (
+    (!isERC20 && amountBN.lt(transactionFee)) ||
+    fiatValue.gt(bigNumberify(convertedToBaseUnit('10', DEFAULT_ASSET_DECIMAL)))
+  );
 };
 
 export const gasLimitValidator = (gasLimit: number | string) => {

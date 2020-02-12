@@ -529,7 +529,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                 )}
                 {isTransactionFeeHigh(
                   values.amount,
-                  (getAssetRate(baseAsset || undefined) || 0).toString(),
+                  getAssetRate(baseAsset || undefined) || 0,
                   isERC20Tx(values.asset),
                   values.gasLimitField,
                   values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider
