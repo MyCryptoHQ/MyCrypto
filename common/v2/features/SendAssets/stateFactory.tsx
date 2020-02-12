@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { Arrayish, hexlify } from 'ethers/utils';
 
 import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
 import {
@@ -125,7 +126,11 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
       .finally(cb);
   };
 
-  const handleSignedTx: TStepAction = (payload: ISignedTx, cb) => {
+  const handleSignedTx: TStepAction = (payload: Arrayish, cb) => {
+    const signedTx = hexlify(payload);
+    // Used when signedTx is a buffer instead of a string.
+    // Hardware wallets return a buffer.
+
     const decodedTx = decodeTransaction(payload);
     const networkDetected = getNetworkByChainId(decodedTx.chainId, networks);
     const contractAsset = getAssetByContractAndNetwork(
@@ -139,7 +144,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
 
     setState((prevState: State) => ({
       ...prevState,
-      signedTx: payload, // keep a reference to signedTx;
+      signedTx, // keep a reference to signedTx;
       txConfig: {
         rawTransaction: prevState.txConfig.rawTransaction,
         receiverAddress: contractAsset ? decodeTransfer(decodedTx.data)._to : decodedTx.to,
@@ -192,9 +197,10 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
     cb();
   };
 
-  const txFactoryState = {
+  const txFactoryState: State = {
     txConfig: state.txConfig,
-    txReceipt: state.txReceipt
+    txReceipt: state.txReceipt,
+    signedTx: state.signedTx
   };
 
   return {

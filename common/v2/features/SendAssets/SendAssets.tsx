@@ -70,7 +70,7 @@ function SendAssets() {
     {
       label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
       component: ConfirmTransaction,
-      props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
+      props: (({ txConfig, signedTx }) => ({ txConfig, signedTx }))(txFactoryState),
       actions: (payload: ITxConfig | ISignedTx, cb: any) => handleConfirmAndSend(payload, cb)
     },
     {
