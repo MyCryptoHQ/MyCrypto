@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { bufferToHex } from 'ethereumjs-util';
 
 import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
 import {
@@ -30,7 +31,6 @@ import { ProviderHandler } from 'v2/services/EthService';
 
 import { TStepAction } from './types';
 import { processFormDataToTx, decodeTransaction } from './helpers';
-import { bufferToHex } from 'ethereumjs-util';
 
 const txConfigInitialState = {
   tx: {
