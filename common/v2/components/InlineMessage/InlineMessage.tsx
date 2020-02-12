@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { COLORS } from 'v2/theme';
+import { COLORS, SPACING, FONT_SIZE } from 'v2/theme';
 import { InlineMessageType } from 'v2/types/inlineMessages';
 import Typography from '../Typography';
 import infoSVG from 'assets/images/icn-info.svg';
@@ -20,7 +20,7 @@ interface Config {
 }
 
 export const Wrapper = styled.div`
-  font-size: 16px;
+  font-size: ${FONT_SIZE.BASE};
   width: 100%;
   text-align: justify;
   white-space: pre-line;
@@ -48,7 +48,7 @@ const STypography = styled(Typography)<BannerTypographyProps>`
 const Icon = styled.img`
   color: ${props => props.color};
   max-width: 24px;
-  margin-right: 6px;
+  margin-right: ${SPACING.XS};
 `;
 
 const messageConfig = (type: InlineMessageType): Config => {
