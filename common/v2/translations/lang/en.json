@@ -557,6 +557,7 @@
     "NONCE_ERROR": "Please double-check your nonce. If this error persists, please email [support@mycrypto.com]($link)",
     "HIGH_TRANSACTION_FEE": "This seems like a very high transaction fee. Are you sure you know what you are doing?",
     "SENDING_TO_YOURSELF": "You are sending to yourself. Are you sure you want to do that?",
-    "SENDING_TO_BURN_ADDRESS": "This address appears to be a “burn” address. Please be absolutely sure you wish to send to this address. There is no way to reverse a transaction."
+    "SENDING_TO_BURN_ADDRESS": "This address appears to be a “burn” address. Please be absolutely sure you wish to send to this address. There is no way to reverse a transaction.",
+    "ADDRESS_ALREADY_ADDED": "This address ($label) has already been added"
   }
 }
