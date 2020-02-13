@@ -27,6 +27,7 @@ import { RatesContext } from 'v2/services';
 import { default as Currency } from './Currency';
 import { TUuid } from 'v2/types/uuid';
 import IconArrow from './IconArrow';
+import Checkbox from './Checkbox';
 
 const Label = styled.span`
   display: flex;
@@ -44,7 +45,18 @@ const LabelWithWallet = styled.span`
   }
 `;
 
-const WalletTypeLabel = styled.div`
+const WalletLabelContainer = styled.ul`
+  margin-bottom: 0px;
+  padding: 0px;
+
+  & li {
+    &:not(:last-of-type) {
+      margin-right: ${SPACING.XS};
+    }
+  }
+`;
+
+const WalletTypeLabel = styled.li`
   display: inline-block;
   text-align: center;
   background: ${COLORS.GREY};
@@ -52,6 +64,21 @@ const WalletTypeLabel = styled.div`
   color: ${COLORS.WHITE};
   font-size: 0.6em;
   padding: 3px 6px;
+`;
+
+const PrivateWalletLabel = styled.li`
+  display: inline-block;
+  text-align: center;
+  background: ${COLORS.PURPLE};
+  border-radius: 600px;
+  color: ${COLORS.WHITE};
+  font-size: 0.6em;
+  padding: 3px 6px;
+`;
+
+const PrivacyCheckBox = styled(Checkbox)`
+  display: flex;
+  justify-content: center;
 `;
 
 const SIdenticon = styled(Identicon)`
@@ -142,6 +169,7 @@ interface AccountListProps {
   deletable?: boolean;
   favoritable?: boolean;
   copyable?: boolean;
+  privacyTriggerEnabled?: boolean;
   dashboard?: boolean;
 }
 
@@ -155,6 +183,7 @@ export default function AccountList(props: AccountListProps) {
     deletable,
     favoritable,
     copyable,
+    privacyTriggerEnabled = false,
     dashboard
   } = props;
   const { deleteAccountFromCache } = useContext(StoreContext);
@@ -196,6 +225,7 @@ export default function AccountList(props: AccountListProps) {
             deletable,
             favoritable,
             copyable,
+            privacyTriggerEnabled,
             overlayRows,
             setDeletingIndex
           )}
@@ -275,21 +305,23 @@ const getSortingFunction = (sortKey: ISortTypes): TSortFunction => {
   }
 };
 
-function buildAccountTable(
+const buildAccountTable = (
   accounts: StoreAccount[],
   deleteAccount: (a: IAccount) => void,
   updateAccount: (u: TUuid, a: IAccount) => void,
   deletable?: boolean,
   favoritable?: boolean,
   copyable?: boolean,
+  privacyTriggerEnabled?: boolean,
   overlayRows?: number[],
   setDeletingIndex?: any
-) {
+) => {
   const [sortingState, setSortingState] = useState(initialSortingState);
   const { totalFiat } = useContext(StoreContext);
   const { getAssetRate } = useContext(RatesContext);
   const { settings } = useContext(SettingsContext);
   const { addressBook, updateAddressBooks, createAddressBooks } = useContext(AddressBookContext);
+  const { triggerAccountPrivacy } = useContext(AccountContext);
 
   const updateSortingState = (id: IColumnValues) => {
     const currentBtnState = sortingState.sortState[id];
@@ -335,6 +367,9 @@ function buildAccountTable(
       {translateRaw('ACCOUNT_LIST_VALUE')}
       <IconArrow isFlipped={getColumnSortDirection('ACCOUNT_LIST_VALUE')} />
     </HeaderAlignment>,
+    <HeaderAlignment key={'ACCOUNT_LIST_PRIVATE'} align="center">
+      {translateRaw('ACCOUNT_LIST_PRIVATE')}
+    </HeaderAlignment>,
     <HeaderAlignment key={'ACCOUNT_LIST_DELETE'} align="center">
       {translateRaw('ACCOUNT_LIST_DELETE')}
     </HeaderAlignment>
@@ -349,8 +384,24 @@ function buildAccountTable(
     })
     .sort(getSortingFunction(sortingState.activeSort));
 
+  const getColumns = (
+    columnList: (string | JSX.Element)[],
+    deletePresent: boolean,
+    privacyPresent: boolean
+  ) => {
+    switch (deletePresent + '-' + privacyPresent) {
+      case 'false-false':
+        return columnList.slice(0, columnList.length - 2);
+      case 'true-false':
+        return [...columnList.slice(0, columnList.length - 2), columnList[columnList.length - 1]];
+      case 'false-true':
+        return columnList.slice(0, columnList.length - 1);
+      case 'true-true':
+        return columnList;
+    }
+  };
   return {
-    head: deletable ? columns : columns.slice(0, columns.length - 1),
+    head: getColumns(columns, deletable || false, privacyTriggerEnabled || false),
     overlay:
       overlayRows && overlayRows[0] !== undefined ? (
         <RowDeleteOverlay
@@ -371,7 +422,7 @@ function buildAccountTable(
       ),
     overlayRows,
     body: getFullTableData.map(({ account, index, label, total, addressCard }) => {
-      const bodyContent = [
+      let bodyContent = [
         <Label key={index}>
           <SIdenticon address={account.address} />
           <LabelWithWallet>
@@ -391,9 +442,10 @@ function buildAccountTable(
               }}
               value={label}
             />
-            <div>
+            <WalletLabelContainer>
               <WalletTypeLabel>{WALLETS_CONFIG[account.wallet].name}</WalletTypeLabel>
-            </div>
+              {account.isPrivate && <PrivateWalletLabel>{'Private Account'}</PrivateWalletLabel>}
+            </WalletLabelContainer>
           </LabelWithWallet>
         </Label>,
         <EthAddress
@@ -413,30 +465,47 @@ function buildAccountTable(
           decimals={2}
         />
       ];
-      return deletable
-        ? [
-            ...bodyContent,
-            <DeleteButton key={index} onClick={() => setDeletingIndex(index)} icon="exit" />
-          ]
-        : favoritable
-        ? [
-            <FavoriteButton
-              key={index}
-              icon="star"
-              favorited={account.favorite ? account.favorite : false}
-              onClick={() =>
-                updateAccount(account.uuid, {
-                  ...account,
-                  favorite: !account.favorite
-                })
-              }
-            />,
-            ...bodyContent
-          ]
-        : bodyContent;
+
+      if (privacyTriggerEnabled) {
+        bodyContent = [
+          ...bodyContent,
+          <PrivacyCheckBox
+            key={index}
+            name={'Privacy Stoof?'}
+            checked={account.isPrivate || false}
+            onChange={() => triggerAccountPrivacy(account.uuid)}
+          />
+        ];
+      }
+
+      if (deletable) {
+        bodyContent = [
+          ...bodyContent,
+          <DeleteButton key={index} onClick={() => setDeletingIndex(index)} icon="exit" />
+        ];
+      }
+
+      if (favoritable) {
+        bodyContent = [
+          <FavoriteButton
+            key={index}
+            icon="star"
+            favorited={account.favorite ? account.favorite : false}
+            onClick={() =>
+              updateAccount(account.uuid, {
+                ...account,
+                favorite: !account.favorite
+              })
+            }
+          />,
+          ...bodyContent
+        ];
+      }
+
+      return bodyContent;
     }),
     config: {
       primaryColumn: translateRaw('ACCOUNT_LIST_LABEL')
     }
   };
-}
+};

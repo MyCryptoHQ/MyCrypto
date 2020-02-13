@@ -51,7 +51,12 @@ function renderAccountPanel() {
         flipped ? (
           <p>Add Account</p>
         ) : (
-          <AccountList accounts={accounts} deletable={true} copyable={true} />
+          <AccountList
+            accounts={accounts}
+            deletable={true}
+            copyable={true}
+            privacyTriggerEnabled={true}
+          />
         )
       }
     </FlippablePanel>

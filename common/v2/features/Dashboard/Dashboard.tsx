@@ -45,6 +45,7 @@ export default function Dashboard() {
             className="Dashboard-mobile-modifiedPanel"
             copyable={true}
             dashboard={true}
+            privacyTriggerEnabled={false}
           />
         </div>
         {!isUnlockVIP && <BannerAd />}
@@ -79,6 +80,7 @@ export default function Dashboard() {
                 className="Dashboard-desktop-modifiedPanel"
                 copyable={true}
                 dashboard={true}
+                privacyTriggerEnabled={false}
               />
             </div>
           </div>

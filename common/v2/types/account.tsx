@@ -19,6 +19,7 @@ export interface IAccount {
   dPath: string;
   mtime: number;
   favorite: boolean;
+  isPrivate?: boolean;
 }
 
 export type IRawAccount = Omit<IAccount, 'uuid'>;

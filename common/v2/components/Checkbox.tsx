@@ -4,7 +4,7 @@ import { Typography } from '@mycrypto/ui';
 
 interface CheckboxProps {
   name: string;
-  label: string;
+  label?: string;
   checked: boolean;
   icon?: any;
   className?: string;
@@ -131,9 +131,11 @@ export default function Checkbox({
       </SLabel>
       <div style={{ display: 'flex', flexDirection: 'row', marginLeft: '15px' }}>
         {icon && <SIconContainer>{icon()}</SIconContainer>}
-        <SLabelContainer>
-          <Typography style={{ fontSize: '1em', margin: 0 }}>{label}</Typography>
-        </SLabelContainer>
+        {label && (
+          <SLabelContainer>
+            <Typography style={{ fontSize: '1em', margin: 0 }}>{label}</Typography>
+          </SLabelContainer>
+        )}
       </div>
     </SContainer>
   );
