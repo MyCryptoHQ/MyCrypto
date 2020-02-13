@@ -1,52 +1,63 @@
-import { ROUTE_PATHS } from 'v2/config';
 import { translateRaw } from 'v2/translations';
 
 import dashboardIcon from 'common/assets/images/icn-dashboard.svg';
+import { APP_ROUTES_OBJECT } from 'v2/routing/routes';
 
 export const links = [
   {
     title: 'Dashboard',
-    to: ROUTE_PATHS.DASHBOARD.path,
+    to: APP_ROUTES_OBJECT.DASHBOARD.path,
+    enabled: APP_ROUTES_OBJECT.DASHBOARD.enabled,
     icon: { src: dashboardIcon, width: '16px', height: '12px' }
   },
   {
     title: 'Manage Assets',
+    enabled: true,
     subItems: [
       {
-        to: ROUTE_PATHS.SEND.path,
+        to: APP_ROUTES_OBJECT.SEND.path,
+        enabled: APP_ROUTES_OBJECT.SEND.enabled,
         title: translateRaw('SEND')
       },
       {
-        to: ROUTE_PATHS.REQUEST_ASSETS.path,
+        to: APP_ROUTES_OBJECT.REQUEST_ASSETS.path,
+        enabled: APP_ROUTES_OBJECT.REQUEST_ASSETS.enabled,
         title: translateRaw('REQUEST')
       },
       {
-        to: ROUTE_PATHS.SWAP.path,
+        to: APP_ROUTES_OBJECT.SWAP.path,
+        enabled: APP_ROUTES_OBJECT.SWAP.enabled,
         title: translateRaw('SWAP')
       }
     ]
   },
   {
     title: 'Tools',
+    enabled: true,
     subItems: [
       {
-        to: ROUTE_PATHS.SIGN_MESSAGE.path,
+        to: APP_ROUTES_OBJECT.SIGN_MESSAGE.path,
+        enabled: APP_ROUTES_OBJECT.SIGN_MESSAGE.enabled,
         title: 'Sign Message'
       },
       {
-        to: ROUTE_PATHS.VERIFY_MESSAGE.path,
+        to: APP_ROUTES_OBJECT.VERIFY_MESSAGE.path,
+        enabled: APP_ROUTES_OBJECT.VERIFY_MESSAGE.enabled,
         title: 'Verify Message'
       },
       {
-        to: ROUTE_PATHS.BROADCAST_TX.path,
+        to: APP_ROUTES_OBJECT.BROADCAST_TX.path,
+        enabled: APP_ROUTES_OBJECT.BROADCAST_TX.enabled,
         title: 'Broadcast Transaction'
       },
       {
-        to: ROUTE_PATHS.INTERACT_WITH_CONTRACTS.path,
+        to: APP_ROUTES_OBJECT.INTERACT_WITH_CONTRACTS.path,
+        enabled: APP_ROUTES_OBJECT.INTERACT_WITH_CONTRACTS.enabled,
         title: 'Interact with Contracts'
       },
       {
-        to: ROUTE_PATHS.DEPLOY_CONTRACTS.path,
+        to: APP_ROUTES_OBJECT.DEPLOY_CONTRACTS.path,
+        enabled: APP_ROUTES_OBJECT.DEPLOY_CONTRACTS.enabled,
         title: 'Deploy Contracts'
       },
       {
@@ -57,6 +68,7 @@ export const links = [
   },
   {
     title: 'Settings',
-    to: ROUTE_PATHS.SETTINGS.path
+    to: APP_ROUTES_OBJECT.SETTINGS.path,
+    enabled: APP_ROUTES_OBJECT.SETTINGS.enabled
   }
 ];

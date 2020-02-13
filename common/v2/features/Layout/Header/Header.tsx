@@ -354,43 +354,47 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
           ((style: any) => (
             <Menu style={style}>
               <MenuLinks>
-                {links.map(({ title, to, subItems, icon }) => {
-                  return (
-                    <li
-                      key={title}
-                      onClick={e => {
-                        e.stopPropagation();
+                {links
+                  .filter(linkObject => linkObject.enabled)
+                  .map(({ title, to, subItems, icon }) => {
+                    return (
+                      <li
+                        key={title}
+                        onClick={e => {
+                          e.stopPropagation();
 
-                        if (to) {
-                          history.push(to);
-                          toggleMenu();
-                        } else {
-                          toggleMenuDropdown(title);
-                        }
-                      }}
-                    >
-                      <TitleIconWrapper>
-                        {icon && <PrefixIcon {...icon} />} {title}
-                        {!icon && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
-                      </TitleIconWrapper>
-                      {subItems && visibleMenuDropdowns[title] && (
-                        <ul>
-                          {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
-                            <li
-                              key={innerTitle}
-                              onClick={() => {
-                                toggleMenu();
-                                history.push(innerTo);
-                              }}
-                            >
-                              {innerTitle}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </li>
-                  );
-                })}
+                          if (to) {
+                            history.push(to);
+                            toggleMenu();
+                          } else {
+                            toggleMenuDropdown(title);
+                          }
+                        }}
+                      >
+                        <TitleIconWrapper>
+                          {icon && <PrefixIcon {...icon} />} {title}
+                          {!icon && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
+                        </TitleIconWrapper>
+                        {subItems && visibleMenuDropdowns[title] && (
+                          <ul>
+                            {subItems
+                              .filter(subItem => subItem.enabled)
+                              .map(({ to: innerTo, title: innerTitle }: LinkElement) => (
+                                <li
+                                  key={innerTitle}
+                                  onClick={() => {
+                                    toggleMenu();
+                                    history.push(innerTo);
+                                  }}
+                                >
+                                  {innerTitle}
+                                </li>
+                              ))}
+                          </ul>
+                        )}
+                      </li>
+                    );
+                  })}
               </MenuLinks>
               <MenuMid onClick={onLanguageClick}>
                 {languages[languageSelection]} <IconWrapper subItems={true} icon="navDownCaret" />
@@ -438,30 +442,34 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
       </HeaderTop>
       <HeaderBottom>
         <HeaderBottomLinks>
-          {links.map(({ title, to, subItems, icon }) => {
-            const liProps = to
-              ? { onClick: () => history.push(to) }
-              : {
-                  onMouseEnter: () => toggleDropdown(title),
-                  onMouseLeave: () => toggleDropdown(title)
-                };
+          {links
+            .filter(link => link.enabled)
+            .map(({ title, to, subItems, icon }) => {
+              const liProps = to
+                ? { onClick: () => history.push(to) }
+                : {
+                    onMouseEnter: () => toggleDropdown(title),
+                    onMouseLeave: () => toggleDropdown(title)
+                  };
 
-            return (
-              <li key={title} {...liProps}>
-                {icon && <PrefixIcon {...icon} />} {title}{' '}
-                {!icon && subItems && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
-                {subItems && visibleDropdowns[title] && (
-                  <ul>
-                    {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
-                      <li key={innerTitle} onClick={() => history.push(innerTo)}>
-                        {innerTitle}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            );
-          })}
+              return (
+                <li key={title} {...liProps}>
+                  {icon && <PrefixIcon {...icon} />} {title}{' '}
+                  {!icon && subItems && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
+                  {subItems && visibleDropdowns[title] && (
+                    <ul>
+                      {subItems
+                        .filter(subItem => subItem.enabled)
+                        .map(({ to: innerTo, title: innerTitle }: LinkElement) => (
+                          <li key={innerTitle} onClick={() => history.push(innerTo)}>
+                            {innerTitle}
+                          </li>
+                        ))}
+                    </ul>
+                  )}
+                </li>
+              );
+            })}
         </HeaderBottomLinks>
       </HeaderBottom>
     </Navbar>
