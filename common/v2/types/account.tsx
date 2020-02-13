@@ -17,6 +17,7 @@ export interface Account {
   dPath: string;
   mtime: number;
   favorite: boolean;
+  isPrivate?: boolean;
 }
 
 export interface ExtendedAccount extends Account {
