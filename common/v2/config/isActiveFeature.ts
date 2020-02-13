@@ -21,11 +21,11 @@ export enum FEATURE_LIST {
   DEFIZAP = 'DEFIZAP'
 }
 
-export type IFeatureStatus = {
+export type IIS_ACTIVE_FEATURE = {
   readonly [k in FEATURE_LIST]: boolean;
 };
 
-export const isActiveFeature: IFeatureStatus = {
+export const IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE = {
   DASHBOARD: true,
   BUY: true,
   SEND_ASSETS: true,
