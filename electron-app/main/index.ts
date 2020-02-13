@@ -32,8 +32,8 @@ app.on('ready', () => {
       titleBarStyle: 'hidden',
       webPreferences: {
         devTools: true,
-        nodeIntegration: true,
-        contextIsolation: false
+        nodeIntegration: false,
+        contextIsolation: true
       }
     });
 
