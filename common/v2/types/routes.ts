@@ -2,11 +2,11 @@ export interface IRoutePath {
   name: string;
   title?: string;
   path: string;
-  featureStatus: boolean;
 }
 
 export interface IAppRoute extends IRoutePath {
   component: React.ReactNode;
+  enabled: boolean;
   exact?: boolean;
   seperateLayout?: boolean;
   requireAccounts?: boolean;

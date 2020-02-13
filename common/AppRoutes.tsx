@@ -39,11 +39,9 @@ export const AppRoutes = () => {
                   <Switch>
                     <Route path={ROUTE_PATHS.ROOT.path} component={Home} exact={true} />
                     <Route path={ROUTE_PATHS.HOME.path} component={Home} exact={true} />
-                    {APP_ROUTES.filter(route => !route.seperateLayout && route.featureStatus).map(
-                      (config, idx) => (
-                        <PrivateRoute key={idx} {...config} />
-                      )
-                    )}
+                    {APP_ROUTES.filter(route => !route.seperateLayout).map((config, idx) => (
+                      <PrivateRoute key={idx} {...config} />
+                    ))}
                     <Route component={PageNotFound} />
                   </Switch>
                 </LayoutWithLocation>

@@ -40,6 +40,6 @@ export {
   TOKEN_INFO_URL
 } from './constants';
 export { Fiats } from './fiats';
-export { FEATURE_STATUS } from './featureStatusMatrix';
+export { isActiveFeature } from './isActiveFeature';
 export { ROUTE_PATHS } from './routePaths';
 export type IWalletConfig = IWalletConfig;

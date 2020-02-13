@@ -25,7 +25,7 @@ export type IFeatureStatus = {
   readonly [k in FEATURE_LIST]: boolean;
 };
 
-export const FEATURE_STATUS: IFeatureStatus = {
+export const isActiveFeature: IFeatureStatus = {
   DASHBOARD: true,
   BUY: true,
   SEND_ASSETS: true,
