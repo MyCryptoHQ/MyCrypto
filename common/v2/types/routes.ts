@@ -2,6 +2,7 @@ export interface IRoutePath {
   name: string;
   title?: string;
   path: string;
+  featureStatus: boolean;
 }
 
 export interface IAppRoute extends IRoutePath {
