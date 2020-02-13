@@ -220,6 +220,7 @@ export const STATIC_APP_ROUTES: IAppRoute[] = [
     path: `${ROUTE_PATHS.DEFIZAP.path}/:zapName?`,
     exact: true,
     requireAccounts: true,
+    enabled: IS_ACTIVE_FEATURE.DEFIZAP,
     component: DeFiZapFlow
   }
 ];
