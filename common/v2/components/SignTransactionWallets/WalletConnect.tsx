@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import * as R from 'ramda';
 
@@ -8,10 +8,13 @@ import { WalletId, ISignComponentProps, TAddress } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
 import { COLORS } from 'v2/theme';
 import { useUpdateEffect } from 'v2/vendor';
-import { noOp } from 'v2/utils';
+import { noOp, truncate } from 'v2/utils';
+import { getNetworkByChainId } from 'v2/services';
+import { StoreContext } from 'v2/services/Store';
 import { useWalletConnect, WcReducer, TActionError, ITxData } from 'v2/services/WalletService';
 
 import './WalletConnect.scss';
+import EthAddress from '../EthAddress';
 
 const SContainer = styled.div`
   display: flex;
@@ -71,6 +74,7 @@ export function SignTransactionWalletConnect({
   onSuccess
 }: ISignComponentProps) {
   const { state, requestConnection, requestSign } = useWalletConnect();
+  const { networks } = useContext(StoreContext);
 
   const sendTx = () =>
     requestSign({
@@ -117,13 +121,16 @@ export function SignTransactionWalletConnect({
           {state.isConnected ? (
             <>
               <div>
-                <Typography>Session Connected to:</Typography>
-                <CodeBlock>
-                  {toString({
-                    address: state.detectedAddress,
-                    chainId: state.detectedChainId
-                  })}
-                </CodeBlock>
+                <Typography>
+                  Session connected with{' '}
+                  <EthAddress
+                    inline={true}
+                    isCopyable={false}
+                    address={state.detectedAddress!}
+                    truncate={truncate}
+                  />{' '}
+                  on network {getNetworkByChainId(state.detectedChainId!, networks)!.name}
+                </Typography>
               </div>
               <div className="wc-content">
                 <Typography>Requesting signature for transcation:</Typography>
