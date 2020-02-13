@@ -1,26 +1,71 @@
 import React, { useContext } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import * as R from 'ramda';
 
 import translate, { translateRaw } from 'v2/translations';
 import { Button, CodeBlock, QRCodeContainer, Typography, Overlay, Spinner } from 'v2/components';
 import { WalletId, ISignComponentProps, TAddress } from 'v2/types';
 import { getWalletConfig } from 'v2/config';
-import { COLORS } from 'v2/theme';
+import { COLORS, FONT_SIZE, BREAK_POINTS } from 'v2/theme';
 import { useUpdateEffect } from 'v2/vendor';
 import { noOp, truncate, objToString } from 'v2/utils';
 import { getNetworkByChainId } from 'v2/services';
 import { StoreContext } from 'v2/services/Store';
 import { useWalletConnect, WcReducer, TActionError, ITxData } from 'v2/services/WalletService';
 
-import './WalletConnect.scss';
 import EthAddress from '../EthAddress';
+
+const SHeader = styled.div`
+  font-size: ${FONT_SIZE.XXL};
+  font-weight: bold;
+  color: var(--dark-slate-blue);
+  text-align: center;
+  margin-bottom: 1em;
+
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    font-size: ${FONT_SIZE.XL};
+  }
+`;
+const SContent = styled.div``;
+
+const SSection = styled.div<{ center: boolean; withOverlay?: boolean }>`
+  ${props =>
+    props.center &&
+    css`
+      margin: 0 auto;
+      text-align: center;
+    `}
+
+  ${props =>
+    props.withOverlay &&
+    css`
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 415px;
+      width: 415px;
+      position: relative;
+    `}
+
+  padding: 1em 0;
+  font-size: ${FONT_SIZE.MD};
+  text-overflow: ellipsis;
+`;
+
+const SFooter = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 1em 0;
+`;
 
 const SContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: ${COLORS.WHITE};
+  &&& span,
+  button {
+    color: ${COLORS.WHITE};
+  }
 `;
 
 const helpLink = getWalletConfig(WalletId.WALLETCONNECT).helpLink;
@@ -33,7 +78,7 @@ interface ErrorProps {
 
 const ErrorHandlers: { [K in TActionError]: React.SFC<ErrorProps> } = {
   WRONG_ADDRESS: ({ address }) => (
-    <Typography style={{ color: 'white', textAlign: 'center', padding: '0 2em' }}>
+    <Typography style={{ padding: '0 2em' }}>
       {translateRaw('SIGN_TX_WALLETCONNECT_FAILED_ACCOUNT', {
         $walletName: translateRaw('X_WALLETCONNECT'),
         $address: address
@@ -41,7 +86,7 @@ const ErrorHandlers: { [K in TActionError]: React.SFC<ErrorProps> } = {
     </Typography>
   ),
   WRONG_NETWORK: ({ network }) => (
-    <Typography style={{ color: 'white', textAlign: 'center', padding: '0 2em' }}>
+    <Typography style={{ padding: '0 2em' }}>
       {translateRaw('SIGN_TX_WALLETCONNECT_FAILED_NETWORK', {
         $walletName: translateRaw('X_WALLETCONNECT'),
         $network: network
@@ -50,7 +95,7 @@ const ErrorHandlers: { [K in TActionError]: React.SFC<ErrorProps> } = {
   ),
   CONNECTION_REJECTED: ({ onClick }) => (
     <>
-      <Typography style={{ color: 'white', textAlign: 'center' }}>Session Rejected</Typography>
+      <Typography>Session Rejected</Typography>
       <div style={{ marginTop: '1em' }}>
         <Button onClick={onClick}>Try Again</Button>
       </div>
@@ -58,7 +103,7 @@ const ErrorHandlers: { [K in TActionError]: React.SFC<ErrorProps> } = {
   ),
   SIGN_REJECTED: ({ onClick }) => (
     <>
-      <Typography style={{ color: 'white', textAlign: 'center' }}>Transaction Rejected</Typography>
+      <Typography>Transaction Rejected</Typography>
       <div style={{ marginTop: '1em' }}>
         <Button onClick={onClick}>Try Again</Button>
       </div>
@@ -111,46 +156,40 @@ export function SignTransactionWalletConnect({
   }, [state.isConnected, state.promptSignRetry, state.errors]);
 
   return (
-    <div>
-      <div className="wc-title">
+    <>
+      <SHeader>
         {translate('SIGNER_SELECT_WALLETCONNECT', { $walletId: translateRaw('X_WALLETCONNECT') })}
-      </div>
-      <section className="wc-container">
-        <div className="wc-content">
-          {state.isConnected ? (
-            <>
-              <div>
-                <Typography>
-                  Session connected with{' '}
-                  <EthAddress
-                    inline={true}
-                    isCopyable={false}
-                    address={state.detectedAddress!}
-                    truncate={truncate}
-                  />{' '}
-                  on network {getNetworkByChainId(state.detectedChainId!, networks)!.name}
-                </Typography>
-              </div>
-              <div className="wc-content">
-                <Typography>Requesting signature for transcation:</Typography>
-                <CodeBlock>{objToString(rawTransaction)}</CodeBlock>
-              </div>
-            </>
-          ) : (
-            <>
-              <div style={{ padding: '0 15px' }}>
-                <Typography as="div">
-                  1. Open the wallet containing the account {senderAccount.address}
-                </Typography>
-                <Typography as="div">2. Select the {senderAccount.networkId} network</Typography>
-                <Typography as="div">3. Scan the QRCode below</Typography>
-              </div>
-            </>
-          )}
-        </div>
-      </section>
-      <section className="wc-container">
-        <div className="wc-qr-container">
+      </SHeader>
+      <SContent>
+        {state.isConnected ? (
+          <>
+            <SSection center={true}>
+              <Typography>
+                Session connected with{' '}
+                <EthAddress
+                  inline={true}
+                  isCopyable={false}
+                  address={state.detectedAddress!}
+                  truncate={truncate}
+                />{' '}
+                on network {getNetworkByChainId(state.detectedChainId!, networks)!.name}
+              </Typography>
+            </SSection>
+            <SSection center={true} style={{ maxWidth: '430px' }}>
+              <Typography>Requesting signature for transcation:</Typography>
+              <CodeBlock>{objToString(rawTransaction)}</CodeBlock>
+            </SSection>
+          </>
+        ) : (
+          <SSection center={true}>
+            <Typography as="div">
+              1. Open the wallet containing the account {senderAccount.address}
+            </Typography>
+            <Typography as="div">2. Select the {senderAccount.networkId} network</Typography>
+            <Typography as="div">3. Scan the QRCode below</Typography>
+          </SSection>
+        )}
+        <SSection center={true} withOverlay={true}>
           <Overlay
             absolute={true}
             center={true}
@@ -161,24 +200,22 @@ export function SignTransactionWalletConnect({
                 getErrorMessage(state.errors![0])
               ) : (
                 <>
-                  <Typography style={{ color: 'white' }}>Pending Confirmation</Typography>
-                  <div style={{ marginTop: '1em' }}>
+                  <Typography>Pending Confirmation</Typography>
+                  <div style={{ margin: '1em 0' }}>
                     <Spinner />
                   </div>
-                  <Typography style={{ color: 'white' }}>
-                    Confirm the transaction on your wallet
-                  </Typography>
+                  <Typography>Please confirm the transaction on your wallet</Typography>
                 </>
               )}
             </SContainer>
           </Overlay>
           <QRCodeContainer data={state.uri} disableSpinner={true} />
-        </div>
-        <div style={{ margin: '1em auto', textAlign: 'center' }}>
-          {translate('ADD_WALLETCONNECT_LINK', { $wiki_link: helpLink })}
-        </div>
-      </section>
-    </div>
+        </SSection>
+      </SContent>
+      <SFooter>
+        <Typography>{translate('ADD_WALLETCONNECT_LINK', { $wiki_link: helpLink })}</Typography>
+      </SFooter>
+    </>
   );
 }
 

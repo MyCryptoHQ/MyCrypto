@@ -1,26 +1,71 @@
 import React, { useEffect } from 'react';
 import * as R from 'ramda';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import translate, { translateRaw } from 'v2/translations';
 import { WalletId } from 'v2/types';
 import { getWalletConfig } from 'v2/config';
-import { COLORS } from 'v2/theme';
+import { COLORS, FONT_SIZE, BREAK_POINTS } from 'v2/theme';
 import { QRCodeContainer, Overlay, Button, Typography } from 'v2/components';
 import { WalletFactory, useWalletConnect } from 'v2/services/WalletService';
-
-import './WalletConnect.scss';
 
 interface OwnProps {
   onUnlock(param: any): void;
   goToPreviousStep(): void;
 }
 
+const SHeader = styled.div`
+  font-size: ${FONT_SIZE.XXL};
+  font-weight: bold;
+  color: var(--dark-slate-blue);
+  text-align: center;
+  margin-bottom: 1em;
+
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    font-size: ${FONT_SIZE.XL};
+  }
+`;
+
+const SContent = styled.div`
+  justify-content: center;
+  text-align: center;
+`;
+const SSection = styled.div<{ center: boolean; withOverlay?: boolean }>`
+  ${props =>
+    props.center &&
+    css`
+      margin: 0 auto;
+    `}
+
+  ${props =>
+    props.withOverlay &&
+    css`
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 415px;
+      width: 415px;
+      position: relative;
+    `}
+
+  padding: 1em 0;
+  font-size: ${FONT_SIZE.MD};
+`;
+
+const SFooter = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 1em 0;
+`;
+
 const SContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: ${COLORS.WHITE};
+  &&& span,
+  button {
+    color: ${COLORS.WHITE};
+  }
 `;
 
 const WalletService = WalletFactory(WalletId.WALLETCONNECT);
@@ -35,44 +80,38 @@ export function WalletConnectDecrypt({ onUnlock }: OwnProps) {
   }, [state.detectedAddress]);
 
   return (
-    <div className="WalletConnectPanel">
-      <div className="Panel-title">
+    <>
+      <SHeader>
         {translate('UNLOCK_WALLET')} {`Your ${translateRaw('X_WALLETCONNECT')} device`}
-      </div>
-      <div className="WalletConnect">
-        <section className="WalletConnect-fields">
-          <section className="Panel-description">
-            {translate('SIGNER_SELECT_WALLET_QR', { $walletId: translateRaw('X_WALLETCONNECT') })}
-          </section>
-          <section className="wc-center wc-qr-container">
-            <Overlay
-              absolute={true}
-              center={true}
-              show={state.isConnected || !R.isEmpty(state.errors)}
-            >
-              <SContainer>
-                {!R.isEmpty(state.errors) && (
-                  <>
-                    <Typography style={{ color: 'white', textAlign: 'center' }}>
-                      Session Rejected
-                    </Typography>
-                    <div style={{ marginTop: '1em' }}>
-                      <Button onClick={requestConnection}>Try Again</Button>
-                    </div>
-                  </>
-                )}
-              </SContainer>
-            </Overlay>
-            <QRCodeContainer data={state.uri} disableSpinner={true} />
-          </section>
-        </section>
-        {wikiLink && (
-          <p className="WalletConnect-wiki-link">
-            {translate('ADD_WALLETCONNECT_LINK', { $wiki_link: wikiLink })}
-          </p>
-        )}
-      </div>
-    </div>
+      </SHeader>
+      <SContent>
+        <SSection center={true}>
+          {translate('SIGNER_SELECT_WALLET_QR', { $walletId: translateRaw('X_WALLETCONNECT') })}
+        </SSection>
+        <SSection center={true} withOverlay={true}>
+          <Overlay
+            absolute={true}
+            center={true}
+            show={state.isConnected || !R.isEmpty(state.errors)}
+          >
+            <SContainer>
+              {!R.isEmpty(state.errors) && (
+                <>
+                  <Typography>Session Rejected</Typography>
+                  <div style={{ marginTop: '1em' }}>
+                    <Button onClick={requestConnection}>Try Again</Button>
+                  </div>
+                </>
+              )}
+            </SContainer>
+          </Overlay>
+          <QRCodeContainer data={state.uri} disableSpinner={true} />
+        </SSection>
+      </SContent>
+      <SFooter>
+        <Typography>{translate('ADD_WALLETCONNECT_LINK', { $wiki_link: wikiLink })}</Typography>
+      </SFooter>
+    </>
   );
 }
 
