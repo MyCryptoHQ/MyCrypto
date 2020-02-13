@@ -80,9 +80,11 @@ export default function Dashboard() {
             <div>
               <WalletBreakdown />
             </div>
-            <div>
-              <DashboardZapCTA className="Dashboard-desktop-modifiedPanel" />
-            </div>
+            {IS_ACTIVE_FEATURE.DEFIZAP && (
+              <div>
+                <DashboardZapCTA className="Dashboard-desktop-modifiedPanel" />
+              </div>
+            )}
             <div>
               <AccountList
                 accounts={currentAccounts}
