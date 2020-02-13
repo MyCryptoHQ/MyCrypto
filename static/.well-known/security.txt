@@ -6,3 +6,4 @@ Preferred-Languages: en
 Canonical: https://mycrypto.com/.well-known/security.txt
 Policy: https://hackerone.com/mycrypto?view_policy=true
 Hiring: https://about.mycrypto.com/jobs/
+OpenBugBounty: https://openbugbounty.org/bugbounty/MyCrypto/
