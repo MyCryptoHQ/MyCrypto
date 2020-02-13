@@ -21,10 +21,6 @@ function SendAssets() {
     txFactoryState
   } = useStateReducer(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: null });
 
-  // goToDashboard is defaulted to do-nothing, because goToNextStep handles redirect location.
-  // tslint:disable-next-line
-  const goToDashboard = () => {};
-
   // Due to MetaMask deprecating eth_sign method,
   // it has different step order, where sign and send are one panel
   const web3Steps: IStepperPath[] = [
@@ -49,7 +45,6 @@ function SendAssets() {
     {
       label: translateRaw('TRANSACTION_BROADCASTED'),
       component: TransactionReceipt,
-      actions: goToDashboard,
       props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(txFactoryState)
     }
   ];
@@ -76,7 +71,6 @@ function SendAssets() {
     {
       label: translateRaw('TRANSACTION_BROADCASTED'),
       component: TransactionReceipt,
-      actions: goToDashboard,
       props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(txFactoryState)
     }
   ];

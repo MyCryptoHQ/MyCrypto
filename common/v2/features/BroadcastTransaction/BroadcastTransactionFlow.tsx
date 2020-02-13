@@ -15,6 +15,7 @@ const BroadcastTransactionFlow = () => {
     handleSendClicked,
     handleSignedTxChanged,
     handleConfirmClick,
+    handleResetFlow,
     broadcastTxState
   } = useStateReducer(BroadcastTxConfigFactory, broadcastTxInitialState);
 
@@ -41,7 +42,8 @@ const BroadcastTransactionFlow = () => {
     {
       label: translateRaw('BROADCAST_TX_RECEIPT_TITLE'),
       component: TransactionReceipt,
-      props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(broadcastTxState)
+      props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(broadcastTxState),
+      actions: (cb: any) => handleResetFlow(cb)
     }
   ];
 

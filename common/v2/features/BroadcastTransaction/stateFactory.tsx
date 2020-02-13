@@ -130,11 +130,17 @@ const BroadcastTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setSt
     }
   };
 
+  const handleResetFlow = (cb: any) => {
+    setState(broadcastTxInitialState);
+    cb();
+  };
+
   return {
     handleNetworkChanged,
     handleSendClicked,
     handleSignedTxChanged,
     handleConfirmClick,
+    handleResetFlow,
     broadcastTxState: state
   };
 };
