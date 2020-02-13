@@ -5,10 +5,10 @@ import * as R from 'ramda';
 import translate, { translateRaw } from 'v2/translations';
 import { Button, CodeBlock, QRCodeContainer, Typography, Overlay, Spinner } from 'v2/components';
 import { WalletId, ISignComponentProps, TAddress } from 'v2/types';
-import { WALLETS_CONFIG } from 'v2/config';
+import { getWalletConfig } from 'v2/config';
 import { COLORS } from 'v2/theme';
 import { useUpdateEffect } from 'v2/vendor';
-import { noOp, truncate } from 'v2/utils';
+import { noOp, truncate, objToString } from 'v2/utils';
 import { getNetworkByChainId } from 'v2/services';
 import { StoreContext } from 'v2/services/Store';
 import { useWalletConnect, WcReducer, TActionError, ITxData } from 'v2/services/WalletService';
@@ -23,8 +23,7 @@ const SContainer = styled.div`
   color: ${COLORS.WHITE};
 `;
 
-const toString = (obj = {}) => JSON.stringify(obj, null, 2);
-const helpLink = WALLETS_CONFIG[WalletId.WALLETCONNECT].helpLink!;
+const helpLink = getWalletConfig(WalletId.WALLETCONNECT).helpLink;
 
 interface ErrorProps {
   address: TAddress;
@@ -134,7 +133,7 @@ export function SignTransactionWalletConnect({
               </div>
               <div className="wc-content">
                 <Typography>Requesting signature for transcation:</Typography>
-                <CodeBlock>{toString(rawTransaction)}</CodeBlock>
+                <CodeBlock>{objToString(rawTransaction)}</CodeBlock>
               </div>
             </>
           ) : (

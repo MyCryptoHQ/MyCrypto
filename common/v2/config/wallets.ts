@@ -25,7 +25,7 @@ export interface IWalletConfig {
   lid: string;
   icon?: string;
   description: string;
-  helpLink?: string;
+  helpLink: string;
   install?: {
     getItLink?: string;
     googlePlay?: string;
@@ -199,7 +199,8 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isDesktopOnly: false,
     type: WalletType.MISC,
     lid: 'VIEW_ADDR',
-    description: 'ADD_VIEW_ADDRESS_DESC'
+    description: 'ADD_VIEW_ADDRESS_DESC',
+    helpLink: ``
   },
   [WalletId.WALLETCONNECT]: {
     id: WalletId.WALLETCONNECT,
@@ -230,3 +231,5 @@ export const HARDWARE_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS_CON
 export const WEB3_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS_CONFIG)(
   ({ type }: { type: WalletType }) => type === WalletType.WEB3
 );
+
+export const getWalletConfig = (walletId: WalletId): IWalletConfig => WALLETS_CONFIG[walletId];

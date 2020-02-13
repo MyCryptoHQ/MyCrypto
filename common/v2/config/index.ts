@@ -29,7 +29,8 @@ export {
   SECURE_WALLETS,
   INSECURE_WALLETS,
   HARDWARE_WALLETS,
-  WEB3_WALLETS
+  WEB3_WALLETS,
+  getWalletConfig
 } from './wallets';
 import { IWalletConfig } from './wallets';
 export { knowledgeBaseURL, HELP_ARTICLE } from './helpArticles';

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import translate, { translateRaw } from 'v2/translations';
 import { WalletId } from 'v2/types';
-import { WALLETS_CONFIG } from 'v2/config';
+import { getWalletConfig } from 'v2/config';
 import { COLORS } from 'v2/theme';
 import { QRCodeContainer, Overlay, Button, Typography } from 'v2/components';
 import { WalletFactory, useWalletConnect } from 'v2/services/WalletService';
@@ -24,7 +24,7 @@ const SContainer = styled.div`
 `;
 
 const WalletService = WalletFactory(WalletId.WALLETCONNECT);
-const wikiLink = WALLETS_CONFIG[WalletId.WALLETCONNECT].helpLink!;
+const wikiLink = getWalletConfig(WalletId.WALLETCONNECT).helpLink;
 
 export function WalletConnectDecrypt({ onUnlock }: OwnProps) {
   const { state, requestConnection } = useWalletConnect();
