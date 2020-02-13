@@ -9,6 +9,7 @@ import { NotificationsPanel } from '../NotificationsPanel';
 import { actions } from './constants';
 import './Dashboard.scss';
 import { DashboardZapCTA } from '../DeFiZap';
+import { IS_ACTIVE_FEATURE } from 'v2/config';
 
 // Keep the same mobile width as an ActionTile
 const EmptyTile = styled.div`
@@ -48,9 +49,11 @@ export default function Dashboard() {
             dashboard={true}
           />
         </div>
-        <div className="Dashboard-mobile-section">
-          <DashboardZapCTA className="Dashboard-mobile-modifiedPanel" />
-        </div>
+        {IS_ACTIVE_FEATURE.DEFIZAP && (
+          <div className="Dashboard-mobile-section">
+            <DashboardZapCTA className="Dashboard-mobile-modifiedPanel" />
+          </div>
+        )}
         {!isUnlockVIP && <BannerAd />}
         <div className="Dashboard-mobile-section">
           <RecentTransactionList accountsList={currentAccounts} />
