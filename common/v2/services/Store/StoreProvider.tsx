@@ -1,6 +1,7 @@
 import React, { useState, useContext, useMemo, createContext, useEffect } from 'react';
 import * as R from 'ramda';
 import {
+  TAddress,
   Account,
   StoreAccount,
   StoreAsset,
@@ -228,7 +229,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     },
     addAccount: (
       networkId: NetworkId,
-      address: string,
+      address: TAddress,
       accountType: WalletId | undefined,
       dPath: string
     ) => {

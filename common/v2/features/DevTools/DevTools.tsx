@@ -13,7 +13,14 @@ import {
   DataContext
 } from 'v2/services/Store';
 import { useDevTools } from 'v2/services';
-import { Account, AddressBook, WalletId, AssetBalanceObject, ExtendedAddressBook } from 'v2/types';
+import {
+  TAddress,
+  Account,
+  AddressBook,
+  WalletId,
+  AssetBalanceObject,
+  ExtendedAddressBook
+} from 'v2/types';
 
 import ToolsNotifications from './ToolsNotifications';
 import ToolsAccountList from './ToolsAccountList';
@@ -120,7 +127,7 @@ const DevTools = () => {
   const { accounts, createAccountWithID, deleteAccount } = useContext(AccountContext);
   const dummyAccount = {
     label: 'Foo',
-    address: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
+    address: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d' as TAddress,
     networkId: DEFAULT_NETWORK,
     assets: [
       {

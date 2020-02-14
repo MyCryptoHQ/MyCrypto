@@ -16,7 +16,7 @@ import {
 import { stripHexPrefix } from 'v2/services/EthService';
 import { WalletFactory } from 'v2/services/WalletService';
 import { NotificationTemplates } from 'v2/features/NotificationsPanel';
-import { Account, Asset, ISettings, Network, NetworkId, WalletId } from 'v2/types';
+import { TAddress, Account, Asset, ISettings, Network, NetworkId, WalletId } from 'v2/types';
 import { ROUTE_PATHS, N_FACTOR } from 'v2/config';
 
 import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
@@ -119,7 +119,7 @@ class CreateKeystore extends Component<Props & INetworkContext & IAssetContext, 
     const newAssetID = generateUUID();
     const newUUID = generateUUID();
     const account: Account = {
-      address: toChecksumAddress(addHexPrefix(keystore.address)),
+      address: toChecksumAddress(addHexPrefix(keystore.address)) as TAddress,
       networkId: network as NetworkId,
       wallet: accountType,
       dPath: '',

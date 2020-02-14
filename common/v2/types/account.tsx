@@ -6,10 +6,11 @@ import { NetworkId } from './networkId';
 import { WalletId } from './walletId';
 import { ITxReceipt } from './transaction';
 import { TUuid } from './uuid';
+import { TAddress } from './address';
 
 export interface Account {
   label?: string;
-  address: string;
+  address: TAddress;
   networkId: NetworkId;
   assets: AssetBalanceObject[];
   wallet: WalletId;
