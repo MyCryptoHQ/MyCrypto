@@ -11,6 +11,7 @@ import { AssetIcon, Currency, Typography } from 'v2/components';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
 import coinGeckoIcon from 'common/assets/images/credits/credits-coingecko.png';
+import { calculateShownIndex } from './helpers';
 
 export const SMALLEST_CHART_SHARE_SUPPORTED = 0.03; // 3%
 export const NUMBER_OF_ASSETS_DISPLAYED = 4;
@@ -228,13 +229,7 @@ export default function WalletBreakdownView({
         $total: `${accounts.length}`
       });
 
-  const shownSelectedIndex = !(
-    chartBalances.length > selectedAssetIndex && selectedAssetIndex !== -1
-  )
-    ? chartBalances.length <= selectedAssetIndex
-      ? chartBalances.length - 1
-      : 0
-    : selectedAssetIndex;
+  const shownSelectedIndex = calculateShownIndex(chartBalances.length, selectedAssetIndex);
 
   const balance = chartBalances[shownSelectedIndex];
   const selectedAssetPercentage = parseFloat(
@@ -260,7 +255,7 @@ export default function WalletBreakdownView({
               setSelectedAssetIndex={setSelectedAssetIndex}
               selectedAssetIndex={shownSelectedIndex}
             />
-            {selectedAssetIndex !== -1 && (
+            {shownSelectedIndex !== -1 && (
               <PanelFigures>
                 <PanelFigure>
                   <PanelFigureValue>
