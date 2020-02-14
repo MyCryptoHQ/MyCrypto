@@ -3,7 +3,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
-import { ExtendedContentPanel, Tabs } from 'v2/components';
+import { ExtendedContentPanel, Tabs, WALLET_STEPS } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
 import { useStateReducer } from 'v2/utils';
 import { ITxReceipt, ISignedTx, Tab } from 'v2/types';
@@ -12,7 +12,6 @@ import { BREAK_POINTS } from 'v2/theme';
 import { deployContractsInitialState, DeployContractsFactory } from './stateFactory';
 import { Deploy, DeployConfirm, DeployReceipt } from './components';
 import { DeployContractsState } from './types';
-import { WALLET_STEPS } from './helpers';
 
 const { SCREEN_XS } = BREAK_POINTS;
 

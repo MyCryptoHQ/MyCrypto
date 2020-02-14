@@ -4,9 +4,7 @@ import styled from 'styled-components';
 import translate from 'v2/translations';
 
 import { StoreAccount } from 'v2/types';
-import { Spinner, Typography } from 'v2/components';
-
-import { WALLET_STEPS } from '../helpers';
+import { Spinner, Typography, WALLET_STEPS } from 'v2/components';
 
 const AllowanceWrapper = styled.div`
   display: flex;

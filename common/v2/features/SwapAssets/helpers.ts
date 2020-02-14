@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
-import { Asset, StoreAccount, WalletId, ITxConfig, SigningComponents } from 'v2/types';
+import { Asset, StoreAccount, ITxConfig } from 'v2/types';
 import { DEXAG_PROXY_CONTRACT } from 'v2/config';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 import {
@@ -13,35 +13,10 @@ import {
   hexToString
 } from 'v2/services/EthService';
 import { getAssetByUUID, getAssetByTicker } from 'v2/services';
-import {
-  SignTransactionPrivateKey,
-  SignTransactionWeb3,
-  SignTransactionLedger,
-  SignTransactionTrezor,
-  SignTransactionSafeT,
-  SignTransactionKeystore,
-  SignTransactionParity,
-  SignTransactionMnemonic
-} from 'v2/components';
+import { WALLET_STEPS } from 'v2/components';
 import { weiToFloat } from 'v2/utils';
 
 import { ISwapAsset } from './types';
-
-export const WALLET_STEPS: SigningComponents = {
-  [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,
-  [WalletId.WEB3]: SignTransactionWeb3,
-  [WalletId.METAMASK]: SignTransactionWeb3,
-  [WalletId.TRUST]: SignTransactionWeb3,
-  [WalletId.FRAME]: SignTransactionWeb3,
-  [WalletId.COINBASE]: SignTransactionWeb3,
-  [WalletId.LEDGER_NANO_S]: SignTransactionLedger,
-  [WalletId.TREZOR]: SignTransactionTrezor,
-  [WalletId.SAFE_T_MINI]: SignTransactionSafeT,
-  [WalletId.KEYSTORE_FILE]: SignTransactionKeystore,
-  [WalletId.PARITY_SIGNER]: SignTransactionParity,
-  [WalletId.MNEMONIC_PHRASE]: SignTransactionMnemonic,
-  [WalletId.VIEW_ONLY]: null
-};
 
 export const makeAllowanceTransaction = async (
   trade: any,

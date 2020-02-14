@@ -3,7 +3,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { translateRaw } from 'v2/translations';
 
-import { ExtendedContentPanel } from 'v2/components';
+import { ExtendedContentPanel, WALLET_STEPS } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
 import { ITxReceipt, ISignedTx } from 'v2/types';
 import { useStateReducer } from 'v2/utils';
@@ -16,7 +16,6 @@ import {
   SwapTransactionReceipt,
   SetAllowance
 } from './components';
-import { WALLET_STEPS } from './helpers';
 import { SwapFlowFactory, swapFlowInitialState } from './stateFactory';
 import { SwapState } from './types';
 
