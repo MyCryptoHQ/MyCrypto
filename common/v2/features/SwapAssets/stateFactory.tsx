@@ -1,7 +1,12 @@
 import { useContext } from 'react';
 
 import translate from 'v2/translations';
-import { TUseStateReducerFactory, fromTxReceiptObj, formatErrorEmailMarkdown } from 'v2/utils';
+import {
+  TUseStateReducerFactory,
+  fromTxReceiptObj,
+  formatErrorEmailMarkdown,
+  calculateCommission
+} from 'v2/utils';
 import {
   DexService,
   ProviderHandler,
@@ -131,7 +136,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       setState((prevState: SwapState) => ({
         ...prevState,
         isCalculatingFromAmount: false,
-        fromAmount: (Number(value) * price + Number(value) * price * 0.025).toString(),
+        fromAmount: calculateCommission(Number(value) * price).toString(),
         fromAmountError: '',
         toAmountError: '',
         swapPrice: price
@@ -188,7 +193,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       setState((prevState: SwapState) => ({
         ...prevState,
         isCalculatingToAmount: false,
-        toAmount: ((Number(value) - Number(value) * 0.025) * price).toString(),
+        toAmount: calculateCommission(Number(value) * price, true).toString(),
         fromAmountError: '',
         toAmountError: '',
         swapPrice: price

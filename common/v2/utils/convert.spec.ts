@@ -1,4 +1,4 @@
-import { convertToFiatFromAsset } from './convert';
+import { convertToFiatFromAsset, calculateCommission } from './convert';
 import { BigNumber } from 'ethers/utils';
 import { StoreAsset, TAssetType, TUuid } from 'v2/types';
 
@@ -48,6 +48,45 @@ describe('it converts balance to fiat', () => {
       decimal: 18
     };
     const converted = convertToFiatFromAsset(assetObject, rate);
+    expect(converted).toEqual(expected);
+  });
+});
+
+describe('it Remove / Add commission from amount', () => {
+  it('remove commission from decimal amount', () => {
+    const expected = 195;
+    const amount = 200;
+    const converted = calculateCommission(amount, true);
+    expect(converted).toEqual(expected);
+  });
+  it('remove commission from null amount', () => {
+    const expected = 0;
+    const amount = 0;
+    const converted = calculateCommission(amount, true);
+    expect(converted).toEqual(expected);
+  });
+  it('remove commission from float amount', () => {
+    const expected = 467.24989328624764;
+    const amount = 479.2306597807668;
+    const converted = calculateCommission(amount, true);
+    expect(converted).toEqual(expected);
+  });
+  it('add commission from decimal amount', () => {
+    const expected = 205;
+    const amount = 200;
+    const converted = calculateCommission(amount);
+    expect(converted).toEqual(expected);
+  });
+  it('add commission from null amount', () => {
+    const expected = 0;
+    const amount = 0;
+    const converted = calculateCommission(amount);
+    expect(converted).toEqual(expected);
+  });
+  it('add commission from float amount', () => {
+    const expected = 491.21142627528593;
+    const amount = 479.2306597807668;
+    const converted = calculateCommission(amount);
     expect(converted).toEqual(expected);
   });
 });
