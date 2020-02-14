@@ -5180,6 +5180,13 @@
     "uuid": "924d7286-d96b-55d1-afbe-863398a6eecd"
   },
   {
+    "address": "0x3b3A5557F119106270017A7662488C1FF6312A6b",
+    "symbol": "LGC",
+    "decimal": 18,
+    "name": "LOGISTICS",
+    "uuid": "59618bac-2019-5974-a4ee-d1d315f5f80b"
+  },
+  {
     "address": "0x0a50C93c762fDD6E56D86215C24AaAD43aB629aa",
     "symbol": "LGO",
     "decimal": 8,
