@@ -2,7 +2,7 @@ import { SagaIterator } from 'redux-saga';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { gasPriceDefaults, gasEstimateCacheTime } from 'config';
-import { fetchGasEstimates, GasEstimates } from 'api/gas';
+import { fetchGasEstimates, fetchGasEstimatesRPC, GasEstimates } from 'api/gas';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
 import * as configMetaSelectors from 'features/config/meta/selectors';
@@ -52,6 +52,17 @@ export function* fetchEstimates(): SagaIterator {
     oldEstimates.time + gasEstimateCacheTime > Date.now()
   ) {
     yield put(actions.setGasEstimates(oldEstimates));
+    return;
+  }
+
+  if (network.useRPCForGasPrice) {
+    try {
+      const estimates: GasEstimates = yield call(fetchGasEstimatesRPC);
+      yield put(actions.setGasEstimates(estimates));
+    } catch (err) {
+      console.warn('Failed to fetch RPC gas estimates:', err);
+      yield call(setDefaultEstimates, network);
+    }
     return;
   }
 

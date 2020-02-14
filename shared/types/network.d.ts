@@ -95,6 +95,7 @@ interface StaticNetworkConfig {
   isTestnet?: boolean;
   gasPriceSettings: GasPriceSetting;
   shouldEstimateGasPrice?: boolean;
+  useRPCForGasPrice?: boolean;
   unsupportedTabs?: TAB[];
   hideEquivalentValues?: boolean;
 }

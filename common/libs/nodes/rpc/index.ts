@@ -15,7 +15,8 @@ import {
   isValidTransactionByHash,
   isValidTransactionReceipt,
   isValidCurrentBlock,
-  isValidRawTxApi
+  isValidRawTxApi,
+  isValidGasPrice
 } from 'libs/validators';
 import { Token } from 'types/network';
 import { TransactionData, TransactionReceipt } from 'types/transactions';
@@ -152,6 +153,19 @@ export default class RpcNode implements INode {
       .then(isValidRawTxApi)
       .then(({ result }) => {
         return result;
+      });
+  }
+
+  public gasPrice(): Promise<Wei> {
+    return this.client
+      .call(this.requests.gasPrice())
+      .then(isValidGasPrice)
+      .then(({ result }) => Wei(result))
+      .then(result => {
+        return result;
+      })
+      .catch(error => {
+        throw new Error(error.message);
       });
   }
 }
