@@ -25,4 +25,5 @@ export interface INode {
   sendRawTx(tx: string): Promise<string>;
   sendCallRequest(txObj: TxObj): Promise<string>;
   getCurrentBlock(): Promise<string>;
+  gasPrice(chainId: number): Promise<Wei>;
 }

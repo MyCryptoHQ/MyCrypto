@@ -317,7 +317,8 @@ enum API_NAME {
   Get_Accounts = 'Get Accounts',
   Net_Version = 'Net Version',
   Transaction_By_Hash = 'Transaction By Hash',
-  Transaction_Receipt = 'Transaction Receipt'
+  Transaction_Receipt = 'Transaction Receipt',
+  Gas_Price = 'Gas Price'
 }
 
 const isValidEthCall = (response: JsonRpcResponse, schemaType: typeof schema.RpcNode) => (
@@ -373,6 +374,7 @@ export const isValidGetAccounts = (response: JsonRpcResponse) =>
 
 export const isValidGetNetVersion = (response: JsonRpcResponse) =>
   isValidEthCall(response, schema.RpcNode)(API_NAME.Net_Version);
+
 export const isValidTxHash = (hash: string) =>
   hash.substring(0, 2) === '0x' && hash.length === 66 && isValidHex(hash);
 
@@ -446,3 +448,6 @@ export function isValidAddressLabel(
 
   return result;
 }
+
+export const isValidGasPrice = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Gas_Price);

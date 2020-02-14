@@ -83,6 +83,10 @@ export interface GetCurrentBlockRequest extends RPCRequestBase {
   method: 'eth_blockNumber';
 }
 
+export interface GasPriceRequest extends RPCRequestBase {
+  method: 'eth_gasPrice';
+}
+
 export type RPCRequest =
   | RPCRequestBase //base added so I can add an empty params array in decorateRequest without TS complaining
   | GetBalanceRequest
@@ -92,4 +96,5 @@ export type RPCRequest =
   | GetTransactionCountRequest
   | GetTransactionByHashRequest
   | GetTransactionReceiptRequest
-  | GetCurrentBlockRequest;
+  | GetCurrentBlockRequest
+  | GasPriceRequest;
