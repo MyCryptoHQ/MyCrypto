@@ -9,6 +9,7 @@ export { isUrl } from './isUrl';
 export { truncate } from './truncate';
 export { useOnClickOutside } from './useOnClickOutside';
 export { trace } from './trace';
+<<<<<<< HEAD
 export {
   convertToFiat,
   convertToFiatFromAsset,
@@ -16,6 +17,9 @@ export {
   convert,
   withCommission
 } from './convert';
+=======
+export { convertToFiat, convertToFiatFromAsset, weiToFloat, calculateCommission } from './convert';
+>>>>>>> * Added MyCrypto commission in a constant
 export { isArrayEqual } from './isArrayEqual';
 export { useInterval } from './useInterval';
 export * from './useStateReducer';
