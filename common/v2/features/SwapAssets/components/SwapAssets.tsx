@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Button } from '@mycrypto/ui';
+import { Button, Tooltip } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'v2/translations';
-
+import { MYC_COMMISSION } from 'v2/config';
 import { InputField, AssetDropdown } from 'v2/components';
 
 import { ISwapAsset } from '../types';
 import { getUnselectedAssets } from '../helpers';
+import questionToolTip from 'common/assets/images/icn-question.svg';
 
 const FormWrapper = styled.div`
   margin-top: 20px;
@@ -15,7 +16,6 @@ const FormWrapper = styled.div`
 `;
 
 const FormItem = styled.div`
-  margin-bottom: 12px;
   display: flex;
   width: 100%;
 `;
@@ -25,9 +25,33 @@ const InputWrapper = styled.div`
   margin-right: 15px;
 `;
 
+const CenteredToolTip = styled(Tooltip)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Label = styled.p`
+  font-size: 18px;
+  width: 100%;
+  line-height: 1;
+  text-align: left;
+  font-weight: normal;
+  margin-bottom: 9px;
+  color: ${props => props.theme.text};
+`;
+
+const DisplayData = styled.p`
+  margin-left: 12px;
+`;
+
 const StyledButton = styled(Button)`
   margin-top: 12px;
   width: 100%;
+`;
+
+const FormDisplay = styled.div`
+  margin-bottom: 32px;
 `;
 
 interface Props {
@@ -40,6 +64,9 @@ interface Props {
   isCalculatingToAmount: boolean;
   fromAmountError: string;
   toAmountError: string;
+  initialValue: number;
+  initialRate: number;
+  slippageRate: number;
   onSuccess(): void;
   handleFromAssetSelected(asset: ISwapAsset): void;
   handleToAssetSelected(asset: ISwapAsset): void;
@@ -69,7 +96,10 @@ export default function SwapAssets(props: Props) {
     calculateNewFromAmount,
     calculateNewToAmount,
     handleFromAmountChanged,
-    handleToAmountChanged
+    handleToAmountChanged,
+    initialValue,
+    initialRate,
+    slippageRate
   } = props;
 
   // show only unused assets
@@ -109,22 +139,15 @@ export default function SwapAssets(props: Props) {
     calculateNewToAmount(fromAmount);
   }, [toAsset]);
 
+  const makeDisplayString = (amount: number) =>
+    amount.toFixed(2) === '0.00' || amount < 0 ? '<0.01' : amount.toFixed(2);
+
   return (
     <FormWrapper>
       <FormItem>
-        <AssetDropdown
-          searchable={false}
-          selectedAsset={fromAsset}
-          assets={filteredAssets}
-          onSelect={handleFromAssetSelected}
-          label={translateRaw('X_ASSET')}
-          fluid={true}
-        />
-      </FormItem>
-      <FormItem>
         <InputWrapper>
           <InputField
-            label={translateRaw('SWAP_SEND_AMOUNT')}
+            label={'Swap From'}
             value={fromAmount}
             placeholder="0.00"
             onChange={handleFromAmountChangedEvent}
@@ -136,15 +159,33 @@ export default function SwapAssets(props: Props) {
         <AssetDropdown
           selectedAsset={fromAsset}
           assets={filteredAssets}
-          label={translateRaw('ASSET')}
+          label={translateRaw('X_ASSET')}
+          onSelect={handleFromAssetSelected}
           showOnlyTicker={true}
-          disabled={true}
+          disabled={isCalculatingToAmount || isCalculatingFromAmount}
+          searchable={true}
         />
       </FormItem>
+      <FormDisplay>
+        {initialValue && toAmount && toAsset && (
+          <>
+            <Label>
+              {`Fee (${MYC_COMMISSION}%) `}
+              <CenteredToolTip tooltip={'This fee is split between MyCrypto and Dex.AG'}>
+                <img src={questionToolTip} />
+              </CenteredToolTip>{' '}
+              :
+            </Label>
+            <DisplayData>
+              {`${makeDisplayString(initialValue - parseFloat(toAmount))} ${toAsset.symbol}`}
+            </DisplayData>
+          </>
+        )}
+      </FormDisplay>
       <FormItem>
         <InputWrapper>
           <InputField
-            label={translate('SWAP_RECEIVE_AMOUNT')}
+            label={'To'}
             value={toAmount}
             placeholder="0.00"
             onChange={handleToAmountChangedEvent}
@@ -160,8 +201,33 @@ export default function SwapAssets(props: Props) {
           onSelect={handleToAssetSelected}
           showOnlyTicker={true}
           disabled={isCalculatingToAmount || isCalculatingFromAmount}
+          searchable={true}
         />
       </FormItem>
+      <FormDisplay>
+        {initialRate && toAsset && fromAsset && (
+          <>
+            <Label>{`Rate: `}</Label>
+            <DisplayData>
+              {`${makeDisplayString(initialRate)} ${toAsset.symbol} per ${fromAsset.symbol}`}
+            </DisplayData>
+          </>
+        )}
+        {slippageRate && fromAsset && (
+          <>
+            <Label>
+              {`Markup `}
+              <CenteredToolTip
+                tooltip={`Markup is calculated by comparing against a 0.01 ${fromAsset.symbol} trade`}
+              >
+                <img src={questionToolTip} />
+              </CenteredToolTip>
+              :
+            </Label>
+            <DisplayData>{`${makeDisplayString((1 - slippageRate) * 100)}%`}</DisplayData>
+          </>
+        )}
+      </FormDisplay>
       <StyledButton
         onClick={onSuccess}
         disabled={

@@ -42,7 +42,10 @@ const swapFlowInitialState = {
   txConfig: undefined,
   rawTransaction: undefined,
   dexTrade: undefined,
-  txReceipt: undefined
+  txReceipt: undefined,
+  initialValue: undefined,
+  initialRate: undefined,
+  slippageRate: undefined
 };
 
 const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }) => {
@@ -129,20 +132,26 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         isCalculatingFromAmount: true
       }));
 
-      const price = Number(
-        await DexService.instance.getTokenPriceTo(fromAsset.symbol, toAsset.symbol, value)
+      const commissionIncreasedAmount = withCommission({
+        amount: Number(value),
+        rate: MYC_DEXAG_COMMISSION_RATE
+      });
+
+      const { price, costBasis } = await DexService.instance.getTokenPriceTo(
+        fromAsset.symbol,
+        toAsset.symbol,
+        commissionIncreasedAmount.toString()
       );
 
       setState((prevState: SwapState) => ({
         ...prevState,
         isCalculatingFromAmount: false,
-        fromAmount: withCommission({
-          amount: Number(value) * price,
-          rate: MYC_DEXAG_COMMISSION_RATE
-        }).toString(),
+        fromAmount: (commissionIncreasedAmount*price).toString(),
         fromAmountError: '',
         toAmountError: '',
-        swapPrice: price
+        initialValue: Number(commissionIncreasedAmount),
+        initialRate: 1 / price,
+        slippageRate: 1 / price / (1 / costBasis)
       }));
     } catch (e) {
       if (!e.isCancel) {
@@ -189,10 +198,11 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         lastChangedAmount: LAST_CHANGED_AMOUNT.FROM
       }));
 
-      const price = Number(
-        await DexService.instance.getTokenPriceFrom(fromAsset.symbol, toAsset.symbol, value)
+      const { price, costBasis } = await DexService.instance.getTokenPriceFrom(
+        fromAsset.symbol,
+        toAsset.symbol,
+        value
       );
-
       setState((prevState: SwapState) => ({
         ...prevState,
         isCalculatingToAmount: false,
@@ -203,7 +213,9 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         }).toString(),
         fromAmountError: '',
         toAmountError: '',
-        swapPrice: price
+        initialValue: Number(value) * price,
+        initialRate: price,
+        slippageRate: price / costBasis
       }));
     } catch (e) {
       if (!e.isCancel) {
