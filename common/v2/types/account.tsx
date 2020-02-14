@@ -21,7 +21,7 @@ export interface IAccount {
   favorite: boolean;
 }
 
-export type Account = Omit<IAccount, 'uuid'>;
+export type IRawAccount = Omit<IAccount, 'uuid'>;
 
 export interface AssetBalanceObject {
   uuid: TUuid;

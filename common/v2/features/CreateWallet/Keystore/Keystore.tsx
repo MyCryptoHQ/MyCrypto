@@ -16,7 +16,7 @@ import {
 import { stripHexPrefix } from 'v2/services/EthService';
 import { WalletFactory } from 'v2/services/WalletService';
 import { NotificationTemplates } from 'v2/features/NotificationsPanel';
-import { TAddress, Account, Asset, ISettings, Network, NetworkId, WalletId } from 'v2/types';
+import { TAddress, IRawAccount, Asset, ISettings, Network, NetworkId, WalletId } from 'v2/types';
 import { ROUTE_PATHS, N_FACTOR } from 'v2/config';
 
 import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
@@ -34,7 +34,7 @@ interface State {
 
 interface Props extends RouteComponentProps<{}> {
   settings: ISettings;
-  createAccountWithID(accountData: Account, uuid: string): void;
+  createAccountWithID(accountData: IRawAccount, uuid: string): void;
   updateSettingsAccounts(accounts: string[]): void;
   createAssetWithID(value: Asset, id: string): void;
   displayNotification(templateName: string, templateData?: object): void;
@@ -118,7 +118,7 @@ class CreateKeystore extends Component<Props & INetworkContext & IAssetContext, 
     const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(assets)(accountNetwork);
     const newAssetID = generateUUID();
     const newUUID = generateUUID();
-    const account: Account = {
+    const account: IRawAccount = {
       address: toChecksumAddress(addHexPrefix(keystore.address)) as TAddress,
       networkId: network as NetworkId,
       wallet: accountType,

@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js';
 import * as R from 'ramda';
 
 import {
-  Account,
+  IRawAccount,
   IAccount,
   ITxReceipt,
   StoreAccount,
@@ -20,7 +20,7 @@ import { getAllTokensBalancesOfAccount } from '../BalanceService';
 
 export interface IAccountContext {
   accounts: IAccount[];
-  createAccountWithID(accountData: Account, uuid: TUuid): void;
+  createAccountWithID(accountData: IRawAccount, uuid: TUuid): void;
   deleteAccount(account: IAccount): void;
   updateAccount(uuid: TUuid, accountData: IAccount): void;
   addNewTransactionToAccount(account: IAccount, transaction: ITxReceipt): void;

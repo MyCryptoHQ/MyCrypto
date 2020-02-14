@@ -8,14 +8,15 @@ import { DEFAULT_NETWORK } from 'v2/config';
 import { generateUUID } from 'v2/utils';
 import {
   AccountContext,
-  getLabelByAccount,
+  getLabelByAddressAndNetwork,
   AddressBookContext,
-  DataContext
+  DataContext,
+  NetworkContext
 } from 'v2/services/Store';
 import { useDevTools } from 'v2/services';
 import {
   TAddress,
-  Account,
+  IRawAccount,
   AddressBook,
   WalletId,
   AssetBalanceObject,
@@ -35,8 +36,13 @@ const renderAccountForm = (addressBook: ExtendedAddressBook[]) => ({
   handleChange,
   handleBlur,
   isSubmitting
-}: FormikProps<Account>) => {
-  const detectedLabel: AddressBook | undefined = getLabelByAccount(values, addressBook);
+}: FormikProps<IRawAccount>) => {
+  const { getNetworkByName } = useContext(NetworkContext);
+  const detectedLabel: AddressBook | undefined = getLabelByAddressAndNetwork(
+    values.address,
+    addressBook,
+    getNetworkByName(values.networkId)
+  );
   const label = detectedLabel ? detectedLabel.label : 'Unknown Account';
   return (
     <Form>
@@ -162,7 +168,7 @@ const DevTools = () => {
         <div className="Settings-heading">Enter a new Account</div>
         <Formik
           initialValues={dummyAccount}
-          onSubmit={(values: Account, { setSubmitting }) => {
+          onSubmit={(values: IRawAccount, { setSubmitting }) => {
             createAccountWithID(values, generateUUID());
             setSubmitting(false);
           }}
