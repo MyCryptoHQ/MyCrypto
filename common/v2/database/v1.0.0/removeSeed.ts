@@ -3,7 +3,7 @@ import * as R from 'ramda';
 import { devAccounts, DevAccount, devContacts } from '../seed';
 import {
   AddressBook,
-  ExtendedAccount,
+  IAccount,
   ExtendedAddressBook,
   LocalStorage,
   TUuid,
@@ -14,14 +14,14 @@ import {
 import { toArray, toObject, add } from './helpers';
 
 const removeDevAccounts = add(LSKeys.ACCOUNTS)((accounts: DevAccount[], store: LocalStorage) => {
-  const cmp = (x: ExtendedAccount, y: DevAccount) => x.address === y.address;
+  const cmp = (x: IAccount, y: DevAccount) => x.address === y.address;
   const toKeep = R.differenceWith(cmp, toArray(store.accounts), accounts);
   return R.reduce(toObject('uuid'), {}, toKeep);
 });
 
 const removeDevAccountsFromSettings = add(LSKeys.SETTINGS)(
   (accounts: DevAccount[], store: LocalStorage) => {
-    const cmp = (x: ExtendedAccount, y: DevAccount) => x.address === y.address;
+    const cmp = (x: IAccount, y: DevAccount) => x.address === y.address;
     const devAccountUuids = R.differenceWith(cmp, toArray(store.accounts), accounts).map(
       a => a.uuid
     );

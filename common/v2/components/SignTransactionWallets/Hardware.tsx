@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { ExtendedAccount as IExtendedAccount, ITxReceipt, ITxObject, ISignedTx } from 'v2/types';
+import { IAccount as IIAccount, ITxReceipt, ITxObject, ISignedTx } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
 import { makeTransaction } from 'v2/services/EthService';
 import { WalletFactory, HardwareWallet } from 'v2/services/WalletService';
@@ -29,7 +29,7 @@ export const splitDPath = (fullDPath: string): IDestructuredDPath => {
 export interface IProps {
   walletIcon: any;
   signerDescription: string;
-  senderAccount: IExtendedAccount;
+  senderAccount: IIAccount;
   rawTransaction: ITxObject;
   onSuccess(receipt: ITxReceipt | ISignedTx): void;
 }

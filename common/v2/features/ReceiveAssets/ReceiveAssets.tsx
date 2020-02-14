@@ -12,7 +12,7 @@ import {
 import { ContentPanel, QRCode, AccountDropdown, AssetDropdown } from 'v2/components';
 import { AssetContext, getNetworkById, StoreContext } from 'v2/services/Store';
 import { isValidAmount } from 'v2/utils';
-import { ExtendedAccount as IExtendedAccount, StoreAccount } from 'v2/types';
+import { IAccount as IIAccount, StoreAccount } from 'v2/types';
 import { ROUTE_PATHS } from 'v2/config';
 import translate, { translateRaw } from 'v2/translations';
 import questionToolTip from 'common/assets/images/icn-question.svg';
@@ -169,7 +169,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                     name={field.name}
                     value={field.value}
                     accounts={accounts}
-                    onSelect={(option: IExtendedAccount) => {
+                    onSelect={(option: IIAccount) => {
                       form.setFieldValue(field.name, option);
                       if (option.networkId) {
                         setNetworkId(option.networkId);

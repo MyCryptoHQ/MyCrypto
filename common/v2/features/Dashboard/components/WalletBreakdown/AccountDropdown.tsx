@@ -7,12 +7,12 @@ import { Checkbox } from 'v2/components';
 import { useOnClickOutside, truncate } from 'v2/utils';
 import { getLabelByAccount, AddressBookContext } from 'v2/services/Store';
 import { COLORS } from 'v2/theme';
-import { ExtendedAccount, ExtendedAddressBook, TUuid } from 'v2/types';
+import { IAccount, ExtendedAddressBook, TUuid } from 'v2/types';
 
 const { BLUE_BRIGHT } = COLORS;
 
 interface AccountDropdownProps {
-  accounts: ExtendedAccount[];
+  accounts: IAccount[];
   selected: TUuid[];
   onSubmit(selected: TUuid[]): void;
 }
@@ -81,12 +81,12 @@ const IconWrapper = styled(Icon)`
 `;
 
 const renderAccounts = (
-  accounts: ExtendedAccount[],
+  accounts: IAccount[],
   selected: string[],
   addressBook: ExtendedAddressBook[],
   handleChange: (uuid: string) => void
 ) =>
-  accounts.map((account: ExtendedAccount) => {
+  accounts.map((account: IAccount) => {
     const addressCard = getLabelByAccount(account, addressBook);
     const addressLabel = addressCard ? addressCard.label : 'Unknown Account';
     return (

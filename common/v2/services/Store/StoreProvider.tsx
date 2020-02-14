@@ -8,7 +8,7 @@ import {
   Network,
   TTicker,
   ExtendedAsset,
-  ExtendedAccount,
+  IAccount,
   WalletId,
   Asset,
   ITxReceipt,
@@ -53,7 +53,7 @@ interface State {
   assetTickers(targetAssets?: StoreAsset[]): TTicker[];
   assetUUIDs(targetAssets?: StoreAsset[]): any[];
   scanTokens(asset?: ExtendedAsset): Promise<void[]>;
-  deleteAccountFromCache(account: ExtendedAccount): void;
+  deleteAccountFromCache(account: IAccount): void;
   addAccount(
     networkId: NetworkId,
     address: string,

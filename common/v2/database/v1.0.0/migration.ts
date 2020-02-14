@@ -3,7 +3,7 @@ import {
   LocalStorage,
   Asset,
   TUuid,
-  ExtendedAccount,
+  IAccount,
   TTicker,
   NetworkId,
   AssetBalanceObject
@@ -25,7 +25,7 @@ export function migrate(prev: LocalStorage, curr: LocalStorage) {
       R.values(assets)
     );
 
-  const updateAccountAssetsUUID = ({ networkId, assets = [], ...rest }: ExtendedAccount) => {
+  const updateAccountAssetsUUID = ({ networkId, assets = [], ...rest }: IAccount) => {
     const getTicker = (uuid: TUuid) => {
       //@ts-ignore
       const asset = prev.assets[uuid] || {};
@@ -53,7 +53,7 @@ export function migrate(prev: LocalStorage, curr: LocalStorage) {
   const accounts = Object.assign(
     {},
     curr.accounts,
-    R.map(updateAccountAssetsUUID, (prev.accounts as R.Functor<ExtendedAccount>) || {})
+    R.map(updateAccountAssetsUUID, (prev.accounts as R.Functor<IAccount>) || {})
   );
 
   // Add labels to address book

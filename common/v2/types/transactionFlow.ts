@@ -1,9 +1,9 @@
 import {
   Asset,
-  ExtendedAccount as IExtendedAccount,
+  IAccount as IIAccount,
   Network as INetwork,
   GasEstimates,
-  ExtendedAccount,
+  IAccount,
   ITxReceipt,
   WalletId
 } from 'v2/types';
@@ -25,7 +25,7 @@ export interface ITxConfig {
   readonly rawTransaction: ITxObject /* The rawTransaction object that will be signed */;
   readonly amount: string;
   readonly receiverAddress: string;
-  readonly senderAccount: IExtendedAccount;
+  readonly senderAccount: IIAccount;
   readonly from: string;
   readonly asset: Asset;
   readonly baseAsset: Asset;
@@ -41,7 +41,7 @@ export interface IFormikFields {
   asset: Asset;
   address: IReceiverAddress;
   amount: string;
-  account: IExtendedAccount;
+  account: IIAccount;
   txDataField: string;
   gasEstimates: GasEstimates;
   gasPriceField: string;
@@ -55,7 +55,7 @@ export interface IFormikFields {
 
 export interface ISignComponentProps {
   network: INetwork;
-  senderAccount: ExtendedAccount;
+  senderAccount: IAccount;
   rawTransaction: ITxObject;
   children?: never;
   onSuccess(receipt: ITxReceipt | ISignedTx): void;
