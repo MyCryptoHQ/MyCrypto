@@ -5,7 +5,7 @@ import BN from 'bn.js';
 import { translateRaw } from 'translations';
 import { NetworkConfig } from 'types/network';
 import { Units } from 'libs/units';
-import { isAdvancedQueryTransaction } from 'utils/helpers';
+import { isAdvancedQueryTransaction, isGasLimitQueryTransaction } from 'utils/helpers';
 import { AppState } from 'features/reducers';
 import { configSelectors, configMetaSelectors } from 'features/config';
 import {
@@ -94,6 +94,7 @@ class TXMetaDataPanel extends React.Component<Props, State> {
     const { gasPrice } = this.state;
     const queryTransaction = isAdvancedQueryTransaction(location.search);
     const showAdvanced = this.state.sliderState === 'advanced' || queryTransaction || offline;
+    const gasLimitQueryTransaction = isGasLimitQueryTransaction(location.search);
 
     return (
       <div className={`Gas col-md-12 ${className}`}>
@@ -104,6 +105,7 @@ class TXMetaDataPanel extends React.Component<Props, State> {
             inputGasPrice={this.props.inputGasPrice}
             options={advancedGasOptions}
             scheduling={scheduling}
+            gasLimitQueryTransaction={gasLimitQueryTransaction}
           />
         ) : (
           <SimpleGas

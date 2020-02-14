@@ -264,8 +264,14 @@ describe('Network Sagas', () => {
         );
       });
 
-      it('should put setGasLimitField', () => {
+      it('should select configMetaSelectors.getAutoGasLimitEnabled', () => {
         expect(gens.successCase.next(false).value).toEqual(
+          select(configMetaSelectors.getAutoGasLimitEnabled)
+        );
+      });
+
+      it('should put setGasLimitField', () => {
+        expect(gens.successCase.next(true).value).toEqual(
           put(transactionFieldsActions.setGasLimitField(gasSetOptions))
         );
       });

@@ -135,7 +135,7 @@ export function* estimateGas(): SagaIterator {
   );
 
   while (true) {
-    const autoGasLimitEnabled: boolean = yield select(configMetaSelectors.getAutoGasLimitEnabled);
+    let autoGasLimitEnabled: boolean = yield select(configMetaSelectors.getAutoGasLimitEnabled);
     const isOffline = yield select(configMetaSelectors.getOffline);
 
     if (isOffline || !autoGasLimitEnabled) {
@@ -168,9 +168,16 @@ export function* estimateGas(): SagaIterator {
           value: gasLimit
         };
 
-        yield put(transactionFieldsActions.setGasLimitField(gasSetOptions));
-
-        yield put(actions.estimateGasSucceeded());
+        // Here we ensure `autoGasLimitEnabled` is still set to `true` in the application state before calling
+        // `setGasLimitField`
+        // The reason for this additional check is that, since the start of the execution of this function,
+        // `autoGasLimitEnabled` might have been toggled to 'false' from the `componentWillMount` function of the
+        // AdvancedGas component in case a `gasLimit` parameter has been found in the url query
+        autoGasLimitEnabled = yield select(configMetaSelectors.getAutoGasLimitEnabled);
+        if (autoGasLimitEnabled) {
+          yield put(transactionFieldsActions.setGasLimitField(gasSetOptions));
+          yield put(actions.estimateGasSucceeded());
+        }
       } else {
         yield put(actions.estimateGasTimedout());
         yield call(localGasEstimation, payload);

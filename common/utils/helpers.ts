@@ -42,6 +42,11 @@ export function isAdvancedQueryTransaction(query: string): boolean {
   }
 }
 
+export function isGasLimitQueryTransaction(query: string): boolean {
+  const params = qs.parse(query.toLowerCase());
+  return 'gaslimit' in params;
+}
+
 export function isPositiveInteger(n: number) {
   return Number.isInteger(n) && n > 0;
 }
