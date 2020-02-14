@@ -1,24 +1,8 @@
 import { sortBy, cloneDeep } from 'lodash';
 import { bufferToHex } from 'ethereumjs-util';
 
-import {
-  WalletId,
-  SigningComponents,
-  StoreAccount,
-  NetworkId,
-  ITxConfig,
-  ITxObject
-} from 'v2/types';
-import {
-  SignTransactionPrivateKey,
-  SignTransactionWeb3,
-  SignTransactionLedger,
-  SignTransactionTrezor,
-  SignTransactionSafeT,
-  SignTransactionKeystore,
-  SignTransactionParity,
-  SignTransactionMnemonic
-} from 'v2/components';
+import { StoreAccount, NetworkId, ITxConfig, ITxObject } from 'v2/types';
+import { WALLET_STEPS } from 'v2/components';
 import { getAssetByUUID, hexToString, hexWeiToString, inputValueToHex } from 'v2/services';
 import { AbiFunction } from 'v2/services/EthService/contracts/ABIFunction';
 
@@ -94,22 +78,6 @@ export const getFunctionsFromABI = (pAbi: ABIItem[]) =>
     pAbi.filter(x => x.type === ABIItemType.FUNCTION),
     item => item.name.toLowerCase()
   ).map(x => Object.assign(x, { label: x.name }));
-
-export const WALLET_STEPS: SigningComponents = {
-  [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,
-  [WalletId.WEB3]: SignTransactionWeb3,
-  [WalletId.METAMASK]: SignTransactionWeb3,
-  [WalletId.TRUST]: SignTransactionWeb3,
-  [WalletId.FRAME]: SignTransactionWeb3,
-  [WalletId.COINBASE]: SignTransactionWeb3,
-  [WalletId.LEDGER_NANO_S]: SignTransactionLedger,
-  [WalletId.TREZOR]: SignTransactionTrezor,
-  [WalletId.SAFE_T_MINI]: SignTransactionSafeT,
-  [WalletId.KEYSTORE_FILE]: SignTransactionKeystore,
-  [WalletId.PARITY_SIGNER]: SignTransactionParity,
-  [WalletId.MNEMONIC_PHRASE]: SignTransactionMnemonic,
-  [WalletId.VIEW_ONLY]: null
-};
 
 export const getAccountsInNetwork = (accounts: StoreAccount[], networkId: NetworkId) =>
   accounts.filter(acc => acc.networkId === networkId && WALLET_STEPS[acc.wallet]);
