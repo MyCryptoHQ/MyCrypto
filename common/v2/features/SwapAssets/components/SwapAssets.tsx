@@ -50,6 +50,10 @@ const StyledButton = styled(Button)`
   width: 100%;
 `;
 
+const SlippageDisplay = styled.div`
+  color: ${props => props.color};
+`;
+
 const FormDisplay = styled.div`
   margin-bottom: 32px;
 `;
@@ -101,7 +105,7 @@ export default function SwapAssets(props: Props) {
     initialRate,
     slippageRate
   } = props;
-
+  const markup = (1 - slippageRate) * 100;
   // show only unused assets
   const filteredAssets = getUnselectedAssets(assets, fromAsset, toAsset);
 
@@ -140,7 +144,7 @@ export default function SwapAssets(props: Props) {
   }, [toAsset]);
 
   const makeDisplayString = (amount: number) =>
-    amount.toFixed(2) === '0.00' || amount < 0 ? '<0.01' : amount.toFixed(2);
+    amount.toFixed(2) === '~0.00' || amount < 0 ? '<0.01' : `~ ${amount.toFixed(2)}`;
 
   return (
     <FormWrapper>
@@ -224,7 +228,11 @@ export default function SwapAssets(props: Props) {
               </CenteredToolTip>
               :
             </Label>
-            <DisplayData>{`${makeDisplayString((1 - slippageRate) * 100)}%`}</DisplayData>
+            <DisplayData>
+              <SlippageDisplay color={markup >= 1.5 ? 'red' : 'green'}>
+                {`${makeDisplayString(markup)}%`}
+              </SlippageDisplay>
+            </DisplayData>
           </>
         )}
       </FormDisplay>
