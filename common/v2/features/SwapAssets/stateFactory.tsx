@@ -149,6 +149,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         fromAmount: (commissionIncreasedAmount*price).toString(),
         fromAmountError: '',
         toAmountError: '',
+        swapPrice: price,
         initialValue: Number(commissionIncreasedAmount),
         initialRate: 1 / price,
         slippageRate: 1 / price / (1 / costBasis)
@@ -213,6 +214,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         }).toString(),
         fromAmountError: '',
         toAmountError: '',
+        swapPrice: price,
         initialValue: Number(value) * price,
         initialRate: price,
         slippageRate: price / costBasis

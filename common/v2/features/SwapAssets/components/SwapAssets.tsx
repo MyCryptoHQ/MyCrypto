@@ -50,7 +50,7 @@ const StyledButton = styled(Button)`
   width: 100%;
 `;
 
-const SlippageDisplay = styled.div`
+const SlippageDisplay = styled(DisplayData)`
   color: ${props => props.color};
 `;
 
@@ -228,11 +228,9 @@ export default function SwapAssets(props: Props) {
               </CenteredToolTip>
               :
             </Label>
-            <DisplayData>
-              <SlippageDisplay color={markup >= 1.5 ? 'red' : 'green'}>
-                {`${makeDisplayString(markup)}%`}
-              </SlippageDisplay>
-            </DisplayData>
+            <SlippageDisplay color={markup >= 1.5 ? 'red' : 'green'}>
+              {`${makeDisplayString(markup)}%`}
+            </SlippageDisplay>
           </>
         )}
       </FormDisplay>
