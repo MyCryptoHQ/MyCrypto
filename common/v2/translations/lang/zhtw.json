@@ -3,7 +3,6 @@
   "data": {
     "NAV_SIGNMSG": "對訊息做簽名 ",
     "X_ADDRESS": "你的地址 ",
-    "X_CIPHER": "Cipher Browser",
     "X_KEYSTORE2": "Keystore 檔 ",
     "X_METAMASK": "MetaMask / Web3 ",
     "X_MNEMONIC": "助憶口令 ",

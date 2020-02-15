@@ -3,7 +3,6 @@
   "data": {
     "NAV_SIGNMSG": "メッセージ署名 ",
     "X_ADDRESS": "自分のアドレス ",
-    "X_CIPHER": "暗号化ブラウザ",
     "X_KEYSTORE2": "Keystore ファイル ",
     "X_METAMASK": "MetaMask / Web3 ",
     "X_MIST": "Mist",
