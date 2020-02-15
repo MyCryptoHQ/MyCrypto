@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Formik, Form, Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
-import { Button, Input } from '@mycrypto/ui';
+import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
@@ -41,6 +41,10 @@ const AddressBookButtons = styled.div`
       margin-right: 12px;
     }
   }
+`;
+
+const SNetworkSelectDropdown = styled(NetworkSelectDropdown)`
+  margin-bottom: 15px;
 `;
 
 interface Props {
@@ -102,7 +106,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
               <Field
                 name="label"
                 render={({ field }: FieldProps<AddressBook>) => (
-                  <Input {...field} placeholder="Enter name of address" />
+                  <InputField {...field} placeholder="Enter name of address" />
                 )}
               />
             </AddressFieldset>
@@ -123,7 +127,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
               <Field
                 name="network"
                 render={({ field, form }: FieldProps<AddressBook>) => (
-                  <NetworkSelectDropdown
+                  <SNetworkSelectDropdown
                     network={field.value}
                     onChange={e => form.setFieldValue(field.name, e)}
                   />
