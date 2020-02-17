@@ -5,7 +5,7 @@ import {
   TUseStateReducerFactory,
   fromTxReceiptObj,
   formatErrorEmailMarkdown,
-  calculateCommission
+  withCommission
 } from 'v2/utils';
 import {
   DexService,
@@ -136,7 +136,10 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       setState((prevState: SwapState) => ({
         ...prevState,
         isCalculatingFromAmount: false,
-        fromAmount: calculateCommission(Number(value) * price).toString(),
+        fromAmount: withCommission({
+          amount: Number(value) * price,
+          rate: MYC_DEXAG_COMMISSION_RATE
+        }).toString(),
         fromAmountError: '',
         toAmountError: '',
         swapPrice: price
@@ -193,7 +196,11 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       setState((prevState: SwapState) => ({
         ...prevState,
         isCalculatingToAmount: false,
-        toAmount: calculateCommission(Number(value) * price, true).toString(),
+        toAmount: withCommission({
+          amount: Number(value) * price,
+          rate: MYC_DEXAG_COMMISSION_RATE,
+          substract: true
+        }).toString(),
         fromAmountError: '',
         toAmountError: '',
         swapPrice: price
