@@ -8,7 +8,7 @@ import { default as SignTransactionParity } from './Parity';
 import { default as SignTransactionPrivateKey } from './PrivateKey';
 import { default as SignTransactionSafeT } from './SafeTmini';
 import { default as SignTransactionTrezor } from './Trezor';
-export { default as SignTransactionWalletConnect } from './WalletConnect';
+import { default as SignTransactionWalletConnect } from './WalletConnect';
 
 export const WALLET_STEPS: SigningComponents = {
   [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,
