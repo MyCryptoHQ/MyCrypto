@@ -1,6 +1,7 @@
-import { convertToFiatFromAsset, calculateCommission } from './convert';
+import { convertToFiatFromAsset, withCommission } from './convert';
 import { BigNumber } from 'ethers/utils';
 import { StoreAsset, TAssetType, TUuid } from 'v2/types';
+import { MYC_DEXAG_COMMISSION_RATE } from 'v2/config';
 
 describe('it converts balance to fiat', () => {
   it('converts some balance to fiat', () => {
@@ -56,37 +57,49 @@ describe('it Remove / Add commission from amount', () => {
   it('remove commission from decimal amount', () => {
     const expected = 195;
     const amount = 200;
-    const converted = calculateCommission(amount, true);
+    const converted = withCommission({
+      amount,
+      rate: MYC_DEXAG_COMMISSION_RATE,
+      substract: true
+    });
     expect(converted).toEqual(expected);
   });
   it('remove commission from null amount', () => {
     const expected = 0;
     const amount = 0;
-    const converted = calculateCommission(amount, true);
+    const converted = withCommission({
+      amount,
+      rate: MYC_DEXAG_COMMISSION_RATE,
+      substract: true
+    });
     expect(converted).toEqual(expected);
   });
   it('remove commission from float amount', () => {
     const expected = 467.24989328624764;
     const amount = 479.2306597807668;
-    const converted = calculateCommission(amount, true);
+    const converted = withCommission({
+      amount,
+      rate: MYC_DEXAG_COMMISSION_RATE,
+      substract: true
+    });
     expect(converted).toEqual(expected);
   });
   it('add commission from decimal amount', () => {
     const expected = 205;
     const amount = 200;
-    const converted = calculateCommission(amount);
+    const converted = withCommission({ amount, rate: MYC_DEXAG_COMMISSION_RATE });
     expect(converted).toEqual(expected);
   });
   it('add commission from null amount', () => {
     const expected = 0;
     const amount = 0;
-    const converted = calculateCommission(amount);
+    const converted = withCommission({ amount, rate: MYC_DEXAG_COMMISSION_RATE });
     expect(converted).toEqual(expected);
   });
   it('add commission from float amount', () => {
     const expected = 491.21142627528593;
     const amount = 479.2306597807668;
-    const converted = calculateCommission(amount);
+    const converted = withCommission({ amount, rate: MYC_DEXAG_COMMISSION_RATE });
     expect(converted).toEqual(expected);
   });
 });

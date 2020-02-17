@@ -1,6 +1,6 @@
 import { bigNumberify, BigNumber, parseEther } from 'ethers/utils';
 import { fromTokenBase } from 'v2/services/EthService';
-import { DEFAULT_ASSET_DECIMAL, MYC_COMMISSION } from 'v2/config';
+import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { StoreAsset } from 'v2/types';
 import BN from 'bn.js';
 
@@ -21,10 +21,18 @@ export const convertToFiat = (userViewableBalance: number, rate: number = 1): nu
 export const weiToFloat = (wei: BigNumber, decimal?: number): number =>
   parseFloat(fromTokenBase(new BN(wei.toString()), decimal || DEFAULT_ASSET_DECIMAL));
 
-export const calculateCommission = (amount: number, substract: boolean = false): number => {
-  const commission = substract ? (100 - MYC_COMMISSION) / 100 : (100 + MYC_COMMISSION) / 100;
-  const splitCommisson = commission.toString().split('.');
+export const withCommission = ({
+  amount,
+  rate,
+  substract
+}: {
+  amount: number;
+  rate: number;
+  substract?: boolean;
+}): number => {
   const amountBN = parseEther(amount.toString());
+  const commission = substract ? (100 - rate) / 100 : (100 + rate) / 100;
+  const splitCommisson = commission.toString().split('.');
   const decimals = splitCommisson.length > 1 ? splitCommisson[1].length : 0;
   const commissionDivisor = Math.pow(10, decimals);
   const commissionBN = bigNumberify(Math.round(commission * commissionDivisor));

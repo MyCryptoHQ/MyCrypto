@@ -5,7 +5,7 @@ import {
   TUseStateReducerFactory,
   fromTxReceiptObj,
   formatErrorEmailMarkdown,
-  calculateCommission
+  withCommission
 } from 'v2/utils';
 import {
   DexService,
@@ -16,7 +16,7 @@ import {
 } from 'v2/services';
 import { StoreAccount } from 'v2/types';
 import { isWeb3Wallet } from 'v2/utils/web3';
-import { DEFAULT_NETWORK } from 'v2/config';
+import { DEFAULT_NETWORK, MYC_DEXAG_COMMISSION_RATE } from 'v2/config';
 
 import { ISwapAsset, LAST_CHANGED_AMOUNT, SwapState } from './types';
 import {
@@ -136,7 +136,10 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       setState((prevState: SwapState) => ({
         ...prevState,
         isCalculatingFromAmount: false,
-        fromAmount: calculateCommission(Number(value) * price).toString(),
+        fromAmount: withCommission({
+          amount: Number(value) * price,
+          rate: MYC_DEXAG_COMMISSION_RATE
+        }).toString(),
         fromAmountError: '',
         toAmountError: '',
         swapPrice: price
@@ -193,7 +196,11 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       setState((prevState: SwapState) => ({
         ...prevState,
         isCalculatingToAmount: false,
-        toAmount: calculateCommission(Number(value) * price, true).toString(),
+        toAmount: withCommission({
+          amount: Number(value) * price,
+          rate: MYC_DEXAG_COMMISSION_RATE,
+          substract: true
+        }).toString(),
         fromAmountError: '',
         toAmountError: '',
         swapPrice: price
