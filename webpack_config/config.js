@@ -15,15 +15,15 @@ const paths = {
 module.exports = {
   // Configuration
   port: 3000,
-  title: 'MyCrypto',
+  title: 'EnergiWallet',
   // description < 200 characters
-  description: 'MyCrypto is a free, open-source interface for interacting with the blockchain.',
-  url: 'https://mycrypto.com/',
+  description: 'EnergiWallet is a free, open-source interface for interacting with the blockchain.',
+  url: 'https://wallet.gen3.energi.network/',
   type: 'website',
   // img < 5MB
   img: path.join(paths.assets, 'images/link-preview.png'),
   twitter: {
-    creator: '@MyCrypto'
+    creator: '@Energicrypto'
   },
   path: paths,
 
