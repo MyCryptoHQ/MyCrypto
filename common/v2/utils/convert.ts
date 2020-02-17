@@ -21,11 +21,14 @@ export const convertToFiat = (userViewableBalance: number, rate: number = 1): nu
 export const weiToFloat = (wei: BigNumber, decimal?: number): number =>
   parseFloat(fromTokenBase(new BN(wei.toString()), decimal || DEFAULT_ASSET_DECIMAL));
 
-export const calculateCommission = (amount: number, subtract: boolean = false): number => {
-  const commission = subtract ? 1000 - MYC_COMMISSION * 10 : 1000 + MYC_COMMISSION * 10;
+export const calculateCommission = (amount: number, substract: boolean = false): number => {
+  const commission = substract ? (100 - MYC_COMMISSION) / 100 : (100 + MYC_COMMISSION) / 100;
+  const splitCommisson = commission.toString().split('.');
   const amountBN = parseEther(amount.toString());
-  const commissionBN = bigNumberify(commission);
+  const decimals = splitCommisson.length > 1 ? splitCommisson[1].length : 0;
+  const commissionDivisor = Math.pow(10, decimals);
+  const commissionBN = bigNumberify(Math.round(commission * commissionDivisor));
 
-  const convertedFloat = weiToFloat(amountBN.mul(commissionBN).div(1000), 18);
-  return convertedFloat;
+  const convertedFloat = weiToFloat(amountBN.mul(commissionBN), 18);
+  return convertedFloat / commissionDivisor;
 };
