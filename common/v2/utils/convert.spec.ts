@@ -85,7 +85,7 @@ describe('it Remove / Add commission from amount', () => {
     expect(converted).toEqual(expected);
   });
   it('add commission from float amount', () => {
-    const expected = 491.211426275286;
+    const expected = 491.21142627528593;
     const amount = 479.2306597807668;
     const converted = calculateCommission(amount);
     expect(converted).toEqual(expected);
