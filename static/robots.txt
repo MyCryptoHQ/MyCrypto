@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: https://mycrypto.com/sitemap.xml
+Sitemap: https://wallet.gen3.energi.network/sitemap.xml
