@@ -1,5 +1,5 @@
 import { Overwrite } from 'utility-types';
-import { AssetBalanceObject, TTicker, Account, WalletId, TUuid } from 'v2/types';
+import { TAddress, AssetBalanceObject, TTicker, Account, WalletId, TUuid } from 'v2/types';
 
 export interface SeedAssetBalance extends AssetBalanceObject {
   ticker: TTicker;
@@ -14,7 +14,7 @@ export type DevAccount = Overwrite<
 
 export const devAccounts: DevAccount[] = [
   {
-    address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912',
+    address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912' as TAddress,
     networkId: 'Ethereum',
     assets: [
       {
@@ -37,7 +37,7 @@ export const devAccounts: DevAccount[] = [
     favorite: true
   },
   {
-    address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912',
+    address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912' as TAddress,
     networkId: 'Goerli',
     assets: [
       {
@@ -54,7 +54,7 @@ export const devAccounts: DevAccount[] = [
     favorite: true
   },
   {
-    address: '0x82d69476357a03415e92b5780c89e5e9e972ce75',
+    address: '0x82d69476357a03415e92b5780c89e5e9e972ce75' as TAddress,
     networkId: 'Ropsten',
     assets: [
       {
@@ -89,7 +89,7 @@ export const devAccounts: DevAccount[] = [
     favorite: true
   },
   {
-    address: '0x8fe684ae26557DfFF70ceE9a4Ff5ee7251a31AD5',
+    address: '0x8fe684ae26557DfFF70ceE9a4Ff5ee7251a31AD5' as TAddress,
     networkId: 'Rinkeby',
     assets: [
       {
@@ -124,7 +124,7 @@ export const devAccounts: DevAccount[] = [
     favorite: true
   },
   {
-    address: '0xd57478a81CF7DcA65996Ef0550367467cbD6309f',
+    address: '0xd57478a81CF7DcA65996Ef0550367467cbD6309f' as TAddress,
     networkId: 'Kovan',
     assets: [
       {

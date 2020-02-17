@@ -9,7 +9,16 @@ import * as R from 'ramda';
 import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './constants';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
 import { NotificationTemplates } from 'v2/features/NotificationsPanel';
-import { Account, Asset, DPathFormat, ISettings, WalletId, Network, NetworkId } from 'v2/types';
+import {
+  TAddress,
+  Account,
+  Asset,
+  DPathFormat,
+  ISettings,
+  WalletId,
+  Network,
+  NetworkId
+} from 'v2/types';
 import { generateUUID, withContext } from 'v2/utils';
 import {
   NetworkContext,
@@ -151,7 +160,7 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
     const newAssetID = generateUUID();
     const newUUID = generateUUID();
     const account: Account = {
-      address: toChecksumAddress(addHexPrefix(address)),
+      address: toChecksumAddress(addHexPrefix(address)) as TAddress,
       networkId: network,
       wallet: accountType,
       dPath: path,
