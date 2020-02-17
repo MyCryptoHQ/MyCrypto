@@ -3,7 +3,7 @@ import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
 import _, { isEmpty } from 'lodash';
-import { formatEther, parseEther } from 'ethers/utils';
+import { formatEther, parseEther, bigNumberify } from 'ethers/utils';
 import BN from 'bn.js';
 import styled from 'styled-components';
 import * as R from 'ramda';
@@ -49,7 +49,8 @@ import {
   isTransactionFeeHigh,
   isChecksumAddress,
   isBurnAddress,
-  isValidENSName
+  isValidENSName,
+  bigNumGasPriceToViewableGwei
 } from 'v2/services/EthService';
 import UnstoppableResolution from 'v2/services/UnstoppableService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
@@ -119,6 +120,9 @@ const initialFormikValues: IFormikFields = {
 // values when they exits.
 type FieldValue = ValuesType<IFormikFields>;
 export const getInitialFormikValues = (s: ITxConfig): IFormikFields => {
+  const gasPriceInGwei =
+    R.path(['rawTransaction', 'gasPrice'], s) &&
+    bigNumGasPriceToViewableGwei(bigNumberify(s.rawTransaction.gasPrice));
   const state: Partial<IFormikFields> = {
     amount: s.amount,
     account: s.senderAccount,
@@ -126,7 +130,10 @@ export const getInitialFormikValues = (s: ITxConfig): IFormikFields => {
     asset: s.asset,
     nonceField: s.nonce,
     txDataField: s.data,
-    address: { value: s.receiverAddress, display: s.receiverAddress }
+    address: { value: s.receiverAddress, display: s.receiverAddress },
+    gasLimitField: s.gasLimit && hexToNumber(s.gasLimit).toString(),
+    gasPriceSlider: gasPriceInGwei,
+    gasPriceField: gasPriceInGwei
   };
 
   const preferValueFromState = (l: FieldValue, r: FieldValue): FieldValue => (isEmpty(r) ? l : r);
@@ -287,7 +294,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
               setIsEstimatingGasLimit(true);
               const finalTx = processFormForEstimateGas(values);
               const gas = await getGasEstimate(values.network, finalTx);
-              setFieldValue('gasLimitField', hexToNumber(gas));
+              setFieldValue('gasLimitField', hexToNumber(gas).toString());
               setFieldTouched('amount');
               setIsEstimatingGasLimit(false);
             } else {
