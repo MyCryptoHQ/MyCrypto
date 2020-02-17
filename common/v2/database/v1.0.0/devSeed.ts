@@ -5,7 +5,7 @@ import { devAccounts, DevAccount, SeedAssetBalance, devAssets, devContacts } fro
 import {
   Asset,
   AssetBalanceObject,
-  ExtendedAccount,
+  IAccount,
   AddressBook,
   LocalStorage,
   NetworkId,
@@ -53,7 +53,7 @@ const addDevAccounts = add(LSKeys.ACCOUNTS)((accounts: DevAccount[], store: Loca
     };
   };
 
-  const updateAssetUuid = ({ assets, ...rest }: ExtendedAccount): ExtendedAccount => ({
+  const updateAssetUuid = ({ assets, ...rest }: IAccount): IAccount => ({
     ...rest,
     assets: assets.map(formatAccountAssetBalance(rest.networkId))
   });

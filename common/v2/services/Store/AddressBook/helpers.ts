@@ -1,12 +1,11 @@
-
-import { Account, AddressBook, Network, WalletId, ExtendedAddressBook } from 'v2/types';
+import { IAccount, AddressBook, Network, WalletId, ExtendedAddressBook } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
 
 export const getLabelByAccount = (
-  account: Account,
+  account: IAccount,
   addressLabels: ExtendedAddressBook[]
 ): ExtendedAddressBook | undefined => {
-if (!account || !addressLabels) return;
+  if (!account || !addressLabels) return;
   return addressLabels.find(
     label =>
       account.address.toLowerCase() === label.address.toLowerCase() &&

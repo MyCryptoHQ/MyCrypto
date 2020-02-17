@@ -3,7 +3,7 @@ import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { SPACING } from 'v2/theme';
-import { ExtendedAccount } from 'v2/types';
+import { IAccount } from 'v2/types';
 import { NotificationsContext } from './NotificationsProvider';
 import { notificationsConfigs, NotificationTemplates } from './constants';
 
@@ -27,7 +27,7 @@ const CloseButton = styled(Button)`
 `;
 
 interface Props {
-  accounts: ExtendedAccount[];
+  accounts: IAccount[];
 }
 
 const NotificationsPanel = ({ accounts }: Props) => {

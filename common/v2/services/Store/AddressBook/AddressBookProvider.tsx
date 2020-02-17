@@ -3,7 +3,7 @@ import React, { useContext, createContext } from 'react';
 import {
   AddressBook,
   ExtendedAddressBook,
-  ExtendedAccount,
+  IAccount,
   Network,
   StoreAccount,
   LSKeys,
@@ -19,8 +19,8 @@ interface IAddressBookContext {
   deleteAddressBooks(uuid: TUuid): void;
   getContactByAddress(address: string): ExtendedAddressBook | undefined;
   getContactByAddressAndNetwork(address: string, network: Network): ExtendedAddressBook | undefined;
-  getContactByAccount(account: ExtendedAccount): ExtendedAddressBook | undefined;
-  getAccountLabel(account: StoreAccount | ExtendedAccount): string | undefined;
+  getContactByAccount(account: IAccount): ExtendedAddressBook | undefined;
+  getAccountLabel(account: StoreAccount | IAccount): string | undefined;
 }
 
 export const AddressBookContext = createContext({} as IAddressBookContext);
@@ -57,7 +57,7 @@ export const AddressBookProvider: React.FC = ({ children }) => {
         );
     },
     getAccountLabel: account => {
-      const addressContact = state.getContactByAccount(account as ExtendedAccount);
+      const addressContact = state.getContactByAccount(account as IAccount);
       return addressContact ? addressContact.label : undefined;
     }
   };

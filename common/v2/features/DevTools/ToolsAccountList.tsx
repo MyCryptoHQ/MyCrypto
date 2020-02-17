@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { List, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { AddressBook, ExtendedAccount } from 'v2/types';
+import { AddressBook, IAccount } from 'v2/types';
 import { truncate } from 'v2/utils';
 import { getLabelByAccount, AddressBookContext } from 'v2/services/Store';
 import { Account } from 'v2/components';
@@ -18,14 +18,14 @@ const DeleteButton = styled(Button)`
 `;
 
 export interface AccountListProps {
-  accounts: ExtendedAccount[];
-  deleteAccount(account: ExtendedAccount): void;
+  accounts: IAccount[];
+  deleteAccount(account: IAccount): void;
 }
 
 const ToolsAccountList: React.FC<AccountListProps> = props => {
   const { addressBook } = useContext(AddressBookContext);
   const { accounts, deleteAccount } = props;
-  const list = accounts.map((account: ExtendedAccount, index: number) => {
+  const list = accounts.map((account: IAccount, index: number) => {
     const detectedLabel: AddressBook | undefined = getLabelByAccount(account, addressBook);
     const label = detectedLabel ? detectedLabel.label : 'Unknown Account';
     return (

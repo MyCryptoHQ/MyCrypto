@@ -35,7 +35,7 @@ export {
   AssetWithDetails
 } from './asset';
 import { StoreAccount } from './account';
-export { Account, ExtendedAccount } from './account';
+export { IRawAccount, IAccount } from './account';
 export type StoreAccount = StoreAccount;
 export { AddressBook, ExtendedAddressBook } from './addressBook';
 export { Contract, ExtendedContract } from './contract';

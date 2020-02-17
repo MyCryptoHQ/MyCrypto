@@ -11,7 +11,7 @@ import { withAccountAndNotificationsContext } from '../components/withAccountAnd
 import { NotificationTemplates } from 'v2/features/NotificationsPanel';
 import {
   TAddress,
-  Account,
+  IRawAccount,
   Asset,
   DPathFormat,
   ISettings,
@@ -32,7 +32,7 @@ import { DEFAULT_NETWORK, ROUTE_PATHS } from 'v2/config';
 
 interface Props extends RouteComponentProps<{}> {
   settings: ISettings;
-  createAccountWithID(accountData: Account, uuid: string): void;
+  createAccountWithID(accountData: IRawAccount, uuid: string): void;
   updateSettingsAccounts(accounts: string[]): void;
   createAssetWithID(value: Asset, id: string): void;
   displayNotification(templateName: string, templateData?: object): void;
@@ -159,7 +159,7 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
     const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(this.props.assets)(accountNetwork);
     const newAssetID = generateUUID();
     const newUUID = generateUUID();
-    const account: Account = {
+    const account: IRawAccount = {
       address: toChecksumAddress(addHexPrefix(address)) as TAddress,
       networkId: network,
       wallet: accountType,

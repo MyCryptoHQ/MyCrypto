@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Network } from '@mycrypto/ui';
 import { bigNumberify } from 'ethers/utils';
 
-import { Asset, StoreAccount, ExtendedAccount, Network as INetwork, ITxObject } from 'v2/types';
+import { Asset, StoreAccount, IAccount, Network as INetwork, ITxObject } from 'v2/types';
 import { baseToConvertedUnit, totalTxFeeToString } from 'v2/services/EthService';
 import { getAccountBalance, StoreContext } from 'v2/services/Store';
 import { CopyableCodeBlock, Button } from 'v2/components';
@@ -23,7 +23,7 @@ interface Props {
   data: string;
   gasLimit: string;
   gasPrice: string;
-  senderAccount: ExtendedAccount;
+  senderAccount: IAccount;
   rawTransaction?: ITxObject;
   signedTransaction?: string;
 }

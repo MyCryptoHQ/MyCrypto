@@ -8,7 +8,8 @@ import { ITxReceipt } from './transaction';
 import { TUuid } from './uuid';
 import { TAddress } from './address';
 
-export interface Account {
+export interface IAccount {
+  uuid: TUuid;
   label?: string;
   address: TAddress;
   networkId: NetworkId;
@@ -20,9 +21,7 @@ export interface Account {
   favorite: boolean;
 }
 
-export interface ExtendedAccount extends Account {
-  uuid: TUuid;
-}
+export type IRawAccount = Omit<IAccount, 'uuid'>;
 
 export interface AssetBalanceObject {
   uuid: TUuid;
@@ -31,7 +30,7 @@ export interface AssetBalanceObject {
 }
 
 export type StoreAccount = Overwrite<
-  ExtendedAccount,
+  IAccount,
   {
     assets: StoreAsset[];
   }

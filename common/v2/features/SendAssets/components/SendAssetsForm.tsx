@@ -31,7 +31,7 @@ import {
 import {
   Asset,
   Network,
-  ExtendedAccount,
+  IAccount,
   StoreAsset,
   WalletId,
   IFormikFields,
@@ -92,7 +92,7 @@ const initialFormikValues: IFormikFields = {
     display: ''
   },
   amount: '',
-  account: {} as ExtendedAccount, // should be renamed senderAccount
+  account: {} as IAccount, // should be renamed senderAccount
   network: {} as Network, // Not a field move to state
   asset: {} as StoreAsset,
   txDataField: '0x',
@@ -354,7 +354,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
             }
           };
 
-          const handleNonceEstimate = async (account: ExtendedAccount) => {
+          const handleNonceEstimate = async (account: IAccount) => {
             if (!values || !values.network || !account) {
               return;
             }
@@ -424,7 +424,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                         name={field.name}
                         value={field.value}
                         accounts={accountsWithAsset}
-                        onSelect={(option: ExtendedAccount) => {
+                        onSelect={(option: IAccount) => {
                           form.setFieldValue('account', option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
                           handleNonceEstimate(option);
                           handleGasEstimate();

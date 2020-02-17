@@ -1,4 +1,4 @@
-import { Asset, ExtendedAccount, StoreAccount } from 'v2/types';
+import { Asset, IAccount, StoreAccount } from 'v2/types';
 
 export const getDashboardAccounts = (
   accounts: StoreAccount[],
@@ -9,10 +9,10 @@ export const getDashboardAccounts = (
     .filter(({ uuid }) => currentAccounts.indexOf(uuid) >= 0);
 };
 
-export const getAccountByAddressAndNetworkName = (accounts: ExtendedAccount[]) => (
+export const getAccountByAddressAndNetworkName = (accounts: IAccount[]) => (
   address: string,
   networkId: string
-): ExtendedAccount | undefined => {
+): IAccount | undefined => {
   return accounts.find(
     account =>
       account.address.toLowerCase() === address.toLowerCase() && account.networkId === networkId

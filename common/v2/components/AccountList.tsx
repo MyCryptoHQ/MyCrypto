@@ -14,7 +14,7 @@ import {
 } from 'v2/components';
 import { truncate } from 'v2/utils';
 import { BREAK_POINTS, COLORS, SPACING, breakpointToNumber } from 'v2/theme';
-import { ExtendedAccount, StoreAccount, ExtendedAddressBook } from 'v2/types';
+import { IAccount, StoreAccount, ExtendedAddressBook } from 'v2/types';
 import {
   AccountContext,
   getLabelByAccount,
@@ -206,8 +206,8 @@ export default function AccountList(props: AccountListProps) {
 
 function buildAccountTable(
   accounts: StoreAccount[],
-  deleteAccount: (a: ExtendedAccount) => void,
-  updateAccount: (u: TUuid, a: ExtendedAccount) => void,
+  deleteAccount: (a: IAccount) => void,
+  updateAccount: (u: TUuid, a: IAccount) => void,
   deletable?: boolean,
   favoritable?: boolean,
   copyable?: boolean,
