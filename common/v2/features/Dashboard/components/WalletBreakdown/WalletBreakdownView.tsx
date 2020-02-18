@@ -10,7 +10,8 @@ import { TSymbol } from 'v2/types';
 import { AssetIcon, Currency, Typography } from 'v2/components';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
-import coinGeckoIcon from 'common/assets/images/credits/credits-coingecko.png'
+import coinGeckoIcon from 'common/assets/images/credits/credits-coingecko.png';
+import { calculateShownIndex } from './helpers';
 
 export const SMALLEST_CHART_SHARE_SUPPORTED = 0.03; // 3%
 export const NUMBER_OF_ASSETS_DISPLAYED = 4;
@@ -141,10 +142,10 @@ const BreakDownBalance = styled.div`
   display: flex;
   justify-content: space-between;
   line-height: 1.2;
-  margin: ${SPACING.SM} 0;
+  padding: ${SPACING.SM} 0;
 
   &:first-of-type {
-    margin-top: 16px;
+    padding-top: 16px;
   }
 `;
 
@@ -211,7 +212,6 @@ export default function WalletBreakdownView({
 }: WalletBreakdownProps) {
   const [selectedAssetIndex, setSelectedAssetIndex] = useState(-1);
   const [previousBalances, setPreviousBalances] = useState<Balance[]>([]);
-
   const chartBalances = createChartBalances(balances, totalFiatValue);
   const breakdownBalances =
     balances.length > NUMBER_OF_ASSETS_DISPLAYED ? createBreakdownBalances(balances) : balances;
@@ -229,8 +229,8 @@ export default function WalletBreakdownView({
         $total: `${accounts.length}`
       });
 
-  const shownSelectedIndex =
-    chartBalances.length > selectedAssetIndex && selectedAssetIndex !== -1 ? selectedAssetIndex : 0;
+  const shownSelectedIndex = calculateShownIndex(chartBalances.length, selectedAssetIndex);
+
   const balance = chartBalances[shownSelectedIndex];
   const selectedAssetPercentage = parseFloat(
     ((balance.fiatValue / totalFiatValue) * 100).toFixed(2)
@@ -238,6 +238,7 @@ export default function WalletBreakdownView({
   if (chartBalances.length !== previousBalances.length) {
     setPreviousBalances(chartBalances);
   }
+
   return (
     <>
       <BreakDownChartWrapper>
@@ -252,9 +253,9 @@ export default function WalletBreakdownView({
             <BreakdownChart
               balances={chartBalances}
               setSelectedAssetIndex={setSelectedAssetIndex}
-              selectedAssetIndex={selectedAssetIndex}
+              selectedAssetIndex={shownSelectedIndex}
             />
-            {selectedAssetIndex !== -1 && (
+            {shownSelectedIndex !== -1 && (
               <PanelFigures>
                 <PanelFigure>
                   <PanelFigureValue>
