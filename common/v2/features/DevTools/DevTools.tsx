@@ -20,7 +20,8 @@ import {
   AddressBook,
   WalletId,
   AssetBalanceObject,
-  ExtendedAddressBook
+  ExtendedAddressBook,
+  Network
 } from 'v2/types';
 
 import ToolsNotifications from './ToolsNotifications';
@@ -31,13 +32,10 @@ const DevToolsInput = styled(Input)`
   font-size: 1em;
 `;
 
-const renderAccountForm = (addressBook: ExtendedAddressBook[]) => ({
-  values,
-  handleChange,
-  handleBlur,
-  isSubmitting
-}: FormikProps<IRawAccount>) => {
-  const { getNetworkByName } = useContext(NetworkContext);
+const renderAccountForm = (
+  addressBook: ExtendedAddressBook[],
+  getNetworkByName: (name: string) => Network | undefined
+) => ({ values, handleChange, handleBlur, isSubmitting }: FormikProps<IRawAccount>) => {
   const detectedLabel: AddressBook | undefined = getLabelByAddressAndNetwork(
     values.address,
     addressBook,
@@ -129,6 +127,7 @@ const ErrorTools = () => {
 };
 
 const DevTools = () => {
+  const { getNetworkByName } = useContext(NetworkContext);
   const { addressBook } = useContext(AddressBookContext);
   const { accounts, createAccountWithID, deleteAccount } = useContext(AccountContext);
   const dummyAccount = {
@@ -173,7 +172,7 @@ const DevTools = () => {
             setSubmitting(false);
           }}
         >
-          {renderAccountForm(addressBook)}
+          {renderAccountForm(addressBook, getNetworkByName)}
         </Formik>
       </Panel>
     </React.Fragment>
