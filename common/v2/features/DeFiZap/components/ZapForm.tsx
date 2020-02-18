@@ -4,7 +4,7 @@ import { ZapInteractionState, ISimpleTxFormFull } from '../types';
 import styled from 'styled-components';
 import { Formik, Form, Field, FieldProps } from 'formik';
 import translate from 'v2/translations';
-import { ExtendedAccount, ExtendedAsset, Network } from 'v2/types';
+import { IAccount, ExtendedAsset, Network } from 'v2/types';
 import { StoreContext, AssetContext, getNonce, NetworkContext, fetchGasPriceEstimates } from 'v2';
 import { validateAmountField } from 'v2/features/SendAssets/components/validators/validators';
 import { isEthereumAccount } from 'v2/services/Store/Account/helpers';
@@ -28,7 +28,7 @@ const ZapForm = (props: Props) => {
   const network = networks.find(n => n.baseAsset === EtherUUID) as Network;
 
   const initialFormikValues: ISimpleTxFormFull = {
-    account: {} as ExtendedAccount,
+    account: {} as IAccount,
     amount: '',
     asset: ethAsset,
     nonce: '0',
@@ -52,7 +52,7 @@ const ZapForm = (props: Props) => {
             });
           }}
           render={({ values, errors, touched, setFieldValue }) => {
-            const handleNonceEstimate = async (account: ExtendedAccount) => {
+            const handleNonceEstimate = async (account: IAccount) => {
               const nonce: number = await getNonce(values.network, account);
               setFieldValue('nonce', nonce);
             };
@@ -71,7 +71,7 @@ const ZapForm = (props: Props) => {
                         name={field.name}
                         value={field.value}
                         accounts={relevantAccounts}
-                        onSelect={(option: ExtendedAccount) => {
+                        onSelect={(option: IAccount) => {
                           form.setFieldValue('account', option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
                           handleNonceEstimate(option);
                         }}

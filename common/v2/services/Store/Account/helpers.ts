@@ -28,5 +28,5 @@ export const getAccountsByAsset = (
 
 export const getBaseAsset = (account: StoreAccount) => account.assets.find(a => a.type === 'base');
 
-export const isEthereumAccount = (account: StoreAccount | ExtendedAccount) =>
+export const isEthereumAccount = (account: StoreAccount | IAccount) =>
   account.networkId === DEFAULT_NETWORK;

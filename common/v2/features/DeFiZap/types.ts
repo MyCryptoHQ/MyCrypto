@@ -1,4 +1,4 @@
-import { ITxConfig, ITxReceipt, Asset, ExtendedAccount, Network } from 'v2/types';
+import { ITxConfig, ITxReceipt, Asset, IAccount, Network } from 'v2/types';
 import { IZapConfig } from './config';
 
 export type TStepAction = (payload: any, after: () => void) => void;
@@ -21,7 +21,7 @@ export interface ISimpleTxForm {
   gasLimit: string | number; // number - ex: 1,500,000
   gasPrice: string; // gwei
   nonce: string; // number - ex: 55
-  account: ExtendedAccount;
+  account: IAccount;
 }
 
 export interface ISimpleTxFormFull extends ISimpleTxForm {
