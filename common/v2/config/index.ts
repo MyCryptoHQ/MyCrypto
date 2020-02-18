@@ -39,7 +39,7 @@ export {
   DEFAULT_NETWORK,
   GITHUB_RELEASE_NOTES_URL,
   TOKEN_INFO_URL,
-  MYC_COMMISSION
+  MYC_DEXAG_COMMISSION_RATE
 } from './constants';
 export { Fiats } from './fiats';
 export { IS_ACTIVE_FEATURE } from './isActiveFeature';

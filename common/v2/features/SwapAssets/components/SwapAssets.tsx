@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Button, Tooltip } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'v2/translations';
-import { MYC_COMMISSION } from 'v2/config';
+import { MYC_DEXAG_COMMISSION_RATE } from 'v2/config';
 import { InputField, AssetDropdown } from 'v2/components';
 
 import { ISwapAsset } from '../types';
@@ -174,7 +174,7 @@ export default function SwapAssets(props: Props) {
         {initialValue && toAmount && toAsset && (
           <>
             <Label>
-              {`Fee (${MYC_COMMISSION}%) `}
+              {`Fee (${MYC_DEXAG_COMMISSION_RATE}%) `}
               <CenteredToolTip tooltip={'This fee is split between MyCrypto and Dex.AG'}>
                 <img src={questionToolTip} />
               </CenteredToolTip>{' '}

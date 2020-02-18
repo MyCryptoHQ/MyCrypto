@@ -105,7 +105,7 @@ describe('it Remove / Add commission from amount', () => {
   it('add commission from float amount', () => {
     const expected = 0.45795853102987494;
     const amount = 0.4467888107608536;
-    const converted = calculateCommission(amount);
+    const converted = withCommission({ amount, rate: MYC_DEXAG_COMMISSION_RATE });
     expect(converted).toEqual(expected);
   });
 });
