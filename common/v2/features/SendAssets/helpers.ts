@@ -1,6 +1,5 @@
 import BN from 'bn.js';
 import { bufferToHex } from 'ethereumjs-util';
-import { utils } from 'ethers';
 
 import {
   IFormikFields,
@@ -11,9 +10,6 @@ import {
 } from 'v2/types';
 
 import {
-  bigNumGasPriceToViewableGwei,
-  bigNumGasLimitToViewable,
-  bigNumValueToViewableEther,
   Address,
   toWei,
   TokenValue,
@@ -23,24 +19,6 @@ import {
   inputGasLimitToHex,
   encodeTransfer
 } from 'v2/services/EthService';
-
-export function decodeTransaction(signedTx: utils.Arrayish) {
-  const decodedTransaction = utils.parseTransaction(signedTx);
-  const gasLimit = bigNumGasLimitToViewable(decodedTransaction.gasLimit);
-  const gasPriceGwei = bigNumGasPriceToViewableGwei(decodedTransaction.gasPrice);
-  const amountToSendEther = bigNumValueToViewableEther(decodedTransaction.value);
-
-  return {
-    to: decodedTransaction.to,
-    from: decodedTransaction.from,
-    value: amountToSendEther.toString(),
-    gasLimit: gasLimit.toString(),
-    gasPrice: gasPriceGwei.toString(),
-    nonce: decodedTransaction.nonce,
-    data: decodedTransaction.data,
-    chainId: decodedTransaction.chainId
-  };
-}
 
 const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
   const { network } = formData;

@@ -1,30 +1,14 @@
-import React, { Component } from 'react';
-import { toBuffer } from 'ethereumjs-util';
+import React, { useState } from 'react';
 import { Button, Identicon } from '@mycrypto/ui';
 import { Transaction as EthTx } from 'ethereumjs-tx';
 import styled from 'styled-components';
+import { parseTransaction, Transaction } from 'ethers/utils';
+import { toBuffer } from 'ethereumjs-util';
 
 import translate, { translateRaw } from 'v2/translations';
-import { InputField, QRCode, CodeBlock, NetworkSelectDropdown, InlineMessage } from 'v2/components';
-import { getTransactionFields, makeTransaction } from 'v2/services/EthService';
-
-interface State {
-  userInput: string;
-  inputError: string;
-  networkSelectError: string;
-  stringifiedTransaction: string;
-  transaction: EthTx | undefined;
-}
-
-interface Props {
-  transaction: any;
-  signedTransaction: string;
-  network: string;
-  selectNetwork(network: string): void;
-  goToNextStep(): void;
-  setTransaction(transaction: EthTx | undefined): void;
-  setSignedTransaction(signedTransaction: string): void;
-}
+import { InputField, CodeBlock, NetworkSelectDropdown, InlineMessage } from 'v2/components';
+import { getTransactionFields } from 'v2/services/EthService';
+import { NetworkId, ISignedTx } from 'v2/types';
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -74,13 +58,6 @@ const CodeBlockWrapper = styled.div`
   overflow-x: auto;
 `;
 
-const QRCodeWrapper = styled.div`
-  max-width: 15rem;
-  margin: 1rem auto;
-  width: 100%;
-  text-align: center;
-`;
-
 const IdenticonIcon = styled(Identicon)`
   margin-left: 12px;
   margin-top: 8px;
@@ -100,96 +77,88 @@ const NetworkSelectWrapper = styled.div`
   width: 100%;
 `;
 
-const getStringifiedTx = (serializedTx: Buffer) =>
-  JSON.stringify(getTransactionFields(makeTransaction(serializedTx)), null, 2);
+const getStringifiedTx = (tx: EthTx) => JSON.stringify(getTransactionFields(tx), null, 2);
 
-class BroadcastTx extends Component<Props> {
-  public state: State = {
-    stringifiedTransaction: '',
-    userInput: '',
-    inputError: '',
-    networkSelectError: '',
-    transaction: undefined
-  };
-
-  public handleSendClicked = () => {
-    const { goToNextStep, setTransaction, network } = this.props;
-    this.setState({ networkSelectError: '' });
-    if (!network) {
-      this.setState({ networkSelectError: translateRaw('SELECT_NETWORK_ERROR') });
-      return;
-    }
-
-    setTransaction(this.state.transaction);
-    goToNextStep();
-  };
-
-  public render() {
-    const { network, selectNetwork } = this.props;
-    const { userInput } = this.state;
-    const stateTransaction = userInput ? this.state.stringifiedTransaction : '';
-
-    return (
-      <ContentWrapper>
-        <Description>{translate('BROADCAST_TX_DESCRIPTION')}</Description>
-        <InputWrapper>
-          <InputField
-            label={translateRaw('SEND_SIGNED')}
-            value={userInput}
-            textarea={true}
-            height={'250px'}
-            placeholder="0xf86b0284ee6b2800825208944bbeeb066ed09b7aed07bf39eee0460dfa26152088016345785d8a00008029a03ba7a0cc6d1756cd771f2119cf688b6d4dc9d37096089f0331fe0de0d1cc1254a02f7bcd19854c8d46f8de09e457aec25b127ab4328e1c0d24bfbff8702ee1f474"
-            onChange={this.handleChange}
-            onBlur={this.validateField}
-            inputError={!stateTransaction ? this.state.inputError : ''}
-          />
-          {stateTransaction && <IdenticonIcon address={userInput} />}
-        </InputWrapper>
-        {stateTransaction && (
-          <React.Fragment>
-            {this.state.transaction && !this.state.transaction.getChainId() && (
-              <NetworkSelectWrapper>
-                <NetworkSelectDropdown network={network} onChange={selectNetwork} />
-                {this.state.networkSelectError && (
-                  <InlineMessage>{this.state.networkSelectError}</InlineMessage>
-                )}
-              </NetworkSelectWrapper>
-            )}
-            <StyledLabel>{translate('SEND_RAW')}</StyledLabel>
-            <CodeBlockWrapper>
-              <CodeBlock>{stateTransaction}</CodeBlock>
-            </CodeBlockWrapper>
-            <SendButton onClick={this.handleSendClicked}>{translateRaw('SEND_TRANS')}</SendButton>
-          </React.Fragment>
-        )}
-        {!stateTransaction && <PlaceholderButton>{translateRaw('SEND_TRANS')}</PlaceholderButton>}
-        <QRCodeWrapper>{stateTransaction && <QRCode data={stateTransaction} />}</QRCodeWrapper>
-      </ContentWrapper>
-    );
+const makeTxFromSignedTx = (signedTransaction: string) => {
+  try {
+    const bufferTransaction = toBuffer(signedTransaction);
+    const decoded: Transaction = parseTransaction(bufferTransaction);
+    const transaction = new EthTx(bufferTransaction, { chain: decoded.chainId });
+    return transaction;
+  } catch (err) {
+    console.debug(`[BroadcastTx] ${err}`);
+    return undefined;
   }
+};
 
-  protected validateField = () => {
-    const { stringifiedTransaction } = this.state;
-    if (!!stringifiedTransaction || !this.state.userInput) {
-      this.setState({ inputError: '' });
-    } else {
-      this.setState({ inputError: translateRaw('BROADCAST_TX_INPUT_ERROR') });
-    }
-  };
-
-  protected handleChange = ({ currentTarget }: React.FormEvent<HTMLInputElement>) => {
-    const { setSignedTransaction } = this.props;
-    const { value } = currentTarget;
-    this.setState({ userInput: value, inputError: '', stringifiedTransaction: '' });
-    setSignedTransaction(value);
-
-    const bufferTransaction = toBuffer(value);
-    const tx = new EthTx(bufferTransaction);
-    if (tx.verifySignature()) {
-      const stringifiedTransaction = getStringifiedTx(bufferTransaction);
-      this.setState({ stringifiedTransaction, transaction: tx });
-    }
-  };
+interface Props {
+  network: NetworkId;
+  signedTx: ISignedTx;
+  transaction: EthTx | undefined;
+  onComplete(signedTx: string): void;
+  handleNetworkChanged(network: NetworkId): void;
 }
+
+const BroadcastTx = ({ signedTx, network, onComplete, handleNetworkChanged }: Props) => {
+  const [userInput, setUserInput] = useState(signedTx);
+  const [inputError, setInputError] = useState('');
+  const [transaction, setTransaction] = useState<EthTx | undefined>(makeTxFromSignedTx(signedTx));
+
+  const validateField = () => {
+    if ((transaction && transaction.verifySignature()) || !userInput) {
+      setInputError('');
+    } else {
+      setInputError(translateRaw('BROADCAST_TX_INPUT_ERROR'));
+    }
+  };
+
+  const handleChange = ({ currentTarget }: React.FormEvent<HTMLInputElement>) => {
+    const { value } = currentTarget;
+    const trimmedValue = value.trim();
+    setUserInput(value);
+    setInputError('');
+    setTransaction(makeTxFromSignedTx(trimmedValue));
+  };
+
+  return (
+    <ContentWrapper>
+      <Description>{translate('BROADCAST_TX_DESCRIPTION')}</Description>
+      <InputWrapper>
+        <InputField
+          label={translateRaw('SEND_SIGNED')}
+          value={userInput}
+          textarea={true}
+          height={'250px'}
+          placeholder="0xf86b0284ee6b2800825208944bbeeb066ed09b7aed07bf39eee0460dfa26152088016345785d8a00008029a03ba7a0cc6d1756cd771f2119cf688b6d4dc9d37096089f0331fe0de0d1cc1254a02f7bcd19854c8d46f8de09e457aec25b127ab4328e1c0d24bfbff8702ee1f474"
+          onChange={handleChange}
+          onBlur={validateField}
+          inputError={!transaction ? inputError : ''}
+        />
+        {transaction && <IdenticonIcon address={userInput} />}
+      </InputWrapper>
+      {transaction ? (
+        <React.Fragment>
+          {!transaction.getChainId() && (
+            <NetworkSelectWrapper>
+              <NetworkSelectDropdown network={network} onChange={handleNetworkChanged} />
+              {!network && (
+                <InlineMessage>{translate('BROADCAST_TX_INVALID_CHAIN_ID')}</InlineMessage>
+              )}
+            </NetworkSelectWrapper>
+          )}
+          <StyledLabel>{translate('SEND_RAW')}</StyledLabel>
+          <CodeBlockWrapper>
+            <CodeBlock>{getStringifiedTx(transaction)}</CodeBlock>
+          </CodeBlockWrapper>
+          <SendButton onClick={() => onComplete(userInput.trim())}>
+            {translateRaw('SEND_TRANS')}
+          </SendButton>
+        </React.Fragment>
+      ) : (
+        <PlaceholderButton>{translateRaw('SEND_TRANS')}</PlaceholderButton>
+      )}
+    </ContentWrapper>
+  );
+};
 
 export default BroadcastTx;

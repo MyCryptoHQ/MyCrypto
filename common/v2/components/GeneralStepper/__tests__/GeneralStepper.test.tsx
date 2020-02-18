@@ -35,8 +35,7 @@ const testSteps = [
   {
     label: 'Test Component 2',
     component: ExampleButtonFinalComponent,
-    props: { onCompleteText: 'Finished this2' },
-    actions: (payload: any, cb: any) => functionTest(payload, cb)
+    props: { onCompleteText: 'Finished this2' }
   }
 ];
 

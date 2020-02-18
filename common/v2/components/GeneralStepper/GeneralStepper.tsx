@@ -68,7 +68,7 @@ export function GeneralStepper({
           stepAction ? stepAction(payload, goToNextStep, goToPrevStep) : goToNextStep()
         }
         completeButtonText={completeBtnText || translateRaw('SEND_ASSETS_SEND_ANOTHER')}
-        resetFlow={goToFirstStep}
+        resetFlow={() => (stepAction ? stepAction(goToFirstStep) : goToFirstStep())}
         {...stepProps}
         {...stepActions}
       />

@@ -115,7 +115,7 @@ const totalTxFeeToString = (gasPriceEther: string, gasLimit: string): string =>
   parseFloat(fromWei(totalTxFeeToWei(gasPriceEther, gasLimit), 'ether')).toFixed(6);
 
 const totalTxFeeToWei = (gasPriceEther: string, gasLimit: string): Wei =>
-  new BN(parseInt(gasPriceEther, 10) * parseInt(gasLimit, 10));
+  new BN(gasPriceEther).mul(new BN(gasLimit));
 
 const gasStringsToMaxGasBN = (gasPriceGwei: string, gasLimit: string): BN => {
   return gasPriceToBase(parseFloat(gasPriceGwei)).mul(new BN(gasLimit));
