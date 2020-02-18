@@ -13,7 +13,7 @@ import SubTabs, { Tab } from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';
 import {
   WalletInfo,
-  RequestPayment,
+  // RequestPayment,
   RecentTransactions,
   AddressBook,
   Fields,
@@ -45,11 +45,12 @@ class SendTransaction extends React.Component<Props> {
         name: translate('NAV_SENDETHER'),
         disabled: !!wallet && !!wallet.isReadOnly
       },
-      {
+      /*{
         path: 'request',
         name: translate('NAV_REQUESTPAYMENT'),
         disabled: this.props.requestDisabled
       },
+      */
       {
         path: 'info',
         name: translate('NAV_VIEWWALLET')
@@ -97,11 +98,11 @@ class SendTransaction extends React.Component<Props> {
                     exact={true}
                     render={() => <WalletInfo wallet={wallet} />}
                   />
-                  <Route
+                  {/*<Route
                     path={`${currentPath}/request`}
                     exact={true}
                     render={() => <RequestPayment wallet={wallet} />}
-                  />
+                  />*/}
                   <Route
                     path={`${currentPath}/recent-txs`}
                     exact={true}

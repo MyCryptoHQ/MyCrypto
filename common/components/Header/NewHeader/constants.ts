@@ -7,11 +7,12 @@ export const LINKSET = {
       title: translateRaw('NEW_HEADER_TEXT_7'),
       accessMessage: translateRaw('ACCESS_MESSAGE_1')
     },
-    {
+    /*{
       to: '/account/request',
       title: translateRaw('NEW_HEADER_TEXT_8'),
       accessMessage: translateRaw('ACCESS_MESSAGE_2')
     },
+    */
     {
       to: '/account/info',
       title: translateRaw('NEW_HEADER_TEXT_9'),
