@@ -140,6 +140,14 @@ export const isTransactionFeeHigh = (
   gasLimit: string,
   gasPrice: string
 ) => {
+  const validInputRegex = /^[0-9]+(.[0-9])?[0-9]*$/;
+  if (
+    !amount.match(validInputRegex) ||
+    !gasLimit.match(validInputRegex) ||
+    !gasPrice.match(validInputRegex)
+  ) {
+    return false;
+  }
   const amountBN = bigNumberify(convertedToBaseUnit(amount, DEFAULT_ASSET_DECIMAL));
   if (amountBN.lt(bigNumberify(convertedToBaseUnit('0.000001', DEFAULT_ASSET_DECIMAL)))) {
     return false;
