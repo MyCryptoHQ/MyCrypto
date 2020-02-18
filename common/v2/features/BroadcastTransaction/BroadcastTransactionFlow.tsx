@@ -5,6 +5,7 @@ import { ROUTE_PATHS } from 'v2/config';
 import { translateRaw } from 'v2/translations';
 import { useStateReducer } from 'v2/utils';
 import { IStepperPath } from 'v2/components/GeneralStepper/types';
+import { ISignedTx } from 'v2/types';
 
 import { BroadcastTxConfigFactory, broadcastTxInitialState } from './stateFactory';
 import { BroadcastTx } from './components';
@@ -13,7 +14,6 @@ const BroadcastTransactionFlow = () => {
   const {
     handleNetworkChanged,
     handleSendClicked,
-    handleSignedTxChanged,
     handleConfirmClick,
     handleResetFlow,
     broadcastTxState
@@ -23,15 +23,12 @@ const BroadcastTransactionFlow = () => {
     {
       label: translateRaw('BROADCAST_TX_TITLE'),
       component: BroadcastTx,
-      props: (({ transaction, signedTransaction, network, networkSelectError }) => ({
-        transaction,
-        signedTransaction,
+      props: (({ signedTx, network }) => ({
+        signedTx,
         network,
-        networkSelectError,
-        handleNetworkChanged,
-        handleSignedTxChanged: (payload: string) => handleSignedTxChanged(payload)
+        handleNetworkChanged
       }))(broadcastTxState),
-      actions: (_: any, cb: any) => handleSendClicked(cb)
+      actions: (signedTx: ISignedTx, cb: any) => handleSendClicked(signedTx, cb)
     },
     {
       label: translateRaw('CONFIRM_TX_MODAL_TITLE'),

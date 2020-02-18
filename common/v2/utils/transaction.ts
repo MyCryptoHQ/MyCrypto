@@ -1,10 +1,26 @@
+import { Arrayish, parseTransaction } from 'ethers/utils';
+
 import {
   getNetworkByChainId,
   getBaseAssetByNetwork,
-  getAssetByContractAndNetwork
+  getAssetByContractAndNetwork,
+  getAccountByAddressAndNetworkName
 } from 'v2/services/Store';
-import { ERC20, fromWei, fromTokenBase, Wei, hexWeiToString } from 'v2/services/EthService';
-import { ITxReceipt, ExtendedAsset, Network } from 'v2/types';
+import {
+  ERC20,
+  fromWei,
+  fromTokenBase,
+  Wei,
+  hexWeiToString,
+  bigNumGasLimitToViewable,
+  bigNumGasPriceToViewableGwei,
+  bigNumValueToViewableEther,
+  decodeTransfer,
+  toWei,
+  getDecimalFromEtherUnit,
+  gasPriceToBase
+} from 'v2/services/EthService';
+import { ITxReceipt, ExtendedAsset, Network, ITxConfig, IAccount } from 'v2/types';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 
 export const fromTxReceiptObj = (txReceipt: ITxReceipt) => (
@@ -37,4 +53,74 @@ export const fromTxReceiptObj = (txReceipt: ITxReceipt) => (
     };
   }
   return;
+};
+
+const decodeTransaction = (signedTx: Arrayish) => {
+  const decodedTransaction = parseTransaction(signedTx);
+  const gasLimit = bigNumGasLimitToViewable(decodedTransaction.gasLimit);
+  const gasPriceGwei = bigNumGasPriceToViewableGwei(decodedTransaction.gasPrice);
+  const amountToSendEther = bigNumValueToViewableEther(decodedTransaction.value);
+
+  return {
+    to: decodedTransaction.to,
+    from: decodedTransaction.from,
+    value: amountToSendEther.toString(),
+    gasLimit: gasLimit.toString(),
+    gasPrice: gasPriceGwei.toString(),
+    nonce: decodedTransaction.nonce,
+    data: decodedTransaction.data,
+    chainId: decodedTransaction.chainId
+  };
+};
+
+export const makeTxConfigFromSignedTx = (
+  signedTx: Arrayish,
+  assets: ExtendedAsset[],
+  networks: Network[],
+  accounts: IAccount[],
+  oldTxConfig: ITxConfig = {} as ITxConfig
+): ITxConfig => {
+  const decodedTx = decodeTransaction(signedTx);
+  const networkDetected = getNetworkByChainId(decodedTx.chainId, networks);
+  const contractAsset = getAssetByContractAndNetwork(
+    decodedTx.to || undefined,
+    networkDetected
+  )(assets);
+  const baseAsset = getBaseAssetByNetwork({
+    network: networkDetected || ({} as Network),
+    assets
+  });
+  const defaultSenderAccount = {
+    address: decodedTx.from,
+    assets: [],
+    networkId: networkDetected && networkDetected.id
+  };
+
+  const txConfig = {
+    rawTransaction: oldTxConfig.rawTransaction,
+    receiverAddress: contractAsset ? decodeTransfer(decodedTx.data)._to : decodedTx.to,
+    amount: contractAsset
+      ? fromTokenBase(
+          toWei(decodeTransfer(decodedTx.data)._value, 0),
+          contractAsset.decimal || DEFAULT_ASSET_DECIMAL
+        )
+      : decodedTx.value,
+    network: networkDetected || oldTxConfig.network,
+    value: toWei(decodedTx.value, getDecimalFromEtherUnit('ether')).toString(),
+    asset: contractAsset || oldTxConfig.asset || baseAsset,
+    baseAsset: baseAsset || oldTxConfig.baseAsset,
+    senderAccount:
+      decodedTx.from && networkDetected
+        ? getAccountByAddressAndNetworkName(accounts)(decodedTx.from, networkDetected.name) ||
+          oldTxConfig.senderAccount ||
+          defaultSenderAccount
+        : oldTxConfig.senderAccount || defaultSenderAccount,
+    gasPrice: gasPriceToBase(parseInt(decodedTx.gasPrice, 10)).toString(),
+    gasLimit: decodedTx.gasLimit,
+    data: decodedTx.data,
+    nonce: decodedTx.nonce.toString(),
+    from: decodedTx.from || oldTxConfig.from
+  };
+
+  return txConfig;
 };
