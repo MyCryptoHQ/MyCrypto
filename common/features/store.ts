@@ -55,18 +55,18 @@ window.addEventListener('load', () => {
    */
   async function detectOnlineStateConflict() {
     const shepherdStatus = getShepherdStatus();
-    const appOffline = getAppOnline();
-    const onlineStateConflict = shepherdStatus.isOnline !== appOffline;
+    const appOnline = getAppOnline();
+    const onlineStateConflict = shepherdStatus.isOnline !== appOnline;
 
     if (shepherdStatus.pending || !onlineStateConflict) {
       return setTimeout(detectOnlineStateConflict, 1000);
     }
 
     // if app reports online but shepherd offline, then set app offline
-    if (appOffline && !shepherdStatus.isOnline) {
+    if (appOnline && !shepherdStatus.isOnline) {
       lostNetworkNotif();
       offline();
-    } else if (!appOffline && shepherdStatus.isOnline) {
+    } else if (!appOnline && shepherdStatus.isOnline) {
       // if app reports offline but shepherd reports online
       // send a request to shepherd provider to see if we can still send out requests
       const success = await shepherdProvider.ping().catch(() => false);
