@@ -11,13 +11,14 @@ import { Typography, Dropdown } from 'v2/components';
 interface Props {
   network: string | undefined;
   accountType?: WalletId;
+  className?: string;
   onChange(network: NetworkId): void;
 }
 
 const DropdownContainer = styled('div')`
   .is-open > .Select-control > .Select-multi-value-wrapper > .Select-input:only-child {
     transform: translateY(0%);
-    padding: 16px 15px 16px 15px;
+    padding: 12px;
     position: inherit;
   }
 `;
@@ -25,7 +26,7 @@ const DropdownContainer = styled('div')`
 const SContainer = styled('div')`
   display: flex;
   flex-direction: row;
-  padding: 16px 15px 16px 15px;
+  padding: 12px;
 
   &:hover {
     background-color: var(--color-gray-lighter);
@@ -43,7 +44,7 @@ class NetworkOption extends React.PureComponent<OptionComponentProps> {
   }
 }
 
-function NetworkSelectDropdown({ network, accountType, onChange }: Props) {
+function NetworkSelectDropdown({ network, accountType, onChange, ...props }: Props) {
   const { networks } = useContext(NetworkContext);
 
   // set default network if none selected
@@ -61,7 +62,7 @@ function NetworkSelectDropdown({ network, accountType, onChange }: Props) {
     .map(n => ({ label: n.name, value: n }));
 
   return (
-    <div>
+    <div {...props}>
       <label>{translate('SELECT_NETWORK_LABEL')}</label>
       <DropdownContainer>
         <Dropdown

@@ -9,6 +9,7 @@ import { SettingsContext } from 'v2/services/Store';
 import { ROUTE_PATHS } from 'v2/config';
 
 import Downloader from './Downloader';
+import { COLORS } from 'v2/theme';
 
 const CenteredContentPanel = styled(ContentPanel)`
   width: 35rem;
@@ -37,7 +38,9 @@ export function Export(props: RouteComponentProps<{}>) {
         <Typography>{translate('SETTINGS_EXPORT_INFO')}</Typography>
         <CacheDisplay>{appStore}</CacheDisplay>
         <RouterLink fullwidth={true} to={ROUTE_PATHS.SETTINGS.path}>
-          <Button fullwidth={true}>{translate('SETTINGS_EXPORT_LEAVE')}</Button>
+          <Button color={COLORS.WHITE} fullwidth={true}>
+            {translate('SETTINGS_EXPORT_LEAVE')}
+          </Button>
         </RouterLink>
         <Downloader appStore={appStore} />
       </ImportSuccessContainer>
