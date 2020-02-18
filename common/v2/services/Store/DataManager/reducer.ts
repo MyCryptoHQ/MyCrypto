@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 
-import { LSKeys, DataStore, DataStoreEntry, DataStoreItem, TUuid, Network } from 'v2/types';
+import { LSKeys, DataStoreEntry, DataStoreItem, TUuid, Network } from 'v2/types';
+import { EncryptedDataStore, DataStore } from 'v2/types/store';
 
 export enum ActionT {
   ADD_ITEM = 'ADD_ITEM',
@@ -18,7 +19,23 @@ export interface ActionPayload<T> {
 
 export interface ActionV {
   type: keyof typeof ActionT;
-  payload: ActionPayload<DataStoreItem | DataStoreEntry | DataStore> | ActionPayload<TUuid>;
+  payload:
+    | ActionPayload<DataStoreItem | DataStoreEntry | DataStore | string>
+    | ActionPayload<TUuid>;
+}
+
+export enum ActionY {
+  CLEAR_DATA = 'CLEAR_DATA',
+  SET_DATA = 'SET_DATA'
+}
+
+export interface EncryptedDbActionPayload<T> {
+  data?: T;
+}
+
+export interface ActionZ {
+  type: keyof typeof ActionY;
+  payload: EncryptedDbActionPayload<string>;
 }
 
 // Handler to facilitate initial store state and reset.
@@ -49,7 +66,7 @@ export function appDataReducer(state: DataStore, { type, payload }: ActionV) {
 
       return {
         ...state,
-        [model]: R.symmetricDifferenceWith(predicate, [data], state[model])
+        [model]: R.symmetricDifferenceWith(predicate, [data], state[model] as any)
       };
     }
     case ActionT.UPDATE_ITEM: {
@@ -61,7 +78,7 @@ export function appDataReducer(state: DataStore, { type, payload }: ActionV) {
       return {
         ...state,
         // Find item in array by uuid and replace.
-        [model]: R.unionWith(predicate, [data], state[model])
+        [model]: R.unionWith(predicate, [data], state[model] as any)
       };
     }
     case ActionT.UPDATE_NETWORK: {
@@ -88,6 +105,27 @@ export function appDataReducer(state: DataStore, { type, payload }: ActionV) {
     }
     default: {
       throw new Error('[AppReducer]: missing action type');
+    }
+  }
+}
+
+export function encryptedDbReducer(
+  state: EncryptedDataStore,
+  { type, payload }: ActionZ
+): EncryptedDataStore {
+  switch (type) {
+    case ActionY.SET_DATA: {
+      return {
+        ...state,
+        ...payload
+      };
+    }
+    case ActionY.CLEAR_DATA: {
+      return {};
+    }
+
+    default: {
+      throw new Error('[EncryptedDbReducer]: missing action type');
     }
   }
 }

@@ -3,14 +3,17 @@ import styled from 'styled-components';
 import { Icon } from '@mycrypto/ui';
 
 import { COLORS } from 'v2/theme';
-import { InlineErrorMsg, Spinner } from 'v2/components';
+import { InlineMessage, Spinner } from 'v2/components';
+import { InlineMessageType } from 'v2/types';
 
-const { PASTEL_RED, BRIGHT_SKY_BLUE, DARK_SILVER } = COLORS;
-
-const MainWrapper = styled.div`
-  margin-bottom: 15px;
+const MainWrapper = styled.div<WrapperProps>`
+  margin-bottom: ${props => props.marginBottom};
   width: 100%;
 `;
+
+interface WrapperProps {
+  marginBottom?: string;
+}
 
 const Label = styled.p`
   font-size: 18px;
@@ -24,7 +27,9 @@ const Label = styled.p`
 
 interface CustomInputProps {
   inputError?: string | JSX.Element;
+  inputErrorBorder?: boolean;
   showEye?: boolean;
+  customIcon?: React.ReactType;
   height?: string;
   maxHeight?: string;
   resizable?: boolean;
@@ -35,18 +40,18 @@ const CustomInput = styled.input<CustomInputProps>`
   background: ${props => props.theme.controlBackground};
   border: 0.125em solid ${props => props.theme.controlBorder};
   border-radius: 0.125em;
-  padding: ${props => (props.showEye ? '12px 36px 12px 12px' : '12px 12px')};
+  padding: ${props => (props.showEye || props.customIcon ? '12px 36px 12px 12px' : '12px 12px')};
   display: flex;
   :focus-within {
     outline: none;
     box-shadow: ${props => props.theme.outline};
   }
   ::placeholder {
-    color: ${DARK_SILVER};
+    color: ${COLORS.GREY_LIGHT};
     opacity: 1;
   }
-  border-color: ${props => (props.inputError ? PASTEL_RED : '')};
-  ${props => props.height && `height: ${props.height}`}
+  border-color: ${props => (props.inputError && props.inputErrorBorder ? COLORS.PASTEL_RED : '')};
+  ${props => props.height && `height: ${props.height}`};
 `;
 
 const CustomTextArea = styled.textarea<CustomInputProps>`
@@ -61,10 +66,10 @@ const CustomTextArea = styled.textarea<CustomInputProps>`
     box-shadow: ${props => props.theme.outline};
   }
   ::placeholder {
-    color: ${DARK_SILVER};
+    color: ${COLORS.GREY_LIGHT};
     opacity: 1;
   }
-  border-color: ${props => (props.inputError ? PASTEL_RED : '')};
+  border-color: ${props => (props.inputError ? COLORS.PASTEL_RED : '')};
   resize:  ${props => (props.resizable ? 'default' : 'none')};
   ${props => props.height && `height: ${props.height}`};
   ${props => props.maxHeight && `max-height: ${props.maxHeight}`};
@@ -73,21 +78,36 @@ const CustomTextArea = styled.textarea<CustomInputProps>`
 const InputWrapper = styled.div`
   position: relative;
   width: 100%;
+
+  input {
+    :disabled {
+      background-color: ${COLORS.GREY_LIGHTER};
+    }
+  }
 `;
 
 interface CustomIconProps {
   showPassword?: boolean;
 }
 
-const CustomIcon = styled(Icon)`
+const EyeIcon = styled(Icon)`
   svg {
     margin-top: 6px;
     width: 23px;
     height: 23px;
-    color: ${(props: CustomIconProps) => (props.showPassword ? BRIGHT_SKY_BLUE : '')};
+    color: ${(props: CustomIconProps) => (props.showPassword ? COLORS.BLUE_BRIGHT : '')};
     cursor: pointer;
     user-select: none;
   }
+`;
+
+const DefaultIconWrapper = styled.div`
+  display: flex;
+  height: 100%;
+  align-items: center;
+  position: absolute;
+  right: 10px;
+  top: 0;
 `;
 
 const CustomIconWrapper = styled.div`
@@ -99,23 +119,41 @@ const CustomIconWrapper = styled.div`
   top: 0;
 `;
 
+const CustomIcon = styled.span`
+  display: flex;
+  border-left: 1px solid ${COLORS.GREY_GEYSER};
+  img {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 8px;
+    color: ${COLORS.BLUE_BRIGHT}};
+    cursor: pointer;
+    user-select: none;
+  }
+`;
+
 interface Props {
   name?: string;
   type?: string;
   label?: string | JSX.Element;
   value: string | undefined;
   inputError?: string | JSX.Element | undefined;
+  inputErrorType?: InlineMessageType;
+  inputErrorBorder?: boolean;
   showEye?: boolean;
+  customIcon?: React.ElementType;
   textarea?: boolean;
   placeholder?: string;
   height?: string;
   maxHeight?: string;
+  marginBottom?: string;
   resizableTextArea?: boolean;
   disabled?: boolean;
   isLoading?: boolean;
   onChange?(event: any): void;
   onBlur?(event: any): void;
   validate?(): Promise<void> | void | undefined;
+  onFocus?(event: any): void;
 }
 
 export class InputField extends Component<Props> {
@@ -133,19 +171,27 @@ export class InputField extends Component<Props> {
       label,
       onChange,
       onBlur,
+      onFocus,
       inputError,
+      inputErrorType,
+      inputErrorBorder = false,
       type,
       showEye,
+      customIcon,
       textarea,
       placeholder,
       height,
       resizableTextArea,
       disabled,
       isLoading,
-      maxHeight
+      maxHeight,
+      marginBottom = '15px'
     } = this.props;
+
+    const IconComponent = customIcon as React.ElementType;
+
     return (
-      <MainWrapper>
+      <MainWrapper marginBottom={marginBottom}>
         {label && <Label>{label}</Label>}
         <InputWrapper>
           {textarea ? (
@@ -154,6 +200,7 @@ export class InputField extends Component<Props> {
               value={value}
               onChange={onChange}
               onBlur={onBlur}
+              onFocus={onFocus}
               inputError={inputError}
               onKeyUp={this.handleKeyUp}
               placeholder={placeholder ? placeholder : ''}
@@ -168,9 +215,12 @@ export class InputField extends Component<Props> {
               value={value}
               onChange={onChange}
               onBlur={onBlur}
+              onFocus={onFocus}
               inputError={inputError}
+              inputErrorBorder={inputErrorBorder}
               onKeyUp={this.handleKeyUp}
               showEye={showEye}
+              customIcon={customIcon}
               type={this.state.showPassword ? 'text' : type ? type : 'text'}
               placeholder={placeholder ? placeholder : ''}
               height={height}
@@ -178,20 +228,28 @@ export class InputField extends Component<Props> {
             />
           )}
 
-          {showEye && (
-            <CustomIconWrapper onClick={this.handleEyeClick}>
-              <CustomIcon icon={'showNetworks'} showPassword={this.state.showPassword} />
+          {customIcon && (
+            <CustomIconWrapper>
+              <CustomIcon>
+                <IconComponent />
+              </CustomIcon>
             </CustomIconWrapper>
+          )}
+
+          {showEye && (
+            <DefaultIconWrapper onClick={this.handleEyeClick}>
+              <EyeIcon icon={'showNetworks'} showPassword={this.state.showPassword} />
+            </DefaultIconWrapper>
           )}
 
           {isLoading && (
-            <CustomIconWrapper>
+            <DefaultIconWrapper>
               <Spinner />
-            </CustomIconWrapper>
+            </DefaultIconWrapper>
           )}
         </InputWrapper>
 
-        {inputError && <InlineErrorMsg>{inputError}</InlineErrorMsg>}
+        {inputError && <InlineMessage type={inputErrorType}>{inputError}</InlineMessage>}
       </MainWrapper>
     );
   }

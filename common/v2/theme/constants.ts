@@ -11,20 +11,33 @@ export const GAU_THEME = Object.assign({}, light, {
 });
 
 export const COLORS = {
-  DARK_SLATE_BLUE: '#163150',
-  GREYISH_BROWN: '#424242',
-  BRIGHT_SKY_BLUE: '#1eb8e7',
-  SILVER: '#f7f7f7',
-  DARK_SILVER: '#ccc',
-  LIGHT_GREY: '#ededed',
-  GREY: '#7b8695',
-  DARK_GREY: '#e5ecf3',
-  PASTEL_RED: '#ef4747',
-  WHITE: '#fff',
+  BLUE_BRIGHT: '#1eb8e7',
+  BLUE_GREY: '#b5bfc7',
+  BLUE_GREY_LIGHTEST: '#fafcfc',
+  BLUE_DARK_SLATE: '#163150',
+  BLUE_DARK: '#1c314e',
+
+  LEMON_GRASS: '#99968C',
   SUCCESS_GREEN: '#5dba5a',
+  ERROR_RED: '#FF5050',
+  PASTEL_RED: '#ef4747',
   GOLD: '#FFD166',
-  CLOUDY_BLUE: '#b5bfc7',
-  LEMON_GRASS: '#99968C'
+
+  WHITE: '#fff',
+  GREY_LIGHTEST: '#f7f7f7',
+  GREY_LIGHTER: '#e5ecf3',
+  GREY_LIGHT: '#D8D8D8',
+  GREY: '#b7bfc6',
+  GREY_DARK: '#7b8695',
+  GREY_DARKER: '#7b8695',
+  GREY_DARKEST: '#282D32',
+  BLACK: '#000',
+
+  GREY_GEYSER: '#d6dce5',
+  GREY_ATHENS: '#e8eaed',
+  GREYISH_BROWN: '#424242',
+  PURPLE: '#A086F7',
+  ORANGE: '#FA863F'
 };
 
 export const BREAK_POINTS = {
@@ -34,6 +47,26 @@ export const BREAK_POINTS = {
   SCREEN_LG: '1280px',
   SCREEN_XL: '1440px',
   SCREEN_XXL: '1600px'
+};
+
+export const FONT_SIZE = {
+  XS: '12px',
+  SM: '14px',
+  BASE: '16px',
+  MD: '18px',
+  LG: '20px',
+  XL: '24px',
+  XXL: '36px'
+};
+
+export const SPACING = {
+  XS: '5px',
+  SM: '10px',
+  BASE: '20px',
+  MD: '30px',
+  LG: '40px',
+  XL: '60px',
+  XXL: '100px'
 };
 
 export const MAX_CONTENT_WIDTH = '1200px';

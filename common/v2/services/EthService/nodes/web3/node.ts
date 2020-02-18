@@ -78,7 +78,9 @@ export async function setupWeb3Node() {
   const { ethereum } = window as any;
   if (ethereum) {
     // Overwrite the legacy Web3 with the newer version.
-    (window as any).web3 = new (window as any).Web3(ethereum);
+    if ((window as any).Web3) {
+      (window as any).web3 = new (window as any).Web3(ethereum);
+    }
     try {
       // Request permission to access MetaMask accounts.
       await ethereum.enable();
@@ -99,38 +101,5 @@ export async function setupWeb3Node() {
     return getChainIdAndLib();
   } else {
     throw new Error('Web3 not found. Please check that MetaMask is installed');
-  }
-}
-
-export async function isWeb3NodeAvailable(): Promise<boolean> {
-  try {
-    await setupWeb3Node();
-    return true;
-  } catch (e) {
-    // If the specific error is that the request for MetaMask permission was denied,
-    // re-throw the error and allow the caller to handle it.
-    if (e.message === translateRaw('METAMASK_PERMISSION_DENIED')) {
-      throw e;
-    }
-
-    // Otherwise, chances are the MetaMask extension isn't installed.
-    return false;
-  }
-}
-
-export async function ensureWeb3NodeStillAvailable(): Promise<boolean> {
-  try {
-    const { ethereum } = window as any;
-
-    // Legacy handling; will become unavailable 11/2.
-    if (!ethereum) {
-      return true;
-    }
-
-    await ethereum.enable();
-
-    return true;
-  } catch (e) {
-    return false;
   }
 }

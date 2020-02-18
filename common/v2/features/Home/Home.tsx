@@ -16,8 +16,6 @@ import { GithubService } from 'v2/services/ApiService';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK, OS } from 'v2/config';
 
-const { SILVER, DARK_SLATE_BLUE, WHITE } = COLORS;
-
 interface SectionProps {
   color?: string;
 }
@@ -84,22 +82,22 @@ export default class Home extends Component {
         <Section>
           <GetStartedPanel />
         </Section>
-        <Section color={SILVER}>
+        <Section color={COLORS.GREY_LIGHTEST}>
           <CompatibleWalletsPanel />
         </Section>
-        <Section color={WHITE}>
+        <Section color={COLORS.WHITE}>
           <FeaturesPanel />
         </Section>
-        <Section color={DARK_SLATE_BLUE}>
+        <Section color={COLORS.BLUE_DARK_SLATE}>
           <DownloadAppPanel downloadLink={this.state.appDownloadLink} OSName={this.state.OSName} />
         </Section>
-        <Section color={SILVER}>
+        <Section color={COLORS.GREY_LIGHTEST}>
           <KeepYourAssetsSafePanel />
         </Section>
-        <Section color={WHITE}>
+        <Section color={COLORS.WHITE}>
           <PeaceOfMindPanel downloadLink={this.state.appDownloadLink} />
         </Section>
-        <Section color={SILVER}>
+        <Section color={COLORS.GREY_LIGHTEST}>
           <TestimonialsPanel />
         </Section>
         <BottomSection>

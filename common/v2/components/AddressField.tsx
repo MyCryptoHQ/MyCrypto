@@ -1,40 +1,45 @@
 import React from 'react';
-import { Input, Identicon } from '@mycrypto/ui';
-import { FieldProps, Field, FormikTouched } from 'formik';
+import { Identicon } from '@mycrypto/ui';
+import { FieldProps, Field } from 'formik';
 import styled from 'styled-components';
 
-import { translateRaw } from 'v2/translations';
-import {
-  isValidETHAddress,
-  getENSTLDForChain,
-  getIsValidENSAddressFunction
-} from 'v2/services/EthService';
-import { InlineErrorMsg, ENSStatus } from 'v2/components';
-import { Network, IFormikFields } from 'v2/types';
+import { Network, InlineMessageType } from 'v2/types';
+import { DomainStatus } from 'v2/components';
+import { getIsValidENSAddressFunction } from 'v2/services/EthService';
 import { monospace } from 'v2/theme';
-
+import { ResolutionError } from '@unstoppabledomains/resolution';
+import InputField from './InputField';
 /*
   Eth address field to be used within a Formik Form
   - the 'fieldname' must exist wihtin the Formik default fields
   - validation of the field is handled here.
 */
 
+interface ErrorObject {
+  type: InlineMessageType;
+  message: string | JSX.Element;
+}
+
 interface Props {
-  error?: string;
+  error?: string | ErrorObject;
   className?: string;
   fieldName: string;
-  touched?: FormikTouched<IFormikFields>;
   placeholder?: string;
   network?: Network;
   isLoading: boolean;
   isError: boolean;
-  handleENSResolve?(name: string): Promise<void>;
+  resolutionError?: ResolutionError;
+  handleDomainResolve?(name: string): Promise<void>;
   onBlur?(ev: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>): void;
+  onChange?(event: any): void;
 }
 
 const Wrapper = styled.div`
+  width: 100%;
+`;
+
+const InputWrapper = styled.div`
   display: flex;
-  align-items: center;
 
   > div:nth-child(2) {
     flex: 1;
@@ -54,35 +59,30 @@ const EmptyIdenticon = styled.span`
   border-radius: 50%;
 `;
 
-const SInput = styled(Input)`
-  font-family: ${monospace};
+interface InputProps {
+  value: string;
+}
+
+const SInput = styled(InputField)<InputProps>`
+  ${props => props.value && `font-family: ${monospace};`}
+  font-size: 1rem !important; // to override Typography from mycrypto/ui
 `;
 
 function ETHAddressField({
   className,
   fieldName,
-  touched,
   error,
   network,
-  placeholder = 'ETH Address or ENS Name',
+  placeholder = 'ETH Address or blockchain domain',
   isLoading,
   isError,
-  handleENSResolve,
-  onBlur
+  resolutionError,
+  handleDomainResolve,
+  onBlur,
+  onChange
 }: Props) {
-  const validateEthAddress = (value: any) => {
-    let errorMsg;
-    if (!value) {
-      errorMsg = translateRaw('REQUIRED');
-    } else if (!isValidETHAddress(value)) {
-      const networkId = network && network.chainId ? network.chainId : 1;
-      const isValidENSName = getIsValidENSAddressFunction(networkId);
-      if (!isValidENSName(value)) {
-        errorMsg = translateRaw('TO_FIELD_ERROR');
-      }
-    }
-    return errorMsg;
-  };
+  const errorMessage = typeof error === 'object' ? error.message : error;
+  const errorType = typeof error === 'object' ? error.type : undefined;
 
   // By destructuring 'field' in the rendered component we are mapping
   // the Inputs 'value' and 'onChange' props to Formiks handlers.
@@ -90,17 +90,19 @@ function ETHAddressField({
     <>
       <Field
         name={fieldName}
-        validate={validateEthAddress}
         validateOnChange={false}
         render={({ field, form }: FieldProps) => (
-          <div className={className}>
-            <Wrapper>
+          <Wrapper className={className}>
+            <InputWrapper>
               <IdenticonWrapper>
                 {field.value.value ? <Identicon address={field.value.value} /> : <EmptyIdenticon />}
               </IdenticonWrapper>
               <SInput
                 data-lpignore="true"
                 {...field}
+                inputErrorType={errorType}
+                inputError={errorMessage}
+                marginBottom={'0'}
                 value={field.value.display}
                 placeholder={placeholder}
                 onChange={e => {
@@ -108,16 +110,19 @@ function ETHAddressField({
                     display: e.currentTarget.value,
                     value: e.currentTarget.value
                   });
+                  if (onChange) {
+                    onChange(e);
+                  }
                 }}
                 onBlur={async e => {
                   if (!network || !network.chainId) {
                     return;
                   }
-                  const ensTLD = getENSTLDForChain(network.chainId);
-                  const isENSAddress = e.currentTarget.value.endsWith(`.${ensTLD}`);
+                  const isValidENSAddress = getIsValidENSAddressFunction(network.chainId);
+                  const isENSAddress = isValidENSAddress(e.currentTarget.value);
                   const action =
-                    isENSAddress && handleENSResolve
-                      ? (ensName: string) => handleENSResolve(ensName)
+                    isENSAddress && handleDomainResolve
+                      ? (domainName: string) => handleDomainResolve(domainName)
                       : (address: string) =>
                           form.setFieldValue(fieldName, { display: address, value: address });
                   await action(e.currentTarget.value);
@@ -127,18 +132,15 @@ function ETHAddressField({
                   }
                 }}
               />
-            </Wrapper>
-            <ENSStatus
-              ensName={form.values[fieldName].display}
+            </InputWrapper>
+            <DomainStatus
+              domain={form.values[fieldName].value}
               rawAddress={form.values[fieldName].value}
-              chainId={network ? network.chainId : 1}
               isLoading={isLoading}
               isError={isError}
+              resolutionError={resolutionError}
             />
-            {error && touched && touched.address ? (
-              <InlineErrorMsg className="SendAssetsForm-errors">{error}</InlineErrorMsg>
-            ) : null}
-          </div>
+          </Wrapper>
         )}
       />
     </>

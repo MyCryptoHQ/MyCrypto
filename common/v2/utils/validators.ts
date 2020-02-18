@@ -41,6 +41,8 @@ export const isValidAmount = (decimal: number) => (amount: string) => {
   return !convertedAmount.isNeg() && validDecimal(amount, decimal);
 };
 
+export const isTransactionDataEmpty = (data: string) => ['', '0x', '0x0', '0x00'].includes(data);
+
 export const addressValidatorHash: ValidatorHash = {
   ETH: isValidEthereumAddress,
   BTC: isValidBitcoinAddress,

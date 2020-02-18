@@ -2,7 +2,7 @@ export * from './error';
 export * from './typeGuards';
 export * from './validators';
 export { IS_ELECTRON, IS_MOBILE, IS_DOWNLOADABLE } from './platform';
-export { HAS_WEB3_PROVIDER, IS_DEV, IS_PROD } from './environment';
+export { hasWeb3Provider, IS_DEV, IS_PROD } from './environment';
 export { getFeaturedOS } from './getFeaturedOS';
 export { generateUUID, generateAssetUUID, generateContractUUID } from './generateUUID';
 export { isUrl } from './isUrl';
@@ -26,8 +26,13 @@ export {
 export { makeBlob } from './blob';
 export { default as consoleAdvertisement } from './consoleAdvertisement';
 export { tap } from './tap';
-export { fromTxReceiptObj } from './transaction';
-export { formatEmailMarkdown, formatErrorEmailMarkdown } from './emailFormatter';
+export { fromTxReceiptObj, makeTxConfigFromSignedTx } from './transaction';
+export {
+  formatErrorEmail,
+  formatSupportEmail,
+  formatEmailMarkdown,
+  formatErrorEmailMarkdown
+} from './emailFormatter';
 export { withContext } from './withContext';
 export { getWeb3Config } from './web3';
 export { toArray } from './toArray';

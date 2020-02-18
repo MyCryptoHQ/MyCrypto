@@ -5,6 +5,7 @@ import { translateRaw } from 'v2/translations';
 import { AssetWithDetails, TSymbol } from 'v2/types';
 import { DashboardPanel, AssetIcon } from 'v2/components';
 import { getNetworkById, StoreContext } from 'v2/services/Store';
+import { COLORS, FONT_SIZE, SPACING } from 'v2/theme';
 
 import socialTelegram from 'common/assets/images/social-icons/social-telegram.svg';
 import socialTwitter from 'common/assets/images/social-icons/social-twitter.svg';
@@ -28,16 +29,19 @@ const InfoWrapper = styled.div`
 `;
 
 const InfoTitle = styled.div`
-  font-size: 13px;
+  font-size: ${FONT_SIZE.XS};
+  letter-spacing: 0.1em;
   font-weight: 900;
-  color: #000;
+  color: ${COLORS.GREY_DARKER};
   text-transform: uppercase;
+  margin-bottom: 2px;
 `;
 
 const InfoValue = styled.div`
-  font-size: 18px;
+  font-size: ${FONT_SIZE.MD};
   font-weight: normal;
   word-break: break-all;
+  color: ${COLORS.GREY_DARKEST};
 `;
 
 interface SectionProps {
@@ -52,44 +56,44 @@ const TwoColumnsWrapper = styled.div`
   display: flex;
 `;
 
-const Icon = styled.img`
-  width: 24px;
-  height: auto;
-  cursor: pointer;
-`;
-
-const SocialIcon = styled(Icon)`
-  margin-right: 21px;
-`;
-
-const Resources = styled.div`
-  display: flex;
-`;
-
-const ResourceItem = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: 21px;
-  cursor: pointer;
-  color: #000;
-`;
-
-const ResourceIcon = styled(Icon)`
-  margin-right: 10px;
-`;
-
-const BackIcon = styled(Icon)`
-  margin-right: 16px;
-`;
-
-const TokenIcon = styled.div`
-  margin-right: 8px;
-  display: flex;
-`;
-
 const DetailsHeadingWrapper = styled.div`
   display: flex;
   align-items: center;
+  line-height: 1.1;
+`;
+
+const Icon = styled.img`
+  height: auto;
+  cursor: pointer;
+  transition: 100ms transform;
+  &:hover {
+    transition: 100ms transform;
+    transform: scale(1.1);
+  }
+
+  width: 40px;
+  padding: ${SPACING.SM};
+`;
+
+const BackIcon = styled(Icon)`
+  margin-left: -${SPACING.SM};
+`;
+
+const TokenIcon = styled.div`
+  margin-right: ${SPACING.SM};
+  display: flex;
+`;
+
+const ResourceIcon = styled(Icon)`
+  width: 46px;
+  margin-left: -${SPACING.SM};
+  margin-right: ${SPACING.SM};
+`;
+
+const SocialIcon = styled(Icon)`
+  width: 46px;
+  margin-left: -${SPACING.SM};
+  margin-right: ${SPACING.BASE};
 `;
 
 interface InfoPieceProps {
@@ -175,7 +179,7 @@ export function TokenDetails(props: Props) {
         <DetailsHeadingWrapper>
           <BackIcon src={backArrowIcon} onClick={() => setShowDetailsView(false)} />
           <TokenIcon>
-            <AssetIcon symbol={currentToken.ticker as TSymbol} size={'26px'} />
+            <AssetIcon symbol={currentToken.ticker as TSymbol} size={'30px'} />
           </TokenIcon>
           {currentToken.name}
         </DetailsHeadingWrapper>
@@ -202,45 +206,30 @@ export function TokenDetails(props: Props) {
       <Section>
         <InfoPiece title={translateRaw('TOKEN_ADDRESS')} value={currentToken.contractAddress} />
       </Section>
-      <Section>
-        <InfoPiece title={translateRaw('TOKEN_DECIMALS')} value={currentToken.decimal} />
-      </Section>
-      <Section>
-        <InfoPiece title={translateRaw('TOKEN_SYMBOL')} value={currentToken.ticker} />
-      </Section>
-      {(details.website || details.whitepaper) && (
+      <TwoColumnsWrapper>
+        <Section>
+          <InfoPiece title={translateRaw('TOKEN_DECIMALS')} value={currentToken.decimal} />
+        </Section>
+        <Section>
+          <InfoPiece title={translateRaw('TOKEN_SYMBOL')} value={currentToken.ticker} />
+        </Section>
+      </TwoColumnsWrapper>
+      {Object.keys(filteredSocial).length > 0 && (
         <Section>
           <InfoPiece
             title={translateRaw('RESOURCES')}
             value={
-              <Resources>
+              <>
                 {details.website && (
                   <a href={details.website} target="_blank" rel="noreferrer">
-                    <ResourceItem>
-                      <ResourceIcon src={websiteIcon} />
-                      {translateRaw('WEBSITE')}
-                    </ResourceItem>
+                    <ResourceIcon src={websiteIcon} />
                   </a>
                 )}
                 {details.whitepaper && (
                   <a href={details.whitepaper} target="_blank" rel="noreferrer">
-                    <ResourceItem>
-                      <ResourceIcon src={whitepaperIcon} />
-                      {translateRaw('WHITEPAPER')}
-                    </ResourceItem>
+                    <ResourceIcon src={whitepaperIcon} />
                   </a>
                 )}
-              </Resources>
-            }
-          />
-        </Section>
-      )}
-      {Object.keys(filteredSocial).length > 0 && (
-        <Section>
-          <InfoPiece
-            title={translateRaw('SOCIAL')}
-            value={
-              <>
                 {filteredSocialArray.map(social => {
                   return (
                     <a key={social} href={details.social[social]} target="_blank" rel="noreferrer">

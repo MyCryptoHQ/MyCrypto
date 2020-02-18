@@ -4,7 +4,7 @@ import { Transition } from 'react-spring/renderprops.cjs';
 import { Icon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { UnlockScreen, SelectLanguage } from 'v2/features/Drawer/screens';
+import { SelectLanguage } from 'v2/features/Drawer/screens';
 import { links } from './constants';
 import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from 'v2/theme';
 import { AnalyticsService, ANALYTICS_CATEGORIES, SettingsContext } from 'v2/services';
@@ -13,8 +13,9 @@ import translate from 'v2/translations';
 
 // Legacy
 import logo from 'assets/images/logo-mycrypto.svg';
+import { ScreenLockContext } from 'v2/features/ScreenLock/ScreenLockProvider';
 
-const { BRIGHT_SKY_BLUE } = COLORS;
+const { BLUE_BRIGHT } = COLORS;
 
 const Navbar = styled.nav`
   position: fixed;
@@ -214,16 +215,12 @@ const MobileTopLeft = styled.div`
   }
 `;
 
-const MobileTopRight = styled(MobileTopLeft)`
-  visibility: hidden;
-`;
-
 const CenterImg = styled.img`
   width: 160px;
   height: 39px;
 `;
 
-const Unlock = styled.li`
+const Lock = styled.li`
   display: flex;
   align-items: center;
   border-left: 1px solid #3e546d;
@@ -239,13 +236,13 @@ interface IconWrapperProps {
 }
 
 // prettier-ignore
-const IconWrapper = styled(Icon)<IconWrapperProps>`
+const IconWrapper = styled(Icon) <IconWrapperProps>`
   margin: 0;
   margin-left: 6px;
   font-size: 0.75rem;
 
   svg {
-    color: ${BRIGHT_SKY_BLUE};
+    color: ${BLUE_BRIGHT};
     ${props => props.subItems && 'transform: rotate(270deg);'};
   }
 `;
@@ -267,7 +264,7 @@ const PrefixIcon = styled.img<PrefixIconProps>`
   margin-right: 3px;
 
   svg {
-    color: ${BRIGHT_SKY_BLUE};
+    color: ${BLUE_BRIGHT};
   }
 `;
 
@@ -290,6 +287,7 @@ interface LinkElement {
 type Props = OwnProps & RouteComponentProps;
 export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, history }: Props) {
   const { language: languageSelection } = useContext(SettingsContext);
+  const { startLockCountdown } = useContext(ScreenLockContext);
   const initVisibleMenuDropdowns: DropdownType = {
     'Manage Assets': false,
     Tools: false
@@ -304,9 +302,9 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
 
   const closeMenu = () => setMenuOpen(false);
 
-  const onUnlockClick = () => {
+  const onLockClick = () => {
     closeMenu();
-    drawerVisible ? toggleDrawerVisible() : setDrawerScreen(UnlockScreen);
+    startLockCountdown(true);
   };
 
   const onLanguageClick = () => {
@@ -356,43 +354,47 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
           ((style: any) => (
             <Menu style={style}>
               <MenuLinks>
-                {links.map(({ title, to, subItems, icon }) => {
-                  return (
-                    <li
-                      key={title}
-                      onClick={e => {
-                        e.stopPropagation();
+                {links
+                  .filter(linkObject => linkObject.enabled)
+                  .map(({ title, to, subItems, icon }) => {
+                    return (
+                      <li
+                        key={title}
+                        onClick={e => {
+                          e.stopPropagation();
 
-                        if (to) {
-                          history.push(to);
-                          toggleMenu();
-                        } else {
-                          toggleMenuDropdown(title);
-                        }
-                      }}
-                    >
-                      <TitleIconWrapper>
-                        {icon && <PrefixIcon {...icon} />} {title}
-                        {!icon && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
-                      </TitleIconWrapper>
-                      {subItems && visibleMenuDropdowns[title] && (
-                        <ul>
-                          {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
-                            <li
-                              key={innerTitle}
-                              onClick={() => {
-                                toggleMenu();
-                                history.push(innerTo);
-                              }}
-                            >
-                              {innerTitle}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </li>
-                  );
-                })}
+                          if (to) {
+                            history.push(to);
+                            toggleMenu();
+                          } else {
+                            toggleMenuDropdown(title);
+                          }
+                        }}
+                      >
+                        <TitleIconWrapper>
+                          {icon && <PrefixIcon {...icon} />} {title}
+                          {!icon && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
+                        </TitleIconWrapper>
+                        {subItems && visibleMenuDropdowns[title] && (
+                          <ul>
+                            {subItems
+                              .filter(subItem => subItem.enabled)
+                              .map(({ to: innerTo, title: innerTitle }: LinkElement) => (
+                                <li
+                                  key={innerTitle}
+                                  onClick={() => {
+                                    toggleMenu();
+                                    history.push(innerTo);
+                                  }}
+                                >
+                                  {innerTitle}
+                                </li>
+                              ))}
+                          </ul>
+                        )}
+                      </li>
+                    );
+                  })}
               </MenuLinks>
               <MenuMid onClick={onLanguageClick}>
                 {languages[languageSelection]} <IconWrapper subItems={true} icon="navDownCaret" />
@@ -426,45 +428,48 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
             <CenterImg src={logo} alt="Our logo" />
           </Link>
         </div>
-        {/* Unlock button hidden for MVP purposes */}
         {/* Mobile Right */}
-        <MobileTopRight onClick={onUnlockClick}>
-          <Icon icon={drawerVisible ? 'exit' : 'unlock'} />
-        </MobileTopRight>
+        <MobileTopLeft onClick={onLockClick}>
+          <Icon icon={drawerVisible ? 'exit' : 'lock'} />
+        </MobileTopLeft>
         {/* Desktop Right */}
         <HeaderTopLeft>
-          <Unlock onClick={onUnlockClick}>
-            <IconWrapper icon="unlock" /> Unlock
-          </Unlock>
+          <Lock onClick={onLockClick}>
+            <IconWrapper icon="lock" /> {translate('LOCK')}
+          </Lock>
           <li onClick={onLanguageClick}>{languages[languageSelection]}</li>
         </HeaderTopLeft>
       </HeaderTop>
       <HeaderBottom>
         <HeaderBottomLinks>
-          {links.map(({ title, to, subItems, icon }) => {
-            const liProps = to
-              ? { onClick: () => history.push(to) }
-              : {
-                  onMouseEnter: () => toggleDropdown(title),
-                  onMouseLeave: () => toggleDropdown(title)
-                };
+          {links
+            .filter(link => link.enabled)
+            .map(({ title, to, subItems, icon }) => {
+              const liProps = to
+                ? { onClick: () => history.push(to) }
+                : {
+                    onMouseEnter: () => toggleDropdown(title),
+                    onMouseLeave: () => toggleDropdown(title)
+                  };
 
-            return (
-              <li key={title} {...liProps}>
-                {icon && <PrefixIcon {...icon} />} {title}{' '}
-                {!icon && subItems && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
-                {subItems && visibleDropdowns[title] && (
-                  <ul>
-                    {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
-                      <li key={innerTitle} onClick={() => history.push(innerTo)}>
-                        {innerTitle}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            );
-          })}
+              return (
+                <li key={title} {...liProps}>
+                  {icon && <PrefixIcon {...icon} />} {title}{' '}
+                  {!icon && subItems && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
+                  {subItems && visibleDropdowns[title] && (
+                    <ul>
+                      {subItems
+                        .filter(subItem => subItem.enabled)
+                        .map(({ to: innerTo, title: innerTitle }: LinkElement) => (
+                          <li key={innerTitle} onClick={() => history.push(innerTo)}>
+                            {innerTitle}
+                          </li>
+                        ))}
+                    </ul>
+                  )}
+                </li>
+              );
+            })}
         </HeaderBottomLinks>
       </HeaderBottom>
     </Navbar>

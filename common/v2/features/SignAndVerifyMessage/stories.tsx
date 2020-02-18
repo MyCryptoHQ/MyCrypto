@@ -1,5 +1,5 @@
 import { IStory, WalletId } from 'v2/types';
-import { IS_DEV, IS_ELECTRON, HAS_WEB3_PROVIDER } from 'v2/utils';
+import { IS_DEV, IS_ELECTRON, hasWeb3Provider } from 'v2/utils';
 import {
   LedgerNanoSDecrypt,
   KeystoreDecrypt,
@@ -10,10 +10,10 @@ import {
   Web3ProviderInstall
 } from 'v2/components';
 
-export const STORIES: IStory[] = [
+export const getStories = (): IStory[] => [
   {
     name: WalletId.METAMASK,
-    steps: HAS_WEB3_PROVIDER ? [Web3ProviderDecrypt] : [Web3ProviderInstall]
+    steps: hasWeb3Provider() ? [Web3ProviderDecrypt] : [Web3ProviderInstall]
   },
   {
     name: WalletId.LEDGER_NANO_S,

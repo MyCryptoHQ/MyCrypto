@@ -28,7 +28,8 @@ export {
   HD_WALLETS,
   SECURE_WALLETS,
   INSECURE_WALLETS,
-  HARDWARE_WALLETS
+  HARDWARE_WALLETS,
+  WEB3_WALLETS
 } from './wallets';
 import { IWalletConfig } from './wallets';
 export { knowledgeBaseURL, HELP_ARTICLE } from './helpArticles';
@@ -39,6 +40,6 @@ export {
   TOKEN_INFO_URL
 } from './constants';
 export { Fiats } from './fiats';
-
+export { IS_ACTIVE_FEATURE } from './isActiveFeature';
 export { ROUTE_PATHS } from './routePaths';
 export type IWalletConfig = IWalletConfig;

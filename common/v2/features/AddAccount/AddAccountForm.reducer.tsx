@@ -5,7 +5,7 @@ import { FormDataAction, FormDataActionType as ActionType } from './types';
 export const initialState: FormData = {
   network: DEFAULT_NETWORK,
   accountType: undefined,
-  account: '',
+  address: '',
   label: 'New Account',
   derivationPath: ''
 };
@@ -15,9 +15,6 @@ export const formReducer = (formData: FormData, action: FormDataAction) => {
     case ActionType.SELECT_NETWORK:
       const { network } = action.payload;
       return { ...formData, network };
-    case ActionType.SELECT_ACCOUNT:
-      const { account } = action.payload;
-      return { ...formData, account };
     case ActionType.SELECT_ACCOUNT_TYPE:
       const { accountType } = action.payload;
       return { ...formData, accountType };
@@ -44,12 +41,12 @@ const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
     case WalletId.PRIVATE_KEY:
     case WalletId.WEB3:
       return {
-        account: payload.getAddressString(),
+        address: payload.getAddressString(),
         derivationPath: ''
       };
     case WalletId.PARITY_SIGNER:
       return {
-        account: payload.address,
+        address: payload.address,
         derivationPath: ''
       };
     case WalletId.MNEMONIC_PHRASE:
@@ -57,7 +54,7 @@ const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
     case WalletId.TREZOR:
     case WalletId.SAFE_T_MINI:
       return {
-        account: payload.address,
+        address: payload.address,
         derivationPath: payload.path || payload.dPath + '/' + payload.index.toString()
       };
     default:

@@ -8,4 +8,11 @@ export const MnemonicWallet = (
   pass: string | undefined,
   path: string,
   address: string
-) => signWrapper(fromPrivateKey(decryptMnemonicToPrivKey(phrase, pass, path, address)));
+) =>
+  Object.assign(
+    signWrapper(fromPrivateKey(decryptMnemonicToPrivKey(phrase, pass, path, address))),
+    {
+      address,
+      path
+    }
+  );

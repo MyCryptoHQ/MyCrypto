@@ -11,8 +11,8 @@ import {
 } from 'v2/services/EthService/utils/formatters';
 import { ContentPanel, QRCode, AccountDropdown, AssetDropdown } from 'v2/components';
 import { AssetContext, getNetworkById, StoreContext } from 'v2/services/Store';
-import { isValidAmount, truncate } from 'v2/utils';
-import { ExtendedAccount as IExtendedAccount, StoreAccount } from 'v2/types';
+import { isValidAmount } from 'v2/utils';
+import { IAccount as IIAccount, StoreAccount } from 'v2/types';
 import { ROUTE_PATHS } from 'v2/config';
 import translate, { translateRaw } from 'v2/translations';
 import questionToolTip from 'common/assets/images/icn-question.svg';
@@ -109,9 +109,8 @@ const ErrorMessage = styled.span`
 export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   const { accounts, networks } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
-  const [networkName, setNetworkName] = useState(accounts[0].networkId);
-  // @TODO: StoreAccount contains it's Network. This can be cleanedup.
-  const network = getNetworkById(networkName, networks);
+  const [networkId, setNetworkId] = useState(accounts[0].networkId);
+  const network = getNetworkById(networkId, networks);
   const filteredAssets = network
     ? assets
         .filter(asset => asset.networkId === network.id)
@@ -126,11 +125,9 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   const [chosenAssetName, setAssetName] = useState(filteredAssets[0].name);
   const selectedAsset = filteredAssets.find(asset => asset.name === chosenAssetName);
 
-  const ethereum = assets.find(asset => asset.networkId === 'Ethereum');
-
   const initialValues = {
-    amount: '0',
-    asset: { label: ethereum!.name, id: ethereum!.uuid },
+    amount: '',
+    asset: {},
     recipientAddress: {} as StoreAccount
   };
 
@@ -172,10 +169,10 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                     name={field.name}
                     value={field.value}
                     accounts={accounts}
-                    onSelect={(option: IExtendedAccount) => {
+                    onSelect={(option: IIAccount) => {
                       form.setFieldValue(field.name, option);
                       if (option.networkId) {
-                        setNetworkName(option.networkId);
+                        setNetworkId(option.networkId);
                       }
                     }}
                   />
@@ -205,9 +202,9 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                   name="asset"
                   component={({ field, form }: FieldProps) => (
                     <AssetDropdown
-                      name={field.name}
-                      value={field.value}
+                      selectedAsset={field.value}
                       assets={assetOptions}
+                      searchable={true}
                       onSelect={option => {
                         form.setFieldValue(field.name, option);
                         if (option.name) {
@@ -275,7 +272,6 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                             )
                       }
                       isCopyable={true}
-                      truncate={truncate}
                     />
                   </FieldsetBox>
                 </Fieldset>

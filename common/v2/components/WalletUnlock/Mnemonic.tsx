@@ -160,22 +160,8 @@ class MnemonicDecryptClass extends PureComponent<OwnProps, State> {
 
   private handleUnlock = async (address: string, index: number) => {
     const { formattedPhrase, pass, selectedDPath } = this.state;
-    const networks = this.context.networks;
-    const network = this.context.getNetworkByName(this.props.formData.network);
 
-    if (!formattedPhrase) {
-      return;
-    }
-
-    this.setState({
-      seed: undefined,
-      phrase: undefined,
-      formattedPhrase: undefined,
-      pass: undefined,
-      selectedDPath:
-        getDPath(network, WalletId.MNEMONIC_PHRASE) ||
-        getDPaths(networks, WalletId.MNEMONIC_PHRASE)[0]
-    });
+    if (!formattedPhrase) return;
 
     const wallet = await WalletService.init({
       path: `${selectedDPath.value}/${index}`,

@@ -1,23 +1,14 @@
-.TrustWallet-img {
-  width: 150px;
-  height: 150px;
-}
-
-.TrustWallet-container {
+.Provider-container {
   width: 200px;
   height: 200px;
   padding: 10px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.CoinbaseWallet-container {
-  width: 200px;
-  height: 200px;
-  padding: 10px;
-  text-align: center;
-}
-
-.CoinbaseWallet-img {
+.Provider-img {
   width: 150px;
   height: 150px;
 }
@@ -25,6 +16,7 @@
 .Web3-options {
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 
 .Panel-content-img {
@@ -39,6 +31,10 @@
   }
 }
 
-.MetaMaskPanel-footer {
+.Provider-footer {
   text-align: center;
+}
+
+.download-option {
+  margin-top: 0.5rem;
 }

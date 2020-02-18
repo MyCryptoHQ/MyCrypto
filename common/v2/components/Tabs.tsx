@@ -4,13 +4,13 @@ import styled from 'styled-components';
 import { Tab } from 'v2/types';
 import { COLORS } from 'v2/theme';
 
-const { WHITE, BRIGHT_SKY_BLUE } = COLORS;
+const { WHITE, BLUE_BRIGHT } = COLORS;
 
 const TabsWrapper = styled.div`
-  border: 1px solid ${BRIGHT_SKY_BLUE};
+  border: 1px solid ${BLUE_BRIGHT};
   display: flex;
   font-size: 16px;
-  color: ${BRIGHT_SKY_BLUE};
+  color: ${BLUE_BRIGHT};
   font-weight: normal;
   border-radius: 2px;
   background-color: ${WHITE};
@@ -24,7 +24,7 @@ interface TabWrapperProps {
 const TabWrapper = styled.div<TabWrapperProps>`
   ${props =>
     props.selected &&
-    `background-color: ${BRIGHT_SKY_BLUE};
+    `background-color: ${BLUE_BRIGHT};
      color: ${WHITE};`}
   padding: 12px 20px;
   text-align: center;
@@ -33,7 +33,7 @@ const TabWrapper = styled.div<TabWrapperProps>`
   align-items: center;
 
   &:not(:first-child) {
-    border-left: 1px solid ${BRIGHT_SKY_BLUE};
+    border-left: 1px solid ${BLUE_BRIGHT};
   }
 `;
 

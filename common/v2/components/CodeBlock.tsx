@@ -3,12 +3,10 @@ import styled from 'styled-components';
 
 import { COLORS } from 'v2/theme';
 
-const { DARK_GREY } = COLORS;
-
 const CodeBlockWrapper = styled.div`
   font-weight: 400;
   font-size: 1rem;
-  border: 1px solid ${DARK_GREY};
+  border: 1px solid ${COLORS.GREY_LIGHTER};
   padding: 0.75rem 1rem;
   margin: 0;
   margin-bottom: 1rem;

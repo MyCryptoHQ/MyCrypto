@@ -4,7 +4,7 @@ import { Button } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'v2/translations';
 
-import { AccountDropdown, InlineErrorMsg, Typography } from 'v2/components';
+import { AccountDropdown, InlineMessage, Typography } from 'v2/components';
 import { StoreAccount } from 'v2/types';
 import { StoreContext } from 'v2/services';
 
@@ -72,7 +72,7 @@ export default function SelectAddress(props: Props) {
         asset={assets().find(x => x.ticker === fromAsset.symbol)}
       />
       {!filteredAccounts.length && (
-        <InlineErrorMsg>{translate('ACCOUNT_SELECTION_NO_FUNDS')}</InlineErrorMsg>
+        <InlineMessage>{translate('ACCOUNT_SELECTION_NO_FUNDS')}</InlineMessage>
       )}
 
       <StyledButton disabled={!account} onClick={onSuccess}>

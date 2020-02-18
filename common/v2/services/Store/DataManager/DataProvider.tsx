@@ -1,12 +1,28 @@
-import React, { createContext, Dispatch, useReducer, useCallback } from 'react';
+import React, { createContext, Dispatch, useReducer, useCallback, useMemo, useEffect } from 'react';
 
-import { DataStore, LSKeys } from 'v2/types';
-import { useThrottleFn, useLocalStorage, useEvent } from 'v2/vendor';
-import { addDevSeedToSchema, removeSeedDataFromSchema, getCurrentDBConfig } from 'v2/database';
-import { appDataReducer, ActionV, ActionT, ActionPayload } from './reducer';
+import { LSKeys } from 'v2/types';
+import { useThrottleFn, useEvent } from 'v2/vendor';
+import {
+  addDevSeedToSchema,
+  removeSeedDataFromSchema,
+  getCurrentDBConfig,
+  getData
+} from 'v2/database';
+
+import {
+  appDataReducer,
+  ActionV,
+  ActionT,
+  ActionPayload,
+  encryptedDbReducer,
+  ActionZ,
+  ActionY,
+  EncryptedDbActionPayload
+} from './reducer';
 import { ActionFactory } from './actions';
 import { deMarshallState, marshallState } from './utils';
-import { useDatabase } from './useDatabase';
+import { DatabaseService } from './DatabaseService';
+import { EncryptedDataStore, DataStore } from 'v2/types/store';
 
 export interface DataCacheManager extends DataStore {
   createActions(k: LSKeys): ReturnType<typeof ActionFactory>;
@@ -16,7 +32,7 @@ export interface DataCacheManager extends DataStore {
 }
 
 interface EncryptedStorage {
-  encryptedDb: any;
+  encryptedDbState: EncryptedDataStore;
   setEncryptedCache(ls: string): void;
   destroyEncryptedCache(): void;
   setUnlockPassword(pwd: string): void;
@@ -31,13 +47,24 @@ export const DataProvider: React.FC = ({ children }) => {
    *  Create the our master store, sync with persistance layer,
    *  Provide lj
    */
-  const { db, updateDb, resetDb, defaultValues } = useDatabase();
+  const currentDB = useMemo(() => getCurrentDBConfig(), []);
+  const currentDBValues = useMemo(() => getData(), []);
+  const { db, updateDb, resetDb, defaultValues } = DatabaseService(
+    currentDB.main,
+    currentDBValues,
+    currentDB.defaultValues
+  );
 
   const [appState, dispatch]: [DataStore, Dispatch<ActionV>] = useReducer(
     appDataReducer,
     db, // Initial state
     marshallState // method to run on initial state
   );
+
+  const [encryptedDbState, dispatchEncryptedDb]: [
+    EncryptedDataStore,
+    Dispatch<ActionZ>
+  ] = useReducer(encryptedDbReducer, (undefined as unknown) as EncryptedDataStore);
 
   const resetAppDb = useCallback(
     (newDb = defaultValues) => {
@@ -53,17 +80,22 @@ export const DataProvider: React.FC = ({ children }) => {
   /*
    * Manage sync between appState an db
    */
-  const syncDb = useCallback(() => {
-    console.debug('Updating LocalStorage');
-    updateDb(deMarshallState(appState));
-  }, [appState]);
-  // By default we sync no more than once a minute
-  useThrottleFn(syncDb, 60000, [appState]);
+  const syncDb = (state: DataStore) => {
+    updateDb(deMarshallState(state));
+  };
+
+  useEffect(() => setEncryptedDb(encryptedDbState), [encryptedDbState]);
+
+  // observe password changes in appState
+  useEffect(() => syncDb(appState), [appState.password]);
+
+  // By default we sync no more than once a 30 seconds
+  useThrottleFn(syncDb, 30000, [appState]);
   // In any case, we sync before the tab is closed
   // https://developers.google.com/web/updates/2018/07/page-lifecycle-api
   useEvent('visibilitychange', () => {
     if (document.hidden) {
-      syncDb();
+      syncDb(appState);
     }
   });
 
@@ -81,24 +113,36 @@ export const DataProvider: React.FC = ({ children }) => {
   /*
    *  Handle db encryption on ScreenLock
    */
-  const [encryptedDb, setEncryptedDb] = useLocalStorage(getCurrentDBConfig().vault);
-  const setEncryptedCache = (data: string) => setEncryptedDb({ ...encryptedDb, data });
-  const destroyEncryptedCache = () => {
-    const { data, ...rest } = encryptedDb;
-    setEncryptedDb({ ...rest }); // Keep the password field
+  const { updateDb: setEncryptedDb } = DatabaseService(currentDB.vault);
+  const setEncryptedCache = (data: string) => {
+    dispatchEncryptedDb({
+      type: ActionY.SET_DATA,
+      payload: { data } as EncryptedDbActionPayload<string>
+    });
   };
-  const getUnlockPassword = () => encryptedDb.password;
+  const destroyEncryptedCache = () => {
+    dispatchEncryptedDb({
+      type: ActionY.CLEAR_DATA,
+      payload: {} as EncryptedDbActionPayload<string>
+    });
+  };
+  const getUnlockPassword = () => {
+    return db && db.password;
+  };
   const setUnlockPassword = (password: string) => {
-    setEncryptedDb({ ...encryptedDb, password });
+    dispatch({
+      type: ActionT.ADD_ENTRY,
+      payload: { data: password, model: LSKeys.PASSWORD }
+    });
   };
 
   const stateContext: IDataContext = {
     ...appState,
     createActions: key => ActionFactory(key, dispatch, appState),
     resetAppDb,
+    encryptedDbState,
     removeSeedData,
     addSeedData,
-    encryptedDb,
     setEncryptedCache,
     destroyEncryptedCache,
     setUnlockPassword,

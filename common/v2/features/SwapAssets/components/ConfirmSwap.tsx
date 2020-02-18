@@ -11,8 +11,6 @@ import { Typography, Currency } from 'v2/components';
 import { SwapFromToDiagram, FromToAccount } from './fields';
 import { ISwapAsset, LAST_CHANGED_AMOUNT } from '../types';
 
-const { SILVER, BRIGHT_SKY_BLUE, GREY } = COLORS;
-
 const StyledButton = styled(Button)`
   margin-top: 28px;
   width: 100%;
@@ -23,18 +21,18 @@ const ConversionRateBox = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${SILVER};
+  background-color: ${COLORS.GREY_LIGHTEST};
   font-size: 20px;
   font-weight: bold;
   height: 150px;
 `;
 
 const ConversionLabel = styled(Typography)`
-  color: ${GREY};
+  color: ${COLORS.GREY};
 `;
 
 const LinkLabel = styled(Typography)`
-  color: ${BRIGHT_SKY_BLUE};
+  color: ${COLORS.BLUE_BRIGHT};
   cursor: pointer;
 `;
 

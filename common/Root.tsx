@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { setConfig } from 'react-hot-loader';
 import { hot } from 'react-hot-loader/root';
 import styled, { ThemeProvider } from 'styled-components';
+import { HashRouter, BrowserRouter } from 'react-router-dom';
 // v2
 import { BREAK_POINTS, GAU_THEME } from 'v2/theme';
-import { IS_DEV, IS_ELECTRON } from 'v2/utils';
+import { IS_DEV, IS_ELECTRON, IS_DOWNLOADABLE, IS_PROD } from 'v2/utils';
 import { NewAppReleaseModal } from 'v2/components';
 import { DevToolsManager } from 'v2/features';
 import AppProviders from './AppProviders';
-import { AppRouter } from './AppRouter';
+import { AppRoutes } from './AppRoutes';
 
 const AppProvidersInnerContainer = styled.div`
   display: flex;
@@ -34,28 +35,28 @@ class RootClass extends Component {
     this.addBodyClasses();
   }
 
-  public componentDidCatch(error: Error) {
-    console.error(error);
-  }
-
   public render() {
+    const Router: any = IS_DOWNLOADABLE && IS_PROD ? HashRouter : BrowserRouter;
+
     return (
       <ThemeProvider theme={GAU_THEME}>
-        <AppProviders>
-          <AppProvidersInnerContainer>
-            {/* DevToolsManager */}
-            <DevToolsManagerContainer>
-              {IS_DEV ? <DevToolsManager /> : <></>}
-            </DevToolsManagerContainer>
+        <Router>
+          <AppProviders>
+            <AppProvidersInnerContainer>
+              {/* DevToolsManager */}
+              <DevToolsManagerContainer>
+                {IS_DEV ? <DevToolsManager /> : <></>}
+              </DevToolsManagerContainer>
 
-            {/* Router */}
-            <AppRouterContainer>
-              <AppRouter />
-              <div id="ModalContainer" />
-              {IS_ELECTRON ? <NewAppReleaseModal /> : <></>}
-            </AppRouterContainer>
-          </AppProvidersInnerContainer>
-        </AppProviders>
+              {/* Router */}
+              <AppRouterContainer>
+                <AppRoutes />
+                <div id="ModalContainer" />
+                {IS_ELECTRON ? <NewAppReleaseModal /> : <></>}
+              </AppRouterContainer>
+            </AppProvidersInnerContainer>
+          </AppProviders>
+        </Router>
       </ThemeProvider>
     );
   }

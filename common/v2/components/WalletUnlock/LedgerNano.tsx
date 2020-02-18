@@ -155,7 +155,6 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
   private handleUnlock = (address: string, index: number) => {
     this.props.onUnlock(WalletService.init(address, this.state.dPath.value, index));
-    this.reset();
   };
 
   private handleNullConnect = (): void => {

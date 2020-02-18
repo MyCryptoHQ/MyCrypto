@@ -1,16 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Address } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'v2/translations';
 
 import { StoreAccount } from 'v2/types';
 import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { truncate } from 'v2/utils';
-import { Typography } from 'v2/components';
-
-const { SILVER } = COLORS;
-const { SCREEN_XS } = BREAK_POINTS;
+import { Typography, Account } from 'v2/components';
 
 interface Props {
   fromAccount: StoreAccount;
@@ -18,7 +14,7 @@ interface Props {
 }
 
 const AddressWrapper = styled.div`
-  background-color: ${SILVER};
+  background-color: ${COLORS.GREY_LIGHTEST};
   padding: 10px;
 
   img {
@@ -34,7 +30,7 @@ const Addresses = styled.div`
     max-width: 48%;
   }
 
-  @media (max-width: ${SCREEN_XS}) {
+  @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
     flex-direction: column;
 
     > div {
@@ -69,7 +65,7 @@ export default function FromToAccount(props: Props) {
           <Label value={translate('CONFIRM_TX_FROM')} fontSize="1.13em" />
         </LabelWrapper>
         <AddressWrapper>
-          <Address
+          <Account
             address={fromAccount.address}
             title={fromAccount.label || noLabel}
             truncate={truncate}
@@ -81,7 +77,7 @@ export default function FromToAccount(props: Props) {
           <Label value={translate('CONFIRM_TX_TO')} fontSize="1.13em" />
         </LabelWrapper>
         <AddressWrapper>
-          <Address
+          <Account
             address={toAccount.address}
             title={toAccount.label || noLabel}
             truncate={truncate}

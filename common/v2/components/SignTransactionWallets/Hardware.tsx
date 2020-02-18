@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-import { ExtendedAccount as IExtendedAccount, ITxReceipt, ITxObject, ISignedTx } from 'v2/types';
+import { IAccount as IIAccount, ITxReceipt, ITxObject, ISignedTx } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
 import { makeTransaction } from 'v2/services/EthService';
 import { WalletFactory, HardwareWallet } from 'v2/services/WalletService';
-import { InlineErrorMsg } from 'v2/components/ErrorMessages';
+import { InlineMessage } from 'v2/components';
 import translate, { translateRaw } from 'v2/translations';
 
 import './Hardware.scss';
@@ -29,7 +29,7 @@ export const splitDPath = (fullDPath: string): IDestructuredDPath => {
 export interface IProps {
   walletIcon: any;
   signerDescription: string;
-  senderAccount: IExtendedAccount;
+  senderAccount: IIAccount;
   rawTransaction: ITxObject;
   onSuccess(receipt: ITxReceipt | ISignedTx): void;
 }
@@ -113,7 +113,7 @@ export default function HardwareSignTransaction({
         <div className="SignTransactionHardware-description">
           {translateRaw('SIGN_TX_EXPLANATION')}
           {isTxSignatureRequestDenied && (
-            <InlineErrorMsg>{translate('SIGN_TX_HARDWARE_FAILED_1')}</InlineErrorMsg>
+            <InlineMessage value={translate('SIGN_TX_HARDWARE_FAILED_1')} />
           )}
         </div>
         <div className="SignTransactionHardware-footer">

@@ -1,10 +1,10 @@
 import React from 'react';
-import Select, { OptionComponentProps } from 'react-select';
+import Select, { OptionComponentProps, ArrowRendererProps } from 'react-select';
 import styled from 'styled-components';
+import { Icon } from '@mycrypto/ui';
 
-import { COLORS } from 'v2/theme';
+import { COLORS, FONT_SIZE } from 'v2/theme';
 
-const { SILVER } = COLORS;
 // Give a height to the input when value is defined
 // Overide custom styles common/sass/styles/overrides/react-select.scss
 interface SProps {
@@ -14,9 +14,8 @@ interface SProps {
 
 const SSelect = styled(Select)`
   height: ${(props: SProps) => (props.value ? 'auto' : '54px')};
-  background-color: ${(props: SProps) => (props.disabled ? SILVER : 'default')};
-  ${props => props.disabled && '.Select-arrow {display: none};'}
-  font-size: 16px;
+  background-color: ${(props: SProps) => (props.disabled ? COLORS.GREY_LIGHTEST : 'default')};
+  ${props => props.disabled && '.Select-arrow {display: none};'} font-size: ${FONT_SIZE.BASE};
 
   /* Set max-height to prevent the dropdown form overflowing the footer. */
   .Select-menu {
@@ -38,6 +37,14 @@ interface Props<T> {
   onChange?(option: T): void;
 }
 
+const Chevron = styled(Icon)`
+  font-size: 0.75rem;
+`;
+
+const DropdownIndicator = (props: ArrowRendererProps) => (
+  <Chevron icon={props.isOpen ? 'chevronUp' : 'chevronDown'} />
+);
+
 export default function Dropdown({
   onChange,
   options,
@@ -51,6 +58,7 @@ export default function Dropdown({
 }: Props<any>) {
   return (
     <SSelect
+      arrowRenderer={DropdownIndicator}
       clearable={false}
       menuContainerStyle={{ maxHeight: '65vh', borderTop: '1px solid #ececec' }}
       menuStyle={{ maxHeight: '65vh' }}

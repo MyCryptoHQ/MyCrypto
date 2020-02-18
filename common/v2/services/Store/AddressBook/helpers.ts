@@ -1,10 +1,10 @@
-import { Account, AddressBook, Network, WalletId } from 'v2/types';
+import { IAccount, AddressBook, Network, WalletId, ExtendedAddressBook } from 'v2/types';
 import { WALLETS_CONFIG } from 'v2/config';
 
 export const getLabelByAccount = (
-  account: Account,
-  addressLabels: AddressBook[]
-): AddressBook | undefined => {
+  account: IAccount,
+  addressLabels: ExtendedAddressBook[]
+): ExtendedAddressBook | undefined => {
   if (!account || !addressLabels) return;
   return addressLabels.find(
     label =>

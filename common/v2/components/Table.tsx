@@ -62,8 +62,8 @@ interface CellProps {
 }
 
 const sharedCellProperties = ({ isReversed }: CellProps) => `
-  min-width: 1em;
-  padding: 1em;
+  min-width: .75em;
+  padding: .75em;
   text-align: ${isReversed ? 'right' : 'left'};
 `;
 

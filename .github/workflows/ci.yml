@@ -1,6 +1,12 @@
 name: GitHub CI
 
-on: [push]
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - master
 
 jobs:
 ## WINDOWS-PREBUILD START ##

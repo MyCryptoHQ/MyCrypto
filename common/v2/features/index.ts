@@ -1,10 +1,4 @@
-export {
-  DrawerContext,
-  DrawerProvider,
-  AccountScreen,
-  UnlockScreen,
-  SelectLanguage
-} from './Drawer';
+export { DrawerContext, DrawerProvider, SelectLanguage } from './Drawer';
 export { DevToolsManager } from './DevTools';
 export { Home } from './Home';
 export { CreateWallet, Mnemonic, Keystore } from './CreateWallet';
@@ -31,3 +25,4 @@ export { SwapAssetsFlow } from './SwapAssets';
 export { InteractWithContractsFlow } from './InteractWithContracts';
 export { DeployContractsFlow } from './DeployContracts';
 export { ToastProvider } from './Toasts';
+export { ErrorProvider, ErrorContext } from './ErrorHandling';

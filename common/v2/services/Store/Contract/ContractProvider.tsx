@@ -1,6 +1,6 @@
-import React, { Component, createContext } from 'react';
+import React, { createContext, useContext } from 'react';
 
-import { ExtendedContract, LSKeys } from 'v2/types';
+import { ExtendedContract, LSKeys, TUuid } from 'v2/types';
 import { DataContext } from '../DataManager';
 
 export interface ProviderState {
@@ -14,32 +14,26 @@ export interface ProviderState {
 
 export const ContractContext = createContext({} as ProviderState);
 
-export class ContractProvider extends Component {
-  public readonly state: ProviderState = {
-    contracts: this.context.contracts,
-    createContract: (contractsData: ExtendedContract) => {
-      this.model.create(contractsData);
-    },
-    createContractWithId: (contractsData: ExtendedContract, id: string) => {
-      this.model.createContractWithId(contractsData, id);
-    },
+export const ContractProvider: React.FC = ({ children }) => {
+  const { createActions, contracts } = useContext(DataContext);
+  const model = createActions(LSKeys.CONTRACTS);
 
-    deleteContracts: (uuid: string) => {
-      this.model.delete(uuid);
+  const state: ProviderState = {
+    contracts,
+    createContract: (contractsData: ExtendedContract) => {
+      model.create(contractsData);
     },
-    updateContracts: (uuid: string, contractsData: ExtendedContract) => {
-      this.model.update(uuid, contractsData);
+    createContractWithId: (contractsData: ExtendedContract, id: TUuid) => {
+      model.createWithID(contractsData, id);
+    },
+    deleteContracts: (uuid: TUuid) => {
+      model.destroy(contracts.find(a => a.uuid === uuid) as ExtendedContract);
+    },
+    updateContracts: (uuid: TUuid, contractsData: ExtendedContract) => {
+      model.update(uuid, contractsData);
     },
     getContractsByIds: (uuids: string[]) =>
-      uuids.map(contractId => this.state.contracts.find(c => c.uuid === contractId)!)
+      uuids.map(contractId => contracts.find(c => c.uuid === contractId)!).filter(Boolean)
   };
-
-  private model = this.context.createActions(LSKeys.CONTRACTS);
-
-  public render() {
-    const { children } = this.props;
-    return <ContractContext.Provider value={this.state}>{children}</ContractContext.Provider>;
-  }
-}
-
-ContractProvider.contextType = DataContext;
+  return <ContractContext.Provider value={state}>{children}</ContractContext.Provider>;
+};

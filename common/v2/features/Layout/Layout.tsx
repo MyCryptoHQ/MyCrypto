@@ -3,8 +3,8 @@ import styled, { css } from 'styled-components';
 
 import { BannerType } from 'v2/types';
 import { Banner } from 'v2/components';
-import { BREAK_POINTS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING } from 'v2/theme';
-import { DrawerContext } from 'v2/features';
+import { BREAK_POINTS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from 'v2/theme';
+import { DrawerContext, ErrorContext } from 'v2/features';
 import Header from './Header';
 import Footer from './Footer';
 
@@ -43,8 +43,12 @@ const SBanner = styled(Banner)`
 `;
 
 const SContainer = styled('div')`
-  padding: 50px ${p => (p.fluid || p.fullW ? 0 : MIN_CONTENT_PADDING)};
+  padding: ${SPACING.BASE};
   max-width: ${p => (p.fullW ? '100%' : MAX_CONTENT_WIDTH)};
+
+  @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
+    padding: ${SPACING.MD} ${p => (p.fluid || p.fullW ? 0 : MIN_CONTENT_PADDING)};
+  }
 
   ${({ centered }: LayoutConfig) =>
     centered &&
@@ -52,17 +56,19 @@ const SContainer = styled('div')`
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: center:
       flex: 1;
       // Necessary to center the mobile layout when below the small screen breakpoint.
       @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
         align-self: center;
       }
-    `}
+  `}
 `;
 
 export default function Layout({ config = {}, className = '', children }: Props) {
   const { centered = true, fluid, fullW = false, bgColor } = config;
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
+  const { error, shouldShowError, getErrorMessage } = useContext(ErrorContext);
   const betaAnnouncement =
     'Heads up: this is a beta version of the new MyCrypto. It has not been audited yet, so please practice safe sending.';
   return (
@@ -72,6 +78,9 @@ export default function Layout({ config = {}, className = '', children }: Props)
         toggleDrawerVisible={toggleVisible}
         setDrawerScreen={setScreen}
       />
+      {shouldShowError() && error && (
+        <SBanner type={BannerType.ERROR} value={getErrorMessage(error)} />
+      )}
       <SBanner type={BannerType.ANNOUNCEMENT} value={betaAnnouncement} />
       <SContainer centered={centered} fluid={fluid} fullW={fullW}>
         {children}

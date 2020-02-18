@@ -2,10 +2,11 @@
   text-align: left;
   &-row {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 
     &-from-to {
       justify-content: space-between;
+      flex-direction: column;
       @media (min-width: 550px) {
         > div {
           max-width: 48%;
@@ -30,9 +31,6 @@
       flex-direction: row;
       align-items: center;
       margin-bottom: 24px;
-      &:not(:last-child) {
-        margin-right: 13px;
-      }
     }
     &-column {
       flex: 1;
@@ -45,6 +43,21 @@
         width: 30px;
         height: 30px;
         margin-right: 10px;
+      }
+      &-amount {
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-start;
+        img {
+          margin-right: 10px;
+          @media (max-width: 550px) {
+            display: none;
+          }
+        }
+        .Amount .Amount-fiat{
+          color: #B5BFC7;
+          font-size: 16px;
+        }
       }
     }
   }
@@ -63,12 +76,13 @@
 
     &-row {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      justify-content: space-between;
       margin-bottom: 10px;
 
       @media (min-width: 500px) {
         flex-direction: row;
-        align-items: center;
+        align-items: flex-start;
       }
       &-column {
         &:first-child {
@@ -79,17 +93,14 @@
           }
         }
         &:nth-child(2) {
-          @media (min-width: 500px) {
-            flex: 2;
-            text-align: right;
-          }
+          flex: 2;
+          text-align: right;
         }
       }
     }
   }
   &-another {
     width: 100%;
-    margin-top: 20px;
     margin-bottom: 15px;
   }
   &-back {

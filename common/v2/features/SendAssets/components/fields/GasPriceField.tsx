@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Input } from '@mycrypto/ui';
+import { InputField } from 'v2/components';
 
-export function GasPriceField({ value, name, onChange }: IGasPriceField) {
+export function GasPriceField({ value, name, onChange, error }: IGasPriceField) {
   return (
     <div>
-      <Input
+      <InputField
         {...value}
         name={name}
         value={value}
@@ -13,6 +13,7 @@ export function GasPriceField({ value, name, onChange }: IGasPriceField) {
         onChange={e => onChange(e.target.value)}
         placeholder="20"
         className="SendAssetsForm-fieldset-input"
+        inputError={error}
       />
     </div>
   );
@@ -21,6 +22,7 @@ export function GasPriceField({ value, name, onChange }: IGasPriceField) {
 interface IGasPriceField {
   value: string;
   name: string;
+  error?: string | JSX.Element | undefined;
   onChange(entry: string): void;
 }
 

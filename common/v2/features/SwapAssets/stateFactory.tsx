@@ -100,6 +100,24 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       return;
     }
 
+    if(value.length === 0) {
+      setState((prevState: SwapState) => ({
+        ...prevState,
+        toAmount: '',
+        fromAmount: ''
+      }));
+      return;
+    }
+
+    if(parseFloat(value)<=0) {
+      setState((prevState: SwapState) => ({
+        ...prevState,
+        isCalculatingFromAmount: false,
+        toAmountError: translate('SWAP_ZERO_VALUE')
+      }));
+      return;
+    }
+
     try {
       setState((prevState: SwapState) => ({
         ...prevState,
@@ -135,6 +153,24 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
   const calculateNewToAmount = async (value: string) => {
     const { fromAsset, toAsset } = state;
     if (!fromAsset || !toAsset) {
+      return;
+    }
+
+    if(value.length === 0) {
+      setState((prevState: SwapState) => ({
+        ...prevState,
+        toAmount: '',
+        fromAmount: ''
+      }));
+      return;
+    }
+
+    if(parseFloat(value)<=0) {
+      setState((prevState: SwapState) => ({
+        ...prevState,
+        isCalculatingToAmount: false,
+        fromAmountError: translate('SWAP_ZERO_VALUE')
+      }));
       return;
     }
 

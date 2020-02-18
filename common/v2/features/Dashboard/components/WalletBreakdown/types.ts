@@ -1,4 +1,4 @@
-import { ExtendedAccount, Fiat } from 'v2/types';
+import { IAccount, Fiat } from 'v2/types';
 
 export interface Balance {
   name: string;
@@ -12,7 +12,7 @@ export interface WalletBreakdownProps {
   balances: Balance[];
   totalFiatValue: number;
   fiat: Fiat;
-  accounts: ExtendedAccount[];
+  accounts: IAccount[];
   selected: string[];
   toggleShowChart(): void;
 }

@@ -9,7 +9,16 @@ import * as R from 'ramda';
 import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './constants';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
 import { NotificationTemplates } from 'v2/features/NotificationsPanel';
-import { Account, Asset, DPathFormat, ISettings, WalletId, Network, NetworkId } from 'v2/types';
+import {
+  TAddress,
+  IRawAccount,
+  Asset,
+  DPathFormat,
+  ISettings,
+  WalletId,
+  Network,
+  NetworkId
+} from 'v2/types';
 import { generateUUID, withContext } from 'v2/utils';
 import {
   NetworkContext,
@@ -23,7 +32,7 @@ import { DEFAULT_NETWORK, ROUTE_PATHS } from 'v2/config';
 
 interface Props extends RouteComponentProps<{}> {
   settings: ISettings;
-  createAccountWithID(accountData: Account, uuid: string): void;
+  createAccountWithID(accountData: IRawAccount, uuid: string): void;
   updateSettingsAccounts(accounts: string[]): void;
   createAssetWithID(value: Asset, id: string): void;
   displayNotification(templateName: string, templateData?: object): void;
@@ -150,8 +159,8 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
     const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(this.props.assets)(accountNetwork);
     const newAssetID = generateUUID();
     const newUUID = generateUUID();
-    const account: Account = {
-      address: toChecksumAddress(addHexPrefix(address)),
+    const account: IRawAccount = {
+      address: toChecksumAddress(addHexPrefix(address)) as TAddress,
       networkId: network,
       wallet: accountType,
       dPath: path,

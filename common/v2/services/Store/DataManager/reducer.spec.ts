@@ -1,4 +1,4 @@
-import { LSKeys, ExtendedAccount } from 'v2/types';
+import { LSKeys, IAccount } from 'v2/types';
 import { ActionT, ActionV, appDataReducer } from './reducer';
 
 const dispatch = (action: ActionV) => (state: any) => appDataReducer(state, action);
@@ -6,7 +6,7 @@ const dispatch = (action: ActionV) => (state: any) => appDataReducer(state, acti
 describe('AppStateReducer', () => {
   describe('ADD_ITEM', () => {
     it('can add an Item to an array', () => {
-      const account = { address: '0x0', uuid: 'fakeUUID' } as ExtendedAccount;
+      const account = { address: '0x0', uuid: 'fakeUUID' } as IAccount;
       const prevState = { [LSKeys.ACCOUNTS]: [] };
       const payload = {
         model: LSKeys.ACCOUNTS,
@@ -18,8 +18,8 @@ describe('AppStateReducer', () => {
     });
 
     it('preserves the previous items in the array', () => {
-      const account1 = { address: '0x1', uuid: 'fakeUUID' } as ExtendedAccount;
-      const account2 = { address: '0x2', uuid: 'fakeUUID' } as ExtendedAccount;
+      const account1 = { address: '0x1', uuid: 'fakeUUID' } as IAccount;
+      const account2 = { address: '0x2', uuid: 'fakeUUID' } as IAccount;
       const prevState = { [LSKeys.ACCOUNTS]: [account1] };
       const payload = {
         model: LSKeys.ACCOUNTS,
@@ -32,8 +32,8 @@ describe('AppStateReducer', () => {
     });
 
     // it('avoids duplicates in the array', () => {
-    //   const account1 = { address: '0x1', uuid: 'fakeUUID' } as ExtendedAccount;
-    //   const account2 = { address: '0x1', uuid: 'fakeUUID' } as ExtendedAccount;
+    //   const account1 = { address: '0x1', uuid: 'fakeUUID' } as IAccount;
+    //   const account2 = { address: '0x1', uuid: 'fakeUUID' } as IAccount;
     //   const prevState = { [LSKeys.ACCOUNTS]: [account1] };
     //   const payload = {
     //     model: LSKeys.ACCOUNTS,

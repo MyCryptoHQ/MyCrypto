@@ -37,7 +37,7 @@ interface ContentPanelHeadingProps {
   centered: boolean | undefined;
 }
 
-const ContentPanelHeading = styled.p<ContentPanelHeadingProps>`
+const ContentPanelHeading = styled.div<ContentPanelHeadingProps>`
   font-size: 36px;
   width: 100%;
   display: flex;

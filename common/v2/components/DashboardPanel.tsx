@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Heading } from '@mycrypto/ui';
 
-import { COLORS } from 'v2/theme';
+import { COLORS, FONT_SIZE, SPACING } from 'v2/theme';
 
 import settingsIcon from 'common/assets/images/icn-settings.svg';
 
@@ -10,43 +10,52 @@ import { Panel } from './Panel';
 import RouterLink from './RouterLink';
 import Typography from './Typography';
 
-const Content = styled.div`
-  padding-left: 15px;
-  padding-right: 15px;
-`;
-
-const DPanel = styled(Panel)`
-  padding: 0;
-`;
-
-const DHeadingWrapper = styled.div`
-  & span {
-    color: ${COLORS.BRIGHT_SKY_BLUE};
-    padding-right: 15px;
+const SRouterLink = styled(RouterLink)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  & span,
+  p,
+  div {
+    color: ${COLORS.BLUE_BRIGHT};
   }
   & img {
     margin-right: 0.5em;
   }
+`;
+
+const Content = styled.div`
+  padding: ${SPACING.BASE};
+`;
+
+const DPanel = styled(Panel)`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin: 0 0 ${SPACING.BASE} 0;
+  padding: 0;
+`;
+
+const DHeadingWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px;
+  padding: ${SPACING.BASE};
 `;
 
 const DFooterWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 30px 0;
-  background: #fafcfc;
+  background: ${COLORS.BLUE_GREY_LIGHTEST};
 `;
 
 const DHeading = styled(Heading)`
   && {
     margin: 0;
-    font-size: 24px;
+    font-size: ${FONT_SIZE.XL};
     font-weight: bold;
-    color: #424242;
+    color: ${COLORS.BLUE_DARK_SLATE};
   }
 `;
 
@@ -76,10 +85,10 @@ export const DashboardPanel = ({
         <DHeading>{heading}</DHeading>
         {headingRight &&
           (actionLink ? (
-            <RouterLink to={actionLink}>
+            <SRouterLink to={actionLink}>
               <img src={settingsIcon} alt={'settings'} width={32} />
               <Typography>{headingRight}</Typography>
-            </RouterLink>
+            </SRouterLink>
           ) : (
             headingRight
           ))}

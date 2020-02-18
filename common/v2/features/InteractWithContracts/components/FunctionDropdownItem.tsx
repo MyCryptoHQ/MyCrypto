@@ -7,8 +7,6 @@ import { translateRaw } from 'v2/translations';
 import { ABIItem } from '../types';
 import { isReadOperation } from '../helpers';
 
-const { SILVER, SUCCESS_GREEN, WHITE, BRIGHT_SKY_BLUE } = COLORS;
-
 interface OptionWrapperProps {
   isSelectable: boolean;
 }
@@ -22,7 +20,7 @@ const OptionWrapper = styled.div<OptionWrapperProps>`
   ${props =>
     props.isSelectable &&
     ` &:hover {
-    background-color: ${SILVER};
+    background-color: ${COLORS.GREY_LIGHTEST};
   }`};
 `;
 
@@ -31,9 +29,9 @@ interface StickerProps {
 }
 
 const Sticker = styled.div<StickerProps>`
-  background-color: ${props => (props.isRead ? SUCCESS_GREEN : BRIGHT_SKY_BLUE)};
+  background-color: ${props => (props.isRead ? COLORS.SUCCESS_GREEN : COLORS.BLUE_BRIGHT)};
   border-radius: 28px;
-  color: ${WHITE};
+  color: ${COLORS.WHITE};
   padding: 2px 8px;
   font-size: 0.7em;
   font-weight: bold;

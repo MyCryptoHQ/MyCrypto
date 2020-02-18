@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Select, { Option } from 'react-select';
-import { Table, Address, Button } from '@mycrypto/ui';
+import { Table, Button } from '@mycrypto/ui';
 import BN from 'bn.js';
 
 import translate, { translateRaw } from 'v2/translations';
@@ -24,6 +24,7 @@ import radioChecked from 'assets/images/radio-checked.svg';
 import './DeterministicWallets.scss';
 import { DeterministicWalletData, getDeterministicWallets } from 'v2/services/WalletService';
 import { getBaseAssetBalances, BalanceMap } from 'v2/services/Store/BalanceService';
+import Account from '../Account';
 
 function Radio({ checked }: { checked: boolean }) {
   return <img className="clickable radio-image" src={checked ? radioChecked : radio} />;
@@ -228,7 +229,7 @@ export function DeterministicWalletsClass({
         {wallet.index + 1}
         <Radio checked={selectedAddress === wallet.address} />
       </div>,
-      <Address
+      <Account
         title={addrBook ? addrBook.label : 'Unknown Address'}
         address={wallet.address}
         truncate={truncate}

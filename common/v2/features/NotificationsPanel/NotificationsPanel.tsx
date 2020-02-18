@@ -2,26 +2,18 @@ import React, { useContext } from 'react';
 import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { BREAK_POINTS } from 'v2/theme';
-import { ExtendedAccount } from 'v2/types';
+import { SPACING } from 'v2/theme';
+import { IAccount } from 'v2/types';
 import { NotificationsContext } from './NotificationsProvider';
 import { notificationsConfigs, NotificationTemplates } from './constants';
 
 // Legacy
 import closeIcon from 'common/assets/images/icn-close.svg';
 
-const { SCREEN_MD } = BREAK_POINTS;
-
 const MainPanel = styled(Panel)`
   position: relative;
-  margin-left: 15px;
-  margin-right: 15px;
-  padding-left: 25px;
-  padding-right: 25px;
-
-  @media (min-width: ${SCREEN_MD}) {
-    margin: 0 0 50px 0;
-  }
+  padding: ${SPACING.BASE};
+  margin-bottom: ${SPACING.BASE};
 `;
 
 const CloseButton = styled(Button)`
@@ -35,7 +27,7 @@ const CloseButton = styled(Button)`
 `;
 
 interface Props {
-  accounts: ExtendedAccount[];
+  accounts: IAccount[];
 }
 
 const NotificationsPanel = ({ accounts }: Props) => {

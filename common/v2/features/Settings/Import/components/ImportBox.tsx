@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import translate from 'v2/translations';
+import { InlineMessage } from 'v2/components';
 
 const FilePicker = styled.label`
   background: none;
@@ -23,12 +24,8 @@ const ImportBoxContainer = styled.div<ImportBoxContainerProps>`
   box-shadow: ${props => (props.dragging ? '0px 0px 0px 2px #1eb8e7;' : 'none')};
 `;
 
-const ErrorMessage = styled.span`
-  color: #ef4747;
-`;
-
 interface ImportProps {
-  importCache(importedCache: any): void;
+  importCache(importedCache: string): boolean;
   onNext(): void;
 }
 
@@ -37,10 +34,9 @@ export default class ImportBox extends React.Component<ImportProps> {
 
   public submit = (importedCache: string) => {
     const importSuccess = this.props.importCache(importedCache);
-    if (Boolean(importSuccess) === false) {
+    if (!importSuccess) {
       this.setState({ badImport: true });
-    }
-    if (Boolean(importSuccess) === true) {
+    } else {
       this.props.onNext();
     }
   };
@@ -55,7 +51,7 @@ export default class ImportBox extends React.Component<ImportProps> {
         dragging={dragging}
       >
         {badImport ? (
-          <ErrorMessage>{translate('SETTINGS_IMPORT_INVALID')}</ErrorMessage>
+          <InlineMessage>{translate('SETTINGS_IMPORT_INVALID')}</InlineMessage>
         ) : (
           translate('SETTINGS_IMPORT_COPY')
         )}

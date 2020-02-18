@@ -2,7 +2,6 @@ import * as R from 'ramda';
 import { Omit, ValuesType } from 'utility-types';
 
 import {
-  DataStore,
   LocalStorage,
   Network,
   NetworkId,
@@ -10,7 +9,8 @@ import {
   ExtendedAddressBook,
   ExtendedNotification,
   LSKeys,
-  TUuid
+  TUuid,
+  DataStore
 } from 'v2/types';
 import { makeExplorer } from 'v2/services/EthService';
 
@@ -49,7 +49,8 @@ export function marshallState(ls: LocalStorage): DataStore {
       },
       [] as ExtendedNotification[]
     ),
-    [LSKeys.SETTINGS]: ls[LSKeys.SETTINGS]
+    [LSKeys.SETTINGS]: ls[LSKeys.SETTINGS],
+    [LSKeys.PASSWORD]: ls[LSKeys.PASSWORD]
   };
 }
 
@@ -76,6 +77,7 @@ export function deMarshallState(st: DataStore): Omit<LocalStorage, 'mtime'> {
       (acc, curr) => ({ ...acc, [curr.uuid]: curr }),
       {}
     ),
-    [LSKeys.SETTINGS]: st[LSKeys.SETTINGS]
+    [LSKeys.SETTINGS]: st[LSKeys.SETTINGS],
+    [LSKeys.PASSWORD]: st[LSKeys.PASSWORD]
   };
 }

@@ -7,24 +7,24 @@ import { Button } from 'v2/components';
 /*
   Passed to CollapisableTable and Table by AccountList and AddressBook
   It handles its own display to adapt to overlay on table row or over
-  StackCard. 
+  StackCard.
 */
 
 const TableOverlay = styled.div`
   height: 100%;
   max-height: 69px;
+  background-color: ${COLORS.GREY_DARKER};
+  color: ${COLORS.WHITE};
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: ${COLORS.CLOUDY_BLUE};
-  color: ${COLORS.WHITE};
   padding: 1em;
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    max-height: 100%;
+    align-items: space-between;
     flex-direction: column;
     justify-content: start;
-    align-items: space-between;
+    max-height: 100%;
   }
 `;
 

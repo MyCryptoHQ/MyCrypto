@@ -1,6 +1,20 @@
 .Web3-img {
+  display: flex;
+  justify-content: center;
   width: 150px;
+  img {
+    height: 150px;
+  }
+}
+
+.Web3-img-default {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   height: 150px;
+  img {
+    width: 150px;
+  }
 }
 
 .Web3-img-container {

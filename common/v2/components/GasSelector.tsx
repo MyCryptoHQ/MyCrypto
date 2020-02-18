@@ -16,7 +16,7 @@ import {
 import { StoreAccount } from 'v2/types';
 import { COLORS, monospace } from 'v2/theme';
 
-const { LIGHT_GREY } = COLORS;
+const { GREY_LIGHTER } = COLORS;
 
 const Wrapper = styled.div`
   display: flex;
@@ -33,7 +33,7 @@ const FieldWrapper = styled.div`
   input {
     font-family: ${monospace};
     :disabled {
-      background-color: ${LIGHT_GREY};
+      background-color: ${GREY_LIGHTER};
     }
   }
 `;

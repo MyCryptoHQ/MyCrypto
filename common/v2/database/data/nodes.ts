@@ -80,7 +80,7 @@ export const NODES_CONFIG: { [key in NetworkId]: NodeConfig[] } = {
       name: makeNodeName('ETC', 'etccooperative'),
       type: NodeType.RPC,
       service: 'ETC Cooperative',
-      url: 'https://ethereumclassic.network'
+      url: 'https://www.ethercluster.com/etc'
     }
   ],
 
@@ -401,6 +401,15 @@ export const NODES_CONFIG: { [key in NetworkId]: NodeConfig[] } = {
       type: NodeType.RPC,
       service: 'auxilium.global',
       url: 'https://rpc.auxilium.global'
+    }
+  ],
+
+  ERE: [
+    {
+      name: makeNodeName('ERE', 'ethercore'),
+      type: NodeType.RPC,
+      service: 'ethercore.org',
+      url: 'https://rpc.ethercore.org'
     }
   ]
 };

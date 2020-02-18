@@ -14,18 +14,6 @@ declare module 'ethereumjs-util' {
 
   export const TWO_POW256: BN;
 
-  export const SHA3_NULL_S: string;
-
-  export const SHA3_NULL: Buffer;
-
-  export const SHA3_RLP_ARRAY_S: string;
-
-  export const SHA3_RLP_ARRAY: Buffer;
-
-  export const SHA3_RLP_S: string;
-
-  export const SHA3_RLP: Buffer;
-
   /**
    *
    * @description Returns a buffer filled with 0s
@@ -174,13 +162,13 @@ declare module 'ethereumjs-util' {
 
   /**
    *
-   * @description Creates SHA-3 hash of the input
+   * @description Creates Keccak hash of the input
    * @export
    * @param {(Buffer | string | number | number[])} a the input data
    * @param {number} [bits] the SHA width (optional, default 256)
    * @returns {Buffer}
    */
-  export function sha3(a: Buffer | string | number | number[], bits?: number): Buffer;
+  export function keccak(a: Buffer | string | number | number[], bits?: number): Buffer;
 
   /**
    *

@@ -4,6 +4,7 @@ import { Button } from '@mycrypto/ui';
 interface ButtonProps {
   fullwidth?: boolean;
   disabled?: boolean;
+  color?: string;
 }
 
 const StyledButton = styled(Button)<ButtonProps>`
@@ -16,6 +17,7 @@ const StyledButton = styled(Button)<ButtonProps>`
     :disabled {
     opacity: 0.4;
   }
+  color: ${props => (props.color ? props.color : 'inherit')};
 `;
 
 export default StyledButton;

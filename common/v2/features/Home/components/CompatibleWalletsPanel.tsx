@@ -8,8 +8,9 @@ import translate, { translateRaw } from 'v2/translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { WalletId } from 'v2/types';
-import './SliderImports.scss';
+import { ROUTE_PATHS } from 'v2/config';
 
+import './SliderImports.scss';
 import metamaskIcon from 'common/assets/images/wallets/metamask.svg';
 import trustIcon from 'common/assets/images/wallets/trust-2.svg';
 import ledgerIcon from 'common/assets/images/wallets/ledger.svg';
@@ -18,7 +19,7 @@ import paritySignerIcon from 'common/assets/images/wallets/parity-signer.svg';
 import safeTIcon from 'common/assets/images/wallets/safe-t.png';
 
 const { SCREEN_SM, SCREEN_LG, SCREEN_XXL } = BREAK_POINTS;
-const { DARK_SLATE_BLUE, GREYISH_BROWN } = COLORS;
+const { BLUE_DARK_SLATE, GREYISH_BROWN } = COLORS;
 
 const MainPanel = styled(Panel)`
   padding: 25px 148px;
@@ -150,7 +151,7 @@ const WalletCardImg = styled.img`
 const WalletCardDescription = styled.p`
   font-size: 13px;
   font-weight: normal;
-  color: ${DARK_SLATE_BLUE};
+  color: ${BLUE_DARK_SLATE};
   margin-top: 5px;
 `;
 
@@ -159,13 +160,13 @@ interface WalletCardProps {
   text: string;
   mobileSrc?: string;
   mobileText?: string;
-  walletName: string;
+  walletId: string;
 }
 
 class WalletCard extends Component<WalletCardProps & RouteComponentProps<{}>> {
   public handleWalletClick = (wallet: string) => {
-    const { walletName, history } = this.props;
-    history.push(`/add-account/${walletName}`);
+    const { walletId, history } = this.props;
+    history.push(`${ROUTE_PATHS.ADD_ACCOUNT}/${walletId}`);
     AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HOME, `${wallet} wallet button clicked`);
   };
 
@@ -240,27 +241,27 @@ export default function CompatibleWalletsPanel() {
             text={translateRaw('X_METAMASK')}
             mobileSrc={trustIcon}
             mobileText={translateRaw('X_TRUST')}
-            walletName={WalletId.METAMASK}
+            walletId={WalletId.METAMASK}
           />
           <WalletCardWithRouter
             src={ledgerIcon}
             text={translateRaw('X_LEDGER')}
-            walletName={WalletId.LEDGER_NANO_S}
+            walletId={WalletId.LEDGER_NANO_S}
           />
           <WalletCardWithRouter
             src={trezorIcon}
             text={translateRaw('X_TREZOR')}
-            walletName={WalletId.TREZOR}
+            walletId={WalletId.TREZOR}
           />
           <WalletCardWithRouter
             src={paritySignerIcon}
             text={translateRaw('X_PARITYSIGNER')}
-            walletName={WalletId.PARITY_SIGNER}
+            walletId={WalletId.PARITY_SIGNER}
           />
           <WalletCardWithRouter
             src={safeTIcon}
             text={translateRaw('X_SAFE_T')}
-            walletName={WalletId.SAFE_T_MINI}
+            walletId={WalletId.SAFE_T_MINI}
           />
         </Slider>
       </Wallets>

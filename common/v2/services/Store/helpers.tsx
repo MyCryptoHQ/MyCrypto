@@ -6,7 +6,7 @@ import {
   AssetBalanceObject,
   Asset,
   StoreAsset,
-  ExtendedAccount,
+  IAccount,
   StoreAccount,
   ITxStatus,
   ITxReceipt
@@ -24,7 +24,7 @@ const getAssetsByUuid = (accountAssets: AssetBalanceObject[], assets: Asset[]): 
     .map(asset => ({ ...asset, balance: bigNumberify(asset.balance), mtime: Date.now() }));
 
 export const getStoreAccounts = (
-  accounts: ExtendedAccount[],
+  accounts: IAccount[],
   assets: Asset[],
   networks: Network[]
 ): StoreAccount[] => {

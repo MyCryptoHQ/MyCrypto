@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { COLORS } from 'v2/theme';
 
 import { NotificationsContext, NotificationTemplates } from 'v2/features/NotificationsPanel';
 
@@ -10,7 +11,7 @@ const ToolWrapper = styled.div`
   width: 100%;
   backround: white;
   padding: 8px;
-  border: 1px solid silver;
+  border: 1px solid ${COLORS.GREY_LIGHTEST};
 `;
 
 const ToolsNotifications = () => {

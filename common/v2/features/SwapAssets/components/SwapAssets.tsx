@@ -4,10 +4,9 @@ import { Button } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'v2/translations';
 
-import { InputField } from 'v2/components';
+import { InputField, AssetDropdown } from 'v2/components';
 
 import { ISwapAsset } from '../types';
-import { AssetSelectDropdown } from './fields';
 import { getUnselectedAssets } from '../helpers';
 
 const FormWrapper = styled.div`
@@ -113,10 +112,11 @@ export default function SwapAssets(props: Props) {
   return (
     <FormWrapper>
       <FormItem>
-        <AssetSelectDropdown
+        <AssetDropdown
+          searchable={false}
           selectedAsset={fromAsset}
           assets={filteredAssets}
-          onChange={handleFromAssetSelected}
+          onSelect={handleFromAssetSelected}
           label={translateRaw('X_ASSET')}
           fluid={true}
         />
@@ -133,7 +133,7 @@ export default function SwapAssets(props: Props) {
             inputError={fromAmountError}
           />
         </InputWrapper>
-        <AssetSelectDropdown
+        <AssetDropdown
           selectedAsset={fromAsset}
           assets={filteredAssets}
           label={translateRaw('ASSET')}
@@ -153,11 +153,11 @@ export default function SwapAssets(props: Props) {
             inputError={toAmountError}
           />
         </InputWrapper>
-        <AssetSelectDropdown
+        <AssetDropdown
           selectedAsset={toAsset}
           assets={filteredAssets}
           label={translateRaw('ASSET')}
-          onChange={handleToAssetSelected}
+          onSelect={handleToAssetSelected}
           showOnlyTicker={true}
           disabled={isCalculatingToAmount || isCalculatingFromAmount}
         />

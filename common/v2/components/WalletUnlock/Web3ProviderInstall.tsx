@@ -1,12 +1,9 @@
 import React from 'react';
 import { Typography } from '@mycrypto/ui';
 
-import translate, { translateRaw } from 'v2/translations';
-import { DOWNLOAD_MYCRYPTO_LINK } from 'v2/config';
+import translate from 'v2/translations';
+import { DOWNLOAD_MYCRYPTO_LINK, WALLETS_CONFIG } from 'v2/config';
 
-import TrustWalletWEBP from 'common/assets/images/wallets/trust-3.webp';
-import CoinbaseWalletJPG from 'common/assets/images/wallets/coinbase.jpg';
-import MetamaskSVG from 'common/assets/images/wallets/metamask.svg';
 import AppStoreBadgeIMG from 'assets/images/mobile/app-store-badge.png';
 import GooglePlayBadgeIMG from 'assets/images/mobile/google-play-badge.png';
 import { NewTabLink } from 'v2/components';
@@ -14,84 +11,82 @@ import { IS_MOBILE } from 'v2/utils';
 import './Web3ProviderInstall.scss';
 
 function InstallTrunk() {
+  const providers = [WALLETS_CONFIG.TRUST, WALLETS_CONFIG.COINBASE];
   return (
-    <div className="Panel">
-      <div className="Panel-title">
-        {translate('ADD_ACCOUNT_WEB3_INSTALL_TITLE', { $walletId: 'Web3 Provider' })}
-      </div>
-      <div className="Panel-description">{translate('ADD_ACCOUNT_WEB3_INSTALL_MOBILE_DESC')}</div>
-      <div className="Panel-content">
-        <div className="Web3-options">
-          <div className="TrustWallet-container">
-            <NewTabLink href="https://trustwallet.com/dapp">
-              <div className="TrustWallet-img">
-                <img src={TrustWalletWEBP} />
-              </div>
-            </NewTabLink>
+    <div className="Web3-options">
+      {providers.map(provider => (
+        <div key={provider.id} className="Provider-container">
+          <NewTabLink href={provider.install ? provider.install.getItLink : undefined}>
+            <div className="Provider-img">
+              <img src={provider.icon} />
+            </div>
+          </NewTabLink>
 
-            <Typography>{translateRaw('TRUST_APP_LABEL')}</Typography>
-            <NewTabLink href="https://itunes.apple.com/us/app/trust-ethereum-wallet/id1288339409">
+          <Typography>{provider.name}</Typography>
+          {provider.install && provider.install.appStore && (
+            <NewTabLink className="download-option" href={provider.install.appStore}>
               <img src={AppStoreBadgeIMG} />
             </NewTabLink>
-            <NewTabLink href="https://play.google.com/store/apps/details?id=com.wallet.crypto.trustapp">
+          )}
+
+          {provider.install && provider.install.googlePlay && (
+            <NewTabLink className="download-option" href={provider.install.googlePlay}>
               <img src={GooglePlayBadgeIMG} />
             </NewTabLink>
-          </div>
-
-          <div className="CoinbaseWallet-container">
-            <div className="download-option">
-              <NewTabLink href="https://www.coinbase.com/mobile" target="_blank">
-                <div className="CoinbaseWallet-img">
-                  <img src={CoinbaseWalletJPG} />
-                </div>
-              </NewTabLink>
-              <Typography>{translateRaw('COINBASE_APP_LABEL')}</Typography>
-              <NewTabLink href="https://itunes.apple.com/us/app/coinbase-bitcoin-wallet/id886427730?mt=8">
-                <img src={AppStoreBadgeIMG} />
-              </NewTabLink>
-              <NewTabLink href="https://play.google.com/store/apps/details?id=com.coinbase.android">
-                <img src={GooglePlayBadgeIMG} />
-              </NewTabLink>
-            </div>
-          </div>
+          )}
         </div>
-      </div>
+      ))}
     </div>
   );
 }
 
 function InstallMetaMask() {
+  const provider = WALLETS_CONFIG.METAMASK;
   return (
-    <div className="Panel">
-      <div className="Panel-title">
-        {translate('ADD_ACCOUNT_WEB3_INSTALL_TITLE', { $walletId: 'Metamask' })}
-      </div>
-      <div className="Panel-description">{translate('ADD_ACCOUNT_WEB3_INSTALL_DESC')}</div>
-      <div className="Panel-content">
-        <div>
-          <div className="Panel-content-img">
-            <img src={MetamaskSVG} />
+    <>
+      <div>
+        <div className="Panel-content-img">
+          <div className="Provider-img">
+            <img src={provider.icon} />
           </div>
-          <a href="https://metamask.io/" target="_blank" rel="noreferrer">
-            <button className="btn btn-primary btn-lg btn-block">
-              {translate('METAMASK_DOWNLOAD')}
-            </button>
-          </a>
         </div>
+        <a
+          href={provider.install ? provider.install.getItLink : undefined}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <button className="btn btn-primary btn-lg btn-block">
+            {translate('PROVIDER_DOWNLOAD', { $provider: provider.name })}
+          </button>
+        </a>
       </div>
-      <div className="MetaMaskPanel-footer">
+      <div className="Provider-footer">
         {translate('ADD_ACCOUNT_WEB3_INSTALL_FOOTER')} <br />
         <NewTabLink
           content={translate('ADD_ACCOUNT_WEB3_INSTALL_FOOTER_LINK')}
           href={DOWNLOAD_MYCRYPTO_LINK}
         />
       </div>
-    </div>
+    </>
   );
 }
 
 function Web3ProviderInstall() {
-  return <>{IS_MOBILE ? <InstallTrunk /> : <InstallMetaMask />}</>;
+  return (
+    <div className="Panel">
+      <div className="Panel-title">
+        {translate('ADD_ACCOUNT_WEB3_INSTALL_TITLE', {
+          $walletId: IS_MOBILE ? 'Web3 Provider' : 'Metamask'
+        })}
+      </div>
+      <div className="Panel-description">
+        {translate(
+          IS_MOBILE ? 'ADD_ACCOUNT_WEB3_INSTALL_MOBILE_DESC' : 'ADD_ACCOUNT_WEB3_INSTALL_DESC'
+        )}
+      </div>
+      <div className="Panel-content">{IS_MOBILE ? <InstallTrunk /> : <InstallMetaMask />}</div>
+    </div>
+  );
 }
 
 export default Web3ProviderInstall;

@@ -13,7 +13,7 @@ import jsonIcon from 'common/assets/images/onboarding/icn-json.svg';
 import myCryptoIcon from 'common/assets/images/onboarding/icn-mnycrpto-app.svg';
 
 const { SCREEN_XS, SCREEN_MD } = BREAK_POINTS;
-const { BRIGHT_SKY_BLUE } = COLORS;
+const { BLUE_BRIGHT } = COLORS;
 
 const ResourceLink = styled.a`
   @media (min-width: ${SCREEN_MD}) {
@@ -79,7 +79,7 @@ const TipText = styled.p`
 
   a {
     font-weight: bold;
-    color: ${BRIGHT_SKY_BLUE};
+    color: ${BLUE_BRIGHT};
   }
 `;
 

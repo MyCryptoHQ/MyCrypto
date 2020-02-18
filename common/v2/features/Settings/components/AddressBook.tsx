@@ -1,42 +1,50 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Icon, Copyable, Identicon, Button } from '@mycrypto/ui';
+import { Icon, Identicon, Button } from '@mycrypto/ui';
 
 import {
   DashboardPanel,
   CollapsibleTable,
   RowDeleteOverlay,
   Network,
-  Typography
+  EthAddress,
+  EditableText
 } from 'v2/components';
-import { ExtendedAddressBook } from 'v2/types';
+import { ExtendedAddressBook, AddressBook as IAddressBook } from 'v2/types';
 import { truncate } from 'v2/utils';
-import { BREAK_POINTS } from 'v2/theme';
+import { COLORS, SPACING, BREAK_POINTS } from 'v2/theme';
+import { translateRaw } from 'v2/translations';
 
 interface Props {
   addressBook: ExtendedAddressBook[];
   toggleFlipped(): void;
   deleteAddressBooks(uuid: string): void;
+  updateAddressBooks(uuid: string, addressBooksData: IAddressBook): void;
 }
 
 const DeleteButton = styled(Button)`
+  align-items: center;
   align-self: flex-end;
   display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 0.7em;
+  justify-content: center;
   width: 100%;
 `;
 
 const AddAccountButton = styled(Button)`
-  color: #1eb8e7;
-  font-weight: bold;
-  margin-bottom: 15px;
+  color: ${COLORS.BLUE_BRIGHT};
+  padding: ${SPACING.BASE};
+  opacity: 1;
+  &:hover {
+    transition: 200ms ease all;
+    transform: scale(1.02);
+    opacity: 0.7;
+  }
 `;
 
 const BottomRow = styled.div`
-  margin-top: 0.875rem;
   text-align: center;
+  background: ${COLORS.BLUE_GREY_LIGHTEST};
 `;
 
 const Label = styled.span`
@@ -48,13 +56,13 @@ const SIdenticon = styled(Identicon)`
   > img {
     height: 2em;
   }
-  margin-right: 10px;
+  margin-right: ${SPACING.SM};
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    margin-right: 27px;
+    margin-right: ${SPACING.MD};
   }
 `;
 
-const STypography = styled(Typography)`
+const SEditableText = styled(EditableText)`
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     font-weight: inherit;
   }
@@ -63,7 +71,12 @@ const STypography = styled(Typography)`
 export const screenIsMobileSized = (breakpoint: number): boolean =>
   window.matchMedia(`(max-width: ${breakpoint}px)`).matches;
 
-export default function AddressBook({ addressBook, toggleFlipped, deleteAddressBooks }: Props) {
+export default function AddressBook({
+  addressBook,
+  toggleFlipped,
+  deleteAddressBooks,
+  updateAddressBooks
+}: Props) {
   const [deletingIndex, setDeletingIndex] = useState();
 
   const overlayRows = [deletingIndex];
@@ -85,19 +98,30 @@ export default function AddressBook({ addressBook, toggleFlipped, deleteAddressB
         <></>
       ),
     overlayRows,
-    body: addressBook.map(({ address, label, network, notes }: ExtendedAddressBook, index) => [
-      <Icon key={0} icon="star" />,
-      <Label key={1}>
-        <SIdenticon address={address} />
-        <STypography bold={true} value={label} />
-      </Label>,
-      <Copyable key={2} text={address} truncate={truncate} isCopyable={true} />,
-      <Network key={3} color="#a682ff">
-        {network}
-      </Network>,
-      <Typography key={4} value={notes} />,
-      <DeleteButton key={5} onClick={() => setDeletingIndex(index)} icon="exit" />
-    ]),
+    body: addressBook.map(
+      ({ uuid, address, label, network, notes }: ExtendedAddressBook, index) => [
+        <Icon key={0} icon="star" />,
+        <Label key={1}>
+          <SIdenticon address={address} />
+          <SEditableText
+            truncate={true}
+            value={label}
+            saveValue={value => updateAddressBooks(uuid, { address, label: value, network, notes })}
+          />
+        </Label>,
+        <EthAddress key={2} address={address} truncate={truncate} isCopyable={true} />,
+        <Network key={3} color="#a682ff">
+          {network}
+        </Network>,
+        <EditableText
+          key={4}
+          truncate={true}
+          value={notes}
+          saveValue={value => updateAddressBooks(uuid, { address, label, network, notes: value })}
+        />,
+        <DeleteButton key={5} onClick={() => setDeletingIndex(index)} icon="exit" />
+      ]
+    ),
     config: {
       primaryColumn: 'Label',
       sortableColumn: 'Label',
@@ -115,7 +139,7 @@ export default function AddressBook({ addressBook, toggleFlipped, deleteAddressB
       <CollapsibleTable breakpoint={450} {...addressBookTable} />
       <BottomRow>
         <AddAccountButton onClick={toggleFlipped} basic={true}>
-          + Add Address
+          {`+ ${translateRaw('ACCOUNT_LIST_TABLE_ADD_ACCOUNT')}`}
         </AddAccountButton>
       </BottomRow>
     </DashboardPanel>

@@ -9,20 +9,17 @@ interface Props {
 }
 
 const IntermediaryDisplay = styled('div')`
+  max-width: 100%;
+  width: 100%;
   display: flex;
+  flex-direction: column;
   border: 1px solid #55b6e2;
   box-sizing: border-box;
   box-shadow: inset 0px 1px 1px rgba(63, 63, 68, 0.05);
   border-radius: 2px;
-`;
-
-const IntermediaryDisplayBox = styled('div')`
-  font-size: 16px;
   line-height: 21px;
-  padding-bottom: 12px;
-  padding-top: 12px;
-  padding-left: 15px;
-  padding-right: 12px;
+  padding: 12px;
+  font-size: 16px;
 `;
 
 const IntermediaryDisplayLabel = styled('div')`
@@ -44,14 +41,10 @@ function TransactionIntermediaryDisplay({ asset }: Props) {
   return (
     <>
       {asset.contractAddress && (
-        <div className="ConfirmTransaction-row-column">
-          <IntermediaryDisplay>
-            <IntermediaryDisplayBox>
-              <IntermediaryDisplayLabel>{`Transaction performed via ${asset.ticker} contract:`}</IntermediaryDisplayLabel>
-              <IntermediaryDisplayContract text={asset.contractAddress} />
-            </IntermediaryDisplayBox>
-          </IntermediaryDisplay>
-        </div>
+        <IntermediaryDisplay>
+          <IntermediaryDisplayLabel>{`Transaction performed via ${asset.ticker} contract:`}</IntermediaryDisplayLabel>
+          <IntermediaryDisplayContract text={asset.contractAddress} />
+        </IntermediaryDisplay>
       )}
     </>
   );

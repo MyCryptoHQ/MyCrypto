@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel, InlineErrorMsg, PrintPaperWalletButton } from 'v2/components';
+import { ExtendedContentPanel, InlineMessage, PrintPaperWalletButton } from 'v2/components';
 import lockSafetyIcon from 'common/assets/images/icn-lock-safety.svg';
 import { PanelProps } from 'v2/features/CreateWallet';
 import translate, { translateRaw } from 'v2/translations';
@@ -120,7 +120,7 @@ export default class BackUpPhrasePanel extends Component<Props, State> {
 
         {this.state.error && (
           <ErrorWrapper>
-            <InlineErrorMsg>{translateRaw('MNEMONIC_MAKE_BACKUP_ERROR')}</InlineErrorMsg>
+            <InlineMessage>{translateRaw('MNEMONIC_MAKE_BACKUP_ERROR')}</InlineMessage>
           </ErrorWrapper>
         )}
         <ButtonsWrapper>

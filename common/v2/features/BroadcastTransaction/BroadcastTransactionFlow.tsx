@@ -1,72 +1,57 @@
-import React, { useState, ReactType } from 'react';
-import { Transaction as EthTx } from 'ethereumjs-tx';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import React from 'react';
 
-import { ExtendedContentPanel } from 'v2/components';
-import { BroadcastTx, ConfirmTransaction, TransactionReceipt } from './components';
-import { ROUTE_PATHS, DEFAULT_NETWORK } from 'v2/config';
-import { ITxConfig, ITxReceipt } from 'v2/types';
+import { GeneralStepper, ConfirmTransaction, TransactionReceipt } from 'v2/components';
+import { ROUTE_PATHS } from 'v2/config';
 import { translateRaw } from 'v2/translations';
+import { useStateReducer } from 'v2/utils';
+import { IStepperPath } from 'v2/components/GeneralStepper/types';
+import { ISignedTx } from 'v2/types';
 
-interface TStep {
-  title: string;
-  component: ReactType;
-}
+import { BroadcastTxConfigFactory, broadcastTxInitialState } from './stateFactory';
+import { BroadcastTx } from './components';
 
-const BroadcastTransactionFlow = (props: RouteComponentProps<{}>) => {
-  const [step, setStep] = useState(0);
-  const [network, setNetwork] = useState(DEFAULT_NETWORK);
-  const [txReceipt, setTxReceipt] = useState<ITxReceipt | undefined>();
-  const [txConfig, setTxConfig] = useState<ITxConfig | undefined>();
-  const [signedTransaction, setSignedTransaction] = useState('');
-  const [transaction, setTransaction] = useState<EthTx | undefined>();
+const BroadcastTransactionFlow = () => {
+  const {
+    handleNetworkChanged,
+    handleSendClicked,
+    handleConfirmClick,
+    handleResetFlow,
+    broadcastTxState
+  } = useStateReducer(BroadcastTxConfigFactory, broadcastTxInitialState);
 
-  const steps: TStep[] = [
-    { title: translateRaw('BROADCAST_TX_TITLE'), component: BroadcastTx },
-    { title: translateRaw('CONFIRM_TX_MODAL_TITLE'), component: ConfirmTransaction },
-    { title: translateRaw('BROADCAST_TX_RECEIPT_TITLE'), component: TransactionReceipt }
+  const steps: IStepperPath[] = [
+    {
+      label: translateRaw('BROADCAST_TX_TITLE'),
+      component: BroadcastTx,
+      props: (({ signedTx, network }) => ({
+        signedTx,
+        network,
+        handleNetworkChanged
+      }))(broadcastTxState),
+      actions: (signedTx: ISignedTx, cb: any) => handleSendClicked(signedTx, cb)
+    },
+    {
+      label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
+      component: ConfirmTransaction,
+      props: (({ txConfig }) => ({ txConfig }))(broadcastTxState),
+      actions: (_: any, cb: any) => handleConfirmClick(cb)
+    },
+    {
+      label: translateRaw('BROADCAST_TX_RECEIPT_TITLE'),
+      component: TransactionReceipt,
+      props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(broadcastTxState),
+      actions: (cb: any) => handleResetFlow(cb)
+    }
   ];
 
-  const goToNextStep = () => {
-    setStep(step + 1);
-  };
-
-  const goToPreviousStep = () => {
-    const { history } = props;
-    if (step === 0) {
-      history.push(ROUTE_PATHS.DASHBOARD.path);
-    } else {
-      setStep(step - 1);
-    }
-  };
-
-  const stepObject = steps[step];
-  const StepComponent = stepObject.component;
-
   return (
-    <ExtendedContentPanel
-      onBack={goToPreviousStep}
-      stepper={{ current: step + 1, total: steps.length }}
-      width="650px"
-      heading={stepObject.title}
-      centered={true}
-    >
-      <StepComponent
-        goToNextStep={goToNextStep}
-        selectNetwork={setNetwork}
-        network={network}
-        setTransaction={setTransaction}
-        transaction={transaction}
-        setSignedTransaction={setSignedTransaction}
-        signedTransaction={signedTransaction}
-        txReceipt={txReceipt}
-        setTxReceipt={setTxReceipt}
-        txConfig={txConfig}
-        setTxConfig={setTxConfig}
-        setStep={setStep}
-      />
-    </ExtendedContentPanel>
+    <GeneralStepper
+      steps={steps}
+      defaultBackPath={ROUTE_PATHS.DASHBOARD.path}
+      defaultBackPathLabel={translateRaw('DASHBOARD')}
+      completeBtnText={translateRaw('BROADCAST_TX_BROADCAST_ANOTHER')}
+    />
   );
 };
 
-export default withRouter(BroadcastTransactionFlow);
+export default BroadcastTransactionFlow;
