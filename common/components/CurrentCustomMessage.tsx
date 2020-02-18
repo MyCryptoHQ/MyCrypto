@@ -9,6 +9,7 @@ import * as derivedSelectors from 'features/selectors';
 import { configSelectors } from 'features/config';
 import { walletSelectors } from 'features/wallet';
 import { Address } from 'components/ui';
+import { shouldDisplayWarningMessages } from 'utils/helpers';
 
 interface ReduxProps {
   currentTo: ICurrentTo;
@@ -39,6 +40,10 @@ class CurrentCustomMessageClass extends PureComponent<Props, State> {
 
   public render() {
     const message = this.getMessage();
+    if (!shouldDisplayWarningMessages(location.search)) {
+      return null;
+    }
+
     if (message) {
       return (
         <div className="clearfix form-group">

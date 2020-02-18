@@ -114,3 +114,17 @@ export function makeExplorer(expConfig: ExplorerConfig): BlockExplorerConfig {
     blockUrl: blockNum => `${config.origin}/${config.blockPath}/${blockNum}`
   };
 }
+
+/** The following function checks for a 'warnings' flag in the url query in order to disable warning
+ * messages on the /send page.
+ *
+ * If the url query contains'warnings=0', warning messages displayed by
+ * 'common/components/CurrentCustomMessage.tsx'
+ * and
+ * 'common/containers/Tabs/SendTransaction/components/Fields/components/NonStandardTransaction.tsx'
+ * components will be disabled.
+ */
+export function shouldDisplayWarningMessages(query: string): boolean {
+  const params = qs.parse(query.toLowerCase());
+  return !(params.warnings === '0');
+}
