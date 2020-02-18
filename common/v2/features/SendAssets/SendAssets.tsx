@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { GeneralStepper } from 'v2/components';
 import { useStateReducer, isWeb3Wallet } from 'v2/utils';
@@ -19,7 +19,7 @@ function SendAssets() {
     handleSignedTx,
     handleSignedWeb3Tx,
     txFactoryState
-  } = useStateReducer(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: null });
+  } = useStateReducer(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: undefined });
 
   // Due to MetaMask deprecating eth_sign method,
   // it has different step order, where sign and send are one panel
@@ -75,14 +75,14 @@ function SendAssets() {
     }
   ];
 
-  const steps = useMemo(() => {
+  const getPath = () => {
     const { senderAccount } = txFactoryState.txConfig;
     return senderAccount && isWeb3Wallet(senderAccount.wallet) ? web3Steps : defaultSteps;
-  }, [txFactoryState.txConfig]);
+  };
 
   return (
     <GeneralStepper
-      steps={steps}
+      steps={getPath()}
       defaultBackPath={ROUTE_PATHS.DASHBOARD.path}
       defaultBackPathLabel={translateRaw('DASHBOARD')}
       completeBtnText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}

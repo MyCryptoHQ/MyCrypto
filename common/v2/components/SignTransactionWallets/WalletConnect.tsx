@@ -122,7 +122,7 @@ export function SignTransactionWalletConnect({
 
   const sendTx = () =>
     requestSign({
-      from: senderAccount.address as TAddress,
+      from: senderAccount.address,
       ...rawTransaction
     })
       .then((txHash: ITxData) => onSuccess(txHash))
@@ -140,7 +140,7 @@ export function SignTransactionWalletConnect({
       }
     };
     return ErrorHandlers[code]({
-      address: senderAccount.address as TAddress,
+      address: senderAccount.address,
       network: network.name,
       onClick: getAction()
     });

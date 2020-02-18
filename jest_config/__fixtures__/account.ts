@@ -1,10 +1,10 @@
-import { StoreAccount, TUuid, WalletId } from 'v2/types';
+import { StoreAccount, TUuid, TAddress, WalletId } from 'v2/types';
 
 import { fNetwork } from './network';
 import { fAsset } from './assets';
 
 export const fAccount: StoreAccount = {
-  address: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
+  address: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c' as TAddress,
   networkId: 'Ropsten',
   wallet: 'WALLETCONNECT' as WalletId,
   dPath: '',
