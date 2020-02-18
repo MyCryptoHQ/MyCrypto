@@ -532,7 +532,9 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                   getAssetRate(baseAsset || undefined) || 0,
                   isERC20Tx(values.asset),
                   values.gasLimitField,
-                  values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider
+                  values.advancedTransaction
+                    ? values.gasPriceField
+                    : values.gasPriceSlider.toString()
                 ) && <InlineMessage value={translate('HIGH_TRANSACTION_FEE')} />}
               </fieldset>
               {/* Advanced Options */}
