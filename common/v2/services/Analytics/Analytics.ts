@@ -6,6 +6,7 @@ import {
   ANALYTICS_ID_DESKTOP,
   ANALYTICS_REC
 } from './constants';
+import { VERSION } from 'config';
 import { APIService } from '../API';
 import { isDevelopment, isDesktop } from 'v2/utils';
 import { Params, CvarEntry } from './types';
@@ -27,21 +28,29 @@ export default class AnalyticsService {
     }
   }
 
-  public trackPageVisit(pageUrl: string): Promise<any> {
-    const customParams: Params = {
+  public trackPageVisit(pageUrl: string, pathHash: string, network: string): Promise<any> {
+    const customParamsView: Params = {
       local: isDevelopment().toString()
     };
 
-    const cvar = this.mapParamsToCvars(customParams);
+    const customParamsVisit: Params = {
+      node_id: network,
+      platform: isDesktop() ? 'desktop app' : 'website',
+      version: VERSION
+    };
 
     const analyticsId = isDesktop() ? ANALYTICS_ID_DESKTOP : ANALYTICS_ID_SITE;
 
+    const desktopString = 'https://desktop.app';
+    const url = isDesktop() ? desktopString + pathHash.substr(1) : pageUrl;
+
     const params = {
       action_name: 'Page navigation',
-      url: pageUrl,
+      url,
       idsite: analyticsId,
       rec: ANALYTICS_REC,
-      cvar: JSON.stringify(cvar)
+      _cvar: JSON.stringify(this.mapParamsToCvars(customParamsVisit)),
+      cvar: JSON.stringify(this.mapParamsToCvars(customParamsView))
     };
 
     return this.service.get('', { params }).catch();

@@ -17,6 +17,7 @@ import { AppState } from 'features/reducers';
 import { configSelectors, configMetaSelectors } from 'features/config';
 import { transactionMetaActions } from 'features/transaction';
 import { onboardingSelectors } from 'features/onboarding';
+import { StaticNetworkConfig, CustomNetworkConfig } from 'types/network';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
@@ -56,6 +57,10 @@ interface DispatchProps {
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
+
+type PageVisitsAnalyticsProps = RouteComponentProps<{}> & {
+  network: StaticNetworkConfig | CustomNetworkConfig;
+};
 
 interface State {
   error: Error | null;
@@ -118,7 +123,6 @@ class RootClass extends Component<Props, State> {
       process.env.BUILD_DOWNLOADABLE && process.env.NODE_ENV === 'production'
         ? HashRouter
         : BrowserRouter;
-
     return (
       <React.Fragment>
         <Provider store={store}>
@@ -167,21 +171,29 @@ class RootClass extends Component<Props, State> {
 
 let previousURL = '';
 const PageVisitsAnalytics = withRouter(
-  // tslint:disable-next-line: max-classes-per-file
-  class extends Component<RouteComponentProps<{}>> {
-    public componentDidMount() {
-      this.props.history.listen(() => {
-        if (previousURL !== window.location.href) {
-          AnalyticsService.instance.trackPageVisit(window.location.href);
-          previousURL = window.location.href;
-        }
-      });
-    }
+  connect((state: AppState) => ({
+    network: configSelectors.getNetworkConfig(state)
+  }))(
+    // tslint:disable-next-line: max-classes-per-file
+    class extends Component<PageVisitsAnalyticsProps> {
+      public componentDidMount() {
+        this.props.history.listen(() => {
+          if (previousURL !== window.location.href) {
+            AnalyticsService.instance.trackPageVisit(
+              window.location.href,
+              window.location.hash,
+              this.props.network.id
+            );
+            previousURL = window.location.href;
+          }
+        });
+      }
 
-    public render() {
-      return this.props.children;
+      public render() {
+        return this.props.children;
+      }
     }
-  }
+  )
 );
 
 const LegacyRoutes = withRouter(props => {

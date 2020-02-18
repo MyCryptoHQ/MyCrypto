@@ -80,7 +80,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('ETC', 'etccooperative'),
       type: 'rpc',
       service: 'ETC Cooperative',
-      url: 'https://ethereumclassic.network'
+      url: 'https://www.ethercluster.com/etc'
     }
   ],
 
@@ -197,7 +197,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('ELLA', 'ellaism'),
       type: 'rpc',
       service: 'ellaism.org',
-      url: 'https://jsonrpc.ellaism.org'
+      url: 'https://jsonrpc.ellaism.io'
     }
   ],
 
@@ -401,6 +401,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       type: 'rpc',
       service: 'auxilium.global',
       url: 'https://rpc.auxilium.global'
+    }
+  ],
+
+  ERE: [
+    {
+      name: makeNodeName('ERE', 'ethercore'),
+      type: 'rpc',
+      service: 'ethercore.org',
+      url: 'https://rpc.ethercore.org'
     }
   ]
 };
