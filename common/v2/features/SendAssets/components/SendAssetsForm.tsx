@@ -179,7 +179,9 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
         .test(
           'check-eth-address',
           translateRaw('TO_FIELD_ERROR'),
-          value => isValidETHAddress(value) || isValidENSName(value)
+          value =>
+            isValidETHAddress(value) ||
+            (isValidENSName(value) && UnstoppableResolution.isValidDomain(value))
         )
         // @ts-ignore Hack as Formik doesn't officially support warnings
         // tslint:disable-next-line
