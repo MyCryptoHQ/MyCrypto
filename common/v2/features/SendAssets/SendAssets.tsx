@@ -78,7 +78,7 @@ function SendAssets() {
   const steps = useMemo(() => {
     const { senderAccount } = txFactoryState.txConfig;
     return senderAccount && isWeb3Wallet(senderAccount.wallet) ? web3Steps : defaultSteps;
-  }, [txFactoryState.senderAccount]);
+  }, [txFactoryState.txConfig]);
 
   return (
     <GeneralStepper
