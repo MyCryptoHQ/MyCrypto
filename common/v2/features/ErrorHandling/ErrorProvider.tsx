@@ -46,16 +46,18 @@ class ErrorProvider extends Component<RouteComponentProps<{}>> {
   }
 
   public componentDidCatch(error: Error) {
-    const path = Object.values(ROUTE_PATHS).find(p => p.path === window.location.pathname);
     console.error(error);
-    this.props.history.replace(ROUTE_PATHS.HOME.path);
-    this.setState({
-      error: { error, path }
-    });
-    clearTimeout(errorTimer);
-    errorTimer = setTimeout(() => {
-      this.setState({ error: undefined });
-    }, ERROR_TIMEOUT_MS);
+    if (!this.state.suppressErrors) {
+      const path = Object.values(ROUTE_PATHS).find(p => p.path === window.location.pathname);
+      this.props.history.replace(ROUTE_PATHS.HOME.path);
+      this.setState({
+        error: { error, path }
+      });
+      clearTimeout(errorTimer);
+      errorTimer = setTimeout(() => {
+        this.setState({ error: undefined });
+      }, ERROR_TIMEOUT_MS);
+    }
   }
 
   private shouldShowError = () => {
