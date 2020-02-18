@@ -25,10 +25,10 @@ export const DomainStatus: React.FC<DomainStatusProps> = (props: DomainStatusPro
   );
 
   if (props.isLoading) return spinner();
-  if (props.domain === '') return <div data-testid="domainStatus">{''}</div>;
   if (props.isError || props.resolutionError) {
     return parseError(props.resolutionError);
   }
+  if (props.domain === '') return <div data-testid="domainStatus">{''}</div>;
   return (
     <div data-testid="domainStatus">{`${translateRaw('SEND_ASSETS_DID_RESOLVE')}: ${
       props.rawAddress

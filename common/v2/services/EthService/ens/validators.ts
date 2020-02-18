@@ -19,15 +19,14 @@ export function getValidTLDsForChain(chainId: number): ITLDCollection {
   return {
     eth: true,
     test: true,
-    reverse: true
+    reverse: true,
+    xyz: true
   };
 }
 
 export function isValidENSName(str: string) {
   try {
-    return (
-      str.length > 6 && str.includes('.') && normalise(str) !== '' && str.substring(0, 2) !== '0x'
-    );
+    return str.includes('.') && normalise(str) !== '';
   } catch (e) {
     return false;
   }

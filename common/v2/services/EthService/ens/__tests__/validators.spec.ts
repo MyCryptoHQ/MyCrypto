@@ -4,9 +4,7 @@ describe('isValidENSName', () => {
   const valid = ['bob.eth', 'edouard.eth'];
 
   const invalid = [
-    'et.eth', // second level domain must be longer than 2
-    'edouard', // must contain domain
-    '0xbob.eth' // and is not a hex number
+    'edouard' // must contain domain
   ];
 
   it('returns true if the name is valid', () => {
