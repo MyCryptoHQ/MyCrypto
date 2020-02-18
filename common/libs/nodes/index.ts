@@ -16,7 +16,7 @@ export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): 
   const defaultConfig: IProviderConfig = {
     concurrency: 2,
     network: 'ETH',
-    requestFailureThreshold: 10,
+    requestFailureThreshold: 30,
     supportedMethods: {
       getNetVersion: true,
       ping: true,
