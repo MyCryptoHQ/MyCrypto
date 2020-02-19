@@ -1,7 +1,13 @@
 import { useContext } from 'react';
 
 import translate from 'v2/translations';
-import { TUseStateReducerFactory, fromTxReceiptObj, formatErrorEmailMarkdown } from 'v2/utils';
+import {
+  TUseStateReducerFactory,
+  fromTxReceiptObj,
+  formatErrorEmailMarkdown,
+  convert,
+  withCommission
+} from 'v2/utils';
 import {
   DexService,
   ProviderHandler,
@@ -11,7 +17,7 @@ import {
 } from 'v2/services';
 import { StoreAccount } from 'v2/types';
 import { isWeb3Wallet } from 'v2/utils/web3';
-import { DEFAULT_NETWORK } from 'v2/config';
+import { DEFAULT_NETWORK, MYC_DEXAG_COMMISSION_RATE } from 'v2/config';
 
 import { ISwapAsset, LAST_CHANGED_AMOUNT, SwapState } from './types';
 import {
@@ -100,7 +106,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       return;
     }
 
-    if(value.length === 0) {
+    if (value.length === 0) {
       setState((prevState: SwapState) => ({
         ...prevState,
         toAmount: '',
@@ -109,7 +115,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       return;
     }
 
-    if(parseFloat(value)<=0) {
+    if (parseFloat(value) <= 0) {
       setState((prevState: SwapState) => ({
         ...prevState,
         isCalculatingFromAmount: false,
@@ -131,7 +137,10 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       setState((prevState: SwapState) => ({
         ...prevState,
         isCalculatingFromAmount: false,
-        fromAmount: (Number(value) * price).toString(),
+        fromAmount: withCommission({
+          amount: convert(Number(value), price),
+          rate: MYC_DEXAG_COMMISSION_RATE
+        }).toString(),
         fromAmountError: '',
         toAmountError: '',
         swapPrice: price
@@ -156,7 +165,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       return;
     }
 
-    if(value.length === 0) {
+    if (value.length === 0) {
       setState((prevState: SwapState) => ({
         ...prevState,
         toAmount: '',
@@ -165,7 +174,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       return;
     }
 
-    if(parseFloat(value)<=0) {
+    if (parseFloat(value) <= 0) {
       setState((prevState: SwapState) => ({
         ...prevState,
         isCalculatingToAmount: false,
@@ -188,7 +197,11 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       setState((prevState: SwapState) => ({
         ...prevState,
         isCalculatingToAmount: false,
-        toAmount: (Number(value) * price).toString(),
+        toAmount: withCommission({
+          amount: convert(Number(value), price),
+          rate: MYC_DEXAG_COMMISSION_RATE,
+          substract: true
+        }).toString(),
         fromAmountError: '',
         toAmountError: '',
         swapPrice: price
