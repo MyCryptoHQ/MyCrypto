@@ -25,7 +25,7 @@
 
   &-top {
     @include perfectly-centered;
-    @include baby-blue;
+    @include energi-deep-green;
 
     flex: 1;
     border-radius: 6px 6px 0 0;
@@ -42,7 +42,7 @@
     display: none;
 
     @media (min-width: 500px) {
-      @include baby-blue;
+      @include energi-deep-green;
 
       flex: 2;
       display: flex;
@@ -98,7 +98,7 @@
   }
   &-bottom {
     @include perfectly-centered;
-    @include baby-blue;
+    @include energi-deep-green;
 
     flex: 1;
     justify-content: space-around;
