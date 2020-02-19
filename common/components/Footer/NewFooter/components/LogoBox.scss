@@ -3,7 +3,7 @@
 @mixin logo-text {
   font-family: Lato;
   font-size: 10px;
-  color: color(white-base);
+  color: color(white-clear);
 }
 
 @mixin perfectly-centered {
@@ -12,20 +12,36 @@
   justify-content: center;
 }
 
+@mixin no-margin-padding {
+  margin: 0;
+  padding: 0;
+}
+
+@mixin heading {
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 500;
+  color: color(white-clear);
+}
+
 $logo-text-width: 375px;
 $spacing-md: 15px;
+$spacing-sm: 7px;
 
 .LogoBox {
   text-align: center;
 
-  &-image {
+  &-title {
     @include perfectly-centered;
     margin-bottom: $spacing-md;
 
-    img {
-      width: 152px;
-      height: 38px;
+    h2 {
+      @include heading;
+      @include no-margin-padding;
+
+      margin-bottom: $spacing-sm;
     }
+
     &-toggle {
       display: none;
 

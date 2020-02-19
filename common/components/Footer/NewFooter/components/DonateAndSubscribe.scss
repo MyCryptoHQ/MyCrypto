@@ -9,7 +9,7 @@
   font-family: Lato;
   font-size: 16px;
   font-weight: 500;
-  color: color(white-base);
+  color: color(white-clear);
 }
 
 @mixin text {
@@ -45,7 +45,7 @@ $input-border-radius: 3px;
   background-color: color(donation-button-bg);
   border: 1px solid color(donation-button-border);
   border-radius: 6px;
-  color: color(white-base);
+  color: color(white-clear);
 
   &:not(:last-of-type) {
     margin-bottom: $spacing-md;
@@ -154,7 +154,7 @@ $input-border-radius: 3px;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
         border-right: none;
-        color: color(white-base);
+        color: color(white-clear);
       }
     }
     &-button {
@@ -165,7 +165,7 @@ $input-border-radius: 3px;
         border-radius: $input-border-radius;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
-        color: color(white-base);
+        color: color(white-clear);
       }
     }
 

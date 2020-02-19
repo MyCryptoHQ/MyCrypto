@@ -1,7 +1,6 @@
 import React from 'react';
 
 import translate from 'translations';
-import logo from 'assets/images/logo-mycrypto.svg';
 import ThemeToggle from 'components/Footer/ThemeToggle';
 import SocialsAndLegal from './SocialsAndLegal';
 import './LogoBox.scss';
@@ -9,8 +8,8 @@ import './LogoBox.scss';
 export default function LogoBox() {
   return (
     <section className="LogoBox">
-      <section className="LogoBox-image">
-        <img src={logo} alt="Logo" />
+      <section className="LogoBox-title">
+        <h2>{translate('NEW_FOOTER_TEXT_16')} MyCrypto</h2>
         <section className="LogoBox-image-toggle">
           <ThemeToggle />
         </section>
