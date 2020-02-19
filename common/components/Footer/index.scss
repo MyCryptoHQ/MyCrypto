@@ -1,7 +1,7 @@
 @import 'common/sass/variables';
 @import 'common/sass/mixins';
 
-$footer-link-color: color(text-color-inverted);
+$footer-link-color: color(white-clear);
 
 .Footer {
   background-color: color(footer-bg);
@@ -13,7 +13,7 @@ $footer-link-color: color(text-color-inverted);
   border-top: 3px solid color(footer-border);
 
   &-section {
-    color: color(text-color-inverted);
+    color: color(white-clear);
     padding: $space;
   }
 
