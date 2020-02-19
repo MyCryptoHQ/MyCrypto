@@ -128,10 +128,6 @@ const FavoriteButton = styled(Button)`
   margin-left: 1em;
 `;
 
-const STooltip = styled(Tooltip)`
-  margin-left: 5em;
-`;
-
 const DeleteButton = styled(Button)`
   align-self: flex-end;
   display: flex;
@@ -379,9 +375,9 @@ const buildAccountTable = (
     </HeaderAlignment>,
     <HeaderAlignment key={'ACCOUNT_LIST_PRIVATE'} align="center">
       <PrivateColumnLabel>{translateRaw('ACCOUNT_LIST_PRIVATE')}</PrivateColumnLabel>
-      <STooltip tooltip={translateRaw('ACCOUNT_LIST_PRIVATE_TOOLTIP')}>
+      <Tooltip tooltip={translateRaw('ACCOUNT_LIST_PRIVATE_TOOLTIP')}>
         <img src={QuestionToolTip} />
-      </STooltip>
+      </Tooltip>
     </HeaderAlignment>,
     <HeaderAlignment key={'ACCOUNT_LIST_DELETE'} align="center">
       {translateRaw('ACCOUNT_LIST_DELETE')}
@@ -402,13 +398,17 @@ const buildAccountTable = (
     deletePresent: boolean,
     privacyPresent: boolean
   ) => {
-    switch (deletePresent + '-' + privacyPresent) {
+    switch (`${deletePresent}-${privacyPresent}`) {
+      // Excludes both columns
       case 'false-false':
         return columnList.slice(0, columnList.length - 2);
+      // Includes only the delete column, excludes the privacy tag column
       case 'true-false':
         return [...columnList.slice(0, columnList.length - 2), columnList[columnList.length - 1]];
+      // Includes only the privacy tag column, excludes the delete column
       case 'false-true':
         return columnList.slice(0, columnList.length - 1);
+      // Includes both delete && privacy tag column
       case 'true-true':
         return columnList;
     }
