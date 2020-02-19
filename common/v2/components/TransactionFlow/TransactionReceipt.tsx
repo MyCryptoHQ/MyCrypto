@@ -19,6 +19,7 @@ import {
 import { ROUTE_PATHS } from 'v2/config';
 import translate, { translateRaw } from 'v2/translations';
 import { convertToFiat, truncate, fromTxReceiptObj } from 'v2/utils';
+import { isWeb3Wallet } from 'v2/utils/web3';
 
 import './TransactionReceipt.scss';
 // Legacy
@@ -110,6 +111,9 @@ export default function TransactionReceipt({
   const assetForRateFetch = 'asset' in displayTxReceipt ? displayTxReceipt.asset : undefined;
 
   const txUrl = displayTxReceipt.network.blockExplorer.txUrl(displayTxReceipt.hash);
+  const shouldRenderPendingBtn =
+    pendingButton && txStatus === ITxStatus.PENDING && !isWeb3Wallet(senderAccount.wallet);
+
   return (
     <div className="TransactionReceipt">
       <div className="TransactionReceipt-row">
@@ -203,16 +207,16 @@ export default function TransactionReceipt({
           rawTransaction={txConfig.rawTransaction}
         />
       </div>
-      {pendingButton && txStatus === ITxStatus.PENDING && (
+      {shouldRenderPendingBtn && (
         <Button
           secondary={true}
           className="TransactionReceipt-another"
-          onClick={() => pendingButton.action(resetFlow)}
+          onClick={() => pendingButton!.action(resetFlow)}
         >
-          {pendingButton.text}
+          {pendingButton!.text}
         </Button>
       )}
-      {completeButtonText && (!pendingButton || (pendingButton && txStatus !== ITxStatus.PENDING)) && (
+      {completeButtonText && !shouldRenderPendingBtn && (
         <Button secondary={true} className="TransactionReceipt-another" onClick={resetFlow}>
           {completeButtonText}
         </Button>
