@@ -1,5 +1,6 @@
-import { convertToFiatFromAsset, withCommission } from './convert';
-import { BigNumber } from 'ethers/utils';
+import BigNumberJs from 'bignumber.js';
+import { convertToFiatFromAsset, withCommission, convert } from './convert';
+import { BigNumber, formatEther } from 'ethers/utils';
 import { StoreAsset, TAssetType, TUuid } from 'v2/types';
 import { MYC_DEXAG_COMMISSION_RATE } from 'v2/config';
 
@@ -65,8 +66,12 @@ describe('it Remove / Add commission from amount', () => {
     expect(converted).toEqual(expected);
   });
   it('remove commission from null amount', () => {
-    const expected = 0;
     const amount = 0;
+    const expected = withCommissionTest({
+      amount,
+      rate: MYC_DEXAG_COMMISSION_RATE,
+      substract: true
+    });
     const converted = withCommission({
       amount,
       rate: MYC_DEXAG_COMMISSION_RATE,
