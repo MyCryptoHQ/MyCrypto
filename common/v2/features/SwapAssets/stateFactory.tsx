@@ -5,6 +5,7 @@ import {
   TUseStateReducerFactory,
   fromTxReceiptObj,
   formatErrorEmailMarkdown,
+  convert,
   withCommission
 } from 'v2/utils';
 import {
@@ -137,7 +138,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         ...prevState,
         isCalculatingFromAmount: false,
         fromAmount: withCommission({
-          amount: Number(value) * price,
+          amount: convert(Number(value), price),
           rate: MYC_DEXAG_COMMISSION_RATE
         }).toString(),
         fromAmountError: '',
@@ -197,7 +198,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         ...prevState,
         isCalculatingToAmount: false,
         toAmount: withCommission({
-          amount: Number(value) * price,
+          amount: convert(Number(value), price),
           rate: MYC_DEXAG_COMMISSION_RATE,
           substract: true
         }).toString(),
