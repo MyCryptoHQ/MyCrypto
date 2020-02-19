@@ -59,6 +59,7 @@
     "ADD_WALLETCONNECT_LINK": "Not working? [Here are some troubleshooting tips to try]($wiki_link).",
     "ADD_HARDWAREDESC": "Connect & sign via your hardware wallet",
     "ACCOUNT_SELECTION_PLACEHOLDER": "Select Account",
+    "ACCOUNT_LOOKUP_SELECTION_PLACEHOLDER": "Enter an Address or Contact",
     "ACCOUNT_SELECTION_NO_FUNDS": "You don't have an account with sufficient funds.",
     "SEND_ASSETS_AMOUNT_LABEL": "Amount",
     "SEND_ASSETS_AMOUNT_LABEL_ACTION": "Send max",

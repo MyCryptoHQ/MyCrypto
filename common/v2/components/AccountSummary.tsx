@@ -12,6 +12,7 @@ interface Props {
   assetSymbol?: string;
   label?: string;
   selectable?: boolean;
+  hideCurrency?: boolean;
   onClick?(): void;
 }
 
@@ -49,17 +50,20 @@ function AccountSummary({
   assetSymbol,
   label,
   selectable = true,
+  hideCurrency,
   onClick
 }: Props) {
   return (
     <SAccountWrapper onPointerDown={onClick} selectable={selectable}>
       <SAddress title={label} truncate={truncate} address={address} isCopyable={false} />
-      <SCurrency
-        amount={balance}
-        symbol={(assetSymbol as TSymbol) || ('ETH' as TSymbol)}
-        decimals={4}
-        icon={true}
-      />
+      {!hideCurrency && (
+        <SCurrency
+          amount={balance}
+          symbol={(assetSymbol as TSymbol) || ('ETH' as TSymbol)}
+          decimals={4}
+          icon={true}
+        />
+      )}
     </SAccountWrapper>
   );
 }

@@ -1,5 +1,10 @@
 import React from 'react';
-import Select, { OptionComponentProps, ArrowRendererProps } from 'react-select';
+import Select, {
+  OptionComponentProps,
+  ArrowRendererProps,
+  OnInputChangeHandler,
+  OnInputKeyDownHandler
+} from 'react-select';
 import styled from 'styled-components';
 import { Icon } from '@mycrypto/ui';
 
@@ -34,7 +39,11 @@ interface Props<T> {
     | React.ComponentClass<OptionComponentProps<T>>
     | React.StatelessComponent<OptionComponentProps<T>>;
   valueComponent?: React.ComponentClass<T> | React.StatelessComponent<T>;
+  inputValue?: string;
+  onInputChange?: OnInputChangeHandler;
+  onInputKeyDown?: OnInputKeyDownHandler;
   onChange?(option: T): void;
+  onBlur?(e: string | undefined): void;
 }
 
 const Chevron = styled(Icon)`
@@ -47,6 +56,7 @@ const DropdownIndicator = (props: ArrowRendererProps) => (
 
 export default function Dropdown({
   onChange,
+  onBlur,
   options,
   optionComponent,
   value,
@@ -54,7 +64,10 @@ export default function Dropdown({
   placeholder,
   disabled,
   searchable,
-  name // field name for hidden input. Important for Formik
+  inputValue,
+  onInputChange,
+  name, // field name for hidden input. Important for Formik
+  onInputKeyDown
 }: Props<any>) {
   return (
     <SSelect
@@ -64,6 +77,8 @@ export default function Dropdown({
       menuStyle={{ maxHeight: '65vh' }}
       name={name}
       onChange={onChange}
+      onInputChange={onInputChange}
+      onBlur={onBlur ? () => onBlur(inputValue) : undefined}
       options={options}
       optionComponent={optionComponent}
       placeholder={placeholder}
@@ -71,6 +86,7 @@ export default function Dropdown({
       value={value} //!! value must be an expression or an object !?
       valueComponent={valueComponent}
       disabled={disabled}
+      onInputKeyDown={onInputKeyDown}
     />
   );
 }

@@ -13,6 +13,7 @@ class AccountOption extends React.PureComponent<OptionComponentProps> {
           balance={option.balance}
           assetSymbol={option.assetSymbol}
           label={option.label}
+          hideCurrency={option.hideCurrency}
           onClick={() => onSelect!(option, null)} // Since it's a custom Dropdown we know onSelect is defined
         />
         <Divider padding={'14px'} />
