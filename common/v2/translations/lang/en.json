@@ -559,6 +559,6 @@
     "SENDING_TO_BURN_ADDRESS": "This address appears to be a “burn” address. Please be absolutely sure you wish to send to this address. There is no way to reverse a transaction.",
     "ADDRESS_ALREADY_ADDED": "This address ($label) has already been added",
     "ACCOUNT_LIST_PRIVATE": "Private",
-    "ACCOUNT_LIST_PRIVATE_TOOLTIP": "This will label an account as \"Private\" which will provide you some tips on how to keep this account pseudonymous"
+    "ACCOUNT_LIST_PRIVATE_TOOLTIP": "This will label an account as \"Private\" which will provide you some tips on how to keep this account pseudonymous."
   }
 }

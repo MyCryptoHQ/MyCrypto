@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { Button, Identicon, Tooltip } from '@mycrypto/ui';
 
 import { translateRaw } from 'v2/translations';
-import { ROUTE_PATHS, Fiats, WALLETS_CONFIG } from 'v2/config';
+import { ROUTE_PATHS, Fiats, WALLETS_CONFIG, IS_ACTIVE_FEATURE } from 'v2/config';
 import {
   EthAddress,
   CollapsibleTable,
@@ -457,7 +457,9 @@ const buildAccountTable = (
             />
             <WalletLabelContainer>
               <WalletTypeLabel>{WALLETS_CONFIG[account.wallet].name}</WalletTypeLabel>
-              {account.isPrivate && <PrivateWalletLabel>{'Private Account'}</PrivateWalletLabel>}
+              {IS_ACTIVE_FEATURE.PRIVATE_TAGS && account.isPrivate && (
+                <PrivateWalletLabel>{'Private Account'}</PrivateWalletLabel>
+              )}
             </WalletLabelContainer>
           </LabelWithWallet>
         </Label>,
