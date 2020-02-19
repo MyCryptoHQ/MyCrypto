@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { Button, Identicon } from '@mycrypto/ui';
+import { Button, Identicon, Tooltip } from '@mycrypto/ui';
 
 import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS, Fiats, WALLETS_CONFIG } from 'v2/config';
@@ -28,6 +28,7 @@ import { default as Currency } from './Currency';
 import { TUuid } from 'v2/types/uuid';
 import IconArrow from './IconArrow';
 import Checkbox from './Checkbox';
+import QuestionToolTip from 'common/assets/images/icn-question.svg';
 
 const Label = styled.span`
   display: flex;
@@ -56,24 +57,22 @@ const WalletLabelContainer = styled.ul`
   }
 `;
 
-const WalletTypeLabel = styled.li`
+const StyledAccountLabel = styled.li`
   display: inline-block;
   text-align: center;
-  background: ${COLORS.GREY};
   border-radius: 600px;
   color: ${COLORS.WHITE};
-  font-size: 0.6em;
+  font-size: 0.7em;
+  font-weight: normal;
   padding: 3px 6px;
 `;
 
-const PrivateWalletLabel = styled.li`
-  display: inline-block;
-  text-align: center;
+const WalletTypeLabel = styled(StyledAccountLabel)`
+  background: ${COLORS.GREY};
+`;
+
+const PrivateWalletLabel = styled(StyledAccountLabel)`
   background: ${COLORS.PURPLE};
-  border-radius: 600px;
-  color: ${COLORS.WHITE};
-  font-size: 0.6em;
-  padding: 3px 6px;
 `;
 
 const PrivacyCheckBox = styled(Checkbox)`
@@ -105,6 +104,9 @@ const HeaderAlignment = styled.div`
       text-align: ${props.align || 'inherit'};
     }
   `};
+  & img {
+    margin-left: ${SPACING.XS};
+  }
 `;
 
 interface IFavoriteProps {
@@ -124,6 +126,10 @@ const FavoriteButton = styled(Button)`
   }
   align-self: flex-start;
   margin-left: 1em;
+`;
+
+const STooltip = styled(Tooltip)`
+  margin-left: 5em;
 `;
 
 const DeleteButton = styled(Button)`
@@ -160,6 +166,10 @@ const AddAccountButton = styled(Button)`
     transform: scale(1.02);
     opacity: 0.7;
   }
+`;
+
+const PrivateColumnLabel = styled.p`
+  display: inline-block;
 `;
 
 interface AccountListProps {
@@ -368,7 +378,10 @@ const buildAccountTable = (
       <IconArrow isFlipped={getColumnSortDirection('ACCOUNT_LIST_VALUE')} />
     </HeaderAlignment>,
     <HeaderAlignment key={'ACCOUNT_LIST_PRIVATE'} align="center">
-      {translateRaw('ACCOUNT_LIST_PRIVATE')}
+      <PrivateColumnLabel>{translateRaw('ACCOUNT_LIST_PRIVATE')}</PrivateColumnLabel>
+      <STooltip tooltip={translateRaw('ACCOUNT_LIST_PRIVATE_TOOLTIP')}>
+        <img src={QuestionToolTip} />
+      </STooltip>
     </HeaderAlignment>,
     <HeaderAlignment key={'ACCOUNT_LIST_DELETE'} align="center">
       {translateRaw('ACCOUNT_LIST_DELETE')}
