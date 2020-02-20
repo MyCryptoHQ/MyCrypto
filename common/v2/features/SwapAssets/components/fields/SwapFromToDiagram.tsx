@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { TSymbol } from 'v2/types';
 import { AssetIcon, Currency } from 'v2/components';
+import { FONT_SIZE } from 'v2/theme';
 
 import arrowIcon from 'assets/images/arrow-right.svg';
 
@@ -27,6 +28,11 @@ const AssetWrapper = styled.div`
   align-items: center;
   margin: 0 15px;
   width: 148px;
+  height: 9em;
+  text-align: center;
+  & > :first-child {
+    margin-bottom: 14px;
+  }
 `;
 
 const Arrow = styled.img`
@@ -35,36 +41,30 @@ const Arrow = styled.img`
   margin-bottom: 64px;
 `;
 
-const AssetAmount = styled.p`
-  font-size: 20px;
-  font-weight: bold;
-  margin-top: 14px;
-  height: 50px;
-  text-align: center;
-`;
-
 export default function SwapFromToDiagram(props: Props) {
   const { fromSymbol, toSymbol, fromAmount, toAmount } = props;
   return (
     <Wrapper>
       <AssetWrapper>
         <AssetIcon symbol={fromSymbol} size="72px" />
-        <AssetAmount>
-          <Currency
-            bold={true}
-            fontSize="1em"
-            amount={fromAmount}
-            symbol={fromSymbol}
-            decimals={6}
-          />
-        </AssetAmount>
+        <Currency
+          bold={true}
+          fontSize={FONT_SIZE.LG}
+          amount={fromAmount}
+          symbol={fromSymbol}
+          decimals={6}
+        />
       </AssetWrapper>
       <Arrow src={arrowIcon} />
       <AssetWrapper>
         <AssetIcon symbol={toSymbol} size="72px" />
-        <AssetAmount>
-          <Currency bold={true} fontSize="1em" amount={toAmount} symbol={toSymbol} decimals={6} />
-        </AssetAmount>
+        <Currency
+          bold={true}
+          fontSize={FONT_SIZE.LG}
+          amount={toAmount}
+          symbol={toSymbol}
+          decimals={6}
+        />
       </AssetWrapper>
     </Wrapper>
   );
