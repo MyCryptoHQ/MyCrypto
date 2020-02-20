@@ -10,7 +10,6 @@ import { ROUTE_PATHS } from 'v2/config';
 import { COLORS } from 'v2/theme';
 
 import Downloader from './Downloader';
-import { COLORS } from 'v2/theme';
 
 const CenteredContentPanel = styled(ContentPanel)`
   width: 35rem;

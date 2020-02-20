@@ -343,9 +343,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
 
     if (isWeb3Wallet(account.wallet)) {
       const txReceipt =
-        signResponse && signResponse.hash
-          ? signResponse
-          : { hash: signResponse, asset: txConfig.asset };
+        signResponse && signResponse.hash ? signResponse : { ...txConfig, hash: signResponse };
       setState((prevState: SwapState) => ({
         ...prevState,
         txReceipt

@@ -46,14 +46,7 @@ function SendAssets() {
     {
       label: translateRaw('TRANSACTION_BROADCASTED'),
       component: TransactionReceipt,
-      props: (({ txConfig, txReceipt }) => ({
-        txConfig,
-        txReceipt,
-        pendingButton: {
-          text: translateRaw('TRANSACTION_BROADCASTED_RESUBMIT'),
-          action: (cb: any) => handleResubmitTx(cb)
-        }
-      }))(txFactoryState)
+      props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(txFactoryState)
     }
   ];
 

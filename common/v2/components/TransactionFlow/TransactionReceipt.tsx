@@ -26,7 +26,7 @@ import './TransactionReceipt.scss';
 import sentIcon from 'common/assets/images/icn-sent.svg';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 
-export interface PendingBtnAction {
+interface PendingBtnAction {
   text: string;
   action(cb: any): void;
 }
