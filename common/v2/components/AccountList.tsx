@@ -411,7 +411,7 @@ const buildAccountTable = (
       return columnList.slice(0, columnList.length - 1);
     }
     // Includes both delete && privacy tag column
-    else if (deletePresent && privacyPresent) {
+    else {
       return columnList;
     }
   };
