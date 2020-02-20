@@ -9,6 +9,9 @@ import { InputField, AssetDropdown } from 'v2/components';
 import { ISwapAsset } from '../types';
 import { getUnselectedAssets } from '../helpers';
 import questionToolTip from 'common/assets/images/icn-question.svg';
+import { SPACING } from 'v2/theme';
+
+const MARKUP_THRESHOLD = 1.5;
 
 const FormWrapper = styled.div`
   margin-top: 20px;
@@ -25,24 +28,35 @@ const InputWrapper = styled.div`
   margin-right: 15px;
 `;
 
-const CenteredToolTip = styled(Tooltip)`
+const LabelText = styled.p`
   display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
-const Label = styled.p`
+const STooltip = styled(Tooltip)`
+  display: flex;
+`;
+
+const Label = styled.div`
   font-size: 18px;
-  width: 100%;
+  display: flex;
+  flex-direction: row;
   line-height: 1;
   text-align: left;
   font-weight: normal;
   margin-bottom: 9px;
   color: ${props => props.theme.text};
+  & img {
+    margin: 0em 0.2em;
+  }
+`;
+
+const DisplayDataContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const DisplayData = styled.p`
-  margin-left: 12px;
+  display: flex;
 `;
 
 const StyledButton = styled(Button)`
@@ -52,10 +66,11 @@ const StyledButton = styled(Button)`
 
 const SlippageDisplay = styled(DisplayData)`
   color: ${props => props.color};
+  display: flex;
 `;
 
 const FormDisplay = styled.div`
-  margin-bottom: 32px;
+  margin-bottom: ${SPACING.SM};
 `;
 
 interface Props {
@@ -105,7 +120,9 @@ export default function SwapAssets(props: Props) {
     initialRate,
     slippageRate
   } = props;
+
   const markup = (1 - slippageRate) * 100;
+
   // show only unused assets
   const filteredAssets = getUnselectedAssets(assets, fromAsset, toAsset);
 
@@ -144,14 +161,14 @@ export default function SwapAssets(props: Props) {
   }, [toAsset]);
 
   const makeDisplayString = (amount: number) =>
-    amount.toFixed(2) === '~0.00' || amount < 0 ? '<0.01' : `~ ${amount.toFixed(2)}`;
+    amount.toFixed(2) === '0.00' || amount < 0 ? '<0.01' : `~ ${amount.toFixed(2)}`;
 
   return (
     <FormWrapper>
       <FormItem>
         <InputWrapper>
           <InputField
-            label={'Swap From'}
+            label={translateRaw('SWAP_SEND_AMOUNT')}
             value={fromAmount}
             placeholder="0.00"
             onChange={handleFromAmountChangedEvent}
@@ -170,26 +187,10 @@ export default function SwapAssets(props: Props) {
           searchable={true}
         />
       </FormItem>
-      <FormDisplay>
-        {initialValue && toAmount && toAsset && (
-          <>
-            <Label>
-              {`Fee (${MYC_DEXAG_COMMISSION_RATE}%) `}
-              <CenteredToolTip tooltip={'This fee is split between MyCrypto and Dex.AG'}>
-                <img src={questionToolTip} />
-              </CenteredToolTip>{' '}
-              :
-            </Label>
-            <DisplayData>
-              {`${makeDisplayString(initialValue - parseFloat(toAmount))} ${toAsset.symbol}`}
-            </DisplayData>
-          </>
-        )}
-      </FormDisplay>
       <FormItem>
         <InputWrapper>
           <InputField
-            label={'To'}
+            label={translateRaw('SWAP_RECEIVE_AMOUNT')}
             value={toAmount}
             placeholder="0.00"
             onChange={handleToAmountChangedEvent}
@@ -210,28 +211,50 @@ export default function SwapAssets(props: Props) {
       </FormItem>
       <FormDisplay>
         {initialRate && toAsset && fromAsset && (
-          <>
-            <Label>{`Rate: `}</Label>
+          <DisplayDataContainer>
+            <Label>{translateRaw('SWAP_RATE_LABEL')}</Label>
             <DisplayData>
-              {`${makeDisplayString(initialRate)} ${toAsset.symbol} per ${fromAsset.symbol}`}
+              {translateRaw('SWAP_RATE_TEXT', {
+                $displayString: makeDisplayString(initialRate),
+                $toAssetSymbol: toAsset.symbol,
+                $fromAssetSymbol: fromAsset.symbol
+              })}
             </DisplayData>
-          </>
+          </DisplayDataContainer>
         )}
-        {slippageRate && fromAsset && (
-          <>
+        {initialValue && toAmount && toAsset && (
+          <DisplayDataContainer>
             <Label>
-              {`Markup `}
-              <CenteredToolTip
-                tooltip={`Markup is calculated by comparing against a 0.01 ${fromAsset.symbol} trade`}
-              >
+              <LabelText>
+                {translateRaw('SWAP_FEE_LABEL', {
+                  $commission: MYC_DEXAG_COMMISSION_RATE.toString()
+                })}
+              </LabelText>
+              <STooltip tooltip={translateRaw('SWAP_FEE_TOOLTIP')}>
                 <img src={questionToolTip} />
-              </CenteredToolTip>
+              </STooltip>
               :
             </Label>
-            <SlippageDisplay color={markup >= 1.5 ? 'red' : 'green'}>
+            <DisplayData>
+              {`${makeDisplayString(initialValue - parseFloat(toAmount))} ${toAsset.symbol}`}
+            </DisplayData>
+          </DisplayDataContainer>
+        )}
+        {slippageRate && fromAsset && (
+          <DisplayDataContainer>
+            <Label>
+              <LabelText>{translateRaw('SWAP_MARKUP_LABEL')}</LabelText>
+              <STooltip
+                tooltip={translateRaw('SWAP_MARKUP_TOOLTIP', { $assetSymbol: fromAsset.symbol })}
+              >
+                <img src={questionToolTip} />
+              </STooltip>
+              :
+            </Label>
+            <SlippageDisplay color={markup >= MARKUP_THRESHOLD ? 'red' : 'green'}>
               {`${makeDisplayString(markup)}%`}
             </SlippageDisplay>
-          </>
+          </DisplayDataContainer>
         )}
       </FormDisplay>
       <StyledButton
