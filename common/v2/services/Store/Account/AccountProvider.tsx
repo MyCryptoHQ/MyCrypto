@@ -27,6 +27,7 @@ export interface IAccountContext {
   getAccountByAddressAndNetworkName(address: string, network: string): IAccount | undefined;
   updateAccountAssets(account: StoreAccount, assets: Asset[]): Promise<void>;
   updateAccountsBalances(toUpate: IAccount[]): void;
+  toggleAccountPrivacy(uuid: TUuid): void;
 }
 
 export const AccountContext = createContext({} as IAccountContext);
@@ -90,6 +91,14 @@ export const AccountProvider: React.FC = ({ children }) => {
         Boolean
       );
       model.updateAll(newAccounts);
+    },
+    toggleAccountPrivacy: uuid => {
+      const existingAccount = accounts.find(x => x.uuid === uuid);
+      if (!existingAccount) return;
+      state.updateAccount(uuid, {
+        ...existingAccount,
+        isPrivate: existingAccount.isPrivate ? !existingAccount.isPrivate : true
+      });
     }
   };
   return <AccountContext.Provider value={state}>{children}</AccountContext.Provider>;

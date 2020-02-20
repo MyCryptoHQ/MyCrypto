@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { Button, Identicon } from '@mycrypto/ui';
+import { Button, Identicon, Tooltip } from '@mycrypto/ui';
 
 import { translateRaw } from 'v2/translations';
-import { ROUTE_PATHS, Fiats, WALLETS_CONFIG } from 'v2/config';
+import { ROUTE_PATHS, Fiats, WALLETS_CONFIG, IS_ACTIVE_FEATURE } from 'v2/config';
 import {
   EthAddress,
   CollapsibleTable,
@@ -27,6 +27,8 @@ import { RatesContext } from 'v2/services';
 import { default as Currency } from './Currency';
 import { TUuid } from 'v2/types/uuid';
 import IconArrow from './IconArrow';
+import Checkbox from './Checkbox';
+import QuestionToolTip from 'common/assets/images/icn-question.svg';
 
 const Label = styled.span`
   display: flex;
@@ -44,14 +46,38 @@ const LabelWithWallet = styled.span`
   }
 `;
 
-const WalletTypeLabel = styled.div`
+const WalletLabelContainer = styled.ul`
+  margin-bottom: 0px;
+  padding: 0px;
+
+  & li {
+    &:not(:last-of-type) {
+      margin-right: ${SPACING.XS};
+    }
+  }
+`;
+
+const StyledAccountLabel = styled.li`
   display: inline-block;
   text-align: center;
-  background: ${COLORS.GREY};
   border-radius: 600px;
   color: ${COLORS.WHITE};
-  font-size: 0.6em;
+  font-size: 0.7em;
+  font-weight: normal;
   padding: 3px 6px;
+`;
+
+const WalletTypeLabel = styled(StyledAccountLabel)`
+  background: ${COLORS.GREY};
+`;
+
+const PrivateWalletLabel = styled(StyledAccountLabel)`
+  background: ${COLORS.PURPLE};
+`;
+
+const PrivacyCheckBox = styled(Checkbox)`
+  display: flex;
+  justify-content: center;
 `;
 
 const SIdenticon = styled(Identicon)`
@@ -78,6 +104,9 @@ const HeaderAlignment = styled.div`
       text-align: ${props.align || 'inherit'};
     }
   `};
+  & img {
+    margin-left: ${SPACING.XS};
+  }
 `;
 
 interface IFavoriteProps {
@@ -135,6 +164,10 @@ const AddAccountButton = styled(Button)`
   }
 `;
 
+const PrivateColumnLabel = styled.p`
+  display: inline-block;
+`;
+
 interface AccountListProps {
   accounts: StoreAccount[];
   className?: string;
@@ -142,6 +175,7 @@ interface AccountListProps {
   deletable?: boolean;
   favoritable?: boolean;
   copyable?: boolean;
+  privacyCheckboxEnabled?: boolean;
   dashboard?: boolean;
 }
 
@@ -155,6 +189,7 @@ export default function AccountList(props: AccountListProps) {
     deletable,
     favoritable,
     copyable,
+    privacyCheckboxEnabled = false,
     dashboard
   } = props;
   const { deleteAccountFromCache } = useContext(StoreContext);
@@ -196,6 +231,7 @@ export default function AccountList(props: AccountListProps) {
             deletable,
             favoritable,
             copyable,
+            privacyCheckboxEnabled,
             overlayRows,
             setDeletingIndex
           )}
@@ -275,21 +311,23 @@ const getSortingFunction = (sortKey: ISortTypes): TSortFunction => {
   }
 };
 
-function buildAccountTable(
+const buildAccountTable = (
   accounts: StoreAccount[],
   deleteAccount: (a: IAccount) => void,
   updateAccount: (u: TUuid, a: IAccount) => void,
   deletable?: boolean,
   favoritable?: boolean,
   copyable?: boolean,
+  privacyCheckboxEnabled?: boolean,
   overlayRows?: number[],
   setDeletingIndex?: any
-) {
+) => {
   const [sortingState, setSortingState] = useState(initialSortingState);
   const { totalFiat } = useContext(StoreContext);
   const { getAssetRate } = useContext(RatesContext);
   const { settings } = useContext(SettingsContext);
   const { addressBook, updateAddressBooks, createAddressBooks } = useContext(AddressBookContext);
+  const { toggleAccountPrivacy } = useContext(AccountContext);
 
   const updateSortingState = (id: IColumnValues) => {
     const currentBtnState = sortingState.sortState[id];
@@ -335,6 +373,12 @@ function buildAccountTable(
       {translateRaw('ACCOUNT_LIST_VALUE')}
       <IconArrow isFlipped={getColumnSortDirection('ACCOUNT_LIST_VALUE')} />
     </HeaderAlignment>,
+    <HeaderAlignment key={'ACCOUNT_LIST_PRIVATE'} align="center">
+      <PrivateColumnLabel>{translateRaw('ACCOUNT_LIST_PRIVATE')}</PrivateColumnLabel>
+      <Tooltip tooltip={translateRaw('ACCOUNT_LIST_PRIVATE_TOOLTIP')}>
+        <img src={QuestionToolTip} />
+      </Tooltip>
+    </HeaderAlignment>,
     <HeaderAlignment key={'ACCOUNT_LIST_DELETE'} align="center">
       {translateRaw('ACCOUNT_LIST_DELETE')}
     </HeaderAlignment>
@@ -349,8 +393,30 @@ function buildAccountTable(
     })
     .sort(getSortingFunction(sortingState.activeSort));
 
+  const getColumns = (
+    columnList: (string | JSX.Element)[],
+    deletePresent: boolean,
+    privacyPresent: boolean
+  ) => {
+    // Excludes both columns
+    if (!deletePresent && !privacyPresent) {
+      return columnList.slice(0, columnList.length - 2);
+    }
+    // Includes only the delete column, excludes the privacy tag column
+    else if (deletePresent && !privacyPresent) {
+      return [...columnList.slice(0, columnList.length - 2), columnList[columnList.length - 1]];
+    }
+    // Includes only the privacy tag column, excludes the delete column
+    else if (!deletePresent && privacyPresent) {
+      return columnList.slice(0, columnList.length - 1);
+    }
+    // Includes both delete && privacy tag column
+    else {
+      return columnList;
+    }
+  };
   return {
-    head: deletable ? columns : columns.slice(0, columns.length - 1),
+    head: getColumns(columns, deletable || false, privacyCheckboxEnabled || false),
     overlay:
       overlayRows && overlayRows[0] !== undefined ? (
         <RowDeleteOverlay
@@ -371,7 +437,7 @@ function buildAccountTable(
       ),
     overlayRows,
     body: getFullTableData.map(({ account, index, label, total, addressCard }) => {
-      const bodyContent = [
+      let bodyContent = [
         <Label key={index}>
           <SIdenticon address={account.address} />
           <LabelWithWallet>
@@ -391,9 +457,12 @@ function buildAccountTable(
               }}
               value={label}
             />
-            <div>
+            <WalletLabelContainer>
               <WalletTypeLabel>{WALLETS_CONFIG[account.wallet].name}</WalletTypeLabel>
-            </div>
+              {IS_ACTIVE_FEATURE.PRIVATE_TAGS && account.isPrivate && (
+                <PrivateWalletLabel>{'Private Account'}</PrivateWalletLabel>
+              )}
+            </WalletLabelContainer>
           </LabelWithWallet>
         </Label>,
         <EthAddress
@@ -413,30 +482,47 @@ function buildAccountTable(
           decimals={2}
         />
       ];
-      return deletable
-        ? [
-            ...bodyContent,
-            <DeleteButton key={index} onClick={() => setDeletingIndex(index)} icon="exit" />
-          ]
-        : favoritable
-        ? [
-            <FavoriteButton
-              key={index}
-              icon="star"
-              favorited={account.favorite ? account.favorite : false}
-              onClick={() =>
-                updateAccount(account.uuid, {
-                  ...account,
-                  favorite: !account.favorite
-                })
-              }
-            />,
-            ...bodyContent
-          ]
-        : bodyContent;
+
+      if (privacyCheckboxEnabled) {
+        bodyContent = [
+          ...bodyContent,
+          <PrivacyCheckBox
+            key={index}
+            name={'Private'}
+            checked={account.isPrivate || false}
+            onChange={() => toggleAccountPrivacy(account.uuid)}
+          />
+        ];
+      }
+
+      if (deletable) {
+        bodyContent = [
+          ...bodyContent,
+          <DeleteButton key={index} onClick={() => setDeletingIndex(index)} icon="exit" />
+        ];
+      }
+
+      if (favoritable) {
+        bodyContent = [
+          <FavoriteButton
+            key={index}
+            icon="star"
+            favorited={account.favorite ? account.favorite : false}
+            onClick={() =>
+              updateAccount(account.uuid, {
+                ...account,
+                favorite: !account.favorite
+              })
+            }
+          />,
+          ...bodyContent
+        ];
+      }
+
+      return bodyContent;
     }),
     config: {
       primaryColumn: translateRaw('ACCOUNT_LIST_LABEL')
     }
   };
-}
+};

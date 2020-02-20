@@ -140,7 +140,6 @@
     "CONFIRM_TX_FEE": "Transaction Fee",
     "CONFIRM_TX_FROM": "From",
     "CONFIRM_TX_TO": "To",
-    "CONFIRM_TX_FEE": "Transaction Fee",
     "TOTAL": "Total",
     "INSECURE_WALLET_TYPE_TITLE": "$wallet_type wallets are disabled online",
     "INSECURE_WALLET_TYPE_DESC": "Entering your $wallet_type on any website is dangerous. If MyCrypto.com was compromised, or you accidentally visited a phishing website, you could lose your funds. Because of that, we have disabled the use of $wallet_type wallets through the website. In order to access your account, please download MyCrypto and run it locally.",
@@ -558,6 +557,8 @@
     "HIGH_TRANSACTION_FEE": "This seems like a very high transaction fee. Are you sure you know what you are doing?",
     "SENDING_TO_YOURSELF": "You are sending to yourself. Are you sure you want to do that?",
     "SENDING_TO_BURN_ADDRESS": "This address appears to be a “burn” address. Please be absolutely sure you wish to send to this address. There is no way to reverse a transaction.",
-    "ADDRESS_ALREADY_ADDED": "This address ($label) has already been added"
+    "ADDRESS_ALREADY_ADDED": "This address ($label) has already been added",
+    "ACCOUNT_LIST_PRIVATE": "Private",
+    "ACCOUNT_LIST_PRIVATE_TOOLTIP": "This will label an account as \"Private\" which will provide you some tips on how to keep this account pseudonymous."
   }
 }

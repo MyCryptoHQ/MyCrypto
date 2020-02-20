@@ -10,6 +10,7 @@ import { AccountList, FlippablePanel, TabsNav } from 'v2/components';
 import { AddressBookPanel, AddToAddressBook, GeneralSettings, DangerZone } from './components';
 
 import settingsIcon from 'common/assets/images/icn-settings.svg';
+import { IS_ACTIVE_FEATURE } from 'v2/config';
 
 const SettingsHeading = styled(Heading)`
   display: flex;
@@ -51,7 +52,12 @@ function renderAccountPanel() {
         flipped ? (
           <p>Add Account</p>
         ) : (
-          <AccountList accounts={accounts} deletable={true} copyable={true} />
+          <AccountList
+            accounts={accounts}
+            deletable={true}
+            copyable={true}
+            privacyCheckboxEnabled={IS_ACTIVE_FEATURE.PRIVATE_TAGS}
+          />
         )
       }
     </FlippablePanel>
