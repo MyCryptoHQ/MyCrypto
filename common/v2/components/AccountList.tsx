@@ -398,19 +398,21 @@ const buildAccountTable = (
     deletePresent: boolean,
     privacyPresent: boolean
   ) => {
-    switch (`${deletePresent}-${privacyPresent}`) {
-      // Excludes both columns
-      case 'false-false':
-        return columnList.slice(0, columnList.length - 2);
-      // Includes only the delete column, excludes the privacy tag column
-      case 'true-false':
-        return [...columnList.slice(0, columnList.length - 2), columnList[columnList.length - 1]];
-      // Includes only the privacy tag column, excludes the delete column
-      case 'false-true':
-        return columnList.slice(0, columnList.length - 1);
-      // Includes both delete && privacy tag column
-      case 'true-true':
-        return columnList;
+    // Excludes both columns
+    if (!deletePresent && !privacyPresent) {
+      return columnList.slice(0, columnList.length - 2);
+    }
+    // Includes only the delete column, excludes the privacy tag column
+    else if (deletePresent && !privacyPresent) {
+      return [...columnList.slice(0, columnList.length - 2), columnList[columnList.length - 1]];
+    }
+    // Includes only the privacy tag column, excludes the delete column
+    else if (!deletePresent && privacyPresent) {
+      return columnList.slice(0, columnList.length - 1);
+    }
+    // Includes both delete && privacy tag column
+    else if (deletePresent && privacyPresent) {
+      return columnList;
     }
   };
   return {
