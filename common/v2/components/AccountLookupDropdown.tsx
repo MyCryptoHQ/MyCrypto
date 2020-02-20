@@ -4,6 +4,7 @@ import { OnInputKeyDownHandler } from 'react-select';
 import { translateRaw } from 'v2/translations';
 import { AccountSummary, AccountOption, Dropdown } from 'v2/components';
 import { Asset, IReceiverAddress, ExtendedAddressBook } from 'v2/types';
+import addressBookIcon from 'common/assets/images/icn-address-book.svg';
 
 // Option item displayed in Dropdown menu. Props are passed by react-select Select.
 // To know: Select needs to receive a class in order to attach refs https://github.com/JedWatson/react-select/issues/2459
@@ -41,6 +42,7 @@ function AccountLookupDropdown({
 
   return (
     <Dropdown
+      dropdownIcon={<img src={addressBookIcon} />}
       onInputKeyDown={onEnterKeyDown}
       inputValue={inputValue}
       name={name}
@@ -48,8 +50,8 @@ function AccountLookupDropdown({
       options={relevantAccounts}
       onChange={option => {
         onSelect({
-          display: option.label,
-          value: option.address
+          display: option ? option.label : '',
+          value: option ? option.address : ''
         });
       }}
       onInputChange={onInputChange}
@@ -67,6 +69,7 @@ function AccountLookupDropdown({
         />
       )}
       searchable={true}
+      clearable={true}
     />
   );
 }

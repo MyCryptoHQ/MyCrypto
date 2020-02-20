@@ -7,6 +7,7 @@ import Select, {
 } from 'react-select';
 import styled from 'styled-components';
 import { Icon } from '@mycrypto/ui';
+import crossIcon from 'common/assets/images/icn-cross.svg';
 
 import { COLORS, FONT_SIZE } from 'v2/theme';
 
@@ -34,7 +35,9 @@ interface Props<T> {
   disabled?: boolean;
   placeholder?: string;
   searchable?: boolean;
+  clearable?: boolean;
   name?: string;
+  dropdownIcon?: JSX.Element;
   optionComponent?:
     | React.ComponentClass<OptionComponentProps<T>>
     | React.StatelessComponent<OptionComponentProps<T>>;
@@ -49,9 +52,20 @@ interface Props<T> {
 const Chevron = styled(Icon)`
   font-size: 0.75rem;
 `;
+const IconWrapper = styled('div')`
+  width: 30px;
+`;
 
 const DropdownIndicator = (props: ArrowRendererProps) => (
   <Chevron icon={props.isOpen ? 'chevronUp' : 'chevronDown'} />
+);
+const CustomDropdownIndicator = (dropdownIcon: JSX.Element) => () => (
+  <IconWrapper>{dropdownIcon}</IconWrapper>
+);
+const ClearIndicator = () => (
+  <IconWrapper>
+    <img src={crossIcon} />
+  </IconWrapper>
 );
 
 export default function Dropdown({
@@ -64,15 +78,25 @@ export default function Dropdown({
   placeholder,
   disabled,
   searchable,
+  clearable = false,
   inputValue,
   onInputChange,
   name, // field name for hidden input. Important for Formik
-  onInputKeyDown
+  onInputKeyDown,
+  dropdownIcon
 }: Props<any>) {
+  // AccountLookup dropdown is using custom dropdown indicator (dropdownIcon) and clear field indicator. When value is set, it hides dropdown icon, so that clear icon can appear instead of it.
+  const resolveDropdownIcon = dropdownIcon
+    ? value
+      ? null
+      : CustomDropdownIndicator(dropdownIcon)
+    : DropdownIndicator;
+
   return (
     <SSelect
-      arrowRenderer={DropdownIndicator}
-      clearable={false}
+      arrowRenderer={resolveDropdownIcon}
+      clearRenderer={ClearIndicator}
+      clearable={clearable}
       menuContainerStyle={{ maxHeight: '65vh', borderTop: '1px solid #ececec' }}
       menuStyle={{ maxHeight: '65vh' }}
       name={name}
