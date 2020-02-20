@@ -29,6 +29,7 @@ const AssetWrapper = styled.div`
   margin: 0 15px;
   width: 148px;
   height: 9em;
+  text-align: center;
   & > :first-child {
     margin-bottom: 14px;
   }
