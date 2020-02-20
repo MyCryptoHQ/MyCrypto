@@ -56,7 +56,7 @@ function renderAccountPanel() {
             accounts={accounts}
             deletable={true}
             copyable={true}
-            privacyTriggerEnabled={IS_ACTIVE_FEATURE.PRIVATE_TAGS}
+            privacyCheckboxEnabled={IS_ACTIVE_FEATURE.PRIVATE_TAGS}
           />
         )
       }

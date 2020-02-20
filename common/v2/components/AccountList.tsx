@@ -175,7 +175,7 @@ interface AccountListProps {
   deletable?: boolean;
   favoritable?: boolean;
   copyable?: boolean;
-  privacyTriggerEnabled?: boolean;
+  privacyCheckboxEnabled?: boolean;
   dashboard?: boolean;
 }
 
@@ -189,7 +189,7 @@ export default function AccountList(props: AccountListProps) {
     deletable,
     favoritable,
     copyable,
-    privacyTriggerEnabled = false,
+    privacyCheckboxEnabled = false,
     dashboard
   } = props;
   const { deleteAccountFromCache } = useContext(StoreContext);
@@ -231,7 +231,7 @@ export default function AccountList(props: AccountListProps) {
             deletable,
             favoritable,
             copyable,
-            privacyTriggerEnabled,
+            privacyCheckboxEnabled,
             overlayRows,
             setDeletingIndex
           )}
@@ -318,7 +318,7 @@ const buildAccountTable = (
   deletable?: boolean,
   favoritable?: boolean,
   copyable?: boolean,
-  privacyTriggerEnabled?: boolean,
+  privacyCheckboxEnabled?: boolean,
   overlayRows?: number[],
   setDeletingIndex?: any
 ) => {
@@ -327,7 +327,7 @@ const buildAccountTable = (
   const { getAssetRate } = useContext(RatesContext);
   const { settings } = useContext(SettingsContext);
   const { addressBook, updateAddressBooks, createAddressBooks } = useContext(AddressBookContext);
-  const { triggerAccountPrivacy } = useContext(AccountContext);
+  const { toggleAccountPrivacy } = useContext(AccountContext);
 
   const updateSortingState = (id: IColumnValues) => {
     const currentBtnState = sortingState.sortState[id];
@@ -414,7 +414,7 @@ const buildAccountTable = (
     }
   };
   return {
-    head: getColumns(columns, deletable || false, privacyTriggerEnabled || false),
+    head: getColumns(columns, deletable || false, privacyCheckboxEnabled || false),
     overlay:
       overlayRows && overlayRows[0] !== undefined ? (
         <RowDeleteOverlay
@@ -481,14 +481,14 @@ const buildAccountTable = (
         />
       ];
 
-      if (privacyTriggerEnabled) {
+      if (privacyCheckboxEnabled) {
         bodyContent = [
           ...bodyContent,
           <PrivacyCheckBox
             key={index}
-            name={'Privacy Stoof?'}
+            name={'Private'}
             checked={account.isPrivate || false}
-            onChange={() => triggerAccountPrivacy(account.uuid)}
+            onChange={() => toggleAccountPrivacy(account.uuid)}
           />
         ];
       }
