@@ -22,7 +22,7 @@ export const convert = (asset: number, rate: number = 1): BigNumber => {
   const assetBN = parseEther(asset.toString());
   const splitRate = rate.toString().split('.');
   const decimals = splitRate.length > 1 ? splitRate[1].length : 0;
-  const rateDivisor = Math.pow(10, decimals);
+  const rateDivisor = bigNumberify(10).pow(decimals);
   const rateBN = parseUnits(rate.toString(), decimals);
 
   const converted = assetBN.mul(rateBN);
