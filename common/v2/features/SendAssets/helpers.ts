@@ -26,7 +26,7 @@ const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxOb
     to: formData.address.value,
     value: formData.amount ? inputValueToHex(formData.amount) : '0x0',
     data: formData.txDataField ? formData.txDataField : '0x0',
-    gasLimit: formData.gasLimitField,
+    gasLimit: inputGasLimitToHex(formData.gasLimitField),
     gasPrice: formData.advancedTransaction
       ? inputGasPriceToHex(formData.gasPriceField)
       : inputGasPriceToHex(formData.gasPriceSlider),

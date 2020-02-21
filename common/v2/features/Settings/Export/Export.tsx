@@ -7,9 +7,9 @@ import translate, { translateRaw } from 'v2/translations';
 import { ContentPanel, Button, RouterLink } from 'v2/components';
 import { SettingsContext } from 'v2/services/Store';
 import { ROUTE_PATHS } from 'v2/config';
+import { COLORS } from 'v2/theme';
 
 import Downloader from './Downloader';
-import { COLORS } from 'v2/theme';
 
 const CenteredContentPanel = styled(ContentPanel)`
   width: 35rem;

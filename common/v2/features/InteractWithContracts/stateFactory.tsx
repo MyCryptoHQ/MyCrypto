@@ -13,7 +13,8 @@ import {
   getGasEstimate,
   getResolvedENSAddress,
   EtherscanService,
-  getIsValidENSAddressFunction
+  getIsValidENSAddressFunction,
+  AssetContext
 } from 'v2/services';
 import { AbiFunction } from 'v2/services/EthService/contracts/ABIFunction';
 import { isWeb3Wallet } from 'v2/utils/web3';
@@ -51,6 +52,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
 }) => {
   const { getContractsByIds, createContractWithId, deleteContracts } = useContext(ContractContext);
   const { networks, updateNetwork } = useContext(NetworkContext);
+  const { assets } = useContext(AssetContext);
 
   const handleNetworkSelected = (networkId: NetworkId) => {
     setState((prevState: InteractWithContractState) => ({
@@ -325,9 +327,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
 
     if (isWeb3Wallet(account.wallet)) {
       const txReceipt =
-        signResponse && signResponse.hash
-          ? signResponse
-          : { hash: signResponse, asset: txConfig.asset };
+        signResponse && signResponse.hash ? signResponse : { ...txConfig, hash: signResponse };
       setState((prevState: InteractWithContractState) => ({
         ...prevState,
         txReceipt
@@ -341,7 +341,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
         .then(retrievedTxReceipt => retrievedTxReceipt)
         .catch(hash => provider.getTransactionByHash(hash))
         .then(retrievedTransactionReceipt => {
-          const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt);
+          const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(assets, networks);
           setState((prevState: InteractWithContractState) => ({
             ...prevState,
             txReceipt

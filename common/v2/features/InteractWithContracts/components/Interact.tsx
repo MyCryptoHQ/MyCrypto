@@ -33,7 +33,7 @@ import { ABIItem } from '../types';
 import { getParsedQueryString } from '../utils';
 import { isValidENSName } from 'v2/services/EthService';
 
-const { BLUE_BRIGHT } = COLORS;
+const { BLUE_BRIGHT, WHITE, BLUE_LIGHT } = COLORS;
 const { SCREEN_SM } = BREAK_POINTS;
 
 const NetworkSelectorWrapper = styled.div`
@@ -400,7 +400,12 @@ function Interact(props: CombinedProps) {
                       onChange={({ target: { value } }) => handleCustomContractNameChanged(value)}
                     />
                     <SaveButtonWrapper>
-                      <Button large={false} secondary={true} onClick={saveContract}>
+                      <Button
+                        color={BLUE_LIGHT}
+                        large={false}
+                        secondary={true}
+                        onClick={saveContract}
+                      >
                         {translateRaw('SAVE_CONTRACT')}
                       </Button>
                     </SaveButtonWrapper>
@@ -415,7 +420,7 @@ function Interact(props: CombinedProps) {
             </FieldWrapper>
 
             <ButtonWrapper>
-              <Button disabled={wasContractInteracted} onClick={submitInteract}>
+              <Button color={WHITE} disabled={wasContractInteracted} onClick={submitInteract}>
                 {translateRaw('INTERACT_WITH_CONTRACT')}
               </Button>
             </ButtonWrapper>

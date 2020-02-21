@@ -1,8 +1,9 @@
+import { useContext } from 'react';
 import { isHexString } from 'ethjs-util';
 
 import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
 import { StoreAccount, NetworkId } from 'v2/types';
-import { ProviderHandler, getGasEstimate } from 'v2/services';
+import { ProviderHandler, getGasEstimate, AssetContext, NetworkContext } from 'v2/services';
 import { isWeb3Wallet } from 'v2/utils/web3';
 import { translateRaw } from 'v2/translations';
 import { DEFAULT_NONCE, GAS_LIMIT_LOWER_BOUND, GAS_PRICE_GWEI_DEFAULT_HEX } from 'v2/config';
@@ -27,6 +28,9 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
   state,
   setState
 }) => {
+  const { assets } = useContext(AssetContext);
+  const { networks } = useContext(NetworkContext);
+
   const handleNetworkSelected = (networkId: NetworkId) => {
     setState((prevState: DeployContractsState) => ({
       ...prevState,
@@ -95,9 +99,7 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
 
     if (isWeb3Wallet(account.wallet)) {
       const txReceipt =
-        signResponse && signResponse.hash
-          ? signResponse
-          : { hash: signResponse, asset: txConfig.asset };
+        signResponse && signResponse.hash ? signResponse : { ...txConfig, hash: signResponse };
       setState((prevState: DeployContractsState) => ({
         ...prevState,
         txReceipt
@@ -111,7 +113,7 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
         .then(retrievedTxReceipt => retrievedTxReceipt)
         .catch(hash => provider.getTransactionByHash(hash))
         .then(retrievedTransactionReceipt => {
-          const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt);
+          const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(assets, networks);
           setState((prevState: DeployContractsState) => ({
             ...prevState,
             txReceipt

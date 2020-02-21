@@ -56,7 +56,7 @@ const SettingsTooltipIcon = styled(Icon)`
 `;
 
 const SelectContainer = styled.div`
-  border: 0.125em solid #007896;
+  border: 0.125em solid ${COLORS.BLUE_LIGHT};
   padding: 0.6rem;
   width: 205px;
   text-align: center;

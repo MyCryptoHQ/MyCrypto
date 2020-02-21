@@ -19,15 +19,20 @@ import {
 import { ROUTE_PATHS } from 'v2/config';
 import translate, { translateRaw } from 'v2/translations';
 import { convertToFiat, truncate, fromTxReceiptObj } from 'v2/utils';
+import { isWeb3Wallet } from 'v2/utils/web3';
 
 import './TransactionReceipt.scss';
 // Legacy
 import sentIcon from 'common/assets/images/icn-sent.svg';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 
+interface PendingBtnAction {
+  text: string;
+  action(cb: any): void;
+}
 interface Props {
-  completeButtonText: string;
   customDetails?: JSX.Element;
+  pendingButton?: PendingBtnAction;
 }
 
 export default function TransactionReceipt({
@@ -35,7 +40,8 @@ export default function TransactionReceipt({
   txConfig,
   resetFlow,
   completeButtonText,
-  customDetails
+  customDetails,
+  pendingButton
 }: IStepComponentProps & Props) {
   const { getAssetRate } = useContext(RatesContext);
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
@@ -90,14 +96,14 @@ export default function TransactionReceipt({
     txConfig.receiverAddress,
     txConfig.network
   );
-  const recipientLabel = recipientContact ? recipientContact.label : 'Unknown Address';
+  const recipientLabel = recipientContact ? recipientContact.label : translateRaw('NO_ADDRESS');
 
   /* ToDo: Figure out how to extract this */
   const { asset, gasPrice, gasLimit, senderAccount, network, data, nonce, baseAsset } = txConfig;
 
   /* Determing User's Contact */
   const senderContact = getContactByAccount(senderAccount);
-  const senderAccountLabel = senderContact ? senderContact.label : 'Unknown Account';
+  const senderAccountLabel = senderContact ? senderContact.label : translateRaw('NO_LABEL');
 
   const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
   const assetAmount = displayTxReceipt.amount || txConfig.amount;
@@ -105,6 +111,9 @@ export default function TransactionReceipt({
   const assetForRateFetch = 'asset' in displayTxReceipt ? displayTxReceipt.asset : undefined;
 
   const txUrl = displayTxReceipt.network.blockExplorer.txUrl(displayTxReceipt.hash);
+  const shouldRenderPendingBtn =
+    pendingButton && txStatus === ITxStatus.PENDING && !isWeb3Wallet(senderAccount.wallet);
+
   return (
     <div className="TransactionReceipt">
       <div className="TransactionReceipt-row">
@@ -157,19 +166,23 @@ export default function TransactionReceipt({
       <div className="TransactionReceipt-divider" />
       <div className="TransactionReceipt-details">
         <div className="TransactionReceipt-details-row">
-          <div className="TransactionReceipt-details-row-column">Transaction ID:</div>
+          <div className="TransactionReceipt-details-row-column">
+            {translate('TRANSACTION_ID')}:
+          </div>
           <div className="TransactionReceipt-details-row-column">
             <LinkOut text={displayTxReceipt.hash} truncate={truncate} link={txUrl} />
           </div>
         </div>
 
         <div className="TransactionReceipt-details-row">
-          <div className="TransactionReceipt-details-row-column">Transaction Status:</div>
-          <div className="TransactionReceipt-details-row-column">{translateRaw(txStatus)}</div>
+          <div className="TransactionReceipt-details-row-column">
+            {translate('TRANSACTION_STATUS')}:
+          </div>
+          <div className="TransactionReceipt-details-row-column">{translate(txStatus)}</div>
         </div>
 
         <div className="TransactionReceipt-details-row">
-          <div className="TransactionReceipt-details-row-column">Timestamp:</div>
+          <div className="TransactionReceipt-details-row-column">{translate('TIMESTAMP')}:</div>
           <div className="TransactionReceipt-details-row-column">
             {timestamp !== 0 ? (
               <div>
@@ -177,7 +190,7 @@ export default function TransactionReceipt({
                 <br /> {localTimestamp}
               </div>
             ) : (
-              'Unknown'
+              translate('UNKNOWN')
             )}
           </div>
         </div>
@@ -194,13 +207,24 @@ export default function TransactionReceipt({
           rawTransaction={txConfig.rawTransaction}
         />
       </div>
-      {completeButtonText && (
+      {shouldRenderPendingBtn && (
+        <Button
+          secondary={true}
+          className="TransactionReceipt-another"
+          onClick={() => pendingButton!.action(resetFlow)}
+        >
+          {pendingButton!.text}
+        </Button>
+      )}
+      {completeButtonText && !shouldRenderPendingBtn && (
         <Button secondary={true} className="TransactionReceipt-another" onClick={resetFlow}>
           {completeButtonText}
         </Button>
       )}
       <Link to={ROUTE_PATHS.DASHBOARD.path}>
-        <Button className="TransactionReceipt-back">Back to Dashboard</Button>
+        <Button className="TransactionReceipt-back">
+          {translate('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')}
+        </Button>
       </Link>
     </div>
   );
