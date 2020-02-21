@@ -42,7 +42,7 @@
     "jspdf": "1.5.3",
     "lodash": "4.17.15",
     "moment": "2.22.1",
-    "node-gyp": "5.0.3",
+    "node-gyp": "6.1.0",
     "qrcode": "1.4.4",
     "query-string": "6.0.0",
     "ramda": "0.26.1",
