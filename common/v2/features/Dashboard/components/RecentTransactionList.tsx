@@ -177,9 +177,9 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           <NewTabLink
             key={4}
             href={
-              network && network.blockExplorer
-                ? network.blockExplorer.txUrl(hash)
-                : `https://etherscan.io/tx/${hash}`
+              !network || !('blockExplorer' in network) || !network.blockExplorer
+                ? `https://etherscan.io/tx/${hash}`
+                : network.blockExplorer.txUrl(hash)
             }
           >
             <img src={newWindowIcon} alt="View more information about this transaction" />

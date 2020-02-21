@@ -135,13 +135,14 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
 
   const handleSignedWeb3Tx: TStepAction = (payload: ITxReceipt | string, cb) => {
     // Payload is tx hash or receipt
+    // @ts-ignore
     const txReceipt =
       typeof payload === 'string'
         ? {
             ...state.txConfig,
             hash: payload,
             to: state.txConfig.receiverAddress,
-            from: state.txConfig.senderAccount.address as string
+            from: state.txConfig.senderAccount.address
           }
         : fromTxReceiptObj(payload);
     addNewTransactionToAccount(

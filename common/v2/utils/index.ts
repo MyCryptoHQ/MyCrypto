@@ -40,5 +40,6 @@ export {
   formatErrorEmailMarkdown
 } from './emailFormatter';
 export { withContext } from './withContext';
-export { getWeb3Config } from './web3';
+export { getWeb3Config, isWeb3Wallet } from './web3';
 export { toArray } from './toArray';
+export { objToString } from './objToString';

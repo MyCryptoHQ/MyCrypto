@@ -28,7 +28,7 @@ export { default as InputField } from './InputField';
 export { default as NetworkSelectDropdown } from './NetworkSelectDropdown';
 export { default as PrintPaperWalletButton } from './PrintPaperWalletButton';
 export { default as Overlay } from './Overlay';
-export { default as QRCode } from './QRCode';
+export { default as QRCode, QRCodeContainer } from './QRCode';
 export { default as RouterLink } from './RouterLink';
 export { default as Stepper } from './Stepper';
 export { default as TimeElapsedCounter } from './TimeElapsedCounter';

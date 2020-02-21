@@ -52,7 +52,6 @@ export default function TransactionReceipt({
   const [displayTxReceipt, setDisplayTxReceipt] = useState(txReceipt as ITxReceipt);
   const [blockNumber, setBlockNumber] = useState(0);
   const [timestamp, setTimestamp] = useState(0);
-
   useEffect(() => {
     const provider = new ProviderHandler(displayTxReceipt.network || txConfig.network);
     if (blockNumber === 0 && displayTxReceipt.hash) {

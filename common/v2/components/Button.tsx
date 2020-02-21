@@ -8,6 +8,9 @@ interface ButtonProps {
 }
 
 const StyledButton = styled(Button)<ButtonProps>`
+  &&& {
+    font-size: 1rem;
+  }
   ${props =>
       props.fullwidth === true &&
       css`

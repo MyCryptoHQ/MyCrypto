@@ -11,7 +11,8 @@ import {
   TrezorDecrypt,
   Web3ProviderDecrypt,
   Web3ProviderInstall,
-  ViewOnlyDecrypt
+  ViewOnlyDecrypt,
+  WalletConnectDecrypt
 } from 'v2/components';
 
 import { NetworkSelectPanel } from './components';
@@ -41,6 +42,10 @@ export const getStories = (): IStory[] => [
     name: WalletId.PARITY_SIGNER,
     steps: [NetworkSelectPanel, ParitySignerDecrypt],
     hideFromWalletList: true
+  },
+  {
+    name: WalletId.WALLETCONNECT,
+    steps: [NetworkSelectPanel, WalletConnectDecrypt]
   },
   {
     name: WalletId.KEYSTORE_FILE,

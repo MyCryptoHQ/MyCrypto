@@ -8,6 +8,7 @@ import { default as SignTransactionParity } from './Parity';
 import { default as SignTransactionPrivateKey } from './PrivateKey';
 import { default as SignTransactionSafeT } from './SafeTmini';
 import { default as SignTransactionTrezor } from './Trezor';
+import { default as SignTransactionWalletConnect } from './WalletConnect';
 
 export const WALLET_STEPS: SigningComponents = {
   [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,
@@ -22,5 +23,7 @@ export const WALLET_STEPS: SigningComponents = {
   [WalletId.KEYSTORE_FILE]: SignTransactionKeystore,
   [WalletId.PARITY_SIGNER]: SignTransactionParity,
   [WalletId.MNEMONIC_PHRASE]: SignTransactionMnemonic,
+  [WalletId.WALLETCONNECT]: SignTransactionWalletConnect,
   [WalletId.VIEW_ONLY]: null
 };
+export { default as HardwareSignTransaction } from './Hardware';

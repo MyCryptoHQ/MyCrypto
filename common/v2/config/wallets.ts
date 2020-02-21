@@ -13,6 +13,7 @@ import TrustIcon from 'common/assets/images/wallets/trust-3.svg';
 import Web3DefaultIcon from 'assets/images/wallets/web3-default.svg';
 import FrameIcon from 'assets/images/wallets/frame.svg';
 import CoinbaseWalletIcon from 'common/assets/images/wallets/coinbase.svg';
+import WalletConnectSVG from 'assets/images/wallets/walletconnect.svg';
 
 export interface IWalletConfig {
   id: WalletId;
@@ -24,7 +25,7 @@ export interface IWalletConfig {
   lid: string;
   icon?: string;
   description: string;
-  helpLink?: string;
+  helpLink: string;
   install?: {
     getItLink?: string;
     googlePlay?: string;
@@ -198,7 +199,20 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isDesktopOnly: false,
     type: WalletType.MISC,
     lid: 'VIEW_ADDR',
-    description: 'ADD_VIEW_ADDRESS_DESC'
+    description: 'ADD_VIEW_ADDRESS_DESC',
+    helpLink: ``
+  },
+  [WalletId.WALLETCONNECT]: {
+    id: WalletId.WALLETCONNECT,
+    name: 'WalletConnect',
+    isDeterministic: false,
+    isSecure: true,
+    isDesktopOnly: false,
+    type: WalletType.WEB3,
+    lid: 'X_WALLETCONNECT',
+    icon: WalletConnectSVG,
+    description: 'ADD_WALLETCONNECTDESC',
+    helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/what-is-walletconnect`
   }
 };
 
@@ -217,3 +231,5 @@ export const HARDWARE_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS_CON
 export const WEB3_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS_CONFIG)(
   ({ type }: { type: WalletType }) => type === WalletType.WEB3
 );
+
+export const getWalletConfig = (walletId: WalletId): IWalletConfig => WALLETS_CONFIG[walletId];

@@ -6,13 +6,18 @@ import { COLORS, monospace } from 'v2/theme';
 
 // Override styles of @mycrypto/ui in order to vertically align text and icon.
 // Ensure the icon uses the discrete color.
+interface SProps {
+  inline?: boolean;
+}
 const Overrides = styled.div`
+  display: ${(props: SProps) => (props.inline ? 'inline-block' : 'block')};
+
   * {
     font-family: ${monospace};
   }
 
   & button {
-    vertical-align: middle;
+    vertical-align: ${(props: SProps) => (props.inline ? 'inherit' : 'middle')};
     font-size: 1em;
     line-height: 24px;
   }
@@ -29,15 +34,15 @@ const Overrides = styled.div`
     color: ${COLORS.BLUE_GREY};
   }
 `;
-interface Props {
+interface Props extends SProps {
   address: string;
-  isCopyable?: boolean;
   truncate: any;
+  isCopyable?: boolean;
 }
 
-function EthAddress({ address, isCopyable = true, truncate }: Props) {
+function EthAddress({ address, isCopyable = true, truncate, inline = false }: Props) {
   return (
-    <Overrides>
+    <Overrides inline={inline}>
       <Copyable text={address.toLowerCase()} isCopyable={isCopyable} truncate={truncate} />
     </Overrides>
   );
