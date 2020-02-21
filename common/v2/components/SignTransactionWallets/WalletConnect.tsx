@@ -95,17 +95,17 @@ const ErrorHandlers: { [K in TActionError]: React.SFC<ErrorProps> } = {
   ),
   CONNECTION_REJECTED: ({ onClick }) => (
     <>
-      <Typography>Session Rejected</Typography>
+      <Typography>{translateRaw('SIGN_TX_WALLETCONNECT_SESSION_REJECTED')}</Typography>
       <div style={{ marginTop: '1em' }}>
-        <Button onClick={onClick}>Try Again</Button>
+        <Button onClick={onClick}>{translateRaw('SIGN_TX_WALLETCONNECT_TRY_AGAIN')}</Button>
       </div>
     </>
   ),
   SIGN_REJECTED: ({ onClick }) => (
     <>
-      <Typography>Transaction Rejected</Typography>
+      <Typography>{translateRaw('SIGN_TX_WALLETCONNECT_TX_REJECTED')}</Typography>
       <div style={{ marginTop: '1em' }}>
-        <Button onClick={onClick}>Try Again</Button>
+        <Button onClick={onClick}>{translateRaw('SIGN_TX_WALLETCONNECT_TRY_AGAIN')}</Button>
       </div>
     </>
   )
@@ -165,28 +165,33 @@ export function SignTransactionWalletConnect({
           <>
             <SSection center={true}>
               <Typography>
-                Session connected with{' '}
+                {translateRaw('SIGN_TX_WALLETCONNECT_SESSION_ADDRESS')}{' '}
                 <EthAddress
                   inline={true}
                   isCopyable={false}
                   address={state.detectedAddress!}
                   truncate={truncate}
                 />{' '}
-                on network {getNetworkByChainId(state.detectedChainId!, networks)!.name}
+                {translateRaw('SIGN_TX_WALLETCONNECT_SESSION_NETWORK')}{' '}
+                {getNetworkByChainId(state.detectedChainId!, networks)!.name}
               </Typography>
             </SSection>
             <SSection center={true} style={{ maxWidth: '430px' }}>
-              <Typography>Requesting signature for transcation:</Typography>
+              <Typography>{translateRaw('SIGN_TX_WALLETCONNECT_TX_INFO')}</Typography>
               <CodeBlock>{objToString(rawTransaction)}</CodeBlock>
             </SSection>
           </>
         ) : (
           <SSection center={true}>
             <Typography as="div">
-              1. Open the wallet containing the account {senderAccount.address}
+              {translateRaw('SIGN_TX_WALLETCONNECT_INSTRUCTIONS_1')} {senderAccount.address}
             </Typography>
-            <Typography as="div">2. Select the {senderAccount.networkId} network</Typography>
-            <Typography as="div">3. Scan the QRCode below</Typography>
+            <Typography as="div">
+              {translateRaw('SIGN_TX_WALLETCONNECT_INSTRUCTIONS_2', {
+                $network: senderAccount.networkId
+              })}
+            </Typography>
+            <Typography as="div">{translateRaw('SIGN_TX_WALLETCONNECT_INSTRUCTIONS_3')}</Typography>
           </SSection>
         )}
         <SSection center={true} withOverlay={true}>
@@ -200,11 +205,11 @@ export function SignTransactionWalletConnect({
                 getErrorMessage(state.errors![0])
               ) : (
                 <>
-                  <Typography>Pending Confirmation</Typography>
+                  <Typography>{translateRaw('SIGN_TX_WALLETCONNECT_CONFIRM_PENDING')}</Typography>
                   <div style={{ margin: '1em 0' }}>
                     <Spinner />
                   </div>
-                  <Typography>Please confirm the transaction on your wallet</Typography>
+                  <Typography>{translateRaw('SIGN_TX_WALLETCONNECT_CONFIRM_PROMPT')}</Typography>
                 </>
               )}
             </SContainer>

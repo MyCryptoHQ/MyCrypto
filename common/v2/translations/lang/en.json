@@ -29,6 +29,7 @@
     "HOWTO_TREZOR": "[Learn how TREZOR works with MyCrypto](https://support.mycrypto.com/how-to/migrating/moving-from-mycrypto-to-trezor)",
     "X_KEEPKEY": "KeepKey",
     "UNLOCK_WALLET": "Connect and Unlock",
+    "UNLOCK_WALLET_TITLE": "Connect and unlock your $wallet device",
     "SIGNER_SELECT_WALLET": "Connect and Unlock with $walletId",
     "SIGNER_SELECT_WALLETCONNECT": "Connect and Unlock your $walletId App",
     "SIGNER_SELECT_WALLET_QR": "Open your $walletId app on your phone and scan the QR code.",
@@ -567,9 +568,16 @@
     "ACCOUNT_LIST_PRIVATE_TOOLTIP": "This will label an account as \"Private\" which will provide you some tips on how to keep this account pseudonymous.",
     "SIGN_TX_WALLETCONNECT_FAILED_ACCOUNT": "Please switch the account in your $walletName app to $address in order to proceed.",
     "SIGN_TX_WALLETCONNECT_FAILED_NETWORK": "Please switch the network in your $walletName app to $networkName in order to proceed.",
-    "SIGN_TX_WALLETCONNECT_REJECTED": "Transaction has been rejected or there was an error. If you rejected the tx, please approve it. Otherwise, please restart the Send Assets flow.",
-    "SIGN_TX_WALLETCONNECT_PENDING": "Attempting to sign the transaction with account $address.",
-    "SIGN_TX_WALLETCONNECT_HIDE_QR": "Hide QR Code -",
-    "SIGN_TX_WALLETCONNECT_SHOW_QR": "Show QR Code +"
+    "SIGN_TX_WALLETCONNECT_SESSION_REJECTED": "Session rejected",
+    "SIGN_TX_WALLETCONNECT_TRY_AGAIN": "Try Again",
+    "SIGN_TX_WALLETCONNECT_TX_REJECTED": "Signature rejected",
+    "SIGN_TX_WALLETCONNECT_TX_INFO": "Requesting signature for transcation:",
+    "SIGN_TX_WALLETCONNECT_CONFIRM_PROMPT": "Please confirm the transaction on your wallet",
+    "SIGN_TX_WALLETCONNECT_CONFIRM_PENDING": "Pending Confirmation",
+    "SIGN_TX_WALLETCONNECT_SESSION_ADDRESS": "Session connected with",
+    "SIGN_TX_WALLETCONNECT_SESSION_NETWORK": "on network",
+    "SIGN_TX_WALLETCONNECT_INSTRUCTIONS_1": "1. Open the wallet containing the account",
+    "SIGN_TX_WALLETCONNECT_INSTRUCTIONS_2": "2. Select the $network network",
+    "SIGN_TX_WALLETCONNECT_INSTRUCTIONS_3": "3. Scan the QRCode below"
   }
 }

@@ -82,7 +82,7 @@ export function WalletConnectDecrypt({ onUnlock }: OwnProps) {
   return (
     <>
       <SHeader>
-        {translate('UNLOCK_WALLET')} {`Your ${translateRaw('X_WALLETCONNECT')} device`}
+        {translateRaw('UNLOCK_WALLET_TITLE', { $wallet: translateRaw('X_WALLETCONNECT') })}
       </SHeader>
       <SContent>
         <SSection center={true}>
@@ -97,9 +97,11 @@ export function WalletConnectDecrypt({ onUnlock }: OwnProps) {
             <SContainer>
               {!R.isEmpty(state.errors) && (
                 <>
-                  <Typography>Session Rejected</Typography>
+                  <Typography>{translateRaw('SIGN_TX_WALLETCONNECT_SESSION_REJECTED')}</Typography>
                   <div style={{ marginTop: '1em' }}>
-                    <Button onClick={requestConnection}>Try Again</Button>
+                    <Button onClick={requestConnection}>
+                      {translateRaw('SIGN_TX_WALLETCONNECT_TRY_AGAIN')}
+                    </Button>
                   </div>
                 </>
               )}
