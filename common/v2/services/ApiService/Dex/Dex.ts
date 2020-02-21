@@ -56,7 +56,7 @@ export default class DexService {
       undefined,
       toAmount
     );
-    return { costBasis: 1 / parseFloat(costBasis), price: parseFloat(price) };
+    return { costBasis: parseFloat(costBasis), price: parseFloat(price) };
   };
 
   public getOrderDetailsFrom = async (from: TSymbol, to: TSymbol, fromAmount: string) =>
@@ -107,7 +107,12 @@ export default class DexService {
         dex: 'all'
       };
       const { data: costBasis } = await this.service.get('price', {
-        params: { ...params, toAmount: undefined, fromAmount: '0.01' },
+        params: {
+          ...params,
+          toAmount: toAmount ? '0.01' : undefined,
+          fromAmount: fromAmount ? '0.01' : undefined,
+          dex: 'all'
+        },
         cancelToken: new CancelToken(function executor(c) {
           // An executor function receives a cancel function as a parameter
           cancel = c;
@@ -120,6 +125,7 @@ export default class DexService {
           cancel = c;
         })
       });
+
       return { costBasis: costBasis[0].price, tokenPrices: tokenPrices[0].price };
     } catch (e) {
       if (axios.isCancel(e)) {

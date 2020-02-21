@@ -1,5 +1,5 @@
 import BigNumberJs from 'bignumber.js';
-import { bigNumberify, BigNumber, parseEther } from 'ethers/utils';
+import { bigNumberify, BigNumber, parseEther, formatEther } from 'ethers/utils';
 import { fromTokenBase } from 'v2/services/EthService';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { StoreAsset } from 'v2/types';
@@ -99,3 +99,9 @@ export const withCommission = ({
   const convertedFloat = weiToFloat(amountBN.mul(commissionBN), 18);
   return convertedFloat / commissionDivisor;
 };
+
+export const calculateMarkup = (exchangeRate: number, costBasis: number): string =>
+  (
+    (1 - parseFloat(trimBN(formatEther(divideBNFloats(exchangeRate, costBasis).toString()), 10))) *
+    100
+  ).toString();

@@ -13,6 +13,7 @@ import {
   multiplyBNFloats,
   divideBNFloats,
   withCommission,
+  calculateMarkup,
   trimBN
 >>>>>>> reworked conversion
 } from 'v2/utils';
@@ -45,7 +46,6 @@ const swapFlowInitialState = {
   toAmountError: undefined,
   isCalculatingToAmount: false,
   lastChangedAmount: LAST_CHANGED_AMOUNT.FROM,
-  swapPrice: 0,
   account: undefined,
   isSubmitting: false,
   txConfig: undefined,
@@ -162,24 +162,12 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         ),
         fromAmountError: '',
         toAmountError: '',
-        swapPrice: price,
         initialToAmount: commissionIncreasedAmount,
         exchangeRate: trimBN(formatEther(divideBNFloats(1, price).toString())),
-        markup: (
-          1 -
-          parseFloat(
-            trimBN(
-              formatEther(
-                divideBNFloats(
-                  trimBN(formatEther(divideBNFloats(1, price).toString())),
-                  trimBN(formatEther(divideBNFloats(1, costBasis).toString()))
-                ).toString()
-              ),
-              10
-            )
-          ) *
-            100
-        ).toString()
+        markup: calculateMarkup(
+          parseFloat(trimBN(formatEther(divideBNFloats(1, price).toString()))),
+          parseFloat(trimBN(formatEther(divideBNFloats(1, costBasis).toString())))
+        )
       }));
     } catch (e) {
       if (!e.isCancel) {
@@ -231,6 +219,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         toAsset.symbol,
         value
       );
+
       setState((prevState: SwapState) => ({
         ...prevState,
         isCalculatingToAmount: false,
@@ -245,13 +234,9 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         }).toString(),
         fromAmountError: '',
         toAmountError: '',
-        swapPrice: price,
         initialToAmount: trimBN(formatEther(multiplyBNFloats(value, price).toString())),
         exchangeRate: price.toString(),
-        markup: (
-          1 -
-          parseFloat(trimBN(formatEther(divideBNFloats(price, costBasis).toString()), 10)) * 100
-        ).toString()
+        markup: calculateMarkup(price, costBasis)
       }));
     } catch (e) {
       if (!e.isCancel) {

@@ -57,7 +57,6 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     fromAmountError,
     toAmountError,
     account,
-    swapPrice,
     isSubmitting,
     lastChangedAmount,
     dexTrade,
@@ -129,7 +128,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         toAsset,
         fromAmount,
         toAmount,
-        swapPrice
+        exchangeRate
       },
       actions: {
         handleAccountSelected,
@@ -146,7 +145,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         fromAmount,
         toAmount,
         account,
-        swapPrice,
+        exchangeRate,
         lastChangedAmount,
         isSubmitting
       },

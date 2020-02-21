@@ -9,7 +9,8 @@ import {
   convertToBN,
   trimBN,
   addBNFloats,
-  subtractBNFloats
+  subtractBNFloats,
+  calculateMarkup
 } from './convert';
 import { StoreAsset, TAssetType, TUuid } from 'v2/types';
 import { MYC_DEXAG_COMMISSION_RATE } from 'v2/config';
@@ -290,6 +291,17 @@ describe('it Remove / Add commission from amount', () => {
       amount: convertToBN(amount),
       rate: MYC_DEXAG_COMMISSION_RATE
     });
+    expect(converted).toEqual(expected);
+  });
+});
+
+describe('it calculates markup correctly', () => {
+  it('calculates markup from costBasis and exchangeRate', () => {
+    const exchangeRate = 224.78743749068855;
+    const costBasis = 263.0915899;
+
+    const expected = '14.559246999999997';
+    const converted = calculateMarkup(exchangeRate, costBasis);
     expect(converted).toEqual(expected);
   });
 });

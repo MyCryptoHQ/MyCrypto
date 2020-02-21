@@ -21,7 +21,6 @@ export interface SwapState {
   toAmountError: string | JSX.Element;
   isCalculatingToAmount: boolean;
   lastChangedAmount: LAST_CHANGED_AMOUNT;
-  swapPrice: number;
   account: StoreAccount;
   isSubmitting: boolean;
   txConfig: ITxConfig;
