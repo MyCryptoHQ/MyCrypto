@@ -70,7 +70,6 @@ const AddressWrapper = Styled(ColumnWrapper)<{ position: string }>`
     display: flex;
     flex-direction: column;
   }
-}
 `;
 
 const AmountWrapper = Styled(ColumnWrapper)`
