@@ -9,7 +9,16 @@ export { isUrl } from './isUrl';
 export { truncate } from './truncate';
 export { useOnClickOutside } from './useOnClickOutside';
 export { trace } from './trace';
-export { convertToFiat, convertToFiatFromAsset, weiToFloat, withCommission } from './convert';
+export {
+  convertToFiat,
+  convertToFiatFromAsset,
+  weiToFloat,
+  convertToBN,
+  divideBNFloats,
+  multiplyBNFloats,
+  trimBN,
+  withCommission
+} from './convert';
 export { isArrayEqual } from './isArrayEqual';
 export { useInterval } from './useInterval';
 export * from './useStateReducer';

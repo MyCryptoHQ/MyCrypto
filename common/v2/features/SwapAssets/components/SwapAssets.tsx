@@ -10,6 +10,8 @@ import { ISwapAsset } from '../types';
 import { getUnselectedAssets } from '../helpers';
 import questionToolTip from 'common/assets/images/icn-question.svg';
 import { SPACING } from 'v2/theme';
+import { formatEther } from 'ethers/utils';
+import { subBNFloats, trimBN } from 'v2/utils/convert';
 
 const FormWrapper = styled.div`
   margin-top: 20px;
@@ -81,9 +83,9 @@ interface Props {
   isCalculatingToAmount: boolean;
   fromAmountError: string;
   toAmountError: string;
-  initialToAmount: number;
-  exchangeRate: number;
-  slippageRate: number;
+  initialToAmount: string;
+  exchangeRate: string;
+  slippageRate: string;
   onSuccess(): void;
   handleFromAssetSelected(asset: ISwapAsset): void;
   handleToAssetSelected(asset: ISwapAsset): void;
@@ -119,7 +121,7 @@ export default function SwapAssets(props: Props) {
     slippageRate
   } = props;
 
-  const markup = (1 - slippageRate) * 100;
+  const markup = (1 - parseFloat(trimBN(slippageRate, 10))) * 100;
 
   // show only unused assets
   const filteredAssets = getUnselectedAssets(assets, fromAsset, toAsset);
@@ -158,8 +160,20 @@ export default function SwapAssets(props: Props) {
     calculateNewToAmount(fromAmount);
   }, [toAsset]);
 
-  const makeDisplayString = (amount: number) =>
-    amount.toFixed(2) === '0.00' || amount < 0 ? '<0.01' : `~ ${amount.toFixed(2)}`;
+  const makeDisplayString = (amount: string) =>
+    parseFloat(trimBN(amount, 10)) <= 0.01
+      ? '<0.01'
+      : `~ ${parseFloat(trimBN(amount, 10)).toFixed(2)}`;
+
+  const z = {
+    initialToAmount,
+    toAmount,
+    fromAmount,
+    slippageRate,
+    markup,
+    exchangeRate
+  };
+  console.debug('[newTrade]: ', z);
 
   return (
     <FormWrapper>
@@ -213,7 +227,7 @@ export default function SwapAssets(props: Props) {
             <Label>{translateRaw('SWAP_RATE_LABEL')}</Label>
             <DisplayData>
               {translateRaw('SWAP_RATE_TEXT', {
-                $displayString: makeDisplayString(exchangeRate),
+                $displayString: makeDisplayString(exchangeRate.toString()),
                 $toAssetSymbol: toAsset.symbol,
                 $fromAssetSymbol: fromAsset.symbol
               })}
@@ -234,7 +248,9 @@ export default function SwapAssets(props: Props) {
               :
             </Label>
             <DisplayData>
-              {`${makeDisplayString(initialToAmount - parseFloat(toAmount))} ${toAsset.symbol}`}
+              {`${makeDisplayString(
+                formatEther(subBNFloats(initialToAmount, toAmount).toString())
+              )} ${toAsset.symbol}`}
             </DisplayData>
           </DisplayDataContainer>
         )}
@@ -250,7 +266,7 @@ export default function SwapAssets(props: Props) {
               :
             </Label>
             <SlippageDisplay color={markup >= MYC_DEXAG_MARKUP_THRESHOLD ? 'red' : 'green'}>
-              {`${makeDisplayString(markup)}%`}
+              {`${makeDisplayString(markup.toString())}%`}
             </SlippageDisplay>
           </DisplayDataContainer>
         )}

@@ -28,7 +28,7 @@ export interface SwapState {
   rawTransaction: ITxConfig;
   dexTrade: any;
   txReceipt: ITxReceipt | undefined;
-  initialToAmount: number;
-  exchangeRate: number;
-  slippageRate: number;
+  initialToAmount: string;
+  exchangeRate: string;
+  slippageRate: string;
 }
