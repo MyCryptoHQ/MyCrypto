@@ -178,6 +178,7 @@
     "stylelint-config-recommended": "3.0.0",
     "stylelint-config-styled-components": "0.1.1",
     "stylelint-processor-styled-components": "1.10.0",
+    "stylelint-webpack-plugin": "1.2.3",
     "ts-jest": "24.3.0",
     "tslint": "5.20.1",
     "tslint-config-prettier": "1.18.0",
@@ -231,6 +232,7 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "prettier --write --config ./.prettierrc --config-precedence file-override",
+      "yarn lint:css",
       "yarn tslint",
       "git add"
     ]

@@ -3868,6 +3868,11 @@ arrify@^1.0.1:
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-1.0.1.tgz#898508da2226f380df904728456849c1501a4b0d"
   integrity sha1-iYUI2iIm84DfkEcoRWhJwVAaSw0=
 
+arrify@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/arrify/-/arrify-2.0.1.tgz#c9655e9331e0abcd588d2a7cad7e9956f66701fa"
+  integrity sha512-3duEwti880xqi4eAMN8AyR4a0ByT90zoYdLlevfrvU43vb0YZwZVfxOgxWrLXXXpyugL0hNZc9G6BiB5B3nUug==
+
 asap@~2.0.3:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
@@ -17128,6 +17133,15 @@ stylelint-processor-styled-components@1.10.0:
     "@babel/traverse" "^7.8.3"
     micromatch "^4.0.2"
     postcss "^7.0.26"
+
+stylelint-webpack-plugin@1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/stylelint-webpack-plugin/-/stylelint-webpack-plugin-1.2.3.tgz#c1785dbb5a9e7ea2777726c6851c1e4ac6362ad8"
+  integrity sha512-XEevZZzlI6k3e0Amp7AtpZ/elgaOdPPwLFY9InNoajw4KNRcZTkK61ZsZdHvIyK32Ej9L9u4fwfXG2QGKW0imA==
+  dependencies:
+    arrify "^2.0.1"
+    micromatch "^4.0.2"
+    schema-utils "^2.6.1"
 
 stylelint@13.2.0:
   version "13.2.0"
