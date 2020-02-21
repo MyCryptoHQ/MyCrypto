@@ -67,7 +67,6 @@ const ActionsWrapper = styled.div`
 `;
 
 const Title = styled.p`
-  font-weight: bold;
   font-size: 3.1vw;
   font-weight: 900;
   line-height: normal;
