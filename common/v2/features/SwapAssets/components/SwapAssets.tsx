@@ -165,16 +165,6 @@ export default function SwapAssets(props: Props) {
       ? '<0.01'
       : `~ ${parseFloat(trimBN(amount, 10)).toFixed(2)}`;
 
-  const z = {
-    initialToAmount,
-    toAmount,
-    fromAmount,
-    slippageRate,
-    markup,
-    exchangeRate
-  };
-  console.debug('[newTrade]: ', z);
-
   return (
     <FormWrapper>
       <FormItem>
