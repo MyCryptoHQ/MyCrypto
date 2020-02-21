@@ -3,15 +3,13 @@ import styled from 'styled-components';
 import { Button, Tooltip } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'v2/translations';
-import { MYC_DEXAG_COMMISSION_RATE } from 'v2/config';
+import { MYC_DEXAG_COMMISSION_RATE, MYC_DEXAG_MARKUP_THRESHOLD } from 'v2/config';
 import { InputField, AssetDropdown } from 'v2/components';
 
 import { ISwapAsset } from '../types';
 import { getUnselectedAssets } from '../helpers';
 import questionToolTip from 'common/assets/images/icn-question.svg';
 import { SPACING } from 'v2/theme';
-
-const MARKUP_THRESHOLD = 1.5;
 
 const FormWrapper = styled.div`
   margin-top: 20px;
@@ -83,8 +81,8 @@ interface Props {
   isCalculatingToAmount: boolean;
   fromAmountError: string;
   toAmountError: string;
-  initialValue: number;
-  initialRate: number;
+  initialToAmount: number;
+  exchangeRate: number;
   slippageRate: number;
   onSuccess(): void;
   handleFromAssetSelected(asset: ISwapAsset): void;
@@ -116,8 +114,8 @@ export default function SwapAssets(props: Props) {
     calculateNewToAmount,
     handleFromAmountChanged,
     handleToAmountChanged,
-    initialValue,
-    initialRate,
+    initialToAmount,
+    exchangeRate,
     slippageRate
   } = props;
 
@@ -210,19 +208,19 @@ export default function SwapAssets(props: Props) {
         />
       </FormItem>
       <FormDisplay>
-        {initialRate && toAsset && fromAsset && (
+        {exchangeRate && toAsset && fromAsset && (
           <DisplayDataContainer>
             <Label>{translateRaw('SWAP_RATE_LABEL')}</Label>
             <DisplayData>
               {translateRaw('SWAP_RATE_TEXT', {
-                $displayString: makeDisplayString(initialRate),
+                $displayString: makeDisplayString(exchangeRate),
                 $toAssetSymbol: toAsset.symbol,
                 $fromAssetSymbol: fromAsset.symbol
               })}
             </DisplayData>
           </DisplayDataContainer>
         )}
-        {initialValue && toAmount && toAsset && (
+        {initialToAmount && toAmount && toAsset && (
           <DisplayDataContainer>
             <Label>
               <LabelText>
@@ -236,7 +234,7 @@ export default function SwapAssets(props: Props) {
               :
             </Label>
             <DisplayData>
-              {`${makeDisplayString(initialValue - parseFloat(toAmount))} ${toAsset.symbol}`}
+              {`${makeDisplayString(initialToAmount - parseFloat(toAmount))} ${toAsset.symbol}`}
             </DisplayData>
           </DisplayDataContainer>
         )}
@@ -251,7 +249,7 @@ export default function SwapAssets(props: Props) {
               </STooltip>
               :
             </Label>
-            <SlippageDisplay color={markup >= MARKUP_THRESHOLD ? 'red' : 'green'}>
+            <SlippageDisplay color={markup >= MYC_DEXAG_MARKUP_THRESHOLD ? 'red' : 'green'}>
               {`${makeDisplayString(markup)}%`}
             </SlippageDisplay>
           </DisplayDataContainer>

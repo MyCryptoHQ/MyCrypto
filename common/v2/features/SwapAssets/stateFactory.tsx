@@ -43,8 +43,8 @@ const swapFlowInitialState = {
   rawTransaction: undefined,
   dexTrade: undefined,
   txReceipt: undefined,
-  initialValue: undefined,
-  initialRate: undefined,
+  initialToAmount: undefined,
+  exchangeRate: undefined,
   slippageRate: undefined
 };
 
@@ -150,8 +150,8 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         fromAmountError: '',
         toAmountError: '',
         swapPrice: price,
-        initialValue: commissionIncreasedAmount,
-        initialRate: 1 / price,
+        initialToAmount: commissionIncreasedAmount,
+        exchangeRate: 1 / price,
         slippageRate: 1 / price / (1 / costBasis)
       }));
     } catch (e) {
@@ -215,8 +215,8 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         fromAmountError: '',
         toAmountError: '',
         swapPrice: price,
-        initialValue: Number(value) * price,
-        initialRate: price,
+        initialToAmount: Number(value) * price,
+        exchangeRate: price,
         slippageRate: price / costBasis
       }));
     } catch (e) {
