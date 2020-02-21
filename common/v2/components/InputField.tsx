@@ -126,7 +126,7 @@ const CustomIcon = styled.span`
     margin-top: 2px;
     margin-bottom: 2px;
     margin-left: 8px;
-    color: ${COLORS.BLUE_BRIGHT}};
+    color: ${COLORS.BLUE_BRIGHT};
     cursor: pointer;
     user-select: none;
   }

@@ -21,7 +21,7 @@ const Code = styled.div`
   border: none;
   background-color: inherit;
   white-space: pre;
-  font-family: 'Roboto Mono';
+  font-family: 'Roboto Mono', sans-serif;
 `;
 
 interface Props {

@@ -65,7 +65,8 @@ interface InputProps {
 
 const SInput = styled(InputField)<InputProps>`
   ${props => props.value && `font-family: ${monospace};`}
-  font-size: 1rem !important; // to override Typography from mycrypto/ui
+  /* Override Typography from mycrypto/ui */
+  font-size: 1rem !important;
 `;
 
 function ETHAddressField({

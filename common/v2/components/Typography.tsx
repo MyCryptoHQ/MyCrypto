@@ -24,8 +24,10 @@ const STypography = styled(UITypography)`
   vertical-align: middle;
   ${(p: SProps) => !p.inheritFontWeight && `font-weight: ${p.bold ? '600' : '400'};`}
   font-size: ${(p: SProps) => p.fontSize} !important;
-  // UITypography component defaults to a 'p' tag with a margin-bottom.
-  // To facilitate text and icon alignement we remove it here once and for all.
+  /*
+    UITypography component defaults to a 'p' tag with a margin-bottom.
+    To facilitate text and icon alignement we remove it here once and for all.
+  */
   margin-bottom: 0px;
 
   ${(p: SProps) =>
