@@ -6,7 +6,7 @@ import { Button, Tooltip } from '@mycrypto/ui';
 import translate, { translateRaw } from 'v2/translations';
 import { MYC_DEXAG_COMMISSION_RATE, MYC_DEXAG_MARKUP_THRESHOLD } from 'v2/config';
 import { InputField, AssetDropdown } from 'v2/components';
-import { SPACING } from 'v2/theme';
+import { SPACING, COLORS } from 'v2/theme';
 import { subtractBNFloats, trimBN } from 'v2/utils';
 
 import { ISwapAsset } from '../types';
@@ -254,7 +254,7 @@ export default function SwapAssets(props: Props) {
               :
             </Label>
             <SlippageDisplay
-              color={parseFloat(markup) >= MYC_DEXAG_MARKUP_THRESHOLD ? 'red' : 'green'}
+              color={parseFloat(markup) >= MYC_DEXAG_MARKUP_THRESHOLD ? COLORS.RED : COLORS.GREEN}
             >
               {`${makeDisplayString(markup.toString())}%`}
             </SlippageDisplay>
