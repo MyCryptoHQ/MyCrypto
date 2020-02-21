@@ -93,6 +93,7 @@ const WhiteButtonFirst = styled(Button)`
 
     &:first-of-type {
       margin-right: 20px;
+    }
   }
 `;
 
@@ -106,7 +107,7 @@ const WhiteButtonSecond = styled(Button)`
 
   @media (min-width: 700px) {
     width: 230px;
-
+  }
 `;
 
 const ButtonGroup = styled.div`
