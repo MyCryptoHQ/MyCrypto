@@ -30,5 +30,5 @@ export interface SwapState {
   txReceipt: ITxReceipt | undefined;
   initialToAmount: string; // This is used to reverse the fee calculation when inputing the recipient amount. It's how we determine the fee.
   exchangeRate: string; // The exchange rate displayed to the user (post-markup)
-  slippageRate: string;
+  markup: string;
 }

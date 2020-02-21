@@ -85,7 +85,7 @@ interface Props {
   toAmountError: string;
   initialToAmount: string;
   exchangeRate: string;
-  slippageRate: string;
+  markup: string;
   onSuccess(): void;
   handleFromAssetSelected(asset: ISwapAsset): void;
   handleToAssetSelected(asset: ISwapAsset): void;
@@ -118,10 +118,8 @@ export default function SwapAssets(props: Props) {
     handleToAmountChanged,
     initialToAmount,
     exchangeRate,
-    slippageRate
+    markup
   } = props;
-
-  const markup = (1 - parseFloat(trimBN(slippageRate, 10))) * 100;
 
   // show only unused assets
   const filteredAssets = getUnselectedAssets(assets, fromAsset, toAsset);
@@ -244,7 +242,7 @@ export default function SwapAssets(props: Props) {
             </DisplayData>
           </DisplayDataContainer>
         )}
-        {slippageRate && fromAsset && (
+        {markup && fromAsset && (
           <DisplayDataContainer>
             <Label>
               <LabelText>{translateRaw('SWAP_MARKUP_LABEL')}</LabelText>
@@ -255,7 +253,9 @@ export default function SwapAssets(props: Props) {
               </STooltip>
               :
             </Label>
-            <SlippageDisplay color={markup >= MYC_DEXAG_MARKUP_THRESHOLD ? 'red' : 'green'}>
+            <SlippageDisplay
+              color={parseFloat(markup) >= MYC_DEXAG_MARKUP_THRESHOLD ? 'red' : 'green'}
+            >
               {`${makeDisplayString(markup.toString())}%`}
             </SlippageDisplay>
           </DisplayDataContainer>
