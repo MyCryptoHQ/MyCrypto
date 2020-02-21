@@ -31,17 +31,26 @@ export const getLabelByAddressAndNetwork = (
 / that they can change later which differentiates between accounts.
 / `New Ethereum Account 1` vs `New Ethereum Account 2` vs `New Ethereum Classic Account 1`
 */
-export const findNextUnusedDefaultLabel = (wallet: WalletId) => (
-  contacts: AddressBook[]
-): string => {
+
+const getUnusedLabel = (contacts: AddressBook[], generateLabel: (index: number) => string) => {
   let index = 0;
   let isFound: AddressBook | undefined;
   let unusedLabel: string;
   do {
     index += 1;
-    unusedLabel = `${WALLETS_CONFIG[wallet].name} Account ${index}`;
+    unusedLabel = generateLabel(index);
     isFound = contacts.find(a => a.label === unusedLabel);
   } while (isFound);
 
   return unusedLabel;
+};
+
+export const findNextUnusedDefaultLabel = (wallet: WalletId) => (
+  contacts: AddressBook[]
+): string => {
+  return getUnusedLabel(contacts, index => `${WALLETS_CONFIG[wallet].name} Account ${index}`);
+};
+
+export const findNextRecipientLabel = (contacts: AddressBook[]) => {
+  return getUnusedLabel(contacts, index => `Recipient ${index}`);
 };

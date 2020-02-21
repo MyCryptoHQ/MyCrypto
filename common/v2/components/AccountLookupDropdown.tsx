@@ -4,11 +4,8 @@ import { OnInputKeyDownHandler } from 'react-select';
 import { translateRaw } from 'v2/translations';
 import { AccountSummary, AccountOption, Dropdown } from 'v2/components';
 import { Asset, IReceiverAddress, ExtendedAddressBook } from 'v2/types';
-import addressBookIcon from 'common/assets/images/icn-address-book.svg';
 
-// Option item displayed in Dropdown menu. Props are passed by react-select Select.
-// To know: Select needs to receive a class in order to attach refs https://github.com/JedWatson/react-select/issues/2459
-// Since Account summary is using Address which still has the 'copy', we must handle hover ourself.
+import addressBookIcon from 'common/assets/images/icn-address-book.svg';
 
 interface IAccountLookupDropdownProps {
   accounts: ExtendedAddressBook[];
@@ -20,7 +17,7 @@ interface IAccountLookupDropdownProps {
   onSelect(option: IReceiverAddress): void;
   onChange?(e: any): void;
   onInputChange(e: any): string;
-  onBlur(e: any): void;
+  onBlur(inputString: string): void;
 }
 
 function AccountLookupDropdown({

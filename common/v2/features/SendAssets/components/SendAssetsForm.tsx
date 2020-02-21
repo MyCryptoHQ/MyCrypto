@@ -8,8 +8,7 @@ import BN from 'bn.js';
 import styled from 'styled-components';
 import * as R from 'ramda';
 import { ValuesType } from 'utility-types';
-
-import questionSVG from 'assets/images/icn-question.svg';
+import { ResolutionError } from '@unstoppabledomains/resolution';
 
 import translate, { translateRaw } from 'v2/translations';
 import {
@@ -61,8 +60,11 @@ import {
   DEFAULT_ASSET_DECIMAL
 } from 'v2/config';
 import { RatesContext } from 'v2/services/RatesProvider';
-
 import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
+import { weiToFloat, formatSupportEmail } from 'v2/utils';
+import { InlineMessageType } from 'v2/types/inlineMessages';
+import AddressLookupField from 'v2/components/AddressLookupField';
+
 import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
 import './SendAssetsForm.scss';
 import {
@@ -71,12 +73,10 @@ import {
   validateNonceField,
   validateDataField,
   validateAmountField
-} from './validators/validators';
+} from './validators';
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
-import { weiToFloat, formatSupportEmail } from 'v2/utils';
-import { ResolutionError } from '@unstoppabledomains/resolution';
-import { InlineMessageType } from 'v2/types/inlineMessages';
-import AddressLookupField from 'v2/components/AddressLookupField';
+
+import questionSVG from 'assets/images/icn-question.svg';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;
@@ -193,7 +193,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
         // @ts-ignore Hack as Formik doesn't officially support warnings
         // tslint:disable-next-line
         .test('is-checksummed', translate('CHECKSUM_ERROR'), function(value) {
-          if (!isChecksumAddress(value)) {
+          if (isValidETHAddress(value) && !isChecksumAddress(value)) {
             return {
               name: 'ValidationError',
               type: InlineMessageType.INFO_CIRCLE,
@@ -456,13 +456,15 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                   value={values.address}
                   component={(fieldProps: FieldProps) => (
                     <AddressLookupField
+                      error={errors && touched.address && errors.address && errors.address.value}
                       fieldProps={fieldProps}
                       network={values.network}
                       resolutionError={resolutionError}
                       isValidAddress={isValidAddress}
                       isResolvingName={isResolvingName}
-                      handleGasEstimate={handleGasEstimate}
+                      onBlur={handleGasEstimate}
                       handleDomainResolve={handleDomainResolve}
+                      clearErrors={() => setResolutionError(undefined)}
                     />
                   )}
                 />

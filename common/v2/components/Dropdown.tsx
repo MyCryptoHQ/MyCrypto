@@ -7,9 +7,10 @@ import Select, {
 } from 'react-select';
 import styled from 'styled-components';
 import { Icon } from '@mycrypto/ui';
-import crossIcon from 'common/assets/images/icn-cross.svg';
 
 import { COLORS, FONT_SIZE } from 'v2/theme';
+
+import crossIcon from 'common/assets/images/icn-cross.svg';
 
 // Give a height to the input when value is defined
 // Overide custom styles common/sass/styles/overrides/react-select.scss
@@ -59,14 +60,27 @@ const IconWrapper = styled('div')`
 const DropdownIndicator = (props: ArrowRendererProps) => (
   <Chevron icon={props.isOpen ? 'chevronUp' : 'chevronDown'} />
 );
+
 const CustomDropdownIndicator = (dropdownIcon: JSX.Element) => () => (
   <IconWrapper>{dropdownIcon}</IconWrapper>
 );
+
 const ClearIndicator = () => (
   <IconWrapper>
     <img src={crossIcon} />
   </IconWrapper>
 );
+
+// AccountLookup dropdown is using custom dropdown indicator (dropdownIcon) and clear field indicator.
+// When value is set, it hides dropdown icon, so that clear icon can appear instead of it.
+const getDropdownIndicator = (
+  value: Props<any>['value'],
+  dropdownIcon: Props<any>['dropdownIcon']
+) => {
+  if (!dropdownIcon) return DropdownIndicator;
+  if (!value) return CustomDropdownIndicator(dropdownIcon);
+  return null;
+};
 
 export default function Dropdown({
   onChange,
@@ -85,16 +99,9 @@ export default function Dropdown({
   onInputKeyDown,
   dropdownIcon
 }: Props<any>) {
-  // AccountLookup dropdown is using custom dropdown indicator (dropdownIcon) and clear field indicator. When value is set, it hides dropdown icon, so that clear icon can appear instead of it.
-  const resolveDropdownIcon = dropdownIcon
-    ? value
-      ? null
-      : CustomDropdownIndicator(dropdownIcon)
-    : DropdownIndicator;
-
   return (
     <SSelect
-      arrowRenderer={resolveDropdownIcon}
+      arrowRenderer={getDropdownIndicator(value, dropdownIcon)}
       clearRenderer={ClearIndicator}
       clearable={clearable}
       menuContainerStyle={{ maxHeight: '65vh', borderTop: '1px solid #ececec' }}
