@@ -27,15 +27,15 @@ export const convertToBN = (asset: number): BigNumber => {
 
 // Multiply a floating-point BN by another floating-point BN
 export const multiplyBNFloats = (asset: number | string, rate: number | string): BigNumber => {
-  BigNumberJs.config({ DECIMAL_PLACES: 18 });
+  BigNumberJs.config({ DECIMAL_PLACES: DEFAULT_ASSET_DECIMAL });
   const assetBN = new BigNumberJs(asset);
   const rateBN = new BigNumberJs(rate);
-  return bigNumberify(parseEther(trimBN(assetBN.times(rateBN).toFixed(18))));
+  return bigNumberify(parseEther(trimBN(assetBN.times(rateBN).toFixed(DEFAULT_ASSET_DECIMAL))));
 };
 
 // Divide a floating-point BNs by another floating-point BN
 export const divideBNFloats = (asset: number | string, divisor: number | string): BigNumber => {
-  BigNumberJs.config({ DECIMAL_PLACES: 18 });
+  BigNumberJs.config({ DECIMAL_PLACES: DEFAULT_ASSET_DECIMAL });
   const assetBN = new BigNumberJs(asset);
   const divisorBN = new BigNumberJs(divisor);
   return bigNumberify(
@@ -48,7 +48,7 @@ export const subtractBNFloats = (
   asset: number | string,
   subtractor: number | string
 ): BigNumber => {
-  BigNumberJs.config({ DECIMAL_PLACES: 18 });
+  BigNumberJs.config({ DECIMAL_PLACES: DEFAULT_ASSET_DECIMAL });
   const assetBN = new BigNumberJs(asset);
   const subtractorBN = new BigNumberJs(subtractor);
   return bigNumberify(
@@ -60,7 +60,7 @@ export const subtractBNFloats = (
 
 // Add a floating-point BNs to another floating-point BN
 export const addBNFloats = (asset: number | string, additor: number | string): BigNumber => {
-  BigNumberJs.config({ DECIMAL_PLACES: 18 });
+  BigNumberJs.config({ DECIMAL_PLACES: DEFAULT_ASSET_DECIMAL });
   const assetBN = new BigNumberJs(asset);
   const additorBN = new BigNumberJs(additor);
   return bigNumberify(
@@ -96,7 +96,7 @@ export const withCommission = ({
   const commissionDivisor = Math.pow(10, decimals);
   const commissionBN = bigNumberify(Math.round(commission * commissionDivisor));
 
-  const convertedFloat = weiToFloat(amountBN.mul(commissionBN), 18);
+  const convertedFloat = weiToFloat(amountBN.mul(commissionBN), DEFAULT_ASSET_DECIMAL);
   return convertedFloat / commissionDivisor;
 };
 
