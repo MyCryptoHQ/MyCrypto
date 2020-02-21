@@ -59,7 +59,7 @@ const CustomTextArea = styled.textarea<CustomInputProps>`
   background: ${props => props.theme.controlBackground};
   border: 0.125em solid ${props => props.theme.controlBorder};
   border-radius: 0.125em;
-  padding: ${props => (props.showEye ? '12px 36px 12px 12px' : '12px 12px')}
+  padding: ${props => (props.showEye ? '12px 36px 12px 12px' : '12px 12px')};
   display: flex;
   :focus-within {
     outline: none;
@@ -70,7 +70,7 @@ const CustomTextArea = styled.textarea<CustomInputProps>`
     opacity: 1;
   }
   border-color: ${props => (props.inputError ? COLORS.PASTEL_RED : '')};
-  resize:  ${props => (props.resizable ? 'default' : 'none')};
+  resize: ${props => (props.resizable ? 'default' : 'none')};
   ${props => props.height && `height: ${props.height}`};
   ${props => props.maxHeight && `max-height: ${props.maxHeight}`};
 `;
