@@ -44,7 +44,10 @@ export const divideBNFloats = (asset: number | string, divisor: number | string)
 };
 
 // Subtract a floating-point BNs from another floating-point BN
-export const subBNFloats = (asset: number | string, subtractor: number | string): BigNumber => {
+export const subtractBNFloats = (
+  asset: number | string,
+  subtractor: number | string
+): BigNumber => {
   BigNumberJs.config({ DECIMAL_PLACES: 18 });
   const assetBN = new BigNumberJs(asset);
   const subtractorBN = new BigNumberJs(subtractor);

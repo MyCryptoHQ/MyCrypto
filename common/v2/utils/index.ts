@@ -16,6 +16,8 @@ export {
   convertToBN,
   divideBNFloats,
   multiplyBNFloats,
+  addBNFloats,
+  subtractBNFloats,
   trimBN,
   withCommission
 } from './convert';

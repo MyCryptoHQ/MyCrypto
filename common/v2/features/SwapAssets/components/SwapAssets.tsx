@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import { formatEther } from 'ethers/utils';
 import { Button, Tooltip } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'v2/translations';
 import { MYC_DEXAG_COMMISSION_RATE, MYC_DEXAG_MARKUP_THRESHOLD } from 'v2/config';
 import { InputField, AssetDropdown } from 'v2/components';
+import { SPACING } from 'v2/theme';
+import { subtractBNFloats, trimBN } from 'v2/utils';
 
 import { ISwapAsset } from '../types';
 import { getUnselectedAssets } from '../helpers';
 import questionToolTip from 'common/assets/images/icn-question.svg';
-import { SPACING } from 'v2/theme';
-import { formatEther } from 'ethers/utils';
-import { subBNFloats, trimBN } from 'v2/utils/convert';
 
 const FormWrapper = styled.div`
   margin-top: 20px;
@@ -239,7 +239,7 @@ export default function SwapAssets(props: Props) {
             </Label>
             <DisplayData>
               {`${makeDisplayString(
-                formatEther(subBNFloats(initialToAmount, toAmount).toString())
+                formatEther(subtractBNFloats(initialToAmount, toAmount).toString())
               )} ${toAsset.symbol}`}
             </DisplayData>
           </DisplayDataContainer>

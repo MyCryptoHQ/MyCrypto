@@ -9,7 +9,7 @@ import {
   convertToBN,
   trimBN,
   addBNFloats,
-  subBNFloats
+  subtractBNFloats
 } from './convert';
 import { StoreAsset, TAssetType, TUuid } from 'v2/types';
 import { MYC_DEXAG_COMMISSION_RATE } from 'v2/config';
@@ -196,7 +196,7 @@ describe('it subtracts BigNumber floating point numbers from each other', () => 
     const subtractor = 1914.9054605256267;
     const amount = 2;
     const expected = convertTest(amount, subtractor);
-    const converted = subBNFloats(amount, subtractor);
+    const converted = subtractBNFloats(amount, subtractor);
     expect(trimBN(formatEther(converted))).toEqual(expected);
   });
 
@@ -204,7 +204,7 @@ describe('it subtracts BigNumber floating point numbers from each other', () => 
     const subtractor = 2;
     const amount = 1914.9054605256267;
     const expected = convertTest(amount, subtractor);
-    const converted = subBNFloats(amount, subtractor);
+    const converted = subtractBNFloats(amount, subtractor);
     expect(trimBN(formatEther(converted))).toEqual(expected);
   });
 
@@ -212,14 +212,14 @@ describe('it subtracts BigNumber floating point numbers from each other', () => 
     const subtractor = 648931.7247453306;
     const amount = 0.0010249999999999999;
     const expected = '-648931.7237203306';
-    const converted = subBNFloats(amount, subtractor);
+    const converted = subtractBNFloats(amount, subtractor);
     expect(trimBN(formatEther(converted))).toEqual(expected);
   });
 
   it('should be a ether.js BigNumber', () => {
     const subtractor = 2;
     const amount = 1914.9054605256267;
-    const converted = subBNFloats(amount, subtractor);
+    const converted = subtractBNFloats(amount, subtractor);
     expect(converted instanceof BigNumber).toBeTruthy();
   });
 });
