@@ -15,8 +15,8 @@ import metamaskIcon from 'common/assets/images/wallets/metamask.svg';
 import trustIcon from 'common/assets/images/wallets/trust-2.svg';
 import ledgerIcon from 'common/assets/images/wallets/ledger.svg';
 import trezorIcon from 'common/assets/images/wallets/trezor.svg';
-// import frameIcon from 'common/assets/images/wallets/frame.svg';
-// import walletConnectIcon from 'common/assets/images/wallets/wallet-connect.svg';
+import frameIcon from 'common/assets/images/wallets/frame.svg';
+import walletConnectIcon from 'common/assets/images/wallets/wallet-connect.svg';
 
 const { SCREEN_SM, SCREEN_LG, SCREEN_XXL } = BREAK_POINTS;
 const { BLUE_DARK_SLATE, GREYISH_BROWN } = COLORS;
@@ -259,7 +259,7 @@ export default function CompatibleWalletsPanel() {
             text={translateRaw('X_TREZOR')}
             walletId={WalletId.TREZOR}
           />
-          {/* <WalletCardWithRouter
+          <WalletCardWithRouter
             src={walletConnectIcon}
             text={translateRaw('X_WALLET_CONNECT')}
             walletId={WalletId.WALLETCONNECT}
@@ -274,7 +274,7 @@ export default function CompatibleWalletsPanel() {
             mobileSrc={walletConnectIcon}
             mobileText={translateRaw('X_WALLET_CONNECT')}
             mobileWalletId={WalletId.WALLETCONNECT}
-          /> */}
+          />
         </Slider>
       </Wallets>
     </MainPanel>
