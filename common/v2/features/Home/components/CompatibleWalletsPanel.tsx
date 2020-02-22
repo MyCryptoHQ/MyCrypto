@@ -15,8 +15,8 @@ import metamaskIcon from 'common/assets/images/wallets/metamask.svg';
 import trustIcon from 'common/assets/images/wallets/trust-2.svg';
 import ledgerIcon from 'common/assets/images/wallets/ledger.svg';
 import trezorIcon from 'common/assets/images/wallets/trezor.svg';
-import paritySignerIcon from 'common/assets/images/wallets/parity-signer.svg';
-import safeTIcon from 'common/assets/images/wallets/safe-t.png';
+import frameIcon from 'common/assets/images/wallets/frame.svg';
+import walletConnectIcon from 'common/assets/images/wallets/walletconnect.svg';
 
 const { SCREEN_SM, SCREEN_LG, SCREEN_XXL } = BREAK_POINTS;
 const { BLUE_DARK_SLATE, GREYISH_BROWN } = COLORS;
@@ -160,21 +160,25 @@ interface WalletCardProps {
   text: string;
   mobileSrc?: string;
   mobileText?: string;
+  mobileWalletId?: string;
   walletId: string;
 }
 
 class WalletCard extends Component<WalletCardProps & RouteComponentProps<{}>> {
-  public handleWalletClick = (wallet: string) => {
-    const { walletId, history } = this.props;
-    history.push(`${ROUTE_PATHS.ADD_ACCOUNT}/${walletId}`);
+  public handleWalletClick = (wallet: string, walletId: string) => {
+    const { history } = this.props;
+    history.push(`${ROUTE_PATHS.ADD_ACCOUNT.path}/${walletId}`);
     AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HOME, `${wallet} wallet button clicked`);
   };
 
   public render() {
-    const { src, text, mobileSrc, mobileText } = this.props;
+    const { src, text, mobileSrc, mobileText, walletId, mobileWalletId } = this.props;
     return (
       <WalletCardWrapper>
-        <WalletCardContent isMobile={!!mobileSrc} onClick={() => this.handleWalletClick(text)}>
+        <WalletCardContent
+          isMobile={!!mobileSrc}
+          onClick={() => this.handleWalletClick(text, walletId)}
+        >
           <WalletCardImg src={src} alt={text} />
           <WalletCardDescription>{text}</WalletCardDescription>
         </WalletCardContent>
@@ -182,7 +186,7 @@ class WalletCard extends Component<WalletCardProps & RouteComponentProps<{}>> {
           <WalletCardContent
             isMobile={!mobileSrc}
             showMobile={true}
-            onClick={() => this.handleWalletClick(mobileText || text)}
+            onClick={() => this.handleWalletClick(mobileText || text, mobileWalletId || walletId)}
           >
             <WalletCardImg src={mobileSrc} alt={mobileText} />
             <WalletCardDescription>{mobileText}</WalletCardDescription>
@@ -241,11 +245,13 @@ export default function CompatibleWalletsPanel() {
             text={translateRaw('X_METAMASK')}
             mobileSrc={trustIcon}
             mobileText={translateRaw('X_TRUST')}
-            walletId={WalletId.METAMASK}
+            walletId={WalletId.WEB3}
           />
           <WalletCardWithRouter
             src={ledgerIcon}
             text={translateRaw('X_LEDGER')}
+            mobileSrc={ledgerIcon}
+            mobileText={translateRaw('X_LEDGER')}
             walletId={WalletId.LEDGER_NANO_S}
           />
           <WalletCardWithRouter
@@ -254,14 +260,20 @@ export default function CompatibleWalletsPanel() {
             walletId={WalletId.TREZOR}
           />
           <WalletCardWithRouter
-            src={paritySignerIcon}
-            text={translateRaw('X_PARITYSIGNER')}
-            walletId={WalletId.PARITY_SIGNER}
+            src={walletConnectIcon}
+            text={translateRaw('X_WALLETCONNECT')}
+            walletId={WalletId.WALLETCONNECT}
+            mobileSrc={metamaskIcon}
+            mobileText={translateRaw('X_METAMASK')}
+            mobileWalletId={WalletId.WEB3}
           />
           <WalletCardWithRouter
-            src={safeTIcon}
-            text={translateRaw('X_SAFE_T')}
-            walletId={WalletId.SAFE_T_MINI}
+            src={frameIcon}
+            text={translateRaw('X_FRAME')}
+            walletId={WalletId.WEB3}
+            mobileSrc={walletConnectIcon}
+            mobileText={translateRaw('X_WALLETCONNECT')}
+            mobileWalletId={WalletId.WALLETCONNECT}
           />
         </Slider>
       </Wallets>
