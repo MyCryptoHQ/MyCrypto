@@ -28,15 +28,6 @@ module.exports = {
   },
   path: paths,
 
-  // File resolution
-  resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss'],
-    modules: [paths.src, paths.modules, paths.root],
-    alias: {
-      modernizr$: path.resolve(__dirname, '../.modernizrrc.js')
-    }
-  },
-
   // Vendor modules
   vendorModules: [
     'bip39',
