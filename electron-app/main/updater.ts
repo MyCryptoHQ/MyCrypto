@@ -86,9 +86,7 @@ export default function(mainWindow: BrowserWindow) {
     resetWindowFromUpdates(mainWindow);
     dialog.showErrorBox(
       'Downloading Update has Failed',
-      `The update could not be downloaded. Restart the app and try again later, or manually install the new update at ${REPOSITORY}/releases\n\n(${
-        err.name
-      }: ${err.message})`
+      `The update could not be downloaded. Restart the app and try again later, or manually install the new update at ${REPOSITORY}/releases\n\n(${err.name}: ${err.message})`
     );
   });
 
@@ -102,7 +100,7 @@ export default function(mainWindow: BrowserWindow) {
 }
 
 function resetWindowFromUpdates(window: BrowserWindow) {
-  window.setTitle('MyCrypto');
+  window.setTitle('EnergiWallet');
   window.setProgressBar(-1); // Clears progress bar
 }
 
