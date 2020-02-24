@@ -215,9 +215,11 @@ const LegacyRoutes = withRouter(props => {
       case '#generate-wallet':
         history.push('/');
         break;
+      /*
       case '#swap':
         history.push('/swap');
         break;
+      */
       case '#contracts':
         history.push('/contracts');
         break;

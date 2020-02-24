@@ -1,8 +1,9 @@
-import BuyAndExchange from './BuyAndExchange';
-import { ShapeShiftAuthorization } from './ShapeShift';
-import { ZeroEx } from './ZeroEx';
+// import BuyAndExchange from './BuyAndExchange';
+// import { ShapeShiftAuthorization } from './ShapeShift';
+// import { ZeroEx } from './ZeroEx';
 
 export default [
+  /*
   {
     name: 'Buy and Exchange | Select Exchange',
     path: '/swap',
@@ -19,4 +20,5 @@ export default [
     path: '/swap/0x',
     component: ZeroEx
   }
+  */
 ];

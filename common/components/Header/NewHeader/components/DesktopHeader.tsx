@@ -46,7 +46,7 @@ class DesktopHeader extends Component<Props> {
   public state: State = {
     visibleDropdowns: {
       sendAndReceive: false,
-      buyAndExchange: false,
+      // buyAndExchange: false,
       tools: false
     }
   };
@@ -58,10 +58,14 @@ class DesktopHeader extends Component<Props> {
   public render() {
     const { nodeLabel, openSidebar, languageSelection, setAccessMessage } = this.props;
     const {
-      visibleDropdowns: { sendAndReceive, buyAndExchange, tools }
+      visibleDropdowns: {
+        sendAndReceive,
+        // buyAndExchange,
+        tools
+      }
     } = this.state;
     const sendAndReceiveIcon = generateCaretIcon(sendAndReceive);
-    const buyAndExchangeIcon = generateCaretIcon(buyAndExchange);
+    // const buyAndExchangeIcon = generateCaretIcon(buyAndExchange);
     const toolsIcon = generateCaretIcon(tools);
 
     return (
@@ -118,6 +122,7 @@ class DesktopHeader extends Component<Props> {
                   </ul>
                 )}
               </li>
+              {/* Deprecated: 'Buy & Exchange' menu item 'Swap NRG and Tokens' is temporarily disabled
               <li
                 className="DesktopHeader-bottom-links-item"
                 onMouseEnter={this.toggleBuyAndExchange}
@@ -136,6 +141,7 @@ class DesktopHeader extends Component<Props> {
                   </ul>
                 )}
               </li>
+              */}
               <li
                 className="DesktopHeader-bottom-links-item"
                 onMouseEnter={this.toggleTools}
@@ -175,7 +181,7 @@ class DesktopHeader extends Component<Props> {
     }));
 
   private toggleSendAndReceive = () => this.toggleDropdown('sendAndReceive');
-  private toggleBuyAndExchange = () => this.toggleDropdown('buyAndExchange');
+  // private toggleBuyAndExchange = () => this.toggleDropdown('buyAndExchange');
   private toggleTools = () => this.toggleDropdown('tools');
 
   private attemptSetNodeFromQueryParameter = () => {

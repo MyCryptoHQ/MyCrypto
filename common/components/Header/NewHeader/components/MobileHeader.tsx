@@ -62,11 +62,15 @@ class MobileHeader extends Component<Props> {
     const { nodeLabel, openSidebar, languageSelection, setAccessMessage } = this.props;
     const {
       menuVisible,
-      visibleDropdowns: { sendAndReceive, buyAndExchange, tools }
+      visibleDropdowns: {
+        sendAndReceive,
+        // buyAndExchange,
+        tools
+      }
     } = this.state;
     const menuIcon = generateMenuIcon(menuVisible);
     const sendAndReceiveIcon = generateCaretIcon(sendAndReceive);
-    const buyAndExchangeIcon = generateCaretIcon(buyAndExchange);
+    // const buyAndExchangeIcon = generateCaretIcon(buyAndExchange);
     const toolsIcon = generateCaretIcon(tools);
 
     return (
@@ -102,6 +106,7 @@ class MobileHeader extends Component<Props> {
                       </ul>
                     )}
                   </li>
+                  {/* Deprecated: 'Buy & Exchange' menu item 'Swap NRG and Tokens' is temporarily disabled
                   <li onClick={this.toggleBuyAndExchange}>
                     {translateRaw('NEW_HEADER_TEXT_4')} <i className={buyAndExchangeIcon} />
                     {buyAndExchange && (
@@ -116,6 +121,7 @@ class MobileHeader extends Component<Props> {
                       </ul>
                     )}
                   </li>
+                  */}
                   <li onClick={this.toggleTools}>
                     {translateRaw('NEW_HEADER_TEXT_5')}
                     <i className={toolsIcon} style={{ marginLeft: '3px' }} />
@@ -192,7 +198,7 @@ class MobileHeader extends Component<Props> {
     }));
 
   private toggleSendAndReceive = () => this.toggleDropdown('sendAndReceive');
-  private toggleBuyAndExchange = () => this.toggleDropdown('buyAndExchange');
+  // private toggleBuyAndExchange = () => this.toggleDropdown('buyAndExchange');
   private toggleTools = () => this.toggleDropdown('tools');
 
   private attemptSetNodeFromQueryParameter = () => {
