@@ -186,9 +186,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
         .test(
           'check-eth-address',
           translateRaw('TO_FIELD_ERROR'),
-          value =>
-            isValidETHAddress(value) ||
-            (isValidENSName(value) && UnstoppableResolution.isValidDomain(value))
+          value => isValidETHAddress(value) || (isValidENSName(value) && !resolutionError)
         )
         // @ts-ignore Hack as Formik doesn't officially support warnings
         // tslint:disable-next-line
@@ -310,10 +308,13 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
             }
             setIsResolvingDomain(true);
             setResolutionError(undefined);
+            const asset =
+              getBaseAssetByNetwork({ network: values.network, assets: userAssets }) ||
+              values.asset;
             try {
               const unstoppableAddress = await UnstoppableResolution.getResolvedAddress(
                 name,
-                values.asset.ticker
+                asset.ticker
               );
               return unstoppableAddress;
             } catch (err) {

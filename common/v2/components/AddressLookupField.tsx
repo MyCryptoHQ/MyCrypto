@@ -6,6 +6,7 @@ import { DomainStatus, InlineMessage } from 'v2/components';
 import { Network, InlineMessageType, ExtendedAddressBook } from 'v2/types';
 import { AddressBookContext, findNextRecipientLabel } from 'v2/services/Store';
 import { isValidETHAddress, isValidENSName } from 'v2/services/EthService';
+import { useEffectOnce } from 'v2/vendor';
 
 import AccountLookupDropdown from './AccountLookupDropdown';
 
@@ -52,6 +53,13 @@ const AddressLookupField = ({
   const errorMessage = typeof error === 'object' ? error.message : error;
   const errorType = typeof error === 'object' ? error.type : undefined;
   const { name: fieldName, value: fieldValue } = field;
+
+  useEffectOnce(() => {
+    const existingAddressBook = getExistingAddressbook(addressBook, fieldValue.value);
+    if (existingAddressBook && fieldValue.display !== existingAddressBook.display) {
+      form.setFieldValue(fieldName, existingAddressBook);
+    }
+  });
 
   const handleInputChange = (value: string) => {
     setInputValue(value);
@@ -132,6 +140,7 @@ const AddressLookupField = ({
         accounts={addressBook}
         onSelect={(option: any) => {
           form.setFieldValue(fieldName, option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
+          form.setFieldTouched(fieldName);
         }}
         onInputChange={handleInputChange}
         onBlur={(inputString: string) => {

@@ -45,12 +45,8 @@ const getUnusedLabel = (contacts: AddressBook[], generateLabel: (index: number) 
   return unusedLabel;
 };
 
-export const findNextUnusedDefaultLabel = (wallet: WalletId) => (
-  contacts: AddressBook[]
-): string => {
-  return getUnusedLabel(contacts, index => `${WALLETS_CONFIG[wallet].name} Account ${index}`);
-};
+export const findNextUnusedDefaultLabel = (wallet: WalletId) => (contacts: AddressBook[]): string =>
+  getUnusedLabel(contacts, index => `${WALLETS_CONFIG[wallet].name} Account ${index}`);
 
-export const findNextRecipientLabel = (contacts: AddressBook[]) => {
-  return getUnusedLabel(contacts, index => `Recipient ${index}`);
-};
+export const findNextRecipientLabel = (contacts: AddressBook[]) =>
+  getUnusedLabel(contacts, index => `Recipient ${index}`);
