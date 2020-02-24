@@ -8,8 +8,10 @@ import {
   ISignedTx
 } from 'v2/types';
 import { WALLET_STEPS } from 'v2/components';
+import { withProtectTransaction } from '../../ProtectTransaction/components/WithProtectTransaction';
+import { ThisTransactionIsProtected } from '../../ProtectTransaction/components/ThisTransactionIsProtected';
 
-export default function SignTransaction({ txConfig, onComplete }: IStepComponentProps) {
+const SignTransaction = ({ txConfig, onComplete }: IStepComponentProps) => {
   // @TODO remove before deployement.
   // const txObject = {
   //   nonce: 0,
@@ -42,4 +44,6 @@ export default function SignTransaction({ txConfig, onComplete }: IStepComponent
       onSuccess={(payload: ITxReceipt | ISignedTx) => onComplete(payload)}
     />
   );
-}
+};
+
+export default withProtectTransaction(SignTransaction, ThisTransactionIsProtected);

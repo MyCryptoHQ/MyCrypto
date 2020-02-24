@@ -1,0 +1,51 @@
+.TransactionProtectionButton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 16px 40px 14px;
+  margin: 30px 0 15px;
+  border: 1px solid #A086F7;
+  box-sizing: border-box;
+  border-radius: 2px;
+  background: white;
+
+  &[disabled] {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+
+  &:not([disabled]):hover {
+    background: #A086F7;
+
+    h6, p {
+      color: white;
+    }
+
+    svg {
+      path {
+        fill: white !important;
+      }
+    }
+  }
+
+  &-text {
+    max-width: 70%;
+    text-align: left;
+
+    h6 {
+      font-family: Lato, serif;
+      font-size: 16px;
+      line-height: 15px;
+      margin-top: 0;
+      color: #424242;
+    }
+
+    p {
+      font-family: Lato, serif;
+      font-size: 12px;
+      line-height: 18px;
+      margin-bottom: 0;
+    }
+  }
+}

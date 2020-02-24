@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import Styled from 'styled-components';
+import Styled, { createGlobalStyle } from 'styled-components';
 import BN from 'bn.js';
 import { Button } from '@mycrypto/ui';
 
@@ -19,7 +19,21 @@ import { convertToFiat, truncate } from 'v2/utils';
 import translate from 'v2/translations';
 import { TSymbol } from 'v2/types/symbols';
 import Account from '../Account';
+import { withProtectTransaction } from 'v2/features/ProtectTransaction/components/WithProtectTransaction';
+import { ProtectedTransactionReport } from '../../features/ProtectTransaction/components/ProtectedTransactionReport';
 const { SCREEN_XS } = BREAK_POINTS;
+
+const ProtectedTransaction = createGlobalStyle`
+  [class^="ContentPanel__ContentPanelWrapper"] {
+    &.has-side-panel {
+      .ConfirmTransaction {
+        &-button {
+          margin-top: 250px;
+        }
+      }
+    }
+  }
+`;
 
 const ConfirmTransactionWrapper = Styled.div`
   text-align: left;
@@ -97,11 +111,7 @@ const SendButton = Styled(Button)`
   width: 100%;
 `;
 
-export default function ConfirmTransaction({
-  txConfig,
-  onComplete,
-  signedTx
-}: IStepComponentProps) {
+const ConfirmTransaction = ({ txConfig, onComplete, signedTx }: IStepComponentProps) => {
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
   const [isBroadcastingTx, setIsBroadcastingTx] = useState(false);
   const handleApprove = () => {
@@ -248,6 +258,9 @@ export default function ConfirmTransaction({
       >
         {isBroadcastingTx ? translate('SUBMITTING') : translate('CONFIRM_AND_SEND')}
       </SendButton>
+      <ProtectedTransaction />
     </ConfirmTransactionWrapper>
   );
-}
+};
+
+export default withProtectTransaction(ConfirmTransaction, ProtectedTransactionReport);

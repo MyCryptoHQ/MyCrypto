@@ -7,17 +7,28 @@ import Stepper from './Stepper';
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
 interface ContentPanelProps {
-  width?: string;
+  width?: number;
   mobileMaxWidth?: string;
 }
 
-const ContentPanelWrapper = styled.div`
-  width: ${(props: ContentPanelProps) => props.width};
-  max-width: ${(props: ContentPanelProps) => props.width};
+const ContentPanelWrapper = styled.div<ContentPanelProps>`
+  position: relative;
+  width: ${({ width }) => `${width}px`};
+  max-width: ${({ width }) => `${width}px`};
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    width: ${(props: ContentPanelProps) => props.mobileMaxWidth};
+    width: ${({ mobileMaxWidth }) => mobileMaxWidth};
     padding-left: 0px;
     margin-bottom: 1em;
+  }
+
+  &.has-side-panel {
+    width: ${({ width }) => `${width ? width + 375 + 15 : width}px`};
+    max-width: ${({ width }) => `${width ? width + 375 + 15 : width}px`};
+
+    > section {
+      width: ${({ width }) => `${width}px`};
+      max-width: ${({ width }) => `${width}px`};
+    }
   }
 `;
 
@@ -76,7 +87,7 @@ interface Props {
     current: number;
     total: number;
   };
-  width?: string;
+  width?: number;
   mobileMaxWidth?: string;
   backBtnText?: string;
   onBack?(): void | null;
@@ -91,7 +102,7 @@ export default function ContentPanel({
   description,
   children,
   className = '',
-  width = '650px',
+  width = 650,
   mobileMaxWidth = '100%',
   ...rest
 }: Props) {

@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { Field, FieldProps, Form, Formik, FastField } from 'formik';
+import { FastField, Field, FieldProps, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
-import _, { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 import { formatEther, parseEther } from 'ethers/utils';
 import BN from 'bn.js';
 import styled from 'styled-components';
@@ -13,69 +13,76 @@ import questionSVG from 'assets/images/icn-question.svg';
 
 import translate, { translateRaw } from 'v2/translations';
 import {
-  InlineMessage,
   AccountDropdown,
+  AddressField,
   AmountInput,
   AssetDropdown,
-  WhenQueryExists,
-  AddressField,
-  Checkbox
+  Checkbox,
+  InlineMessage,
+  WhenQueryExists
 } from 'v2/components';
 import {
-  getNetworkById,
-  getBaseAssetByNetwork,
+  getAccountBalance,
   getAccountsByAsset,
-  StoreContext,
-  getAccountBalance
+  getBaseAssetByNetwork,
+  getNetworkById,
+  StoreContext
 } from 'v2/services/Store';
 import {
   Asset,
-  Network,
   IAccount,
-  StoreAsset,
-  WalletId,
   IFormikFields,
   IStepComponentProps,
-  ITxConfig
+  ITxConfig,
+  Network,
+  StoreAsset,
+  WalletId
 } from 'v2/types';
 import {
+  baseToConvertedUnit,
+  convertedToBaseUnit,
+  gasStringsToMaxGasBN,
   getNonce,
   hexToNumber,
-  isValidETHAddress,
-  gasStringsToMaxGasBN,
-  convertedToBaseUnit,
-  baseToConvertedUnit,
-  isValidPositiveNumber,
-  isTransactionFeeHigh,
-  isChecksumAddress,
   isBurnAddress,
-  isValidENSName
+  isChecksumAddress,
+  isTransactionFeeHigh,
+  isValidENSName,
+  isValidETHAddress,
+  isValidPositiveNumber
 } from 'v2/services/EthService';
 import UnstoppableResolution from 'v2/services/UnstoppableService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 import {
+  DEFAULT_ASSET_DECIMAL,
   GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
-  GAS_PRICE_GWEI_UPPER_BOUND,
-  DEFAULT_ASSET_DECIMAL
+  GAS_PRICE_GWEI_UPPER_BOUND
 } from 'v2/config';
 import { RatesContext } from 'v2/services/RatesProvider';
 
 import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
-import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
+import { DataField, GasLimitField, GasPriceField, GasPriceSlider, NonceField } from './fields';
 import './SendAssetsForm.scss';
 import {
+  validateAmountField,
+  validateDataField,
   validateGasLimitField,
   validateGasPriceField,
-  validateNonceField,
-  validateDataField,
-  validateAmountField
-} from './validators/validators';
-import { processFormForEstimateGas, isERC20Tx } from '../helpers';
-import { weiToFloat, formatSupportEmail } from 'v2/utils';
+  validateNonceField
+} from './validators';
+import { isERC20Tx, processFormForEstimateGas } from '../helpers';
+import { formatSupportEmail, weiToFloat } from 'v2/utils';
 import { ResolutionError } from '@unstoppabledomains/resolution';
 import { InlineMessageType } from 'v2/types/inlineMessages';
+import { TransactionProtectionButton } from '../../ProtectTransaction/components/TransactionProtectionButton';
+import { withProtectTransaction } from '../../ProtectTransaction/components/WithProtectTransaction';
+import { ProtectionThisTransaction } from '../../ProtectTransaction/components/ProtectionThisTransaction';
+import {
+  IProtectTransactionProps,
+  ProtectTransactionAction
+} from 'v2/features/ProtectTransaction/types';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;
@@ -143,7 +150,11 @@ const QueryWarning: React.SFC<{}> = () => (
   />
 );
 
-export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentProps) {
+const SendAssetsForm = ({
+  txConfig,
+  onComplete,
+  onProtectTransactionAction
+}: IStepComponentProps & IProtectTransactionProps) => {
   const { accounts, userAssets, networks, getAccount } = useContext(StoreContext);
   const { getAssetRate } = useContext(RatesContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
@@ -262,6 +273,13 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
           onComplete(fields);
         }}
         render={({ errors, setFieldValue, setFieldTouched, touched, values, handleChange }) => {
+          if (onProtectTransactionAction) {
+            onProtectTransactionAction({
+              actionType: ProtectTransactionAction.SEND_FORM_CALLBACK,
+              payload: () => ({ isValid, values })
+            });
+          }
+
           const toggleAdvancedOptions = () => {
             setFieldValue('advancedTransaction', !values.advancedTransaction);
           };
@@ -661,9 +679,31 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                 )}
               </div>
 
+              <TransactionProtectionButton
+                disabled={isEstimatingGasLimit || isResolvingName || isEstimatingNonce || !isValid}
+                onClick={e => {
+                  e.preventDefault();
+                  if (onProtectTransactionAction) {
+                    onProtectTransactionAction({
+                      actionType: ProtectTransactionAction.SHOW_HIDE_TRANSACTION_PROTECTION,
+                      payload: true
+                    });
+                  }
+                }}
+              />
+
               <Button
                 type="submit"
-                onClick={() => {
+                onClick={e => {
+                  e.preventDefault();
+
+                  if (onProtectTransactionAction) {
+                    onProtectTransactionAction({
+                      actionType: ProtectTransactionAction.SHOW_HIDE_TRANSACTION_PROTECTION,
+                      payload: false
+                    });
+                  }
+
                   if (isValid) {
                     onComplete(values);
                   }
@@ -679,4 +719,6 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
       />
     </div>
   );
-}
+};
+
+export default withProtectTransaction(SendAssetsForm, ProtectionThisTransaction);
