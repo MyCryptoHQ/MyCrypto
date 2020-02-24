@@ -166,6 +166,7 @@ const MenuLinks = styled.ul`
   padding: 15px 0;
   border-bottom: 1px solid #3e546d;
 
+  /* stylelint-disable-next-line no-descending-specificity */
   li {
     height: 100%;
     margin: 0;
@@ -235,8 +236,7 @@ interface IconWrapperProps {
   subItems?: boolean;
 }
 
-// prettier-ignore
-const IconWrapper = styled(Icon) <IconWrapperProps>`
+const IconWrapper = styled(Icon)<IconWrapperProps>`
   margin: 0;
   margin-left: 6px;
   font-size: 0.75rem;

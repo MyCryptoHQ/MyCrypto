@@ -12,7 +12,6 @@ import champagneIcon from 'common/assets/images/icn-champagne-2.svg';
 const { SCREEN_SM, SCREEN_MD, SCREEN_XXL } = BREAK_POINTS;
 
 const MainPanel = styled(Panel)`
-  padding: 0;
   display: flex;
   justify-content: space-between;
   flex: 1;

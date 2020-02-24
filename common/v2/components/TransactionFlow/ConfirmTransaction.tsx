@@ -65,12 +65,11 @@ const AddressWrapper = Styled(ColumnWrapper)<{ position: string }>`
     ${props => `margin-${props.position}: 0;`}
   }
 
-  // Ensure that label and address are stacked vertically
+  /* Vertically stack label and address */
   & > div > div {
     display: flex;
     flex-direction: column;
   }
-}
 `;
 
 const AmountWrapper = Styled(ColumnWrapper)`

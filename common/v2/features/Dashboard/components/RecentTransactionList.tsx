@@ -86,8 +86,6 @@ export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt) => {
 };
 
 const SAssetIcon = styled(AssetIcon)`
-  -webkit-filter: grayscale(1); /* Webkit */
-  filter: gray; /* IE6-9 */
   filter: grayscale(1); /* W3C */
   position: absolute;
   border: 3px solid white;

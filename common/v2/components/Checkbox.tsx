@@ -41,14 +41,6 @@ const SLabel = styled('label')`
     cursor: pointer;
   }
 
-  & > input:checked ~ span {
-    background-color: transparent;
-    border-radius: ${borderRadius};
-    transform: rotate(0deg) scale(1);
-    opacity: 1;
-    border: ${props => `1px solid ${props.theme.GAU.COLORS.borderColor}`};
-  }
-
   & > span {
     position: absolute;
     height: ${checkboxSize};
@@ -59,9 +51,19 @@ const SLabel = styled('label')`
     transition: all 0.2s ease-out;
   }
 
-  // Create the pseudo content element and place it in the center
-  // Hide it by setting the scale(0)
-  // This will be the origin of the transition.
+  & > input:checked ~ span {
+    background-color: transparent;
+    border-radius: ${borderRadius};
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+    border: ${props => `1px solid ${props.theme.GAU.COLORS.borderColor}`};
+  }
+
+  /*
+    Create the pseudo content element and place it in the center
+    Hide it by setting the scale(0)
+    This will be the origin of the transition.
+  */
   & > span::after {
     position: absolute;
     content: '';
@@ -77,10 +79,12 @@ const SLabel = styled('label')`
     transition: all 0.2s ease-out;
   }
 
-  // When the checkbox is selected we transform to show half the borders
-  // of a rotated rectangle which provides the swoosh effect.
-  // 'top' & 'left' are used to position the swoosh with the container.
-  // 'width' & 'height' serve as the size.
+  /*
+     When the checkbox is selected we transform to show half the borders
+     of a rotated rectangle which provides the swoosh effect.
+    'top' & 'left' are used to position the swoosh with the container.
+    'width' & 'height' serve as the size.
+  */
   & > input:checked ~ span::after {
     opacity: 1;
     left: 35%;

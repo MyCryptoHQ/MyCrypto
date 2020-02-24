@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const StyleLintPlugin = require('stylelint-webpack-plugin')
 const config = require('./config');
 
 const IS_DEVELOPMENT = process.env.NODE_ENV !== 'production';
@@ -149,6 +150,12 @@ module.exports = {
 
   plugins: [
     new CleanWebpackPlugin(),
+
+    new StyleLintPlugin({
+      files: '**/*.tsx',
+      lintDirtyModulesOnly: true,
+      quiet: true
+    }),
 
     new HtmlWebpackPlugin({
       template: path.resolve(config.path.src, 'index.html'),

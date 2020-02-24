@@ -7,7 +7,6 @@ import AssetIcon from './AssetIcon';
 
 const SContainer = styled('div')`
   display: inline-flex;
-  align-contents: center;
 `;
 
 const SAssetIconContainer = styled('span')`

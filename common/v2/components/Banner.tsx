@@ -32,8 +32,9 @@ const Container = styled.div`
     margin-top: 5px;
   }
 
-  // In mobile we let the icon stay top-aligned with the text
-  // as screen grows we remove the arbitray value used to align the icon.
+  /*
+    In mobile we let the icon stay top-aligned with the text
+    as screen grows we remove the arbitray value used to align the icon. */
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     align-items: center;
     & > img {

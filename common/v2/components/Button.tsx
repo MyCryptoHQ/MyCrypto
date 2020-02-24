@@ -11,16 +11,17 @@ const StyledButton = styled(Button)<ButtonProps>`
   &&& {
     font-size: 1rem;
   }
-  ${props =>
-      props.fullwidth === true &&
-      css`
-        width: 100%;
-        margin-top: 1rem;
-      `}
-    :disabled {
+  :disabled {
     opacity: 0.4;
   }
   color: ${props => (props.color ? props.color : 'inherit')};
+
+  ${props =>
+    props.fullwidth &&
+    css`
+      width: 100%;
+      margin-top: 1rem;
+    `}
 `;
 
 export default StyledButton;

@@ -38,7 +38,6 @@ const ContentPanelHeading = styled.p`
   justify-content: space-between;
   margin-bottom: 15px;
   color: #303030;
-  font-family: Lato;
   font-size: 32px;
   font-weight: bold;
 `;
