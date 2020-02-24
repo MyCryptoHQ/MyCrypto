@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { simpleRender } from 'test-utils';
-import { fAssets } from 'fixtures';
+import { fAssets } from '@fixtures';
 import { Asset, TSymbol } from 'v2/types';
 
 import AssetDropdown, { Props } from '../AssetDropdown';
