@@ -30,14 +30,14 @@ $back-spacing: 10px;
       margin-left: -1px;
       height: 35px;
       margin-bottom: 10px;
-      background-image: url('~assets/images/logo-mycrypto-transparent.svg');
+      background-image: url('~assets/images/logo-energi-white.png');
       background-position: center;
       background-repeat: no-repeat;
       background-size: auto 100%;
       cursor: pointer;
 
       @include theme(dark) {
-        background-image: url('~assets/images/logo-mycrypto.svg');
+        background-image: url('~assets/images/logo-energi-white.png');
       }
 
       &:hover {

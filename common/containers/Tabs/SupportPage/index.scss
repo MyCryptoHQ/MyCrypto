@@ -13,13 +13,13 @@
       display: block;
       margin: 0 auto $space;
       height: 100px;
-      background-image: url('~assets/images/logo-mycrypto-transparent.svg');
+      background-image: url('~assets/images/logo-energi-white.png');
       background-position: center;
       background-size: auto 100%;
       background-repeat: no-repeat;
 
       @include theme(dark) {
-        background-image: url('~assets/images/logo-mycrypto.svg');
+        background-image: url('~assets/images/logo-energi-white.png');
       }
     }
 
