@@ -1814,9 +1814,9 @@
   },
   {
     "address": "0xF5DCe57282A584D2746FaF1593d3121Fcac444dC",
-    "symbol": "cDai",
+    "symbol": "cSai",
     "decimal": 8,
-    "name": "Compound Dai",
+    "name": "Compound Sai",
     "uuid": "350c0d6f-a0eb-504e-9a8c-43a4d5966fc3"
   },
   {
