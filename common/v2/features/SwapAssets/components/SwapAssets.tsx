@@ -55,18 +55,13 @@ const DisplayDataContainer = styled.div`
   justify-content: space-between;
 `;
 
-const DisplayData = styled.p`
-  display: flex;
-`;
-
 const StyledButton = styled(Button)`
   margin-top: 12px;
   width: 100%;
 `;
 
-const SlippageDisplay = styled(DisplayData)`
+const SlippageDisplay = styled(LabelText)`
   color: ${props => props.color};
-  display: flex;
 `;
 
 const FormDisplay = styled.div`
@@ -213,13 +208,13 @@ export default function SwapAssets(props: Props) {
         {exchangeRate && toAsset && fromAsset && (
           <DisplayDataContainer>
             <Label>{translateRaw('SWAP_RATE_LABEL')}</Label>
-            <DisplayData>
+            <LabelText>
               {translateRaw('SWAP_RATE_TEXT', {
                 $displayString: makeDisplayString(exchangeRate.toString()),
                 $toAssetSymbol: toAsset.symbol,
                 $fromAssetSymbol: fromAsset.symbol
               })}
-            </DisplayData>
+            </LabelText>
           </DisplayDataContainer>
         )}
         {initialToAmount && toAmount && toAsset && (
@@ -235,20 +230,18 @@ export default function SwapAssets(props: Props) {
               </STooltip>
               :
             </Label>
-            <DisplayData>
+            <LabelText>
               {`${makeDisplayString(
                 formatEther(subtractBNFloats(initialToAmount, toAmount).toString())
               )} ${toAsset.symbol}`}
-            </DisplayData>
+            </LabelText>
           </DisplayDataContainer>
         )}
         {markup && fromAsset && (
           <DisplayDataContainer>
             <Label>
               <LabelText>{translateRaw('SWAP_MARKUP_LABEL')}</LabelText>
-              <STooltip
-                tooltip={translateRaw('SWAP_MARKUP_TOOLTIP', { $assetSymbol: fromAsset.symbol })}
-              >
+              <STooltip tooltip={translateRaw('SWAP_MARKUP_TOOLTIP')}>
                 <img src={questionToolTip} />
               </STooltip>
               :
