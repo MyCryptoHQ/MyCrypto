@@ -77,12 +77,21 @@ export function getDisabledWallets(state: AppState): any {
 
   // Some wallets are disabled on certain platforms
   if (process.env.BUILD_ELECTRON) {
-    addReason([SecureWalletName.WEB3], 'This wallet is not supported in the MyCrypto app');
+    addReason(
+      [SecureWalletName.WEB3],
+      'This wallet is not supported in the EnergiWallet desktop app'
+    );
     addReason(
       [SecureWalletName.SAFE_T],
-      'Coming soon. Please use the MyCrypto.com website in the meantime'
+      'Coming soon. Please use the EnergiWallet website in the meantime'
     );
   }
+
+  // Some wallets are temporarily disabled
+  addReason([SecureWalletName.TREZOR], 'This wallet is temporarily disabled');
+  addReason([SecureWalletName.LEDGER_NANO_S], 'This wallet is temporarily disabled');
+  addReason([SecureWalletName.PARITY_SIGNER], 'This wallet is temporarily disabled');
+  addReason([SecureWalletName.SAFE_T], 'This wallet is temporarily disabled');
 
   // Dedupe and sort for consistency
   disabledWallets.wallets = disabledWallets.wallets
