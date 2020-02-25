@@ -9,10 +9,19 @@ export interface IZapConfig {
   minimumGasLimit: number;
   ctaText: string;
   risk: number;
+  platformsUsed: string[];
+  bulletPoints: string[];
+  positionDetails: string;
 }
 
-export interface IZapConfigObject {
-  [key: string]: IZapConfig;
+export type IZapConfigObject = {
+  [key in IZapId]: IZapConfig;
+};
+
+export enum IZapId {
+  unipoolseth = 'unipoolseth',
+  llpdai = 'llpdai',
+  lender = 'lender'
 }
 
 export const fetchRiskText = (riskLevel: number) => {
@@ -42,7 +51,14 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     outlook: 'bullish',
     link: 'https://defizap.com/zaps/unipoolseth',
     ctaText: 'Make money with Uniswap',
-    minimumGasLimit: 1500000
+    minimumGasLimit: 1500000,
+    platformsUsed: ['uniswap'],
+    bulletPoints: [
+      'Retain 100% ETH Exposure.',
+      'Generate 66% of the fees from the ETH/DAI trading pair on Uniswap.',
+      'Eliminate impermanent loss when ETH goes up but increases it on the way down.'
+    ],
+    positionDetails: 'Bullish on ETH'
   },
   lender: {
     title: 'ETH Bearish Investment',
@@ -55,7 +71,14 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     outlook: 'bearish',
     link: 'https://defizap.com/zaps/lender',
     ctaText: 'Make money and bet against ETH',
-    minimumGasLimit: 7000000
+    minimumGasLimit: 7000000,
+    platformsUsed: ['compound', 'fulcrum', 'kyber'],
+    bulletPoints: [
+      'Retain 100% ETH Exposure.',
+      'Generate 66% of the fees from the ETH/DAI trading pair on Uniswap.',
+      'Eliminate impermanent loss when ETH goes up but increases it on the way down.'
+    ],
+    positionDetails: 'Bearish on ETH'
   },
   llpdai: {
     title: 'MoonShot Investment',
@@ -68,6 +91,13 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     outlook: 'bullish',
     link: 'https://defizap.com/zaps/llpdai',
     ctaText: 'Make money and bet on ETH',
-    minimumGasLimit: 5000000
+    minimumGasLimit: 5000000,
+    platformsUsed: ['uniswap', 'fulcrum', 'kyber'],
+    bulletPoints: [
+      'Retain 100% ETH Exposure.',
+      'Generate 66% of the fees from the ETH/DAI trading pair on Uniswap.',
+      'Eliminate impermanent loss when ETH goes up but increases it on the way down.'
+    ],
+    positionDetails: 'Bullish on ETH'
   }
 };

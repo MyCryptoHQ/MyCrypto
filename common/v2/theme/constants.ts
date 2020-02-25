@@ -40,7 +40,7 @@ export const COLORS = {
 
   PURPLE: '#A086F7',
   ORANGE: '#FA863F',
-  GREEN: '#008000',
+  GREEN: '#28a745',
   RED: '#FF0000'
 };
 
