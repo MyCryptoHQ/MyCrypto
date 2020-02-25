@@ -3,19 +3,19 @@ import { FieldProps } from 'formik';
 import { ResolutionError } from '@unstoppabledomains/resolution';
 
 import { DomainStatus, InlineMessage } from 'v2/components';
-import { Network, InlineMessageType, ExtendedAddressBook } from 'v2/types';
+import { Network, InlineMessageType, IReceiverAddress } from 'v2/types';
 import { AddressBookContext, findNextRecipientLabel } from 'v2/services/Store';
 import { isValidETHAddress, isValidENSName } from 'v2/services/EthService';
 import { useEffectOnce } from 'v2/vendor';
 
-import AccountLookupDropdown from './AccountLookupDropdown';
+import ContactLookupDropdown from './ContactLookupDropdown';
 
 interface ErrorObject {
   type: InlineMessageType;
   message: string | JSX.Element;
 }
 
-interface IAddressFieldComponentProps {
+interface IContactLookupFieldComponentProps {
   error?: string | ErrorObject;
   network: Network;
   isValidAddress: boolean;
@@ -27,17 +27,7 @@ interface IAddressFieldComponentProps {
   clearErrors(): void;
 }
 
-const getExistingAddressbook = (addressBook: ExtendedAddressBook[], address: string) => {
-  const existingAddressBook = addressBook.find(book => book.address === address);
-  if (!existingAddressBook) return;
-
-  return {
-    display: existingAddressBook.label,
-    value: existingAddressBook.address
-  };
-};
-
-const AddressLookupField = ({
+const ContactLookupField = ({
   error,
   fieldProps: { field, form },
   network,
@@ -47,17 +37,21 @@ const AddressLookupField = ({
   onBlur,
   handleDomainResolve,
   clearErrors
-}: IAddressFieldComponentProps) => {
+}: IContactLookupFieldComponentProps) => {
   const [inputValue, setInputValue] = useState();
-  const { addressBook, createAddressBooks } = useContext(AddressBookContext);
+  const {
+    addressBook: contacts,
+    createAddressBooks: createContact,
+    getContactByAddress
+  } = useContext(AddressBookContext);
   const errorMessage = typeof error === 'object' ? error.message : error;
   const errorType = typeof error === 'object' ? error.type : undefined;
   const { name: fieldName, value: fieldValue } = field;
 
   useEffectOnce(() => {
-    const existingAddressBook = getExistingAddressbook(addressBook, fieldValue.value);
-    if (existingAddressBook && fieldValue.display !== existingAddressBook.display) {
-      form.setFieldValue(fieldName, existingAddressBook);
+    const contact = getContactByAddress(fieldValue.value);
+    if (contact && fieldValue.display !== contact.label) {
+      form.setFieldValue(fieldName, { display: contact.label, value: contact.address });
     }
   });
 
@@ -72,12 +66,12 @@ const AddressLookupField = ({
     }
   };
 
-  const handleETHaddress = (inputString: string) => {
-    const existingAddressBook = getExistingAddressbook(addressBook, inputString);
-    if (existingAddressBook) return existingAddressBook;
+  const handleEthAddress = (inputString: string): IReceiverAddress => {
+    const contact = getContactByAddress(inputString);
+    if (contact) return { display: contact.label, value: contact.address };
 
-    const label = findNextRecipientLabel(addressBook);
-    createAddressBooks({
+    const label = findNextRecipientLabel(contacts);
+    createContact({
       address: inputString,
       label,
       notes: '',
@@ -89,56 +83,64 @@ const AddressLookupField = ({
     };
   };
 
-  const handleENSname = async (inputString: string, defaultInput: FieldProps['field']['value']) => {
-    const resolvedAddress = await handleDomainResolve(inputString);
-    if (!resolvedAddress) return defaultInput;
+  const handleENSname = async (
+    inputString: string,
+    defaultInput: IReceiverAddress
+  ): Promise<IReceiverAddress> => {
+    try {
+      const resolvedAddress = await handleDomainResolve(inputString);
+      if (!resolvedAddress) return defaultInput;
 
-    const existingAddressBook = getExistingAddressbook(addressBook, resolvedAddress);
-    if (existingAddressBook) return existingAddressBook;
+      const contact = getContactByAddress(resolvedAddress);
+      if (contact) return { display: contact.label, value: contact.address };
 
-    const [label] = inputString.split('.');
-    createAddressBooks({
-      address: resolvedAddress,
-      label,
-      notes: '',
-      network: network.id
-    });
-    return {
-      display: label,
-      value: resolvedAddress
-    };
+      const [label] = inputString.split('.');
+      createContact({
+        address: resolvedAddress,
+        label,
+        notes: '',
+        network: network.id
+      });
+      return {
+        display: label,
+        value: resolvedAddress
+      };
+    } catch (err) {
+      console.debug(`[ContactLookupField] ${err}`);
+      return { display: '', value: '' };
+    }
   };
 
   const handleAddAddressBookEntry = async (inputString: string) => {
     clearErrors();
-    if (!inputString || !network || !network.id || !addressBook) {
+    if (!inputString || !network || !network.id || !contacts) {
       return;
     }
 
-    let resolvedInput: FieldProps['field']['value'] = {
+    let contact: IReceiverAddress = {
       display: inputString,
       value: inputString
     };
 
     if (isValidETHAddress(inputString)) {
       // saves 0x address to address book labeled as "Recipient X"
-      resolvedInput = handleETHaddress(inputString);
+      contact = handleEthAddress(inputString);
     } else if (isValidENSName(inputString)) {
       // resolves ENS name and saves it to address book labeled as first part of ENS name before "." (example.test.eth --> example)
-      resolvedInput = await handleENSname(inputString, resolvedInput);
+      contact = await handleENSname(inputString, contact);
     }
 
-    form.setFieldValue(fieldName, resolvedInput);
+    form.setFieldValue(fieldName, contact);
     form.setFieldTouched(fieldName);
   };
 
   return (
     <>
-      <AccountLookupDropdown
+      <ContactLookupDropdown
         name={fieldName}
         value={fieldValue}
-        accounts={addressBook}
-        onSelect={(option: any) => {
+        contacts={contacts}
+        onSelect={(option: IReceiverAddress) => {
           form.setFieldValue(fieldName, option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
           form.setFieldTouched(fieldName);
         }}
@@ -165,4 +167,4 @@ const AddressLookupField = ({
   );
 };
 
-export default AddressLookupField;
+export default ContactLookupField;

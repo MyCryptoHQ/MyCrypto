@@ -17,7 +17,8 @@ import {
   AmountInput,
   AssetDropdown,
   WhenQueryExists,
-  Checkbox
+  Checkbox,
+  ContactLookupField
 } from 'v2/components';
 import {
   getNetworkById,
@@ -63,7 +64,6 @@ import { RatesContext } from 'v2/services/RatesProvider';
 import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
 import { weiToFloat, formatSupportEmail } from 'v2/utils';
 import { InlineMessageType } from 'v2/types/inlineMessages';
-import AddressLookupField from 'v2/components/AddressLookupField';
 
 import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
 import './SendAssetsForm.scss';
@@ -156,7 +156,11 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
-  const [baseAsset, setBaseAsset] = useState({} as Asset);
+  const [baseAsset, setBaseAsset] = useState(
+    (txConfig.network &&
+      getBaseAssetByNetwork({ network: txConfig.network, assets: userAssets })) ||
+      ({} as Asset)
+  );
   const [resolutionError, setResolutionError] = useState<ResolutionError>();
   const [selectedAsset, setAsset] = useState({} as Asset);
 
@@ -308,13 +312,10 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
             }
             setIsResolvingDomain(true);
             setResolutionError(undefined);
-            const asset =
-              getBaseAssetByNetwork({ network: values.network, assets: userAssets }) ||
-              values.asset;
             try {
               const unstoppableAddress = await UnstoppableResolution.getResolvedAddress(
                 name,
-                asset.ticker
+                baseAsset.ticker
               );
               return unstoppableAddress;
             } catch (err) {
@@ -456,7 +457,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                   name="address"
                   value={values.address}
                   component={(fieldProps: FieldProps) => (
-                    <AddressLookupField
+                    <ContactLookupField
                       error={errors && touched.address && errors.address && errors.address.value}
                       fieldProps={fieldProps}
                       network={values.network}

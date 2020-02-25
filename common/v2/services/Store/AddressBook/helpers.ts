@@ -1,5 +1,5 @@
 import { IAccount, AddressBook, Network, WalletId, ExtendedAddressBook } from 'v2/types';
-import { WALLETS_CONFIG } from 'v2/config';
+import { getWalletConfig } from 'v2/config';
 
 export const getLabelByAccount = (
   account: IAccount,
@@ -46,7 +46,7 @@ const getUnusedLabel = (contacts: AddressBook[], generateLabel: (index: number) 
 };
 
 export const findNextUnusedDefaultLabel = (wallet: WalletId) => (contacts: AddressBook[]): string =>
-  getUnusedLabel(contacts, index => `${WALLETS_CONFIG[wallet].name} Account ${index}`);
+  getUnusedLabel(contacts, index => `${getWalletConfig(wallet).name} Account ${index}`);
 
 export const findNextRecipientLabel = (contacts: AddressBook[]) =>
   getUnusedLabel(contacts, index => `Recipient ${index}`);

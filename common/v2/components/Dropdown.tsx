@@ -71,7 +71,7 @@ const ClearIndicator = () => (
   </IconWrapper>
 );
 
-// AccountLookup dropdown is using custom dropdown indicator (dropdownIcon) and clear field indicator.
+// ContactLookup dropdown is using custom dropdown indicator (dropdownIcon) and clear field indicator.
 // When value is set, it hides dropdown icon, so that clear icon can appear instead of it.
 const getDropdownIndicator = (
   value: Props<any>['value'],
@@ -82,42 +82,17 @@ const getDropdownIndicator = (
   return null;
 };
 
-export default function Dropdown({
-  onChange,
-  onBlur,
-  options,
-  optionComponent,
-  value,
-  valueComponent,
-  placeholder,
-  disabled,
-  searchable,
-  clearable = false,
-  inputValue,
-  onInputChange,
-  name, // field name for hidden input. Important for Formik
-  onInputKeyDown,
-  dropdownIcon
-}: Props<any>) {
+export default function Dropdown(props: Props<any>) {
+  const { value, dropdownIcon, onBlur, inputValue, clearable = false } = props;
   return (
     <SSelect
+      {...props}
       arrowRenderer={getDropdownIndicator(value, dropdownIcon)}
       clearRenderer={ClearIndicator}
-      clearable={clearable}
       menuContainerStyle={{ maxHeight: '65vh', borderTop: '1px solid #ececec' }}
       menuStyle={{ maxHeight: '65vh' }}
-      name={name}
-      onChange={onChange}
-      onInputChange={onInputChange}
       onBlur={onBlur ? () => onBlur(inputValue) : undefined}
-      options={options}
-      optionComponent={optionComponent}
-      placeholder={placeholder}
-      searchable={searchable}
-      value={value} //!! value must be an expression or an object !?
-      valueComponent={valueComponent}
-      disabled={disabled}
-      onInputKeyDown={onInputKeyDown}
+      clearable={clearable}
     />
   );
 }

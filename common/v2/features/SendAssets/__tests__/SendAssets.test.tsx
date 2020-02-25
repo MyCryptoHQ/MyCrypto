@@ -28,7 +28,9 @@ describe('SendAssetsFlow', () => {
             } as unknown) as any
           }
         >
-          <AddressBookContext.Provider value={({ addressBook: [] } as unknown) as any}>
+          <AddressBookContext.Provider
+            value={({ addressBook: [], getContactByAddress: jest.fn() } as unknown) as any}
+          >
             <SendAssets />
           </AddressBookContext.Provider>
         </RatesContext.Provider>
