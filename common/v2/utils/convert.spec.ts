@@ -226,6 +226,19 @@ describe('it subtracts BigNumber floating point numbers from each other', () => 
 });
 
 describe('it Remove / Add commission from amount', () => {
+  const withCommissionTest = ({
+    amount,
+    rate,
+    substract
+  }: {
+    amount: number;
+    rate: number;
+    substract?: boolean;
+  }) => {
+    const amountBN = new BigNumberJs(amount);
+    const rateBN = new BigNumberJs((substract ? 100 - rate : 100 + rate) / 100);
+    return amountBN.times(rateBN).toNumber();
+  };
   it('remove commission from decimal amount', () => {
     const expected = 195;
     const amount = 200;

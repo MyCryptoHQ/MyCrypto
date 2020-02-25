@@ -6,16 +6,12 @@ import {
   TUseStateReducerFactory,
   fromTxReceiptObj,
   formatErrorEmailMarkdown,
-<<<<<<< HEAD
-  withCommission
-=======
   convertToBN,
   multiplyBNFloats,
   divideBNFloats,
   withCommission,
   calculateMarkup,
   trimBN
->>>>>>> reworked conversion
 } from 'v2/utils';
 import {
   DexService,
@@ -224,11 +220,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         ...prevState,
         isCalculatingToAmount: false,
         toAmount: withCommission({
-<<<<<<< HEAD
-          amount: Number(value) * price,
-=======
           amount: multiplyBNFloats(value, price),
->>>>>>> reworked conversion
           rate: MYC_DEXAG_COMMISSION_RATE,
           substract: true
         }).toString(),

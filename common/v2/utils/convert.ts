@@ -85,7 +85,7 @@ export const withCommission = ({
   rate,
   substract
 }: {
-  amount: number;
+  amount: BigNumber;
   rate: number;
   substract?: boolean;
 }): number => {
