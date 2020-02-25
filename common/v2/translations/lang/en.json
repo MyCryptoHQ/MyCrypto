@@ -588,7 +588,7 @@
     "SIGN_TX_WALLETCONNECT_INSTRUCTIONS_3": "3. Scan the QRCode below",
     "SWAP_FEE_TOOLTIP": "This fee is split between MyCrypto and Dex.AG",
     "SWAP_FEE_LABEL": "Fee ($commission%) ",
-    "SWAP_MARKUP_TOOLTIP": "Markup is calculated by comparing against a 0.01 $assetSymbol trade",
+    "SWAP_MARKUP_TOOLTIP": "Markup determines how good of a deal you're getting, according to available liquidity.",
     "SWAP_MARKUP_LABEL": "Markup ",
     "SWAP_RATE_LABEL": "Rate: ",
     "SWAP_RATE_TEXT": "$displayString $toAssetSymbol per $fromAssetSymbol"
