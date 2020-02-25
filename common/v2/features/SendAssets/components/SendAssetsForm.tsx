@@ -78,7 +78,6 @@ import { ResolutionError } from '@unstoppabledomains/resolution';
 import { InlineMessageType } from 'v2/types/inlineMessages';
 import { TransactionProtectionButton } from '../../ProtectTransaction/components/TransactionProtectionButton';
 import { withProtectTransaction } from '../../ProtectTransaction/components/WithProtectTransaction';
-import { ProtectionThisTransaction } from '../../ProtectTransaction/components/ProtectionThisTransaction';
 import {
   IProtectTransactionProps,
   ProtectTransactionAction
@@ -721,4 +720,4 @@ const SendAssetsForm = ({
   );
 };
 
-export default withProtectTransaction(SendAssetsForm, ProtectionThisTransaction);
+export default withProtectTransaction(SendAssetsForm);

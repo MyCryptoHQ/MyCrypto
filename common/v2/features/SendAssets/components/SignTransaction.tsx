@@ -8,8 +8,8 @@ import {
   ISignedTx
 } from 'v2/types';
 import { WALLET_STEPS } from 'v2/components';
-import { withProtectTransaction } from '../../ProtectTransaction/components/WithProtectTransaction';
-import { ThisTransactionIsProtected } from '../../ProtectTransaction/components/ThisTransactionIsProtected';
+
+import './SignTransaction.scss';
 
 const SignTransaction = ({ txConfig, onComplete }: IStepComponentProps) => {
   // @TODO remove before deployement.
@@ -46,4 +46,4 @@ const SignTransaction = ({ txConfig, onComplete }: IStepComponentProps) => {
   );
 };
 
-export default withProtectTransaction(SignTransaction, ThisTransactionIsProtected);
+export default SignTransaction;

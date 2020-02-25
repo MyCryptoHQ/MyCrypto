@@ -20,7 +20,6 @@ import translate from 'v2/translations';
 import { TSymbol } from 'v2/types/symbols';
 import Account from '../Account';
 import { withProtectTransaction } from 'v2/features/ProtectTransaction/components/WithProtectTransaction';
-import { ProtectedTransactionReport } from '../../features/ProtectTransaction/components/ProtectedTransactionReport';
 const { SCREEN_XS } = BREAK_POINTS;
 
 const ProtectedTransaction = createGlobalStyle`
@@ -263,4 +262,4 @@ const ConfirmTransaction = ({ txConfig, onComplete, signedTx }: IStepComponentPr
   );
 };
 
-export default withProtectTransaction(ConfirmTransaction, ProtectedTransactionReport);
+export default withProtectTransaction(ConfirmTransaction);

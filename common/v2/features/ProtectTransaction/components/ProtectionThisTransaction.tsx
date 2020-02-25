@@ -1,15 +1,35 @@
-import React, { FC, useCallback } from 'react';
-import ProtectIcon from './icons/ProtectIcon';
-import feeIcon from 'assets/images/icn-fee.svg';
-
-import './ProtectionThisTransaction.scss';
+import React, { FC, useCallback, useContext, useEffect } from 'react';
 import CloseIcon from './icons/CloseIcon';
 import { Button } from '@mycrypto/ui';
 import { IProtectTransactionProps, ProtectTransactionAction } from '../types';
+import { ITxConfig } from '../../../types';
+import { ProtectTransactionUtils } from '../utils';
+import { Amount } from '../../../components';
+import { convertToFiat } from '../../../utils';
+import { AssetContext, RatesContext } from '../../../services';
 
-export const ProtectionThisTransaction: FC<IProtectTransactionProps> = ({
-  onProtectTransactionAction
+import './ProtectionThisTransaction.scss';
+
+import ProtectIcon from './icons/ProtectIcon';
+import feeIcon from 'assets/images/icn-fee.svg';
+
+export const ProtectionThisTransaction: FC<IProtectTransactionProps & { txConfig: ITxConfig }> = ({
+  onProtectTransactionAction,
+  txConfig
 }) => {
+  const { getAssetRate } = useContext(RatesContext);
+  const { assets } = useContext(AssetContext);
+
+  useEffect(() => {
+    /*const { asset } = txConfig;
+    const ethAsset = assets.find(a => a.ticker === 'ETH');
+
+    const assetRate = getAssetRate(asset);
+    const ethAssetRate = ethAsset ? getAssetRate(ethAsset) : 0;*/
+
+    ProtectTransactionUtils.getProtectTransactionFee(txConfig);
+  }, [txConfig, assets, getAssetRate]);
+
   const onProtectMyTransactionClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
@@ -74,14 +94,11 @@ export const ProtectionThisTransaction: FC<IProtectTransactionProps> = ({
       <div className="ProtectionThisTransaction-fee">
         <img src={feeIcon} alt="Fee" />
         <p className="fee-label">Protected Transaction Fee:</p>
-        <p className="fee-value">
-          <span title="0.000426 ETH" className="fee-eth-value">
-            0.000426 ETH
-          </span>
-          <span title="$0.21" className="fee-fiat-value muted">
-            $0.21
-          </span>
-        </p>
+        <Amount
+          assetValue={`${parseFloat('0.000426').toFixed(6)} ETH`}
+          fiatValue={`$${convertToFiat(parseFloat('0.000426'), 10).toFixed(2)}
+          `}
+        />
       </div>
       <Button
         type="button"

@@ -96,26 +96,6 @@
       margin-bottom: 0;
       text-align: left;
     }
-
-    .fee-value {
-      flex: 0 0 136px;
-      max-width: 136px;
-      margin-bottom: 0;
-      text-align: right;
-
-      .fee-fiat-value,
-      .fee-eth-value {
-        display: inline-block;
-        max-width: 136px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-      }
-
-      .fee-fiat-value {
-        margin-top: -6px;
-      }
-    }
   }
 
   &-protect-transaction {
