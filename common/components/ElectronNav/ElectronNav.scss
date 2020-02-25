@@ -18,7 +18,7 @@ $back-spacing: 10px;
     position: sticky;
     top: 0;
     padding-top: $branding-spacing-top;
-    background: color(control-bg);
+    background: color(header-bg);
     z-index: 1;
     border-bottom: 1px solid shade-dark(0.1);
 
@@ -115,7 +115,7 @@ $back-spacing: 10px;
       padding: $back-spacing 0 8px $back-spacing;
       color: shade-dark(0.2);
       border-bottom: 1px solid shade-dark(0.05);
-      background: color(control-bg);
+      background: color(header-bg);
 
       .is-osx & {
         padding-top: $electron-osx-control-spacing + $back-spacing;

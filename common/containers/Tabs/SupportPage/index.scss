@@ -8,6 +8,8 @@
 
   &-mycrypto {
     text-align: center;
+    color: color(white-clear);
+    background: color(header-bg);
 
     &-logo {
       display: block;
@@ -33,7 +35,7 @@
 
       &-link {
         margin: 0 .45rem;
-        color: shade-dark(0.4);
+        color: color(white-clear);
 
         &:hover {
           opacity: 1;
@@ -51,11 +53,11 @@
 
       &-text {
         margin: 0 $space-sm;
-        color: shade-dark(0.4);
+        color: color(white-clear);
         font-size: $font-size-xs-bump;
 
         a {
-          color: shade-dark(0.4);
+          color: color(white-clear);
 
           &:hover {
             color: color(link-hover-color);
