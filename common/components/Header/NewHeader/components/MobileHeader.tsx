@@ -164,7 +164,7 @@ class MobileHeader extends Component<Props> {
                 <ul className="MobileHeader-menu-bottom">
                   <li>
                     <a
-                      href="https://www.energi.world/faq/"
+                      href="https://docs.energi.software/"
                       target="_blank"
                       rel="noopener noreferrer"
                     >

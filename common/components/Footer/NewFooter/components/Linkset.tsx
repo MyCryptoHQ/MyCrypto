@@ -23,7 +23,7 @@ const LINK_COLUMNS = [
 */
       {
         title: translateRaw('NEW_FOOTER_TEXT_7'),
-        link: 'https://www.energi.world/faq/'
+        link: 'https://docs.energi.software/'
       },
       {
         title: translateRaw('NEW_FOOTER_TEXT_8'),

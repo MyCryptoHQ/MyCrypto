@@ -44,7 +44,7 @@ const HELP_MENU: MenuItemConstructorOptions = {
     {
       label: 'Help / FAQ',
       click() {
-        shell.openExternal('https://www.energi.world/faq/');
+        shell.openExternal('https://docs.energi.software/');
       }
     },
     {

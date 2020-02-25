@@ -54,7 +54,7 @@ export const gasPriceDefaults: GasPriceSetting = {
 
 export const MINIMUM_PASSWORD_LENGTH = 12;
 
-export const knowledgeBaseURL = 'https://support.mycrypto.com';
+export const knowledgeBaseURL = 'https://docs.energi.software/';
 export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/1985?path=/products/';
 export const trezorReferralURL = 'https://shop.trezor.io/?offer_id=10&aff_id=1735';
 // TODO - Update url
