@@ -90,8 +90,8 @@ export const withCommission = ({
   subtract?: boolean;
 }): number => {
   const commission = subtract ? (100 - rate) / 100 : (100 + rate) / 100;
-  const x = multiplyBNFloats(weiToFloat(amount), commission);
-  return parseFloat(trimBN(formatEther(x)));
+  const outputBN = multiplyBNFloats(weiToFloat(amount), commission);
+  return parseFloat(trimBN(formatEther(outputBN)));
 };
 
 export const calculateMarkup = (exchangeRate: number, costBasis: number): string =>
