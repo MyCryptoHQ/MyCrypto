@@ -69,6 +69,7 @@ const SpinnerWrapper = styled.div`
 interface TokenListProps {
   isScanning: boolean;
   tokens: AssetWithDetails[];
+  showValue?: boolean;
   setShowDetailsView(show: boolean): void;
   setShowAddToken(setShowAddToken: boolean): void;
   setCurrentToken(token: AssetWithDetails): void;
@@ -80,6 +81,7 @@ export function TokenList(props: TokenListProps) {
     setShowDetailsView,
     setCurrentToken,
     tokens,
+    showValue = false,
     isScanning,
     setShowAddToken,
     handleScanTokens
@@ -112,7 +114,9 @@ export function TokenList(props: TokenListProps) {
                 <AssetName>{token.name}</AssetName>
               </Asset>
               <TokenValueWrapper>
-                <TokenValue>${convertToFiatFromAsset(token, token.rate).toFixed(2)}</TokenValue>
+                {showValue && (
+                  <TokenValue>${convertToFiatFromAsset(token, token.rate).toFixed(2)}</TokenValue>
+                )}
                 <MoreIcon
                   src={moreIcon}
                   alt="More"
