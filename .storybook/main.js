@@ -13,13 +13,21 @@ module.exports = {
   ],
 
   webpackFinal: async config => {
+    // Remove storybooks handling of assets in favor of our own.
+    config.module.rules = config.module.rules.filter(
+      rule => !rule.test.toString().includes('svg')
+    )
+
+    // Merge storybook and our custom webpack_config/development.js
     return merge.smart(
       config,
-      // Use the existing dev webpack_config
+
       {
         resolve: custom.resolve,
         module: {
-          rules: custom.module.rules
+          rules: [
+            ...custom.module.rules
+          ]
         }
       },
       // Necessary to launch @storybook
