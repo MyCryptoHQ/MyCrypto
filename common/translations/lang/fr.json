@@ -221,7 +221,7 @@
     "DEP_INTERFACE": "Interface générée ",
     "NODE_TITLE": "Installer votre nœud personnalisé",
     "NODE_SUBTITLE": "Pour se connecter à un nœud local…",
-    "NODE_WARNING": "Votre nœud doit être en HTTPS pour vous y connecter via MyCrypto.com. Vous pouvez [télécharger le repo MyCrypto et le lancer localement](https://github.com/energicryptocurrency/energi3-mycrypto/releases) pour vous connecter à un nœud quelconque, ou obtenir un certificat SSL gratuit via [LetsEncrypt](https://letsencrypt.org/)",
+    "NODE_WARNING": "Votre nœud doit être en HTTPS pour vous y connecter via MyCrypto.com. Vous pouvez [télécharger le repo MyCrypto et le lancer localement](https://docs.energi.software/en/downloads/myenergiwallet) pour vous connecter à un nœud quelconque, ou obtenir un certificat SSL gratuit via [LetsEncrypt](https://letsencrypt.org/)",
     "NODE_NAME": "Nom du nœud",
     "NODE_PORT": "Port du nœud",
     "NODE_CTA": "Sauvegarder et utiliser un nœud personnalisé",

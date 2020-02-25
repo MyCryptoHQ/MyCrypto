@@ -167,7 +167,7 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
         <React.Fragment>
           <div className="WalletTypes-download">
             <NewTabLink
-              href="https://github.com/energicryptocurrency/energi3-mycrypto/releases"
+              href="https://docs.energi.software/en/downloads/myenergiwallet"
               className="WalletTypes-download-button btn btn-primary btn-lg"
             >
               {translate('WALLET_SUGGESTION_DESKTOP_APP')}

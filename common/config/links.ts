@@ -14,8 +14,7 @@ interface Link {
   text: string;
 }
 
-export const DOWNLOAD_MYCRYPTO_LINK =
-  'https://github.com/energicryptocurrency/energi3-mycrypto/releases';
+export const DOWNLOAD_MYCRYPTO_LINK = 'https://docs.energi.software/en/downloads/myenergiwallet';
 
 export const socialMediaLinks: Link[] = [
   {
