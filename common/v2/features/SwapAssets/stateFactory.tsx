@@ -222,7 +222,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         toAmount: withCommission({
           amount: multiplyBNFloats(value, price),
           rate: MYC_DEXAG_COMMISSION_RATE,
-          substract: true
+          subtract: true
         }).toString(),
         fromAmountError: '',
         toAmountError: '',

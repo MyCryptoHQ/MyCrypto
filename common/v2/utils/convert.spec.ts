@@ -245,7 +245,7 @@ describe('it Remove / Add commission from amount', () => {
     const converted = withCommission({
       amount: convertToBN(amount),
       rate: MYC_DEXAG_COMMISSION_RATE,
-      substract: true
+      subtract: true
     });
     expect(converted).toEqual(expected);
   });
@@ -259,7 +259,7 @@ describe('it Remove / Add commission from amount', () => {
     const converted = withCommission({
       amount: convertToBN(amount),
       rate: MYC_DEXAG_COMMISSION_RATE,
-      substract: true
+      subtract: true
     });
     expect(converted).toEqual(expected);
   });
@@ -269,7 +269,7 @@ describe('it Remove / Add commission from amount', () => {
     const converted = withCommission({
       amount: convertToBN(amount),
       rate: MYC_DEXAG_COMMISSION_RATE,
-      substract: true
+      subtract: true
     });
     expect(converted).toEqual(expected);
   });

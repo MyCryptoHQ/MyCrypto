@@ -83,21 +83,15 @@ export const weiToFloat = (wei: BigNumber, decimal?: number): number =>
 export const withCommission = ({
   amount,
   rate,
-  substract
+  subtract
 }: {
   amount: BigNumber;
   rate: number;
-  substract?: boolean;
+  subtract?: boolean;
 }): number => {
-  const amountBN = parseEther(amount.toString());
-  const commission = substract ? (100 - rate) / 100 : (100 + rate) / 100;
-  const splitCommisson = commission.toString().split('.');
-  const decimals = splitCommisson.length > 1 ? splitCommisson[1].length : 0;
-  const commissionDivisor = Math.pow(10, decimals);
-  const commissionBN = bigNumberify(Math.round(commission * commissionDivisor));
-
-  const convertedFloat = weiToFloat(amountBN.mul(commissionBN), DEFAULT_ASSET_DECIMAL);
-  return convertedFloat / commissionDivisor;
+  const commission = subtract ? (100 - rate) / 100 : (100 + rate) / 100;
+  const x = multiplyBNFloats(weiToFloat(amount), commission);
+  return parseFloat(trimBN(formatEther(x)));
 };
 
 export const calculateMarkup = (exchangeRate: number, costBasis: number): string =>
