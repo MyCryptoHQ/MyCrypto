@@ -10,7 +10,7 @@ import { AddressBookContext, StoreContext } from 'v2/services/Store';
 import { Amount, AssetIcon } from 'v2/components';
 import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from 'v2/services/EthService';
 import { RatesContext } from 'v2/services/RatesProvider';
-import { IStepComponentProps, ExtendedAddressBook} from 'v2/types';
+import { IStepComponentProps, ExtendedAddressBook } from 'v2/types';
 import { BREAK_POINTS } from 'v2/theme';
 
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
@@ -102,13 +102,7 @@ export default function ConfirmTransaction({
   onComplete,
   signedTx
 }: IStepComponentProps) {
-  const {
-    asset,
-    senderAccount: account,
-    baseAsset,
-    receiverAddress,
-    network
-  } = txConfig;
+  const { asset, senderAccount: account, baseAsset, receiverAddress, network } = txConfig;
 
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
   const { getAssetRate } = useContext(RatesContext);
@@ -123,16 +117,18 @@ export default function ConfirmTransaction({
   const assetRate = getAssetRate(asset);
   const baseAssetRate = getAssetRate(baseAsset);
 
-  return <ConfirmTransactionUI
-    assetRate={assetRate}
-    baseAssetRate={baseAssetRate}
-    senderContact={senderContact}
-    senderAccount={senderAccount!}
-    txConfig={txConfig}
-    recipientContact={recipientContact}
-    onComplete={onComplete}
-    signedTx={signedTx}
-  />
+  return (
+    <ConfirmTransactionUI
+      assetRate={assetRate}
+      baseAssetRate={baseAssetRate}
+      senderContact={senderContact}
+      senderAccount={senderAccount!}
+      txConfig={txConfig}
+      recipientContact={recipientContact}
+      onComplete={onComplete}
+      signedTx={signedTx}
+    />
+  );
 }
 
 interface DataProps {
@@ -152,7 +148,7 @@ export const ConfirmTransactionUI = ({
   txConfig,
   onComplete,
   signedTx
-}: Omit<IStepComponentProps, 'resetFlow'> & DataProps ) => {
+}: Omit<IStepComponentProps, 'resetFlow'> & DataProps) => {
   const {
     asset,
     gasPrice,
@@ -253,19 +249,19 @@ export const ConfirmTransactionUI = ({
               />
             </>
           ) : (
-              <>
-                <AssetIcon symbol={asset.ticker as TSymbol} size={'30px'} />
-                <Amount
-                  assetValue={`${amount} ${asset.ticker}`}
-                  bold={true}
-                  baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
-                  fiatValue={`$${(
-                    convertToFiat(parseFloat(amount), assetRate) +
-                    convertToFiat(parseFloat(totalEtherEgress), baseAssetRate)
-                  ).toFixed(2)}`}
-                />
-              </>
-            )}
+            <>
+              <AssetIcon symbol={asset.ticker as TSymbol} size={'30px'} />
+              <Amount
+                assetValue={`${amount} ${asset.ticker}`}
+                bold={true}
+                baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
+                fiatValue={`$${(
+                  convertToFiat(parseFloat(amount), assetRate) +
+                  convertToFiat(parseFloat(totalEtherEgress), baseAssetRate)
+                ).toFixed(2)}`}
+              />
+            </>
+          )}
         </AmountWrapper>
       </RowWrapper>
       <TransactionDetailsDisplay
@@ -288,4 +284,4 @@ export const ConfirmTransactionUI = ({
       </SendButton>
     </ConfirmTransactionWrapper>
   );
-}
+};

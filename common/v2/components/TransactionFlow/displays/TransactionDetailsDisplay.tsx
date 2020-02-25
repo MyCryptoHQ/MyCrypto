@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Network } from '@mycrypto/ui';
 import { bigNumberify } from 'ethers/utils';
 
@@ -74,9 +74,7 @@ function TransactionDetailsDisplay({
                   {`Account Balance (${baseAsset.ticker}):`}
                 </div>
                 <div className="TransactionDetails-row-column">{`
-                  ${weiToFloat(
-                    getAccountBalance(senderAccount)
-                  ).toFixed(6)}
+                  ${weiToFloat(getAccountBalance(senderAccount)).toFixed(6)}
                   ${baseAsset.ticker}
                 `}</div>
               </div>

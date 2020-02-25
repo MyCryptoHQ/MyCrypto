@@ -36,7 +36,8 @@ import {
   IFormikFields,
   IStepComponentProps,
   ITxConfig,
-  ErrorObject
+  ErrorObject,
+  StoreAccount
 } from 'v2/types';
 import {
   getNonce,
@@ -94,7 +95,7 @@ const initialFormikValues: IFormikFields = {
     display: ''
   },
   amount: '',
-  account: {} as IAccount, // should be renamed senderAccount
+  account: {} as StoreAccount, // should be renamed senderAccount
   network: {} as Network, // Not a field move to state
   asset: {} as StoreAsset,
   txDataField: '0x',
