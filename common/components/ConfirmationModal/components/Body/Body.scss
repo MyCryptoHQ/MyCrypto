@@ -1,5 +1,9 @@
 @import 'common/sass/variables';
 
+.Modal {
+  max-height: calc(85vh - 60px) !important;
+}
+
 .tx-modal-body {
   margin: auto;
   max-width: 35rem;

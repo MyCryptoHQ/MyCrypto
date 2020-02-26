@@ -63,7 +63,7 @@ $button-break: 'max-width: 620px';
 @media (#{$button-break}) {
   .ConfModalWrap {
     .Modal-footer-btn {
-      display: block;
+      display: flex;
       float: none;
       width: 100%;
       margin: 0 0 5px;
