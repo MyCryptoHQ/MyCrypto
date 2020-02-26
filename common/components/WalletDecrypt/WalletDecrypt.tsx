@@ -130,7 +130,7 @@ const WalletDecrypt = withRouter<Props>(
         initialParams: {},
         unlock: this.props.unlockWeb3,
         attemptUnlock: true,
-        helpLink: `${knowledgeBaseURL}/how-to/migrating/moving-from-mycrypto-to-metamask`
+        helpLink: `${knowledgeBaseURL}en/how-to/myenergiwallet`
       },
       [SecureWalletName.LEDGER_NANO_S]: {
         lid: 'X_LEDGER',
@@ -148,7 +148,7 @@ const WalletDecrypt = withRouter<Props>(
         component: TrezorDecrypt,
         initialParams: {},
         unlock: this.props.setWallet,
-        helpLink: `${knowledgeBaseURL}/how-to/migrating/moving-from-mycrypto-to-trezor`
+        helpLink: `${knowledgeBaseURL}en/how-to/myenergiwallet`
       },
       [SecureWalletName.SAFE_T]: {
         lid: 'X_SAFE_T',
@@ -178,7 +178,7 @@ const WalletDecrypt = withRouter<Props>(
           password: ''
         },
         unlock: this.props.unlockKeystore,
-        helpLink: `${knowledgeBaseURL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
+        helpLink: `${knowledgeBaseURL}en/how-to/myenergiwallet`
       },
       [InsecureWalletName.MNEMONIC_PHRASE]: {
         lid: 'X_MNEMONIC',
@@ -186,7 +186,7 @@ const WalletDecrypt = withRouter<Props>(
         component: MnemonicDecrypt,
         initialParams: {},
         unlock: this.props.unlockMnemonic,
-        helpLink: `${knowledgeBaseURL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
+        helpLink: `${knowledgeBaseURL}en/how-to/myenergiwallet`
       },
       [InsecureWalletName.PRIVATE_KEY]: {
         lid: 'X_PRIVKEY2',
@@ -197,7 +197,7 @@ const WalletDecrypt = withRouter<Props>(
           password: ''
         },
         unlock: this.props.unlockPrivateKey,
-        helpLink: `${knowledgeBaseURL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
+        helpLink: `${knowledgeBaseURL}en/how-to/myenergiwallet`
       },
       [MiscWalletName.VIEW_ONLY]: {
         lid: 'VIEW_ADDR',
