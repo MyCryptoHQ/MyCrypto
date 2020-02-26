@@ -7,7 +7,7 @@ import { ledgerReferralURL, trezorReferralURL } from 'config';
 import Template from './Template';
 import MetamaskIcon from 'assets/images/wallets/metamask.svg';
 import HardwareWalletIcon from 'assets/images/wallets/hardware.svg';
-import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
+// import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
 import FileIcon from 'assets/images/wallets/file.svg';
 import './WalletTypes.scss';
 
@@ -101,7 +101,9 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
           href: 'https://metamask.io/'
         }
       ]
-    },
+    }
+    /* Disabling Parity Signer option to create new wallet
+    ,
     {
       name: translate('X_PARITYSIGNER'),
       type: 'parity',
@@ -123,6 +125,7 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
         }
       ]
     }
+    */
   ];
 
   // TODO: remove after some time for web version
