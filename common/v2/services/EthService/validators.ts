@@ -47,7 +47,7 @@ export function isBurnAddress(address: string): boolean {
 }
 
 function isValidRSKAddress(address: string, chainId: number): boolean {
-  return isValidETHLikeAddress(address, () => isValidChecksumRSKAddress(address, chainId));
+  return isValidETHLikeAddress(address, isValidChecksumRSKAddress(address, chainId));
 }
 
 function getIsValidAddressFunction(chainId: number) {
@@ -57,16 +57,22 @@ function getIsValidAddressFunction(chainId: number) {
   return isValidETHAddress;
 }
 
-export function isValidETHLikeAddress(address: string, extraChecks?: () => boolean): boolean {
-  if (address.substring(0, 2) !== '0x') {
+export function isValidETHLikeAddress(address: string, checksumValid: boolean): boolean {
+  if (!['0x', '0X'].includes(address.substring(0, 2))) {
+    // Invalid if the address doesn't begin with '0x' or '0X'
     return false;
-  } else if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
+  } else if (isValidMixedCaseETHAddress(address) && !checksumValid) {
+    // Invalid if mixed case, but not checksummed.
     return false;
-  } else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
+  } else if (isValidMixedCaseETHAddress(address) && checksumValid) {
+    // Valid if isMixedCaseAddress && checksum is valid
     return true;
-  } else {
-    return extraChecks ? extraChecks() : false;
+  } else if (isValidUpperOrLowerCaseETHAddress(address)) {
+    // Valid if isValidUpperOrLowercase eth address && checksum
+    return true;
   }
+  // else return false
+  return false;
 }
 
 export const isValidETHRecipientAddress = (
@@ -139,7 +145,7 @@ export function isValidAddress(address: string, chainId: number) {
 }
 
 export function isValidETHAddress(address: string): boolean {
-  return isValidETHLikeAddress(address, () => isChecksumAddress(address));
+  return isValidETHLikeAddress(address, isChecksumAddress(address));
 }
 
 export const isCreationAddress = (address: string): boolean =>
