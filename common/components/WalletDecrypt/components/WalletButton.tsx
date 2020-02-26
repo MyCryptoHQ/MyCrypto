@@ -41,11 +41,19 @@ export class WalletButton extends React.PureComponent<Props> {
       example,
       icon,
       helpLink,
-      isSecure,
       isReadOnly,
       isDisabled,
       disableReason
     } = this.props;
+
+    /** Setting isSecure=true for desktop wallet options */
+    let { isSecure } = this.props;
+    if (
+      process.env.BUILD_ELECTRON &&
+      (name === 'Keystore File ' || name === 'Mnemonic Phrase ' || name === 'Private Key')
+    ) {
+      isSecure = true;
+    }
 
     const icons: Icon[] = [];
     if (isReadOnly) {
