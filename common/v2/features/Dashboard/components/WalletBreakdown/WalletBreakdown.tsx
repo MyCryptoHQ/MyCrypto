@@ -101,7 +101,7 @@ export function WalletBreakdown() {
     <>
       <WalletBreakdownTop>
         <AccountDropdownWrapper>
-          <Tooltip tooltip={translateRaw('DASHBOARD_TOKENS_TOOLTIP')}>
+          <Tooltip tooltip={translateRaw('DASHBOARD_ACCOUNT_SELECT_TOOLTIP')}>
             <img src={QuestionToolTip} />
           </Tooltip>
           <SAccountDropdown
