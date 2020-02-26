@@ -1,7 +1,11 @@
 import React from 'react';
-import translate, { translateRaw } from 'v2/translations';
-import { Spinner } from './Spinner';
 import { ResolutionError } from '@unstoppabledomains/resolution';
+import styled from 'styled-components';
+
+import translate, { translateRaw } from 'v2/translations';
+
+import { Spinner } from './Spinner';
+import { InlineMessage } from './InlineMessage';
 
 export interface DomainStatusProps {
   isLoading: boolean;
@@ -11,11 +15,21 @@ export interface DomainStatusProps {
   resolutionError?: ResolutionError;
 }
 
+const InlineError = styled(InlineMessage)`
+  > :nth-child(2) > :first-child {
+    display: inline;
+  }
+`;
+
+const withInlineError = (children: JSX.Element) => <InlineError>{children}</InlineError>;
+
 export const DomainStatus: React.FC<DomainStatusProps> = (props: DomainStatusProps) => {
   const parseError = (resolutionError?: ResolutionError) => {
     if (!resolutionError)
-      return <div data-testid="domainStatus">{`Could not resolve the domain ${props.domain}`}</div>;
-    return <div data-testid="domainStatus">{`${resolutionError.message}`}</div>;
+      return withInlineError(
+        <div data-testid="domainStatus">{`Could not resolve the domain ${props.domain}`}</div>
+      );
+    return withInlineError(<div data-testid="domainStatus">{`${resolutionError.message}`}</div>);
   };
 
   const spinner = () => (
@@ -28,8 +42,8 @@ export const DomainStatus: React.FC<DomainStatusProps> = (props: DomainStatusPro
   if (props.isError || props.resolutionError) {
     return parseError(props.resolutionError);
   }
-  if (props.domain === '') return <div data-testid="domainStatus">{''}</div>;
-  return (
+  if (props.domain === '') return withInlineError(<div data-testid="domainStatus">{''}</div>);
+  return withInlineError(
     <div data-testid="domainStatus">{`${translateRaw('SEND_ASSETS_DID_RESOLVE')}: ${
       props.rawAddress
     }`}</div>

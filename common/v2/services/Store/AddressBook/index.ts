@@ -2,5 +2,6 @@ export { AddressBookContext, AddressBookProvider } from './AddressBookProvider';
 export {
   getLabelByAccount,
   getLabelByAddressAndNetwork,
-  findNextUnusedDefaultLabel
+  findNextUnusedDefaultLabel,
+  findNextRecipientLabel
 } from './helpers';

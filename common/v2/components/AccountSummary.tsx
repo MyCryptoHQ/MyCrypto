@@ -8,10 +8,11 @@ import Account from './Account';
 
 interface Props {
   address: string;
-  balance: string;
+  balance?: string;
   assetSymbol?: string;
   label?: string;
   selectable?: boolean;
+  hideCurrency?: boolean;
   onClick?(): void;
 }
 
@@ -54,12 +55,14 @@ function AccountSummary({
   return (
     <SAccountWrapper onPointerDown={onClick} selectable={selectable}>
       <SAddress title={label} truncate={truncate} address={address} isCopyable={false} />
-      <SCurrency
-        amount={balance}
-        symbol={(assetSymbol as TSymbol) || ('ETH' as TSymbol)}
-        decimals={4}
-        icon={true}
-      />
+      {balance && (
+        <SCurrency
+          amount={balance}
+          symbol={(assetSymbol as TSymbol) || ('ETH' as TSymbol)}
+          decimals={4}
+          icon={true}
+        />
+      )}
     </SAccountWrapper>
   );
 }
