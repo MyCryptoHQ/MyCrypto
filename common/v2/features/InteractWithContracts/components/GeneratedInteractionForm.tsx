@@ -20,7 +20,7 @@ import {
 import { FieldLabel, BooleanOutputField, BooleanSelector } from './fields';
 import WriteForm from './WriteForm';
 
-const { GREY_LIGHTER } = COLORS;
+const { GREY_LIGHTER, WHITE } = COLORS;
 
 interface FieldWraperProps {
   isOutput?: boolean;
@@ -302,7 +302,7 @@ export default function GeneratedInteractionForm({
             {error && <InlineMessage>{error}</InlineMessage>}
             <ActionWrapper>
               {isRead && inputs.length > 0 && (
-                <ActionButton onClick={() => submitFormRead(currentFunction)}>
+                <ActionButton color={WHITE} onClick={() => submitFormRead(currentFunction)}>
                   {translateRaw('ACTION_16')}
                 </ActionButton>
               )}

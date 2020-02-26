@@ -56,7 +56,7 @@ const SettingsTooltipIcon = styled(Icon)`
 `;
 
 const SelectContainer = styled.div`
-  border: 0.125em solid #007896;
+  border: 0.125em solid ${COLORS.BLUE_LIGHT};
   padding: 0.6rem;
   width: 205px;
   text-align: center;
@@ -125,13 +125,14 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
             </Link>
           </SettingsControl>
         </SettingsField>
+        {/* Hidding Paper wallet section according to CH4412
         <SettingsField>
           <SettingsLabel>{translate('SETTINGS_PAPER_LABEL')}</SettingsLabel>
           <SettingsControl>
             <SettingsButton secondary={true}>{translate('SETTINGS_DOWNLOAD_LABEL')}</SettingsButton>
             <SettingsButton secondary={true}>{translate('SETTINGS_PRINT_LABEL')}</SettingsButton>
           </SettingsControl>
-        </SettingsField>
+        </SettingsField> */}
         <SettingsField>
           <SettingsLabel>
             {translate('SETTINGS_INACTIVITY_LABEL')}{' '}

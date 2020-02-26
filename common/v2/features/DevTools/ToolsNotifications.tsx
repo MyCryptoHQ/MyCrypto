@@ -9,7 +9,6 @@ const ToolWrapper = styled.div`
   flex-direction: column;
   font-size: 14px;
   width: 100%;
-  backround: white;
   padding: 8px;
   border: 1px solid ${COLORS.GREY_LIGHTEST};
 `;

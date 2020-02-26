@@ -20,7 +20,7 @@ interface Link {
 // we create an overlap between the old Link and the new IRoutePath
 type TmpLink = Partial<Link & IRoutePath>;
 
-export const DOWNLOAD_MYCRYPTO_LINK = 'https://download.mycrypto.com/';
+export const DOWNLOAD_MYCRYPTO_LINK = 'https://beta.mycrypto.com/download-desktop-app';
 
 export const socialMediaLinks: Link[] = [
   {
@@ -132,16 +132,13 @@ export const partnerLinks: Link[] = [
   }
 ];
 
-export const EXT_URLS = createNavLinksFromExternalLinks(affiliateLinks.filter(
-  l => l.name !== undefined
-) as IRoutePath[]);
+export const EXT_URLS = createNavLinksFromExternalLinks(
+  affiliateLinks.filter(l => l.name !== undefined) as IRoutePath[]
+);
 
 function createNavLinksFromExternalLinks(links: IRoutePath[]) {
-  return links.reduce(
-    (navLinks, linkInfo) => {
-      navLinks[linkInfo.name] = linkInfo;
-      return navLinks;
-    },
-    {} as IRoutePaths
-  );
+  return links.reduce((navLinks, linkInfo) => {
+    navLinks[linkInfo.name] = linkInfo;
+    return navLinks;
+  }, {} as IRoutePaths);
 }

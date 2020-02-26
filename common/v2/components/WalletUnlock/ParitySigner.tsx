@@ -5,7 +5,7 @@ import { ParityQrSigner, NewTabLink } from 'v2/components';
 import { WalletFactory } from 'v2/services/WalletService';
 import { isValidAddress } from 'v2/services/EthService';
 import { WalletId, FormData } from 'v2/types';
-import { WALLETS_CONFIG } from 'v2/config';
+import { getWalletConfig } from 'v2/config';
 
 import AppStoreBadge from 'assets/images/mobile/app-store-badge.png';
 import GooglePlayBadge from 'assets/images/mobile/google-play-badge.png';
@@ -29,7 +29,7 @@ interface SignerAddress {
 type SignerQrContent = SignerAddress | string;
 
 const WalletService = WalletFactory(WalletId.PARITY_SIGNER);
-const wikiLink = WALLETS_CONFIG[WalletId.PARITY_SIGNER].helpLink!;
+const wikiLink = getWalletConfig(WalletId.PARITY_SIGNER).helpLink;
 
 export function ParitySignerDecrypt({ formData, onUnlock }: OwnProps & StateProps) {
   const { getNetworkByName } = useContext(NetworkContext);
@@ -52,7 +52,9 @@ export function ParitySignerDecrypt({ formData, onUnlock }: OwnProps & StateProp
       <div className="ParitySigner">
         {/* <div className="ParitySigner-title">{translate('SIGNER_SELECT_WALLET')}</div> */}
         <section className="ParitySigner-fields">
-          <section className="Panel-description">{translate('SIGNER_SELECT_WALLET_QR')}</section>
+          <section className="Panel-description">
+            {translate('SIGNER_SELECT_WALLET_QR', { $walletId: translateRaw('X_PARITYSIGNER') })}
+          </section>
           <section className="ParitySigner-fields-field">
             <ParityQrSigner scan={true} onScan={unlockAddress} />
           </section>

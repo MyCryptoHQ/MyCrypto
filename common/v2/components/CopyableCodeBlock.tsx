@@ -12,7 +12,6 @@ const truncate = (_: string) => {
 
 const CopyableCodeBlockWrapper = styled('div')`
   font-weight: 400;
-  font-size: 1rem;
   margin: 0;
   margin-bottom: 1rem;
   font-size: 1rem;
@@ -23,7 +22,6 @@ const CopyableCodeBlockWrapper = styled('div')`
 
 const CodeDisplay = styled('pre')`
   font-weight: 400;
-  font-size: 1rem;
   padding: 0.75rem 1rem;
   margin: 0;
   font-size: 1rem;

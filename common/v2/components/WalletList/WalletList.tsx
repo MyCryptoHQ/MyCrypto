@@ -60,7 +60,6 @@ interface InfoProps {
 
 const Info = styled.div<InfoProps>`
   justify-content: center;
-  font-family: Lato;
   font-size: 16px;
   text-align: center;
   color: #093053;

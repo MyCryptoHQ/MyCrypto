@@ -1,15 +1,15 @@
 import React from 'react';
 
 import { GeneralStepper } from 'v2/components';
-import { useStateReducer } from 'v2/utils';
-import { WalletId, ITxReceipt, ISignedTx, IFormikFields, ITxConfig } from 'v2/types';
-import { ConfirmTransaction, TransactionReceipt } from 'v2/components/TransactionFlow';
+import { useStateReducer, isWeb3Wallet } from 'v2/utils';
+import { ITxReceipt, ISignedTx, IFormikFields, ITxConfig } from 'v2/types';
 import { translateRaw } from 'v2/translations';
+import { ROUTE_PATHS } from 'v2/config';
 
+import { ConfirmTransaction, TransactionReceipt } from 'v2/components/TransactionFlow';
+import { IStepperPath } from 'v2/components/GeneralStepper/types';
 import { SendAssetsForm, SignTransaction } from './components';
 import { txConfigInitialState, TxConfigFactory } from './stateFactory';
-import { IStepperPath } from 'v2/components/GeneralStepper/types';
-import { ROUTE_PATHS } from 'v2/config';
 
 function SendAssets() {
   const {
@@ -18,8 +18,9 @@ function SendAssets() {
     handleConfirmAndSend,
     handleSignedTx,
     handleSignedWeb3Tx,
+    handleResubmitTx,
     txFactoryState
-  } = useStateReducer(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: null });
+  } = useStateReducer(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: undefined });
 
   // Due to MetaMask deprecating eth_sign method,
   // it has different step order, where sign and send are one panel
@@ -71,18 +72,25 @@ function SendAssets() {
     {
       label: translateRaw('TRANSACTION_BROADCASTED'),
       component: TransactionReceipt,
-      props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(txFactoryState)
+      props: (({ txConfig, txReceipt }) => ({
+        txConfig,
+        txReceipt,
+        pendingButton: {
+          text: translateRaw('TRANSACTION_BROADCASTED_RESUBMIT'),
+          action: (cb: any) => handleResubmitTx(cb)
+        }
+      }))(txFactoryState)
     }
   ];
 
-  const { senderAccount } = txFactoryState && txFactoryState.txConfig;
-
-  const walletId = senderAccount ? senderAccount.wallet : undefined;
-  const steps = walletId === WalletId.METAMASK ? web3Steps : defaultSteps;
+  const getPath = () => {
+    const { senderAccount } = txFactoryState.txConfig;
+    return senderAccount && isWeb3Wallet(senderAccount.wallet) ? web3Steps : defaultSteps;
+  };
 
   return (
     <GeneralStepper
-      steps={steps}
+      steps={getPath()}
       defaultBackPath={ROUTE_PATHS.DASHBOARD.path}
       defaultBackPathLabel={translateRaw('DASHBOARD')}
       completeBtnText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}

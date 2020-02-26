@@ -16,7 +16,6 @@ const { SCREEN_SM, SCREEN_MD, SCREEN_XL, SCREEN_XXL } = BREAK_POINTS;
 const { GREYISH_BROWN } = COLORS;
 
 const MainPanel = styled(Panel)`
-padding: 0;
 display: flex;
 flex-direction: column;
 align-items: center;

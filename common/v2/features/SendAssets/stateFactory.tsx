@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Arrayish, hexlify } from 'ethers/utils';
+import { Arrayish, hexlify, bigNumberify } from 'ethers/utils';
 
 import { TUseStateReducerFactory, fromTxReceiptObj, makeTxConfigFromSignedTx } from 'v2/utils';
 import {
@@ -18,7 +18,11 @@ import {
   AssetContext,
   NetworkContext
 } from 'v2/services';
-import { ProviderHandler } from 'v2/services/EthService';
+import {
+  ProviderHandler,
+  inputGasPriceToHex,
+  bigNumGasPriceToViewableGwei
+} from 'v2/services/EthService';
 
 import { TStepAction } from './types';
 import { processFormDataToTx } from './helpers';
@@ -131,13 +135,14 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
 
   const handleSignedWeb3Tx: TStepAction = (payload: ITxReceipt | string, cb) => {
     // Payload is tx hash or receipt
+    // @ts-ignore
     const txReceipt =
       typeof payload === 'string'
         ? {
             ...state.txConfig,
             hash: payload,
             to: state.txConfig.receiverAddress,
-            from: state.txConfig.senderAccount.address as string
+            from: state.txConfig.senderAccount.address
           }
         : fromTxReceiptObj(payload);
     addNewTransactionToAccount(
@@ -148,6 +153,24 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
     setState((prevState: State) => ({
       ...prevState,
       txReceipt
+    }));
+    cb();
+  };
+
+  const handleResubmitTx: TStepAction = cb => {
+    const { txConfig } = state;
+    const rawTransaction = txConfig.rawTransaction;
+    // add 10 gwei to current gas price
+    const resubmitGasPrice =
+      parseFloat(bigNumGasPriceToViewableGwei(bigNumberify(rawTransaction.gasPrice))) + 10;
+    const hexGasPrice = inputGasPriceToHex(resubmitGasPrice.toString());
+
+    setState((prevState: State) => ({
+      ...prevState,
+      txConfig: {
+        ...txConfig,
+        rawTransaction: { ...rawTransaction, gasPrice: hexGasPrice }
+      }
     }));
     cb();
   };
@@ -164,6 +187,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
     handleConfirmAndSend,
     handleSignedTx,
     handleSignedWeb3Tx,
+    handleResubmitTx,
     txFactoryState
   };
 };

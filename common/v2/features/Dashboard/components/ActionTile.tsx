@@ -57,6 +57,7 @@ const SButton = styled(Button)<{ faded?: boolean }>`
       height: 54px;
       order: 1;
     }
+  }
 `;
 
 const STitle = styled('div')`
@@ -69,7 +70,7 @@ const STitle = styled('div')`
     font-size: ${FONT_SIZE.SM};
     height: 2.8em;
     padding-top: ${SPACING.XS};
-    // The link for 'Get Hardware Wallet' is too long to use a line per word.
+    /* The link for 'Get Hardware Wallet' is too long to use a line per word. */
     word-spacing: ${({ isLonger }: { isLonger: boolean }) => (isLonger ? 'inherit' : '9999px')};
   }
 

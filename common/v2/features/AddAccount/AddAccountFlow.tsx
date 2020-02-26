@@ -133,6 +133,7 @@ const AddAccountFlow = withRouter(({ history, match }) => {
               wallet={getWalletInfo(storyName)}
               goToStart={goToStart}
               goToNextStep={goToNextStep}
+              goToPreviousStep={goToPreviousStep}
               onUnlock={(payload: any) => updateFormState({ type: ActionType.ON_UNLOCK, payload })}
               formData={formData}
               formDispatch={updateFormState}

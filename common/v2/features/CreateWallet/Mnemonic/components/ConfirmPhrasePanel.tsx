@@ -10,7 +10,6 @@ import { translateRaw } from 'v2/translations';
 
 const ActiveWords = styled.div`
   height: 200px;
-  margin-top: 10px;
   margin-bottom: 15px;
   padding: 15px;
   border: 1px solid #e5ecf3;

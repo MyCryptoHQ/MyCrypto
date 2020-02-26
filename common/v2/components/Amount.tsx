@@ -10,9 +10,9 @@ const SAmount = styled.div`
   justify-content: center;
   align-items: flex-end;
   font-size: 16px;
-  @media(min-width: ${BREAK_POINTS.SCREEN_XS} {
+  @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
     font-size: 18px;
-  })
+  }
 `;
 
 const Asset = styled(Typography)<{ discrete?: boolean }>`

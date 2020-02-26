@@ -19,13 +19,13 @@ const CloseIcon: React.FC<CloseIconProps> = ({ fillColor, size, onClick }) => (
   >
     <path
       d="M1 1L19 21"
-      stroke={fillColor || COLORS.BLUE_LIGHT}
+      stroke={fillColor || COLORS.BLUE_SKY}
       strokeWidth="2"
       strokeLinecap="round"
     />
     <path
       d="M19 1L1 21"
-      stroke={fillColor || COLORS.BLUE_LIGHT}
+      stroke={fillColor || COLORS.BLUE_SKY}
       strokeWidth="2"
       strokeLinecap="round"
     />

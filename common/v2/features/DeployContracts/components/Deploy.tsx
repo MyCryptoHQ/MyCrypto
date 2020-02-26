@@ -22,6 +22,7 @@ import {
   hexToString,
   baseToConvertedUnit
 } from 'v2/services';
+import { COLORS } from 'v2/theme';
 
 import { getAccountsInNetwork, constructGasCallProps } from '../helpers';
 
@@ -189,7 +190,9 @@ export default function Deploy(props: Props) {
       )}
 
       <ButtonWrapper>
-        <Button onClick={deploySubmit}>{translateRaw('NAV_DEPLOYCONTRACT')}</Button>
+        <Button color={COLORS.WHITE} onClick={deploySubmit}>
+          {translateRaw('NAV_DEPLOYCONTRACT')}
+        </Button>
       </ButtonWrapper>
     </div>
   );
