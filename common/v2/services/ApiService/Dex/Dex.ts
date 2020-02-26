@@ -36,11 +36,28 @@ export default class DexService {
     }
   };
 
-  public getTokenPriceFrom = async (from: TSymbol, to: TSymbol, fromAmount: string) =>
-    this.getTokenPrice(from, to, fromAmount);
+  public getTokenPriceFrom = async (
+    from: TSymbol,
+    to: TSymbol,
+    fromAmount: string
+  ): Promise<{ costBasis: number; price: number }> => {
+    const { costBasis, tokenPrices: price } = await this.getTokenPrice(from, to, fromAmount);
+    return { costBasis: parseFloat(costBasis), price: parseFloat(price) };
+  };
 
-  public getTokenPriceTo = async (from: TSymbol, to: TSymbol, toAmount: string) =>
-    this.getTokenPrice(from, to, undefined, toAmount);
+  public getTokenPriceTo = async (
+    from: TSymbol,
+    to: TSymbol,
+    toAmount: string
+  ): Promise<{ costBasis: number; price: number }> => {
+    const { costBasis, tokenPrices: price } = await this.getTokenPrice(
+      from,
+      to,
+      undefined,
+      toAmount
+    );
+    return { costBasis: parseFloat(costBasis), price: parseFloat(price) };
+  };
 
   public getOrderDetailsFrom = async (from: TSymbol, to: TSymbol, fromAmount: string) =>
     this.getOrderDetails(from, to, fromAmount);
@@ -89,6 +106,18 @@ export default class DexService {
         toAmount,
         dex: 'all'
       };
+      const { data: costBasis } = await this.service.get('price', {
+        params: {
+          ...params,
+          toAmount: toAmount ? '0.01' : undefined,
+          fromAmount: fromAmount ? '0.01' : undefined,
+          dex: 'all'
+        },
+        cancelToken: new CancelToken(function executor(c) {
+          // An executor function receives a cancel function as a parameter
+          cancel = c;
+        })
+      });
       const { data: tokenPrices } = await this.service.get('price', {
         params,
         cancelToken: new CancelToken(function executor(c) {
@@ -97,7 +126,7 @@ export default class DexService {
         })
       });
 
-      return tokenPrices[0].price;
+      return { costBasis: costBasis[0].price, tokenPrices: tokenPrices[0].price };
     } catch (e) {
       if (axios.isCancel(e)) {
         e.isCancel = true;

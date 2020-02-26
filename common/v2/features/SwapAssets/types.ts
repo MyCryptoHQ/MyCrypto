@@ -21,11 +21,13 @@ export interface SwapState {
   toAmountError: string | JSX.Element;
   isCalculatingToAmount: boolean;
   lastChangedAmount: LAST_CHANGED_AMOUNT;
-  swapPrice: number;
   account: StoreAccount;
   isSubmitting: boolean;
   txConfig: ITxConfig;
   rawTransaction: ITxConfig;
   dexTrade: any;
   txReceipt: ITxReceipt | undefined;
+  initialToAmount: string; // This is used to reverse the fee calculation when inputing the recipient amount. It's how we determine the fee.
+  exchangeRate: string; // The exchange rate displayed to the user (post-markup)
+  markup: string;
 }

@@ -57,13 +57,15 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     fromAmountError,
     toAmountError,
     account,
-    swapPrice,
     isSubmitting,
     lastChangedAmount,
     dexTrade,
     txReceipt,
     txConfig,
-    rawTransaction
+    rawTransaction,
+    exchangeRate,
+    initialToAmount,
+    markup
   }: SwapState = swapState;
 
   const goToFirstStep = () => {
@@ -97,7 +99,10 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         isCalculatingFromAmount,
         isCalculatingToAmount,
         fromAmountError,
-        toAmountError
+        toAmountError,
+        initialToAmount,
+        exchangeRate,
+        markup
       },
       actions: {
         handleFromAssetSelected,
@@ -122,7 +127,8 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         fromAsset,
         toAsset,
         fromAmount,
-        toAmount
+        toAmount,
+        exchangeRate
       },
       actions: {
         handleAccountSelected,
@@ -139,7 +145,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         fromAmount,
         toAmount,
         account,
-        swapPrice,
+        exchangeRate,
         lastChangedAmount,
         isSubmitting
       },

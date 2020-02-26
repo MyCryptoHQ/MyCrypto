@@ -59,6 +59,7 @@
     "ADD_WALLETCONNECT_LINK": "Not working? [Here are some troubleshooting tips to try]($wiki_link).",
     "ADD_HARDWAREDESC": "Connect & sign via your hardware wallet",
     "ACCOUNT_SELECTION_PLACEHOLDER": "Select Account",
+    "ACCOUNT_LOOKUP_SELECTION_PLACEHOLDER": "Enter an Address or Contact",
     "ACCOUNT_SELECTION_NO_FUNDS": "You don't have an account with sufficient funds.",
     "SEND_ASSETS_AMOUNT_LABEL": "Amount",
     "SEND_ASSETS_AMOUNT_LABEL_ACTION": "Send max",
@@ -81,7 +82,7 @@
     "DEP_SIGNTX": "Sign Transaction",
     "SWAP_WHY_RATE": "why this rate?",
     "SWAP_RATE": "Conversion Rate",
-    "SWAP_SEND_AMOUNT": "Send Amount",
+    "SWAP_SEND_AMOUNT": "Convert Amount",
     "SWAP_RECEIVE_AMOUNT": "Receive Amount",
     "SWAP_START_ANOTHER": "Start Another Swap",
     "SWAP_ACCOUNT_SELECT_DESC": "Where will you be sending your $fromAsset from? You will receive your $toAsset back to the same address after the swap.",
@@ -588,6 +589,12 @@
     "SIGN_TX_WALLETCONNECT_INSTRUCTIONS_3": "3. Scan the QRCode below",
     "DASHBOARD_TOKENS_TOOLTIP": "Use this area to view detailed information on the tokens in your account(s), scan for new tokens, or add tokens that aren’t on our default list.",
     "DASHBOARD_ACCOUNT_SELECT_TOOLTIP": "Use this Account Selector to display the balance of a single account, or the combined balances of any accounts you have added.",
-    "DASHBOARD_ACCOUNTS_TOOLTIP": "All of the accounts that you’ve added to your MyCrypto Dashboard will appear here. You can add an account by clicking “+ Add Account” below, or click on “Settings” to the right to manage them further."
+    "DASHBOARD_ACCOUNTS_TOOLTIP": "All of the accounts that you’ve added to your MyCrypto Dashboard will appear here. You can add an account by clicking “+ Add Account” below, or click on “Settings” to the right to manage them further.",
+    "SWAP_FEE_TOOLTIP": "This fee is split between MyCrypto and Dex.AG",
+    "SWAP_FEE_LABEL": "Fee ($commission%) ",
+    "SWAP_MARKUP_TOOLTIP": "Markup determines how good of a deal you're getting, according to available liquidity.",
+    "SWAP_MARKUP_LABEL": "Markup ",
+    "SWAP_RATE_LABEL": "Rate: ",
+    "SWAP_RATE_TEXT": "$displayString $toAssetSymbol per $fromAssetSymbol"
   }
 }

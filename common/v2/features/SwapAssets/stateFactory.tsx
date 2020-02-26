@@ -1,12 +1,17 @@
 import { useContext } from 'react';
+import { formatEther } from 'ethers/utils';
 
 import translate from 'v2/translations';
 import {
   TUseStateReducerFactory,
   fromTxReceiptObj,
   formatErrorEmailMarkdown,
-  convert,
-  withCommission
+  convertToBN,
+  multiplyBNFloats,
+  divideBNFloats,
+  withCommission,
+  calculateMarkup,
+  trimBN
 } from 'v2/utils';
 import {
   DexService,
@@ -37,13 +42,15 @@ const swapFlowInitialState = {
   toAmountError: undefined,
   isCalculatingToAmount: false,
   lastChangedAmount: LAST_CHANGED_AMOUNT.FROM,
-  swapPrice: 0,
   account: undefined,
   isSubmitting: false,
   txConfig: undefined,
   rawTransaction: undefined,
   dexTrade: undefined,
-  txReceipt: undefined
+  txReceipt: undefined,
+  initialToAmount: undefined,
+  exchangeRate: undefined,
+  markup: undefined
 };
 
 const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }) => {
@@ -130,20 +137,33 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         isCalculatingFromAmount: true
       }));
 
-      const price = Number(
-        await DexService.instance.getTokenPriceTo(fromAsset.symbol, toAsset.symbol, value)
+      const commissionIncreasedAmount = trimBN(
+        withCommission({
+          amount: convertToBN(Number(value)),
+          rate: MYC_DEXAG_COMMISSION_RATE
+        }).toString()
+      );
+
+      const { price, costBasis } = await DexService.instance.getTokenPriceTo(
+        fromAsset.symbol,
+        toAsset.symbol,
+        commissionIncreasedAmount.toString()
       );
 
       setState((prevState: SwapState) => ({
         ...prevState,
         isCalculatingFromAmount: false,
-        fromAmount: withCommission({
-          amount: convert(Number(value), price),
-          rate: MYC_DEXAG_COMMISSION_RATE
-        }).toString(),
+        fromAmount: trimBN(
+          formatEther(multiplyBNFloats(commissionIncreasedAmount, price).toString())
+        ),
         fromAmountError: '',
         toAmountError: '',
-        swapPrice: price
+        initialToAmount: commissionIncreasedAmount,
+        exchangeRate: trimBN(formatEther(divideBNFloats(1, price).toString())),
+        markup: calculateMarkup(
+          parseFloat(trimBN(formatEther(divideBNFloats(1, price).toString()))),
+          parseFloat(trimBN(formatEther(divideBNFloats(1, costBasis).toString())))
+        )
       }));
     } catch (e) {
       if (!e.isCancel) {
@@ -190,21 +210,25 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         lastChangedAmount: LAST_CHANGED_AMOUNT.FROM
       }));
 
-      const price = Number(
-        await DexService.instance.getTokenPriceFrom(fromAsset.symbol, toAsset.symbol, value)
+      const { price, costBasis } = await DexService.instance.getTokenPriceFrom(
+        fromAsset.symbol,
+        toAsset.symbol,
+        value
       );
 
       setState((prevState: SwapState) => ({
         ...prevState,
         isCalculatingToAmount: false,
         toAmount: withCommission({
-          amount: convert(Number(value), price),
+          amount: multiplyBNFloats(value, price),
           rate: MYC_DEXAG_COMMISSION_RATE,
-          substract: true
+          subtract: true
         }).toString(),
         fromAmountError: '',
         toAmountError: '',
-        swapPrice: price
+        initialToAmount: trimBN(formatEther(multiplyBNFloats(value, price).toString())),
+        exchangeRate: price.toString(),
+        markup: calculateMarkup(price, costBasis)
       }));
     } catch (e) {
       if (!e.isCancel) {

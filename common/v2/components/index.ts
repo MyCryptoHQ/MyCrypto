@@ -1,5 +1,6 @@
 export { default as Amount } from './Amount';
 export { default as AddressField } from './AddressField';
+export { default as ContactLookupField } from './ContactLookupField';
 export { default as AccountDropdown } from './AccountDropdown';
 export { default as AccountOption } from './AccountOption';
 export { default as AccountSummary } from './AccountSummary';

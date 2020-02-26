@@ -4,7 +4,7 @@ import { simpleRender } from 'test-utils';
 
 // New
 import SendAssets from 'v2/features/SendAssets/SendAssets';
-import { StoreContext } from 'v2/services/Store';
+import { StoreContext, AddressBookContext } from 'v2/services/Store';
 import { RatesContext } from 'v2/services/RatesProvider';
 
 /* Test components */
@@ -28,7 +28,11 @@ describe('SendAssetsFlow', () => {
             } as unknown) as any
           }
         >
-          <SendAssets />;
+          <AddressBookContext.Provider
+            value={({ addressBook: [], getContactByAddress: jest.fn() } as unknown) as any}
+          >
+            <SendAssets />
+          </AddressBookContext.Provider>
         </RatesContext.Provider>
       </StoreContext.Provider>
     </MemoryRouter>

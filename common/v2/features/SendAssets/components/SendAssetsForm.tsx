@@ -8,8 +8,7 @@ import BN from 'bn.js';
 import styled from 'styled-components';
 import * as R from 'ramda';
 import { ValuesType } from 'utility-types';
-
-import questionSVG from 'assets/images/icn-question.svg';
+import { ResolutionError } from '@unstoppabledomains/resolution';
 
 import translate, { translateRaw } from 'v2/translations';
 import {
@@ -18,8 +17,8 @@ import {
   AmountInput,
   AssetDropdown,
   WhenQueryExists,
-  AddressField,
-  Checkbox
+  Checkbox,
+  ContactLookupField
 } from 'v2/components';
 import {
   getNetworkById,
@@ -62,8 +61,10 @@ import {
   DEFAULT_ASSET_DECIMAL
 } from 'v2/config';
 import { RatesContext } from 'v2/services/RatesProvider';
-
 import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
+import { weiToFloat, formatSupportEmail } from 'v2/utils';
+import { InlineMessageType } from 'v2/types/inlineMessages';
+
 import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
 import './SendAssetsForm.scss';
 import {
@@ -72,11 +73,10 @@ import {
   validateNonceField,
   validateDataField,
   validateAmountField
-} from './validators/validators';
+} from './validators';
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
-import { weiToFloat, formatSupportEmail } from 'v2/utils';
-import { ResolutionError } from '@unstoppabledomains/resolution';
-import { InlineMessageType } from 'v2/types/inlineMessages';
+
+import questionSVG from 'assets/images/icn-question.svg';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;
@@ -156,7 +156,11 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
-  const [baseAsset, setBaseAsset] = useState({} as Asset);
+  const [baseAsset, setBaseAsset] = useState(
+    (txConfig.network &&
+      getBaseAssetByNetwork({ network: txConfig.network, assets: userAssets })) ||
+      ({} as Asset)
+  );
   const [resolutionError, setResolutionError] = useState<ResolutionError>();
   const [selectedAsset, setAsset] = useState({} as Asset);
 
@@ -186,14 +190,12 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
         .test(
           'check-eth-address',
           translateRaw('TO_FIELD_ERROR'),
-          value =>
-            isValidETHAddress(value) ||
-            (isValidENSName(value) && UnstoppableResolution.isValidDomain(value))
+          value => isValidETHAddress(value) || (isValidENSName(value) && !resolutionError)
         )
         // @ts-ignore Hack as Formik doesn't officially support warnings
         // tslint:disable-next-line
         .test('is-checksummed', translate('CHECKSUM_ERROR'), function(value) {
-          if (!isChecksumAddress(value)) {
+          if (isValidETHAddress(value) && !isChecksumAddress(value)) {
             return {
               name: 'ValidationError',
               type: InlineMessageType.INFO_CIRCLE,
@@ -302,7 +304,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
             }
           };
 
-          const handleDomainResolve = async (name: string) => {
+          const handleDomainResolve = async (name: string): Promise<string | undefined> => {
             if (!values || !values.network) {
               setIsResolvingDomain(false);
               setResolutionError(undefined);
@@ -313,12 +315,9 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
             try {
               const unstoppableAddress = await UnstoppableResolution.getResolvedAddress(
                 name,
-                values.asset.ticker
+                baseAsset.ticker
               );
-              setFieldValue('address', {
-                ...values.address,
-                value: unstoppableAddress
-              });
+              return unstoppableAddress;
             } catch (err) {
               // Force the field value to error so that isValidAddress is triggered!
               setFieldValue('address', {
@@ -454,16 +453,22 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                 <label htmlFor="address" className="input-group-header">
                   {translate('X_RECIPIENT')}
                 </label>
-                <AddressField
-                  fieldName="address"
-                  handleDomainResolve={handleDomainResolve}
-                  onBlur={() => handleGasEstimate()}
-                  error={errors && touched.address && errors.address && errors.address.value}
-                  network={values.network}
-                  isLoading={isResolvingName}
-                  isError={!isValidAddress}
-                  resolutionError={resolutionError}
-                  placeholder="Enter an Address or Contact"
+                <Field
+                  name="address"
+                  value={values.address}
+                  component={(fieldProps: FieldProps) => (
+                    <ContactLookupField
+                      error={errors && touched.address && errors.address && errors.address.value}
+                      fieldProps={fieldProps}
+                      network={values.network}
+                      resolutionError={resolutionError}
+                      isValidAddress={isValidAddress}
+                      isResolvingName={isResolvingName}
+                      onBlur={handleGasEstimate}
+                      handleDomainResolve={handleDomainResolve}
+                      clearErrors={() => setResolutionError(undefined)}
+                    />
+                  )}
                 />
               </fieldset>
               {/* Amount */}

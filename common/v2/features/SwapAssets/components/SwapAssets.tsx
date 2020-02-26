@@ -1,13 +1,17 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Button } from '@mycrypto/ui';
+import { formatEther } from 'ethers/utils';
+import { Button, Tooltip } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'v2/translations';
-
+import { MYC_DEXAG_COMMISSION_RATE, MYC_DEXAG_MARKUP_THRESHOLD } from 'v2/config';
 import { InputField, AssetDropdown } from 'v2/components';
+import { SPACING, COLORS } from 'v2/theme';
+import { subtractBNFloats, trimBN } from 'v2/utils';
 
 import { ISwapAsset } from '../types';
 import { getUnselectedAssets } from '../helpers';
+import questionToolTip from 'common/assets/images/icn-question.svg';
 
 const FormWrapper = styled.div`
   margin-top: 20px;
@@ -15,7 +19,6 @@ const FormWrapper = styled.div`
 `;
 
 const FormItem = styled.div`
-  margin-bottom: 12px;
   display: flex;
   width: 100%;
 `;
@@ -25,9 +28,44 @@ const InputWrapper = styled.div`
   margin-right: 15px;
 `;
 
+const LabelText = styled.p`
+  display: flex;
+`;
+
+const STooltip = styled(Tooltip)`
+  display: flex;
+`;
+
+const Label = styled.div`
+  font-size: 18px;
+  display: flex;
+  flex-direction: row;
+  line-height: 1;
+  text-align: left;
+  font-weight: normal;
+  margin-bottom: 9px;
+  color: ${props => props.theme.text};
+  & img {
+    margin: 0em 0.2em;
+  }
+`;
+
+const DisplayDataContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const StyledButton = styled(Button)`
   margin-top: 12px;
   width: 100%;
+`;
+
+const SlippageDisplay = styled(LabelText)`
+  color: ${props => props.color};
+`;
+
+const FormDisplay = styled.div`
+  margin-bottom: ${SPACING.SM};
 `;
 
 interface Props {
@@ -40,6 +78,9 @@ interface Props {
   isCalculatingToAmount: boolean;
   fromAmountError: string;
   toAmountError: string;
+  initialToAmount: string;
+  exchangeRate: string;
+  markup: string;
   onSuccess(): void;
   handleFromAssetSelected(asset: ISwapAsset): void;
   handleToAssetSelected(asset: ISwapAsset): void;
@@ -69,7 +110,10 @@ export default function SwapAssets(props: Props) {
     calculateNewFromAmount,
     calculateNewToAmount,
     handleFromAmountChanged,
-    handleToAmountChanged
+    handleToAmountChanged,
+    initialToAmount,
+    exchangeRate,
+    markup
   } = props;
 
   // show only unused assets
@@ -109,18 +153,13 @@ export default function SwapAssets(props: Props) {
     calculateNewToAmount(fromAmount);
   }, [toAsset]);
 
+  const makeDisplayString = (amount: string) =>
+    parseFloat(trimBN(amount, 10)) <= 0.01
+      ? '<0.01'
+      : `~ ${parseFloat(trimBN(amount, 10)).toFixed(2)}`;
+
   return (
     <FormWrapper>
-      <FormItem>
-        <AssetDropdown
-          searchable={false}
-          selectedAsset={fromAsset}
-          assets={filteredAssets}
-          onSelect={handleFromAssetSelected}
-          label={translateRaw('X_ASSET')}
-          fluid={true}
-        />
-      </FormItem>
       <FormItem>
         <InputWrapper>
           <InputField
@@ -136,15 +175,17 @@ export default function SwapAssets(props: Props) {
         <AssetDropdown
           selectedAsset={fromAsset}
           assets={filteredAssets}
-          label={translateRaw('ASSET')}
+          label={translateRaw('X_ASSET')}
+          onSelect={handleFromAssetSelected}
           showOnlyTicker={true}
-          disabled={true}
+          disabled={isCalculatingToAmount || isCalculatingFromAmount}
+          searchable={true}
         />
       </FormItem>
       <FormItem>
         <InputWrapper>
           <InputField
-            label={translate('SWAP_RECEIVE_AMOUNT')}
+            label={translateRaw('SWAP_RECEIVE_AMOUNT')}
             value={toAmount}
             placeholder="0.00"
             onChange={handleToAmountChangedEvent}
@@ -160,8 +201,59 @@ export default function SwapAssets(props: Props) {
           onSelect={handleToAssetSelected}
           showOnlyTicker={true}
           disabled={isCalculatingToAmount || isCalculatingFromAmount}
+          searchable={true}
         />
       </FormItem>
+      <FormDisplay>
+        {exchangeRate && toAsset && fromAsset && (
+          <DisplayDataContainer>
+            <Label>{translateRaw('SWAP_RATE_LABEL')}</Label>
+            <LabelText>
+              {translateRaw('SWAP_RATE_TEXT', {
+                $displayString: makeDisplayString(exchangeRate.toString()),
+                $toAssetSymbol: toAsset.symbol,
+                $fromAssetSymbol: fromAsset.symbol
+              })}
+            </LabelText>
+          </DisplayDataContainer>
+        )}
+        {initialToAmount && toAmount && toAsset && (
+          <DisplayDataContainer>
+            <Label>
+              <LabelText>
+                {translateRaw('SWAP_FEE_LABEL', {
+                  $commission: MYC_DEXAG_COMMISSION_RATE.toString()
+                })}
+              </LabelText>
+              <STooltip tooltip={translateRaw('SWAP_FEE_TOOLTIP')}>
+                <img src={questionToolTip} />
+              </STooltip>
+              :
+            </Label>
+            <LabelText>
+              {`${makeDisplayString(
+                formatEther(subtractBNFloats(initialToAmount, toAmount).toString())
+              )} ${toAsset.symbol}`}
+            </LabelText>
+          </DisplayDataContainer>
+        )}
+        {markup && fromAsset && (
+          <DisplayDataContainer>
+            <Label>
+              <LabelText>{translateRaw('SWAP_MARKUP_LABEL')}</LabelText>
+              <STooltip tooltip={translateRaw('SWAP_MARKUP_TOOLTIP')}>
+                <img src={questionToolTip} />
+              </STooltip>
+              :
+            </Label>
+            <SlippageDisplay
+              color={parseFloat(markup) >= MYC_DEXAG_MARKUP_THRESHOLD ? COLORS.RED : COLORS.GREEN}
+            >
+              {`${makeDisplayString(markup.toString())}%`}
+            </SlippageDisplay>
+          </DisplayDataContainer>
+        )}
+      </FormDisplay>
       <StyledButton
         onClick={onSuccess}
         disabled={
