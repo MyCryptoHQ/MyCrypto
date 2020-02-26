@@ -68,10 +68,10 @@ describe('isValidETHRecipientAddress', () => {
   });
   it('returns false for an unresolved ens name', () => {
     const expected = { success: false };
-    const testAddress = 'mycryptoidd.eth';
+    const testAddress = 'a.eth';
     const returned = isValidETHRecipientAddress(
       testAddress,
-      ('Domain michaelhahnn.eth is not registered' as unknown) as ResolutionError
+      ('Domain a.eth is not registered' as unknown) as ResolutionError
     );
     expect(returned.success).toBe(expected.success);
   });
