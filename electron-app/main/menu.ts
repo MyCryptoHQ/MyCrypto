@@ -1,5 +1,5 @@
 import { MenuItemConstructorOptions, shell } from 'electron';
-import { APP_TITLE, REPOSITORY } from '../constants';
+import { APP_TITLE, DOCUMENTATION } from '../constants';
 import packageJson from '../../package.json';
 
 const MENU: MenuItemConstructorOptions[] = [
@@ -44,13 +44,13 @@ const HELP_MENU: MenuItemConstructorOptions = {
     {
       label: 'Help / FAQ',
       click() {
-        shell.openExternal('https://docs.energi.software/');
+        shell.openExternal(`${DOCUMENTATION}`);
       }
     },
     {
       label: 'Report a Bug',
       click() {
-        shell.openExternal(`${REPOSITORY}/issues/new`);
+        shell.openExternal(`${DOCUMENTATION}/support/help-me`);
       }
     }
   ]
