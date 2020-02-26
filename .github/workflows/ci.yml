@@ -69,8 +69,6 @@ jobs:
             ${{ runner.OS }}-
 
       - name: Install Dependencies
-        ## If no cache is found, install dependencies
-        ## if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install
 
       - name: yarn tslint
