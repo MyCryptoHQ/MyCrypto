@@ -58,16 +58,12 @@ function getIsValidAddressFunction(chainId: number) {
 
 export function isValidETHLikeAddress(address: string, extraChecks?: () => boolean): boolean {
   if (address.substring(0, 2) !== '0x') {
-    console.debug('[isValidETHLikeAddress]: return 1');
     return false;
   } else if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
-    console.debug('[isValidETHLikeAddress]: return 2');
     return false;
   } else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
-    console.debug('[isValidETHLikeAddress]: return 3');
     return true;
   } else {
-    console.debug('[isValidETHLikeAddress]: return 4');
     return extraChecks ? extraChecks() : false;
   }
 }
@@ -76,25 +72,55 @@ export const isValidETHRecipientAddress = (
   address: string,
   resolutionErr: ResolutionError | undefined
 ) => {
-  if (isValidENSName(address) && !resolutionErr) {
+  if (isValidENSName(address) && resolutionErr) {
+    // Is a valid ENS name, but it couldn't be resolved or there is some other issue.
     return {
       success: false,
       name: 'ValidationError',
       type: InlineMessageType.INFO_CIRCLE,
       message: translate('TO_FIELD_ERROR')
     };
-  }
-  if (!isValidETHAddress(address) && !isChecksumAddress(address)) {
-    if (/^(0x|0X[a-f0-9]{40}$|0x|0X[A-F0-9]{40}$)/.test(address)) {
-      return { success: true };
-    } else {
-      return {
-        success: false,
-        name: 'ValidationError',
-        type: InlineMessageType.INFO_CIRCLE,
-        message: translate('CHECKSUM_ERROR')
-      };
-    }
+  } else if (isValidENSName(address) && !resolutionErr) {
+    // Is a valid ENS name, and it can be resolved!
+    return {
+      success: true
+    };
+  } else if (
+    !isValidENSName(address) &&
+    /^0x|0X[a-fA-F0-9]{40}$/.test(address) &&
+    isChecksumAddress(address)
+  ) {
+    // isMixedCase Address that is a valid checksum
+    return { success: true };
+  } else if (
+    !isValidENSName(address) &&
+    /^0x|0X[a-fA-F0-9]{40}$/.test(address) &&
+    !isChecksumAddress(address) &&
+    /^(0(x|X)(([a-f0-9]{40})|([A-F0-9]{40})))$/.test(address)
+  ) {
+    // Is a fully-uppercase or fully-lowercase address and is an invalid checksum
+    return { success: true };
+  } else if (
+    !isValidENSName(address) &&
+    /^0x|0X[a-fA-F0-9]{40}$/.test(address) &&
+    !isChecksumAddress(address) &&
+    !/^(0(x|X)(([a-f0-9]{40})|([A-F0-9]{40})))$/.test(address)
+  ) {
+    // Is not fully-uppercase or fully-lowercase address and is an invalid checksum
+    return {
+      success: false,
+      name: 'ValidationError',
+      type: InlineMessageType.INFO_CIRCLE,
+      message: translate('CHECKSUM_ERROR')
+    };
+  } else if (!isValidENSName(address) && !/^0x|0X[a-fA-F0-9]{40}$/.test(address)) {
+    // Is an invalid ens name & an invalid mixed-case address.
+    return {
+      success: false,
+      name: 'ValidationError',
+      type: InlineMessageType.INFO_CIRCLE,
+      message: translate('TO_FIELD_ERROR')
+    };
   }
   return { success: true };
 };
