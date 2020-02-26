@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { FieldProps } from 'formik';
 import { ResolutionError } from '@unstoppabledomains/resolution';
+import styled from 'styled-components';
 
 import { DomainStatus, InlineMessage } from 'v2/components';
 import { Network, InlineMessageType, IReceiverAddress } from 'v2/types';
@@ -26,6 +27,15 @@ interface IContactLookupFieldComponentProps {
   handleDomainResolve(domain: string): Promise<string | undefined>;
   clearErrors(): void;
 }
+
+// Fixes weird placement issues for react-select
+const DropdownContainer = styled('div')`
+  .has-value > .Select-control > .Select-multi-value-wrapper > .Select-input:only-child {
+    transform: translateY(0%);
+    padding: 16px 15px 16px 15px;
+    position: inherit;
+  }
+`;
 
 const ContactLookupField = ({
   error,
@@ -136,22 +146,24 @@ const ContactLookupField = ({
 
   return (
     <>
-      <ContactLookupDropdown
-        name={fieldName}
-        value={fieldValue}
-        contacts={contacts}
-        onSelect={(option: IReceiverAddress) => {
-          form.setFieldValue(fieldName, option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
-          form.setFieldTouched(fieldName);
-        }}
-        onInputChange={handleInputChange}
-        onBlur={(inputString: string) => {
-          handleAddAddressBookEntry(inputString);
-          onBlur();
-        }}
-        inputValue={inputValue}
-        onEnterKeyDown={handleEnterKeyDown}
-      />
+      <DropdownContainer>
+        <ContactLookupDropdown
+          name={fieldName}
+          value={fieldValue}
+          contacts={contacts}
+          onSelect={(option: IReceiverAddress) => {
+            form.setFieldValue(fieldName, option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
+            form.setFieldTouched(fieldName);
+          }}
+          onInputChange={handleInputChange}
+          onBlur={(inputString: string) => {
+            handleAddAddressBookEntry(inputString);
+            onBlur();
+          }}
+          inputValue={inputValue}
+          onEnterKeyDown={handleEnterKeyDown}
+        />
+      </DropdownContainer>
       {(fieldValue && isValidENSName(fieldValue.value)) || isResolvingName ? (
         <DomainStatus
           domain={fieldValue.value}
