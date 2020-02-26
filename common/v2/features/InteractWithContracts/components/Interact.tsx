@@ -105,15 +105,6 @@ const SaveButtonWrapper = styled.div`
   }
 `;
 
-// TODO: Fix the dropdown component instead of overriding styles
-const DropdownContainer = styled.div`
-  .is-open > .Select-control > .Select-multi-value-wrapper > .Select-input:only-child {
-    transform: translateY(0%);
-    padding: 12px 15px;
-    position: inherit;
-  }
-`;
-
 const ErrorWrapper = styled.div`
   margin-bottom: 12px;
 `;
@@ -327,26 +318,24 @@ function Interact(props: CombinedProps) {
                   )}
                 </ContractSelectLabelWrapper>
 
-                <DropdownContainer>
-                  <Dropdown
-                    value={contract}
-                    options={contracts}
-                    onChange={option => {
-                      if (option.address !== 'custom') {
-                        setFieldValue('address', {
-                          display: option.address,
-                          value: option.address
-                        });
-                      } else {
-                        setFieldValue('address', initialFormikValues.address);
-                      }
-                      handleContractSelected(option);
-                    }}
-                    optionComponent={ContractDropdownOption}
-                    valueComponent={ContractDropdownValue}
-                    searchable={true}
-                  />
-                </DropdownContainer>
+                <Dropdown
+                  value={contract}
+                  options={contracts}
+                  onChange={option => {
+                    if (option.address !== 'custom') {
+                      setFieldValue('address', {
+                        display: option.address,
+                        value: option.address
+                      });
+                    } else {
+                      setFieldValue('address', initialFormikValues.address);
+                    }
+                    handleContractSelected(option);
+                  }}
+                  optionComponent={ContractDropdownOption}
+                  valueComponent={ContractDropdownValue}
+                  searchable={true}
+                />
               </FieldWrapper>
               <Separator />
               <FieldWrapper>
