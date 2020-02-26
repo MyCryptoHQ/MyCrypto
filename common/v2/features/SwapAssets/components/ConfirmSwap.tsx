@@ -7,10 +7,9 @@ import translate from 'v2/translations';
 import { StoreAccount } from 'v2/types';
 import { COLORS } from 'v2/theme';
 import { Typography, Currency } from 'v2/components';
+import { FromToAccount, SwapFromToDiagram } from 'v2/components/TransactionFlow/displays';
 
-import { SwapFromToDiagram } from './fields';
 import { ISwapAsset, LAST_CHANGED_AMOUNT } from '../types';
-import { FromToAccount } from 'v2/components/TransactionFlow/displays';
 
 const StyledButton = styled(Button)`
   margin-top: 28px;

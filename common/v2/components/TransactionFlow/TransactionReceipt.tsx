@@ -17,17 +17,14 @@ import {
   getTransactionReceiptFromHash
 } from 'v2/services/EthService';
 import { ROUTE_PATHS } from 'v2/config';
+import { SwapDisplayData } from 'v2/features/SwapAssets/types';
 import translate, { translateRaw } from 'v2/translations';
 import { convertToFiat, truncate, fromTxReceiptObj } from 'v2/utils';
 import { isWeb3Wallet } from 'v2/utils/web3';
 
-import './TransactionReceipt.scss';
-// Legacy
+import { FromToAccount, SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
 import sentIcon from 'common/assets/images/icn-sent.svg';
-import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
-import { SwapDisplayData } from 'v2/features/SwapAssets/types';
-import { SwapFromToDiagram } from 'v2/features/SwapAssets/components/fields';
-import { FromToAccount } from './displays';
+import './TransactionReceipt.scss';
 
 interface PendingBtnAction {
   text: string;
