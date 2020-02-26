@@ -122,10 +122,11 @@ export default function SwapAssets(props: Props) {
     markup
   } = props;
 
-  const { accounts, assets: _assets } = useContext(StoreContext);
+  const { accounts, assets: assetsFunc } = useContext(StoreContext);
 
-  const allAssets = _assets();
+  const allAssets = assetsFunc();
 
+  // Accounts with a balance of the chosen asset
   const filteredAccounts = fromAsset
     ? getAccountsWithAssetBalance(accounts, fromAsset, fromAmount)
     : [];
@@ -166,6 +167,19 @@ export default function SwapAssets(props: Props) {
 
     calculateNewToAmount(fromAmount);
   }, [toAsset]);
+
+  useEffect(() => {
+    if (
+      fromAmount &&
+      fromAsset &&
+      account &&
+      !getAccountsWithAssetBalance(accounts, fromAsset, fromAmount).find(
+        a => a.uuid === account.uuid
+      )
+    ) {
+      handleAccountSelected(undefined);
+    }
+  }, [fromAsset, fromAmount]);
 
   const makeDisplayString = (amount: string) =>
     parseFloat(trimBN(amount, 10)) <= 0.01
