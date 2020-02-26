@@ -2,6 +2,7 @@ import { toChecksumAddress, isValidPrivate } from 'ethereumjs-util';
 import { isValidChecksumAddress as isValidChecksumRSKAddress } from 'rskjs-util';
 import WalletAddressValidator from 'wallet-address-validator';
 import { Validator } from 'jsonschema';
+import { ResolutionError } from '@unstoppabledomains/resolution';
 
 import {
   dPathRegex,
@@ -14,11 +15,11 @@ import {
   DEFAULT_ASSET_DECIMAL
 } from 'v2/config';
 import { JsonRPCResponse, InlineMessageType } from 'v2/types';
+import translate from 'v2/translations';
+
 import { stripHexPrefix, gasStringsToMaxGasBN, convertedToBaseUnit } from './utils';
 import { bigNumberify } from 'ethers/utils';
 import { isValidENSName } from './ens/validators';
-import translate from 'v2/translations';
-import { ResolutionError } from '@unstoppabledomains/resolution';
 
 export const isValidPositiveOrZeroInteger = (value: number | string) =>
   isValidPositiveNumber(value) && isInteger(value);

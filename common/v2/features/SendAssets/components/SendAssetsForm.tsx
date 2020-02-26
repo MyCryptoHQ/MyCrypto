@@ -62,6 +62,7 @@ import { RatesContext } from 'v2/services/RatesProvider';
 import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
 import { weiToFloat, formatSupportEmail } from 'v2/utils';
 import { InlineMessageType } from 'v2/types/inlineMessages';
+import { isValidETHRecipientAddress } from 'v2/services/EthService/validators';
 
 import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
 import './SendAssetsForm.scss';
@@ -75,7 +76,6 @@ import {
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
 
 import questionSVG from 'assets/images/icn-question.svg';
-import { isValidETHRecipientAddress } from 'v2/services/EthService/validators';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;

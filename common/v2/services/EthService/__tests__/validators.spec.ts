@@ -1,5 +1,5 @@
-import { isTransactionFeeHigh, isValidETHRecipientAddress } from '../validators';
 import { ResolutionError } from '@unstoppabledomains/resolution';
+import { isTransactionFeeHigh, isValidETHRecipientAddress } from '../validators';
 
 describe('isTransactionFeeHigh', () => {
   it('return true for cases where transaction fee is high', () => {
