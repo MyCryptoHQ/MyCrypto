@@ -46,9 +46,7 @@ import {
   baseToConvertedUnit,
   isValidPositiveNumber,
   isTransactionFeeHigh,
-  isChecksumAddress,
   isBurnAddress,
-  isValidENSName,
   bigNumGasPriceToViewableGwei
 } from 'v2/services/EthService';
 import UnstoppableResolution from 'v2/services/UnstoppableService';
@@ -77,6 +75,7 @@ import {
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
 
 import questionSVG from 'assets/images/icn-question.svg';
+import { isValidETHRecipientAddress } from 'v2/services/EthService/validators';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;
@@ -187,19 +186,15 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
     account: Yup.object().required(translateRaw('REQUIRED')),
     address: Yup.object({
       value: Yup.string()
-        .test(
-          'check-eth-address',
-          translateRaw('TO_FIELD_ERROR'),
-          value => isValidETHAddress(value) || (isValidENSName(value) && !resolutionError)
-        )
         // @ts-ignore Hack as Formik doesn't officially support warnings
         // tslint:disable-next-line
         .test('is-checksummed', translate('CHECKSUM_ERROR'), function(value) {
-          if (isValidETHAddress(value) && !isChecksumAddress(value)) {
+          const validationResult = isValidETHRecipientAddress(value, resolutionError);
+          if (!validationResult.success) {
             return {
-              name: 'ValidationError',
-              type: InlineMessageType.INFO_CIRCLE,
-              message: translate('CHECKSUM_ERROR')
+              name: validationResult.name,
+              type: validationResult.type,
+              message: validationResult.message
             };
           }
           return true;

@@ -13,9 +13,12 @@ import {
   CREATION_ADDRESS,
   DEFAULT_ASSET_DECIMAL
 } from 'v2/config';
-import { JsonRPCResponse } from 'v2/types';
+import { JsonRPCResponse, InlineMessageType } from 'v2/types';
 import { stripHexPrefix, gasStringsToMaxGasBN, convertedToBaseUnit } from './utils';
 import { bigNumberify } from 'ethers/utils';
+import { isValidENSName } from './ens/validators';
+import translate from 'v2/translations';
+import { ResolutionError } from '@unstoppabledomains/resolution';
 
 export const isValidPositiveOrZeroInteger = (value: number | string) =>
   isValidPositiveNumber(value) && isInteger(value);
@@ -53,17 +56,48 @@ function getIsValidAddressFunction(chainId: number) {
   return isValidETHAddress;
 }
 
-function isValidETHLikeAddress(address: string, extraChecks?: () => boolean): boolean {
+export function isValidETHLikeAddress(address: string, extraChecks?: () => boolean): boolean {
   if (address.substring(0, 2) !== '0x') {
+    console.debug('[isValidETHLikeAddress]: return 1');
     return false;
   } else if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
+    console.debug('[isValidETHLikeAddress]: return 2');
     return false;
   } else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
+    console.debug('[isValidETHLikeAddress]: return 3');
     return true;
   } else {
+    console.debug('[isValidETHLikeAddress]: return 4');
     return extraChecks ? extraChecks() : false;
   }
 }
+
+export const isValidETHRecipientAddress = (
+  address: string,
+  resolutionErr: ResolutionError | undefined
+) => {
+  if (isValidENSName(address) && !resolutionErr) {
+    return {
+      success: false,
+      name: 'ValidationError',
+      type: InlineMessageType.INFO_CIRCLE,
+      message: translate('TO_FIELD_ERROR')
+    };
+  }
+  if (!isValidETHAddress(address) && !isChecksumAddress(address)) {
+    if (/^(0x|0X[a-f0-9]{40}$|0x|0X[A-F0-9]{40}$)/.test(address)) {
+      return { success: true };
+    } else {
+      return {
+        success: false,
+        name: 'ValidationError',
+        type: InlineMessageType.INFO_CIRCLE,
+        message: translate('CHECKSUM_ERROR')
+      };
+    }
+  }
+  return { success: true };
+};
 
 export function isValidAddress(address: string, chainId: number) {
   return getIsValidAddressFunction(chainId)(address);
