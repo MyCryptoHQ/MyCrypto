@@ -11,7 +11,6 @@ import { useEffectOnce, usePromise } from 'v2/vendor';
 
 import {
   SwapAssets,
-  SelectAddress,
   ConfirmSwap,
   SwapTransactionReceipt,
   SetAllowance
@@ -116,27 +115,6 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         onSuccess: goToNextStep
       }
     },
-    /**{
-      title: translateRaw('ACCOUNT_SELECTION_PLACEHOLDER'),
-      backBtnText: translateRaw('SWAP'),
-      description: translateRaw('SWAP_ACCOUNT_SELECT_DESC', {
-        $fromAsset: (fromAsset && fromAsset.symbol) || 'ETH',
-        $toAsset: (toAsset && toAsset.symbol) || 'ETH'
-      }),
-      component: SelectAddress,
-      props: {
-        account,
-        fromAsset,
-        toAsset,
-        fromAmount,
-        toAmount,
-        exchangeRate
-      },
-      actions: {
-        handleAccountSelected,
-        onSuccess: goToNextStep
-      }
-    },**/
     {
       title: translateRaw('SWAP_CONFIRM_TITLE'),
       backBtnText: translateRaw('SWAP'),
