@@ -88,24 +88,24 @@ export const isValidETHRecipientAddress = (
     };
   } else if (
     !isValidENSName(address) &&
-    /^0x|0X[a-fA-F0-9]{40}$/.test(address) &&
+    isValidMixedCaseETHAddress(address) &&
     isChecksumAddress(address)
   ) {
     // isMixedCase Address that is a valid checksum
     return { success: true };
   } else if (
     !isValidENSName(address) &&
-    /^0x|0X[a-fA-F0-9]{40}$/.test(address) &&
+    isValidMixedCaseETHAddress(address) &&
     !isChecksumAddress(address) &&
-    /^(0(x|X)(([a-f0-9]{40})|([A-F0-9]{40})))$/.test(address)
+    isValidUpperOrLowerCaseETHAddress(address)
   ) {
     // Is a fully-uppercase or fully-lowercase address and is an invalid checksum
     return { success: true };
   } else if (
     !isValidENSName(address) &&
-    /^0x|0X[a-fA-F0-9]{40}$/.test(address) &&
+    isValidMixedCaseETHAddress(address) &&
     !isChecksumAddress(address) &&
-    !/^(0(x|X)(([a-f0-9]{40})|([A-F0-9]{40})))$/.test(address)
+    !isValidUpperOrLowerCaseETHAddress(address)
   ) {
     // Is not fully-uppercase or fully-lowercase address and is an invalid checksum
     return {
@@ -114,7 +114,7 @@ export const isValidETHRecipientAddress = (
       type: InlineMessageType.INFO_CIRCLE,
       message: translate('CHECKSUM_ERROR')
     };
-  } else if (!isValidENSName(address) && !/^0x|0X[a-fA-F0-9]{40}$/.test(address)) {
+  } else if (!isValidENSName(address) && !isValidMixedCaseETHAddress(address)) {
     // Is an invalid ens name & an invalid mixed-case address.
     return {
       success: false,
@@ -125,6 +125,14 @@ export const isValidETHRecipientAddress = (
   }
   return { success: true };
 };
+
+export function isValidMixedCaseETHAddress(address: string) {
+  return /^(0(x|X)[a-fA-F0-9]{40})$/.test(address);
+}
+
+export function isValidUpperOrLowerCaseETHAddress(address: string) {
+  return /^(0(x|X)(([a-f0-9]{40})|([A-F0-9]{40})))$/.test(address);
+}
 
 export function isValidAddress(address: string, chainId: number) {
   return getIsValidAddressFunction(chainId)(address);

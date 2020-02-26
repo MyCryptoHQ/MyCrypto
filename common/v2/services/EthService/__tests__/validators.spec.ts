@@ -1,5 +1,10 @@
 import { ResolutionError } from '@unstoppabledomains/resolution';
-import { isTransactionFeeHigh, isValidETHRecipientAddress } from '../validators';
+import {
+  isTransactionFeeHigh,
+  isValidETHRecipientAddress,
+  isValidMixedCaseETHAddress,
+  isValidUpperOrLowerCaseETHAddress
+} from '../validators';
 
 describe('isTransactionFeeHigh', () => {
   it('return true for cases where transaction fee is high', () => {
@@ -89,5 +94,65 @@ describe('isValidETHRecipientAddress', () => {
     const testAddress = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa2615200000';
     const returned = isValidETHRecipientAddress(testAddress, undefined);
     expect(returned.success).toBe(expected.success);
+  });
+});
+
+describe('isValidMixedCaseETHAddress', () => {
+  it('returns true for cases where ETH address is mixed-case', () => {
+    const expected = true;
+    const testAddress = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520';
+    const returned = isValidMixedCaseETHAddress(testAddress);
+    expect(returned).toBe(expected);
+  });
+
+  it('returns false for cases where ETH address is too long', () => {
+    const expected = false;
+    const testAddress = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa2615200000';
+    const returned = isValidMixedCaseETHAddress(testAddress);
+    expect(returned).toBe(expected);
+  });
+
+  it('returns false for cases where ETH address is too short', () => {
+    const expected = false;
+    const testAddress = '0x4bbeEB066eD09B7AEd07bF39EEe0460DF';
+    const returned = isValidMixedCaseETHAddress(testAddress);
+    expect(returned).toBe(expected);
+  });
+});
+
+describe('isValidUpperOrLowerCaseETHAddress', () => {
+  it('returns true for cases where ETH address is all upper-case', () => {
+    const expected = true;
+    const testAddress = '0X4BBEEB066ED09B7AED07BF39EEE0460DFA261520';
+    const returned = isValidUpperOrLowerCaseETHAddress(testAddress);
+    expect(returned).toBe(expected);
+  });
+
+  it('returns true for cases where ETH address is all lower-case', () => {
+    const expected = true;
+    const testAddress = '0x4bbeeb066ed09b7aed07bf39eee0460dfa261520';
+    const returned = isValidUpperOrLowerCaseETHAddress(testAddress);
+    expect(returned).toBe(expected);
+  });
+
+  it('returns false for cases where ETH address is mixed-case', () => {
+    const expected = false;
+    const testAddress = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520';
+    const returned = isValidUpperOrLowerCaseETHAddress(testAddress);
+    expect(returned).toBe(expected);
+  });
+
+  it('returns false for cases where ETH address is too long', () => {
+    const expected = false;
+    const testAddress = '0x4bbeeb066ed09b7aed07bf39eee0460dfa261520111111';
+    const returned = isValidUpperOrLowerCaseETHAddress(testAddress);
+    expect(returned).toBe(expected);
+  });
+
+  it('returns false for cases where ETH address is too short', () => {
+    const expected = false;
+    const testAddress = '0x4bbeeb066ed09b7aed07bf39eee0460df';
+    const returned = isValidUpperOrLowerCaseETHAddress(testAddress);
+    expect(returned).toBe(expected);
   });
 });
