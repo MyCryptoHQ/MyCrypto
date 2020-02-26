@@ -215,7 +215,14 @@ export default function AccountList(props: AccountListProps) {
 
   return (
     <DashboardPanel
-      heading={translateRaw('ACCOUNT_LIST_TABLE_ACCOUNTS')}
+      heading={
+        <>
+          {translateRaw('ACCOUNT_LIST_TABLE_ACCOUNTS')}{' '}
+          <Tooltip tooltip={translateRaw('DASHBOARD_ACCOUNTS_TOOLTIP')}>
+            <img src={QuestionToolTip} />
+          </Tooltip>
+        </>
+      }
       headingRight={headingRight}
       actionLink={actionLink}
       className={`AccountList ${className}`}
