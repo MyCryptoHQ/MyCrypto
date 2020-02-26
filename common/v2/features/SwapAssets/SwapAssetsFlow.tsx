@@ -102,7 +102,8 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         toAmountError,
         initialToAmount,
         exchangeRate,
-        markup
+        markup,
+        account
       },
       actions: {
         handleFromAssetSelected,
@@ -111,10 +112,11 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         calculateNewToAmount,
         handleFromAmountChanged,
         handleToAmountChanged,
+        handleAccountSelected,
         onSuccess: goToNextStep
       }
     },
-    {
+    /**{
       title: translateRaw('ACCOUNT_SELECTION_PLACEHOLDER'),
       backBtnText: translateRaw('SWAP'),
       description: translateRaw('SWAP_ACCOUNT_SELECT_DESC', {
@@ -134,10 +136,10 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         handleAccountSelected,
         onSuccess: goToNextStep
       }
-    },
+    },**/
     {
       title: translateRaw('SWAP_CONFIRM_TITLE'),
-      backBtnText: translateRaw('ACCOUNT_SELECTION_PLACEHOLDER'),
+      backBtnText: translateRaw('SWAP'),
       component: ConfirmSwap,
       props: {
         fromAsset,

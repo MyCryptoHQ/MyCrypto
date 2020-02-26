@@ -1,17 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { formatEther } from 'ethers/utils';
 import { Button, Tooltip } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'v2/translations';
 import { MYC_DEXAG_COMMISSION_RATE, MYC_DEXAG_MARKUP_THRESHOLD } from 'v2/config';
-import { InputField, AssetDropdown } from 'v2/components';
+import { InputField, AssetDropdown, AccountDropdown, InlineMessage } from 'v2/components';
 import { SPACING, COLORS } from 'v2/theme';
 import { subtractBNFloats, trimBN } from 'v2/utils';
 
 import { ISwapAsset } from '../types';
-import { getUnselectedAssets } from '../helpers';
+import { getUnselectedAssets, getAccountsWithAssetBalance } from '../helpers';
 import questionToolTip from 'common/assets/images/icn-question.svg';
+import { StoreAccount } from 'v2/types';
+import { StoreContext } from 'v2/services/Store';
 
 const FormWrapper = styled.div`
   margin-top: 20px;
@@ -69,6 +71,7 @@ const FormDisplay = styled.div`
 `;
 
 interface Props {
+  account: StoreAccount;
   fromAmount: string;
   toAmount: string;
   fromAsset: ISwapAsset;
@@ -88,6 +91,7 @@ interface Props {
   calculateNewToAmount(value: string): Promise<void>;
   handleFromAmountChanged(value: string): void;
   handleToAmountChanged(value: string): void;
+  handleAccountSelected(account: StoreAccount): void;
 }
 
 let calculateToAmountTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -95,6 +99,7 @@ let calculateFromAmountTimeout: ReturnType<typeof setTimeout> | null = null;
 
 export default function SwapAssets(props: Props) {
   const {
+    account,
     fromAmount,
     toAmount,
     fromAsset,
@@ -111,10 +116,19 @@ export default function SwapAssets(props: Props) {
     calculateNewToAmount,
     handleFromAmountChanged,
     handleToAmountChanged,
+    handleAccountSelected,
     initialToAmount,
     exchangeRate,
     markup
   } = props;
+
+  const { accounts, assets: _assets } = useContext(StoreContext);
+
+  const allAssets = _assets();
+
+  const filteredAccounts = fromAsset
+    ? getAccountsWithAssetBalance(accounts, fromAsset, fromAmount)
+    : [];
 
   // show only unused assets
   const filteredAssets = getUnselectedAssets(assets, fromAsset, toAsset);
@@ -252,6 +266,18 @@ export default function SwapAssets(props: Props) {
               {`${makeDisplayString(markup.toString())}%`}
             </SlippageDisplay>
           </DisplayDataContainer>
+        )}
+        <AccountDropdown
+          name="account"
+          value={account}
+          accounts={filteredAccounts}
+          onSelect={(option: StoreAccount) => {
+            handleAccountSelected(option);
+          }}
+          asset={fromAsset ? allAssets.find(x => x.ticker === fromAsset.symbol) : undefined}
+        />
+        {!filteredAccounts.length && (
+          <InlineMessage>{translate('ACCOUNT_SELECTION_NO_FUNDS')}</InlineMessage>
         )}
       </FormDisplay>
       <StyledButton
