@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
 
-import { ITxReceipt, ITxStatus, IStepComponentProps, TSymbol } from 'v2/types';
+import { ITxReceipt, ITxStatus, IStepComponentProps, TSymbol, ITxType } from 'v2/types';
 import { Amount, TimeElapsedCounter, AssetIcon, LinkOut, Account } from 'v2/components';
 import {
   AddressBookContext,
@@ -25,14 +25,16 @@ import './TransactionReceipt.scss';
 // Legacy
 import sentIcon from 'common/assets/images/icn-sent.svg';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
+import { SwapDisplayData } from 'v2/features/SwapAssets/types';
+import { SwapFromToDiagram } from 'v2/features/SwapAssets/components/fields';
 
 interface PendingBtnAction {
   text: string;
   action(cb: any): void;
 }
 interface Props {
-  customDetails?: JSX.Element;
   pendingButton?: PendingBtnAction;
+  swapDisplay?: SwapDisplayData;
 }
 
 export default function TransactionReceipt({
@@ -40,8 +42,9 @@ export default function TransactionReceipt({
   txConfig,
   resetFlow,
   completeButtonText,
-  customDetails,
-  pendingButton
+  pendingButton,
+  txType = ITxType.STANDARD,
+  swapDisplay
 }: IStepComponentProps & Props) {
   const { getAssetRate } = useContext(RatesContext);
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
@@ -120,7 +123,16 @@ export default function TransactionReceipt({
           {translate('TRANSACTION_BROADCASTED_DESC')}
         </div>
       </div>
-      {customDetails && <div className="TransactionReceipt-row">{customDetails}</div>}
+      {txType === ITxType.SWAP && swapDisplay && (
+        <div className="TransactionReceipt-row">
+          <SwapFromToDiagram
+            fromSymbol={swapDisplay.fromAsset.symbol}
+            toSymbol={swapDisplay.toAsset.symbol}
+            fromAmount={swapDisplay.fromAmount}
+            toAmount={swapDisplay.toAmount}
+          />
+        </div>
+      )}
       <div className="TransactionReceipt-row TransactionReceipt-row-from-to">
         <div className="TransactionReceipt-row-column">
           {translate('CONFIRM_TX_FROM')}
@@ -132,18 +144,20 @@ export default function TransactionReceipt({
             />
           </div>
         </div>
-        <div className="TransactionReceipt-row-column">
-          {translate('CONFIRM_TX_TO')}
-          <div className="TransactionReceipt-addressWrapper">
-            <Account
-              address={displayTxReceipt.to || txConfig.receiverAddress}
-              title={recipientLabel}
-              truncate={truncate}
-            />
+        {txType !== ITxType.SWAP && (
+          <div className="TransactionReceipt-row-column">
+            {translate('CONFIRM_TX_TO')}
+            <div className="TransactionReceipt-addressWrapper">
+              <Account
+                address={displayTxReceipt.to || txConfig.receiverAddress}
+                title={recipientLabel}
+                truncate={truncate}
+              />
+            </div>
           </div>
-        </div>
+        )}
       </div>
-      {!customDetails && (
+      {txType !== ITxType.SWAP && (
         <div className="TransactionReceipt-row">
           <div className="TransactionReceipt-row-column">
             <img src={sentIcon} alt="Sent" />

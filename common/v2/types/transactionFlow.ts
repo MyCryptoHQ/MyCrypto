@@ -64,6 +64,7 @@ export interface IStepComponentProps {
   txConfig: ITxConfig;
   txReceipt?: ITxReceipt;
   signedTx?: string;
+  txType?: ITxType;
   children?: never;
   completeButtonText?: string;
   onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;
@@ -78,8 +79,15 @@ export interface IReceiverAddress {
 export type SigningComponents = {
   readonly [k in WalletId]: React.ComponentType<ISignComponentProps> | null;
 };
+
 export enum ITxStatus {
   SUCCESS = 'SUCCESS',
   FAILED = 'FAILED',
   PENDING = 'PENDING'
+}
+
+export enum ITxType {
+  STANDARD = 'STANDARD',
+  BROADCAST_TX = 'BROADCAST_TX',
+  SWAP = 'SWAP'
 }

@@ -59,6 +59,7 @@ export {
   ITxObject,
   ITxConfig,
   ITxStatus,
+  ITxType,
   IFormikFields,
   ISignComponentProps,
   IStepComponentProps,
