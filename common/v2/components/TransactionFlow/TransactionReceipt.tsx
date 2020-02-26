@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
 
 import { ITxReceipt, ITxStatus, IStepComponentProps, TSymbol, ITxType } from 'v2/types';
-import { Amount, TimeElapsedCounter, AssetIcon, LinkOut, Account } from 'v2/components';
+import { Amount, TimeElapsedCounter, AssetIcon, LinkOut } from 'v2/components';
 import {
   AddressBookContext,
   AccountContext,
@@ -27,6 +27,7 @@ import sentIcon from 'common/assets/images/icn-sent.svg';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import { SwapDisplayData } from 'v2/features/SwapAssets/types';
 import { SwapFromToDiagram } from 'v2/features/SwapAssets/components/fields';
+import { FromToAccount } from './displays';
 
 interface PendingBtnAction {
   text: string;
@@ -133,7 +134,20 @@ export default function TransactionReceipt({
           />
         </div>
       )}
-      <div className="TransactionReceipt-row TransactionReceipt-row-from-to">
+      <>
+        <FromToAccount
+          fromAddressAndLabel={{
+            address: displayTxReceipt.from || txConfig.senderAccount.address,
+            label: senderAccountLabel
+          }}
+          toAddressAndLabel={{
+            address: displayTxReceipt.to || txConfig.receiverAddress,
+            label: recipientLabel
+          }}
+        />
+      </>
+
+      {/* <div className="TransactionReceipt-row TransactionReceipt-row-from-to">
         <div className="TransactionReceipt-row-column">
           {translate('CONFIRM_TX_FROM')}
           <div className="TransactionReceipt-addressWrapper">
@@ -144,19 +158,17 @@ export default function TransactionReceipt({
             />
           </div>
         </div>
-        {txType !== ITxType.SWAP && (
-          <div className="TransactionReceipt-row-column">
-            {translate('CONFIRM_TX_TO')}
-            <div className="TransactionReceipt-addressWrapper">
-              <Account
-                address={displayTxReceipt.to || txConfig.receiverAddress}
-                title={recipientLabel}
-                truncate={truncate}
-              />
-            </div>
+        <div className="TransactionReceipt-row-column">
+          {translate('CONFIRM_TX_TO')}
+          <div className="TransactionReceipt-addressWrapper">
+            <Account
+              address={displayTxReceipt.to || txConfig.receiverAddress}
+              title={recipientLabel}
+              truncate={truncate}
+            />
           </div>
-        )}
-      </div>
+        </div> 
+      </div> */}
       {txType !== ITxType.SWAP && (
         <div className="TransactionReceipt-row">
           <div className="TransactionReceipt-row-column">

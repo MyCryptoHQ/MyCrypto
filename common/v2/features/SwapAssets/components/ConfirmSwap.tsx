@@ -8,8 +8,9 @@ import { StoreAccount } from 'v2/types';
 import { COLORS } from 'v2/theme';
 import { Typography, Currency } from 'v2/components';
 
-import { SwapFromToDiagram, FromToAccount } from './fields';
+import { SwapFromToDiagram } from './fields';
 import { ISwapAsset, LAST_CHANGED_AMOUNT } from '../types';
+import { FromToAccount } from 'v2/components/TransactionFlow/displays';
 
 const StyledButton = styled(Button)`
   margin-top: 28px;
@@ -72,7 +73,10 @@ export default function ConfirmSwap(props: Props) {
         fromAmount={fromAmount}
         toAmount={toAmount}
       />
-      <FromToAccount fromAccount={account} toAccount={account} />
+      <FromToAccount
+        fromAddressAndLabel={{ address: account.address, label: account.label }}
+        toAddressAndLabel={{ address: account.address, label: account.label }}
+      />
       <LinkLabelWrapper>
         <LinkLabel value={translate('SWAP_WHY_RATE')} fontSize="0.8em" />
       </LinkLabelWrapper>

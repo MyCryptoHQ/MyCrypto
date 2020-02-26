@@ -3,14 +3,18 @@ import styled from 'styled-components';
 
 import translate, { translateRaw } from 'v2/translations';
 
-import { StoreAccount } from 'v2/types';
 import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { truncate } from 'v2/utils';
 import { Typography, Account } from 'v2/components';
 
+export interface IAddressAndLabel {
+  address: string;
+  label: string | undefined;
+}
+
 interface Props {
-  fromAccount: StoreAccount;
-  toAccount: StoreAccount;
+  fromAddressAndLabel: IAddressAndLabel;
+  toAddressAndLabel: IAddressAndLabel;
 }
 
 const AddressWrapper = styled.div`
@@ -55,7 +59,7 @@ const LabelWrapper = styled.div`
 `;
 
 export default function FromToAccount(props: Props) {
-  const { fromAccount, toAccount } = props;
+  const { fromAddressAndLabel, toAddressAndLabel } = props;
   const noLabel = translateRaw('NO_LABEL');
 
   return (
@@ -66,8 +70,8 @@ export default function FromToAccount(props: Props) {
         </LabelWrapper>
         <AddressWrapper>
           <Account
-            address={fromAccount.address}
-            title={fromAccount.label || noLabel}
+            address={fromAddressAndLabel.address}
+            title={fromAddressAndLabel.label || noLabel}
             truncate={truncate}
           />
         </AddressWrapper>
@@ -78,8 +82,8 @@ export default function FromToAccount(props: Props) {
         </LabelWrapper>
         <AddressWrapper>
           <Account
-            address={toAccount.address}
-            title={toAccount.label || noLabel}
+            address={toAddressAndLabel.address}
+            title={toAddressAndLabel.label || noLabel}
             truncate={truncate}
           />
         </AddressWrapper>
