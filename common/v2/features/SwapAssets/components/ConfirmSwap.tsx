@@ -46,7 +46,7 @@ interface Props {
   fromAmount: string;
   toAmount: string;
   account: StoreAccount;
-  swapPrice: number;
+  exchangeRate: string;
   lastChangedAmount: LAST_CHANGED_AMOUNT;
   isSubmitting: boolean;
   onSuccess(): void;
@@ -59,12 +59,10 @@ export default function ConfirmSwap(props: Props) {
     fromAmount,
     toAmount,
     account,
-    swapPrice,
-    lastChangedAmount,
+    exchangeRate,
     isSubmitting,
     onSuccess
   } = props;
-  const conversionRate = lastChangedAmount === LAST_CHANGED_AMOUNT.TO ? 1 / swapPrice : swapPrice;
 
   return (
     <div>
@@ -86,7 +84,7 @@ export default function ConfirmSwap(props: Props) {
           <Currency
             bold={true}
             fontSize="1em"
-            amount={conversionRate.toString()}
+            amount={exchangeRate}
             symbol={toAsset.symbol}
             decimals={8}
           />

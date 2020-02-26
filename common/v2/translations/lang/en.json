@@ -81,7 +81,7 @@
     "DEP_SIGNTX": "Sign Transaction",
     "SWAP_WHY_RATE": "why this rate?",
     "SWAP_RATE": "Conversion Rate",
-    "SWAP_SEND_AMOUNT": "Send Amount",
+    "SWAP_SEND_AMOUNT": "Convert Amount",
     "SWAP_RECEIVE_AMOUNT": "Receive Amount",
     "SWAP_START_ANOTHER": "Start Another Swap",
     "SWAP_ACCOUNT_SELECT_DESC": "Where will you be sending your $fromAsset from? You will receive your $toAsset back to the same address after the swap.",
@@ -585,6 +585,12 @@
     "SIGN_TX_WALLETCONNECT_SESSION_NETWORK": "on network",
     "SIGN_TX_WALLETCONNECT_INSTRUCTIONS_1": "1. Open the wallet containing the account",
     "SIGN_TX_WALLETCONNECT_INSTRUCTIONS_2": "2. Select the $network network",
-    "SIGN_TX_WALLETCONNECT_INSTRUCTIONS_3": "3. Scan the QRCode below"
+    "SIGN_TX_WALLETCONNECT_INSTRUCTIONS_3": "3. Scan the QRCode below",
+    "SWAP_FEE_TOOLTIP": "This fee is split between MyCrypto and Dex.AG",
+    "SWAP_FEE_LABEL": "Fee ($commission%) ",
+    "SWAP_MARKUP_TOOLTIP": "Markup determines how good of a deal you're getting, according to available liquidity.",
+    "SWAP_MARKUP_LABEL": "Markup ",
+    "SWAP_RATE_LABEL": "Rate: ",
+    "SWAP_RATE_TEXT": "$displayString $toAssetSymbol per $fromAssetSymbol"
   }
 }
