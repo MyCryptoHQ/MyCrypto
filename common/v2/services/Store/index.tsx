@@ -6,4 +6,4 @@ export * from './Network';
 export * from './Settings';
 export * from './DataManager';
 export { StoreContext, StoreProvider } from './StoreProvider';
-export { getAccountBalance } from './utils';
+export { getAccountBalance, getStoreAccount } from './utils';

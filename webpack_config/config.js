@@ -9,7 +9,8 @@ const paths = {
   static: path.join(__dirname, '../static'),
   electron: path.join(__dirname, '../electron-app'),
   shared: path.join(__dirname, '../shared'),
-  modules: path.join(__dirname, '../node_modules')
+  modules: path.join(__dirname, '../node_modules'),
+  testConfig: path.join(__dirname, '../jest_config')
 };
 
 module.exports = {
@@ -26,25 +27,6 @@ module.exports = {
     creator: '@MyCrypto'
   },
   path: paths,
-
-  // Typescript rule config
-  typescriptRule: {
-    test: /\.(ts|tsx)$/,
-    include: [paths.src, paths.shared, paths.electron],
-    use: [{ loader: 'ts-loader', options: { happyPackMode: true, logLevel: 'info' } }],
-    exclude: ['assets', 'sass', 'vendor', 'translations/lang']
-      .map(dir => path.resolve(paths.src, dir))
-      .concat([paths.modules])
-  },
-
-  // File resolution
-  resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss'],
-    modules: [paths.src, paths.modules, paths.root],
-    alias: {
-      modernizr$: path.resolve(__dirname, '../.modernizrrc.js')
-    }
-  },
 
   // Vendor modules
   vendorModules: [

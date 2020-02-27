@@ -1007,6 +1007,4 @@ function PopupManager() {
     };
 }
 
-var connect = new SafeTConnect();
-
-module.exports = connect;
+export default new SafeTConnect();

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { simpleRender } from 'test-utils';
-import { fAccount, fTransaction, fNetwork } from 'fixtures';
+import { fAccount, fTransaction, fNetwork } from '@fixtures';
 
 import { default as WalletConnectComponent } from '../WalletConnect';
 

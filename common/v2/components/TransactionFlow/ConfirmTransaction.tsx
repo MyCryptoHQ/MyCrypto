@@ -6,11 +6,11 @@ import { Button } from '@mycrypto/ui';
 import feeIcon from 'common/assets/images/icn-fee.svg';
 import sendIcon from 'common/assets/images/icn-send.svg';
 import walletIcon from 'common/assets/images/icn-wallet.svg';
-import { AddressBookContext } from 'v2/services/Store';
+import { AddressBookContext, StoreContext } from 'v2/services/Store';
 import { Amount, AssetIcon } from 'v2/components';
 import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from 'v2/services/EthService';
 import { RatesContext } from 'v2/services/RatesProvider';
-import { IStepComponentProps } from 'v2/types';
+import { IStepComponentProps, ExtendedAddressBook } from 'v2/types';
 import { BREAK_POINTS } from 'v2/theme';
 
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
@@ -19,6 +19,7 @@ import { convertToFiat, truncate } from 'v2/utils';
 import translate from 'v2/translations';
 import { TSymbol } from 'v2/types/symbols';
 import Account from '../Account';
+import { StoreAccount } from 'v2/types/account';
 const { SCREEN_XS } = BREAK_POINTS;
 
 const ConfirmTransactionWrapper = Styled.div`
@@ -101,33 +102,72 @@ export default function ConfirmTransaction({
   onComplete,
   signedTx
 }: IStepComponentProps) {
+  const { asset, senderAccount: account, baseAsset, receiverAddress, network } = txConfig;
+
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
-  const [isBroadcastingTx, setIsBroadcastingTx] = useState(false);
-  const handleApprove = () => {
-    setIsBroadcastingTx(true);
-    onComplete(null);
-  };
-
   const { getAssetRate } = useContext(RatesContext);
-  const recipientContact = getContactByAddressAndNetwork(
-    txConfig.receiverAddress,
-    txConfig.network
-  );
-  const recipientLabel = recipientContact ? recipientContact.label : 'Unknown Address';
+  const { getAccount } = useContext(StoreContext);
 
+  /* Get contact info */
+  const recipientContact = getContactByAddressAndNetwork(receiverAddress, network);
+  const senderContact = getContactByAccount(account);
+  const senderAccount = getAccount(account);
+
+  /* Get Rates */
+  const assetRate = getAssetRate(asset);
+  const baseAssetRate = getAssetRate(baseAsset);
+
+  return (
+    <ConfirmTransactionUI
+      assetRate={assetRate}
+      baseAssetRate={baseAssetRate}
+      senderContact={senderContact}
+      senderAccount={senderAccount!}
+      txConfig={txConfig}
+      recipientContact={recipientContact}
+      onComplete={onComplete}
+      signedTx={signedTx}
+    />
+  );
+}
+
+interface DataProps {
+  assetRate?: number;
+  baseAssetRate?: number;
+  recipientContact?: ExtendedAddressBook;
+  senderContact?: ExtendedAddressBook;
+  senderAccount: StoreAccount;
+}
+
+export const ConfirmTransactionUI = ({
+  assetRate,
+  baseAssetRate,
+  senderAccount,
+  senderContact,
+  recipientContact,
+  txConfig,
+  onComplete,
+  signedTx
+}: Omit<IStepComponentProps, 'resetFlow'> & DataProps) => {
   const {
     asset,
     gasPrice,
     gasLimit,
     value,
     amount,
-    senderAccount,
     receiverAddress,
     network,
     nonce,
     data,
     baseAsset
   } = txConfig;
+
+  const [isBroadcastingTx, setIsBroadcastingTx] = useState(false);
+  const handleApprove = () => {
+    setIsBroadcastingTx(true);
+    onComplete(null);
+  };
+
   const assetType = asset.type;
 
   /* Calculate Transaction Fee */
@@ -136,15 +176,10 @@ export default function ConfirmTransaction({
 
   /* Calculate total base asset amount */
   const valueWei = Wei(value);
-  const totalEtherEgress = parseFloat(fromWei(valueWei.add(transactionFeeWei), 'ether')).toFixed(6); // @TODO: BN math, add amount + maxCost !In same symbol
-
-  /* Determing User's Contact */
-  const senderContact = getContactByAccount(senderAccount);
+  // @TODO: BN math, add amount + maxCost !In same symbol
+  const totalEtherEgress = parseFloat(fromWei(valueWei.add(transactionFeeWei), 'ether')).toFixed(6);
   const senderAccountLabel = senderContact ? senderContact.label : 'Unknown Account';
-
-  /* Get Rates */
-  const assetRate = getAssetRate(asset);
-  const baseAssetRate = getAssetRate(baseAsset);
+  const recipientLabel = recipientContact ? recipientContact.label : 'Unknown Address';
 
   return (
     <ConfirmTransactionWrapper>
@@ -249,4 +284,4 @@ export default function ConfirmTransaction({
       </SendButton>
     </ConfirmTransactionWrapper>
   );
-}
+};

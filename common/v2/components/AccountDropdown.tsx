@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { translateRaw } from 'v2/translations';
 import { formatEther } from 'ethers/utils';
 
 import { AccountSummary, AccountOption, Dropdown } from 'v2/components';
 import { StoreAccount, Asset } from 'v2/types';
-import { AddressBookContext, getAccountBalance, getBaseAsset } from 'v2/services/Store';
+import { getAccountBalance, getBaseAsset } from 'v2/services/Store';
 import { useEffectOnce } from 'v2/vendor';
 
 // Option item displayed in Dropdown menu. Props are passed by react-select Select.
@@ -20,10 +20,8 @@ interface IAccountDropdownProps {
 }
 
 function AccountDropdown({ accounts, name, value, onSelect, asset }: IAccountDropdownProps) {
-  const { getAccountLabel } = useContext(AddressBookContext);
   const relevantAccounts: StoreAccount[] = accounts.map(account => ({
     ...account,
-    label: getAccountLabel(account),
     balance: formatEther(asset ? getAccountBalance(account, asset) : getAccountBalance(account)),
     assetSymbol: asset ? asset.ticker : getBaseAsset(account)!.ticker
   }));

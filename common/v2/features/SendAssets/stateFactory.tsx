@@ -16,7 +16,8 @@ import {
   getBaseAssetByNetwork,
   AccountContext,
   AssetContext,
-  NetworkContext
+  NetworkContext,
+  StoreContext
 } from 'v2/services';
 import {
   ProviderHandler,
@@ -51,8 +52,8 @@ interface State {
 const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) => {
   const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
-
-  const { addNewTransactionToAccount, accounts } = useContext(AccountContext);
+  const { accounts } = useContext(StoreContext);
+  const { addNewTransactionToAccount } = useContext(AccountContext);
 
   const handleFormSubmit: TStepAction = (payload: IFormikFields, cb: any) => {
     const rawTransaction: ITxObject = processFormDataToTx(payload);

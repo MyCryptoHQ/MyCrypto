@@ -1,6 +1,6 @@
 import { bigNumberify, BigNumber } from 'ethers/utils';
 
-import { Asset, StoreAccount } from 'v2/types';
+import { TAddress, NetworkId, Asset, StoreAccount } from 'v2/types';
 
 // Every StoreAccount has a base asset and a balance
 const getAccountBaseBalance = (account: StoreAccount) =>
@@ -13,3 +13,8 @@ const getAccountTokenBalance = (account: StoreAccount, token: Asset): BigNumber 
 
 export const getAccountBalance = (account: StoreAccount, token?: Asset): BigNumber =>
   token ? getAccountTokenBalance(account, token) : getAccountBaseBalance(account);
+
+export const getStoreAccount = (accounts: StoreAccount[]) => (
+  address: TAddress,
+  networkId: NetworkId
+) => accounts.find(a => a.address === address && a.networkId === networkId);

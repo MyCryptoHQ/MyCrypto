@@ -1,8 +1,13 @@
-import { light, dark } from '@mycrypto/ui';
-import { GAU_COLORS } from '../common/v2/theme/constants';
+import React from 'react';
 import { addDecorator } from '@storybook/react';
-import { withThemesProvider } from 'storybook-addon-styled-component-theme';
 import { withA11y } from '@storybook/addon-a11y';
+import { withThemesProvider } from 'storybook-addon-styled-component-theme';
+import styled from 'styled-components';
+import { light, dark } from '@mycrypto/ui';
+
+import { GAU_COLORS } from 'v2/theme';
+
+import 'sass/styles'
 
 const LIGHT_THEME = {
   name: 'Light',

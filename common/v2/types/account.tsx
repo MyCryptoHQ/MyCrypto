@@ -35,4 +35,7 @@ export type StoreAccount = Overwrite<
   {
     assets: StoreAsset[];
   }
-> & { network: Network };
+> & {
+  network: Network;
+  label: string;
+};

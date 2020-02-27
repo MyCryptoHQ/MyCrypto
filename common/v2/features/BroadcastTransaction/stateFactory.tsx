@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { TUseStateReducerFactory, fromTxReceiptObj, makeTxConfigFromSignedTx } from 'v2/utils';
 import { ITxReceipt, ITxConfig, ISignedTx, NetworkId } from 'v2/types';
 import { DEFAULT_NETWORK } from 'v2/config';
-import { NetworkContext, AssetContext, AccountContext } from 'v2/services/Store';
+import { NetworkContext, AssetContext, StoreContext } from 'v2/services/Store';
 import { ProviderHandler } from 'v2/services/EthService';
 import { ToastContext } from 'v2/features/Toasts';
 
@@ -25,7 +25,7 @@ const BroadcastTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setSt
   const { networks, getNetworkByName } = useContext(NetworkContext);
   const { assets } = useContext(AssetContext);
   const { displayToast, toastTemplates } = useContext(ToastContext);
-  const { accounts } = useContext(AccountContext);
+  const { accounts } = useContext(StoreContext);
 
   const handleNetworkChanged = (network: NetworkId) => {
     setState((prevState: State) => ({

@@ -216,7 +216,7 @@
     "dev:electron": "cross-env BUILD_ELECTRON=true concurrently -r --kill-others -n \"RENDERER,MAIN\" \"yarn run dev:electron:renderer\" \"yarn run dev:electron:main\"",
     "dev:electron:main": "webpack --config webpack_config/electron-main.development.js && electron dist/electron-main/main.js",
     "dev:electron:renderer": "webpack-dev-server --config webpack_config/electron-renderer.development.js",
-    "storybook": "start-storybook",
+    "storybook": "start-storybook -p 3001 --ci",
     "tslint": "tslint --project .",
     "tscheck": "tsc",
     "start": " yarn run dev",
