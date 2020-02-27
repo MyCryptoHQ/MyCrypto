@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 const SriPlugin = require('webpack-subresource-integrity');
 const common = require('./common');
 const config = require('./config');
@@ -69,7 +70,14 @@ module.exports = merge.smart(common, {
       enabled: true
     }),
 
-    new webpack.ProgressPlugin()
+    new webpack.ProgressPlugin(),
+
+    new CompressionPlugin({
+      algorithm: "gzip",
+      test: /\.js$|\.css$|\.html$/,
+      threshold: 10240,
+      minRatio: 0.8
+    })
   ],
 
   optimization: {
