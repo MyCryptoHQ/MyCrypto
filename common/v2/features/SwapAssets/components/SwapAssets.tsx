@@ -139,9 +139,7 @@ export default function SwapAssets(props: Props) {
     markup
   } = props;
 
-  const { accounts, assets: assetsFunc } = useContext(StoreContext);
-
-  const userAssets = assetsFunc();
+  const { accounts, userAssets } = useContext(StoreContext);
 
   // Accounts with a balance of the chosen asset
   const filteredAccounts = fromAsset
