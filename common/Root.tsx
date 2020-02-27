@@ -88,8 +88,11 @@ class RootClass extends Component<Props, State> {
   }
 
   public render() {
-    const { store, onboardingActive } = this.props;
+    const { store } = this.props;
     const { error } = this.state;
+
+    // Disabling onborading modal display
+    const onboardingActive = false;
 
     if (error) {
       // @ts-ignore

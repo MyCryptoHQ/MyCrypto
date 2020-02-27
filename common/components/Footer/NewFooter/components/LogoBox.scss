@@ -76,6 +76,7 @@ $spacing-sm: 7px;
   }
   &-socials-legal {
     display: none;
+    min-width: 260px;
 
     @media (min-width: 800px) {
       display: block;
