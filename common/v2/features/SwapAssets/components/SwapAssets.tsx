@@ -141,15 +141,18 @@ export default function SwapAssets(props: Props) {
 
   const { accounts, assets: assetsFunc } = useContext(StoreContext);
 
-  const allAssets = assetsFunc();
+  const userAssets = assetsFunc();
 
   // Accounts with a balance of the chosen asset
   const filteredAccounts = fromAsset
     ? getAccountsWithAssetBalance(accounts, fromAsset, fromAmount)
     : [];
 
-  // show only unused assets
+  // show only unused assets and assets owned by the user
   const filteredAssets = getUnselectedAssets(assets, fromAsset, toAsset);
+  const ownedAssets = filteredAssets.filter(a =>
+    userAssets.find(userAsset => a.symbol === userAsset.ticker)
+  );
 
   // SEND AMOUNT CHANGED
   const handleFromAmountChangedEvent = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -219,7 +222,7 @@ export default function SwapAssets(props: Props) {
         </InputWrapper>
         <AssetDropdown
           selectedAsset={fromAsset}
-          assets={filteredAssets}
+          assets={ownedAssets}
           label={translateRaw('X_ASSET')}
           onSelect={handleFromAssetSelected}
           showOnlyTicker={true}
@@ -308,9 +311,9 @@ export default function SwapAssets(props: Props) {
           onSelect={(option: StoreAccount) => {
             handleAccountSelected(option);
           }}
-          asset={fromAsset ? allAssets.find(x => x.ticker === fromAsset.symbol) : undefined}
+          asset={fromAsset ? userAssets.find(x => x.ticker === fromAsset.symbol) : undefined}
         />
-        {!filteredAccounts.length && (
+        {!filteredAccounts.length && fromAsset && (
           <InlineMessage>{translate('ACCOUNT_SELECTION_NO_FUNDS')}</InlineMessage>
         )}
       </FormDisplay>
