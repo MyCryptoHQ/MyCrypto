@@ -5,7 +5,13 @@ import { Button, Tooltip } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'v2/translations';
 import { MYC_DEXAG_COMMISSION_RATE, MYC_DEXAG_MARKUP_THRESHOLD } from 'v2/config';
-import { InputField, AssetDropdown, AccountDropdown, InlineMessage } from 'v2/components';
+import {
+  InputField,
+  AssetDropdown,
+  AccountDropdown,
+  InlineMessage,
+  Typography
+} from 'v2/components';
 import { SPACING, COLORS } from 'v2/theme';
 import { subtractBNFloats, trimBN } from 'v2/utils';
 
@@ -50,6 +56,17 @@ const Label = styled.div`
   & img {
     margin: 0em 0.2em;
   }
+`;
+
+const AccountLabel = styled(Typography)`
+  line-height: 1;
+  color: ${props => props.theme.text};
+`;
+
+const AccountLabelWrapper = styled.div`
+  width: 100%;
+  text-align: left;
+  margin-bottom: 9px;
 `;
 
 const DisplayDataContainer = styled.div`
@@ -281,6 +298,9 @@ export default function SwapAssets(props: Props) {
             </SlippageDisplay>
           </DisplayDataContainer>
         )}
+        <AccountLabelWrapper>
+          <AccountLabel value={translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')} fontSize="1.13em" />
+        </AccountLabelWrapper>
         <AccountDropdown
           name="account"
           value={account}
@@ -297,6 +317,7 @@ export default function SwapAssets(props: Props) {
       <StyledButton
         onClick={onSuccess}
         disabled={
+          !account ||
           isCalculatingToAmount ||
           isCalculatingFromAmount ||
           !fromAmount ||
