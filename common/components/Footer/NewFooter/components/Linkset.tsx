@@ -41,6 +41,7 @@ const LINK_COLUMNS = [
       }
     ]
   },
+  /* Disabling 'Support Us' footer linkset column
   {
     heading: translateRaw('NEW_FOOTER_TEXT_11'),
     links: [
@@ -58,6 +59,7 @@ const LINK_COLUMNS = [
       }
     ]
   },
+  */
   {
     heading: translateRaw('NEW_FOOTER_TEXT_12'),
     links: [

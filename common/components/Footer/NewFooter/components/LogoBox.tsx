@@ -14,9 +14,6 @@ export default function LogoBox() {
           <ThemeToggle />
         </section>
       </section>
-      <section className="LogoBox-text">
-        <p>{translate('NEW_FOOTER_TEXT_13')}</p>
-      </section>
       <section className="LogoBox-toggle">
         <ThemeToggle />
       </section>
