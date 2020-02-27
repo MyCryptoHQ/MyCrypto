@@ -108,7 +108,7 @@ interface Props {
   calculateNewToAmount(value: string): Promise<void>;
   handleFromAmountChanged(value: string): void;
   handleToAmountChanged(value: string): void;
-  handleAccountSelected(account: StoreAccount): void;
+  handleAccountSelected(account?: StoreAccount): void;
 }
 
 let calculateToAmountTimeout: ReturnType<typeof setTimeout> | null = null;
