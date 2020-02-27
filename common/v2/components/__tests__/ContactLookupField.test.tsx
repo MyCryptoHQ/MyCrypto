@@ -1,6 +1,7 @@
 import React from 'react';
+
 import { simpleRender, fireEvent, wait } from 'test-utils';
-import { fNetwork } from 'fixtures';
+import { fNetwork } from '@fixtures';
 
 import { AddressBookContext } from 'v2/services/Store';
 import { AddressBook, ExtendedAddressBook, TUuid, IReceiverAddress } from 'v2/types';
