@@ -23,6 +23,7 @@ export interface ITokenValues {
 
 export interface DeterministicWalletData {
   index: number;
+  displayIndex?: number;
   address: string;
   value?: TokenValue;
   tokenValues: ITokenValues;

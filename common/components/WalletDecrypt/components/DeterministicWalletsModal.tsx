@@ -88,8 +88,12 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   }
 
   public render() {
-    const { wallets, desiredToken, network, tokens, dPaths, onCancel } = this.props;
+    const { desiredToken, network, tokens, dPaths, onCancel } = this.props;
     const { selectedAddress, customPath, page } = this.state;
+
+    let { wallets } = this.props;
+    wallets.sort(this.compareWalletsBalances);
+    wallets = this.reIndexWallets(wallets);
 
     const buttons: IButton[] = [
       {
@@ -267,6 +271,37 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
     this.setState({ page: Math.max(this.state.page - 1, 0) }, this.getAddresses);
   };
 
+  private compareWalletsBalances(
+    a: deterministicWalletsTypes.DeterministicWalletData,
+    b: deterministicWalletsTypes.DeterministicWalletData
+  ) {
+    if (a.value && !b.value) {
+      return -1;
+    }
+    if (b.value && !a.value) {
+      return 1;
+    }
+    if (!a.value && !b.value) {
+      return 0;
+    }
+    // @ts-ignore
+    if (a.value > b.value) {
+      return -1;
+    }
+    // @ts-ignore
+    if (b.value > a.value) {
+      return 1;
+    }
+    return 0;
+  }
+
+  private reIndexWallets(wallets: deterministicWalletsTypes.DeterministicWalletData[]) {
+    for (let i = 0; i < wallets.length; i++) {
+      wallets[i].displayIndex = i + 1;
+    }
+    return wallets;
+  }
+
   private renderDPathOption(option: Option) {
     if (option.value === customDPath.value) {
       return translate('X_CUSTOM');
@@ -304,7 +339,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
         key={wallet.address}
         onClick={this.selectAddress.bind(this, wallet.address, wallet.index)}
       >
-        <td>{wallet.index + 1}</td>
+        <td>{wallet.displayIndex ? wallet.displayIndex : wallet.index + 1}</td>
         <td className="DWModal-addresses-table-address">
           <input
             type="radio"
