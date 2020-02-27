@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import translate, { translateRaw } from 'translations';
 import { WalletType } from '../GenerateWallet';
 import { NewTabLink } from 'components/ui';
-import { ledgerReferralURL, trezorReferralURL } from 'config';
+// import { ledgerReferralURL, trezorReferralURL } from 'config';
 import Template from './Template';
-import MetamaskIcon from 'assets/images/wallets/metamask.svg';
-import HardwareWalletIcon from 'assets/images/wallets/hardware.svg';
-// import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
+// import MetamaskIcon from 'assets/images/wallets/metamask.svg';
+// import HardwareWalletIcon from 'assets/images/wallets/hardware.svg';
+// // import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
 import FileIcon from 'assets/images/wallets/file.svg';
 import './WalletTypes.scss';
 
@@ -61,6 +61,7 @@ interface WalletSuggestion {
 
 const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) => {
   const suggestions: WalletSuggestion[] = [
+    /* Disabling alternative options to create new wallet
     {
       name: translate('X_HARDWARE_WALLET'),
       type: 'hardware',
@@ -101,9 +102,7 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
           href: 'https://metamask.io/'
         }
       ]
-    }
-    /* Disabling Parity Signer option to create new wallet
-    ,
+    },
     {
       name: translate('X_PARITYSIGNER'),
       type: 'parity',
@@ -130,8 +129,8 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
 
   // TODO: remove after some time for web version
   if (true || process.env.BUILD_DOWNLOADABLE) {
-    const metamask = suggestions[1];
-    suggestions[1] = {
+    // const metamask = suggestions[1];
+    suggestions[0] = {
       name: translate('NAV_GENERATEWALLET'),
       type: 'generate',
       icon: FileIcon,
@@ -156,8 +155,8 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
     // TODO: remove after some time
     // Add extra option for web wallet
     if (!process.env.BUILD_DOWNLOADABLE) {
-      suggestions.push(suggestions[1]);
-      suggestions[1] = metamask;
+      // suggestions.push(suggestions[1]);
+      // suggestions[1] = metamask;
     }
   }
 
