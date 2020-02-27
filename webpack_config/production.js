@@ -81,8 +81,11 @@ module.exports = merge.smart(common, {
   ],
 
   optimization: {
+    runtimeChunk: true,
+    namedModules: true, // ToDo: Turn this off after done testing
     splitChunks: {
-      chunks: 'all'
+      chunks: 'all',
+      maxSize: 300000
     },
     concatenateModules: false
   },
