@@ -172,6 +172,7 @@ export const STATIC_APP_ROUTES: IAppRoute[] = [
     title: ROUTE_PATHS.SWAP.title,
     path: ROUTE_PATHS.SWAP.path,
     enabled: IS_ACTIVE_FEATURE.SWAP,
+    requireAccounts: true,
     exact: true,
     component: SwapAssetsFlow
   },

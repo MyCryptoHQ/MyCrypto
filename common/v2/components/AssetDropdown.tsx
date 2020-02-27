@@ -83,7 +83,7 @@ function AssetDropdown({
       {label && <Label>{label}</Label>}
       <Dropdown
         placeholder={translateRaw('SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER')}
-        options={assets}
+        options={assets.map(a => ({ value: showOnlyTicker ? a.symbol : a.name, ...a }))}
         disabled={disabled}
         searchable={searchable}
         onChange={(option: Asset) => onSelect && onSelect(option)}

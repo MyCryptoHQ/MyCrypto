@@ -1,17 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { formatEther } from 'ethers/utils';
 import { Button, Tooltip } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'v2/translations';
 import { MYC_DEXAG_COMMISSION_RATE, MYC_DEXAG_MARKUP_THRESHOLD } from 'v2/config';
-import { InputField, AssetDropdown } from 'v2/components';
+import {
+  InputField,
+  AssetDropdown,
+  AccountDropdown,
+  InlineMessage,
+  Typography
+} from 'v2/components';
 import { SPACING, COLORS } from 'v2/theme';
 import { subtractBNFloats, trimBN } from 'v2/utils';
 
 import { ISwapAsset } from '../types';
-import { getUnselectedAssets } from '../helpers';
+import { getUnselectedAssets, getAccountsWithAssetBalance } from '../helpers';
 import questionToolTip from 'common/assets/images/icn-question.svg';
+import { StoreAccount } from 'v2/types';
+import { StoreContext } from 'v2/services/Store';
 
 const FormWrapper = styled.div`
   margin-top: 20px;
@@ -50,6 +58,17 @@ const Label = styled.div`
   }
 `;
 
+const AccountLabel = styled(Typography)`
+  line-height: 1;
+  color: ${props => props.theme.text};
+`;
+
+const AccountLabelWrapper = styled.div`
+  width: 100%;
+  text-align: left;
+  margin-bottom: 9px;
+`;
+
 const DisplayDataContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -69,6 +88,7 @@ const FormDisplay = styled.div`
 `;
 
 interface Props {
+  account: StoreAccount;
   fromAmount: string;
   toAmount: string;
   fromAsset: ISwapAsset;
@@ -88,6 +108,7 @@ interface Props {
   calculateNewToAmount(value: string): Promise<void>;
   handleFromAmountChanged(value: string): void;
   handleToAmountChanged(value: string): void;
+  handleAccountSelected(account?: StoreAccount): void;
 }
 
 let calculateToAmountTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -95,6 +116,7 @@ let calculateFromAmountTimeout: ReturnType<typeof setTimeout> | null = null;
 
 export default function SwapAssets(props: Props) {
   const {
+    account,
     fromAmount,
     toAmount,
     fromAsset,
@@ -111,13 +133,24 @@ export default function SwapAssets(props: Props) {
     calculateNewToAmount,
     handleFromAmountChanged,
     handleToAmountChanged,
+    handleAccountSelected,
     initialToAmount,
     exchangeRate,
     markup
   } = props;
 
-  // show only unused assets
+  const { accounts, userAssets } = useContext(StoreContext);
+
+  // Accounts with a balance of the chosen asset
+  const filteredAccounts = fromAsset
+    ? getAccountsWithAssetBalance(accounts, fromAsset, fromAmount)
+    : [];
+
+  // show only unused assets and assets owned by the user
   const filteredAssets = getUnselectedAssets(assets, fromAsset, toAsset);
+  const ownedAssets = filteredAssets.filter(a =>
+    userAssets.find(userAsset => a.symbol === userAsset.ticker)
+  );
 
   // SEND AMOUNT CHANGED
   const handleFromAmountChangedEvent = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -153,6 +186,19 @@ export default function SwapAssets(props: Props) {
     calculateNewToAmount(fromAmount);
   }, [toAsset]);
 
+  useEffect(() => {
+    if (
+      fromAmount &&
+      fromAsset &&
+      account &&
+      !getAccountsWithAssetBalance(accounts, fromAsset, fromAmount).find(
+        a => a.uuid === account.uuid
+      )
+    ) {
+      handleAccountSelected(undefined);
+    }
+  }, [fromAsset, fromAmount]);
+
   const makeDisplayString = (amount: string) =>
     parseFloat(trimBN(amount, 10)) <= 0.01
       ? '<0.01'
@@ -174,7 +220,7 @@ export default function SwapAssets(props: Props) {
         </InputWrapper>
         <AssetDropdown
           selectedAsset={fromAsset}
-          assets={filteredAssets}
+          assets={ownedAssets}
           label={translateRaw('X_ASSET')}
           onSelect={handleFromAssetSelected}
           showOnlyTicker={true}
@@ -253,10 +299,26 @@ export default function SwapAssets(props: Props) {
             </SlippageDisplay>
           </DisplayDataContainer>
         )}
+        <AccountLabelWrapper>
+          <AccountLabel value={translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')} fontSize="1.13em" />
+        </AccountLabelWrapper>
+        <AccountDropdown
+          name="account"
+          value={account}
+          accounts={filteredAccounts}
+          onSelect={(option: StoreAccount) => {
+            handleAccountSelected(option);
+          }}
+          asset={fromAsset ? userAssets.find(x => x.ticker === fromAsset.symbol) : undefined}
+        />
+        {!filteredAccounts.length && fromAsset && (
+          <InlineMessage>{translate('ACCOUNT_SELECTION_NO_FUNDS')}</InlineMessage>
+        )}
       </FormDisplay>
       <StyledButton
         onClick={onSuccess}
         disabled={
+          !account ||
           isCalculatingToAmount ||
           isCalculatingFromAmount ||
           !fromAmount ||
