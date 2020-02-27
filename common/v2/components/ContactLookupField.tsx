@@ -3,17 +3,12 @@ import { FieldProps } from 'formik';
 import { ResolutionError } from '@unstoppabledomains/resolution';
 
 import { DomainStatus, InlineMessage } from 'v2/components';
-import { Network, InlineMessageType, IReceiverAddress } from 'v2/types';
+import { Network, IReceiverAddress, ErrorObject } from 'v2/types';
 import { AddressBookContext, findNextRecipientLabel } from 'v2/services/Store';
 import { isValidETHAddress, isValidENSName } from 'v2/services/EthService';
 import { useEffectOnce } from 'v2/vendor';
 
 import ContactLookupDropdown from './ContactLookupDropdown';
-
-interface ErrorObject {
-  type: InlineMessageType;
-  message: string | JSX.Element;
-}
 
 interface IContactLookupFieldComponentProps {
   error?: string | ErrorObject;

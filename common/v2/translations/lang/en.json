@@ -448,7 +448,7 @@
     "SEND_ASSETS_DID_RESOLVE": "Resolved Address",
     "SEND_ASSETS_SEND_ANOTHER": "Send Another Transaction",
     "REQUIRED": "Required",
-    "TO_FIELD_ERROR": "Enter a valid address or blockchain domain",
+    "TO_FIELD_ERROR": "Enter a valid address, ENS name, or blockchain domain",
     "404_HEADER": "Page Not Found",
     "404_DESCRIPTION": "Looks like you got lost somewhere along the way. Don't worry, the wizard can help you get back!",
     "404_BUTTON": "Go Home",

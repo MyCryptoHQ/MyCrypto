@@ -35,7 +35,8 @@ import {
   WalletId,
   IFormikFields,
   IStepComponentProps,
-  ITxConfig
+  ITxConfig,
+  ErrorObject
 } from 'v2/types';
 import {
   getNonce,
@@ -46,9 +47,7 @@ import {
   baseToConvertedUnit,
   isValidPositiveNumber,
   isTransactionFeeHigh,
-  isChecksumAddress,
   isBurnAddress,
-  isValidENSName,
   bigNumGasPriceToViewableGwei
 } from 'v2/services/EthService';
 import UnstoppableResolution from 'v2/services/UnstoppableService';
@@ -64,6 +63,7 @@ import { RatesContext } from 'v2/services/RatesProvider';
 import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
 import { weiToFloat, formatSupportEmail } from 'v2/utils';
 import { InlineMessageType } from 'v2/types/inlineMessages';
+import { isValidETHRecipientAddress } from 'v2/services/EthService/validators';
 
 import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
 import './SendAssetsForm.scss';
@@ -185,50 +185,45 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
         }
       ),
     account: Yup.object().required(translateRaw('REQUIRED')),
-    address: Yup.object({
-      value: Yup.string()
-        .test(
-          'check-eth-address',
-          translateRaw('TO_FIELD_ERROR'),
-          value => isValidETHAddress(value) || (isValidENSName(value) && !resolutionError)
-        )
-        // @ts-ignore Hack as Formik doesn't officially support warnings
-        // tslint:disable-next-line
-        .test('is-checksummed', translate('CHECKSUM_ERROR'), function(value) {
-          if (isValidETHAddress(value) && !isChecksumAddress(value)) {
-            return {
-              name: 'ValidationError',
-              type: InlineMessageType.INFO_CIRCLE,
-              message: translate('CHECKSUM_ERROR')
-            };
-          }
-          return true;
-        })
-        // @ts-ignore Hack as Formik doesn't officially support warnings
-        .test('check-sending-to-yourself', translateRaw('SENDING_TO_YOURSELF'), function(value) {
-          const account = this.parent.account;
-          if (!isEmpty(account) && account.address.toLowerCase() === value.toLowerCase()) {
-            return {
-              name: 'ValidationError',
-              type: InlineMessageType.INFO_CIRCLE,
-              message: translateRaw('SENDING_TO_YOURSELF')
-            };
-          }
-          return true;
-        })
-        // @ts-ignore Hack as Formik doesn't officially support warnings
-        // tslint:disable-next-line
-        .test('check-sending-to-burn', translateRaw('SENDING_TO_BURN_ADDRESS'), function(value) {
-          if (isBurnAddress(value)) {
-            return {
-              name: 'ValidationError',
-              type: InlineMessageType.INFO_CIRCLE,
-              message: translateRaw('SENDING_TO_BURN_ADDRESS')
-            };
-          }
-          return true;
-        })
-    }).required(translateRaw('REQUIRED')),
+    address: Yup.object()
+      .required(translateRaw('REQUIRED'))
+      // @ts-ignore Hack as Formik doesn't officially support warnings
+      // tslint:disable-next-line
+      .test('is-checksummed', translate('CHECKSUM_ERROR'), function(value) {
+        const validationResult = isValidETHRecipientAddress(value.value, resolutionError);
+        if (!validationResult.success) {
+          return {
+            name: validationResult.name,
+            type: validationResult.type,
+            message: validationResult.message
+          };
+        }
+        return true;
+      })
+      // @ts-ignore Hack as Formik doesn't officially support warnings
+      // tslint:disable-next-line
+      .test('check-sending-to-burn', translateRaw('SENDING_TO_BURN_ADDRESS'), function(value) {
+        if (isBurnAddress(value.value)) {
+          return {
+            name: 'ValidationError',
+            type: InlineMessageType.INFO_CIRCLE,
+            message: translateRaw('SENDING_TO_BURN_ADDRESS')
+          };
+        }
+        return true;
+      })
+      // @ts-ignore Hack as Formik doesn't officially support warnings
+      .test('check-sending-to-yourself', translateRaw('SENDING_TO_YOURSELF'), function(value) {
+        const account = this.parent.account;
+        if (!isEmpty(account) && account.address.toLowerCase() === value.value.toLowerCase()) {
+          return {
+            name: 'ValidationError',
+            type: InlineMessageType.INFO_CIRCLE,
+            message: translateRaw('SENDING_TO_YOURSELF')
+          };
+        }
+        return true;
+      }),
     gasLimitField: Yup.number()
       .min(GAS_LIMIT_LOWER_BOUND, translateRaw('ERROR_8'))
       .max(GAS_LIMIT_UPPER_BOUND, translateRaw('ERROR_8'))
@@ -458,7 +453,12 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                   value={values.address}
                   component={(fieldProps: FieldProps) => (
                     <ContactLookupField
-                      error={errors && touched.address && errors.address && errors.address.value}
+                      error={
+                        errors &&
+                        touched.address &&
+                        errors.address &&
+                        (errors.address as ErrorObject)
+                      }
                       fieldProps={fieldProps}
                       network={values.network}
                       resolutionError={resolutionError}
