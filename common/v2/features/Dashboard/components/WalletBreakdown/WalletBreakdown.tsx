@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Panel } from '@mycrypto/ui';
+import { Panel, Tooltip } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
@@ -16,6 +16,8 @@ import BalancesDetailView from './BalancesDetailView';
 import WalletBreakdownView from './WalletBreakdownView';
 import NoAccountsSelected from './NoAccountsSelected';
 
+import QuestionToolTip from 'common/assets/images/icn-question.svg';
+
 const WalletBreakdownTop = styled.div`
   display: flex;
   flex-direction: column;
@@ -28,6 +30,8 @@ const WalletBreakdownTop = styled.div`
 `;
 
 const AccountDropdownWrapper = styled.div`
+  display: flex;
+  align-items: center;
   width: 100%;
   max-width: 480px;
   margin-bottom: ${SPACING.SM};
@@ -35,6 +39,11 @@ const AccountDropdownWrapper = styled.div`
   @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
     margin-bottom: ${SPACING.BASE};
   }
+`;
+
+const SAccountDropdown = styled(AccountDropdown)`
+  width: 100%;
+  margin-left: ${SPACING.XS};
 `;
 
 const WalletBreakdownPanel = styled(Panel)`
@@ -92,7 +101,10 @@ export function WalletBreakdown() {
     <>
       <WalletBreakdownTop>
         <AccountDropdownWrapper>
-          <AccountDropdown
+          <Tooltip tooltip={translateRaw('DASHBOARD_ACCOUNT_SELECT_TOOLTIP')}>
+            <img src={QuestionToolTip} />
+          </Tooltip>
+          <SAccountDropdown
             accounts={accounts}
             selected={settings.dashboardAccounts}
             onSubmit={(selected: TUuid[]) => {

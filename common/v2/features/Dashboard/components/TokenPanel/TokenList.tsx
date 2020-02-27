@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Button } from '@mycrypto/ui';
+import { Typography, Button, Tooltip } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { convertToFiatFromAsset } from 'v2/utils';
@@ -10,6 +10,7 @@ import { translateRaw } from 'v2/translations';
 import { FONT_SIZE, SPACING } from 'v2/theme';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
+import QuestionToolTip from 'common/assets/images/icn-question.svg';
 
 const TokenListWrapper = styled.div`
   max-height: 313px;
@@ -88,7 +89,14 @@ export function TokenList(props: TokenListProps) {
   } = props;
   return (
     <DashboardPanel
-      heading={translateRaw('TOKENS')}
+      heading={
+        <>
+          {translateRaw('TOKENS')}{' '}
+          <Tooltip tooltip={translateRaw('DASHBOARD_TOKENS_TOOLTIP')}>
+            <img src={QuestionToolTip} />
+          </Tooltip>
+        </>
+      }
       headingRight={
         <div style={{ minWidth: '170px', textAlign: 'right' }}>
           <StyledButton onClick={() => handleScanTokens()}>
