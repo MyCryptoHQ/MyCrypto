@@ -50,6 +50,21 @@ interface Props<T> {
   onBlur?(e: string | undefined): void;
 }
 
+// Fixes weird placement issues for react-select
+const DropdownContainer = styled('div')`
+  .has-value > .Select-control > .Select-multi-value-wrapper > .Select-input:only-child {
+    transform: translateY(0%);
+    padding: 16px 15px 16px 15px;
+    position: inherit;
+  }
+
+  .is-open > .Select-control > .Select-multi-value-wrapper > .Select-input:only-child {
+    transform: translateY(0%);
+    padding: 16px 15px 16px 15px;
+    position: inherit;
+  }
+`;
+
 const Chevron = styled(Icon)`
   font-size: 0.75rem;
 `;
@@ -85,14 +100,16 @@ const getDropdownIndicator = (
 export default function Dropdown(props: Props<any>) {
   const { value, dropdownIcon, onBlur, inputValue, clearable = false } = props;
   return (
-    <SSelect
-      {...props}
-      arrowRenderer={getDropdownIndicator(value, dropdownIcon)}
-      clearRenderer={ClearIndicator}
-      menuContainerStyle={{ maxHeight: '65vh', borderTop: '1px solid #ececec' }}
-      menuStyle={{ maxHeight: '65vh' }}
-      onBlur={onBlur ? () => onBlur(inputValue) : undefined}
-      clearable={clearable}
-    />
+    <DropdownContainer>
+      <SSelect
+        {...props}
+        arrowRenderer={getDropdownIndicator(value, dropdownIcon)}
+        clearRenderer={ClearIndicator}
+        menuContainerStyle={{ maxHeight: '65vh', borderTop: '1px solid #ececec' }}
+        menuStyle={{ maxHeight: '65vh' }}
+        onBlur={onBlur ? () => onBlur(inputValue) : undefined}
+        clearable={clearable}
+      />
+    </DropdownContainer>
   );
 }
