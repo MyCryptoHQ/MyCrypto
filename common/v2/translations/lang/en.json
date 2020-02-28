@@ -600,9 +600,9 @@
     "ADDRESSBOOK": "Address Book",
     "ADDRESS_BOOK_TOOLTIP": "Adding an address to your Address Book allows you to store and add labels to any addresses that you want to remember. Additionally, you can easily send to a stored address by typing the label into the Recipient field on the Send page.",
     "SENDER_TOOLTIP": "MyCrypto allows you to send from any of the accounts you have added. Please select the account you’d like to send from.",
-    "GAS_LIMIT_TOOLTIP": "The Gas Limit is the maximum amount of ETH that is allowed to be used to send a transaction. Oftentimes, a transaction will not use all of this, and the remainder will be refunded. Most users do not need to modify this field. Learn about Gas.",
-    "GAS_PRICE_TOOLTIP": "A higher Gas Price will ensure that a transaction is confirmed quicker, but it will also raise the Transaction Fee. Most users do not need to modify this field. Learn about Gas.",
+    "GAS_LIMIT_TOOLTIP": "The Gas Limit is the maximum amount of ETH that is allowed to be used to send a transaction. Oftentimes, a transaction will not use all of this, and the remainder will be refunded. Most users do not need to modify this field. [Learn about Gas.](https://support.mycrypto.com/general-knowledge/ethereum-blockchain/what-is-gas)",
+    "GAS_PRICE_TOOLTIP": "A higher Gas Price will ensure that a transaction is confirmed quicker, but it will also raise the Transaction Fee. Most users do not need to modify this field. [Learn about Gas.](https://support.mycrypto.com/general-knowledge/ethereum-blockchain/what-is-gas)",
     "TOKEN_SEND_TOOLTIP": "Whenever you send a token on the Ethereum blockchain, you’re actually sending a request to the token contract to move the tokens around. This doesn’t require any extra action from you, but this is why you see this additional information.",
-    "NETWORK_TOOLTIP": "A network is also known as a blockchain. Most users are here to manage their Ethereum accounts, so this selection defaults to the Ethereum network. Learn about the other networks that MyCrypto supports."
+    "NETWORK_TOOLTIP": "A network is also known as a blockchain. Most users are here to manage their Ethereum accounts, so this selection defaults to the Ethereum network. [Learn about the other networks that MyCrypto supports.](https://support.mycrypto.com/developers/adding-a-new-network)"
   }
 }

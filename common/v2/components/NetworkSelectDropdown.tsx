@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 
 import { OptionComponentProps } from 'react-select';
 import styled from 'styled-components';
-import translate, { translateRaw } from 'v2/translations';
+import translate from 'v2/translations';
 import { NetworkContext, isWalletFormatSupportedOnNetwork } from 'v2/services/Store';
 import { NetworkId, WalletId } from 'v2/types';
 import { DEFAULT_NETWORK } from 'v2/config';
@@ -68,7 +68,7 @@ function NetworkSelectDropdown({
       <label>
         {translate('SELECT_NETWORK_LABEL')}{' '}
         {showTooltip && (
-          <Tooltip tooltip={translateRaw('NETWORK_TOOLTIP')}>
+          <Tooltip tooltip={translate('NETWORK_TOOLTIP')}>
             <img src={questionSVG} />
           </Tooltip>
         )}

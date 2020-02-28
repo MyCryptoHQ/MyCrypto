@@ -422,10 +422,12 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
               {/* Sender Address */}
               <fieldset className="SendAssetsForm-fieldset">
                 <label htmlFor="account" className="input-group-header">
-                  {translate('X_SENDER')}{' '}
-                  <Tooltip tooltip={translateRaw('SENDER_TOOLTIP')}>
-                    <img src={questionSVG} />
-                  </Tooltip>
+                  <div>
+                    {translate('X_SENDER')}{' '}
+                    <Tooltip tooltip={translateRaw('SENDER_TOOLTIP')}>
+                      <img src={questionSVG} />
+                    </Tooltip>
+                  </div>
                 </label>
                 <Field
                   name="account"
@@ -574,7 +576,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                         <label htmlFor="gasLimit" className="input-group-header label-with-action">
                           <div>
                             {translate('OFFLINE_STEP2_LABEL_4')}
-                            <Tooltip tooltip={translateRaw('GAS_LIMIT_TOOLTIP')}>
+                            <Tooltip tooltip={translate('GAS_LIMIT_TOOLTIP')}>
                               <img src={questionSVG} />
                             </Tooltip>
                           </div>
@@ -607,7 +609,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-price">
                         <label htmlFor="gasPrice">
                           {translate('OFFLINE_STEP2_LABEL_3')}
-                          <Tooltip tooltip={translateRaw('GAS_PRICE_TOOLTIP')}>
+                          <Tooltip tooltip={translate('GAS_PRICE_TOOLTIP')}>
                             <img src={questionSVG} />
                           </Tooltip>
                         </label>
