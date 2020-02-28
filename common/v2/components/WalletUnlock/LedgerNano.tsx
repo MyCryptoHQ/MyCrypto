@@ -6,6 +6,7 @@ import { Spinner, NewTabLink, Link } from 'v2/components';
 import translate, { translateRaw } from 'v2/translations';
 import { WalletId, FormData } from 'v2/types';
 import { getDPath, getDPaths } from 'v2/services';
+import { COLORS } from 'v2/theme';
 import { NetworkContext } from 'v2/services/Store';
 import { WalletFactory, ChainCodeResponse } from 'v2/services/WalletService';
 
@@ -20,6 +21,9 @@ const FooterLink = styled.div`
   align-items: baseline;
   p {
     font-size: 16px;
+  }
+  a {
+    color: ${COLORS.BLUE_BRIGHT};
   }
 `;
 
