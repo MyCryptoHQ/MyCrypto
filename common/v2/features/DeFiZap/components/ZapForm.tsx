@@ -4,7 +4,7 @@ import { Formik, Form, Field, FieldProps } from 'formik';
 
 import { StoreContext, AssetContext, getNonce, NetworkContext, fetchGasPriceEstimates } from 'v2';
 import translate from 'v2/translations';
-import { IAccount, ExtendedAsset, Network } from 'v2/types';
+import { IAccount, Network, StoreAccount, Asset } from 'v2/types';
 import { Button, AccountDropdown, InlineMessage, AmountInput } from 'v2/components';
 import { validateAmountField } from 'v2/features/SendAssets/components/validators/validators';
 import { isEthereumAccount } from 'v2/services/Store/Account/helpers';
@@ -26,11 +26,11 @@ const ZapForm = (props: Props) => {
   const { accounts } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
-  const ethAsset = assets.find(asset => asset.uuid === EtherUUID) as ExtendedAsset;
+  const ethAsset = assets.find(asset => asset.uuid === EtherUUID) as Asset;
   const network = networks.find(n => n.baseAsset === EtherUUID) as Network;
 
   const initialFormikValues: ISimpleTxFormFull = {
-    account: {} as IAccount,
+    account: {} as StoreAccount,
     amount: '',
     asset: ethAsset,
     nonce: '0',
