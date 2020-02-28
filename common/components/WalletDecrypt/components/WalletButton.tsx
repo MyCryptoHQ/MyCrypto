@@ -69,7 +69,7 @@ export class WalletButton extends React.PureComponent<Props> {
           tooltip: translateRaw('TOOLTIP_SECURE_WALLET_TYPE'),
           arialabel: 'Secure wallet type'
         });
-      } else {
+      } else if (process.env.BUILD_ELECTRON) {
         icons.push({
           icon: 'exclamation-triangle',
           tooltip: translateRaw('TOOLTIP_INSECURE_WALLET_TYPE'),

@@ -107,7 +107,7 @@
 
   &-example {
     font-size: $font-size-xs;
-    color: color(brand-warning);
+    color: color(gray-base);
     @include ellipsis;
   }
 
