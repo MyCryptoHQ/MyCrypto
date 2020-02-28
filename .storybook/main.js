@@ -18,6 +18,11 @@ module.exports = {
       rule => !rule.test.toString().includes('svg')
     )
 
+    // Remove storybooks css config
+    config.module.rules = config.module.rules.filter(
+      rule => !rule.test.toString().includes('css')
+    )
+
     // Merge storybook and our custom webpack_config/development.js
     return merge.smart(
       config,
