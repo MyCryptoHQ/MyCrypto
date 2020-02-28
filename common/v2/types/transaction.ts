@@ -21,7 +21,7 @@ export interface IHexStrTransaction {
   to: string;
   value: string;
   data: string;
-  gasLimit: string;
+  gasLimit: any; // number? string?
   gasPrice: string;
   nonce: string;
   chainId: number;

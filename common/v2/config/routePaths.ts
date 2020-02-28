@@ -77,6 +77,11 @@ const PATHS: IRoutePath[] = [
     path: '/send'
   },
   {
+    name: 'DEFIZAP',
+    title: 'DeFiZap',
+    path: '/defi/zap'
+  },
+  {
     name: 'SETTINGS',
     title: 'Settings',
     path: '/settings'
