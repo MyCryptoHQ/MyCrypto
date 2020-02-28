@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
-import { Button } from '@mycrypto/ui';
+import styled from 'styled-components';
+import { Button, Typography } from '@mycrypto/ui';
 
-import { Spinner, NewTabLink } from 'v2/components';
+import { Spinner, NewTabLink, Link } from 'v2/components';
 import translate, { translateRaw } from 'v2/translations';
 import { WalletId, FormData } from 'v2/types';
 import { getDPath, getDPaths } from 'v2/services';
@@ -12,6 +13,15 @@ import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWallets from './DeterministicWallets';
 import './LedgerNano.scss';
 import ledgerIcon from 'common/assets/images/icn-ledger-nano-large.svg';
+
+const FooterLink = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  p {
+    font-size: 16px;
+  }
+`;
 
 interface OwnProps {
   wallet: object;
@@ -78,6 +88,12 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
             onConfirmAddress={this.handleUnlock}
             onPathChange={this.handlePathChange}
           />
+          <FooterLink>
+            <Typography>Can't find your ETH ?</Typography>&nbsp;
+            <Link href="https://findeth.io" target="_blank" rel="noreferrer">
+              Use findeth.io
+            </Link>
+          </FooterLink>
         </div>
       );
     } else {

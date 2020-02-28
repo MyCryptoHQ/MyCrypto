@@ -39,7 +39,7 @@ const Description = styled.p`
 const WalletsContainer = styled.div`
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: wrap-reverse;
   margin-top: 12px;
 `;
 
