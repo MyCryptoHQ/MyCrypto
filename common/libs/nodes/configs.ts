@@ -7,12 +7,16 @@ export const makeNodeName = (network: string, name: string) => {
 
 export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   ETH: [
+    // Redirecting MyCryptoShepherd calls made by default to ETH main network on startup
     {
       name: makeNodeName('ETH', 'mycrypto'),
       type: 'rpc',
       service: 'MyCrypto',
-      url: 'https://api.mycryptoapi.com/eth'
-    },
+      url: window.location.hostname.match(/(localhost|test3)/)
+        ? 'https://nodeapi.test3.energi.network'
+        : 'https://nodeapi.gen3.energi.network'
+    }
+    /*
     {
       name: makeNodeName('ETH', 'ethscan'),
       type: 'etherscan',
@@ -25,6 +29,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'Infura',
       url: 'https://mainnet.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286'
     }
+    */
   ],
 
   Ropsten: [
