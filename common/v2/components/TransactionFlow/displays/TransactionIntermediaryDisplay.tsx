@@ -1,12 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Copyable } from '@mycrypto/ui';
+import { Copyable, Tooltip } from '@mycrypto/ui';
 
 import { Asset } from 'v2/types';
+import { translateRaw } from 'v2/translations';
+
+import questionSVG from 'assets/images/icn-question.svg';
 
 interface Props {
   asset: Asset;
 }
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
 
 const IntermediaryDisplay = styled('div')`
   max-width: 100%;
@@ -42,8 +51,15 @@ function TransactionIntermediaryDisplay({ asset }: Props) {
     <>
       {asset.contractAddress && (
         <IntermediaryDisplay>
-          <IntermediaryDisplayLabel>{`Transaction performed via ${asset.ticker} contract:`}</IntermediaryDisplayLabel>
-          <IntermediaryDisplayContract text={asset.contractAddress} />
+          <Wrapper>
+            <div>
+              <IntermediaryDisplayLabel>{`Transaction performed via ${asset.ticker} contract:`}</IntermediaryDisplayLabel>
+              <IntermediaryDisplayContract text={asset.contractAddress} />
+            </div>
+            <Tooltip tooltip={translateRaw('TOKEN_SEND_TOOLTIP')}>
+              <img src={questionSVG} />
+            </Tooltip>
+          </Wrapper>
         </IntermediaryDisplay>
       )}
     </>

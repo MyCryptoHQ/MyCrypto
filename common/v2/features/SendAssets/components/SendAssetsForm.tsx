@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
-import { Button } from '@mycrypto/ui';
+import { Button, Tooltip } from '@mycrypto/ui';
 import _, { isEmpty } from 'lodash';
 import { formatEther, parseEther, bigNumberify } from 'ethers/utils';
 import BN from 'bn.js';
@@ -422,7 +422,10 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
               {/* Sender Address */}
               <fieldset className="SendAssetsForm-fieldset">
                 <label htmlFor="account" className="input-group-header">
-                  {translate('X_SENDER')}
+                  {translate('X_SENDER')}{' '}
+                  <Tooltip tooltip={translateRaw('SENDER_TOOLTIP')}>
+                    <img src={questionSVG} />
+                  </Tooltip>
                 </label>
                 <Field
                   name="account"
@@ -569,7 +572,12 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-limit">
                         <label htmlFor="gasLimit" className="input-group-header label-with-action">
-                          <div>{translate('OFFLINE_STEP2_LABEL_4')}</div>
+                          <div>
+                            {translate('OFFLINE_STEP2_LABEL_4')}
+                            <Tooltip tooltip={translateRaw('GAS_LIMIT_TOOLTIP')}>
+                              <img src={questionSVG} />
+                            </Tooltip>
+                          </div>
                           <NoMarginCheckbox
                             onChange={toggleIsAutoGasSet}
                             checked={values.isAutoGasSet}
@@ -597,7 +605,12 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                     </div>
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-price">
-                        <label htmlFor="gasPrice">{translate('OFFLINE_STEP2_LABEL_3')}</label>
+                        <label htmlFor="gasPrice">
+                          {translate('OFFLINE_STEP2_LABEL_3')}
+                          <Tooltip tooltip={translateRaw('GAS_PRICE_TOOLTIP')}>
+                            <img src={questionSVG} />
+                          </Tooltip>
+                        </label>
                         <Field
                           name="gasPriceField"
                           validate={validateGasPriceField}

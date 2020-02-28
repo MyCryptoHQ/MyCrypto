@@ -300,7 +300,10 @@ export default function SwapAssets(props: Props) {
           </DisplayDataContainer>
         )}
         <AccountLabelWrapper>
-          <AccountLabel value={translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')} fontSize="1.13em" />
+          <AccountLabel value={translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')} fontSize="1.13em" />{' '}
+          <STooltip tooltip={translateRaw('SWAP_SELECT_ACCOUNT_TOOLTIP')}>
+            <img src={questionToolTip} />
+          </STooltip>
         </AccountLabelWrapper>
         <AccountDropdown
           name="account"
