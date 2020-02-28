@@ -2,14 +2,15 @@ import React, { useContext } from 'react';
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { AccountContext, StoreContext } from 'v2/services/Store';
 import { AccountList, BannerAd, Desktop, Mobile } from 'v2/components';
-import { ActionTile, TokenPanel, WalletBreakdown, RecentTransactionList } from './components';
+import { IS_ACTIVE_FEATURE } from 'v2/config';
+import { AccountContext, StoreContext } from 'v2/services/Store';
+
 import { NotificationsPanel } from '../NotificationsPanel';
+import { DashboardZapCTA } from '../DeFiZap';
+import { ActionTile, TokenPanel, WalletBreakdown, RecentTransactionList } from './components';
 import { actions } from './constants';
 import './Dashboard.scss';
-import { DashboardZapCTA } from '../DeFiZap';
-import { IS_ACTIVE_FEATURE } from 'v2/config';
 
 // Keep the same mobile width as an ActionTile
 const EmptyTile = styled.div`

@@ -1,13 +1,15 @@
 import React, { useContext } from 'react';
-import { Button, AccountDropdown, InlineMessage, AmountInput } from 'v2/components';
-import { ZapInteractionState, ISimpleTxFormFull } from '../types';
 import styled from 'styled-components';
 import { Formik, Form, Field, FieldProps } from 'formik';
+
+import { StoreContext, AssetContext, getNonce, NetworkContext, fetchGasPriceEstimates } from 'v2';
 import translate from 'v2/translations';
 import { IAccount, ExtendedAsset, Network } from 'v2/types';
-import { StoreContext, AssetContext, getNonce, NetworkContext, fetchGasPriceEstimates } from 'v2';
+import { Button, AccountDropdown, InlineMessage, AmountInput } from 'v2/components';
 import { validateAmountField } from 'v2/features/SendAssets/components/validators/validators';
 import { isEthereumAccount } from 'v2/services/Store/Account/helpers';
+
+import { ZapInteractionState, ISimpleTxFormFull } from '../types';
 
 interface Props extends ZapInteractionState {
   onComplete(fields: any): void;
@@ -47,7 +49,6 @@ const ZapForm = (props: Props) => {
           initialValues={initialFormikValues}
           onSubmit={fields => {
             fetchGasPriceEstimates(fields.network).then(({ fast }) => {
-              console.debug('[here?]: ', fast);
               props.onComplete({ ...fields, gasPrice: fast.toString() });
             });
           }}

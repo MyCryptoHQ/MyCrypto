@@ -3,13 +3,13 @@ import styled from 'styled-components';
 
 import { RouterLink } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
+import { COLORS, BREAK_POINTS } from 'v2/theme';
 
-import { fetchRiskText } from '../config';
+import { fetchRiskText, IZapConfig } from '../config';
 import moderateRisk from 'assets/images/defizap/moderateRisk.svg';
 import conservativeRisk from 'assets/images/defizap/conservativeRisk.svg';
 import insaneRisk from 'assets/images/defizap/insaneRisk.svg';
 import ludicrousRisk from 'assets/images/defizap/ludicrousRisk.svg';
-import { COLORS, BREAK_POINTS } from 'v2/theme';
 
 const ZapCardContainer = styled('li')`
   background: #ffffff;
@@ -101,7 +101,11 @@ const ZapCardHeaderText = styled('div')`
   margin-left: 0.5em;
 `;
 
-const ZapCard = ({ config }: any) => {
+interface Props {
+  config: IZapConfig;
+}
+
+const ZapCard = ({ config }: Props) => {
   const selectImageGivenRisk = (risk: number) => {
     switch (risk) {
       case 1:

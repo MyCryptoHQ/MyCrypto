@@ -1,8 +1,9 @@
 import { IHexStrTransaction, ITxObject } from 'v2/types';
 import { inputValueToHex, inputGasPriceToHex, inputNonceToHex } from 'v2/services/EthService';
 import { DEFAULT_NETWORK_CHAINID } from 'v2/config';
-import { ISimpleTxForm } from './types';
 import { COLORS } from 'v2/theme';
+
+import { ISimpleTxForm } from './types';
 
 export const createSimpleTxObject = (formData: ISimpleTxForm): IHexStrTransaction | ITxObject => {
   return {

@@ -22,7 +22,6 @@ const ContentPanelHeading = styled.p`
   margin-bottom: 15px;
   padding: 0.75em 1.1em 0em 1.1em;
   color: #303030;
-  font-family: Lato;
   font-size: 32px;
   font-weight: bold;
 `;
