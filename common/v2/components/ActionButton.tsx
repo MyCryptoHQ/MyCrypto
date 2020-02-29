@@ -23,8 +23,10 @@ const LoadingSpinnerWrapper = styled.div`
   margin-right: ${SPACING.XS};
 `;
 
-const TextWrapper = styled(Typography)`
+// CSS calculation since Spinner has a constant size of 1em
+const TextWrapper = styled(Typography)<{ loading?: boolean }>`
   color: ${COLORS.WHITE};
+  ${props => props.loading && `margin-right: calc(1em + ${SPACING.XS})`};
 `;
 
 const SButton = styled(Button)`
@@ -44,7 +46,7 @@ function ActionButton({ value, disabled, loading, ...props }: Props) {
             <Spinner />
           </LoadingSpinnerWrapper>
         )}
-        <TextWrapper>{value}</TextWrapper>
+        <TextWrapper loading={loading}>{value}</TextWrapper>
       </Wrapper>
     </SButton>
   );
