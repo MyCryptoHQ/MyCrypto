@@ -634,15 +634,9 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                         <label htmlFor="nonce">
                           <div>
                             Nonce{' '}
-                            <a
-                              href={
-                                'https://support.mycrypto.com/general-knowledge/ethereum-blockchain/what-is-nonce'
-                              }
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <img src={questionSVG} alt="Help" />{' '}
-                            </a>
+                            <Tooltip tooltip={translate('NONCE_TOOLTIP')}>
+                              <img src={questionSVG} />
+                            </Tooltip>
                           </div>
                         </label>
                         <Field
