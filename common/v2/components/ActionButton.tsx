@@ -31,6 +31,9 @@ const TextWrapper = styled(Typography)<{ loading?: boolean }>`
 
 const SButton = styled(Button)`
   background-color: ${props => (props.disabled ? COLORS.GREY_LIGHT : COLORS.BLUE_LIGHT)};
+  &&& {
+    opacity: 1;
+  }
 
   :hover {
     background-color: ${props => (props.disabled ? COLORS.GREY_LIGHT : COLORS.BLUE_LIGHT_DARKISH)};
