@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
+import styled from 'styled-components';
 import Select, { Option } from 'react-select';
-import { Table, Button } from '@mycrypto/ui';
+import { Table, Button, Typography } from '@mycrypto/ui';
 import BN from 'bn.js';
 
 import translate, { translateRaw } from 'v2/translations';
-import { Input, Spinner } from 'v2/components';
+import { Input, Spinner, Link } from 'v2/components';
 
 import { truncate } from 'v2/utils';
 import { Network } from 'v2/types';
+import { COLORS } from 'v2/theme';
 import {
   getBaseAssetByNetwork,
   AddressBookContext,
@@ -25,6 +27,18 @@ import './DeterministicWallets.scss';
 import { DeterministicWalletData, getDeterministicWallets } from 'v2/services/WalletService';
 import { getBaseAssetBalances, BalanceMap } from 'v2/services/Store/BalanceService';
 import Account from '../Account';
+
+const FooterLink = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  p {
+    font-size: 16px;
+  }
+  a {
+    color: ${COLORS.BLUE_BRIGHT};
+  }
+`;
 
 function Radio({ checked }: { checked: boolean }) {
   return <img className="clickable radio-image" src={checked ? radioChecked : radio} />;
@@ -330,6 +344,12 @@ export function DeterministicWalletsClass({
           {translate('ACTION_6')}
         </Button>
       </div>
+      <FooterLink>
+        <Typography>Can't find your ETH ?</Typography>&nbsp;
+        <Link href="https://findeth.io" target="_blank" rel="noreferrer">
+          Use findeth.io
+        </Link>
+      </FooterLink>
     </div>
   );
 }
