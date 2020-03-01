@@ -11,11 +11,15 @@ import {
   SendFormCallbackType
 } from '../types';
 import { useStateReducer } from '../../../utils';
-import { TxConfigFactory, txConfigInitialState } from '../../SendAssets/stateFactory';
 import SignTransaction from '../../SendAssets/components/SignTransaction';
 import { ProtectionThisTransaction } from './ProtectionThisTransaction';
 import { SignProtectedTransaction } from './SignProtectedTransaction';
 import { ProtectedTransactionReport } from './ProtectedTransactionReport';
+import {
+  ProtectedTxConfigFactory,
+  protectedTxConfigInitialState,
+  protectedTxReceiptInitialState
+} from '../stateFactory';
 
 const numOfSteps = 3;
 
@@ -27,81 +31,84 @@ export function withProtectTransaction(
     onComplete: onCompleteMain
   }: IStepComponentProps) {
     const {
-      handleFormSubmit,
-      /*handleConfirmAndSign,
-      handleConfirmAndSend,
-      handleSignedTx,
-      handleSignedWeb3Tx,*/
-      txFactoryState
-    } = useStateReducer(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: null });
+      handleProtectedTransactionSubmit,
+      handleProtectedTransactionConfirmAndSend,
+      protectedTransactionTxFactoryState
+    } = useStateReducer(ProtectedTxConfigFactory, {
+      txConfig: protectedTxConfigInitialState,
+      txReceipt: protectedTxReceiptInitialState
+    });
 
-    const formCallback = useRef<SendFormCallbackType>(() => ({ isValid: false, values: {} }));
+    const formCallback = useRef<SendFormCallbackType>(() => ({ isValid: false, values: null }));
 
     const [stepIndex, setStepIndex] = useState(0);
     const [sidePanelVisible, setSidePanelVisible] = useState(false);
 
     useEffect(() => {
-      return () => {
-        const contentPanel = document.querySelector('[class^=ContentPanel__ContentPanelWrapper]');
+      const contentPanel = document.querySelector('[class^=ContentPanel__ContentPanelWrapper]');
 
-        if (contentPanel) {
-          if (contentPanel.classList.contains('has-side-panel')) {
-            contentPanel.classList.remove('has-side-panel');
-            setSidePanelVisible(false);
-          }
+      /*if (contentPanel && !contentPanel.classList.contains('has-side-panel')) {
+        contentPanel.classList.add('has-side-panel');
+      }*/
+
+      return () => {
+        if (contentPanel && contentPanel.classList.contains('has-side-panel')) {
+          contentPanel.classList.remove('has-side-panel');
+          setSidePanelVisible(false);
         }
       };
     }, [setSidePanelVisible]);
 
-    const onNextStep = useCallback(() => {
+    const goOnNextStep = useCallback(() => {
       setStepIndex(step => (step + 1) % numOfSteps);
     }, [setStepIndex]);
 
-    const onInitialStep = useCallback(() => {
+    const goOnInitialStep = useCallback(() => {
       setStepIndex(0);
     }, [setStepIndex]);
 
-    const onProtectTransactionAction = useCallback(
-      (action: ProtectTransactionActions) => {
-        switch (action.actionType) {
-          case ProtectTransactionAction.SHOW_HIDE_TRANSACTION_PROTECTION:
-            const contentPanel = document.querySelector(
-              '[class^=ContentPanel__ContentPanelWrapper]'
-            );
+    const onProtectTransactionAction = async (action: ProtectTransactionActions) => {
+      switch (action.actionType) {
+        case ProtectTransactionAction.SHOW_HIDE_TRANSACTION_PROTECTION:
+          const contentPanel = document.querySelector('[class^=ContentPanel__ContentPanelWrapper]');
 
-            if (action.payload) {
-              if (contentPanel && !contentPanel.classList.contains('has-side-panel')) {
-                contentPanel.classList.add('has-side-panel');
-              }
-              setSidePanelVisible(true);
-            } else {
-              if (contentPanel && contentPanel.classList.contains('has-side-panel')) {
-                contentPanel.classList.remove('has-side-panel');
-              }
-              setSidePanelVisible(false);
+          if (action.payload) {
+            if (contentPanel && !contentPanel.classList.contains('has-side-panel')) {
+              contentPanel.classList.add('has-side-panel');
             }
-            break;
-
-          case ProtectTransactionAction.SEND_FORM_CALLBACK:
-            if (action.payload) {
-              formCallback.current = action.payload;
+            setSidePanelVisible(true);
+          } else {
+            if (contentPanel && contentPanel.classList.contains('has-side-panel')) {
+              contentPanel.classList.remove('has-side-panel');
             }
-            break;
+            setSidePanelVisible(false);
+          }
+          break;
 
-          case ProtectTransactionAction.PROTECT_MY_TRANSACTION:
-            const { isValid, values } = formCallback.current();
-            if (isValid) {
-              handleFormSubmit(values, () => {
-                /*debugger;*/
-                onNextStep();
-                // onCompleteMain(values);
+        case ProtectTransactionAction.SEND_FORM_CALLBACK:
+          if (action.payload) {
+            formCallback.current = action.payload;
+          }
+          break;
+
+        case ProtectTransactionAction.PROTECT_MY_TRANSACTION:
+          const { isValid, values } = formCallback.current();
+
+          if (isValid) {
+            const { amount } = action.paylaod;
+            try {
+              await handleProtectedTransactionSubmit({
+                ...values,
+                amount
               });
+              goOnNextStep();
+            } catch (e) {
+              console.error(e);
             }
-            break;
-        }
-      },
-      [formCallback, onNextStep, setSidePanelVisible]
-    );
+          }
+          break;
+      }
+    };
 
     return useMemo(
       () => (
@@ -127,26 +134,33 @@ export function withProtectTransaction(
                     return (
                       <ProtectionThisTransaction
                         onProtectTransactionAction={onProtectTransactionAction}
-                        txConfig={values}
+                        sendAssetsValues={values}
                       />
                     );
-                  } else if (stepIndex === 1) {
+                  } else if (stepIndex === 2) {
                     return (
                       <SignProtectedTransaction>
                         <SignTransaction
-                          txConfig={(({ txConfig }) => txConfig)(txFactoryState)}
-                          onComplete={() => {
-                            onNextStep();
-                            // handleSignedTx(payload);
+                          txConfig={(({ txConfig }) => txConfig)(
+                            protectedTransactionTxFactoryState
+                          )}
+                          onComplete={(payload: IFormikFields | ITxReceipt | ISignedTx | null) => {
+                            handleProtectedTransactionConfirmAndSend(payload, () => {
+                              goOnNextStep();
+                            });
                           }}
                           resetFlow={() => {
-                            onInitialStep();
+                            goOnInitialStep();
                           }}
                         />
                       </SignProtectedTransaction>
                     );
-                  } else if (stepIndex === 2) {
-                    return <ProtectedTransactionReport />;
+                  } else if (stepIndex === 1) {
+                    return (
+                      <ProtectedTransactionReport
+                        txReport={(({ txReport }) => txReport)(protectedTransactionTxFactoryState)}
+                      />
+                    );
                   }
 
                   return <></>;
@@ -162,7 +176,8 @@ export function withProtectTransaction(
         setStepIndex,
         txConfigMain,
         sidePanelVisible,
-        formCallback
+        formCallback,
+        protectedTransactionTxFactoryState
       ]
     );
   };

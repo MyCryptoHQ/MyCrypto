@@ -71,6 +71,18 @@
               color: #b3dd87;
             }
 
+            &.text-no-info {
+              color: #a086f7;
+            }
+
+            &.text-danger {
+              color: #fa873f;
+            }
+
+            &.text-error {
+              color: #dd544e;
+            }
+
             &.text-muted {
               color: #B5BFC7;
             }
@@ -120,6 +132,17 @@
     margin: 0 50px 30px 80px;
     color: #A086F7;
     text-align: left;
+
+    >img {
+      position: absolute;
+      right: -132px;
+      transform: translateY(-50%);
+    }
+
+    a {
+      color: #A086F7;
+      text-decoration: underline;
+    }
   }
 
   &-footer-text {
@@ -129,11 +152,5 @@
     .highlighted {
       color: #A086F7;
     }
-  }
-
-  >img {
-    position: absolute;
-    right: -132px;
-    bottom: 10%;
   }
 }

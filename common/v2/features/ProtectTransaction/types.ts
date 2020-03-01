@@ -1,6 +1,7 @@
 import { ProtectionThisTransaction } from './components/ProtectionThisTransaction';
 import { SignProtectedTransaction } from './components/SignProtectedTransaction';
 import { ProtectedTransactionReport } from './components/ProtectedTransactionReport';
+import { IFormikFields } from '../../types';
 
 export enum ProtectTransactionAction {
   SHOW_HIDE_TRANSACTION_PROTECTION,
@@ -8,7 +9,7 @@ export enum ProtectTransactionAction {
   SEND_FORM_CALLBACK
 }
 
-export type SendFormCallbackType = () => { isValid: boolean; values: any };
+export type SendFormCallbackType = () => { isValid: boolean; values: IFormikFields | null };
 
 export type ProtectTransactionActions =
   | {
@@ -21,6 +22,9 @@ export type ProtectTransactionActions =
     }
   | {
       actionType: ProtectTransactionAction.PROTECT_MY_TRANSACTION;
+      paylaod: {
+        amount: string;
+      };
     };
 
 export interface IProtectTransactionProps {

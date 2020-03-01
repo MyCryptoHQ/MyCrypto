@@ -1,46 +1,55 @@
-import React, { FC, useCallback, useContext, useEffect } from 'react';
+import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
 import CloseIcon from './icons/CloseIcon';
 import { Button } from '@mycrypto/ui';
 import { IProtectTransactionProps, ProtectTransactionAction } from '../types';
-import { ITxConfig } from '../../../types';
+import { IFormikFields } from '../../../types';
 import { ProtectTransactionUtils } from '../utils';
 import { Amount } from '../../../components';
 import { convertToFiat } from '../../../utils';
-import { AssetContext, RatesContext } from '../../../services';
+import { RatesContext } from '../../../services';
 
 import './ProtectionThisTransaction.scss';
 
 import ProtectIcon from './icons/ProtectIcon';
 import feeIcon from 'assets/images/icn-fee.svg';
 
-export const ProtectionThisTransaction: FC<IProtectTransactionProps & { txConfig: ITxConfig }> = ({
-  onProtectTransactionAction,
-  txConfig
-}) => {
+export const ProtectionThisTransaction: FC<IProtectTransactionProps & {
+  sendAssetsValues: IFormikFields | null;
+}> = ({ onProtectTransactionAction, sendAssetsValues }) => {
   const { getAssetRate } = useContext(RatesContext);
-  const { assets } = useContext(AssetContext);
+
+  const [feeAmount, setFeeAmount] = useState<{
+    amount: number | null;
+    fee: number | null;
+    rate: number | null;
+  }>({ amount: null, fee: null, rate: null });
 
   useEffect(() => {
-    /*const { asset } = txConfig;
-    const ethAsset = assets.find(a => a.ticker === 'ETH');
+    const { asset } = sendAssetsValues!;
+    const rate = getAssetRate(asset);
 
-    const assetRate = getAssetRate(asset);
-    const ethAssetRate = ethAsset ? getAssetRate(ethAsset) : 0;*/
+    const { amount, fee } = ProtectTransactionUtils.getProtectTransactionFee(
+      sendAssetsValues!,
+      rate
+    );
 
-    ProtectTransactionUtils.getProtectTransactionFee(txConfig);
-  }, [txConfig, assets, getAssetRate]);
+    setFeeAmount({ amount, fee, rate: rate ? rate : null });
+  }, [sendAssetsValues, getAssetRate, setFeeAmount]);
 
   const onProtectMyTransactionClick = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
 
       if (onProtectTransactionAction) {
-        onProtectTransactionAction({
-          actionType: ProtectTransactionAction.PROTECT_MY_TRANSACTION
+        await onProtectTransactionAction({
+          actionType: ProtectTransactionAction.PROTECT_MY_TRANSACTION,
+          paylaod: {
+            amount: feeAmount.amount ? feeAmount.amount.toString() : ''
+          }
         });
       }
     },
-    []
+    [feeAmount]
   );
 
   const onProtectMyTransactionCancelClick = useCallback(
@@ -56,6 +65,19 @@ export const ProtectionThisTransaction: FC<IProtectTransactionProps & { txConfig
     },
     []
   );
+
+  const getAssetValue = useCallback(() => {
+    if (feeAmount.amount === null || feeAmount.fee === null) return '--';
+    return `${parseFloat((feeAmount.amount + feeAmount.fee).toString()).toFixed(6)} ETH`;
+  }, [feeAmount]);
+
+  const getFiatValue = useCallback(() => {
+    if (feeAmount.amount === null || feeAmount.fee === null || feeAmount.rate === null) return '--';
+    return `$${convertToFiat(
+      parseFloat((feeAmount.amount + feeAmount.fee).toString()),
+      feeAmount.rate
+    ).toFixed(2)}`;
+  }, [feeAmount]);
 
   return (
     <div className="ProtectionThisTransaction">
@@ -94,11 +116,7 @@ export const ProtectionThisTransaction: FC<IProtectTransactionProps & { txConfig
       <div className="ProtectionThisTransaction-fee">
         <img src={feeIcon} alt="Fee" />
         <p className="fee-label">Protected Transaction Fee:</p>
-        <Amount
-          assetValue={`${parseFloat('0.000426').toFixed(6)} ETH`}
-          fiatValue={`$${convertToFiat(parseFloat('0.000426'), 10).toFixed(2)}
-          `}
-        />
+        <Amount assetValue={getAssetValue()} fiatValue={getFiatValue()} />
       </div>
       <Button
         type="button"
