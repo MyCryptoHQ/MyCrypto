@@ -6,10 +6,7 @@ import translate from 'v2/translations';
 import { NetworkContext, isWalletFormatSupportedOnNetwork } from 'v2/services/Store';
 import { NetworkId, WalletId } from 'v2/types';
 import { DEFAULT_NETWORK } from 'v2/config';
-import { Typography, Dropdown } from 'v2/components';
-import { Tooltip } from '@mycrypto/ui';
-
-import questionSVG from 'assets/images/icn-question.svg';
+import { Typography, Dropdown, Tooltip } from 'v2/components';
 
 interface Props {
   network: string | undefined;
@@ -67,11 +64,7 @@ function NetworkSelectDropdown({
     <div {...props}>
       <label>
         {translate('SELECT_NETWORK_LABEL')}{' '}
-        {showTooltip && (
-          <Tooltip tooltip={translate('NETWORK_TOOLTIP')}>
-            <img src={questionSVG} />
-          </Tooltip>
-        )}
+        {showTooltip && <Tooltip tooltip={translate('NETWORK_TOOLTIP')} />}
       </label>
       <Dropdown
         value={{ label: network }}

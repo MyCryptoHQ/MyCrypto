@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Icon, Identicon, Button, Tooltip } from '@mycrypto/ui';
+import { Icon, Identicon, Button } from '@mycrypto/ui';
 
 import {
   DashboardPanel,
@@ -8,14 +8,13 @@ import {
   RowDeleteOverlay,
   Network,
   EthAddress,
-  EditableText
+  EditableText,
+  Tooltip
 } from 'v2/components';
 import { ExtendedAddressBook, AddressBook as IAddressBook } from 'v2/types';
 import { truncate } from 'v2/utils';
 import { COLORS, SPACING, BREAK_POINTS } from 'v2/theme';
 import { translateRaw } from 'v2/translations';
-
-import QuestionToolTip from 'common/assets/images/icn-question.svg';
 
 interface Props {
   addressBook: ExtendedAddressBook[];
@@ -140,10 +139,7 @@ export default function AddressBook({
     <DashboardPanel
       heading={
         <>
-          {translateRaw('ADDRESSBOOK')}{' '}
-          <Tooltip tooltip={translateRaw('ADDRESS_BOOK_TOOLTIP')}>
-            <img src={QuestionToolTip} />
-          </Tooltip>
+          {translateRaw('ADDRESSBOOK')} <Tooltip tooltip={translateRaw('ADDRESS_BOOK_TOOLTIP')} />
         </>
       }
     >

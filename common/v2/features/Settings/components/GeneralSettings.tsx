@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Tooltip, Icon } from '@mycrypto/ui';
+import { Button, Icon } from '@mycrypto/ui';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -7,7 +7,7 @@ import { COLORS, SPACING, BREAK_POINTS, FONT_SIZE } from 'v2/theme';
 import translate from 'v2/translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { ISettings } from 'v2/types';
-import { DashboardPanel } from 'v2/components';
+import { DashboardPanel, Tooltip } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
 
 const Divider = styled.div`
