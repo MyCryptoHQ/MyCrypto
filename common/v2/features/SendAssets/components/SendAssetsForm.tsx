@@ -18,7 +18,8 @@ import {
   AssetDropdown,
   WhenQueryExists,
   Checkbox,
-  ContactLookupField
+  ContactLookupField,
+  Tooltip
 } from 'v2/components';
 import {
   getNetworkById,
@@ -76,8 +77,6 @@ import {
   validateAmountField
 } from './validators';
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
-
-import questionSVG from 'assets/images/icn-question.svg';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;
@@ -422,7 +421,9 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
               {/* Sender Address */}
               <fieldset className="SendAssetsForm-fieldset">
                 <label htmlFor="account" className="input-group-header">
-                  {translate('X_SENDER')}
+                  <div>
+                    {translate('X_SENDER')} <Tooltip tooltip={translateRaw('SENDER_TOOLTIP')} />
+                  </div>
                 </label>
                 <Field
                   name="account"
@@ -569,7 +570,10 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-limit">
                         <label htmlFor="gasLimit" className="input-group-header label-with-action">
-                          <div>{translate('OFFLINE_STEP2_LABEL_4')}</div>
+                          <div>
+                            {translate('OFFLINE_STEP2_LABEL_4')}
+                            <Tooltip tooltip={translate('GAS_LIMIT_TOOLTIP')} />
+                          </div>
                           <NoMarginCheckbox
                             onChange={toggleIsAutoGasSet}
                             checked={values.isAutoGasSet}
@@ -597,7 +601,10 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                     </div>
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-price">
-                        <label htmlFor="gasPrice">{translate('OFFLINE_STEP2_LABEL_3')}</label>
+                        <label htmlFor="gasPrice">
+                          {translate('OFFLINE_STEP2_LABEL_3')}
+                          <Tooltip tooltip={translate('GAS_PRICE_TOOLTIP')} />
+                        </label>
                         <Field
                           name="gasPriceField"
                           validate={validateGasPriceField}
@@ -618,16 +625,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-nonce">
                         <label htmlFor="nonce">
                           <div>
-                            Nonce{' '}
-                            <a
-                              href={
-                                'https://support.mycrypto.com/general-knowledge/ethereum-blockchain/what-is-nonce'
-                              }
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <img src={questionSVG} alt="Help" />{' '}
-                            </a>
+                            Nonce <Tooltip tooltip={translate('NONCE_TOOLTIP')} />
                           </div>
                         </label>
                         <Field

@@ -45,6 +45,7 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
           network={network}
           accountType={formData.accountType!}
           onChange={setNetwork}
+          showTooltip={true}
         />
       </NetworkForm>
       <div className="SelectNetworkPanel-button-container">

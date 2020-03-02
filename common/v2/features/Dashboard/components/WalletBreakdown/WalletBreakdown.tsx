@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Panel, Tooltip } from '@mycrypto/ui';
+import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
@@ -15,8 +15,7 @@ import AccountDropdown from './AccountDropdown';
 import BalancesDetailView from './BalancesDetailView';
 import WalletBreakdownView from './WalletBreakdownView';
 import NoAccountsSelected from './NoAccountsSelected';
-
-import QuestionToolTip from 'common/assets/images/icn-question.svg';
+import { Tooltip } from 'v2/components';
 
 const WalletBreakdownTop = styled.div`
   display: flex;
@@ -101,9 +100,7 @@ export function WalletBreakdown() {
     <>
       <WalletBreakdownTop>
         <AccountDropdownWrapper>
-          <Tooltip tooltip={translateRaw('DASHBOARD_ACCOUNT_SELECT_TOOLTIP')}>
-            <img src={QuestionToolTip} />
-          </Tooltip>
+          <Tooltip tooltip={translateRaw('DASHBOARD_ACCOUNT_SELECT_TOOLTIP')} />
           <SAccountDropdown
             accounts={accounts}
             selected={settings.dashboardAccounts}

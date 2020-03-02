@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { Button, Identicon, Tooltip } from '@mycrypto/ui';
+import { Button, Identicon } from '@mycrypto/ui';
 
 import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS, Fiats, WALLETS_CONFIG, IS_ACTIVE_FEATURE } from 'v2/config';
@@ -28,7 +28,7 @@ import { default as Currency } from './Currency';
 import { TUuid } from 'v2/types/uuid';
 import IconArrow from './IconArrow';
 import Checkbox from './Checkbox';
-import QuestionToolTip from 'common/assets/images/icn-question.svg';
+import Tooltip from './Tooltip';
 
 const Label = styled.span`
   display: flex;
@@ -218,9 +218,7 @@ export default function AccountList(props: AccountListProps) {
       heading={
         <>
           {translateRaw('ACCOUNT_LIST_TABLE_ACCOUNTS')}{' '}
-          <Tooltip tooltip={translateRaw('DASHBOARD_ACCOUNTS_TOOLTIP')}>
-            <img src={QuestionToolTip} />
-          </Tooltip>
+          <Tooltip tooltip={translateRaw('DASHBOARD_ACCOUNTS_TOOLTIP')} />
         </>
       }
       headingRight={headingRight}
@@ -382,9 +380,7 @@ const buildAccountTable = (
     </HeaderAlignment>,
     <HeaderAlignment key={'ACCOUNT_LIST_PRIVATE'} align="center">
       <PrivateColumnLabel>{translateRaw('ACCOUNT_LIST_PRIVATE')}</PrivateColumnLabel>
-      <Tooltip tooltip={translateRaw('ACCOUNT_LIST_PRIVATE_TOOLTIP')}>
-        <img src={QuestionToolTip} />
-      </Tooltip>
+      <Tooltip tooltip={translateRaw('ACCOUNT_LIST_PRIVATE_TOOLTIP')} />
     </HeaderAlignment>,
     <HeaderAlignment key={'ACCOUNT_LIST_DELETE'} align="center">
       {translateRaw('ACCOUNT_LIST_DELETE')}

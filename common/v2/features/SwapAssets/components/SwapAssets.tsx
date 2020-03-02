@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { formatEther } from 'ethers/utils';
-import { Button, Tooltip } from '@mycrypto/ui';
+import { Button } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'v2/translations';
 import { MYC_DEXAG_COMMISSION_RATE, MYC_DEXAG_MARKUP_THRESHOLD } from 'v2/config';
@@ -10,14 +10,14 @@ import {
   AssetDropdown,
   AccountDropdown,
   InlineMessage,
-  Typography
+  Typography,
+  Tooltip
 } from 'v2/components';
 import { SPACING, COLORS } from 'v2/theme';
 import { subtractBNFloats, trimBN } from 'v2/utils';
 
 import { ISwapAsset } from '../types';
 import { getUnselectedAssets, getAccountsWithAssetBalance } from '../helpers';
-import questionToolTip from 'common/assets/images/icn-question.svg';
 import { StoreAccount } from 'v2/types';
 import { StoreContext } from 'v2/services/Store';
 
@@ -271,10 +271,7 @@ export default function SwapAssets(props: Props) {
                   $commission: MYC_DEXAG_COMMISSION_RATE.toString()
                 })}
               </LabelText>
-              <STooltip tooltip={translateRaw('SWAP_FEE_TOOLTIP')}>
-                <img src={questionToolTip} />
-              </STooltip>
-              :
+              <STooltip tooltip={translateRaw('SWAP_FEE_TOOLTIP')} />:
             </Label>
             <LabelText>
               {`${makeDisplayString(
@@ -287,10 +284,7 @@ export default function SwapAssets(props: Props) {
           <DisplayDataContainer>
             <Label>
               <LabelText>{translateRaw('SWAP_MARKUP_LABEL')}</LabelText>
-              <STooltip tooltip={translateRaw('SWAP_MARKUP_TOOLTIP')}>
-                <img src={questionToolTip} />
-              </STooltip>
-              :
+              <STooltip tooltip={translateRaw('SWAP_MARKUP_TOOLTIP')} />:
             </Label>
             <SlippageDisplay
               color={parseFloat(markup) >= MYC_DEXAG_MARKUP_THRESHOLD ? COLORS.RED : COLORS.GREEN}
@@ -300,7 +294,8 @@ export default function SwapAssets(props: Props) {
           </DisplayDataContainer>
         )}
         <AccountLabelWrapper>
-          <AccountLabel value={translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')} fontSize="1.13em" />
+          <AccountLabel value={translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')} fontSize="1.13em" />{' '}
+          <STooltip tooltip={translateRaw('SWAP_SELECT_ACCOUNT_TOOLTIP')} />
         </AccountLabelWrapper>
         <AccountDropdown
           name="account"

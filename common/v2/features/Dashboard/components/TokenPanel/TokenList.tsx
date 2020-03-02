@@ -1,16 +1,15 @@
 import React from 'react';
-import { Typography, Button, Tooltip } from '@mycrypto/ui';
+import { Typography, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { convertToFiatFromAsset } from 'v2/utils';
 import { AssetWithDetails, TSymbol } from 'v2/types';
-import { AssetIcon, DashboardPanel, Spinner } from 'v2/components';
+import { AssetIcon, DashboardPanel, Spinner, Tooltip } from 'v2/components';
 import { translateRaw } from 'v2/translations';
 
 import { FONT_SIZE, SPACING } from 'v2/theme';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
-import QuestionToolTip from 'common/assets/images/icn-question.svg';
 
 const TokenListWrapper = styled.div`
   max-height: 313px;
@@ -91,10 +90,7 @@ export function TokenList(props: TokenListProps) {
     <DashboardPanel
       heading={
         <>
-          {translateRaw('TOKENS')}{' '}
-          <Tooltip tooltip={translateRaw('DASHBOARD_TOKENS_TOOLTIP')}>
-            <img src={QuestionToolTip} />
-          </Tooltip>
+          {translateRaw('TOKENS')} <Tooltip tooltip={translateRaw('DASHBOARD_TOKENS_TOOLTIP')} />
         </>
       }
       headingRight={
