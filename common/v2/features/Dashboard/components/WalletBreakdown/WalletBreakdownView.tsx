@@ -213,15 +213,23 @@ export default function WalletBreakdownView({
   selected
 }: WalletBreakdownProps) {
   const [selectedAssetIndex, setSelectedAssetIndex] = useState(initialSelectedAssetIndex);
+  const [isChartAnimating, setIsChartAnimating] = useState(false);
+  const [shouldAnimate, setShouldAnimate] = useState(true);
   const chartBalances = createChartBalances(balances, totalFiatValue);
   const breakdownBalances = createBreakdownBalances(balances);
 
   const handleMouseOver = (index: number) => {
+    if (isChartAnimating) return;
+
     const shownSelectedIndex = calculateShownIndex(chartBalances.length, index);
     setSelectedAssetIndex({ chart: shownSelectedIndex, balance: shownSelectedIndex });
   };
 
-  const handleMouseLeave = () => setSelectedAssetIndex(pos => ({ ...pos, chart: -1 }));
+  const handleMouseLeave = () => {
+    if (isChartAnimating) return;
+
+    setSelectedAssetIndex(pos => ({ ...pos, chart: -1 }));
+  };
 
   const allVisible = accounts.length !== 0 && accounts.length === selected.length;
 
@@ -234,6 +242,7 @@ export default function WalletBreakdownView({
 
   useEffect(() => {
     setSelectedAssetIndex(initialSelectedAssetIndex);
+    setShouldAnimate(true);
   }, [selected]);
 
   const balance = chartBalances[selectedAssetIndex.balance];
@@ -256,6 +265,10 @@ export default function WalletBreakdownView({
               selectedAssetIndex={selectedAssetIndex.chart}
               handleMouseOver={handleMouseOver}
               handleMouseLeave={handleMouseLeave}
+              setIsChartAnimating={setIsChartAnimating}
+              isChartAnimating={isChartAnimating}
+              shouldAnimate={shouldAnimate}
+              setShouldAnimate={setShouldAnimate}
             />
             {balance && (
               <PanelFigures>
