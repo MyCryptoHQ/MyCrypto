@@ -1,4 +1,4 @@
-import React, { Component, SetStateAction, Dispatch } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import { PieChart, Pie, Sector, Cell, PieLabelRenderProps } from 'recharts';
 
@@ -17,7 +17,8 @@ const MainWrapper = styled.div`
 interface BreakdownChartProps {
   balances: Balance[];
   selectedAssetIndex: number;
-  setSelectedAssetIndex: Dispatch<SetStateAction<number>>;
+  handleMouseOver(index: number): void;
+  handleMouseLeave(index: number): void;
 }
 interface CustomLabelProps extends PieLabelRenderProps {
   cx: number;
@@ -108,13 +109,13 @@ export default class BreakdownChart extends Component<BreakdownChartProps> {
     // Ignore mouse enter while animating the chart
     if (this.isChartAnimating) return;
 
-    this.props.setSelectedAssetIndex(index);
+    this.props.handleMouseOver(index);
   };
 
-  public handleMouseLeave = (_: any) => {
+  public handleMouseLeave = () => {
     if (this.isChartAnimating) return;
 
-    this.props.setSelectedAssetIndex(-1);
+    this.props.handleMouseLeave(-1);
   };
 
   public render() {

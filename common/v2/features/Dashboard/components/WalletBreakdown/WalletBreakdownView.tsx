@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
 import translate, { translateRaw } from 'v2/translations';
@@ -202,6 +202,8 @@ const PoweredBy = styled.div`
   }
 `;
 
+const initialSelectedAssetIndex = { chart: -1, balance: 0 };
+
 export default function WalletBreakdownView({
   balances,
   toggleShowChart,
@@ -210,15 +212,16 @@ export default function WalletBreakdownView({
   accounts,
   selected
 }: WalletBreakdownProps) {
-  const [selectedAssetIndex, setSelectedAssetIndex] = useState(-1);
-  const [previousBalances, setPreviousBalances] = useState<Balance[]>([]);
+  const [selectedAssetIndex, setSelectedAssetIndex] = useState(initialSelectedAssetIndex);
   const chartBalances = createChartBalances(balances, totalFiatValue);
-  const breakdownBalances =
-    balances.length > NUMBER_OF_ASSETS_DISPLAYED ? createBreakdownBalances(balances) : balances;
+  const breakdownBalances = createBreakdownBalances(balances);
 
-  const handleMouseOver = (_: any, index: number) => setSelectedAssetIndex(index);
+  const handleMouseOver = (index: number) => {
+    const shownSelectedIndex = calculateShownIndex(chartBalances.length, index);
+    setSelectedAssetIndex({ chart: shownSelectedIndex, balance: shownSelectedIndex });
+  };
 
-  const handleMouseLeave = (_: any) => setSelectedAssetIndex(-1);
+  const handleMouseLeave = () => setSelectedAssetIndex(pos => ({ ...pos, chart: -1 }));
 
   const allVisible = accounts.length !== 0 && accounts.length === selected.length;
 
@@ -229,15 +232,13 @@ export default function WalletBreakdownView({
         $total: `${accounts.length}`
       });
 
-  const shownSelectedIndex = calculateShownIndex(chartBalances.length, selectedAssetIndex);
+  useEffect(() => {
+    setSelectedAssetIndex(initialSelectedAssetIndex);
+  }, [selected]);
 
-  const balance = chartBalances[shownSelectedIndex];
-  const selectedAssetPercentage = parseFloat(
-    ((balance.fiatValue / totalFiatValue) * 100).toFixed(2)
-  );
-  if (chartBalances.length !== previousBalances.length) {
-    setPreviousBalances(chartBalances);
-  }
+  const balance = chartBalances[selectedAssetIndex.balance];
+  const selectedAssetPercentage =
+    balance && parseFloat(((balance.fiatValue / totalFiatValue) * 100).toFixed(2));
 
   return (
     <>
@@ -252,10 +253,11 @@ export default function WalletBreakdownView({
           <>
             <BreakdownChart
               balances={chartBalances}
-              setSelectedAssetIndex={setSelectedAssetIndex}
-              selectedAssetIndex={shownSelectedIndex}
+              selectedAssetIndex={selectedAssetIndex.chart}
+              handleMouseOver={handleMouseOver}
+              handleMouseLeave={handleMouseLeave}
             />
-            {shownSelectedIndex !== -1 && (
+            {balance && (
               <PanelFigures>
                 <PanelFigure>
                   <PanelFigureValue>
@@ -302,7 +304,7 @@ export default function WalletBreakdownView({
           {breakdownBalances.map(({ name, amount, fiatValue, ticker, isOther }, index) => (
             <BreakDownBalance
               key={name}
-              onMouseOver={e => handleMouseOver(e, index)}
+              onMouseOver={() => handleMouseOver(index)}
               onMouseLeave={handleMouseLeave}
             >
               <BreakDownBalanceAssetInfo>
@@ -352,12 +354,14 @@ export default function WalletBreakdownView({
 const createChartBalances = (balances: Balance[], totalFiatValue: number) => {
   /* Construct a chartBalances array which consists of assets and a otherTokensAsset
   which combines the fiat value of all remaining tokens that are in the balances array*/
-  const chartBalances = balances.filter(
+  const balancesVisibleInChart = balances.filter(
     balanceObject => balanceObject.fiatValue / totalFiatValue >= SMALLEST_CHART_SHARE_SUPPORTED
   );
   const otherBalances = balances.filter(
-    balanceObject => balanceObject.fiatValue / totalFiatValue <= SMALLEST_CHART_SHARE_SUPPORTED
+    balanceObject => balanceObject.fiatValue / totalFiatValue < SMALLEST_CHART_SHARE_SUPPORTED
   );
+  const chartBalances = balancesVisibleInChart.splice(0, NUMBER_OF_ASSETS_DISPLAYED);
+  otherBalances.push(...balancesVisibleInChart);
   const otherTokensAsset = createOtherTokenAsset(otherBalances);
   chartBalances.push(otherTokensAsset);
   return chartBalances;
@@ -366,6 +370,8 @@ const createChartBalances = (balances: Balance[], totalFiatValue: number) => {
 const createBreakdownBalances = (balances: Balance[]) => {
   /* Construct a finalBalances array which consists of top X assets and a otherTokensAsset
   which combines the fiat value of all remaining tokens that are in the balances array*/
+  if (balances.length <= NUMBER_OF_ASSETS_DISPLAYED) return balances;
+
   const otherBalances = balances.slice(NUMBER_OF_ASSETS_DISPLAYED, balances.length);
   const otherTokensAssets = createOtherTokenAsset(otherBalances);
   const finalBalances = balances.slice(0, NUMBER_OF_ASSETS_DISPLAYED);
