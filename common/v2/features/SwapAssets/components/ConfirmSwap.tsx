@@ -73,8 +73,8 @@ export default function ConfirmSwap(props: Props) {
         toAmount={toAmount}
       />
       <FromToAccount
-        fromAddressAndLabel={{ address: account.address, label: account.label }}
-        toAddressAndLabel={{ address: account.address, label: account.label }}
+        from={{ address: account.address, label: account.label }}
+        to={{ address: account.address, label: account.label }}
       />
       <LinkLabelWrapper>
         <LinkLabel value={translate('SWAP_WHY_RATE')} fontSize="0.8em" />

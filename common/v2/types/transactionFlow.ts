@@ -88,6 +88,6 @@ export enum ITxStatus {
 
 export enum ITxType {
   STANDARD = 'STANDARD',
-  BROADCAST_TX = 'BROADCAST_TX',
-  SWAP = 'SWAP'
+  SWAP = 'SWAP',
+  DEFIZAP = 'DEFIZAP'
 }

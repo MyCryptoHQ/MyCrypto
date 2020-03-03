@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
 
-import { ITxReceipt, ITxStatus, IStepComponentProps, TSymbol, ITxType } from 'v2/types';
+import { ITxReceipt, ITxStatus, IStepComponentProps, TSymbol, ITxType, TAddress } from 'v2/types';
 import { Amount, TimeElapsedCounter, AssetIcon, LinkOut } from 'v2/components';
 import {
   AddressBookContext,
@@ -133,12 +133,12 @@ export default function TransactionReceipt({
       )}
       <>
         <FromToAccount
-          fromAddressAndLabel={{
-            address: displayTxReceipt.from || txConfig.senderAccount.address,
+          from={{
+            address: (displayTxReceipt.from || txConfig.senderAccount.address) as TAddress,
             label: senderAccountLabel
           }}
-          toAddressAndLabel={{
-            address: displayTxReceipt.to || txConfig.receiverAddress,
+          to={{
+            address: (displayTxReceipt.to || txConfig.receiverAddress) as TAddress,
             label: recipientLabel
           }}
         />

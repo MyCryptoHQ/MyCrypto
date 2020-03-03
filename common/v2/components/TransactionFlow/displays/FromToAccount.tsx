@@ -6,6 +6,7 @@ import translate, { translateRaw } from 'v2/translations';
 import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { truncate } from 'v2/utils';
 import { Typography, Account } from 'v2/components';
+import { StoreAccount } from 'v2/types';
 
 export interface IAddressAndLabel {
   address: string;
@@ -13,8 +14,8 @@ export interface IAddressAndLabel {
 }
 
 interface Props {
-  fromAddressAndLabel: IAddressAndLabel;
-  toAddressAndLabel: IAddressAndLabel;
+  from: Pick<StoreAccount, 'address' | 'label'>;
+  to: Pick<StoreAccount, 'address' | 'label'>;
 }
 
 const AddressWrapper = styled.div`
@@ -58,8 +59,7 @@ const LabelWrapper = styled.div`
   margin-bottom: 9px;
 `;
 
-export default function FromToAccount(props: Props) {
-  const { fromAddressAndLabel, toAddressAndLabel } = props;
+export default function FromToAccount({ from, to }: Props) {
   const noLabel = translateRaw('NO_LABEL');
 
   return (
@@ -69,11 +69,7 @@ export default function FromToAccount(props: Props) {
           <Label value={translate('CONFIRM_TX_FROM')} fontSize="1.13em" />
         </LabelWrapper>
         <AddressWrapper>
-          <Account
-            address={fromAddressAndLabel.address}
-            title={fromAddressAndLabel.label || noLabel}
-            truncate={truncate}
-          />
+          <Account address={from.address} title={from.label || noLabel} truncate={truncate} />
         </AddressWrapper>
       </div>
       <div>
@@ -81,11 +77,7 @@ export default function FromToAccount(props: Props) {
           <Label value={translate('CONFIRM_TX_TO')} fontSize="1.13em" />
         </LabelWrapper>
         <AddressWrapper>
-          <Account
-            address={toAddressAndLabel.address}
-            title={toAddressAndLabel.label || noLabel}
-            truncate={truncate}
-          />
+          <Account address={to.address} title={to.label || noLabel} truncate={truncate} />
         </AddressWrapper>
       </div>
     </Addresses>
