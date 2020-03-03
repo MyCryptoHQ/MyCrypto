@@ -1,11 +1,11 @@
 {
-  "name": "EnergiWallet",
+  "name": "MyEnergiWallet",
   "manifest_version": 1,
   "start_url": ".",
   "theme_color": "#163151",
   "background_color": "#163151",
   "display": "standalone",
-  "description": "EnergiWallet is a free, open-source, client-side interface for generating Energi wallets & more",
+  "description": "MyEnergiWallet is a free, open-source, client-side interface for generating Energi wallets & more",
   "default_locale": "en",
   "icons": [
     {

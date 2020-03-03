@@ -42,7 +42,7 @@ async function build() {
       ia32: true,
       config: {
         appId: 'network.energi.wallet',
-        productName: 'EnergiWallet',
+        productName: 'MyEnergiWallet',
         directories: {
           app: jsBuildDir,
           output: electronBuildsDir
