@@ -176,8 +176,6 @@ export const TransactionReceiptUI = ({
   const assetAmount = displayTxReceipt.amount || txConfig.amount;
   const assetTicker = 'asset' in displayTxReceipt ? displayTxReceipt.asset.ticker : 'ETH';
 
-  console.debug('displayTxReceipt - blockExplorer: ', displayTxReceipt);
-
   const txUrl = displayTxReceipt.network
     ? displayTxReceipt.network.blockExplorer.txUrl(displayTxReceipt.hash)
     : txConfig && txConfig.network && txConfig.network.blockExplorer
@@ -232,7 +230,7 @@ export const TransactionReceiptUI = ({
             <div className="TransactionReceipt-row-column-zapInfo">{zapSelected.name}</div>
           </div>
           <div className="TransactionReceipt-row">
-            <div className="TransactionReceipt-row-column">{translateRaw('PLATFORMS_USED')}</div>
+            <div className="TransactionReceipt-row-column">{translateRaw('PLATFORMS')}</div>
             <div className="TransactionReceipt-row-column-zapInfo">
               <ProtocolTagsList platformsUsed={zapSelected.platformsUsed} />
             </div>

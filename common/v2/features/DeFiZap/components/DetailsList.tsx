@@ -3,10 +3,10 @@ import styled from 'styled-components';
 
 import { COLORS, SPACING } from 'v2/theme';
 import { Button } from 'v2/components';
+import { translateRaw } from 'v2/translations';
 
 import { IZapConfig } from '../config';
 import { ProtocolTagsList } from '..';
-import { translateRaw } from 'v2/translations';
 
 const DetailsListHeader = styled.h4`
   color: ${COLORS.PURPLE};
@@ -40,7 +40,7 @@ const DetailsList = (props: Props) => {
         ))}
       </DetailsBulletPoints>
       <DetailsPlatformsUsed>
-        {translateRaw('PLATFORMS_USED')}
+        {translateRaw('PLATFORMS')}
         <ProtocolTagsList platformsUsed={platformsUsed} />
       </DetailsPlatformsUsed>
       <Button onClick={onSubmit}>Start Earning Now!</Button>
