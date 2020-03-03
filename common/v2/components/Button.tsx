@@ -15,7 +15,14 @@ interface ButtonProps {
   color?: string;
 }
 
-type Props = ButtonProps & React.ComponentProps<typeof Button>;
+interface StyledButtonProps {
+  fullwidth?: boolean;
+  disabled?: boolean;
+  // Since using 'loading' causes warnings from React
+  _loading?: boolean;
+}
+
+export type Props = ButtonProps & React.ComponentProps<typeof Button>;
 
 const Wrapper = styled.div`
   display: flex;
@@ -27,15 +34,15 @@ const LoadingSpinnerWrapper = styled.div`
   margin-right: ${SPACING.XS};
 `;
 
-const TextWrapper = styled(Typography)<{ loading?: boolean; color?: string }>`
+const TextWrapper = styled(Typography)<{ color?: string }>`
   color: ${props => (props.color ? props.color : COLORS.WHITE)};
 `;
 
 // CSS calculation since Spinner has a constant size of 1em
-const SButton = styled(Button)<ButtonProps>`
+const SButton = styled(Button)<StyledButtonProps>`
   &&& {
     font-size: 1rem;
-    ${props => props.loading && 'padding-left: calc(2.25em - 1em)'}
+    ${props => props._loading && 'padding-left: calc(2.25em - 1em)'}
   }
 
   background-color: ${props => (props.disabled ? COLORS.GREY_LIGHT : COLORS.BLUE_LIGHT)};
@@ -52,16 +59,16 @@ const SButton = styled(Button)<ButtonProps>`
     `}
 `;
 
-function StyledButton({ children, disabled, loading, ...props }: Props) {
+function StyledButton({ children, disabled, loading, color, ...props }: Props) {
   return (
-    <SButton disabled={disabled || loading} loading={loading} {...props}>
+    <SButton disabled={disabled || loading} _loading={loading} {...props}>
       <Wrapper>
         {loading && (
           <LoadingSpinnerWrapper>
             <Spinner />
           </LoadingSpinnerWrapper>
         )}
-        <TextWrapper loading={loading}>{children}</TextWrapper>
+        <TextWrapper color={color}>{children}</TextWrapper>
       </Wrapper>
     </SButton>
   );
