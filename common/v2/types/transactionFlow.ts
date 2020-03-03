@@ -6,6 +6,7 @@ import {
   WalletId,
   StoreAccount
 } from 'v2/types';
+import { IZapConfig } from 'v2/features/DeFiZap/config';
 
 export type ISignedTx = string;
 
@@ -65,6 +66,7 @@ export interface IStepComponentProps {
   txReceipt?: ITxReceipt;
   signedTx?: string;
   txType?: ITxType;
+  zapSelected?: IZapConfig;
   children?: never;
   completeButtonText?: string;
   onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;

@@ -201,9 +201,12 @@ export const ConfirmTransactionUI = ({
           />
         </AddressWrapper>
       </RowWrapper>
-      {assetType === 'erc20' && (
+      {assetType === 'erc20' && asset && asset.contractAddress && (
         <RowWrapper>
-          <TransactionIntermediaryDisplay asset={asset} />
+          <TransactionIntermediaryDisplay
+            address={asset.contractAddress}
+            contractName={asset.ticker}
+          />
         </RowWrapper>
       )}
       <RowWrapper>

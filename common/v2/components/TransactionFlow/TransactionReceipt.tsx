@@ -23,6 +23,7 @@ import { convertToFiat, truncate, fromTxReceiptObj } from 'v2/utils';
 import { isWeb3Wallet } from 'v2/utils/web3';
 
 import { FromToAccount, SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
+import TransactionIntermediaryDisplay from './displays/TransactionIntermediaryDisplay';
 import sentIcon from 'common/assets/images/icn-sent.svg';
 import './TransactionReceipt.scss';
 
@@ -42,6 +43,7 @@ export default function TransactionReceipt({
   completeButtonText,
   pendingButton,
   txType = ITxType.STANDARD,
+  zapSelected,
   swapDisplay
 }: IStepComponentProps & Props) {
   const { getAssetRate } = useContext(RatesContext);
@@ -144,28 +146,15 @@ export default function TransactionReceipt({
         />
       </>
 
-      {/* <div className="TransactionReceipt-row TransactionReceipt-row-from-to">
-        <div className="TransactionReceipt-row-column">
-          {translate('CONFIRM_TX_FROM')}
-          <div className="TransactionReceipt-addressWrapper">
-            <Account
-              address={displayTxReceipt.from || txConfig.senderAccount.address}
-              title={senderAccountLabel}
-              truncate={truncate}
-            />
-          </div>
+      {txType === ITxType.DEFIZAP && zapSelected && (
+        <div className="TransactionReceipt-row">
+          <TransactionIntermediaryDisplay
+            address={zapSelected.contractAddress}
+            contractName={'DeFi Zap'}
+          />
         </div>
-        <div className="TransactionReceipt-row-column">
-          {translate('CONFIRM_TX_TO')}
-          <div className="TransactionReceipt-addressWrapper">
-            <Account
-              address={displayTxReceipt.to || txConfig.receiverAddress}
-              title={recipientLabel}
-              truncate={truncate}
-            />
-          </div>
-        </div> 
-      </div> */}
+      )}
+
       {txType !== ITxType.SWAP && (
         <div className="TransactionReceipt-row">
           <div className="TransactionReceipt-row-column">
