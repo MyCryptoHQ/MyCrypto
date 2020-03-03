@@ -195,7 +195,9 @@
     "webpack-subresource-integrity": "1.4.0",
     "worker-loader": "2.0.0"
   },
-  "resolutions": {},
+  "resolutions": {
+    "node-fetch": "2.6.0"
+  },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config webpack_config/production.js",
     "prebuild": "check-node-version --package",
