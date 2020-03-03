@@ -1,7 +1,7 @@
 {
   "name": "MyEnergiWallet",
   "author": "Energi Core & MyCryptoHQ",
-  "version": "1.3.6",
+  "version": "1.3.7",
   "main": "main.js",
   "description": "MyEnergiWallet is a free, open-source interface for interacting with the blockchain",
   "repository": "https://github.com/energicryptocurrency/energi3-mycrypto",
