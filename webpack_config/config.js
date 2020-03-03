@@ -15,9 +15,9 @@ const paths = {
 module.exports = {
   // Configuration
   port: 3000,
-  title: 'EnergiWallet',
+  title: 'MyEnergiWallet',
   // description < 200 characters
-  description: 'EnergiWallet is a free, open-source interface for interacting with the blockchain.',
+  description: 'MyEnergiWallet is a free, open-source interface for interacting with the blockchain.',
   url: 'https://wallet.gen3.energi.network/',
   type: 'website',
   // img < 5MB
