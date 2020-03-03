@@ -1,20 +1,48 @@
+import React from 'react';
+
 import styled, { css } from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
+import Spinner from './Spinner';
+import Typography from './Typography';
+import { COLORS, SPACING } from 'v2/theme';
+
 interface ButtonProps {
+  children: React.ReactNode | string;
   fullwidth?: boolean;
   disabled?: boolean;
+  loading?: boolean;
   color?: string;
 }
 
-const StyledButton = styled(Button)<ButtonProps>`
+type Props = ButtonProps & React.ComponentProps<typeof Button>;
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const LoadingSpinnerWrapper = styled.div`
+  display: flex;
+  margin-right: ${SPACING.XS};
+`;
+
+// CSS calculation since Spinner has a constant size of 1em
+const TextWrapper = styled(Typography)<{ loading?: boolean; color?: string }>`
+  color: ${props => (props.color ? props.color : COLORS.WHITE)};
+  ${props => props.loading && `margin-right: calc(1em + ${SPACING.XS})`};
+`;
+
+const SButton = styled(Button)<ButtonProps>`
   &&& {
     font-size: 1rem;
   }
-  :disabled {
-    opacity: 0.4;
+
+  background-color: ${props => (props.disabled ? COLORS.GREY_LIGHT : COLORS.BLUE_LIGHT)};
+
+  :hover {
+    background-color: ${props => (props.disabled ? COLORS.GREY_LIGHT : COLORS.BLUE_LIGHT_DARKISH)};
   }
-  color: ${props => (props.color ? props.color : 'inherit')};
 
   ${props =>
     props.fullwidth &&
@@ -23,5 +51,20 @@ const StyledButton = styled(Button)<ButtonProps>`
       margin-top: 1rem;
     `}
 `;
+
+function StyledButton({ children, disabled, loading, ...props }: Props) {
+  return (
+    <SButton disabled={disabled || loading} {...props}>
+      <Wrapper>
+        {loading && (
+          <LoadingSpinnerWrapper>
+            <Spinner />
+          </LoadingSpinnerWrapper>
+        )}
+        <TextWrapper loading={loading}>{children}</TextWrapper>
+      </Wrapper>
+    </SButton>
+  );
+}
 
 export default StyledButton;
