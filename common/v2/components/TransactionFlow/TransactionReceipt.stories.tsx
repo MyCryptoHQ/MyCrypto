@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { fTxConfig, fTxReceiptPending } from '@fixtures';
+import { fTxConfig, fTxReceipt } from '@fixtures';
 import { ITxStatus, ExtendedAddressBook, ITxType } from 'v2/types';
 import { noOp } from 'v2/utils';
 import { devContacts } from 'v2/database/seed';
@@ -22,7 +22,7 @@ export const transactionReceipt = () => (
   <div className="sb-container" style={{ maxWidth: '620px' }}>
     <TransactionReceiptUI
       txStatus={txStatus}
-      displayTxReceipt={fTxReceiptPending}
+      displayTxReceipt={fTxReceipt}
       timestamp={timestamp}
       resetFlow={resetFlow}
       assetRate={assetRate}
@@ -42,7 +42,7 @@ export const transactionReceiptDeFiZap = () => (
       txStatus={txStatus}
       txType={ITxType.DEFIZAP}
       zapSelected={zapSelected}
-      displayTxReceipt={fTxReceiptPending}
+      displayTxReceipt={fTxReceipt}
       timestamp={timestamp}
       resetFlow={resetFlow}
       assetRate={assetRate}
