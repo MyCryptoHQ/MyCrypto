@@ -2,7 +2,15 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
 
-import { ITxReceipt, ITxStatus, IStepComponentProps, TSymbol, ITxType, TAddress } from 'v2/types';
+import {
+  ITxReceipt,
+  ITxStatus,
+  IStepComponentProps,
+  TSymbol,
+  ITxType,
+  TAddress,
+  ExtendedAddressBook
+} from 'v2/types';
 import { Amount, TimeElapsedCounter, AssetIcon, LinkOut } from 'v2/components';
 import {
   AddressBookContext,
@@ -94,25 +102,79 @@ export default function TransactionReceipt({
     }
   });
 
+  const assetForRateFetch = 'asset' in displayTxReceipt ? displayTxReceipt.asset : undefined;
+  const assetRate = getAssetRate(assetForRateFetch);
+  const { senderAccount } = txConfig;
+  const senderContact = getContactByAccount(senderAccount);
   const recipientContact = getContactByAddressAndNetwork(
     txConfig.receiverAddress,
     txConfig.network
   );
-  const recipientLabel = recipientContact ? recipientContact.label : translateRaw('NO_ADDRESS');
 
-  /* ToDo: Figure out how to extract this */
+  return (
+    <TransactionReceiptUI
+      txConfig={txConfig}
+      txReceipt={txReceipt}
+      txType={txType}
+      assetRate={assetRate}
+      zapSelected={zapSelected}
+      swapDisplay={swapDisplay}
+      txStatus={txStatus}
+      timestamp={timestamp}
+      senderContact={senderContact}
+      recipientContact={recipientContact}
+      displayTxReceipt={displayTxReceipt}
+      resetFlow={resetFlow}
+      completeButtonText={completeButtonText}
+      pendingButton={pendingButton}
+    />
+  );
+}
+
+export interface TxReceiptDataProps {
+  txStatus: ITxStatus;
+  timestamp: number;
+  assetRate: number | undefined;
+  displayTxReceipt: ITxReceipt;
+  senderContact: ExtendedAddressBook | undefined;
+  recipientContact: ExtendedAddressBook | undefined;
+  pendingButton?: PendingBtnAction;
+  swapDisplay?: SwapDisplayData;
+  resetFlow(): void;
+}
+
+export const TransactionReceiptUI = ({
+  txType,
+  swapDisplay,
+  txConfig,
+  txStatus,
+  timestamp,
+  assetRate,
+  displayTxReceipt,
+  zapSelected,
+  senderContact,
+  recipientContact,
+  pendingButton,
+  resetFlow,
+  completeButtonText
+}: Omit<IStepComponentProps, 'resetFlow' | 'onComplete'> & TxReceiptDataProps) => {
+  /* Determing User's Contact */
   const { asset, gasPrice, gasLimit, senderAccount, network, data, nonce, baseAsset } = txConfig;
 
-  /* Determing User's Contact */
-  const senderContact = getContactByAccount(senderAccount);
+  const recipientLabel = recipientContact ? recipientContact.label : translateRaw('NO_ADDRESS');
   const senderAccountLabel = senderContact ? senderContact.label : translateRaw('NO_LABEL');
 
   const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
   const assetAmount = displayTxReceipt.amount || txConfig.amount;
   const assetTicker = 'asset' in displayTxReceipt ? displayTxReceipt.asset.ticker : 'ETH';
-  const assetForRateFetch = 'asset' in displayTxReceipt ? displayTxReceipt.asset : undefined;
 
-  const txUrl = displayTxReceipt.network.blockExplorer.txUrl(displayTxReceipt.hash);
+  console.debug('displayTxReceipt - blockExplorer: ', displayTxReceipt);
+
+  const txUrl = displayTxReceipt.network
+    ? displayTxReceipt.network.blockExplorer.txUrl(displayTxReceipt.hash)
+    : txConfig && txConfig.network && txConfig.network.blockExplorer
+    ? txConfig.network.blockExplorer.txUrl(displayTxReceipt.hash)
+    : '';
   const shouldRenderPendingBtn =
     pendingButton && txStatus === ITxStatus.PENDING && !isWeb3Wallet(senderAccount.wallet);
 
@@ -165,10 +227,7 @@ export default function TransactionReceipt({
             <AssetIcon symbol={asset.ticker as TSymbol} size={'24px'} />
             <Amount
               assetValue={`${parseFloat(assetAmount).toFixed(6)} ${assetTicker}`}
-              fiatValue={`$${convertToFiat(
-                parseFloat(assetAmount),
-                getAssetRate(assetForRateFetch)
-              ).toFixed(2)}
+              fiatValue={`$${convertToFiat(parseFloat(assetAmount), assetRate).toFixed(2)}
             `}
             />
           </div>
@@ -239,4 +298,4 @@ export default function TransactionReceipt({
       </Link>
     </div>
   );
-}
+};

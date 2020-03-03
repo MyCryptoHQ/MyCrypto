@@ -1,6 +1,7 @@
 import React from 'react';
 import { addDecorator } from '@storybook/react';
 import { withA11y } from '@storybook/addon-a11y';
+import StoryRouter from 'storybook-react-router';
 import { withThemesProvider } from 'storybook-addon-styled-component-theme';
 import styled from 'styled-components';
 import { light, dark } from '@mycrypto/ui';
@@ -27,3 +28,4 @@ const DARK_THEME = {
 
 addDecorator(withThemesProvider([LIGHT_THEME, DARK_THEME]));
 addDecorator(withA11y);
+addDecorator(StoryRouter())
