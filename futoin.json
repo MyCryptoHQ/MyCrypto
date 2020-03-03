@@ -6,7 +6,6 @@
   "rmsRepo": "s3://download.energi.software/internal/gen3/mycrypto",
   "tools": {
     "aws": true,
-    "make": true,
     "node": "8",
     "yarn": "*"
   },
