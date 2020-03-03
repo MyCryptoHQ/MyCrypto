@@ -1,7 +1,6 @@
 import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
 import CloseIcon from './icons/CloseIcon';
 import { Button } from '@mycrypto/ui';
-import { IProtectTransactionProps, ProtectTransactionAction } from '../types';
 import { IFormikFields } from '../../../types';
 import { ProtectTransactionUtils } from '../utils';
 import { Amount } from '../../../components';
@@ -12,17 +11,24 @@ import './ProtectionThisTransaction.scss';
 
 import ProtectIcon from './icons/ProtectIcon';
 import feeIcon from 'assets/images/icn-fee.svg';
+import { WithProtectApiFactory } from '../withProtectStateFactory';
 
-export const ProtectionThisTransaction: FC<IProtectTransactionProps & {
+export const ProtectionThisTransaction: FC<{
+  withProtectApi: WithProtectApiFactory;
   sendAssetsValues: IFormikFields | null;
-}> = ({ onProtectTransactionAction, sendAssetsValues }) => {
+  handleProtectedTransactionSubmit(payload: IFormikFields): Promise<void>;
+}> = ({ sendAssetsValues, withProtectApi, handleProtectedTransactionSubmit }) => {
   const { getAssetRate } = useContext(RatesContext);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [feeAmount, setFeeAmount] = useState<{
     amount: number | null;
     fee: number | null;
     rate: number | null;
   }>({ amount: null, fee: null, rate: null });
+
+  const { showHideTransactionProtection, goOnNextStep, setReceiverAddress } = withProtectApi;
 
   useEffect(() => {
     const { asset } = sendAssetsValues!;
@@ -40,27 +46,28 @@ export const ProtectionThisTransaction: FC<IProtectTransactionProps & {
     async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
 
-      if (onProtectTransactionAction) {
-        await onProtectTransactionAction({
-          actionType: ProtectTransactionAction.PROTECT_MY_TRANSACTION,
-          paylaod: {
-            amount: feeAmount.amount ? feeAmount.amount.toString() : ''
-          }
+      try {
+        setIsLoading(true);
+        await setReceiverAddress(sendAssetsValues!.address.value);
+        await handleProtectedTransactionSubmit({
+          ...sendAssetsValues!,
+          amount: feeAmount.amount ? feeAmount.amount.toString() : ''
         });
+        goOnNextStep();
+        setIsLoading(false);
+      } catch (e) {
+        console.error(e);
       }
     },
-    [feeAmount]
+    [feeAmount, setIsLoading]
   );
 
   const onProtectMyTransactionCancelClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement & SVGSVGElement, MouseEvent>) => {
       e.preventDefault();
 
-      if (onProtectTransactionAction) {
-        onProtectTransactionAction({
-          actionType: ProtectTransactionAction.SHOW_HIDE_TRANSACTION_PROTECTION,
-          payload: false
-        });
+      if (showHideTransactionProtection) {
+        showHideTransactionProtection(false);
       }
     },
     []
@@ -120,7 +127,7 @@ export const ProtectionThisTransaction: FC<IProtectTransactionProps & {
       </div>
       <Button
         type="button"
-        className="ProtectionThisTransaction-protect-transaction"
+        className={`ProtectionThisTransaction-protect-transaction ${isLoading ? 'loading' : ''}`}
         onClick={onProtectMyTransactionClick}
       >
         Protect My Transaction

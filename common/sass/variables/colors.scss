@@ -86,7 +86,8 @@ $theme-light: (
   tooltip-bg: $gray-darker,
   tooltip-color: #fff,
   component-active-color: #fff,
-  component-active-bg: $brand-primary
+  component-active-bg: $brand-primary,
+  brand-purple: #a086f7
 );
 
 $gray-base: #b8bfd0;
@@ -163,7 +164,8 @@ $theme-dark: (
   tooltip-bg: #1c1c1c,
   tooltip-color: #fff,
   component-active-color: $gray-light,
-  component-active-bg: $brand-primary
+  component-active-bg: $brand-primary,
+  brand-purple: #a086f7
 );
 
 $themes: (

@@ -9,23 +9,28 @@ import {
 import upperFirst from 'lodash/upperFirst';
 
 import './ProtectedTransactionReport.scss';
+import { Spinner } from '../../../components/Spinner';
 
 interface Props {
-  txReport: CryptoScamDBNoInfoResponse | CryptoScamDBInfoResponse;
+  txReport?: CryptoScamDBNoInfoResponse | CryptoScamDBInfoResponse | null;
+  receiverAddress: string | null;
 }
 
-export const ProtectedTransactionReport: FC<Props> = ({ txReport }) => {
+export const ProtectedTransactionReport: FC<Props> = ({ txReport, receiverAddress }) => {
   const getShortAddress = useCallback(() => {
-    if (txReport) {
-      const { input } = txReport as CryptoScamDBBaseResponse;
-      if (input && input.length >= 10) {
-        return `${input.substr(0, 6)}...${input.substr(input.length - 4)}`;
-      }
+    if (receiverAddress && receiverAddress.length >= 10) {
+      return `${receiverAddress.substr(0, 6)}...${receiverAddress.substr(
+        receiverAddress.length - 4
+      )}`;
     }
     return 'Invalid address!';
-  }, [txReport]);
+  }, [receiverAddress]);
 
   const getTimeline = useCallback(() => {
+    if (!txReport) {
+      return <Spinner />;
+    }
+
     const { success } = txReport;
 
     if (!success) {
@@ -125,28 +130,34 @@ export const ProtectedTransactionReport: FC<Props> = ({ txReport }) => {
       <h4 className="ProtectedTransactionReport-title ProtectedTransactionReport-title-address">
         {getShortAddress()}
       </h4>
-      <h5 className="ProtectedTransactionReport-subtitle">
-        If any of the information below is unexpected, please stop and review the address. Where did
-        you copy the address from? Who gave you the address?
-      </h5>
+      {txReport && (
+        <h5 className="ProtectedTransactionReport-subtitle">
+          If any of the information below is unexpected, please stop and review the address. Where
+          did you copy the address from? Who gave you the address?
+        </h5>
+      )}
       <div className="ProtectedTransactionReport-timeline">{getTimeline()}</div>
-      <p className="ProtectedTransactionReport-view-comments">
-        View comments for this account on &nbsp;
-        <a
-          href={`https://etherscan.io/address/${(txReport as CryptoScamDBBaseResponse).input}`}
-          rel="noreferrer"
-          target="_blank"
-        >
-          Etherscan
-        </a>
-        .
-        <img src={wizardIcon} alt="Wizard" />
-      </p>
-      <p className="ProtectedTransactionReport-footer-text">
-        If everything looks good, click "Next" on the left to see a preview of your main
-        transaction. Upon confirming and sending the transaction, you'll get{' '}
-        <span className="highlighted">20 seconds</span> to cancel if you change your mind.
-      </p>
+      {txReport && (
+        <>
+          <p className="ProtectedTransactionReport-view-comments">
+            View comments for this account on &nbsp;
+            <a
+              href={`https://etherscan.io/address/${(txReport as CryptoScamDBBaseResponse).input}`}
+              rel="noreferrer"
+              target="_blank"
+            >
+              Etherscan
+            </a>
+            .
+            <img src={wizardIcon} alt="Wizard" />
+          </p>
+          <p className="ProtectedTransactionReport-footer-text">
+            If everything looks good, click "Next" on the left to see a preview of your main
+            transaction. Upon confirming and sending the transaction, you'll get{' '}
+            <span className="highlighted">20 seconds</span> to cancel if you change your mind.
+          </p>
+        </>
+      )}
     </div>
   );
 };

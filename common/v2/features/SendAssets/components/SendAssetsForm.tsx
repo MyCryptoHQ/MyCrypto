@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { FastField, Field, FieldProps, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
-import _, { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 import { formatEther, parseEther, bigNumberify } from 'ethers/utils';
 import BN from 'bn.js';
 import styled from 'styled-components';
@@ -79,10 +79,8 @@ import { ResolutionError } from '@unstoppabledomains/resolution';
 import { InlineMessageType } from 'v2/types/inlineMessages';
 import { TransactionProtectionButton } from '../../ProtectTransaction/components/TransactionProtectionButton';
 import { withProtectTransaction } from '../../ProtectTransaction/components/WithProtectTransaction';
-import {
-  IProtectTransactionProps,
-  ProtectTransactionAction
-} from 'v2/features/ProtectTransaction/types';
+import { WithProtectApiFactory } from '../../ProtectTransaction/withProtectStateFactory';
+import { SignTransaction } from './index';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;
@@ -159,8 +157,8 @@ const QueryWarning: React.SFC<{}> = () => (
 const SendAssetsForm = ({
   txConfig,
   onComplete,
-  onProtectTransactionAction
-}: IStepComponentProps & IProtectTransactionProps) => {
+  withProtectApi
+}: IStepComponentProps & { withProtectApi: WithProtectApiFactory }) => {
   const { accounts, userAssets, networks, getAccount } = useContext(StoreContext);
   const { getAssetRate } = useContext(RatesContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
@@ -169,6 +167,13 @@ const SendAssetsForm = ({
   const [baseAsset, setBaseAsset] = useState({} as Asset);
   const [resolutionError, setResolutionError] = useState<ResolutionError>();
   const [selectedAsset, setAsset] = useState({} as Asset);
+
+  const {
+    goOnInitialStep,
+    showHideTransactionProtection,
+    setMainTransactionFormCallback,
+    withProtectState: { mainComponentDisabled }
+  } = withProtectApi;
 
   const SendAssetsSchema = Yup.object().shape({
     amount: Yup.number()
@@ -271,7 +276,7 @@ const SendAssetsForm = ({
 
   const validAccounts = accounts.filter(account => account.wallet !== WalletId.VIEW_ONLY);
   return (
-    <div className="SendAssetsForm">
+    <div className={`SendAssetsForm ${mainComponentDisabled ? 'SendAssetsForm-disabled' : ''}`}>
       <Formik
         initialValues={getInitialFormikValues(txConfig)}
         validationSchema={SendAssetsSchema}
@@ -279,11 +284,8 @@ const SendAssetsForm = ({
           onComplete(fields);
         }}
         render={({ errors, setFieldValue, setFieldTouched, touched, values, handleChange }) => {
-          if (onProtectTransactionAction) {
-            onProtectTransactionAction({
-              actionType: ProtectTransactionAction.SEND_FORM_CALLBACK,
-              payload: () => ({ isValid, values })
-            });
+          if (setMainTransactionFormCallback) {
+            setMainTransactionFormCallback(() => ({ isValid, values }));
           }
 
           const toggleAdvancedOptions = () => {
@@ -689,11 +691,13 @@ const SendAssetsForm = ({
                 disabled={isEstimatingGasLimit || isResolvingName || isEstimatingNonce || !isValid}
                 onClick={e => {
                   e.preventDefault();
-                  if (onProtectTransactionAction) {
-                    onProtectTransactionAction({
-                      actionType: ProtectTransactionAction.SHOW_HIDE_TRANSACTION_PROTECTION,
-                      payload: true
-                    });
+
+                  if (goOnInitialStep) {
+                    goOnInitialStep();
+                  }
+
+                  if (showHideTransactionProtection) {
+                    showHideTransactionProtection(true);
                   }
                 }}
               />
@@ -702,13 +706,6 @@ const SendAssetsForm = ({
                 type="submit"
                 onClick={e => {
                   e.preventDefault();
-
-                  if (onProtectTransactionAction) {
-                    onProtectTransactionAction({
-                      actionType: ProtectTransactionAction.SHOW_HIDE_TRANSACTION_PROTECTION,
-                      payload: false
-                    });
-                  }
 
                   if (isValid) {
                     onComplete(values);
@@ -723,8 +720,9 @@ const SendAssetsForm = ({
           );
         }}
       />
+      {mainComponentDisabled && <div className="SendAssetsForm-disabled-overlay" />}
     </div>
   );
 };
 
-export default withProtectTransaction(SendAssetsForm);
+export default withProtectTransaction(SendAssetsForm, SignTransaction);

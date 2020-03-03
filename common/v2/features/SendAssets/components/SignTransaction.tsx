@@ -9,6 +9,8 @@ import {
 } from 'v2/types';
 import { WALLET_STEPS } from 'v2/components';
 
+import './SignTransaction.scss';
+
 const SignTransaction = ({ txConfig, onComplete }: IStepComponentProps) => {
   const {
     network,

@@ -1,7 +1,9 @@
 [class^="ContentPanel__ContentPanelWrapper"] {
   &.has-side-panel {
-    .btn.btn-primary {
-      margin-top: 215px;
+    .WithProtectTransaction-main {
+      .SignTransactionKeystore-description {
+        margin-bottom: 215px;
+      }
     }
   }
 }

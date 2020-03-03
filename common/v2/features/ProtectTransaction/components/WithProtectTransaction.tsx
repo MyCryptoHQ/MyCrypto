@@ -1,114 +1,48 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo } from 'react';
 import { IFormikFields, ISignedTx, IStepComponentProps, ITxReceipt } from '../../../types';
 
-import { Panel } from '@mycrypto/ui';
+import { Button, Panel } from '@mycrypto/ui';
 
 import './WithProtectTranscation.scss';
-import {
-  IProtectTransactionProps,
-  ProtectTransactionAction,
-  ProtectTransactionActions,
-  SendFormCallbackType
-} from '../types';
 import { useStateReducer } from '../../../utils';
-import SignTransaction from '../../SendAssets/components/SignTransaction';
 import { ProtectionThisTransaction } from './ProtectionThisTransaction';
 import { SignProtectedTransaction } from './SignProtectedTransaction';
 import { ProtectedTransactionReport } from './ProtectedTransactionReport';
-import {
-  ProtectedTxConfigFactory,
-  protectedTxConfigInitialState,
-  protectedTxReceiptInitialState
-} from '../stateFactory';
+import { ProtectedTxConfigFactory, protectedTxConfigInitialState } from '../txStateFactory';
+import { WithProtectApiFactory } from '../withProtectStateFactory';
 
-const numOfSteps = 3;
+interface WithProtectTransactionProp extends IStepComponentProps {
+  withProtectApi?: WithProtectApiFactory;
+  customDetails?: JSX.Element;
+}
 
 export function withProtectTransaction(
-  WrappedComponent: React.ComponentType<Partial<IStepComponentProps & IProtectTransactionProps>>
+  WrappedComponent: React.ComponentType<WithProtectTransactionProp>,
+  SignComponent: React.ComponentType<IStepComponentProps>
 ) {
   return function WithProtectTransaction({
     txConfig: txConfigMain,
-    onComplete: onCompleteMain
-  }: IStepComponentProps) {
+    onComplete: onCompleteMain,
+    withProtectApi,
+    customDetails,
+    resetFlow
+  }: WithProtectTransactionProp) {
     const {
       handleProtectedTransactionSubmit,
       handleProtectedTransactionConfirmAndSend,
       protectedTransactionTxFactoryState
     } = useStateReducer(ProtectedTxConfigFactory, {
       txConfig: protectedTxConfigInitialState,
-      txReceipt: protectedTxReceiptInitialState
+      txReceipt: null
     });
 
-    const formCallback = useRef<SendFormCallbackType>(() => ({ isValid: false, values: null }));
-
-    const [stepIndex, setStepIndex] = useState(0);
-    const [sidePanelVisible, setSidePanelVisible] = useState(false);
-
-    useEffect(() => {
-      const contentPanel = document.querySelector('[class^=ContentPanel__ContentPanelWrapper]');
-
-      /*if (contentPanel && !contentPanel.classList.contains('has-side-panel')) {
-        contentPanel.classList.add('has-side-panel');
-      }*/
-
-      return () => {
-        if (contentPanel && contentPanel.classList.contains('has-side-panel')) {
-          contentPanel.classList.remove('has-side-panel');
-          setSidePanelVisible(false);
-        }
-      };
-    }, [setSidePanelVisible]);
-
-    const goOnNextStep = useCallback(() => {
-      setStepIndex(step => (step + 1) % numOfSteps);
-    }, [setStepIndex]);
-
-    const goOnInitialStep = useCallback(() => {
-      setStepIndex(0);
-    }, [setStepIndex]);
-
-    const onProtectTransactionAction = async (action: ProtectTransactionActions) => {
-      switch (action.actionType) {
-        case ProtectTransactionAction.SHOW_HIDE_TRANSACTION_PROTECTION:
-          const contentPanel = document.querySelector('[class^=ContentPanel__ContentPanelWrapper]');
-
-          if (action.payload) {
-            if (contentPanel && !contentPanel.classList.contains('has-side-panel')) {
-              contentPanel.classList.add('has-side-panel');
-            }
-            setSidePanelVisible(true);
-          } else {
-            if (contentPanel && contentPanel.classList.contains('has-side-panel')) {
-              contentPanel.classList.remove('has-side-panel');
-            }
-            setSidePanelVisible(false);
-          }
-          break;
-
-        case ProtectTransactionAction.SEND_FORM_CALLBACK:
-          if (action.payload) {
-            formCallback.current = action.payload;
-          }
-          break;
-
-        case ProtectTransactionAction.PROTECT_MY_TRANSACTION:
-          const { isValid, values } = formCallback.current();
-
-          if (isValid) {
-            const { amount } = action.paylaod;
-            try {
-              await handleProtectedTransactionSubmit({
-                ...values,
-                amount
-              });
-              goOnNextStep();
-            } catch (e) {
-              console.error(e);
-            }
-          }
-          break;
-      }
-    };
+    const {
+      withProtectState: { protectTxEnabled, txReport, stepIndex, receiverAddress },
+      handleTransactionReport,
+      goOnNextStep,
+      goOnInitialStep,
+      formCallback
+    } = withProtectApi!;
 
     return useMemo(
       () => (
@@ -118,47 +52,68 @@ export function withProtectTransaction(
               txConfig={txConfigMain}
               onComplete={(values: IFormikFields | ITxReceipt | ISignedTx | null) => {
                 onCompleteMain(values);
-                // handleFormSubmit(values, () => {
-                // });
               }}
-              onProtectTransactionAction={onProtectTransactionAction}
+              withProtectApi={withProtectApi}
+              customDetails={customDetails}
+              resetFlow={resetFlow}
             />
           </div>
-          {sidePanelVisible && (
+          {protectTxEnabled && (
             <div className="WithProtectTransaction-side">
               <Panel>
                 {(() => {
                   if (stepIndex === 0) {
-                    const { values } = formCallback.current();
+                    const { values } = formCallback();
 
                     return (
                       <ProtectionThisTransaction
-                        onProtectTransactionAction={onProtectTransactionAction}
+                        handleProtectedTransactionSubmit={handleProtectedTransactionSubmit}
+                        withProtectApi={withProtectApi!}
                         sendAssetsValues={values}
                       />
                     );
-                  } else if (stepIndex === 2) {
-                    return (
-                      <SignProtectedTransaction>
-                        <SignTransaction
-                          txConfig={(({ txConfig }) => txConfig)(
-                            protectedTransactionTxFactoryState
-                          )}
-                          onComplete={(payload: IFormikFields | ITxReceipt | ISignedTx | null) => {
-                            handleProtectedTransactionConfirmAndSend(payload, () => {
-                              goOnNextStep();
-                            });
-                          }}
-                          resetFlow={() => {
-                            goOnInitialStep();
-                          }}
-                        />
-                      </SignProtectedTransaction>
-                    );
                   } else if (stepIndex === 1) {
                     return (
+                      <SignProtectedTransaction>
+                        <>
+                          <SignComponent
+                            txConfig={(({ txConfig }) => txConfig)(
+                              protectedTransactionTxFactoryState
+                            )}
+                            onComplete={(
+                              payload: IFormikFields | ITxReceipt | ISignedTx | null
+                            ) => {
+                              handleTransactionReport().then(() => {
+                                handleProtectedTransactionConfirmAndSend(payload, () => {
+                                  goOnNextStep();
+                                });
+                              });
+                            }}
+                            resetFlow={() => {
+                              goOnInitialStep();
+                            }}
+                          />
+                          <Button
+                            type="submit"
+                            onClick={e => {
+                              // TODO: Remove, only for testing
+                              e.preventDefault();
+
+                              handleTransactionReport().then(() => {
+                                goOnNextStep();
+                              });
+                            }}
+                          >
+                            Skip (testing purpose)
+                          </Button>
+                        </>
+                      </SignProtectedTransaction>
+                    );
+                  } else if (stepIndex === 2) {
+                    return (
                       <ProtectedTransactionReport
-                        txReport={(({ txReport }) => txReport)(protectedTransactionTxFactoryState)}
+                        receiverAddress={receiverAddress}
+                        txReport={txReport}
                       />
                     );
                   }
@@ -170,15 +125,7 @@ export function withProtectTransaction(
           )}
         </div>
       ),
-      [
-        onProtectTransactionAction,
-        stepIndex,
-        setStepIndex,
-        txConfigMain,
-        sidePanelVisible,
-        formCallback,
-        protectedTransactionTxFactoryState
-      ]
+      [stepIndex, txConfigMain, protectTxEnabled, formCallback, protectedTransactionTxFactoryState]
     );
   };
 }

@@ -112,4 +112,24 @@
     margin-bottom: 15px;
     color: #1eb8e7;
   }
+
+  .pending-loader {
+    display: flex;
+    justify-content: flex-end;
+
+    .loading {
+      margin-right: 25px;
+    }
+  }
 }
+
+[class^="ContentPanel__ContentPanelWrapper"] {
+  &.has-side-panel {
+    .WithProtectTransaction-main {
+      .TransactionReceipt-back {
+        margin-top: 250px;
+      }
+    }
+  }
+}
+

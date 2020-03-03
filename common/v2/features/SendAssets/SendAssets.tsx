@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { GeneralStepper } from 'v2/components';
-import { useStateReducer, isWeb3Wallet } from 'v2/utils';
+import { useStateReducer, isWeb3Wallet, useStateReducerT } from 'v2/utils';
 import { ITxReceipt, ISignedTx, IFormikFields, ITxConfig } from 'v2/types';
 import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS } from 'v2/config';
 
 import { ConfirmTransaction, TransactionReceipt } from 'v2/components/TransactionFlow';
 import { IStepperPath } from 'v2/components/GeneralStepper/types';
-import { SendAssetsForm, SignTransaction } from './components';
+import { SendAssetsForm, SignTransaction, SignTransactionWithProtection } from './components';
 import { txConfigInitialState, TxConfigFactory } from './stateFactory';
+import {
+  WithProtectApiFactory,
+  WithProtectConfigFactory,
+  WithProtectInitialState,
+  WithProtectState
+} from '../ProtectTransaction/withProtectStateFactory';
 
 function SendAssets() {
   const {
@@ -21,6 +27,18 @@ function SendAssets() {
     handleResubmitTx,
     txFactoryState
   } = useStateReducer(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: undefined });
+
+  const withProtectApi = useStateReducerT<Partial<WithProtectState>, WithProtectApiFactory>(
+    WithProtectConfigFactory,
+    {
+      ...WithProtectInitialState
+    }
+  );
+  const { setProtectionTxTimeoutFunction } = withProtectApi;
+
+  useEffect(() => {
+    withProtectApi.showHideTransactionProtection(false);
+  }, []);
 
   // Due to MetaMask deprecating eth_sign method,
   // it has different step order, where sign and send are one panel
@@ -54,20 +72,31 @@ function SendAssets() {
     {
       label: 'Send Assets',
       component: SendAssetsForm,
-      props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
+      props: (({ txConfig }) => ({ txConfig, withProtectApi }))(txFactoryState),
       actions: (payload: IFormikFields, cb: any) => handleFormSubmit(payload, cb)
     },
     {
       label: '',
-      component: SignTransaction,
-      props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
+      component: SignTransactionWithProtection,
+      props: (({ txConfig }) => ({ txConfig, withProtectApi }))(txFactoryState),
       actions: (payload: ITxConfig | ISignedTx, cb: any) => handleSignedTx(payload, cb)
     },
     {
       label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
       component: ConfirmTransaction,
-      props: (({ txConfig, signedTx }) => ({ txConfig, signedTx }))(txFactoryState),
-      actions: (payload: ITxConfig | ISignedTx, cb: any) => handleConfirmAndSend(payload, cb)
+      props: (({ txConfig, signedTx }) => ({ txConfig, signedTx, withProtectApi }))(txFactoryState),
+      actions: (payload: ITxConfig | ISignedTx, cb: any) => {
+        setProtectionTxTimeoutFunction(txReceiptCb =>
+          handleConfirmAndSend(payload, (txReceipt: ITxReceipt) => {
+            if (txReceiptCb) {
+              txReceiptCb(txReceipt);
+            }
+          })
+        );
+        if (cb) {
+          cb();
+        }
+      }
     },
     {
       label: translateRaw('TRANSACTION_BROADCASTED'),
@@ -78,7 +107,8 @@ function SendAssets() {
         pendingButton: {
           text: translateRaw('TRANSACTION_BROADCASTED_RESUBMIT'),
           action: (cb: any) => handleResubmitTx(cb)
-        }
+        },
+        withProtectApi
       }))(txFactoryState)
     }
   ];

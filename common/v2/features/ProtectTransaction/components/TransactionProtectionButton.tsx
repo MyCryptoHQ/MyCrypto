@@ -27,12 +27,12 @@ export const TransactionProtectionButton: FC<TransactionProtectionButtonProps> =
       onClick={onClickEvent}
       disabled={disabled}
     >
-      <ProtectIcon />
+      <ProtectIcon size="md" />
       <div className="TransactionProtectionButton-text">
         <h6>Get Transaction Protection</h6>
         <p>
           Gain valuable information about the recipient address and the ability to undo your
-          transaction within 30 seconds.
+          transaction within 20 seconds.
         </p>
       </div>
       <ArrowRightIcon />
