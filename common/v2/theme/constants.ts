@@ -13,6 +13,7 @@ export const GAU_THEME = Object.assign({}, light, {
 export const COLORS = {
   BLUE_BRIGHT: '#1eb8e7',
   BLUE_LIGHT: '#007896',
+  BLUE_LIGHT_DARKISH: '#006077',
   BLUE_GREY: '#b5bfc7',
   BLUE_GREY_LIGHTEST: '#fafcfc',
   BLUE_DARK_SLATE: '#163150',
