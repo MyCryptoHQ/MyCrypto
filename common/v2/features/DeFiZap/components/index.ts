@@ -5,4 +5,5 @@ export { default as ZapInteractionReceipt } from './ZapInteractionReceipt';
 export { default as DashboardZapCTA } from './DashboardZapCTA';
 export { default as zapCard } from './ZapCard';
 export { default as DetailsList } from './DetailsList';
+export { default as ProtocolTagsList } from './ProtocolTagsList';
 export * from './ZapOption';

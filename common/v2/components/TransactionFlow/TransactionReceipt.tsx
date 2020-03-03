@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
+import styled from 'styled-components';
 
 import {
   ITxReceipt,
@@ -29,10 +30,12 @@ import { SwapDisplayData } from 'v2/features/SwapAssets/types';
 import translate, { translateRaw } from 'v2/translations';
 import { convertToFiat, truncate, fromTxReceiptObj } from 'v2/utils';
 import { isWeb3Wallet } from 'v2/utils/web3';
+import ProtocolTagsList from 'v2/features/DeFiZap/components/ProtocolTagsList';
 
 import { FromToAccount, SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
 import TransactionIntermediaryDisplay from './displays/TransactionIntermediaryDisplay';
 import sentIcon from 'common/assets/images/icn-sent.svg';
+import defizaplogo from 'assets/images/defizap/defizaplogo.svg';
 import './TransactionReceipt.scss';
 
 interface PendingBtnAction {
@@ -43,6 +46,11 @@ interface Props {
   pendingButton?: PendingBtnAction;
   swapDisplay?: SwapDisplayData;
 }
+
+const SImg = styled('img')`
+  height: ${(p: { size: string }) => p.size};
+  width: ${(p: { size: string }) => p.size};
+`;
 
 export default function TransactionReceipt({
   txReceipt,
@@ -209,12 +217,28 @@ export const TransactionReceiptUI = ({
       </>
 
       {txType === ITxType.DEFIZAP && zapSelected && (
-        <div className="TransactionReceipt-row">
-          <TransactionIntermediaryDisplay
-            address={zapSelected.contractAddress}
-            contractName={'DeFi Zap'}
-          />
-        </div>
+        <>
+          <div className="TransactionReceipt-row">
+            <TransactionIntermediaryDisplay
+              address={zapSelected.contractAddress}
+              contractName={'DeFi Zap'}
+            />
+          </div>
+          <div className="TransactionReceipt-row">
+            <div className="TransactionReceipt-row-column">
+              <SImg src={defizaplogo} size="24px" />
+              {translateRaw('ZAP_NAME')}
+            </div>
+            <div className="TransactionReceipt-row-column-zapInfo">{zapSelected.name}</div>
+          </div>
+          <div className="TransactionReceipt-row">
+            <div className="TransactionReceipt-row-column">{translateRaw('PLATFORMS_USED')}</div>
+            <div className="TransactionReceipt-row-column-zapInfo">
+              <ProtocolTagsList platformsUsed={zapSelected.platformsUsed} />
+            </div>
+          </div>
+          <div className="TransactionReceipt-divider" />
+        </>
       )}
 
       {txType !== ITxType.SWAP && (
@@ -233,7 +257,7 @@ export const TransactionReceiptUI = ({
           </div>
         </div>
       )}
-      <div className="TransactionReceipt-divider" />
+      {txType !== ITxType.DEFIZAP && <div className="TransactionReceipt-divider" />}
       <div className="TransactionReceipt-details">
         <div className="TransactionReceipt-details-row">
           <div className="TransactionReceipt-details-row-column">

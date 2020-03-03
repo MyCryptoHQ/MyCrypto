@@ -43,6 +43,7 @@ export { Desktop, Mobile } from './ResponsiveLayout';
 export { DomainStatus } from './DomainStatus';
 export * from './InlineMessage';
 export { default as Tabs } from './Tabs';
+export { default as TagsList } from './TagsList';
 export { default as CodeBlock } from './CodeBlock';
 export { default as WalletList } from './WalletList';
 export * from './WalletUnlock';

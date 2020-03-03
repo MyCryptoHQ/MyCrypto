@@ -33,7 +33,7 @@ export const transactionReceipt = () => (
   </div>
 );
 
-const defaultZap = 'unipoolseth';
+const defaultZap = 'llpdai';
 const zapSelected: IZapConfig = ZAPS_CONFIG[defaultZap];
 
 export const transactionReceiptDeFiZap = () => (
@@ -61,7 +61,7 @@ export const transactionReceiptDeFiZap = () => (
     design: {
       type: 'figma',
       url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/MyCrypto-GAU-Master?node-id=325%3A79384'
+        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=8544%3A116927'
     }
   }
 };
@@ -72,7 +72,7 @@ export const transactionReceiptDeFiZap = () => (
     design: {
       type: 'figma',
       url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/MyCrypto-GAU-Master?node-id=325%3A79384'
+        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=8544%3A117793'
     }
   }
 };
