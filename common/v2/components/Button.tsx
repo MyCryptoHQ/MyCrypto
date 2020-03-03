@@ -27,15 +27,15 @@ const LoadingSpinnerWrapper = styled.div`
   margin-right: ${SPACING.XS};
 `;
 
-// CSS calculation since Spinner has a constant size of 1em
 const TextWrapper = styled(Typography)<{ loading?: boolean; color?: string }>`
   color: ${props => (props.color ? props.color : COLORS.WHITE)};
-  ${props => props.loading && `margin-right: calc(1em + ${SPACING.XS})`};
 `;
 
+// CSS calculation since Spinner has a constant size of 1em
 const SButton = styled(Button)<ButtonProps>`
   &&& {
     font-size: 1rem;
+    ${props => props.loading && 'padding-left: calc(2.25em - 1em)'}
   }
 
   background-color: ${props => (props.disabled ? COLORS.GREY_LIGHT : COLORS.BLUE_LIGHT)};
@@ -54,7 +54,7 @@ const SButton = styled(Button)<ButtonProps>`
 
 function StyledButton({ children, disabled, loading, ...props }: Props) {
   return (
-    <SButton disabled={disabled || loading} {...props}>
+    <SButton disabled={disabled || loading} loading={loading} {...props}>
       <Wrapper>
         {loading && (
           <LoadingSpinnerWrapper>
