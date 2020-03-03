@@ -5,6 +5,8 @@
   "rms": "aws",
   "rmsRepo": "s3://download.energi.software/internal/gen3/mycrypto",
   "tools": {
+    "aws": true,
+    "make": true,
     "node": "8",
     "yarn": "*"
   },
@@ -67,7 +69,8 @@
     "build": [
       "@cte yarn build",
       "@cid tool build gzip"
-    ]
+    ],
+    "make_release": "@cte make -f Makefile.release -j1"
   },
   "package": [
     "dist/prod"

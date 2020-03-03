@@ -1,0 +1,62 @@
+
+RELEASE_RAW_VER := $(shell jq -r .version futoin.json)
+RELEASE_VER := MyEnergiWallet-$(RELEASE_RAW_VER)
+RELEASE_DIR := dist/release/$(RELEASE_RAW_VER)
+
+.PHONY: release release-tools
+.PHONY: release-linux release-windows release-macos
+
+release: release-linux release-windows release-macos
+release-tools:
+	-sudo -n dpkg --add-architecture i386
+	-sudo -n apt-get update
+	-sudo -n apt-get -yq --no-install-suggests --no-install-recommends --force-yes install \
+	  gcc-multilib-i686-linux-gnu gcc-i686-linux-gnu libc6-dev-i386-amd64-cross \
+	   g++-multilib-i686-linux-gnu g++-i686-linux-gnu \
+	  mingw-w64 binutils-mingw-w64 gcc-mingw-w64 \
+	    wine32-development wine64-development wine64-development-tools \
+	    nsis nsis-pluginapi
+
+release-linux:
+	@mkdir -p $(RELEASE_DIR)
+	@cte yarn run build:electron:linux
+	@cp -a dist/electron-builds/*-$(RELEASE_RAW_VER)-x86_64.AppImage \
+	    $(RELEASE_DIR)/$(RELEASE_VER)-linux-amd64.AppImage
+	@cp -a dist/electron-builds/*-$(RELEASE_RAW_VER)-i386.AppImage \
+	    $(RELEASE_DIR)/$(RELEASE_VER)-linux-i386.AppImage
+release-windows:
+	@mkdir -p $(RELEASE_DIR)
+	@cte yarn run build:electron:windows
+	@cp -a dist/electron-builds/*$(RELEASE_RAW_VER).exe \
+	    $(RELEASE_DIR)/$(RELEASE_VER)-windows-setup.exe
+	@cp -a dist/electron-builds/*$(RELEASE_RAW_VER).exe.blockmap \
+	    $(RELEASE_DIR)/$(RELEASE_VER)-windows-setup.exe.blockmap
+release-macos:
+	@mkdir -p $(RELEASE_DIR)
+	@cte yarn run build:electron:osx
+	@cp -a dist/electron-builds/*$(RELEASE_RAW_VER).dmg \
+	    $(RELEASE_DIR)/$(RELEASE_VER)-macos.dmg
+	@cp -a dist/electron-builds/*$(RELEASE_RAW_VER).dmg.blockmap \
+	    $(RELEASE_DIR)/$(RELEASE_VER)-macos.dmg.blockmap
+
+
+RELEASE_REPO := s3://download.energi.software/releases/mew
+
+.PHONY: release-upload
+release-upload:
+	@find $(RELEASE_DIR)/* | while read fn; do \
+	  dst=$(RELEASE_REPO)/$(RELEASE_RAW_VER)/$$(basename $$fn); \
+	  aws s3 ls "$$dst" >/dev/null || aws s3 cp "$$fn" "$$dst" || exit $$?; \
+	done
+	@find $(RELEASE_DIR)/ -type f | xargs sha256sum
+
+.PHONY: release-sign release-sign-download release-sign-upload
+release-sign-download:
+	@aws s3 sync $(RELEASE_REPO)/$(RELEASE_RAW_VER) $(RELEASE_DIR)
+	@cd $(RELEASE_DIR) && ls | xargs sha256sum
+
+release-sign: release-sign-download
+	@for f in $(RELEASE_DIR)/*; do gpg --sign --detach $$f; done
+
+release-sign-upload:
+	@aws s3 sync $(RELEASE_DIR) $(RELEASE_REPO)/$(RELEASE_RAW_VER)
