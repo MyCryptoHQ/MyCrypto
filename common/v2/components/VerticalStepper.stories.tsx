@@ -1,0 +1,16 @@
+import React from 'react';
+import VerticalStepper from './VerticalStepper';
+
+import step1SVG from 'assets/images/icn-unlock-wallet.svg';
+
+export default { title: 'VerticalStepper' };
+
+export const defaultState = () => (
+  <VerticalStepper
+    steps={[
+      { title: 'Enable ETH', icon: step1SVG, description: 'TEST' },
+      { title: 'Step2', icon: step1SVG, description: 'TEST' },
+      { title: 'Step3', icon: step1SVG, description: 'TEST' }
+    ]}
+  />
+);
