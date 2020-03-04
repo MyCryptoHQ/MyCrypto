@@ -42,6 +42,13 @@ const SStep = styled(Step)<StepProps>`
       width: ${FONT_SIZE.SM};
     }
   }
+  
+  && .rc-steps-item-tail {
+    top: -5px;
+    padding-bottom: 0;
+    height: 110%;
+  }
+
   && .rc-steps-item-tail:after {
     background-color: ${COLORS.BLUE_BRIGHT};
   }
@@ -114,11 +121,15 @@ interface DescriptionProps {
   description: React.ReactNode | string;
 }
 
+const SButton = styled(Button)`
+  margin-top: ${SPACING.SM};
+`;
+
 function StepperDescription({ active, description }: DescriptionProps) {
   return (
     <>
       <Typography as={'div'}>{description}</Typography>
-      <Button disabled={!active}>Activate</Button>
+      <SButton disabled={!active}>Activate</SButton>
     </>
   );
 }
