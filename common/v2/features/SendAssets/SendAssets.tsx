@@ -34,7 +34,10 @@ function SendAssets() {
       ...WithProtectInitialState
     }
   );
-  const { setProtectionTxTimeoutFunction } = withProtectApi;
+  const {
+    setProtectionTxTimeoutFunction,
+    withProtectState: { protectTxEnabled }
+  } = withProtectApi;
 
   useEffect(() => {
     withProtectApi.showHideTransactionProtection(false);
@@ -124,6 +127,7 @@ function SendAssets() {
       defaultBackPath={ROUTE_PATHS.DASHBOARD.path}
       defaultBackPathLabel={translateRaw('DASHBOARD')}
       completeBtnText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
+      wrapperClassName={protectTxEnabled ? 'has-side-panel' : ''}
     />
   );
 }

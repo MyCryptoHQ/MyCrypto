@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import Styled, { createGlobalStyle } from 'styled-components';
+import Styled from 'styled-components';
 import BN from 'bn.js';
 import { Button } from '@mycrypto/ui';
 
@@ -22,18 +22,6 @@ import Account from '../Account';
 import { withProtectTransaction } from 'v2/features/ProtectTransaction/components/WithProtectTransaction';
 import { SignTransaction } from 'v2/features/SendAssets/components';
 const { SCREEN_XS } = BREAK_POINTS;
-
-const ProtectedTransaction = createGlobalStyle`
-  [class^="ContentPanel__ContentPanelWrapper"] {
-    &.has-side-panel {
-      .ConfirmTransaction {
-        &-button {
-          margin-top: 250px;
-        }
-      }
-    }
-  }
-`;
 
 const ConfirmTransactionWrapper = Styled.div`
   text-align: left;
@@ -257,7 +245,6 @@ const ConfirmTransaction = ({ txConfig, onComplete, signedTx }: IStepComponentPr
       >
         {isBroadcastingTx ? translate('SUBMITTING') : translate('CONFIRM_AND_SEND')}
       </SendButton>
-      <ProtectedTransaction />
     </ConfirmTransactionWrapper>
   );
 };

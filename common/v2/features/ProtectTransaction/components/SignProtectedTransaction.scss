@@ -3,7 +3,6 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 15px;
   box-sizing: border-box;
   border-radius: 2px;
   background: white;
@@ -13,16 +12,6 @@
     &-title {
       height: auto;
       margin-top: 10px;
-    }
-  }
-}
-
-[class^="ContentPanel__ContentPanelWrapper"] {
-  &.has-side-panel {
-    .SignProtectedTransaction {
-      .btn.btn-primary {
-        margin-top: 0;
-      }
     }
   }
 }

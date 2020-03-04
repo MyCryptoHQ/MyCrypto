@@ -3,7 +3,6 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 15px;
   box-sizing: border-box;
   border-radius: 2px;
   background: white;
@@ -108,6 +107,7 @@
       }
 
       >li:not(:last-child) {
+        position: relative;
         margin-bottom: 20px;
 
         >.timeline-panel {
@@ -118,7 +118,7 @@
             content: " ";
             width: 2px;
             background-color: #A086F7;
-            left: -30px;
+            left: -27px;
             height: 100%;
           }
         }

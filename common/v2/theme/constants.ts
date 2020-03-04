@@ -39,7 +39,9 @@ export const COLORS = {
   GREY_ATHENS: '#e8eaed',
   GREYISH_BROWN: '#424242',
   PURPLE: '#A086F7',
-  ORANGE: '#FA863F'
+  ORANGE: '#FA863F',
+
+  BG_GRAY: '#f6f8fa'
 };
 
 export const BREAK_POINTS = {

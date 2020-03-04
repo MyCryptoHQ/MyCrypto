@@ -141,26 +141,10 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
 
   const showHideTransactionProtection = useCallback(
     (showOrHide: boolean) => {
-      // TODO: Refactor this
-      const contentPanel = document.querySelector('[class^=ContentPanel__ContentPanelWrapper]');
-
-      if (showOrHide) {
-        if (contentPanel && !contentPanel.classList.contains('has-side-panel')) {
-          contentPanel.classList.add('has-side-panel');
-        }
-        setState(prevState => ({
-          ...prevState,
-          protectTxEnabled: true
-        }));
-      } else {
-        if (contentPanel && contentPanel.classList.contains('has-side-panel')) {
-          contentPanel.classList.remove('has-side-panel');
-        }
-        setState(prevState => ({
-          ...prevState,
-          protectTxEnabled: false
-        }));
-      }
+      setState(prevState => ({
+        ...prevState,
+        protectTxEnabled: showOrHide
+      }));
     },
     [setState]
   );

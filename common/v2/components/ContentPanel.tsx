@@ -17,17 +17,24 @@ const ContentPanelWrapper = styled.div<ContentPanelProps>`
   max-width: ${({ width }) => `${width}px`};
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: ${({ mobileMaxWidth }) => mobileMaxWidth};
-    padding-left: 0px;
+    padding-left: 0;
     margin-bottom: 1em;
   }
 
   &.has-side-panel {
-    width: ${({ width }) => `${width ? width + 375 + 15 : width}px`};
-    max-width: ${({ width }) => `${width ? width + 375 + 15 : width}px`};
+    width: ${({ width }) => `${width ? width + 375 : width}px`};
+    max-width: ${({ width }) => `${width ? width + 375 : width}px`};
 
     > section {
-      width: ${({ width }) => `${width}px`};
-      max-width: ${({ width }) => `${width}px`};
+      width: 100%;
+      max-width: 100%;
+      padding-bottom: 0;
+
+      p ~ div {
+        & > div:last-child {
+          margin-top: calc(-0.5rem - 75px);
+        }
+      }
     }
   }
 `;
@@ -106,7 +113,7 @@ export default function ContentPanel({
   ...rest
 }: Props) {
   return (
-    <ContentPanelWrapper width={width} mobileMaxWidth={mobileMaxWidth}>
+    <ContentPanelWrapper className={className} width={width} mobileMaxWidth={mobileMaxWidth}>
       {(onBack || stepper) && (
         <ContentPanelTop stepperOnly={stepper !== undefined && !onBack}>
           {onBack && (
@@ -118,7 +125,7 @@ export default function ContentPanel({
           {stepper && <Stepper current={stepper.current} total={stepper.total} />}
         </ContentPanelTop>
       )}
-      <Panel className={className} {...rest}>
+      <Panel {...rest}>
         {heading && (
           <ContentPanelHeading>
             {heading}

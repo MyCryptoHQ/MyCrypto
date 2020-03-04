@@ -122,14 +122,3 @@
     }
   }
 }
-
-[class^="ContentPanel__ContentPanelWrapper"] {
-  &.has-side-panel {
-    .WithProtectTransaction-main {
-      .TransactionReceipt-back {
-        margin-top: 250px;
-      }
-    }
-  }
-}
-
