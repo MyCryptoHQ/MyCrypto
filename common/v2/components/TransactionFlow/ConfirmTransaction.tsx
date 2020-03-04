@@ -111,7 +111,7 @@ export default function ConfirmTransaction({
   /* Get contact info */
   const recipientContact = getContactByAddressAndNetwork(receiverAddress, network);
   const senderContact = getContactByAccount(account);
-  const senderAccount = getAccount(account);
+  const senderAccount = getAccount(account) || account;
 
   /* Get Rates */
   const assetRate = getAssetRate(asset);
@@ -122,7 +122,7 @@ export default function ConfirmTransaction({
       assetRate={assetRate}
       baseAssetRate={baseAssetRate}
       senderContact={senderContact}
-      senderAccount={senderAccount!}
+      senderAccount={senderAccount}
       txConfig={txConfig}
       recipientContact={recipientContact}
       onComplete={onComplete}
