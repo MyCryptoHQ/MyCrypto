@@ -14,7 +14,7 @@ import { IStepComponentProps, ExtendedAddressBook } from 'v2/types';
 import { BREAK_POINTS } from 'v2/theme';
 
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
-import TransactionIntermediaryDisplay from './displays/TransactionIntermediaryDisplay';
+import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
 import { convertToFiat, truncate } from 'v2/utils';
 import translate from 'v2/translations';
 import { TSymbol } from 'v2/types/symbols';
@@ -203,10 +203,7 @@ export const ConfirmTransactionUI = ({
       </RowWrapper>
       {assetType === 'erc20' && asset && asset.contractAddress && (
         <RowWrapper>
-          <TransactionIntermediaryDisplay
-            address={asset.contractAddress}
-            contractName={asset.ticker}
-          />
+          <TxIntermediaryDisplay address={asset.contractAddress} contractName={asset.ticker} />
         </RowWrapper>
       )}
       <RowWrapper>

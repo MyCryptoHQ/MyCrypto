@@ -6,7 +6,7 @@ import { noOp } from 'v2/utils';
 import { devContacts } from 'v2/database/seed';
 import { IZapConfig, ZAPS_CONFIG } from 'v2/features/DeFiZap/config';
 
-import { TransactionReceiptUI } from './TransactionReceipt';
+import { TxReceiptUI } from './TxReceipt';
 
 // Define props
 const assetRate = 1.34;
@@ -20,7 +20,7 @@ export default { title: 'TxReceipt' };
 
 export const transactionReceipt = () => (
   <div className="sb-container" style={{ maxWidth: '620px' }}>
-    <TransactionReceiptUI
+    <TxReceiptUI
       txStatus={txStatus}
       displayTxReceipt={fTxReceipt}
       timestamp={timestamp}
@@ -38,7 +38,7 @@ const zapSelected: IZapConfig = ZAPS_CONFIG[defaultZap];
 
 export const transactionReceiptDeFiZap = () => (
   <div className="sb-container" style={{ maxWidth: '620px' }}>
-    <TransactionReceiptUI
+    <TxReceiptUI
       txStatus={txStatus}
       txType={ITxType.DEFIZAP}
       zapSelected={zapSelected}

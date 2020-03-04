@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { translateRaw } from 'v2/translations';
-import { TransactionReceipt } from 'v2/components/TransactionFlow';
+import { TxReceipt } from 'v2/components/TransactionFlow';
 import { ITxReceipt, ITxConfig, ITxType } from 'v2/types';
 
 import { ISwapAsset, SwapDisplayData } from '../types';
@@ -25,7 +25,7 @@ export default function SwapTransactionReceipt(props: Props) {
     toAmount
   };
   return (
-    <TransactionReceipt
+    <TxReceipt
       txType={ITxType.SWAP}
       txReceipt={txReceipt}
       txConfig={txConfig}

@@ -33,10 +33,10 @@ import { isWeb3Wallet } from 'v2/utils/web3';
 import ProtocolTagsList from 'v2/features/DeFiZap/components/ProtocolTagsList';
 
 import { FromToAccount, SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
-import TransactionIntermediaryDisplay from './displays/TransactionIntermediaryDisplay';
+import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
 import sentIcon from 'common/assets/images/icn-sent.svg';
 import defizaplogo from 'assets/images/defizap/defizaplogo.svg';
-import './TransactionReceipt.scss';
+import './TxReceipt.scss';
 
 interface PendingBtnAction {
   text: string;
@@ -52,7 +52,7 @@ const SImg = styled('img')`
   width: ${(p: { size: string }) => p.size};
 `;
 
-export default function TransactionReceipt({
+export default function TxReceipt({
   txReceipt,
   txConfig,
   resetFlow,
@@ -120,7 +120,7 @@ export default function TransactionReceipt({
   );
 
   return (
-    <TransactionReceiptUI
+    <TxReceiptUI
       txConfig={txConfig}
       txReceipt={txReceipt}
       txType={txType}
@@ -151,7 +151,7 @@ export interface TxReceiptDataProps {
   resetFlow(): void;
 }
 
-export const TransactionReceiptUI = ({
+export const TxReceiptUI = ({
   txType,
   swapDisplay,
   txConfig,
@@ -217,7 +217,7 @@ export const TransactionReceiptUI = ({
       {txType === ITxType.DEFIZAP && zapSelected && (
         <>
           <div className="TransactionReceipt-row">
-            <TransactionIntermediaryDisplay
+            <TxIntermediaryDisplay
               address={zapSelected.contractAddress}
               contractName={'DeFi Zap'}
             />

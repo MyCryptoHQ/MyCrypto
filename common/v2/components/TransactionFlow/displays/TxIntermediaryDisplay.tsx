@@ -45,7 +45,7 @@ const IntermediaryDisplayContract = styled(Copyable)`
   color: #282d32;
 `;
 
-function TransactionIntermediaryDisplay({ address, contractName }: Props) {
+function TxIntermediaryDisplay({ address, contractName }: Props) {
   return (
     <>
       {address && (
@@ -63,4 +63,4 @@ function TransactionIntermediaryDisplay({ address, contractName }: Props) {
   );
 }
 
-export default TransactionIntermediaryDisplay;
+export default TxIntermediaryDisplay;

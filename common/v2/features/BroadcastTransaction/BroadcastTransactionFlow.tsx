@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { GeneralStepper, ConfirmTransaction, TransactionReceipt } from 'v2/components';
+import { GeneralStepper, ConfirmTransaction, TxReceipt } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
 import { translateRaw } from 'v2/translations';
 import { useStateReducer } from 'v2/utils';
@@ -38,7 +38,7 @@ const BroadcastTransactionFlow = () => {
     },
     {
       label: translateRaw('BROADCAST_TX_RECEIPT_TITLE'),
-      component: TransactionReceipt,
+      component: TxReceipt,
       props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(broadcastTxState),
       actions: (cb: any) => handleResetFlow(cb)
     }
