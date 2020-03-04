@@ -37,7 +37,7 @@ export function withProtectTransaction(
     });
 
     const {
-      withProtectState: { protectTxEnabled, txReport, stepIndex, receiverAddress },
+      withProtectState: { protectTxEnabled, stepIndex },
       handleTransactionReport,
       goOnNextStep,
       goOnInitialStep,
@@ -110,12 +110,7 @@ export function withProtectTransaction(
                       </SignProtectedTransaction>
                     );
                   } else if (stepIndex === 2) {
-                    return (
-                      <ProtectedTransactionReport
-                        receiverAddress={receiverAddress}
-                        txReport={txReport}
-                      />
-                    );
+                    return <ProtectedTransactionReport withProtectApi={withProtectApi} />;
                   }
 
                   return <></>;

@@ -3,20 +3,32 @@ import ProtectIcon from './icons/ProtectIcon';
 import wizardIcon from 'assets/images/icn-protect-transcation-wizard.svg';
 import {
   CryptoScamDBBaseResponse,
-  CryptoScamDBInfoResponse,
-  CryptoScamDBNoInfoResponse
+  CryptoScamDBInfoResponse
 } from '../../../services/ApiService/CryptoScamDB/types';
 import upperFirst from 'lodash/upperFirst';
 
 import './ProtectedTransactionReport.scss';
-import { Spinner } from '../../../components/Spinner';
+import { WithProtectApiFactory } from '../withProtectStateFactory';
+import { fromWei, Wei } from '../../../services/EthService/utils';
+import moment from 'moment';
 
 interface Props {
-  txReport?: CryptoScamDBNoInfoResponse | CryptoScamDBInfoResponse | null;
-  receiverAddress: string | null;
+  withProtectApi?: WithProtectApiFactory;
 }
 
-export const ProtectedTransactionReport: FC<Props> = ({ txReport, receiverAddress }) => {
+const formatDate = (date: number): string => moment.unix(date).format('MM/DD/YYYY');
+
+export const ProtectedTransactionReport: FC<Props> = ({ withProtectApi }) => {
+  const {
+    withProtectState: {
+      receiverAddress,
+      cryptoScamAddressReport,
+      etherscanBalanceReport,
+      etherscanLastTxReport,
+      asset
+    }
+  } = withProtectApi!;
+
   const getShortAddress = useCallback(() => {
     if (receiverAddress && receiverAddress.length >= 10) {
       return `${receiverAddress.substr(0, 6)}...${receiverAddress.substr(
@@ -26,12 +38,71 @@ export const ProtectedTransactionReport: FC<Props> = ({ txReport, receiverAddres
     return 'Invalid address!';
   }, [receiverAddress]);
 
-  const getTimeline = useCallback(() => {
-    if (!txReport) {
-      return <Spinner />;
+  const getAccountBalanceTimelineEntry = useCallback(() => {
+    let balance = 'Unknown balance';
+    if (etherscanBalanceReport) {
+      const { result } = etherscanBalanceReport;
+      balance = parseFloat(fromWei(Wei(result), 'ether')).toFixed(6);
     }
 
-    const { success } = txReport;
+    let assetTicker = '';
+    if (etherscanBalanceReport && asset) {
+      assetTicker = asset.ticker;
+    }
+
+    return (
+      <li>
+        <div className="timeline-badge">2</div>
+        <div className="timeline-panel">
+          <h6>Recipient Account Balance:</h6>
+          <p className="text-muted">
+            {balance} {assetTicker}
+          </p>
+        </div>
+      </li>
+    );
+  }, [etherscanBalanceReport]);
+
+  const getLastTxReportTimelineEntry = useCallback(() => {
+    let lastSentToken: { value: string; ticker: string; timestamp: string } | null = null;
+    if (etherscanLastTxReport && etherscanLastTxReport.result.length) {
+      const {
+        result: [firstResult]
+      } = etherscanLastTxReport;
+      if (firstResult) {
+        const { tokenSymbol: ticker, value, timeStamp } = firstResult;
+        lastSentToken = {
+          ticker,
+          value: parseFloat(fromWei(Wei(value), 'ether')).toFixed(6),
+          timestamp: formatDate(parseInt(timeStamp, 10))
+        };
+      }
+    }
+
+    return (
+      <li>
+        <div className="timeline-badge">3</div>
+        <div className="timeline-panel">
+          <h6>Recipient Account Activity:</h6>
+          {/*<h6>Last Sent {assetTicker}:</h6>
+        <p className="text-muted">1.01 {assetTicker} on 12/24/2019</p>*/}
+          <h6>Last Sent Token:</h6>
+          <p className="text-muted">
+            {lastSentToken &&
+              `${lastSentToken.value} ${lastSentToken.ticker} on ${lastSentToken.timestamp}`}
+            {!lastSentToken && 'No information available!'}
+          </p>
+        </div>
+      </li>
+    );
+  }, [etherscanLastTxReport]);
+
+  const getTimeline = useCallback(() => {
+    if (!cryptoScamAddressReport) {
+      return <div className="loading" />;
+    }
+
+    const { success } = cryptoScamAddressReport;
 
     if (!success) {
       // No info for account
@@ -47,12 +118,14 @@ export const ProtectedTransactionReport: FC<Props> = ({ txReport, receiverAddres
               </p>
             </div>
           </li>
+          {getAccountBalanceTimelineEntry()}
+          {getLastTxReportTimelineEntry()}
         </ul>
       );
     } else {
       const {
         result: { status, entries }
-      } = txReport as CryptoScamDBInfoResponse;
+      } = cryptoScamAddressReport as CryptoScamDBInfoResponse;
       if (status === 'blocked') {
         // Malicious account
         const accountTags = [...new Set(entries.map(e => e.type))];
@@ -83,6 +156,8 @@ export const ProtectedTransactionReport: FC<Props> = ({ txReport, receiverAddres
                 ))}
               </div>
             </li>
+            {getAccountBalanceTimelineEntry()}
+            {getLastTxReportTimelineEntry()}
           </ul>
         );
       } else if (status === 'whitelisted') {
@@ -105,6 +180,8 @@ export const ProtectedTransactionReport: FC<Props> = ({ txReport, receiverAddres
                 ))}
               </div>
             </li>
+            {getAccountBalanceTimelineEntry()}
+            {getLastTxReportTimelineEntry()}
           </ul>
         );
       }
@@ -119,9 +196,11 @@ export const ProtectedTransactionReport: FC<Props> = ({ txReport, receiverAddres
             <p className="text-danger">We are not sure what is going on with this address.</p>
           </div>
         </li>
+        {getAccountBalanceTimelineEntry()}
+        {getLastTxReportTimelineEntry()}
       </ul>
     );
-  }, [txReport]);
+  }, [cryptoScamAddressReport, getAccountBalanceTimelineEntry]);
 
   return (
     <div className="ProtectedTransactionReport">
@@ -130,19 +209,21 @@ export const ProtectedTransactionReport: FC<Props> = ({ txReport, receiverAddres
       <h4 className="ProtectedTransactionReport-title ProtectedTransactionReport-title-address">
         {getShortAddress()}
       </h4>
-      {txReport && (
+      {cryptoScamAddressReport && (
         <h5 className="ProtectedTransactionReport-subtitle">
           If any of the information below is unexpected, please stop and review the address. Where
           did you copy the address from? Who gave you the address?
         </h5>
       )}
       <div className="ProtectedTransactionReport-timeline">{getTimeline()}</div>
-      {txReport && (
+      {cryptoScamAddressReport && (
         <>
           <p className="ProtectedTransactionReport-view-comments">
             View comments for this account on &nbsp;
             <a
-              href={`https://etherscan.io/address/${(txReport as CryptoScamDBBaseResponse).input}`}
+              href={`https://etherscan.io/address/${
+                (cryptoScamAddressReport as CryptoScamDBBaseResponse).input
+              }`}
               rel="noreferrer"
               target="_blank"
             >

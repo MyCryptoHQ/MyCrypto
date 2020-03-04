@@ -28,7 +28,7 @@ export const ProtectionThisTransaction: FC<{
     rate: number | null;
   }>({ amount: null, fee: null, rate: null });
 
-  const { showHideTransactionProtection, goOnNextStep, setReceiverAddress } = withProtectApi;
+  const { showHideTransactionProtection, goOnNextStep, setReceiverInfo } = withProtectApi;
 
   useEffect(() => {
     const { asset } = sendAssetsValues!;
@@ -48,7 +48,7 @@ export const ProtectionThisTransaction: FC<{
 
       try {
         setIsLoading(true);
-        await setReceiverAddress(sendAssetsValues!.address.value);
+        await setReceiverInfo(sendAssetsValues!.address.value, sendAssetsValues!.network.id);
         await handleProtectedTransactionSubmit({
           ...sendAssetsValues!,
           amount: feeAmount.amount ? feeAmount.amount.toString() : ''

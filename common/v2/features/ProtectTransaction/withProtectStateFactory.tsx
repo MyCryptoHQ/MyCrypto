@@ -3,17 +3,25 @@ import {
   CryptoScamDBNoInfoResponse
 } from '../../services/ApiService/CryptoScamDB/types';
 import { TUseStateReducerFactory } from '../../utils';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useContext, useEffect, useRef } from 'react';
 import CryptoScamDBService from '../../services/ApiService/CryptoScamDB/CryptoScamDB';
 import { SendFormCallbackType } from './types';
-import { ITxReceipt } from '../../types';
+import { Asset, ITxReceipt, Network, NetworkId } from '../../types';
+import { GetBalanceResponse, GetLastTxResponse } from '../../services/ApiService/Etherscan/types';
+import { EtherscanService } from 'v2/services/ApiService/Etherscan';
+import { getNetworkById, NetworkContext } from '../../services/Store/Network';
+import { AssetContext, getAssetByUUID } from '../../services/Store/Asset';
 
 export interface WithProtectState {
   stepIndex: number;
   protectTxEnabled: boolean;
-  txReport: CryptoScamDBNoInfoResponse | CryptoScamDBInfoResponse | null;
+  cryptoScamAddressReport: CryptoScamDBNoInfoResponse | CryptoScamDBInfoResponse | null;
+  etherscanBalanceReport: GetBalanceResponse | null;
+  etherscanLastTxReport: GetLastTxResponse | null;
   mainComponentDisabled: boolean;
   receiverAddress: string | null;
+  network: Network | null;
+  asset: Asset | null;
 }
 
 export interface WithProtectApiFactory {
@@ -25,7 +33,7 @@ export interface WithProtectApiFactory {
   goOnNextStep(): void;
   goOnInitialStep(): void;
   showHideTransactionProtection(showOrHide: boolean): void;
-  setReceiverAddress(receiverAddress: string): Promise<void>;
+  setReceiverInfo(receiverAddress: string, network: NetworkId | null): Promise<void>;
   setProtectionTxTimeoutFunction(cb: (txReceiptCb?: (txReciept: ITxReceipt) => void) => void): void;
   invokeProtectionTxTimeoutFunction(cb: (txReceipt: ITxReceipt) => void): void;
   clearProtectionTxTimeoutFunction(): void;
@@ -34,7 +42,12 @@ export interface WithProtectApiFactory {
 export const WithProtectInitialState: Partial<WithProtectState> = {
   stepIndex: 0,
   protectTxEnabled: false,
-  receiverAddress: null
+  receiverAddress: null,
+  network: null,
+  cryptoScamAddressReport: null,
+  etherscanBalanceReport: null,
+  etherscanLastTxReport: null,
+  asset: null
 };
 
 const numOfSteps = 3;
@@ -46,25 +59,42 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
   const formCallback = useRef<SendFormCallbackType>(() => ({ isValid: false, values: null }));
   const protectionTxTimeoutFunction = useRef<((cb: () => ITxReceipt) => void) | null>(null);
 
+  const { networks } = useContext(NetworkContext);
+  const { assets } = useContext(AssetContext);
+
   useEffect(() => {
     const isDisabled =
-      state.protectTxEnabled && state.stepIndex !== numOfSteps - 1 && state.txReport === null;
+      state.protectTxEnabled &&
+      state.stepIndex !== numOfSteps - 1 &&
+      state.cryptoScamAddressReport === null;
 
     setState(prevState => ({
       ...prevState,
       mainComponentDisabled: isDisabled
     }));
-  }, [state.protectTxEnabled, state.stepIndex, state.txReport]);
+  }, [state.protectTxEnabled, state.stepIndex, state.cryptoScamAddressReport]);
 
   const handleTransactionReport = useCallback(async (): Promise<void> => {
     if (!state.receiverAddress) return;
 
     try {
-      const txReport = await CryptoScamDBService.instance.check(state.receiverAddress);
+      const cryptoScamAddressReport = await CryptoScamDBService.instance.check(
+        state.receiverAddress
+      );
+      const etherscanBalanceReport = await EtherscanService.instance.getBalance(
+        state.receiverAddress,
+        state.network!.id
+      );
+      const etherscanLastTxReport = await EtherscanService.instance.getLastTx(
+        state.receiverAddress,
+        state.network!.id
+      );
 
       setState((prevState: WithProtectState) => ({
         ...prevState,
-        txReport
+        cryptoScamAddressReport,
+        etherscanBalanceReport,
+        etherscanLastTxReport
       }));
 
       return Promise.resolve();
@@ -72,7 +102,7 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
       console.error(e);
       setState((prevState: WithProtectState) => ({
         ...prevState,
-        txReport: {
+        cryptoScamAddressReport: {
           input: prevState.receiverAddress,
           message: '',
           success: false
@@ -105,7 +135,7 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
     setState(prevState => ({
       ...prevState,
       stepIndex: 0,
-      txReport: null
+      cryptoScamAddressReport: null
     }));
   }, [setState]);
 
@@ -135,15 +165,27 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
     [setState]
   );
 
-  const setReceiverAddress = useCallback(
-    async (receiverAddress: string) => {
+  const setReceiverInfo = useCallback(
+    async (receiverAddress: string, networkId: NetworkId | null = null) => {
       if (!receiverAddress) {
         return Promise.reject();
       }
 
+      let network: Network | null = null;
+      if (networkId) {
+        network = getNetworkById(networkId, networks);
+      }
+
+      let asset: Asset | null = null;
+      if (network) {
+        asset = getAssetByUUID(assets)(network.baseAsset)!;
+      }
+
       setState(prevState => ({
         ...prevState,
-        receiverAddress
+        receiverAddress,
+        network,
+        asset
       }));
 
       return Promise.resolve();
@@ -188,7 +230,7 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
     goOnInitialStep,
     showHideTransactionProtection,
     formCallback: formCallback.current,
-    setReceiverAddress,
+    setReceiverInfo,
     setProtectionTxTimeoutFunction,
     invokeProtectionTxTimeoutFunction,
     clearProtectionTxTimeoutFunction
