@@ -42,13 +42,11 @@ const SStep = styled(Step)<StepProps>`
       width: ${FONT_SIZE.SM};
     }
   }
-  
   && .rc-steps-item-tail {
     top: -5px;
     padding-bottom: 0;
     height: 110%;
   }
-
   && .rc-steps-item-tail:after {
     background-color: ${COLORS.BLUE_BRIGHT};
   }
