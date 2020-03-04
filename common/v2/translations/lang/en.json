@@ -604,6 +604,8 @@
     "GAS_PRICE_TOOLTIP": "A higher Gas Price will ensure that a transaction is confirmed quicker, but it will also raise the Transaction Fee. Most users do not need to modify this field. [Learn about Gas.](https://support.mycrypto.com/general-knowledge/ethereum-blockchain/what-is-gas)",
     "TOKEN_SEND_TOOLTIP": "Whenever you send a token on the Ethereum blockchain, you’re actually sending a request to the token contract to move the tokens around. This doesn’t require any extra action from you, but this is why you see this additional information.",
     "NETWORK_TOOLTIP": "A network is also known as a blockchain. Most users are here to manage their Ethereum accounts, so this selection defaults to the Ethereum network. [Learn about the other networks that MyCrypto supports.](https://support.mycrypto.com/developers/adding-a-new-network)",
-    "NONCE_TOOLTIP": "The nonce is the number of transactions sent from a given address and its purpose is to prevent double spending. [Learn more about nonce.](https://support.mycrypto.com/general-knowledge/ethereum-blockchain/what-is-nonce)"
+    "NONCE_TOOLTIP": "The nonce is the number of transactions sent from a given address and its purpose is to prevent double spending. [Learn more about nonce.](https://support.mycrypto.com/general-knowledge/ethereum-blockchain/what-is-nonce)",
+    "PLATFORMS": "Platforms:",
+    "ZAP_NAME": "Zap Name:"
   }
 }

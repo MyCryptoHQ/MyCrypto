@@ -1,7 +1,7 @@
 import React from 'react';
 import { useStateReducer } from 'v2/utils';
 import { IZapConfig } from './config';
-import { ZapForm, ConfirmZapInteraction, ZapInteractionReceipt } from './components';
+import { ZapForm, ConfirmZapInteraction, ZapReceipt } from './components';
 import { default as GeneralStepper, IStepperPath } from 'v2/components/GeneralStepper';
 import { ROUTE_PATHS } from 'v2/config';
 import ZapInteractionFactory from './stateFactory';
@@ -45,7 +45,7 @@ const ZapStepper = ({ selectedZap }: Props) => {
     },
     {
       label: 'Zap Receipt',
-      component: ZapInteractionReceipt,
+      component: ZapReceipt,
       props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(zapFlowState)
     }
   ];

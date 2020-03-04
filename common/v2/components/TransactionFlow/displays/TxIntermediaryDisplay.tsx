@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { Copyable } from '@mycrypto/ui';
 
-import { Asset } from 'v2/types';
 import { translateRaw } from 'v2/translations';
 import { Tooltip } from 'v2/components';
 
 interface Props {
-  asset: Asset;
+  address: string;
+  contractName: string;
 }
 
 const Wrapper = styled.div`
@@ -45,15 +45,15 @@ const IntermediaryDisplayContract = styled(Copyable)`
   color: #282d32;
 `;
 
-function TransactionIntermediaryDisplay({ asset }: Props) {
+function TxIntermediaryDisplay({ address, contractName }: Props) {
   return (
     <>
-      {asset.contractAddress && (
+      {address && (
         <IntermediaryDisplay>
           <Wrapper>
             <div>
-              <IntermediaryDisplayLabel>{`Transaction performed via ${asset.ticker} contract:`}</IntermediaryDisplayLabel>
-              <IntermediaryDisplayContract text={asset.contractAddress} />
+              <IntermediaryDisplayLabel>{`Transaction performed via ${contractName} contract:`}</IntermediaryDisplayLabel>
+              <IntermediaryDisplayContract text={address} />
             </div>
             <Tooltip tooltip={translateRaw('TOKEN_SEND_TOOLTIP')} />
           </Wrapper>
@@ -63,4 +63,4 @@ function TransactionIntermediaryDisplay({ asset }: Props) {
   );
 }
 
-export default TransactionIntermediaryDisplay;
+export default TxIntermediaryDisplay;

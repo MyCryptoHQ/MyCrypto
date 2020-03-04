@@ -33,8 +33,21 @@
       margin-bottom: 24px;
     }
     &-column {
+
       flex: 1;
       margin-bottom: 24px;
+
+      &:first-child {
+        font-weight: bold;
+
+        @media (min-width: 500px) {
+          flex: 1;
+        }
+      }
+      &:nth-child(2) {
+        flex: 2;
+        text-align: right;
+      }
 
       @media (min-width: 550px) {
         margin-bottom: 0;
@@ -44,21 +57,8 @@
         height: 30px;
         margin-right: 10px;
       }
-      &-amount {
-        display: flex;
-        justify-content: flex-end;
-        align-items: flex-start;
-        img {
-          margin-right: 10px;
-          @media (max-width: 550px) {
-            display: none;
-          }
-        }
-        .Amount .Amount-fiat{
-          color: #B5BFC7;
-          font-size: 16px;
-        }
-      }
+
+      
     }
   }
   &-addressWrapper {
@@ -111,5 +111,21 @@
     width: 100%;
     margin-bottom: 15px;
     color: #1eb8e7;
+  }
+}
+
+.rightAligned {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  img {
+    margin-right: 10px;
+    @media (max-width: 550px) {
+      display: none;
+    }
+  }
+  .Amount .Amount-fiat{
+    color: #B5BFC7;
+    font-size: 16px;
   }
 }

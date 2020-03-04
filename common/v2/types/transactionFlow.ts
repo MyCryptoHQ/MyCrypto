@@ -6,6 +6,7 @@ import {
   WalletId,
   StoreAccount
 } from 'v2/types';
+import { IZapConfig } from 'v2/features/DeFiZap/config';
 
 export type ISignedTx = string;
 
@@ -64,6 +65,8 @@ export interface IStepComponentProps {
   txConfig: ITxConfig;
   txReceipt?: ITxReceipt;
   signedTx?: string;
+  txType?: ITxType;
+  zapSelected?: IZapConfig;
   children?: never;
   completeButtonText?: string;
   onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;
@@ -78,8 +81,15 @@ export interface IReceiverAddress {
 export type SigningComponents = {
   readonly [k in WalletId]: React.ComponentType<ISignComponentProps> | null;
 };
+
 export enum ITxStatus {
   SUCCESS = 'SUCCESS',
   FAILED = 'FAILED',
   PENDING = 'PENDING'
+}
+
+export enum ITxType {
+  STANDARD = 'STANDARD',
+  SWAP = 'SWAP',
+  DEFIZAP = 'DEFIZAP'
 }

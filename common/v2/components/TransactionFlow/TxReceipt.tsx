@@ -1,9 +1,18 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
+import styled from 'styled-components';
 
-import { ITxReceipt, ITxStatus, IStepComponentProps, TSymbol } from 'v2/types';
-import { Amount, TimeElapsedCounter, AssetIcon, LinkOut, Account } from 'v2/components';
+import {
+  ITxReceipt,
+  ITxStatus,
+  IStepComponentProps,
+  TSymbol,
+  ITxType,
+  TAddress,
+  ExtendedAddressBook
+} from 'v2/types';
+import { Amount, TimeElapsedCounter, AssetIcon, LinkOut } from 'v2/components';
 import {
   AddressBookContext,
   AccountContext,
@@ -17,31 +26,41 @@ import {
   getTransactionReceiptFromHash
 } from 'v2/services/EthService';
 import { ROUTE_PATHS } from 'v2/config';
+import { SwapDisplayData } from 'v2/features/SwapAssets/types';
 import translate, { translateRaw } from 'v2/translations';
 import { convertToFiat, truncate, fromTxReceiptObj } from 'v2/utils';
 import { isWeb3Wallet } from 'v2/utils/web3';
+import ProtocolTagsList from 'v2/features/DeFiZap/components/ProtocolTagsList';
 
-import './TransactionReceipt.scss';
-// Legacy
+import { FromToAccount, SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
+import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
 import sentIcon from 'common/assets/images/icn-sent.svg';
-import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
+import defizaplogo from 'assets/images/defizap/defizaplogo.svg';
+import './TxReceipt.scss';
 
 interface PendingBtnAction {
   text: string;
   action(cb: any): void;
 }
 interface Props {
-  customDetails?: JSX.Element;
   pendingButton?: PendingBtnAction;
+  swapDisplay?: SwapDisplayData;
 }
 
-export default function TransactionReceipt({
+const SImg = styled('img')`
+  height: ${(p: { size: string }) => p.size};
+  width: ${(p: { size: string }) => p.size};
+`;
+
+export default function TxReceipt({
   txReceipt,
   txConfig,
   resetFlow,
   completeButtonText,
-  customDetails,
-  pendingButton
+  pendingButton,
+  txType = ITxType.STANDARD,
+  zapSelected,
+  swapDisplay
 }: IStepComponentProps & Props) {
   const { getAssetRate } = useContext(RatesContext);
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
@@ -91,25 +110,77 @@ export default function TransactionReceipt({
     }
   });
 
+  const assetForRateFetch = 'asset' in displayTxReceipt ? displayTxReceipt.asset : undefined;
+  const assetRate = getAssetRate(assetForRateFetch);
+  const { senderAccount } = txConfig;
+  const senderContact = getContactByAccount(senderAccount);
   const recipientContact = getContactByAddressAndNetwork(
     txConfig.receiverAddress,
     txConfig.network
   );
-  const recipientLabel = recipientContact ? recipientContact.label : translateRaw('NO_ADDRESS');
 
-  /* ToDo: Figure out how to extract this */
+  return (
+    <TxReceiptUI
+      txConfig={txConfig}
+      txReceipt={txReceipt}
+      txType={txType}
+      assetRate={assetRate}
+      zapSelected={zapSelected}
+      swapDisplay={swapDisplay}
+      txStatus={txStatus}
+      timestamp={timestamp}
+      senderContact={senderContact}
+      recipientContact={recipientContact}
+      displayTxReceipt={displayTxReceipt}
+      resetFlow={resetFlow}
+      completeButtonText={completeButtonText}
+      pendingButton={pendingButton}
+    />
+  );
+}
+
+export interface TxReceiptDataProps {
+  txStatus: ITxStatus;
+  timestamp: number;
+  assetRate: number | undefined;
+  displayTxReceipt: ITxReceipt;
+  senderContact: ExtendedAddressBook | undefined;
+  recipientContact: ExtendedAddressBook | undefined;
+  pendingButton?: PendingBtnAction;
+  swapDisplay?: SwapDisplayData;
+  resetFlow(): void;
+}
+
+export const TxReceiptUI = ({
+  txType,
+  swapDisplay,
+  txConfig,
+  txStatus,
+  timestamp,
+  assetRate,
+  displayTxReceipt,
+  zapSelected,
+  senderContact,
+  recipientContact,
+  pendingButton,
+  resetFlow,
+  completeButtonText
+}: Omit<IStepComponentProps, 'resetFlow' | 'onComplete'> & TxReceiptDataProps) => {
+  /* Determing User's Contact */
   const { asset, gasPrice, gasLimit, senderAccount, network, data, nonce, baseAsset } = txConfig;
 
-  /* Determing User's Contact */
-  const senderContact = getContactByAccount(senderAccount);
+  const recipientLabel = recipientContact ? recipientContact.label : translateRaw('NO_ADDRESS');
   const senderAccountLabel = senderContact ? senderContact.label : translateRaw('NO_LABEL');
 
   const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
   const assetAmount = displayTxReceipt.amount || txConfig.amount;
   const assetTicker = 'asset' in displayTxReceipt ? displayTxReceipt.asset.ticker : 'ETH';
-  const assetForRateFetch = 'asset' in displayTxReceipt ? displayTxReceipt.asset : undefined;
 
-  const txUrl = displayTxReceipt.network.blockExplorer.txUrl(displayTxReceipt.hash);
+  const txUrl = displayTxReceipt.network
+    ? displayTxReceipt.network.blockExplorer.txUrl(displayTxReceipt.hash)
+    : txConfig && txConfig.network && txConfig.network.blockExplorer
+    ? txConfig.network.blockExplorer.txUrl(displayTxReceipt.hash)
+    : '';
   const shouldRenderPendingBtn =
     pendingButton && txStatus === ITxStatus.PENDING && !isWeb3Wallet(senderAccount.wallet);
 
@@ -120,49 +191,71 @@ export default function TransactionReceipt({
           {translate('TRANSACTION_BROADCASTED_DESC')}
         </div>
       </div>
-      {customDetails && <div className="TransactionReceipt-row">{customDetails}</div>}
-      <div className="TransactionReceipt-row TransactionReceipt-row-from-to">
-        <div className="TransactionReceipt-row-column">
-          {translate('CONFIRM_TX_FROM')}
-          <div className="TransactionReceipt-addressWrapper">
-            <Account
-              address={displayTxReceipt.from || txConfig.senderAccount.address}
-              title={senderAccountLabel}
-              truncate={truncate}
+      {txType === ITxType.SWAP && swapDisplay && (
+        <div className="TransactionReceipt-row">
+          <SwapFromToDiagram
+            fromSymbol={swapDisplay.fromAsset.symbol}
+            toSymbol={swapDisplay.toAsset.symbol}
+            fromAmount={swapDisplay.fromAmount}
+            toAmount={swapDisplay.toAmount}
+          />
+        </div>
+      )}
+      <>
+        <FromToAccount
+          from={{
+            address: (displayTxReceipt.from || txConfig.senderAccount.address) as TAddress,
+            label: senderAccountLabel
+          }}
+          to={{
+            address: (displayTxReceipt.to || txConfig.receiverAddress) as TAddress,
+            label: recipientLabel
+          }}
+        />
+      </>
+
+      {txType === ITxType.DEFIZAP && zapSelected && (
+        <>
+          <div className="TransactionReceipt-row">
+            <TxIntermediaryDisplay
+              address={zapSelected.contractAddress}
+              contractName={'DeFi Zap'}
             />
           </div>
-        </div>
-        <div className="TransactionReceipt-row-column">
-          {translate('CONFIRM_TX_TO')}
-          <div className="TransactionReceipt-addressWrapper">
-            <Account
-              address={displayTxReceipt.to || txConfig.receiverAddress}
-              title={recipientLabel}
-              truncate={truncate}
-            />
+          <div className="TransactionReceipt-row">
+            <div className="TransactionReceipt-row-column">
+              <SImg src={defizaplogo} size="24px" />
+              {translateRaw('ZAP_NAME')}
+            </div>
+            <div className="TransactionReceipt-row-column rightAligned">{zapSelected.name}</div>
           </div>
-        </div>
-      </div>
-      {!customDetails && (
+          <div className="TransactionReceipt-row">
+            <div className="TransactionReceipt-row-column">{translateRaw('PLATFORMS')}</div>
+            <div className="TransactionReceipt-row-column rightAligned">
+              <ProtocolTagsList platformsUsed={zapSelected.platformsUsed} />
+            </div>
+          </div>
+          <div className="TransactionReceipt-divider" />
+        </>
+      )}
+
+      {txType !== ITxType.SWAP && (
         <div className="TransactionReceipt-row">
           <div className="TransactionReceipt-row-column">
             <img src={sentIcon} alt="Sent" />
             {translate('CONFIRM_TX_SENT')}
           </div>
-          <div className="TransactionReceipt-row-column-amount">
+          <div className="TransactionReceipt-row-column rightAligned">
             <AssetIcon symbol={asset.ticker as TSymbol} size={'24px'} />
             <Amount
               assetValue={`${parseFloat(assetAmount).toFixed(6)} ${assetTicker}`}
-              fiatValue={`$${convertToFiat(
-                parseFloat(assetAmount),
-                getAssetRate(assetForRateFetch)
-              ).toFixed(2)}
+              fiatValue={`$${convertToFiat(parseFloat(assetAmount), assetRate).toFixed(2)}
             `}
             />
           </div>
         </div>
       )}
-      <div className="TransactionReceipt-divider" />
+      {txType !== ITxType.DEFIZAP && <div className="TransactionReceipt-divider" />}
       <div className="TransactionReceipt-details">
         <div className="TransactionReceipt-details-row">
           <div className="TransactionReceipt-details-row-column">
@@ -227,4 +320,4 @@ export default function TransactionReceipt({
       </Link>
     </div>
   );
-}
+};

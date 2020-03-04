@@ -6,7 +6,7 @@ import { ITxReceipt, ISignedTx, IFormikFields, ITxConfig } from 'v2/types';
 import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS } from 'v2/config';
 
-import { ConfirmTransaction, TransactionReceipt } from 'v2/components/TransactionFlow';
+import { ConfirmTransaction, TxReceipt } from 'v2/components/TransactionFlow';
 import { IStepperPath } from 'v2/components/GeneralStepper/types';
 import { SendAssetsForm, SignTransaction } from './components';
 import { txConfigInitialState, TxConfigFactory } from './stateFactory';
@@ -45,7 +45,7 @@ function SendAssets() {
     },
     {
       label: translateRaw('TRANSACTION_BROADCASTED'),
-      component: TransactionReceipt,
+      component: TxReceipt,
       props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(txFactoryState)
     }
   ];
@@ -71,7 +71,7 @@ function SendAssets() {
     },
     {
       label: translateRaw('TRANSACTION_BROADCASTED'),
-      component: TransactionReceipt,
+      component: TxReceipt,
       props: (({ txConfig, txReceipt }) => ({
         txConfig,
         txReceipt,

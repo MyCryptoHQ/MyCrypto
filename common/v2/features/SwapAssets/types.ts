@@ -10,14 +10,17 @@ export enum LAST_CHANGED_AMOUNT {
   TO = 'TO_AMOUNT'
 }
 
-export interface SwapState {
-  assets: ISwapAsset[];
+export interface SwapDisplayData {
   fromAsset: ISwapAsset;
+  toAsset: ISwapAsset;
   fromAmount: string;
+  toAmount: string;
+}
+
+export interface SwapState extends SwapDisplayData {
+  assets: ISwapAsset[];
   fromAmountError: string | JSX.Element;
   isCalculatingFromAmount: boolean;
-  toAsset: ISwapAsset;
-  toAmount: string;
   toAmountError: string | JSX.Element;
   isCalculatingToAmount: boolean;
   lastChangedAmount: LAST_CHANGED_AMOUNT;
