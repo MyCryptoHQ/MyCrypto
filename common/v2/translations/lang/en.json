@@ -615,6 +615,7 @@
     "ZAP_BALANCE_TOOLTIP": "We've detected that you have a balance on the $protocol protocol.",
     "ZAP_BALANCE_DETECTED": "This zap is active in one or more of your accounts.",
     "ZAP_ESTIMATED_BALANCE": "Estimated Balance",
-    "ZAP_RISK_PROFILE_HEADER_TEXT": "$riskProfile Risk Profile"
+    "ZAP_RISK_PROFILE_HEADER_TEXT": "$riskProfile Risk Profile",
+    "STEP_FINISHED": "Great Work!"
   }
 }

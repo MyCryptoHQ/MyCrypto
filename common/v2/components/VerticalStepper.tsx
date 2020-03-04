@@ -1,16 +1,16 @@
 import React from 'react';
 
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import 'rc-steps/assets/index.css';
 import 'rc-steps/assets/iconfont.css';
 import Steps, { Step } from 'rc-steps';
 
-import Spinner from './Spinner';
 import Typography from './Typography';
 import Button from './Button';
 import { COLORS, SPACING, FONT_SIZE } from 'v2/theme';
 
 import checkmark from 'assets/images/icn-checkmark-white.svg';
+import { translateRaw } from 'v2/translations';
 
 interface StepData {
   icon: string;
@@ -25,22 +25,26 @@ interface Props {
 
 interface StepProps {
   active: boolean;
+  finished: boolean;
 }
 
 const SSteps = styled(Steps)``;
 
 const SStep = styled(Step)<StepProps>`
   && .rc-steps-item-icon {
-    background-color: ${props => (props.active ? COLORS.WHITE : COLORS.BLUE_BRIGHT)};
+    background-color: ${props =>
+      props.active || props.finished ? COLORS.BLUE_BRIGHT : COLORS.WHITE};
     border-color: ${COLORS.BLUE_BRIGHT};
   }
   && .rc-steps-icon {
-    color: ${props => (props.active ? COLORS.BLUE_BRIGHT : COLORS.WHITE)};
+    color: ${props => (props.active ? COLORS.WHITE : COLORS.BLUE_BRIGHT)};
+    img {
+      width: ${FONT_SIZE.SM};
+    }
   }
-`;
-
-const Icon = styled.img`
-  width: ${FONT_SIZE.XL};
+  && .rc-steps-item-tail:after {
+    background-color: ${COLORS.BLUE_BRIGHT};
+  }
 `;
 
 function VerticalStepper({ currentStep = 0, steps }: Props) {
@@ -49,32 +53,71 @@ function VerticalStepper({ currentStep = 0, steps }: Props) {
   };
   return (
     <SSteps current={currentStep} direction="vertical" icons={icons}>
-      {steps.map((s, index) => (
-        <SStep
-          active={currentStep === index}
-          title={<StepperTitle title={s.title} icon={s.icon} />}
-          description={
-            <StepperDescription active={currentStep === index} description={s.description} />
-          }
-        />
-      ))}
+      {steps.map((s, index) => {
+        const active = currentStep === index;
+        const finished = currentStep > index;
+        return (
+          <SStep
+            key={index}
+            active={active}
+            finished={finished}
+            title={<StepperTitle title={s.title} icon={s.icon} finished={finished} />}
+            description={
+              !finished && <StepperDescription active={active} description={s.description} />
+            }
+          />
+        );
+      })}
     </SSteps>
   );
 }
 
-function StepperTitle({ icon, title }) {
+interface TitleProps {
+  icon: string;
+  title: React.ReactNode | string;
+  finished: boolean;
+}
+
+const TitleWrapper = styled.div`
+  display: flex;
+`;
+
+const TitleTypography = styled(Typography)<{ finished: boolean }>`
+  ${props => props.finished && `color: ${COLORS.GREY_LIGHT}`};
+`;
+
+const FinishedTypography = styled(Typography)`
+  margin-left: ${SPACING.SM};
+  font-style: italic;
+  color: ${COLORS.LIGHT_PURPLE};
+`;
+
+const Icon = styled.img`
+  width: ${FONT_SIZE.XL};
+  margin-right: ${SPACING.XS};
+`;
+
+function StepperTitle({ icon, title, finished }: TitleProps) {
   return (
-    <>
+    <TitleWrapper>
       <Icon src={icon} />
-      {title}
-    </>
+      <TitleTypography bold={true} finished={finished}>
+        {title}
+      </TitleTypography>
+      {finished && <FinishedTypography>{translateRaw('STEP_FINISHED')}</FinishedTypography>}
+    </TitleWrapper>
   );
 }
 
-function StepperDescription({ active, description }) {
+interface DescriptionProps {
+  active: boolean;
+  description: React.ReactNode | string;
+}
+
+function StepperDescription({ active, description }: DescriptionProps) {
   return (
     <>
-      <div>{description}</div>
+      <Typography as={'div'}>{description}</Typography>
       <Button disabled={!active}>Activate</Button>
     </>
   );

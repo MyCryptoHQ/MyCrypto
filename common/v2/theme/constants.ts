@@ -41,6 +41,7 @@ export const COLORS = {
   GREYISH_BROWN: '#424242',
 
   PURPLE: '#A086F7',
+  LIGHT_PURPLE: '#A682FF',
   ORANGE: '#FA863F',
   GREEN: '#28a745',
   RED: '#FF0000'

@@ -7,6 +7,7 @@ export default { title: 'VerticalStepper' };
 
 export const defaultState = () => (
   <VerticalStepper
+    currentStep={1}
     steps={[
       { title: 'Enable ETH', icon: step1SVG, description: 'TEST' },
       { title: 'Step2', icon: step1SVG, description: 'TEST' },
