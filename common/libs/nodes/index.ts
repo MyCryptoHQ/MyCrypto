@@ -15,7 +15,7 @@ const {
 export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): IProviderConfig => {
   const defaultConfig: IProviderConfig = {
     concurrency: 2,
-    network: 'ETH',
+    network: 'NRG',
     requestFailureThreshold: 30,
     supportedMethods: {
       getNetVersion: true,
@@ -76,7 +76,7 @@ export const makeAutoNodeName = (network: string) => makeNodeName(network, autoN
 /**
  * Assemble shepherd providers from node configs. Includes pseudo-configs
  */
-const WEB3_NETWORKS = ['ETH', 'Ropsten', 'Kovan', 'Rinkeby', 'ETC', 'Goerli'];
+const WEB3_NETWORKS = ['ETH', 'Ropsten', 'Kovan', 'Rinkeby', 'ETC', 'Goerli', 'NRG', 'NRG_TESTNET'];
 Object.entries(NODE_CONFIGS).forEach(([network, nodes]) => {
   const nodeProviderConf = makeProviderConfig({ network });
   const web3ProviderConf = WEB3_NETWORKS.includes(network)
