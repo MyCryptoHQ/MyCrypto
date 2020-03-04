@@ -57,36 +57,8 @@
         height: 30px;
         margin-right: 10px;
       }
-      &-amount {
-        display: flex;
-        justify-content: flex-end;
-        align-items: flex-start;
-        img {
-          margin-right: 10px;
-          @media (max-width: 550px) {
-            display: none;
-          }
-        }
-        .Amount .Amount-fiat{
-          color: #B5BFC7;
-          font-size: 16px;
-        }
-      }
-      &-zapInfo {
-        display: flex;
-        justify-content: flex-end;
-        align-items: flex-start;
-        img {
-          margin-right: 10px;
-          @media (max-width: 550px) {
-            display: none;
-          }
-        }
-        .Amount .Amount-fiat{
-          color: #B5BFC7;
-          font-size: 16px;
-        }
-      }
+
+      
     }
   }
   &-addressWrapper {
@@ -139,5 +111,21 @@
     width: 100%;
     margin-bottom: 15px;
     color: #1eb8e7;
+  }
+}
+
+.rightAligned {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  img {
+    margin-right: 10px;
+    @media (max-width: 550px) {
+      display: none;
+    }
+  }
+  .Amount .Amount-fiat{
+    color: #B5BFC7;
+    font-size: 16px;
   }
 }

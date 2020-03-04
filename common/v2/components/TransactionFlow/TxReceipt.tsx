@@ -227,11 +227,11 @@ export const TxReceiptUI = ({
               <SImg src={defizaplogo} size="24px" />
               {translateRaw('ZAP_NAME')}
             </div>
-            <div className="TransactionReceipt-row-column-zapInfo">{zapSelected.name}</div>
+            <div className="TransactionReceipt-row-column rightAligned">{zapSelected.name}</div>
           </div>
           <div className="TransactionReceipt-row">
             <div className="TransactionReceipt-row-column">{translateRaw('PLATFORMS')}</div>
-            <div className="TransactionReceipt-row-column-zapInfo">
+            <div className="TransactionReceipt-row-column rightAligned">
               <ProtocolTagsList platformsUsed={zapSelected.platformsUsed} />
             </div>
           </div>
@@ -245,7 +245,7 @@ export const TxReceiptUI = ({
             <img src={sentIcon} alt="Sent" />
             {translate('CONFIRM_TX_SENT')}
           </div>
-          <div className="TransactionReceipt-row-column-amount">
+          <div className="TransactionReceipt-row-column rightAligned">
             <AssetIcon symbol={asset.ticker as TSymbol} size={'24px'} />
             <Amount
               assetValue={`${parseFloat(assetAmount).toFixed(6)} ${assetTicker}`}
