@@ -5,13 +5,18 @@ import { translateRaw } from 'v2/translations';
 
 import { ExtendedContentPanel, WALLET_STEPS } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
-import { ITxReceipt, ISignedTx } from 'v2/types';
+import { ITxReceipt, ITxConfig, ISignedTx } from 'v2/types';
 import { useStateReducer } from 'v2/utils';
 import { useEffectOnce, usePromise } from 'v2/vendor';
 
 import { SwapAssets, ConfirmSwap, SwapTransactionReceipt, SetAllowance } from './components';
-import { SwapFlowFactory, swapFlowInitialState } from './stateFactory';
-import { SwapState } from './types';
+import {
+  SwapFlowFactory,
+  SwapFormFactory,
+  swapFlowInitialState,
+  swapFormInitialState
+} from './stateFactory';
+import { SwapState, SwapFormState } from './types';
 
 interface TStep {
   title?: string;
@@ -35,32 +40,36 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     handleFromAmountChanged,
     handleToAmountChanged,
     handleAccountSelected,
-    handleConfirmSwapClicked,
-    handleAllowanceSigned,
-    handleTxSigned,
-    swapState
-  } = useStateReducer(SwapFlowFactory, swapFlowInitialState);
+    getTokexInfo,
+    formState
+  } = useStateReducer(SwapFormFactory, swapFormInitialState);
   const {
+    assets,
+    account,
     fromAsset,
     toAsset,
-    assets,
     fromAmount,
     toAmount,
     isCalculatingFromAmount,
     isCalculatingToAmount,
     fromAmountError,
     toAmountError,
-    account,
-    isSubmitting,
     lastChangedAmount,
-    dexTrade,
-    txReceipt,
-    txConfig,
-    rawTransaction,
     exchangeRate,
     initialToAmount,
-    markup
-  }: SwapState = swapState;
+    markup,
+    isMulti,
+    dexTrade
+  }: SwapFormState = formState;
+
+  const {
+    saveTxConfig,
+    handleConfirmSwapClicked,
+    handleAllowanceSigned,
+    handleTxSigned,
+    swapState
+  } = useStateReducer(SwapFlowFactory, swapFlowInitialState);
+  const { isSubmitting, txReceipt, txConfig, rawTransaction }: SwapState = swapState;
 
   const goToFirstStep = () => {
     setStep(0);
@@ -107,7 +116,11 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         handleFromAmountChanged,
         handleToAmountChanged,
         handleAccountSelected,
-        onSuccess: goToNextStep
+        onSuccess: () => {
+          getTokexInfo()
+            .then((config: ITxConfig) => saveTxConfig(config, fromAsset, fromAmount, dexTrade))
+            .then(goToNextStep);
+        }
       }
     },
     {
@@ -128,7 +141,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         onSuccess: () => handleConfirmSwapClicked(goToNextStep)
       }
     },
-    ...(dexTrade && dexTrade.metadata.input
+    ...(isMulti
       ? [
           {
             title: translateRaw('SWAP_ALLOWANCE_TITLE'),

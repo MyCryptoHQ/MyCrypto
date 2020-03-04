@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
-import { Asset, StoreAccount, ITxConfig } from 'v2/types';
+import { Asset, StoreAccount, ITxConfig, IHexStrTransaction, ITxObject } from 'v2/types';
 import { DEXAG_PROXY_CONTRACT } from 'v2/config';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 import {
@@ -21,7 +21,7 @@ import { ISwapAsset } from './types';
 export const makeAllowanceTransaction = async (
   trade: any,
   account: StoreAccount
-): Promise<ITxConfig> => {
+): Promise<ITxObject> => {
   const { address: to, amount } = trade.metadata.input;
   const network = account.network;
 
@@ -65,7 +65,7 @@ export const makeAllowanceTransaction = async (
 export const makeTradeTransactionFromDexTrade = async (
   trade: any,
   account: StoreAccount
-): Promise<ITxConfig> => {
+): Promise<ITxObject> => {
   const network = account.network;
   const { fast } = await fetchGasPriceEstimates(network);
   let gasPrice = hexWeiToString(inputGasPriceToHex(fast.toString()));
@@ -92,7 +92,7 @@ export const makeTradeTransactionFromDexTrade = async (
 };
 
 export const makeTxConfigFromTransaction = (assets: Asset[]) => (
-  transaction: ITxConfig,
+  transaction: ITxObject,
   account: StoreAccount,
   fromAsset: ISwapAsset,
   fromAmount: string
@@ -119,6 +119,18 @@ export const makeTxConfigFromTransaction = (assets: Asset[]) => (
   };
 
   return txConfig;
+};
+
+export const makeTxObject = (config: ITxConfig): IHexStrTransaction => {
+  return {
+    to: config.receiverAddress,
+    chainId: config.network.chainId,
+    data: config.data,
+    value: addHexPrefix(new BN(config.amount).toString(16)),
+    gasPrice: addHexPrefix(new BN(config.gasPrice).toString(16)),
+    gasLimit: config.gasLimit,
+    nonce: config.nonce
+  };
 };
 
 // filter accounts based on wallet type and sufficient balance

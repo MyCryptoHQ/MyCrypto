@@ -20,28 +20,19 @@ import {
   NetworkContext,
   getNetworkById
 } from 'v2/services';
-import { StoreAccount } from 'v2/types';
+import { StoreAccount, ITxConfig } from 'v2/types';
 import { isWeb3Wallet } from 'v2/utils/web3';
 import { DEFAULT_NETWORK, MYC_DEXAG_COMMISSION_RATE } from 'v2/config';
 
-import { ISwapAsset, LAST_CHANGED_AMOUNT, SwapState } from './types';
+import { ISwapAsset, LAST_CHANGED_AMOUNT, SwapState, SwapFormState } from './types';
 import {
   makeTxConfigFromTransaction,
   makeAllowanceTransaction,
-  makeTradeTransactionFromDexTrade
+  makeTradeTransactionFromDexTrade,
+  makeTxObject
 } from './helpers';
 
 const swapFlowInitialState = {
-  assets: [],
-  fromAsset: undefined,
-  fromAmount: '',
-  fromAmountError: undefined,
-  isCalculatingFromAmount: false,
-  toAsset: undefined,
-  toAmount: '',
-  toAmountError: undefined,
-  isCalculatingToAmount: false,
-  lastChangedAmount: LAST_CHANGED_AMOUNT.FROM,
   account: undefined,
   isSubmitting: false,
   txConfig: undefined,
@@ -53,9 +44,23 @@ const swapFlowInitialState = {
   markup: undefined
 };
 
-const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }) => {
-  const { assets: userAssets } = useContext(AssetContext);
+const swapFormInitialState = {
+  assets: [],
+  account: undefined,
+  fromAsset: undefined,
+  fromAmount: '',
+  fromAmountError: undefined,
+  isCalculatingFromAmount: false,
+  toAsset: undefined,
+  toAmount: '',
+  toAmountError: undefined,
+  isCalculatingToAmount: false,
+  lastChangedAmount: LAST_CHANGED_AMOUNT.FROM
+};
+
+const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setState }) => {
   const { networks } = useContext(NetworkContext);
+  const { assets: userAssets } = useContext(AssetContext);
 
   const fetchSwapAssets = async () => {
     try {
@@ -76,7 +81,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
   };
 
   const setSwapAssets = (assets: ISwapAsset[], fromAsset: ISwapAsset, toAsset: ISwapAsset) => {
-    setState((prevState: SwapState) => ({
+    setState((prevState: SwapFormState) => ({
       ...prevState,
       assets,
       fromAsset,
@@ -90,7 +95,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       return;
     }
 
-    setState((prevState: SwapState) => ({
+    setState((prevState: SwapFormState) => ({
       ...prevState,
       fromAsset,
       fromAmount: '',
@@ -101,7 +106,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
   };
 
   const handleToAssetSelected = (toAsset: ISwapAsset) => {
-    setState((prevState: SwapState) => ({
+    setState((prevState: SwapFormState) => ({
       ...prevState,
       toAsset
     }));
@@ -114,7 +119,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
     }
 
     if (value.length === 0) {
-      setState((prevState: SwapState) => ({
+      setState((prevState: SwapFormState) => ({
         ...prevState,
         toAmount: '',
         fromAmount: ''
@@ -123,7 +128,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
     }
 
     if (parseFloat(value) <= 0) {
-      setState((prevState: SwapState) => ({
+      setState((prevState: SwapFormState) => ({
         ...prevState,
         isCalculatingFromAmount: false,
         toAmountError: translate('SWAP_ZERO_VALUE')
@@ -132,7 +137,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
     }
 
     try {
-      setState((prevState: SwapState) => ({
+      setState((prevState: SwapFormState) => ({
         ...prevState,
         isCalculatingFromAmount: true
       }));
@@ -150,7 +155,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         commissionIncreasedAmount.toString()
       );
 
-      setState((prevState: SwapState) => ({
+      setState((prevState: SwapFormState) => ({
         ...prevState,
         isCalculatingFromAmount: false,
         fromAmount: trimBN(
@@ -167,7 +172,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       }));
     } catch (e) {
       if (!e.isCancel) {
-        setState((prevState: SwapState) => ({
+        setState((prevState: SwapFormState) => ({
           ...prevState,
           isCalculatingFromAmount: false,
           toAmountError: translate('UNEXPECTED_ERROR', {
@@ -186,7 +191,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
     }
 
     if (value.length === 0) {
-      setState((prevState: SwapState) => ({
+      setState((prevState: SwapFormState) => ({
         ...prevState,
         toAmount: '',
         fromAmount: ''
@@ -195,7 +200,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
     }
 
     if (parseFloat(value) <= 0) {
-      setState((prevState: SwapState) => ({
+      setState((prevState: SwapFormState) => ({
         ...prevState,
         isCalculatingToAmount: false,
         fromAmountError: translate('SWAP_ZERO_VALUE')
@@ -204,7 +209,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
     }
 
     try {
-      setState((prevState: SwapState) => ({
+      setState((prevState: SwapFormState) => ({
         ...prevState,
         isCalculatingToAmount: true,
         lastChangedAmount: LAST_CHANGED_AMOUNT.FROM
@@ -216,7 +221,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
         value
       );
 
-      setState((prevState: SwapState) => ({
+      setState((prevState: SwapFormState) => ({
         ...prevState,
         isCalculatingToAmount: false,
         toAmount: withCommission({
@@ -232,7 +237,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       }));
     } catch (e) {
       if (!e.isCancel) {
-        setState((prevState: SwapState) => ({
+        setState((prevState: SwapFormState) => ({
           ...prevState,
           isCalculatingToAmount: false,
           fromAmountError: translate('UNEXPECTED_ERROR', {
@@ -245,7 +250,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
   };
 
   const handleFromAmountChanged = (fromAmount: string) => {
-    setState((prevState: SwapState) => ({
+    setState((prevState: SwapFormState) => ({
       ...prevState,
       fromAmount,
       lastChangedAmount: LAST_CHANGED_AMOUNT.FROM,
@@ -255,7 +260,7 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
   };
 
   const handleToAmountChanged = (toAmount: string) => {
-    setState((prevState: SwapState) => ({
+    setState((prevState: SwapFormState) => ({
       ...prevState,
       toAmount,
       lastChangedAmount: LAST_CHANGED_AMOUNT.TO,
@@ -265,26 +270,21 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
   };
 
   const handleAccountSelected = (account: StoreAccount) => {
-    setState((prevState: SwapState) => ({
+    setState((prevState: SwapFormState) => ({
       ...prevState,
       account
     }));
   };
 
-  const handleConfirmSwapClicked = async (after: () => void): Promise<void> => {
+  const getTokexInfo = async (): Promise<ITxConfig> => {
     const { lastChangedAmount, fromAsset, fromAmount, toAsset, toAmount, account } = state;
     const isLastChangedTo = lastChangedAmount === LAST_CHANGED_AMOUNT.TO;
 
+    const getOrderDetails = isLastChangedTo
+      ? DexService.instance.getOrderDetailsTo
+      : DexService.instance.getOrderDetailsFrom;
+
     try {
-      const getOrderDetails = isLastChangedTo
-        ? DexService.instance.getOrderDetailsTo
-        : DexService.instance.getOrderDetailsFrom;
-
-      setState((prevState: SwapState) => ({
-        ...prevState,
-        isSubmitting: true
-      }));
-
       const dexTrade = await getOrderDetails(
         fromAsset.symbol,
         toAsset.symbol,
@@ -294,21 +294,67 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       const makeTransaction = dexTrade.metadata.input
         ? makeAllowanceTransaction
         : makeTradeTransactionFromDexTrade;
+
       const rawTransaction = await makeTransaction(dexTrade, account);
 
-      const txConfig = makeTxConfigFromTransaction(userAssets)(
+      setState(prevState => ({
+        ...prevState,
+        isMulti: dexTrade.metadata.input,
+        dexTrade
+      }));
+
+      return makeTxConfigFromTransaction(userAssets)(
         rawTransaction,
         account,
         fromAsset,
         fromAmount
       );
+    } catch (err) {
+      throw new Error(err);
+    }
+  };
 
+  return {
+    fetchSwapAssets,
+    setSwapAssets,
+    handleFromAssetSelected,
+    handleToAssetSelected,
+    calculateNewFromAmount,
+    calculateNewToAmount,
+    handleFromAmountChanged,
+    handleToAmountChanged,
+    handleAccountSelected,
+    getTokexInfo,
+    formState: state
+  };
+};
+
+const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }) => {
+  const { assets: userAssets } = useContext(AssetContext);
+  const { networks } = useContext(NetworkContext);
+
+  const saveTxConfig = (
+    txConfig: ITxConfig,
+    fromAsset: ISwapAsset,
+    fromAmount: string,
+    dexTrade: any
+  ) => {
+    setState(prevState => ({
+      ...prevState,
+      txConfig,
+      fromAsset,
+      fromAmount,
+      dexTrade,
+      account: txConfig.senderAccount
+    }));
+  };
+
+  const handleConfirmSwapClicked = async (after: () => void): Promise<void> => {
+    try {
       setState((prevState: SwapState) => ({
         ...prevState,
         isSubmitting: false,
-        txConfig,
-        rawTransaction,
-        dexTrade
+        rawTransaction: makeTxObject(prevState.txConfig)
       }));
 
       after();
@@ -344,7 +390,6 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       isSubmitting: true
     }));
     await provider.waitForTransaction(allowanceTxHash);
-
     const rawTransaction = await makeTradeTransactionFromDexTrade(dexTrade, account);
     const txConfig = makeTxConfigFromTransaction(userAssets)(
       rawTransaction,
@@ -392,20 +437,12 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
   };
 
   return {
-    fetchSwapAssets,
-    setSwapAssets,
-    handleFromAssetSelected,
-    handleToAssetSelected,
-    calculateNewFromAmount,
-    calculateNewToAmount,
-    handleFromAmountChanged,
-    handleToAmountChanged,
-    handleAccountSelected,
     handleConfirmSwapClicked,
     handleAllowanceSigned,
     handleTxSigned,
+    saveTxConfig,
     swapState: state
   };
 };
 
-export { swapFlowInitialState, SwapFlowFactory };
+export { swapFlowInitialState, SwapFlowFactory, swapFormInitialState, SwapFormFactory };
