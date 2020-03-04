@@ -18,10 +18,7 @@ const swapFlowInitialState = {
   txConfig: undefined,
   rawTransaction: undefined,
   dexTrade: undefined,
-  txReceipt: undefined,
-  initialToAmount: undefined,
-  exchangeRate: undefined,
-  markup: undefined
+  txReceipt: undefined
 };
 
 const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }) => {
@@ -64,9 +61,9 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
 
   const handleAllowanceSigned = async (signResponse: any, after: () => void) => {
     const { fromAsset, fromAmount, account, dexTrade } = state;
-    let allowanceTxHash;
     const provider = new ProviderHandler(account.network);
 
+    let allowanceTxHash;
     try {
       if (isWeb3Wallet(account.wallet)) {
         allowanceTxHash = (signResponse && signResponse.hash) || signResponse;
@@ -78,7 +75,6 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
       const tx = await provider.getTransactionByHash(hash);
       allowanceTxHash = tx.hash;
     }
-
     // wait for allowance tx to be mined
     setState((prevState: SwapState) => ({
       ...prevState,

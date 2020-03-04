@@ -1,5 +1,4 @@
 import { TSymbol, StoreAccount, ITxConfig, ITxReceipt, ITxObject } from 'v2/types';
-import { BigNumber } from 'ethers/utils';
 
 export interface ISwapAsset {
   name: string;
@@ -28,6 +27,7 @@ export interface SwapState extends SwapDisplayData {
 }
 
 export interface SwapFormState extends SwapDisplayData {
+  account: StoreAccount;
   assets: ISwapAsset[];
   fromAmountError: string | JSX.Element;
   isCalculatingFromAmount: boolean;
@@ -39,13 +39,4 @@ export interface SwapFormState extends SwapDisplayData {
   markup: string;
   isMulti: boolean;
   dexTrade: any;
-}
-
-// Token Exchange ref. Forex
-// Defines the equivalent of currency pair in the exchange
-export interface Tokex {
-  baseToken: ISwapAsset;
-  baseAmount: BigNumber;
-  quoteToken: ISwapAsset;
-  quoteAmount: BigNumber;
 }
