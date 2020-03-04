@@ -10,12 +10,8 @@ import { useStateReducer } from 'v2/utils';
 import { useEffectOnce, usePromise } from 'v2/vendor';
 
 import { SwapAssets, ConfirmSwap, SwapTransactionReceipt, SetAllowance } from './components';
-import {
-  SwapFlowFactory,
-  SwapFormFactory,
-  swapFlowInitialState,
-  swapFormInitialState
-} from './stateFactory';
+import { SwapFlowFactory, swapFlowInitialState } from './stateFactory';
+import { SwapFormFactory, swapFormInitialState } from './stateFormFactory';
 import { SwapState, SwapFormState } from './types';
 
 interface TStep {
