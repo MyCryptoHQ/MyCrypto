@@ -215,6 +215,7 @@ export default function WalletBreakdownView({
   const [selectedAssetIndex, setSelectedAssetIndex] = useState(initialSelectedAssetIndex);
   const [isChartAnimating, setIsChartAnimating] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(true);
+  const [previousTickers, setPreviousTickers] = useState(balances.map(x => x.ticker));
   const chartBalances = createChartBalances(balances, totalFiatValue);
   const breakdownBalances = createBreakdownBalances(balances);
 
@@ -241,9 +242,22 @@ export default function WalletBreakdownView({
       });
 
   useEffect(() => {
-    setSelectedAssetIndex(initialSelectedAssetIndex);
     setShouldAnimate(true);
+    setSelectedAssetIndex(initialSelectedAssetIndex);
   }, [selected]);
+
+  useEffect(() => {
+    // enable animations and reset selected asset when order of balances change
+    const tickers = balances.map(x => x.ticker);
+    if (
+      previousTickers.length !== tickers.length ||
+      previousTickers.some((x, i) => x !== tickers[i])
+    ) {
+      setShouldAnimate(true);
+      setSelectedAssetIndex(initialSelectedAssetIndex);
+    }
+    setPreviousTickers(tickers);
+  }, [balances]);
 
   const balance = chartBalances[selectedAssetIndex.balance];
   const selectedAssetPercentage =

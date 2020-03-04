@@ -68,7 +68,8 @@ const ActiveSection = (props: ActiveSectionProps) => {
 
 const CustomLabel = (
   labelProps: CustomLabelProps,
-  selectedAssetIndex: number
+  selectedAssetIndex: number,
+  handleMouseOver: BreakdownChartProps['handleMouseOver']
 ): React.ReactElement<any> => {
   const { cx, cy, midAngle, innerRadius, outerRadius, percent, ticker, index } = labelProps;
 
@@ -83,7 +84,14 @@ const CustomLabel = (
 
   // Don't show the label if percent is 3%
   return percent > SMALLEST_CHART_SHARE_SUPPORTED ? (
-    <text x={x} y={y} fill="white" textAnchor={'middle'} dominantBaseline="central">
+    <text
+      onMouseOver={() => handleMouseOver(index)}
+      x={x}
+      y={y}
+      fill="white"
+      textAnchor={'middle'}
+      dominantBaseline="central"
+    >
       {ticker}
     </text>
   ) : (
@@ -110,21 +118,25 @@ const generateColors = (length: number) => {
 };
 
 const BreakdownChart = React.memo(
-  (props: BreakdownChartProps) => {
-    const {
-      balances,
-      selectedAssetIndex,
-      handleMouseOver,
-      handleMouseLeave,
-      setIsChartAnimating,
-      shouldAnimate,
-      setShouldAnimate
-    } = props;
+  ({
+    balances,
+    selectedAssetIndex,
+    handleMouseOver,
+    handleMouseLeave,
+    setIsChartAnimating,
+    shouldAnimate,
+    setShouldAnimate
+  }: BreakdownChartProps) => {
     const COLORS = useMemo(() => generateColors(balances.length), [balances.length]);
 
     return (
       <MainWrapper>
-        <PieChart width={400} height={350}>
+        <PieChart
+          width={400}
+          height={350}
+          onMouseLeave={() => handleMouseLeave(-1)}
+          onMouseEnter={() => handleMouseLeave(-1)}
+        >
           <Pie
             isAnimationActive={shouldAnimate}
             activeIndex={selectedAssetIndex}
@@ -134,7 +146,7 @@ const BreakdownChart = React.memo(
             cy={200}
             innerRadius={0}
             outerRadius={110}
-            label={p => CustomLabel(p as CustomLabelProps, selectedAssetIndex)}
+            label={p => CustomLabel(p as CustomLabelProps, selectedAssetIndex, handleMouseOver)}
             labelLine={false}
             dataKey="fiatValue"
             onMouseEnter={(_: any, index: number) => handleMouseOver(index)}
