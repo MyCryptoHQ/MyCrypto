@@ -67,7 +67,7 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
     }
   }
 
-  public componentWillMount() {
+  public UNSAFE_componentWillMount() {
     this.initProvider();
   }
 

@@ -1,4 +1,5 @@
-import { TSymbol, StoreAccount, ITxConfig, ITxReceipt } from 'v2/types';
+import { TSymbol, StoreAccount, ITxConfig, ITxReceipt, ITxObject } from 'v2/types';
+import { BigNumber } from 'ethers/utils';
 
 export interface ISwapAsset {
   name: string;
@@ -12,25 +13,39 @@ export enum LAST_CHANGED_AMOUNT {
 
 export interface SwapDisplayData {
   fromAsset: ISwapAsset;
-  toAsset: ISwapAsset;
   fromAmount: string;
+  toAsset: ISwapAsset;
   toAmount: string;
 }
 
 export interface SwapState extends SwapDisplayData {
+  account: StoreAccount;
+  isSubmitting: boolean;
+  txConfig: ITxConfig;
+  rawTransaction: ITxObject;
+  dexTrade: any;
+  txReceipt: ITxReceipt | undefined;
+}
+
+export interface SwapFormState extends SwapDisplayData {
   assets: ISwapAsset[];
   fromAmountError: string | JSX.Element;
   isCalculatingFromAmount: boolean;
   toAmountError: string | JSX.Element;
   isCalculatingToAmount: boolean;
   lastChangedAmount: LAST_CHANGED_AMOUNT;
-  account: StoreAccount;
-  isSubmitting: boolean;
-  txConfig: ITxConfig;
-  rawTransaction: ITxConfig;
-  dexTrade: any;
-  txReceipt: ITxReceipt | undefined;
   initialToAmount: string; // This is used to reverse the fee calculation when inputing the recipient amount. It's how we determine the fee.
   exchangeRate: string; // The exchange rate displayed to the user (post-markup)
   markup: string;
+  isMulti: boolean;
+  dexTrade: any;
+}
+
+// Token Exchange ref. Forex
+// Defines the equivalent of currency pair in the exchange
+export interface Tokex {
+  baseToken: ISwapAsset;
+  baseAmount: BigNumber;
+  quoteToken: ISwapAsset;
+  quoteAmount: BigNumber;
 }
