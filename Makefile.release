@@ -46,7 +46,7 @@ RELEASE_REPO := s3://download.energi.software/releases/mew
 release-upload:
 	@find $(RELEASE_DIR)/* | while read fn; do \
 	  dst=$(RELEASE_REPO)/$(RELEASE_RAW_VER)/$$(basename $$fn); \
-	  aws s3 ls "$$dst" >/dev/null || aws s3 cp "$$fn" "$$dst" || exit $$?; \
+	  aws s3 ls "$$dst" >/dev/null || aws s3 cp "$$fn" "$$dst" --acl public-read || exit $$?; \
 	done
 	@find $(RELEASE_DIR)/ -type f | xargs sha256sum
 
@@ -59,4 +59,4 @@ release-sign: release-sign-download
 	@for f in $(RELEASE_DIR)/*; do gpg --sign --detach $$f; done
 
 release-sign-upload:
-	@aws s3 sync $(RELEASE_DIR) $(RELEASE_REPO)/$(RELEASE_RAW_VER)
+	@aws s3 sync $(RELEASE_DIR) $(RELEASE_REPO)/$(RELEASE_RAW_VER) --acl public-read
