@@ -83,7 +83,7 @@ const LINK_COLUMNS = [
       },
 */
       {
-        title: 'Energi MyCrypto Desktop App',
+        title: 'MyEnergiWallet Desktop App',
         link: 'https://docs.energi.software/en/downloads/myenergiwallet'
       }
       /*
