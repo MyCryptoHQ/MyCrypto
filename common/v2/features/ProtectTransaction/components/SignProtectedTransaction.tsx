@@ -1,13 +1,40 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
+import styled from 'styled-components';
+
+import { WithProtectApi } from '../types';
+
+import ProtectedTransactionBase from './ProtectedTransactionBase';
 import ProtectIcon from './icons/ProtectIcon';
+import CloseIcon from './icons/CloseIcon';
 
-import './SignProtectedTransaction.scss';
+const SignProtectedTransactionStyled = styled(ProtectedTransactionBase)`
+  .SignTransactionKeystore {
+    &-title {
+      height: auto;
+      margin-top: 10px;
+    }
+  }
+`;
 
-export const SignProtectedTransaction: FC = ({ children }) => {
+export const SignProtectedTransaction: FC<WithProtectApi> = ({ children, withProtectApi }) => {
+  const { goOnInitialStep } = withProtectApi!;
+
+  const onProtectMyTransactionCancelClick = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement & SVGSVGElement, MouseEvent>) => {
+      e.preventDefault();
+
+      if (goOnInitialStep) {
+        goOnInitialStep();
+      }
+    },
+    []
+  );
+
   return (
-    <div className="SignProtectedTransaction">
+    <SignProtectedTransactionStyled>
+      <CloseIcon size="lg" onClick={onProtectMyTransactionCancelClick} />
       <ProtectIcon size="lg" />
       {children}
-    </div>
+    </SignProtectedTransactionStyled>
   );
 };

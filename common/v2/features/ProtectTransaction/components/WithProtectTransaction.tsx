@@ -1,16 +1,16 @@
 import React, { useMemo } from 'react';
+import styled from 'styled-components';
+
 import { IFormikFields, ISignedTx, IStepComponentProps, ITxReceipt } from '../../../types';
-
 import { Button, Panel } from '@mycrypto/ui';
-
 import { useStateReducer } from '../../../utils';
+import { COLORS } from '../../../theme';
+
 import { ProtectionThisTransaction } from './ProtectionThisTransaction';
 import { SignProtectedTransaction } from './SignProtectedTransaction';
 import { ProtectedTransactionReport } from './ProtectedTransactionReport';
 import { ProtectedTxConfigFactory, protectedTxConfigInitialState } from '../txStateFactory';
 import { WithProtectApiFactory } from '../withProtectStateFactory';
-import styled from 'styled-components';
-import { COLORS } from '../../../theme';
 
 const WithProtectTransactionWrapper = styled.div`
   display: flex;
@@ -103,7 +103,7 @@ export function withProtectTransaction(
                     );
                   } else if (stepIndex === 1) {
                     return (
-                      <SignProtectedTransaction>
+                      <SignProtectedTransaction withProtectApi={withProtectApi!}>
                         <>
                           <SignComponent
                             txConfig={(({ txConfig }) => txConfig)(

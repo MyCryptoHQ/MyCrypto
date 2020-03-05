@@ -1,23 +1,107 @@
 import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
-import CloseIcon from './icons/CloseIcon';
+import styled from 'styled-components';
+
 import { Button } from '@mycrypto/ui';
-import { IFormikFields } from '../../../types';
-import { ProtectTransactionUtils } from '../utils';
-import { Amount } from '../../../components';
 import { convertToFiat } from '../../../utils';
+import { ProtectTransactionUtils } from '../utils';
 import { RatesContext } from '../../../services';
+import { IFormikFields } from '../../../types';
 
-import './ProtectionThisTransaction.scss';
-
+import ProtectedTransactionBase from './ProtectedTransactionBase';
+import { Amount } from '../../../components';
+import CloseIcon from './icons/CloseIcon';
 import ProtectIcon from './icons/ProtectIcon';
 import feeIcon from 'assets/images/icn-fee.svg';
-import { WithProtectApiFactory } from '../withProtectStateFactory';
 
-export const ProtectionThisTransaction: FC<{
-  withProtectApi: WithProtectApiFactory;
+import { WithProtectApi } from '../types';
+import { COLORS } from '../../../theme';
+
+const ProtectionThisTransactionStyled = styled(ProtectedTransactionBase)`
+  .confirm-text {
+    max-width: 300px;
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 16px;
+  }
+
+  .send-with-confidence {
+    margin: 0 0 15px;
+  }
+
+  .protect-transaction {
+    width: 280px;
+    margin: 12px 0 16px;
+  }
+
+  .cancel {
+    background: none;
+    border: none;
+    color: ${COLORS.BLUE_BRIGHT};
+    text-align: center;
+  }
+`;
+
+const BulletList = styled.ul`
+  li {
+    padding-left: 10px;
+    margin-left: -10px;
+    margin-bottom: 15px;
+    background-image: url('~assets/images/icn-bullet.svg');
+    background-position: 0 10px;
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+    text-align: left;
+    max-width: 280px;
+
+    &:last-child {
+      margin-bottom: 16px;
+    }
+
+    h6 {
+      color: ${COLORS.PURPLE};
+      margin: 0;
+      font-size: 14px;
+      line-height: 24px;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 24px;
+    }
+  }
+`;
+
+const FeeContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 300px;
+  font-size: 16px;
+  line-height: 24px;
+
+  img {
+    height: 23px;
+    width: 24px;
+  }
+
+  .fee-label {
+    flex: 0 0 140px;
+    max-width: 140px;
+    padding-left: 10px;
+    margin-bottom: 0;
+    text-align: left;
+  }
+`;
+
+interface ProtectionThisTransaction extends WithProtectApi {
   sendAssetsValues: IFormikFields | null;
   handleProtectedTransactionSubmit(payload: IFormikFields): Promise<void>;
-}> = ({ sendAssetsValues, withProtectApi, handleProtectedTransactionSubmit }) => {
+}
+
+export const ProtectionThisTransaction: FC<ProtectionThisTransaction> = ({
+  sendAssetsValues,
+  withProtectApi,
+  handleProtectedTransactionSubmit
+}) => {
   const { getAssetRate } = useContext(RatesContext);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -28,7 +112,7 @@ export const ProtectionThisTransaction: FC<{
     rate: number | null;
   }>({ amount: null, fee: null, rate: null });
 
-  const { showHideTransactionProtection, goOnNextStep, setReceiverInfo } = withProtectApi;
+  const { showHideTransactionProtection, goOnNextStep, setReceiverInfo } = withProtectApi!;
 
   useEffect(() => {
     const { asset } = sendAssetsValues!;
@@ -53,8 +137,8 @@ export const ProtectionThisTransaction: FC<{
           ...sendAssetsValues!,
           amount: feeAmount.amount ? feeAmount.amount.toString() : ''
         });
-        goOnNextStep();
         setIsLoading(false);
+        goOnNextStep();
       } catch (e) {
         console.error(e);
       }
@@ -87,14 +171,12 @@ export const ProtectionThisTransaction: FC<{
   }, [feeAmount]);
 
   return (
-    <div className="ProtectionThisTransaction">
+    <ProtectionThisTransactionStyled>
       <CloseIcon size="lg" onClick={onProtectMyTransactionCancelClick} />
       <ProtectIcon size="lg" />
-      <h4 className="ProtectionThisTransaction-title">Protect This Transaction</h4>
-      <h5 className="ProtectionThisTransaction-subtitle">
-        Send your transaction with confidence by learning about who you're sending to:
-      </h5>
-      <ul>
+      <h4>Protect This Transaction</h4>
+      <h5>Send your transaction with confidence by learning about who you're sending to:</h5>
+      <BulletList>
         <li>
           <h6>SCAN OUR PARTNER DATABASES</h6>
           <span>We'll let you know if the recipient account is known anywhere.</span>
@@ -111,34 +193,29 @@ export const ProtectionThisTransaction: FC<{
           <h6>LINK TO BLOCK EXPLORER COMMENTS</h6>
           <span>If the account is malicious, there will oftentimes be user comments.</span>
         </li>
-      </ul>
-      <p className="ProtectionThisTransaction-confirm-text">
+      </BulletList>
+      <p className="confirm-text">
         Once you confirm and sign the transaction, you'll have 20 seconds to cancel sending if you
         change your mind. Still not convinced? Learn more.
       </p>
       <hr />
-      <h4 className="ProtectionThisTransaction-title ProtectionThisTransaction-send-with-confidence">
-        Send with Confidence
-      </h4>
-      <div className="ProtectionThisTransaction-fee">
+      <h4 className="send-with-confidence">Send with Confidence</h4>
+      <FeeContainer>
         <img src={feeIcon} alt="Fee" />
         <p className="fee-label">Protected Transaction Fee:</p>
         <Amount assetValue={getAssetValue()} fiatValue={getFiatValue()} />
-      </div>
+      </FeeContainer>
       <Button
         type="button"
-        className={`ProtectionThisTransaction-protect-transaction ${isLoading ? 'loading' : ''}`}
+        className={`protect-transaction ${isLoading ? 'loading' : ''}`}
         onClick={onProtectMyTransactionClick}
+        disabled={isLoading}
       >
         Protect My Transaction
       </Button>
-      <button
-        type="button"
-        className="ProtectionThisTransaction-cancel"
-        onClick={onProtectMyTransactionCancelClick}
-      >
+      <button type="button" className="cancel" onClick={onProtectMyTransactionCancelClick}>
         I don't want to protect my transaction.
       </button>
-    </div>
+    </ProtectionThisTransactionStyled>
   );
 };

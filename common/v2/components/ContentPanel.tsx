@@ -30,7 +30,7 @@ const ContentPanelWrapper = styled.div<ContentPanelProps>`
       max-width: 100%;
       padding-bottom: 0;
 
-      p ~ div {
+      > p ~ div {
         & > div:last-child {
           margin-top: calc(-0.5rem - 75px);
         }

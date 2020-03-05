@@ -10,6 +10,7 @@ interface CloseIconProps {
 
 const CloseIcon: React.FC<CloseIconProps> = ({ fillColor, size, onClick }) => (
   <svg
+    className="close-icon"
     width={(size || 'sm') === 'sm' ? '10' : '20'}
     height={(size || 'sm') === 'sm' ? '11' : '22'}
     viewBox="0 0 20 22"

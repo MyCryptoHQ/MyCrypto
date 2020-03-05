@@ -19,27 +19,30 @@ export const COLORS = {
   BLUE_DARK_SLATE: '#163150',
   BLUE_DARK: '#1c314e',
 
-  LEMON_GRASS: '#99968C',
+  LEMON_GRASS: '#99968c',
   SUCCESS_GREEN: '#5dba5a',
-  ERROR_RED: '#FF5050',
+  SUCCESS_GREEN_LIGHT: '#b3dd87',
+  WARNING_ORANGE: '#fa873f',
+  ERROR_RED: '#ff5050',
   PASTEL_RED: '#ef4747',
-  GOLD: '#FFD166',
+  ERROR_RED_LIGHT: '#dd544e',
+  GOLD: '#ffd166',
 
   WHITE: '#fff',
   GREY_LIGHTEST: '#f7f7f7',
   GREY_LIGHTER: '#e5ecf3',
-  GREY_LIGHT: '#D8D8D8',
+  GREY_LIGHT: '#d8d8d8',
   GREY: '#b7bfc6',
   GREY_DARK: '#7b8695',
   GREY_DARKER: '#7b8695',
-  GREY_DARKEST: '#282D32',
+  GREY_DARKEST: '#282d32',
   BLACK: '#000',
 
   GREY_GEYSER: '#d6dce5',
   GREY_ATHENS: '#e8eaed',
   GREYISH_BROWN: '#424242',
-  PURPLE: '#A086F7',
-  ORANGE: '#FA863F',
+  PURPLE: '#a086f7',
+  ORANGE: '#fa863f',
 
   BG_GRAY: '#f6f8fa'
 };

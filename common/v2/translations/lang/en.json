@@ -519,6 +519,7 @@
     "TRANSACTION_BROADCASTED_DESC": "Your transaction has been sent to the network to be mined. Your assets will typically be sent in ~15 seconds, as long as the network is not busy and there is not an error in the transaction. Read More: [Error in Transaction, Network is Not Busy](https://support.mycrypto.com/troubleshooting/sending/transactions-not-showing-or-pending)",
     "TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD": "Back to Dashboard",
     "TRANSACTION_BROADCASTED_RESUBMIT": "Re-Submit Transaction",
+    "TRANSACTION_RELAYED": "Transaction Relayed to Network",
     "TIMESTAMP": "Timestamp",
     "TRANSACTION_STATUS": "Transaction Status",
     "TRANSACTION_ID": "Transaction ID",

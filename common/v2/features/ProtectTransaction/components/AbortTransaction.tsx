@@ -1,6 +1,40 @@
 import React, { FC, useCallback, useState } from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
+import { translateRaw } from '../../../translations';
+import { COLORS } from '../../../theme';
 import ProtectIcon from './icons/ProtectIcon';
+
+// TODO: A hacky way to change the title of content panel
+const TransactionReceiptHeaderGlobal = createGlobalStyle<{ relayedToNetwork: boolean }>`
+  [class^="ContentPanel__ContentPanelWrapper"] {
+    &.has-side-panel {
+      [class^="ContentPanel__ContentPanelHeading"] {
+        margin-top: 60px;
+
+        ${({ relayedToNetwork }) =>
+          relayedToNetwork
+            ? `
+          &::before {
+            content: "${translateRaw('TRANSACTION_RELAYED')}";
+          }
+        `
+            : `
+          &::before {
+            content: "${translateRaw('TRANSACTION_BROADCASTED')}";
+          }
+        `}
+      }
+
+      > section {
+        > p ~ div {
+          & > div:last-child {
+            margin-top: calc(-0.5rem - 75px - 60px);
+          }
+        }
+      }
+    }
+  }
+`;
 
 const AbortTransactionWrapper = styled.div`
   display: flex;
@@ -8,11 +42,11 @@ const AbortTransactionWrapper = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: calc(100% + 4.5rem);
-  top: calc(-0.5rem - 75px);
+  top: calc(-0.5rem - 75px - 60px);
   left: -2.25em;
   padding: 18px 40px;
-  background: #a086f7;
-  color: white;
+  background: ${COLORS.PURPLE};
+  color: ${COLORS.WHITE};
 
   p {
     margin: 0 15px 0;
@@ -24,10 +58,10 @@ const AbortTransactionWrapper = styled.div`
 const AbortTransactionLink = styled.a`
   margin-left: auto;
   text-decoration: underline;
-  color: white;
+  color: ${COLORS.WHITE};
 
   &:hover {
-    color: black;
+    color: ${COLORS.BLACK};
   }
 `;
 
@@ -80,6 +114,7 @@ export const AbortTransaction: FC<AbortTransactionProps> = ({
         </>
       )}
       {!isCanceled && countdown === 0 && <p>Transaction has been relayed to the network!</p>}
+      <TransactionReceiptHeaderGlobal relayedToNetwork={!isCanceled && countdown === 0} />
     </AbortTransactionWrapper>
   );
 };

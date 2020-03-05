@@ -77,9 +77,11 @@ import { isERC20Tx, processFormForEstimateGas } from '../helpers';
 import { formatSupportEmail, weiToFloat } from 'v2/utils';
 import { ResolutionError } from '@unstoppabledomains/resolution';
 import { InlineMessageType } from 'v2/types/inlineMessages';
-import { TransactionProtectionButton } from '../../ProtectTransaction/components/TransactionProtectionButton';
-import { withProtectTransaction } from '../../ProtectTransaction/components/WithProtectTransaction';
-import { WithProtectApiFactory } from '../../ProtectTransaction/withProtectStateFactory';
+import {
+  TransactionProtectionButton,
+  withProtectTransaction
+} from '../../ProtectTransaction/components';
+import { WithProtectApiFactory } from '../../ProtectTransaction';
 import { SignTransaction } from './index';
 
 export const AdvancedOptionsButton = styled(Button)`

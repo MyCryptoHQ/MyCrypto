@@ -102,7 +102,7 @@ function SendAssets() {
       }
     },
     {
-      label: translateRaw('TRANSACTION_BROADCASTED'),
+      label: ' ',
       component: TransactionReceipt,
       props: (({ txConfig, txReceipt }) => ({
         txConfig,

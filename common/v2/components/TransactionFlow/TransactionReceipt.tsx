@@ -26,9 +26,11 @@ import './TransactionReceipt.scss';
 import sentIcon from 'common/assets/images/icn-sent.svg';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import { SignTransaction } from '../../features/SendAssets/components';
-import { withProtectTransaction } from '../../features/ProtectTransaction/components/WithProtectTransaction';
-import { WithProtectApiFactory } from '../../features/ProtectTransaction/withProtectStateFactory';
-import { AbortTransaction } from '../../features/ProtectTransaction/components/AbortTransaction';
+import {
+  withProtectTransaction,
+  AbortTransaction
+} from '../../features/ProtectTransaction/components';
+import { WithProtectApiFactory } from '../../features/ProtectTransaction';
 
 const PendingTransaction: FC = () => {
   return (
