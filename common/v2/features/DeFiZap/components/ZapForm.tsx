@@ -3,9 +3,17 @@ import styled from 'styled-components';
 import { Formik, Form, Field, FieldProps } from 'formik';
 import { Button } from '@mycrypto/ui';
 import { isEmpty } from 'lodash';
+import * as Yup from 'yup';
 
-import { StoreContext, AssetContext, getNonce, NetworkContext, fetchGasPriceEstimates } from 'v2';
-import translate from 'v2/translations';
+import {
+  StoreContext,
+  AssetContext,
+  getNonce,
+  NetworkContext,
+  fetchGasPriceEstimates,
+  getAccountBalance
+} from 'v2';
+import translate, { translateRaw } from 'v2/translations';
 import { SPACING } from 'v2/theme';
 import { IAccount, Network, StoreAccount, Asset } from 'v2/types';
 import { AccountDropdown, InlineMessage, AmountInput } from 'v2/components';
@@ -16,10 +24,19 @@ import { ZapInteractionState, ISimpleTxFormFull } from '../types';
 import ZapSelectedBanner from './ZapSelectedBanner';
 import DeFiZapLogo from './DeFiZapLogo';
 import { IZapConfig } from '../config';
+import { parseEther } from 'ethers/utils';
 
 interface Props extends ZapInteractionState {
   onComplete(fields: any): void;
   handleUserInputFormSubmit(fields: any): void;
+}
+
+interface UIProps {
+  ethAsset: Asset;
+  network: Network;
+  zapSelected: IZapConfig;
+  relevantAccounts: StoreAccount[];
+  onComplete(fields: any): void;
 }
 
 const FormFieldItem = styled.fieldset`
@@ -68,14 +85,6 @@ const ZapForm = ({ onComplete, zapSelected }: Props) => {
   );
 };
 
-interface UIProps {
-  ethAsset: Asset;
-  network: Network;
-  zapSelected: IZapConfig;
-  relevantAccounts: StoreAccount[];
-  onComplete(fields: any): void;
-}
-
 export const ZapFormUI = ({
   ethAsset,
   network,
@@ -94,10 +103,33 @@ export const ZapFormUI = ({
     network
   };
 
+  const ZapFormSchema = Yup.object().shape({
+    amount: Yup.number()
+      .min(0, translateRaw('ERROR_0'))
+      .required(translateRaw('REQUIRED'))
+      .typeError(translateRaw('ERROR_0'))
+      .test(
+        'check-amount',
+        translateRaw('BALANCE_TOO_LOW_NO_RECOMMENDATION_ERROR', { $asset: ethAsset.ticker }),
+        function(value) {
+          const account = this.parent.account;
+          const asset = this.parent.asset;
+          const val = value ? value : 0;
+          if (!isEmpty(account)) {
+            return getAccountBalance(account, asset.type === 'base' ? undefined : asset).gte(
+              parseEther(val.toString())
+            );
+          }
+          return true;
+        }
+      )
+  });
+
   return (
     <div>
       <Formik
         initialValues={initialFormikValues}
+        validationSchema={ZapFormSchema}
         onSubmit={fields => {
           fetchGasPriceEstimates(fields.network).then(({ fast }) => {
             onComplete({ ...fields, gasPrice: fast.toString() });

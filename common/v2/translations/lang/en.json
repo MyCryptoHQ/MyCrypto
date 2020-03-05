@@ -567,6 +567,7 @@
     "CHECKSUM_ERROR": "This address is not [checksummed](https://support.mycrypto.com/troubleshooting/sending/not-checksummed-shows-when-i-enter-an-address). Please ensure you have copied & pasted the address. Never hand-type addresses.",
     "GASPRICE_ERROR": "Please enter a valid gas price in gwei (Must be a number between 0.1 and 3000)",
     "BALANCE_TOO_LOW_ERROR": "You are trying to send more $asset than you current have. Click “send max” if you want to send your entire available balance",
+    "BALANCE_TOO_LOW_NO_RECOMMENDATION_ERROR": "You are trying to send more $asset than you current have.",
     "NONCE_ERROR": "Please double-check your nonce. If this error persists, please email [support@mycrypto.com]($link)",
     "HIGH_TRANSACTION_FEE": "This seems like a very high transaction fee. Are you sure you know what you are doing?",
     "SENDING_TO_YOURSELF": "You are sending to yourself. Are you sure you want to do that?",
