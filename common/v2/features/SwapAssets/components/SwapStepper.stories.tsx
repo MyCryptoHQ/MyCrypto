@@ -10,12 +10,14 @@ const ETH: ISwapAsset = { name: 'Ethereum', symbol: 'ETH' as TSymbol };
 const daiAmount = '100';
 const ethAmount = '0.5';
 
-export const ethToDai = () => (
-  <SwapStepper fromAsset={ETH} toAsset={DAI} fromAmount={ethAmount} toAmount={daiAmount} />
-);
-
 export const daiToEth = () => (
-  <SwapStepper fromAsset={DAI} toAsset={ETH} fromAmount={daiAmount} toAmount={ethAmount} />
+  <SwapStepper
+    currentStep={0}
+    fromAsset={DAI}
+    toAsset={ETH}
+    fromAmount={daiAmount}
+    toAmount={ethAmount}
+  />
 );
 
 export const daiToEthStep2 = () => (

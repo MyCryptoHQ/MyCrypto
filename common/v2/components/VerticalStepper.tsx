@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import 'rc-steps/assets/index.css';
 import 'rc-steps/assets/iconfont.css';
+//@ts-ignore No types available at the moment
 import Steps, { Step } from 'rc-steps';
 
 import Typography from './Typography';
