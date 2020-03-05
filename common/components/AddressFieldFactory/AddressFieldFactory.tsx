@@ -99,7 +99,6 @@ class AddressFieldFactoryClass extends React.Component<Props> {
   private setAddress = (ev: React.FormEvent<HTMLInputElement>) => {
     const { onChangeOverride, setCurrentTo } = this.props;
     const { value } = ev.currentTarget;
-
     onChangeOverride ? onChangeOverride(ev) : setCurrentTo(value);
   };
 

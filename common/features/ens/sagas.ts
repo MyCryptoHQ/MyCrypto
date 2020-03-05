@@ -29,7 +29,6 @@ function* resolveDomain(): SagaIterator {
     const { payload }: types.ResolveDomainRequested = yield take(requestChan);
 
     const { domain } = payload;
-
     try {
       const shouldResolve = yield call(shouldResolveDomain, domain);
       if (!shouldResolve) {

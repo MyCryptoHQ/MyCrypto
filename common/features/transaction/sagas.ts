@@ -37,7 +37,7 @@ import * as types from './types';
 import * as actions from './actions';
 import * as helpers from './helpers';
 import { calcEACFutureExecutionCost, EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
-
+import UnstoppableResolution from 'v2/services/UnstoppableResolution';
 //#region Current
 
 //#region Current To
@@ -73,8 +73,15 @@ export function* setCurrentToSaga({ payload: raw }: types.SetCurrentToAction): S
     if (resolvedAddress) {
       value = Address(resolvedAddress);
     }
+  } else if (raw.endsWith('.zil') || raw.endsWith('.crypto')) {
+    try {
+      const resolutionTool = new UnstoppableResolution();
+      const resolvedAddress = yield call(resolutionTool.getResolvedAddress, raw, 'ETH');
+      value = Address(resolvedAddress.replace('0x', ''));
+    } catch (err) {
+      console.log(err);
+    }
   }
-
   yield call(setField, { value, raw });
 }
 

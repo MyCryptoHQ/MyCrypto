@@ -50,7 +50,8 @@ const ENSStatus: React.SFC<{
   chainId: number;
 }> = ({ isLoading, ensAddress, rawAddress, chainId }) => {
   const isValidENS = getIsValidENSAddressFunction(chainId);
-  const isENS = isValidENS(ensAddress);
+  const isValidDomain = (domain: string) => domain.endsWith('.zil') || domain.endsWith('.crypto');
+  const isValid = isValidENS(ensAddress) || isValidDomain(ensAddress);
 
   const text = translate('LOADING_ENS_ADDRESS');
 
@@ -61,7 +62,7 @@ const ENSStatus: React.SFC<{
       </React.Fragment>
     );
   } else {
-    return isENS ? <React.Fragment>{`Resolved Address: ${rawAddress}`}</React.Fragment> : null;
+    return isValid ? <React.Fragment>{`Resolved Address: ${rawAddress}`}</React.Fragment> : null;
   }
 };
 
@@ -86,7 +87,6 @@ class AddressInputFactoryClass extends Component<Props> {
       onChangeOverride,
       value,
       dropdownThreshold,
-      showEnsResolution,
       chainId
     } = this.props;
     const inputClassName = `AddressInput-input ${label ? 'AddressInput-input-with-label' : ''}`;
@@ -103,7 +103,6 @@ class AddressInputFactoryClass extends Component<Props> {
      *  If there wasn't a value passed, use the value from the redux store.
      */
     let addr = value;
-
     if (addr == null) {
       addr = addHexPrefix(currentTo.value ? currentTo.value.toString('hex') : '0');
     }
@@ -131,14 +130,14 @@ class AddressInputFactoryClass extends Component<Props> {
               })
             }
           />
-          {showEnsResolution && (
+          {
             <ENSStatus
               ensAddress={currentTo.raw}
               isLoading={isResolving}
               rawAddress={addr}
               chainId={chainId}
             />
-          )}
+          }
           {isFocused && !isENSAddress && (
             <AddressFieldDropdown
               controlled={controlled}
