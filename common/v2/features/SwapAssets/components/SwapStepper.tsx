@@ -2,10 +2,10 @@ import React from 'react';
 
 import VerticalStepper from 'v2/components/VerticalStepper';
 import { ISwapAsset } from '../types';
+import { SwapFromToDiagram } from 'v2/components/TransactionFlow/displays';
 
 import step1SVG from 'assets/images/icn-unlock-wallet.svg';
 import step2SVG from 'assets/images/icn-sent.svg';
-import { SwapFromToDiagram } from './fields';
 
 interface Props {
   currentStep: number;
