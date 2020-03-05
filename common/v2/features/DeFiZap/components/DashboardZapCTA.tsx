@@ -49,7 +49,7 @@ const DashboardZapCTA = ({ className }: any) => {
   return (
     <DashboardPanel
       heading={'Put your ETH to work for you'}
-      headingRight={DeFiZapLogo()}
+      headingRight={<DeFiZapLogo />}
       className={className}
       footer={<CTAFooter />}
     >

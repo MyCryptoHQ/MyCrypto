@@ -4,6 +4,7 @@ import { Formik, Form, Field, FieldProps } from 'formik';
 import { Button } from '@mycrypto/ui';
 import { isEmpty } from 'lodash';
 import * as Yup from 'yup';
+import { parseEther } from 'ethers/utils';
 
 import {
   StoreContext,
@@ -19,12 +20,12 @@ import { IAccount, Network, StoreAccount, Asset } from 'v2/types';
 import { AccountDropdown, InlineMessage, AmountInput } from 'v2/components';
 import { validateAmountField } from 'v2/features/SendAssets/components/validators/validators';
 import { isEthereumAccount } from 'v2/services/Store/Account/helpers';
+import { EtherUUID } from 'v2/utils';
 
 import { ZapInteractionState, ISimpleTxFormFull } from '../types';
 import ZapSelectedBanner from './ZapSelectedBanner';
 import DeFiZapLogo from './DeFiZapLogo';
 import { IZapConfig } from '../config';
-import { parseEther } from 'ethers/utils';
 
 interface Props extends ZapInteractionState {
   onComplete(fields: any): void;
@@ -63,8 +64,6 @@ const FormFieldSubmitButton = styled(Button)`
 const DeFiZapLogoContainer = styled.div`
   margin-top: ${SPACING.BASE};
 `;
-
-export const EtherUUID = '356a192b-7913-504c-9457-4d18c28d46e6';
 
 const ZapForm = ({ onComplete, zapSelected }: Props) => {
   const { accounts } = useContext(StoreContext);

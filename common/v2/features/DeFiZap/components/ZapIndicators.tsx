@@ -6,7 +6,7 @@ import { SPACING, COLORS } from 'v2/theme';
 import bullishIndicator from 'assets/images/defizap/indicators/bullishIndicator.svg';
 import bearishIndicator from 'assets/images/defizap/indicators/bearishIndicator.svg';
 
-const IContainer = styled.div`
+const SContainer = styled.div`
   display: flex;
 `;
 
@@ -14,7 +14,7 @@ const SImage = styled.img`
   height: 16px;
   width: 16px;
 `;
-const IText = styled.p`
+const SText = styled.p`
   padding-left: ${SPACING.XS};
   color: ${COLORS.PURPLE};
   margin-bottom: 0px;
@@ -26,15 +26,15 @@ interface IndicatorProps {
 }
 
 export const BullishIndicator = ({ text }: IndicatorProps) => (
-  <IContainer>
+  <SContainer>
     <SImage src={bullishIndicator} />
-    <IText>{text}</IText>
-  </IContainer>
+    <SText>{text}</SText>
+  </SContainer>
 );
 
 export const BearishIndicator = ({ text }: IndicatorProps) => (
-  <IContainer>
+  <SContainer>
     <SImage src={bearishIndicator} />
-    <IText>{text}</IText>
-  </IContainer>
+    <SText>{text}</SText>
+  </SContainer>
 );
