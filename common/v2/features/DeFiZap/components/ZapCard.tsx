@@ -78,17 +78,19 @@ const ZapCardContentHeaderRow = styled('div')`
   justify-content: center;
   flex: 1;
 `;
-const ZapCardNameSection = styled('div')`
+const ZapCardHeaderTextSection = styled('div')`
   display: flex;
   justify-content: left;
   flex-direction: column;
   margin-left: 1em;
-  & h5 {
-    font-weight: bold;
-  }
-  & p {
-    color: ${COLORS.GREY};
-  }
+`;
+
+const ZapCardHeaderTitle = styled.h5`
+  font-weight: bold;
+`;
+
+const ZapCardHeaderName = styled.p`
+  color: ${COLORS.GREY};
 `;
 
 const ZapCardImgSection = styled('div')`
@@ -97,7 +99,7 @@ const ZapCardImgSection = styled('div')`
   justify-content: center;
 `;
 
-const ZapCardHeaderText = styled('div')`
+const ZapCardRiskProfile = styled('div')`
   margin-left: 0.5em;
 `;
 
@@ -120,22 +122,23 @@ const ZapCard = ({ config }: Props) => {
         return ludicrousRisk;
     }
   };
-
+  const IndicatorItem = config.positionDetails;
   return (
     <ZapCardContainer>
       <ZapCardHeader>
         <img src={selectImageGivenRisk(config.risk)} />
-        <ZapCardHeaderText>{`${fetchRiskText(config.risk)} Risk Profile`}</ZapCardHeaderText>
+        <ZapCardRiskProfile>{`${fetchRiskText(config.risk)} Risk Profile`}</ZapCardRiskProfile>
       </ZapCardHeader>
       <ZapCardContent>
         <ZapCardContentHeaderRow>
           <ZapCardImgSection>
             <img src={'https://via.placeholder.com/52'} />
           </ZapCardImgSection>
-          <ZapCardNameSection>
-            <h5>{config.title}</h5>
-            <p>{config.name}</p>
-          </ZapCardNameSection>
+          <ZapCardHeaderTextSection>
+            <ZapCardHeaderTitle>{config.title}</ZapCardHeaderTitle>
+            <ZapCardHeaderName>{config.name}</ZapCardHeaderName>
+            <IndicatorItem />
+          </ZapCardHeaderTextSection>
         </ZapCardContentHeaderRow>
         <ZapCardContentRow>
           <p>{config.description}</p>

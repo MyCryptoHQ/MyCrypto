@@ -29,11 +29,13 @@ interface Props {
 
 const DetailsList = (props: Props) => {
   const { zapSelected, onSubmit } = props;
-  const { platformsUsed, bulletPoints, positionDetails } = zapSelected;
-
+  const { platformsUsed, bulletPoints } = zapSelected;
+  const IndicatorItem = zapSelected.positionDetails;
   return (
     <>
-      <DetailsListHeader>{positionDetails}</DetailsListHeader>
+      <DetailsListHeader>
+        <IndicatorItem />
+      </DetailsListHeader>
       <DetailsBulletPoints>
         {bulletPoints.map(bulletPoint => (
           <li key={bulletPoint}>{bulletPoint}</li>

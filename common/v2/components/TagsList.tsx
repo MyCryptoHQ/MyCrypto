@@ -19,7 +19,7 @@ const TagItem = styled.li`
   background: ${props => props.color || COLORS.GREY_LIGHT};
   border-radius: 600px;
   color: ${COLORS.WHITE};
-  font-size: 0.6em;
+  font-size: 0.8em;
   font-weight: normal;
   padding: 3px 6px;
 `;

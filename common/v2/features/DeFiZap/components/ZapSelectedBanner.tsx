@@ -23,7 +23,7 @@ const BannerContainer = styled.div`
 const BannerSubItem = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: ${SPACING.SM};
+  margin-top: ${SPACING.BASE};
 `;
 
 const BannerSubItemLabel = styled.p`
@@ -31,20 +31,25 @@ const BannerSubItemLabel = styled.p`
   font-weight: bold;
   margin-bottom: 0px;
   margin-right: ${SPACING.XS};
+  line-height: 16px;
 `;
 
 const BannerSubItemText = styled.div`
   display: flex;
   margin-bottom: 0px;
+  line-height: 16px;
 `;
 
 const ZapSelectedBanner = ({ zapSelected }: Props) => {
+  const IndicatorItem = zapSelected.positionDetails;
   return (
     <BannerContainer>
       <BannerSubItemText>{translateRaw('ZAP_BANNER_DESCRIPTION')}</BannerSubItemText>
       <BannerSubItem>
         <BannerSubItemLabel>{translateRaw('ZAP_NAME')}</BannerSubItemLabel>
-        <BannerSubItemText>{`${zapSelected.title} - ${zapSelected.name}`}</BannerSubItemText>
+        <BannerSubItemText>
+          {zapSelected.title} <IndicatorItem />{' '}
+        </BannerSubItemText>
       </BannerSubItem>
       <BannerSubItem>
         <BannerSubItemLabel>{translateRaw('PLATFORMS')}</BannerSubItemLabel>

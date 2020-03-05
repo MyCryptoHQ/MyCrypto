@@ -1,3 +1,5 @@
+import { BearishIndicator, BullishIndicator } from './components';
+
 export interface IZapConfig {
   title: string;
   name: string;
@@ -11,7 +13,7 @@ export interface IZapConfig {
   risk: number;
   platformsUsed: string[];
   bulletPoints: string[];
-  positionDetails: string;
+  positionDetails(): JSX.Element;
 }
 
 export type IZapConfigObject = {
@@ -58,7 +60,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
       'Generate 66% of the fees from the ETH/DAI trading pair on Uniswap.',
       'Eliminate impermanent loss when ETH goes up but increases it on the way down.'
     ],
-    positionDetails: 'Bullish on ETH'
+    positionDetails: () => BullishIndicator({ text: 'Bullish on ETH' })
   },
   lender: {
     title: 'ETH Bearish Investment',
@@ -78,7 +80,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
       'Generate 66% of the fees from the ETH/DAI trading pair on Uniswap.',
       'Eliminate impermanent loss when ETH goes up but increases it on the way down.'
     ],
-    positionDetails: 'Bearish on ETH'
+    positionDetails: () => BearishIndicator({ text: 'Bearish on ETH' })
   },
   llpdai: {
     title: 'MoonShot Investment',
@@ -98,6 +100,6 @@ export const ZAPS_CONFIG: IZapConfigObject = {
       'Generate 66% of the fees from the ETH/DAI trading pair on Uniswap.',
       'Eliminate impermanent loss when ETH goes up but increases it on the way down.'
     ],
-    positionDetails: 'Bullish on ETH'
+    positionDetails: () => BullishIndicator({ text: 'Bullish on ETH' })
   }
 };
