@@ -27,7 +27,7 @@ const ZapStepper = ({ selectedZap }: Props) => {
 
   const steps: IStepperPath[] = [
     {
-      label: 'Zap Form',
+      label: 'Add Funds to Zap',
       component: ZapForm,
       props: (state => state)(zapFlowState),
       actions: (formData: ISimpleTxFormFull, cb: any) => handleUserInputFormSubmit(formData, cb)
