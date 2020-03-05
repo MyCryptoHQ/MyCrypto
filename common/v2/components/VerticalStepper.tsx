@@ -13,9 +13,11 @@ import checkmark from 'assets/images/icn-checkmark-white.svg';
 import { translateRaw } from 'v2/translations';
 
 interface StepData {
-  icon: string;
+  icon?: string;
   title: React.ReactNode | string;
-  description: React.ReactNode | string;
+  content: React.ReactNode | string;
+  buttonText: string;
+  onClick?(): void;
 }
 
 interface Props {
@@ -68,7 +70,14 @@ function VerticalStepper({ currentStep = 0, steps }: Props) {
             finished={finished}
             title={<StepperTitle title={s.title} icon={s.icon} finished={finished} />}
             description={
-              !finished && <StepperDescription active={active} description={s.description} />
+              !finished && (
+                <StepperContent
+                  active={active}
+                  content={s.content}
+                  buttonText={s.buttonText}
+                  onClick={s.onClick}
+                />
+              )
             }
           />
         );
@@ -78,7 +87,7 @@ function VerticalStepper({ currentStep = 0, steps }: Props) {
 }
 
 interface TitleProps {
-  icon: string;
+  icon?: string;
   title: React.ReactNode | string;
   finished: boolean;
 }
@@ -105,7 +114,7 @@ const Icon = styled.img`
 function StepperTitle({ icon, title, finished }: TitleProps) {
   return (
     <TitleWrapper>
-      <Icon src={icon} />
+      {icon && <Icon src={icon} />}
       <TitleTypography bold={true} finished={finished}>
         {title}
       </TitleTypography>
@@ -116,19 +125,27 @@ function StepperTitle({ icon, title, finished }: TitleProps) {
 
 interface DescriptionProps {
   active: boolean;
-  description: React.ReactNode | string;
+  content: React.ReactNode | string;
+  buttonText: string;
+  onClick?(): void;
 }
+
+const ContentWrapper = styled.div`
+  padding: ${SPACING.XS};
+`;
 
 const SButton = styled(Button)`
   margin-top: ${SPACING.SM};
 `;
 
-function StepperDescription({ active, description }: DescriptionProps) {
+function StepperContent({ active, content, buttonText, onClick }: DescriptionProps) {
   return (
-    <>
-      <Typography as={'div'}>{description}</Typography>
-      <SButton disabled={!active}>Activate</SButton>
-    </>
+    <ContentWrapper>
+      <Typography as={'div'}>{content}</Typography>
+      <SButton disabled={!active} onClick={onClick}>
+        {buttonText}
+      </SButton>
+    </ContentWrapper>
   );
 }
 
