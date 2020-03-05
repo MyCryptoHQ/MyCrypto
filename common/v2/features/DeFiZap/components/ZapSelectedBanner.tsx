@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
-import { COLORS, SPACING } from 'v2/theme';
+import { COLORS, SPACING, BREAK_POINTS } from 'v2/theme';
 
 import { IZapConfig } from '../config';
 import { ProtocolTagsList } from '.';
@@ -36,8 +36,20 @@ const BannerSubItemLabel = styled.p`
 
 const BannerSubItemText = styled.div`
   display: flex;
+  flex: 1;
+  justify-content: space-between;
   margin-bottom: 0px;
   line-height: 16px;
+  flex-direction: column;
+  @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
+    font-size: 1em;
+    flex-direction: row;
+  }
+`;
+
+const ZapNameGrey = styled.p`
+  color: ${COLORS.GREY};
+  margin: 0px;
 `;
 
 const ZapSelectedBanner = ({ zapSelected }: Props) => {
@@ -48,7 +60,9 @@ const ZapSelectedBanner = ({ zapSelected }: Props) => {
       <BannerSubItem>
         <BannerSubItemLabel>{translateRaw('ZAP_NAME')}</BannerSubItemLabel>
         <BannerSubItemText>
-          {zapSelected.title} <IndicatorItem />{' '}
+          <div>{zapSelected.title}</div>
+          <ZapNameGrey>{zapSelected.name}</ZapNameGrey>
+          <IndicatorItem />
         </BannerSubItemText>
       </BannerSubItem>
       <BannerSubItem>

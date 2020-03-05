@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { translateRaw } from 'v2/translations';
+
 import defizaplogo from 'assets/images/defizap/defizaplogo.svg';
 
 const DefiZapLogo = styled.div`
@@ -18,11 +20,10 @@ const DefiZapLogoText = styled.div`
 `;
 
 const DeFiZapLogo = () => {
-  const headingRight = 'Powered by DefiZap';
   return (
     <DefiZapLogo>
       <DefiZapLogoImage src={defizaplogo} />
-      <DefiZapLogoText>{headingRight}</DefiZapLogoText>
+      <DefiZapLogoText>{translateRaw('ZAP_POWERED_BY')}</DefiZapLogoText>
     </DefiZapLogo>
   );
 };

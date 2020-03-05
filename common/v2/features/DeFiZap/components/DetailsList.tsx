@@ -27,10 +27,10 @@ interface Props {
   onSubmit(): void;
 }
 
-const DetailsList = (props: Props) => {
-  const { zapSelected, onSubmit } = props;
+const DetailsList = ({ zapSelected, onSubmit }: Props) => {
   const { platformsUsed, bulletPoints } = zapSelected;
   const IndicatorItem = zapSelected.positionDetails;
+
   return (
     <>
       <DetailsListHeader>
