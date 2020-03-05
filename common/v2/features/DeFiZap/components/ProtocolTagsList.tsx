@@ -8,7 +8,7 @@ interface Props {
 
 const ProtocolTagsList = ({ platformsUsed }: Props) => {
   const platformTags = platformsUsed.map(platform => ({
-    tagText: platform,
+    tagText: platform.toUpperCase(),
     color: getPlatformColor(platform)
   }));
   return <TagsList tags={platformTags} />;

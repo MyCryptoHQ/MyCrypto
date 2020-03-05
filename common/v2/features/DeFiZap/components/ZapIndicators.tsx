@@ -10,7 +10,7 @@ const IContainer = styled.div`
   display: flex;
 `;
 
-const IImage = styled.img`
+const SImage = styled.img`
   height: 16px;
   width: 16px;
 `;
@@ -27,14 +27,14 @@ interface IndicatorProps {
 
 export const BullishIndicator = ({ text }: IndicatorProps) => (
   <IContainer>
-    <IImage src={bullishIndicator} />
+    <SImage src={bullishIndicator} />
     <IText>{text}</IText>
   </IContainer>
 );
 
 export const BearishIndicator = ({ text }: IndicatorProps) => (
   <IContainer>
-    <IImage src={bearishIndicator} />
+    <SImage src={bearishIndicator} />
     <IText>{text}</IText>
   </IContainer>
 );
