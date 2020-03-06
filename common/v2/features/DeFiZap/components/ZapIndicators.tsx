@@ -2,23 +2,29 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { SPACING, COLORS } from 'v2/theme';
+import { Typography } from 'v2/components';
 
 import bullishIndicator from 'assets/images/defizap/indicators/bullishIndicator.svg';
 import bearishIndicator from 'assets/images/defizap/indicators/bearishIndicator.svg';
 
 const SContainer = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const SImage = styled.img`
+  display: flex;
+  align-items: center;
   height: 16px;
   width: 16px;
 `;
-const SText = styled.p`
+const SText = styled(Typography)`
+  display: flex;
+  align-items: center;
   padding-left: ${SPACING.XS};
   color: ${COLORS.PURPLE};
   margin-bottom: 0px;
-  font-size: 16px;
+  font-weight: bold;
 `;
 
 interface IndicatorProps {

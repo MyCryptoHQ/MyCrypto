@@ -28,7 +28,7 @@ export const getPlatformColor = (platform: string) => {
     case 'synthetix':
       return COLORS.BLUE_BRIGHT;
     case 'compound':
-      return COLORS.GREEN;
+      return COLORS.LIGHT_GREEN;
     case 'mkr':
       return COLORS.BLACK;
     default:

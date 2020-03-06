@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
-import { COLORS, SPACING, BREAK_POINTS } from 'v2/theme';
+import { COLORS, SPACING, BREAK_POINTS, FONT_SIZE, LINE_HEIGHT } from 'v2/theme';
 
 import { IZapConfig } from '../config';
 import { ProtocolTagsList } from '.';
@@ -31,7 +31,7 @@ const BannerSubItemLabel = styled.p`
   font-weight: bold;
   margin-bottom: 0px;
   margin-right: ${SPACING.XS};
-  line-height: 16px;
+  line-height: ${LINE_HEIGHT.BASE};
 `;
 
 const BannerSubItemText = styled.div`
@@ -39,10 +39,10 @@ const BannerSubItemText = styled.div`
   flex: 1;
   justify-content: space-between;
   margin-bottom: 0px;
-  line-height: 16px;
+  line-height: ${LINE_HEIGHT.BASE};
   flex-direction: column;
   @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
-    font-size: 1em;
+    font-size: ${FONT_SIZE.BASE};
     flex-direction: row;
   }
 `;
