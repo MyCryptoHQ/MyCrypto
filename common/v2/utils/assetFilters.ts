@@ -4,7 +4,8 @@ import {
   AAVE_TOKEN_UUIDS,
   COMPOUND_TOKEN_UUIDS,
   SYNTHETIX_TOKEN_UUIDS,
-  UNISWAP_EXCHANGE_TOKEN_UUIDS
+  UNISWAP_EXCHANGE_TOKEN_UUIDS,
+  FULCRUM_TOKEN_UUIDS
 } from './constants';
 
 const filterDefiAssets = (assetsToFilter: StoreAsset[] | Asset[], uuidComparisonList: string[]) =>
@@ -21,3 +22,6 @@ export const filterAaveAssets = (assetsToFilter: StoreAsset[] | Asset[]) =>
 
 export const filterSynthetixAssets = (assetsToFilter: StoreAsset[] | Asset[]) =>
   filterDefiAssets(assetsToFilter, SYNTHETIX_TOKEN_UUIDS);
+
+export const filterFulcrumAssets = (assetsToFilter: StoreAsset[] | Asset[]) =>
+  filterDefiAssets(assetsToFilter, FULCRUM_TOKEN_UUIDS);
