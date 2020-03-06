@@ -9,6 +9,7 @@ export interface DPath {
 export type DPathFormat =
   | WalletId.LEDGER_NANO_S
   | WalletId.TREZOR
+  | WalletId.SATOCHIP
   | WalletId.SAFE_T_MINI
   | WalletId.MNEMONIC_PHRASE;
 

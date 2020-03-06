@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "./dist/",
     "sourceMap": true,
-    "strictNullChecks": true,
+    "strictNullChecks": true, //true
     "module": "es2015",
     "jsx": "react",
     "target": "es2015",
@@ -17,8 +17,8 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "noEmitOnError": false,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false, //true
+    "noUnusedParameters": false, //true
     "pretty": true,
     "noErrorTruncation": true,
     "noImplicitAny": true,

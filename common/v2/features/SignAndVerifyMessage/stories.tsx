@@ -6,6 +6,7 @@ import {
   MnemonicDecrypt,
   //ParitySignerDecrypt,
   PrivateKeyDecrypt,
+  SatochipDecrypt,
   Web3ProviderDecrypt,
   Web3ProviderInstall
 } from 'v2/components';
@@ -18,6 +19,10 @@ export const STORIES: IStory[] = [
   {
     name: WalletId.LEDGER_NANO_S,
     steps: [LedgerNanoSDecrypt]
+  },
+  {
+    name: WalletId.SATOCHIP,
+    steps: [SatochipDecrypt]
   },
   /*{
     name: WalletId.PARITY_SIGNER,

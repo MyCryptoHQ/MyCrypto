@@ -33,6 +33,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: require('v2/config/contracts/eth.json'),
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TREZOR,
+      [WalletId.SATOCHIP]: DPaths.ETH_SATOCHIP,
       [WalletId.SAFE_T_MINI]: DPaths.ETH_SAFE_T,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
       [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_DEFAULT
@@ -56,6 +57,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,
+      [WalletId.SATOCHIP]: DPaths.ETH_TESTNET,
       [WalletId.SAFE_T_MINI]: DPaths.ETH_TESTNET,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
       [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_TESTNET
@@ -78,6 +80,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,
+      [WalletId.SATOCHIP]: DPaths.ETH_TESTNET,
       [WalletId.SAFE_T_MINI]: DPaths.ETH_TESTNET,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
       [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_TESTNET
@@ -100,6 +103,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,
+      [WalletId.SATOCHIP]: DPaths.ETH_TESTNET,
       [WalletId.SAFE_T_MINI]: DPaths.ETH_TESTNET,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
       [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_TESTNET
@@ -122,6 +126,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,
+      [WalletId.SATOCHIP]: DPaths.ETH_TESTNET,
       [WalletId.SAFE_T_MINI]: DPaths.ETH_TESTNET,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
       [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_TESTNET
@@ -144,6 +149,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: require('v2/config/contracts/etc.json'),
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETC_TREZOR,
+      [WalletId.SATOCHIP]: DPaths.ETC_SATOCHIP,
       [WalletId.SAFE_T_MINI]: DPaths.ETH_SAFE_T,
       [WalletId.LEDGER_NANO_S]: DPaths.ETC_LEDGER,
       [WalletId.MNEMONIC_PHRASE]: DPaths.ETC_TREZOR
@@ -169,6 +175,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: require('v2/config/contracts/ubq.json'),
     dPaths: {
       [WalletId.TREZOR]: DPaths.UBQ_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.UBQ_DEFAULT,
       [WalletId.SAFE_T_MINI]: DPaths.UBQ_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.UBQ_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.UBQ_DEFAULT
@@ -194,6 +201,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: require('v2/config/contracts/exp.json'),
     dPaths: {
       [WalletId.TREZOR]: DPaths.EXP_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.EXP_DEFAULT,
       [WalletId.SAFE_T_MINI]: DPaths.EXP_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.EXP_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.EXP_DEFAULT
@@ -221,6 +229,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.POA_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.POA_DEFAULT,
       [WalletId.SAFE_T_MINI]: DPaths.POA_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
       [WalletId.MNEMONIC_PHRASE]: DPaths.POA_DEFAULT
@@ -247,6 +256,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
       [WalletId.TREZOR]: DPaths.ETH_TREZOR,
+      [WalletId.SATOCHIP]: DPaths.TOMO_DEFAULT,
       [WalletId.SAFE_T_MINI]: DPaths.ETH_SAFE_T,
       [WalletId.LEDGER_NANO_S]: DPaths.TOMO_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.TOMO_DEFAULT
@@ -272,6 +282,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ELLA_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.ELLA_DEFAULT,
       [WalletId.SAFE_T_MINI]: DPaths.ELLA_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.ELLA_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.ELLA_DEFAULT
@@ -297,6 +308,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,
+      [WalletId.SATOCHIP]: DPaths.ETH_TESTNET,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_TESTNET,
       [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_TESTNET
     },
@@ -322,6 +334,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.MUSIC_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.MUSIC_DEFAULT,
       [WalletId.SAFE_T_MINI]: DPaths.MUSIC_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.MUSIC_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.MUSIC_DEFAULT
@@ -348,6 +361,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETSC_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.ETSC_DEFAULT,
       [WalletId.SAFE_T_MINI]: DPaths.ETSC_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.ETSC_DEFAULT
     },
@@ -373,6 +387,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.EGEM_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.ETSC_DEFAULT,
       [WalletId.SAFE_T_MINI]: DPaths.EGEM_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.EGEM_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.EGEM_DEFAULT
@@ -399,6 +414,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.CLO_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.CLO_DEFAULT,
       [WalletId.SAFE_T_MINI]: DPaths.CLO_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.CLO_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.CLO_DEFAULT
@@ -426,6 +442,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     isTestnet: false,
     dPaths: {
       [WalletId.TREZOR]: DPaths.RSK_MAINNET,
+      [WalletId.SATOCHIP]: DPaths.RSK_MAINNET,
       [WalletId.LEDGER_NANO_S]: DPaths.RSK_MAINNET,
       [WalletId.MNEMONIC_PHRASE]: DPaths.RSK_MAINNET
     },
@@ -454,6 +471,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.RSK_TESTNET,
+      [WalletId.SATOCHIP]: DPaths.RSK_TESTNET,
       [WalletId.LEDGER_NANO_S]: DPaths.RSK_TESTNET,
       [WalletId.MNEMONIC_PHRASE]: DPaths.RSK_TESTNET
     },
@@ -480,6 +498,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.GO_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.GO_DEFAULT,
       [WalletId.SAFE_T_MINI]: DPaths.GO_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.GO_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.GO_DEFAULT
@@ -507,6 +526,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.GO_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.GO_DEFAULT,
       [WalletId.SAFE_T_MINI]: DPaths.GO_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.GO_DEFAULT
     },
@@ -532,6 +552,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.EOSC_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.EOSC_DEFAULT,
       [WalletId.SAFE_T_MINI]: DPaths.EOSC_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.EOSC_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.EOSC_DEFAULT
@@ -558,6 +579,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: require('v2/config/contracts/esn.json'),
     dPaths: {
       [WalletId.TREZOR]: DPaths.ESN_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.ESN_DEFAULT,
       [WalletId.SAFE_T_MINI]: DPaths.ESN_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.ESN_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.ESN_DEFAULT
@@ -583,6 +605,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.ETH_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_DEFAULT
     },
@@ -607,6 +630,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.AKA_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.AKA_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.AKA_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.AKA_DEFAULT
     },
@@ -631,6 +655,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: require('v2/config/contracts/pirl.json'),
     dPaths: {
       [WalletId.TREZOR]: DPaths.PIRL_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.PIRL_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.PIRL_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.PIRL_DEFAULT
     },
@@ -655,6 +680,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ATH_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.ATH_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.ATH_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.ATH_DEFAULT
     },
@@ -679,6 +705,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETHO_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.ETHO_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.ETHO_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.ETHO_DEFAULT
     },
@@ -703,6 +730,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.MIX_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.MIX_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.MIX_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.MIX_DEFAULT
     },
@@ -727,6 +755,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.REOSC_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.REOSC_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.REOSC_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.REOSC_DEFAULT
     },
@@ -754,6 +783,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     isTestnet: false,
     dPaths: {
       [WalletId.TREZOR]: DPaths.ARTIS_SIGMA1,
+      [WalletId.SATOCHIP]: DPaths.ARTIS_SIGMA1,
       [WalletId.SAFE_T_MINI]: DPaths.ARTIS_SIGMA1,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
       [WalletId.MNEMONIC_PHRASE]: DPaths.ARTIS_SIGMA1
@@ -782,6 +812,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.ARTIS_TAU1,
+      [WalletId.SATOCHIP]: DPaths.ARTIS_TAU1,
       [WalletId.SAFE_T_MINI]: DPaths.ARTIS_TAU1,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
       [WalletId.MNEMONIC_PHRASE]: DPaths.ARTIS_TAU1
@@ -807,6 +838,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.LEDGER_NANO_S]: DPaths.THUNDERCORE_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.THUNDERCORE_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.THUNDERCORE_DEFAULT
     },
     gasPriceSettings: {
@@ -829,6 +861,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     tokens: [],
     contracts: [],
     dPaths: {
+      [WalletId.SATOCHIP]: DPaths.WEB_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.WEB_DEFAULT
     },
     gasPriceSettings: {
@@ -852,6 +885,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
+      [WalletId.SATOCHIP]: DPaths.ETH_LEDGER,
       [WalletId.MNEMONIC_PHRASE]: DPaths.METADIUM_DEFAULT
     },
     gasPriceSettings: {
@@ -875,6 +909,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.LEDGER_NANO_S]: DPaths.SOLIDUM_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.SOLIDUM_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.SOLIDUM_DEFAULT
     },
     gasPriceSettings: {
@@ -899,6 +934,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.LEDGER_NANO_S]: DPaths.DEXON_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.DEXON_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.DEXON_DEFAULT
     },
     gasPriceSettings: {
@@ -922,6 +958,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETI_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.ETI_DEFAULT,
       [WalletId.SAFE_T_MINI]: DPaths.ETI_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.ETI_DEFAULT
     },
@@ -949,6 +986,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ASK_TREZOR,
+      [WalletId.SATOCHIP]: DPaths.ASK_TREZOR,
       [WalletId.MNEMONIC_PHRASE]: DPaths.ASK_DEFAULT
     },
     gasPriceSettings: {
@@ -973,6 +1011,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.SAFE_T_MINI]: DPaths.AUX_DEFAULT,
+      [WalletId.SATOCHIP]: DPaths.AUX_DEFAULT,
       [WalletId.MNEMONIC_PHRASE]: DPaths.AUX_DEFAULT
     },
     gasPriceSettings: {

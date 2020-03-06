@@ -12,6 +12,7 @@ import {
   SignTransactionWeb3,
   SignTransactionLedger,
   SignTransactionTrezor,
+  SignTransactionSatochip,
   SignTransactionSafeT,
   SignTransactionKeystore,
   SignTransactionMnemonic
@@ -29,6 +30,7 @@ const SigningComponents: SigningComponents = {
   [WalletId.FRAME]: SignTransactionWeb3,
   [WalletId.LEDGER_NANO_S]: SignTransactionLedger,
   [WalletId.TREZOR]: SignTransactionTrezor,
+  [WalletId.SATOCHIP]: SignTransactionSatochip,
   [WalletId.SAFE_T_MINI]: SignTransactionSafeT,
   [WalletId.KEYSTORE_FILE]: SignTransactionKeystore,
   [WalletId.PARITY_SIGNER]: null,

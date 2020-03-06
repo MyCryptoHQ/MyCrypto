@@ -10,6 +10,7 @@ import {
   PrivateKeyDecrypt,
   SafeTminiDecrypt,
   TrezorDecrypt,
+  SatochipDecrypt,
   Web3ProviderDecrypt,
   Web3ProviderInstall,
   ViewOnlyDecrypt
@@ -27,6 +28,10 @@ export const STORIES: IStory[] = [
   {
     name: WalletId.TREZOR,
     steps: [NetworkSelectPanel, TrezorDecrypt, SaveAndRedirect]
+  },
+  {
+    name: WalletId.SATOCHIP,
+    steps: [NetworkSelectPanel, SatochipDecrypt, SaveAndRedirect]
   },
   {
     name: WalletId.SAFE_T_MINI,

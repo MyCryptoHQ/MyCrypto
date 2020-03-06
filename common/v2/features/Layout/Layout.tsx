@@ -64,7 +64,7 @@ export default function Layout({ config = {}, className = '', children }: Props)
   const { centered = true, fluid, fullW = false, bgColor } = config;
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
   const betaAnnouncement =
-    'Heads up: this is a beta version of the new MyCrypto. It has not been audited yet, so please practice safe sending.';
+    'Heads up: this is a beta version of the MyCrypto-Satochip. It has not been audited yet, so please practice safe sending.';
   return (
     <SMain className={className} bgColor={bgColor}>
       <Header

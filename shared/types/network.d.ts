@@ -66,6 +66,7 @@ interface DPathFormats {
   trezor?: DPath;
   safeTmini?: DPath;
   ledgerNanoS?: DPath;
+  satochip?: DPath;
   mnemonicPhrase: DPath;
   default?: DPath;
 }

@@ -5,6 +5,7 @@ export * from './Mnemonic';
 export * from './ParitySigner';
 export * from './PrivateKey';
 export * from './Trezor';
+export * from './Satochip';
 export * from './SafeT';
 export * from './ViewOnly';
 export * from './disables';

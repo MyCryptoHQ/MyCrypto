@@ -10,6 +10,7 @@ const walletTypeNames = {
   [WalletTypes.LEDGER]: 'X_LEDGER',
   [WalletTypes.TREZOR]: 'X_TREZOR',
   [WalletTypes.SAFE_T]: 'X_SAFE_T',
+  [WalletTypes.SATOCHIP]: 'X_SATOCHIP',
   [WalletTypes.KEEPKEY]: 'X_KEEPKEY'
 };
 

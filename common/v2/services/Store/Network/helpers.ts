@@ -30,6 +30,8 @@ export const getNetworkById = (id: NetworkId): Network | undefined => {
 };
 
 export const isWalletFormatSupportedOnNetwork = (network: Network, format: WalletId): boolean => {
+  //return true;//debugSatochip
+  console.log('# isWalletFormatSupportedOnNetwork():'); //debugSatochip
   const chainId = network ? network.chainId : 0;
 
   const CHECK_FORMATS: DPathFormat[] = Object.keys(HD_WALLETS) as DPathFormat[];
@@ -38,10 +40,13 @@ export const isWalletFormatSupportedOnNetwork = (network: Network, format: Walle
 
   // Ensure DPath's are found
   if (isHDFormat(format)) {
+    console.log('		format:' + format); //debugSatochip
+    console.log('		network name:' + network.name); //debugSatochip
     if (!network) {
       return false;
     }
     const dPath: DPath | undefined = network.dPaths && network.dPaths[format];
+    console.log('		dPath:' + dPath);
     return !!dPath;
   }
 

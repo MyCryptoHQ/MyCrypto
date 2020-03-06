@@ -7,6 +7,7 @@ import { WalletType, WalletId } from 'v2/types';
 // component.
 import LedgerSVG from 'common/assets/images/wallets/ledger.svg';
 import TrezorSVG from 'common/assets/images/wallets/trezor.svg';
+import SatochipSVG from 'common/assets/images/wallets/satochip.svg';
 import SafeTSVG from 'common/assets/images/wallets/safe-t.png';
 import ParitySignerSVG from 'common/assets/images/wallets/parity-signer.svg';
 
@@ -109,6 +110,18 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     icon: TrezorSVG,
     description: 'ADD_HARDWAREDESC',
     helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-trezor`
+  },
+  [WalletId.SATOCHIP]: {
+    id: WalletId.SATOCHIP,
+    name: 'Satochip',
+    isDeterministic: true,
+    isSecure: true,
+    isDesktopOnly: false,
+    type: WalletType.HARDWARE,
+    lid: 'X_SATOCHIP',
+    icon: SatochipSVG,
+    description: 'ADD_HARDWAREDESC',
+    helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-satochip`
   },
   [WalletId.SAFE_T_MINI]: {
     id: WalletId.SAFE_T_MINI,

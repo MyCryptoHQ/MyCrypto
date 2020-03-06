@@ -10,6 +10,7 @@ export enum WalletTypes {
   LEDGER = 'ledger',
   TREZOR = 'trezor',
   SAFE_T = 'safe-t',
+  SATOCHIP = 'satochip',
   KEEPKEY = 'keepkey'
 }
 

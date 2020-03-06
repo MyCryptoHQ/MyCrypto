@@ -3,6 +3,7 @@ import { WalletId, HardwareWalletId } from 'v2/types';
 import { makeEnclaveWallet } from './enclave';
 import { LedgerWallet as LedgerWalletWeb } from './ledger';
 import { TrezorWallet as TrezorWalletWeb } from './trezor';
+import { SatochipWallet as SatochipWalletWeb } from './satochip';
 import { SafeTWallet as SafeTWalletWeb } from './safe-t';
 
 function enclaveOrWallet<T>(type: HardwareWalletId, lib: T) {
@@ -11,6 +12,7 @@ function enclaveOrWallet<T>(type: HardwareWalletId, lib: T) {
   const walletIdToWalletTypes = {
     [WalletId.LEDGER_NANO_S]: WalletTypes.LEDGER,
     [WalletId.TREZOR]: WalletTypes.TREZOR,
+    [WalletId.SATOCHIP]: WalletTypes.SATOCHIP,
     [WalletId.SAFE_T_MINI]: WalletTypes.SAFE_T
   } as Record<HardwareWalletId, WalletTypes>;
 
@@ -22,4 +24,5 @@ export * from './hardware';
 export * from './deterministic';
 export const LedgerWallet = enclaveOrWallet(WalletId.LEDGER_NANO_S, LedgerWalletWeb);
 export const TrezorWallet = enclaveOrWallet(WalletId.TREZOR, TrezorWalletWeb);
+export const SatochipWallet = enclaveOrWallet(WalletId.SATOCHIP, SatochipWalletWeb);
 export const SafeTWallet = enclaveOrWallet(WalletId.SAFE_T_MINI, SafeTWalletWeb);
