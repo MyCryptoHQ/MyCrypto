@@ -103,7 +103,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     title: 'ETH Bearish Investment',
     name: 'Compound Lender Pool',
     key: 'compoundLender',
-    contractAddress: '0xEbD5E23927891FBfDa10487cCC9A1a1a7b9a4210',
+    contractAddress: '0x1FE91B5D531620643cADcAcc9C3bA83097c1B698',
     risk: 3,
     description:
       'Converts all of your ETH to DAI and contributes it to the Compound Money Market protocol to grow your funds.',

@@ -77,7 +77,7 @@ const ZapCardContentBottom = styled('div')`
     }
   }
 
-  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+  @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
     flex-direction: column;
     & a {
       &:not(:first-child) {
