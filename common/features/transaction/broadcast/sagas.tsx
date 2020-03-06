@@ -64,7 +64,9 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
       );
     } catch (error) {
       yield put(actions.broadcastTransactionFailed({ indexingHash }));
-      yield put(notificationsActions.showNotification('danger', (error as Error).message));
+      if (error.message !== '[object Object]') {
+        yield put(notificationsActions.showNotification('danger', (error as Error).message));
+      }
     }
   };
 
