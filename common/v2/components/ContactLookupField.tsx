@@ -4,9 +4,15 @@ import { ResolutionError } from '@unstoppabledomains/resolution';
 
 import { DomainStatus, InlineMessage } from 'v2/components';
 import { Network, IReceiverAddress, ErrorObject } from 'v2/types';
-import { AddressBookContext, findNextRecipientLabel } from 'v2/services/Store';
+import {
+  AddressBookContext,
+  findNextRecipientLabel,
+  getBaseAssetByNetwork,
+  AssetContext
+} from 'v2/services/Store';
 import { isValidETHAddress, isValidENSName } from 'v2/services/EthService';
 import { useEffectOnce } from 'v2/vendor';
+import UnstoppableResolution from 'v2/services/UnstoppableService';
 
 import ContactLookupDropdown from './ContactLookupDropdown';
 
@@ -18,8 +24,9 @@ interface IContactLookupFieldComponentProps {
   fieldProps: FieldProps;
   resolutionError: ResolutionError | undefined;
   onBlur(): void;
-  handleDomainResolve(domain: string): Promise<string | undefined>;
   clearErrors(): void;
+  setIsResolvingDomain(isResolving: boolean): void;
+  setResolutionError(err: ResolutionError | undefined): void;
 }
 
 const ContactLookupField = ({
@@ -30,8 +37,9 @@ const ContactLookupField = ({
   isValidAddress,
   isResolvingName,
   onBlur,
-  handleDomainResolve,
-  clearErrors
+  clearErrors,
+  setIsResolvingDomain,
+  setResolutionError
 }: IContactLookupFieldComponentProps) => {
   const [inputValue, setInputValue] = useState();
   const {
@@ -39,6 +47,7 @@ const ContactLookupField = ({
     createAddressBooks: createContact,
     getContactByAddress
   } = useContext(AddressBookContext);
+  const { assets } = useContext(AssetContext);
   const errorMessage = typeof error === 'object' ? error.message : error;
   const errorType = typeof error === 'object' ? error.type : undefined;
   const { name: fieldName, value: fieldValue } = field;
@@ -127,6 +136,34 @@ const ContactLookupField = ({
 
     form.setFieldValue(fieldName, contact);
     form.setFieldTouched(fieldName);
+  };
+
+  const handleDomainResolve = async (name: string): Promise<string | undefined> => {
+    if (!name || !network) {
+      setIsResolvingDomain(false);
+      setResolutionError(undefined);
+      return;
+    }
+    setIsResolvingDomain(true);
+    setResolutionError(undefined);
+    try {
+      const unstoppableAddress = await UnstoppableResolution.getResolvedAddress(
+        name,
+        getBaseAssetByNetwork({ network, assets })!.ticker
+      );
+      return unstoppableAddress;
+    } catch (err) {
+      // Force the field value to error so that isValidAddress is triggered!
+      form.setFieldValue(fieldName, {
+        ...fieldValue,
+        value: ''
+      });
+      if (UnstoppableResolution.isResolutionError(err)) {
+        setResolutionError(err);
+      } else throw err;
+    } finally {
+      setIsResolvingDomain(false);
+    }
   };
 
   return (

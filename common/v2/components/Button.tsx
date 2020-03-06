@@ -27,6 +27,7 @@ export type Props = ButtonProps & React.ComponentProps<typeof Button>;
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
 `;
 
 const LoadingSpinnerWrapper = styled.div`

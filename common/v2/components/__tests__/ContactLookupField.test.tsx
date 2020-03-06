@@ -3,7 +3,7 @@ import React from 'react';
 import { simpleRender, fireEvent, wait } from 'test-utils';
 import { fNetwork } from '@fixtures';
 
-import { AddressBookContext } from 'v2/services/Store';
+import { AddressBookContext, AssetContext } from 'v2/services/Store';
 import { AddressBook, ExtendedAddressBook, TUuid, IReceiverAddress } from 'v2/types';
 import { addressBook } from 'v2/database/seed/addressBook';
 
@@ -14,7 +14,7 @@ interface ParamsProps {
   handleDomainResolve?(domain: string): string;
 }
 
-const getDefaultProps = ({ handleDomainResolve, error }: ParamsProps = {} as ParamsProps) => {
+const getDefaultProps = ({ error }: ParamsProps = {} as ParamsProps) => {
   const props = {
     network: fNetwork,
     isValidAddress: false,
@@ -30,8 +30,9 @@ const getDefaultProps = ({ handleDomainResolve, error }: ParamsProps = {} as Par
     },
     clearErrors: jest.fn(),
     resolutionError: undefined,
-    handleDomainResolve: handleDomainResolve || jest.fn(),
-    error
+    error,
+    setIsResolvingDomain: jest.fn(),
+    setResolutionError: jest.fn()
   };
 
   return props;
@@ -39,25 +40,40 @@ const getDefaultProps = ({ handleDomainResolve, error }: ParamsProps = {} as Par
 
 function getComponent(props: any, contacts: AddressBook[] = []) {
   return simpleRender(
-    <AddressBookContext.Provider
+    <AssetContext.Provider
       value={
         ({
-          addressBook: contacts,
-          getContactByAddress: (address: string) =>
-            contacts.find((x: ExtendedAddressBook) => x.address === address),
-          createAddressBooks: (contact: AddressBook) => contacts.push(contact)
+          assets: [{ uuid: fNetwork.baseAsset }]
         } as unknown) as any
       }
     >
-      <ContactLookupField {...props} />
-    </AddressBookContext.Provider>
+      <AddressBookContext.Provider
+        value={
+          ({
+            addressBook: contacts,
+            getContactByAddress: (address: string) =>
+              contacts.find((x: ExtendedAddressBook) => x.address === address),
+            createAddressBooks: (contact: AddressBook) => contacts.push(contact)
+          } as unknown) as any
+        }
+      >
+        <ContactLookupField {...props} />
+      </AddressBookContext.Provider>
+    </AssetContext.Provider>
   );
 }
 
 const enter = { key: 'Enter', keyCode: 13 };
-const mappedContacts: ExtendedAddressBook[] = Object.entries(addressBook).map(([key, value]) => ({
-  ...value,
-  uuid: key as TUuid
+const mockMappedContacts: ExtendedAddressBook[] = Object.entries(addressBook).map(
+  ([key, value]) => ({
+    ...value,
+    uuid: key as TUuid
+  })
+);
+
+// mock domain resolving function
+jest.mock('v2/services/UnstoppableService', () => ({
+  getResolvedAddress: () => mockMappedContacts[0].address
 }));
 
 describe('ContactLookupField', () => {
@@ -68,7 +84,7 @@ describe('ContactLookupField', () => {
   });
 
   test('it adds unknown address to contact book and select it after blur', async () => {
-    const address = mappedContacts[0].address;
+    const address = mockMappedContacts[0].address;
     const contacts: ExtendedAddressBook[] = [];
     const props = getDefaultProps();
     const { container } = getComponent(props, contacts);
@@ -84,10 +100,9 @@ describe('ContactLookupField', () => {
 
   test('it adds unknown ens to contact book and select it by keypress enter', async () => {
     const contacts: ExtendedAddressBook[] = [];
-    const address = mappedContacts[0].address;
+    const address = mockMappedContacts[0].address;
     const ens = 'eth.eth';
-    const handleDomainResolve = () => address;
-    const props = getDefaultProps({ handleDomainResolve });
+    const props = getDefaultProps();
     const { container } = getComponent(props, contacts);
     const input = container.querySelector('input');
     fireEvent.click(input!);
@@ -115,11 +130,10 @@ describe('ContactLookupField', () => {
   });
 
   test('it select existing contact from contacts book by keypress enter', async () => {
-    const contacts: ExtendedAddressBook[] = mappedContacts.map(x => x);
+    const contacts: ExtendedAddressBook[] = mockMappedContacts.map(x => x);
     const [contact] = contacts;
-    const handleDomainResolve = () => contact.address;
     const inputString = 'eth.eth';
-    const props = getDefaultProps({ handleDomainResolve });
+    const props = getDefaultProps();
     const { container } = getComponent(props, contacts);
     const input = container.querySelector('input');
     fireEvent.click(input!);

@@ -277,7 +277,7 @@
     "DOWNLOAD_APP_FOOTER_LINK": "Download our desktop application to use them.",
     "ADD_ACCOUNT_DESCRIPTION": "Select from the options below to unlock your account and manage your assets.",
     "ADD_ACCOUNT_NETWORK_TITLE": "Select Network",
-    "ADD_ACCOUNT_NETWORK_SELCT": "Select the blockchain that you want to operate with and the network it connects through. Not sure what to choose? Stick with the default choices below and click next.",
+    "ADD_ACCOUNT_NETWORK_SELECT": "Select the blockchain that you want to operate with and the network it connects through. Not sure what to choose? Stick with the default choices below and click next.",
     "ADD_ACCOUNT_NETWORK_ACTION": "Next",
     "ADD_ACCOUNT_WEB3_TITLE": "Connect and Unlock with $walletId",
     "ADD_ACCOUNT_WEB3_TITLE_DEFAULT": "Connect and unlock with your Web3 Provider",

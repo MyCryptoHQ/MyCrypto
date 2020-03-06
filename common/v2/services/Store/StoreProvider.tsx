@@ -80,12 +80,17 @@ export const StoreProvider: React.FC = ({ children }) => {
   const { assets } = useContext(AssetContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { networks } = useContext(NetworkContext);
-  const { createAddressBooks, addressBook } = useContext(AddressBookContext);
+  const {
+    createAddressBooks: createContact,
+    addressBook: contacts,
+    getContactByAddressAndNetwork,
+    updateAddressBooks: updateContact
+  } = useContext(AddressBookContext);
 
   const [pendingTransactions, setPendingTransactions] = useState([] as ITxReceipt[]);
   // We transform rawAccounts into StoreAccount. Since the operation is exponential to the number of
   // accounts, make sure it is done only when rawAccounts change.
-  const accounts = useMemo(() => getStoreAccounts(rawAccounts, assets, networks, addressBook), [
+  const accounts = useMemo(() => getStoreAccounts(rawAccounts, assets, networks, contacts), [
     rawAccounts,
     assets,
     networks
@@ -250,13 +255,22 @@ export const StoreProvider: React.FC = ({ children }) => {
         favorite: false,
         mtime: 0
       };
-      const newLabel: AddressBook = {
-        label: findNextUnusedDefaultLabel(account.wallet)(addressBook),
-        address: account.address,
-        notes: '',
-        network: account.networkId
-      };
-      createAddressBooks(newLabel);
+
+      const existingContact = getContactByAddressAndNetwork(account.address, network);
+      if (existingContact) {
+        updateContact(existingContact.uuid, {
+          ...existingContact,
+          label: findNextUnusedDefaultLabel(account.wallet)(contacts)
+        });
+      } else {
+        const newLabel: AddressBook = {
+          label: findNextUnusedDefaultLabel(account.wallet)(contacts),
+          address: account.address,
+          notes: '',
+          network: account.networkId
+        };
+        createContact(newLabel);
+      }
       createAccountWithID(account, newUUID);
 
       return account;

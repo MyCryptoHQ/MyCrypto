@@ -52,7 +52,6 @@ import {
   isBurnAddress,
   bigNumGasPriceToViewableGwei
 } from 'v2/services/EthService';
-import UnstoppableResolution from 'v2/services/UnstoppableService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 import {
   GAS_LIMIT_LOWER_BOUND,
@@ -299,34 +298,6 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
             }
           };
 
-          const handleDomainResolve = async (name: string): Promise<string | undefined> => {
-            if (!values || !values.network) {
-              setIsResolvingDomain(false);
-              setResolutionError(undefined);
-              return;
-            }
-            setIsResolvingDomain(true);
-            setResolutionError(undefined);
-            try {
-              const unstoppableAddress = await UnstoppableResolution.getResolvedAddress(
-                name,
-                baseAsset.ticker
-              );
-              return unstoppableAddress;
-            } catch (err) {
-              // Force the field value to error so that isValidAddress is triggered!
-              setFieldValue('address', {
-                ...values.address,
-                value: ''
-              });
-              if (UnstoppableResolution.isResolutionError(err)) {
-                setResolutionError(err);
-              } else throw err;
-            } finally {
-              setIsResolvingDomain(false);
-            }
-          };
-
           const handleFieldReset = () => {
             const resetFields: (keyof IFormikFields)[] = [
               'account',
@@ -467,7 +438,8 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                       isValidAddress={isValidAddress}
                       isResolvingName={isResolvingName}
                       onBlur={handleGasEstimate}
-                      handleDomainResolve={handleDomainResolve}
+                      setIsResolvingDomain={setIsResolvingDomain}
+                      setResolutionError={setResolutionError}
                       clearErrors={() => setResolutionError(undefined)}
                     />
                   )}
