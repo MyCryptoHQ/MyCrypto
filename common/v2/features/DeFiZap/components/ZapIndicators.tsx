@@ -9,18 +9,16 @@ import bearishIndicator from 'assets/images/defizap/indicators/bearishIndicator.
 
 const SContainer = styled.div`
   display: flex;
-  align-items: center;
+  justify-content: center;
+  align-items: top;
 `;
 
 const SImage = styled.img`
-  display: flex;
-  align-items: center;
   height: 16px;
   width: 16px;
 `;
+
 const SText = styled(Typography)`
-  display: flex;
-  align-items: center;
   padding-left: ${SPACING.XS};
   color: ${COLORS.PURPLE};
   margin-bottom: 0px;
