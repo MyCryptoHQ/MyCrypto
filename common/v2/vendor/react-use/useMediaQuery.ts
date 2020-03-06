@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import isFunction from 'lodash/isFunction';
 
 // https://github.com/bence-toth/react-hook-media-query
 const useMediaQuery = (query: string) => {
@@ -8,9 +9,25 @@ const useMediaQuery = (query: string) => {
     const updateMatch = () => setIsMatching(window.matchMedia(query).matches);
 
     updateMatch();
-    window.matchMedia(query).addEventListener('change', updateMatch);
+    if (window.hasOwnProperty('matchMedia') && isFunction(window.matchMedia)) {
+      const matchMediaQuery = window.matchMedia(query);
+      if (
+        matchMediaQuery.hasOwnProperty('addEventListener') &&
+        isFunction(matchMediaQuery.addEventListener)
+      ) {
+        matchMediaQuery.addEventListener('change', updateMatch);
+      }
+    }
     return () => {
-      window.matchMedia(query).removeEventListener('change', updateMatch);
+      if (window.hasOwnProperty('matchMedia') && isFunction(window.matchMedia)) {
+        const matchMediaQuery = window.matchMedia(query);
+        if (
+          matchMediaQuery.hasOwnProperty('addEventListener') &&
+          isFunction(matchMediaQuery.removeEventListener)
+        ) {
+          matchMediaQuery.removeEventListener('change', updateMatch);
+        }
+      }
     };
   }, [query]);
 
