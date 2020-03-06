@@ -13,15 +13,10 @@ import {
   trimBN
 } from 'v2/utils';
 import { DexService, AssetContext, NetworkContext, getNetworkById } from 'v2/services';
-import { StoreAccount, ITxConfig } from 'v2/types';
+import { StoreAccount } from 'v2/types';
 import { DEFAULT_NETWORK, MYC_DEXAG_COMMISSION_RATE } from 'v2/config';
 
 import { ISwapAsset, LAST_CHANGED_AMOUNT, SwapFormState } from './types';
-import {
-  makeTxConfigFromTransaction,
-  makeAllowanceTransaction,
-  makeTradeTransactionFromDexTrade
-} from './helpers';
 
 const swapFormInitialState = {
   assets: [],
@@ -39,7 +34,6 @@ const swapFormInitialState = {
 
 const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setState }) => {
   const { networks } = useContext(NetworkContext);
-  const { assets: userAssets } = useContext(AssetContext);
 
   const fetchSwapAssets = async () => {
     try {
@@ -255,44 +249,6 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
     }));
   };
 
-  const getTokexInfo = async (): Promise<ITxConfig> => {
-    const { lastChangedAmount, fromAsset, fromAmount, toAsset, toAmount, account } = state;
-    const isLastChangedTo = lastChangedAmount === LAST_CHANGED_AMOUNT.TO;
-
-    const getOrderDetails = isLastChangedTo
-      ? DexService.instance.getOrderDetailsTo
-      : DexService.instance.getOrderDetailsFrom;
-
-    try {
-      const dexTrade = await getOrderDetails(
-        fromAsset.symbol,
-        toAsset.symbol,
-        isLastChangedTo ? toAmount : fromAmount
-      );
-
-      const makeTransaction = dexTrade.metadata.input
-        ? makeAllowanceTransaction
-        : makeTradeTransactionFromDexTrade;
-
-      const rawTransaction = await makeTransaction(dexTrade, account);
-
-      setState(prevState => ({
-        ...prevState,
-        isMulti: dexTrade.metadata.input,
-        dexTrade
-      }));
-
-      return makeTxConfigFromTransaction(userAssets)(
-        rawTransaction,
-        account,
-        fromAsset,
-        fromAmount
-      );
-    } catch (err) {
-      throw new Error(err);
-    }
-  };
-
   return {
     fetchSwapAssets,
     setSwapAssets,
@@ -303,7 +259,6 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
     handleFromAmountChanged,
     handleToAmountChanged,
     handleAccountSelected,
-    getTokexInfo,
     formState: state
   };
 };

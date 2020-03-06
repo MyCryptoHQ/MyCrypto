@@ -1,8 +1,13 @@
+import { ethers } from 'ethers';
+import { addHexPrefix } from 'ethereumjs-util';
+import BN from 'bn.js';
 import axios, { AxiosInstance } from 'axios';
 
 import { default as ApiService } from '../ApiService';
-import { TSymbol } from 'v2/types';
+import { TSymbol, ITxObject } from 'v2/types';
 import { DEXAG_PROXY_CONTRACT } from 'v2/config';
+
+import { DexTrade } from './types';
 
 const DEX_BASE_URL = 'https://api.dex.ag/';
 
@@ -80,9 +85,20 @@ export default class DexService {
         dex: 'best',
         proxy: DEXAG_PROXY_CONTRACT
       };
-      const { data: orderDetails } = await this.service.get('trade', { params });
-
-      return orderDetails;
+      const { data }: { data: DexTrade } = await this.service.get('trade', { params });
+      const isMultiTx = !!(data.metadata && data.metadata.input);
+      return [
+        isMultiTx &&
+          formatApproveTx({
+            to: data.metadata.input.address,
+            value: data.metadata.input.amount
+          }),
+        formatTradeTx({
+          to: data.trade.to,
+          data: data.trade.data,
+          value: data.trade.value
+        })
+      ];
     } catch (e) {
       throw e;
     }
@@ -135,3 +151,40 @@ export default class DexService {
     }
   };
 }
+
+export const formatApproveTx = ({ to, value }: Partial<ITxObject>): ITxObject => {
+  // First 4 bytes of the hash of "fee()" for the sighash selector
+  const funcHash = ethers.utils.hexDataSlice(ethers.utils.id('approve(address,uint256)'), 0, 4);
+
+  const abi = new ethers.utils.AbiCoder();
+  const inputs = [
+    {
+      name: 'spender',
+      type: 'address'
+    },
+    {
+      name: 'amount',
+      type: 'uint256'
+    }
+  ];
+
+  const params = [DEXAG_PROXY_CONTRACT, value];
+  const bytes = abi.encode(inputs, params).substr(2);
+  const inputData = `${funcHash}${bytes}`;
+
+  return {
+    to,
+    chainId: 1,
+    data: inputData,
+    value: 0
+  };
+};
+
+export const formatTradeTx = ({ to, data, value }: Partial<ITxObject>): ITxObject => {
+  return {
+    to,
+    data,
+    value: addHexPrefix(new BN(value || '0').toString(16)),
+    chainId: 1
+  };
+};

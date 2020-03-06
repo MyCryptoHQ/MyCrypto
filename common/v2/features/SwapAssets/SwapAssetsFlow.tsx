@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useReducer } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { translateRaw } from 'v2/translations';
@@ -8,9 +8,17 @@ import { ROUTE_PATHS } from 'v2/config';
 import { ITxReceipt, ITxConfig, ISignedTx } from 'v2/types';
 import { useStateReducer } from 'v2/utils';
 import { useEffectOnce, usePromise } from 'v2/vendor';
+import { AssetContext, NetworkContext } from 'v2/services';
 
 import { SwapAssets, ConfirmSwap, SwapTransactionReceipt, SetAllowance } from './components';
-import { SwapFlowFactory, swapFlowInitialState } from './stateFactory';
+import {
+  SwapFlowReducer,
+  swapFlowInitialState,
+  saveTxConfig,
+  handleConfirmSwapClicked,
+  handleApproveSigned,
+  handleTxSigned
+} from './stateFactory';
 import { SwapFormFactory, swapFormInitialState } from './stateFormFactory';
 import { SwapState, SwapFormState } from './types';
 
@@ -36,7 +44,6 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     handleFromAmountChanged,
     handleToAmountChanged,
     handleAccountSelected,
-    getTokexInfo,
     formState
   } = useStateReducer(SwapFormFactory, swapFormInitialState);
   const {
@@ -53,19 +60,20 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     lastChangedAmount,
     exchangeRate,
     initialToAmount,
-    markup,
-    isMulti,
-    dexTrade
+    markup
   }: SwapFormState = formState;
 
+  const { assets: userAssets } = useContext(AssetContext);
+  const { networks } = useContext(NetworkContext);
+  const [state, dispatch] = useReducer<>(SwapFlowReducer, swapFlowInitialState);
   const {
-    saveTxConfig,
-    handleConfirmSwapClicked,
-    handleAllowanceSigned,
-    handleTxSigned,
-    swapState
-  } = useStateReducer(SwapFlowFactory, swapFlowInitialState);
-  const { isSubmitting, txReceipt, txConfig, rawTransaction }: SwapState = swapState;
+    isSubmitting,
+    assetPair,
+    txReceipt,
+    txConfig,
+    rawTransaction,
+    tradeOrder
+  }: SwapState = state;
 
   const goToFirstStep = () => {
     setStep(0);
@@ -102,7 +110,8 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         initialToAmount,
         exchangeRate,
         markup,
-        account
+        account,
+        isSubmitting
       },
       actions: {
         handleFromAssetSelected,
@@ -113,9 +122,17 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         handleToAmountChanged,
         handleAccountSelected,
         onSuccess: () => {
-          getTokexInfo()
-            .then((config: ITxConfig) => saveTxConfig(config, fromAsset, fromAmount, dexTrade))
-            .then(goToNextStep);
+          saveTxConfig(dispatch, _, goToNextStep)(
+            userAssets,
+            {
+              fromAsset,
+              fromAmount,
+              toAmount,
+              toAsset,
+              lastChangedAmount
+            },
+            account
+          );
         }
       }
     },
@@ -134,10 +151,10 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         isSubmitting
       },
       actions: {
-        onSuccess: () => handleConfirmSwapClicked(goToNextStep)
+        onSuccess: () => handleConfirmSwapClicked(dispatch)(goToNextStep)
       }
     },
-    ...(isMulti
+    ...(tradeOrder && tradeOrder.isMultiTx
       ? [
           {
             title: translateRaw('SWAP_ALLOWANCE_TITLE'),
@@ -151,7 +168,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
             },
             actions: {
               onSuccess: (payload: ITxReceipt | ISignedTx) =>
-                handleAllowanceSigned(payload, goToNextStep)
+                handleApproveSigned(dispatch, () => state)(userAssets, payload, goToNextStep)
             }
           }
         ]
@@ -166,7 +183,8 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         rawTransaction
       },
       actions: {
-        onSuccess: (payload: ITxReceipt | ISignedTx) => handleTxSigned(payload, goToNextStep)
+        onSuccess: (payload: ITxReceipt | ISignedTx) =>
+          handleTxSigned(dispatch, () => state)(userAssets, networks, payload, goToNextStep)
       }
     },
     {

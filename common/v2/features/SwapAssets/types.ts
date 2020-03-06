@@ -1,4 +1,5 @@
 import { TSymbol, StoreAccount, ITxConfig, ITxReceipt, ITxObject } from 'v2/types';
+import { BigNumber } from 'ethers/utils';
 
 export interface ISwapAsset {
   name: string;
@@ -22,8 +23,9 @@ export interface SwapState extends SwapDisplayData {
   isSubmitting: boolean;
   txConfig: ITxConfig;
   rawTransaction: ITxObject;
-  dexTrade: any;
   txReceipt: ITxReceipt | undefined;
+  assetPair: IAssetPair;
+  tradeOrder: AssetPairOrder;
 }
 
 export interface SwapFormState extends SwapDisplayData {
@@ -38,5 +40,18 @@ export interface SwapFormState extends SwapDisplayData {
   exchangeRate: string; // The exchange rate displayed to the user (post-markup)
   markup: string;
   isMulti: boolean;
-  dexTrade: any;
 }
+
+export interface IAssetPair {
+  lastChangedAmount: LAST_CHANGED_AMOUNT;
+  fromAsset: ISwapAsset;
+  toAsset: ISwapAsset;
+  fromAmount: BigNumber;
+  toAmount: BigNumber;
+  rate: BigNumber;
+  markup: BigNumber;
+}
+
+export type AssetPairOrder = IAssetPair & { transactions: []; isMultiTx: boolean };
+
+// I need multiple rawtx, status and receipts.
