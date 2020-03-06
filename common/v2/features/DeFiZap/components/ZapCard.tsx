@@ -24,12 +24,12 @@ const ZapCardContainer = styled('li')`
   flex: 1;
   margin-bottom: 0px;
   &:not(:last-child) {
-    margin-bottom: 15px;
+    margin-bottom: ${SPACING.BASE};
   }
 
   @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
     &:not(:last-child) {
-      margin-right: 15px;
+      margin-right: ${SPACING.BASE};
       margin-bottom: 0px;
     }
   }
@@ -43,21 +43,21 @@ const ZapCardHeader = styled('div')`
   justify-content: center;
   color: white;
   font-weight: bold;
+  padding: ${SPACING.XS} ${SPACING.SM};
 `;
 
 const ZapCardContent = styled('div')`
   display: flex;
   flex: 1;
-  padding: 0px 15px 0 15px;
+  padding: 0px ${SPACING.BASE} 0 ${SPACING.BASE};
   flex-direction: column;
 `;
 
 const ZapCardContentText = styled.p`
-  padding: 15px 0px;
+  padding: ${SPACING.BASE} 0px;
 `;
 
 const ZapCardContentRow = styled('div')`
-  margin: 0px 10px;
   align-items: center;
   justify-content: center;
   flex: 1;
@@ -65,7 +65,7 @@ const ZapCardContentRow = styled('div')`
 
 const ZapCardContentBottom = styled('div')`
   display: flex;
-  padding: 16px 16px;
+  padding: 15px 15px;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -89,7 +89,7 @@ const ZapCardContentBottom = styled('div')`
 `;
 
 const ZapCardContentHeaderRow = styled('div')`
-  margin: 0px 10px;
+  margin: 0px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -132,7 +132,7 @@ const ZapCardButton = styled(Button)`
   border-radius: 3px;
   font-size: ${FONT_SIZE.MD};
   font-weight: normal;
-  padding: 0px ${SPACING.BASE};
+  padding: 0px 15px;
   &:hover {
     background-color: ${COLORS.BLUE_LIGHT_DARKISH};
     color: ${COLORS.WHITE};
