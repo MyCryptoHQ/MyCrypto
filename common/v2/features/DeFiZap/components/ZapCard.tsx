@@ -1,19 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+import { Button } from '@mycrypto/ui';
 
-import { RouterLink } from 'v2/components';
+import { RouterLink, Tooltip } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
-import { COLORS, BREAK_POINTS } from 'v2/theme';
+import { COLORS, BREAK_POINTS, FONT_SIZE, SPACING } from 'v2/theme';
 
-import { fetchRiskText, IZapConfig } from '../config';
-import moderateRisk from 'assets/images/defizap/moderateRisk.svg';
-import conservativeRisk from 'assets/images/defizap/conservativeRisk.svg';
-import insaneRisk from 'assets/images/defizap/insaneRisk.svg';
-import ludicrousRisk from 'assets/images/defizap/ludicrousRisk.svg';
+import { fetchZapRiskObject, IZapConfig } from '../config';
+import { weiToFloat } from 'v2/utils';
+import { StoreContext, getTotalByAsset } from 'v2/services';
+import { translateRaw } from 'v2/translations';
+
+interface SProps {
+  isOwned?: boolean;
+}
 
 const ZapCardContainer = styled('li')`
   background: #ffffff;
-  border: 1px solid #1eb8e7;
+  border: 1px solid ${(props: SProps) => (props.isOwned ? COLORS.LIGHT_GREEN : COLORS.BLUE_BRIGHT)};
   border-radius: 3px;
   display: flex;
   flex-direction: column;
@@ -33,7 +37,7 @@ const ZapCardContainer = styled('li')`
 
 const ZapCardHeader = styled('div')`
   display: flex;
-  background: #1eb8e7;
+  background: ${(props: SProps) => (props.isOwned ? COLORS.LIGHT_GREEN : COLORS.BLUE_BRIGHT)};
   height: 49px;
   align-items: center;
   justify-content: center;
@@ -48,6 +52,10 @@ const ZapCardContent = styled('div')`
   flex-direction: column;
 `;
 
+const ZapCardContentText = styled.p`
+  padding: 15px 0px;
+`;
+
 const ZapCardContentRow = styled('div')`
   margin: 0px 10px;
   align-items: center;
@@ -57,19 +65,29 @@ const ZapCardContentRow = styled('div')`
 
 const ZapCardContentBottom = styled('div')`
   display: flex;
-  padding: 30px 15px;
-  height: 24px;
-  flex-direction: row;
+  padding: 16px 16px;
   align-items: center;
-  text-align: center;
   justify-content: center;
-  color: #1eb8e7;
-  font-weight: normal;
-  &:hover {
-    color: white;
-    background-color: #1eb8e7;
+  width: 100%;
+  flex-direction: row;
+  & a {
+    &:not(:first-child) {
+      margin-left: ${SPACING.SM};
+      margin-top: 0px;
+    }
+  }
+
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    flex-direction: column;
+    & a {
+      &:not(:first-child) {
+        margin-top: ${SPACING.SM};
+        margin-left: 0px;
+      }
+    }
   }
 `;
+
 const ZapCardContentHeaderRow = styled('div')`
   margin: 0px 10px;
   display: flex;
@@ -78,6 +96,7 @@ const ZapCardContentHeaderRow = styled('div')`
   justify-content: center;
   flex: 1;
 `;
+
 const ZapCardHeaderTextSection = styled('div')`
   display: flex;
   justify-content: left;
@@ -103,50 +122,123 @@ const ZapCardRiskProfile = styled('div')`
   margin-left: 0.5em;
 `;
 
+const ZapCardButton = styled(Button)`
+  display: flex;
+  flex: 1;
+  min-height: 60px;
+  background-color: ${COLORS.WHITE};
+  color: ${COLORS.BLUE_LIGHT_DARKISH};
+  border: 2px solid ${COLORS.BLUE_LIGHT_DARKISH};
+  border-radius: 3px;
+  font-size: ${FONT_SIZE.MD};
+  font-weight: normal;
+  padding: 0px ${SPACING.BASE};
+  &:hover {
+    background-color: ${COLORS.BLUE_LIGHT_DARKISH};
+    color: ${COLORS.WHITE};
+  }
+`;
+
+const ZapEstimatedBalance = styled.p`
+  font-weight: bold;
+  color: ${COLORS.BLUE_DARK};
+`;
+
 interface Props {
   config: IZapConfig;
 }
 
 const ZapCard = ({ config }: Props) => {
-  const selectImageGivenRisk = (risk: number) => {
-    switch (risk) {
-      case 1:
-        return conservativeRisk;
-      case 2:
-        return moderateRisk;
-      case 3:
-        return moderateRisk;
-      case 4:
-        return insaneRisk;
-      case 5:
-        return ludicrousRisk;
-    }
-  };
+  const { accounts, assets } = useContext(StoreContext);
   const IndicatorItem = config.positionDetails;
+  const userZapBalances = getTotalByAsset(
+    assets(accounts).filter(({ uuid }) => uuid === config.poolTokenUUID)
+  )[config.poolTokenUUID];
+  console.debug(
+    '[zapId: ' + config.key.substr(0, 5) + ']: balance = ',
+    userZapBalances,
+    ' uuid: ',
+    config.poolTokenUUID
+  );
+
+  const humanReadableZapBalance = userZapBalances
+    ? weiToFloat(userZapBalances.balance, userZapBalances.decimal)
+    : undefined;
+  if (humanReadableZapBalance) {
+    console.debug('[zap human-readable balance]: ', humanReadableZapBalance);
+  }
+  const isZapOwned = !!humanReadableZapBalance;
   return (
-    <ZapCardContainer>
-      <ZapCardHeader>
-        <img src={selectImageGivenRisk(config.risk)} />
-        <ZapCardRiskProfile>{`${fetchRiskText(config.risk)} Risk Profile`}</ZapCardRiskProfile>
+    <ZapCardContainer isOwned={isZapOwned}>
+      <ZapCardHeader isOwned={isZapOwned}>
+        <img src={fetchZapRiskObject(config.risk).image} />
+        <ZapCardRiskProfile>{`${
+          fetchZapRiskObject(config.risk).text
+        } Risk Profile`}</ZapCardRiskProfile>
       </ZapCardHeader>
       <ZapCardContent>
-        <ZapCardContentHeaderRow>
-          <ZapCardImgSection>
-            <img src={'https://via.placeholder.com/52'} />
-          </ZapCardImgSection>
-          <ZapCardHeaderTextSection>
-            <ZapCardHeaderTitle>{config.title}</ZapCardHeaderTitle>
-            <ZapCardHeaderName>{config.name}</ZapCardHeaderName>
-            <IndicatorItem />
-          </ZapCardHeaderTextSection>
-        </ZapCardContentHeaderRow>
-        <ZapCardContentRow>
-          <p>{config.description}</p>
-        </ZapCardContentRow>
+        {!humanReadableZapBalance ? (
+          <>
+            <ZapCardContentHeaderRow>
+              <ZapCardImgSection>
+                <img src={'https://via.placeholder.com/52'} />
+              </ZapCardImgSection>
+              <ZapCardHeaderTextSection>
+                <ZapCardHeaderTitle>{config.title}</ZapCardHeaderTitle>
+                <ZapCardHeaderName>{config.name}</ZapCardHeaderName>
+                <IndicatorItem />
+              </ZapCardHeaderTextSection>
+            </ZapCardContentHeaderRow>
+            <ZapCardContentRow>
+              <ZapCardContentText>{config.description}</ZapCardContentText>
+            </ZapCardContentRow>
+          </>
+        ) : (
+          <>
+            <ZapCardContentHeaderRow>
+              <ZapCardImgSection>
+                <img src={'https://via.placeholder.com/52'} />
+              </ZapCardImgSection>
+              <ZapCardHeaderTextSection>
+                <ZapCardHeaderTitle>{config.title}</ZapCardHeaderTitle>
+                <ZapCardHeaderName>{config.name}</ZapCardHeaderName>
+                <IndicatorItem />
+              </ZapCardHeaderTextSection>
+            </ZapCardContentHeaderRow>
+            <ZapCardContentRow>
+              <ZapCardContentText>You seem to have a balance of this already!</ZapCardContentText>
+              <ZapCardContentText>
+                <ZapEstimatedBalance>
+                  {translateRaw('ZAP_ESTIMATED_BALANCE')}{' '}
+                  <Tooltip
+                    tooltip={translateRaw('ZAP_BALANCE_TOOLTIP', {
+                      $protocol: config.platformsUsed[0]
+                    })}
+                  />
+                  {`: `}
+                </ZapEstimatedBalance>
+                {`${humanReadableZapBalance.toFixed(4)} ${userZapBalances.ticker}`}
+              </ZapCardContentText>
+            </ZapCardContentRow>
+          </>
+        )}
       </ZapCardContent>
-      <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
-        <ZapCardContentBottom>{config.ctaText}</ZapCardContentBottom>
-      </RouterLink>
+      <ZapCardContentBottom>
+        {!humanReadableZapBalance ? (
+          <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
+            <ZapCardButton>{config.ctaText}</ZapCardButton>
+          </RouterLink>
+        ) : (
+          <>
+            <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
+              <ZapCardButton>{translateRaw('ADD')}</ZapCardButton>
+            </RouterLink>
+            <a href={`https://defizap.com/zaps/${config.key}`}>
+              <ZapCardButton>{translateRaw('WITHDRAW')}</ZapCardButton>
+            </a>
+          </>
+        )}
+      </ZapCardContentBottom>
     </ZapCardContainer>
   );
 };
