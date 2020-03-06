@@ -21,7 +21,7 @@ export const useStateReducer: TUseStateReducer<object> = (apiFactory, initialSta
   return apiFactory({ state, setState });
 };
 
-export const useStateReducerT = <T1, T2 = FactoryApi>(
+export const useTStateReducer = <T1, T2 = FactoryApi>(
   apiFactory: TUseStateReducerFactory<T1, T2>,
   initialState: T1
 ): T2 => {

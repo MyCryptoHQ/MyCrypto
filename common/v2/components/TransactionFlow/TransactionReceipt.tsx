@@ -20,17 +20,17 @@ import { ROUTE_PATHS } from 'v2/config';
 import translate, { translateRaw } from 'v2/translations';
 import { convertToFiat, truncate, fromTxReceiptObj } from 'v2/utils';
 import { isWeb3Wallet } from 'v2/utils/web3';
-
-import './TransactionReceipt.scss';
-// Legacy
-import sentIcon from 'common/assets/images/icn-sent.svg';
-import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import { SignTransaction } from '../../features/SendAssets/components';
 import {
   withProtectTransaction,
   AbortTransaction
 } from '../../features/ProtectTransaction/components';
 import { WithProtectApiFactory } from '../../features/ProtectTransaction';
+
+import './TransactionReceipt.scss';
+// Legacy
+import sentIcon from 'common/assets/images/icn-sent.svg';
+import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 
 const PendingTransaction: FC = () => {
   return (
@@ -51,6 +51,7 @@ interface Props {
   customDetails?: JSX.Element;
   pendingButton?: PendingBtnAction;
   withProtectApi: WithProtectApiFactory;
+  protectTxButton?(): JSX.Element;
 }
 
 const TransactionReceipt = ({
@@ -60,7 +61,8 @@ const TransactionReceipt = ({
   completeButtonText,
   customDetails,
   pendingButton,
-  withProtectApi
+  withProtectApi,
+  protectTxButton
 }: IStepComponentProps & Props) => {
   const { getAssetRate } = useContext(RatesContext);
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
@@ -298,6 +300,8 @@ const TransactionReceipt = ({
             {!displayTxReceipt && <PendingTransaction />}
           </div>
         </div>
+
+        {protectTxButton && protectTxButton()}
 
         <TransactionDetailsDisplay
           baseAsset={baseAsset}

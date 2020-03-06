@@ -18,23 +18,32 @@ const ContentPanelWrapper = styled.div<ContentPanelProps>`
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: ${({ mobileMaxWidth }) => mobileMaxWidth};
     padding-left: 0;
-    margin-bottom: 1em;
+    margin: 0 auto 1em;
   }
 
-  &.has-side-panel {
-    width: ${({ width }) => `${width ? width + 375 : width}px`};
-    max-width: ${({ width }) => `${width ? width + 375 : width}px`};
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    &.has-side-panel {
+      width: 100vw;
+      max-width: 100vw;
 
-    > section {
-      width: 100%;
-      max-width: 100%;
-      padding-bottom: 0;
+      > section {
+        width: 100%;
+        max-width: 100%;
+        padding-bottom: 0;
 
-      > p ~ div {
-        & > div:last-child {
-          margin-top: calc(-0.5rem - 75px);
+        > p ~ div {
+          & > div:last-child {
+            margin-top: calc(-0.5rem - 75px);
+          }
         }
       }
+    }
+  }
+
+  @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
+    &.has-side-panel {
+      width: ${({ width }) => `${width ? width + 375 : width}px`};
+      max-width: ${({ width }) => `${width ? width + 375 : width}px`};
     }
   }
 `;

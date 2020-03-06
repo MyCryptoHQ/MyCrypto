@@ -2,29 +2,33 @@ import React, { FC, useCallback, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { translateRaw } from '../../../translations';
 import { COLORS } from '../../../theme';
-import ProtectIcon from './icons/ProtectIcon';
+import ProtectIconCheck from './icons/ProtectIconCheck';
+
+interface RelayedToNetworkProps {
+  relayedToNetwork: boolean;
+}
 
 // TODO: A hacky way to change the title of content panel
-const TransactionReceiptHeaderGlobal = createGlobalStyle<{ relayedToNetwork: boolean }>`
+const TransactionReceiptHeaderGlobal = createGlobalStyle<RelayedToNetworkProps>`
   [class^="ContentPanel__ContentPanelWrapper"] {
+    [class^="ContentPanel__ContentPanelHeading"] {
+      margin-top: 60px;
+
+      ${({ relayedToNetwork }) =>
+        relayedToNetwork
+          ? `
+        &::before {
+          content: "${translateRaw('TRANSACTION_RELAYED')}";
+        }
+      `
+          : `
+        &::before {
+          content: "${translateRaw('TRANSACTION_BROADCASTED')}";
+        }
+      `}
+    }
+
     &.has-side-panel {
-      [class^="ContentPanel__ContentPanelHeading"] {
-        margin-top: 60px;
-
-        ${({ relayedToNetwork }) =>
-          relayedToNetwork
-            ? `
-          &::before {
-            content: "${translateRaw('TRANSACTION_RELAYED')}";
-          }
-        `
-            : `
-          &::before {
-            content: "${translateRaw('TRANSACTION_BROADCASTED')}";
-          }
-        `}
-      }
-
       > section {
         > p ~ div {
           & > div:last-child {
@@ -36,17 +40,37 @@ const TransactionReceiptHeaderGlobal = createGlobalStyle<{ relayedToNetwork: boo
   }
 `;
 
-const AbortTransactionWrapper = styled.div`
+const AbortTransactionWrapper = styled.div<RelayedToNetworkProps>`
   display: flex;
   position: absolute;
   justify-content: flex-start;
   align-items: center;
   width: calc(100% + 4.5rem);
-  top: calc(-0.5rem - 75px - 60px);
   left: -2.25em;
   padding: 18px 40px;
   background: ${COLORS.PURPLE};
   color: ${COLORS.WHITE};
+
+  ${({ relayedToNetwork }) =>
+    relayedToNetwork
+      ? `top: calc(-0.5rem - 75px - 60px - 44px - 44px);`
+      : `top: calc(-0.5rem - 75px - 60px - 44px);`};
+
+  ${({ relayedToNetwork }) =>
+    relayedToNetwork
+      ? `
+    @media (min-width: 394px) {
+      top: calc(-0.5rem - 75px - 60px - 44px);
+    }
+    @media (min-width: 556px) {
+      top: calc(-0.5rem - 75px - 60px);
+    }
+    `
+      : `
+    @media (min-width: 462px) {
+      top: calc(-0.5rem - 75px - 60px);
+    }
+    `};
 
   p {
     margin: 0 15px 0;
@@ -96,8 +120,8 @@ export const AbortTransaction: FC<AbortTransactionProps> = ({
   );
 
   return (
-    <AbortTransactionWrapper>
-      <ProtectIcon fillColor="#fff" />
+    <AbortTransactionWrapper relayedToNetwork={!isCanceled && countdown === 0}>
+      <ProtectIconCheck fillColor={COLORS.WHITE} />
       {isCanceled && (
         <>
           <p>Transaction has been aborted</p>

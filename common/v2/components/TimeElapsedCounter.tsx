@@ -32,10 +32,18 @@ const TimeElapsedCounter = ({ timestamp, isSeconds }: Props) => {
   const [elapsedTime, setElapsedTime] = useState(timeComponents);
 
   useEffect(() => {
-    setTimeout(() => {
+    let elapsedTimeTimer: number | null = null;
+    // @ts-ignore
+    elapsedTimeTimer = setTimeout(() => {
       const newElapsedTimeSeconds = Math.floor((Date.now() - convertedTimestamp) / 1000);
       setElapsedTime(calculateTimeComponents(newElapsedTimeSeconds));
     }, 1000);
+
+    return () => {
+      if (elapsedTimeTimer) {
+        clearTimeout(elapsedTimeTimer);
+      }
+    };
   }, [elapsedTime]);
 
   return (

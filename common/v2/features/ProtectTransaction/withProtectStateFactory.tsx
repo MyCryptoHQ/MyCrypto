@@ -11,9 +11,12 @@ import { GetBalanceResponse, GetLastTxResponse } from '../../services/ApiService
 import { EtherscanService } from 'v2/services/ApiService/Etherscan';
 import { getNetworkById, NetworkContext } from '../../services/Store/Network';
 import { AssetContext, getAssetByUUID } from '../../services/Store/Asset';
+import useMediaQuery from '../../vendor/react-use/useMediaQuery';
+import { BREAK_POINTS } from '../../theme';
 
 export interface WithProtectState {
   stepIndex: number;
+  protectTxShown: boolean;
   protectTxEnabled: boolean;
   cryptoScamAddressReport: CryptoScamDBNoInfoResponse | CryptoScamDBInfoResponse | null;
   etherscanBalanceReport: GetBalanceResponse | null;
@@ -41,6 +44,7 @@ export interface WithProtectApiFactory {
 
 export const WithProtectInitialState: Partial<WithProtectState> = {
   stepIndex: 0,
+  protectTxShown: false,
   protectTxEnabled: false,
   receiverAddress: null,
   network: null,
@@ -62,9 +66,30 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
   const { networks } = useContext(NetworkContext);
   const { assets } = useContext(AssetContext);
 
+  const isMdScreen = useMediaQuery(`(min-width: ${BREAK_POINTS.SCREEN_MD})`);
+
+  useEffect(() => {
+    // Show tx protect in case of window resize
+    if (state.protectTxEnabled) {
+      setState(prevState => ({
+        ...prevState,
+        protectTxShown: isMdScreen
+      }));
+    }
+  }, [isMdScreen, state.protectTxEnabled]);
+
+  useEffect(() => {
+    if (state.stepIndex === numOfSteps - 1) {
+      setState(prevState => ({
+        ...prevState,
+        protectTxEnabled: true
+      }));
+    }
+  }, [state.stepIndex]);
+
   useEffect(() => {
     const isDisabled =
-      state.protectTxEnabled &&
+      state.protectTxShown &&
       state.stepIndex !== numOfSteps - 1 &&
       state.cryptoScamAddressReport === null;
 
@@ -72,7 +97,7 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
       ...prevState,
       mainComponentDisabled: isDisabled
     }));
-  }, [state.protectTxEnabled, state.stepIndex, state.cryptoScamAddressReport]);
+  }, [state.protectTxShown, state.stepIndex, state.cryptoScamAddressReport]);
 
   const handleTransactionReport = useCallback(async (): Promise<void> => {
     if (!state.receiverAddress) return;
@@ -143,7 +168,7 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
     (showOrHide: boolean) => {
       setState(prevState => ({
         ...prevState,
-        protectTxEnabled: showOrHide
+        protectTxShown: showOrHide
       }));
     },
     [setState]
@@ -180,7 +205,7 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
   const setProtectionTxTimeoutFunction = useCallback(
     (cb: (txReceiptCb?: (txReciept: ITxReceipt) => void) => void) => {
       const { protectTxEnabled } = state;
-      // In case when protected transaction is not visible, just invoke cb function
+      // In case when protected transaction is not enabled, just invoke cb function
       if (protectTxEnabled) {
         protectionTxTimeoutFunction.current = cb;
       } else {

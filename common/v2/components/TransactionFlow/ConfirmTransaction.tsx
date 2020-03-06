@@ -98,7 +98,11 @@ const SendButton = Styled(Button)`
   width: 100%;
 `;
 
-const ConfirmTransaction = ({ txConfig, onComplete, signedTx }: IStepComponentProps) => {
+interface Props extends IStepComponentProps {
+  protectTxButton?(): JSX.Element;
+}
+
+const ConfirmTransaction = ({ txConfig, onComplete, signedTx, protectTxButton }: Props) => {
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
   const [isBroadcastingTx, setIsBroadcastingTx] = useState(false);
   const handleApprove = () => {
@@ -245,6 +249,7 @@ const ConfirmTransaction = ({ txConfig, onComplete, signedTx }: IStepComponentPr
       >
         {isBroadcastingTx ? translate('SUBMITTING') : translate('CONFIRM_AND_SEND')}
       </SendButton>
+      {protectTxButton && protectTxButton()}
     </ConfirmTransactionWrapper>
   );
 };

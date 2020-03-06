@@ -3,17 +3,19 @@ import moment from 'moment';
 import styled from 'styled-components';
 import upperFirst from 'lodash/upperFirst';
 
+import useMediaQuery from 'v2/vendor/react-use/useMediaQuery';
 import { fromWei, Wei } from '../../../services/EthService/utils';
 import { WithProtectApi } from '../types';
 import {
   CryptoScamDBBaseResponse,
   CryptoScamDBInfoResponse
 } from '../../../services/ApiService/CryptoScamDB/types';
-import { COLORS } from '../../../theme';
+import { BREAK_POINTS, COLORS } from '../../../theme';
 
 import ProtectedTransactionBase from './ProtectedTransactionBase';
-import ProtectIcon from './icons/ProtectIcon';
-import wizardIcon from 'assets/images/icn-protect-transcation-wizard.svg';
+import ProtectIconCheck from './icons/ProtectIconCheck';
+import WizardIcon from './icons/WizardIcon';
+import CloseIcon from './icons/CloseIcon';
 
 const formatDate = (date: number): string => moment.unix(date).format('MM/DD/YYYY');
 
@@ -23,16 +25,26 @@ const ProtectedTransactionReportStyled = styled(ProtectedTransactionBase)`
   }
 
   .view-comments {
+    position: relative;
     font-size: 16px;
     line-height: 24px;
     margin: 0 50px 30px 80px;
     color: ${COLORS.PURPLE};
     text-align: left;
 
-    > img {
+    > svg {
       position: absolute;
-      right: -132px;
+      left: -75px;
+      bottom: -50px;
       transform: translateY(-50%);
+    }
+
+    @media (min-width: ${BREAK_POINTS.SCREEN_LG}) {
+      > svg {
+        right: -200px;
+        left: unset;
+        bottom: unset;
+      }
     }
 
     a {
@@ -158,8 +170,12 @@ export const ProtectedTransactionReport: FC<WithProtectApi> = ({ withProtectApi 
       etherscanBalanceReport,
       etherscanLastTxReport,
       asset
-    }
+    },
+    showHideTransactionProtection
   } = withProtectApi!;
+
+  const isLgScreen = useMediaQuery(`(min-width: ${BREAK_POINTS.SCREEN_LG})`);
+  const isSmScreen = useMediaQuery(`(min-width: ${BREAK_POINTS.SCREEN_SM})`);
 
   const getShortAddress = useCallback(() => {
     if (receiverAddress && receiverAddress.length >= 10) {
@@ -334,9 +350,21 @@ export const ProtectedTransactionReport: FC<WithProtectApi> = ({ withProtectApi 
     );
   }, [cryptoScamAddressReport, getAccountBalanceTimelineEntry]);
 
+  const onHideModel = useCallback(
+    (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+      e.preventDefault();
+
+      if (showHideTransactionProtection) {
+        showHideTransactionProtection(false);
+      }
+    },
+    [showHideTransactionProtection]
+  );
+
   return (
     <ProtectedTransactionReportStyled>
-      <ProtectIcon size="lg" />
+      {!isSmScreen && <CloseIcon size="lg" onClick={onHideModel} />}
+      <ProtectIconCheck size="lg" />
       <h4>Your Report for Address</h4>
       <h4 className="title-address">{getShortAddress()}</h4>
       {cryptoScamAddressReport && (
@@ -360,7 +388,7 @@ export const ProtectedTransactionReport: FC<WithProtectApi> = ({ withProtectApi 
               Etherscan
             </a>
             .
-            <img src={wizardIcon} alt="Wizard" />
+            <WizardIcon size={isLgScreen ? 'lg' : 'sm'} />
           </p>
           <p className="footer-text">
             If everything looks good, click "Next" on the left to see a preview of your main

@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { GeneralStepper } from 'v2/components';
-import { useStateReducer, isWeb3Wallet, useStateReducerT } from 'v2/utils';
+import { useStateReducer, isWeb3Wallet, useTStateReducer } from 'v2/utils';
 import { ITxReceipt, ISignedTx, IFormikFields, ITxConfig } from 'v2/types';
 import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS } from 'v2/config';
@@ -15,7 +15,7 @@ import {
   WithProtectConfigFactory,
   WithProtectInitialState,
   WithProtectState
-} from '../ProtectTransaction/withProtectStateFactory';
+} from '../ProtectTransaction';
 
 function SendAssets() {
   const {
@@ -28,7 +28,7 @@ function SendAssets() {
     txFactoryState
   } = useStateReducer(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: undefined });
 
-  const withProtectApi = useStateReducerT<Partial<WithProtectState>, WithProtectApiFactory>(
+  const withProtectApi = useTStateReducer<Partial<WithProtectState>, WithProtectApiFactory>(
     WithProtectConfigFactory,
     {
       ...WithProtectInitialState
@@ -36,12 +36,8 @@ function SendAssets() {
   );
   const {
     setProtectionTxTimeoutFunction,
-    withProtectState: { protectTxEnabled }
+    withProtectState: { protectTxShown }
   } = withProtectApi;
-
-  useEffect(() => {
-    withProtectApi.showHideTransactionProtection(false);
-  }, []);
 
   // Due to MetaMask deprecating eth_sign method,
   // it has different step order, where sign and send are one panel
@@ -127,7 +123,7 @@ function SendAssets() {
       defaultBackPath={ROUTE_PATHS.DASHBOARD.path}
       defaultBackPathLabel={translateRaw('DASHBOARD')}
       completeBtnText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
-      wrapperClassName={protectTxEnabled ? 'has-side-panel' : ''}
+      wrapperClassName={protectTxShown ? 'has-side-panel' : ''}
     />
   );
 }

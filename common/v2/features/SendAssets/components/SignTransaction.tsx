@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import {
   WalletId,
@@ -9,7 +9,11 @@ import {
 } from 'v2/types';
 import { WALLET_STEPS } from 'v2/components';
 
-const SignTransaction = ({ txConfig, onComplete }: IStepComponentProps) => {
+interface Props extends IStepComponentProps {
+  protectTxButton?(): JSX.Element;
+}
+
+const SignTransaction: FC<Props> = ({ txConfig, onComplete, protectTxButton }: Props) => {
   const {
     network,
     senderAccount: { wallet: walletName }
@@ -22,12 +26,15 @@ const SignTransaction = ({ txConfig, onComplete }: IStepComponentProps) => {
   const WalletComponent: React.ComponentType<ISignComponentProps> = getWalletComponent(walletName)!;
 
   return (
-    <WalletComponent
-      network={network}
-      senderAccount={txConfig.senderAccount}
-      rawTransaction={txConfig.rawTransaction}
-      onSuccess={(payload: ITxReceipt | ISignedTx) => onComplete(payload)}
-    />
+    <>
+      <WalletComponent
+        network={network}
+        senderAccount={txConfig.senderAccount}
+        rawTransaction={txConfig.rawTransaction}
+        onSuccess={(payload: ITxReceipt | ISignedTx) => onComplete(payload)}
+      />
+      {protectTxButton && protectTxButton()}
+    </>
   );
 };
 
