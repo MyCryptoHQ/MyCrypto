@@ -7,7 +7,7 @@ import { ROUTE_PATHS } from 'v2/config';
 
 import { ZAPS_CONFIG } from '../config';
 import ZapCard from './ZapCard';
-import defizaplogo from 'assets/images/defizap/defizaplogo.svg';
+import DeFiZapLogo from './DeFiZapLogo';
 
 const CTAContent = styled('ul')`
   display: flex;
@@ -33,23 +33,8 @@ const FooterWrapper = styled.div`
   }
 `;
 
-const DefiZapLogo = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const DefiZapLogoImage = styled.img`
-  height: 24px;
-`;
-
-const DefiZapLogoText = styled.div`
-  margin-left: 0.5em;
-`;
-
 const DashboardZapCTA = ({ className }: any) => {
   const zapConfig = ZAPS_CONFIG;
-  const headingRight = 'Powered by DefiZap';
 
   const CTAFooter = () => {
     return (
@@ -61,17 +46,10 @@ const DashboardZapCTA = ({ className }: any) => {
     );
   };
 
-  const RightHeading = (
-    <DefiZapLogo>
-      <DefiZapLogoImage src={defizaplogo} />
-      <DefiZapLogoText>{headingRight}</DefiZapLogoText>
-    </DefiZapLogo>
-  );
-
   return (
     <DashboardPanel
       heading={'Put your ETH to work for you'}
-      headingRight={RightHeading}
+      headingRight={<DeFiZapLogo />}
       className={className}
       footer={<CTAFooter />}
     >

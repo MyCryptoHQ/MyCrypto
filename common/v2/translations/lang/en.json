@@ -567,6 +567,7 @@
     "CHECKSUM_ERROR": "This address is not [checksummed](https://support.mycrypto.com/troubleshooting/sending/not-checksummed-shows-when-i-enter-an-address). Please ensure you have copied & pasted the address. Never hand-type addresses.",
     "GASPRICE_ERROR": "Please enter a valid gas price in gwei (Must be a number between 0.1 and 3000)",
     "BALANCE_TOO_LOW_ERROR": "You are trying to send more $asset than you current have. Click “send max” if you want to send your entire available balance",
+    "BALANCE_TOO_LOW_NO_RECOMMENDATION_ERROR": "You are trying to send more $asset than you current have.",
     "NONCE_ERROR": "Please double-check your nonce. If this error persists, please email [support@mycrypto.com]($link)",
     "HIGH_TRANSACTION_FEE": "This seems like a very high transaction fee. Are you sure you know what you are doing?",
     "SENDING_TO_YOURSELF": "You are sending to yourself. Are you sure you want to do that?",
@@ -606,6 +607,8 @@
     "NETWORK_TOOLTIP": "A network is also known as a blockchain. Most users are here to manage their Ethereum accounts, so this selection defaults to the Ethereum network. [Learn about the other networks that MyCrypto supports.](https://support.mycrypto.com/developers/adding-a-new-network)",
     "NONCE_TOOLTIP": "The nonce is the number of transactions sent from a given address and its purpose is to prevent double spending. [Learn more about nonce.](https://support.mycrypto.com/general-knowledge/ethereum-blockchain/what-is-nonce)",
     "PLATFORMS": "Platforms:",
-    "ZAP_NAME": "Zap Name:"
+    "ZAP_NAME": "Zap Name:",
+    "ZAP_BANNER_DESCRIPTION": "You have selected to open a position with the following Zap:",
+    "ZAP_POWERED_BY": "Powered by DefiZap"
   }
 }

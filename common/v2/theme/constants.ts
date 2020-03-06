@@ -20,6 +20,7 @@ export const COLORS = {
   BLUE_DARK: '#1c314e',
 
   LEMON_GRASS: '#99968C',
+  LIGHT_GREEN: '#B3DD87',
   SUCCESS_GREEN: '#5dba5a',
   ERROR_RED: '#FF5050',
   PASTEL_RED: '#ef4747',
@@ -62,6 +63,10 @@ export const FONT_SIZE = {
   LG: '20px',
   XL: '24px',
   XXL: '36px'
+};
+
+export const LINE_HEIGHT = {
+  BASE: '16px'
 };
 
 export const SPACING = {
