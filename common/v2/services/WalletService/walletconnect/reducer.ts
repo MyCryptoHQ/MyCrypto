@@ -1,12 +1,9 @@
 import { ValuesType } from 'utility-types';
-import { TAddress } from 'v2/types';
+import { TAction, TAddress } from 'v2/types';
 
 export type TActionError = ValuesType<typeof WcReducer.errorCodes>;
-interface TAction {
-  type: ValuesType<typeof WcReducer.actionTypes>;
-  payload?: any;
-  error?: { code: TActionError };
-}
+type WCAction = TAction<ValuesType<typeof WcReducer.actionTypes>, any, TActionError>;
+
 interface State {
   detectedAddress?: TAddress;
   detectedChainId?: number;
@@ -26,7 +23,7 @@ export const initialState: State = {
   errors: []
 };
 
-export function WcReducer(state: State, { type, payload, error }: TAction): State {
+export function WcReducer(state: State, { type, payload, error }: WCAction): State {
   switch (type) {
     case WcReducer.actionTypes.INIT_SUCCESS: {
       const { uri } = payload;

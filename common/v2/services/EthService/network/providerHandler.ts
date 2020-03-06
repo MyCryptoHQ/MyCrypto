@@ -84,7 +84,7 @@ export class ProviderHandler {
     return this.client.sendTransaction(signedTx);
   }
 
-  public waitForTransaction(txHash: string, confirmations?: number): Promise<TransactionReceipt> {
+  public waitForTransaction(txHash: string, confirmations = 1): Promise<TransactionReceipt> {
     return this.client.waitForTransaction(txHash, confirmations);
   }
 
