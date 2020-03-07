@@ -101,7 +101,7 @@ const ZapCardHeaderTextSection = styled('div')`
   display: flex;
   justify-content: left;
   flex-direction: column;
-  margin-left: 1em;
+  margin-left: 0.5em;
 `;
 
 const ZapCardHeaderTitle = styled.h5`
@@ -116,6 +116,11 @@ const ZapCardImgSection = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const ZapCardImg = styled.img`
+  min-width: 40px;
+  overflow: hidden;
 `;
 
 const ZapCardRiskProfile = styled('div')`
@@ -181,7 +186,7 @@ const ZapCard = ({ config }: Props) => {
           <>
             <ZapCardContentHeaderRow>
               <ZapCardImgSection>
-                <img src={'https://via.placeholder.com/52'} />
+                <ZapCardImg src={config.breakdownImage} />
               </ZapCardImgSection>
               <ZapCardHeaderTextSection>
                 <ZapCardHeaderTitle>{config.title}</ZapCardHeaderTitle>
@@ -197,7 +202,7 @@ const ZapCard = ({ config }: Props) => {
           <>
             <ZapCardContentHeaderRow>
               <ZapCardImgSection>
-                <img src={'https://via.placeholder.com/52'} />
+                <ZapCardImg src={config.breakdownImage} />
               </ZapCardImgSection>
               <ZapCardHeaderTextSection>
                 <ZapCardHeaderTitle>{config.title}</ZapCardHeaderTitle>
