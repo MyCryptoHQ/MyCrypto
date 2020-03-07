@@ -617,6 +617,8 @@
     "ZAP_ESTIMATED_BALANCE": "Estimated Balance",
     "ZAP_RISK_PROFILE_HEADER_TEXT": "$riskProfile Risk Profile",
     "SWAP_STEP1_TEXT": "Before swapping a token, you must activate the token. Sign an initial transaction to activate $token",
-    "STEP_FINISHED": "Great Work!"
+    "STEP_FINISHED": "Great Work!",
+    "CONFIRM_TRANSACTION": "Confirm Transaction",
+    "CONFIRM_TRANSACTION_MULTITX": "Confirm Transaction ($current/$total)"
   }
 }

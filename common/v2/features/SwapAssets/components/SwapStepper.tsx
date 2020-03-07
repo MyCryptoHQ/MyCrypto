@@ -25,7 +25,7 @@ export default function SwapStepper(props: Props) {
     icon: step1SVG,
     content: translateRaw('SWAP_STEP1_TEXT', { $token: fromAsset.symbol }),
     buttonText: `Activate ${fromAsset.symbol}`,
-    onClick: onClick
+    onClick
   };
 
   const transferStep = {
@@ -42,8 +42,8 @@ export default function SwapStepper(props: Props) {
         />
       </>
     ),
-    buttonText: 'Confirm Transaction',
-    onClick: onClick
+    buttonText: translateRaw('CONFIRM_TRANSACTION'),
+    onClick
   };
 
   return <VerticalStepper currentStep={currentStep} steps={[tokenStep, transferStep]} />;

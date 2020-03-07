@@ -139,7 +139,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     ...(isTokenSwap
       ? [
           {
-            title: translateRaw('SWAP_CONFIRM_TITLE'),
+            title: translateRaw('CONFIRM_TRANSACTION_MULTITX', { $current: '1', $total: '2' }),
             backBtnText: translateRaw('SWAP_CONFIRM_TITLE'),
             component: SwapStepper,
             props: {
@@ -168,7 +168,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
             }
           },
           {
-            title: translateRaw('SWAP_CONFIRM_TITLE'),
+            title: translateRaw('CONFIRM_TRANSACTION_MULTITX', { $current: '2', $total: '2' }),
             backBtnText: translateRaw('SWAP_CONFIRM_TITLE'),
             component: SwapStepper,
             props: {
