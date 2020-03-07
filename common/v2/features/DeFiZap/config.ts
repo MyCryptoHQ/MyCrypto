@@ -35,7 +35,7 @@ export type IZapConfigObject = {
 export enum IZapId {
   unipoolseth = 'unipoolseth',
   unipooldai = 'unipooldai',
-  lender = 'lender'
+  compounddai = 'compounddai'
 }
 
 export const fetchZapRiskObject = (riskLevel: number) => {
@@ -84,9 +84,9 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     contractAddress: '0x929A10EfDA7099865dAD8286Aee8715078902d51',
     risk: 2,
     description:
-      'Converts 50% of your ETH to DAI and contributes both to a Uniswap pool to grow your funds.',
+      'Converts 50% of your ETH to DAI and contributes both to the ETH/DAI Uniswap pool to grow your funds.',
     outlook: 'bearish',
-    link: 'https://defizap.com/zaps/llpdai',
+    link: 'https://defizap.com/zaps/unipooldai',
     ctaText: 'Make money & bet against ETH',
     minimumGasLimit: 1500000,
     platformsUsed: ['uniswap'],
@@ -99,25 +99,25 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     interestTokenAddr: '0x2a1530C4C41db0B0b2bB646CB5Eb1A67b7158667',
     positionDetails: () => BearishIndicator({ text: 'Bearish on ETH' })
   },
-  lender: {
+  compounddai: {
     title: 'ETH Bearish Investment',
-    name: 'Compound Lender Pool',
-    key: 'compoundLender',
+    name: 'Compound DAI Pool',
+    key: 'compounddai',
     contractAddress: '0x1FE91B5D531620643cADcAcc9C3bA83097c1B698',
     risk: 3,
     description:
       'Converts all of your ETH to DAI and contributes it to the Compound Money Market protocol to grow your funds.',
     outlook: 'bearish',
-    link: 'https://defizap.com/zaps/lender',
+    link: 'https://app.compound.finance',
     ctaText: 'Make money and bet against ETH',
-    minimumGasLimit: 7000000,
+    minimumGasLimit: 1800000,
     platformsUsed: ['compound', 'kyber'],
     bulletPoints: [
       'Remove your exposure to changes in the price of ETH.',
       'Contribute your DAI to a money market protocol to generate a return of up to 8% per year.'
     ],
     zapType: IZapType.COMPOUND,
-    poolTokenUUID: '350c0d6f-a0eb-504e-9a8c-43a4d5966fc3', // <- This is cSAI for testing purposes. // cDAI is: 'a9cc6884-14bd-53b6-abcd-f9b56b60463d',
+    poolTokenUUID: 'a9cc6884-14bd-53b6-abcd-f9b56b60463d',
     interestTokenAddr: '0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643',
     positionDetails: () => BearishIndicator({ text: 'Bearish on ETH' })
   }
