@@ -6,6 +6,7 @@ import { SwapFromToDiagram } from 'v2/components/TransactionFlow/displays';
 
 import step1SVG from 'assets/images/icn-unlock-wallet.svg';
 import step2SVG from 'assets/images/icn-sent.svg';
+import { translateRaw } from 'v2/translations';
 
 interface Props {
   currentStep: number;
@@ -21,7 +22,7 @@ export default function SwapStepper(props: Props) {
   const tokenStep = {
     title: `Enable ${fromAsset.symbol}`,
     icon: step1SVG,
-    content: `Before swapping a token, you must activate the token. Sign an initial transaction to activate ${fromAsset.symbol}`,
+    content: translateRaw('SWAP_STEP1_TEXT', { $token: fromAsset.symbol }),
     buttonText: `Activate ${fromAsset.symbol}`
   };
 

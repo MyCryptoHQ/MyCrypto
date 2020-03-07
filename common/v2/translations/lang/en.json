@@ -616,6 +616,7 @@
     "ZAP_BALANCE_DETECTED": "This zap is active in one or more of your accounts.",
     "ZAP_ESTIMATED_BALANCE": "Estimated Balance",
     "ZAP_RISK_PROFILE_HEADER_TEXT": "$riskProfile Risk Profile",
+    "SWAP_STEP1_TEXT": "Before swapping a token, you must activate the token. Sign an initial transaction to activate $token",
     "STEP_FINISHED": "Great Work!"
   }
 }
