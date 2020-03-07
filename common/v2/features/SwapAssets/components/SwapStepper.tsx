@@ -14,16 +14,18 @@ interface Props {
   toAsset: ISwapAsset;
   fromAmount: string;
   toAmount: string;
+  onClick?(): void;
 }
 
 export default function SwapStepper(props: Props) {
-  const { currentStep, fromAsset, toAsset, fromAmount, toAmount } = props;
+  const { currentStep, fromAsset, toAsset, fromAmount, toAmount, onClick } = props;
 
   const tokenStep = {
     title: `Enable ${fromAsset.symbol}`,
     icon: step1SVG,
     content: translateRaw('SWAP_STEP1_TEXT', { $token: fromAsset.symbol }),
-    buttonText: `Activate ${fromAsset.symbol}`
+    buttonText: `Activate ${fromAsset.symbol}`,
+    onClick: onClick
   };
 
   const transferStep = {
@@ -31,7 +33,7 @@ export default function SwapStepper(props: Props) {
     icon: step2SVG,
     content: (
       <>
-        <text>whatever</text>
+        <text>More copy here</text>
         <SwapFromToDiagram
           fromSymbol={fromAsset.symbol}
           toSymbol={toAsset.symbol}
@@ -40,7 +42,8 @@ export default function SwapStepper(props: Props) {
         />
       </>
     ),
-    buttonText: 'Confirm Transaction'
+    buttonText: 'Confirm Transaction',
+    onClick: onClick
   };
 
   return <VerticalStepper currentStep={currentStep} steps={[tokenStep, transferStep]} />;
