@@ -139,7 +139,7 @@
     "ADD_LABEL_6": "Wallet entsperren ",
     "ADD_LABEL_6_SHORT": "Entsperren ",
     "ADD_LABEL_7": "Kontoadresse hinzufügen ",
-    "ADD_LABEL_8": "Password (optional): ",
+    "ADD_LABEL_8": "Passphrase (optional): ",
     "GEN_DESC": "Wenn du mehrere Wallets auf einmal erstellen möchtest, kannst du dies hier tun ",
     "GEN_LABEL_1": "Gib ein starkes Passwort ein (mindestens 9 Zeichen) ",
     "GEN_PLACEHOLDER_1": "BITTE VERGISS NICHT dieses Passwort an einem sicheren Ort zu notieren! ",

@@ -10,6 +10,7 @@ import { configSelectors, configNetworksStaticSelectors } from 'features/config'
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
+import MnemonicPasswordSaltWarning from './MnemonicPasswordSaltWarning';
 
 interface OwnProps {
   onUnlock(param: any): void;
@@ -64,7 +65,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
             />
           </div>
           <div className="form-group">
-            <p>{translate('ADD_LABEL_8')}</p>
+            <p>{translate('ADD_LABEL_8')} <MnemonicPasswordSaltWarning /></p>
             <Input
               isValid={true}
               showValidAsPlain={true}

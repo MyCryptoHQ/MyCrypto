@@ -164,7 +164,7 @@
     "ADD_LABEL_6": "Unlock your Wallet ",
     "ADD_LABEL_6_SHORT": "Unlock ",
     "ADD_LABEL_7": "Add Account ",
-    "ADD_LABEL_8": "Password (optional): ",
+    "ADD_LABEL_8": "Passphrase (optional): ",
     "GEN_DESC": "If you want to generate multiple wallets, you can do so here ",
     "GEN_LABEL_1": "Enter a strong password (at least 9 characters) ",
     "GEN_PLACEHOLDER_1": "Do NOT forget to save this! ",

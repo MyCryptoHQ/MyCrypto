@@ -140,7 +140,7 @@
     "ADD_LABEL_6": "解锁钱包 ",
     "ADD_LABEL_6_SHORT": "解锁 ",
     "ADD_LABEL_7": "增加账户 ",
-    "ADD_LABEL_8": "Password (optional): ",
+    "ADD_LABEL_8": "Passphrase (optional): ",
     "GEN_DESC": "如果你想生成多个钱包，你可以在这里进行： ",
     "GEN_LABEL_1": "输入一个强密码（至少9位） ",
     "GEN_PLACEHOLDER_1": "不要忘记保存！ ",

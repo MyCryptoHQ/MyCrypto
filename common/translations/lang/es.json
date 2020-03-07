@@ -139,7 +139,7 @@
     "ADD_LABEL_6": "Desbloquea tu cartera ",
     "ADD_LABEL_6_SHORT": "Desbloquear ",
     "ADD_LABEL_7": "Añadir cuenta ",
-    "ADD_LABEL_8": "Password (optional): ",
+    "ADD_LABEL_8": "Passphrase (optional): ",
     "GEN_DESC": "Si quieres generar varias carteras, puedes hacerlo aquí ",
     "GEN_LABEL_1": "Introduce una contraseña fuerte (mínimo 9 caracteres) ",
     "GEN_PLACEHOLDER_1": "¡NO olvides guardar esto! ",
