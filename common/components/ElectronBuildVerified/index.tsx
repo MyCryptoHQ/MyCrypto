@@ -30,11 +30,11 @@ export default class ElectronBuildVerified extends Component<BannerProps, Banner
                     type="checkbox"
                     onChange={(e) => this.handleCheck(e)}
                 />{' '}
-                <p>
+                <span>
                     I have{' '}
                     <a href="https://support.mycrypto.com/staying-safe/verifying-authenticity-of-desktop-app">verified that this build ({VERSION})</a>{' '}
                     is signed by MyCrypto and I understand the risks of not verifying the build.
-                </p>
+                </span>
             </div>)
         }
 
