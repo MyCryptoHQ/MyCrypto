@@ -159,27 +159,22 @@ const ZapCard = ({ config }: Props) => {
   const userZapBalances = getTotalByAsset(
     assets(accounts).filter(({ uuid }) => uuid === config.poolTokenUUID)
   )[config.poolTokenUUID];
-  console.debug(
-    '[zapId: ' + config.key.substr(0, 5) + ']: balance = ',
-    userZapBalances,
-    ' uuid: ',
-    config.poolTokenUUID
-  );
 
   const humanReadableZapBalance = userZapBalances
     ? weiToFloat(userZapBalances.balance, userZapBalances.decimal)
     : undefined;
-  if (humanReadableZapBalance) {
-    console.debug('[zap human-readable balance]: ', humanReadableZapBalance);
-  }
+
   const isZapOwned = !!humanReadableZapBalance;
+
   return (
     <ZapCardContainer isOwned={isZapOwned}>
       <ZapCardHeader isOwned={isZapOwned}>
         <img src={fetchZapRiskObject(config.risk).image} />
-        <ZapCardRiskProfile>{`${
-          fetchZapRiskObject(config.risk).text
-        } Risk Profile`}</ZapCardRiskProfile>
+        <ZapCardRiskProfile>
+          {translateRaw('ZAP_RISK_PROFILE_HEADER_TEXT', {
+            $riskProfile: fetchZapRiskObject(config.risk).text
+          })}
+        </ZapCardRiskProfile>
       </ZapCardHeader>
       <ZapCardContent>
         {!humanReadableZapBalance ? (
@@ -219,7 +214,7 @@ const ZapCard = ({ config }: Props) => {
               <IndicatorItem />
             </ZapCardContentRow>
             <ZapCardContentRow>
-              <ZapCardContentText>You seem to have a balance of this already!</ZapCardContentText>
+              <ZapCardContentText>{translateRaw('ZAP_BALANCE_DETECTED')}</ZapCardContentText>
               <ZapCardContentText>
                 <ZapEstimatedBalance>
                   {translateRaw('ZAP_ESTIMATED_BALANCE')}{' '}
@@ -246,7 +241,7 @@ const ZapCard = ({ config }: Props) => {
             <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
               <ZapCardButton>{translateRaw('ADD')}</ZapCardButton>
             </RouterLink>
-            <a href={`https://defizap.com/zaps/${config.key}`}>
+            <a target="_blank" href={config.link} rel="noreferrer">
               <ZapCardButton>{translateRaw('WITHDRAW')}</ZapCardButton>
             </a>
           </>
