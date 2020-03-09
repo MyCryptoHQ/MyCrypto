@@ -4,6 +4,7 @@ import moderateRisk from 'assets/images/defizap/moderateRisk.svg';
 import conservativeRisk from 'assets/images/defizap/conservativeRisk.svg';
 import aggressiveRisk from 'assets/images/defizap/aggressiveRisk.svg';
 import unipoolBreakdown from 'assets/images/defizap/breakdowns/unipoolBreakdown.svg';
+import compoundBreakdown from 'assets/images/defizap/breakdowns/compoundBreakdown.svg';
 
 export enum IZapType {
   UNIPOOL = 'UNIPOOL',
@@ -27,6 +28,7 @@ export interface IZapConfig {
   interestTokenAddr: string;
   poolTokenUUID: string;
   breakdownImage: any;
+  breakdownTooltip: string;
   positionDetails(): JSX.Element;
 }
 
@@ -77,6 +79,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     poolTokenUUID: 'ca27272a-891e-577d-ae75-f8efe4d55231',
     interestTokenAddr: '0xe9Cf7887b93150D4F2Da7dFc6D502B216438F244',
     breakdownImage: unipoolBreakdown,
+    breakdownTooltip: '100% Uniswap',
     positionDetails: () => BullishIndicator({ text: 'Bullish on ETH' })
   },
 
@@ -90,7 +93,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
       'Hedges against ETH-DAI price volatility and allows you to generate a variable interest rate (generally 5-25%) by market making on Uniswap.',
     outlook: 'bearish',
     link: 'https://defizap.com/zaps/unipooldai',
-    ctaText: 'Make money & bet against ETH',
+    ctaText: 'Make money & hedge against ETH',
     minimumGasLimit: 1500000,
     platformsUsed: ['uniswap'],
     bulletPoints: [
@@ -101,6 +104,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     poolTokenUUID: '2b7a4d65-9c40-5c21-96eb-f7d380a4dc87',
     interestTokenAddr: '0x2a1530C4C41db0B0b2bB646CB5Eb1A67b7158667',
     breakdownImage: unipoolBreakdown,
+    breakdownTooltip: '100% Uniswap',
     positionDetails: () => BearishIndicator({ text: 'Bearish on ETH' })
   },
   compounddai: {
@@ -110,10 +114,10 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     contractAddress: '0x225078aea64696c6e4fe3960e471ca45aa9bdae4',
     risk: 3,
     description:
-      'Contribute to the Compound Money Market protocol to grow your funds rate of up to 8%.',
+      'Swap ETH for DAI and contribute to the Compound Money Market protocol to grow your funds rate of up to 8%.',
     outlook: 'bearish',
     link: 'https://app.compound.finance',
-    ctaText: 'Make money and bet against ETH',
+    ctaText: 'Make money with Compound Protocol',
     minimumGasLimit: 1800000,
     platformsUsed: ['compound', 'kyber'],
     bulletPoints: [
@@ -123,7 +127,8 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     zapType: IZapType.COMPOUND,
     poolTokenUUID: 'a9cc6884-14bd-53b6-abcd-f9b56b60463d',
     interestTokenAddr: '0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643',
-    breakdownImage: unipoolBreakdown,
+    breakdownImage: compoundBreakdown,
+    breakdownTooltip: '100% Compound',
     positionDetails: () => BearishIndicator({ text: 'Bearish on ETH' })
   }
 };

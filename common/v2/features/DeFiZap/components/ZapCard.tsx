@@ -49,12 +49,12 @@ const ZapCardHeader = styled('div')`
 const ZapCardContent = styled('div')`
   display: flex;
   flex: 1;
-  padding: 0px ${SPACING.BASE} 0 ${SPACING.BASE};
+  padding: 0px ${SPACING.BASE} 0px ${SPACING.BASE};
   flex-direction: column;
 `;
 
 const ZapCardContentText = styled.p`
-  padding: ${SPACING.BASE} 0px;
+  padding: ${SPACING.SM} 0px;
 `;
 
 const ZapCardContentRow = styled('div')`
@@ -186,14 +186,18 @@ const ZapCard = ({ config }: Props) => {
           <>
             <ZapCardContentHeaderRow>
               <ZapCardImgSection>
-                <ZapCardImg src={config.breakdownImage} />
+                <Tooltip tooltip={config.breakdownTooltip}>
+                  <ZapCardImg src={config.breakdownImage} />
+                </Tooltip>
               </ZapCardImgSection>
               <ZapCardHeaderTextSection>
                 <ZapCardHeaderTitle>{config.title}</ZapCardHeaderTitle>
                 <ZapCardHeaderName>{config.name}</ZapCardHeaderName>
-                <IndicatorItem />
               </ZapCardHeaderTextSection>
             </ZapCardContentHeaderRow>
+            <ZapCardContentRow>
+              <IndicatorItem />
+            </ZapCardContentRow>
             <ZapCardContentRow>
               <ZapCardContentText>{config.description}</ZapCardContentText>
             </ZapCardContentRow>
@@ -202,14 +206,18 @@ const ZapCard = ({ config }: Props) => {
           <>
             <ZapCardContentHeaderRow>
               <ZapCardImgSection>
-                <ZapCardImg src={config.breakdownImage} />
+                <Tooltip tooltip={config.breakdownTooltip}>
+                  <ZapCardImg src={config.breakdownImage} />
+                </Tooltip>
               </ZapCardImgSection>
               <ZapCardHeaderTextSection>
                 <ZapCardHeaderTitle>{config.title}</ZapCardHeaderTitle>
                 <ZapCardHeaderName>{config.name}</ZapCardHeaderName>
-                <IndicatorItem />
               </ZapCardHeaderTextSection>
             </ZapCardContentHeaderRow>
+            <ZapCardContentRow>
+              <IndicatorItem />
+            </ZapCardContentRow>
             <ZapCardContentRow>
               <ZapCardContentText>You seem to have a balance of this already!</ZapCardContentText>
               <ZapCardContentText>
