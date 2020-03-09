@@ -613,9 +613,8 @@
     "ADD": "Add",
     "WITHDRAW": "Withdraw",
     "ZAP_BALANCE_TOOLTIP": "We've detected that you have a balance on the $protocol protocol.",
-    "ZAP_BALANCE_DETECTED": "You seem to already have a balance in the protocol this zap uses!",
+    "ZAP_BALANCE_DETECTED": "This zap is active in one or more of your accounts.",
     "ZAP_ESTIMATED_BALANCE": "Estimated Balance",
     "ZAP_RISK_PROFILE_HEADER_TEXT": "$riskProfile Risk Profile"
-    
   }
 }
