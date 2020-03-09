@@ -2,26 +2,48 @@ import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { Button } from '@mycrypto/ui';
-import { convertToFiat } from '../../../utils';
+import { convertToFiat, isWeb3Wallet } from '../../../utils';
 import { ProtectTransactionUtils } from '../utils';
 import { RatesContext } from '../../../services';
-import { IFormikFields } from '../../../types';
+import { IAccount, IFormikFields } from '../../../types';
+import { COLORS } from '../../../theme';
+import { WithProtectApi } from '../types';
 
 import ProtectedTransactionBase from './ProtectedTransactionBase';
 import { Amount } from '../../../components';
 import CloseIcon from './icons/CloseIcon';
 import ProtectIcon from './icons/ProtectIcon';
+import WarningIcon from './icons/WarningIcon';
 import feeIcon from 'assets/images/icn-fee.svg';
 
-import { WithProtectApi } from '../types';
-import { COLORS } from '../../../theme';
-
 const ProtectionThisTransactionStyled = styled(ProtectedTransactionBase)`
-  .confirm-text {
+  .description-text {
     max-width: 300px;
     font-size: 16px;
     line-height: 24px;
     margin-bottom: 16px;
+  }
+
+  .description-text-danger {
+    color: ${COLORS.PASTEL_RED};
+  }
+
+  .description-text-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 300px;
+
+    > svg {
+      display: flex;
+      align-self: flex-start;
+    }
+
+    > .description-text-danger {
+      max-width: 260px;
+      padding-left: 16px;
+      text-align: left;
+    }
   }
 
   .send-with-confidence {
@@ -112,7 +134,20 @@ export const ProtectionThisTransaction: FC<ProtectionThisTransaction> = ({
     rate: number | null;
   }>({ amount: null, fee: null, rate: null });
 
-  const { showHideTransactionProtection, goOnNextStep, setReceiverInfo } = withProtectApi!;
+  const {
+    withProtectState: { isWeb3Wallet: web3Wallet, web3WalletName },
+    showHideTransactionProtection,
+    goOnNextStep,
+    setReceiverInfo,
+    setWeb3Wallet
+  } = withProtectApi!;
+
+  useEffect(() => {
+    const {
+      account: { wallet: walletId }
+    } = sendAssetsValues as { account: IAccount };
+    setWeb3Wallet(walletId && isWeb3Wallet(walletId), walletId);
+  }, [sendAssetsValues]);
 
   useEffect(() => {
     const { asset } = sendAssetsValues!;
@@ -194,10 +229,23 @@ export const ProtectionThisTransaction: FC<ProtectionThisTransaction> = ({
           <span>If the account is malicious, there will oftentimes be user comments.</span>
         </li>
       </BulletList>
-      <p className="confirm-text">
-        Once you confirm and sign the transaction, you'll have 20 seconds to cancel sending if you
-        change your mind. Still not convinced? Learn more.
-      </p>
+      {web3Wallet && (
+        <div className="description-text-wrapper">
+          <WarningIcon />
+          <p className="description-text description-text-danger">
+            Due to technical limitations, the 20 second cancellation timer is unavailable for
+            transactions using
+            {` ${web3WalletName} `}
+            and other Web 3 providers.
+          </p>
+        </div>
+      )}
+      {!web3Wallet && (
+        <p className="description-text">
+          Once you confirm and sign the transaction, you'll have 20 seconds to cancel sending if you
+          change your mind. Still not convinced? Learn more.
+        </p>
+      )}
       <hr />
       <h4 className="send-with-confidence">Send with Confidence</h4>
       <FeeContainer>

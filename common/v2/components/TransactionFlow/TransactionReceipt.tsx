@@ -75,17 +75,21 @@ const TransactionReceipt = ({
   const [timestamp, setTimestamp] = useState(0);
 
   const {
-    withProtectState: { protectTxEnabled },
+    withProtectState: { protectTxEnabled, isWeb3Wallet: web3Wallet },
     invokeProtectionTxTimeoutFunction
   } = withProtectApi;
   const [protectTxCounter, setProtectTxCounter] = React.useState(20);
 
   useEffect(() => {
+    setDisplayTxReceipt(txReceipt);
+  }, [setDisplayTxReceipt, txReceipt]);
+
+  useEffect(() => {
     let protectTxTimer: number | null = null;
-    if (protectTxEnabled && protectTxCounter > 0) {
+    if (!web3Wallet && protectTxEnabled && protectTxCounter > 0) {
       // @ts-ignore
       protectTxTimer = setTimeout(() => setProtectTxCounter(prevCount => prevCount - 1), 1000);
-    } else if (protectTxEnabled && protectTxCounter === 0) {
+    } else if (!web3Wallet && protectTxEnabled && protectTxCounter === 0) {
       invokeProtectionTxTimeoutFunction(txReceiptCb => {
         setDisplayTxReceipt(txReceiptCb);
       });
@@ -95,7 +99,7 @@ const TransactionReceipt = ({
         clearTimeout(protectTxTimer);
       }
     };
-  }, [protectTxEnabled, protectTxCounter]);
+  }, [protectTxEnabled, protectTxCounter, web3Wallet]);
 
   useEffect(() => {
     if (displayTxReceipt) {
@@ -205,7 +209,7 @@ const TransactionReceipt = ({
 
   return (
     <div className="TransactionReceipt">
-      {protectTxEnabled && (
+      {protectTxEnabled && !web3Wallet && (
         <AbortTransaction
           countdown={protectTxCounter}
           onAbortTransactionClick={e => {

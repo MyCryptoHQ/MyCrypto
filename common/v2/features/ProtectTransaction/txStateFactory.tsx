@@ -56,7 +56,7 @@ const ProtectedTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setSt
 
       payload = {
         ...payload,
-        nonceField: (await getNonce(network, account)).toString()
+        nonceField: ((await getNonce(network, account)) + 1).toString()
       };
 
       if (payload.advancedTransaction) {
@@ -102,35 +102,64 @@ const ProtectedTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setSt
   );
 
   const handleProtectedTransactionConfirmAndSend = useCallback(
-    (payload: Arrayish, cb: () => void) => {
-      const provider = new ProviderHandler(state.txConfig.network);
+    (payload: Arrayish | ITxConfig, cb: () => void, isWeb3Wallet: boolean = false) => {
+      if (isWeb3Wallet) {
+        setState((prevState: State) => ({
+          ...prevState,
+          txReceipt: payload as ITxConfig
+        }));
 
-      const signedTx = hexlify(payload);
+        // Payload is tx hash or receipt
+        // @ts-ignore
+        const txReceipt =
+          typeof payload === 'string'
+            ? {
+                ...state.txConfig,
+                hash: payload,
+                to: state.txConfig.receiverAddress,
+                from: state.txConfig.senderAccount.address
+              }
+            : fromTxReceiptObj(payload);
+        addNewTransactionToAccount(
+          state.txConfig.senderAccount,
+          { ...txReceipt, stage: ITxStatus.PENDING } || {}
+        );
 
-      provider
-        .sendRawTx(signedTx)
-        .then(retrievedTxReceipt => retrievedTxReceipt)
-        .catch(txHash => provider.getTransactionByHash(txHash))
-        .then(retrievedTransactionReceipt => {
-          const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(assets, networks);
-          addNewTransactionToAccount(
-            state.txConfig.senderAccount,
-            { ...txReceipt, stage: ITxStatus.PENDING } || {}
-          );
-          setState((prevState: State) => ({
-            ...prevState,
-            txConfig: makeTxConfigFromSignedTx(
-              payload,
-              assets,
-              networks,
-              accounts,
-              prevState.txConfig
-            ),
-            txReceipt,
-            signedTx
-          }));
-        })
-        .finally(cb);
+        setState((prevState: State) => ({
+          ...prevState,
+          txReceipt
+        }));
+        cb();
+      } else {
+        const provider = new ProviderHandler(state.txConfig.network);
+
+        const signedTx = hexlify(payload as Arrayish);
+
+        provider
+          .sendRawTx(signedTx)
+          .then(retrievedTxReceipt => retrievedTxReceipt)
+          .catch(txHash => provider.getTransactionByHash(txHash))
+          .then(retrievedTransactionReceipt => {
+            const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(assets, networks);
+            addNewTransactionToAccount(
+              state.txConfig.senderAccount,
+              { ...txReceipt, stage: ITxStatus.PENDING } || {}
+            );
+            setState((prevState: State) => ({
+              ...prevState,
+              txConfig: makeTxConfigFromSignedTx(
+                payload as Arrayish,
+                assets,
+                networks,
+                accounts,
+                prevState.txConfig
+              ),
+              txReceipt,
+              signedTx
+            }));
+          })
+          .finally(cb);
+      }
     },
     [state, setState, assets, networks, addNewTransactionToAccount, accounts]
   );

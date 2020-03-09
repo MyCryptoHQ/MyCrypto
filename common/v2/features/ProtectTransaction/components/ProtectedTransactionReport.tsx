@@ -169,7 +169,8 @@ export const ProtectedTransactionReport: FC<WithProtectApi> = ({ withProtectApi 
       cryptoScamAddressReport,
       etherscanBalanceReport,
       etherscanLastTxReport,
-      asset
+      asset,
+      isWeb3Wallet
     },
     showHideTransactionProtection
   } = withProtectApi!;
@@ -392,8 +393,14 @@ export const ProtectedTransactionReport: FC<WithProtectApi> = ({ withProtectApi 
           </p>
           <p className="footer-text">
             If everything looks good, click "Next" on the left to see a preview of your main
-            transaction. Upon confirming and sending the transaction, you'll get{' '}
-            <span className="highlighted">20 seconds</span> to cancel if you change your mind.
+            transaction.
+            {!isWeb3Wallet && (
+              <>
+                &nbsp;Upon confirming and sending the transaction, you'll get &nbsp;
+                <span className="highlighted">20 seconds</span>&nbsp; to cancel if you change your
+                mind.
+              </>
+            )}
           </p>
         </>
       )}

@@ -14,6 +14,12 @@ const SignProtectedTransactionStyled = styled(ProtectedTransactionBase)`
       margin-top: 10px;
     }
   }
+
+  .SignTransactionWeb3 {
+    &-img {
+      min-width: 100%;
+    }
+  }
 `;
 
 export const SignProtectedTransaction: FC<WithProtectApi> = ({ children, withProtectApi }) => {

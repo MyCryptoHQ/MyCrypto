@@ -82,6 +82,8 @@ export function withProtectTransaction(
 ) {
   return function WithProtectTransaction({
     txConfig: txConfigMain,
+    signedTx: signedTxMain,
+    txReceipt: txReceiptMain,
     onComplete: onCompleteMain,
     withProtectApi,
     customDetails,
@@ -97,7 +99,7 @@ export function withProtectTransaction(
     });
 
     const {
-      withProtectState: { protectTxShown, stepIndex, protectTxEnabled },
+      withProtectState: { protectTxShown, stepIndex, protectTxEnabled, isWeb3Wallet },
       handleTransactionReport,
       goOnNextStep,
       goOnInitialStep,
@@ -135,6 +137,8 @@ export function withProtectTransaction(
           <WithProtectTransactionMain protectTxShown={protectTxShown}>
             <WrappedComponent
               txConfig={txConfigMain}
+              signedTx={signedTxMain}
+              txReceipt={txReceiptMain}
               onComplete={(values: IFormikFields | ITxReceipt | ISignedTx | null) => {
                 onCompleteMain(values);
               }}
@@ -183,9 +187,13 @@ export function withProtectTransaction(
                                 payload: IFormikFields | ITxReceipt | ISignedTx | null
                               ) => {
                                 handleTransactionReport().then(() => {
-                                  handleProtectedTransactionConfirmAndSend(payload, () => {
-                                    goOnNextStep();
-                                  });
+                                  handleProtectedTransactionConfirmAndSend(
+                                    payload,
+                                    () => {
+                                      goOnNextStep();
+                                    },
+                                    isWeb3Wallet
+                                  );
                                 });
                               }}
                               resetFlow={() => {
@@ -223,13 +231,16 @@ export function withProtectTransaction(
       [
         stepIndex,
         txConfigMain,
+        signedTxMain,
+        txReceiptMain,
         protectTxShown,
         formCallback,
         protectedTransactionTxFactoryState,
         isMdScreen,
         onModalBackdropClick,
         protectTxEnabled,
-        onMobileShowReportClick
+        onMobileShowReportClick,
+        isWeb3Wallet
       ]
     );
   };

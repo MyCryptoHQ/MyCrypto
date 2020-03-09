@@ -6,13 +6,14 @@ import { TUseStateReducerFactory } from '../../utils';
 import { useCallback, useContext, useEffect, useRef } from 'react';
 import CryptoScamDBService from '../../services/ApiService/CryptoScamDB/CryptoScamDB';
 import { SendFormCallbackType } from './types';
-import { Asset, ITxReceipt, Network, NetworkId } from '../../types';
+import { Asset, ITxReceipt, Network, NetworkId, WalletId } from '../../types';
 import { GetBalanceResponse, GetLastTxResponse } from '../../services/ApiService/Etherscan/types';
 import { EtherscanService } from 'v2/services/ApiService/Etherscan';
 import { getNetworkById, NetworkContext } from '../../services/Store/Network';
 import { AssetContext, getAssetByUUID } from '../../services/Store/Asset';
 import useMediaQuery from '../../vendor/react-use/useMediaQuery';
 import { BREAK_POINTS } from '../../theme';
+import { WALLETS_CONFIG } from '../../config';
 
 export interface WithProtectState {
   stepIndex: number;
@@ -25,6 +26,8 @@ export interface WithProtectState {
   receiverAddress: string | null;
   network: Network | null;
   asset: Asset | null;
+  isWeb3Wallet: boolean;
+  web3WalletName: string | null;
 }
 
 export interface WithProtectApiFactory {
@@ -40,6 +43,7 @@ export interface WithProtectApiFactory {
   setProtectionTxTimeoutFunction(cb: (txReceiptCb?: (txReciept: ITxReceipt) => void) => void): void;
   invokeProtectionTxTimeoutFunction(cb: (txReceipt: ITxReceipt) => void): void;
   clearProtectionTxTimeoutFunction(): void;
+  setWeb3Wallet(isWeb3Wallet: boolean, walletTypeId?: WalletId | null): void;
 }
 
 export const WithProtectInitialState: Partial<WithProtectState> = {
@@ -51,7 +55,9 @@ export const WithProtectInitialState: Partial<WithProtectState> = {
   cryptoScamAddressReport: null,
   etherscanBalanceReport: null,
   etherscanLastTxReport: null,
-  asset: null
+  asset: null,
+  isWeb3Wallet: false,
+  web3WalletName: null
 };
 
 const numOfSteps = 3;
@@ -204,9 +210,8 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
 
   const setProtectionTxTimeoutFunction = useCallback(
     (cb: (txReceiptCb?: (txReciept: ITxReceipt) => void) => void) => {
-      const { protectTxEnabled } = state;
-      // In case when protected transaction is not enabled, just invoke cb function
-      if (protectTxEnabled) {
+      const { protectTxEnabled, isWeb3Wallet } = state;
+      if (protectTxEnabled && !isWeb3Wallet) {
         protectionTxTimeoutFunction.current = cb;
       } else {
         if (cb) {
@@ -231,6 +236,19 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
     protectionTxTimeoutFunction.current = null;
   }, [protectionTxTimeoutFunction]);
 
+  const setWeb3Wallet = useCallback(
+    (isWeb3Wallet: boolean, walletTypeId: WalletId | null = null) => {
+      const web3WalletType = walletTypeId ? WALLETS_CONFIG[walletTypeId].name : null;
+
+      setState(prevState => ({
+        ...prevState,
+        isWeb3Wallet,
+        web3WalletName: web3WalletType
+      }));
+    },
+    [setState]
+  );
+
   return {
     withProtectState: state,
     handleTransactionReport,
@@ -242,7 +260,8 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
     setReceiverInfo,
     setProtectionTxTimeoutFunction,
     invokeProtectionTxTimeoutFunction,
-    clearProtectionTxTimeoutFunction
+    clearProtectionTxTimeoutFunction,
+    setWeb3Wallet
   };
 };
 

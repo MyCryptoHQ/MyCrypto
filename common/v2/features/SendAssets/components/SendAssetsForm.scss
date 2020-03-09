@@ -150,6 +150,16 @@
   }
 }
 
+[class^="ContentPanel__ContentPanelWrapper"] {
+  &.has-side-panel {
+    .SendAssetsForm {
+      &-next {
+        margin-bottom: 30px;
+      }
+    }
+  }
+}
+
 // Custom Range
 input[type='range'] {
   -webkit-appearance: none; /* Hides the slider so that custom slider can be made */

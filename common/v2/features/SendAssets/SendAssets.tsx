@@ -8,7 +8,7 @@ import { ROUTE_PATHS } from 'v2/config';
 
 import { ConfirmTransaction, TransactionReceipt } from 'v2/components/TransactionFlow';
 import { IStepperPath } from 'v2/components/GeneralStepper/types';
-import { SendAssetsForm, SignTransaction, SignTransactionWithProtection } from './components';
+import { SendAssetsForm, SignTransactionWithProtection } from './components';
 import { txConfigInitialState, TxConfigFactory } from './stateFactory';
 import {
   WithProtectApiFactory,
@@ -45,25 +45,27 @@ function SendAssets() {
     {
       label: 'Send Assets',
       component: SendAssetsForm,
-      props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
+      props: (({ txConfig }) => ({ txConfig, withProtectApi }))(txFactoryState),
       actions: (payload: IFormikFields, cb: any) => handleFormSubmit(payload, cb)
     },
     {
       label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
       component: ConfirmTransaction,
-      props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
+      props: (({ txConfig }) => ({ txConfig, withProtectApi }))(txFactoryState),
       actions: (payload: ITxConfig, cb: any) => handleConfirmAndSign(payload, cb)
     },
     {
       label: '',
-      component: SignTransaction,
-      props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
+      component: SignTransactionWithProtection,
+      props: (({ txConfig }) => ({ txConfig, withProtectApi }))(txFactoryState),
       actions: (payload: ITxReceipt | ISignedTx, cb: any) => handleSignedWeb3Tx(payload, cb)
     },
     {
       label: translateRaw('TRANSACTION_BROADCASTED'),
       component: TransactionReceipt,
-      props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(txFactoryState)
+      props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt, withProtectApi }))(
+        txFactoryState
+      )
     }
   ];
 
