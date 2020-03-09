@@ -1813,13 +1813,6 @@
     "uuid": "6fc8b067-1011-59a3-b3a0-6b1d6ac9f900"
   },
   {
-    "address": "0xF5DCe57282A584D2746FaF1593d3121Fcac444dC",
-    "symbol": "cSai",
-    "decimal": 8,
-    "name": "Compound Sai",
-    "uuid": "350c0d6f-a0eb-504e-9a8c-43a4d5966fc3"
-  },
-  {
     "address": "0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643",
     "symbol": "cDAI",
     "decimal": 8,
@@ -2301,6 +2294,13 @@
     "decimal": 6,
     "name": "Credits",
     "uuid": "b69ac284-65ee-5139-b2ca-70f282036277"
+  },
+  {
+    "address": "0xF5DCe57282A584D2746FaF1593d3121Fcac444dC",
+    "symbol": "cSai",
+    "decimal": 8,
+    "name": "Compound Sai",
+    "uuid": "350c0d6f-a0eb-504e-9a8c-43a4d5966fc3"
   },
   {
     "address": "0x29D75277aC7F0335b2165D0895E8725cbF658d73",
@@ -3554,6 +3554,13 @@
     "decimal": 0,
     "name": "Edgeless",
     "uuid": "a3cf6b10-f1a3-5605-b005-d4860871f81c"
+  },
+  {
+    "address": "0x79C5a1Ae586322A07BfB60be36E1b31CE8C84A1e",
+    "symbol": "EDI",
+    "decimal": 18,
+    "name": "Freight Trust Network",
+    "uuid": "843ea25a-e347-5894-b561-c8c6cc7f3d7a"
   },
   {
     "address": "0xCeD4E93198734dDaFf8492d525Bd258D49eb388E",
@@ -5999,8 +6006,15 @@
     "uuid": "924d7286-d96b-55d1-afbe-863398a6eecd"
   },
   {
-    "address": "0x3b3A5557F119106270017A7662488C1FF6312A6b",
+    "address": "0x2bc8B955F6a0Ed5a9D4146DED61aEC0bB74EcF67",
     "symbol": "LGC",
+    "decimal": 18,
+    "name": "Logistics Coin",
+    "uuid": "64d75fff-d672-584e-a185-e4da842ff744"
+  },
+  {
+    "address": "0x3b3A5557F119106270017A7662488C1FF6312A6b",
+    "symbol": "LGC (1)",
     "decimal": 18,
     "name": "LOGISTICS",
     "uuid": "59618bac-2019-5974-a4ee-d1d315f5f80b"
@@ -10213,11 +10227,669 @@
     "uuid": "715d2364-bd16-591c-8307-50dc367de73f"
   },
   {
+    "address": "0x701564Aa6E26816147D4fa211a0779F1B774Bb9B",
+    "symbol": "uni0xBTC",
+    "decimal": 18,
+    "name": "Uniswap: 0xBitcoin Token",
+    "uuid": "870be09a-55f5-56de-be20-9937050f2572"
+  },
+  {
+    "address": "0x7cfab87AaC0899c093235b342AC0e5B1ACF159EB",
+    "symbol": "uniaDAI",
+    "decimal": 18,
+    "name": "Uniswap: Aave Interest bearing DAI",
+    "uuid": "50b83702-2652-5e12-8585-cd8014641b74"
+  },
+  {
+    "address": "0xE6C198d27a5B71144B40cFa2362ae3166728e0C8",
+    "symbol": "uniAMN",
+    "decimal": 18,
+    "name": "Uniswap: Amon",
+    "uuid": "528a02b4-c426-576c-9326-19939a3b2714"
+  },
+  {
+    "address": "0x042dBBDc27F75d277C3D99efE327DB21Bc4fde75",
+    "symbol": "uniAMPL",
+    "decimal": 18,
+    "name": "Uniswap: Ampleforth",
+    "uuid": "a2c4fca6-ec18-55e2-96d8-fd8c8e9ae813"
+  },
+  {
+    "address": "0x077d52B047735976dfdA76feF74d4d988AC25196",
+    "symbol": "uniANT",
+    "decimal": 18,
+    "name": "Uniswap: Aragon Network Token",
+    "uuid": "0cbb8ae5-f084-5bc8-9d95-9efaf7e36dba"
+  },
+  {
+    "address": "0x2E642b8D59B45a1D8c5aEf716A84FF44ea665914",
+    "symbol": "uniBAT",
+    "decimal": 18,
+    "name": "Uniswap: Basic Attention Token",
+    "uuid": "59c11c4d-e32c-55a2-b4c7-1f5ca5b4f0ba"
+  },
+  {
+    "address": "0x0E6A53B13688018A3df8C69f99aFB19A3068D04f",
+    "symbol": "uniBLT",
+    "decimal": 18,
+    "name": "Uniswap: Bloom Token",
+    "uuid": "73165fb5-4b61-59ed-82a7-baf8420c7bda"
+  },
+  {
+    "address": "0x87d80DBD37E551F58680B4217b23aF6a752DA83F",
+    "symbol": "uniBNT",
+    "decimal": 18,
+    "name": "Uniswap: Bancor Network Token",
+    "uuid": "0fd4fd95-c227-5ad7-b757-e3936263f466"
+  },
+  {
+    "address": "0xF7B5A4b934658025390ff69dB302BC7F2AC4a542",
+    "symbol": "uniC20",
+    "decimal": 18,
+    "name": "Uniswap: Crypto20",
+    "uuid": "4ce970a1-2f8d-5d83-9c6f-532d568ec254"
+  },
+  {
+    "address": "0x34E89740adF97C3A9D3f63Cc2cE4a914382c230b",
+    "symbol": "unicDAI",
+    "decimal": 18,
+    "name": "Uniswap: Compound Dai",
+    "uuid": "cf3aa546-dad1-51e8-ba3f-59934e6af29d"
+  },
+  {
+    "address": "0x1e3740A030AF8c755c888a0ee83aC9E79e09f4F1",
+    "symbol": "uniCELR",
+    "decimal": 18,
+    "name": "Uniswap: CelerToken",
+    "uuid": "1391f2f1-c924-55b4-83e8-b7af95c40c3d"
+  },
+  {
+    "address": "0x6C3942B383bc3d0efd3F36eFa1CBE7C8E12C8A2B",
+    "symbol": "uniCHAI",
+    "decimal": 18,
+    "name": "Uniswap: Chai",
+    "uuid": "70fe83de-5c6d-5f96-9d90-0889a7559e40"
+  },
+  {
     "address": "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7",
     "symbol": "Unicorn",
     "decimal": 0,
     "name": "Unicorn",
     "uuid": "97259728-6d1e-56b3-9997-5cf8fc5c5acf"
+  },
+  {
+    "address": "0x45A2FDfED7F7a2c791fb1bdF6075b83faD821ddE",
+    "symbol": "unicSAI",
+    "decimal": 18,
+    "name": "Uniswap: Compound Dai",
+    "uuid": "fb27dbbc-fdfe-5c68-9db9-be4371ee2543"
+  },
+  {
+    "address": "0x1C6c712b1F4a7c263B1DBd8F97fb447c945d3b9a",
+    "symbol": "uniCVC",
+    "decimal": 18,
+    "name": "Uniswap: Civic",
+    "uuid": "f34348a9-47a3-5d0f-8623-e093ae5beba2"
+  },
+  {
+    "address": "0x2a1530C4C41db0B0b2bB646CB5Eb1A67b7158667",
+    "symbol": "uniDAI",
+    "decimal": 18,
+    "name": "Uniswap: Dai Stablecoin",
+    "uuid": "2b7a4d65-9c40-5c21-96eb-f7d380a4dc87"
+  },
+  {
+    "address": "0x4F0d6E2179938828CfF93dA40a8BA1Df7519Ca8C",
+    "symbol": "uniDATA",
+    "decimal": 18,
+    "name": "Uniswap: Streamr DATAcoin",
+    "uuid": "d08f92cc-4121-5351-a43e-8b441b3ebe18"
+  },
+  {
+    "address": "0xD55C1cA9F5992A2e5E379DCe49Abf24294ABe055",
+    "symbol": "uniDGD",
+    "decimal": 18,
+    "name": "Uniswap: DigixDAO",
+    "uuid": "433ace33-756b-508e-9e52-b8b9abe39752"
+  },
+  {
+    "address": "0xb92dE8B30584392Af27726D5ce04Ef3c4e5c9924",
+    "symbol": "uniDGX",
+    "decimal": 18,
+    "name": "Uniswap: Digix Gold Token",
+    "uuid": "180a5aee-0bc3-5737-9127-e9306446fd2f"
+  },
+  {
+    "address": "0x61792F290e5100FBBcBb2309F03A1Bab869fb850",
+    "symbol": "uniDIP",
+    "decimal": 18,
+    "name": "Uniswap: Decentralized Insurance Protocol",
+    "uuid": "8cd31622-b42d-5e6f-8cbe-bc637efa912d"
+  },
+  {
+    "address": "0xD552119eD44EC8Fa8f87c568769C67Bd02B5b3FB",
+    "symbol": "uniDONUT",
+    "decimal": 18,
+    "name": "Uniswap: Donut",
+    "uuid": "609a348b-133a-50d3-a497-474137add6da"
+  },
+  {
+    "address": "0xb99A23b1a4585fc56d0EC3B76528C27cAd427473",
+    "symbol": "uniENJ",
+    "decimal": 18,
+    "name": "Uniswap: Enjin Coin",
+    "uuid": "9820d87f-14c5-5d85-9e6e-a9d0364fe231"
+  },
+  {
+    "address": "0x5e7907aC70b9a781365c72F2acEE96710bdA042e",
+    "symbol": "uniFAME",
+    "decimal": 18,
+    "name": "Uniswap: SAINT FAME: Genesis Shirt",
+    "uuid": "21e70510-5492-512b-95e1-72348b4a1a6d"
+  },
+  {
+    "address": "0xf79cb3BEA83BD502737586A6E8B133c378FD1fF2",
+    "symbol": "uniFOAM",
+    "decimal": 18,
+    "name": "Uniswap: FOAM Token",
+    "uuid": "ad4988d0-ade1-5d4d-8143-c9dde2ed140d"
+  },
+  {
+    "address": "0x60a87cC7Fca7E53867facB79DA73181B1bB4238B",
+    "symbol": "uniFUN",
+    "decimal": 18,
+    "name": "Uniswap: FunFair",
+    "uuid": "c90bcfa5-9b23-5add-bfa6-98cc0919eda5"
+  },
+  {
+    "address": "0x26Cc0EAb6Cb650B0Db4D0d0dA8cB5BF69F4ad692",
+    "symbol": "uniGEN",
+    "decimal": 18,
+    "name": "Uniswap: DAOstack",
+    "uuid": "f0933b0f-5410-5338-8979-df335beb3b62"
+  },
+  {
+    "address": "0xe8e45431b93215566BA923a7E611B7342Ea954DF",
+    "symbol": "uniGNO",
+    "decimal": 18,
+    "name": "Uniswap: Gnosis Token",
+    "uuid": "f2d08ecc-d32c-5fae-8002-c477a47d632d"
+  },
+  {
+    "address": "0x4B17685b330307C751B47f33890c8398dF4Fe407",
+    "symbol": "uniGRID",
+    "decimal": 18,
+    "name": "Uniswap: GRID Token",
+    "uuid": "74c77aac-bc10-55d3-9462-89644149b819"
+  },
+  {
+    "address": "0x929507CD3D90Ab11eC4822E9eB5A48eb3a178F19",
+    "symbol": "uniGST2",
+    "decimal": 18,
+    "name": "Uniswap: Gastoken.io",
+    "uuid": "ef9be964-a40a-5000-9c72-43ddaebcec2f"
+  },
+  {
+    "address": "0xd4777E164c6C683E10593E08760B803D58529a8E",
+    "symbol": "uniHOT",
+    "decimal": 18,
+    "name": "Uniswap: HoloToken",
+    "uuid": "95b8e380-2c43-5a0a-ac3a-39241476c959"
+  },
+  {
+    "address": "0x3E0349F5D38414008B9Bb1907ea422739BE7CD4C",
+    "symbol": "uniiDAI",
+    "decimal": 18,
+    "name": "Uniswap: Fulcrum DAI iToken ",
+    "uuid": "7f1a87d4-7f88-5fcc-a9cc-db9fa947cf02"
+  },
+  {
+    "address": "0xFFcf45b540e6C9F094Ae656D2e34aD11cdfdb187",
+    "symbol": "uniimBTC",
+    "decimal": 18,
+    "name": "Uniswap: The Tokenized Bitcoin",
+    "uuid": "4eb699dc-5dce-502d-9a23-194a58aa1450"
+  },
+  {
+    "address": "0x084f002671a5f03D5498B1e5fb15fc0cfee9a470",
+    "symbol": "uniIOTX",
+    "decimal": 18,
+    "name": "Uniswap: IoTeX Network",
+    "uuid": "72039d77-81a0-5f22-bb92-548923298b10"
+  },
+  {
+    "address": "0x81eeD7F1EcbD7FA9978fcc7584296Fb0C215Dc5C",
+    "symbol": "uniiSAI",
+    "decimal": 18,
+    "name": "Uniswap: Fulcrum SAI iToken ",
+    "uuid": "021ce881-6817-55b1-a92c-ee824b5646b5"
+  },
+  {
+    "address": "0xb7520a5F8c832c573d6BD0Df955fC5c9b72400F7",
+    "symbol": "uniKIN",
+    "decimal": 18,
+    "name": "Uniswap: Kin",
+    "uuid": "106732d8-b1ab-5515-816b-b165ed129dd3"
+  },
+  {
+    "address": "0x49c4f9bc14884f6210F28342ceD592A633801a8b",
+    "symbol": "uniKNC",
+    "decimal": 18,
+    "name": "Uniswap: Kyber Network Crystal",
+    "uuid": "97a7bed6-0d39-57bf-a5ac-17c7adfa709b"
+  },
+  {
+    "address": "0xcaA7e4656f6A2B59f5f99c745F91AB26D1210DCe",
+    "symbol": "uniLEND",
+    "decimal": 18,
+    "name": "Uniswap: EthLend Token",
+    "uuid": "b4692e52-6de2-5210-bc0e-1d4d77c11525"
+  },
+  {
+    "address": "0xF173214C720f58E03e194085B1DB28B50aCDeeaD",
+    "symbol": "uniLINK",
+    "decimal": 18,
+    "name": "Uniswap: ChainLink Token",
+    "uuid": "e729efdf-fab2-518e-b07f-0cff165cf304"
+  },
+  {
+    "address": "0x417CB32bc991fBbDCaE230C7c4771CC0D69daA6b",
+    "symbol": "uniLOOM",
+    "decimal": 18,
+    "name": "Uniswap: LoomToken",
+    "uuid": "5468e6f2-c8cc-5e78-8dd1-a7f6751112b5"
+  },
+  {
+    "address": "0xc4a1C45D5546029Fd57128483aE65b56124BFA6A",
+    "symbol": "uniLPT",
+    "decimal": 18,
+    "name": "Uniswap: Livepeer Token",
+    "uuid": "e39fd4ae-e817-51a9-a712-b821c93f6a63"
+  },
+  {
+    "address": "0xe3406e7D0155E0a83236eC25D34Cd3D903036669",
+    "symbol": "uniLQD",
+    "decimal": 18,
+    "name": "Uniswap: Liquidity.Network Token",
+    "uuid": "03d27066-3dd2-5f4b-abd4-6284d842fbbd"
+  },
+  {
+    "address": "0xA539BAaa3aCA455c986bB1E25301CEF936CE1B65",
+    "symbol": "uniLRC",
+    "decimal": 18,
+    "name": "Uniswap: LoopringCoin V2",
+    "uuid": "1741b04b-4e9d-54c4-8c46-f17ce246d6ee"
+  },
+  {
+    "address": "0xC6581Ce3A005e2801c1e0903281BBd318eC5B5C2",
+    "symbol": "uniMANA",
+    "decimal": 18,
+    "name": "Uniswap: Decentraland MANA",
+    "uuid": "ed8c1b4d-bc04-54c8-bc28-70da09cc3f88"
+  },
+  {
+    "address": "0x9a7A75E66B325a3BD46973B2b57c9b8d9D26a621",
+    "symbol": "uniMATIC",
+    "decimal": 18,
+    "name": "Uniswap: Matic Token",
+    "uuid": "b456c951-f251-5494-886e-91c9f3461c71"
+  },
+  {
+    "address": "0xE1b7AeC3639068b474bFbcB916580fc28A20717B",
+    "symbol": "uniMBC",
+    "decimal": 18,
+    "name": "Uniswap: Marblecoin",
+    "uuid": "7561fc7f-621e-5666-b423-5ad4b383c95a"
+  },
+  {
+    "address": "0xdd80Ca8062c7Ef90FcA2547E6a2A126C596e611F",
+    "symbol": "uniMGN",
+    "decimal": 18,
+    "name": "Uniswap: Magnolia Token",
+    "uuid": "8b89272d-341b-5dd9-ae49-a5f456134199"
+  },
+  {
+    "address": "0x2C4Bd064b998838076fa341A83d007FC2FA50957",
+    "symbol": "uniMKR",
+    "decimal": 18,
+    "name": "Uniswap: Maker",
+    "uuid": "44fabad2-d9da-50b3-b46b-e37466fd9751"
+  },
+  {
+    "address": "0xA931F4eB165AC307fD7431b5EC6eADde53E14b0C",
+    "symbol": "uniMLN",
+    "decimal": 18,
+    "name": "Uniswap: Melon Token",
+    "uuid": "dcb18292-ea7d-5c54-b3fe-2c996f07e2c6"
+  },
+  {
+    "address": "0xCCB98654CD486216fFF273dd025246588E77cFC1",
+    "symbol": "uniMOD",
+    "decimal": 18,
+    "name": "Uniswap: Modum Token",
+    "uuid": "83ee102e-0b80-53bf-998e-7f4a7f77e481"
+  },
+  {
+    "address": "0x069C97DBA948175D10af4b2414969e0B88d44669",
+    "symbol": "uniNEXO",
+    "decimal": 18,
+    "name": "Uniswap: Nexo",
+    "uuid": "8fca9c14-a87a-5ba8-a368-9029a0975f03"
+  },
+  {
+    "address": "0x2Bf5A5bA29E60682fC56B2Fcf9cE07Bef4F6196f",
+    "symbol": "uniNMR",
+    "decimal": 18,
+    "name": "Uniswap: Numeraire",
+    "uuid": "ad0efbaa-bd94-5427-baff-c83b5e8319a2"
+  },
+  {
+    "address": "0xe9a5bbe41dc63D555E06746b047d624E3343EA52",
+    "symbol": "uniOXT",
+    "decimal": 18,
+    "name": "Uniswap: Orchid",
+    "uuid": "ce337576-e033-5be4-86ee-bd7ed750ddff"
+  },
+  {
+    "address": "0xF53bBFBff01c50F2D42D542b09637DcA97935fF7",
+    "symbol": "uniPAN",
+    "decimal": 18,
+    "name": "Uniswap: Panvala pan",
+    "uuid": "f3815391-fc39-5a35-8c38-a07edca3faca"
+  },
+  {
+    "address": "0xC040d51b07Aea5d94a89Bc21E8078B77366Fc6C7",
+    "symbol": "uniPAX",
+    "decimal": 18,
+    "name": "Uniswap: PAX",
+    "uuid": "5b6de87e-32af-51db-af21-d4a31b2fa6e2"
+  },
+  {
+    "address": "0x0d2E1a84638bD1B6c0C260c758c39451D4587be1",
+    "symbol": "uniPAXG",
+    "decimal": 18,
+    "name": "Uniswap: Paxos Gold",
+    "uuid": "283aa7a9-4251-51dd-9aa9-c5c3f3fd77f2"
+  },
+  {
+    "address": "0xF506828B166de88cA2EDb2A98D960aBba0D2402A",
+    "symbol": "uniPNK",
+    "decimal": 18,
+    "name": "Uniswap: Pinakion",
+    "uuid": "ade64d83-fd92-58ab-80ab-df336d4b290f"
+  },
+  {
+    "address": "0xA2E6B3EF205FeAEe475937c4883b24E6eB717eeF",
+    "symbol": "uniPOA20",
+    "decimal": 18,
+    "name": "Uniswap: POA ERC20 on Foundation",
+    "uuid": "f32b90a6-4325-5c19-9652-86472a0afc7c"
+  },
+  {
+    "address": "0x755899F0540c3548b99E68C59AdB0f15d2695188",
+    "symbol": "uniQCH",
+    "decimal": 18,
+    "name": "Uniswap: QChi",
+    "uuid": "f7a4cf7a-6d6c-5ab5-b42a-ff173ee8a5d7"
+  },
+  {
+    "address": "0x82Db9FC4956Fa40efe1e35d881004612B5CB2cc2",
+    "symbol": "uniQSP",
+    "decimal": 18,
+    "name": "Uniswap: Quantstamp Token",
+    "uuid": "718113cb-d087-528e-8092-7538dfacb9fe"
+  },
+  {
+    "address": "0xD91FF16Ef92568fC27F466C3c5613e43313Ab1dc",
+    "symbol": "uniRCN",
+    "decimal": 18,
+    "name": "Uniswap: Ripio Credit Network Token",
+    "uuid": "2220121c-1a7f-5342-abe8-5ed5b32f83ab"
+  },
+  {
+    "address": "0x7D03CeCb36820b4666F45E1b4cA2538724Db271C",
+    "symbol": "uniRDN",
+    "decimal": 18,
+    "name": "Uniswap: Raiden Token",
+    "uuid": "f05be60f-c80f-5603-bedb-6d0a18d558c9"
+  },
+  {
+    "address": "0x43892992B0b102459E895B88601Bb2C76736942c",
+    "symbol": "uniREN",
+    "decimal": 18,
+    "name": "Uniswap: Republic Token",
+    "uuid": "73026704-b476-5cd9-ba73-49d6646ecf9e"
+  },
+  {
+    "address": "0x48B04d2A05B6B604d8d5223Fd1984f191DED51af",
+    "symbol": "uniREP",
+    "decimal": 18,
+    "name": "Uniswap: Reputation",
+    "uuid": "79a2ad75-3ead-5f2f-8e77-9801b81180a4"
+  },
+  {
+    "address": "0xeBD8AA50b26bFa63007d61eBa777A9DdE7e43c64",
+    "symbol": "uniRING",
+    "decimal": 18,
+    "name": "Uniswap: Darwinia Network Native Token",
+    "uuid": "7b299a00-1792-5201-a68f-5806ddf9bc13"
+  },
+  {
+    "address": "0xA825CAE02B310E9901b4776806CE25db520c8642",
+    "symbol": "uniRLC",
+    "decimal": 18,
+    "name": "Uniswap: iEx.ec Network Token",
+    "uuid": "4dd376ed-f4af-56ea-86d9-c92454f024d6"
+  },
+  {
+    "address": "0x3Fb2F18065926DdB33E7571475c509541d15dA0e",
+    "symbol": "uniRPL",
+    "decimal": 18,
+    "name": "Uniswap: Rocket Pool",
+    "uuid": "eaa1f49e-1e96-5344-b89b-ecb87f6b2d9d"
+  },
+  {
+    "address": "0x09cabEC1eAd1c0Ba254B09efb3EE13841712bE14",
+    "symbol": "uniSAI",
+    "decimal": 18,
+    "name": "Uniswap: Dai Stablecoin v1.0 (SAI)",
+    "uuid": "459a37b4-ad23-5c2b-8030-031eeff78453"
+  },
+  {
+    "address": "0xC0C59cDe851bfcbdddD3377EC10ea54A18Efb937",
+    "symbol": "uniSALT",
+    "decimal": 18,
+    "name": "Uniswap: Salt",
+    "uuid": "0cfef5bc-7370-5a17-b45e-d08037c856e0"
+  },
+  {
+    "address": "0x8a8D7aD4b89D91983cd069C58C4AA9F2f4166298",
+    "symbol": "uniSAN",
+    "decimal": 18,
+    "name": "Uniswap: SANtiment network token",
+    "uuid": "227adde0-9df8-55e5-8445-10c23fd595d6"
+  },
+  {
+    "address": "0xe9Cf7887b93150D4F2Da7dFc6D502B216438F244",
+    "symbol": "unisETH",
+    "decimal": 18,
+    "name": "Uniswap: Synth sETH",
+    "uuid": "ca27272a-891e-577d-ae75-f8efe4d55231"
+  },
+  {
+    "address": "0x536956Fab86774fb55CfaAcF496BC25E4d2B435C",
+    "symbol": "uniSHUF",
+    "decimal": 18,
+    "name": "Uniswap: Shuffle.Monster V3",
+    "uuid": "0039e50a-bab5-52fc-a48f-43f36410a87a"
+  },
+  {
+    "address": "0x1aEC8F11A7E78dC22477e91Ed924Fab46e3A88Fd",
+    "symbol": "uniSNT",
+    "decimal": 18,
+    "name": "Uniswap: Status Network Token",
+    "uuid": "26f97811-015b-50f9-be86-de591b8ff31c"
+  },
+  {
+    "address": "0x3958B4eC427F8fa24eB60F42821760e88d485f7F",
+    "symbol": "uniSNX",
+    "decimal": 18,
+    "name": "Uniswap: Synthetix Network Token",
+    "uuid": "8e55d260-a85d-53c8-aa34-61a8cfc078df"
+  },
+  {
+    "address": "0x22d8432cc7aA4f8712a655fC4cdfB1baEC29FCA9",
+    "symbol": "uniSOCKS",
+    "decimal": 18,
+    "name": "Uniswap: Unisocks Edition 0",
+    "uuid": "eaac5c67-473f-5154-98ca-c431340dc52c"
+  },
+  {
+    "address": "0x4e395304655F0796bc3bc63709DB72173b9DdF98",
+    "symbol": "uniSPANK",
+    "decimal": 18,
+    "name": "Uniswap: SPANK",
+    "uuid": "7c4ff905-8d4d-5832-898e-ac7d0965aaf6"
+  },
+  {
+    "address": "0xA7298541E52f96d42382eCBe4f242cBcBC534d02",
+    "symbol": "uniSTORJ",
+    "decimal": 18,
+    "name": "Uniswap: StorjToken",
+    "uuid": "2e5729f2-d6cb-5e38-9c65-e96a9c5cca07"
+  },
+  {
+    "address": "0xB944d13b2f4047fc7bd3F7013bcf01b115fb260d",
+    "symbol": "unisUSD",
+    "decimal": 18,
+    "name": "Uniswap: Synth sUSD",
+    "uuid": "f9086e7d-c815-58ca-8acf-30a2f2e65f08"
+  },
+  {
+    "address": "0x88dF13889E20EFa93Ff9a0C08f101F431bD9DDD7",
+    "symbol": "uniTAUD",
+    "decimal": 18,
+    "name": "Uniswap: TrueAUD",
+    "uuid": "f3df8c39-1633-558d-8a17-02f93a1b466b"
+  },
+  {
+    "address": "0xF996D7d9BaCb9217ca64BBce1b1cD72E0E886Be6",
+    "symbol": "uniTCAD",
+    "decimal": 18,
+    "name": "Uniswap: TrueCAD",
+    "uuid": "ebad2b96-e8ff-5a3c-b68d-5ef21963d402"
+  },
+  {
+    "address": "0x6bFa119a191576Ba26Bc5e711432aCA0cFda04DE",
+    "symbol": "uniTGBP",
+    "decimal": 18,
+    "name": "Uniswap: TrueGBP",
+    "uuid": "5faceaf1-e3f7-57b7-80f6-eeab68e09c6d"
+  },
+  {
+    "address": "0x505C02B4aa1286375FBDF0c390AC0fe9209DCB05",
+    "symbol": "uniTHKD",
+    "decimal": 18,
+    "name": "Uniswap: TrueHKD",
+    "uuid": "40aa5b7d-6a6e-548d-acff-82f3e0b29ab1"
+  },
+  {
+    "address": "0xb6cFBf322db47D39331E306005DC7E5e6549942B",
+    "symbol": "uniTKN",
+    "decimal": 18,
+    "name": "Uniswap: Monolith TKN",
+    "uuid": "7261743f-a97f-5bf8-b8c2-b4234ea91fe6"
+  },
+  {
+    "address": "0x95E4649F5209dD292cAF1F087b8F1Db3bE24927f",
+    "symbol": "uniTRST",
+    "decimal": 18,
+    "name": "Uniswap: Trustcoin",
+    "uuid": "990c2a73-781c-5412-ae55-702b23c6f5fd"
+  },
+  {
+    "address": "0x122327Fd43B2C66DD9e4B6c91c8f071E217558eF",
+    "symbol": "uniTRYB",
+    "decimal": 18,
+    "name": "Uniswap: BiLira",
+    "uuid": "e0c874b0-ecb5-5ebb-979a-8cf26a7c007f"
+  },
+  {
+    "address": "0x5048b9d01097498Fd72F3F14bC9Bc74A5aAc8fA7",
+    "symbol": "uniTUSD",
+    "decimal": 18,
+    "name": "Uniswap: TrueUSD",
+    "uuid": "1d94084b-5140-55b3-86b2-456291d1aab3"
+  },
+  {
+    "address": "0x601c32E0580D3aef9437dB52D09f5a5D7E60eC22",
+    "symbol": "uniUNI-V1:SAI",
+    "decimal": 18,
+    "name": "Uniswap: Uniswap V1",
+    "uuid": "dfe672db-4da0-573b-91c3-5a2e2b35d041"
+  },
+  {
+    "address": "0x97deC872013f6B5fB443861090ad931542878126",
+    "symbol": "uniUSDC",
+    "decimal": 18,
+    "name": "Uniswap: USD//C",
+    "uuid": "6a8057fe-cb66-5195-8f0b-51677d820090"
+  },
+  {
+    "address": "0x7Ef7191AB91dDB4D7cC347fbFA170355acbaf02D",
+    "symbol": "uniUSDS",
+    "decimal": 18,
+    "name": "Uniswap: StableUSD",
+    "uuid": "ff235e5f-d628-5b00-b44a-1cc67cd72d37"
+  },
+  {
+    "address": "0x17e5BF07D696eaf0d14caA4B44ff8A1E17B34de3",
+    "symbol": "uniVERI",
+    "decimal": 18,
+    "name": "Uniswap: Veritaseum",
+    "uuid": "f140f96e-5aa7-548a-b47a-087469194da1"
+  },
+  {
+    "address": "0x4d2f5cFbA55AE412221182D8475bC85799A5644b",
+    "symbol": "uniWBTC",
+    "decimal": 18,
+    "name": "Uniswap: Wrapped BTC",
+    "uuid": "43b7e3fb-86ea-595e-b3df-cda91181881d"
+  },
+  {
+    "address": "0x4FF7Fa493559c40aBd6D157a0bfC35Df68d8D0aC",
+    "symbol": "uniWCK",
+    "decimal": 18,
+    "name": "Uniswap: Wrapped CryptoKitties",
+    "uuid": "89167425-3f05-504e-88c6-2006273fcf7a"
+  },
+  {
+    "address": "0xA2881A90Bf33F03E7a3f803765Cd2ED5c8928dFb",
+    "symbol": "uniWETH",
+    "decimal": 18,
+    "name": "Uniswap: Wrapped Ether",
+    "uuid": "2d616333-8e53-5703-9a82-f992263a671c"
+  },
+  {
+    "address": "0x8dE0d002DC83478f479dC31F76cB0a8aa7CcEa17",
+    "symbol": "uniXCHF",
+    "decimal": 18,
+    "name": "Uniswap: CryptoFranc",
+    "uuid": "6de1cff6-671e-58de-966f-8f8d2fd711fd"
+  },
+  {
+    "address": "0x7B6E5278a14d5318571d65aceD036d09c998C707",
+    "symbol": "uniXIO",
+    "decimal": 18,
+    "name": "Uniswap: XIO Network",
+    "uuid": "a020c62d-151f-53f8-9cd2-14b0aafc1a06"
+  },
+  {
+    "address": "0xaE76c84C9262Cdb9abc0C2c8888e62Db8E22A0bF",
+    "symbol": "uniZRX",
+    "decimal": 18,
+    "name": "Uniswap: 0x Protocol Token",
+    "uuid": "2a564380-964a-5f5a-8ca8-17d5d37d4b2c"
   },
   {
     "address": "0x6Ba460AB75Cd2c56343b3517ffeBA60748654D26",
