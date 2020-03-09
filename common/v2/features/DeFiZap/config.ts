@@ -67,7 +67,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
       'Preserves your ETH price exposure and allows you to generate a variable interest rate (generally 1-2%) by market making on Uniswap.',
     outlook: 'bullish',
     link: 'https://defizap.com/zaps/unipoolseth',
-    ctaText: 'Make money with Uniswap',
+    ctaText: 'Get started',
     minimumGasLimit: 1500000,
     platformsUsed: ['uniswap'],
     bulletPoints: [
@@ -93,7 +93,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
       'Hedges against ETH price volatility and allows you to generate a variable interest rate (generally 5-25%) by market making on Uniswap.',
     outlook: 'bearish',
     link: 'https://defizap.com/zaps/unipooldai',
-    ctaText: 'Make money & hedge against ETH',
+    ctaText: 'Get started',
     minimumGasLimit: 1500000,
     platformsUsed: ['uniswap'],
     bulletPoints: [
@@ -117,7 +117,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
       'Swap ETH for DAI and contribute it to the Compound money market protocol to grow your funds rate of up to 8%.',
     outlook: 'bearish',
     link: 'https://app.compound.finance',
-    ctaText: 'Make money with Compound Protocol',
+    ctaText: 'Get started',
     minimumGasLimit: 1800000,
     platformsUsed: ['compound', 'kyber'],
     bulletPoints: [
