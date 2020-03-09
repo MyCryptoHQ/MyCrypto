@@ -11,7 +11,7 @@ interface BannerProps {
     versionNow: string;
 }
 
-const StorageName = "ElectronBuildVerified";
+const STORAGE_NAME = "ElectronBuildVerified";
 
 export default class ElectronBuildVerified extends Component<BannerProps, BannerState> {
     public state: State = {
@@ -24,27 +24,21 @@ export default class ElectronBuildVerified extends Component<BannerProps, Banner
 
     public render() {
         const { displayBanner } = this.state;
-        return(
-            <>
-            {
-                displayBanner
-                ?
-                    (<div className="BannerContainer">
-                        <input
-                            type="checkbox"
-                            onChange={(e) => this.CheckedBox(e)}
-                        />{' '}
-                        <p>
-                            I have{' '}
-                            <a href="https://support.mycrypto.com/staying-safe/verifying-authenticity-of-desktop-app">verified that this build ({VERSION})</a>{' '}
-                            is signed by MyCrypto and I understand the risks of not verifying the build.
-                        </p>
-                    </div>)
-                :
-                    (<></>)
-            }
-            </>
-        )
+        if(displayBanner) {
+            return(<div className="BannerContainer">
+                <input
+                    type="checkbox"
+                    onChange={(e) => this.handleCheck(e)}
+                />{' '}
+                <p>
+                    I have{' '}
+                    <a href="https://support.mycrypto.com/staying-safe/verifying-authenticity-of-desktop-app">verified that this build ({VERSION})</a>{' '}
+                    is signed by MyCrypto and I understand the risks of not verifying the build.
+                </p>
+            </div>)
+        }
+
+        return null;
     }
 
     componentWillMount() {
@@ -53,9 +47,9 @@ export default class ElectronBuildVerified extends Component<BannerProps, Banner
 
     private isBannerPrompted() {
         let storageVerified;
-        if(localStorage.getItem(StorageName) !== null) {
+        if(localStorage.getItem(STORAGE_NAME) !== null) {
             try {
-                storageVerified = localStorage.getItem(StorageName);
+                storageVerified = localStorage.getItem(STORAGE_NAME);
                 const objStorage = JSON.parse(storageVerified);
                 if(objStorage.versionChecked === this.props.versionNow) {
                     return false;
@@ -68,10 +62,10 @@ export default class ElectronBuildVerified extends Component<BannerProps, Banner
         return true;
     }
 
-    private CheckedBox = (event: React.ChangeEvent<HTMLInputElement>) => {
+    private handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
         if(event.target.checked) {
             this.setState({ displayBanner: false })
-            localStorage.setItem(StorageName, JSON.stringify({"versionChecked": this.props.versionNow, "ack": true, "ts": Math.floor(Date.now() / 1000)}))
+            localStorage.setItem(STORAGE_NAME, JSON.stringify({"versionChecked": this.props.versionNow, "ack": true, "ts": Math.floor(Date.now() / 1000)}))
         }
     }
 }
