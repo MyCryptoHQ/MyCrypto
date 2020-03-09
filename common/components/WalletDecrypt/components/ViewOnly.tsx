@@ -7,7 +7,7 @@ import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
 import { ICurrentTo } from 'features/types';
 import { configSelectors } from 'features/config';
-import { ensSelectors } from 'features/ens';
+import { ensSelectors } from 'features/domainResolution/ens';
 import { AddressField } from 'components';
 import './ViewOnly.scss';
 

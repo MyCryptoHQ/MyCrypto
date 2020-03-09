@@ -1,10 +1,12 @@
 import { IOwnedDomainRequest, IBaseDomainRequest } from 'libs/ens';
 import { isCreationAddress } from 'libs/validators';
 import { AppState } from 'features/reducers';
-import { ensDomainRequestsTypes, ensDomainRequestsSelectors } from './domainRequests';
+import * as commonTypes from '../common/types';
+import { ensDomainRequestsSelectors } from './domainRequests';
 import { ensDomainSelectorSelectors } from './domainSelector';
 import { getNetworkChainId } from 'features/config/selectors';
 import { getENSTLDForChain, getENSAddressesForChain } from 'libs/ens/networkConfigs';
+import { unstoppableDomainSelectorSelectors, unstoppableResolutionSelectors } from '../unstoppable';
 
 const isOwned = (data: IBaseDomainRequest): data is IOwnedDomainRequest => {
   return !!(data as IOwnedDomainRequest).ownerAddress;
@@ -50,10 +52,15 @@ export const getResolvingDomain = (state: AppState) => {
   const domainRequests = ensDomainRequestsSelectors.getDomainRequests(state);
 
   if (!currentDomain || !domainRequests[currentDomain]) {
-    return null;
+    const unstoppableDomain = unstoppableDomainSelectorSelectors.getCurrentDomainName(state);
+    const unstoppableRequests = unstoppableResolutionSelectors.getUnstoppableRequests(state);
+    if (!unstoppableDomain || !unstoppableRequests[unstoppableDomain]) {
+      return null;
+    }
+    return unstoppableRequests[unstoppableDomain].state === commonTypes.RequestStates.pending;
   }
 
-  return domainRequests[currentDomain].state === ensDomainRequestsTypes.RequestStates.pending;
+  return domainRequests[currentDomain].state === commonTypes.RequestStates.pending;
 };
 
 export const getENSTLD = (state: AppState) => {

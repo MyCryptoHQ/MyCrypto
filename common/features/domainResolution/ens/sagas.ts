@@ -3,10 +3,10 @@ import { call, put, select, all, actionChannel, take, fork, race } from 'redux-s
 import { IBaseDomainRequest } from 'libs/ens';
 import { notificationsActions } from 'features/notifications';
 import { ensDomainSelectorSelectors } from './domainSelector';
-import * as types from './types';
-import * as actions from './actions';
+import * as types from '../common/types';
+import * as actions from '../common/actions';
 import * as selectors from './selectors';
-import * as helpers from './helpers';
+import * as helpers from '../common/helpers';
 
 function* shouldResolveDomain(domain: string) {
   const currentDomainName = yield select(ensDomainSelectorSelectors.getCurrentDomainName);
@@ -21,7 +21,7 @@ function* shouldResolveDomain(domain: string) {
 
 function* resolveDomain(): SagaIterator {
   const requestChan = yield actionChannel(
-    types.ENSActions.RESOLVE_DOMAIN_REQUESTED,
+    types.DomainActions.RESOLVE_DOMAIN_REQUESTED,
     buffers.sliding(1)
   );
 
@@ -37,7 +37,7 @@ function* resolveDomain(): SagaIterator {
       }
 
       const result: { domainData: IBaseDomainRequest; error: any } = yield race({
-        domainData: call(helpers.resolveDomainRequest, domain),
+        domainData: call(helpers.resolveEndDomainRequest, domain),
         err: call(delay, 10000)
       });
 

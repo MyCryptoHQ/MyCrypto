@@ -8,7 +8,7 @@ import { ICurrentTo } from 'features/types';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
 import { walletSelectors } from 'features/wallet';
-import { ensSelectors } from 'features/ens';
+import { ensSelectors } from 'features/domainResolution/ens';
 import { Identicon, Spinner } from 'components/ui';
 import { Query } from 'components/renderCbs';
 import { CallbackProps } from 'components/AddressFieldFactory';

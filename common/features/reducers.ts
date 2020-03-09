@@ -9,8 +9,8 @@ import { CustomTokensState } from './customTokens/types';
 import { customTokensReducer } from './customTokens/reducer';
 import { DeterministicWalletsState } from './deterministicWallets/types';
 import { deterministicWalletsReducer } from './deterministicWallets/reducer';
-import { ENSState } from './ens/types';
-import { ensReducer } from './ens/reducer';
+import { ENSState } from './domainResolution/ens/types';
+import { ensReducer } from './domainResolution/ens/reducer';
 import { GasState } from './gas/types';
 import { gasReducer } from './gas/reducer';
 import { MessageState } from './message/types';
@@ -33,6 +33,8 @@ import { WalletState } from './wallet/types';
 import { walletReducer } from './wallet/reducer';
 import { SidebarState } from './sidebar/types';
 import { sidebarReducer } from './sidebar/reducer';
+import { UnstoppableState } from './domainResolution/unstoppable/types';
+import { UnstoppableReducer } from './domainResolution/unstoppable/reducer';
 
 export interface AppState {
   // Custom reducers
@@ -40,6 +42,7 @@ export interface AppState {
   notifications: NotificationState;
   onboarding: OnboardingState;
   ens: ENSState;
+  unstoppableResolution: UnstoppableState;
   wallet: WalletState;
   customTokens: CustomTokensState;
   rates: RatesState;
@@ -61,6 +64,7 @@ export default combineReducers<AppState>({
   notifications: notificationsReducer,
   onboarding: onboardingReducer,
   ens: ensReducer,
+  unstoppableResolution: UnstoppableReducer,
   wallet: walletReducer,
   customTokens: customTokensReducer,
   rates: ratesReducer,

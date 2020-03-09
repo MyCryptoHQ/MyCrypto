@@ -20,7 +20,12 @@ import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
 import * as configSelectors from 'features/config/selectors';
 import * as scheduleSelectors from 'features/schedule/selectors';
-import { ensTypes, ensActions, ensSelectors } from 'features/ens';
+import { ensTypes, ensActions, ensSelectors } from 'features/domainResolution/ens';
+import {
+  UnstoppableTypes,
+  UnstoppableActions,
+  UnstoppableSelectors
+} from 'features/domainResolution/unstoppable';
 import { walletTypes, walletSelectors } from 'features/wallet';
 import { notificationsActions } from 'features/notifications';
 import { transactionBroadcastSagas, transactionBroadcastTypes } from './broadcast';
@@ -37,7 +42,6 @@ import * as types from './types';
 import * as actions from './actions';
 import * as helpers from './helpers';
 import { calcEACFutureExecutionCost, EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
-import UnstoppableResolution from 'v2/services/UnstoppableResolution';
 //#region Current
 
 //#region Current To
@@ -63,23 +67,26 @@ export function* setCurrentToSaga({ payload: raw }: types.SetCurrentToAction): S
     } else if (domain.length === 3) {
       yield put(ensActions.resolveDomainRequested(`${domain[0]}.${domain[1]}`));
     }
-
     yield take([
-      ensTypes.ENSActions.RESOLVE_DOMAIN_FAILED,
-      ensTypes.ENSActions.RESOLVE_DOMAIN_SUCCEEDED,
-      ensTypes.ENSActions.RESOLVE_DOMAIN_CACHED
+      ensTypes.DomainActions.RESOLVE_DOMAIN_FAILED,
+      ensTypes.DomainActions.RESOLVE_DOMAIN_SUCCEEDED,
+      ensTypes.DomainActions.RESOLVE_DOMAIN_CACHED
     ]);
     const resolvedAddress: string | null = yield select(ensSelectors.getResolvedAddress, true);
     if (resolvedAddress) {
       value = Address(resolvedAddress);
     }
   } else if (raw.endsWith('.zil') || raw.endsWith('.crypto')) {
-    try {
-      const resolutionTool = new UnstoppableResolution();
-      const resolvedAddress = yield call(resolutionTool.getResolvedAddress, raw, 'ETH');
-      value = Address(resolvedAddress.replace('0x', ''));
-    } catch (err) {
-      console.log(err);
+    yield call(setField, { value, raw });
+    yield put(UnstoppableActions.resolveDomainRequested(raw, true));
+    yield take([
+      UnstoppableTypes.UnstoppableActions.UNSTOPPABLE_DOMAIN_FAILED,
+      UnstoppableTypes.UnstoppableActions.UNSTOPPABLE_DOMAIN_SUCCEEDED,
+      UnstoppableTypes.UnstoppableActions.UNSTOPPABLE_DOMAIN_CACHED
+    ]);
+    const domainData: any = yield select(UnstoppableSelectors.getCurrentDomainData);
+    if (domainData) {
+      value = Address(domainData.resolvedAddress.replace('0x', ''));
     }
   }
   yield call(setField, { value, raw });

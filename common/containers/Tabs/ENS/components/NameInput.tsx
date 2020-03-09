@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import { isValidENSName } from 'libs/validators';
 import { AppState } from 'features/reducers';
-import { ensActions } from 'features/ens';
+import { ensActions } from 'features/domainResolution/ens';
 import { Input } from 'components/ui';
 import './NameInput.scss';
 

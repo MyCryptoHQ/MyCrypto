@@ -3,7 +3,7 @@ import * as ens from 'libs/ens';
 // TODO: write tests for:
 // ens.placeBid
 // ens.unsealBid
-// ens.resolveDomainRequest
+// ens.resolveEndDomainRequest
 
 describe('ENS', () => {
   it('converts a domain name to a normalized Unicode', () => {

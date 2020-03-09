@@ -1293,7 +1293,7 @@
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/@types/zxcvbn/-/zxcvbn-4.4.0.tgz#fbc1d941cc6d9d37d18405c513ba6b294f89b609"
 
-"@unstoppabledomains/resolution@^1.1.0":
+"@unstoppabledomains/resolution@1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@unstoppabledomains/resolution/-/resolution-1.1.0.tgz#6e8a0bab616dce18787caa96a8a680f98b50c374"
   integrity sha512-SaClpTsJRlfNj9mvKpfm1i3H6XMguvxASZDavfRm47bFjkEWwmICSPQlFVGp4NHDdj2jqrwD2GUu3n7IAB1N5A==

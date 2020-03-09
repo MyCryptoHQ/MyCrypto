@@ -6,7 +6,7 @@ import { INode } from 'libs/nodes/INode';
 import ENS from 'libs/ens/contracts';
 import { IDomainData, NameState, getNameHash, IBaseDomainRequest } from 'libs/ens';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
-import { getENSTLD, getENSAddresses } from './selectors';
+import { getENSTLD, getENSAddresses } from '../ens/selectors';
 
 //#region Make & Decode
 interface Params {
@@ -101,7 +101,7 @@ const modeMap: IModeMap = {
   [NameState.NotYetAvailable]: (_: IDomainData<NameState.NotYetAvailable>) => ({})
 };
 
-export function* resolveDomainRequest(name: string): SagaIterator {
+export function* resolveEndDomainRequest(name: string): SagaIterator {
   const ensAddresses = yield select(getENSAddresses);
   const ensTLD = yield select(getENSTLD);
   const lowercaseName = name.toLowerCase();
