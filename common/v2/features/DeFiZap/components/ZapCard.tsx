@@ -142,6 +142,9 @@ const ZapCardButton = styled(Button)`
     background-color: ${COLORS.BLUE_LIGHT_DARKISH};
     color: ${COLORS.WHITE};
   }
+  &:focus {
+    background-color: ${COLORS.WHITE};
+  }
 `;
 
 const ZapEstimatedBalance = styled.p`

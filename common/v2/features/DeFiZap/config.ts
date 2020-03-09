@@ -64,16 +64,15 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     contractAddress: '0xd3EBA712988df0F8A7e5073719A40cE4cbF60b33',
     risk: 1,
     description:
-      'Preserves your ETH price exposure and allows you to generate a variable interest rate (generally 1-2%) by market making on Uniswap.',
+      'Preserve your ETH price exposure and earn a variable interest rate (generally 1-2%) by lending on the Uniswap exchange protocol.',
     outlook: 'bullish',
     link: 'https://defizap.com/zaps/unipoolseth',
-    ctaText: 'Get started',
+    ctaText: 'Get Started',
     minimumGasLimit: 1500000,
     platformsUsed: ['uniswap'],
     bulletPoints: [
       'Retain 100% ETH Exposure.',
-      'Grows your stack by market making on the of the fees from the ETH/DAI trading pair on Uniswap.',
-      'Eliminate impermanent loss when ETH goes up but increases it on the way down.'
+      'Earn interest by lending to the Synthetic ETH pool on the Uniswap exchange protocol.'
     ],
     zapType: IZapType.UNIPOOL,
     poolTokenUUID: 'ca27272a-891e-577d-ae75-f8efe4d55231',
@@ -84,21 +83,21 @@ export const ZAPS_CONFIG: IZapConfigObject = {
   },
 
   unipooldai: {
-    title: 'Income-producing ETH Hedge',
+    title: 'Interest-earning ETH Hedge',
     name: 'DAI Unipool',
     key: 'unipooldai',
     contractAddress: '0x929A10EfDA7099865dAD8286Aee8715078902d51',
-    risk: 2,
+    risk: 1,
     description:
-      'Hedges against ETH price volatility and allows you to generate a variable interest rate (generally 5-25%) by market making on Uniswap.',
+      'Hedge against ETH price volatility and earn a variable interest rate (generally 5-25%) by lending on the Uniswap exchange protocol.',
     outlook: 'bearish',
     link: 'https://defizap.com/zaps/unipooldai',
-    ctaText: 'Get started',
+    ctaText: 'Get Started',
     minimumGasLimit: 1500000,
     platformsUsed: ['uniswap'],
     bulletPoints: [
       'Reduce your exposure to changes in the price of ETH.',
-      'Act as a market maker to generate income by providing liquditiy to the DAI/ETH pool on Uniswap.'
+      'Earn interest by lending to the DAI pool on the Uniswap exchange protocol.'
     ],
     zapType: IZapType.UNIPOOL,
     poolTokenUUID: '2b7a4d65-9c40-5c21-96eb-f7d380a4dc87',
@@ -108,21 +107,21 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     positionDetails: () => BearishIndicator({ text: 'Bearish on ETH' })
   },
   compounddai: {
-    title: 'ETH Bearish Investment',
+    title: 'Interest Earning with DAI',
     name: 'Compound DAI Pool',
     key: 'compounddai',
     contractAddress: '0x225078aea64696c6e4fe3960e471ca45aa9bdae4',
-    risk: 3,
+    risk: 2,
     description:
-      'Swap ETH for DAI and contribute it to the Compound money market protocol to grow your funds rate of up to 8%.',
+      'Earn interest of up to 8% a year by contributing to the Compound money market protocol. Remove your ETH price exposure.',
     outlook: 'bearish',
     link: 'https://app.compound.finance',
-    ctaText: 'Get started',
+    ctaText: 'Get Started',
     minimumGasLimit: 1800000,
     platformsUsed: ['compound', 'kyber'],
     bulletPoints: [
       'Remove your exposure to changes in the price of ETH.',
-      'Contribute your DAI to a money market protocol to generate a return of up to 8% per year.'
+      'Contribute your DAI to a money market protocol to earn interest of up to 8% a year'
     ],
     zapType: IZapType.COMPOUND,
     poolTokenUUID: 'a9cc6884-14bd-53b6-abcd-f9b56b60463d',
