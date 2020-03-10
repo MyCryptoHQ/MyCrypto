@@ -21,18 +21,12 @@ export const IS_NOT_ELECTRON_AND_IS_NOT_DEV: boolean = !IS_ELECTRON && !IS_DEV;
 
 export const getStories = (): IStory[] => [
   {
-    name: WalletId.VIEW_ONLY,
-    steps: [NetworkSelectPanel, ViewOnlyDecrypt]
+    name: WalletId.WEB3,
+    steps: hasWeb3Provider() ? [Web3ProviderDecrypt] : [Web3ProviderInstall]
   },
   {
-    name: WalletId.PRIVATE_KEY,
-    steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? PrivateKeyDecrypt : InsecureWalletWarning],
-    hideFromWalletList: IS_NOT_ELECTRON_AND_IS_NOT_DEV
-  },
-  {
-    name: WalletId.MNEMONIC_PHRASE,
-    steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? MnemonicDecrypt : InsecureWalletWarning],
-    hideFromWalletList: IS_NOT_ELECTRON_AND_IS_NOT_DEV
+    name: WalletId.WALLETCONNECT,
+    steps: [NetworkSelectPanel, WalletConnectDecrypt]
   },
   {
     name: WalletId.LEDGER_NANO_S,
@@ -48,11 +42,17 @@ export const getStories = (): IStory[] => [
     hideFromWalletList: IS_NOT_ELECTRON_AND_IS_NOT_DEV
   },
   {
-    name: WalletId.WEB3,
-    steps: hasWeb3Provider() ? [Web3ProviderDecrypt] : [Web3ProviderInstall]
+    name: WalletId.PRIVATE_KEY,
+    steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? PrivateKeyDecrypt : InsecureWalletWarning],
+    hideFromWalletList: IS_NOT_ELECTRON_AND_IS_NOT_DEV
   },
   {
-    name: WalletId.WALLETCONNECT,
-    steps: [NetworkSelectPanel, WalletConnectDecrypt]
+    name: WalletId.MNEMONIC_PHRASE,
+    steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? MnemonicDecrypt : InsecureWalletWarning],
+    hideFromWalletList: IS_NOT_ELECTRON_AND_IS_NOT_DEV
+  },
+  {
+    name: WalletId.VIEW_ONLY,
+    steps: [NetworkSelectPanel, ViewOnlyDecrypt]
   }
 ];

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { WalletId } from 'v2/types';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 
-const { SCREEN_SM } = BREAK_POINTS;
+const { SCREEN_SM, SCREEN_XS } = BREAK_POINTS;
 const { WHITE } = COLORS;
 
 interface OwnProps {
@@ -15,6 +15,7 @@ interface OwnProps {
   isSecure?: boolean;
   isDisabled?: boolean;
   disableReason?: string;
+  margin: string;
   onClick(walletType: any): void;
 }
 
@@ -31,7 +32,7 @@ interface Icon {
 
 type Props = OwnProps & StateProps & Icon;
 
-const WalletButtonWrapper = styled.div`
+const WalletButtonWrapper = styled.div<{ margin: string }>`
   @keyframes wallet-button-enter {
     0% {
       opacity: 0;
@@ -47,7 +48,7 @@ const WalletButtonWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 10px;
+  margin: 10px ${props => props.margin};
   height: 200px;
   width: 200px;
   padding: 25px 15px;
@@ -63,7 +64,7 @@ const WalletButtonWrapper = styled.div`
     opacity: 0.8;
   }
 
-  @media only screen and (max-width: ${SCREEN_SM}) {
+  @media only screen and (max-width: ${SCREEN_XS}) {
     height: 150px;
     width: 150px;
   }
@@ -86,10 +87,10 @@ const WalletIcon = styled.img`
 
 export class WalletButton extends React.PureComponent<Props> {
   public render() {
-    const { name, icon } = this.props;
+    const { name, icon, margin } = this.props;
 
     return (
-      <WalletButtonWrapper onClick={this.handleClick}>
+      <WalletButtonWrapper onClick={this.handleClick} margin={margin}>
         {icon && <WalletIcon src={icon} alt={name + ' logo'} />}
         <WalletLabel>{name}</WalletLabel>
       </WalletButtonWrapper>
