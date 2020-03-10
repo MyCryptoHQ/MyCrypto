@@ -9,13 +9,7 @@ import { ITxReceipt, ISignedTx } from 'v2/types';
 import { useStateReducer } from 'v2/utils';
 import { useEffectOnce, usePromise } from 'v2/vendor';
 
-import {
-  SwapAssets,
-  ConfirmSwap,
-  SwapTransactionReceipt,
-  SetAllowance,
-  SwapStepper
-} from './components';
+import { SwapAssets, ConfirmSwap, SwapTransactionReceipt, SetAllowance } from './components';
 import { SwapFlowFactory, swapFlowInitialState } from './stateFactory';
 import { SwapState } from './types';
 
@@ -85,8 +79,6 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     }
   };
 
-  const isTokenSwap = dexTrade && dexTrade.metadata.input;
-
   const steps: TStep[] = [
     {
       title: translateRaw('SWAP'),
@@ -136,22 +128,8 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         onSuccess: () => handleConfirmSwapClicked(goToNextStep)
       }
     },
-    ...(isTokenSwap
+    ...(dexTrade && dexTrade.metadata.input
       ? [
-          {
-            title: translateRaw('CONFIRM_TRANSACTION_MULTITX', { $current: '1', $total: '2' }),
-            backBtnText: translateRaw('SWAP_CONFIRM_TITLE'),
-            component: SwapStepper,
-            props: {
-              fromAsset,
-              toAsset,
-              fromAmount,
-              toAmount,
-              currentStep: 0,
-              onClick: goToNextStep
-            },
-            actions: {}
-          },
           {
             title: translateRaw('SWAP_ALLOWANCE_TITLE'),
             backBtnText: translateRaw('SWAP_CONFIRM_TITLE'),
@@ -166,20 +144,6 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
               onSuccess: (payload: ITxReceipt | ISignedTx) =>
                 handleAllowanceSigned(payload, goToNextStep)
             }
-          },
-          {
-            title: translateRaw('CONFIRM_TRANSACTION_MULTITX', { $current: '2', $total: '2' }),
-            backBtnText: translateRaw('SWAP_CONFIRM_TITLE'),
-            component: SwapStepper,
-            props: {
-              fromAsset,
-              toAsset,
-              fromAmount,
-              toAmount,
-              currentStep: 1,
-              onClick: goToNextStep
-            },
-            actions: {}
           }
         ]
       : []),
