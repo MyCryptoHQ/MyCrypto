@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Network } from '@mycrypto/ui';
+import { Network, Button } from '@mycrypto/ui';
 import { bigNumberify } from 'ethers/utils';
+import styled from 'styled-components';
 
 import { Asset, ITxObject } from 'v2/types';
 import { baseToConvertedUnit, totalTxFeeToString } from 'v2/services/EthService';
-import { CopyableCodeBlock, Button } from 'v2/components';
+import { CopyableCodeBlock } from 'v2/components';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { weiToFloat, isTransactionDataEmpty } from 'v2/utils';
 import translate from 'v2/translations';
@@ -27,6 +28,14 @@ interface Props {
   signedTransaction?: string;
   sender: ISender;
 }
+
+const SeeMoreDetailsButton = styled(Button)`
+  width: 100%;
+  align-items: center;
+  margin-bottom: 15px;
+  color: #1eb8e7;
+  font-weight: normal;
+`;
 
 function TransactionDetailsDisplay({
   baseAsset,
@@ -57,14 +66,13 @@ function TransactionDetailsDisplay({
       <div className="TransactionDetails">
         <div className="TransactionDetails-row">
           <div className="TransactionDetails-row-column">
-            <Button
+            <SeeMoreDetailsButton
               basic={true}
               color={BLUE_BRIGHT}
               onClick={() => setShowDetails(!showDetails)}
-              className="TransactionDetails-detailButton"
             >
               {showDetails ? '- Hide' : '+ See More'} {translate('ACTION_8')}
-            </Button>
+            </SeeMoreDetailsButton>
           </div>
         </div>
         {showDetails && (
