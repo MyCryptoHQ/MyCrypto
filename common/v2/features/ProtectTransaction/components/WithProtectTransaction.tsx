@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import useMediaQuery from '../../../vendor/react-use/useMediaQuery';
 import { IFormikFields, ISignedTx, IStepComponentProps, ITxReceipt } from '../../../types';
-import { Button, Panel } from '@mycrypto/ui';
+import { Panel } from '@mycrypto/ui';
 import { useStateReducer } from '../../../utils';
 import { BREAK_POINTS, COLORS } from '../../../theme';
 
@@ -200,19 +200,6 @@ export function withProtectTransaction(
                                 goOnInitialStepOrFetchReport();
                               }}
                             />
-                            <Button
-                              type="submit"
-                              onClick={e => {
-                                // TODO: Remove, only for testing
-                                e.preventDefault();
-
-                                handleTransactionReport().then(() => {
-                                  goOnNextStep();
-                                });
-                              }}
-                            >
-                              Skip (testing purpose)
-                            </Button>
                           </>
                         </SignProtectedTransaction>
                       );
