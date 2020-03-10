@@ -7,7 +7,7 @@ import { ProtectTransactionUtils } from '../utils';
 import { RatesContext } from '../../../services';
 import { IAccount, IFormikFields } from '../../../types';
 import { COLORS } from '../../../theme';
-import { WithProtectApi } from '../types';
+import { IWithProtectApi } from '../types';
 
 import ProtectedTransactionBase from './ProtectedTransactionBase';
 import { Amount } from '../../../components';
@@ -114,12 +114,12 @@ const FeeContainer = styled.div`
   }
 `;
 
-interface ProtectionThisTransaction extends WithProtectApi {
+interface ProtectionThisTransactionProps extends IWithProtectApi {
   sendAssetsValues: IFormikFields | null;
   handleProtectedTransactionSubmit(payload: IFormikFields): Promise<void>;
 }
 
-export const ProtectionThisTransaction: FC<ProtectionThisTransaction> = ({
+export const ProtectionThisTransaction: FC<ProtectionThisTransactionProps> = ({
   sendAssetsValues,
   withProtectApi,
   handleProtectedTransactionSubmit

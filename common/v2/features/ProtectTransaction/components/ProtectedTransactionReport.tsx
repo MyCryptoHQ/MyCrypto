@@ -5,7 +5,7 @@ import upperFirst from 'lodash/upperFirst';
 
 import useMediaQuery from 'v2/vendor/react-use/useMediaQuery';
 import { fromWei, Wei } from '../../../services/EthService/utils';
-import { WithProtectApi } from '../types';
+import { IWithProtectApi } from '../types';
 import {
   CryptoScamDBBaseResponse,
   CryptoScamDBInfoResponse
@@ -162,7 +162,7 @@ const TimelinePanel = styled.div`
   }
 `;
 
-export const ProtectedTransactionReport: FC<WithProtectApi> = ({ withProtectApi }) => {
+export const ProtectedTransactionReport: FC<IWithProtectApi> = ({ withProtectApi }) => {
   const {
     withProtectState: {
       receiverAddress,

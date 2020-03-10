@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../../theme';
 import { ProtectTxError } from '../types';
+import { SUPPORT_EMAIL, TWITTER_URL } from '../../../config';
 
 const ProtectedTransactionErrorWrapper = styled.div`
   text-align: left;
@@ -38,14 +39,14 @@ export const ProtectedTransactionError: FC<ProtectedTransactionErrorProps> = ({
         We currently only allow transaction protection when you are sending <b>ETH</b>. Please ping
         us at&nbsp;
         <a
-          href="mailto:support@mycrypto.com?subject=Protected transaction ETH only"
+          href={`mailto:${SUPPORT_EMAIL}?subject=Protected transaction ETH only`}
           rel="noopener noreferrer"
           target="_blank"
         >
-          support@mycrypto.com
+          {SUPPORT_EMAIL}
         </a>
         &nbsp; or on &nbsp;
-        <a href="https://twitter.com/MyCrypto" rel="noopener noreferrer" target="_blank">
+        <a href={TWITTER_URL} rel="noopener noreferrer" target="_blank">
           Twitter
         </a>
         &nbsp; if you disagree with this choice. We may adjust in the future.
@@ -57,14 +58,14 @@ export const ProtectedTransactionError: FC<ProtectedTransactionErrorProps> = ({
         We currently only allow transaction protection when you are sending more than $5.00. Please
         ping us at&nbsp;
         <a
-          href="mailto:support@mycrypto.com?subject=Protected transaction 5.00$ limit"
+          href={`mailto:${SUPPORT_EMAIL}?subject=Protected transaction 5.00$ limit`}
           rel="noopener noreferrer"
           target="_blank"
         >
-          support@mycrypto.com
+          {SUPPORT_EMAIL}
         </a>
         &nbsp; or on&nbsp;
-        <a href="https://twitter.com/MyCrypto" rel="noopener noreferrer" target="_blank">
+        <a href={TWITTER_URL} rel="noopener noreferrer" target="_blank">
           Twitter
         </a>
         &nbsp; if you disagree with this choice. We may adjust in the future.
