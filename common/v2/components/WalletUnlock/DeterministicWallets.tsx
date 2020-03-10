@@ -345,9 +345,9 @@ export function DeterministicWalletsClass({
         </Button>
       </div>
       <FooterLink>
-        <Typography>Can't find your ETH ?</Typography>&nbsp;
+        <Typography>{translateRaw('FIND_ETH_PHRASE')}</Typography>&nbsp;
         <Link href="https://findeth.io" target="_blank" rel="noreferrer">
-          Use findeth.io
+          {translateRaw('FIND_ETH_LINK')}
         </Link>
       </FooterLink>
     </div>
