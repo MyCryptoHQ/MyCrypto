@@ -82,7 +82,7 @@ const SendButton = Styled(Button)`
 `;
 
 export default function ConfirmTransaction({
-  txType,
+  txType = ITxType.STANDARD,
   zapSelected,
   txConfig,
   onComplete,
