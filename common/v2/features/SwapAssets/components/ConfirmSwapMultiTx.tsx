@@ -18,7 +18,7 @@ interface Props {
   onClick?(): void;
 }
 
-export default function SwapStepper(props: Props) {
+export default function ConfirmSwapMultiTx(props: Props) {
   const { currentStep, fromAsset, toAsset, fromAmount, toAmount, onClick } = props;
 
   const tokenStep = {
