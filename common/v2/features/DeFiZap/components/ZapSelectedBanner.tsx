@@ -17,7 +17,7 @@ const BannerContainer = styled.div`
   padding: ${SPACING.BASE};
   flex-direction: column;
   background-color: ${COLORS.GREY_LIGHTEST};
-  margin-bottom: ${SPACING.LG};
+  margin-bottom: ${SPACING.MD};
 `;
 
 const BannerSubItem = styled.div`
