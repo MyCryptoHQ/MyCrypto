@@ -12,3 +12,4 @@ export { ProtectionThisTransaction } from './ProtectionThisTransaction';
 export { SignProtectedTransaction } from './SignProtectedTransaction';
 export { TransactionProtectionButton } from './TransactionProtectionButton';
 export { withProtectTransaction } from './WithProtectTransaction';
+export { ProtectedTransactionError } from './ProtectedTransactionError';

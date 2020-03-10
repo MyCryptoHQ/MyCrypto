@@ -3,7 +3,7 @@ import { FastField, Field, FieldProps, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
 import { isEmpty } from 'lodash';
-import { formatEther, parseEther, bigNumberify } from 'ethers/utils';
+import { bigNumberify, formatEther, parseEther } from 'ethers/utils';
 import BN from 'bn.js';
 import styled from 'styled-components';
 import * as R from 'ramda';
@@ -40,6 +40,7 @@ import {
 } from 'v2/types';
 import {
   baseToConvertedUnit,
+  bigNumGasPriceToViewableGwei,
   convertedToBaseUnit,
   gasStringsToMaxGasBN,
   getNonce,
@@ -49,8 +50,7 @@ import {
   isTransactionFeeHigh,
   isValidENSName,
   isValidETHAddress,
-  isValidPositiveNumber,
-  bigNumGasPriceToViewableGwei
+  isValidPositiveNumber
 } from 'v2/services/EthService';
 import UnstoppableResolution from 'v2/services/UnstoppableService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
@@ -78,10 +78,15 @@ import { formatSupportEmail, weiToFloat } from 'v2/utils';
 import { ResolutionError } from '@unstoppabledomains/resolution';
 import { InlineMessageType } from 'v2/types/inlineMessages';
 import {
+  ProtectedTransactionError,
   TransactionProtectionButton,
   withProtectTransaction
 } from '../../ProtectTransaction/components';
-import { WithProtectApiFactory } from '../../ProtectTransaction';
+import {
+  ProtectTransactionUtils,
+  ProtectTxError,
+  WithProtectApiFactory
+} from '../../ProtectTransaction';
 import { SignTransaction } from './index';
 
 export const AdvancedOptionsButton = styled(Button)`
@@ -91,7 +96,7 @@ export const AdvancedOptionsButton = styled(Button)`
 `;
 
 const NoMarginCheckbox = styled(Checkbox)`
-  margin-bottom: 0px;
+  margin-bottom: 0;
 `;
 
 const initialFormikValues: IFormikFields = {
@@ -146,7 +151,7 @@ export const getInitialFormikValues = (s: ITxConfig): IFormikFields => {
   return R.mergeDeepWith(preferValueFromState, initialFormikValues, state);
 };
 
-const QueryWarning: React.SFC<{}> = () => (
+const QueryWarning: React.FC = () => (
   <WhenQueryExists
     whenQueryExists={
       <div className="alert alert-info">
@@ -690,7 +695,16 @@ const SendAssetsForm = ({
               </div>
 
               <TransactionProtectionButton
-                disabled={isEstimatingGasLimit || isResolvingName || isEstimatingNonce || !isValid}
+                disabled={
+                  isEstimatingGasLimit ||
+                  isResolvingName ||
+                  isEstimatingNonce ||
+                  !isValid ||
+                  ProtectTransactionUtils.checkFormForProtectedTxErrors(
+                    values,
+                    getAssetRate(values.asset)
+                  ) !== ProtectTxError.NO_ERROR
+                }
                 onClick={e => {
                   e.preventDefault();
 
@@ -718,6 +732,14 @@ const SendAssetsForm = ({
               >
                 {translate('ACTION_6')}
               </Button>
+
+              <ProtectedTransactionError
+                protectTxError={ProtectTransactionUtils.checkFormForProtectedTxErrors(
+                  values,
+                  getAssetRate(values.asset)
+                )}
+                shown={!(isEstimatingGasLimit || isResolvingName || isEstimatingNonce || !isValid)}
+              />
             </Form>
           );
         }}

@@ -13,7 +13,6 @@ const TransactionProtectionButtonText = styled.div`
   text-align: left;
 
   h6 {
-    font-family: Lato, serif;
     font-size: 16px;
     line-height: 15px;
     margin-top: 0;
@@ -21,7 +20,6 @@ const TransactionProtectionButtonText = styled.div`
   }
 
   p {
-    font-family: Lato, serif;
     font-size: 12px;
     line-height: 18px;
     margin-bottom: 0;

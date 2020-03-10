@@ -1,6 +1,7 @@
-import { IFormikFields } from '../../types';
 import isNumber from 'lodash/isNumber';
 import { fromWei, totalTxFeeToWei, Wei } from '../../services/EthService/utils';
+import { IFormikFields } from '../../types';
+import { ProtectTxError } from './types';
 
 export abstract class ProtectTransactionUtils {
   public static getProtectTransactionFee(
@@ -41,5 +42,24 @@ export abstract class ProtectTransactionUtils {
       amount: fixedHalfDollar + fixedFee - mainTransactionWei,
       fee: protectedTransactionWei
     };
+  }
+
+  public static checkFormForProtectedTxErrors(
+    formValues: IFormikFields,
+    rate: number | undefined
+  ): ProtectTxError {
+    const { asset, amount } = formValues;
+
+    if (!asset || !amount) return ProtectTxError.INSUFFICIENT_DATA;
+
+    if (asset.ticker !== 'ETH') {
+      return ProtectTxError.ETH_ONLY;
+    }
+
+    if (!rate || rate <= 0 || parseFloat(amount) < 0.5 / rate) {
+      return ProtectTxError.LESS_THAN_MIN_AMOUNT;
+    }
+
+    return ProtectTxError.NO_ERROR;
   }
 }
