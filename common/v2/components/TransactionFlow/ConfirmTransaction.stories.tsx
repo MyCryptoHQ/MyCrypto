@@ -1,10 +1,11 @@
 import React from 'react';
 
 import { fTxConfig, fAccount } from '@fixtures';
-import { ExtendedAddressBook, ITxType } from 'v2/types';
+import { ExtendedAddressBook } from 'v2/types';
+import { ITxType } from 'v2/types/transactionFlow';
 import { noOp } from 'v2/utils';
 import { devContacts } from 'v2/database/seed';
-import { IZapConfig, ZAPS_CONFIG } from 'v2/features/DeFiZap/config';
+import { IZapConfig, ZAPS_CONFIG, IZapId } from 'v2/features/DeFiZap/config';
 
 import { ConfirmTransactionUI } from './ConfirmTransaction';
 import { constructSenderFromTxConfig } from './helpers';
@@ -32,7 +33,7 @@ export const confirmTransaction = () => (
   </div>
 );
 
-const defaultZap = 'llpdai';
+const defaultZap = IZapId.unipoolseth;
 const zapSelected: IZapConfig = ZAPS_CONFIG[defaultZap];
 
 export const confirmTransactionZap = () => (

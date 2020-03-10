@@ -8,6 +8,7 @@ import ZapInteractionFactory from './stateFactory';
 import { ITxReceipt, ISignedTx } from 'v2/types';
 import { SignTransaction } from '../SendAssets/components';
 import { ISimpleTxFormFull } from './types';
+import { translateRaw } from 'v2/translations';
 
 const initialZapFlowState = (initialZapSelected: IZapConfig) => ({
   zapSelected: initialZapSelected,
@@ -56,6 +57,7 @@ const ZapStepper = ({ selectedZap }: Props) => {
       steps={steps}
       defaultBackPath={ROUTE_PATHS.DEFIZAP.path}
       defaultBackPathLabel={ROUTE_PATHS.DEFIZAP.title} // ToDo: Change this.
+      completeBtnText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
     />
   );
 };
