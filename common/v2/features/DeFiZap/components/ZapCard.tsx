@@ -5,11 +5,11 @@ import { Button } from '@mycrypto/ui';
 import { RouterLink, Tooltip } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
 import { COLORS, BREAK_POINTS, FONT_SIZE, SPACING } from 'v2/theme';
-
-import { fetchZapRiskObject, IZapConfig } from '../config';
 import { weiToFloat } from 'v2/utils';
 import { StoreContext, getTotalByAsset } from 'v2/services';
 import { translateRaw } from 'v2/translations';
+
+import { fetchZapRiskObject, IZapConfig } from '../config';
 
 interface SProps {
   isOwned?: boolean;
