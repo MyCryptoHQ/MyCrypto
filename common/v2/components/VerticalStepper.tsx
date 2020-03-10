@@ -20,7 +20,7 @@ interface StepData {
   onClick?(): void;
 }
 
-interface Props {
+export interface Props {
   currentStep?: number;
   steps: StepData[];
 }
@@ -30,9 +30,12 @@ interface StepProps {
   finished: boolean;
 }
 
-const SSteps = styled(Steps)``;
-
-const SStep = styled(Step)<StepProps>`
+// Can't use the usual way since the Step component adds all props to an underlying div which React doesn't like
+const SStep = styled(
+  ({ active, finished, ...rest }: StepProps & React.ComponentProps<typeof Step>) => (
+    <Step {...rest} />
+  )
+)`
   && .rc-steps-item-icon {
     background-color: ${props =>
       props.active || props.finished ? COLORS.BLUE_BRIGHT : COLORS.WHITE};
@@ -59,7 +62,7 @@ function VerticalStepper({ currentStep = 0, steps }: Props) {
     finish: <img src={checkmark} />
   };
   return (
-    <SSteps current={currentStep} direction="vertical" icons={icons}>
+    <Steps current={currentStep} direction="vertical" icons={icons}>
       {steps.map((s, index) => {
         const active = currentStep === index;
         const finished = currentStep > index;
@@ -82,7 +85,7 @@ function VerticalStepper({ currentStep = 0, steps }: Props) {
           />
         );
       })}
-    </SSteps>
+    </Steps>
   );
 }
 
