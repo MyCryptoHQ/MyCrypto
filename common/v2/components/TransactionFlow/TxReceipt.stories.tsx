@@ -4,7 +4,7 @@ import { fTxConfig, fTxReceipt } from '@fixtures';
 import { ITxStatus, ExtendedAddressBook, ITxType } from 'v2/types';
 import { noOp } from 'v2/utils';
 import { devContacts } from 'v2/database/seed';
-import { IZapConfig, ZAPS_CONFIG } from 'v2/features/DeFiZap/config';
+import { IZapConfig, ZAPS_CONFIG, defaultZapId } from 'v2/features/DeFiZap/config';
 
 import { TxReceiptUI } from './TxReceipt';
 
@@ -33,8 +33,7 @@ export const transactionReceipt = () => (
   </div>
 );
 
-const defaultZap = 'llpdai';
-const zapSelected: IZapConfig = ZAPS_CONFIG[defaultZap];
+const zapSelected: IZapConfig = ZAPS_CONFIG[defaultZapId];
 
 export const transactionReceiptDeFiZap = () => (
   <div className="sb-container" style={{ maxWidth: '620px' }}>

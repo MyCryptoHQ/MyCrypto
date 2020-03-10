@@ -609,6 +609,12 @@
     "PLATFORMS": "Platforms:",
     "ZAP_NAME": "Zap Name:",
     "ZAP_BANNER_DESCRIPTION": "You have selected to open a position with the following Zap:",
-    "ZAP_POWERED_BY": "Powered by DefiZap"
+    "ZAP_POWERED_BY": "Powered by DefiZap",
+    "ADD": "Add",
+    "WITHDRAW": "Withdraw",
+    "ZAP_BALANCE_TOOLTIP": "We've detected that you have a balance on the $protocol protocol.",
+    "ZAP_BALANCE_DETECTED": "This zap is active in one or more of your accounts.",
+    "ZAP_ESTIMATED_BALANCE": "Estimated Balance",
+    "ZAP_RISK_PROFILE_HEADER_TEXT": "$riskProfile Risk Profile"
   }
 }

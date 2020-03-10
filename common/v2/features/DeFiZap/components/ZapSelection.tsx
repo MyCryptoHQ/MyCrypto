@@ -7,7 +7,7 @@ import { Button, ContentPanel } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
 import { COLORS, BREAK_POINTS } from 'v2/theme';
 
-import { ZAPS_CONFIG, IZapId } from '../config';
+import { ZAPS_CONFIG, IZapId, defaultZapId } from '../config';
 import { DetailsList } from '.';
 import sEth from 'assets/images/defizap/illustrations/seth.svg';
 
@@ -55,13 +55,11 @@ const ZapTextExplainer = styled.div`
   flex: 1;
 `;
 
-const defaultZap = 'unipoolseth';
-
 const ZapEducation = withRouter(({ history, location }) => {
   const qs = queryString.parse(location.search);
   const detectedZapId: IZapId = qs.key;
   const [zapSelected, setZapSelected] = useState(
-    qs.key ? ZAPS_CONFIG[detectedZapId] || ZAPS_CONFIG[defaultZap] : ZAPS_CONFIG[defaultZap]
+    qs.key ? ZAPS_CONFIG[detectedZapId] || ZAPS_CONFIG[defaultZapId] : ZAPS_CONFIG[defaultZapId]
   );
 
   const handleSubmit = () => {
@@ -73,7 +71,7 @@ const ZapEducation = withRouter(({ history, location }) => {
     if (detectedZapId && ZAPS_CONFIG[detectedZapId] !== zapSelected && ZAPS_CONFIG[detectedZapId]) {
       setZapSelected(ZAPS_CONFIG[detectedZapId]);
     } else if (!detectedZapId || !ZAPS_CONFIG[detectedZapId]) {
-      setZapSelected(ZAPS_CONFIG[defaultZap]);
+      setZapSelected(ZAPS_CONFIG[defaultZapId]);
     }
   }, [qs]);
 
