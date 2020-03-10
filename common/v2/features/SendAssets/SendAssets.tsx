@@ -36,7 +36,7 @@ function SendAssets() {
   );
   const {
     setProtectionTxTimeoutFunction,
-    withProtectState: { protectTxShown }
+    withProtectState: { protectTxShown, protectTxEnabled }
   } = withProtectApi;
 
   // Due to MetaMask deprecating eth_sign method,
@@ -46,7 +46,12 @@ function SendAssets() {
       label: 'Send Assets',
       component: SendAssetsForm,
       props: (({ txConfig }) => ({ txConfig, withProtectApi }))(txFactoryState),
-      actions: (payload: IFormikFields, cb: any) => handleFormSubmit(payload, cb)
+      actions: (payload: IFormikFields, cb: any) => {
+        if (protectTxEnabled) {
+          payload.nonceField = (parseInt(payload.nonceField, 10) + 1).toString();
+        }
+        return handleFormSubmit(payload, cb);
+      }
     },
     {
       label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
@@ -74,7 +79,12 @@ function SendAssets() {
       label: 'Send Assets',
       component: SendAssetsForm,
       props: (({ txConfig }) => ({ txConfig, withProtectApi }))(txFactoryState),
-      actions: (payload: IFormikFields, cb: any) => handleFormSubmit(payload, cb)
+      actions: (payload: IFormikFields, cb: any) => {
+        if (protectTxEnabled) {
+          payload.nonceField = (parseInt(payload.nonceField, 10) + 1).toString();
+        }
+        return handleFormSubmit(payload, cb);
+      }
     },
     {
       label: '',
