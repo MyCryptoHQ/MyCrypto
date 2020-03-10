@@ -23,14 +23,14 @@ const SignProtectedTransactionStyled = styled(ProtectedTransactionBase)`
 `;
 
 export const SignProtectedTransaction: FC<WithProtectApi> = ({ children, withProtectApi }) => {
-  const { goOnInitialStep } = withProtectApi!;
+  const { goOnInitialStepOrFetchReport } = withProtectApi!;
 
   const onProtectMyTransactionCancelClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement & SVGSVGElement, MouseEvent>) => {
       e.preventDefault();
 
-      if (goOnInitialStep) {
-        goOnInitialStep();
+      if (goOnInitialStepOrFetchReport) {
+        goOnInitialStepOrFetchReport();
       }
     },
     []

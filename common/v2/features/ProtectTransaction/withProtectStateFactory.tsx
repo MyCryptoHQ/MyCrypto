@@ -34,10 +34,10 @@ export interface WithProtectApiFactory {
   withProtectState: WithProtectState;
   formCallback: SendFormCallbackType;
 
-  handleTransactionReport(): Promise<void>;
+  handleTransactionReport(receiverAddress?: string): Promise<void>;
   setMainTransactionFormCallback(callback: SendFormCallbackType): void;
   goOnNextStep(): void;
-  goOnInitialStep(): void;
+  goOnInitialStepOrFetchReport(receiverAddress?: string): void;
   showHideTransactionProtection(showOrHide: boolean): void;
   setReceiverInfo(receiverAddress: string, network: NetworkId | null): Promise<void>;
   setProtectionTxTimeoutFunction(cb: (txReceiptCb?: (txReciept: ITxReceipt) => void) => void): void;
@@ -105,44 +105,78 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
     }));
   }, [state.protectTxShown, state.stepIndex, state.cryptoScamAddressReport]);
 
-  const handleTransactionReport = useCallback(async (): Promise<void> => {
-    if (!state.receiverAddress) return;
+  const handleTransactionReport = useCallback(
+    async (receiverAddress?: string): Promise<void> => {
+      const address = receiverAddress || state.receiverAddress;
+      if (!address) return Promise.reject();
 
-    try {
-      const cryptoScamAddressReport = await CryptoScamDBService.instance.check(
-        state.receiverAddress
-      );
-      const etherscanBalanceReport = await EtherscanService.instance.getBalance(
-        state.receiverAddress,
-        state.network!.id
-      );
-      const etherscanLastTxReport = await EtherscanService.instance.getLastTx(
-        state.receiverAddress,
-        state.network!.id
-      );
+      let numOfErrors = 0;
 
-      setState((prevState: WithProtectState) => ({
-        ...prevState,
-        cryptoScamAddressReport,
-        etherscanBalanceReport,
-        etherscanLastTxReport
-      }));
+      try {
+        const cryptoScamAddressReport = await CryptoScamDBService.instance.check(address);
 
-      return Promise.resolve();
-    } catch (e) {
-      console.error(e);
-      setState((prevState: WithProtectState) => ({
-        ...prevState,
-        cryptoScamAddressReport: {
-          input: prevState.receiverAddress,
-          message: '',
-          success: false
-        } as CryptoScamDBNoInfoResponse
-      }));
-    }
+        setState((prevState: WithProtectState) => ({
+          ...prevState,
+          cryptoScamAddressReport
+        }));
+      } catch (e) {
+        numOfErrors++;
+        console.error(e);
+        setState((prevState: WithProtectState) => ({
+          ...prevState,
+          cryptoScamAddressReport: {
+            input: address,
+            message: '',
+            success: false
+          } as CryptoScamDBNoInfoResponse
+        }));
+      }
 
-    return Promise.reject();
-  }, [state.receiverAddress, setState]);
+      try {
+        const etherscanBalanceReport = await EtherscanService.instance.getBalance(
+          address,
+          state.network!.id
+        );
+
+        setState((prevState: WithProtectState) => ({
+          ...prevState,
+          etherscanBalanceReport
+        }));
+      } catch (e) {
+        numOfErrors++;
+        console.error(e);
+        setState((prevState: WithProtectState) => ({
+          ...prevState,
+          etherscanBalanceReport: null
+        }));
+      }
+
+      try {
+        const etherscanLastTxReport = await EtherscanService.instance.getLastTx(
+          address,
+          state.network!.id
+        );
+
+        setState((prevState: WithProtectState) => ({
+          ...prevState,
+          etherscanLastTxReport
+        }));
+      } catch (e) {
+        numOfErrors++;
+        console.error(e);
+        setState((prevState: WithProtectState) => ({
+          ...prevState,
+          etherscanLastTxReport: null
+        }));
+      }
+
+      if (numOfErrors < 3) {
+        return Promise.resolve();
+      }
+      return Promise.reject();
+    },
+    [state.receiverAddress, setState]
+  );
 
   const setMainTransactionFormCallback = useCallback(
     (callback: SendFormCallbackType) => {
@@ -162,13 +196,30 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
     });
   }, [setState]);
 
-  const goOnInitialStep = useCallback(() => {
-    setState(prevState => ({
-      ...prevState,
-      stepIndex: 0,
-      cryptoScamAddressReport: null
-    }));
-  }, [setState]);
+  const goOnInitialStepOrFetchReport = useCallback(
+    (receiverAddress?: string) => {
+      if (state.protectTxEnabled) {
+        setState(prevState => ({
+          ...prevState,
+          cryptoScamAddressReport: null,
+          etherscanLastTxReport: null,
+          etherscanBalanceReport: null,
+          receiverAddress: receiverAddress ? receiverAddress : prevState.receiverAddress
+        }));
+
+        handleTransactionReport(receiverAddress);
+      } else {
+        setState(prevState => ({
+          ...prevState,
+          stepIndex: 0,
+          cryptoScamAddressReport: null,
+          etherscanLastTxReport: null,
+          etherscanBalanceReport: null
+        }));
+      }
+    },
+    [setState, state, handleTransactionReport]
+  );
 
   const showHideTransactionProtection = useCallback(
     (showOrHide: boolean) => {
@@ -254,7 +305,7 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
     handleTransactionReport,
     setMainTransactionFormCallback,
     goOnNextStep,
-    goOnInitialStep,
+    goOnInitialStepOrFetchReport,
     showHideTransactionProtection,
     formCallback: formCallback.current,
     setReceiverInfo,

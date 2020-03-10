@@ -176,7 +176,7 @@ const SendAssetsForm = ({
   const [selectedAsset, setAsset] = useState({} as Asset);
 
   const {
-    goOnInitialStep,
+    goOnInitialStepOrFetchReport,
     showHideTransactionProtection,
     setMainTransactionFormCallback,
     withProtectState: { mainComponentDisabled }
@@ -708,8 +708,9 @@ const SendAssetsForm = ({
                 onClick={e => {
                   e.preventDefault();
 
-                  if (goOnInitialStep) {
-                    goOnInitialStep();
+                  if (goOnInitialStepOrFetchReport) {
+                    const { address } = values;
+                    goOnInitialStepOrFetchReport(address.value);
                   }
 
                   if (showHideTransactionProtection) {

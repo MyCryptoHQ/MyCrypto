@@ -102,7 +102,7 @@ export function withProtectTransaction(
       withProtectState: { protectTxShown, stepIndex, protectTxEnabled, isWeb3Wallet },
       handleTransactionReport,
       goOnNextStep,
-      goOnInitialStep,
+      goOnInitialStepOrFetchReport,
       formCallback,
       showHideTransactionProtection
     } = withProtectApi!;
@@ -197,7 +197,7 @@ export function withProtectTransaction(
                                 });
                               }}
                               resetFlow={() => {
-                                goOnInitialStep();
+                                goOnInitialStepOrFetchReport();
                               }}
                             />
                             <Button
