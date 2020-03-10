@@ -1,4 +1,4 @@
-import { BearishIndicator, BullishIndicator } from './components';
+import { BearishIndicator, BullishIndicator, NeutralIndicator } from './components';
 
 import moderateRisk from 'assets/images/defizap/moderateRisk.svg';
 import conservativeRisk from 'assets/images/defizap/conservativeRisk.svg';
@@ -90,7 +90,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     risk: 1,
     description:
       'Hedge against ETH price volatility and earn a variable interest rate (generally 5-25%) by lending on the Uniswap exchange protocol.',
-    outlook: 'bearish',
+    outlook: 'neutral',
     link: 'https://defizap.com/zaps/unipooldai',
     ctaText: 'Get Started',
     minimumGasLimit: 1500000,
@@ -104,7 +104,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     interestTokenAddr: '0x2a1530C4C41db0B0b2bB646CB5Eb1A67b7158667',
     breakdownImage: unipoolBreakdown,
     breakdownTooltip: 'This zap stores funds in the Uniswap exchange protocol',
-    positionDetails: () => BearishIndicator({ text: 'Bearish on ETH' })
+    positionDetails: () => NeutralIndicator({ text: 'Neutral on ETH' })
   },
   compounddai: {
     title: 'Interest Earning with DAI',

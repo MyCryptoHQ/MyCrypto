@@ -9,4 +9,4 @@ export { default as ProtocolTagsList } from './ProtocolTagsList';
 export * from './ZapOption';
 export { default as ZapSelectedBanner } from './ZapSelectedBanner';
 export { default as DeFiZapLogo } from './DeFiZapLogo';
-export { BullishIndicator, BearishIndicator } from './ZapIndicators';
+export { BullishIndicator, BearishIndicator, NeutralIndicator } from './ZapIndicators';

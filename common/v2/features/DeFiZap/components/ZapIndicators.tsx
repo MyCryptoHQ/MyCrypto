@@ -6,6 +6,7 @@ import { Typography } from 'v2/components';
 
 import bullishIndicator from 'assets/images/defizap/indicators/bullishIndicator.svg';
 import bearishIndicator from 'assets/images/defizap/indicators/bearishIndicator.svg';
+import neutralIndicator from 'assets/images/defizap/indicators/neutralIndicator.svg';
 
 interface SProps {
   color: string;
@@ -18,8 +19,8 @@ const SContainer = styled.div`
 `;
 
 const SImage = styled.img`
-  height: 16px;
-  width: 16px;
+  height: 24px;
+  width: 24px;
 `;
 
 const SText = styled(Typography)`
@@ -43,6 +44,13 @@ export const BullishIndicator = ({ text }: IndicatorProps) => (
 export const BearishIndicator = ({ text }: IndicatorProps) => (
   <SContainer>
     <SImage src={bearishIndicator} />
-    <SText color={COLORS.SALMON_ORANGE}>{text}</SText>
+    <SText color={COLORS.PURPLE}>{text}</SText>
+  </SContainer>
+);
+
+export const NeutralIndicator = ({ text }: IndicatorProps) => (
+  <SContainer>
+    <SImage src={neutralIndicator} />
+    <SText color={COLORS.PURPLE}>{text}</SText>
   </SContainer>
 );
