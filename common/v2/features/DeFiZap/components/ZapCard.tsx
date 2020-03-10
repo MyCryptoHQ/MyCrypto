@@ -180,43 +180,25 @@ const ZapCard = ({ config }: Props) => {
         </ZapCardRiskProfile>
       </ZapCardHeader>
       <ZapCardContent>
-        {!humanReadableZapBalance ? (
-          <>
-            <ZapCardContentHeaderRow>
-              <ZapCardImgSection>
-                <Tooltip tooltip={config.breakdownTooltip}>
-                  <ZapCardImg src={config.breakdownImage} />
-                </Tooltip>
-              </ZapCardImgSection>
-              <ZapCardHeaderTextSection>
-                <ZapCardHeaderTitle>{config.title}</ZapCardHeaderTitle>
-                <ZapCardHeaderName>{config.name}</ZapCardHeaderName>
-              </ZapCardHeaderTextSection>
-            </ZapCardContentHeaderRow>
-            <ZapCardContentRow>
-              <IndicatorItem />
-            </ZapCardContentRow>
-            <ZapCardContentRow>
-              <ZapCardContentText>{config.description}</ZapCardContentText>
-            </ZapCardContentRow>
-          </>
-        ) : (
-          <>
-            <ZapCardContentHeaderRow>
-              <ZapCardImgSection>
-                <Tooltip tooltip={config.breakdownTooltip}>
-                  <ZapCardImg src={config.breakdownImage} />
-                </Tooltip>
-              </ZapCardImgSection>
-              <ZapCardHeaderTextSection>
-                <ZapCardHeaderTitle>{config.title}</ZapCardHeaderTitle>
-                <ZapCardHeaderName>{config.name}</ZapCardHeaderName>
-              </ZapCardHeaderTextSection>
-            </ZapCardContentHeaderRow>
-            <ZapCardContentRow>
-              <IndicatorItem />
-            </ZapCardContentRow>
-            <ZapCardContentRow>
+        <ZapCardContentHeaderRow>
+          <ZapCardImgSection>
+            <Tooltip tooltip={config.breakdownTooltip}>
+              <ZapCardImg src={config.breakdownImage} />
+            </Tooltip>
+          </ZapCardImgSection>
+          <ZapCardHeaderTextSection>
+            <ZapCardHeaderTitle>{config.title}</ZapCardHeaderTitle>
+            <ZapCardHeaderName>{config.name}</ZapCardHeaderName>
+          </ZapCardHeaderTextSection>
+        </ZapCardContentHeaderRow>
+        <ZapCardContentRow>
+          <IndicatorItem />
+        </ZapCardContentRow>
+        <ZapCardContentRow>
+          {!humanReadableZapBalance ? (
+            <ZapCardContentText>{config.description}</ZapCardContentText>
+          ) : (
+            <>
               <ZapCardContentText>{translateRaw('ZAP_BALANCE_DETECTED')}</ZapCardContentText>
               <ZapCardContentText>
                 <ZapEstimatedBalance>
@@ -230,9 +212,9 @@ const ZapCard = ({ config }: Props) => {
                 </ZapEstimatedBalance>
                 {`${humanReadableZapBalance.toFixed(4)} ${userZapBalances.ticker}`}
               </ZapCardContentText>
-            </ZapCardContentRow>
-          </>
-        )}
+            </>
+          )}
+        </ZapCardContentRow>
       </ZapCardContent>
       <ZapCardContentBottom>
         {!humanReadableZapBalance ? (
