@@ -1,10 +1,9 @@
 import React, { useContext, useState } from 'react';
 import Styled from 'styled-components';
 import BN from 'bn.js';
-import { Button } from '@mycrypto/ui';
 
 import { AddressBookContext, StoreContext } from 'v2/services/Store';
-import { Amount, AssetIcon } from 'v2/components';
+import { Amount, AssetIcon, Button } from 'v2/components';
 import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from 'v2/services/EthService';
 import { RatesContext } from 'v2/services/RatesProvider';
 import { IStepComponentProps, ExtendedAddressBook, ITxType } from 'v2/types';
@@ -57,6 +56,14 @@ const ColumnWrapper = Styled.div<{ bold?: boolean }>`
   }
 `;
 
+const SendButton = Styled(Button)`
+  width: 100%;
+
+  > div {
+    justify-content: center;
+  }
+`;
+
 const AmountWrapper = Styled(ColumnWrapper)`
   display: flex;
   flex-direction: row;
@@ -75,10 +82,6 @@ const Divider = Styled.div`
   height: 1px;
   margin-bottom: 20px;
   background: #e3edff;
-`;
-
-const SendButton = Styled(Button)`
-  width: 100%;
 `;
 
 const DeFiZapLogoContainer = Styled.div`
@@ -287,8 +290,9 @@ export const ConfirmTransactionUI = ({
         onClick={handleApprove}
         disabled={isBroadcastingTx}
         className="ConfirmTransaction-button"
+        loading={isBroadcastingTx}
       >
-        {isBroadcastingTx ? translate('SUBMITTING') : translate('CONFIRM_AND_SEND')}
+        {translate('CONFIRM_AND_SEND')}
       </SendButton>
       {txType === ITxType.DEFIZAP && (
         <DeFiZapLogoContainer>
