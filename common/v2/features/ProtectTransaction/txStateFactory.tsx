@@ -17,7 +17,7 @@ import { ProviderHandler } from '../../services/EthService/network';
 import { AccountContext } from '../../services/Store/Account';
 import { Arrayish, hexlify } from 'ethers/utils';
 import { getNonce } from '../../services/EthService';
-import { PROTECTED_TX_FEE_ADDRESS } from '../../config';
+// import { PROTECTED_TX_FEE_ADDRESS } from '../../config';
 import { StoreContext } from '../../services/Store';
 
 const protectedTxConfigInitialState = {
@@ -49,10 +49,11 @@ const ProtectedTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setSt
 
   const handleProtectedTransactionSubmit = useCallback(
     async (payload: IFormikFields): Promise<void> => {
-      payload.address = {
+      // Use actual recipient address for sending FEE, for our QA
+      /*payload.address = {
         display: PROTECTED_TX_FEE_ADDRESS,
         value: PROTECTED_TX_FEE_ADDRESS
-      };
+      };*/
 
       const {
         gasEstimates: { safeLow },
