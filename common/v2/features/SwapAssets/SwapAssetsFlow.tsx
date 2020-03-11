@@ -1,26 +1,26 @@
-import React, { useState, useContext, useReducer } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { useReducer } from 'reinspect';
 
 import { translateRaw } from 'v2/translations';
-
 import { ExtendedContentPanel, WALLET_STEPS } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
-import { ITxReceipt, ITxConfig, ISignedTx } from 'v2/types';
-import { useStateReducer } from 'v2/utils';
+import { ITxReceipt, ISignedTx } from 'v2/types';
+import { bigify, useStateReducer } from 'v2/utils';
 import { useEffectOnce, usePromise } from 'v2/vendor';
 import { AssetContext, NetworkContext } from 'v2/services';
 
-import { SwapAssets, ConfirmSwap, SwapTransactionReceipt, SetAllowance } from './components';
+import { SwapAssets, SwapTransactionReceipt, ConfirmSwapMultiTx } from './components';
 import {
   SwapFlowReducer,
   swapFlowInitialState,
-  saveTxConfig,
-  handleConfirmSwapClicked,
-  handleApproveSigned,
-  handleTxSigned
-} from './stateFactory';
+  getTradeOrder,
+  confirmSend,
+  handleTxSigned,
+  currentTx
+} from './flowReducer';
 import { SwapFormFactory, swapFormInitialState } from './stateFormFactory';
-import { SwapState, SwapFormState } from './types';
+import { SwapState, SwapFormState, IAssetPair } from './types';
 
 interface TStep {
   title?: string;
@@ -32,8 +32,6 @@ interface TStep {
 }
 
 const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
-  const [step, setStep] = useState(0);
-
   const {
     fetchSwapAssets,
     setSwapAssets,
@@ -65,15 +63,8 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
 
   const { assets: userAssets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
-  const [state, dispatch] = useReducer<>(SwapFlowReducer, swapFlowInitialState);
-  const {
-    isSubmitting,
-    assetPair,
-    txReceipt,
-    txConfig,
-    rawTransaction,
-    tradeOrder
-  }: SwapState = state;
+  const [state, dispatch] = useReducer(SwapFlowReducer, swapFlowInitialState, s => s, 'Swap');
+  const { isSubmitting, assetPair, txConfig, transactions, nextInFlow }: SwapState = state;
 
   const goToFirstStep = () => {
     setStep(0);
@@ -122,71 +113,55 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         handleToAmountChanged,
         handleAccountSelected,
         onSuccess: () => {
-          saveTxConfig(dispatch, _, goToNextStep)(
-            userAssets,
-            {
-              fromAsset,
-              fromAmount,
-              toAmount,
-              toAsset,
-              lastChangedAmount
-            },
+          const pair: IAssetPair = {
+            fromAsset,
+            toAsset,
+            fromAmount: bigify(fromAmount),
+            toAmount: bigify(toAmount),
+            rate: bigify(exchangeRate),
+            markup: bigify(markup),
+            lastChangedAmount
+          };
+          getTradeOrder(dispatch)(
+            pair, // as assetPair
             account
           );
         }
       }
     },
-    {
-      title: translateRaw('SWAP_CONFIRM_TITLE'),
-      backBtnText: translateRaw('SWAP'),
-      component: ConfirmSwap,
-      props: {
-        fromAsset,
-        toAsset,
-        fromAmount,
-        toAmount,
-        account,
-        exchangeRate,
-        lastChangedAmount,
-        isSubmitting
-      },
-      actions: {
-        onSuccess: () => handleConfirmSwapClicked(dispatch)(goToNextStep)
-      }
-    },
-    ...(tradeOrder && tradeOrder.isMultiTx
-      ? [
-          {
-            title: translateRaw('SWAP_ALLOWANCE_TITLE'),
-            backBtnText: translateRaw('SWAP_CONFIRM_TITLE'),
-            component: SetAllowance,
-            props: {
-              isSubmitting,
-              network: account && account.network,
-              senderAccount: account,
-              rawTransaction
-            },
-            actions: {
-              onSuccess: (payload: ITxReceipt | ISignedTx) =>
-                handleApproveSigned(dispatch, () => state)(userAssets, payload, goToNextStep)
-            }
+    ...transactions.flatMap((tx, idx) => [
+      {
+        title: translateRaw('SWAP_CONFIRM_TITLE'),
+        backBtnText: translateRaw('SWAP'),
+        component: ConfirmSwapMultiTx,
+        props: {
+          assetPair,
+          account,
+          isSubmitting,
+          transactions,
+          currentTx: idx // Index of tx within MultiTx.
+        },
+        actions: {
+          onClick: () => {
+            confirmSend(dispatch, () => state)(tx.rawTx);
           }
-        ]
-      : []),
-    {
-      title: translateRaw('SWAP'),
-      backBtnText: translateRaw('SWAP_CONFIRM_TITLE'),
-      component: account && WALLET_STEPS[account.wallet],
-      props: {
-        network: account && account.network,
-        senderAccount: account,
-        rawTransaction
+        }
       },
-      actions: {
-        onSuccess: (payload: ITxReceipt | ISignedTx) =>
-          handleTxSigned(dispatch, () => state)(userAssets, networks, payload, goToNextStep)
+      {
+        title: translateRaw('SWAP'),
+        backBtnText: translateRaw('SWAP_CONFIRM_TITLE'),
+        component: account && WALLET_STEPS[account.wallet],
+        props: {
+          network: account && account.network,
+          senderAccount: account,
+          rawTransaction: currentTx(state).rawTx
+        },
+        actions: {
+          onSuccess: (payload: ITxReceipt | ISignedTx) =>
+            handleTxSigned(dispatch, () => state)(userAssets, networks, payload)
+        }
       }
-    },
+    ]),
     {
       title: translateRaw('TRANSACTION_BROADCASTED'),
       backBtnText: translateRaw('DEP_SIGNTX'),
@@ -196,15 +171,22 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         toAsset,
         fromAmount,
         toAmount,
-        txReceipt,
+        txReceipt: currentTx(state).txReceipt,
         txConfig,
         onSuccess: goToFirstStep
       }
     }
   ];
 
+  const [step, setStep] = useState(0);
   const stepObject = steps[step];
   const StepComponent = stepObject.component;
+
+  useEffect(() => {
+    if (!nextInFlow) return;
+    goToNextStep();
+    dispatch({ type: 'HALT_FLOW' });
+  }, [nextInFlow]);
 
   const mounted = usePromise();
   useEffectOnce(() => {

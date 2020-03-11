@@ -12,7 +12,7 @@ import {
   calculateMarkup,
   trimBN
 } from 'v2/utils';
-import { DexService, AssetContext, NetworkContext, getNetworkById } from 'v2/services';
+import { DexService, NetworkContext, getNetworkById } from 'v2/services';
 import { StoreAccount } from 'v2/types';
 import { DEFAULT_NETWORK, MYC_DEXAG_COMMISSION_RATE } from 'v2/config';
 

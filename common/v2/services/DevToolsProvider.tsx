@@ -1,4 +1,5 @@
 import React, { Component, createContext } from 'react';
+import { StateInspector } from 'reinspect';
 
 export interface ProviderState {
   isActive: boolean;
@@ -17,7 +18,11 @@ class DevToolsProvider extends Component {
 
   public render() {
     const { children } = this.props;
-    return <DevToolsContext.Provider value={this.state}>{children}</DevToolsContext.Provider>;
+    return (
+      <DevToolsContext.Provider value={this.state}>
+        <StateInspector name="MYC_CORE">{children}</StateInspector>
+      </DevToolsContext.Provider>
+    );
   }
 }
 

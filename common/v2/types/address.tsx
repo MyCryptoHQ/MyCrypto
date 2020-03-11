@@ -1,2 +1,3 @@
-enum AddressBrand {}
-export type TAddress = AddressBrand & string;
+import { Brand } from 'utility-types';
+
+export type TAddress = Brand<string, 'Address'>;

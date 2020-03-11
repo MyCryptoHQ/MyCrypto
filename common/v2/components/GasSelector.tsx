@@ -95,7 +95,7 @@ export default function GasSelector(props: Props) {
       const { fast } = await fetchGasPriceEstimates(network);
       setGasPrice(fast.toString());
       const fetchedGasPrice = hexWeiToString(inputGasPriceToHex(fast.toString()));
-      const fetchedNonce = await getNonce(network, account);
+      const fetchedNonce = await getNonce(network, account.address);
       setNonce(fetchedNonce.toString());
 
       const txConfig: any = Object.assign({}, estimateGasCallProps, {
