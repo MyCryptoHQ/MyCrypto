@@ -22,7 +22,9 @@ interface Props {
 const AddressWrapper = styled.div`
   background-color: ${COLORS.GREY_LIGHTEST};
   padding: 10px;
-
+  min-height: 100px;
+  display: flex;
+  align-items: center;
   img {
     max-width: fit-content;
   }
@@ -34,16 +36,19 @@ const AddressContainer = styled.div`
 
 const Addresses = styled.div`
   display: flex;
+  flex: 1;
   justify-content: space-between;
   margin-bottom: ${SPACING.MD};
-  > div {
-    max-width: 48%;
+
+  > div:not(:last-child) {
+    margin-right: ${SPACING.SM};
   }
+
   @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
     flex-direction: column;
 
     > div {
-      max-width: 100%;
+      margin-right: 0px;
     }
 
     > div:nth-child(2) {
