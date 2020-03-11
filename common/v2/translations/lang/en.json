@@ -615,6 +615,14 @@
     "ZAP_BALANCE_TOOLTIP": "We've detected that you have a balance on the $protocol protocol.",
     "ZAP_BALANCE_DETECTED": "This zap is active in one or more of your accounts.",
     "ZAP_ESTIMATED_BALANCE": "Estimated Balance",
-    "ZAP_RISK_PROFILE_HEADER_TEXT": "$riskProfile Risk Profile"
+    "ZAP_RISK_PROFILE_HEADER_TEXT": "$riskProfile Risk Profile",
+    "SWAP_STEP1_TEXT": "Before swapping a token, you must approve the swap contract to execute the transaction.",
+    "STEP_FINISHED": "Great Work!",
+    "CONFIRM_TRANSACTION": "Confirm Transaction",
+    "CONFIRM_TRANSACTION_MULTITX": "Confirm Transaction $current of $total",
+    "SWAP_INTRO": "To begin your swap process, we’ll first help you sell your ETH. We will walk you through the process below.",
+    "APPROVE_SWAP": "Approve Swap",
+    "COMPLETE_SWAP": "Complete Swap",
+    "SWAP_STEP2_TEXT": "The contract you approved will complete the swap contract as soon as you confirm the transaction below."
   }
 }

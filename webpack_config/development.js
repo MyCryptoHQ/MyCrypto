@@ -43,7 +43,8 @@ module.exports = merge.smart(common, {
         use: ['style-loader', 'css-loader'],
         include: [
           path.join(config.path.src, 'vendor'),
-          path.join(config.path.root, 'node_modules/typeface-lato')
+          path.join(config.path.root, 'node_modules/typeface-lato'),
+          path.join(config.path.root, 'node_modules/rc-steps')
         ]
       },
 

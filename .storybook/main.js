@@ -14,9 +14,10 @@ module.exports = {
 
   webpackFinal: async config => {
     // Remove storybooks handling of assets in favor of our own.
-    config.module.rules = config.module.rules.filter(
-      rule => !rule.test.toString().includes('svg')
-    )
+    config.module.rules = config.module.rules.filter(rule => !rule.test.toString().includes('svg'));
+
+    // Remove storybooks css config
+    config.module.rules = config.module.rules.filter(rule => !rule.test.toString().includes('css'));
 
     // Merge storybook and our custom webpack_config/development.js
     return merge.smart(
@@ -25,9 +26,7 @@ module.exports = {
       {
         resolve: custom.resolve,
         module: {
-          rules: [
-            ...custom.module.rules
-          ]
+          rules: [...custom.module.rules]
         }
       },
       // Necessary to launch @storybook
@@ -37,6 +36,6 @@ module.exports = {
           child_process: 'empty'
         }
       }
-    )
+    );
   }
 };
