@@ -28,6 +28,7 @@ import {
   DeFiZapFlow
 } from 'v2/features';
 import { requiresDesktopApp } from './helpers';
+import { PurchaseMembershipStepper, MembershipEducation } from 'v2/features/PurchaseMembership';
 
 export interface IAppRoutes {
   [K: string]: IAppRoute;
@@ -222,6 +223,24 @@ export const STATIC_APP_ROUTES: IAppRoute[] = [
     requireAccounts: true,
     enabled: IS_ACTIVE_FEATURE.DEFIZAP,
     component: DeFiZapFlow
+  },
+  {
+    name: ROUTE_PATHS.MYC_MEMBERSHIP.name,
+    title: ROUTE_PATHS.MYC_MEMBERSHIP.title,
+    path: ROUTE_PATHS.MYC_MEMBERSHIP.path,
+    exact: true,
+    requireAccounts: false,
+    enabled: IS_ACTIVE_FEATURE.MYC_MEMBERSHIP,
+    component: MembershipEducation
+  },
+  {
+    name: ROUTE_PATHS.MYC_MEMBERSHIP.name,
+    title: ROUTE_PATHS.MYC_MEMBERSHIP.title,
+    path: `${ROUTE_PATHS.MYC_MEMBERSHIP.path}/buy`,
+    exact: true,
+    requireAccounts: false,
+    enabled: IS_ACTIVE_FEATURE.MYC_MEMBERSHIP,
+    component: PurchaseMembershipStepper
   }
 ];
 

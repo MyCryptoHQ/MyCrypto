@@ -63,6 +63,7 @@ export default function TxReceipt({
   completeButtonText,
   pendingButton,
   txType = ITxType.STANDARD,
+  membershipSelected,
   zapSelected,
   swapDisplay
 }: IStepComponentProps & Props) {
@@ -76,6 +77,7 @@ export default function TxReceipt({
   const [displayTxReceipt, setDisplayTxReceipt] = useState(txReceipt as ITxReceipt);
   const [blockNumber, setBlockNumber] = useState(0);
   const [timestamp, setTimestamp] = useState(0);
+
   useEffect(() => {
     const provider = new ProviderHandler(displayTxReceipt.network || txConfig.network);
     if (blockNumber === 0 && displayTxReceipt.hash) {
@@ -131,6 +133,7 @@ export default function TxReceipt({
       txType={txType}
       assetRate={assetRate}
       zapSelected={zapSelected}
+      membershipSelected={membershipSelected}
       swapDisplay={swapDisplay}
       txStatus={txStatus}
       timestamp={timestamp}

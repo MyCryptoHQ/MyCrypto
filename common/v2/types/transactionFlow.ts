@@ -7,6 +7,7 @@ import {
   StoreAccount
 } from 'v2/types';
 import { IZapConfig } from 'v2/features/DeFiZap/config';
+import { IMembershipConfig } from 'v2/features/PurchaseMembership/config';
 
 export type ISignedTx = string;
 
@@ -67,6 +68,7 @@ export interface IStepComponentProps {
   signedTx?: string;
   txType?: ITxType;
   zapSelected?: IZapConfig;
+  membershipSelected?: IMembershipConfig;
   children?: never;
   completeButtonText?: string;
   onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;
@@ -91,5 +93,6 @@ export enum ITxStatus {
 export enum ITxType {
   STANDARD = 'STANDARD',
   SWAP = 'SWAP',
-  DEFIZAP = 'DEFIZAP'
+  DEFIZAP = 'DEFIZAP',
+  PURCHASE_MEMBERSHIP = 'PURCHASE_MEMBERSHIP'
 }
