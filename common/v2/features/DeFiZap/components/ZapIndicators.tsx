@@ -12,15 +12,17 @@ interface SProps {
   color: string;
 }
 
-const SContainer = styled.div`
+const SContainer = styled.div<{ txtPosition?: string }>`
   display: flex;
   justify-content: center;
-  align-items: top;
+  align-items: ${props => (props.txtPosition ? props.txtPosition : 'center')};
+  height: 2em;
 `;
 
 const SImage = styled.img`
   height: 24px;
   width: 24px;
+  margin: 15px 0;
 `;
 
 const SText = styled(Typography)`
@@ -35,14 +37,14 @@ interface IndicatorProps {
 }
 
 export const BullishIndicator = ({ text }: IndicatorProps) => (
-  <SContainer>
+  <SContainer txtPosition={'flex-start'}>
     <SImage src={bullishIndicator} />
     <SText color={COLORS.PURPLE}>{text}</SText>
   </SContainer>
 );
 
 export const BearishIndicator = ({ text }: IndicatorProps) => (
-  <SContainer>
+  <SContainer txtPosition={'flex-end'}>
     <SImage src={bearishIndicator} />
     <SText color={COLORS.PURPLE}>{text}</SText>
   </SContainer>

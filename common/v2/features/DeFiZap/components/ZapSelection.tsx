@@ -3,56 +3,87 @@ import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Button, ContentPanel } from 'v2/components';
+import {
+  Button,
+  ExtendedContentPanel,
+  AppLogo,
+  Typography,
+  TranslateMarkdown
+} from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
-import { COLORS, BREAK_POINTS } from 'v2/theme';
+import { COLORS, BREAK_POINTS, SPACING } from 'v2/theme';
 
-import { ZAPS_CONFIG, IZapId, defaultZapId } from '../config';
-import { DetailsList } from '.';
+import { ZAPS_CONFIG, IZapId, defaultZapId, riskAndReward, accordionContent } from '../config';
+import { DetailsList, RiskAndRewardCard } from '.';
 import sEth from 'assets/images/defizap/illustrations/seth.svg';
+import { Accordion } from '@mycrypto/ui';
 
-const FullSizedContentPanel = styled(ContentPanel)`
+const FullSizeContentPanel = styled(ExtendedContentPanel)`
   padding: 0px;
 `;
 
-const ContentPanelHeading = styled.p`
+const SSection = styled.section<{ color?: string }>`
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    flex-direction: column;
+    padding: 0;
+    padding: ${SPACING.LG} ${SPACING.BASE};
+    align-items: center;
+  }
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: ${props => (props.color ? props.color : 'inherit')};
+  width: 100%;
+  padding: ${SPACING.LG} ${SPACING.XL};
+`;
+
+const ContentPanelHeading = styled(SSection)`
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    flex-direction: column;
+  }
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 15px;
-  padding: 0.75em 1.1em 0em 1.1em;
-  color: #303030;
+`;
+
+const Title = styled.div`
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  display: flex;
+  align-items: center;
   font-size: 32px;
   font-weight: bold;
 `;
 
-const SSection = styled.section`
-  padding: 1.5em 2.25em;
-  flex-direction: column;
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    flex-direction: row;
+const BreakdownImg = styled.img`
+  max-width: 32px;
+  margin-right: 10px;
+`;
+
+const DetailsSection = styled(SSection)`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+`;
+
+const SpacedSection = styled(SSection)`
+  & > * {
+    margin: ${SPACING.BASE} 0;
   }
 `;
 
-const WhiteSection = styled(SSection)`
-  background-color: ${COLORS.WHITE};
-`;
-
-const GreySection = styled(SSection)`
-  background-color: ${COLORS.GREY_LIGHTEST};
-`;
-
-const DetailsSection = styled(WhiteSection)`
+const CardContainer = styled.div`
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    flex-direction: column;
+    align-items: center;
+  }
   display: flex;
-  flex: 1;
-`;
-const ZapImageExplainer = styled.img``;
-
-const ZapTextExplainer = styled.div`
-  align-items: left;
-  text-align: left;
-  /* width: 50%; */
-  flex: 1;
+  justify-content: space-between;
+  flex-wrap: wrap;
 `;
 
 const ZapEducation = withRouter(({ history, location }) => {
@@ -81,25 +112,61 @@ const ZapEducation = withRouter(({ history, location }) => {
   // };
 
   return (
-    <FullSizedContentPanel>
-      <ContentPanelHeading>{`${zapSelected.title} Details`}</ContentPanelHeading>
+    <FullSizeContentPanel width={'1100px'}>
+      <ContentPanelHeading>
+        <Title>
+          <BreakdownImg src={zapSelected.breakdownImage} />
+          {`${zapSelected.title} Details`}
+        </Title>
+        <AppLogo />
+      </ContentPanelHeading>
       <DetailsSection>
-        <ZapImageExplainer src={sEth} />
-
-        <ZapTextExplainer>
-          <DetailsList onSubmit={handleSubmit} zapSelected={zapSelected} />
-        </ZapTextExplainer>
+        <img src={sEth} />
+        <DetailsList onSubmit={handleSubmit} zapSelected={zapSelected} />
       </DetailsSection>
-      <GreySection>meh2</GreySection>
-      <WhiteSection>meh3</WhiteSection>
-      <GreySection>meh4</GreySection>
-      This will eventually be the education panel for defizap, and the selection of zap for the rest
-      of the flow. For now, it's just a dropdown to allow for us to test the rest of the flow.
-      <br />
-      <div>
-        <Button onClick={handleSubmit}>Continue on!</Button>
-      </div>
-    </FullSizedContentPanel>
+      <SpacedSection color={COLORS.GREY_LIGHTEST}>
+        <Title>{'How Does Zap Work?'}</Title>
+        <img src={sEth} />
+        <Button onClick={handleSubmit}>Add Funds</Button>
+      </SpacedSection>
+      <SSection>
+        <Title>{'Risks and Rewards when using DeFi Zap'}</Title>
+        <CardContainer>
+          {riskAndReward.map((el, i) => (
+            <RiskAndRewardCard key={i} riskAndReward={el} />
+          ))}
+        </CardContainer>
+      </SSection>
+      <SpacedSection color={COLORS.GREY_LIGHTEST}>
+        <Title>More Information About DeFi Zaps</Title>
+        <Typography>
+          Polis moore thrawn kanos. Cato altyr trianii firrerreo momaw orrin subterrel darth coway.
+          Kessel porkins kessel togruta cracken huk rhen priapulin. Jin'ha coway gilad kendal phlog.
+          Kyle elom jinn raynar moff quarren. Verpine chagrian porkins twi'lek ackbar corran.
+          Xanatos taung darth vurk. Kamino kamino ken tyber walon. R2-d2 boba mirialan max. Polis
+          tc-14 thennqora mandalorians jabiimas boba. Porkins moff typho md-5. Dash skywalker nunb
+          cabasshite veknoid luke conan. Boz habassa mandalore lannik iblis utapau cabasshite vor.
+        </Typography>
+        <Typography>
+          Jin'ha lars maris rahm gamorrean thul boss antilles ansionian. Gank iego yané jettster.
+          Bardan nar veila grievous valorum tatooine polis grievous annoo. Wharl biggs ziro desolous
+          thakwaash anzati. Fode desolous talortai ysanne altyr aparo taun jerjerrod. Lowbacca
+          jubnuk tatooine vel var ima-gun toydarian alderaan tusken raider. Defel cal ev-9d9 klivian
+          aleena. Hapan ysanne ventress han. Antemeridian golda darth vurk moff dengar ruwee jin'ha
+          tenel. Conan darth subterrel doldur atrivis kuat teneniel wookiee.
+        </Typography>
+      </SpacedSection>
+      <SpacedSection>
+        <Title>Frequently Asked Questions</Title>
+        <Accordion items={accordionContent} />
+        <div>
+          <TranslateMarkdown
+            source={'To view more Frequently Asked Questions go [here](https://exemple.com).'}
+          />
+        </div>
+        <Button onClick={handleSubmit}>Add Founds</Button>
+      </SpacedSection>
+    </FullSizeContentPanel>
   );
 });
 

@@ -1,3 +1,4 @@
+import { TranslateMarkdown } from 'v2/components';
 import { BearishIndicator, BullishIndicator, NeutralIndicator } from './components';
 
 import moderateRisk from 'assets/images/defizap/moderateRisk.svg';
@@ -5,6 +6,12 @@ import conservativeRisk from 'assets/images/defizap/conservativeRisk.svg';
 import aggressiveRisk from 'assets/images/defizap/aggressiveRisk.svg';
 import unipoolBreakdown from 'assets/images/defizap/breakdowns/unipoolBreakdown.svg';
 import compoundBreakdown from 'assets/images/defizap/breakdowns/compoundBreakdown.svg';
+import smartContractIcn from 'assets/images/defizap/icn-smart-contract.svg';
+import inverstingIcn from 'assets/images/defizap/icn-investing.svg';
+import collateralizationIcn from 'assets/images/defizap/icn-collateralization.svg';
+import liquidityIcn from 'assets/images/defizap/icn-liquidity.svg';
+import innovationIcn from 'assets/images/defizap/icn-innovation.svg';
+import diversificationIcn from 'assets/images/defizap/icn-diversification.svg';
 
 export enum IZapType {
   UNIPOOL = 'UNIPOOL',
@@ -40,6 +47,11 @@ export enum IZapId {
   unipoolseth = 'unipoolseth',
   unipooldai = 'unipooldai',
   compounddai = 'compounddai'
+}
+
+export interface RiskAndReward {
+  icon: any;
+  text: string;
 }
 
 export const fetchZapRiskObject = (riskLevel: number) => {
@@ -131,3 +143,78 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     positionDetails: () => BearishIndicator({ text: 'Bearish on ETH' })
   }
 };
+
+export const riskAndReward: RiskAndReward[] = [
+  {
+    text:
+      '**Smart Contract:** there is a chance that  smart contracts get hacked and you lose all your money',
+    icon: smartContractIcn
+  },
+  {
+    text: '**Investing:** put your ETH to work for you, potential to watch your money grow',
+    icon: inverstingIcn
+  },
+  {
+    text:
+      '**Collateralization:** if the crypto price swings you don’t get liquidated nor does the entire system collapse',
+    icon: collateralizationIcn
+  },
+  {
+    text:
+      '**Innvoation:** Take advantage of innovative decentralized tools avaiable to ETH holders',
+    icon: innovationIcn
+  },
+  {
+    text: '**Liquidity:** markets are more inefficient when they are more shallow',
+    icon: liquidityIcn
+  },
+  {
+    text: '**Diversification:** Expand your investment portfolio leveraging your ETH',
+    icon: diversificationIcn
+  }
+];
+
+export const accordionContent = [
+  {
+    title: 'How is the MyCrypto Compound integration different than the main Compound Interface?',
+    component: TranslateMarkdown({
+      source:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+    })
+  },
+  {
+    title: 'How are interest rates set?',
+    component: TranslateMarkdown({
+      source:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+    })
+  },
+  {
+    title: 'How is interest calculated?',
+    component: TranslateMarkdown({
+      source:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+    })
+  },
+  {
+    title: 'How do I get the original asset back?',
+    component: TranslateMarkdown({
+      source:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+    })
+  },
+  {
+    title: 'How do I borrow assets?',
+    component: TranslateMarkdown({
+      source:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+    })
+  },
+  {
+    title: 'How long do I have to use Compound for?',
+    component: TranslateMarkdown({
+      source:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+    })
+  }
+];

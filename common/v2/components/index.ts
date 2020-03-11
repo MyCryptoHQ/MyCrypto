@@ -67,3 +67,4 @@ export { default as EditableText } from './EditableText';
 export { default as Account } from './Account';
 export { default as GeneralStepper } from './GeneralStepper';
 export { default as Tooltip } from './Tooltip';
+export { default as AppLogo } from './AppLogo';
