@@ -26,6 +26,10 @@ enum WalletSigningState {
 
 const SignButton = styled(Button)`
   width: 100%;
+
+  > div {
+    justify-content: center;
+  }
 `;
 
 export default class SignTransactionMnemonic extends Component<
