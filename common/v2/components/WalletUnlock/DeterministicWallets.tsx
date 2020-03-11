@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import Select, { Option } from 'react-select';
-import { Table, Button, Typography } from '@mycrypto/ui';
+import { Table, Button } from '@mycrypto/ui';
 import BN from 'bn.js';
 
 import translate, { translateRaw } from 'v2/translations';
-import { Input, Spinner, Link } from 'v2/components';
+import { Input, Spinner } from 'v2/components';
 
 import { truncate } from 'v2/utils';
 import { Network } from 'v2/types';
-import { COLORS } from 'v2/theme';
 import {
   getBaseAssetByNetwork,
   AddressBookContext,
@@ -29,15 +28,7 @@ import { getBaseAssetBalances, BalanceMap } from 'v2/services/Store/BalanceServi
 import Account from '../Account';
 
 const FooterLink = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: baseline;
-  p {
-    font-size: 16px;
-  }
-  a {
-    color: ${COLORS.BLUE_BRIGHT};
-  }
+  text-align: center;
 `;
 
 function Radio({ checked }: { checked: boolean }) {
@@ -344,12 +335,7 @@ export function DeterministicWalletsClass({
           {translate('ACTION_6')}
         </Button>
       </div>
-      <FooterLink>
-        <Typography>{translateRaw('FIND_ETH_PHRASE')}</Typography>&nbsp;
-        <Link href="https://findeth.io" target="_blank" rel="noreferrer">
-          {translateRaw('FIND_ETH_LINK')}
-        </Link>
-      </FooterLink>
+      <FooterLink>{translate('FIND_ETH_LINK')}</FooterLink>
     </div>
   );
 }
