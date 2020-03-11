@@ -7,8 +7,8 @@ import translate from 'v2/translations';
 import { StoreAccount } from 'v2/types';
 import { COLORS } from 'v2/theme';
 import { Typography, Currency } from 'v2/components';
+import { FromToAccount, SwapFromToDiagram } from 'v2/components/TransactionFlow/displays';
 
-import { SwapFromToDiagram, FromToAccount } from './fields';
 import { ISwapAsset, LAST_CHANGED_AMOUNT } from '../types';
 
 const StyledButton = styled(Button)`
@@ -46,7 +46,7 @@ interface Props {
   fromAmount: string;
   toAmount: string;
   account: StoreAccount;
-  swapPrice: number;
+  exchangeRate: string;
   lastChangedAmount: LAST_CHANGED_AMOUNT;
   isSubmitting: boolean;
   onSuccess(): void;
@@ -59,12 +59,10 @@ export default function ConfirmSwap(props: Props) {
     fromAmount,
     toAmount,
     account,
-    swapPrice,
-    lastChangedAmount,
+    exchangeRate,
     isSubmitting,
     onSuccess
   } = props;
-  const conversionRate = lastChangedAmount === LAST_CHANGED_AMOUNT.TO ? 1 / swapPrice : swapPrice;
 
   return (
     <div>
@@ -74,7 +72,10 @@ export default function ConfirmSwap(props: Props) {
         fromAmount={fromAmount}
         toAmount={toAmount}
       />
-      <FromToAccount fromAccount={account} toAccount={account} />
+      <FromToAccount
+        from={{ address: account.address, label: account.label }}
+        to={{ address: account.address, label: account.label }}
+      />
       <LinkLabelWrapper>
         <LinkLabel value={translate('SWAP_WHY_RATE')} fontSize="0.8em" />
       </LinkLabelWrapper>
@@ -86,7 +87,7 @@ export default function ConfirmSwap(props: Props) {
           <Currency
             bold={true}
             fontSize="1em"
-            amount={conversionRate.toString()}
+            amount={exchangeRate}
             symbol={toAsset.symbol}
             decimals={8}
           />

@@ -8,7 +8,8 @@ import {
   RowDeleteOverlay,
   Network,
   EthAddress,
-  EditableText
+  EditableText,
+  Tooltip
 } from 'v2/components';
 import { ExtendedAddressBook, AddressBook as IAddressBook } from 'v2/types';
 import { truncate } from 'v2/utils';
@@ -135,7 +136,13 @@ export default function AddressBook({
     }
   };
   return (
-    <DashboardPanel heading="Address Book">
+    <DashboardPanel
+      heading={
+        <>
+          {translateRaw('ADDRESSBOOK')} <Tooltip tooltip={translateRaw('ADDRESS_BOOK_TOOLTIP')} />
+        </>
+      }
+    >
       <CollapsibleTable breakpoint={450} {...addressBookTable} />
       <BottomRow>
         <AddAccountButton onClick={toggleFlipped} basic={true}>

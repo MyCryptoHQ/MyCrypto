@@ -1,5 +1,5 @@
 import { IAccount, AddressBook, Network, WalletId, ExtendedAddressBook } from 'v2/types';
-import { WALLETS_CONFIG } from 'v2/config';
+import { getWalletConfig } from 'v2/config';
 
 export const getLabelByAccount = (
   account: IAccount,
@@ -31,17 +31,22 @@ export const getLabelByAddressAndNetwork = (
 / that they can change later which differentiates between accounts.
 / `New Ethereum Account 1` vs `New Ethereum Account 2` vs `New Ethereum Classic Account 1`
 */
-export const findNextUnusedDefaultLabel = (wallet: WalletId) => (
-  contacts: AddressBook[]
-): string => {
+
+const getUnusedLabel = (contacts: AddressBook[], generateLabel: (index: number) => string) => {
   let index = 0;
   let isFound: AddressBook | undefined;
   let unusedLabel: string;
   do {
     index += 1;
-    unusedLabel = `${WALLETS_CONFIG[wallet].name} Account ${index}`;
+    unusedLabel = generateLabel(index);
     isFound = contacts.find(a => a.label === unusedLabel);
   } while (isFound);
 
   return unusedLabel;
 };
+
+export const findNextUnusedDefaultLabel = (wallet: WalletId) => (contacts: AddressBook[]): string =>
+  getUnusedLabel(contacts, index => `${getWalletConfig(wallet).name} Account ${index}`);
+
+export const findNextRecipientLabel = (contacts: AddressBook[]) =>
+  getUnusedLabel(contacts, index => `Recipient ${index}`);

@@ -1,4 +1,5 @@
 import { Asset, IAccount, StoreAccount } from 'v2/types';
+import { DEFAULT_NETWORK } from 'v2/config';
 
 export const getDashboardAccounts = (
   accounts: StoreAccount[],
@@ -26,3 +27,6 @@ export const getAccountsByAsset = (
   accounts.filter(({ assets }) => assets.find(({ uuid }) => uuid === targetUuid));
 
 export const getBaseAsset = (account: StoreAccount) => account.assets.find(a => a.type === 'base');
+
+export const isEthereumAccount = (account: StoreAccount | IAccount) =>
+  account.networkId === DEFAULT_NETWORK;

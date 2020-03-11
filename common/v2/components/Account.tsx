@@ -1,9 +1,10 @@
 import React, { ReactNode } from 'react';
 
 import styled from 'styled-components';
-import { Avatar, Identicon, Tooltip, scale } from '@mycrypto/ui';
+import { Avatar, Identicon, scale } from '@mycrypto/ui';
 import Typography from './Typography';
 import EthAddress from './EthAddress';
+import Tooltip from './Tooltip';
 
 const Flex = styled.div`
   align-items: center;

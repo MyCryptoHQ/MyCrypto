@@ -4,7 +4,7 @@ import {
   getNetworkByChainId,
   getBaseAssetByNetwork,
   getAssetByContractAndNetwork,
-  getAccountByAddressAndNetworkName
+  getStoreAccount
 } from 'v2/services/Store';
 import {
   ERC20,
@@ -20,8 +20,9 @@ import {
   getDecimalFromEtherUnit,
   gasPriceToBase
 } from 'v2/services/EthService';
-import { ITxReceipt, ExtendedAsset, Network, ITxConfig, IAccount } from 'v2/types';
+import { ITxReceipt, ExtendedAsset, Network, ITxConfig, StoreAccount } from 'v2/types';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
+import { TAddress } from 'v2/types/address';
 
 export const fromTxReceiptObj = (txReceipt: ITxReceipt) => (
   assets: ExtendedAsset[],
@@ -77,7 +78,7 @@ export const makeTxConfigFromSignedTx = (
   signedTx: Arrayish,
   assets: ExtendedAsset[],
   networks: Network[],
-  accounts: IAccount[],
+  accounts: StoreAccount[],
   oldTxConfig: ITxConfig = {} as ITxConfig
 ): ITxConfig => {
   const decodedTx = decodeTransaction(signedTx);
@@ -111,7 +112,7 @@ export const makeTxConfigFromSignedTx = (
     baseAsset: baseAsset || oldTxConfig.baseAsset,
     senderAccount:
       decodedTx.from && networkDetected
-        ? getAccountByAddressAndNetworkName(accounts)(decodedTx.from, networkDetected.name) ||
+        ? getStoreAccount(accounts)(decodedTx.from as TAddress, networkDetected.id) ||
           oldTxConfig.senderAccount ||
           defaultSenderAccount
         : oldTxConfig.senderAccount || defaultSenderAccount,

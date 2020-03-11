@@ -1,6 +1,5 @@
 import { bigNumberify } from 'ethers/utils';
 
-import { getNetworkById } from './Network';
 import {
   Network,
   AssetBalanceObject,
@@ -9,8 +8,13 @@ import {
   IAccount,
   StoreAccount,
   ITxStatus,
-  ITxReceipt
+  ITxReceipt,
+  ExtendedAddressBook
 } from 'v2/types';
+
+import { getLabelByAccount } from './AddressBook';
+import { getNetworkById } from './Network';
+import { translateRaw } from 'v2/translations';
 
 const getAssetsByUuid = (accountAssets: AssetBalanceObject[], assets: Asset[]): StoreAsset[] =>
   accountAssets
@@ -26,13 +30,18 @@ const getAssetsByUuid = (accountAssets: AssetBalanceObject[], assets: Asset[]): 
 export const getStoreAccounts = (
   accounts: IAccount[],
   assets: Asset[],
-  networks: Network[]
+  networks: Network[],
+  contacts: ExtendedAddressBook[]
 ): StoreAccount[] => {
-  return accounts.map(a => ({
-    ...a,
-    assets: getAssetsByUuid(a.assets, assets),
-    network: getNetworkById(a.networkId, networks)
-  }));
+  return accounts.map(a => {
+    const accountLabel = getLabelByAccount(a, contacts);
+    return {
+      ...a,
+      assets: getAssetsByUuid(a.assets, assets),
+      network: getNetworkById(a.networkId, networks),
+      label: accountLabel ? accountLabel.label : translateRaw('NO_LABEL')
+    };
+  });
 };
 
 export const txIsPending = ({ stage }: { stage: ITxStatus }) => stage === ITxStatus.PENDING;

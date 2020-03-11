@@ -1,4 +1,6 @@
 const path = require('path');
+const merge = require('webpack-merge');
+const custom = require('../webpack_config/development');
 
 module.exports = {
   stories: ['../common/**/*.stories.(tsx|mdx)'],
@@ -11,22 +13,30 @@ module.exports = {
   ],
 
   webpackFinal: async config => {
-    config.module.rules.push({
-      test: /\.tsx?$/,
-      use: [require.resolve('babel-loader')]
-    });
+    // Remove storybooks handling of assets in favor of our own.
+    config.module.rules = config.module.rules.filter(
+      rule => !rule.test.toString().includes('svg')
+    )
 
-    config.resolve.extensions.push('.ts', '.tsx');
-    config.resolve.modules.push(
-      path.resolve(__dirname, '../common'),
-      path.resolve(__dirname, '..')
-    );
+    // Merge storybook and our custom webpack_config/development.js
+    return merge.smart(
+      config,
 
-    config.node = {
-      fs: 'empty',
-      child_process: 'empty'
-    };
-
-    return config;
+      {
+        resolve: custom.resolve,
+        module: {
+          rules: [
+            ...custom.module.rules
+          ]
+        }
+      },
+      // Necessary to launch @storybook
+      {
+        node: {
+          fs: 'empty',
+          child_process: 'empty'
+        }
+      }
+    )
   }
 };

@@ -1,93 +1,87 @@
 import React, { useContext, useState } from 'react';
-import { FastField, Field, FieldProps, Form, Formik } from 'formik';
+import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
-import { isEmpty } from 'lodash';
-import { bigNumberify, formatEther, parseEther } from 'ethers/utils';
+import _, { isEmpty } from 'lodash';
+import { formatEther, parseEther, bigNumberify } from 'ethers/utils';
 import BN from 'bn.js';
 import styled from 'styled-components';
 import * as R from 'ramda';
 import { ValuesType } from 'utility-types';
-
-import questionSVG from 'assets/images/icn-question.svg';
+import { ResolutionError } from '@unstoppabledomains/resolution';
 
 import translate, { translateRaw } from 'v2/translations';
 import {
+  InlineMessage,
   AccountDropdown,
-  AddressField,
   AmountInput,
   AssetDropdown,
+  WhenQueryExists,
   Checkbox,
-  InlineMessage,
-  WhenQueryExists
+  ContactLookupField,
+  Tooltip
 } from 'v2/components';
 import {
-  getAccountBalance,
-  getAccountsByAsset,
-  getBaseAssetByNetwork,
   getNetworkById,
-  StoreContext
+  getBaseAssetByNetwork,
+  getAccountsByAsset,
+  StoreContext,
+  getAccountBalance
 } from 'v2/services/Store';
 import {
   Asset,
+  Network,
   IAccount,
+  StoreAsset,
+  WalletId,
   IFormikFields,
   IStepComponentProps,
   ITxConfig,
-  Network,
-  StoreAsset,
-  WalletId
+  ErrorObject,
+  StoreAccount
 } from 'v2/types';
 import {
-  baseToConvertedUnit,
-  bigNumGasPriceToViewableGwei,
-  convertedToBaseUnit,
-  gasStringsToMaxGasBN,
   getNonce,
   hexToNumber,
-  isBurnAddress,
-  isChecksumAddress,
-  isTransactionFeeHigh,
-  isValidENSName,
   isValidETHAddress,
-  isValidPositiveNumber
+  gasStringsToMaxGasBN,
+  convertedToBaseUnit,
+  baseToConvertedUnit,
+  isValidPositiveNumber,
+  isTransactionFeeHigh,
+  isBurnAddress,
+  bigNumGasPriceToViewableGwei
 } from 'v2/services/EthService';
 import UnstoppableResolution from 'v2/services/UnstoppableService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 import {
-  DEFAULT_ASSET_DECIMAL,
   GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
-  GAS_PRICE_GWEI_UPPER_BOUND
+  GAS_PRICE_GWEI_UPPER_BOUND,
+  DEFAULT_ASSET_DECIMAL
 } from 'v2/config';
 import { RatesContext } from 'v2/services/RatesProvider';
-
 import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
-import { DataField, GasLimitField, GasPriceField, GasPriceSlider, NonceField } from './fields';
+import { weiToFloat, formatSupportEmail } from 'v2/utils';
+import { InlineMessageType } from 'v2/types/inlineMessages';
+import { isValidETHRecipientAddress } from 'v2/services/EthService/validators';
+
+import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
 import './SendAssetsForm.scss';
 import {
-  validateAmountField,
-  validateDataField,
   validateGasLimitField,
   validateGasPriceField,
-  validateNonceField
+  validateNonceField,
+  validateDataField,
+  validateAmountField
 } from './validators';
-import { isERC20Tx, processFormForEstimateGas } from '../helpers';
-import { formatSupportEmail, weiToFloat } from 'v2/utils';
-import { ResolutionError } from '@unstoppabledomains/resolution';
-import { InlineMessageType } from 'v2/types/inlineMessages';
+import { processFormForEstimateGas, isERC20Tx } from '../helpers';
+import { ProtectTransactionUtils, ProtectTxError, WithProtectApiFactory } from '../../ProtectTransaction';
 import {
   ProtectedTransactionError,
   TransactionProtectionButton,
-  withProtectTransaction
 } from '../../ProtectTransaction/components';
-import {
-  ProtectTransactionUtils,
-  ProtectTxError,
-  WithProtectApiFactory
-} from '../../ProtectTransaction';
-import { SignTransaction } from './index';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;
@@ -105,7 +99,7 @@ const initialFormikValues: IFormikFields = {
     display: ''
   },
   amount: '',
-  account: {} as IAccount, // should be renamed senderAccount
+  account: {} as StoreAccount, // should be renamed senderAccount
   network: {} as Network, // Not a field move to state
   asset: {} as StoreAsset,
   txDataField: '0x',
@@ -171,7 +165,11 @@ const SendAssetsForm = ({
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
-  const [baseAsset, setBaseAsset] = useState({} as Asset);
+  const [baseAsset, setBaseAsset] = useState(
+    (txConfig.network &&
+      getBaseAssetByNetwork({ network: txConfig.network, assets: userAssets })) ||
+      ({} as Asset)
+  );
   const [resolutionError, setResolutionError] = useState<ResolutionError>();
   const [selectedAsset, setAsset] = useState({} as Asset);
 
@@ -203,52 +201,45 @@ const SendAssetsForm = ({
         }
       ),
     account: Yup.object().required(translateRaw('REQUIRED')),
-    address: Yup.object({
-      value: Yup.string()
-        .test(
-          'check-eth-address',
-          translateRaw('TO_FIELD_ERROR'),
-          value =>
-            isValidETHAddress(value) ||
-            (isValidENSName(value) && UnstoppableResolution.isValidDomain(value))
-        )
-        // @ts-ignore Hack as Formik doesn't officially support warnings
-        // tslint:disable-next-line
-        .test('is-checksummed', translate('CHECKSUM_ERROR'), function(value) {
-          if (!isChecksumAddress(value)) {
-            return {
-              name: 'ValidationError',
-              type: InlineMessageType.INFO_CIRCLE,
-              message: translate('CHECKSUM_ERROR')
-            };
-          }
-          return true;
-        })
-        // @ts-ignore Hack as Formik doesn't officially support warnings
-        .test('check-sending-to-yourself', translateRaw('SENDING_TO_YOURSELF'), function(value) {
-          const account = this.parent.account;
-          if (!isEmpty(account) && account.address.toLowerCase() === value.toLowerCase()) {
-            return {
-              name: 'ValidationError',
-              type: InlineMessageType.INFO_CIRCLE,
-              message: translateRaw('SENDING_TO_YOURSELF')
-            };
-          }
-          return true;
-        })
-        // @ts-ignore Hack as Formik doesn't officially support warnings
-        // tslint:disable-next-line
-        .test('check-sending-to-burn', translateRaw('SENDING_TO_BURN_ADDRESS'), function(value) {
-          if (isBurnAddress(value)) {
-            return {
-              name: 'ValidationError',
-              type: InlineMessageType.INFO_CIRCLE,
-              message: translateRaw('SENDING_TO_BURN_ADDRESS')
-            };
-          }
-          return true;
-        })
-    }).required(translateRaw('REQUIRED')),
+    address: Yup.object()
+      .required(translateRaw('REQUIRED'))
+      // @ts-ignore Hack as Formik doesn't officially support warnings
+      // tslint:disable-next-line
+      .test('is-checksummed', translate('CHECKSUM_ERROR'), function(value) {
+        const validationResult = isValidETHRecipientAddress(value.value, resolutionError);
+        if (!validationResult.success) {
+          return {
+            name: validationResult.name,
+            type: validationResult.type,
+            message: validationResult.message
+          };
+        }
+        return true;
+      })
+      // @ts-ignore Hack as Formik doesn't officially support warnings
+      // tslint:disable-next-line
+      .test('check-sending-to-burn', translateRaw('SENDING_TO_BURN_ADDRESS'), function(value) {
+        if (isBurnAddress(value.value)) {
+          return {
+            name: 'ValidationError',
+            type: InlineMessageType.INFO_CIRCLE,
+            message: translateRaw('SENDING_TO_BURN_ADDRESS')
+          };
+        }
+        return true;
+      })
+      // @ts-ignore Hack as Formik doesn't officially support warnings
+      .test('check-sending-to-yourself', translateRaw('SENDING_TO_YOURSELF'), function(value) {
+        const account = this.parent.account;
+        if (!isEmpty(account) && account.address.toLowerCase() === value.value.toLowerCase()) {
+          return {
+            name: 'ValidationError',
+            type: InlineMessageType.INFO_CIRCLE,
+            message: translateRaw('SENDING_TO_YOURSELF')
+          };
+        }
+        return true;
+      }),
     gasLimitField: Yup.number()
       .min(GAS_LIMIT_LOWER_BOUND, translateRaw('ERROR_8'))
       .max(GAS_LIMIT_UPPER_BOUND, translateRaw('ERROR_8'))
@@ -328,7 +319,7 @@ const SendAssetsForm = ({
             }
           };
 
-          const handleDomainResolve = async (name: string) => {
+          const handleDomainResolve = async (name: string): Promise<string | undefined> => {
             if (!values || !values.network) {
               setIsResolvingDomain(false);
               setResolutionError(undefined);
@@ -339,12 +330,9 @@ const SendAssetsForm = ({
             try {
               const unstoppableAddress = await UnstoppableResolution.getResolvedAddress(
                 name,
-                values.asset.ticker
+                baseAsset.ticker
               );
-              setFieldValue('address', {
-                ...values.address,
-                value: unstoppableAddress
-              });
+              return unstoppableAddress;
             } catch (err) {
               // Force the field value to error so that isValidAddress is triggered!
               setFieldValue('address', {
@@ -453,7 +441,9 @@ const SendAssetsForm = ({
               {/* Sender Address */}
               <fieldset className="SendAssetsForm-fieldset">
                 <label htmlFor="account" className="input-group-header">
-                  {translate('X_SENDER')}
+                  <div>
+                    {translate('X_SENDER')} <Tooltip tooltip={translateRaw('SENDER_TOOLTIP')} />
+                  </div>
                 </label>
                 <Field
                   name="account"
@@ -480,16 +470,27 @@ const SendAssetsForm = ({
                 <label htmlFor="address" className="input-group-header">
                   {translate('X_RECIPIENT')}
                 </label>
-                <AddressField
-                  fieldName="address"
-                  handleDomainResolve={handleDomainResolve}
-                  onBlur={() => handleGasEstimate()}
-                  error={errors && touched.address && errors.address && errors.address.value}
-                  network={values.network}
-                  isLoading={isResolvingName}
-                  isError={!isValidAddress}
-                  resolutionError={resolutionError}
-                  placeholder="Enter an Address or Contact"
+                <Field
+                  name="address"
+                  value={values.address}
+                  component={(fieldProps: FieldProps) => (
+                    <ContactLookupField
+                      error={
+                        errors &&
+                        touched.address &&
+                        errors.address &&
+                        (errors.address as ErrorObject)
+                      }
+                      fieldProps={fieldProps}
+                      network={values.network}
+                      resolutionError={resolutionError}
+                      isValidAddress={isValidAddress}
+                      isResolvingName={isResolvingName}
+                      onBlur={handleGasEstimate}
+                      handleDomainResolve={handleDomainResolve}
+                      clearErrors={() => setResolutionError(undefined)}
+                    />
+                  )}
                 />
               </fieldset>
               {/* Amount */}
@@ -589,7 +590,10 @@ const SendAssetsForm = ({
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-limit">
                         <label htmlFor="gasLimit" className="input-group-header label-with-action">
-                          <div>{translate('OFFLINE_STEP2_LABEL_4')}</div>
+                          <div>
+                            {translate('OFFLINE_STEP2_LABEL_4')}
+                            <Tooltip tooltip={translate('GAS_LIMIT_TOOLTIP')} />
+                          </div>
                           <NoMarginCheckbox
                             onChange={toggleIsAutoGasSet}
                             checked={values.isAutoGasSet}
@@ -617,7 +621,10 @@ const SendAssetsForm = ({
                     </div>
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-price">
-                        <label htmlFor="gasPrice">{translate('OFFLINE_STEP2_LABEL_3')}</label>
+                        <label htmlFor="gasPrice">
+                          {translate('OFFLINE_STEP2_LABEL_3')}
+                          <Tooltip tooltip={translate('GAS_PRICE_TOOLTIP')} />
+                        </label>
                         <Field
                           name="gasPriceField"
                           validate={validateGasPriceField}
@@ -638,16 +645,7 @@ const SendAssetsForm = ({
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-nonce">
                         <label htmlFor="nonce">
                           <div>
-                            Nonce{' '}
-                            <a
-                              href={
-                                'https://support.mycrypto.com/general-knowledge/ethereum-blockchain/what-is-nonce'
-                              }
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <img src={questionSVG} alt="Help" />{' '}
-                            </a>
+                            Nonce <Tooltip tooltip={translate('NONCE_TOOLTIP')} />
                           </div>
                         </label>
                         <Field
@@ -745,9 +743,8 @@ const SendAssetsForm = ({
           );
         }}
       />
-      {mainComponentDisabled && <div className="SendAssetsForm-disabled-overlay" />}
     </div>
   );
 };
 
-export default withProtectTransaction(SendAssetsForm, SignTransaction);
+export default SendAssetsForm;

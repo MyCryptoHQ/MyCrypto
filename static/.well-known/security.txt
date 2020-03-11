@@ -1,9 +1,8 @@
 # If you would like to report a security issue
-# please open a report on HackerOne
-Contact: https://hackerone.com/mycrypto
-Acknowledgments: https://hackerone.com/mycrypto/thanks
+# please open a report via instructions at security.mycrypto.com
+Contact: https://security.mycrypto.com
 Preferred-Languages: en
 Canonical: https://mycrypto.com/.well-known/security.txt
-Policy: https://hackerone.com/mycrypto?view_policy=true
+Policy: https://security.mycrypto.com/#intro
 Hiring: https://about.mycrypto.com/jobs/
 OpenBugBounty: https://openbugbounty.org/bugbounty/MyCrypto/

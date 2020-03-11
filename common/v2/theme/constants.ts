@@ -14,12 +14,14 @@ export const COLORS = {
   BLUE_BRIGHT: '#1eb8e7',
   BLUE_LIGHT: '#007896',
   BLUE_SKY: '#55b6e2',
+  BLUE_LIGHT_DARKISH: '#006077',
   BLUE_GREY: '#b5bfc7',
   BLUE_GREY_LIGHTEST: '#fafcfc',
   BLUE_DARK_SLATE: '#163150',
   BLUE_DARK: '#1c314e',
 
   LEMON_GRASS: '#99968c',
+  LIGHT_GREEN: '#B3DD87',
   SUCCESS_GREEN: '#5dba5a',
   SUCCESS_GREEN_LIGHT: '#b3dd87',
   WARNING_ORANGE: '#fa873f',
@@ -43,6 +45,8 @@ export const COLORS = {
   GREYISH_BROWN: '#424242',
   PURPLE: '#a086f7',
   ORANGE: '#fa863f',
+  GREEN: '#28a745',
+  RED: '#FF0000',
 
   BG_GRAY: '#f6f8fa'
 };
@@ -64,6 +68,10 @@ export const FONT_SIZE = {
   LG: '20px',
   XL: '24px',
   XXL: '36px'
+};
+
+export const LINE_HEIGHT = {
+  BASE: '16px'
 };
 
 export const SPACING = {

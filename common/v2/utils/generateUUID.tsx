@@ -21,7 +21,7 @@ export const generateUUID = (): TUuid => {
 
 export const generateAssetUUID = (chainId: string | number, address?: string): TUuid =>
   address
-    ? (getUuid(`${chainId}-${toChecksumAddress(address)}`) as TUuid)
+    ? (getUuid(`${chainId.toString()}-${toChecksumAddress(address)}`) as TUuid)
     : (getUuid(chainId.toString()) as TUuid);
 
 export const generateContractUUID = (abi: string) => getUuid(abi) as TUuid;

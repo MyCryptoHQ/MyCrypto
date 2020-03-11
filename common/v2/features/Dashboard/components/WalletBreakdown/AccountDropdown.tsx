@@ -12,6 +12,7 @@ import { IAccount, ExtendedAddressBook, TUuid } from 'v2/types';
 const { BLUE_BRIGHT } = COLORS;
 
 interface AccountDropdownProps {
+  className?: string;
   accounts: IAccount[];
   selected: TUuid[];
   onSubmit(selected: TUuid[]): void;
@@ -103,7 +104,12 @@ const renderAccounts = (
     );
   });
 
-const AccountDropdown = ({ accounts = [], selected = [], onSubmit }: AccountDropdownProps) => {
+const AccountDropdown = ({
+  accounts = [],
+  selected = [],
+  onSubmit,
+  ...props
+}: AccountDropdownProps) => {
   const { addressBook } = useContext(AddressBookContext);
   const ref = useRef<HTMLElement>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -143,7 +149,7 @@ const AccountDropdown = ({ accounts = [], selected = [], onSubmit }: AccountDrop
   };
 
   return (
-    <SDropdown ref={ref as SCref} role="button" onClick={toggleOpen} isOpen={isOpen}>
+    <SDropdown ref={ref as SCref} role="button" onClick={toggleOpen} isOpen={isOpen} {...props}>
       <LabelRow>
         <span>{label}</span>
         <IconWrapper icon="navDownCaret" />

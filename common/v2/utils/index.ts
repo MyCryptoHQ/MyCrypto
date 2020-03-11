@@ -13,9 +13,16 @@ export {
   convertToFiat,
   convertToFiatFromAsset,
   weiToFloat,
-  convert,
+  convertToBN,
+  divideBNFloats,
+  multiplyBNFloats,
+  addBNFloats,
+  subtractBNFloats,
+  trimBN,
+  calculateMarkup,
   withCommission
 } from './convert';
+export { EtherUUID } from './constants';
 export { isArrayEqual } from './isArrayEqual';
 export { useInterval } from './useInterval';
 export * from './useStateReducer';
@@ -43,3 +50,4 @@ export { withContext } from './withContext';
 export { getWeb3Config, isWeb3Wallet } from './web3';
 export { toArray } from './toArray';
 export { objToString } from './objToString';
+export * from './constants';

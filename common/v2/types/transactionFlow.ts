@@ -1,12 +1,12 @@
 import {
   Asset,
-  IAccount as IIAccount,
   Network as INetwork,
   GasEstimates,
-  IAccount,
   ITxReceipt,
-  WalletId
+  WalletId,
+  StoreAccount
 } from 'v2/types';
+import { IZapConfig } from 'v2/features/DeFiZap/config';
 
 export type ISignedTx = string;
 
@@ -25,7 +25,7 @@ export interface ITxConfig {
   readonly rawTransaction: ITxObject /* The rawTransaction object that will be signed */;
   readonly amount: string;
   readonly receiverAddress: string;
-  readonly senderAccount: IIAccount;
+  readonly senderAccount: StoreAccount;
   readonly from: string;
   readonly asset: Asset;
   readonly baseAsset: Asset;
@@ -41,7 +41,7 @@ export interface IFormikFields {
   asset: Asset;
   address: IReceiverAddress;
   amount: string;
-  account: IIAccount;
+  account: StoreAccount;
   txDataField: string;
   gasEstimates: GasEstimates;
   gasPriceField: string;
@@ -55,7 +55,7 @@ export interface IFormikFields {
 
 export interface ISignComponentProps {
   network: INetwork;
-  senderAccount: IAccount;
+  senderAccount: StoreAccount;
   rawTransaction: ITxObject;
   children?: never;
   onSuccess(receipt: ITxReceipt | ISignedTx): void;
@@ -65,6 +65,8 @@ export interface IStepComponentProps {
   txConfig: ITxConfig;
   txReceipt?: ITxReceipt;
   signedTx?: string;
+  txType?: ITxType;
+  zapSelected?: IZapConfig;
   children?: never;
   completeButtonText?: string;
   onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;
@@ -79,8 +81,15 @@ export interface IReceiverAddress {
 export type SigningComponents = {
   readonly [k in WalletId]: React.ComponentType<ISignComponentProps> | null;
 };
+
 export enum ITxStatus {
   SUCCESS = 'SUCCESS',
   FAILED = 'FAILED',
   PENDING = 'PENDING'
+}
+
+export enum ITxType {
+  STANDARD = 'STANDARD',
+  SWAP = 'SWAP',
+  DEFIZAP = 'DEFIZAP'
 }

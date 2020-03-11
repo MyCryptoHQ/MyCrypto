@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { convertToFiatFromAsset } from 'v2/utils';
 import { AssetWithDetails, TSymbol } from 'v2/types';
-import { AssetIcon, DashboardPanel, Spinner } from 'v2/components';
+import { AssetIcon, DashboardPanel, Spinner, Tooltip } from 'v2/components';
 import { translateRaw } from 'v2/translations';
 
 import { FONT_SIZE, SPACING } from 'v2/theme';
@@ -88,7 +88,11 @@ export function TokenList(props: TokenListProps) {
   } = props;
   return (
     <DashboardPanel
-      heading={translateRaw('TOKENS')}
+      heading={
+        <>
+          {translateRaw('TOKENS')} <Tooltip tooltip={translateRaw('DASHBOARD_TOKENS_TOOLTIP')} />
+        </>
+      }
       headingRight={
         <div style={{ minWidth: '170px', textAlign: 'right' }}>
           <StyledButton onClick={() => handleScanTokens()}>

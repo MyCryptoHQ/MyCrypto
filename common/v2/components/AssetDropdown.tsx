@@ -18,16 +18,10 @@ const Label = styled.div`
   color: ${props => props.theme.text};
 `;
 
-// Fixes weird placement issues for react-select
 const DropdownContainer = styled('div')`
   width: ${(props: { fluid: boolean }) => (props.fluid ? '100%' : 'default')};
-
-  .has-value > .Select-control > .Select-multi-value-wrapper > .Select-input:only-child {
-    transform: translateY(0%);
-    padding: 16px 15px 16px 15px;
-    position: inherit;
-  }
 `;
+
 // Class component to avoid 'Function components cannot be given refs' error
 class AssetOption extends React.PureComponent<OptionComponentProps> {
   public render() {
@@ -89,7 +83,7 @@ function AssetDropdown({
       {label && <Label>{label}</Label>}
       <Dropdown
         placeholder={translateRaw('SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER')}
-        options={assets}
+        options={assets.map(a => ({ value: showOnlyTicker ? a.symbol : a.name, ...a }))}
         disabled={disabled}
         searchable={searchable}
         onChange={(option: Asset) => onSelect && onSelect(option)}

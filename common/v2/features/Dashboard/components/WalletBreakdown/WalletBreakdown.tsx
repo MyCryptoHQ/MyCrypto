@@ -15,6 +15,7 @@ import AccountDropdown from './AccountDropdown';
 import BalancesDetailView from './BalancesDetailView';
 import WalletBreakdownView from './WalletBreakdownView';
 import NoAccountsSelected from './NoAccountsSelected';
+import { Tooltip } from 'v2/components';
 
 const WalletBreakdownTop = styled.div`
   display: flex;
@@ -28,6 +29,8 @@ const WalletBreakdownTop = styled.div`
 `;
 
 const AccountDropdownWrapper = styled.div`
+  display: flex;
+  align-items: center;
   width: 100%;
   max-width: 480px;
   margin-bottom: ${SPACING.SM};
@@ -35,6 +38,11 @@ const AccountDropdownWrapper = styled.div`
   @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
     margin-bottom: ${SPACING.BASE};
   }
+`;
+
+const SAccountDropdown = styled(AccountDropdown)`
+  width: 100%;
+  margin-left: ${SPACING.XS};
 `;
 
 const WalletBreakdownPanel = styled(Panel)`
@@ -92,7 +100,8 @@ export function WalletBreakdown() {
     <>
       <WalletBreakdownTop>
         <AccountDropdownWrapper>
-          <AccountDropdown
+          <Tooltip tooltip={translateRaw('DASHBOARD_ACCOUNT_SELECT_TOOLTIP')} />
+          <SAccountDropdown
             accounts={accounts}
             selected={settings.dashboardAccounts}
             onSubmit={(selected: TUuid[]) => {

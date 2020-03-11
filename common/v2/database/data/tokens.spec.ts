@@ -1,5 +1,7 @@
-import { isValidETHAddress } from 'v2/services/EthService';
+import { isValidAddress } from 'v2/services/EthService';
 import { NetworkAssets as TOKENS } from './tokens';
+import { NETWORKS_CONFIG } from '.';
+import { NetworkId } from 'v2/types';
 
 describe('Tokens JSON', () => {
   Object.keys(TOKENS).forEach(network => {
@@ -8,9 +10,9 @@ describe('Tokens JSON', () => {
       const addressCollisionMap: any = {};
       const symbolCollisionMap: any = {};
       const validationErrors: string[] = [];
-
+      const networkObj = NETWORKS_CONFIG[network as NetworkId];
       tokens.forEach((token: any) => {
-        if (!isValidETHAddress(token.address)) {
+        if (!isValidAddress(token.address, networkObj.chainId)) {
           validationErrors.push(
             `Token ${token.symbol} has invalid contract address '${token.address}'`
           );

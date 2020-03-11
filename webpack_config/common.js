@@ -31,7 +31,8 @@ module.exports = {
       config.path.root
     ],
     alias: {
-      modernizr$: path.resolve(__dirname, '../.modernizrrc.js')
+      modernizr$: path.resolve(__dirname, '../.modernizrrc.js'),
+      '@fixtures': `${config.path.root}/jest_config/__fixtures__`
     }
   },
 
@@ -54,7 +55,8 @@ module.exports = {
         include: [
           config.path.src,
           config.path.shared,
-          config.path.electron
+          config.path.electron,
+          config.path.testConfig
         ],
         exclude: /node_modules/,
       },

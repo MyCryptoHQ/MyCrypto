@@ -10,22 +10,27 @@ export enum LAST_CHANGED_AMOUNT {
   TO = 'TO_AMOUNT'
 }
 
-export interface SwapState {
-  assets: ISwapAsset[];
+export interface SwapDisplayData {
   fromAsset: ISwapAsset;
+  toAsset: ISwapAsset;
   fromAmount: string;
+  toAmount: string;
+}
+
+export interface SwapState extends SwapDisplayData {
+  assets: ISwapAsset[];
   fromAmountError: string | JSX.Element;
   isCalculatingFromAmount: boolean;
-  toAsset: ISwapAsset;
-  toAmount: string;
   toAmountError: string | JSX.Element;
   isCalculatingToAmount: boolean;
   lastChangedAmount: LAST_CHANGED_AMOUNT;
-  swapPrice: number;
   account: StoreAccount;
   isSubmitting: boolean;
   txConfig: ITxConfig;
   rawTransaction: ITxConfig;
   dexTrade: any;
   txReceipt: ITxReceipt | undefined;
+  initialToAmount: string; // This is used to reverse the fee calculation when inputing the recipient amount. It's how we determine the fee.
+  exchangeRate: string; // The exchange rate displayed to the user (post-markup)
+  markup: string;
 }

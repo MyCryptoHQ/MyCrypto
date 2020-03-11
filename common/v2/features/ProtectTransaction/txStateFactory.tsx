@@ -18,6 +18,7 @@ import { AccountContext } from '../../services/Store/Account';
 import { Arrayish, hexlify } from 'ethers/utils';
 import { getNonce } from '../../services/EthService';
 import { PROTECTED_TX_FEE_ADDRESS } from '../../config';
+import { StoreContext } from '../../services/Store';
 
 const protectedTxConfigInitialState = {
   tx: {
@@ -43,8 +44,8 @@ interface State {
 const ProtectedTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) => {
   const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
-
-  const { addNewTransactionToAccount, accounts } = useContext(AccountContext);
+  const { accounts } = useContext(StoreContext);
+  const { addNewTransactionToAccount } = useContext(AccountContext);
 
   const handleProtectedTransactionSubmit = useCallback(
     async (payload: IFormikFields): Promise<void> => {

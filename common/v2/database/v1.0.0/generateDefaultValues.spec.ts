@@ -24,14 +24,14 @@ describe('Schema', () => {
   describe('Seed: Contracts', () => {
     it('add Contracts to Store', () => {
       const contracts = toArray(defaultData[LSKeys.CONTRACTS]);
-      expect(contracts.length).toBeGreaterThanOrEqual(70);
+      expect(contracts.length).toBeGreaterThanOrEqual(42);
     });
   });
 
   describe('Seed: Networks', () => {
     it('adds Contracts to Networks', () => {
       const contracts = toArray(defaultData[LSKeys.NETWORKS]).flatMap(n => n.contracts);
-      expect(contracts.length).toBeGreaterThanOrEqual(70);
+      expect(contracts.length).toBeGreaterThanOrEqual(42);
     });
 
     it('adds Nodes to each Network', () => {
@@ -81,7 +81,7 @@ describe('Schema', () => {
 
     it('adds Tokens to Assets', () => {
       const tokens = toArray(defaultData[LSKeys.ASSETS]).filter(({ type }) => type === 'erc20');
-      expect(tokens.length).toEqual(1691);
+      expect(tokens.length).toEqual(1787);
     });
   });
 });

@@ -85,7 +85,7 @@ export const StoreProvider: React.FC = ({ children }) => {
   const [pendingTransactions, setPendingTransactions] = useState([] as ITxReceipt[]);
   // We transform rawAccounts into StoreAccount. Since the operation is exponential to the number of
   // accounts, make sure it is done only when rawAccounts change.
-  const accounts = useMemo(() => getStoreAccounts(rawAccounts, assets, networks), [
+  const accounts = useMemo(() => getStoreAccounts(rawAccounts, assets, networks, addressBook), [
     rawAccounts,
     assets,
     networks

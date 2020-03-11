@@ -9,13 +9,7 @@ import { ITxReceipt, ISignedTx } from 'v2/types';
 import { useStateReducer } from 'v2/utils';
 import { useEffectOnce, usePromise } from 'v2/vendor';
 
-import {
-  SwapAssets,
-  SelectAddress,
-  ConfirmSwap,
-  SwapTransactionReceipt,
-  SetAllowance
-} from './components';
+import { SwapAssets, ConfirmSwap, SwapTransactionReceipt, SetAllowance } from './components';
 import { SwapFlowFactory, swapFlowInitialState } from './stateFactory';
 import { SwapState } from './types';
 
@@ -57,13 +51,15 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     fromAmountError,
     toAmountError,
     account,
-    swapPrice,
     isSubmitting,
     lastChangedAmount,
     dexTrade,
     txReceipt,
     txConfig,
-    rawTransaction
+    rawTransaction,
+    exchangeRate,
+    initialToAmount,
+    markup
   }: SwapState = swapState;
 
   const goToFirstStep = () => {
@@ -97,7 +93,11 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         isCalculatingFromAmount,
         isCalculatingToAmount,
         fromAmountError,
-        toAmountError
+        toAmountError,
+        initialToAmount,
+        exchangeRate,
+        markup,
+        account
       },
       actions: {
         handleFromAssetSelected,
@@ -106,32 +106,13 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         calculateNewToAmount,
         handleFromAmountChanged,
         handleToAmountChanged,
-        onSuccess: goToNextStep
-      }
-    },
-    {
-      title: translateRaw('ACCOUNT_SELECTION_PLACEHOLDER'),
-      backBtnText: translateRaw('SWAP'),
-      description: translateRaw('SWAP_ACCOUNT_SELECT_DESC', {
-        $fromAsset: (fromAsset && fromAsset.symbol) || 'ETH',
-        $toAsset: (toAsset && toAsset.symbol) || 'ETH'
-      }),
-      component: SelectAddress,
-      props: {
-        account,
-        fromAsset,
-        toAsset,
-        fromAmount,
-        toAmount
-      },
-      actions: {
         handleAccountSelected,
         onSuccess: goToNextStep
       }
     },
     {
       title: translateRaw('SWAP_CONFIRM_TITLE'),
-      backBtnText: translateRaw('ACCOUNT_SELECTION_PLACEHOLDER'),
+      backBtnText: translateRaw('SWAP'),
       component: ConfirmSwap,
       props: {
         fromAsset,
@@ -139,7 +120,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         fromAmount,
         toAmount,
         account,
-        swapPrice,
+        exchangeRate,
         lastChangedAmount,
         isSubmitting
       },

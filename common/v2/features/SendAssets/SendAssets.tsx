@@ -1,14 +1,17 @@
 import React from 'react';
 
-import { GeneralStepper } from 'v2/components';
+import { GeneralStepper, TxReceiptWithProtection } from 'v2/components';
 import { useStateReducer, isWeb3Wallet, useTStateReducer } from 'v2/utils';
 import { ITxReceipt, ISignedTx, IFormikFields, ITxConfig } from 'v2/types';
 import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS } from 'v2/config';
 
-import { ConfirmTransaction, TransactionReceipt } from 'v2/components/TransactionFlow';
 import { IStepperPath } from 'v2/components/GeneralStepper/types';
-import { SendAssetsForm, SignTransactionWithProtection } from './components';
+import {
+  ConfirmTransactionWithProtection,
+  SendAssetsFormWithProtection,
+  SignTransactionWithProtection
+} from './components';
 import { txConfigInitialState, TxConfigFactory } from './stateFactory';
 import {
   WithProtectApiFactory,
@@ -44,7 +47,7 @@ function SendAssets() {
   const web3Steps: IStepperPath[] = [
     {
       label: 'Send Assets',
-      component: SendAssetsForm,
+      component: SendAssetsFormWithProtection,
       props: (({ txConfig }) => ({ txConfig, withProtectApi }))(txFactoryState),
       actions: (payload: IFormikFields, cb: any) => {
         if (protectTxEnabled) {
@@ -55,7 +58,7 @@ function SendAssets() {
     },
     {
       label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
-      component: ConfirmTransaction,
+      component: ConfirmTransactionWithProtection,
       props: (({ txConfig }) => ({ txConfig, withProtectApi }))(txFactoryState),
       actions: (payload: ITxConfig, cb: any) => handleConfirmAndSign(payload, cb)
     },
@@ -67,7 +70,7 @@ function SendAssets() {
     },
     {
       label: translateRaw('TRANSACTION_BROADCASTED'),
-      component: TransactionReceipt,
+      component: TxReceiptWithProtection,
       props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt, withProtectApi }))(
         txFactoryState
       )
@@ -77,7 +80,7 @@ function SendAssets() {
   const defaultSteps: IStepperPath[] = [
     {
       label: 'Send Assets',
-      component: SendAssetsForm,
+      component: SendAssetsFormWithProtection,
       props: (({ txConfig }) => ({ txConfig, withProtectApi }))(txFactoryState),
       actions: (payload: IFormikFields, cb: any) => {
         if (protectTxEnabled) {
@@ -94,7 +97,7 @@ function SendAssets() {
     },
     {
       label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
-      component: ConfirmTransaction,
+      component: ConfirmTransactionWithProtection,
       props: (({ txConfig, signedTx }) => ({ txConfig, signedTx, withProtectApi }))(txFactoryState),
       actions: (payload: ITxConfig | ISignedTx, cb: any) => {
         setProtectionTxTimeoutFunction(txReceiptCb =>
@@ -111,7 +114,7 @@ function SendAssets() {
     },
     {
       label: ' ',
-      component: TransactionReceipt,
+      component: TxReceiptWithProtection,
       props: (({ txConfig, txReceipt }) => ({
         txConfig,
         txReceipt,

@@ -2,10 +2,13 @@ import React, { useContext } from 'react';
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { AccountContext, StoreContext } from 'v2/services/Store';
 import { AccountList, BannerAd, Desktop, Mobile } from 'v2/components';
-import { ActionTile, TokenPanel, WalletBreakdown, RecentTransactionList } from './components';
+import { IS_ACTIVE_FEATURE } from 'v2/config';
+import { AccountContext, StoreContext } from 'v2/services/Store';
+
 import { NotificationsPanel } from '../NotificationsPanel';
+import { DashboardZapCTA } from '../DeFiZap';
+import { ActionTile, TokenPanel, WalletBreakdown, RecentTransactionList } from './components';
 import { actions } from './constants';
 import './Dashboard.scss';
 
@@ -47,6 +50,11 @@ export default function Dashboard() {
             dashboard={true}
           />
         </div>
+        {IS_ACTIVE_FEATURE.DEFIZAP && (
+          <div className="Dashboard-mobile-section">
+            <DashboardZapCTA className="Dashboard-mobile-modifiedPanel" />
+          </div>
+        )}
         {!isUnlockVIP && <BannerAd />}
         <div className="Dashboard-mobile-section">
           <RecentTransactionList accountsList={currentAccounts} />
@@ -73,6 +81,11 @@ export default function Dashboard() {
             <div>
               <WalletBreakdown />
             </div>
+            {IS_ACTIVE_FEATURE.DEFIZAP && (
+              <div>
+                <DashboardZapCTA className="Dashboard-desktop-modifiedPanel" />
+              </div>
+            )}
             <div>
               <AccountList
                 accounts={currentAccounts}

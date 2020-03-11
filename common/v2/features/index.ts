@@ -26,3 +26,4 @@ export { InteractWithContractsFlow } from './InteractWithContracts';
 export { DeployContractsFlow } from './DeployContracts';
 export { ToastProvider } from './Toasts';
 export { ErrorProvider, ErrorContext } from './ErrorHandling';
+export { DeFiZapFlow } from './DeFiZap';
