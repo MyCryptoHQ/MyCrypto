@@ -5,9 +5,7 @@ import {
   LedgerNanoSDecrypt,
   KeystoreDecrypt,
   MnemonicDecrypt,
-  ParitySignerDecrypt,
   PrivateKeyDecrypt,
-  SafeTminiDecrypt,
   TrezorDecrypt,
   Web3ProviderDecrypt,
   Web3ProviderInstall,
@@ -27,6 +25,10 @@ export const getStories = (): IStory[] => [
     steps: hasWeb3Provider() ? [Web3ProviderDecrypt] : [Web3ProviderInstall]
   },
   {
+    name: WalletId.WALLETCONNECT,
+    steps: [NetworkSelectPanel, WalletConnectDecrypt]
+  },
+  {
     name: WalletId.LEDGER_NANO_S,
     steps: [NetworkSelectPanel, LedgerNanoSDecrypt]
   },
@@ -35,31 +37,18 @@ export const getStories = (): IStory[] => [
     steps: [NetworkSelectPanel, TrezorDecrypt]
   },
   {
-    name: WalletId.SAFE_T_MINI,
-    steps: [NetworkSelectPanel, SafeTminiDecrypt]
-  },
-  {
-    name: WalletId.PARITY_SIGNER,
-    steps: [NetworkSelectPanel, ParitySignerDecrypt],
-    hideFromWalletList: true
-  },
-  {
-    name: WalletId.WALLETCONNECT,
-    steps: [NetworkSelectPanel, WalletConnectDecrypt]
-  },
-  {
     name: WalletId.KEYSTORE_FILE,
     steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? KeystoreDecrypt : InsecureWalletWarning],
     hideFromWalletList: IS_NOT_ELECTRON_AND_IS_NOT_DEV
   },
   {
-    name: WalletId.MNEMONIC_PHRASE,
-    steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? MnemonicDecrypt : InsecureWalletWarning],
+    name: WalletId.PRIVATE_KEY,
+    steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? PrivateKeyDecrypt : InsecureWalletWarning],
     hideFromWalletList: IS_NOT_ELECTRON_AND_IS_NOT_DEV
   },
   {
-    name: WalletId.PRIVATE_KEY,
-    steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? PrivateKeyDecrypt : InsecureWalletWarning],
+    name: WalletId.MNEMONIC_PHRASE,
+    steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? MnemonicDecrypt : InsecureWalletWarning],
     hideFromWalletList: IS_NOT_ELECTRON_AND_IS_NOT_DEV
   },
   {

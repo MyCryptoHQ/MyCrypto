@@ -142,6 +142,7 @@
     "ACTION_15": "Delete",
     "ACTION_16": "Read",
     "ACTION_17": "Write",
+    "FIND_ETH_LINK": "Can't find your ETH? [Use findeth.io](https://findeth.io)",
     "CONFIRM_TX_MODAL_TITLE": "Confirm Send",
     "CONFIRM_TX_SENT": "You Sent",
     "CONFIRM_TX_FEE": "Transaction Fee",
