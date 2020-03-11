@@ -77,8 +77,8 @@ const DisplayDataContainer = styled.div`
 const StyledButton = styled(Button)`
   margin-top: 12px;
   width: 100%;
-  && span {
-    width: 100%;
+  && div {
+    justify-content: center;
   }
 `;
 
@@ -164,7 +164,6 @@ export default function SwapAssets(props: Props) {
 
     // Calculate new "to amount" 500 ms after user stopped typing
     if (calculateToAmountTimeout) clearTimeout(calculateToAmountTimeout);
-
     calculateToAmountTimeout = setTimeout(() => {
       calculateNewToAmount(value);
     }, 500);

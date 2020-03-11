@@ -1,4 +1,5 @@
 import React from 'react';
+import BigNumber from 'bignumber.js';
 
 import { translateRaw } from 'v2/translations';
 import { TxReceipt } from 'v2/components/TransactionFlow';
@@ -11,8 +12,8 @@ interface Props {
   txConfig: ITxConfig;
   fromAsset: ISwapAsset;
   toAsset: ISwapAsset;
-  fromAmount: string;
-  toAmount: string;
+  fromAmount: BigNumber;
+  toAmount: BigNumber;
   onSuccess(): void;
 }
 

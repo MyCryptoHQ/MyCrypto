@@ -71,6 +71,7 @@ export default function TxReceipt({
   const [displayTxReceipt, setDisplayTxReceipt] = useState(txReceipt as ITxReceipt);
   const [blockNumber, setBlockNumber] = useState(0);
   const [timestamp, setTimestamp] = useState(0);
+
   useEffect(() => {
     const provider = new ProviderHandler(displayTxReceipt.network || txConfig.network);
     if (blockNumber === 0 && displayTxReceipt.hash) {
@@ -196,8 +197,8 @@ export const TxReceiptUI = ({
           <SwapFromToDiagram
             fromSymbol={swapDisplay.fromAsset.symbol}
             toSymbol={swapDisplay.toAsset.symbol}
-            fromAmount={swapDisplay.fromAmount}
-            toAmount={swapDisplay.toAmount}
+            fromAmount={swapDisplay.fromAmount.toString()}
+            toAmount={swapDisplay.toAmount.toString()}
           />
         </div>
       )}

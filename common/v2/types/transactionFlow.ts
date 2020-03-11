@@ -4,7 +4,8 @@ import {
   GasEstimates,
   ITxReceipt,
   WalletId,
-  StoreAccount
+  StoreAccount,
+  TAddress
 } from 'v2/types';
 import { IZapConfig } from 'v2/features/DeFiZap/config';
 
@@ -12,13 +13,14 @@ export type ISignedTx = string;
 
 export interface ITxObject {
   /* Raw Transaction Object */
-  readonly to: string;
+  readonly to: TAddress | string;
+  readonly value: string;
   readonly gasLimit: string;
+  readonly data: string;
   readonly gasPrice: string;
   readonly nonce: string;
-  readonly data: string;
-  readonly value: string;
   readonly chainId: number;
+  readonly from?: TAddress;
 }
 
 export interface ITxConfig {
@@ -85,7 +87,12 @@ export type SigningComponents = {
 export enum ITxStatus {
   SUCCESS = 'SUCCESS',
   FAILED = 'FAILED',
-  PENDING = 'PENDING'
+  PENDING = 'PENDING',
+
+  READY = 'READY',
+  SIGNED = 'SIGNED',
+  BROADCASTED = 'BROADCASTED',
+  CONFIRMED = 'CONFIRMED'
 }
 
 export enum ITxType {

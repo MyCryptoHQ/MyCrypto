@@ -248,7 +248,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
           const account = this.parent.account;
           const network = this.parent.network;
           if (!isEmpty(account)) {
-            const nonce = await getNonce(network, account);
+            const nonce = await getNonce(network, account.address);
             return Math.abs(value - nonce) < 10;
           }
           return true;
@@ -368,7 +368,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
               return;
             }
             setIsEstimatingNonce(true);
-            const nonce: number = await getNonce(values.network, account);
+            const nonce: number = await getNonce(values.network, account.address);
             setFieldValue('nonceField', nonce.toString());
             setIsEstimatingNonce(false);
           };

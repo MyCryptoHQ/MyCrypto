@@ -5,11 +5,11 @@ import axios, { AxiosInstance } from 'axios';
 
 import { default as ApiService } from '../ApiService';
 import { TSymbol, ITxObject } from 'v2/types';
-import { DEXAG_PROXY_CONTRACT } from 'v2/config';
+import { DEXAG_MYC_TRADE_CONTRACT, DEXAG_MYC_HANDLER_CONTRACT } from 'v2/config';
 
 import { DexTrade } from './types';
 
-const DEX_BASE_URL = 'https://api.dex.ag/';
+const DEX_BASE_URL = 'https://api-v2.dex.ag/';
 
 let instantiated: boolean = false;
 
@@ -75,7 +75,7 @@ export default class DexService {
     to: TSymbol,
     fromAmount?: string,
     toAmount?: string
-  ) => {
+  ): Promise<Partial<ITxObject>[]> => {
     try {
       const params = {
         from,
@@ -83,16 +83,22 @@ export default class DexService {
         fromAmount,
         toAmount,
         dex: 'best',
-        proxy: DEXAG_PROXY_CONTRACT
+        proxy: DEXAG_MYC_TRADE_CONTRACT
       };
       const { data }: { data: DexTrade } = await this.service.get('trade', { params });
       const isMultiTx = !!(data.metadata && data.metadata.input);
+
       return [
-        isMultiTx &&
-          formatApproveTx({
-            to: data.metadata.input.address,
-            value: data.metadata.input.amount
-          }),
+        // Include the Approve transaction when necessary.
+        // ie. any trade that is not an ETH/Token
+        ...(isMultiTx
+          ? [
+              formatApproveTx({
+                to: data.metadata.input.address,
+                value: data.metadata.input.amount
+              })
+            ]
+          : []),
         formatTradeTx({
           to: data.trade.to,
           data: data.trade.data,
@@ -152,10 +158,9 @@ export default class DexService {
   };
 }
 
-export const formatApproveTx = ({ to, value }: Partial<ITxObject>): ITxObject => {
-  // First 4 bytes of the hash of "fee()" for the sighash selector
-  const funcHash = ethers.utils.hexDataSlice(ethers.utils.id('approve(address,uint256)'), 0, 4);
-
+// Create a transaction that approves the MYC_HANDLER_CONTRACT in order for the TRADE_CONTRACT
+// to execute. Example: https://docs.dex.ag/api/using-the-api-with-node.js
+export const formatApproveTx = ({ to, value }: Partial<ITxObject>): Partial<ITxObject> => {
   const abi = new ethers.utils.AbiCoder();
   const inputs = [
     {
@@ -168,19 +173,23 @@ export const formatApproveTx = ({ to, value }: Partial<ITxObject>): ITxObject =>
     }
   ];
 
-  const params = [DEXAG_PROXY_CONTRACT, value];
+  // First 4 bytes of the hash of "fee()" for the sighash selector
+  const funcHash = ethers.utils.hexDataSlice(ethers.utils.id('approve(address,uint256)'), 0, 4);
+  // [spender, amount]. Spender is the contract the user needs to authorize.
+  // It's value is also available in the API response obj `data.metadata.input.spender`
+  const params = [DEXAG_MYC_HANDLER_CONTRACT, value];
   const bytes = abi.encode(inputs, params).substr(2);
-  const inputData = `${funcHash}${bytes}`;
+  const data = `${funcHash}${bytes}`;
 
   return {
     to,
+    data,
     chainId: 1,
-    data: inputData,
-    value: 0
+    value: addHexPrefix(new BN('0').toString())
   };
 };
 
-export const formatTradeTx = ({ to, data, value }: Partial<ITxObject>): ITxObject => {
+export const formatTradeTx = ({ to, data, value }: Partial<ITxObject>): Partial<ITxObject> => {
   return {
     to,
     data,

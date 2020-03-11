@@ -1,5 +1,5 @@
-import { TSymbol, StoreAccount, ITxConfig, ITxReceipt, ITxObject } from 'v2/types';
-import { BigNumber } from 'ethers/utils';
+import { TSymbol, StoreAccount, ITxConfig, ITxReceipt, ITxObject, ITxStatus } from 'v2/types';
+import { BigNumber } from 'bignumber.js';
 
 export interface ISwapAsset {
   name: string;
@@ -11,26 +11,32 @@ export enum LAST_CHANGED_AMOUNT {
   TO = 'TO_AMOUNT'
 }
 
-export interface SwapDisplayData {
+export interface TxEnveloppe {
+  rawTx: ITxObject;
+  txHash: string;
+  status: ITxStatus;
+  txReceipt: ITxReceipt;
+  queuePos: number;
+}
+
+export interface SwapState {
+  transactions: TxEnveloppe[];
+  currentTxIndex: number;
+  assetPair?: IAssetPair;
+  account?: StoreAccount;
+  txConfig?: ITxConfig;
+  isSubmitting: boolean;
+  nextInFlow: boolean;
+  error?: { code: Error };
+}
+
+export interface SwapFormState {
+  account: StoreAccount;
+  assets: ISwapAsset[];
   fromAsset: ISwapAsset;
   fromAmount: string;
   toAsset: ISwapAsset;
   toAmount: string;
-}
-
-export interface SwapState extends SwapDisplayData {
-  account: StoreAccount;
-  isSubmitting: boolean;
-  txConfig: ITxConfig;
-  rawTransaction: ITxObject;
-  txReceipt: ITxReceipt | undefined;
-  assetPair: IAssetPair;
-  tradeOrder: AssetPairOrder;
-}
-
-export interface SwapFormState extends SwapDisplayData {
-  account: StoreAccount;
-  assets: ISwapAsset[];
   fromAmountError: string | JSX.Element;
   isCalculatingFromAmount: boolean;
   toAmountError: string | JSX.Element;
@@ -52,6 +58,4 @@ export interface IAssetPair {
   markup: BigNumber;
 }
 
-export type AssetPairOrder = IAssetPair & { transactions: []; isMultiTx: boolean };
-
-// I need multiple rawtx, status and receipts.
+export type SwapDisplayData = Pick<IAssetPair, 'fromAsset' | 'toAsset' | 'fromAmount' | 'toAmount'>;

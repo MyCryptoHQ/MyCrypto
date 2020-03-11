@@ -1,10 +1,21 @@
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
+import { Optional } from 'utility-types';
 
-import { Asset, StoreAccount, ITxConfig, IHexStrTransaction, ITxObject } from 'v2/types';
+import {
+  TAddress,
+  Asset,
+  StoreAccount,
+  Network,
+  ITxConfig,
+  IHexStrTransaction,
+  ITxObject
+} from 'v2/types';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 import {
   inputGasPriceToHex,
+  inputGasLimitToHex,
+  inputNonceToHex,
   hexWeiToString,
   getNonce,
   hexToNumber,
@@ -16,24 +27,69 @@ import { weiToFloat } from 'v2/utils';
 
 import { ISwapAsset } from './types';
 
-export const fetchTxInfo = async (tx, network, fromAddress) => {
+type TxBeforeSender = Pick<ITxObject, 'to' | 'value' | 'data' | 'chainId'>;
+type TxBeforeGasPrice = Optional<ITxObject, 'nonce' | 'gasLimit' | 'gasPrice'>;
+type TxBeforeGasLimit = Optional<ITxObject, 'nonce' | 'gasLimit'>;
+type TxBeforeNonce = Optional<ITxObject, 'nonce'>;
+
+export const appendSender = (senderAddress: TAddress) => async (
+  tx: TxBeforeSender
+): Promise<TxBeforeGasPrice> => {
+  return {
+    ...tx,
+    from: senderAddress
+  };
+};
+
+export const appendGasPrice = (network: Network) => async (
+  tx: TxBeforeGasPrice
+): Promise<TxBeforeGasLimit> => {
   const gasPrice = await fetchGasPriceEstimates(network)
     .then(({ fast }) => fast.toString())
     .then(inputGasPriceToHex)
     .then(hexWeiToString)
     .then(v => new BN(v).toString(16))
-    .then(addHexPrefix);
-
-  const gasLimit = await getGasEstimate(network, tx)
-    .then(hexToNumber)
-    .then(n => n * 1.2);
-
-  const nonce = await getNonce(network, fromAddress);
+    .then(addHexPrefix)
+    .catch(err => {
+      throw new Error(`getGasPriceEstimate: ${err}`);
+    });
 
   return {
     ...tx,
-    gasPrice,
-    gasLimit,
+    gasPrice
+  };
+};
+
+export const appendGasLimit = (network: Network) => async (
+  tx: TxBeforeGasLimit
+): Promise<TxBeforeNonce> => {
+  try {
+    const gasLimit = await getGasEstimate(network, tx)
+      .then(hexToNumber)
+      .then((n: number) => Math.round(n * 1.2))
+      .then((n: number) => inputGasLimitToHex(n.toString()));
+
+    return {
+      ...tx,
+      gasLimit
+    };
+  } catch (err) {
+    throw new Error(`getGasEstimate: ${err}`);
+  }
+};
+
+export const appendNonce = (network: Network, senderAddress: TAddress) => async (
+  tx: TxBeforeNonce
+): Promise<ITxObject> => {
+  const nonce = await getNonce(network, senderAddress)
+    .then(n => n.toString())
+    .then(inputNonceToHex)
+    .catch(err => {
+      throw new Error(`getNonce: ${err}`);
+    });
+
+  return {
+    ...tx,
     nonce
   };
 };

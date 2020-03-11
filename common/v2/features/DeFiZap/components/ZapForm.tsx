@@ -136,7 +136,7 @@ export const ZapFormUI = ({
         }}
         render={({ values, errors, touched, setFieldValue }) => {
           const handleNonceEstimate = async (account: IAccount) => {
-            const nonce: number = await getNonce(values.network, account);
+            const nonce: number = await getNonce(values.network, account.address);
             setFieldValue('nonce', nonce);
           };
           const isValid =
