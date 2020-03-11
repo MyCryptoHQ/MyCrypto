@@ -1,12 +1,13 @@
 import React from 'react';
 
-import { fTxConfig, fTxReceipt } from '@fixtures';
+import { fTxConfig, fTxReceipt, fAccount } from '@fixtures';
 import { ITxStatus, ExtendedAddressBook, ITxType } from 'v2/types';
 import { noOp } from 'v2/utils';
 import { devContacts } from 'v2/database/seed';
 import { IZapConfig, ZAPS_CONFIG, defaultZapId } from 'v2/features/DeFiZap/config';
 
 import { TxReceiptUI } from './TxReceipt';
+import { constructSenderFromTxConfig } from './helpers';
 
 // Define props
 const assetRate = 1.34;
@@ -29,6 +30,7 @@ export const transactionReceipt = () => (
       senderContact={senderContact}
       recipientContact={recipientContact}
       txConfig={fTxConfig}
+      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
     />
   </div>
 );
@@ -48,6 +50,7 @@ export const transactionReceiptDeFiZap = () => (
       senderContact={senderContact}
       recipientContact={recipientContact}
       txConfig={fTxConfig}
+      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
     />
   </div>
 );

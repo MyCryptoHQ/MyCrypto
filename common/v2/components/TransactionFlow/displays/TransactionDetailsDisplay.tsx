@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import { Network } from '@mycrypto/ui';
 import { bigNumberify } from 'ethers/utils';
 
-import { Asset, StoreAccount, Network as INetwork, ITxObject } from 'v2/types';
+import { Asset, ITxObject } from 'v2/types';
 import { baseToConvertedUnit, totalTxFeeToString } from 'v2/services/EthService';
-import { getAccountBalance } from 'v2/services/Store';
 import { CopyableCodeBlock, Button } from 'v2/components';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { weiToFloat, isTransactionDataEmpty } from 'v2/utils';
 import translate from 'v2/translations';
 import { COLORS } from 'v2/theme';
+
+import { ISender } from '../types';
 
 import './TransactionDetailsDisplay.scss';
 
@@ -18,33 +19,33 @@ const { BLUE_BRIGHT } = COLORS;
 interface Props {
   baseAsset: Asset;
   asset: Asset;
-  network: INetwork;
   nonce: string;
   data: string;
   gasLimit: string;
   gasPrice: string;
-  senderAccount: StoreAccount;
   rawTransaction?: ITxObject;
   signedTransaction?: string;
+  sender: ISender;
 }
 
 function TransactionDetailsDisplay({
   baseAsset,
   asset,
-  network,
   nonce,
   data,
-  senderAccount,
   gasLimit,
   gasPrice,
   rawTransaction,
-  signedTransaction
+  signedTransaction,
+  sender
 }: Props) {
   const [showDetails, setShowDetails] = useState(false);
 
   const maxTransactionFeeBase: string = totalTxFeeToString(gasPrice, gasLimit);
-  const networkName = network ? network.name : undefined;
-  const userAssetToSend = senderAccount.assets.find(accountAsset => {
+  const {
+    network: { name: networkName, color: networkColor }
+  } = sender;
+  const userAssetToSend = sender.assets.find(accountAsset => {
     return accountAsset.uuid === asset.uuid;
   });
   const userAssetBalance = userAssetToSend
@@ -68,13 +69,13 @@ function TransactionDetailsDisplay({
         </div>
         {showDetails && (
           <div className="TransactionDetails-content">
-            {baseAsset && senderAccount.uuid && (
+            {sender.accountBalance && (
               <div className="TransactionDetails-row">
                 <div className="TransactionDetails-row-column">
                   {`Account Balance (${baseAsset.ticker}):`}
                 </div>
                 <div className="TransactionDetails-row-column">{`
-                  ${weiToFloat(getAccountBalance(senderAccount)).toFixed(6)}
+                  ${weiToFloat(sender.accountBalance).toFixed(6)}
                   ${baseAsset.ticker}
                 `}</div>
               </div>
@@ -93,7 +94,7 @@ function TransactionDetailsDisplay({
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">Network:</div>
               <div className="TransactionDetails-row-column">
-                <Network color="blue">{networkName}</Network>
+                <Network color={networkColor || 'blue'}>{networkName}</Network>
               </div>
             </div>
             <div className="TransactionDetails-row">

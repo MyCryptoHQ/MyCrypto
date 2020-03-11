@@ -3,23 +3,25 @@ import Styled from 'styled-components';
 import BN from 'bn.js';
 import { Button } from '@mycrypto/ui';
 
-import feeIcon from 'common/assets/images/icn-fee.svg';
-import sendIcon from 'common/assets/images/icn-send.svg';
-import walletIcon from 'common/assets/images/icn-wallet.svg';
 import { AddressBookContext, StoreContext } from 'v2/services/Store';
-import { Amount, AssetIcon } from 'v2/components';
+import { Amount, AssetIcon, Account } from 'v2/components';
 import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from 'v2/services/EthService';
 import { RatesContext } from 'v2/services/RatesProvider';
 import { IStepComponentProps, ExtendedAddressBook } from 'v2/types';
 import { BREAK_POINTS } from 'v2/theme';
-
-import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
-import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
 import { convertToFiat, truncate } from 'v2/utils';
 import translate from 'v2/translations';
 import { TSymbol } from 'v2/types/symbols';
-import Account from '../Account';
-import { StoreAccount } from 'v2/types/account';
+
+import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
+import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
+import { constructSenderFromTxConfig } from './helpers';
+import { ISender } from './types';
+
+import feeIcon from 'common/assets/images/icn-fee.svg';
+import sendIcon from 'common/assets/images/icn-send.svg';
+import walletIcon from 'common/assets/images/icn-wallet.svg';
+
 const { SCREEN_XS } = BREAK_POINTS;
 
 const ConfirmTransactionWrapper = Styled.div`
@@ -102,16 +104,16 @@ export default function ConfirmTransaction({
   onComplete,
   signedTx
 }: IStepComponentProps) {
-  const { asset, senderAccount: account, baseAsset, receiverAddress, network } = txConfig;
+  const { asset, baseAsset, receiverAddress, network, from } = txConfig;
 
-  const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
+  const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
   const { getAssetRate } = useContext(RatesContext);
-  const { getAccount } = useContext(StoreContext);
+  const { accounts } = useContext(StoreContext);
 
   /* Get contact info */
-  const recipientContact = getContactByAddressAndNetwork(receiverAddress, network);
-  const senderContact = getContactByAccount(account);
-  const senderAccount = getAccount(account);
+  const recipientContact = getContactByAddressAndNetworkId(receiverAddress, network.id);
+  const senderContact = getContactByAddressAndNetworkId(from, network.id);
+  const sender = constructSenderFromTxConfig(txConfig, accounts);
 
   /* Get Rates */
   const assetRate = getAssetRate(asset);
@@ -122,7 +124,7 @@ export default function ConfirmTransaction({
       assetRate={assetRate}
       baseAssetRate={baseAssetRate}
       senderContact={senderContact}
-      senderAccount={senderAccount!}
+      sender={sender}
       txConfig={txConfig}
       recipientContact={recipientContact}
       onComplete={onComplete}
@@ -136,14 +138,14 @@ interface DataProps {
   baseAssetRate?: number;
   recipientContact?: ExtendedAddressBook;
   senderContact?: ExtendedAddressBook;
-  senderAccount: StoreAccount;
+  sender: ISender;
 }
 
 export const ConfirmTransactionUI = ({
   assetRate,
   baseAssetRate,
-  senderAccount,
   senderContact,
+  sender,
   recipientContact,
   txConfig,
   onComplete,
@@ -156,12 +158,10 @@ export const ConfirmTransactionUI = ({
     value,
     amount,
     receiverAddress,
-    network,
     nonce,
     data,
     baseAsset
   } = txConfig;
-
   const [isBroadcastingTx, setIsBroadcastingTx] = useState(false);
   const handleApprove = () => {
     setIsBroadcastingTx(true);
@@ -186,11 +186,7 @@ export const ConfirmTransactionUI = ({
       <RowWrapper stack={true}>
         <AddressWrapper position={'left'}>
           {translate('CONFIRM_TX_FROM')}
-          <Account
-            address={senderAccount ? senderAccount.address : 'Unknown'}
-            title={senderAccountLabel}
-            truncate={truncate}
-          />
+          <Account address={sender.address} title={senderAccountLabel} truncate={truncate} />
         </AddressWrapper>
         <AddressWrapper position={'right'}>
           {translate('CONFIRM_TX_TO')}
@@ -268,8 +264,7 @@ export const ConfirmTransactionUI = ({
         baseAsset={baseAsset}
         asset={asset}
         data={data}
-        network={network}
-        senderAccount={senderAccount}
+        sender={sender}
         gasLimit={gasLimit}
         gasPrice={gasPrice}
         nonce={nonce}
