@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { COLORS } from '../../../theme';
+import { SUPPORT_EMAIL, TWITTER_URL } from 'v2/config';
+import { COLORS } from 'v2/theme';
 import { ProtectTxError } from '../types';
-import { SUPPORT_EMAIL, TWITTER_URL } from '../../../config';
 
 const ProtectedTransactionErrorWrapper = styled.div`
   text-align: left;

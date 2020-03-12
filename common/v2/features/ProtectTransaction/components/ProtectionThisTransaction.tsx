@@ -1,19 +1,20 @@
 import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-
 import { Button } from '@mycrypto/ui';
-import { convertToFiat, isWeb3Wallet } from '../../../utils';
-import { ProtectTransactionUtils } from '../utils';
-import { RatesContext } from '../../../services';
-import { IAccount, IFormikFields } from '../../../types';
-import { COLORS } from '../../../theme';
-import { IWithProtectApi } from '../types';
 
+import { convertToFiat, isWeb3Wallet } from 'v2/utils';
+import { RatesContext } from 'v2/services';
+import { IAccount, IFormikFields } from 'v2/types';
+import { COLORS } from 'v2/theme';
+import { Amount } from 'v2/components';
+
+import { IWithProtectApi } from '../types';
+import { ProtectTransactionUtils } from '../utils';
 import ProtectedTransactionBase from './ProtectedTransactionBase';
-import { Amount } from '../../../components';
 import CloseIcon from './icons/CloseIcon';
 import ProtectIcon from './icons/ProtectIcon';
 import WarningIcon from './icons/WarningIcon';
+
 import feeIcon from 'assets/images/icn-fee.svg';
 
 const ProtectionThisTransactionStyled = styled(ProtectedTransactionBase)`

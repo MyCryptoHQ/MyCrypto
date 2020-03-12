@@ -31,14 +31,14 @@ import translate, { translateRaw } from 'v2/translations';
 import { convertToFiat, truncate, fromTxReceiptObj } from 'v2/utils';
 import { isWeb3Wallet } from 'v2/utils/web3';
 import ProtocolTagsList from 'v2/features/DeFiZap/components/ProtocolTagsList';
+import { WithProtectApiFactory } from 'v2/features/ProtectTransaction';
+import { AbortTransaction } from 'v2/features/ProtectTransaction/components';
 
 import { FromToAccount, SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
 import sentIcon from 'common/assets/images/icn-sent.svg';
 import defizaplogo from 'assets/images/defizap/defizaplogo.svg';
 import './TxReceipt.scss';
-import { WithProtectApiFactory } from '../../features/ProtectTransaction';
-import { AbortTransaction } from '../../features/ProtectTransaction/components';
 
 const PendingTransaction: FC = () => {
   return (
@@ -95,7 +95,10 @@ export default function TxReceipt({
   useEffect(() => {
     if (withProtectApi) {
       const {
-        withProtectState: { protectTxEnabled: isProtectTxEnabled, isWeb3Wallet: isProtectedTxWeb3Wallet },
+        withProtectState: {
+          protectTxEnabled: isProtectTxEnabled,
+          isWeb3Wallet: isProtectedTxWeb3Wallet
+        },
         invokeProtectionTxTimeoutFunction
       } = withProtectApi;
 
@@ -317,11 +320,13 @@ export const TxReceiptUI = ({
       <>
         <FromToAccount
           from={{
-            address: ((displayTxReceipt && displayTxReceipt.from) || txConfig.senderAccount.address) as TAddress,
+            address: ((displayTxReceipt && displayTxReceipt.from) ||
+              txConfig.senderAccount.address) as TAddress,
             label: senderAccountLabel
           }}
           to={{
-            address: ((displayTxReceipt && displayTxReceipt.to) || txConfig.receiverAddress) as TAddress,
+            address: ((displayTxReceipt && displayTxReceipt.to) ||
+              txConfig.receiverAddress) as TAddress,
             label: recipientLabel
           }}
         />

@@ -4,14 +4,14 @@ import styled from 'styled-components';
 import upperFirst from 'lodash/upperFirst';
 
 import useMediaQuery from 'v2/vendor/react-use/useMediaQuery';
-import { fromWei, Wei } from '../../../services/EthService/utils';
-import { IWithProtectApi } from '../types';
+import { fromWei, Wei } from 'v2/services';
+import { BREAK_POINTS, COLORS } from 'v2/theme';
 import {
   CryptoScamDBBaseResponse,
   CryptoScamDBInfoResponse
-} from '../../../services/ApiService/CryptoScamDB/types';
-import { BREAK_POINTS, COLORS } from '../../../theme';
+} from 'v2/services/ApiService/CryptoScamDB/types';
 
+import { IWithProtectApi } from '../types';
 import ProtectedTransactionBase from './ProtectedTransactionBase';
 import ProtectIconCheck from './icons/ProtectIconCheck';
 import WizardIcon from './icons/WizardIcon';

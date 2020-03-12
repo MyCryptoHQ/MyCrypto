@@ -1,4 +1,8 @@
-import { AssetContext } from '../../services/Store/Asset';
+import { useCallback, useContext } from 'react';
+import { Arrayish, hexlify } from 'ethers/utils';
+
+import { fromTxReceiptObj, makeTxConfigFromSignedTx, TUseStateReducerFactory } from 'v2/utils';
+import { AssetContext } from 'v2/services/Store/Asset';
 import {
   IFormikFields,
   ISignedTx,
@@ -7,18 +11,15 @@ import {
   ITxReceipt,
   Asset,
   ITxStatus
-} from '../../types';
-import { hexWeiToString } from '../../services/EthService/utils';
-import { useCallback, useContext } from 'react';
-import { processFormDataToTx } from '../SendAssets/helpers';
-import { fromTxReceiptObj, makeTxConfigFromSignedTx, TUseStateReducerFactory } from '../../utils';
-import { getBaseAssetByNetwork, NetworkContext } from '../../services/Store/Network';
-import { ProviderHandler } from '../../services/EthService/network';
-import { AccountContext } from '../../services/Store/Account';
-import { Arrayish, hexlify } from 'ethers/utils';
-import { getNonce } from '../../services/EthService';
-import { PROTECTED_TX_FEE_ADDRESS } from '../../config';
-import { StoreContext } from '../../services/Store';
+} from 'v2/types';
+import { hexWeiToString } from 'v2/services/EthService/utils';
+import { processFormDataToTx } from 'v2/features/SendAssets/helpers';
+import { getBaseAssetByNetwork, NetworkContext } from 'v2/services/Store/Network';
+import { ProviderHandler } from 'v2/services/EthService/network';
+import { AccountContext } from 'v2/services/Store/Account';
+import { getNonce } from 'v2/services/EthService';
+import { PROTECTED_TX_FEE_ADDRESS } from 'v2/config';
+import { StoreContext } from 'v2/services/Store';
 
 const protectedTxConfigInitialState = {
   tx: {

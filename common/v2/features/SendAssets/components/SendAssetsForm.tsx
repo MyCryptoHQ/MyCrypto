@@ -66,6 +66,15 @@ import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/Transa
 import { weiToFloat, formatSupportEmail } from 'v2/utils';
 import { InlineMessageType } from 'v2/types/inlineMessages';
 import { isValidETHRecipientAddress } from 'v2/services/EthService/validators';
+import {
+  ProtectTransactionUtils,
+  ProtectTxError,
+  WithProtectApiFactory
+} from 'v2/features/ProtectTransaction';
+import {
+  ProtectedTransactionError,
+  TransactionProtectionButton
+} from 'v2/features/ProtectTransaction/components';
 
 import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
 import './SendAssetsForm.scss';
@@ -77,11 +86,6 @@ import {
   validateAmountField
 } from './validators';
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
-import { ProtectTransactionUtils, ProtectTxError, WithProtectApiFactory } from '../../ProtectTransaction';
-import {
-  ProtectedTransactionError,
-  TransactionProtectionButton,
-} from '../../ProtectTransaction/components';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;

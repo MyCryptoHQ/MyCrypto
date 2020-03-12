@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { COLORS } from '../../../../theme';
+import { COLORS } from 'v2/theme';
 
 interface ProtectIconProps {
   fillColor?: string;

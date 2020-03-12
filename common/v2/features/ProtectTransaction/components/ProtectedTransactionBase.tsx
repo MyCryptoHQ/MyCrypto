@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { COLORS } from '../../../theme';
+import { COLORS } from 'v2/theme';
 
 const ProtectedTransactionBase = styled.div`
   display: flex;

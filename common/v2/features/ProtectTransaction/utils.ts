@@ -1,6 +1,6 @@
 import isNumber from 'lodash/isNumber';
-import { fromWei, totalTxFeeToWei, Wei } from '../../services/EthService/utils';
-import { IFormikFields } from '../../types';
+import { fromWei, totalTxFeeToWei, Wei } from 'v2/services/EthService/utils';
+import { IFormikFields } from 'v2/types';
 import { ProtectTxError } from './types';
 
 export abstract class ProtectTransactionUtils {

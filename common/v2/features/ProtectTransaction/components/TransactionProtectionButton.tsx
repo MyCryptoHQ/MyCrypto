@@ -1,8 +1,8 @@
 import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
 
-import { BREAK_POINTS, COLORS } from '../../../theme';
-import useMediaQuery from '../../../vendor/react-use/useMediaQuery';
+import { BREAK_POINTS, COLORS } from 'v2/theme';
+import useMediaQuery from 'v2/vendor/react-use/useMediaQuery';
 
 import ProtectIcon from './icons/ProtectIcon';
 import ProtectIconCheck from './icons/ProtectIconCheck';

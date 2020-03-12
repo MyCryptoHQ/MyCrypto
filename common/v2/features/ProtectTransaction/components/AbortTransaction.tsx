@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import { translateRaw } from '../../../translations';
-import { COLORS } from '../../../theme';
+import { COLORS } from 'v2/theme';
+import { translateRaw } from 'v2/translations';
 import ProtectIconCheck from './icons/ProtectIconCheck';
 
 interface RelayedToNetworkProps {
