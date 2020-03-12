@@ -199,7 +199,8 @@
     "worker-loader": "2.0.0"
   },
   "resolutions": {
-    "node-fetch": "2.6.0"
+    "node-fetch": "2.6.0",
+    "babel-runtime": "6.26.0"
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config webpack_config/production.js",
