@@ -172,7 +172,6 @@ export const ConfirmTransactionUI = ({
   return (
     <ConfirmTransactionWrapper>
       {txType === ITxType.DEFIZAP && zapSelected && <ZapSelectedBanner zapSelected={zapSelected} />}
-      {/* <RowWrapper stack={true}> */}
       <FromToAccount
         from={{
           address: sender.address,
@@ -184,7 +183,6 @@ export const ConfirmTransactionUI = ({
         }}
         displayToAddress={txType !== ITxType.DEFIZAP}
       />
-      {/* </RowWrapper> */}
       {txType === ITxType.DEFIZAP && zapSelected && (
         <RowWrapper>
           <TxIntermediaryDisplay address={zapSelected.contractAddress} contractName={'DeFi Zap'} />
