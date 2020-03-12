@@ -4,6 +4,7 @@ import * as R from 'ramda';
 import { SwapFromToDiagram } from 'v2/components/TransactionFlow/displays';
 import { VerticalStepper, Typography } from 'v2/components';
 import { translateRaw } from 'v2/translations';
+import { ITxStatus } from 'v2/types';
 
 import { IAssetPair, TxEnveloppe } from '../types';
 import step1SVG from 'assets/images/icn-send.svg';
@@ -18,13 +19,16 @@ interface Props {
 
 export default function ConfirmSwapMultiTx({ assetPair, currentTx, transactions, onClick }: Props) {
   const { fromAsset, toAsset, fromAmount, toAmount } = assetPair;
-  const status = R.path(['status'], transactions[0]);
+  const status = transactions.map(t => R.path(['status'], t));
+
+  const broadcasting = status.findIndex(s => s === ITxStatus.BROADCASTED);
 
   const approveTx = {
     title: translateRaw('APPROVE_SWAP'),
     icon: step1SVG,
     content: translateRaw('SWAP_STEP1_TEXT', { $token: fromAsset.symbol }),
-    buttonText: `${status} ${translateRaw('APPROVE_SWAP')}`,
+    buttonText: `${status[0]} ${translateRaw('APPROVE_SWAP')}`,
+    loading: status[0] === ITxStatus.BROADCASTED,
     onClick
   };
 
@@ -32,7 +36,8 @@ export default function ConfirmSwapMultiTx({ assetPair, currentTx, transactions,
     title: translateRaw('COMPLETE_SWAP'),
     icon: step2SVG,
     content: translateRaw('SWAP_STEP2_TEXT'),
-    buttonText: ` ${translateRaw('CONFIRM_TRANSACTION')}`,
+    buttonText: `${status[1]} ${translateRaw('CONFIRM_TRANSACTION')}`,
+    loading: status[1] === ITxStatus.BROADCASTED,
     onClick
   };
 
@@ -47,7 +52,10 @@ export default function ConfirmSwapMultiTx({ assetPair, currentTx, transactions,
         fromAmount={fromAmount.toString()}
         toAmount={toAmount.toString()}
       />
-      <VerticalStepper currentStep={currentTx} steps={[approveTx, transferTx]} />
+      <VerticalStepper
+        currentStep={broadcasting === -1 ? currentTx : broadcasting}
+        steps={[approveTx, transferTx]}
+      />
     </div>
   );
 }
