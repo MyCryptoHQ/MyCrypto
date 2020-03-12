@@ -8,7 +8,8 @@ import {
   ExtendedContentPanel,
   AppLogo,
   Typography,
-  TranslateMarkdown
+  TranslateMarkdown,
+  Link
 } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
 import { COLORS, BREAK_POINTS, SPACING } from 'v2/theme';
@@ -60,7 +61,7 @@ const Title = styled.div`
 
 const BreakdownImg = styled.img`
   max-width: 32px;
-  margin-right: 10px;
+  margin-right: ${SPACING.SM};
 `;
 
 const DetailsSection = styled(SSection)`
@@ -84,6 +85,18 @@ const CardContainer = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+`;
+
+const LinkContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+const RowContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: ${SPACING.SM} 0;
 `;
 
 const ZapEducation = withRouter(({ history, location }) => {
@@ -155,6 +168,21 @@ const ZapEducation = withRouter(({ history, location }) => {
           aleena. Hapan ysanne ventress han. Antemeridian golda darth vurk moff dengar ruwee jin'ha
           tenel. Conan darth subterrel doldur atrivis kuat teneniel wookiee.
         </Typography>
+        <LinkContainer>
+          <RowContainer>
+            <Typography bold={true}>More from the Knowledgebase:</Typography>
+          </RowContainer>
+          <RowContainer>
+            <Link href="https://example.com">Some Link</Link>
+            <Link href="https://example.com">Some Link</Link>
+            <Link href="https://example.com">Some Link</Link>
+          </RowContainer>
+          <RowContainer>
+            <Link href="https://example.com">Some Link</Link>
+            <Link href="https://example.com">Some Link</Link>
+            <Link href="https://example.com">Some Link</Link>
+          </RowContainer>
+        </LinkContainer>
       </SpacedSection>
       <SpacedSection>
         <Title>Frequently Asked Questions</Title>
