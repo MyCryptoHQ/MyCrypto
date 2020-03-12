@@ -17,6 +17,7 @@ interface StepData {
   title: React.ReactNode | string;
   content: React.ReactNode | string;
   buttonText: string;
+  loading?: boolean;
   onClick?(): void;
 }
 
@@ -78,6 +79,7 @@ function VerticalStepper({ currentStep = 0, steps }: Props) {
                   active={active}
                   content={s.content}
                   buttonText={s.buttonText}
+                  loading={s.loading}
                   onClick={s.onClick}
                 />
               )
@@ -130,6 +132,7 @@ interface DescriptionProps {
   active: boolean;
   content: React.ReactNode | string;
   buttonText: string;
+  loading?: boolean;
   onClick?(): void;
 }
 
@@ -141,11 +144,11 @@ const SButton = styled(Button)`
   margin-top: ${SPACING.SM};
 `;
 
-function StepperContent({ active, content, buttonText, onClick }: DescriptionProps) {
+function StepperContent({ active, content, buttonText, loading, onClick }: DescriptionProps) {
   return (
     <ContentWrapper>
       <Typography as={'div'}>{content}</Typography>
-      <SButton disabled={!active} onClick={onClick}>
+      <SButton disabled={!active} loading={loading} onClick={onClick}>
         {buttonText}
       </SButton>
     </ContentWrapper>
