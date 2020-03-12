@@ -1,8 +1,12 @@
-import { ValuesType } from 'utility-types';
+import { ValuesType, Overwrite } from 'utility-types';
 import { TAction, TAddress } from 'v2/types';
 
 export type TActionError = ValuesType<typeof WcReducer.errorCodes>;
-type WCAction = TAction<ValuesType<typeof WcReducer.actionTypes>, any, TActionError>;
+// TODO convert to FSA compatible action type
+type WCAction = Overwrite<
+  TAction<ValuesType<typeof WcReducer.actionTypes>, any>,
+  { error?: { code: TActionError } }
+>;
 
 interface State {
   detectedAddress?: TAddress;
