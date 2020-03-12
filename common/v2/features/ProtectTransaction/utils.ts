@@ -56,7 +56,7 @@ export abstract class ProtectTransactionUtils {
       return ProtectTxError.ETH_ONLY;
     }
 
-    if (!rate || rate <= 0 || parseFloat(amount) < 0.5 / rate) {
+    if (!rate || rate <= 0 || parseFloat(amount) < 5 / rate) {
       return ProtectTxError.LESS_THAN_MIN_AMOUNT;
     }
 
