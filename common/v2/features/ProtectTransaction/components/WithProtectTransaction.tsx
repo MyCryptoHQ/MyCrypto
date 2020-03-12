@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
-
-import useMediaQuery from '../../../vendor/react-use/useMediaQuery';
-import { IFormikFields, ISignedTx, IStepComponentProps, ITxReceipt } from '../../../types';
 import { Panel } from '@mycrypto/ui';
-import { useStateReducer } from '../../../utils';
-import { BREAK_POINTS, COLORS } from '../../../theme';
+
+import useMediaQuery from 'v2/vendor/react-use/useMediaQuery';
+import { IFormikFields, ISignedTx, IStepComponentProps, ITxReceipt } from 'v2/types';
+import { useStateReducer } from 'v2/utils';
+import { BREAK_POINTS, COLORS } from 'v2/theme';
 
 import { ProtectionThisTransaction } from './ProtectionThisTransaction';
 import { SignProtectedTransaction } from './SignProtectedTransaction';

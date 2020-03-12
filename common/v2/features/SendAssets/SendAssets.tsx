@@ -5,20 +5,20 @@ import { useStateReducer, isWeb3Wallet, useTStateReducer } from 'v2/utils';
 import { ITxReceipt, ISignedTx, IFormikFields, ITxConfig } from 'v2/types';
 import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS } from 'v2/config';
-
+import {
+  WithProtectApiFactory,
+  WithProtectConfigFactory,
+  WithProtectInitialState,
+  WithProtectState
+} from 'v2/features/ProtectTransaction';
 import { IStepperPath } from 'v2/components/GeneralStepper/types';
+
 import {
   ConfirmTransactionWithProtection,
   SendAssetsFormWithProtection,
   SignTransactionWithProtection
 } from './components';
 import { txConfigInitialState, TxConfigFactory } from './stateFactory';
-import {
-  WithProtectApiFactory,
-  WithProtectConfigFactory,
-  WithProtectInitialState,
-  WithProtectState
-} from '../ProtectTransaction';
 
 function SendAssets() {
   const {

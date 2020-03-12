@@ -1,19 +1,21 @@
+import { useCallback, useContext, useEffect, useRef } from 'react';
+
 import {
   CryptoScamDBInfoResponse,
   CryptoScamDBNoInfoResponse
-} from '../../services/ApiService/CryptoScamDB/types';
-import { TUseStateReducerFactory } from '../../utils';
-import { useCallback, useContext, useEffect, useRef } from 'react';
-import CryptoScamDBService from '../../services/ApiService/CryptoScamDB/CryptoScamDB';
-import { SendFormCallbackType } from './types';
-import { Asset, ITxReceipt, Network, NetworkId, WalletId } from '../../types';
-import { GetBalanceResponse, GetLastTxResponse } from '../../services/ApiService/Etherscan/types';
+} from 'v2/services/ApiService/CryptoScamDB/types';
+import { TUseStateReducerFactory } from 'v2/utils';
+import CryptoScamDBService from 'v2/services/ApiService/CryptoScamDB/CryptoScamDB';
+import { Asset, ITxReceipt, Network, NetworkId, WalletId } from 'v2/types';
+import { GetBalanceResponse, GetLastTxResponse } from 'v2/services/ApiService/Etherscan/types';
 import { EtherscanService } from 'v2/services/ApiService/Etherscan';
-import { getNetworkById, NetworkContext } from '../../services/Store/Network';
-import { AssetContext, getAssetByUUID } from '../../services/Store/Asset';
-import useMediaQuery from '../../vendor/react-use/useMediaQuery';
-import { BREAK_POINTS } from '../../theme';
-import { WALLETS_CONFIG } from '../../config';
+import { getNetworkById, NetworkContext } from 'v2/services/Store/Network';
+import { AssetContext, getAssetByUUID } from 'v2/services/Store/Asset';
+import useMediaQuery from 'v2/vendor/react-use/useMediaQuery';
+import { BREAK_POINTS } from 'v2/theme';
+import { WALLETS_CONFIG } from 'v2/config';
+
+import { SendFormCallbackType } from './types';
 
 export interface WithProtectState {
   stepIndex: number;

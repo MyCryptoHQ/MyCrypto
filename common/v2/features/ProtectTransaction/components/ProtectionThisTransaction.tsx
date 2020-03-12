@@ -1,19 +1,21 @@
 import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-
 import { Button } from '@mycrypto/ui';
-import { convertToFiat, isWeb3Wallet } from '../../../utils';
-import { ProtectTransactionUtils } from '../utils';
-import { RatesContext } from '../../../services';
-import { IAccount, IFormikFields } from '../../../types';
-import { COLORS } from '../../../theme';
-import { IWithProtectApi } from '../types';
 
+import { convertToFiat, isWeb3Wallet } from 'v2/utils';
+import { RatesContext } from 'v2/services';
+import { IAccount, IFormikFields } from 'v2/types';
+import { COLORS } from 'v2/theme';
+import { Amount } from 'v2/components';
+import { translateRaw } from 'v2/translations';
+
+import { IWithProtectApi } from '../types';
+import { ProtectTransactionUtils } from '../utils';
 import ProtectedTransactionBase from './ProtectedTransactionBase';
-import { Amount } from '../../../components';
 import CloseIcon from './icons/CloseIcon';
 import ProtectIcon from './icons/ProtectIcon';
 import WarningIcon from './icons/WarningIcon';
+
 import feeIcon from 'assets/images/icn-fee.svg';
 
 const ProtectionThisTransactionStyled = styled(ProtectedTransactionBase)`
@@ -84,6 +86,7 @@ const BulletList = styled.ul`
       margin: 0;
       font-size: 14px;
       line-height: 24px;
+      text-transform: uppercase;
     }
 
     p {
@@ -209,48 +212,42 @@ export const ProtectionThisTransaction: FC<ProtectionThisTransactionProps> = ({
     <ProtectionThisTransactionStyled>
       <CloseIcon size="lg" onClick={onProtectMyTransactionCancelClick} />
       <ProtectIcon size="lg" />
-      <h4>Protect This Transaction</h4>
-      <h5>Send your transaction with confidence by learning about who you're sending to:</h5>
+      <h4>{translateRaw('PROTECTED_TX_PROTECT_THIS_TRANSACTION')}</h4>
+      <h5>{translateRaw('PROTECTED_TX_PROTECT_THIS_TRANSACTION_DESC')}</h5>
       <BulletList>
         <li>
-          <h6>SCAN OUR PARTNER DATABASES</h6>
-          <span>We'll let you know if the recipient account is known anywhere.</span>
+          <h6>{translateRaw('PROTECTED_TX_SCAN_PARTNER_DB')}</h6>
+          <span>{translateRaw('PROTECTED_TX_SCAN_PARTNER_DB_DESC')}</span>
         </li>
         <li>
-          <h6>RECIPIENT’S ACCOUNT BALANCE</h6>
-          <span>How much does the account hold?</span>
+          <h6>{translateRaw('PROTECTED_TX_SCAN_ACCOUNT_BALANCE')}</h6>
+          <span>{translateRaw('PROTECTED_TX_SCAN_ACCOUNT_BALANCE_DESC')}</span>
         </li>
         <li>
-          <h6>RECIPIENT’S LATEST TRANSACTION</h6>
-          <span>How active is the account?</span>
+          <h6>{translateRaw('PROTECTED_TX_SCAN_LATEST_TX')}</h6>
+          <span>{translateRaw('PROTECTED_TX_SCAN_LATEST_TX_DESC')}</span>
         </li>
         <li>
-          <h6>LINK TO BLOCK EXPLORER COMMENTS</h6>
-          <span>If the account is malicious, there will oftentimes be user comments.</span>
+          <h6>{translateRaw('PROTECTED_TX_SCAN_COMMENTS')}</h6>
+          <span>{translateRaw('PROTECTED_TX_SCAN_COMMENTS_DESC')}</span>
         </li>
       </BulletList>
       {web3Wallet && (
         <div className="description-text-wrapper">
           <WarningIcon />
           <p className="description-text description-text-danger">
-            Due to technical limitations, the 20 second cancellation timer is unavailable for
-            transactions using
-            {` ${web3WalletName} `}
-            and other Web 3 providers.
+            {translateRaw('PROTECTED_TX_WEB3_WALLET_DESC', { $web3WalletName: web3WalletName! })}
           </p>
         </div>
       )}
       {!web3Wallet && (
-        <p className="description-text">
-          Once you confirm and sign the transaction, you'll have 20 seconds to cancel sending if you
-          change your mind. Still not convinced? Learn more.
-        </p>
+        <p className="description-text">{translateRaw('PROTECTED_TX_NOT_WEB3_WALLET_DESC')}</p>
       )}
       <hr />
-      <h4 className="send-with-confidence">Send with Confidence</h4>
+      <h4 className="send-with-confidence">{translateRaw('PROTECTED_TX_SEND_WITH_CONFIDENCE')}</h4>
       <FeeContainer>
         <img src={feeIcon} alt="Fee" />
-        <p className="fee-label">Protected Transaction Fee:</p>
+        <p className="fee-label">{translateRaw('PROTECTED_TX_FEE')}</p>
         <Amount assetValue={getAssetValue()} fiatValue={getFiatValue()} />
       </FeeContainer>
       <Button
@@ -259,10 +256,10 @@ export const ProtectionThisTransaction: FC<ProtectionThisTransactionProps> = ({
         onClick={onProtectMyTransactionClick}
         disabled={isLoading}
       >
-        Protect My Transaction
+        {translateRaw('PROTECTED_TX_PROTECT_MY_TX')}
       </Button>
       <button type="button" className="cancel" onClick={onProtectMyTransactionCancelClick}>
-        I don't want to protect my transaction.
+        {translateRaw('PROTECTED_TX_DONT_PROTECT_MY_TX')}
       </button>
     </ProtectionThisTransactionStyled>
   );

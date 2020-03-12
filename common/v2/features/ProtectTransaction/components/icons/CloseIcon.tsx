@@ -1,5 +1,5 @@
 import React from 'react';
-import { COLORS } from '../../../../theme';
+import { COLORS } from 'v2/theme';
 
 interface CloseIconProps {
   fillColor?: string;

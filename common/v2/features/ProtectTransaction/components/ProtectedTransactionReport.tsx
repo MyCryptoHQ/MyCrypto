@@ -3,15 +3,16 @@ import moment from 'moment';
 import styled from 'styled-components';
 import upperFirst from 'lodash/upperFirst';
 
+import { translateRaw } from 'v2/translations';
 import useMediaQuery from 'v2/vendor/react-use/useMediaQuery';
-import { fromWei, Wei } from '../../../services/EthService/utils';
-import { IWithProtectApi } from '../types';
+import { fromWei, Wei } from 'v2/services';
+import { BREAK_POINTS, COLORS } from 'v2/theme';
 import {
   CryptoScamDBBaseResponse,
   CryptoScamDBInfoResponse
-} from '../../../services/ApiService/CryptoScamDB/types';
-import { BREAK_POINTS, COLORS } from '../../../theme';
+} from 'v2/services/ApiService/CryptoScamDB/types';
 
+import { IWithProtectApi } from '../types';
 import ProtectedTransactionBase from './ProtectedTransactionBase';
 import ProtectIconCheck from './icons/ProtectIconCheck';
 import WizardIcon from './icons/WizardIcon';
@@ -135,6 +136,7 @@ const TimelinePanel = styled.div`
     margin: 0;
     color: #1c314e;
     font-weight: 700;
+    text-transform: uppercase;
   }
 
   > p {
@@ -184,11 +186,11 @@ export const ProtectedTransactionReport: FC<IWithProtectApi> = ({ withProtectApi
         receiverAddress.length - 4
       )}`;
     }
-    return 'Invalid address!';
+    return translateRaw('ADD_TOKEN_INVALID_ADDRESS');
   }, [receiverAddress]);
 
   const getAccountBalanceTimelineEntry = useCallback(() => {
-    let balance = 'Unknown balance';
+    let balance = translateRaw('PROTECTED_TX_UNKNOWN_BALANCE');
     if (etherscanBalanceReport) {
       const { result } = etherscanBalanceReport;
       balance = parseFloat(fromWei(Wei(result), 'ether')).toFixed(6);
@@ -203,7 +205,7 @@ export const ProtectedTransactionReport: FC<IWithProtectApi> = ({ withProtectApi
       <TimelineEntry>
         <TimelineBadge>2</TimelineBadge>
         <TimelinePanel>
-          <h6>Recipient Account Balance:</h6>
+          <h6>{translateRaw('PROTECTED_TX_RECIPIENT_ACCOUNT_BALANCE')}</h6>
           <p className="text-muted">
             {balance} {assetTicker}
           </p>
@@ -232,14 +234,14 @@ export const ProtectedTransactionReport: FC<IWithProtectApi> = ({ withProtectApi
       <TimelineEntry>
         <TimelineBadge>3</TimelineBadge>
         <TimelinePanel>
-          <h6>Recipient Account Activity:</h6>
+          <h6>{translateRaw('PROTECTED_TX_RECIPIENT_ACCOUNT_ACTIVITY')}</h6>
           {/*<h6>Last Sent {assetTicker}:</h6>
         <p className="text-muted">1.01 {assetTicker} on 12/24/2019</p>*/}
-          <h6>Last Sent Token:</h6>
+          <h6>{translateRaw('PROTECTED_TX_LAST_SENT_TOKEN')}</h6>
           <p className="text-muted">
             {lastSentToken &&
               `${lastSentToken.value} ${lastSentToken.ticker} on ${lastSentToken.timestamp}`}
-            {!lastSentToken && 'No information available!'}
+            {!lastSentToken && translateRaw('PROTECTED_TX_NO_INFORMATION_AVAILABLE')}
           </p>
         </TimelinePanel>
       </TimelineEntry>
@@ -260,10 +262,9 @@ export const ProtectedTransactionReport: FC<IWithProtectApi> = ({ withProtectApi
           <TimelineEntry>
             <TimelineBadge>1</TimelineBadge>
             <TimelinePanel>
-              <h6>UNKNOWN ACCOUNT:</h6>
+              <h6>{translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT')}</h6>
               <p className="text-no-info">
-                This doesn't necessarily mean it’s 'safe' or 'unsafe', just that no information has
-                been collected at this time.
+                {translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT_DESC')}
               </p>
             </TimelinePanel>
           </TimelineEntry>
@@ -282,7 +283,10 @@ export const ProtectedTransactionReport: FC<IWithProtectApi> = ({ withProtectApi
           ...new Set(
             entries.map(e =>
               upperFirst(
-                `${e.reporter} has the following note about this address: "${e.description}"`
+                translateRaw('PROTECTED_TX_TIMELINE_COMMENT', {
+                  $reporter: e.reporter ? e.reporter : '',
+                  $description: e.description ? e.description : ''
+                })
               )
             )
           )
@@ -293,9 +297,11 @@ export const ProtectedTransactionReport: FC<IWithProtectApi> = ({ withProtectApi
             <TimelineEntry>
               <TimelineBadge>1</TimelineBadge>
               <TimelinePanel>
-                <h6>UNKNOWN ACCOUNT:</h6>
+                <h6>{translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT')}</h6>
                 <p className="text-error">
-                  Malicious: This account has been marked as {`"${accountTags.join('", "')}"`}
+                  {translateRaw('PROTECTED_TX_TIMELINE_MALICIOUS', {
+                    $tags: `"${accountTags.join('", "')}"`
+                  })}
                 </p>
                 {accountComments.map((c, i) => (
                   <p key={i} className="text-error">
@@ -320,7 +326,7 @@ export const ProtectedTransactionReport: FC<IWithProtectApi> = ({ withProtectApi
             <TimelineEntry>
               <TimelineBadge>1</TimelineBadge>
               <TimelinePanel>
-                <h6>KNOWN ACCOUNT:</h6>
+                <h6>{translateRaw('PROTECTED_TX_TIMELINE_KNOWN_ACCOUNT')}</h6>
                 {accountComments.map((c, i) => (
                   <p key={i} className="text-success">
                     {c}
@@ -341,8 +347,10 @@ export const ProtectedTransactionReport: FC<IWithProtectApi> = ({ withProtectApi
         <TimelineEntry>
           <TimelineBadge>1</TimelineBadge>
           <TimelinePanel>
-            <h6>UNKNOWN ACCOUNT:</h6>
-            <p className="text-danger">We are not sure what is going on with this address.</p>
+            <h6>{translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT')}</h6>
+            <p className="text-danger">
+              {translateRaw('PROTECTED_TX_TIMELINE_NOT_SURE_ABOUT_ADDRESS')}
+            </p>
           </TimelinePanel>
         </TimelineEntry>
         {getAccountBalanceTimelineEntry()}
@@ -366,41 +374,54 @@ export const ProtectedTransactionReport: FC<IWithProtectApi> = ({ withProtectApi
     <ProtectedTransactionReportStyled>
       {!isSmScreen && <CloseIcon size="lg" onClick={onHideModel} />}
       <ProtectIconCheck size="lg" />
-      <h4>Your Report for Address</h4>
+      <h4>{translateRaw('PROTECTED_TX_REPORT_TITLE')}</h4>
       <h4 className="title-address">{getShortAddress()}</h4>
       {cryptoScamAddressReport && (
-        <h5 className="subtitle">
-          If any of the information below is unexpected, please stop and review the address. Where
-          did you copy the address from? Who gave you the address?
-        </h5>
+        <h5 className="subtitle">{translateRaw('PROTECTED_TX_REPORT_SUBTITLE')}</h5>
       )}
       <div className="timeline">{getTimeline()}</div>
       {cryptoScamAddressReport && (
         <>
           <p className="view-comments">
-            View comments for this account on &nbsp;
-            <a
-              href={`https://etherscan.io/address/${
-                (cryptoScamAddressReport as CryptoScamDBBaseResponse).input
-              }`}
-              rel="noreferrer"
-              target="_blank"
-            >
-              Etherscan
-            </a>
-            .
+            {(linkTranslation => {
+              if (linkTranslation.includes('$etherscanLink')) {
+                const linkTranslationSplit = linkTranslation.split('$etherscanLink');
+                return (
+                  <>
+                    {linkTranslationSplit[0]}
+                    <a
+                      href={`https://etherscan.io/address/${
+                        (cryptoScamAddressReport as CryptoScamDBBaseResponse).input
+                      }`}
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      Etherscan
+                    </a>
+                    {linkTranslationSplit[1]}
+                  </>
+                );
+              }
+              return linkTranslation;
+            })(translateRaw('PROTECTED_TX_ETHERSCAN_EXTERNAL_LINK'))}
             <WizardIcon size={isLgScreen ? 'lg' : 'sm'} />
           </p>
           <p className="footer-text">
-            If everything looks good, click "Next" on the left to see a preview of your main
-            transaction.
-            {!isWeb3Wallet && (
-              <>
-                &nbsp;Upon confirming and sending the transaction, you'll get &nbsp;
-                <span className="highlighted">20 seconds</span>&nbsp; to cancel if you change your
-                mind.
-              </>
-            )}
+            {translateRaw('PROTECTED_TX_REPORT_FOOTER_TEXT')}
+            {!isWeb3Wallet &&
+              (t => {
+                const tSplit = t.split('$');
+                if (tSplit.length === 3) {
+                  return (
+                    <>
+                      {tSplit[0]}
+                      <span className="highlighted">{tSplit[1]}</span>
+                      {tSplit[2]}
+                    </>
+                  );
+                }
+                return t;
+              })(translateRaw('PROTECTED_TX_REPORT_FOOTER_TEXT_NOT_WEB3_WALLET'))}
           </p>
         </>
       )}
