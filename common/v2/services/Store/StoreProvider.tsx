@@ -83,7 +83,7 @@ export const StoreProvider: React.FC = ({ children }) => {
   const {
     createAddressBooks: createContact,
     addressBook: contacts,
-    getContactByAddressAndNetwork,
+    getContactByAddressAndNetworkId,
     updateAddressBooks: updateContact
   } = useContext(AddressBookContext);
 
@@ -256,7 +256,7 @@ export const StoreProvider: React.FC = ({ children }) => {
         mtime: 0
       };
 
-      const existingContact = getContactByAddressAndNetwork(account.address, network);
+      const existingContact = getContactByAddressAndNetworkId(account.address, networkId);
       if (existingContact) {
         updateContact(existingContact.uuid, {
           ...existingContact,
