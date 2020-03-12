@@ -11,14 +11,8 @@ import { useEffectOnce, usePromise } from 'v2/vendor';
 import { AssetContext, NetworkContext } from 'v2/services';
 
 import { SwapAssets, SwapTransactionReceipt, ConfirmSwapMultiTx } from './components';
-import {
-  SwapFlowReducer,
-  swapFlowInitialState,
-  getTradeOrder,
-  confirmSend,
-  handleTxSigned,
-  currentTx
-} from './flowReducer';
+import { SwapFlowReducer, swapFlowInitialState } from './reducer';
+import { getTradeOrder, confirmSend, handleTxSigned, currentTx } from './actions';
 import { SwapFormFactory, swapFormInitialState } from './stateFormFactory';
 import { SwapState, SwapFormState, IAssetPair } from './types';
 
@@ -122,10 +116,10 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
             markup: bigify(markup),
             lastChangedAmount
           };
-          getTradeOrder(dispatch)(
+          getTradeOrder(
             pair, // as assetPair
             account
-          );
+          )(dispatch);
         }
       }
     },
@@ -143,7 +137,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         },
         actions: {
           onClick: () => {
-            confirmSend(dispatch, () => state)(tx.rawTx);
+            confirmSend(tx.rawTx)(dispatch, () => state);
           }
         }
       },
@@ -158,7 +152,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         },
         actions: {
           onSuccess: (payload: ITxReceipt | ISignedTx) =>
-            handleTxSigned(dispatch, () => state)(userAssets, networks, payload)
+            handleTxSigned(userAssets, networks, payload)(dispatch, () => state)
         }
       }
     ]),

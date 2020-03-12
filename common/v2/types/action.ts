@@ -1,6 +1,7 @@
-// Generic Action type
-export interface TAction<T, P, E> {
+// Generic Action type according to Flux Standard Action (FSA)
+export interface TAction<T, P> {
   type: T;
   payload?: P;
-  error?: { code: E };
+  error?: boolean;
+  meta?: object;
 }
