@@ -192,7 +192,7 @@ const ZapEducation = withRouter(({ history, location }) => {
             source={'To view more Frequently Asked Questions go [here](https://exemple.com).'}
           />
         </div>
-        <Button onClick={handleSubmit}>Add Founds</Button>
+        <Button onClick={handleSubmit}>Add Funds</Button>
       </SpacedSection>
     </FullSizeContentPanel>
   );
