@@ -1,18 +1,12 @@
 import { Dispatch } from 'react';
 import { Optional } from 'utility-types';
 
-import { isWeb3Wallet, fromTxReceiptObj } from 'v2/utils';
+import { isWeb3Wallet } from 'v2/utils';
 import { ProviderHandler, DexService } from 'v2/services';
-import { ITxConfig, ExtendedAsset, StoreAccount, Network, ITxObject } from 'v2/types';
+import { StoreAccount, ITxObject } from 'v2/types';
 
 import { TStateGetter, SFAction, SwapState, IAssetPair, LAST_CHANGED_AMOUNT } from './types';
-import {
-  makeTxConfigFromTransaction,
-  appendSender,
-  appendGasPrice,
-  appendGasLimit,
-  appendNonce
-} from './helpers';
+import { appendSender, appendGasPrice, appendGasLimit, appendNonce } from './helpers';
 
 export const currentTx = (state: SwapState) => state.transactions[state.currentTxIndex] || {};
 
@@ -65,36 +59,26 @@ export const confirmSend = (tx: Partial<ITxObject>) => async (
   }
 };
 
-export const handleTxSigned = (
-  userAssets: ExtendedAsset[],
-  networks: Network[],
-  signResponse: any
-) => async (dispatch: Dispatch<SFAction>, getState: TStateGetter): Promise<void> => {
-  const { account, assetPair, transactions } = getState();
-
-  const txConfig: ITxConfig = makeTxConfigFromTransaction(userAssets)(
-    transactions[0].rawTx,
-    account!,
-    assetPair!.fromAsset,
-    assetPair!.fromAmount.toString()
-  );
+export const handleTxSigned = (signResponse: any) => async (
+  dispatch: Dispatch<SFAction>,
+  getState: TStateGetter
+): Promise<void> => {
+  const { account } = getState();
 
   const provider = new ProviderHandler(account!.network);
 
   if (isWeb3Wallet(account!.wallet)) {
-    const txReceipt =
-      signResponse && signResponse.hash ? signResponse : { ...txConfig, hash: signResponse };
+    const txReceipt = signResponse;
     dispatch({ type: 'SEND_TX_SUCCESS', payload: { txReceipt } });
     waitForConfirmation(signResponse, provider)(dispatch);
   } else {
     provider
       .sendRawTx(signResponse)
       .then(txResponse => {
-        const txReceipt = fromTxReceiptObj(txResponse)(userAssets, networks);
-        dispatch({ type: 'SEND_TX_SUCCESS', payload: { txReceipt } });
-        return txReceipt!.hash;
+        dispatch({ type: 'SEND_TX_SUCCESS', payload: { txReceipt: txResponse } });
+        return txResponse.hash;
       })
-      .then(txHash => waitForConfirmation(txHash, provider)(dispatch))
+      .then(txHash => waitForConfirmation(txHash!, provider)(dispatch))
       .catch(err => {
         throw new Error(err);
       });

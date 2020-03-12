@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { useReducer } from 'reinspect';
 
@@ -8,7 +8,6 @@ import { ROUTE_PATHS } from 'v2/config';
 import { ITxReceipt, ISignedTx } from 'v2/types';
 import { bigify, useStateReducer } from 'v2/utils';
 import { useEffectOnce, usePromise } from 'v2/vendor';
-import { AssetContext, NetworkContext } from 'v2/services';
 
 import { SwapAssets, SwapTransactionReceipt, ConfirmSwapMultiTx } from './components';
 import { SwapFlowReducer, swapFlowInitialState } from './reducer';
@@ -55,10 +54,8 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     markup
   }: SwapFormState = formState;
 
-  const { assets: userAssets } = useContext(AssetContext);
-  const { networks } = useContext(NetworkContext);
   const [state, dispatch] = useReducer(SwapFlowReducer, swapFlowInitialState, s => s, 'Swap');
-  const { isSubmitting, assetPair, txConfig, transactions, nextInFlow }: SwapState = state;
+  const { isSubmitting, assetPair, transactions, nextInFlow }: SwapState = state;
 
   const goToFirstStep = () => {
     setStep(0);
@@ -152,7 +149,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         },
         actions: {
           onSuccess: (payload: ITxReceipt | ISignedTx) =>
-            handleTxSigned(userAssets, networks, payload)(dispatch, () => state)
+            handleTxSigned(payload)(dispatch, () => state)
         }
       }
     ]),
@@ -161,12 +158,9 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
       backBtnText: translateRaw('DEP_SIGNTX'),
       component: SwapTransactionReceipt,
       props: {
-        fromAsset,
-        toAsset,
-        fromAmount,
-        toAmount,
-        txReceipt: currentTx(state).txReceipt,
-        txConfig,
+        assetPair,
+        account,
+        transactions,
         onSuccess: goToFirstStep
       }
     }
