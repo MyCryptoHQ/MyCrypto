@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 import useMediaQuery from 'v2/vendor/react-use/useMediaQuery';
+import { translateRaw } from 'v2/translations';
 
 import ProtectIcon from './icons/ProtectIcon';
 import ProtectIconCheck from './icons/ProtectIconCheck';
@@ -108,20 +109,14 @@ export const TransactionProtectionButton: FC<TransactionProtectionButtonProps> =
       <TransactionProtectionButtonText>
         {reviewReport && (
           <>
-            <h6>This Transaction is Protected!</h6>
-            <p>
-              Review the report for the recipient address to verfiy that it is safe before sending
-              your funds.
-            </p>
+            <h6>{translateRaw('PROTECTED_TX_THIS_TX_IS_PROTECTED')}</h6>
+            <p>{translateRaw('PROTECTED_TX_THIS_TX_IS_PROTECTED_DESC')}</p>
           </>
         )}
         {!reviewReport && (
           <>
-            <h6>Get Transaction Protection</h6>
-            <p>
-              Gain valuable information about the recipient address and the ability to undo your
-              transaction within 20 seconds.
-            </p>
+            <h6>{translateRaw('PROTECTED_TX_GET_TX_PROTECTION')}</h6>
+            <p>{translateRaw('PROTECTED_TX_GET_TX_PROTECTION_DESC')}</p>
           </>
         )}
       </TransactionProtectionButtonText>

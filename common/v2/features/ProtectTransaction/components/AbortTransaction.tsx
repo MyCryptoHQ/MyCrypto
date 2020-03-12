@@ -124,20 +124,25 @@ export const AbortTransaction: FC<AbortTransactionProps> = ({
       <ProtectIconCheck fillColor={COLORS.WHITE} />
       {isCanceled && (
         <>
-          <p>Transaction has been aborted</p>
-          <AbortTransactionLink onClick={onSendClick}>Resend</AbortTransactionLink>
+          <p>{translateRaw('PROTECTED_TX_ABORTED_TX')}</p>
+          <AbortTransactionLink onClick={onSendClick}>
+            {translateRaw('PROTECTED_TX_RESEND')}
+          </AbortTransactionLink>
         </>
       )}
       {!isCanceled && countdown > 0 && (
         <>
           <p>
-            You can undo or modify this transaction for the next 0:
-            {countdown.toString().padStart(2, '0')} sec
+            {translateRaw('PROTECTED_TX_MODIFY_TX', {
+              $sec: `0:${countdown.toString().padStart(2, '0')}`
+            })}
           </p>
-          <AbortTransactionLink onClick={onCancelClick}>Cancel</AbortTransactionLink>
+          <AbortTransactionLink onClick={onCancelClick}>
+            {translateRaw('PROTECTED_TX_CANCEL')}
+          </AbortTransactionLink>
         </>
       )}
-      {!isCanceled && countdown === 0 && <p>Transaction has been relayed to the network!</p>}
+      {!isCanceled && countdown === 0 && <p>{translateRaw('PROTECTED_TX_RELAYED_TO_NETWORK')}</p>}
       <TransactionReceiptHeaderGlobal relayedToNetwork={!isCanceled && countdown === 0} />
     </AbortTransactionWrapper>
   );
