@@ -1,15 +1,16 @@
 import React from 'react';
 import { useStateReducer } from 'v2/utils';
+import { ITxReceipt, ISignedTx, ITxConfig } from 'v2/types';
+import { default as GeneralStepper, IStepperPath } from 'v2/components/GeneralStepper';
+import { ROUTE_PATHS } from 'v2/config';
+
 import { defaultMembershipObject } from './config';
 import {
   MembershipPurchaseForm,
   MembershipPurchaseReceipt,
   ConfirmMembershipPurchase
 } from './components';
-import { default as GeneralStepper, IStepperPath } from 'v2/components/GeneralStepper';
-import { ROUTE_PATHS } from 'v2/config';
 import MembershipInteractionFactory from './stateFactory';
-import { ITxReceipt, ISignedTx, ITxConfig } from 'v2/types';
 import { SignTransaction } from '../SendAssets/components';
 import { ISimpleTxFormFull } from './types';
 

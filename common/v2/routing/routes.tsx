@@ -25,10 +25,11 @@ import {
   BroadcastTransactionFlow,
   InteractWithContractsFlow,
   DeployContractsFlow,
-  DeFiZapFlow
+  DeFiZapFlow,
+  PurchaseMembershipStepper,
+  MembershipEducation
 } from 'v2/features';
 import { requiresDesktopApp } from './helpers';
-import { PurchaseMembershipStepper, MembershipEducation } from 'v2/features/PurchaseMembership';
 
 export interface IAppRoutes {
   [K: string]: IAppRoute;
