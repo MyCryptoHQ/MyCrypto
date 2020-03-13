@@ -25,7 +25,7 @@ import {
 } from 'v2/utils';
 import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from 'v2/services/EthService';
 
-import { getAccountsAssetsBalances, accountUnlockVIPDetected } from './BalanceService';
+import { getAccountsAssetsBalances, accountMemberDetected } from './BalanceService';
 import { getStoreAccounts, getPendingTransactionsFromAccounts } from './helpers';
 import {
   AssetContext,
@@ -41,7 +41,7 @@ import { findNextUnusedDefaultLabel, AddressBookContext } from './AddressBook';
 interface State {
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
-  readonly isUnlockVIP: boolean;
+  readonly isMyCryptoMember: boolean;
   readonly currentAccounts: StoreAccount[];
   readonly userAssets: Asset[];
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
@@ -95,7 +95,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     [rawAccounts, settings.dashboardAccounts]
   );
 
-  const [isUnlockVIP, setIsUnlockVerified] = useState(false);
+  const [isMyCryptoMember, setIsUnlockVerified] = useState(false);
 
   // Naive polling to get the Balances of baseAsset and tokens for each account.
   useInterval(
@@ -116,7 +116,7 @@ export const StoreProvider: React.FC = ({ children }) => {
             .filter(account => account.networkId === 'Ethereum')
             .filter(account => account.wallet !== WalletId.VIEW_ONLY);
         })
-        .then(accountUnlockVIPDetected)
+        .then(accountMemberDetected)
         .then(e => {
           if (!isMounted) return;
           setIsUnlockVerified(e);
@@ -187,7 +187,7 @@ export const StoreProvider: React.FC = ({ children }) => {
   const state: State = {
     accounts,
     networks,
-    isUnlockVIP,
+    isMyCryptoMember,
     currentAccounts,
     get userAssets() {
       const userAssets = state.accounts

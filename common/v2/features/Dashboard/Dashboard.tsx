@@ -18,7 +18,7 @@ const EmptyTile = styled.div`
 `;
 
 export default function Dashboard() {
-  const { isUnlockVIP, currentAccounts } = useContext(StoreContext);
+  const { isMyCryptoMember, currentAccounts } = useContext(StoreContext);
   const { accounts } = useContext(AccountContext);
   return (
     <div>
@@ -55,7 +55,7 @@ export default function Dashboard() {
             <DashboardZapCTA className="Dashboard-mobile-modifiedPanel" />
           </div>
         )}
-        {!isUnlockVIP && <BannerAd />}
+        {!isMyCryptoMember && <BannerAd />}
         <div className="Dashboard-mobile-section">
           <RecentTransactionList accountsList={currentAccounts} />
         </div>
@@ -96,7 +96,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        {!isUnlockVIP && <BannerAd />}
+        {!isMyCryptoMember && <BannerAd />}
         <div className="Dashboard-desktop-bottom">
           <RecentTransactionList
             accountsList={currentAccounts}

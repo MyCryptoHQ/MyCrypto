@@ -10,7 +10,7 @@ import { default as BN } from 'bignumber.js';
 import { bigNumberify } from 'ethers/utils';
 import { BigNumber as EthScanBN } from '@ethersproject/bignumber';
 
-import { ETHSCAN_NETWORKS, MYCRYPTO_UNLOCK_CONTRACT_ADDRESS } from 'v2/config';
+import { ETHSCAN_NETWORKS, MYCRYPTO_UNLOCK_CONTRACT_ADDRESSES } from 'v2/config';
 import { TAddress, StoreAccount, StoreAsset, Asset, Network } from 'v2/types';
 import { ProviderHandler } from 'v2/services/EthService';
 
@@ -176,8 +176,8 @@ export const getAccountsTokenBalances = (accounts: StoreAccount[], tokenContract
 
 // Unlock Token getBalance will return 0 if no valid unlock token is found for the address.
 // If there is an Unlock token found, it will return the id of the token.
-export const getAccountsUnlockVIPAddresses = async (accounts: StoreAccount[]) =>
-  getAccountsTokenBalance(accounts, MYCRYPTO_UNLOCK_CONTRACT_ADDRESS)
+export const getMemberAccounts = async (accounts: StoreAccount[]) =>
+  getAccountsTokenBalances(accounts, MYCRYPTO_UNLOCK_CONTRACT_ADDRESSES)
     .then(unlockStatusBalanceMap =>
       Object.keys(unlockStatusBalanceMap).filter(address =>
         unlockStatusBalanceMap[address].isGreaterThan(new BN(0))
@@ -185,9 +185,9 @@ export const getAccountsUnlockVIPAddresses = async (accounts: StoreAccount[]) =>
     )
     .catch(err => console.error(err));
 
-export const accountUnlockVIPDetected = async (accounts: StoreAccount[]) =>
+export const accountMemberDetected = async (accounts: StoreAccount[]) =>
   !accounts || !(accounts.length > 0)
     ? false
-    : getAccountsUnlockVIPAddresses(accounts)
+    : getMemberAccounts(accounts)
         .then((unlockAccounts: string[]) => !(!unlockAccounts || unlockAccounts.length === 0))
         .catch(_ => false);
