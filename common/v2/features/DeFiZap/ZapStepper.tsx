@@ -1,13 +1,14 @@
 import React from 'react';
 import { useStateReducer } from 'v2/utils';
 import { IZapConfig } from './config';
-import { ZapForm, ConfirmZapInteraction, ZapReceipt } from './components';
+import { ZapForm, ZapConfirm, ZapReceipt } from './components';
 import { default as GeneralStepper, IStepperPath } from 'v2/components/GeneralStepper';
 import { ROUTE_PATHS } from 'v2/config';
 import ZapInteractionFactory from './stateFactory';
 import { ITxReceipt, ISignedTx } from 'v2/types';
 import { SignTransaction } from '../SendAssets/components';
 import { ISimpleTxFormFull } from './types';
+import { translateRaw } from 'v2/translations';
 
 const initialZapFlowState = (initialZapSelected: IZapConfig) => ({
   zapSelected: initialZapSelected,
@@ -34,8 +35,8 @@ const ZapStepper = ({ selectedZap }: Props) => {
     },
     {
       label: 'Confirm Transaction',
-      component: ConfirmZapInteraction,
-      props: (({ txConfig }) => ({ txConfig }))(zapFlowState)
+      component: ZapConfirm,
+      props: (({ txConfig, zapSelected }) => ({ txConfig, zapSelected }))(zapFlowState)
     },
     {
       label: '',
@@ -46,7 +47,9 @@ const ZapStepper = ({ selectedZap }: Props) => {
     {
       label: 'Zap Receipt',
       component: ZapReceipt,
-      props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(zapFlowState)
+      props: (({ txConfig, zapSelected, txReceipt }) => ({ txConfig, zapSelected, txReceipt }))(
+        zapFlowState
+      )
     }
   ];
   return (
@@ -54,6 +57,7 @@ const ZapStepper = ({ selectedZap }: Props) => {
       steps={steps}
       defaultBackPath={ROUTE_PATHS.DEFIZAP.path}
       defaultBackPathLabel={ROUTE_PATHS.DEFIZAP.title} // ToDo: Change this.
+      completeBtnText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
     />
   );
 };

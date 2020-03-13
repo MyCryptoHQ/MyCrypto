@@ -107,7 +107,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     positionDetails: () => NeutralIndicator({ text: 'Neutral on ETH' })
   },
   compounddai: {
-    title: 'Interest Earning with DAI',
+    title: 'Interest-earning with DAI',
     name: 'Compound DAI Pool',
     key: 'compounddai',
     contractAddress: '0x225078aea64696c6e4fe3960e471ca45aa9bdae4',

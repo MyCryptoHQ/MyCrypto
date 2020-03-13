@@ -624,6 +624,8 @@
     "SWAP_INTRO": "To begin your swap process, we’ll first help you sell your ETH. We will walk you through the process below.",
     "APPROVE_SWAP": "Approve Swap",
     "COMPLETE_SWAP": "Complete Swap",
-    "SWAP_STEP2_TEXT": "The contract you approved will complete the swap contract as soon as you confirm the transaction below."
+    "SWAP_STEP2_TEXT": "The contract you approved will complete the swap contract as soon as you confirm the transaction below.",
+    "ZAP_CONFIRM_TX_SENDING": "You'll Open Position With",
+    "ZAP_CONFIRM_DISCLAIMER": "Remember, there are no guarantees that you will make money if you make this trade. Please don't confirm unless you understand the risks."
   }
 }

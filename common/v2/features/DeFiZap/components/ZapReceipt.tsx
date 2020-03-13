@@ -9,10 +9,17 @@ interface Props {
   txReceipt: ITxReceipt;
   txConfig: ITxConfig;
   zapSelected: IZapConfig;
+  resetFlow(): void;
   onComplete(): void;
 }
 
-export default function ZapReceipt({ txReceipt, txConfig, zapSelected, onComplete }: Props) {
+export default function ZapReceipt({
+  txReceipt,
+  txConfig,
+  zapSelected,
+  resetFlow,
+  onComplete
+}: Props) {
   return (
     <TxReceipt
       txReceipt={txReceipt}
@@ -20,7 +27,7 @@ export default function ZapReceipt({ txReceipt, txConfig, zapSelected, onComplet
       txType={ITxType.DEFIZAP}
       zapSelected={zapSelected}
       completeButtonText={translateRaw('INTERACT_ANOTHER')}
-      resetFlow={onComplete}
+      resetFlow={resetFlow}
       onComplete={onComplete}
     />
   );

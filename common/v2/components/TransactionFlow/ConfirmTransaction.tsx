@@ -4,17 +4,19 @@ import BN from 'bn.js';
 import { Button } from '@mycrypto/ui';
 
 import { AddressBookContext, StoreContext } from 'v2/services/Store';
-import { Amount, AssetIcon, Account } from 'v2/components';
+import { Amount, AssetIcon } from 'v2/components';
 import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from 'v2/services/EthService';
 import { RatesContext } from 'v2/services/RatesProvider';
-import { IStepComponentProps, ExtendedAddressBook } from 'v2/types';
-import { BREAK_POINTS } from 'v2/theme';
-import { convertToFiat, truncate } from 'v2/utils';
-import translate from 'v2/translations';
+import { IStepComponentProps, ExtendedAddressBook, ITxType } from 'v2/types';
+import { BREAK_POINTS, SPACING, COLORS } from 'v2/theme';
+import { convertToFiat } from 'v2/utils';
+import translate, { translateRaw } from 'v2/translations';
 import { TSymbol } from 'v2/types/symbols';
+import { ZapSelectedBanner, DeFiZapLogo } from 'v2/features/DeFiZap';
 
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
+import { FromToAccount } from './displays';
 import { constructSenderFromTxConfig } from './helpers';
 import { ISender } from './types';
 
@@ -55,26 +57,6 @@ const ColumnWrapper = Styled.div<{ bold?: boolean }>`
   }
 `;
 
-const AddressWrapper = Styled(ColumnWrapper)<{ position: string }>`
-  font-size: 16px;
-  & > div {
-    margin: 10px 0 10px 0;
-    padding: 12px;
-    background: #f8f8f8;
-    font-size: 16px;
-  }
-  @media (min-width: ${SCREEN_XS}) {
-    margin: 0 10px 0 10px;
-    ${props => `margin-${props.position}: 0;`}
-  }
-
-  /* Vertically stack label and address */
-  & > div > div {
-    display: flex;
-    flex-direction: column;
-  }
-`;
-
 const AmountWrapper = Styled(ColumnWrapper)`
   display: flex;
   flex-direction: row;
@@ -99,7 +81,17 @@ const SendButton = Styled(Button)`
   width: 100%;
 `;
 
+const DeFiZapLogoContainer = Styled.div`
+  margin-top: ${SPACING.BASE};
+`;
+const DeFiDisclaimerWrapper = Styled.p`
+  color: ${COLORS.GREY};
+  margin-bottom: ${SPACING.MD};
+`;
+
 export default function ConfirmTransaction({
+  txType = ITxType.STANDARD,
+  zapSelected,
   txConfig,
   onComplete,
   signedTx
@@ -125,6 +117,8 @@ export default function ConfirmTransaction({
       baseAssetRate={baseAssetRate}
       senderContact={senderContact}
       sender={sender}
+      txType={txType}
+      zapSelected={zapSelected}
       txConfig={txConfig}
       recipientContact={recipientContact}
       onComplete={onComplete}
@@ -147,6 +141,8 @@ export const ConfirmTransactionUI = ({
   senderContact,
   sender,
   recipientContact,
+  zapSelected,
+  txType,
   txConfig,
   onComplete,
   signedTx
@@ -183,20 +179,23 @@ export const ConfirmTransactionUI = ({
 
   return (
     <ConfirmTransactionWrapper>
-      <RowWrapper stack={true}>
-        <AddressWrapper position={'left'}>
-          {translate('CONFIRM_TX_FROM')}
-          <Account address={sender.address} title={senderAccountLabel} truncate={truncate} />
-        </AddressWrapper>
-        <AddressWrapper position={'right'}>
-          {translate('CONFIRM_TX_TO')}
-          <Account
-            address={receiverAddress || 'Unknown'}
-            title={recipientLabel}
-            truncate={truncate}
-          />
-        </AddressWrapper>
-      </RowWrapper>
+      {txType === ITxType.DEFIZAP && zapSelected && <ZapSelectedBanner zapSelected={zapSelected} />}
+      <FromToAccount
+        from={{
+          address: sender.address,
+          label: senderAccountLabel
+        }}
+        to={{
+          address: (receiverAddress || 'Unknown') as never,
+          label: recipientLabel
+        }}
+        displayToAddress={txType !== ITxType.DEFIZAP}
+      />
+      {txType === ITxType.DEFIZAP && zapSelected && (
+        <RowWrapper>
+          <TxIntermediaryDisplay address={zapSelected.contractAddress} contractName={'DeFi Zap'} />
+        </RowWrapper>
+      )}
       {assetType === 'erc20' && asset && asset.contractAddress && (
         <RowWrapper>
           <TxIntermediaryDisplay address={asset.contractAddress} contractName={asset.ticker} />
@@ -204,7 +203,8 @@ export const ConfirmTransactionUI = ({
       )}
       <RowWrapper>
         <ColumnWrapper>
-          <img src={sendIcon} alt="Send" /> {translate('CONFIRM_TX_SENDING')}
+          <img src={sendIcon} alt="Send" />
+          {translate(txType === ITxType.DEFIZAP ? 'ZAP_CONFIRM_TX_SENDING' : 'CONFIRM_TX_SENDING')}
         </ColumnWrapper>
         <AmountWrapper>
           <AssetIcon symbol={asset.ticker as TSymbol} size={'30px'} />
@@ -270,6 +270,9 @@ export const ConfirmTransactionUI = ({
         nonce={nonce}
         signedTransaction={signedTx}
       />
+      {txType === ITxType.DEFIZAP && (
+        <DeFiDisclaimerWrapper>{translateRaw('ZAP_CONFIRM_DISCLAIMER')}</DeFiDisclaimerWrapper>
+      )}
       <SendButton
         onClick={handleApprove}
         disabled={isBroadcastingTx}
@@ -277,6 +280,11 @@ export const ConfirmTransactionUI = ({
       >
         {isBroadcastingTx ? translate('SUBMITTING') : translate('CONFIRM_AND_SEND')}
       </SendButton>
+      {txType === ITxType.DEFIZAP && (
+        <DeFiZapLogoContainer>
+          <DeFiZapLogo />
+        </DeFiZapLogoContainer>
+      )}
     </ConfirmTransactionWrapper>
   );
 };

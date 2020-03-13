@@ -6,14 +6,6 @@ import { isEmpty } from 'lodash';
 import * as Yup from 'yup';
 import { parseEther } from 'ethers/utils';
 
-import {
-  StoreContext,
-  AssetContext,
-  getNonce,
-  NetworkContext,
-  fetchGasPriceEstimates,
-  getAccountBalance
-} from 'v2';
 import translate, { translateRaw } from 'v2/translations';
 import { SPACING } from 'v2/theme';
 import { IAccount, Network, StoreAccount, Asset } from 'v2/types';
@@ -26,6 +18,12 @@ import { ZapInteractionState, ISimpleTxFormFull } from '../types';
 import ZapSelectedBanner from './ZapSelectedBanner';
 import DeFiZapLogo from './DeFiZapLogo';
 import { IZapConfig } from '../config';
+import { StoreContext } from 'v2/services/Store/StoreProvider';
+import { AssetContext } from 'v2/services/Store/Asset';
+import { NetworkContext } from 'v2/services/Store/Network';
+import { getAccountBalance } from 'v2/services/Store';
+import { fetchGasPriceEstimates } from 'v2/services/ApiService';
+import { getNonce } from 'v2/services/EthService';
 
 interface Props extends ZapInteractionState {
   onComplete(fields: any): void;
@@ -96,7 +94,7 @@ export const ZapFormUI = ({
     amount: '',
     asset: ethAsset,
     nonce: '0',
-    gasPrice: '20',
+    gasPrice: '10',
     address: '',
     gasLimit: '',
     network
@@ -130,8 +128,8 @@ export const ZapFormUI = ({
         initialValues={initialFormikValues}
         validationSchema={ZapFormSchema}
         onSubmit={fields => {
-          fetchGasPriceEstimates(fields.network).then(({ fast }) => {
-            onComplete({ ...fields, gasPrice: fast.toString() });
+          fetchGasPriceEstimates(fields.network).then(({ standard }) => {
+            onComplete({ ...fields, gasPrice: standard.toString() });
           });
         }}
         render={({ values, errors, touched, setFieldValue }) => {
@@ -139,9 +137,6 @@ export const ZapFormUI = ({
             const nonce: number = await getNonce(values.network, account);
             setFieldValue('nonce', nonce);
           };
-          const isValid =
-            Object.values(errors).filter(error => error !== undefined && !isEmpty(error)).length ===
-            0;
 
           return (
             <Form>
@@ -194,16 +189,7 @@ export const ZapFormUI = ({
                   }}
                 />
               </FormFieldItem>
-              <FormFieldSubmitButton
-                type="submit"
-                onClick={() => {
-                  if (isValid) {
-                    onComplete(values);
-                  }
-                }}
-              >
-                Continue on!
-              </FormFieldSubmitButton>
+              <FormFieldSubmitButton type="submit">Continue on!</FormFieldSubmitButton>
               <DeFiZapLogoContainer>
                 <DeFiZapLogo />
               </DeFiZapLogoContainer>
