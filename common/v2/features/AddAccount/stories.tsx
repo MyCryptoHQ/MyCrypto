@@ -12,6 +12,7 @@ import {
   ViewOnlyDecrypt,
   WalletConnectDecrypt
 } from 'v2/components';
+import { withWalletConnect } from 'v2/services/WalletService';
 
 import { NetworkSelectPanel } from './components';
 
@@ -26,7 +27,7 @@ export const getStories = (): IStory[] => [
   },
   {
     name: WalletId.WALLETCONNECT,
-    steps: [NetworkSelectPanel, WalletConnectDecrypt]
+    steps: [NetworkSelectPanel, withWalletConnect(WalletConnectDecrypt)]
   },
   {
     name: WalletId.LEDGER_NANO_S,

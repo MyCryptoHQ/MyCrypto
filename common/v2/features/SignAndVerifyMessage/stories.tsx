@@ -4,10 +4,10 @@ import {
   LedgerNanoSDecrypt,
   KeystoreDecrypt,
   MnemonicDecrypt,
-  //ParitySignerDecrypt,
   PrivateKeyDecrypt,
   Web3ProviderDecrypt,
-  Web3ProviderInstall
+  Web3ProviderInstall,
+  WalletConnectDecrypt
 } from 'v2/components';
 
 export const getStories = (): IStory[] => [
@@ -19,10 +19,10 @@ export const getStories = (): IStory[] => [
     name: WalletId.LEDGER_NANO_S,
     steps: [LedgerNanoSDecrypt]
   },
-  /*{
-    name: WalletId.PARITY_SIGNER,
-    steps: [ParitySignerDecrypt]
-  },*/
+  {
+    name: WalletId.WALLETCONNECT,
+    steps: [WalletConnectDecrypt]
+  },
   {
     name: WalletId.KEYSTORE_FILE,
     steps: [KeystoreDecrypt],

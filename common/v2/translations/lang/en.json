@@ -454,6 +454,7 @@
     "404_DESCRIPTION": "Looks like you got lost somewhere along the way. Don't worry, the wizard can help you get back!",
     "404_BUTTON": "Go Home",
     "SIGN_MESSAGE_DESCRIPTION": "To sign a message, please unlock your account first. Select from the options below.",
+    "SIGN_MESSAGE_ERROR": "There was a problem signing a message. Please try again.",
     "VERIFY_MESSAGE_DESCRIPTION": "To verify a message, please paste a signature below.",
     "VERIFY_MESSAGE_SIGNED": "**$address** signed **$msg**",
     "CHANGE_WALLET_BUTTON": "Change Wallet",
