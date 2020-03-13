@@ -60,7 +60,7 @@ const DHeading = styled(Heading)`
 `;
 
 interface Props {
-  heading: any;
+  heading?: any;
   children: any;
   headingRight?: string | JSX.Element;
   footer?: JSX.Element;
@@ -81,7 +81,7 @@ export const DashboardPanel = ({
 }: Props) => {
   return (
     <DPanel {...rest}>
-      <DHeadingWrapper>
+      {heading && (<DHeadingWrapper>
         <DHeading>{heading}</DHeading>
         {headingRight &&
           (actionLink ? (
@@ -90,9 +90,9 @@ export const DashboardPanel = ({
               <Typography>{headingRight}</Typography>
             </SRouterLink>
           ) : (
-            headingRight
-          ))}
-      </DHeadingWrapper>
+              headingRight
+            ))}
+      </DHeadingWrapper>)}
       {padChildren ? <Content>{children}</Content> : children}
       {footer && <DFooterWrapper>{footer}</DFooterWrapper>}
     </DPanel>
