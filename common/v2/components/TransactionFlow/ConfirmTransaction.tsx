@@ -8,11 +8,11 @@ import { Amount, AssetIcon } from 'v2/components';
 import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from 'v2/services/EthService';
 import { RatesContext } from 'v2/services/RatesProvider';
 import { IStepComponentProps, ExtendedAddressBook, ITxType } from 'v2/types';
-import { BREAK_POINTS } from 'v2/theme';
+import { BREAK_POINTS, SPACING } from 'v2/theme';
 import { convertToFiat } from 'v2/utils';
 import translate from 'v2/translations';
 import { TSymbol } from 'v2/types/symbols';
-import { ZapSelectedBanner } from 'v2/features/DeFiZap';
+import { ZapSelectedBanner, DeFiZapLogo } from 'v2/features/DeFiZap';
 
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
@@ -79,6 +79,10 @@ const Divider = Styled.div`
 
 const SendButton = Styled(Button)`
   width: 100%;
+`;
+
+const DeFiZapLogoContainer = Styled.div`
+  margin-top: ${SPACING.BASE};
 `;
 
 export default function ConfirmTransaction({
@@ -269,6 +273,11 @@ export const ConfirmTransactionUI = ({
       >
         {isBroadcastingTx ? translate('SUBMITTING') : translate('CONFIRM_AND_SEND')}
       </SendButton>
+      {txType === ITxType.DEFIZAP && (
+        <DeFiZapLogoContainer>
+          <DeFiZapLogo />
+        </DeFiZapLogoContainer>
+      )}
     </ConfirmTransactionWrapper>
   );
 };
