@@ -8,9 +8,9 @@ import { Amount, AssetIcon } from 'v2/components';
 import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from 'v2/services/EthService';
 import { RatesContext } from 'v2/services/RatesProvider';
 import { IStepComponentProps, ExtendedAddressBook, ITxType } from 'v2/types';
-import { BREAK_POINTS, SPACING } from 'v2/theme';
+import { BREAK_POINTS, SPACING, COLORS } from 'v2/theme';
 import { convertToFiat } from 'v2/utils';
-import translate from 'v2/translations';
+import translate, { translateRaw } from 'v2/translations';
 import { TSymbol } from 'v2/types/symbols';
 import { ZapSelectedBanner, DeFiZapLogo } from 'v2/features/DeFiZap';
 
@@ -83,6 +83,10 @@ const SendButton = Styled(Button)`
 
 const DeFiZapLogoContainer = Styled.div`
   margin-top: ${SPACING.BASE};
+`;
+const DeFiDisclaimerWrapper = Styled.p`
+  color: ${COLORS.GREY};
+  margin-bottom: ${SPACING.MD};
 `;
 
 export default function ConfirmTransaction({
@@ -266,6 +270,9 @@ export const ConfirmTransactionUI = ({
         nonce={nonce}
         signedTransaction={signedTx}
       />
+      {txType === ITxType.DEFIZAP && (
+        <DeFiDisclaimerWrapper>{translateRaw('ZAP_CONFIRM_DISCLAIMER')}</DeFiDisclaimerWrapper>
+      )}
       <SendButton
         onClick={handleApprove}
         disabled={isBroadcastingTx}
