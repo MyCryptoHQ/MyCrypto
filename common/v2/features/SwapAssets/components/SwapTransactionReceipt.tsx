@@ -45,6 +45,14 @@ export default function SwapTransactionReceipt({
     };
   });
 
+  const transactionsData = transactions.map((t, idx) => ({
+    label: t.label,
+    config: txConfigs[idx],
+    receipt: txReceipts[idx],
+    status: t.status,
+    timestamp: 0 //TODO
+  }));
+
   return txReceipts.length === 1 ? (
     <TxReceipt
       txType={ITxType.SWAP}
@@ -58,8 +66,7 @@ export default function SwapTransactionReceipt({
   ) : (
     <MultiTxReceipt
       txType={ITxType.SWAP}
-      txReceipts={txReceipts}
-      txConfigs={txConfigs}
+      transactions={transactionsData}
       completeButtonText={translateRaw('SWAP_START_ANOTHER')}
       resetFlow={onSuccess}
       onComplete={onSuccess}

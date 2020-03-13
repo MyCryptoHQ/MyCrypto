@@ -15,6 +15,7 @@ export enum LAST_CHANGED_AMOUNT {
 }
 
 export interface TxEnveloppe {
+  label: string;
   rawTx: ITxObject;
   txHash: string;
   status: ITxStatus;
