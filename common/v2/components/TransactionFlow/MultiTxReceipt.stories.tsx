@@ -4,7 +4,7 @@ import { fTxReceipts, fTxConfigs } from '@fixtures';
 import { ITxStatus, ITxType, TSymbol } from 'v2/types';
 import { noOp, bigify } from 'v2/utils';
 
-import { MultiTxReceiptUI, TxReceiptData } from './MultiTxReceipt';
+import MultiTxReceipt, { TxReceiptData } from './MultiTxReceipt';
 import { SwapDisplayData, ISwapAsset } from 'v2/features/SwapAssets/types';
 
 // Define props
@@ -39,10 +39,11 @@ export default { title: 'MultiTxReceipt' };
 
 export const swapTransactionReceipt = () => (
   <div className="sb-container" style={{ maxWidth: '620px' }}>
-    <MultiTxReceiptUI
+    <MultiTxReceipt
       txType={ITxType.SWAP}
       transactions={transactions}
       resetFlow={resetFlow}
+      onComplete={resetFlow}
       swapDisplay={swapDisplay}
     />
   </div>
