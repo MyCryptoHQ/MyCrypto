@@ -626,6 +626,12 @@
     "COMPLETE_SWAP": "Complete Swap",
     "SWAP_STEP2_TEXT": "The contract you approved will complete the swap contract as soon as you confirm the transaction below.",
     "ZAP_CONFIRM_TX_SENDING": "You'll Open Position With",
-    "ZAP_CONFIRM_DISCLAIMER": "Remember, there are no guarantees that you will make money if you make this trade. Please don't confirm unless you understand the risks."
+    "ZAP_CONFIRM_DISCLAIMER": "Remember, there are no guarantees that you will make money if you make this trade. Please don't confirm unless you understand the risks.",
+    "MEMBERSHIP": "MyCrypto Membership",
+    "MEMBERSHIP_NOTMEMBER": "Support MyCrypto and become a member!",
+    "BECOME_MEMBER": "Become a Member",
+    "REQUEST_REWARDS": "Request Rewards",
+    "MANAGE_MEMBERSHIP": "Manage Membership",
+    "EXPIRES_ON": "Expires on"
   }
 }
