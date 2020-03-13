@@ -170,6 +170,7 @@ export const TxReceiptUI = ({
   assetRate,
   displayTxReceipt,
   zapSelected,
+  membershipSelected,
   senderContact,
   sender,
   recipientContact,
@@ -227,7 +228,14 @@ export const TxReceiptUI = ({
           }}
         />
       </>
-
+      {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
+        <div className="TransactionReceipt-row">
+          <TxIntermediaryDisplay
+            address={membershipSelected.contractAddress}
+            contractName={asset.ticker}
+          />
+        </div>
+      )}
       {txType === ITxType.DEFIZAP && zapSelected && (
         <>
           <div className="TransactionReceipt-row">

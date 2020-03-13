@@ -91,6 +91,7 @@ const DeFiDisclaimerWrapper = Styled.p`
 
 export default function ConfirmTransaction({
   txType = ITxType.STANDARD,
+  membershipSelected,
   zapSelected,
   txConfig,
   onComplete,
@@ -101,7 +102,6 @@ export default function ConfirmTransaction({
   const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
   const { getAssetRate } = useContext(RatesContext);
   const { accounts } = useContext(StoreContext);
-
   /* Get contact info */
   const recipientContact = getContactByAddressAndNetworkId(receiverAddress, network.id);
   const senderContact = getContactByAddressAndNetworkId(from, network.id);
@@ -119,6 +119,7 @@ export default function ConfirmTransaction({
       sender={sender}
       txType={txType}
       zapSelected={zapSelected}
+      membershipSelected={membershipSelected}
       txConfig={txConfig}
       recipientContact={recipientContact}
       onComplete={onComplete}
@@ -142,6 +143,7 @@ export const ConfirmTransactionUI = ({
   sender,
   recipientContact,
   zapSelected,
+  membershipSelected,
   txType,
   txConfig,
   onComplete,
@@ -199,6 +201,14 @@ export const ConfirmTransactionUI = ({
       {assetType === 'erc20' && asset && asset.contractAddress && (
         <RowWrapper>
           <TxIntermediaryDisplay address={asset.contractAddress} contractName={asset.ticker} />
+        </RowWrapper>
+      )}
+      {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
+        <RowWrapper>
+          <TxIntermediaryDisplay
+            address={membershipSelected.contractAddress}
+            contractName={asset.ticker}
+          />
         </RowWrapper>
       )}
       <RowWrapper>
