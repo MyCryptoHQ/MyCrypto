@@ -1167,7 +1167,7 @@
     rskjs-util "^1.0.3"
     safe-buffer "^5.2.0"
 
-"@ethersproject/abi@^5.0.0-beta.133":
+"@ethersproject/abi@^5.0.0-beta.146":
   version "5.0.0-beta.146"
   resolved "https://registry.yarnpkg.com/@ethersproject/abi/-/abi-5.0.0-beta.146.tgz#c843b90716c37630404e647313119e7e01838163"
   integrity sha512-9wn60tZ0rLGTlHnrD2V58i+bo+UvWytSCuI506ytqfwYauPI9gSkd3IPQI8Li61J1albZa4qtM37W5QlP0B7Eg==
@@ -1194,7 +1194,7 @@
     "@ethersproject/rlp" ">=5.0.0-beta.126"
     bn.js "^4.4.0"
 
-"@ethersproject/bignumber@>=5.0.0-beta.130":
+"@ethersproject/bignumber@>=5.0.0-beta.130", "@ethersproject/bignumber@^5.0.0-beta.135":
   version "5.0.0-beta.135"
   resolved "https://registry.yarnpkg.com/@ethersproject/bignumber/-/bignumber-5.0.0-beta.135.tgz#9d464df8967f5d314d109497e4f25ab82314c098"
   integrity sha512-7Tw2NgHzK7o+70bwyoaIZCbRycz+saWNU0sLOYnis3qYXwYsdTL+Rm0PMGA2v4jyHJt7BPS2pxGww+akVXbX+w==
@@ -1827,14 +1827,14 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@mycrypto/eth-scan@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@mycrypto/eth-scan/-/eth-scan-1.1.0.tgz#2355d90fae833b67304e5ae11072dbba3420f22b"
-  integrity sha512-s4ZPmwETCKtU0Myy7YObfxRb05H8lkuSE9ynRpeSaTE03IHPbsB6/SKmCatJUhRfPawhmPDlqVKiZ8ARgfCLqg==
+"@mycrypto/eth-scan@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@mycrypto/eth-scan/-/eth-scan-2.1.0.tgz#9248b00000bff0b4ac9acda093d98eae0c84b93c"
+  integrity sha512-ncbWZDz6lL/8iFklGYt5MG2iTtTzJ6V6P10ht6PoOMHFG/2HiAm9AbKzwP0twYRh/oa/p/nSg3SrZer0Zuk7ZA==
   dependencies:
-    "@ethersproject/abi" "^5.0.0-beta.133"
-    bignumber.js "^9.0.0"
-    isomorphic-fetch "^2.2.1"
+    "@ethersproject/abi" "^5.0.0-beta.146"
+    "@ethersproject/bignumber" "^5.0.0-beta.135"
+    isomorphic-unfetch "^3.0.0"
 
 "@mycrypto/ui@0.22.0":
   version "0.22.0"
@@ -4634,7 +4634,7 @@ bigi@^1.1.0, bigi@^1.2.1, bigi@^1.4.0, bigi@^1.4.1:
   resolved "https://registry.yarnpkg.com/bigi/-/bigi-1.4.2.tgz#9c665a95f88b8b08fc05cfd731f561859d725825"
   integrity sha1-nGZalfiLiwj8Bc/XMfVhhZ1yWCU=
 
-bignumber.js@9.0.0, bignumber.js@^9.0.0:
+bignumber.js@9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.0.0.tgz#805880f84a329b5eac6e7cb6f8274b6d82bdf075"
   integrity sha512-t/OYhhJ2SD+YGBQcjY8GzzDHEk9f3nerxjtfa6tlMXfe7frs/WozhvCNoGvpM0P3bNf3Gq5ZRMlGr5f3r4/N8A==
@@ -8317,7 +8317,7 @@ file-loader@^4.2.0:
     loader-utils "^1.2.3"
     schema-utils "^2.5.0"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
@@ -10663,13 +10663,21 @@ isobject@^4.0.0:
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-4.0.0.tgz#3f1c9155e73b192022a80819bacd0343711697b0"
   integrity sha512-S/2fF5wH8SJA/kmwr6HYhK/RI/OkhD84k8ntalo0iJjZikgq1XFvR5M8NPT1x5F7fBwCG3qHfnzeP/Vh/ZxCUA==
 
-isomorphic-fetch@2.2.1, isomorphic-fetch@^2.1.1, isomorphic-fetch@^2.2.1:
+isomorphic-fetch@2.2.1, isomorphic-fetch@^2.1.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/isomorphic-fetch/-/isomorphic-fetch-2.2.1.tgz#611ae1acf14f5e81f729507472819fe9733558a9"
   integrity sha1-YRrhrPFPXoH3KVB0coGf6XM1WKk=
   dependencies:
     node-fetch "^1.0.1"
     whatwg-fetch ">=0.10.0"
+
+isomorphic-unfetch@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/isomorphic-unfetch/-/isomorphic-unfetch-3.0.0.tgz#de6d80abde487b17de2c400a7ef9e5ecc2efb362"
+  integrity sha512-V0tmJSYfkKokZ5mgl0cmfQMTb7MLHsBMngTkbLY0eXvKqiVRRoZP04Ly+KhKrJfKtzC9E6Pp15Jo+bwh7Vi2XQ==
+  dependencies:
+    node-fetch "^2.2.0"
+    unfetch "^4.0.0"
 
 isstream@~0.1.2:
   version "0.1.2"
@@ -12770,7 +12778,7 @@ node-ensure@^0.0.0:
   resolved "https://registry.yarnpkg.com/node-ensure/-/node-ensure-0.0.0.tgz#ecae764150de99861ec5c810fd5d096b183932a7"
   integrity sha1-7K52QVDemYYexcgQ/V0Jaxg5Mqc=
 
-node-fetch@2.6.0, node-fetch@^1.0.1, node-fetch@^1.6.0, node-fetch@^2.6.0:
+node-fetch@2.6.0, node-fetch@^1.0.1, node-fetch@^1.6.0, node-fetch@^2.2.0, node-fetch@^2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.0.tgz#e633456386d4aa55863f676a7ab0daa8fdecb0fd"
   integrity sha512-8dG4H5ujfvFiqDmVu9fQ5bOHUC15JMjMY/Zumv26oOvvVJjM67KF8koCWIabKQ1GJIa9r2mMZscBq/TbdOcmNA==
@@ -12873,22 +12881,6 @@ node-notifier@^5.4.2:
     semver "^5.5.0"
     shellwords "^0.1.1"
     which "^1.3.0"
-
-node-pre-gyp@*:
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.14.0.tgz#9a0596533b877289bcad4e143982ca3d904ddc83"
-  integrity sha512-+CvDC7ZttU/sSt9rFjix/P05iS43qHCOOGzcr3Ry99bXG7VX953+vFyEuph/tfqoYu8dttBkE86JSKBO2OzcxA==
-  dependencies:
-    detect-libc "^1.0.2"
-    mkdirp "^0.5.1"
-    needle "^2.2.1"
-    nopt "^4.0.1"
-    npm-packlist "^1.1.6"
-    npmlog "^4.0.2"
-    rc "^1.2.7"
-    rimraf "^2.6.1"
-    semver "^5.3.0"
-    tar "^4.4.2"
 
 node-pre-gyp@^0.13.0:
   version "0.13.0"
@@ -17552,7 +17544,7 @@ tar@^2.0.0:
     fstream "^1.0.12"
     inherits "2"
 
-tar@^4, tar@^4.4.2, tar@^4.4.8:
+tar@^4, tar@^4.4.8:
   version "4.4.13"
   resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.13.tgz#43b364bc52888d555298637b10d60790254ab525"
   integrity sha512-w2VwSrBoHa5BsSyH+KxEqeQBAllHhccyMFVHtGtdMpF4W7IRWfZjFiQceJPChOeTsSDVUpER2T8FA93pr0L+QA==
@@ -18223,7 +18215,7 @@ unbzip2-stream@^1.0.9:
     buffer "^5.2.1"
     through "^2.3.8"
 
-unfetch@^4.1.0:
+unfetch@^4.0.0, unfetch@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/unfetch/-/unfetch-4.1.0.tgz#6ec2dd0de887e58a4dee83a050ded80ffc4137db"
   integrity sha512-crP/n3eAPUJxZXM9T80/yv0YhkTEx2K1D3h7D1AJM6fzsWZrxdyRuLN0JH/dkZh1LNH8LxCnBzoPFCPbb2iGpg==

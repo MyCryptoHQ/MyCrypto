@@ -1,27 +1,37 @@
-import EthScan, { HttpProvider, EthersProvider } from '@mycrypto/eth-scan';
+import {
+  getEtherBalances,
+  getTokensBalance,
+  getTokenBalances as getTokenBalancesFromEthScan
+} from '@mycrypto/eth-scan';
 import partition from 'lodash/partition';
-import { bigNumberify, BigNumber } from 'ethers/utils';
-import { FallbackProvider } from 'ethers/providers';
 import { default as BN } from 'bignumber.js';
+import { bigNumberify } from 'ethers/utils';
+import { BigNumber as EthScanBN } from '@ethersproject/bignumber';
 
 import { ETHSCAN_NETWORKS, MYCRYPTO_UNLOCK_CONTRACT_ADDRESS } from 'v2/config';
-import { TAddress, StoreAccount, StoreAsset, Asset, NodeConfig, Network } from 'v2/types';
+import { TAddress, StoreAccount, StoreAsset, Asset, Network } from 'v2/types';
 import { ProviderHandler } from 'v2/services/EthService';
 
 export interface BalanceMap {
-  [key: string]: BN | BigNumber;
+  [key: string]: BN;
+}
+
+interface EthScanBalanceMap {
+  [key: string]: EthScanBN;
 }
 
 const getAssetAddresses = (assets: Asset[] = []): (string | undefined)[] => {
   return assets.map(a => a.contractAddress).filter(a => a);
 };
 
-const getScanner = (node: NodeConfig) => {
-  return new EthScan(new HttpProvider(node.url));
+const convertBNToBigNumberJS = (bn: EthScanBN): BN => {
+  return new BN(bn._hex);
 };
 
-const getScannerWithProvider = (provider: FallbackProvider) => {
-  return new EthScan(new EthersProvider(provider));
+const toBigNumberJS = (balances: EthScanBalanceMap): BalanceMap => {
+  return Object.fromEntries(
+    Object.keys(balances).map(key => [key, convertBNToBigNumberJS(balances[key])])
+  );
 };
 
 const addBalancesToAccount = (account: StoreAccount) => ([baseBalance, tokenBalances]: [
@@ -55,10 +65,10 @@ const addBalancesToAccount = (account: StoreAccount) => ([baseBalance, tokenBala
 
 const getAccountAssetsBalancesWithEthScan = async (account: StoreAccount) => {
   const list = getAssetAddresses(account.assets) as string[];
-  const scanner = getScannerWithProvider(new ProviderHandler(account.network).client);
+  const provider = new ProviderHandler(account.network).client;
   return Promise.all([
-    scanner.getEtherBalances([account.address]),
-    scanner.getTokensBalance(account.address, list)
+    getEtherBalances(provider, [account.address]).then(toBigNumberJS),
+    getTokensBalance(provider, account.address, list).then(toBigNumberJS)
   ])
     .then(addBalancesToAccount(account))
     .catch(_ => account);
@@ -68,9 +78,8 @@ export const getBaseAssetBalances = async (addresses: string[], network: Network
   if (!network) {
     return ([] as unknown) as BalanceMap;
   }
-  const scanner = getScannerWithProvider(new ProviderHandler(network).client);
-  return scanner
-    .getEtherBalances(addresses)
+  const provider = new ProviderHandler(network).client;
+  return getEtherBalances(provider, addresses)
     .then(data => {
       return data;
     })
@@ -82,12 +91,14 @@ const getTokenBalances = (
   address: TAddress,
   tokens: StoreAsset[]
 ): BalanceMap => {
-  return tokens.reduce(async (balances, token) => {
-    return {
-      ...balances,
-      [token.contractAddress as TAddress]: await provider.getRawTokenBalance(address, token)
-    };
-  }, {});
+  return toBigNumberJS(
+    tokens.reduce(async (balances, token) => {
+      return {
+        ...balances,
+        [token.contractAddress as TAddress]: await provider.getRawTokenBalance(address, token)
+      };
+    }, {})
+  );
 };
 
 const getAccountAssetsBalancesWithJsonRPC = async (
@@ -98,7 +109,12 @@ const getAccountAssetsBalancesWithJsonRPC = async (
   const tokens = assets.filter((a: StoreAsset) => a.type === 'erc20');
 
   return Promise.all([
-    provider.getRawBalance(account.address).then(balance => ({ [address]: balance })),
+    provider
+      .getRawBalance(account.address)
+      // @ts-ignore The types mismatch due to versioning of ethersjs
+      .then(convertBNToBigNumberJS)
+      // @ts-ignore The types mismatch due to versioning of ethersjs
+      .then(balance => ({ [address]: balance })),
     getTokenBalances(provider, address, tokens)
   ])
     .then(addBalancesToAccount(account))
@@ -123,24 +139,25 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
 };
 
 export const getAllTokensBalancesOfAccount = async (account: StoreAccount, assets: Asset[]) => {
-  const scanner = getScanner(account.network.nodes[0]);
+  const provider = account.network.nodes[0];
   const assetsInNetwork = assets.filter(x => x.networkId === account.network.id);
   const assetAddresses = getAssetAddresses(assetsInNetwork) as string[];
 
   try {
-    return scanner.getTokensBalance(account.address, assetAddresses);
+    return getTokensBalance(provider, account.address, assetAddresses).then(toBigNumberJS);
   } catch (err) {
     throw new Error(err);
   }
 };
 
 export const getAccountsTokenBalance = async (accounts: StoreAccount[], tokenContract: string) => {
-  const scanner = getScanner(accounts[0].network.nodes[0]);
+  const provider = accounts[0].network.nodes[0];
   try {
-    return scanner.getTokenBalances(
+    return getTokenBalancesFromEthScan(
+      provider,
       accounts.map(account => account.address),
       tokenContract
-    );
+    ).then(toBigNumberJS);
   } catch (err) {
     throw new Error(err);
   }
