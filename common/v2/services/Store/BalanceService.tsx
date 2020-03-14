@@ -95,10 +95,10 @@ const getTokenBalances = (
 ): Promise<BalanceMap> => {
   return tokens
     .reduce<Promise<EthScanBalanceMap>>(async (balances, token) => {
-      return Promise.resolve({
+      return {
         ...balances,
         [token.contractAddress as TAddress]: await provider.getRawTokenBalance(address, token)
-      });
+      };
     }, Promise.resolve<EthScanBalanceMap>({}))
     .then(toBigNumberJS);
 };
@@ -165,20 +165,13 @@ export const getAccountsTokenBalance = async (accounts: StoreAccount[], tokenCon
   }
 };
 
-export const getAccountsTokenBalances = async (
-  accounts: StoreAccount[],
-  tokenContracts: string[]
-) => {
+export const getAccountsTokenBalances = (accounts: StoreAccount[], tokenContracts: string[]) => {
   const provider = accounts[0].network.nodes[0];
-  try {
-    return getTokensBalances(
-      provider,
-      accounts.map(account => account.address),
-      tokenContracts
-    ).then(nestedToBigNumberJS);
-  } catch (err) {
-    throw new Error(err);
-  }
+  return getTokensBalances(
+    provider,
+    accounts.map(account => account.address),
+    tokenContracts
+  ).then(nestedToBigNumberJS);
 };
 
 // Unlock Token getBalance will return 0 if no valid unlock token is found for the address.
