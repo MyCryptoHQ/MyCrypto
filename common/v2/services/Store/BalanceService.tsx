@@ -92,15 +92,15 @@ const getTokenBalances = (
   provider: ProviderHandler,
   address: TAddress,
   tokens: StoreAsset[]
-): BalanceMap => {
-  return toBigNumberJS(
-    tokens.reduce(async (balances, token) => {
-      return {
+): Promise<BalanceMap> => {
+  return tokens
+    .reduce<Promise<EthScanBalanceMap>>(async (balances, token) => {
+      return Promise.resolve({
         ...balances,
         [token.contractAddress as TAddress]: await provider.getRawTokenBalance(address, token)
-      };
-    }, {})
-  );
+      });
+    }, Promise.resolve<EthScanBalanceMap>({}))
+    .then(toBigNumberJS);
 };
 
 const getAccountAssetsBalancesWithJsonRPC = async (
