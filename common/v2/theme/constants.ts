@@ -19,6 +19,7 @@ export const COLORS = {
   BLUE_GREY_LIGHTEST: '#fafcfc',
   BLUE_DARK_SLATE: '#163150',
   BLUE_DARK: '#1c314e',
+  BLUE_GREEN: '#337996',
 
   LEMON_GRASS: '#99968C',
   LIGHT_GREEN: '#B3DD87',
