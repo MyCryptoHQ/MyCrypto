@@ -2,7 +2,8 @@ import {
   getEtherBalances,
   getTokensBalance,
   getTokenBalances as getTokenBalancesFromEthScan,
-  getTokensBalances
+  getTokensBalances,
+  BalanceMap as EthScanBalanceMap
 } from '@mycrypto/eth-scan';
 import partition from 'lodash/partition';
 import { default as BN } from 'bignumber.js';
@@ -14,10 +15,6 @@ import { TAddress, StoreAccount, StoreAsset, Asset, Network } from 'v2/types';
 import { ProviderHandler } from 'v2/services/EthService';
 
 export interface BalanceMap<T = BN> {
-  [key: string]: T;
-}
-
-interface EthScanBalanceMap<T = EthScanBN> {
   [key: string]: T;
 }
 
