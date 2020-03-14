@@ -1,10 +1,12 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { StoreContext } from 'v2/services';
 import { DashboardPanel, Typography, Button, Link } from 'v2/components';
-import { translateRaw } from 'v2';
 import { FONT_SIZE, COLORS, SPACING } from 'v2/theme';
+import { translateRaw } from 'v2/translations';
+import { ROUTE_PATHS } from 'v2/config';
 
 const SDashboardPanel = styled(DashboardPanel)<{isMyCryptoMember: boolean}>`
   display: flex;
@@ -38,7 +40,8 @@ const SButton = styled(Button)`
   margin-top: ${SPACING.SM};
 `;
 
-export default function MembershipPanel() {
+type Props = RouteComponentProps<{}>;
+function MembershipPanel({ history }: Props) {
   const { isMyCryptoMember } = useContext(StoreContext);
 
   return (
@@ -65,7 +68,7 @@ export default function MembershipPanel() {
               <Typography as="div">
                 {translateRaw("MEMBERSHIP_NOTMEMBER")}
               </Typography>
-              <SButton>{translateRaw("BECOME_MEMBER")}</SButton>
+              <SButton onClick={() => history.push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}>{translateRaw("BECOME_MEMBER")}</SButton>
             </>
           )}
         </TextWrapper>
@@ -73,3 +76,5 @@ export default function MembershipPanel() {
     </SDashboardPanel>
   );
 }
+
+export default withRouter(MembershipPanel);
