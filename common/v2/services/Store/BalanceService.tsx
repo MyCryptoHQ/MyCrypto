@@ -14,9 +14,7 @@ import { ETHSCAN_NETWORKS, MYCRYPTO_UNLOCK_CONTRACT_ADDRESS } from 'v2/config';
 import { TAddress, StoreAccount, StoreAsset, Asset, Network } from 'v2/types';
 import { ProviderHandler } from 'v2/services/EthService';
 
-export interface BalanceMap<T = BN> {
-  [key: string]: T;
-}
+export type BalanceMap<T = BN> = EthScanBalanceMap<T>;
 
 const getAssetAddresses = (assets: Asset[] = []): (string | undefined)[] => {
   return assets.map(a => a.contractAddress).filter(a => a);
