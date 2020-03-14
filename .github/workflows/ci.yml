@@ -63,10 +63,6 @@ jobs:
           path: node_modules
           ## Check cache based on yarn.lock hashfile
           key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.OS }}-build-${{ env.cache-name }}-
-            ${{ runner.OS }}-build-
-            ${{ runner.OS }}-
 
       - name: Install Dependencies
         ## If no cache is found, install dependencies
@@ -149,10 +145,6 @@ jobs:
         path: node_modules
         ## Check cache based on yarn.lock hashfile
         key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.OS }}-build-${{ env.cache-name }}-
-          ${{ runner.OS }}-build-
-          ${{ runner.OS }}-
 
     - name: Install Dependencies
       ## If no cache is found, install dependencies
@@ -197,11 +189,18 @@ jobs:
       with:
         node-version: "${{ steps.nvm.outputs.NVMRC }}"
 
-    - name: Restoring node modules
+    - name: Cache node modules
+      id: cache
       uses: actions/cache@v1
       with:
         path: node_modules
+        ## Check cache based on yarn.lock hashfile
         key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Install Dependencies
+      ## If no cache is found, install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: yarn install
 
     - name: yarn build:electron:osx
       run: yarn build:electron:osx
@@ -259,10 +258,11 @@ jobs:
         path: node_modules
         ## Check cache based on yarn.lock hashfile
         key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.OS }}-build-${{ env.cache-name }}-
-          ${{ runner.OS }}-build-
-          ${{ runner.OS }}-
+
+    - name: Install Dependencies
+      ## If no cache is found, install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: yarn install
 
     - name: yarn build:electron:linux
       run: yarn build:electron:linux
