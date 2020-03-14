@@ -74,7 +74,6 @@ export const DashboardPanel = ({
   headingRight,
   actionLink,
   footer,
-  className = '',
   children,
   padChildren,
   ...rest
