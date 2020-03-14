@@ -180,7 +180,7 @@ export const getMemberAccounts = async (accounts: StoreAccount[]) =>
   getAccountsTokenBalances(accounts, MYCRYPTO_UNLOCK_CONTRACT_ADDRESSES)
     .then(unlockStatusBalanceMap =>
       Object.keys(unlockStatusBalanceMap).filter(address =>
-        unlockStatusBalanceMap[address].isGreaterThan(new BN(0))
+        Object.values(unlockStatusBalanceMap[address]).some(b => b.isGreaterThan(new BN(0)))
       )
     )
     .catch(err => console.error(err));
