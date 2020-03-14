@@ -4,10 +4,11 @@ import styled from 'styled-components';
 import { StoreContext } from 'v2/services';
 import { DashboardPanel, Typography, Button, Link } from 'v2/components';
 import { translateRaw } from 'v2';
-import { FONT_SIZE } from 'v2/theme';
+import { FONT_SIZE, COLORS, SPACING } from 'v2/theme';
 
-const SDashboardPanel = styled(DashboardPanel)`
+const SDashboardPanel = styled(DashboardPanel)<{isMyCryptoMember: boolean}>`
   display: flex;
+  ${props => !props.isMyCryptoMember && `background-color: ${COLORS.BLUE_LIGHTEST};`}
 `;
 
 const Wrapper = styled.div`
@@ -18,10 +19,23 @@ const Header = styled(Typography)`
   font-weight: bold;
   font-size: ${FONT_SIZE.LG};
 `
-const TextWrapper = styled.div`
+
+const ImageWrapper = styled.div`
+  margin-right: ${SPACING.BASE};
+`;
+
+const TextWrapper = styled.div<{isMyCryptoMember: boolean}>`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  ${props => props.isMyCryptoMember && `align-items: center;`}
+`;
+
+const SLink = styled(Link)`
+  margin-top: ${SPACING.SM};
+`;
+
+const SButton = styled(Button)`
+  margin-top: ${SPACING.SM};
 `;
 
 export default function MembershipPanel() {
@@ -29,20 +43,21 @@ export default function MembershipPanel() {
 
   return (
     <SDashboardPanel
+      isMyCryptoMember={isMyCryptoMember}
       padChildren={true}>
       <Wrapper>
-        <div>
+        <ImageWrapper>
           <img src="https://via.placeholder.com/100x100" />
-        </div>
-        <TextWrapper>
+        </ImageWrapper>
+        <TextWrapper isMyCryptoMember={isMyCryptoMember}>
           <Header as="div">
             {translateRaw("MEMBERSHIP")}
           </Header>
           {isMyCryptoMember && (
             <>
               <div>{translateRaw("EXPIRES_ON")}</div>
-              <Link>{translateRaw("MANAGE_MEMBERSHIP")}</Link>
-              <Button>{translateRaw("REQUEST_REWARDS")}</Button>
+              <SLink>{translateRaw("MANAGE_MEMBERSHIP")}</SLink>
+              <SButton>{translateRaw("REQUEST_REWARDS")}</SButton>
             </>
           )}
           {!isMyCryptoMember && (
@@ -50,7 +65,7 @@ export default function MembershipPanel() {
               <Typography as="div">
                 {translateRaw("MEMBERSHIP_NOTMEMBER")}
               </Typography>
-              <Button>{translateRaw("BECOME_MEMBER")}</Button>
+              <SButton>{translateRaw("BECOME_MEMBER")}</SButton>
             </>
           )}
         </TextWrapper>
