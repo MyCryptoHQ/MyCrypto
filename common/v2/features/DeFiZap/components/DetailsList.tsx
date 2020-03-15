@@ -65,7 +65,7 @@ const DetailsList = ({ zapSelected, onSubmit }: Props) => {
         {translateRaw('PLATFORMS')}
         <ProtocolTagsList platformsUsed={platformsUsed} />
       </ProtocolContainer>
-      <Button onClick={onSubmit}>Start Earning Now!</Button>
+      <Button onClick={onSubmit}>{translateRaw('ZAP_START_EARNING')}</Button>
     </DetailsContainer>
   );
 };

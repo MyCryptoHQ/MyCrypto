@@ -1,6 +1,9 @@
 import { TranslateMarkdown } from 'v2/components';
 import { BearishIndicator, BullishIndicator, NeutralIndicator } from './components';
 
+import ProtocolsExplainer from './components/ProtocolsExplainer';
+import AvailableZaps from './components/AvailableZaps';
+
 import moderateRisk from 'assets/images/defizap/moderateRisk.svg';
 import conservativeRisk from 'assets/images/defizap/conservativeRisk.svg';
 import aggressiveRisk from 'assets/images/defizap/aggressiveRisk.svg';
@@ -176,45 +179,47 @@ export const riskAndReward: RiskAndReward[] = [
 
 export const accordionContent = [
   {
-    title: 'How is the MyCrypto Compound integration different than the main Compound Interface?',
+    title: 'What is DeFi?',
     component: TranslateMarkdown({
       source:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+        'Short for decentralized finance, DeFi refers to financial services for crypto, such as borrowing, lending, and trading, that are usually facilitated using smart contracts on the blockchain. They are often open-source and noncustodial.'
     })
   },
   {
-    title: 'How are interest rates set?',
+    title: 'Is DeFiZap safe?',
     component: TranslateMarkdown({
       source:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+        "There's always risk when interacting with DeFi and smart contracts, and DeFiZap is an experimental project that is in beta. Using a service like DeFiZap to interact with protocols for you does add a small amount of additional risk, but most of the risk stems from the actual protocols that are being interacted with."
     })
   },
   {
-    title: 'How is interest calculated?',
+    title: 'Which protocols does DeFiZap interact with and where can I learn about them?',
+    component: ProtocolsExplainer()
+  },
+  {
+    title: 'Which Zaps are available?',
+    component: AvailableZaps()
+  },
+  {
+    title:
+      'How is the MyCrypto DeFiZap integration different from the functionality of DeFiZap.com?',
     component: TranslateMarkdown({
       source:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+        'The MyCrypto DeFiZap integration uses the same process as the DeFiZap.com process. MyCrypto’s DeFiZap integration adds an extra layer of convenience by allowing you to access Zaps without having to leave MyCrypto. For the full list of available Zaps, visit [DeFiZap.com](https://defizap.com).'
     })
   },
   {
-    title: 'How do I get the original asset back?',
+    title: 'After entering a Zap, how do I exit?',
     component: TranslateMarkdown({
       source:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+        'To exit a Zap, please visit [DeFiZap.com](https://defizap.com), go to the Zap that you’re currently engaged with, and follow the steps that they outline.'
     })
   },
   {
-    title: 'How do I borrow assets?',
+    title: 'How do I see my DeFiZap balances?',
     component: TranslateMarkdown({
       source:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-    })
-  },
-  {
-    title: 'How long do I have to use Compound for?',
-    component: TranslateMarkdown({
-      source:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+        'Due to technical limitations, at this time we’re only currently able to give an estimate on some Zap balances, and DeFiZap recommends checking [pools.fyi](https://pools.fyi/) to view some of your balances/returns. Over time, as we and DeFiZap explore this further, we anticipate that there will be a better solution for this.'
     })
   }
 ];

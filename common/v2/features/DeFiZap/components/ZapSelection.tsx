@@ -2,22 +2,17 @@ import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
+import { Accordion } from '@mycrypto/ui';
 
-import {
-  Button,
-  ExtendedContentPanel,
-  AppLogo,
-  Typography,
-  TranslateMarkdown,
-  Link
-} from 'v2/components';
+import { Button, ExtendedContentPanel, AppLogo, Typography } from 'v2/components';
+import translate from 'v2/translations';
 import { ROUTE_PATHS } from 'v2/config';
 import { COLORS, BREAK_POINTS, SPACING } from 'v2/theme';
 
 import { ZAPS_CONFIG, IZapId, defaultZapId, riskAndReward, accordionContent } from '../config';
 import { DetailsList, RiskAndRewardCard } from '.';
+
 import sEth from 'assets/images/defizap/illustrations/seth.svg';
-import { Accordion } from '@mycrypto/ui';
 
 const FullSizeContentPanel = styled(ExtendedContentPanel)`
   padding: 0px;
@@ -87,17 +82,18 @@ const CardContainer = styled.div`
   flex-wrap: wrap;
 `;
 
-const LinkContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;
-const RowContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin: ${SPACING.SM} 0;
-`;
+// To re-activate later when we have content
+// const LinkContainer = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   width: 100%;
+// `;
+// const RowContainer = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   width: 100%;
+//   margin: ${SPACING.SM} 0;
+// `;
 
 const ZapEducation = withRouter(({ history, location }) => {
   const qs = queryString.parse(location.search);
@@ -129,7 +125,7 @@ const ZapEducation = withRouter(({ history, location }) => {
       <ContentPanelHeading>
         <Title>
           <BreakdownImg src={zapSelected.breakdownImage} />
-          {`${zapSelected.title} Details`}
+          {translate('ZAP_HEADER', { $zap: zapSelected.title })}
         </Title>
         <AppLogo />
       </ContentPanelHeading>
@@ -138,12 +134,12 @@ const ZapEducation = withRouter(({ history, location }) => {
         <DetailsList onSubmit={handleSubmit} zapSelected={zapSelected} />
       </DetailsSection>
       <SpacedSection color={COLORS.GREY_LIGHTEST}>
-        <Title>{'How Does Zap Work?'}</Title>
+        <Title>{translate('ZAP_HOW_HEADER')}</Title>
         <img src={sEth} />
-        <Button onClick={handleSubmit}>Add Funds</Button>
+        <Button onClick={handleSubmit}>{translate('ZAP_ADD_FUNDS')}</Button>
       </SpacedSection>
       <SSection>
-        <Title>{'Risks and Rewards when using DeFi Zap'}</Title>
+        <Title>{translate('ZAP_RISKS_HEADER')}</Title>
         <CardContainer>
           {riskAndReward.map((el, i) => (
             <RiskAndRewardCard key={i} riskAndReward={el} />
@@ -151,23 +147,12 @@ const ZapEducation = withRouter(({ history, location }) => {
         </CardContainer>
       </SSection>
       <SpacedSection color={COLORS.GREY_LIGHTEST}>
-        <Title>More Information About DeFi Zaps</Title>
-        <Typography>
-          Polis moore thrawn kanos. Cato altyr trianii firrerreo momaw orrin subterrel darth coway.
-          Kessel porkins kessel togruta cracken huk rhen priapulin. Jin'ha coway gilad kendal phlog.
-          Kyle elom jinn raynar moff quarren. Verpine chagrian porkins twi'lek ackbar corran.
-          Xanatos taung darth vurk. Kamino kamino ken tyber walon. R2-d2 boba mirialan max. Polis
-          tc-14 thennqora mandalorians jabiimas boba. Porkins moff typho md-5. Dash skywalker nunb
-          cabasshite veknoid luke conan. Boz habassa mandalore lannik iblis utapau cabasshite vor.
-        </Typography>
-        <Typography>
-          Jin'ha lars maris rahm gamorrean thul boss antilles ansionian. Gank iego yané jettster.
-          Bardan nar veila grievous valorum tatooine polis grievous annoo. Wharl biggs ziro desolous
-          thakwaash anzati. Fode desolous talortai ysanne altyr aparo taun jerjerrod. Lowbacca
-          jubnuk tatooine vel var ima-gun toydarian alderaan tusken raider. Defel cal ev-9d9 klivian
-          aleena. Hapan ysanne ventress han. Antemeridian golda darth vurk moff dengar ruwee jin'ha
-          tenel. Conan darth subterrel doldur atrivis kuat teneniel wookiee.
-        </Typography>
+        <Title>{translate('ZAP_MORE_INFO_HEADER')}</Title>
+        <Typography>{translate('DEFI_DESC_FIRST')}</Typography>
+        <Typography>{translate('DEFI_DESC_SECOND')}</Typography>
+        <Typography>{translate('DEFI_DESC_THIRD')}</Typography>
+        <Typography>{translate('VISIT_DEFIZAP')}</Typography>
+        {/* To re-activate later when we have content
         <LinkContainer>
           <RowContainer>
             <Typography bold={true}>More from the Knowledgebase:</Typography>
@@ -182,17 +167,18 @@ const ZapEducation = withRouter(({ history, location }) => {
             <Link href="https://example.com">Some Link</Link>
             <Link href="https://example.com">Some Link</Link>
           </RowContainer>
-        </LinkContainer>
+        </LinkContainer> */}
       </SpacedSection>
       <SpacedSection>
-        <Title>Frequently Asked Questions</Title>
+        <Title>{translate('ZAP_QUESTIONS_HEADER')}</Title>
         <Accordion items={accordionContent} />
+        {/* To re-activate later when we have content
         <div>
           <TranslateMarkdown
             source={'To view more Frequently Asked Questions go [here](https://exemple.com).'}
           />
-        </div>
-        <Button onClick={handleSubmit}>Add Funds</Button>
+        </div> */}
+        <Button onClick={handleSubmit}>{translate('ZAP_ADD_FUNDS')}</Button>
       </SpacedSection>
     </FullSizeContentPanel>
   );
