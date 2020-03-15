@@ -164,7 +164,7 @@ export const riskAndReward: RiskAndReward[] = [
   },
   {
     text:
-      '**Innvoation:** Take advantage of innovative decentralized tools avaiable to ETH holders',
+      '**Innovation:** Take advantage of innovative decentralized tools avaiable to ETH holders',
     icon: innovationIcn
   },
   {
