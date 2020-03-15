@@ -150,16 +150,16 @@ export const ZAPS_CONFIG: IZapConfigObject = {
 export const riskAndReward: RiskAndReward[] = [
   {
     text:
-      '**Smart Contract:** there is a chance that  smart contracts get hacked and you lose all your money',
+      '**Smart Contract:** There is a chance that  smart contracts get hacked and you lose all your money',
     icon: smartContractIcn
   },
   {
-    text: '**Investing:** put your ETH to work for you, potential to watch your money grow',
+    text: '**Investing:** Put your ETH to work for you, potential to watch your money grow',
     icon: inverstingIcn
   },
   {
     text:
-      '**Collateralization:** if the crypto price swings you don’t get liquidated nor does the entire system collapse',
+      '**Collateralization:** If the crypto price swings you don’t get liquidated nor does the entire system collapse',
     icon: collateralizationIcn
   },
   {
@@ -168,7 +168,7 @@ export const riskAndReward: RiskAndReward[] = [
     icon: innovationIcn
   },
   {
-    text: '**Liquidity:** markets are more inefficient when they are more shallow',
+    text: '**Liquidity:** Markets are more inefficient when they are more shallow',
     icon: liquidityIcn
   },
   {

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { SPACING } from 'v2/theme';
+import { SPACING, BREAK_POINTS } from 'v2/theme';
 import { Button } from 'v2/components';
 import { translateRaw } from 'v2/translations';
 
@@ -9,6 +9,9 @@ import { IZapConfig } from '../config';
 import { ProtocolTagsList } from '..';
 
 const DetailsContainer = styled.div`
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    margin-left: ${SPACING.LG};
+  }
   display: flex;
   flex-direction: column;
   align-items: flex-start;
