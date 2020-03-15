@@ -1,4 +1,4 @@
-import { TranslateMarkdown } from 'v2/components';
+import { TranslateMarkdown } from 'v2/components/TranslateMarkdown';
 import { BearishIndicator, BullishIndicator, NeutralIndicator } from './components';
 
 import ProtocolsExplainer from './components/ProtocolsExplainer';

@@ -7,7 +7,7 @@ interface Props {
   source: string;
 }
 
-const TranslateMarkdown = ({ source }: Props) => {
+export const TranslateMarkdown = ({ source }: Props) => {
   return (
     <Markdown
       escapeHtml={true}

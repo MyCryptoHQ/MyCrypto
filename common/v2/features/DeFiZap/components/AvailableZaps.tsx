@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { SPACING } from 'v2/theme';
-import { TranslateMarkdown } from 'v2/components';
+import { TranslateMarkdown } from 'v2/components/TranslateMarkdown';
 
 const Container = styled.div`
   display: flex;
