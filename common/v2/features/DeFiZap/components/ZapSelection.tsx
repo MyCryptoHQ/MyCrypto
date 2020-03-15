@@ -2,58 +2,98 @@ import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
+import { Accordion } from '@mycrypto/ui';
 
-import { Button, ContentPanel } from 'v2/components';
+import { Button, ExtendedContentPanel, AppLogo, Typography } from 'v2/components';
+import translate from 'v2/translations';
 import { ROUTE_PATHS } from 'v2/config';
-import { COLORS, BREAK_POINTS } from 'v2/theme';
+import { COLORS, BREAK_POINTS, SPACING } from 'v2/theme';
 
-import { ZAPS_CONFIG, IZapId, defaultZapId } from '../config';
-import { DetailsList } from '.';
+import { ZAPS_CONFIG, IZapId, defaultZapId, riskAndReward, accordionContent } from '../config';
+import { DetailsList, RiskAndRewardCard } from '.';
+
 import sEth from 'assets/images/defizap/illustrations/seth.svg';
 
-const FullSizedContentPanel = styled(ContentPanel)`
+const FullSizeContentPanel = styled(ExtendedContentPanel)`
   padding: 0px;
 `;
 
-const ContentPanelHeading = styled.p`
+const SSection = styled.section<{ color?: string }>`
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    flex-direction: column;
+    padding: 0;
+    padding: ${SPACING.LG} ${SPACING.BASE};
+    align-items: center;
+  }
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: ${props => (props.color ? props.color : 'inherit')};
+  width: 100%;
+  padding: ${SPACING.LG} ${SPACING.XL};
+`;
+
+const ContentPanelHeading = styled(SSection)`
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    flex-direction: column;
+  }
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 15px;
-  padding: 0.75em 1.1em 0em 1.1em;
-  color: #303030;
+`;
+
+const Title = styled.div`
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  display: flex;
+  align-items: center;
   font-size: 32px;
   font-weight: bold;
 `;
 
-const SSection = styled.section`
-  padding: 1.5em 2.25em;
-  flex-direction: column;
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    flex-direction: row;
+const BreakdownImg = styled.img`
+  max-width: 32px;
+  margin-right: ${SPACING.SM};
+`;
+
+const DetailsSection = styled(SSection)`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+`;
+
+const SpacedSection = styled(SSection)`
+  & > * {
+    margin: ${SPACING.BASE} 0;
   }
 `;
 
-const WhiteSection = styled(SSection)`
-  background-color: ${COLORS.WHITE};
-`;
-
-const GreySection = styled(SSection)`
-  background-color: ${COLORS.GREY_LIGHTEST};
-`;
-
-const DetailsSection = styled(WhiteSection)`
+const CardContainer = styled.div`
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    flex-direction: column;
+    align-items: center;
+  }
   display: flex;
-  flex: 1;
+  justify-content: space-between;
+  flex-wrap: wrap;
 `;
-const ZapImageExplainer = styled.img``;
 
-const ZapTextExplainer = styled.div`
-  align-items: left;
-  text-align: left;
-  /* width: 50%; */
-  flex: 1;
-`;
+// To re-activate later when we have content
+// const LinkContainer = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   width: 100%;
+// `;
+// const RowContainer = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   width: 100%;
+//   margin: ${SPACING.SM} 0;
+// `;
 
 const ZapEducation = withRouter(({ history, location }) => {
   const qs = queryString.parse(location.search);
@@ -81,25 +121,66 @@ const ZapEducation = withRouter(({ history, location }) => {
   // };
 
   return (
-    <FullSizedContentPanel>
-      <ContentPanelHeading>{`${zapSelected.title} Details`}</ContentPanelHeading>
+    <FullSizeContentPanel width={'1100px'}>
+      <ContentPanelHeading>
+        <Title>
+          <BreakdownImg src={zapSelected.breakdownImage} />
+          {translate('ZAP_HEADER', { $zap: zapSelected.title })}
+        </Title>
+        <AppLogo />
+      </ContentPanelHeading>
       <DetailsSection>
-        <ZapImageExplainer src={sEth} />
-
-        <ZapTextExplainer>
-          <DetailsList onSubmit={handleSubmit} zapSelected={zapSelected} />
-        </ZapTextExplainer>
+        <img src={sEth} />
+        <DetailsList onSubmit={handleSubmit} zapSelected={zapSelected} />
       </DetailsSection>
-      <GreySection>meh2</GreySection>
-      <WhiteSection>meh3</WhiteSection>
-      <GreySection>meh4</GreySection>
-      This will eventually be the education panel for defizap, and the selection of zap for the rest
-      of the flow. For now, it's just a dropdown to allow for us to test the rest of the flow.
-      <br />
-      <div>
-        <Button onClick={handleSubmit}>Continue on!</Button>
-      </div>
-    </FullSizedContentPanel>
+      <SpacedSection color={COLORS.GREY_LIGHTEST}>
+        <Title>{translate('ZAP_HOW_HEADER')}</Title>
+        <img src={sEth} />
+        <Button onClick={handleSubmit}>{translate('ZAP_ADD_FUNDS')}</Button>
+      </SpacedSection>
+      <SSection>
+        <Title>{translate('ZAP_RISKS_HEADER')}</Title>
+        <CardContainer>
+          {riskAndReward.map((el, i) => (
+            <RiskAndRewardCard key={i} riskAndReward={el} />
+          ))}
+        </CardContainer>
+      </SSection>
+      <SpacedSection color={COLORS.GREY_LIGHTEST}>
+        <Title>{translate('ZAP_MORE_INFO_HEADER')}</Title>
+        <Typography>{translate('DEFI_DESC_FIRST')}</Typography>
+        <Typography>{translate('DEFI_DESC_SECOND')}</Typography>
+        <Typography>{translate('DEFI_DESC_THIRD')}</Typography>
+        <Typography>{translate('VISIT_DEFIZAP')}</Typography>
+        {/* To re-activate later when we have content
+        <LinkContainer>
+          <RowContainer>
+            <Typography bold={true}>More from the Knowledgebase:</Typography>
+          </RowContainer>
+          <RowContainer>
+            <Link href="https://example.com">Some Link</Link>
+            <Link href="https://example.com">Some Link</Link>
+            <Link href="https://example.com">Some Link</Link>
+          </RowContainer>
+          <RowContainer>
+            <Link href="https://example.com">Some Link</Link>
+            <Link href="https://example.com">Some Link</Link>
+            <Link href="https://example.com">Some Link</Link>
+          </RowContainer>
+        </LinkContainer> */}
+      </SpacedSection>
+      <SpacedSection>
+        <Title>{translate('ZAP_QUESTIONS_HEADER')}</Title>
+        <Accordion items={accordionContent} />
+        {/* To re-activate later when we have content
+        <div>
+          <TranslateMarkdown
+            source={'To view more Frequently Asked Questions go [here](https://exemple.com).'}
+          />
+        </div> */}
+        <Button onClick={handleSubmit}>{translate('ZAP_ADD_FUNDS')}</Button>
+      </SpacedSection>
+    </FullSizeContentPanel>
   );
 });
 

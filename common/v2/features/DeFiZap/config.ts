@@ -1,10 +1,20 @@
+import { TranslateMarkdown } from 'v2/components/TranslateMarkdown';
 import { BearishIndicator, BullishIndicator, NeutralIndicator } from './components';
+
+import ProtocolsExplainer from './components/ProtocolsExplainer';
+import AvailableZaps from './components/AvailableZaps';
 
 import moderateRisk from 'assets/images/defizap/moderateRisk.svg';
 import conservativeRisk from 'assets/images/defizap/conservativeRisk.svg';
 import aggressiveRisk from 'assets/images/defizap/aggressiveRisk.svg';
 import unipoolBreakdown from 'assets/images/defizap/breakdowns/unipoolBreakdown.svg';
 import compoundBreakdown from 'assets/images/defizap/breakdowns/compoundBreakdown.svg';
+import smartContractIcn from 'assets/images/defizap/icn-smart-contract.svg';
+import inverstingIcn from 'assets/images/defizap/icn-investing.svg';
+import collateralizationIcn from 'assets/images/defizap/icn-collateralization.svg';
+import liquidityIcn from 'assets/images/defizap/icn-liquidity.svg';
+import innovationIcn from 'assets/images/defizap/icn-innovation.svg';
+import diversificationIcn from 'assets/images/defizap/icn-diversification.svg';
 
 export enum IZapType {
   UNIPOOL = 'UNIPOOL',
@@ -40,6 +50,11 @@ export enum IZapId {
   unipoolseth = 'unipoolseth',
   unipooldai = 'unipooldai',
   compounddai = 'compounddai'
+}
+
+export interface RiskAndReward {
+  icon: any;
+  text: string;
 }
 
 export const fetchZapRiskObject = (riskLevel: number) => {
@@ -131,3 +146,80 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     positionDetails: () => BearishIndicator({ text: 'Bearish on ETH' })
   }
 };
+
+export const riskAndReward: RiskAndReward[] = [
+  {
+    text:
+      '**Smart Contract:** There is a chance that  smart contracts get hacked and you lose all your money',
+    icon: smartContractIcn
+  },
+  {
+    text: '**Investing:** Put your ETH to work for you, potential to watch your money grow',
+    icon: inverstingIcn
+  },
+  {
+    text:
+      '**Collateralization:** If the crypto price swings you don’t get liquidated nor does the entire system collapse',
+    icon: collateralizationIcn
+  },
+  {
+    text:
+      '**Innovation:** Take advantage of innovative decentralized tools avaiable to ETH holders',
+    icon: innovationIcn
+  },
+  {
+    text: '**Liquidity:** Markets are more inefficient when they are more shallow',
+    icon: liquidityIcn
+  },
+  {
+    text: '**Diversification:** Expand your investment portfolio leveraging your ETH',
+    icon: diversificationIcn
+  }
+];
+
+export const accordionContent = [
+  {
+    title: 'What is DeFi?',
+    component: TranslateMarkdown({
+      source:
+        'Short for decentralized finance, DeFi refers to financial services for crypto, such as borrowing, lending, and trading, that are usually facilitated using smart contracts on the blockchain. They are often open-source and noncustodial.'
+    })
+  },
+  {
+    title: 'Is DeFiZap safe?',
+    component: TranslateMarkdown({
+      source:
+        "There's always risk when interacting with DeFi and smart contracts, and DeFiZap is an experimental project that is in beta. Using a service like DeFiZap to interact with protocols for you does add a small amount of additional risk, but most of the risk stems from the actual protocols that are being interacted with."
+    })
+  },
+  {
+    title: 'Which protocols does DeFiZap interact with and where can I learn about them?',
+    component: ProtocolsExplainer()
+  },
+  {
+    title: 'Which Zaps are available?',
+    component: AvailableZaps()
+  },
+  {
+    title:
+      'How is the MyCrypto DeFiZap integration different from the functionality of DeFiZap.com?',
+    component: TranslateMarkdown({
+      source:
+        'The MyCrypto DeFiZap integration uses the same process as the DeFiZap.com process. MyCrypto’s DeFiZap integration adds an extra layer of convenience by allowing you to access Zaps without having to leave MyCrypto. For the full list of available Zaps, visit [DeFiZap.com](https://defizap.com).'
+    })
+  },
+  {
+    title: 'After entering a Zap, how do I exit?',
+    component: TranslateMarkdown({
+      source:
+        'To exit a Zap, please visit [DeFiZap.com](https://defizap.com), go to the Zap that you’re currently engaged with, and follow the steps that they outline.'
+    })
+  },
+  {
+    title: 'How do I see my DeFiZap balances?',
+    component: TranslateMarkdown({
+      source:
+        'Due to technical limitations, at this time we’re only currently able to give an estimate on some Zap balances, and DeFiZap recommends checking [pools.fyi](https://pools.fyi/) to view some of your balances/returns. Over time, as we and DeFiZap explore this further, we anticipate that there will be a better solution for this.'
+    })
+  }
+];

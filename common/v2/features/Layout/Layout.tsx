@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { BannerType } from 'v2/types';
 import { Banner } from 'v2/components';
@@ -44,6 +44,7 @@ const SBanner = styled(Banner)`
 
 const SContainer = styled('div')`
   padding: ${SPACING.BASE};
+  width: 100%;
   max-width: ${p => (p.fullW ? '100%' : MAX_CONTENT_WIDTH)};
 
   @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
@@ -52,17 +53,17 @@ const SContainer = styled('div')`
 
   ${({ centered }: LayoutConfig) =>
     centered &&
-    css`
+    `
       display: flex;
       flex-direction: column;
       justify-content: center;
-      align-items: center:
+      align-items: center;
       flex: 1;
       // Necessary to center the mobile layout when below the small screen breakpoint.
       @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
         align-self: center;
       }
-  `}
+    `}
 `;
 
 export default function Layout({ config = {}, className = '', children }: Props) {

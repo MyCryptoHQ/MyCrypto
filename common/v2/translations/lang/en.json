@@ -607,7 +607,7 @@
     "TOKEN_SEND_TOOLTIP": "Whenever you send a token on the Ethereum blockchain, you’re actually sending a request to the token contract to move the tokens around. This doesn’t require any extra action from you, but this is why you see this additional information.",
     "NETWORK_TOOLTIP": "A network is also known as a blockchain. Most users are here to manage their Ethereum accounts, so this selection defaults to the Ethereum network. [Learn about the other networks that MyCrypto supports.](https://support.mycrypto.com/developers/adding-a-new-network)",
     "NONCE_TOOLTIP": "The nonce is the number of transactions sent from a given address and its purpose is to prevent double spending. [Learn more about nonce.](https://support.mycrypto.com/general-knowledge/ethereum-blockchain/what-is-nonce)",
-    "PLATFORMS": "Platforms:",
+    "PLATFORMS": "Platforms used:",
     "ZAP_NAME": "Zap Name:",
     "ZAP_BANNER_DESCRIPTION": "You have selected to open a position with the following Zap:",
     "ZAP_POWERED_BY": "Powered by DefiZap",
@@ -626,6 +626,17 @@
     "COMPLETE_SWAP": "Complete Swap",
     "SWAP_STEP2_TEXT": "The contract you approved will complete the swap contract as soon as you confirm the transaction below.",
     "ZAP_CONFIRM_TX_SENDING": "You'll Open Position With",
-    "ZAP_CONFIRM_DISCLAIMER": "Remember, there are no guarantees that you will make money if you make this trade. Please don't confirm unless you understand the risks."
+    "ZAP_CONFIRM_DISCLAIMER": "Remember, there are no guarantees that you will make money if you make this trade. Please don't confirm unless you understand the risks.",
+    "ZAP_HEADER": "$zap Details",
+    "ZAP_HOW_HEADER": "How Does Zap Work?",
+    "ZAP_RISKS_HEADER": "Risks and Rewards when using DeFi Zap",
+    "ZAP_MORE_INFO_HEADER": "More Information About DeFi Zaps",
+    "ZAP_QUESTIONS_HEADER": "Frequently Asked Questions",
+    "DEFI_DESC_FIRST": "Zaps are created by none other than [DeFiZap](https://www.defizap.com)! With the intent to help users gain access to decentralized finance (“DeFi”) protocols, DeFiZap takes complicated processes and turns them into one-click solutions.",
+    "DEFI_DESC_SECOND": "In addition to this easy entry into otherwise complicated DeFi protocols, it’s all noncustodial. You retain complete control of your funds and can manage everything manually if you’d like.",
+    "DEFI_DESC_THIRD": "MyCrypto’s DeFiZap integration aims to take this one step further and allows one-step access to DeFi protocols without having to leave the comfort of your dashboard.",
+    "VISIT_DEFIZAP": "Visit [DeFiZap](https://defizap.com/) to learn more.",
+    "ZAP_ADD_FUNDS": "Add Funds",
+    "ZAP_START_EARNING": "Start Earning Now!"
   }
 }
