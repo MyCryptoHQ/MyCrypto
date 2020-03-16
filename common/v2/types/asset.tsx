@@ -34,6 +34,10 @@ export interface ExtendedAsset extends Asset {
   uuid: TUuid;
 }
 
+export interface ReserveAsset extends Asset {
+  reserveExchangeRate: string; // BigNumber float string
+}
+
 // Used to reference an Asset in a storage Account
 export interface AssetBalanceObject {
   readonly uuid: TUuid;
