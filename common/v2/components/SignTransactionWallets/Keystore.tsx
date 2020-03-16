@@ -120,13 +120,8 @@ export default class SignTransactionKeystore extends Component<
             <div className="SignTransactionKeystore-description">
               {translateRaw('SIGN_TX_EXPLANATION')}
             </div>
-            <Button
-              type="submit"
-              className="SignTransactionKeystore-button"
-              disabled={unlockDisabled}
-              loading={isSigning}
-            >
-              {translateRaw('DEP_SIGNTX')}
+            <Button type="submit" disabled={unlockDisabled} loading={isSigning} fullwidth={true}>
+              {isSigning ? translateRaw('SUBMITTING') : translateRaw('DEP_SIGNTX')}
             </Button>
           </form>
           {WALLETS_CONFIG.KEYSTORE_FILE.helpLink && (
