@@ -57,8 +57,6 @@ const ColumnWrapper = Styled.div<{ bold?: boolean }>`
 `;
 
 const SendButton = Styled(Button)`
-  width: 100%;
-
   > div {
     justify-content: center;
   }
@@ -292,7 +290,7 @@ export const ConfirmTransactionUI = ({
         className="ConfirmTransaction-button"
         loading={isBroadcastingTx}
       >
-        {translate('CONFIRM_AND_SEND')}
+        {isBroadcastingTx ? translateRaw('SUBMITTING') : translateRaw('CONFIRM_AND_SEND')}
       </SendButton>
       {txType === ITxType.DEFIZAP && (
         <DeFiZapLogoContainer>
