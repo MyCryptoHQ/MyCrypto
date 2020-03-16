@@ -218,7 +218,7 @@ const ZapCard = ({ config }: Props) => {
                   defiReserveBalances.map(defiReserveAsset => {
                     return (
                       <div key={defiReserveAsset.uuid}>
-                        {`- ${parseFloat(
+                        {`~ ${parseFloat(
                           trimBN(formatEther(defiReserveAsset.balance.toString()))
                         ).toFixed(4)} ${defiReserveAsset.ticker}`}
                       </div>
