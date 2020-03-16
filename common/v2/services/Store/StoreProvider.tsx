@@ -25,7 +25,7 @@ import {
 } from 'v2/utils';
 import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from 'v2/services/EthService';
 
-import { getAccountsAssetsBalances, accountMemberDetected } from './BalanceService';
+import { getAccountsAssetsBalances, accountMembershipDetected } from './BalanceService';
 import { getStoreAccounts, getPendingTransactionsFromAccounts } from './helpers';
 import {
   AssetContext,
@@ -37,11 +37,13 @@ import { AccountContext, getDashboardAccounts } from './Account';
 import { SettingsContext } from './Settings';
 import { NetworkContext, getNetworkById } from './Network';
 import { findNextUnusedDefaultLabel, AddressBookContext } from './AddressBook';
+import { MembershipDict } from 'v2/features/PurchaseMembership/config';
 
 interface State {
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
   readonly isMyCryptoMember: boolean;
+  readonly memberships: MembershipDict;
   readonly currentAccounts: StoreAccount[];
   readonly userAssets: Asset[];
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
@@ -95,7 +97,9 @@ export const StoreProvider: React.FC = ({ children }) => {
     [rawAccounts, settings.dashboardAccounts]
   );
 
-  const [isMyCryptoMember, setIsUnlockVerified] = useState(false);
+  const [memberships, setMemberships] = useState({} as MembershipDict);
+
+  const isMyCryptoMember = Object.values(memberships).length > 0;
 
   // Naive polling to get the Balances of baseAsset and tokens for each account.
   useInterval(
@@ -116,10 +120,10 @@ export const StoreProvider: React.FC = ({ children }) => {
             .filter(account => account.networkId === 'Ethereum')
             .filter(account => account.wallet !== WalletId.VIEW_ONLY);
         })
-        .then(accountMemberDetected)
+        .then(accountMembershipDetected)
         .then(e => {
           if (!isMounted) return;
-          setIsUnlockVerified(e);
+          setMemberships(e as MembershipDict);
         });
 
       return () => {
@@ -188,6 +192,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     accounts,
     networks,
     isMyCryptoMember,
+    memberships,
     currentAccounts,
     get userAssets() {
       const userAssets = state.accounts
