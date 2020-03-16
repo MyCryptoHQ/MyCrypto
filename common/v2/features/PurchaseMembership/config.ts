@@ -24,7 +24,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     title: 'One Month Membership',
     name: 'One Month Membership',
     key: 'One Month Membership',
-    contractAddress: '',
+    contractAddress: '0x74970E3CF71E0dB7ca589218853C4b4182081c8a', // TODO: Update this to use the proper ones
     description: ''
   },
 
@@ -32,7 +32,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     title: 'Three Month Membership',
     name: 'Three Month Membership',
     key: 'threemonths',
-    contractAddress: '',
+    contractAddress: '0x74970E3CF71E0dB7ca589218853C4b4182081c8a', // TODO: Update this to use the proper ones
     description: ''
   },
 
@@ -40,7 +40,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     title: 'Six Month Membership',
     name: 'Six Month Membership',
     key: 'sixmonths',
-    contractAddress: '',
+    contractAddress: '0x74970E3CF71E0dB7ca589218853C4b4182081c8a', // TODO: Update this to use the proper ones
     description: ''
   },
 
@@ -48,7 +48,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     title: 'Lifetime Membership',
     name: 'Lifetime Membership',
     key: 'lifetime',
-    contractAddress: '',
+    contractAddress: '0x74970E3CF71E0dB7ca589218853C4b4182081c8a', // TODO: Update this to use the proper ones
     description: ''
   }
 };
