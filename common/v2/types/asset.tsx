@@ -35,7 +35,7 @@ export interface ExtendedAsset extends Asset {
 }
 
 export interface ReserveAsset extends Asset {
-  reserveExchangeRate: string; // BigNumber float string
+  reserveExchangeRate: string; // Is a BigNumberJS float string
 }
 
 // Used to reference an Asset in a storage Account

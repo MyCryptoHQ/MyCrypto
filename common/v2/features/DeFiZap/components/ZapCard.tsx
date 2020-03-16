@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
+import { formatEther } from 'ethers/utils';
 
 import { RouterLink, Tooltip } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
@@ -10,7 +11,6 @@ import { StoreContext, getTotalByAsset, RatesContext } from 'v2/services';
 import { translateRaw } from 'v2/translations';
 
 import { fetchZapRiskObject, IZapConfig } from '../config';
-import { formatEther } from 'ethers/utils';
 
 interface SProps {
   isOwned?: boolean;
@@ -215,15 +215,13 @@ const ZapCard = ({ config }: Props) => {
                 </ZapEstimatedBalance>
 
                 {defiReserveBalances &&
-                  defiReserveBalances.map(defiReserveAsset => {
-                    return (
-                      <div key={defiReserveAsset.uuid}>
-                        {`~ ${parseFloat(
-                          trimBN(formatEther(defiReserveAsset.balance.toString()))
-                        ).toFixed(4)} ${defiReserveAsset.ticker}`}
-                      </div>
-                    );
-                  })}
+                  defiReserveBalances.map(defiReserveAsset => (
+                    <div key={defiReserveAsset.uuid}>
+                      {`~ ${parseFloat(
+                        trimBN(formatEther(defiReserveAsset.balance.toString()))
+                      ).toFixed(4)} ${defiReserveAsset.ticker}`}
+                    </div>
+                  ))}
                 {`(${humanReadableZapBalance.toFixed(4)} ${userZapBalances.ticker})`}
               </ZapCardContentText>
             </>
