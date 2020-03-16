@@ -4,8 +4,7 @@ import { default as ApiService } from '../ApiService';
 let instantiated: boolean = false;
 
 // TODO: Change this once api endpoint becomes avail
-const DEFI_RESERVE_MAPPING_URL =
-  'https://gist.githubusercontent.com/blurpesec/d44be3065cce61fd777fa6f7ccf98715/raw/8119e0775c2c6897e7e7ce87c3b5745fe140755a/reserveMap.json';
+const DEFI_RESERVE_MAPPING_URL = 'https://defi.mycryptoapi.com';
 
 export default class DeFiReserveMapService {
   public static instance = new DeFiReserveMapService();
