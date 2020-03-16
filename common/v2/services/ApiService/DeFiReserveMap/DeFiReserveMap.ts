@@ -1,10 +1,10 @@
 import { AxiosInstance } from 'axios';
+
+import { DEFI_RESERVE_MAPPING_URL } from 'v2/config';
+
 import { default as ApiService } from '../ApiService';
 
 let instantiated: boolean = false;
-
-// TODO: Change this once api endpoint becomes avail
-const DEFI_RESERVE_MAPPING_URL = 'https://defi.mycryptoapi.com';
 
 export default class DeFiReserveMapService {
   public static instance = new DeFiReserveMapService();
@@ -21,7 +21,7 @@ export default class DeFiReserveMapService {
     }
   }
 
-  public getDeFiReserveMap = async () => {
+  public getDeFiReserveMap = () => {
     try {
       return this.service.get('').then(res => res.data);
     } catch (e) {
