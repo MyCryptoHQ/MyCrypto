@@ -168,7 +168,9 @@ const ZapCard = ({ config }: Props) => {
     ? weiToFloat(userZapBalances.balance, userZapBalances.decimal)
     : undefined;
 
-  const defiReserveBalances = getDeFiAssetReserveAssets(userZapBalances)(getPoolAssetReserveRate);
+  const defiReserveBalances = !userZapBalances
+    ? []
+    : getDeFiAssetReserveAssets(userZapBalances)(getPoolAssetReserveRate);
 
   const isZapOwned = !!humanReadableZapBalance;
 
