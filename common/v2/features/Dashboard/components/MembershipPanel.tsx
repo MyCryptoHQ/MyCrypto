@@ -15,6 +15,7 @@ const SDashboardPanel = styled(DashboardPanel)<{ isMyCryptoMember: boolean }>`
 
 const Wrapper = styled.div`
   display: flex;
+  justify-content: center;
 `;
 
 const Header = styled(Typography)`
@@ -35,6 +36,8 @@ const TextWrapper = styled.div<{ isMyCryptoMember: boolean }>`
 const ExpiryWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
 `;
 
 const SLink = styled(Link)`
