@@ -9,11 +9,12 @@ import partition from 'lodash/partition';
 import { default as BN } from 'bignumber.js';
 import { bigNumberify } from 'ethers/utils';
 import { BigNumber as EthScanBN } from '@ethersproject/bignumber';
+import * as R from 'ramda';
 
 import { ETHSCAN_NETWORKS } from 'v2/config';
 import { TAddress, StoreAccount, StoreAsset, Asset, Network } from 'v2/types';
 import { ProviderHandler } from 'v2/services/EthService';
-import { MEMBERSHIP_CONFIG } from 'v2/features/PurchaseMembership/config';
+import { MEMBERSHIP_CONFIG, MEMBERSHIP_CONTRACTS } from 'v2/features/PurchaseMembership/config';
 
 export type BalanceMap<T = BN> = EthScanBalanceMap<T>;
 
@@ -177,21 +178,28 @@ export const getAccountsTokenBalances = (accounts: StoreAccount[], tokenContract
 
 // Unlock Token getBalance will return 0 if no valid unlock token is found for the address.
 // If there is an Unlock token found, it will return the id of the token.
-export const getMemberAccounts = async (accounts: StoreAccount[]) =>
+export const getAccountMemberships = async (accounts: StoreAccount[]) =>
   getAccountsTokenBalances(
     accounts,
     Object.values(MEMBERSHIP_CONFIG).map(c => c.contractAddress)
   )
     .then(unlockStatusBalanceMap =>
-      Object.keys(unlockStatusBalanceMap).filter(address =>
-        Object.values(unlockStatusBalanceMap[address]).some(b => b.isGreaterThan(new BN(0)))
+      R.fromPairs(
+        R.reject(
+          t => R.isEmpty(t[1]),
+          R.toPairs(
+            R.mergeAll(
+              Object.keys(unlockStatusBalanceMap).map(address => ({
+                [address]: Object.keys(unlockStatusBalanceMap[address])
+                  .filter(b => unlockStatusBalanceMap[address][b].isGreaterThan(new BN(0)))
+                  .map(b => MEMBERSHIP_CONTRACTS[b])
+              }))
+            )
+          )
+        )
       )
     )
     .catch(err => console.error(err));
 
-export const accountMemberDetected = async (accounts: StoreAccount[]) =>
-  !accounts || !(accounts.length > 0)
-    ? false
-    : getMemberAccounts(accounts)
-        .then((unlockAccounts: string[]) => !(!unlockAccounts || unlockAccounts.length === 0))
-        .catch(_ => false);
+export const accountMembershipDetected = async (accounts: StoreAccount[]) =>
+  !accounts || !(accounts.length > 0) ? false : getAccountMemberships(accounts).catch(_ => ({}));
