@@ -12,7 +12,6 @@ import DeFiZapLogo from './DeFiZapLogo';
 const CTAContent = styled('ul')`
   display: flex;
   padding: 0px 15px;
-  margin: 0px;
   flex-direction: column;
   @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
     flex-direction: row;
@@ -27,6 +26,7 @@ const DashboardZapCTA = ({ className }: any) => {
       heading={translateRaw('ZAP_DASHBOARD_PANEL_HEADER')}
       headingRight={<DeFiZapLogo />}
       className={className}
+      footer={<></>}
     >
       <CTAContent>
         {Object.values(zapConfig).map(zap => (
