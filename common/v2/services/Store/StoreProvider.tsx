@@ -307,7 +307,3 @@ export const StoreProvider: React.FC = ({ children }) => {
 
   return <StoreContext.Provider value={state}>{children}</StoreContext.Provider>;
 };
-
-// const determineOldestKey = (data: string[][]) {
-
-// }
