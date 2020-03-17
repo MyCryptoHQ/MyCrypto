@@ -19,6 +19,7 @@ export enum IMembershipId {
   onemonth = 'onemonth',
   threemonths = 'threemonths',
   sixmonths = 'sixmonths',
+  twelvemonths = 'twelvemonths',
   lifetime = 'lifetime'
 }
 
@@ -29,7 +30,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     title: 'One Month Membership',
     name: 'One Month Membership',
     key: 'One Month Membership',
-    contractAddress: '0x74970E3CF71E0dB7ca589218853C4b4182081c8a', // TODO: Update this to use the proper ones
+    contractAddress: '0xCE8EF07495A36c451fB49b7391b33884832Bb66f',
     description: '',
     icon: ''
   },
@@ -38,7 +39,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     title: 'Three Month Membership',
     name: 'Three Month Membership',
     key: 'threemonths',
-    contractAddress: '0x74970E3CF71E0dB7ca589218853C4b4182081c8a', // TODO: Update this to use the proper ones
+    contractAddress: '0xae90e0F7F3f2191B17b1816dFA8C5Ce8e049DC96',
     description: '',
     icon: ''
   },
@@ -47,7 +48,16 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     title: 'Six Month Membership',
     name: 'Six Month Membership',
     key: 'sixmonths',
-    contractAddress: '0x74970E3CF71E0dB7ca589218853C4b4182081c8a', // TODO: Update this to use the proper ones
+    contractAddress: '0x1C8369C9772E71E82679c9750E4770F29FECcbdD',
+    description: '',
+    icon: ''
+  },
+
+  twelvemonths: {
+    title: 'Twelve Month Membership',
+    name: 'Twelve Month Membership',
+    key: 'twelvemonths',
+    contractAddress: '0xb9cae1F4480bcc6dF52F045077BAc1DE448D5406',
     description: '',
     icon: ''
   },
@@ -56,7 +66,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     title: 'Lifetime Membership',
     name: 'Lifetime Membership',
     key: 'lifetime',
-    contractAddress: '0x74970E3CF71E0dB7ca589218853C4b4182081c8a', // TODO: Update this to use the proper ones
+    contractAddress: '0x1e1Eed8882dd411e7569ee79823a44f4F4a55Cac', // TODO: Update this to use the proper ones
     description: '',
     icon: ''
   }
