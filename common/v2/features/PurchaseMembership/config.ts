@@ -72,7 +72,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     title: 'Lifetime Membership',
     name: 'Lifetime Membership',
     key: 'lifetime',
-    contractAddress: '0x1e1Eed8882dd411e7569ee79823a44f4F4a55Cac', // TODO: Update this to use the proper ones
+    contractAddress: '0x1e1Eed8882dd411e7569ee79823a44f4F4a55Cac',
     description: '',
     icon: lifetimeIcon
   }
