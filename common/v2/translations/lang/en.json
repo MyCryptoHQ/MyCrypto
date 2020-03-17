@@ -645,6 +645,19 @@
     "MANAGE_MEMBERSHIP": "Manage Membership",
     "EXPIRES_ON": "Expires on",
     "MEMBERSHIP_ERROR": "Cannot detect membership status. Please refresh the page or try again. If problem persists, contact [support@mycrypto.com](mailto:support@mycrypto.com)",
-    "BUY_MEMBERSHIP": "Buy Membership"
+    "BUY_MEMBERSHIP": "Buy Membership",
+    "ZAP_DASHBOARD_PANEL_HEADER": "Put your ETH to work for you",
+    "ZAPS_AVAIL": "MyCrypto’s DeFiZap integration will initially allow you to access three Zaps:",
+    "ZAPS_AVAIL_DAI_UNIPOOL": "DAI Unipool: Swaps 50% of ETH for DAI (using Uniswap) and contributes both ETH & DAI to Uniswap DAI Pool.",
+    "ZAPS_AVAIL_SETH_UNIPOOL": "sETH Unipool: Swaps 50% of ETH for sETH (using Uniswap) and contributes both ETH & sETH to the Uniswap sETH Pool.",
+    "ZAPS_AVAIL_COMPOUND_POOL": "Compound Dai Pool: Swaps 100% of ETH for DAI (using Kyber Network) and contributes it to Compound.",
+    "ZAPS_AVAIL_NOTIF": "We’ll be working to add more Zaps over time, but you can access all of the Zaps via [DeFiZap.com](https://defizap.com).",
+    "ZAP_FLOW_ADD_FUNDS": "Add Funds to Zap",
+    "ZAP_FLOW_RECEIPT": "Zap Receipt",
+    "ZAP_INDICATOR_CONSERVATIVE": "Conservative",
+    "ZAP_INDICATOR_MODERATE": "Moderate",
+    "ZAP_INDICATOR_AGGRESSIVE": "Aggressive",
+    "ZAP_UNISWAP_TOOLTIP": "This zap stores funds in the Uniswap exchange protocol",
+    "ZAP_COMPOUND_TOOLTIP": "This zap stores funds in the Compound money market protocol"
   }
 }

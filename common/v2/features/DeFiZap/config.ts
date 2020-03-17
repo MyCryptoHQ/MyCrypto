@@ -1,6 +1,7 @@
 import { TranslateMarkdown } from 'v2/components/TranslateMarkdown';
-import { BearishIndicator, BullishIndicator, NeutralIndicator } from './components';
+import { translateRaw } from 'v2/translations';
 
+import { BearishIndicator, BullishIndicator, NeutralIndicator } from './components';
 import ProtocolsExplainer from './components/ProtocolsExplainer';
 import AvailableZaps from './components/AvailableZaps';
 
@@ -35,7 +36,6 @@ export interface IZapConfig {
   platformsUsed: string[];
   bulletPoints: string[];
   zapType: IZapType;
-  interestTokenAddr: string;
   poolTokenUUID: string;
   breakdownImage: any;
   breakdownTooltip: string;
@@ -61,11 +61,11 @@ export const fetchZapRiskObject = (riskLevel: number) => {
   switch (riskLevel) {
     default:
     case 1:
-      return { text: 'Conservative', image: conservativeRisk };
+      return { text: translateRaw('ZAP_INDICATOR_CONSERVATIVE'), image: conservativeRisk };
     case 2:
-      return { text: 'Moderate', image: moderateRisk };
+      return { text: translateRaw('ZAP_INDICATOR_MODERATE'), image: moderateRisk };
     case 3:
-      return { text: 'Aggressive', image: aggressiveRisk };
+      return { text: translateRaw('ZAP_INDICATOR_AGGRESSIVE'), image: aggressiveRisk };
   }
 };
 
@@ -91,9 +91,8 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     ],
     zapType: IZapType.UNIPOOL,
     poolTokenUUID: 'ca27272a-891e-577d-ae75-f8efe4d55231',
-    interestTokenAddr: '0xe9Cf7887b93150D4F2Da7dFc6D502B216438F244',
     breakdownImage: unipoolBreakdown,
-    breakdownTooltip: 'This zap stores funds in the Uniswap exchange protocol',
+    breakdownTooltip: translateRaw('ZAP_UNISWAP_TOOLTIP'),
     positionDetails: () => BullishIndicator({ text: 'Bullish on ETH' })
   },
 
@@ -116,9 +115,8 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     ],
     zapType: IZapType.UNIPOOL,
     poolTokenUUID: '2b7a4d65-9c40-5c21-96eb-f7d380a4dc87',
-    interestTokenAddr: '0x2a1530C4C41db0B0b2bB646CB5Eb1A67b7158667',
     breakdownImage: unipoolBreakdown,
-    breakdownTooltip: 'This zap stores funds in the Uniswap exchange protocol',
+    breakdownTooltip: translateRaw('ZAP_UNISWAP_TOOLTIP'),
     positionDetails: () => NeutralIndicator({ text: 'Neutral on ETH' })
   },
   compounddai: {
@@ -140,9 +138,8 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     ],
     zapType: IZapType.COMPOUND,
     poolTokenUUID: 'a9cc6884-14bd-53b6-abcd-f9b56b60463d',
-    interestTokenAddr: '0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643',
     breakdownImage: compoundBreakdown,
-    breakdownTooltip: 'This zap stores funds in the Compound money market protocol',
+    breakdownTooltip: translateRaw('ZAP_COMPOUND_TOOLTIP'),
     positionDetails: () => BearishIndicator({ text: 'Bearish on ETH' })
   }
 };

@@ -189,7 +189,9 @@ export const ZapFormUI = ({
                   }}
                 />
               </FormFieldItem>
-              <FormFieldSubmitButton type="submit">Continue on!</FormFieldSubmitButton>
+              <FormFieldSubmitButton type="submit">
+                {translateRaw('ACTION_6')}
+              </FormFieldSubmitButton>
               <DeFiZapLogoContainer>
                 <DeFiZapLogo />
               </DeFiZapLogoContainer>
