@@ -230,7 +230,7 @@
     "precommit": "lint-staged",
     "formatAll": "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
     "prettier:diff": "prettier --write --config ./.prettierrc --list-different \"common/**/*.ts\" \"common/**/*.tsx\"",
-    "update:tokens": "parse-eth-tokens --networks all --output ./common/v2/database/data/tokens --exclude 0x5a276Aeb77bCfDAc8Ac6f31BBC7416AE1A85eEF2",
+    "update:tokens": "parse-eth-tokens --networks all --output ./common/v2/database/data/tokens --exclude 0x5a276Aeb77bCfDAc8Ac6f31BBC7416AE1A85eEF2,0x0027449Bf0887ca3E431D263FFDeFb244D95b555",
     "postinstall": "electron-builder install-app-deps",
     "lint:css": "stylelint ./common/**/*.tsx"
   },

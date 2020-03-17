@@ -1,5 +1,6 @@
 import React, { useState, useContext, useMemo, createContext, useEffect } from 'react';
 import * as R from 'ramda';
+
 import {
   TAddress,
   IRawAccount,
@@ -21,8 +22,11 @@ import {
   convertToFiatFromAsset,
   fromTxReceiptObj,
   getWeb3Config,
-  generateUUID
+  generateUUID,
+  multiplyBNFloats,
+  weiToFloat
 } from 'v2/utils';
+import { ReserveAsset } from 'v2/types/asset';
 import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from 'v2/services/EthService';
 
 import { getAccountsAssetsBalances, accountUnlockVIPDetected } from './BalanceService';
@@ -62,6 +66,11 @@ interface State {
   ): IRawAccount | undefined;
   getAssetByTicker(symbol: string): Asset | undefined;
   getAccount(a: IRawAccount): StoreAccount | undefined;
+  getDeFiAssetReserveAssets(
+    asset: StoreAsset
+  ): (
+    getPoolAssetReserveRate: (poolTokenUUID: string, assets: Asset[]) => ReserveAsset[]
+  ) => StoreAsset[];
 }
 export const StoreContext = createContext({} as State);
 
@@ -263,7 +272,18 @@ export const StoreProvider: React.FC = ({ children }) => {
     },
     getAssetByTicker: getAssetByTicker(assets),
     getAccount: ({ address, networkId }) =>
-      accounts.find(a => a.address === address && a.networkId === networkId)
+      accounts.find(a => a.address === address && a.networkId === networkId),
+    getDeFiAssetReserveAssets: (poolAsset: StoreAsset) => (
+      getPoolAssetReserveRate: (poolTokenUuid: string, assets: Asset[]) => ReserveAsset[]
+    ) =>
+      getPoolAssetReserveRate(poolAsset.uuid, assets).map(reserveAsset => ({
+        ...reserveAsset,
+        balance: multiplyBNFloats(
+          weiToFloat(poolAsset.balance, poolAsset.decimal).toString(),
+          reserveAsset.reserveExchangeRate
+        ),
+        mtime: Date.now()
+      }))
   };
 
   return <StoreContext.Provider value={state}>{children}</StoreContext.Provider>;
