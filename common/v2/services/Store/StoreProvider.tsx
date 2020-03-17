@@ -89,7 +89,7 @@ export const StoreContext = createContext({} as State);
 export const StoreProvider: React.FC = ({ children }) => {
   const {
     accounts: rawAccounts,
-    addNewTransactionToAccount,
+    addNewTransactionToAccountAndUpdateTokens,
     getAccountByAddressAndNetworkName,
     updateAccountAssets,
     updateAccountsBalances,
@@ -231,7 +231,7 @@ export const StoreProvider: React.FC = ({ children }) => {
               pendingTransactionObject.senderAccount ||
               getAccountByAddressAndNetworkName(receipt.from, pendingTransactionObject.network.id);
 
-            addNewTransactionToAccount(senderAccount, {
+            addNewTransactionToAccountAndUpdateTokens(senderAccount, {
               ...receipt,
               timestamp: txTimestamp,
               stage: txStatus
