@@ -1,3 +1,9 @@
+import onemonthIcon from 'assets/images/membership/membership-onemonth.svg';
+import threemonthsIcon from 'assets/images/membership/membership-threemonths.svg';
+import sixMonthsIcon from 'assets/images/membership/membership-sixmonths.svg';
+import twelveMonthsIcon from 'assets/images/membership/membership-twelvemonths.svg';
+import lifetimeIcon from 'assets/images/membership/membership-lifetime.svg';
+
 export interface IMembershipConfig {
   title: string;
   name: string;
@@ -32,7 +38,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     key: 'One Month Membership',
     contractAddress: '0xCE8EF07495A36c451fB49b7391b33884832Bb66f',
     description: '',
-    icon: ''
+    icon: onemonthIcon
   },
 
   threemonths: {
@@ -41,7 +47,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     key: 'threemonths',
     contractAddress: '0xae90e0F7F3f2191B17b1816dFA8C5Ce8e049DC96',
     description: '',
-    icon: ''
+    icon: threemonthsIcon
   },
 
   sixmonths: {
@@ -50,7 +56,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     key: 'sixmonths',
     contractAddress: '0x1C8369C9772E71E82679c9750E4770F29FECcbdD',
     description: '',
-    icon: ''
+    icon: sixMonthsIcon
   },
 
   twelvemonths: {
@@ -59,7 +65,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     key: 'twelvemonths',
     contractAddress: '0xb9cae1F4480bcc6dF52F045077BAc1DE448D5406',
     description: '',
-    icon: ''
+    icon: twelveMonthsIcon
   },
 
   lifetime: {
@@ -68,7 +74,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     key: 'lifetime',
     contractAddress: '0x1e1Eed8882dd411e7569ee79823a44f4F4a55Cac', // TODO: Update this to use the proper ones
     description: '',
-    icon: ''
+    icon: lifetimeIcon
   }
 };
 
