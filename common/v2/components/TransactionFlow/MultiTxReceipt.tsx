@@ -164,8 +164,7 @@ export default function MultiTxReceipt({
               baseAsset={baseAsset}
               asset={asset}
               data={data}
-              network={network}
-              senderAccount={senderAccount}
+              sender={senderAccount}
               gasLimit={gasLimit}
               gasPrice={gasPrice}
               nonce={nonce}

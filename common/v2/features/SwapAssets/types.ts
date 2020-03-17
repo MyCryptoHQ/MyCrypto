@@ -1,7 +1,7 @@
 import { BigNumber } from 'bignumber.js';
 import { SwapFlowReducer } from './reducer';
 
-import { TAction, TSymbol, StoreAccount, ITxConfig, ITxObject, ITxStatus } from 'v2/types';
+import { TAction, TSymbol, StoreAccount, ITxObject, ITxStatus } from 'v2/types';
 import { ValuesType } from 'utility-types';
 
 export interface ISwapAsset {
@@ -19,7 +19,6 @@ export interface TxEnveloppe {
   rawTx: ITxObject;
   txHash: string;
   status: ITxStatus;
-  // txReceipt: ITxReceipt;
   queuePos: number;
 }
 
@@ -28,7 +27,6 @@ export interface SwapState {
   currentTxIndex: number;
   assetPair?: IAssetPair;
   account?: StoreAccount;
-  txConfig?: ITxConfig;
   isSubmitting: boolean;
   nextInFlow: boolean;
 }

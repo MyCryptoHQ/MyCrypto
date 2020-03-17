@@ -25,3 +25,5 @@ export const generateAssetUUID = (chainId: string | number, address?: string): T
     : (getUuid(chainId.toString()) as TUuid);
 
 export const generateContractUUID = (abi: string) => getUuid(abi) as TUuid;
+
+export const getUUID = (val: string): TUuid => getUuid(val) as TUuid;

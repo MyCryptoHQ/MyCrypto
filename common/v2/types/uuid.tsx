@@ -1,2 +1,3 @@
-enum UuidBrand {}
-export type TUuid = UuidBrand & string;
+import { Brand } from 'utility-types';
+
+export type TUuid = Brand<string, 'UUID'>;

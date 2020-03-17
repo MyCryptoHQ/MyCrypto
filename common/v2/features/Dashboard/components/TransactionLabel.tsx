@@ -25,12 +25,15 @@ const formatDate = (date: number): string => moment.unix(date).format('MM/DD/YY 
 type ITxStatusConfig = { [K in ITxStatus]: { color: string } };
 
 const txStatusConfig: ITxStatusConfig = {
-  [ITxStatus.FAILED]: { color: '#F05424' },
   [ITxStatus.SUCCESS]: { color: '#75b433' },
+  [ITxStatus.FAILED]: { color: '#F05424' },
   [ITxStatus.PENDING]: { color: '#424242' },
+  [ITxStatus.EMPTY]: { color: '#424242' },
+  [ITxStatus.PREPARING]: { color: '#424242' },
   [ITxStatus.READY]: { color: '#424242' },
   [ITxStatus.SIGNED]: { color: '#424242' },
   [ITxStatus.BROADCASTED]: { color: '#424242' },
+  [ITxStatus.CONFIRMING]: { color: '#424242' },
   [ITxStatus.CONFIRMED]: { color: '#75b433' }
 };
 
