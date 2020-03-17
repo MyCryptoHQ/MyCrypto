@@ -47,6 +47,7 @@ export { ISettings } from './settings';
 export { LocalStorage, LSKeys, DataStore, DataStoreItem, DataStoreEntry } from './store';
 export { Notification, ExtendedNotification } from './notification';
 export { IERC20 } from './erc20';
+export { IUNLOCKLOCK } from './unlockProtocolToken';
 export { ABIFunc, ABIFuncParamless } from './abiFunc';
 export {
   ITransaction,
