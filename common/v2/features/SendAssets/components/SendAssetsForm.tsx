@@ -8,7 +8,6 @@ import BN from 'bn.js';
 import styled from 'styled-components';
 import * as R from 'ramda';
 import { ValuesType } from 'utility-types';
-import { ResolutionError } from '@unstoppabledomains/resolution';
 
 import translate, { translateRaw } from 'v2/translations';
 import {
@@ -52,7 +51,6 @@ import {
   isBurnAddress,
   bigNumGasPriceToViewableGwei
 } from 'v2/services/EthService';
-import UnstoppableResolution from 'v2/services/UnstoppableService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 import {
   GAS_LIMIT_LOWER_BOUND,
@@ -65,7 +63,6 @@ import { RatesContext } from 'v2/services/RatesProvider';
 import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
 import { weiToFloat, formatSupportEmail } from 'v2/utils';
 import { InlineMessageType } from 'v2/types/inlineMessages';
-import { isValidETHRecipientAddress } from 'v2/services/EthService/validators';
 
 import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
 import './SendAssetsForm.scss';
@@ -161,7 +158,6 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
       getBaseAssetByNetwork({ network: txConfig.network, assets: userAssets })) ||
       ({} as Asset)
   );
-  const [resolutionError, setResolutionError] = useState<ResolutionError>();
   const [selectedAsset, setAsset] = useState({} as Asset);
 
   const SendAssetsSchema = Yup.object().shape({
@@ -187,19 +183,6 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
     account: Yup.object().required(translateRaw('REQUIRED')),
     address: Yup.object()
       .required(translateRaw('REQUIRED'))
-      // @ts-ignore Hack as Formik doesn't officially support warnings
-      // tslint:disable-next-line
-      .test('is-checksummed', translate('CHECKSUM_ERROR'), function(value) {
-        const validationResult = isValidETHRecipientAddress(value.value, resolutionError);
-        if (!validationResult.success) {
-          return {
-            name: validationResult.name,
-            type: validationResult.type,
-            message: validationResult.message
-          };
-        }
-        return true;
-      })
       // @ts-ignore Hack as Formik doesn't officially support warnings
       // tslint:disable-next-line
       .test('check-sending-to-burn', translateRaw('SENDING_TO_BURN_ADDRESS'), function(value) {
@@ -299,34 +282,6 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
             }
           };
 
-          const handleDomainResolve = async (name: string): Promise<string | undefined> => {
-            if (!values || !values.network) {
-              setIsResolvingDomain(false);
-              setResolutionError(undefined);
-              return;
-            }
-            setIsResolvingDomain(true);
-            setResolutionError(undefined);
-            try {
-              const unstoppableAddress = await UnstoppableResolution.getResolvedAddress(
-                name,
-                baseAsset.ticker
-              );
-              return unstoppableAddress;
-            } catch (err) {
-              // Force the field value to error so that isValidAddress is triggered!
-              setFieldValue('address', {
-                ...values.address,
-                value: ''
-              });
-              if (UnstoppableResolution.isResolutionError(err)) {
-                setResolutionError(err);
-              } else throw err;
-            } finally {
-              setIsResolvingDomain(false);
-            }
-          };
-
           const handleFieldReset = () => {
             const resetFields: (keyof IFormikFields)[] = [
               'account',
@@ -373,10 +328,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
             setIsEstimatingNonce(false);
           };
 
-          const isValidAddress =
-            !errors.address ||
-            Object.values(errors.address).filter(e => e !== undefined).length === 0;
-          const isValid =
+          const isFormValid =
             Object.values(errors).filter(error => error !== undefined && !isEmpty(error)).length ===
             0;
 
@@ -450,27 +402,16 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                 <label htmlFor="address" className="input-group-header">
                   {translate('X_RECIPIENT')}
                 </label>
-                <Field
+                <ContactLookupField
                   name="address"
                   value={values.address}
-                  component={(fieldProps: FieldProps) => (
-                    <ContactLookupField
-                      error={
-                        errors &&
-                        touched.address &&
-                        errors.address &&
-                        (errors.address as ErrorObject)
-                      }
-                      fieldProps={fieldProps}
-                      network={values.network}
-                      resolutionError={resolutionError}
-                      isValidAddress={isValidAddress}
-                      isResolvingName={isResolvingName}
-                      onBlur={handleGasEstimate}
-                      handleDomainResolve={handleDomainResolve}
-                      clearErrors={() => setResolutionError(undefined)}
-                    />
-                  )}
+                  error={
+                    errors && touched.address && errors.address && (errors.address as ErrorObject)
+                  }
+                  network={values.network}
+                  isResolvingName={isResolvingName}
+                  onBlur={handleGasEstimate}
+                  setIsResolvingDomain={setIsResolvingDomain}
                 />
               </fieldset>
               {/* Amount */}
@@ -675,11 +616,13 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
               <Button
                 type="submit"
                 onClick={() => {
-                  if (isValid) {
+                  if (isFormValid) {
                     onComplete(values);
                   }
                 }}
-                disabled={isEstimatingGasLimit || isResolvingName || isEstimatingNonce || !isValid}
+                disabled={
+                  isEstimatingGasLimit || isResolvingName || isEstimatingNonce || !isFormValid
+                }
                 className="SendAssetsForm-next"
               >
                 {translate('ACTION_6')}
