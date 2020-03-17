@@ -53,7 +53,7 @@ const ZapCardContent = styled('div')`
   flex-direction: column;
 `;
 
-const ZapCardContentText = styled.div`
+const ZapCardContentText = styled.p`
   padding: ${SPACING.SM} 0px;
 `;
 
@@ -193,27 +193,28 @@ const ZapCard = ({ config }: Props) => {
           ) : (
             <>
               <ZapCardContentText>{translateRaw('ZAP_BALANCE_DETECTED')}</ZapCardContentText>
-              <ZapCardContentText>
-                <ZapEstimatedBalance>
-                  {translateRaw('ZAP_ESTIMATED_BALANCE')}{' '}
-                  <Tooltip
-                    tooltip={translateRaw('ZAP_BALANCE_TOOLTIP', {
-                      $protocol: config.platformsUsed[0]
-                    })}
-                  />
-                  {`: `}
-                </ZapEstimatedBalance>
-
-                {defiReserveBalances &&
-                  defiReserveBalances.map(defiReserveAsset => (
-                    <div key={defiReserveAsset.uuid}>
-                      {`~ ${parseFloat(
-                        trimBN(formatEther(defiReserveAsset.balance.toString()))
-                      ).toFixed(4)} ${defiReserveAsset.ticker}`}
-                    </div>
-                  ))}
-                {`(${humanReadableZapBalance.toFixed(4)} ${userZapBalances.ticker})`}
-              </ZapCardContentText>
+              <ZapEstimatedBalance>
+                {translateRaw('ZAP_ESTIMATED_BALANCE')}{' '}
+                <Tooltip
+                  tooltip={translateRaw('ZAP_BALANCE_TOOLTIP', {
+                    $protocol: config.platformsUsed[0]
+                  })}
+                />
+                {`: `}
+              </ZapEstimatedBalance>
+              {defiReserveBalances ? (
+                defiReserveBalances.map(defiReserveAsset => (
+                  <ZapCardContentText key={defiReserveAsset.uuid}>
+                    {`~ ${parseFloat(
+                      trimBN(formatEther(defiReserveAsset.balance.toString()))
+                    ).toFixed(4)} ${defiReserveAsset.ticker}`}
+                  </ZapCardContentText>
+                ))
+              ) : (
+                <ZapCardContentText>
+                  {`(${humanReadableZapBalance.toFixed(4)} ${userZapBalances.ticker})`}
+                </ZapCardContentText>
+              )}
             </>
           )}
         </ZapCardContentRow>
