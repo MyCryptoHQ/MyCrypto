@@ -666,6 +666,26 @@
     "ZAP_INDICATOR_MODERATE": "Moderate",
     "ZAP_INDICATOR_AGGRESSIVE": "Aggressive",
     "ZAP_UNISWAP_TOOLTIP": "This zap stores funds in the Uniswap exchange protocol",
-    "ZAP_COMPOUND_TOOLTIP": "This zap stores funds in the Compound money market protocol"
+    "ZAP_COMPOUND_TOOLTIP": "This zap stores funds in the Compound money market protocol",
+    "ZAP_CARD_CTA": "Get Started",
+    "ZAP_POSITION_BULLISH": "Bullish on $asset",
+    "ZAP_POSITION_NEUTRAL": "Neutral on $asset",
+    "ZAP_POSITION_BEARISH": "Bearish on $asset",
+    "ZAP_SETH_UNIPOOL_TITLE": "Everyday ETH Investment",
+    "ZAP_SETH_UNIPOOL_NAME": "sETH Unipool",
+    "ZAP_SETH_UNIPOOL_DESCRIPTION": "Preserve your ETH price exposure and earn a variable interest rate (generally 1-2%) by lending on the Uniswap exchange protocol.",
+    "ZAP_SETH_UNIPOOL_BULLETPOINT_ONE": "Retain 100% ETH Exposure.",
+    "ZAP_SETH_UNIPOOL_BULLETPOINT_TWO": "Earn interest by lending to the Synthetic ETH pool on the Uniswap exchange protocol.",
+    "ZAP_DAI_UNIPOOL_TITLE": "Interest-earning ETH Hedge",
+    "ZAP_DAI_UNIPOOL_NAME": "DAI Unipool",
+    "ZAP_DAI_UNIPOOL_DESCRIPTION": "Hedge against ETH price volatility and earn a variable interest rate (generally 5-25%) by lending on the Uniswap exchange protocol.",
+    "ZAP_DAI_UNIPOOL_BULLETPOINT_ONE": "Reduce your exposure to changes in the price of ETH.",
+    "ZAP_DAI_UNIPOOL_BULLETPOINT_TWO": "Earn interest by lending to the DAI pool on the Uniswap exchange protocol.",
+    "ZAP_COMPOUND_DAI_POOL_TITLE": "Interest-earning with DAI",
+    "ZAP_COMPOUND_DAI_POOL_NAME": "Compound DAI Pool",
+    "ZAP_COMPOUND_DAI_POOL_DESCRIPTION": "Earn interest of up to 8% a year by contributing to the Compound money market protocol. Remove your ETH price exposure.",
+    "ZAP_COMPOUND_DAI_POOL_BULLETPOINT_ONE": "Remove your exposure to changes in the price of ETH.",
+    "ZAP_COMPOUND_DAI_POOL_BULLETPOINT_TWO": "Contribute your DAI to a money market protocol to earn interest of up to 8% a year.",
+    "DEFI_RESERVE_MAP_ERR": "DeFiReserveMapService has already been instantiated."
   }
 }

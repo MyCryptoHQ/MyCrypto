@@ -1,6 +1,7 @@
 import { AxiosInstance } from 'axios';
 
 import { DEFI_RESERVE_MAPPING_URL } from 'v2/config';
+import { translateRaw } from 'v2/translations';
 
 import { default as ApiService } from '../ApiService';
 
@@ -15,7 +16,7 @@ export default class DeFiReserveMapService {
 
   constructor() {
     if (instantiated) {
-      throw new Error(`DeFiReserveMapService has already been instantiated.`);
+      throw new Error(translateRaw('DEFI_RESERVE_MAP_ERR'));
     } else {
       instantiated = true;
     }
