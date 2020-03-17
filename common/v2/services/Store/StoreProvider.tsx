@@ -112,8 +112,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       getAccountsAssetsBalances(currentAccounts)
         .then((accountsWithBalances: StoreAccount[]) => {
           // Avoid the state change if the balances are identical.
-          if (isArrayEqual(currentAccounts, accountsWithBalances.filter(Boolean))) return;
-          if (isMounted) {
+          if (isMounted && !isArrayEqual(currentAccounts, accountsWithBalances.filter(Boolean))) {
             updateAccountsBalances(accountsWithBalances);
           }
           return currentAccounts

@@ -202,4 +202,4 @@ export const getAccountMemberships = async (accounts: StoreAccount[]) =>
     .catch(err => console.error(err));
 
 export const accountMembershipDetected = async (accounts: StoreAccount[]) =>
-  !accounts || !(accounts.length > 0) ? false : getAccountMemberships(accounts).catch(_ => ({}));
+  !accounts || !(accounts.length > 0) ? {} : getAccountMemberships(accounts).catch(_ => ({}));
