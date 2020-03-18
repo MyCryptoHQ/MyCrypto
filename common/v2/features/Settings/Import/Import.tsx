@@ -3,22 +3,13 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ContentPanel } from 'v2/components';
-import { ImportBox, ImportSuccess } from './components';
 import { SettingsContext } from 'v2/services/Store';
 import { translateRaw } from 'v2/translations';
 
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-`;
+import { ImportBox, ImportSuccess } from './components';
 
-const CenteredContentPanel = styled(ContentPanel)`
-  width: 35rem;
-  h1 {
-    font-size: 24px;
-  }
+const Content = styled.div`
+  text-align: center;
 `;
 
 export interface PanelProps {
@@ -47,7 +38,8 @@ export class Import extends React.Component<RouteComponentProps<{}>> {
     const onBack = steps[step].backOption;
     const Step = steps[step].component;
     return (
-      <CenteredContentPanel
+      <ContentPanel
+        width="35rem"
         onBack={onBack}
         heading={steps[step].heading}
         stepper={{
@@ -60,7 +52,7 @@ export class Import extends React.Component<RouteComponentProps<{}>> {
             {({ importStorage }) => <Step onNext={this.advanceStep} importCache={importStorage} />}
           </SettingsContext.Consumer>
         </Content>
-      </CenteredContentPanel>
+      </ContentPanel>
     );
   }
 

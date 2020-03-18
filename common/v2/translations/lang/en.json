@@ -532,6 +532,7 @@
     "CREATE_WALLET_MNEMONIC": "Mnemonic",
     "CREATE_WALLET": "Create Wallet",
     "ADD_ACCOUNT": "Add Account",
+    "ADD_EXISTING_ACCOUNT": "Add Existing Account",
     "SEND": "Send Assets",
     "BUY": "Buy",
     "UNLOCK_PROTOCOL_DONATOR_TITLE": "Thank you for donating to MyCrypto!",
