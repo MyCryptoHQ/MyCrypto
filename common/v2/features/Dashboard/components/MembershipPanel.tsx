@@ -88,7 +88,9 @@ function MembershipPanel({ history }: Props) {
                   {new Date(Math.max(...membershipExpiration) * 1000).toLocaleDateString()}
                 </Typography>
               </ExpiryWrapper>
-              <SLink>{translateRaw('MANAGE_MEMBERSHIP')}</SLink>
+              <SLink onClick={() => history.push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}>
+                {translateRaw('MANAGE_MEMBERSHIP')}
+              </SLink>
               <InvertedButton color={COLORS.BLUE_GREEN}>
                 {translateRaw('REQUEST_REWARDS')}
               </InvertedButton>
