@@ -17,7 +17,6 @@ import { DataContext } from '../DataManager';
 import { SettingsContext } from '../Settings';
 import { getAccountByAddressAndNetworkName } from './helpers';
 import { getAllTokensBalancesOfAccount } from '../BalanceService';
-import { StoreContext } from '../StoreProvider';
 
 export interface IAccountContext {
   accounts: IAccount[];
@@ -25,7 +24,6 @@ export interface IAccountContext {
   deleteAccount(account: IAccount): void;
   updateAccount(uuid: TUuid, accountData: IAccount): void;
   addNewTransactionToAccount(account: IAccount, transaction: ITxReceipt): void;
-  addNewTransactionToAccountAndUpdateTokens(account: IAccount, transaction: ITxReceipt): void;
   getAccountByAddressAndNetworkName(address: string, network: string): IAccount | undefined;
   updateAccountAssets(account: StoreAccount, assets: Asset[]): Promise<void>;
   updateAccountsBalances(toUpate: IAccount[]): void;
@@ -37,7 +35,6 @@ export const AccountContext = createContext({} as IAccountContext);
 export const AccountProvider: React.FC = ({ children }) => {
   const { createActions, accounts } = useContext(DataContext);
   const { addAccountToFavorites } = useContext(SettingsContext);
-  const { scanTokens } = useContext(StoreContext);
   const model = createActions(LSKeys.ACCOUNTS);
 
   const state: IAccountContext = {
@@ -49,6 +46,7 @@ export const AccountProvider: React.FC = ({ children }) => {
     deleteAccount: model.destroy,
     updateAccount: (uuid, a) => model.update(uuid, a),
     addNewTransactionToAccount: (accountData, newTransaction) => {
+      console.debug('[addNewTransaction]: Tx: ', newTransaction);
       const { network, ...newTxWithoutNetwork } = newTransaction;
       const newAccountData = {
         ...accountData,
@@ -58,10 +56,6 @@ export const AccountProvider: React.FC = ({ children }) => {
         ]
       };
       state.updateAccount(accountData.uuid, newAccountData);
-    },
-    addNewTransactionToAccountAndUpdateTokens: (accountData, newTransaction) => {
-      state.addNewTransactionToAccount(accountData, newTransaction);
-      scanTokens();
     },
     getAccountByAddressAndNetworkName: getAccountByAddressAndNetworkName(accounts),
     updateAccountAssets: async (storeAccount, assets) => {
