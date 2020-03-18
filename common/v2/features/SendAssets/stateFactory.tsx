@@ -9,7 +9,8 @@ import {
   IFormikFields,
   ISignedTx,
   ITxObject,
-  ITxStatus
+  ITxStatus,
+  ITxType
 } from 'v2/types';
 import {
   hexWeiToString,
@@ -110,7 +111,14 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
         const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(assets, networks);
         addNewTransactionToAccount(
           state.txConfig.senderAccount,
-          { ...txReceipt, stage: ITxStatus.PENDING } || {}
+          {
+            ...txReceipt,
+            to: state.txConfig.receiverAddress,
+            from: state.txConfig.senderAccount.address,
+            amount: state.txConfig.amount,
+            txType: ITxType.STANDARD,
+            stage: ITxStatus.PENDING
+          } || {}
         );
         setState((prevState: State) => ({
           ...prevState,
@@ -148,7 +156,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
         : fromTxReceiptObj(payload);
     addNewTransactionToAccount(
       state.txConfig.senderAccount,
-      { ...txReceipt, stage: ITxStatus.PENDING } || {}
+      { ...txReceipt, txType: ITxType.STANDARD, stage: ITxStatus.PENDING } || {}
     );
 
     setState((prevState: State) => ({

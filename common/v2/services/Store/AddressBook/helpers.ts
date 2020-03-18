@@ -14,10 +14,11 @@ export const getLabelByAccount = (
 };
 
 export const getLabelByAddressAndNetwork = (
-  address: string,
+  address: string | undefined,
   addressLabels: AddressBook[],
   network: Network | undefined
 ): AddressBook | undefined => {
+  if (!address) return;
   return addressLabels.find(
     label =>
       address.toLowerCase() === label.address.toLowerCase() &&

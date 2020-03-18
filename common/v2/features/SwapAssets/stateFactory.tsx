@@ -18,9 +18,10 @@ import {
   ProviderHandler,
   AssetContext,
   NetworkContext,
-  getNetworkById
+  getNetworkById,
+  AccountContext
 } from 'v2/services';
-import { StoreAccount } from 'v2/types';
+import { StoreAccount, ITxType, ITxStatus } from 'v2/types';
 import { isWeb3Wallet } from 'v2/utils/web3';
 import { DEFAULT_NETWORK, MYC_DEXAG_COMMISSION_RATE } from 'v2/config';
 
@@ -56,6 +57,7 @@ const swapFlowInitialState = {
 const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }) => {
   const { assets: userAssets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
+  const { addNewTransactionToAccount } = useContext(AccountContext);
 
   const fetchSwapAssets = async () => {
     try {
@@ -368,6 +370,17 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
     if (isWeb3Wallet(account.wallet)) {
       const txReceipt =
         signResponse && signResponse.hash ? signResponse : { ...txConfig, hash: signResponse };
+      addNewTransactionToAccount(
+        state.txConfig.senderAccount,
+        {
+          ...txReceipt,
+          to: state.txConfig.receiverAddress,
+          from: state.txConfig.senderAccount.address,
+          amount: state.txConfig.amount,
+          txType: ITxType.SWAP,
+          stage: ITxStatus.PENDING
+        } || {}
+      );
       setState((prevState: SwapState) => ({
         ...prevState,
         txReceipt
@@ -386,6 +399,10 @@ const SwapFlowFactory: TUseStateReducerFactory<SwapState> = ({ state, setState }
             ...prevState,
             txReceipt
           }));
+          addNewTransactionToAccount(
+            state.txConfig.senderAccount,
+            { ...txReceipt, txType: ITxType.SWAP, stage: ITxStatus.PENDING } || {}
+          );
         })
         .finally(after);
     }

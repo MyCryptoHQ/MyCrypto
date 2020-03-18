@@ -14,7 +14,8 @@ import {
   Asset,
   ITxReceipt,
   NetworkId,
-  AddressBook
+  AddressBook,
+  ITxType
 } from 'v2/types';
 import {
   isArrayEqual,
@@ -89,7 +90,7 @@ export const StoreContext = createContext({} as State);
 export const StoreProvider: React.FC = ({ children }) => {
   const {
     accounts: rawAccounts,
-    addNewTransactionToAccountAndUpdateTokens,
+    addNewTransactionToAccount,
     getAccountByAddressAndNetworkName,
     updateAccountAssets,
     updateAccountsBalances,
@@ -201,7 +202,7 @@ export const StoreProvider: React.FC = ({ children }) => {
   useEffect(() => {
     // A pending transaction is detected.
     if (pendingTransactions.length <= 0) return;
-
+    console.debug('[PendingTxPoller] Pending Tx Detected', pendingTransactions);
     let isMounted = true;
     // This interval is used to poll for status of txs.
     const txStatusLookupInterval = setInterval(() => {
@@ -231,8 +232,9 @@ export const StoreProvider: React.FC = ({ children }) => {
               pendingTransactionObject.senderAccount ||
               getAccountByAddressAndNetworkName(receipt.from, pendingTransactionObject.network.id);
 
-            addNewTransactionToAccountAndUpdateTokens(senderAccount, {
+            addNewTransactionToAccount(senderAccount, {
               ...receipt,
+              txType: pendingTransactionObject.txType || ITxType.STANDARD,
               timestamp: txTimestamp,
               stage: txStatus
             });
