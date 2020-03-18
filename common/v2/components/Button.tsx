@@ -43,7 +43,9 @@ const SButton = styled(Button)<StyledButtonProps>`
     ${props => props._loading && 'padding-left: calc(2.25em - 1em)'}
   }
 
-  color: ${COLORS.WHITE};
+  div > span {
+    color: ${COLORS.WHITE};
+  }
 
   ${props =>
     !props.inverted &&
