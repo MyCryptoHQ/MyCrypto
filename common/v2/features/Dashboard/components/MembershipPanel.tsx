@@ -85,7 +85,7 @@ function MembershipPanel({ history }: Props) {
               <ExpiryWrapper>
                 <Typography as="div">{translateRaw('EXPIRES_ON')}</Typography>
                 <Typography as="div">
-                  {new Date(membershipExpiration * 1000).toLocaleDateString()}
+                  {new Date(Math.max(...membershipExpiration) * 1000).toLocaleDateString()}
                 </Typography>
               </ExpiryWrapper>
               <SLink>{translateRaw('MANAGE_MEMBERSHIP')}</SLink>

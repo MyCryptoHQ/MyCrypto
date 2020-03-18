@@ -46,7 +46,7 @@ interface State {
   readonly networks: Network[];
   readonly isMyCryptoMember: boolean;
   readonly memberships: MembershipDict;
-  readonly membershipExpiration: number;
+  readonly membershipExpiration: number[];
   readonly currentAccounts: StoreAccount[];
   readonly userAssets: Asset[];
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
@@ -88,7 +88,7 @@ export const StoreProvider: React.FC = ({ children }) => {
   const { createAddressBooks, addressBook } = useContext(AddressBookContext);
 
   const [pendingTransactions, setPendingTransactions] = useState([] as ITxReceipt[]);
-  const [membershipExpiration, setMembershipExpiration] = useState(0);
+  const [membershipExpiration, setMembershipExpiration] = useState([] as number[]);
   // We transform rawAccounts into StoreAccount. Since the operation is exponential to the number of
   // accounts, make sure it is done only when rawAccounts change.
   const accounts = useMemo(() => getStoreAccounts(rawAccounts, assets, networks, addressBook), [
@@ -163,7 +163,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       )
     )
       .then(data => {
-        setMembershipExpiration(Math.max(...data));
+        setMembershipExpiration(data);
       })
       .catch(e => console.debug('[MembershipExpirationPolling]: Err: ', e));
   }, [memberships]);
