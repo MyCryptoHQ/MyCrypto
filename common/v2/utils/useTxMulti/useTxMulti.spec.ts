@@ -6,7 +6,7 @@ import { ITxStatus } from 'v2/types';
 import { ProviderHandler } from 'v2/services';
 
 import { getUUID } from '../generateUUID';
-import { useMultiTx, TxParcel } from './useMultiTx';
+import { useTxMulti, TxParcel } from './useTxMulti';
 import * as Gas from 'v2/services/ApiService/Gas/gasPriceFunctions';
 import * as Nonce from 'v2/services/EthService/nonce';
 
@@ -24,12 +24,12 @@ const createTxRaw = (idx: number) => ({
 
 const data = [createTxRaw(1), createTxRaw(2)];
 
-describe('useMultiTx', () => {
+describe('useTxMulti', () => {
   // Limit the scopes of the mocks to the current tests.
   afterAll(() => jest.resetAllMocks());
 
   it('can initialize a transaction queue', () => {
-    const { result } = renderHook(() => useMultiTx());
+    const { result } = renderHook(() => useTxMulti());
     const { initQueue } = result.current;
 
     act(() => initQueue(data));
@@ -40,7 +40,7 @@ describe('useMultiTx', () => {
   });
 
   it('can return the appropriate actions for currentTx', () => {
-    const { result } = renderHook(() => useMultiTx());
+    const { result } = renderHook(() => useTxMulti());
     const { initQueue } = result.current;
 
     act(() => initQueue(data));
@@ -52,7 +52,7 @@ describe('useMultiTx', () => {
   });
 
   it('can move to next in list', () => {
-    const { result } = renderHook(() => useMultiTx());
+    const { result } = renderHook(() => useTxMulti());
     const { initQueue } = result.current;
 
     act(() => {
@@ -65,11 +65,11 @@ describe('useMultiTx', () => {
   });
 
   it('the currentTx is reactive', async () => {
-    const { result } = renderHook(() => useMultiTx());
+    const { result } = renderHook(() => useTxMulti());
     const { initQueue } = result.current;
     const getProp = (
-      prop: keyof ReturnType<typeof useMultiTx>
-    ): ValuesType<ReturnType<typeof useMultiTx>> => result.current[prop];
+      prop: keyof ReturnType<typeof useTxMulti>
+    ): ValuesType<ReturnType<typeof useTxMulti>> => result.current[prop];
 
     // Run the 'prepareTx' and expect the status of the 'currentTx' to be
     // updated.
@@ -85,9 +85,9 @@ describe('useMultiTx', () => {
   });
 
   it('moves to next in queue on confirmed', async () => {
-    const { result } = renderHook(() => useMultiTx());
+    const { result } = renderHook(() => useTxMulti());
     const { initQueue } = result.current;
-    const getProp = (prop: keyof ReturnType<typeof useMultiTx>) => result.current[prop];
+    const getProp = (prop: keyof ReturnType<typeof useTxMulti>) => result.current[prop];
 
     // Run the 'prepareTx' and expect the status of the 'currentTx' to be
     // updated.

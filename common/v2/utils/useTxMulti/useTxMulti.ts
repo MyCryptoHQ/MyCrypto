@@ -33,13 +33,13 @@ const initializeQueue: Updater = (currentIdx: number, newTxState: TxSendState, f
   3. when the status of the previous tx is `ITxStatus.CONFIRMED` the queue will
      move to the next tx in line.
 */
-export type TUseMultiTx = () => {
+export type TUseTxMulti = () => {
   currentTx: TxParcel;
   previousTx: TxParcel;
   transactions: TxParcel[];
   initQueue(txs: any[]): void;
 };
-export const useMultiTx: TUseMultiTx = () => {
+export const useTxMulti: TUseTxMulti = () => {
   const { state: txState, ...actions } = useTxSend();
   const [txQueue, setTxQueue] = useState<TxParcel[]>([]);
   const [currentTxIdx, setCurrentTxIdx] = useState(0);
