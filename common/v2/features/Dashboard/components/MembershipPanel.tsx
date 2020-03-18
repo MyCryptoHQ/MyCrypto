@@ -52,12 +52,6 @@ const SButton = styled(Button)`
   margin-top: ${SPACING.SM};
 `;
 
-const InvertedButton = styled(Button)`
-  background: ${COLORS.WHITE};
-  margin-top: ${SPACING.SM};
-  border: 2px solid ${COLORS.BLUE_GREEN};
-`;
-
 const Icon = styled.img<{ isMyCryptoMember: boolean }>`
   ${props => !props.isMyCryptoMember && 'opacity: 0.25;'}
 `;
@@ -91,9 +85,7 @@ function MembershipPanel({ history }: Props) {
               <SLink onClick={() => history.push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}>
                 {translateRaw('MANAGE_MEMBERSHIP')}
               </SLink>
-              <InvertedButton color={COLORS.BLUE_GREEN}>
-                {translateRaw('REQUEST_REWARDS')}
-              </InvertedButton>
+              <SButton inverted={true}>{translateRaw('REQUEST_REWARDS')}</SButton>
             </>
           )}
           {!isMyCryptoMember && (
