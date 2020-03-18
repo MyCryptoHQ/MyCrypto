@@ -41,13 +41,16 @@ import { AccountContext, getDashboardAccounts } from './Account';
 import { SettingsContext } from './Settings';
 import { NetworkContext, getNetworkById } from './Network';
 import { findNextUnusedDefaultLabel, AddressBookContext } from './AddressBook';
-import { MembershipDict } from 'v2/features/PurchaseMembership/config';
+import { MembershipDict, MEMBERSHIP_CONFIG } from 'v2/features/PurchaseMembership/config';
+import { UnlockProtocolHandler } from '../EthService/network';
+import { DEFAULT_NETWORK } from 'v2/config';
 
 interface State {
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
   readonly isMyCryptoMember: boolean;
   readonly memberships: MembershipDict;
+  readonly membershipExpiration: number[];
   readonly currentAccounts: StoreAccount[];
   readonly userAssets: Asset[];
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
@@ -99,6 +102,7 @@ export const StoreProvider: React.FC = ({ children }) => {
   } = useContext(AddressBookContext);
 
   const [pendingTransactions, setPendingTransactions] = useState([] as ITxReceipt[]);
+  const [membershipExpiration, setMembershipExpiration] = useState([] as number[]);
   // We transform rawAccounts into StoreAccount. Since the operation is exponential to the number of
   // accounts, make sure it is done only when rawAccounts change.
   const accounts = useMemo(() => getStoreAccounts(rawAccounts, assets, networks, contacts), [
@@ -147,6 +151,36 @@ export const StoreProvider: React.FC = ({ children }) => {
     true,
     [currentAccounts]
   );
+
+  useEffect(() => {
+    const membershipsItems = Object.values(memberships);
+    if (membershipsItems.length === 0) return;
+    const network = networks.find(({ id }) => DEFAULT_NETWORK === id);
+    if (!network) return;
+    const membershipAccounts = Object.keys(memberships);
+    const unlockProvider = new UnlockProtocolHandler(network);
+    const membershipLookups = R.flatten(
+      membershipAccounts.map(membershipAccount =>
+        memberships[membershipAccount].map(membershipId => {
+          const membershipConfig = MEMBERSHIP_CONFIG[membershipId];
+          return { account: membershipAccount, lockAddress: membershipConfig.contractAddress };
+        })
+      )
+    );
+
+    Promise.all(
+      membershipLookups.map(membershipLookupObj =>
+        unlockProvider.fetchUnlockKeyExpiration(
+          membershipLookupObj.account,
+          membershipLookupObj.lockAddress
+        )
+      )
+    )
+      .then(data => {
+        setMembershipExpiration(data);
+      })
+      .catch(e => console.debug('[MembershipExpirationPolling]: Err: ', e));
+  }, [memberships]);
 
   useEffect(() => {
     setPendingTransactions(getPendingTransactionsFromAccounts(currentAccounts));
@@ -206,6 +240,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     networks,
     isMyCryptoMember,
     memberships,
+    membershipExpiration,
     currentAccounts,
     get userAssets() {
       const userAssets = state.accounts

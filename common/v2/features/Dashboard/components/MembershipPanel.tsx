@@ -64,7 +64,7 @@ const Icon = styled.img<{ isMyCryptoMember: boolean }>`
 
 type Props = RouteComponentProps<{}>;
 function MembershipPanel({ history }: Props) {
-  const { isMyCryptoMember, memberships } = useContext(StoreContext);
+  const { isMyCryptoMember, memberships, membershipExpiration } = useContext(StoreContext);
 
   const allMemberships = R.uniq(R.flatten(Object.values(memberships)));
   const membership =
@@ -84,7 +84,9 @@ function MembershipPanel({ history }: Props) {
             <>
               <ExpiryWrapper>
                 <Typography as="div">{translateRaw('EXPIRES_ON')}</Typography>
-                <Typography as="div">TODO</Typography>
+                <Typography as="div">
+                  {new Date(Math.max(...membershipExpiration) * 1000).toLocaleDateString()}
+                </Typography>
               </ExpiryWrapper>
               <SLink>{translateRaw('MANAGE_MEMBERSHIP')}</SLink>
               <InvertedButton color={COLORS.BLUE_GREEN}>
