@@ -54,13 +54,15 @@ const ZapCardContent = styled('div')`
 `;
 
 const ZapCardContentText = styled.p`
-  padding: ${SPACING.SM} 0px;
+  padding-bottom: ${SPACING.SM};
+  margin-bottom: 0px;
 `;
 
 const ZapCardContentRow = styled('div')`
   align-items: center;
   justify-content: center;
   flex: 1;
+  margin-bottom: ${SPACING.XS};
 `;
 
 const ZapCardContentBottom = styled('div')`
