@@ -8,7 +8,13 @@ import { AccountContext, StoreContext } from 'v2/services/Store';
 
 import { NotificationsPanel } from '../NotificationsPanel';
 import { DashboardZapCTA } from '../DeFiZap';
-import { ActionTile, TokenPanel, WalletBreakdown, RecentTransactionList, MembershipPanel } from './components';
+import {
+  ActionTile,
+  TokenPanel,
+  WalletBreakdown,
+  RecentTransactionList,
+  MembershipPanel
+} from './components';
 import { actions } from './constants';
 import './Dashboard.scss';
 
@@ -38,9 +44,11 @@ export default function Dashboard() {
           <div className="Dashboard-mobile-walletBreakdown">
             <WalletBreakdown />
           </div>
-          <div className="Dashboard-mobile-section Dashboard-mobile-tokenList">
-            <MembershipPanel />
-          </div>
+          {IS_ACTIVE_FEATURE.MYC_MEMBERSHIP && (
+            <div className="Dashboard-mobile-section Dashboard-mobile-tokenList">
+              <MembershipPanel />
+            </div>
+          )}
           <div className="Dashboard-mobile-section Dashboard-mobile-tokenList">
             <TokenPanel />
           </div>
@@ -76,9 +84,11 @@ export default function Dashboard() {
                 <ActionTile key={action.title} {...action} />
               ))}
             </div>
-            <div className="Dashboard-desktop-top-left-token">
-              <MembershipPanel />
-            </div>
+            {IS_ACTIVE_FEATURE.MYC_MEMBERSHIP && (
+              <div className="Dashboard-desktop-top-left-token">
+                <MembershipPanel />
+              </div>
+            )}
             <div className="Dashboard-desktop-top-left-tokens">
               <TokenPanel />
             </div>
