@@ -28,6 +28,9 @@ import {
 } from 'v2/utils';
 import { ReserveAsset } from 'v2/types/asset';
 import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from 'v2/services/EthService';
+import { UnlockProtocolHandler } from 'v2/services/EthService/network';
+import { MembershipStatus, MEMBERSHIP_CONFIG } from 'v2/features/PurchaseMembership/config';
+import { DEFAULT_NETWORK } from 'v2/config';
 
 import { getAccountsAssetsBalances, accountMembershipDetected } from './BalanceService';
 import { getStoreAccounts, getPendingTransactionsFromAccounts } from './helpers';
@@ -41,9 +44,6 @@ import { AccountContext, getDashboardAccounts } from './Account';
 import { SettingsContext } from './Settings';
 import { NetworkContext, getNetworkById } from './Network';
 import { findNextUnusedDefaultLabel, AddressBookContext } from './AddressBook';
-import { MembershipStatus, MEMBERSHIP_CONFIG } from 'v2/features/PurchaseMembership/config';
-import { UnlockProtocolHandler } from '../EthService/network';
-import { DEFAULT_NETWORK } from 'v2/config';
 
 interface State {
   readonly accounts: StoreAccount[];

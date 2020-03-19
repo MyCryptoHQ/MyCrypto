@@ -8,8 +8,9 @@ import { DashboardPanel, Typography, Button, Link } from 'v2/components';
 import { FONT_SIZE, COLORS, SPACING } from 'v2/theme';
 import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS } from 'v2/config';
-import defaultIcon from 'common/assets/images/membership/membership-none.svg';
 import { MEMBERSHIP_CONFIG } from 'v2/features/PurchaseMembership/config';
+
+import defaultIcon from 'common/assets/images/membership/membership-none.svg';
 
 const SDashboardPanel = styled(DashboardPanel)<{ isMyCryptoMember: boolean }>`
   display: flex;
