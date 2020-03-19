@@ -142,10 +142,10 @@ export const MembershipFormUI = ({ daiAsset, network, relevantAccounts, onComple
                   component={({ field, form }: FieldProps) => (
                     <MembershipDropdown
                       name={field.name}
-                      value={field.value}
-                      onSelect={(option: IMembershipConfig) => {
-                        form.setFieldValue('membership', option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
-                        //handleNonceEstimate(option);
+                      value={{ value: field.value, label: field.value.title }}
+                      onSelect={(option: { label: string; value: IMembershipConfig }) => {
+                        form.setFieldValue('membership', option.value); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
+                        form.setFieldValue('amount', option.value.price);
                       }}
                     />
                   )}

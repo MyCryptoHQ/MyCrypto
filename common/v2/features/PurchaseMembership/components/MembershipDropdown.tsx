@@ -18,8 +18,8 @@ const SContainer = styled('div')`
 
 interface Props {
   name: string;
-  value: IMembershipConfig;
-  onSelect(option: IMembershipConfig): void;
+  value: { label: string; value: IMembershipConfig };
+  onSelect(option: { label: string; value: IMembershipConfig }): void;
 }
 
 function MembershipDropdown({ name, value, onSelect }: Props) {
