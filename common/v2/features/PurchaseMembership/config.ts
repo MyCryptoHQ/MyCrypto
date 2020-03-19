@@ -79,7 +79,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     contractAddress: '0xb9cae1F4480bcc6dF52F045077BAc1DE448D5406',
     description: '',
     icon: twelveMonthsIcon,
-    price: 18 // TODO:
+    price: 30
   },
 
   lifetime: {
