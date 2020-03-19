@@ -19,6 +19,12 @@ export type IMembershipConfigObject = {
   [key in IMembershipId]: IMembershipConfig;
 };
 
+export enum MembershipState {
+  MEMBER,
+  NOTMEMBER,
+  ERROR
+}
+
 export interface MembershipStatus {
   address: TAddress;
   memberships: IMembershipId[];

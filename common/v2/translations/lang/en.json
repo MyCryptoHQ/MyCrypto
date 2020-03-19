@@ -643,6 +643,8 @@
     "BECOME_MEMBER": "Become a Member",
     "REQUEST_REWARDS": "Request Rewards",
     "MANAGE_MEMBERSHIP": "Manage Membership",
-    "EXPIRES_ON": "Expires on"
+    "EXPIRES_ON": "Expires on",
+    "MEMBERSHIP_ERROR": "Cannot detect membership status. Please refresh the page or try again. If problem persists, contact [support@mycrypto.com](mailto:support@mycrypto.com)",
+    "BUY_MEMBERSHIP": "Buy Membership"
   }
 }

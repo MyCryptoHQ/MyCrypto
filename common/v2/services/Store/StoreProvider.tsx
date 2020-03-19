@@ -29,7 +29,11 @@ import {
 import { ReserveAsset } from 'v2/types/asset';
 import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from 'v2/services/EthService';
 import { UnlockProtocolHandler } from 'v2/services/EthService/network';
-import { MembershipStatus, MEMBERSHIP_CONFIG } from 'v2/features/PurchaseMembership/config';
+import {
+  MembershipStatus,
+  MEMBERSHIP_CONFIG,
+  MembershipState
+} from 'v2/features/PurchaseMembership/config';
 import { DEFAULT_NETWORK } from 'v2/config';
 
 import { getAccountsAssetsBalances, accountMembershipDetected } from './BalanceService';
@@ -49,7 +53,8 @@ interface State {
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
   readonly isMyCryptoMember: boolean;
-  readonly memberships: MembershipStatus[];
+  readonly membershipState: MembershipState;
+  readonly memberships?: MembershipStatus[];
   readonly membershipExpiration: number[];
   readonly currentAccounts: StoreAccount[];
   readonly userAssets: Asset[];
@@ -115,9 +120,17 @@ export const StoreProvider: React.FC = ({ children }) => {
     [rawAccounts, settings.dashboardAccounts]
   );
 
-  const [memberships, setMemberships] = useState([] as MembershipStatus[]);
+  const [memberships, setMemberships] = useState<MembershipStatus[] | undefined>([]);
 
-  const isMyCryptoMember = Object.values(memberships).length > 0;
+  const membershipState = (() => {
+    if (memberships) {
+      return Object.values(memberships).length > 0
+        ? MembershipState.MEMBER
+        : MembershipState.NOTMEMBER;
+    }
+    return MembershipState.ERROR;
+  })();
+  const isMyCryptoMember = membershipState === MembershipState.MEMBER;
 
   // Naive polling to get the Balances of baseAsset and tokens for each account.
   useInterval(
@@ -153,8 +166,7 @@ export const StoreProvider: React.FC = ({ children }) => {
   );
 
   useEffect(() => {
-    const membershipsItems = Object.values(memberships);
-    if (membershipsItems.length === 0) return;
+    if (!memberships || memberships.length === 0) return;
     const network = networks.find(({ id }) => DEFAULT_NETWORK === id);
     if (!network) return;
     const unlockProvider = new UnlockProtocolHandler(network);
@@ -238,6 +250,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     accounts,
     networks,
     isMyCryptoMember,
+    membershipState,
     memberships,
     membershipExpiration,
     currentAccounts,

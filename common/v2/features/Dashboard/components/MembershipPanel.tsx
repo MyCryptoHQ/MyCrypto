@@ -6,15 +6,15 @@ import * as R from 'ramda';
 import { StoreContext } from 'v2/services';
 import { DashboardPanel, Typography, Button, Link } from 'v2/components';
 import { FONT_SIZE, COLORS, SPACING } from 'v2/theme';
-import { translateRaw } from 'v2/translations';
+import translate, { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS } from 'v2/config';
-import { MEMBERSHIP_CONFIG } from 'v2/features/PurchaseMembership/config';
+import { MEMBERSHIP_CONFIG, MembershipState } from 'v2/features/PurchaseMembership/config';
 
 import defaultIcon from 'common/assets/images/membership/membership-none.svg';
 
-const SDashboardPanel = styled(DashboardPanel)<{ isMyCryptoMember: boolean }>`
+const SDashboardPanel = styled(DashboardPanel)<{ isMember: boolean }>`
   display: flex;
-  ${props => !props.isMyCryptoMember && `background-color: ${COLORS.BLUE_LIGHTEST};`}
+  ${props => !props.isMember && `background-color: ${COLORS.BLUE_LIGHTEST};`}
 `;
 
 const Wrapper = styled.div`
@@ -29,12 +29,13 @@ const Header = styled(Typography)`
 
 const ImageWrapper = styled.div`
   margin-right: ${SPACING.BASE};
+  min-width: ${SPACING.XL};
 `;
 
-const TextWrapper = styled.div<{ isMyCryptoMember: boolean }>`
+const TextWrapper = styled.div<{ isMember: boolean }>`
   display: flex;
   flex-direction: column;
-  ${props => props.isMyCryptoMember && `align-items: center;`}
+  ${props => props.isMember && `align-items: center;`}
 `;
 
 const ExpiryWrapper = styled.div`
@@ -53,29 +54,30 @@ const SButton = styled(Button)`
   margin-top: ${SPACING.SM};
 `;
 
-const Icon = styled.img<{ isMyCryptoMember: boolean }>`
-  ${props => !props.isMyCryptoMember && 'opacity: 0.25;'}
+const Icon = styled.img<{ isMember: boolean }>`
+  ${props => !props.isMember && 'opacity: 0.25;'}
 `;
 
 type Props = RouteComponentProps<{}>;
 function MembershipPanel({ history }: Props) {
-  const { isMyCryptoMember, memberships, membershipExpiration } = useContext(StoreContext);
+  const { membershipState, memberships, membershipExpiration } = useContext(StoreContext);
 
-  const allMemberships = R.uniq(R.flatten(memberships.map(m => m.memberships)));
+  const isMember = membershipState === MembershipState.MEMBER;
+  const allMemberships = memberships ? R.uniq(R.flatten(memberships.map(m => m.memberships))) : [];
   const membership =
     allMemberships.length > 0 ? allMemberships[allMemberships.length - 1] : undefined;
 
   const icon = membership ? MEMBERSHIP_CONFIG[membership].icon : defaultIcon;
 
   return (
-    <SDashboardPanel isMyCryptoMember={isMyCryptoMember} padChildren={true}>
+    <SDashboardPanel isMember={isMember} padChildren={true}>
       <Wrapper>
         <ImageWrapper>
-          <Icon isMyCryptoMember={isMyCryptoMember} src={icon} />
+          <Icon isMember={isMember} src={icon} />
         </ImageWrapper>
-        <TextWrapper isMyCryptoMember={isMyCryptoMember}>
+        <TextWrapper isMember={isMember}>
           <Header as="div">{translateRaw('MEMBERSHIP')}</Header>
-          {isMyCryptoMember && (
+          {membershipState === MembershipState.MEMBER && (
             <>
               <ExpiryWrapper>
                 <Typography as="div">{translateRaw('EXPIRES_ON')}</Typography>
@@ -89,11 +91,19 @@ function MembershipPanel({ history }: Props) {
               <SButton inverted={true}>{translateRaw('REQUEST_REWARDS')}</SButton>
             </>
           )}
-          {!isMyCryptoMember && (
+          {membershipState === MembershipState.NOTMEMBER && (
             <>
               <Typography as="div">{translateRaw('MEMBERSHIP_NOTMEMBER')}</Typography>
               <SButton onClick={() => history.push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}>
                 {translateRaw('BECOME_MEMBER')}
+              </SButton>
+            </>
+          )}
+          {membershipState === MembershipState.ERROR && (
+            <>
+              <Typography as="div">{translate('MEMBERSHIP_ERROR')}</Typography>
+              <SButton onClick={() => history.push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}>
+                {translateRaw('BUY_MEMBERSHIP')}
               </SButton>
             </>
           )}
