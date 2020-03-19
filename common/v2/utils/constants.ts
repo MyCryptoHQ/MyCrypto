@@ -1,4 +1,5 @@
 export const EtherUUID = '356a192b-7913-504c-9457-4d18c28d46e6';
+export const DAIUUID = 'e1f698bf-cb85-5405-b563-14774af14bf1';
 
 export const AAVE_TOKEN_UUIDS = [
   'b8725c43-0f80-59c1-a9ea-ea6549be9ccd',

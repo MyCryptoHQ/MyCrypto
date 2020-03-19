@@ -8,6 +8,7 @@ import { TSymbol } from 'v2/types/symbols';
 import AssetIcon from './AssetIcon';
 import Typography from './Typography';
 interface Props {
+  disabled?: boolean;
   asset: Asset;
   value: string;
   placeholder?: string;
