@@ -61,7 +61,7 @@ import {
 } from 'v2/config';
 import { RatesContext } from 'v2/services/RatesProvider';
 import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
-import { weiToFloat, formatSupportEmail } from 'v2/utils';
+import { weiToFloat, formatSupportEmail, isFormValid as checkFormValid } from 'v2/utils';
 import { InlineMessageType } from 'v2/types/inlineMessages';
 
 import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
@@ -328,9 +328,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
             setIsEstimatingNonce(false);
           };
 
-          const isFormValid =
-            Object.values(errors).filter(error => error !== undefined && !isEmpty(error)).length ===
-            0;
+          const isFormValid = checkFormValid(errors);
 
           return (
             <Form className="SendAssetsForm">

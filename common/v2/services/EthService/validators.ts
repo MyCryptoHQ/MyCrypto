@@ -88,7 +88,7 @@ export const isValidETHRecipientAddress = (
     return {
       success: false,
       name: 'ValidationError',
-      type: InlineMessageType.INFO_CIRCLE,
+      type: InlineMessageType.ERROR,
       message: translate('TO_FIELD_ERROR')
     };
   } else if (isValidENSName(address) && !resolutionErr) {
@@ -129,7 +129,7 @@ export const isValidETHRecipientAddress = (
     return {
       success: false,
       name: 'ValidationError',
-      type: InlineMessageType.INFO_CIRCLE,
+      type: InlineMessageType.ERROR,
       message: translate('TO_FIELD_ERROR')
     };
   }
