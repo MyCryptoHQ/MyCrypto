@@ -109,6 +109,7 @@ export const StoreProvider: React.FC = ({ children }) => {
 
   const [pendingTransactions, setPendingTransactions] = useState([] as ITxReceipt[]);
   const [membershipExpiration, setMembershipExpiration] = useState([] as number[]);
+  const [isScanTokenRequested, setIsScanTokenRequested] = useState(false);
   // We transform rawAccounts into StoreAccount. Since the operation is exponential to the number of
   // accounts, make sure it is done only when rawAccounts change.
   const accounts = useMemo(() => getStoreAccounts(rawAccounts, assets, networks, contacts), [
@@ -200,9 +201,8 @@ export const StoreProvider: React.FC = ({ children }) => {
 
   // A change to pending txs is detected
   useEffect(() => {
+    if (pendingTransactions.length === 0) return;
     // A pending transaction is detected.
-    if (pendingTransactions.length <= 0) return;
-    console.debug('[PendingTxPoller] Pending Tx Detected', pendingTransactions);
     let isMounted = true;
     // This interval is used to poll for status of txs.
     const txStatusLookupInterval = setInterval(() => {
@@ -238,6 +238,9 @@ export const StoreProvider: React.FC = ({ children }) => {
               timestamp: txTimestamp,
               stage: txStatus
             });
+            if (pendingTransactionObject.txType === ITxType.DEFIZAP) {
+              setIsScanTokenRequested(true);
+            }
           });
         });
       });
@@ -247,6 +250,12 @@ export const StoreProvider: React.FC = ({ children }) => {
       clearInterval(txStatusLookupInterval);
     };
   }, [pendingTransactions]);
+
+  useEffect(() => {
+    if (!isScanTokenRequested) return;
+    state.scanTokens();
+    setIsScanTokenRequested(false);
+  }, [isScanTokenRequested]);
 
   const state: State = {
     accounts,
