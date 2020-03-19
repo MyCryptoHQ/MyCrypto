@@ -16,6 +16,9 @@ import collateralizationIcn from 'assets/images/defizap/icn-collateralization.sv
 import liquidityIcn from 'assets/images/defizap/icn-liquidity.svg';
 import innovationIcn from 'assets/images/defizap/icn-innovation.svg';
 import diversificationIcn from 'assets/images/defizap/icn-diversification.svg';
+import unisethIllustration from 'assets/images/defizap/illustrations/uniseth.svg';
+import unidaiIllustration from 'assets/images/defizap/illustrations/unidai.svg';
+import cdaiIllustration from 'assets/images/defizap/illustrations/cdai.svg';
 
 export enum IZapType {
   UNIPOOL = 'UNIPOOL',
@@ -34,6 +37,7 @@ export interface IZapConfig {
   risk: number;
   platformsUsed: string[];
   bulletPoints: string[];
+  illustration: any;
   zapType: IZapType;
   poolTokenUUID: string;
   breakdownImage: any;
@@ -86,6 +90,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
       translateRaw('ZAP_SETH_UNIPOOL_BULLETPOINT_ONE'),
       translateRaw('ZAP_SETH_UNIPOOL_BULLETPOINT_TWO')
     ],
+    illustration: unisethIllustration,
     zapType: IZapType.UNIPOOL,
     poolTokenUUID: 'ca27272a-891e-577d-ae75-f8efe4d55231',
     breakdownImage: unipoolBreakdown,
@@ -109,6 +114,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
       translateRaw('ZAP_DAI_UNIPOOL_BULLETPOINT_ONE'),
       translateRaw('ZAP_DAI_UNIPOOL_BULLETPOINT_TWO')
     ],
+    illustration: unidaiIllustration,
     zapType: IZapType.UNIPOOL,
     poolTokenUUID: '2b7a4d65-9c40-5c21-96eb-f7d380a4dc87',
     breakdownImage: unipoolBreakdown,
@@ -131,6 +137,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
       translateRaw('ZAP_COMPOUND_DAI_POOL_BULLETPOINT_ONE'),
       translateRaw('ZAP_COMPOUND_DAI_POOL_BULLETPOINT_TWO')
     ],
+    illustration: cdaiIllustration,
     zapType: IZapType.COMPOUND,
     poolTokenUUID: 'a9cc6884-14bd-53b6-abcd-f9b56b60463d',
     breakdownImage: compoundBreakdown,

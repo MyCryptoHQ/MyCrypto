@@ -10,9 +10,7 @@ import { ROUTE_PATHS } from 'v2/config';
 import { COLORS, BREAK_POINTS, SPACING } from 'v2/theme';
 
 import { ZAPS_CONFIG, IZapId, defaultZapId, riskAndReward, accordionContent } from '../config';
-import { DetailsList, RiskAndRewardCard } from '.';
-
-import sEth from 'assets/images/defizap/illustrations/seth.svg';
+import { RiskAndRewardCard } from '.';
 
 const FullSizeContentPanel = styled(ExtendedContentPanel)`
   padding: 0px;
@@ -59,12 +57,12 @@ const BreakdownImg = styled.img`
   margin-right: ${SPACING.SM};
 `;
 
-const DetailsSection = styled(SSection)`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: space-between;
-`;
+// const DetailsSection = styled(SSection)`
+//   display: flex;
+//   flex-direction: row;
+//   align-items: flex-start;
+//   justify-content: space-between;
+// `;
 
 const SpacedSection = styled(SSection)`
   & > * {
@@ -129,16 +127,11 @@ const ZapEducation = withRouter(({ history, location }) => {
         </Title>
         <AppLogo />
       </ContentPanelHeading>
-      <DetailsSection>
-        <img src={sEth} />
-        <DetailsList onSubmit={handleSubmit} zapSelected={zapSelected} />
-      </DetailsSection>
-      <SpacedSection color={COLORS.GREY_LIGHTEST}>
-        <Title>{translate('ZAP_HOW_HEADER')}</Title>
-        <img src={sEth} />
+      <SpacedSection color={COLORS.WHITE}>
+        <img src={zapSelected.illustration} />
         <Button onClick={handleSubmit}>{translate('ZAP_ADD_FUNDS')}</Button>
       </SpacedSection>
-      <SSection>
+      <SSection color={COLORS.GREY_LIGHTEST}>
         <Title>{translate('ZAP_RISKS_HEADER')}</Title>
         <CardContainer>
           {riskAndReward.map((el, i) => (
@@ -146,7 +139,7 @@ const ZapEducation = withRouter(({ history, location }) => {
           ))}
         </CardContainer>
       </SSection>
-      <SpacedSection color={COLORS.GREY_LIGHTEST}>
+      <SpacedSection color={COLORS.WHITE}>
         <Title>{translate('ZAP_MORE_INFO_HEADER')}</Title>
         <Typography>{translate('DEFI_DESC_FIRST')}</Typography>
         <Typography>{translate('DEFI_DESC_SECOND')}</Typography>
