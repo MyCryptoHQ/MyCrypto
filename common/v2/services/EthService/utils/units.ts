@@ -96,7 +96,7 @@ const toWei = (value: string, decimal: number): Wei => {
   return Wei(wei);
 };
 
-const fromTokenBase = (value: TokenValue, decimal: number) =>
+const fromTokenBase = (value: TokenValue, decimal: number = DEFAULT_ASSET_DECIMAL) =>
   baseToConvertedUnit(value.toString(), decimal);
 
 const toTokenBase = (value: string, decimal: number) =>

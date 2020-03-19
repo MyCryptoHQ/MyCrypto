@@ -21,7 +21,6 @@ import {
   gasPriceToBase
 } from 'v2/services/EthService';
 import { ITxReceipt, ExtendedAsset, Network, ITxConfig, StoreAccount } from 'v2/types';
-import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { TAddress } from 'v2/types/address';
 
 export const fromTxReceiptObj = (txReceipt: ITxReceipt) => (
@@ -41,10 +40,7 @@ export const fromTxReceiptObj = (txReceipt: ITxReceipt) => (
       asset: contractAsset ? contractAsset : baseAsset ? baseAsset : undefined, // If contractAsset, use contractAsset, else if baseAsset, use baseAsset, else 'undefined'
       value: txReceipt.value.hex, // Hex - wei
       amount: contractAsset
-        ? fromTokenBase(
-            ERC20.transfer.decodeInput(txReceipt.data)._value,
-            contractAsset.decimal || DEFAULT_ASSET_DECIMAL
-          )
+        ? fromTokenBase(ERC20.transfer.decodeInput(txReceipt.data)._value, contractAsset.decimal)
         : fromWei(Wei(hexWeiToString(txReceipt.value._hex)), 'ether').toString(),
       to: contractAsset ? ERC20.transfer.decodeInput(txReceipt.data)._to : txReceipt.to,
       nonce: txReceipt.nonce,
@@ -96,10 +92,7 @@ export const makeTxConfigFromSignedTx = (
     rawTransaction: oldTxConfig.rawTransaction,
     receiverAddress: contractAsset ? decodeTransfer(decodedTx.data)._to : decodedTx.to,
     amount: contractAsset
-      ? fromTokenBase(
-          toWei(decodeTransfer(decodedTx.data)._value, 0),
-          contractAsset.decimal || DEFAULT_ASSET_DECIMAL
-        )
+      ? fromTokenBase(toWei(decodeTransfer(decodedTx.data)._value, 0), contractAsset.decimal)
       : decodedTx.value,
     network: networkDetected || oldTxConfig.network,
     value: toWei(decodedTx.value, getDecimalFromEtherUnit('ether')).toString(),
