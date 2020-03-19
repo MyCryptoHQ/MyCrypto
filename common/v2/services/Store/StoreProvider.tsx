@@ -28,8 +28,15 @@ import {
 } from 'v2/utils';
 import { ReserveAsset } from 'v2/types/asset';
 import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from 'v2/services/EthService';
+import { UnlockProtocolHandler } from 'v2/services/EthService/network';
+import {
+  MembershipStatus,
+  MEMBERSHIP_CONFIG,
+  MembershipState
+} from 'v2/features/PurchaseMembership/config';
+import { DEFAULT_NETWORK } from 'v2/config';
 
-import { getAccountsAssetsBalances, accountUnlockVIPDetected } from './BalanceService';
+import { getAccountsAssetsBalances, accountMembershipDetected } from './BalanceService';
 import { getStoreAccounts, getPendingTransactionsFromAccounts } from './helpers';
 import {
   AssetContext,
@@ -45,7 +52,10 @@ import { findNextUnusedDefaultLabel, AddressBookContext } from './AddressBook';
 interface State {
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
-  readonly isUnlockVIP: boolean;
+  readonly isMyCryptoMember: boolean;
+  readonly membershipState: MembershipState;
+  readonly memberships?: MembershipStatus[];
+  readonly membershipExpiration: number[];
   readonly currentAccounts: StoreAccount[];
   readonly userAssets: Asset[];
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
@@ -97,6 +107,7 @@ export const StoreProvider: React.FC = ({ children }) => {
   } = useContext(AddressBookContext);
 
   const [pendingTransactions, setPendingTransactions] = useState([] as ITxReceipt[]);
+  const [membershipExpiration, setMembershipExpiration] = useState([] as number[]);
   // We transform rawAccounts into StoreAccount. Since the operation is exponential to the number of
   // accounts, make sure it is done only when rawAccounts change.
   const accounts = useMemo(() => getStoreAccounts(rawAccounts, assets, networks, contacts), [
@@ -109,7 +120,17 @@ export const StoreProvider: React.FC = ({ children }) => {
     [rawAccounts, settings.dashboardAccounts]
   );
 
-  const [isUnlockVIP, setIsUnlockVerified] = useState(false);
+  const [memberships, setMemberships] = useState<MembershipStatus[] | undefined>([]);
+
+  const membershipState = (() => {
+    if (memberships) {
+      return Object.values(memberships).length > 0
+        ? MembershipState.MEMBER
+        : MembershipState.NOTMEMBER;
+    }
+    return MembershipState.ERROR;
+  })();
+  const isMyCryptoMember = membershipState === MembershipState.MEMBER;
 
   // Naive polling to get the Balances of baseAsset and tokens for each account.
   useInterval(
@@ -122,18 +143,17 @@ export const StoreProvider: React.FC = ({ children }) => {
       getAccountsAssetsBalances(currentAccounts)
         .then((accountsWithBalances: StoreAccount[]) => {
           // Avoid the state change if the balances are identical.
-          if (isArrayEqual(currentAccounts, accountsWithBalances.filter(Boolean))) return;
-          if (isMounted) {
+          if (isMounted && !isArrayEqual(currentAccounts, accountsWithBalances.filter(Boolean))) {
             updateAccountsBalances(accountsWithBalances);
           }
           return currentAccounts
             .filter(account => account.networkId === 'Ethereum')
             .filter(account => account.wallet !== WalletId.VIEW_ONLY);
         })
-        .then(accountUnlockVIPDetected)
+        .then(accountMembershipDetected)
         .then(e => {
           if (!isMounted) return;
-          setIsUnlockVerified(e);
+          setMemberships(e as MembershipStatus[]);
         });
 
       return () => {
@@ -144,6 +164,34 @@ export const StoreProvider: React.FC = ({ children }) => {
     true,
     [currentAccounts]
   );
+
+  useEffect(() => {
+    if (!memberships || memberships.length === 0) return;
+    const network = networks.find(({ id }) => DEFAULT_NETWORK === id);
+    if (!network) return;
+    const unlockProvider = new UnlockProtocolHandler(network);
+    const membershipLookups = R.flatten(
+      memberships.map(membership =>
+        membership.memberships.map(membershipId => {
+          const membershipConfig = MEMBERSHIP_CONFIG[membershipId];
+          return { account: membership.address, lockAddress: membershipConfig.contractAddress };
+        })
+      )
+    );
+
+    Promise.all(
+      membershipLookups.map(membershipLookupObj =>
+        unlockProvider.fetchUnlockKeyExpiration(
+          membershipLookupObj.account,
+          membershipLookupObj.lockAddress
+        )
+      )
+    )
+      .then(data => {
+        setMembershipExpiration(data);
+      })
+      .catch(e => console.debug('[MembershipExpirationPolling]: Err: ', e));
+  }, [memberships]);
 
   useEffect(() => {
     setPendingTransactions(getPendingTransactionsFromAccounts(currentAccounts));
@@ -201,7 +249,10 @@ export const StoreProvider: React.FC = ({ children }) => {
   const state: State = {
     accounts,
     networks,
-    isUnlockVIP,
+    isMyCryptoMember,
+    membershipState,
+    memberships,
+    membershipExpiration,
     currentAccounts,
     get userAssets() {
       const userAssets = state.accounts

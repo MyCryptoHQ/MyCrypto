@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { Button } from '@mycrypto/ui';
 import { formatEther } from 'ethers/utils';
 
-import { RouterLink, Tooltip } from 'v2/components';
+import { RouterLink, Tooltip, Button } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
 import { COLORS, BREAK_POINTS, FONT_SIZE, SPACING } from 'v2/theme';
 import { weiToFloat, trimBN } from 'v2/utils';
@@ -132,20 +131,9 @@ const ZapCardButton = styled(Button)`
   display: flex;
   flex: 1;
   min-height: 60px;
-  background-color: ${COLORS.WHITE};
-  color: ${COLORS.BLUE_LIGHT_DARKISH};
-  border: 2px solid ${COLORS.BLUE_LIGHT_DARKISH};
-  border-radius: 3px;
   font-size: ${FONT_SIZE.MD};
   font-weight: normal;
   padding: 0px 15px;
-  &:hover {
-    background-color: ${COLORS.BLUE_LIGHT_DARKISH};
-    color: ${COLORS.WHITE};
-  }
-  &:focus {
-    background-color: ${COLORS.WHITE};
-  }
 `;
 
 const ZapEstimatedBalance = styled.p`
@@ -233,15 +221,15 @@ const ZapCard = ({ config }: Props) => {
       <ZapCardContentBottom>
         {!humanReadableZapBalance ? (
           <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
-            <ZapCardButton>{config.ctaText}</ZapCardButton>
+            <ZapCardButton inverted={true}>{config.ctaText}</ZapCardButton>
           </RouterLink>
         ) : (
           <>
             <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
-              <ZapCardButton>{translateRaw('ADD')}</ZapCardButton>
+              <ZapCardButton inverted={true}>{translateRaw('ADD')}</ZapCardButton>
             </RouterLink>
             <a target="_blank" href={config.link} rel="noreferrer">
-              <ZapCardButton>{translateRaw('WITHDRAW')}</ZapCardButton>
+              <ZapCardButton inverted={true}>{translateRaw('WITHDRAW')}</ZapCardButton>
             </a>
           </>
         )}

@@ -12,6 +12,7 @@ import {
 } from './types';
 import { Token } from 'shared/types/network';
 import { Asset, IHexStrTransaction, TxObj } from 'v2/types';
+import { UnlockToken } from '../../contracts';
 
 export class RPCRequests {
   public getNetVersion() {
@@ -88,6 +89,22 @@ export class RPCRequests {
   public getCurrentBlock(): GetCurrentBlockRequest | any {
     return {
       method: 'eth_blockNumber'
+    };
+  }
+
+  public getUnlockKeyExpirationTime(
+    address: string,
+    lockAddress: string
+  ): GetTokenBalanceRequest | any {
+    return {
+      method: 'eth_call',
+      params: [
+        {
+          to: lockAddress,
+          data: UnlockToken.keyExpirationTimestampFor.encodeInput({ _owner: address })
+        },
+        'pending'
+      ]
     };
   }
 }

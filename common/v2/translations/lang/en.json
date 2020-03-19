@@ -637,6 +637,14 @@
     "DEFI_DESC_THIRD": "MyCrypto’s DeFiZap integration aims to take this one step further and allows one-step access to DeFi protocols without having to leave the comfort of your dashboard.",
     "VISIT_DEFIZAP": "Visit [DeFiZap](https://defizap.com/) to learn more.",
     "ZAP_ADD_FUNDS": "Add Funds",
-    "ZAP_START_EARNING": "Start Earning Now!"
+    "ZAP_START_EARNING": "Start Earning Now!",
+    "MEMBERSHIP": "MyCrypto Membership",
+    "MEMBERSHIP_NOTMEMBER": "Support MyCrypto and become a member!",
+    "BECOME_MEMBER": "Become a Member",
+    "REQUEST_REWARDS": "Request Rewards",
+    "MANAGE_MEMBERSHIP": "Manage Membership",
+    "EXPIRES_ON": "Expires on",
+    "MEMBERSHIP_ERROR": "Cannot detect membership status. Please refresh the page or try again. If problem persists, contact [support@mycrypto.com](mailto:support@mycrypto.com)",
+    "BUY_MEMBERSHIP": "Buy Membership"
   }
 }
