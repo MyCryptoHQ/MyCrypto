@@ -183,12 +183,14 @@ export const getAccountMemberships = async (accounts: StoreAccount[]) =>
     Object.values(MEMBERSHIP_CONFIG).map(c => c.contractAddress)
   )
     .then(unlockStatusBalanceMap =>
-      Object.keys(unlockStatusBalanceMap).map(address => ({
-        address,
-        memberships: Object.keys(unlockStatusBalanceMap[address])
-          .filter(contract => unlockStatusBalanceMap[address][contract].isGreaterThan(new BN(0)))
-          .map(contract => MEMBERSHIP_CONTRACTS[contract])
-      }))
+      Object.keys(unlockStatusBalanceMap)
+        .map(address => ({
+          address,
+          memberships: Object.keys(unlockStatusBalanceMap[address])
+            .filter(contract => unlockStatusBalanceMap[address][contract].isGreaterThan(new BN(0)))
+            .map(contract => MEMBERSHIP_CONTRACTS[contract])
+        }))
+        .filter(m => m.memberships.length > 0)
     )
     .catch(err => console.error(err));
 
