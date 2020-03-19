@@ -9,7 +9,6 @@ import partition from 'lodash/partition';
 import { default as BN } from 'bignumber.js';
 import { bigNumberify } from 'ethers/utils';
 import { BigNumber as EthScanBN } from '@ethersproject/bignumber';
-import * as R from 'ramda';
 
 import { ETHSCAN_NETWORKS } from 'v2/config';
 import { TAddress, StoreAccount, StoreAsset, Asset, Network } from 'v2/types';
@@ -184,22 +183,14 @@ export const getAccountMemberships = async (accounts: StoreAccount[]) =>
     Object.values(MEMBERSHIP_CONFIG).map(c => c.contractAddress)
   )
     .then(unlockStatusBalanceMap =>
-      R.fromPairs(
-        R.reject(
-          t => R.isEmpty(t[1]),
-          R.toPairs(
-            R.mergeAll(
-              Object.keys(unlockStatusBalanceMap).map(address => ({
-                [address]: Object.keys(unlockStatusBalanceMap[address])
-                  .filter(b => unlockStatusBalanceMap[address][b].isGreaterThan(new BN(0)))
-                  .map(b => MEMBERSHIP_CONTRACTS[b])
-              }))
-            )
-          )
-        )
-      )
+      Object.keys(unlockStatusBalanceMap).map(address => ({
+        address,
+        memberships: Object.keys(unlockStatusBalanceMap[address])
+          .filter(contract => unlockStatusBalanceMap[address][contract].isGreaterThan(new BN(0)))
+          .map(contract => MEMBERSHIP_CONTRACTS[contract])
+      }))
     )
     .catch(err => console.error(err));
 
 export const accountMembershipDetected = async (accounts: StoreAccount[]) =>
-  !accounts || !(accounts.length > 0) ? {} : getAccountMemberships(accounts).catch(_ => ({}));
+  !accounts || !(accounts.length > 0) ? {} : getAccountMemberships(accounts).catch(_ => []);

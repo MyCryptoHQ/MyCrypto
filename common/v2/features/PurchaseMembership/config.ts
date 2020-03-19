@@ -1,3 +1,5 @@
+import { TAddress } from 'v2/types/address';
+
 import onemonthIcon from 'assets/images/membership/membership-onemonth.svg';
 import threemonthsIcon from 'assets/images/membership/membership-threemonths.svg';
 import sixMonthsIcon from 'assets/images/membership/membership-sixmonths.svg';
@@ -17,8 +19,9 @@ export type IMembershipConfigObject = {
   [key in IMembershipId]: IMembershipConfig;
 };
 
-export interface MembershipDict {
-  [address: string]: IMembershipId[];
+export interface MembershipStatus {
+  address: TAddress;
+  memberships: IMembershipId[];
 }
 
 export enum IMembershipId {

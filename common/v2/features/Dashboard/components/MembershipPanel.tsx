@@ -60,7 +60,7 @@ type Props = RouteComponentProps<{}>;
 function MembershipPanel({ history }: Props) {
   const { isMyCryptoMember, memberships, membershipExpiration } = useContext(StoreContext);
 
-  const allMemberships = R.uniq(R.flatten(Object.values(memberships)));
+  const allMemberships = R.uniq(R.flatten(memberships.map(m => m.memberships)));
   const membership =
     allMemberships.length > 0 ? allMemberships[allMemberships.length - 1] : undefined;
 

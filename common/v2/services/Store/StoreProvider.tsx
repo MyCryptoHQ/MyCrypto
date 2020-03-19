@@ -41,7 +41,7 @@ import { AccountContext, getDashboardAccounts } from './Account';
 import { SettingsContext } from './Settings';
 import { NetworkContext, getNetworkById } from './Network';
 import { findNextUnusedDefaultLabel, AddressBookContext } from './AddressBook';
-import { MembershipDict, MEMBERSHIP_CONFIG } from 'v2/features/PurchaseMembership/config';
+import { MembershipStatus, MEMBERSHIP_CONFIG } from 'v2/features/PurchaseMembership/config';
 import { UnlockProtocolHandler } from '../EthService/network';
 import { DEFAULT_NETWORK } from 'v2/config';
 
@@ -49,7 +49,7 @@ interface State {
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
   readonly isMyCryptoMember: boolean;
-  readonly memberships: MembershipDict;
+  readonly memberships: MembershipStatus[];
   readonly membershipExpiration: number[];
   readonly currentAccounts: StoreAccount[];
   readonly userAssets: Asset[];
@@ -115,7 +115,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     [rawAccounts, settings.dashboardAccounts]
   );
 
-  const [memberships, setMemberships] = useState({} as MembershipDict);
+  const [memberships, setMemberships] = useState([] as MembershipStatus[]);
 
   const isMyCryptoMember = Object.values(memberships).length > 0;
 
@@ -140,7 +140,7 @@ export const StoreProvider: React.FC = ({ children }) => {
         .then(accountMembershipDetected)
         .then(e => {
           if (!isMounted) return;
-          setMemberships(e as MembershipDict);
+          setMemberships(e as MembershipStatus[]);
         });
 
       return () => {
@@ -157,13 +157,12 @@ export const StoreProvider: React.FC = ({ children }) => {
     if (membershipsItems.length === 0) return;
     const network = networks.find(({ id }) => DEFAULT_NETWORK === id);
     if (!network) return;
-    const membershipAccounts = Object.keys(memberships);
     const unlockProvider = new UnlockProtocolHandler(network);
     const membershipLookups = R.flatten(
-      membershipAccounts.map(membershipAccount =>
-        memberships[membershipAccount].map(membershipId => {
+      memberships.map(membership =>
+        membership.memberships.map(membershipId => {
           const membershipConfig = MEMBERSHIP_CONFIG[membershipId];
-          return { account: membershipAccount, lockAddress: membershipConfig.contractAddress };
+          return { account: membership.address, lockAddress: membershipConfig.contractAddress };
         })
       )
     );
