@@ -77,10 +77,11 @@ interface MembershipPurchaseForm extends ISimpleTxFormFull {
 }
 
 export const MembershipFormUI = ({ daiAsset, network, relevantAccounts, onComplete }: UIProps) => {
+  const defaultMembership = MEMBERSHIP_CONFIG[IMembershipId.onemonth];
   const initialFormikValues: MembershipPurchaseForm = {
-    membership: MEMBERSHIP_CONFIG[IMembershipId.onemonth],
+    membership: defaultMembership,
     account: {} as StoreAccount,
-    amount: '',
+    amount: defaultMembership.price,
     asset: daiAsset,
     nonce: '0',
     gasPrice: '20',
@@ -163,6 +164,7 @@ export const MembershipFormUI = ({ daiAsset, network, relevantAccounts, onComple
                       name={field.name}
                       value={field.value}
                       accounts={relevantAccounts}
+                      asset={daiAsset}
                       onSelect={(option: IAccount) => {
                         form.setFieldValue('account', option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
                         handleNonceEstimate(option);

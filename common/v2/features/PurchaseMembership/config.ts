@@ -13,7 +13,7 @@ export interface IMembershipConfig {
   contractAddress: string;
   description: string;
   icon: string;
-  price: number;
+  price: string;
 }
 
 export type IMembershipConfigObject = {
@@ -49,7 +49,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     contractAddress: '0xCE8EF07495A36c451fB49b7391b33884832Bb66f',
     description: '',
     icon: onemonthIcon,
-    price: 4
+    price: '4'
   },
 
   threemonths: {
@@ -59,7 +59,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     contractAddress: '0xae90e0F7F3f2191B17b1816dFA8C5Ce8e049DC96',
     description: '',
     icon: threemonthsIcon,
-    price: 10.5
+    price: '10.5'
   },
 
   sixmonths: {
@@ -69,7 +69,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     contractAddress: '0x1C8369C9772E71E82679c9750E4770F29FECcbdD',
     description: '',
     icon: sixMonthsIcon,
-    price: 18
+    price: '18'
   },
 
   twelvemonths: {
@@ -79,7 +79,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     contractAddress: '0xb9cae1F4480bcc6dF52F045077BAc1DE448D5406',
     description: '',
     icon: twelveMonthsIcon,
-    price: 30
+    price: '30'
   },
 
   lifetime: {
@@ -89,7 +89,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     contractAddress: '0x1e1Eed8882dd411e7569ee79823a44f4F4a55Cac',
     description: '',
     icon: lifetimeIcon,
-    price: 400
+    price: '400'
   }
 };
 
