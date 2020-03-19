@@ -46,7 +46,6 @@ export const AccountProvider: React.FC = ({ children }) => {
     deleteAccount: model.destroy,
     updateAccount: (uuid, a) => model.update(uuid, a),
     addNewTransactionToAccount: (accountData, newTransaction) => {
-      console.debug('[addNewTransaction]: Tx: ', newTransaction);
       const { network, ...newTxWithoutNetwork } = newTransaction;
       const newAccountData = {
         ...accountData,
