@@ -105,7 +105,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
               <label htmlFor="label">Label</label>
               <Field
                 name="label"
-                render={({ field }: FieldProps<AddressBook>) => (
+                render={({ field }: FieldProps<string>) => (
                   <InputField {...field} placeholder="Enter name of address" />
                 )}
               />
@@ -114,7 +114,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
               <label htmlFor="address">Address</label>
               <Field
                 name="address"
-                render={({ field }: FieldProps<AddressBook>) => (
+                render={({ field }: FieldProps<string>) => (
                   <InputField
                     inputError={errors && errors.address}
                     {...field}
@@ -126,7 +126,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
             <AddressFieldset>
               <Field
                 name="network"
-                render={({ field, form }: FieldProps<AddressBook>) => (
+                render={({ field, form }: FieldProps<string>) => (
                   <SNetworkSelectDropdown
                     network={field.value}
                     onChange={e => form.setFieldValue(field.name, e)}
@@ -138,7 +138,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
               <label htmlFor="notes">Notes</label>
               <Field
                 name="notes"
-                render={({ field }: FieldProps<AddressBook>) => (
+                render={({ field }: FieldProps<string>) => (
                   <InputField
                     {...field}
                     textarea={true}

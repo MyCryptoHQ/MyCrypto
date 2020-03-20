@@ -1,12 +1,12 @@
 import React, { ChangeEvent, Component } from 'react';
-import { Field, FieldProps, Formik } from 'formik';
+import { Field, FieldProps, FormikHandlers } from 'formik';
 import { ComboBox } from '@mycrypto/ui';
 
 import { AccountContext, NetworkContext } from 'v2/services/Store';
-import { Network, IFormikFields } from 'v2/types';
+import { Network } from 'v2/types';
 
 interface OwnProps {
-  handleChange: Formik['handleChange'];
+  handleChange: FormikHandlers['handleChange'];
 }
 
 type Props = OwnProps;
@@ -54,7 +54,7 @@ export default class AssetField extends Component<Props> {
                   <Field
                     id={'7'}
                     name="asset"
-                    render={({ field }: FieldProps<IFormikFields>) => (
+                    render={({ field }: FieldProps<string>) => (
                       <ComboBox
                         {...field}
                         id={'8'}
