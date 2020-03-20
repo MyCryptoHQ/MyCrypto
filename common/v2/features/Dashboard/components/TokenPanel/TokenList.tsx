@@ -12,7 +12,7 @@ import { FONT_SIZE, SPACING } from 'v2/theme';
 import moreIcon from 'common/assets/images/icn-more.svg';
 
 const TokenListWrapper = styled.div`
-  max-height: 313px;
+  min-height: 0;
   overflow-y: auto;
   padding: 0 ${SPACING.BASE} ${SPACING.BASE} ${SPACING.BASE};
 `;

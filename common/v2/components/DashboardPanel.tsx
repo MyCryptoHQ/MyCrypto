@@ -33,6 +33,7 @@ const DPanel = styled(Panel)`
   flex-direction: column;
   flex: 1;
   margin: 0 0 ${SPACING.BASE} 0;
+  min-height: 0;
   padding: 0;
 `;
 
