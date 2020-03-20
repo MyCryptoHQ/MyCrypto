@@ -63,8 +63,8 @@ const ContactLookupField = ({
     };
   };
 
-  const validateAddress = () => {
-    const validationResult = isValidETHRecipientAddress(value.value, resolutionError);
+  const validateAddress = (v: IReceiverAddress) => {
+    const validationResult = isValidETHRecipientAddress(v.value, resolutionError);
     if (validationResult.success) return;
 
     return {
@@ -85,7 +85,7 @@ const ContactLookupField = ({
         useEffectOnce(() => {
           const contact = getContactByAddress(value.value);
           if (contact && value.display !== contact.label) {
-            form.setFieldValue(name, { display: contact.label, value: contact.address });
+            form.setFieldValue(name, { display: contact.label, value: contact.address }, true);
           }
         });
 
@@ -147,8 +147,8 @@ const ContactLookupField = ({
             contact = await handleENSname(inputString, contact);
           }
 
-          form.setFieldValue(name, contact);
-          form.setFieldTouched(name);
+          form.setFieldValue(name, contact, true);
+          form.setFieldTouched(name, true, false);
         };
 
         const handleDomainResolve = async (domain: string): Promise<string | undefined> => {
@@ -167,10 +167,14 @@ const ContactLookupField = ({
             return unstoppableAddress;
           } catch (err) {
             // Force the field value to error so that isValidAddress is triggered!
-            form.setFieldValue(name, {
-              ...value,
-              value: ''
-            });
+            form.setFieldValue(
+              name,
+              {
+                ...value,
+                value: ''
+              },
+              true
+            );
             if (UnstoppableResolution.isResolutionError(err)) {
               setResolutionError(err);
             } else throw err;
@@ -186,13 +190,13 @@ const ContactLookupField = ({
               value={value}
               contacts={contacts}
               onSelect={(option: IReceiverAddress) => {
-                form.setFieldValue(name, option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
-                form.setFieldTouched(name);
+                form.setFieldValue(name, option, true); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
+                form.setFieldTouched(name, true, false);
               }}
               onInputChange={handleInputChange}
               onBlur={(inputString: string) => {
                 handleAddAddressBookEntry(inputString);
-                form.setFieldTouched(name);
+                form.setFieldTouched(name, true, false);
                 if (onBlur) onBlur();
               }}
               inputValue={inputValue}
