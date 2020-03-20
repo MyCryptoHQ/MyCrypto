@@ -5,3 +5,4 @@ export {
   isWalletFormatSupportedOnNetwork,
   getBaseAssetByNetwork
 } from './helpers';
+export { NetworkUtils } from './utils';

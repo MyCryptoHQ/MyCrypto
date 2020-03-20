@@ -49,7 +49,7 @@ export const fNetwork: Network = {
   nodes: [
     {
       name: 'ropsten_infura',
-      type: 'infura' as NodeType,
+      type: NodeType.INFURA,
       service: 'Infura',
       url: 'https://ropsten.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286'
     }

@@ -38,6 +38,8 @@ export interface Network {
   gasPriceSettings: GasPrice;
   shouldEstimateGasPrice?: boolean;
   nodes: NodeOptions[];
+  selectedNode?: string;
+  autoNode?: string;
 }
 
 interface NetworkPropsMissingInLegacy {

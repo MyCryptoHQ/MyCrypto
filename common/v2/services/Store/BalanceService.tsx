@@ -68,7 +68,7 @@ const addBalancesToAccount = (account: StoreAccount) => ([baseBalance, tokenBala
 
 const getAccountAssetsBalancesWithEthScan = async (account: StoreAccount) => {
   const list = getAssetAddresses(account.assets) as string[];
-  const provider = new ProviderHandler(account.network).client;
+  const provider = ProviderHandler.fetchProvider(account.network);
   return Promise.all([
     getEtherBalances(provider, [account.address]).then(toBigNumberJS),
     getTokensBalance(provider, account.address, list).then(toBigNumberJS)
@@ -81,7 +81,7 @@ export const getBaseAssetBalances = async (addresses: string[], network: Network
   if (!network) {
     return ([] as unknown) as BalanceMap;
   }
-  const provider = new ProviderHandler(network).client;
+  const provider = ProviderHandler.fetchProvider(network);
   return getEtherBalances(provider, addresses)
     .then(data => {
       return data;

@@ -10,7 +10,8 @@ import {
   SettingsContext,
   ISettingsContext,
   INetworkContext,
-  NetworkContext
+  NetworkContext,
+  NetworkUtils
 } from 'v2/services/Store';
 import { WalletFactory } from 'v2/services/WalletService';
 import { FormDataActionType as ActionType } from 'v2/features/AddAccount/types';
@@ -103,10 +104,10 @@ class Web3ProviderDecrypt extends ComponentProps<
   }
 
   public async unlockWallet() {
-    const { updateSettingsNode, addNodeToNetwork, createWeb3Node, networks } = this.props;
+    const { updateSettingsNode, addNodeToNetwork, networks } = this.props;
     const handleUnlock = (network: Network) => {
       updateSettingsNode('web3');
-      addNodeToNetwork(createWeb3Node(network.id), network);
+      addNodeToNetwork(NetworkUtils.createWeb3Node(), network);
     };
 
     try {

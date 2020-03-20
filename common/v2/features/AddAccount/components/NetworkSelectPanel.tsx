@@ -1,12 +1,14 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useCallback } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import translate from 'v2/translations';
 import { FormDataActionType as ActionType } from '../types';
-import { FormData } from 'v2/types';
+import { FormData, NetworkId } from 'v2/types';
 import { NetworkSelectDropdown } from 'v2/components';
 import { NetworkContext } from 'v2/services/Store';
+import NetworkNodeDropdown from '../../../components/NetworkNodeDropdown';
+import { ProviderHandler } from '../../../services/EthService/network';
 
 const NetworkForm = styled.div`
   margin-top: 22px;
@@ -26,23 +28,38 @@ const SButton = styled(Button)`
   bottom: 2em;
 `;
 
+const SLabel = styled.label`
+  margin-top: 15px;
+  margin-bottom: 10px;
+`;
+
 interface Props {
   formData: FormData;
   formDispatch: any;
   goToNextStep(): void;
 }
 
-function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
-  const { networks } = useContext(NetworkContext);
-  const [network, setNetwork] = useState(formData.network);
+const NetworkSelectPanel = ({ formData, formDispatch, goToNextStep }: Props) => {
+  const { networks, getNetworkById } = useContext(NetworkContext);
+  const [network, setNetwork] = useState<NetworkId>(formData.network);
 
-  const onSubmit = () => {
-    formDispatch({
-      type: ActionType.SELECT_NETWORK,
-      payload: { network }
-    });
-    goToNextStep();
-  };
+  const onSubmit = useCallback(async () => {
+    try {
+      const nodeNetwork = getNetworkById(network);
+      const { selectedNode, nodes } = nodeNetwork;
+      const node = nodes.find(n => n.name === selectedNode)!;
+      const provider = new ProviderHandler({ ...nodeNetwork, nodes: [node] }, false);
+      await provider.getCurrentBlock();
+
+      formDispatch({
+        type: ActionType.SELECT_NETWORK,
+        payload: { network }
+      });
+      goToNextStep();
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
 
   const validNetwork = networks.some(n => n.id === network);
 
@@ -57,6 +74,8 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
           onChange={setNetwork}
           showTooltip={true}
         />
+        <SLabel>Node</SLabel>
+        <NetworkNodeDropdown networkId={network} />
       </NetworkForm>
       <ButtonWrapper>
         <SButton disabled={!validNetwork} onClick={onSubmit}>
@@ -65,6 +84,6 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
       </ButtonWrapper>
     </div>
   );
-}
+};
 
 export default NetworkSelectPanel;

@@ -1,17 +1,22 @@
-import { TAddress } from './address';
-import { TUuid } from './uuid';
-import { TSymbol } from './symbols';
-import { IRates } from './rates';
-import { NodeConfig, CustomNodeConfig, NodeOptions } from './node';
-// Babel needs to know which types to remove when transpiling
-// https://github.com/webpack/webpack/issues/7378#issuecomment-492641148
-export type NodeConfig = NodeConfig;
-export type CustomNodeConfig = CustomNodeConfig;
-export type NodeOptions = NodeOptions;
-export type TSymbol = TSymbol;
-export type IRates = IRates;
-export type TAddress = TAddress;
-export type TUuid = TUuid;
+import { TAddress as IAddress } from './address';
+import { TUuid as IUuid } from './uuid';
+import { TSymbol as ISymbol } from './symbols';
+import { IRates as Rates } from './rates';
+import {
+  NodeConfig as INodeConfig,
+  CustomNodeConfig as ICustomNodeConfig,
+  NodeOptions as INodeOptions,
+  StaticNodeConfig as IStaticNodeConfig
+} from './node';
+
+export type NodeConfig = INodeConfig;
+export type CustomNodeConfig = ICustomNodeConfig;
+export type StaticNodeConfig = IStaticNodeConfig;
+export type NodeOptions = INodeOptions;
+export type TSymbol = ISymbol;
+export type IRates = Rates;
+export type TAddress = IAddress;
+export type TUuid = IUuid;
 
 export {
   HardwareWalletId,

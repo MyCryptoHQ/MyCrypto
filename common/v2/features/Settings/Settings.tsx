@@ -3,13 +3,17 @@ import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { BREAK_POINTS, MIN_CONTENT_PADDING, SPACING } from 'v2/theme';
-import { AddressBookContext, SettingsContext, StoreContext } from 'v2/services/Store';
+import { AddressBookContext, SettingsContext, StoreContext, NetworkContext } from 'v2/services/Store';
 import { AccountList, FlippablePanel, TabsNav, Desktop, Mobile } from 'v2/components';
+import { NetworkId } from 'v2/types';
+import { CustomNodeConfig } from 'v2/types/node';
+import { DEFAULT_NETWORK, IS_ACTIVE_FEATURE } from 'v2/config';
 import translate from 'v2/translations';
-import { IS_ACTIVE_FEATURE } from 'v2/config';
 import { AddressBookPanel, AddToAddressBook, GeneralSettings, DangerZone } from './components';
 
 import settingsIcon from 'common/assets/images/icn-settings.svg';
+import NetworkNodes from './components/NetworkNodes';
+import AddOrEditNetworkNode from './components/AddOrEditNetworkNode';
 
 const SettingsHeading = styled(Heading)<{ forwardedAs?: string }>`
   display: flex;
@@ -84,6 +88,52 @@ function renderAddressPanel() {
   );
 }
 
+function renderNetworkNodes() {
+  const {
+    getNetworkByName,
+    addNodeToNetwork,
+    isNodeNameAvailable,
+    getNetworkById,
+    updateNode,
+    deleteNode
+  } = useContext(NetworkContext);
+  const { addressBook } = useContext(AddressBookContext);
+  const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
+  const [editNode, setEditNode] = useState<CustomNodeConfig | undefined>(undefined);
+
+  const addressBookNetworksIds = [...new Set(addressBook.map(a => a.network))];
+  const addressBookNetworks = addressBookNetworksIds.map(addressId => getNetworkByName(addressId)!);
+
+  return (
+    <FlippablePanel>
+      {({ flipped, toggleFlipped }) =>
+        flipped ? (
+          <AddOrEditNetworkNode
+            networkId={networkId}
+            editNode={editNode}
+            toggleFlipped={toggleFlipped}
+            addNodeToNetwork={addNodeToNetwork}
+            isNodeNameAvailable={isNodeNameAvailable}
+            getNetworkById={getNetworkById}
+            updateNode={updateNode}
+            deleteNode={deleteNode}
+          />
+        ) : (
+          <NetworkNodes
+            networks={addressBookNetworks}
+            toggleFlipped={(id, node) => {
+              setNetworkId(id);
+              setEditNode(node);
+
+              toggleFlipped();
+            }}
+          />
+        )
+      }
+    </FlippablePanel>
+  );
+}
+
 function renderGeneralSettingsPanel() {
   const { updateSettings, settings } = useContext(SettingsContext);
   return (
@@ -131,6 +181,7 @@ export default function Settings() {
         </SettingsHeading>
         {renderAccountPanel()}
         {renderAddressPanel()}
+        {renderNetworkNodes()}
         {renderGeneralSettingsPanel()}
       </Desktop>
     </StyledLayout>
