@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { Formik, Form, Field, FieldProps } from 'formik';
 import { Button } from '@mycrypto/ui';
@@ -8,7 +8,7 @@ import { parseEther } from 'ethers/utils';
 
 import translate, { translateRaw } from 'v2/translations';
 import { SPACING } from 'v2/theme';
-import { IAccount, Network, StoreAccount, Asset } from 'v2/types';
+import { IAccount, Network, StoreAccount, Asset, TSymbol } from 'v2/types';
 import { AccountDropdown, InlineMessage, AmountInput } from 'v2/components';
 import { validateAmountField } from 'v2/features/SendAssets/components/validators/validators';
 import { isEthereumAccount } from 'v2/services/Store/Account/helpers';
@@ -17,9 +17,10 @@ import { fetchGasPriceEstimates } from 'v2/services/ApiService';
 import { getNonce } from 'v2/services/EthService';
 import { EtherUUID, DAIUUID } from 'v2/utils';
 
-import { MembershipPurchaseState, ISimpleTxFormFull } from '../types';
+import { MembershipPurchaseState, MembershipSimpleTxFormFull } from '../types';
 import { IMembershipId, IMembershipConfig, MEMBERSHIP_CONFIG } from '../config';
 import MembershipDropdown from './MembershipDropdown';
+import { getAccountsWithAssetBalance } from 'v2/features/SwapAssets/helpers';
 
 interface Props extends MembershipPurchaseState {
   onComplete(fields: any): void;
@@ -72,14 +73,10 @@ const MembershipForm = ({ onComplete }: Props) => {
   );
 };
 
-interface MembershipPurchaseForm extends ISimpleTxFormFull {
-  membership: IMembershipConfig;
-}
-
 export const MembershipFormUI = ({ daiAsset, network, relevantAccounts, onComplete }: UIProps) => {
   const defaultMembership = MEMBERSHIP_CONFIG[IMembershipId.onemonth];
-  const initialFormikValues: MembershipPurchaseForm = {
-    membership: defaultMembership,
+  const initialFormikValues: MembershipSimpleTxFormFull = {
+    membershipSelected: defaultMembership,
     account: {} as StoreAccount,
     amount: defaultMembership.price,
     asset: daiAsset,
@@ -131,21 +128,42 @@ export const MembershipFormUI = ({ daiAsset, network, relevantAccounts, onComple
             Object.values(errors).filter(error => error !== undefined && !isEmpty(error)).length ===
             0;
 
+          const { amount, asset } = values;
+          const filteredAccounts = getAccountsWithAssetBalance(
+            relevantAccounts,
+            { name: asset.name, symbol: asset.ticker as TSymbol },
+            amount
+          );
+
+          // TODO: Remove selected account if not enough of given asset
+          /**useEffect(() => {
+            if (
+              amount &&
+              asset &&
+              account &&
+              !getAccountsWithAssetBalance(filteredAccounts, asset, amount).find(
+                a => a.uuid === values.account.uuid
+              )
+            ) {
+              setFieldValue('account', undefined);
+            }
+          }, [amount, asset]);**/
+
           return (
             <Form>
               <FormFieldItem>
-                <FormFieldLabel htmlFor="membership">
+                <FormFieldLabel htmlFor="membershipSelected">
                   {translate('SELECT_MEMBERSHIP')}
                 </FormFieldLabel>
                 <Field
-                  name="membership"
-                  value={values.membership}
+                  name="membershipSelected"
+                  value={values.membershipSelected}
                   component={({ field, form }: FieldProps) => (
                     <MembershipDropdown
                       name={field.name}
                       value={{ value: field.value, label: field.value.title }}
                       onSelect={(option: { label: string; value: IMembershipConfig }) => {
-                        form.setFieldValue('membership', option.value); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
+                        form.setFieldValue('membershipSelected', option.value); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
                         form.setFieldValue('amount', option.value.price);
                       }}
                     />
@@ -163,8 +181,8 @@ export const MembershipFormUI = ({ daiAsset, network, relevantAccounts, onComple
                     <AccountDropdown
                       name={field.name}
                       value={field.value}
-                      accounts={relevantAccounts}
-                      asset={daiAsset}
+                      accounts={filteredAccounts}
+                      asset={values.asset}
                       onSelect={(option: IAccount) => {
                         form.setFieldValue('account', option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
                         handleNonceEstimate(option);
