@@ -52,5 +52,4 @@ export { toArray } from './toArray';
 export { objToString } from './objToString';
 export * from './constants';
 export { bigify } from './bigify';
-export { useTxSend } from './useTxSend';
 export { useTxMulti } from './useTxMulti';

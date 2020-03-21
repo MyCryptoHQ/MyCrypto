@@ -79,4 +79,4 @@ export { BannerType } from './banner';
 export { ToastConfig, ToastType, ToastConfigsProps } from './toast';
 export { InlineMessageType } from './inlineMessages';
 export { ErrorObject } from './errorObject';
-export { TAction } from './action';
+export { TAction, TStateGetter } from './action';

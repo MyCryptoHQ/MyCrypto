@@ -1,29 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useReducer } from 'reinspect';
 import * as R from 'ramda';
 
-import { ITxStatus, ITxObject } from 'v2/types';
-
-import { useTxSend, TxSendState, TxSendActions } from '../useTxSend';
-
-export type TxParcel = TxSendState & { _queuePos: number } & Pick<
-    TxSendActions,
-    'prepareTx' | 'sendTx' | 'waitForConfirmation'
-  >;
-type Updater = (...args: any) => (txs: TxParcel[]) => TxParcel[];
-
-const addQueuePos = (tx: ITxObject, currentIdx: number) => ({ _queuePos: currentIdx, ...tx });
-
-// Update an tx in the queue by 'adjusting' aka. cloning
-// the value of the new state into our transactions array.
-// (Number, TxParcel) => (TxParcel[]) => TxParcel[]
-const updateTxs: Updater = (currentIdx: number, newTxState: TxSendState) =>
-  R.adjust(currentIdx, (prevTxState: TxParcel): TxParcel => ({ ...prevTxState, ...newTxState }));
-
-const refreshQueue: Updater = (currentIdx: number, newTxState: TxSendState) =>
-  R.pipe(updateTxs(currentIdx, newTxState));
-
-const initializeQueue: Updater = (currentIdx: number, newTxState: TxSendState, formatter) =>
-  R.pipe(R.map(formatter), R.addIndex(R.map)(addQueuePos), updateTxs(currentIdx, newTxState));
+import { TxMultiReducer, initialState } from './reducer';
+import { prepareTx, sendTx, reset } from './actions';
+import { TxParcel, TxMultiState } from './types';
 
 /*
   Create a queue of transactions the need to be sent in order.
@@ -33,51 +13,51 @@ const initializeQueue: Updater = (currentIdx: number, newTxState: TxSendState, f
   3. when the status of the previous tx is `ITxStatus.CONFIRMED` the queue will
      move to the next tx in line.
 */
+
 export type TUseTxMulti = () => {
+  init(txs: any[], account: any, network: any): Promise<void>;
+  initWith(getTxs: <T>() => Promise<void | T[]>, account: any, network: any): Promise<void>;
+  stopYield(): Promise<void>;
+  prepareTx: ReturnType<typeof prepareTx>;
+  sendTx: ReturnType<typeof sendTx>;
+  reset: ReturnType<typeof reset>;
   currentTx: TxParcel;
-  previousTx: TxParcel;
-  transactions: TxParcel[];
-  initQueue(txs: any[]): void;
+  state: TxMultiState;
 };
+
 export const useTxMulti: TUseTxMulti = () => {
-  const { state: txState, ...actions } = useTxSend();
-  const [txQueue, setTxQueue] = useState<TxParcel[]>([]);
-  const [currentTxIdx, setCurrentTxIdx] = useState(0);
-  const currentTx = txQueue[currentTxIdx] || {};
-
-  const initQueue = useCallback(txs => {
-    const transactions: TxParcel[] = initializeQueue(
-      currentTxIdx,
-      txState,
-      actions.formatRawTx
-    )(txs);
-    setTxQueue(transactions);
-  }, []);
-
-  // Update the references in our queue whenever the associated tx changes.
-  useEffect(() => {
-    const updated: TxParcel[] = refreshQueue(currentTxIdx, txState)(txQueue);
-
-    if (updated[currentTxIdx] && updated[currentTxIdx].status === ITxStatus.CONFIRMED) {
-      const nextIdx = Math.min(currentTxIdx + 1, updated.length - 1);
-      actions.reset();
-
-      setCurrentTxIdx(nextIdx);
-      setTxQueue(updated);
-      // ie. setCurrentTxIdx(currentTx + 1)
-    } else {
-      setTxQueue(updated);
-    }
-  }, [txState]);
+  const [state, dispatch] = useReducer(TxMultiReducer, initialState, R.identity, 'TxMulti');
+  const getState = () => state;
 
   return {
-    initQueue,
-    get currentTx() {
-      return { ...currentTx, ...R.pick(['prepareTx', 'sendTx', 'waitForConfirmation'], actions) }; // share only the relevant actions.
+    state,
+    init: async (txs, account, network) =>
+      dispatch({
+        type: TxMultiReducer.actionTypes.INIT_SUCCESS,
+        payload: { txs, account, network }
+      }),
+    initWith: async (getTxs, account, network) => {
+      dispatch({ type: TxMultiReducer.actionTypes.INIT_REQUEST });
+      try {
+        const txs = await getTxs();
+        dispatch({
+          type: TxMultiReducer.actionTypes.INIT_SUCCESS,
+          payload: {
+            txs,
+            account,
+            network
+          }
+        });
+      } catch (err) {
+        dispatch({ type: TxMultiReducer.actionTypes.INIT_FAILURE, payload: err, error: true });
+      }
     },
-    get previousTx() {
-      return txQueue[currentTxIdx - 1];
-    },
-    transactions: txQueue
+    stopYield: async () => dispatch({ type: TxMultiReducer.actionTypes.HALT_FLOW }),
+    prepareTx: prepareTx(dispatch, getState),
+    sendTx: sendTx(dispatch, getState),
+    reset: reset(dispatch, getState),
+    get currentTx(): TxParcel {
+      return R.view(R.lensIndex(state._currentTxIdx), state.transactions);
+    }
   };
 };

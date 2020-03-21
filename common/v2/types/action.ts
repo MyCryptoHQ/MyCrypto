@@ -5,3 +5,5 @@ export interface TAction<T, P> {
   error?: boolean;
   meta?: object;
 }
+
+export type TStateGetter<S> = () => S;

@@ -1,20 +1,8 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { ValuesType } from 'utility-types';
+import * as R from 'ramda';
+import { fAccount, fNetwork } from '@fixtures';
 
-import { fAccount, fTxReceiptProvider } from '@fixtures';
-import { ITxStatus } from 'v2/types';
-import { ProviderHandler } from 'v2/services';
-
-import { getUUID } from '../generateUUID';
-import { useTxMulti, TxParcel } from './useTxMulti';
-import * as Gas from 'v2/services/ApiService/Gas/gasPriceFunctions';
-import * as Nonce from 'v2/services/EthService/nonce';
-
-jest.spyOn(Gas, 'getGasEstimate').mockImplementation(jest.fn(() => Promise.resolve('0x01010')));
-jest.spyOn(Nonce, 'getNonce').mockImplementation(jest.fn(() => Promise.resolve(34)));
-jest
-  .spyOn(ProviderHandler.prototype, 'waitForTransaction')
-  .mockImplementation(() => Promise.resolve(fTxReceiptProvider));
+import { useTxMulti } from './useTxMulti';
 
 const createTxRaw = (idx: number) => ({
   to: 'address' + idx,
@@ -22,85 +10,80 @@ const createTxRaw = (idx: number) => ({
   data: 'empty'
 });
 
-const data = [createTxRaw(1), createTxRaw(2)];
-
 describe('useTxMulti', () => {
-  // Limit the scopes of the mocks to the current tests.
-  afterAll(() => jest.resetAllMocks());
+  const rawTxs = [createTxRaw(1), createTxRaw(2)];
 
-  it('can initialize a transaction queue', () => {
-    const { result } = renderHook(() => useTxMulti());
-    const { initQueue } = result.current;
-
-    act(() => initQueue(data));
-    const currentTx = result.current.currentTx;
-    expect(currentTx.txRaw).toEqual(data[0]);
-    expect(currentTx.status).toEqual(ITxStatus.EMPTY);
-    expect(currentTx._uuid).toEqual(getUUID(JSON.stringify(data[0])));
-  });
-
-  it('can return the appropriate actions for currentTx', () => {
-    const { result } = renderHook(() => useTxMulti());
-    const { initQueue } = result.current;
-
-    act(() => initQueue(data));
-    const currentTx = result.current.currentTx;
-
-    expect(currentTx.prepareTx).toBeDefined();
-    expect(currentTx.sendTx).toBeDefined();
-    expect(currentTx.waitForConfirmation).toBeDefined();
-  });
-
-  it('can move to next in list', () => {
-    const { result } = renderHook(() => useTxMulti());
-    const { initQueue } = result.current;
+  it('can initialize the hook', async () => {
+    const { result: r } = renderHook(() => useTxMulti());
 
     act(() => {
-      initQueue(data);
+      r.current.init(rawTxs, fAccount, fNetwork);
     });
-    const currentTx = result.current.currentTx;
-    expect(currentTx.txRaw).toEqual(data[0]);
-    expect(currentTx.status).toEqual(ITxStatus.EMPTY);
-    expect(currentTx._uuid).toEqual(getUUID(JSON.stringify(data[0])));
+
+    const state = r.current.state;
+    expect(state._isInitialized).toBeTruthy();
+    expect(state._currentTxIdx).toEqual(0);
+    expect(state.account).toEqual(fAccount);
+    expect(state.network).toEqual(fNetwork);
+    expect(state.isSubmitting).toBeFalsy();
+    // Check that the transactions are correctly formatted.
+    expect(state.transactions.length).toEqual(rawTxs.length);
+    expect(state.transactions).toContainEqual({
+      txRaw: { to: 'address1', value: 'any', data: 'empty' },
+      _uuid: 'cc85a4c4-8c65-54a7-b286-bac7096b012a',
+      status: 'PREPARING'
+    });
   });
 
-  it('the currentTx is reactive', async () => {
-    const { result } = renderHook(() => useTxMulti());
-    const { initQueue } = result.current;
-    const getProp = (
-      prop: keyof ReturnType<typeof useTxMulti>
-    ): ValuesType<ReturnType<typeof useTxMulti>> => result.current[prop];
+  it('can initialize the after an async call', async () => {
+    const { result: r } = renderHook(() => useTxMulti());
 
-    // Run the 'prepareTx' and expect the status of the 'currentTx' to be
-    // updated.
-    let currentTx;
-    act(() => initQueue(data));
     await act(async () => {
-      currentTx = getProp('currentTx') as TxParcel;
-      await currentTx.prepareTx(currentTx.txRaw!, fAccount);
+      await r.current.initWith(() => Promise.resolve(rawTxs), fAccount, fNetwork);
     });
 
-    currentTx = getProp('currentTx') as TxParcel;
-    expect(currentTx.status).toEqual(ITxStatus.READY);
+    const state = r.current.state;
+    expect(state._isInitialized).toBeTruthy();
+    expect(state._currentTxIdx).toEqual(0);
+    expect(state.account).toEqual(fAccount);
+    expect(state.network).toEqual(fNetwork);
+    expect(state.isSubmitting).toBeFalsy();
+    // Check that the transactions are correctly formatted.
+    expect(state.transactions.length).toEqual(rawTxs.length);
+    expect(state.transactions).toContainEqual({
+      txRaw: { to: 'address1', value: 'any', data: 'empty' },
+      _uuid: 'cc85a4c4-8c65-54a7-b286-bac7096b012a',
+      status: 'PREPARING'
+    });
   });
 
-  it('moves to next in queue on confirmed', async () => {
-    const { result } = renderHook(() => useTxMulti());
-    const { initQueue } = result.current;
-    const getProp = (prop: keyof ReturnType<typeof useTxMulti>) => result.current[prop];
-
-    // Run the 'prepareTx' and expect the status of the 'currentTx' to be
-    // updated.
-    let currentTx;
-    act(() => initQueue(data));
+  it('sets state.error if init fails', async () => {
+    const { result: r } = renderHook(() => useTxMulti());
+    const error = new Error('Init failed');
     await act(async () => {
-      currentTx = getProp('currentTx') as TxParcel;
-      await currentTx.prepareTx(currentTx.txRaw!, fAccount);
-      await currentTx.waitForConfirmation(fTxReceiptProvider.transactionHash, fAccount);
+      await r.current.initWith(() => Promise.reject(error), fAccount, fNetwork);
     });
-    currentTx = getProp('currentTx') as TxParcel;
-    const previousTx = getProp('previousTx') as TxParcel;
-    expect(previousTx.status).toEqual(ITxStatus.CONFIRMED);
-    expect(currentTx._queuePos).toEqual(1);
+    const state = r.current.state;
+    expect(state.error).toEqual(error);
+    expect(state.isSubmitting).toBeFalsy();
+    expect(state.canYield).toBeFalsy();
+  });
+
+  it('can reset the state', async () => {
+    const { result: r } = renderHook(() => useTxMulti());
+    await act(async () => {
+      await r.current.initWith(() => Promise.resolve(rawTxs), fAccount, fNetwork);
+    });
+    let state = r.current.state;
+    expect(state.transactions).toContainEqual({
+      txRaw: { to: 'address1', value: 'any', data: 'empty' },
+      _uuid: 'cc85a4c4-8c65-54a7-b286-bac7096b012a',
+      status: 'PREPARING'
+    });
+    await act(async () => {
+      await r.current.reset();
+    });
+    state = r.current.state;
+    expect(R.isEmpty(state.transactions)).toBeTruthy();
   });
 });
