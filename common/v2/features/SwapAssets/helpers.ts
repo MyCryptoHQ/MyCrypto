@@ -1,97 +1,30 @@
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
-import { Optional } from 'utility-types';
 
-import {
-  TAddress,
-  Asset,
-  StoreAccount,
-  Network,
-  ITxConfig,
-  IHexStrTransaction,
-  ITxObject
-} from 'v2/types';
-import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
-import {
-  inputGasPriceToHex,
-  inputGasLimitToHex,
-  inputNonceToHex,
-  hexWeiToString,
-  getNonce,
-  hexToNumber,
-  hexToString
-} from 'v2/services/EthService';
-import { getAssetByUUID, getAssetByTicker } from 'v2/services';
+import { Asset, StoreAccount, ITxConfig, IHexStrTransaction, ITxObject } from 'v2/types';
+import { getAssetByUUID, getAssetByTicker, DexService } from 'v2/services';
+import { hexToString, appendGasPrice, appendSender } from 'v2/services/EthService';
 import { WALLET_STEPS } from 'v2/components';
 import { weiToFloat } from 'v2/utils';
 
-import { ISwapAsset } from './types';
+import { ISwapAsset, IAssetPair, LAST_CHANGED_AMOUNT } from './types';
 
-type TxBeforeSender = Pick<ITxObject, 'to' | 'value' | 'data' | 'chainId'>;
-type TxBeforeGasPrice = Optional<ITxObject, 'nonce' | 'gasLimit' | 'gasPrice'>;
-type TxBeforeGasLimit = Optional<ITxObject, 'nonce' | 'gasLimit'>;
-type TxBeforeNonce = Optional<ITxObject, 'nonce'>;
+export const getTradeOrder = (assetPair: IAssetPair, account: StoreAccount) => async () => {
+  const { lastChangedAmount, fromAsset, fromAmount, toAsset, toAmount } = assetPair;
+  const { address, network } = account;
+  const isLastChangedTo = lastChangedAmount === LAST_CHANGED_AMOUNT.TO;
+  // Trade order details depends on the direction of the asset exchange.
+  const getOrderDetails = isLastChangedTo
+    ? DexService.instance.getOrderDetailsTo
+    : DexService.instance.getOrderDetailsFrom;
 
-export const appendSender = (senderAddress: TAddress) => async (
-  tx: TxBeforeSender
-): Promise<TxBeforeGasPrice> => {
-  return {
-    ...tx,
-    from: senderAddress
-  };
-};
-
-export const appendGasPrice = (network: Network) => async (
-  tx: TxBeforeGasPrice
-): Promise<TxBeforeGasLimit> => {
-  const gasPrice = await fetchGasPriceEstimates(network)
-    .then(({ fast }) => fast.toString())
-    .then(inputGasPriceToHex)
-    .then(hexWeiToString)
-    .then(v => new BN(v).toString(16))
-    .then(addHexPrefix)
-    .catch(err => {
-      throw new Error(`getGasPriceEstimate: ${err}`);
-    });
-
-  return {
-    ...tx,
-    gasPrice
-  };
-};
-
-export const appendGasLimit = (network: Network) => async (
-  tx: TxBeforeGasLimit
-): Promise<TxBeforeNonce> => {
-  try {
-    const gasLimit = await getGasEstimate(network, tx)
-      .then(hexToNumber)
-      .then((n: number) => Math.round(n * 1.2))
-      .then((n: number) => inputGasLimitToHex(n.toString()));
-
-    return {
-      ...tx,
-      gasLimit
-    };
-  } catch (err) {
-    throw new Error(`getGasEstimate: ${err}`);
-  }
-};
-
-export const appendNonce = (network: Network, senderAddress: TAddress) => async (
-  tx: TxBeforeNonce
-): Promise<ITxObject> => {
-  const nonce = await getNonce(network, senderAddress)
-    .then(n => n.toString())
-    .then(inputNonceToHex)
-    .catch(err => {
-      throw new Error(`getNonce: ${err}`);
-    });
-
-  return {
-    ...tx,
-    nonce
-  };
+  return getOrderDetails(
+    fromAsset.symbol,
+    toAsset.symbol,
+    (isLastChangedTo ? toAmount : fromAmount).toString()
+  )
+    .then(txs => Promise.all(txs.map(appendSender(address))))
+    .then(txs => Promise.all(txs.map(appendGasPrice(network))));
 };
 
 export const makeTxConfigFromTransaction = (assets: Asset[]) => (

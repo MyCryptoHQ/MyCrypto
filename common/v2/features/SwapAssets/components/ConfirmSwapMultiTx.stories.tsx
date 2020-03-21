@@ -22,9 +22,9 @@ const assetPair = {
 };
 
 export const daiToEth = () => (
-  <ConfirmSwapMultiTx currentTx={0} assetPair={assetPair} transactions={[]} />
+  <ConfirmSwapMultiTx currentTxIdx={0} assetPair={assetPair} transactions={[]} />
 );
 
 export const daiToEthStep2 = () => (
-  <ConfirmSwapMultiTx currentTx={1} assetPair={assetPair} transactions={[]} />
+  <ConfirmSwapMultiTx currentTxIdx={1} assetPair={assetPair} transactions={[]} />
 );

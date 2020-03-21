@@ -3,8 +3,9 @@ import * as R from 'ramda';
 import { fAccount, fNetwork } from '@fixtures';
 
 import { useTxMulti } from './useTxMulti';
+import { ITxObject } from 'v2/types';
 
-const createTxRaw = (idx: number) => ({
+const createTxRaw = (idx: number): Partial<ITxObject> => ({
   to: 'address' + idx,
   value: 'any',
   data: 'empty'

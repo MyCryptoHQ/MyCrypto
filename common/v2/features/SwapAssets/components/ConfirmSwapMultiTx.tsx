@@ -4,20 +4,25 @@ import * as R from 'ramda';
 import { SwapFromToDiagram } from 'v2/components/TransactionFlow/displays';
 import { VerticalStepper, Typography } from 'v2/components';
 import { translateRaw } from 'v2/translations';
-import { ITxStatus } from 'v2/types';
+import { ITxStatus, TxParcel } from 'v2/types';
 
-import { IAssetPair, TxEnveloppe } from '../types';
+import { IAssetPair } from '../types';
 import step1SVG from 'assets/images/icn-send.svg';
 import step2SVG from 'assets/images/icn-receive.svg';
 
 interface Props {
   assetPair: IAssetPair;
-  currentTx: number;
-  transactions: TxEnveloppe[];
+  currentTxIdx: number;
+  transactions: TxParcel[];
   onClick?(): void;
 }
 
-export default function ConfirmSwapMultiTx({ assetPair, currentTx, transactions, onClick }: Props) {
+export default function ConfirmSwapMultiTx({
+  assetPair,
+  currentTxIdx,
+  transactions,
+  onClick
+}: Props) {
   const { fromAsset, toAsset, fromAmount, toAmount } = assetPair;
   const status = transactions.map(t => R.path(['status'], t));
 
@@ -53,7 +58,7 @@ export default function ConfirmSwapMultiTx({ assetPair, currentTx, transactions,
         toAmount={toAmount.toString()}
       />
       <VerticalStepper
-        currentStep={broadcasting === -1 ? currentTx : broadcasting}
+        currentStep={broadcasting === -1 ? currentTxIdx : broadcasting}
         steps={[approveTx, transferTx]}
       />
     </div>

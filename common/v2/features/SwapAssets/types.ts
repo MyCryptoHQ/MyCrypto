@@ -1,8 +1,6 @@
 import { BigNumber } from 'bignumber.js';
-import { SwapFlowReducer } from './reducer';
 
-import { TAction, TSymbol, StoreAccount, ITxObject, ITxStatus } from 'v2/types';
-import { ValuesType } from 'utility-types';
+import { TSymbol, StoreAccount, ITxObject, ITxStatus } from 'v2/types';
 
 export interface ISwapAsset {
   name: string;
@@ -60,5 +58,3 @@ export interface IAssetPair {
 }
 
 export type SwapDisplayData = Pick<IAssetPair, 'fromAsset' | 'toAsset' | 'fromAmount' | 'toAmount'>;
-export type SFAction = TAction<ValuesType<typeof SwapFlowReducer>, any>;
-export type TStateGetter = () => SwapState;

@@ -1,17 +1,15 @@
-import { ValuesType } from 'utility-types';
-import { TransactionResponse } from 'ethers/providers';
+import { TransactionReceipt } from 'ethers/providers';
 
-import { Network, TAction, TUuid, ITxStatus, StoreAccount, ITxObject } from 'v2/types';
-import { TxMultiReducer } from './reducer';
+import { Network, ITxStatus, StoreAccount, ITxObject, ITxHash } from 'v2/types';
+import { TUuid } from 'v2/types/uuid';
 
 export interface TxParcel {
-  readonly label?: string; // name of transaction eg. 'Allowance transaction'
-  readonly _uuid?: TUuid;
+  readonly _uuid: TUuid;
   readonly status: ITxStatus;
-  readonly account?: StoreAccount;
-  readonly txRaw?: ITxObject;
-  readonly txHash?: string;
-  readonly txReceipt?: TransactionResponse;
+  readonly txRaw: ITxObject;
+  readonly label?: string; // name of transaction eg. 'Allowance transaction'
+  readonly txHash?: ITxHash;
+  readonly txReceipt?: TransactionReceipt;
 }
 
 export interface TxMultiState {
@@ -21,9 +19,88 @@ export interface TxMultiState {
   readonly isSubmitting: boolean;
   readonly transactions: TxParcel[];
   readonly currentTx?: TxParcel;
-  readonly account?: Account;
+  readonly account?: StoreAccount;
   readonly network?: Network;
   readonly error?: Error;
 }
 
-export type TxMultiAction = TAction<ValuesType<typeof TxMultiReducer>, any>;
+export enum ActionTypes {
+  INIT_REQUEST = 'INIT_REQUEST',
+  INIT_SUCCESS = 'INIT_SUCCESS',
+  INIT_FAILURE = 'INIT_FAILURE',
+
+  PREPARE_TX_REQUEST = 'PREPARE_TX_REQUEST',
+  PREPARE_TX_SUCCESS = 'PREPARE_TX_SUCCESS',
+  PREPARE_TX_FAILURE = 'PREPARE_TX_FAILURE',
+
+  SEND_TX_SUCCESS = 'SEND_TX_SUCCESS',
+  SEND_TX_REQUEST = 'SEND_TX_REQUEST',
+  SEND_TX_FAILURE = 'SEND_TX_FAILURE',
+
+  CONFIRM_TX_SUCCESS = 'CONFIRM_TX_SUCCESS',
+  CONFIRM_TX_REQUEST = 'CONFIRM_TX_REQUEST',
+  CONFIRM_TX_FAILURE = 'CONFIRM_TX_FAILURE',
+
+  HALT_FLOW = 'HALT_FLOW',
+  RESET = 'RESET'
+}
+
+interface DefaultAction {
+  type: ActionTypes;
+  payload?: any;
+  error?: boolean;
+}
+
+interface ARequest extends DefaultAction {
+  type:
+    | ActionTypes.INIT_REQUEST
+    | ActionTypes.PREPARE_TX_REQUEST
+    | ActionTypes.SEND_TX_REQUEST
+    | ActionTypes.CONFIRM_TX_REQUEST
+    | ActionTypes.HALT_FLOW
+    | ActionTypes.RESET;
+}
+interface AFailure extends DefaultAction {
+  type:
+    | ActionTypes.INIT_FAILURE
+    | ActionTypes.PREPARE_TX_FAILURE
+    | ActionTypes.SEND_TX_FAILURE
+    | ActionTypes.CONFIRM_TX_FAILURE;
+  payload: Error | string;
+  error: boolean;
+}
+interface AInitSuccess extends DefaultAction {
+  type: ActionTypes.INIT_SUCCESS;
+  payload: {
+    txs: ITxObject[];
+    account: StoreAccount;
+    network: Network;
+  };
+}
+interface APrepareSuccess extends DefaultAction {
+  type: ActionTypes.PREPARE_TX_SUCCESS;
+  payload: {
+    txRaw: ITxObject;
+  };
+}
+
+interface ASendSuccess extends DefaultAction {
+  type: ActionTypes.SEND_TX_SUCCESS;
+  payload: {
+    txHash: ITxHash;
+  };
+}
+interface AConfirmSuccess extends DefaultAction {
+  type: ActionTypes.CONFIRM_TX_SUCCESS;
+  payload: {
+    txReceipt: TransactionReceipt;
+  };
+}
+
+export type TxMultiAction =
+  | AFailure
+  | ARequest
+  | AInitSuccess
+  | APrepareSuccess
+  | ASendSuccess
+  | AConfirmSuccess;

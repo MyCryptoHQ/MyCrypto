@@ -52,7 +52,9 @@ export {
   ITransaction,
   IHexStrTransaction,
   IHexStrWeb3Transaction,
-  ITxReceipt
+  ITxReceipt,
+  ITxHash,
+  ITxSigned
 } from './transaction';
 export {
   ISignedTx,
@@ -80,3 +82,4 @@ export { ToastConfig, ToastType, ToastConfigsProps } from './toast';
 export { InlineMessageType } from './inlineMessages';
 export { ErrorObject } from './errorObject';
 export { TAction, TStateGetter } from './action';
+export { TxParcel } from 'v2/utils/useTxMulti/types'; // Specific re-export to avoid Circular deps
