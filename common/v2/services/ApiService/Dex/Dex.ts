@@ -82,7 +82,7 @@ export default class DexService {
         to,
         fromAmount,
         toAmount,
-        dex: 'best',
+        dex: 'ag',
         proxy: DEXAG_MYC_TRADE_CONTRACT
       };
       const { data }: { data: DexTrade } = await this.service.get('trade', { params });
