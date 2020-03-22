@@ -128,26 +128,26 @@ export const MembershipFormUI = ({ daiAsset, network, relevantAccounts, onComple
             Object.values(errors).filter(error => error !== undefined && !isEmpty(error)).length ===
             0;
 
-          const { amount, asset } = values;
+          const { amount, asset, account } = values;
+          const convertedAsset = { name: asset.name, symbol: asset.ticker as TSymbol }
           const filteredAccounts = getAccountsWithAssetBalance(
             relevantAccounts,
-            { name: asset.name, symbol: asset.ticker as TSymbol },
+            convertedAsset,
             amount
           );
 
-          // TODO: Remove selected account if not enough of given asset
-          /**useEffect(() => {
+          useEffect(() => {
             if (
               amount &&
               asset &&
               account &&
-              !getAccountsWithAssetBalance(filteredAccounts, asset, amount).find(
-                a => a.uuid === values.account.uuid
+              !getAccountsWithAssetBalance(filteredAccounts, convertedAsset, amount).find(
+                a => a.uuid === account.uuid
               )
             ) {
               setFieldValue('account', undefined);
             }
-          }, [amount, asset]);**/
+          }, [amount, asset]);
 
           return (
             <Form>
