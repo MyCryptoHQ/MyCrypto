@@ -128,8 +128,8 @@ export const MembershipFormUI = ({ daiAsset, network, relevantAccounts, onComple
             Object.values(errors).filter(error => error !== undefined && !isEmpty(error)).length ===
             0;
 
-          const { amount, asset, account } = values;
-          const convertedAsset = { name: asset.name, symbol: asset.ticker as TSymbol }
+          const { amount, asset, account: selectedAccount } = values;
+          const convertedAsset = { name: asset.name, symbol: asset.ticker as TSymbol };
           const filteredAccounts = getAccountsWithAssetBalance(
             relevantAccounts,
             convertedAsset,
@@ -140,9 +140,9 @@ export const MembershipFormUI = ({ daiAsset, network, relevantAccounts, onComple
             if (
               amount &&
               asset &&
-              account &&
+              selectedAccount &&
               !getAccountsWithAssetBalance(filteredAccounts, convertedAsset, amount).find(
-                a => a.uuid === account.uuid
+                a => a.uuid === selectedAccount.uuid
               )
             ) {
               setFieldValue('account', undefined);

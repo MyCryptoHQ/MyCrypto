@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
-import { COLORS, SPACING, BREAK_POINTS, FONT_SIZE, LINE_HEIGHT } from 'v2/theme';
+import { COLORS, SPACING, FONT_SIZE } from 'v2/theme';
 import { IMembershipConfig } from '../config';
 import { Typography, Tooltip } from 'v2/components';
 
