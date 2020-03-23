@@ -6,7 +6,8 @@ export const ToastTemplates = {
   pleaseReload: 'please-reload',
   offline: 'offline',
   somethingWentWrong: 'something-went-wrong',
-  online: 'online'
+  online: 'online',
+  nodeConnectionError: 'node-connection-error'
 };
 
 export const toastConfigs: ToastConfigsProps = {
@@ -44,6 +45,12 @@ export const toastConfigs: ToastConfigsProps = {
     header: 'You’re online!',
     message: () => 'All systems good to go.',
     type: ToastType.SUCCESS,
+    position: 'top-left'
+  },
+  [ToastTemplates.nodeConnectionError]: {
+    header: 'Node is offline!',
+    message: () => 'The node you have selected is offline. Now connected to "Auto" node.',
+    type: ToastType.ERROR,
     position: 'top-left'
   }
 };

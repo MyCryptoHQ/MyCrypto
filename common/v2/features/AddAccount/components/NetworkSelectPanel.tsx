@@ -6,9 +6,10 @@ import translate from 'v2/translations';
 import { FormDataActionType as ActionType } from '../types';
 import { FormData, NetworkId } from 'v2/types';
 import { NetworkSelectDropdown } from 'v2/components';
-import { NetworkContext } from 'v2/services/Store';
-import NetworkNodeDropdown from '../../../components/NetworkNodeDropdown';
-import { ProviderHandler } from '../../../services/EthService/network';
+import { NetworkContext, NetworkUtils } from 'v2/services/Store';
+import NetworkNodeDropdown from 'v2/components/NetworkNodeDropdown';
+import { ProviderHandler } from 'v2/services/EthService/network';
+import { ToastContext } from '../../Toasts';
 
 const NetworkForm = styled.div`
   margin-top: 22px;
@@ -39,16 +40,17 @@ interface Props {
   goToNextStep(): void;
 }
 
-const NetworkSelectPanel = ({ formData, formDispatch, goToNextStep }: Props) => {
-  const { networks, getNetworkById } = useContext(NetworkContext);
+function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
+  const { networks, getNetworkById, setNetworkSelectedNode } = useContext(NetworkContext);
+  const { displayToast, toastTemplates } = useContext(ToastContext);
   const [network, setNetwork] = useState<NetworkId>(formData.network);
 
   const onSubmit = useCallback(async () => {
+    const networkNode = getNetworkById(network);
+
     try {
-      const nodeNetwork = getNetworkById(network);
-      const { selectedNode, nodes } = nodeNetwork;
-      const node = nodes.find(n => n.name === selectedNode)!;
-      const provider = new ProviderHandler({ ...nodeNetwork, nodes: [node] }, false);
+      const selectedNode = NetworkUtils.getSelectedNode(networkNode);
+      const provider = new ProviderHandler({ ...networkNode, nodes: [selectedNode] }, false);
       await provider.getCurrentBlock();
 
       formDispatch({
@@ -57,9 +59,11 @@ const NetworkSelectPanel = ({ formData, formDispatch, goToNextStep }: Props) => 
       });
       goToNextStep();
     } catch (e) {
-      console.error(e);
+      console.debug(e);
+      displayToast(toastTemplates.nodeConnectionError);
+      setNetworkSelectedNode(networkNode.id, networkNode.autoNode!);
     }
-  }, []);
+  }, [network, networks, getNetworkById]);
 
   const validNetwork = networks.some(n => n.id === network);
 

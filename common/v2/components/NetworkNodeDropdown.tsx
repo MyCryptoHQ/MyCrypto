@@ -105,13 +105,15 @@ interface Props {
 }
 
 const NetworkNodeDropdown: FC<Props> = ({ networkId, toggleFlipped }) => {
-  const { getNetworkById, setNetworkSelectedNode } = useContext(NetworkContext);
+  const { networks, getNetworkById, setNetworkSelectedNode } = useContext(NetworkContext);
   const [network, setNetwork] = useState(() => getNetworkById(networkId));
   const [selectedNode, setSelectedNode] = useState(() => NetworkUtils.getSelectedNode(network));
 
   useEffect(() => {
-    setNetwork(getNetworkById(networkId));
-  }, [networkId]);
+    const newNetwork = getNetworkById(networkId);
+    setNetwork(newNetwork);
+    setSelectedNode(NetworkUtils.getSelectedNode(newNetwork));
+  }, [networkId, networks]);
 
   const onChange = useCallback(
     (node: NodeOptions) => {
