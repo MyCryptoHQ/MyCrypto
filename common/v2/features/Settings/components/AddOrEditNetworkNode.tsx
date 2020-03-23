@@ -8,7 +8,7 @@ import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { Checkbox, DashboardPanel, InputField, NetworkSelectDropdown } from 'v2/components';
 import { CustomNodeConfig, Network, NetworkId, NodeOptions, NodeType } from 'v2/types';
 import { translateRaw } from 'v2/translations';
-import { DEFAULT_NETWORK } from 'v2/config';
+import { DEFAULT_NETWORK, GITHUB_RELEASE_NOTES_URL, LET_ENCRYPT_URL } from 'v2/config';
 import { NetworkUtils } from 'v2/services/Store/Network';
 import { ProviderHandler } from 'v2/services/EthService/network';
 
@@ -40,14 +40,17 @@ const SubtitleRow = styled(Row)`
 
 const Column = styled.div<{ alignSelf?: string }>`
   flex: 1;
-  ${({ alignSelf }) => `align-self: ${alignSelf || 'auto'};`};
 
-  &:not(:first-child) {
-    padding-left: 25px;
-  }
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    ${({ alignSelf }) => `align-self: ${alignSelf || 'auto'};`};
 
-  &:not(:last-child) {
-    padding-right: 25px;
+    &:not(:first-child) {
+      padding-left: 25px;
+    }
+
+    &:not(:last-child) {
+      padding-right: 25px;
+    }
   }
 
   label {
@@ -73,8 +76,13 @@ const AddressFieldset = styled.fieldset`
 const NetworkNodeFieldsButtons = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-top: 20px;
   button {
     text-transform: capitalize;
+  }
+
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    margin-top: 0;
   }
 `;
 
@@ -84,6 +92,9 @@ const SNetworkSelectDropdown = styled(NetworkSelectDropdown)`
 
 const SCheckbox = styled(Checkbox)`
   margin-bottom: 0;
+  ${({ checked }) => checked && `margin-bottom: 20px;`};
+  ${({ checked }) =>
+    checked && `@media (min-width: ${BREAK_POINTS.SCREEN_SM}) {margin-bottom: 0;}`};
 `;
 
 const SError = styled.div`
@@ -172,8 +183,12 @@ export default function AddOrEditNetworkNode({
       networkId: Yup.string().required(translateRaw('REQUIRED')),
       url: Yup.string().required(translateRaw('REQUIRED')),
       auth: Yup.boolean().nullable(false),
-      username: Yup.string().notRequired(),
-      password: Yup.string().notRequired()
+      username: Yup.string().test('auth-required', translateRaw('REQUIRED'), username => {
+        return values.auth ? !!username : true;
+      }),
+      password: Yup.string().test('auth-required', translateRaw('REQUIRED'), password => {
+        return values.auth ? !!password : true;
+      })
     })
   );
 
@@ -184,16 +199,32 @@ export default function AddOrEditNetworkNode({
           <BackButton basic={true} onClick={toggleFlipped}>
             <img src={backArrowIcon} alt="Back" />
           </BackButton>
-          {editMode ? 'Edit custom node' : 'Add custom node'}
+          {editMode ? translateRaw('CUSTOM_NODE_EDIT') : translateRaw('CUSTOM_NODE_ADD')}
         </>
       }
       padChildren={true}
     >
       <SubtitleRow>
         <Column>
-          Your node must be HTTPS in order to connect to it via MyCrypto.com. You can download the
-          MyCrypto repo & run it locally to connect to any node. Or, get a free SSL certificate via
-          LetsEncrypt.
+          {(t => {
+            const tSplit = t.split(/\$myCryptoRepo|\$letsEncrypt/);
+            if (tSplit.length === 3) {
+              return (
+                <>
+                  {tSplit[0]}
+                  <a href={GITHUB_RELEASE_NOTES_URL} rel="noopener noreferrer" target="_blank">
+                    {translateRaw('CUSTOM_NODE_SUBTITLE_REPO')}
+                  </a>
+                  {tSplit[1]}
+                  <a href={LET_ENCRYPT_URL} rel="noopener noreferrer" target="_blank">
+                    LetsEncrypt
+                  </a>
+                  {tSplit[2]}
+                </>
+              );
+            }
+            return t;
+          })(translateRaw('CUSTOM_NODE_SUBTITLE'))}
         </Column>
       </SubtitleRow>
       <Formik
@@ -238,14 +269,14 @@ export default function AddOrEditNetworkNode({
             <Row>
               <Column>
                 <AddressFieldset>
-                  <label htmlFor="name">Node name</label>
+                  <label htmlFor="name">{translateRaw('CUSTOM_NODE_FORM_NODE_NAME')}</label>
                   <Field
                     name="name"
                     render={({ field }: FieldProps<NetworkNodeFields>) => (
                       <InputField
                         {...field}
                         inputError={errors && errors.name}
-                        placeholder="Node Name"
+                        placeholder={translateRaw('CUSTOM_NODE_FORM_NODE_NAME')}
                       />
                     )}
                   />
@@ -269,13 +300,13 @@ export default function AddOrEditNetworkNode({
             <Row>
               <Column>
                 <AddressFieldset>
-                  <label htmlFor="url">Node address</label>
+                  <label htmlFor="url">{translateRaw('CUSTOM_NODE_FORM_NODE_ADDRESS')}</label>
                   <Field
                     name="url"
                     render={({ field }: FieldProps<NetworkNodeFields>) => (
                       <InputField
                         inputError={errors && errors.url}
-                        placeholder="Enter the address"
+                        placeholder={translateRaw('CUSTOM_NODE_FORM_NODE_ADDRESS_PLACEHOLDER')}
                         {...field}
                       />
                     )}
@@ -290,7 +321,7 @@ export default function AddOrEditNetworkNode({
                       {...field}
                       onChange={() => form.setFieldValue(field.name, !field.value)}
                       checked={field.value}
-                      label="HTTP Basic Authentication"
+                      label={translateRaw('CUSTOM_NODE_FORM_AUTH_TOGGLE')}
                     />
                   )}
                 />
@@ -299,22 +330,31 @@ export default function AddOrEditNetworkNode({
             <Row hidden={!values.auth}>
               <Column>
                 <AddressFieldset>
-                  <label htmlFor="username">Username</label>
+                  <label htmlFor="username">{translateRaw('CUSTOM_NODE_FORM_USERNAME')}</label>
                   <Field
                     name="username"
                     render={({ field }: FieldProps<NetworkNodeFields>) => (
-                      <InputField {...field} placeholder="Your username" />
+                      <InputField
+                        {...field}
+                        inputError={errors && errors.username}
+                        placeholder={translateRaw('CUSTOM_NODE_FORM_USERNAME_PLACEHOLDER')}
+                      />
                     )}
                   />
                 </AddressFieldset>
               </Column>
               <Column>
                 <AddressFieldset>
-                  <label htmlFor="password">Password</label>
+                  <label htmlFor="password">{translateRaw('CUSTOM_NODE_FORM_PASSWORD')}</label>
                   <Field
                     name="password"
                     render={({ field }: FieldProps<NetworkNodeFields>) => (
-                      <InputField {...field} type="password" placeholder="Password" />
+                      <InputField
+                        {...field}
+                        inputError={errors && errors.password}
+                        type="password"
+                        placeholder={translateRaw('CUSTOM_NODE_FORM_PASSWORD')}
+                      />
                     )}
                   />
                 </AddressFieldset>
@@ -324,11 +364,11 @@ export default function AddOrEditNetworkNode({
               <Column>
                 <NetworkNodeFieldsButtons>
                   <Button type="submit" disabled={isSubmitting}>
-                    Save & use custom node
+                    {translateRaw('CUSTOM_NODE_SAVE_NODE')}
                   </Button>
                   {editMode && (
                     <DeleteButton type="button" onClick={onDeleteNodeClick}>
-                      Remove node
+                      {translateRaw('CUSTOM_NODE_REMOVE_NODE')}
                     </DeleteButton>
                   )}
                 </NetworkNodeFieldsButtons>
@@ -336,7 +376,7 @@ export default function AddOrEditNetworkNode({
             </Row>
             <Row hidden={!isConnectionError}>
               <Column>
-                <SError>Could not connect to node! Please check if node is up and running.</SError>
+                <SError>{translateRaw('CUSTOM_NODE_ERROR_CONNECTION')}</SError>
               </Column>
             </Row>
           </Form>

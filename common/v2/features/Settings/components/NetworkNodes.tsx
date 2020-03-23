@@ -13,7 +13,10 @@ interface Props {
 
 const NetworkNodes: FC<Props> = ({ networks, toggleFlipped }) => {
   const networkNodesTable = {
-    head: ['Network', 'Node'],
+    head: [
+      translateRaw('CUSTOM_NODE_SETTINGS_TABLE_NETWORK_HEADER') || 'Network',
+      translateRaw('CUSTOM_NODE_SETTINGS_TABLE_NETWORK_NODE')
+    ],
     body: networks.map(({ id, name, color }: INetwork, index) => [
       <Network key={index} color={color || COLORS.LIGHT_PURPLE}>
         {name}
@@ -25,8 +28,8 @@ const NetworkNodes: FC<Props> = ({ networks, toggleFlipped }) => {
       />
     ]),
     config: {
-      primaryColumn: 'Network',
-      sortableColumn: 'Network',
+      primaryColumn: translateRaw('CUSTOM_NODE_SETTINGS_TABLE_NETWORK_HEADER') || 'Network',
+      sortableColumn: translateRaw('CUSTOM_NODE_SETTINGS_TABLE_NETWORK_HEADER') || 'Network',
       sortFunction: (a: any, b: any) => {
         const aLabel = a.props.label;
         const bLabel = b.props.label;

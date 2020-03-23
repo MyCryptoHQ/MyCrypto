@@ -1,19 +1,26 @@
 import React, { useState, useContext } from 'react';
+import {
+  AddressBookContext,
+  NetworkContext,
+  NetworkUtils,
+  SettingsContext,
+  StoreContext
+} from 'v2/services/Store';
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { BREAK_POINTS, MIN_CONTENT_PADDING, SPACING } from 'v2/theme';
-import { AddressBookContext, SettingsContext, StoreContext, NetworkContext } from 'v2/services/Store';
-import { AccountList, FlippablePanel, TabsNav, Desktop, Mobile } from 'v2/components';
+import { AccountList, FlippablePanel, Desktop, Mobile } from 'v2/components';
+import { BREAK_POINTS } from 'v2/theme';
 import { NetworkId } from 'v2/types';
 import { CustomNodeConfig } from 'v2/types/node';
 import { DEFAULT_NETWORK, IS_ACTIVE_FEATURE } from 'v2/config';
 import translate from 'v2/translations';
-import { AddressBookPanel, AddToAddressBook, GeneralSettings, DangerZone } from './components';
+import MobileNavBar from 'v2/MobileNavBar';
 
-import settingsIcon from 'common/assets/images/icn-settings.svg';
+import { AddressBookPanel, AddToAddressBook, GeneralSettings, DangerZone } from './components';
 import NetworkNodes from './components/NetworkNodes';
 import AddOrEditNetworkNode from './components/AddOrEditNetworkNode';
+import settingsIcon from 'common/assets/images/icn-settings.svg';
 
 const SettingsHeading = styled(Heading)<{ forwardedAs?: string }>`
   display: flex;
@@ -37,13 +44,6 @@ const StyledLayout = styled.div`
   .Layout-content {
     padding: 0;
   }
-`;
-
-const SettingsTabs = styled(TabsNav)`
-  /* Override the Layout margin */
-  margin-left: -${MIN_CONTENT_PADDING};
-  margin-right: -${MIN_CONTENT_PADDING};
-  margin-bottom: ${SPACING.BASE};
 `;
 
 function renderAccountPanel() {
@@ -101,8 +101,7 @@ function renderNetworkNodes() {
   const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
   const [editNode, setEditNode] = useState<CustomNodeConfig | undefined>(undefined);
 
-  const addressBookNetworksIds = [...new Set(addressBook.map(a => a.network))];
-  const addressBookNetworks = addressBookNetworksIds.map(addressId => getNetworkByName(addressId)!);
+  const addressBookNetworks = NetworkUtils.getDistinctNetworks(addressBook, getNetworkByName);
 
   return (
     <FlippablePanel>
@@ -154,24 +153,38 @@ export default function Settings() {
   const tabOptions: TabOptions = {
     ['accounts']: renderAccountPanel(),
     ['addresses']: renderAddressPanel(),
-    ['general']: renderGeneralSettingsPanel()
+    ['general']: renderGeneralSettingsPanel(),
+    ['nodes']: renderNetworkNodes()
   };
   const currentTab = tabOptions[tab];
 
   return (
     <StyledLayout>
       <Mobile>
-        <SettingsTabs>
-          <a href="#" onClick={() => setTab('accounts')}>
-            Accounts
-          </a>
-          <a href="#" onClick={() => setTab('addresses')}>
-            Addresses
-          </a>
-          <a href="#" onClick={() => setTab('general')}>
-            General
-          </a>
-        </SettingsTabs>
+        <MobileNavBar>
+          <div
+            className={`tab ${tab === 'accounts' ? 'active' : ''}`}
+            onClick={() => setTab('accounts')}
+          >
+            <h6>Accounts</h6>
+          </div>
+          <div
+            className={`tab ${tab === 'addresses' ? 'active' : ''}`}
+            onClick={() => setTab('addresses')}
+          >
+            <h6>Addresses</h6>
+          </div>
+          <div className="w-100" />
+          <div className={`tab ${tab === 'nodes' ? 'active' : ''}`} onClick={() => setTab('nodes')}>
+            <h6>Network & Nodes</h6>
+          </div>
+          <div
+            className={`tab ${tab === 'general' ? 'active' : ''}`}
+            onClick={() => setTab('general')}
+          >
+            <h6>General</h6>
+          </div>
+        </MobileNavBar>
         <>{currentTab}</>
       </Mobile>
       <Desktop>

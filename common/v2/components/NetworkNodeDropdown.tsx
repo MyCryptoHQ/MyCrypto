@@ -92,7 +92,7 @@ class NetworkOption extends React.PureComponent<NetworkOptionProps> {
       return (
         <SContainerOption onClick={() => onSelect && onSelect({}, null)}>
           <AddIcon src={addIcon} />
-          Custom
+          {translateRaw('CUSTOM_NODE_DROPDOWN_NEW_NODE')}
         </SContainerOption>
       );
     }

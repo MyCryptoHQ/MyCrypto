@@ -1,4 +1,4 @@
-import { NodeOptions, NodeType, Network } from 'v2/types';
+import { NodeOptions, NodeType, Network, ExtendedAddressBook } from 'v2/types';
 
 export abstract class NetworkUtils {
   public static createWeb3Node = (): NodeOptions => ({
@@ -34,4 +34,12 @@ export abstract class NetworkUtils {
 
   public static makeNodeName = (network: string, name: string) =>
     `${network.toLowerCase()}_${name.replace(/ /g, '_')}`;
+
+  public static getDistinctNetworks(
+    addressBook: ExtendedAddressBook[],
+    getNetworkByName: (name: string) => Network | undefined
+  ) {
+    const addressBookNetworksIds = [...new Set(addressBook.map(a => a.network))];
+    return addressBookNetworksIds.map(addressId => getNetworkByName(addressId)!);
+  }
 }
