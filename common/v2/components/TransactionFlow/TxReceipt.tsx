@@ -17,7 +17,8 @@ import {
   AddressBookContext,
   AccountContext,
   AssetContext,
-  NetworkContext
+  NetworkContext,
+  StoreContext
 } from 'v2/services/Store';
 import { RatesContext } from 'v2/services/RatesProvider';
 import {
@@ -34,6 +35,8 @@ import ProtocolTagsList from 'v2/features/DeFiZap/components/ProtocolTagsList';
 import { WithProtectApiFactory } from 'v2/features/ProtectTransaction';
 import { AbortTransaction } from 'v2/features/ProtectTransaction/components';
 
+import { ISender } from './types';
+import { constructSenderFromTxConfig } from './helpers';
 import { FromToAccount, SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
 import sentIcon from 'common/assets/images/icn-sent.svg';
@@ -74,14 +77,16 @@ export default function TxReceipt({
   completeButtonText,
   pendingButton,
   txType = ITxType.STANDARD,
+  membershipSelected,
   zapSelected,
   swapDisplay,
   withProtectApi,
   protectTxButton
 }: IStepComponentProps & Props) {
   const { getAssetRate } = useContext(RatesContext);
-  const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
+  const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
   const { addNewTransactionToAccount } = useContext(AccountContext);
+  const { accounts } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
   const [txStatus, setTxStatus] = useState(ITxStatus.PENDING);
@@ -189,11 +194,17 @@ export default function TxReceipt({
   }, [displayTxReceipt, txConfig.asset]);
 
   const { senderAccount } = txConfig;
-  const senderContact = getContactByAccount(senderAccount);
-  const recipientContact = getContactByAddressAndNetwork(
-    txConfig.receiverAddress,
-    txConfig.network
+
+  const senderContact = getContactByAddressAndNetworkId(
+    txConfig.senderAccount.address,
+    txConfig.network.id
   );
+  const recipientContact = getContactByAddressAndNetworkId(
+    txConfig.receiverAddress,
+    txConfig.network.id
+  );
+
+  const sender = constructSenderFromTxConfig(txConfig, accounts);
 
   return (
     <TxReceiptUI
@@ -202,10 +213,12 @@ export default function TxReceipt({
       txType={txType}
       assetRate={assetRate}
       zapSelected={zapSelected}
+      membershipSelected={membershipSelected}
       swapDisplay={swapDisplay}
       txStatus={txStatus}
       timestamp={timestamp}
       senderContact={senderContact}
+      sender={sender}
       recipientContact={recipientContact}
       displayTxReceipt={displayTxReceipt}
       resetFlow={resetFlow}
@@ -225,6 +238,7 @@ export interface TxReceiptDataProps {
   timestamp: number;
   displayTxReceipt?: ITxReceipt;
   senderContact: ExtendedAddressBook | undefined;
+  sender: ISender;
   recipientContact: ExtendedAddressBook | undefined;
   pendingButton?: PendingBtnAction;
   swapDisplay?: SwapDisplayData;
@@ -246,7 +260,9 @@ export const TxReceiptUI = ({
   assetRate,
   displayTxReceipt,
   zapSelected,
+  membershipSelected,
   senderContact,
+  sender,
   recipientContact,
   pendingButton,
   resetFlow,
@@ -258,8 +274,7 @@ export const TxReceiptUI = ({
   protectTxButton
 }: Omit<IStepComponentProps, 'resetFlow' | 'onComplete'> & TxReceiptDataProps) => {
   /* Determing User's Contact */
-  const { asset, gasPrice, gasLimit, senderAccount, network, data, nonce, baseAsset } = txConfig;
-
+  const { asset, gasPrice, gasLimit, data, nonce, baseAsset, receiverAddress } = txConfig;
   const recipientLabel = recipientContact ? recipientContact.label : translateRaw('NO_ADDRESS');
   const senderAccountLabel = senderContact ? senderContact.label : translateRaw('NO_LABEL');
 
@@ -281,7 +296,10 @@ export const TxReceiptUI = ({
   }, [displayTxReceipt, txConfig.asset]);
 
   const shouldRenderPendingBtn =
-    pendingButton && txStatus === ITxStatus.PENDING && !isWeb3Wallet(senderAccount.wallet);
+    pendingButton &&
+    txStatus === ITxStatus.PENDING &&
+    sender.account &&
+    !isWeb3Wallet(sender.account.wallet);
 
   return (
     <div className="TransactionReceipt">
@@ -320,18 +338,23 @@ export const TxReceiptUI = ({
       <>
         <FromToAccount
           from={{
-            address: ((displayTxReceipt && displayTxReceipt.from) ||
-              txConfig.senderAccount.address) as TAddress,
+            address: ((displayTxReceipt && displayTxReceipt.from) || sender.address) as TAddress,
             label: senderAccountLabel
           }}
           to={{
-            address: ((displayTxReceipt && displayTxReceipt.to) ||
-              txConfig.receiverAddress) as TAddress,
+            address: ((displayTxReceipt && displayTxReceipt.to) || receiverAddress) as TAddress,
             label: recipientLabel
           }}
         />
       </>
-
+      {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
+        <div className="TransactionReceipt-row">
+          <TxIntermediaryDisplay
+            address={membershipSelected.contractAddress}
+            contractName={asset.ticker}
+          />
+        </div>
+      )}
       {txType === ITxType.DEFIZAP && zapSelected && (
         <>
           <div className="TransactionReceipt-row">
@@ -423,8 +446,7 @@ export const TxReceiptUI = ({
           baseAsset={baseAsset}
           asset={asset}
           data={data}
-          network={network}
-          senderAccount={senderAccount}
+          sender={sender}
           gasLimit={gasLimit}
           gasPrice={gasPrice}
           nonce={nonce}

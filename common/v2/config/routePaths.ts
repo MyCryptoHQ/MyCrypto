@@ -125,6 +125,11 @@ const PATHS: IRoutePath[] = [
     name: 'DEPLOY_CONTRACTS',
     title: 'Deploy Contracts',
     path: '/deploy-contracts'
+  },
+  {
+    name: 'MYC_MEMBERSHIP',
+    title: 'MyCrypto Membership',
+    path: '/membership'
   }
 ];
 

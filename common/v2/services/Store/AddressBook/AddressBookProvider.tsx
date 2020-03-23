@@ -4,10 +4,10 @@ import {
   AddressBook,
   ExtendedAddressBook,
   IAccount,
-  Network,
   StoreAccount,
   LSKeys,
-  TUuid
+  TUuid,
+  NetworkId
 } from 'v2/types';
 import { generateUUID } from 'v2/utils';
 import { DataContext } from '../DataManager';
@@ -18,8 +18,10 @@ interface IAddressBookContext {
   updateAddressBooks(uuid: TUuid, addressBooksData: ExtendedAddressBook): void;
   deleteAddressBooks(uuid: TUuid): void;
   getContactByAddress(address: string): ExtendedAddressBook | undefined;
-  getContactByAddressAndNetwork(address: string, network: Network): ExtendedAddressBook | undefined;
-  getContactByAccount(account: IAccount): ExtendedAddressBook | undefined;
+  getContactByAddressAndNetworkId(
+    address: string,
+    networkId: NetworkId
+  ): ExtendedAddressBook | undefined;
   getAccountLabel(account: StoreAccount | IAccount): string | undefined;
 }
 
@@ -41,23 +43,15 @@ export const AddressBookProvider: React.FC = ({ children }) => {
         (contact: ExtendedAddressBook) => contact.address.toLowerCase() === address.toLowerCase()
       );
     },
-    getContactByAddressAndNetwork: (address, network) => {
+    getContactByAddressAndNetworkId: (address, networkId) => {
       return addressBook
-        .filter((contact: ExtendedAddressBook) => contact.network === network.name)
+        .filter((contact: ExtendedAddressBook) => contact.network === networkId)
         .find(
           (contact: ExtendedAddressBook) => contact.address.toLowerCase() === address.toLowerCase()
         );
     },
-    getContactByAccount: account => {
-      return addressBook
-        .filter((contact: ExtendedAddressBook) => contact.network === account.networkId)
-        .find(
-          (contact: ExtendedAddressBook) =>
-            contact.address.toLowerCase() === account.address.toLowerCase()
-        );
-    },
-    getAccountLabel: account => {
-      const addressContact = state.getContactByAccount(account as IAccount);
+    getAccountLabel: ({ address, networkId }) => {
+      const addressContact = state.getContactByAddressAndNetworkId(address, networkId);
       return addressContact ? addressContact.label : undefined;
     }
   };

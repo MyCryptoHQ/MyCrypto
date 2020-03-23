@@ -17,4 +17,7 @@ export const getAccountBalance = (account: StoreAccount, token?: Asset): BigNumb
 export const getStoreAccount = (accounts: StoreAccount[]) => (
   address: TAddress,
   networkId: NetworkId
-) => accounts.find(a => a.address === address && a.networkId === networkId);
+) =>
+  accounts.find(
+    a => a.address.toLowerCase() === address.toLowerCase() && a.networkId === networkId
+  );

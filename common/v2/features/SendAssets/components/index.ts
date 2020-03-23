@@ -1,5 +1,5 @@
 import { withProtectTransaction } from 'v2/features/ProtectTransaction/components';
-import { ConfirmTransaction } from 'v2/components/TransactionFlow';
+import { ConfirmTransaction } from 'v2/components';
 import SignTransaction from './SignTransaction';
 import SendAssetsForm from './SendAssetsForm';
 export * from './validators';

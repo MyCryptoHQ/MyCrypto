@@ -97,16 +97,22 @@ export default class WalletList extends PureComponent<Props> {
           </>
         )}
         <WalletsContainer>
-          {validWallets.map((wallet: IStory) => {
+          {validWallets.map((wallet: IStory, index: number) => {
             const walletInfo =
               wallet.name === WalletId.WEB3 ? getWeb3Config() : WALLETS_CONFIG[wallet.name];
-
+            let margin = '10px';
+            if (index < 4) {
+              margin = '2%';
+            } else if (index === validWallets.length - 1) {
+              margin = '15%';
+            }
             return (
               <WalletButton
                 key={`wallet-icon-${wallet.name}`}
                 name={translateRaw(walletInfo.lid)}
                 icon={walletInfo.icon}
                 description={translateRaw(walletInfo.description)}
+                margin={margin}
                 onClick={() => onSelect(wallet.name)}
               />
             );

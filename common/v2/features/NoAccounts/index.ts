@@ -1,1 +1,1 @@
-export { default as NoAccounts } from './NoAccounts';
+export { NoAccounts } from './NoAccounts';

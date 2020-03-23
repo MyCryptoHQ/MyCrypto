@@ -194,7 +194,7 @@ const PoweredBy = styled.div`
   position: absolute;
   bottom: 20px;
   left: 20px;
-  font-size: 14px;
+  font-size: 10px;
   color: #b5bfc8;
 
   > img {

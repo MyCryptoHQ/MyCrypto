@@ -14,6 +14,10 @@ import Web3DefaultIcon from 'assets/images/wallets/web3-default.svg';
 import FrameIcon from 'assets/images/wallets/frame.svg';
 import CoinbaseWalletIcon from 'common/assets/images/wallets/coinbase.svg';
 import WalletConnectSVG from 'assets/images/wallets/walletconnect.svg';
+import keystoreIcon from 'assets/images/icn-keystore.svg';
+import mnemonicIcon from 'assets/images/icn-create-pw.svg';
+import privateKeyIcon from 'assets/images/icn-lock-safety.svg';
+import viewOnlyIcon from 'assets/images/icn-view-only.svg';
 
 export interface IWalletConfig {
   id: WalletId;
@@ -166,6 +170,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isDesktopOnly: true,
     type: WalletType.FILE,
     lid: 'X_KEYSTORE2',
+    icon: keystoreIcon,
     description: 'UTC--2017-12-15T17-35-22.547Z--6be6e49e82425a5aa56396db03512f2cc10e95e8',
     helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
   },
@@ -177,6 +182,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isDesktopOnly: true,
     type: WalletType.FILE,
     lid: 'X_MNEMONIC',
+    icon: mnemonicIcon,
     description: 'brain surround have swap horror cheese file distinct',
     helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
   },
@@ -188,6 +194,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isDesktopOnly: true,
     type: WalletType.FILE,
     lid: 'X_PRIVKEY2',
+    icon: privateKeyIcon,
     description: 'f1d0e0789c6d40f399ca90cc674b7858de4c719e0d5752a60d5d2f6baa45d4c9',
     helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
   },
@@ -199,6 +206,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isDesktopOnly: false,
     type: WalletType.MISC,
     lid: 'VIEW_ADDR',
+    icon: viewOnlyIcon,
     description: 'ADD_VIEW_ADDRESS_DESC',
     helpLink: ``
   },

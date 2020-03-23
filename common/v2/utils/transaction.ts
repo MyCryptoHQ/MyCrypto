@@ -91,11 +91,6 @@ export const makeTxConfigFromSignedTx = (
     network: networkDetected || ({} as Network),
     assets
   });
-  const defaultSenderAccount = {
-    address: decodedTx.from,
-    assets: [],
-    networkId: networkDetected && networkDetected.id
-  };
 
   const txConfig = {
     rawTransaction: oldTxConfig.rawTransaction,
@@ -113,9 +108,8 @@ export const makeTxConfigFromSignedTx = (
     senderAccount:
       decodedTx.from && networkDetected
         ? getStoreAccount(accounts)(decodedTx.from as TAddress, networkDetected.id) ||
-          oldTxConfig.senderAccount ||
-          defaultSenderAccount
-        : oldTxConfig.senderAccount || defaultSenderAccount,
+          oldTxConfig.senderAccount
+        : oldTxConfig.senderAccount,
     gasPrice: gasPriceToBase(parseInt(decodedTx.gasPrice, 10)).toString(),
     gasLimit: decodedTx.gasLimit,
     data: decodedTx.data,

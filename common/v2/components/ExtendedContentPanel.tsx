@@ -15,7 +15,8 @@ const ContentPanelWrapper = styled.div`
   text-align: ${(props: ContentPanelWrapperProps) => (props.centered ? 'center' : 'left')};
   width: ${(props: ContentPanelWrapperProps) => (props.width ? props.width : 'auto')};
   @media (min-width: 700px) {
-    max-width: ${(props: ContentPanelWrapperProps) => (props.width ? props.width : '560px')};
+    max-width: 100%;
+    width: ${(props: ContentPanelWrapperProps) => (props.width ? props.width : '560px')};
   }
   @media (max-width: 700px) {
     max-width: 100%;
@@ -94,7 +95,6 @@ const ContentPanelTop = styled.div<ContentPanelTopProps>`
 
 const StyledPanel = styled(Panel)`
   padding: 42px 70px;
-
   @media (max-width: 700px) {
     padding-left: 15px;
     padding-right: 15px;

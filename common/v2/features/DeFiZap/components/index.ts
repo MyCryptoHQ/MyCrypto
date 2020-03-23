@@ -1,6 +1,6 @@
 export { default as ZapEducation } from './ZapSelection';
 export { default as ZapForm } from './ZapForm';
-export { default as ConfirmZapInteraction } from './ConfirmZapInteraction';
+export { default as ZapConfirm } from './ZapConfirm';
 export { default as ZapReceipt } from './ZapReceipt';
 export { default as DashboardZapCTA } from './DashboardZapCTA';
 export { default as zapCard } from './ZapCard';
@@ -10,3 +10,4 @@ export * from './ZapOption';
 export { default as ZapSelectedBanner } from './ZapSelectedBanner';
 export { default as DeFiZapLogo } from './DeFiZapLogo';
 export { BullishIndicator, BearishIndicator, NeutralIndicator } from './ZapIndicators';
+export { default as RiskAndRewardCard } from './RiskAndRewardCard';

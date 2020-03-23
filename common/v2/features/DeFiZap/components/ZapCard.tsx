@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { Button } from '@mycrypto/ui';
+import { formatEther } from 'ethers/utils';
 
-import { RouterLink, Tooltip } from 'v2/components';
+import { RouterLink, Tooltip, Button } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
 import { COLORS, BREAK_POINTS, FONT_SIZE, SPACING } from 'v2/theme';
-import { weiToFloat } from 'v2/utils';
-import { StoreContext, getTotalByAsset } from 'v2/services';
+import { weiToFloat, trimBN } from 'v2/utils';
+import { StoreContext, getTotalByAsset, RatesContext } from 'v2/services';
 import { translateRaw } from 'v2/translations';
 
 import { fetchZapRiskObject, IZapConfig } from '../config';
@@ -53,7 +53,7 @@ const ZapCardContent = styled('div')`
   flex-direction: column;
 `;
 
-const ZapCardContentText = styled.p`
+const ZapCardContentText = styled.div`
   padding: ${SPACING.SM} 0px;
 `;
 
@@ -131,20 +131,9 @@ const ZapCardButton = styled(Button)`
   display: flex;
   flex: 1;
   min-height: 60px;
-  background-color: ${COLORS.WHITE};
-  color: ${COLORS.BLUE_LIGHT_DARKISH};
-  border: 2px solid ${COLORS.BLUE_LIGHT_DARKISH};
-  border-radius: 3px;
   font-size: ${FONT_SIZE.MD};
   font-weight: normal;
   padding: 0px 15px;
-  &:hover {
-    background-color: ${COLORS.BLUE_LIGHT_DARKISH};
-    color: ${COLORS.WHITE};
-  }
-  &:focus {
-    background-color: ${COLORS.WHITE};
-  }
 `;
 
 const ZapEstimatedBalance = styled.p`
@@ -157,15 +146,19 @@ interface Props {
 }
 
 const ZapCard = ({ config }: Props) => {
-  const { accounts, assets } = useContext(StoreContext);
+  const { getPoolAssetReserveRate } = useContext(RatesContext);
+  const { accounts, assets, getDeFiAssetReserveAssets } = useContext(StoreContext);
   const IndicatorItem = config.positionDetails;
-  const userZapBalances = getTotalByAsset(
-    assets(accounts).filter(({ uuid }) => uuid === config.poolTokenUUID)
-  )[config.poolTokenUUID];
+  const defiPoolBalances = assets(accounts).filter(({ uuid }) => uuid === config.poolTokenUUID);
+  const userZapBalances = getTotalByAsset(defiPoolBalances)[config.poolTokenUUID];
 
   const humanReadableZapBalance = userZapBalances
     ? weiToFloat(userZapBalances.balance, userZapBalances.decimal)
     : undefined;
+
+  const defiReserveBalances = !userZapBalances
+    ? []
+    : getDeFiAssetReserveAssets(userZapBalances)(getPoolAssetReserveRate);
 
   const isZapOwned = !!humanReadableZapBalance;
 
@@ -210,7 +203,16 @@ const ZapCard = ({ config }: Props) => {
                   />
                   {`: `}
                 </ZapEstimatedBalance>
-                {`${humanReadableZapBalance.toFixed(4)} ${userZapBalances.ticker}`}
+
+                {defiReserveBalances &&
+                  defiReserveBalances.map(defiReserveAsset => (
+                    <div key={defiReserveAsset.uuid}>
+                      {`~ ${parseFloat(
+                        trimBN(formatEther(defiReserveAsset.balance.toString()))
+                      ).toFixed(4)} ${defiReserveAsset.ticker}`}
+                    </div>
+                  ))}
+                {`(${humanReadableZapBalance.toFixed(4)} ${userZapBalances.ticker})`}
               </ZapCardContentText>
             </>
           )}
@@ -219,15 +221,15 @@ const ZapCard = ({ config }: Props) => {
       <ZapCardContentBottom>
         {!humanReadableZapBalance ? (
           <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
-            <ZapCardButton>{config.ctaText}</ZapCardButton>
+            <ZapCardButton inverted={true}>{config.ctaText}</ZapCardButton>
           </RouterLink>
         ) : (
           <>
             <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
-              <ZapCardButton>{translateRaw('ADD')}</ZapCardButton>
+              <ZapCardButton inverted={true}>{translateRaw('ADD')}</ZapCardButton>
             </RouterLink>
             <a target="_blank" href={config.link} rel="noreferrer">
-              <ZapCardButton>{translateRaw('WITHDRAW')}</ZapCardButton>
+              <ZapCardButton inverted={true}>{translateRaw('WITHDRAW')}</ZapCardButton>
             </a>
           </>
         )}
