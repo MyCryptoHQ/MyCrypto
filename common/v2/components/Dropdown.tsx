@@ -57,12 +57,6 @@ const DropdownContainer = styled('div')`
     padding: 16px 15px 16px 15px;
     position: inherit;
   }
-
-  .is-open > .Select-control > .Select-multi-value-wrapper > .Select-input:only-child {
-    transform: translateY(0%);
-    padding: 16px 15px 16px 15px;
-    position: inherit;
-  }
 `;
 
 const Chevron = styled(Icon)`
