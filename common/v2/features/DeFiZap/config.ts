@@ -8,8 +8,9 @@ import AvailableZaps from './components/AvailableZaps';
 import moderateRisk from 'assets/images/defizap/moderateRisk.svg';
 import conservativeRisk from 'assets/images/defizap/conservativeRisk.svg';
 import aggressiveRisk from 'assets/images/defizap/aggressiveRisk.svg';
-import unipoolBreakdown from 'assets/images/defizap/breakdowns/unipoolBreakdown.svg';
-import compoundBreakdown from 'assets/images/defizap/breakdowns/compoundBreakdown.svg';
+import unipoolSethBreakdown from 'assets/images/defizap/breakdowns/unisethBreakdown.svg';
+import unipoolDaiBreakdown from 'assets/images/defizap/breakdowns/unidaiBreakdown.svg';
+import compoundDaiBreakdown from 'assets/images/defizap/breakdowns/cdaiBreakdown.svg';
 import smartContractIcn from 'assets/images/defizap/icn-smart-contract.svg';
 import inverstingIcn from 'assets/images/defizap/icn-investing.svg';
 import collateralizationIcn from 'assets/images/defizap/icn-collateralization.svg';
@@ -93,7 +94,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     illustration: unisethIllustration,
     zapType: IZapType.UNIPOOL,
     poolTokenUUID: 'ca27272a-891e-577d-ae75-f8efe4d55231',
-    breakdownImage: unipoolBreakdown,
+    breakdownImage: unipoolSethBreakdown,
     breakdownTooltip: translateRaw('ZAP_UNISWAP_TOOLTIP'),
     positionDetails: () =>
       BullishIndicator({ text: translateRaw('ZAP_POSITION_BULLISH', { $asset: 'ETH' }) })
@@ -117,7 +118,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     illustration: unidaiIllustration,
     zapType: IZapType.UNIPOOL,
     poolTokenUUID: '2b7a4d65-9c40-5c21-96eb-f7d380a4dc87',
-    breakdownImage: unipoolBreakdown,
+    breakdownImage: unipoolDaiBreakdown,
     breakdownTooltip: translateRaw('ZAP_UNISWAP_TOOLTIP'),
     positionDetails: () =>
       NeutralIndicator({ text: translateRaw('ZAP_POSITION_NEUTRAL', { $asset: 'ETH' }) })
@@ -140,7 +141,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     illustration: cdaiIllustration,
     zapType: IZapType.COMPOUND,
     poolTokenUUID: 'a9cc6884-14bd-53b6-abcd-f9b56b60463d',
-    breakdownImage: compoundBreakdown,
+    breakdownImage: compoundDaiBreakdown,
     breakdownTooltip: translateRaw('ZAP_COMPOUND_TOOLTIP'),
     positionDetails: () =>
       BearishIndicator({ text: translateRaw('ZAP_POSITION_BEARISH', { $asset: 'ETH' }) })
@@ -150,29 +151,29 @@ export const ZAPS_CONFIG: IZapConfigObject = {
 export const riskAndReward: RiskAndReward[] = [
   {
     text:
-      '**Smart Contract:** There is a chance that  smart contracts get hacked and you lose all your money',
+      '**Smart Contract:** There is a chance that smart contracts get hacked and you lose all your money.',
     icon: smartContractIcn
   },
   {
-    text: '**Investing:** Put your ETH to work for you, potential to watch your money grow',
+    text: '**Investing:** Put your ETH to work for you with potential to watch your money grow.',
     icon: inverstingIcn
   },
   {
     text:
-      '**Collateralization:** If the crypto price swings you don’t get liquidated nor does the entire system collapse',
+      '**Collateralization:** If the crypto price swings, you don’t get liquidated nor does the entire system collapse.',
     icon: collateralizationIcn
   },
   {
     text:
-      '**Innovation:** Take advantage of innovative decentralized tools avaiable to ETH holders',
+      '**Innovation:** Take advantage of innovative decentralized tools avaiable to ETH holders.',
     icon: innovationIcn
   },
   {
-    text: '**Liquidity:** Markets are more inefficient when they are more shallow',
+    text: '**Liquidity:** Markets are less efficient when they are more shallow.',
     icon: liquidityIcn
   },
   {
-    text: '**Diversification:** Expand your investment portfolio leveraging your ETH',
+    text: '**Diversification:** Expand your investment portfolio leveraging your ETH.',
     icon: diversificationIcn
   }
 ];
