@@ -8,7 +8,7 @@ import { ITxSigned, ITxHash, TxParcel } from 'v2/types';
 import { bigify, useStateReducer, useTxMulti } from 'v2/utils';
 import { useEffectOnce, usePromise } from 'v2/vendor';
 
-import { SwapAssets, SwapTransactionReceipt, ConfirmSwapMultiTx } from './components';
+import { SwapAssets, SwapTransactionReceipt, ConfirmSwapMultiTx, ConfirmSwap } from './components';
 import { getTradeOrder } from './helpers';
 import { SwapFormFactory, swapFormInitialState } from './stateFormFactory';
 import { SwapFormState, IAssetPair } from './types';
@@ -121,7 +121,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
       {
         title: translateRaw('SWAP_CONFIRM_TITLE'),
         backBtnText: translateRaw('SWAP'),
-        component: ConfirmSwapMultiTx,
+        component: transactions.length > 1 ? ConfirmSwapMultiTx : ConfirmSwap,
         props: {
           assetPair,
           account,
