@@ -41,7 +41,7 @@ export interface IHexStrWeb3Transaction {
 
 export type ITxHash = Brand<string, 'TxHash'>;
 
-export type ITxSigned = Brand<string, 'TxSigned'>;
+export type ITxSigned = Brand<Uint8Array, 'TxSigned'>;
 
 export interface ITxReceipt {
   [index: string]: any;

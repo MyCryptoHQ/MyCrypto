@@ -1,5 +1,5 @@
 export * from './error';
-export * from './typeGuards';
+export { notUndefined, isTxSigned, isTxHash } from './typeGuards';
 export * from './validators';
 export { IS_ELECTRON, IS_MOBILE, IS_DOWNLOADABLE } from './platform';
 export { hasWeb3Provider, IS_DEV, IS_PROD } from './environment';

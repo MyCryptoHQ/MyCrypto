@@ -2,7 +2,7 @@ import { Dispatch } from 'react';
 import { TransactionResponse } from 'ethers/providers';
 
 import { ITxSigned, ITxObject, TStateGetter, StoreAccount, Network, ITxHash } from 'v2/types';
-import { isWeb3Wallet } from 'v2/utils';
+import { isWeb3Wallet, isTxSigned, isTxHash } from 'v2/utils';
 import { ProviderHandler } from 'v2/services';
 import { appendGasLimit, appendNonce } from 'v2/services/EthService';
 
@@ -59,17 +59,10 @@ export const prepareTx = (
   }
 };
 
-const isTxSigned = (walletResponse: any): walletResponse is ITxSigned =>
-  typeof walletResponse === 'string';
-
-// aka: 0x9be781b4def0b764252ff6257a60129eea006b1dc9f657d715599ecff82e955f
-const isTxHash = (walletResponse: any): walletResponse is ITxHash =>
-  typeof walletResponse === 'string';
-
 export const sendTx = (
   dispatch: Dispatch<TxMultiAction>,
   getState: TStateGetter<TxMultiState>
-) => async (walletResponse: TransactionResponse | ITxHash | ITxSigned) => {
+) => async (walletResponse: ITxHash | ITxSigned) => {
   const { account } = getState();
   dispatch({ type: ActionTypes.SEND_TX_REQUEST });
 
@@ -81,7 +74,6 @@ export const sendTx = (
     waitForConfirmation(dispatch, getState)(walletResponse);
   } else if (isTxSigned(walletResponse)) {
     const provider = new ProviderHandler(account!.network);
-    console.warn('SENDTX', walletResponse);
     provider
       .sendRawTx(walletResponse)
       .then((txResponse: TransactionResponse) => {
@@ -92,7 +84,7 @@ export const sendTx = (
         return txResponse.hash;
       })
       .then((txHash: ITxHash) => waitForConfirmation(dispatch, getState)(txHash))
-      .catch(err => {
+      .catch((err: Error) => {
         dispatch({ type: ActionTypes.SEND_TX_FAILURE, error: true, payload: err });
       });
   } else {

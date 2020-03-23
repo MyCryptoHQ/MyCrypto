@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { TransactionResponse } from 'ethers/providers';
 
 import { translateRaw } from 'v2/translations';
 import { ExtendedContentPanel, WALLET_STEPS } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
-import { ITxSigned, TxParcel } from 'v2/types';
+import { ITxSigned, ITxHash, TxParcel } from 'v2/types';
 import { bigify, useStateReducer, useTxMulti } from 'v2/utils';
 import { useEffectOnce, usePromise } from 'v2/vendor';
 
@@ -146,7 +145,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
           rawTransaction: tx.txRaw
         },
         actions: {
-          onSuccess: (payload: TransactionResponse | ITxSigned) => sendTx(payload)
+          onSuccess: (payload: ITxHash | ITxSigned) => sendTx(payload)
         }
       }
     ]),
