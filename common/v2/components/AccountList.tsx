@@ -425,12 +425,12 @@ const buildAccountTable = (
         <RowDeleteOverlay
           prompt={`Are you sure you want to delete
               ${
-                getLabelByAccount(accounts[overlayRows[0]], addressBook) !== undefined
-                  ? getLabelByAccount(accounts[overlayRows[0]], addressBook)!.label
+                getLabelByAccount(getFullTableData[overlayRows[0]].account, addressBook)
+                  ? getLabelByAccount(getFullTableData[overlayRows[0]].account, addressBook)!.label
                   : ''
-              } account with address: ${accounts[overlayRows[0]].address} ?`}
+              } account with address: ${getFullTableData[overlayRows[0]].account.address} ?`}
           deleteAction={() => {
-            deleteAccount(accounts[overlayRows[0]]);
+            deleteAccount(getFullTableData[overlayRows[0]].account);
             setDeletingIndex(undefined);
           }}
           cancelAction={() => setDeletingIndex(undefined)}
@@ -501,7 +501,15 @@ const buildAccountTable = (
       if (deletable) {
         bodyContent = [
           ...bodyContent,
-          <DeleteButton key={index} onClick={() => setDeletingIndex(index)} icon="exit" />
+          <DeleteButton
+            key={index}
+            onClick={() =>
+              setDeletingIndex(
+                getFullTableData.findIndex(row => row.account.uuid === accounts[index].uuid)
+              )
+            }
+            icon="exit"
+          />
         ];
       }
 

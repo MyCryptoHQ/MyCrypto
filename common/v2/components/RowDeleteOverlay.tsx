@@ -39,6 +39,7 @@ const OverlayText = styled('span')`
 `;
 
 const OverlayButtons = styled.div`
+  display: flex;
   padding: 8px 0px;
   & > * {
     margin-left: 2ch;
