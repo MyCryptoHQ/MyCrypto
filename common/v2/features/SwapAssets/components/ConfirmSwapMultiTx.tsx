@@ -32,7 +32,7 @@ export default function ConfirmSwapMultiTx({
     title: translateRaw('APPROVE_SWAP'),
     icon: step1SVG,
     content: translateRaw('SWAP_STEP1_TEXT', { $token: fromAsset.symbol }),
-    buttonText: `${status[0]} ${translateRaw('APPROVE_SWAP')}`,
+    buttonText: `${translateRaw('APPROVE_SWAP')}`,
     loading: status[0] === ITxStatus.BROADCASTED,
     onClick
   };
@@ -41,7 +41,7 @@ export default function ConfirmSwapMultiTx({
     title: translateRaw('COMPLETE_SWAP'),
     icon: step2SVG,
     content: translateRaw('SWAP_STEP2_TEXT'),
-    buttonText: `${status[1]} ${translateRaw('CONFIRM_TRANSACTION')}`,
+    buttonText: `${translateRaw('CONFIRM_TRANSACTION')}`,
     loading: status[1] === ITxStatus.BROADCASTED,
     onClick
   };
