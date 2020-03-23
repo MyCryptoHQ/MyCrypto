@@ -1,6 +1,11 @@
 import isNumber from 'lodash/isNumber';
 import { fromWei, totalTxFeeToWei, Wei } from 'v2/services/EthService/utils';
 import { IFormikFields } from 'v2/types';
+import {
+  PROTECTED_TX_FEE_PERCENTAGE,
+  PROTECTED_TX_FIXED_FEE_AMOUNT,
+  PROTECTED_TX_MIN_AMOUNT
+} from 'v2/config';
 import { ProtectTxError } from './types';
 
 export abstract class ProtectTransactionUtils {
@@ -20,11 +25,11 @@ export abstract class ProtectTransactionUtils {
       ? sendAssetsValues.gasPriceField
       : sendAssetsValues.gasPriceSlider;
 
-    const fixedHalfDollar = 0.5 / rate;
+    const fixedHalfDollar = PROTECTED_TX_FIXED_FEE_AMOUNT / rate;
 
     let fixedFee = 0;
     try {
-      fixedFee = parseFloat((parseFloat(amount) * 0.001).toString());
+      fixedFee = parseFloat((parseFloat(amount) * PROTECTED_TX_FEE_PERCENTAGE).toString());
     } catch (e) {
       console.error(e);
     }
@@ -56,7 +61,7 @@ export abstract class ProtectTransactionUtils {
       return ProtectTxError.ETH_ONLY;
     }
 
-    if (!rate || rate <= 0 || parseFloat(amount) < 5 / rate) {
+    if (!rate || rate <= 0 || parseFloat(amount) < PROTECTED_TX_MIN_AMOUNT / rate) {
       return ProtectTxError.LESS_THAN_MIN_AMOUNT;
     }
 
