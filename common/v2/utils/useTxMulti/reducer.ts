@@ -101,11 +101,11 @@ export function TxMultiReducer(state: TxMultiState, action: TxMultiAction): TxMu
       };
     }
     case ActionTypes.CONFIRM_TX_SUCCESS: {
-      const { txReceipt } = payload;
+      const { txReceipt, minedAt } = payload;
       const next = (curr: number) => Math.min(curr + 1, state.transactions.length - 1);
       const transactions = R.adjust(
         state._currentTxIdx,
-        R.mergeLeft({ txReceipt, status: ITxStatus.CONFIRMED }),
+        R.mergeLeft({ txReceipt, minedAt, status: ITxStatus.CONFIRMED }),
         state.transactions
       );
 

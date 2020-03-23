@@ -101,7 +101,10 @@ const waitForConfirmation = (
   const provider = new ProviderHandler(account!.network);
   try {
     const txReceipt = await provider.waitForTransaction(txHash);
-    dispatch({ type: ActionTypes.CONFIRM_TX_SUCCESS, payload: { txReceipt } });
+    const minedAt = await provider
+      .getBlockByNumber(txReceipt.blockNumber!)
+      .then(block => block.timestamp);
+    dispatch({ type: ActionTypes.CONFIRM_TX_SUCCESS, payload: { txReceipt, minedAt } });
   } catch (err) {
     dispatch({
       type: ActionTypes.CONFIRM_TX_FAILURE,

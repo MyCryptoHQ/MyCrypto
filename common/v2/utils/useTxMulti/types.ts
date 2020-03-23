@@ -10,6 +10,7 @@ export interface TxParcel {
   readonly label?: string; // name of transaction eg. 'Allowance transaction'
   readonly txHash?: ITxHash;
   readonly txReceipt?: TransactionReceipt;
+  readonly minedAt?: number; // timestamp of block that included tx
 }
 
 export interface TxMultiState {
@@ -94,6 +95,7 @@ interface AConfirmSuccess extends DefaultAction {
   type: ActionTypes.CONFIRM_TX_SUCCESS;
   payload: {
     txReceipt: TransactionReceipt;
+    minedAt: number;
   };
 }
 
