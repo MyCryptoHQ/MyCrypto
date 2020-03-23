@@ -80,7 +80,7 @@ const ContactLookupField = ({
       value={value}
       validate={validateAddress}
       component={({ form }: FieldProps) => {
-        const [inputValue, setInputValue] = useState();
+        const [inputValue, setInputValue] = useState<string>('');
 
         useEffectOnce(() => {
           const contact = getContactByAddress(value.value);

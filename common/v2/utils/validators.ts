@@ -1,5 +1,8 @@
 import AddressValidator from 'wallet-address-validator';
 import BN from 'bn.js';
+import { FormikErrors } from 'formik';
+
+import { InlineMessageType } from 'v2/types';
 
 interface ValidatorHash {
   [asset: string]: (address: string) => boolean;
@@ -48,3 +51,9 @@ export const addressValidatorHash: ValidatorHash = {
   BTC: isValidBitcoinAddress,
   XMR: isValidMoneroAddress
 };
+
+// allow warnings and info errors type for form to still be valid
+export const isFormValid = (errors: FormikErrors<object>) =>
+  Object.values(errors).filter(
+    error => error !== undefined && (!error.type || error.type === InlineMessageType.ERROR)
+  ).length === 0;

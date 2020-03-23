@@ -3,7 +3,7 @@ import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
 import _, { isEmpty } from 'lodash';
-import { formatEther, parseEther, bigNumberify } from 'ethers/utils';
+import { bigNumberify } from 'ethers/utils';
 import BN from 'bn.js';
 import styled from 'styled-components';
 import * as R from 'ramda';
@@ -49,7 +49,9 @@ import {
   isValidPositiveNumber,
   isTransactionFeeHigh,
   isBurnAddress,
-  bigNumGasPriceToViewableGwei
+  bigNumGasPriceToViewableGwei,
+  fromTokenBase,
+  toTokenBase
 } from 'v2/services/EthService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 import {
@@ -61,7 +63,7 @@ import {
 } from 'v2/config';
 import { RatesContext } from 'v2/services/RatesProvider';
 import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
-import { weiToFloat, formatSupportEmail } from 'v2/utils';
+import { formatSupportEmail, isFormValid as checkFormValid } from 'v2/utils';
 import { InlineMessageType } from 'v2/types/inlineMessages';
 
 import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
@@ -161,21 +163,23 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
   const [selectedAsset, setAsset] = useState({} as Asset);
 
   const SendAssetsSchema = Yup.object().shape({
-    amount: Yup.number()
-      .min(0, translateRaw('ERROR_0'))
+    amount: Yup.string()
       .required(translateRaw('REQUIRED'))
-      .typeError(translateRaw('ERROR_0'))
+      .test('check-valid-amount', translateRaw('ERROR_0'), value => !validateAmountField(value))
       .test(
         'check-amount',
         translateRaw('BALANCE_TOO_LOW_ERROR', { $asset: selectedAsset.ticker }),
         function(value) {
-          const account = this.parent.account;
-          const asset = this.parent.asset;
-          const val = value ? value : 0;
-          if (!isEmpty(account)) {
-            return getAccountBalance(account, asset.type === 'base' ? undefined : asset).gte(
-              parseEther(val.toString())
-            );
+          try {
+            const account = this.parent.account;
+            const asset = this.parent.asset;
+            if (!isEmpty(account)) {
+              const balance = getAccountBalance(account, asset.type === 'base' ? undefined : asset);
+              const amount = bigNumberify(toTokenBase(value, asset.decimal).toString());
+              return balance.gte(amount);
+            }
+          } catch (err) {
+            return false;
           }
           return true;
         }
@@ -295,13 +299,9 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
           const setAmountFieldToAssetMax = () => {
             const account = getAccount(values.account);
             if (values.asset && account && baseAsset) {
+              const accountBalance = getAccountBalance(account, values.asset).toString();
               const isERC20 = isERC20Tx(values.asset);
-              const balance = isERC20
-                ? weiToFloat(
-                    getAccountBalance(account, values.asset),
-                    values.asset.decimal
-                  ).toString()
-                : formatEther(getAccountBalance(account).toString());
+              const balance = fromTokenBase(new BN(accountBalance), values.asset.decimal);
               const gasPrice = values.advancedTransaction
                 ? values.gasPriceField
                 : values.gasPriceSlider;
@@ -328,9 +328,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
             setIsEstimatingNonce(false);
           };
 
-          const isFormValid =
-            Object.values(errors).filter(error => error !== undefined && !isEmpty(error)).length ===
-            0;
+          const isFormValid = checkFormValid(errors);
 
           return (
             <Form className="SendAssetsForm">
@@ -424,7 +422,6 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                 </label>
                 <Field
                   name="amount"
-                  validate={validateAmountField}
                   render={({ field, form }: FieldProps) => {
                     return (
                       <>
@@ -438,11 +435,9 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                           }}
                           placeholder={'0.00'}
                         />
-                        {errors && errors.amount && touched && touched.amount ? (
-                          <InlineMessage className="SendAssetsForm-errors">
-                            {errors.amount}
-                          </InlineMessage>
-                        ) : null}
+                        {errors && errors.amount && touched && touched.amount && (
+                          <InlineMessage>{errors.amount}</InlineMessage>
+                        )}
                       </>
                     );
                   }}
@@ -477,7 +472,6 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                       symbol: '$'
                     }}
                   />
-                  {/* TRANSLATE THIS */}
                 </label>
                 {!values.advancedTransaction && (
                   <GasPriceSlider

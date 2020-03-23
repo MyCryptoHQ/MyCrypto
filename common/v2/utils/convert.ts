@@ -78,7 +78,7 @@ export const trimBN = (
 };
 
 export const weiToFloat = (wei: BigNumber, decimal?: number): number =>
-  parseFloat(fromTokenBase(new BN(wei.toString()), decimal || DEFAULT_ASSET_DECIMAL));
+  parseFloat(fromTokenBase(new BN(wei.toString()), decimal));
 
 export const withCommission = ({
   amount,
