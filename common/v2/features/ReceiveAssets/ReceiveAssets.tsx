@@ -185,7 +185,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                 <Field
                   name="amount"
                   validate={validateAmount}
-                  render={({ field, form }: FieldProps<typeof initialValues>) => (
+                  render={({ field, form }: FieldProps<string>) => (
                     <FullWidthInput
                       data-lpignore="true"
                       value={field.value}

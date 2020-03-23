@@ -481,7 +481,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                 </label>
                 {!values.advancedTransaction && (
                   <GasPriceSlider
-                    handleChange={(e: string) => {
+                    handleChange={(e: React.ChangeEvent<any>) => {
                       handleGasEstimate();
                       handleChange(e);
                     }}
@@ -526,7 +526,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                         <Field
                           name="gasLimitField"
                           validate={validateGasLimitField}
-                          render={({ field, form }: FieldProps<IFormikFields>) => (
+                          render={({ field, form }: FieldProps<string>) => (
                             <GasLimitField
                               onChange={(option: string) => {
                                 form.setFieldValue('gasLimitField', option);
@@ -549,7 +549,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                         <Field
                           name="gasPriceField"
                           validate={validateGasPriceField}
-                          render={({ field, form }: FieldProps<IFormikFields>) => (
+                          render={({ field, form }: FieldProps<string>) => (
                             <GasPriceField
                               onChange={(option: string) => {
                                 form.setFieldValue('gasPriceField', option);
@@ -572,7 +572,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                         <Field
                           name="nonceField"
                           validate={validateNonceField}
-                          render={({ field, form }: FieldProps<IFormikFields>) => (
+                          render={({ field, form }: FieldProps<string>) => (
                             <NonceField
                               onChange={(option: string) => {
                                 form.setFieldValue('nonceField', option);
@@ -594,7 +594,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                             <Field
                               name="txDataField"
                               validate={(value: string) => value !== '' && validateDataField(value)}
-                              render={({ field, form }: FieldProps<IFormikFields>) => (
+                              render={({ field, form }: FieldProps<string>) => (
                                 <DataField
                                   onChange={(option: string) => {
                                     form.setFieldValue('txDataField', option);
