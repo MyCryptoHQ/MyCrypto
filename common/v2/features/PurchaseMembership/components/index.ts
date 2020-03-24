@@ -3,3 +3,4 @@ export { default as ConfirmMembershipPurchase } from './ConfirmMembershipPurchas
 export { default as MembershipPurchaseReceipt } from './MembershipPurchaseReceipt';
 export { default as MembershipEducation } from './MembershipEducation';
 export { default as MembershipSelectedBanner } from './MembershipSelectedBanner';
+export { default as MembershipReceiptBanner } from './MembershipReceiptBanner';

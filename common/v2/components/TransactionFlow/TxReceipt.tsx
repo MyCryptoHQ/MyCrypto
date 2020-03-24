@@ -33,6 +33,7 @@ import translate, { translateRaw } from 'v2/translations';
 import { convertToFiat, truncate, fromTxReceiptObj } from 'v2/utils';
 import { isWeb3Wallet } from 'v2/utils/web3';
 import ProtocolTagsList from 'v2/features/DeFiZap/components/ProtocolTagsList';
+import { MembershipReceiptBanner } from 'v2/features/PurchaseMembership';
 
 import { ISender } from './types';
 import { constructSenderFromTxConfig } from './helpers';
@@ -216,18 +217,25 @@ export const TxReceiptUI = ({
           />
         </div>
       )}
-      <>
-        <FromToAccount
-          from={{
-            address: (displayTxReceipt.from || sender.address) as TAddress,
-            label: senderAccountLabel
-          }}
-          to={{
-            address: (displayTxReceipt.to || receiverAddress) as TAddress,
-            label: recipientLabel
-          }}
-        />
-      </>
+      {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
+        <div className="TransactionReceipt-row">
+          <MembershipReceiptBanner membershipSelected={membershipSelected} />
+        </div>
+      )}
+      {txType !== ITxType.PURCHASE_MEMBERSHIP && (
+        <>
+          <FromToAccount
+            from={{
+              address: (displayTxReceipt.from || sender.address) as TAddress,
+              label: senderAccountLabel
+            }}
+            to={{
+              address: (displayTxReceipt.to || receiverAddress) as TAddress,
+              label: recipientLabel
+            }}
+          />
+        </>
+      )}
       {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
         <div className="TransactionReceipt-row">
           <TxIntermediaryDisplay

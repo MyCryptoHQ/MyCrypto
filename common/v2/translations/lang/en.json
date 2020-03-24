@@ -650,6 +650,7 @@
     "SELECT_YOUR_ACCOUNT": "Select Your Account",
     "SELECT_MEMBERSHIP": "Select Your Membership Plan",
     "MEMBERSHIP_DETAILS": "Membership Details",
-    "COST": "Cost"
+    "COST": "Cost",
+    "NEW_MEMBER": "You are now a MyCrypto Member!"
   }
 }

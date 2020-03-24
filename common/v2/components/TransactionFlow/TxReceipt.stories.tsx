@@ -5,6 +5,7 @@ import { ITxStatus, ExtendedAddressBook, ITxType } from 'v2/types';
 import { noOp } from 'v2/utils';
 import { devContacts } from 'v2/database/seed';
 import { IZapConfig, ZAPS_CONFIG, defaultZapId } from 'v2/features/DeFiZap/config';
+import { MEMBERSHIP_CONFIG, IMembershipId } from 'v2/features/PurchaseMembership/config';
 
 import { TxReceiptUI } from './TxReceipt';
 import { constructSenderFromTxConfig } from './helpers';
@@ -51,6 +52,25 @@ export const transactionReceiptDeFiZap = () => (
       recipientContact={recipientContact}
       txConfig={fTxConfig}
       sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+    />
+  </div>
+);
+
+export const transactionReceiptMembership = () => (
+  <div className="sb-container" style={{ maxWidth: '620px' }}>
+    <TxReceiptUI
+      txReceipt={fTxReceipt}
+      txConfig={fTxConfig}
+      txType={ITxType.PURCHASE_MEMBERSHIP}
+      membershipSelected={MEMBERSHIP_CONFIG[IMembershipId.threemonths]}
+      timestamp={timestamp}
+      txStatus={txStatus}
+      assetRate={assetRate}
+      displayTxReceipt={fTxReceipt}
+      senderContact={senderContact}
+      recipientContact={recipientContact}
+      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+      resetFlow={resetFlow}
     />
   </div>
 );

@@ -16,6 +16,7 @@ export interface IMembershipConfig {
   icon: string;
   price: string;
   assetUUID: string;
+  durationInDays: number;
 }
 
 export type IMembershipConfigObject = {
@@ -52,7 +53,8 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     description: '',
     icon: onemonthIcon,
     price: '4',
-    assetUUID: DAIUUID
+    assetUUID: DAIUUID,
+    durationInDays: 30
   },
 
   threemonths: {
@@ -63,7 +65,8 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     description: '',
     icon: threemonthsIcon,
     price: '10.5',
-    assetUUID: DAIUUID
+    assetUUID: DAIUUID,
+    durationInDays: 90
   },
 
   sixmonths: {
@@ -74,7 +77,8 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     description: '',
     icon: sixMonthsIcon,
     price: '18',
-    assetUUID: DAIUUID
+    assetUUID: DAIUUID,
+    durationInDays: 180
   },
 
   twelvemonths: {
@@ -85,7 +89,8 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     description: '',
     icon: twelveMonthsIcon,
     price: '30',
-    assetUUID: DAIUUID
+    assetUUID: DAIUUID,
+    durationInDays: 366
   },
 
   lifetime: {
@@ -96,7 +101,8 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     description: '',
     icon: lifetimeIcon,
     price: '5',
-    assetUUID: EtherUUID
+    assetUUID: EtherUUID,
+    durationInDays: 36500
   }
 };
 
