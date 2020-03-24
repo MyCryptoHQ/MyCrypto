@@ -58,11 +58,21 @@ const ZapCardContentText = styled.p`
   margin-bottom: 0px;
 `;
 
+const ZapCardBalanceText = styled(ZapCardContentText)`
+  font-weight: bold;
+`;
+
 const ZapCardContentRow = styled('div')`
   align-items: center;
   justify-content: center;
   flex: 1;
   margin-bottom: ${SPACING.XS};
+  & p {
+    &:last-child {
+      margin-bottom: 0px;
+      padding-bottom: 0px;
+    }
+  }
 `;
 
 const ZapCardContentBottom = styled('div')`
@@ -91,10 +101,10 @@ const ZapCardContentBottom = styled('div')`
 `;
 
 const ZapCardContentHeaderRow = styled('div')`
-  margin: 0px;
+  margin: ${SPACING.BASE} 0px 0px 0px;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: top;
   justify-content: center;
   flex: 1;
 `;
@@ -108,6 +118,7 @@ const ZapCardHeaderTextSection = styled('div')`
 
 const ZapCardHeaderTitle = styled.h5`
   font-weight: bold;
+  margin-top: 0px;
 `;
 
 const ZapCardHeaderName = styled.p`
@@ -116,7 +127,7 @@ const ZapCardHeaderName = styled.p`
 
 const ZapCardImgSection = styled('div')`
   display: flex;
-  align-items: center;
+  align-items: top;
   justify-content: center;
 `;
 
@@ -132,15 +143,24 @@ const ZapCardRiskProfile = styled('div')`
 const ZapCardButton = styled(Button)`
   display: flex;
   flex: 1;
-  min-height: 60px;
+  min-height: 45px;
   font-size: ${FONT_SIZE.MD};
-  font-weight: normal;
-  padding: 0px 15px;
+  padding: 9px 16px;
+  &:hover {
+    background-color: ${COLORS.BLUE_LIGHT_DARKISH};
+  }
 `;
 
 const ZapEstimatedBalance = styled.p`
+  display: flex;
   font-weight: bold;
   color: ${COLORS.BLUE_DARK};
+  vertical-align: top;
+  align-items: top;
+  line-height: 17px;
+  & span {
+    margin-left: ${SPACING.XS};
+  }
 `;
 
 interface Props {
@@ -201,16 +221,16 @@ const ZapCard = ({ config }: Props) => {
                   tooltip={translateRaw('ZAP_BALANCE_TOOLTIP', {
                     $protocol: config.platformsUsed[0]
                   })}
+                  type={'informational'}
                 />
-                {`: `}
               </ZapEstimatedBalance>
               {defiReserveBalances ? (
                 defiReserveBalances.map(defiReserveAsset => (
-                  <ZapCardContentText key={defiReserveAsset.uuid}>
+                  <ZapCardBalanceText key={defiReserveAsset.uuid}>
                     {`~ ${parseFloat(
                       trimBN(formatEther(defiReserveAsset.balance.toString()))
                     ).toFixed(4)} ${defiReserveAsset.ticker}`}
-                  </ZapCardContentText>
+                  </ZapCardBalanceText>
                 ))
               ) : (
                 <ZapCardContentText>
