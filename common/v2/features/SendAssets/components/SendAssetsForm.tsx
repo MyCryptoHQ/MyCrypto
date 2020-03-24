@@ -126,7 +126,7 @@ export const getInitialFormikValues = (s: ITxConfig, defaultAsset?: Asset): IFor
     amount: s.amount,
     account: s.senderAccount,
     network: s.network,
-    asset: defaultAsset ? defaultAsset : s.asset,
+    asset: s.asset ? s.asset : defaultAsset,
     nonceField: s.nonce,
     txDataField: s.data,
     address: { value: s.receiverAddress, display: s.receiverAddress },
