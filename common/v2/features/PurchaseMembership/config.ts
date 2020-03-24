@@ -5,7 +5,7 @@ import threemonthsIcon from 'assets/images/membership/membership-threemonths.svg
 import sixMonthsIcon from 'assets/images/membership/membership-sixmonths.svg';
 import twelveMonthsIcon from 'assets/images/membership/membership-twelvemonths.svg';
 import lifetimeIcon from 'assets/images/membership/membership-lifetime.svg';
-import { DAIUUID } from 'v2/utils';
+import { DAIUUID, EtherUUID } from 'v2/utils';
 
 export interface IMembershipConfig {
   title: string;
@@ -95,8 +95,8 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     contractAddress: '0x1e1Eed8882dd411e7569ee79823a44f4F4a55Cac',
     description: '',
     icon: lifetimeIcon,
-    price: '400',
-    assetUUID: DAIUUID
+    price: '5',
+    assetUUID: EtherUUID
   }
 };
 
