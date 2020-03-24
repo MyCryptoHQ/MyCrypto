@@ -39,6 +39,7 @@ export const initWith = (dispatch: Dispatch<TxMultiAction>) => async (
     dispatch({ type: ActionTypes.INIT_FAILURE, payload: err, error: true });
   }
 };
+
 export const stopYield = (dispatch: Dispatch<TxMultiAction>) => async () =>
   dispatch({ type: ActionTypes.HALT_FLOW });
 

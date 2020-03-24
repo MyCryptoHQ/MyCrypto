@@ -1,12 +1,12 @@
-import { ethers } from 'ethers';
 import { addHexPrefix } from 'ethereumjs-util';
 import BN from 'bn.js';
 import axios, { AxiosInstance } from 'axios';
 
-import { default as ApiService } from '../ApiService';
 import { TSymbol, ITxObject } from 'v2/types';
 import { DEXAG_MYC_TRADE_CONTRACT, DEXAG_MYC_HANDLER_CONTRACT } from 'v2/config';
+import { ERC20 } from 'v2/services/EthService';
 
+import { default as ApiService } from '../ApiService';
 import { DexTrade } from './types';
 
 const DEX_BASE_URL = 'https://api-v2.dex.ag/';
@@ -161,25 +161,9 @@ export default class DexService {
 // Create a transaction that approves the MYC_HANDLER_CONTRACT in order for the TRADE_CONTRACT
 // to execute. Example: https://docs.dex.ag/api/using-the-api-with-node.js
 export const formatApproveTx = ({ to, value }: Partial<ITxObject>): Partial<ITxObject> => {
-  const abi = new ethers.utils.AbiCoder();
-  const inputs = [
-    {
-      name: 'spender',
-      type: 'address'
-    },
-    {
-      name: 'amount',
-      type: 'uint256'
-    }
-  ];
-
-  // First 4 bytes of the hash of "fee()" for the sighash selector
-  const funcHash = ethers.utils.hexDataSlice(ethers.utils.id('approve(address,uint256)'), 0, 4);
   // [spender, amount]. Spender is the contract the user needs to authorize.
   // It's value is also available in the API response obj `data.metadata.input.spender`
-  const params = [DEXAG_MYC_HANDLER_CONTRACT, value];
-  const bytes = abi.encode(inputs, params).substr(2);
-  const data = `${funcHash}${bytes}`;
+  const data = ERC20.approve.encodeInput({ _spender: DEXAG_MYC_HANDLER_CONTRACT, _value: value });
 
   return {
     to,
