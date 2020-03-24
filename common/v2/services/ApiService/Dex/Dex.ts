@@ -3,13 +3,11 @@ import BN from 'bn.js';
 import axios, { AxiosInstance } from 'axios';
 
 import { TSymbol, ITxObject } from 'v2/types';
-import { DEXAG_MYC_TRADE_CONTRACT, DEXAG_MYC_HANDLER_CONTRACT } from 'v2/config';
+import { DEXAG_MYC_TRADE_CONTRACT, DEXAG_MYC_HANDLER_CONTRACT, DEX_BASE_URL } from 'v2/config';
 import { ERC20 } from 'v2/services/EthService';
 
 import { default as ApiService } from '../ApiService';
 import { DexTrade } from './types';
-
-const DEX_BASE_URL = 'https://api-v2.dex.ag/';
 
 let instantiated: boolean = false;
 
