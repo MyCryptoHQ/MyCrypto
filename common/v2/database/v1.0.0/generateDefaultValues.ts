@@ -24,7 +24,7 @@ import { toArray, toObject, add } from './helpers';
 const addNetworks = add(LSKeys.NETWORKS)((networks: SeedData) => {
   const formatNetwork = (n: NetworkLegacy): Network => {
     const baseAssetUuid = generateAssetUUID(n.chainId);
-    const nodes = NODES_CONFIG[n.id] || [];
+    const nodes = NODES_CONFIG[n.name as NetworkId] || [];
     const [firstNode] = nodes;
 
     return Object.assign(

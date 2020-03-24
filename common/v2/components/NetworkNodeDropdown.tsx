@@ -74,13 +74,13 @@ class NetworkOption extends React.PureComponent<NetworkOptionProps> {
       return (
         <SContainerValue onClick={() => onSelect && onSelect(option, null)}>
           <Typography value={option.label} />
-          {isFunction(option.toggleFlipped) && isEditEnabled && isCustom === true && (
+          {isFunction(option.onEdit) && isEditEnabled && isCustom === true && (
             <EditIcon
               onClick={e => {
                 e.preventDefault();
 
-                if (option.toggleFlipped) {
-                  option.toggleFlipped(option.value);
+                if (option.onEdit) {
+                  option.onEdit(option.value);
                 }
               }}
               src={editIcon}
