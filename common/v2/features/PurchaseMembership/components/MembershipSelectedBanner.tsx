@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
 import { COLORS, SPACING, FONT_SIZE } from 'v2/theme';
 import { IMembershipConfig } from '../config';
 import { Typography, Tooltip } from 'v2/components';
+import { AssetContext } from 'v2/services';
+import { Asset } from 'v2/types';
 
 interface Props {
   membershipSelected: IMembershipConfig;
@@ -51,6 +53,8 @@ const CostText = styled(Typography)`
 `;
 
 const MembershipSelectedBanner = ({ membershipSelected }: Props) => {
+  const { assets } = useContext(AssetContext);
+  const asset = assets.find(a => a.uuid === membershipSelected.assetUUID) as Asset;
   return (
     <BannerContainer>
       <MembershipWrapper>
@@ -69,7 +73,7 @@ const MembershipSelectedBanner = ({ membershipSelected }: Props) => {
           {translateRaw('COST')} <Tooltip tooltip="TODO" />
         </CostText>
         <Price as="div" bold={true}>
-          {membershipSelected.price} {'DAI'}
+          {membershipSelected.price} {asset.ticker}
         </Price>
       </CostWrapper>
     </BannerContainer>

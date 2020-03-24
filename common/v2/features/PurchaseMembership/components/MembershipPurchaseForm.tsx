@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Formik, Form, Field, FieldProps } from 'formik';
 import { Button } from '@mycrypto/ui';
@@ -15,7 +15,7 @@ import { isEthereumAccount } from 'v2/services/Store/Account/helpers';
 import { StoreContext, AssetContext, NetworkContext, getAccountBalance } from 'v2/services/Store';
 import { fetchGasPriceEstimates } from 'v2/services/ApiService';
 import { getNonce } from 'v2/services/EthService';
-import { EtherUUID, DAIUUID } from 'v2/utils';
+import { EtherUUID } from 'v2/utils';
 
 import { MembershipPurchaseState, MembershipSimpleTxFormFull } from '../types';
 import { IMembershipId, IMembershipConfig, MEMBERSHIP_CONFIG } from '../config';
@@ -28,7 +28,6 @@ interface Props extends MembershipPurchaseState {
 }
 
 interface UIProps {
-  daiAsset: Asset;
   network: Network;
   relevantAccounts: StoreAccount[];
   onComplete(fields: any): void;
@@ -57,15 +56,12 @@ const FormFieldSubmitButton = styled(Button)`
 
 const MembershipForm = ({ onComplete }: Props) => {
   const { accounts } = useContext(StoreContext);
-  const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
-  const daiAsset = assets.find(asset => asset.uuid === DAIUUID) as Asset;
   const network = networks.find(n => n.baseAsset === EtherUUID) as Network;
   const relevantAccounts = accounts.filter(isEthereumAccount);
 
   return (
     <MembershipFormUI
-      daiAsset={daiAsset}
       network={network}
       relevantAccounts={relevantAccounts}
       onComplete={onComplete}
@@ -73,13 +69,16 @@ const MembershipForm = ({ onComplete }: Props) => {
   );
 };
 
-export const MembershipFormUI = ({ daiAsset, network, relevantAccounts, onComplete }: UIProps) => {
+export const MembershipFormUI = ({ network, relevantAccounts, onComplete }: UIProps) => {
+  const { assets } = useContext(AssetContext);
   const defaultMembership = MEMBERSHIP_CONFIG[IMembershipId.onemonth];
+  const defaultAsset = assets.find(asset => asset.uuid === defaultMembership.assetUUID) as Asset;
+  const [selectedAsset, setSelectedAsset] = useState(defaultAsset);
   const initialFormikValues: MembershipSimpleTxFormFull = {
     membershipSelected: defaultMembership,
     account: {} as StoreAccount,
     amount: defaultMembership.price,
-    asset: daiAsset,
+    asset: defaultAsset,
     nonce: '0',
     gasPrice: '20',
     address: '',
@@ -94,7 +93,7 @@ export const MembershipFormUI = ({ daiAsset, network, relevantAccounts, onComple
       .typeError(translateRaw('ERROR_0'))
       .test(
         'check-amount',
-        translateRaw('BALANCE_TOO_LOW_NO_RECOMMENDATION_ERROR', { $asset: daiAsset.ticker }),
+        translateRaw('BALANCE_TOO_LOW_NO_RECOMMENDATION_ERROR', { $asset: selectedAsset.ticker }),
         function(value) {
           const account = this.parent.account;
           const asset = this.parent.asset;
@@ -165,6 +164,11 @@ export const MembershipFormUI = ({ daiAsset, network, relevantAccounts, onComple
                       onSelect={(option: { label: string; value: IMembershipConfig }) => {
                         form.setFieldValue('membershipSelected', option.value); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
                         form.setFieldValue('amount', option.value.price);
+                        const newAsset = assets.find(
+                          a => a.uuid === option.value.assetUUID
+                        ) as Asset;
+                        form.setFieldValue('asset', newAsset);
+                        setSelectedAsset(newAsset);
                       }}
                     />
                   )}
@@ -204,7 +208,7 @@ export const MembershipFormUI = ({ daiAsset, network, relevantAccounts, onComple
                         <AmountInput
                           {...field}
                           disabled={true}
-                          asset={daiAsset}
+                          asset={values.asset}
                           value={field.value}
                           onBlur={() => {
                             form.setFieldTouched('amount');
