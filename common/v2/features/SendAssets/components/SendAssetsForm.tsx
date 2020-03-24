@@ -118,7 +118,7 @@ const initialFormikValues: IFormikFields = {
 // To preserve form state between steps, we prefil the fields with state
 // values when they exits.
 type FieldValue = ValuesType<IFormikFields>;
-export const getInitialFormikValues = (s: ITxConfig): IFormikFields => {
+export const getInitialFormikValues = (s: ITxConfig, defaultAsset?: Asset): IFormikFields => {
   const gasPriceInGwei =
     R.path(['rawTransaction', 'gasPrice'], s) &&
     bigNumGasPriceToViewableGwei(bigNumberify(s.rawTransaction.gasPrice));
@@ -126,7 +126,7 @@ export const getInitialFormikValues = (s: ITxConfig): IFormikFields => {
     amount: s.amount,
     account: s.senderAccount,
     network: s.network,
-    asset: s.asset,
+    asset: defaultAsset ? defaultAsset : s.asset,
     nonceField: s.nonce,
     txDataField: s.data,
     address: { value: s.receiverAddress, display: s.receiverAddress },
@@ -244,10 +244,12 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
   });
 
   const validAccounts = accounts.filter(account => account.wallet !== WalletId.VIEW_ONLY);
+  const userAccountEthAsset = userAssets.find((a: Asset) => a.ticker === 'ETH');
+
   return (
     <div className="SendAssetsForm">
       <Formik
-        initialValues={getInitialFormikValues(txConfig)}
+        initialValues={getInitialFormikValues(txConfig, userAccountEthAsset)}
         validationSchema={SendAssetsSchema}
         onSubmit={fields => {
           onComplete(fields);
