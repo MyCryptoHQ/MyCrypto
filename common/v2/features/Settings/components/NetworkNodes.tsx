@@ -24,7 +24,7 @@ const NetworkNodes: FC<Props> = ({ networks, toggleFlipped }) => {
       <NetworkNodeDropdown
         key={index}
         networkId={id}
-        toggleFlipped={(node: CustomNodeConfig) => toggleFlipped(id, node)}
+        onEdit={(node: CustomNodeConfig) => toggleFlipped(id, node)}
       />
     ]),
     config: {

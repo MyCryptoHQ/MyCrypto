@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
-import { BREAK_POINTS, COLORS } from './theme';
-import { IS_MOBILE } from './utils';
+import { BREAK_POINTS, COLORS } from '../theme';
+import { IS_MOBILE } from '../utils';
 
 const MobileNavBarStyled = styled.div`
   display: flex;

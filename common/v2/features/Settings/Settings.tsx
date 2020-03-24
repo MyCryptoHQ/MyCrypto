@@ -15,11 +15,12 @@ import { NetworkId } from 'v2/types';
 import { CustomNodeConfig } from 'v2/types/node';
 import { DEFAULT_NETWORK, IS_ACTIVE_FEATURE } from 'v2/config';
 import translate from 'v2/translations';
-import MobileNavBar from 'v2/MobileNavBar';
+import MobileNavBar from 'v2/components/MobileNavBar';
 
 import { AddressBookPanel, AddToAddressBook, GeneralSettings, DangerZone } from './components';
 import NetworkNodes from './components/NetworkNodes';
 import AddOrEditNetworkNode from './components/AddOrEditNetworkNode';
+
 import settingsIcon from 'common/assets/images/icn-settings.svg';
 
 const SettingsHeading = styled(Heading)<{ forwardedAs?: string }>`
@@ -110,7 +111,7 @@ function renderNetworkNodes() {
           <AddOrEditNetworkNode
             networkId={networkId}
             editNode={editNode}
-            toggleFlipped={toggleFlipped}
+            onComplete={toggleFlipped}
             addNodeToNetwork={addNodeToNetwork}
             isNodeNameAvailable={isNodeNameAvailable}
             getNetworkById={getNetworkById}

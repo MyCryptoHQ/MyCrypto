@@ -101,10 +101,10 @@ class NetworkOption extends React.PureComponent<NetworkOptionProps> {
 
 interface Props {
   networkId: NetworkId;
-  toggleFlipped?(node?: CustomNodeConfig): void;
+  onEdit?(node?: CustomNodeConfig): void;
 }
 
-const NetworkNodeDropdown: FC<Props> = ({ networkId, toggleFlipped }) => {
+const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
   const { networks, getNetworkById, setNetworkSelectedNode } = useContext(NetworkContext);
   const [network, setNetwork] = useState(() => getNetworkById(networkId));
   const [selectedNode, setSelectedNode] = useState(() => NetworkUtils.getSelectedNode(network));
@@ -121,8 +121,8 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, toggleFlipped }) => {
         const { name } = node;
         setNetworkSelectedNode(networkId, name);
         setSelectedNode(node);
-      } else if (toggleFlipped) {
-        toggleFlipped();
+      } else if (onEdit) {
+        onEdit();
       }
     },
     [networkId, setNetworkSelectedNode]
@@ -136,7 +136,7 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, toggleFlipped }) => {
   const { service, name: selectedNodeName } = selectedNode;
   let displayNodes = [autoNode, ...nodes];
 
-  if (isFunction(toggleFlipped)) {
+  if (isFunction(onEdit)) {
     displayNodes = [...displayNodes, { service: newNode } as any];
   }
 
@@ -146,7 +146,7 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, toggleFlipped }) => {
         label: selectedNodeName === autoNodeName ? autoNodeLabel : service,
         value: selectedNode
       }}
-      options={displayNodes.map(n => ({ label: n.service, value: n, toggleFlipped }))}
+      options={displayNodes.map(n => ({ label: n.service, value: n, onEdit }))}
       placeholder={'Auto'}
       searchable={true}
       onChange={option => onChange(option.value)}

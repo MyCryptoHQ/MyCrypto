@@ -121,7 +121,7 @@ interface NetworkNodeFields {
 interface Props {
   networkId: NetworkId;
   editNode: CustomNodeConfig | undefined;
-  toggleFlipped(): void;
+  onComplete(): void;
   addNodeToNetwork(node: NodeOptions, network: Network | NetworkId): void;
   isNodeNameAvailable(networkId: NetworkId, nodeName: string, ignoreNames?: string[]): boolean;
   getNetworkById(networkId: NetworkId): Network;
@@ -131,7 +131,7 @@ interface Props {
 
 export default function AddOrEditNetworkNode({
   networkId,
-  toggleFlipped,
+  onComplete,
   addNodeToNetwork,
   isNodeNameAvailable,
   getNetworkById,
@@ -168,9 +168,9 @@ export default function AddOrEditNetworkNode({
       e.preventDefault();
 
       deleteNode(editNode!.name, networkId);
-      toggleFlipped();
+      onComplete();
     },
-    [deleteNode, toggleFlipped]
+    [deleteNode, onComplete]
   );
 
   const Schema = Yup.lazy((values: NetworkNodeFields) =>
@@ -196,7 +196,7 @@ export default function AddOrEditNetworkNode({
     <AddToNetworkNodePanel
       heading={
         <>
-          <BackButton basic={true} onClick={toggleFlipped}>
+          <BackButton basic={true} onClick={onComplete}>
             <img src={backArrowIcon} alt="Back" />
           </BackButton>
           {editMode ? translateRaw('CUSTOM_NODE_EDIT') : translateRaw('CUSTOM_NODE_ADD')}
@@ -256,7 +256,7 @@ export default function AddOrEditNetworkNode({
             }
 
             setIsConnectionError(false);
-            toggleFlipped();
+            onComplete();
           } catch (e) {
             setIsConnectionError(true);
           } finally {
