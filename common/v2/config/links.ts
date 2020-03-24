@@ -20,7 +20,7 @@ interface Link {
 // we create an overlap between the old Link and the new IRoutePath
 type TmpLink = Partial<Link & IRoutePath>;
 
-export const DOWNLOAD_MYCRYPTO_LINK = 'https://beta.mycrypto.com/download-desktop-app';
+export const DOWNLOAD_MYCRYPTO_LINK = 'https://download.mycrypto.com';
 
 export const socialMediaLinks: Link[] = [
   {
