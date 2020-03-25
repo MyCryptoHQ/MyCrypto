@@ -63,7 +63,7 @@ import {
 } from 'v2/config';
 import { RatesContext } from 'v2/services/RatesProvider';
 import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
-import { formatSupportEmail, isFormValid as checkFormValid } from 'v2/utils';
+import { formatSupportEmail, isFormValid as checkFormValid, EtherUUID } from 'v2/utils';
 import { InlineMessageType } from 'v2/types/inlineMessages';
 
 import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
@@ -126,7 +126,7 @@ export const getInitialFormikValues = (s: ITxConfig, defaultAsset?: Asset): IFor
     amount: s.amount,
     account: s.senderAccount,
     network: s.network,
-    asset: s.asset ? s.asset : defaultAsset,
+    asset: s.asset || defaultAsset,
     nonceField: s.nonce,
     txDataField: s.data,
     address: { value: s.receiverAddress, display: s.receiverAddress },
@@ -244,7 +244,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
   });
 
   const validAccounts = accounts.filter(account => account.wallet !== WalletId.VIEW_ONLY);
-  const userAccountEthAsset = userAssets.find((a: Asset) => a.ticker === 'ETH');
+  const userAccountEthAsset = userAssets.find(a => a.uuid === EtherUUID);
 
   return (
     <div className="SendAssetsForm">
