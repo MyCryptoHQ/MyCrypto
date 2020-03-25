@@ -27,7 +27,9 @@ export default class ElectronBuildVerified extends Component<BannerProps, Banner
     if (displayBanner) {
       return (
         <div className="BannerContainer">
-          <input type="checkbox" onChange={e => this.handleCheck(e)} />{' '}
+          <div style={{display: 'flex', padding: '0em 0.5em 0em 0em'}}>
+            <input type="checkbox" onChange={e => this.handleCheck(e)} />{' '}
+          </div>
           <span>
             I have{' '}
             <a href="https://support.mycrypto.com/staying-safe/verifying-authenticity-of-desktop-app">
