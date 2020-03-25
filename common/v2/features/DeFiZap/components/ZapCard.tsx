@@ -15,7 +15,7 @@ interface SProps {
   isOwned?: boolean;
 }
 
-const ZapCardContainer = styled('li')`
+const ZapCardContainer = styled.div`
   background: #ffffff;
   border: 1px solid ${(props: SProps) => (props.isOwned ? COLORS.LIGHT_GREEN : COLORS.BLUE_BRIGHT)};
   border-radius: 3px;
@@ -24,12 +24,11 @@ const ZapCardContainer = styled('li')`
   flex: 1;
   margin-bottom: 0px;
   &:not(:last-child) {
-    margin-bottom: ${SPACING.BASE};
+    margin-bottom: ${SPACING.SM};
   }
-
   @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
     &:not(:last-child) {
-      margin-right: ${SPACING.BASE};
+      margin-right: ${SPACING.SM};
       margin-bottom: 0px;
     }
   }
@@ -59,6 +58,7 @@ const ZapCardContentText = styled.p`
 `;
 
 const ZapCardBalanceText = styled(ZapCardContentText)`
+  font-size: 16px;
   font-weight: bold;
 `;
 
@@ -78,7 +78,7 @@ const ZapCardContentRow = styled('div')`
 const ZapCardContentBottom = styled('div')`
   display: flex;
   padding: 15px 15px;
-  align-items: center;
+  align-items: stretch + center;
   justify-content: center;
   width: 100%;
   flex-direction: row;
@@ -140,27 +140,48 @@ const ZapCardRiskProfile = styled('div')`
   margin-left: 0.5em;
 `;
 
-const ZapCardButton = styled(Button)`
+const ZapCardButton = styled(Button)<{ width: string }>`
+  @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+    width: 100%;
+  }
   display: flex;
-  flex: 1;
-  min-height: 45px;
+  justify-content: center;
+  align-items: center;
+  width: ${props => props.width};
+  height: 40px;
+  padding: 0;
   font-size: ${FONT_SIZE.MD};
-  padding: 9px 16px;
   &:hover {
     background-color: ${COLORS.BLUE_LIGHT_DARKISH};
   }
 `;
 
-const ZapEstimatedBalance = styled.p`
+const ZapEstimatedBalance = styled.div`
   display: flex;
   font-weight: bold;
   color: ${COLORS.BLUE_DARK};
-  vertical-align: top;
-  align-items: top;
+  justify-content: flex-start;
+  align-items: center;
   line-height: 17px;
+  font-size: 16px;
   & span {
     margin-left: ${SPACING.XS};
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
+`;
+
+const BalanceWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+`;
+
+const AmountContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 `;
 
 interface Props {
@@ -210,33 +231,34 @@ const ZapCard = ({ config }: Props) => {
           <IndicatorItem />
         </ZapCardContentRow>
         <ZapCardContentRow>
-          {!humanReadableZapBalance ? (
-            <ZapCardContentText>{config.description}</ZapCardContentText>
-          ) : (
+          {humanReadableZapBalance && (
             <>
-              <ZapCardContentText>{translateRaw('ZAP_BALANCE_DETECTED')}</ZapCardContentText>
-              <ZapEstimatedBalance>
-                {translateRaw('ZAP_ESTIMATED_BALANCE')}{' '}
-                <Tooltip
-                  tooltip={translateRaw('ZAP_BALANCE_TOOLTIP', {
-                    $protocol: config.platformsUsed[0]
-                  })}
-                  type={'informational'}
-                />
-              </ZapEstimatedBalance>
-              {defiReserveBalances ? (
-                defiReserveBalances.map(defiReserveAsset => (
-                  <ZapCardBalanceText key={defiReserveAsset.uuid}>
-                    {`~ ${parseFloat(
-                      trimBN(formatEther(defiReserveAsset.balance.toString()))
-                    ).toFixed(4)} ${defiReserveAsset.ticker}`}
-                  </ZapCardBalanceText>
-                ))
-              ) : (
-                <ZapCardContentText>
-                  {`(${humanReadableZapBalance.toFixed(4)} ${userZapBalances.ticker})`}
-                </ZapCardContentText>
-              )}
+              <BalanceWrapper>
+                <ZapEstimatedBalance>
+                  {translateRaw('ZAP_ESTIMATED_BALANCE')}{' '}
+                  <Tooltip
+                    tooltip={translateRaw('ZAP_BALANCE_TOOLTIP', {
+                      $protocol: config.platformsUsed[0]
+                    })}
+                    type={'informational'}
+                  />
+                </ZapEstimatedBalance>
+                <AmountContainer>
+                  {defiReserveBalances ? (
+                    defiReserveBalances.map(defiReserveAsset => (
+                      <ZapCardBalanceText key={defiReserveAsset.uuid}>
+                        {`~ ${parseFloat(
+                          trimBN(formatEther(defiReserveAsset.balance.toString()))
+                        ).toFixed(3)} ${defiReserveAsset.ticker}`}
+                      </ZapCardBalanceText>
+                    ))
+                  ) : (
+                    <ZapCardContentText>
+                      {`(${humanReadableZapBalance.toFixed(4)} ${userZapBalances.ticker})`}
+                    </ZapCardContentText>
+                  )}
+                </AmountContainer>
+              </BalanceWrapper>
             </>
           )}
         </ZapCardContentRow>
@@ -244,15 +266,21 @@ const ZapCard = ({ config }: Props) => {
       <ZapCardContentBottom>
         {!humanReadableZapBalance ? (
           <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
-            <ZapCardButton inverted={true}>{translateRaw('ZAP_CARD_CTA')}</ZapCardButton>
+            <ZapCardButton width={'174px'} inverted={true}>
+              {translateRaw('ZAP_CARD_CTA')}
+            </ZapCardButton>
           </RouterLink>
         ) : (
           <>
             <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
-              <ZapCardButton inverted={true}>{translateRaw('ADD')}</ZapCardButton>
+              <ZapCardButton width={'81px'} inverted={true}>
+                {translateRaw('ADD')}
+              </ZapCardButton>
             </RouterLink>
             <a target="_blank" href={config.link} rel="noreferrer">
-              <ZapCardButton inverted={true}>{translateRaw('WITHDRAW')}</ZapCardButton>
+              <ZapCardButton width={'117px'} inverted={true}>
+                {translateRaw('WITHDRAW')}
+              </ZapCardButton>
             </a>
           </>
         )}

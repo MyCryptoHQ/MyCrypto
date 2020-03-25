@@ -2,17 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { DashboardPanel } from 'v2/components';
-import { BREAK_POINTS } from 'v2/theme';
+import { BREAK_POINTS, SPACING } from 'v2/theme';
 import { translateRaw } from 'v2/translations';
 
 import { ZAPS_CONFIG } from '../config';
 import ZapCard from './ZapCard';
 import DeFiZapLogo from './DeFiZapLogo';
 
-const CTAContent = styled('ul')`
+const CTAContent = styled.div`
   display: flex;
-  padding: 0px 15px;
+  padding: 0px ${SPACING.BASE};
   flex-direction: column;
+  padding-bottom: ${SPACING.BASE};
   @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
     flex-direction: row;
   }
