@@ -16,11 +16,11 @@ import { StoreContext, AssetContext, NetworkContext, getAccountBalance } from 'v
 import { fetchGasPriceEstimates } from 'v2/services/ApiService';
 import { getNonce } from 'v2/services/EthService';
 import { EtherUUID } from 'v2/utils';
+import { getAccountsWithAssetBalance } from 'v2/features/SwapAssets/helpers';
 
+import MembershipDropdown from './MembershipDropdown';
 import { MembershipPurchaseState, MembershipSimpleTxFormFull } from '../types';
 import { IMembershipId, IMembershipConfig, MEMBERSHIP_CONFIG } from '../config';
-import MembershipDropdown from './MembershipDropdown';
-import { getAccountsWithAssetBalance } from 'v2/features/SwapAssets/helpers';
 
 interface Props extends MembershipPurchaseState {
   onComplete(fields: any): void;

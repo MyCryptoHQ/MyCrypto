@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
 import { COLORS, SPACING, FONT_SIZE } from 'v2/theme';
-import { IMembershipConfig } from '../config';
 import { Typography } from 'v2/components';
+import { IMembershipConfig, getExpiryDate } from '../config';
 
 interface Props {
   membershipSelected: IMembershipConfig;
@@ -44,8 +44,6 @@ const ExpiryWrapper = styled.div`
 `;
 
 const MembershipReceiptBanner = ({ membershipSelected }: Props) => {
-  const today = new Date();
-  const expiration = new Date(today.getTime() + 86400000 * membershipSelected.durationInDays);
   return (
     <BannerContainer>
       <MembershipWrapper>
@@ -58,7 +56,7 @@ const MembershipReceiptBanner = ({ membershipSelected }: Props) => {
             <Typography as="div">
               {translateRaw('EXPIRES_ON')}
               {': '}
-              {expiration.toLocaleDateString()}
+              {getExpiryDate(membershipSelected.key).toLocaleDateString()}
             </Typography>
           </ExpiryWrapper>
         </div>

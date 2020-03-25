@@ -3,10 +3,10 @@ import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
 import { COLORS, SPACING, FONT_SIZE } from 'v2/theme';
-import { IMembershipConfig } from '../config';
 import { Typography, Tooltip } from 'v2/components';
 import { AssetContext } from 'v2/services';
 import { Asset } from 'v2/types';
+import { IMembershipConfig } from '../config';
 
 interface Props {
   membershipSelected: IMembershipConfig;
