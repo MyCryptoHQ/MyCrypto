@@ -71,8 +71,8 @@ export const productLinks: Link[] = [
     text: translateRaw('FOOTER_HELP_AND_DEBUGGING')
   },
   {
-    link: 'https://hackerone.com/mycrypto',
-    text: translateRaw('FOOTER_HACKERONE')
+    link: 'https://security.mycrypto.com',
+    text: translateRaw('FOOTER_SECURITY')
   }
 ];
 
