@@ -289,6 +289,7 @@ export const ConfirmTransactionUI = ({
         disabled={isBroadcastingTx}
         className="ConfirmTransaction-button"
         loading={isBroadcastingTx}
+        fullwidth={true}
       >
         {isBroadcastingTx ? translateRaw('SUBMITTING') : translateRaw('CONFIRM_AND_SEND')}
       </SendButton>
