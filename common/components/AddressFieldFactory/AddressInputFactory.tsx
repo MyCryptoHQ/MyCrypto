@@ -51,8 +51,10 @@ const ENSStatus: React.SFC<{
 }> = ({ isLoading, ensAddress, rawAddress, chainId }) => {
   const isValidENS = getIsValidENSAddressFunction(chainId);
   const isValidDomain = (domain: string) => domain.endsWith('.zil') || domain.endsWith('.crypto');
-  const isValid = isValidENS(ensAddress) || isValidDomain(ensAddress);
-
+  let isValid = isValidENS(ensAddress) || isValidDomain(ensAddress);
+  if (rawAddress === '0x0') {
+    isValid = false;
+  }
   const text = translate('LOADING_ENS_ADDRESS');
 
   if (isLoading) {
