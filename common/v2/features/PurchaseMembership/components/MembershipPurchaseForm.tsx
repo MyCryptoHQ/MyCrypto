@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Formik, Form, Field, FieldProps } from 'formik';
 import { Button } from '@mycrypto/ui';
@@ -8,7 +8,7 @@ import { parseEther } from 'ethers/utils';
 
 import translate, { translateRaw } from 'v2/translations';
 import { SPACING } from 'v2/theme';
-import { IAccount, Network, StoreAccount, Asset } from 'v2/types';
+import { IAccount, Network, StoreAccount, Asset, TSymbol } from 'v2/types';
 import { AccountDropdown, InlineMessage, AmountInput } from 'v2/components';
 import { validateAmountField } from 'v2/features/SendAssets/components/validators/validators';
 import { isEthereumAccount } from 'v2/services/Store/Account/helpers';
@@ -16,8 +16,11 @@ import { StoreContext, AssetContext, NetworkContext, getAccountBalance } from 'v
 import { fetchGasPriceEstimates } from 'v2/services/ApiService';
 import { getNonce } from 'v2/services/EthService';
 import { EtherUUID } from 'v2/utils';
+import { getAccountsWithAssetBalance } from 'v2/features/SwapAssets/helpers';
 
-import { MembershipPurchaseState, ISimpleTxFormFull } from '../types';
+import MembershipDropdown from './MembershipDropdown';
+import { MembershipPurchaseState, MembershipSimpleTxFormFull } from '../types';
+import { IMembershipId, IMembershipConfig, MEMBERSHIP_CONFIG } from '../config';
 
 interface Props extends MembershipPurchaseState {
   onComplete(fields: any): void;
@@ -25,7 +28,6 @@ interface Props extends MembershipPurchaseState {
 }
 
 interface UIProps {
-  ethAsset: Asset;
   network: Network;
   relevantAccounts: StoreAccount[];
   onComplete(fields: any): void;
@@ -54,15 +56,12 @@ const FormFieldSubmitButton = styled(Button)`
 
 const MembershipForm = ({ onComplete }: Props) => {
   const { accounts } = useContext(StoreContext);
-  const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
-  const ethAsset = assets.find(asset => asset.uuid === EtherUUID) as Asset;
   const network = networks.find(n => n.baseAsset === EtherUUID) as Network;
   const relevantAccounts = accounts.filter(isEthereumAccount);
 
   return (
     <MembershipFormUI
-      ethAsset={ethAsset}
       network={network}
       relevantAccounts={relevantAccounts}
       onComplete={onComplete}
@@ -70,11 +69,16 @@ const MembershipForm = ({ onComplete }: Props) => {
   );
 };
 
-export const MembershipFormUI = ({ ethAsset, network, relevantAccounts, onComplete }: UIProps) => {
-  const initialFormikValues: ISimpleTxFormFull = {
+export const MembershipFormUI = ({ network, relevantAccounts, onComplete }: UIProps) => {
+  const { assets } = useContext(AssetContext);
+  const defaultMembership = MEMBERSHIP_CONFIG[IMembershipId.onemonth];
+  const defaultAsset = assets.find(asset => asset.uuid === defaultMembership.assetUUID) as Asset;
+  const [selectedAsset, setSelectedAsset] = useState(defaultAsset);
+  const initialFormikValues: MembershipSimpleTxFormFull = {
+    membershipSelected: defaultMembership,
     account: {} as StoreAccount,
-    amount: '',
-    asset: ethAsset,
+    amount: defaultMembership.price,
+    asset: defaultAsset,
     nonce: '0',
     gasPrice: '20',
     address: '',
@@ -89,7 +93,7 @@ export const MembershipFormUI = ({ ethAsset, network, relevantAccounts, onComple
       .typeError(translateRaw('ERROR_0'))
       .test(
         'check-amount',
-        translateRaw('BALANCE_TOO_LOW_NO_RECOMMENDATION_ERROR', { $asset: ethAsset.ticker }),
+        translateRaw('BALANCE_TOO_LOW_NO_RECOMMENDATION_ERROR', { $asset: selectedAsset.ticker }),
         function(value) {
           const account = this.parent.account;
           const asset = this.parent.asset;
@@ -123,10 +127,57 @@ export const MembershipFormUI = ({ ethAsset, network, relevantAccounts, onComple
             Object.values(errors).filter(error => error !== undefined && !isEmpty(error)).length ===
             0;
 
+          const { amount, asset, account: selectedAccount } = values;
+          const convertedAsset = { name: asset.name, symbol: asset.ticker as TSymbol };
+          const filteredAccounts = getAccountsWithAssetBalance(
+            relevantAccounts,
+            convertedAsset,
+            amount
+          );
+
+          useEffect(() => {
+            if (
+              amount &&
+              asset &&
+              selectedAccount &&
+              !getAccountsWithAssetBalance(filteredAccounts, convertedAsset, amount).find(
+                a => a.uuid === selectedAccount.uuid
+              )
+            ) {
+              setFieldValue('account', undefined);
+            }
+          }, [amount, asset]);
+
           return (
             <Form>
               <FormFieldItem>
-                <FormFieldLabel htmlFor="account">{translate('X_SENDER')}</FormFieldLabel>
+                <FormFieldLabel htmlFor="membershipSelected">
+                  {translate('SELECT_MEMBERSHIP')}
+                </FormFieldLabel>
+                <Field
+                  name="membershipSelected"
+                  value={values.membershipSelected}
+                  component={({ field, form }: FieldProps) => (
+                    <MembershipDropdown
+                      name={field.name}
+                      value={{ value: field.value, label: field.value.title }}
+                      onSelect={(option: { label: string; value: IMembershipConfig }) => {
+                        form.setFieldValue('membershipSelected', option.value); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
+                        form.setFieldValue('amount', option.value.price);
+                        const newAsset = assets.find(
+                          a => a.uuid === option.value.assetUUID
+                        ) as Asset;
+                        form.setFieldValue('asset', newAsset);
+                        setSelectedAsset(newAsset);
+                      }}
+                    />
+                  )}
+                />
+              </FormFieldItem>
+              <FormFieldItem>
+                <FormFieldLabel htmlFor="account">
+                  {translate('SELECT_YOUR_ACCOUNT')}
+                </FormFieldLabel>
                 <Field
                   name="account"
                   value={values.account}
@@ -134,7 +185,8 @@ export const MembershipFormUI = ({ ethAsset, network, relevantAccounts, onComple
                     <AccountDropdown
                       name={field.name}
                       value={field.value}
-                      accounts={relevantAccounts}
+                      accounts={filteredAccounts}
+                      asset={values.asset}
                       onSelect={(option: IAccount) => {
                         form.setFieldValue('account', option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
                         handleNonceEstimate(option);
@@ -155,7 +207,8 @@ export const MembershipFormUI = ({ ethAsset, network, relevantAccounts, onComple
                       <>
                         <AmountInput
                           {...field}
-                          asset={ethAsset}
+                          disabled={true}
+                          asset={values.asset}
                           value={field.value}
                           onBlur={() => {
                             form.setFieldTouched('amount');
@@ -181,7 +234,7 @@ export const MembershipFormUI = ({ ethAsset, network, relevantAccounts, onComple
                   }
                 }}
               >
-                Continue on!
+                {translateRaw('BUY_MEMBERSHIP')}
               </FormFieldSubmitButton>
             </Form>
           );

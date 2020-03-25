@@ -646,6 +646,11 @@
     "MANAGE_MEMBERSHIP": "Manage Membership",
     "EXPIRES_ON": "Expires on",
     "MEMBERSHIP_ERROR": "Cannot detect membership status. Please refresh the page or try again. If problem persists, contact [support@mycrypto.com](mailto:support@mycrypto.com)",
-    "BUY_MEMBERSHIP": "Buy Membership"
+    "BUY_MEMBERSHIP": "Buy Membership",
+    "SELECT_YOUR_ACCOUNT": "Select Your Account",
+    "SELECT_MEMBERSHIP": "Select Your Membership Plan",
+    "MEMBERSHIP_DETAILS": "Membership Details",
+    "COST": "Cost",
+    "NEW_MEMBER": "You are now a MyCrypto Member!"
   }
 }

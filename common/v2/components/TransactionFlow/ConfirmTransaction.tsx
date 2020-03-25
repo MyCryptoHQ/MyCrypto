@@ -12,6 +12,7 @@ import { convertToFiat } from 'v2/utils';
 import translate, { translateRaw } from 'v2/translations';
 import { TSymbol } from 'v2/types/symbols';
 import { ZapSelectedBanner, DeFiZapLogo } from 'v2/features/DeFiZap';
+import { MembershipSelectedBanner } from 'v2/features/PurchaseMembership';
 
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
@@ -183,6 +184,9 @@ export const ConfirmTransactionUI = ({
   return (
     <ConfirmTransactionWrapper>
       {txType === ITxType.DEFIZAP && zapSelected && <ZapSelectedBanner zapSelected={zapSelected} />}
+      {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
+        <MembershipSelectedBanner membershipSelected={membershipSelected} />
+      )}
       <FromToAccount
         from={{
           address: sender.address,
@@ -192,18 +196,21 @@ export const ConfirmTransactionUI = ({
           address: (receiverAddress || 'Unknown') as never,
           label: recipientLabel
         }}
-        displayToAddress={txType !== ITxType.DEFIZAP}
+        displayToAddress={txType !== ITxType.DEFIZAP && txType !== ITxType.PURCHASE_MEMBERSHIP}
       />
       {txType === ITxType.DEFIZAP && zapSelected && (
         <RowWrapper>
           <TxIntermediaryDisplay address={zapSelected.contractAddress} contractName={'DeFi Zap'} />
         </RowWrapper>
       )}
-      {assetType === 'erc20' && asset && asset.contractAddress && (
-        <RowWrapper>
-          <TxIntermediaryDisplay address={asset.contractAddress} contractName={asset.ticker} />
-        </RowWrapper>
-      )}
+      {assetType === 'erc20' &&
+        asset &&
+        asset.contractAddress &&
+        txType !== ITxType.PURCHASE_MEMBERSHIP && (
+          <RowWrapper>
+            <TxIntermediaryDisplay address={asset.contractAddress} contractName={asset.ticker} />
+          </RowWrapper>
+        )}
       {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
         <RowWrapper>
           <TxIntermediaryDisplay
