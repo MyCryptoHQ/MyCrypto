@@ -211,8 +211,8 @@ export const TxReceiptUI = ({
           <SwapFromToDiagram
             fromSymbol={swapDisplay.fromAsset.symbol}
             toSymbol={swapDisplay.toAsset.symbol}
-            fromAmount={swapDisplay.fromAmount}
-            toAmount={swapDisplay.toAmount}
+            fromAmount={swapDisplay.fromAmount.toString()}
+            toAmount={swapDisplay.toAmount.toString()}
           />
         </div>
       )}

@@ -1,10 +1,10 @@
 export * from './error';
-export * from './typeGuards';
+export { notUndefined, isTxSigned, isTxHash } from './typeGuards';
 export * from './validators';
 export { IS_ELECTRON, IS_MOBILE, IS_DOWNLOADABLE } from './platform';
 export { hasWeb3Provider, IS_DEV, IS_PROD } from './environment';
 export { getFeaturedOS } from './getFeaturedOS';
-export { generateUUID, generateAssetUUID, generateContractUUID } from './generateUUID';
+export { generateUUID, generateAssetUUID, generateContractUUID, getUUID } from './generateUUID';
 export { isUrl } from './isUrl';
 export { truncate } from './truncate';
 export { useOnClickOutside } from './useOnClickOutside';
@@ -51,3 +51,5 @@ export { getWeb3Config, isWeb3Wallet } from './web3';
 export { toArray } from './toArray';
 export { objToString } from './objToString';
 export * from './constants';
+export { bigify } from './bigify';
+export { useTxMulti } from './useTxMulti';

@@ -37,3 +37,4 @@ export {
 export { hexEncodeData, hexEncodeQuantity } from './hexEncode';
 export { hexToNumber } from './hexToNumber';
 export * from './providerWrappers';
+export { appendNonce, appendGasLimit, appendGasPrice, appendSender } from './transactions';

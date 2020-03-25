@@ -1,98 +1,34 @@
-import { ethers } from 'ethers';
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
-import { Asset, StoreAccount, ITxConfig } from 'v2/types';
-import { DEXAG_PROXY_CONTRACT } from 'v2/config';
-import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
-import {
-  inputGasPriceToHex,
-  hexWeiToString,
-  getNonce,
-  hexToNumber,
-  hexToString
-} from 'v2/services/EthService';
-import { getAssetByUUID, getAssetByTicker } from 'v2/services';
+import { Asset, StoreAccount, ITxConfig, IHexStrTransaction, ITxObject } from 'v2/types';
+import { getAssetByUUID, getAssetByTicker, DexService } from 'v2/services';
+import { hexToString, appendGasPrice, appendSender } from 'v2/services/EthService';
 import { WALLET_STEPS } from 'v2/components';
 import { weiToFloat } from 'v2/utils';
 
-import { ISwapAsset } from './types';
+import { ISwapAsset, IAssetPair, LAST_CHANGED_AMOUNT } from './types';
 
-export const makeAllowanceTransaction = async (
-  trade: any,
-  account: StoreAccount
-): Promise<ITxConfig> => {
-  const { address: to, amount } = trade.metadata.input;
-  const network = account.network;
+export const getTradeOrder = (assetPair: IAssetPair, account: StoreAccount) => async () => {
+  const { lastChangedAmount, fromAsset, fromAmount, toAsset, toAmount } = assetPair;
+  const { address, network } = account;
+  const isLastChangedTo = lastChangedAmount === LAST_CHANGED_AMOUNT.TO;
+  // Trade order details depends on the direction of the asset exchange.
+  const getOrderDetails = isLastChangedTo
+    ? DexService.instance.getOrderDetailsTo
+    : DexService.instance.getOrderDetailsFrom;
 
-  // First 4 bytes of the hash of "fee()" for the sighash selector
-  const funcHash = ethers.utils.hexDataSlice(ethers.utils.id('approve(address,uint256)'), 0, 4);
-
-  const abi = new ethers.utils.AbiCoder();
-  const inputs = [
-    {
-      name: 'spender',
-      type: 'address'
-    },
-    {
-      name: 'amount',
-      type: 'uint256'
-    }
-  ];
-
-  const params = [DEXAG_PROXY_CONTRACT, amount];
-  const bytes = abi.encode(inputs, params).substr(2);
-
-  // construct approval data from function hash and parameters
-  const inputData = `${funcHash}${bytes}`;
-  const { fast } = await fetchGasPriceEstimates(network);
-  const gasPrice = hexWeiToString(inputGasPriceToHex(fast.toString()));
-
-  const transaction: any = {
-    to,
-    chainId: network.chainId,
-    data: inputData,
-    value: 0,
-    gasPrice: addHexPrefix(new BN(gasPrice).toString(16)),
-    nonce: await getNonce(network, account)
-  };
-  const gasLimit = await getGasEstimate(network, transaction);
-  transaction.gasLimit = hexToNumber(gasLimit);
-
-  return transaction;
-};
-
-export const makeTradeTransactionFromDexTrade = async (
-  trade: any,
-  account: StoreAccount
-): Promise<ITxConfig> => {
-  const network = account.network;
-  const { fast } = await fetchGasPriceEstimates(network);
-  let gasPrice = hexWeiToString(inputGasPriceToHex(fast.toString()));
-
-  if (trade.metadata.gasPrice) {
-    gasPrice = trade.metadata.gasPrice;
-  }
-
-  const { to, data, value } = trade.trade;
-  const transaction: any = {
-    to,
-    data,
-    from: account.address,
-    gasPrice: addHexPrefix(new BN(gasPrice).toString(16)),
-    value: addHexPrefix(new BN(value).toString(16)),
-    chainId: network.chainId,
-    nonce: await getNonce(network, account)
-  };
-  const gasLimit = await getGasEstimate(network, transaction);
-  transaction.gasLimit = hexToNumber(gasLimit) * 1.2; // use slightly higher gas limit than estimate
-  delete transaction.from;
-
-  return transaction;
+  return getOrderDetails(
+    fromAsset.symbol,
+    toAsset.symbol,
+    (isLastChangedTo ? toAmount : fromAmount).toString()
+  )
+    .then(txs => Promise.all(txs.map(appendSender(address))))
+    .then(txs => Promise.all(txs.map(appendGasPrice(network))));
 };
 
 export const makeTxConfigFromTransaction = (assets: Asset[]) => (
-  transaction: ITxConfig,
+  transaction: ITxObject,
   account: StoreAccount,
   fromAsset: ISwapAsset,
   fromAmount: string
@@ -119,6 +55,18 @@ export const makeTxConfigFromTransaction = (assets: Asset[]) => (
   };
 
   return txConfig;
+};
+
+export const makeTxObject = (config: ITxConfig): IHexStrTransaction => {
+  return {
+    to: config.receiverAddress,
+    chainId: config.network.chainId,
+    data: config.data,
+    value: addHexPrefix(new BN(config.amount).toString(16)),
+    gasPrice: addHexPrefix(new BN(config.gasPrice).toString(16)),
+    gasLimit: config.gasLimit,
+    nonce: config.nonce
+  };
 };
 
 // filter accounts based on wallet type and sufficient balance

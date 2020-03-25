@@ -1,12 +1,13 @@
-import { ValuesType } from 'utility-types';
-import { TAddress } from 'v2/types';
+import { ValuesType, Overwrite } from 'utility-types';
+import { TAction, TAddress } from 'v2/types';
 
 export type TActionError = ValuesType<typeof WcReducer.errorCodes>;
-interface TAction {
-  type: ValuesType<typeof WcReducer.actionTypes>;
-  payload?: any;
-  error?: { code: TActionError };
-}
+// TODO convert to FSA compatible action type
+type WCAction = Overwrite<
+  TAction<ValuesType<typeof WcReducer.actionTypes>, any>,
+  { error?: { code: TActionError } }
+>;
+
 interface State {
   detectedAddress?: TAddress;
   detectedChainId?: number;
@@ -26,7 +27,7 @@ export const initialState: State = {
   errors: []
 };
 
-export function WcReducer(state: State, { type, payload, error }: TAction): State {
+export function WcReducer(state: State, { type, payload, error }: WCAction): State {
   switch (type) {
     case WcReducer.actionTypes.INIT_SUCCESS: {
       const { uri } = payload;

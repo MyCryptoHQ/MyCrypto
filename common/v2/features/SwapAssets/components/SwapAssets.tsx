@@ -1,7 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { formatEther } from 'ethers/utils';
-import { Button } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'v2/translations';
 import { MYC_DEXAG_COMMISSION_RATE, MYC_DEXAG_MARKUP_THRESHOLD } from 'v2/config';
@@ -11,7 +10,8 @@ import {
   AccountDropdown,
   InlineMessage,
   Typography,
-  Tooltip
+  Tooltip,
+  Button
 } from 'v2/components';
 import { SPACING, COLORS } from 'v2/theme';
 import { subtractBNFloats, trimBN } from 'v2/utils';
@@ -77,6 +77,9 @@ const DisplayDataContainer = styled.div`
 const StyledButton = styled(Button)`
   margin-top: 12px;
   width: 100%;
+  && div {
+    justify-content: center;
+  }
 `;
 
 const SlippageDisplay = styled(LabelText)`
@@ -101,6 +104,7 @@ interface Props {
   initialToAmount: string;
   exchangeRate: string;
   markup: string;
+  isSubmitting: boolean;
   onSuccess(): void;
   handleFromAssetSelected(asset: ISwapAsset): void;
   handleToAssetSelected(asset: ISwapAsset): void;
@@ -127,6 +131,7 @@ export default function SwapAssets(props: Props) {
     fromAmountError,
     toAmountError,
     onSuccess,
+    isSubmitting,
     handleFromAssetSelected,
     handleToAssetSelected,
     calculateNewFromAmount,
@@ -159,7 +164,6 @@ export default function SwapAssets(props: Props) {
 
     // Calculate new "to amount" 500 ms after user stopped typing
     if (calculateToAmountTimeout) clearTimeout(calculateToAmountTimeout);
-
     calculateToAmountTimeout = setTimeout(() => {
       calculateNewToAmount(value);
     }, 500);
@@ -321,6 +325,7 @@ export default function SwapAssets(props: Props) {
           !!fromAmountError ||
           !!toAmountError
         }
+        loading={isSubmitting}
       >
         {translate('ACTION_6')}
       </StyledButton>

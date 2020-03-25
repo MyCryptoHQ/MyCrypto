@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { translateRaw } from 'v2/translations';
-
 import { ExtendedContentPanel, WALLET_STEPS } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
-import { ITxReceipt, ISignedTx } from 'v2/types';
-import { useStateReducer } from 'v2/utils';
+import { ITxSigned, ITxHash, TxParcel } from 'v2/types';
+import { bigify, useStateReducer, useTxMulti } from 'v2/utils';
 import { useEffectOnce, usePromise } from 'v2/vendor';
 
-import { SwapAssets, ConfirmSwap, SwapTransactionReceipt, SetAllowance } from './components';
-import { SwapFlowFactory, swapFlowInitialState } from './stateFactory';
-import { SwapState } from './types';
+import { SwapAssets, SwapTransactionReceipt, ConfirmSwapMultiTx, ConfirmSwap } from './components';
+import { getTradeOrder } from './helpers';
+import { SwapFormFactory, swapFormInitialState } from './stateFormFactory';
+import { SwapFormState, IAssetPair } from './types';
 
 interface TStep {
   title?: string;
@@ -23,8 +23,6 @@ interface TStep {
 }
 
 const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
-  const [step, setStep] = useState(0);
-
   const {
     fetchSwapAssets,
     setSwapAssets,
@@ -35,32 +33,28 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     handleFromAmountChanged,
     handleToAmountChanged,
     handleAccountSelected,
-    handleConfirmSwapClicked,
-    handleAllowanceSigned,
-    handleTxSigned,
-    swapState
-  } = useStateReducer(SwapFlowFactory, swapFlowInitialState);
+    formState
+  } = useStateReducer(SwapFormFactory, swapFormInitialState);
   const {
+    assets,
+    account,
     fromAsset,
     toAsset,
-    assets,
     fromAmount,
     toAmount,
     isCalculatingFromAmount,
     isCalculatingToAmount,
     fromAmountError,
     toAmountError,
-    account,
-    isSubmitting,
     lastChangedAmount,
-    dexTrade,
-    txReceipt,
-    txConfig,
-    rawTransaction,
     exchangeRate,
     initialToAmount,
     markup
-  }: SwapState = swapState;
+  }: SwapFormState = formState;
+
+  const [assetPair, setAssetPair] = useState({});
+  const { state, initWith, prepareTx, sendTx, reset, stopYield } = useTxMulti();
+  const { canYield, isSubmitting, transactions } = state;
 
   const goToFirstStep = () => {
     setStep(0);
@@ -97,7 +91,8 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         initialToAmount,
         exchangeRate,
         markup,
-        account
+        account,
+        isSubmitting
       },
       actions: {
         handleFromAssetSelected,
@@ -107,77 +102,78 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         handleFromAmountChanged,
         handleToAmountChanged,
         handleAccountSelected,
-        onSuccess: goToNextStep
+        onSuccess: () => {
+          const pair: IAssetPair = {
+            fromAsset,
+            toAsset,
+            fromAmount: bigify(fromAmount),
+            toAmount: bigify(toAmount),
+            rate: bigify(exchangeRate),
+            markup: bigify(markup),
+            lastChangedAmount
+          };
+          initWith(getTradeOrder(pair, account), account, account.network);
+          setAssetPair(pair);
+        }
       }
     },
-    {
-      title: translateRaw('SWAP_CONFIRM_TITLE'),
-      backBtnText: translateRaw('SWAP'),
-      component: ConfirmSwap,
-      props: {
-        fromAsset,
-        toAsset,
-        fromAmount,
-        toAmount,
-        account,
-        exchangeRate,
-        lastChangedAmount,
-        isSubmitting
-      },
-      actions: {
-        onSuccess: () => handleConfirmSwapClicked(goToNextStep)
-      }
-    },
-    ...(dexTrade && dexTrade.metadata.input
-      ? [
-          {
-            title: translateRaw('SWAP_ALLOWANCE_TITLE'),
-            backBtnText: translateRaw('SWAP_CONFIRM_TITLE'),
-            component: SetAllowance,
-            props: {
-              isSubmitting,
-              network: account && account.network,
-              senderAccount: account,
-              rawTransaction
-            },
-            actions: {
-              onSuccess: (payload: ITxReceipt | ISignedTx) =>
-                handleAllowanceSigned(payload, goToNextStep)
-            }
+    ...transactions.flatMap((tx: Required<TxParcel>, idx) => [
+      {
+        title: translateRaw('SWAP_CONFIRM_TITLE'),
+        backBtnText: translateRaw('SWAP'),
+        component: transactions.length > 1 ? ConfirmSwapMultiTx : ConfirmSwap,
+        props: {
+          assetPair,
+          account,
+          isSubmitting,
+          transactions,
+          currentTxIdx: idx
+        },
+        actions: {
+          onClick: () => {
+            prepareTx(tx.txRaw);
           }
-        ]
-      : []),
-    {
-      title: translateRaw('SWAP'),
-      backBtnText: translateRaw('SWAP_CONFIRM_TITLE'),
-      component: account && WALLET_STEPS[account.wallet],
-      props: {
-        network: account && account.network,
-        senderAccount: account,
-        rawTransaction
+        }
       },
-      actions: {
-        onSuccess: (payload: ITxReceipt | ISignedTx) => handleTxSigned(payload, goToNextStep)
+      {
+        title: translateRaw('SWAP'),
+        backBtnText: translateRaw('SWAP_CONFIRM_TITLE'),
+        component: account && WALLET_STEPS[account.wallet],
+        props: {
+          network: account && account.network,
+          senderAccount: account,
+          rawTransaction: tx.txRaw
+        },
+        actions: {
+          onSuccess: (payload: ITxHash | ITxSigned) => sendTx(payload)
+        }
       }
-    },
+    ]),
     {
       title: translateRaw('TRANSACTION_BROADCASTED'),
       backBtnText: translateRaw('DEP_SIGNTX'),
       component: SwapTransactionReceipt,
       props: {
-        fromAsset,
-        toAsset,
-        fromAmount,
-        toAmount,
-        txReceipt,
-        txConfig,
-        onSuccess: goToFirstStep
+        assetPair,
+        account,
+        transactions,
+        onSuccess: () => {
+          reset();
+          goToFirstStep();
+        }
       }
     }
   ];
 
+  const [step, setStep] = useState(0);
   const stepObject = steps[step];
   const StepComponent = stepObject.component;
+
+  useEffect(() => {
+    if (!canYield) return;
+    goToNextStep();
+    stopYield();
+  }, [canYield]);
 
   const mounted = usePromise();
   useEffectOnce(() => {

@@ -68,7 +68,12 @@ export const ethercardReferralURL =
   'https://ether.cards/?utm_source=mycrypto&utm_medium=cpm&utm_campaign=site';
 export const keepkeyReferralURL = 'https://keepkey.go2cloud.org/aff_c?offer_id=1&aff_id=4086';
 export const steelyReferralURL = 'https://stee.ly/2Hcl4RE';
-export const DEXAG_PROXY_CONTRACT = '0xA65440C4CC83D70b44cF244a0da5373acA16a9cb';
+
+// Handler address will change if the trade contract changes.
+// Can also access handler by calling `approvalHandler()` on the trade contract.
+export const DEXAG_MYC_TRADE_CONTRACT = '0x3d7b19C37d422B43c07C7Ba6353ED2D1689540FD'; //'0xA65440C4CC83D70b44cF244a0da5373acA16a9cb';
+export const DEXAG_MYC_HANDLER_CONTRACT = '0xae0A30ac8C76d85f1E76A3EbDcEdc3047e0da456';
+export const DEX_BASE_URL = 'https://api-v2.dex.ag/';
 
 export enum Theme {
   DARK = 'dark',

@@ -1,7 +1,7 @@
 import { FallbackProvider, TransactionReceipt, TransactionResponse, Block } from 'ethers/providers';
 import { formatEther, BigNumber } from 'ethers/utils';
 
-import { Asset, Network, IHexStrTransaction, TxObj } from 'v2/types';
+import { Asset, Network, IHexStrTransaction, TxObj, ITxSigned } from 'v2/types';
 import { RPCRequests, baseToConvertedUnit, ERC20 } from 'v2/services/EthService';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { EthersJS } from './ethersJsProvider';
@@ -80,11 +80,11 @@ export class ProviderHandler {
     return this.client.getBlockNumber().then(data => data.toString());
   }
 
-  public sendRawTx(signedTx: string): Promise<TransactionResponse> {
-    return this.client.sendTransaction(signedTx);
+  public sendRawTx(signedTx: string | ITxSigned): Promise<TransactionResponse> {
+    return this.client.sendTransaction(signedTx as string);
   }
 
-  public waitForTransaction(txHash: string, confirmations?: number): Promise<TransactionReceipt> {
+  public waitForTransaction(txHash: string, confirmations = 1): Promise<TransactionReceipt> {
     return this.client.waitForTransaction(txHash, confirmations);
   }
 

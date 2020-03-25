@@ -1,10 +1,13 @@
+import { addHexPrefix } from 'ethereumjs-util';
+import BN from 'bn.js';
 import axios, { AxiosInstance } from 'axios';
 
-import { default as ApiService } from '../ApiService';
-import { TSymbol } from 'v2/types';
-import { DEXAG_PROXY_CONTRACT } from 'v2/config';
+import { TSymbol, ITxObject } from 'v2/types';
+import { DEXAG_MYC_TRADE_CONTRACT, DEXAG_MYC_HANDLER_CONTRACT, DEX_BASE_URL } from 'v2/config';
+import { ERC20 } from 'v2/services/EthService';
 
-const DEX_BASE_URL = 'https://api.dex.ag/';
+import { default as ApiService } from '../ApiService';
+import { DexTrade } from './types';
 
 let instantiated: boolean = false;
 
@@ -70,19 +73,36 @@ export default class DexService {
     to: TSymbol,
     fromAmount?: string,
     toAmount?: string
-  ) => {
+  ): Promise<Partial<ITxObject>[]> => {
     try {
       const params = {
         from,
         to,
         fromAmount,
         toAmount,
-        dex: 'best',
-        proxy: DEXAG_PROXY_CONTRACT
+        dex: 'ag',
+        proxy: DEXAG_MYC_TRADE_CONTRACT
       };
-      const { data: orderDetails } = await this.service.get('trade', { params });
+      const { data }: { data: DexTrade } = await this.service.get('trade', { params });
+      const isMultiTx = !!(data.metadata && data.metadata.input);
 
-      return orderDetails;
+      return [
+        // Include the Approve transaction when necessary.
+        // ie. any trade that is not an ETH/Token
+        ...(isMultiTx
+          ? [
+              formatApproveTx({
+                to: data.metadata.input.address,
+                value: data.metadata.input.amount
+              })
+            ]
+          : []),
+        formatTradeTx({
+          to: data.trade.to,
+          data: data.trade.data,
+          value: data.trade.value
+        })
+      ];
     } catch (e) {
       throw e;
     }
@@ -135,3 +155,27 @@ export default class DexService {
     }
   };
 }
+
+// Create a transaction that approves the MYC_HANDLER_CONTRACT in order for the TRADE_CONTRACT
+// to execute. Example: https://docs.dex.ag/api/using-the-api-with-node.js
+export const formatApproveTx = ({ to, value }: Partial<ITxObject>): Partial<ITxObject> => {
+  // [spender, amount]. Spender is the contract the user needs to authorize.
+  // It's value is also available in the API response obj `data.metadata.input.spender`
+  const data = ERC20.approve.encodeInput({ _spender: DEXAG_MYC_HANDLER_CONTRACT, _value: value });
+
+  return {
+    to,
+    data,
+    chainId: 1,
+    value: addHexPrefix(new BN('0').toString())
+  };
+};
+
+export const formatTradeTx = ({ to, data, value }: Partial<ITxObject>): Partial<ITxObject> => {
+  return {
+    to,
+    data,
+    value: addHexPrefix(new BN(value || '0').toString(16)),
+    chainId: 1
+  };
+};

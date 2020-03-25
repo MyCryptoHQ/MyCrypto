@@ -136,7 +136,7 @@ export function DeterministicWalletsClass({
       return getBaseAssetBalances(addressesToLookup, network).then((balanceMapData: BalanceMap) => {
         const walletsWithBalances: DeterministicWalletData[] = wallets.map(wallet => {
           const balance = balanceMapData[wallet.address];
-          const value = new BN(balance.toString(10));
+          const value = new BN(balance.toString());
           return {
             ...wallet,
             value
