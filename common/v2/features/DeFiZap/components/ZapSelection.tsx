@@ -10,7 +10,7 @@ import { ROUTE_PATHS } from 'v2/config';
 import { COLORS, BREAK_POINTS, SPACING } from 'v2/theme';
 
 import { ZAPS_CONFIG, IZapId, defaultZapId, riskAndReward, accordionContent } from '../config';
-import { RiskAndRewardCard } from '.';
+import { RiskAndRewardCard, DetailsList } from '.';
 
 const FullSizeContentPanel = styled(ExtendedContentPanel)`
   padding: 0px;
@@ -31,30 +31,71 @@ const SSection = styled.section<{ color?: string }>`
   padding: ${SPACING.LG} ${SPACING.XL};
 `;
 
-const ContentPanelHeading = styled(SSection)`
+const Illustration = styled.img`
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    flex-direction: column;
+    display: none;
   }
+`;
+
+const MobileIllustration = styled.img`
+  display: none;
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    display: inherit;
+  }
+`;
+
+const DetailsSection = styled.div`
+  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 `;
 
-const Title = styled.div`
+const ContentPanelHeading = styled(SSection)`
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    flex-direction: column-reverse;
+  }
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-bottom: 0;
+`;
+
+const Title = styled.div`
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    font-size: 22px;
   }
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   font-size: 32px;
   font-weight: bold;
+`;
+
+const TitleContent = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const SubTitle = styled.div`
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    font-size: 14px;
+  }
+  font-size: 20px;
+  font-weight: normal;
+  color: ${COLORS.GREY};
+`;
+
+const LogoContainer = styled.div`
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    align-self: flex-end;
+    margin-bottom: ${SPACING.BASE};
+  }
 `;
 
 const BreakdownImg = styled.img`
   max-width: 32px;
   margin-right: ${SPACING.SM};
+  margin-top: ${SPACING.XS};
 `;
 
 // const DetailsSection = styled(SSection)`
@@ -123,13 +164,22 @@ const ZapEducation = withRouter(({ history, location }) => {
       <ContentPanelHeading>
         <Title>
           <BreakdownImg src={zapSelected.breakdownImage} />
-          {translate('ZAP_HEADER', { $zap: zapSelected.title })}
+          <TitleContent>
+            {zapSelected.title}
+            <SubTitle>{zapSelected.name}</SubTitle>
+          </TitleContent>
         </Title>
-        <AppLogo />
+        <LogoContainer>
+          <AppLogo />
+        </LogoContainer>
       </ContentPanelHeading>
       <SpacedSection color={COLORS.WHITE}>
-        <img src={zapSelected.illustration} />
-        <Button onClick={handleSubmit}>{translate('ZAP_ADD_FUNDS')}</Button>
+        <DetailsSection>
+          <Illustration src={zapSelected.illustration} width={'50%'} />
+          <DetailsList zapSelected={zapSelected} />
+        </DetailsSection>
+        <Button onClick={handleSubmit}>{translate('ZAP_START_EARNING')}</Button>
+        <MobileIllustration src={zapSelected.mobileIllustration} />
       </SpacedSection>
       <SSection color={COLORS.GREY_LIGHTEST}>
         <Title>{translate('ZAP_RISKS_HEADER')}</Title>
