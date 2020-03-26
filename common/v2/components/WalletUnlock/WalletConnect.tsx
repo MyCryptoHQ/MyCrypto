@@ -7,9 +7,10 @@ import { WalletId } from 'v2/types';
 import { getWalletConfig } from 'v2/config';
 import { COLORS, FONT_SIZE, BREAK_POINTS } from 'v2/theme';
 import { QRCodeContainer, Overlay, Button, Typography } from 'v2/components';
-import { WalletFactory, useWalletConnect } from 'v2/services/WalletService';
+import { WalletFactory, IUseWalletConnect } from 'v2/services/WalletService';
 
 interface OwnProps {
+  useWalletConnectProps: IUseWalletConnect;
   onUnlock(param: any): void;
   goToPreviousStep(): void;
 }
@@ -71,12 +72,12 @@ const SContainer = styled.div`
 const WalletService = WalletFactory(WalletId.WALLETCONNECT);
 const wikiLink = getWalletConfig(WalletId.WALLETCONNECT).helpLink;
 
-export function WalletConnectDecrypt({ onUnlock }: OwnProps) {
-  const { state, requestConnection } = useWalletConnect();
+export function WalletConnectDecrypt({ onUnlock, useWalletConnectProps }: OwnProps) {
+  const { state, requestConnection, signMessage } = useWalletConnectProps;
 
   useEffect(() => {
     if (!state.detectedAddress) return;
-    onUnlock(WalletService.init(state.detectedAddress));
+    onUnlock(WalletService.init(state.detectedAddress, signMessage));
   }, [state.detectedAddress]);
 
   return (

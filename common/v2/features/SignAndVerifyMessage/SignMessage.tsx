@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Button } from '@mycrypto/ui';
+import { Button as ButtonUI } from '@mycrypto/ui';
+import { toChecksumAddress } from 'ethereumjs-util';
 
-import { InputField, CodeBlock, WalletList } from 'v2/components';
+import { InputField, CodeBlock, WalletList, Button } from 'v2/components';
 import { BREAK_POINTS } from 'v2/theme';
 import translate, { translateRaw } from 'v2/translations';
 import { ISignedMessage, INode, FormData, WalletId } from 'v2/types';
-import { WALLETS_CONFIG } from 'v2/config';
+import { WALLETS_CONFIG, DEFAULT_NETWORK } from 'v2/config';
 import { setupWeb3Node } from 'v2/services/EthService';
-import { IFullWallet } from 'v2/services/WalletService';
-import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
+import { IFullWallet, withWalletConnect, IUseWalletConnect } from 'v2/services/WalletService';
+
 import { getStories } from './stories';
+
+import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
-export const defaultFormData: Omit<FormData, 'address'> = {
-  network: 'Ethereum',
-  accountType: undefined,
-  label: 'New Account',
-  derivationPath: ''
+export const defaultFormData: Pick<FormData, 'network'> = {
+  network: DEFAULT_NETWORK
 };
 
 const Content = styled.div`
@@ -61,7 +61,7 @@ interface BackButtonProps {
   marginBottom: boolean;
 }
 
-const BackButton = styled(Button)<BackButtonProps>`
+const BackButton = styled(ButtonUI)<BackButtonProps>`
   align-self: flex-start;
   color: #007a99;
   font-weight: bold;
@@ -75,50 +75,42 @@ const BackButton = styled(Button)<BackButtonProps>`
   }
 `;
 
-interface StateProps {
-  //paritySig: string;
-  setShowSubtitle(show: boolean): void;
+enum SignStatus {
+  NOT_SIGNED,
+  SIGNING,
+  SIGNED
 }
 
-type Props = StateProps;
+interface Props {
+  useWalletConnectProps: IUseWalletConnect;
+  setShowSubtitle(show: boolean): void;
+}
 
 function SignMessage(props: Props) {
   const [walletName, setWalletName] = useState<WalletId | undefined>(undefined);
   const [wallet, setWallet] = useState<IFullWallet | null>(null);
-  const [unlocked, setUnlocked] = useState(false);
-  const [isSigned, setIsSigned] = useState(false);
+  const [signStatus, setSignStatus] = useState<SignStatus>(SignStatus.NOT_SIGNED);
   const [message, setMessage] = useState('');
   const [error, setError] = useState<string | undefined>(undefined);
   const [signedMessage, setSignedMessage] = useState<ISignedMessage | null>(null);
 
-  const { setShowSubtitle } = props;
-
-  /*useEffect(() => {
-    if (props.paritySig && signedMessage && walletName === WalletId.PARITY_SIGNER) {
-      setSignedMessage({ ...signedMessage, sig: props.paritySig });
-      setIsSigned(true);
-    }
-  }, [props.paritySig]);*/
+  const { setShowSubtitle, useWalletConnectProps } = props;
 
   const handleSignMessage = async () => {
+    setSignStatus(SignStatus.SIGNING);
     try {
       if (!wallet) {
         throw Error;
       }
 
-      const address = wallet.getAddressString();
+      const address = toChecksumAddress(wallet.getAddressString());
       let sig = '';
 
-      /*if (walletName === WalletId.PARITY_SIGNER) {
-        const data = messageToData(message);
-        props.requestParityMessageSignature(address, data);
-      } else {*/
       let lib: INode = {} as INode;
       if (walletName === WalletId.METAMASK) {
         lib = (await setupWeb3Node()).lib;
       }
       sig = await wallet.signMessage(message, lib);
-      //}
 
       const combined = {
         address,
@@ -128,17 +120,18 @@ function SignMessage(props: Props) {
       };
       setError(undefined);
       setSignedMessage(combined);
-      setIsSigned(!!sig);
+      setSignStatus(SignStatus.SIGNED);
     } catch (err) {
-      setError(translateRaw('ERROR_38'));
-      setSignedMessage(null);
+      setSignStatus(SignStatus.NOT_SIGNED);
+      setError(translateRaw('SIGN_MESSAGE_ERROR'));
+      console.debug('[SignMessage]', err);
     }
   };
 
   const handleOnChange = (msg: string) => {
     setMessage(msg);
     setError(undefined);
-    setSignedMessage(null);
+    setSignStatus(SignStatus.NOT_SIGNED);
   };
 
   const onSelect = (selectedWalletName: WalletId) => {
@@ -148,17 +141,15 @@ function SignMessage(props: Props) {
 
   const onUnlock = (selectedWallet: any) => {
     setWallet(selectedWallet);
-    setUnlocked(true);
   };
 
   const resetWalletSelectionAndForm = () => {
     setMessage('');
     setError(undefined);
-    setSignedMessage(null);
     setWalletName(undefined);
-    setUnlocked(false);
-    setIsSigned(false);
+    setSignStatus(SignStatus.NOT_SIGNED);
     setShowSubtitle(true);
+    setWallet(null);
   };
 
   const story = getStories().find(x => x.name === walletName);
@@ -168,15 +159,16 @@ function SignMessage(props: Props) {
     <Content>
       {walletName ? (
         <>
-          <BackButton marginBottom={unlocked} basic={true} onClick={resetWalletSelectionAndForm}>
+          <BackButton marginBottom={!!wallet} basic={true} onClick={resetWalletSelectionAndForm}>
             <img src={backArrowIcon} alt="Back arrow" />
             {translateRaw('CHANGE_WALLET_BUTTON')}
           </BackButton>
-          {!unlocked && Step && (
+          {!wallet && (
             <Step
               wallet={WALLETS_CONFIG[walletName]}
               onUnlock={onUnlock}
               formData={defaultFormData}
+              useWalletConnectProps={useWalletConnectProps}
             />
           )}
         </>
@@ -184,7 +176,7 @@ function SignMessage(props: Props) {
         <WalletList wallets={getStories()} onSelect={onSelect} />
       )}
 
-      {unlocked && walletName && (
+      {wallet && (
         <>
           <InputField
             value={message}
@@ -195,10 +187,14 @@ function SignMessage(props: Props) {
             height="150px"
             inputError={error}
           />
-          <SignButton disabled={!message} onClick={handleSignMessage}>
-            {translate('NAV_SIGNMSG')}
+          <SignButton
+            disabled={!message}
+            onClick={handleSignMessage}
+            loading={signStatus === SignStatus.SIGNING}
+          >
+            {signStatus === SignStatus.SIGNING ? translate('SUBMITTING') : translate('NAV_SIGNMSG')}
           </SignButton>
-          {signedMessage && isSigned && (
+          {signStatus === SignStatus.SIGNED && (
             <SignedMessage>
               <SignedMessageLabel>{translate('MSG_SIGNATURE')}</SignedMessageLabel>
               <CodeBlockWrapper>
@@ -212,16 +208,4 @@ function SignMessage(props: Props) {
   );
 }
 
-export default SignMessage;
-/*const mapStateToProps = (state: AppState) => ({
-  paritySig: state.paritySigner.sig
-});
-
-const mapDispatchToProps = {
-  requestParityMessageSignature: paritySignerActions.requestMessageSignature
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SignMessage); */
+export default withWalletConnect(SignMessage);

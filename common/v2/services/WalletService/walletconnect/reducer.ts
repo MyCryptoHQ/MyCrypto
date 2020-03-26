@@ -1,25 +1,16 @@
 import { ValuesType, Overwrite } from 'utility-types';
-import { TAction, TAddress } from 'v2/types';
 
-export type TActionError = ValuesType<typeof WcReducer.errorCodes>;
+import { TAction } from 'v2/types';
+
+import { TActionError, WalletConnectState } from './types';
+
 // TODO convert to FSA compatible action type
 type WCAction = Overwrite<
   TAction<ValuesType<typeof WcReducer.actionTypes>, any>,
   { error?: { code: TActionError } }
 >;
 
-interface State {
-  detectedAddress?: TAddress;
-  detectedChainId?: number;
-  uri?: string;
-  errors?: TActionError[];
-  isConnected: boolean;
-  isPendingSign: boolean;
-  promptConnectionRetry: boolean;
-  promptSignRetry: boolean;
-}
-
-export const initialState: State = {
+export const initialState: WalletConnectState = {
   isConnected: false,
   isPendingSign: false,
   promptSignRetry: false,
@@ -27,7 +18,10 @@ export const initialState: State = {
   errors: []
 };
 
-export function WcReducer(state: State, { type, payload, error }: WCAction): State {
+export function WcReducer(
+  state: WalletConnectState,
+  { type, payload, error }: WCAction
+): WalletConnectState {
   switch (type) {
     case WcReducer.actionTypes.INIT_SUCCESS: {
       const { uri } = payload;

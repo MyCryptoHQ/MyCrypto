@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import translate, { translateRaw } from 'v2/translations';
 import { WalletButton } from './WalletButton';
 import { WalletId, IStory } from 'v2/types';
-import { WALLETS_CONFIG, ROUTE_PATHS } from 'v2/config';
+import { ROUTE_PATHS, getWalletConfig } from 'v2/config';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { IS_ELECTRON, getWeb3Config } from 'v2/utils';
 
@@ -82,59 +82,49 @@ interface Props {
   wallets: IStory[];
   showHeader?: boolean;
   onSelect(name: WalletId): void;
+  calculateMargin?(index: number): string;
 }
 
-export default class WalletList extends PureComponent<Props> {
-  public render() {
-    const { wallets, onSelect, showHeader } = this.props;
-    const validWallets = wallets.filter(w => !w.hideFromWalletList);
-    return (
-      <div>
-        {showHeader && (
-          <>
-            <Heading>{translate('DECRYPT_ACCESS')}</Heading>
-            <Description>{translate('ADD_ACCOUNT_DESCRIPTION')}</Description>
-          </>
-        )}
-        <WalletsContainer>
-          {validWallets.map((wallet: IStory, index: number) => {
-            const walletInfo =
-              wallet.name === WalletId.WEB3 ? getWeb3Config() : WALLETS_CONFIG[wallet.name];
-            let margin = '10px';
-            if (index < 4) {
-              margin = '2%';
-            } else if (index === validWallets.length - 1) {
-              margin = '15%';
-            }
-            return (
-              <WalletButton
-                key={`wallet-icon-${wallet.name}`}
-                name={translateRaw(walletInfo.lid)}
-                icon={walletInfo.icon}
-                description={translateRaw(walletInfo.description)}
-                margin={margin}
-                onClick={() => onSelect(wallet.name)}
-              />
-            );
-          })}
-        </WalletsContainer>
-        <InfoWrapper>
-          <Info showInOneLine={true}>
-            {translateRaw('ADD_ACCOUNT_FOOTER_LABEL')}{' '}
-            <Link to={ROUTE_PATHS.CREATE_WALLET.path}>
-              {translateRaw('ADD_ACCOUNT_FOOTER_LINK')}
+export const WalletList = ({ wallets, onSelect, showHeader, calculateMargin }: Props) => {
+  return (
+    <div>
+      {showHeader && (
+        <>
+          <Heading>{translate('DECRYPT_ACCESS')}</Heading>
+          <Description>{translate('ADD_ACCOUNT_DESCRIPTION')}</Description>
+        </>
+      )}
+      <WalletsContainer>
+        {wallets.map((wallet: IStory, index: number) => {
+          const walletInfo =
+            wallet.name === WalletId.WEB3 ? getWeb3Config() : getWalletConfig(wallet.name);
+          return (
+            <WalletButton
+              key={`wallet-icon-${wallet.name}`}
+              name={translateRaw(walletInfo.lid)}
+              icon={walletInfo.icon}
+              description={translateRaw(walletInfo.description)}
+              margin={calculateMargin && calculateMargin(index)}
+              onClick={() => onSelect(wallet.name)}
+              isDisabled={wallet.isDisabled}
+            />
+          );
+        })}
+      </WalletsContainer>
+      <InfoWrapper>
+        <Info showInOneLine={true}>
+          {translateRaw('ADD_ACCOUNT_FOOTER_LABEL')}{' '}
+          <Link to={ROUTE_PATHS.CREATE_WALLET.path}>{translateRaw('ADD_ACCOUNT_FOOTER_LINK')}</Link>
+        </Info>
+        {!IS_ELECTRON && (
+          <Info>
+            {translateRaw('DOWNLOAD_APP_FOOTER_LABEL')}
+            <Link to={ROUTE_PATHS.DOWNLOAD_DESKTOP_APP.path}>
+              {translateRaw('DOWNLOAD_APP_FOOTER_LINK')}
             </Link>
           </Info>
-          {!IS_ELECTRON && (
-            <Info>
-              {translateRaw('DOWNLOAD_APP_FOOTER_LABEL')}{' '}
-              <Link to={ROUTE_PATHS.DOWNLOAD_DESKTOP_APP.path}>
-                {translateRaw('DOWNLOAD_APP_FOOTER_LINK')}
-              </Link>
-            </Info>
-          )}
-        </InfoWrapper>
-      </div>
-    );
-  }
-}
+        )}
+      </InfoWrapper>
+    </div>
+  );
+};
