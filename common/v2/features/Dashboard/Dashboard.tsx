@@ -23,11 +23,15 @@ const EmptyTile = styled.div`
   width: 30%;
 `;
 
+const DashboardWrapper = styled.div`
+  width: 100%;
+`;
+
 export default function Dashboard() {
   const { isMyCryptoMember, currentAccounts } = useContext(StoreContext);
   const { accounts } = useContext(AccountContext);
   return (
-    <div>
+    <DashboardWrapper>
       {/* Mobile only */}
       <Mobile className="Dashboard-mobile">
         <NotificationsPanel accounts={accounts} />
@@ -120,6 +124,6 @@ export default function Dashboard() {
           />
         </div>
       </Desktop>
-    </div>
+    </DashboardWrapper>
   );
 }

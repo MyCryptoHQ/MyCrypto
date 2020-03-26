@@ -28,6 +28,14 @@ const SSelect = styled(Select)`
   .Select-menu {
     max-height: 20em !important;
   }
+
+  .Select-input {
+    width: 100%;
+
+    > input {
+      width: 100% !important;
+    }
+  }
 `;
 
 interface Props<T> {
@@ -46,6 +54,8 @@ interface Props<T> {
   inputValue?: string;
   onInputChange?: OnInputChangeHandler;
   onInputKeyDown?: OnInputKeyDownHandler;
+  onCloseResetsInput?: boolean;
+  onBlurResetsInput?: boolean;
   onChange?(option: T): void;
   onBlur?(e: string | undefined): void;
 }
@@ -53,12 +63,6 @@ interface Props<T> {
 // Fixes weird placement issues for react-select
 const DropdownContainer = styled('div')`
   .has-value > .Select-control > .Select-multi-value-wrapper > .Select-input:only-child {
-    transform: translateY(0%);
-    padding: 16px 15px 16px 15px;
-    position: inherit;
-  }
-
-  .is-open > .Select-control > .Select-multi-value-wrapper > .Select-input:only-child {
     transform: translateY(0%);
     padding: 16px 15px 16px 15px;
     position: inherit;
