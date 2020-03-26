@@ -45,7 +45,7 @@ const ZapStepper = ({ selectedZap }: Props) => {
       actions: (payload: ITxReceipt | ISignedTx, cb: any) => handleTxSigned(payload, cb)
     },
     {
-      label: translateRaw('ZAP_FLOW_RECEIPT'),
+      label: translateRaw('BROADCAST_TX_RECEIPT_TITLE'),
       component: ZapReceipt,
       props: (({ txConfig, zapSelected, txReceipt }) => ({ txConfig, zapSelected, txReceipt }))(
         zapFlowState

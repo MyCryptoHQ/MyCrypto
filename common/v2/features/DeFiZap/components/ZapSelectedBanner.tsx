@@ -2,10 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
-import { COLORS, SPACING, BREAK_POINTS, FONT_SIZE, LINE_HEIGHT } from 'v2/theme';
+import { COLORS, SPACING } from 'v2/theme';
 
 import { IZapConfig } from '../config';
-import { ProtocolTagsList } from '.';
 
 interface Props {
   zapSelected: IZapConfig;
@@ -23,53 +22,40 @@ const BannerContainer = styled.div`
 const BannerSubItem = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
   margin-top: ${SPACING.BASE};
 `;
 
-const BannerSubItemLabel = styled.p`
-  display: flex;
-  font-weight: bold;
-  margin-bottom: 0px;
-  margin-right: ${SPACING.XS};
-  line-height: ${LINE_HEIGHT.BASE};
+const SImg = styled.img`
+  width: auto;
+  height: 38px;
 `;
 
-const BannerSubItemText = styled.div`
+const TitleWrapper = styled.div`
   display: flex;
-  flex: 1;
-  justify-content: space-between;
-  margin-bottom: 0px;
-  line-height: ${LINE_HEIGHT.BASE};
   flex-direction: column;
-  @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
-    font-size: ${FONT_SIZE.BASE};
-    flex-direction: row;
-  }
+  align-items: flex-start;
+  margin-left: ${SPACING.SM};
 `;
 
-const ZapNameGrey = styled.p`
-  color: ${COLORS.GREY};
-  margin: 0px;
+const ZapName = styled.p`
+  color: ${COLORS.BLUE_DARK};
+  margin: 0 0 ${SPACING.SM} 0;
 `;
 
 const ZapSelectedBanner = ({ zapSelected }: Props) => {
   const IndicatorItem = zapSelected.positionDetails;
+
   return (
     <BannerContainer>
-      <BannerSubItemText>{translateRaw('ZAP_BANNER_DESCRIPTION')}</BannerSubItemText>
+      {translateRaw('ZAP_BANNER_DESCRIPTION')}
       <BannerSubItem>
-        <BannerSubItemLabel>{translateRaw('ZAP_NAME')}</BannerSubItemLabel>
-        <BannerSubItemText>
+        <SImg src={zapSelected.breakdownImage} />
+        <TitleWrapper>
           <div>{zapSelected.title}</div>
-          <ZapNameGrey>{zapSelected.name}</ZapNameGrey>
+          <ZapName>{zapSelected.name}</ZapName>
           <IndicatorItem />
-        </BannerSubItemText>
-      </BannerSubItem>
-      <BannerSubItem>
-        <BannerSubItemLabel>{translateRaw('PLATFORMS')}</BannerSubItemLabel>
-        <BannerSubItemText>
-          <ProtocolTagsList platformsUsed={zapSelected.platformsUsed} />
-        </BannerSubItemText>
+        </TitleWrapper>
       </BannerSubItem>
     </BannerContainer>
   );
