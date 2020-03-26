@@ -18,16 +18,8 @@ import { ScreenLockContext } from 'v2/features/ScreenLock/ScreenLockProvider';
 const { BLUE_BRIGHT } = COLORS;
 
 const Navbar = styled.nav`
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 4;
   width: 100%;
   background: #163150;
-
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    position: initial;
-  }
 `;
 
 const Menu = styled.div`
