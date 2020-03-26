@@ -16,6 +16,10 @@ let cancel: any = null;
 
 export default class DexService {
   public static instance = new DexService();
+  public static defaultParams = {
+    discluded: 'radar-relay',
+    dex: 'all'
+  };
 
   private service: AxiosInstance = ApiService.generateInstance({
     baseURL: DEX_BASE_URL
@@ -76,6 +80,7 @@ export default class DexService {
   ): Promise<Partial<ITxObject>[]> => {
     try {
       const params = {
+        ...DexService.defaultParams,
         from,
         to,
         fromAmount,
@@ -120,18 +125,17 @@ export default class DexService {
       }
 
       const params = {
+        ...DexService.defaultParams,
         from,
         to,
         fromAmount,
-        toAmount,
-        dex: 'all'
+        toAmount
       };
       const { data: costBasis } = await this.service.get('price', {
         params: {
           ...params,
           toAmount: toAmount ? '0.01' : undefined,
-          fromAmount: fromAmount ? '0.01' : undefined,
-          dex: 'all'
+          fromAmount: fromAmount ? '0.01' : undefined
         },
         cancelToken: new CancelToken(function executor(c) {
           // An executor function receives a cancel function as a parameter
