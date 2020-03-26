@@ -192,7 +192,7 @@ function SignMessage(props: Props) {
             onClick={handleSignMessage}
             loading={signStatus === SignStatus.SIGNING}
           >
-            {translate('NAV_SIGNMSG')}
+            {signStatus === SignStatus.SIGNING ? translate('SUBMITTING') : translate('NAV_SIGNMSG')}
           </SignButton>
           {signStatus === SignStatus.SIGNED && (
             <SignedMessage>

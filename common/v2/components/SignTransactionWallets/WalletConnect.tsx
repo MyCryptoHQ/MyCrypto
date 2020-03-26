@@ -4,7 +4,7 @@ import * as R from 'ramda';
 
 import translate, { translateRaw } from 'v2/translations';
 import { Button, CodeBlock, QRCodeContainer, Typography, Overlay, Spinner } from 'v2/components';
-import { WalletId, ISignComponentProps, TAddress } from 'v2/types';
+import { WalletId, ISignComponentProps, TAddress, ITxHash } from 'v2/types';
 import { getWalletConfig } from 'v2/config';
 import { COLORS, FONT_SIZE, BREAK_POINTS } from 'v2/theme';
 import { useUpdateEffect } from 'v2/vendor';
@@ -125,7 +125,7 @@ export function SignTransactionWalletConnect({
       from: senderAccount.address,
       ...rawTransaction
     })
-      .then((txHash: string) => onSuccess(txHash))
+      .then((txHash: ITxHash) => onSuccess(txHash))
       .catch(console.debug);
 
   const getErrorMessage = (code: TActionError) => {

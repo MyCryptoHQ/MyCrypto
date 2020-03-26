@@ -24,18 +24,18 @@ export const getStories = (): IStory[] => [
     steps: [WalletConnectDecrypt]
   },
   {
+    name: WalletId.PRIVATE_KEY,
+    steps: [PrivateKeyDecrypt],
+    isDisabled: IS_DEV ? false : !IS_ELECTRON
+  },
+  {
     name: WalletId.KEYSTORE_FILE,
     steps: [KeystoreDecrypt],
-    hideFromWalletList: IS_DEV ? false : !IS_ELECTRON
+    isDisabled: IS_DEV ? false : !IS_ELECTRON
   },
   {
     name: WalletId.MNEMONIC_PHRASE,
     steps: [MnemonicDecrypt],
-    hideFromWalletList: IS_DEV ? false : !IS_ELECTRON
-  },
-  {
-    name: WalletId.PRIVATE_KEY,
-    steps: [PrivateKeyDecrypt],
-    hideFromWalletList: IS_DEV ? false : !IS_ELECTRON
+    isDisabled: IS_DEV ? false : !IS_ELECTRON
   }
 ];

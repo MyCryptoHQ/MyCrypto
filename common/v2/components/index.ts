@@ -45,7 +45,7 @@ export * from './InlineMessage';
 export { default as Tabs } from './Tabs';
 export { default as TagsList } from './TagsList';
 export { default as CodeBlock } from './CodeBlock';
-export { default as WalletList } from './WalletList';
+export { WalletList } from './WalletList';
 export * from './WalletUnlock';
 export * from './TransactionFlow';
 export { default as TabsNav } from './TabsNav';

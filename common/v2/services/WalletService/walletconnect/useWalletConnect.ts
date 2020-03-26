@@ -1,6 +1,6 @@
 import { useState, useReducer, useEffect } from 'react';
 
-import { TAddress, ITxObject } from 'v2/types';
+import { TAddress, ITxObject, ITxHash } from 'v2/types';
 import { useUnmount } from 'v2/vendor';
 
 import { default as WalletConnectService } from './WalletConnectService';
@@ -72,7 +72,7 @@ export function useWalletConnect(): IUseWalletConnect {
         );
       }
 
-      if (!isExpectedAddress(from, state.detectedAddress!)) {
+      if (!isExpectedAddress(from, state.detectedAddress)) {
         dispatch({
           type: WcReducer.actionTypes.SIGN_FAILURE,
           error: { code: WcReducer.errorCodes.WRONG_ADDRESS }
@@ -87,7 +87,7 @@ export function useWalletConnect(): IUseWalletConnect {
       } else {
         return service
           .sendTx(tx)
-          .then((txHash: string) => {
+          .then((txHash: ITxHash) => {
             dispatch({ type: WcReducer.actionTypes.SIGN_SUCCESS });
             resolve(txHash);
           })
