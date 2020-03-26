@@ -37,7 +37,9 @@ const PurchaseMembershipStepper = () => {
     {
       label: 'Confirm Transaction',
       component: ConfirmMembershipPurchase,
-      props: (({ txConfig, membershipSelected }) => ({ txConfig, membershipSelected }))(purchaseMembershipFlowState)
+      props: (({ txConfig, membershipSelected }) => ({ txConfig, membershipSelected }))(
+        purchaseMembershipFlowState
+      )
     },
     {
       label: '',
@@ -48,7 +50,11 @@ const PurchaseMembershipStepper = () => {
     {
       label: 'Membership Purchase Receipt',
       component: MembershipPurchaseReceipt,
-      props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(purchaseMembershipFlowState)
+      props: (({ txConfig, txReceipt, membershipSelected }) => ({
+        txConfig,
+        txReceipt,
+        membershipSelected
+      }))(purchaseMembershipFlowState)
     }
   ];
   return (
