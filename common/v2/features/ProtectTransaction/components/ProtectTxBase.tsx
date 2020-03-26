@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { COLORS } from 'v2/theme';
+import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from 'v2/theme';
 
-const ProtectedTransactionBase = styled.div`
+const ProtectTxBase = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,20 +13,20 @@ const ProtectedTransactionBase = styled.div`
 
   svg.close-icon {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: ${SPACING.BASE};
+    right: ${SPACING.BASE};
   }
 
   h4 {
-    margin: 10px 0;
-    font-size: 24px;
-    line-height: 36px;
+    margin: ${SPACING.SM} 0;
+    font-size: ${FONT_SIZE.XL};
+    line-height: ${LINE_HEIGHT.XXL};
   }
 
   h5 {
-    margin: 10px 0 25px;
-    font-size: 16px;
-    line-height: 24px;
+    margin: ${SPACING.SM} 0 25px;
+    font-size: ${FONT_SIZE.BASE};
+    line-height: ${LINE_HEIGHT.XL};
   }
 
   hr {
@@ -40,4 +40,4 @@ const ProtectedTransactionBase = styled.div`
   }
 `;
 
-export default ProtectedTransactionBase;
+export default ProtectTxBase;

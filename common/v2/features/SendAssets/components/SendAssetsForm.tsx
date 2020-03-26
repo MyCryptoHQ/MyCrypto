@@ -69,7 +69,7 @@ import {
   WithProtectApiFactory
 } from 'v2/features/ProtectTransaction';
 import {
-  ProtectedTransactionError,
+  ProtectTxShowError,
   TransactionProtectionButton
 } from 'v2/features/ProtectTransaction/components';
 
@@ -677,12 +677,14 @@ const SendAssetsForm = ({
                 {translate('ACTION_6')}
               </Button>
 
-              <ProtectedTransactionError
+              <ProtectTxShowError
                 protectTxError={ProtectTransactionUtils.checkFormForProtectedTxErrors(
                   values,
                   getAssetRate(values.asset)
                 )}
-                shown={!(isEstimatingGasLimit || isResolvingName || isEstimatingNonce || !isFormValid)}
+                shown={
+                  !(isEstimatingGasLimit || isResolvingName || isEstimatingNonce || !isFormValid)
+                }
               />
             </Form>
           );

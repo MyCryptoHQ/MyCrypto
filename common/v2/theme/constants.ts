@@ -75,7 +75,13 @@ export const FONT_SIZE = {
 };
 
 export const LINE_HEIGHT = {
-  BASE: '16px'
+  XS: '12px',
+  SM: '14px',
+  BASE: '16px',
+  MD: '18px',
+  LG: '20px',
+  XL: '24px',
+  XXL: '36px'
 };
 
 export const SPACING = {

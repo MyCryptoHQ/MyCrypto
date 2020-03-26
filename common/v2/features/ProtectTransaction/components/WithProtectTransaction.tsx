@@ -7,12 +7,12 @@ import { IFormikFields, ISignedTx, IStepComponentProps, ITxReceipt } from 'v2/ty
 import { useStateReducer } from 'v2/utils';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 
-import { ProtectionThisTransaction } from './ProtectionThisTransaction';
-import { SignProtectedTransaction } from './SignProtectedTransaction';
-import { ProtectedTransactionReport } from './ProtectedTransactionReport';
+import { ProtectTxProtection } from './ProtectTxProtection';
+import { ProtectTxSign } from './ProtectTxSign';
+import { ProtectTxReport } from './ProtectTxReport';
 import { ProtectedTxConfigFactory, protectedTxConfigInitialState } from '../txStateFactory';
 import { WithProtectApiFactory } from '../withProtectStateFactory';
-import ProtectedTransactionModalBackdrop from './ProtectedTransactionModalBackdrop';
+import ProtectTxModalBackdrop from './ProtectTxModalBackdrop';
 import { TransactionProtectionButton } from './TransactionProtectionButton';
 
 const WithProtectTransactionWrapper = styled.div`
@@ -20,14 +20,14 @@ const WithProtectTransactionWrapper = styled.div`
   flex-wrap: nowrap;
 `;
 
-const WithProtectTransactionMain = styled.div<{ protectTxShown: boolean }>`
+const WithProtectTransactionMain = styled.div<{ protectTxShow: boolean }>`
   position: relative;
   flex: 0 0 100%;
   width: 100%;
   max-width: 100%;
 
-  ${({ protectTxShown }) =>
-    protectTxShown &&
+  ${({ protectTxShow }) =>
+    protectTxShow &&
     `
     @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
       flex: 0 0 calc(100vw - 375px - 4.5rem);
@@ -99,7 +99,7 @@ export function withProtectTransaction(
     });
 
     const {
-      withProtectState: { protectTxShown, stepIndex, protectTxEnabled, isWeb3Wallet },
+      withProtectState: { protectTxShow, stepIndex, protectTxEnabled, isWeb3Wallet },
       handleTransactionReport,
       goOnNextStep,
       goOnInitialStepOrFetchReport,
@@ -109,23 +109,12 @@ export function withProtectTransaction(
 
     const isMdScreen = useMediaQuery(`(min-width: ${BREAK_POINTS.SCREEN_MD})`);
 
-    const onModalBackdropClick = useCallback(
+    const toggleProtectTxShow = useCallback(
       e => {
         e.preventDefault();
 
         if (showHideTransactionProtection) {
-          showHideTransactionProtection(false);
-        }
-      },
-      [showHideTransactionProtection]
-    );
-
-    const onMobileShowReportClick = useCallback(
-      e => {
-        e.preventDefault();
-
-        if (showHideTransactionProtection) {
-          showHideTransactionProtection(true);
+          showHideTransactionProtection(!protectTxShow);
         }
       },
       [showHideTransactionProtection]
@@ -134,7 +123,7 @@ export function withProtectTransaction(
     return useMemo(
       () => (
         <WithProtectTransactionWrapper>
-          <WithProtectTransactionMain protectTxShown={protectTxShown}>
+          <WithProtectTransactionMain protectTxShow={protectTxShow}>
             <WrappedComponent
               txConfig={txConfigMain}
               signedTx={signedTxMain}
@@ -147,21 +136,16 @@ export function withProtectTransaction(
               resetFlow={resetFlow}
               protectTxButton={() =>
                 protectTxEnabled ? (
-                  <TransactionProtectionButton
-                    reviewReport={true}
-                    onClick={onMobileShowReportClick}
-                  />
+                  <TransactionProtectionButton reviewReport={true} onClick={toggleProtectTxShow} />
                 ) : (
                   <></>
                 )
               }
             />
           </WithProtectTransactionMain>
-          {protectTxShown && (
+          {protectTxShow && (
             <>
-              {!isMdScreen && (
-                <ProtectedTransactionModalBackdrop onBackdropClick={onModalBackdropClick} />
-              )}
+              {!isMdScreen && <ProtectTxModalBackdrop onBackdropClick={toggleProtectTxShow} />}
               <WithProtectTransactionSide>
                 <Panel>
                   {(() => {
@@ -169,7 +153,7 @@ export function withProtectTransaction(
                       const { values } = formCallback();
 
                       return (
-                        <ProtectionThisTransaction
+                        <ProtectTxProtection
                           handleProtectedTransactionSubmit={handleProtectedTransactionSubmit}
                           withProtectApi={withProtectApi!}
                           sendAssetsValues={values}
@@ -177,7 +161,7 @@ export function withProtectTransaction(
                       );
                     } else if (stepIndex === 1) {
                       return (
-                        <SignProtectedTransaction withProtectApi={withProtectApi!}>
+                        <ProtectTxSign withProtectApi={withProtectApi!}>
                           <>
                             <SignComponent
                               txConfig={(({ txConfig }) => txConfig)(
@@ -189,22 +173,18 @@ export function withProtectTransaction(
                                 handleTransactionReport().then(() => {
                                   handleProtectedTransactionConfirmAndSend(
                                     payload,
-                                    () => {
-                                      goOnNextStep();
-                                    },
+                                    goOnNextStep,
                                     isWeb3Wallet
                                   );
                                 });
                               }}
-                              resetFlow={() => {
-                                goOnInitialStepOrFetchReport();
-                              }}
+                              resetFlow={goOnInitialStepOrFetchReport}
                             />
                           </>
-                        </SignProtectedTransaction>
+                        </ProtectTxSign>
                       );
                     } else if (stepIndex === 2) {
-                      return <ProtectedTransactionReport withProtectApi={withProtectApi} />;
+                      return <ProtectTxReport withProtectApi={withProtectApi} />;
                     }
 
                     return <></>;
@@ -220,13 +200,11 @@ export function withProtectTransaction(
         txConfigMain,
         signedTxMain,
         txReceiptMain,
-        protectTxShown,
+        protectTxShow,
         formCallback,
         protectedTransactionTxFactoryState,
         isMdScreen,
-        onModalBackdropClick,
         protectTxEnabled,
-        onMobileShowReportClick,
         isWeb3Wallet
       ]
     );

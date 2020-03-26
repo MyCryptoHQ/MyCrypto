@@ -37,7 +37,10 @@
       }
     }
   }
-  &-detailButton.TransactionDetails-detailButton {
+}
+
+.TransactionDetails-detailButton {
+  & {
     width: 100%;
     align-items: center;
     margin-bottom: 15px;

@@ -3,32 +3,29 @@ import moment from 'moment';
 import styled from 'styled-components';
 import upperFirst from 'lodash/upperFirst';
 
-import { translateRaw } from 'v2/translations';
+import { Trans, translateRaw } from 'v2/translations';
 import useMediaQuery from 'v2/vendor/react-use/useMediaQuery';
 import { fromWei, Wei } from 'v2/services';
-import { BREAK_POINTS, COLORS } from 'v2/theme';
-import {
-  CryptoScamDBBaseResponse,
-  CryptoScamDBInfoResponse
-} from 'v2/services/ApiService/CryptoScamDB/types';
+import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from 'v2/theme';
+import { CryptoScamDBBaseResponse, CryptoScamDBInfoResponse } from 'v2/services/ApiService';
 
 import { IWithProtectApi } from '../types';
-import ProtectedTransactionBase from './ProtectedTransactionBase';
+import ProtectTxBase from './ProtectTxBase';
 import ProtectIconCheck from './icons/ProtectIconCheck';
 import WizardIcon from './icons/WizardIcon';
 import CloseIcon from './icons/CloseIcon';
 
 const formatDate = (date: number): string => moment.unix(date).format('MM/DD/YYYY');
 
-const ProtectedTransactionReportStyled = styled(ProtectedTransactionBase)`
+const Wrapper = styled(ProtectTxBase)`
   .title-address {
-    margin: 0 0 10px;
+    margin: 0 0 ${SPACING.SM};
   }
 
   .view-comments {
     position: relative;
-    font-size: 16px;
-    line-height: 24px;
+    font-size: ${FONT_SIZE.BASE};
+    line-height: ${LINE_HEIGHT.XL};
     margin: 0 50px 30px 80px;
     color: ${COLORS.PURPLE};
     text-align: left;
@@ -55,8 +52,8 @@ const ProtectedTransactionReportStyled = styled(ProtectedTransactionBase)`
   }
 
   .footer-text {
-    font-size: 16px;
-    line-height: 24px;
+    font-size: ${FONT_SIZE.BASE};
+    line-height: ${LINE_HEIGHT.XL};
 
     .highlighted {
       color: ${COLORS.PURPLE};
@@ -66,7 +63,7 @@ const ProtectedTransactionReportStyled = styled(ProtectedTransactionBase)`
 
 const Timeline = styled.ul`
   list-style: none;
-  padding: 20px 0 30px;
+  padding: ${SPACING.BASE} 0 ${SPACING.MD};
   margin: 0;
   position: relative;
 `;
@@ -87,7 +84,7 @@ const TimelineEntry = styled.li`
 
   &:not(:last-child) {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: ${SPACING.BASE};
 
     > div:last-child {
       &:before {
@@ -114,7 +111,7 @@ const TimelineBadge = styled.div`
   border-radius: 50%;
   transform: translateX(50%);
   color: ${COLORS.PURPLE};
-  font-size: 16px;
+  font-size: ${FONT_SIZE.BASE};
   line-height: 44px;
   background: ${COLORS.WHITE};
   text-align: center;
@@ -125,11 +122,11 @@ const TimelinePanel = styled.div`
   min-height: 50px;
   width: 80%;
   padding-top: 12px;
-  padding-left: 10px;
+  padding-left: ${SPACING.SM};
   float: right;
   position: relative;
-  font-size: 18px;
-  line-height: 24px;
+  font-size: ${FONT_SIZE.MD};
+  line-height: ${LINE_HEIGHT.XL};
   text-align: left;
 
   > h6 {
@@ -164,7 +161,7 @@ const TimelinePanel = styled.div`
   }
 `;
 
-export const ProtectedTransactionReport: FC<IWithProtectApi> = ({ withProtectApi }) => {
+export const ProtectTxReport: FC<IWithProtectApi> = ({ withProtectApi }) => {
   const {
     withProtectState: {
       receiverAddress,
@@ -235,8 +232,6 @@ export const ProtectedTransactionReport: FC<IWithProtectApi> = ({ withProtectApi
         <TimelineBadge>3</TimelineBadge>
         <TimelinePanel>
           <h6>{translateRaw('PROTECTED_TX_RECIPIENT_ACCOUNT_ACTIVITY')}</h6>
-          {/*<h6>Last Sent {assetTicker}:</h6>
-        <p className="text-muted">1.01 {assetTicker} on 12/24/2019</p>*/}
           <h6>{translateRaw('PROTECTED_TX_LAST_SENT_TOKEN')}</h6>
           <p className="text-muted">
             {lastSentToken &&
@@ -371,7 +366,7 @@ export const ProtectedTransactionReport: FC<IWithProtectApi> = ({ withProtectApi
   );
 
   return (
-    <ProtectedTransactionReportStyled>
+    <Wrapper>
       {!isSmScreen && <CloseIcon size="lg" onClick={onHideModel} />}
       <ProtectIconCheck size="lg" />
       <h4>{translateRaw('PROTECTED_TX_REPORT_TITLE')}</h4>
@@ -383,48 +378,41 @@ export const ProtectedTransactionReport: FC<IWithProtectApi> = ({ withProtectApi
       {cryptoScamAddressReport && (
         <>
           <p className="view-comments">
-            {(linkTranslation => {
-              if (linkTranslation.includes('$etherscanLink')) {
-                const linkTranslationSplit = linkTranslation.split('$etherscanLink');
-                return (
-                  <>
-                    {linkTranslationSplit[0]}
-                    <a
-                      href={`https://etherscan.io/address/${
-                        (cryptoScamAddressReport as CryptoScamDBBaseResponse).input
-                      }`}
-                      rel="noreferrer"
-                      target="_blank"
-                    >
-                      Etherscan
-                    </a>
-                    {linkTranslationSplit[1]}
-                  </>
-                );
-              }
-              return linkTranslation;
-            })(translateRaw('PROTECTED_TX_ETHERSCAN_EXTERNAL_LINK'))}
+            <Trans
+              id="PROTECTED_TX_ETHERSCAN_EXTERNAL_LINK"
+              variables={{
+                $etherscanLink: () => (
+                  <a
+                    href={`https://etherscan.io/address/${
+                      (cryptoScamAddressReport as CryptoScamDBBaseResponse).input
+                    }`}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    Etherscan
+                  </a>
+                )
+              }}
+            />
             <WizardIcon size={isLgScreen ? 'lg' : 'sm'} />
           </p>
           <p className="footer-text">
             {translateRaw('PROTECTED_TX_REPORT_FOOTER_TEXT')}
-            {!isWeb3Wallet &&
-              (t => {
-                const tSplit = t.split('$');
-                if (tSplit.length === 3) {
-                  return (
-                    <>
-                      {tSplit[0]}
-                      <span className="highlighted">{tSplit[1]}</span>
-                      {tSplit[2]}
-                    </>
-                  );
-                }
-                return t;
-              })(translateRaw('PROTECTED_TX_REPORT_FOOTER_TEXT_NOT_WEB3_WALLET'))}
+            {!isWeb3Wallet && (
+              <Trans
+                id="PROTECTED_TX_REPORT_FOOTER_TEXT_NOT_WEB3_WALLET"
+                variables={{
+                  $20seconds: () => (
+                    <span className="highlighted">
+                      {translateRaw('PROTECTED_TX_REPORT_20_SEC')}
+                    </span>
+                  )
+                }}
+              />
+            )}
           </p>
         </>
       )}
-    </ProtectedTransactionReportStyled>
+    </Wrapper>
   );
 };

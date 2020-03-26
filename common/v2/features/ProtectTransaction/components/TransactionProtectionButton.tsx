@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
 
-import { BREAK_POINTS, COLORS } from 'v2/theme';
+import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from 'v2/theme';
 import useMediaQuery from 'v2/vendor/react-use/useMediaQuery';
 import { translateRaw } from 'v2/translations';
 
@@ -14,15 +14,15 @@ const TransactionProtectionButtonText = styled.div`
   text-align: left;
 
   h6 {
-    font-size: 16px;
+    font-size: ${FONT_SIZE.BASE};
     line-height: 15px;
     margin-top: 0;
     color: #424242;
   }
 
   p {
-    font-size: 12px;
-    line-height: 18px;
+    font-size: ${FONT_SIZE.XS};
+    line-height: ${LINE_HEIGHT.MD};
     margin-bottom: 0;
   }
 
@@ -31,12 +31,12 @@ const TransactionProtectionButtonText = styled.div`
   }
 `;
 
-const TransactionProtectionButtonStyled = styled.button`
+const STransactionProtectionButton = styled.button`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 20px 20px 15px;
+  padding: ${SPACING.BASE} ${SPACING.BASE} 15px;
   margin: 30px 0 15px;
   border: 1px solid ${COLORS.PURPLE};
   box-sizing: border-box;
@@ -103,7 +103,7 @@ export const TransactionProtectionButton: FC<TransactionProtectionButtonProps> =
   }
 
   return (
-    <TransactionProtectionButtonStyled type="button" onClick={onClickEvent} disabled={disabled}>
+    <STransactionProtectionButton type="button" onClick={onClickEvent} disabled={disabled}>
       {isSmScreen && <ProtectIcon size="md" />}
       {!isSmScreen && <ProtectIconCheck size="sm" />}
       <TransactionProtectionButtonText>
@@ -121,6 +121,6 @@ export const TransactionProtectionButton: FC<TransactionProtectionButtonProps> =
         )}
       </TransactionProtectionButtonText>
       <ArrowRightIcon />
-    </TransactionProtectionButtonStyled>
+    </STransactionProtectionButton>
   );
 };

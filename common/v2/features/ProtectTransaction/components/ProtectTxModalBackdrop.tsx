@@ -14,10 +14,10 @@ interface ProtectedTransactionModalBackdropProps {
   onBackdropClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>): void;
 }
 
-const ProtectedTransactionModalBackdrop: FC<ProtectedTransactionModalBackdropProps> = ({
+const ProtectTxModalBackdrop: FC<ProtectedTransactionModalBackdropProps> = ({
   onBackdropClick
 }) => {
   return <ProtectedTransactionModalBackdropLayout onClick={onBackdropClick} />;
 };
 
-export default ProtectedTransactionModalBackdrop;
+export default ProtectTxModalBackdrop;

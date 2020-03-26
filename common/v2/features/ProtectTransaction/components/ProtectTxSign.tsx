@@ -1,17 +1,18 @@
 import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
 
-import { IWithProtectApi } from '../types';
+import { SPACING } from 'v2/theme';
 
-import ProtectedTransactionBase from './ProtectedTransactionBase';
+import { IWithProtectApi } from '../types';
+import ProtectTxBase from './ProtectTxBase';
 import ProtectIcon from './icons/ProtectIcon';
 import CloseIcon from './icons/CloseIcon';
 
-const SignProtectedTransactionStyled = styled(ProtectedTransactionBase)`
+const SignProtectedTransaction = styled(ProtectTxBase)`
   .SignTransactionKeystore {
     &-title {
       height: auto;
-      margin-top: 10px;
+      margin-top: ${SPACING.SM};
     }
   }
 
@@ -22,7 +23,7 @@ const SignProtectedTransactionStyled = styled(ProtectedTransactionBase)`
   }
 `;
 
-export const SignProtectedTransaction: FC<IWithProtectApi> = ({ children, withProtectApi }) => {
+export const ProtectTxSign: FC<IWithProtectApi> = ({ children, withProtectApi }) => {
   const { goOnInitialStepOrFetchReport } = withProtectApi!;
 
   const onProtectMyTransactionCancelClick = useCallback(
@@ -37,10 +38,10 @@ export const SignProtectedTransaction: FC<IWithProtectApi> = ({ children, withPr
   );
 
   return (
-    <SignProtectedTransactionStyled>
+    <SignProtectedTransaction>
       <CloseIcon size="lg" onClick={onProtectMyTransactionCancelClick} />
       <ProtectIcon size="lg" />
       {children}
-    </SignProtectedTransactionStyled>
+    </SignProtectedTransaction>
   );
 };

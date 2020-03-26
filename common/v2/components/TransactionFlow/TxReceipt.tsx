@@ -1,7 +1,8 @@
-import React, { useState, useContext, useEffect, FC, useCallback, useRef } from 'react';
+import React, { useState, useContext, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
+import R_path from 'ramda/src/path';
 
 import {
   ITxReceipt,
@@ -39,20 +40,10 @@ import { ISender } from './types';
 import { constructSenderFromTxConfig } from './helpers';
 import { FromToAccount, SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
+import { PendingTransaction } from './PendingLoader';
 import sentIcon from 'common/assets/images/icn-sent.svg';
 import defizaplogo from 'assets/images/defizap/defizaplogo.svg';
 import './TxReceipt.scss';
-
-const PendingTransaction: FC = () => {
-  return (
-    <div className="pending-loader">
-      <div className="loading" />
-      <span>
-        <b>Pending</b>
-      </span>
-    </div>
-  );
-};
 
 interface PendingBtnAction {
   text: string;
@@ -123,12 +114,15 @@ export default function TxReceipt({
     if (!web3Wallet && protectTxEnabled && protectTxCounter > 0) {
       // @ts-ignore
       protectTxTimer = setTimeout(() => setProtectTxCounter(prevCount => prevCount - 1), 1000);
-    } else if (!web3Wallet && protectTxEnabled && protectTxCounter === 0) {
-      if (protectionTxTimeoutFunction.current) {
-        protectionTxTimeoutFunction.current(txReceiptCb => {
-          setDisplayTxReceipt(txReceiptCb);
-        });
-      }
+    } else if (
+      !web3Wallet &&
+      protectTxEnabled &&
+      protectTxCounter === 0 &&
+      protectionTxTimeoutFunction.current
+    ) {
+      protectionTxTimeoutFunction.current(txReceiptCb => {
+        setDisplayTxReceipt(txReceiptCb);
+      });
     }
     return () => {
       if (protectTxTimer) {
@@ -138,55 +132,45 @@ export default function TxReceipt({
   }, [protectTxEnabled, protectTxCounter, web3Wallet]);
 
   useEffect(() => {
-    if (displayTxReceipt) {
+    if (displayTxReceipt && blockNumber === 0 && displayTxReceipt.hash) {
       const provider = new ProviderHandler(displayTxReceipt.network || txConfig.network);
-      if (blockNumber === 0 && displayTxReceipt.hash) {
-        const blockNumInterval = setInterval(() => {
-          getTransactionReceiptFromHash(displayTxReceipt.hash, provider).then(
-            transactionOutcome => {
-              if (!transactionOutcome) {
-                return;
-              }
-              const transactionStatus =
-                transactionOutcome.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
-              setTxStatus(prevStatusState => transactionStatus || prevStatusState);
-              setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
-              provider.getTransactionByHash(displayTxReceipt.hash).then(transactionReceipt => {
-                const receipt = fromTxReceiptObj(transactionReceipt)(
-                  assets,
-                  networks
-                ) as ITxReceipt;
-                setDisplayTxReceipt(receipt);
-              });
-            }
-          );
-        }, 1000);
-        return () => clearInterval(blockNumInterval);
-      }
+      const blockNumInterval = setInterval(() => {
+        getTransactionReceiptFromHash(displayTxReceipt.hash, provider).then(transactionOutcome => {
+          if (transactionOutcome) {
+            const transactionStatus =
+              transactionOutcome.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
+            setTxStatus(prevStatusState => transactionStatus || prevStatusState);
+            setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
+            provider.getTransactionByHash(displayTxReceipt.hash).then(transactionReceipt => {
+              const receipt = fromTxReceiptObj(transactionReceipt)(assets, networks) as ITxReceipt;
+              setDisplayTxReceipt(receipt);
+            });
+          }
+        });
+      }, 1000);
+      return () => clearInterval(blockNumInterval);
     }
   });
   useEffect(() => {
-    if (displayTxReceipt) {
+    if (displayTxReceipt && timestamp === 0 && blockNumber !== 0) {
       const provider = new ProviderHandler(displayTxReceipt.network || txConfig.network);
-      if (timestamp === 0 && blockNumber !== 0) {
-        const timestampInterval = setInterval(() => {
-          getTimestampFromBlockNum(blockNumber, provider).then(transactionTimestamp => {
-            addNewTransactionToAccount(senderAccount, {
-              ...displayTxReceipt,
-              timestamp: transactionTimestamp || 0,
-              stage: txStatus
-            });
-            setTimestamp(transactionTimestamp || 0);
+      const timestampInterval = setInterval(() => {
+        getTimestampFromBlockNum(blockNumber, provider).then(transactionTimestamp => {
+          addNewTransactionToAccount(senderAccount, {
+            ...displayTxReceipt,
+            timestamp: transactionTimestamp || 0,
+            stage: txStatus
           });
-        }, 1000);
+          setTimestamp(transactionTimestamp || 0);
+        });
+      }, 1000);
 
-        return () => clearInterval(timestampInterval);
-      }
+      return () => clearInterval(timestampInterval);
     }
   });
 
   const assetRate = useCallback(() => {
-    if (displayTxReceipt && 'asset' in displayTxReceipt) {
+    if (displayTxReceipt && R_path(['asset'], displayTxReceipt)) {
       return getAssetRate(displayTxReceipt.asset);
     } else {
       return getAssetRate(txConfig.asset);
@@ -280,7 +264,7 @@ export const TxReceiptUI = ({
 
   const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
   const assetAmount = useCallback(() => {
-    if (displayTxReceipt && 'amount' in displayTxReceipt) {
+    if (displayTxReceipt && R_path(['amount'], displayTxReceipt)) {
       return displayTxReceipt.amount;
     } else {
       return txConfig.amount;
@@ -288,7 +272,7 @@ export const TxReceiptUI = ({
   }, [displayTxReceipt, txConfig.amount]);
 
   const assetTicker = useCallback(() => {
-    if (displayTxReceipt && 'asset' in displayTxReceipt) {
+    if (displayTxReceipt && R_path(['asset'], displayTxReceipt)) {
       return displayTxReceipt.asset.ticker;
     } else {
       return txConfig.asset.ticker;
@@ -306,13 +290,13 @@ export const TxReceiptUI = ({
       {protectTxEnabled && !web3Wallet && (
         <AbortTransaction
           countdown={protectTxCounter ? protectTxCounter : 0}
-          onAbortTransactionClick={e => {
+          onAbortTransaction={e => {
             e.preventDefault();
             if (setProtectTxCounter) {
               setProtectTxCounter(-1);
             }
           }}
-          onSendTransactionClick={e => {
+          onSendTransaction={e => {
             e.preventDefault();
             if (setProtectTxCounter) {
               setProtectTxCounter(20);

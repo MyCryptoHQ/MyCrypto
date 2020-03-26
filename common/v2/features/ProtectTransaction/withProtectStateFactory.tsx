@@ -1,16 +1,16 @@
 import { useCallback, useContext, useEffect, useRef } from 'react';
 
+import { TUseStateReducerFactory } from 'v2/utils';
+import { Asset, ITxReceipt, Network, NetworkId, WalletId } from 'v2/types';
 import {
+  GetBalanceResponse,
+  GetLastTxResponse,
+  EtherscanService,
+  CryptoScamDBService,
   CryptoScamDBInfoResponse,
   CryptoScamDBNoInfoResponse
-} from 'v2/services/ApiService/CryptoScamDB/types';
-import { TUseStateReducerFactory } from 'v2/utils';
-import CryptoScamDBService from 'v2/services/ApiService/CryptoScamDB/CryptoScamDB';
-import { Asset, ITxReceipt, Network, NetworkId, WalletId } from 'v2/types';
-import { GetBalanceResponse, GetLastTxResponse } from 'v2/services/ApiService/Etherscan/types';
-import { EtherscanService } from 'v2/services/ApiService/Etherscan';
-import { getNetworkById, NetworkContext } from 'v2/services/Store/Network';
-import { AssetContext, getAssetByUUID } from 'v2/services/Store/Asset';
+} from 'v2/services/ApiService';
+import { getNetworkById, NetworkContext, AssetContext, getAssetByUUID } from 'v2/services/Store';
 import useMediaQuery from 'v2/vendor/react-use/useMediaQuery';
 import { BREAK_POINTS } from 'v2/theme';
 import { WALLETS_CONFIG } from 'v2/config';
@@ -19,7 +19,7 @@ import { SendFormCallbackType } from './types';
 
 export interface WithProtectState {
   stepIndex: number;
-  protectTxShown: boolean;
+  protectTxShow: boolean;
   protectTxEnabled: boolean;
   cryptoScamAddressReport: CryptoScamDBNoInfoResponse | CryptoScamDBInfoResponse | null;
   etherscanBalanceReport: GetBalanceResponse | null;
@@ -50,7 +50,7 @@ export interface WithProtectApiFactory {
 
 export const WithProtectInitialState: Partial<WithProtectState> = {
   stepIndex: 0,
-  protectTxShown: false,
+  protectTxShow: false,
   protectTxEnabled: false,
   receiverAddress: null,
   network: null,
@@ -81,7 +81,7 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
     if (state.protectTxEnabled) {
       setState(prevState => ({
         ...prevState,
-        protectTxShown: isMdScreen
+        protectTxShow: isMdScreen
       }));
     }
   }, [isMdScreen, state.protectTxEnabled]);
@@ -97,7 +97,7 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
 
   useEffect(() => {
     const isDisabled =
-      state.protectTxShown &&
+      state.protectTxShow &&
       state.stepIndex !== numOfSteps - 1 &&
       state.cryptoScamAddressReport === null;
 
@@ -105,7 +105,7 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
       ...prevState,
       mainComponentDisabled: isDisabled
     }));
-  }, [state.protectTxShown, state.stepIndex, state.cryptoScamAddressReport]);
+  }, [state.protectTxShow, state.stepIndex, state.cryptoScamAddressReport]);
 
   const handleTransactionReport = useCallback(
     async (receiverAddress?: string): Promise<void> => {
@@ -227,7 +227,7 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
     (showOrHide: boolean) => {
       setState(prevState => ({
         ...prevState,
-        protectTxShown: showOrHide
+        protectTxShow: showOrHide
       }));
     },
     [setState]

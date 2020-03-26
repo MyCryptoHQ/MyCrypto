@@ -1,46 +1,15 @@
 import React, { FC, useCallback, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import { COLORS } from 'v2/theme';
+import { COLORS, FONT_SIZE } from 'v2/theme';
 import { translateRaw } from 'v2/translations';
 import ProtectIconCheck from './icons/ProtectIconCheck';
+import { Link } from 'v2/components';
 
 interface RelayedToNetworkProps {
   relayedToNetwork: boolean;
 }
 
-// TODO: A hacky way to change the title of content panel
-const TransactionReceiptHeaderGlobal = createGlobalStyle<RelayedToNetworkProps>`
-  [class^="ContentPanel__ContentPanelWrapper"] {
-    [class^="ContentPanel__ContentPanelHeading"] {
-      margin-top: 60px;
-
-      ${({ relayedToNetwork }) =>
-        relayedToNetwork
-          ? `
-        &::before {
-          content: "${translateRaw('TRANSACTION_RELAYED')}";
-        }
-      `
-          : `
-        &::before {
-          content: "${translateRaw('TRANSACTION_BROADCASTED')}";
-        }
-      `}
-    }
-
-    &.has-side-panel {
-      > section {
-        > p ~ div {
-          & > div:last-child {
-            margin-top: calc(-0.5rem - 75px - 60px);
-          }
-        }
-      }
-    }
-  }
-`;
-
-const AbortTransactionWrapper = styled.div<RelayedToNetworkProps>`
+const Wrapper = styled.div<RelayedToNetworkProps>`
   display: flex;
   position: absolute;
   justify-content: flex-start;
@@ -74,58 +43,86 @@ const AbortTransactionWrapper = styled.div<RelayedToNetworkProps>`
 
   p {
     margin: 0 15px 0;
-    font-size: 16px;
-    line-height: 24px;
+    font-size: ${FONT_SIZE.BASE};
+    line-height: ${FONT_SIZE.XL};
   }
 `;
 
-const AbortTransactionLink = styled.a`
-  margin-left: auto;
-  text-decoration: underline;
-  color: ${COLORS.WHITE};
+// TODO: A hacky way to change the title of content panel
+const TransactionReceiptHeaderGlobal = createGlobalStyle<RelayedToNetworkProps>`
+  .send-assets-stepper {
+    > section {
+      > p {
+        margin-top: 60px;
 
-  &:hover {
-    color: ${COLORS.BLACK};
+        ${({ relayedToNetwork }) =>
+          relayedToNetwork
+            ? `
+          &::before {
+            content: "${translateRaw('TRANSACTION_RELAYED')}";
+          }
+        `
+            : `
+          &::before {
+            content: "${translateRaw('TRANSACTION_BROADCASTED')}";
+          }
+        `}
+      }
+    }
+
+    &.has-side-panel {
+      > section {
+        > p ~ div {
+          & > div:last-child {
+            margin-top: calc(-0.5rem - 75px - 60px);
+          }
+        }
+      }
+    }
   }
+`;
+
+const AbortTransactionLink = styled(Link)`
+  margin-left: auto;
 `;
 
 interface AbortTransactionProps {
   countdown: number;
 
-  onAbortTransactionClick(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void;
-  onSendTransactionClick(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void;
+  onAbortTransaction(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void;
+  onSendTransaction(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void;
 }
 
 export const AbortTransaction: FC<AbortTransactionProps> = ({
   countdown,
-  onAbortTransactionClick,
-  onSendTransactionClick
+  onAbortTransaction,
+  onSendTransaction
 }) => {
   const [isCanceled, setIsCanceled] = useState(false);
 
   const onCancelClick = useCallback(
     e => {
       setIsCanceled(true);
-      onAbortTransactionClick(e);
+      onAbortTransaction(e);
     },
-    [onAbortTransactionClick, setIsCanceled]
+    [onAbortTransaction, setIsCanceled]
   );
 
   const onSendClick = useCallback(
     e => {
       setIsCanceled(false);
-      onSendTransactionClick(e);
+      onSendTransaction(e);
     },
-    [onSendTransactionClick, setIsCanceled]
+    [onSendTransaction, setIsCanceled]
   );
 
   return (
-    <AbortTransactionWrapper relayedToNetwork={!isCanceled && countdown === 0}>
+    <Wrapper relayedToNetwork={!isCanceled && countdown === 0}>
       <ProtectIconCheck fillColor={COLORS.WHITE} />
       {isCanceled && (
         <>
           <p>{translateRaw('PROTECTED_TX_ABORTED_TX')}</p>
-          <AbortTransactionLink onClick={onSendClick}>
+          <AbortTransactionLink type="white-black" underline={true} onClick={onSendClick}>
             {translateRaw('PROTECTED_TX_RESEND')}
           </AbortTransactionLink>
         </>
@@ -137,13 +134,13 @@ export const AbortTransaction: FC<AbortTransactionProps> = ({
               $sec: `0:${countdown.toString().padStart(2, '0')}`
             })}
           </p>
-          <AbortTransactionLink onClick={onCancelClick}>
+          <AbortTransactionLink type="white-black" underline={true} onClick={onCancelClick}>
             {translateRaw('PROTECTED_TX_CANCEL')}
           </AbortTransactionLink>
         </>
       )}
       {!isCanceled && countdown === 0 && <p>{translateRaw('PROTECTED_TX_RELAYED_TO_NETWORK')}</p>}
       <TransactionReceiptHeaderGlobal relayedToNetwork={!isCanceled && countdown === 0} />
-    </AbortTransactionWrapper>
+    </Wrapper>
   );
 };

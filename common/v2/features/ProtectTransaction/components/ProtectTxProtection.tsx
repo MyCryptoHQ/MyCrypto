@@ -5,24 +5,24 @@ import { Button } from '@mycrypto/ui';
 import { convertToFiat, isWeb3Wallet } from 'v2/utils';
 import { RatesContext } from 'v2/services';
 import { IAccount, IFormikFields } from 'v2/types';
-import { COLORS } from 'v2/theme';
+import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from 'v2/theme';
 import { Amount } from 'v2/components';
 import { translateRaw } from 'v2/translations';
 
 import { IWithProtectApi } from '../types';
 import { ProtectTransactionUtils } from '../utils';
-import ProtectedTransactionBase from './ProtectedTransactionBase';
+import ProtectTxBase from './ProtectTxBase';
 import CloseIcon from './icons/CloseIcon';
 import ProtectIcon from './icons/ProtectIcon';
 import WarningIcon from './icons/WarningIcon';
 
 import feeIcon from 'assets/images/icn-fee.svg';
 
-const ProtectionThisTransactionStyled = styled(ProtectedTransactionBase)`
+const SProtectionThisTransaction = styled(ProtectTxBase)`
   .description-text {
     max-width: 300px;
-    font-size: 16px;
-    line-height: 24px;
+    font-size: ${FONT_SIZE.BASE};
+    line-height: ${LINE_HEIGHT.XL};
     margin-bottom: 16px;
   }
 
@@ -67,11 +67,11 @@ const ProtectionThisTransactionStyled = styled(ProtectedTransactionBase)`
 
 const BulletList = styled.ul`
   li {
-    padding-left: 10px;
-    margin-left: -10px;
+    padding-left: ${SPACING.SM};
+    margin-left: -${SPACING.SM};
     margin-bottom: 15px;
     background-image: url('~assets/images/icn-bullet.svg');
-    background-position: 0 10px;
+    background-position: 0 ${SPACING.SM};
     background-size: 5px 5px;
     background-repeat: no-repeat;
     text-align: left;
@@ -84,14 +84,14 @@ const BulletList = styled.ul`
     h6 {
       color: ${COLORS.PURPLE};
       margin: 0;
-      font-size: 14px;
-      line-height: 24px;
+      font-size: ${FONT_SIZE.SM};
+      line-height: ${LINE_HEIGHT.XL};
       text-transform: uppercase;
     }
 
     p {
       font-size: 14px;
-      line-height: 24px;
+      line-height: ${LINE_HEIGHT.XL};
     }
   }
 `;
@@ -100,8 +100,8 @@ const FeeContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   max-width: 300px;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: ${FONT_SIZE.BASE};
+  line-height: ${LINE_HEIGHT.XL};
 
   img {
     height: 23px;
@@ -111,18 +111,18 @@ const FeeContainer = styled.div`
   .fee-label {
     flex: 0 0 140px;
     max-width: 140px;
-    padding-left: 10px;
+    padding-left: ${SPACING.SM};
     margin-bottom: 0;
     text-align: left;
   }
 `;
 
-interface ProtectionThisTransactionProps extends IWithProtectApi {
+interface Props extends IWithProtectApi {
   sendAssetsValues: IFormikFields | null;
   handleProtectedTransactionSubmit(payload: IFormikFields): Promise<void>;
 }
 
-export const ProtectionThisTransaction: FC<ProtectionThisTransactionProps> = ({
+export const ProtectTxProtection: FC<Props> = ({
   sendAssetsValues,
   withProtectApi,
   handleProtectedTransactionSubmit
@@ -209,7 +209,7 @@ export const ProtectionThisTransaction: FC<ProtectionThisTransactionProps> = ({
   }, [feeAmount]);
 
   return (
-    <ProtectionThisTransactionStyled>
+    <SProtectionThisTransaction>
       <CloseIcon size="lg" onClick={onProtectMyTransactionCancelClick} />
       <ProtectIcon size="lg" />
       <h4>{translateRaw('PROTECTED_TX_PROTECT_THIS_TRANSACTION')}</h4>
@@ -261,6 +261,6 @@ export const ProtectionThisTransaction: FC<ProtectionThisTransactionProps> = ({
       <button type="button" className="cancel" onClick={onProtectMyTransactionCancelClick}>
         {translateRaw('PROTECTED_TX_DONT_PROTECT_MY_TX')}
       </button>
-    </ProtectionThisTransactionStyled>
+    </SProtectionThisTransaction>
   );
 };

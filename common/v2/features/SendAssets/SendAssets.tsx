@@ -39,7 +39,7 @@ function SendAssets() {
   );
   const {
     setProtectionTxTimeoutFunction,
-    withProtectState: { protectTxShown, protectTxEnabled }
+    withProtectState: { protectTxShow, protectTxEnabled }
   } = withProtectApi;
 
   // Due to MetaMask deprecating eth_sign method,
@@ -138,7 +138,7 @@ function SendAssets() {
       defaultBackPath={ROUTE_PATHS.DASHBOARD.path}
       defaultBackPathLabel={translateRaw('DASHBOARD')}
       completeBtnText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
-      wrapperClassName={protectTxShown ? 'has-side-panel' : ''}
+      wrapperClassName={`send-assets-stepper ${protectTxShow ? 'has-side-panel' : ''}`}
     />
   );
 }

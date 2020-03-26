@@ -47,7 +47,6 @@ export const PROTECTED_TX_FEE_ADDRESS = '0xe9c593dc6FaDC38401896C21987E2976f0AF6
 export const PROTECTED_TX_FIXED_FEE_AMOUNT = 0.5; // Fixed half dollar fee
 export const PROTECTED_TX_FEE_PERCENTAGE = 0.001; // 1 / 1000 percentage
 export const PROTECTED_TX_MIN_AMOUNT = 5; // 5 dollars minimum fee
-export const TWITTER_URL = 'https://twitter.com/MyCrypto';
 
 export const gasEstimateCacheTime = 60000;
 
