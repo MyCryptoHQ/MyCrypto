@@ -10,7 +10,7 @@ import { RatesContext } from 'v2/services/RatesProvider';
 import { IStepComponentProps, ExtendedAddressBook, ITxType } from 'v2/types';
 import { BREAK_POINTS, SPACING, COLORS } from 'v2/theme';
 import { convertToFiat } from 'v2/utils';
-import translate, { translateRaw } from 'v2/translations';
+import translate from 'v2/translations';
 import { TSymbol } from 'v2/types/symbols';
 import { ZapSelectedBanner, DeFiZapLogo } from 'v2/features/DeFiZap';
 
@@ -51,7 +51,7 @@ const ColumnWrapper = Styled.div<{ bold?: boolean }>`
     font-size: 18px;
   }
   img {
-    width: 30px;
+    width: auto;
     height: 30px;
     margin-right: 10px;
   }
@@ -281,7 +281,7 @@ export const ConfirmTransactionUI = ({
         signedTransaction={signedTx}
       />
       {txType === ITxType.DEFIZAP && (
-        <DeFiDisclaimerWrapper>{translateRaw('ZAP_CONFIRM_DISCLAIMER')}</DeFiDisclaimerWrapper>
+        <DeFiDisclaimerWrapper>{translate('ZAP_CONFIRM_DISCLAIMER')}</DeFiDisclaimerWrapper>
       )}
       <SendButton
         onClick={handleApprove}
