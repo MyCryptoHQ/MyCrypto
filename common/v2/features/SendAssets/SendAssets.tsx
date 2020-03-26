@@ -1,22 +1,22 @@
 import React from 'react';
 
-import { GeneralStepper, TxReceiptWithProtection } from 'v2/components';
+import { GeneralStepper, TxReceiptWithProtectTx } from 'v2/components';
 import { useStateReducer, isWeb3Wallet, useTStateReducer } from 'v2/utils';
 import { ITxReceipt, ISignedTx, IFormikFields, ITxConfig } from 'v2/types';
 import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS } from 'v2/config';
 import {
-  WithProtectApiFactory,
-  WithProtectConfigFactory,
-  WithProtectInitialState,
-  WithProtectState
+  WithProtectTxApiFactory,
+  WithProtectTxConfigFactory,
+  withProtectTxInitialState,
+  WithProtectTxState
 } from 'v2/features/ProtectTransaction';
 import { IStepperPath } from 'v2/components/GeneralStepper/types';
 
 import {
-  ConfirmTransactionWithProtection,
-  SendAssetsFormWithProtection,
-  SignTransactionWithProtection
+  ConfirmTransactionWithProtectTx,
+  SendAssetsFormWithProtectTx,
+  SignTransactionWithProtectTx
 } from './components';
 import { txConfigInitialState, TxConfigFactory } from './stateFactory';
 
@@ -31,14 +31,14 @@ function SendAssets() {
     txFactoryState
   } = useStateReducer(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: undefined });
 
-  const withProtectApi = useTStateReducer<Partial<WithProtectState>, WithProtectApiFactory>(
-    WithProtectConfigFactory,
+  const withProtectApi = useTStateReducer<Partial<WithProtectTxState>, WithProtectTxApiFactory>(
+    WithProtectTxConfigFactory,
     {
-      ...WithProtectInitialState
+      ...withProtectTxInitialState
     }
   );
   const {
-    setProtectionTxTimeoutFunction,
+    setProtectTxTimeoutFunction,
     withProtectState: { protectTxShow, protectTxEnabled }
   } = withProtectApi;
 
@@ -47,7 +47,7 @@ function SendAssets() {
   const web3Steps: IStepperPath[] = [
     {
       label: 'Send Assets',
-      component: SendAssetsFormWithProtection,
+      component: SendAssetsFormWithProtectTx,
       props: (({ txConfig }) => ({ txConfig, withProtectApi }))(txFactoryState),
       actions: (payload: IFormikFields, cb: any) => {
         if (protectTxEnabled) {
@@ -58,19 +58,19 @@ function SendAssets() {
     },
     {
       label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
-      component: ConfirmTransactionWithProtection,
+      component: ConfirmTransactionWithProtectTx,
       props: (({ txConfig }) => ({ txConfig, withProtectApi }))(txFactoryState),
       actions: (payload: ITxConfig, cb: any) => handleConfirmAndSign(payload, cb)
     },
     {
       label: '',
-      component: SignTransactionWithProtection,
+      component: SignTransactionWithProtectTx,
       props: (({ txConfig }) => ({ txConfig, withProtectApi }))(txFactoryState),
       actions: (payload: ITxReceipt | ISignedTx, cb: any) => handleSignedWeb3Tx(payload, cb)
     },
     {
       label: translateRaw('TRANSACTION_BROADCASTED'),
-      component: TxReceiptWithProtection,
+      component: TxReceiptWithProtectTx,
       props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt, withProtectApi }))(
         txFactoryState
       )
@@ -80,7 +80,7 @@ function SendAssets() {
   const defaultSteps: IStepperPath[] = [
     {
       label: 'Send Assets',
-      component: SendAssetsFormWithProtection,
+      component: SendAssetsFormWithProtectTx,
       props: (({ txConfig }) => ({ txConfig, withProtectApi }))(txFactoryState),
       actions: (payload: IFormikFields, cb: any) => {
         if (protectTxEnabled) {
@@ -91,16 +91,16 @@ function SendAssets() {
     },
     {
       label: '',
-      component: SignTransactionWithProtection,
+      component: SignTransactionWithProtectTx,
       props: (({ txConfig }) => ({ txConfig, withProtectApi }))(txFactoryState),
       actions: (payload: ITxConfig | ISignedTx, cb: any) => handleSignedTx(payload, cb)
     },
     {
       label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
-      component: ConfirmTransactionWithProtection,
+      component: ConfirmTransactionWithProtectTx,
       props: (({ txConfig, signedTx }) => ({ txConfig, signedTx, withProtectApi }))(txFactoryState),
       actions: (payload: ITxConfig | ISignedTx, cb: any) => {
-        setProtectionTxTimeoutFunction(txReceiptCb =>
+        setProtectTxTimeoutFunction(txReceiptCb =>
           handleConfirmAndSend(payload, (txReceipt: ITxReceipt) => {
             if (txReceiptCb) {
               txReceiptCb(txReceipt);
@@ -114,7 +114,7 @@ function SendAssets() {
     },
     {
       label: ' ',
-      component: TxReceiptWithProtection,
+      component: TxReceiptWithProtectTx,
       props: (({ txConfig, txReceipt }) => ({
         txConfig,
         txReceipt,

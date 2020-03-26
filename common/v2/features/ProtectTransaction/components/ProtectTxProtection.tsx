@@ -10,7 +10,7 @@ import { Amount } from 'v2/components';
 import { translateRaw } from 'v2/translations';
 
 import { IWithProtectApi } from '../types';
-import { ProtectTransactionUtils } from '../utils';
+import { ProtectTxUtils } from '../utils';
 import ProtectTxBase from './ProtectTxBase';
 import CloseIcon from './icons/CloseIcon';
 import ProtectIcon from './icons/ProtectIcon';
@@ -119,13 +119,13 @@ const FeeContainer = styled.div`
 
 interface Props extends IWithProtectApi {
   sendAssetsValues: IFormikFields | null;
-  handleProtectedTransactionSubmit(payload: IFormikFields): Promise<void>;
+  handleProtectTxSubmit(payload: IFormikFields): Promise<void>;
 }
 
 export const ProtectTxProtection: FC<Props> = ({
   sendAssetsValues,
   withProtectApi,
-  handleProtectedTransactionSubmit
+  handleProtectTxSubmit
 }) => {
   const { getAssetRate } = useContext(RatesContext);
 
@@ -139,8 +139,8 @@ export const ProtectTxProtection: FC<Props> = ({
 
   const {
     withProtectState: { isWeb3Wallet: web3Wallet, web3WalletName },
-    showHideTransactionProtection,
-    goOnNextStep,
+    showHideProtectTx,
+    goToNextStep,
     setReceiverInfo,
     setWeb3Wallet
   } = withProtectApi!;
@@ -156,10 +156,7 @@ export const ProtectTxProtection: FC<Props> = ({
     const { asset } = sendAssetsValues!;
     const rate = getAssetRate(asset);
 
-    const { amount, fee } = ProtectTransactionUtils.getProtectTransactionFee(
-      sendAssetsValues!,
-      rate
-    );
+    const { amount, fee } = ProtectTxUtils.getProtectTransactionFee(sendAssetsValues!, rate);
 
     setFeeAmount({ amount, fee, rate: rate ? rate : null });
   }, [sendAssetsValues, getAssetRate, setFeeAmount]);
@@ -171,12 +168,12 @@ export const ProtectTxProtection: FC<Props> = ({
       try {
         setIsLoading(true);
         await setReceiverInfo(sendAssetsValues!.address.value, sendAssetsValues!.network.id);
-        await handleProtectedTransactionSubmit({
+        await handleProtectTxSubmit({
           ...sendAssetsValues!,
           amount: feeAmount.amount ? feeAmount.amount.toString() : ''
         });
         setIsLoading(false);
-        goOnNextStep();
+        goToNextStep();
       } catch (e) {
         console.error(e);
       }
@@ -188,8 +185,8 @@ export const ProtectTxProtection: FC<Props> = ({
     (e: React.MouseEvent<HTMLButtonElement & SVGSVGElement, MouseEvent>) => {
       e.preventDefault();
 
-      if (showHideTransactionProtection) {
-        showHideTransactionProtection(false);
+      if (showHideProtectTx) {
+        showHideProtectTx(false);
       }
     },
     []

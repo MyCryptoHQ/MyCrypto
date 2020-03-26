@@ -24,14 +24,14 @@ const SignProtectedTransaction = styled(ProtectTxBase)`
 `;
 
 export const ProtectTxSign: FC<IWithProtectApi> = ({ children, withProtectApi }) => {
-  const { goOnInitialStepOrFetchReport } = withProtectApi!;
+  const { goToInitialStepOrFetchReport } = withProtectApi!;
 
   const onProtectMyTransactionCancelClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement & SVGSVGElement, MouseEvent>) => {
       e.preventDefault();
 
-      if (goOnInitialStepOrFetchReport) {
-        goOnInitialStepOrFetchReport();
+      if (goToInitialStepOrFetchReport) {
+        goToInitialStepOrFetchReport();
       }
     },
     []

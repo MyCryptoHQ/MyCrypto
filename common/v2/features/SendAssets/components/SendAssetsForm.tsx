@@ -64,14 +64,11 @@ import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/Transa
 import { weiToFloat, formatSupportEmail } from 'v2/utils';
 import { InlineMessageType } from 'v2/types/inlineMessages';
 import {
-  ProtectTransactionUtils,
+  ProtectTxUtils,
   ProtectTxError,
-  WithProtectApiFactory
+  WithProtectTxApiFactory
 } from 'v2/features/ProtectTransaction';
-import {
-  ProtectTxShowError,
-  TransactionProtectionButton
-} from 'v2/features/ProtectTransaction/components';
+import { ProtectTxShowError, ProtectTxButton } from 'v2/features/ProtectTransaction/components';
 
 import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
 import './SendAssetsForm.scss';
@@ -160,7 +157,7 @@ const SendAssetsForm = ({
   txConfig,
   onComplete,
   withProtectApi
-}: IStepComponentProps & { withProtectApi: WithProtectApiFactory }) => {
+}: IStepComponentProps & { withProtectApi: WithProtectTxApiFactory }) => {
   const { accounts, userAssets, networks, getAccount } = useContext(StoreContext);
   const { getAssetRate } = useContext(RatesContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
@@ -174,8 +171,8 @@ const SendAssetsForm = ({
   const [selectedAsset, setAsset] = useState({} as Asset);
 
   const {
-    goOnInitialStepOrFetchReport,
-    showHideTransactionProtection,
+    goToInitialStepOrFetchReport,
+    showHideProtectTx,
     setMainTransactionFormCallback,
     withProtectState: { mainComponentDisabled }
   } = withProtectApi;
@@ -637,13 +634,13 @@ const SendAssetsForm = ({
                 )}
               </div>
 
-              <TransactionProtectionButton
+              <ProtectTxButton
                 disabled={
                   isEstimatingGasLimit ||
                   isResolvingName ||
                   isEstimatingNonce ||
                   !isFormValid ||
-                  ProtectTransactionUtils.checkFormForProtectedTxErrors(
+                  ProtectTxUtils.checkFormForProtectedTxErrors(
                     values,
                     getAssetRate(values.asset)
                   ) !== ProtectTxError.NO_ERROR
@@ -651,13 +648,13 @@ const SendAssetsForm = ({
                 onClick={e => {
                   e.preventDefault();
 
-                  if (goOnInitialStepOrFetchReport) {
+                  if (goToInitialStepOrFetchReport) {
                     const { address } = values;
-                    goOnInitialStepOrFetchReport(address.value);
+                    goToInitialStepOrFetchReport(address.value);
                   }
 
-                  if (showHideTransactionProtection) {
-                    showHideTransactionProtection(true);
+                  if (showHideProtectTx) {
+                    showHideProtectTx(true);
                   }
                 }}
               />
@@ -678,7 +675,7 @@ const SendAssetsForm = ({
               </Button>
 
               <ProtectTxShowError
-                protectTxError={ProtectTransactionUtils.checkFormForProtectedTxErrors(
+                protectTxError={ProtectTxUtils.checkFormForProtectedTxErrors(
                   values,
                   getAssetRate(values.asset)
                 )}

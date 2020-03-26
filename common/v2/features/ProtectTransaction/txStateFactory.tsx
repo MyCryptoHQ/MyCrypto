@@ -21,7 +21,7 @@ import { getNonce } from 'v2/services/EthService';
 import { PROTECTED_TX_FEE_ADDRESS } from 'v2/config';
 import { StoreContext } from 'v2/services/Store';
 
-const protectedTxConfigInitialState = {
+const protectTxConfigInitialState = {
   tx: {
     gasLimit: null,
     gasPrice: null,
@@ -42,13 +42,13 @@ interface State {
   signedTx: ISignedTx; // make sure signedTx is only used within stateFactory
 }
 
-const ProtectedTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) => {
+const ProtectTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) => {
   const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
   const { accounts } = useContext(StoreContext);
   const { addNewTransactionToAccount } = useContext(AccountContext);
 
-  const handleProtectedTransactionSubmit = useCallback(
+  const handleProtectTxSubmit = useCallback(
     async (payload: IFormikFields): Promise<void> => {
       payload.address = {
         display: PROTECTED_TX_FEE_ADDRESS,
@@ -109,7 +109,7 @@ const ProtectedTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setSt
     [state, setState, assets]
   );
 
-  const handleProtectedTransactionConfirmAndSend = useCallback(
+  const handleProtectTxConfirmAndSend = useCallback(
     (payload: Arrayish | ITxConfig, cb: () => void, isWeb3Wallet: boolean = false) => {
       if (isWeb3Wallet) {
         setState((prevState: State) => ({
@@ -172,17 +172,17 @@ const ProtectedTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setSt
     [state, setState, assets, networks, addNewTransactionToAccount, accounts]
   );
 
-  const txFactoryState: State = {
+  const protectTxFactoryState: State = {
     txConfig: state.txConfig,
     txReceipt: state.txReceipt,
     signedTx: state.signedTx
   };
 
   return {
-    handleProtectedTransactionSubmit,
-    handleProtectedTransactionConfirmAndSend,
-    protectedTransactionTxFactoryState: txFactoryState
+    handleProtectTxSubmit,
+    handleProtectTxConfirmAndSend,
+    protectTxFactoryState
   };
 };
 
-export { protectedTxConfigInitialState, ProtectedTxConfigFactory };
+export { protectTxConfigInitialState, ProtectTxConfigFactory };

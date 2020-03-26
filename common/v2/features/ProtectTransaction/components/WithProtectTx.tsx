@@ -2,25 +2,25 @@ import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { Panel } from '@mycrypto/ui';
 
-import useMediaQuery from 'v2/vendor/react-use/useMediaQuery';
 import { IFormikFields, ISignedTx, IStepComponentProps, ITxReceipt } from 'v2/types';
 import { useStateReducer } from 'v2/utils';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
+import { useScreenSize } from 'v2/vendor';
 
 import { ProtectTxProtection } from './ProtectTxProtection';
 import { ProtectTxSign } from './ProtectTxSign';
 import { ProtectTxReport } from './ProtectTxReport';
-import { ProtectedTxConfigFactory, protectedTxConfigInitialState } from '../txStateFactory';
-import { WithProtectApiFactory } from '../withProtectStateFactory';
+import { ProtectTxConfigFactory, protectTxConfigInitialState } from '../txStateFactory';
+import { WithProtectTxApiFactory } from '../withProtectStateFactory';
 import ProtectTxModalBackdrop from './ProtectTxModalBackdrop';
-import { TransactionProtectionButton } from './TransactionProtectionButton';
+import { ProtectTxButton } from './ProtectTxButton';
 
-const WithProtectTransactionWrapper = styled.div`
+const WithProtectTxWrapper = styled.div`
   display: flex;
   flex-wrap: nowrap;
 `;
 
-const WithProtectTransactionMain = styled.div<{ protectTxShow: boolean }>`
+const WithProtectTxMain = styled.div<{ protectTxShow: boolean }>`
   position: relative;
   flex: 0 0 100%;
   width: 100%;
@@ -43,7 +43,7 @@ const WithProtectTransactionMain = styled.div<{ protectTxShow: boolean }>`
   }
 `;
 
-const WithProtectTransactionSide = styled.div`
+const WithProtectTxSide = styled.div`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -70,14 +70,14 @@ const WithProtectTransactionSide = styled.div`
   }
 `;
 
-interface WithProtectTransactionProp extends IStepComponentProps {
-  withProtectApi?: WithProtectApiFactory;
+interface Props extends IStepComponentProps {
+  withProtectApi?: WithProtectTxApiFactory;
   customDetails?: JSX.Element;
   protectTxButton?(): JSX.Element;
 }
 
-export function withProtectTransaction(
-  WrappedComponent: React.ComponentType<WithProtectTransactionProp>,
+export function withProtectTx(
+  WrappedComponent: React.ComponentType<Props>,
   SignComponent: React.ComponentType<IStepComponentProps>
 ) {
   return function WithProtectTransaction({
@@ -88,42 +88,42 @@ export function withProtectTransaction(
     withProtectApi,
     customDetails,
     resetFlow
-  }: WithProtectTransactionProp) {
+  }: Props) {
     const {
-      handleProtectedTransactionSubmit,
-      handleProtectedTransactionConfirmAndSend,
-      protectedTransactionTxFactoryState
-    } = useStateReducer(ProtectedTxConfigFactory, {
-      txConfig: protectedTxConfigInitialState,
+      handleProtectTxSubmit,
+      handleProtectTxConfirmAndSend,
+      protectTxFactoryState
+    } = useStateReducer(ProtectTxConfigFactory, {
+      txConfig: protectTxConfigInitialState,
       txReceipt: null
     });
 
     const {
       withProtectState: { protectTxShow, stepIndex, protectTxEnabled, isWeb3Wallet },
       handleTransactionReport,
-      goOnNextStep,
-      goOnInitialStepOrFetchReport,
+      goToNextStep,
+      goToInitialStepOrFetchReport,
       formCallback,
-      showHideTransactionProtection
+      showHideProtectTx
     } = withProtectApi!;
 
-    const isMdScreen = useMediaQuery(`(min-width: ${BREAK_POINTS.SCREEN_MD})`);
+    const { isMdScreen } = useScreenSize();
 
     const toggleProtectTxShow = useCallback(
       e => {
         e.preventDefault();
 
-        if (showHideTransactionProtection) {
-          showHideTransactionProtection(!protectTxShow);
+        if (showHideProtectTx) {
+          showHideProtectTx(!protectTxShow);
         }
       },
-      [showHideTransactionProtection]
+      [showHideProtectTx]
     );
 
     return useMemo(
       () => (
-        <WithProtectTransactionWrapper>
-          <WithProtectTransactionMain protectTxShow={protectTxShow}>
+        <WithProtectTxWrapper>
+          <WithProtectTxMain protectTxShow={protectTxShow}>
             <WrappedComponent
               txConfig={txConfigMain}
               signedTx={signedTxMain}
@@ -136,17 +136,17 @@ export function withProtectTransaction(
               resetFlow={resetFlow}
               protectTxButton={() =>
                 protectTxEnabled ? (
-                  <TransactionProtectionButton reviewReport={true} onClick={toggleProtectTxShow} />
+                  <ProtectTxButton reviewReport={true} onClick={toggleProtectTxShow} />
                 ) : (
                   <></>
                 )
               }
             />
-          </WithProtectTransactionMain>
+          </WithProtectTxMain>
           {protectTxShow && (
             <>
               {!isMdScreen && <ProtectTxModalBackdrop onBackdropClick={toggleProtectTxShow} />}
-              <WithProtectTransactionSide>
+              <WithProtectTxSide>
                 <Panel>
                   {(() => {
                     if (stepIndex === 0) {
@@ -154,7 +154,7 @@ export function withProtectTransaction(
 
                       return (
                         <ProtectTxProtection
-                          handleProtectedTransactionSubmit={handleProtectedTransactionSubmit}
+                          handleProtectTxSubmit={handleProtectTxSubmit}
                           withProtectApi={withProtectApi!}
                           sendAssetsValues={values}
                         />
@@ -164,21 +164,19 @@ export function withProtectTransaction(
                         <ProtectTxSign withProtectApi={withProtectApi!}>
                           <>
                             <SignComponent
-                              txConfig={(({ txConfig }) => txConfig)(
-                                protectedTransactionTxFactoryState
-                              )}
+                              txConfig={(({ txConfig }) => txConfig)(protectTxFactoryState)}
                               onComplete={(
                                 payload: IFormikFields | ITxReceipt | ISignedTx | null
                               ) => {
                                 handleTransactionReport().then(() => {
-                                  handleProtectedTransactionConfirmAndSend(
+                                  handleProtectTxConfirmAndSend(
                                     payload,
-                                    goOnNextStep,
+                                    goToNextStep,
                                     isWeb3Wallet
                                   );
                                 });
                               }}
-                              resetFlow={goOnInitialStepOrFetchReport}
+                              resetFlow={goToInitialStepOrFetchReport}
                             />
                           </>
                         </ProtectTxSign>
@@ -190,10 +188,10 @@ export function withProtectTransaction(
                     return <></>;
                   })()}
                 </Panel>
-              </WithProtectTransactionSide>
+              </WithProtectTxSide>
             </>
           )}
-        </WithProtectTransactionWrapper>
+        </WithProtectTxWrapper>
       ),
       [
         stepIndex,
@@ -202,7 +200,7 @@ export function withProtectTransaction(
         txReceiptMain,
         protectTxShow,
         formCallback,
-        protectedTransactionTxFactoryState,
+        protectTxFactoryState,
         isMdScreen,
         protectTxEnabled,
         isWeb3Wallet

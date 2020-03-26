@@ -11,13 +11,12 @@ import {
   CryptoScamDBNoInfoResponse
 } from 'v2/services/ApiService';
 import { getNetworkById, NetworkContext, AssetContext, getAssetByUUID } from 'v2/services/Store';
-import useMediaQuery from 'v2/vendor/react-use/useMediaQuery';
-import { BREAK_POINTS } from 'v2/theme';
+import { useScreenSize } from 'v2/vendor';
 import { WALLETS_CONFIG } from 'v2/config';
 
 import { SendFormCallbackType } from './types';
 
-export interface WithProtectState {
+export interface WithProtectTxState {
   stepIndex: number;
   protectTxShow: boolean;
   protectTxEnabled: boolean;
@@ -32,23 +31,23 @@ export interface WithProtectState {
   web3WalletName: string | null;
 }
 
-export interface WithProtectApiFactory {
-  withProtectState: WithProtectState;
+export interface WithProtectTxApiFactory {
+  withProtectState: WithProtectTxState;
   formCallback: SendFormCallbackType;
 
   handleTransactionReport(receiverAddress?: string): Promise<void>;
   setMainTransactionFormCallback(callback: SendFormCallbackType): void;
-  goOnNextStep(): void;
-  goOnInitialStepOrFetchReport(receiverAddress?: string): void;
-  showHideTransactionProtection(showOrHide: boolean): void;
+  goToNextStep(): void;
+  goToInitialStepOrFetchReport(receiverAddress?: string): void;
+  showHideProtectTx(showOrHide: boolean): void;
   setReceiverInfo(receiverAddress: string, network: NetworkId | null): Promise<void>;
-  setProtectionTxTimeoutFunction(cb: (txReceiptCb?: (txReciept: ITxReceipt) => void) => void): void;
-  invokeProtectionTxTimeoutFunction(cb: (txReceipt: ITxReceipt) => void): void;
-  clearProtectionTxTimeoutFunction(): void;
+  setProtectTxTimeoutFunction(cb: (txReceiptCb?: (txReciept: ITxReceipt) => void) => void): void;
+  invokeProtectTxTimeoutFunction(cb: (txReceipt: ITxReceipt) => void): void;
+  clearProtectTxTimeoutFunction(): void;
   setWeb3Wallet(isWeb3Wallet: boolean, walletTypeId?: WalletId | null): void;
 }
 
-export const WithProtectInitialState: Partial<WithProtectState> = {
+export const withProtectTxInitialState: Partial<WithProtectTxState> = {
   stepIndex: 0,
   protectTxShow: false,
   protectTxEnabled: false,
@@ -64,9 +63,9 @@ export const WithProtectInitialState: Partial<WithProtectState> = {
 
 const numOfSteps = 3;
 
-const WithProtectConfigFactory: TUseStateReducerFactory<
-  WithProtectState,
-  WithProtectApiFactory
+const WithProtectTxConfigFactory: TUseStateReducerFactory<
+  WithProtectTxState,
+  WithProtectTxApiFactory
 > = ({ state, setState }) => {
   const formCallback = useRef<SendFormCallbackType>(() => ({ isValid: false, values: null }));
   const protectionTxTimeoutFunction = useRef<((cb: () => ITxReceipt) => void) | null>(null);
@@ -74,7 +73,7 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
   const { networks } = useContext(NetworkContext);
   const { assets } = useContext(AssetContext);
 
-  const isMdScreen = useMediaQuery(`(min-width: ${BREAK_POINTS.SCREEN_MD})`);
+  const { isMdScreen } = useScreenSize();
 
   useEffect(() => {
     // Show tx protect in case of window resize
@@ -117,14 +116,14 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
       try {
         const cryptoScamAddressReport = await CryptoScamDBService.instance.check(address);
 
-        setState((prevState: WithProtectState) => ({
+        setState((prevState: WithProtectTxState) => ({
           ...prevState,
           cryptoScamAddressReport
         }));
       } catch (e) {
         numOfErrors++;
         console.error(e);
-        setState((prevState: WithProtectState) => ({
+        setState((prevState: WithProtectTxState) => ({
           ...prevState,
           cryptoScamAddressReport: {
             input: address,
@@ -140,14 +139,14 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
           state.network!.id
         );
 
-        setState((prevState: WithProtectState) => ({
+        setState((prevState: WithProtectTxState) => ({
           ...prevState,
           etherscanBalanceReport
         }));
       } catch (e) {
         numOfErrors++;
         console.error(e);
-        setState((prevState: WithProtectState) => ({
+        setState((prevState: WithProtectTxState) => ({
           ...prevState,
           etherscanBalanceReport: null
         }));
@@ -159,14 +158,14 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
           state.network!.id
         );
 
-        setState((prevState: WithProtectState) => ({
+        setState((prevState: WithProtectTxState) => ({
           ...prevState,
           etherscanLastTxReport
         }));
       } catch (e) {
         numOfErrors++;
         console.error(e);
-        setState((prevState: WithProtectState) => ({
+        setState((prevState: WithProtectTxState) => ({
           ...prevState,
           etherscanLastTxReport: null
         }));
@@ -187,7 +186,7 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
     [formCallback]
   );
 
-  const goOnNextStep = useCallback(() => {
+  const goToNextStep = useCallback(() => {
     setState(prevState => {
       const { stepIndex } = prevState;
 
@@ -198,7 +197,7 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
     });
   }, [setState]);
 
-  const goOnInitialStepOrFetchReport = useCallback(
+  const goToInitialStepOrFetchReport = useCallback(
     (receiverAddress?: string) => {
       if (state.protectTxEnabled) {
         setState(prevState => ({
@@ -223,7 +222,7 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
     [setState, state, handleTransactionReport]
   );
 
-  const showHideTransactionProtection = useCallback(
+  const showHideProtectTx = useCallback(
     (showOrHide: boolean) => {
       setState(prevState => ({
         ...prevState,
@@ -261,7 +260,7 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
     [setState]
   );
 
-  const setProtectionTxTimeoutFunction = useCallback(
+  const setProtectTxTimeoutFunction = useCallback(
     (cb: (txReceiptCb?: (txReciept: ITxReceipt) => void) => void) => {
       const { protectTxEnabled, isWeb3Wallet } = state;
       if (protectTxEnabled && !isWeb3Wallet) {
@@ -275,7 +274,7 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
     [protectionTxTimeoutFunction, state]
   );
 
-  const invokeProtectionTxTimeoutFunction = useCallback(
+  const invokeProtectTxTimeoutFunction = useCallback(
     cb => {
       if (protectionTxTimeoutFunction.current) {
         protectionTxTimeoutFunction.current(cb);
@@ -285,7 +284,7 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
     [protectionTxTimeoutFunction]
   );
 
-  const clearProtectionTxTimeoutFunction = useCallback(() => {
+  const clearProtectTxTimeoutFunction = useCallback(() => {
     protectionTxTimeoutFunction.current = null;
   }, [protectionTxTimeoutFunction]);
 
@@ -306,16 +305,16 @@ const WithProtectConfigFactory: TUseStateReducerFactory<
     withProtectState: state,
     handleTransactionReport,
     setMainTransactionFormCallback,
-    goOnNextStep,
-    goOnInitialStepOrFetchReport,
-    showHideTransactionProtection,
+    goToNextStep,
+    goToInitialStepOrFetchReport,
+    showHideProtectTx,
     formCallback: formCallback.current,
     setReceiverInfo,
-    setProtectionTxTimeoutFunction,
-    invokeProtectionTxTimeoutFunction,
-    clearProtectionTxTimeoutFunction,
+    setProtectTxTimeoutFunction,
+    invokeProtectTxTimeoutFunction,
+    clearProtectTxTimeoutFunction,
     setWeb3Wallet
   };
 };
 
-export { WithProtectConfigFactory };
+export { WithProtectTxConfigFactory };

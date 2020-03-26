@@ -1,9 +1,9 @@
 import { IFormikFields } from 'v2/types/transactionFlow';
-import { WithProtectApiFactory } from './withProtectStateFactory';
+import { WithProtectTxApiFactory } from './withProtectStateFactory';
 
 export type SendFormCallbackType = () => { isValid: boolean; values: IFormikFields | null };
 export interface IWithProtectApi {
-  withProtectApi?: WithProtectApiFactory;
+  withProtectApi?: WithProtectTxApiFactory;
 }
 
 export enum ProtectTxError {

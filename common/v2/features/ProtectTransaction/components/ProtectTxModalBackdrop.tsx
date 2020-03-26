@@ -10,13 +10,11 @@ const ProtectedTransactionModalBackdropLayout = styled.div`
   background: rgba(255, 255, 255, 0.5);
 `;
 
-interface ProtectedTransactionModalBackdropProps {
+interface Props {
   onBackdropClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>): void;
 }
 
-const ProtectTxModalBackdrop: FC<ProtectedTransactionModalBackdropProps> = ({
-  onBackdropClick
-}) => {
+const ProtectTxModalBackdrop: FC<Props> = ({ onBackdropClick }) => {
   return <ProtectedTransactionModalBackdropLayout onClick={onBackdropClick} />;
 };
 

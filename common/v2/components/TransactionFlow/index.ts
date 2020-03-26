@@ -1,13 +1,9 @@
-import { withProtectTransaction } from '../../features/ProtectTransaction/components';
+import { withProtectTx } from '../../features/ProtectTransaction/components';
 import SignTransaction from '../../features/SendAssets/components/SignTransaction';
 
 import { default as ConfirmTransaction } from './ConfirmTransaction';
 import TxReceipt from './TxReceipt';
 
-const TxReceiptWithProtection = withProtectTransaction(TxReceipt, SignTransaction);
+const TxReceiptWithProtectTx = withProtectTx(TxReceipt, SignTransaction);
 
-export {
-  TxReceipt,
-  TxReceiptWithProtection,
-  ConfirmTransaction
-}
+export { TxReceipt, TxReceiptWithProtectTx, ConfirmTransaction };

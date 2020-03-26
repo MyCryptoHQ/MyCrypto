@@ -1,9 +1,9 @@
-export { ProtectedTxConfigFactory, protectedTxConfigInitialState } from './txStateFactory';
+export { ProtectTxConfigFactory, protectTxConfigInitialState } from './txStateFactory';
 export * from './types';
 export * from './utils';
 export {
-  WithProtectApiFactory,
-  WithProtectConfigFactory,
-  WithProtectInitialState,
-  WithProtectState
+  WithProtectTxApiFactory,
+  WithProtectTxConfigFactory,
+  withProtectTxInitialState,
+  WithProtectTxState
 } from './withProtectStateFactory';

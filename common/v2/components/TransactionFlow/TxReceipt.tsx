@@ -33,8 +33,8 @@ import translate, { translateRaw } from 'v2/translations';
 import { convertToFiat, truncate, fromTxReceiptObj } from 'v2/utils';
 import { isWeb3Wallet } from 'v2/utils/web3';
 import ProtocolTagsList from 'v2/features/DeFiZap/components/ProtocolTagsList';
-import { WithProtectApiFactory } from 'v2/features/ProtectTransaction';
-import { AbortTransaction } from 'v2/features/ProtectTransaction/components';
+import { WithProtectTxApiFactory } from 'v2/features/ProtectTransaction';
+import { ProtectTxAbort } from 'v2/features/ProtectTransaction/components';
 
 import { ISender } from './types';
 import { constructSenderFromTxConfig } from './helpers';
@@ -52,7 +52,7 @@ interface PendingBtnAction {
 interface Props {
   pendingButton?: PendingBtnAction;
   swapDisplay?: SwapDisplayData;
-  withProtectApi?: WithProtectApiFactory;
+  withProtectApi?: WithProtectTxApiFactory;
   protectTxButton?(): JSX.Element;
 }
 
@@ -95,12 +95,12 @@ export default function TxReceipt({
           protectTxEnabled: isProtectTxEnabled,
           isWeb3Wallet: isProtectedTxWeb3Wallet
         },
-        invokeProtectionTxTimeoutFunction
+        invokeProtectTxTimeoutFunction
       } = withProtectApi;
 
       setProtectTxEnabled(isProtectTxEnabled);
       setWeb3Wallet(isProtectedTxWeb3Wallet);
-      protectionTxTimeoutFunction.current = invokeProtectionTxTimeoutFunction;
+      protectionTxTimeoutFunction.current = invokeProtectTxTimeoutFunction;
     }
   }, [withProtectApi, setWeb3Wallet, protectionTxTimeoutFunction]);
 
@@ -288,7 +288,7 @@ export const TxReceiptUI = ({
   return (
     <div className="TransactionReceipt">
       {protectTxEnabled && !web3Wallet && (
-        <AbortTransaction
+        <ProtectTxAbort
           countdown={protectTxCounter ? protectTxCounter : 0}
           onAbortTransaction={e => {
             e.preventDefault();

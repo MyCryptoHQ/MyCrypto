@@ -2,8 +2,8 @@ import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
 
 import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from 'v2/theme';
-import useMediaQuery from 'v2/vendor/react-use/useMediaQuery';
 import { translateRaw } from 'v2/translations';
+import { useScreenSize } from 'v2/vendor';
 
 import ProtectIcon from './icons/ProtectIcon';
 import ProtectIconCheck from './icons/ProtectIconCheck';
@@ -78,18 +78,18 @@ const STransactionProtectionButton = styled.button`
   }
 `;
 
-interface TransactionProtectionButtonProps {
+interface Props {
   disabled?: boolean;
   reviewReport?: boolean;
   onClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
 }
 
-export const TransactionProtectionButton: FC<TransactionProtectionButtonProps> = ({
+export const ProtectTxButton: FC<Props> = ({
   onClick: onTransactionProtectionClick,
   disabled = false,
   reviewReport = false
 }) => {
-  const isSmScreen = useMediaQuery(`(min-width: ${BREAK_POINTS.SCREEN_SM})`);
+  const { isSmScreen } = useScreenSize();
 
   const onClickEvent = useCallback(
     (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

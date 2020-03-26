@@ -8,7 +8,7 @@ import {
 } from 'v2/config';
 import { ProtectTxError } from './types';
 
-export abstract class ProtectTransactionUtils {
+export abstract class ProtectTxUtils {
   public static getProtectTransactionFee(
     sendAssetsValues: IFormikFields,
     rate: number | undefined

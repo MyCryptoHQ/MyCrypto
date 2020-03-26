@@ -93,7 +93,7 @@ interface AbortTransactionProps {
   onSendTransaction(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void;
 }
 
-export const AbortTransaction: FC<AbortTransactionProps> = ({
+export const ProtectTxAbort: FC<AbortTransactionProps> = ({
   countdown,
   onAbortTransaction,
   onSendTransaction

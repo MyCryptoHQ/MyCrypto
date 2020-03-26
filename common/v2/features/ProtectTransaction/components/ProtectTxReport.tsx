@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import upperFirst from 'lodash/upperFirst';
 
 import { Trans, translateRaw } from 'v2/translations';
-import useMediaQuery from 'v2/vendor/react-use/useMediaQuery';
+import { useScreenSize } from 'v2/vendor';
 import { fromWei, Wei } from 'v2/services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from 'v2/theme';
 import { CryptoScamDBBaseResponse, CryptoScamDBInfoResponse } from 'v2/services/ApiService';
@@ -106,7 +106,7 @@ const TimelineBadge = styled.div`
   height: 50px;
   position: absolute;
   left: 15px;
-  margin-left: -25px;
+  margin-left: -30px;
   border: 2px solid ${COLORS.PURPLE};
   border-radius: 50%;
   transform: translateX(50%);
@@ -116,6 +116,10 @@ const TimelineBadge = styled.div`
   background: ${COLORS.WHITE};
   text-align: center;
   z-index: 1000;
+
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    margin-left: -25px;
+  }
 `;
 
 const TimelinePanel = styled.div`
@@ -171,11 +175,10 @@ export const ProtectTxReport: FC<IWithProtectApi> = ({ withProtectApi }) => {
       asset,
       isWeb3Wallet
     },
-    showHideTransactionProtection
+    showHideProtectTx
   } = withProtectApi!;
 
-  const isLgScreen = useMediaQuery(`(min-width: ${BREAK_POINTS.SCREEN_LG})`);
-  const isSmScreen = useMediaQuery(`(min-width: ${BREAK_POINTS.SCREEN_SM})`);
+  const { isSmScreen, isLgScreen } = useScreenSize();
 
   const getShortAddress = useCallback(() => {
     if (receiverAddress && receiverAddress.length >= 10) {
@@ -358,11 +361,11 @@ export const ProtectTxReport: FC<IWithProtectApi> = ({ withProtectApi }) => {
     (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
       e.preventDefault();
 
-      if (showHideTransactionProtection) {
-        showHideTransactionProtection(false);
+      if (showHideProtectTx) {
+        showHideProtectTx(false);
       }
     },
-    [showHideTransactionProtection]
+    [showHideProtectTx]
   );
 
   return (
