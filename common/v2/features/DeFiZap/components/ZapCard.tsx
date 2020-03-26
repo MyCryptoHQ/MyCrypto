@@ -50,6 +50,7 @@ const ZapCardContent = styled('div')`
   flex: 1;
   padding: 0px ${SPACING.BASE} 0px ${SPACING.BASE};
   flex-direction: column;
+  justify-content: flex-start;
 `;
 
 const ZapCardContentText = styled.p`
@@ -57,22 +58,21 @@ const ZapCardContentText = styled.p`
   margin-bottom: 0px;
 `;
 
-const ZapCardBalanceText = styled(ZapCardContentText)`
-  font-size: 16px;
-  font-weight: bold;
-`;
-
 const ZapCardContentRow = styled('div')`
   align-items: center;
   justify-content: center;
-  flex: 1;
-  margin-bottom: ${SPACING.XS};
+  margin-bottom: ${SPACING.SM};
   & p {
     &:last-child {
       margin-bottom: 0px;
       padding-bottom: 0px;
     }
   }
+`;
+
+const ZapContentAmountRow = styled(ZapCardContentRow)`
+  flex: 1;
+  justify-content: flex-start;
 `;
 
 const ZapCardContentBottom = styled('div')`
@@ -88,8 +88,7 @@ const ZapCardContentBottom = styled('div')`
       margin-top: 0px;
     }
   }
-
-  @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+  @media (min-width: ${BREAK_POINTS.SCREEN_XS}) and (max-width: ${BREAK_POINTS.SCREEN_MD}) {
     flex-direction: column;
     & a {
       &:not(:first-child) {
@@ -106,7 +105,6 @@ const ZapCardContentHeaderRow = styled('div')`
   flex-direction: row;
   align-items: top;
   justify-content: center;
-  flex: 1;
 `;
 
 const ZapCardHeaderTextSection = styled('div')`
@@ -141,7 +139,7 @@ const ZapCardRiskProfile = styled('div')`
 `;
 
 const ZapCardButton = styled(Button)<{ width: string }>`
-  @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+  @media (min-width: ${BREAK_POINTS.SCREEN_XS}) and (max-width: ${BREAK_POINTS.SCREEN_MD}) {
     width: 100%;
   }
   display: flex;
@@ -151,37 +149,50 @@ const ZapCardButton = styled(Button)<{ width: string }>`
   height: 40px;
   padding: 0;
   font-size: ${FONT_SIZE.MD};
-  &:hover {
-    background-color: ${COLORS.BLUE_LIGHT_DARKISH};
-  }
 `;
 
 const ZapEstimatedBalance = styled.div`
+  position: relative;
   display: flex;
   font-weight: bold;
-  color: ${COLORS.BLUE_DARK};
-  justify-content: flex-start;
-  align-items: center;
-  line-height: 17px;
-  font-size: 16px;
-  & span {
-    margin-left: ${SPACING.XS};
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 80px;
+  @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+    margin-bottom: ${SPACING.SM};
   }
 `;
 
 const BalanceWrapper = styled.div`
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
+  width: 100%;
+  font-weight: bold;
+  color: ${COLORS.BLUE_DARK};
+  line-height: 17px;
+  font-size: 16px;
+  @media (min-width: ${BREAK_POINTS.SCREEN_XS}) and (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+    flex-direction: column;
+  }
 `;
 
 const AmountContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: flex-end;
+  & > * {
+    margin-bottom: ${SPACING.XS};
+  }
+  @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+    align-items: flex-start;
+  }
+`;
+
+const TooltipWrapper = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 2px;
 `;
 
 interface Props {
@@ -230,27 +241,32 @@ const ZapCard = ({ config }: Props) => {
         <ZapCardContentRow>
           <IndicatorItem />
         </ZapCardContentRow>
-        <ZapCardContentRow>
-          {humanReadableZapBalance && (
+        <ZapContentAmountRow>
+          {!humanReadableZapBalance ? (
+            <ZapCardContentText>{config.description}</ZapCardContentText>
+          ) : (
             <>
+              <ZapCardContentText>{translateRaw('ZAP_BALANCE_DETECTED')}</ZapCardContentText>
               <BalanceWrapper>
                 <ZapEstimatedBalance>
                   {translateRaw('ZAP_ESTIMATED_BALANCE')}{' '}
-                  <Tooltip
-                    tooltip={translateRaw('ZAP_BALANCE_TOOLTIP', {
-                      $protocol: config.platformsUsed[0]
-                    })}
-                    type={'informational'}
-                  />
+                  <TooltipWrapper>
+                    <Tooltip
+                      tooltip={translateRaw('ZAP_BALANCE_TOOLTIP', {
+                        $protocol: config.platformsUsed[0]
+                      })}
+                      type={'informational'}
+                    />
+                  </TooltipWrapper>
                 </ZapEstimatedBalance>
                 <AmountContainer>
                   {defiReserveBalances ? (
                     defiReserveBalances.map(defiReserveAsset => (
-                      <ZapCardBalanceText key={defiReserveAsset.uuid}>
+                      <div key={defiReserveAsset.uuid}>
                         {`~ ${parseFloat(
                           trimBN(formatEther(defiReserveAsset.balance.toString()))
-                        ).toFixed(3)} ${defiReserveAsset.ticker}`}
-                      </ZapCardBalanceText>
+                        ).toFixed(4)} ${defiReserveAsset.ticker}`}
+                      </div>
                     ))
                   ) : (
                     <ZapCardContentText>
@@ -261,7 +277,7 @@ const ZapCard = ({ config }: Props) => {
               </BalanceWrapper>
             </>
           )}
-        </ZapCardContentRow>
+        </ZapContentAmountRow>
       </ZapCardContent>
       <ZapCardContentBottom>
         {!humanReadableZapBalance ? (
