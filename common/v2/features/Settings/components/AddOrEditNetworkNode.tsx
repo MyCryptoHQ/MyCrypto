@@ -272,7 +272,7 @@ export default function AddOrEditNetworkNode({
                   <label htmlFor="name">{translateRaw('CUSTOM_NODE_FORM_NODE_NAME')}</label>
                   <Field
                     name="name"
-                    render={({ field }: FieldProps<NetworkNodeFields>) => (
+                    render={({ field }: FieldProps<string>) => (
                       <InputField
                         {...field}
                         inputError={errors && errors.name}
@@ -286,7 +286,7 @@ export default function AddOrEditNetworkNode({
                 <AddressFieldset>
                   <Field
                     name="networkId"
-                    render={({ field, form }: FieldProps<NetworkNodeFields>) => (
+                    render={({ field, form }: FieldProps<string>) => (
                       <SNetworkSelectDropdown
                         network={field.value}
                         onChange={e => form.setFieldValue(field.name, e)}
@@ -303,7 +303,7 @@ export default function AddOrEditNetworkNode({
                   <label htmlFor="url">{translateRaw('CUSTOM_NODE_FORM_NODE_ADDRESS')}</label>
                   <Field
                     name="url"
-                    render={({ field }: FieldProps<NetworkNodeFields>) => (
+                    render={({ field }: FieldProps<string>) => (
                       <InputField
                         inputError={errors && errors.url}
                         placeholder={translateRaw('CUSTOM_NODE_FORM_NODE_ADDRESS_PLACEHOLDER')}
@@ -316,7 +316,7 @@ export default function AddOrEditNetworkNode({
               <Column alignSelf="center">
                 <Field
                   name="auth"
-                  render={({ field, form }: FieldProps<NetworkNodeFields>) => (
+                  render={({ field, form }: FieldProps<boolean>) => (
                     <SCheckbox
                       {...field}
                       onChange={() => form.setFieldValue(field.name, !field.value)}
@@ -333,7 +333,7 @@ export default function AddOrEditNetworkNode({
                   <label htmlFor="username">{translateRaw('CUSTOM_NODE_FORM_USERNAME')}</label>
                   <Field
                     name="username"
-                    render={({ field }: FieldProps<NetworkNodeFields>) => (
+                    render={({ field }: FieldProps<string>) => (
                       <InputField
                         {...field}
                         inputError={errors && errors.username}
@@ -348,7 +348,7 @@ export default function AddOrEditNetworkNode({
                   <label htmlFor="password">{translateRaw('CUSTOM_NODE_FORM_PASSWORD')}</label>
                   <Field
                     name="password"
-                    render={({ field }: FieldProps<NetworkNodeFields>) => (
+                    render={({ field }: FieldProps<string>) => (
                       <InputField
                         {...field}
                         inputError={errors && errors.password}

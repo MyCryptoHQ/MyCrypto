@@ -7,7 +7,7 @@ import {
 } from 'ethers/providers';
 import { formatEther, BigNumber } from 'ethers/utils';
 
-import { Asset, Network, IHexStrTransaction, TxObj } from 'v2/types';
+import { Asset, Network, IHexStrTransaction, TxObj, ITxSigned } from 'v2/types';
 import { RPCRequests, baseToConvertedUnit, ERC20 } from 'v2/services/EthService';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { EthersJS } from './ethersJsProvider';
@@ -102,8 +102,8 @@ export class ProviderHandler {
     return this.injectClient(client => client.getBlockNumber().then(data => data.toString()));
   }
 
-  public sendRawTx(signedTx: string): Promise<TransactionResponse> {
-    return this.injectClient(client => client.sendTransaction(signedTx));
+  public sendRawTx(signedTx: string | ITxSigned): Promise<TransactionResponse> {
+    return this.injectClient(client => client.sendTransaction(signedTx as string));
   }
 
   public waitForTransaction(txHash: string, confirmations = 1): Promise<TransactionReceipt> {
