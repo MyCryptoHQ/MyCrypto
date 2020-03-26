@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { BannerType } from 'v2/types';
-import { BREAK_POINTS, COLORS } from 'v2/theme';
+import { FONT_SIZE, BREAK_POINTS, COLORS } from 'v2/theme';
 import { default as Typography } from './Typography';
 import announcementSVG from 'assets/images/icn-announcement.svg';
 import errorSVG from 'assets/images/icn-toast-error.svg';
@@ -21,14 +21,15 @@ interface Config {
 const Container = styled.div`
   background-color: ${(p: { config: Config }) => p.config.bgColor || 'transparent'};
   color: ${p => p.config.color || 'inherit'};
-  padding: 15px 10px;
+  padding: 5px 10px;
   padding-right: 30px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
+  font-size: ${FONT_SIZE.SM};
   & > img {
     vertical-align: top;
-    margin-right: 15px;
+    margin-right: 1ch;
     margin-top: 5px;
   }
 
@@ -44,7 +45,7 @@ const Container = styled.div`
 `;
 
 const Icon = styled.img`
-  max-width: 24px;
+  max-width: 1em;
 `;
 
 interface BannerTypographyProps {
@@ -89,7 +90,7 @@ export const Banner = ({ value, type, ...props }: Props) => {
   return (
     <Container config={config} {...props}>
       <Icon src={config.icon} alt={type} />
-      <STypography value={value} color={config.color} />
+      <STypography value={value} color={config.color} fontSize={FONT_SIZE.SM} />
     </Container>
   );
 };
