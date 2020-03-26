@@ -20,6 +20,9 @@ import diversificationIcn from 'assets/images/defizap/icn-diversification.svg';
 import unisethIllustration from 'assets/images/defizap/illustrations/uniseth.svg';
 import unidaiIllustration from 'assets/images/defizap/illustrations/unidai.svg';
 import cdaiIllustration from 'assets/images/defizap/illustrations/cdai.svg';
+import unisethMobileIllustration from 'assets/images/defizap/illustrations/uniseth-mobile.svg';
+import unidaiMobileIllustration from 'assets/images/defizap/illustrations/unidai-mobile.svg';
+import cdaiMobileIllustration from 'assets/images/defizap/illustrations/cdai-mobile.svg';
 
 export enum IZapType {
   UNIPOOL = 'UNIPOOL',
@@ -39,6 +42,7 @@ export interface IZapConfig {
   platformsUsed: string[];
   bulletPoints: string[];
   illustration: any;
+  mobileIllustration: any;
   zapType: IZapType;
   poolTokenUUID: string;
   breakdownImage: any;
@@ -92,6 +96,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
       translateRaw('ZAP_SETH_UNIPOOL_BULLETPOINT_TWO')
     ],
     illustration: unisethIllustration,
+    mobileIllustration: unisethMobileIllustration,
     zapType: IZapType.UNIPOOL,
     poolTokenUUID: 'ca27272a-891e-577d-ae75-f8efe4d55231',
     breakdownImage: unipoolSethBreakdown,
@@ -116,6 +121,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
       translateRaw('ZAP_DAI_UNIPOOL_BULLETPOINT_TWO')
     ],
     illustration: unidaiIllustration,
+    mobileIllustration: unidaiMobileIllustration,
     zapType: IZapType.UNIPOOL,
     poolTokenUUID: '2b7a4d65-9c40-5c21-96eb-f7d380a4dc87',
     breakdownImage: unipoolDaiBreakdown,
@@ -139,6 +145,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
       translateRaw('ZAP_COMPOUND_DAI_POOL_BULLETPOINT_TWO')
     ],
     illustration: cdaiIllustration,
+    mobileIllustration: cdaiMobileIllustration,
     zapType: IZapType.COMPOUND,
     poolTokenUUID: 'a9cc6884-14bd-53b6-abcd-f9b56b60463d',
     breakdownImage: compoundDaiBreakdown,
