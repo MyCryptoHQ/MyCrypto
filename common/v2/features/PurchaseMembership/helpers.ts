@@ -4,11 +4,14 @@ import { DEFAULT_NETWORK_CHAINID } from 'v2/config';
 
 import { ISimpleTxForm } from './types';
 
-export const createSimpleTxObject = (formData: ISimpleTxForm): IHexStrTransaction | ITxObject => {
+export const createSimpleTxObject = (
+  formData: ISimpleTxForm,
+  data: string
+): IHexStrTransaction | ITxObject => {
   return {
     to: formData.address,
     value: inputValueToHex(formData.amount),
-    data: '0x',
+    data,
     gasLimit: formData.gasLimit,
     gasPrice: inputGasPriceToHex(formData.gasPrice),
     nonce: inputNonceToHex(formData.nonce),

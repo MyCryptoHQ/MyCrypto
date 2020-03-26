@@ -1,12 +1,14 @@
-import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
+import { ethers } from 'ethers';
 
+import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
 import { isWeb3Wallet } from 'v2/utils/web3';
 import { Asset } from 'v2/types';
-import { hexWeiToString, ProviderHandler } from 'v2/services/EthService';
+import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
+import { hexWeiToString, ProviderHandler, toWei } from 'v2/services/EthService';
+import { UnlockToken } from 'v2/services/EthService/contracts';
 import { createSimpleTxObject } from './helpers';
 import { MembershipPurchaseState, TStepAction, MembershipSimpleTxFormFull } from './types';
 import { MEMBERSHIP_PURCHASE_GAS_LIMIT } from './config';
-
 const MembershipPurchaseFactory: TUseStateReducerFactory<MembershipPurchaseState> = ({
   state,
   setState
@@ -44,11 +46,23 @@ const MembershipPurchaseFactory: TUseStateReducerFactory<MembershipPurchaseState
 
   const handleUserInputFormSubmit: TStepAction = (payload: MembershipSimpleTxFormFull, cb: any) => {
     const membershipSelected = payload.membershipSelected;
-    const rawTransaction = createSimpleTxObject({
-      ...payload,
-      address: membershipSelected.contractAddress,
-      gasLimit: MEMBERSHIP_PURCHASE_GAS_LIMIT
+
+    const weiPrice = toWei(membershipSelected.price, DEFAULT_ASSET_DECIMAL);
+    const data = UnlockToken.purchase.encodeInput({
+      _value: weiPrice,
+      _recipient: payload.account.address,
+      _referrer: ethers.constants.AddressZero,
+      _data: []
     });
+
+    const rawTransaction = createSimpleTxObject(
+      {
+        ...payload,
+        address: membershipSelected.contractAddress,
+        gasLimit: MEMBERSHIP_PURCHASE_GAS_LIMIT
+      },
+      data
+    );
 
     const txConfig = {
       rawTransaction,
@@ -62,7 +76,7 @@ const MembershipPurchaseFactory: TUseStateReducerFactory<MembershipPurchaseState
       gasPrice: hexWeiToString(rawTransaction.gasPrice),
       gasLimit: MEMBERSHIP_PURCHASE_GAS_LIMIT.toString(),
       nonce: payload.nonce,
-      data: '0x',
+      data,
       value: hexWeiToString(rawTransaction.value)
     };
     setState({
