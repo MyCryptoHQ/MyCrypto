@@ -54,6 +54,7 @@ const DetailsSection = styled.div`
 const ContentPanelHeading = styled(SSection)`
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     flex-direction: column-reverse;
+    padding-top: ${SPACING.BASE};
   }
   flex-direction: row;
   align-items: flex-start;
@@ -175,7 +176,7 @@ const ZapEducation = withRouter(({ history, location }) => {
       </ContentPanelHeading>
       <SpacedSection color={COLORS.WHITE}>
         <DetailsSection>
-          <Illustration src={zapSelected.illustration} width={'50%'} />
+          <Illustration src={zapSelected.illustration} width={'60%'} />
           <DetailsList zapSelected={zapSelected} />
         </DetailsSection>
         <Button onClick={handleSubmit}>{translate('ZAP_START_EARNING')}</Button>
