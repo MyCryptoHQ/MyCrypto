@@ -14,10 +14,6 @@ module.exports = merge.smart(common, {
 
   devtool: 'cheap-module-source-map',
 
-  entry: {
-    vendor: config.vendorModules
-  },
-
   output: {
     path: path.join(config.path.output, 'prod'),
     filename: '[name].[contenthash].js',
@@ -70,16 +66,5 @@ module.exports = merge.smart(common, {
     }),
 
     new webpack.ProgressPlugin()
-  ],
-
-  optimization: {
-    splitChunks: {
-      chunks: 'all'
-    },
-    concatenateModules: false
-  },
-
-  performance: {
-    hints: 'warning'
-  }
+  ]
 });

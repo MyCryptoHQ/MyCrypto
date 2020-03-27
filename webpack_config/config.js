@@ -27,31 +27,5 @@ module.exports = {
   twitter: {
     creator: '@MyCrypto'
   },
-  path: paths,
-
-  // Vendor modules
-  vendorModules: [
-    'bip39',
-    'bn.js',
-    'classnames',
-    'ethereumjs-abi',
-    'ethereumjs-tx',
-    'ethereumjs-util',
-    'ethereumjs-wallet',
-    'hdkey',
-    'idna-uts46',
-    'jsonschema',
-    'lodash',
-    'moment',
-    'qrcode',
-    'query-string',
-    'react',
-    'react-dom',
-    'react-markdown',
-    'react-router-dom',
-    'react-transition-group',
-    'uuid',
-    'wallet-address-validator',
-    'whatwg-fetch'
-  ]
+  path: paths
 };

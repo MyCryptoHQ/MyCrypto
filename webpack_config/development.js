@@ -72,5 +72,9 @@ module.exports = merge.smart(common, {
     new webpack.EnvironmentPlugin({ NODE_ENV: 'development' }),
 
     new webpack.HotModuleReplacementPlugin()
-  ]
+  ],
+
+  performance: {
+    hints: false
+  }
 });

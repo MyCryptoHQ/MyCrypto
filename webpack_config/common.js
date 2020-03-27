@@ -1,9 +1,11 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const StyleLintPlugin = require('stylelint-webpack-plugin')
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 const config = require('./config');
 
 const IS_DEVELOPMENT = process.env.NODE_ENV !== 'production';
@@ -13,7 +15,7 @@ module.exports = {
 
   entry: {
     badBrowserCheck: path.join(config.path.src, 'badBrowserCheck.ts'),
-    client: path.join(config.path.src, 'index.tsx')
+    main: path.join(config.path.src, 'index.tsx')
   },
 
   output: {
@@ -25,14 +27,16 @@ module.exports = {
 
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss'],
-    modules: [
-      config.path.src,
-      config.path.modules,
-      config.path.root
-    ],
+    modules: [config.path.src, config.path.modules, config.path.root],
     alias: {
       modernizr$: path.resolve(__dirname, '../.modernizrrc.js'),
       '@fixtures': `${config.path.root}/jest_config/__fixtures__`
+    }
+  },
+
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
     }
   },
 
@@ -49,6 +53,8 @@ module.exports = {
             options: {
               cacheDirectory: true,
               cacheCompression: false,
+              // allow lodash-webpack-plugin to reduce lodash size.
+              plugins: ['lodash']
             }
           }
         ],
@@ -58,7 +64,7 @@ module.exports = {
           config.path.electron,
           config.path.testConfig
         ],
-        exclude: /node_modules/,
+        exclude: /node_modules/
       },
 
       /**
@@ -66,9 +72,7 @@ module.exports = {
        */
       {
         test: /\.worker\.js$/,
-        use: [
-          'worker-loader'
-        ]
+        use: ['worker-loader']
       },
 
       /**
@@ -114,10 +118,7 @@ module.exports = {
             }
           }
         ],
-        include: [
-          config.path.assets,
-          config.path.modules
-        ]
+        include: [config.path.assets, config.path.modules]
       },
 
       /**
@@ -133,10 +134,7 @@ module.exports = {
             }
           }
         ],
-        include: [
-          config.path.assets,
-          config.path.modules
-        ]
+        include: [config.path.assets, config.path.modules]
       },
 
       /**
@@ -184,11 +182,14 @@ module.exports = {
     new ForkTsCheckerWebpackPlugin({
       tsconfig: path.join(config.path.root, 'tsconfig.json'),
       tslint: path.join(config.path.root, 'tslint.json'),
-      reportFiles: [
-        '**/*.{ts,tsx}',
-        '!node_modules/**/*'
-      ]
-    })
+      reportFiles: ['**/*.{ts,tsx}', '!node_modules/**/*']
+    }),
+
+    // Allow tree shaking for lodash
+    new LodashModuleReplacementPlugin(),
+
+    // Ignore all locale files of moment.js
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
   ],
 
   stats: {
@@ -200,7 +201,7 @@ module.exports = {
   },
 
   performance: {
-    hints: false
+    hints: 'warning'
   },
 
   externals: [
