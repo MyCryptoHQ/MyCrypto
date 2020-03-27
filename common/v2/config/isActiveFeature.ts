@@ -29,7 +29,7 @@ export type IIS_ACTIVE_FEATURE = {
 
 export const IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE = {
   DASHBOARD: true,
-  BUY: true,
+  BUY: IS_DEV,
   SEND_ASSETS: true,
   BROADCAST_TX: true,
   ADD_ACCOUNT: true,

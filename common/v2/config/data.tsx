@@ -74,6 +74,12 @@ export const DEXAG_MYC_TRADE_CONTRACT = '0x3d7b19C37d422B43c07C7Ba6353ED2D168954
 export const DEXAG_MYC_HANDLER_CONTRACT = '0xae0A30ac8C76d85f1E76A3EbDcEdc3047e0da456';
 export const DEX_BASE_URL = 'https://api-v2.dex.ag/';
 
+export const MOONPAY_PUBLIC_API_KEY = 'pk_live_0pl9XlYMsevvKP6xfEwdlU1nEylXYQ1j';
+export const MOONPAY_API_QUERYSTRING = `?${MOONPAY_PUBLIC_API_KEY}&colorCode=%23163150`;
+// tslint:disable-next-line: no-http-string
+export const BUY_MYCRYPTO_WEBSITE = 'http://supergeniustay.com/escape/buy.html'; //TODO: Swap out for buy.mycrypto.com when new site goes live.
+export const MOONPAY_SIGNER_API = 'https://moonpay.mycryptodev.com';
+
 export enum Theme {
   DARK = 'dark',
   LIGHT = 'light'

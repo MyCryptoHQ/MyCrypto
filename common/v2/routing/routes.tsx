@@ -27,7 +27,8 @@ import {
   DeployContractsFlow,
   DeFiZapFlow,
   PurchaseMembershipStepper,
-  MembershipEducation
+  MembershipEducation,
+  BuyAssets
 } from 'v2/features';
 import { requiresDesktopApp } from './helpers';
 
@@ -242,6 +243,15 @@ export const STATIC_APP_ROUTES: IAppRoute[] = [
     requireAccounts: false,
     enabled: IS_ACTIVE_FEATURE.MYC_MEMBERSHIP,
     component: PurchaseMembershipStepper
+  },
+  {
+    name: ROUTE_PATHS.BUY.name,
+    title: ROUTE_PATHS.BUY.title,
+    path: ROUTE_PATHS.BUY.path,
+    exact: true,
+    requireAccounts: false,
+    enabled: IS_ACTIVE_FEATURE.BUY,
+    component: BuyAssets
   }
 ];
 

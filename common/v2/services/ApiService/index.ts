@@ -14,4 +14,5 @@ export {
   CryptoScamDBInfoResponse,
   CryptoScamDBService
 } from './CryptoScamDB';
+export { MoonpaySignerService } from './MoonpaySigner';
 export * from './constants';

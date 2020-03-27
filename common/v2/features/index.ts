@@ -28,3 +28,4 @@ export { ToastProvider } from './Toasts';
 export { ErrorProvider, ErrorContext } from './ErrorHandling';
 export { DeFiZapFlow } from './DeFiZap';
 export { PurchaseMembershipStepper, MembershipEducation } from './PurchaseMembership';
+export { BuyAssets } from './BuyAssets';
