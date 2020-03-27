@@ -26,6 +26,7 @@ export const getNameHash = (name: string = ''): string => {
 };
 
 export interface IBaseDomainRequest {
+  resolvedAddress: any;
   name: string;
   labelHash: string;
   mode: NameState;
