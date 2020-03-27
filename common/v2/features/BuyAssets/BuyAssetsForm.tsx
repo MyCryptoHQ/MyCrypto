@@ -68,16 +68,22 @@ export const BuyAssetsForm = ({}: any) => {
   const filteredAssets = assets.filter(({ uuid }) => MOONPAY_ASSET_UUIDS.includes(uuid));
 
   const handleSubmission = (values: IBuyFormState, typeOfSubmission: SubmissionType) => {
-    console.debug('Submission detected');
-    console.debug('values: ', values);
-    console.debug('typeOfSubmission: ', typeOfSubmission);
     if (typeOfSubmission === SubmissionType.SEND_TO_SELF) {
-      let urlQuery = `${MOONPAY_API_QUERYSTRING}&currencyCode=${values.asset.ticker}&walletAddress=${values.account.address}`;
-      MoonpaySignerService.instance.signUrlQuery(urlQuery).then((signature: any) => {
-        console.debug('signature detected: ', signature);
-        urlQuery += `&signature=${signature}`;
-        window.open(`${BUY_MYCRYPTO_WEBSITE}${urlQuery}`, '_blank');
-      });
+      const urlQuery = `${MOONPAY_API_QUERYSTRING}&currencyCode=${values.asset.ticker}&walletAddress=${values.account.address}`;
+
+      MoonpaySignerService.instance
+        .signUrlQuery(urlQuery)
+        .then((signature: any) => {
+          const redirectQueryParams = `?currencyCode=${values.asset.ticker}&walletAddress=${
+            values.account.address
+          }&signature=${encodeURIComponent(signature)}`;
+          window.open(`${BUY_MYCRYPTO_WEBSITE}${redirectQueryParams}`, '_blank');
+        })
+        .catch(err => {
+          console.debug('err detected: ', err);
+          window.open(`${BUY_MYCRYPTO_WEBSITE}`, '_blank');
+        });
+    } else {
       window.open(`${BUY_MYCRYPTO_WEBSITE}`, '_blank');
     }
   };
