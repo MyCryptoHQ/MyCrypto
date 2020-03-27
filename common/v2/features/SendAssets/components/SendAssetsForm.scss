@@ -9,19 +9,21 @@
   cursor: pointer;
 }
 
-.SendAssetsForm {
-  &-disabled {
-    position: relative;
-    &-overlay {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background-color: #fff;
-      opacity: .5;
-    }
+.SendAssetsForm-disabled {
+  position: relative;
+
+  &-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    opacity: .5;
   }
+}
+
+.SendAssetsForm {
   label {
     color: #333333;
     font-weight: normal;

@@ -8,12 +8,13 @@ import { useScreenSize } from 'v2/vendor';
 import { fromWei, Wei } from 'v2/services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from 'v2/theme';
 import { CryptoScamDBBaseResponse, CryptoScamDBInfoResponse } from 'v2/services/ApiService';
+import { ProtectIconCheck, WizardIcon, CloseIcon } from 'v2/components/icons';
+import { ETHAddressExplorer } from 'v2/config';
+import { LinkOut } from 'v2/components';
+import { truncate } from 'v2/utils';
 
 import { IWithProtectApi } from '../types';
 import ProtectTxBase from './ProtectTxBase';
-import ProtectIconCheck from './icons/ProtectIconCheck';
-import WizardIcon from './icons/WizardIcon';
-import CloseIcon from './icons/CloseIcon';
 
 const formatDate = (date: number): string => moment.unix(date).format('MM/DD/YYYY');
 
@@ -35,6 +36,8 @@ const Wrapper = styled(ProtectTxBase)`
       left: -75px;
       bottom: -50px;
       transform: translateY(-50%);
+      max-width: 61px;
+      max-height: 54px;
     }
 
     @media (min-width: ${BREAK_POINTS.SCREEN_LG}) {
@@ -42,12 +45,9 @@ const Wrapper = styled(ProtectTxBase)`
         right: -200px;
         left: unset;
         bottom: unset;
+        max-width: 186px;
+        max-height: 169px;
       }
-    }
-
-    a {
-      color: ${COLORS.PURPLE};
-      text-decoration: underline;
     }
   }
 
@@ -178,13 +178,11 @@ export const ProtectTxReport: FC<IWithProtectApi> = ({ withProtectApi }) => {
     showHideProtectTx
   } = withProtectApi!;
 
-  const { isSmScreen, isLgScreen } = useScreenSize();
+  const { isSmScreen } = useScreenSize();
 
   const getShortAddress = useCallback(() => {
     if (receiverAddress && receiverAddress.length >= 10) {
-      return `${receiverAddress.substr(0, 6)}...${receiverAddress.substr(
-        receiverAddress.length - 4
-      )}`;
+      truncate(receiverAddress);
     }
     return translateRaw('ADD_TOKEN_INVALID_ADDRESS');
   }, [receiverAddress]);
@@ -385,19 +383,21 @@ export const ProtectTxReport: FC<IWithProtectApi> = ({ withProtectApi }) => {
               id="PROTECTED_TX_ETHERSCAN_EXTERNAL_LINK"
               variables={{
                 $etherscanLink: () => (
-                  <a
-                    href={`https://etherscan.io/address/${
+                  <LinkOut
+                    showIcon={false}
+                    inline={true}
+                    fontSize={FONT_SIZE.BASE}
+                    fontColor={COLORS.PURPLE}
+                    underline={true}
+                    link={`${ETHAddressExplorer(
                       (cryptoScamAddressReport as CryptoScamDBBaseResponse).input
-                    }`}
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    Etherscan
-                  </a>
+                    )}`}
+                    text="Etherscan"
+                  />
                 )
               }}
             />
-            <WizardIcon size={isLgScreen ? 'lg' : 'sm'} />
+            <WizardIcon size="lg" />
           </p>
           <p className="footer-text">
             {translateRaw('PROTECTED_TX_REPORT_FOOTER_TEXT')}

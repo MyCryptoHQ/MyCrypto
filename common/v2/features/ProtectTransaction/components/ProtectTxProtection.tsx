@@ -12,9 +12,7 @@ import { translateRaw } from 'v2/translations';
 import { IWithProtectApi } from '../types';
 import { ProtectTxUtils } from '../utils';
 import ProtectTxBase from './ProtectTxBase';
-import CloseIcon from './icons/CloseIcon';
-import ProtectIcon from './icons/ProtectIcon';
-import WarningIcon from './icons/WarningIcon';
+import { CloseIcon, ProtectIcon, WarningIcon } from 'v2/components/icons';
 
 import feeIcon from 'assets/images/icn-fee.svg';
 

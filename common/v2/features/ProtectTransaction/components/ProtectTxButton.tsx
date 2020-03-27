@@ -4,10 +4,7 @@ import styled from 'styled-components';
 import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from 'v2/theme';
 import { translateRaw } from 'v2/translations';
 import { useScreenSize } from 'v2/vendor';
-
-import ProtectIcon from './icons/ProtectIcon';
-import ProtectIconCheck from './icons/ProtectIconCheck';
-import ArrowRightIcon from './icons/ArrowRightIcon';
+import { ProtectIcon, ProtectIconCheck, ArrowRightIcon } from 'v2/components/icons';
 
 const TransactionProtectionButtonText = styled.div`
   max-width: 85%;

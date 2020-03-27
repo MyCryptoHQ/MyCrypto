@@ -1,5 +1,7 @@
+import { TAddress } from 'v2/types';
+
 export interface CryptoScamDBBaseResponse {
-  input: string;
+  input: TAddress;
   success: boolean;
 }
 

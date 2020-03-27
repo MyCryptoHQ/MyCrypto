@@ -2,11 +2,10 @@ import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
 
 import { SPACING } from 'v2/theme';
+import { ProtectIcon, CloseIcon } from 'v2/components/icons';
 
 import { IWithProtectApi } from '../types';
 import ProtectTxBase from './ProtectTxBase';
-import ProtectIcon from './icons/ProtectIcon';
-import CloseIcon from './icons/CloseIcon';
 
 const SignProtectedTransaction = styled(ProtectTxBase)`
   .SignTransactionKeystore {

@@ -114,7 +114,7 @@ const WithProtectTxConfigFactory: TUseStateReducerFactory<
       let numOfErrors = 0;
 
       try {
-        const cryptoScamAddressReport = await CryptoScamDBService.instance.check(address);
+        const cryptoScamAddressReport = await CryptoScamDBService.check(address);
 
         setState((prevState: WithProtectTxState) => ({
           ...prevState,

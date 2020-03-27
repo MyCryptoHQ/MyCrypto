@@ -2,7 +2,7 @@ import React, { FC, useCallback, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { COLORS, FONT_SIZE } from 'v2/theme';
 import { translateRaw } from 'v2/translations';
-import ProtectIconCheck from './icons/ProtectIconCheck';
+import { ProtectIconCheck } from 'v2/components/icons';
 import { Link } from 'v2/components';
 
 interface RelayedToNetworkProps {
