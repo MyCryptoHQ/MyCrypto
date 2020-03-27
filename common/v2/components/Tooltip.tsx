@@ -5,24 +5,29 @@ import { Tooltip as UITooltip } from '@mycrypto/ui';
 import questionSVG from 'assets/images/icn-question.svg';
 import informationalSVG from 'assets/images/icn-info-blue.svg';
 
+export enum IconID {
+  question = 'question',
+  informational = 'informational'
+}
+
 interface Props {
   tooltip: React.ReactNode;
-  type?: string;
+  type?: IconID;
   children?: React.ReactNode;
 }
 
-const fetchIconType = (type: string): any => {
+const selectIconType = (type: IconID): any => {
   switch (type) {
     default:
-    case 'question':
+    case IconID.question:
       return questionSVG;
-    case 'informational':
+    case IconID.informational:
       return informationalSVG;
   }
 };
 
-function Tooltip({ type = 'question', tooltip, children }: Props) {
-  const iconType = fetchIconType(type);
+function Tooltip({ type = IconID.question, tooltip, children }: Props) {
+  const iconType = selectIconType(type);
 
   return <UITooltip tooltip={tooltip}>{children ? children : <img src={iconType} />}</UITooltip>;
 }

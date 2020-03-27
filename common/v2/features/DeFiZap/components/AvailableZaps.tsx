@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+
 import { SPACING } from 'v2/theme';
-import { TranslateMarkdown } from 'v2/components/TranslateMarkdown';
-import { translateRaw } from 'v2/translations';
+import translate, { translateRaw } from 'v2/translations';
 
 const Container = styled.div`
   display: flex;
@@ -24,9 +24,7 @@ export default () => {
         </ul>
       </SubContainer>
       <SubContainer>
-        <div>
-          <TranslateMarkdown source={translateRaw('ZAPS_AVAIL_NOTIF')} />
-        </div>
+        <div>{translate('ZAPS_AVAIL_NOTIF')}</div>
       </SubContainer>
     </Container>
   );

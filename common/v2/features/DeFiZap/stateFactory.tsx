@@ -24,17 +24,14 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
         signResponse && signResponse.hash
           ? signResponse
           : { hash: signResponse, asset: txConfig.asset };
-      addNewTransactionToAccount(
-        state.txConfig.senderAccount,
-        {
-          ...txReceipt,
-          to: state.txConfig.receiverAddress,
-          from: state.txConfig.senderAccount.address,
-          amount: state.txConfig.amount,
-          txType: ITxType.DEFIZAP,
-          stage: ITxStatus.PENDING
-        } || {}
-      );
+      addNewTransactionToAccount(state.txConfig.senderAccount, {
+        ...txReceipt,
+        to: state.txConfig.receiverAddress,
+        from: state.txConfig.senderAccount.address,
+        amount: state.txConfig.amount,
+        txType: ITxType.DEFIZAP,
+        stage: ITxStatus.PENDING
+      });
       setState((prevState: ZapInteractionState) => ({
         ...prevState,
         txReceipt
@@ -48,10 +45,11 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
         .catch(hash => provider.getTransactionByHash(hash))
         .then(retrievedTransactionReceipt => {
           const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt);
-          addNewTransactionToAccount(
-            state.txConfig.senderAccount,
-            { ...txReceipt, txType: ITxType.DEFIZAP, stage: ITxStatus.PENDING } || {}
-          );
+          addNewTransactionToAccount(state.txConfig.senderAccount, {
+            ...txReceipt,
+            txType: ITxType.DEFIZAP,
+            stage: ITxStatus.PENDING
+          });
           setState((prevState: ZapInteractionState) => ({
             ...prevState,
             txReceipt

@@ -107,17 +107,14 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
     if (isWeb3Wallet(account.wallet)) {
       const txReceipt =
         signResponse && signResponse.hash ? signResponse : { ...txConfig, hash: signResponse };
-      addNewTransactionToAccount(
-        state.txConfig.senderAccount,
-        {
-          ...txReceipt,
-          to: state.txConfig.receiverAddress,
-          from: state.txConfig.senderAccount.address,
-          amount: state.txConfig.amount,
-          txType: ITxType.DEPLOY_CONTRACT,
-          stage: ITxStatus.PENDING
-        } || {}
-      );
+      addNewTransactionToAccount(state.txConfig.senderAccount, {
+        ...txReceipt,
+        to: state.txConfig.receiverAddress,
+        from: state.txConfig.senderAccount.address,
+        amount: state.txConfig.amount,
+        txType: ITxType.DEPLOY_CONTRACT,
+        stage: ITxStatus.PENDING
+      });
       setState((prevState: DeployContractsState) => ({
         ...prevState,
         txReceipt
@@ -132,10 +129,11 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
         .catch(hash => provider.getTransactionByHash(hash))
         .then(retrievedTransactionReceipt => {
           const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(assets, networks);
-          addNewTransactionToAccount(
-            state.txConfig.senderAccount,
-            { ...txReceipt, txType: ITxType.DEPLOY_CONTRACT, stage: ITxStatus.PENDING } || {}
-          );
+          addNewTransactionToAccount(state.txConfig.senderAccount, {
+            ...txReceipt,
+            txType: ITxType.DEPLOY_CONTRACT,
+            stage: ITxStatus.PENDING
+          });
           setState((prevState: DeployContractsState) => ({
             ...prevState,
             txReceipt

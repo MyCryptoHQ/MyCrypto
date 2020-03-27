@@ -8,6 +8,7 @@ import { COLORS, BREAK_POINTS, FONT_SIZE, SPACING } from 'v2/theme';
 import { weiToFloat, trimBN } from 'v2/utils';
 import { StoreContext, getTotalByAsset, RatesContext } from 'v2/services';
 import { translateRaw } from 'v2/translations';
+import { IconID } from 'v2/components/Tooltip';
 
 import { fetchZapRiskObject, IZapConfig } from '../config';
 
@@ -255,7 +256,7 @@ const ZapCard = ({ config }: Props) => {
                       tooltip={translateRaw('ZAP_BALANCE_TOOLTIP', {
                         $protocol: config.platformsUsed[0]
                       })}
-                      type={'informational'}
+                      type={IconID.informational}
                     />
                   </TooltipWrapper>
                 </ZapEstimatedBalance>

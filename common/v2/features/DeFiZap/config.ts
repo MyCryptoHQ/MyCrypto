@@ -157,77 +157,68 @@ export const ZAPS_CONFIG: IZapConfigObject = {
 
 export const riskAndReward: RiskAndReward[] = [
   {
-    text:
-      '**Smart Contract:** There is a chance that smart contracts get hacked and you lose all your money.',
+    text: translateRaw('RISK_REWARD_SMART_CONTRACT'),
     icon: smartContractIcn
   },
   {
-    text: '**Investing:** Put your ETH to work for you with potential to watch your money grow.',
+    text: translateRaw('RISK_REWARD_INVESTING'),
     icon: inverstingIcn
   },
   {
-    text:
-      '**Collateralization:** If the crypto price swings, you don’t get liquidated nor does the entire system collapse.',
+    text: translateRaw('RISK_REWARD_COLLATERALIZATION'),
     icon: collateralizationIcn
   },
   {
-    text:
-      '**Innovation:** Take advantage of innovative decentralized tools avaiable to ETH holders.',
+    text: translateRaw('RISK_REWARD_INNOVATION'),
     icon: innovationIcn
   },
   {
-    text: '**Liquidity:** Markets are less efficient when they are more shallow.',
+    text: translateRaw('RISK_REWARD_LIQUIDITY'),
     icon: liquidityIcn
   },
   {
-    text: '**Diversification:** Expand your investment portfolio leveraging your ETH.',
+    text: translateRaw('RISK_REWARD_DIVERSIFICATION'),
     icon: diversificationIcn
   }
 ];
 
 export const accordionContent = [
   {
-    title: 'What is DeFi?',
+    title: translateRaw('DEFIZAP_QUESTION_ONE'),
     component: TranslateMarkdown({
-      source:
-        'Short for decentralized finance, DeFi refers to financial services for crypto, such as borrowing, lending, and trading, that are usually facilitated using smart contracts on the blockchain. They are often open-source and noncustodial.'
+      source: translateRaw('DEFIZAP_QUESTION_ONE_ANSWER')
     })
   },
   {
-    title: 'Is DeFiZap safe?',
+    title: translateRaw('DEFIZAP_QUESTION_TWO'),
     component: TranslateMarkdown({
-      source:
-        "There's always risk when interacting with DeFi and smart contracts, and DeFiZap is an experimental project that is in beta. Using a service like DeFiZap to interact with protocols for you does add a small amount of additional risk, but most of the risk stems from the actual protocols that are being interacted with."
+      source: translateRaw('DEFIZAP_QUESTION_TWO_ANSWER')
     })
   },
   {
-    title: 'Which protocols does DeFiZap interact with and where can I learn about them?',
+    title: translateRaw('DEFIZAP_QUESTION_THREE'),
     component: ProtocolsExplainer()
   },
   {
-    title: 'Which Zaps are available?',
+    title: translateRaw('DEFIZAP_QUESTION_FOUR'),
     component: AvailableZaps()
   },
   {
-    title:
-      'How is the MyCrypto DeFiZap integration different from the functionality of DeFiZap.com?',
+    title: translateRaw('DEFIZAP_QUESTION_FIVE'),
     component: TranslateMarkdown({
-      source:
-        'The MyCrypto DeFiZap integration uses the same process as the DeFiZap.com process. MyCrypto’s DeFiZap integration adds an extra layer of convenience by allowing you to access Zaps without having to leave MyCrypto. For the full list of available Zaps, visit [DeFiZap.com](https://defizap.com).'
+      source: translateRaw('DEFIZAP_QUESTION_FIVE_ANSWER')
     })
   },
   {
-    title: 'After entering a Zap, how do I exit?',
+    title: translateRaw('DEFIZAP_QUESTION_SIX'),
     component: TranslateMarkdown({
-      source:
-        'To exit a Zap, please visit [DeFiZap.com](https://defizap.com), go to the Zap that you’re currently engaged with, and follow the steps that they outline.'
+      source: translateRaw('DEFIZAP_QUESTION_SIX_ANSWER')
     })
   },
   {
-    title: 'How do I see my DeFiZap balances?',
+    title: translateRaw('DEFIZAP_QUESTION_SEVEN'),
     component: TranslateMarkdown({
-      source:
-        'Due to technical limitations, at this time we’re only currently able to give an estimate on some Zap balances, and DeFiZap recommends checking [pools.fyi](https://pools.fyi/) to view some of your balances/returns. Over time, as we and DeFiZap explore this further, we anticipate that there will be a better solution for this.'
+      source: translateRaw('DEFIZAP_QUESTION_SEVEN_ANSWER')
     })
   }
 ];

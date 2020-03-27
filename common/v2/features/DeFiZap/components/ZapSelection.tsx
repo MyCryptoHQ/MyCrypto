@@ -99,13 +99,6 @@ const BreakdownImg = styled.img`
   margin-top: ${SPACING.XS};
 `;
 
-// const DetailsSection = styled(SSection)`
-//   display: flex;
-//   flex-direction: row;
-//   align-items: flex-start;
-//   justify-content: space-between;
-// `;
-
 const SpacedSection = styled(SSection)`
   & > * {
     margin: ${SPACING.BASE} 0;
@@ -122,7 +115,7 @@ const CardContainer = styled.div`
   flex-wrap: wrap;
 `;
 
-// To re-activate later when we have content
+// To re-activate later when we have content links
 // const LinkContainer = styled.div`
 //   display: flex;
 //   flex-direction: column;

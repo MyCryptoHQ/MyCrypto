@@ -27,7 +27,6 @@ const DashboardZapCTA = ({ className }: any) => {
       heading={translateRaw('ZAP_DASHBOARD_PANEL_HEADER')}
       headingRight={<DeFiZapLogo />}
       className={className}
-      footer={<></>}
     >
       <CTAContent>
         {Object.values(zapConfig).map(zap => (

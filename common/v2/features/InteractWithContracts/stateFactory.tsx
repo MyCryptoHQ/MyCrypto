@@ -330,17 +330,14 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     if (isWeb3Wallet(account.wallet)) {
       const txReceipt =
         signResponse && signResponse.hash ? signResponse : { ...txConfig, hash: signResponse };
-      addNewTransactionToAccount(
-        state.txConfig.senderAccount,
-        {
-          ...txReceipt,
-          to: state.txConfig.receiverAddress,
-          from: state.txConfig.senderAccount.address,
-          amount: state.txConfig.amount,
-          txType: ITxType.CONTRACT_INTERACT,
-          stage: ITxStatus.PENDING
-        } || {}
-      );
+      addNewTransactionToAccount(state.txConfig.senderAccount, {
+        ...txReceipt,
+        to: state.txConfig.receiverAddress,
+        from: state.txConfig.senderAccount.address,
+        amount: state.txConfig.amount,
+        txType: ITxType.CONTRACT_INTERACT,
+        stage: ITxStatus.PENDING
+      });
       setState((prevState: InteractWithContractState) => ({
         ...prevState,
         txReceipt
@@ -355,10 +352,11 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
         .catch(hash => provider.getTransactionByHash(hash))
         .then(retrievedTransactionReceipt => {
           const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(assets, networks);
-          addNewTransactionToAccount(
-            state.txConfig.senderAccount,
-            { ...txReceipt, txType: ITxType.CONTRACT_INTERACT, stage: ITxStatus.PENDING } || {}
-          );
+          addNewTransactionToAccount(state.txConfig.senderAccount, {
+            ...txReceipt,
+            txType: ITxType.CONTRACT_INTERACT,
+            stage: ITxStatus.PENDING
+          });
           setState((prevState: InteractWithContractState) => ({
             ...prevState,
             txReceipt
