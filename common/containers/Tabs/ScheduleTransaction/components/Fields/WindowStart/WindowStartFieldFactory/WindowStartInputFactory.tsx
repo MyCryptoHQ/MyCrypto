@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
 import { scheduleSelectors } from 'features/schedule';
-import { ensSelectors } from 'features/ens';
+import { ensSelectors } from 'features/domainResolution/ens';
 import { Query } from 'components/renderCbs';
 import { CallbackProps } from './WindowStartFieldFactory';
 

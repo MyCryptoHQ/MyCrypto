@@ -1,4 +1,4 @@
-import * as ensTypes from '../types';
+import * as ensTypes from '../../common/types';
 import * as types from './types';
 
 const SELECTOR_INITIAL_STATE: types.ENSDomainSelectorState = {
@@ -25,11 +25,11 @@ export function ensDomainSelectorReducer(
   action: ensTypes.EnsAction
 ): types.ENSDomainSelectorState {
   switch (action.type) {
-    case ensTypes.ENSActions.RESOLVE_DOMAIN_CACHED:
-    case ensTypes.ENSActions.RESOLVE_DOMAIN_REQUESTED:
-    case ensTypes.ENSActions.RESOLVE_DOMAIN_SUCCEEDED:
+    case ensTypes.DomainActions.RESOLVE_DOMAIN_CACHED:
+    case ensTypes.DomainActions.RESOLVE_DOMAIN_REQUESTED:
+    case ensTypes.DomainActions.RESOLVE_DOMAIN_SUCCEEDED:
       return setCurrentDomainName(state, action);
-    case ensTypes.ENSActions.RESOLVE_DOMAIN_FAILED:
+    case ensTypes.DomainActions.RESOLVE_DOMAIN_FAILED:
       return clearCurrentDomainName();
     default:
       return state;

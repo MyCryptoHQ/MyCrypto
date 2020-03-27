@@ -1,5 +1,5 @@
-import * as ensTypes from './types';
-import * as ensActions from './actions';
+import * as ensTypes from '../common/types';
+import * as ensActions from '../common/actions';
 import * as ensReducer from './reducer';
 import * as ensSelectors from './selectors';
 

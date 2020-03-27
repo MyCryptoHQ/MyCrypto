@@ -8,7 +8,7 @@ import { ICurrentTo } from 'features/types';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
 import { walletSelectors } from 'features/wallet';
-import { ensSelectors } from 'features/ens';
+import { ensSelectors } from 'features/domainResolution/ens';
 import { Identicon, Spinner } from 'components/ui';
 import { Query } from 'components/renderCbs';
 import { CallbackProps } from 'components/AddressFieldFactory';
@@ -50,8 +50,11 @@ const ENSStatus: React.SFC<{
   chainId: number;
 }> = ({ isLoading, ensAddress, rawAddress, chainId }) => {
   const isValidENS = getIsValidENSAddressFunction(chainId);
-  const isENS = isValidENS(ensAddress);
-
+  const isValidDomain = (domain: string) => domain.endsWith('.zil') || domain.endsWith('.crypto');
+  let isValid = isValidENS(ensAddress) || isValidDomain(ensAddress);
+  if (rawAddress === '0x0') {
+    isValid = false;
+  }
   const text = translate('LOADING_ENS_ADDRESS');
 
   if (isLoading) {
@@ -61,7 +64,7 @@ const ENSStatus: React.SFC<{
       </React.Fragment>
     );
   } else {
-    return isENS ? <React.Fragment>{`Resolved Address: ${rawAddress}`}</React.Fragment> : null;
+    return isValid ? <React.Fragment>{`Resolved Address: ${rawAddress}`}</React.Fragment> : null;
   }
 };
 
@@ -86,7 +89,6 @@ class AddressInputFactoryClass extends Component<Props> {
       onChangeOverride,
       value,
       dropdownThreshold,
-      showEnsResolution,
       chainId
     } = this.props;
     const inputClassName = `AddressInput-input ${label ? 'AddressInput-input-with-label' : ''}`;
@@ -103,7 +105,6 @@ class AddressInputFactoryClass extends Component<Props> {
      *  If there wasn't a value passed, use the value from the redux store.
      */
     let addr = value;
-
     if (addr == null) {
       addr = addHexPrefix(currentTo.value ? currentTo.value.toString('hex') : '0');
     }
@@ -131,14 +132,14 @@ class AddressInputFactoryClass extends Component<Props> {
               })
             }
           />
-          {showEnsResolution && (
+          {
             <ENSStatus
               ensAddress={currentTo.raw}
               isLoading={isResolving}
               rawAddress={addr}
               chainId={chainId}
             />
-          )}
+          }
           {isFocused && !isENSAddress && (
             <AddressFieldDropdown
               controlled={controlled}

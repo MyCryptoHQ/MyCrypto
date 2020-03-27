@@ -1,4 +1,5 @@
-import { ensSaga as ens } from './ens/sagas';
+import { ensSaga as ens } from './domainResolution/ens/sagas';
+import { unstoppableSaga as unstoppableResolution } from './domainResolution/unstoppable/sagas';
 import { configSaga as config } from './config/sagas';
 import { notificationsSaga as notifications } from './notifications/sagas';
 import { walletSaga as wallet } from './wallet/sagas';
@@ -13,6 +14,7 @@ import { addressBookSaga as addressBook } from './addressBook/sagas';
 
 export default {
   ens,
+  unstoppableResolution,
   config,
   notifications,
   wallet,

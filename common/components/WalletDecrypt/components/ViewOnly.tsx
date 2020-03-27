@@ -7,7 +7,8 @@ import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
 import { ICurrentTo } from 'features/types';
 import { configSelectors } from 'features/config';
-import { ensSelectors } from 'features/ens';
+import { ensSelectors } from 'features/domainResolution/ens';
+import { UnstoppableSelectors } from 'features/domainResolution/unstoppable';
 import { AddressField } from 'components';
 import './ViewOnly.scss';
 
@@ -19,6 +20,7 @@ interface StateProps {
   isValidAddress: ReturnType<typeof configSelectors.getIsValidAddressFn>;
   currentAddress: ICurrentTo;
   resolvedAddress: ReturnType<typeof ensSelectors.getResolvedAddress>;
+  unstoppableAddress: ReturnType<typeof UnstoppableSelectors.getResolvedAddress>;
 }
 
 type Props = OwnProps & StateProps;
@@ -33,11 +35,12 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
   };
 
   public render() {
-    const { isValidAddress, currentAddress, resolvedAddress } = this.props;
+    const { isValidAddress, currentAddress, resolvedAddress, unstoppableAddress } = this.props;
     const { addressFromBook } = this.state;
     const isValid =
-      isValidAddress(currentAddress.raw) || (resolvedAddress && isValidAddress(resolvedAddress));
-
+      isValidAddress(currentAddress.raw) ||
+      (resolvedAddress && isValidAddress(resolvedAddress)) ||
+      unstoppableAddress;
     return (
       <div className="ViewOnly">
         <form className="form-group" onSubmit={this.openWallet}>
@@ -85,7 +88,13 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
   };
 
   private openWallet = () => {
-    const { isValidAddress, currentAddress, resolvedAddress, onUnlock } = this.props;
+    const {
+      isValidAddress,
+      currentAddress,
+      resolvedAddress,
+      onUnlock,
+      unstoppableAddress
+    } = this.props;
     const { addressFromBook } = this.state;
 
     let wallet;
@@ -96,6 +105,8 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
       wallet = currentAddress.raw;
     } else if (resolvedAddress && isValidAddress(resolvedAddress)) {
       wallet = resolvedAddress;
+    } else if (unstoppableAddress) {
+      wallet = unstoppableAddress;
     }
 
     if (wallet) {
@@ -108,6 +119,7 @@ export const ViewOnlyDecrypt = connect(
   (state: AppState): StateProps => ({
     currentAddress: selectors.getCurrentTo(state),
     isValidAddress: configSelectors.getIsValidAddressFn(state),
-    resolvedAddress: ensSelectors.getResolvedAddress(state)
+    resolvedAddress: ensSelectors.getResolvedAddress(state),
+    unstoppableAddress: UnstoppableSelectors.getResolvedAddress(state)
   })
 )(ViewOnlyDecryptClass);

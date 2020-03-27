@@ -9,7 +9,7 @@ import configuredStore from 'features/store';
 import { ICurrentValue } from 'features/types';
 import * as derivedSelectors from 'features/selectors';
 import * as configSelectors from 'features/config/selectors';
-import { ensTypes, ensActions, ensSelectors } from 'features/ens';
+import { ensTypes, ensActions, ensSelectors } from 'features/domainResolution/ens';
 import { walletSelectors } from 'features/wallet';
 import { notificationsActions } from 'features/notifications';
 import { transactionFieldsActions } from './fields';
@@ -118,9 +118,9 @@ describe('transaction: Sagas', () => {
         it('should take ENS type keys', () => {
           expect(data.validEnsGen.next().value).toEqual(
             take([
-              ensTypes.ENSActions.RESOLVE_DOMAIN_FAILED,
-              ensTypes.ENSActions.RESOLVE_DOMAIN_SUCCEEDED,
-              ensTypes.ENSActions.RESOLVE_DOMAIN_CACHED
+              ensTypes.DomainActions.RESOLVE_DOMAIN_FAILED,
+              ensTypes.DomainActions.RESOLVE_DOMAIN_SUCCEEDED,
+              ensTypes.DomainActions.RESOLVE_DOMAIN_CACHED
             ])
           );
         });

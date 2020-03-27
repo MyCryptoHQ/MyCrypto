@@ -1,10 +1,12 @@
 import { IOwnedDomainRequest, IBaseDomainRequest } from 'libs/ens';
 import { isCreationAddress } from 'libs/validators';
 import { AppState } from 'features/reducers';
-import { ensDomainRequestsTypes, ensDomainRequestsSelectors } from './domainRequests';
+import * as commonTypes from '../common/types';
+import { ensDomainRequestsSelectors } from './domainRequests';
 import { ensDomainSelectorSelectors } from './domainSelector';
 import { getNetworkChainId } from 'features/config/selectors';
 import { getENSTLDForChain, getENSAddressesForChain } from 'libs/ens/networkConfigs';
+import { unstoppableDomainSelectorSelectors, unstoppableResolutionSelectors } from '../unstoppable';
 
 const isOwned = (data: IBaseDomainRequest): data is IOwnedDomainRequest => {
   return !!(data as IOwnedDomainRequest).ownerAddress;
@@ -48,12 +50,26 @@ export const getResolvedAddress = (state: AppState, noGenesisAddress: boolean = 
 export const getResolvingDomain = (state: AppState) => {
   const currentDomain = ensDomainSelectorSelectors.getCurrentDomainName(state);
   const domainRequests = ensDomainRequestsSelectors.getDomainRequests(state);
-
+  const unstoppableDomain = unstoppableDomainSelectorSelectors.getCurrentDomainName(state);
+  const unstoppableRequests = unstoppableResolutionSelectors.getUnstoppableRequests(state);
+  let ensStatus;
+  let unstoppableStatus;
+  console.log({ currentDomain, unstoppableDomain });
   if (!currentDomain || !domainRequests[currentDomain]) {
-    return null;
+    if (!unstoppableDomain || !unstoppableRequests[unstoppableDomain]) {
+      return null;
+    }
   }
 
-  return domainRequests[currentDomain].state === ensDomainRequestsTypes.RequestStates.pending;
+  if (currentDomain && domainRequests[currentDomain]) {
+    ensStatus = domainRequests[currentDomain].state === commonTypes.RequestStates.pending;
+  }
+
+  if (unstoppableDomain && unstoppableRequests[unstoppableDomain]) {
+    unstoppableStatus =
+      unstoppableRequests[unstoppableDomain].state === commonTypes.RequestStates.pending;
+  }
+  return ensStatus || unstoppableStatus;
 };
 
 export const getENSTLD = (state: AppState) => {

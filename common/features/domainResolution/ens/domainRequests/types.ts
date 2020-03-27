@@ -1,10 +1,5 @@
 import { DomainRequest } from 'libs/ens';
-
-export enum RequestStates {
-  pending = 'PENDING',
-  success = 'SUCCESS',
-  failed = 'FAILED'
-}
+import { RequestStates } from 'features/domainResolution/common/types';
 
 export interface ENSDomainRequestsState {
   [key: string]: {

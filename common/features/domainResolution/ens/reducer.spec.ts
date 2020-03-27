@@ -1,6 +1,6 @@
 import { createStore } from 'redux';
 
-import * as actions from './actions';
+import * as actions from '../common/actions';
 import * as reducer from './reducer';
 
 const store = createStore(reducer.ensReducer);
