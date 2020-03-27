@@ -1293,18 +1293,21 @@
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/@types/zxcvbn/-/zxcvbn-4.4.0.tgz#fbc1d941cc6d9d37d18405c513ba6b294f89b609"
 
-"@unstoppabledomains/resolution@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@unstoppabledomains/resolution/-/resolution-1.1.0.tgz#6e8a0bab616dce18787caa96a8a680f98b50c374"
-  integrity sha512-SaClpTsJRlfNj9mvKpfm1i3H6XMguvxASZDavfRm47bFjkEWwmICSPQlFVGp4NHDdj2jqrwD2GUu3n7IAB1N5A==
+"@unstoppabledomains/resolution@1.3.4":
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/@unstoppabledomains/resolution/-/resolution-1.3.4.tgz#a6951dd71c1c433bcae1a681af4ae82b7eef7c1a"
+  integrity sha512-TxDSpTbuAgq1jKhjaGLj88Q5xgg/7JamIOr3Miwfsv/iYu33nWKGjNxlsneWa/2HTaevEf98oeU0JrJFjdd8EA==
   dependencies:
     "@ensdomains/address-encoder" "0.1.2"
     bip44-constants "^8.0.5"
     bn.js "^5.1.1"
+    commander "^4.1.1"
     content-hash "^2.5.2"
     hash.js "^1.1.7"
     js-sha3 "^0.8.0"
     node-fetch "^2.6.0"
+  optionalDependencies:
+    dotenv "^8.2.0"
 
 "@webassemblyjs/ast@1.8.5":
   version "1.8.5"
@@ -3526,6 +3529,11 @@ commander@^2.20.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.1.tgz#3863ce3ca92d0831dcf2a102f5fb4b5926afd0f9"
   integrity sha512-cCuLsMhJeWQ/ZpsFTbE765kvVfoeSddc4nU3up4fV+fDBcfUXnbITJ+JzhkdjzOqhURjZgujxaioam4RM9yGUg==
 
+commander@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-4.1.1.tgz#9fd602bd936294e9e9ef46a3f4d6964044b18068"
+  integrity sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==
+
 commander@~2.13.0:
   version "2.13.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.13.0.tgz#6964bca67685df7c1f1430c584f07d7597885b9c"
@@ -4642,6 +4650,11 @@ dotenv@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-5.0.1.tgz#a5317459bd3d79ab88cff6e44057a6a3fbb1fcef"
   integrity sha512-4As8uPrjfwb7VXC+WnLCbXK7y+Ueb2B3zgNCePYfhxS1PYeaO1YTeplffTEcbfLhvFNGLAz90VvJs9yomG7bow==
+
+dotenv@^8.2.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
+  integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
 
 download@^4.0.0, download@^4.1.2:
   version "4.4.3"

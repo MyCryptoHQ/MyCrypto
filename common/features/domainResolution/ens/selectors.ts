@@ -50,17 +50,26 @@ export const getResolvedAddress = (state: AppState, noGenesisAddress: boolean = 
 export const getResolvingDomain = (state: AppState) => {
   const currentDomain = ensDomainSelectorSelectors.getCurrentDomainName(state);
   const domainRequests = ensDomainRequestsSelectors.getDomainRequests(state);
-
+  const unstoppableDomain = unstoppableDomainSelectorSelectors.getCurrentDomainName(state);
+  const unstoppableRequests = unstoppableResolutionSelectors.getUnstoppableRequests(state);
+  let ensStatus;
+  let unstoppableStatus;
+  console.log({ currentDomain, unstoppableDomain });
   if (!currentDomain || !domainRequests[currentDomain]) {
-    const unstoppableDomain = unstoppableDomainSelectorSelectors.getCurrentDomainName(state);
-    const unstoppableRequests = unstoppableResolutionSelectors.getUnstoppableRequests(state);
     if (!unstoppableDomain || !unstoppableRequests[unstoppableDomain]) {
       return null;
     }
-    return unstoppableRequests[unstoppableDomain].state === commonTypes.RequestStates.pending;
   }
 
-  return domainRequests[currentDomain].state === commonTypes.RequestStates.pending;
+  if (currentDomain && domainRequests[currentDomain]) {
+    ensStatus = domainRequests[currentDomain].state === commonTypes.RequestStates.pending;
+  }
+
+  if (unstoppableDomain && unstoppableRequests[unstoppableDomain]) {
+    unstoppableStatus =
+      unstoppableRequests[unstoppableDomain].state === commonTypes.RequestStates.pending;
+  }
+  return ensStatus || unstoppableStatus;
 };
 
 export const getENSTLD = (state: AppState) => {
