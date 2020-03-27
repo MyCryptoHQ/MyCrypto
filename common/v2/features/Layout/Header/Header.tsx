@@ -24,11 +24,11 @@ const Navbar = styled.nav`
 
 const Menu = styled.div`
   position: fixed;
-  top: 77px;
   left: 0;
   overflow: auto;
   width: 375px;
-  height: calc(100vh - 77px);
+  height: 100%;
+  z-index: 9999;
   background: #163150;
 `;
 
