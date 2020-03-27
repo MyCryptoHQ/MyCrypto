@@ -22,20 +22,20 @@ const SContainer = styled('div')`
   padding: 12px;
 
   &:hover {
-    background-color: var(--color-gray-lighter);
+    background-color: ${(p: { selectable: boolean }) =>
+      p.selectable ? 'var(--color-gray-lighter)' : 'inherit'};
   }
 `;
 
-class NetworkOption extends React.PureComponent<OptionComponentProps> {
-  public render() {
-    const { option, onSelect } = this.props;
-    return (
-      <SContainer onClick={() => onSelect && onSelect(option, null)}>
-        <Typography value={option.label} />
-      </SContainer>
-    );
-  }
+interface NetworkOptionProps extends OptionComponentProps {
+  selectable: boolean;
 }
+
+const NetworkOption = ({ option, onSelect, selectable = true }: NetworkOptionProps) => (
+  <SContainer onClick={() => onSelect && onSelect(option, null)} selectable={selectable}>
+    <Typography value={option.label} />
+  </SContainer>
+);
 
 function NetworkSelectDropdown({
   network,
@@ -73,7 +73,7 @@ function NetworkSelectDropdown({
         searchable={true}
         onChange={option => onChange(option.value.id)}
         optionComponent={NetworkOption}
-        valueComponent={({ value: option }) => <NetworkOption option={option} />}
+        valueComponent={({ value: option }) => <NetworkOption option={option} selectable={false} />}
       />
     </div>
   );

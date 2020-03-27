@@ -31,9 +31,11 @@ const SSelect = styled(Select)`
 
   .Select-input {
     width: 100%;
+    cursor: pointer;
 
     > input {
       width: 100% !important;
+      cursor: pointer;
     }
   }
 `;
@@ -62,6 +64,27 @@ interface Props<T> {
 
 // Fixes weird placement issues for react-select
 const DropdownContainer = styled('div')`
+  cursor: pointer;
+
+  .Select-control {
+    cursor: pointer;
+  }
+
+  .is-searchable.is-open {
+    .Select-input,
+    .Select-control {
+      cursor: text;
+
+      > input {
+        cursor: text;
+      }
+    }
+  }
+
+  .is-searchable.is-focused:not(.is-open) > .Select-control {
+    cursor: pointer;
+  }
+
   .has-value > .Select-control > .Select-multi-value-wrapper > .Select-input:only-child {
     transform: translateY(0%);
     padding: 16px 15px 16px 15px;
