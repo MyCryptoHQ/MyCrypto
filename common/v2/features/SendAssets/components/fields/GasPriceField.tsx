@@ -14,6 +14,7 @@ export function GasPriceField({ value, name, onChange, error }: IGasPriceField) 
         placeholder="20"
         className="SendAssetsForm-fieldset-input"
         inputError={error}
+        inputMode="decimal"
       />
     </div>
   );
