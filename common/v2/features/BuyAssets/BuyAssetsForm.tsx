@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Formik, Form, Field, FieldProps } from 'formik';
-import { Button } from '@mycrypto/ui';
+import { Button, Icon } from '@mycrypto/ui';
 import * as Yup from 'yup';
 
 import translate, { translateRaw } from 'v2/translations';
@@ -38,11 +38,27 @@ const FormFieldSubmitButton = styled(Button)`
     background-color: rgba(0, 122, 153, 0.3);
   }
 `;
-const NavigationWarning = styled.p`
+
+const NavigationWarning = styled.div`
   color: ${COLORS.GREY};
-  margin-bottom: ${SPACING.MD};
+  margin-bottom: ${SPACING.SM};
   display: flex;
   justify-content: center;
+`;
+
+const WarningIcon = styled(Icon)`
+  margin-right: 5px;
+  vertical-align: middle;
+
+  svg {
+    color: ${COLORS.GREY};
+  }
+`;
+
+const Divider = styled.div`
+  height: 1px;
+  margin-bottom: 20px;
+  background: #e3edff;
 `;
 
 interface IBuyFormState {
@@ -66,7 +82,7 @@ export const BuyAssetsForm = ({}: any) => {
     asset: ethAsset
   };
 
-  const ZapFormSchema = Yup.object().shape({
+  const BuyFormSchema = Yup.object().shape({
     account: Yup.object().required(translateRaw('REQUIRED')),
     asset: Yup.object().required(translateRaw('REQUIRED'))
   });
@@ -104,7 +120,7 @@ export const BuyAssetsForm = ({}: any) => {
     >
       <Formik
         initialValues={initialFormikValues}
-        validationSchema={ZapFormSchema}
+        validationSchema={BuyFormSchema}
         onSubmit={vals => handleSubmission(vals, SubmissionType.SEND_TO_SELF)}
         render={({ values, errors, touched, setFieldValue }) => {
           const relevantAccounts = accounts.filter(account => {
@@ -156,7 +172,11 @@ export const BuyAssetsForm = ({}: any) => {
                   <InlineMessage className="SendAssetsForm-errors">{errors.asset}</InlineMessage>
                 ) : null}
               </FormFieldItem>
-              <NavigationWarning>{translateRaw('EXTERNAL_NAVIGATION_WARNING')}</NavigationWarning>
+              <Divider />
+              <NavigationWarning>
+                <WarningIcon icon="warning" />
+                {translateRaw('EXTERNAL_NAVIGATION_WARNING')}
+              </NavigationWarning>
               <FormFieldSubmitButton
                 onClick={() => handleSubmission(values, SubmissionType.SEND_TO_SELF)}
               >

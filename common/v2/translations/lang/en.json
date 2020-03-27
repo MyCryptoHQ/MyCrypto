@@ -792,8 +792,8 @@
     "MEMBERSHIP_LIFETIME_DESC": "Lifetime of Love!",
     "MEMBERSHIP_LIFETIME_EMOJI": "I 💖 MyCrypto",
 		"NEW_MEMBER": "You are now a MyCrypto Member!",
-		"CHECKOUT_CTA": "Next: Purchase and Send to MyCrypto Account",
-		"CHECKOUT_OTHER_CTA": "Next: Purchase and Send to Another Account",
-		"EXTERNAL_NAVIGATION_WARNING": "Note: \"Next\" will open a new tab for buy.mycrypto.com"
+		"CHECKOUT_CTA": "Next: Purchase for MyCrypto account",
+		"CHECKOUT_OTHER_CTA": "Next: Purchase for a different account",
+		"EXTERNAL_NAVIGATION_WARNING": "This will open buy.mycrypto.com in a new tab."
   }
 }
