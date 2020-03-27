@@ -19,6 +19,7 @@ const SContainer = styled('div')`
 
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: 30%;
+    align-self: stretch;
   }
 
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
@@ -68,7 +69,6 @@ const STitle = styled('div')`
 
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     font-size: ${FONT_SIZE.SM};
-    height: 2.8em;
     padding-top: ${SPACING.XS};
     /* The link for 'Get Hardware Wallet' is too long to use a line per word. */
     word-spacing: ${({ isLonger }: { isLonger: boolean }) => (isLonger ? 'inherit' : '9999px')};
