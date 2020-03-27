@@ -3,19 +3,18 @@ import styled from 'styled-components';
 import { Formik, Form, Field, FieldProps } from 'formik';
 import { Button, Icon } from '@mycrypto/ui';
 import * as Yup from 'yup';
+import { useHistory } from 'react-router-dom';
 
 import translate, { translateRaw } from 'v2/translations';
 import { SPACING, COLORS } from 'v2/theme';
 import { IAccount, StoreAccount, Asset } from 'v2/types';
+import { EtherUUID, MOONPAY_ASSET_UUIDS } from 'v2/utils';
+import { ROUTE_PATHS, MOONPAY_API_QUERYSTRING, BUY_MYCRYPTO_WEBSITE } from 'v2/config';
 import { AccountDropdown, AssetDropdown, InlineMessage, ContentPanel } from 'v2/components';
 import { isAccountInNetwork } from 'v2/services/Store/Account/helpers';
-import { EtherUUID, MOONPAY_ASSET_UUIDS } from 'v2/utils';
-
+import { MoonpaySignerService } from 'v2/services/ApiService/MoonpaySigner';
 import { StoreContext } from 'v2/services/Store/StoreProvider';
 import { AssetContext } from 'v2/services/Store/Asset';
-import { ROUTE_PATHS, MOONPAY_API_QUERYSTRING, BUY_MYCRYPTO_WEBSITE } from 'v2/config';
-import { useHistory } from 'react-router-dom';
-import { MoonpaySignerService } from 'v2/services/ApiService/MoonpaySigner';
 
 const FormFieldItem = styled.fieldset`
   margin-bottom: ${SPACING.LG};
