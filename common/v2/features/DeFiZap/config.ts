@@ -1,5 +1,4 @@
-import { TranslateMarkdown } from 'v2/components/TranslateMarkdown';
-import { translateRaw } from 'v2/translations';
+import translate, { translateRaw } from 'v2/translations';
 
 import { BearishIndicator, BullishIndicator, NeutralIndicator } from './components';
 import ProtocolsExplainer from './components/ProtocolsExplainer';
@@ -185,15 +184,11 @@ export const riskAndReward: RiskAndReward[] = [
 export const accordionContent = [
   {
     title: translateRaw('DEFIZAP_QUESTION_ONE'),
-    component: TranslateMarkdown({
-      source: translateRaw('DEFIZAP_QUESTION_ONE_ANSWER')
-    })
+    component: translate('DEFIZAP_QUESTION_ONE_ANSWER')
   },
   {
     title: translateRaw('DEFIZAP_QUESTION_TWO'),
-    component: TranslateMarkdown({
-      source: translateRaw('DEFIZAP_QUESTION_TWO_ANSWER')
-    })
+    component: translate('DEFIZAP_QUESTION_TWO_ANSWER')
   },
   {
     title: translateRaw('DEFIZAP_QUESTION_THREE'),
@@ -205,20 +200,14 @@ export const accordionContent = [
   },
   {
     title: translateRaw('DEFIZAP_QUESTION_FIVE'),
-    component: TranslateMarkdown({
-      source: translateRaw('DEFIZAP_QUESTION_FIVE_ANSWER')
-    })
+    component: translate('DEFIZAP_QUESTION_FIVE_ANSWER')
   },
   {
     title: translateRaw('DEFIZAP_QUESTION_SIX'),
-    component: TranslateMarkdown({
-      source: translateRaw('DEFIZAP_QUESTION_SIX_ANSWER')
-    })
+    component: translate('DEFIZAP_QUESTION_SIX_ANSWER')
   },
   {
     title: translateRaw('DEFIZAP_QUESTION_SEVEN'),
-    component: TranslateMarkdown({
-      source: translateRaw('DEFIZAP_QUESTION_SEVEN_ANSWER')
-    })
+    component: translate('DEFIZAP_QUESTION_SEVEN_ANSWER')
   }
 ];
