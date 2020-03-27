@@ -9,7 +9,7 @@ import { RatesContext } from 'v2/services/RatesProvider';
 import { IStepComponentProps, ExtendedAddressBook, ITxType } from 'v2/types';
 import { BREAK_POINTS, SPACING, COLORS } from 'v2/theme';
 import { convertToFiat } from 'v2/utils';
-import translate from 'v2/translations';
+import translate, { translateRaw } from 'v2/translations';
 import { TSymbol } from 'v2/types/symbols';
 import { ZapSelectedBanner, DeFiZapLogo } from 'v2/features/DeFiZap';
 import { MembershipSelectedBanner } from 'v2/features/PurchaseMembership';

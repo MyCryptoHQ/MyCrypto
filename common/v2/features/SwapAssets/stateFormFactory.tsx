@@ -12,16 +12,8 @@ import {
   calculateMarkup,
   trimBN
 } from 'v2/utils';
-import {
-  DexService,
-  ProviderHandler,
-  AssetContext,
-  NetworkContext,
-  getNetworkById,
-  AccountContext
-} from 'v2/services';
-import { StoreAccount, ITxType, ITxStatus } from 'v2/types';
-import { isWeb3Wallet } from 'v2/utils/web3';
+import { DexService, NetworkContext, getNetworkById } from 'v2/services';
+import { StoreAccount } from 'v2/types';
 import { DEFAULT_NETWORK, MYC_DEXAG_COMMISSION_RATE } from 'v2/config';
 
 import { ISwapAsset, LAST_CHANGED_AMOUNT, SwapFormState } from './types';
@@ -42,7 +34,6 @@ const swapFormInitialState = {
 
 const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setState }) => {
   const { networks } = useContext(NetworkContext);
-  const { addNewTransactionToAccount } = useContext(AccountContext);
 
   const fetchSwapAssets = async () => {
     try {
@@ -256,141 +247,6 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       ...prevState,
       account
     }));
-  };
-
-  const handleConfirmSwapClicked = async (after: () => void): Promise<void> => {
-    const { lastChangedAmount, fromAsset, fromAmount, toAsset, toAmount, account } = state;
-    const isLastChangedTo = lastChangedAmount === LAST_CHANGED_AMOUNT.TO;
-
-    try {
-      const getOrderDetails = isLastChangedTo
-        ? DexService.instance.getOrderDetailsTo
-        : DexService.instance.getOrderDetailsFrom;
-
-      setState((prevState: SwapState) => ({
-        ...prevState,
-        isSubmitting: true
-      }));
-
-      const dexTrade = await getOrderDetails(
-        fromAsset.symbol,
-        toAsset.symbol,
-        isLastChangedTo ? toAmount : fromAmount
-      );
-
-      const makeTransaction = dexTrade.metadata.input
-        ? makeAllowanceTransaction
-        : makeTradeTransactionFromDexTrade;
-      const rawTransaction = await makeTransaction(dexTrade, account);
-
-      const txConfig = makeTxConfigFromTransaction(userAssets)(
-        rawTransaction,
-        account,
-        fromAsset,
-        fromAmount
-      );
-
-      setState((prevState: SwapState) => ({
-        ...prevState,
-        isSubmitting: false,
-        txConfig,
-        rawTransaction,
-        dexTrade
-      }));
-
-      after();
-    } catch (e) {
-      setState((prevState: SwapState) => ({
-        ...prevState,
-        isSubmitting: false
-      }));
-      console.error(e);
-    }
-  };
-
-  const handleAllowanceSigned = async (signResponse: any, after: () => void) => {
-    const { fromAsset, fromAmount, account, dexTrade } = state;
-    let allowanceTxHash;
-    const provider = new ProviderHandler(account.network);
-
-    try {
-      if (isWeb3Wallet(account.wallet)) {
-        allowanceTxHash = (signResponse && signResponse.hash) || signResponse;
-      } else {
-        const tx = await provider.sendRawTx(signResponse);
-        allowanceTxHash = tx.hash;
-      }
-    } catch (hash) {
-      const tx = await provider.getTransactionByHash(hash);
-      allowanceTxHash = tx.hash;
-    }
-
-    // wait for allowance tx to be mined
-    setState((prevState: SwapState) => ({
-      ...prevState,
-      isSubmitting: true
-    }));
-    await provider.waitForTransaction(allowanceTxHash);
-
-    const rawTransaction = await makeTradeTransactionFromDexTrade(dexTrade, account);
-    const txConfig = makeTxConfigFromTransaction(userAssets)(
-      rawTransaction,
-      account,
-      fromAsset,
-      fromAmount
-    );
-    setState((prevState: SwapState) => ({
-      ...prevState,
-      isSubmitting: false,
-      txConfig,
-      rawTransaction
-    }));
-
-    after();
-  };
-
-  const handleTxSigned = async (signResponse: any, after: () => void) => {
-    const { account, txConfig } = state;
-
-    if (isWeb3Wallet(account.wallet)) {
-      const txReceipt =
-        signResponse && signResponse.hash ? signResponse : { ...txConfig, hash: signResponse };
-      addNewTransactionToAccount(
-        state.txConfig.senderAccount,
-        {
-          ...txReceipt,
-          to: state.txConfig.receiverAddress,
-          from: state.txConfig.senderAccount.address,
-          amount: state.txConfig.amount,
-          txType: ITxType.SWAP,
-          stage: ITxStatus.PENDING
-        } || {}
-      );
-      setState((prevState: SwapState) => ({
-        ...prevState,
-        txReceipt
-      }));
-
-      after();
-    } else {
-      const provider = new ProviderHandler(account.network);
-      provider
-        .sendRawTx(signResponse)
-        .then(retrievedTxReceipt => retrievedTxReceipt)
-        .catch(hash => provider.getTransactionByHash(hash))
-        .then(retrievedTransactionReceipt => {
-          const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(userAssets, networks);
-          setState((prevState: SwapState) => ({
-            ...prevState,
-            txReceipt
-          }));
-          addNewTransactionToAccount(
-            state.txConfig.senderAccount,
-            { ...txReceipt, txType: ITxType.SWAP, stage: ITxStatus.PENDING } || {}
-          );
-        })
-        .finally(after);
-    }
   };
 
   return {
