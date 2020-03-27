@@ -14,10 +14,6 @@ interface Props {
   date: number;
 }
 
-interface Config {
-  color: string;
-}
-
 const capitalize = (word: string): string =>
   word
     .split('')
@@ -26,29 +22,25 @@ const capitalize = (word: string): string =>
 
 const formatDate = (date: number): string => moment.unix(date).format('MM/DD/YY h:mm A');
 
-interface ITxStatusObject {
-  color: string;
-}
-
-type ITxStatusConfig = {
-  [key in ITxStatus]: ITxStatusObject;
-};
+type ITxStatusConfig = { [K in ITxStatus]: { color: string } };
 
 const txStatusConfig: ITxStatusConfig = {
-  [ITxStatus.FAILED]: {
-    color: '#F05424'
-  },
-  [ITxStatus.SUCCESS]: {
-    color: '#75b433'
-  },
-  [ITxStatus.PENDING]: {
-    color: '#424242'
-  }
+  [ITxStatus.SUCCESS]: { color: '#75b433' },
+  [ITxStatus.FAILED]: { color: '#F05424' },
+  [ITxStatus.PENDING]: { color: '#424242' },
+  [ITxStatus.EMPTY]: { color: '#424242' },
+  [ITxStatus.PREPARING]: { color: '#424242' },
+  [ITxStatus.READY]: { color: '#424242' },
+  [ITxStatus.SIGNED]: { color: '#424242' },
+  [ITxStatus.BROADCASTED]: { color: '#424242' },
+  [ITxStatus.CONFIRMING]: { color: '#424242' },
+  [ITxStatus.CONFIRMED]: { color: '#75b433' }
 };
 
 const SStage = styled(Typography)`
-  color: ${(p: { config: Config }) => p.config.color || 'transparent'};
+  color: ${(p: { color: string }) => p.color || 'transparent'};
 `;
+
 export default function TransactionLabel({ image, label, stage, date }: Props) {
   const config = txStatusConfig[stage];
   return (
@@ -56,7 +48,7 @@ export default function TransactionLabel({ image, label, stage, date }: Props) {
       {image}
       <div className="TransactionLabel-info">
         <Typography className="TransactionLabel-info-label">{label}</Typography>
-        <SStage config={config} className="TransactionLabel-info-stage">
+        <SStage color={config.color} className="TransactionLabel-info-stage">
           {capitalize(stage)}{' '}
         </SStage>
         <Typography className="TransactionLabel-info-Date">{`${

@@ -26,6 +26,7 @@ const AssetWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   margin: 0 15px;
   width: 148px;
   height: 9em;
@@ -38,7 +39,7 @@ const AssetWrapper = styled.div`
 const Arrow = styled.img`
   width: 54px;
   height: 38px;
-  margin-bottom: 64px;
+  margin-bottom: 25px;
 `;
 
 export default function SwapFromToDiagram(props: Props) {

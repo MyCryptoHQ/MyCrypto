@@ -4,14 +4,14 @@ import * as R from 'ramda';
 
 import translate, { translateRaw } from 'v2/translations';
 import { Button, CodeBlock, QRCodeContainer, Typography, Overlay, Spinner } from 'v2/components';
-import { WalletId, ISignComponentProps, TAddress } from 'v2/types';
+import { WalletId, ISignComponentProps, TAddress, ITxHash } from 'v2/types';
 import { getWalletConfig } from 'v2/config';
 import { COLORS, FONT_SIZE, BREAK_POINTS } from 'v2/theme';
 import { useUpdateEffect } from 'v2/vendor';
 import { noOp, truncate, objToString } from 'v2/utils';
 import { getNetworkByChainId } from 'v2/services';
 import { StoreContext } from 'v2/services/Store';
-import { useWalletConnect, WcReducer, TActionError, ITxData } from 'v2/services/WalletService';
+import { useWalletConnect, WcReducer, TActionError } from 'v2/services/WalletService';
 
 import EthAddress from '../EthAddress';
 
@@ -89,7 +89,7 @@ const ErrorHandlers: { [K in TActionError]: React.SFC<ErrorProps> } = {
     <Typography style={{ padding: '0 2em' }}>
       {translateRaw('SIGN_TX_WALLETCONNECT_FAILED_NETWORK', {
         $walletName: translateRaw('X_WALLETCONNECT'),
-        $network: network
+        $networkName: network
       })}
     </Typography>
   ),
@@ -125,7 +125,7 @@ export function SignTransactionWalletConnect({
       from: senderAccount.address,
       ...rawTransaction
     })
-      .then((txHash: ITxData) => onSuccess(txHash))
+      .then((txHash: ITxHash) => onSuccess(txHash))
       .catch(console.debug);
 
   const getErrorMessage = (code: TActionError) => {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Field, FieldProps, Formik } from 'formik';
+import { Field, FieldProps, FormikHandlers } from 'formik';
 import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
 
 import translate, { translateRaw } from 'v2/translations';
@@ -11,7 +11,7 @@ const SliderWithTooltip = createSliderWithTooltip(Slider);
 
 interface OwnProps {
   gasPrice: string;
-  handleChange: Formik['handleChange'];
+  handleChange: FormikHandlers['handleChange'];
   gasEstimates: GasEstimates;
   network: Network;
 }

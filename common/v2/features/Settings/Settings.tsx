@@ -47,20 +47,12 @@ const SettingsTabs = styled(TabsNav)`
 function renderAccountPanel() {
   const { accounts } = useContext(StoreContext);
   return (
-    <FlippablePanel>
-      {({ flipped }) =>
-        flipped ? (
-          <p>Add Account</p>
-        ) : (
-          <AccountList
-            accounts={accounts}
-            deletable={true}
-            copyable={true}
-            privacyCheckboxEnabled={IS_ACTIVE_FEATURE.PRIVATE_TAGS}
-          />
-        )
-      }
-    </FlippablePanel>
+    <AccountList
+      accounts={accounts}
+      deletable={true}
+      copyable={true}
+      privacyCheckboxEnabled={IS_ACTIVE_FEATURE.PRIVATE_TAGS}
+    />
   );
 }
 

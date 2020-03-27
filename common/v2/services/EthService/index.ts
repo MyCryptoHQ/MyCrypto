@@ -37,7 +37,11 @@ export {
   getTxStatus,
   gasStringsToMaxGasBN,
   convertedToBaseUnit,
-  messageToData
+  messageToData,
+  appendNonce,
+  appendGasLimit,
+  appendGasPrice,
+  appendSender
 } from './utils';
 export {
   isValidPath,

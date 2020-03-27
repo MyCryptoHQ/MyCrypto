@@ -37,7 +37,7 @@ const PurchaseMembershipStepper = () => {
     {
       label: 'Confirm Transaction',
       component: ConfirmMembershipPurchase,
-      props: (({ txConfig }) => ({ txConfig }))(purchaseMembershipFlowState)
+      props: (({ txConfig, membershipSelected }) => ({ txConfig, membershipSelected }))(purchaseMembershipFlowState)
     },
     {
       label: '',

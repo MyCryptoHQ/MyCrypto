@@ -52,6 +52,8 @@ const ContactLookupDropdown = ({
     )}
     searchable={true}
     clearable={true}
+    onCloseResetsInput={false}
+    onBlurResetsInput={false}
   />
 );
 

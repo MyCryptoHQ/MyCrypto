@@ -1,52 +1,66 @@
 import React from 'react';
+import * as R from 'ramda';
 
-import VerticalStepper from 'v2/components/VerticalStepper';
-import { ISwapAsset } from '../types';
 import { SwapFromToDiagram } from 'v2/components/TransactionFlow/displays';
+import { VerticalStepper, Typography } from 'v2/components';
+import { translateRaw } from 'v2/translations';
+import { ITxStatus, TxParcel } from 'v2/types';
 
+import { IAssetPair } from '../types';
 import step1SVG from 'assets/images/icn-send.svg';
 import step2SVG from 'assets/images/icn-receive.svg';
-import { translateRaw } from 'v2/translations';
-import { Typography } from 'v2/components';
 
 interface Props {
-  currentStep: number;
-  fromAsset: ISwapAsset;
-  toAsset: ISwapAsset;
-  fromAmount: string;
-  toAmount: string;
+  assetPair: IAssetPair;
+  currentTxIdx: number;
+  transactions: TxParcel[];
   onClick?(): void;
 }
 
-export default function ConfirmSwapMultiTx(props: Props) {
-  const { currentStep, fromAsset, toAsset, fromAmount, toAmount, onClick } = props;
+export default function ConfirmSwapMultiTx({
+  assetPair,
+  currentTxIdx,
+  transactions,
+  onClick
+}: Props) {
+  const { fromAsset, toAsset, fromAmount, toAmount } = assetPair;
+  const status = transactions.map(t => R.path(['status'], t));
 
-  const tokenStep = {
+  const broadcasting = status.findIndex(s => s === ITxStatus.BROADCASTED);
+
+  const approveTx = {
     title: translateRaw('APPROVE_SWAP'),
     icon: step1SVG,
     content: translateRaw('SWAP_STEP1_TEXT', { $token: fromAsset.symbol }),
-    buttonText: translateRaw('APPROVE_SWAP'),
+    buttonText: `${translateRaw('APPROVE_SWAP')}`,
+    loading: status[0] === ITxStatus.BROADCASTED,
     onClick
   };
 
-  const transferStep = {
+  const transferTx = {
     title: translateRaw('COMPLETE_SWAP'),
     icon: step2SVG,
     content: translateRaw('SWAP_STEP2_TEXT'),
-    buttonText: translateRaw('CONFIRM_TRANSACTION'),
+    buttonText: `${translateRaw('CONFIRM_TRANSACTION')}`,
+    loading: status[1] === ITxStatus.BROADCASTED,
     onClick
   };
 
   return (
     <div>
-      <Typography>{translateRaw('SWAP_INTRO')}</Typography>
+      <Typography as="p" style={{ marginBottom: '2em' }}>
+        {translateRaw('SWAP_INTRO')}
+      </Typography>
       <SwapFromToDiagram
         fromSymbol={fromAsset.symbol}
         toSymbol={toAsset.symbol}
-        fromAmount={fromAmount}
-        toAmount={toAmount}
+        fromAmount={fromAmount.toString()}
+        toAmount={toAmount.toString()}
       />
-      <VerticalStepper currentStep={currentStep} steps={[tokenStep, transferStep]} />
+      <VerticalStepper
+        currentStep={broadcasting === -1 ? currentTxIdx : broadcasting}
+        steps={[approveTx, transferTx]}
+      />
     </div>
   );
 }

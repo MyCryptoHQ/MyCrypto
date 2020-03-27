@@ -18,6 +18,7 @@ const Content = styled.div`
 const Title = styled(Typography)`
   display: inline;
   font-size: ${scale(0.5)};
+  word-break: break-word;
 `;
 
 Title.defaultProps = { as: 'div' };
@@ -44,6 +45,7 @@ const SIdenticon = styled(Identicon)`
   &&& img {
     height: 45px;
     width: 44px;
+    max-width: none;
   }
 `;
 

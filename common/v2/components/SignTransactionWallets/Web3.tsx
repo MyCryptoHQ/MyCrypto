@@ -67,7 +67,7 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
     }
   }
 
-  public componentWillMount() {
+  public UNSAFE_componentWillMount() {
     this.initProvider();
   }
 
@@ -196,7 +196,10 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
     const signerWallet = web3Provider.getSigner();
 
     try {
-      signerWallet.sendUncheckedTransaction(rawTransaction).then(txHash => {
+      // Calling ethers.js with a tx object containing a 'from' property
+      // will fail https://github.com/ethers-io/ethers.js/issues/692.
+      const { from, ...rawTx } = rawTransaction;
+      signerWallet.sendUncheckedTransaction(rawTx).then(txHash => {
         web3Provider.getTransactionReceipt(txHash).then(output => {
           this.setState({ submitting: false });
           onSuccess(output !== null ? output : txHash);

@@ -35,6 +35,7 @@ import { isWeb3Wallet } from 'v2/utils/web3';
 import ProtocolTagsList from 'v2/features/DeFiZap/components/ProtocolTagsList';
 import { WithProtectTxApiFactory } from 'v2/features/ProtectTransaction';
 import { ProtectTxAbort } from 'v2/features/ProtectTransaction/components';
+import { MembershipReceiptBanner } from 'v2/features/PurchaseMembership';
 
 import { ISender } from './types';
 import { constructSenderFromTxConfig } from './helpers';
@@ -314,23 +315,30 @@ export const TxReceiptUI = ({
           <SwapFromToDiagram
             fromSymbol={swapDisplay.fromAsset.symbol}
             toSymbol={swapDisplay.toAsset.symbol}
-            fromAmount={swapDisplay.fromAmount}
-            toAmount={swapDisplay.toAmount}
+            fromAmount={swapDisplay.fromAmount.toString()}
+            toAmount={swapDisplay.toAmount.toString()}
           />
         </div>
       )}
-      <>
-        <FromToAccount
-          from={{
-            address: ((displayTxReceipt && displayTxReceipt.from) || sender.address) as TAddress,
-            label: senderAccountLabel
-          }}
-          to={{
-            address: ((displayTxReceipt && displayTxReceipt.to) || receiverAddress) as TAddress,
-            label: recipientLabel
-          }}
-        />
-      </>
+      {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
+        <div className="TransactionReceipt-row">
+          <MembershipReceiptBanner membershipSelected={membershipSelected} />
+        </div>
+      )}
+      {txType !== ITxType.PURCHASE_MEMBERSHIP && (
+        <>
+          <FromToAccount
+            from={{
+              address: (displayTxReceipt && displayTxReceipt.from || sender.address) as TAddress,
+              label: senderAccountLabel
+            }}
+            to={{
+              address: (displayTxReceipt && displayTxReceipt.to || receiverAddress) as TAddress,
+              label: recipientLabel
+            }}
+          />
+        </>
+      )}
       {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
         <div className="TransactionReceipt-row">
           <TxIntermediaryDisplay

@@ -64,7 +64,7 @@ const ProtectTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setStat
 
       payload = {
         ...payload,
-        nonceField: (await getNonce(network, account)).toString()
+        nonceField: (await getNonce(network, account.address)).toString()
       };
 
       if (payload.advancedTransaction) {

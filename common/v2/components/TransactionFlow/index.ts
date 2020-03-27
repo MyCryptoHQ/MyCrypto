@@ -3,7 +3,13 @@ import SignTransaction from '../../features/SendAssets/components/SignTransactio
 
 import { default as ConfirmTransaction } from './ConfirmTransaction';
 import TxReceipt from './TxReceipt';
+import MultiTxReceipt from './MultiTxReceipt';
 
 const TxReceiptWithProtectTx = withProtectTx(TxReceipt, SignTransaction);
 
-export { TxReceipt, TxReceiptWithProtectTx, ConfirmTransaction };
+export {
+  TxReceipt,
+  TxReceiptWithProtectTx,
+  ConfirmTransaction,
+  MultiTxReceipt
+};

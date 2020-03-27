@@ -1,4 +1,6 @@
-import { TSymbol, StoreAccount, ITxConfig, ITxReceipt } from 'v2/types';
+import { BigNumber } from 'bignumber.js';
+
+import { TSymbol, StoreAccount, ITxObject, ITxStatus } from 'v2/types';
 
 export interface ISwapAsset {
   name: string;
@@ -10,27 +12,49 @@ export enum LAST_CHANGED_AMOUNT {
   TO = 'TO_AMOUNT'
 }
 
-export interface SwapDisplayData {
-  fromAsset: ISwapAsset;
-  toAsset: ISwapAsset;
-  fromAmount: string;
-  toAmount: string;
+export interface TxEnveloppe {
+  label: string;
+  rawTx: ITxObject;
+  txHash: string;
+  status: ITxStatus;
+  queuePos: number;
 }
 
-export interface SwapState extends SwapDisplayData {
+export interface SwapState {
+  transactions: TxEnveloppe[];
+  currentTxIndex: number;
+  assetPair?: IAssetPair;
+  account?: StoreAccount;
+  isSubmitting: boolean;
+  nextInFlow: boolean;
+}
+
+export interface SwapFormState {
+  account: StoreAccount;
   assets: ISwapAsset[];
+  fromAsset: ISwapAsset;
+  fromAmount: string;
+  toAsset: ISwapAsset;
+  toAmount: string;
   fromAmountError: string | JSX.Element;
   isCalculatingFromAmount: boolean;
   toAmountError: string | JSX.Element;
   isCalculatingToAmount: boolean;
   lastChangedAmount: LAST_CHANGED_AMOUNT;
-  account: StoreAccount;
-  isSubmitting: boolean;
-  txConfig: ITxConfig;
-  rawTransaction: ITxConfig;
-  dexTrade: any;
-  txReceipt: ITxReceipt | undefined;
   initialToAmount: string; // This is used to reverse the fee calculation when inputing the recipient amount. It's how we determine the fee.
   exchangeRate: string; // The exchange rate displayed to the user (post-markup)
   markup: string;
+  isMulti: boolean;
 }
+
+export interface IAssetPair {
+  lastChangedAmount: LAST_CHANGED_AMOUNT;
+  fromAsset: ISwapAsset;
+  toAsset: ISwapAsset;
+  fromAmount: BigNumber;
+  toAmount: BigNumber;
+  rate: BigNumber;
+  markup: BigNumber;
+}
+
+export type SwapDisplayData = Pick<IAssetPair, 'fromAsset' | 'toAsset' | 'fromAmount' | 'toAmount'>;

@@ -109,12 +109,19 @@ const AddAccountFlow = withRouter(({ history, match }) => {
     updateFormState({ type: ActionType.SELECT_ACCOUNT_TYPE, payload: { accountType: name } });
   };
 
+  const calculateMargin = (index: number) => (index < 4 ? '2%' : '10px');
+
   const renderDefault = () => {
     return (
       <ExtendedContentPanel width="800px">
         <TransitionGroup>
           <CSSTransition classNames="DecryptContent" timeout={500}>
-            <WalletList wallets={getStories()} onSelect={onWalletSelection} showHeader={true} />
+            <WalletList
+              wallets={getStories()}
+              onSelect={onWalletSelection}
+              showHeader={true}
+              calculateMargin={calculateMargin}
+            />
           </CSSTransition>
         </TransitionGroup>
       </ExtendedContentPanel>

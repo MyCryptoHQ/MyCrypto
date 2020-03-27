@@ -1,8 +1,10 @@
 import WalletConnect from '@walletconnect/browser';
-import { ITxData as _ITxData, IWalletConnectSession } from '@walletconnect/types';
+import { IWalletConnectSession, ITxData } from '@walletconnect/types';
 
 import { TAddress } from 'v2/types';
 import { noOp } from 'v2/utils';
+
+import { IWalletConnectService } from './types';
 
 const WALLET_CONNECT_BRIDGE_URI = 'https://bridge.walletconnect.org';
 
@@ -29,8 +31,6 @@ interface EventHandlers {
   handleDisconnect(params: any): void;
 }
 
-export type ITxData = _ITxData;
-
 export default function WalletConnectService({
   handleInit,
   handleConnect,
@@ -38,7 +38,7 @@ export default function WalletConnectService({
   handleReject,
   handleUpdate,
   handleDisconnect = noOp
-}: EventHandlers) {
+}: EventHandlers): IWalletConnectService {
   const connector = new WalletConnect({
     bridge: WALLET_CONNECT_BRIDGE_URI
   });
@@ -46,15 +46,16 @@ export default function WalletConnectService({
   // Helper to extract message from payload.
   const getMessage = (payload: any) => (payload.params ? payload.params[0].message : false);
 
-  const sendTx = (tx: ITxData) => {
-    return connector.sendTransaction(tx);
-  };
+  const sendTx = async (tx: ITxData) => connector.sendTransaction(tx);
 
-  const kill = () => connector.killSession();
+  const signMessage = async (msg: string, address: string) =>
+    connector.signPersonalMessage([msg, address]);
 
-  const init = () => {
+  const kill = async () => connector.killSession();
+
+  const init = async () => {
     // Make sure we are dealing with the same session.
-    if (connector.connected) kill();
+    if (connector.connected) await kill();
 
     connector.createSession().then(() => {
       // get uri for QR Code modal
@@ -94,6 +95,7 @@ export default function WalletConnectService({
     init,
     kill,
     sendTx,
+    signMessage,
     isConnected: connector.connected
   };
 }

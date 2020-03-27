@@ -1,10 +1,9 @@
 import React, { useContext, useState } from 'react';
 import Styled from 'styled-components';
 import BN from 'bn.js';
-import { Button } from '@mycrypto/ui';
 
 import { AddressBookContext, StoreContext } from 'v2/services/Store';
-import { Amount, AssetIcon } from 'v2/components';
+import { Amount, AssetIcon, Button } from 'v2/components';
 import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from 'v2/services/EthService';
 import { RatesContext } from 'v2/services/RatesProvider';
 import { convertToFiat } from 'v2/utils';
@@ -12,6 +11,7 @@ import translate, { translateRaw } from 'v2/translations';
 import { TSymbol } from 'v2/types/symbols';
 import { ZapSelectedBanner, DeFiZapLogo } from 'v2/features/DeFiZap';
 import { BREAK_POINTS, SPACING, COLORS } from 'v2/theme';
+import { MembershipSelectedBanner } from 'v2/features/PurchaseMembership';
 
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
@@ -57,6 +57,12 @@ const ColumnWrapper = Styled.div<{ bold?: boolean }>`
   }
 `;
 
+const SendButton = Styled(Button)`
+  > div {
+    justify-content: center;
+  }
+`;
+
 const AmountWrapper = Styled(ColumnWrapper)`
   display: flex;
   flex-direction: row;
@@ -75,10 +81,6 @@ const Divider = Styled.div`
   height: 1px;
   margin-bottom: 20px;
   background: #e3edff;
-`;
-
-const SendButton = Styled(Button)`
-  width: 100%;
 `;
 
 const DeFiZapLogoContainer = Styled.div`
@@ -190,6 +192,9 @@ export const ConfirmTransactionUI = ({
   return (
     <ConfirmTransactionWrapper>
       {txType === ITxType.DEFIZAP && zapSelected && <ZapSelectedBanner zapSelected={zapSelected} />}
+      {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
+        <MembershipSelectedBanner membershipSelected={membershipSelected} />
+      )}
       <FromToAccount
         from={{
           address: sender.address,
@@ -199,18 +204,21 @@ export const ConfirmTransactionUI = ({
           address: (receiverAddress || 'Unknown') as never,
           label: recipientLabel
         }}
-        displayToAddress={txType !== ITxType.DEFIZAP}
+        displayToAddress={txType !== ITxType.DEFIZAP && txType !== ITxType.PURCHASE_MEMBERSHIP}
       />
       {txType === ITxType.DEFIZAP && zapSelected && (
         <RowWrapper>
           <TxIntermediaryDisplay address={zapSelected.contractAddress} contractName={'DeFi Zap'} />
         </RowWrapper>
       )}
-      {assetType === 'erc20' && asset && asset.contractAddress && (
-        <RowWrapper>
-          <TxIntermediaryDisplay address={asset.contractAddress} contractName={asset.ticker} />
-        </RowWrapper>
-      )}
+      {assetType === 'erc20' &&
+        asset &&
+        asset.contractAddress &&
+        txType !== ITxType.PURCHASE_MEMBERSHIP && (
+          <RowWrapper>
+            <TxIntermediaryDisplay address={asset.contractAddress} contractName={asset.ticker} />
+          </RowWrapper>
+        )}
       {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
         <RowWrapper>
           <TxIntermediaryDisplay
@@ -295,8 +303,10 @@ export const ConfirmTransactionUI = ({
         onClick={handleApprove}
         disabled={isBroadcastingTx}
         className="ConfirmTransaction-button"
+        loading={isBroadcastingTx}
+        fullwidth={true}
       >
-        {isBroadcastingTx ? translate('SUBMITTING') : translate('CONFIRM_AND_SEND')}
+        {isBroadcastingTx ? translateRaw('SUBMITTING') : translateRaw('CONFIRM_AND_SEND')}
       </SendButton>
       {txType === ITxType.DEFIZAP && (
         <DeFiZapLogoContainer>

@@ -12,10 +12,11 @@ import {
   ViewOnlyDecrypt,
   WalletConnectDecrypt
 } from 'v2/components';
+import { withWalletConnect } from 'v2/services/WalletService';
 
 import { NetworkSelectPanel } from './components';
 
-// This const is used to hideFromWalletList
+// This const is used to disable non supported wallets
 // only if it is not the Desktop App and not the Dev environment
 export const IS_NOT_ELECTRON_AND_IS_NOT_DEV: boolean = !IS_ELECTRON && !IS_DEV;
 
@@ -26,7 +27,7 @@ export const getStories = (): IStory[] => [
   },
   {
     name: WalletId.WALLETCONNECT,
-    steps: [NetworkSelectPanel, WalletConnectDecrypt]
+    steps: [NetworkSelectPanel, withWalletConnect(WalletConnectDecrypt)]
   },
   {
     name: WalletId.LEDGER_NANO_S,
@@ -39,17 +40,17 @@ export const getStories = (): IStory[] => [
   {
     name: WalletId.KEYSTORE_FILE,
     steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? KeystoreDecrypt : InsecureWalletWarning],
-    hideFromWalletList: IS_NOT_ELECTRON_AND_IS_NOT_DEV
+    isDisabled: IS_NOT_ELECTRON_AND_IS_NOT_DEV
   },
   {
     name: WalletId.PRIVATE_KEY,
     steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? PrivateKeyDecrypt : InsecureWalletWarning],
-    hideFromWalletList: IS_NOT_ELECTRON_AND_IS_NOT_DEV
+    isDisabled: IS_NOT_ELECTRON_AND_IS_NOT_DEV
   },
   {
     name: WalletId.MNEMONIC_PHRASE,
     steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? MnemonicDecrypt : InsecureWalletWarning],
-    hideFromWalletList: IS_NOT_ELECTRON_AND_IS_NOT_DEV
+    isDisabled: IS_NOT_ELECTRON_AND_IS_NOT_DEV
   },
   {
     name: WalletId.VIEW_ONLY,
