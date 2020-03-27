@@ -10,6 +10,34 @@ const config = require('./config');
 
 const IS_DEVELOPMENT = process.env.NODE_ENV !== 'production';
 
+// Split vendor modules into seperate chunks for better caching.
+// 1. Multiple chunks are better than a single one. ie. The gain in caching outweighs
+//    the cost of multiple files.
+//    https://medium.com/hackernoon/the-100-correct-way-to-split-your-chunks-with-webpack-f8a9df5b7758
+// 2. Separate pattern for cacheGroups:
+//    https://stackoverflow.com/questions/48985780/webpack-4-create-vendor-chunk
+const chunks = {
+  individual: [
+    'ethers',
+    'recharts',
+    'jspdf',
+    '@walletconnect',
+    '@ledgerhq',
+    '@unstoppabledomains',
+    '@mycrypto'
+  ],
+  devOnly: ['@hot-loader/react-dom'],
+  electronOnly: ['zxcvbn', 'bip39']
+};
+const generateChunkName = module => {
+  // get the name. E.g. node_modules/packageName/not/this/part.js
+  // or node_modules/packageName
+  const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+
+  // npm package names are URL-safe, but some servers don't like @ symbols
+  return `npm.${packageName.replace('@', '')}`;
+};
+
 module.exports = {
   target: 'web',
 
@@ -36,7 +64,21 @@ module.exports = {
 
   optimization: {
     splitChunks: {
-      chunks: 'all'
+      chunks: 'all',
+      cacheGroups: {
+        vendorIndividual: {
+          test: new RegExp(`[\\/]node_modules[\\/](${chunks.individual.join('|')})[\\/]`),
+          name: generateChunkName
+        },
+        vendorDev: {
+          test: new RegExp(`[\\/]node_modules[\\/](${chunks.devOnly.join('|')})[\\/]`),
+          name: generateChunkName
+        },
+        vendorElectron: {
+          test: new RegExp(`[\\/]node_modules[\\/](${chunks.electronOnly.join('|')})[\\/]`),
+          name: generateChunkName
+        }
+      }
     }
   },
 
