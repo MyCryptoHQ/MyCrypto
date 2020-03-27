@@ -5,7 +5,7 @@ import { Button } from '@mycrypto/ui';
 import * as Yup from 'yup';
 
 import translate, { translateRaw } from 'v2/translations';
-import { SPACING } from 'v2/theme';
+import { SPACING, COLORS } from 'v2/theme';
 import { IAccount, StoreAccount, Asset } from 'v2/types';
 import { AccountDropdown, AssetDropdown, InlineMessage, ContentPanel } from 'v2/components';
 import { isAccountInNetwork } from 'v2/services/Store/Account/helpers';
@@ -37,6 +37,12 @@ const FormFieldSubmitButton = styled(Button)`
   &:disabled {
     background-color: rgba(0, 122, 153, 0.3);
   }
+`;
+const NavigationWarning = styled.p`
+  color: ${COLORS.GREY};
+  margin-bottom: ${SPACING.MD};
+  display: flex;
+  justify-content: center;
 `;
 
 interface IBuyFormState {
@@ -150,6 +156,7 @@ export const BuyAssetsForm = ({}: any) => {
                   <InlineMessage className="SendAssetsForm-errors">{errors.asset}</InlineMessage>
                 ) : null}
               </FormFieldItem>
+              <NavigationWarning>{translateRaw('EXTERNAL_NAVIGATION_WARNING')}</NavigationWarning>
               <FormFieldSubmitButton
                 onClick={() => handleSubmission(values, SubmissionType.SEND_TO_SELF)}
               >
