@@ -37,7 +37,7 @@ const PurchaseMembershipStepper = () => {
   // @ts-ignore Ignore type issue with signing step for now
   const steps: IStepperPath[] = [
     {
-      label: 'Purchase Membership',
+      label: translateRaw('PURCHASE_MEMBERSHIP'),
       component: MembershipPurchaseForm,
       props: (s => s)(purchaseMembershipFlowState),
       actions: (formData: MembershipSimpleTxFormFull) => {
@@ -57,8 +57,8 @@ const PurchaseMembershipStepper = () => {
     },
     ...transactions.flatMap((tx: Required<TxParcel>, idx) => [
       {
-        label: translateRaw('SWAP_CONFIRM_TITLE'),
-        backBtnText: translateRaw('SWAP'),
+        label: translateRaw('CONFIRM_TRANSACTION'),
+        backBtnText: translateRaw('PURCHASE_MEMBERSHIP'),
         component:
           transactions.length > 1 ? ConfirmMembershipPurchaseMultiTx : ConfirmMembershipPurchase,
         props: {
@@ -71,8 +71,8 @@ const PurchaseMembershipStepper = () => {
         actions: () => prepareTx(tx.txRaw)
       },
       {
-        label: translateRaw('SWAP'),
-        backBtnText: translateRaw('SWAP_CONFIRM_TITLE'),
+        label: translateRaw('CONFIRM_TRANSACTION'),
+        backBtnText: translateRaw('CONFIRM_TRANSACTION'),
         component: account && WALLET_STEPS[account.wallet],
         props: {
           network: account && account.network,
@@ -85,7 +85,7 @@ const PurchaseMembershipStepper = () => {
       }
     ]),
     {
-      label: 'Membership Purchase Receipt',
+      label: translateRaw('PURCHASE_MEMBERSHIP_RECEIPT'),
       component: MembershipPurchaseReceipt,
       props: {
         account,

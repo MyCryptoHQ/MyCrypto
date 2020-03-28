@@ -2,7 +2,6 @@ import React from 'react';
 
 import { TxReceipt, MultiTxReceipt } from 'v2/components/TransactionFlow';
 import { ITxType, TxParcel, StoreAccount } from 'v2/types';
-import { translateRaw } from 'v2/translations';
 import { IMembershipConfig } from '../config';
 import { makeTxConfigFromTransaction } from 'v2/features/InteractWithContracts/helpers';
 
@@ -20,11 +19,7 @@ export default function MembershipReceipt({
   onComplete
 }: Props) {
   const txConfigs = transactions.map(tx => {
-    return makeTxConfigFromTransaction(
-      tx.txRaw,
-      account,
-      '0' // TODO
-    );
+    return makeTxConfigFromTransaction(tx.txRaw, account, membershipSelected.price);
   });
 
   const txReceipts = transactions.map((tx, idx) => {
@@ -41,7 +36,6 @@ export default function MembershipReceipt({
       txConfig={txConfigs[0]}
       txType={ITxType.PURCHASE_MEMBERSHIP}
       membershipSelected={membershipSelected}
-      completeButtonText={translateRaw('INTERACT_ANOTHER')}
       resetFlow={onComplete}
       onComplete={onComplete}
     />
@@ -53,7 +47,6 @@ export default function MembershipReceipt({
       transactionsConfigs={txConfigs}
       account={account}
       network={account.network}
-      completeButtonText={translateRaw('INTERACT_ANOTHER')}
       resetFlow={onComplete}
       onComplete={onComplete}
     />
