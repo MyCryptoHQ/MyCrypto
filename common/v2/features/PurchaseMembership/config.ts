@@ -50,10 +50,10 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     title: '1 month',
     name: 'One Month Membership',
     key: IMembershipId.onemonth,
-    contractAddress: '0x74970E3CF71E0dB7ca589218853C4b4182081c8a', // DONT MERGE!!
+    contractAddress: '0xCE8EF07495A36c451fB49b7391b33884832Bb66f',
     description: '',
     icon: onemonthIcon,
-    price: '0.25', // DONT MERGE!!
+    price: '4',
     assetUUID: DAIUUID,
     durationInDays: 30,
     discountNotice: ''
@@ -102,10 +102,10 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     title: 'I 💖 MyCrypto',
     name: 'Lifetime Membership',
     key: IMembershipId.lifetime,
-    contractAddress: '0x312D732b4E37c237dFF73A3A52833AF366b6afE4', // DONT MERGE!!
+    contractAddress: '0x60B8C6c7d339Aa170bcFa5a76053ff3e8c1189c1',
     description: '',
     icon: lifetimeIcon,
-    price: '0.001', // DONT MERGE!!
+    price: '5',
     assetUUID: EtherUUID,
     durationInDays: 36500,
     discountNotice: 'lifetime of love!'
