@@ -34,6 +34,7 @@ const PurchaseMembershipStepper = () => {
   const { canYield, isSubmitting, transactions } = state;
   const { account, membershipSelected }: MembershipPurchaseState = purchaseMembershipFlowState;
 
+  // @ts-ignore Ignore type issue with signing step for now
   const steps: IStepperPath[] = [
     {
       label: 'Purchase Membership',
@@ -86,11 +87,11 @@ const PurchaseMembershipStepper = () => {
     {
       label: 'Membership Purchase Receipt',
       component: MembershipPurchaseReceipt,
-      props: (({ membershipSelected }) => ({
+      props: {
         account,
         transactions,
         membershipSelected
-      }))(purchaseMembershipFlowState)
+      }
     }
   ];
 
