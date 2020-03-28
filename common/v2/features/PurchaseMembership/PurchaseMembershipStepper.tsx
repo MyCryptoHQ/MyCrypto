@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
+
 import { useStateReducer, useTxMulti } from 'v2/utils';
 import { ITxReceipt, ITxConfig, TxParcel, ITxSigned, ITxHash } from 'v2/types';
 import { default as GeneralStepper, IStepperPath } from 'v2/components/GeneralStepper';
 import { ROUTE_PATHS } from 'v2/config';
+import { translateRaw } from 'v2/translations';
+import { WALLET_STEPS } from 'v2/components';
 
 import { defaultMembershipObject } from './config';
 import {
@@ -13,8 +16,6 @@ import {
 } from './components';
 import MembershipInteractionFactory from './stateFactory';
 import { MembershipSimpleTxFormFull, MembershipPurchaseState } from './types';
-import { translateRaw } from 'v2/translations';
-import { WALLET_STEPS } from 'v2/components';
 import { createPurchaseTx, createApproveTx } from './helpers';
 import { isERC20Tx } from '../SendAssets';
 

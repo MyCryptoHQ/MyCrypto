@@ -2,8 +2,8 @@ import React from 'react';
 
 import { TxReceipt, MultiTxReceipt } from 'v2/components/TransactionFlow';
 import { ITxType, TxParcel, StoreAccount } from 'v2/types';
-import { IMembershipConfig } from '../config';
 import { makeTxConfigFromTransaction } from 'v2/features/InteractWithContracts/helpers';
+import { IMembershipConfig } from '../config';
 
 interface Props {
   account: StoreAccount;
