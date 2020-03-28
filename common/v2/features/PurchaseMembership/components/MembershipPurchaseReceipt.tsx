@@ -23,7 +23,7 @@ export default function MembershipReceipt({
     return makeTxConfigFromTransaction(
       tx.txRaw,
       account,
-      "0" // TODO
+      '0' // TODO
     );
   });
 
@@ -48,6 +48,7 @@ export default function MembershipReceipt({
   ) : (
     <MultiTxReceipt
       txType={ITxType.PURCHASE_MEMBERSHIP}
+      membershipSelected={membershipSelected}
       transactions={transactions}
       transactionsConfigs={txConfigs}
       account={account}
