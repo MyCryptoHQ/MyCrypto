@@ -1,7 +1,7 @@
 import React from 'react';
 import * as R from 'ramda';
 
-import { ITxConfig, ITxStatus, TxParcel } from 'v2/types';
+import { ITxStatus, TxParcel } from 'v2/types';
 import { IMembershipConfig } from '../config';
 import { Typography, VerticalStepper } from 'v2/components';
 import { translateRaw } from 'v2/translations';
@@ -11,13 +11,12 @@ import step2SVG from 'assets/images/icn-receive.svg';
 
 interface Props {
   membershipSelected: IMembershipConfig;
-  txConfig: ITxConfig;
   currentTxIdx: number;
   transactions: TxParcel[];
-  onClick?(): void;
+  onComplete?(): void;
 }
 
-export default function ConfirmMembershipPurchase({ currentTxIdx, transactions, onClick }: Props) {
+export default function ConfirmMembershipPurchase({ currentTxIdx, transactions, onComplete }: Props) {
   const status = transactions.map(t => R.path(['status'], t));
 
   const broadcasting = status.findIndex(s => s === ITxStatus.BROADCASTED);
@@ -28,7 +27,7 @@ export default function ConfirmMembershipPurchase({ currentTxIdx, transactions, 
     content: translateRaw('SWAP_STEP1_TEXT'),
     buttonText: `${translateRaw('APPROVE_SWAP')}`,
     loading: status[0] === ITxStatus.BROADCASTED,
-    onClick
+    onComplete
   };
 
   const transferTx = {
@@ -37,7 +36,7 @@ export default function ConfirmMembershipPurchase({ currentTxIdx, transactions, 
     content: translateRaw('SWAP_STEP2_TEXT'),
     buttonText: `${translateRaw('CONFIRM_TRANSACTION')}`,
     loading: status[1] === ITxStatus.BROADCASTED,
-    onClick
+    onComplete
   };
 
   return (

@@ -32,7 +32,7 @@ const PurchaseMembershipStepper = () => {
 
   const { state, prepareTx, sendTx, stopYield, initWith } = useTxMulti();
   const { canYield, isSubmitting, transactions } = state;
-  const { account }: MembershipPurchaseState = purchaseMembershipFlowState;
+  const { account, membershipSelected }: MembershipPurchaseState = purchaseMembershipFlowState;
 
   const steps: IStepperPath[] = [
     {
@@ -61,16 +61,13 @@ const PurchaseMembershipStepper = () => {
         component:
           transactions.length > 1 ? ConfirmMembershipPurchaseMultiTx : ConfirmMembershipPurchase,
         props: {
+          membershipSelected,
           account,
           isSubmitting,
           transactions,
           currentTxIdx: idx
         },
-        actions: {
-          onClick: () => {
-            prepareTx(tx.txRaw);
-          }
-        }
+        actions: () => prepareTx(tx.txRaw)
       },
       {
         label: translateRaw('SWAP'),
