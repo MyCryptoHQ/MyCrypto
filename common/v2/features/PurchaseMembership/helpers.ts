@@ -1,33 +1,13 @@
 import { ethers } from 'ethers';
 
 import { ITxObject } from 'v2/types';
-import {
-  inputValueToHex,
-  inputGasPriceToHex,
-  toWei
-} from 'v2/services/EthService';
+import { inputValueToHex, inputGasPriceToHex, toWei } from 'v2/services/EthService';
 import { DEFAULT_NETWORK_CHAINID, DEFAULT_ASSET_DECIMAL } from 'v2/config';
+import { UnlockToken, ERC20 } from 'v2/services/EthService/contracts';
 
 import { MembershipSimpleTxFormFull } from './types';
 import { MEMBERSHIP_PURCHASE_GAS_LIMIT } from './config';
-import { UnlockToken, ERC20 } from 'v2/services/EthService/contracts';
-import { addHexPrefix } from 'ethereumjs-util';
-import BN from 'bn.js';
 import { isERC20Tx } from '../SendAssets';
-
-export const createSimpleTxObject = (
-  formData: MembershipSimpleTxFormFull,
-  data: string
-): Partial<ITxObject> => {
-  return {
-    to: formData.address,
-    value: isERC20Tx(formData.asset) ? inputValueToHex('0') : inputValueToHex(formData.amount),
-    data,
-    gasLimit: formData.gasLimit.toString(),
-    gasPrice: inputGasPriceToHex(formData.gasPrice),
-    chainId: DEFAULT_NETWORK_CHAINID
-  };
-};
 
 export const createApproveTx = (payload: MembershipSimpleTxFormFull): Partial<ITxObject> => {
   const data = ERC20.approve.encodeInput({
@@ -38,9 +18,11 @@ export const createApproveTx = (payload: MembershipSimpleTxFormFull): Partial<IT
   return {
     // @ts-ignore Contract Address should be set if asset is ERC20
     to: payload.asset.contractAddress,
+    from: payload.account.address,
     data,
-    chainId: 1,
-    value: addHexPrefix(new BN('0').toString())
+    chainId: DEFAULT_NETWORK_CHAINID,
+    gasPrice: inputGasPriceToHex(payload.gasPrice),
+    value: inputValueToHex('0')
   };
 };
 
@@ -55,13 +37,13 @@ export const createPurchaseTx = (payload: MembershipSimpleTxFormFull): Partial<I
     _data: []
   });
 
-  const rawTransaction = createSimpleTxObject(
-    {
-      ...payload,
-      address: membershipSelected.contractAddress,
-      gasLimit: MEMBERSHIP_PURCHASE_GAS_LIMIT
-    },
-    data
-  );
-  return rawTransaction;
+  return {
+    from: payload.account.address,
+    to: membershipSelected.contractAddress,
+    value: isERC20Tx(payload.asset) ? inputValueToHex('0') : inputValueToHex(payload.amount),
+    data,
+    gasLimit: MEMBERSHIP_PURCHASE_GAS_LIMIT.toString(),
+    gasPrice: inputGasPriceToHex(payload.gasPrice),
+    chainId: DEFAULT_NETWORK_CHAINID
+  };
 };
