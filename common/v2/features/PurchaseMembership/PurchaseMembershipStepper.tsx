@@ -90,6 +90,7 @@ const PurchaseMembershipStepper = () => {
       label: 'Membership Purchase Receipt',
       component: MembershipPurchaseReceipt,
       props: (({ membershipSelected }) => ({
+        account,
         transactions,
         membershipSelected
       }))(purchaseMembershipFlowState)
