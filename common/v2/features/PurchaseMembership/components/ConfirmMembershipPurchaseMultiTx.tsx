@@ -16,7 +16,11 @@ interface Props {
   onComplete?(): void;
 }
 
-export default function ConfirmMembershipPurchase({ currentTxIdx, transactions, onComplete }: Props) {
+export default function ConfirmMembershipPurchase({
+  currentTxIdx,
+  transactions,
+  onComplete
+}: Props) {
   const status = transactions.map(t => R.path(['status'], t));
 
   const broadcasting = status.findIndex(s => s === ITxStatus.BROADCASTED);
@@ -27,7 +31,7 @@ export default function ConfirmMembershipPurchase({ currentTxIdx, transactions, 
     content: translateRaw('SWAP_STEP1_TEXT'),
     buttonText: `${translateRaw('APPROVE_SWAP')}`,
     loading: status[0] === ITxStatus.BROADCASTED,
-    onComplete
+    onClick: onComplete
   };
 
   const transferTx = {
@@ -36,7 +40,7 @@ export default function ConfirmMembershipPurchase({ currentTxIdx, transactions, 
     content: translateRaw('SWAP_STEP2_TEXT'),
     buttonText: `${translateRaw('CONFIRM_TRANSACTION')}`,
     loading: status[1] === ITxStatus.BROADCASTED,
-    onComplete
+    onClick: onComplete
   };
 
   return (
