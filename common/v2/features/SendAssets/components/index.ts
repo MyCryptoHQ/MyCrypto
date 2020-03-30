@@ -5,9 +5,9 @@ import SendAssetsForm from './SendAssetsForm';
 export * from './validators';
 export * from './fields';
 
-const SignTransactionWithProtectTx = withProtectTx(SignTransaction, SignTransaction);
-const ConfirmTransactionWithProtectTx = withProtectTx(ConfirmTransaction, SignTransaction);
-const SendAssetsFormWithProtectTx = withProtectTx(SendAssetsForm, SignTransaction);
+const SignTransactionWithProtectTx = withProtectTx(SignTransaction);
+const ConfirmTransactionWithProtectTx = withProtectTx(ConfirmTransaction);
+const SendAssetsFormWithProtectTx = withProtectTx(SendAssetsForm);
 
 export {
   SignTransaction,

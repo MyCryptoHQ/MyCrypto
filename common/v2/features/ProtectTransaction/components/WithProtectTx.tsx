@@ -14,6 +14,7 @@ import { ProtectTxConfigFactory, protectTxConfigInitialState } from '../txStateF
 import { WithProtectTxApiFactory } from '../withProtectStateFactory';
 import ProtectTxModalBackdrop from './ProtectTxModalBackdrop';
 import { ProtectTxButton } from './ProtectTxButton';
+import { ProtectTxStepper } from './ProtectTxStepper';
 
 const WithProtectTxWrapper = styled.div`
   display: flex;
@@ -76,10 +77,7 @@ interface Props extends IStepComponentProps {
   protectTxButton?(): JSX.Element;
 }
 
-export function withProtectTx(
-  WrappedComponent: React.ComponentType<Props>,
-  SignComponent: React.ComponentType<IStepComponentProps>
-) {
+export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
   return function WithProtectTransaction({
     txConfig: txConfigMain,
     signedTx: signedTxMain,
@@ -100,12 +98,38 @@ export function withProtectTx(
 
     const {
       withProtectState: { protectTxShow, stepIndex, protectTxEnabled, isWeb3Wallet },
-      handleTransactionReport,
-      goToNextStep,
-      goToInitialStepOrFetchReport,
       formCallback,
       showHideProtectTx
     } = withProtectApi!;
+
+    const protectTxStepperSteps = [
+      {
+        component: ProtectTxProtection,
+        props: {
+          sendAssetsValues: (({ values }) => values)(formCallback()),
+          withProtectApi
+        },
+        actions: {
+          handleProtectTxSubmit
+        }
+      },
+      {
+        component: ProtectTxSign,
+        props: {
+          txConfig: (({ txConfig }) => txConfig)(protectTxFactoryState),
+          withProtectApi
+        },
+        actions: {
+          handleProtectTxConfirmAndSend
+        }
+      },
+      {
+        component: ProtectTxReport,
+        props: {
+          withProtectApi
+        }
+      }
+    ];
 
     const { isMdScreen } = useScreenSize();
 
@@ -148,45 +172,7 @@ export function withProtectTx(
               {!isMdScreen && <ProtectTxModalBackdrop onBackdropClick={toggleProtectTxShow} />}
               <WithProtectTxSide>
                 <Panel>
-                  {(() => {
-                    if (stepIndex === 0) {
-                      const { values } = formCallback();
-
-                      return (
-                        <ProtectTxProtection
-                          handleProtectTxSubmit={handleProtectTxSubmit}
-                          withProtectApi={withProtectApi!}
-                          sendAssetsValues={values}
-                        />
-                      );
-                    } else if (stepIndex === 1) {
-                      return (
-                        <ProtectTxSign withProtectApi={withProtectApi!}>
-                          <>
-                            <SignComponent
-                              txConfig={(({ txConfig }) => txConfig)(protectTxFactoryState)}
-                              onComplete={(
-                                payload: IFormikFields | ITxReceipt | ISignedTx | null
-                              ) => {
-                                handleTransactionReport().then(() => {
-                                  handleProtectTxConfirmAndSend(
-                                    payload,
-                                    goToNextStep,
-                                    isWeb3Wallet
-                                  );
-                                });
-                              }}
-                              resetFlow={goToInitialStepOrFetchReport}
-                            />
-                          </>
-                        </ProtectTxSign>
-                      );
-                    } else if (stepIndex === 2) {
-                      return <ProtectTxReport withProtectApi={withProtectApi} />;
-                    }
-
-                    return <></>;
-                  })()}
+                  <ProtectTxStepper currentStepIndex={stepIndex} steps={protectTxStepperSteps} />
                 </Panel>
               </WithProtectTxSide>
             </>
