@@ -11,6 +11,10 @@ interface BannerProps {
   versionNow: string;
 }
 
+interface State {
+  displayBanner: boolean;
+}
+
 const STORAGE_NAME = 'ElectronBuildVerified';
 
 export default class ElectronBuildVerified extends Component<BannerProps, BannerState> {
@@ -27,7 +31,7 @@ export default class ElectronBuildVerified extends Component<BannerProps, Banner
     if (displayBanner) {
       return (
         <div className="BannerContainer">
-          <div style={{display: 'flex', padding: '0em 0.5em 0em 0em'}}>
+          <div style={{ display: 'flex', padding: '0em 0.5em 0em 0em' }}>
             <input type="checkbox" onChange={e => this.handleCheck(e)} />{' '}
           </div>
           <span>
@@ -44,7 +48,7 @@ export default class ElectronBuildVerified extends Component<BannerProps, Banner
     return null;
   }
 
-  componentWillMount() {
+  public componentWillMount() {
     this.setState({ displayBanner: this.isBannerPrompted() });
   }
 
@@ -53,7 +57,7 @@ export default class ElectronBuildVerified extends Component<BannerProps, Banner
     if (localStorage.getItem(STORAGE_NAME) !== null) {
       try {
         storageVerified = localStorage.getItem(STORAGE_NAME);
-        const objStorage = JSON.parse(storageVerified);
+        const objStorage = JSON.parse(storageVerified!);
         if (objStorage.versionChecked === this.props.versionNow) {
           return false;
         }
