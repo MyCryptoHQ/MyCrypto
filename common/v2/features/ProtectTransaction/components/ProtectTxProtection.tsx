@@ -1,8 +1,9 @@
 import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
+import BigNumber from 'bignumber.js';
 
-import { convertToFiat, isWeb3Wallet } from 'v2/utils';
+import { isWeb3Wallet } from 'v2/utils';
 import { RatesContext } from 'v2/services';
 import { IAccount, IFormikFields } from 'v2/types';
 import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from 'v2/theme';
@@ -130,8 +131,8 @@ export const ProtectTxProtection: FC<Props> = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const [feeAmount, setFeeAmount] = useState<{
-    amount: number | null;
-    fee: number | null;
+    amount: BigNumber | null;
+    fee: BigNumber | null;
     rate: number | null;
   }>({ amount: null, fee: null, rate: null });
 
@@ -192,15 +193,15 @@ export const ProtectTxProtection: FC<Props> = ({
 
   const getAssetValue = useCallback(() => {
     if (feeAmount.amount === null || feeAmount.fee === null) return '--';
-    return `${parseFloat((feeAmount.amount + feeAmount.fee).toString()).toFixed(6)} ETH`;
+    return `${feeAmount.amount.plus(feeAmount.fee).toFixed(6)} ETH`;
   }, [feeAmount]);
 
   const getFiatValue = useCallback(() => {
     if (feeAmount.amount === null || feeAmount.fee === null || feeAmount.rate === null) return '--';
-    return `$${convertToFiat(
-      parseFloat((feeAmount.amount + feeAmount.fee).toString()),
-      feeAmount.rate
-    ).toFixed(2)}`;
+    return feeAmount.amount
+      .plus(feeAmount.fee)
+      .multipliedBy(feeAmount.rate)
+      .toFixed(2);
   }, [feeAmount]);
 
   return (

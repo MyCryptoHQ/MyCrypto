@@ -1,6 +1,8 @@
+import BigNumber from 'bignumber.js';
 import isNumber from 'lodash/isNumber';
 import { fromWei, totalTxFeeToWei, Wei } from 'v2/services/EthService/utils';
 import { IFormikFields } from 'v2/types';
+import { bigify } from 'v2/utils';
 import {
   PROTECTED_TX_FEE_PERCENTAGE,
   PROTECTED_TX_FIXED_FEE_AMOUNT,
@@ -12,7 +14,7 @@ export abstract class ProtectTxUtils {
   public static getProtectTransactionFee(
     sendAssetsValues: IFormikFields,
     rate: number | undefined
-  ): { amount: number | null; fee: number | null } {
+  ): { amount: BigNumber | null; fee: BigNumber | null } {
     if (sendAssetsValues.amount === null || !isNumber(rate)) return { amount: null, fee: null };
 
     const {
@@ -44,8 +46,8 @@ export abstract class ProtectTxUtils {
     );
 
     return {
-      amount: fixedHalfDollar + fixedFee - mainTransactionWei,
-      fee: protectedTransactionWei
+      amount: bigify((fixedHalfDollar + fixedFee - mainTransactionWei).toString()),
+      fee: bigify(protectedTransactionWei.toString())
     };
   }
 
