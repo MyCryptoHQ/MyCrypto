@@ -53,7 +53,7 @@ function TxIntermediaryDisplay({ address, contractName }: Props) {
           <Wrapper>
             <div>
               <IntermediaryDisplayLabel>{`Transaction performed via ${contractName} contract:`}</IntermediaryDisplayLabel>
-              <IntermediaryDisplayContract text={address} />
+              <IntermediaryDisplayContract text={address} isCopyable={true} />
             </div>
             <Tooltip tooltip={translateRaw('TOKEN_SEND_TOOLTIP')} />
           </Wrapper>

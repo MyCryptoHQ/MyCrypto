@@ -1,8 +1,11 @@
-import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
+import { useContext } from 'react';
 
+import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
 import { isWeb3Wallet } from 'v2/utils/web3';
-import { Asset } from 'v2/types';
+import { Asset, ITxStatus, ITxType } from 'v2/types';
 import { hexWeiToString, ProviderHandler } from 'v2/services/EthService';
+import { AccountContext } from 'v2/services/Store';
+
 import { createSimpleTxObject } from './helpers';
 import { ZapInteractionState, TStepAction, ISimpleTxFormFull } from './types';
 
@@ -10,6 +13,8 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
   state,
   setState
 }) => {
+  const { addNewTransactionToAccount } = useContext(AccountContext);
+
   const handleTxSigned = async (signResponse: any, cb: any) => {
     const { txConfig } = state;
     if (!txConfig.senderAccount) return;
@@ -19,6 +24,14 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
         signResponse && signResponse.hash
           ? signResponse
           : { hash: signResponse, asset: txConfig.asset };
+      addNewTransactionToAccount(state.txConfig.senderAccount, {
+        ...txReceipt,
+        to: state.txConfig.receiverAddress,
+        from: state.txConfig.senderAccount.address,
+        amount: state.txConfig.amount,
+        txType: ITxType.DEFIZAP,
+        stage: ITxStatus.PENDING
+      });
       setState((prevState: ZapInteractionState) => ({
         ...prevState,
         txReceipt
@@ -32,6 +45,11 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
         .catch(hash => provider.getTransactionByHash(hash))
         .then(retrievedTransactionReceipt => {
           const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt);
+          addNewTransactionToAccount(state.txConfig.senderAccount, {
+            ...txReceipt,
+            txType: ITxType.DEFIZAP,
+            stage: ITxStatus.PENDING
+          });
           setState((prevState: ZapInteractionState) => ({
             ...prevState,
             txReceipt

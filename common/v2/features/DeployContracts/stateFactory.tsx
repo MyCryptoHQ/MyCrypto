@@ -2,8 +2,14 @@ import { useContext } from 'react';
 import { isHexString } from 'ethjs-util';
 
 import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
-import { StoreAccount, NetworkId } from 'v2/types';
-import { ProviderHandler, getGasEstimate, AssetContext, NetworkContext } from 'v2/services';
+import { StoreAccount, NetworkId, ITxType, ITxStatus } from 'v2/types';
+import {
+  ProviderHandler,
+  getGasEstimate,
+  AssetContext,
+  NetworkContext,
+  AccountContext
+} from 'v2/services';
 import { isWeb3Wallet } from 'v2/utils/web3';
 import { translateRaw } from 'v2/translations';
 import { DEFAULT_NONCE, GAS_LIMIT_LOWER_BOUND, GAS_PRICE_GWEI_DEFAULT_HEX } from 'v2/config';
@@ -30,6 +36,7 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
 }) => {
   const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
+  const { addNewTransactionToAccount } = useContext(AccountContext);
 
   const handleNetworkSelected = (networkId: NetworkId) => {
     setState((prevState: DeployContractsState) => ({
@@ -100,6 +107,14 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
     if (isWeb3Wallet(account.wallet)) {
       const txReceipt =
         signResponse && signResponse.hash ? signResponse : { ...txConfig, hash: signResponse };
+      addNewTransactionToAccount(state.txConfig.senderAccount, {
+        ...txReceipt,
+        to: state.txConfig.receiverAddress,
+        from: state.txConfig.senderAccount.address,
+        amount: state.txConfig.amount,
+        txType: ITxType.DEPLOY_CONTRACT,
+        stage: ITxStatus.PENDING
+      });
       setState((prevState: DeployContractsState) => ({
         ...prevState,
         txReceipt
@@ -114,6 +129,11 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
         .catch(hash => provider.getTransactionByHash(hash))
         .then(retrievedTransactionReceipt => {
           const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(assets, networks);
+          addNewTransactionToAccount(state.txConfig.senderAccount, {
+            ...txReceipt,
+            txType: ITxType.DEPLOY_CONTRACT,
+            stage: ITxStatus.PENDING
+          });
           setState((prevState: DeployContractsState) => ({
             ...prevState,
             txReceipt

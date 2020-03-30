@@ -51,7 +51,7 @@ const ColumnWrapper = Styled.div<{ bold?: boolean }>`
     font-size: 18px;
   }
   img {
-    width: 30px;
+    width: auto;
     height: 30px;
     margin-right: 10px;
   }
@@ -289,7 +289,7 @@ export const ConfirmTransactionUI = ({
         signedTransaction={signedTx}
       />
       {txType === ITxType.DEFIZAP && (
-        <DeFiDisclaimerWrapper>{translateRaw('ZAP_CONFIRM_DISCLAIMER')}</DeFiDisclaimerWrapper>
+        <DeFiDisclaimerWrapper>{translate('ZAP_CONFIRM_DISCLAIMER')}</DeFiDisclaimerWrapper>
       )}
       <SendButton
         onClick={handleApprove}

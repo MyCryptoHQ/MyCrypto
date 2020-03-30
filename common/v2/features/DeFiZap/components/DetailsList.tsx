@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { SPACING, BREAK_POINTS } from 'v2/theme';
-import { Button } from 'v2/components';
 import { translateRaw } from 'v2/translations';
 
 import { IZapConfig } from '../config';
@@ -49,10 +48,9 @@ const ProtocolContainer = styled.div`
 
 interface Props {
   zapSelected: IZapConfig;
-  onSubmit(): void;
 }
 
-const DetailsList = ({ zapSelected, onSubmit }: Props) => {
+const DetailsList = ({ zapSelected }: Props) => {
   const { platformsUsed, bulletPoints } = zapSelected;
   const IndicatorItem = zapSelected.positionDetails;
 
@@ -68,7 +66,6 @@ const DetailsList = ({ zapSelected, onSubmit }: Props) => {
         {translateRaw('PLATFORMS')}
         <ProtocolTagsList platformsUsed={platformsUsed} />
       </ProtocolContainer>
-      <Button onClick={onSubmit}>{translateRaw('ZAP_START_EARNING')}</Button>
     </DetailsContainer>
   );
 };

@@ -28,13 +28,13 @@ const ZapStepper = ({ selectedZap }: Props) => {
 
   const steps: IStepperPath[] = [
     {
-      label: 'Add Funds to Zap',
+      label: translateRaw('ZAP_FLOW_ADD_FUNDS'),
       component: ZapForm,
       props: (state => state)(zapFlowState),
       actions: (formData: ISimpleTxFormFull, cb: any) => handleUserInputFormSubmit(formData, cb)
     },
     {
-      label: 'Confirm Transaction',
+      label: translateRaw('CONFIRM_TRANSACTION'),
       component: ZapConfirm,
       props: (({ txConfig, zapSelected }) => ({ txConfig, zapSelected }))(zapFlowState)
     },
@@ -45,7 +45,7 @@ const ZapStepper = ({ selectedZap }: Props) => {
       actions: (payload: ITxReceipt | ISignedTx, cb: any) => handleTxSigned(payload, cb)
     },
     {
-      label: 'Zap Receipt',
+      label: translateRaw('BROADCAST_TX_RECEIPT_TITLE'),
       component: ZapReceipt,
       props: (({ txConfig, zapSelected, txReceipt }) => ({ txConfig, zapSelected, txReceipt }))(
         zapFlowState
@@ -56,7 +56,7 @@ const ZapStepper = ({ selectedZap }: Props) => {
     <GeneralStepper
       steps={steps}
       defaultBackPath={ROUTE_PATHS.DEFIZAP.path}
-      defaultBackPathLabel={ROUTE_PATHS.DEFIZAP.title} // ToDo: Change this.
+      defaultBackPathLabel={ROUTE_PATHS.DEFIZAP.title}
       completeBtnText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
     />
   );

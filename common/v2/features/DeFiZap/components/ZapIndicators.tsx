@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { SPACING, COLORS } from 'v2/theme';
-import { Typography } from 'v2/components';
 
 import bullishIndicator from 'assets/images/defizap/indicators/bullishIndicator.svg';
 import bearishIndicator from 'assets/images/defizap/indicators/bearishIndicator.svg';
@@ -15,19 +14,20 @@ interface SProps {
 const SContainer = styled.div`
   display: flex;
   justify-content: center;
-  align-items: top;
+  align-items: center;
 `;
 
 const SImage = styled.img`
-  height: 24px;
-  width: 24px;
+  height: 16px;
+  width: 16px;
 `;
 
-const SText = styled(Typography)`
+const SText = styled.div`
   padding-left: ${SPACING.XS};
   color: ${(props: SProps) => props.color || COLORS.PURPLE};
   margin-bottom: 0px;
   font-weight: bold;
+  text-transform: uppercase;
 `;
 
 interface IndicatorProps {
