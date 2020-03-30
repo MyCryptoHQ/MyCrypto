@@ -5,12 +5,12 @@ import upperFirst from 'lodash/upperFirst';
 
 import { Trans, translateRaw } from 'v2/translations';
 import { useScreenSize } from 'v2/vendor';
-import { fromWei, Wei } from 'v2/services';
+import { fromWei, isValidETHAddress, Wei } from 'v2/services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from 'v2/theme';
 import { CryptoScamDBBaseResponse, CryptoScamDBInfoResponse } from 'v2/services/ApiService';
 import { ProtectIconCheck, WizardIcon, CloseIcon } from 'v2/components/icons';
 import { ETHAddressExplorer } from 'v2/config';
-import { LinkOut, VerticalStepper } from 'v2/components';
+import { EthAddress, LinkOut, VerticalStepper } from 'v2/components';
 import { StepData } from 'v2/components/VerticalStepper';
 import { truncate } from 'v2/utils';
 
@@ -91,6 +91,16 @@ const StepperDescText = styled.p`
   }
 `;
 
+const SEthAddress = styled.div`
+  &&& button {
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+    font-size: ${FONT_SIZE.XL};
+    font-weight: 700;
+    line-height: ${LINE_HEIGHT.XXL};
+  }
+`;
+
 export const ProtectTxReport: FC<IWithProtectApi> = ({ withProtectApi }) => {
   const {
     withProtectState: {
@@ -105,13 +115,6 @@ export const ProtectTxReport: FC<IWithProtectApi> = ({ withProtectApi }) => {
   } = withProtectApi!;
 
   const { isSmScreen } = useScreenSize();
-
-  const getShortAddress = useCallback(() => {
-    if (receiverAddress && receiverAddress.length >= 10) {
-      truncate(receiverAddress);
-    }
-    return translateRaw('ADD_TOKEN_INVALID_ADDRESS');
-  }, [receiverAddress]);
 
   const getAccountBalanceTimelineEntry = useCallback((): StepData => {
     let balance = translateRaw('PROTECTED_TX_UNKNOWN_BALANCE');
@@ -282,7 +285,11 @@ export const ProtectTxReport: FC<IWithProtectApi> = ({ withProtectApi }) => {
       {!isSmScreen && <CloseIcon size="lg" onClick={onHideModel} />}
       <ProtectIconCheck size="lg" />
       <h4>{translateRaw('PROTECTED_TX_REPORT_TITLE')}</h4>
-      <h4 className="title-address">{getShortAddress()}</h4>
+      {receiverAddress && isValidETHAddress(receiverAddress) && (
+        <SEthAddress>
+          <EthAddress address={receiverAddress} truncate={truncate} isCopyable={false} />
+        </SEthAddress>
+      )}
       {cryptoScamAddressReport && (
         <h5 className="subtitle">{translateRaw('PROTECTED_TX_REPORT_SUBTITLE')}</h5>
       )}
