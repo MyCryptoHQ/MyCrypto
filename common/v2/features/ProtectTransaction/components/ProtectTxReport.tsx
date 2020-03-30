@@ -10,7 +10,8 @@ import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from 'v2/theme'
 import { CryptoScamDBBaseResponse, CryptoScamDBInfoResponse } from 'v2/services/ApiService';
 import { ProtectIconCheck, WizardIcon, CloseIcon } from 'v2/components/icons';
 import { ETHAddressExplorer } from 'v2/config';
-import { LinkOut } from 'v2/components';
+import { LinkOut, VerticalStepper } from 'v2/components';
+import { StepData } from 'v2/components/VerticalStepper';
 import { truncate } from 'v2/utils';
 
 import { IWithProtectApi } from '../types';
@@ -21,6 +22,11 @@ const formatDate = (date: number): string => moment.unix(date).format('MM/DD/YYY
 const Wrapper = styled(ProtectTxBase)`
   .title-address {
     margin: 0 0 ${SPACING.SM};
+  }
+
+  .timeline {
+    text-align: left;
+    padding: 0 20px;
   }
 
   .view-comments {
@@ -61,107 +67,27 @@ const Wrapper = styled(ProtectTxBase)`
   }
 `;
 
-const Timeline = styled.ul`
-  list-style: none;
-  padding: ${SPACING.BASE} 0 ${SPACING.MD};
+const StepperDescText = styled.p`
   margin: 0;
-  position: relative;
-`;
 
-const TimelineEntry = styled.li`
-  position: relative;
-
-  &:before {
-    content: ' ';
-    display: table;
+  &.text-success {
+    color: ${COLORS.SUCCESS_GREEN_LIGHT};
   }
 
-  &:after {
-    content: ' ';
-    display: table;
-    clear: both;
+  &.text-no-info {
+    color: ${COLORS.PURPLE};
   }
 
-  &:not(:last-child) {
-    position: relative;
-    margin-bottom: ${SPACING.BASE};
-
-    > div:last-child {
-      &:before {
-        top: 45px;
-        bottom: 0;
-        position: absolute;
-        content: ' ';
-        width: 2px;
-        background-color: ${COLORS.PURPLE};
-        left: -27px;
-        height: 100%;
-      }
-    }
-  }
-`;
-
-const TimelineBadge = styled.div`
-  width: 50px;
-  height: 50px;
-  position: absolute;
-  left: 15px;
-  margin-left: -30px;
-  border: 2px solid ${COLORS.PURPLE};
-  border-radius: 50%;
-  transform: translateX(50%);
-  color: ${COLORS.PURPLE};
-  font-size: ${FONT_SIZE.BASE};
-  line-height: 44px;
-  background: ${COLORS.WHITE};
-  text-align: center;
-  z-index: 1000;
-
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    margin-left: -25px;
-  }
-`;
-
-const TimelinePanel = styled.div`
-  min-height: 50px;
-  width: 80%;
-  padding-top: 12px;
-  padding-left: ${SPACING.SM};
-  float: right;
-  position: relative;
-  font-size: ${FONT_SIZE.MD};
-  line-height: ${LINE_HEIGHT.XL};
-  text-align: left;
-
-  > h6 {
-    margin: 0;
-    color: #1c314e;
-    font-weight: 700;
-    text-transform: uppercase;
+  &.text-danger {
+    color: ${COLORS.WARNING_ORANGE};
   }
 
-  > p {
-    margin: 0;
+  &.text-error {
+    color: ${COLORS.ERROR_RED_LIGHT};
+  }
 
-    &.text-success {
-      color: ${COLORS.SUCCESS_GREEN_LIGHT};
-    }
-
-    &.text-no-info {
-      color: ${COLORS.PURPLE};
-    }
-
-    &.text-danger {
-      color: ${COLORS.WARNING_ORANGE};
-    }
-
-    &.text-error {
-      color: ${COLORS.ERROR_RED_LIGHT};
-    }
-
-    &.text-muted {
-      color: ${COLORS.BLUE_GREY};
-    }
+  &.text-muted {
+    color: ${COLORS.BLUE_GREY};
   }
 `;
 
@@ -187,7 +113,7 @@ export const ProtectTxReport: FC<IWithProtectApi> = ({ withProtectApi }) => {
     return translateRaw('ADD_TOKEN_INVALID_ADDRESS');
   }, [receiverAddress]);
 
-  const getAccountBalanceTimelineEntry = useCallback(() => {
+  const getAccountBalanceTimelineEntry = useCallback((): StepData => {
     let balance = translateRaw('PROTECTED_TX_UNKNOWN_BALANCE');
     if (etherscanBalanceReport) {
       const { result } = etherscanBalanceReport;
@@ -199,20 +125,17 @@ export const ProtectTxReport: FC<IWithProtectApi> = ({ withProtectApi }) => {
       assetTicker = asset.ticker;
     }
 
-    return (
-      <TimelineEntry>
-        <TimelineBadge>2</TimelineBadge>
-        <TimelinePanel>
-          <h6>{translateRaw('PROTECTED_TX_RECIPIENT_ACCOUNT_BALANCE')}</h6>
-          <p className="text-muted">
-            {balance} {assetTicker}
-          </p>
-        </TimelinePanel>
-      </TimelineEntry>
-    );
+    return {
+      title: translateRaw('PROTECTED_TX_RECIPIENT_ACCOUNT_BALANCE'),
+      content: (
+        <StepperDescText className="text-muted">
+          {balance} {assetTicker}
+        </StepperDescText>
+      )
+    };
   }, [etherscanBalanceReport]);
 
-  const getLastTxReportTimelineEntry = useCallback(() => {
+  const getLastTxReportTimelineEntry = useCallback((): StepData => {
     let lastSentToken: { value: string; ticker: string; timestamp: string } | null = null;
     if (etherscanLastTxReport && etherscanLastTxReport.result.length) {
       const {
@@ -228,20 +151,22 @@ export const ProtectTxReport: FC<IWithProtectApi> = ({ withProtectApi }) => {
       }
     }
 
-    return (
-      <TimelineEntry>
-        <TimelineBadge>3</TimelineBadge>
-        <TimelinePanel>
-          <h6>{translateRaw('PROTECTED_TX_RECIPIENT_ACCOUNT_ACTIVITY')}</h6>
-          <h6>{translateRaw('PROTECTED_TX_LAST_SENT_TOKEN')}</h6>
-          <p className="text-muted">
-            {lastSentToken &&
-              `${lastSentToken.value} ${lastSentToken.ticker} on ${lastSentToken.timestamp}`}
-            {!lastSentToken && translateRaw('PROTECTED_TX_NO_INFORMATION_AVAILABLE')}
-          </p>
-        </TimelinePanel>
-      </TimelineEntry>
-    );
+    return {
+      title: (
+        <>
+          {translateRaw('PROTECTED_TX_RECIPIENT_ACCOUNT_ACTIVITY')}
+          <br />
+          {translateRaw('PROTECTED_TX_LAST_SENT_TOKEN')}
+        </>
+      ),
+      content: (
+        <StepperDescText className="text-muted">
+          {lastSentToken &&
+            `${lastSentToken.value} ${lastSentToken.ticker} on ${lastSentToken.timestamp}`}
+          {!lastSentToken && translateRaw('PROTECTED_TX_NO_INFORMATION_AVAILABLE')}
+        </StepperDescText>
+      )
+    };
   }, [etherscanLastTxReport]);
 
   const getTimeline = useCallback(() => {
@@ -250,24 +175,18 @@ export const ProtectTxReport: FC<IWithProtectApi> = ({ withProtectApi }) => {
     }
 
     const { success } = cryptoScamAddressReport;
+    const steps: StepData[] = [];
 
     if (!success) {
       // No info for account
-      return (
-        <Timeline>
-          <TimelineEntry>
-            <TimelineBadge>1</TimelineBadge>
-            <TimelinePanel>
-              <h6>{translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT')}</h6>
-              <p className="text-no-info">
-                {translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT_DESC')}
-              </p>
-            </TimelinePanel>
-          </TimelineEntry>
-          {getAccountBalanceTimelineEntry()}
-          {getLastTxReportTimelineEntry()}
-        </Timeline>
-      );
+      steps.push({
+        title: translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT'),
+        content: (
+          <StepperDescText className="text-no-info">
+            {translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT_DESC')}
+          </StepperDescText>
+        )
+      });
     } else {
       const {
         result: { status, entries }
@@ -288,70 +207,62 @@ export const ProtectTxReport: FC<IWithProtectApi> = ({ withProtectApi }) => {
           )
         ];
 
-        return (
-          <Timeline>
-            <TimelineEntry>
-              <TimelineBadge>1</TimelineBadge>
-              <TimelinePanel>
-                <h6>{translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT')}</h6>
-                <p className="text-error">
-                  {translateRaw('PROTECTED_TX_TIMELINE_MALICIOUS', {
-                    $tags: `"${accountTags.join('", "')}"`
-                  })}
-                </p>
-                {accountComments.map((c, i) => (
-                  <p key={i} className="text-error">
-                    <br />
-                    {c}
-                  </p>
-                ))}
-              </TimelinePanel>
-            </TimelineEntry>
-            {getAccountBalanceTimelineEntry()}
-            {getLastTxReportTimelineEntry()}
-          </Timeline>
-        );
+        steps.push({
+          title: translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT'),
+          content: (
+            <>
+              <StepperDescText className="text-error">
+                {translateRaw('PROTECTED_TX_TIMELINE_MALICIOUS', {
+                  $tags: `"${accountTags.join('", "')}"`
+                })}
+              </StepperDescText>
+              {accountComments.map((c, i) => (
+                <StepperDescText key={i} className="text-error">
+                  <br />
+                  {c}
+                </StepperDescText>
+              ))}
+            </>
+          )
+        });
       } else if (status === 'whitelisted') {
         // Verified account
         const accountComments = [
           ...new Set(entries.map(e => upperFirst(`${e.type}: ${e.description}`)))
         ];
 
-        return (
-          <Timeline>
-            <TimelineEntry>
-              <TimelineBadge>1</TimelineBadge>
-              <TimelinePanel>
-                <h6>{translateRaw('PROTECTED_TX_TIMELINE_KNOWN_ACCOUNT')}</h6>
-                {accountComments.map((c, i) => (
-                  <p key={i} className="text-success">
-                    {c}
-                    <br />
-                  </p>
-                ))}
-              </TimelinePanel>
-            </TimelineEntry>
-            {getAccountBalanceTimelineEntry()}
-            {getLastTxReportTimelineEntry()}
-          </Timeline>
-        );
+        steps.push({
+          title: translateRaw('PROTECTED_TX_TIMELINE_KNOWN_ACCOUNT'),
+          content: (
+            <>
+              {accountComments.map((c, i) => (
+                <StepperDescText key={i} className="text-success">
+                  {c}
+                  <br />
+                </StepperDescText>
+              ))}
+            </>
+          )
+        });
+      } else {
+        steps.push({
+          title: translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT'),
+          content: (
+            <StepperDescText className="text-danger">
+              {translateRaw('PROTECTED_TX_TIMELINE_NOT_SURE_ABOUT_ADDRESS')}
+            </StepperDescText>
+          )
+        });
       }
     }
 
     return (
-      <Timeline>
-        <TimelineEntry>
-          <TimelineBadge>1</TimelineBadge>
-          <TimelinePanel>
-            <h6>{translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT')}</h6>
-            <p className="text-danger">
-              {translateRaw('PROTECTED_TX_TIMELINE_NOT_SURE_ABOUT_ADDRESS')}
-            </p>
-          </TimelinePanel>
-        </TimelineEntry>
-        {getAccountBalanceTimelineEntry()}
-        {getLastTxReportTimelineEntry()}
-      </Timeline>
+      <VerticalStepper
+        currentStep={-1}
+        size="lg"
+        color={COLORS.PURPLE}
+        steps={[...steps, getAccountBalanceTimelineEntry(), getLastTxReportTimelineEntry()]}
+      />
     );
   }, [cryptoScamAddressReport, getAccountBalanceTimelineEntry]);
 
