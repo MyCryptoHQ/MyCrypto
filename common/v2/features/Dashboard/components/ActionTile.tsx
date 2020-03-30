@@ -17,6 +17,10 @@ const SContainer = styled('div')`
   margin-bottom: ${SPACING.BASE};
   padding: ${SPACING.BASE};
 
+  @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    height: 155px;
+  }
+
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: 30%;
     align-self: stretch;
@@ -42,7 +46,6 @@ const SButton = styled(Button)<{ faded?: boolean }>`
   height: 100%;
   justify-content: center;
   text-align: center;
-  width: 100%;
   word-wrap: word-break;
   & > img {
     height: 50px;
@@ -99,14 +102,9 @@ function ActionTile({ icon, faded, title, description, link, history }: Props) {
   const action = isUrl(link) ? goToExternalLink : goToAppRouter;
 
   return (
-    <SContainer className="ActionTile">
-      <SButton
-        basic={true}
-        faded={faded}
-        className="ActionTile-button"
-        onClick={() => action(link)}
-      >
-        <img className="ActionTile-button-icon" src={icon} alt={title} />
+    <SContainer>
+      <SButton basic={true} faded={faded} onClick={() => action(link)}>
+        <img src={icon} alt={title} />
         <Typography as="div">
           <STitle isLonger={title.length > 15}>{title}</STitle>
           <SDescription>{description}</SDescription>
