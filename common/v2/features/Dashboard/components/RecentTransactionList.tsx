@@ -10,7 +10,7 @@ import {
   Account
 } from 'v2/components';
 import { truncate, convertToFiat } from 'v2/utils';
-import { ITxReceipt, TTicker, ITxStatus, StoreAccount, Asset, TSymbol } from 'v2/types';
+import { ITxReceipt, ITxStatus, StoreAccount, Asset, TSymbol } from 'v2/types';
 import { RatesContext, AddressBookContext, getLabelByAddressAndNetwork } from 'v2/services';
 import { translateRaw } from 'v2/translations';
 import {
@@ -123,7 +123,7 @@ const makeTxIcon = (type: ITxType, asset: Asset) => {
 
 export default function RecentTransactionList({ accountsList, className = '' }: Props) {
   const { addressBook } = useContext(AddressBookContext);
-  const { getRate } = useContext(RatesContext);
+  const { getAssetRate } = useContext(RatesContext);
   const noLabel = translateRaw('NO_LABEL');
   const transactions = accountsList.flatMap(account => account.transactions);
   const accountTxs: ITxReceipt = getTxsFromAccount(accountsList).map((tx: ITxReceipt) => ({
@@ -166,10 +166,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           <Amount
             key={3}
             assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
-            fiatValue={`$${convertToFiat(
-              parseFloat(amount),
-              getRate(asset.ticker as TTicker)
-            ).toFixed(2)}
+            fiatValue={`$${convertToFiat(parseFloat(amount), getAssetRate(asset)).toFixed(2)}
         `}
           />,
           <NewTabLink
