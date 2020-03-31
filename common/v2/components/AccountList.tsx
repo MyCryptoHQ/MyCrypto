@@ -29,7 +29,7 @@ import { TUuid } from 'v2/types/uuid';
 import IconArrow from './IconArrow';
 import Checkbox from './Checkbox';
 import Tooltip from './Tooltip';
-import warningSVG from 'assets/images/icn-warning.svg';
+import informationalSVG from 'assets/images/icn-info-blue.svg';
 
 const Label = styled.span`
   display: flex;
@@ -170,8 +170,9 @@ const PrivateColumnLabel = styled.p`
   display: inline-block;
 `;
 
-const WarningIcon = styled.img`
+const InformationalIcon = styled.img`
   margin-right: ${SPACING.XS};
+  height: 16px;
 `;
 
 interface AccountListProps {
@@ -469,7 +470,7 @@ const buildAccountTable = (
             <WalletLabelContainer>
               {account.wallet === WalletId.VIEW_ONLY && (
                 <Tooltip tooltip={translateRaw('VIEW_ONLY_WARNING_TOOLTIP')}>
-                  <WarningIcon src={warningSVG} />
+                  <InformationalIcon src={informationalSVG} />
                 </Tooltip>
               )}
               <WalletTypeLabel>{WALLETS_CONFIG[account.wallet].name}</WalletTypeLabel>
