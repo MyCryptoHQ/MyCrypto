@@ -1,5 +1,6 @@
 import { TAddress } from 'v2/types/address';
 import { DAIUUID, EtherUUID } from 'v2/utils';
+import translate, { translateRaw } from 'v2/translations';
 
 import onemonthIcon from 'assets/images/membership/membership-onemonth.svg';
 import threemonthsIcon from 'assets/images/membership/membership-threemonths.svg';
@@ -15,6 +16,7 @@ export interface IMembershipConfig {
   description: string;
   icon: string;
   price: string;
+  discount?: string;
   assetUUID: string;
   durationInDays: number;
   discountNotice: string;
@@ -67,6 +69,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     description: '',
     icon: threemonthsIcon,
     price: '10.5',
+    discount: '10',
     assetUUID: DAIUUID,
     durationInDays: 90,
     discountNotice: '10% off'
@@ -80,6 +83,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     description: '',
     icon: sixMonthsIcon,
     price: '18',
+    discount: '20',
     assetUUID: DAIUUID,
     durationInDays: 180,
     discountNotice: '20% off'
@@ -93,6 +97,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     description: '',
     icon: twelveMonthsIcon,
     price: '30',
+    discount: '40',
     assetUUID: DAIUUID,
     durationInDays: 366,
     discountNotice: '40% off'
@@ -129,3 +134,22 @@ export const getExpiryDate = (selectedMembership: IMembershipId): Date => {
     today.getTime() + 86400000 * MEMBERSHIP_CONFIG[selectedMembership].durationInDays
   );
 };
+
+export const accordionContent = [
+  {
+    title: translateRaw('MEMBERSHIP_ACCORDION_FIRST_TITLE'),
+    component: translate('MEMBERSHIP_ACCORDION_FIRST_CONTENT')
+  },
+  {
+    title: translateRaw('MEMBERSHIP_ACCORDION_SECOND_TITLE'),
+    component: translate('MEMBERSHIP_ACCORDION_SECOND_CONTENT')
+  },
+  {
+    title: translateRaw('MEMBERSHIP_ACCORDION_THIRD_TITLE'),
+    component: translate('MEMBERSHIP_ACCORDION_THIRD_CONTENT')
+  },
+  {
+    title: translateRaw('MEMBERSHIP_ACCORDION_FORTH_TITLE'),
+    component: translate('MEMBERSHIP_ACCORDION_FORTH_CONTENT')
+  }
+];

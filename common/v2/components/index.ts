@@ -18,7 +18,7 @@ export { default as Currency } from './Currency';
 export { default as RowDeleteOverlay } from './RowDeleteOverlay';
 export { default as Divider } from './Divider';
 export { default as Dropdown } from './Dropdown';
-export { default as ExtendedContentPanel } from './ExtendedContentPanel';
+export { default as ExtendedContentPanel, ExtendedControlPanelProps } from './ExtendedContentPanel';
 export { default as FlippablePanel } from './FlippablePanel';
 export { default as Link } from './Link';
 export { default as Typography } from './Typography';
@@ -69,3 +69,9 @@ export { default as GeneralStepper } from './GeneralStepper';
 export { default as Tooltip } from './Tooltip';
 export { default as AppLogo } from './AppLogo';
 export { default as VerticalStepper } from './VerticalStepper';
+export {
+  default as FullSizeContentPanel,
+  FullSizePanelSection,
+  SpacedPanelSection,
+  RowPanelSection
+} from './FullSizeContentPanel';
