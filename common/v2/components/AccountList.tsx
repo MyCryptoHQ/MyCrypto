@@ -171,7 +171,7 @@ const PrivateColumnLabel = styled.p`
 `;
 
 const WarningIcon = styled.img`
-  margin-left: ${SPACING.XS};
+  margin-right: ${SPACING.XS};
 `;
 
 interface AccountListProps {
@@ -467,14 +467,14 @@ const buildAccountTable = (
               value={label}
             />
             <WalletLabelContainer>
-              <WalletTypeLabel>{WALLETS_CONFIG[account.wallet].name}</WalletTypeLabel>
-              {IS_ACTIVE_FEATURE.PRIVATE_TAGS && account.isPrivate && (
-                <PrivateWalletLabel>{'Private Account'}</PrivateWalletLabel>
-              )}
               {account.wallet === WalletId.VIEW_ONLY && (
                 <Tooltip tooltip={translateRaw('VIEW_ONLY_WARNING_TOOLTIP')}>
                   <WarningIcon src={warningSVG} />
                 </Tooltip>
+              )}
+              <WalletTypeLabel>{WALLETS_CONFIG[account.wallet].name}</WalletTypeLabel>
+              {IS_ACTIVE_FEATURE.PRIVATE_TAGS && account.isPrivate && (
+                <PrivateWalletLabel>{'Private Account'}</PrivateWalletLabel>
               )}
             </WalletLabelContainer>
           </LabelWithWallet>
