@@ -5,6 +5,7 @@
 
 import React, { Component, DetailedHTMLProps, HTMLAttributes, ReactNode } from 'react';
 import throttle from 'lodash.throttle';
+import isFunction from 'lodash/isFunction';
 import styled, { StyledComponentClass } from 'styled-components';
 
 import { Theme, scale, Icon, StackedCardData, Typography } from '@mycrypto/ui';
@@ -186,7 +187,9 @@ export class CollapsibleTable extends Component<Props, State> {
           <StackedCardContainer>
             <StackedCard key={index} {...cardData} />
             {overlay && overlayRows!.includes(index) && (
-              <StackedCardOverlay>{overlay}</StackedCardOverlay>
+              <StackedCardOverlay>
+                {isFunction(overlay) ? overlay(index) : overlay}
+              </StackedCardOverlay>
             )}
           </StackedCardContainer>
         )
