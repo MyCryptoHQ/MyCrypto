@@ -1,11 +1,20 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import Select, { Option } from 'react-select';
-import { Table, Button } from '@mycrypto/ui';
+import { OptionComponentProps } from 'react-select';
 import BN from 'bn.js';
 
 import translate, { translateRaw } from 'v2/translations';
-import { Input, Spinner } from 'v2/components';
+import {
+  Input,
+  Spinner,
+  Account,
+  LinkOut,
+  Typography,
+  Dropdown,
+  NewTabLink,
+  Button,
+  InlineMessage
+} from 'v2/components';
 
 import { truncate } from 'v2/utils';
 import { Network } from 'v2/types';
@@ -17,23 +26,156 @@ import {
   fromWei
 } from 'v2/services';
 import { AssetContext } from 'v2/services/Store';
-import nextIcon from 'assets/images/next-page-button.svg';
-import prevIcon from 'assets/images/previous-page-button.svg';
-import radio from 'assets/images/radio.svg';
-import radioChecked from 'assets/images/radio-checked.svg';
-
-import './DeterministicWallets.scss';
+import { HELP_ARTICLE } from 'v2/config';
 import { DeterministicWalletData, getDeterministicWallets } from 'v2/services/WalletService';
 import { getBaseAssetBalances, BalanceMap } from 'v2/services/Store/BalanceService';
-import Account from '../Account';
+import { COLORS, monospace, SPACING, FONT_SIZE, BREAK_POINTS } from 'v2/theme';
+
+import { Table } from '../Table';
+
+import nextIcon from 'assets/images/next-page-button.svg';
+import prevIcon from 'assets/images/previous-page-button.svg';
+import questionSVG from 'assets/images/icn-question.svg';
+
+const { GREY_LIGHTEST, BLUE_LIGHTEST, GREY_DARK } = COLORS;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  position: relative;
+  width: 100%;
+  margin-bottom: 35px;
+  flex-wrap: wrap;
+
+  > div {
+    margin-top: ${SPACING.BASE};
+  }
+
+  @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    flex-direction: column;
+
+    > :last-child {
+      margin-top: ${SPACING.BASE};
+    }
+  }
+`;
+
+const Title = styled.div`
+  font-size: 32px;
+  font-weight: bold;
+`;
+
+const SDropdown = styled.div`
+  width: 365px;
+
+  @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    width: 100%;
+  }
+`;
+
+const DropdownDPath = styled.span`
+  padding-left: ${SPACING.XS};
+  opacity: 0.5;
+  font-size: 11px;
+  font-family: ${monospace};
+`;
+
+const SContainer = styled('div')`
+  display: flex;
+  flex-direction: row;
+  padding: 12px;
+
+  &:hover {
+    background-color: ${(p: { selectable: boolean }) =>
+      p.selectable ? 'var(--color-gray-lighter)' : 'inherit'};
+  }
+`;
+
+const CustomDPath = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: ${SPACING.SM};
+`;
+
+const InputGroup = styled.div`
+  display: flex;
+`;
+
+const InputField = styled(Input)`
+  margin-bottom: 0px;
+  margin-right: 2px;
+  max-width: 285px;
+
+  @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    max-width: 100%;
+  }
+`;
+
+const DWTable = styled(Table)<{ selectedIndex: number; page: number }>`
+  tbody {
+    tr {
+      cursor: pointer;
+
+      /* Highlight selected row */
+      ${({ selectedIndex, page }) =>
+        Math.trunc(selectedIndex / WALLETS_PER_PAGE) === page &&
+        `:nth-child(${(selectedIndex % WALLETS_PER_PAGE) + 1}) {
+      background: ${BLUE_LIGHTEST};
+    }`};
+
+      /* On hover don't highlight selected row */
+      :not(:nth-child(${({ selectedIndex, page }) =>
+              Math.trunc(selectedIndex / WALLETS_PER_PAGE) === page
+                ? (selectedIndex % WALLETS_PER_PAGE) + 1
+                : 0}))
+        :hover {
+        background-color: ${GREY_LIGHTEST};
+      }
+    }
+  }
+`;
+
+const Bottom = styled.div`
+  display: flex;
+  margin-top: ${SPACING.BASE};
+  margin-bottom: ${SPACING.BASE};
+  justify-content: space-between;
+  align-items: center;
+
+  @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    flex-direction: column;
+
+    > :first-child {
+      margin-bottom: ${SPACING.BASE};
+    }
+  }
+`;
+
+const Nav = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: ${GREY_DARK};
+  font-size: ${FONT_SIZE.XS};
+  width: 200px;
+
+  > img {
+    cursor: pointer;
+  }
+`;
+
+const ButtonsGroup = styled.div`
+  display: flex;
+`;
+
+const CancelButton = styled(Button)`
+  margin-right: ${SPACING.BASE};
+`;
 
 const FooterLink = styled.div`
   text-align: center;
 `;
-
-function Radio({ checked }: { checked: boolean }) {
-  return <img className="clickable radio-image" src={checked ? radioChecked : radio} />;
-}
 
 const WALLETS_PER_PAGE = 5;
 
@@ -70,7 +212,7 @@ export function DeterministicWalletsClass({
   onPathChange
 }: Props) {
   const [selectedAddress, setSelectedAddress] = useState('');
-  const [selectedAddressIndex, setSelectedAddressIndex] = useState(0);
+  const [selectedAddressIndex, setSelectedAddressIndex] = useState(-1);
   const [reqestingBalanceCheck, setReqestingBalanceCheck] = useState(false);
   const [requestingWallets, setRequestingWallets] = useState(false);
   const [customPath, setCustomPath] = useState('');
@@ -163,7 +305,7 @@ export function DeterministicWalletsClass({
     setCustomPath(ev.currentTarget.value);
   };
 
-  const handleSubmitCustomPath = (ev: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitCustomPath = (ev: React.MouseEvent<HTMLButtonElement>) => {
     ev.preventDefault();
 
     if (currentDPath.value === customDPath.value && isValidPath(customPath)) {
@@ -180,9 +322,9 @@ export function DeterministicWalletsClass({
     }
   };
 
-  const selectAddress = (selectedAddr: string, selectedAddrIndex: number) => {
-    setSelectedAddress(selectedAddr);
-    setSelectedAddressIndex(selectedAddrIndex);
+  const selectAddress = (selectedAddrIndex: number) => {
+    setSelectedAddress(wallets[selectedAddrIndex].address);
+    setSelectedAddressIndex(page * WALLETS_PER_PAGE + selectedAddrIndex);
   };
 
   const nextPage = () => {
@@ -193,15 +335,26 @@ export function DeterministicWalletsClass({
     setPage(Math.max(page - 1, 0));
   };
 
-  const renderDPathOption = (option: Option) => {
-    if (option.value === customDPath.value) {
-      return translate('X_CUSTOM');
-    }
+  interface DPathOptionProps extends OptionComponentProps {
+    selectable: boolean;
+  }
 
+  const DPathOption = ({ option, onSelect, selectable = true }: DPathOptionProps) => {
     return (
-      <React.Fragment>
-        {option.label} {option.value && <small>({option.value.toString().replace(' ', '')})</small>}
-      </React.Fragment>
+      <SContainer selectable={selectable} onClick={() => onSelect && onSelect(option, null)}>
+        <Typography>
+          {option.value === customDPath.value ? (
+            translate('X_CUSTOM')
+          ) : (
+            <div>
+              {option.label}{' '}
+              {option.value && (
+                <DropdownDPath>{option.value.toString().replace(' ', '')}</DropdownDPath>
+              )}
+            </div>
+          )}{' '}
+        </Typography>
+      </SContainer>
     );
   };
 
@@ -230,12 +383,9 @@ export function DeterministicWalletsClass({
 
     // tslint:disable:jsx-key
     return [
-      <div className="DW-addresses-table-address-select">
-        {wallet.index + 1}
-        <Radio checked={selectedAddress === wallet.address} />
-      </div>,
+      <div>{wallet.index + 1}</div>,
       <Account
-        title={addrBook ? addrBook.label : 'Unknown Address'}
+        title={addrBook ? addrBook.label : translateRaw('NO_ADDRESS')}
         address={wallet.address}
         truncate={truncate}
       />,
@@ -246,33 +396,10 @@ export function DeterministicWalletsClass({
           `${parseFloat(fromWei(wallet.value, 'ether')).toFixed(4)} ${symbol}`
         )}
       </div>,
-      <a
-        target="_blank"
-        href={blockExplorer.addressUrl(wallet.address)}
-        rel="noopener noreferrer"
-        onClick={event => event.stopPropagation()}
-      >
-        <i className="DW-addresses-table-more" />
-      </a>
-    ].map(element => (
-      <div className="clickable" onClick={() => selectAddress(wallet.address, wallet.index)}>
-        {element}
-      </div>
-    ));
+      <LinkOut link={blockExplorer.addressUrl(wallet.address)} />
+    ];
     // tslint:enable:jsx-key
   };
-
-  /*public UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    const { publicKey, chainCode, seed, dPath } = this.props;
-    if (
-      nextProps.publicKey !== publicKey ||
-      nextProps.chainCode !== chainCode ||
-      nextProps.dPath !== dPath ||
-      nextProps.seed !== seed
-    ) {
-      this.getAddresses(nextProps);
-    }
-  }*/
 
   let baseAssetSymbol: string | undefined;
   if (network) {
@@ -281,62 +408,81 @@ export function DeterministicWalletsClass({
   const symbol: string = baseAssetSymbol ? baseAssetSymbol : 'ETH';
 
   return (
-    <div className="DW">
-      <form className="DW-path form-group-sm" onSubmit={handleSubmitCustomPath}>
-        <div className="DW-header">
-          {' '}
-          <div className="DW-header-title">{translate('DECRYPT_PROMPT_SELECT_ADDRESS')}</div>
-          <div className="DW-header-select">
-            <Select
-              name="fieldDPath"
-              value={currentDPath}
-              onChange={handleChangePath}
-              options={dPaths.concat([customDPath])}
-              optionRenderer={renderDPathOption}
-              valueRenderer={renderDPathOption}
-              clearable={false}
-              searchable={false}
-            />
-          </div>
-        </div>
+    <>
+      <Header>
+        <Title>{translate('DECRYPT_PROMPT_SELECT_ADDRESS')}</Title>
+        <SDropdown>
+          <label>
+            {translate('DPATH')}{' '}
+            <NewTabLink href={HELP_ARTICLE.DPATH}>
+              <img src={questionSVG} />
+            </NewTabLink>
+          </label>
+          <Dropdown
+            value={currentDPath}
+            onChange={handleChangePath}
+            options={dPaths.concat([customDPath])}
+            optionComponent={DPathOption}
+            valueComponent={({ value: option }) => (
+              <DPathOption option={option} selectable={false} />
+            )}
+            clearable={false}
+            searchable={false}
+          />
+        </SDropdown>
+      </Header>
 
-        {currentDPath.label === customDPath.label && (
-          <div className="flex-wrapper">
-            <div className="DW-custom">
-              <Input
-                isValid={customPath ? isValidPath(customPath) : true}
-                value={customPath}
-                placeholder="m/44'/60'/0'/0"
-                onChange={handleChangeCustomPath}
-              />
-            </div>
-            <button className="DW-path-submit btn btn-success" disabled={!isValidPath(customPath)}>
+      {currentDPath.label === customDPath.label && (
+        <CustomDPath>
+          <label>{translate('CUSTOM_DPATH')}</label>
+          <InputGroup>
+            <InputField
+              value={customPath}
+              placeholder="m/44'/60'/0'/0"
+              onChange={handleChangeCustomPath}
+              isValid={!!customPath && isValidPath(customPath)}
+            />
+            <button
+              className="btn btn-success"
+              disabled={!isValidPath(customPath)}
+              onClick={handleSubmitCustomPath}
+            >
               <i className="fa fa-check" />
             </button>
-          </div>
-        )}
-      </form>
+          </InputGroup>
+          {customPath && !isValidPath(customPath) && (
+            <InlineMessage>{translate('CUSTOM_DPATH_ERROR')}</InlineMessage>
+          )}
+        </CustomDPath>
+      )}
 
-      <Table
-        head={['#', 'Address', symbol, translateRaw('ACTION_5')]}
+      <DWTable
+        selectedIndex={selectedAddressIndex}
+        page={page}
+        head={['#', translateRaw('ADDRESS'), symbol, translateRaw('ACTION_5')]}
         body={wallets.map(wallet => renderWalletRow(wallet, network, symbol))}
-        config={{ hiddenHeadings: ['#', translateRaw('ACTION_5')] }}
+        config={{
+          hiddenHeadings: ['#', translateRaw('ACTION_5')],
+          handleRowClicked: selectAddress
+        }}
       />
-
-      <div className="DW-addresses-nav">
-        <img src={prevIcon} onClick={prevPage} />
-        <span className="DW-addresses-nav-page">PAGE {page + 1} OF ∞</span>
-        <img className="Identicon-img" src={nextIcon} onClick={nextPage} />
-
-        <Button onClick={onCancel} secondary={true}>
-          {translate('ACTION_2')}
-        </Button>
-        <Button onClick={handleConfirmAddress} disabled={!selectedAddress}>
-          {translate('ACTION_6')}
-        </Button>
-      </div>
+      <Bottom>
+        <Nav>
+          <img src={prevIcon} onClick={prevPage} />
+          {translate('PAGE_OF', { $page: (page + 1).toString(), $all: '∞' })}
+          <img src={nextIcon} onClick={nextPage} />
+        </Nav>
+        <ButtonsGroup>
+          <CancelButton onClick={onCancel} inverted={true}>
+            {translate('ACTION_2')}
+          </CancelButton>
+          <Button onClick={handleConfirmAddress} disabled={!selectedAddress}>
+            {translate('ACTION_6')}
+          </Button>
+        </ButtonsGroup>
+      </Bottom>
       <FooterLink>{translate('FIND_ETH_LINK')}</FooterLink>
-    </div>
+    </>
   );
 }
 

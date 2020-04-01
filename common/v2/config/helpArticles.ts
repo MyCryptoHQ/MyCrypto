@@ -1,4 +1,4 @@
-export enum HELP_ARTICLE {
+export enum KB_HELP_ARTICLE {
   HOME = '',
   ENS = 'how-to/ens',
   ENS_BAD_REVEAL = 'troubleshooting/ens/ens-debugging-a-bad-instruction-reveal',
@@ -14,6 +14,10 @@ export enum HELP_ARTICLE {
   PROTECT_YOUR_FUNDS = 'staying-safe/protecting-yourself-and-your-funds',
   WHAT_IS_NONCE = 'general-knowledge/ethereum-blockchain/what-is-nonce',
   WHAT_IS_GAS = 'general-knowledge/ethereum-blockchain/what-is-gas'
+}
+
+export enum HELP_ARTICLE {
+  DPATH = 'https://medium.com/mycrypto/wtf-is-a-derivation-path-c3493ca2eb52'
 }
 
 export const knowledgeBaseURL = 'https://support.mycrypto.com';

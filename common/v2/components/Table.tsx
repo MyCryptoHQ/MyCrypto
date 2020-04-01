@@ -13,8 +13,10 @@ import React, {
 } from 'react';
 import styled, { StyledComponentClass } from 'styled-components';
 import { Theme } from '@mycrypto/ui';
+import * as R from 'ramda';
 
 import { noOp } from 'v2/utils';
+
 import { default as Typography } from './Typography';
 import { default as IconArrow } from './IconArrow';
 
@@ -29,6 +31,7 @@ export interface TableConfig {
   hiddenHeadings?: (string | JSX.Element)[]; //Hack to allow a head to include JSX.Elements
   reversedColumns?: string[];
   sortFunction?(a: any, b: any): number;
+  handleRowClicked?(index: number): void;
 }
 
 export interface TableContent {
@@ -85,7 +88,7 @@ const TableHeading = styled(Typography)<HeadingProps>`
   font-weight: normal;
   text-transform: uppercase;
   letter-spacing: 0.0625em;
-  cursor: ${props => (props.isSortable ? 'pointer' : 'inherit')}
+  cursor: ${props => (props.isSortable ? 'pointer' : 'inherit')};
     ${props =>
       props.isHidden &&
       `
@@ -228,7 +231,7 @@ class AbstractTable extends Component<Props, State> {
         <tbody>
           {/* Ungrouped rows are placed on top of grouped rows. */}
           {body.map((row, rowIndex) => (
-            <TableRow key={rowIndex}>
+            <TableRow key={rowIndex} onClick={() => this.handleRowClicked(rowIndex)}>
               {overlay && overlayRows!.includes(rowIndex) ? (
                 // TODO: Solve jump in th width when the overlay is toggled.
                 <td colSpan={head.length}>{overlay}</td>
@@ -355,6 +358,16 @@ class AbstractTable extends Component<Props, State> {
           }))
         }
       : { body, groups };
+  };
+
+  private handleRowClicked = (rowIndex: number) => {
+    const { config, overlay, overlayRows } = this.props;
+
+    // no click if overlay is shown or no handler function present
+    if ((overlay && overlayRows!.includes(rowIndex)) || !R.path(['handleRowClicked'], config))
+      return;
+
+    config!.handleRowClicked!(rowIndex);
   };
 }
 

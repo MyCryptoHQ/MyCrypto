@@ -33,7 +33,7 @@ export {
   getWalletConfig
 } from './wallets';
 import { IWalletConfig } from './wallets';
-export { knowledgeBaseURL, HELP_ARTICLE } from './helpArticles';
+export { knowledgeBaseURL, KB_HELP_ARTICLE, HELP_ARTICLE } from './helpArticles';
 export {
   DEFAULT_NETWORK_FOR_FALLBACK,
   DEFAULT_NETWORK,

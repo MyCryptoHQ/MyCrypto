@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { HELP_ARTICLE, knowledgeBaseURL } from 'v2/config';
+import { KB_HELP_ARTICLE, knowledgeBaseURL } from 'v2/config';
 import NewTabLink, { AAttributes } from './NewTabLink';
 
 interface Props {
-  article?: HELP_ARTICLE;
+  article?: KB_HELP_ARTICLE;
   children?: string | React.ReactElement<string>;
 }
 
