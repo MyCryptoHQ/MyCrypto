@@ -683,6 +683,7 @@ const SendAssetsForm = ({
           );
         }}
       />
+      <div className="SendAssetsForm-disabled-overlay" />
     </div>
   );
 };

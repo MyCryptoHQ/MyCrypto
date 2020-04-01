@@ -12,7 +12,7 @@
 .SendAssetsForm-disabled {
   position: relative;
 
-  &-overlay {
+  > .SendAssetsForm-disabled-overlay {
     position: absolute;
     top: 0;
     bottom: 0;
