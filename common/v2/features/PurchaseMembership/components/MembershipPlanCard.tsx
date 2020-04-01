@@ -1,8 +1,11 @@
 import React from 'react';
-import { IMembershipConfig, IMembershipId } from '../config';
 import styled from 'styled-components';
+
 import { Typography } from 'v2/components';
 import { SPACING, COLORS, BREAK_POINTS } from 'v2/theme';
+import translate from 'v2/translations';
+
+import { IMembershipConfig, IMembershipId } from '../config';
 
 const PlanCard = styled.div<{ fullwith?: boolean }>`
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
@@ -43,18 +46,26 @@ export default ({ plan }: { plan: IMembershipConfig }) => {
     <PlanCard>
       <img src={plan.icon} />
       <Description>
-        <Typography bold={true}>{`${duration} ${duration > 1 ? 'Mounths' : 'Mounth'}`}</Typography>
+        <Typography bold={true}>
+          {duration > 1
+            ? translate('MEMBERSHIP_MOUNTHS', { $duration: duration.toString() })
+            : translate('MEMBERSHIP_MOUNTH', { $duration: duration.toString() })}
+        </Typography>
         <Typography>{`$${plan.price}`}</Typography>
-        {plan.discount && <STypography>{`${plan.discount}% off!`}</STypography>}
+        {plan.discount && (
+          <STypography>
+            {translate('MEMBERSHIP_DISCOUNT', { $percentage: `${plan.discount}%` })}
+          </STypography>
+        )}
       </Description>
     </PlanCard>
   ) : (
     <PlanCard fullwith={true}>
       <img src={plan.icon} />
       <Description>
-        <Typography bold={true}>I Love MyCrypto</Typography>
+        <Typography bold={true}>{translate('MEMBERSHIP_LIFETIME_TITLE')}</Typography>
         <Typography>{`$${plan.price}`}</Typography>
-        <STypography>Lifetime of Love!</STypography>
+        <STypography>{translate('MEMBERSHIP_LIFETIME_DESC')}</STypography>
       </Description>
     </PlanCard>
   );

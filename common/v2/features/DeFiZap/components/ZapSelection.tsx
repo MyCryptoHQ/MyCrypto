@@ -9,12 +9,10 @@ import translate from 'v2/translations';
 import { ROUTE_PATHS } from 'v2/config';
 import { COLORS, BREAK_POINTS, SPACING } from 'v2/theme';
 
+import { FullSizePanelSection, SpacedPanelSection } from '../../../components/FullSizeContentPanel';
+
 import { ZAPS_CONFIG, IZapId, defaultZapId, riskAndReward, accordionContent } from '../config';
 import { RiskAndRewardCard, DetailsList } from '.';
-import {
-  FullSizePanelSection,
-  SpacedPanelSection
-} from '../../../components/FullSizeContentPanel';
 
 const Illustration = styled.img`
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {

@@ -1,19 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 import { withRouter, Link } from 'react-router-dom';
+
 import { FullSizeContentPanel, Button, Typography } from 'v2/components';
+import translate from 'v2/translations';
+import { ROUTE_PATHS } from 'v2/config';
+import { BREAK_POINTS, SPACING, COLORS } from 'v2/theme';
+
 import {
   FullSizePanelSection,
   SpacedPanelSection,
   RowPanelSection
 } from '../../../components/FullSizeContentPanel';
-import translate from 'v2/translations';
-import { BREAK_POINTS, SPACING, COLORS } from 'v2/theme';
 import { MEMBERSHIP_CONFIG, IMembershipId, accordionContent } from '../config';
 import { MembershipPlanCard } from '.';
-import membershipIllustration from 'assets/images/membership/membership-illustration.svg';
-import { ROUTE_PATHS } from 'v2/config';
 
+import membershipIllustration from 'assets/images/membership/membership-illustration.svg';
 import membershipLifetime from 'assets/images/membership/membership-lifetime.svg';
 import membershipUnlimited from 'assets/images/membership/membership-unlimited-transaction.svg';
 import membershipNoAds from 'assets/images/membership/membership-no-ads.svg';
