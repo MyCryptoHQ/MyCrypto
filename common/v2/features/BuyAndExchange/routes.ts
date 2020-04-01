@@ -1,5 +1,5 @@
 import BuyAndExchange from './BuyAndExchange';
-import { ShapeShiftAuthorization } from './ShapeShift';
+import { ShapeShiftDisabled } from './ShapeShift';
 import { ZeroEx } from './ZeroEx';
 
 export default [
@@ -12,7 +12,7 @@ export default [
   {
     name: 'Buy and Exchange | ShapeShift',
     path: '/swap/shapeshift',
-    component: ShapeShiftAuthorization
+    component: ShapeShiftDisabled
   },
   {
     name: 'Buy and Exchange | 0x Instant',

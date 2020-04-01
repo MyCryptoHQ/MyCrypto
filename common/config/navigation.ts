@@ -16,10 +16,10 @@ export const navigationLinks: NavigationLink[] = [
     name: 'NAV_GENERATEWALLET',
     to: '/generate'
   },
-  {
-    name: 'NAV_SWAP',
-    to: '/swap'
-  },
+  // {
+  //   name: 'NAV_SWAP',
+  //   to: '/swap'
+  // },
   {
     name: 'NAV_CONTRACTS',
     to: '/contracts'
