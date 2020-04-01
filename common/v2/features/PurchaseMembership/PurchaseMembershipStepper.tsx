@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { useStateReducer, useTxMulti } from 'v2/utils';
-import { ITxReceipt, ITxConfig, TxParcel, ITxSigned, ITxHash } from 'v2/types';
+import { ITxReceipt, ITxConfig, TxParcel, ITxSigned, ITxHash, ITxStatus } from 'v2/types';
 import { default as GeneralStepper, IStepperPath } from 'v2/components/GeneralStepper';
 import { ROUTE_PATHS } from 'v2/config';
 import { translateRaw } from 'v2/translations';
@@ -69,7 +69,11 @@ const PurchaseMembershipStepper = () => {
           transactions,
           currentTxIdx: idx
         },
-        actions: () => prepareTx(tx.txRaw)
+        actions: () => {
+          if (transactions.length > 1) {
+            prepareTx(tx.txRaw);
+          }
+        }
       },
       {
         label: translateRaw('CONFIRM_TRANSACTION'),
@@ -101,7 +105,11 @@ const PurchaseMembershipStepper = () => {
       onRender={goToNextStep => {
         useEffect(() => {
           if (!canYield) return;
-          goToNextStep();
+          if (transactions.length === 1 && transactions[0].status === ITxStatus.PREPARING) {
+            prepareTx(transactions[0].txRaw);
+          } else {
+            goToNextStep();
+          }
           stopYield();
         }, [canYield]);
       }}

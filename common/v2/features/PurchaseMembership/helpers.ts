@@ -1,9 +1,16 @@
 import { ethers } from 'ethers';
 
-import { ITxObject } from 'v2/types';
-import { inputValueToHex, inputGasPriceToHex, toWei } from 'v2/services/EthService';
+import { ITxObject, StoreAccount, ITxConfig } from 'v2/types';
+import {
+  inputValueToHex,
+  inputGasPriceToHex,
+  toWei,
+  hexToString,
+  hexWeiToString
+} from 'v2/services/EthService';
 import { DEFAULT_NETWORK_CHAINID, DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { UnlockToken, ERC20 } from 'v2/services/EthService/contracts';
+import { getAssetByUUID } from 'v2/services';
 
 import { MembershipSimpleTxFormFull } from './types';
 import { isERC20Tx } from '../SendAssets';
@@ -44,4 +51,32 @@ export const createPurchaseTx = (payload: MembershipSimpleTxFormFull): Partial<I
     gasPrice: inputGasPriceToHex(payload.gasPrice),
     chainId: DEFAULT_NETWORK_CHAINID
   };
+};
+
+export const makeTxConfigFromTransaction = (
+  rawTransaction: ITxObject,
+  account: StoreAccount,
+  amount: string
+): ITxConfig => {
+  const { gasPrice, gasLimit, nonce, data, to, value } = rawTransaction;
+  const { address, network } = account;
+  const baseAsset = getAssetByUUID(account.assets)(network.baseAsset)!;
+
+  const txConfig: ITxConfig = {
+    from: address,
+    amount,
+    receiverAddress: to,
+    senderAccount: account,
+    network,
+    asset: baseAsset,
+    baseAsset,
+    gasPrice: hexToString(gasPrice),
+    gasLimit: hexToString(gasLimit),
+    value: hexWeiToString(value),
+    nonce: hexToString(nonce),
+    data,
+    rawTransaction
+  };
+
+  return txConfig;
 };
