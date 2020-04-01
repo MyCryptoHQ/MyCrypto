@@ -34,11 +34,30 @@ const Heading = styled(FullSizePanelSection)`
   font-weight: bold;
 `;
 
+const Title = styled.div`
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    font-size: 24px;
+  }
+  font-size: 32px;
+  font-weight: bold;
+`;
+
 const SImg = styled.img`
-  padding: 0 ${SPACING.XXL};
+  @media screen and (min-width: ${BREAK_POINTS.SCREEN_MD}) {
+    padding: 0 ${SPACING.XXL};
+  }
+  @media screen and (min-width: ${BREAK_POINTS.SCREEN_SM}) and (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+    padding-right: ${SPACING.LG};
+  }
+
+  width: 50%;
+  height: auto;
 `;
 
 const DescriptionColumn = styled.div`
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+    margin-top: ${SPACING.BASE};
+  }
   display: flex;
   flex-direction: column;
   & > *:not(:first-child) {
@@ -47,6 +66,9 @@ const DescriptionColumn = styled.div`
 `;
 
 const SButton = styled(Button)`
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    width: 100%;
+  }
   width: 250px;
 `;
 
@@ -97,6 +119,7 @@ const ListImg = styled.img`
 
 const PlanContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
   margin-bottom: ${SPACING.LG};
@@ -123,14 +146,10 @@ const MembershipEducation = withRouter(({ history }) => {
       </RowPanelSection>
       <SpacedPanelSection color={COLORS.GREY_LIGHTEST}>
         <SectionTitle>
-          <Typography fontSize={'32px'} bold={true}>
-            {translate('SUPPORT_MYC')}
-          </Typography>
+          <Title>{translate('SUPPORT_MYC')}</Title>
           <Typography>{translate('SUPPORT_MYC_DESC')}</Typography>
         </SectionTitle>
-        <Typography fontSize={'32px'} bold={true}>
-          {translate('WHAT_I_GET')}
-        </Typography>
+        <Title>{translate('WHAT_I_GET')}</Title>
         <ListContainer>
           <ListRow>
             <ListItem>
@@ -139,7 +158,7 @@ const MembershipEducation = withRouter(({ history }) => {
             </ListItem>
             <ListItem>
               <ListImg src={membershipUnlimited} />
-              <Typography>{translate('MEMBERSHIP_LIST_THIRD_1')}</Typography>
+              <Typography>{translate('MEMBERSHIP_LIST_THIRD_1')}</Typography>&nbsp;
               <Link to={ROUTE_PATHS.DASHBOARD.path}>{translate('MEMBERSHIP_LIST_THIRD_2')}</Link>
             </ListItem>
             <ListItem>
@@ -162,9 +181,7 @@ const MembershipEducation = withRouter(({ history }) => {
             </ListItem>
           </ListRow>
         </ListContainer>
-        <Typography fontSize={'32px'} bold={true}>
-          {translate('WHAT_IT_COST')}
-        </Typography>
+        <Title>{translate('WHAT_IT_COST')}</Title>
         <PlanContainer>
           {Object.keys(MEMBERSHIP_CONFIG).map(key => (
             <MembershipPlanCard key={key} plan={MEMBERSHIP_CONFIG[key as IMembershipId]} />
@@ -174,9 +191,7 @@ const MembershipEducation = withRouter(({ history }) => {
         <Disclaimer>{translate('MEMBERSHIP_NOTE')}</Disclaimer>
       </SpacedPanelSection>
       <SpacedPanelSection>
-        <Typography fontSize={'32px'} bold={true}>
-          {translate('ZAP_QUESTIONS_HEADER')}
-        </Typography>
+        <Title>{translate('ZAP_QUESTIONS_HEADER')}</Title>
         <Accordion items={accordionContent} />
         <Typography as="div">{translate('MEMBERSHIP_MORE_FAQ')}</Typography>
         <SButton onClick={handleSubmit}>{translate('BUY_MEMBERSHIP_NOW')}</SButton>
