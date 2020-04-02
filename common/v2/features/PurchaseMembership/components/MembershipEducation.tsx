@@ -29,8 +29,10 @@ const Heading = styled(FullSizePanelSection)`
     flex-direction: column;
     align-items: center;
     text-align: center;
+    padding: ${SPACING.BASE} ${SPACING.LG} 0 ${SPACING.XL};
   }
   display: flex;
+  padding: ${SPACING.LG} ${SPACING.XL} 0 ${SPACING.XL};
   align-items: flex-start;
   font-size: 24px;
   font-weight: bold;
