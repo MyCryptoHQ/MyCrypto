@@ -139,7 +139,6 @@ export const ProtectTxProtection: FC<Props> = ({
   const {
     withProtectState: { isWeb3Wallet: web3Wallet, web3WalletName },
     showHideProtectTx,
-    goToNextStep,
     setReceiverInfo,
     setWeb3Wallet
   } = withProtectApi!;
@@ -172,7 +171,6 @@ export const ProtectTxProtection: FC<Props> = ({
           amount: feeAmount.amount ? feeAmount.amount.toString() : ''
         });
         setIsLoading(false);
-        goToNextStep();
       } catch (e) {
         console.error(e);
       }

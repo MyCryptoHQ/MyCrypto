@@ -96,15 +96,13 @@ const WithProtectTxConfigFactory: TUseStateReducerFactory<
 
   useEffect(() => {
     const isDisabled =
-      state.protectTxShow &&
-      state.stepIndex !== numOfSteps - 1 &&
-      state.cryptoScamAddressReport === null;
+      state.protectTxShow && !state.protectTxEnabled && state.cryptoScamAddressReport === null;
 
     setState(prevState => ({
       ...prevState,
       mainComponentDisabled: isDisabled
     }));
-  }, [state.protectTxShow, state.stepIndex, state.cryptoScamAddressReport]);
+  }, [state.protectTxShow, state.stepIndex, state.cryptoScamAddressReport, state.protectTxEnabled]);
 
   const handleTransactionReport = useCallback(
     async (receiverAddress?: string): Promise<void> => {

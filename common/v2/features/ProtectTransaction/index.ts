@@ -1,4 +1,3 @@
-export { ProtectTxConfigFactory, protectTxConfigInitialState } from './txStateFactory';
 export * from './types';
 export * from './utils';
 export {

@@ -1,20 +1,29 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Panel } from '@mycrypto/ui';
 
-import { IFormikFields, ISignedTx, IStepComponentProps, ITxReceipt } from 'v2/types';
-import { useStateReducer } from 'v2/utils';
+import {
+  IFormikFields,
+  ISignedTx,
+  IStepComponentProps,
+  ITxHash,
+  ITxObject,
+  ITxReceipt,
+  ITxSigned
+} from 'v2/types';
+import { isWeb3Wallet, useTxMulti } from 'v2/utils';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { useScreenSize } from 'v2/vendor';
+import { processFormDataToTx } from 'v2/features/SendAssets/helpers';
 
 import { ProtectTxProtection } from './ProtectTxProtection';
 import { ProtectTxSign } from './ProtectTxSign';
 import { ProtectTxReport } from './ProtectTxReport';
-import { ProtectTxConfigFactory, protectTxConfigInitialState } from '../txStateFactory';
 import { WithProtectTxApiFactory } from '../withProtectStateFactory';
 import ProtectTxModalBackdrop from './ProtectTxModalBackdrop';
 import { ProtectTxButton } from './ProtectTxButton';
 import { ProtectTxStepper } from './ProtectTxStepper';
+import { PROTECTED_TX_FEE_ADDRESS } from '../../../config';
 
 const WithProtectTxWrapper = styled.div`
   display: flex;
@@ -74,6 +83,7 @@ const WithProtectTxSide = styled.div`
 interface Props extends IStepComponentProps {
   withProtectApi?: WithProtectTxApiFactory;
   customDetails?: JSX.Element;
+
   protectTxButton?(): JSX.Element;
 }
 
@@ -87,20 +97,27 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
     customDetails,
     resetFlow
   }: Props) {
-    const {
-      handleProtectTxSubmit,
-      handleProtectTxConfirmAndSend,
-      protectTxFactoryState
-    } = useStateReducer(ProtectTxConfigFactory, {
-      txConfig: protectTxConfigInitialState,
-      txReceipt: null
-    });
+    const [protectTx, setProtectTx] = useState<ITxObject | null>(null);
+    const { state, initWith, prepareTx, sendTx } = useTxMulti();
+    const { transactions, _currentTxIdx, account, network } = state;
 
     const {
-      withProtectState: { protectTxShow, stepIndex, protectTxEnabled, isWeb3Wallet },
+      withProtectState: { protectTxShow, stepIndex, protectTxEnabled, isWeb3Wallet: web3Wallet },
       formCallback,
-      showHideProtectTx
+      showHideProtectTx,
+      goToNextStep,
+      setWeb3Wallet,
+      handleTransactionReport
     } = withProtectApi!;
+
+    // Wait for useTxMulti to finish initWith
+    useEffect(() => {
+      if (account && network && protectTx) {
+        prepareTx(protectTx);
+        setWeb3Wallet(isWeb3Wallet(account.wallet), account.wallet);
+        goToNextStep();
+      }
+    }, [account, network, protectTx]);
 
     const protectTxStepperSteps = [
       {
@@ -110,17 +127,31 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
           withProtectApi
         },
         actions: {
-          handleProtectTxSubmit
+          handleProtectTxSubmit: async (payload: IFormikFields) => {
+            const { account: formAccount, network: formNetwork } = payload;
+            // TODO: initWith requires some object for every tx, because of R.adjust can't operate on empty array
+            await initWith(() => Promise.resolve([{}]), formAccount, formNetwork);
+            setProtectTx({
+              ...processFormDataToTx(payload),
+              to: PROTECTED_TX_FEE_ADDRESS
+            });
+          }
         }
       },
       {
         component: ProtectTxSign,
         props: {
-          txConfig: (({ txConfig }) => txConfig)(protectTxFactoryState),
+          txConfig: transactions[_currentTxIdx] && transactions[_currentTxIdx].txRaw,
+          account,
+          network,
           withProtectApi
         },
         actions: {
-          handleProtectTxConfirmAndSend
+          handleProtectTxConfirmAndSend: async (payload: ITxHash | ITxSigned) => {
+            await handleTransactionReport();
+            await sendTx(payload);
+            goToNextStep();
+          }
         }
       },
       {
@@ -186,10 +217,14 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
         txReceiptMain,
         protectTxShow,
         formCallback,
-        protectTxFactoryState,
         isMdScreen,
         protectTxEnabled,
-        isWeb3Wallet
+        web3Wallet,
+        transactions,
+        prepareTx,
+        sendTx,
+        transactions,
+        _currentTxIdx
       ]
     );
   };
