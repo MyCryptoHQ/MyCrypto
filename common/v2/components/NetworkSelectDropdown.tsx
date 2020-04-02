@@ -20,19 +20,10 @@ const SContainer = styled('div')`
   display: flex;
   flex-direction: row;
   padding: 12px;
-
-  &:hover {
-    background-color: ${(p: { selectable: boolean }) =>
-      p.selectable ? 'var(--color-gray-lighter)' : 'inherit'};
-  }
 `;
 
-interface NetworkOptionProps extends OptionComponentProps {
-  selectable: boolean;
-}
-
-const NetworkOption = ({ option, onSelect, selectable = true }: NetworkOptionProps) => (
-  <SContainer onClick={() => onSelect && onSelect(option, null)} selectable={selectable}>
+const NetworkOption = ({ option, onSelect }: OptionComponentProps) => (
+  <SContainer onClick={() => onSelect && onSelect(option, null)}>
     <Typography value={option.label} />
   </SContainer>
 );
@@ -73,7 +64,7 @@ function NetworkSelectDropdown({
         searchable={true}
         onChange={option => onChange(option.value.id)}
         optionComponent={NetworkOption}
-        valueComponent={({ value: option }) => <NetworkOption option={option} selectable={false} />}
+        valueComponent={({ value: option }) => <NetworkOption option={option} />}
       />
     </div>
   );

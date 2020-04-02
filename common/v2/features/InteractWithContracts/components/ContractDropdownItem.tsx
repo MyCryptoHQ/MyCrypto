@@ -1,21 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { COLORS } from 'v2/theme';
 import { Contract } from 'v2/types';
 
-interface OptionWrapperProps {
-  isSelectable: boolean;
-}
-
-const OptionWrapper = styled.div<OptionWrapperProps>`
+const OptionWrapper = styled.div`
   padding: 12px 15px;
-
-  ${props =>
-    props.isSelectable &&
-    ` &:hover {
-    background-color: ${COLORS.GREY_LIGHTEST};
-  }`};
 `;
 
 interface Props {
@@ -26,12 +15,5 @@ interface Props {
 export default function ContractDropdownItem(props: Props) {
   const { option, onSelect } = props;
 
-  return (
-    <OptionWrapper
-      onClick={() => (onSelect ? onSelect(option) : undefined)}
-      isSelectable={!!onSelect}
-    >
-      {option.name}
-    </OptionWrapper>
-  );
+  return <OptionWrapper onClick={() => onSelect && onSelect(option)}>{option.name}</OptionWrapper>;
 }
