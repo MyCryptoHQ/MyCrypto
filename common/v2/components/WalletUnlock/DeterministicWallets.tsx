@@ -15,7 +15,6 @@ import {
   Button,
   InlineMessage
 } from 'v2/components';
-
 import { truncate } from 'v2/utils';
 import { Network } from 'v2/types';
 import {
@@ -85,11 +84,6 @@ const SContainer = styled('div')`
   display: flex;
   flex-direction: row;
   padding: 12px;
-
-  &:hover {
-    background-color: ${(p: { selectable: boolean }) =>
-      p.selectable ? 'var(--color-gray-lighter)' : 'inherit'};
-  }
 `;
 
 const CustomDPath = styled.div`
@@ -112,22 +106,22 @@ const InputField = styled(Input)`
   }
 `;
 
-const DWTable = styled(Table)<{ selectedIndex: number; page: number }>`
+const DWTable = styled(Table)<{ selected: number; page: number }>`
   tbody {
     tr {
       cursor: pointer;
 
       /* Highlight selected row */
-      ${({ selectedIndex, page }) =>
-        Math.trunc(selectedIndex / WALLETS_PER_PAGE) === page &&
-        `:nth-child(${(selectedIndex % WALLETS_PER_PAGE) + 1}) {
+      ${({ selected, page }) =>
+        Math.trunc(selected / WALLETS_PER_PAGE) === page &&
+        `:nth-child(${(selected % WALLETS_PER_PAGE) + 1}) {
       background: ${BLUE_LIGHTEST};
     }`};
 
       /* On hover don't highlight selected row */
-      :not(:nth-child(${({ selectedIndex, page }) =>
-              Math.trunc(selectedIndex / WALLETS_PER_PAGE) === page
-                ? (selectedIndex % WALLETS_PER_PAGE) + 1
+      :not(:nth-child(${({ selected, page }) =>
+              Math.trunc(selected / WALLETS_PER_PAGE) === page
+                ? (selected % WALLETS_PER_PAGE) + 1
                 : 0}))
         :hover {
         background-color: ${GREY_LIGHTEST};
@@ -158,7 +152,7 @@ const Nav = styled.div`
   justify-content: space-between;
   color: ${GREY_DARK};
   font-size: ${FONT_SIZE.XS};
-  width: 200px;
+  width: 195px;
 
   > img {
     cursor: pointer;
@@ -197,9 +191,10 @@ interface DispatchProps {
 type Props = OwnProps & DispatchProps;
 
 const customDPath: DPath = {
-  label: 'custom',
-  value: 'custom'
+  label: translateRaw('X_CUSTOM'),
+  value: ''
 };
+
 export function DeterministicWalletsClass({
   network,
   dPath,
@@ -213,7 +208,7 @@ export function DeterministicWalletsClass({
 }: Props) {
   const [selectedAddress, setSelectedAddress] = useState('');
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(-1);
-  const [reqestingBalanceCheck, setReqestingBalanceCheck] = useState(false);
+  const [requestingBalanceCheck, setRequestingBalanceCheck] = useState(false);
   const [requestingWallets, setRequestingWallets] = useState(false);
   const [customPath, setCustomPath] = useState('');
   const [currentDPath, setCurrentDPath] = useState(dPath);
@@ -232,17 +227,17 @@ export function DeterministicWalletsClass({
       chainCode,
       seed
     });
-    return () => setReqestingBalanceCheck(true);
+    return () => setRequestingBalanceCheck(true);
   }, [page, currentDPath]);
 
   /* Used to update balances for addresses displayed */
   useEffect(() => {
-    if (!reqestingBalanceCheck || requestingWallets) {
+    if (!requestingBalanceCheck || requestingWallets) {
       return;
     }
     getBaseBalances();
     return;
-  }, [reqestingBalanceCheck]);
+  }, [requestingBalanceCheck]);
 
   const getAddresses = (props: OwnProps) => {
     setRequestingWallets(true);
@@ -261,13 +256,10 @@ export function DeterministicWalletsClass({
           })
         );
         setRequestingWallets(false);
-        setReqestingBalanceCheck(true);
-        return;
+        setRequestingBalanceCheck(true);
       } else {
-        console.error('Invalid dPath provided', dPath);
         setRequestingWallets(false);
-        setReqestingBalanceCheck(true);
-        return;
+        setRequestingBalanceCheck(false);
       }
     }
   };
@@ -277,14 +269,14 @@ export function DeterministicWalletsClass({
     try {
       return getBaseAssetBalances(addressesToLookup, network).then((balanceMapData: BalanceMap) => {
         const walletsWithBalances: DeterministicWalletData[] = wallets.map(wallet => {
-          const balance = balanceMapData[wallet.address];
+          const balance = balanceMapData[wallet.address] || 0;
           const value = new BN(balance.toString());
           return {
             ...wallet,
             value
           };
         });
-        setReqestingBalanceCheck(false);
+        setRequestingBalanceCheck(false);
         setWallets(walletsWithBalances);
       });
     } catch (err) {
@@ -292,35 +284,34 @@ export function DeterministicWalletsClass({
     }
   };
 
+  const resetTable = () => {
+    setPage(0);
+    setSelectedAddressIndex(-1);
+    setSelectedAddress('');
+  };
+
   const handleChangePath = (newPath: DPath) => {
-    if (newPath.value === customDPath.value) {
+    resetTable();
+    if (newPath.label === customDPath.label) {
       setCurrentDPath(newPath);
+      setCustomPath('');
     } else {
       setCurrentDPath(newPath);
       onPathChange(newPath);
     }
   };
 
-  const handleChangeCustomPath = (ev: React.FormEvent<HTMLInputElement>) => {
+  const handleChangeCustomPath = (ev: React.FormEvent<HTMLInputElement>) =>
     setCustomPath(ev.currentTarget.value);
+
+  const handleSubmitCustomPath = () => {
+    resetTable();
+    const submittedDPath: DPath = { ...customDPath, value: customPath };
+    setCurrentDPath(submittedDPath);
+    onPathChange(submittedDPath);
   };
 
-  const handleSubmitCustomPath = (ev: React.MouseEvent<HTMLButtonElement>) => {
-    ev.preventDefault();
-
-    if (currentDPath.value === customDPath.value && isValidPath(customPath)) {
-      onPathChange({
-        label: customDPath.label,
-        value: customPath
-      });
-    }
-  };
-
-  const handleConfirmAddress = () => {
-    if (selectedAddress) {
-      onConfirmAddress(selectedAddress, selectedAddressIndex);
-    }
-  };
+  const handleConfirmAddress = () => onConfirmAddress(selectedAddress, selectedAddressIndex);
 
   const selectAddress = (selectedAddrIndex: number) => {
     setSelectedAddress(wallets[selectedAddrIndex].address);
@@ -335,28 +326,14 @@ export function DeterministicWalletsClass({
     setPage(Math.max(page - 1, 0));
   };
 
-  interface DPathOptionProps extends OptionComponentProps {
-    selectable: boolean;
-  }
-
-  const DPathOption = ({ option, onSelect, selectable = true }: DPathOptionProps) => {
-    return (
-      <SContainer selectable={selectable} onClick={() => onSelect && onSelect(option, null)}>
-        <Typography>
-          {option.value === customDPath.value ? (
-            translate('X_CUSTOM')
-          ) : (
-            <div>
-              {option.label}{' '}
-              {option.value && (
-                <DropdownDPath>{option.value.toString().replace(' ', '')}</DropdownDPath>
-              )}
-            </div>
-          )}{' '}
-        </Typography>
-      </SContainer>
-    );
-  };
+  const DPathOption = ({ option, onSelect }: OptionComponentProps) => (
+    <SContainer onClick={() => onSelect && onSelect(option, null)}>
+      <Typography>
+        {option.label}{' '}
+        {option.value && <DropdownDPath>{option.value.toString().replace(' ', '')}</DropdownDPath>}
+      </Typography>
+    </SContainer>
+  );
 
   const renderWalletRow = (
     wallet: DeterministicWalletData,
@@ -423,9 +400,7 @@ export function DeterministicWalletsClass({
             onChange={handleChangePath}
             options={dPaths.concat([customDPath])}
             optionComponent={DPathOption}
-            valueComponent={({ value: option }) => (
-              <DPathOption option={option} selectable={false} />
-            )}
+            valueComponent={({ value: option }) => <DPathOption option={option} />}
             clearable={false}
             searchable={false}
           />
@@ -457,7 +432,7 @@ export function DeterministicWalletsClass({
       )}
 
       <DWTable
-        selectedIndex={selectedAddressIndex}
+        selected={selectedAddressIndex}
         page={page}
         head={['#', translateRaw('ADDRESS'), symbol, translateRaw('ACTION_5')]}
         body={wallets.map(wallet => renderWalletRow(wallet, network, symbol))}
