@@ -110,7 +110,6 @@ export const WalletList = ({ wallets, onSelect, showHeader, calculateMargin }: P
               icon={walletInfo.icon}
               description={translateRaw(walletInfo.description)}
               margin={calculateMargin && calculateMargin(index)}
-              // onClick={() => onSelect(wallet.name)}
               onClick={() => onWalletClick(wallet.name)}
               isDisabled={wallet.isDisabled}
             />
