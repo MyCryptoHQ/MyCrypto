@@ -21,12 +21,8 @@ export default class Survey extends Component {
       return (
         <Container>
           <span>
-            Hey you! We're trying to learn a bit more about how people use the MyCrypto Desktop App.
-            Please check out our short survey{' '}
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdwg-UDXIOQVCQfzcXOaCazZXuAs2OVNjtRzJHdziCYHKH4dw/viewform">
-              here
-            </a>
-            . Alternatively, copy this link and paste it into your browser:{' '}
+            We're trying to learn more about how people use the MyCrypto Desktop App. Please check
+            out our short survey:{' '}
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSdwg-UDXIOQVCQfzcXOaCazZXuAs2OVNjtRzJHdziCYHKH4dw/viewform">
               https://docs.google.com/forms/d/e/1FAIpQLSdwg-UDXIOQVCQfzcXOaCazZXuAs2OVNjtRzJHdziCYHKH4dw/viewform
             </a>
@@ -46,7 +42,7 @@ export default class Survey extends Component {
   }
 
   private isSurveyPrompted() {
-    if (localStorage.getItem(STORAGE_NAME) !== null) {
+    if (sessionStorage.getItem(STORAGE_NAME) !== null) {
       return false;
     }
     return true;
@@ -54,7 +50,7 @@ export default class Survey extends Component {
 
   private handleClose = () => {
     this.setState({ displaySurvey: false });
-    localStorage.setItem(
+    sessionStorage.setItem(
       STORAGE_NAME,
       JSON.stringify({
         dismissed: true,
