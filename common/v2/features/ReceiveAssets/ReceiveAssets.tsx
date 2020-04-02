@@ -191,6 +191,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                       value={field.value}
                       onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
                       placeholder="0.00"
+                      inputMode="decimal"
                     />
                   )}
                 />

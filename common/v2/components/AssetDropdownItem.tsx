@@ -9,16 +9,11 @@ const SContainer = styled('div')`
   flex-direction: row;
   align-items: center;
   padding: 14px 15px 14px 15px;
-
-  &:hover {
-    background-color: ${(p: { selectable: boolean }) =>
-      p.selectable ? 'var(--color-gray-lighter)' : 'inherit'};
-  }
 `;
 
-function AssetDropdownItem({ symbol, name, onClick, selectable = false }: Props) {
+function AssetDropdownItem({ symbol, name, onClick }: Props) {
   return (
-    <SContainer {...(onClick ? { onPointerDown: onClick } : null)} selectable={selectable}>
+    <SContainer {...(onClick ? { onPointerDown: onClick } : null)}>
       <AssetIcon symbol={symbol} size={'1.5rem'} />
       <Typography bold={true} value={symbol} style={{ marginLeft: '10px' }} />
       {name && <span>&nbsp; - &nbsp;</span>}
@@ -30,7 +25,6 @@ function AssetDropdownItem({ symbol, name, onClick, selectable = false }: Props)
 export interface Props {
   symbol: TSymbol;
   name?: string;
-  selectable?: boolean;
   onClick?(): void;
 }
 

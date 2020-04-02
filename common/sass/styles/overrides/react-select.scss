@@ -79,6 +79,10 @@
   //   border-color: color(brand-danger);
   //   box-shadow: inset 0px 0px 0px 1px color(brand-danger);
   // }
+  &:hover {
+    border-color: color(brand-primary);
+    box-shadow: inset 0px 0px 0px 1px color(brand-primary);
+  }
   &.is-focused {
     border-color: color(brand-primary);
     box-shadow: inset 0px 0px 0px 1px color(brand-primary);
@@ -108,10 +112,10 @@
 
   // This shitty selector is the text color of the select, no joke.
   &.has-value.Select--single > .Select-control .Select-value,
-	&.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value {
-		.Select-value-label {
-			color: color(control-color);
-		}
+  &.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value {
+    .Select-value-label {
+      color: color(control-color);
+    }
   }
 
   // Identicons need to fit into the select

@@ -47,7 +47,6 @@ function AccountDropdown({ accounts, name, value, onSelect, asset }: IAccountDro
           balance={balance}
           label={label}
           assetSymbol={assetSymbol}
-          selectable={false}
         />
       )}
     />

@@ -16,12 +16,6 @@ const OptionWrapper = styled.div<OptionWrapperProps>`
   justify-content: space-between;
   padding: 12px 15px;
   font-weight: ${props => (props.isSelectable ? 'default' : 'bold')};
-
-  ${props =>
-    props.isSelectable &&
-    ` &:hover {
-    background-color: ${COLORS.GREY_LIGHTEST};
-  }`};
 `;
 
 interface StickerProps {

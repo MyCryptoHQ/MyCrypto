@@ -10,10 +10,6 @@ const SContainer = styled('div')`
   display: flex;
   flex-direction: row;
   padding: 12px;
-
-  &:hover {
-    background-color: var(--color-gray-lighter);
-  }
 `;
 
 interface Props {

@@ -11,13 +11,8 @@ interface Props {
   balance?: string;
   assetSymbol?: string;
   label?: string;
-  selectable?: boolean;
   hideCurrency?: boolean;
   onClick?(): void;
-}
-
-interface SProps {
-  selectable: boolean;
 }
 
 const SCurrency = styled(Currency)`
@@ -38,22 +33,12 @@ const SAccountWrapper = styled('div')`
   & > ${SAddress} {
     pointer-events: none;
   }
-  &:hover {
-    background-color: ${(p: SProps) => (p.selectable ? 'var(--color-gray-lighter)' : 'inherit')};
-  }
 `;
 
 // Display an address with it's balance
-function AccountSummary({
-  address,
-  balance,
-  assetSymbol,
-  label,
-  selectable = true,
-  onClick
-}: Props) {
+function AccountSummary({ address, balance, assetSymbol, label, onClick }: Props) {
   return (
-    <SAccountWrapper onPointerDown={onClick} selectable={selectable}>
+    <SAccountWrapper onPointerDown={onClick}>
       <SAddress title={label} truncate={truncate} address={address} isCopyable={false} />
       {balance && (
         <SCurrency

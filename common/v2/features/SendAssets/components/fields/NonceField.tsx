@@ -13,6 +13,7 @@ export function NonceField({ value, name, onChange, error }: INonceField) {
         placeholder="0"
         className="SendAssetsForm-fieldset-input"
         inputError={error}
+        inputMode="decimal"
       />
     </div>
   );

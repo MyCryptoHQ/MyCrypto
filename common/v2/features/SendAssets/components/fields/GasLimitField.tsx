@@ -15,6 +15,7 @@ export function GasLimitField({ value, name, onChange, disabled, error }: IGasLi
         className="SendAssetsForm-fieldset-input"
         inputError={error}
         disabled={disabled}
+        inputMode="decimal"
       />
     </div>
   );
