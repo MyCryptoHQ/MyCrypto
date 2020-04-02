@@ -27,5 +27,24 @@ module.exports = {
   twitter: {
     creator: '@MyCrypto'
   },
-  path: paths
+  path: paths,
+
+  // Split vendor modules into seperate chunks for better caching.
+  // 1. Multiple chunks are better than a single one. ie. The gain in caching outweighs
+  //    the cost of multiple files.
+  //    https://medium.com/hackernoon/the-100-correct-way-to-split-your-chunks-with-webpack-f8a9df5b7758
+  // 2. Separate pattern for cacheGroups:
+  //    https://stackoverflow.com/questions/48985780/webpack-4-create-vendor-chunk
+  chunks: {
+    individual: [
+      'ethers',
+      'recharts',
+      'jspdf',
+      '@walletconnect',
+      '@ledgerhq',
+      '@unstoppabledomains'
+    ],
+    devOnly: ['@hot-loader/react-dom'],
+    electronOnly: ['zxcvbn', 'bip39']
+  }
 };
