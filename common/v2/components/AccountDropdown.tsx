@@ -19,8 +19,10 @@ interface IAccountDropdownProps {
   onSelect(option: StoreAccount): void;
 }
 
+type Option = StoreAccount & { balance: string; assetSymbol: string };
+
 function AccountDropdown({ accounts, name, value, onSelect, asset }: IAccountDropdownProps) {
-  const relevantAccounts: StoreAccount[] = accounts.map(account => ({
+  const relevantAccounts: Option[] = accounts.map(account => ({
     ...account,
     balance: formatEther(asset ? getAccountBalance(account, asset) : getAccountBalance(account)),
     assetSymbol: asset ? asset.ticker : getBaseAsset(account)!.ticker
@@ -41,14 +43,17 @@ function AccountDropdown({ accounts, name, value, onSelect, asset }: IAccountDro
       onChange={option => onSelect(option)}
       optionComponent={AccountOption}
       value={value && value.address ? value : undefined} // Allow the value to be undefined at the start in order to display the placeholder
-      valueComponent={({ value: { label, address, balance, assetSymbol } }) => (
-        <AccountSummary
-          address={address}
-          balance={balance}
-          label={label}
-          assetSymbol={assetSymbol}
-        />
-      )}
+      valueComponent={({ value: { uuid, label, address, balance, assetSymbol } }) => {
+        const option = relevantAccounts.find(a => a.uuid === uuid);
+        return (
+          <AccountSummary
+            address={address}
+            balance={option ? option.balance : balance}
+            label={label}
+            assetSymbol={option ? option.assetSymbol : assetSymbol}
+          />
+        );
+      }}
     />
   );
 }
