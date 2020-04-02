@@ -40,7 +40,11 @@ const PurchaseMembershipStepper = () => {
     {
       label: translateRaw('PURCHASE_MEMBERSHIP'),
       component: MembershipPurchaseForm,
-      props: (s => s)(purchaseMembershipFlowState),
+      props: {
+        account,
+        membershipSelected,
+        isSubmitting
+      },
       actions: (formData: MembershipSimpleTxFormFull) => {
         initWith(
           () => {
@@ -69,9 +73,11 @@ const PurchaseMembershipStepper = () => {
           transactions,
           currentTxIdx: idx
         },
-        actions: () => {
+        actions: (_: MembershipSimpleTxFormFull, goToNextStep: () => void) => {
           if (transactions.length > 1) {
             prepareTx(tx.txRaw);
+          } else {
+            goToNextStep();
           }
         }
       },
