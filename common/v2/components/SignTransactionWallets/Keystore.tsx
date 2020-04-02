@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ethers, utils } from 'ethers';
 
-import { Spinner, Input } from 'v2/components';
+import { Input, Button } from 'v2/components';
 import translate, { translateRaw } from 'v2/translations';
 import { ISignComponentProps } from 'v2/types';
 import { isKeystorePassRequired } from 'v2/services/WalletService';
@@ -120,15 +120,9 @@ export default class SignTransactionKeystore extends Component<
             <div className="SignTransactionKeystore-description">
               {translateRaw('SIGN_TX_EXPLANATION')}
             </div>
-            <div className="SignTransactionKeystore-spinner">
-              {isSigning ? (
-                <Spinner />
-              ) : (
-                <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
-                  {translateRaw('DEP_SIGNTX')}
-                </button>
-              )}
-            </div>
+            <Button type="submit" disabled={unlockDisabled} loading={isSigning} fullwidth={true}>
+              {isSigning ? translateRaw('SUBMITTING') : translateRaw('DEP_SIGNTX')}
+            </Button>
           </form>
           {WALLETS_CONFIG.KEYSTORE_FILE.helpLink && (
             <div className="SignTransactionKeystore-help">
@@ -161,8 +155,11 @@ export default class SignTransactionKeystore extends Component<
       })
       .catch(e => {
         if (e) {
-          this.setState({ hasCorrectPassword: false, isSigning: false });
+          this.setState({ hasCorrectPassword: false });
         }
+      })
+      .finally(() => {
+        this.setState({ isSigning: false });
       });
   }
 

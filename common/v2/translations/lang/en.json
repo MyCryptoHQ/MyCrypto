@@ -542,7 +542,7 @@
     "UNLOCK_PROTOCOL_DONATOR_DESCRIPTION_ADD": "Are you confused? We noticed that you donated to us using [Unlock Protocol](https://unlock-protocol.com). In the future, we will make features just for you and philanthropists like you!",
     "SIGN_TX_TITLE": "Sign the Transaction with your $walletName wallet",
     "SIGN_TX_YOUR_WALLET": "Your $walletName",
-    "SIGN_TX_YOUR_PASSWORD": "Your $password",
+    "SIGN_TX_YOUR_PASSWORD": "Your Password",
     "SIGN_TX_EXPLANATION": "Because we never save, store, or transmit your secret, you need to sign each transaction in order to send it. MyCrypto puts YOU in control of your assets.",
     "SIGN_TX_HARDWARE_FAILED_1": "You denied the transaction signature request, or the transaction signature request timed out. Please confirm the transaction signature.",
     "SIGN_TX_LEDGER_DESCRIPTION": "Connect your Ledger to your computer and select the Network application to sign your transaction.",
