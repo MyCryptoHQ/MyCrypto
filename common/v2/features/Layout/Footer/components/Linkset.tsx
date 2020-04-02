@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { KNOWLEDGE_BASE_URL, CRYPTOSCAMDB } from 'v2/config';
+import { CRYPTOSCAMDB, getKBHelpArticle, KB_HELP_ARTICLE } from 'v2/config';
 import { translateRaw } from 'v2/translations';
 import './Linkset.scss';
 
@@ -16,7 +16,7 @@ const LINK_COLUMNS = [
       },
       {
         title: translateRaw('NEW_FOOTER_TEXT_7'),
-        link: KNOWLEDGE_BASE_URL,
+        link: getKBHelpArticle(KB_HELP_ARTICLE.HOME),
         analytics_event: 'Help & Support'
       },
       {

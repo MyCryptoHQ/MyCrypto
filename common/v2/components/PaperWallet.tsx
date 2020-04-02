@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Identicon } from '@mycrypto/ui';
 
 import { QRCode } from 'v2/components';
-import { KNOWLEDGE_BASE_URL } from 'v2/config';
+import { getKBHelpArticle, KB_HELP_ARTICLE } from 'v2/config';
 
 import walletIcon from 'common/assets/images/icn-hardware-wallet.svg';
 import myCryptoIcon from 'common/assets/images/logo-mycrypto-transparent.png';
@@ -248,7 +248,9 @@ export default class PaperWallet extends React.Component<Props, {}> {
           </Part>
           <Part hasRightBorder={true} hasTopBorder={true}>
             <WalletImage src={walletIcon} />
-            <Resources>For Resources and Help, Visit: {KNOWLEDGE_BASE_URL}</Resources>
+            <Resources>
+              For Resources and Help, Visit: {getKBHelpArticle(KB_HELP_ARTICLE.HOME)}
+            </Resources>
           </Part>
           <Part hasTopBorder={true}>{this.getQRAddressWrapper(false)}</Part>
         </PartWrapper>
