@@ -1,22 +1,21 @@
-import { useCallback, useContext, useEffect, useRef } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
-import { TUseStateReducerFactory } from 'v2/utils';
-import { Asset, ITxReceipt, Network, NetworkId, WalletId } from 'v2/types';
+import { Asset, ITxReceipt, Network, WalletId } from 'v2/types';
 import {
   GetBalanceResponse,
   GetLastTxResponse,
-  EtherscanService,
-  CryptoScamDBService,
   CryptoScamDBInfoResponse,
-  CryptoScamDBNoInfoResponse
+  CryptoScamDBNoInfoResponse,
+  CryptoScamDBService,
+  EtherscanService
 } from 'v2/services/ApiService';
-import { getNetworkById, NetworkContext, AssetContext, getAssetByUUID } from 'v2/services/Store';
-import { useScreenSize } from 'v2/vendor';
-import { WALLETS_CONFIG } from 'v2/config';
+import { AssetContext, getAssetByUUID } from 'v2/services/Store';
 
 import { SendFormCallbackType } from './types';
+import { useScreenSize } from '../../vendor/react-use';
+import { WALLETS_CONFIG } from '../../config';
 
-export interface WithProtectTxState {
+export interface ProtectTxState {
   stepIndex: number;
   protectTxShow: boolean;
   protectTxEnabled: boolean;
@@ -31,8 +30,8 @@ export interface WithProtectTxState {
   web3WalletName: string | null;
 }
 
-export interface WithProtectTxApiFactory {
-  withProtectState: WithProtectTxState;
+export interface ProtectTxContext {
+  state: ProtectTxState;
   formCallback: SendFormCallbackType;
 
   handleTransactionReport(receiverAddress?: string): Promise<void>;
@@ -40,14 +39,14 @@ export interface WithProtectTxApiFactory {
   goToNextStep(): void;
   goToInitialStepOrFetchReport(receiverAddress?: string): void;
   showHideProtectTx(showOrHide: boolean): void;
-  setReceiverInfo(receiverAddress: string, network: NetworkId | null): Promise<void>;
+  setReceiverInfo(receiverAddress: string, network: Network): Promise<void>;
   setProtectTxTimeoutFunction(cb: (txReceiptCb?: (txReciept: ITxReceipt) => void) => void): void;
   invokeProtectTxTimeoutFunction(cb: (txReceipt: ITxReceipt) => void): void;
   clearProtectTxTimeoutFunction(): void;
   setWeb3Wallet(isWeb3Wallet: boolean, walletTypeId?: WalletId | null): void;
 }
 
-export const withProtectTxInitialState: Partial<WithProtectTxState> = {
+export const protectTxProviderInitialState: ProtectTxState = {
   stepIndex: 0,
   protectTxShow: false,
   protectTxEnabled: false,
@@ -58,51 +57,21 @@ export const withProtectTxInitialState: Partial<WithProtectTxState> = {
   etherscanLastTxReport: null,
   asset: null,
   isWeb3Wallet: false,
-  web3WalletName: null
+  web3WalletName: null,
+  mainComponentDisabled: false
 };
 
 const numOfSteps = 3;
 
-const WithProtectTxConfigFactory: TUseStateReducerFactory<
-  WithProtectTxState,
-  WithProtectTxApiFactory
-> = ({ state, setState }) => {
-  const formCallback = useRef<SendFormCallbackType>(() => ({ isValid: false, values: null }));
-  const protectionTxTimeoutFunction = useRef<((cb: () => ITxReceipt) => void) | null>(null);
+export const ProtectTxContext = createContext({} as ProtectTxContext);
 
-  const { networks } = useContext(NetworkContext);
+const ProtectTxProvider: React.FC = ({ children }) => {
   const { assets } = useContext(AssetContext);
-
+  const [state, setState] = useState<ProtectTxState>({ ...protectTxProviderInitialState });
   const { isMdScreen } = useScreenSize();
 
-  useEffect(() => {
-    // Show tx protect in case of window resize
-    if (state.protectTxEnabled) {
-      setState(prevState => ({
-        ...prevState,
-        protectTxShow: isMdScreen
-      }));
-    }
-  }, [isMdScreen, state.protectTxEnabled]);
-
-  useEffect(() => {
-    if (state.stepIndex === numOfSteps - 1) {
-      setState(prevState => ({
-        ...prevState,
-        protectTxEnabled: true
-      }));
-    }
-  }, [state.stepIndex]);
-
-  useEffect(() => {
-    const isDisabled =
-      state.protectTxShow && !state.protectTxEnabled && state.cryptoScamAddressReport === null;
-
-    setState(prevState => ({
-      ...prevState,
-      mainComponentDisabled: isDisabled
-    }));
-  }, [state.protectTxShow, state.stepIndex, state.cryptoScamAddressReport, state.protectTxEnabled]);
+  const formCallback = useRef<SendFormCallbackType>(() => ({ isValid: false, values: null }));
+  const protectionTxTimeoutFunction = useRef<((cb: () => ITxReceipt) => void) | null>(null);
 
   const handleTransactionReport = useCallback(
     async (receiverAddress?: string): Promise<void> => {
@@ -114,14 +83,14 @@ const WithProtectTxConfigFactory: TUseStateReducerFactory<
       try {
         const cryptoScamAddressReport = await CryptoScamDBService.check(address);
 
-        setState((prevState: WithProtectTxState) => ({
+        setState((prevState: ProtectTxState) => ({
           ...prevState,
           cryptoScamAddressReport
         }));
       } catch (e) {
         numOfErrors++;
         console.error(e);
-        setState((prevState: WithProtectTxState) => ({
+        setState((prevState: ProtectTxState) => ({
           ...prevState,
           cryptoScamAddressReport: {
             input: address,
@@ -137,14 +106,14 @@ const WithProtectTxConfigFactory: TUseStateReducerFactory<
           state.network!.id
         );
 
-        setState((prevState: WithProtectTxState) => ({
+        setState((prevState: ProtectTxState) => ({
           ...prevState,
           etherscanBalanceReport
         }));
       } catch (e) {
         numOfErrors++;
         console.error(e);
-        setState((prevState: WithProtectTxState) => ({
+        setState((prevState: ProtectTxState) => ({
           ...prevState,
           etherscanBalanceReport: null
         }));
@@ -156,14 +125,14 @@ const WithProtectTxConfigFactory: TUseStateReducerFactory<
           state.network!.id
         );
 
-        setState((prevState: WithProtectTxState) => ({
+        setState((prevState: ProtectTxState) => ({
           ...prevState,
           etherscanLastTxReport
         }));
       } catch (e) {
         numOfErrors++;
         console.error(e);
-        setState((prevState: WithProtectTxState) => ({
+        setState((prevState: ProtectTxState) => ({
           ...prevState,
           etherscanLastTxReport: null
         }));
@@ -231,20 +200,12 @@ const WithProtectTxConfigFactory: TUseStateReducerFactory<
   );
 
   const setReceiverInfo = useCallback(
-    async (receiverAddress: string, networkId: NetworkId | null = null) => {
-      if (!receiverAddress) {
+    async (receiverAddress: string, network: Network) => {
+      if (!receiverAddress && !network) {
         return Promise.reject();
       }
 
-      let network: Network | null = null;
-      if (networkId) {
-        network = getNetworkById(networkId, networks);
-      }
-
-      let asset: Asset | null = null;
-      if (network) {
-        asset = getAssetByUUID(assets)(network.baseAsset)!;
-      }
+      const asset = getAssetByUUID(assets)(network.baseAsset)!;
 
       setState(prevState => ({
         ...prevState,
@@ -299,20 +260,52 @@ const WithProtectTxConfigFactory: TUseStateReducerFactory<
     [setState]
   );
 
-  return {
-    withProtectState: state,
+  useEffect(() => {
+    // Show tx protect in case of window resize
+    if (state.protectTxEnabled) {
+      setState(prevState => ({
+        ...prevState,
+        protectTxShow: isMdScreen
+      }));
+    }
+  }, [isMdScreen, state.protectTxEnabled]);
+
+  useEffect(() => {
+    if (state.stepIndex === numOfSteps - 1) {
+      setState(prevState => ({
+        ...prevState,
+        protectTxEnabled: true
+      }));
+    }
+  }, [state.stepIndex]);
+
+  useEffect(() => {
+    const isDisabled =
+      state.protectTxShow && !state.protectTxEnabled && state.cryptoScamAddressReport === null;
+
+    setState(prevState => ({
+      ...prevState,
+      mainComponentDisabled: isDisabled
+    }));
+  }, [state.protectTxShow, state.stepIndex, state.cryptoScamAddressReport, state.protectTxEnabled]);
+
+  const providerState: ProtectTxContext = {
+    state,
+    formCallback: formCallback.current,
+
     handleTransactionReport,
     setMainTransactionFormCallback,
     goToNextStep,
     goToInitialStepOrFetchReport,
     showHideProtectTx,
-    formCallback: formCallback.current,
     setReceiverInfo,
     setProtectTxTimeoutFunction,
     invokeProtectTxTimeoutFunction,
     clearProtectTxTimeoutFunction,
     setWeb3Wallet
   };
+
+  return <ProtectTxContext.Provider value={providerState}>{children}</ProtectTxContext.Provider>;
 };
 
-export { WithProtectTxConfigFactory };
+export default ProtectTxProvider;

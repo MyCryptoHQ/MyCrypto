@@ -65,11 +65,7 @@ import { RatesContext } from 'v2/services/RatesProvider';
 import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
 import { formatSupportEmail, isFormValid as checkFormValid, EtherUUID } from 'v2/utils';
 import { InlineMessageType } from 'v2/types/inlineMessages';
-import {
-  ProtectTxUtils,
-  ProtectTxError,
-  WithProtectTxApiFactory
-} from 'v2/features/ProtectTransaction';
+import { ProtectTxUtils, ProtectTxError } from 'v2/features/ProtectTransaction';
 import { ProtectTxShowError, ProtectTxButton } from 'v2/features/ProtectTransaction/components';
 
 import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
@@ -82,6 +78,7 @@ import {
   validateAmountField
 } from './validators';
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
+import { ProtectTxContext } from 'v2/features/ProtectTransaction/ProtectTxProvider';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;
@@ -155,11 +152,7 @@ const QueryWarning: React.FC = () => (
   />
 );
 
-const SendAssetsForm = ({
-  txConfig,
-  onComplete,
-  withProtectApi
-}: IStepComponentProps & { withProtectApi: WithProtectTxApiFactory }) => {
+const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
   const { accounts, userAssets, networks, getAccount } = useContext(StoreContext);
   const { getAssetRate } = useContext(RatesContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
@@ -172,12 +165,8 @@ const SendAssetsForm = ({
   );
   const [selectedAsset, setAsset] = useState({} as Asset);
 
-  const {
-    goToInitialStepOrFetchReport,
-    showHideProtectTx,
-    setMainTransactionFormCallback,
-    withProtectState: { mainComponentDisabled }
-  } = withProtectApi;
+  const protectTxContext = useContext(ProtectTxContext);
+  const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
 
   const SendAssetsSchema = Yup.object().shape({
     amount: Yup.string()
@@ -264,7 +253,11 @@ const SendAssetsForm = ({
   const userAccountEthAsset = userAssets.find(a => a.uuid === EtherUUID);
 
   return (
-    <div className={`SendAssetsForm ${mainComponentDisabled ? 'SendAssetsForm-disabled' : ''}`}>
+    <div
+      className={`SendAssetsForm ${
+        getProTxValue(['state', 'mainComponentDisabled']) ? 'SendAssetsForm-disabled' : ''
+      }`}
+    >
       <Formik
         initialValues={getInitialFormikValues(txConfig, userAccountEthAsset)}
         validationSchema={SendAssetsSchema}
@@ -272,8 +265,11 @@ const SendAssetsForm = ({
           onComplete(fields);
         }}
         render={({ errors, setFieldValue, setFieldTouched, touched, values, handleChange }) => {
-          if (setMainTransactionFormCallback) {
-            setMainTransactionFormCallback(() => ({ isValid: isFormValid, values }));
+          if (getProTxValue(['setMainTransactionFormCallback'])) {
+            getProTxValue(['setMainTransactionFormCallback'])(() => ({
+              isValid: isFormValid,
+              values
+            }));
           }
 
           const toggleAdvancedOptions = () => {
@@ -630,30 +626,32 @@ const SendAssetsForm = ({
                 )}
               </div>
 
-              <ProtectTxButton
-                disabled={
-                  isEstimatingGasLimit ||
-                  isResolvingName ||
-                  isEstimatingNonce ||
-                  !isFormValid ||
-                  ProtectTxUtils.checkFormForProtectedTxErrors(
-                    values,
-                    getAssetRate(values.asset)
-                  ) !== ProtectTxError.NO_ERROR
-                }
-                onClick={e => {
-                  e.preventDefault();
-
-                  if (goToInitialStepOrFetchReport) {
-                    const { address } = values;
-                    goToInitialStepOrFetchReport(address.value);
+              {getProTxValue() && (
+                <ProtectTxButton
+                  disabled={
+                    isEstimatingGasLimit ||
+                    isResolvingName ||
+                    isEstimatingNonce ||
+                    !isFormValid ||
+                    ProtectTxUtils.checkFormForProtectedTxErrors(
+                      values,
+                      getAssetRate(values.asset)
+                    ) !== ProtectTxError.NO_ERROR
                   }
+                  onClick={e => {
+                    e.preventDefault();
 
-                  if (showHideProtectTx) {
-                    showHideProtectTx(true);
-                  }
-                }}
-              />
+                    if (getProTxValue(['goToInitialStepOrFetchReport'])) {
+                      const { address } = values;
+                      getProTxValue(['goToInitialStepOrFetchReport'])(address.value);
+                    }
+
+                    if (getProTxValue(['showHideProtectTx'])) {
+                      getProTxValue(['showHideProtectTx'])(true);
+                    }
+                  }}
+                />
+              )}
 
               <Button
                 type="submit"
@@ -670,15 +668,17 @@ const SendAssetsForm = ({
                 {translate('ACTION_6')}
               </Button>
 
-              <ProtectTxShowError
-                protectTxError={ProtectTxUtils.checkFormForProtectedTxErrors(
-                  values,
-                  getAssetRate(values.asset)
-                )}
-                shown={
-                  !(isEstimatingGasLimit || isResolvingName || isEstimatingNonce || !isFormValid)
-                }
-              />
+              {getProTxValue() && (
+                <ProtectTxShowError
+                  protectTxError={ProtectTxUtils.checkFormForProtectedTxErrors(
+                    values,
+                    getAssetRate(values.asset)
+                  )}
+                  shown={
+                    !(isEstimatingGasLimit || isResolvingName || isEstimatingNonce || !isFormValid)
+                  }
+                />
+              )}
             </Form>
           );
         }}

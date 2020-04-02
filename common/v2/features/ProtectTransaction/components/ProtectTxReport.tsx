@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useContext } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
 import upperFirst from 'lodash/upperFirst';
@@ -14,8 +14,9 @@ import { EthAddress, LinkOut, VerticalStepper } from 'v2/components';
 import { StepData } from 'v2/components/VerticalStepper';
 import { truncate } from 'v2/utils';
 
-import { IWithProtectApi } from '../types';
 import ProtectTxBase from './ProtectTxBase';
+import { ProtectTxContext } from '../ProtectTxProvider';
+import { ProtectTxUtils } from '../utils';
 
 const formatDate = (date: number): string => moment.unix(date).format('MM/DD/YYYY');
 
@@ -101,18 +102,24 @@ const SEthAddress = styled.div`
   }
 `;
 
-export const ProtectTxReport: FC<IWithProtectApi> = ({ withProtectApi }) => {
+export const ProtectTxReport: FC = () => {
+  const protectTxContext = useContext(ProtectTxContext);
+  const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
+  if (!getProTxValue()) {
+    throw new Error('ProtectTxProtection requires to be wrapped in ProtectTxContext!');
+  }
+
   const {
-    withProtectState: {
-      receiverAddress,
-      cryptoScamAddressReport,
+    state: {
       etherscanBalanceReport,
       etherscanLastTxReport,
+      cryptoScamAddressReport,
       asset,
+      receiverAddress,
       isWeb3Wallet
     },
     showHideProtectTx
-  } = withProtectApi!;
+  } = protectTxContext;
 
   const { isSmScreen } = useScreenSize();
 

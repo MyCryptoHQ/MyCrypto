@@ -10,12 +10,12 @@ import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from 'v2/theme';
 import { Amount } from 'v2/components';
 import { translateRaw } from 'v2/translations';
 
-import { IWithProtectApi } from '../types';
 import { ProtectTxUtils } from '../utils';
 import ProtectTxBase from './ProtectTxBase';
 import { CloseIcon, ProtectIcon, WarningIcon } from 'v2/components/icons';
 
 import feeIcon from 'assets/images/icn-fee.svg';
+import { ProtectTxContext } from '../ProtectTxProvider';
 
 const SProtectionThisTransaction = styled(ProtectTxBase)`
   .description-text {
@@ -116,16 +116,12 @@ const FeeContainer = styled.div`
   }
 `;
 
-interface Props extends IWithProtectApi {
+interface Props {
   sendAssetsValues: IFormikFields | null;
   handleProtectTxSubmit(payload: IFormikFields): Promise<void>;
 }
 
-export const ProtectTxProtection: FC<Props> = ({
-  sendAssetsValues,
-  withProtectApi,
-  handleProtectTxSubmit
-}) => {
+export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtectTxSubmit }) => {
   const { getAssetRate } = useContext(RatesContext);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -136,12 +132,18 @@ export const ProtectTxProtection: FC<Props> = ({
     rate: number | null;
   }>({ amount: null, fee: null, rate: null });
 
+  const protectTxContext = useContext(ProtectTxContext);
+  const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
+  if (!getProTxValue()) {
+    throw new Error('ProtectTxProtection requires to be wrapped in ProtectTxContext!');
+  }
+
   const {
-    withProtectState: { isWeb3Wallet: web3Wallet, web3WalletName },
-    showHideProtectTx,
+    state: { isWeb3Wallet: web3Wallet, web3WalletName },
     setReceiverInfo,
-    setWeb3Wallet
-  } = withProtectApi!;
+    setWeb3Wallet,
+    showHideProtectTx
+  } = protectTxContext;
 
   useEffect(() => {
     const {
@@ -165,7 +167,7 @@ export const ProtectTxProtection: FC<Props> = ({
 
       try {
         setIsLoading(true);
-        await setReceiverInfo(sendAssetsValues!.address.value, sendAssetsValues!.network.id);
+        await setReceiverInfo(sendAssetsValues!.address.value, sendAssetsValues!.network);
         await handleProtectTxSubmit({
           ...sendAssetsValues!,
           amount: feeAmount.amount ? feeAmount.amount.toString() : ''

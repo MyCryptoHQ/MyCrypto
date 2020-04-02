@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
@@ -33,7 +33,7 @@ import translate, { translateRaw } from 'v2/translations';
 import { convertToFiat, truncate, fromTxReceiptObj } from 'v2/utils';
 import { isWeb3Wallet } from 'v2/utils/web3';
 import ProtocolTagsList from 'v2/features/DeFiZap/components/ProtocolTagsList';
-import { WithProtectTxApiFactory } from 'v2/features/ProtectTransaction';
+import { ProtectTxUtils, ProtectTxContext } from 'v2/features/ProtectTransaction';
 import { ProtectTxAbort } from 'v2/features/ProtectTransaction/components';
 import { MembershipReceiptBanner } from 'v2/features/PurchaseMembership';
 
@@ -53,7 +53,6 @@ interface PendingBtnAction {
 interface Props {
   pendingButton?: PendingBtnAction;
   swapDisplay?: SwapDisplayData;
-  withProtectApi?: WithProtectTxApiFactory;
   protectTxButton?(): JSX.Element;
 }
 
@@ -72,7 +71,6 @@ export default function TxReceipt({
   membershipSelected,
   zapSelected,
   swapDisplay,
-  withProtectApi,
   protectTxButton
 }: IStepComponentProps & Props) {
   const { getAssetRate } = useContext(RatesContext);
@@ -85,25 +83,9 @@ export default function TxReceipt({
   const [displayTxReceipt, setDisplayTxReceipt] = useState<ITxReceipt | undefined>(txReceipt);
   const [blockNumber, setBlockNumber] = useState(0);
   const [timestamp, setTimestamp] = useState(0);
-  const protectionTxTimeoutFunction = useRef<(cb: (txReceipt: ITxReceipt) => void) => void>();
-  const [web3Wallet, setWeb3Wallet] = useState(false);
-  const [protectTxEnabled, setProtectTxEnabled] = useState(false);
 
-  useEffect(() => {
-    if (withProtectApi) {
-      const {
-        withProtectState: {
-          protectTxEnabled: isProtectTxEnabled,
-          isWeb3Wallet: isProtectedTxWeb3Wallet
-        },
-        invokeProtectTxTimeoutFunction
-      } = withProtectApi;
-
-      setProtectTxEnabled(isProtectTxEnabled);
-      setWeb3Wallet(isProtectedTxWeb3Wallet);
-      protectionTxTimeoutFunction.current = invokeProtectTxTimeoutFunction;
-    }
-  }, [withProtectApi, setWeb3Wallet, protectionTxTimeoutFunction]);
+  const protectTxContext = useContext(ProtectTxContext);
+  const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
 
   useEffect(() => {
     setDisplayTxReceipt(txReceipt);
@@ -112,25 +94,31 @@ export default function TxReceipt({
   const [protectTxCounter, setProtectTxCounter] = React.useState(20);
   useEffect(() => {
     let protectTxTimer: number | null = null;
-    if (!web3Wallet && protectTxEnabled && protectTxCounter > 0) {
+    if (
+      !getProTxValue(['state', 'isWeb3Wallet']) &&
+      getProTxValue(['state', 'protectTxEnabled']) &&
+      protectTxCounter > 0
+    ) {
       // @ts-ignore
       protectTxTimer = setTimeout(() => setProtectTxCounter(prevCount => prevCount - 1), 1000);
     } else if (
-      !web3Wallet &&
-      protectTxEnabled &&
+      !getProTxValue(['state', 'isWeb3Wallet']) &&
+      getProTxValue(['state', 'protectTxEnabled']) &&
       protectTxCounter === 0 &&
-      protectionTxTimeoutFunction.current
+      getProTxValue(['invokeProtectTxTimeoutFunction'])
     ) {
-      protectionTxTimeoutFunction.current(txReceiptCb => {
-        setDisplayTxReceipt(txReceiptCb);
-      });
+      getProTxValue(['invokeProtectTxTimeoutFunction'])(
+        (txReceiptCb: (txReceipt: ITxReceipt) => void) => {
+          setDisplayTxReceipt(txReceiptCb);
+        }
+      );
     }
     return () => {
       if (protectTxTimer) {
         clearTimeout(protectTxTimer);
       }
     };
-  }, [protectTxEnabled, protectTxCounter, web3Wallet]);
+  }, [protectTxContext, protectTxCounter]);
 
   useEffect(() => {
     if (displayTxReceipt && blockNumber === 0 && displayTxReceipt.hash) {
@@ -209,8 +197,8 @@ export default function TxReceipt({
       resetFlow={resetFlow}
       completeButtonText={completeButtonText}
       pendingButton={pendingButton}
-      protectTxEnabled={protectTxEnabled}
-      web3Wallet={web3Wallet}
+      protectTxEnabled={getProTxValue(['state', 'protectTxEnabled'])}
+      web3Wallet={getProTxValue(['state', 'isWeb3Wallet'])}
       protectTxCounter={protectTxCounter}
       setProtectTxCounter={setProtectTxCounter}
       protectTxButton={protectTxButton}
@@ -258,7 +246,7 @@ export const TxReceiptUI = ({
   setProtectTxCounter,
   protectTxButton
 }: Omit<IStepComponentProps, 'resetFlow' | 'onComplete'> & TxReceiptDataProps) => {
-  /* Determing User's Contact */
+  /* Determining User's Contact */
   const { asset, gasPrice, gasLimit, data, nonce, baseAsset, receiverAddress } = txConfig;
   const recipientLabel = recipientContact ? recipientContact.label : translateRaw('NO_ADDRESS');
   const senderAccountLabel = senderContact ? senderContact.label : translateRaw('NO_LABEL');
@@ -329,11 +317,11 @@ export const TxReceiptUI = ({
         <>
           <FromToAccount
             from={{
-              address: (displayTxReceipt && displayTxReceipt.from || sender.address) as TAddress,
+              address: ((displayTxReceipt && displayTxReceipt.from) || sender.address) as TAddress,
               label: senderAccountLabel
             }}
             to={{
-              address: (displayTxReceipt && displayTxReceipt.to || receiverAddress) as TAddress,
+              address: ((displayTxReceipt && displayTxReceipt.to) || receiverAddress) as TAddress,
               label: recipientLabel
             }}
           />

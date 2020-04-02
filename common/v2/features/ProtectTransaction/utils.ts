@@ -1,5 +1,7 @@
 import BigNumber from 'bignumber.js';
 import isNumber from 'lodash/isNumber';
+import has from 'lodash/has';
+import get from 'lodash/get';
 import { fromWei, totalTxFeeToWei, Wei } from 'v2/services/EthService/utils';
 import { IFormikFields } from 'v2/types';
 import { bigify } from 'v2/utils';
@@ -9,6 +11,7 @@ import {
   PROTECTED_TX_MIN_AMOUNT
 } from 'v2/config';
 import { ProtectTxError } from './types';
+import { ProtectTxContext } from './ProtectTxProvider';
 
 export abstract class ProtectTxUtils {
   public static getProtectTransactionFee(
@@ -68,5 +71,14 @@ export abstract class ProtectTxUtils {
     }
 
     return ProtectTxError.NO_ERROR;
+  }
+
+  public static isProtectTxDefined(protectTxContext: ProtectTxContext): any {
+    return (keys: string[] = ['state'], obj: any = protectTxContext): any => {
+      if (has(obj, keys)) {
+        return get(obj, keys);
+      }
+      return false;
+    };
   }
 }

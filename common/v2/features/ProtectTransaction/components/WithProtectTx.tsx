@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Panel } from '@mycrypto/ui';
 
@@ -19,11 +19,12 @@ import { processFormDataToTx } from 'v2/features/SendAssets/helpers';
 import { ProtectTxProtection } from './ProtectTxProtection';
 import { ProtectTxSign } from './ProtectTxSign';
 import { ProtectTxReport } from './ProtectTxReport';
-import { WithProtectTxApiFactory } from '../withProtectStateFactory';
+import { ProtectTxContext } from '../ProtectTxProvider';
 import ProtectTxModalBackdrop from './ProtectTxModalBackdrop';
 import { ProtectTxButton } from './ProtectTxButton';
 import { ProtectTxStepper } from './ProtectTxStepper';
 import { PROTECTED_TX_FEE_ADDRESS } from '../../../config';
+import { ProtectTxUtils } from '../utils';
 
 const WithProtectTxWrapper = styled.div`
   display: flex;
@@ -81,9 +82,7 @@ const WithProtectTxSide = styled.div`
 `;
 
 interface Props extends IStepComponentProps {
-  withProtectApi?: WithProtectTxApiFactory;
   customDetails?: JSX.Element;
-
   protectTxButton?(): JSX.Element;
 }
 
@@ -93,7 +92,6 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
     signedTx: signedTxMain,
     txReceipt: txReceiptMain,
     onComplete: onCompleteMain,
-    withProtectApi,
     customDetails,
     resetFlow
   }: Props) {
@@ -101,14 +99,20 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
     const { state, initWith, prepareTx, sendTx } = useTxMulti();
     const { transactions, _currentTxIdx, account, network } = state;
 
+    const protectTxContext = useContext(ProtectTxContext);
+    const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
+    if (!getProTxValue()) {
+      throw new Error('withProtectTx requires to be wrapped in ProtectTxContext!');
+    }
+
     const {
-      withProtectState: { protectTxShow, stepIndex, protectTxEnabled, isWeb3Wallet: web3Wallet },
-      formCallback,
-      showHideProtectTx,
-      goToNextStep,
+      state: { protectTxShow, protectTxEnabled, stepIndex },
       setWeb3Wallet,
-      handleTransactionReport
-    } = withProtectApi!;
+      goToNextStep,
+      formCallback,
+      handleTransactionReport,
+      showHideProtectTx
+    } = protectTxContext;
 
     // Wait for useTxMulti to finish initWith
     useEffect(() => {
@@ -123,8 +127,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
       {
         component: ProtectTxProtection,
         props: {
-          sendAssetsValues: (({ values }) => values)(formCallback()),
-          withProtectApi
+          sendAssetsValues: (({ values }) => values)(formCallback())
         },
         actions: {
           handleProtectTxSubmit: async (payload: IFormikFields) => {
@@ -143,8 +146,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
         props: {
           txConfig: transactions[_currentTxIdx] && transactions[_currentTxIdx].txRaw,
           account,
-          network,
-          withProtectApi
+          network
         },
         actions: {
           handleProtectTxConfirmAndSend: async (payload: ITxHash | ITxSigned) => {
@@ -155,10 +157,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
         }
       },
       {
-        component: ProtectTxReport,
-        props: {
-          withProtectApi
-        }
+        component: ProtectTxReport
       }
     ];
 
@@ -175,57 +174,38 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
       [showHideProtectTx]
     );
 
-    return useMemo(
-      () => (
-        <WithProtectTxWrapper>
-          <WithProtectTxMain protectTxShow={protectTxShow}>
-            <WrappedComponent
-              txConfig={txConfigMain}
-              signedTx={signedTxMain}
-              txReceipt={txReceiptMain}
-              onComplete={(values: IFormikFields | ITxReceipt | ISignedTx | null) => {
-                onCompleteMain(values);
-              }}
-              withProtectApi={withProtectApi}
-              customDetails={customDetails}
-              resetFlow={resetFlow}
-              protectTxButton={() =>
-                protectTxEnabled ? (
-                  <ProtectTxButton reviewReport={true} onClick={toggleProtectTxShow} />
-                ) : (
-                  <></>
-                )
-              }
-            />
-          </WithProtectTxMain>
-          {protectTxShow && (
-            <>
-              {!isMdScreen && <ProtectTxModalBackdrop onBackdropClick={toggleProtectTxShow} />}
-              <WithProtectTxSide>
-                <Panel>
-                  <ProtectTxStepper currentStepIndex={stepIndex} steps={protectTxStepperSteps} />
-                </Panel>
-              </WithProtectTxSide>
-            </>
-          )}
-        </WithProtectTxWrapper>
-      ),
-      [
-        stepIndex,
-        txConfigMain,
-        signedTxMain,
-        txReceiptMain,
-        protectTxShow,
-        formCallback,
-        isMdScreen,
-        protectTxEnabled,
-        web3Wallet,
-        transactions,
-        prepareTx,
-        sendTx,
-        transactions,
-        _currentTxIdx
-      ]
+    return (
+      <WithProtectTxWrapper>
+        <WithProtectTxMain protectTxShow={protectTxShow}>
+          <WrappedComponent
+            txConfig={txConfigMain}
+            signedTx={signedTxMain}
+            txReceipt={txReceiptMain}
+            onComplete={(values: IFormikFields | ITxReceipt | ISignedTx | null) => {
+              onCompleteMain(values);
+            }}
+            customDetails={customDetails}
+            resetFlow={resetFlow}
+            protectTxButton={() =>
+              protectTxEnabled ? (
+                <ProtectTxButton reviewReport={true} onClick={toggleProtectTxShow} />
+              ) : (
+                <></>
+              )
+            }
+          />
+        </WithProtectTxMain>
+        {protectTxShow && (
+          <>
+            {!isMdScreen && <ProtectTxModalBackdrop onBackdropClick={toggleProtectTxShow} />}
+            <WithProtectTxSide>
+              <Panel>
+                <ProtectTxStepper currentStepIndex={stepIndex} steps={protectTxStepperSteps} />
+              </Panel>
+            </WithProtectTxSide>
+          </>
+        )}
+      </WithProtectTxWrapper>
     );
   };
 }

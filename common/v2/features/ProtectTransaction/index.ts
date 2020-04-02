@@ -1,8 +1,3 @@
 export * from './types';
 export * from './utils';
-export {
-  WithProtectTxApiFactory,
-  WithProtectTxConfigFactory,
-  withProtectTxInitialState,
-  WithProtectTxState
-} from './withProtectStateFactory';
+export { default as ProtectTxProvider, ProtectTxContext } from './ProtectTxProvider';

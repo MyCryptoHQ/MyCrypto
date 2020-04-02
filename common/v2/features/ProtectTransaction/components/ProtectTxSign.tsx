@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useContext } from 'react';
 import styled from 'styled-components';
 import isEmpty from 'lodash/isEmpty';
 import values from 'lodash/values';
@@ -8,8 +8,9 @@ import { ProtectIcon, CloseIcon } from 'v2/components/icons';
 import { ITxConfig, ITxHash, ITxSigned, Network, StoreAccount } from 'v2/types';
 import { WALLET_STEPS } from 'v2/components/SignTransactionWallets';
 
-import { IWithProtectApi } from '../types';
 import ProtectTxBase from './ProtectTxBase';
+import { ProtectTxContext } from '../ProtectTxProvider';
+import { ProtectTxUtils } from '../utils';
 
 const SignProtectedTransaction = styled(ProtectTxBase)`
   .SignTransactionKeystore {
@@ -30,7 +31,7 @@ const Loader = styled.div`
   margin-top: ${SPACING.BASE};
 `;
 
-interface Props extends IWithProtectApi {
+interface Props {
   txConfig: ITxConfig;
   readonly account?: StoreAccount;
   readonly network?: Network;
@@ -38,8 +39,14 @@ interface Props extends IWithProtectApi {
 }
 
 export const ProtectTxSign: FC<Props> = props => {
-  const { withProtectApi, txConfig, handleProtectTxConfirmAndSend, account, network } = props;
-  const { goToInitialStepOrFetchReport } = withProtectApi!;
+  const protectTxContext = useContext(ProtectTxContext);
+  const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
+  if (!getProTxValue()) {
+    throw new Error('ProtectTxProtection requires to be wrapped in ProtectTxContext!');
+  }
+  const { goToInitialStepOrFetchReport } = protectTxContext;
+
+  const { txConfig, handleProtectTxConfirmAndSend, account, network } = props;
 
   const onProtectMyTransactionCancelClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement & SVGSVGElement, MouseEvent>) => {
