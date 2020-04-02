@@ -9,7 +9,7 @@ export default class ShapeShiftDisabled extends Component {
     return (
       <TabSection>
           <Warning>
-            ShapeShift functionality is currently unavailable on the Legacy MyCrypto App.
+            ShapeShift functionality is currently unavailable on the MyCrypto App.
           </Warning>
       </TabSection>
     );
