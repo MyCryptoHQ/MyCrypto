@@ -106,7 +106,12 @@ const InputField = styled(Input)`
   }
 `;
 
-const DWTable = styled(Table)<{ selected: number; page: number }>`
+const DWTable = styled(Table)<{ selected: number; page: number; disabled: boolean }>`
+  ${({ disabled }) =>
+    disabled &&
+    `opacity: 0.5;
+  pointer-events: none;`};
+
   tbody {
     tr {
       cursor: pointer;
@@ -146,13 +151,17 @@ const Bottom = styled.div`
   }
 `;
 
-const Nav = styled.div`
+const Nav = styled.div<{ disabled: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: ${GREY_DARK};
   font-size: ${FONT_SIZE.XS};
   width: 195px;
+  ${({ disabled }) =>
+    disabled &&
+    `opacity: 0.5;
+  pointer-events: none;`};
 
   > img {
     cursor: pointer;
@@ -383,6 +392,7 @@ export function DeterministicWalletsClass({
     baseAssetSymbol = getBaseAssetByNetwork({ network, assets })!.ticker;
   }
   const symbol: string = baseAssetSymbol ? baseAssetSymbol : 'ETH';
+  const isCustom = currentDPath.label === customDPath.label;
 
   return (
     <>
@@ -407,7 +417,7 @@ export function DeterministicWalletsClass({
         </SDropdown>
       </Header>
 
-      {currentDPath.label === customDPath.label && (
+      {isCustom && (
         <CustomDPath>
           <label>{translate('CUSTOM_DPATH')}</label>
           <InputGroup>
@@ -432,6 +442,7 @@ export function DeterministicWalletsClass({
       )}
 
       <DWTable
+        disabled={isCustom && !currentDPath.value}
         selected={selectedAddressIndex}
         page={page}
         head={['#', translateRaw('ADDRESS'), symbol, translateRaw('ACTION_5')]}
@@ -442,7 +453,7 @@ export function DeterministicWalletsClass({
         }}
       />
       <Bottom>
-        <Nav>
+        <Nav disabled={isCustom && !currentDPath.value}>
           <img src={prevIcon} onClick={prevPage} />
           {translate('PAGE_OF', { $page: (page + 1).toString(), $all: '∞' })}
           <img src={nextIcon} onClick={nextPage} />
