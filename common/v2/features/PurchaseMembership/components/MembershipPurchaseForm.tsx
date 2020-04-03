@@ -13,7 +13,7 @@ import { isEthereumAccount } from 'v2/services/Store/Account/helpers';
 import { StoreContext, AssetContext, NetworkContext } from 'v2/services/Store';
 import { fetchGasPriceEstimates } from 'v2/services/ApiService';
 import { getNonce } from 'v2/services/EthService';
-import { EtherUUID } from 'v2/utils';
+import { EtherUUID, noOp } from 'v2/utils';
 import { getAccountsWithAssetBalance } from 'v2/features/SwapAssets/helpers';
 
 import MembershipDropdown from './MembershipDropdown';
@@ -103,11 +103,7 @@ export const MembershipFormUI = ({
       <Formik
         initialValues={initialFormikValues}
         validationSchema={MembershipFormSchema}
-        onSubmit={fields => {
-          fetchGasPriceEstimates(fields.network).then(({ fast }) => {
-            onComplete({ ...fields, gasPrice: fast.toString() });
-          });
-        }}
+        onSubmit={noOp}
         render={({ values, errors, touched, setFieldValue }) => {
           const handleNonceEstimate = async (account: IAccount) => {
             const nonce: number = await getNonce(values.network, account.address);
@@ -223,7 +219,9 @@ export const MembershipFormUI = ({
                 loading={isSubmitting}
                 onClick={() => {
                   if (isValid) {
-                    onComplete(values);
+                    fetchGasPriceEstimates(values.network).then(({ fast }) => {
+                      onComplete({ ...values, gasPrice: fast.toString() });
+                    });
                   }
                 }}
               >
