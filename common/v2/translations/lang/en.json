@@ -740,7 +740,7 @@
     "MEMBERSHIP_ACCORDION_THIRD_CONTENT": "We use the [Unlock Protocol](https://unlock-protocol.com/) for this. You’ll be purchasing a token that unlocks features of MyCrypto when we detect that you hold that token. Each token has an expiration date according to the duration of membership you purchased.",
     "MEMBERSHIP_ACCORDION_FORTH_TITLE": "Will the price stay the same forever?",
     "MEMBERSHIP_ACCORDION_FORTH_CONTENT": "As we continue to add features to the MyCrypto Membership, we may adjust the prices. However, if you have an active membership at the time we add new features, you will get access to those new features for no extra cost until your existing membership expires.",
-    "MEMBERSHIP_MORE_FAQ": "To view more Frequently Asked Questions go [here](https://support.mycrypto.com/).",
+    "MEMBERSHIP_MORE_FAQ": "To view more Frequently Asked Questions go [here](https://support.mycrypto.com/general-knowledge/about-mycrypto/membership-information/).",
     "MEMBERSHIP_MONTH": "$duration Month",
     "MEMBERSHIP_MONTHS": "$duration Months",
     "MEMBERSHIP_DISCOUNT": "$percentage off!",
