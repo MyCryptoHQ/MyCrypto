@@ -35,7 +35,6 @@ const PurchaseMembershipStepper = () => {
   const { canYield, isSubmitting, transactions } = state;
   const { account, membershipSelected }: MembershipPurchaseState = purchaseMembershipFlowState;
 
-  // @ts-ignore Ignore type issue with signing step for now
   const steps: IStepperPath[] = [
     {
       label: translateRaw('PURCHASE_MEMBERSHIP'),
@@ -88,9 +87,7 @@ const PurchaseMembershipStepper = () => {
         props: {
           network: account && account.network,
           senderAccount: account,
-          rawTransaction: tx.txRaw
-        },
-        actions: {
+          rawTransaction: tx.txRaw,
           onSuccess: (payload: ITxHash | ITxSigned) => sendTx(payload)
         }
       }
@@ -109,11 +106,14 @@ const PurchaseMembershipStepper = () => {
   return (
     <GeneralStepper
       onRender={goToNextStep => {
+        // Allows to execute code when state has been updated after MTX hook has run
         useEffect(() => {
           if (!canYield) return;
+          // Make sure to prepare ETH tx before showing to user
           if (transactions.length === 1 && transactions[0].status === ITxStatus.PREPARING) {
             prepareTx(transactions[0].txRaw);
           } else {
+            // Go to next step after preparing tx for MTX
             goToNextStep();
           }
           stopYield();

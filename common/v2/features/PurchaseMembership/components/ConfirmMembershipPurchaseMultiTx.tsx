@@ -25,7 +25,7 @@ export default function ConfirmMembershipPurchase({
 }: Props) {
   const status = transactions.map(t => R.path(['status'], t));
 
-  const broadcasting = status.findIndex(s => s === ITxStatus.BROADCASTED);
+  const broadcastingIndex = status.findIndex(s => s === ITxStatus.BROADCASTED);
 
   const approveTx = {
     title: translateRaw('APPROVE_MEMBERSHIP'),
@@ -49,7 +49,7 @@ export default function ConfirmMembershipPurchase({
     <div>
       <MembershipSelectedBanner membershipSelected={membershipSelected} />
       <VerticalStepper
-        currentStep={broadcasting === -1 ? currentTxIdx : broadcasting}
+        currentStep={broadcastingIndex === -1 ? currentTxIdx : broadcastingIndex}
         steps={[approveTx, transferTx]}
       />
     </div>

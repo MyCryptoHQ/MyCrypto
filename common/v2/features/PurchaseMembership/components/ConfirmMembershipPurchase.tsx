@@ -16,9 +16,9 @@ interface Props {
 export default function ConfirmMembershipPurchase(props: Props) {
   const { membershipSelected, transactions, currentTxIdx, account, onComplete } = props;
 
-  const txConfigs = transactions.map(tx => {
-    return makeTxConfigFromTransaction(tx.txRaw, account, membershipSelected.price);
-  });
+  const txConfigs = transactions.map(tx =>
+    makeTxConfigFromTransaction(tx.txRaw, account, membershipSelected.price)
+  );
 
   const txConfig = txConfigs[currentTxIdx];
 
