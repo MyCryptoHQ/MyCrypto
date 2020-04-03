@@ -3,7 +3,7 @@ import { debounce } from 'lodash';
 
 import { TUseStateReducerFactory, generateUUID, fromTxReceiptObj } from 'v2/utils';
 import { CREATION_ADDRESS } from 'v2/config';
-import { NetworkId, Contract, StoreAccount } from 'v2/types';
+import { NetworkId, Contract, StoreAccount, ITxType, ITxStatus } from 'v2/types';
 import {
   getNetworkById,
   ContractContext,
@@ -14,7 +14,8 @@ import {
   getResolvedENSAddress,
   EtherscanService,
   getIsValidENSAddressFunction,
-  AssetContext
+  AssetContext,
+  AccountContext
 } from 'v2/services';
 import { AbiFunction } from 'v2/services/EthService/contracts/ABIFunction';
 import { isWeb3Wallet } from 'v2/utils/web3';
@@ -53,6 +54,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   const { getContractsByIds, createContractWithId, deleteContracts } = useContext(ContractContext);
   const { networks, updateNetwork } = useContext(NetworkContext);
   const { assets } = useContext(AssetContext);
+  const { addNewTransactionToAccount } = useContext(AccountContext);
 
   const handleNetworkSelected = (networkId: NetworkId) => {
     setState((prevState: InteractWithContractState) => ({
@@ -328,6 +330,14 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     if (isWeb3Wallet(account.wallet)) {
       const txReceipt =
         signResponse && signResponse.hash ? signResponse : { ...txConfig, hash: signResponse };
+      addNewTransactionToAccount(state.txConfig.senderAccount, {
+        ...txReceipt,
+        to: state.txConfig.receiverAddress,
+        from: state.txConfig.senderAccount.address,
+        amount: state.txConfig.amount,
+        txType: ITxType.CONTRACT_INTERACT,
+        stage: ITxStatus.PENDING
+      });
       setState((prevState: InteractWithContractState) => ({
         ...prevState,
         txReceipt
@@ -342,6 +352,11 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
         .catch(hash => provider.getTransactionByHash(hash))
         .then(retrievedTransactionReceipt => {
           const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(assets, networks);
+          addNewTransactionToAccount(state.txConfig.senderAccount, {
+            ...txReceipt,
+            txType: ITxType.CONTRACT_INTERACT,
+            stage: ITxStatus.PENDING
+          });
           setState((prevState: InteractWithContractState) => ({
             ...prevState,
             txReceipt

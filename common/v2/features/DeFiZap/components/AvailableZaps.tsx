@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+
 import { SPACING } from 'v2/theme';
-import { TranslateMarkdown } from 'v2/components/TranslateMarkdown';
+import translate, { translateRaw } from 'v2/translations';
 
 const Container = styled.div`
   display: flex;
@@ -14,36 +15,16 @@ const SubContainer = styled(Container)`
 export default () => {
   return (
     <Container>
-      <SubContainer>
-        {'MyCrypto’s DeFiZap integration will initially allow you to access three Zaps:'}
-      </SubContainer>
+      <SubContainer>{translateRaw('ZAPS_AVAIL')}</SubContainer>
       <SubContainer>
         <ul>
-          <li>
-            {
-              'DAI Unipool: Swaps 50% of ETH for DAI (using Uniswap) and contributes both ETH & DAI to Uniswap DAI Pool.'
-            }
-          </li>
-          <li>
-            {
-              'sETH Unipool: Swaps 50% of ETH for sETH (using Uniswap) and contributes both ETH & sETH to the Uniswap sETH Pool.'
-            }
-          </li>
-          <li>
-            {
-              'Compound Dai Pool: Swaps 100% of ETH for DAI (using Kyber Network) and contributes it to Compound.'
-            }
-          </li>
+          <li>{translateRaw('ZAPS_AVAIL_DAI_UNIPOOL')}</li>
+          <li>{translateRaw('ZAPS_AVAIL_SETH_UNIPOOL')}</li>
+          <li>{translateRaw('ZAPS_AVAIL_COMPOUND_POOL')}</li>
         </ul>
       </SubContainer>
       <SubContainer>
-        <div>
-          <TranslateMarkdown
-            source={
-              'We’ll be working to add more Zaps over time, but you can access all of the Zaps via [DeFiZap.com](https://defizap.com).'
-            }
-          />
-        </div>
+        <div>{translate('ZAPS_AVAIL_NOTIF')}</div>
       </SubContainer>
     </Container>
   );

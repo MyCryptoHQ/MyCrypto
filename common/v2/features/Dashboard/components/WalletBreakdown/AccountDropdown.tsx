@@ -9,7 +9,7 @@ import { getLabelByAccount, AddressBookContext } from 'v2/services/Store';
 import { COLORS } from 'v2/theme';
 import { IAccount, ExtendedAddressBook, TUuid } from 'v2/types';
 
-const { BLUE_BRIGHT } = COLORS;
+const { BLUE_BRIGHT, BLUE_LIGHT, GREY_LIGHTEST } = COLORS;
 
 interface AccountDropdownProps {
   className?: string;
@@ -25,7 +25,7 @@ interface SDropdownProps {
 
 const Divider = styled('div')`
   border-bottom: ${props => `1px solid ${props.theme.GAU.COLORS.dividerColor}`};
-  margin-bottom: 15px;
+  margin: 0px 20px 15px;
 `;
 
 const dropdown: StyledFunction<SDropdownProps & React.HTMLProps<HTMLInputElement>> = styled('div');
@@ -41,27 +41,32 @@ const SDropdown = dropdown`
   cursor: pointer;
 
   ${props =>
-    props.isOpen
-      ? `{
+    props.isOpen &&
+    `{
     box-shadow: 0 7px 10px 5px rgba(50, 50, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-  }`
-      : ''}
+    border: 2px solid ${BLUE_LIGHT};
+    padding: 8px 14px;
+  }`}
 
   & > div {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    left: -1px;                 // border-box isn't satisfying so we increase width and
-    width: calc(100% + 2px);    // move to left to align the trigger and the dropdown.
+    left: -2px;                 // border-box isn't satisfying so we increase width and
+    width: calc(100% + 4px);    // move to left to align the trigger and the dropdown.
     position: absolute;
     top: 100%;
     z-index: 2;
-    padding: 15px 20px 14px 20px;
     background: #ffffff;
-    border: 1px solid #e5ecf3;
+    border: 2px solid ${BLUE_LIGHT};
     border-top: none;
     box-shadow: 0 7px 10px 5px rgba(50, 50, 93, 0.1);
+  }
+
+  &:hover {
+    border: 2px solid ${BLUE_LIGHT};
+    padding: 8px 14px;
   }
 `;
 
@@ -81,6 +86,16 @@ const IconWrapper = styled(Icon)`
   }
 `;
 
+const SCheckbox = styled(Checkbox)`
+  padding: 5px 20px 5px 20px;
+  height: 50px;
+  margin-bottom: 0px;
+
+  &:hover {
+    background-color: ${GREY_LIGHTEST};
+  }
+`;
+
 const renderAccounts = (
   accounts: IAccount[],
   selected: string[],
@@ -91,7 +106,7 @@ const renderAccounts = (
     const addressCard = getLabelByAccount(account, addressBook);
     const addressLabel = addressCard ? addressCard.label : 'Unknown Account';
     return (
-      <Checkbox
+      <SCheckbox
         key={account.uuid}
         name={`account-${account.uuid}`}
         checked={selected.includes(account.uuid)}
@@ -157,7 +172,7 @@ const AccountDropdown = ({
 
       {isOpen && (
         <div onClick={e => e.stopPropagation()}>
-          <Checkbox
+          <SCheckbox
             name="all-accounts"
             checked={allVisible}
             onChange={toggleAllAccounts}
@@ -165,7 +180,6 @@ const AccountDropdown = ({
           />
           <Divider />
           {renderAccounts(accounts, draftSelected, addressBook, toggleSingleAccount)}
-          <Divider />
         </div>
       )}
     </SDropdown>

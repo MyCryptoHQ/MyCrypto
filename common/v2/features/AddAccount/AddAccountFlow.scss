@@ -85,7 +85,7 @@ $speed: 500ms;
   }
 
   &-description {
-    height: 108px;
+    min-height: 108px;
     font-family: Lato;
     font-size: 18px;
     line-height: 1.5;
@@ -93,10 +93,6 @@ $speed: 500ms;
     padding-top: 16px;
     position: relative;
     text-align: center;
-
-    // @media (max-width: 700px) {
-    //   margin-bottom: 50px;
-    // }
 
     &-button {
       position: absolute;

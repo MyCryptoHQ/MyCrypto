@@ -34,7 +34,6 @@ class AssetOption extends React.PureComponent<OptionComponentProps> {
           symbol={ref}
           name={name}
           onClick={() => onSelect && onSelect(option, null)}
-          selectable={true}
         />
         <Divider />
       </>
@@ -50,11 +49,7 @@ class AssetOptionShort extends React.PureComponent<OptionComponentProps> {
     const ref = ticker ? ticker : symbol;
     return (
       <>
-        <AssetDropdownItem
-          symbol={ref}
-          onClick={() => onSelect && onSelect(option, null)}
-          selectable={true}
-        />
+        <AssetDropdownItem symbol={ref} onClick={() => onSelect && onSelect(option, null)} />
         <Divider />
       </>
     );

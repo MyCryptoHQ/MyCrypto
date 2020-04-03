@@ -10,9 +10,7 @@ import { ROUTE_PATHS } from 'v2/config';
 import { COLORS, BREAK_POINTS, SPACING } from 'v2/theme';
 
 import { ZAPS_CONFIG, IZapId, defaultZapId, riskAndReward, accordionContent } from '../config';
-import { DetailsList, RiskAndRewardCard } from '.';
-
-import sEth from 'assets/images/defizap/illustrations/seth.svg';
+import { RiskAndRewardCard, DetailsList } from '.';
 
 const FullSizeContentPanel = styled(ExtendedContentPanel)`
   padding: 0px;
@@ -33,37 +31,72 @@ const SSection = styled.section<{ color?: string }>`
   padding: ${SPACING.LG} ${SPACING.XL};
 `;
 
-const ContentPanelHeading = styled(SSection)`
+const Illustration = styled.img`
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    flex-direction: column;
+    display: none;
   }
+`;
+
+const MobileIllustration = styled.img`
+  display: none;
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    display: inherit;
+  }
+`;
+
+const DetailsSection = styled.div`
+  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 `;
 
-const Title = styled.div`
+const ContentPanelHeading = styled(SSection)`
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    flex-direction: column-reverse;
+    padding-top: ${SPACING.BASE};
+  }
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-bottom: 0;
+`;
+
+const Title = styled.div`
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    font-size: 22px;
   }
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   font-size: 32px;
   font-weight: bold;
+`;
+
+const TitleContent = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const SubTitle = styled.div`
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    font-size: 14px;
+  }
+  font-size: 20px;
+  font-weight: normal;
+  color: ${COLORS.GREY};
+`;
+
+const LogoContainer = styled.div`
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    align-self: flex-end;
+    margin-bottom: ${SPACING.BASE};
+  }
 `;
 
 const BreakdownImg = styled.img`
   max-width: 32px;
   margin-right: ${SPACING.SM};
-`;
-
-const DetailsSection = styled(SSection)`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: space-between;
+  margin-top: ${SPACING.XS};
 `;
 
 const SpacedSection = styled(SSection)`
@@ -82,7 +115,7 @@ const CardContainer = styled.div`
   flex-wrap: wrap;
 `;
 
-// To re-activate later when we have content
+// To re-activate later when we have content links
 // const LinkContainer = styled.div`
 //   display: flex;
 //   flex-direction: column;
@@ -125,20 +158,24 @@ const ZapEducation = withRouter(({ history, location }) => {
       <ContentPanelHeading>
         <Title>
           <BreakdownImg src={zapSelected.breakdownImage} />
-          {translate('ZAP_HEADER', { $zap: zapSelected.title })}
+          <TitleContent>
+            {zapSelected.title}
+            <SubTitle>{zapSelected.name}</SubTitle>
+          </TitleContent>
         </Title>
-        <AppLogo />
+        <LogoContainer>
+          <AppLogo />
+        </LogoContainer>
       </ContentPanelHeading>
-      <DetailsSection>
-        <img src={sEth} />
-        <DetailsList onSubmit={handleSubmit} zapSelected={zapSelected} />
-      </DetailsSection>
-      <SpacedSection color={COLORS.GREY_LIGHTEST}>
-        <Title>{translate('ZAP_HOW_HEADER')}</Title>
-        <img src={sEth} />
-        <Button onClick={handleSubmit}>{translate('ZAP_ADD_FUNDS')}</Button>
+      <SpacedSection color={COLORS.WHITE}>
+        <DetailsSection>
+          <Illustration src={zapSelected.illustration} width={'60%'} />
+          <DetailsList zapSelected={zapSelected} />
+        </DetailsSection>
+        <Button onClick={handleSubmit}>{translate('ZAP_START_EARNING')}</Button>
+        <MobileIllustration src={zapSelected.mobileIllustration} />
       </SpacedSection>
-      <SSection>
+      <SSection color={COLORS.GREY_LIGHTEST}>
         <Title>{translate('ZAP_RISKS_HEADER')}</Title>
         <CardContainer>
           {riskAndReward.map((el, i) => (
@@ -146,7 +183,7 @@ const ZapEducation = withRouter(({ history, location }) => {
           ))}
         </CardContainer>
       </SSection>
-      <SpacedSection color={COLORS.GREY_LIGHTEST}>
+      <SpacedSection color={COLORS.WHITE}>
         <Title>{translate('ZAP_MORE_INFO_HEADER')}</Title>
         <Typography>{translate('DEFI_DESC_FIRST')}</Typography>
         <Typography>{translate('DEFI_DESC_SECOND')}</Typography>

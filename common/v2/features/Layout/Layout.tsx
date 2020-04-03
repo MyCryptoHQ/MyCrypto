@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 
 import { BannerType } from 'v2/types';
@@ -13,6 +13,7 @@ interface LayoutConfig {
   fluid?: boolean;
   fullW?: boolean;
   bgColor?: string;
+  marginTop?: string;
 }
 interface Props {
   config?: LayoutConfig;
@@ -31,14 +32,12 @@ const SMain = styled('main')`
   flex-direction: column;
 `;
 
-// This is the moment our header becomes sticky and shrinks.
-// Since it is aboslute positionning we add the extra height to
-// the padding.
-// !WARNING: When we remove the banner we will need to place the
-// same margin on SContainer.
-const SBanner = styled(Banner)`
-  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    margin-top: 77px;
+const STop = styled.div`
+  @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
   }
 `;
 
@@ -46,6 +45,13 @@ const SContainer = styled('div')`
   padding: ${SPACING.BASE};
   width: 100%;
   max-width: ${p => (p.fullW ? '100%' : MAX_CONTENT_WIDTH)};
+  /*
+  * This is the moment our header becomes sticky and shrinks.
+  * Since it is aboslute positionning we move the container down.
+  */
+  @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    margin-top: ${p => (p.marginTop ? p.marginTop : 0)};
+  }
 
   @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
     padding: ${SPACING.MD} ${p => (p.fluid || p.fullW ? 0 : MIN_CONTENT_PADDING)};
@@ -72,18 +78,24 @@ export default function Layout({ config = {}, className = '', children }: Props)
   const { error, shouldShowError, getErrorMessage } = useContext(ErrorContext);
   const betaAnnouncement =
     'Heads up: this is a beta version of the new MyCrypto. It has not been audited yet, so please practice safe sending.';
+
+  // Store the calculated height of STop so we can adapt the marginTop of SContainer
+  // when the mobile header has a fixed positioning.
+  const [topWidth, setTopWidth] = useState('0px');
   return (
     <SMain className={className} bgColor={bgColor}>
-      <Header
-        drawerVisible={visible}
-        toggleDrawerVisible={toggleVisible}
-        setDrawerScreen={setScreen}
-      />
-      {shouldShowError() && error && (
-        <SBanner type={BannerType.ERROR} value={getErrorMessage(error)} />
-      )}
-      <SBanner type={BannerType.ANNOUNCEMENT} value={betaAnnouncement} />
-      <SContainer centered={centered} fluid={fluid} fullW={fullW}>
+      <STop ref={(elem: any) => elem && setTopWidth(`${elem.getBoundingClientRect().height}px`)}>
+        {shouldShowError() && error && (
+          <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
+        )}
+        <Banner type={BannerType.ANNOUNCEMENT} value={betaAnnouncement} />
+        <Header
+          drawerVisible={visible}
+          toggleDrawerVisible={toggleVisible}
+          setDrawerScreen={setScreen}
+        />
+      </STop>
+      <SContainer centered={centered} fluid={fluid} fullW={fullW} marginTop={topWidth}>
         {children}
       </SContainer>
       <Footer />

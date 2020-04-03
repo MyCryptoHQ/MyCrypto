@@ -8,6 +8,7 @@ import { COLORS, BREAK_POINTS, FONT_SIZE, SPACING } from 'v2/theme';
 import { weiToFloat, trimBN } from 'v2/utils';
 import { StoreContext, getTotalByAsset, RatesContext } from 'v2/services';
 import { translateRaw } from 'v2/translations';
+import { IconID } from 'v2/components/Tooltip';
 
 import { fetchZapRiskObject, IZapConfig } from '../config';
 
@@ -15,7 +16,7 @@ interface SProps {
   isOwned?: boolean;
 }
 
-const ZapCardContainer = styled('li')`
+const ZapCardContainer = styled.div`
   background: #ffffff;
   border: 1px solid ${(props: SProps) => (props.isOwned ? COLORS.LIGHT_GREEN : COLORS.BLUE_BRIGHT)};
   border-radius: 3px;
@@ -24,12 +25,11 @@ const ZapCardContainer = styled('li')`
   flex: 1;
   margin-bottom: 0px;
   &:not(:last-child) {
-    margin-bottom: ${SPACING.BASE};
+    margin-bottom: ${SPACING.SM};
   }
-
   @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
     &:not(:last-child) {
-      margin-right: ${SPACING.BASE};
+      margin-right: ${SPACING.SM};
       margin-bottom: 0px;
     }
   }
@@ -51,22 +51,35 @@ const ZapCardContent = styled('div')`
   flex: 1;
   padding: 0px ${SPACING.BASE} 0px ${SPACING.BASE};
   flex-direction: column;
+  justify-content: flex-start;
 `;
 
-const ZapCardContentText = styled.div`
-  padding: ${SPACING.SM} 0px;
+const ZapCardContentText = styled.p`
+  padding-bottom: ${SPACING.SM};
+  margin-bottom: 0px;
 `;
 
 const ZapCardContentRow = styled('div')`
   align-items: center;
   justify-content: center;
+  margin-bottom: ${SPACING.SM};
+  & p {
+    &:last-child {
+      margin-bottom: 0px;
+      padding-bottom: 0px;
+    }
+  }
+`;
+
+const ZapContentAmountRow = styled(ZapCardContentRow)`
   flex: 1;
+  justify-content: flex-start;
 `;
 
 const ZapCardContentBottom = styled('div')`
   display: flex;
   padding: 15px 15px;
-  align-items: center;
+  align-items: stretch + center;
   justify-content: center;
   width: 100%;
   flex-direction: row;
@@ -76,8 +89,7 @@ const ZapCardContentBottom = styled('div')`
       margin-top: 0px;
     }
   }
-
-  @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+  @media (min-width: ${BREAK_POINTS.SCREEN_XS}) and (max-width: ${BREAK_POINTS.SCREEN_MD}) {
     flex-direction: column;
     & a {
       &:not(:first-child) {
@@ -89,12 +101,11 @@ const ZapCardContentBottom = styled('div')`
 `;
 
 const ZapCardContentHeaderRow = styled('div')`
-  margin: 0px;
+  margin: ${SPACING.BASE} 0px 0px 0px;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: top;
   justify-content: center;
-  flex: 1;
 `;
 
 const ZapCardHeaderTextSection = styled('div')`
@@ -106,6 +117,7 @@ const ZapCardHeaderTextSection = styled('div')`
 
 const ZapCardHeaderTitle = styled.h5`
   font-weight: bold;
+  margin-top: 0px;
 `;
 
 const ZapCardHeaderName = styled.p`
@@ -114,7 +126,7 @@ const ZapCardHeaderName = styled.p`
 
 const ZapCardImgSection = styled('div')`
   display: flex;
-  align-items: center;
+  align-items: top;
   justify-content: center;
 `;
 
@@ -127,18 +139,61 @@ const ZapCardRiskProfile = styled('div')`
   margin-left: 0.5em;
 `;
 
-const ZapCardButton = styled(Button)`
+const ZapCardButton = styled(Button)<{ width: string }>`
+  @media (min-width: ${BREAK_POINTS.SCREEN_XS}) and (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+    width: 100%;
+  }
   display: flex;
-  flex: 1;
-  min-height: 60px;
+  justify-content: center;
+  align-items: center;
+  width: ${props => props.width};
+  height: 40px;
+  padding: 0;
   font-size: ${FONT_SIZE.MD};
-  font-weight: normal;
-  padding: 0px 15px;
 `;
 
-const ZapEstimatedBalance = styled.p`
+const ZapEstimatedBalance = styled.div`
+  position: relative;
+  display: flex;
+  font-weight: bold;
+  width: 80px;
+  @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+    margin-bottom: ${SPACING.SM};
+  }
+`;
+
+const BalanceWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
   font-weight: bold;
   color: ${COLORS.BLUE_DARK};
+  line-height: 17px;
+  font-size: 16px;
+  @media (min-width: ${BREAK_POINTS.SCREEN_XS}) and (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+    flex-direction: column;
+  }
+`;
+
+const AmountContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  & > * {
+    margin-bottom: ${SPACING.XS};
+  }
+  @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+    align-items: flex-start;
+  }
+`;
+
+const TooltipWrapper = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 2px;
 `;
 
 interface Props {
@@ -187,49 +242,62 @@ const ZapCard = ({ config }: Props) => {
         <ZapCardContentRow>
           <IndicatorItem />
         </ZapCardContentRow>
-        <ZapCardContentRow>
+        <ZapContentAmountRow>
           {!humanReadableZapBalance ? (
             <ZapCardContentText>{config.description}</ZapCardContentText>
           ) : (
             <>
               <ZapCardContentText>{translateRaw('ZAP_BALANCE_DETECTED')}</ZapCardContentText>
-              <ZapCardContentText>
+              <BalanceWrapper>
                 <ZapEstimatedBalance>
                   {translateRaw('ZAP_ESTIMATED_BALANCE')}{' '}
-                  <Tooltip
-                    tooltip={translateRaw('ZAP_BALANCE_TOOLTIP', {
-                      $protocol: config.platformsUsed[0]
-                    })}
-                  />
-                  {`: `}
+                  <TooltipWrapper>
+                    <Tooltip
+                      tooltip={translateRaw('ZAP_BALANCE_TOOLTIP', {
+                        $protocol: config.platformsUsed[0]
+                      })}
+                      type={IconID.informational}
+                    />
+                  </TooltipWrapper>
                 </ZapEstimatedBalance>
-
-                {defiReserveBalances &&
-                  defiReserveBalances.map(defiReserveAsset => (
-                    <div key={defiReserveAsset.uuid}>
-                      {`~ ${parseFloat(
-                        trimBN(formatEther(defiReserveAsset.balance.toString()))
-                      ).toFixed(4)} ${defiReserveAsset.ticker}`}
-                    </div>
-                  ))}
-                {`(${humanReadableZapBalance.toFixed(4)} ${userZapBalances.ticker})`}
-              </ZapCardContentText>
+                <AmountContainer>
+                  {defiReserveBalances ? (
+                    defiReserveBalances.map(defiReserveAsset => (
+                      <div key={defiReserveAsset.uuid}>
+                        {`~ ${parseFloat(
+                          trimBN(formatEther(defiReserveAsset.balance.toString()))
+                        ).toFixed(4)} ${defiReserveAsset.ticker}`}
+                      </div>
+                    ))
+                  ) : (
+                    <ZapCardContentText>
+                      {`(${humanReadableZapBalance.toFixed(4)} ${userZapBalances.ticker})`}
+                    </ZapCardContentText>
+                  )}
+                </AmountContainer>
+              </BalanceWrapper>
             </>
           )}
-        </ZapCardContentRow>
+        </ZapContentAmountRow>
       </ZapCardContent>
       <ZapCardContentBottom>
         {!humanReadableZapBalance ? (
           <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
-            <ZapCardButton inverted={true}>{config.ctaText}</ZapCardButton>
+            <ZapCardButton width={'174px'} inverted={true}>
+              {translateRaw('ZAP_CARD_CTA')}
+            </ZapCardButton>
           </RouterLink>
         ) : (
           <>
             <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
-              <ZapCardButton inverted={true}>{translateRaw('ADD')}</ZapCardButton>
+              <ZapCardButton width={'81px'} inverted={true}>
+                {translateRaw('ADD')}
+              </ZapCardButton>
             </RouterLink>
             <a target="_blank" href={config.link} rel="noreferrer">
-              <ZapCardButton inverted={true}>{translateRaw('WITHDRAW')}</ZapCardButton>
+              <ZapCardButton width={'117px'} inverted={true}>
+                {translateRaw('WITHDRAW')}
+              </ZapCardButton>
             </a>
           </>
         )}

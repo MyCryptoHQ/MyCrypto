@@ -220,6 +220,7 @@ export default function SwapAssets(props: Props) {
             height={'54px'}
             isLoading={isCalculatingFromAmount}
             inputError={fromAmountError}
+            inputMode="decimal"
           />
         </InputWrapper>
         <AssetDropdown
@@ -242,6 +243,7 @@ export default function SwapAssets(props: Props) {
             height={'54px'}
             isLoading={isCalculatingToAmount}
             inputError={toAmountError}
+            inputMode="decimal"
           />
         </InputWrapper>
         <AssetDropdown

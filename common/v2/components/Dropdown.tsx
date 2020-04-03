@@ -31,9 +31,11 @@ const SSelect = styled(Select)`
 
   .Select-input {
     width: 100%;
+    cursor: pointer;
 
     > input {
       width: 100% !important;
+      cursor: pointer;
     }
   }
 `;
@@ -47,7 +49,7 @@ interface Props<T> {
   clearable?: boolean;
   name?: string;
   dropdownIcon?: JSX.Element;
-  optionComponent?:
+  optionComponent:
     | React.ComponentClass<OptionComponentProps<T>>
     | React.StatelessComponent<OptionComponentProps<T>>;
   valueComponent?: React.ComponentClass<T> | React.StatelessComponent<T>;
@@ -62,6 +64,27 @@ interface Props<T> {
 
 // Fixes weird placement issues for react-select
 const DropdownContainer = styled('div')`
+  cursor: pointer;
+
+  .Select-control {
+    cursor: pointer;
+  }
+
+  .is-searchable.is-open {
+    .Select-input,
+    .Select-control {
+      cursor: text;
+
+      > input {
+        cursor: text;
+      }
+    }
+  }
+
+  .is-searchable.is-focused:not(.is-open) > .Select-control {
+    cursor: pointer;
+  }
+
   .has-value > .Select-control > .Select-multi-value-wrapper > .Select-input:only-child {
     transform: translateY(0%);
     padding: 16px 15px 16px 15px;
@@ -72,8 +95,15 @@ const DropdownContainer = styled('div')`
 const Chevron = styled(Icon)`
   font-size: 0.75rem;
 `;
+
 const IconWrapper = styled('div')`
   width: 30px;
+`;
+
+const OptionWrapper = styled.div`
+  &:hover {
+    background-color: ${COLORS.GREY_LIGHTEST};
+  }
 `;
 
 const DropdownIndicator = (props: ArrowRendererProps) => (
@@ -90,6 +120,17 @@ const ClearIndicator = () => (
   </IconWrapper>
 );
 
+const OptionComponent = (
+  props: OptionComponentProps,
+  Component:
+    | React.ComponentClass<OptionComponentProps>
+    | React.StatelessComponent<OptionComponentProps>
+) => (
+  <OptionWrapper>
+    <Component {...props} />
+  </OptionWrapper>
+);
+
 // ContactLookup dropdown is using custom dropdown indicator (dropdownIcon) and clear field indicator.
 // When value is set, it hides dropdown icon, so that clear icon can appear instead of it.
 const getDropdownIndicator = (
@@ -102,7 +143,8 @@ const getDropdownIndicator = (
 };
 
 export default function Dropdown(props: Props<any>) {
-  const { value, dropdownIcon, onBlur, inputValue, clearable = false } = props;
+  const { value, dropdownIcon, onBlur, inputValue, clearable = false, optionComponent } = props;
+
   return (
     <DropdownContainer>
       <SSelect
@@ -113,6 +155,7 @@ export default function Dropdown(props: Props<any>) {
         menuStyle={{ maxHeight: '65vh' }}
         onBlur={onBlur ? () => onBlur(inputValue) : undefined}
         clearable={clearable}
+        optionComponent={(oProps: OptionComponentProps) => OptionComponent(oProps, optionComponent)}
       />
     </DropdownContainer>
   );

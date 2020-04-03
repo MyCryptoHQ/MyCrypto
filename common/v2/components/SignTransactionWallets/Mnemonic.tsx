@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { ethers, utils } from 'ethers';
 import { isValidMnemonic } from 'ethers/utils/hdnode';
+import styled from 'styled-components';
 
 import { ISignComponentProps } from 'v2/types';
 import translate, { translateRaw } from 'v2/translations';
-import { Spinner } from 'v2/components/Spinner';
-import { Input } from 'v2/components';
+import { Button, Input } from 'v2/components';
 import { WALLETS_CONFIG } from 'v2/config';
 
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
@@ -23,6 +23,14 @@ enum WalletSigningState {
   NOT_READY, //use when signerWallet rejects transaction
   UNKNOWN //used upon component initialization when wallet status is not determined
 }
+
+const SignButton = styled(Button)`
+  width: 100%;
+
+  > div {
+    justify-content: center;
+  }
+`;
 
 export default class SignTransactionMnemonic extends Component<
   ISignComponentProps,
@@ -86,15 +94,9 @@ export default class SignTransactionMnemonic extends Component<
             <div className="SignTransactionKeystore-description">
               {translateRaw('SIGN_TX_EXPLANATION')}
             </div>
-            <div className="SignTransactionKeystore-spinner">
-              {isSigning ? (
-                <Spinner />
-              ) : (
-                <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
-                  {translateRaw('DEP_SIGNTX')}
-                </button>
-              )}
-            </div>
+            <SignButton type="submit" disabled={unlockDisabled} loading={isSigning}>
+              {translateRaw('DEP_SIGNTX')}
+            </SignButton>
           </form>
           {WALLETS_CONFIG.MNEMONIC_PHRASE.helpLink && (
             <div className="SignTransactionKeystore-help">
@@ -117,7 +119,7 @@ export default class SignTransactionMnemonic extends Component<
   private unlock = async (e: React.SyntheticEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    this.getPublicKey();
+    await this.getPublicKey();
   };
 
   private async getPublicKey() {
@@ -129,6 +131,8 @@ export default class SignTransactionMnemonic extends Component<
       this.checkPublicKeyMatchesCache(checkSumAddress);
     } catch (err) {
       console.error(err);
+    } finally {
+      this.setState({ isSigning: false });
     }
   }
 

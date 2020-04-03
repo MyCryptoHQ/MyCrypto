@@ -36,12 +36,14 @@ import ProtocolTagsList from 'v2/features/DeFiZap/components/ProtocolTagsList';
 import { ProtectTxUtils, ProtectTxContext } from 'v2/features/ProtectTransaction';
 import { ProtectTxAbort } from 'v2/features/ProtectTransaction/components';
 import { MembershipReceiptBanner } from 'v2/features/PurchaseMembership';
+import { DeFiZapLogo } from 'v2/features/DeFiZap';
 
 import { ISender } from './types';
 import { constructSenderFromTxConfig } from './helpers';
 import { FromToAccount, SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
 import { PendingTransaction } from './PendingLoader';
+
 import sentIcon from 'common/assets/images/icn-sent.svg';
 import defizaplogo from 'assets/images/defizap/defizaplogo.svg';
 import './TxReceipt.scss';
@@ -145,11 +147,14 @@ export default function TxReceipt({
       const provider = new ProviderHandler(displayTxReceipt.network || txConfig.network);
       const timestampInterval = setInterval(() => {
         getTimestampFromBlockNum(blockNumber, provider).then(transactionTimestamp => {
-          addNewTransactionToAccount(senderAccount, {
-            ...displayTxReceipt,
-            timestamp: transactionTimestamp || 0,
-            stage: txStatus
-          });
+          if (sender.account) {
+            addNewTransactionToAccount(sender.account, {
+              ...displayTxReceipt,
+              txType: displayTxReceipt ? displayTxReceipt.txType : ITxType.STANDARD,
+              timestamp: transactionTimestamp || 0,
+              stage: txStatus
+            });
+          }
           setTimestamp(transactionTimestamp || 0);
         });
       }, 1000);
@@ -165,8 +170,6 @@ export default function TxReceipt({
       return getAssetRate(txConfig.asset);
     }
   }, [displayTxReceipt, txConfig.asset]);
-
-  const { senderAccount } = txConfig;
 
   const senderContact = getContactByAddressAndNetworkId(
     txConfig.senderAccount.address,
@@ -348,7 +351,7 @@ export const TxReceiptUI = ({
               <SImg src={defizaplogo} size="24px" />
               {translateRaw('ZAP_NAME')}
             </div>
-            <div className="TransactionReceipt-row-column rightAligned">{zapSelected.name}</div>
+            <div className="TransactionReceipt-row-column rightAligned">{zapSelected.title}</div>
           </div>
           <div className="TransactionReceipt-row">
             <div className="TransactionReceipt-row-column">{translateRaw('PLATFORMS')}</div>
@@ -452,6 +455,7 @@ export const TxReceiptUI = ({
           {translate('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')}
         </Button>
       </Link>
+      {txType === ITxType.DEFIZAP && <DeFiZapLogo />}
     </div>
   );
 };

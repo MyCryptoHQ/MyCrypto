@@ -135,6 +135,7 @@ const CustomIcon = styled.span`
 interface Props {
   name?: string;
   type?: string;
+  inputMode?: React.HTMLProps<HTMLInputElement>['inputMode'];
   label?: string | JSX.Element;
   value: string | undefined;
   inputError?: string | JSX.Element | undefined;
@@ -185,7 +186,8 @@ export class InputField extends Component<Props> {
       disabled,
       isLoading,
       maxHeight,
-      marginBottom = '15px'
+      marginBottom = '15px',
+      inputMode
     } = this.props;
 
     const IconComponent = customIcon as React.ElementType;
@@ -225,6 +227,7 @@ export class InputField extends Component<Props> {
               placeholder={placeholder ? placeholder : ''}
               height={height}
               disabled={isLoading || disabled}
+              inputMode={inputMode}
             />
           )}
 

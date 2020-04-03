@@ -9,7 +9,8 @@ import {
   IFormikFields,
   ISignedTx,
   ITxObject,
-  ITxStatus
+  ITxStatus,
+  ITxType
 } from 'v2/types';
 import {
   hexWeiToString,
@@ -111,10 +112,14 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
       .catch(txHash => provider.getTransactionByHash(txHash))
       .then(retrievedTransactionReceipt => {
         const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(assets, networks);
-        addNewTransactionToAccount(
-          state.txConfig.senderAccount,
-          { ...txReceipt, stage: ITxStatus.PENDING } || {}
-        );
+        addNewTransactionToAccount(state.txConfig.senderAccount, {
+          ...txReceipt,
+          to: state.txConfig.receiverAddress,
+          from: state.txConfig.senderAccount.address,
+          amount: state.txConfig.amount,
+          txType: ITxType.STANDARD,
+          stage: ITxStatus.PENDING
+        });
         setState((prevState: State) => ({
           ...prevState,
           txReceipt
@@ -152,10 +157,11 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
             from: state.txConfig.senderAccount.address
           }
         : fromTxReceiptObj(payload);
-    addNewTransactionToAccount(
-      state.txConfig.senderAccount,
-      { ...txReceipt, stage: ITxStatus.PENDING } || {}
-    );
+    addNewTransactionToAccount(state.txConfig.senderAccount, {
+      ...txReceipt,
+      txType: ITxType.STANDARD,
+      stage: ITxStatus.PENDING
+    });
 
     setState((prevState: State) => ({
       ...prevState,

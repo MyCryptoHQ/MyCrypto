@@ -20,22 +20,13 @@ const SContainer = styled('div')`
   display: flex;
   flex-direction: row;
   padding: 12px;
-
-  &:hover {
-    background-color: var(--color-gray-lighter);
-  }
 `;
 
-class NetworkOption extends React.PureComponent<OptionComponentProps> {
-  public render() {
-    const { option, onSelect } = this.props;
-    return (
-      <SContainer onClick={() => onSelect && onSelect(option, null)}>
-        <Typography value={option.label} />
-      </SContainer>
-    );
-  }
-}
+const NetworkOption = ({ option, onSelect }: OptionComponentProps) => (
+  <SContainer onClick={() => onSelect && onSelect(option, null)}>
+    <Typography value={option.label} />
+  </SContainer>
+);
 
 function NetworkSelectDropdown({
   network,

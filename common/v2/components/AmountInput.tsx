@@ -29,6 +29,7 @@ function AmountInput({ asset, value, onChange, onBlur, placeholder, ...props }: 
   return (
     <SInput
       {...props}
+      inputMode="decimal"
       value={value}
       onChange={onChange}
       onBlur={onBlur}
