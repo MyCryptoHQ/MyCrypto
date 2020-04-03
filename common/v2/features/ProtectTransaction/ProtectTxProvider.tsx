@@ -78,70 +78,49 @@ const ProtectTxProvider: React.FC = ({ children }) => {
       const address = receiverAddress || state.receiverAddress;
       if (!address) return Promise.reject();
 
-      let numOfErrors = 0;
+      const [
+        cryptoScamAddressReportResponse,
+        etherscanBalanceReportResponse,
+        etherscanLastTxReportResponse
+      ] = await Promise.all(
+        [
+          CryptoScamDBService.check(address),
+          EtherscanService.instance.getBalance(address, state.network!.id),
+          EtherscanService.instance.getLastTx(address, state.network!.id)
+        ].map(p => p.catch(e => e))
+      );
 
-      try {
-        const cryptoScamAddressReport = await CryptoScamDBService.check(address);
+      const cryptoScamAddressReport =
+        cryptoScamAddressReportResponse instanceof Error
+          ? {
+              input: address,
+              message: '',
+              success: false
+            }
+          : cryptoScamAddressReportResponse;
 
-        setState((prevState: ProtectTxState) => ({
-          ...prevState,
-          cryptoScamAddressReport
-        }));
-      } catch (e) {
-        numOfErrors++;
-        console.error(e);
-        setState((prevState: ProtectTxState) => ({
-          ...prevState,
-          cryptoScamAddressReport: {
-            input: address,
-            message: '',
-            success: false
-          } as CryptoScamDBNoInfoResponse
-        }));
+      const etherscanBalanceReport =
+        etherscanBalanceReportResponse instanceof Error ? null : etherscanBalanceReportResponse;
+
+      if (etherscanBalanceReportResponse instanceof Error) {
+        console.error(etherscanBalanceReportResponse);
       }
 
-      try {
-        const etherscanBalanceReport = await EtherscanService.instance.getBalance(
-          address,
-          state.network!.id
-        );
+      const etherscanLastTxReport =
+        etherscanLastTxReportResponse instanceof Error ? null : etherscanLastTxReportResponse;
 
-        setState((prevState: ProtectTxState) => ({
-          ...prevState,
-          etherscanBalanceReport
-        }));
-      } catch (e) {
-        numOfErrors++;
-        console.error(e);
-        setState((prevState: ProtectTxState) => ({
-          ...prevState,
-          etherscanBalanceReport: null
-        }));
+      if (etherscanLastTxReportResponse instanceof Error) {
+        console.error(etherscanLastTxReportResponse);
       }
 
-      try {
-        const etherscanLastTxReport = await EtherscanService.instance.getLastTx(
-          address,
-          state.network!.id
-        );
+      setState((prevState: ProtectTxState) => ({
+        ...prevState,
+        cryptoScamAddressReport,
+        etherscanBalanceReport,
+        etherscanLastTxReport
+      }));
 
-        setState((prevState: ProtectTxState) => ({
-          ...prevState,
-          etherscanLastTxReport
-        }));
-      } catch (e) {
-        numOfErrors++;
-        console.error(e);
-        setState((prevState: ProtectTxState) => ({
-          ...prevState,
-          etherscanLastTxReport: null
-        }));
-      }
-
-      if (numOfErrors < 3) {
-        return Promise.resolve();
-      }
-      return Promise.reject();
+      return Promise.resolve();
     },
     [state.receiverAddress, setState]
   );

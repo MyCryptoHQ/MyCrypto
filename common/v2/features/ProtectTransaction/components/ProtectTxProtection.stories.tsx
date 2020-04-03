@@ -41,7 +41,8 @@ const formValues = {
   },
   network,
   asset: find(assets, { networkId: ropstenId }),
-  gasPriceSlider: 4,
+  gasPriceSlider: 10,
+  gasEstimates: { safeLow: 5 },
   advancedTransaction: false,
   nonceField: '49'
 };

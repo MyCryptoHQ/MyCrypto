@@ -95,13 +95,12 @@ export default function TxReceipt({
 
   const [protectTxCounter, setProtectTxCounter] = React.useState(20);
   useEffect(() => {
-    let protectTxTimer: number | null = null;
+    let protectTxTimer: ReturnType<typeof setTimeout> | null = null;
     if (
       !getProTxValue(['state', 'isWeb3Wallet']) &&
       getProTxValue(['state', 'protectTxEnabled']) &&
       protectTxCounter > 0
     ) {
-      // @ts-ignore
       protectTxTimer = setTimeout(() => setProtectTxCounter(prevCount => prevCount - 1), 1000);
     } else if (
       !getProTxValue(['state', 'isWeb3Wallet']) &&
