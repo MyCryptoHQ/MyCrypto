@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
@@ -139,7 +139,7 @@ export const getInitialFormikValues = (s: ITxConfig, defaultAsset?: Asset): IFor
   return R.mergeDeepWith(preferValueFromState, initialFormikValues, state);
 };
 
-const QueryWarning: React.SFC<{}> = () => (
+const QueryWarning: React.FC = () => (
   <WhenQueryExists
     whenQueryExists={
       <div className="alert alert-info">
@@ -255,6 +255,19 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
           onComplete(fields);
         }}
         render={({ errors, setFieldValue, setFieldTouched, touched, values, handleChange }) => {
+          // Handle nonce calculation
+          useEffect(() => {
+            if (R.isEmpty(values) || R.isEmpty(values.network) || R.isEmpty(values.account)) {
+              return;
+            }
+            setIsEstimatingNonce(true);
+            (async () => {
+              const nonce: number = await getNonce(values.network, values.account.address);
+              setFieldValue('nonceField', nonce.toString());
+              setIsEstimatingNonce(false);
+            })();
+          }, [values.network, values.account]);
+
           const toggleAdvancedOptions = () => {
             setFieldValue('advancedTransaction', !values.advancedTransaction);
           };
@@ -320,16 +333,6 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
             }
           };
 
-          const handleNonceEstimate = async (account: IAccount) => {
-            if (!values || !values.network || !account) {
-              return;
-            }
-            setIsEstimatingNonce(true);
-            const nonce: number = await getNonce(values.network, account.address);
-            setFieldValue('nonceField', nonce.toString());
-            setIsEstimatingNonce(false);
-          };
-
           const isFormValid = checkFormValid(errors);
 
           return (
@@ -389,7 +392,6 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                         accounts={accountsWithAsset}
                         onSelect={(option: IAccount) => {
                           form.setFieldValue('account', option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
-                          handleNonceEstimate(option);
                           handleGasEstimate();
                         }}
                         asset={values.asset}

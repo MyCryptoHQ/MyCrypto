@@ -70,6 +70,8 @@ function AssetDropdown({
     // Preselect first value when not provided
     if (R.isEmpty(selectedAsset) && onSelect && !R.isEmpty(assets)) {
       onSelect(assets[0]);
+    } else if (!R.isEmpty(selectedAsset) && onSelect) {
+      onSelect(selectedAsset!);
     }
   });
 
