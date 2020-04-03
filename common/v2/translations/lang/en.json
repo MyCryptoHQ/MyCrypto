@@ -295,6 +295,7 @@
     "ADD_ACCOUNT_WEB3_INSTALL_FOOTER_LINK": "Download the Desktop App to unlock your wallet",
     "ADD_ACCOUNT_WEB3_INSTALL_MOBILE_DESC": "Download our recommended Web3Provider apps to get started now!",
     "ACCOUNT_LIST_TABLE_ADD_ACCOUNT": "Add Account",
+    "ADDRESS_BOOK_TABLE_ADD_ADDRESS": "Add Address",
     "ACCOUNT_LIST_TABLE_ACCOUNTS": "Accounts",
     "ACCOUNT_LIST_LABEL": "Label",
     "ACCOUNT_LIST_ADDRESS": "Address",
@@ -374,7 +375,7 @@
     "NOTIFICATIONS_WALLET_RESOURCE_SUPPORT": "Support Center",
     "NOTIFICATIONS_WALLET_ADDED_TITLE": "Your account has been added.",
     "NOTIFICATIONS_WALLET_ADDED_DESCRIPTION": "Your account with the address **$address** has been successfully added!",
-    "NOTIFICATIONS_WALLET_NOT_ADDED_TITLE": "Your account could not been added.",
+    "NOTIFICATIONS_WALLET_NOT_ADDED_TITLE": "Your account could not be added.",
     "NOTIFICATIONS_WALLET_NOT_ADDED_DESCRIPTION": "Your account with the address **$address** could not be successfully added. This can be due to an invalid network being selected, or if the account is already present on your dashboard.",
     "NOTIFICATIONS_SAVE_DASHBOARD_TITLE": "Save Your Dashboard Settings",
     "NOTIFICATIONS_SAVE_DASHBOARD_DESCRIPTION": "You've spent a lot of time customizing your dashboard. Make sure to back it up so you don’t lose your settings.",
@@ -703,6 +704,7 @@
     "DEFIZAP_QUESTION_TWO_ANSWER": "There's always risk when interacting with DeFi and smart contracts, and DeFiZap is an experimental project that is in beta. Using a service like DeFiZap to interact with protocols for you does add a small amount of additional risk, but most of the risk stems from the actual protocols that are being interacted with.",
     "DEFIZAP_QUESTION_FIVE_ANSWER": "The MyCrypto DeFiZap integration uses the same process as the DeFiZap.com process. MyCrypto’s DeFiZap integration adds an extra layer of convenience by allowing you to access Zaps without having to leave MyCrypto. For the full list of available Zaps, visit [DeFiZap.com](https://defizap.com).",
     "DEFIZAP_QUESTION_SIX_ANSWER": "To exit a Zap, please visit [DeFiZap.com](https://defizap.com), go to the Zap that you’re currently engaged with, and follow the steps that they outline.",
-    "DEFIZAP_QUESTION_SEVEN_ANSWER": "Due to technical limitations, at this time we’re only currently able to give an estimate on some Zap balances, and DeFiZap recommends checking [pools.fyi](https://pools.fyi/) to view some of your balances/returns. Over time, as we and DeFiZap explore this further, we anticipate that there will be a better solution for this."
+    "DEFIZAP_QUESTION_SEVEN_ANSWER": "Due to technical limitations, at this time we’re only currently able to give an estimate on some Zap balances, and DeFiZap recommends checking [pools.fyi](https://pools.fyi/) to view some of your balances/returns. Over time, as we and DeFiZap explore this further, we anticipate that there will be a better solution for this.",
+    "VIEW_ONLY_WARNING_TOOLTIP": "Note: You cannot send from a view-only account."
   }
 }

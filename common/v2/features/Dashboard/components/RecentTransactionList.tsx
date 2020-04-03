@@ -165,7 +165,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           ),
           <Amount
             key={3}
-            assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
+            assetValue={`${parseFloat(amount).toFixed(4)} ${asset.ticker}`}
             fiatValue={`$${convertToFiat(parseFloat(amount), getAssetRate(asset)).toFixed(2)}
         `}
           />,

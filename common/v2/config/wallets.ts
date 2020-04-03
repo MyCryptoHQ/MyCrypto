@@ -200,7 +200,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
   },
   [WalletId.VIEW_ONLY]: {
     id: WalletId.VIEW_ONLY,
-    name: 'View Only',
+    name: 'View-Only',
     isDeterministic: false,
     isSecure: true,
     isDesktopOnly: false,
