@@ -1,21 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { Formik, Form, Field, FieldProps } from 'formik';
-import { Button } from '@mycrypto/ui';
 import { isEmpty } from 'lodash';
 import * as Yup from 'yup';
-import { parseEther } from 'ethers/utils';
 
 import translate, { translateRaw } from 'v2/translations';
 import { SPACING } from 'v2/theme';
 import { IAccount, Network, StoreAccount, Asset, TSymbol } from 'v2/types';
-import { AccountDropdown, InlineMessage, AmountInput } from 'v2/components';
+import { AccountDropdown, InlineMessage, AmountInput, Button } from 'v2/components';
 import { validateAmountField } from 'v2/features/SendAssets/components/validators/validators';
 import { isEthereumAccount } from 'v2/services/Store/Account/helpers';
-import { StoreContext, AssetContext, NetworkContext, getAccountBalance } from 'v2/services/Store';
+import { StoreContext, AssetContext, NetworkContext } from 'v2/services/Store';
 import { fetchGasPriceEstimates } from 'v2/services/ApiService';
 import { getNonce } from 'v2/services/EthService';
-import { EtherUUID } from 'v2/utils';
+import { EtherUUID, noOp } from 'v2/utils';
 import { getAccountsWithAssetBalance } from 'v2/features/SwapAssets/helpers';
 
 import MembershipDropdown from './MembershipDropdown';
@@ -23,6 +21,7 @@ import { MembershipPurchaseState, MembershipSimpleTxFormFull } from '../types';
 import { IMembershipId, IMembershipConfig, MEMBERSHIP_CONFIG } from '../config';
 
 interface Props extends MembershipPurchaseState {
+  isSubmitting: boolean;
   onComplete(fields: any): void;
   handleUserInputFormSubmit(fields: any): void;
 }
@@ -30,6 +29,7 @@ interface Props extends MembershipPurchaseState {
 interface UIProps {
   network: Network;
   relevantAccounts: StoreAccount[];
+  isSubmitting: boolean;
   onComplete(fields: any): void;
 }
 
@@ -54,7 +54,7 @@ const FormFieldSubmitButton = styled(Button)`
   }
 `;
 
-const MembershipForm = ({ onComplete }: Props) => {
+const MembershipForm = ({ isSubmitting, onComplete }: Props) => {
   const { accounts } = useContext(StoreContext);
   const { networks } = useContext(NetworkContext);
   const network = networks.find(n => n.baseAsset === EtherUUID) as Network;
@@ -62,6 +62,7 @@ const MembershipForm = ({ onComplete }: Props) => {
 
   return (
     <MembershipFormUI
+      isSubmitting={isSubmitting}
       network={network}
       relevantAccounts={relevantAccounts}
       onComplete={onComplete}
@@ -69,11 +70,15 @@ const MembershipForm = ({ onComplete }: Props) => {
   );
 };
 
-export const MembershipFormUI = ({ network, relevantAccounts, onComplete }: UIProps) => {
+export const MembershipFormUI = ({
+  isSubmitting,
+  network,
+  relevantAccounts,
+  onComplete
+}: UIProps) => {
   const { assets } = useContext(AssetContext);
   const defaultMembership = MEMBERSHIP_CONFIG[IMembershipId.onemonth];
   const defaultAsset = assets.find(asset => asset.uuid === defaultMembership.assetUUID) as Asset;
-  const [selectedAsset, setSelectedAsset] = useState(defaultAsset);
   const initialFormikValues: MembershipSimpleTxFormFull = {
     membershipSelected: defaultMembership,
     account: {} as StoreAccount,
@@ -91,21 +96,6 @@ export const MembershipFormUI = ({ network, relevantAccounts, onComplete }: UIPr
       .min(0, translateRaw('ERROR_0'))
       .required(translateRaw('REQUIRED'))
       .typeError(translateRaw('ERROR_0'))
-      .test(
-        'check-amount',
-        translateRaw('BALANCE_TOO_LOW_NO_RECOMMENDATION_ERROR', { $asset: selectedAsset.ticker }),
-        function(value) {
-          const account = this.parent.account;
-          const asset = this.parent.asset;
-          const val = value ? value : 0;
-          if (!isEmpty(account)) {
-            return getAccountBalance(account, asset.type === 'base' ? undefined : asset).gte(
-              parseEther(val.toString())
-            );
-          }
-          return true;
-        }
-      )
   });
 
   return (
@@ -113,11 +103,7 @@ export const MembershipFormUI = ({ network, relevantAccounts, onComplete }: UIPr
       <Formik
         initialValues={initialFormikValues}
         validationSchema={MembershipFormSchema}
-        onSubmit={fields => {
-          fetchGasPriceEstimates(fields.network).then(({ fast }) => {
-            onComplete({ ...fields, gasPrice: fast.toString() });
-          });
-        }}
+        onSubmit={noOp}
         render={({ values, errors, touched, setFieldValue }) => {
           const handleNonceEstimate = async (account: IAccount) => {
             const nonce: number = await getNonce(values.network, account.address);
@@ -168,7 +154,6 @@ export const MembershipFormUI = ({ network, relevantAccounts, onComplete }: UIPr
                           a => a.uuid === option.value.assetUUID
                         ) as Asset;
                         form.setFieldValue('asset', newAsset);
-                        setSelectedAsset(newAsset);
                       }}
                     />
                   )}
@@ -194,6 +179,9 @@ export const MembershipFormUI = ({ network, relevantAccounts, onComplete }: UIPr
                     />
                   )}
                 />
+                {filteredAccounts.length === 0 && (
+                  <InlineMessage>{translateRaw('NO_RELEVANT_ACCOUNTS')}</InlineMessage>
+                )}
               </FormFieldItem>
               <FormFieldItem>
                 <FormFieldLabel htmlFor="amount">
@@ -228,9 +216,12 @@ export const MembershipFormUI = ({ network, relevantAccounts, onComplete }: UIPr
               </FormFieldItem>
               <FormFieldSubmitButton
                 type="submit"
+                loading={isSubmitting}
                 onClick={() => {
                   if (isValid) {
-                    onComplete(values);
+                    fetchGasPriceEstimates(values.network).then(({ fast }) => {
+                      onComplete({ ...values, gasPrice: fast.toString() });
+                    });
                   }
                 }}
               >

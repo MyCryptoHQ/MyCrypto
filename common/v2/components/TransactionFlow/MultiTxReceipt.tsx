@@ -19,6 +19,7 @@ import translate, { translateRaw } from 'v2/translations';
 import { truncate } from 'v2/utils';
 import { COLORS, SPACING } from 'v2/theme';
 import ProtocolTagsList from 'v2/features/DeFiZap/components/ProtocolTagsList';
+import { MembershipReceiptBanner } from 'v2/features/PurchaseMembership';
 
 import { SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
@@ -58,6 +59,7 @@ export default function MultiTxReceipt({
   transactions,
   transactionsConfigs,
   zapSelected,
+  membershipSelected,
   pendingButton,
   resetFlow,
   account,
@@ -108,6 +110,12 @@ export default function MultiTxReceipt({
           </div>
           <div className="TransactionReceipt-divider" />
         </>
+      )}
+
+      {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
+        <div className="TransactionReceipt-row">
+          <MembershipReceiptBanner membershipSelected={membershipSelected} />
+        </div>
       )}
 
       {txType !== ITxType.DEFIZAP && <div className="TransactionReceipt-divider" />}

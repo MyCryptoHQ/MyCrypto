@@ -705,6 +705,13 @@
     "DEFIZAP_QUESTION_FIVE_ANSWER": "The MyCrypto DeFiZap integration uses the same process as the DeFiZap.com process. MyCrypto’s DeFiZap integration adds an extra layer of convenience by allowing you to access Zaps without having to leave MyCrypto. For the full list of available Zaps, visit [DeFiZap.com](https://defizap.com).",
     "DEFIZAP_QUESTION_SIX_ANSWER": "To exit a Zap, please visit [DeFiZap.com](https://defizap.com), go to the Zap that you’re currently engaged with, and follow the steps that they outline.",
     "DEFIZAP_QUESTION_SEVEN_ANSWER": "Due to technical limitations, at this time we’re only currently able to give an estimate on some Zap balances, and DeFiZap recommends checking [pools.fyi](https://pools.fyi/) to view some of your balances/returns. Over time, as we and DeFiZap explore this further, we anticipate that there will be a better solution for this.",
-    "VIEW_ONLY_WARNING_TOOLTIP": "Note: You cannot send from a view-only account."
+    "VIEW_ONLY_WARNING_TOOLTIP": "Note: You cannot send from a view-only account.",
+    "APPROVE_MEMBERSHIP": "Approve Membership Contract",
+    "MEMBERSHIP_STEP1_TEXT": "Before purchasing a membership with DAI, you must approve the membership contract to execute the transaction.",
+    "COMPLETE_PURCHASE": "Complete Purchase",
+    "MEMBERSHIP_STEP2_TEXT": "The contract you approved will complete the membership purchase as soon as you confirm the transaction below.",
+    "PURCHASE_MEMBERSHIP": "Purchase Membership",
+    "PURCHASE_MEMBERSHIP_RECEIPT": "Purchase Membership Receipt",
+    "NO_RELEVANT_ACCOUNTS": "No accounts with the required amount available"
   }
 }

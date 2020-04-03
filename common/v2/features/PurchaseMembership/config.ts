@@ -17,6 +17,7 @@ export interface IMembershipConfig {
   price: string;
   assetUUID: string;
   durationInDays: number;
+  discountNotice: string;
 }
 
 export type IMembershipConfigObject = {
@@ -46,7 +47,7 @@ export const MEMBERSHIP_PURCHASE_GAS_LIMIT = 1000000;
 
 export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
   onemonth: {
-    title: 'One Month Membership',
+    title: '1 month',
     name: 'One Month Membership',
     key: IMembershipId.onemonth,
     contractAddress: '0xCE8EF07495A36c451fB49b7391b33884832Bb66f',
@@ -54,11 +55,12 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     icon: onemonthIcon,
     price: '4',
     assetUUID: DAIUUID,
-    durationInDays: 30
+    durationInDays: 30,
+    discountNotice: ''
   },
 
   threemonths: {
-    title: 'Three Month Membership',
+    title: '3 months',
     name: 'Three Month Membership',
     key: IMembershipId.threemonths,
     contractAddress: '0xae90e0F7F3f2191B17b1816dFA8C5Ce8e049DC96',
@@ -66,11 +68,12 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     icon: threemonthsIcon,
     price: '10.5',
     assetUUID: DAIUUID,
-    durationInDays: 90
+    durationInDays: 90,
+    discountNotice: '10% off'
   },
 
   sixmonths: {
-    title: 'Six Month Membership',
+    title: '6 months',
     name: 'Six Month Membership',
     key: IMembershipId.sixmonths,
     contractAddress: '0x1C8369C9772E71E82679c9750E4770F29FECcbdD',
@@ -78,11 +81,12 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     icon: sixMonthsIcon,
     price: '18',
     assetUUID: DAIUUID,
-    durationInDays: 180
+    durationInDays: 180,
+    discountNotice: '20% off'
   },
 
   twelvemonths: {
-    title: 'Twelve Month Membership',
+    title: '12 months',
     name: 'Twelve Month Membership',
     key: IMembershipId.twelvemonths,
     contractAddress: '0xb9cae1F4480bcc6dF52F045077BAc1DE448D5406',
@@ -90,11 +94,12 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     icon: twelveMonthsIcon,
     price: '30',
     assetUUID: DAIUUID,
-    durationInDays: 366
+    durationInDays: 366,
+    discountNotice: '40% off'
   },
 
   lifetime: {
-    title: 'Lifetime Membership',
+    title: 'I 💖 MyCrypto',
     name: 'Lifetime Membership',
     key: IMembershipId.lifetime,
     contractAddress: '0x60B8C6c7d339Aa170bcFa5a76053ff3e8c1189c1',
@@ -102,7 +107,8 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     icon: lifetimeIcon,
     price: '5',
     assetUUID: EtherUUID,
-    durationInDays: 36500
+    durationInDays: 36500,
+    discountNotice: 'lifetime of love!'
   }
 };
 

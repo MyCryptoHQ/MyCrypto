@@ -1,4 +1,4 @@
-import { ITxConfig, ITxReceipt, Asset, Network, StoreAccount } from 'v2/types';
+import { Asset, Network, StoreAccount } from 'v2/types';
 import { IMembershipConfig } from './config';
 
 export type TStepAction = (payload: any, after: () => void) => void;
@@ -11,8 +11,7 @@ export interface IMembershipStepComponentProps {
 
 export interface MembershipPurchaseState {
   membershipSelected: undefined | IMembershipConfig; // ToDo: Make enum
-  txConfig: ITxConfig;
-  txReceipt: ITxReceipt | undefined;
+  account: StoreAccount;
 }
 
 export interface ISimpleTxForm {
