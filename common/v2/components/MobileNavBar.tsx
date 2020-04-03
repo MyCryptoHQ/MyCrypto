@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 
 import { BREAK_POINTS, COLORS } from '../theme';
-import { IS_MOBILE } from '../utils';
 
 const MobileNavBarStyled = styled.div`
   display: flex;
@@ -54,7 +53,7 @@ const MobileNavBarStyled = styled.div`
   }
 
   @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
-    margin-top: ${IS_MOBILE && '-29px'};
+    margin-top: -29px;
   }
 `;
 
