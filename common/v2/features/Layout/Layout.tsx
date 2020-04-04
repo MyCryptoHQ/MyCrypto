@@ -53,7 +53,7 @@ const SContainer = styled('div')`
     margin-top: ${p => (p.marginTop ? p.marginTop : 0)};
   }
 
-  @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     padding: ${SPACING.MD} ${p => (p.fluid || p.fullW ? 0 : MIN_CONTENT_PADDING)};
   }
 
