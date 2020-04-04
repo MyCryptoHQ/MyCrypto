@@ -712,6 +712,9 @@
     "MEMBERSHIP_STEP2_TEXT": "The contract you approved will complete the membership purchase as soon as you confirm the transaction below.",
     "PURCHASE_MEMBERSHIP": "Purchase Membership",
     "PURCHASE_MEMBERSHIP_RECEIPT": "Purchase Membership Receipt",
-    "NO_RELEVANT_ACCOUNTS": "No accounts with the required amount available"
+    "NO_RELEVANT_ACCOUNTS": "No accounts with the required amount available",
+    "MEMBERSHIP_EXPIRED": "MyCrypto Membership Expired",
+    "EXPIRED_ON": "Expired on",
+    "RENEW_MEMBERSHIP": "Renew Membership"
   }
 }
