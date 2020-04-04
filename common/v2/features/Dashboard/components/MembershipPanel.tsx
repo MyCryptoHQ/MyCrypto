@@ -88,7 +88,12 @@ function MembershipPanel({ history }: Props) {
               <SLink onClick={() => history.push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}>
                 {translateRaw('MANAGE_MEMBERSHIP')}
               </SLink>
-              <SButton inverted={true}>{translateRaw('REQUEST_REWARDS')}</SButton>
+              <Link
+                href="https://support.mycrypto.com/general-knowledge/about-mycrypto/membership-information/"
+                rel="noreferrer"
+              >
+                <SButton inverted={true}>{translateRaw('REQUEST_REWARDS')}</SButton>
+              </Link>
             </>
           )}
           {membershipState === MembershipState.NOTMEMBER && (
