@@ -59,7 +59,8 @@ import {
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
   GAS_PRICE_GWEI_UPPER_BOUND,
-  DEFAULT_ASSET_DECIMAL
+  DEFAULT_ASSET_DECIMAL,
+  DEFAULT_NETWORK
 } from 'v2/config';
 import { RatesContext } from 'v2/services/RatesProvider';
 import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
@@ -118,14 +119,18 @@ const initialFormikValues: IFormikFields = {
 // To preserve form state between steps, we prefil the fields with state
 // values when they exits.
 type FieldValue = ValuesType<IFormikFields>;
-export const getInitialFormikValues = (s: ITxConfig, defaultAsset?: Asset): IFormikFields => {
+export const getInitialFormikValues = (
+  s: ITxConfig,
+  defaultAsset: Asset | undefined,
+  defaultNetwork: Network | undefined
+): IFormikFields => {
   const gasPriceInGwei =
     R.path(['rawTransaction', 'gasPrice'], s) &&
     bigNumGasPriceToViewableGwei(bigNumberify(s.rawTransaction.gasPrice));
   const state: Partial<IFormikFields> = {
     amount: s.amount,
     account: s.senderAccount,
-    network: s.network,
+    network: s.network || defaultNetwork,
     asset: s.asset || defaultAsset,
     nonceField: s.nonce,
     txDataField: s.data,
@@ -245,11 +250,12 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
 
   const validAccounts = accounts.filter(account => account.wallet !== WalletId.VIEW_ONLY);
   const userAccountEthAsset = userAssets.find(a => a.uuid === EtherUUID);
+  const defaultNetwork = networks.find(n => n.id === DEFAULT_NETWORK);
 
   return (
     <div className="SendAssetsForm">
       <Formik
-        initialValues={getInitialFormikValues(txConfig, userAccountEthAsset)}
+        initialValues={getInitialFormikValues(txConfig, userAccountEthAsset, defaultNetwork)}
         validationSchema={SendAssetsSchema}
         onSubmit={fields => {
           onComplete(fields);
