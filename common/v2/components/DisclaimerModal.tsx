@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { HELP_ARTICLE } from 'v2/config';
+import { KB_HELP_ARTICLE } from 'v2/config';
 import translate from 'v2/translations';
 
 import { LegacyModal, IButton, HelpLink } from 'v2/components';
@@ -19,7 +19,7 @@ const DisclaimerModal: React.SFC<Props> = ({ isOpen, handleClose }) => {
     <LegacyModal isOpen={isOpen} title="Disclaimer" buttons={buttons} handleClose={handleClose}>
       <p>
         <b>Be safe & secure: </b>
-        <HelpLink article={HELP_ARTICLE.SECURING_YOUR_ETH}>
+        <HelpLink article={KB_HELP_ARTICLE.SECURING_YOUR_ETH}>
           We highly recommend that you read our guide on How to Prevent Loss & Theft for some
           recommendations on how to be proactive about your security.
         </HelpLink>

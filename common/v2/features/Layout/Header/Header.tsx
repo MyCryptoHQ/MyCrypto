@@ -8,7 +8,13 @@ import { SelectLanguage } from 'v2/features/Drawer/screens';
 import { links } from './constants';
 import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from 'v2/theme';
 import { AnalyticsService, ANALYTICS_CATEGORIES, SettingsContext } from 'v2/services';
-import { KNOWLEDGE_BASE_URL, ROUTE_PATHS, LATEST_NEWS_URL, languages } from 'v2/config';
+import {
+  ROUTE_PATHS,
+  LATEST_NEWS_URL,
+  languages,
+  getKBHelpArticle,
+  KB_HELP_ARTICLE
+} from 'v2/config';
 import translate from 'v2/translations';
 
 // Legacy
@@ -328,7 +334,7 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
   };
 
   const openHelpSupportPage = (): void => {
-    window.open(KNOWLEDGE_BASE_URL, '_blank');
+    window.open(getKBHelpArticle(KB_HELP_ARTICLE.HOME), '_blank');
     AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HEADER, 'Help & Support clicked');
   };
 

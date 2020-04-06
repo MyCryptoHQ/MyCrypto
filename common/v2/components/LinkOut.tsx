@@ -17,25 +17,26 @@ const LinkOutWrapper = styled.a`
   }
 `;
 
-const OutIcon = styled.img`
+const OutIcon = styled.img<{ useMargin: boolean }>`
   color: ${BLUE_BRIGHT};
   width: 18px;
   height: 18px;
-  margin-left: 10px;
+  ${({ useMargin }) => useMargin && 'margin-left: 10px;'};
+  max-width: none;
 `;
 
 interface Props {
-  text: string;
+  text?: string;
   link: string;
   truncate?(text: string): string;
 }
 
 const LinkOut = ({ text, link, truncate }: Props) => {
-  const content = truncate ? truncate(text) : text;
+  const content = truncate && text ? truncate(text) : text;
   return (
     <LinkOutWrapper href={link} target="_blank" rel="noreferrer">
       <Typography fontSize={'16px'}>{content}</Typography>
-      <OutIcon src={LinkOutIcon} />
+      <OutIcon useMargin={!!content} src={LinkOutIcon} />
     </LinkOutWrapper>
   );
 };

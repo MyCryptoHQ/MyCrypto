@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
 import { FallbackProvider, BaseProvider } from 'ethers/providers';
+import * as R from 'ramda';
 
 import { Network, NetworkId, NodeType, DPathFormat } from 'v2/types';
 
@@ -41,8 +42,11 @@ export const getDPath = (network: Network | undefined, type: DPathFormat): DPath
   return network ? network.dPaths[type] : undefined;
 };
 
-export const getDPaths = (networks: Network[], type: DPathFormat): DPath[] => {
-  return networks
-    .map((n: Network) => getDPath(n, type))
-    .filter((d: DPath | undefined) => d !== undefined) as DPath[];
-};
+export const getDPaths = (networks: Network[], type: DPathFormat): DPath[] =>
+  networks.reduce((acc, n) => {
+    const dPath = getDPath(n, type);
+    if (dPath && !acc.find(x => R.equals(x, dPath))) {
+      acc.push(dPath);
+    }
+    return acc;
+  }, [] as DPath[]);
