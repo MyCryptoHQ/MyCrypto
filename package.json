@@ -92,6 +92,7 @@
     "@babel/preset-env": "7.8.3",
     "@babel/preset-react": "7.8.3",
     "@babel/preset-typescript": "7.8.3",
+    "@phenomnomnominal/tsquery": "^4.0.0",
     "@storybook/addon-a11y": "5.3.13",
     "@storybook/addon-actions": "5.3.14",
     "@storybook/addon-docs": "5.3.13",
@@ -224,7 +225,7 @@
     "report-coverage": " cat ./coverage/lcov.info | coveralls",
     "pretest": "check-node-version --package",
     "predev": "check-node-version --package",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack_config/development.js",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack_config/development.js --host 0.0.0.0",
     "dev:electron": "cross-env BUILD_ELECTRON=true concurrently -r --kill-others -n \"RENDERER,MAIN\" \"yarn run dev:electron:renderer\" \"yarn run dev:electron:main\"",
     "predev:electron": "electron-builder install-app-deps",
     "dev:electron:main": "webpack --config webpack_config/electron-main.development.js && electron dist/electron-main/main.js",
@@ -240,7 +241,8 @@
     "formatAll": "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
     "prettier:diff": "prettier --write --config ./.prettierrc --list-different \"common/**/*.ts\" \"common/**/*.tsx\"",
     "update:tokens": "parse-eth-tokens --networks all --output ./common/v2/database/data/tokens --exclude 0x5a276Aeb77bCfDAc8Ac6f31BBC7416AE1A85eEF2,0x0027449Bf0887ca3E431D263FFDeFb244D95b555",
-    "lint:css": "stylelint ./common/**/*.tsx"
+    "lint:css": "stylelint ./common/**/*.tsx",
+    "translations:extract": "node node-scripts/translations/translations-extract.js"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
