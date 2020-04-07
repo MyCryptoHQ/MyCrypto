@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component as ComponentProps } from 'react';
 import * as R from 'ramda';
 
 import translate, { translateRaw } from 'v2/translations';
 import { WALLETS_CONFIG, IWalletConfig } from 'v2/config';
 import { WalletId, FormData, Network } from 'v2/types';
 import { InlineMessage, NewTabLink } from 'v2/components';
-import { withContext, hasWeb3Provider, useResponsive } from 'v2/utils';
+import { withContext, hasWeb3Provider, useScreenSize } from 'v2/utils';
 import {
   SettingsContext,
   ISettingsContext,
@@ -21,8 +21,8 @@ interface Props {
   formDispatch: any;
   formData: FormData;
   wallet: object;
-  onUnlock(param: any): void;
   isMobile: boolean;
+  onUnlock(param: any): void;
 }
 
 interface State {
@@ -32,7 +32,10 @@ interface State {
 
 const WalletService = WalletFactory(WalletId.WEB3);
 
-class Web3ProviderDecrypt extends Component<Props & ISettingsContext & INetworkContext, State> {
+class Web3ProviderDecrypt extends ComponentProps<
+  Props & ISettingsContext & INetworkContext,
+  State
+> {
   constructor(props: Props & ISettingsContext & INetworkContext) {
     super(props);
     this.state = {
@@ -134,7 +137,7 @@ class Web3ProviderDecrypt extends Component<Props & ISettingsContext & INetworkC
 }
 
 const withResponsive = (Component: any) => (ownProps: any) => {
-  const { isMobile } = useResponsive();
+  const { isMobile } = useScreenSize();
   return <Component {...ownProps} isMobile={isMobile} />;
 };
 

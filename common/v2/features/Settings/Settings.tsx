@@ -3,7 +3,7 @@ import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 import translate from 'v2/translations';
 
-import { BREAK_POINTS, MIN_CONTENT_PADDING } from 'v2/theme';
+import { BREAK_POINTS, MIN_CONTENT_PADDING, SPACING } from 'v2/theme';
 import { AddressBookContext, SettingsContext, StoreContext } from 'v2/services/Store';
 import { AccountList, FlippablePanel, TabsNav, Desktop, Mobile } from 'v2/components';
 import { AddressBookPanel, AddToAddressBook, GeneralSettings, DangerZone } from './components';
@@ -33,8 +33,10 @@ const StyledLayout = styled.div`
 `;
 
 const SettingsTabs = styled(TabsNav)`
+  /* Override the Layout margin */
   margin-left: -${MIN_CONTENT_PADDING};
   margin-right: -${MIN_CONTENT_PADDING};
+  margin-bottom: ${SPACING.BASE};
 `;
 
 function renderAccountPanel() {

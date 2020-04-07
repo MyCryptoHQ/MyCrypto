@@ -7,7 +7,7 @@ import { DOWNLOAD_MYCRYPTO_LINK, WALLETS_CONFIG } from 'v2/config';
 import AppStoreBadgeIMG from 'assets/images/mobile/app-store-badge.png';
 import GooglePlayBadgeIMG from 'assets/images/mobile/google-play-badge.png';
 import { NewTabLink } from 'v2/components';
-import { useResponsive } from 'v2/utils';
+import { useScreenSize } from 'v2/utils';
 import './Web3ProviderInstall.scss';
 
 function InstallTrunk() {
@@ -72,7 +72,7 @@ function InstallMetaMask() {
 }
 
 function Web3ProviderInstall() {
-  const { isMobile } = useResponsive();
+  const { isMobile } = useScreenSize();
 
   return (
     <div className="Panel">

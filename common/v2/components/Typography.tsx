@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Typography as UITypography } from '@mycrypto/ui';
 
-import { useResponsive } from 'v2/utils';
+import { useScreenSize } from 'v2/utils';
 
 interface Props {
   as?: string;
@@ -12,12 +12,11 @@ interface Props {
   fontSize?: string;
   style?: any;
   truncate?: boolean;
-  maxCharLen: number;
   inheritFontWeight?: boolean;
   onClick?(): void;
 }
 
-type SProps = Props & { forwardedAs: string };
+type SProps = Props & { forwardedAs: string; maxCharLen: number };
 
 const STypography = styled(UITypography)`
   line-height: 24px;
@@ -51,13 +50,14 @@ function Typography({
   truncate,
   ...props
 }: Props) {
-  const { isMobile } = useResponsive();
+  const { isMobile } = useScreenSize();
   const maxCharLen = isMobile ? 28 : 18;
 
   return (
-    // @ts-ignore: forwardedAs is not respected so use SC as
-    // https://styled-components.com/docs/api#forwardedas-prop
     <STypography
+      // ForwardedAs is not respected so use SC as
+      // https://styled-components.com/docs/api#forwardedas-prop
+      // @ts-ignore
       as={as}
       bold={bold}
       fontSize={fontSize}

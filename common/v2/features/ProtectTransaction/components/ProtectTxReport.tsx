@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import upperFirst from 'lodash/upperFirst';
 
 import { Trans, translateRaw } from 'v2/translations';
-import { useScreenSize } from 'v2/vendor';
 import { fromWei, isValidETHAddress, Wei } from 'v2/services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from 'v2/theme';
 import { CryptoScamDBBaseResponse, CryptoScamDBInfoResponse } from 'v2/services/ApiService';
@@ -12,7 +11,7 @@ import { ProtectIconCheck, WizardIcon, CloseIcon } from 'v2/components/icons';
 import { ETHAddressExplorer } from 'v2/config';
 import { EthAddress, LinkOut, VerticalStepper } from 'v2/components';
 import { StepData } from 'v2/components/VerticalStepper';
-import { truncate } from 'v2/utils';
+import { truncate, useScreenSize } from 'v2/utils';
 
 import ProtectTxBase from './ProtectTxBase';
 import { ProtectTxContext } from '../ProtectTxProvider';

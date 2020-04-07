@@ -10,9 +10,9 @@ import {
   EtherscanService
 } from 'v2/services/ApiService';
 import { AssetContext, getAssetByUUID } from 'v2/services/Store';
+import { useScreenSize } from 'v2/utils';
 
 import { SendFormCallbackType } from './types';
-import { useScreenSize } from '../../vendor/react-use';
 import { WALLETS_CONFIG } from '../../config';
 
 export interface ProtectTxState {

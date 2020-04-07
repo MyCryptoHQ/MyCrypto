@@ -54,4 +54,4 @@ export * from './constants';
 export { bigify } from './bigify';
 export { useTxMulti } from './useTxMulti';
 export { withProtectTxProvider } from './withProtectTxProvider';
-export { useResponsive } from './useResponsive';
+export { default as useScreenSize } from './useScreenSize';
