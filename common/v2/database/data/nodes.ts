@@ -99,26 +99,14 @@ export const NODES_CONFIG: { [key in NetworkId]: NodeConfig[] } = {
       type: NodeType.RPC,
       service: 'remote.akroma.io',
       url: 'https://remote.akroma.io'
-    },
-    {
-      name: makeNodeName('AKA', 'rpc.akroma.io'),
-      type: NodeType.RPC,
-      service: 'rpc.akroma.io',
-      url: 'https://rpc.akroma.io'
     }
   ],
 
   AQUA: [
     {
-      name: makeNodeName('AQUA', 'aquachain'),
-      type: NodeType.RPC,
-      service: 'aquacha.in',
-      url: 'https://tx.aquacha.in/api'
-    },
-    {
       name: makeNodeName('AQUA', 'uncan.onical'),
       type: NodeType.RPC,
-      service: 'uncan.onical.org',
+      service: 'c.onical.org',
       url: 'https://c.onical.org'
     }
   ],
@@ -165,12 +153,6 @@ export const NODES_CONFIG: { [key in NetworkId]: NodeConfig[] } = {
       type: NodeType.RPC,
       service: '0xinfra.com',
       url: 'https://clo-geth.0xinfra.com/'
-    },
-    {
-      name: makeNodeName('CLO', 'chainkorea'),
-      type: NodeType.RPC,
-      service: 'Chainkorea',
-      url: 'https://node.clopool.net/'
     }
   ],
 
@@ -198,15 +180,6 @@ export const NODES_CONFIG: { [key in NetworkId]: NodeConfig[] } = {
       type: NodeType.RPC,
       service: 'ellaism.org',
       url: 'https://jsonrpc.ellaism.org'
-    }
-  ],
-
-  EOSC: [
-    {
-      name: makeNodeName('EOSC', 'eosc'),
-      type: NodeType.RPC,
-      service: 'eos-classic.io',
-      url: 'https://node.eos-classic.io/'
     }
   ],
 
@@ -243,15 +216,6 @@ export const NODES_CONFIG: { [key in NetworkId]: NodeConfig[] } = {
       type: NodeType.RPC,
       service: 'expanse.tech',
       url: 'https://node.expanse.tech/'
-    }
-  ],
-
-  Gangnam: [
-    {
-      name: makeNodeName('Gangnam', 'progtest'),
-      type: NodeType.RPC,
-      service: 'Gangnam ProgPoW',
-      url: 'https://rpc.progtest.net'
     }
   ],
 
@@ -336,15 +300,6 @@ export const NODES_CONFIG: { [key in NetworkId]: NodeConfig[] } = {
     }
   ],
 
-  SOLIDUM: [
-    {
-      name: makeNodeName('SOLIDUM', 'rpc.solidum.network'),
-      type: NodeType.RPC,
-      service: 'rpc.solidum.network',
-      url: 'https://rpc.solidum.network'
-    }
-  ],
-
   THUNDERCORE: [
     {
       name: makeNodeName('THUNDERCORE', 'thundercore'),
@@ -386,12 +341,6 @@ export const NODES_CONFIG: { [key in NetworkId]: NodeConfig[] } = {
       type: NodeType.RPC,
       service: 'node1.webchain.network',
       url: 'https://node1.webchain.network'
-    },
-    {
-      name: makeNodeName('WEB', 'node2.webchain.network'),
-      type: NodeType.RPC,
-      service: 'node2.webchain.network',
-      url: 'https://node2.webchain.network'
     }
   ],
 

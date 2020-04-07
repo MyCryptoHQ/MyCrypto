@@ -103,11 +103,6 @@ const GO_DEFAULT: DPath = {
   value: "m/44'/6060'/0'/0"
 };
 
-const EOSC_DEFAULT: DPath = {
-  label: 'Default (EOSC)',
-  value: "m/44'/2018'/0'/0"
-};
-
 const ESN_DEFAULT: DPath = {
   label: 'Default (ESN)',
   value: "m/44'/31102'/0'/0"
@@ -172,11 +167,6 @@ const METADIUM_DEFAULT: DPath = {
   value: "m/44'/916'/0'/0"
 };
 
-const SOLIDUM_DEFAULT: DPath = {
-  label: 'Default (SOLIDUM)',
-  value: "m/44'/997'/0'/0"
-};
-
 const DEXON_DEFAULT: DPath = {
   label: 'Default (DEXON)',
   value: "m/44'/237'/0'/0"
@@ -223,7 +213,6 @@ export const DPathsList = {
   RSK_MAINNET,
   RSK_TESTNET,
   GO_DEFAULT,
-  EOSC_DEFAULT,
   ESN_DEFAULT,
   AKA_DEFAULT,
   PIRL_DEFAULT,
@@ -237,7 +226,6 @@ export const DPathsList = {
   ETI_DEFAULT,
   WEB_DEFAULT,
   METADIUM_DEFAULT,
-  SOLIDUM_DEFAULT,
   DEXON_DEFAULT,
   ASK_DEFAULT,
   ASK_TREZOR,

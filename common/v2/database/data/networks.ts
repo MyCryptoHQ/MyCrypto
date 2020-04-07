@@ -285,30 +285,6 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       initial: 20
     }
   },
-  Gangnam: {
-    id: 'Gangnam',
-    name: 'Gangnam',
-    unit: 'ETH' as TSymbol,
-    chainId: 43568,
-    isCustom: false,
-    color: '#adc101',
-    blockExplorer: makeExplorer({
-      name: 'Gangnam Explorer',
-      origin: 'https://explorer.progtest.net'
-    }),
-    tokens: [],
-    contracts: [],
-    dPaths: {
-      [WalletId.TREZOR]: DPaths.ETH_TESTNET,
-      [WalletId.LEDGER_NANO_S]: DPaths.ETH_TESTNET,
-      [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_TESTNET
-    },
-    gasPriceSettings: {
-      min: 1,
-      max: 60,
-      initial: 20
-    }
-  },
   MUSIC: {
     id: 'MUSIC',
     name: 'Musicoin',
@@ -519,33 +495,6 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       initial: 2
     }
   },
-
-  EOSC: {
-    id: 'EOSC',
-    name: 'EOS Classic',
-    unit: 'EOSC' as TSymbol,
-    chainId: 20,
-    isCustom: false,
-    color: '#926565',
-    blockExplorer: makeExplorer({
-      name: 'EOSC Explorer',
-      origin: 'https://explorer.eos-classic.io'
-    }),
-    tokens: [],
-    contracts: [],
-    dPaths: {
-      [WalletId.TREZOR]: DPaths.EOSC_DEFAULT,
-      [WalletId.SAFE_T_MINI]: DPaths.EOSC_DEFAULT,
-      [WalletId.LEDGER_NANO_S]: DPaths.EOSC_DEFAULT,
-      [WalletId.MNEMONIC_PHRASE]: DPaths.EOSC_DEFAULT
-    },
-    gasPriceSettings: {
-      min: 1,
-      max: 60,
-      initial: 20
-    }
-  },
-
   ESN: {
     id: 'ESN',
     name: 'EthersocialNetwork',
@@ -861,29 +810,6 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       min: 80,
       max: 80,
       initial: 80
-    }
-  },
-  SOLIDUM: {
-    id: 'SOLIDUM',
-    name: 'Solidum',
-    unit: 'SUM' as TSymbol,
-    chainId: 72106,
-    isCustom: false,
-    color: '#1e87f0',
-    blockExplorer: makeExplorer({
-      name: 'Solidum Explorer',
-      origin: 'https://explorer.solidum.network'
-    }),
-    tokens: [],
-    contracts: [],
-    dPaths: {
-      [WalletId.LEDGER_NANO_S]: DPaths.SOLIDUM_DEFAULT,
-      [WalletId.MNEMONIC_PHRASE]: DPaths.SOLIDUM_DEFAULT
-    },
-    gasPriceSettings: {
-      min: 1,
-      max: 60,
-      initial: 20
     }
   },
   DEXON: {
