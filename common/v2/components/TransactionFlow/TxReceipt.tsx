@@ -1,4 +1,11 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
+import React, {
+  useState,
+  useContext,
+  useEffect,
+  useCallback,
+  Dispatch,
+  SetStateAction
+} from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
@@ -93,34 +100,6 @@ export default function TxReceipt({
     setDisplayTxReceipt(txReceipt);
   }, [setDisplayTxReceipt, txReceipt]);
 
-  const [protectTxCounter, setProtectTxCounter] = React.useState(20);
-  useEffect(() => {
-    let protectTxTimer: ReturnType<typeof setTimeout> | null = null;
-    if (
-      !getProTxValue(['state', 'isWeb3Wallet']) &&
-      getProTxValue(['state', 'protectTxEnabled']) &&
-      protectTxCounter > 0
-    ) {
-      protectTxTimer = setTimeout(() => setProtectTxCounter(prevCount => prevCount - 1), 1000);
-    } else if (
-      !getProTxValue(['state', 'isWeb3Wallet']) &&
-      getProTxValue(['state', 'protectTxEnabled']) &&
-      protectTxCounter === 0 &&
-      getProTxValue(['invokeProtectTxTimeoutFunction'])
-    ) {
-      getProTxValue(['invokeProtectTxTimeoutFunction'])(
-        (txReceiptCb: (txReceipt: ITxReceipt) => void) => {
-          setDisplayTxReceipt(txReceiptCb);
-        }
-      );
-    }
-    return () => {
-      if (protectTxTimer) {
-        clearTimeout(protectTxTimer);
-      }
-    };
-  }, [protectTxContext, protectTxCounter]);
-
   useEffect(() => {
     if (displayTxReceipt && blockNumber === 0 && displayTxReceipt.hash) {
       const provider = new ProviderHandler(displayTxReceipt.network || txConfig.network);
@@ -196,13 +175,12 @@ export default function TxReceipt({
       sender={sender}
       recipientContact={recipientContact}
       displayTxReceipt={displayTxReceipt}
+      setDisplayTxReceipt={setDisplayTxReceipt}
       resetFlow={resetFlow}
       completeButtonText={completeButtonText}
       pendingButton={pendingButton}
       protectTxEnabled={getProTxValue(['state', 'protectTxEnabled'])}
       web3Wallet={getProTxValue(['state', 'isWeb3Wallet'])}
-      protectTxCounter={protectTxCounter}
-      setProtectTxCounter={setProtectTxCounter}
       protectTxButton={protectTxButton}
     />
   );
@@ -212,6 +190,7 @@ export interface TxReceiptDataProps {
   txStatus: ITxStatus;
   timestamp: number;
   displayTxReceipt?: ITxReceipt;
+  setDisplayTxReceipt?: Dispatch<SetStateAction<ITxReceipt | undefined>>;
   senderContact: ExtendedAddressBook | undefined;
   sender: ISender;
   recipientContact: ExtendedAddressBook | undefined;
@@ -219,10 +198,8 @@ export interface TxReceiptDataProps {
   swapDisplay?: SwapDisplayData;
   protectTxEnabled?: boolean;
   web3Wallet?: boolean;
-  protectTxCounter?: number;
   assetRate(): number | undefined;
   protectTxButton?(): JSX.Element;
-  setProtectTxCounter?(counter: number): void;
   resetFlow(): void;
 }
 
@@ -234,6 +211,7 @@ export const TxReceiptUI = ({
   timestamp,
   assetRate,
   displayTxReceipt,
+  setDisplayTxReceipt,
   zapSelected,
   membershipSelected,
   senderContact,
@@ -244,8 +222,6 @@ export const TxReceiptUI = ({
   completeButtonText,
   protectTxEnabled = false,
   web3Wallet = false,
-  protectTxCounter,
-  setProtectTxCounter,
   protectTxButton
 }: Omit<IStepComponentProps, 'resetFlow' | 'onComplete'> & TxReceiptDataProps) => {
   /* Determining User's Contact */
@@ -280,17 +256,9 @@ export const TxReceiptUI = ({
     <div className="TransactionReceipt">
       {protectTxEnabled && !web3Wallet && (
         <ProtectTxAbort
-          countdown={protectTxCounter ? protectTxCounter : 0}
-          onAbortTransaction={e => {
-            e.preventDefault();
-            if (setProtectTxCounter) {
-              setProtectTxCounter(-1);
-            }
-          }}
-          onSendTransaction={e => {
-            e.preventDefault();
-            if (setProtectTxCounter) {
-              setProtectTxCounter(20);
+          onTxSent={txReceipt => {
+            if (setDisplayTxReceipt) {
+              setDisplayTxReceipt(txReceipt);
             }
           }}
         />

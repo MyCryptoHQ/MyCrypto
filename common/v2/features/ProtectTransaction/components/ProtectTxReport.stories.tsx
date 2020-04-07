@@ -187,7 +187,7 @@ const cryptoScamAddressVerifiedReport = {
 
 const verifiedProviderState: Partial<ProtectTxState> = {
   ...unknownProviderState,
-  receiverAddress: '',
+  receiverAddress: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
   cryptoScamAddressReport: cryptoScamAddressVerifiedReport as any
 };
 

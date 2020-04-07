@@ -70,9 +70,15 @@ export const ProtectTxShowError: FC<Props> = ({ shown, protectTxError }) => {
               />
             ),
             $twitter: () => (
-              <a href={twitter ? twitter.link : ''} rel="noopener noreferrer" target="_blank">
-                Twitter
-              </a>
+              <LinkOut
+                showIcon={false}
+                inline={true}
+                fontSize={FONT_SIZE.SM}
+                fontColor={COLORS.PASTEL_RED}
+                underline={true}
+                link={twitter ? twitter.link : ''}
+                text="Twitter"
+              />
             )
           }}
         />

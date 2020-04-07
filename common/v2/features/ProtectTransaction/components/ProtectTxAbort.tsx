@@ -1,9 +1,12 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { COLORS, FONT_SIZE } from 'v2/theme';
 import { translateRaw } from 'v2/translations';
 import { ProtectIconCheck } from 'v2/components/icons';
 import { Link } from 'v2/components';
+import { ITxReceipt } from '../../../types';
+import { ProtectTxContext } from '../ProtectTxProvider';
+import { ProtectTxUtils } from '../utils';
 
 interface RelayedToNetworkProps {
   relayedToNetwork: boolean;
@@ -87,37 +90,59 @@ const AbortTransactionLink = styled(Link)`
 `;
 
 interface AbortTransactionProps {
-  countdown: number;
-
-  onAbortTransaction(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void;
-  onSendTransaction(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void;
+  onTxSent(txReceipt: ITxReceipt): void;
 }
 
-export const ProtectTxAbort: FC<AbortTransactionProps> = ({
-  countdown,
-  onAbortTransaction,
-  onSendTransaction
-}) => {
+export const ProtectTxAbort: FC<AbortTransactionProps> = ({ onTxSent }) => {
   const [isCanceled, setIsCanceled] = useState(false);
+  const [protectTxCountdown, setProtectTxCountdown] = React.useState(20);
+
+  const protectTxContext = useContext(ProtectTxContext);
+  const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
+  if (!getProTxValue()) {
+    throw new Error('ProtectTxProtection requires to be wrapped in ProtectTxAbort!');
+  }
+
+  const { invokeProtectTxTimeoutFunction } = protectTxContext;
+
+  useEffect(() => {
+    let protectTxTimer: ReturnType<typeof setTimeout> | null = null;
+    if (protectTxCountdown > 0) {
+      protectTxTimer = setTimeout(() => setProtectTxCountdown(prevCount => prevCount - 1), 1000);
+    } else if (protectTxCountdown === 0) {
+      invokeProtectTxTimeoutFunction((txReceiptCb: (txReceipt: ITxReceipt) => void) => {
+        onTxSent(txReceiptCb);
+      });
+    }
+    return () => {
+      if (protectTxTimer) {
+        clearTimeout(protectTxTimer);
+      }
+    };
+  }, [protectTxContext, protectTxCountdown]);
 
   const onCancelClick = useCallback(
     e => {
+      e.preventDefault();
+
       setIsCanceled(true);
-      onAbortTransaction(e);
+      setProtectTxCountdown(-1);
     },
-    [onAbortTransaction, setIsCanceled]
+    [setIsCanceled]
   );
 
   const onSendClick = useCallback(
     e => {
+      e.preventDefault();
+
       setIsCanceled(false);
-      onSendTransaction(e);
+      setProtectTxCountdown(20);
     },
-    [onSendTransaction, setIsCanceled]
+    [setIsCanceled]
   );
 
   return (
-    <Wrapper relayedToNetwork={!isCanceled && countdown === 0}>
+    <Wrapper relayedToNetwork={!isCanceled && protectTxCountdown === 0}>
       <ProtectIconCheck fillColor={COLORS.WHITE} />
       {isCanceled && (
         <>
@@ -127,11 +152,11 @@ export const ProtectTxAbort: FC<AbortTransactionProps> = ({
           </AbortTransactionLink>
         </>
       )}
-      {!isCanceled && countdown > 0 && (
+      {!isCanceled && protectTxCountdown > 0 && (
         <>
           <p>
             {translateRaw('PROTECTED_TX_MODIFY_TX', {
-              $sec: `0:${countdown.toString().padStart(2, '0')}`
+              $sec: `0:${protectTxCountdown.toString().padStart(2, '0')}`
             })}
           </p>
           <AbortTransactionLink type="white-black" underline={true} onClick={onCancelClick}>
@@ -139,8 +164,10 @@ export const ProtectTxAbort: FC<AbortTransactionProps> = ({
           </AbortTransactionLink>
         </>
       )}
-      {!isCanceled && countdown === 0 && <p>{translateRaw('PROTECTED_TX_RELAYED_TO_NETWORK')}</p>}
-      <TransactionReceiptHeaderGlobal relayedToNetwork={!isCanceled && countdown === 0} />
+      {!isCanceled && protectTxCountdown === 0 && (
+        <p>{translateRaw('PROTECTED_TX_RELAYED_TO_NETWORK')}</p>
+      )}
+      <TransactionReceiptHeaderGlobal relayedToNetwork={!isCanceled && protectTxCountdown === 0} />
     </Wrapper>
   );
 };

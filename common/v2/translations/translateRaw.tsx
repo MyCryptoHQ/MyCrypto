@@ -87,7 +87,7 @@ export function translateRaw(key: string, variables?: { [name: string]: string }
 
 interface Props {
   id: string;
-  variables?: { [name: string]: () => any };
+  variables?: { [name: string]: () => string | React.ReactNode };
 }
 
 export const Trans: FC<Props> = ({ id, variables }) => {
