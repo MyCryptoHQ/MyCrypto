@@ -10,4 +10,6 @@ export { default as useEvent } from './useEvent';
 export { default as useEffectOnce } from './useEffectOnce';
 export { default as useUpdateEffect } from './useUpdateEffect';
 export { default as useUnmount } from './useUnmount';
+export { default as useMediaQuery } from './useMediaQuery';
+export { default as useScreenSize } from './useScreenSize';
 export { isClient } from './util';

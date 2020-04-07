@@ -95,7 +95,10 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
 
   // For Other Wallets
   // tslint:disable-next-line
-  const handleConfirmAndSend: TStepAction = (_, cb) => {
+  const handleConfirmAndSend: (payload: any, after: (txReceipt: ITxReceipt) => void) => void = (
+    _,
+    cb
+  ) => {
     const { signedTx } = state;
     if (!signedTx) {
       return;
@@ -121,8 +124,11 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
           ...prevState,
           txReceipt
         }));
-      })
-      .finally(cb);
+
+        if (cb) {
+          cb(txReceipt!);
+        }
+      });
   };
 
   const handleSignedTx: TStepAction = (payload: Arrayish, cb) => {

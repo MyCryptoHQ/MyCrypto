@@ -12,6 +12,7 @@ export interface StepperProps {
   defaultBackPath?: string; // Path that component reverts to when user clicks "back" from first step in flow.
   defaultBackPathLabel?: string;
   completeBtnText?: string; // Text for btn to navigate out of flow in last step.
+  wrapperClassName?: string;
   onRender?(goToNextStep: () => void): void;
 }
 
@@ -20,6 +21,7 @@ export function GeneralStepper({
   defaultBackPath,
   defaultBackPathLabel,
   completeBtnText,
+  wrapperClassName = '',
   onRender
 }: StepperProps) {
   const history = useHistory();
@@ -68,6 +70,7 @@ export function GeneralStepper({
       backBtnText={getBackBtnLabel()}
       heading={label}
       stepper={{ current: step + 1, total: currentPath.length }}
+      className={wrapperClassName}
     >
       <Step
         onComplete={(payload: any) =>

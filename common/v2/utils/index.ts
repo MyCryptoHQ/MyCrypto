@@ -53,3 +53,4 @@ export { objToString } from './objToString';
 export * from './constants';
 export { bigify } from './bigify';
 export { useTxMulti } from './useTxMulti';
+export { withProtectTxProvider } from './withProtectTxProvider';
