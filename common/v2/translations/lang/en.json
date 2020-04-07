@@ -745,6 +745,7 @@
     "MEMBERSHIP_MONTHS": "$duration Months",
     "MEMBERSHIP_DISCOUNT": "$percentage off!",
     "MEMBERSHIP_LIFETIME_TITLE": "I Love MyCrypto",
-    "MEMBERSHIP_LIFETIME_DESC": "Lifetime of Love!"
+    "MEMBERSHIP_LIFETIME_DESC": "Lifetime of Love!",
+    "MEMBERSHIP_LIFETIME_EMOJI": "I 💖 MyCrypto"
   }
 }
