@@ -12,17 +12,33 @@ import {
   DefaultHomeHandler,
   PrivateRoute
 } from 'v2/routing';
+import { SPACING } from 'v2/theme';
+
+const layoutConfig = (path: string) => {
+  switch (path) {
+    case ROUTE_PATHS.HOME.path:
+    case ROUTE_PATHS.ROOT.path:
+      return {
+        centered: false,
+        fluid: true,
+        fullW: true,
+        bgColor: '#fff'
+      };
+    case ROUTE_PATHS.DASHBOARD.path:
+      return {
+        centered: true,
+        paddingV: SPACING.MD
+      };
+    default:
+      return {
+        centered: true,
+        paddingV: SPACING.XL
+      };
+  }
+};
 
 const LayoutWithLocation = withRouter(({ location, children }) => {
-  const homeLayout = {
-    centered: false,
-    fluid: true,
-    fullW: true,
-    bgColor: '#fff'
-  };
-  const isHomeRoute =
-    location.pathname === ROUTE_PATHS.ROOT.path || location.pathname === ROUTE_PATHS.HOME.path;
-  return <Layout config={isHomeRoute ? homeLayout : {}}>{children}</Layout>;
+  return <Layout config={layoutConfig(location.pathname)}>{children}</Layout>;
 });
 
 export const AppRoutes = () => {

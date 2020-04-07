@@ -14,6 +14,7 @@ interface LayoutConfig {
   fullW?: boolean;
   bgColor?: string;
   marginTop?: string;
+  paddingV?: string;
 }
 interface Props {
   config?: LayoutConfig;
@@ -42,7 +43,9 @@ const STop = styled.div`
 `;
 
 const SContainer = styled('div')`
-  padding: ${SPACING.BASE};
+  padding: ${p => (p.fullW ? 0 : SPACING.BASE)};
+  padding-top: ${p => (p.paddingV ? p.paddingV : SPACING.BASE)};
+  padding-bottom: ${p => (p.paddingV ? p.paddingV : SPACING.BASE)};
   width: 100%;
   max-width: ${p => (p.fullW ? '100%' : MAX_CONTENT_WIDTH)};
   /*
@@ -62,7 +65,6 @@ const SContainer = styled('div')`
     `
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
       flex: 1;
       // Necessary to center the mobile layout when below the small screen breakpoint.
@@ -73,7 +75,7 @@ const SContainer = styled('div')`
 `;
 
 export default function Layout({ config = {}, className = '', children }: Props) {
-  const { centered = true, fluid, fullW = false, bgColor } = config;
+  const { centered = true, fluid, fullW = false, bgColor, paddingV } = config;
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
   const { error, shouldShowError, getErrorMessage } = useContext(ErrorContext);
   const betaAnnouncement =
@@ -95,7 +97,13 @@ export default function Layout({ config = {}, className = '', children }: Props)
           setDrawerScreen={setScreen}
         />
       </STop>
-      <SContainer centered={centered} fluid={fluid} fullW={fullW} marginTop={topWidth}>
+      <SContainer
+        centered={centered}
+        fluid={fluid}
+        fullW={fullW}
+        marginTop={topWidth}
+        paddingV={paddingV}
+      >
         {children}
       </SContainer>
       <Footer />

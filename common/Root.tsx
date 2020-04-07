@@ -13,6 +13,7 @@ import { AppRoutes } from './AppRoutes';
 
 const AppProvidersInnerContainer = styled.div`
   display: flex;
+  min-height: 100%;
 `;
 const AppRouterContainer = styled.div`
   flex: 1;
