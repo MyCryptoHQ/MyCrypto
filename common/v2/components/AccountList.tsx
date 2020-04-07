@@ -365,9 +365,7 @@ const buildAccountTable = (
 
   const updateSortingState = (id: IColumnValues) => {
     // In case overlay active, disable changing sorting state
-    if (overlayRowsFlat.length) {
-      return;
-    }
+    if (overlayRowsFlat.length) return;
 
     const currentBtnState = sortingState.sortState[id];
     if (currentBtnState.indexOf('-reverse') > -1) {
