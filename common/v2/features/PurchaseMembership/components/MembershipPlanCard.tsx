@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import { Typography } from 'v2/components';
 import { SPACING, COLORS, BREAK_POINTS } from 'v2/theme';
-import translate from 'v2/translations';
 
 import { IMembershipConfig, IMembershipId } from '../config';
 import { AssetContext } from 'v2/services/Store';
@@ -15,7 +14,7 @@ const PlanCard = styled.div<{ fullwith?: boolean }>`
     margin-top: ${SPACING.SM};
     flex-direction: ${props => (props.fullwith ? 'row' : 'column')};
     justify-content: ${props => (props.fullwith ? 'space-evenly' : 'flex-start')};
-    height: ${props => (props.fullwith ? '109px' : '212px')};
+    height: ${props => (props.fullwith ? '150px' : '212px')};
   }
   display: flex;
   flex-direction: column;
@@ -45,34 +44,15 @@ const STypography = styled(Typography)`
 
 export default ({ plan }: { plan: IMembershipConfig }) => {
   const { assets } = useContext(AssetContext);
-
   const planAsset = assets.find(asset => asset.uuid === plan.assetUUID) as Asset;
-  const duration = plan.key !== IMembershipId.lifetime && Math.floor(plan.durationInDays / 30);
 
-  return plan.key !== IMembershipId.lifetime ? (
-    <PlanCard>
+  return (
+    <PlanCard fullwith={plan.key === IMembershipId.lifetime ? true : false}>
       <img src={plan.icon} />
       <Description>
-        <Typography bold={true}>
-          {duration > 1
-            ? translate('MEMBERSHIP_MONTHS', { $duration: duration.toString() })
-            : translate('MEMBERSHIP_MONTH', { $duration: duration.toString() })}
-        </Typography>
+        <Typography bold={true}>{plan.title}</Typography>
         <Typography>{`${plan.price} ${planAsset.ticker}`}</Typography>
-        {plan.discount && (
-          <STypography>
-            {translate('MEMBERSHIP_DISCOUNT', { $percentage: `${plan.discount}%` })}
-          </STypography>
-        )}
-      </Description>
-    </PlanCard>
-  ) : (
-    <PlanCard fullwith={true}>
-      <img src={plan.icon} />
-      <Description>
-        <Typography bold={true}>{translate('MEMBERSHIP_LIFETIME_TITLE')}</Typography>
-        <Typography>{`${plan.price} ${planAsset.ticker}`}</Typography>
-        <STypography>{translate('MEMBERSHIP_LIFETIME_DESC')}</STypography>
+        <STypography>{plan.discountNotice}</STypography>
       </Description>
     </PlanCard>
   );
