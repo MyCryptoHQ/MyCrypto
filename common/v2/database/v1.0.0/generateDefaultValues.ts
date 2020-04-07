@@ -66,7 +66,7 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: SeedData) => {
 const addContracts = add(LSKeys.CONTRACTS)(
   (networks: Record<NetworkId, NetworkLegacy>, store: LocalStorage) => {
     const formatContract = (id: NetworkId) => (c: ContractLegacy): ExtendedContract => ({
-      uuid: generateContractUUID(c.abi),
+      uuid: generateContractUUID(id, c.address, c.abi),
       name: c.name,
       address: c.address,
       abi: c.abi,
