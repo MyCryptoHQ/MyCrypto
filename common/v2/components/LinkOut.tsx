@@ -25,15 +25,16 @@ const LinkOutWrapper = styled.a<LinkOutWrapperProps>`
   }
 `;
 
-const OutIcon = styled.img`
+const OutIcon = styled.img<{ useMargin: boolean }>`
   color: ${BLUE_BRIGHT};
   width: 18px;
   height: 18px;
-  margin-left: 10px;
+  ${({ useMargin }) => useMargin && 'margin-left: 10px;'};
+  max-width: none;
 `;
 
 interface Props {
-  text: string;
+  text?: string;
   link: string;
   showIcon?: boolean;
   inline?: boolean;
@@ -53,7 +54,7 @@ const LinkOut = ({
   fontColor = COLORS.GREYISH_BROWN,
   underline = false
 }: Props) => {
-  const content = truncate ? truncate(text) : text;
+  const content = text && (truncate ? truncate(text) : text);
   return (
     <LinkOutWrapper
       href={link}
@@ -65,7 +66,7 @@ const LinkOut = ({
       <Typography fontSize={fontSize} style={{ color: fontColor }}>
         {content}
       </Typography>
-      {showIcon && <OutIcon src={LinkOutIcon} />}
+      {showIcon && <OutIcon useMargin={!!content} src={LinkOutIcon} />}
     </LinkOutWrapper>
   );
 };

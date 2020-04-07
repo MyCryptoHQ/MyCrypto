@@ -14,7 +14,7 @@ import {
 } from 'v2/components';
 import { truncate } from 'v2/utils';
 import { BREAK_POINTS, COLORS, SPACING, breakpointToNumber } from 'v2/theme';
-import { IAccount, StoreAccount, ExtendedAddressBook } from 'v2/types';
+import { IAccount, StoreAccount, ExtendedAddressBook, WalletId } from 'v2/types';
 import {
   AccountContext,
   getLabelByAccount,
@@ -29,6 +29,7 @@ import { TUuid } from 'v2/types/uuid';
 import IconArrow from './IconArrow';
 import Checkbox from './Checkbox';
 import Tooltip from './Tooltip';
+import informationalSVG from 'assets/images/icn-info-blue.svg';
 
 const Label = styled.span`
   display: flex;
@@ -141,6 +142,7 @@ const TableContainer = styled.div`
   display: block;
   overflow: auto;
   flex: 1;
+  max-height: 600px;
 `;
 
 const AccountListFooterWrapper = styled.div`
@@ -166,6 +168,11 @@ const AddAccountButton = styled(Button)`
 
 const PrivateColumnLabel = styled.p`
   display: inline-block;
+`;
+
+const InformationalIcon = styled.img`
+  margin-right: ${SPACING.XS};
+  height: 16px;
 `;
 
 interface AccountListProps {
@@ -461,6 +468,11 @@ const buildAccountTable = (
               value={label}
             />
             <WalletLabelContainer>
+              {account.wallet === WalletId.VIEW_ONLY && (
+                <Tooltip tooltip={translateRaw('VIEW_ONLY_WARNING_TOOLTIP')}>
+                  <InformationalIcon src={informationalSVG} />
+                </Tooltip>
+              )}
               <WalletTypeLabel>{WALLETS_CONFIG[account.wallet].name}</WalletTypeLabel>
               {IS_ACTIVE_FEATURE.PRIVATE_TAGS && account.isPrivate && (
                 <PrivateWalletLabel>{'Private Account'}</PrivateWalletLabel>

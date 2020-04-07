@@ -13,6 +13,7 @@ export interface StepperProps {
   defaultBackPathLabel?: string;
   completeBtnText?: string; // Text for btn to navigate out of flow in last step.
   wrapperClassName?: string;
+  onRender?(goToNextStep: () => void): void;
 }
 
 export function GeneralStepper({
@@ -20,7 +21,8 @@ export function GeneralStepper({
   defaultBackPath,
   defaultBackPathLabel,
   completeBtnText,
-  wrapperClassName = ''
+  wrapperClassName = '',
+  onRender
 }: StepperProps) {
   const history = useHistory();
   const [step, setStep] = useState(0);
@@ -57,6 +59,10 @@ export function GeneralStepper({
   const stepObject = steps[step];
   const stepProps = stepObject.props;
   const stepActions = stepObject.actions;
+
+  if (onRender) {
+    onRender(goToNextStep);
+  }
 
   return (
     <ContentPanel

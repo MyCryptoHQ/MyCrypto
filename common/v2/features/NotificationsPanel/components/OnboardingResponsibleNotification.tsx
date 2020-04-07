@@ -5,7 +5,7 @@ import { Button } from '@mycrypto/ui';
 import translate, { translateRaw } from 'v2/translations';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 import NotificationWrapper from './NotificationWrapper';
-import { CRYPTOSCAMDB, DOWNLOAD_MYCRYPTO_LINK, STAYING_SAFE_URL } from 'v2/config';
+import { CRYPTOSCAMDB, DOWNLOAD_MYCRYPTO_LINK, getKBHelpArticle, KB_HELP_ARTICLE } from 'v2/config';
 
 import privateIcon from 'common/assets/images/onboarding/icn-key-mnemonic.svg';
 import phishingIcon from 'common/assets/images/onboarding/icn-phishing.svg';
@@ -90,7 +90,11 @@ export default function OnboardingResponsibleNotification() {
       tagline={translate('NOTIFICATIONS_ONBOARDING_TAGLINE')}
       title={`${translateRaw('NOTIFICATIONS_ONBOARDING_RESPONSIBLE_TITLE')}:`}
       resources={
-        <ResourceLink href={STAYING_SAFE_URL} target="_blank" rel="noopener noreferrer">
+        <ResourceLink
+          href={getKBHelpArticle(KB_HELP_ARTICLE.STAYING_SAFE)}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <ResourceItem secondary={true}>{translate('NOTIFICATIONS_ONBOARDING_MORE')}</ResourceItem>
         </ResourceLink>
       }

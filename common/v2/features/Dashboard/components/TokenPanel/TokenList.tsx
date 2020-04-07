@@ -66,6 +66,10 @@ const SpinnerWrapper = styled.div`
   padding: 32px 0;
 `;
 
+const TokenDashboardPanel = styled(DashboardPanel)`
+  max-height: 500px;
+`;
+
 interface TokenListProps {
   isScanning: boolean;
   tokens: AssetWithDetails[];
@@ -87,7 +91,7 @@ export function TokenList(props: TokenListProps) {
     handleScanTokens
   } = props;
   return (
-    <DashboardPanel
+    <TokenDashboardPanel
       heading={
         <>
           {translateRaw('TOKENS')} <Tooltip tooltip={translateRaw('DASHBOARD_TOKENS_TOOLTIP')} />
@@ -134,6 +138,6 @@ export function TokenList(props: TokenListProps) {
           ))}
         </TokenListWrapper>
       )}
-    </DashboardPanel>
+    </TokenDashboardPanel>
   );
 }

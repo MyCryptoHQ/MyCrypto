@@ -6,7 +6,10 @@ class UnstoppableResolution {
 
   constructor() {
     this.resolution = new Resolution({
-      blockchain: { ens: { url: MYC_API_MAINNET, network: 'mainnet' } }
+      blockchain: {
+        ens: { url: MYC_API_MAINNET, network: 'mainnet' },
+        cns: { url: MYC_API_MAINNET, network: 'mainnet' }
+      }
     });
   }
 

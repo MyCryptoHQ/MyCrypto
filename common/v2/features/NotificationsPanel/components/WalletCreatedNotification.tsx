@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import translate from 'v2/translations';
 import { BREAK_POINTS } from 'v2/theme';
 import NotificationWrapper from './NotificationWrapper';
-import { KNOWLEDGE_BASE_URL, HOW_TO_BUY_CRYPTO_URL, DONT_LOSE_CRYPTO_URL } from 'v2/config';
+import { getKBHelpArticle, KB_HELP_ARTICLE } from 'v2/config';
 
 // Legacy
 import champagneIcon from 'common/assets/images/icn-champagne-2.svg';
@@ -13,6 +13,7 @@ import dontLoseCryptoIcon from 'common/assets/images/icn-don-t-lose-crypto.svg';
 import questionsIcon from 'common/assets/images/icn-questions.svg';
 
 const { SCREEN_XS } = BREAK_POINTS;
+const { HOME, SECURING_YOUR_ETH, BUY_CRYPTO } = KB_HELP_ARTICLE;
 
 const ResourceItemWrapper = styled.a`
   display: flex;
@@ -57,17 +58,17 @@ const getResources = () => {
       <ResourceItem
         src={howBuyIcon}
         title={translate('NOTIFICATIONS_WALLET_RESOURCE_BUY')}
-        link={HOW_TO_BUY_CRYPTO_URL}
+        link={getKBHelpArticle(BUY_CRYPTO)}
       />
       <ResourceItem
         src={dontLoseCryptoIcon}
         title={translate('NOTIFICATIONS_WALLET_RESOURCE_LOSE')}
-        link={DONT_LOSE_CRYPTO_URL}
+        link={getKBHelpArticle(SECURING_YOUR_ETH)}
       />
       <ResourceItem
         src={questionsIcon}
         title={translate('NOTIFICATIONS_WALLET_RESOURCE_SUPPORT')}
-        link={KNOWLEDGE_BASE_URL}
+        link={getKBHelpArticle(HOME)}
       />
     </>
   );

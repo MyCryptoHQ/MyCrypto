@@ -146,7 +146,7 @@ export default function AddressBook({
       <CollapsibleTable breakpoint={450} {...addressBookTable} />
       <BottomRow>
         <AddAccountButton onClick={toggleFlipped} basic={true}>
-          {`+ ${translateRaw('ACCOUNT_LIST_TABLE_ADD_ACCOUNT')}`}
+          {`+ ${translateRaw('ADDRESS_BOOK_TABLE_ADD_ADDRESS')}`}
         </AddAccountButton>
       </BottomRow>
     </DashboardPanel>
