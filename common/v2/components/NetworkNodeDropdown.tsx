@@ -66,21 +66,12 @@ class NetworkOption extends React.PureComponent<NetworkOptionProps> {
       value: { isCustom }
     } = option as { value: CustomNodeConfig };
 
-    const onEdit = useCallback(
-      e => {
-        e.preventDefault();
-
-        option.onEdit(option.value);
-      },
-      [option]
-    );
-
     if (option.label !== newNode) {
       return (
         <SContainerValue onClick={() => onSelect && onSelect(option, null)}>
           <Typography value={option.label} />
           {isFunction(option.onEdit) && isEditEnabled && isCustom === true && (
-            <EditIcon onClick={onEdit} src={editIcon} />
+            <EditIcon onClick={e => this.onEdit.apply(this, [e])} src={editIcon} />
           )}
         </SContainerValue>
       );
@@ -92,6 +83,13 @@ class NetworkOption extends React.PureComponent<NetworkOptionProps> {
         </SContainerOption>
       );
     }
+  }
+
+  private onEdit(e: React.MouseEvent<HTMLImageElement, MouseEvent>) {
+    e.preventDefault();
+
+    const { option } = this.props;
+    option.onEdit(option.value);
   }
 }
 

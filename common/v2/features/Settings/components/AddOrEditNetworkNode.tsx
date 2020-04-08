@@ -259,7 +259,6 @@ export default function AddOrEditNetworkNode({
             onComplete();
           } catch (e) {
             setIsConnectionError(true);
-          } finally {
             setSubmitting(false);
           }
         }}
@@ -270,30 +269,28 @@ export default function AddOrEditNetworkNode({
               <Column>
                 <AddressFieldset>
                   <label htmlFor="name">{translateRaw('CUSTOM_NODE_FORM_NODE_NAME')}</label>
-                  <Field
-                    name="name"
-                    render={({ field }: FieldProps<string>) => (
+                  <Field name="name">
+                    {({ field }: FieldProps<string>) => (
                       <InputField
                         {...field}
                         inputError={errors && errors.name}
                         placeholder={translateRaw('CUSTOM_NODE_FORM_NODE_NAME')}
                       />
                     )}
-                  />
+                  </Field>
                 </AddressFieldset>
               </Column>
               <Column>
                 <AddressFieldset>
-                  <Field
-                    name="networkId"
-                    render={({ field, form }: FieldProps<string>) => (
+                  <Field name="networkId">
+                    {({ field, form }: FieldProps<string>) => (
                       <SNetworkSelectDropdown
                         network={field.value}
                         onChange={e => form.setFieldValue(field.name, e)}
                         disabled={editMode}
                       />
                     )}
-                  />
+                  </Field>
                 </AddressFieldset>
               </Column>
             </Row>
@@ -301,22 +298,20 @@ export default function AddOrEditNetworkNode({
               <Column>
                 <AddressFieldset>
                   <label htmlFor="url">{translateRaw('CUSTOM_NODE_FORM_NODE_ADDRESS')}</label>
-                  <Field
-                    name="url"
-                    render={({ field }: FieldProps<string>) => (
+                  <Field name="url">
+                    {({ field }: FieldProps<string>) => (
                       <InputField
                         inputError={errors && errors.url}
                         placeholder={translateRaw('CUSTOM_NODE_FORM_NODE_ADDRESS_PLACEHOLDER')}
                         {...field}
                       />
                     )}
-                  />
+                  </Field>
                 </AddressFieldset>
               </Column>
               <Column alignSelf="center">
-                <Field
-                  name="auth"
-                  render={({ field, form }: FieldProps<boolean>) => (
+                <Field name="auth">
+                  {({ field, form }: FieldProps<boolean>) => (
                     <SCheckbox
                       {...field}
                       onChange={() => form.setFieldValue(field.name, !field.value)}
@@ -324,31 +319,29 @@ export default function AddOrEditNetworkNode({
                       label={translateRaw('CUSTOM_NODE_FORM_AUTH_TOGGLE')}
                     />
                   )}
-                />
+                </Field>
               </Column>
             </Row>
             <Row hidden={!values.auth}>
               <Column>
                 <AddressFieldset>
                   <label htmlFor="username">{translateRaw('CUSTOM_NODE_FORM_USERNAME')}</label>
-                  <Field
-                    name="username"
-                    render={({ field }: FieldProps<string>) => (
+                  <Field name="username">
+                    {({ field }: FieldProps<string>) => (
                       <InputField
                         {...field}
                         inputError={errors && errors.username}
                         placeholder={translateRaw('CUSTOM_NODE_FORM_USERNAME_PLACEHOLDER')}
                       />
                     )}
-                  />
+                  </Field>
                 </AddressFieldset>
               </Column>
               <Column>
                 <AddressFieldset>
                   <label htmlFor="password">{translateRaw('CUSTOM_NODE_FORM_PASSWORD')}</label>
-                  <Field
-                    name="password"
-                    render={({ field }: FieldProps<string>) => (
+                  <Field name="password">
+                    {({ field }: FieldProps<string>) => (
                       <InputField
                         {...field}
                         inputError={errors && errors.password}
@@ -356,7 +349,7 @@ export default function AddOrEditNetworkNode({
                         placeholder={translateRaw('CUSTOM_NODE_FORM_PASSWORD')}
                       />
                     )}
-                  />
+                  </Field>
                 </AddressFieldset>
               </Column>
             </Row>
