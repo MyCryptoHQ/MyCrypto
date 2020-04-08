@@ -18,7 +18,8 @@ export enum KB_HELP_ARTICLE {
   WHAT_IS_GAS = 'general-knowledge/ethereum-blockchain/what-is-gas',
   WALLETCONNECT = 'general-knowledge/ethereum-blockchain/what-is-walletconnect',
   STAYING_SAFE = 'staying-safe',
-  BUY_CRYPTO = 'how-to/getting-started/how-to-buy-ether-with-usd'
+  BUY_CRYPTO = 'how-to/getting-started/how-to-buy-ether-with-usd',
+  MEMBERSHIP_INFO = 'general-knowledge/about-mycrypto/membership-information'
 }
 
 export enum HELP_ARTICLE {
