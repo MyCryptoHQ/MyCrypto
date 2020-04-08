@@ -140,10 +140,10 @@ export const NODES_CONFIG: { [key in NetworkId]: NodeConfig[] } = {
 
   ATH: [
     {
-      name: makeNodeName('ATH', 'wallet.atheios.com'),
+      name: makeNodeName('ATH', 'rpc.atheios.org'),
       type: NodeType.RPC,
-      service: 'wallet.atheios.com',
-      url: 'https://wallet.atheios.com:8797'
+      service: 'rpc.atheios.org',
+      url: 'https://rpc.atheios.org/'
     }
   ],
 
