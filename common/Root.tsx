@@ -17,6 +17,7 @@ const AppProvidersInnerContainer = styled.div`
 `;
 const AppRouterContainer = styled.div`
   flex: 1;
+  max-width: 100vw;
   max-height: 100vh;
 `;
 const DevToolsManagerContainer = styled.div`
