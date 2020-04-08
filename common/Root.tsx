@@ -17,15 +17,18 @@ const AppProvidersInnerContainer = styled.div`
 `;
 const AppRouterContainer = styled.div`
   flex: 1;
-  overflow: auto;
   max-height: 100vh;
 `;
 const DevToolsManagerContainer = styled.div`
-  overflow: auto;
-  max-height: 100vh;
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  width: 450px;
+  height: 100vh;
 
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    position: absolute;
+    position: fixed;
     z-index: 100;
     width: 100vw;
   }
