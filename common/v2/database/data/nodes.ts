@@ -250,8 +250,8 @@ export const NODES_CONFIG: { [key in NetworkId]: NodeConfig[] } = {
     {
       name: makeNodeName('MUSIC', 'music'),
       type: NodeType.RPC,
-      service: 'musicoin.tw',
-      url: 'https://mewapi.musicoin.tw'
+      service: 'rpc.musicoin.org',
+      url: 'https://rpc.musicoin.org/'
     }
   ],
 
