@@ -104,43 +104,44 @@ export default function AddressBook({
   const addressBookTable = {
     head: ['Favorite', 'Label', 'Address', 'Network', 'Notes', 'Delete'],
     overlay: (rowIndex: number): JSX.Element => {
-      if (overlayRows) {
-        if (overlayRows[0].length && overlayRows[0][0] === rowIndex) {
-          // Row delete overlay
-          const { uuid, label, address } = displayAddressBook[rowIndex];
-          return (
-            <RowDeleteOverlay
-              prompt={translateRaw('ADDRESS_BOOK_DELETE_OVERLAY_TEXT', {
-                $label: label,
-                $address: truncate(address)
-              })}
-              deleteAction={() => {
-                setDeletingIndex(undefined);
-                setUndoDeletingIndexes(prev => [...prev, [rowIndex, uuid]]);
-                deleteAddressBooks(uuid);
-              }}
-              cancelAction={() => setDeletingIndex(undefined)}
-            />
-          );
-        } else if (overlayRows[1].length && overlayRows[1].map(row => row[0]).includes(rowIndex)) {
-          // Undo delete overlay
-          const { uuid, label, address } = displayAddressBook[rowIndex];
+      if (!overlayRows) return <></>;
 
-          return (
-            <UndoDeleteOverlay
-              address={address}
-              overlayText={translateRaw('ADDRESS_BOOK_UNDO_DELETE_OVERLAY_TEXT', {
-                $label: label,
-                $address: truncate(address)
-              })}
-              restoreAccount={() => {
-                restoreDeletedAddressBook(uuid);
-                setUndoDeletingIndexes(prev => prev.filter(i => i[0] !== rowIndex));
-              }}
-            />
-          );
-        }
+      if (overlayRows[0].length && overlayRows[0][0] === rowIndex) {
+        // Row delete overlay
+        const { uuid, label, address } = displayAddressBook[rowIndex];
+        return (
+          <RowDeleteOverlay
+            prompt={translateRaw('ADDRESS_BOOK_DELETE_OVERLAY_TEXT', {
+              $label: label,
+              $address: truncate(address)
+            })}
+            deleteAction={() => {
+              setDeletingIndex(undefined);
+              setUndoDeletingIndexes(prev => [...prev, [rowIndex, uuid]]);
+              deleteAddressBooks(uuid);
+            }}
+            cancelAction={() => setDeletingIndex(undefined)}
+          />
+        );
+      } else if (overlayRows[1].length && overlayRows[1].map(row => row[0]).includes(rowIndex)) {
+        // Undo delete overlay
+        const { uuid, label, address } = displayAddressBook[rowIndex];
+
+        return (
+          <UndoDeleteOverlay
+            address={address}
+            overlayText={translateRaw('ADDRESS_BOOK_UNDO_DELETE_OVERLAY_TEXT', {
+              $label: label,
+              $address: truncate(address)
+            })}
+            restoreAccount={() => {
+              restoreDeletedAddressBook(uuid);
+              setUndoDeletingIndexes(prev => prev.filter(i => i[0] !== rowIndex));
+            }}
+          />
+        );
       }
+
       return <></>;
     },
     overlayRows: overlayRowsFlat,
