@@ -3,10 +3,9 @@ import styled from 'styled-components';
 
 import { Typography } from 'v2/components';
 import { SPACING, COLORS, BREAK_POINTS } from 'v2/theme';
+import { AssetContext, getAssetByUUID } from 'v2/services/Store';
 
 import { IMembershipConfig, IMembershipId } from '../config';
-import { AssetContext } from 'v2/services/Store';
-import { Asset } from 'v2/types';
 
 const PlanCard = styled.div<{ fullwith?: boolean }>`
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
@@ -44,7 +43,7 @@ const STypography = styled(Typography)`
 
 export default ({ plan }: { plan: IMembershipConfig }) => {
   const { assets } = useContext(AssetContext);
-  const planAsset = assets.find(asset => asset.uuid === plan.assetUUID) as Asset;
+  const planAsset = getAssetByUUID(assets)(plan.assetUUID)!;
 
   return (
     <PlanCard fullwith={plan.key === IMembershipId.lifetime ? true : false}>

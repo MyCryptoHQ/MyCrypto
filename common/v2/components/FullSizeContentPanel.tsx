@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+
 import { ExtendedContentPanel, ExtendedControlPanelProps } from 'v2/components';
 import { BREAK_POINTS, SPACING } from 'v2/theme';
 
@@ -12,7 +13,7 @@ export const FullSizePanelSection = styled.section<{ color?: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: ${props => (props.color ? props.color : 'inherit')};
+  background-color: ${props => props.color || 'inherit'};
   width: 100%;
   padding: ${SPACING.LG} ${SPACING.XL};
 `;

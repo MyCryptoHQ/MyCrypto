@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { withRouter, Link } from 'react-router-dom';
+import { Accordion } from '@mycrypto/ui';
 
 import { FullSizeContentPanel, Button, Typography } from 'v2/components';
 import translate from 'v2/translations';
@@ -22,7 +23,6 @@ import membershipNoAds from 'assets/images/membership/membership-no-ads.svg';
 import membershipNoSponsor from 'assets/images/membership/membership-no-sponsor.svg';
 import membershipStickers from 'assets/images/membership/membership-stickers.svg';
 import membershipShirt from 'assets/images/membership/membership-shirt.svg';
-import { Accordion } from '@mycrypto/ui';
 
 const Heading = styled(FullSizePanelSection)`
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
@@ -136,7 +136,7 @@ const Disclaimer = styled(Typography)`
 `;
 
 const MembershipEducation = withRouter(({ history }) => {
-  const handleSubmit = () => history.push(`${ROUTE_PATHS.MYC_MEMBERSHIP.path}/buy`);
+  const handleSubmit = () => history.push(`${ROUTE_PATHS.MYC_MEMBERSHIP_BUY.path}`);
   return (
     <FullSizeContentPanel width={'1100px'}>
       <Heading>{translate('MEMBERSHIP')}</Heading>

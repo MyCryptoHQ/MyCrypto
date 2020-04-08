@@ -235,9 +235,9 @@ export const STATIC_APP_ROUTES: IAppRoute[] = [
     component: MembershipEducation
   },
   {
-    name: ROUTE_PATHS.MYC_MEMBERSHIP.name,
-    title: ROUTE_PATHS.MYC_MEMBERSHIP.title,
-    path: `${ROUTE_PATHS.MYC_MEMBERSHIP.path}/buy`,
+    name: ROUTE_PATHS.MYC_MEMBERSHIP_BUY.name,
+    title: ROUTE_PATHS.MYC_MEMBERSHIP_BUY.title,
+    path: `${ROUTE_PATHS.MYC_MEMBERSHIP_BUY.path}`,
     exact: true,
     requireAccounts: false,
     enabled: IS_ACTIVE_FEATURE.MYC_MEMBERSHIP,
