@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
-import { COLORS } from '../theme';
+import { COLORS, SPACING } from '../theme';
 
 const MobileNavBarStyled = styled.div`
   display: flex;
@@ -16,7 +16,7 @@ const MobileNavBarStyled = styled.div`
       width: 100%;
       max-width: 100%;
 
-      padding: 23px 0;
+      padding: ${SPACING.BASE} 0;
       background-color: ${COLORS.BLUE_DARK_SLATE};
       border: 1px solid ${COLORS.GREY_GEYSER};
 

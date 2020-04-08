@@ -6,16 +6,16 @@ import {
   SettingsContext,
   StoreContext
 } from 'v2/services/Store';
+
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { AccountList, FlippablePanel, Desktop, Mobile } from 'v2/components';
+import { AccountList, FlippablePanel, Desktop, Mobile, MobileNavBar } from 'v2/components';
 import { BREAK_POINTS } from 'v2/theme';
 import { NetworkId } from 'v2/types';
 import { CustomNodeConfig } from 'v2/types/node';
 import { DEFAULT_NETWORK, IS_ACTIVE_FEATURE } from 'v2/config';
 import translate from 'v2/translations';
-import MobileNavBar from 'v2/components/MobileNavBar';
 
 import { AddressBookPanel, AddToAddressBook, GeneralSettings, DangerZone } from './components';
 import NetworkNodes from './components/NetworkNodes';

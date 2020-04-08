@@ -17,10 +17,6 @@ const SContainer = styled.div`
   display: flex;
   flex-direction: row;
   padding: 12px;
-
-  &:hover {
-    background-color: var(--color-gray-lighter);
-  }
 `;
 
 const SContainerValue = styled(SContainer)`
@@ -70,21 +66,21 @@ class NetworkOption extends React.PureComponent<NetworkOptionProps> {
       value: { isCustom }
     } = option as { value: CustomNodeConfig };
 
+    const onEdit = useCallback(
+      e => {
+        e.preventDefault();
+
+        option.onEdit(option.value);
+      },
+      [option]
+    );
+
     if (option.label !== newNode) {
       return (
         <SContainerValue onClick={() => onSelect && onSelect(option, null)}>
           <Typography value={option.label} />
           {isFunction(option.onEdit) && isEditEnabled && isCustom === true && (
-            <EditIcon
-              onClick={e => {
-                e.preventDefault();
-
-                if (option.onEdit) {
-                  option.onEdit(option.value);
-                }
-              }}
-              src={editIcon}
-            />
+            <EditIcon onClick={onEdit} src={editIcon} />
           )}
         </SContainerValue>
       );
