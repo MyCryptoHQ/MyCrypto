@@ -28,6 +28,7 @@ export interface Asset {
   readonly type: TAssetType;
   readonly contractAddress?: string;
   readonly decimal?: number;
+  readonly isCustom?: boolean;
 }
 
 export interface ExtendedAsset extends Asset {

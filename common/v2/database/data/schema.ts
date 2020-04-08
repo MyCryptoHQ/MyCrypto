@@ -1,5 +1,6 @@
 import { LSKeys, LocalStorage } from 'v2/types';
-import { defaultSettings } from '../data';
+
+import { defaultSettings } from './settings';
 
 export const SCHEMA_BASE: LocalStorage = {
   version: 'v1.0.0',

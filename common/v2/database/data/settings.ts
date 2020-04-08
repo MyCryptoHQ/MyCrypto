@@ -1,4 +1,4 @@
-export const settings = {
+export const defaultSettings = {
   fiatCurrency: 'USD',
   darkMode: false,
   dashboardAccounts: [],

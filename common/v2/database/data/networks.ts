@@ -12,7 +12,7 @@ import {
 } from 'v2/config';
 
 // Temporay type to bridge the difference between v1 and v2 network definitions.
-type NetworkConfig = {
+export type NetworkConfig = {
   [key in NetworkId]: NetworkLegacy;
 };
 
@@ -77,7 +77,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       origin: 'https://kovan.etherscan.io'
     }),
     tokens: require('./tokens/kov.json'),
-    contracts: require('./contracts/ropsten.json'),
+    contracts: require('./contracts/kovan.json'),
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,

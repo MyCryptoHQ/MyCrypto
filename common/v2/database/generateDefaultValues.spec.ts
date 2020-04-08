@@ -1,13 +1,14 @@
 import { LocalStorage, LSKeys } from 'v2/types';
 import { toArray } from 'v2/utils';
+
 import { createDefaultValues } from './generateDefaultValues';
-import { SCHEMA_BASE } from './schema';
+import { SCHEMA_BASE, NETWORKS_CONFIG } from './data';
 
 describe('Schema', () => {
   let defaultData: LocalStorage;
 
   beforeAll(() => {
-    defaultData = createDefaultValues(SCHEMA_BASE);
+    defaultData = createDefaultValues(SCHEMA_BASE, NETWORKS_CONFIG);
   });
 
   it('defaultData has with valid properties', () => {
