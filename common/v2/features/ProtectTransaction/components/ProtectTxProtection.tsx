@@ -172,9 +172,9 @@ export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtect
           ...sendAssetsValues!,
           amount: feeAmount.amount ? feeAmount.amount.toString() : ''
         });
-        setIsLoading(false);
       } catch (e) {
         console.error(e);
+        setIsLoading(false);
       }
     },
     [feeAmount, setIsLoading]

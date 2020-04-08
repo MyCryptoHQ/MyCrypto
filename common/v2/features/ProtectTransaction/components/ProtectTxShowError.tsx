@@ -65,6 +65,11 @@ export const ProtectTxShowError: FC<Props> = ({ shown, protectTxError }) => {
           variables={{
             $supportEmail: () => (
               <LinkOut
+                showIcon={false}
+                inline={true}
+                fontSize={FONT_SIZE.SM}
+                fontColor={COLORS.PASTEL_RED}
+                underline={true}
                 link={`mailto:${SUPPORT_EMAIL}?subject=Protected transaction $5.00 limit`}
                 text={SUPPORT_EMAIL}
               />
