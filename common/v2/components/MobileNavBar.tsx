@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
-import { BREAK_POINTS, COLORS } from '../theme';
+import { COLORS } from '../theme';
 
 const MobileNavBarStyled = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin: -19px 0 0;
+  margin: -29px 0 0;
 
   > div {
     &.tab {
@@ -50,10 +50,6 @@ const MobileNavBarStyled = styled.div`
     &.w-100 {
       width: 100%;
     }
-  }
-
-  @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
-    margin-top: -29px;
   }
 `;
 
