@@ -20,7 +20,6 @@ type StaticNetworkIds =
   | 'ESN'
   | 'ETI'
   | 'ETHO'
-  | 'ETSC'
   | 'EXP'
   | 'GO'
   | 'GO_TESTNET'

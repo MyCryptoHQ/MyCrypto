@@ -18,7 +18,6 @@ export type NetworkId =
   | 'ESN'
   | 'ETI'
   | 'ETHO'
-  | 'ETSC'
   | 'EXP'
   | 'GO'
   | 'GO_TESTNET'

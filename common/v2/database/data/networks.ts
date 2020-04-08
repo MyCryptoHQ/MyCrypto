@@ -312,31 +312,6 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     }
   },
 
-  ETSC: {
-    id: 'ETSC',
-    name: 'Ethereum Social',
-    unit: 'ETSC' as TSymbol,
-    chainId: 28,
-    isCustom: false,
-    color: '#4295d1',
-    blockExplorer: makeExplorer({
-      name: 'Ethereum Social Explorer',
-      origin: 'https://explorer.ethereumsocial.kr'
-    }),
-    tokens: [],
-    contracts: [],
-    dPaths: {
-      [WalletId.TREZOR]: DPaths.ETSC_DEFAULT,
-      [WalletId.SAFE_T_MINI]: DPaths.ETSC_DEFAULT,
-      [WalletId.MNEMONIC_PHRASE]: DPaths.ETSC_DEFAULT
-    },
-    gasPriceSettings: {
-      min: 1,
-      max: 60,
-      initial: 20
-    }
-  },
-
   EGEM: {
     id: 'EGEM',
     name: 'EtherGem',

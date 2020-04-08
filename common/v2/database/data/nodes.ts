@@ -201,15 +201,6 @@ export const NODES_CONFIG: { [key in NetworkId]: NodeConfig[] } = {
     }
   ],
 
-  ETSC: [
-    {
-      name: makeNodeName('ETSC', 'etsc'),
-      type: NodeType.RPC,
-      service: 'ethereumsocial.kr',
-      url: 'https://node.ethereumsocial.kr'
-    }
-  ],
-
   EXP: [
     {
       name: makeNodeName('EXP', 'tech'),

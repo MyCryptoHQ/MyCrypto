@@ -68,11 +68,6 @@ const MUSIC_DEFAULT: DPath = {
   value: "m/44'/184'/0'/0"
 };
 
-const ETSC_DEFAULT: DPath = {
-  label: 'Default (ETSC)',
-  value: "m/44'/1128'/0'/0"
-};
-
 const EGEM_DEFAULT: DPath = {
   label: 'Default (EGEM)',
   value: "m/44'/1987'/0'/0"
@@ -207,7 +202,6 @@ export const DPathsList = {
   TOMO_DEFAULT,
   ELLA_DEFAULT,
   MUSIC_DEFAULT,
-  ETSC_DEFAULT,
   EGEM_DEFAULT,
   CLO_DEFAULT,
   RSK_MAINNET,
