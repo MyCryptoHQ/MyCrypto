@@ -15,6 +15,7 @@ import { isWeb3Wallet, useTxMulti, useScreenSize } from 'v2/utils';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { processFormDataToTx } from 'v2/features/SendAssets/helpers';
 import { PROTECTED_TX_FEE_ADDRESS } from 'v2/config';
+import { StoreContext } from 'v2/services';
 
 import { ProtectTxProtection } from './ProtectTxProtection';
 import { ProtectTxSign } from './ProtectTxSign';
@@ -94,6 +95,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
     customDetails,
     resetFlow
   }: Props) {
+    const { isMyCryptoMember } = useContext(StoreContext);
     const [protectTx, setProtectTx] = useState<ITxObject | null>(null);
     const { state, initWith, prepareTx, sendTx } = useTxMulti();
     const { transactions, _currentTxIdx, account, network } = state;
@@ -122,43 +124,47 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
       }
     }, [account, network, protectTx]);
 
-    const protectTxStepperSteps = [
-      {
-        component: ProtectTxProtection,
-        props: {
-          sendAssetsValues: (({ values }) => values)(formCallback())
-        },
-        actions: {
-          handleProtectTxSubmit: async (payload: IFormikFields) => {
-            const { account: formAccount, network: formNetwork } = payload;
-            // TODO: initWith requires some object for every tx, because of R.adjust can't operate on empty array
-            await initWith(() => Promise.resolve([{}]), formAccount, formNetwork);
-            setProtectTx({
-              ...processFormDataToTx(payload),
-              to: PROTECTED_TX_FEE_ADDRESS
-            });
-          }
-        }
-      },
-      {
-        component: ProtectTxSign,
-        props: {
-          txConfig: transactions[_currentTxIdx] && transactions[_currentTxIdx].txRaw,
-          account,
-          network
-        },
-        actions: {
-          handleProtectTxConfirmAndSend: async (payload: ITxHash | ITxSigned) => {
-            await handleTransactionReport();
-            await sendTx(payload);
-            goToNextStep();
-          }
-        }
-      },
-      {
-        component: ProtectTxReport
-      }
-    ];
+    const reportStep = {
+      component: ProtectTxReport
+    };
+
+    const protectTxStepperSteps = isMyCryptoMember
+      ? [reportStep]
+      : [
+          {
+            component: ProtectTxProtection,
+            props: {
+              sendAssetsValues: (({ values }) => values)(formCallback())
+            },
+            actions: {
+              handleProtectTxSubmit: async (payload: IFormikFields) => {
+                const { account: formAccount, network: formNetwork } = payload;
+                // TODO: initWith requires some object for every tx, because of R.adjust can't operate on empty array
+                await initWith(() => Promise.resolve([{}]), formAccount, formNetwork);
+                setProtectTx({
+                  ...processFormDataToTx(payload),
+                  to: PROTECTED_TX_FEE_ADDRESS
+                });
+              }
+            }
+          },
+          {
+            component: ProtectTxSign,
+            props: {
+              txConfig: transactions[_currentTxIdx] && transactions[_currentTxIdx].txRaw,
+              account,
+              network
+            },
+            actions: {
+              handleProtectTxConfirmAndSend: async (payload: ITxHash | ITxSigned) => {
+                await handleTransactionReport();
+                await sendTx(payload);
+                goToNextStep();
+              }
+            }
+          },
+          reportStep
+        ];
 
     const { isMdScreen } = useScreenSize();
 

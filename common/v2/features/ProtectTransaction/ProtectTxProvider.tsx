@@ -9,7 +9,7 @@ import {
   CryptoScamDBService,
   EtherscanService
 } from 'v2/services/ApiService';
-import { AssetContext, getAssetByUUID } from 'v2/services/Store';
+import { AssetContext, getAssetByUUID, StoreContext } from 'v2/services/Store';
 import { useScreenSize } from 'v2/utils';
 
 import { SendFormCallbackType } from './types';
@@ -37,7 +37,7 @@ export interface ProtectTxContext {
   handleTransactionReport(receiverAddress?: string): Promise<void>;
   setMainTransactionFormCallback(callback: SendFormCallbackType): void;
   goToNextStep(): void;
-  goToInitialStepOrFetchReport(receiverAddress?: string): void;
+  goToInitialStepOrFetchReport(receiverAddress?: string, network?: Network): void;
   showHideProtectTx(showOrHide: boolean): void;
   setReceiverInfo(receiverAddress: string, network: Network): Promise<void>;
   setProtectTxTimeoutFunction(cb: (txReceiptCb?: (txReciept: ITxReceipt) => void) => void): void;
@@ -66,6 +66,7 @@ const numOfSteps = 3;
 export const ProtectTxContext = createContext({} as ProtectTxContext);
 
 const ProtectTxProvider: React.FC = ({ children }) => {
+  const { isMyCryptoMember } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
   const [state, setState] = useState<ProtectTxState>({ ...protectTxProviderInitialState });
   const { isMdScreen } = useScreenSize();
@@ -74,8 +75,9 @@ const ProtectTxProvider: React.FC = ({ children }) => {
   const protectionTxTimeoutFunction = useRef<((cb: () => ITxReceipt) => void) | null>(null);
 
   const handleTransactionReport = useCallback(
-    async (receiverAddress?: string): Promise<void> => {
+    async (receiverAddress?: string, n?: Network): Promise<void> => {
       const address = receiverAddress || state.receiverAddress;
+      const network = n || state.network;
       if (!address) return Promise.reject();
 
       const [
@@ -85,8 +87,8 @@ const ProtectTxProvider: React.FC = ({ children }) => {
       ] = await Promise.all(
         [
           CryptoScamDBService.check(address),
-          EtherscanService.instance.getBalance(address, state.network!.id),
-          EtherscanService.instance.getLastTx(address, state.network!.id)
+          EtherscanService.instance.getBalance(address, network!.id),
+          EtherscanService.instance.getLastTx(address, network!.id)
         ].map(p => p.catch(e => e))
       );
 
@@ -144,17 +146,18 @@ const ProtectTxProvider: React.FC = ({ children }) => {
   }, [setState]);
 
   const goToInitialStepOrFetchReport = useCallback(
-    (receiverAddress?: string) => {
-      if (state.protectTxEnabled) {
+    (receiverAddress?: string, network?: Network) => {
+      if (state.protectTxEnabled || isMyCryptoMember) {
         setState(prevState => ({
           ...prevState,
           cryptoScamAddressReport: null,
           etherscanLastTxReport: null,
           etherscanBalanceReport: null,
-          receiverAddress: receiverAddress ? receiverAddress : prevState.receiverAddress
+          receiverAddress: receiverAddress ? receiverAddress : prevState.receiverAddress,
+          network: network ? network : prevState.network
         }));
 
-        handleTransactionReport(receiverAddress);
+        handleTransactionReport(receiverAddress, network);
       } else {
         setState(prevState => ({
           ...prevState,
