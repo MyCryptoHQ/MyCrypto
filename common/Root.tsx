@@ -24,13 +24,13 @@ const DevToolsManagerContainer = styled.div`
   z-index: 100;
   top: 0;
   left: 0;
-  width: 450px;
+  max-width: 450px;
   height: 100vh;
 
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     position: fixed;
     z-index: 100;
-    width: 100vw;
+    max-width: 100vw;
   }
 `;
 
