@@ -1992,7 +1992,7 @@
     qrcode-generator "1.4.0"
     react-qr-reader "2.1.0"
 
-"@phenomnomnominal/tsquery@^4.0.0":
+"@phenomnomnominal/tsquery@4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@phenomnomnominal/tsquery/-/tsquery-4.0.0.tgz#610e8ac968137e4a0f98c842c919bb8ad0e85718"
   integrity sha512-s2Yet/MCj9Jh6nR6GfldrUPT6Y+aM1jIAdiKcOKEzmeKALT0Tc7SFIkYP3KvzjzbkKK5W7BiJ3cWy2UOa4ITbw==
