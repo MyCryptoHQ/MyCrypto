@@ -93,7 +93,8 @@ export function AddToken(props: Props) {
       type: 'erc20',
       contractAddress: address,
       decimal: parseInt(decimals, 10),
-      uuid
+      uuid,
+      isCustom: true
     };
 
     createAssetWithID(newAsset, uuid);

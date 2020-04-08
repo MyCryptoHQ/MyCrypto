@@ -1,7 +1,7 @@
 import * as R from 'ramda';
+
 import { generateAssetUUID, generateContractUUID } from 'v2/utils';
 import { Fiats, DEFAULT_ASSET_DECIMAL } from 'v2/config';
-import { NODES_CONFIG, NETWORKS_CONFIG } from '../data';
 import {
   Asset,
   ExtendedAsset,
@@ -18,6 +18,7 @@ import {
   LSKeys
 } from 'v2/types';
 
+import { NODES_CONFIG, NETWORKS_CONFIG, NetworkConfig } from './data';
 import { SeedData, StoreAction } from './types';
 import { toArray, toObject, add } from './helpers';
 /* Transducers */
@@ -63,14 +64,15 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: SeedData) => {
   return R.mapObjIndexed(formatNetwork, networks);
 });
 
-const addContracts = add(LSKeys.CONTRACTS)(
+export const addContracts = add(LSKeys.CONTRACTS)(
   (networks: Record<NetworkId, NetworkLegacy>, store: LocalStorage) => {
     const formatContract = (id: NetworkId) => (c: ContractLegacy): ExtendedContract => ({
-      uuid: generateContractUUID(id, c.address, c.abi),
+      uuid: c.uuid || generateContractUUID(id, c.address, c.abi),
       name: c.name,
       address: c.address,
       abi: c.abi,
-      networkId: id
+      networkId: id,
+      isCustom: c.isCustom
     });
 
     // Transform { ETH: { contracts: [ {<contract>} ] }}
@@ -85,7 +87,7 @@ const addContracts = add(LSKeys.CONTRACTS)(
   }
 );
 
-const addContractsToNetworks = add(LSKeys.NETWORKS)((_, store: LocalStorage) => {
+export const addContractsToNetworks = add(LSKeys.NETWORKS)((_, store: LocalStorage) => {
   const getNetworkContracts = (n: Network) => {
     const nContracts = R.filter((c: ExtendedContract) => c.networkId === n.id, store.contracts);
     return {
@@ -144,7 +146,8 @@ const addTokensToAssets = add(LSKeys.ASSETS)(
       ticker: (a.symbol as unknown) as TSymbol,
       networkId: id,
       contractAddress: a.address,
-      type: 'erc20'
+      type: 'erc20',
+      isCustom: a.isCustom
     });
 
     // From { ETH: { tokens: [ {<tokens>} ] }}
@@ -179,19 +182,19 @@ const updateNetworkAssets = add(LSKeys.NETWORKS)((_, store: LocalStorage) => {
 });
 
 /* Define flow order */
-const defaultTransducers: StoreAction[] = [
-  addNetworks(NETWORKS_CONFIG),
-  addContracts(NETWORKS_CONFIG),
+const getDefaultTransducers = (networkConfig: NetworkConfig): StoreAction[] => [
+  addNetworks(networkConfig),
+  addContracts(networkConfig),
   addContractsToNetworks(),
   addBaseAssetsToAssets(),
   addFiatsToAssets(toArray(Fiats)),
-  addTokensToAssets(NETWORKS_CONFIG),
+  addTokensToAssets(networkConfig),
   updateNetworkAssets()
 ];
 
 /* Handler to trigger the flow according the environment */
-type Transduce = (z: LocalStorage) => LocalStorage;
-export const createDefaultValues: Transduce = (initialSchema: LocalStorage) => {
+type Transduce = (z: LocalStorage, networkConfig: NetworkConfig) => LocalStorage;
+export const createDefaultValues: Transduce = (initialSchema: LocalStorage, networkConfig) => {
   // @ts-ignore
-  return R.pipe(...defaultTransducers)(initialSchema);
+  return R.pipe(...getDefaultTransducers(networkConfig))(initialSchema);
 };

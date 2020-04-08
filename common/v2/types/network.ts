@@ -16,7 +16,7 @@ interface AssetPropsInLegacy {
   address: TAddress;
 }
 export type AssetLegacy = Subtract<Asset, AssetPropsMissingInLegacy> & AssetPropsInLegacy;
-export type ContractLegacy = Omit<Contract, 'networkId'>;
+export type ContractLegacy = Omit<Contract, 'networkId'> & { uuid?: TUuid };
 
 export interface Network {
   id: NetworkId;

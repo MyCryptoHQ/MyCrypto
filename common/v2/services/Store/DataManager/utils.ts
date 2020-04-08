@@ -1,4 +1,3 @@
-import * as R from 'ramda';
 import { Omit, ValuesType } from 'utility-types';
 
 import {
@@ -11,13 +10,14 @@ import {
   LSKeys,
   TUuid,
   DataStore,
+  ExtendedContract,
   ExtendedAsset,
-  ExtendedContract
+  TAddress
 } from 'v2/types';
 import { makeExplorer } from 'v2/services/EthService';
+import { NETWORKS_CONFIG, SCHEMA_BASE } from 'v2/database/data';
+import { createDefaultValues } from 'v2/database';
 
-const createObjHash = (obj: object): string => Object.keys(obj).length.toString();
-const createArrHash = (arr: []): string => arr.length.toString();
 type ObjToArray = <T>(o: T) => ValuesType<T>[];
 const objToArray: ObjToArray = obj => Object.values(obj);
 type ArrayToObj = <K extends string | number>(
@@ -25,11 +25,28 @@ type ArrayToObj = <K extends string | number>(
 ) => <V extends any[]>(arr: V) => Record<K, ValuesType<V>>;
 const arrayToObj: ArrayToObj = key => arr =>
   arr.reduce((acc, curr) => ({ ...acc, [curr[key]]: curr }), {});
-const memoizeObjToArray = R.memoizeWith(createObjHash, objToArray);
-const memoizeArrayToObj = (key: string) => R.memoizeWith(createArrHash, arrayToObj(key));
+
+const mergeConfigWithLocalStorage = (ls: LocalStorage): LocalStorage => {
+  // fetch data from endpoint
+  const defaultConfig = NETWORKS_CONFIG;
+
+  // add contracts and assets from localstorage
+  const lsContracts = objToArray(ls[LSKeys.CONTRACTS]) as ExtendedContract[];
+  const lsAssets = objToArray(ls[LSKeys.ASSETS]) as ExtendedAsset[];
+  lsContracts.forEach(c => defaultConfig[c.networkId].contracts.push(c));
+  lsAssets.forEach(
+    a =>
+      a.networkId &&
+      defaultConfig[a.networkId].tokens.push({ ...a, address: a.contractAddress as TAddress })
+  );
+
+  return createDefaultValues(SCHEMA_BASE, defaultConfig);
+};
 
 // From LocalStorage to the state we want to use within the app.
 export function marshallState(ls: LocalStorage): DataStore {
+  const mergedLs = mergeConfigWithLocalStorage(ls);
+
   return {
     version: ls.version,
     [LSKeys.ACCOUNTS]: Object.values(ls[LSKeys.ACCOUNTS]),
@@ -39,12 +56,14 @@ export function marshallState(ls: LocalStorage): DataStore {
       },
       [] as ExtendedAddressBook[]
     ),
-    [LSKeys.ASSETS]: memoizeObjToArray(ls[LSKeys.ASSETS]) as ExtendedAsset[],
-    [LSKeys.CONTRACTS]: memoizeObjToArray(ls[LSKeys.CONTRACTS]) as ExtendedContract[],
-    [LSKeys.NETWORKS]: Object.values(ls[LSKeys.NETWORKS]).map(({ blockExplorer, ...rest }) => ({
-      ...rest,
-      blockExplorer: blockExplorer ? makeExplorer(blockExplorer) : blockExplorer
-    })),
+    [LSKeys.ASSETS]: objToArray(mergedLs[LSKeys.ASSETS]) as ExtendedAsset[],
+    [LSKeys.CONTRACTS]: objToArray(mergedLs[LSKeys.CONTRACTS]) as ExtendedContract[],
+    [LSKeys.NETWORKS]: Object.values(mergedLs[LSKeys.NETWORKS]).map(
+      ({ blockExplorer, ...rest }) => ({
+        ...rest,
+        blockExplorer: blockExplorer ? makeExplorer(blockExplorer) : blockExplorer
+      })
+    ),
     [LSKeys.NOTIFICATIONS]: Object.entries(ls[LSKeys.NOTIFICATIONS]).reduce(
       (acc, [uuid, n]: [TUuid, Notification]) => {
         return acc.concat([{ ...n, uuid }]);
@@ -69,12 +88,11 @@ export function deMarshallState(st: DataStore): Omit<LocalStorage, 'mtime'> {
       (acc, curr) => ({ ...acc, [curr.uuid]: curr }),
       {}
     ),
-    [LSKeys.ASSETS]: memoizeArrayToObj('uuid')(st[LSKeys.ASSETS]),
-    [LSKeys.CONTRACTS]: memoizeArrayToObj('uuid')(st[LSKeys.CONTRACTS]),
-    [LSKeys.NETWORKS]: st[LSKeys.NETWORKS].reduce(
-      (acc, curr) => ({ ...acc, [curr.id]: curr }),
-      {} as Record<NetworkId, Network>
-    ),
+    [LSKeys.ASSETS]: arrayToObj('uuid')(st[LSKeys.ASSETS].filter(a => a.isCustom)),
+    [LSKeys.CONTRACTS]: arrayToObj('uuid')(st[LSKeys.CONTRACTS].filter(c => c.isCustom)),
+    [LSKeys.NETWORKS]: st[LSKeys.NETWORKS]
+      .filter(c => c.isCustom)
+      .reduce((acc, curr) => ({ ...acc, [curr.id]: curr }), {} as Record<NetworkId, Network>),
     [LSKeys.NOTIFICATIONS]: st[LSKeys.NOTIFICATIONS].reduce(
       (acc, curr) => ({ ...acc, [curr.uuid]: curr }),
       {}

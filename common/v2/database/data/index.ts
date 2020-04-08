@@ -1,5 +1,5 @@
 export * from './tokens';
 export * from './contracts';
-export { NETWORKS_CONFIG } from './networks';
+export { NETWORKS_CONFIG, NetworkConfig } from './networks';
 export { NODES_CONFIG } from './nodes';
-export { settings as defaultSettings } from './settings';
+export { SCHEMA_BASE } from './schema';
