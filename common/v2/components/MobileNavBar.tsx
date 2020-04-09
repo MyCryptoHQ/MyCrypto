@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
-import { COLORS, SPACING } from '../theme';
+import { COLORS, FONT_SIZE, SPACING } from '../theme';
 
 const MobileNavBarStyled = styled.div`
   display: flex;
@@ -39,8 +39,8 @@ const MobileNavBarStyled = styled.div`
         margin: 0;
         text-align: center;
         font-weight: bold;
-        font-size: 14px;
-        line-height: 17px;
+        font-size: ${FONT_SIZE.SM};
+        line-height: ${FONT_SIZE.MD};
         letter-spacing: 1.07692px;
         text-transform: uppercase;
         color: ${COLORS.WHITE};

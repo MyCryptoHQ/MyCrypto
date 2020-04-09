@@ -16,7 +16,7 @@ import editIcon from 'assets/images/icn-edit.svg';
 const SContainer = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 12px;
+  padding: ${SPACING.SM};
 `;
 
 const SContainerValue = styled(SContainer)`
