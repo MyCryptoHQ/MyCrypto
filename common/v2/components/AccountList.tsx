@@ -205,7 +205,6 @@ export default function AccountList(props: AccountListProps) {
   const overlayRows = [deletingIndex];
 
   // Verify if AccountList is used in Dashboard to display Settings button
-  const headingRight = dashboard ? translateRaw('SETTINGS_HEADING') : undefined;
   const actionLink = dashboard ? ROUTE_PATHS.SETTINGS.path : undefined;
 
   const Footer = () => {
@@ -228,7 +227,6 @@ export default function AccountList(props: AccountListProps) {
           <Tooltip tooltip={translateRaw('DASHBOARD_ACCOUNTS_TOOLTIP')} />
         </>
       }
-      headingRight={headingRight}
       actionLink={actionLink}
       className={`AccountList ${className}`}
       footer={<Footer />}
