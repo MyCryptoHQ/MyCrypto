@@ -58,11 +58,6 @@ const TOMO_DEFAULT: DPath = {
   value: "m/44'/889'/0'/0"
 };
 
-const ELLA_DEFAULT: DPath = {
-  label: 'Default (ELLA)',
-  value: "m/44'/163'/0'/0"
-};
-
 const MUSIC_DEFAULT: DPath = {
   label: 'Default (MUSIC)',
   value: "m/44'/184'/0'/0"
@@ -200,7 +195,6 @@ export const DPathsList = {
   UBQ_DEFAULT,
   POA_DEFAULT,
   TOMO_DEFAULT,
-  ELLA_DEFAULT,
   MUSIC_DEFAULT,
   EGEM_DEFAULT,
   CLO_DEFAULT,

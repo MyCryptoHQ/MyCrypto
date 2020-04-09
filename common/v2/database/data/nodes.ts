@@ -174,15 +174,6 @@ export const NODES_CONFIG: { [key in NetworkId]: NodeConfig[] } = {
     }
   ],
 
-  ELLA: [
-    {
-      name: makeNodeName('ELLA', 'ellaism'),
-      type: NodeType.RPC,
-      service: 'ellaism.org',
-      url: 'https://jsonrpc.ellaism.org'
-    }
-  ],
-
   ESN: [
     {
       name: makeNodeName('ESN', 'esn'),
@@ -332,6 +323,12 @@ export const NODES_CONFIG: { [key in NetworkId]: NodeConfig[] } = {
       type: NodeType.RPC,
       service: 'node1.webchain.network',
       url: 'https://node1.webchain.network'
+    },
+    {
+      name: makeNodeName('WEB', 'node2.webchain.network'),
+      type: NodeType.RPC,
+      service: 'node2.webchain.network',
+      url: 'https://node2.webchain.network'
     }
   ],
 

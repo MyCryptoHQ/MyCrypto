@@ -260,31 +260,6 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       initial: 20
     }
   },
-  ELLA: {
-    id: 'ELLA',
-    name: 'Ellaism',
-    unit: 'ELLA' as TSymbol,
-    chainId: 64,
-    isCustom: false,
-    color: '#046111',
-    blockExplorer: makeExplorer({
-      name: 'Ellaism Explorer',
-      origin: 'https://explorer.ellaism.org'
-    }),
-    tokens: require('./tokens/ella.json'),
-    contracts: [],
-    dPaths: {
-      [WalletId.TREZOR]: DPaths.ELLA_DEFAULT,
-      [WalletId.SAFE_T_MINI]: DPaths.ELLA_DEFAULT,
-      [WalletId.LEDGER_NANO_S]: DPaths.ELLA_DEFAULT,
-      [WalletId.MNEMONIC_PHRASE]: DPaths.ELLA_DEFAULT
-    },
-    gasPriceSettings: {
-      min: 1,
-      max: 60,
-      initial: 20
-    }
-  },
   MUSIC: {
     id: 'MUSIC',
     name: 'Musicoin',

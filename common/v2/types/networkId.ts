@@ -14,7 +14,6 @@ export type NetworkId =
   | 'CLO'
   | 'DEXON'
   | 'EGEM'
-  | 'ELLA'
   | 'ESN'
   | 'ETI'
   | 'ETHO'

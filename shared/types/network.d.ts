@@ -16,7 +16,6 @@ type StaticNetworkIds =
   | 'CLO'
   | 'DEXON'
   | 'EGEM'
-  | 'ELLA'
   | 'ESN'
   | 'ETI'
   | 'ETHO'
