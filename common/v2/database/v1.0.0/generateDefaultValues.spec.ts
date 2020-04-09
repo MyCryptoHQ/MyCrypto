@@ -24,7 +24,7 @@ describe('Schema', () => {
   describe('Seed: Contracts', () => {
     it('add Contracts to Store', () => {
       const contracts = toArray(defaultData[LSKeys.CONTRACTS]);
-      expect(contracts.length).toBeGreaterThanOrEqual(42);
+      expect(contracts.length).toBeGreaterThanOrEqual(40);
     });
   });
 
