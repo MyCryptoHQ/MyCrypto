@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { BREAK_POINTS, COLORS } from 'v2/theme';
+import { BREAK_POINTS, COLORS, SPACING } from 'v2/theme';
 import { Checkbox, DashboardPanel, InputField, NetworkSelectDropdown } from 'v2/components';
 import { CustomNodeConfig, Network, NetworkId, NodeOptions, NodeType } from 'v2/types';
 import { translateRaw } from 'v2/translations';
@@ -15,11 +15,11 @@ import { ProviderHandler } from 'v2/services/EthService/network';
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
 const AddToNetworkNodePanel = styled(DashboardPanel)`
-  padding: 0 30px 15px;
+  padding: 0 ${SPACING.MD} ${SPACING.SM};
 `;
 
 const BackButton = styled(Button)`
-  margin-right: 16px;
+  margin-right: ${SPACING.BASE};
 `;
 
 const Row = styled.div<{ hidden?: boolean }>`
@@ -29,13 +29,13 @@ const Row = styled.div<{ hidden?: boolean }>`
   @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
     flex-direction: row;
     align-items: flex-start;
-    padding-left: 40px;
+    padding-left: ${SPACING.LG};
   }
 `;
 
 const SubtitleRow = styled(Row)`
-  margin-top: -25px;
-  padding-bottom: 20px;
+  margin-top: -${SPACING.BASE};
+  padding-bottom: ${SPACING.BASE};
 `;
 
 const Column = styled.div<{ alignSelf?: string }>`
@@ -45,25 +45,25 @@ const Column = styled.div<{ alignSelf?: string }>`
     ${({ alignSelf }) => `align-self: ${alignSelf || 'auto'};`};
 
     &:not(:first-child) {
-      padding-left: 25px;
+      padding-left: ${SPACING.BASE};
     }
 
     &:not(:last-child) {
-      padding-right: 25px;
+      padding-right: ${SPACING.BASE};
     }
   }
 
   label {
-    padding-left: 3px;
+    padding-left: ${SPACING.XS};
   }
 `;
 
 const AddressFieldset = styled.fieldset`
-  margin-bottom: 15px;
+  margin-bottom: ${SPACING.SM};
 
   label {
     display: block;
-    margin-bottom: 9px;
+    margin-bottom: ${SPACING.SM};
     color: #163150;
   }
   input,
@@ -76,7 +76,7 @@ const AddressFieldset = styled.fieldset`
 const NetworkNodeFieldsButtons = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  margin-top: ${SPACING.BASE};
   button {
     text-transform: capitalize;
   }
@@ -87,18 +87,18 @@ const NetworkNodeFieldsButtons = styled.div`
 `;
 
 const SNetworkSelectDropdown = styled(NetworkSelectDropdown)`
-  margin-bottom: 15px;
+  margin-bottom: ${SPACING.SM};
 `;
 
 const SCheckbox = styled(Checkbox)`
   margin-bottom: 0;
-  ${({ checked }) => checked && `margin-bottom: 20px;`};
+  ${({ checked }) => checked && `margin-bottom: ${SPACING.BASE};`};
   ${({ checked }) =>
     checked && `@media (min-width: ${BREAK_POINTS.SCREEN_SM}) {margin-bottom: 0;}`};
 `;
 
 const SError = styled.div`
-  margin-top: 10px;
+  margin-top: ${SPACING.SM};
   color: ${COLORS.PASTEL_RED};
 `;
 

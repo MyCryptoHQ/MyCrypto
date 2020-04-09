@@ -9,10 +9,11 @@ import { NetworkSelectDropdown } from 'v2/components';
 import { NetworkContext, NetworkUtils } from 'v2/services/Store';
 import NetworkNodeDropdown from 'v2/components/NetworkNodeDropdown';
 import { ProviderHandler } from 'v2/services/EthService/network';
+import { SPACING } from 'v2/theme';
 import { ToastContext } from '../../Toasts';
 
 const NetworkForm = styled.div`
-  margin-top: 22px;
+  margin-top: ${SPACING.BASE};
 `;
 
 const ButtonWrapper = styled.div`
@@ -30,8 +31,8 @@ const SButton = styled(Button)`
 `;
 
 const SLabel = styled.label`
-  margin-top: 15px;
-  margin-bottom: 10px;
+  margin-top: ${SPACING.BASE};
+  margin-bottom: ${SPACING.SM};
 `;
 
 interface Props {
@@ -88,6 +89,6 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
       </ButtonWrapper>
     </div>
   );
-};
+}
 
 export default NetworkSelectPanel;
