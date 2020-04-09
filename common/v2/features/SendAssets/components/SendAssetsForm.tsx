@@ -168,7 +168,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
       getBaseAssetByNetwork({ network: txConfig.network, assets: userAssets })) ||
       ({} as Asset)
   );
-  const [selectedAsset, setAsset] = useState({} as Asset);
 
   const protectTxContext = useContext(ProtectTxContext);
   const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
@@ -177,24 +176,29 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
     amount: Yup.string()
       .required(translateRaw('REQUIRED'))
       .test('check-valid-amount', translateRaw('ERROR_0'), value => !validateAmountField(value))
-      .test(
-        'check-amount',
-        translateRaw('BALANCE_TOO_LOW_ERROR', { $asset: selectedAsset.ticker }),
-        function(value) {
+      .test({
+        name: 'check-amount',
+        test(value) {
           try {
             const account = this.parent.account;
             const asset = this.parent.asset;
             if (!isEmpty(account)) {
               const balance = getAccountBalance(account, asset.type === 'base' ? undefined : asset);
               const amount = bigNumberify(toTokenBase(value, asset.decimal).toString());
-              return balance.gte(amount);
+              if (balance.lt(amount)) {
+                return this.createError({
+                  message: translateRaw('BALANCE_TOO_LOW_ERROR', {
+                    $asset: this.parent.asset.ticker
+                  })
+                });
+              }
             }
           } catch (err) {
             return false;
           }
           return true;
         }
-      ),
+      }),
     account: Yup.object().required(translateRaw('REQUIRED')),
     address: Yup.object()
       .required(translateRaw('REQUIRED'))
@@ -380,7 +384,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                             form.setFieldValue('gasPriceSlider', data.fast);
                           });
                           form.setFieldValue('network', network || {});
-                          setAsset(option);
                           if (network) {
                             setBaseAsset(
                               getBaseAssetByNetwork({ network, assets: userAssets }) ||
