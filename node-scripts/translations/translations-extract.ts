@@ -8,11 +8,11 @@ const path = require('path');
 
 const PROJECT_FILE_PATTERN = './common/**/*.{ts,tsx}';
 const TRANSLATION_FILE_PATTERN = './common/v2/translations/lang/*.json';
-const TRANSLATE_FUNCTIONS = ['translateRaw', 'translate'];
+const TRANSLATE_FUNCTIONS = ['translateRaw', 'translate', 'translateMarker'];
 const JSX_ELEMENTS_WITH_PROP: [string, string][] = [['Trans', 'id']];
 
 const findCallExpressions = (node: ts.Node, functionName: string): ts.CallExpression[] => {
-  const query = `CallExpression:has(Identifier[name="${functionName}"])`;
+  const query = `CallExpression:has(Identifier[name="${functionName}"]):not(:has(PropertyAccessExpression))`;
   return tsquery(node, query, { visitAllChildren: true });
 };
 
@@ -100,7 +100,7 @@ const updateTranslations = (translated: { [name: string]: string }) => {
     translationFileJson.data = Object.keys(translated)
       .map(k => replaceApostrophe(k))
       .sort()
-      .reduce((acc, key) => ({ ...acc, [key]: translated[key] }), {});
+      .reduce((acc, key) => ({ ...acc, [key]: translated[key] || '' }), {});
 
     fs.writeFileSync(translationFilePath, JSON.stringify(translationFileJson, null, '\t'));
     console.log(`File ${path.basename(translationFilePath)} updated`);
