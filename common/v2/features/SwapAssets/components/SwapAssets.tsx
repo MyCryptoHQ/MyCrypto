@@ -3,7 +3,11 @@ import styled from 'styled-components';
 import { formatEther } from 'ethers/utils';
 
 import translate, { translateRaw } from 'v2/translations';
-import { MYC_DEXAG_COMMISSION_RATE, MYC_DEXAG_MARKUP_THRESHOLD } from 'v2/config';
+import {
+  MYC_DEXAG_COMMISSION_RATE,
+  MYC_DEXAG_MARKUP_THRESHOLD,
+  MYC_DEXAG_REDUCED_COMMISSION_RATE
+} from 'v2/config';
 import {
   InputField,
   AssetDropdown,
@@ -144,7 +148,7 @@ export default function SwapAssets(props: Props) {
     markup
   } = props;
 
-  const { accounts, userAssets } = useContext(StoreContext);
+  const { accounts, userAssets, isMyCryptoMember } = useContext(StoreContext);
 
   // Accounts with a balance of the chosen asset
   const filteredAccounts = fromAsset
@@ -274,7 +278,9 @@ export default function SwapAssets(props: Props) {
             <Label>
               <LabelText>
                 {translateRaw('SWAP_FEE_LABEL', {
-                  $commission: MYC_DEXAG_COMMISSION_RATE.toString()
+                  $commission: isMyCryptoMember
+                    ? MYC_DEXAG_REDUCED_COMMISSION_RATE.toString()
+                    : MYC_DEXAG_COMMISSION_RATE.toString()
                 })}
               </LabelText>
               <STooltip tooltip={translateRaw('SWAP_FEE_TOOLTIP')} />:

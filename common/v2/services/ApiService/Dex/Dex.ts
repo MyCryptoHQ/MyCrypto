@@ -3,7 +3,12 @@ import BN from 'bn.js';
 import axios, { AxiosInstance } from 'axios';
 
 import { TSymbol, ITxObject } from 'v2/types';
-import { DEXAG_MYC_TRADE_CONTRACT, DEXAG_MYC_HANDLER_CONTRACT, DEX_BASE_URL } from 'v2/config';
+import {
+  DEXAG_MYC_TRADE_CONTRACT,
+  DEXAG_MYC_HANDLER_CONTRACT,
+  DEX_BASE_URL,
+  DEXAG_MYC_TRADE_CONTRACT_REDUCED_FEE
+} from 'v2/config';
 import { ERC20 } from 'v2/services/EthService';
 
 import { default as ApiService } from '../ApiService';
@@ -66,15 +71,24 @@ export default class DexService {
     return { costBasis: parseFloat(costBasis), price: parseFloat(price) };
   };
 
-  public getOrderDetailsFrom = async (from: TSymbol, to: TSymbol, fromAmount: string) =>
-    this.getOrderDetails(from, to, fromAmount);
+  public getOrderDetailsFrom = async (
+    from: TSymbol,
+    to: TSymbol,
+    fromAmount: string,
+    reducedFee: boolean
+  ) => this.getOrderDetails(from, to, reducedFee, fromAmount);
 
-  public getOrderDetailsTo = async (from: TSymbol, to: TSymbol, toAmount: string) =>
-    this.getOrderDetails(from, to, undefined, toAmount);
+  public getOrderDetailsTo = async (
+    from: TSymbol,
+    to: TSymbol,
+    toAmount: string,
+    reducedFee: boolean
+  ) => this.getOrderDetails(from, to, reducedFee, undefined, toAmount);
 
   private getOrderDetails = async (
     from: TSymbol,
     to: TSymbol,
+    reducedFee: boolean,
     fromAmount?: string,
     toAmount?: string
   ): Promise<Partial<ITxObject>[]> => {
@@ -86,7 +100,7 @@ export default class DexService {
         fromAmount,
         toAmount,
         dex: 'ag',
-        proxy: DEXAG_MYC_TRADE_CONTRACT
+        proxy: reducedFee ? DEXAG_MYC_TRADE_CONTRACT_REDUCED_FEE : DEXAG_MYC_TRADE_CONTRACT
       };
       const { data }: { data: DexTrade } = await this.service.get('trade', { params });
       const isMultiTx = !!(data.metadata && data.metadata.input);

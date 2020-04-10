@@ -1,8 +1,9 @@
+import { useContext } from 'react';
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
 import { Asset, StoreAccount, ITxConfig, IHexStrTransaction, ITxObject } from 'v2/types';
-import { getAssetByUUID, getAssetByTicker, DexService } from 'v2/services';
+import { getAssetByUUID, getAssetByTicker, DexService, StoreContext } from 'v2/services';
 import { hexToString, appendGasPrice, appendSender } from 'v2/services/EthService';
 import { WALLET_STEPS } from 'v2/components';
 import { weiToFloat } from 'v2/utils';
@@ -10,6 +11,7 @@ import { weiToFloat } from 'v2/utils';
 import { ISwapAsset, IAssetPair, LAST_CHANGED_AMOUNT } from './types';
 
 export const getTradeOrder = (assetPair: IAssetPair, account: StoreAccount) => async () => {
+  const { isMyCryptoMember } = useContext(StoreContext);
   const { lastChangedAmount, fromAsset, fromAmount, toAsset, toAmount } = assetPair;
   const { address, network } = account;
   const isLastChangedTo = lastChangedAmount === LAST_CHANGED_AMOUNT.TO;
@@ -21,7 +23,8 @@ export const getTradeOrder = (assetPair: IAssetPair, account: StoreAccount) => a
   return getOrderDetails(
     fromAsset.symbol,
     toAsset.symbol,
-    (isLastChangedTo ? toAmount : fromAmount).toString()
+    (isLastChangedTo ? toAmount : fromAmount).toString(),
+    isMyCryptoMember
   )
     .then(txs => Promise.all(txs.map(appendSender(address))))
     .then(txs => Promise.all(txs.map(appendGasPrice(network))));

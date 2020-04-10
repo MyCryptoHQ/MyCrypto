@@ -19,6 +19,7 @@ export const DEFAULT_NETWORK: NetworkId = 'Ethereum';
 export const DEFAULT_ASSET_DECIMAL = 18;
 
 export const MYC_DEXAG_COMMISSION_RATE = 2.5;
+export const MYC_DEXAG_REDUCED_COMMISSION_RATE = 1.0; // SET TO CORRECT
 
 export const MYC_DEXAG_MARKUP_THRESHOLD = 1.5;
 
