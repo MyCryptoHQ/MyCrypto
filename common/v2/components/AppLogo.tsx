@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { COLORS } from 'v2/theme';
 
 import mycLogo from 'assets/images/icn-myc.svg';
+import { translateRaw } from '../translations';
 
 const Container = styled.div`
   display: flex;
@@ -22,7 +23,7 @@ export default () => {
   return (
     <Container>
       <img src={mycLogo} width="18px" />
-      {'MyCrypto App'}
+      {translateRaw('MYCRYPTO_APP')}
     </Container>
   );
 };

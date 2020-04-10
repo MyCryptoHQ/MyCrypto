@@ -74,7 +74,7 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
   public render() {
     const { senderAccount, rawTransaction, networks } = this.props;
     const detectedNetwork = getNetworkByChainId(rawTransaction.chainId, networks);
-    const networkName = detectedNetwork ? detectedNetwork.name : 'Unknown Network';
+    const networkName = detectedNetwork ? detectedNetwork.name : translateRaw('UNKNOWN_NETWORK');
     const walletConfig = getWeb3Config();
     const { accountMatches, networkMatches, walletState, submitting } = this.state;
 

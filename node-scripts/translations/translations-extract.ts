@@ -7,13 +7,24 @@ const glob = require('glob');
 const path = require('path');
 
 const PROJECT_FILE_PATTERN = './common/**/*.{ts,tsx}';
-const TRANSLATION_FILE_PATTERN = './common/v2/translations/lang/*.json';
+// const TRANSLATION_FILE_PATTERN = './common/v2/translations/lang/*.json';
+const TRANSLATION_FILE_PATTERN = './common/v2/translations/lang/en.json';
 const TRANSLATE_FUNCTIONS = ['translateRaw', 'translate', 'translateMarker'];
 const JSX_ELEMENTS_WITH_PROP: [string, string][] = [['Trans', 'id']];
 
+const replaceApostrophe = (s: string) => s
+  .replace(/'/g, '')
+  .replace(/`/g, '')
+  .replace(/"/g, '');
+
 const findCallExpressions = (node: ts.Node, functionName: string): ts.CallExpression[] => {
-  const query = `CallExpression:has(Identifier[name="${functionName}"]):not(:has(PropertyAccessExpression))`;
-  return tsquery(node, query, { visitAllChildren: true });
+  const functionsQuery = `CallExpression:has(Identifier[name="${functionName}"]):not(:has(PropertyAccessExpression))`;
+  return tsquery(node, functionsQuery, { visitAllChildren: true });
+};
+
+const findIinsideTemplateCallExpressions = (node: ts.Node, functionName: string): ts.CallExpression[] => {
+  const insideTemplateQuery = `JsxExpression CallExpression:has(Identifier[name="${functionName}"])`;
+  return tsquery(node, insideTemplateQuery, { visitAllChildren: true });
 };
 
 const findJxsElementExpressions = (
@@ -32,7 +43,7 @@ const getStringFromExpression = (expression: ts.Node) => {
     text &&
     typeof text === 'string' &&
     text.toUpperCase() === text &&
-    !/[0-9]+/.test(text) // Ignore css translate
+    /^[0-9]*['"][A-Z][A-Z0-9_'"]*$/.test(text) // Ignore only digits
   ) {
     return [text];
   }
@@ -54,9 +65,10 @@ const extract = () => {
     const fileContent = fs.readFileSync(filePath, 'utf-8');
     const ast = tsquery.ast(fileContent, 'filePath', ts.ScriptKind.TSX);
 
-    const callExpressions = TRANSLATE_FUNCTIONS.map(transFunc =>
-      findCallExpressions(ast, transFunc)
-    ).flat();
+    const callExpressions = TRANSLATE_FUNCTIONS.map(transFunc => [
+      ...findCallExpressions(ast, transFunc),
+      ...findIinsideTemplateCallExpressions(ast, transFunc)
+    ]).flat();
 
     if (callExpressions.length) {
       callExpressions.forEach(callExpression => {
@@ -81,11 +93,10 @@ const extract = () => {
 
   // Get unique object
   return [...new Set(keys)]
+    .map(k => replaceApostrophe(k))
     .filter(k => k.length)
     .reduce((acc, item) => ({ ...acc, [item]: '' }), {});
 };
-
-const replaceApostrophe = (s: string) => s.replace(/'/g, '').replace(/"/g, '');
 
 const updateTranslations = (translated: { [name: string]: string }) => {
   console.log(`Found ${Object.keys(translated).length} translation keys`);

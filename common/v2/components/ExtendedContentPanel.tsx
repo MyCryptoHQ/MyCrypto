@@ -5,6 +5,7 @@ import Stepper from './Stepper';
 
 // Legacy
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
+import { translateRaw } from '../translations';
 
 interface ContentPanelWrapperProps {
   centered: boolean | undefined;
@@ -141,7 +142,9 @@ export default function ExtendedContentPanel({
           {onBack && (
             <BackButton basic={true} onClick={onBack}>
               <img src={backArrowIcon} alt="Back arrow" />{' '}
-              {backBtnText ? `Back: ${backBtnText}` : `Back`}
+              {backBtnText
+                ? translateRaw('BACK_WITH_APPEND', { $append: ` : ${backBtnText}` })
+                : translateRaw('BACK')}
             </BackButton>
           )}
           {stepper && <Stepper current={stepper.current} total={stepper.total} />}

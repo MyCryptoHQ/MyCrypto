@@ -230,7 +230,9 @@ export const ConfirmTransactionUI = ({
       <RowWrapper>
         <ColumnWrapper>
           <img src={sendIcon} alt="Send" />
-          {translate(txType === ITxType.DEFIZAP ? 'ZAP_CONFIRM_TX_SENDING' : 'CONFIRM_TX_SENDING')}
+          {txType === ITxType.DEFIZAP
+            ? translate('ZAP_CONFIRM_TX_SENDING')
+            : translate('CONFIRM_TX_SENDING')}
         </ColumnWrapper>
         <AmountWrapper>
           <AssetIcon symbol={asset.ticker as TSymbol} size={'30px'} />

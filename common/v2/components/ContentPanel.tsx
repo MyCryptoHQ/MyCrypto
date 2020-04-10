@@ -6,6 +6,7 @@ import { BREAK_POINTS, SPACING } from 'v2/theme';
 import translate from 'v2/translations';
 import Stepper from './Stepper';
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
+import { translateRaw } from '../translations';
 
 interface ContentPanelProps {
   width?: number;
@@ -134,8 +135,9 @@ export default function ContentPanel({
           {onBack && (
             <BackButton basic={true} onClick={onBack}>
               <img src={backArrowIcon} alt="Back arrow" /> {translate('BACK')}
-              {backBtnText && `: `}
-              {backBtnText && <BackButtonExtraText>{backBtnText}</BackButtonExtraText>}
+              {backBtnText && <BackButtonExtraText>
+                {translateRaw('BACK_WITH_APPEND', { $append: ` : ${backBtnText}` })}
+              </BackButtonExtraText>}
             </BackButton>
           )}
           {stepper && <Stepper current={stepper.current} total={stepper.total} />}

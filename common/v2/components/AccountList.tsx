@@ -51,8 +51,8 @@ const LabelWithWallet = styled.span`
 `;
 
 const WalletLabelContainer = styled.ul`
-  margin-bottom: 0px;
-  padding: 0px;
+  margin-bottom: 0;
+  padding: 0;
 
   & li {
     &:not(:last-of-type) {
@@ -423,7 +423,7 @@ const buildAccountTable = (
     .map((account, index) => {
       const addressCard: ExtendedAddressBook | undefined = getLabelByAccount(account, addressBook);
       const total = totalFiat([account])(getAssetRate);
-      const label = addressCard ? addressCard.label : 'Unknown Account';
+      const label = addressCard ? addressCard.label : translateRaw('NO_LABEL');
       return { account, index, label, total, addressCard };
     })
     .sort(getSortingFunction(sortingState.activeSort));

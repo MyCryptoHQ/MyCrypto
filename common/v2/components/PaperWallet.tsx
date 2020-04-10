@@ -6,6 +6,7 @@ import { Identicon } from '@mycrypto/ui';
 
 import { QRCode } from 'v2/components';
 import { getKBHelpArticle, KB_HELP_ARTICLE } from 'v2/config';
+import { Trans, translateRaw } from 'v2/translations';
 
 import walletIcon from 'common/assets/images/icn-hardware-wallet.svg';
 import myCryptoIcon from 'common/assets/images/logo-mycrypto-transparent.png';
@@ -171,7 +172,7 @@ const Address = styled.div`
   font-size: 18px;
   text-align: center;
   font-weight: normal;
-  margin: 0px 32px 20px 32px;
+  margin: 0 32px 20px 32px;
   line-height: 24px;
   word-break: break-all;
 `;
@@ -183,7 +184,7 @@ const Mnemonic = styled.div<MnemonicProps>`
   font-size: 14px;
   text-align: center;
   font-weight: normal;
-  margin: 0px 16px 10px 16px;
+  margin: 0 16px 10px 16px;
   line-height: 17px;
   ${props => props.breakWords && 'word-break: break-all;'}
 `;
@@ -210,22 +211,16 @@ export default class PaperWallet extends React.Component<Props, {}> {
               <IdenticonHeader>
                 <IdenticonIcon address={address} />
                 <TextHeader>
-                  Your Identicon
+                  {translateRaw('PAPER_WALLET_YOUR_IDENTICON')}
                   <TextSubHeader noTopMargin={true}>
-                    Look for this icon when sending funds to this wallet.
+                    {translateRaw('PAPER_WALLET_LOOK_FOR_THIS_ICON')}
                   </TextSubHeader>
                 </TextHeader>
               </IdenticonHeader>
+              <TextSubHeader>{translateRaw('PAPER_WALLET_DEPOSIT_FUNDS_TO_WALLET')}</TextSubHeader>
+              <TextSubHeader>{translateRaw('PAPER_WALLET_CHECK_BALANCE_OF_WALLET')}</TextSubHeader>
               <TextSubHeader>
-                To deposit funds to this wallet, send ETH or tokens to the public address.
-              </TextSubHeader>
-              <TextSubHeader>
-                To check the balance of this wallet, go to www.mycrypto.com or the MyCrypto Desktop
-                app and unlock your wallet.
-              </TextSubHeader>
-              <TextSubHeader>
-                DO NOT SHARE YOUR PRIVATE KEY with anyone. You are responsible for keeping your
-                funds safe. MyCrypto cannot recover your funds for you.
+                {translateRaw('PAPER_WALLET_NOT_SHARE_YOUR_PRIVATE_KEY')}
               </TextSubHeader>
             </InnerPartWrapper>
           </Part>
@@ -243,13 +238,18 @@ export default class PaperWallet extends React.Component<Props, {}> {
           <Part hasRightBorder={true} hasTopBorder={true}>
             <div>
               <MyCryptoImage src={myCryptoIcon} />
-              <LogoText>Paper Wallet</LogoText>
+              <LogoText>{translateRaw('PAPER_WALLET')}</LogoText>
             </div>
           </Part>
           <Part hasRightBorder={true} hasTopBorder={true}>
             <WalletImage src={walletIcon} />
             <Resources>
-              For Resources and Help, Visit: {getKBHelpArticle(KB_HELP_ARTICLE.HOME)}
+              <Trans
+                id="PAPER_WALLET_RESOURCES_AND_HELP"
+                variables={{
+                  $visitLink: () => getKBHelpArticle(KB_HELP_ARTICLE.HOME)
+                }}
+              />
             </Resources>
           </Part>
           <Part hasTopBorder={true}>{this.getQRAddressWrapper(false)}</Part>
@@ -301,28 +301,30 @@ export default class PaperWallet extends React.Component<Props, {}> {
     if (isPrivate) {
       if (mnemonic) {
         data = mnemonic;
-        dataText = 'Your Mnemonic Phrase';
+        dataText = translateRaw('YOUR_MNEMONIC_PHRASE');
       }
       if (privateKey) {
         data = privateKey;
-        dataText = 'Your Private Key';
+        dataText = translateRaw('YOUR_PRIVATE_KEY');
       }
     } else {
       data = address;
     }
     const subTitle = isPrivate
-      ? 'Keep this safe. Do not share.'
-      : 'Share this with your friends when they need to send you crypto!';
+      ? translateRaw('PAPER_WALLET_KEEP_THIS_SAFE')
+      : translateRaw('PAPER_WALLET_SHARE_THIS_WITH_YOUR_FRIENDS');
 
     return (
       <InnerPartWrapper>
         <QRAddressWrapper isInversed={isPrivate}>
-          <QRCodeTitle>{isPrivate ? 'PRIVATE' : 'PUBLIC'}</QRCodeTitle>
+          <QRCodeTitle>{isPrivate ? translateRaw('PRIVATE') : translateRaw('PUBLIC')}</QRCodeTitle>
           <QRCodeSubTitle>{subTitle}</QRCodeSubTitle>
           <QRCodeWrapper>
             <QRCode data={data} />
           </QRCodeWrapper>
-          <Path>{isPrivate && path && `Derived Path: ${path}`}</Path>
+          <Path>
+            {isPrivate && path && translateRaw('PAPER_WALLET_DERIVED_PATH', { $path: path })}
+          </Path>
           {isPrivate ? (
             <Mnemonic breakWords={!!privateKey}>
               <b>{dataText}:</b>

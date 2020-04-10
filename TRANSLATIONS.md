@@ -27,12 +27,14 @@ and insert the value(Do this at least for English language(`en.json`)).
 const mapTranslationKey = (message: string) => {
     switch(message) {
         case 'success':
-          return translateRaw('SUCCESS_MESSAGE');
+          return translateMarker('SUCCESS_MESSAGE');
         case 'error':
         default:
-          return translateRaw('ERROR_MESSAGE');
+          return translateMarker('ERROR_MESSAGE');
     }
 };
+
+translateRaw(mapTranslationKey(message));
 ```
 - Incorrect: `translateRaw(message)`, where message is a variable
 

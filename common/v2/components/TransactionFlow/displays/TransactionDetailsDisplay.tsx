@@ -8,7 +8,7 @@ import { baseToConvertedUnit, totalTxFeeToString } from 'v2/services/EthService'
 import { CopyableCodeBlock } from 'v2/components';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { weiToFloat, isTransactionDataEmpty } from 'v2/utils';
-import translate from 'v2/translations';
+import translate, { translateRaw } from 'v2/translations';
 import { COLORS } from 'v2/theme';
 
 import { ISender } from '../types';
@@ -59,7 +59,7 @@ function TransactionDetailsDisplay({
   });
   const userAssetBalance = userAssetToSend
     ? weiToFloat(bigNumberify(userAssetToSend.balance), asset.decimal).toFixed(6)
-    : 'Unknown Balance';
+    : translateRaw('UNKNOWN_BALANCE');
 
   return (
     <>
@@ -71,7 +71,8 @@ function TransactionDetailsDisplay({
               color={BLUE_BRIGHT}
               onClick={() => setShowDetails(!showDetails)}
             >
-              {showDetails ? '- Hide' : '+ See More'} {translate('ACTION_8')}
+              {showDetails ? `- ${translateRaw('HIDE')}` : `+ ${translateRaw('SEE_MORE')}`}{' '}
+              {translate('ACTION_8')}
             </SeeMoreDetailsButton>
           </div>
         </div>
@@ -80,7 +81,7 @@ function TransactionDetailsDisplay({
             {sender.accountBalance && (
               <div className="TransactionDetails-row">
                 <div className="TransactionDetails-row-column">
-                  {`Account Balance (${baseAsset.ticker}):`}
+                  {translateRaw('ACCOUNT_BALANCE_WITH_TICKER', { $ticker: baseAsset.ticker })}
                 </div>
                 <div className="TransactionDetails-row-column">{`
                   ${weiToFloat(sender.accountBalance).toFixed(6)}
@@ -91,7 +92,7 @@ function TransactionDetailsDisplay({
             {asset.type === 'erc20' && (
               <div className="TransactionDetails-row">
                 <div className="TransactionDetails-row-column">
-                  {`Account Balance (${asset.ticker}):`}
+                  {translateRaw('ACCOUNT_BALANCE_WITH_TICKER', { $ticker: asset.ticker })}
                 </div>
                 <div className="TransactionDetails-row-column">{`
                   ${userAssetBalance}
@@ -100,18 +101,18 @@ function TransactionDetailsDisplay({
               </div>
             )}
             <div className="TransactionDetails-row">
-              <div className="TransactionDetails-row-column">Network:</div>
+              <div className="TransactionDetails-row-column">{translateRaw('NETWORK')}:</div>
               <div className="TransactionDetails-row-column">
                 <Network color={networkColor || 'blue'}>{networkName}</Network>
               </div>
             </div>
             <div className="TransactionDetails-row">
-              <div className="TransactionDetails-row-column">Gas Limit:</div>
+              <div className="TransactionDetails-row-column">{translateRaw('GAS_LIMIT')}:</div>
               <div className="TransactionDetails-row-column">{`${gasLimit}`}</div>
             </div>
             {baseAsset && (
               <div className="TransactionDetails-row">
-                <div className="TransactionDetails-row-column">Gas Price:</div>
+                <div className="TransactionDetails-row-column">{translateRaw('GAS_PRICE')}:</div>
                 <div className="TransactionDetails-row-column">{`
                   ${baseToConvertedUnit(gasPrice, 9)} gwei
                   (${baseToConvertedUnit(gasPrice, DEFAULT_ASSET_DECIMAL)} ${baseAsset.ticker})
@@ -119,15 +120,15 @@ function TransactionDetailsDisplay({
               </div>
             )}
             <div className="TransactionDetails-row">
-              <div className="TransactionDetails-row-column">Max TX Fee:</div>
+              <div className="TransactionDetails-row-column">{translateRaw('MAX_TX_FEE')}:</div>
               <div className="TransactionDetails-row-column">{`${maxTransactionFeeBase} ${baseAsset.ticker}`}</div>
             </div>
             <div className="TransactionDetails-row">
-              <div className="TransactionDetails-row-column">Nonce:</div>
+              <div className="TransactionDetails-row-column">{translateRaw('NONCE')}:</div>
               <div className="TransactionDetails-row-column">{nonce}</div>
             </div>
             <div className="TransactionDetails-row">
-              <div className="TransactionDetails-row-column">Data:</div>
+              <div className="TransactionDetails-row-column">{translateRaw('DATA')}:</div>
               {!isTransactionDataEmpty(data) ? (
                 <div className="TransactionDetails-row-data">{data}</div>
               ) : (
@@ -139,7 +140,9 @@ function TransactionDetailsDisplay({
             {rawTransaction && (
               <>
                 <div className="TransactionDetails-row stacked">
-                  <div className="TransactionDetails-row-column">Raw Transaction:</div>
+                  <div className="TransactionDetails-row-column">
+                    {translateRaw('RAW_TRANSACTION')}:
+                  </div>
                   <div className="TransactionDetails-row-data">
                     <CopyableCodeBlock>{JSON.stringify(rawTransaction)}</CopyableCodeBlock>
                   </div>
@@ -149,7 +152,9 @@ function TransactionDetailsDisplay({
             {signedTransaction && (
               <>
                 <div className="TransactionDetails-row stacked">
-                  <div className="TransactionDetails-row-column">Signed Transaction:</div>
+                  <div className="TransactionDetails-row-column">
+                    {translateRaw('SIGNED_TRANSACTION')}:
+                  </div>
                   <div className="TransactionDetails-row-data">
                     <CopyableCodeBlock>{signedTransaction}</CopyableCodeBlock>
                   </div>

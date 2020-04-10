@@ -69,7 +69,8 @@ class MnemonicDecryptClass extends PureComponent<OwnProps, State> {
       return (
         <div className="Panel">
           <div className="Panel-title">
-            {translate('UNLOCK_WALLET')} {`Your ${translateRaw('X_MNEMONIC')}`}
+            {translate('UNLOCK_WALLET')}{' '}
+            {translateRaw('YOUR_WALLET_TYPE', { $walletType: translateRaw('X_MNEMONIC') })}
           </div>
           <div className="Mnemonic">
             <div id="selectedTypeKey">
@@ -78,7 +79,7 @@ class MnemonicDecryptClass extends PureComponent<OwnProps, State> {
               </div>
 
               <div className="form-group">
-                <label>Your Mnemonic Phrase</label>
+                <label>{translateRaw('YOUR_MNEMONIC_PHRASE')}</label>
                 <TogglablePassword
                   value={phrase || ''}
                   rows={4}

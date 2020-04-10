@@ -27,7 +27,9 @@ export const DomainStatus: React.FC<DomainStatusProps> = (props: DomainStatusPro
   const parseError = (resolutionError?: ResolutionError) => {
     if (!resolutionError)
       return withInlineError(
-        <div data-testid="domainStatus">{`Could not resolve the domain ${props.domain}`}</div>
+        <div data-testid="domainStatus">
+          {translateRaw('COULD_NOT_RESOLVE_THE_DOMAIN', { $domain: props.domain })}
+        </div>
       );
     return withInlineError(<div data-testid="domainStatus">{`${resolutionError.message}`}</div>);
   };
