@@ -1,6 +1,7 @@
 import React from 'react';
 import Responsive from 'react-responsive';
 import * as R from 'ramda';
+
 import { BREAK_POINTS } from 'v2/theme';
 
 // Applies the provided numerical operation to a BREAKPOINT and
