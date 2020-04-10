@@ -15,6 +15,7 @@ import { isWeb3Wallet, useTxMulti } from 'v2/utils';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { useScreenSize } from 'v2/vendor';
 import { processFormDataToTx } from 'v2/features/SendAssets/helpers';
+import { PROTECTED_TX_FEE_ADDRESS } from 'v2/config';
 
 import { ProtectTxProtection } from './ProtectTxProtection';
 import { ProtectTxSign } from './ProtectTxSign';
@@ -23,7 +24,6 @@ import { ProtectTxContext } from '../ProtectTxProvider';
 import ProtectTxModalBackdrop from './ProtectTxModalBackdrop';
 import { ProtectTxButton } from './ProtectTxButton';
 import { ProtectTxStepper } from './ProtectTxStepper';
-import { PROTECTED_TX_FEE_ADDRESS } from '../../../config';
 import { ProtectTxUtils } from '../utils';
 
 const WithProtectTxWrapper = styled.div`

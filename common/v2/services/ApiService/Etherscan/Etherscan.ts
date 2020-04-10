@@ -72,7 +72,7 @@ export default class EtherscanService {
   ): Promise<GetLastTxResponse | null> => {
     if (!Object.keys(ETHERSCAN_API_URLS).includes(networkId)) {
       throw new Error(
-        `Not supported networkId. Supported: ${Object.keys(ETHERSCAN_API_URLS).join(', ')}`
+        `Not supported networkId. Supported: '${Object.keys(ETHERSCAN_API_URLS).join(', ')}'`
       );
     }
 
@@ -82,8 +82,6 @@ export default class EtherscanService {
       startblock: 0,
       endblock: 99999999,
       address,
-      page: 1,
-      offset: 1,
       sort: 'desc',
       apiKey: ''
     };
