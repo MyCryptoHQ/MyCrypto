@@ -1,0 +1,27 @@
+name: Jest
+
+on:
+  pull_request:
+    branches:
+      - 'legacy'
+
+jobs:
+  build:
+    name: Setup
+    runs-on: macos-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v1
+
+      - name: Specify node version
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install dependencies
+        run: |
+          yarn
+
+      - name: Run Jest
+        run: |
+          yarn test
