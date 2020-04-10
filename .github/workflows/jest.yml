@@ -22,9 +22,9 @@ jobs:
         id: cache
         uses: actions/cache@v1
         with:
-          path: node_modules
+          path: ~/node_modules
           ## Check cache based on yarn.lock hashfile
-          key: setup-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
         ## If no cache is found, install dependencies
