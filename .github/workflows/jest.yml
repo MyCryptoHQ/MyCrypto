@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     name: Setup
-    runs-on: macos-latest
+    runs-on: ubuntu-16.04
     steps:
       - name: Checkout project
         uses: actions/checkout@v1
@@ -16,7 +16,7 @@ jobs:
       - name: Specify node version
         uses: actions/setup-node@v1
         with:
-          node-version: 8.16.0
+          node-version: '8'
 
       - name: Install dependencies
         run: |
