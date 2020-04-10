@@ -22,9 +22,13 @@ jobs:
         id: cache
         uses: actions/cache@v1
         with:
-          path: ~/node_modules
+          path: node_modules
           ## Check cache based on yarn.lock hashfile
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ env.cache-name }}-
+            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-
 
       - name: Install dependencies
         ## If no cache is found, install dependencies
@@ -41,8 +45,8 @@ jobs:
       - name: Restore cache
         uses: actions/cache@v1
         with:
-          path: ~/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: Lint
         run: yarn tslint
       - name: TScheck
