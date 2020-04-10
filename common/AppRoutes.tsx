@@ -24,6 +24,7 @@ const layoutConfig = (path: string, isMobile: boolean): LayoutConfig => {
         fullW: true,
         bgColor: '#fff'
       };
+    case ROUTE_PATHS.SETTINGS.path:
     case ROUTE_PATHS.DASHBOARD.path:
       return {
         centered: true,
