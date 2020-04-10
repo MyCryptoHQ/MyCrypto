@@ -53,5 +53,3 @@ jobs:
         run: yarn tscheck
       - name: Test
         run: yarn test:coverage
-      - name: Report
-        run: yarn report-coverage
