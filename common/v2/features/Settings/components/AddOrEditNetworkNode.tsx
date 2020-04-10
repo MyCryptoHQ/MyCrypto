@@ -8,7 +8,7 @@ import { BREAK_POINTS, COLORS, SPACING } from 'v2/theme';
 import { Checkbox, DashboardPanel, InputField, NetworkSelectDropdown } from 'v2/components';
 import { CustomNodeConfig, Network, NetworkId, NodeOptions, NodeType } from 'v2/types';
 import { translateRaw } from 'v2/translations';
-import { DEFAULT_NETWORK, GITHUB_RELEASE_NOTES_URL, LET_ENCRYPT_URL } from 'v2/config';
+import { DEFAULT_NETWORK, GITHUB_RELEASE_NOTES_URL, LETS_ENCRYPT_URL } from 'v2/config';
 import { NetworkUtils } from 'v2/services/Store/Network';
 import { ProviderHandler } from 'v2/services/EthService/network';
 
@@ -64,7 +64,7 @@ const AddressFieldset = styled.fieldset`
   label {
     display: block;
     margin-bottom: ${SPACING.SM};
-    color: #163150;
+    color: ${COLORS.BLUE_DARK_SLATE};
   }
   input,
   textarea {
@@ -216,7 +216,7 @@ export default function AddOrEditNetworkNode({
                     {translateRaw('CUSTOM_NODE_SUBTITLE_REPO')}
                   </a>
                   {tSplit[1]}
-                  <a href={LET_ENCRYPT_URL} rel="noopener noreferrer" target="_blank">
+                  <a href={LETS_ENCRYPT_URL} rel="noopener noreferrer" target="_blank">
                     LetsEncrypt
                   </a>
                   {tSplit[2]}

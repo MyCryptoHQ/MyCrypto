@@ -28,7 +28,7 @@ const MobileNavBarStyled = styled.div`
           bottom: 0;
           left: 0;
           right: 0;
-          background-color: white;
+          background-color: ${COLORS.WHITE};
           opacity: 0.15;
         }
       }

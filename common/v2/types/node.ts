@@ -24,8 +24,7 @@ interface NodeBase {
 }
 
 export interface CustomNodeConfig extends NodeBase {
-  isCustom?: true;
-  service: string;
+  isCustom: true;
   type: NodeType.MYC_CUSTOM;
   auth?: {
     username: string;
@@ -35,7 +34,6 @@ export interface CustomNodeConfig extends NodeBase {
 
 export interface StaticNodeConfig extends NodeBase {
   isCustom?: false;
-  service: string;
   type: NodeType.ETHERSCAN | NodeType.INFURA | NodeType.RPC | NodeType.WEB3;
 }
 

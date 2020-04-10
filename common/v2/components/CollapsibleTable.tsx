@@ -59,7 +59,7 @@ export const transformRowToCards = (
     (prev: StackedCardData, next, index) => {
       const label = head[index];
 
-      if (index === primaryColumnIndex) {
+      if (index === primaryColumnIndex && !iconColumns) {
         prev.heading = next;
       } else if (iconColumns.includes(label as string)) {
         prev.icons!.push(next);

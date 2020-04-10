@@ -4,26 +4,15 @@ import { storiesOf } from '@storybook/react';
 
 import { DEFAULT_NETWORK } from 'v2/config';
 import { NETWORKS_CONFIG, NODES_CONFIG } from 'v2/database/data';
-import { CustomNodeConfig, Network, NetworkId, NodeType } from 'v2/types';
+import { Network, NetworkId } from 'v2/types';
 import { GAU_THEME } from 'v2/theme';
-import AppProviders from 'v2/../AppProviders';
 
 import AddOrEditNetworkNode from './AddOrEditNetworkNode';
+import AppProviders from 'AppProviders';
+import { customNodeConfig } from '@fixtures';
 
 const networkId = DEFAULT_NETWORK;
 const addNode = undefined;
-const editNode: CustomNodeConfig = {
-  name: 'eth_custom_node_1',
-  service: 'Custom node 1',
-  auth: {
-    username: 'username',
-    password: 'password'
-  },
-  url: 'https://custom.node.com/',
-  isCustom: true,
-  type: NodeType.MYC_CUSTOM,
-  hidden: false
-};
 const onComplete = () => undefined;
 const addNodeToNetwork = () => undefined;
 const isNodeNameAvailable = () => true;
@@ -54,7 +43,7 @@ const editNetworkNode = () => (
   <div className="sb-container" style={{ maxWidth: '800px' }}>
     <AddOrEditNetworkNode
       networkId={networkId}
-      editNode={editNode}
+      editNode={customNodeConfig}
       onComplete={onComplete}
       addNodeToNetwork={addNodeToNetwork}
       isNodeNameAvailable={isNodeNameAvailable}

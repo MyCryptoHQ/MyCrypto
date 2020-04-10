@@ -79,7 +79,7 @@ export const MOONPAY_API_QUERYSTRING = `?apiKey=${MOONPAY_PUBLIC_API_KEY}&colorC
 export const BUY_MYCRYPTO_WEBSITE = 'https://buy.mycrypto.com';
 export const MOONPAY_SIGNER_API = 'https://moonpay.mycryptoapi.com/sign';
 
-export const LET_ENCRYPT_URL = 'https://letsencrypt.org/';
+export const LETS_ENCRYPT_URL = 'https://letsencrypt.org/';
 
 export enum Theme {
   DARK = 'dark',

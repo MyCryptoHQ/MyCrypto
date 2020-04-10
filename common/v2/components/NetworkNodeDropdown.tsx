@@ -20,6 +20,7 @@ const SContainer = styled.div`
 `;
 
 const SContainerValue = styled(SContainer)`
+  padding: ${SPACING.XS};
   > img {
     position: absolute;
     right: ${SPACING.SM};
@@ -70,7 +71,7 @@ class NetworkOption extends React.PureComponent<NetworkOptionProps> {
       return (
         <SContainerValue onClick={() => onSelect && onSelect(option, null)}>
           <Typography value={option.label} />
-          {isFunction(option.onEdit) && isEditEnabled && isCustom === true && (
+          {isFunction(option.onEdit) && isEditEnabled && isCustom && (
             <EditIcon onClick={e => this.onEdit.apply(this, [e])} src={editIcon} />
           )}
         </SContainerValue>
@@ -128,11 +129,7 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
     service: autoNodeLabel
   };
   const { service, name: selectedNodeName } = selectedNode;
-  let displayNodes = [autoNode, ...nodes];
-
-  if (isFunction(onEdit)) {
-    displayNodes = [...displayNodes, { service: newNode } as any];
-  }
+  const displayNodes = [autoNode, ...nodes, ...(isFunction(onEdit) ? [{ service: newNode }] : [])];
 
   return (
     <Dropdown
