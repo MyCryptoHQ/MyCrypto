@@ -134,10 +134,12 @@ export default function ContentPanel({
         <ContentPanelTop stepperOnly={stepper !== undefined && !onBack}>
           {onBack && (
             <BackButton basic={true} onClick={onBack}>
-              <img src={backArrowIcon} alt="Back arrow" /> {translate('BACK')}
-              {backBtnText && <BackButtonExtraText>
-                {translateRaw('BACK_WITH_APPEND', { $append: ` : ${backBtnText}` })}
-              </BackButtonExtraText>}
+              <img src={backArrowIcon} alt="Back arrow"/>
+              {backBtnText ?
+                <BackButtonExtraText>
+                  {translateRaw('BACK_WITH_APPEND', { $append: ` : ${backBtnText}` })}
+                </BackButtonExtraText> :
+                translate('BACK')}
             </BackButton>
           )}
           {stepper && <Stepper current={stepper.current} total={stepper.total} />}

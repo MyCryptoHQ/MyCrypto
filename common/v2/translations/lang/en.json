@@ -107,7 +107,8 @@
 		"APP_UPDATE_TITLE_CRITICAL": "There is a Critical Security Update Available for MyCrypto!",
 		"APP_UPDATE_WARNING": "We’ve just released an update that resolves an important issue. Please install the update now.",
 		"ASSET": "Asset",
-		"BACK_WITH_APPEND": "Back$append",
+		"BACK": "Back",
+		"BACK_WITH_APPEND": "Back $append",
 		"BALANCE": "Balance",
 		"BALANCE_TOO_LOW_ERROR": "You are trying to send more $asset than you current have. Click “send max” if you want to send your entire available balance",
 		"BALANCE_TOO_LOW_NO_RECOMMENDATION_ERROR": "You are trying to send more $asset than you current have.",
@@ -909,7 +910,6 @@
     "CUSTOM_NODE_FORM_PASSWORD": "Password",
     "CUSTOM_NODE_SETTINGS_TABLE_NETWORK_HEADER": "Network",
     "CUSTOM_NODE_SETTINGS_TABLE_NETWORK_NODE": "Default Node",
-    "BACK": "Back",
     "MISSING_PASSWORD": "Please enter a password",
     "CUSTOM_NODE_DROPDOWN_NEW_NODE": "Custom"
 	}

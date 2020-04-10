@@ -143,7 +143,7 @@ export default function ExtendedContentPanel({
             <BackButton basic={true} onClick={onBack}>
               <img src={backArrowIcon} alt="Back arrow" />{' '}
               {backBtnText
-                ? translateRaw('BACK_WITH_APPEND', { $append: ` : ${backBtnText}` })
+                ? translateRaw('BACK_WITH_APPEND', { $append: `: ${backBtnText}` })
                 : translateRaw('BACK')}
             </BackButton>
           )}
