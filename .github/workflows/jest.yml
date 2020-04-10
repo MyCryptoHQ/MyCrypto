@@ -3,14 +3,14 @@ name: Jest
 on:
   pull_request:
     branches:
-      - 'legacy'
+      - legacy
 
 jobs:
   setup:
     name: Setup
     runs-on: ubuntu-16.04
     steps:
-      - name: Checkout project
+      - name: Checkout PR
         uses: actions/checkout@v1
 
       - name: Specify node version
@@ -36,6 +36,8 @@ jobs:
     needs: [setup]
     runs-on: ubuntu-16.04
     steps:
+      - name: Checkout PR
+        uses: actions/checkout@v1
       - name: Lint
         run: yarn tslint
       - name: TScheck
