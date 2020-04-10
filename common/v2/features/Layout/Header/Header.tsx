@@ -252,7 +252,7 @@ const TitleIconWrapper = styled.div`
 
 interface PrefixIconProps {
   width: string;
-  height: string;
+  height?: string;
 }
 
 // prettier-ignore
