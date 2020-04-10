@@ -38,6 +38,11 @@ jobs:
     steps:
       - name: Checkout PR
         uses: actions/checkout@v1
+      - name: Restore cache
+        uses: actions/cache@v1
+        with:
+          path: ~/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
       - name: Lint
         run: yarn tslint
       - name: TScheck
