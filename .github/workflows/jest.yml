@@ -16,7 +16,7 @@ jobs:
       - name: Specify node version
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 8.16.0
 
       - name: Install dependencies
         run: |
