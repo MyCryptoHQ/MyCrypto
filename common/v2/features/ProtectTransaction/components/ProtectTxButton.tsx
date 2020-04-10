@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from 'v2/theme';
 import { translateRaw } from 'v2/translations';
-import { useScreenSize } from 'v2/vendor';
+import { useScreenSize } from 'v2/utils';
 import { ProtectIcon, ProtectIconCheck, ArrowRightIcon } from 'v2/components/icons';
 
 const TransactionProtectionButtonText = styled.div`

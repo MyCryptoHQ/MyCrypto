@@ -8,7 +8,7 @@ import { DrawerContext, ErrorContext } from 'v2/features';
 import Header from './Header';
 import Footer from './Footer';
 
-interface LayoutConfig {
+export interface LayoutConfig {
   centered?: boolean;
   fluid?: boolean;
   fullW?: boolean;
@@ -34,7 +34,7 @@ const SMain = styled('main')`
 `;
 
 const STop = styled.div`
-  @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     position: fixed;
     top: 0;
     width: 100%;
@@ -43,21 +43,18 @@ const STop = styled.div`
 `;
 
 const SContainer = styled('div')`
-  padding: ${p => (p.fullW ? 0 : SPACING.BASE)};
-  padding-top: ${p => (p.paddingV ? p.paddingV : SPACING.BASE)};
-  padding-bottom: ${p => (p.paddingV ? p.paddingV : SPACING.BASE)};
+  padding: ${p =>
+    `${p.paddingV ? p.paddingV : SPACING.BASE} ${p.fluid || p.fullW ? 0 : MIN_CONTENT_PADDING}`};
   width: 100%;
   max-width: ${p => (p.fullW ? '100%' : MAX_CONTENT_WIDTH)};
   /*
   * This is the moment our header becomes sticky and shrinks.
   * Since it is aboslute positionning we move the container down.
   */
-  @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
-    margin-top: ${p => (p.marginTop ? p.marginTop : 0)};
-  }
-
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    padding: ${SPACING.MD} ${p => (p.fluid || p.fullW ? 0 : MIN_CONTENT_PADDING)};
+    margin-top: ${p => (p.marginTop ? p.marginTop : 0)};
+    padding: ${p =>
+      `${p.paddingV ? p.paddingV : SPACING.BASE} ${p.fluid || p.fullW ? 0 : MIN_CONTENT_PADDING}`};
   }
 
   ${({ centered }: LayoutConfig) =>
@@ -84,6 +81,7 @@ export default function Layout({ config = {}, className = '', children }: Props)
   // Store the calculated height of STop so we can adapt the marginTop of SContainer
   // when the mobile header has a fixed positioning.
   const [topWidth, setTopWidth] = useState('0px');
+
   return (
     <SMain className={className} bgColor={bgColor}>
       <STop ref={(elem: any) => elem && setTopWidth(`${elem.getBoundingClientRect().height}px`)}>

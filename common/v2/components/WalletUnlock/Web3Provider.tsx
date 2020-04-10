@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component as ComponentProps } from 'react';
 import * as R from 'ramda';
 
 import translate, { translateRaw } from 'v2/translations';
 import { WALLETS_CONFIG, IWalletConfig } from 'v2/config';
 import { WalletId, FormData, Network } from 'v2/types';
 import { InlineMessage, NewTabLink } from 'v2/components';
-import { withContext, hasWeb3Provider, IS_MOBILE } from 'v2/utils';
+import { withContext, hasWeb3Provider, useScreenSize } from 'v2/utils';
 import {
   SettingsContext,
   ISettingsContext,
@@ -21,6 +21,7 @@ interface Props {
   formDispatch: any;
   formData: FormData;
   wallet: object;
+  isMobile: boolean;
   onUnlock(param: any): void;
 }
 
@@ -31,7 +32,10 @@ interface State {
 
 const WalletService = WalletFactory(WalletId.WEB3);
 
-class Web3ProviderDecrypt extends Component<Props & ISettingsContext & INetworkContext, State> {
+class Web3ProviderDecrypt extends ComponentProps<
+  Props & ISettingsContext & INetworkContext,
+  State
+> {
   constructor(props: Props & ISettingsContext & INetworkContext) {
     super(props);
     this.state = {
@@ -43,6 +47,7 @@ class Web3ProviderDecrypt extends Component<Props & ISettingsContext & INetworkC
 
   public render() {
     const { web3Unlocked, web3ProviderSettings: provider } = this.state;
+    const { isMobile } = this.props;
     const isDefault = provider.id === WalletId.WEB3;
     return (
       <div className="Panel">
@@ -79,7 +84,7 @@ class Web3ProviderDecrypt extends Component<Props & ISettingsContext & INetworkC
                 provider.install
                   ? provider.install.getItLink
                   : translateRaw(
-                      IS_MOBILE
+                      isMobile
                         ? `ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_MOBILE`
                         : `ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_DESKTOP`
                     )
@@ -131,7 +136,13 @@ class Web3ProviderDecrypt extends Component<Props & ISettingsContext & INetworkC
   }
 }
 
+const withResponsive = (Component: any) => (ownProps: any) => {
+  const { isMobile } = useScreenSize();
+  return <Component {...ownProps} isMobile={isMobile} />;
+};
+
 export default R.pipe(
+  withResponsive,
   withContext(SettingsContext),
   withContext(NetworkContext)
 )(Web3ProviderDecrypt);

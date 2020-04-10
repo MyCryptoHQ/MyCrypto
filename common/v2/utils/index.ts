@@ -1,7 +1,7 @@
 export * from './error';
 export { notUndefined, isTxSigned, isTxHash } from './typeGuards';
 export * from './validators';
-export { IS_ELECTRON, IS_MOBILE, IS_DOWNLOADABLE } from './platform';
+export { IS_ELECTRON, IS_DOWNLOADABLE } from './platform';
 export { hasWeb3Provider, IS_DEV, IS_PROD } from './environment';
 export { getFeaturedOS } from './getFeaturedOS';
 export { generateUUID, generateAssetUUID, generateContractUUID, getUUID } from './generateUUID';
@@ -54,3 +54,4 @@ export * from './constants';
 export { bigify } from './bigify';
 export { useTxMulti } from './useTxMulti';
 export { withProtectTxProvider } from './withProtectTxProvider';
+export { default as useScreenSize } from './useScreenSize';

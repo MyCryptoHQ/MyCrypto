@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
-import { Layout } from 'v2/features/Layout';
+import { Layout, LayoutConfig } from 'v2/features/Layout';
 import { Home, PageNotFound, ScreenLockProvider, DrawerProvider } from 'v2/features';
-import { ScrollToTop } from 'v2/utils';
+import { ScrollToTop, useScreenSize } from 'v2/utils';
 import { ROUTE_PATHS } from 'v2/config/routePaths';
 import {
   APP_ROUTES,
@@ -14,7 +14,7 @@ import {
 } from 'v2/routing';
 import { SPACING } from 'v2/theme';
 
-const layoutConfig = (path: string) => {
+const layoutConfig = (path: string, isMobile: boolean): LayoutConfig => {
   switch (path) {
     case ROUTE_PATHS.HOME.path:
     case ROUTE_PATHS.ROOT.path:
@@ -29,6 +29,11 @@ const layoutConfig = (path: string) => {
         centered: true,
         paddingV: SPACING.MD
       };
+    case ROUTE_PATHS.SETTINGS.path:
+      return {
+        centered: true,
+        ...(isMobile && { paddingV: '0px' })
+      };
     default:
       return {
         centered: true,
@@ -38,7 +43,8 @@ const layoutConfig = (path: string) => {
 };
 
 const LayoutWithLocation = withRouter(({ location, children }) => {
-  return <Layout config={layoutConfig(location.pathname)}>{children}</Layout>;
+  const { isMobile } = useScreenSize();
+  return <Layout config={layoutConfig(location.pathname, isMobile)}>{children}</Layout>;
 });
 
 export const AppRoutes = () => {

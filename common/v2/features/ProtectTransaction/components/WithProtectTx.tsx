@@ -11,9 +11,8 @@ import {
   ITxReceipt,
   ITxSigned
 } from 'v2/types';
-import { isWeb3Wallet, useTxMulti } from 'v2/utils';
+import { isWeb3Wallet, useTxMulti, useScreenSize } from 'v2/utils';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
-import { useScreenSize } from 'v2/vendor';
 import { processFormDataToTx } from 'v2/features/SendAssets/helpers';
 
 import { ProtectTxProtection } from './ProtectTxProtection';
