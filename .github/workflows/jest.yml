@@ -34,6 +34,7 @@ jobs:
   test:
     name: Test
     needs: [setup]
+    runs-on: ubuntu-16.04
     steps:
       - name: Lint
         run: yarn tslint
