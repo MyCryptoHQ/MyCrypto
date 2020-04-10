@@ -1,3 +1,5 @@
+# Badge name is dependant on the workflow name so make sure to
+# change them together.
 name: Jest
 
 on:

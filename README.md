@@ -1,20 +1,22 @@
 # MyCrypto Web & Desktop Apps
 
+![](https://github.com/MyCryptoHQ/MyCrypto/workflows/Jest/badge.svg?branch=legacy)
+
 [![Build Status](https://travis-ci.org/MyCryptoHQ/MyCrypto.svg?branch=develop)](https://travis-ci.org/MyCryptoHQ/MyCrypto)
 [![Coverage Status](https://coveralls.io/repos/github/MyCryptoHQ/MyCrypto/badge.svg?branch=develop)](https://coveralls.io/github/MyCryptoHQ/MyCrypto?branch=develop)
 
-* **Just looking to download?** Grab our [latest release](https://github.com/MyCryptoHQ/MyCrypto/releases).
-* **Looking for the old site?** Check out [https://legacy.mycrypto.com](https://legacy.mycrypto.com) or the source at [MyCryptoHQ/mycrypto.com](https://github.com/MyCryptoHQ/mycrypto.com)
+- **Just looking to download?** Grab our [latest release](https://github.com/MyCryptoHQ/MyCrypto/releases).
+- **Looking for the old site?** Check out [https://legacy.mycrypto.com](https://legacy.mycrypto.com) or the source at [MyCryptoHQ/mycrypto.com](https://github.com/MyCryptoHQ/mycrypto.com)
 
 ## Verifying our releases
-You can find how to do this on our [support document](https://support.mycrypto.com/staying-safe/verifying-authenticity-of-desktop-app)
 
+You can find how to do this on our [support document](https://support.mycrypto.com/staying-safe/verifying-authenticity-of-desktop-app)
 
 ## Development / Build Requirements
 
-* Node 8.16.0\*
-* Yarn >= 1.7.0\*\*
-* Python 2.7.X\*\*\*
+- Node 8.16.0\*
+- Yarn >= 1.7.0\*\*
+- Python 2.7.X\*\*\*
 
 <sub>\*Higher versions should work fine, but may cause inconsistencies. It's suggested you run 8.16.0 using `nvm`.</sub>
 <br/>
@@ -22,7 +24,7 @@ You can find how to do this on our [support document](https://support.mycrypto.c
 <br/>
 <sub>\***Python 3 is **not** supported, since our dependencies use `node-gyp`.</sub>
 <br/>
-<sub>\***For users trying to build with WSL, you'll need to have install libpng via `sudo apt-get install libpng16-dev`.</sub>
+<sub>\*\*\*For users trying to build with WSL, you'll need to have install libpng via `sudo apt-get install libpng16-dev`.</sub>
 
 ## Running the App
 
@@ -36,10 +38,10 @@ Then, you can run various commands depending on what you want to do:
 # run app in dev mode in browser, rebuild on file changes
 yarn start
 ```
+
 A development server will be available on https://localhost:3000
 If you're using Chrome, you will get a `net::ERR_CERT_AUTHORITY_INVALID` warning.
 To disable it you can your settings in chrome: chrome://flags/#allow-insecure-localhost
-
 
 ```bash
 # run app in dev mode in electron, rebuild on file changes
@@ -148,10 +150,12 @@ yarn test:int
 ```
 
 ## Typescript Resources:
+
 - https://basarat.gitbooks.io/typescript/
 - https://blog.mariusschulz.com/series/typescript-evolution
 
 ## More information is available on the [Wiki Pages](https://github.com/MyCryptoHQ/MyCrypto/wiki)
+
 - [Getting your token added to MyCrypto](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Adding-Tokens)
 - [Adding your Network or Node](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Network-or-Node)
 - [Adding your Web3 Wallet & Logo](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Web3-Wallet)
@@ -169,12 +173,12 @@ Your branch name must meet our naming conventions to help with administration an
 
 We name our branches like `<type>/<name>` - examples below;
 
-* `feature/foo` - A feature branch for a feature to do with foo.
-* `enhancement/foo` - An enhancement branch to an already built feature called foo.
-* `hotfix/foo` - A hotfix branch called foo (something affecting current production)
-* `bugfix/foo` - A bugfix branch called foo (something affecting current staging)
-* `release/1.4.2` - A release branch for tag 1.4.2
-* `revert/foo` - A branch to revert a logic to do with foo.
+- `feature/foo` - A feature branch for a feature to do with foo.
+- `enhancement/foo` - An enhancement branch to an already built feature called foo.
+- `hotfix/foo` - A hotfix branch called foo (something affecting current production)
+- `bugfix/foo` - A bugfix branch called foo (something affecting current staging)
+- `release/1.4.2` - A release branch for tag 1.4.2
+- `revert/foo` - A branch to revert a logic to do with foo.
 
 #### Feature branches
 
@@ -190,9 +194,9 @@ $ git checkout -b feature/foo develop
 
 You should use `feature/foo` to implement and commit all changed required for your new feature.
 
-* Make many small commits so that the history of development for you feature branch is clear and so that it is easy to pinpoint and edit or cherry-pick specific commits if necessary.
-* Avoid merging your feature branch with out feature branches being developed in parallel.
-* Add neccessary unit tests for your features code.
+- Make many small commits so that the history of development for you feature branch is clear and so that it is easy to pinpoint and edit or cherry-pick specific commits if necessary.
+- Avoid merging your feature branch with out feature branches being developed in parallel.
+- Add neccessary unit tests for your features code.
 
 When your feature is complete, push it to your remote repo and prepare it for a pull request.
 
