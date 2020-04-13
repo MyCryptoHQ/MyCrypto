@@ -82,22 +82,18 @@ export const DashboardPanel = ({
   const getRightHeading = () => {
     if (headingRight && actionLink) {
       return (
-        <>
-          <SRouterLink to={actionLink} imageFirst={true}>
-            <img src={settingsIcon} alt={'settings'} width={24} />
-            <Typography>{headingRight}</Typography>
-          </SRouterLink>
-        </>
+        <SRouterLink to={actionLink} imageFirst={true}>
+          <img src={settingsIcon} alt={'settings'} width={24} />
+          <Typography>{headingRight}</Typography>
+        </SRouterLink>
       );
     } else if (headingRight && !actionLink) {
       return <Typography>{headingRight}</Typography>;
     } else if (!headingRight && actionLink) {
       return (
-        <>
-          <SRouterLink to={actionLink}>
-            <img src={settingsIcon} alt={'settings'} width={24} />
-          </SRouterLink>
-        </>
+        <SRouterLink to={actionLink}>
+          <img src={settingsIcon} alt={'settings'} width={24} />
+        </SRouterLink>
       );
     } else {
       return false;
