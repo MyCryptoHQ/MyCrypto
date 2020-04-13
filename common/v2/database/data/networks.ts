@@ -580,7 +580,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     color: '#00ffff',
     blockExplorer: makeExplorer({
       name: 'AQUA Explorer',
-      origin: 'https://aquachain.github.io/explorer/#'
+      origin: 'https://blockscout.aqua.signal2noi.se'
     }),
     tokens: [],
     contracts: [],
