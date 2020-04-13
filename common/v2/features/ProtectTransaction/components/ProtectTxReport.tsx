@@ -147,11 +147,12 @@ export const ProtectTxReport: FC = () => {
   const getLastTxReportTimelineEntry = useCallback((): StepData => {
     let lastSentToken: { value: string; ticker: string; timestamp: string } | null = null;
     if (etherscanLastTxReport && etherscanLastTxReport.result.length) {
-      const {
-        result: [firstResult]
-      } = etherscanLastTxReport;
-      if (firstResult) {
-        const { tokenSymbol: ticker, value, timeStamp } = firstResult;
+      const { result } = etherscanLastTxReport;
+      const firstSentResult = result.find(
+        r => r.from.toLowerCase() === receiverAddress!.toLowerCase()
+      );
+      if (firstSentResult) {
+        const { tokenSymbol: ticker, value, timeStamp } = firstSentResult;
         lastSentToken = {
           ticker,
           value: parseFloat(fromWei(Wei(value), 'ether')).toFixed(6),
