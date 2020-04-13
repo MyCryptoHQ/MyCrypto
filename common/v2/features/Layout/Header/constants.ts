@@ -29,6 +29,11 @@ export const links = [
         to: APP_ROUTES_OBJECT.SWAP.path,
         enabled: APP_ROUTES_OBJECT.SWAP.enabled,
         title: translateRaw('SWAP')
+      },
+      {
+        to: APP_ROUTES_OBJECT.ADD_ACCOUNT.path,
+        enabled: APP_ROUTES_OBJECT.ADD_ACCOUNT.enabled,
+        title: translateRaw('ADD_ACCOUNT')
       }
     ]
   },
