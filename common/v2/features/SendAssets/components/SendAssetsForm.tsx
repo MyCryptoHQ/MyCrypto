@@ -651,8 +651,8 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                     e.preventDefault();
 
                     if (getProTxValue(['goToInitialStepOrFetchReport'])) {
-                      const { address } = values;
-                      getProTxValue(['goToInitialStepOrFetchReport'])(address.value);
+                      const { address, network } = values;
+                      getProTxValue(['goToInitialStepOrFetchReport'])(address.value, network);
                     }
 
                     if (getProTxValue(['showHideProtectTx'])) {
