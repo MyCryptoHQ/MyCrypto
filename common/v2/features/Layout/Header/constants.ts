@@ -1,7 +1,8 @@
 import { translateRaw } from 'v2/translations';
+import { APP_ROUTES_OBJECT } from 'v2/routing';
 
+import settingsIcon from 'assets/images/icn-settings.svg';
 import dashboardIcon from 'common/assets/images/icn-dashboard.svg';
-import { APP_ROUTES_OBJECT } from 'v2/routing/routes';
 
 export const links = [
   {
@@ -73,6 +74,7 @@ export const links = [
   {
     title: 'Settings',
     to: APP_ROUTES_OBJECT.SETTINGS.path,
-    enabled: APP_ROUTES_OBJECT.SETTINGS.enabled
+    enabled: APP_ROUTES_OBJECT.SETTINGS.enabled,
+    icon: { src: settingsIcon, width: '16px' }
   }
 ];
