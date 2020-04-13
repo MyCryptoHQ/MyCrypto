@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { useHistory } from 'react-router-dom';
 
 import translate, { translateRaw } from 'v2/translations';
-import { SPACING, COLORS } from 'v2/theme';
+import { SPACING, COLORS, FONT_SIZE } from 'v2/theme';
 import { IAccount, StoreAccount, Asset } from 'v2/types';
 import { EtherUUID, MOONPAY_ASSET_UUIDS } from 'v2/utils';
 import { ROUTE_PATHS, MOONPAY_API_QUERYSTRING, BUY_MYCRYPTO_WEBSITE } from 'v2/config';
@@ -22,7 +22,7 @@ const FormFieldItem = styled.fieldset`
 
 const FormFieldLabel = styled.label`
   display: flex;
-  font-size: 1rem;
+  font-size: ${FONT_SIZE.BASE};
   margin-bottom: ${SPACING.SM};
   font-weight: 400;
   align-items: center;
@@ -32,7 +32,7 @@ const FormFieldLabel = styled.label`
 const FormFieldSubmitButton = styled(Button)`
   width: 100%;
   display: inline-block;
-  margin-bottom: 15px;
+  margin-bottom: ${SPACING.BASE};
   &:disabled {
     background-color: rgba(0, 122, 153, 0.3);
   }
@@ -46,7 +46,7 @@ const NavigationWarning = styled.div`
 `;
 
 const WarningIcon = styled(Icon)`
-  margin-right: 5px;
+  margin-right: ${SPACING.XS};
   vertical-align: middle;
 
   svg {
@@ -56,7 +56,7 @@ const WarningIcon = styled(Icon)`
 
 const Divider = styled.div`
   height: 1px;
-  margin-bottom: 20px;
+  margin-bottom: ${SPACING.BASE};
   background: #e3edff;
 `;
 
@@ -70,7 +70,7 @@ enum SubmissionType {
   SEND_TO_OTHER = 'SEND_TO_OTHER'
 }
 
-export const BuyAssetsForm = ({}: any) => {
+export const BuyAssetsForm = () => {
   const history = useHistory();
   const { accounts } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
