@@ -36,7 +36,7 @@ describe('Schema', () => {
 
     it('adds Nodes to each Network', () => {
       const nodes = toArray(defaultData[LSKeys.NETWORKS]).flatMap(n => n.nodes);
-      expect(nodes.length).toBe(40);
+      expect(nodes.length).toBe(39);
     });
 
     it('adds BaseAssets to Networks', () => {
@@ -81,7 +81,7 @@ describe('Schema', () => {
 
     it('adds Tokens to Assets', () => {
       const tokens = toArray(defaultData[LSKeys.ASSETS]).filter(({ type }) => type === 'erc20');
-      expect(tokens.length).toEqual(1787);
+      expect(tokens.length).toEqual(1786);
     });
   });
 });

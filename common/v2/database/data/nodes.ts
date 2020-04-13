@@ -346,7 +346,7 @@ export const NODES_CONFIG: { [key in NetworkId]: NodeConfig[] } = {
       name: makeNodeName('ERE', 'ethercore'),
       type: NodeType.RPC,
       service: 'ethercore.io',
-      url: 'https://rpc.ethercore.io/'
+      url: 'https://rpc.ethercore.io'
     }
   ]
 };
