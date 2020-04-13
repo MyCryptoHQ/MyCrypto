@@ -115,6 +115,7 @@ export const StoreProvider: React.FC = ({ children }) => {
   const accounts = useMemo(() => getStoreAccounts(rawAccounts, assets, networks, contacts), [
     rawAccounts,
     assets,
+    contacts,
     networks
   ]);
   const currentAccounts = useMemo(
