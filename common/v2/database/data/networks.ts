@@ -869,7 +869,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     color: '#3a6ea7',
     blockExplorer: makeExplorer({
       name: 'EtherCore Explorer',
-      origin: 'https://explorer.ethercore.org'
+      origin: 'https://explorer.ethercore.io'
     }),
     tokens: [],
     contracts: [],
