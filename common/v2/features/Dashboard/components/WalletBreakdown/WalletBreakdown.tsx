@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES, RatesContext } from 'v2/services';
-import { SettingsContext, StoreContext, AccountContext } from 'v2/services/Store';
+import { SettingsContext, StoreContext } from 'v2/services/Store';
 import { StoreAsset, TUuid } from 'v2/types';
 import { weiToFloat, convertToFiatFromAsset } from 'v2/utils';
 import { BREAK_POINTS, SPACING } from 'v2/theme';
@@ -61,8 +61,7 @@ let wasNumOfAccountsTracked = false;
 
 export function WalletBreakdown() {
   const [showBalanceDetailView, setShowBalanceDetailView] = useState(false);
-  const { totals, currentAccounts } = useContext(StoreContext);
-  const { accounts } = useContext(AccountContext);
+  const { accounts, totals, currentAccounts } = useContext(StoreContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { getAssetRate } = useContext(RatesContext);
 
