@@ -1,0 +1,57 @@
+# Badge name is dependant on the workflow name so make sure to
+# change them together.
+name: Jest
+
+on:
+  pull_request:
+    branches:
+      - legacy
+
+jobs:
+  setup:
+    name: Setup
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v1
+
+      - name: Specify node version
+        uses: actions/setup-node@v1
+        with:
+          node-version: '8.16.0'
+
+      - name: Cache depedendencies
+        id: cache
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          ## Check cache based on yarn.lock hashfile
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ env.cache-name }}-
+            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        ## If no cache is found, install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn
+
+  test:
+    name: Test
+    needs: [setup]
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v1
+      - name: Restore cache
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+      - name: Lint
+        run: yarn tslint
+      - name: TScheck
+        run: yarn tscheck
+      - name: Test
+        run: yarn test:coverage
