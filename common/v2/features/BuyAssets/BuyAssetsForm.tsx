@@ -167,9 +167,9 @@ export const BuyAssetsForm = () => {
                     />
                   )}
                 />
-                {errors && errors.asset && touched && touched.asset ? (
+                {errors && errors.asset && touched && touched.asset && (
                   <InlineMessage className="SendAssetsForm-errors">{errors.asset}</InlineMessage>
-                ) : null}
+                )}
               </FormFieldItem>
               <Divider />
               <NavigationWarning>
