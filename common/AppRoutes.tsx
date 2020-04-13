@@ -24,7 +24,6 @@ const layoutConfig = (path: string, isMobile: boolean): LayoutConfig => {
         fullW: true,
         bgColor: '#fff'
       };
-    case ROUTE_PATHS.SETTINGS.path:
     case ROUTE_PATHS.DASHBOARD.path:
       return {
         centered: true,
@@ -33,7 +32,7 @@ const layoutConfig = (path: string, isMobile: boolean): LayoutConfig => {
     case ROUTE_PATHS.SETTINGS.path:
       return {
         centered: true,
-        ...(isMobile && { paddingV: '0px' })
+        paddingV: isMobile ? '0px' : SPACING.MD
       };
     default:
       return {
