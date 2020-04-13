@@ -14,7 +14,7 @@ import { AccountDropdown, AssetDropdown, InlineMessage, ContentPanel } from 'v2/
 import { isAccountInNetwork } from 'v2/services/Store/Account/helpers';
 import { MoonpaySignerService } from 'v2/services/ApiService/MoonpaySigner';
 import { StoreContext } from 'v2/services/Store/StoreProvider';
-import { AssetContext } from 'v2/services/Store/Asset';
+import { AssetContext, getAssetByUUID } from 'v2/services/Store/Asset';
 
 const FormFieldItem = styled.fieldset`
   margin-bottom: ${SPACING.LG};
@@ -74,7 +74,7 @@ export const BuyAssetsForm = () => {
   const history = useHistory();
   const { accounts } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
-  const ethAsset = assets.find(asset => asset.uuid === EtherUUID) as Asset;
+  const ethAsset = getAssetByUUID(assets)(EtherUUID) as Asset;
 
   const initialFormikValues: IBuyFormState = {
     account: {} as StoreAccount,
@@ -146,9 +146,9 @@ export const BuyAssetsForm = () => {
                     />
                   )}
                 />
-                {errors && errors.account && touched && touched.account ? (
+                {errors && errors.account && touched && touched.account && (
                   <InlineMessage className="SendAssetsForm-errors">{errors.asset}</InlineMessage>
-                ) : null}
+                )}
               </FormFieldItem>
               <FormFieldItem>
                 <FormFieldLabel htmlFor="asset">
