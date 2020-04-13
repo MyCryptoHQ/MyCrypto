@@ -29,6 +29,7 @@ import {
   PurchaseMembershipStepper,
   MembershipEducation,
   BuyAssets
+  DefiDashboard
 } from 'v2/features';
 import { requiresDesktopApp } from './helpers';
 
@@ -225,6 +226,15 @@ export const STATIC_APP_ROUTES: IAppRoute[] = [
     requireAccounts: true,
     enabled: IS_ACTIVE_FEATURE.DEFIZAP,
     component: DeFiZapFlow
+  },
+  {
+    name: ROUTE_PATHS.DEFIDASHBOARD.name,
+    title: ROUTE_PATHS.DEFIDASHBOARD.title,
+    path: ROUTE_PATHS.DEFIDASHBOARD.path,
+    exact: true,
+    requireAccounts: true,
+    enabled: IS_ACTIVE_FEATURE.DEFI_DASHBOARD,
+    component: DefiDashboard
   },
   {
     name: ROUTE_PATHS.MYC_MEMBERSHIP.name,

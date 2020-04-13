@@ -12,6 +12,12 @@ export const links = [
     icon: { src: dashboardIcon, width: '16px', height: '12px' }
   },
   {
+    title: 'Defi Dashboard',
+    to: APP_ROUTES_OBJECT.DEFIDASHBOARD.path,
+    enabled: APP_ROUTES_OBJECT.DEFIDASHBOARD.enabled,
+    icon: { src: dashboardIcon, width: '16px', height: '12px' }
+  },
+  {
     title: 'Manage Assets',
     enabled: true,
     subItems: [

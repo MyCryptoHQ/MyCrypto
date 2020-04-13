@@ -5,7 +5,7 @@ import { usePromise, useEffectOnce } from 'v2/vendor';
 import { StoreContext, SettingsContext } from 'v2/services/Store';
 import { PollingService } from 'v2/workers';
 import { IRates, TTicker, Asset } from 'v2/types';
-import { notUndefined } from 'v2/utils';
+import { notUndefined, COMPOUND_TOKEN_UUIDS, UNISWAP_EXCHANGE_TOKEN_UUIDS } from 'v2/utils';
 import { ReserveAsset } from 'v2/types/asset';
 
 import { AssetMapService, DeFiReserveMapService } from './ApiService';
@@ -120,8 +120,15 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Wait till we have fetched our asset mapping
     if (isEmpty(assetMapping)) return;
-
-    const formattedCoinGeckoIds = pullCoinGeckoIDs(assetMapping, currentAssetUUIDs as TTicker[]);
+    const defiAndAccountAssetIds = [
+      ...currentAssetUUIDs,
+      ...COMPOUND_TOKEN_UUIDS,
+      ...UNISWAP_EXCHANGE_TOKEN_UUIDS
+    ];
+    const formattedCoinGeckoIds = pullCoinGeckoIDs(
+      assetMapping,
+      defiAndAccountAssetIds as TTicker[]
+    );
 
     worker.current = new PollingService(
       buildAssetQueryUrl(formattedCoinGeckoIds, DEFAULT_FIAT_PAIRS), // @TODO: More elegant conversion then `DEFAULT_FIAT_RATE`
