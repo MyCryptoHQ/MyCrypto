@@ -51,9 +51,9 @@ export const actions: Action[] = [
   },
   {
     icon: buyIcon,
-    title: translateRaw('DASHBOARD_ACTIONS_BUY_ASSETS_TITLE'),
+    title: translateRaw('DASHBOARD_ACTIONS_BUY_TITLE'),
     link: ROUTE_PATHS.BUY.path,
-    description: translateRaw('DASHBOARD_ACTIONS_BUY_ASSETS_SUBTITLE')
+    description: translateRaw('DASHBOARD_ACTIONS_BUY_SUBTITLE')
   },
   selectRandomAction(hardwareWallets)
 ];
