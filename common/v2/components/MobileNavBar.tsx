@@ -6,7 +6,7 @@ import { COLORS, FONT_SIZE, SPACING } from '../theme';
 const MobileNavBarStyled = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin: -29px 0 0;
+  margin: 1px -1px 10px;
 
   > div {
     &.tab {

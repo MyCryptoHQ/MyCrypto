@@ -1,4 +1,6 @@
 import React, { useState, useContext } from 'react';
+import styled from 'styled-components';
+import { Heading } from '@mycrypto/ui';
 import {
   AddressBookContext,
   NetworkContext,
@@ -7,21 +9,18 @@ import {
   StoreContext
 } from 'v2/services/Store';
 
-import { Heading } from '@mycrypto/ui';
-import styled from 'styled-components';
-
-import { AccountList, FlippablePanel, Desktop, Mobile, MobileNavBar } from 'v2/components';
-import { BREAK_POINTS } from 'v2/theme';
+import { AccountList, FlippablePanel, Mobile, MobileNavBar, Desktop } from 'v2/components';
 import { NetworkId } from 'v2/types';
 import { CustomNodeConfig } from 'v2/types/node';
 import { DEFAULT_NETWORK, IS_ACTIVE_FEATURE } from 'v2/config';
+import { BREAK_POINTS } from 'v2/theme';
 import translate from 'v2/translations';
 
-import { AddressBookPanel, AddToAddressBook, GeneralSettings, DangerZone } from './components';
-import NetworkNodes from './components/NetworkNodes';
-import AddOrEditNetworkNode from './components/AddOrEditNetworkNode';
-
 import settingsIcon from 'common/assets/images/icn-settings.svg';
+import AddToAddressBook from './components/AddToAddressBook';
+import { AddressBookPanel, GeneralSettings, DangerZone } from './components';
+import AddOrEditNetworkNode from './components/AddOrEditNetworkNode';
+import NetworkNodes from './components/NetworkNodes';
 
 const SettingsHeading = styled(Heading)<{ forwardedAs?: string }>`
   display: flex;
