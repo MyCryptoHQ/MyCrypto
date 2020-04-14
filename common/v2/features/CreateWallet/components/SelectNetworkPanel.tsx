@@ -38,7 +38,7 @@ export default class SelectNetworkPanel extends Component<Props> {
 
   public handleSubmitClick = () => {
     const { network, onNext } = this.props;
-    if (this.context.getNetworkByName(network)) {
+    if (this.context.getNetworkById(network)) {
       onNext();
     } else {
       this.setState({ error: true });

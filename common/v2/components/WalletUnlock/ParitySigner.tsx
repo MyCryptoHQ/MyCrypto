@@ -32,8 +32,8 @@ const WalletService = WalletFactory(WalletId.PARITY_SIGNER);
 const wikiLink = getWalletConfig(WalletId.PARITY_SIGNER).helpLink;
 
 export function ParitySignerDecrypt({ formData, onUnlock }: OwnProps & StateProps) {
-  const { getNetworkByName } = useContext(NetworkContext);
-  const [network] = useState(getNetworkByName(formData.network));
+  const { getNetworkById } = useContext(NetworkContext);
+  const [network] = useState(getNetworkById(formData.network));
   const unlockAddress = (content: SignerQrContent) => {
     if (
       typeof content === 'string' ||

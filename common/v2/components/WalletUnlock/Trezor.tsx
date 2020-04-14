@@ -36,7 +36,7 @@ class TrezorDecryptClass extends PureComponent<OwnProps, State> {
     publicKey: '',
     chainCode: '',
     dPath:
-      getDPath(this.context.getNetworkByName(this.props.formData.network), WalletId.TREZOR) ||
+      getDPath(this.context.getNetworkById(this.props.formData.network), WalletId.TREZOR) ||
       getDPaths(this.context.networks, WalletId.TREZOR)[0],
     error: null,
     isLoading: false
@@ -45,7 +45,7 @@ class TrezorDecryptClass extends PureComponent<OwnProps, State> {
   public render() {
     const { dPath, publicKey, chainCode, isLoading } = this.state;
     const networks = this.context.networks;
-    const network = this.context.getNetworkByName(this.props.formData.network);
+    const network = this.context.getNetworkById(this.props.formData.network);
 
     if (!dPath) {
       return <UnsupportedNetwork walletType={translateRaw('x_Trezor')} network={network} />;
@@ -148,7 +148,7 @@ class TrezorDecryptClass extends PureComponent<OwnProps, State> {
 
   private reset() {
     const networks = this.context.networks;
-    const network = this.context.getNetworkByName(this.props.formData.network);
+    const network = this.context.getNetworkById(this.props.formData.network);
     this.setState({
       publicKey: '',
       chainCode: '',

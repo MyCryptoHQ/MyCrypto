@@ -50,7 +50,7 @@ export function AddToken(props: Props) {
   const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
 
   const { createAssetWithID } = useContext(AssetContext);
-  const { getNetworkByName } = useContext(NetworkContext);
+  const { getNetworkById } = useContext(NetworkContext);
 
   const { setShowAddToken, scanTokens, setShowDetailsView } = props;
 
@@ -61,7 +61,7 @@ export function AddToken(props: Props) {
 
     let isValid = true;
 
-    const network = getNetworkByName(networkId);
+    const network = getNetworkById(networkId);
 
     if (symbol.length === 0) {
       setSymbolError(translateRaw('ADD_TOKEN_NO_SYMBOL'));

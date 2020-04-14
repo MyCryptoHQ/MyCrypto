@@ -36,10 +36,8 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
     publicKey: '',
     chainCode: '',
     dPath:
-      getDPath(
-        this.context.getNetworkByName(this.props.formData.network),
-        WalletId.LEDGER_NANO_S
-      ) || getDPaths(this.context.networks, WalletId.LEDGER_NANO_S)[0],
+      getDPath(this.context.getNetworkById(this.props.formData.network), WalletId.LEDGER_NANO_S) ||
+      getDPaths(this.context.networks, WalletId.LEDGER_NANO_S)[0],
     error: null,
     isLoading: false
   };
@@ -47,7 +45,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   public render() {
     const { dPath, publicKey, chainCode, isLoading } = this.state;
     const networks = this.context.networks;
-    const network = this.context.getNetworkByName(this.props.formData.network);
+    const network = this.context.getNetworkById(this.props.formData.network);
 
     if (!dPath) {
       return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} network={network} />;
@@ -162,7 +160,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
   private reset() {
     const networks = this.context.networks;
-    const network = this.context.getNetworkByName(this.props.formData.network);
+    const network = this.context.getNetworkById(this.props.formData.network);
     this.setState({
       publicKey: '',
       chainCode: '',
