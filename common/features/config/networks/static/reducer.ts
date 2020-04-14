@@ -16,8 +16,6 @@ import {
   CLO_DEFAULT,
   DEXON_DEFAULT,
   EGEM_DEFAULT,
-  ELLA_DEFAULT,
-  EOSC_DEFAULT,
   ESN_DEFAULT,
   ETC_LEDGER,
   ETC_SAFE_T,
@@ -29,7 +27,6 @@ import {
   ETH_TESTNET,
   ETH_TREZOR,
   ETI_DEFAULT,
-  ETSC_DEFAULT,
   EXP_DEFAULT,
   GO_DEFAULT,
   METADIUM_DEFAULT,
@@ -40,7 +37,6 @@ import {
   REOSC_DEFAULT,
   RSK_MAINNET,
   RSK_TESTNET,
-  SOLIDUM_DEFAULT,
   THUNDERCORE_DEFAULT,
   TOMO_DEFAULT,
   UBQ_DEFAULT,
@@ -301,55 +297,6 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       initial: 20
     }
   },
-  ELLA: {
-    id: 'ELLA',
-    name: 'Ellaism',
-    unit: 'ELLA',
-    chainId: 64,
-    isCustom: false,
-    color: '#046111',
-    blockExplorer: makeExplorer({
-      name: 'Ellaism Explorer',
-      origin: 'https://explorer.ellaism.io'
-    }),
-    tokens: require('config/tokens/ella.json'),
-    contracts: [],
-    dPathFormats: {
-      [SecureWalletName.TREZOR]: ELLA_DEFAULT,
-      [SecureWalletName.SAFE_T]: ELLA_DEFAULT,
-      [SecureWalletName.LEDGER_NANO_S]: ELLA_DEFAULT,
-      [InsecureWalletName.MNEMONIC_PHRASE]: ELLA_DEFAULT
-    },
-    gasPriceSettings: {
-      min: 1,
-      max: 60,
-      initial: 20
-    }
-  },
-  Gangnam: {
-    id: 'Gangnam',
-    name: 'Gangnam',
-    unit: 'ETH',
-    chainId: 43568,
-    isCustom: false,
-    color: '#adc101',
-    blockExplorer: makeExplorer({
-      name: 'Gangnam Explorer',
-      origin: 'https://explorer.progtest.net'
-    }),
-    tokens: [],
-    contracts: [],
-    dPathFormats: {
-      [SecureWalletName.TREZOR]: ETH_TESTNET,
-      [SecureWalletName.LEDGER_NANO_S]: ETH_TESTNET,
-      [InsecureWalletName.MNEMONIC_PHRASE]: ETH_TESTNET
-    },
-    gasPriceSettings: {
-      min: 1,
-      max: 60,
-      initial: 20
-    }
-  },
   MUSIC: {
     id: 'MUSIC',
     name: 'Musicoin',
@@ -369,31 +316,6 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       [SecureWalletName.SAFE_T]: MUSIC_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: MUSIC_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: MUSIC_DEFAULT
-    },
-    gasPriceSettings: {
-      min: 1,
-      max: 60,
-      initial: 20
-    }
-  },
-
-  ETSC: {
-    id: 'ETSC',
-    name: 'Ethereum Social',
-    unit: 'ETSC',
-    chainId: 28,
-    isCustom: false,
-    color: '#4295d1',
-    blockExplorer: makeExplorer({
-      name: 'Ethereum Social Explorer',
-      origin: 'https://explorer.ethereumsocial.kr'
-    }),
-    tokens: [],
-    contracts: [],
-    dPathFormats: {
-      [SecureWalletName.TREZOR]: ETSC_DEFAULT,
-      [SecureWalletName.SAFE_T]: ETSC_DEFAULT,
-      [InsecureWalletName.MNEMONIC_PHRASE]: ETSC_DEFAULT
     },
     gasPriceSettings: {
       min: 1,
@@ -558,32 +480,6 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       min: 2,
       max: 60,
       initial: 2
-    }
-  },
-
-  EOSC: {
-    id: 'EOSC',
-    name: 'EOS Classic',
-    unit: 'EOSC',
-    chainId: 20,
-    isCustom: false,
-    color: '#926565',
-    blockExplorer: makeExplorer({
-      name: 'EOSC Explorer',
-      origin: 'https://explorer.eos-classic.io'
-    }),
-    tokens: [],
-    contracts: [],
-    dPathFormats: {
-      [SecureWalletName.TREZOR]: EOSC_DEFAULT,
-      [SecureWalletName.SAFE_T]: EOSC_DEFAULT,
-      [SecureWalletName.LEDGER_NANO_S]: EOSC_DEFAULT,
-      [InsecureWalletName.MNEMONIC_PHRASE]: EOSC_DEFAULT
-    },
-    gasPriceSettings: {
-      min: 1,
-      max: 60,
-      initial: 20
     }
   },
 
@@ -904,29 +800,6 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       initial: 80
     }
   },
-  SOLIDUM: {
-    id: 'SOLIDUM',
-    name: 'Solidum',
-    unit: 'SUM',
-    chainId: 72106,
-    isCustom: false,
-    color: '#1e87f0',
-    blockExplorer: makeExplorer({
-      name: 'Solidum Explorer',
-      origin: 'https://explorer.solidum.network'
-    }),
-    tokens: [],
-    contracts: [],
-    dPathFormats: {
-      [SecureWalletName.LEDGER_NANO_S]: SOLIDUM_DEFAULT,
-      [InsecureWalletName.MNEMONIC_PHRASE]: SOLIDUM_DEFAULT
-    },
-    gasPriceSettings: {
-      min: 1,
-      max: 60,
-      initial: 20
-    }
-  },
   DEXON: {
     id: 'DEXON',
     name: 'DEXON Network',
@@ -1034,7 +907,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     color: '#3a6ea7',
     blockExplorer: makeExplorer({
       name: 'EtherCore Explorer',
-      origin: 'https://explorer.ethercore.org'
+      origin: 'https://explorer.ethercore.io'
     }),
     tokens: [],
     contracts: [],

@@ -58,19 +58,9 @@ export const TOMO_DEFAULT: DPath = {
   value: "m/44'/889'/0'/0"
 };
 
-export const ELLA_DEFAULT: DPath = {
-  label: 'Default (ELLA)',
-  value: "m/44'/163'/0'/0"
-};
-
 export const MUSIC_DEFAULT: DPath = {
   label: 'Default (MUSIC)',
   value: "m/44'/184'/0'/0"
-};
-
-export const ETSC_DEFAULT: DPath = {
-  label: 'Default (ETSC)',
-  value: "m/44'/1128'/0'/0"
 };
 
 export const EGEM_DEFAULT: DPath = {
@@ -101,11 +91,6 @@ export const RSK_MAINNET: DPath = {
 export const GO_DEFAULT: DPath = {
   label: 'Default (GO)',
   value: "m/44'/6060'/0'/0"
-};
-
-export const EOSC_DEFAULT: DPath = {
-  label: 'Default (EOSC)',
-  value: "m/44'/2018'/0'/0"
 };
 
 export const ESN_DEFAULT: DPath = {
@@ -172,11 +157,6 @@ export const METADIUM_DEFAULT: DPath = {
   value: "m/44'/916'/0'/0"
 };
 
-export const SOLIDUM_DEFAULT: DPath = {
-  label: 'Default (SOLIDUM)',
-  value: "m/44'/997'/0'/0"
-};
-
 export const DEXON_DEFAULT: DPath = {
   label: 'Default (DEXON)',
   value: "m/44'/237'/0'/0"
@@ -215,15 +195,12 @@ export const DPaths: DPath[] = [
   UBQ_DEFAULT,
   POA_DEFAULT,
   TOMO_DEFAULT,
-  ELLA_DEFAULT,
   MUSIC_DEFAULT,
-  ETSC_DEFAULT,
   EGEM_DEFAULT,
   CLO_DEFAULT,
   RSK_MAINNET,
   RSK_TESTNET,
   GO_DEFAULT,
-  EOSC_DEFAULT,
   ESN_DEFAULT,
   AKA_DEFAULT,
   PIRL_DEFAULT,
@@ -237,7 +214,6 @@ export const DPaths: DPath[] = [
   ETI_DEFAULT,
   WEB_DEFAULT,
   METADIUM_DEFAULT,
-  SOLIDUM_DEFAULT,
   DEXON_DEFAULT,
   ASK_DEFAULT,
   ASK_TREZOR,
