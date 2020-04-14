@@ -21,8 +21,8 @@ const SettingsHeading = styled(Heading)<{ forwardedAs?: string }>`
 
 const SettingsHeadingIcon = styled.img`
   margin-right: 24px;
-  margin-top: -16px;
-  width: 20px;
+  margin-top: 2px;
+  width: 30px;
 `;
 
 const StyledLayout = styled.div`
