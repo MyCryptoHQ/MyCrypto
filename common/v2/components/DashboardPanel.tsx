@@ -83,7 +83,7 @@ export const DashboardPanel = ({
     if (headingRight && actionLink) {
       return (
         <SRouterLink to={actionLink} imageFirst={true}>
-          <img src={settingsIcon} alt={'settings'} width={24} />
+          <img src={settingsIcon} alt={'settings'} width={30} />
           <Typography>{headingRight}</Typography>
         </SRouterLink>
       );
@@ -92,7 +92,7 @@ export const DashboardPanel = ({
     } else if (!headingRight && actionLink) {
       return (
         <SRouterLink to={actionLink}>
-          <img src={settingsIcon} alt={'settings'} width={24} />
+          <img src={settingsIcon} alt={'settings'} width={30} />
         </SRouterLink>
       );
     } else {
