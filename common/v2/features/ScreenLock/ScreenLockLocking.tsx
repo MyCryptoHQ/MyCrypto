@@ -55,7 +55,7 @@ const SecondaryButton = styled(Button)`
   background: none;
   border: solid 2px #ffffff;
 
-  hover: {
+  :hover {
     background: #fff;
   }
 `;

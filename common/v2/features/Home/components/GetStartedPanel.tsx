@@ -219,7 +219,7 @@ const trackButtonClick = (button: string) => {
   AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HOME, `${button} button clicked`);
 };
 
-const ActionCard: React.SFC<ActionCardProps> = props => {
+const ActionCard: React.FC<ActionCardProps> = props => {
   const { name, description, icon, link, eventAction } = props;
   return (
     <ActionCardWrapper onClick={() => trackButtonClick(eventAction)}>

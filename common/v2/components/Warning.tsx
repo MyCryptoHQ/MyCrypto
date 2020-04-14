@@ -6,7 +6,7 @@ interface WarningProps {
   highlighted?: boolean;
 }
 
-const Warning: React.SFC<WarningProps> = ({ highlighted, children }) => {
+const Warning: React.FC<WarningProps> = ({ highlighted, children }) => {
   const className = `Warning ${highlighted ? 'highlighted' : ''}`;
 
   return (

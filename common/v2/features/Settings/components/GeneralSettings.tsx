@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { COLORS, SPACING, BREAK_POINTS, FONT_SIZE } from 'v2/theme';
-import translate from 'v2/translations';
+import translate, { translateRaw } from 'v2/translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { ISettings } from 'v2/types';
 import { DashboardPanel, Tooltip } from 'v2/components';
@@ -73,17 +73,17 @@ interface SettingsProps {
 }
 
 const timerOptions = [
-  { name: '1 Minutes', value: '60000' },
-  { name: '3 Minutes', value: '180000' },
-  { name: '5 Minutes', value: '300000' },
-  { name: '10 Minutes', value: '600000' },
-  { name: '15 Minutes', value: '900000' },
-  { name: '30 Minutes', value: '1800000' },
-  { name: '45 Minutes', value: '2700000' },
-  { name: '1 Hours', value: '3600000' },
-  { name: '3 Hours', value: '10800000' },
-  { name: '6 Hours', value: '21600000' },
-  { name: '12 Hours', value: '43200000' }
+  { name: `1 ${translateRaw('ELAPSED_TIME_MINUTE')}`, value: '60000' },
+  { name: `3 ${translateRaw('ELAPSED_TIME_MINUTES')}`, value: '180000' },
+  { name: `5 ${translateRaw('ELAPSED_TIME_MINUTES')}`, value: '300000' },
+  { name: `10 ${translateRaw('ELAPSED_TIME_MINUTES')}`, value: '600000' },
+  { name: `15 ${translateRaw('ELAPSED_TIME_MINUTES')}`, value: '900000' },
+  { name: `30 ${translateRaw('ELAPSED_TIME_MINUTES')}`, value: '1800000' },
+  { name: `45 ${translateRaw('ELAPSED_TIME_MINUTES')}`, value: '2700000' },
+  { name: `1 ${translateRaw('ELAPSED_TIME_HOUR')}`, value: '3600000' },
+  { name: `3 ${translateRaw('ELAPSED_TIME_HOURS')}`, value: '10800000' },
+  { name: `6 ${translateRaw('ELAPSED_TIME_HOURS')}`, value: '21600000' },
+  { name: `12 ${translateRaw('ELAPSED_TIME_HOURS')}`, value: '43200000' }
 ];
 
 export default class GeneralSettings extends React.Component<SettingsProps> {

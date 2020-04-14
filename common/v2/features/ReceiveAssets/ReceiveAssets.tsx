@@ -20,10 +20,7 @@ import questionToolTip from 'common/assets/images/icn-question.svg';
 import receiveIcon from 'common/assets/images/icn-receive.svg';
 
 const isAssetToken = (tokenType: string) => {
-  if (tokenType === 'base') {
-    return false;
-  }
-  return true;
+  return tokenType !== 'base';
 };
 
 const QRDisplay = styled.div`

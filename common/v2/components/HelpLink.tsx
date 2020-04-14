@@ -8,7 +8,7 @@ interface Props {
   children?: string | React.ReactElement<string>;
 }
 
-const HelpLink: React.SFC<AAttributes & Props> = ({ article, children, ...rest }) => (
+const HelpLink: React.FC<AAttributes & Props> = ({ article, children, ...rest }) => (
   <NewTabLink {...rest} href={getKBHelpArticle(article)}>
     {children}
   </NewTabLink>

@@ -9,7 +9,7 @@ interface OwnProps {
 
 type Props = OwnProps;
 
-const UnsupportedNetwork: React.SFC<Props> = ({ walletType, network }) => {
+const UnsupportedNetwork: React.FC<Props> = ({ walletType, network }) => {
   return (
     <h2>
       <Trans

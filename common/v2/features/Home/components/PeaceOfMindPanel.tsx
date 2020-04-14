@@ -156,7 +156,7 @@ interface ContentItemProps {
   description: React.ReactElement<any>;
 }
 
-const ContentItem: React.SFC<ContentItemProps> = props => {
+const ContentItem: React.FC<ContentItemProps> = props => {
   const { icon, description } = props;
   return (
     <ContentItemWrapper>

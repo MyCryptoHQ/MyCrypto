@@ -11,7 +11,7 @@ interface Props {
   handleClose(): void;
 }
 
-const DisclaimerModal: React.SFC<Props> = ({ isOpen, handleClose }) => {
+const DisclaimerModal: React.FC<Props> = ({ isOpen, handleClose }) => {
   const buttons: IButton[] = [
     { text: translate('ACTION_10'), type: 'default', onClick: handleClose }
   ];

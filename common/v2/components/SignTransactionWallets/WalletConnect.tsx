@@ -76,7 +76,7 @@ interface ErrorProps {
   onClick(): void;
 }
 
-const ErrorHandlers: { [K in TActionError]: React.SFC<ErrorProps> } = {
+const ErrorHandlers: { [K in TActionError]: React.FC<ErrorProps> } = {
   WRONG_ADDRESS: ({ address }) => (
     <Typography style={{ padding: '0 2em' }}>
       {translateRaw('SIGN_TX_WALLETCONNECT_FAILED_ACCOUNT', {

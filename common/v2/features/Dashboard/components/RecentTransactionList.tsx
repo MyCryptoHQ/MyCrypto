@@ -52,21 +52,21 @@ const TxTypeConfig: ITxTypeConfig = {
   [ITxType.INBOUND]: {
     label: (asset: Asset) =>
       translateRaw('RECENT_TX_LIST_LABEL_RECEIVED', {
-        $ticker: asset.ticker || 'Unknown'
+        $ticker: asset.ticker || translateRaw('UNKNOWN')
       }),
     icon: inbound
   },
   [ITxType.OUTBOUND]: {
     label: (asset: Asset) =>
       translateRaw('RECENT_TX_LIST_LABEL_SENT', {
-        $ticker: asset.ticker || 'Unknown'
+        $ticker: asset.ticker || translateRaw('UNKNOWN')
       }),
     icon: outbound
   },
   [ITxType.TRANSFER]: {
     label: (asset: Asset) =>
       translateRaw('RECENT_TX_LIST_LABEL_TRANSFERRED', {
-        $ticker: asset.ticker || 'Unknown'
+        $ticker: asset.ticker || translateRaw('UNKNOWN')
       }),
     icon: transfer
   }
@@ -200,15 +200,21 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
   const filteredGroups = groups.filter((group) => group.entries.length !== 0);
 
   const recentTransactionsTable = {
-    head: ['Date', 'From Address', 'To Address', 'Amount', 'View More'],
+    head: [
+      translateRaw('RECENT_TRANSACTIONS_DATE') || 'Date',
+      translateRaw('RECENT_TRANSACTIONS_FROM_ADDRESS'),
+      translateRaw('RECENT_TRANSACTIONS_TO_ADDRESS'),
+      translateRaw('RECENT_TRANSACTIONS_TO_AMOUNT'),
+      translateRaw('RECENT_TRANSACTIONS_VIEW_MORE') || 'View More'
+    ],
     body: [],
     groups: filteredGroups,
     config: {
-      primaryColumn: 'Date',
-      sortableColumn: 'Date',
+      primaryColumn: translateRaw('RECENT_TRANSACTIONS_DATE'),
+      sortableColumn: translateRaw('RECENT_TRANSACTIONS_DATE'),
       sortFunction: () => (a: any, b: any) => b.props.date - a.props.date,
-      hiddenHeadings: ['View More'],
-      iconColumns: ['View More']
+      hiddenHeadings: [translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')],
+      iconColumns: [translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')]
     }
   };
   return (

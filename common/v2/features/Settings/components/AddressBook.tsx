@@ -102,7 +102,14 @@ export default function AddressBook({
   const displayAddressBook = getDisplayAddressBook();
 
   const addressBookTable = {
-    head: ['Favorite', 'Label', 'Address', 'Network', 'Notes', 'Delete'],
+    head: [
+      translateRaw('ADDRESSBOOK_FAVORITE') || 'Favorite',
+      translateRaw('ADDRESSBOOK_LABEL') || 'Label',
+      translateRaw('ADDRESSBOOK_ADDRESS'),
+      translateRaw('ADDRESSBOOK_NETWORK'),
+      translateRaw('ADDRESSBOOK_NOTES'),
+      translateRaw('ADDRESSBOOK_DELETE') || 'Delete'
+    ],
     overlay: (rowIndex: number): JSX.Element => {
       if (!overlayRows) return <></>;
 
@@ -170,15 +177,21 @@ export default function AddressBook({
       ]
     ),
     config: {
-      primaryColumn: 'Label',
-      sortableColumn: overlayRowsFlat.length ? '' : 'Label',
+      primaryColumn: translateRaw('ADDRESSBOOK_LABEL'),
+      sortableColumn: overlayRowsFlat.length ? '' : translateRaw('ADDRESSBOOK_LABEL'),
       sortFunction: () => (a: any, b: any) => {
         const aLabel = a.props.label;
         const bLabel = b.props.label;
         return aLabel === bLabel ? true : aLabel.localeCompare(bLabel);
       },
-      hiddenHeadings: ['Favorite', 'Delete'],
-      iconColumns: ['Favorite', 'Delete']
+      hiddenHeadings: [
+        translateRaw('ADDRESSBOOK_FAVORITE'),
+        translateRaw('ADDRESSBOOK_DELETE')
+      ],
+      iconColumns: [
+        translateRaw('ADDRESSBOOK_FAVORITE'),
+        translateRaw('ADDRESSBOOK_DELETE')
+      ]
     }
   };
   return (

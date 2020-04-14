@@ -90,7 +90,7 @@ const ButtonGroup = styled.div`
   }
 `;
 
-const PageNotFound: React.SFC = () => (
+const PageNotFound: React.FC = () => (
   <PageNotFoundContainer>
     <PageNotFoundContent>
       <ImgIcon src={cryingWallet} />

@@ -104,7 +104,7 @@ class VerifyKeystorePanel extends Component<Props> {
     if (keystore) {
       const isValid = await verifyKeystore(keystore!, password);
       if (!isValid) {
-        this.setState({ passwordError: 'Wrong password' });
+        this.setState({ passwordError: translateRaw('WRONG_PASSWORD') });
         return;
       } else {
         addCreatedAccountAndRedirectToDashboard();
@@ -112,7 +112,7 @@ class VerifyKeystorePanel extends Component<Props> {
     } else if (privateKey) {
       const isValid = verifyPrivateKey(privateKey, password) && generatedPrivateKey === privateKey;
       if (!isValid) {
-        this.setState({ privateKeyError: 'Invalid private key' });
+        this.setState({ privateKeyError: translateRaw('INVALID_PRIVATE_KEY') });
         return;
       } else {
         addCreatedAccountAndRedirectToDashboard();

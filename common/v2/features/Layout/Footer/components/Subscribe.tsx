@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import translate from 'v2/translations';
+import translate, { translateRaw } from 'v2/translations';
 import { subscribeToMailingList } from 'v2/services/ApiService';
 
 export default class Subscribe extends Component {
@@ -18,7 +18,7 @@ export default class Subscribe extends Component {
           <section className="Subscribe-input-wrapper-input">
             <input
               type="email"
-              placeholder="Email address"
+              placeholder={translateRaw('EMAIL_ADDRESS_PLACEHOLDER')}
               onChange={this.handleChange}
               disabled={submitted}
               value={submitted ? '' : email}

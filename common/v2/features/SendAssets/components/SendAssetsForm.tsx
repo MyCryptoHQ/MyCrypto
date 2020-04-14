@@ -538,7 +538,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
               {/* Advanced Options */}
               <div className="SendAssetsForm-advancedOptions">
                 <AdvancedOptionsButton basic={true} onClick={toggleAdvancedOptions}>
-                  {values.advancedTransaction ? 'Hide' : 'Show'}{' '}
+                  {values.advancedTransaction ? translateRaw('HIDE') : translateRaw('SHOW')}{' '}
                   {translate('ADVANCED_OPTIONS_LABEL')}
                 </AdvancedOptionsButton>
                 {values.advancedTransaction && (
@@ -601,7 +601,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-nonce">
                         <label htmlFor="nonce">
                           <div>
-                            Nonce <Tooltip tooltip={translate('NONCE_TOOLTIP')} />
+                            {translateRaw('NONCE')} <Tooltip tooltip={translate('NONCE_TOOLTIP')} />
                           </div>
                         </label>
                         <Field

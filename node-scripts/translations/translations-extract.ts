@@ -7,8 +7,7 @@ const glob = require('glob');
 const path = require('path');
 
 const PROJECT_FILE_PATTERN = './common/**/*.{ts,tsx}';
-// const TRANSLATION_FILE_PATTERN = './common/v2/translations/lang/*.json';
-const TRANSLATION_FILE_PATTERN = './common/v2/translations/lang/en.json';
+const TRANSLATION_FILE_PATTERN = './common/v2/translations/lang/*.json';
 const TRANSLATE_FUNCTIONS = ['translateRaw', 'translate', 'translateMarker'];
 const JSX_ELEMENTS_WITH_PROP: [string, string][] = [['Trans', 'id']];
 

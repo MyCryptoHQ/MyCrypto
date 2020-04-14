@@ -8,7 +8,7 @@ interface Props {
 
 const params: Param[] = ['to', 'data', 'tokenSymbol', 'value', 'gaslimit', 'limit', 'readOnly'];
 
-export const WhenQueryExists: React.SFC<Props> = ({ whenQueryExists }) => (
+export const WhenQueryExists: React.FC<Props> = ({ whenQueryExists }) => (
   <Query
     params={params}
     withQuery={queries => (Object.values(queries).some(v => !!v) ? whenQueryExists : null)}

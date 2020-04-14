@@ -17,6 +17,7 @@ import {
 } from './components';
 import { actions } from './constants';
 import './Dashboard.scss';
+import { translateRaw } from '../../translations';
 
 // Keep the same mobile width as an ActionTile
 const EmptyTile = styled.div`
@@ -81,7 +82,7 @@ export default function Dashboard() {
         <div className="Dashboard-desktop-top">
           <div className="Dashboard-desktop-top-left">
             <Heading as="h2" className="Dashboard-desktop-top-left-heading">
-              Your Dashboard
+              {translateRaw('YOUR_DASHBOARD')}
             </Heading>
             <div className="Dashboard-desktop-top-left-actions">
               {actions.map(action => (
