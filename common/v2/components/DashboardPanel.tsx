@@ -20,7 +20,7 @@ const SRouterLink = styled(RouterLink)`
     color: ${COLORS.BLUE_BRIGHT};
   }
   & img {
-    margin-right: 0.5em;
+    margin-right: ${(p: { imageFirst?: boolean }) => (p.imageFirst ? '0.5em' : '0')};
   }
 `;
 
@@ -79,20 +79,35 @@ export const DashboardPanel = ({
   padChildren,
   ...rest
 }: Props) => {
+  const getRightHeading = () => {
+    if (headingRight && actionLink) {
+      return (
+        <SRouterLink to={actionLink} imageFirst={true}>
+          <img src={settingsIcon} alt={'settings'} width={30} />
+          <Typography>{headingRight}</Typography>
+        </SRouterLink>
+      );
+    } else if (headingRight && !actionLink) {
+      return <Typography>{headingRight}</Typography>;
+    } else if (!headingRight && actionLink) {
+      return (
+        <SRouterLink to={actionLink}>
+          <img src={settingsIcon} alt={'settings'} width={30} />
+        </SRouterLink>
+      );
+    } else {
+      return false;
+    }
+  };
+
   return (
     <DPanel {...rest}>
-      {heading && (<DHeadingWrapper>
-        <DHeading>{heading}</DHeading>
-        {headingRight &&
-          (actionLink ? (
-            <SRouterLink to={actionLink}>
-              <img src={settingsIcon} alt={'settings'} width={32} />
-              <Typography>{headingRight}</Typography>
-            </SRouterLink>
-          ) : (
-              headingRight
-            ))}
-      </DHeadingWrapper>)}
+      {heading && (
+        <DHeadingWrapper>
+          <DHeading>{heading}</DHeading>
+          {(headingRight || actionLink) && getRightHeading()}
+        </DHeadingWrapper>
+      )}
       {padChildren ? <Content>{children}</Content> : children}
       {footer && <DFooterWrapper>{footer}</DFooterWrapper>}
     </DPanel>
