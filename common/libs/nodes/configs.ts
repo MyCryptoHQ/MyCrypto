@@ -99,26 +99,14 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       type: 'rpc',
       service: 'remote.akroma.io',
       url: 'https://remote.akroma.io'
-    },
-    {
-      name: makeNodeName('AKA', 'rpc.akroma.io'),
-      type: 'rpc',
-      service: 'rpc.akroma.io',
-      url: 'https://rpc.akroma.io'
     }
   ],
 
   AQUA: [
     {
-      name: makeNodeName('AQUA', 'aquachain'),
-      type: 'rpc',
-      service: 'aquacha.in',
-      url: 'https://tx.aquacha.in/api'
-    },
-    {
       name: makeNodeName('AQUA', 'uncan.onical'),
       type: 'rpc',
-      service: 'uncan.onical.org',
+      service: 'c.onical.org',
       url: 'https://c.onical.org'
     }
   ],
@@ -152,10 +140,10 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
 
   ATH: [
     {
-      name: makeNodeName('ATH', 'wallet.atheios.com'),
+      name: makeNodeName('ATH', 'rpc.atheios.org'),
       type: 'rpc',
-      service: 'wallet.atheios.com',
-      url: 'https://wallet.atheios.com:8797'
+      service: 'rpc.atheios.org',
+      url: 'https://rpc.atheios.org/'
     }
   ],
 
@@ -165,12 +153,6 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       type: 'rpc',
       service: '0xinfra.com',
       url: 'https://clo-geth.0xinfra.com/'
-    },
-    {
-      name: makeNodeName('CLO', 'chainkorea'),
-      type: 'rpc',
-      service: 'Chainkorea',
-      url: 'https://node.clopool.net/'
     }
   ],
 
@@ -192,24 +174,6 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     }
   ],
 
-  ELLA: [
-    {
-      name: makeNodeName('ELLA', 'ellaism'),
-      type: 'rpc',
-      service: 'ellaism.org',
-      url: 'https://jsonrpc.ellaism.io'
-    }
-  ],
-
-  EOSC: [
-    {
-      name: makeNodeName('EOSC', 'eosc'),
-      type: 'rpc',
-      service: 'eos-classic.io',
-      url: 'https://node.eos-classic.io/'
-    }
-  ],
-
   ESN: [
     {
       name: makeNodeName('ESN', 'esn'),
@@ -228,30 +192,12 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     }
   ],
 
-  ETSC: [
-    {
-      name: makeNodeName('ETSC', 'etsc'),
-      type: 'rpc',
-      service: 'ethereumsocial.kr',
-      url: 'https://node.ethereumsocial.kr'
-    }
-  ],
-
   EXP: [
     {
       name: makeNodeName('EXP', 'tech'),
       type: 'rpc',
       service: 'expanse.tech',
       url: 'https://node.expanse.tech/'
-    }
-  ],
-
-  Gangnam: [
-    {
-      name: makeNodeName('Gangnam', 'progtest'),
-      type: 'rpc',
-      service: 'Gangnam ProgPoW',
-      url: 'https://rpc.progtest.net'
     }
   ],
 
@@ -295,8 +241,8 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     {
       name: makeNodeName('MUSIC', 'music'),
       type: 'rpc',
-      service: 'musicoin.tw',
-      url: 'https://mewapi.musicoin.tw'
+      service: 'rpc.musicoin.org',
+      url: 'https://rpc.musicoin.org/'
     }
   ],
 
@@ -333,15 +279,6 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       type: 'rpc',
       service: 'mycrypto.testnet.rsk.co',
       url: 'https://mycrypto.testnet.rsk.co/'
-    }
-  ],
-
-  SOLIDUM: [
-    {
-      name: makeNodeName('SOLIDUM', 'rpc.solidum.network'),
-      type: 'rpc',
-      service: 'rpc.solidum.network',
-      url: 'https://rpc.solidum.network'
     }
   ],
 
@@ -408,8 +345,8 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     {
       name: makeNodeName('ERE', 'ethercore'),
       type: 'rpc',
-      service: 'ethercore.org',
-      url: 'https://rpc.ethercore.org'
+      service: 'ethercore.io',
+      url: 'https://rpc.ethercore.io'
     }
   ]
 };
