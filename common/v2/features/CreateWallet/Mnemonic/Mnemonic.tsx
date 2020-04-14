@@ -51,7 +51,9 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
     words: [],
     network: DEFAULT_NETWORK,
     accountType: WalletId.MNEMONIC_PHRASE,
-    path: '',
+    path:
+      getNetworkById(DEFAULT_NETWORK, this.props.networks).dPaths[WalletId.MNEMONIC_PHRASE]
+        ?.value || '',
     address: ''
   };
 
