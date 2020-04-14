@@ -34,7 +34,7 @@ const FormFieldSubmitButton = styled(Button)`
   display: inline-block;
   margin-bottom: ${SPACING.BASE};
   &:disabled {
-    background-color: rgba(0, 122, 153, 0.3);
+    background-color: ${COLORS.BLUE_MYC};
   }
 `;
 
@@ -54,20 +54,14 @@ const WarningIcon = styled(Icon)`
   }
 `;
 
-const Divider = styled.div`
-  height: 1px;
-  margin-bottom: ${SPACING.BASE};
-  background: #e3edff;
-`;
-
 interface IBuyFormState {
   account: StoreAccount;
   asset: Asset;
 }
 
 enum SubmissionType {
-  SEND_TO_SELF = 'SEND_TO_SELF',
-  SEND_TO_OTHER = 'SEND_TO_OTHER'
+  SEND_TO_SELF,
+  SEND_TO_OTHER
 }
 
 export const BuyAssetsForm = () => {
@@ -171,7 +165,6 @@ export const BuyAssetsForm = () => {
                   <InlineMessage className="SendAssetsForm-errors">{errors.asset}</InlineMessage>
                 )}
               </FormFieldItem>
-              <Divider />
               <NavigationWarning>
                 <WarningIcon icon="warning" />
                 {translateRaw('EXTERNAL_NAVIGATION_WARNING')}
