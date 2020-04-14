@@ -4,6 +4,7 @@ import { ethers } from 'ethers';
 
 import { TogglablePassword, Input, Button } from 'v2/components';
 import { isValidPrivKey, isValidEncryptedPrivKey } from 'v2/services/EthService';
+import { decryptPrivKey } from 'v2/services/EthService/utils';
 import { ISignComponentProps } from 'v2/types';
 import translate, { translateRaw } from 'v2/translations';
 import { WALLETS_CONFIG } from 'v2/config';
@@ -145,10 +146,11 @@ export default class SignTransactionPrivateKey extends Component<
     e.preventDefault();
     e.stopPropagation();
     const { rawTransaction } = this.props;
-    const { key } = this.state;
+    const { key, password } = this.state;
 
-    // TODO: Handle encrypted private keys
-    const signerWallet = new ethers.Wallet(key);
+    const privateKey = password.length > 0 ? decryptPrivKey(key, password) : key;
+
+    const signerWallet = new ethers.Wallet(privateKey);
     const rawSignedTransaction: any = await signerWallet.sign(rawTransaction);
     this.props.onSuccess(rawSignedTransaction);
   };
