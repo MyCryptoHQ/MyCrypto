@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { SPACING } from 'v2/theme';
 import { Link } from 'v2/components';
-import { translateRaw } from '../../../translations';
+import { translateRaw } from 'v2/translations';
 
 const Container = styled.div`
   display: flex;

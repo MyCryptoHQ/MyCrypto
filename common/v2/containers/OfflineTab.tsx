@@ -1,7 +1,6 @@
 import React from 'react';
-
+import { translateRaw } from 'v2/translations';
 import './OfflineTab.scss';
-import { translateRaw } from '../translations';
 
 const OfflineTab: React.FC = () => (
   <section className="OfflineTab Tab-content swap-tab">

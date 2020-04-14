@@ -10,7 +10,7 @@ It will merge new keys, without modifying old ones and sort them alphabetically.
 It will update all *.json files inside `common/v2/translations/lang/*.json`, meaning all languages will be updated with new keys.
 
 ### Add new translation key
-To add new translation key, just wrap the key inside `translate` or `translateRaw` functions.
+To add new translation key, just wrap the key inside `translate`, `translateRaw` or `translateMarker` functions.
 And run `yarn translations:extract`, to update the *.json files. Find the key in *.json file,
 and insert the value(Do this at least for English language(`en.json`)).
 

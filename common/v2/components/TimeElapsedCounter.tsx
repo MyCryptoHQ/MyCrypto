@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { translateRaw } from '../translations';
+import { translateRaw } from 'v2/translations';
 
 interface Props {
   timestamp: number;

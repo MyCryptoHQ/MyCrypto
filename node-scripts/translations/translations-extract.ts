@@ -34,7 +34,6 @@ const findJxsElementExpressions = (
   return tsquery(node, query, { visitAllChildren: true });
 };
 
-/* Get only upper case expressions */
 const getStringFromExpression = (expression: ts.Node) => {
   const text = expression.getText();
 
@@ -103,7 +102,6 @@ const updateTranslations = (translated: { [name: string]: string }) => {
 
   const translationFilePaths = getFilesMatchingPattern(path.resolve(TRANSLATION_FILE_PATTERN));
   translationFilePaths.forEach((translationFilePath: string) => {
-    // Read file as JSON
     const translationFileJson = JSON.parse(fs.readFileSync(translationFilePath));
 
     Object.assign(translated, translationFileJson.data);

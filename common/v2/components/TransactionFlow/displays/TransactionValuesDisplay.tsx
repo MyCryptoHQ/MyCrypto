@@ -4,7 +4,7 @@ import { Heading, Typography } from '@mycrypto/ui';
 import sendIcon from 'common/assets/images/icn-send.svg';
 import { Currency } from 'v2/components';
 import { TSymbol } from 'v2/types';
-import { translateRaw } from '../../../translations';
+import { translateRaw } from 'v2/translations';
 
 interface Props {
   amount: string;
