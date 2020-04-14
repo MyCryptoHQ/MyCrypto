@@ -11,15 +11,18 @@ import { AddressBookPanel, AddToAddressBook, GeneralSettings, DangerZone } from 
 import settingsIcon from 'common/assets/images/icn-settings.svg';
 import { IS_ACTIVE_FEATURE } from 'v2/config';
 
-const SettingsHeading = styled(Heading)`
+const SettingsHeading = styled(Heading)<{ forwardedAs?: string }>`
   display: flex;
   align-items: center;
-  margin-bottom: 22px;
-  color: #163150;
+  margin-bottom: 24px;
+  font-weight: bold;
+  margin-top: 0;
 `;
 
 const SettingsHeadingIcon = styled.img`
-  margin-right: 12px;
+  margin-right: 24px;
+  margin-top: 2px;
+  width: 30px;
 `;
 
 const StyledLayout = styled.div`
@@ -114,7 +117,7 @@ export default function Settings() {
         <>{currentTab}</>
       </Mobile>
       <Desktop>
-        <SettingsHeading>
+        <SettingsHeading as="h2">
           <SettingsHeadingIcon src={settingsIcon} alt="Settings" />
           {translate('SETTINGS_HEADING')}
         </SettingsHeading>
