@@ -1,5 +1,6 @@
 import React, { useState, useContext, useMemo, createContext, useEffect } from 'react';
 import * as R from 'ramda';
+import isEmpty from 'lodash/isEmpty';
 
 import {
   TAddress,
@@ -36,6 +37,7 @@ import {
   MembershipState
 } from 'v2/features/PurchaseMembership/config';
 import { DEFAULT_NETWORK } from 'v2/config';
+import { TUuid } from 'v2/types/uuid';
 
 import { getAccountsAssetsBalances, accountMembershipDetected } from './BalanceService';
 import { getStoreAccounts, getPendingTransactionsFromAccounts } from './helpers';
@@ -59,6 +61,7 @@ interface State {
   readonly membershipExpiration: number[];
   readonly currentAccounts: StoreAccount[];
   readonly userAssets: Asset[];
+  readonly accountRestore: { [name: string]: IAccount | undefined };
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
@@ -69,6 +72,7 @@ interface State {
   assetUUIDs(targetAssets?: StoreAsset[]): any[];
   scanTokens(asset?: ExtendedAsset): Promise<void[]>;
   deleteAccountFromCache(account: IAccount): void;
+  restoreDeletedAccount(accountId: TUuid): void;
   addAccount(
     networkId: NetworkId,
     address: string,
@@ -106,6 +110,10 @@ export const StoreProvider: React.FC = ({ children }) => {
     getContactByAddressAndNetworkId,
     updateAddressBooks: updateContact
   } = useContext(AddressBookContext);
+
+  const [accountRestore, setAccountRestore] = useState<{ [name: string]: IAccount | undefined }>(
+    {}
+  );
 
   const [pendingTransactions, setPendingTransactions] = useState([] as ITxReceipt[]);
   const [membershipExpiration, setMembershipExpiration] = useState([] as number[]);
@@ -266,6 +274,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     memberships,
     membershipExpiration,
     currentAccounts,
+    accountRestore,
     get userAssets() {
       const userAssets = state.accounts
         .filter((a: StoreAccount) => a.wallet !== WalletId.VIEW_ONLY)
@@ -299,10 +308,21 @@ export const StoreProvider: React.FC = ({ children }) => {
           .map(p => p.catch(e => console.debug(e)))
       ),
     deleteAccountFromCache: account => {
+      setAccountRestore(prevState => ({ ...prevState, [account.uuid]: account }));
       deleteAccount(account);
       updateSettingsAccounts(
         settings.dashboardAccounts.filter(dashboardUUID => dashboardUUID !== account.uuid)
       );
+    },
+    restoreDeletedAccount: accountId => {
+      const account = accountRestore[accountId];
+      if (isEmpty(account)) {
+        throw new Error('Unable to restore account! No account with id specified.');
+      }
+
+      const { uuid, ...restAccount } = account!;
+      createAccountWithID(restAccount, uuid);
+      setAccountRestore(prevState => ({ ...prevState, [uuid]: undefined }));
     },
     addAccount: (
       networkId: NetworkId,

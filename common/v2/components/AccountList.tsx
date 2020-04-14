@@ -1,6 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Button, Identicon } from '@mycrypto/ui';
+import isNumber from 'lodash/isNumber';
+import cloneDeep from 'lodash/cloneDeep';
 
 import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS, Fiats, WALLETS_CONFIG, IS_ACTIVE_FEATURE } from 'v2/config';
@@ -10,7 +12,8 @@ import {
   Network,
   RowDeleteOverlay,
   RouterLink,
-  EditableText
+  EditableText,
+  UndoDeleteOverlay
 } from 'v2/components';
 import { truncate } from 'v2/utils';
 import { BREAK_POINTS, COLORS, SPACING, breakpointToNumber } from 'v2/theme';
@@ -84,6 +87,7 @@ const PrivacyCheckBox = styled(Checkbox)`
 const SIdenticon = styled(Identicon)`
   img {
     height: 2em;
+    min-width: 2em;
   }
   margin-right: 0.8em;
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
@@ -186,9 +190,6 @@ interface AccountListProps {
   dashboard?: boolean;
 }
 
-export const screenIsMobileSized = (breakpoint: number): boolean =>
-  window.matchMedia(`(max-width: ${breakpoint}px)`).matches;
-
 export default function AccountList(props: AccountListProps) {
   const {
     accounts: displayAccounts,
@@ -199,10 +200,26 @@ export default function AccountList(props: AccountListProps) {
     privacyCheckboxEnabled = false,
     dashboard
   } = props;
-  const { deleteAccountFromCache } = useContext(StoreContext);
+  const { deleteAccountFromCache, restoreDeletedAccount, accountRestore } = useContext(
+    StoreContext
+  );
   const { updateAccount } = useContext(AccountContext);
-  const [deletingIndex, setDeletingIndex] = useState();
-  const overlayRows = [deletingIndex];
+  const [deletingIndex, setDeletingIndex] = useState<number | undefined>();
+  const [undoDeletingIndexes, setUndoDeletingIndexes] = useState<[number, TUuid][]>([]);
+  const overlayRows: [number[], [number, TUuid][]] = [
+    isNumber(deletingIndex) ? [deletingIndex] : [],
+    [...undoDeletingIndexes]
+  ];
+
+  const getDisplayAccounts = (): StoreAccount[] => {
+    const accountsTemp = cloneDeep(displayAccounts);
+    overlayRows[1]
+      .sort((a, b) => a[0] - b[0])
+      .forEach(index => {
+        accountsTemp.splice(index[0], 0, accountRestore[index[1]] as StoreAccount);
+      });
+    return accountsTemp.sort((a, b) => a.uuid.localeCompare(b.uuid));
+  };
 
   // Verify if AccountList is used in Dashboard to display Settings button
   const headingRight = dashboard ? translateRaw('SETTINGS_HEADING') : undefined;
@@ -237,9 +254,11 @@ export default function AccountList(props: AccountListProps) {
         <CollapsibleTable
           breakpoint={breakpointToNumber(BREAK_POINTS.SCREEN_XS)}
           {...buildAccountTable(
-            displayAccounts,
+            getDisplayAccounts(),
             deleteAccountFromCache,
             updateAccount,
+            setUndoDeletingIndexes,
+            restoreDeletedAccount,
             deletable,
             favoritable,
             copyable,
@@ -327,11 +346,13 @@ const buildAccountTable = (
   accounts: StoreAccount[],
   deleteAccount: (a: IAccount) => void,
   updateAccount: (u: TUuid, a: IAccount) => void,
+  setUndoDeletingIndexes: Dispatch<SetStateAction<[number, TUuid][]>>,
+  restoreDeletedAccount: (accountId: TUuid) => void,
   deletable?: boolean,
   favoritable?: boolean,
   copyable?: boolean,
   privacyCheckboxEnabled?: boolean,
-  overlayRows?: number[],
+  overlayRows?: [number[], [number, TUuid][]],
   setDeletingIndex?: any
 ) => {
   const [sortingState, setSortingState] = useState(initialSortingState);
@@ -340,8 +361,12 @@ const buildAccountTable = (
   const { settings } = useContext(SettingsContext);
   const { addressBook, updateAddressBooks, createAddressBooks } = useContext(AddressBookContext);
   const { toggleAccountPrivacy } = useContext(AccountContext);
+  const overlayRowsFlat = [...overlayRows![0], ...overlayRows![1].map(row => row[0])];
 
   const updateSortingState = (id: IColumnValues) => {
+    // In case overlay active, disable changing sorting state
+    if (overlayRowsFlat.length) return;
+
     const currentBtnState = sortingState.sortState[id];
     if (currentBtnState.indexOf('-reverse') > -1) {
       const newActiveSort = currentBtnState.split('-reverse')[0] as ISortTypes;
@@ -365,7 +390,7 @@ const buildAccountTable = (
   };
 
   const getColumnSortDirection = (id: IColumnValues): boolean =>
-    sortingState.sortState[id].indexOf('-reverse') > -1 ? true : false;
+    sortingState.sortState[id].indexOf('-reverse') > -1;
 
   const convertColumnToClickable = (id: IColumnValues) => (
     <div onClick={() => updateSortingState(id)}>
@@ -425,27 +450,64 @@ const buildAccountTable = (
       return columnList;
     }
   };
+
   return {
     head: getColumns(columns, deletable || false, privacyCheckboxEnabled || false),
-    overlay:
-      overlayRows && overlayRows[0] !== undefined ? (
-        <RowDeleteOverlay
-          prompt={`Are you sure you want to delete
-              ${
-                getLabelByAccount(getFullTableData[overlayRows[0]].account, addressBook)
-                  ? getLabelByAccount(getFullTableData[overlayRows[0]].account, addressBook)!.label
-                  : ''
-              } account with address: ${getFullTableData[overlayRows[0]].account.address} ?`}
-          deleteAction={() => {
-            deleteAccount(getFullTableData[overlayRows[0]].account);
-            setDeletingIndex(undefined);
-          }}
-          cancelAction={() => setDeletingIndex(undefined)}
-        />
-      ) : (
-        <></>
-      ),
-    overlayRows,
+    overlay: (rowIndex: number): JSX.Element => {
+      const label = (l?: { label: string }) => (l ? l.label : translateRaw('NO_LABEL'));
+
+      if (overlayRows && overlayRows[0].length && overlayRows[0][0] === rowIndex) {
+        // Row delete overlay
+        const addressBookRecord = getLabelByAccount(
+          getFullTableData[rowIndex].account,
+          addressBook
+        )!;
+        const { account } = getFullTableData[rowIndex];
+        const { uuid, address } = account;
+        return (
+          <RowDeleteOverlay
+            prompt={translateRaw('ACCOUNT_LIST_DELETE_OVERLAY_TEXT', {
+              $label: label(addressBookRecord),
+              $address: truncate(address)
+            })}
+            deleteAction={() => {
+              setDeletingIndex(undefined);
+              setUndoDeletingIndexes(prev => [...prev, [rowIndex, uuid]]);
+              deleteAccount(account);
+            }}
+            cancelAction={() => setDeletingIndex(undefined)}
+          />
+        );
+      } else if (
+        overlayRows &&
+        overlayRows[1].length &&
+        overlayRows[1].map(row => row[0]).includes(rowIndex)
+      ) {
+        // Undo delete overlay
+        const addressBookRecord = getLabelByAccount(
+          getFullTableData[rowIndex].account,
+          addressBook
+        )!;
+        const {
+          account: { uuid, address }
+        } = getFullTableData[rowIndex];
+        return (
+          <UndoDeleteOverlay
+            address={address}
+            overlayText={translateRaw('ACCOUNT_LIST_UNDO_DELETE_OVERLAY_TEXT', {
+              $label: label(addressBookRecord),
+              $address: truncate(address)
+            })}
+            restoreAccount={() => {
+              restoreDeletedAccount(uuid);
+              setUndoDeletingIndexes(prev => prev.filter(i => i[0] !== rowIndex));
+            }}
+          />
+        );
+      }
+      return <></>;
+    },
+    overlayRows: overlayRowsFlat,
     body: getFullTableData.map(({ account, index, label, total, addressCard }) => {
       let bodyContent = [
         <Label key={index}>

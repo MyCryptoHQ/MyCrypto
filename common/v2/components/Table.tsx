@@ -14,6 +14,7 @@ import React, {
 import styled, { StyledComponentClass } from 'styled-components';
 import { Theme } from '@mycrypto/ui';
 import * as R from 'ramda';
+import isFunction from 'lodash/isFunction';
 
 import { noOp } from 'v2/utils';
 
@@ -234,7 +235,7 @@ class AbstractTable extends Component<Props, State> {
             <TableRow key={rowIndex} onClick={() => this.handleRowClicked(rowIndex)}>
               {overlay && overlayRows!.includes(rowIndex) ? (
                 // TODO: Solve jump in th width when the overlay is toggled.
-                <td colSpan={head.length}>{overlay}</td>
+                <td colSpan={head.length}>{isFunction(overlay) ? overlay(rowIndex) : overlay}</td>
               ) : (
                 row.map((cell, cellIndex) => (
                   <TableCell

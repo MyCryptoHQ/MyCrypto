@@ -75,3 +75,4 @@ export {
   SpacedPanelSection,
   RowPanelSection
 } from './FullSizeContentPanel';
+export { default as UndoDeleteOverlay } from './UndoDeleteOverlay';
