@@ -104,11 +104,14 @@ const updateTranslations = (translated: { [name: string]: string }) => {
   translationFilePaths.forEach((translationFilePath: string) => {
     const translationFileJson = JSON.parse(fs.readFileSync(translationFilePath));
 
-    Object.assign(translated, translationFileJson.data);
-    translationFileJson.data = Object.keys(translated)
+    const translationJson = {
+      ...translated,
+      ...translationFileJson.data
+    };
+    translationFileJson.data = Object.keys(translationJson)
       .map(k => replaceApostrophe(k))
       .sort()
-      .reduce((acc, key) => ({ ...acc, [key]: translated[key] || '' }), {});
+      .reduce((acc, key) => ({ ...acc, [key]: translationJson[key] || '' }), {});
 
     fs.writeFileSync(translationFilePath, JSON.stringify(translationFileJson, null, '\t'));
     console.log(`File ${path.basename(translationFilePath)} updated`);
