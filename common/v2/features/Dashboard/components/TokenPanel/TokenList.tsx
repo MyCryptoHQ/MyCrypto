@@ -90,6 +90,7 @@ export function TokenList(props: TokenListProps) {
     setShowAddToken,
     handleScanTokens
   } = props;
+  const sortedTokens = tokens.sort((a, b) => a.name.localeCompare(b.name));
   return (
     <TokenDashboardPanel
       heading={
@@ -115,7 +116,7 @@ export function TokenList(props: TokenListProps) {
         </SpinnerWrapper>
       ) : (
         <TokenListWrapper>
-          {tokens.map(token => (
+          {sortedTokens.map(token => (
             <Token key={token.uuid}>
               <Asset>
                 <AssetIcon symbol={token.ticker as TSymbol} size={'26px'} />
