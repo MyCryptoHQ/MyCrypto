@@ -43,6 +43,11 @@ export const donationAddressMap = {
     '4GdoN7NCTi8a5gZug7PrwZNKjvHFmKeV11L6pNJPgj5QNEHsN6eeX3DaAQFwZ1ufD4LYCZKArktt113W7QjWvQ7CW7F7tDFvS511SNfZV7'
 };
 
+export const PROTECTED_TX_FEE_ADDRESS = '0xe9c593dc6FaDC38401896C21987E2976f0AF6914';
+export const PROTECTED_TX_FIXED_FEE_AMOUNT = 0.5; // Fixed half dollar fee
+export const PROTECTED_TX_FEE_PERCENTAGE = 0.001; // 1 / 1000 percentage
+export const PROTECTED_TX_MIN_AMOUNT = 5; // 5 dollars minimum fee
+
 export const gasEstimateCacheTime = 60000;
 
 export const MINIMUM_PASSWORD_LENGTH = 12;
@@ -50,12 +55,6 @@ export const MINIMUM_PASSWORD_LENGTH = 12;
 export const SUPPORT_EMAIL = 'support@mycrypto.com';
 export const LATEST_NEWS_URL = 'https://medium.com/@mycrypto';
 export const CRYPTOSCAMDB = 'https://cryptoscamdb.org';
-export const KNOWLEDGE_BASE_URL = 'https://support.mycrypto.com';
-export const HOW_TO_BUY_CRYPTO_URL =
-  'https://support.mycrypto.com/how-to/getting-started/how-to-buy-ether-with-usd';
-export const DONT_LOSE_CRYPTO_URL =
-  'https://support.mycrypto.com/staying-safe/protecting-yourself-and-your-funds';
-export const STAYING_SAFE_URL = 'https://support.mycrypto.com/staying-safe';
 export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/1985?path=/products/';
 export const trezorReferralURL = 'https://shop.trezor.io/?offer_id=10&aff_id=1735';
 // TODO - Update url
@@ -74,6 +73,11 @@ export const steelyReferralURL = 'https://stee.ly/2Hcl4RE';
 export const DEXAG_MYC_TRADE_CONTRACT = '0x3d7b19C37d422B43c07C7Ba6353ED2D1689540FD'; //'0xA65440C4CC83D70b44cF244a0da5373acA16a9cb';
 export const DEXAG_MYC_HANDLER_CONTRACT = '0xae0A30ac8C76d85f1E76A3EbDcEdc3047e0da456';
 export const DEX_BASE_URL = 'https://api-v2.dex.ag/';
+
+export const MOONPAY_PUBLIC_API_KEY = 'pk_live_Fi1kufUL8EflbE49vbZRKa71S2a4Y1D';
+export const MOONPAY_API_QUERYSTRING = `?apiKey=${MOONPAY_PUBLIC_API_KEY}&colorCode=%23163150`;
+export const BUY_MYCRYPTO_WEBSITE = 'https://buy.mycrypto.com';
+export const MOONPAY_SIGNER_API = 'https://moonpay.mycryptoapi.com/sign';
 
 export enum Theme {
   DARK = 'dark',

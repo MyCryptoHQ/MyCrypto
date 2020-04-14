@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { ConfirmTransaction as ConfirmTransactionForm } from 'v2/components/TransactionFlow';
 import { ITxConfig } from 'v2/types';
+import { ConfirmTransaction } from 'v2/components';
 
 interface Props {
   txConfig: ITxConfig;
@@ -12,7 +12,7 @@ export default function InteractionConfirm(props: Props) {
   const { goToNextStep, txConfig } = props;
 
   return (
-    <ConfirmTransactionForm
+    <ConfirmTransaction
       onComplete={goToNextStep}
       resetFlow={goToNextStep}
       txConfig={txConfig}

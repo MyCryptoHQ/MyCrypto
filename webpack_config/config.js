@@ -22,7 +22,8 @@ module.exports = {
   url: 'https://mycrypto.com/',
   type: 'website',
   // img < 5MB
-  img: path.join(paths.assets, 'images/link-preview.png'),
+  // image needs to be an absolute URL
+  img: 'https://beta.mycrypto.com/link-preview.png',
   twitter: {
     creator: '@MyCrypto'
   },

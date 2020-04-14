@@ -73,7 +73,7 @@ export const sendTx = (
       payload: { txHash: walletResponse }
     });
     waitForConfirmation(dispatch, getState)(walletResponse);
-  } else if (isTxSigned(walletResponse)) {
+  } else if (isTxHash(walletResponse) || isTxSigned(walletResponse)) {
     const provider = new ProviderHandler(account!.network);
     provider
       .sendRawTx(walletResponse)

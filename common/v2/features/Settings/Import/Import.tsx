@@ -39,7 +39,7 @@ export class Import extends React.Component<RouteComponentProps<{}>> {
     const Step = steps[step].component;
     return (
       <ContentPanel
-        width="35rem"
+        width={560}
         onBack={onBack}
         heading={steps[step].heading}
         stepper={{

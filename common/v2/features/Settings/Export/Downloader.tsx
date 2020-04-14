@@ -21,7 +21,7 @@ const Downloader = (props: DownloaderProps) => {
   };
 
   return (
-    <Link fullwidth={true} href={blob} download={fileName} onClick={handleDownload}>
+    <Link fullWidth={true} href={blob} download={fileName} onClick={handleDownload}>
       <Button color={COLORS.WHITE} fullwidth={true}>
         {translate('SETTINGS_EXPORT_DOWNLOAD')}
       </Button>

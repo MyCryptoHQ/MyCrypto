@@ -135,7 +135,7 @@ const AddAccountFlow = withRouter(({ history, match }) => {
     return (
       <ExtendedContentPanel
         onBack={goToPreviousStep}
-        stepper={{ current: step + 1, total: steps.length }}
+        stepper={steps.length > 1 ? { current: step + 1, total: steps.length } : undefined}
         width="800px"
       >
         <TransitionGroup>

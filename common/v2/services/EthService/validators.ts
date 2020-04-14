@@ -219,7 +219,7 @@ export const isTransactionFeeHigh = (
   gasLimit: string,
   gasPrice: string
 ) => {
-  const validInputRegex = /^[0-9]+(.[0-9])?[0-9]*$/;
+  const validInputRegex = /^[0-9]+(\.[0-9])?[0-9]*$/;
   if (
     !amount.match(validInputRegex) ||
     !gasLimit.match(validInputRegex) ||

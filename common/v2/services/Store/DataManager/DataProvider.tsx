@@ -42,6 +42,8 @@ export type IDataContext = DataCacheManager & EncryptedStorage;
 
 export const DataContext = createContext({} as IDataContext);
 
+const isSafari = () => /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
 export const DataProvider: React.FC = ({ children }) => {
   /*
    *  Create the our master store, sync with persistance layer,
@@ -95,6 +97,14 @@ export const DataProvider: React.FC = ({ children }) => {
   // https://developers.google.com/web/updates/2018/07/page-lifecycle-api
   useEvent('visibilitychange', () => {
     if (document.hidden) {
+      syncDb(appState);
+    }
+  });
+
+  // Workaround, since Safari does not trigger 'visibilitychange' event on page reload
+  // Meaning all changes are lost, if db wasn't synced in 30sec window
+  useEvent('beforeunload', () => {
+    if (isSafari()) {
       syncDb(appState);
     }
   });

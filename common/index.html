@@ -15,9 +15,12 @@
     <meta property="og:description" content="<%= htmlWebpackPlugin.options.appDescription %>" />
     <meta property="og:site_name" content="<%= htmlWebpackPlugin.options.title %>" />
     <meta property="og:type" content="<%= htmlWebpackPlugin.options.type %>" />
-    <meta property="og:image" content="/common/assets/images/link-preview.png" />
+    <meta property="og:image" content="<%= htmlWebpackPlugin.options.image %>" />
+    <meta name="twitter:title" content="<%= htmlWebpackPlugin.options.title %>" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="<%= htmlWebpackPlugin.options.twitter.site %>" />
     <meta name="twitter:creator" content="<%= htmlWebpackPlugin.options.twitter.creator %>" />
+    <meta name="twitter:image" content="<%= htmlWebpackPlugin.options.image %>" />
     <meta name="google-site-verification" content="dRWkvANAUNAhNyMnTyc7M7S3lnucotMY8j8R-gsZhbo" />
     <link rel="manifest" href="/manifest.json" />
   </head>

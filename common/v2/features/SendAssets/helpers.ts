@@ -56,7 +56,7 @@ const createERC20TxObject = (formData: IFormikFields): IHexStrTransaction => {
 };
 
 export const isERC20Tx = (asset: Asset): boolean => {
-  return asset.type === 'erc20' && asset.contractAddress && asset.decimal ? true : false;
+  return !!(asset.type === 'erc20' && asset.contractAddress && asset.decimal);
 };
 
 export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction | ITxObject => {

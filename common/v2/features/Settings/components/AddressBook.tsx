@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Icon, Identicon, Button } from '@mycrypto/ui';
+import isNumber from 'lodash/isNumber';
+import cloneDeep from 'lodash/cloneDeep';
 
 import {
   DashboardPanel,
@@ -9,18 +11,21 @@ import {
   Network,
   EthAddress,
   EditableText,
-  Tooltip
+  Tooltip,
+  UndoDeleteOverlay
 } from 'v2/components';
-import { ExtendedAddressBook, AddressBook as IAddressBook } from 'v2/types';
+import { ExtendedAddressBook, AddressBook as IAddressBook, TUuid } from 'v2/types';
 import { truncate } from 'v2/utils';
 import { COLORS, SPACING, BREAK_POINTS } from 'v2/theme';
 import { translateRaw } from 'v2/translations';
 
 interface Props {
   addressBook: ExtendedAddressBook[];
+  addressBookRestore: { [name: string]: ExtendedAddressBook | undefined };
   toggleFlipped(): void;
   deleteAddressBooks(uuid: string): void;
   updateAddressBooks(uuid: string, addressBooksData: IAddressBook): void;
+  restoreDeletedAddressBook(addressBookId: TUuid): void;
 }
 
 const DeleteButton = styled(Button)`
@@ -69,37 +74,78 @@ const SEditableText = styled(EditableText)`
   }
 `;
 
-export const screenIsMobileSized = (breakpoint: number): boolean =>
-  window.matchMedia(`(max-width: ${breakpoint}px)`).matches;
-
 export default function AddressBook({
   addressBook,
+  addressBookRestore,
   toggleFlipped,
   deleteAddressBooks,
-  updateAddressBooks
+  updateAddressBooks,
+  restoreDeletedAddressBook
 }: Props) {
   const [deletingIndex, setDeletingIndex] = useState();
+  const [undoDeletingIndexes, setUndoDeletingIndexes] = useState<[number, TUuid][]>([]);
+  const overlayRows: [number[], [number, TUuid][]] = [
+    isNumber(deletingIndex) ? [deletingIndex] : [],
+    [...undoDeletingIndexes]
+  ];
+  const overlayRowsFlat = [...overlayRows[0], ...overlayRows[1].map(row => row[0])];
 
-  const overlayRows = [deletingIndex];
+  const getDisplayAddressBook = (): ExtendedAddressBook[] => {
+    const accountsTemp = cloneDeep(addressBook);
+    overlayRows[1]
+      .sort((a, b) => a[0] - b[0])
+      .forEach(index => {
+        accountsTemp.splice(index[0], 0, addressBookRestore[index[1]] as ExtendedAddressBook);
+      });
+    return accountsTemp.sort((a, b) => a.uuid.localeCompare(b.uuid));
+  };
+  const displayAddressBook = getDisplayAddressBook();
 
   const addressBookTable = {
     head: ['Favorite', 'Label', 'Address', 'Network', 'Notes', 'Delete'],
-    overlay:
-      overlayRows && overlayRows[0] !== undefined ? (
-        <RowDeleteOverlay
-          prompt={`Are you sure you want to delete ${addressBook[overlayRows[0]].label} address with
-             address: ${truncate(addressBook[overlayRows[0]].address)}?`}
-          deleteAction={() => {
-            deleteAddressBooks(addressBook[overlayRows[0]].uuid);
-            setDeletingIndex(undefined);
-          }}
-          cancelAction={() => setDeletingIndex(undefined)}
-        />
-      ) : (
-        <></>
-      ),
-    overlayRows,
-    body: addressBook.map(
+    overlay: (rowIndex: number): JSX.Element => {
+      if (!overlayRows) return <></>;
+
+      if (overlayRows[0].length && overlayRows[0][0] === rowIndex) {
+        // Row delete overlay
+        const { uuid, label, address } = displayAddressBook[rowIndex];
+        return (
+          <RowDeleteOverlay
+            prompt={translateRaw('ADDRESS_BOOK_DELETE_OVERLAY_TEXT', {
+              $label: label,
+              $address: truncate(address)
+            })}
+            deleteAction={() => {
+              setDeletingIndex(undefined);
+              setUndoDeletingIndexes(prev => [...prev, [rowIndex, uuid]]);
+              deleteAddressBooks(uuid);
+            }}
+            cancelAction={() => setDeletingIndex(undefined)}
+          />
+        );
+      } else if (overlayRows[1].length && overlayRows[1].map(row => row[0]).includes(rowIndex)) {
+        // Undo delete overlay
+        const { uuid, label, address } = displayAddressBook[rowIndex];
+
+        return (
+          <UndoDeleteOverlay
+            address={address}
+            overlayText={translateRaw('ADDRESS_BOOK_UNDO_DELETE_OVERLAY_TEXT', {
+              $label: label,
+              $address: truncate(address)
+            })}
+            restoreAccount={() => {
+              restoreDeletedAddressBook(uuid);
+              setUndoDeletingIndexes(prev => prev.filter(i => i[0] !== rowIndex));
+            }}
+          />
+        );
+      }
+
+      return <></>;
+    },
+    overlayRows: overlayRowsFlat,
+    body: displayAddressBook.map(
       ({ uuid, address, label, network, notes }: ExtendedAddressBook, index) => [
         <Icon key={0} icon="star" />,
         <Label key={1}>
@@ -125,7 +171,7 @@ export default function AddressBook({
     ),
     config: {
       primaryColumn: 'Label',
-      sortableColumn: 'Label',
+      sortableColumn: overlayRowsFlat.length ? '' : 'Label',
       sortFunction: (a: any, b: any) => {
         const aLabel = a.props.label;
         const bLabel = b.props.label;

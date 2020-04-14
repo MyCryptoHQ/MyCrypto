@@ -1,26 +1,28 @@
 import React, { useState, useContext } from 'react';
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
-import translate from 'v2/translations';
 
-import { IS_MOBILE } from 'v2/utils';
-import { BREAK_POINTS, MIN_CONTENT_PADDING } from 'v2/theme';
+import { BREAK_POINTS, MIN_CONTENT_PADDING, SPACING } from 'v2/theme';
 import { AddressBookContext, SettingsContext, StoreContext } from 'v2/services/Store';
-import { AccountList, FlippablePanel, TabsNav } from 'v2/components';
+import { AccountList, FlippablePanel, TabsNav, Desktop, Mobile } from 'v2/components';
+import translate from 'v2/translations';
+import { IS_ACTIVE_FEATURE } from 'v2/config';
 import { AddressBookPanel, AddToAddressBook, GeneralSettings, DangerZone } from './components';
 
 import settingsIcon from 'common/assets/images/icn-settings.svg';
-import { IS_ACTIVE_FEATURE } from 'v2/config';
 
-const SettingsHeading = styled(Heading)`
+const SettingsHeading = styled(Heading)<{ forwardedAs?: string }>`
   display: flex;
   align-items: center;
-  margin-bottom: 22px;
-  color: #163150;
+  margin-bottom: 24px;
+  font-weight: bold;
+  margin-top: 0;
 `;
 
 const SettingsHeadingIcon = styled.img`
-  margin-right: 12px;
+  margin-right: 24px;
+  margin-top: 2px;
+  width: 30px;
 `;
 
 const StyledLayout = styled.div`
@@ -31,17 +33,13 @@ const StyledLayout = styled.div`
   .Layout-content {
     padding: 0;
   }
-  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    .Layout-content {
-      margin-top: ${IS_MOBILE && '73px'};
-    }
-  }
 `;
 
 const SettingsTabs = styled(TabsNav)`
-  margin-top: -44px;
+  /* Override the Layout margin */
   margin-left: -${MIN_CONTENT_PADDING};
   margin-right: -${MIN_CONTENT_PADDING};
+  margin-bottom: ${SPACING.BASE};
 `;
 
 function renderAccountPanel() {
@@ -57,9 +55,15 @@ function renderAccountPanel() {
 }
 
 function renderAddressPanel() {
-  const { createAddressBooks, addressBook, deleteAddressBooks, updateAddressBooks } = useContext(
-    AddressBookContext
-  );
+  const {
+    createAddressBooks,
+    addressBook,
+    addressBookRestore,
+    deleteAddressBooks,
+    updateAddressBooks,
+    restoreDeletedAddressBook
+  } = useContext(AddressBookContext);
+
   return (
     <FlippablePanel>
       {({ flipped, toggleFlipped }) =>
@@ -71,6 +75,8 @@ function renderAddressPanel() {
             toggleFlipped={toggleFlipped}
             updateAddressBooks={updateAddressBooks}
             deleteAddressBooks={deleteAddressBooks}
+            restoreDeletedAddressBook={restoreDeletedAddressBook}
+            addressBookRestore={addressBookRestore}
           />
         )
       }
@@ -92,7 +98,8 @@ interface TabOptions {
   [key: string]: React.ReactNode;
 }
 
-function renderMobile() {
+export default function Settings() {
+  // In Mobile view we display a tab instead
   const [tab, setTab] = useState('accounts');
   const tabOptions: TabOptions = {
     ['accounts']: renderAccountPanel(),
@@ -100,39 +107,32 @@ function renderMobile() {
     ['general']: renderGeneralSettingsPanel()
   };
   const currentTab = tabOptions[tab];
-  return (
-    <>
-      <SettingsTabs>
-        <a href="#" onClick={() => setTab('accounts')}>
-          Accounts
-        </a>
-        <a href="#" onClick={() => setTab('addresses')}>
-          Addresses
-        </a>
-        <a href="#" onClick={() => setTab('general')}>
-          General
-        </a>
-      </SettingsTabs>
-      <>{currentTab}</>
-    </>
-  );
-}
 
-function renderDesktop() {
   return (
-    <>
-      <SettingsHeading>
-        <SettingsHeadingIcon src={settingsIcon} alt="Settings" />
-        {translate('SETTINGS_HEADING')}
-      </SettingsHeading>
-      {renderAccountPanel()}
-      {renderAddressPanel()}
-      {renderGeneralSettingsPanel()}
-    </>
+    <StyledLayout>
+      <Mobile>
+        <SettingsTabs>
+          <a href="#" onClick={() => setTab('accounts')}>
+            Accounts
+          </a>
+          <a href="#" onClick={() => setTab('addresses')}>
+            Addresses
+          </a>
+          <a href="#" onClick={() => setTab('general')}>
+            General
+          </a>
+        </SettingsTabs>
+        <>{currentTab}</>
+      </Mobile>
+      <Desktop>
+        <SettingsHeading as="h2">
+          <SettingsHeadingIcon src={settingsIcon} alt="Settings" />
+          {translate('SETTINGS_HEADING')}
+        </SettingsHeading>
+        {renderAccountPanel()}
+        {renderAddressPanel()}
+        {renderGeneralSettingsPanel()}
+      </Desktop>
+    </StyledLayout>
   );
-}
-
-// @TODO: Use { Desktop, Mobile } components instead
-export default function Settings() {
-  return <StyledLayout>{IS_MOBILE ? renderMobile() : renderDesktop()}</StyledLayout>;
 }

@@ -82,14 +82,6 @@ export const fAssets = [
     networkId: 'TOMO',
     type: 'base',
     decimal: 18
-  },
-  {
-    uuid: 'c66c6517-5fec-5310-bb3b-587be9b5b230',
-    ticker: 'ELLA',
-    name: 'Ellaism',
-    networkId: 'ELLA',
-    type: 'base',
-    decimal: 18
   }
 ] as ExtendedAsset[];
 

@@ -143,9 +143,9 @@ const WalletCardContent = styled.div<WalletCardContentProps>`
 
 const WalletCardImg = styled.img`
   width: auto;
-  max-width: 53px;
+  max-height: 53px;
   height: 53px;
-  display: inline;
+  display: block;
 `;
 
 const WalletCardDescription = styled.p`

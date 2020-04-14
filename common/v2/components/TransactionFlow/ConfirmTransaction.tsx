@@ -6,12 +6,11 @@ import { AddressBookContext, StoreContext } from 'v2/services/Store';
 import { Amount, AssetIcon, Button } from 'v2/components';
 import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from 'v2/services/EthService';
 import { RatesContext } from 'v2/services/RatesProvider';
-import { IStepComponentProps, ExtendedAddressBook, ITxType } from 'v2/types';
-import { BREAK_POINTS, SPACING, COLORS } from 'v2/theme';
 import { convertToFiat } from 'v2/utils';
 import translate, { translateRaw } from 'v2/translations';
 import { TSymbol } from 'v2/types/symbols';
 import { ZapSelectedBanner, DeFiZapLogo } from 'v2/features/DeFiZap';
+import { BREAK_POINTS, SPACING, COLORS } from 'v2/theme';
 import { MembershipSelectedBanner } from 'v2/features/PurchaseMembership';
 
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
@@ -23,6 +22,7 @@ import { ISender } from './types';
 import feeIcon from 'common/assets/images/icn-fee.svg';
 import sendIcon from 'common/assets/images/icn-send.svg';
 import walletIcon from 'common/assets/images/icn-wallet.svg';
+import { IStepComponentProps, ITxType, ExtendedAddressBook } from 'v2/types';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
@@ -91,14 +91,19 @@ const DeFiDisclaimerWrapper = Styled.p`
   margin-bottom: ${SPACING.MD};
 `;
 
+interface Props extends IStepComponentProps {
+  protectTxButton?(): JSX.Element;
+}
+
 export default function ConfirmTransaction({
   txType = ITxType.STANDARD,
   membershipSelected,
   zapSelected,
   txConfig,
   onComplete,
-  signedTx
-}: IStepComponentProps) {
+  signedTx,
+  protectTxButton
+}: Props) {
   const { asset, baseAsset, receiverAddress, network, from } = txConfig;
 
   const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
@@ -126,6 +131,7 @@ export default function ConfirmTransaction({
       recipientContact={recipientContact}
       onComplete={onComplete}
       signedTx={signedTx}
+      protectTxButton={protectTxButton}
     />
   );
 }
@@ -136,6 +142,7 @@ interface DataProps {
   recipientContact?: ExtendedAddressBook;
   senderContact?: ExtendedAddressBook;
   sender: ISender;
+  protectTxButton?(): JSX.Element;
 }
 
 export const ConfirmTransactionUI = ({
@@ -149,7 +156,8 @@ export const ConfirmTransactionUI = ({
   txType,
   txConfig,
   onComplete,
-  signedTx
+  signedTx,
+  protectTxButton
 }: Omit<IStepComponentProps, 'resetFlow'> & DataProps) => {
   const {
     asset,
@@ -305,6 +313,7 @@ export const ConfirmTransactionUI = ({
           <DeFiZapLogo />
         </DeFiZapLogoContainer>
       )}
+      {protectTxButton && protectTxButton()}
     </ConfirmTransactionWrapper>
   );
 };

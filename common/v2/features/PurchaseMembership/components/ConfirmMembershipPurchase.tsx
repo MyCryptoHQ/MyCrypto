@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ConfirmTransaction as ConfirmTransactionForm } from 'v2/components/TransactionFlow';
+import { ConfirmTransaction } from 'v2/components';
 import { ITxType, TxParcel, StoreAccount } from 'v2/types';
 import { IMembershipConfig } from '../config';
 import { makeTxConfigFromTransaction } from '../helpers';
@@ -23,7 +23,7 @@ export default function ConfirmMembershipPurchase(props: Props) {
   const txConfig = txConfigs[currentTxIdx];
 
   return (
-    <ConfirmTransactionForm
+    <ConfirmTransaction
       onComplete={onComplete}
       resetFlow={onComplete}
       txConfig={txConfig}

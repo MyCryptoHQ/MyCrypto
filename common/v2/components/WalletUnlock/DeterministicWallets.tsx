@@ -1,12 +1,20 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import Select, { Option } from 'react-select';
-import { Table, Button } from '@mycrypto/ui';
+import { OptionComponentProps } from 'react-select';
 import BN from 'bn.js';
 
 import translate, { translateRaw } from 'v2/translations';
-import { Input, Spinner } from 'v2/components';
-
+import {
+  Input,
+  Spinner,
+  Account,
+  LinkOut,
+  Typography,
+  Dropdown,
+  NewTabLink,
+  Button,
+  InlineMessage
+} from 'v2/components';
 import { truncate } from 'v2/utils';
 import { Network } from 'v2/types';
 import {
@@ -17,23 +25,160 @@ import {
   fromWei
 } from 'v2/services';
 import { AssetContext } from 'v2/services/Store';
-import nextIcon from 'assets/images/next-page-button.svg';
-import prevIcon from 'assets/images/previous-page-button.svg';
-import radio from 'assets/images/radio.svg';
-import radioChecked from 'assets/images/radio-checked.svg';
-
-import './DeterministicWallets.scss';
+import { HELP_ARTICLE } from 'v2/config';
 import { DeterministicWalletData, getDeterministicWallets } from 'v2/services/WalletService';
 import { getBaseAssetBalances, BalanceMap } from 'v2/services/Store/BalanceService';
-import Account from '../Account';
+import { COLORS, monospace, SPACING, FONT_SIZE, BREAK_POINTS } from 'v2/theme';
+
+import { Table } from '../Table';
+
+import nextIcon from 'assets/images/next-page-button.svg';
+import prevIcon from 'assets/images/previous-page-button.svg';
+import questionSVG from 'assets/images/icn-question.svg';
+
+const { GREY_LIGHTEST, BLUE_LIGHTEST, GREY_DARK } = COLORS;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  position: relative;
+  width: 100%;
+  margin-bottom: 35px;
+  flex-wrap: wrap;
+
+  > div {
+    margin-top: ${SPACING.BASE};
+  }
+
+  @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    flex-direction: column;
+
+    > :last-child {
+      margin-top: ${SPACING.BASE};
+    }
+  }
+`;
+
+const Title = styled.div`
+  font-size: 32px;
+  font-weight: bold;
+`;
+
+const SDropdown = styled.div`
+  width: 365px;
+
+  @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    width: 100%;
+  }
+`;
+
+const DropdownDPath = styled.span`
+  padding-left: ${SPACING.XS};
+  opacity: 0.5;
+  font-size: 11px;
+  font-family: ${monospace};
+`;
+
+const SContainer = styled('div')`
+  display: flex;
+  flex-direction: row;
+  padding: 12px;
+`;
+
+const CustomDPath = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: ${SPACING.SM};
+`;
+
+const InputGroup = styled.div`
+  display: flex;
+`;
+
+const InputField = styled(Input)`
+  margin-bottom: 0px;
+  margin-right: 2px;
+  max-width: 285px;
+
+  @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    max-width: 100%;
+  }
+`;
+
+const DWTable = styled(Table)<{ selected: number; page: number; disabled: boolean }>`
+  ${({ disabled }) =>
+    disabled &&
+    `opacity: 0.5;
+  pointer-events: none;`};
+
+  tbody {
+    tr {
+      cursor: pointer;
+
+      /* Highlight selected row */
+      ${({ selected, page }) =>
+        Math.trunc(selected / WALLETS_PER_PAGE) === page &&
+        `:nth-child(${(selected % WALLETS_PER_PAGE) + 1}) {
+      background: ${BLUE_LIGHTEST};
+    }`};
+
+      /* On hover don't highlight selected row */
+      :not(:nth-child(${({ selected, page }) =>
+              Math.trunc(selected / WALLETS_PER_PAGE) === page
+                ? (selected % WALLETS_PER_PAGE) + 1
+                : 0}))
+        :hover {
+        background-color: ${GREY_LIGHTEST};
+      }
+    }
+  }
+`;
+
+const Bottom = styled.div`
+  display: flex;
+  margin-top: ${SPACING.BASE};
+  margin-bottom: ${SPACING.BASE};
+  justify-content: space-between;
+  align-items: center;
+
+  @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    flex-direction: column;
+
+    > :first-child {
+      margin-bottom: ${SPACING.BASE};
+    }
+  }
+`;
+
+const Nav = styled.div<{ disabled: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: ${GREY_DARK};
+  font-size: ${FONT_SIZE.XS};
+  width: 195px;
+  ${({ disabled }) =>
+    disabled &&
+    `opacity: 0.5;
+  pointer-events: none;`};
+
+  > img {
+    cursor: pointer;
+  }
+`;
+
+const ButtonsGroup = styled.div`
+  display: flex;
+`;
+
+const CancelButton = styled(Button)`
+  margin-right: ${SPACING.BASE};
+`;
 
 const FooterLink = styled.div`
   text-align: center;
 `;
-
-function Radio({ checked }: { checked: boolean }) {
-  return <img className="clickable radio-image" src={checked ? radioChecked : radio} />;
-}
 
 const WALLETS_PER_PAGE = 5;
 
@@ -55,9 +200,10 @@ interface DispatchProps {
 type Props = OwnProps & DispatchProps;
 
 const customDPath: DPath = {
-  label: 'custom',
-  value: 'custom'
+  label: translateRaw('X_CUSTOM'),
+  value: ''
 };
+
 export function DeterministicWalletsClass({
   network,
   dPath,
@@ -70,8 +216,8 @@ export function DeterministicWalletsClass({
   onPathChange
 }: Props) {
   const [selectedAddress, setSelectedAddress] = useState('');
-  const [selectedAddressIndex, setSelectedAddressIndex] = useState(0);
-  const [reqestingBalanceCheck, setReqestingBalanceCheck] = useState(false);
+  const [selectedAddressIndex, setSelectedAddressIndex] = useState(-1);
+  const [requestingBalanceCheck, setRequestingBalanceCheck] = useState(false);
   const [requestingWallets, setRequestingWallets] = useState(false);
   const [customPath, setCustomPath] = useState('');
   const [currentDPath, setCurrentDPath] = useState(dPath);
@@ -90,17 +236,17 @@ export function DeterministicWalletsClass({
       chainCode,
       seed
     });
-    return () => setReqestingBalanceCheck(true);
+    return () => setRequestingBalanceCheck(true);
   }, [page, currentDPath]);
 
   /* Used to update balances for addresses displayed */
   useEffect(() => {
-    if (!reqestingBalanceCheck || requestingWallets) {
+    if (!requestingBalanceCheck || requestingWallets) {
       return;
     }
     getBaseBalances();
     return;
-  }, [reqestingBalanceCheck]);
+  }, [requestingBalanceCheck]);
 
   const getAddresses = (props: OwnProps) => {
     setRequestingWallets(true);
@@ -119,13 +265,10 @@ export function DeterministicWalletsClass({
           })
         );
         setRequestingWallets(false);
-        setReqestingBalanceCheck(true);
-        return;
+        setRequestingBalanceCheck(true);
       } else {
-        console.error('Invalid dPath provided', dPath);
         setRequestingWallets(false);
-        setReqestingBalanceCheck(true);
-        return;
+        setRequestingBalanceCheck(false);
       }
     }
   };
@@ -135,14 +278,14 @@ export function DeterministicWalletsClass({
     try {
       return getBaseAssetBalances(addressesToLookup, network).then((balanceMapData: BalanceMap) => {
         const walletsWithBalances: DeterministicWalletData[] = wallets.map(wallet => {
-          const balance = balanceMapData[wallet.address];
+          const balance = balanceMapData[wallet.address] || 0;
           const value = new BN(balance.toString());
           return {
             ...wallet,
             value
           };
         });
-        setReqestingBalanceCheck(false);
+        setRequestingBalanceCheck(false);
         setWallets(walletsWithBalances);
       });
     } catch (err) {
@@ -150,39 +293,38 @@ export function DeterministicWalletsClass({
     }
   };
 
+  const resetTable = () => {
+    setPage(0);
+    setSelectedAddressIndex(-1);
+    setSelectedAddress('');
+  };
+
   const handleChangePath = (newPath: DPath) => {
-    if (newPath.value === customDPath.value) {
+    resetTable();
+    if (newPath.label === customDPath.label) {
       setCurrentDPath(newPath);
+      setCustomPath('');
     } else {
       setCurrentDPath(newPath);
       onPathChange(newPath);
     }
   };
 
-  const handleChangeCustomPath = (ev: React.FormEvent<HTMLInputElement>) => {
+  const handleChangeCustomPath = (ev: React.FormEvent<HTMLInputElement>) =>
     setCustomPath(ev.currentTarget.value);
+
+  const handleSubmitCustomPath = () => {
+    resetTable();
+    const submittedDPath: DPath = { ...customDPath, value: customPath };
+    setCurrentDPath(submittedDPath);
+    onPathChange(submittedDPath);
   };
 
-  const handleSubmitCustomPath = (ev: React.FormEvent<HTMLFormElement>) => {
-    ev.preventDefault();
+  const handleConfirmAddress = () => onConfirmAddress(selectedAddress, selectedAddressIndex);
 
-    if (currentDPath.value === customDPath.value && isValidPath(customPath)) {
-      onPathChange({
-        label: customDPath.label,
-        value: customPath
-      });
-    }
-  };
-
-  const handleConfirmAddress = () => {
-    if (selectedAddress) {
-      onConfirmAddress(selectedAddress, selectedAddressIndex);
-    }
-  };
-
-  const selectAddress = (selectedAddr: string, selectedAddrIndex: number) => {
-    setSelectedAddress(selectedAddr);
-    setSelectedAddressIndex(selectedAddrIndex);
+  const selectAddress = (selectedAddrIndex: number) => {
+    setSelectedAddress(wallets[selectedAddrIndex].address);
+    setSelectedAddressIndex(page * WALLETS_PER_PAGE + selectedAddrIndex);
   };
 
   const nextPage = () => {
@@ -193,17 +335,14 @@ export function DeterministicWalletsClass({
     setPage(Math.max(page - 1, 0));
   };
 
-  const renderDPathOption = (option: Option) => {
-    if (option.value === customDPath.value) {
-      return translate('X_CUSTOM');
-    }
-
-    return (
-      <React.Fragment>
-        {option.label} {option.value && <small>({option.value.toString().replace(' ', '')})</small>}
-      </React.Fragment>
-    );
-  };
+  const DPathOption = ({ option, onSelect }: OptionComponentProps) => (
+    <SContainer onClick={() => onSelect && onSelect(option, null)}>
+      <Typography>
+        {option.label}{' '}
+        {option.value && <DropdownDPath>{option.value.toString().replace(' ', '')}</DropdownDPath>}
+      </Typography>
+    </SContainer>
+  );
 
   const renderWalletRow = (
     wallet: DeterministicWalletData,
@@ -230,12 +369,9 @@ export function DeterministicWalletsClass({
 
     // tslint:disable:jsx-key
     return [
-      <div className="DW-addresses-table-address-select">
-        {wallet.index + 1}
-        <Radio checked={selectedAddress === wallet.address} />
-      </div>,
+      <div>{wallet.index + 1}</div>,
       <Account
-        title={addrBook ? addrBook.label : 'Unknown Address'}
+        title={addrBook ? addrBook.label : translateRaw('NO_ADDRESS')}
         address={wallet.address}
         truncate={truncate}
       />,
@@ -246,97 +382,93 @@ export function DeterministicWalletsClass({
           `${parseFloat(fromWei(wallet.value, 'ether')).toFixed(4)} ${symbol}`
         )}
       </div>,
-      <a
-        target="_blank"
-        href={blockExplorer.addressUrl(wallet.address)}
-        rel="noopener noreferrer"
-        onClick={event => event.stopPropagation()}
-      >
-        <i className="DW-addresses-table-more" />
-      </a>
-    ].map(element => (
-      <div className="clickable" onClick={() => selectAddress(wallet.address, wallet.index)}>
-        {element}
-      </div>
-    ));
+      <LinkOut link={blockExplorer.addressUrl(wallet.address)} />
+    ];
     // tslint:enable:jsx-key
   };
-
-  /*public UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    const { publicKey, chainCode, seed, dPath } = this.props;
-    if (
-      nextProps.publicKey !== publicKey ||
-      nextProps.chainCode !== chainCode ||
-      nextProps.dPath !== dPath ||
-      nextProps.seed !== seed
-    ) {
-      this.getAddresses(nextProps);
-    }
-  }*/
 
   let baseAssetSymbol: string | undefined;
   if (network) {
     baseAssetSymbol = getBaseAssetByNetwork({ network, assets })!.ticker;
   }
   const symbol: string = baseAssetSymbol ? baseAssetSymbol : 'ETH';
+  const isCustom = currentDPath.label === customDPath.label;
 
   return (
-    <div className="DW">
-      <form className="DW-path form-group-sm" onSubmit={handleSubmitCustomPath}>
-        <div className="DW-header">
-          {' '}
-          <div className="DW-header-title">{translate('DECRYPT_PROMPT_SELECT_ADDRESS')}</div>
-          <div className="DW-header-select">
-            <Select
-              name="fieldDPath"
-              value={currentDPath}
-              onChange={handleChangePath}
-              options={dPaths.concat([customDPath])}
-              optionRenderer={renderDPathOption}
-              valueRenderer={renderDPathOption}
-              clearable={false}
-              searchable={false}
-            />
-          </div>
-        </div>
+    <>
+      <Header>
+        <Title>{translate('DECRYPT_PROMPT_SELECT_ADDRESS')}</Title>
+        <SDropdown>
+          <label>
+            {translate('DPATH')}{' '}
+            <NewTabLink href={HELP_ARTICLE.DPATH}>
+              <img src={questionSVG} />
+            </NewTabLink>
+          </label>
+          <Dropdown
+            value={currentDPath}
+            onChange={handleChangePath}
+            options={dPaths.concat([customDPath])}
+            optionComponent={DPathOption}
+            valueComponent={({ value: option }) => <DPathOption option={option} />}
+            clearable={false}
+            searchable={false}
+          />
+        </SDropdown>
+      </Header>
 
-        {currentDPath.label === customDPath.label && (
-          <div className="flex-wrapper">
-            <div className="DW-custom">
-              <Input
-                isValid={customPath ? isValidPath(customPath) : true}
-                value={customPath}
-                placeholder="m/44'/60'/0'/0"
-                onChange={handleChangeCustomPath}
-              />
-            </div>
-            <button className="DW-path-submit btn btn-success" disabled={!isValidPath(customPath)}>
+      {isCustom && (
+        <CustomDPath>
+          <label>{translate('CUSTOM_DPATH')}</label>
+          <InputGroup>
+            <InputField
+              value={customPath}
+              placeholder="m/44'/60'/0'/0"
+              onChange={handleChangeCustomPath}
+              isValid={!!customPath && isValidPath(customPath)}
+            />
+            <button
+              className="btn btn-success"
+              disabled={!isValidPath(customPath)}
+              onClick={handleSubmitCustomPath}
+            >
               <i className="fa fa-check" />
             </button>
-          </div>
-        )}
-      </form>
+          </InputGroup>
+          {customPath && !isValidPath(customPath) && (
+            <InlineMessage>{translate('CUSTOM_DPATH_ERROR')}</InlineMessage>
+          )}
+        </CustomDPath>
+      )}
 
-      <Table
-        head={['#', 'Address', symbol, translateRaw('ACTION_5')]}
+      <DWTable
+        disabled={isCustom && !currentDPath.value}
+        selected={selectedAddressIndex}
+        page={page}
+        head={['#', translateRaw('ADDRESS'), symbol, translateRaw('ACTION_5')]}
         body={wallets.map(wallet => renderWalletRow(wallet, network, symbol))}
-        config={{ hiddenHeadings: ['#', translateRaw('ACTION_5')] }}
+        config={{
+          hiddenHeadings: ['#', translateRaw('ACTION_5')],
+          handleRowClicked: selectAddress
+        }}
       />
-
-      <div className="DW-addresses-nav">
-        <img src={prevIcon} onClick={prevPage} />
-        <span className="DW-addresses-nav-page">PAGE {page + 1} OF ∞</span>
-        <img className="Identicon-img" src={nextIcon} onClick={nextPage} />
-
-        <Button onClick={onCancel} secondary={true}>
-          {translate('ACTION_2')}
-        </Button>
-        <Button onClick={handleConfirmAddress} disabled={!selectedAddress}>
-          {translate('ACTION_6')}
-        </Button>
-      </div>
+      <Bottom>
+        <Nav disabled={isCustom && !currentDPath.value}>
+          <img src={prevIcon} onClick={prevPage} />
+          {translate('PAGE_OF', { $page: (page + 1).toString(), $all: '∞' })}
+          <img src={nextIcon} onClick={nextPage} />
+        </Nav>
+        <ButtonsGroup>
+          <CancelButton onClick={onCancel} inverted={true}>
+            {translate('ACTION_2')}
+          </CancelButton>
+          <Button onClick={handleConfirmAddress} disabled={!selectedAddress}>
+            {translate('ACTION_6')}
+          </Button>
+        </ButtonsGroup>
+      </Bottom>
       <FooterLink>{translate('FIND_ETH_LINK')}</FooterLink>
-    </div>
+    </>
   );
 }
 

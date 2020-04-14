@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { GeneralStepper, ConfirmTransaction, TxReceipt } from 'v2/components';
+import { GeneralStepper, TxReceipt, ConfirmTransaction } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
 import { translateRaw } from 'v2/translations';
 import { useStateReducer } from 'v2/utils';

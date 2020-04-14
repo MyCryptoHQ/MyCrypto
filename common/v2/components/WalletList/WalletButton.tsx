@@ -77,6 +77,7 @@ const WalletLabel = styled.div`
 
 const WalletIcon = styled.img`
   max-height: 75px;
+  width: auto;
 
   @media screen and (max-width: ${SCREEN_SM}) {
     max-height: 60px;

@@ -1,8 +1,15 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, {
+  useState,
+  useContext,
+  useEffect,
+  useCallback,
+  Dispatch,
+  SetStateAction
+} from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
-import * as R from 'ramda';
+import R_path from 'ramda/src/path';
 
 import {
   ITxReceipt,
@@ -33,6 +40,8 @@ import translate, { translateRaw } from 'v2/translations';
 import { convertToFiat, truncate, fromTxReceiptObj } from 'v2/utils';
 import { isWeb3Wallet } from 'v2/utils/web3';
 import ProtocolTagsList from 'v2/features/DeFiZap/components/ProtocolTagsList';
+import { ProtectTxUtils, ProtectTxContext } from 'v2/features/ProtectTransaction';
+import { ProtectTxAbort } from 'v2/features/ProtectTransaction/components';
 import { MembershipReceiptBanner } from 'v2/features/PurchaseMembership';
 import { DeFiZapLogo } from 'v2/features/DeFiZap';
 
@@ -40,7 +49,9 @@ import { ISender } from './types';
 import { constructSenderFromTxConfig } from './helpers';
 import { FromToAccount, SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
-import sentIcon from 'common/assets/images/icn-send.svg';
+import { PendingTransaction } from './PendingLoader';
+
+import sentIcon from 'common/assets/images/icn-sent.svg';
 import defizaplogo from 'assets/images/defizap/defizaplogo.svg';
 import './TxReceipt.scss';
 
@@ -51,6 +62,7 @@ interface PendingBtnAction {
 interface Props {
   pendingButton?: PendingBtnAction;
   swapDisplay?: SwapDisplayData;
+  protectTxButton?(): JSX.Element;
 }
 
 const SImg = styled('img')`
@@ -67,7 +79,8 @@ export default function TxReceipt({
   txType = ITxType.STANDARD,
   membershipSelected,
   zapSelected,
-  swapDisplay
+  swapDisplay,
+  protectTxButton
 }: IStepComponentProps & Props) {
   const { getAssetRate } = useContext(RatesContext);
   const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
@@ -76,34 +89,40 @@ export default function TxReceipt({
   const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
   const [txStatus, setTxStatus] = useState(ITxStatus.PENDING);
-  const [displayTxReceipt, setDisplayTxReceipt] = useState(txReceipt as ITxReceipt);
+  const [displayTxReceipt, setDisplayTxReceipt] = useState<ITxReceipt | undefined>(txReceipt);
   const [blockNumber, setBlockNumber] = useState(0);
   const [timestamp, setTimestamp] = useState(0);
 
+  const protectTxContext = useContext(ProtectTxContext);
+  const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
+
   useEffect(() => {
-    const provider = new ProviderHandler(displayTxReceipt.network || txConfig.network);
-    if (blockNumber === 0 && displayTxReceipt.hash) {
+    setDisplayTxReceipt(txReceipt);
+  }, [setDisplayTxReceipt, txReceipt]);
+
+  useEffect(() => {
+    if (displayTxReceipt && blockNumber === 0 && displayTxReceipt.hash) {
+      const provider = new ProviderHandler(displayTxReceipt.network || txConfig.network);
       const blockNumInterval = setInterval(() => {
         getTransactionReceiptFromHash(displayTxReceipt.hash, provider).then(transactionOutcome => {
-          if (!transactionOutcome) {
-            return;
+          if (transactionOutcome) {
+            const transactionStatus =
+              transactionOutcome.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
+            setTxStatus(prevStatusState => transactionStatus || prevStatusState);
+            setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
+            provider.getTransactionByHash(displayTxReceipt.hash).then(transactionReceipt => {
+              const receipt = fromTxReceiptObj(transactionReceipt)(assets, networks) as ITxReceipt;
+              setDisplayTxReceipt(receipt);
+            });
           }
-          const transactionStatus =
-            transactionOutcome.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
-          setTxStatus(prevStatusState => transactionStatus || prevStatusState);
-          setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
-          provider.getTransactionByHash(displayTxReceipt.hash).then(transactionReceipt => {
-            const receipt = fromTxReceiptObj(transactionReceipt)(assets, networks) as ITxReceipt;
-            setDisplayTxReceipt(receipt);
-          });
         });
       }, 1000);
       return () => clearInterval(blockNumInterval);
     }
   });
   useEffect(() => {
-    const provider = new ProviderHandler(displayTxReceipt.network || txConfig.network);
-    if (timestamp === 0 && blockNumber !== 0) {
+    if (displayTxReceipt && timestamp === 0 && blockNumber !== 0) {
+      const provider = new ProviderHandler(displayTxReceipt.network || txConfig.network);
       const timestampInterval = setInterval(() => {
         getTimestampFromBlockNum(blockNumber, provider).then(transactionTimestamp => {
           if (sender.account) {
@@ -122,12 +141,24 @@ export default function TxReceipt({
     }
   });
 
-  const assetForRateFetch = 'asset' in displayTxReceipt ? displayTxReceipt.asset : undefined;
-  const assetRate = getAssetRate(assetForRateFetch);
+  const assetRate = useCallback(() => {
+    if (displayTxReceipt && R_path(['asset'], displayTxReceipt)) {
+      return getAssetRate(displayTxReceipt.asset);
+    } else {
+      return getAssetRate(txConfig.asset);
+    }
+  }, [displayTxReceipt, txConfig.asset]);
+
+  const senderContact = getContactByAddressAndNetworkId(
+    txConfig.senderAccount.address,
+    txConfig.network.id
+  );
+  const recipientContact = getContactByAddressAndNetworkId(
+    txConfig.receiverAddress,
+    txConfig.network.id
+  );
+
   const sender = constructSenderFromTxConfig(txConfig, accounts);
-  const { receiverAddress, network } = txConfig;
-  const senderContact = getContactByAddressAndNetworkId(sender.address, network.id);
-  const recipientContact = getContactByAddressAndNetworkId(receiverAddress, network.id);
 
   return (
     <TxReceiptUI
@@ -144,9 +175,13 @@ export default function TxReceipt({
       sender={sender}
       recipientContact={recipientContact}
       displayTxReceipt={displayTxReceipt}
+      setDisplayTxReceipt={setDisplayTxReceipt}
       resetFlow={resetFlow}
       completeButtonText={completeButtonText}
       pendingButton={pendingButton}
+      protectTxEnabled={getProTxValue(['state', 'protectTxEnabled'])}
+      web3Wallet={getProTxValue(['state', 'isWeb3Wallet'])}
+      protectTxButton={protectTxButton}
     />
   );
 }
@@ -154,13 +189,17 @@ export default function TxReceipt({
 export interface TxReceiptDataProps {
   txStatus: ITxStatus;
   timestamp: number;
-  assetRate: number | undefined;
-  displayTxReceipt: ITxReceipt;
+  displayTxReceipt?: ITxReceipt;
+  setDisplayTxReceipt?: Dispatch<SetStateAction<ITxReceipt | undefined>>;
   senderContact: ExtendedAddressBook | undefined;
   sender: ISender;
   recipientContact: ExtendedAddressBook | undefined;
   pendingButton?: PendingBtnAction;
   swapDisplay?: SwapDisplayData;
+  protectTxEnabled?: boolean;
+  web3Wallet?: boolean;
+  assetRate(): number | undefined;
+  protectTxButton?(): JSX.Element;
   resetFlow(): void;
 }
 
@@ -172,6 +211,7 @@ export const TxReceiptUI = ({
   timestamp,
   assetRate,
   displayTxReceipt,
+  setDisplayTxReceipt,
   zapSelected,
   membershipSelected,
   senderContact,
@@ -179,23 +219,33 @@ export const TxReceiptUI = ({
   recipientContact,
   pendingButton,
   resetFlow,
-  completeButtonText
+  completeButtonText,
+  protectTxEnabled = false,
+  web3Wallet = false,
+  protectTxButton
 }: Omit<IStepComponentProps, 'resetFlow' | 'onComplete'> & TxReceiptDataProps) => {
-  /* Determing User's Contact */
+  /* Determining User's Contact */
   const { asset, gasPrice, gasLimit, data, nonce, baseAsset, receiverAddress } = txConfig;
   const recipientLabel = recipientContact ? recipientContact.label : translateRaw('NO_ADDRESS');
   const senderAccountLabel = senderContact ? senderContact.label : translateRaw('NO_LABEL');
 
   const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
-  const assetAmount = displayTxReceipt.amount || txConfig.amount;
-  const assetTicker = 'asset' in displayTxReceipt ? displayTxReceipt.asset.ticker : 'ETH';
+  const assetAmount = useCallback(() => {
+    if (displayTxReceipt && R_path(['amount'], displayTxReceipt)) {
+      return displayTxReceipt.amount;
+    } else {
+      return txConfig.amount;
+    }
+  }, [displayTxReceipt, txConfig.amount]);
 
-  let txUrl = '';
-  if (R.path(['network', 'blockExplorer', 'txUrl'], displayTxReceipt)) {
-    txUrl = displayTxReceipt.network.blockExplorer.txUrl(displayTxReceipt.hash);
-  } else if (R.path(['network', 'blockExplorer', 'txUrl'], sender)) {
-    txUrl = sender.network.blockExplorer!.txUrl(displayTxReceipt.hash);
-  }
+  const assetTicker = useCallback(() => {
+    if (displayTxReceipt && R_path(['asset'], displayTxReceipt)) {
+      return displayTxReceipt.asset.ticker;
+    } else {
+      return txConfig.asset.ticker;
+    }
+  }, [displayTxReceipt, txConfig.asset]);
+
   const shouldRenderPendingBtn =
     pendingButton &&
     txStatus === ITxStatus.PENDING &&
@@ -204,6 +254,15 @@ export const TxReceiptUI = ({
 
   return (
     <div className="TransactionReceipt">
+      {protectTxEnabled && !web3Wallet && (
+        <ProtectTxAbort
+          onTxSent={txReceipt => {
+            if (setDisplayTxReceipt) {
+              setDisplayTxReceipt(txReceipt);
+            }
+          }}
+        />
+      )}
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-desc">
           {translate('TRANSACTION_BROADCASTED_DESC')}
@@ -228,11 +287,11 @@ export const TxReceiptUI = ({
         <>
           <FromToAccount
             from={{
-              address: (displayTxReceipt.from || sender.address) as TAddress,
+              address: ((displayTxReceipt && displayTxReceipt.from) || sender.address) as TAddress,
               label: senderAccountLabel
             }}
             to={{
-              address: (displayTxReceipt.to || receiverAddress) as TAddress,
+              address: ((displayTxReceipt && displayTxReceipt.to) || receiverAddress) as TAddress,
               label: recipientLabel
             }}
           />
@@ -280,8 +339,8 @@ export const TxReceiptUI = ({
           <div className="TransactionReceipt-row-column rightAligned">
             <AssetIcon symbol={asset.ticker as TSymbol} size={'24px'} />
             <Amount
-              assetValue={`${parseFloat(assetAmount).toFixed(6)} ${assetTicker}`}
-              fiatValue={`$${convertToFiat(parseFloat(assetAmount), assetRate).toFixed(2)}
+              assetValue={`${parseFloat(assetAmount()).toFixed(6)} ${assetTicker()}`}
+              fiatValue={`$${convertToFiat(parseFloat(assetAmount()), assetRate()).toFixed(2)}
             `}
             />
           </div>
@@ -294,7 +353,14 @@ export const TxReceiptUI = ({
             {translate('TRANSACTION_ID')}:
           </div>
           <div className="TransactionReceipt-details-row-column">
-            <LinkOut text={displayTxReceipt.hash} truncate={truncate} link={txUrl} />
+            {displayTxReceipt && (
+              <LinkOut
+                text={displayTxReceipt.hash}
+                truncate={truncate}
+                link={displayTxReceipt.network.blockExplorer.txUrl(displayTxReceipt.hash)}
+              />
+            )}
+            {!displayTxReceipt && <PendingTransaction />}
           </div>
         </div>
 
@@ -302,22 +368,29 @@ export const TxReceiptUI = ({
           <div className="TransactionReceipt-details-row-column">
             {translate('TRANSACTION_STATUS')}:
           </div>
-          <div className="TransactionReceipt-details-row-column">{translate(txStatus)}</div>
+          <div className="TransactionReceipt-details-row-column">
+            {displayTxReceipt && translate(txStatus)}
+            {!displayTxReceipt && <PendingTransaction />}
+          </div>
         </div>
 
         <div className="TransactionReceipt-details-row">
           <div className="TransactionReceipt-details-row-column">{translate('TIMESTAMP')}:</div>
           <div className="TransactionReceipt-details-row-column">
-            {timestamp !== 0 ? (
-              <div>
-                <TimeElapsedCounter timestamp={timestamp} isSeconds={true} />
-                <br /> {localTimestamp}
-              </div>
-            ) : (
-              translate('UNKNOWN')
-            )}
+            {displayTxReceipt &&
+              (timestamp !== 0 ? (
+                <div>
+                  <TimeElapsedCounter timestamp={timestamp} isSeconds={true} />
+                  <br /> {localTimestamp}
+                </div>
+              ) : (
+                translate('UNKNOWN')
+              ))}
+            {!displayTxReceipt && <PendingTransaction />}
           </div>
         </div>
+
+        {protectTxButton && protectTxButton()}
 
         <TransactionDetailsDisplay
           baseAsset={baseAsset}

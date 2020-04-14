@@ -1,5 +1,19 @@
 export const EtherUUID = '356a192b-7913-504c-9457-4d18c28d46e6';
 export const DAIUUID = 'e1f698bf-cb85-5405-b563-14774af14bf1';
+export const BATUUID = 'e34bb9ff-47be-503b-956b-30d4b3f3507b';
+export const ETCUUID = '6c1e671f-9af5-546d-9c1a-52067bdf0e53';
+export const USDTUUID = '00ff8c75-22ce-5e15-b06a-770154d7e333';
+export const ZRXUUID = '36a94c95-ec51-5e0f-b254-415e31d1c3a7';
+
+export const MOONPAY_ASSET_UUIDS = [
+  EtherUUID,
+  DAIUUID,
+  BATUUID,
+  USDTUUID,
+  ZRXUUID,
+  '41dc838d-355f-5e04-9763-4ab7a36cd70c', // BNB
+  '685f1c7f-2d31-56c2-ae80-9cd433aeb0e1' // TUSD
+];
 
 export const AAVE_TOKEN_UUIDS = [
   'b8725c43-0f80-59c1-a9ea-ea6549be9ccd',
