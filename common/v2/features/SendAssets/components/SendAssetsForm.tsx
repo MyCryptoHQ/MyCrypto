@@ -68,6 +68,8 @@ import { formatSupportEmail, isFormValid as checkFormValid, EtherUUID } from 'v2
 import { InlineMessageType } from 'v2/types/inlineMessages';
 import { ProtectTxUtils, ProtectTxError } from 'v2/features/ProtectTransaction';
 import { ProtectTxShowError, ProtectTxButton } from 'v2/features/ProtectTransaction/components';
+import { ProtectTxContext } from 'v2/features/ProtectTransaction/ProtectTxProvider';
+import { useEffectOnce } from 'v2/vendor';
 
 import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
 import './SendAssetsForm.scss';
@@ -79,7 +81,6 @@ import {
   validateAmountField
 } from './validators';
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
-import { ProtectTxContext } from 'v2/features/ProtectTransaction/ProtectTxProvider';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;
@@ -217,7 +218,11 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
       // @ts-ignore Hack as Formik doesn't officially support warnings
       .test('check-sending-to-yourself', translateRaw('SENDING_TO_YOURSELF'), function(value) {
         const account = this.parent.account;
-        if (!isEmpty(account) && account.address.toLowerCase() === value.value.toLowerCase()) {
+        if (
+          !isEmpty(account) &&
+          value.value !== undefined &&
+          account.address.toLowerCase() === value.value.toLowerCase()
+        ) {
           return {
             name: 'ValidationError',
             type: InlineMessageType.INFO_CIRCLE,
@@ -281,6 +286,16 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
               values
             }));
           }
+
+          // Set gas estimates if default asset is selected
+          useEffectOnce(() => {
+            if (!isEmpty(values.asset)) {
+              fetchGasPriceEstimates(values.network).then(data => {
+                setFieldValue('gasEstimates', data);
+                setFieldValue('gasPriceSlider', data.fast);
+              });
+            }
+          });
 
           const toggleAdvancedOptions = () => {
             setFieldValue('advancedTransaction', !values.advancedTransaction);
