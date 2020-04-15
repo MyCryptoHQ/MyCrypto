@@ -8,3 +8,4 @@ export { default as fTxReceipt } from './txReceipt.json';
 export { default as fTxReceipts } from './txReceipts.json';
 export { default as fTxReceiptProvider } from './txReceiptProvider.json';
 export { default as fTxParcels } from './txParcels';
+export { default as customNodeConfig } from './customNode';

@@ -5,9 +5,10 @@ import { simpleRender, fireEvent } from 'test-utils';
 import { AccountContext, NetworkContext, INetworkContext } from 'v2/services/Store';
 import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS, WALLETS_CONFIG } from 'v2/config';
-import { WalletId } from 'v2/types';
+import { NetworkId, WalletId } from 'v2/types';
 import AddAccountFlow, { isValidWalletId } from 'v2/features/AddAccount/AddAccountFlow';
 import { IAccountContext } from 'v2/services/Store/Account/AccountProvider';
+import { NETWORKS_CONFIG, NODES_CONFIG } from 'v2/database/data';
 
 /* Test helpers */
 describe('isValidWalletId()', () => {
@@ -28,7 +29,11 @@ describe('AddAccountFlow', () => {
       <NetworkContext.Provider
         value={
           ({
-            networks: []
+            networks: [],
+            getNetworkById: jest.fn((id: NetworkId) => ({
+              ...NETWORKS_CONFIG[id],
+              nodes: NODES_CONFIG[id]
+            }))
           } as unknown) as INetworkContext
         }
       >
@@ -71,6 +76,6 @@ describe('AddAccountFlow', () => {
     fireEvent.click(getByText(translateRaw(config.lid).trim()));
     expect(location.pathname).toEqual(`${expectedPath}/${config.id.toLowerCase()}`);
     expect(history.action).toEqual('REPLACE');
-    expect(getByText('Select Network')).toBeInTheDocument(); // Expect to see the Network selection step
+    expect(getByText('Select Network and Node')).toBeInTheDocument(); // Expect to see the Network selection step
   });
 });

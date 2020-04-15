@@ -76,3 +76,4 @@ export {
   RowPanelSection
 } from './FullSizeContentPanel';
 export { default as UndoDeleteOverlay } from './UndoDeleteOverlay';
+export { default as MobileNavBar } from './MobileNavBar';

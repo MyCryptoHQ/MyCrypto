@@ -1,5 +1,3 @@
-import { NetworkId } from './networkId';
-
 // Used to be named RawNodeConfig in v1
 export enum NodeType {
   RPC = 'rpc',
@@ -16,40 +14,27 @@ export interface NodeConfig {
   url: string;
 }
 
-export interface NodeOptions {
+interface NodeBase {
+  isCustom?: boolean;
   name: string;
   type: NodeType;
   service: string;
   url: string;
-  isCustom?: boolean;
-  isAuto?: boolean;
-  network?: string;
   hidden?: boolean;
 }
 
-export interface ExtendedNodeOptions extends NodeOptions {
-  uuid: string;
-}
-
-export interface CustomNodeConfig {
-  id: string;
+export interface CustomNodeConfig extends NodeBase {
   isCustom: true;
-  isAuto?: undefined;
-  name: string;
-  service: 'your custom node';
-  url: string;
-  network: string;
+  type: NodeType.MYC_CUSTOM;
   auth?: {
     username: string;
     password: string;
   };
 }
 
-export interface StaticNodeConfig {
-  id: string;
-  isCustom: false;
-  isAuto?: boolean;
-  network: NetworkId;
-  service: string;
-  hidden?: boolean;
+export interface StaticNodeConfig extends NodeBase {
+  isCustom?: false;
+  type: NodeType.ETHERSCAN | NodeType.INFURA | NodeType.RPC | NodeType.WEB3;
 }
+
+export type NodeOptions = StaticNodeConfig | CustomNodeConfig;
