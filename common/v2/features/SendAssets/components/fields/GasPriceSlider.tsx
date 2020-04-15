@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Field, FieldProps } from 'formik';
 import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
+import styled from 'styled-components';
 
 import translate, { translateRaw } from 'v2/translations';
 import { GAS_PRICE_DEFAULT } from 'v2/config';
 import { GasEstimates, IFormikFields, Network } from 'v2/types';
+import { COLORS } from 'v2/theme';
 import './GasPriceSlider.scss';
 
 const SliderWithTooltip = createSliderWithTooltip(Slider);
@@ -27,6 +29,12 @@ interface State {
 interface GasTooltips {
   [estimationLevel: string]: string;
 }
+
+const Label = styled.span`
+  &&& {
+    color: ${COLORS.BLUE_GREY};
+  }
+`;
 
 export default class SimpleGas extends Component<Props> {
   public state: State = {
@@ -78,8 +86,8 @@ export default class SimpleGas extends Component<Props> {
                   step={bounds.min < 1 ? 0.1 : 1}
                 />
                 <div className="GasPriceSlider-slider-labels">
-                  <span>{translate('TX_FEE_SCALE_LEFT')}</span>
-                  <span>{translate('TX_FEE_SCALE_RIGHT')}</span>
+                  <Label>{translate('TX_FEE_SCALE_LEFT')}</Label>
+                  <Label>{translate('TX_FEE_SCALE_RIGHT')}</Label>
                 </div>
               </div>
             </div>
