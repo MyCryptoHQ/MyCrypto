@@ -17,6 +17,7 @@ import * as R from 'ramda';
 import isFunction from 'lodash/isFunction';
 
 import { noOp } from 'v2/utils';
+import { SPACING } from 'v2/theme';
 
 import { default as Typography } from './Typography';
 import { default as IconArrow } from './IconArrow';
@@ -69,6 +70,7 @@ const sharedCellProperties = ({ isReversed }: CellProps) => `
   min-width: .75em;
   padding: .75em;
   text-align: ${isReversed ? 'right' : 'left'};
+  & > 
 `;
 
 const TableHead = styled.tr`
@@ -76,6 +78,12 @@ const TableHead = styled.tr`
   border-bottom: 0.0625em solid ${props => props.theme.tableHeadBorder};
   background: ${props => props.theme.tableHeadBackground};
   font-size: 0.9em;
+  & > th:first-child {
+    padding-left: ${SPACING.BASE};
+  }
+  & > th:last-child {
+    padding-right: ${SPACING.BASE};
+  }
 `;
 
 interface HeadingProps extends CellProps {
@@ -110,6 +118,12 @@ TableHeading.defaultProps = {
 
 const TableRow = styled.tr`
   border-bottom: 0.0625em solid ${props => props.theme.tableRowBorder};
+  & > td:first-child {
+    padding-left: ${SPACING.BASE};
+  }
+  & > td:last-child {
+    padding-right: ${SPACING.BASE};
+  }
 `;
 
 const TableGroupHead = styled(TableRow)`

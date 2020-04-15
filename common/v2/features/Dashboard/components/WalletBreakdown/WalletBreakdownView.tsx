@@ -59,8 +59,13 @@ const BreakDownChartWrapper = styled.div`
 const PanelFigures = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
   margin: 30px 0;
+  & > div:last-child {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
 `;
 
 const PanelFigure = styled.div``;
@@ -309,7 +314,7 @@ export default function WalletBreakdownView({
                     />
                   </PanelFigureValue>
                   <PanelFigureLabel>
-                    {translate('WALLET_BREAKDOWN_VALUE_IN')} {fiat.name}
+                    {translate('WALLET_BREAKDOWN_VALUE_IN')} {fiat.code}
                   </PanelFigureLabel>
                 </PanelFigure>
               </PanelFigures>
