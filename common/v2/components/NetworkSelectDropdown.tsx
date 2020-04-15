@@ -61,7 +61,7 @@ function NetworkSelectDropdown({
         {showTooltip && <Tooltip tooltip={translate('NETWORK_TOOLTIP')} />}
       </label>
       <Dropdown
-        value={{ label: network!.name }}
+        value={{ label: network.name }}
         options={validNetworks.sort()}
         placeholder={DEFAULT_NETWORK}
         searchable={true}

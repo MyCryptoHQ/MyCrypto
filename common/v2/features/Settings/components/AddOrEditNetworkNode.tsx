@@ -283,7 +283,7 @@ export default function AddOrEditNetworkNode({
               <Column>
                 <AddressFieldset>
                   <Field name="networkId">
-                    {({ field, form }: FieldProps<string>) => (
+                    {({ field, form }: FieldProps<NetworkId>) => (
                       <SNetworkSelectDropdown
                         network={field.value}
                         onChange={e => form.setFieldValue(field.name, e)}

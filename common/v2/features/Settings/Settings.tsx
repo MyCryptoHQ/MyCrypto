@@ -90,7 +90,6 @@ function renderAddressPanel() {
 
 function renderNetworkNodes() {
   const {
-    getNetworkByName,
     addNodeToNetwork,
     isNodeNameAvailable,
     getNetworkById,
@@ -101,7 +100,7 @@ function renderNetworkNodes() {
   const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
   const [editNode, setEditNode] = useState<CustomNodeConfig | undefined>(undefined);
 
-  const addressBookNetworks = NetworkUtils.getDistinctNetworks(addressBook, getNetworkByName);
+  const addressBookNetworks = NetworkUtils.getDistinctNetworks(addressBook, getNetworkById);
 
   return (
     <FlippablePanel>
