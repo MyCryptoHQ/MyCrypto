@@ -37,9 +37,9 @@ export abstract class NetworkUtils {
 
   public static getDistinctNetworks(
     addressBook: ExtendedAddressBook[],
-    getNetworkByName: (name: string) => Network | undefined
+    getNetworkById: (name: string) => Network
   ) {
     const addressBookNetworksIds = [...new Set(addressBook.map(a => a.network))];
-    return addressBookNetworksIds.map(addressId => getNetworkByName(addressId)!);
+    return addressBookNetworksIds.map(id => getNetworkById(id));
   }
 }

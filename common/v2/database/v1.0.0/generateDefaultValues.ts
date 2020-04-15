@@ -29,7 +29,7 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: SeedData) => {
 
     return Object.assign(
       {
-        // Also availbale are: blockExplorer, tokenExplorer, tokens aka assets, contracts
+        // Also available are: blockExplorer, tokenExplorer, tokens aka assets, contracts
         id: n.id,
         name: n.name,
         chainId: n.chainId,

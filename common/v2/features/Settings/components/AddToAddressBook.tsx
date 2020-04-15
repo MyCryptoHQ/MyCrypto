@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 import { DashboardPanel, NetworkSelectDropdown, InputField } from 'v2/components';
-import { AddressBook } from 'v2/types';
+import { AddressBook, NetworkId } from 'v2/types';
 import { ToastContext } from 'v2/features/Toasts';
 import { translateRaw } from 'v2/translations';
 import { isValidETHAddress } from 'v2/services/EthService';
@@ -126,7 +126,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
             <AddressFieldset>
               <Field
                 name="network"
-                render={({ field, form }: FieldProps<string>) => (
+                render={({ field, form }: FieldProps<NetworkId>) => (
                   <SNetworkSelectDropdown
                     network={field.value}
                     onChange={e => form.setFieldValue(field.name, e)}

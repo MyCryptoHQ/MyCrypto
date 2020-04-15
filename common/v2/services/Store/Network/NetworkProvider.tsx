@@ -3,15 +3,16 @@ import isString from 'lodash/isString';
 import isEmpty from 'lodash/isEmpty';
 
 import { Network, NetworkId, NodeOptions, LSKeys } from 'v2/types';
+
 import { DataContext } from '../DataManager';
 import { NetworkUtils } from './utils';
 import { EthersJS } from '../../EthService/network/ethersJsProvider';
+import { getNetworkById } from './helpers';
 
 export interface INetworkContext {
   networks: Network[];
   updateNetwork(id: NetworkId, item: Network): void;
   getNetworkById(networkId: NetworkId): Network;
-  getNetworkByName(name: string): Network | undefined;
   getNetworkByChainId(chainId: number): Network | undefined;
   getNetworkNodes(networkId: NetworkId): NodeOptions[];
   addNodeToNetwork(node: NodeOptions, network: Network | NetworkId): void;
@@ -31,20 +32,17 @@ export const NetworkProvider: React.FC = ({ children }) => {
     networks,
     updateNetwork: model.update,
     getNetworkById(networkId: NetworkId): Network {
-      const foundNetwork = networks.find((network: Network) => network.id === networkId);
+      const foundNetwork = getNetworkById(networkId, networks);
       if (foundNetwork) {
         return foundNetwork;
       }
       throw new Error(`No network found with network id: ${networkId}`);
     },
-    getNetworkByName: name => {
-      return networks.find((network: Network) => network.name === name);
-    },
     getNetworkByChainId: chainId => {
       return networks.find((network: Network) => network.chainId === chainId);
     },
     getNetworkNodes: (networkId: NetworkId) => {
-      const foundNetwork = networks.find((network: Network) => network.id === networkId);
+      const foundNetwork = getNetworkById(networkId, networks);
       if (foundNetwork) {
         return foundNetwork.nodes;
       }
@@ -117,8 +115,7 @@ export const NetworkProvider: React.FC = ({ children }) => {
     isNodeNameAvailable: (networkId: NetworkId, nodeName: string, ignoreNames: string[] = []) => {
       if (isEmpty(networkId) || isEmpty(nodeName)) return false;
 
-      const foundNetwork = networks.find((network: Network) => network.id === networkId);
-
+      const foundNetwork = getNetworkById(networkId, networks);
       if (!foundNetwork) {
         throw new Error(`No network found with network id: ${networkId}`);
       }

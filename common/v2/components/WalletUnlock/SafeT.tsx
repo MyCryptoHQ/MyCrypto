@@ -35,7 +35,7 @@ class SafeTminiDecryptClass extends PureComponent<OwnProps, State> {
     publicKey: '',
     chainCode: '',
     dPath:
-      getDPath(this.context.getNetworkByName(this.props.formData.network), WalletId.SAFE_T_MINI) ||
+      getDPath(this.context.getNetworkById(this.props.formData.network), WalletId.SAFE_T_MINI) ||
       getDPaths(this.context.networks, WalletId.SAFE_T_MINI)[0],
     error: null,
     isLoading: false
@@ -45,7 +45,7 @@ class SafeTminiDecryptClass extends PureComponent<OwnProps, State> {
     const { dPath, publicKey, chainCode, error, isLoading } = this.state;
     const showErr = error ? 'is-showing' : '';
     const networks = this.context.networks;
-    const network = this.context.getNetworkByName(this.props.formData.network);
+    const network = this.context.getNetworkById(this.props.formData.network);
 
     if (!dPath) {
       return <UnsupportedNetwork walletType={translateRaw('X_SAFE_T')} network={network} />;
@@ -153,7 +153,7 @@ class SafeTminiDecryptClass extends PureComponent<OwnProps, State> {
 
   private reset() {
     const networks = this.context.networks;
-    const network = this.context.getNetworkByName(this.props.formData.network);
+    const network = this.context.getNetworkById(this.props.formData.network);
     this.setState({
       publicKey: '',
       chainCode: '',

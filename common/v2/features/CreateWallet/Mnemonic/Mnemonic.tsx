@@ -16,7 +16,6 @@ import {
   DPathFormat,
   ISettings,
   WalletId,
-  Network,
   NetworkId
 } from 'v2/types';
 import { generateUUID, withContext } from 'v2/utils';
@@ -25,8 +24,7 @@ import {
   AssetContext,
   IAssetContext,
   INetworkContext,
-  getNewDefaultAssetTemplateByNetwork,
-  getNetworkById
+  getNewDefaultAssetTemplateByNetwork
 } from 'v2/services/Store';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from 'v2/config';
 
@@ -123,7 +121,7 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
   };
 
   private selectNetwork = async (network: NetworkId) => {
-    const accountNetwork: Network | undefined = getNetworkById(network, this.props.networks);
+    const accountNetwork = this.props.getNetworkById(network);
     const pathFormat = accountNetwork && accountNetwork.dPaths[this.state.accountType];
     const path = (pathFormat && pathFormat.value) || '';
     this.setState({ network, path });
@@ -148,14 +146,14 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
       createAccountWithID,
       updateSettingsAccounts,
       createAssetWithID,
-      displayNotification
+      displayNotification,
+      getNetworkById
     } = this.props;
     const { network, accountType, address, path } = this.state;
 
-    const accountNetwork: Network | undefined = getNetworkById(network, this.props.networks);
-    if (!accountNetwork) {
-      return;
-    }
+    const accountNetwork = getNetworkById(network);
+    if (!accountNetwork) return;
+
     const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(this.props.assets)(accountNetwork);
     const newAssetID = generateUUID();
     const newUUID = generateUUID();

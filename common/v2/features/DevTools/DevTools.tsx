@@ -34,12 +34,12 @@ const DevToolsInput = styled(Input)`
 
 const renderAccountForm = (
   addressBook: ExtendedAddressBook[],
-  getNetworkByName: (name: string) => Network | undefined
+  getNetworkById: (name: string) => Network | undefined
 ) => ({ values, handleChange, handleBlur, isSubmitting }: FormikProps<IRawAccount>) => {
   const detectedLabel: AddressBook | undefined = getLabelByAddressAndNetwork(
     values.address,
     addressBook,
-    getNetworkByName(values.networkId)
+    getNetworkById(values.networkId)
   );
   const label = detectedLabel ? detectedLabel.label : 'Unknown Account';
   return (
@@ -127,7 +127,7 @@ const ErrorTools = () => {
 };
 
 const DevTools = () => {
-  const { getNetworkByName } = useContext(NetworkContext);
+  const { getNetworkById } = useContext(NetworkContext);
   const { addressBook } = useContext(AddressBookContext);
   const { accounts, createAccountWithID, deleteAccount } = useContext(AccountContext);
   const dummyAccount = {
@@ -172,7 +172,7 @@ const DevTools = () => {
             setSubmitting(false);
           }}
         >
-          {renderAccountForm(addressBook, getNetworkByName)}
+          {renderAccountForm(addressBook, getNetworkById)}
         </Formik>
       </Panel>
     </React.Fragment>
