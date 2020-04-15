@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Field, FieldProps, FormikHandlers } from 'formik';
+import { Field, FieldProps } from 'formik';
 import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
 
 import translate, { translateRaw } from 'v2/translations';
@@ -11,14 +11,15 @@ const SliderWithTooltip = createSliderWithTooltip(Slider);
 
 interface OwnProps {
   gasPrice: string;
-  handleChange: FormikHandlers['handleChange'];
   gasEstimates: GasEstimates;
   network: Network;
+  onAfterChange(): void;
 }
 
 type Props = OwnProps;
 
 interface State {
+  gasPrice: string;
   hasSetRecommendedGasPrice: boolean;
   realGasPrice: number;
 }
@@ -29,12 +30,14 @@ interface GasTooltips {
 
 export default class SimpleGas extends Component<Props> {
   public state: State = {
+    gasPrice: this.props.gasPrice,
     hasSetRecommendedGasPrice: false,
     realGasPrice: 0
   };
 
   public render() {
-    const { gasPrice, gasEstimates } = this.props;
+    const { gasEstimates, onAfterChange } = this.props;
+    const { gasPrice } = this.state;
     const bounds = {
       max: gasEstimates ? gasEstimates.fastest : GAS_PRICE_DEFAULT.max,
       min: gasEstimates ? gasEstimates.safeLow : GAS_PRICE_DEFAULT.min
@@ -59,7 +62,13 @@ export default class SimpleGas extends Component<Props> {
               <div className="GasPriceSlider-slider">
                 <SliderWithTooltip
                   {...field}
-                  onChange={e => form.setFieldValue('gasPriceSlider', e)}
+                  onChange={e => {
+                    this.setState({ gasPrice: e.toString() });
+                  }}
+                  onAfterChange={e => {
+                    form.setFieldValue('gasPriceSlider', e);
+                    onAfterChange();
+                  }}
                   min={bounds.min}
                   max={bounds.max}
                   marks={gasNotches}

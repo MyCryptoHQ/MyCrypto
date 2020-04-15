@@ -274,7 +274,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
         onSubmit={fields => {
           onComplete(fields);
         }}
-        render={({ errors, setFieldValue, setFieldTouched, touched, values, handleChange }) => {
+        render={({ errors, setFieldValue, setFieldTouched, touched, values }) => {
           if (getProTxValue(['setMainTransactionFormCallback'])) {
             getProTxValue(['setMainTransactionFormCallback'])(() => ({
               isValid: isFormValid,
@@ -503,9 +503,8 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                 </label>
                 {!values.advancedTransaction && (
                   <GasPriceSlider
-                    handleChange={(e: React.ChangeEvent<any>) => {
+                    onAfterChange={() => {
                       handleGasEstimate();
-                      handleChange(e);
                     }}
                     network={values.network}
                     gasPrice={values.gasPriceSlider}
