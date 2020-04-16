@@ -41,7 +41,7 @@ interface State {
   stage: MnemonicStages;
   words: string[];
   accountType: DPathFormat;
-  path: string;
+  dPath: string;
   address: string;
 }
 
@@ -51,7 +51,7 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
     words: [],
     network: DEFAULT_NETWORK,
     accountType: WalletId.MNEMONIC_PHRASE,
-    path: '',
+    dPath: this.props.getNetworkById(DEFAULT_NETWORK).dPaths[WalletId.MNEMONIC_PHRASE]?.value || '',
     address: ''
   };
 
@@ -71,8 +71,8 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
       addCreatedAccountAndRedirectToDashboard: this.addCreatedAccountAndRedirectToDashboard
     };
 
-    const { words, network, accountType, path, address } = this.state;
-    const props = { words, network, accountType, path, address };
+    const { words, network, accountType, dPath, address } = this.state;
+    const props = { words, network, accountType, dPath, address };
 
     return (
       <ActivePanel currentStep={currentStep} totalSteps={totalSteps} {...props} {...actions} />
@@ -128,11 +128,11 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
   };
 
   private decryptMnemonic = () => {
-    const { words, path } = this.state;
+    const { words, dPath } = this.state;
 
     const phrase = words.join(' ').trim();
     const seed = mnemonicToSeedSync(phrase);
-    const derived = HDkey.fromMasterSeed(seed).derive(path);
+    const derived = HDkey.fromMasterSeed(seed).derive(dPath);
     const privateKey = derived.privateKey;
     const address = privateToAddress(privateKey).toString('hex');
 
@@ -149,7 +149,7 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
       displayNotification,
       getNetworkById
     } = this.props;
-    const { network, accountType, address, path } = this.state;
+    const { network, accountType, address, dPath } = this.state;
 
     const accountNetwork = getNetworkById(network);
     if (!accountNetwork) return;
@@ -161,7 +161,7 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
       address: toChecksumAddress(addHexPrefix(address)) as TAddress,
       networkId: network,
       wallet: accountType,
-      dPath: path,
+      dPath,
       assets: [{ uuid: newAssetID, balance: '0', mtime: Date.now() }],
       transactions: [],
       favorite: false,

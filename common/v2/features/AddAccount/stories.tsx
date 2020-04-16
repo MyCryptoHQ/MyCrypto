@@ -23,7 +23,8 @@ export const IS_NOT_ELECTRON_AND_IS_NOT_DEV: boolean = !IS_ELECTRON && !IS_DEV;
 export const getStories = (): IStory[] => [
   {
     name: WalletId.WEB3,
-    steps: hasWeb3Provider() ? [Web3ProviderDecrypt] : [Web3ProviderInstall]
+    steps: hasWeb3Provider() ? [Web3ProviderDecrypt] : [Web3ProviderInstall],
+    hideFromWalletList: IS_ELECTRON
   },
   {
     name: WalletId.WALLETCONNECT,

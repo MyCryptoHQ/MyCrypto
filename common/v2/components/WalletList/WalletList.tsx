@@ -22,14 +22,14 @@ const Heading = styled.p`
   margin-top: 0;
   margin-bottom: 15px;
   text-align: center;
-  color: ${props => props.theme.headline};
+  color: ${(props) => props.theme.headline};
 `;
 
 const Description = styled.p`
   font-size: 18px;
   line-height: 1.5;
   font-weight: normal;
-  color: ${props => props.theme.text};
+  color: ${(props) => props.theme.text};
   white-space: pre-line;
   display: flex;
   justify-content: center;
@@ -67,7 +67,7 @@ const Info = styled.div<InfoProps>`
   width: 100%;
   flex-direction: column;
   margin-bottom: 15px;
-  display: ${props => (props.showInOneLine ? 'block' : 'grid')};
+  display: ${(props) => (props.showInOneLine ? 'block' : 'grid')};
 
   @media screen and (max-width: ${SCREEN_XS}) {
     display: grid;
@@ -95,21 +95,23 @@ export const WalletList = ({ wallets, onSelect, showHeader, calculateMargin }: P
         </>
       )}
       <WalletsContainer>
-        {wallets.map((wallet: IStory, index: number) => {
-          const walletInfo =
-            wallet.name === WalletId.WEB3 ? getWeb3Config() : getWalletConfig(wallet.name);
-          return (
-            <WalletButton
-              key={`wallet-icon-${wallet.name}`}
-              name={translateRaw(walletInfo.lid)}
-              icon={walletInfo.icon}
-              description={translateRaw(walletInfo.description)}
-              margin={calculateMargin && calculateMargin(index)}
-              onClick={() => onSelect(wallet.name)}
-              isDisabled={wallet.isDisabled}
-            />
-          );
-        })}
+        {wallets
+          .filter((w) => !w.hideFromWalletList)
+          .map((wallet: IStory, index: number) => {
+            const walletInfo =
+              wallet.name === WalletId.WEB3 ? getWeb3Config() : getWalletConfig(wallet.name);
+            return (
+              <WalletButton
+                key={`wallet-icon-${wallet.name}`}
+                name={translateRaw(walletInfo.lid)}
+                icon={walletInfo.icon}
+                description={translateRaw(walletInfo.description)}
+                margin={calculateMargin && calculateMargin(index)}
+                onClick={() => onSelect(wallet.name)}
+                isDisabled={wallet.isDisabled}
+              />
+            );
+          })}
       </WalletsContainer>
       <InfoWrapper>
         <Info showInOneLine={true}>

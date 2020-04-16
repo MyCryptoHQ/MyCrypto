@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { stripHexPrefix } from 'ethjs-util';
-import { Button } from '@mycrypto/ui';
+import { ethers } from 'ethers';
 
-import { TogglablePassword, Input } from 'v2/components';
+import { TogglablePassword, Input, Button } from 'v2/components';
 import { isValidPrivKey, isValidEncryptedPrivKey } from 'v2/services/EthService';
+import { decryptPrivKey } from 'v2/services/EthService/utils';
 import { ISignComponentProps } from 'v2/types';
 import translate, { translateRaw } from 'v2/translations';
 import { WALLETS_CONFIG } from 'v2/config';
@@ -99,7 +100,7 @@ export default class SignTransactionPrivateKey extends Component<
             {translateRaw('SIGN_TX_EXPLANATION')}
           </div>
           <div className="SignTransactionPrivateKey-footer">
-            <Button className="SignTransactionPrivateKey-button">
+            <Button onClick={this.unlock} className="SignTransactionPrivateKey-button">
               {translateRaw('DEP_SIGNTX')}
             </Button>
             {WALLETS_CONFIG.PRIVATE_KEY.helpLink && (
@@ -144,5 +145,13 @@ export default class SignTransactionPrivateKey extends Component<
   private unlock = async (e: React.SyntheticEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
+    const { rawTransaction } = this.props;
+    const { key, password } = this.state;
+
+    const privateKey = password.length > 0 ? decryptPrivKey(key, password) : key;
+
+    const signerWallet = new ethers.Wallet(privateKey);
+    const rawSignedTransaction: any = await signerWallet.sign(rawTransaction);
+    this.props.onSuccess(rawSignedTransaction);
   };
 }
