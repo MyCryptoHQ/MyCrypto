@@ -62,7 +62,7 @@ const addDevAccounts = add(LSKeys.ACCOUNTS)((accounts: DevAccount[], store: Loca
     R.map(withUuid(generateUUID)),
     //@ts-ignore ie. https://github.com/DefinitelyTyped/DefinitelyTyped/issues/25581
     R.map(updateAssetUuid),
-    R.reduce(toObject('uuid'), {}),
+    R.reduce(toObject('uuid'), {} as any),
     R.mergeRight(store.accounts)
   )(accounts);
 });
