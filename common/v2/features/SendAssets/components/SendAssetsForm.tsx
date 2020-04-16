@@ -518,9 +518,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                 </label>
                 {!values.advancedTransaction && (
                   <GasPriceSlider
-                    onAfterChange={() => {
-                      handleGasEstimate();
-                    }}
                     network={values.network}
                     gasPrice={values.gasPriceSlider}
                     gasEstimates={values.gasEstimates}

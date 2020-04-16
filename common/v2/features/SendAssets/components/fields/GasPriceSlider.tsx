@@ -15,7 +15,6 @@ interface OwnProps {
   gasPrice: string;
   gasEstimates: GasEstimates;
   network: Network;
-  onAfterChange(): void;
 }
 
 type Props = OwnProps;
@@ -44,7 +43,7 @@ export default class SimpleGas extends Component<Props> {
   };
 
   public render() {
-    const { gasEstimates, onAfterChange } = this.props;
+    const { gasEstimates } = this.props;
     const { gasPrice } = this.state;
     const bounds = {
       max: gasEstimates ? gasEstimates.fastest : GAS_PRICE_DEFAULT.max,
@@ -52,14 +51,6 @@ export default class SimpleGas extends Component<Props> {
     };
     const gasNotches = this.makeGasNotches();
 
-    /**
-     * @desc On retrieval of gas estimates,
-     *  the current gas price may be lower than the lowest recommended price.
-     *  `rc-slider` will force the onChange if the value is too low, so we
-     *  ensure it at least passes the lower boundary.
-     *  When this occurs, the logic in `UNSAFE_componentWillReceiveProps` fires,
-     *  and it cannot happen again from that point forward.
-     */
     const actualGasPrice = Math.max(parseFloat(gasPrice), bounds.min);
     return (
       <Field
@@ -75,7 +66,6 @@ export default class SimpleGas extends Component<Props> {
                   }}
                   onAfterChange={e => {
                     form.setFieldValue('gasPriceSlider', e);
-                    onAfterChange();
                   }}
                   min={bounds.min}
                   max={bounds.max}
