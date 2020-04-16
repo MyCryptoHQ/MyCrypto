@@ -1,8 +1,8 @@
 import { BigNumber } from 'ethers/utils';
 import { NetworkId, TSymbol, TUuid } from 'v2/types';
+import { Brand } from 'utility-types';
 
-enum TickerBrand {}
-export type TTicker = TickerBrand & string;
+export type TTicker = Brand<string, 'Ticker'>;
 
 export interface Fiat {
   code: string;

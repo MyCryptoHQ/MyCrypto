@@ -82,7 +82,7 @@ export default function AddressBook({
   updateAddressBooks,
   restoreDeletedAddressBook
 }: Props) {
-  const [deletingIndex, setDeletingIndex] = useState();
+  const [deletingIndex, setDeletingIndex] = useState<number>();
   const [undoDeletingIndexes, setUndoDeletingIndexes] = useState<[number, TUuid][]>([]);
   const overlayRows: [number[], [number, TUuid][]] = [
     isNumber(deletingIndex) ? [deletingIndex] : [],

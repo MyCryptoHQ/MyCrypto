@@ -79,7 +79,7 @@ const addContracts = add(LSKeys.CONTRACTS)(
       R.map(({ id, contracts }) => ({ id, contracts })),
       R.filter(({ contracts }) => contracts),
       R.chain(({ id, contracts }): ExtendedAsset[] => contracts.map(formatContract(id))),
-      R.reduce(toObject('uuid'), {}),
+      R.reduce(toObject('uuid'), {} as any),
       R.mergeRight(store.contracts)
     )(toArray(networks));
   }
@@ -153,7 +153,7 @@ const addTokensToAssets = add(LSKeys.ASSETS)(
       R.map(({ id, tokens }) => ({ id, tokens })),
       R.filter(({ tokens }) => tokens),
       R.chain(({ id, tokens }): ExtendedAsset[] => tokens.map(formatToken(id))),
-      R.reduce(toObject('uuid'), {}),
+      R.reduce(toObject('uuid'), {} as any),
       R.mergeRight(store.assets)
     )(toArray(networks));
   }

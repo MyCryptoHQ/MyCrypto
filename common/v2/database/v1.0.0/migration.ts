@@ -39,6 +39,7 @@ export function migrate(prev: LocalStorage, curr: LocalStorage) {
 
     const updateUUID = (assetBalance: AssetBalanceObject) => ({
       ...assetBalance,
+      //@ts-ignore
       uuid: getUUID(getTicker(assetBalance.uuid))
     });
 

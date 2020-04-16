@@ -10,7 +10,9 @@ import {
   ExtendedNotification,
   LSKeys,
   TUuid,
-  DataStore
+  DataStore,
+  ExtendedAsset,
+  ExtendedContract
 } from 'v2/types';
 import { makeExplorer } from 'v2/services/EthService';
 
@@ -37,8 +39,8 @@ export function marshallState(ls: LocalStorage): DataStore {
       },
       [] as ExtendedAddressBook[]
     ),
-    [LSKeys.ASSETS]: memoizeObjToArray(ls[LSKeys.ASSETS]),
-    [LSKeys.CONTRACTS]: memoizeObjToArray(ls[LSKeys.CONTRACTS]),
+    [LSKeys.ASSETS]: memoizeObjToArray(ls[LSKeys.ASSETS]) as ExtendedAsset[],
+    [LSKeys.CONTRACTS]: memoizeObjToArray(ls[LSKeys.CONTRACTS]) as ExtendedContract[],
     [LSKeys.NETWORKS]: Object.values(ls[LSKeys.NETWORKS]).map(({ blockExplorer, ...rest }) => ({
       ...rest,
       blockExplorer: blockExplorer ? makeExplorer(blockExplorer) : blockExplorer
