@@ -7,7 +7,10 @@ import handlers from './handlers';
 export function registerServer(app: App) {
   // Register protocol scheme
   protocol.registerSchemesAsPrivileged([
-    { scheme: PROTOCOL_NAME, privileges: { standard: true, secure: true } }
+    {
+      scheme: PROTOCOL_NAME,
+      privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true }
+    }
   ]);
 
   app.on('ready', () => {
@@ -52,7 +55,7 @@ function getMethod(req: Electron.Request): EnclaveMethods {
 }
 
 function getParams(method: EnclaveMethods, req: Electron.Request): EnclaveMethodParams {
-  const data = req.uploadData.find(d => !!d.bytes);
+  const data = req.uploadData.find((d) => !!d.bytes);
 
   if (!data) {
     throw new Error(`No data provided for '${method}'`);
