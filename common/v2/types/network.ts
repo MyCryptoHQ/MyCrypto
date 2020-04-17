@@ -55,6 +55,7 @@ interface NetworkUnusedLegacyProps {
   unsupportedTabs?: any[];
   hideEquivalentValues?: boolean;
   unit: TSymbol;
+  nodes?: NodeOptions[];
 }
 
 export type NetworkLegacy = Subtract<
@@ -62,3 +63,8 @@ export type NetworkLegacy = Subtract<
   NetworkPropsMissingInLegacy
 > &
   NetworkUnusedLegacyProps;
+
+export interface NetworkNodes {
+  nodes?: NodeOptions[];
+  selectedNode?: string;
+}

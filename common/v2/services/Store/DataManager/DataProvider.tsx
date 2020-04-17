@@ -1,6 +1,6 @@
 import React, { createContext, Dispatch, useReducer, useCallback, useMemo, useEffect } from 'react';
 
-import { LSKeys } from 'v2/types';
+import { LSKeys, DSKeys } from 'v2/types';
 import { useThrottleFn, useEvent } from 'v2/vendor';
 import {
   addDevSeedToSchema,
@@ -25,7 +25,7 @@ import { DatabaseService } from './DatabaseService';
 import { EncryptedDataStore, DataStore } from 'v2/types/store';
 
 export interface DataCacheManager extends DataStore {
-  createActions(k: LSKeys): ReturnType<typeof ActionFactory>;
+  createActions(k: DSKeys): ReturnType<typeof ActionFactory>;
   resetAppDb(): void;
   addSeedData(): void;
   removeSeedData(): void;
@@ -148,7 +148,7 @@ export const DataProvider: React.FC = ({ children }) => {
 
   const stateContext: IDataContext = {
     ...appState,
-    createActions: key => ActionFactory(key, dispatch, appState),
+    createActions: (key) => ActionFactory(key, dispatch, appState),
     resetAppDb,
     encryptedDbState,
     removeSeedData,

@@ -1,4 +1,4 @@
-import { LSKeys, IAccount } from 'v2/types';
+import { LSKeys, IAccount, DSKeys } from 'v2/types';
 import { ActionT, ActionV, appDataReducer } from './reducer';
 
 const dispatch = (action: ActionV) => (state: any) => appDataReducer(state, action);
@@ -9,7 +9,7 @@ describe('AppStateReducer', () => {
       const account = { address: '0x0', uuid: 'fakeUUID' } as IAccount;
       const prevState = { [LSKeys.ACCOUNTS]: [] };
       const payload = {
-        model: LSKeys.ACCOUNTS,
+        model: LSKeys.ACCOUNTS as DSKeys,
         data: account
       };
 
@@ -22,7 +22,7 @@ describe('AppStateReducer', () => {
       const account2 = { address: '0x2', uuid: 'fakeUUID' } as IAccount;
       const prevState = { [LSKeys.ACCOUNTS]: [account1] };
       const payload = {
-        model: LSKeys.ACCOUNTS,
+        model: LSKeys.ACCOUNTS as DSKeys,
         data: account2
       };
 

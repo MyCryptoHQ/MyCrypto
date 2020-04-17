@@ -9,15 +9,16 @@ import {
   Network,
   NetworkId,
   ISettings,
-  LocalStorage
+  LocalStorage,
+  DSKeys
 } from 'v2/types';
 import { ActionPayload, ActionV, ActionT } from './reducer';
 import { marshallState, deMarshallState } from './utils';
 
-type createPayload = (m: LSKeys) => <T>(v: T) => ActionPayload<T>;
-const createPayload: createPayload = model => v => ({ model, data: v });
+type createPayload = (m: DSKeys) => <T>(v: T) => ActionPayload<T>;
+const createPayload: createPayload = (model) => (v) => ({ model, data: v });
 
-export function ActionFactory(model: LSKeys, dispatch: Dispatch<ActionV>, state: DataStore) {
+export function ActionFactory(model: DSKeys, dispatch: Dispatch<ActionV>, state: DataStore) {
   const generatePayload = createPayload(model);
 
   const create = (item: DataStoreItem): void => {
