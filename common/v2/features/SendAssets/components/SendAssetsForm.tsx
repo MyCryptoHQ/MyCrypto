@@ -164,9 +164,11 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
+  const defaultNetwork = networks.find((n) => n.id === DEFAULT_NETWORK);
   const [baseAsset, setBaseAsset] = useState(
     (txConfig.network &&
       getBaseAssetByNetwork({ network: txConfig.network, assets: userAssets })) ||
+      (defaultNetwork && getBaseAssetByNetwork({ network: defaultNetwork, assets: userAssets })) ||
       ({} as Asset)
   );
 
@@ -176,7 +178,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
   const SendAssetsSchema = Yup.object().shape({
     amount: Yup.string()
       .required(translateRaw('REQUIRED'))
-      .test('check-valid-amount', translateRaw('ERROR_0'), value => !validateAmountField(value))
+      .test('check-valid-amount', translateRaw('ERROR_0'), (value) => !validateAmountField(value))
       .test({
         name: 'check-amount',
         test(value) {
@@ -205,7 +207,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
       .required(translateRaw('REQUIRED'))
       // @ts-ignore Hack as Formik doesn't officially support warnings
       // tslint:disable-next-line
-      .test('check-sending-to-burn', translateRaw('SENDING_TO_BURN_ADDRESS'), function(value) {
+      .test('check-sending-to-burn', translateRaw('SENDING_TO_BURN_ADDRESS'), function (value) {
         if (isBurnAddress(value.value)) {
           return {
             name: 'ValidationError',
@@ -216,7 +218,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
         return true;
       })
       // @ts-ignore Hack as Formik doesn't officially support warnings
-      .test('check-sending-to-yourself', translateRaw('SENDING_TO_YOURSELF'), function(value) {
+      .test('check-sending-to-yourself', translateRaw('SENDING_TO_YOURSELF'), function (value) {
         const account = this.parent.account;
         if (
           !isEmpty(account) &&
@@ -251,7 +253,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
         // @ts-ignore Hack to allow for returning of Markdown
         translate('NONCE_ERROR', { $link: formatSupportEmail('Send Page: Nonce Error') }),
         // @ts-ignore Hack to allow for returning of Markdown
-        async function(value) {
+        async function (value) {
           const account = this.parent.account;
           const network = this.parent.network;
           if (!isEmpty(account)) {
@@ -263,9 +265,8 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
       )
   });
 
-  const validAccounts = accounts.filter(account => account.wallet !== WalletId.VIEW_ONLY);
-  const userAccountEthAsset = userAssets.find(a => a.uuid === EtherUUID);
-  const defaultNetwork = networks.find(n => n.id === DEFAULT_NETWORK);
+  const validAccounts = accounts.filter((account) => account.wallet !== WalletId.VIEW_ONLY);
+  const userAccountEthAsset = userAssets.find((a) => a.uuid === EtherUUID);
 
   return (
     <div
@@ -276,7 +277,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
       <Formik
         initialValues={getInitialFormikValues(txConfig, userAccountEthAsset, defaultNetwork)}
         validationSchema={SendAssetsSchema}
-        onSubmit={fields => {
+        onSubmit={(fields) => {
           onComplete(fields);
         }}
         render={({ errors, setFieldValue, setFieldTouched, touched, values }) => {
@@ -290,7 +291,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
           // Set gas estimates if default asset is selected
           useEffectOnce(() => {
             if (!isEmpty(values.asset)) {
-              fetchGasPriceEstimates(values.network).then(data => {
+              fetchGasPriceEstimates(values.network).then((data) => {
                 setFieldValue('gasEstimates', data);
                 setFieldValue('gasPriceSlider', data.fast);
               });
@@ -337,7 +338,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
               'txDataField',
               'advancedTransaction'
             ];
-            resetFields.forEach(field => setFieldValue(field, initialFormikValues[field]));
+            resetFields.forEach((field) => setFieldValue(field, initialFormikValues[field]));
           };
 
           const setAmountFieldToAssetMax = () => {
@@ -394,7 +395,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                         handleFieldReset();
                         if (option && option.networkId) {
                           const network = getNetworkById(option.networkId, networks);
-                          fetchGasPriceEstimates(network).then(data => {
+                          fetchGasPriceEstimates(network).then((data) => {
                             form.setFieldValue('gasEstimates', data);
                             form.setFieldValue('gasPriceSlider', data.fast);
                           });
@@ -658,7 +659,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                       getAssetRate(values.asset)
                     ) !== ProtectTxError.NO_ERROR
                   }
-                  onClick={e => {
+                  onClick={(e) => {
                     e.preventDefault();
 
                     if (getProTxValue(['goToInitialStepOrFetchReport'])) {
