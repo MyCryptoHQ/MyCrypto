@@ -117,23 +117,16 @@ const constructNetworkNodes = (networks: DataStore[LSKeys.NETWORKS]) => {
 export function deMarshallState(st: DataStore): Omit<LocalStorage, 'mtime'> {
   return {
     version: st.version,
-    [LSKeys.ACCOUNTS]: st[LSKeys.ACCOUNTS].reduce(
-      (acc, curr) => ({ ...acc, [curr.uuid]: curr }),
-      {}
+    [LSKeys.ACCOUNTS]: arrayToObj('uuid')(
+      st[LSKeys.ACCOUNTS].map((x) => ({ ...x, network: undefined }))
     ),
-    [LSKeys.ADDRESS_BOOK]: st[LSKeys.ADDRESS_BOOK].reduce(
-      (acc, curr) => ({ ...acc, [curr.uuid]: curr }),
-      {}
-    ),
+    [LSKeys.ADDRESS_BOOK]: arrayToObj('uuid')(st[LSKeys.ADDRESS_BOOK]),
     [LSKeys.ASSETS]: arrayToObj('uuid')(st[LSKeys.ASSETS].filter((a) => a.isCustom)),
     [LSKeys.CONTRACTS]: arrayToObj('uuid')(st[LSKeys.CONTRACTS].filter((c) => c.isCustom)),
     [LSKeys.NETWORKS]: st[LSKeys.NETWORKS]
       .filter((c) => c.isCustom)
       .reduce((acc, curr) => ({ ...acc, [curr.id]: curr }), {} as Record<NetworkId, Network>),
-    [LSKeys.NOTIFICATIONS]: st[LSKeys.NOTIFICATIONS].reduce(
-      (acc, curr) => ({ ...acc, [curr.uuid]: curr }),
-      {}
-    ),
+    [LSKeys.NOTIFICATIONS]: arrayToObj('uuid')(st[LSKeys.NOTIFICATIONS]),
     [LSKeys.SETTINGS]: st[LSKeys.SETTINGS],
     [LSKeys.PASSWORD]: st[LSKeys.PASSWORD],
     [LSKeys.NETWORK_NODES]: constructNetworkNodes(st[LSKeys.NETWORKS])
