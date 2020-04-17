@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
-import { ROUTE_PATHS } from 'v2/config';
+//import { ROUTE_PATHS } from 'v2/config';
 import { AccountContext } from 'v2/services/Store';
 
 interface PrivateRouteProps {
@@ -17,11 +17,12 @@ export const PrivateRoute = ({
   return (
     <Route
       {...rest}
-      render={props =>
+      render={(props) =>
         (accounts && accounts.length) || !requireAccounts ? (
           <Component {...props} />
         ) : (
-          <Redirect to={ROUTE_PATHS.NO_ACCOUNTS.path} />
+          <Component {...props} />
+          // <Redirect to={ROUTE_PATHS.NO_ACCOUNTS.path} />
         )
       }
     />
