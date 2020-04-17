@@ -166,7 +166,9 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
   const defaultNetwork = networks.find((n) => n.id === DEFAULT_NETWORK);
   const [baseAsset, setBaseAsset] = useState(
-    (defaultNetwork && getBaseAssetByNetwork({ network: defaultNetwork, assets: userAssets })) ||
+    (txConfig.network &&
+      getBaseAssetByNetwork({ network: txConfig.network, assets: userAssets })) ||
+      (defaultNetwork && getBaseAssetByNetwork({ network: defaultNetwork, assets: userAssets })) ||
       ({} as Asset)
   );
 
