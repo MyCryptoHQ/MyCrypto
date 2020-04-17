@@ -39,9 +39,8 @@ export {
   StoreAsset,
   AssetWithDetails
 } from './asset';
-import type { StoreAccount } from './account';
+export { StoreAccount } from './account';
 export { IRawAccount, IAccount } from './account';
-export type { StoreAccount }
 export { AddressBook, ExtendedAddressBook } from './addressBook';
 export { Contract, ExtendedContract } from './contract';
 export { Network, NetworkLegacy, AssetLegacy, ContractLegacy } from './network';
