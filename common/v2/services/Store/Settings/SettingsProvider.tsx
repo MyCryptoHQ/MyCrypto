@@ -27,9 +27,9 @@ const isValidImport = (importedCache: string, localStorage: string) => {
       );
     }
 
-    const oldKeys = Object.keys(parsedImport).sort();
-    const newKeys = Object.keys(parsedLocalStorage).sort();
-    return JSON.stringify(oldKeys) === JSON.stringify(newKeys);
+    const oldKeys = Object.keys(parsedImport);
+    const newKeys = Object.keys(parsedLocalStorage);
+    return oldKeys.every((key) => newKeys.includes(key));
   } catch (error) {
     console.debug(error);
     return false;
@@ -68,10 +68,10 @@ export const SettingsProvider: React.FC = ({ children }) => {
       state.updateSettings({ ...settings, node: nodeId });
     },
 
-    updateSettingsRates: rates => {
+    updateSettingsRates: (rates) => {
       state.updateSettings({ ...settings, rates });
     },
-    updateLanguageSelection: languageToChangeTo => {
+    updateLanguageSelection: (languageToChangeTo) => {
       state.updateSettings({ ...settings, language: languageToChangeTo });
     }
   };
