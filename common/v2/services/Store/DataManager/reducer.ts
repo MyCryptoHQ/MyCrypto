@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 
 import { LSKeys, DataStoreEntry, DataStoreItem, TUuid, Network } from 'v2/types';
-import { EncryptedDataStore, DataStore } from 'v2/types/store';
+import { EncryptedDataStore, DataStore, DSKeys } from 'v2/types/store';
 
 export enum ActionT {
   ADD_ITEM = 'ADD_ITEM',
@@ -13,7 +13,7 @@ export enum ActionT {
 }
 
 export interface ActionPayload<T> {
-  model: LSKeys;
+  model: DSKeys;
   data: T;
 }
 

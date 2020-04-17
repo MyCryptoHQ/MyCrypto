@@ -11,7 +11,8 @@ import {
   ExtendedAsset,
   ExtendedNotification,
   TUuid,
-  NetworkId
+  NetworkId,
+  NetworkNodes
 } from 'v2/types';
 
 export enum LSKeys {
@@ -22,7 +23,8 @@ export enum LSKeys {
   NETWORKS = 'networks',
   NOTIFICATIONS = 'notifications',
   SETTINGS = 'settings',
-  PASSWORD = 'password'
+  PASSWORD = 'password',
+  NETWORK_NODES = 'networkNodes'
 }
 
 export interface LocalStorage {
@@ -36,7 +38,10 @@ export interface LocalStorage {
   readonly [LSKeys.ADDRESS_BOOK]: Record<TUuid, AddressBook>;
   readonly [LSKeys.NOTIFICATIONS]: Record<TUuid, Notification>;
   readonly [LSKeys.PASSWORD]: string;
+  readonly [LSKeys.NETWORK_NODES]: Record<NetworkId, NetworkNodes>;
 }
+
+export type DSKeys = Exclude<LSKeys, LSKeys.NETWORK_NODES>;
 
 export interface DataStore {
   readonly version: string;

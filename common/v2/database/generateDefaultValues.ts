@@ -15,17 +15,22 @@ import {
   Fiat,
   ContractLegacy,
   AssetLegacy,
-  LSKeys
+  LSKeys,
+  NodeOptions
 } from 'v2/types';
 
 import { NODES_CONFIG, NETWORKS_CONFIG, NetworkConfig } from './data';
 import { SeedData, StoreAction } from './types';
 import { toArray, toObject, add } from './helpers';
+
 /* Transducers */
 const addNetworks = add(LSKeys.NETWORKS)((networks: SeedData) => {
   const formatNetwork = (n: NetworkLegacy): Network => {
     const baseAssetUuid = generateAssetUUID(n.chainId);
-    const nodes = NODES_CONFIG[n.id] || NODES_CONFIG[n.name as NetworkId] || [];
+    const nodes: NodeOptions[] = NODES_CONFIG[n.id] || [];
+    if (n.nodes) {
+      nodes.push(...n.nodes); // add custom nodes
+    }
     const [firstNode] = nodes;
 
     return Object.assign(
@@ -55,7 +60,7 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: SeedData) => {
         ? {
             // Extend network if nodes are defined
             autoNode: firstNode.name, // Select first node as auto
-            selectedNode: firstNode.name // Select first node as default
+            selectedNode: n.selectedNode || firstNode.name // Select first node as default
           }
         : {}
     );
@@ -64,7 +69,7 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: SeedData) => {
   return R.mapObjIndexed(formatNetwork, networks);
 });
 
-export const addContracts = add(LSKeys.CONTRACTS)(
+const addContracts = add(LSKeys.CONTRACTS)(
   (networks: Record<NetworkId, NetworkLegacy>, store: LocalStorage) => {
     const formatContract = (id: NetworkId) => (c: ContractLegacy): ExtendedContract => ({
       uuid: c.uuid || generateContractUUID(id, c.address, c.abi),
@@ -87,12 +92,12 @@ export const addContracts = add(LSKeys.CONTRACTS)(
   }
 );
 
-export const addContractsToNetworks = add(LSKeys.NETWORKS)((_, store: LocalStorage) => {
+const addContractsToNetworks = add(LSKeys.NETWORKS)((_, store: LocalStorage) => {
   const getNetworkContracts = (n: Network) => {
     const nContracts = R.filter((c: ExtendedContract) => c.networkId === n.id, store.contracts);
     return {
       ...n,
-      contracts: toArray(nContracts).map(c => c.uuid)
+      contracts: toArray(nContracts).map((c) => c.uuid)
     };
   };
   return R.mapObjIndexed(getNetworkContracts, store.networks);
@@ -165,12 +170,12 @@ const addTokensToAssets = add(LSKeys.ASSETS)(
 const updateNetworkAssets = add(LSKeys.NETWORKS)((_, store: LocalStorage) => {
   // Since we added baseAsset and tokens to Assets this will return both.
   const findNetworkAssets = (nId: NetworkId): Asset[] =>
-    toArray(store.assets).filter(a => a.networkId === nId);
+    toArray(store.assets).filter((a) => a.networkId === nId);
 
   const getAssetUuid = (n: Network) =>
     findNetworkAssets(n.id)
       .filter(Boolean)
-      .map(a => a.uuid);
+      .map((a) => a.uuid);
 
   return R.mapObjIndexed(
     (n: Network) => ({
