@@ -6,7 +6,7 @@ import { useUpdateEffect } from 'v2/vendor';
 import { ROUTE_PATHS, WALLETS_CONFIG, IWalletConfig } from 'v2/config';
 import { WalletId, IStory } from 'v2/types';
 import { ExtendedContentPanel, WalletList } from 'v2/components';
-import { StoreContext, AccountContext } from 'v2/services/Store';
+import { StoreContext } from 'v2/services/Store';
 
 import { NotificationsContext, NotificationTemplates } from '../NotificationsPanel';
 import { FormDataActionType as ActionType } from './types';
@@ -15,7 +15,7 @@ import { formReducer, initialState } from './AddAccountForm.reducer';
 import './AddAccountFlow.scss';
 
 export const getStory = (storyName: WalletId): IStory => {
-  return getStories().filter(selected => selected.name === storyName)[0];
+  return getStories().filter((selected) => selected.name === storyName)[0];
 };
 
 export const getStorySteps = (storyName: WalletId) => {
@@ -40,9 +40,8 @@ export const isValidWalletId = (id: WalletId | string | undefined) => {
 const AddAccountFlow = withRouter(({ history, match }) => {
   const [step, setStep] = useState(0); // The current Step inside the Wallet Story.
   const [formData, updateFormState] = useReducer(formReducer, initialState); // The data that we want to save at the end.
-  const { scanTokens, addAccount, accounts } = useContext(StoreContext);
+  const { scanAccountTokens, addAccount, accounts } = useContext(StoreContext);
   const { displayNotification } = useContext(NotificationsContext);
-  const { getAccountByAddressAndNetworkName } = useContext(AccountContext);
 
   const storyName: WalletId = formData.accountType; // The Wallet Story that we are tracking.
   const isDefaultView = storyName === undefined;
@@ -60,9 +59,13 @@ const AddAccountFlow = withRouter(({ history, match }) => {
   // If add account succeeds, accounts is updated and we can return to dashboard
   useEffect(() => {
     const { network, address } = formData;
-    if (!!getAccountByAddressAndNetworkName(address, network)) {
+    if (!accounts) return;
+    const newAccount = accounts.find(
+      (account) => account.address === address && account.networkId === network
+    );
+    if (!!newAccount) {
       displayNotification(NotificationTemplates.walletAdded, { address });
-      scanTokens();
+      scanAccountTokens(newAccount);
       history.push(ROUTE_PATHS.DASHBOARD.path);
     }
   }, [accounts]);
