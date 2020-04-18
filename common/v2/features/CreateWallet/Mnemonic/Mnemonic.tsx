@@ -18,7 +18,7 @@ import {
   WalletId,
   NetworkId
 } from 'v2/types';
-import { generateUUID, withContext } from 'v2/utils';
+import { withContext, generateAccountUUID } from 'v2/utils';
 import {
   NetworkContext,
   AssetContext,
@@ -154,22 +154,21 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
     const accountNetwork = getNetworkById(network);
     if (!accountNetwork) return;
 
-    const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(this.props.assets)(accountNetwork);
-    const newAssetID = generateUUID();
-    const newUUID = generateUUID();
+    const newAsset = getNewDefaultAssetTemplateByNetwork(this.props.assets)(accountNetwork);
     const account: IRawAccount = {
       address: toChecksumAddress(addHexPrefix(address)) as TAddress,
       networkId: network,
       wallet: accountType,
       dPath,
-      assets: [{ uuid: newAssetID, balance: '0', mtime: Date.now() }],
+      assets: [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
       transactions: [],
       favorite: false,
       mtime: Date.now()
     };
-    createAccountWithID(account, newUUID);
-    updateSettingsAccounts([...settings.dashboardAccounts, newUUID]);
-    createAssetWithID(newAsset, newAssetID);
+    const accountUUID = generateAccountUUID(network, account.address);
+    createAccountWithID(account, accountUUID);
+    updateSettingsAccounts([...settings.dashboardAccounts, accountUUID]);
+    createAssetWithID(newAsset, newAsset.uuid);
 
     displayNotification(NotificationTemplates.walletCreated, {
       address: account.address
