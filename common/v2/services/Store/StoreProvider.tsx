@@ -24,9 +24,9 @@ import {
   convertToFiatFromAsset,
   fromTxReceiptObj,
   getWeb3Config,
-  generateUUID,
   multiplyBNFloats,
-  weiToFloat
+  weiToFloat,
+  generateAccountUUID
 } from 'v2/utils';
 import { ReserveAsset } from 'v2/types/asset';
 import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from 'v2/services/EthService';
@@ -158,11 +158,11 @@ export const StoreProvider: React.FC = ({ children }) => {
             updateAccountsBalances(accountsWithBalances);
           }
           return currentAccounts
-            .filter(account => account.networkId === 'Ethereum')
-            .filter(account => account.wallet !== WalletId.VIEW_ONLY);
+            .filter((account) => account.networkId === DEFAULT_NETWORK)
+            .filter((account) => account.wallet !== WalletId.VIEW_ONLY);
         })
         .then(accountMembershipDetected)
-        .then(e => {
+        .then((e) => {
           if (!isMounted) return;
           setMemberships(e as MembershipStatus[]);
         });
@@ -182,8 +182,8 @@ export const StoreProvider: React.FC = ({ children }) => {
     if (!network) return;
     const unlockProvider = new UnlockProtocolHandler(network);
     const membershipLookups = R.flatten(
-      memberships.map(membership =>
-        membership.memberships.map(membershipId => {
+      memberships.map((membership) =>
+        membership.memberships.map((membershipId) => {
           const membershipConfig = MEMBERSHIP_CONFIG[membershipId];
           return { account: membership.address, lockAddress: membershipConfig.contractAddress };
         })
@@ -191,17 +191,17 @@ export const StoreProvider: React.FC = ({ children }) => {
     );
 
     Promise.all(
-      membershipLookups.map(membershipLookupObj =>
+      membershipLookups.map((membershipLookupObj) =>
         unlockProvider.fetchUnlockKeyExpiration(
           membershipLookupObj.account,
           membershipLookupObj.lockAddress
         )
       )
     )
-      .then(data => {
+      .then((data) => {
         setMembershipExpiration(data);
       })
-      .catch(e => console.debug('[MembershipExpirationPolling]: Err: ', e));
+      .catch((e) => console.debug('[MembershipExpirationPolling]: Err: ', e));
   }, [memberships]);
 
   useEffect(() => {
@@ -221,7 +221,7 @@ export const StoreProvider: React.FC = ({ children }) => {
         if (!network) return;
         const provider = new ProviderHandler(network);
 
-        provider.getTransactionByHash(pendingTransactionObject.hash).then(transactionReceipt => {
+        provider.getTransactionByHash(pendingTransactionObject.hash).then((transactionReceipt) => {
           // Fail out if tx receipt cant be found.
           // This initial check stops us from spamming node for data before there is data to fetch.
           if (!transactionReceipt) return;
@@ -296,7 +296,7 @@ export const StoreProvider: React.FC = ({ children }) => {
         .reduce((sum, asset) => (sum += convertToFiatFromAsset(asset, getAssetRate(asset))), 0),
 
     assetTickers: (targetAssets = state.assets()) => [
-      ...new Set(targetAssets.map(a => a.ticker as TTicker))
+      ...new Set(targetAssets.map((a) => a.ticker as TTicker))
     ],
     assetUUIDs: (targetAssets = state.assets()) => {
       return [...new Set(targetAssets.map((a: StoreAsset) => a.uuid))];
@@ -304,17 +304,17 @@ export const StoreProvider: React.FC = ({ children }) => {
     scanTokens: async (asset?: ExtendedAsset) =>
       Promise.all(
         accounts
-          .map(account => updateAccountAssets(account, asset ? [...assets, asset] : assets))
-          .map(p => p.catch(e => console.debug(e)))
+          .map((account) => updateAccountAssets(account, asset ? [...assets, asset] : assets))
+          .map((p) => p.catch((e) => console.debug(e)))
       ),
-    deleteAccountFromCache: account => {
-      setAccountRestore(prevState => ({ ...prevState, [account.uuid]: account }));
+    deleteAccountFromCache: (account) => {
+      setAccountRestore((prevState) => ({ ...prevState, [account.uuid]: account }));
       deleteAccount(account);
       updateSettingsAccounts(
-        settings.dashboardAccounts.filter(dashboardUUID => dashboardUUID !== account.uuid)
+        settings.dashboardAccounts.filter((dashboardUUID) => dashboardUUID !== account.uuid)
       );
     },
-    restoreDeletedAccount: accountId => {
+    restoreDeletedAccount: (accountId) => {
       const account = accountRestore[accountId];
       if (isEmpty(account)) {
         throw new Error('Unable to restore account! No account with id specified.');
@@ -322,7 +322,7 @@ export const StoreProvider: React.FC = ({ children }) => {
 
       const { uuid, ...restAccount } = account!;
       createAccountWithID(restAccount, uuid);
-      setAccountRestore(prevState => ({ ...prevState, [uuid]: undefined }));
+      setAccountRestore((prevState) => ({ ...prevState, [uuid]: undefined }));
     },
     addAccount: (
       networkId: NetworkId,
@@ -336,7 +336,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       const walletType =
         accountType! === WalletId.WEB3 ? WalletId[getWeb3Config().id] : accountType!;
       const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(assets)(network);
-      const newUUID = generateUUID();
+      const accountUUID = generateAccountUUID(networkId, address);
       const account: IRawAccount = {
         address,
         networkId,
@@ -363,17 +363,17 @@ export const StoreProvider: React.FC = ({ children }) => {
         };
         createContact(newLabel);
       }
-      createAccountWithID(account, newUUID);
+      createAccountWithID(account, accountUUID);
 
       return account;
     },
     getAssetByTicker: getAssetByTicker(assets),
     getAccount: ({ address, networkId }) =>
-      accounts.find(a => a.address === address && a.networkId === networkId),
+      accounts.find((a) => a.address === address && a.networkId === networkId),
     getDeFiAssetReserveAssets: (poolAsset: StoreAsset) => (
       getPoolAssetReserveRate: (poolTokenUuid: string, assets: Asset[]) => ReserveAsset[]
     ) =>
-      getPoolAssetReserveRate(poolAsset.uuid, assets).map(reserveAsset => ({
+      getPoolAssetReserveRate(poolAsset.uuid, assets).map((reserveAsset) => ({
         ...reserveAsset,
         balance: multiplyBNFloats(
           weiToFloat(poolAsset.balance, poolAsset.decimal).toString(),

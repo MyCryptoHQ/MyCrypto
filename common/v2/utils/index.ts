@@ -4,7 +4,13 @@ export * from './validators';
 export { IS_ELECTRON, IS_DOWNLOADABLE } from './platform';
 export { hasWeb3Provider, IS_DEV, IS_PROD } from './environment';
 export { getFeaturedOS } from './getFeaturedOS';
-export { generateUUID, generateAssetUUID, generateContractUUID, getUUID } from './generateUUID';
+export {
+  generateUUID,
+  generateAssetUUID,
+  generateContractUUID,
+  generateAccountUUID,
+  getUUID
+} from './generateUUID';
 export { isUrl } from './isUrl';
 export { truncate } from './truncate';
 export { useOnClickOutside } from './useOnClickOutside';
