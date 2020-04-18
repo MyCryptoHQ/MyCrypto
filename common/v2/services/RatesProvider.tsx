@@ -10,6 +10,7 @@ import { DeFiReserveMapService } from './ApiService';
 
 interface State {
   rates: IRates;
+  assetMapping: AssetMappingListObject;
   getRate(ticker: TTicker): number | undefined;
   getAssetRate(asset: Asset): number | undefined;
   getPoolAssetReserveRate(defiPoolTokenUUID: string, assets: Asset[]): ReserveAsset[];
@@ -110,6 +111,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
     get rates() {
       return settings.rates;
     },
+    assetMapping,
     getRate: (ticker: TTicker) => {
       // @ts-ignore until we find a solution for TS7053 error
       return state.rates[ticker] ? state.rates[ticker].usd : DEFAULT_FIAT_RATE;
