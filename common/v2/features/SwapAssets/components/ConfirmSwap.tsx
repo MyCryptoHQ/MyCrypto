@@ -60,6 +60,8 @@ export default function ConfirmSwap({
       <SwapFromToDiagram
         fromSymbol={fromAsset.symbol}
         toSymbol={toAsset.symbol}
+        fromUUID={fromAsset.uuid}
+        toUUID={toAsset.uuid}
         fromAmount={fromAmount.toString(10)}
         toAmount={toAmount.toString(10)}
       />

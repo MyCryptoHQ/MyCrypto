@@ -6,12 +6,12 @@ import BreakdownChart from './BreakdownChart';
 import NoAssets from './NoAssets';
 import { WalletBreakdownProps, Balance } from './types';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from 'v2/theme';
-import { TSymbol } from 'v2/types';
 import { AssetIcon, Currency, Typography } from 'v2/components';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
 import coinGeckoIcon from 'common/assets/images/credits/credits-coingecko.png';
 import { calculateShownIndex } from './helpers';
+import { EmptyUUID } from 'v2/utils';
 
 export const SMALLEST_CHART_SHARE_SUPPORTED = 0.03; // 3%
 export const NUMBER_OF_ASSETS_DISPLAYED = 4;
@@ -341,7 +341,7 @@ export default function WalletBreakdownView({
             >
               <BreakDownBalanceAssetInfo>
                 <div>
-                  <BreakDownBalanceAssetIcon symbol={ticker as TSymbol} size={'26px'} />
+                  <BreakDownBalanceAssetIcon uuid={uuid} size={'26px'} />
                 </div>
                 <div>
                   <BreakDownBalanceAssetName>{name}</BreakDownBalanceAssetName>
@@ -416,6 +416,7 @@ const createOtherTokenAsset = (otherBalances: Balance[]) => ({
   ticker: translateRaw('WALLET_BREAKDOWN_OTHER_TICKER'),
   isOther: true,
   amount: 0,
+  uuid: EmptyUUID,
   fiatValue: otherBalances.reduce((sum, asset) => {
     return (sum += asset.fiatValue);
   }, 0)

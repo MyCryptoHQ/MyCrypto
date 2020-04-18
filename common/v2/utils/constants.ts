@@ -5,6 +5,8 @@ export const ETCUUID = '6c1e671f-9af5-546d-9c1a-52067bdf0e53';
 export const USDTUUID = '00ff8c75-22ce-5e15-b06a-770154d7e333';
 export const ZRXUUID = '36a94c95-ec51-5e0f-b254-415e31d1c3a7';
 
+export const EmptyUUID = '00000000-0000-0000-0000-000000000000';
+
 export const MOONPAY_ASSET_UUIDS = [
   EtherUUID,
   DAIUUID,

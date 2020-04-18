@@ -11,6 +11,7 @@ class AccountOption extends React.PureComponent<OptionComponentProps> {
         <AccountSummary
           address={option.address}
           balance={option.balance}
+          uuid={option.assetUUID}
           assetSymbol={option.assetSymbol}
           label={option.label}
           onClick={() => onSelect!(option, null)} // Since it's a custom Dropdown we know onSelect is defined

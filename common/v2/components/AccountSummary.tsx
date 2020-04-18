@@ -8,6 +8,7 @@ import Account from './Account';
 
 interface Props {
   address: string;
+  uuid?: string;
   balance?: string;
   assetSymbol?: string;
   label?: string;
@@ -36,14 +37,15 @@ const SAccountWrapper = styled('div')`
 `;
 
 // Display an address with it's balance
-function AccountSummary({ address, balance, assetSymbol, label, onClick }: Props) {
+function AccountSummary({ address, balance, assetSymbol, uuid, label, onClick }: Props) {
   return (
     <SAccountWrapper onPointerDown={onClick}>
       <SAddress title={label} truncate={truncate} address={address} isCopyable={false} />
-      {balance && (
+      {balance && uuid && (
         <SCurrency
           amount={balance}
           symbol={(assetSymbol as TSymbol) || ('ETH' as TSymbol)}
+          uuid={uuid}
           decimals={4}
           icon={true}
         />

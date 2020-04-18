@@ -11,10 +11,10 @@ const SContainer = styled('div')`
   padding: 14px 15px 14px 15px;
 `;
 
-function AssetDropdownItem({ symbol, name, onClick }: Props) {
+function AssetDropdownItem({ uuid, symbol, name, onClick }: Props) {
   return (
     <SContainer {...(onClick ? { onPointerDown: onClick } : null)}>
-      <AssetIcon symbol={symbol} size={'1.5rem'} />
+      <AssetIcon uuid={uuid} size={'1.5rem'} />
       <Typography bold={true} value={symbol} style={{ marginLeft: '10px' }} />
       {name && <span>&nbsp; - &nbsp;</span>}
       <Typography value={name} />
@@ -23,6 +23,7 @@ function AssetDropdownItem({ symbol, name, onClick }: Props) {
 }
 
 export interface Props {
+  uuid: string;
   symbol: TSymbol;
   name?: string;
   onClick?(): void;

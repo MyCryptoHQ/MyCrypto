@@ -5,6 +5,7 @@ import { TSymbol, StoreAccount, ITxObject, ITxStatus } from 'v2/types';
 export interface ISwapAsset {
   name: string;
   symbol: TSymbol;
+  uuid: string;
 }
 
 export enum LAST_CHANGED_AMOUNT {

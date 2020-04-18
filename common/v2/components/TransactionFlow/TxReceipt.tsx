@@ -15,7 +15,6 @@ import {
   ITxReceipt,
   ITxStatus,
   IStepComponentProps,
-  TSymbol,
   ITxType,
   TAddress,
   ExtendedAddressBook
@@ -280,6 +279,8 @@ export const TxReceiptUI = ({
             toSymbol={swapDisplay.toAsset.symbol}
             fromAmount={swapDisplay.fromAmount.toString()}
             toAmount={swapDisplay.toAmount.toString()}
+            fromUUID={swapDisplay.fromAsset.uuid}
+            toUUID={swapDisplay.toAsset.uuid}
           />
         </div>
       )}
@@ -342,7 +343,7 @@ export const TxReceiptUI = ({
             {translate('CONFIRM_TX_SENT')}
           </div>
           <div className="TransactionReceipt-row-column rightAligned">
-            <AssetIcon symbol={asset.ticker as TSymbol} size={'24px'} />
+            <AssetIcon uuid={asset.uuid} size={'24px'} />
             <Amount
               assetValue={`${parseFloat(assetAmount()).toFixed(6)} ${assetTicker()}`}
               fiatValue={`$${convertToFiat(parseFloat(assetAmount()), assetRate()).toFixed(2)}

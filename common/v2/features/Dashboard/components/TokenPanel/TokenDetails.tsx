@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
-import { StoreAsset, TSymbol, Social } from 'v2/types';
+import { StoreAsset, Social } from 'v2/types';
 import { DashboardPanel, AssetIcon } from 'v2/components';
 import { getNetworkById, StoreContext } from 'v2/services/Store';
 import { COLORS, FONT_SIZE, SPACING } from 'v2/theme';
@@ -164,7 +164,7 @@ export function TokenDetails(props: Props) {
         <DetailsHeadingWrapper>
           <BackIcon src={backArrowIcon} onClick={() => setShowDetailsView(false)} />
           <TokenIcon>
-            <AssetIcon symbol={currentToken.ticker as TSymbol} size={'30px'} />
+            <AssetIcon uuid={currentToken.uuid} size={'30px'} />
           </TokenIcon>
           {currentToken.name}
         </DetailsHeadingWrapper>

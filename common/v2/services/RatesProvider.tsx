@@ -10,6 +10,7 @@ import { DeFiReserveMapService } from './ApiService';
 
 interface State {
   rates: IRates;
+  assetMapping: AssetMappingListObject;
   getRate(ticker: TTicker): number | undefined;
   getAssetRate(asset: Asset): number | undefined;
   getPoolAssetReserveRate(defiPoolTokenUUID: string, assets: Asset[]): ReserveAsset[];
@@ -59,6 +60,7 @@ export const RatesContext = createContext({} as State);
 export function RatesProvider({ children }: { children: React.ReactNode }) {
   const { assets: getAssets } = useContext(StoreContext);
   const { settings, updateSettingsRates } = useContext(SettingsContext);
+  const [assetMapping, setAssetMapping] = useState({} as AssetMappingListObject);
   const [reserveRateMapping, setReserveRateMapping] = useState({} as ReserveMappingListObject);
   const worker = useRef<undefined | PollingService>();
 
@@ -81,6 +83,19 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
   }, [settings]);
 
   const mounted = usePromise();
+  useEffectOnce(() => {
+    (async () => {
+      // The cryptocompare api that our proxie uses fails gracefully and will return a conversion rate
+      // even if some are tickers are invalid (e.g WETH, GoerliETH etc.)
+      const value = await mounted(
+        fetchAssetMappingList().then((e) => {
+          return e;
+        })
+      );
+      setAssetMapping(value);
+    })();
+  });
+
   useEffectOnce(() => {
     (async () => {
       const value = await mounted(fetchDeFiReserveMappingList().then((e) => e));
@@ -111,6 +126,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
     get rates() {
       return settings.rates;
     },
+    assetMapping,
     getRate: (ticker: TTicker) => {
       // @ts-ignore until we find a solution for TS7053 error
       return state.rates[ticker] ? state.rates[ticker].usd : DEFAULT_FIAT_RATE;

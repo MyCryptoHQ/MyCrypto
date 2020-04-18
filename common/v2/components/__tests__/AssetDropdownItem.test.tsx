@@ -3,15 +3,19 @@ import React from 'react';
 import { simpleRender, fireEvent } from 'test-utils';
 import { TSymbol } from 'v2/types';
 import AssetDropdownItem, { Props } from '../AssetDropdownItem';
+import { EtherUUID } from 'v2/utils';
 
 const defaultProps: Props = {
   symbol: 'ETH' as TSymbol,
   name: 'Ether',
+  uuid: EtherUUID,
   onClick: jest.fn()
 };
 
-function getComponent({ symbol, name, onClick }: Props) {
-  return simpleRender(<AssetDropdownItem symbol={symbol} name={name} onClick={onClick} />);
+function getComponent({ symbol, uuid, name, onClick }: Props) {
+  return simpleRender(
+    <AssetDropdownItem symbol={symbol} uuid={uuid} name={name} onClick={onClick} />
+  );
 }
 
 describe('AssetDropdownItem', () => {

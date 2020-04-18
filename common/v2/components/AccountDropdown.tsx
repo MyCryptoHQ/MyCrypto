@@ -24,13 +24,12 @@ const sortByLabel = (a: Option, b: Option) => a.label.localeCompare(b.label);
 type Option = StoreAccount & { balance: string; assetSymbol: string };
 
 function AccountDropdown({ accounts, name, value, onSelect, asset }: IAccountDropdownProps) {
-  const relevantAccounts: Option[] = accounts
-    .map((account) => ({
-      ...account,
-      balance: formatEther(asset ? getAccountBalance(account, asset) : getAccountBalance(account)),
-      assetSymbol: asset ? asset.ticker : getBaseAsset(account)!.ticker
-    }))
-    .sort(sortByLabel);
+  const relevantAccounts: Option[] = accounts.map((account) => ({
+    ...account,
+    balance: formatEther(asset ? getAccountBalance(account, asset) : getAccountBalance(account)),
+    assetUUID: asset ? asset.uuid : getBaseAsset(account)!.uuid,
+    assetSymbol: asset ? asset.ticker : getBaseAsset(account)!.ticker
+  })).sort(sortByLabel);
 
   useEffectOnce(() => {
     // preselect first value from options
@@ -47,13 +46,14 @@ function AccountDropdown({ accounts, name, value, onSelect, asset }: IAccountDro
       onChange={(option) => onSelect(option)}
       optionComponent={AccountOption}
       value={value && value.address ? value : undefined} // Allow the value to be undefined at the start in order to display the placeholder
-      valueComponent={({ value: { uuid, label, address, balance, assetSymbol } }) => {
+      valueComponent={({ value: { uuid, label, address, balance, assetSymbol, assetUUID } }) => {
         const option = relevantAccounts.find((a) => a.uuid === uuid);
         return (
           <AccountSummary
             address={address}
             balance={option ? option.balance : balance}
             label={label}
+            uuid={assetUUID}
             assetSymbol={option ? option.assetSymbol : assetSymbol}
           />
         );

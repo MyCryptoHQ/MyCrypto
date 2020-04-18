@@ -4,13 +4,13 @@ import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
 import {
-  DashboardPanel,
-  CollapsibleTable,
-  AssetIcon,
-  Currency,
   TableCell,
   TableRow,
-  EthAddress
+  EthAddress,
+  AssetIcon,
+  Currency,
+  DashboardPanel,
+  CollapsibleTable
 } from 'v2/components';
 import { CollapseIcon, ExpandIcon } from 'v2/components/icons';
 import { Balance, BalanceAccount, WalletBreakdownProps } from './types';
@@ -109,7 +109,7 @@ const createBalancesDetailViewRow = (
 
   return [
     <Label key={balance.id}>
-      <Icon symbol={balance.ticker as TSymbol} size={'2rem'} />
+      <Icon uuid={balance.uuid as TSymbol} size={'2rem'} />
       {balance.name}
     </Label>,
     <Label key={balance.id}>

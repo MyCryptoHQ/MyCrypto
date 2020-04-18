@@ -115,7 +115,11 @@ export const MembershipFormUI = ({
               .length === 0;
 
           const { amount, asset, account: selectedAccount } = values;
-          const convertedAsset = { name: asset.name, symbol: asset.ticker as TSymbol };
+          const convertedAsset = {
+            name: asset.name,
+            symbol: asset.ticker as TSymbol,
+            uuid: asset.uuid
+          };
           const filteredAccounts = getAccountsWithAssetBalance(
             relevantAccounts,
             convertedAsset,

@@ -47,8 +47,8 @@ const ContactLookupDropdown = ({
     onBlur={onBlur}
     optionComponent={AccountOption}
     value={value && value.value ? value : undefined} // Allow the value to be undefined at the start in order to display the placeholder
-    valueComponent={({ value: { value: address, display: label } }) => (
-      <AccountSummary address={address} label={label} />
+    valueComponent={({ value: { value: address, assetUUID, display: label } }) => (
+      <AccountSummary uuid={assetUUID} address={address} label={label} />
     )}
     searchable={true}
     clearable={true}

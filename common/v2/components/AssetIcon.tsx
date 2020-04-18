@@ -1,19 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
-import manifest from 'cryptocurrency-icons/manifest.json';
+import { RatesContext } from 'v2/services';
 
-import { IAsset, TSymbol } from 'v2/types';
 // Relies on https://github.com/atomiclabs/cryptocurrency-icons using fixed version number through CDN
 // @TODO: We should be using our own sprite served over a trusted CDN
-const baseURL = 'https://cdn.mycryptoapi.com/v1/icons';
+const baseURL = 'https://mycryptoapi.com/api/v1/images';
+const genericURL = 'https://cdn.mycryptoapi.com/v1/icons/generic.svg';
 
-function buildUrl(symbol: TSymbol) {
-  return `${baseURL}/${symbol.toLowerCase()}.svg`;
+function buildUrl(uuid: string) {
+  return `${baseURL}/${uuid}.png`;
 }
 
-function getIconUrl(symbol: TSymbol) {
-  const curr = manifest.find((c: IAsset) => c.symbol === symbol);
-  return curr ? buildUrl(symbol) : buildUrl('generic' as TSymbol);
+function getIconUrl(uuid: string, assetIconsManifest: any) {
+  const assetIconsManifestEntry =
+    assetIconsManifest && assetIconsManifest[uuid] && assetIconsManifest[uuid].coinGeckoId;
+  const curr = assetIconsManifest ? assetIconsManifestEntry : false;
+  return curr ? buildUrl(uuid) : genericURL;
 }
 
 const SImg = styled('img')`
@@ -22,13 +24,14 @@ const SImg = styled('img')`
 `;
 
 interface Props {
-  symbol: TSymbol;
+  uuid: string;
   size?: string;
   className?: string;
 }
 
-function AssetIcon({ symbol, size = '32px', className }: Props) {
-  const iconUrl = getIconUrl(symbol);
+function AssetIcon({ uuid, size = '32px', className }: Props) {
+  const { assetMapping } = useContext(RatesContext);
+  const iconUrl = getIconUrl(uuid, assetMapping);
 
   return <SImg src={iconUrl} size={size} className={className} />;
 }

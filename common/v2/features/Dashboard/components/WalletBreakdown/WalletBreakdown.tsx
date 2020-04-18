@@ -81,6 +81,7 @@ export function WalletBreakdown() {
       id: `${asset.name}-${asset.ticker}`,
       name: asset.name || translateRaw('WALLET_BREAKDOWN_UNKNOWN'),
       ticker: asset.ticker,
+      uuid: asset.uuid,
       amount: weiToFloat(asset.balance, asset.decimal),
       fiatValue: convertToFiatFromAsset(asset, getAssetRate(asset)),
       uuid: asset.uuid,
