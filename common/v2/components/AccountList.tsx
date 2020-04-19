@@ -489,14 +489,14 @@ const buildAccountTable = (
           addressBook
         )!;
         const {
-          account: { uuid, address }
+          account: { uuid, address, wallet }
         } = getFullTableData[rowIndex];
         return (
           <UndoDeleteOverlay
             address={address}
             overlayText={translateRaw('ACCOUNT_LIST_UNDO_DELETE_OVERLAY_TEXT', {
               $label: label(addressBookRecord),
-              $address: truncate(address)
+              $walletId: WALLETS_CONFIG[wallet].name
             })}
             restoreAccount={() => {
               restoreDeletedAccount(uuid);
