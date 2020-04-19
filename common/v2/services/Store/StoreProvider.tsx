@@ -143,7 +143,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       if (membershipExpiration.some(expirationTime => expirationTime > currentTime)) {
         return MembershipState.MEMBER;
       } else {
-        return MembershipState.EXPIREDMEMBER;
+        return MembershipState.EXPIRED;
       }
     }
   })();

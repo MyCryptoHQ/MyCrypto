@@ -68,7 +68,7 @@ function MembershipPanel({ history }: Props) {
   const { membershipState, memberships, membershipExpiration } = useContext(StoreContext);
 
   const isMember = membershipState === MembershipState.MEMBER;
-  const isExpired = membershipState === MembershipState.EXPIREDMEMBER;
+  const isExpired = membershipState === MembershipState.EXPIRED;
   const allMemberships = memberships ? R.uniq(R.flatten(memberships.map(m => m.memberships))) : [];
   const membership =
     allMemberships.length > 0 ? allMemberships[allMemberships.length - 1] : undefined;
@@ -90,7 +90,7 @@ function MembershipPanel({ history }: Props) {
           <Icon isMemberOrExpired={isMember || isExpired} src={icon} />
         </ImageWrapper>
         <TextWrapper isMember={isMember}>
-          {membershipState === MembershipState.EXPIREDMEMBER ? (
+          {membershipState === MembershipState.EXPIRED ? (
             <Header as="div">{translateRaw('MEMBERSHIP_EXPIRED')}</Header>
           ) : (
             <Header as="div">{translateRaw('MEMBERSHIP')}</Header>
@@ -119,7 +119,7 @@ function MembershipPanel({ history }: Props) {
               </SButton>
             </>
           )}
-          {membershipState === MembershipState.EXPIREDMEMBER && (
+          {membershipState === MembershipState.EXPIRED && (
             <>
               <ExpiryWrapper>
                 <ExpiredOnWrapper as="div">{translateRaw('EXPIRED_ON')}</ExpiredOnWrapper>

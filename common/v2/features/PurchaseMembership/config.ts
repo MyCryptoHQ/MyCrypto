@@ -28,7 +28,7 @@ export type IMembershipConfigObject = {
 export enum MembershipState {
   MEMBER,
   NOTMEMBER,
-  EXPIREDMEMBER,
+  EXPIRED,
   ERROR
 }
 
