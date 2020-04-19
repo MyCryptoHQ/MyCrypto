@@ -306,7 +306,7 @@
     "ACCOUNT_LIST_NETWORK": "Network",
     "ACCOUNT_LIST_VALUE": "Value",
     "ACCOUNT_LIST_DELETE": "Delete",
-    "ACCOUNT_LIST_DELETE_OVERLAY_TEXT": "Are you sure you want to delete “$label” account with address: “$address”?",
+    "ACCOUNT_LIST_DELETE_OVERLAY_TEXT": "Are you sure you want to delete the “$label” account with address: “$address”?",
     "ACCOUNT_LIST_UNDO_DELETE_OVERLAY_TEXT": "Deleted $walletId account with label “$label”.",
     "DOWNLOAD_APP_FOOTER_INFO_LINK": "Learn more about our desktop app.",
     "SCREEN_LOCK_NEW_HEADING": "Create Password to Lock Your Wallet",
