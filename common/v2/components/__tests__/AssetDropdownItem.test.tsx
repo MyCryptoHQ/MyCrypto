@@ -21,9 +21,7 @@ function getComponent({ symbol, uuid, name, onClick }: Props) {
 describe('AssetDropdownItem', () => {
   test('it renders the asset icon', async () => {
     const { getByRole } = getComponent(defaultProps);
-    expect(getByRole('img').getAttribute('src')).toContain(
-      'https://cdn.mycryptoapi.com/v1/icons/generic.svg'
-    );
+    expect(getByRole('img').getAttribute('src')).toContain('test-file-stub');
   });
 
   test('it displays the asset symbol and name', async () => {
