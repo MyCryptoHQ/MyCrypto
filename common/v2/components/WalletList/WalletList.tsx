@@ -87,7 +87,7 @@ interface Props {
 }
 
 export const WalletList = ({ wallets, onSelect, showHeader, calculateMargin }: Props) => {
-  const onWalletClick = (name: WalletId) => {
+  const selectWallet = (name: WalletId) => {
     AnalyticsService.instance.track(ANALYTICS_CATEGORIES.ADD_ACCOUNT, `${name} clicked`);
     onSelect(name);
   };
@@ -110,7 +110,7 @@ export const WalletList = ({ wallets, onSelect, showHeader, calculateMargin }: P
               icon={walletInfo.icon}
               description={translateRaw(walletInfo.description)}
               margin={calculateMargin && calculateMargin(index)}
-              onClick={() => onWalletClick(wallet.name)}
+              onClick={() => selectWallet(wallet.name)}
               isDisabled={wallet.isDisabled}
             />
           );

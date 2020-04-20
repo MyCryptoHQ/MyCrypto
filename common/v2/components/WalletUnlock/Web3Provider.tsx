@@ -42,13 +42,16 @@ class Web3ProviderDecrypt extends Component<Props & ISettingsContext & INetworkC
     this.unlockWallet = this.unlockWallet.bind(this);
   }
 
+  public componentDidMount() {
+    AnalyticsService.instance.track(
+      ANALYTICS_CATEGORIES.ADD_WEB3_ACCOUNT,
+      `${this.state.web3ProviderSettings.name} detected`
+    );
+  }
+
   public render() {
     const { web3Unlocked, web3ProviderSettings: provider } = this.state;
     const isDefault = provider.id === WalletId.WEB3;
-    AnalyticsService.instance.track(
-      ANALYTICS_CATEGORIES.ADD_WEB3_ACCOUNT,
-      `${provider.name} detected`
-    );
 
     return (
       <div className="Panel">
