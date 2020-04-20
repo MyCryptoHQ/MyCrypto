@@ -39,16 +39,15 @@ export {
   StoreAsset,
   AssetWithDetails
 } from './asset';
-export { StoreAccount } from './account';
-export { IRawAccount, IAccount } from './account';
+export { IRawAccount, IAccount, StoreAccount } from './account';
 export { AddressBook, ExtendedAddressBook } from './addressBook';
 export { Contract, ExtendedContract } from './contract';
-export { Network, NetworkLegacy, AssetLegacy, ContractLegacy } from './network';
+export { Network, NetworkLegacy, AssetLegacy, ContractLegacy, NetworkNodes } from './network';
 export { NetworkId } from './networkId';
 export { NodeType } from './node';
 export { DPathFormat } from './dPath';
 export { ISettings } from './settings';
-export { LocalStorage, LSKeys, DataStore, DataStoreItem, DataStoreEntry } from './store';
+export { LocalStorage, LSKeys, DSKeys, DataStore, DataStoreItem, DataStoreEntry } from './store';
 export { Notification, ExtendedNotification } from './notification';
 export { IERC20 } from './erc20';
 export { IUNLOCKLOCK } from './unlockProtocolToken';

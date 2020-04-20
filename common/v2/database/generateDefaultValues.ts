@@ -1,7 +1,7 @@
 import * as R from 'ramda';
+
 import { generateAssetUUID, generateContractUUID } from 'v2/utils';
 import { Fiats, DEFAULT_ASSET_DECIMAL } from 'v2/config';
-import { NODES_CONFIG, NETWORKS_CONFIG } from '../data';
 import {
   Asset,
   ExtendedAsset,
@@ -15,16 +15,20 @@ import {
   Fiat,
   ContractLegacy,
   AssetLegacy,
-  LSKeys
+  LSKeys,
+  NodeOptions
 } from 'v2/types';
 
+import { NODES_CONFIG, NETWORKS_CONFIG, NetworkConfig } from './data';
 import { SeedData, StoreAction } from './types';
 import { toArray, toObject, add } from './helpers';
+
 /* Transducers */
 const addNetworks = add(LSKeys.NETWORKS)((networks: SeedData) => {
   const formatNetwork = (n: NetworkLegacy): Network => {
     const baseAssetUuid = generateAssetUUID(n.chainId);
-    const nodes = NODES_CONFIG[n.id] || NODES_CONFIG[n.name as NetworkId] || [];
+    // add custom nodes from local storage
+    const nodes: NodeOptions[] = [...(NODES_CONFIG[n.id] || []), ...(n.nodes || [])];
     const [firstNode] = nodes;
 
     return Object.assign(
@@ -54,7 +58,7 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: SeedData) => {
         ? {
             // Extend network if nodes are defined
             autoNode: firstNode.name, // Select first node as auto
-            selectedNode: firstNode.name // Select first node as default
+            selectedNode: n.selectedNode || firstNode.name // Select first node as default
           }
         : {}
     );
@@ -66,11 +70,12 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: SeedData) => {
 const addContracts = add(LSKeys.CONTRACTS)(
   (networks: Record<NetworkId, NetworkLegacy>, store: LocalStorage) => {
     const formatContract = (id: NetworkId) => (c: ContractLegacy): ExtendedContract => ({
-      uuid: generateContractUUID(c.abi),
+      uuid: c.uuid || generateContractUUID(id, c.address),
       name: c.name,
       address: c.address,
       abi: c.abi,
-      networkId: id
+      networkId: id,
+      isCustom: c.isCustom
     });
 
     // Transform { ETH: { contracts: [ {<contract>} ] }}
@@ -90,7 +95,7 @@ const addContractsToNetworks = add(LSKeys.NETWORKS)((_, store: LocalStorage) => 
     const nContracts = R.filter((c: ExtendedContract) => c.networkId === n.id, store.contracts);
     return {
       ...n,
-      contracts: toArray(nContracts).map(c => c.uuid)
+      contracts: toArray(nContracts).map((c) => c.uuid)
     };
   };
   return R.mapObjIndexed(getNetworkContracts, store.networks);
@@ -144,7 +149,8 @@ const addTokensToAssets = add(LSKeys.ASSETS)(
       ticker: (a.symbol as unknown) as TSymbol,
       networkId: id,
       contractAddress: a.address,
-      type: 'erc20'
+      type: 'erc20',
+      isCustom: a.isCustom
     });
 
     // From { ETH: { tokens: [ {<tokens>} ] }}
@@ -162,12 +168,12 @@ const addTokensToAssets = add(LSKeys.ASSETS)(
 const updateNetworkAssets = add(LSKeys.NETWORKS)((_, store: LocalStorage) => {
   // Since we added baseAsset and tokens to Assets this will return both.
   const findNetworkAssets = (nId: NetworkId): Asset[] =>
-    toArray(store.assets).filter(a => a.networkId === nId);
+    toArray(store.assets).filter((a) => a.networkId === nId);
 
   const getAssetUuid = (n: Network) =>
     findNetworkAssets(n.id)
       .filter(Boolean)
-      .map(a => a.uuid);
+      .map((a) => a.uuid);
 
   return R.mapObjIndexed(
     (n: Network) => ({
@@ -179,19 +185,19 @@ const updateNetworkAssets = add(LSKeys.NETWORKS)((_, store: LocalStorage) => {
 });
 
 /* Define flow order */
-const defaultTransducers: StoreAction[] = [
-  addNetworks(NETWORKS_CONFIG),
-  addContracts(NETWORKS_CONFIG),
+const getDefaultTransducers = (networkConfig: NetworkConfig): StoreAction[] => [
+  addNetworks(networkConfig),
+  addContracts(networkConfig),
   addContractsToNetworks(),
   addBaseAssetsToAssets(),
   addFiatsToAssets(toArray(Fiats)),
-  addTokensToAssets(NETWORKS_CONFIG),
+  addTokensToAssets(networkConfig),
   updateNetworkAssets()
 ];
 
 /* Handler to trigger the flow according the environment */
-type Transduce = (z: LocalStorage) => LocalStorage;
-export const createDefaultValues: Transduce = (initialSchema: LocalStorage) => {
+type Transduce = (z: LocalStorage, networkConfig: NetworkConfig) => LocalStorage;
+export const createDefaultValues: Transduce = (initialSchema: LocalStorage, networkConfig) => {
   // @ts-ignore
-  return R.pipe(...defaultTransducers)(initialSchema);
+  return R.pipe(...getDefaultTransducers(networkConfig))(initialSchema);
 };

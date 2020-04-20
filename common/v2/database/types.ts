@@ -8,8 +8,9 @@ import {
   Fiat,
   LSKeys
 } from 'v2/types';
-import { DevAccount } from '../seed';
-import { NETWORKS_CONFIG } from '../data';
+
+import { DevAccount } from './seed';
+import { NETWORKS_CONFIG } from './data';
 
 /* Types */
 type DevData = Asset[] | DevAccount[] | Record<string | TUuid, AddressBook>;

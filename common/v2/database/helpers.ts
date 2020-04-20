@@ -1,4 +1,5 @@
 import { TUuid } from 'v2/types';
+
 import { FlowTransducer, GenObject } from './types';
 
 export const withUuid = <T extends {}>(fn: () => TUuid) => (x: T): T => ({ ...x, uuid: fn() });

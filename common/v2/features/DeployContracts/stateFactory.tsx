@@ -12,7 +12,12 @@ import {
 } from 'v2/services';
 import { isWeb3Wallet } from 'v2/utils/web3';
 import { translateRaw } from 'v2/translations';
-import { DEFAULT_NONCE, GAS_LIMIT_LOWER_BOUND, GAS_PRICE_GWEI_DEFAULT_HEX } from 'v2/config';
+import {
+  DEFAULT_NONCE,
+  GAS_LIMIT_LOWER_BOUND,
+  GAS_PRICE_GWEI_DEFAULT_HEX,
+  DEFAULT_NETWORK
+} from 'v2/config';
 
 import { DeployContractsState } from './types';
 import { makeTxConfigFromTransaction, constructGasCallProps } from './helpers';
@@ -27,7 +32,7 @@ const deployContractsInitialState = {
   txConfig: undefined,
   txReceipt: undefined,
   byteCode: '',
-  networkId: undefined
+  networkId: DEFAULT_NETWORK
 };
 
 const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
@@ -125,9 +130,9 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
       const provider = new ProviderHandler(account.network);
       provider
         .sendRawTx(signResponse)
-        .then(retrievedTxReceipt => retrievedTxReceipt)
-        .catch(hash => provider.getTransactionByHash(hash))
-        .then(retrievedTransactionReceipt => {
+        .then((retrievedTxReceipt) => retrievedTxReceipt)
+        .catch((hash) => provider.getTransactionByHash(hash))
+        .then((retrievedTransactionReceipt) => {
           const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(assets, networks);
           addNewTransactionToAccount(state.txConfig.senderAccount, {
             ...txReceipt,

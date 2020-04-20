@@ -1,14 +1,15 @@
 import { LocalStorage } from 'v2/types';
 import { noOp } from 'v2/utils';
 
-import { SCHEMA_DEFAULT, migrate } from './v1.0.0';
+import { migrate } from './v1.0.0';
+import { SCHEMA_BASE } from './data';
 
 export const dbVersions = {
   'v1.0.0': {
     version: 'v1.0.0',
     main: 'MYC_Storage',
     vault: 'MYC_Vault',
-    defaultValues: SCHEMA_DEFAULT,
+    defaultValues: SCHEMA_BASE,
     schema: {},
     migrate: (prev: LocalStorage, curr: LocalStorage) => migrate(prev, curr)
   },
