@@ -54,7 +54,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     contractAddress: '0x6cA105D2AF7095B1BCEeb6A2113D168ddDCD57cf',
     description: '',
     icon: onemonthIcon,
-    price: '4',
+    price: '0.01', // DONT MERGE!!
     assetUUID: DAIUUID,
     durationInDays: 30,
     discountNotice: ''
