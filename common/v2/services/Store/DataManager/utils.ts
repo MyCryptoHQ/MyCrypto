@@ -28,7 +28,7 @@ type ArrayToObj = <K extends string | number>(
 const arrayToObj: ArrayToObj = (key) => (arr) =>
   arr.reduce((acc, curr) => ({ ...acc, [curr[key]]: curr }), {});
 
-const mergeConfigWithLocalStorage = (
+export const mergeConfigWithLocalStorage = (
   defaultConfig: NetworkConfig,
   ls: LocalStorage
 ): LocalStorage => {
@@ -92,7 +92,7 @@ export function marshallState(ls: LocalStorage): DataStore {
   };
 }
 
-const constructNetworkNodes = (networks: DataStore[LSKeys.NETWORKS]) => {
+export const constructNetworkNodes = (networks: DataStore[LSKeys.NETWORKS]) => {
   const networkNodes = {} as LocalStorage[LSKeys.NETWORK_NODES];
   networks.forEach((n) => {
     const networkSetup: NetworkNodes = {};
