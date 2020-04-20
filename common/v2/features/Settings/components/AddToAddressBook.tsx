@@ -11,6 +11,7 @@ import { ToastContext } from 'v2/features/Toasts';
 import { translateRaw } from 'v2/translations';
 import { isValidETHAddress } from 'v2/services/EthService';
 import { AddressBookContext } from 'v2/services';
+import { DEFAULT_NETWORK } from 'v2/config/constants';
 
 const AddToAddressBookPanel = styled(DashboardPanel)`
   padding: 24px 30px;
@@ -92,7 +93,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
           label: '',
           address: '',
           notes: '',
-          network: 'Ethereum'
+          network: DEFAULT_NETWORK
         }}
         onSubmit={(values: AddressBook, { setSubmitting }) => {
           createAddressBooks(values);
