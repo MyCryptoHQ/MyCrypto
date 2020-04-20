@@ -71,14 +71,18 @@ export const AccountProvider: React.FC = ({ children }) => {
         const newAssets: AssetBalanceObject[] = positiveAssetBalances.reduce(
           (tempAssets: AssetBalanceObject[], [contractAddress, balance]: [string, BigNumber]) => {
             const tempAsset = assets.find((x) => x.contractAddress === contractAddress);
-            if (tempAsset) {
-              tempAssets.push({
-                uuid: tempAsset.uuid,
-                balance: balance.toString(10),
-                mtime: Date.now()
-              });
-            }
-            return tempAssets;
+            return [
+              ...tempAssets,
+              ...(tempAsset
+                ? [
+                    {
+                      uuid: tempAsset.uuid,
+                      balance: balance.toString(10),
+                      mtime: Date.now()
+                    }
+                  ]
+                : [])
+            ];
           },
           []
         );
@@ -87,7 +91,7 @@ export const AccountProvider: React.FC = ({ children }) => {
         state.updateAccount(existingAccount.uuid, existingAccount);
       }
     },
-    updateAllAccountsAssets: async (storeAccounts, assets) =>
+    updateAllAccountsAssets: (storeAccounts, assets) =>
       Promise.all(
         storeAccounts.map(async (storeAccount) => {
           // Find all tokens with a positive balance for given account, and add those tokens to the assets array of the account
@@ -97,30 +101,29 @@ export const AccountProvider: React.FC = ({ children }) => {
           );
 
           const existingAccount = accounts.find((x) => x.uuid === storeAccount.uuid);
+          if (!existingAccount) return {} as IAccount; // no existing account found
 
-          if (existingAccount) {
-            const newAssets: AssetBalanceObject[] = positiveAssetBalances.reduce(
-              (
-                tempAssets: AssetBalanceObject[],
-                [contractAddress, balance]: [string, BigNumber]
-              ) => {
-                const tempAsset = assets.find((x) => x.contractAddress === contractAddress);
-                if (tempAsset) {
-                  tempAssets.push({
-                    uuid: tempAsset.uuid,
-                    balance: balance.toString(10),
-                    mtime: Date.now()
-                  });
-                }
-                return tempAssets;
-              },
-              []
-            );
+          const newAssets: AssetBalanceObject[] = positiveAssetBalances.reduce(
+            (tempAssets: AssetBalanceObject[], [contractAddress, balance]: [string, BigNumber]) => {
+              const tempAsset = assets.find((x) => x.contractAddress === contractAddress);
+              return [
+                ...tempAssets,
+                ...(tempAsset
+                  ? [
+                      {
+                        uuid: tempAsset.uuid,
+                        balance: balance.toString(10),
+                        mtime: Date.now()
+                      }
+                    ]
+                  : [])
+              ];
+            },
+            []
+          );
 
-            existingAccount.assets = unionBy(newAssets, existingAccount.assets, 'uuid');
-            return existingAccount;
-          }
-          return {} as IAccount;
+          existingAccount.assets = unionBy(newAssets, existingAccount.assets, 'uuid');
+          return existingAccount;
         })
       )
         .then((data) => data.filter((accountItem) => !R.isEmpty(accountItem)))
@@ -128,6 +131,7 @@ export const AccountProvider: React.FC = ({ children }) => {
         .catch((err) => {
           console.debug('[AccountProvider]: Scan Tokens Error:', err);
         }),
+
     updateAccountsBalances: (toUpdate) => {
       const newAccounts = R.unionWith(R.eqBy(R.prop('uuid')), toUpdate, state.accounts).filter(
         Boolean
