@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ConfirmTransaction } from 'v2/components/TransactionFlow';
+import { ConfirmTransaction } from 'v2/components';
 import { ITxConfig, ITxType } from 'v2/types';
 import { IZapConfig } from '../config';
 

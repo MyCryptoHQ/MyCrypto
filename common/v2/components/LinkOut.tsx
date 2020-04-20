@@ -1,17 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Typography } from 'v2/components';
-import { COLORS } from 'v2/theme';
+import { COLORS, FONT_SIZE } from 'v2/theme';
 
 import LinkOutIcon from 'assets/images/link-out.svg';
 
 const { BLUE_BRIGHT } = COLORS;
 
-const LinkOutWrapper = styled.a`
-  display: flex;
+interface LinkOutWrapperProps {
+  inline: boolean;
+  underline: boolean;
+}
+
+const LinkOutWrapper = styled.a<LinkOutWrapperProps>`
+  display: ${({ inline }) => (inline ? 'inline-flex' : 'flex')};
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
+  > :not(img) {
+    ${({ underline }) => (underline ? 'text-decoration: underline' : '')};
+  }
   p {
     margin: 0;
   }
@@ -28,15 +36,37 @@ const OutIcon = styled.img<{ useMargin: boolean }>`
 interface Props {
   text?: string;
   link: string;
+  showIcon?: boolean;
+  inline?: boolean;
+  fontSize?: string;
+  fontColor?: string;
+  underline?: boolean;
   truncate?(text: string): string;
 }
 
-const LinkOut = ({ text, link, truncate }: Props) => {
-  const content = truncate && text ? truncate(text) : text;
+const LinkOut = ({
+  text,
+  link,
+  truncate,
+  showIcon = true,
+  inline = false,
+  fontSize = FONT_SIZE.BASE,
+  fontColor = COLORS.GREYISH_BROWN,
+  underline = false
+}: Props) => {
+  const content = text && (truncate ? truncate(text) : text);
   return (
-    <LinkOutWrapper href={link} target="_blank" rel="noreferrer">
-      <Typography fontSize={'16px'}>{content}</Typography>
-      <OutIcon useMargin={!!content} src={LinkOutIcon} />
+    <LinkOutWrapper
+      href={link}
+      target="_blank"
+      rel="noreferrer"
+      inline={inline}
+      underline={underline}
+    >
+      <Typography fontSize={fontSize} style={{ color: fontColor }}>
+        {content}
+      </Typography>
+      {showIcon && <OutIcon useMargin={!!content} src={LinkOutIcon} />}
     </LinkOutWrapper>
   );
 };

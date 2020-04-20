@@ -5,6 +5,7 @@
 
 import React, { Component, DetailedHTMLProps, HTMLAttributes, ReactNode } from 'react';
 import throttle from 'lodash.throttle';
+import isFunction from 'lodash/isFunction';
 import styled, { StyledComponentClass } from 'styled-components';
 
 import { Theme, scale, Icon, StackedCardData, Typography } from '@mycrypto/ui';
@@ -58,7 +59,7 @@ export const transformRowToCards = (
     (prev: StackedCardData, next, index) => {
       const label = head[index];
 
-      if (index === primaryColumnIndex) {
+      if (index === primaryColumnIndex && !iconColumns) {
         prev.heading = next;
       } else if (iconColumns.includes(label as string)) {
         prev.icons!.push(next);
@@ -186,7 +187,9 @@ export class CollapsibleTable extends Component<Props, State> {
           <StackedCardContainer>
             <StackedCard key={index} {...cardData} />
             {overlay && overlayRows!.includes(index) && (
-              <StackedCardOverlay>{overlay}</StackedCardOverlay>
+              <StackedCardOverlay>
+                {isFunction(overlay) ? overlay(index) : overlay}
+              </StackedCardOverlay>
             )}
           </StackedCardContainer>
         )

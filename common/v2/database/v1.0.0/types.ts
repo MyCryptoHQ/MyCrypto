@@ -18,4 +18,4 @@ type StoreProp = Record<NetworkId, Network> | any;
 export type StoreAction = (store: LocalStorage) => LocalStorage;
 type FlowReducer = (data?: SeedData, store?: LocalStorage) => StoreProp;
 export type FlowTransducer = (key: LSKeys) => (fn: FlowReducer) => (data?: SeedData) => StoreAction;
-export type GenObject<T> = Record<keyof T, T>;
+export type GenObject<T> = Record<keyof T, T> | T;

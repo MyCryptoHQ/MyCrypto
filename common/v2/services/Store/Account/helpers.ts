@@ -30,3 +30,6 @@ export const getBaseAsset = (account: StoreAccount) => account.assets.find(a => 
 
 export const isEthereumAccount = (account: StoreAccount | IAccount) =>
   account.networkId === DEFAULT_NETWORK;
+
+export const isAccountInNetwork = (account: StoreAccount | IAccount, networkIdToFilter: string) =>
+  account.networkId === networkIdToFilter;

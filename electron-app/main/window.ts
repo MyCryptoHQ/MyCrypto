@@ -22,7 +22,6 @@ export default function getWindow() {
     height: process.platform === 'darwin' ? 680 : 720,
     minWidth: 480,
     minHeight: 400,
-    titleBarStyle: 'hidden',
     webPreferences: {
       devTools: true,
 

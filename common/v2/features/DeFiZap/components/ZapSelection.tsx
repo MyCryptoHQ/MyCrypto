@@ -4,32 +4,15 @@ import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { Accordion } from '@mycrypto/ui';
 
-import { Button, ExtendedContentPanel, AppLogo, Typography } from 'v2/components';
+import { Button, AppLogo, Typography, FullSizeContentPanel } from 'v2/components';
 import translate from 'v2/translations';
 import { ROUTE_PATHS } from 'v2/config';
 import { COLORS, BREAK_POINTS, SPACING } from 'v2/theme';
 
+import { FullSizePanelSection, SpacedPanelSection } from '../../../components/FullSizeContentPanel';
+
 import { ZAPS_CONFIG, IZapId, defaultZapId, riskAndReward, accordionContent } from '../config';
 import { RiskAndRewardCard, DetailsList } from '.';
-
-const FullSizeContentPanel = styled(ExtendedContentPanel)`
-  padding: 0px;
-`;
-
-const SSection = styled.section<{ color?: string }>`
-  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    flex-direction: column;
-    padding: 0;
-    padding: ${SPACING.LG} ${SPACING.BASE};
-    align-items: center;
-  }
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: ${props => (props.color ? props.color : 'inherit')};
-  width: 100%;
-  padding: ${SPACING.LG} ${SPACING.XL};
-`;
 
 const Illustration = styled.img`
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
@@ -51,7 +34,7 @@ const DetailsSection = styled.div`
   justify-content: space-between;
 `;
 
-const ContentPanelHeading = styled(SSection)`
+const ContentPanelHeading = styled(FullSizePanelSection)`
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     flex-direction: column-reverse;
     padding-top: ${SPACING.BASE};
@@ -97,12 +80,6 @@ const BreakdownImg = styled.img`
   max-width: 32px;
   margin-right: ${SPACING.SM};
   margin-top: ${SPACING.XS};
-`;
-
-const SpacedSection = styled(SSection)`
-  & > * {
-    margin: ${SPACING.BASE} 0;
-  }
 `;
 
 const CardContainer = styled.div`
@@ -167,23 +144,23 @@ const ZapEducation = withRouter(({ history, location }) => {
           <AppLogo />
         </LogoContainer>
       </ContentPanelHeading>
-      <SpacedSection color={COLORS.WHITE}>
+      <SpacedPanelSection color={COLORS.WHITE}>
         <DetailsSection>
           <Illustration src={zapSelected.illustration} width={'60%'} />
           <DetailsList zapSelected={zapSelected} />
         </DetailsSection>
         <Button onClick={handleSubmit}>{translate('ZAP_START_EARNING')}</Button>
         <MobileIllustration src={zapSelected.mobileIllustration} />
-      </SpacedSection>
-      <SSection color={COLORS.GREY_LIGHTEST}>
+      </SpacedPanelSection>
+      <FullSizePanelSection color={COLORS.GREY_LIGHTEST}>
         <Title>{translate('ZAP_RISKS_HEADER')}</Title>
         <CardContainer>
           {riskAndReward.map((el, i) => (
             <RiskAndRewardCard key={i} riskAndReward={el} />
           ))}
         </CardContainer>
-      </SSection>
-      <SpacedSection color={COLORS.WHITE}>
+      </FullSizePanelSection>
+      <SpacedPanelSection color={COLORS.WHITE}>
         <Title>{translate('ZAP_MORE_INFO_HEADER')}</Title>
         <Typography>{translate('DEFI_DESC_FIRST')}</Typography>
         <Typography>{translate('DEFI_DESC_SECOND')}</Typography>
@@ -205,8 +182,8 @@ const ZapEducation = withRouter(({ history, location }) => {
             <Link href="https://example.com">Some Link</Link>
           </RowContainer>
         </LinkContainer> */}
-      </SpacedSection>
-      <SpacedSection>
+      </SpacedPanelSection>
+      <SpacedPanelSection>
         <Title>{translate('ZAP_QUESTIONS_HEADER')}</Title>
         <Accordion items={accordionContent} />
         {/* To re-activate later when we have content
@@ -216,7 +193,7 @@ const ZapEducation = withRouter(({ history, location }) => {
           />
         </div> */}
         <Button onClick={handleSubmit}>{translate('ZAP_ADD_FUNDS')}</Button>
-      </SpacedSection>
+      </SpacedPanelSection>
     </FullSizeContentPanel>
   );
 });

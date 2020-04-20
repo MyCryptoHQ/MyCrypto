@@ -1,7 +1,7 @@
 import { FallbackProvider } from 'ethers/providers';
 
 import { Network } from 'v2/types';
-import { createNetworkProviders } from './helpers';
+import { createFallbackNetworkProviders } from './helpers';
 
 interface InstancesObject {
   [key: string]: FallbackProvider;
@@ -13,13 +13,13 @@ interface InstancesObject {
 export class EthersJS {
   public static getEthersInstance(network: Network): FallbackProvider {
     if (!EthersJS.instances[network.id]) {
-      EthersJS.instances[network.id] = createNetworkProviders(network);
+      EthersJS.instances[network.id] = createFallbackNetworkProviders(network);
     }
     return EthersJS.instances[network.id];
   }
 
   public static updateEthersInstance(network: Network): FallbackProvider {
-    EthersJS.instances[network.id] = createNetworkProviders(network);
+    EthersJS.instances[network.id] = createFallbackNetworkProviders(network);
     return EthersJS.instances[network.id];
   }
 

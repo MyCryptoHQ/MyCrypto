@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Typography as UITypography } from '@mycrypto/ui';
-import { IS_MOBILE } from 'v2/utils';
 
-const TRUNCATE_CHARACTERS = IS_MOBILE ? 28 : 18;
+import { useScreenSize } from 'v2/utils';
 
 interface Props {
   as?: string;
@@ -17,7 +16,7 @@ interface Props {
   onClick?(): void;
 }
 
-type SProps = Props & { forwardedAs: string };
+type SProps = Props & { forwardedAs: string; maxCharLen: number };
 
 const STypography = styled(UITypography)`
   line-height: 24px;
@@ -32,14 +31,14 @@ const STypography = styled(UITypography)`
 
   ${(p: SProps) =>
     p.truncate &&
-    ((p.children && p.children.length >= TRUNCATE_CHARACTERS) ||
-      (p.value && p.value.length >= TRUNCATE_CHARACTERS)) &&
+    ((p.children && p.children.length >= p.maxCharLen) ||
+      (p.value && p.value.length >= p.maxCharLen)) &&
     `
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  width: ${TRUNCATE_CHARACTERS}ch;
-  `}
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      width: ${p.maxCharLen}ch;
+    `}
 `;
 
 function Typography({
@@ -51,10 +50,21 @@ function Typography({
   truncate,
   ...props
 }: Props) {
+  const { isMobile } = useScreenSize();
+  const maxCharLen = isMobile ? 28 : 18;
+
   return (
-    // @ts-ignore: forwardedAs is not respected so use SC as
-    // https://styled-components.com/docs/api#forwardedas-prop
-    <STypography as={as} bold={bold} fontSize={fontSize} truncate={truncate} {...props}>
+    <STypography
+      // ForwardedAs is not respected so use SC as
+      // https://styled-components.com/docs/api#forwardedas-prop
+      // @ts-ignore
+      as={as}
+      bold={bold}
+      fontSize={fontSize}
+      truncate={truncate}
+      maxCharLen={maxCharLen}
+      {...props}
+    >
       {children ? children : value}
     </STypography>
   );

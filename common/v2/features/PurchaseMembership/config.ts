@@ -1,5 +1,6 @@
 import { TAddress } from 'v2/types/address';
 import { DAIUUID, EtherUUID } from 'v2/utils';
+import translate, { translateRaw } from 'v2/translations';
 
 import onemonthIcon from 'assets/images/membership/membership-onemonth.svg';
 import threemonthsIcon from 'assets/images/membership/membership-threemonths.svg';
@@ -9,12 +10,12 @@ import lifetimeIcon from 'assets/images/membership/membership-lifetime.svg';
 
 export interface IMembershipConfig {
   title: string;
-  name: string;
   key: IMembershipId;
   contractAddress: string;
   description: string;
   icon: string;
   price: string;
+  discount?: string;
   assetUUID: string;
   durationInDays: number;
   discountNotice: string;
@@ -47,8 +48,7 @@ export const MEMBERSHIP_PURCHASE_GAS_LIMIT = 1000000;
 
 export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
   onemonth: {
-    title: '1 month',
-    name: 'One Month Membership',
+    title: translateRaw('MEMBERSHIP_MONTH', { $duration: '1' }),
     key: IMembershipId.onemonth,
     contractAddress: '0xCE8EF07495A36c451fB49b7391b33884832Bb66f',
     description: '',
@@ -60,47 +60,46 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
   },
 
   threemonths: {
-    title: '3 months',
-    name: 'Three Month Membership',
+    title: translateRaw('MEMBERSHIP_MONTH', { $duration: '3' }),
     key: IMembershipId.threemonths,
     contractAddress: '0xae90e0F7F3f2191B17b1816dFA8C5Ce8e049DC96',
     description: '',
     icon: threemonthsIcon,
     price: '10.5',
+    discount: '10',
     assetUUID: DAIUUID,
     durationInDays: 90,
-    discountNotice: '10% off'
+    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '10%' })
   },
 
   sixmonths: {
-    title: '6 months',
-    name: 'Six Month Membership',
+    title: translateRaw('MEMBERSHIP_MONTH', { $duration: '6' }),
     key: IMembershipId.sixmonths,
     contractAddress: '0x1C8369C9772E71E82679c9750E4770F29FECcbdD',
     description: '',
     icon: sixMonthsIcon,
     price: '18',
+    discount: '20',
     assetUUID: DAIUUID,
     durationInDays: 180,
-    discountNotice: '20% off'
+    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '20%' })
   },
 
   twelvemonths: {
-    title: '12 months',
-    name: 'Twelve Month Membership',
+    title: translateRaw('MEMBERSHIP_MONTH', { $duration: '12' }),
     key: IMembershipId.twelvemonths,
     contractAddress: '0xb9cae1F4480bcc6dF52F045077BAc1DE448D5406',
     description: '',
     icon: twelveMonthsIcon,
     price: '30',
+    discount: '40',
     assetUUID: DAIUUID,
     durationInDays: 366,
-    discountNotice: '40% off'
+    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '40%' })
   },
 
   lifetime: {
-    title: 'I 💖 MyCrypto',
-    name: 'Lifetime Membership',
+    title: translateRaw('MEMBERSHIP_LIFETIME_EMOJI'),
     key: IMembershipId.lifetime,
     contractAddress: '0x60B8C6c7d339Aa170bcFa5a76053ff3e8c1189c1',
     description: '',
@@ -108,7 +107,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     price: '5',
     assetUUID: EtherUUID,
     durationInDays: 36500,
-    discountNotice: 'lifetime of love!'
+    discountNotice: translateRaw('MEMBERSHIP_LIFETIME_DESC')
   }
 };
 
@@ -129,3 +128,22 @@ export const getExpiryDate = (selectedMembership: IMembershipId): Date => {
     today.getTime() + 86400000 * MEMBERSHIP_CONFIG[selectedMembership].durationInDays
   );
 };
+
+export const accordionContent = [
+  {
+    title: translateRaw('MEMBERSHIP_ACCORDION_FIRST_TITLE'),
+    component: translate('MEMBERSHIP_ACCORDION_FIRST_CONTENT')
+  },
+  {
+    title: translateRaw('MEMBERSHIP_ACCORDION_SECOND_TITLE'),
+    component: translate('MEMBERSHIP_ACCORDION_SECOND_CONTENT')
+  },
+  {
+    title: translateRaw('MEMBERSHIP_ACCORDION_THIRD_TITLE'),
+    component: translate('MEMBERSHIP_ACCORDION_THIRD_CONTENT')
+  },
+  {
+    title: translateRaw('MEMBERSHIP_ACCORDION_FORTH_TITLE'),
+    component: translate('MEMBERSHIP_ACCORDION_FORTH_CONTENT')
+  }
+];

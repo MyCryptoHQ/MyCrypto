@@ -1,26 +1,39 @@
 import React, { useState, useContext } from 'react';
-import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
+import { Heading } from '@mycrypto/ui';
+import {
+  AddressBookContext,
+  NetworkContext,
+  NetworkUtils,
+  SettingsContext,
+  StoreContext
+} from 'v2/services/Store';
+
+import { AccountList, FlippablePanel, Mobile, MobileNavBar, Desktop } from 'v2/components';
+import { NetworkId } from 'v2/types';
+import { CustomNodeConfig } from 'v2/types/node';
+import { DEFAULT_NETWORK, IS_ACTIVE_FEATURE } from 'v2/config';
+import { BREAK_POINTS } from 'v2/theme';
 import translate from 'v2/translations';
 
-import { IS_MOBILE } from 'v2/utils';
-import { BREAK_POINTS, MIN_CONTENT_PADDING } from 'v2/theme';
-import { AddressBookContext, SettingsContext, StoreContext } from 'v2/services/Store';
-import { AccountList, FlippablePanel, TabsNav } from 'v2/components';
-import { AddressBookPanel, AddToAddressBook, GeneralSettings, DangerZone } from './components';
-
 import settingsIcon from 'common/assets/images/icn-settings.svg';
-import { IS_ACTIVE_FEATURE } from 'v2/config';
+import AddToAddressBook from './components/AddToAddressBook';
+import { AddressBookPanel, GeneralSettings, DangerZone } from './components';
+import AddOrEditNetworkNode from './components/AddOrEditNetworkNode';
+import NetworkNodes from './components/NetworkNodes';
 
-const SettingsHeading = styled(Heading)`
+const SettingsHeading = styled(Heading)<{ forwardedAs?: string }>`
   display: flex;
   align-items: center;
-  margin-bottom: 22px;
-  color: #163150;
+  margin-bottom: 24px;
+  font-weight: bold;
+  margin-top: 0;
 `;
 
 const SettingsHeadingIcon = styled.img`
-  margin-right: 12px;
+  margin-right: 24px;
+  margin-top: 2px;
+  width: 30px;
 `;
 
 const StyledLayout = styled.div`
@@ -31,17 +44,6 @@ const StyledLayout = styled.div`
   .Layout-content {
     padding: 0;
   }
-  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    .Layout-content {
-      margin-top: ${IS_MOBILE && '73px'};
-    }
-  }
-`;
-
-const SettingsTabs = styled(TabsNav)`
-  margin-top: -44px;
-  margin-left: -${MIN_CONTENT_PADDING};
-  margin-right: -${MIN_CONTENT_PADDING};
 `;
 
 function renderAccountPanel() {
@@ -57,9 +59,15 @@ function renderAccountPanel() {
 }
 
 function renderAddressPanel() {
-  const { createAddressBooks, addressBook, deleteAddressBooks, updateAddressBooks } = useContext(
-    AddressBookContext
-  );
+  const {
+    createAddressBooks,
+    addressBook,
+    addressBookRestore,
+    deleteAddressBooks,
+    updateAddressBooks,
+    restoreDeletedAddressBook
+  } = useContext(AddressBookContext);
+
   return (
     <FlippablePanel>
       {({ flipped, toggleFlipped }) =>
@@ -71,6 +79,52 @@ function renderAddressPanel() {
             toggleFlipped={toggleFlipped}
             updateAddressBooks={updateAddressBooks}
             deleteAddressBooks={deleteAddressBooks}
+            restoreDeletedAddressBook={restoreDeletedAddressBook}
+            addressBookRestore={addressBookRestore}
+          />
+        )
+      }
+    </FlippablePanel>
+  );
+}
+
+function renderNetworkNodes() {
+  const {
+    addNodeToNetwork,
+    isNodeNameAvailable,
+    getNetworkById,
+    updateNode,
+    deleteNode
+  } = useContext(NetworkContext);
+  const { addressBook } = useContext(AddressBookContext);
+  const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
+  const [editNode, setEditNode] = useState<CustomNodeConfig | undefined>(undefined);
+
+  const addressBookNetworks = NetworkUtils.getDistinctNetworks(addressBook, getNetworkById);
+
+  return (
+    <FlippablePanel>
+      {({ flipped, toggleFlipped }) =>
+        flipped ? (
+          <AddOrEditNetworkNode
+            networkId={networkId}
+            editNode={editNode}
+            onComplete={toggleFlipped}
+            addNodeToNetwork={addNodeToNetwork}
+            isNodeNameAvailable={isNodeNameAvailable}
+            getNetworkById={getNetworkById}
+            updateNode={updateNode}
+            deleteNode={deleteNode}
+          />
+        ) : (
+          <NetworkNodes
+            networks={addressBookNetworks}
+            toggleFlipped={(id, node) => {
+              setNetworkId(id);
+              setEditNode(node);
+
+              toggleFlipped();
+            }}
           />
         )
       }
@@ -92,47 +146,56 @@ interface TabOptions {
   [key: string]: React.ReactNode;
 }
 
-function renderMobile() {
+export default function Settings() {
+  // In Mobile view we display a tab instead
   const [tab, setTab] = useState('accounts');
   const tabOptions: TabOptions = {
     ['accounts']: renderAccountPanel(),
     ['addresses']: renderAddressPanel(),
-    ['general']: renderGeneralSettingsPanel()
+    ['general']: renderGeneralSettingsPanel(),
+    ['nodes']: renderNetworkNodes()
   };
   const currentTab = tabOptions[tab];
-  return (
-    <>
-      <SettingsTabs>
-        <a href="#" onClick={() => setTab('accounts')}>
-          Accounts
-        </a>
-        <a href="#" onClick={() => setTab('addresses')}>
-          Addresses
-        </a>
-        <a href="#" onClick={() => setTab('general')}>
-          General
-        </a>
-      </SettingsTabs>
-      <>{currentTab}</>
-    </>
-  );
-}
 
-function renderDesktop() {
   return (
-    <>
-      <SettingsHeading>
-        <SettingsHeadingIcon src={settingsIcon} alt="Settings" />
-        {translate('SETTINGS_HEADING')}
-      </SettingsHeading>
-      {renderAccountPanel()}
-      {renderAddressPanel()}
-      {renderGeneralSettingsPanel()}
-    </>
+    <StyledLayout>
+      <Mobile>
+        <MobileNavBar>
+          <div
+            className={`tab ${tab === 'accounts' ? 'active' : ''}`}
+            onClick={() => setTab('accounts')}
+          >
+            <h6>Accounts</h6>
+          </div>
+          <div
+            className={`tab ${tab === 'addresses' ? 'active' : ''}`}
+            onClick={() => setTab('addresses')}
+          >
+            <h6>Addresses</h6>
+          </div>
+          <div className="w-100" />
+          <div className={`tab ${tab === 'nodes' ? 'active' : ''}`} onClick={() => setTab('nodes')}>
+            <h6>Network & Nodes</h6>
+          </div>
+          <div
+            className={`tab ${tab === 'general' ? 'active' : ''}`}
+            onClick={() => setTab('general')}
+          >
+            <h6>General</h6>
+          </div>
+        </MobileNavBar>
+        <>{currentTab}</>
+      </Mobile>
+      <Desktop>
+        <SettingsHeading as="h2">
+          <SettingsHeadingIcon src={settingsIcon} alt="Settings" />
+          {translate('SETTINGS_HEADING')}
+        </SettingsHeading>
+        {renderAccountPanel()}
+        {renderAddressPanel()}
+        {renderNetworkNodes()}
+        {renderGeneralSettingsPanel()}
+      </Desktop>
+    </StyledLayout>
   );
-}
-
-// @TODO: Use { Desktop, Mobile } components instead
-export default function Settings() {
-  return <StyledLayout>{IS_MOBILE ? renderMobile() : renderDesktop()}</StyledLayout>;
 }

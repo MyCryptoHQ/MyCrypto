@@ -7,7 +7,7 @@ import { StoreContext } from 'v2/services';
 import { DashboardPanel, Typography, Button, Link } from 'v2/components';
 import { FONT_SIZE, COLORS, SPACING } from 'v2/theme';
 import translate, { translateRaw } from 'v2/translations';
-import { ROUTE_PATHS } from 'v2/config';
+import { ROUTE_PATHS, KB_HELP_ARTICLE, getKBHelpArticle } from 'v2/config';
 import { MEMBERSHIP_CONFIG, MembershipState } from 'v2/features/PurchaseMembership/config';
 
 import defaultIcon from 'common/assets/images/membership/membership-none.svg';
@@ -88,7 +88,9 @@ function MembershipPanel({ history }: Props) {
               <SLink onClick={() => history.push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}>
                 {translateRaw('MANAGE_MEMBERSHIP')}
               </SLink>
-              <SButton inverted={true}>{translateRaw('REQUEST_REWARDS')}</SButton>
+              <Link href={getKBHelpArticle(KB_HELP_ARTICLE.MEMBERSHIP_INFO)} rel="noreferrer">
+                <SButton inverted={true}>{translateRaw('REQUEST_REWARDS')}</SButton>
+              </Link>
             </>
           )}
           {membershipState === MembershipState.NOTMEMBER && (

@@ -27,6 +27,7 @@ describe('isTransactionFeeHigh', () => {
 
     // Invalid string examples
     expect(isTransactionFeeHigh('-0.001', 300, false, '21000', '20')).toBe(false);
+    expect(isTransactionFeeHigh('0,001', 300, false, '21000', '20')).toBe(false);
     expect(isTransactionFeeHigh('0.001', 300, false, '21000*', '20')).toBe(false);
     expect(isTransactionFeeHigh('0.001', 300, false, '21000*', '20+')).toBe(false);
     expect(isTransactionFeeHigh('0.001', 300, false, '21000*', '20a')).toBe(false);

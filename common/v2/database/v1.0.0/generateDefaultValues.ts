@@ -24,28 +24,40 @@ import { toArray, toObject, add } from './helpers';
 const addNetworks = add(LSKeys.NETWORKS)((networks: SeedData) => {
   const formatNetwork = (n: NetworkLegacy): Network => {
     const baseAssetUuid = generateAssetUUID(n.chainId);
-    return {
-      // Also availbale are: blockExplorer, tokenExplorer, tokens aka assets, contracts
-      id: n.id,
-      name: n.name,
-      chainId: n.chainId,
-      isCustom: n.isCustom,
-      isTestnet: n.isTestnet,
-      color: n.color,
-      gasPriceSettings: n.gasPriceSettings,
-      shouldEstimateGasPrice: n.shouldEstimateGasPrice,
-      dPaths: {
-        ...n.dPaths,
-        default: n.dPaths[WalletId.MNEMONIC_PHRASE] // Set default dPath
+    const nodes = NODES_CONFIG[n.id] || NODES_CONFIG[n.name as NetworkId] || [];
+    const [firstNode] = nodes;
+
+    return Object.assign(
+      {
+        // Also available are: blockExplorer, tokenExplorer, tokens aka assets, contracts
+        id: n.id,
+        name: n.name,
+        chainId: n.chainId,
+        isCustom: n.isCustom,
+        isTestnet: n.isTestnet,
+        color: n.color,
+        gasPriceSettings: n.gasPriceSettings,
+        shouldEstimateGasPrice: n.shouldEstimateGasPrice,
+        dPaths: {
+          ...n.dPaths,
+          default: n.dPaths[WalletId.MNEMONIC_PHRASE] // Set default dPath
+        },
+        blockExplorer: n.blockExplorer,
+        tokenExplorer: n.tokenExplorer,
+        contracts: [],
+        assets: [],
+        baseAsset: baseAssetUuid, // Set baseAssetUuid
+        baseUnit: n.unit,
+        nodes
       },
-      blockExplorer: n.blockExplorer,
-      tokenExplorer: n.tokenExplorer,
-      contracts: [],
-      assets: [],
-      baseAsset: baseAssetUuid, // Set baseAssetUuid
-      baseUnit: n.unit,
-      nodes: NODES_CONFIG[n.name as NetworkId]
-    };
+      firstNode
+        ? {
+            // Extend network if nodes are defined
+            autoNode: firstNode.name, // Select first node as auto
+            selectedNode: firstNode.name // Select first node as default
+          }
+        : {}
+    );
   };
 
   return R.mapObjIndexed(formatNetwork, networks);
@@ -67,7 +79,7 @@ const addContracts = add(LSKeys.CONTRACTS)(
       R.map(({ id, contracts }) => ({ id, contracts })),
       R.filter(({ contracts }) => contracts),
       R.chain(({ id, contracts }): ExtendedAsset[] => contracts.map(formatContract(id))),
-      R.reduce(toObject('uuid'), {}),
+      R.reduce(toObject('uuid'), {} as any),
       R.mergeRight(store.contracts)
     )(toArray(networks));
   }
@@ -141,7 +153,7 @@ const addTokensToAssets = add(LSKeys.ASSETS)(
       R.map(({ id, tokens }) => ({ id, tokens })),
       R.filter(({ tokens }) => tokens),
       R.chain(({ id, tokens }): ExtendedAsset[] => tokens.map(formatToken(id))),
-      R.reduce(toObject('uuid'), {}),
+      R.reduce(toObject('uuid'), {} as any),
       R.mergeRight(store.assets)
     )(toArray(networks));
   }

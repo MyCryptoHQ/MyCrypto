@@ -9,7 +9,7 @@ const PATHS: IRoutePath[] = [
   {
     name: 'BUY',
     title: translateRaw('BUY'),
-    path: 'https://buy.mycrypto.com/'
+    path: '/buy'
   },
   {
     name: 'HOME',
@@ -130,6 +130,11 @@ const PATHS: IRoutePath[] = [
     name: 'MYC_MEMBERSHIP',
     title: 'MyCrypto Membership',
     path: '/membership'
+  },
+  {
+    name: 'MYC_MEMBERSHIP_BUY',
+    title: 'MyCrypto Membership',
+    path: '/membership/buy'
   }
 ];
 

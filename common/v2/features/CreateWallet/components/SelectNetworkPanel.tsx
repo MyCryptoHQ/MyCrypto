@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import translate, { translateRaw } from 'v2/translations';
 import { ExtendedContentPanel, InlineMessage, NetworkSelectDropdown } from 'v2/components';
-import { WalletId } from 'v2/types';
+import { WalletId, NetworkId } from 'v2/types';
 import { NetworkContext } from 'v2/services/Store';
 import { PanelProps } from '../CreateWallet';
 
@@ -27,7 +27,7 @@ const ErrorWrapper = styled.div`
 `;
 
 interface Props extends PanelProps {
-  network: string;
+  network: NetworkId;
   accountType: WalletId;
   selectNetwork(network: string): void;
 }
@@ -38,7 +38,7 @@ export default class SelectNetworkPanel extends Component<Props> {
 
   public handleSubmitClick = () => {
     const { network, onNext } = this.props;
-    if (this.context.getNetworkByName(network)) {
+    if (this.context.getNetworkById(network)) {
       onNext();
     } else {
       this.setState({ error: true });

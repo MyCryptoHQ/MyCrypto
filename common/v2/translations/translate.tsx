@@ -6,7 +6,7 @@ export type TranslatedText = React.ReactElement<any> | string;
 
 export function translate(
   key: string,
-  variables?: { [name: string]: string }
+  variables?: { [name: string]: any }
 ): React.ReactElement<any> {
   return <TranslateMarkdown source={translateRaw(key, variables)} />;
 }

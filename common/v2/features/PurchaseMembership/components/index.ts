@@ -5,3 +5,4 @@ export { default as MembershipPurchaseReceipt } from './MembershipPurchaseReceip
 export { default as MembershipEducation } from './MembershipEducation';
 export { default as MembershipSelectedBanner } from './MembershipSelectedBanner';
 export { default as MembershipReceiptBanner } from './MembershipReceiptBanner';
+export { default as MembershipPlanCard } from './MembershipPlanCard';

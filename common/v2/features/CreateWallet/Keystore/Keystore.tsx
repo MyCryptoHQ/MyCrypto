@@ -16,8 +16,8 @@ import {
 import { stripHexPrefix } from 'v2/services/EthService';
 import { WalletFactory } from 'v2/services/WalletService';
 import { NotificationTemplates } from 'v2/features/NotificationsPanel';
-import { TAddress, IRawAccount, Asset, ISettings, Network, NetworkId, WalletId } from 'v2/types';
-import { ROUTE_PATHS, N_FACTOR } from 'v2/config';
+import { TAddress, IRawAccount, Asset, ISettings, NetworkId, WalletId } from 'v2/types';
+import { ROUTE_PATHS, N_FACTOR, DEFAULT_NETWORK } from 'v2/config';
 
 import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
@@ -27,7 +27,7 @@ interface State {
   privateKey: string;
   keystore?: IV3Wallet;
   filename: string;
-  network: string;
+  network: NetworkId;
   stage: KeystoreStages;
   accountType: WalletId;
 }
@@ -47,7 +47,7 @@ class CreateKeystore extends Component<Props & INetworkContext & IAssetContext, 
     password: '',
     privateKey: '',
     filename: '',
-    network: '',
+    network: DEFAULT_NETWORK,
     stage: KeystoreStages.GenerateKeystore,
     accountType: WalletId.KEYSTORE_FILE
   };
@@ -106,12 +106,12 @@ class CreateKeystore extends Component<Props & INetworkContext & IAssetContext, 
       updateSettingsAccounts,
       createAssetWithID,
       displayNotification,
-      getNetworkByName,
+      getNetworkById,
       assets
     } = this.props;
     const { keystore, network, accountType } = this.state;
 
-    const accountNetwork: Network | undefined = getNetworkByName(network);
+    const accountNetwork = getNetworkById(network);
     if (!keystore || !accountNetwork) {
       return;
     }
@@ -120,7 +120,7 @@ class CreateKeystore extends Component<Props & INetworkContext & IAssetContext, 
     const newUUID = generateUUID();
     const account: IRawAccount = {
       address: toChecksumAddress(addHexPrefix(keystore.address)) as TAddress,
-      networkId: network as NetworkId,
+      networkId: network,
       wallet: accountType,
       dPath: '',
       assets: [{ uuid: newAssetID, balance: '0', mtime: Date.now() }],
@@ -153,7 +153,7 @@ class CreateKeystore extends Component<Props & INetworkContext & IAssetContext, 
     }
   };
 
-  private selectNetwork = async (network: string) => {
+  private selectNetwork = async (network: NetworkId) => {
     this.setState({ network });
   };
 

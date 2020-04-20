@@ -22,7 +22,7 @@ interface State {
 }
 
 const BroadcastTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) => {
-  const { networks, getNetworkByName } = useContext(NetworkContext);
+  const { networks, getNetworkById } = useContext(NetworkContext);
   const { assets } = useContext(AssetContext);
   const { displayToast, toastTemplates } = useContext(ToastContext);
   const { accounts } = useContext(StoreContext);
@@ -37,7 +37,7 @@ const BroadcastTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setSt
   const handleSendClicked = (signedTx: ISignedTx, cb: any) => {
     const { network } = state;
     const txConfig = makeTxConfigFromSignedTx(signedTx, assets, networks, accounts, {
-      network: getNetworkByName(network)
+      network: getNetworkById(network)
     } as ITxConfig);
 
     setState((prevState: State) => ({

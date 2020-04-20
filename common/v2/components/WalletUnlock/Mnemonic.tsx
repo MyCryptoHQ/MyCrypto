@@ -40,7 +40,7 @@ class MnemonicDecryptClass extends PureComponent<OwnProps, State> {
     pass: undefined,
     selectedDPath:
       getDPath(
-        this.context.getNetworkByName(this.props.formData.network),
+        this.context.getNetworkById(this.props.formData.network),
         WalletId.MNEMONIC_PHRASE
       ) || getDPaths(this.context.networks, WalletId.MNEMONIC_PHRASE)[0]
   };
@@ -49,7 +49,7 @@ class MnemonicDecryptClass extends PureComponent<OwnProps, State> {
     const { seed, phrase, formattedPhrase, pass, selectedDPath } = this.state;
     const isValidMnemonic = validateMnemonic(formattedPhrase || '');
     const networks = this.context.networks;
-    const network = this.context.getNetworkByName(this.props.formData.network);
+    const network = this.context.getNetworkById(this.props.formData.network);
 
     if (seed) {
       return (

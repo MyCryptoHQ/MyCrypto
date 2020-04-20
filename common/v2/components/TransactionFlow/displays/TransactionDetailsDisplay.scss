@@ -38,3 +38,18 @@
     }
   }
 }
+
+.TransactionDetails-detailButton {
+  & {
+    width: 100%;
+    align-items: center;
+    margin-bottom: 15px;
+    color: #1eb8e7;
+    background-color: white;
+    font-weight: normal;
+
+    :hover {
+      background-color: white;
+    }
+  }
+}

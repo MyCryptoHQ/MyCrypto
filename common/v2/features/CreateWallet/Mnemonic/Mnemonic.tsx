@@ -16,7 +16,6 @@ import {
   DPathFormat,
   ISettings,
   WalletId,
-  Network,
   NetworkId
 } from 'v2/types';
 import { generateUUID, withContext } from 'v2/utils';
@@ -25,8 +24,7 @@ import {
   AssetContext,
   IAssetContext,
   INetworkContext,
-  getNewDefaultAssetTemplateByNetwork,
-  getNetworkById
+  getNewDefaultAssetTemplateByNetwork
 } from 'v2/services/Store';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from 'v2/config';
 
@@ -43,7 +41,7 @@ interface State {
   stage: MnemonicStages;
   words: string[];
   accountType: DPathFormat;
-  path: string;
+  dPath: string;
   address: string;
 }
 
@@ -53,7 +51,7 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
     words: [],
     network: DEFAULT_NETWORK,
     accountType: WalletId.MNEMONIC_PHRASE,
-    path: '',
+    dPath: this.props.getNetworkById(DEFAULT_NETWORK).dPaths[WalletId.MNEMONIC_PHRASE]?.value || '',
     address: ''
   };
 
@@ -73,8 +71,8 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
       addCreatedAccountAndRedirectToDashboard: this.addCreatedAccountAndRedirectToDashboard
     };
 
-    const { words, network, accountType, path, address } = this.state;
-    const props = { words, network, accountType, path, address };
+    const { words, network, accountType, dPath, address } = this.state;
+    const props = { words, network, accountType, dPath, address };
 
     return (
       <ActivePanel currentStep={currentStep} totalSteps={totalSteps} {...props} {...actions} />
@@ -123,18 +121,18 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
   };
 
   private selectNetwork = async (network: NetworkId) => {
-    const accountNetwork: Network | undefined = getNetworkById(network, this.props.networks);
+    const accountNetwork = this.props.getNetworkById(network);
     const pathFormat = accountNetwork && accountNetwork.dPaths[this.state.accountType];
     const path = (pathFormat && pathFormat.value) || '';
     this.setState({ network, path });
   };
 
   private decryptMnemonic = () => {
-    const { words, path } = this.state;
+    const { words, dPath } = this.state;
 
     const phrase = words.join(' ').trim();
     const seed = mnemonicToSeedSync(phrase);
-    const derived = HDkey.fromMasterSeed(seed).derive(path);
+    const derived = HDkey.fromMasterSeed(seed).derive(dPath);
     const privateKey = derived.privateKey;
     const address = privateToAddress(privateKey).toString('hex');
 
@@ -148,14 +146,14 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
       createAccountWithID,
       updateSettingsAccounts,
       createAssetWithID,
-      displayNotification
+      displayNotification,
+      getNetworkById
     } = this.props;
-    const { network, accountType, address, path } = this.state;
+    const { network, accountType, address, dPath } = this.state;
 
-    const accountNetwork: Network | undefined = getNetworkById(network, this.props.networks);
-    if (!accountNetwork) {
-      return;
-    }
+    const accountNetwork = getNetworkById(network);
+    if (!accountNetwork) return;
+
     const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(this.props.assets)(accountNetwork);
     const newAssetID = generateUUID();
     const newUUID = generateUUID();
@@ -163,7 +161,7 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
       address: toChecksumAddress(addHexPrefix(address)) as TAddress,
       networkId: network,
       wallet: accountType,
-      dPath: path,
+      dPath,
       assets: [{ uuid: newAssetID, balance: '0', mtime: Date.now() }],
       transactions: [],
       favorite: false,

@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
-import { GeneralStepper } from 'v2/components';
-import { useStateReducer, isWeb3Wallet } from 'v2/utils';
+import {
+  ConfirmTransaction,
+  GeneralStepper,
+  TxReceipt,
+  TxReceiptWithProtectTx
+} from 'v2/components';
+import { useStateReducer, isWeb3Wallet, withProtectTxProvider } from 'v2/utils';
 import { ITxReceipt, ISignedTx, IFormikFields, ITxConfig } from 'v2/types';
 import { translateRaw } from 'v2/translations';
-import { ROUTE_PATHS } from 'v2/config';
-
-import { ConfirmTransaction, TxReceipt } from 'v2/components/TransactionFlow';
+import { IS_ACTIVE_FEATURE, ROUTE_PATHS } from 'v2/config';
 import { IStepperPath } from 'v2/components/GeneralStepper/types';
-import { SendAssetsForm, SignTransaction } from './components';
+
 import { txConfigInitialState, TxConfigFactory } from './stateFactory';
+import SendAssetsForm from './components/SendAssetsForm';
+import {
+  ConfirmTransactionWithProtectTx,
+  SendAssetsFormWithProtectTx,
+  SignTransaction,
+  SignTransactionWithProtectTx
+} from './components';
+import { ProtectTxContext, ProtectTxUtils } from '../ProtectTransaction';
 
 function SendAssets() {
   const {
@@ -22,30 +33,40 @@ function SendAssets() {
     txFactoryState
   } = useStateReducer(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: undefined });
 
+  const protectTxContext = useContext(ProtectTxContext);
+  const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
+
   // Due to MetaMask deprecating eth_sign method,
   // it has different step order, where sign and send are one panel
   const web3Steps: IStepperPath[] = [
     {
       label: 'Send Assets',
-      component: SendAssetsForm,
+      component: IS_ACTIVE_FEATURE.PROTECT_TX ? SendAssetsFormWithProtectTx : SendAssetsForm,
       props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
-      actions: (payload: IFormikFields, cb: any) => handleFormSubmit(payload, cb)
+      actions: (payload: IFormikFields, cb: any) => {
+        if (getProTxValue(['state', 'protectTxEnabled'])) {
+          payload.nonceField = (parseInt(payload.nonceField, 10) + 1).toString();
+        }
+        return handleFormSubmit(payload, cb);
+      }
     },
     {
       label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
-      component: ConfirmTransaction,
+      component: IS_ACTIVE_FEATURE.PROTECT_TX
+        ? ConfirmTransactionWithProtectTx
+        : ConfirmTransaction,
       props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
       actions: (payload: ITxConfig, cb: any) => handleConfirmAndSign(payload, cb)
     },
     {
       label: '',
-      component: SignTransaction,
+      component: IS_ACTIVE_FEATURE.PROTECT_TX ? SignTransactionWithProtectTx : SignTransaction,
       props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
       actions: (payload: ITxReceipt | ISignedTx, cb: any) => handleSignedWeb3Tx(payload, cb)
     },
     {
       label: translateRaw('TRANSACTION_BROADCASTED'),
-      component: TxReceipt,
+      component: IS_ACTIVE_FEATURE.PROTECT_TX ? TxReceiptWithProtectTx : TxReceipt,
       props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(txFactoryState)
     }
   ];
@@ -53,25 +74,48 @@ function SendAssets() {
   const defaultSteps: IStepperPath[] = [
     {
       label: 'Send Assets',
-      component: SendAssetsForm,
+      component: IS_ACTIVE_FEATURE.PROTECT_TX ? SendAssetsFormWithProtectTx : SendAssetsForm,
       props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
-      actions: (payload: IFormikFields, cb: any) => handleFormSubmit(payload, cb)
+      actions: (payload: IFormikFields, cb: any) => {
+        if (getProTxValue(['state', 'protectTxEnabled'])) {
+          payload.nonceField = (parseInt(payload.nonceField, 10) + 1).toString();
+        }
+        return handleFormSubmit(payload, cb);
+      }
     },
     {
       label: '',
-      component: SignTransaction,
+      component: IS_ACTIVE_FEATURE.PROTECT_TX ? SignTransactionWithProtectTx : SignTransaction,
       props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
       actions: (payload: ITxConfig | ISignedTx, cb: any) => handleSignedTx(payload, cb)
     },
     {
       label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
-      component: ConfirmTransaction,
+      component: IS_ACTIVE_FEATURE.PROTECT_TX
+        ? ConfirmTransactionWithProtectTx
+        : ConfirmTransaction,
       props: (({ txConfig, signedTx }) => ({ txConfig, signedTx }))(txFactoryState),
-      actions: (payload: ITxConfig | ISignedTx, cb: any) => handleConfirmAndSend(payload, cb)
+      actions: (payload: ITxConfig | ISignedTx, cb: any) => {
+        if (getProTxValue(['setProtectTxTimeoutFunction'])) {
+          getProTxValue(['setProtectTxTimeoutFunction'])(
+            (txReceiptCb?: (txReciept: ITxReceipt) => void) =>
+              handleConfirmAndSend(payload, (txReceipt: ITxReceipt) => {
+                if (txReceiptCb) {
+                  txReceiptCb(txReceipt);
+                }
+              })
+          );
+        } else {
+          handleConfirmAndSend(payload);
+        }
+        if (cb) {
+          cb();
+        }
+      }
     },
     {
-      label: translateRaw('TRANSACTION_BROADCASTED'),
-      component: TxReceipt,
+      label: ' ',
+      component: IS_ACTIVE_FEATURE.PROTECT_TX ? TxReceiptWithProtectTx : TxReceipt,
       props: (({ txConfig, txReceipt }) => ({
         txConfig,
         txReceipt,
@@ -94,8 +138,11 @@ function SendAssets() {
       defaultBackPath={ROUTE_PATHS.DASHBOARD.path}
       defaultBackPathLabel={translateRaw('DASHBOARD')}
       completeBtnText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
+      wrapperClassName={`send-assets-stepper ${
+        getProTxValue(['state', 'protectTxShow']) ? 'has-side-panel' : ''
+      }`}
     />
   );
 }
 
-export default SendAssets;
+export default IS_ACTIVE_FEATURE.PROTECT_TX ? withProtectTxProvider()(SendAssets) : SendAssets;

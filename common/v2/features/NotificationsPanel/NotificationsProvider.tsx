@@ -4,7 +4,7 @@ import moment from 'moment';
 import { DataContext } from 'v2/services/Store';
 import { ExtendedNotification, LSKeys } from 'v2/types';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { generateUUID } from 'v2/utils';
+import { generateUUID, notUndefined } from 'v2/utils';
 import { notificationsConfigs } from './constants';
 
 export interface ProviderState {
@@ -60,7 +60,7 @@ function isValidNotification(n: ExtendedNotification) {
 
 export const NotificationsProvider: React.FC = ({ children }) => {
   const { notifications, createActions } = useContext(DataContext);
-  const [currentNotification, setCurrentNotification] = useState();
+  const [currentNotification, setCurrentNotification] = useState<ExtendedNotification>();
   const Notification = createActions(LSKeys.NOTIFICATIONS);
 
   useEffect(() => {
@@ -124,12 +124,14 @@ export const NotificationsProvider: React.FC = ({ children }) => {
     notifications,
     currentNotification,
     displayNotification,
-    dismissNotification: (notif: ExtendedNotification) => {
-      Notification.update(notif.uuid, {
-        ...notif,
-        dismissed: true,
-        dateDismissed: new Date()
-      });
+    dismissNotification: (notif?: ExtendedNotification) => {
+      if (notUndefined(notif)) {
+        Notification.update(notif.uuid, {
+          ...notif,
+          dismissed: true,
+          dateDismissed: new Date()
+        });
+      }
     },
     dismissCurrentNotification: () => state.dismissNotification(currentNotification)
   };

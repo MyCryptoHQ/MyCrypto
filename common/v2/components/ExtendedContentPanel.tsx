@@ -101,7 +101,7 @@ const StyledPanel = styled(Panel)`
   }
 `;
 
-interface Props {
+export interface ExtendedControlPanelProps {
   children: any;
   className?: string;
   heading?: string | JSX.Element;
@@ -133,7 +133,7 @@ export default function ExtendedContentPanel({
   width,
   backBtnText,
   ...rest
-}: Props) {
+}: ExtendedControlPanelProps) {
   return (
     <ContentPanelWrapper centered={centered} width={width}>
       {(onBack || stepper) && (

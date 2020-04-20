@@ -66,6 +66,10 @@ import { RatesContext } from 'v2/services/RatesProvider';
 import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
 import { formatSupportEmail, isFormValid as checkFormValid, EtherUUID } from 'v2/utils';
 import { InlineMessageType } from 'v2/types/inlineMessages';
+import { ProtectTxUtils, ProtectTxError } from 'v2/features/ProtectTransaction';
+import { ProtectTxShowError, ProtectTxButton } from 'v2/features/ProtectTransaction/components';
+import { ProtectTxContext } from 'v2/features/ProtectTransaction/ProtectTxProvider';
+import { useEffectOnce } from 'v2/vendor';
 
 import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
 import './SendAssetsForm.scss';
@@ -85,7 +89,7 @@ export const AdvancedOptionsButton = styled(Button)`
 `;
 
 const NoMarginCheckbox = styled(Checkbox)`
-  margin-bottom: 0px;
+  margin-bottom: 0;
 `;
 
 const initialFormikValues: IFormikFields = {
@@ -144,7 +148,7 @@ export const getInitialFormikValues = (
   return R.mergeDeepWith(preferValueFromState, initialFormikValues, state);
 };
 
-const QueryWarning: React.SFC<{}> = () => (
+const QueryWarning: React.FC = () => (
   <WhenQueryExists
     whenQueryExists={
       <div className="alert alert-info">
@@ -154,47 +158,56 @@ const QueryWarning: React.SFC<{}> = () => (
   />
 );
 
-export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentProps) {
+const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
   const { accounts, userAssets, networks, getAccount } = useContext(StoreContext);
   const { getAssetRate } = useContext(RatesContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
+  const defaultNetwork = networks.find((n) => n.id === DEFAULT_NETWORK);
   const [baseAsset, setBaseAsset] = useState(
     (txConfig.network &&
       getBaseAssetByNetwork({ network: txConfig.network, assets: userAssets })) ||
+      (defaultNetwork && getBaseAssetByNetwork({ network: defaultNetwork, assets: userAssets })) ||
       ({} as Asset)
   );
-  const [selectedAsset, setAsset] = useState({} as Asset);
+
+  const protectTxContext = useContext(ProtectTxContext);
+  const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
 
   const SendAssetsSchema = Yup.object().shape({
     amount: Yup.string()
       .required(translateRaw('REQUIRED'))
-      .test('check-valid-amount', translateRaw('ERROR_0'), value => !validateAmountField(value))
-      .test(
-        'check-amount',
-        translateRaw('BALANCE_TOO_LOW_ERROR', { $asset: selectedAsset.ticker }),
-        function(value) {
+      .test('check-valid-amount', translateRaw('ERROR_0'), (value) => !validateAmountField(value))
+      .test({
+        name: 'check-amount',
+        test(value) {
           try {
             const account = this.parent.account;
             const asset = this.parent.asset;
             if (!isEmpty(account)) {
               const balance = getAccountBalance(account, asset.type === 'base' ? undefined : asset);
               const amount = bigNumberify(toTokenBase(value, asset.decimal).toString());
-              return balance.gte(amount);
+              if (balance.lt(amount)) {
+                return this.createError({
+                  message: translateRaw('BALANCE_TOO_LOW_ERROR', {
+                    $asset: this.parent.asset.ticker
+                  })
+                });
+              }
             }
           } catch (err) {
             return false;
           }
           return true;
         }
-      ),
+      }),
     account: Yup.object().required(translateRaw('REQUIRED')),
     address: Yup.object()
       .required(translateRaw('REQUIRED'))
       // @ts-ignore Hack as Formik doesn't officially support warnings
       // tslint:disable-next-line
-      .test('check-sending-to-burn', translateRaw('SENDING_TO_BURN_ADDRESS'), function(value) {
+      .test('check-sending-to-burn', translateRaw('SENDING_TO_BURN_ADDRESS'), function (value) {
         if (isBurnAddress(value.value)) {
           return {
             name: 'ValidationError',
@@ -205,9 +218,13 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
         return true;
       })
       // @ts-ignore Hack as Formik doesn't officially support warnings
-      .test('check-sending-to-yourself', translateRaw('SENDING_TO_YOURSELF'), function(value) {
+      .test('check-sending-to-yourself', translateRaw('SENDING_TO_YOURSELF'), function (value) {
         const account = this.parent.account;
-        if (!isEmpty(account) && account.address.toLowerCase() === value.value.toLowerCase()) {
+        if (
+          !isEmpty(account) &&
+          value.value !== undefined &&
+          account.address.toLowerCase() === value.value.toLowerCase()
+        ) {
           return {
             name: 'ValidationError',
             type: InlineMessageType.INFO_CIRCLE,
@@ -236,7 +253,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
         // @ts-ignore Hack to allow for returning of Markdown
         translate('NONCE_ERROR', { $link: formatSupportEmail('Send Page: Nonce Error') }),
         // @ts-ignore Hack to allow for returning of Markdown
-        async function(value) {
+        async function (value) {
           const account = this.parent.account;
           const network = this.parent.network;
           if (!isEmpty(account)) {
@@ -248,19 +265,39 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
       )
   });
 
-  const validAccounts = accounts.filter(account => account.wallet !== WalletId.VIEW_ONLY);
-  const userAccountEthAsset = userAssets.find(a => a.uuid === EtherUUID);
-  const defaultNetwork = networks.find(n => n.id === DEFAULT_NETWORK);
+  const validAccounts = accounts.filter((account) => account.wallet !== WalletId.VIEW_ONLY);
+  const userAccountEthAsset = userAssets.find((a) => a.uuid === EtherUUID);
 
   return (
-    <div className="SendAssetsForm">
+    <div
+      className={`SendAssetsForm ${
+        getProTxValue(['state', 'mainComponentDisabled']) ? 'SendAssetsForm-disabled' : ''
+      }`}
+    >
       <Formik
         initialValues={getInitialFormikValues(txConfig, userAccountEthAsset, defaultNetwork)}
         validationSchema={SendAssetsSchema}
-        onSubmit={fields => {
+        onSubmit={(fields) => {
           onComplete(fields);
         }}
-        render={({ errors, setFieldValue, setFieldTouched, touched, values, handleChange }) => {
+        render={({ errors, setFieldValue, setFieldTouched, touched, values }) => {
+          if (getProTxValue(['setMainTransactionFormCallback'])) {
+            getProTxValue(['setMainTransactionFormCallback'])(() => ({
+              isValid: isFormValid,
+              values
+            }));
+          }
+
+          // Set gas estimates if default asset is selected
+          useEffectOnce(() => {
+            if (!isEmpty(values.asset)) {
+              fetchGasPriceEstimates(values.network).then((data) => {
+                setFieldValue('gasEstimates', data);
+                setFieldValue('gasPriceSlider', data.fast);
+              });
+            }
+          });
+
           const toggleAdvancedOptions = () => {
             setFieldValue('advancedTransaction', !values.advancedTransaction);
           };
@@ -301,7 +338,7 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
               'txDataField',
               'advancedTransaction'
             ];
-            resetFields.forEach(field => setFieldValue(field, initialFormikValues[field]));
+            resetFields.forEach((field) => setFieldValue(field, initialFormikValues[field]));
           };
 
           const setAmountFieldToAssetMax = () => {
@@ -358,12 +395,11 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                         handleFieldReset();
                         if (option && option.networkId) {
                           const network = getNetworkById(option.networkId, networks);
-                          fetchGasPriceEstimates(network).then(data => {
+                          fetchGasPriceEstimates(network).then((data) => {
                             form.setFieldValue('gasEstimates', data);
                             form.setFieldValue('gasPriceSlider', data.fast);
                           });
                           form.setFieldValue('network', network || {});
-                          setAsset(option);
                           if (network) {
                             setBaseAsset(
                               getBaseAssetByNetwork({ network, assets: userAssets }) ||
@@ -483,10 +519,6 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                 </label>
                 {!values.advancedTransaction && (
                   <GasPriceSlider
-                    handleChange={(e: React.ChangeEvent<any>) => {
-                      handleGasEstimate();
-                      handleChange(e);
-                    }}
                     network={values.network}
                     gasPrice={values.gasPriceSlider}
                     gasEstimates={values.gasEstimates}
@@ -615,6 +647,33 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
                 )}
               </div>
 
+              {getProTxValue() && (
+                <ProtectTxButton
+                  disabled={
+                    isEstimatingGasLimit ||
+                    isResolvingName ||
+                    isEstimatingNonce ||
+                    !isFormValid ||
+                    ProtectTxUtils.checkFormForProtectedTxErrors(
+                      values,
+                      getAssetRate(values.asset)
+                    ) !== ProtectTxError.NO_ERROR
+                  }
+                  onClick={(e) => {
+                    e.preventDefault();
+
+                    if (getProTxValue(['goToInitialStepOrFetchReport'])) {
+                      const { address, network } = values;
+                      getProTxValue(['goToInitialStepOrFetchReport'])(address.value, network);
+                    }
+
+                    if (getProTxValue(['showHideProtectTx'])) {
+                      getProTxValue(['showHideProtectTx'])(true);
+                    }
+                  }}
+                />
+              )}
+
               <Button
                 type="submit"
                 onClick={() => {
@@ -629,10 +688,25 @@ export default function SendAssetsForm({ txConfig, onComplete }: IStepComponentP
               >
                 {translate('ACTION_6')}
               </Button>
+
+              {getProTxValue() && (
+                <ProtectTxShowError
+                  protectTxError={ProtectTxUtils.checkFormForProtectedTxErrors(
+                    values,
+                    getAssetRate(values.asset)
+                  )}
+                  shown={
+                    !(isEstimatingGasLimit || isResolvingName || isEstimatingNonce || !isFormValid)
+                  }
+                />
+              )}
             </Form>
           );
         }}
       />
+      <div className="SendAssetsForm-disabled-overlay" />
     </div>
   );
-}
+};
+
+export default SendAssetsForm;

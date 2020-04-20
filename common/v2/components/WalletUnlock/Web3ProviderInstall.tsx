@@ -8,7 +8,7 @@ import { ANALYTICS_CATEGORIES, AnalyticsService } from 'v2/services';
 import AppStoreBadgeIMG from 'assets/images/mobile/app-store-badge.png';
 import GooglePlayBadgeIMG from 'assets/images/mobile/google-play-badge.png';
 import { NewTabLink } from 'v2/components';
-import { IS_MOBILE } from 'v2/utils';
+import { useScreenSize } from 'v2/utils';
 import './Web3ProviderInstall.scss';
 
 function InstallTrunk() {
@@ -76,20 +76,20 @@ function Web3ProviderInstall() {
   useEffect(() => {
     AnalyticsService.instance.track(ANALYTICS_CATEGORIES.ADD_WEB3_ACCOUNT, `No provider detected`);
   }, [])
-
+  const { isMobile } = useScreenSize();
   return (
     <div className="Panel">
       <div className="Panel-title">
         {translate('ADD_ACCOUNT_WEB3_INSTALL_TITLE', {
-          $walletId: IS_MOBILE ? 'Web3 Provider' : 'Metamask'
+          $walletId: isMobile ? 'Web3 Provider' : 'Metamask'
         })}
       </div>
       <div className="Panel-description">
         {translate(
-          IS_MOBILE ? 'ADD_ACCOUNT_WEB3_INSTALL_MOBILE_DESC' : 'ADD_ACCOUNT_WEB3_INSTALL_DESC'
+          isMobile ? 'ADD_ACCOUNT_WEB3_INSTALL_MOBILE_DESC' : 'ADD_ACCOUNT_WEB3_INSTALL_DESC'
         )}
       </div>
-      <div className="Panel-content">{IS_MOBILE ? <InstallTrunk /> : <InstallMetaMask />}</div>
+      <div className="Panel-content">{isMobile ? <InstallTrunk /> : <InstallMetaMask />}</div>
     </div>
   );
 }

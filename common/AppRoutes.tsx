@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
-import { Layout } from 'v2/features/Layout';
+import { Layout, LayoutConfig } from 'v2/features/Layout';
 import { Home, PageNotFound, ScreenLockProvider, DrawerProvider } from 'v2/features';
-import { ScrollToTop } from 'v2/utils';
+import { ScrollToTop, useScreenSize } from 'v2/utils';
 import { ROUTE_PATHS } from 'v2/config/routePaths';
 import {
   APP_ROUTES,
@@ -12,17 +12,42 @@ import {
   DefaultHomeHandler,
   PrivateRoute
 } from 'v2/routing';
+import { COLORS, SPACING } from 'v2/theme';
+
+const layoutConfig = (path: string, isMobile: boolean): LayoutConfig => {
+  switch (path) {
+    case ROUTE_PATHS.HOME.path:
+    case ROUTE_PATHS.ROOT.path:
+      return {
+        centered: false,
+        fluid: true,
+        fullW: true,
+        bgColor: COLORS.WHITE
+      };
+    case ROUTE_PATHS.DASHBOARD.path:
+      return {
+        centered: true,
+        paddingV: SPACING.MD
+      };
+    case ROUTE_PATHS.SETTINGS.path:
+      return {
+        centered: true,
+        fluid: true,
+        fullW: true,
+        bgColor: COLORS.WHITE,
+        paddingV: isMobile ? '0px' : SPACING.MD
+      };
+    default:
+      return {
+        centered: true,
+        paddingV: SPACING.XL
+      };
+  }
+};
 
 const LayoutWithLocation = withRouter(({ location, children }) => {
-  const homeLayout = {
-    centered: false,
-    fluid: true,
-    fullW: true,
-    bgColor: '#fff'
-  };
-  const isHomeRoute =
-    location.pathname === ROUTE_PATHS.ROOT.path || location.pathname === ROUTE_PATHS.HOME.path;
-  return <Layout config={isHomeRoute ? homeLayout : {}}>{children}</Layout>;
+  const { isMobile } = useScreenSize();
+  return <Layout config={layoutConfig(location.pathname, isMobile)}>{children}</Layout>;
 });
 
 export const AppRoutes = () => {

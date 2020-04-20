@@ -38,15 +38,13 @@ const initialFormikValues: FormValues = {
 };
 
 export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
-  const { getNetworkByName } = useContext(NetworkContext);
+  const { getNetworkById } = useContext(NetworkContext);
   const [isResolvingDomain, setIsResolvingDomain] = useState(false);
-  const [network] = useState(getNetworkByName(formData.network));
+  const [network] = useState(getNetworkById(formData.network));
 
   const onSubmit = (fields: FormValues) => {
     if (R.equals(fields, initialFormikValues)) return;
-    onUnlock(
-      WalletService.init(toChecksumAddressByChainId(fields.address.value, network!.chainId))
-    );
+    onUnlock(WalletService.init(toChecksumAddressByChainId(fields.address.value, network.chainId)));
   };
 
   return (
@@ -61,7 +59,7 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
               name="address"
               value={values.address}
               error={errors && touched.address && errors.address && (errors.address as ErrorObject)}
-              network={network!}
+              network={network}
               isResolvingName={isResolvingDomain}
               setIsResolvingDomain={setIsResolvingDomain}
             />

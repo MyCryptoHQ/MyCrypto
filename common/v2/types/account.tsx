@@ -24,12 +24,6 @@ export interface IAccount {
 
 export type IRawAccount = Omit<IAccount, 'uuid'>;
 
-export interface AssetBalanceObject {
-  uuid: TUuid;
-  balance: string;
-  timestamp: number;
-}
-
 export type StoreAccount = Overwrite<
   IAccount,
   {
