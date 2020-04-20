@@ -58,8 +58,10 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
   const Schema = Yup.object().shape({
     label: Yup.string().required(translateRaw('REQUIRED')),
     address: Yup.string()
-      .test('check-eth-address', translateRaw('TO_FIELD_ERROR'), value => isValidETHAddress(value))
-      .test('doesnt-exist', translateRaw('ADDRESS_ALREADY_ADDED'), function(value) {
+      .test('check-eth-address', translateRaw('TO_FIELD_ERROR'), (value) =>
+        isValidETHAddress(value)
+      )
+      .test('doesnt-exist', translateRaw('ADDRESS_ALREADY_ADDED'), function (value) {
         const contact = getContactByAddress(value);
         if (contact !== undefined) {
           return this.createError({
@@ -90,7 +92,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
           label: '',
           address: '',
           notes: '',
-          network: ''
+          network: 'Ethereum'
         }}
         onSubmit={(values: AddressBook, { setSubmitting }) => {
           createAddressBooks(values);
@@ -129,7 +131,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
                 render={({ field, form }: FieldProps<NetworkId>) => (
                   <SNetworkSelectDropdown
                     network={field.value}
-                    onChange={e => form.setFieldValue(field.name, e)}
+                    onChange={(e) => form.setFieldValue(field.name, e)}
                   />
                 )}
               />
