@@ -70,7 +70,8 @@ interface State {
   ): (getAssetRate: (asset: Asset) => number | undefined) => number;
   assetTickers(targetAssets?: StoreAsset[]): TTicker[];
   assetUUIDs(targetAssets?: StoreAsset[]): any[];
-  scanTokens(asset?: ExtendedAsset): Promise<void[]>;
+  scanAccountTokens(account: StoreAccount, asset?: ExtendedAsset): Promise<void>;
+  scanTokens(asset?: ExtendedAsset): Promise<void>;
   deleteAccountFromCache(account: IAccount): void;
   restoreDeletedAccount(accountId: TUuid): void;
   addAccount(
@@ -97,6 +98,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     addNewTransactionToAccount,
     getAccountByAddressAndNetworkName,
     updateAccountAssets,
+    updateAllAccountsAssets,
     updateAccountsBalances,
     deleteAccount,
     createAccountWithID
@@ -301,12 +303,10 @@ export const StoreProvider: React.FC = ({ children }) => {
     assetUUIDs: (targetAssets = state.assets()) => {
       return [...new Set(targetAssets.map((a: StoreAsset) => a.uuid))];
     },
+    scanAccountTokens: async (account: StoreAccount, asset?: ExtendedAsset) =>
+      updateAccountAssets(account, asset ? [...assets, asset] : assets),
     scanTokens: async (asset?: ExtendedAsset) =>
-      Promise.all(
-        accounts
-          .map((account) => updateAccountAssets(account, asset ? [...assets, asset] : assets))
-          .map((p) => p.catch((e) => console.debug(e)))
-      ),
+      updateAllAccountsAssets(accounts, asset ? [...assets, asset] : assets),
     deleteAccountFromCache: (account) => {
       setAccountRestore((prevState) => ({ ...prevState, [account.uuid]: account }));
       deleteAccount(account);

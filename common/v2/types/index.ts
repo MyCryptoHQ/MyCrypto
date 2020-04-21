@@ -39,7 +39,7 @@ export {
   StoreAsset,
   AssetWithDetails
 } from './asset';
-export { IRawAccount, IAccount, StoreAccount } from './account';
+export { StoreAccount, IRawAccount, IAccount } from './account';
 export { AddressBook, ExtendedAddressBook } from './addressBook';
 export { Contract, ExtendedContract } from './contract';
 export { Network, NetworkLegacy, AssetLegacy, ContractLegacy, NetworkNodes } from './network';
