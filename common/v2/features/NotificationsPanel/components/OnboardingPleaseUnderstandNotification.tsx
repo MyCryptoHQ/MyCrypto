@@ -55,7 +55,7 @@ const TipItem = styled.div`
 `;
 
 const TipIcon = styled.img`
-  width: 50px;
+  width: auto;
   height: 50px;
   margin-right: 10px;
 `;
