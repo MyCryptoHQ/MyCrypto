@@ -133,9 +133,9 @@ export default function TxReceipt({
           if (sender.account) {
             addNewTransactionToAccount(sender.account, {
               ...displayTxReceipt,
-              txType: txType || ITxType.STANDARD,
               timestamp: transactionTimestamp || 0,
-              stage: txStatus
+              stage: txStatus,
+              txType
             });
           }
           setTimestamp(transactionTimestamp || 0);
