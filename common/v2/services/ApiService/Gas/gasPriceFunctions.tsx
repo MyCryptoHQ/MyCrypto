@@ -1,5 +1,5 @@
 import { GAS_PRICE_DEFAULT } from 'v2/config';
-import { ITxObject, GasEstimates, Network, IHexStrWeb3Transaction } from 'v2/types';
+import { ITxObject, GasEstimates, Network } from 'v2/types';
 import { ProviderHandler } from 'v2/services/EthService';
 import { fetchGasEstimates } from './gas';
 
@@ -55,10 +55,7 @@ export async function fetchGasPriceEstimates(network: Network): Promise<GasEstim
   }
 }
 
-export const getGasEstimate = async (
-  network: Network,
-  tx: Partial<ITxObject> | IHexStrWeb3Transaction
-) => {
+export const getGasEstimate = async (network: Network, tx: Partial<ITxObject>) => {
   const provider = new ProviderHandler(network);
   return await provider.estimateGas(tx);
 };

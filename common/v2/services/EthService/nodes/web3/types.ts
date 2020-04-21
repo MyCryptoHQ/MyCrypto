@@ -1,4 +1,4 @@
-import { JsonRpcResponse, RPCRequest, RPCRequestBase, DATA, QUANTITY } from '../rpc';
+import { JsonRpcResponse, RPCRequest, RPCRequestBase } from '../rpc';
 
 type MESSAGE_HEX = string;
 type ADDRESS = string;
@@ -7,13 +7,13 @@ export interface SendTransactionRequest extends RPCRequestBase {
   method: 'eth_sendTransaction';
   params: [
     {
-      from: DATA;
-      to: DATA;
-      gas: QUANTITY;
-      gasPrice: QUANTITY;
-      value: QUANTITY;
-      data?: DATA;
-      nonce?: QUANTITY;
+      from: string;
+      to: string;
+      gas: string;
+      gasPrice: string;
+      value: string;
+      data?: string;
+      nonce?: string;
     }
   ];
 }

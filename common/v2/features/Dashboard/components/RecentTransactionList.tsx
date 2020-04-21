@@ -10,7 +10,7 @@ import {
   Account
 } from 'v2/components';
 import { truncate, convertToFiat } from 'v2/utils';
-import { ITxReceipt, ITxStatus, StoreAccount, Asset } from 'v2/types';
+import { ITxReceipt, ITxStatus, StoreAccount, Asset, ITxDirection } from 'v2/types';
 import { RatesContext, AddressBookContext, getLabelByAddressAndNetwork } from 'v2/services';
 import { translateRaw } from 'v2/translations';
 import {
@@ -33,37 +33,31 @@ interface Props {
   accountsList: StoreAccount[];
 }
 
-enum ITxType {
-  TRANSFER = 'TRANSFER',
-  OUTBOUND = 'OUTBOUND',
-  INBOUND = 'INBOUND'
-}
-
-interface ITxTypeConfigObj {
+interface ITxDirectionConfigObj {
   icon: any;
   label(asset: Asset): string;
 }
 
-type ITxTypeConfig = {
-  [txType in ITxType]: ITxTypeConfigObj;
+type ITxDirectionConfig = {
+  [txType in ITxDirection]: ITxDirectionConfigObj;
 };
 
-const TxTypeConfig: ITxTypeConfig = {
-  [ITxType.INBOUND]: {
+const TxTypeConfig: ITxDirectionConfig = {
+  [ITxDirection.INBOUND]: {
     label: (asset: Asset) =>
       translateRaw('RECENT_TX_LIST_LABEL_RECEIVED', {
         $ticker: asset.ticker || translateRaw('UNKNOWN')
       }),
     icon: inbound
   },
-  [ITxType.OUTBOUND]: {
+  [ITxDirection.OUTBOUND]: {
     label: (asset: Asset) =>
       translateRaw('RECENT_TX_LIST_LABEL_SENT', {
         $ticker: asset.ticker || translateRaw('UNKNOWN')
       }),
     icon: outbound
   },
-  [ITxType.TRANSFER]: {
+  [ITxDirection.TRANSFER]: {
     label: (asset: Asset) =>
       translateRaw('RECENT_TX_LIST_LABEL_TRANSFERRED', {
         $ticker: asset.ticker || translateRaw('UNKNOWN')
@@ -72,7 +66,10 @@ const TxTypeConfig: ITxTypeConfig = {
   }
 };
 
-export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt) => {
+export const deriveTxDirection = (
+  accountsList: StoreAccount[],
+  tx: ITxReceipt
+): ITxDirection | undefined => {
   const fromAccount =
     tx.from &&
     accountsList.find((account) => account.address.toLowerCase() === tx.from.toLowerCase());
@@ -80,9 +77,9 @@ export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt) => {
     tx.to && accountsList.find((account) => account.address.toLowerCase() === tx.to.toLowerCase());
   return !fromAccount || !toAccount
     ? fromAccount
-      ? ITxType.OUTBOUND
-      : ITxType.INBOUND
-    : ITxType.TRANSFER;
+      ? ITxDirection.OUTBOUND
+      : ITxDirection.INBOUND
+    : ITxDirection.TRANSFER;
 };
 
 const SAssetIcon = styled(AssetIcon)`
@@ -110,7 +107,7 @@ const SCombinedCircle = (asset: Asset) => {
   );
 };
 
-const makeTxIcon = (type: ITxType, asset: Asset) => {
+const makeTxIcon = (type: ITxDirection, asset: Asset) => {
   const greyscaleIcon = asset && <>{SCombinedCircle(asset)}</>;
   const baseIcon = (
     <div className="TransactionLabel-image">
@@ -125,10 +122,10 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
   const { addressBook } = useContext(AddressBookContext);
   const { getAssetRate } = useContext(RatesContext);
   const noLabel = translateRaw('NO_LABEL');
-  const transactions = accountsList.flatMap((account) => account.transactions);
-  const accountTxs: ITxReceipt = getTxsFromAccount(accountsList).map((tx: ITxReceipt) => ({
+  const transactions = accountsList.flatMap(account => account.transactions);
+  const accountTxs: ITxReceipt[] = getTxsFromAccount(accountsList).map((tx: ITxReceipt) => ({
     ...tx,
-    txType: deriveTxType(accountsList, tx)
+    direction: deriveTxDirection(accountsList, tx)
   }));
   // TODO: Sort by relevant transactions
 
@@ -138,16 +135,16 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
 
   const createEntries = (_: string, collection: typeof transactions) =>
     collection.map(
-      ({ timestamp, hash, stage, from, to, amount, asset, network, txType }: ITxReceipt) => {
+      ({ timestamp, hash, stage, from, to, amount, asset, network, direction }: ITxReceipt) => {
         const toAddressBookEntry = to && getLabelByAddressAndNetwork(to, addressBook, network);
         const fromAddressBookEntry = getLabelByAddressAndNetwork(from, addressBook, network);
         return [
           <TransactionLabel
             key={0}
-            image={makeTxIcon(txType, asset)}
-            label={TxTypeConfig[txType as ITxType].label(asset)}
-            stage={stage}
-            date={timestamp}
+            image={makeTxIcon(direction!, asset!)}
+            label={TxTypeConfig[direction!].label(asset!)}
+            stage={stage!}
+            date={timestamp!}
           />,
           <Account
             key={1}
@@ -165,8 +162,8 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           ),
           <Amount
             key={3}
-            assetValue={`${parseFloat(amount).toFixed(4)} ${asset.ticker}`}
-            fiatValue={`$${convertToFiat(parseFloat(amount), getAssetRate(asset)).toFixed(2)}
+            assetValue={`${parseFloat(amount).toFixed(4)} ${asset!.ticker}`}
+            fiatValue={`$${convertToFiat(parseFloat(amount), getAssetRate(asset!)).toFixed(2)}
         `}
           />,
           <NewTabLink

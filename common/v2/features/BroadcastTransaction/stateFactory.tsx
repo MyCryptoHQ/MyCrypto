@@ -1,6 +1,10 @@
 import { useContext } from 'react';
 
-import { TUseStateReducerFactory, fromTxReceiptObj, makeTxConfigFromSignedTx } from 'v2/utils';
+import {
+  TUseStateReducerFactory,
+  fromSignedTxToTxConfig,
+  fromTransactionResponseToITxReceipt
+} from 'v2/utils';
 import { ITxReceipt, ITxConfig, ISignedTx, NetworkId } from 'v2/types';
 import { DEFAULT_NETWORK } from 'v2/config';
 import { NetworkContext, AssetContext, StoreContext } from 'v2/services/Store';
@@ -36,7 +40,7 @@ const BroadcastTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setSt
 
   const handleSendClicked = (signedTx: ISignedTx, cb: any) => {
     const { network } = state;
-    const txConfig = makeTxConfigFromSignedTx(signedTx, assets, networks, accounts, {
+    const txConfig = fromSignedTxToTxConfig(signedTx, assets, networks, accounts, {
       network: getNetworkById(network)
     } as ITxConfig);
 
@@ -54,8 +58,8 @@ const BroadcastTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setSt
     const provider = new ProviderHandler(txConfig!.network);
 
     try {
-      const response = await provider.sendRawTx(signedTx);
-      const txReceipt = fromTxReceiptObj(response)(assets, networks) || {};
+      const txResponse = await provider.sendRawTx(signedTx);
+      const txReceipt = fromTransactionResponseToITxReceipt(txResponse)(assets, networks);
       setState((prevState: State) => ({
         ...prevState,
         txReceipt

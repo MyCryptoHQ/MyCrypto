@@ -1,29 +1,23 @@
 import BN from 'bn.js';
 import { bufferToHex } from 'ethereumjs-util';
 
-import {
-  IFormikFields,
-  ITxObject,
-  IHexStrTransaction,
-  Asset,
-  IHexStrWeb3Transaction
-} from 'v2/types';
+import { Asset, IFormikFields, ITxObject, TAddress } from 'v2/types';
 
 import {
   Address,
-  toWei,
-  TokenValue,
-  inputGasPriceToHex,
-  inputValueToHex,
-  inputNonceToHex,
+  encodeTransfer,
   inputGasLimitToHex,
-  encodeTransfer
+  inputGasPriceToHex,
+  inputNonceToHex,
+  inputValueToHex,
+  TokenValue,
+  toWei
 } from 'v2/services/EthService';
 
-const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
+const createBaseTxObject = (formData: IFormikFields): ITxObject => {
   const { network } = formData;
   return {
-    to: formData.address.value,
+    to: formData.address.value as TAddress,
     value: formData.amount ? inputValueToHex(formData.amount) : '0x0',
     data: formData.txDataField ? formData.txDataField : '0x0',
     gasLimit: inputGasLimitToHex(formData.gasLimitField),
@@ -35,10 +29,10 @@ const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxOb
   };
 };
 
-const createERC20TxObject = (formData: IFormikFields): IHexStrTransaction => {
+const createERC20TxObject = (formData: IFormikFields): ITxObject => {
   const { asset, network } = formData;
   return {
-    to: asset.contractAddress!,
+    to: asset.contractAddress! as TAddress,
     value: '0x0',
     data: bufferToHex(
       encodeTransfer(
@@ -59,12 +53,12 @@ export const isERC20Tx = (asset: Asset): boolean => {
   return !!(asset.type === 'erc20' && asset.contractAddress && asset.decimal);
 };
 
-export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
+export const fromSendAssetFormDataToTxObject = (formData: IFormikFields): ITxObject => {
   const transform = isERC20Tx(formData.asset) ? createERC20TxObject : createBaseTxObject;
   return transform(formData);
 };
 
-export const processFormForEstimateGas = (formData: IFormikFields): IHexStrWeb3Transaction => {
+export const fromSendAssetFormDataToTxObjectWithGasLimit = (formData: IFormikFields): ITxObject => {
   const transform = isERC20Tx(formData.asset) ? createERC20TxObject : createBaseTxObject;
   // First we use destructuring to remove the `gasLimit` field from the object that is not used by IHexStrWeb3Transaction
   // then we add the extra properties required.
@@ -72,6 +66,6 @@ export const processFormForEstimateGas = (formData: IFormikFields): IHexStrWeb3T
   return {
     ...tx,
     from: formData.account.address,
-    gas: inputGasLimitToHex(formData.gasLimitField)
+    gasLimit: inputGasLimitToHex(formData.gasLimitField)
   };
 };

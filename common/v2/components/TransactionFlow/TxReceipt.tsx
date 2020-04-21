@@ -36,7 +36,7 @@ import {
 import { ROUTE_PATHS } from 'v2/config';
 import { SwapDisplayData } from 'v2/features/SwapAssets/types';
 import translate, { translateRaw } from 'v2/translations';
-import { convertToFiat, truncate, fromTxReceiptObj } from 'v2/utils';
+import { convertToFiat, fromTransactionResponseToITxReceipt, truncate } from 'v2/utils';
 import { isWeb3Wallet } from 'v2/utils/web3';
 import ProtocolTagsList from 'v2/features/DeFiZap/components/ProtocolTagsList';
 import { ProtectTxUtils, ProtectTxContext } from 'v2/features/ProtectTransaction';
@@ -103,23 +103,21 @@ export default function TxReceipt({
     if (displayTxReceipt && blockNumber === 0 && displayTxReceipt.hash) {
       const provider = new ProviderHandler(displayTxReceipt.network || txConfig.network);
       const blockNumInterval = setInterval(() => {
-        getTransactionReceiptFromHash(displayTxReceipt.hash, provider).then(
-          (transactionOutcome) => {
-            if (transactionOutcome) {
-              const transactionStatus =
-                transactionOutcome.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
-              setTxStatus((prevStatusState) => transactionStatus || prevStatusState);
-              setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
-              provider.getTransactionByHash(displayTxReceipt.hash).then((transactionReceipt) => {
-                const receipt = fromTxReceiptObj(transactionReceipt)(
-                  assets,
-                  networks
-                ) as ITxReceipt;
-                setDisplayTxReceipt(receipt);
-              });
-            }
+        getTransactionReceiptFromHash(displayTxReceipt.hash, provider).then(transactionOutcome => {
+          if (transactionOutcome) {
+            const transactionStatus =
+              transactionOutcome.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
+            setTxStatus(prevStatusState => transactionStatus || prevStatusState);
+            setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
+            provider.getTransactionByHash(displayTxReceipt.hash).then(transactionResponse => {
+              const receipt = fromTransactionResponseToITxReceipt(transactionResponse)(
+                assets,
+                networks
+              );
+              setDisplayTxReceipt(receipt);
+            });
           }
-        );
+        });
       }, 1000);
       return () => clearInterval(blockNumInterval);
     }
@@ -132,9 +130,9 @@ export default function TxReceipt({
           if (sender.account) {
             addNewTransactionToAccount(sender.account, {
               ...displayTxReceipt,
+              type: displayTxReceipt ? displayTxReceipt.type : ITxType.STANDARD,
               timestamp: transactionTimestamp || 0,
-              stage: txStatus,
-              txType
+              stage: txStatus
             });
           }
           setTimestamp(transactionTimestamp || 0);
@@ -147,7 +145,7 @@ export default function TxReceipt({
 
   const assetRate = useCallback(() => {
     if (displayTxReceipt && R_path(['asset'], displayTxReceipt)) {
-      return getAssetRate(displayTxReceipt.asset);
+      return getAssetRate(displayTxReceipt.asset!);
     } else {
       return getAssetRate(txConfig.asset);
     }
@@ -244,7 +242,7 @@ export const TxReceiptUI = ({
 
   const assetTicker = useCallback(() => {
     if (displayTxReceipt && R_path(['asset'], displayTxReceipt)) {
-      return displayTxReceipt.asset.ticker;
+      return displayTxReceipt.asset!.ticker;
     } else {
       return txConfig.asset.ticker;
     }
@@ -293,11 +291,11 @@ export const TxReceiptUI = ({
         <>
           <FromToAccount
             from={{
-              address: ((displayTxReceipt && displayTxReceipt.from) || sender.address) as TAddress,
+              address: (displayTxReceipt && displayTxReceipt.from) || sender.address,
               label: senderAccountLabel
             }}
             to={{
-              address: ((displayTxReceipt && displayTxReceipt.to) || receiverAddress) as TAddress,
+              address: (displayTxReceipt && displayTxReceipt.to) || (receiverAddress as TAddress),
               label: recipientLabel
             }}
           />
@@ -359,13 +357,15 @@ export const TxReceiptUI = ({
             {translate('TRANSACTION_ID')}:
           </div>
           <div className="TransactionReceipt-details-row-column">
-            {displayTxReceipt && displayTxReceipt.network && (
-              <LinkOut
-                text={displayTxReceipt.hash}
-                truncate={truncate}
-                link={displayTxReceipt.network.blockExplorer.txUrl(displayTxReceipt.hash)}
-              />
-            )}
+            {displayTxReceipt &&
+              displayTxReceipt.network &&
+              displayTxReceipt.network.blockExplorer && (
+                <LinkOut
+                  text={displayTxReceipt.hash}
+                  truncate={truncate}
+                  link={displayTxReceipt.network.blockExplorer.txUrl(displayTxReceipt.hash)}
+                />
+              )}
             {!displayTxReceipt && <PendingTransaction />}
           </div>
         </div>

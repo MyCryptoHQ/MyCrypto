@@ -9,20 +9,29 @@ import {
 } from 'v2/types';
 import { IZapConfig } from 'v2/features/DeFiZap/config';
 import { IMembershipConfig } from 'v2/features/PurchaseMembership/config';
+import { Optional } from 'utility-types';
 
 export type ISignedTx = string;
 
 export interface ITxObject {
   /* Raw Transaction Object */
-  readonly to: TAddress | string;
+  readonly to: TAddress;
   readonly value: string;
-  readonly gasLimit: string;
   readonly data: string;
+  readonly gasLimit: any;
   readonly gasPrice: string;
   readonly nonce: string;
   readonly chainId: number;
   readonly from?: TAddress;
 }
+
+export type ITxObjectBeforeSender = Pick<ITxObject, 'to' | 'value' | 'data' | 'chainId'>;
+
+export type ITxObjectBeforeGasPrice = Optional<ITxObject, 'nonce' | 'gasLimit' | 'gasPrice'>;
+
+export type ITxObjectBeforeGasLimit = Optional<ITxObject, 'nonce' | 'gasLimit'>;
+
+export type ITxObjectBeforeNonce = Optional<ITxObject, 'nonce'>;
 
 export interface ITxConfig {
   readonly rawTransaction: ITxObject /* The rawTransaction object that will be signed */;

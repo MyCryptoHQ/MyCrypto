@@ -59,10 +59,10 @@ export const AccountProvider: React.FC = ({ children }) => {
       const { network, ...newTxWithoutNetwork } = newTransaction;
       if (
         'stage' in newTxWithoutNetwork &&
-        [ITxStatus.SUCCESS, ITxStatus.FAILED].includes(newTxWithoutNetwork.stage)
+        [ITxStatus.SUCCESS, ITxStatus.FAILED].includes(newTxWithoutNetwork.stage!)
       ) {
         AnalyticsService.instance.track(ANALYTICS_CATEGORIES.TX_HISTORY, `Tx Made`, {
-          txType: (newTxWithoutNetwork && newTxWithoutNetwork.txType) || ITxType.UNKNOWN,
+          txType: (newTxWithoutNetwork && newTxWithoutNetwork.type) || ITxType.UNKNOWN,
           txStatus: newTxWithoutNetwork.stage
         });
       }

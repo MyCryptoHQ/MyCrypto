@@ -1,7 +1,11 @@
 import { useContext, useCallback } from 'react';
 import debounce from 'lodash/debounce';
 
-import { TUseStateReducerFactory, fromTxReceiptObj, generateContractUUID } from 'v2/utils';
+import {
+  TUseStateReducerFactory,
+  fromTransactionResponseToITxReceipt,
+  generateContractUUID
+} from 'v2/utils';
 import { CREATION_ADDRESS } from 'v2/config';
 import { NetworkId, Contract, StoreAccount, ITxType, ITxStatus } from 'v2/types';
 import {
@@ -334,7 +338,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
         to: state.txConfig.receiverAddress,
         from: state.txConfig.senderAccount.address,
         amount: state.txConfig.amount,
-        txType: ITxType.CONTRACT_INTERACT,
+        type: ITxType.CONTRACT_INTERACT,
         stage: ITxStatus.PENDING
       });
       setState((prevState: InteractWithContractState) => ({
@@ -347,13 +351,16 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       const provider = new ProviderHandler(account.network);
       provider
         .sendRawTx(signResponse)
-        .then((retrievedTxReceipt) => retrievedTxReceipt)
-        .catch((hash) => provider.getTransactionByHash(hash))
-        .then((retrievedTransactionReceipt) => {
-          const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(assets, networks);
+        .then(retrievedTxReceipt => retrievedTxReceipt)
+        .catch(hash => provider.getTransactionByHash(hash))
+        .then(retrievedTransactionReceipt => {
+          const txReceipt = fromTransactionResponseToITxReceipt(retrievedTransactionReceipt)(
+            assets,
+            networks
+          );
           addNewTransactionToAccount(state.txConfig.senderAccount, {
-            ...txReceipt,
-            txType: ITxType.CONTRACT_INTERACT,
+            ...txReceipt!,
+            type: ITxType.CONTRACT_INTERACT,
             stage: ITxStatus.PENDING
           });
           setState((prevState: InteractWithContractState) => ({

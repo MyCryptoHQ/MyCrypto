@@ -4,16 +4,15 @@ import { Panel } from '@mycrypto/ui';
 
 import {
   IFormikFields,
-  ISignedTx,
   IStepComponentProps,
   ITxHash,
   ITxObject,
-  ITxReceipt,
-  ITxSigned
+  ITxSigned,
+  TAddress
 } from 'v2/types';
 import { isWeb3Wallet, useTxMulti, useScreenSize } from 'v2/utils';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
-import { processFormDataToTx } from 'v2/features/SendAssets/helpers';
+import { fromSendAssetFormDataToTxObject } from 'v2/features/SendAssets/helpers';
 import { PROTECTED_TX_FEE_ADDRESS } from 'v2/config';
 import { StoreContext } from 'v2/services';
 
@@ -87,14 +86,7 @@ interface Props extends IStepComponentProps {
 }
 
 export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
-  return function WithProtectTransaction({
-    txConfig: txConfigMain,
-    signedTx: signedTxMain,
-    txReceipt: txReceiptMain,
-    onComplete: onCompleteMain,
-    customDetails,
-    resetFlow
-  }: Props) {
+  return function WithProtectTransaction(wrappedComponentProps: Props) {
     const { isMyCryptoMember } = useContext(StoreContext);
     const [protectTx, setProtectTx] = useState<ITxObject | null>(null);
     const { state, initWith, prepareTx, sendTx } = useTxMulti();
@@ -142,8 +134,8 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
                 // TODO: initWith requires some object for every tx, because of R.adjust can't operate on empty array
                 await initWith(() => Promise.resolve([{}]), formAccount, formNetwork);
                 setProtectTx({
-                  ...processFormDataToTx(payload),
-                  to: PROTECTED_TX_FEE_ADDRESS
+                  ...fromSendAssetFormDataToTxObject(payload),
+                  to: PROTECTED_TX_FEE_ADDRESS as TAddress
                 });
               }
             }
@@ -183,14 +175,6 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
       <WithProtectTxWrapper>
         <WithProtectTxMain protectTxShow={protectTxShow}>
           <WrappedComponent
-            txConfig={txConfigMain}
-            signedTx={signedTxMain}
-            txReceipt={txReceiptMain}
-            onComplete={(values: IFormikFields | ITxReceipt | ISignedTx | null) => {
-              onCompleteMain(values);
-            }}
-            customDetails={customDetails}
-            resetFlow={resetFlow}
             protectTxButton={() =>
               protectTxEnabled ? (
                 <ProtectTxButton reviewReport={true} onClick={toggleProtectTxShow} />
@@ -198,6 +182,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
                 <></>
               )
             }
+            {...wrappedComponentProps}
           />
         </WithProtectTxMain>
         {protectTxShow && (

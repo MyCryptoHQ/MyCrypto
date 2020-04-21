@@ -1,5 +1,5 @@
 import { translateRaw } from 'v2/translations';
-import { IHexStrWeb3Transaction, INode } from 'v2/types';
+import { INode, ITxObject } from 'v2/types';
 import {
   isValidSendTransaction,
   isValidSignMessage,
@@ -30,7 +30,7 @@ export class Web3Node extends RPCNode {
       .then(({ result }) => result);
   }
 
-  public sendTransaction(web3Tx: IHexStrWeb3Transaction): Promise<string> {
+  public sendTransaction(web3Tx: ITxObject): Promise<string> {
     return this.client
       .call(this.requests.sendTransaction(web3Tx))
       .then(isValidSendTransaction)
