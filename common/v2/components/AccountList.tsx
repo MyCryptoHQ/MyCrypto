@@ -83,6 +83,7 @@ const PrivacyCheckBox = styled(Checkbox)`
   display: flex;
   justify-content: center;
   margin-bottom: 0px;
+  height: auto;
 `;
 
 const SIdenticon = styled(Identicon)`
