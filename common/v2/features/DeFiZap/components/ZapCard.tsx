@@ -261,7 +261,7 @@ const ZapCard = ({ config }: Props) => {
                   </TooltipWrapper>
                 </ZapEstimatedBalance>
                 <AmountContainer>
-                  {defiReserveBalances ? (
+                  {defiReserveBalances && defiReserveBalances.length > 0 ? (
                     defiReserveBalances.map(defiReserveAsset => (
                       <div key={defiReserveAsset.uuid}>
                         {`~ ${parseFloat(
