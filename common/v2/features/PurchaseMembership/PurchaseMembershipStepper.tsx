@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 
 import { useStateReducer, useTxMulti } from 'v2/utils';
 import { ITxReceipt, ITxConfig, TxParcel, ITxSigned, ITxHash, ITxStatus } from 'v2/types';
@@ -6,6 +6,7 @@ import { default as GeneralStepper, IStepperPath } from 'v2/components/GeneralSt
 import { ROUTE_PATHS } from 'v2/config';
 import { translateRaw } from 'v2/translations';
 import { WALLET_STEPS } from 'v2/components';
+import { AccountContext } from 'v2/services';
 
 import { defaultMembershipObject } from './config';
 import {
@@ -16,7 +17,7 @@ import {
 } from './components';
 import MembershipInteractionFactory from './stateFactory';
 import { MembershipSimpleTxFormFull, MembershipPurchaseState } from './types';
-import { createPurchaseTx, createApproveTx } from './helpers';
+import { createPurchaseTx, createApproveTx, makeTxReceiptFromTransaction } from './helpers';
 import { isERC20Tx } from '../SendAssets';
 
 const initialMembershipFlowState = {
@@ -34,6 +35,7 @@ const PurchaseMembershipStepper = () => {
   const { state, prepareTx, sendTx, stopYield, initWith } = useTxMulti();
   const { canYield, isSubmitting, transactions } = state;
   const { account, membershipSelected }: MembershipPurchaseState = purchaseMembershipFlowState;
+  const { addNewTransactionToAccount } = useContext(AccountContext);
 
   const steps: IStepperPath[] = [
     {
@@ -88,7 +90,14 @@ const PurchaseMembershipStepper = () => {
           network: account && account.network,
           senderAccount: account,
           rawTransaction: tx.txRaw,
-          onSuccess: (payload: ITxHash | ITxSigned) => sendTx(payload)
+          onSuccess: (payload: ITxHash | ITxSigned) => {
+            sendTx(payload).then(() =>
+              addNewTransactionToAccount(
+                account,
+                makeTxReceiptFromTransaction(tx, payload, account, membershipSelected!.price)
+              )
+            );
+          }
         }
       }
     ]),
@@ -105,7 +114,7 @@ const PurchaseMembershipStepper = () => {
 
   return (
     <GeneralStepper
-      onRender={goToNextStep => {
+      onRender={(goToNextStep) => {
         // Allows to execute code when state has been updated after MTX hook has run
         useEffect(() => {
           if (!canYield) return;

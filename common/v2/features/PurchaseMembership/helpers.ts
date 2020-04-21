@@ -1,6 +1,16 @@
 import { ethers } from 'ethers';
 
-import { ITxObject, StoreAccount, ITxConfig } from 'v2/types';
+import {
+  ITxObject,
+  StoreAccount,
+  ITxConfig,
+  ITxReceipt,
+  TxParcel,
+  ITxType,
+  ITxHash,
+  ITxStatus,
+  ITxSigned
+} from 'v2/types';
 import {
   inputValueToHex,
   inputGasPriceToHex,
@@ -79,4 +89,19 @@ export const makeTxConfigFromTransaction = (
   };
 
   return txConfig;
+};
+
+export const makeTxReceiptFromTransaction = (
+  tx: TxParcel,
+  hash: ITxHash | ITxSigned,
+  account: StoreAccount,
+  amount: string
+): ITxReceipt => {
+  return {
+    ...makeTxConfigFromTransaction(tx.txRaw, account, amount),
+    ...tx.txRaw,
+    hash,
+    txType: ITxType.PURCHASE_MEMBERSHIP,
+    stage: ITxStatus.PENDING
+  };
 };
