@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { RatesContext } from 'v2/services';
-import genericIcon from 'assets/generic.svg'
+import genericIcon from 'assets/generic.svg';
 
 // Relies on https://github.com/atomiclabs/cryptocurrency-icons using fixed version number through CDN
 // @TODO: We should be using our own sprite served over a trusted CDN
@@ -33,7 +33,19 @@ function AssetIcon({ uuid, size = '32px', className }: Props) {
   const { assetMapping } = useContext(RatesContext);
   const iconUrl = getIconUrl(uuid, assetMapping);
 
-  return <SImg src={iconUrl} size={size} className={className} />;
+  return (
+    <SImg
+      src={iconUrl}
+      size={size}
+      onError={(e) => {
+        // @ts-ignore: onError works, but ts error
+        e.target.onerror = null;
+        // @ts-ignore: onError works, but ts error
+        e.target.src = genericIcon;
+      }}
+      className={className}
+    />
+  );
 }
 
 export default AssetIcon;
