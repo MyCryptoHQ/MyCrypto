@@ -1,7 +1,7 @@
 import { LSKeys, LocalStorage } from 'v2/types';
 
 import { defaultSettings } from './settings';
-import { defaultAddressBook } from '../seed';
+import { defaultAddressBook } from './addressBook';
 
 export const SCHEMA_BASE: LocalStorage = {
   version: 'v1.0.0',
