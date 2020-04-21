@@ -9,11 +9,11 @@ export default class ZeroExDisabled extends Component {
     return (
       <TabSection>
         <Warning>
-          0x functionality is currently unavailable on the MyCrypto App. <br />
-          However, you can use our beta product to swap using an exchange aggregator to ensure you
-          get the best price! <br />
+          0x Instant is currently unavailable. <br />
+          To continue with your swap, please use the new and improved swap functionality on the
+          MyCrypto Beta! <br />
           <a href="https://beta.mycrypto.com/swap" target="_blank" rel="noreferrer">
-            Go to the beta product
+            Continue Swap &raquo;
           </a>
         </Warning>
       </TabSection>
