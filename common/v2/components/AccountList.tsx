@@ -82,6 +82,7 @@ const PrivateWalletLabel = styled(StyledAccountLabel)`
 const PrivacyCheckBox = styled(Checkbox)`
   display: flex;
   justify-content: center;
+  margin-bottom: 0px;
 `;
 
 const SIdenticon = styled(Identicon)`
