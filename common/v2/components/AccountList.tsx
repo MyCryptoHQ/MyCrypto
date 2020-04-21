@@ -82,6 +82,8 @@ const PrivateWalletLabel = styled(StyledAccountLabel)`
 const PrivacyCheckBox = styled(Checkbox)`
   display: flex;
   justify-content: center;
+  margin-bottom: 0px;
+  height: auto;
 `;
 
 const SIdenticon = styled(Identicon)`
@@ -170,7 +172,7 @@ const AddAccountButton = styled(Button)`
   }
 `;
 
-const PrivateColumnLabel = styled.p`
+const PrivateColumnLabel = styled.div`
   display: inline-block;
 `;
 
@@ -215,7 +217,7 @@ export default function AccountList(props: AccountListProps) {
     const accountsTemp = cloneDeep(displayAccounts);
     overlayRows[1]
       .sort((a, b) => a[0] - b[0])
-      .forEach(index => {
+      .forEach((index) => {
         accountsTemp.splice(index[0], 0, accountRestore[index[1]] as StoreAccount);
       });
     return accountsTemp.sort((a, b) => a.uuid.localeCompare(b.uuid));
@@ -359,7 +361,7 @@ const buildAccountTable = (
   const { settings } = useContext(SettingsContext);
   const { addressBook, updateAddressBooks, createAddressBooks } = useContext(AddressBookContext);
   const { toggleAccountPrivacy } = useContext(AccountContext);
-  const overlayRowsFlat = [...overlayRows![0], ...overlayRows![1].map(row => row[0])];
+  const overlayRowsFlat = [...overlayRows![0], ...overlayRows![1].map((row) => row[0])];
 
   const updateSortingState = (id: IColumnValues) => {
     // In case overlay active, disable changing sorting state
@@ -470,7 +472,7 @@ const buildAccountTable = (
             })}
             deleteAction={() => {
               setDeletingIndex(undefined);
-              setUndoDeletingIndexes(prev => [...prev, [rowIndex, uuid]]);
+              setUndoDeletingIndexes((prev) => [...prev, [rowIndex, uuid]]);
               deleteAccount(account);
             }}
             cancelAction={() => setDeletingIndex(undefined)}
@@ -479,7 +481,7 @@ const buildAccountTable = (
       } else if (
         overlayRows &&
         overlayRows[1].length &&
-        overlayRows[1].map(row => row[0]).includes(rowIndex)
+        overlayRows[1].map((row) => row[0]).includes(rowIndex)
       ) {
         // Undo delete overlay
         const addressBookRecord = getLabelByAccount(
@@ -498,7 +500,7 @@ const buildAccountTable = (
             })}
             restoreAccount={() => {
               restoreDeletedAccount(uuid);
-              setUndoDeletingIndexes(prev => prev.filter(i => i[0] !== rowIndex));
+              setUndoDeletingIndexes((prev) => prev.filter((i) => i[0] !== rowIndex));
             }}
           />
         );
@@ -513,7 +515,7 @@ const buildAccountTable = (
           <LabelWithWallet>
             <EditableText
               truncate={true}
-              saveValue={value => {
+              saveValue={(value) => {
                 if (addressCard) {
                   updateAddressBooks(addressCard.uuid, { ...addressCard, label: value });
                 } else {
@@ -535,7 +537,7 @@ const buildAccountTable = (
               )}
               <WalletTypeLabel>{WALLETS_CONFIG[account.wallet].name}</WalletTypeLabel>
               {IS_ACTIVE_FEATURE.PRIVATE_TAGS && account.isPrivate && (
-                <PrivateWalletLabel>{'Private Account'}</PrivateWalletLabel>
+                <PrivateWalletLabel>{translateRaw('PRIVATE_ACCOUNT')}</PrivateWalletLabel>
               )}
             </WalletLabelContainer>
           </LabelWithWallet>
@@ -577,7 +579,7 @@ const buildAccountTable = (
             key={index}
             onClick={() =>
               setDeletingIndex(
-                getFullTableData.findIndex(row => row.account.uuid === accounts[index].uuid)
+                getFullTableData.findIndex((row) => row.account.uuid === accounts[index].uuid)
               )
             }
             icon="exit"

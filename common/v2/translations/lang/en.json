@@ -586,7 +586,7 @@
     "SENDING_TO_BURN_ADDRESS": "This address appears to be a “burn” address. Please be absolutely sure you wish to send to this address. There is no way to reverse a transaction.",
     "ADDRESS_ALREADY_ADDED": "This address ($label) has already been added",
     "ACCOUNT_LIST_PRIVATE": "Private",
-    "ACCOUNT_LIST_PRIVATE_TOOLTIP": "This will label an account as \"Private\" which will provide you some tips on how to keep this account pseudonymous.",
+    "ACCOUNT_LIST_PRIVATE_TOOLTIP": "This will label an account as \"Private\" in your dashboard.",
     "SIGN_TX_WALLETCONNECT_FAILED_ACCOUNT": "Please switch the account in your $walletName app to $address in order to proceed.",
     "SIGN_TX_WALLETCONNECT_FAILED_NETWORK": "Please switch the network in your $walletName app to $networkName in order to proceed.",
     "SIGN_TX_WALLETCONNECT_SESSION_REJECTED": "Session rejected",
@@ -817,6 +817,7 @@
     "CUSTOM_NODE_FORM_PASSWORD": "Password",
     "CUSTOM_NODE_SETTINGS_TABLE_NETWORK_HEADER": "Network",
     "CUSTOM_NODE_SETTINGS_TABLE_NETWORK_NODE": "Default Node",
-    "CUSTOM_NODE_DROPDOWN_NEW_NODE": "Custom"
+    "CUSTOM_NODE_DROPDOWN_NEW_NODE": "Custom",
+    "PRIVATE_ACCOUNT": "Private Account"
   }
 }
