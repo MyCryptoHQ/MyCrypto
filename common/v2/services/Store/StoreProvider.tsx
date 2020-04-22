@@ -136,12 +136,18 @@ export const StoreProvider: React.FC = ({ children }) => {
   const [memberships, setMemberships] = useState<MembershipStatus[] | undefined>([]);
 
   const membershipState = (() => {
-    if (memberships) {
-      return Object.values(memberships).length > 0
-        ? MembershipState.MEMBER
-        : MembershipState.NOTMEMBER;
+    if (!memberships) {
+      return MembershipState.ERROR;
+    } else if (Object.values(memberships).length === 0) {
+      return MembershipState.NOTMEMBER;
+    } else {
+      const currentTime = Math.round(Date.now() / 1000);
+      if (membershipExpiration.some(expirationTime => expirationTime > currentTime)) {
+        return MembershipState.MEMBER;
+      } else {
+        return MembershipState.EXPIRED;
+      }
     }
-    return MembershipState.ERROR;
   })();
   const isMyCryptoMember = membershipState === MembershipState.MEMBER;
 
