@@ -90,11 +90,9 @@ function MembershipPanel({ history }: Props) {
           <Icon isMemberOrExpired={isMember || isExpired} src={icon} />
         </ImageWrapper>
         <TextWrapper isMember={isMember}>
-          {membershipState === MembershipState.EXPIRED ? (
-            <Header as="div">{translateRaw('MEMBERSHIP_EXPIRED')}</Header>
-          ) : (
-            <Header as="div">{translateRaw('MEMBERSHIP')}</Header>
-          )}
+          <Header as="div">
+            {membershipState === MembershipState.EXPIRED ? translateRaw('MEMBERSHIP_EXPIRED') : translateRaw('MEMBERSHIP')}
+          </Header>
           {membershipState === MembershipState.MEMBER && (
             <>
               <ExpiryWrapper>
