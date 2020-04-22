@@ -109,7 +109,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     name: translateRaw('ZAP_DAI_UNIPOOL_NAME'),
     key: 'unipooldai',
     contractAddress: '0x929A10EfDA7099865dAD8286Aee8715078902d51',
-    risk: 1,
+    risk: 2,
     description: translateRaw('ZAP_DAI_UNIPOOL_DESCRIPTION'),
     outlook: 'neutral',
     link: 'https://defizap.com/zaps/unipooldai',
@@ -128,6 +128,7 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     positionDetails: () =>
       NeutralIndicator({ text: translateRaw('ZAP_POSITION_NEUTRAL', { $asset: 'ETH' }) })
   },
+
   compounddai: {
     title: translateRaw('ZAP_COMPOUND_DAI_POOL_TITLE'),
     name: translateRaw('ZAP_COMPOUND_DAI_POOL_NAME'),

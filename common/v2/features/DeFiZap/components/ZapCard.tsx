@@ -146,7 +146,7 @@ const ZapCardButton = styled(Button)<{ width: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${props => props.width};
+  width: ${(props) => props.width};
   height: 40px;
   padding: 0;
   font-size: ${FONT_SIZE.MD};
@@ -202,9 +202,11 @@ interface Props {
 
 const ZapCard = ({ config }: Props) => {
   const { getPoolAssetReserveRate } = useContext(RatesContext);
-  const { accounts, assets, getDeFiAssetReserveAssets } = useContext(StoreContext);
+  const { currentAccounts, assets, getDeFiAssetReserveAssets } = useContext(StoreContext);
   const IndicatorItem = config.positionDetails;
-  const defiPoolBalances = assets(accounts).filter(({ uuid }) => uuid === config.poolTokenUUID);
+  const defiPoolBalances = assets(currentAccounts).filter(
+    ({ uuid }) => uuid === config.poolTokenUUID
+  );
   const userZapBalances = getTotalByAsset(defiPoolBalances)[config.poolTokenUUID];
 
   const humanReadableZapBalance = userZapBalances
@@ -262,7 +264,7 @@ const ZapCard = ({ config }: Props) => {
                 </ZapEstimatedBalance>
                 <AmountContainer>
                   {defiReserveBalances && defiReserveBalances.length > 0 ? (
-                    defiReserveBalances.map(defiReserveAsset => (
+                    defiReserveBalances.map((defiReserveAsset) => (
                       <div key={defiReserveAsset.uuid}>
                         {`~ ${parseFloat(
                           trimBN(formatEther(defiReserveAsset.balance.toString()))
