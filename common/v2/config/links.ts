@@ -1,14 +1,5 @@
 import { translateRaw } from 'v2/translations';
-import {
-  discordURL,
-  ledgerReferralURL,
-  trezorReferralURL,
-  safeTReferralURL,
-  ethercardReferralURL,
-  keepkeyReferralURL,
-  steelyReferralURL,
-  CRYPTOSCAMDB
-} from './data';
+import { CRYPTOSCAMDB } from './data';
 import { IRoutePath, IRoutePaths } from 'v2/types';
 
 interface Link {
@@ -48,7 +39,7 @@ export const socialMediaLinks: Link[] = [
     text: 'reddit'
   },
   {
-    link: discordURL,
+    link: 'https://discord.gg/VSaTXEA',
     text: 'discord'
   }
 ];
@@ -85,31 +76,15 @@ export const productLinks: Link[] = [
 export const affiliateLinks: TmpLink[] = [
   {
     name: 'LEDGER_REFERRAL',
-    path: ledgerReferralURL,
-    link: ledgerReferralURL,
+    path: 'https://www.ledgerwallet.com/r/1985?path=/products/',
+    link: 'https://www.ledgerwallet.com/r/1985?path=/products/',
     text: translateRaw('LEDGER_REFERRAL_1')
   },
   {
     name: 'TREZOR_REFERRAL',
-    path: trezorReferralURL,
-    link: trezorReferralURL,
+    path: 'https://shop.trezor.io/?offer_id=10&aff_id=1735',
+    link: 'https://shop.trezor.io/?offer_id=10&aff_id=1735',
     text: translateRaw('TREZOR_REFERAL')
-  },
-  {
-    link: safeTReferralURL,
-    text: translateRaw('SAFE_T_REFERAL')
-  },
-  {
-    link: keepkeyReferralURL,
-    text: translateRaw('KEEPKEY_REFERRAL')
-  },
-  {
-    link: steelyReferralURL,
-    text: translateRaw('STEELY_REFERRAL')
-  },
-  {
-    link: ethercardReferralURL,
-    text: translateRaw('ETHERCARD_REFERAL')
   }
 ];
 
@@ -133,7 +108,7 @@ export const partnerLinks: Link[] = [
 ];
 
 export const EXT_URLS = createNavLinksFromExternalLinks(
-  affiliateLinks.filter(l => l.name !== undefined) as IRoutePath[]
+  affiliateLinks.filter((l) => l.name !== undefined) as IRoutePath[]
 );
 
 function createNavLinksFromExternalLinks(links: IRoutePath[]) {
