@@ -12,6 +12,7 @@ import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWallets from './DeterministicWallets';
 import './LedgerNano.scss';
 import ledgerIcon from 'common/assets/images/icn-ledger-nano-large.svg';
+import { EXT_URLS } from 'v2/config';
 interface OwnProps {
   wallet: object;
   formData: FormData;
@@ -107,7 +108,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
               )}
             </div>
             <div className="LedgerPanel-footer">
-              {translate('LEDGER_REFERRAL_2')}
+              {translate('LEDGER_REFERRAL_2', { $url: EXT_URLS.LEDGER_REFERRAL.url })}
               {/*<br />
               {translate('LEDGER_HELP_LINK')} */}
             </div>

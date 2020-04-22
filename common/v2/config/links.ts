@@ -10,7 +10,6 @@ interface Link {
 interface IExtUrl {
   url: TURL;
   name: string;
-  text: string;
 }
 
 export const DOWNLOAD_MYCRYPTO_LINK = 'https://download.mycrypto.com';
@@ -78,13 +77,15 @@ export const productLinks: Link[] = [
 const affiliateLinks: IExtUrl[] = [
   {
     name: 'LEDGER_REFERRAL',
-    url: 'https://www.ledgerwallet.com/r/1985?path=/products/' as TURL,
-    text: translateRaw('LEDGER_REFERRAL_1')
+    url: 'https://www.ledgerwallet.com/r/1985?path=/products/' as TURL
   },
   {
     name: 'TREZOR_REFERRAL',
-    url: 'https://shop.trezor.io/?offer_id=10&aff_id=1735' as TURL,
-    text: translateRaw('TREZOR_REFERAL')
+    url: 'https://shop.trezor.io/?offer_id=10&aff_id=1735' as TURL
+  },
+  {
+    name: 'ETHER_CARD_REFERRAL',
+    url: 'https://ether.cards/?utm_source=mycrypto&utm_medium=cpm&utm_campaign=site' as TURL
   }
 ];
 
