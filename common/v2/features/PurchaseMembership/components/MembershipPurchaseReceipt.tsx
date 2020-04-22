@@ -19,7 +19,7 @@ export default function MembershipReceipt({
   onComplete
 }: Props) {
   const txConfigs = transactions.map((tx) => {
-    return makeTxConfigFromTransaction(tx.txRaw, account, membershipSelected.price);
+    return makeTxConfigFromTransaction(tx.txRaw, account, membershipSelected);
   });
 
   const txReceipts = transactions.map((tx, idx) => {

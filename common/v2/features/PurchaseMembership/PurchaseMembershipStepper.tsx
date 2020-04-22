@@ -94,7 +94,7 @@ const PurchaseMembershipStepper = () => {
             sendTx(payload).then(() =>
               addNewTransactionToAccount(
                 account,
-                makeTxReceiptFromTransaction(tx, payload, account, membershipSelected!.price)
+                makeTxReceiptFromTransaction(tx, payload, account, membershipSelected!)
               )
             );
           }
