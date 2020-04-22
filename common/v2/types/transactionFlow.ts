@@ -11,7 +11,7 @@ import { IZapConfig } from 'v2/features/DeFiZap/config';
 import { IMembershipConfig } from 'v2/features/PurchaseMembership/config';
 import { Optional } from 'utility-types';
 
-export type ISignedTx = string;
+export type ITxSigned = string;
 
 export interface ITxObject {
   /* Raw Transaction Object */
@@ -70,7 +70,7 @@ export interface ISignComponentProps {
   senderAccount: StoreAccount;
   rawTransaction: ITxObject;
   children?: never;
-  onSuccess(receipt: ITxReceipt | ISignedTx): void;
+  onSuccess(receipt: ITxReceipt | ITxSigned): void;
 }
 
 export interface IStepComponentProps {
@@ -82,7 +82,7 @@ export interface IStepComponentProps {
   membershipSelected?: IMembershipConfig;
   children?: never;
   completeButtonText?: string;
-  onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;
+  onComplete(data: IFormikFields | ITxReceipt | ITxSigned | null): void;
   resetFlow(): void;
 }
 

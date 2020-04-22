@@ -22,8 +22,8 @@ export type TUseTxMulti = () => {
   reset: ReturnType<typeof reset>;
   currentTx: TxParcel;
   state: TxMultiState;
-  init(txs: any[], account: any, network: any): Promise<void>;
-  initWith(getTxs: () => Promise<Partial<ITxObject>[]>, account: any, network: any): Promise<void>;
+  init(txs: any[], network: any, account: any): Promise<void>;
+  initWith(getTxs: () => Promise<Partial<ITxObject>[]>, network: any, account?: any): Promise<void>;
   stopYield(): Promise<void>;
 };
 

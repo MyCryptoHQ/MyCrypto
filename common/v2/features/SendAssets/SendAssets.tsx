@@ -11,18 +11,10 @@ import {
   withProtectTxProvider,
   useTxMulti,
   fromTxObjectToTxConfig,
-  fromTxParcelToTxReceipt
+  fromTxParcelToTxReceipt,
+  getCurrentTxFromTxMulti
 } from 'v2/utils';
-import {
-  ITxReceipt,
-  ISignedTx,
-  IFormikFields,
-  ITxConfig,
-  ITxObject,
-  ITxSigned,
-  TxParcel,
-  ITxHash
-} from 'v2/types';
+import { ITxReceipt, IFormikFields, ITxConfig, ITxObject, ITxSigned, ITxHash } from 'v2/types';
 import { translateRaw } from 'v2/translations';
 import { IS_ACTIVE_FEATURE, ROUTE_PATHS } from 'v2/config';
 import { IStepperPath } from 'v2/components/GeneralStepper/types';
@@ -44,12 +36,7 @@ function SendAssets() {
   const { state, initWith, prepareTx, sendTx } = useTxMulti();
   const { transactions, _currentTxIdx, account, network } = state;
 
-  const getCurrentTx = ((txs: TxParcel[], txi: number) => () => (txs.length && txs[txi]) || {})(
-    transactions,
-    _currentTxIdx
-  );
-
-  const txParcel = getCurrentTx() as TxParcel;
+  const txParcel = getCurrentTxFromTxMulti(transactions, _currentTxIdx);
   const { txRaw } = txParcel;
   const txConfig = fromTxObjectToTxConfig(txRaw, account);
   const txReceipt = fromTxParcelToTxReceipt(txParcel, account);
@@ -72,7 +59,7 @@ function SendAssets() {
         }
 
         const { account: formAccount, network: formNetwork } = payload;
-        await initWith(() => Promise.resolve([{}]), formAccount, formNetwork);
+        await initWith(() => Promise.resolve([{}]), formNetwork, formAccount);
 
         const rawTransaction: ITxObject = fromSendAssetFormDataToTxObject(payload);
         await prepareTx(rawTransaction);
@@ -100,7 +87,7 @@ function SendAssets() {
       props: {
         txConfig
       },
-      actions: async (payload: ISignedTx, cb: any) => {
+      actions: async (payload: ITxSigned, cb: any) => {
         await sendTx(payload as ITxHash);
         if (cb) {
           cb();
@@ -130,7 +117,7 @@ function SendAssets() {
         }
 
         const { account: formAccount, network: formNetwork } = payload;
-        await initWith(() => Promise.resolve([{}]), formAccount, formNetwork);
+        await initWith(() => Promise.resolve([{}]), formNetwork, formAccount);
 
         const rawTransaction: ITxObject = fromSendAssetFormDataToTxObject(payload);
         await prepareTx(rawTransaction);
@@ -146,7 +133,7 @@ function SendAssets() {
       props: {
         txConfig
       },
-      actions: async (payload: ISignedTx, cb: any) => {
+      actions: async (payload: ITxSigned, cb: any) => {
         setSignedTx(payload as ITxHash);
         if (cb) {
           cb();
@@ -159,7 +146,7 @@ function SendAssets() {
         ? ConfirmTransactionWithProtectTx
         : ConfirmTransaction,
       props: { txConfig, signedTx },
-      actions: async (_: ITxConfig | ISignedTx, cb: any) => {
+      actions: async (_: ITxConfig | ITxSigned, cb: any) => {
         if (getProTxValue(['setProtectTxTimeoutFunction'])) {
           getProTxValue(['setProtectTxTimeoutFunction'])(
             async (txReceiptCb?: (txReciept: ITxReceipt) => void) => {
@@ -186,7 +173,7 @@ function SendAssets() {
         pendingButton: {
           text: translateRaw('TRANSACTION_BROADCASTED_RESUBMIT'),
           action: async (cb: any) => {
-            await initWith(() => Promise.resolve([{}]), account, network);
+            await initWith(() => Promise.resolve([{}]), network, account);
 
             const { gasPrice } = txRaw;
 

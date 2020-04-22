@@ -50,7 +50,8 @@ export {
   fromTransactionResponseToITxReceipt,
   fromSignedTxToTxConfig,
   fromTxObjectToTxConfig,
-  fromTxParcelToTxReceipt
+  fromTxParcelToTxReceipt,
+  fromSignedTxToTxObject
 } from './transaction';
 export {
   formatErrorEmail,
@@ -64,7 +65,7 @@ export { toArray } from './toArray';
 export { objToString } from './objToString';
 export * from './constants';
 export { bigify } from './bigify';
-export { useTxMulti } from './useTxMulti';
+export { useTxMulti, getCurrentTxFromTxMulti } from './useTxMulti';
 export { withProtectTxProvider } from './withProtectTxProvider';
 export { default as useScreenSize } from './useScreenSize';
 export { sanitizeDecimalSeparator } from './sanitizeDecimalSeparator';

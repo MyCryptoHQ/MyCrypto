@@ -6,7 +6,7 @@ import { translateRaw } from 'v2/translations';
 import { ExtendedContentPanel, Tabs, WALLET_STEPS } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
 import { useStateReducer } from 'v2/utils';
-import { ITxReceipt, ISignedTx, Tab } from 'v2/types';
+import { ITxReceipt, ITxSigned, Tab } from 'v2/types';
 import { BREAK_POINTS } from 'v2/theme';
 
 import { deployContractsInitialState, DeployContractsFactory } from './stateFactory';
@@ -93,7 +93,7 @@ const DeployContractsFlow = (props: RouteComponentProps<{}>) => {
     }
   ];
 
-  const currentRoute = tabs.find(tab => tab.path === location.pathname);
+  const currentRoute = tabs.find((tab) => tab.path === location.pathname);
 
   const steps: TStep[] = [
     {
@@ -128,7 +128,7 @@ const DeployContractsFlow = (props: RouteComponentProps<{}>) => {
         rawTransaction
       }))(deployContractsState),
       actions: {
-        onSuccess: (payload: ITxReceipt | ISignedTx) => handleTxSigned(payload, goToNextStep)
+        onSuccess: (payload: ITxReceipt | ITxSigned) => handleTxSigned(payload, goToNextStep)
       }
     },
     {
@@ -155,7 +155,7 @@ const DeployContractsFlow = (props: RouteComponentProps<{}>) => {
           <TabsWrapper>
             <Tabs
               tabs={tabs}
-              selectedIndex={tabs.findIndex(tab => tab.path === currentRoute!.path)}
+              selectedIndex={tabs.findIndex((tab) => tab.path === currentRoute!.path)}
             />
           </TabsWrapper>
         </Heading>

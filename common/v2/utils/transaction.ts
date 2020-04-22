@@ -70,19 +70,19 @@ export const fromTransactionResponseToITxReceipt = (txReceipt: TransactionRespon
   return;
 };
 
-const decodeTransaction = (signedTx: Arrayish) => {
+const decodeTransaction = (signedTx: Arrayish): ITxObject => {
   const decodedTransaction = parseTransaction(signedTx);
   const gasLimit = bigNumGasLimitToViewable(decodedTransaction.gasLimit);
   const gasPriceGwei = bigNumGasPriceToViewableGwei(decodedTransaction.gasPrice);
   const amountToSendEther = bigNumValueToViewableEther(decodedTransaction.value);
 
   return {
-    to: decodedTransaction.to,
-    from: decodedTransaction.from,
+    to: decodedTransaction.to as TAddress,
+    from: decodedTransaction.from as TAddress,
     value: amountToSendEther.toString(),
     gasLimit: gasLimit.toString(),
     gasPrice: gasPriceGwei.toString(),
-    nonce: decodedTransaction.nonce,
+    nonce: decodedTransaction.nonce.toString(),
     data: decodedTransaction.data,
     chainId: decodedTransaction.chainId
   };
@@ -118,8 +118,7 @@ export const fromSignedTxToTxConfig = (
     baseAsset: baseAsset || oldTxConfig.baseAsset,
     senderAccount:
       decodedTx.from && networkDetected
-        ? getStoreAccount(accounts)(decodedTx.from as TAddress, networkDetected.id) ||
-          oldTxConfig.senderAccount
+        ? getStoreAccount(accounts)(decodedTx.from, networkDetected.id) || oldTxConfig.senderAccount
         : oldTxConfig.senderAccount,
     gasPrice: gasPriceToBase(parseInt(decodedTx.gasPrice, 10)).toString(),
     gasLimit: decodedTx.gasLimit,
@@ -214,4 +213,8 @@ export const fromTxParcelToTxReceipt = (
     hash: transactionHash as ITxHash,
     blockNumber: 0
   };
+};
+
+export const fromSignedTxToTxObject = (signedTx: Arrayish): ITxObject => {
+  return decodeTransaction(signedTx);
 };

@@ -19,8 +19,8 @@ import { TxMultiState, TxMultiAction, ActionTypes } from './types';
 
 export const init = (dispatch: Dispatch<TxMultiAction>) => async (
   txs: ITxObject[],
-  account: StoreAccount,
-  network: Network
+  network: Network,
+  account: StoreAccount
 ) => {
   dispatch({
     type: ActionTypes.INIT_SUCCESS,
@@ -30,8 +30,8 @@ export const init = (dispatch: Dispatch<TxMultiAction>) => async (
 
 export const initWith = (dispatch: Dispatch<TxMultiAction>) => async (
   getTxs: () => any,
-  account: StoreAccount,
-  network: Network
+  network: Network,
+  account?: StoreAccount
 ) => {
   dispatch({ type: ActionTypes.INIT_REQUEST });
   try {
@@ -62,13 +62,13 @@ export const prepareTx = (
   try {
     const txRaw = await Promise.resolve(tx as ITxObjectBeforeGasLimit)
       .then(
-        t =>
+        (t) =>
           (!t.gasLimit ? appendGasLimit(network!)(t) : Promise.resolve(t)) as PromiseLike<
             ITxObjectBeforeNonce
           >
       )
       .then(
-        t =>
+        (t) =>
           (!t.nonce
             ? appendNonce(network!, account!.address)(t)
             : Promise.resolve(t)) as PromiseLike<ITxObject>
@@ -123,7 +123,7 @@ const waitForConfirmation = (
     const txReceipt = await provider.waitForTransaction(txHash);
     const minedAt = await provider
       .getBlockByNumber(txReceipt.blockNumber!)
-      .then(block => block.timestamp);
+      .then((block) => block.timestamp);
     dispatch({ type: ActionTypes.CONFIRM_TX_SUCCESS, payload: { txReceipt, minedAt } });
   } catch (err) {
     dispatch({

@@ -55,8 +55,8 @@ const PurchaseMembershipStepper = () => {
               isERC20Tx(formData.asset) ? [approveTx, purchaseTx] : [purchaseTx]
             );
           },
-          formData.account,
-          formData.account.network
+          formData.account.network,
+          formData.account
         );
         handleUserInputFormSubmit(formData);
       }

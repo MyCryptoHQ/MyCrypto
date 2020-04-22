@@ -132,7 +132,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
               handleProtectTxSubmit: async (payload: IFormikFields) => {
                 const { account: formAccount, network: formNetwork } = payload;
                 // TODO: initWith requires some object for every tx, because of R.adjust can't operate on empty array
-                await initWith(() => Promise.resolve([{}]), formAccount, formNetwork);
+                await initWith(() => Promise.resolve([{}]), formNetwork, formAccount);
                 setProtectTx({
                   ...fromSendAssetFormDataToTxObject(payload),
                   to: PROTECTED_TX_FEE_ADDRESS as TAddress
@@ -161,7 +161,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
     const { isMdScreen } = useScreenSize();
 
     const toggleProtectTxShow = useCallback(
-      e => {
+      (e) => {
         e.preventDefault();
 
         if (showHideProtectTx) {
