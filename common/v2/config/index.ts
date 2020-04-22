@@ -4,7 +4,6 @@ export * from './addressMessages';
 export {
   EXT_URLS,
   partnerLinks,
-  affiliateLinks,
   productLinks,
   socialMediaLinks,
   DOWNLOAD_MYCRYPTO_LINK

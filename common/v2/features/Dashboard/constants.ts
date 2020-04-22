@@ -18,14 +18,14 @@ const hardwareWallets: Action[] = [
     icon: ledgerIcon,
     faded: true,
     title: translateRaw('DASHBOARD_ACTIONS_GET_WALLET_TITLE'),
-    link: EXT_URLS.LEDGER_REFERRAL.path,
+    link: EXT_URLS.LEDGER_REFERRAL.url,
     description: translateRaw('DASHBOARD_ACTIONS_GET_WALLET_SUBTITLE', { $wallet: 'Ledger' })
   },
   {
     icon: trezorIcon,
     faded: true,
     title: translateRaw('DASHBOARD_ACTIONS_GET_WALLET_TITLE'),
-    link: EXT_URLS.TREZOR_REFERRAL.path,
+    link: EXT_URLS.TREZOR_REFERRAL.url,
     description: translateRaw('DASHBOARD_ACTIONS_GET_WALLET_SUBTITLE', { $wallet: 'Trezor' })
   }
 ];

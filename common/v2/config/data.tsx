@@ -6,8 +6,6 @@ import translate from 'v2/translations';
 
 export const languages = require('./languages.json');
 
-export const discordURL = 'https://discord.gg/VSaTXEA';
-
 // Displays in the footer
 export const VERSION = packageJson.version;
 export const N_FACTOR = 8192;

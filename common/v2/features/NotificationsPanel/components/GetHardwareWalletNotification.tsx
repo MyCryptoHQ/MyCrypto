@@ -50,11 +50,11 @@ const getResources = () => {
     <>
       <ResourceItemWrapper
         title={translate('NOTIFICATIONS_GET_WALLET_RESOURCE_TREZOR')}
-        link={EXT_URLS.TREZOR_REFERAL.path}
+        link={EXT_URLS.TREZOR_REFFERAL.url}
       />
       <ResourceItemWrapper
         title={translate('NOTIFICATIONS_GET_WALLET_RESOURCE_LEDGER')}
-        link={EXT_URLS.LEDGER_REFERAL.path}
+        link={EXT_URLS.LEDGER_REFERRAL.url}
       />
     </>
   );

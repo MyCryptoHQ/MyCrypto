@@ -1,15 +1,17 @@
 import { translateRaw } from 'v2/translations';
 import { CRYPTOSCAMDB } from './data';
-import { IRoutePath, IRoutePaths } from 'v2/types';
+import { TURL } from 'v2/types';
 
 interface Link {
   link: string;
   text: string;
 }
 
-// As an intermediate step to creating a single place to reference URLS
-// we create an overlap between the old Link and the new IRoutePath
-type TmpLink = Partial<Link & IRoutePath>;
+interface IExtUrl {
+  url: TURL;
+  name: string;
+  text: string;
+}
 
 export const DOWNLOAD_MYCRYPTO_LINK = 'https://download.mycrypto.com';
 
@@ -73,17 +75,15 @@ export const productLinks: Link[] = [
   }
 ];
 
-export const affiliateLinks: TmpLink[] = [
+const affiliateLinks: IExtUrl[] = [
   {
     name: 'LEDGER_REFERRAL',
-    path: 'https://www.ledgerwallet.com/r/1985?path=/products/',
-    link: 'https://www.ledgerwallet.com/r/1985?path=/products/',
+    url: 'https://www.ledgerwallet.com/r/1985?path=/products/' as TURL,
     text: translateRaw('LEDGER_REFERRAL_1')
   },
   {
     name: 'TREZOR_REFERRAL',
-    path: 'https://shop.trezor.io/?offer_id=10&aff_id=1735',
-    link: 'https://shop.trezor.io/?offer_id=10&aff_id=1735',
+    url: 'https://shop.trezor.io/?offer_id=10&aff_id=1735' as TURL,
     text: translateRaw('TREZOR_REFERAL')
   }
 ];
@@ -107,13 +107,11 @@ export const partnerLinks: Link[] = [
   }
 ];
 
-export const EXT_URLS = createNavLinksFromExternalLinks(
-  affiliateLinks.filter((l) => l.name !== undefined) as IRoutePath[]
-);
-
-function createNavLinksFromExternalLinks(links: IRoutePath[]) {
-  return links.reduce((navLinks, linkInfo) => {
-    navLinks[linkInfo.name] = linkInfo;
-    return navLinks;
-  }, {} as IRoutePaths);
+function createNavLinksFromExternalLinks(links: IExtUrl[]) {
+  return links.reduce((acc, link) => {
+    acc[link.name] = link;
+    return acc;
+  }, {} as Record<string, IExtUrl>);
 }
+
+export const EXT_URLS = createNavLinksFromExternalLinks(affiliateLinks);
