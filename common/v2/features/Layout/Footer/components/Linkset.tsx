@@ -45,12 +45,12 @@ const LINK_COLUMNS = [
         analytics_event: 'Ledger Wallet'
       },
       {
-        title: 'TREZOR',
+        title: 'Trezor',
         link: EXT_URLS.TREZOR_REFERRAL.url,
         analytics_event: 'TREZOR'
       },
       {
-        title: 'ether.card',
+        title: 'Ether.cards',
         link: EXT_URLS.ETHER_CARD_REFERRAL.url,
         analytics_event: 'ether.card'
       }
