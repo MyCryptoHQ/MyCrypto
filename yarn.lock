@@ -1936,7 +1936,7 @@
     react-inlinesvg "^0.8.4"
     react-popper-tooltip "^2.10.1"
 
-"@mycrypto/unlock-scan@^0.1.0":
+"@mycrypto/unlock-scan@0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@mycrypto/unlock-scan/-/unlock-scan-0.1.0.tgz#30b87d572debbca1fa7594273de1470f4d267f92"
   integrity sha512-lw9RHhCWjreQhjS+GJaUVsOD7fcs+yNyPlvWfMmz2FWANk3v7gCXgfH+/Uyy15Ngrt/1TeWR3xxn6EWctYlBjA==
