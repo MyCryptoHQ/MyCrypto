@@ -123,6 +123,7 @@ export default function GasSelector(props: Props) {
           label={<CustomLabel>{translateRaw('OFFLINE_STEP2_LABEL_3')}</CustomLabel>}
           value={gasPrice}
           onChange={handleGasPriceChange}
+          inputMode="decimal"
         />
       </FieldWrapper>
       <FieldWrapper>
@@ -131,6 +132,7 @@ export default function GasSelector(props: Props) {
           value={gasLimit}
           onChange={handleGasLimitChange}
           disabled={isAutoGasSet}
+          inputMode="decimal"
         />
       </FieldWrapper>
       <FieldWrapper>
@@ -138,6 +140,7 @@ export default function GasSelector(props: Props) {
           label={<CustomLabel>{translateRaw('OFFLINE_STEP2_LABEL_5')}</CustomLabel>}
           value={nonce}
           onChange={handleNonceChange}
+          inputMode="decimal"
         />
       </FieldWrapper>
     </Wrapper>

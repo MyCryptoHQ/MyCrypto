@@ -5,9 +5,10 @@ import { Icon } from '@mycrypto/ui';
 import { COLORS } from 'v2/theme';
 import { InlineMessage, Spinner } from 'v2/components';
 import { InlineMessageType } from 'v2/types';
+import { sanitizeDecimalSeparator } from 'v2/utils';
 
 const MainWrapper = styled.div<WrapperProps>`
-  margin-bottom: ${props => props.marginBottom};
+  margin-bottom: ${(props) => props.marginBottom};
   width: 100%;
 `;
 
@@ -22,7 +23,7 @@ const Label = styled.p`
   text-align: left;
   font-weight: normal;
   margin-bottom: 9px;
-  color: ${props => props.theme.text};
+  color: ${(props) => props.theme.text};
 `;
 
 interface CustomInputProps {
@@ -37,42 +38,42 @@ interface CustomInputProps {
 
 const CustomInput = styled.input<CustomInputProps>`
   width: 100%;
-  background: ${props => props.theme.controlBackground};
-  border: 0.125em solid ${props => props.theme.controlBorder};
+  background: ${(props) => props.theme.controlBackground};
+  border: 0.125em solid ${(props) => props.theme.controlBorder};
   border-radius: 0.125em;
-  padding: ${props => (props.showEye || props.customIcon ? '12px 36px 12px 12px' : '12px 12px')};
+  padding: ${(props) => (props.showEye || props.customIcon ? '12px 36px 12px 12px' : '12px 12px')};
   display: flex;
   :focus-within {
     outline: none;
-    box-shadow: ${props => props.theme.outline};
+    box-shadow: ${(props) => props.theme.outline};
   }
   ::placeholder {
     color: ${COLORS.GREY_LIGHT};
     opacity: 1;
   }
-  border-color: ${props => (props.inputError && props.inputErrorBorder ? COLORS.PASTEL_RED : '')};
-  ${props => props.height && `height: ${props.height}`};
+  border-color: ${(props) => (props.inputError && props.inputErrorBorder ? COLORS.PASTEL_RED : '')};
+  ${(props) => props.height && `height: ${props.height}`};
 `;
 
 const CustomTextArea = styled.textarea<CustomInputProps>`
   width: 100%;
-  background: ${props => props.theme.controlBackground};
-  border: 0.125em solid ${props => props.theme.controlBorder};
+  background: ${(props) => props.theme.controlBackground};
+  border: 0.125em solid ${(props) => props.theme.controlBorder};
   border-radius: 0.125em;
-  padding: ${props => (props.showEye ? '12px 36px 12px 12px' : '12px 12px')};
+  padding: ${(props) => (props.showEye ? '12px 36px 12px 12px' : '12px 12px')};
   display: flex;
   :focus-within {
     outline: none;
-    box-shadow: ${props => props.theme.outline};
+    box-shadow: ${(props) => props.theme.outline};
   }
   ::placeholder {
     color: ${COLORS.GREY_LIGHT};
     opacity: 1;
   }
-  border-color: ${props => (props.inputError ? COLORS.PASTEL_RED : '')};
-  resize: ${props => (props.resizable ? 'default' : 'none')};
-  ${props => props.height && `height: ${props.height}`};
-  ${props => props.maxHeight && `max-height: ${props.maxHeight}`};
+  border-color: ${(props) => (props.inputError ? COLORS.PASTEL_RED : '')};
+  resize: ${(props) => (props.resizable ? 'default' : 'none')};
+  ${(props) => props.height && `height: ${props.height}`};
+  ${(props) => props.maxHeight && `max-height: ${props.maxHeight}`};
 `;
 
 const InputWrapper = styled.div`
@@ -215,7 +216,14 @@ export class InputField extends Component<Props> {
             <CustomInput
               name={name}
               value={value}
-              onChange={onChange}
+              onChange={(e) => {
+                if (!onChange) return;
+
+                if (inputMode === 'decimal') {
+                  e.target.value = sanitizeDecimalSeparator(e.target.value);
+                }
+                onChange(e);
+              }}
               onBlur={onBlur}
               onFocus={onFocus}
               inputError={inputError}
