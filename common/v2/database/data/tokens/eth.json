@@ -1365,6 +1365,13 @@
     "uuid": "7cbd63b2-8f15-54a1-8825-bd02772a4c58"
   },
   {
+    "address": "0x0327112423F3A68efdF1fcF402F6c5CB9f7C33fd",
+    "symbol": "BTC++",
+    "decimal": 18,
+    "name": "PieDAO BTC++",
+    "uuid": "27e187f1-4d10-57f6-be94-bef6f053c019"
+  },
+  {
     "address": "0x02725836ebF3eCDb1cDf1c7b02FcbBfaa2736AF8",
     "symbol": "BTCA",
     "decimal": 8,
@@ -1909,6 +1916,13 @@
     "decimal": 8,
     "name": "Crafty Token",
     "uuid": "1ab53a32-41ac-5ddb-a814-082b0d8e10ff"
+  },
+  {
+    "address": "0xF5238462E7235c7B62811567E63Dd17d12C2EAA0",
+    "symbol": "CGT",
+    "decimal": 8,
+    "name": "CACHE Gold",
+    "uuid": "5d58a841-9d57-5e26-bd08-2ec6d95cb33b"
   },
   {
     "address": "0x06AF07097C9Eeb7fD685c692751D5C66dB49c215",
@@ -4326,6 +4340,13 @@
     "uuid": "d64c6a6f-4e7f-509b-9bee-f2a7d92727d5"
   },
   {
+    "address": "0xCbe83d6323a9eC795D5Cb73b333b23377a823ECC",
+    "symbol": "fstETHDAI",
+    "decimal": 18,
+    "name": "Futureswap: ETHUSD",
+    "uuid": "ffe368b8-21dc-5c1b-8f5f-93bbab6f7ead"
+  },
+  {
     "address": "0x78a73B6CBc5D183CE56e786f6e905CaDEC63547B",
     "symbol": "FT",
     "decimal": 18,
@@ -4632,6 +4653,13 @@
     "decimal": 18,
     "name": "Girl Coin",
     "uuid": "baa476bc-e183-57da-b594-119f68de0650"
+  },
+  {
+    "address": "0xA5B399a76bbAbEf93D70255525C1d2BCC3701d0b",
+    "symbol": "GL",
+    "decimal": 18,
+    "name": "GLOSMATIN",
+    "uuid": "79bc6009-ce10-52ef-853f-bc33b65df022"
   },
   {
     "address": "0x71D01dB8d6a2fBEa7f8d434599C237980C234e4C",
@@ -5663,6 +5691,13 @@
     "uuid": "c911ad28-5b73-590a-9983-c56e93086342"
   },
   {
+    "address": "0xdfbc9050F5B01DF53512DCC39B4f2B2BBaCD517A",
+    "symbol": "JOB (1)",
+    "decimal": 8,
+    "name": "Jobchain",
+    "uuid": "458d48c3-65d6-535e-82da-b3568f6039a9"
+  },
+  {
     "address": "0xdb455c71C1bC2de4e80cA451184041Ef32054001",
     "symbol": "JOT",
     "decimal": 18,
@@ -6109,6 +6144,13 @@
     "decimal": 18,
     "name": "Lisk Machine Learning",
     "uuid": "7e5748b8-2993-5cab-a194-bd8038919df0"
+  },
+  {
+    "address": "0x66fD97a78d8854fEc445cd1C80a07896B0b4851f",
+    "symbol": "LMY",
+    "decimal": 18,
+    "name": "Lunch Money",
+    "uuid": "1284d958-fa0e-56cf-9480-160202c9ebc5"
   },
   {
     "address": "0x63e634330A20150DbB61B15648bC73855d6CCF07",
@@ -6972,13 +7014,6 @@
     "uuid": "ecfbdb69-87c7-5099-b28c-619997206c1b"
   },
   {
-    "address": "0x0027449Bf0887ca3E431D263FFDeFb244D95b555",
-    "symbol": "NOT",
-    "decimal": 18,
-    "name": "Token Not",
-    "uuid": "17da00cc-4901-5e04-87e0-f7e3cf9b382a"
-  },
-  {
     "address": "0xeC46f8207D766012454c408De210BCBc2243E71c",
     "symbol": "NOX",
     "decimal": 18,
@@ -7518,6 +7553,13 @@
     "uuid": "9234ed1c-14b4-5cff-a8bd-90ba8a17b3e0"
   },
   {
+    "address": "0x5228a22e72ccC52d415EcFd199F99D0665E7733b",
+    "symbol": "pBTC",
+    "decimal": 18,
+    "name": "pTokens BTC",
+    "uuid": "d1735bf5-5981-53dc-9d71-dd32db11bf26"
+  },
+  {
     "address": "0xE3F4b4A5d91e5cB9435B947F090A319737036312",
     "symbol": "PCH",
     "decimal": 18,
@@ -7894,6 +7936,13 @@
     "decimal": 18,
     "name": "Poseidon",
     "uuid": "fe7804d4-4c45-5f1c-88f9-1bf3ec9d42ea"
+  },
+  {
+    "address": "0x1c5F43710a1776b0Ea7191b7Ead75D4B98D69858",
+    "symbol": "PSK",
+    "decimal": 18,
+    "name": "Pool of Stake Master Token",
+    "uuid": "ba195b0d-d2c0-5795-b558-da4466ee4503"
   },
   {
     "address": "0x5d4ABC77B8405aD177d8ac6682D584ecbFd46CEc",
@@ -11989,6 +12038,13 @@
     "decimal": 18,
     "name": "XSC",
     "uuid": "9b616c0e-3cc7-5138-989f-79b75aa4033c"
+  },
+  {
+    "address": "0x70e8dE73cE538DA2bEEd35d14187F6959a8ecA96",
+    "symbol": "XSGD",
+    "decimal": 6,
+    "name": "Singapore-Dollar Backed Stablecoin",
+    "uuid": "1da2589e-8eee-55d9-b619-9fde75c5a545"
   },
   {
     "address": "0x22c421BA4717EDaF6b6BDA424207A7335e8f0e52",
