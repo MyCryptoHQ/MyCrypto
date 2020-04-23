@@ -172,7 +172,7 @@ export default function AddressBook({
     config: {
       primaryColumn: 'Label',
       sortableColumn: overlayRowsFlat.length ? '' : 'Label',
-      sortFunction: (a: any, b: any) => {
+      sortFunction: () => (a: any, b: any) => {
         const aLabel = a.props.label;
         const bLabel = b.props.label;
         return aLabel === bLabel ? true : aLabel.localeCompare(bLabel);

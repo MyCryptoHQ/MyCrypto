@@ -28,11 +28,13 @@ export interface TableGroup {
   offset?: number;
 }
 
+type sortFunctionType = (heading?: string | null) => (a: any, b: any) => number;
+
 export interface TableConfig {
-  sortableColumn?: string | null;
+  sortableColumn?: string | string[];
   hiddenHeadings?: (string | JSX.Element)[]; //Hack to allow a head to include JSX.Elements
   reversedColumns?: string[];
-  sortFunction?(a: any, b: any): number;
+  sortFunction?: sortFunctionType;
   handleRowClicked?(index: number): void;
 }
 
@@ -60,6 +62,7 @@ interface State {
     [title: string]: boolean;
   };
   sortedColumnDirection: ColumnDirections;
+  currentSortColumn: string | null;
 }
 
 interface CellProps {
@@ -70,13 +73,13 @@ const sharedCellProperties = ({ isReversed }: CellProps) => `
   min-width: .75em;
   padding: .75em;
   text-align: ${isReversed ? 'right' : 'left'};
-  & > 
+  & >
 `;
 
 const TableHead = styled.tr`
-  border-top: 0.0625em solid ${props => props.theme.tableHeadBorder};
-  border-bottom: 0.0625em solid ${props => props.theme.tableHeadBorder};
-  background: ${props => props.theme.tableHeadBackground};
+  border-top: 0.0625em solid ${(props) => props.theme.tableHeadBorder};
+  border-bottom: 0.0625em solid ${(props) => props.theme.tableHeadBorder};
+  background: ${(props) => props.theme.tableHeadBackground};
   font-size: 0.9em;
   & > th:first-child {
     padding-left: ${SPACING.BASE};
@@ -93,12 +96,12 @@ interface HeadingProps extends CellProps {
 
 const TableHeading = styled(Typography)<HeadingProps>`
   ${sharedCellProperties}
-  color: ${props => props.theme.headline};
+  color: ${(props) => props.theme.headline};
   font-weight: normal;
   text-transform: uppercase;
   letter-spacing: 0.0625em;
-  cursor: ${props => (props.isSortable ? 'pointer' : 'inherit')};
-    ${props =>
+  cursor: ${(props) => (props.isSortable ? 'pointer' : 'inherit')};
+    ${(props) =>
       props.isHidden &&
       `
     position: fixed;
@@ -117,7 +120,7 @@ TableHeading.defaultProps = {
 };
 
 const TableRow = styled.tr`
-  border-bottom: 0.0625em solid ${props => props.theme.tableRowBorder};
+  border-bottom: 0.0625em solid ${(props) => props.theme.tableRowBorder};
   & > td:first-child {
     padding-left: ${SPACING.BASE};
   }
@@ -141,11 +144,16 @@ const TableCell = styled(Typography)`
   Theme
 >;
 
+const SortPlaceholder = styled.div`
+  width: calc(9px + 0.5em);
+  display: inline-block;
+`;
+
 TableCell.defaultProps = {
   as: 'td'
 };
 
-export const defaultColumnSort = (a: any, b: any): number => {
+export const defaultColumnSort = () => (a: any, b: any): number => {
   try {
     const aText = a.props.children;
     const bText = b.props.children;
@@ -157,26 +165,39 @@ export const defaultColumnSort = (a: any, b: any): number => {
   }
 };
 
+const getHeaderColumn = (head: JSX.Element | string): string => {
+  if (typeof head === 'string') {
+    return head;
+  } else if (typeof head === 'object' && head.key) {
+    return head.key as string;
+  }
+  throw new Error('Header should be either a string or JSX element with key identifier');
+};
+
+const getHeaderColumns = (head: (JSX.Element | string)[]): string[] => head.map(getHeaderColumn);
+
 export const getSortedRows = (
   head: any[],
   body: ReactNode[][],
   config: TableConfig,
-  sortedColumnDirection: ColumnDirections
+  sortedColumnDirection: ColumnDirections,
+  currentSortColumn: string | null
 ): ReactNode[][] => {
-  const { sortableColumn, sortFunction = defaultColumnSort } = config;
+  const { sortFunction = defaultColumnSort } = config;
   // Determine which column to order.
-  const sortableColumnIndex = head.indexOf(sortableColumn);
+  const headerColumns = getHeaderColumns(head);
+  const sortableColumnIndex = Math.max(headerColumns.indexOf(currentSortColumn || ''), 0);
   // Create an array containing the data from each row in the specified column.
   const sortableColumnEntries = body
-    .map(row => row[sortableColumnIndex])
-    .map(entry =>
+    .map((row) => row[sortableColumnIndex])
+    .map((entry) =>
       // If the entry is a string, wrap it.
       typeof entry === 'string' ? <React.Fragment>{entry}</React.Fragment> : entry
     );
   // Rearrange that array based on the selected sort.
-  const sortedColumnEntries = [...sortableColumnEntries].sort(sortFunction);
+  const sortedColumnEntries = [...sortableColumnEntries].sort(sortFunction(currentSortColumn));
   // Translate the new order into the indexes of the original order to determine the change.
-  const sortedColumnIndices = sortedColumnEntries.map(sortedEntry =>
+  const sortedColumnIndices = sortedColumnEntries.map((sortedEntry) =>
     sortableColumnEntries.indexOf(sortedEntry)
   );
   // Potentially reverse the new order depending on the sort direction.
@@ -185,7 +206,7 @@ export const getSortedRows = (
       ? sortedColumnIndices
       : sortedColumnIndices.reverse();
   // Apply the new order to all of the rows.
-  const sortedRows = finalSortedColumnIndices.map(index => body[index]);
+  const sortedRows = finalSortedColumnIndices.map((index) => body[index]);
 
   return sortedRows;
 };
@@ -200,7 +221,8 @@ class AbstractTable extends Component<Props, State> {
 
   public state: State = {
     collapsedGroups: {},
-    sortedColumnDirection: ColumnDirections.Forward
+    sortedColumnDirection: ColumnDirections.Forward,
+    currentSortColumn: null
   };
 
   public componentDidMount() {
@@ -220,14 +242,21 @@ class AbstractTable extends Component<Props, State> {
         <thead>
           <TableHead>
             {head.map((heading, index) => {
-              const isSortableColumn = config && config.sortableColumn === heading;
+              const isSelectedSortableColumn = this.isCurrentColumnSortable(
+                getHeaderColumn(heading)
+              );
+              const isSortableColumn = this.isColumnSortable(getHeaderColumn(heading));
               const isHiddenHeading =
                 config && config.hiddenHeadings && config.hiddenHeadings.includes(heading);
 
               return (
                 <TableHeading
                   key={index}
-                  onClick={isSortableColumn ? this.toggleSortedColumnDirection : noOp}
+                  onClick={() =>
+                    isSortableColumn
+                      ? this.toggleSortedColumnDirection(getHeaderColumn(heading))
+                      : noOp
+                  }
                   role={isSortableColumn ? 'button' : ''}
                   isSortable={isSortableColumn}
                   isHidden={isHiddenHeading}
@@ -235,9 +264,12 @@ class AbstractTable extends Component<Props, State> {
                   data-testid={isSortableColumn ? 'sortable-column-heading' : ''}
                 >
                   {heading}
-                  {isSortableColumn && (
-                    <IconArrow isFlipped={sortedColumnDirection === ColumnDirections.Reverse} />
-                  )}
+                  {isSortableColumn &&
+                    (isSelectedSortableColumn ? (
+                      <IconArrow isFlipped={sortedColumnDirection === ColumnDirections.Reverse} />
+                    ) : (
+                      <SortPlaceholder />
+                    ))}
                 </TableHeading>
               );
             })}
@@ -293,6 +325,37 @@ class AbstractTable extends Component<Props, State> {
     );
   }
 
+  private readonly isCurrentColumnSortable = (heading: string) => {
+    return this.getCurrentColumnSortable() === heading;
+  };
+
+  private readonly getCurrentColumnSortable = () => {
+    const { currentSortColumn } = this.state;
+    const { config } = this.props;
+    const { sortableColumn } = config || {};
+
+    if (currentSortColumn) {
+      return currentSortColumn;
+    } else if (sortableColumn && typeof sortableColumn === 'string') {
+      return sortableColumn;
+    } else if (sortableColumn && Array.isArray(sortableColumn)) {
+      return sortableColumn[0];
+    }
+
+    return null;
+  };
+
+  private readonly isColumnSortable = (column: string) => {
+    const { config } = this.props;
+    const { sortableColumn } = config || {};
+
+    if (Array.isArray(sortableColumn)) {
+      return sortableColumn.some((c) => c.includes(column));
+    }
+
+    return typeof sortableColumn === column;
+  };
+
   private readonly verifyTableLayout = () => {
     const { head, body, groups, config } = this.props;
     const columnCount = head.length;
@@ -328,15 +391,26 @@ class AbstractTable extends Component<Props, State> {
     const { sortableColumn, hiddenHeadings } = config!;
 
     if (sortableColumn) {
-      const sortedColumnExists = head.includes(sortableColumn);
-
-      if (!sortedColumnExists) {
+      const returnNonexistentColumn = () => {
         throw new Error(`Nonexistent sortable column provided to <Table />.`);
+      };
+
+      const headerIdentifiers = getHeaderColumns(head);
+      if (
+        Array.isArray(sortableColumn) &&
+        sortableColumn.some((c) => !headerIdentifiers.includes(c))
+      ) {
+        return returnNonexistentColumn();
+      } else if (
+        typeof sortableColumn === 'string' &&
+        !headerIdentifiers.includes(sortableColumn)
+      ) {
+        return returnNonexistentColumn();
       }
     }
 
     if (hiddenHeadings) {
-      hiddenHeadings.forEach(heading => {
+      hiddenHeadings.forEach((heading) => {
         if (!head.includes(heading)) {
           throw new Error(`Unused heading ${heading} found in hiddenHeadings in <Table />`);
         }
@@ -345,15 +419,16 @@ class AbstractTable extends Component<Props, State> {
   };
 
   private readonly toggleCollapseGroup = (title: string) =>
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       collapsedGroups: {
         ...prevState.collapsedGroups,
         [title]: !prevState.collapsedGroups[title]
       }
     }));
 
-  private readonly toggleSortedColumnDirection = () =>
-    this.setState(prevState => ({
+  private readonly toggleSortedColumnDirection = (currentSortColumn: string) =>
+    this.setState((prevState) => ({
+      currentSortColumn,
       sortedColumnDirection:
         prevState.sortedColumnDirection === ColumnDirections.Forward
           ? ColumnDirections.Reverse
@@ -363,13 +438,20 @@ class AbstractTable extends Component<Props, State> {
   private readonly getSortedLayout = (): TableContent => {
     const { head, body, groups, config } = this.props;
     const { sortedColumnDirection } = this.state;
+    const currentSortColumn = this.getCurrentColumnSortable();
 
     return config && config.sortableColumn
       ? {
-          body: getSortedRows(head, body, config, sortedColumnDirection),
-          groups: groups!.map(group => ({
+          body: getSortedRows(head, body, config, sortedColumnDirection, currentSortColumn),
+          groups: groups!.map((group) => ({
             ...group,
-            entries: getSortedRows(head, group.entries, config, sortedColumnDirection)
+            entries: getSortedRows(
+              head,
+              group.entries,
+              config,
+              sortedColumnDirection,
+              currentSortColumn
+            )
           }))
         }
       : { body, groups };

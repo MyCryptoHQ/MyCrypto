@@ -86,7 +86,7 @@ export function WalletBreakdown() {
     .sort((a, b) => b.fiatValue - a.fiatValue);
 
   const totalFiatValue = balances.reduce((sum, asset) => {
-    return (sum += asset.fiatValue);
+    return sum + asset.fiatValue;
   }, 0);
 
   const toggleShowChart = () => {

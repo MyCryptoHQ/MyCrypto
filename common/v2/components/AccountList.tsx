@@ -393,7 +393,7 @@ const buildAccountTable = (
     sortingState.sortState[id].indexOf('-reverse') > -1;
 
   const convertColumnToClickable = (id: IColumnValues) => (
-    <div onClick={() => updateSortingState(id)}>
+    <div key={id} onClick={() => updateSortingState(id)}>
       {translateRaw(id)} <IconArrow isFlipped={getColumnSortDirection(id)} />
     </div>
   );

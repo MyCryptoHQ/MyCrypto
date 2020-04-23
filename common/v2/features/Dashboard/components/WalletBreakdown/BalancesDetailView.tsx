@@ -42,9 +42,11 @@ const BalancesOnlyTotal = styled.div`
   }
 `;
 
-const HeaderAlignment = styled.div`
+const HeaderAlignment = styled.div<{ align?: string }>`
+  display: inline-block;
+  width: calc(100% - 9px - 0.5em);
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    text-align: ${(props: { align?: string }) => props.align || 'inherit'};
+    text-align: ${({ align }) => align || 'inherit'};
   }
 `;
 
@@ -74,10 +76,10 @@ export default function BalancesDetailView({
   const balancesTable = {
     head: [
       TOKEN,
-      <HeaderAlignment key={BALANCE} align="center">
+      <HeaderAlignment key={BALANCE} align="end">
         {BALANCE}
       </HeaderAlignment>,
-      <HeaderAlignment key={VALUE} align="center">
+      <HeaderAlignment key={VALUE} align="end">
         {VALUE}
       </HeaderAlignment>
     ],
@@ -87,10 +89,10 @@ export default function BalancesDetailView({
           <Icon symbol={balance.ticker as TSymbol} size={'2rem'} />
           {balance.name}
         </Label>,
-        <RowAlignment key={index} align="right">
+        <RowAlignment data-balance={balance.amount} key={index} align="right">
           {`${balance.amount.toFixed(6)} ${balance.ticker}`}
         </RowAlignment>,
-        <RowAlignment key={index} align="right">
+        <RowAlignment key={index} align="right" data-value={balance.fiatValue}>
           <Currency
             amount={balance.fiatValue.toString()}
             symbol={fiat.symbol}
@@ -102,11 +104,23 @@ export default function BalancesDetailView({
     }),
     config: {
       primaryColumn: TOKEN,
-      sortableColumn: TOKEN,
-      sortFunction: (a: any, b: any) => {
-        const aLabel = a.props.children[1];
-        const bLabel = b.props.children[1];
-        return aLabel === bLabel ? true : aLabel.localeCompare(bLabel);
+      sortableColumn: [TOKEN, BALANCE, VALUE],
+      sortFunction: (column: typeof TOKEN | typeof BALANCE | typeof VALUE) => (a: any, b: any) => {
+        switch (column) {
+          case VALUE:
+            const aValue = a.props['data-value'];
+            const bValue = b.props['data-value'];
+            return aValue - bValue;
+          case BALANCE:
+            const aBalance = a.props['data-balance'];
+            const bBalance = b.props['data-balance'];
+            return aBalance - bBalance;
+          case TOKEN:
+          default:
+            const aLabel = a.props.children[1];
+            const bLabel = b.props.children[1];
+            return aLabel === bLabel ? true : aLabel.localeCompare(bLabel);
+        }
       },
       hiddenHeadings: []
     }
