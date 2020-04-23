@@ -1,3 +1,5 @@
+import { BigNumber } from 'bignumber.js';
+
 import { TAddress } from 'v2/types/address';
 import { DAIUUID, EtherUUID } from 'v2/utils';
 import translate, { translateRaw } from 'v2/translations';
@@ -34,7 +36,12 @@ export enum MembershipState {
 
 export interface MembershipStatus {
   address: TAddress;
-  memberships: IMembershipId[];
+  memberships: MembershipExpiry[];
+}
+
+export interface MembershipExpiry {
+  type: IMembershipId;
+  expiry: BigNumber;
 }
 
 export enum IMembershipId {
@@ -119,7 +126,7 @@ export const defaultMembershipObject = MEMBERSHIP_CONFIG[defaultMembershipId];
 export const MEMBERSHIP_CONTRACTS = Object.fromEntries(
   Object.keys(MEMBERSHIP_CONFIG).map((key) => [
     MEMBERSHIP_CONFIG[key as IMembershipId].contractAddress,
-    key
+    key as IMembershipId
   ])
 );
 
