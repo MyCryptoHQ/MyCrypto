@@ -51,9 +51,13 @@ export const AccountProvider: React.FC = ({ children }) => {
     updateAccount: (uuid, a) => model.update(uuid, a),
     addNewTransactionToAccount: (accountData, newTransaction) => {
       const { network, ...newTxWithoutNetwork } = newTransaction;
-      if ('stage' in newTxWithoutNetwork && newTxWithoutNetwork.stage === ITxStatus.SUCCESS) {
+      if (
+        'stage' in newTxWithoutNetwork &&
+        [ITxStatus.SUCCESS, ITxStatus.FAILED].includes(newTxWithoutNetwork.stage)
+      ) {
         AnalyticsService.instance.track(ANALYTICS_CATEGORIES.AD, `Tx Made`, {
-          txType: (newTxWithoutNetwork && newTxWithoutNetwork.txType) || ITxType.UNKNOWN
+          txType: (newTxWithoutNetwork && newTxWithoutNetwork.txType) || ITxType.UNKNOWN,
+          txStatus: newTxWithoutNetwork.stage
         });
       }
       const newAccountData = {
