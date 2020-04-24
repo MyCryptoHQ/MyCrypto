@@ -3,6 +3,8 @@ import unionBy from 'lodash/unionBy';
 import BigNumber from 'bignumber.js';
 import * as R from 'ramda';
 
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services/ApiService/Analytics';
+
 import {
   IRawAccount,
   IAccount,
@@ -19,7 +21,6 @@ import { DataContext } from '../DataManager';
 import { SettingsContext } from '../Settings';
 import { getAccountByAddressAndNetworkName } from './helpers';
 import { getAllTokensBalancesOfAccount } from '../BalanceService';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services/ApiService/Analytics';
 
 export interface IAccountContext {
   accounts: IAccount[];
