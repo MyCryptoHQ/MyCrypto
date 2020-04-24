@@ -4,7 +4,7 @@ import { Button } from '@mycrypto/ui';
 
 import translate from 'v2/translations';
 import { BREAK_POINTS } from 'v2/theme';
-import { ledgerReferralURL, trezorReferralURL } from 'v2/config';
+import { EXT_URLS } from 'v2/config';
 import NotificationWrapper from './NotificationWrapper';
 
 // Legacy
@@ -50,11 +50,11 @@ const getResources = () => {
     <>
       <ResourceItemWrapper
         title={translate('NOTIFICATIONS_GET_WALLET_RESOURCE_TREZOR')}
-        link={trezorReferralURL}
+        link={EXT_URLS.TREZOR_REFFERAL.url}
       />
       <ResourceItemWrapper
         title={translate('NOTIFICATIONS_GET_WALLET_RESOURCE_LEDGER')}
-        link={ledgerReferralURL}
+        link={EXT_URLS.LEDGER_REFERRAL.url}
       />
     </>
   );

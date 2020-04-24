@@ -1,24 +1,16 @@
 import { translateRaw } from 'v2/translations';
-import {
-  discordURL,
-  ledgerReferralURL,
-  trezorReferralURL,
-  safeTReferralURL,
-  ethercardReferralURL,
-  keepkeyReferralURL,
-  steelyReferralURL,
-  CRYPTOSCAMDB
-} from './data';
-import { IRoutePath, IRoutePaths } from 'v2/types';
+import { CRYPTOSCAMDB } from './data';
+import { TURL } from 'v2/types';
 
 interface Link {
   link: string;
   text: string;
 }
 
-// As an intermediate step to creating a single place to reference URLS
-// we create an overlap between the old Link and the new IRoutePath
-type TmpLink = Partial<Link & IRoutePath>;
+interface IExtUrl {
+  url: TURL;
+  name: string;
+}
 
 export const DOWNLOAD_MYCRYPTO_LINK = 'https://download.mycrypto.com';
 
@@ -48,7 +40,7 @@ export const socialMediaLinks: Link[] = [
     text: 'reddit'
   },
   {
-    link: discordURL,
+    link: 'https://discord.gg/VSaTXEA',
     text: 'discord'
   }
 ];
@@ -82,34 +74,18 @@ export const productLinks: Link[] = [
   }
 ];
 
-export const affiliateLinks: TmpLink[] = [
+const affiliateLinks: IExtUrl[] = [
   {
     name: 'LEDGER_REFERRAL',
-    path: ledgerReferralURL,
-    link: ledgerReferralURL,
-    text: translateRaw('LEDGER_REFERRAL_1')
+    url: 'https://www.ledgerwallet.com/r/1985?path=/products/' as TURL
   },
   {
     name: 'TREZOR_REFERRAL',
-    path: trezorReferralURL,
-    link: trezorReferralURL,
-    text: translateRaw('TREZOR_REFERAL')
+    url: 'https://shop.trezor.io/?offer_id=10&aff_id=1735' as TURL
   },
   {
-    link: safeTReferralURL,
-    text: translateRaw('SAFE_T_REFERAL')
-  },
-  {
-    link: keepkeyReferralURL,
-    text: translateRaw('KEEPKEY_REFERRAL')
-  },
-  {
-    link: steelyReferralURL,
-    text: translateRaw('STEELY_REFERRAL')
-  },
-  {
-    link: ethercardReferralURL,
-    text: translateRaw('ETHERCARD_REFERAL')
+    name: 'ETHER_CARD_REFERRAL',
+    url: 'https://ether.cards/?utm_source=mycrypto&utm_medium=cpm&utm_campaign=site' as TURL
   }
 ];
 
@@ -132,13 +108,11 @@ export const partnerLinks: Link[] = [
   }
 ];
 
-export const EXT_URLS = createNavLinksFromExternalLinks(
-  affiliateLinks.filter(l => l.name !== undefined) as IRoutePath[]
-);
-
-function createNavLinksFromExternalLinks(links: IRoutePath[]) {
-  return links.reduce((navLinks, linkInfo) => {
-    navLinks[linkInfo.name] = linkInfo;
-    return navLinks;
-  }, {} as IRoutePaths);
+function createNavLinksFromExternalLinks(links: IExtUrl[]) {
+  return links.reduce((acc, link) => {
+    acc[link.name] = link;
+    return acc;
+  }, {} as Record<string, IExtUrl>);
 }
+
+export const EXT_URLS = createNavLinksFromExternalLinks(affiliateLinks);

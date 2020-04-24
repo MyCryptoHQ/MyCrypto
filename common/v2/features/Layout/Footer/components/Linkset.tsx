@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { CRYPTOSCAMDB, getKBHelpArticle, KB_HELP_ARTICLE } from 'v2/config';
+import { CRYPTOSCAMDB, getKBHelpArticle, KB_HELP_ARTICLE, EXT_URLS } from 'v2/config';
 import { translateRaw } from 'v2/translations';
 import './Linkset.scss';
 
@@ -41,17 +41,17 @@ const LINK_COLUMNS = [
     links: [
       {
         title: 'Ledger Wallet',
-        link: 'https://www.ledgerwallet.com/r/1985?path=/products/',
+        link: EXT_URLS.LEDGER_REFERRAL.url,
         analytics_event: 'Ledger Wallet'
       },
       {
-        title: 'TREZOR',
-        link: 'https://shop.trezor.io/?offer_id=10&aff_id=1735',
+        title: 'Trezor',
+        link: EXT_URLS.TREZOR_REFERRAL.url,
         analytics_event: 'TREZOR'
       },
       {
-        title: 'ether.card',
-        link: 'https://ether.cards/?utm_source=mycrypto&utm_medium=cpm&utm_campaign=site',
+        title: 'Ether.cards',
+        link: EXT_URLS.ETHER_CARD_REFERRAL.url,
         analytics_event: 'ether.card'
       }
     ]
