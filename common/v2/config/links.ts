@@ -89,7 +89,11 @@ const affiliateLinks: IExtUrl[] = [
   },
   {
     name: 'UNSTOPPABLEDOMAINS_REFERRAL',
-    url: 'https://unstoppabledomains.com/r/a9d9ea4bc07e4fc' as TURL
+    url: 'https://unstoppabledomains.com/r/mycrypto' as TURL
+  },
+  {
+    name: 'COINBASE_REFERRAL',
+    url: 'https://coinbase-consumer.sjv.io/RVmkN' as TURL
   }
 ];
 
