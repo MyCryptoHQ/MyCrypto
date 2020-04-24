@@ -60,7 +60,7 @@ interface State {
   readonly isMyCryptoMember: boolean;
   readonly membershipState: MembershipState;
   readonly memberships?: MembershipStatus[];
-  readonly membershipExpiration: BigNumber[];
+  readonly membershipExpirations: BigNumber[];
   readonly currentAccounts: StoreAccount[];
   readonly userAssets: Asset[];
   readonly accountRestore: { [name: string]: IAccount | undefined };
@@ -136,7 +136,7 @@ export const StoreProvider: React.FC = ({ children }) => {
 
   const [memberships, setMemberships] = useState<MembershipStatus[] | undefined>([]);
 
-  const membershipExpiration = memberships
+  const membershipExpirations = memberships
     ? R.flatten(
         Object.values(memberships).map((m) => Object.values(m.memberships).map((e) => e.expiry))
       )
@@ -150,7 +150,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     } else {
       const currentTime = new BigNumber(Math.round(Date.now() / 1000));
       if (
-        membershipExpiration.some((expirationTime) => expirationTime.isGreaterThan(currentTime))
+        membershipExpirations.some((expirationTime) => expirationTime.isGreaterThan(currentTime))
       ) {
         return MembershipState.MEMBER;
       } else {
@@ -299,7 +299,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     isMyCryptoMember,
     membershipState,
     memberships,
-    membershipExpiration,
+    membershipExpirations,
     currentAccounts,
     accountRestore,
     get userAssets() {

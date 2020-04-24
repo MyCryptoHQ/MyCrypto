@@ -65,7 +65,7 @@ const Icon = styled.img<{ isMemberOrExpired: boolean }>`
 
 type Props = RouteComponentProps<{}>;
 function MembershipPanel({ history }: Props) {
-  const { membershipState, memberships, membershipExpiration } = useContext(StoreContext);
+  const { membershipState, memberships, membershipExpirations } = useContext(StoreContext);
 
   const isMember = membershipState === MembershipState.MEMBER;
   const isExpired = membershipState === MembershipState.EXPIRED;
@@ -103,7 +103,7 @@ function MembershipPanel({ history }: Props) {
                 <Typography as="div">{translateRaw('EXPIRES_ON')}</Typography>
                 <Typography as="div">
                   {new Date(
-                    Math.max(...membershipExpiration.map((e) => e.toNumber())) * 1000
+                    Math.max(...membershipExpirations.map((e) => e.toNumber())) * 1000
                   ).toLocaleDateString()}
                 </Typography>
               </ExpiryWrapper>
@@ -129,7 +129,7 @@ function MembershipPanel({ history }: Props) {
                 <ExpiredOnWrapper as="div">{translateRaw('EXPIRED_ON')}</ExpiredOnWrapper>
                 <Typography as="div">
                   {new Date(
-                    Math.max(...membershipExpiration.map((e) => e.toNumber())) * 1000
+                    Math.max(...membershipExpirations.map((e) => e.toNumber())) * 1000
                   ).toLocaleDateString()}
                 </Typography>
               </ExpiryWrapper>
