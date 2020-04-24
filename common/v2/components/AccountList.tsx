@@ -5,7 +5,7 @@ import isNumber from 'lodash/isNumber';
 import cloneDeep from 'lodash/cloneDeep';
 
 import { translateRaw } from 'v2/translations';
-import { ROUTE_PATHS, Fiats, WALLETS_CONFIG, IS_ACTIVE_FEATURE } from 'v2/config';
+import { ROUTE_PATHS, Fiats, IS_ACTIVE_FEATURE, getWalletConfig } from 'v2/config';
 import {
   EthAddress,
   CollapsibleTable,
@@ -489,14 +489,14 @@ const buildAccountTable = (
           addressBook
         )!;
         const {
-          account: { uuid, address }
+          account: { uuid, address, wallet }
         } = getFullTableData[rowIndex];
         return (
           <UndoDeleteOverlay
             address={address}
             overlayText={translateRaw('ACCOUNT_LIST_UNDO_DELETE_OVERLAY_TEXT', {
               $label: label(addressBookRecord),
-              $address: truncate(address)
+              $walletId: getWalletConfig(wallet).name
             })}
             restoreAccount={() => {
               restoreDeletedAccount(uuid);
@@ -535,7 +535,7 @@ const buildAccountTable = (
                   <InformationalIcon src={informationalSVG} />
                 </Tooltip>
               )}
-              <WalletTypeLabel>{WALLETS_CONFIG[account.wallet].name}</WalletTypeLabel>
+              <WalletTypeLabel>{getWalletConfig(account.wallet).name}</WalletTypeLabel>
               {IS_ACTIVE_FEATURE.PRIVATE_TAGS && account.isPrivate && (
                 <PrivateWalletLabel>{translateRaw('PRIVATE_ACCOUNT')}</PrivateWalletLabel>
               )}
