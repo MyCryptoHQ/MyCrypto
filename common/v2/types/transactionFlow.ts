@@ -101,6 +101,7 @@ export enum ITxStatus {
 }
 
 export enum ITxType {
+  UNKNOWN = 'UNKNOWN',
   STANDARD = 'STANDARD',
   SWAP = 'SWAP',
   DEFIZAP = 'DEFIZAP',

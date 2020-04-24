@@ -3,6 +3,8 @@ import unionBy from 'lodash/unionBy';
 import BigNumber from 'bignumber.js';
 import * as R from 'ramda';
 
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services/ApiService/Analytics';
+
 import {
   IRawAccount,
   IAccount,
@@ -11,7 +13,9 @@ import {
   Asset,
   AssetBalanceObject,
   LSKeys,
-  TUuid
+  TUuid,
+  ITxStatus,
+  ITxType
 } from 'v2/types';
 import { DataContext } from '../DataManager';
 import { SettingsContext } from '../Settings';
@@ -48,6 +52,15 @@ export const AccountProvider: React.FC = ({ children }) => {
     updateAccount: (uuid, a) => model.update(uuid, a),
     addNewTransactionToAccount: (accountData, newTransaction) => {
       const { network, ...newTxWithoutNetwork } = newTransaction;
+      if (
+        'stage' in newTxWithoutNetwork &&
+        [ITxStatus.SUCCESS, ITxStatus.FAILED].includes(newTxWithoutNetwork.stage)
+      ) {
+        AnalyticsService.instance.track(ANALYTICS_CATEGORIES.TX_HISTORY, `Tx Made`, {
+          txType: (newTxWithoutNetwork && newTxWithoutNetwork.txType) || ITxType.UNKNOWN,
+          txStatus: newTxWithoutNetwork.stage
+        });
+      }
       const newAccountData = {
         ...accountData,
         transactions: [
