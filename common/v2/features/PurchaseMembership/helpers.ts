@@ -1,6 +1,16 @@
 import { ethers } from 'ethers';
 
-import { ITxObject, StoreAccount, ITxConfig } from 'v2/types';
+import {
+  ITxObject,
+  StoreAccount,
+  ITxConfig,
+  ITxReceipt,
+  TxParcel,
+  ITxType,
+  ITxHash,
+  ITxStatus,
+  ITxSigned
+} from 'v2/types';
 import {
   inputValueToHex,
   inputGasPriceToHex,
@@ -14,6 +24,7 @@ import { getAssetByUUID } from 'v2/services';
 
 import { MembershipSimpleTxFormFull } from './types';
 import { isERC20Tx } from '../SendAssets';
+import { IMembershipConfig } from './config';
 
 export const createApproveTx = (payload: MembershipSimpleTxFormFull): Partial<ITxObject> => {
   const data = ERC20.approve.encodeInput({
@@ -56,19 +67,20 @@ export const createPurchaseTx = (payload: MembershipSimpleTxFormFull): Partial<I
 export const makeTxConfigFromTransaction = (
   rawTransaction: ITxObject,
   account: StoreAccount,
-  amount: string
+  membershipSelected: IMembershipConfig
 ): ITxConfig => {
   const { gasPrice, gasLimit, nonce, data, to, value } = rawTransaction;
   const { address, network } = account;
   const baseAsset = getAssetByUUID(account.assets)(network.baseAsset)!;
+  const asset = getAssetByUUID(account.assets)(membershipSelected.assetUUID)!;
 
   const txConfig: ITxConfig = {
     from: address,
-    amount,
+    amount: membershipSelected.price,
     receiverAddress: to,
     senderAccount: account,
     network,
-    asset: baseAsset,
+    asset,
     baseAsset,
     gasPrice: hexToString(gasPrice),
     gasLimit: hexToString(gasLimit),
@@ -79,4 +91,20 @@ export const makeTxConfigFromTransaction = (
   };
 
   return txConfig;
+};
+
+export const makeTxReceiptFromTransaction = (
+  tx: TxParcel,
+  hash: ITxHash | ITxSigned,
+  account: StoreAccount,
+  membershipSelected: IMembershipConfig,
+  type: ITxType
+): ITxReceipt => {
+  return {
+    ...makeTxConfigFromTransaction(tx.txRaw, account, membershipSelected),
+    ...tx.txRaw,
+    hash,
+    txType: type,
+    stage: ITxStatus.PENDING
+  };
 };

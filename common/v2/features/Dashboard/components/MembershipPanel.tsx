@@ -15,7 +15,7 @@ import expiredIcon from 'common/assets/images/membership/membership-expired.svg'
 
 const SDashboardPanel = styled(DashboardPanel)<{ isMemberOrExpired: boolean }>`
   display: flex;
-  ${props => !props.isMemberOrExpired && `background-color: ${COLORS.BLUE_LIGHTEST};`}
+  ${(props) => !props.isMemberOrExpired && `background-color: ${COLORS.BLUE_LIGHTEST};`}
 `;
 
 const Wrapper = styled.div`
@@ -36,7 +36,7 @@ const ImageWrapper = styled.div`
 const TextWrapper = styled.div<{ isMember: boolean }>`
   display: flex;
   flex-direction: column;
-  ${props => props.isMember && `align-items: center;`}
+  ${(props) => props.isMember && `align-items: center;`}
 `;
 
 const ExpiryWrapper = styled.div`
@@ -60,16 +60,18 @@ const SButton = styled(Button)`
 `;
 
 const Icon = styled.img<{ isMemberOrExpired: boolean }>`
-  ${props => !props.isMemberOrExpired && 'opacity: 0.25;'}
+  ${(props) => !props.isMemberOrExpired && 'opacity: 0.25;'}
 `;
 
 type Props = RouteComponentProps<{}>;
 function MembershipPanel({ history }: Props) {
-  const { membershipState, memberships, membershipExpiration } = useContext(StoreContext);
+  const { membershipState, memberships, membershipExpirations } = useContext(StoreContext);
 
   const isMember = membershipState === MembershipState.MEMBER;
   const isExpired = membershipState === MembershipState.EXPIRED;
-  const allMemberships = memberships ? R.uniq(R.flatten(memberships.map(m => m.memberships))) : [];
+  const allMemberships = memberships
+    ? R.uniq(R.flatten(memberships.map((m) => m.memberships)))
+    : [];
   const membership =
     allMemberships.length > 0 ? allMemberships[allMemberships.length - 1] : undefined;
 
@@ -77,7 +79,7 @@ function MembershipPanel({ history }: Props) {
     if (isExpired) {
       return expiredIcon;
     } else if (membership) {
-      return MEMBERSHIP_CONFIG[membership].icon;
+      return MEMBERSHIP_CONFIG[membership.type].icon;
     } else {
       return defaultIcon;
     }
@@ -91,14 +93,18 @@ function MembershipPanel({ history }: Props) {
         </ImageWrapper>
         <TextWrapper isMember={isMember}>
           <Header as="div">
-            {membershipState === MembershipState.EXPIRED ? translateRaw('MEMBERSHIP_EXPIRED') : translateRaw('MEMBERSHIP')}
+            {membershipState === MembershipState.EXPIRED
+              ? translateRaw('MEMBERSHIP_EXPIRED')
+              : translateRaw('MEMBERSHIP')}
           </Header>
           {membershipState === MembershipState.MEMBER && (
             <>
               <ExpiryWrapper>
                 <Typography as="div">{translateRaw('EXPIRES_ON')}</Typography>
                 <Typography as="div">
-                  {new Date(Math.max(...membershipExpiration) * 1000).toLocaleDateString()}
+                  {new Date(
+                    Math.max(...membershipExpirations.map((e) => e.toNumber())) * 1000
+                  ).toLocaleDateString()}
                 </Typography>
               </ExpiryWrapper>
               <SLink onClick={() => history.push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}>
@@ -122,7 +128,9 @@ function MembershipPanel({ history }: Props) {
               <ExpiryWrapper>
                 <ExpiredOnWrapper as="div">{translateRaw('EXPIRED_ON')}</ExpiredOnWrapper>
                 <Typography as="div">
-                  {new Date(Math.max(...membershipExpiration) * 1000).toLocaleDateString()}
+                  {new Date(
+                    Math.max(...membershipExpirations.map((e) => e.toNumber())) * 1000
+                  ).toLocaleDateString()}
                 </Typography>
               </ExpiryWrapper>
               <SButton onClick={() => history.push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}>

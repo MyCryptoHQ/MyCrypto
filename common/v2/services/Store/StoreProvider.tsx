@@ -1,6 +1,8 @@
 import React, { useState, useContext, useMemo, createContext, useEffect } from 'react';
 import * as R from 'ramda';
 import isEmpty from 'lodash/isEmpty';
+import { getUnlockTimestamps } from '@mycrypto/unlock-scan';
+import { BigNumber } from 'bignumber.js';
 
 import {
   TAddress,
@@ -30,16 +32,16 @@ import {
 } from 'v2/utils';
 import { ReserveAsset } from 'v2/types/asset';
 import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from 'v2/services/EthService';
-import { UnlockProtocolHandler } from 'v2/services/EthService/network';
 import {
   MembershipStatus,
   MEMBERSHIP_CONFIG,
-  MembershipState
+  MembershipState,
+  MEMBERSHIP_CONTRACTS
 } from 'v2/features/PurchaseMembership/config';
 import { DEFAULT_NETWORK } from 'v2/config';
 import { TUuid } from 'v2/types/uuid';
 
-import { getAccountsAssetsBalances, accountMembershipDetected } from './BalanceService';
+import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';
 import { getStoreAccounts, getPendingTransactionsFromAccounts } from './helpers';
 import {
   AssetContext,
@@ -58,7 +60,7 @@ interface State {
   readonly isMyCryptoMember: boolean;
   readonly membershipState: MembershipState;
   readonly memberships?: MembershipStatus[];
-  readonly membershipExpiration: number[];
+  readonly membershipExpirations: BigNumber[];
   readonly currentAccounts: StoreAccount[];
   readonly userAssets: Asset[];
   readonly accountRestore: { [name: string]: IAccount | undefined };
@@ -118,7 +120,6 @@ export const StoreProvider: React.FC = ({ children }) => {
   );
 
   const [pendingTransactions, setPendingTransactions] = useState([] as ITxReceipt[]);
-  const [membershipExpiration, setMembershipExpiration] = useState([] as number[]);
   const [isScanTokenRequested, setIsScanTokenRequested] = useState(false);
   // We transform rawAccounts into StoreAccount. Since the operation is exponential to the number of
   // accounts, make sure it is done only when rawAccounts change.
@@ -135,14 +136,22 @@ export const StoreProvider: React.FC = ({ children }) => {
 
   const [memberships, setMemberships] = useState<MembershipStatus[] | undefined>([]);
 
+  const membershipExpirations = memberships
+    ? R.flatten(
+        Object.values(memberships).map((m) => Object.values(m.memberships).map((e) => e.expiry))
+      )
+    : [];
+
   const membershipState = (() => {
     if (!memberships) {
       return MembershipState.ERROR;
     } else if (Object.values(memberships).length === 0) {
       return MembershipState.NOTMEMBER;
     } else {
-      const currentTime = Math.round(Date.now() / 1000);
-      if (membershipExpiration.some(expirationTime => expirationTime > currentTime)) {
+      const currentTime = new BigNumber(Math.round(Date.now() / 1000));
+      if (
+        membershipExpirations.some((expirationTime) => expirationTime.isGreaterThan(currentTime))
+      ) {
         return MembershipState.MEMBER;
       } else {
         return MembershipState.EXPIRED;
@@ -159,21 +168,12 @@ export const StoreProvider: React.FC = ({ children }) => {
       // @TODO: extract into seperate hook e.g. react-use
       // https://www.robinwieruch.de/react-hooks-fetch-data
       let isMounted = true;
-      getAccountsAssetsBalances(currentAccounts)
-        .then((accountsWithBalances: StoreAccount[]) => {
-          // Avoid the state change if the balances are identical.
-          if (isMounted && !isArrayEqual(currentAccounts, accountsWithBalances.filter(Boolean))) {
-            updateAccountsBalances(accountsWithBalances);
-          }
-          return currentAccounts
-            .filter((account) => account.networkId === DEFAULT_NETWORK)
-            .filter((account) => account.wallet !== WalletId.VIEW_ONLY);
-        })
-        .then(accountMembershipDetected)
-        .then((e) => {
-          if (!isMounted) return;
-          setMemberships(e as MembershipStatus[]);
-        });
+      getAccountsAssetsBalances(currentAccounts).then((accountsWithBalances: StoreAccount[]) => {
+        // Avoid the state change if the balances are identical.
+        if (isMounted && !isArrayEqual(currentAccounts, accountsWithBalances.filter(Boolean))) {
+          updateAccountsBalances(accountsWithBalances);
+        }
+      });
 
       return () => {
         isMounted = false;
@@ -184,33 +184,52 @@ export const StoreProvider: React.FC = ({ children }) => {
     [currentAccounts]
   );
 
+  // Naive polling for membership status
   useEffect(() => {
-    if (!memberships || memberships.length === 0) return;
+    // Pattern to cancel setState call if ever the component is unmounted
+    // before the async requests completes.
+    // @TODO: extract into seperate hook e.g. react-use
+    // https://www.robinwieruch.de/react-hooks-fetch-data
+    let isMounted = true;
+    const relevantAccounts = currentAccounts
+      .filter((account) => account.networkId === DEFAULT_NETWORK)
+      .filter((account) => account.wallet !== WalletId.VIEW_ONLY);
     const network = networks.find(({ id }) => DEFAULT_NETWORK === id);
-    if (!network) return;
-    const unlockProvider = new UnlockProtocolHandler(network);
-    const membershipLookups = R.flatten(
-      memberships.map((membership) =>
-        membership.memberships.map((membershipId) => {
-          const membershipConfig = MEMBERSHIP_CONFIG[membershipId];
-          return { account: membership.address, lockAddress: membershipConfig.contractAddress };
-        })
-      )
-    );
-
-    Promise.all(
-      membershipLookups.map((membershipLookupObj) =>
-        unlockProvider.fetchUnlockKeyExpiration(
-          membershipLookupObj.account,
-          membershipLookupObj.lockAddress
-        )
-      )
+    if (!network || relevantAccounts.length === 0) return;
+    const provider = new ProviderHandler(network);
+    getUnlockTimestamps(
+      provider,
+      relevantAccounts.map((account) => account.address),
+      {
+        contracts: Object.values(MEMBERSHIP_CONFIG).map((membership) => membership.contractAddress)
+      }
     )
-      .then((data) => {
-        setMembershipExpiration(data);
+      .catch((_) => {
+        setMemberships(undefined);
       })
-      .catch((e) => console.debug('[MembershipExpirationPolling]: Err: ', e));
-  }, [memberships]);
+      .then(nestedToBigNumberJS)
+      .then((expiries) => {
+        if (isMounted) {
+          setMemberships(
+            Object.keys(expiries)
+              .map((address: TAddress) => ({
+                address,
+                memberships: Object.keys(expiries[address])
+                  .filter((contract) => expiries[address][contract].isGreaterThan(new BigNumber(0)))
+                  .map((contract) => ({
+                    type: MEMBERSHIP_CONTRACTS[contract],
+                    expiry: expiries[address][contract]
+                  }))
+              }))
+              .filter((m) => m.memberships.length > 0)
+          );
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [currentAccounts]);
 
   useEffect(() => {
     setPendingTransactions(getPendingTransactionsFromAccounts(currentAccounts));
@@ -280,7 +299,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     isMyCryptoMember,
     membershipState,
     memberships,
-    membershipExpiration,
+    membershipExpirations,
     currentAccounts,
     accountRestore,
     get userAssets() {

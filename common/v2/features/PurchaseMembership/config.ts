@@ -1,3 +1,5 @@
+import { BigNumber } from 'bignumber.js';
+
 import { TAddress } from 'v2/types/address';
 import { DAIUUID, EtherUUID } from 'v2/utils';
 import translate, { translateRaw } from 'v2/translations';
@@ -34,7 +36,12 @@ export enum MembershipState {
 
 export interface MembershipStatus {
   address: TAddress;
-  memberships: IMembershipId[];
+  memberships: MembershipExpiry[];
+}
+
+export interface MembershipExpiry {
+  type: IMembershipId;
+  expiry: BigNumber;
 }
 
 export enum IMembershipId {
@@ -51,7 +58,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
   onemonth: {
     title: translateRaw('MEMBERSHIP_MONTH', { $duration: '1' }),
     key: IMembershipId.onemonth,
-    contractAddress: '0xCE8EF07495A36c451fB49b7391b33884832Bb66f',
+    contractAddress: '0x6cA105D2AF7095B1BCEeb6A2113D168ddDCD57cf',
     description: '',
     icon: onemonthIcon,
     price: '4',
@@ -63,7 +70,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
   threemonths: {
     title: translateRaw('MEMBERSHIP_MONTH', { $duration: '3' }),
     key: IMembershipId.threemonths,
-    contractAddress: '0xae90e0F7F3f2191B17b1816dFA8C5Ce8e049DC96',
+    contractAddress: '0xfe58C642A3F703e7Dc1060B3eE02ED4619046125',
     description: '',
     icon: threemonthsIcon,
     price: '10.5',
@@ -76,7 +83,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
   sixmonths: {
     title: translateRaw('MEMBERSHIP_MONTH', { $duration: '6' }),
     key: IMembershipId.sixmonths,
-    contractAddress: '0x1C8369C9772E71E82679c9750E4770F29FECcbdD',
+    contractAddress: '0x7a84f1074B5929cBB7bd08Fb450CF9Fb22bf5329',
     description: '',
     icon: sixMonthsIcon,
     price: '18',
@@ -89,7 +96,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
   twelvemonths: {
     title: translateRaw('MEMBERSHIP_MONTH', { $duration: '12' }),
     key: IMembershipId.twelvemonths,
-    contractAddress: '0xb9cae1F4480bcc6dF52F045077BAc1DE448D5406',
+    contractAddress: '0xee2B7864d8bc731389562F820148e372F57571D8',
     description: '',
     icon: twelveMonthsIcon,
     price: '30',
@@ -102,7 +109,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
   lifetime: {
     title: translateRaw('MEMBERSHIP_LIFETIME_EMOJI'),
     key: IMembershipId.lifetime,
-    contractAddress: '0x60B8C6c7d339Aa170bcFa5a76053ff3e8c1189c1',
+    contractAddress: '0x098D8b363933D742476DDd594c4A5a5F1a62326a',
     description: '',
     icon: lifetimeIcon,
     price: '5',
@@ -117,9 +124,9 @@ export const defaultMembershipId = IMembershipId.onemonth;
 export const defaultMembershipObject = MEMBERSHIP_CONFIG[defaultMembershipId];
 
 export const MEMBERSHIP_CONTRACTS = Object.fromEntries(
-  Object.keys(MEMBERSHIP_CONFIG).map(key => [
+  Object.keys(MEMBERSHIP_CONFIG).map((key) => [
     MEMBERSHIP_CONFIG[key as IMembershipId].contractAddress,
-    key
+    key as IMembershipId
   ])
 );
 
