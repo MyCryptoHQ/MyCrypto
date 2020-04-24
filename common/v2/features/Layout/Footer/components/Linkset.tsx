@@ -40,7 +40,7 @@ const LINK_COLUMNS = [
     heading: translateRaw('NEW_FOOTER_TEXT_11'),
     links: [
       {
-        title: 'Ledger Wallet',
+        title: 'Ledger',
         link: EXT_URLS.LEDGER_REFERRAL.url,
         analytics_event: 'Ledger Wallet'
       },
@@ -50,9 +50,14 @@ const LINK_COLUMNS = [
         analytics_event: 'TREZOR'
       },
       {
-        title: 'Ether.cards',
-        link: EXT_URLS.ETHER_CARD_REFERRAL.url,
-        analytics_event: 'ether.card'
+        title: 'Unstoppable Domains',
+        link: EXT_URLS.UNSTOPPABLEDOMAINS_REFERRAL.url,
+        analytics_event: 'UnstoppableDomains'
+      },
+      {
+        title: 'Quiknode',
+        link: EXT_URLS.QUIKNODE_REFERRAL.url,
+        analytics_event: 'Quiknode'
       }
     ]
   },
