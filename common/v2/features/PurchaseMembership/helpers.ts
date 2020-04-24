@@ -97,13 +97,14 @@ export const makeTxReceiptFromTransaction = (
   tx: TxParcel,
   hash: ITxHash | ITxSigned,
   account: StoreAccount,
-  membershipSelected: IMembershipConfig
+  membershipSelected: IMembershipConfig,
+  type: ITxType
 ): ITxReceipt => {
   return {
     ...makeTxConfigFromTransaction(tx.txRaw, account, membershipSelected),
     ...tx.txRaw,
     hash,
-    txType: ITxType.PURCHASE_MEMBERSHIP,
+    txType: type,
     stage: ITxStatus.PENDING
   };
 };

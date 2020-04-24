@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 
 import { useStateReducer, useTxMulti } from 'v2/utils';
-import { ITxReceipt, ITxConfig, TxParcel, ITxSigned, ITxHash, ITxStatus } from 'v2/types';
+import { ITxReceipt, ITxConfig, TxParcel, ITxSigned, ITxHash, ITxStatus, ITxType } from 'v2/types';
 import { default as GeneralStepper, IStepperPath } from 'v2/components/GeneralStepper';
 import { ROUTE_PATHS } from 'v2/config';
 import { translateRaw } from 'v2/translations';
@@ -91,10 +91,12 @@ const PurchaseMembershipStepper = () => {
           senderAccount: account,
           rawTransaction: tx.txRaw,
           onSuccess: (payload: ITxHash | ITxSigned) => {
+            const type =
+              idx === transactions.length - 1 ? ITxType.PURCHASE_MEMBERSHIP : ITxType.APPROVAL;
             sendTx(payload).then(() =>
               addNewTransactionToAccount(
                 account,
-                makeTxReceiptFromTransaction(tx, payload, account, membershipSelected!)
+                makeTxReceiptFromTransaction(tx, payload, account, membershipSelected!, type)
               )
             );
           }
