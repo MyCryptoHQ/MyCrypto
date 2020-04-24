@@ -11,12 +11,15 @@ import {
   Asset,
   AssetBalanceObject,
   LSKeys,
-  TUuid
+  TUuid,
+  ITxStatus,
+  ITxType
 } from 'v2/types';
 import { DataContext } from '../DataManager';
 import { SettingsContext } from '../Settings';
 import { getAccountByAddressAndNetworkName } from './helpers';
 import { getAllTokensBalancesOfAccount } from '../BalanceService';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services/ApiService/Analytics';
 
 export interface IAccountContext {
   accounts: IAccount[];
@@ -48,6 +51,11 @@ export const AccountProvider: React.FC = ({ children }) => {
     updateAccount: (uuid, a) => model.update(uuid, a),
     addNewTransactionToAccount: (accountData, newTransaction) => {
       const { network, ...newTxWithoutNetwork } = newTransaction;
+      if ('stage' in newTxWithoutNetwork && newTxWithoutNetwork.stage === ITxStatus.SUCCESS) {
+        AnalyticsService.instance.track(ANALYTICS_CATEGORIES.AD, `Tx Made`, {
+          txType: (newTxWithoutNetwork && newTxWithoutNetwork.txType) || ITxType.UNKNOWN
+        });
+      }
       const newAccountData = {
         ...accountData,
         transactions: [
