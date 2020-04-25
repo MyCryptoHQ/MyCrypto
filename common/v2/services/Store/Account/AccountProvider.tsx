@@ -1,5 +1,6 @@
 import React, { createContext, useContext } from 'react';
 import unionBy from 'lodash/unionBy';
+import property from 'lodash/property';
 import BigNumber from 'bignumber.js';
 import * as R from 'ramda';
 
@@ -100,7 +101,7 @@ export const AccountProvider: React.FC = ({ children }) => {
             []
           );
 
-          existingAccount.assets = unionBy(newAssets, existingAccount.assets, 'uuid');
+          existingAccount.assets = unionBy(newAssets, existingAccount.assets, property('uuid'));
           state.updateAccount(existingAccount.uuid, existingAccount);
         }
       });
@@ -139,7 +140,7 @@ export const AccountProvider: React.FC = ({ children }) => {
               []
             );
 
-            existingAccount.assets = unionBy(newAssets, existingAccount.assets, 'uuid');
+            existingAccount.assets = unionBy(newAssets, existingAccount.assets, property('uuid'));
             return existingAccount;
           });
         })
