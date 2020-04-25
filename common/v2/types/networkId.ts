@@ -33,4 +33,5 @@ export type NetworkId =
   | 'WEB'
   | 'AUX'
   | 'ERE'
-  | 'ASK';
+  | 'ASK'
+  | 'FTM';
