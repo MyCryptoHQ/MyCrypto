@@ -346,5 +346,20 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       service: 'ethercore.io',
       url: 'https://rpc.ethercore.io'
     }
+  ],
+
+  Fantom: [
+    {
+      name: NetworkUtils.makeNodeName('FTM', 'Opera'),
+      type: NodeType.RPC,
+      service: 'Fantom Opera',
+      url: 'https://rpc.fantom.network'
+    },
+    {
+      name: NetworkUtils.makeNodeName('FTM', 'fantomscan.io'),
+      type: NodeType.RPC,
+      service: 'fantomscan.io',
+      url: 'https://fantomscan.io/rpc'
+    }
   ]
 };
