@@ -895,7 +895,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       origin: 'https://explorer.fantom.network'
     }),
     tokens: [],
-    contracts: [],
+    contracts: require('./contracts/ftm.json'),
     dPaths: {
       [WalletId.TREZOR]: DPaths.FTM_TREZOR,
       [WalletId.LEDGER_NANO_S]: DPaths.FTM_LEDGER,
