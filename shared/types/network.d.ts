@@ -35,7 +35,8 @@ type StaticNetworkIds =
   | 'WEB'
   | 'AUX'
   | 'ERE'
-  | 'ASK';
+  | 'ASK'
+  | 'FTM';
 
 export interface BlockExplorerConfig {
   name: string;
