@@ -901,10 +901,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: DPaths.FTM_LEDGER,
       [WalletId.MNEMONIC_PHRASE]: DPaths.FTM_DEFAULT
     },
-    gasPriceSettings: {
-      min: 0.1,
-      max: 60,
-      initial: 1
+    gasPriceSettings: GAS_PRICE_DEFAULT
     }
   },
 };
