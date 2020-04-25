@@ -348,7 +348,7 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
     }
   ],
 
-  Fantom: [
+  FTM: [
     {
       name: NetworkUtils.makeNodeName('FTM', 'Opera'),
       type: NodeType.RPC,
