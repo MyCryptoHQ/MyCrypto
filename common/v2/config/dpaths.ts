@@ -182,6 +182,22 @@ const ERE_DEFAULT: DPath = {
   value: "m/44'/466'/0'/0"
 };
 
+const FTM_DEFAULT: DPath = {
+  label: 'Default (FTM)',
+  value: "m/44'/60'/0'/0"
+};
+
+const FTM_TREZOR: DPath = {
+  label: 'TREZOR (FTM)',
+  value: "m/44'/60'/0'/0"
+};
+
+const FTM_LEDGER: DPath = {
+  label: 'Ledger (FTM)',
+  value: "m/44'/60'/0'"
+};
+
+
 export const DPathsList = {
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -219,7 +235,11 @@ export const DPathsList = {
   ASK_TREZOR,
   AUX_DEFAULT,
   ETH_SINGULAR,
-  ERE_DEFAULT
+  ERE_DEFAULT,
+  FTM_DEFAULT,
+  FTM_TREZOR,
+  FTM_SAFE_T,
+  FTM_LEDGER,
 };
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT
