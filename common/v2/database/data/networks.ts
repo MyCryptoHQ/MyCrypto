@@ -882,5 +882,29 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       max: 60,
       initial: 1
     }
-  }
+  },
+  FTM: {
+    id: 'FTM',
+    name: 'Fantom Opera',
+    unit: 'FTM' as TSymbol,
+    chainId: 250,
+    isCustom: false,
+    color: '#1969ff',
+    blockExplorer: makeExplorer({
+      name: 'Fantom Explorer',
+      origin: 'https://explorer.fantom.network'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DPaths.FTM_TREZOR,
+      [WalletId.LEDGER_NANO_S]: DPaths.FTM_LEDGER,
+      [WalletId.MNEMONIC_PHRASE]: DPaths.FTM_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 0.1,
+      max: 60,
+      initial: 1
+    }
+  },
 };
