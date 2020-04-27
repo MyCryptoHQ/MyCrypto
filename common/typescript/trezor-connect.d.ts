@@ -1,12 +1,6 @@
 declare module 'trezor-connect' {
   type Path = number[] | string;
 
-  interface TxSignature {
-    r: number;
-    s: string;
-    v: string;
-  }
-
   interface MessageSignature {
     signature: string;
     address: string;
@@ -20,11 +14,6 @@ declare module 'trezor-connect' {
     publicKey: string;
   }
 
-  interface signTransactionMessage {
-    path: Path;
-    transaction: Transaction;
-  }
-
   interface Transaction {
     nonce: string;
     gasPrice: string;
@@ -33,10 +22,6 @@ declare module 'trezor-connect' {
     value: string;
     data: string | null;
     chainId: number | null;
-  }
-
-  interface pathObj {
-    path: Path;
   }
 
   interface ErrorResponse {
@@ -67,5 +52,5 @@ declare module 'trezor-connect' {
     export function ethereumGetAddress(pathObj): any;
   }
 
-  export default TrezorConnect;
+  export = TrezorConnect;
 }
