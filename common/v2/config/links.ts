@@ -84,8 +84,16 @@ const affiliateLinks: IExtUrl[] = [
     url: 'https://shop.trezor.io/?offer_id=10&aff_id=1735' as TURL
   },
   {
-    name: 'ETHER_CARD_REFERRAL',
-    url: 'https://ether.cards/?utm_source=mycrypto&utm_medium=cpm&utm_campaign=site' as TURL
+    name: 'QUIKNODE_REFERRAL',
+    url: 'https://quiknode.io?tap_a=67226-09396e&tap_s=860550-6c3251' as TURL
+  },
+  {
+    name: 'UNSTOPPABLEDOMAINS_REFERRAL',
+    url: 'https://unstoppabledomains.com/r/mycrypto' as TURL
+  },
+  {
+    name: 'COINBASE_REFERRAL',
+    url: 'https://coinbase-consumer.sjv.io/RVmkN' as TURL
   }
 ];
 

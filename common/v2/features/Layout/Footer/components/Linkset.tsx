@@ -40,19 +40,29 @@ const LINK_COLUMNS = [
     heading: translateRaw('NEW_FOOTER_TEXT_11'),
     links: [
       {
-        title: 'Ledger Wallet',
+        title: 'Get a Ledger',
         link: EXT_URLS.LEDGER_REFERRAL.url,
         analytics_event: 'Ledger Wallet'
       },
       {
-        title: 'Trezor',
+        title: 'Get a Trezor',
         link: EXT_URLS.TREZOR_REFERRAL.url,
         analytics_event: 'TREZOR'
       },
       {
-        title: 'Ether.cards',
-        link: EXT_URLS.ETHER_CARD_REFERRAL.url,
-        analytics_event: 'ether.card'
+        title: 'Get Quiknode',
+        link: EXT_URLS.QUIKNODE_REFERRAL.url,
+        analytics_event: 'Quiknode'
+      },
+      {
+        title: 'Buy ETH on Coinbase',
+        link: EXT_URLS.COINBASE_REFERRAL.url,
+        analytics_event: 'Coinbase'
+      },
+      {
+        title: 'Unstoppable Domains',
+        link: EXT_URLS.UNSTOPPABLEDOMAINS_REFERRAL.url,
+        analytics_event: 'UnstoppableDomains'
       }
     ]
   },
