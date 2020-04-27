@@ -2,7 +2,7 @@ import EthTx, { TxObj } from 'ethereumjs-tx';
 import mapValues from 'lodash/mapValues';
 
 import { translateRaw } from 'translations';
-import * as TrezorConnect from 'trezor-connect';
+import TrezorConnect from 'trezor-connect';
 import { getTransactionFields } from 'libs/transaction';
 import { padLeftEven } from 'libs/values';
 import { stripHexPrefixAndLower } from 'libs/formatters';
