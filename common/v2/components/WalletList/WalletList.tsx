@@ -100,21 +100,23 @@ export const WalletList = ({ wallets, onSelect, showHeader, calculateMargin }: P
         </>
       )}
       <WalletsContainer>
-        {wallets.map((wallet: IStory, index: number) => {
-          const walletInfo =
-            wallet.name === WalletId.WEB3 ? getWeb3Config() : getWalletConfig(wallet.name);
-          return (
-            <WalletButton
-              key={`wallet-icon-${wallet.name}`}
-              name={translateRaw(walletInfo.lid)}
-              icon={walletInfo.icon}
-              description={translateRaw(walletInfo.description)}
-              margin={calculateMargin && calculateMargin(index)}
-              onClick={() => selectWallet(wallet.name)}
-              isDisabled={wallet.isDisabled}
-            />
-          );
-        })}
+        {wallets
+          .filter((w) => !w.hideFromWalletList)
+          .map((wallet: IStory, index: number) => {
+            const walletInfo =
+              wallet.name === WalletId.WEB3 ? getWeb3Config() : getWalletConfig(wallet.name);
+            return (
+              <WalletButton
+                key={`wallet-icon-${wallet.name}`}
+                name={translateRaw(walletInfo.lid)}
+                icon={walletInfo.icon}
+                description={translateRaw(walletInfo.description)}
+                margin={calculateMargin && calculateMargin(index)}
+                onClick={() => selectWallet(wallet.name)}
+                isDisabled={wallet.isDisabled}
+              />
+            );
+          })}
       </WalletsContainer>
       <InfoWrapper>
         <Info showInOneLine={true}>

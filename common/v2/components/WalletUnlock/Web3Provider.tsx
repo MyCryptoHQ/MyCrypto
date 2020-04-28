@@ -47,13 +47,6 @@ class Web3ProviderDecrypt extends ComponentProps<
     this.unlockWallet = this.unlockWallet.bind(this);
   }
 
-  public componentDidMount() {
-    AnalyticsService.instance.track(
-      ANALYTICS_CATEGORIES.ADD_WEB3_ACCOUNT,
-      `${this.state.web3ProviderSettings.name} detected`
-    );
-  }
-
   public render() {
     const { web3Unlocked, web3ProviderSettings: provider } = this.state;
     const { isMobile } = this.props;
@@ -126,6 +119,10 @@ class Web3ProviderDecrypt extends ComponentProps<
       }
       // If accountType is defined, we are in the AddAccountFlow
       if (this.props.formData.accountType) {
+        AnalyticsService.instance.track(
+          ANALYTICS_CATEGORIES.ADD_WEB3_ACCOUNT,
+          `${this.state.web3ProviderSettings.name} added`
+        );
         const network = walletPayload.network;
         this.props.formDispatch({
           type: ActionType.SELECT_NETWORK,
