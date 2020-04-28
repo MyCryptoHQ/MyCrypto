@@ -5,7 +5,6 @@ export { getDefaultEstimates, fetchGasPriceEstimates, getGasEstimate } from './G
 export { AssetMapService } from './AssetMap';
 export { DeFiReserveMapService } from './DeFiReserveMap';
 export { GithubService } from './Github';
-export { TokenInfoService } from './TokenInfo';
 export { DexService } from './Dex';
 export { MyCryptoApiService } from './MyCryptoApi';
 export { GetBalanceResponse, GetLastTxResponse, EtherscanService } from './Etherscan';

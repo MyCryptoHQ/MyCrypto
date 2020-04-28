@@ -2,10 +2,11 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
-import { AssetWithDetails, TSymbol } from 'v2/types';
+import { StoreAsset, TSymbol, Social } from 'v2/types';
 import { DashboardPanel, AssetIcon } from 'v2/components';
 import { getNetworkById, StoreContext } from 'v2/services/Store';
 import { COLORS, FONT_SIZE, SPACING } from 'v2/theme';
+import { weiToFloat } from 'v2/utils';
 
 import socialTelegram from 'common/assets/images/social-icons/social-telegram.svg';
 import socialTwitter from 'common/assets/images/social-icons/social-twitter.svg';
@@ -18,7 +19,6 @@ import websiteIcon from 'common/assets/images/icn-website.svg';
 import whitepaperIcon from 'common/assets/images/icn-whitepaper.svg';
 import backArrowIcon from 'common/assets/images/icn-back.svg';
 import expandIcon from 'common/assets/images/icn-expand.svg';
-import { weiToFloat } from 'v2/utils';
 
 const etherscanUrl = ' https://etherscan.io';
 
@@ -49,7 +49,7 @@ interface SectionProps {
 }
 
 const Section = styled.div<SectionProps>`
-  margin-top: ${props => (props.noMargin ? 0 : '23px')};
+  margin-top: ${(props) => (props.noMargin ? 0 : '23px')};
 `;
 
 const TwoColumnsWrapper = styled.div`
@@ -111,63 +111,48 @@ function InfoPiece(props: InfoPieceProps) {
   );
 }
 
-interface ISocialNetwork {
-  [index: string]: { name: string; icon: string };
-}
+type ISocialNetwork = {
+  [key in Social]: string;
+};
 
 const supportedSocialNetworks: ISocialNetwork = {
-  telegram: {
-    name: 'telegram',
-    icon: socialTelegram
-  },
-  twitter: {
-    name: 'twitter',
-    icon: socialTwitter
-  },
-  reddit: {
-    name: 'reddit',
-    icon: socialReddit
-  },
-  github: {
-    name: 'github',
-    icon: socialGithub
-  },
-  facebook: {
-    name: 'facebook',
-    icon: socialFacebook
-  },
-  slack: {
-    name: 'slack',
-    icon: socialSlack
-  },
-  cmc: {
-    name: 'coin market cap',
-    icon: socialCmc
-  }
+  [Social.TELEGRAM]: socialTelegram,
+  [Social.TWITTER]: socialTwitter,
+  [Social.REDDIT]: socialReddit,
+  [Social.GITHUB]: socialGithub,
+  [Social.FACEBOOK]: socialFacebook,
+  [Social.SLACK]: socialSlack,
+  [Social.CMC]: socialCmc
 };
 
 interface Props {
-  currentToken: AssetWithDetails;
+  currentToken: StoreAsset;
   setShowDetailsView(setShowDetailsView: boolean): void;
 }
 
 export function TokenDetails(props: Props) {
   const { currentToken, setShowDetailsView } = props;
-  const { details, networkId } = currentToken;
+  const {
+    website,
+    whitepaper,
+    social,
+    networkId,
+    rate,
+    balance,
+    decimal,
+    ticker,
+    contractAddress
+  } = currentToken;
   const { networks } = useContext(StoreContext);
   const network = getNetworkById(networkId!, networks);
   const contractUrl = `${
     network && network.blockExplorer ? network.blockExplorer.origin : etherscanUrl
   }/token/${currentToken.contractAddress}`;
 
-  interface ISocial {
-    [index: string]: string;
-  }
-
   // Find available supported social links
-  const filteredSocial = (details.social || {}) as ISocial;
+  const filteredSocial = social || {};
   Object.keys(filteredSocial).forEach(
-    key =>
+    (key: Social) =>
       (!filteredSocial[key] || !supportedSocialNetworks.hasOwnProperty(key)) &&
       delete filteredSocial[key]
   );
@@ -194,24 +179,22 @@ export function TokenDetails(props: Props) {
       <Section noMargin={true}>
         <TwoColumnsWrapper>
           {/*TODO: Look up selected fiat currency instead of hardcoded $*/}
-          <InfoPiece title={translateRaw('LATEST_PRICE')} value={'$' + currentToken.rate} />{' '}
+          <InfoPiece title={translateRaw('LATEST_PRICE')} value={'$' + rate} />{' '}
           <InfoPiece
             title={translateRaw('BALANCE')}
-            value={`${weiToFloat(currentToken.balance, currentToken.decimal).toFixed(6)} ${
-              currentToken.ticker
-            }`}
+            value={`${weiToFloat(balance, decimal).toFixed(6)} ${ticker}`}
           />
         </TwoColumnsWrapper>
       </Section>
       <Section>
-        <InfoPiece title={translateRaw('TOKEN_ADDRESS')} value={currentToken.contractAddress} />
+        <InfoPiece title={translateRaw('TOKEN_ADDRESS')} value={contractAddress} />
       </Section>
       <TwoColumnsWrapper>
         <Section>
-          <InfoPiece title={translateRaw('TOKEN_DECIMALS')} value={currentToken.decimal} />
+          <InfoPiece title={translateRaw('TOKEN_DECIMALS')} value={decimal} />
         </Section>
         <Section>
-          <InfoPiece title={translateRaw('TOKEN_SYMBOL')} value={currentToken.ticker} />
+          <InfoPiece title={translateRaw('TOKEN_SYMBOL')} value={ticker} />
         </Section>
       </TwoColumnsWrapper>
       {Object.keys(filteredSocial).length > 0 && (
@@ -220,26 +203,24 @@ export function TokenDetails(props: Props) {
             title={translateRaw('RESOURCES')}
             value={
               <>
-                {details.website && (
-                  <a href={details.website} target="_blank" rel="noreferrer">
+                {website && (
+                  <a href={website} target="_blank" rel="noreferrer">
                     <ResourceIcon src={websiteIcon} />
                   </a>
                 )}
-                {details.whitepaper && (
-                  <a href={details.whitepaper} target="_blank" rel="noreferrer">
+                {whitepaper && (
+                  <a href={whitepaper} target="_blank" rel="noreferrer">
                     <ResourceIcon src={whitepaperIcon} />
                   </a>
                 )}
-                {filteredSocialArray.map(social => {
-                  return (
-                    <a key={social} href={details.social[social]} target="_blank" rel="noreferrer">
-                      <SocialIcon
-                        alt={supportedSocialNetworks[social].name}
-                        src={supportedSocialNetworks[social].icon}
-                      />
-                    </a>
-                  );
-                })}
+                {social &&
+                  filteredSocialArray.map((s: Social) => {
+                    return (
+                      <a key={s} href={social[s]} target="_blank" rel="noreferrer">
+                        <SocialIcon alt={s} src={supportedSocialNetworks[s]} />
+                      </a>
+                    );
+                  })}
               </>
             }
           />

@@ -36,9 +36,9 @@ export {
   TTicker,
   TAssetType,
   AssetBalanceObject,
-  StoreAsset,
-  AssetWithDetails
+  StoreAsset
 } from './asset';
+export { Social, AssetSocial } from './social';
 export { StoreAccount, IRawAccount, IAccount } from './account';
 export { AddressBook, ExtendedAddressBook } from './addressBook';
 export { Contract, ExtendedContract } from './contract';

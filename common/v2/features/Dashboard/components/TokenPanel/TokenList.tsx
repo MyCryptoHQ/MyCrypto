@@ -3,7 +3,7 @@ import { Typography, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { convertToFiatFromAsset } from 'v2/utils';
-import { AssetWithDetails, TSymbol } from 'v2/types';
+import { StoreAsset, TSymbol } from 'v2/types';
 import { AssetIcon, DashboardPanel, Spinner, Tooltip } from 'v2/components';
 import { translateRaw } from 'v2/translations';
 
@@ -72,11 +72,11 @@ const TokenDashboardPanel = styled(DashboardPanel)`
 
 interface TokenListProps {
   isScanning: boolean;
-  tokens: AssetWithDetails[];
+  tokens: StoreAsset[];
   showValue?: boolean;
   setShowDetailsView(show: boolean): void;
   setShowAddToken(setShowAddToken: boolean): void;
-  setCurrentToken(token: AssetWithDetails): void;
+  setCurrentToken(token: StoreAsset): void;
   handleScanTokens(): Promise<void>;
 }
 
@@ -116,7 +116,7 @@ export function TokenList(props: TokenListProps) {
         </SpinnerWrapper>
       ) : (
         <TokenListWrapper>
-          {sortedTokens.map(token => (
+          {sortedTokens.map((token) => (
             <Token key={token.uuid}>
               <Asset>
                 <AssetIcon symbol={token.ticker as TSymbol} size={'26px'} />
