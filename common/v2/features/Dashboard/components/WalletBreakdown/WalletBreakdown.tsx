@@ -9,13 +9,13 @@ import { StoreAsset, TUuid } from 'v2/types';
 import { weiToFloat, convertToFiatFromAsset } from 'v2/utils';
 import { BREAK_POINTS, SPACING } from 'v2/theme';
 import { Fiats } from 'v2/config';
+import { Tooltip } from 'v2/components';
 
 import { Balance, BalanceAccount } from './types';
 import AccountDropdown from './AccountDropdown';
 import BalancesDetailView from './BalancesDetailView';
 import WalletBreakdownView from './WalletBreakdownView';
 import NoAccountsSelected from './NoAccountsSelected';
-import { Tooltip } from 'v2/components';
 
 const WalletBreakdownTop = styled.div`
   display: flex;
@@ -83,6 +83,7 @@ export function WalletBreakdown() {
       ticker: asset.ticker,
       amount: weiToFloat(asset.balance, asset.decimal),
       fiatValue: convertToFiatFromAsset(asset, getAssetRate(asset)),
+      uuid: asset.uuid,
       accounts: currentAccounts.reduce((acc, currAccount) => {
         const matchingAccAssets = currAccount.assets.filter(
           (accAsset) => accAsset.uuid === asset.uuid
