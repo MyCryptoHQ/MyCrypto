@@ -35,6 +35,7 @@ export interface TableConfig {
   hiddenHeadings?: (string | JSX.Element)[]; //Hack to allow a head to include JSX.Elements
   reversedColumns?: string[];
   sortFunction?: sortFunctionType;
+  overlayRoot?: boolean;
   handleRowClicked?(index: number): void;
 }
 
@@ -46,7 +47,7 @@ export interface TableContent {
 export interface TableData extends TableContent {
   head: (string | JSX.Element)[];
   overlay?: ReactNode;
-  overlayRows?: number[];
+  overlayRows?: (number | string)[];
   config?: TableConfig;
 }
 
@@ -119,7 +120,7 @@ TableHeading.defaultProps = {
   as: 'th'
 };
 
-const TableRow = styled.tr`
+export const TableRow = styled.tr`
   border-bottom: 0.0625em solid ${(props) => props.theme.tableRowBorder};
   & > td:first-child {
     padding-left: ${SPACING.BASE};
@@ -134,7 +135,7 @@ const TableGroupHead = styled(TableRow)`
   cursor: pointer;
 `;
 
-const TableCell = styled(Typography)`
+export const TableCell = styled(Typography)`
   ${sharedCellProperties};
 ` as StyledComponentClass<
   DetailedHTMLProps<
@@ -232,6 +233,7 @@ class AbstractTable extends Component<Props, State> {
   public render() {
     const { head, config, overlay, overlayRows, ...rest } = this.props;
     const { collapsedGroups, sortedColumnDirection } = this.state;
+    const { overlayRoot } = config || { overlayRoot: false };
     const { body, groups } = this.getSortedLayout();
 
     const isReversedColumn = (heading: any) =>
@@ -277,24 +279,43 @@ class AbstractTable extends Component<Props, State> {
         </thead>
         <tbody>
           {/* Ungrouped rows are placed on top of grouped rows. */}
-          {body.map((row, rowIndex) => (
-            <TableRow key={rowIndex} onClick={() => this.handleRowClicked(rowIndex)}>
-              {overlay && overlayRows!.includes(rowIndex) ? (
-                // TODO: Solve jump in th width when the overlay is toggled.
-                <td colSpan={head.length}>{isFunction(overlay) ? overlay(rowIndex) : overlay}</td>
-              ) : (
-                row.map((cell, cellIndex) => (
-                  <TableCell
-                    key={cellIndex}
-                    isReversed={isReversedColumn(head[cellIndex])}
-                    data-testid={`ungrouped-${rowIndex}-${cellIndex}`}
-                  >
-                    {cell}
-                  </TableCell>
-                ))
-              )}
-            </TableRow>
-          ))}
+          {body.map((row, rowIndex) => {
+            const primaryRowKey =
+              overlayRoot &&
+              row.length &&
+              row[0] &&
+              row[0].hasOwnProperty('key') &&
+              (row[0] as any).key;
+            if (primaryRowKey && overlayRows!.includes(primaryRowKey)) {
+              return (
+                <React.Fragment key={rowIndex}>
+                  {isFunction(overlay) ? overlay(primaryRowKey) : overlay}
+                </React.Fragment>
+              );
+            }
+
+            const isOverlayRowIncluded = overlay && overlayRows!.includes(rowIndex);
+            const overlayRow =
+              isOverlayRowIncluded && isFunction(overlay) ? overlay(rowIndex) : overlay;
+            return (
+              <TableRow key={rowIndex} onClick={() => this.handleRowClicked(rowIndex)}>
+                {isOverlayRowIncluded ? (
+                  // TODO: Solve jump in th width when the overlay is toggled.
+                  <td colSpan={head.length}>{overlayRow}</td>
+                ) : (
+                  row.map((cell, cellIndex) => (
+                    <TableCell
+                      key={cellIndex}
+                      isReversed={isReversedColumn(head[cellIndex])}
+                      data-testid={`ungrouped-${rowIndex}-${cellIndex}`}
+                    >
+                      {cell}
+                    </TableCell>
+                  ))
+                )}
+              </TableRow>
+            );
+          })}
           {groups!.map(({ title, entries, offset = 0 }) => (
             <React.Fragment key={title}>
               <TableGroupHead onClick={this.toggleCollapseGroup.bind(this, title)} role="button">
