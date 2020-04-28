@@ -135,6 +135,13 @@ export const StoreProvider: React.FC = ({ children }) => {
   );
 
   const [memberships, setMemberships] = useState<MembershipStatus[] | undefined>([]);
+  const [isMembershipScanRequested, setIsMembershipScanRequested] = useState(false);
+
+  useEffect(() => {
+    if (!isMembershipScanRequested) return;
+    scanForMemberships();
+    setIsMembershipScanRequested(false);
+  }, [isMembershipScanRequested]);
 
   const membershipExpirations = memberships
     ? R.flatten(
@@ -185,12 +192,7 @@ export const StoreProvider: React.FC = ({ children }) => {
   );
 
   // Naive polling for membership status
-  useEffect(() => {
-    // Pattern to cancel setState call if ever the component is unmounted
-    // before the async requests completes.
-    // @TODO: extract into seperate hook e.g. react-use
-    // https://www.robinwieruch.de/react-hooks-fetch-data
-    let isMounted = true;
+  const scanForMemberships = () => {
     const relevantAccounts = currentAccounts
       .filter((account) => account.networkId === DEFAULT_NETWORK)
       .filter((account) => account.wallet !== WalletId.VIEW_ONLY);
@@ -209,30 +211,25 @@ export const StoreProvider: React.FC = ({ children }) => {
       })
       .then(nestedToBigNumberJS)
       .then((expiries) => {
-        if (isMounted) {
-          setMemberships(
-            Object.keys(expiries)
-              .map((address: TAddress) => ({
-                address,
-                memberships: Object.keys(expiries[address])
-                  .filter((contract) => expiries[address][contract].isGreaterThan(new BigNumber(0)))
-                  .map((contract) => ({
-                    type: MEMBERSHIP_CONTRACTS[contract],
-                    expiry: expiries[address][contract]
-                  }))
-              }))
-              .filter((m) => m.memberships.length > 0)
-          );
-        }
+        setMemberships(
+          Object.keys(expiries)
+            .map((address: TAddress) => ({
+              address,
+              memberships: Object.keys(expiries[address])
+                .filter((contract) => expiries[address][contract].isGreaterThan(new BigNumber(0)))
+                .map((contract) => ({
+                  type: MEMBERSHIP_CONTRACTS[contract],
+                  expiry: expiries[address][contract]
+                }))
+            }))
+            .filter((m) => m.memberships.length > 0)
+        );
       });
-
-    return () => {
-      isMounted = false;
-    };
-  }, [currentAccounts]);
+  };
 
   useEffect(() => {
     setPendingTransactions(getPendingTransactionsFromAccounts(currentAccounts));
+    setIsMembershipScanRequested(true);
   }, [currentAccounts]);
 
   // A change to pending txs is detected
@@ -276,6 +273,8 @@ export const StoreProvider: React.FC = ({ children }) => {
             });
             if (pendingTransactionObject.txType === ITxType.DEFIZAP) {
               setIsScanTokenRequested(true);
+            } else if (pendingTransactionObject.txType === ITxType.PURCHASE_MEMBERSHIP) {
+              setIsMembershipScanRequested(true);
             }
           });
         });
