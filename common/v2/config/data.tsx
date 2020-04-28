@@ -6,8 +6,6 @@ import translate from 'v2/translations';
 
 export const languages = require('./languages.json');
 
-export const discordURL = 'https://discord.gg/VSaTXEA';
-
 // Displays in the footer
 export const VERSION = packageJson.version;
 export const N_FACTOR = 8192;
@@ -55,18 +53,6 @@ export const MINIMUM_PASSWORD_LENGTH = 12;
 export const SUPPORT_EMAIL = 'support@mycrypto.com';
 export const LATEST_NEWS_URL = 'https://medium.com/@mycrypto';
 export const CRYPTOSCAMDB = 'https://cryptoscamdb.org';
-export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/1985?path=/products/';
-export const trezorReferralURL = 'https://shop.trezor.io/?offer_id=10&aff_id=1735';
-// TODO - Update url
-export const safeTReferralURL =
-  'https://www.archos.com/fr/products/crypto/archos_safetmini/index.html';
-export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mycrypto';
-// TODO - Update url, this is MEW's
-export const bityReferralURL = 'https://bity.com/af/jshkb37v';
-export const ethercardReferralURL =
-  'https://ether.cards/?utm_source=mycrypto&utm_medium=cpm&utm_campaign=site';
-export const keepkeyReferralURL = 'https://keepkey.go2cloud.org/aff_c?offer_id=1&aff_id=4086';
-export const steelyReferralURL = 'https://stee.ly/2Hcl4RE';
 
 // Handler address will change if the trade contract changes.
 // Can also access handler by calling `approvalHandler()` on the trade contract.

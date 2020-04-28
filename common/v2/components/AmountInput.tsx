@@ -2,11 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { Input } from '@mycrypto/ui';
 
-import { Asset } from 'v2/types';
-import { TSymbol } from 'v2/types/symbols';
+import { Asset, TSymbol } from 'v2/types';
+import { sanitizeDecimalSeparator } from 'v2/utils';
 
 import AssetIcon from './AssetIcon';
 import Typography from './Typography';
+
 interface Props {
   disabled?: boolean;
   asset: Asset;
@@ -31,7 +32,10 @@ function AmountInput({ asset, value, onChange, onBlur, placeholder, ...props }: 
       {...props}
       inputMode="decimal"
       value={value}
-      onChange={onChange}
+      onChange={(e) => {
+        e.target.value = sanitizeDecimalSeparator(e.target.value);
+        onChange(e);
+      }}
       onBlur={onBlur}
       placeholder={placeholder}
       iconSide={'right'}

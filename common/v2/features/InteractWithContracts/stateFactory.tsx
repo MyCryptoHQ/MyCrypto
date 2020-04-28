@@ -1,7 +1,7 @@
 import { useContext, useCallback } from 'react';
 import { debounce } from 'lodash';
 
-import { TUseStateReducerFactory, generateUUID, fromTxReceiptObj } from 'v2/utils';
+import { TUseStateReducerFactory, fromTxReceiptObj, generateContractUUID } from 'v2/utils';
 import { CREATION_ADDRESS } from 'v2/config';
 import { NetworkId, Contract, StoreAccount, ITxType, ITxStatus } from 'v2/types';
 import {
@@ -76,7 +76,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
 
     const customContractOption = Object.assign({}, customContract, { networkId: state.network.id });
 
-    const contracts = [customContractOption, ...networkContracts].map(x =>
+    const contracts = [customContractOption, ...networkContracts].map((x) =>
       Object.assign({}, x, { label: x.name })
     );
 
@@ -156,7 +156,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   };
 
   const selectExistingContract = (address: string) => {
-    const existingContract = state.contracts.find(c => c.address === address);
+    const existingContract = state.contracts.find((c) => c.address === address);
     if (existingContract) {
       handleContractSelected(existingContract);
       return true;
@@ -189,8 +189,6 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   };
 
   const handleSaveContractSubmit = () => {
-    const uuid = generateUUID();
-
     if (!state.contractAddress || !state.customContractName || !state.abi) {
       throw new Error(translateRaw('INTERACT_WRITE_ERROR_MISSING_DATA'));
     }
@@ -205,10 +203,11 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       throw new Error(`ABI Error: ${e.message}`);
     }
 
-    if (state.contracts.find(item => item.name === state.customContractName)) {
+    if (state.contracts.find((item) => item.name === state.customContractName)) {
       throw new Error(translateRaw('INTERACT_SAVE_ERROR_NAME_EXISTS'));
     }
 
+    const uuid = generateContractUUID(state.network.id, state.contractAddress);
     const newContract = {
       abi: state.abi,
       address: state.contractAddress,
@@ -230,7 +229,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   const handleDeleteContract = (contractUuid: string) => {
     deleteContracts(contractUuid);
     const network = state.network;
-    network.contracts = network.contracts.filter(item => item !== contractUuid);
+    network.contracts = network.contracts.filter((item) => item !== contractUuid);
     updateNetwork(network.id, network);
     updateNetworkContractOptions();
     handleContractSelected(customContract);
@@ -348,9 +347,9 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       const provider = new ProviderHandler(account.network);
       provider
         .sendRawTx(signResponse)
-        .then(retrievedTxReceipt => retrievedTxReceipt)
-        .catch(hash => provider.getTransactionByHash(hash))
-        .then(retrievedTransactionReceipt => {
+        .then((retrievedTxReceipt) => retrievedTxReceipt)
+        .catch((hash) => provider.getTransactionByHash(hash))
+        .then((retrievedTransactionReceipt) => {
           const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(assets, networks);
           addNewTransactionToAccount(state.txConfig.senderAccount, {
             ...txReceipt,

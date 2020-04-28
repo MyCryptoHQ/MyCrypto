@@ -1,7 +1,6 @@
 import * as R from 'ramda';
 
 import { generateUUID } from 'v2/utils';
-import { devAccounts, DevAccount, SeedAssetBalance, devAssets, devContacts } from '../seed';
 import {
   Asset,
   AssetBalanceObject,
@@ -14,8 +13,9 @@ import {
   LSKeys
 } from 'v2/types';
 
-import { StoreAction } from './types';
-import { withUuid, toArray, toObject, add } from './helpers';
+import { devAccounts, DevAccount, SeedAssetBalance, devAssets, devContacts } from '../seed';
+import { StoreAction } from '../types';
+import { withUuid, toArray, toObject, add } from '../helpers';
 
 /* DevData */
 const addDevAssets = add(LSKeys.ASSETS)((assets: Asset[], store: LocalStorage) => {

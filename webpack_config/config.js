@@ -29,29 +29,22 @@ module.exports = {
   },
   path: paths,
 
-  // Vendor modules
-  vendorModules: [
-    'bip39',
-    'bn.js',
-    'classnames',
-    'ethereumjs-abi',
-    'ethereumjs-tx',
-    'ethereumjs-util',
-    'ethereumjs-wallet',
-    'hdkey',
-    'idna-uts46',
-    'jsonschema',
-    'lodash',
-    'moment',
-    'qrcode',
-    'query-string',
-    'react',
-    'react-dom',
-    'react-markdown',
-    'react-router-dom',
-    'react-transition-group',
-    'uuid',
-    'wallet-address-validator',
-    'whatwg-fetch'
-  ]
+  // Split vendor modules into seperate chunks for better caching.
+  // 1. Multiple chunks are better than a single one. ie. The gain in caching outweighs
+  //    the cost of multiple files.
+  //    https://medium.com/hackernoon/the-100-correct-way-to-split-your-chunks-with-webpack-f8a9df5b7758
+  // 2. Separate pattern for cacheGroups:
+  //    https://stackoverflow.com/questions/48985780/webpack-4-create-vendor-chunk
+  chunks: {
+    individual: [
+      'ethers',
+      'recharts',
+      'jspdf',
+      '@walletconnect',
+      '@ledgerhq',
+      '@unstoppabledomains'
+    ],
+    devOnly: ['@hot-loader/react-dom'],
+    electronOnly: ['zxcvbn', 'bip39']
+  }
 };

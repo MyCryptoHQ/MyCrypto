@@ -4,7 +4,7 @@ import { IV3Wallet } from 'ethereumjs-wallet';
 import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 import * as R from 'ramda';
 
-import { withContext, makeBlob, generateUUID } from 'v2/utils';
+import { withContext, makeBlob, generateAccountUUID } from 'v2/utils';
 import { generateKeystore, fromV3 } from 'v2/workers';
 import {
   INetworkContext,
@@ -115,22 +115,21 @@ class CreateKeystore extends Component<Props & INetworkContext & IAssetContext, 
     if (!keystore || !accountNetwork) {
       return;
     }
-    const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(assets)(accountNetwork);
-    const newAssetID = generateUUID();
-    const newUUID = generateUUID();
+    const newAsset = getNewDefaultAssetTemplateByNetwork(assets)(accountNetwork);
     const account: IRawAccount = {
       address: toChecksumAddress(addHexPrefix(keystore.address)) as TAddress,
       networkId: network,
       wallet: accountType,
       dPath: '',
-      assets: [{ uuid: newAssetID, balance: '0', mtime: Date.now() }],
+      assets: [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
       transactions: [],
       favorite: false,
       mtime: 0
     };
-    createAccountWithID(account, newUUID);
-    updateSettingsAccounts([...settings.dashboardAccounts, newUUID]);
-    createAssetWithID(newAsset, newAssetID);
+    const accountUUID = generateAccountUUID(network, account.address);
+    createAccountWithID(account, accountUUID);
+    updateSettingsAccounts([...settings.dashboardAccounts, accountUUID]);
+    createAssetWithID(newAsset, newAsset.uuid);
 
     displayNotification(NotificationTemplates.walletCreated, {
       address: account.address

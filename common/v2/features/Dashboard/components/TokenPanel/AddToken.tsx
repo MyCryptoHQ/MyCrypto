@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
-import { generateUUID } from 'v2/utils';
+import { generateAssetUUID } from 'v2/utils';
 import { InputField, NetworkSelectDropdown, DashboardPanel } from 'v2/components';
 import { translateRaw } from 'v2/translations';
 import { AssetContext, NetworkContext } from 'v2/services/Store';
@@ -84,8 +84,7 @@ export function AddToken(props: Props) {
       return;
     }
 
-    const uuid = generateUUID();
-
+    const uuid = generateAssetUUID(networkId, address);
     const newAsset: ExtendedAsset = {
       name: symbol,
       networkId,
@@ -93,7 +92,8 @@ export function AddToken(props: Props) {
       type: 'erc20',
       contractAddress: address,
       decimal: parseInt(decimals, 10),
-      uuid
+      uuid,
+      isCustom: true
     };
 
     createAssetWithID(newAsset, uuid);
@@ -127,21 +127,21 @@ export function AddToken(props: Props) {
       <InputField
         label={translateRaw('SYMBOL')}
         placeholder={'ETH'}
-        onChange={e => setSymbol(e.target.value)}
+        onChange={(e) => setSymbol(e.target.value)}
         value={symbol}
         inputError={symbolError}
       />
       <InputField
         label={translateRaw('ADDRESS')}
         placeholder={translateRaw('ADD_TOKEN_ADDRESS_PLACEHOLDER')}
-        onChange={e => setAddress(e.target.value)}
+        onChange={(e) => setAddress(e.target.value)}
         value={address}
         inputError={addressError}
       />
       <InputField
         label={translateRaw('TOKEN_DEC')}
         placeholder={`${DEFAULT_ASSET_DECIMAL}`}
-        onChange={e => setDecimals(e.target.value)}
+        onChange={(e) => setDecimals(e.target.value)}
         value={decimals}
         inputError={decimalsError}
         type="number"

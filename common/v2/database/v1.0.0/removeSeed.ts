@@ -1,6 +1,5 @@
 import * as R from 'ramda';
 
-import { devAccounts, DevAccount, devContacts } from '../seed';
 import {
   AddressBook,
   IAccount,
@@ -11,7 +10,8 @@ import {
   LSKeys
 } from 'v2/types';
 
-import { toArray, toObject, add } from './helpers';
+import { devAccounts, DevAccount, devContacts } from '../seed';
+import { toArray, toObject, add } from '../helpers';
 
 const removeDevAccounts = add(LSKeys.ACCOUNTS)((accounts: DevAccount[], store: LocalStorage) => {
   const cmp = (x: IAccount, y: DevAccount) => x.address === y.address;

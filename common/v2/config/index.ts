@@ -4,7 +4,6 @@ export * from './addressMessages';
 export {
   EXT_URLS,
   partnerLinks,
-  affiliateLinks,
   productLinks,
   socialMediaLinks,
   DOWNLOAD_MYCRYPTO_LINK
@@ -32,7 +31,6 @@ export {
   WEB3_WALLETS,
   getWalletConfig
 } from './wallets';
-import type { IWalletConfig } from './wallets';
 export { KB_HELP_ARTICLE, HELP_ARTICLE, getKBHelpArticle } from './helpArticles';
 export {
   DEFAULT_NETWORK_FOR_FALLBACK,
@@ -44,4 +42,4 @@ export {
 export { Fiats } from './fiats';
 export { IS_ACTIVE_FEATURE } from './isActiveFeature';
 export { ROUTE_PATHS } from './routePaths';
-export type { IWalletConfig };
+export { IWalletConfig } from './wallets';

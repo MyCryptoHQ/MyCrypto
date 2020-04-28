@@ -11,7 +11,7 @@ import {
 } from 'v2/services/EthService/utils/formatters';
 import { ContentPanel, QRCode, AccountDropdown, AssetDropdown } from 'v2/components';
 import { AssetContext, getNetworkById, StoreContext } from 'v2/services/Store';
-import { isValidAmount } from 'v2/utils';
+import { isValidAmount, sanitizeDecimalSeparator } from 'v2/utils';
 import { IAccount as IIAccount, StoreAccount } from 'v2/types';
 import { ROUTE_PATHS } from 'v2/config';
 import translate, { translateRaw } from 'v2/translations';
@@ -113,17 +113,17 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   const network = getNetworkById(networkId, networks);
   const filteredAssets = network
     ? assets
-        .filter(asset => asset.networkId === network.id)
-        .filter(asset => asset.type === 'base' || asset.type === 'erc20')
+        .filter((asset) => asset.networkId === network.id)
+        .filter((asset) => asset.type === 'base' || asset.type === 'erc20')
     : [];
-  const assetOptions = filteredAssets.map(asset => ({
+  const assetOptions = filteredAssets.map((asset) => ({
     label: asset.name,
     id: asset.uuid,
     ...asset
   }));
 
   const [chosenAssetName, setAssetName] = useState(filteredAssets[0].name);
-  const selectedAsset = filteredAssets.find(asset => asset.name === chosenAssetName);
+  const selectedAsset = filteredAssets.find((asset) => asset.name === chosenAssetName);
 
   const initialValues = {
     amount: '',
@@ -189,7 +189,9 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                     <FullWidthInput
                       data-lpignore="true"
                       value={field.value}
-                      onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
+                      onChange={({ target: { value } }) =>
+                        form.setFieldValue(field.name, sanitizeDecimalSeparator(value))
+                      }
                       placeholder="0.00"
                       inputMode="decimal"
                     />
@@ -206,7 +208,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                       selectedAsset={field.value}
                       assets={assetOptions}
                       searchable={true}
-                      onSelect={option => {
+                      onSelect={(option) => {
                         form.setFieldValue(field.name, option);
                         if (option.name) {
                           setAssetName(option.name);

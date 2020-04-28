@@ -9,12 +9,12 @@ export const ads = [
     name: 'Trezor',
     srcDesktop: trezorDesktop,
     srcMobile: trezorMobile,
-    url: EXT_URLS.TREZOR_REFERRAL.path
+    url: EXT_URLS.TREZOR_REFERRAL.url
   },
   {
     name: 'Ledger',
     srcDesktop: ledgerDesktop,
     srcMobile: ledgerMobile,
-    url: EXT_URLS.LEDGER_REFERRAL.path
+    url: EXT_URLS.LEDGER_REFERRAL.url
   }
 ];

@@ -6,6 +6,7 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const SriPlugin = require('webpack-subresource-integrity');
 const common = require('./common');
 const config = require('./config');
+const { generateChunkName } = require('./utils');
 
 const IS_ELECTRON = !!process.env.BUILD_ELECTRON;
 
@@ -13,10 +14,6 @@ module.exports = merge.smart(common, {
   mode: 'production',
 
   devtool: 'cheap-module-source-map',
-
-  entry: {
-    vendor: config.vendorModules
-  },
 
   output: {
     path: path.join(config.path.output, 'prod'),
@@ -47,6 +44,19 @@ module.exports = merge.smart(common, {
     ]
   },
 
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        // Caching is only useful in production. This is is where we apply the node_module caching solution
+        vendorIndividual: {
+          enforce: true,
+          test: new RegExp(`[\\/]node_modules[\\/](${config.chunks.individual.join('|')})[\\/]`),
+          name: generateChunkName
+        }
+      }
+    }
+  },
+
   plugins: [
     new MiniCSSExtractPlugin({
       filename: `[name].[contenthash].css`
@@ -70,16 +80,5 @@ module.exports = merge.smart(common, {
     }),
 
     new webpack.ProgressPlugin()
-  ],
-
-  optimization: {
-    splitChunks: {
-      chunks: 'all'
-    },
-    concatenateModules: false
-  },
-
-  performance: {
-    hints: 'warning'
-  }
+  ]
 });

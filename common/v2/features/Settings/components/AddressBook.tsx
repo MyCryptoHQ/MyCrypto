@@ -88,13 +88,13 @@ export default function AddressBook({
     isNumber(deletingIndex) ? [deletingIndex] : [],
     [...undoDeletingIndexes]
   ];
-  const overlayRowsFlat = [...overlayRows[0], ...overlayRows[1].map(row => row[0])];
+  const overlayRowsFlat = [...overlayRows[0], ...overlayRows[1].map((row) => row[0])];
 
   const getDisplayAddressBook = (): ExtendedAddressBook[] => {
     const accountsTemp = cloneDeep(addressBook);
     overlayRows[1]
       .sort((a, b) => a[0] - b[0])
-      .forEach(index => {
+      .forEach((index) => {
         accountsTemp.splice(index[0], 0, addressBookRestore[index[1]] as ExtendedAddressBook);
       });
     return accountsTemp.sort((a, b) => a.uuid.localeCompare(b.uuid));
@@ -108,22 +108,21 @@ export default function AddressBook({
 
       if (overlayRows[0].length && overlayRows[0][0] === rowIndex) {
         // Row delete overlay
-        const { uuid, label, address } = displayAddressBook[rowIndex];
+        const { uuid, label } = displayAddressBook[rowIndex];
         return (
           <RowDeleteOverlay
             prompt={translateRaw('ADDRESS_BOOK_DELETE_OVERLAY_TEXT', {
-              $label: label,
-              $address: truncate(address)
+              $label: label
             })}
             deleteAction={() => {
               setDeletingIndex(undefined);
-              setUndoDeletingIndexes(prev => [...prev, [rowIndex, uuid]]);
+              setUndoDeletingIndexes((prev) => [...prev, [rowIndex, uuid]]);
               deleteAddressBooks(uuid);
             }}
             cancelAction={() => setDeletingIndex(undefined)}
           />
         );
-      } else if (overlayRows[1].length && overlayRows[1].map(row => row[0]).includes(rowIndex)) {
+      } else if (overlayRows[1].length && overlayRows[1].map((row) => row[0]).includes(rowIndex)) {
         // Undo delete overlay
         const { uuid, label, address } = displayAddressBook[rowIndex];
 
@@ -131,12 +130,11 @@ export default function AddressBook({
           <UndoDeleteOverlay
             address={address}
             overlayText={translateRaw('ADDRESS_BOOK_UNDO_DELETE_OVERLAY_TEXT', {
-              $label: label,
-              $address: truncate(address)
+              $label: label
             })}
             restoreAccount={() => {
               restoreDeletedAddressBook(uuid);
-              setUndoDeletingIndexes(prev => prev.filter(i => i[0] !== rowIndex));
+              setUndoDeletingIndexes((prev) => prev.filter((i) => i[0] !== rowIndex));
             }}
           />
         );
@@ -153,7 +151,9 @@ export default function AddressBook({
           <SEditableText
             truncate={true}
             value={label}
-            saveValue={value => updateAddressBooks(uuid, { address, label: value, network, notes })}
+            saveValue={(value) =>
+              updateAddressBooks(uuid, { address, label: value, network, notes })
+            }
           />
         </Label>,
         <EthAddress key={2} address={address} truncate={truncate} isCopyable={true} />,
@@ -164,7 +164,7 @@ export default function AddressBook({
           key={4}
           truncate={true}
           value={notes}
-          saveValue={value => updateAddressBooks(uuid, { address, label, network, notes: value })}
+          saveValue={(value) => updateAddressBooks(uuid, { address, label, network, notes: value })}
         />,
         <DeleteButton key={5} onClick={() => setDeletingIndex(index)} icon="exit" />
       ]

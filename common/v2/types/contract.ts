@@ -6,9 +6,9 @@ export interface Contract {
   networkId: NetworkId;
   address: string;
   abi: string;
+  isCustom?: boolean;
 }
 
 export interface ExtendedContract extends Contract {
   uuid: TUuid;
-  isCustom?: boolean;
 }

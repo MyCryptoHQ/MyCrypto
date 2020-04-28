@@ -1,7 +1,10 @@
 import React, { createContext, useContext } from 'react';
 import unionBy from 'lodash/unionBy';
+import property from 'lodash/property';
 import BigNumber from 'bignumber.js';
 import * as R from 'ramda';
+
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services/ApiService/Analytics';
 
 import {
   IRawAccount,
@@ -11,7 +14,9 @@ import {
   Asset,
   AssetBalanceObject,
   LSKeys,
-  TUuid
+  TUuid,
+  ITxStatus,
+  ITxType
 } from 'v2/types';
 import { DataContext } from '../DataManager';
 import { SettingsContext } from '../Settings';
@@ -26,6 +31,7 @@ export interface IAccountContext {
   addNewTransactionToAccount(account: IAccount, transaction: ITxReceipt): void;
   getAccountByAddressAndNetworkName(address: string, network: string): IAccount | undefined;
   updateAccountAssets(account: StoreAccount, assets: Asset[]): Promise<void>;
+  updateAllAccountsAssets(accounts: StoreAccount[], assets: Asset[]): Promise<void>;
   updateAccountsBalances(toUpate: IAccount[]): void;
   toggleAccountPrivacy(uuid: TUuid): void;
 }
@@ -47,10 +53,19 @@ export const AccountProvider: React.FC = ({ children }) => {
     updateAccount: (uuid, a) => model.update(uuid, a),
     addNewTransactionToAccount: (accountData, newTransaction) => {
       const { network, ...newTxWithoutNetwork } = newTransaction;
+      if (
+        'stage' in newTxWithoutNetwork &&
+        [ITxStatus.SUCCESS, ITxStatus.FAILED].includes(newTxWithoutNetwork.stage)
+      ) {
+        AnalyticsService.instance.track(ANALYTICS_CATEGORIES.TX_HISTORY, `Tx Made`, {
+          txType: (newTxWithoutNetwork && newTxWithoutNetwork.txType) || ITxType.UNKNOWN,
+          txStatus: newTxWithoutNetwork.stage
+        });
+      }
       const newAccountData = {
         ...accountData,
         transactions: [
-          ...accountData.transactions.filter(tx => tx.hash !== newTransaction.hash),
+          ...accountData.transactions.filter((tx) => tx.hash !== newTransaction.hash),
           newTxWithoutNetwork
         ]
       };
@@ -59,41 +74,90 @@ export const AccountProvider: React.FC = ({ children }) => {
     getAccountByAddressAndNetworkName: getAccountByAddressAndNetworkName(accounts),
     updateAccountAssets: async (storeAccount, assets) => {
       // Find all tokens with a positive balance for given account, and add those tokens to the assets array of the account
-      const assetBalances = await getAllTokensBalancesOfAccount(storeAccount, assets);
-      const positiveAssetBalances = Object.entries(assetBalances).filter(
-        ([_, value]) => !value.isZero()
-      );
-
-      const existingAccount = accounts.find(x => x.uuid === storeAccount.uuid);
-
-      if (existingAccount) {
-        const newAssets: AssetBalanceObject[] = positiveAssetBalances.reduce(
-          (tempAssets: AssetBalanceObject[], [contractAddress, balance]: [string, BigNumber]) => {
-            const tempAsset = assets.find(x => x.contractAddress === contractAddress);
-            if (tempAsset) {
-              tempAssets.push({
-                uuid: tempAsset.uuid,
-                balance: balance.toString(10),
-                mtime: Date.now()
-              });
-            }
-            return tempAssets;
-          },
-          []
+      return getAllTokensBalancesOfAccount(storeAccount, assets).then((assetBalances) => {
+        const positiveAssetBalances = Object.entries(assetBalances).filter(
+          ([_, value]) => !value.isZero()
         );
 
-        existingAccount.assets = unionBy(newAssets, existingAccount.assets, 'uuid');
-        state.updateAccount(existingAccount.uuid, existingAccount);
-      }
+        const existingAccount = accounts.find((x) => x.uuid === storeAccount.uuid);
+
+        if (existingAccount) {
+          const newAssets: AssetBalanceObject[] = positiveAssetBalances.reduce(
+            (tempAssets: AssetBalanceObject[], [contractAddress, balance]: [string, BigNumber]) => {
+              const tempAsset = assets.find((x) => x.contractAddress === contractAddress);
+              return [
+                ...tempAssets,
+                ...(tempAsset
+                  ? [
+                      {
+                        uuid: tempAsset.uuid,
+                        balance: balance.toString(10),
+                        mtime: Date.now()
+                      }
+                    ]
+                  : [])
+              ];
+            },
+            []
+          );
+
+          existingAccount.assets = unionBy(newAssets, existingAccount.assets, property('uuid'));
+          state.updateAccount(existingAccount.uuid, existingAccount);
+        }
+      });
     },
-    updateAccountsBalances: toUpdate => {
+    updateAllAccountsAssets: (storeAccounts, assets) =>
+      Promise.all(
+        storeAccounts.map(async (storeAccount) => {
+          // Find all tokens with a positive balance for given account, and add those tokens to the assets array of the account
+          return getAllTokensBalancesOfAccount(storeAccount, assets).then((assetBalances) => {
+            const positiveAssetBalances = Object.entries(assetBalances).filter(
+              ([_, value]) => !value.isZero()
+            );
+
+            const existingAccount = accounts.find((x) => x.uuid === storeAccount.uuid);
+            if (!existingAccount) return {} as IAccount; // no existing account found
+
+            const newAssets: AssetBalanceObject[] = positiveAssetBalances.reduce(
+              (
+                tempAssets: AssetBalanceObject[],
+                [contractAddress, balance]: [string, BigNumber]
+              ) => {
+                const tempAsset = assets.find((x) => x.contractAddress === contractAddress);
+                return [
+                  ...tempAssets,
+                  ...(tempAsset
+                    ? [
+                        {
+                          uuid: tempAsset.uuid,
+                          balance: balance.toString(10),
+                          mtime: Date.now()
+                        }
+                      ]
+                    : [])
+                ];
+              },
+              []
+            );
+
+            existingAccount.assets = unionBy(newAssets, existingAccount.assets, property('uuid'));
+            return existingAccount;
+          });
+        })
+      )
+        .then((data) => data.filter((accountItem) => !R.isEmpty(accountItem)))
+        .then((updatedAccounts) => model.updateAll(updatedAccounts))
+        .catch((err) => {
+          console.debug('[AccountProvider]: Scan Tokens Error:', err);
+        }),
+    updateAccountsBalances: (toUpdate) => {
       const newAccounts = R.unionWith(R.eqBy(R.prop('uuid')), toUpdate, state.accounts).filter(
         Boolean
       );
       model.updateAll(newAccounts);
     },
-    toggleAccountPrivacy: uuid => {
-      const existingAccount = accounts.find(x => x.uuid === uuid);
+    toggleAccountPrivacy: (uuid) => {
+      const existingAccount = accounts.find((x) => x.uuid === uuid);
       if (!existingAccount) return;
       state.updateAccount(uuid, {
         ...existingAccount,

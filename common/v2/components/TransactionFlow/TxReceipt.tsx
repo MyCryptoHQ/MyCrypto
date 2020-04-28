@@ -104,18 +104,23 @@ export default function TxReceipt({
     if (displayTxReceipt && blockNumber === 0 && displayTxReceipt.hash) {
       const provider = new ProviderHandler(displayTxReceipt.network || txConfig.network);
       const blockNumInterval = setInterval(() => {
-        getTransactionReceiptFromHash(displayTxReceipt.hash, provider).then(transactionOutcome => {
-          if (transactionOutcome) {
-            const transactionStatus =
-              transactionOutcome.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
-            setTxStatus(prevStatusState => transactionStatus || prevStatusState);
-            setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
-            provider.getTransactionByHash(displayTxReceipt.hash).then(transactionReceipt => {
-              const receipt = fromTxReceiptObj(transactionReceipt)(assets, networks) as ITxReceipt;
-              setDisplayTxReceipt(receipt);
-            });
+        getTransactionReceiptFromHash(displayTxReceipt.hash, provider).then(
+          (transactionOutcome) => {
+            if (transactionOutcome) {
+              const transactionStatus =
+                transactionOutcome.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
+              setTxStatus((prevStatusState) => transactionStatus || prevStatusState);
+              setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
+              provider.getTransactionByHash(displayTxReceipt.hash).then((transactionReceipt) => {
+                const receipt = fromTxReceiptObj(transactionReceipt)(
+                  assets,
+                  networks
+                ) as ITxReceipt;
+                setDisplayTxReceipt(receipt);
+              });
+            }
           }
-        });
+        );
       }, 1000);
       return () => clearInterval(blockNumInterval);
     }
@@ -124,13 +129,13 @@ export default function TxReceipt({
     if (displayTxReceipt && timestamp === 0 && blockNumber !== 0) {
       const provider = new ProviderHandler(displayTxReceipt.network || txConfig.network);
       const timestampInterval = setInterval(() => {
-        getTimestampFromBlockNum(blockNumber, provider).then(transactionTimestamp => {
+        getTimestampFromBlockNum(blockNumber, provider).then((transactionTimestamp) => {
           if (sender.account) {
             addNewTransactionToAccount(sender.account, {
               ...displayTxReceipt,
-              txType: displayTxReceipt ? displayTxReceipt.txType : ITxType.STANDARD,
               timestamp: transactionTimestamp || 0,
-              stage: txStatus
+              stage: txStatus,
+              txType
             });
           }
           setTimestamp(transactionTimestamp || 0);
@@ -256,7 +261,7 @@ export const TxReceiptUI = ({
     <div className="TransactionReceipt">
       {protectTxEnabled && !web3Wallet && (
         <ProtectTxAbort
-          onTxSent={txReceipt => {
+          onTxSent={(txReceipt) => {
             if (setDisplayTxReceipt) {
               setDisplayTxReceipt(txReceipt);
             }
@@ -353,7 +358,7 @@ export const TxReceiptUI = ({
             {translate('TRANSACTION_ID')}:
           </div>
           <div className="TransactionReceipt-details-row-column">
-            {displayTxReceipt && (
+            {displayTxReceipt && displayTxReceipt.network && (
               <LinkOut
                 text={displayTxReceipt.hash}
                 truncate={truncate}

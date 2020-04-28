@@ -11,6 +11,7 @@ import { ToastContext } from 'v2/features/Toasts';
 import { translateRaw } from 'v2/translations';
 import { isValidETHAddress } from 'v2/services/EthService';
 import { AddressBookContext } from 'v2/services';
+import { DEFAULT_NETWORK } from 'v2/config/constants';
 
 const AddToAddressBookPanel = styled(DashboardPanel)`
   padding: 24px 30px;
@@ -58,8 +59,10 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
   const Schema = Yup.object().shape({
     label: Yup.string().required(translateRaw('REQUIRED')),
     address: Yup.string()
-      .test('check-eth-address', translateRaw('TO_FIELD_ERROR'), value => isValidETHAddress(value))
-      .test('doesnt-exist', translateRaw('ADDRESS_ALREADY_ADDED'), function(value) {
+      .test('check-eth-address', translateRaw('TO_FIELD_ERROR'), (value) =>
+        isValidETHAddress(value)
+      )
+      .test('doesnt-exist', translateRaw('ADDRESS_ALREADY_ADDED'), function (value) {
         const contact = getContactByAddress(value);
         if (contact !== undefined) {
           return this.createError({
@@ -90,7 +93,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
           label: '',
           address: '',
           notes: '',
-          network: ''
+          network: DEFAULT_NETWORK
         }}
         onSubmit={(values: AddressBook, { setSubmitting }) => {
           createAddressBooks(values);
@@ -129,7 +132,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
                 render={({ field, form }: FieldProps<NetworkId>) => (
                   <SNetworkSelectDropdown
                     network={field.value}
-                    onChange={e => form.setFieldValue(field.name, e)}
+                    onChange={(e) => form.setFieldValue(field.name, e)}
                   />
                 )}
               />
