@@ -53,4 +53,9 @@ export type StoreAsset = Asset & {
   website?: string;
   whitepaper?: string;
   social?: AssetSocial;
+  mappings?: {
+    coinGeckoId?: string;
+    cryptoCompareId?: string;
+    coinCapId?: string;
+  };
 };

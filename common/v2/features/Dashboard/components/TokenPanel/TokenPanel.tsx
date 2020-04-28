@@ -14,7 +14,12 @@ export function TokenPanel() {
   const [showAddToken, setShowAddToken] = useState(false);
   const [currentToken, setCurrentToken] = useState<StoreAsset>();
   const [isScanning, setIsScanning] = useState(false);
-  const allTokens = totals(currentAccounts).map((a) => ({ ...a, rate: getAssetRate(a) || 0 }));
+  const allTokens = totals(currentAccounts).reduce((acc, a) => {
+    if (a.contractAddress) {
+      acc.push({ ...a, rate: getAssetRate(a) || 0 });
+    }
+    return acc;
+  }, [] as StoreAsset[]);
 
   const handleScanTokens = async (asset?: ExtendedAsset) => {
     try {
