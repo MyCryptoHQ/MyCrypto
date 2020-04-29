@@ -1,14 +1,26 @@
-import { LocalStorage, LSKeys } from 'v2/types';
+import { LocalStorage, LSKeys, AssetLegacy } from 'v2/types';
 import { toArray } from 'v2/utils';
 
 import { createDefaultValues } from './generateDefaultValues';
 import { SCHEMA_BASE, NETWORKS_CONFIG } from './data';
 
+const DAI = {
+  address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+  symbol: 'DAI',
+  decimal: 18,
+  name: 'Dai Stablecoin v2.0',
+  uuid: 'e1f698bf-cb85-5405-b563-14774af14bf1'
+} as AssetLegacy;
+
 describe('Schema', () => {
   let defaultData: LocalStorage;
 
   beforeAll(() => {
-    defaultData = createDefaultValues(SCHEMA_BASE, NETWORKS_CONFIG);
+    // add one token to networks, to test adding tokens from localstorage
+    const customNetworkConfig = { ...NETWORKS_CONFIG };
+    customNetworkConfig.Ethereum.tokens.push(DAI);
+
+    defaultData = createDefaultValues(SCHEMA_BASE, customNetworkConfig);
   });
 
   it('defaultData has with valid properties', () => {
@@ -63,7 +75,7 @@ describe('Schema', () => {
         .filter((uuid) => allAssets[uuid].type === 'erc20')
         .filter(Boolean); // Not all networks have assets!
 
-      expect(networkAssets.length).toBeGreaterThan(1);
+      expect(networkAssets.length).toBeGreaterThan(0);
       expect(networkAssets.length).toEqual(tokens.length);
     });
   });
