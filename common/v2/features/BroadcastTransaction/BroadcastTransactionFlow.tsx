@@ -1,32 +1,54 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import isFunction from 'lodash/isFunction';
 
 import { GeneralStepper, TxReceipt, ConfirmTransaction } from 'v2/components';
 import { ROUTE_PATHS } from 'v2/config';
 import { translateRaw } from 'v2/translations';
 import {
+  fromSignedTxToTxConfig,
   fromSignedTxToTxObject,
-  fromTxObjectToTxConfig,
+  useTxMulti,
   fromTxParcelToTxReceipt,
-  getCurrentTxFromTxMulti,
-  useTxMulti
+  getCurrentTxFromTxMulti
 } from 'v2/utils';
 import { IStepperPath } from 'v2/components/GeneralStepper/types';
-import { ITxSigned, NetworkId } from 'v2/types';
+import { ITxConfig, ITxSigned, Network, NetworkId } from 'v2/types';
+import { StoreContext, AssetContext, NetworkContext } from 'v2/services';
 
 import { BroadcastTx } from './components';
-import { NetworkContext } from '../../services/Store/Network';
 
 const BroadcastTransactionFlow = () => {
-  const { getNetworkById } = useContext(NetworkContext);
+  const { networks, getNetworkById } = useContext(NetworkContext);
+  const { assets } = useContext(AssetContext);
+  const { accounts } = useContext(StoreContext);
 
+  const goToNextStep = useRef<() => void>();
   const [signedTx, setSignedTx] = useState<ITxSigned | null>(null);
+  const [selectedNetwork, setSelectedNetwork] = useState<Network | null>(null);
   const { state, initWith, prepareTx, sendTx, reset } = useTxMulti();
-  const { transactions, _currentTxIdx, account, network } = state;
+  const { transactions, _currentTxIdx, network } = state;
 
+  const txConfig = fromSignedTxToTxConfig(signedTx!, assets, networks, accounts, {
+    network
+  } as ITxConfig);
   const txParcel = getCurrentTxFromTxMulti(transactions, _currentTxIdx);
-  const { txRaw } = txParcel;
-  const txConfig = fromTxObjectToTxConfig(txRaw, account);
-  const txReceipt = fromTxParcelToTxReceipt(txParcel, account);
+  const txReceipt = fromTxParcelToTxReceipt(txParcel, txConfig?.senderAccount);
+
+  useEffect(() => {
+    if (isFunction(goToNextStep.current) && selectedNetwork && signedTx && signedTx && txConfig) {
+      const nextStep = goToNextStep.current;
+      goToNextStep.current = undefined;
+      const initializeTx = async () => {
+        const txObject = fromSignedTxToTxObject(signedTx);
+        await initWith(() => Promise.resolve([{}]), selectedNetwork, txConfig?.senderAccount);
+        await prepareTx(txObject);
+
+        nextStep();
+      };
+
+      initializeTx();
+    }
+  }, [goToNextStep, selectedNetwork, signedTx, txConfig]);
 
   const steps: IStepperPath[] = [
     {
@@ -36,17 +58,13 @@ const BroadcastTransactionFlow = () => {
         signedTx,
         network
       },
-      actions: async (txSigned: ITxSigned, networkId: NetworkId, cb: any) => {
-        const txObject = fromSignedTxToTxObject(txSigned);
-        const selectedNetwork = getNetworkById(networkId);
+      actions: async (payload: { signedTx: string; networkId: NetworkId }, cb: any) => {
+        const { signedTx: txSigned, networkId } = payload;
 
-        await initWith(() => Promise.resolve([{}]), selectedNetwork);
-        await prepareTx(txObject);
         setSignedTx(txSigned);
+        setSelectedNetwork(getNetworkById(networkId));
 
-        if (cb) {
-          cb();
-        }
+        goToNextStep.current = cb;
       }
     },
     {

@@ -94,7 +94,11 @@ export const fromSignedTxToTxConfig = (
   networks: Network[],
   accounts: StoreAccount[],
   oldTxConfig: ITxConfig = {} as ITxConfig
-): ITxConfig => {
+): ITxConfig | null => {
+  if (isEmpty(signedTx) || isEmpty(assets) || isEmpty(networks) || isEmpty(accounts)) {
+    return null;
+  }
+
   const decodedTx = decodeTransaction(signedTx);
   const networkDetected = getNetworkByChainId(decodedTx.chainId, networks);
   const contractAsset = getAssetByContractAndNetwork(
@@ -178,6 +182,7 @@ export const fromTxObjectToTxConfig = (
     rawTransaction: rawTransaction!
   };
 };
+
 export const fromTxParcelToTxReceipt = (
   txParcel?: TxParcel,
   account?: StoreAccount

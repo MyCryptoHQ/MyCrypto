@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button, Identicon } from '@mycrypto/ui';
 import { Transaction as EthTx } from 'ethereumjs-tx';
 import styled from 'styled-components';
@@ -95,7 +95,7 @@ const makeTxFromSignedTx = (signedTransaction: string) => {
 interface Props {
   signedTx: ITxSigned;
   transaction: EthTx | undefined;
-  onComplete(signedTx: string, networkId: NetworkId): void;
+  onComplete(payload: { signedTx: string; networkId: NetworkId }): void;
 }
 
 const BroadcastTx = ({ signedTx, onComplete }: Props) => {
@@ -119,6 +119,13 @@ const BroadcastTx = ({ signedTx, onComplete }: Props) => {
     setInputError('');
     setTransaction(makeTxFromSignedTx(trimmedValue));
   };
+
+  const onSend = useCallback(async () => {
+    await onComplete({
+      signedTx: userInput.trim(),
+      networkId
+    });
+  }, [userInput, networkId]);
 
   return (
     <ContentWrapper>
@@ -150,9 +157,7 @@ const BroadcastTx = ({ signedTx, onComplete }: Props) => {
           <CodeBlockWrapper>
             <CodeBlock>{getStringifiedTx(transaction)}</CodeBlock>
           </CodeBlockWrapper>
-          <SendButton onClick={() => onComplete(userInput.trim(), networkId)}>
-            {translateRaw('SEND_TRANS')}
-          </SendButton>
+          <SendButton onClick={onSend}>{translateRaw('SEND_TRANS')}</SendButton>
         </React.Fragment>
       ) : (
         <PlaceholderButton>{translateRaw('SEND_TRANS')}</PlaceholderButton>
