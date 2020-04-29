@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Typography } from '@mycrypto/ui';
 
-import translate from 'v2/translations';
 import { DOWNLOAD_MYCRYPTO_LINK, WALLETS_CONFIG } from 'v2/config';
+import translate from 'v2/translations';
+import { ANALYTICS_CATEGORIES, AnalyticsService } from 'v2/services';
 
 import AppStoreBadgeIMG from 'assets/images/mobile/app-store-badge.png';
 import GooglePlayBadgeIMG from 'assets/images/mobile/google-play-badge.png';
@@ -72,8 +73,10 @@ function InstallMetaMask() {
 }
 
 function Web3ProviderInstall() {
+  useEffect(() => {
+    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.ADD_WEB3_ACCOUNT, `No provider detected`);
+  }, [])
   const { isMobile } = useScreenSize();
-
   return (
     <div className="Panel">
       <div className="Panel-title">

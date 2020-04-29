@@ -6,6 +6,7 @@ import translate from 'v2/translations';
 import { FormDataActionType as ActionType } from '../types';
 import { FormData, NetworkId } from 'v2/types';
 import { NetworkSelectDropdown } from 'v2/components';
+import { ANALYTICS_CATEGORIES, AnalyticsService } from 'v2/services';
 import { NetworkContext, NetworkUtils } from 'v2/services/Store';
 import NetworkNodeDropdown from 'v2/components/NetworkNodeDropdown';
 import { ProviderHandler } from 'v2/services/EthService/network';
@@ -58,6 +59,7 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
         type: ActionType.SELECT_NETWORK,
         payload: { network }
       });
+      AnalyticsService.instance.track(ANALYTICS_CATEGORIES.SELECT_NETWORK, network);
       goToNextStep();
     } catch (e) {
       console.debug(e);

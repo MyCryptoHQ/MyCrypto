@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
 import translate from 'v2/translations';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { ROUTE_PATHS } from 'v2/config';
 
 import sadWallet from 'common/assets/images/icn-sad-wallet.svg';
@@ -94,23 +95,33 @@ const ButtonGroup = styled.div`
   margin-top: 20px;
 `;
 
-export const NoAccounts = () => (
-  <NoAccountsContainer>
-    <NoAccountsContent>
-      <ImgIcon src={sadWallet} />
-      <Header>{translate('NO_ACCOUNTS_HEADER')}</Header>
-      <Description>{translate('NO_ACCOUNTS_DESCRIPTION')}</Description>
-      <ButtonGroup>
-        <Link to={ROUTE_PATHS.ADD_ACCOUNT.path}>
-          <WhiteButtonFirst secondary={true}>{translate('ADD_EXISTING_ACCOUNT')}</WhiteButtonFirst>
+export const NoAccounts = () => {
+  useEffect(() => {
+    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.WALLET_BREAKDOWN, `User has no accounts`, {
+      numOfAccounts: 0
+    });
+  }, []);
+
+  return (
+    <NoAccountsContainer>
+      <NoAccountsContent>
+        <ImgIcon src={sadWallet} />
+        <Header>{translate('NO_ACCOUNTS_HEADER')}</Header>
+        <Description>{translate('NO_ACCOUNTS_DESCRIPTION')}</Description>
+        <ButtonGroup>
+          <Link to={ROUTE_PATHS.ADD_ACCOUNT.path}>
+            <WhiteButtonFirst secondary={true}>
+              {translate('ADD_EXISTING_ACCOUNT')}
+            </WhiteButtonFirst>
+          </Link>
+          <Link to={ROUTE_PATHS.SETTINGS_IMPORT.path}>
+            <PrimaryButton secondary={true}>{translate('SETTINGS_IMPORT_HEADING')}</PrimaryButton>
+          </Link>
+        </ButtonGroup>
+        <Link to={ROUTE_PATHS.CREATE_WALLET.path}>
+          <PrimaryButton>{translate('CREATE_ACCOUNT_TITLE')}</PrimaryButton>
         </Link>
-        <Link to={ROUTE_PATHS.SETTINGS_IMPORT.path}>
-          <PrimaryButton secondary={true}>{translate('SETTINGS_IMPORT_HEADING')}</PrimaryButton>
-        </Link>
-      </ButtonGroup>
-      <Link to={ROUTE_PATHS.CREATE_WALLET.path}>
-        <PrimaryButton>{translate('CREATE_ACCOUNT_TITLE')}</PrimaryButton>
-      </Link>
-    </NoAccountsContent>
-  </NoAccountsContainer>
-);
+      </NoAccountsContent>
+    </NoAccountsContainer>
+  );
+};

@@ -17,6 +17,7 @@ import { WalletFactory } from 'v2/services/WalletService';
 import { FormDataActionType as ActionType } from 'v2/features/AddAccount/types';
 import './Web3Provider.scss';
 import { getWeb3Config } from 'v2/utils/web3';
+import { ANALYTICS_CATEGORIES, AnalyticsService } from 'v2/services';
 
 interface Props {
   formDispatch: any;
@@ -50,6 +51,7 @@ class Web3ProviderDecrypt extends ComponentProps<
     const { web3Unlocked, web3ProviderSettings: provider } = this.state;
     const { isMobile } = this.props;
     const isDefault = provider.id === WalletId.WEB3;
+
     return (
       <div className="Panel">
         <div className="Panel-title">
@@ -117,6 +119,10 @@ class Web3ProviderDecrypt extends ComponentProps<
       }
       // If accountType is defined, we are in the AddAccountFlow
       if (this.props.formData.accountType) {
+        AnalyticsService.instance.track(
+          ANALYTICS_CATEGORIES.ADD_WEB3_ACCOUNT,
+          `${this.state.web3ProviderSettings.name} added`
+        );
         const network = walletPayload.network;
         this.props.formDispatch({
           type: ActionType.SELECT_NETWORK,
