@@ -45,7 +45,6 @@ import {
   MEMBERSHIP_CONTRACTS
 } from 'v2/features/PurchaseMembership/config';
 import { DEFAULT_NETWORK } from 'v2/config';
-import { useEffectOnce } from 'v2/vendor';
 
 import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';
 import { getStoreAccounts, getPendingTransactionsFromAccounts } from './helpers';
@@ -237,9 +236,9 @@ export const StoreProvider: React.FC = ({ children }) => {
   }, [currentAccounts]);
 
   // fetch assets from api
-  useEffectOnce(() => {
+  useEffect(() => {
     MyCryptoApiService.instance.getAssets().then(addAssetsFromAPI);
-  });
+  }, [assets.length]);
 
   // A change to pending txs is detected
   useEffect(() => {
