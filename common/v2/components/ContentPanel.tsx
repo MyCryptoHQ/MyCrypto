@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Panel, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { BREAK_POINTS } from 'v2/theme';
+import { BREAK_POINTS, SPACING } from 'v2/theme';
 import translate from 'v2/translations';
 import Stepper from './Stepper';
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
@@ -94,7 +94,7 @@ const ContentPanelTop = styled.div`
   align-items: center;
   justify-content: ${(props: ContentPanelTopProps) =>
     props.stepperOnly ? 'flex-end' : 'space-between'};
-  margin: 0 0 10px 0;
+  margin: 0 0 ${SPACING.SM} 0;
   padding: 0;
 `;
 
