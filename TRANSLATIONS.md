@@ -5,7 +5,7 @@ In order to use built in translation extractor you can run:
 yarn translations:extract
 ```
 
-The script will auto extract all translation keys wrapped inside `translate` and `translateRaw` functions.
+The script will auto extract all translation keys wrapped inside `translate`, `translateRaw` and `translateMarker` functions.
 It will merge new keys, without modifying old ones and sort them alphabetically.
 It will update all *.json files inside `common/v2/translations/lang/*.json`, meaning all languages will be updated with new keys.
 
