@@ -23,7 +23,9 @@ import {
   ITxReceipt,
   NetworkId,
   AddressBook,
-  ITxType
+  ITxType,
+  TUuid,
+  ReserveAsset
 } from 'v2/types';
 import {
   isArrayEqual,
@@ -35,7 +37,6 @@ import {
   weiToFloat,
   generateAccountUUID
 } from 'v2/utils';
-import { ReserveAsset } from 'v2/types/asset';
 import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from 'v2/services/EthService';
 import {
   MembershipStatus,
@@ -44,7 +45,6 @@ import {
   MEMBERSHIP_CONTRACTS
 } from 'v2/features/PurchaseMembership/config';
 import { DEFAULT_NETWORK } from 'v2/config';
-import { TUuid } from 'v2/types/uuid';
 import { useEffectOnce } from 'v2/vendor';
 
 import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';
@@ -113,7 +113,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     deleteAccount,
     createAccountWithID
   } = useContext(AccountContext);
-  const { assets, updateAssets } = useContext(AssetContext);
+  const { assets, addAssetsFromAPI } = useContext(AssetContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { networks } = useContext(NetworkContext);
   const {
@@ -238,7 +238,7 @@ export const StoreProvider: React.FC = ({ children }) => {
 
   // fetch assets from api
   useEffectOnce(() => {
-    MyCryptoApiService.instance.getAssets().then(updateAssets);
+    MyCryptoApiService.instance.getAssets().then(addAssetsFromAPI);
   });
 
   // A change to pending txs is detected

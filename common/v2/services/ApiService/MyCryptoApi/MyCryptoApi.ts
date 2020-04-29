@@ -1,6 +1,7 @@
 import { AxiosInstance } from 'axios';
 
 import { MYC_API } from 'v2/config';
+import { StoreAsset, TUuid } from 'v2/types';
 
 import { default as ApiService } from '../ApiService';
 
@@ -21,12 +22,13 @@ export default class MyCryptoApiService {
     }
   }
 
-  public getAssets = async () => {
+  public getAssets = async (): Promise<Record<TUuid, StoreAsset>> => {
     try {
       const { data } = await this.service.get('assets.json');
       return data;
     } catch (e) {
-      throw e;
+      console.debug('[MyCryptoApiService]: Fetching assets failed: ', e);
+      return {};
     }
   };
 }

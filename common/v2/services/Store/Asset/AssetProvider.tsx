@@ -1,7 +1,7 @@
 import React, { useContext, createContext } from 'react';
 import * as R from 'ramda';
 
-import { ExtendedAsset, LSKeys, TUuid } from 'v2/types';
+import { ExtendedAsset, LSKeys, TUuid, StoreAsset } from 'v2/types';
 
 import { DataContext } from '../DataManager';
 import { NetworkContext } from '../Network';
@@ -9,7 +9,7 @@ import { NetworkContext } from '../Network';
 export interface IAssetContext {
   assets: ExtendedAsset[];
   createAssetWithID(assetData: ExtendedAsset, id: TUuid): void;
-  updateAssets(newAssets: any): void;
+  addAssetsFromAPI(newAssets: Record<TUuid, StoreAsset>): void;
 }
 
 export const AssetContext = createContext({} as IAssetContext);
@@ -22,8 +22,8 @@ export const AssetProvider: React.FC = ({ children }) => {
   const state: IAssetContext = {
     assets,
     createAssetWithID: model.createWithID,
-    updateAssets: (newAssets) => {
-      const mappedAssets = Object.entries(newAssets).map(([uuid, asset]: [string, any]) => {
+    addAssetsFromAPI: (newAssets) => {
+      const mappedAssets = Object.entries(newAssets).map(([uuid, asset]: [TUuid, any]) => {
         const network = getNetworkByChainId(parseInt(asset.networkId, 10));
         return {
           ...asset,
@@ -35,6 +35,7 @@ export const AssetProvider: React.FC = ({ children }) => {
         };
       });
 
+      // make a copy of current assets array and merge it with assets received from API
       const assetsCopy = R.clone(assets);
       mappedAssets.forEach((asset) => {
         const existing = assetsCopy.find((x) => x.uuid === asset.uuid);

@@ -3,9 +3,8 @@ import React, { createContext, useContext, useState, useEffect, useRef } from 'r
 import { usePromise, useEffectOnce } from 'v2/vendor';
 import { StoreContext, SettingsContext } from 'v2/services/Store';
 import { PollingService } from 'v2/workers';
-import { IRates, TTicker, Asset } from 'v2/types';
+import { IRates, TTicker, Asset, StoreAsset, ReserveAsset } from 'v2/types';
 import { notUndefined } from 'v2/utils';
-import { ReserveAsset, StoreAsset } from 'v2/types/asset';
 
 import { DeFiReserveMapService } from './ApiService';
 

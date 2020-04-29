@@ -4,16 +4,17 @@ import styled from 'styled-components';
 import { Typography } from 'v2/components';
 import { SPACING, COLORS, BREAK_POINTS } from 'v2/theme';
 import { AssetContext, getAssetByUUID } from 'v2/services/Store';
+import { Asset } from 'v2/types';
 
 import { IMembershipConfig, IMembershipId } from '../config';
 
 const PlanCard = styled.div<{ fullwith?: boolean }>`
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    width: ${props => (props.fullwith ? '100%' : '48%')};
+    width: ${(props) => (props.fullwith ? '100%' : '48%')};
     margin-top: ${SPACING.SM};
-    flex-direction: ${props => (props.fullwith ? 'row' : 'column')};
-    justify-content: ${props => (props.fullwith ? 'space-evenly' : 'flex-start')};
-    height: ${props => (props.fullwith ? '150px' : '212px')};
+    flex-direction: ${(props) => (props.fullwith ? 'row' : 'column')};
+    justify-content: ${(props) => (props.fullwith ? 'space-evenly' : 'flex-start')};
+    height: ${(props) => (props.fullwith ? '150px' : '212px')};
   }
   display: flex;
   flex-direction: column;
@@ -43,7 +44,7 @@ const STypography = styled(Typography)`
 
 export default ({ plan }: { plan: IMembershipConfig }) => {
   const { assets } = useContext(AssetContext);
-  const planAsset = getAssetByUUID(assets)(plan.assetUUID)!;
+  const planAsset = getAssetByUUID(assets)(plan.assetUUID) || ({} as Asset);
 
   return (
     <PlanCard fullwith={plan.key === IMembershipId.lifetime ? true : false}>
