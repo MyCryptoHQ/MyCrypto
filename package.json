@@ -66,8 +66,8 @@
     "rskjs-util": "1.0.3",
     "scryptsy": "2.0.0",
     "semver": "5.5.0",
-    "trezor-connect": "7.0.1",
-    "trezor.js": "6.17.5",
+    "trezor-connect": "8.1.2",
+    "trezor.js": "9.1.0",
     "uuid": "3.2.1",
     "wallet-address-validator": "0.2.4",
     "whatwg-fetch": "2.0.3",
@@ -172,8 +172,7 @@
     "worker-loader": "1.1.1"
   },
   "resolutions": {
-    "*/**/@types/react": "16.3.11",
-    "node-fetch": "2.6.0"
+    "*/**/@types/react": "16.3.11"
   },
   "scripts": {
     "db": "nodemon ./db",
