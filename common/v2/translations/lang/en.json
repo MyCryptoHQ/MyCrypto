@@ -259,10 +259,10 @@
 		"DPATH": "Derivation Path",
 		"ELAPSED_TIME_DAY": "day",
 		"ELAPSED_TIME_DAYS": "days",
-		"ELAPSED_TIME_HOUR": "hour",
-		"ELAPSED_TIME_HOURS": "hours",
-		"ELAPSED_TIME_MINUTE": "minute",
-		"ELAPSED_TIME_MINUTES": "minutes",
+		"ELAPSED_TIME_HOUR": "$value hour",
+		"ELAPSED_TIME_HOURS": "$value hours",
+		"ELAPSED_TIME_MINUTE": "$value minute",
+		"ELAPSED_TIME_MINUTES": "$value minutes",
 		"ELAPSED_TIME_SECOND": "second",
 		"ELAPSED_TIME_SECONDS": "seconds",
 		"EMAIL_ADDRESS_PLACEHOLDER": "Email address",
@@ -958,9 +958,9 @@
     "CHECKOUT_OTHER_CTA": "Next: Purchase for a different account",
     "NETWORK_AND_NODES": "Network & Nodes",
     "MISSING_PASSWORD": "Please enter a password",
-		"ZAP_UNISWAP_TOOLTIP": "This zap stores funds in the Uniswap exchange protocol",
     "WALLET_BREAKDOWN_ACCOUNTS": "Accounts",
     "WALLET_BREAKDOWN_DETAIL_ACCOUNT": "$numOfAccounts Account",
-    "WALLET_BREAKDOWN_DETAIL_ACCOUNTS": "$numOfAccounts Accounts"
+    "WALLET_BREAKDOWN_DETAIL_ACCOUNTS": "$numOfAccounts Accounts",
+    "ZAP_UNISWAP_TOOLTIP": "This zap stores funds in the Uniswap exchange protocol"
   }
 }

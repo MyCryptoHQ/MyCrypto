@@ -73,17 +73,17 @@ interface SettingsProps {
 }
 
 const timerOptions = [
-  { name: `1 ${translateRaw('ELAPSED_TIME_MINUTE')}`, value: '60000' },
-  { name: `3 ${translateRaw('ELAPSED_TIME_MINUTES')}`, value: '180000' },
-  { name: `5 ${translateRaw('ELAPSED_TIME_MINUTES')}`, value: '300000' },
-  { name: `10 ${translateRaw('ELAPSED_TIME_MINUTES')}`, value: '600000' },
-  { name: `15 ${translateRaw('ELAPSED_TIME_MINUTES')}`, value: '900000' },
-  { name: `30 ${translateRaw('ELAPSED_TIME_MINUTES')}`, value: '1800000' },
-  { name: `45 ${translateRaw('ELAPSED_TIME_MINUTES')}`, value: '2700000' },
-  { name: `1 ${translateRaw('ELAPSED_TIME_HOUR')}`, value: '3600000' },
-  { name: `3 ${translateRaw('ELAPSED_TIME_HOURS')}`, value: '10800000' },
-  { name: `6 ${translateRaw('ELAPSED_TIME_HOURS')}`, value: '21600000' },
-  { name: `12 ${translateRaw('ELAPSED_TIME_HOURS')}`, value: '43200000' }
+  { name: translateRaw('ELAPSED_TIME_MINUTE', { $value: '1' }), value: '60000' },
+  { name: translateRaw('ELAPSED_TIME_MINUTES', { $value: '3' }), value: '180000' },
+  { name: translateRaw('ELAPSED_TIME_MINUTES', { $value: '5' }), value: '300000' },
+  { name: translateRaw('ELAPSED_TIME_MINUTES', { $value: '10' }), value: '600000' },
+  { name: translateRaw('ELAPSED_TIME_MINUTES', { $value: '15' }), value: '900000' },
+  { name: translateRaw('ELAPSED_TIME_MINUTES', { $value: '30' }), value: '1800000' },
+  { name: translateRaw('ELAPSED_TIME_MINUTES', { $value: '45' }), value: '2700000' },
+  { name: translateRaw('ELAPSED_TIME_HOUR', { $value: '1' }), value: '3600000' },
+  { name: translateRaw('ELAPSED_TIME_HOURS', { $value: '3' }), value: '10800000' },
+  { name: translateRaw('ELAPSED_TIME_HOURS', { $value: '6' }), value: '21600000' },
+  { name: translateRaw('ELAPSED_TIME_HOURS', { $value: '12' }), value: '43200000' }
 ];
 
 export default class GeneralSettings extends React.Component<SettingsProps> {
@@ -93,7 +93,7 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
     settings.inactivityTimer = Number(target.value);
     this.props.updateGlobalSettings(settings);
 
-    const selectedTimer = timerOptions.find(selection => selection.value === target.value);
+    const selectedTimer = timerOptions.find((selection) => selection.value === target.value);
     if (selectedTimer) {
       AnalyticsService.instance.track(
         ANALYTICS_CATEGORIES.SETTINGS,
@@ -145,7 +145,7 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
           <SettingsControl>
             <SelectContainer>
               <select onChange={this.changeTimer} value={String(globalSettings.inactivityTimer)}>
-                {timerOptions.map(option => (
+                {timerOptions.map((option) => (
                   <option value={option.value} key={option.value}>
                     {option.name}
                   </option>
