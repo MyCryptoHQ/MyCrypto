@@ -40,7 +40,6 @@ const Header = styled(Typography)`
 const ExpiryWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
 `;
 
 const MembershipReceiptBanner = ({ membershipSelected }: Props) => {

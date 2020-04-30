@@ -784,7 +784,7 @@
     "MEMBERSHIP_ACCORDION_FIRST_TITLE": "What is the MyCrypto Membership?",
     "MEMBERSHIP_ACCORDION_FIRST_CONTENT": "The MyCrypto Membership is a monthly subscription that gives you additional features and helps to support MyCrypto’s future developments.",
     "MEMBERSHIP_ACCORDION_SECOND_TITLE": "How much does the MyCrypto Membership cost?",
-    "MEMBERSHIP_ACCORDION_SECOND_CONTENT": "$4.00 per month, or you can purchase multiple month packages at a discounted rate. For the hardcore, there’s also a lifetime membership.",
+    "MEMBERSHIP_ACCORDION_SECOND_CONTENT": "4.00 DAI per month, or you can purchase multiple month packages at a discounted rate. For the hardcore, there’s also a lifetime membership.",
     "MEMBERSHIP_ACCORDION_THIRD_TITLE": "How does the MyCrypto Membership work?",
     "MEMBERSHIP_ACCORDION_THIRD_CONTENT": "We use the [Unlock Protocol](https://unlock-protocol.com/) for this. You’ll be purchasing a token that unlocks features of MyCrypto when we detect that you hold that token. Each token has an expiration date according to the duration of membership you purchased.",
     "MEMBERSHIP_ACCORDION_FORTH_TITLE": "Will the price stay the same forever?",
@@ -819,6 +819,7 @@
     "CUSTOM_NODE_SETTINGS_TABLE_NETWORK_HEADER": "Network",
     "CUSTOM_NODE_SETTINGS_TABLE_NETWORK_NODE": "Default Node",
     "CUSTOM_NODE_DROPDOWN_NEW_NODE": "Custom",
-    "PRIVATE_ACCOUNT": "Private Account"
+    "PRIVATE_ACCOUNT": "Private Account",
+    "BACK": "Back"
   }
 }

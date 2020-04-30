@@ -2,7 +2,8 @@ import React from 'react';
 import { Button, Panel, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { BREAK_POINTS } from 'v2/theme';
+import { BREAK_POINTS, SPACING } from 'v2/theme';
+import translate from 'v2/translations';
 import Stepper from './Stepper';
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
@@ -59,6 +60,11 @@ const BackButton = styled(Button)`
   }
 `;
 
+const BackButtonExtraText = styled.span`
+  display: contents;
+  font-weight: normal;
+`;
+
 const ContentPanelHeading = styled.p`
   display: flex;
   align-items: center;
@@ -88,7 +94,7 @@ const ContentPanelTop = styled.div`
   align-items: center;
   justify-content: ${(props: ContentPanelTopProps) =>
     props.stepperOnly ? 'flex-end' : 'space-between'};
-  margin: 0 30px 10px 30px;
+  margin: 0 0 ${SPACING.SM} 0;
   padding: 0;
 `;
 
@@ -127,8 +133,9 @@ export default function ContentPanel({
         <ContentPanelTop stepperOnly={stepper !== undefined && !onBack}>
           {onBack && (
             <BackButton basic={true} onClick={onBack}>
-              <img src={backArrowIcon} alt="Back arrow" />{' '}
-              {backBtnText ? `Back : ${backBtnText}` : `Back`}
+              <img src={backArrowIcon} alt="Back arrow" /> {translate('BACK')}
+              {backBtnText && `: `}
+              {backBtnText && <BackButtonExtraText>{backBtnText}</BackButtonExtraText>}
             </BackButton>
           )}
           {stepper && <Stepper current={stepper.current} total={stepper.total} />}

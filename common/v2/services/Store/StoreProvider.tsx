@@ -1,6 +1,8 @@
 import React, { useState, useContext, useMemo, createContext, useEffect } from 'react';
 import * as R from 'ramda';
 import isEmpty from 'lodash/isEmpty';
+import unionBy from 'lodash/unionBy';
+import property from 'lodash/property';
 import { getUnlockTimestamps } from '@mycrypto/unlock-scan';
 import { BigNumber } from 'bignumber.js';
 
@@ -40,6 +42,7 @@ import {
 } from 'v2/features/PurchaseMembership/config';
 import { DEFAULT_NETWORK } from 'v2/config';
 import { TUuid } from 'v2/types/uuid';
+import { useEffectOnce } from 'v2/vendor';
 
 import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';
 import { getStoreAccounts, getPendingTransactionsFromAccounts } from './helpers';
@@ -89,6 +92,7 @@ interface State {
   ): (
     getPoolAssetReserveRate: (poolTokenUUID: string, assets: Asset[]) => ReserveAsset[]
   ) => StoreAsset[];
+  scanForMemberships(accounts: StoreAccount[]): void;
 }
 export const StoreContext = createContext({} as State);
 
@@ -184,14 +188,9 @@ export const StoreProvider: React.FC = ({ children }) => {
     [currentAccounts]
   );
 
-  // Naive polling for membership status
-  useEffect(() => {
-    // Pattern to cancel setState call if ever the component is unmounted
-    // before the async requests completes.
-    // @TODO: extract into seperate hook e.g. react-use
-    // https://www.robinwieruch.de/react-hooks-fetch-data
-    let isMounted = true;
-    const relevantAccounts = currentAccounts
+  // Utility method to scan and populate memberships list
+  const scanForMemberships = (accountToScan?: StoreAccount[]) => {
+    const relevantAccounts = (accountToScan ? accountToScan : currentAccounts)
       .filter((account) => account.networkId === DEFAULT_NETWORK)
       .filter((account) => account.wallet !== WalletId.VIEW_ONLY);
     const network = networks.find(({ id }) => DEFAULT_NETWORK === id);
@@ -209,27 +208,26 @@ export const StoreProvider: React.FC = ({ children }) => {
       })
       .then(nestedToBigNumberJS)
       .then((expiries) => {
-        if (isMounted) {
-          setMemberships(
-            Object.keys(expiries)
-              .map((address: TAddress) => ({
-                address,
-                memberships: Object.keys(expiries[address])
-                  .filter((contract) => expiries[address][contract].isGreaterThan(new BigNumber(0)))
-                  .map((contract) => ({
-                    type: MEMBERSHIP_CONTRACTS[contract],
-                    expiry: expiries[address][contract]
-                  }))
+        const newMemberships = Object.keys(expiries)
+          .map((address: TAddress) => ({
+            address,
+            memberships: Object.keys(expiries[address])
+              .filter((contract) => expiries[address][contract].isGreaterThan(new BigNumber(0)))
+              .map((contract) => ({
+                type: MEMBERSHIP_CONTRACTS[contract],
+                expiry: expiries[address][contract]
               }))
-              .filter((m) => m.memberships.length > 0)
-          );
-        }
+          }))
+          .filter((m) => m.memberships.length > 0);
+        setMemberships(
+          unionBy(newMemberships, memberships ? memberships : [], property('address'))
+        );
       });
+  };
 
-    return () => {
-      isMounted = false;
-    };
-  }, [currentAccounts]);
+  useEffectOnce(() => {
+    scanForMemberships();
+  });
 
   useEffect(() => {
     setPendingTransactions(getPendingTransactionsFromAccounts(currentAccounts));
@@ -276,6 +274,8 @@ export const StoreProvider: React.FC = ({ children }) => {
             });
             if (pendingTransactionObject.txType === ITxType.DEFIZAP) {
               setIsScanTokenRequested(true);
+            } else if (pendingTransactionObject.txType === ITxType.PURCHASE_MEMBERSHIP) {
+              scanForMemberships([senderAccount]);
             }
           });
         });
@@ -338,6 +338,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       updateSettingsAccounts(
         settings.dashboardAccounts.filter((dashboardUUID) => dashboardUUID !== account.uuid)
       );
+      setMemberships((prevState) => prevState?.filter((s) => s.address !== account.address));
     },
     restoreDeletedAccount: (accountId) => {
       const account = accountRestore[accountId];
@@ -405,7 +406,8 @@ export const StoreProvider: React.FC = ({ children }) => {
           reserveAsset.reserveExchangeRate
         ),
         mtime: Date.now()
-      }))
+      })),
+    scanForMemberships
   };
 
   return <StoreContext.Provider value={state}>{children}</StoreContext.Provider>;
