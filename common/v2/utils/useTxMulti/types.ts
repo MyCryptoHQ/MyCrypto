@@ -74,7 +74,7 @@ interface AInitSuccess extends DefaultAction {
   type: ActionTypes.INIT_SUCCESS;
   payload: {
     txs: ITxObject[];
-    account?: StoreAccount;
+    account: StoreAccount;
     network: Network;
   };
 }

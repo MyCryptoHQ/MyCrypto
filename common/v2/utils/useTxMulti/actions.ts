@@ -19,8 +19,8 @@ import { TxMultiState, TxMultiAction, ActionTypes } from './types';
 
 export const init = (dispatch: Dispatch<TxMultiAction>) => async (
   txs: ITxObject[],
-  network: Network,
-  account: StoreAccount
+  account: StoreAccount,
+  network: Network
 ) => {
   dispatch({
     type: ActionTypes.INIT_SUCCESS,
@@ -30,8 +30,8 @@ export const init = (dispatch: Dispatch<TxMultiAction>) => async (
 
 export const initWith = (dispatch: Dispatch<TxMultiAction>) => async (
   getTxs: () => any,
-  network: Network,
-  account?: StoreAccount
+  account: StoreAccount,
+  network: Network
 ) => {
   dispatch({ type: ActionTypes.INIT_REQUEST });
   try {
