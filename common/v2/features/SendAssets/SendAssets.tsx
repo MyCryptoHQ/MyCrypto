@@ -33,7 +33,7 @@ import { bigNumberify } from 'ethers/utils';
 
 function SendAssets() {
   const [signedTx, setSignedTx] = useState<ITxHash | ITxSigned | null>(null);
-  const { state, initWith, prepareTx, sendTx } = useTxMulti();
+  const { state, init, prepareTx, sendTx } = useTxMulti();
   const { transactions, _currentTxIdx, account, network } = state;
 
   const txParcel = getCurrentTxFromTxMulti(transactions, _currentTxIdx);
@@ -59,7 +59,7 @@ function SendAssets() {
         }
 
         const { account: formAccount, network: formNetwork } = payload;
-        await initWith(() => Promise.resolve([{}]), formNetwork, formAccount);
+        await init([{}], formNetwork, formAccount);
 
         const rawTransaction: ITxObject = fromSendAssetFormDataToTxObject(payload);
         await prepareTx(rawTransaction);
@@ -117,7 +117,7 @@ function SendAssets() {
         }
 
         const { account: formAccount, network: formNetwork } = payload;
-        await initWith(() => Promise.resolve([{}]), formNetwork, formAccount);
+        await init([{}], formNetwork, formAccount);
 
         const rawTransaction: ITxObject = fromSendAssetFormDataToTxObject(payload);
         await prepareTx(rawTransaction);
@@ -173,7 +173,7 @@ function SendAssets() {
         pendingButton: {
           text: translateRaw('TRANSACTION_BROADCASTED_RESUBMIT'),
           action: async (cb: any) => {
-            await initWith(() => Promise.resolve([{}]), network, account);
+            await init([{}], network, account);
 
             const { gasPrice } = txRaw;
 

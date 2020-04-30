@@ -25,7 +25,7 @@ const BroadcastTransactionFlow = () => {
   const goToNextStep = useRef<() => void>();
   const [signedTx, setSignedTx] = useState<ITxSigned | null>(null);
   const [selectedNetwork, setSelectedNetwork] = useState<Network | null>(null);
-  const { state, initWith, prepareTx, sendTx, reset } = useTxMulti();
+  const { state, init, prepareTx, sendTx, reset } = useTxMulti();
   const { transactions, _currentTxIdx, network } = state;
 
   const txConfig = fromSignedTxToTxConfig(signedTx!, assets, networks, accounts, {
@@ -35,12 +35,12 @@ const BroadcastTransactionFlow = () => {
   const txReceipt = fromTxParcelToTxReceipt(txParcel, txConfig?.senderAccount);
 
   useEffect(() => {
-    if (isFunction(goToNextStep.current) && selectedNetwork && signedTx && signedTx && txConfig) {
+    if (isFunction(goToNextStep.current) && selectedNetwork && signedTx && txConfig) {
       const nextStep = goToNextStep.current;
       goToNextStep.current = undefined;
       const initializeTx = async () => {
         const txObject = fromSignedTxToTxObject(signedTx);
-        await initWith(() => Promise.resolve([{}]), selectedNetwork, txConfig?.senderAccount);
+        await init([{}], selectedNetwork, txConfig?.senderAccount);
         await prepareTx(txObject);
 
         nextStep();
