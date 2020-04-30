@@ -90,8 +90,8 @@ interface State {
   getDeFiAssetReserveAssets(
     asset: StoreAsset
   ): (
-    getPoolAssetReserveRate: (poolTokenUUID: string, assets: Asset[]) => ReserveAsset[]
-  ) => StoreAsset[];
+      getPoolAssetReserveRate: (poolTokenUUID: string, assets: Asset[]) => ReserveAsset[]
+    ) => StoreAsset[];
   scanForMemberships(accounts: StoreAccount[]): void;
 }
 export const StoreContext = createContext({} as State);
@@ -124,7 +124,6 @@ export const StoreProvider: React.FC = ({ children }) => {
   );
 
   const [pendingTransactions, setPendingTransactions] = useState([] as ITxReceipt[]);
-  const [isScanTokenRequested, setIsScanTokenRequested] = useState(false);
   // We transform rawAccounts into StoreAccount. Since the operation is exponential to the number of
   // accounts, make sure it is done only when rawAccounts change.
   const accounts = useMemo(() => getStoreAccounts(rawAccounts, assets, networks, contacts), [
@@ -142,8 +141,8 @@ export const StoreProvider: React.FC = ({ children }) => {
 
   const membershipExpirations = memberships
     ? R.flatten(
-        Object.values(memberships).map((m) => Object.values(m.memberships).map((e) => e.expiry))
-      )
+      Object.values(memberships).map((m) => Object.values(m.memberships).map((e) => e.expiry))
+    )
     : [];
 
   const membershipState = (() => {
@@ -273,7 +272,7 @@ export const StoreProvider: React.FC = ({ children }) => {
               stage: txStatus
             });
             if (pendingTransactionObject.txType === ITxType.DEFIZAP) {
-              setIsScanTokenRequested(true);
+              state.scanAccountTokens(senderAccount);
             } else if (pendingTransactionObject.txType === ITxType.PURCHASE_MEMBERSHIP) {
               scanForMemberships([senderAccount]);
             }
@@ -286,12 +285,6 @@ export const StoreProvider: React.FC = ({ children }) => {
       clearInterval(txStatusLookupInterval);
     };
   }, [pendingTransactions]);
-
-  useEffect(() => {
-    if (!isScanTokenRequested) return;
-    state.scanTokens();
-    setIsScanTokenRequested(false);
-  }, [isScanTokenRequested]);
 
   const state: State = {
     accounts,
