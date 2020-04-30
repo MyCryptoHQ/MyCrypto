@@ -1,5 +1,5 @@
 import React, { useContext, createContext } from 'react';
-import * as R from 'ramda';
+import clone from 'ramda/src/clone';
 
 import { ExtendedAsset, LSKeys, TUuid, StoreAsset } from 'v2/types';
 
@@ -36,7 +36,7 @@ export const AssetProvider: React.FC = ({ children }) => {
       });
 
       // make a copy of current assets array and merge it with assets received from API
-      const assetsCopy = R.clone(assets);
+      const assetsCopy = clone(assets);
       mappedAssets.forEach((asset) => {
         const existing = assetsCopy.find((x) => x.uuid === asset.uuid);
         if (existing) {
