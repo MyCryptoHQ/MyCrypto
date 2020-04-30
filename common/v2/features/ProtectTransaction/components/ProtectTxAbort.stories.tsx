@@ -1,18 +1,20 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import noop from 'lodash/noop';
+
+import { noOp } from 'v2/utils';
+
 import { ProtectTxAbort } from './ProtectTxAbort';
 import { ProtectTxProvider } from '../index';
 
 const AbortTransaction = () => (
   <div style={{ width: '700px', position: 'relative' }}>
-    <ProtectTxAbort onTxSent={noop} />
+    <ProtectTxAbort onTxSent={noOp} />
   </div>
 );
 
 storiesOf('ProtectTransaction', module)
-  .addDecorator(story => <ProtectTxProvider>{story()}</ProtectTxProvider>)
-  .add('Abort transaction', _ => AbortTransaction(), {
+  .addDecorator((story) => <ProtectTxProvider>{story()}</ProtectTxProvider>)
+  .add('Abort transaction', (_) => AbortTransaction(), {
     design: {
       type: 'figma',
       url:

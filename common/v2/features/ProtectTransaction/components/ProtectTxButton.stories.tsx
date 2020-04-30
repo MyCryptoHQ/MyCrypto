@@ -1,17 +1,19 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import noop from 'lodash/noop';
+
+import { noOp } from 'v2/utils';
+
 import { ProtectTxButton } from './ProtectTxButton';
 
 const ProtectTransactionButton = () => (
   <div style={{ maxWidth: '500px', position: 'relative' }}>
-    <ProtectTxButton onClick={noop} />
+    <ProtectTxButton onClick={noOp} />
   </div>
 );
 
 storiesOf('ProtectTransaction', module).add(
   'Protect transaction button',
-  _ => ProtectTransactionButton(),
+  (_) => ProtectTransactionButton(),
   {
     design: {
       type: 'figma',

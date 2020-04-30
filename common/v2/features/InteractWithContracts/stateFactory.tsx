@@ -1,5 +1,5 @@
 import { useContext, useCallback } from 'react';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 
 import { TUseStateReducerFactory, fromTxReceiptObj, generateContractUUID } from 'v2/utils';
 import { CREATION_ADDRESS } from 'v2/config';

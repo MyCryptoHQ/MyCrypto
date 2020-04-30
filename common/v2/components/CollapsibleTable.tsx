@@ -4,7 +4,7 @@
 */
 
 import React, { Component, DetailedHTMLProps, HTMLAttributes, ReactNode } from 'react';
-import throttle from 'lodash.throttle';
+import throttle from 'lodash/throttle';
 import isFunction from 'lodash/isFunction';
 import styled, { StyledComponentClass } from 'styled-components';
 
@@ -82,7 +82,7 @@ export const transformTableToCards = (
 ): (StackedCardData | string)[] => {
   const { primaryColumn, iconColumns } = config;
   const primaryColumnIndex = head.indexOf(primaryColumn);
-  const cards: (StackedCardData | string)[] = body.map(row =>
+  const cards: (StackedCardData | string)[] = body.map((row) =>
     transformRowToCards(row, head, primaryColumnIndex, iconColumns)
   );
 
@@ -91,7 +91,7 @@ export const transformTableToCards = (
       title,
       ...(collapsedGroups[title]
         ? []
-        : entries.map(row => transformRowToCards(row, head, primaryColumnIndex, iconColumns)))
+        : entries.map((row) => transformRowToCards(row, head, primaryColumnIndex, iconColumns)))
     )
   );
 
@@ -107,7 +107,7 @@ const GroupHeading = styled(Typography)`
   margin: 0;
   padding: 0.9375rem;
   border-bottom: 0.0625rem solid #dde3ee;
-  background: ${props => props.theme.tableHeadBackground};
+  background: ${(props) => props.theme.tableHeadBackground};
   text-transform: uppercase;
   font-size: ${scale(2)};
   cursor: pointer;
@@ -120,7 +120,7 @@ GroupHeading.defaultProps = {
 
 const GroupHeadingCaret = styled(Icon)<Flippable>`
   margin-left: 0.5em;
-  ${props =>
+  ${(props) =>
     props.isFlipped &&
     `
     svg {
@@ -223,7 +223,7 @@ export class CollapsibleTable extends Component<Props, State> {
   };
 
   private readonly toggleCollapseGroup = (title: string) =>
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       collapsedGroups: {
         ...prevState.collapsedGroups,
         [title]: !prevState.collapsedGroups[title]

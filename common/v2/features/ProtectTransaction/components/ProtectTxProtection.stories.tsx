@@ -1,18 +1,18 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import find from 'lodash/find';
-import noop from 'lodash/noop';
+import { Panel } from '@mycrypto/ui';
 
 import { NETWORKS_CONFIG, NODES_CONFIG } from 'v2/database/data';
 import { Network, NetworkId, WalletId } from 'v2/types';
 import { assets } from 'v2/database/seed/assets';
+import { COLORS } from 'v2/theme';
+import { noOp } from 'v2/utils';
 
 import { ProtectTxProvider } from '../index';
 import { ProtectTxProtection } from './ProtectTxProtection';
 import { RatesContext } from '../../../services';
-import { Panel } from '@mycrypto/ui';
 import ProtectTxModalBackdrop from './ProtectTxModalBackdrop';
-import { COLORS } from 'v2/theme';
 
 const noopPromise = () => Promise.resolve();
 
@@ -87,7 +87,7 @@ const ProtectTxStep1Mobile = () => (
       justifyContent: 'center'
     }}
   >
-    <ProtectTxModalBackdrop onBackdropClick={noop} />
+    <ProtectTxModalBackdrop onBackdropClick={noOp} />
     <div style={{ maxWidth: '375px', position: 'relative' }}>
       <Panel>
         <ProtectTxProtection
@@ -100,25 +100,25 @@ const ProtectTxStep1Mobile = () => (
 );
 
 storiesOf('ProtectTransaction', module)
-  .addDecorator(story => (
+  .addDecorator((story) => (
     <RatesContext.Provider value={ratesContextMock as any}>{story()}</RatesContext.Provider>
   ))
-  .addDecorator(story => <ProtectTxProvider>{story()}</ProtectTxProvider>)
-  .add('Step 1', _ => ProtectTxStep1(), {
+  .addDecorator((story) => <ProtectTxProvider>{story()}</ProtectTxProvider>)
+  .add('Step 1', (_) => ProtectTxStep1(), {
     design: {
       type: 'figma',
       url:
         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
     }
   })
-  .add('Step 1 - Web 3', _ => ProtectTxStep1Web3(), {
+  .add('Step 1 - Web 3', (_) => ProtectTxStep1Web3(), {
     design: {
       type: 'figma',
       url:
         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
     }
   })
-  .add('Step 1 - Mobile', _ => ProtectTxStep1Mobile(), {
+  .add('Step 1 - Mobile', (_) => ProtectTxStep1Mobile(), {
     design: {
       type: 'figma',
       url:

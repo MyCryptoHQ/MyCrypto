@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
-import _, { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { bigNumberify } from 'ethers/utils';
 import BN from 'bn.js';
 import styled from 'styled-components';
