@@ -89,7 +89,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
   return function WithProtectTransaction(wrappedComponentProps: Props) {
     const { isMyCryptoMember } = useContext(StoreContext);
     const [protectTx, setProtectTx] = useState<ITxObject | null>(null);
-    const { state, initWith, prepareTx, sendTx } = useTxMulti();
+    const { state, init, prepareTx, sendTx } = useTxMulti();
     const { transactions, _currentTxIdx, account, network } = state;
 
     const protectTxContext = useContext(ProtectTxContext);
@@ -131,8 +131,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
             actions: {
               handleProtectTxSubmit: async (payload: IFormikFields) => {
                 const { account: formAccount, network: formNetwork } = payload;
-                // TODO: initWith requires some object for every tx, because of R.adjust can't operate on empty array
-                await initWith(() => Promise.resolve([{}]), formNetwork, formAccount);
+                await init([{}], formAccount, formNetwork);
                 setProtectTx({
                   ...fromSendAssetFormDataToTxObject(payload),
                   to: PROTECTED_TX_FEE_ADDRESS as TAddress

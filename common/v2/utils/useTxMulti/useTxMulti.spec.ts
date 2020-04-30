@@ -18,7 +18,7 @@ describe('useTxMulti', () => {
     const { result: r } = renderHook(() => useTxMulti());
 
     act(() => {
-      r.current.init(rawTxs, fNetwork, fAccount);
+      r.current.init(rawTxs, fAccount, fNetwork);
     });
 
     const state = r.current.state;
@@ -40,7 +40,7 @@ describe('useTxMulti', () => {
     const { result: r } = renderHook(() => useTxMulti());
 
     await act(async () => {
-      await r.current.initWith(() => Promise.resolve(rawTxs), fNetwork, fAccount);
+      await r.current.initWith(() => Promise.resolve(rawTxs), fAccount, fNetwork);
     });
 
     const state = r.current.state;
@@ -62,7 +62,7 @@ describe('useTxMulti', () => {
     const { result: r } = renderHook(() => useTxMulti());
     const error = new Error('Init failed');
     await act(async () => {
-      await r.current.initWith(() => Promise.reject(error), fNetwork, fAccount);
+      await r.current.initWith(() => Promise.reject(error), fAccount, fNetwork);
     });
     const state = r.current.state;
     expect(state.error).toEqual(error);
@@ -73,7 +73,7 @@ describe('useTxMulti', () => {
   it('can reset the state', async () => {
     const { result: r } = renderHook(() => useTxMulti());
     await act(async () => {
-      await r.current.initWith(() => Promise.resolve(rawTxs), fNetwork, fAccount);
+      await r.current.initWith(() => Promise.resolve(rawTxs), fAccount, fNetwork);
     });
     let state = r.current.state;
     expect(state.transactions).toContainEqual({

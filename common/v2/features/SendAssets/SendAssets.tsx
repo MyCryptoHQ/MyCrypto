@@ -59,7 +59,7 @@ function SendAssets() {
         }
 
         const { account: formAccount, network: formNetwork } = payload;
-        await init([{}], formNetwork, formAccount);
+        await init([{}], formAccount, formNetwork);
 
         const rawTransaction: ITxObject = fromSendAssetFormDataToTxObject(payload);
         await prepareTx(rawTransaction);
@@ -117,7 +117,7 @@ function SendAssets() {
         }
 
         const { account: formAccount, network: formNetwork } = payload;
-        await init([{}], formNetwork, formAccount);
+        await init([{}], formAccount, formNetwork);
 
         const rawTransaction: ITxObject = fromSendAssetFormDataToTxObject(payload);
         await prepareTx(rawTransaction);
@@ -173,7 +173,7 @@ function SendAssets() {
         pendingButton: {
           text: translateRaw('TRANSACTION_BROADCASTED_RESUBMIT'),
           action: async (cb: any) => {
-            await init([{}], network, account);
+            await init([{}], account, network);
 
             const { gasPrice } = txRaw;
 

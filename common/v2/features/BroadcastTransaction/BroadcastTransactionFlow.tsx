@@ -40,7 +40,7 @@ const BroadcastTransactionFlow = () => {
       goToNextStep.current = undefined;
       const initializeTx = async () => {
         const txObject = fromSignedTxToTxObject(signedTx);
-        await init([{}], selectedNetwork, txConfig?.senderAccount);
+        await init([{}], txConfig?.senderAccount, selectedNetwork);
         await prepareTx(txObject);
 
         nextStep();
