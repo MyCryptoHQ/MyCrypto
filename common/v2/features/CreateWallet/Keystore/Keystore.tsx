@@ -2,7 +2,7 @@ import React, { Component, ReactType } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { IV3Wallet } from 'ethereumjs-wallet';
 import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
-import * as R from 'ramda';
+import pipe from 'ramda/src/pipe';
 
 import { withContext, makeBlob, generateAccountUUID } from 'v2/utils';
 import { generateKeystore, fromV3 } from 'v2/workers';
@@ -179,7 +179,7 @@ class CreateKeystore extends Component<Props & INetworkContext & IAssetContext, 
   };
 }
 
-export default R.pipe(
+export default pipe(
   withAccountAndNotificationsContext,
   withContext(NetworkContext),
   withContext(AssetContext)

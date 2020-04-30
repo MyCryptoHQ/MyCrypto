@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { PieChart, Pie, Sector, Cell, PieLabelRenderProps } from 'recharts';
-import * as R from 'ramda';
+import equals from 'ramda/src/equals';
 
 import { Balance } from './types';
 import { SMALLEST_CHART_SHARE_SUPPORTED } from './WalletBreakdownView';
@@ -146,7 +146,7 @@ const BreakdownChart = React.memo(
             cy={200}
             innerRadius={0}
             outerRadius={110}
-            label={p => CustomLabel(p as CustomLabelProps, selectedAssetIndex, handleMouseOver)}
+            label={(p) => CustomLabel(p as CustomLabelProps, selectedAssetIndex, handleMouseOver)}
             labelLine={false}
             dataKey="fiatValue"
             onMouseEnter={(_: any, index: number) => handleMouseOver(index)}
@@ -166,7 +166,7 @@ const BreakdownChart = React.memo(
       </MainWrapper>
     );
   },
-  (prev, next) => next.isChartAnimating || R.equals(prev, next)
+  (prev, next) => next.isChartAnimating || equals(prev, next)
 );
 
 export default BreakdownChart;

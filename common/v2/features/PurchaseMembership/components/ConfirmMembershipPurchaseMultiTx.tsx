@@ -1,5 +1,5 @@
 import React from 'react';
-import * as R from 'ramda';
+import path from 'ramda/src/path';
 
 import { ITxStatus, TxParcel } from 'v2/types';
 import { VerticalStepper } from 'v2/components';
@@ -23,9 +23,9 @@ export default function ConfirmMembershipPurchase({
   transactions,
   onComplete
 }: Props) {
-  const status = transactions.map(t => R.path(['status'], t));
+  const status = transactions.map((t) => path(['status'], t));
 
-  const broadcastingIndex = status.findIndex(s => s === ITxStatus.BROADCASTED);
+  const broadcastingIndex = status.findIndex((s) => s === ITxStatus.BROADCASTED);
 
   const approveTx = {
     title: translateRaw('APPROVE_MEMBERSHIP'),

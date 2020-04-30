@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
-import * as R from 'ramda';
+import isEmpty from 'ramda/src/isEmpty';
 
 import translate, { translateRaw } from 'v2/translations';
 import { Button, CodeBlock, QRCodeContainer, Typography, Overlay, Spinner } from 'v2/components';
@@ -29,14 +29,14 @@ const SHeader = styled.div`
 const SContent = styled.div``;
 
 const SSection = styled.div<{ center: boolean; withOverlay?: boolean }>`
-  ${props =>
+  ${(props) =>
     props.center &&
     css`
       margin: 0 auto;
       text-align: center;
     `}
 
-  ${props =>
+  ${(props) =>
     props.withOverlay &&
     css`
       display: flex;
@@ -151,7 +151,7 @@ export function SignTransactionWalletConnect({
   // 2. When 'promptSignRetry' is true, we are waiting for a user confirmation,
   //    so we bail in the meantime.
   useUpdateEffect(() => {
-    if (!state.isConnected || state.promptSignRetry || !R.isEmpty(state.errors)) return;
+    if (!state.isConnected || state.promptSignRetry || !isEmpty(state.errors)) return;
     sendTx();
   }, [state.isConnected, state.promptSignRetry, state.errors]);
 
@@ -195,13 +195,9 @@ export function SignTransactionWalletConnect({
           </SSection>
         )}
         <SSection center={true} withOverlay={true}>
-          <Overlay
-            absolute={true}
-            center={true}
-            show={state.isConnected || !R.isEmpty(state.errors)}
-          >
+          <Overlay absolute={true} center={true} show={state.isConnected || !isEmpty(state.errors)}>
             <SContainer>
-              {!R.isEmpty(state.errors) ? (
+              {!isEmpty(state.errors) ? (
                 getErrorMessage(state.errors![0])
               ) : (
                 <>

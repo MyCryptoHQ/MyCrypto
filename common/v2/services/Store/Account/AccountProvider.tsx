@@ -2,7 +2,10 @@ import React, { createContext, useContext } from 'react';
 import unionBy from 'lodash/unionBy';
 import property from 'lodash/property';
 import BigNumber from 'bignumber.js';
-import * as R from 'ramda';
+import unionWith from 'ramda/src/unionWith';
+import isEmpty from 'ramda/src/isEmpty';
+import eqBy from 'ramda/src/eqBy';
+import prop from 'ramda/src/prop';
 
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services/ApiService/Analytics';
 
@@ -18,6 +21,7 @@ import {
   ITxStatus,
   ITxType
 } from 'v2/types';
+
 import { DataContext } from '../DataManager';
 import { SettingsContext } from '../Settings';
 import { getAccountByAddressAndNetworkName } from './helpers';
@@ -145,15 +149,13 @@ export const AccountProvider: React.FC = ({ children }) => {
           });
         })
       )
-        .then((data) => data.filter((accountItem) => !R.isEmpty(accountItem)))
+        .then((data) => data.filter((accountItem) => !isEmpty(accountItem)))
         .then((updatedAccounts) => model.updateAll(updatedAccounts))
         .catch((err) => {
           console.debug('[AccountProvider]: Scan Tokens Error:', err);
         }),
     updateAccountsBalances: (toUpdate) => {
-      const newAccounts = R.unionWith(R.eqBy(R.prop('uuid')), toUpdate, state.accounts).filter(
-        Boolean
-      );
+      const newAccounts = unionWith(eqBy(prop('uuid')), toUpdate, state.accounts).filter(Boolean);
       model.updateAll(newAccounts);
     },
     toggleAccountPrivacy: (uuid) => {

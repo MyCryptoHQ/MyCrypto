@@ -1,5 +1,8 @@
 import React, { useState, useContext, useMemo, createContext, useEffect } from 'react';
-import * as R from 'ramda';
+import flatten from 'ramda/src/flatten';
+import prop from 'ramda/src/prop';
+import uniqBy from 'ramda/src/uniqBy';
+import sortBy from 'ramda/src/sortBy';
 import isEmpty from 'lodash/isEmpty';
 import unionBy from 'lodash/unionBy';
 import property from 'lodash/property';
@@ -90,8 +93,8 @@ interface State {
   getDeFiAssetReserveAssets(
     asset: StoreAsset
   ): (
-      getPoolAssetReserveRate: (poolTokenUUID: string, assets: Asset[]) => ReserveAsset[]
-    ) => StoreAsset[];
+    getPoolAssetReserveRate: (poolTokenUUID: string, assets: Asset[]) => ReserveAsset[]
+  ) => StoreAsset[];
   scanForMemberships(accounts: StoreAccount[]): void;
 }
 export const StoreContext = createContext({} as State);
@@ -140,9 +143,9 @@ export const StoreProvider: React.FC = ({ children }) => {
   const [memberships, setMemberships] = useState<MembershipStatus[] | undefined>([]);
 
   const membershipExpirations = memberships
-    ? R.flatten(
-      Object.values(memberships).map((m) => Object.values(m.memberships).map((e) => e.expiry))
-    )
+    ? flatten(
+        Object.values(memberships).map((m) => Object.values(m.memberships).map((e) => e.expiry))
+      )
     : [];
 
   const membershipState = (() => {
@@ -299,8 +302,8 @@ export const StoreProvider: React.FC = ({ children }) => {
       const userAssets = state.accounts
         .filter((a: StoreAccount) => a.wallet !== WalletId.VIEW_ONLY)
         .flatMap((a: StoreAccount) => a.assets);
-      const uniq = R.uniqBy(R.prop('uuid'), userAssets);
-      return R.sortBy(R.prop('ticker'), uniq);
+      const uniq = uniqBy(prop('uuid'), userAssets);
+      return sortBy(prop('ticker'), uniq);
     },
     assets: (selectedAccounts = state.accounts) =>
       selectedAccounts.flatMap((account: StoreAccount) => account.assets),

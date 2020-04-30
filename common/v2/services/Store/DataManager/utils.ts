@@ -1,5 +1,5 @@
 import { Omit, ValuesType } from 'utility-types';
-import { isEmpty } from 'ramda';
+import isEmpty from 'ramda/src/isEmpty';
 
 import {
   LocalStorage,

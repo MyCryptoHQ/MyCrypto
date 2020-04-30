@@ -1,4 +1,7 @@
-import * as R from 'ramda';
+import eqBy from 'ramda/src/eqBy';
+import prop from 'ramda/src/prop';
+import unionWith from 'ramda/src/unionWith';
+import symmetricDifferenceWith from 'ramda/src/symmetricDifferenceWith';
 
 import { LSKeys, DataStoreEntry, DataStoreItem, TUuid, Network } from 'v2/types';
 import { EncryptedDataStore, DataStore, DSKeys } from 'v2/types/store';
@@ -62,11 +65,11 @@ export function appDataReducer(state: DataStore, { type, payload }: ActionV) {
         throw new Error(`[AppReducer: cannot call DELETE_ITEM for ${model}`);
       }
 
-      const predicate = R.eqBy(R.prop('uuid'));
+      const predicate = eqBy(prop('uuid'));
 
       return {
         ...state,
-        [model]: R.symmetricDifferenceWith(predicate, [data], state[model] as any)
+        [model]: symmetricDifferenceWith(predicate, [data], state[model] as any)
       };
     }
     case ActionT.UPDATE_ITEM: {
@@ -74,21 +77,21 @@ export function appDataReducer(state: DataStore, { type, payload }: ActionV) {
       if (model === LSKeys.SETTINGS) {
         throw new Error('[AppReducer: use ADD_ENTRY to update SETTINGS');
       }
-      const predicate = R.eqBy(R.prop('uuid'));
+      const predicate = eqBy(prop('uuid'));
       return {
         ...state,
         // Find item in array by uuid and replace.
-        [model]: R.unionWith(predicate, [data], state[model] as any)
+        [model]: unionWith(predicate, [data], state[model] as any)
       };
     }
     case ActionT.UPDATE_NETWORK: {
       const { data } = payload;
-      const predicate = R.eqBy(R.prop('id'));
+      const predicate = eqBy(prop('id'));
       const networks = state.networks;
       return {
         ...state,
         // Find network in array by id and replace.
-        [LSKeys.NETWORKS]: R.unionWith(predicate, [data as Network], networks)
+        [LSKeys.NETWORKS]: unionWith(predicate, [data as Network], networks)
       };
     }
 

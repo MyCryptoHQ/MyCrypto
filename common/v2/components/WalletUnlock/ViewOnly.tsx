@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Formik, Form } from 'formik';
 import styled from 'styled-components';
-import * as R from 'ramda';
+import equals from 'ramda/src/equals';
 
 import { translateRaw } from 'v2/translations';
 import { WalletId, FormData, IReceiverAddress, ErrorObject } from 'v2/types';
@@ -43,7 +43,7 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
   const [network] = useState(getNetworkById(formData.network));
 
   const onSubmit = (fields: FormValues) => {
-    if (R.equals(fields, initialFormikValues)) return;
+    if (equals(fields, initialFormikValues)) return;
     onUnlock(WalletService.init(toChecksumAddressByChainId(fields.address.value, network.chainId)));
   };
 

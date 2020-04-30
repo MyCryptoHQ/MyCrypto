@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import * as R from 'ramda';
+import isEmpty from 'ramda/src/isEmpty';
 import { fAccount, fNetwork } from '@fixtures';
 
 import { useTxMulti } from './useTxMulti';
@@ -85,6 +85,6 @@ describe('useTxMulti', () => {
       await r.current.reset();
     });
     state = r.current.state;
-    expect(R.isEmpty(state.transactions)).toBeTruthy();
+    expect(isEmpty(state.transactions)).toBeTruthy();
   });
 });
