@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Typography as UITypography } from '@mycrypto/ui';
 
 import { useScreenSize } from 'v2/utils';
+import { BREAK_POINTS } from 'v2/theme';
 
 interface Props {
   as?: string;
@@ -29,16 +30,40 @@ const STypography = styled(UITypography)`
   */
   margin-bottom: 0px;
 
-  ${(p: SProps) =>
-    p.truncate &&
-    ((p.children && p.children.length >= p.maxCharLen) ||
-      (p.value && p.value.length >= p.maxCharLen)) &&
-    `
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-      width: ${p.maxCharLen}ch;
-    `}
+  ${({ truncate, maxCharLen, children, value }) => {
+    const childrenLength = children && children.length;
+    const valueLength = value && value.length;
+    const charLength = childrenLength || valueLength;
+
+    const styles: string[] = [];
+    if (truncate && charLength >= maxCharLen / 3) {
+      styles.push(`
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+
+          line-height: 1.4rem;
+          max-height: calc(1.4rem * 3);
+          width: ${maxCharLen / 3}ch;
+        `);
+    }
+    if (truncate && charLength >= maxCharLen / 5) {
+      styles.push(`
+        @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+          display: -webkit-box;
+          -webkit-line-clamp: 5;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+
+          line-height: 1.4rem;
+          max-height: calc(1.4rem * 5);
+          width: ${maxCharLen / 5}ch;
+        }
+      `);
+    }
+    return styles.join('');
+  }}
 `;
 
 function Typography({
@@ -51,7 +76,7 @@ function Typography({
   ...props
 }: Props) {
   const { isMobile } = useScreenSize();
-  const maxCharLen = isMobile ? 28 : 18;
+  const maxCharLen = isMobile ? 58 : 75;
 
   return (
     <STypography

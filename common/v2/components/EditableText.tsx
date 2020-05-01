@@ -12,6 +12,8 @@ const Wrapper = styled.div`
 `;
 
 const EditIcon = styled.img`
+  display: inline-flex;
+  align-self: flex-start;
   cursor: pointer;
   padding: ${SPACING.XS} ${SPACING.SM};
   opacity: 1;
@@ -83,7 +85,7 @@ function EditableText({ saveValue, value, className, bold, truncate }: Props) {
         <SInputField
           autoFocus={true}
           value={editValue}
-          onChange={e => setEditValue(e.currentTarget.value)}
+          onChange={(e) => setEditValue(e.currentTarget.value)}
           onBlur={save}
           onKeyDown={handleKeyDown}
         />
