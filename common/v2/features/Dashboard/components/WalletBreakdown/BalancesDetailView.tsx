@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
-import { DashboardPanel, CollapsibleTable, AssetIcon, Currency } from 'v2/components';
-import { WalletBreakdownProps } from './types';
-import { BREAK_POINTS } from 'v2/theme';
-import { TSymbol } from 'v2/types';
+import {
+  DashboardPanel,
+  CollapsibleTable,
+  AssetIcon,
+  Currency,
+  TableCell,
+  TableRow,
+  EthAddress
+} from 'v2/components';
+import { CollapseIcon, ExpandIcon } from 'v2/components/icons';
+import { Balance, BalanceAccount, WalletBreakdownProps } from './types';
+import { BREAK_POINTS, COLORS, SPACING } from 'v2/theme';
+import { Fiat, TSymbol } from 'v2/types';
+import { truncate } from 'v2/utils';
 
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
@@ -42,9 +52,11 @@ const BalancesOnlyTotal = styled.div`
   }
 `;
 
-const HeaderAlignment = styled.div`
+const HeaderAlignment = styled.div<{ align?: string }>`
+  display: inline-block;
+  width: calc(100% - 9px - 0.5em);
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    text-align: ${(props: { align?: string }) => props.align || 'inherit'};
+    text-align: ${({ align }) => align || 'inherit'};
   }
 `;
 
@@ -52,14 +64,109 @@ const RowAlignment = styled.div`
   float: ${(props: { align?: string }) => props.align || 'inherit'};
 `;
 
-const Label = styled.span`
+const Label = styled.span<{ minWidth?: string }>`
   display: flex;
   align-items: center;
+  ${({ minWidth }) => minWidth && `min-width: ${minWidth};`}
 `;
 
 const Icon = styled(AssetIcon)`
   margin-right: 10px;
 `;
+
+interface BalancesDetailViewTableRowProps {
+  borderBottom?: boolean;
+  spacingTop?: string;
+  spacingBottom?: string;
+  mute?: boolean;
+}
+
+const BalancesDetailViewTableRow = styled(TableRow)<BalancesDetailViewTableRowProps>`
+  ${({ borderBottom }) => !borderBottom && 'border-bottom: none;'}
+
+  > td {
+    ${({ spacingTop }) => spacingTop && `padding-top: ${spacingTop};`}
+    ${({ spacingBottom }) => spacingBottom && `padding-bottom: ${spacingBottom};`}
+    * {
+      ${({ mute }) => mute && `color: ${COLORS.GREY};`}
+    }
+  }
+`;
+
+const createBalancesDetailViewRow = (
+  balance: Balance,
+  fiat: Fiat,
+  rowState: 'opened' | 'closed',
+  setOverlayRows: Dispatch<SetStateAction<string[]>>
+): JSX.Element[] => {
+  const onCollapseOrExpand = () => {
+    if (rowState === 'closed') {
+      setOverlayRows((rows) => [...rows, balance.id!.toString()]);
+    } else {
+      setOverlayRows((rows) => rows.filter((r) => r !== balance.id!.toString()));
+    }
+  };
+
+  return [
+    <Label key={balance.id}>
+      <Icon symbol={balance.ticker as TSymbol} size={'2rem'} />
+      {balance.name}
+    </Label>,
+    <Label key={balance.id}>
+      {balance.accounts &&
+        (balance.accounts.length > 1
+          ? translateRaw('WALLET_BREAKDOWN_DETAIL_ACCOUNTS', {
+              $numOfAccounts: balance.accounts.length.toString()
+            })
+          : translateRaw('WALLET_BREAKDOWN_DETAIL_ACCOUNT', {
+              $numOfAccounts: balance.accounts.length.toString()
+            }))}
+    </Label>,
+    <RowAlignment data-balance={balance.amount} key={balance.id} align="right">
+      {`${balance.amount.toFixed(6)} ${balance.ticker}`}
+    </RowAlignment>,
+    <RowAlignment key={balance.id} align="right" data-value={balance.fiatValue}>
+      <Currency
+        amount={balance.fiatValue.toString()}
+        symbol={fiat.symbol}
+        prefix={fiat.prefix}
+        decimals={2}
+      />
+    </RowAlignment>,
+    <>
+      {rowState === 'opened' ? (
+        <CollapseIcon onClick={onCollapseOrExpand} />
+      ) : (
+        <ExpandIcon onClick={onCollapseOrExpand} />
+      )}
+    </>
+  ];
+};
+
+const createAccountRow = (
+  balanceAccount: BalanceAccount,
+  fiat: Fiat,
+  index: number
+): JSX.Element[] => {
+  return [
+    <></>,
+    <Label minWidth="140px" key={index}>
+      <EthAddress address={balanceAccount.address} truncate={truncate} />
+    </Label>,
+    <RowAlignment data-balance={balanceAccount.amount} key={index} align="right">
+      {`${balanceAccount.amount.toFixed(6)} ${balanceAccount.ticker}`}
+    </RowAlignment>,
+    <RowAlignment key={index} align="right" data-value={balanceAccount.fiatValue}>
+      <Currency
+        amount={balanceAccount.fiatValue.toString()}
+        symbol={fiat.symbol}
+        prefix={fiat.prefix}
+        decimals={2}
+      />
+    </RowAlignment>,
+    <></>
+  ];
+};
 
 export default function BalancesDetailView({
   balances,
@@ -67,48 +174,83 @@ export default function BalancesDetailView({
   totalFiatValue,
   fiat
 }: WalletBreakdownProps) {
+  const [overlayRows, setOverlayRows] = useState<string[]>([]);
+
   const BALANCES = translateRaw('WALLET_BREAKDOWN_BALANCES');
   const TOKEN = translateRaw('WALLET_BREAKDOWN_TOKEN');
+  const ACCOUNTS = translateRaw('WALLET_BREAKDOWN_ACCOUNTS');
   const BALANCE = translateRaw('WALLET_BREAKDOWN_BALANCE');
   const VALUE = translateRaw('WALLET_BREAKDOWN_VALUE');
+
   const balancesTable = {
     head: [
       TOKEN,
-      <HeaderAlignment key={BALANCE} align="center">
+      <Label minWidth="160px" key={ACCOUNTS}>
+        {ACCOUNTS}
+      </Label>,
+      <HeaderAlignment key={BALANCE} align="end">
         {BALANCE}
       </HeaderAlignment>,
-      <HeaderAlignment key={VALUE} align="center">
+      <HeaderAlignment key={VALUE} align="end">
         {VALUE}
-      </HeaderAlignment>
+      </HeaderAlignment>,
+      <React.Fragment key={'EXPAND'} />
     ],
-    body: balances.map((balance, index) => {
-      return [
-        <Label key={index}>
-          <Icon symbol={balance.ticker as TSymbol} size={'2rem'} />
-          {balance.name}
-        </Label>,
-        <RowAlignment key={index} align="right">
-          {`${balance.amount.toFixed(6)} ${balance.ticker}`}
-        </RowAlignment>,
-        <RowAlignment key={index} align="right">
-          <Currency
-            amount={balance.fiatValue.toString()}
-            symbol={fiat.symbol}
-            prefix={fiat.prefix}
-            decimals={2}
-          />
-        </RowAlignment>
-      ];
+    body: balances.map((balance) => {
+      return createBalancesDetailViewRow(balance, fiat, 'closed', setOverlayRows);
     }),
+    overlay: (bId: string): JSX.Element => {
+      const balanceRow = balances.find((b) => b.id === bId)!;
+      return (
+        <>
+          <BalancesDetailViewTableRow spacingBottom="0" borderBottom={false}>
+            {createBalancesDetailViewRow(balanceRow, fiat, 'opened', setOverlayRows).map((c, i) => (
+              <TableCell key={i}>{c}</TableCell>
+            ))}
+          </BalancesDetailViewTableRow>
+
+          {balanceRow.accounts?.map((acc, index) => {
+            const isLastItem = index + 1 >= (balanceRow.accounts?.length || -1);
+            return (
+              <BalancesDetailViewTableRow
+                key={index}
+                mute={true}
+                spacingTop={SPACING.XS}
+                spacingBottom={isLastItem ? SPACING.SM : SPACING.XS}
+                borderBottom={isLastItem}
+              >
+                {createAccountRow(acc, fiat, index).map((c, i) => (
+                  <TableCell key={i}>{c}</TableCell>
+                ))}
+              </BalancesDetailViewTableRow>
+            );
+          })}
+        </>
+      );
+    },
+    overlayRows,
     config: {
       primaryColumn: TOKEN,
-      sortableColumn: TOKEN,
-      sortFunction: (a: any, b: any) => {
-        const aLabel = a.props.children[1];
-        const bLabel = b.props.children[1];
-        return aLabel === bLabel ? true : aLabel.localeCompare(bLabel);
+      sortableColumn: [TOKEN, BALANCE, VALUE],
+      sortFunction: (column: typeof TOKEN | typeof BALANCE | typeof VALUE) => (a: any, b: any) => {
+        switch (column) {
+          case VALUE:
+            const aValue = a.props['data-value'];
+            const bValue = b.props['data-value'];
+            return aValue - bValue;
+          case BALANCE:
+            const aBalance = a.props['data-balance'];
+            const bBalance = b.props['data-balance'];
+            return aBalance - bBalance;
+          case TOKEN:
+          default:
+            const aLabel = a.props.children[1];
+            const bLabel = b.props.children[1];
+            return aLabel === bLabel ? true : aLabel.localeCompare(bLabel);
+        }
       },
-      hiddenHeadings: []
+      hiddenHeadings: [],
+      overlayRoot: true
     }
   };
 

@@ -50,6 +50,7 @@ export * from './WalletUnlock';
 export * from './TransactionFlow';
 export { default as TabsNav } from './TabsNav';
 export { default as CollapsibleTable } from './CollapsibleTable';
+export { TableRow, TableCell } from './Table';
 export { default as Network } from './Network';
 export { Banner } from './Banner';
 export * from './SignTransactionWallets';

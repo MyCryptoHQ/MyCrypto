@@ -10,7 +10,7 @@ import { weiToFloat, convertToFiatFromAsset } from 'v2/utils';
 import { BREAK_POINTS, SPACING } from 'v2/theme';
 import { Fiats } from 'v2/config';
 
-import { Balance } from './types';
+import { Balance, BalanceAccount } from './types';
 import AccountDropdown from './AccountDropdown';
 import BalancesDetailView from './BalancesDetailView';
 import WalletBreakdownView from './WalletBreakdownView';
@@ -78,15 +78,33 @@ export function WalletBreakdown() {
   // Adds/updates an asset in array of balances, which are later displayed in the chart, balance list and in the secondary view
   const balances: Balance[] = totals(currentAccounts)
     .map((asset: StoreAsset) => ({
+      id: `${asset.name}-${asset.ticker}`,
       name: asset.name || translateRaw('WALLET_BREAKDOWN_UNKNOWN'),
       ticker: asset.ticker,
       amount: weiToFloat(asset.balance, asset.decimal),
-      fiatValue: convertToFiatFromAsset(asset, getAssetRate(asset))
+      fiatValue: convertToFiatFromAsset(asset, getAssetRate(asset)),
+      accounts: currentAccounts.reduce((acc, currAccount) => {
+        const matchingAccAssets = currAccount.assets.filter(
+          (accAsset) => accAsset.uuid === asset.uuid
+        );
+        if (matchingAccAssets.length) {
+          return [
+            ...acc,
+            ...matchingAccAssets.map((accAsset) => ({
+              address: currAccount.address,
+              ticker: accAsset.ticker,
+              amount: weiToFloat(accAsset.balance, accAsset.decimal),
+              fiatValue: convertToFiatFromAsset(accAsset, getAssetRate(accAsset))
+            }))
+          ];
+        }
+        return acc;
+      }, [] as BalanceAccount[])
     }))
     .sort((a, b) => b.fiatValue - a.fiatValue);
 
   const totalFiatValue = balances.reduce((sum, asset) => {
-    return (sum += asset.fiatValue);
+    return sum + asset.fiatValue;
   }, 0);
 
   const toggleShowChart = () => {
