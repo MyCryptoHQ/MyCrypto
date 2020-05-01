@@ -24,6 +24,7 @@ export default class RPCClient {
       method: 'POST',
       headers: this.createHeaders({
         'Content-Type': 'application/json',
+        'Referer Policy': 'no-referrer-when-downgrade',
         ...this.headers
       }),
       body: JSON.stringify(this.decorateRequest(request))
@@ -35,6 +36,7 @@ export default class RPCClient {
       method: 'POST',
       headers: this.createHeaders({
         'Content-Type': 'application/json',
+        'Referer Policy': 'no-referrer-when-downgrade',
         ...this.headers
       }),
       body: JSON.stringify(requests.map(this.decorateRequest))
