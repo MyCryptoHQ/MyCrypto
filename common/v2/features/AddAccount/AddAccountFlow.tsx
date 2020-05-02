@@ -13,6 +13,7 @@ import { FormDataActionType as ActionType } from './types';
 import { getStories } from './stories';
 import { formReducer, initialState } from './AddAccountForm.reducer';
 import './AddAccountFlow.scss';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services/ApiService/Analytics';
 
 export const getStory = (storyName: WalletId): IStory => {
   return getStories().filter((selected) => selected.name === storyName)[0];
@@ -64,6 +65,10 @@ const AddAccountFlow = withRouter(({ history, match }) => {
       (account) => account.address === address && account.networkId === network
     );
     if (!!newAccount) {
+      AnalyticsService.instance.track(ANALYTICS_CATEGORIES.ADD_ACCOUNT, 'New Account Added', {
+        newAccountAddedType: newAccount.wallet,
+        newAccountAddedNumOfAccounts: accounts.length
+      });
       displayNotification(NotificationTemplates.walletAdded, { address });
       scanAccountTokens(newAccount);
       scanForMemberships([newAccount]);
