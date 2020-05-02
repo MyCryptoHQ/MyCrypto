@@ -7,13 +7,13 @@ import { ROUTE_PATHS, WALLETS_CONFIG, IWalletConfig } from 'v2/config';
 import { WalletId, IStory } from 'v2/types';
 import { ExtendedContentPanel, WalletList } from 'v2/components';
 import { StoreContext } from 'v2/services/Store';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services/ApiService';
 
 import { NotificationsContext, NotificationTemplates } from '../NotificationsPanel';
 import { FormDataActionType as ActionType } from './types';
 import { getStories } from './stories';
 import { formReducer, initialState } from './AddAccountForm.reducer';
 import './AddAccountFlow.scss';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services/ApiService/Analytics';
 
 export const getStory = (storyName: WalletId): IStory => {
   return getStories().filter((selected) => selected.name === storyName)[0];
