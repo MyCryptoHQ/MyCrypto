@@ -7,6 +7,7 @@ import { ROUTE_PATHS, WALLETS_CONFIG, IWalletConfig } from 'v2/config';
 import { WalletId, IStory } from 'v2/types';
 import { ExtendedContentPanel, WalletList } from 'v2/components';
 import { StoreContext } from 'v2/services/Store';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services/ApiService';
 
 import { NotificationsContext, NotificationTemplates } from '../NotificationsPanel';
 import { FormDataActionType as ActionType } from './types';
@@ -64,6 +65,10 @@ const AddAccountFlow = withRouter(({ history, match }) => {
       (account) => account.address === address && account.networkId === network
     );
     if (!!newAccount) {
+      AnalyticsService.instance.track(ANALYTICS_CATEGORIES.ADD_ACCOUNT, 'New Account Added', {
+        newAccountAddedType: newAccount.wallet,
+        newAccountAddedNumOfAccounts: accounts.length
+      });
       displayNotification(NotificationTemplates.walletAdded, { address });
       scanAccountTokens(newAccount);
       scanForMemberships([newAccount]);
