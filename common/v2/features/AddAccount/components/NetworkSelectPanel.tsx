@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
@@ -7,11 +7,8 @@ import { FormDataActionType as ActionType } from '../types';
 import { FormData, NetworkId } from 'v2/types';
 import { NetworkSelectDropdown } from 'v2/components';
 import { ANALYTICS_CATEGORIES, AnalyticsService } from 'v2/services';
-import { NetworkContext, NetworkUtils } from 'v2/services/Store';
-import NetworkNodeDropdown from 'v2/components/NetworkNodeDropdown';
-import { ProviderHandler } from 'v2/services/EthService/network';
+import { NetworkContext } from 'v2/services/Store';
 import { SPACING } from 'v2/theme';
-import { ToastContext } from '../../Toasts';
 
 const NetworkForm = styled.div`
   margin-top: ${SPACING.BASE};
@@ -31,11 +28,6 @@ const SButton = styled(Button)`
   bottom: 2em;
 `;
 
-const SLabel = styled.label`
-  margin-top: ${SPACING.BASE};
-  margin-bottom: ${SPACING.SM};
-`;
-
 interface Props {
   formData: FormData;
   formDispatch: any;
@@ -43,32 +35,19 @@ interface Props {
 }
 
 function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
-  const { networks, getNetworkById, setNetworkSelectedNode } = useContext(NetworkContext);
-  const { displayToast, toastTemplates } = useContext(ToastContext);
+  const { networks } = useContext(NetworkContext);
   const [network, setNetwork] = useState<NetworkId>(formData.network);
 
-  const onSubmit = useCallback(async () => {
-    const networkNode = getNetworkById(network);
+  const onSubmit = () => {
+    formDispatch({
+      type: ActionType.SELECT_NETWORK,
+      payload: { network }
+    });
+    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.SELECT_NETWORK, network);
+    goToNextStep();
+  };
 
-    try {
-      const selectedNode = NetworkUtils.getSelectedNode(networkNode);
-      const provider = new ProviderHandler({ ...networkNode, nodes: [selectedNode] }, false);
-      await provider.getCurrentBlock();
-
-      formDispatch({
-        type: ActionType.SELECT_NETWORK,
-        payload: { network }
-      });
-      AnalyticsService.instance.track(ANALYTICS_CATEGORIES.SELECT_NETWORK, network);
-      goToNextStep();
-    } catch (e) {
-      console.debug(e);
-      displayToast(toastTemplates.nodeConnectionError);
-      setNetworkSelectedNode(networkNode.id, networkNode.autoNode!);
-    }
-  }, [network, networks, getNetworkById]);
-
-  const validNetwork = networks.some(n => n.id === network);
+  const validNetwork = networks.some((n) => n.id === network);
 
   return (
     <div className="Panel">
@@ -81,8 +60,6 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
           onChange={setNetwork}
           showTooltip={true}
         />
-        <SLabel>Node</SLabel>
-        <NetworkNodeDropdown networkId={network} />
       </NetworkForm>
       <ButtonWrapper>
         <SButton disabled={!validNetwork} onClick={onSubmit}>
