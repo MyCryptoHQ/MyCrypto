@@ -23,11 +23,10 @@ export const unlockKeystore = async (payload: KeystoreUnlockParams) => {
       password === '' &&
       e.message === 'Private key does not satisfy the curve requirements (ie. it is invalid)'
     ) {
-      console.error('Error: ' + 'Please Enter a password.');
+      return translateRaw('MISSING_PASSWORD');
     } else {
-      console.error('Error: ' + translateRaw('ERROR_6'));
+      return translateRaw('ERROR_6');
     }
-    return;
   }
   // TODO: provide a more descriptive error than the two 'ERROR_6' (invalid pass) messages above
   return wallet;
