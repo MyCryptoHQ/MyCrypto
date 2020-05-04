@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { RatesContext } from 'v2/services';
+import { TUuid } from 'v2/types';
 import genericIcon from 'assets/generic.svg';
 
 // Relies on https://github.com/atomiclabs/cryptocurrency-icons using fixed version number through CDN
@@ -24,7 +25,7 @@ const SImg = styled('img')`
 `;
 
 interface Props {
-  uuid: string;
+  uuid: TUuid;
   size?: string;
   className?: string;
 }

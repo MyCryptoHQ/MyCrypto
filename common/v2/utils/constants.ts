@@ -1,4 +1,4 @@
-export const EtherUUID = '356a192b-7913-504c-9457-4d18c28d46e6';
+export const ETHUUID = '356a192b-7913-504c-9457-4d18c28d46e6';
 export const DAIUUID = 'e1f698bf-cb85-5405-b563-14774af14bf1';
 export const BATUUID = 'e34bb9ff-47be-503b-956b-30d4b3f3507b';
 export const ETCUUID = '6c1e671f-9af5-546d-9c1a-52067bdf0e53';
@@ -8,7 +8,7 @@ export const ZRXUUID = '36a94c95-ec51-5e0f-b254-415e31d1c3a7';
 export const EmptyUUID = '00000000-0000-0000-0000-000000000000';
 
 export const MOONPAY_ASSET_UUIDS = [
-  EtherUUID,
+  ETHUUID,
   DAIUUID,
   BATUUID,
   USDTUUID,

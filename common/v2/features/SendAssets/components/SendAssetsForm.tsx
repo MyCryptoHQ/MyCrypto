@@ -65,7 +65,7 @@ import {
 } from 'v2/config';
 import { RatesContext } from 'v2/services/RatesProvider';
 import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
-import { formatSupportEmail, isFormValid as checkFormValid, EtherUUID } from 'v2/utils';
+import { formatSupportEmail, isFormValid as checkFormValid, ETHUUID } from 'v2/utils';
 import { InlineMessageType } from 'v2/types/inlineMessages';
 import { ProtectTxUtils, ProtectTxError } from 'v2/features/ProtectTransaction';
 import { ProtectTxShowError, ProtectTxButton } from 'v2/features/ProtectTransaction/components';
@@ -267,7 +267,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
   });
 
   const validAccounts = accounts.filter((account) => account.wallet !== WalletId.VIEW_ONLY);
-  const userAccountEthAsset = userAssets.find((a) => a.uuid === EtherUUID);
+  const userAccountEthAsset = userAssets.find((a) => a.uuid === ETHUUID);
 
   return (
     <div

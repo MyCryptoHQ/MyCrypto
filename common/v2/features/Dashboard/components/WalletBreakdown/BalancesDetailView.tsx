@@ -15,7 +15,7 @@ import {
 import { CollapseIcon, ExpandIcon } from 'v2/components/icons';
 import { Balance, BalanceAccount, WalletBreakdownProps } from './types';
 import { BREAK_POINTS, COLORS, SPACING } from 'v2/theme';
-import { Fiat, TSymbol } from 'v2/types';
+import { Fiat } from 'v2/types';
 import { truncate } from 'v2/utils';
 
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
@@ -109,7 +109,7 @@ const createBalancesDetailViewRow = (
 
   return [
     <Label key={balance.id}>
-      <Icon uuid={balance.uuid as TSymbol} size={'2rem'} />
+      <Icon uuid={balance.uuid} size={'2rem'} />
       {balance.name}
     </Label>,
     <Label key={balance.id}>

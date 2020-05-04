@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { TSymbol } from 'v2/types';
+import { TSymbol, TUuid } from 'v2/types';
 import { AssetIcon, Currency } from 'v2/components';
 import { FONT_SIZE } from 'v2/theme';
 
@@ -10,8 +10,8 @@ import arrowIcon from 'assets/images/arrow-right.svg';
 interface Props {
   fromSymbol: TSymbol;
   toSymbol: TSymbol;
-  fromUUID: string;
-  toUUID: string;
+  fromUUID: TUuid;
+  toUUID: TUuid;
   fromAmount: string;
   toAmount: string;
 }

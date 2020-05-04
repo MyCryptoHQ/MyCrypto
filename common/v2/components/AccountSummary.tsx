@@ -2,13 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { truncate } from 'v2/utils';
-import { TSymbol } from 'v2/types';
+import { TSymbol, TUuid } from 'v2/types';
 import Currency from './Currency';
 import Account from './Account';
 
 interface Props {
   address: string;
-  uuid?: string;
+  uuid?: TUuid;
   balance?: string;
   assetSymbol?: string;
   label?: string;

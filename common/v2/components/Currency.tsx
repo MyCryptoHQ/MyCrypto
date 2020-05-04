@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { TSymbol } from 'v2/types';
+import { TSymbol, TUuid } from 'v2/types';
 import { default as Typography } from './Typography';
 import AssetIcon from './AssetIcon';
 
@@ -16,7 +16,7 @@ const SAssetIconContainer = styled('span')`
 interface Props {
   amount: string;
   symbol: TSymbol;
-  uuid?: string;
+  uuid?: TUuid;
   decimals?: number;
   icon?: boolean;
   prefix?: boolean;
