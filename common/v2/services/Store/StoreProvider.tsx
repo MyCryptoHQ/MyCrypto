@@ -45,6 +45,7 @@ import {
   MEMBERSHIP_CONTRACTS
 } from 'v2/features/PurchaseMembership/config';
 import { DEFAULT_NETWORK } from 'v2/config';
+import { useEffectOnce } from 'v2/vendor';
 
 import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';
 import { getStoreAccounts, getPendingTransactionsFromAccounts } from './helpers';
