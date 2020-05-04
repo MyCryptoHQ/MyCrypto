@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { VERSION } from 'config';
-import { isDesktop } from 'v2/utils';
 import { AppState } from 'features/reducers';
 import { configMetaSelectors } from 'features/config';
 import { ElectronNav } from 'components';
 import OfflineTab from './OfflineTab';
 import Notifications from './Notifications';
 import ElectronBuildVerified from 'components/ElectronBuildVerified';
-import Survey from 'components/Survey';
 import './ElectronTemplate.scss';
 
 interface StateProps {
@@ -35,7 +33,6 @@ class ElectronTemplate extends Component<Props, {}> {
         <div className="ElectronTemplate-content">
           <div className="Tab ElectronTemplate-content-tab">
             <ElectronBuildVerified versionNow={VERSION} />
-            {isDesktop() && <Survey />}
             {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
           </div>
           <Notifications />
