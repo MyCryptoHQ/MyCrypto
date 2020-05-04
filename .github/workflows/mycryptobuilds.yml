@@ -67,7 +67,7 @@ jobs:
       with:
         args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
       env:
-        DEST_DIR: 'testing'
+        DEST_DIR: ${{ github.sha }}
         
         
 #     - name: S3 Sync - Sha
