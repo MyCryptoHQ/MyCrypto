@@ -2,6 +2,15 @@
 
 name: CI
 
+env:
+  AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: 'us-east-1'
+  SOURCE_DIR: 'dist/download'
+
+  
+
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
@@ -58,12 +67,7 @@ jobs:
       with:
         args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
       env:
-        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: 'us-east-1'
-        SOURCE_DIR: 'dist/download'
-        DEST_DIR: ${{ github.base_ref }}
+        DEST_DIR: '$(git rev-parse --abbrev-ref HEAD)'
         
         
 #     - name: mycrypto-bot
