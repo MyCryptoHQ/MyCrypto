@@ -8,7 +8,9 @@ import {
   ethPlorer,
   ETHTokenExplorer,
   GAS_PRICE_TESTNET,
-  GAS_PRICE_DEFAULT
+  GAS_PRICE_DEFAULT,
+  DEFAULT_NETWORK_SYMBOL,
+  DEFAULT_NETWORK
 } from 'v2/config';
 
 // Temporay type to bridge the difference between v1 and v2 network definitions.
@@ -18,9 +20,9 @@ export type NetworkConfig = {
 
 export const NETWORKS_CONFIG: NetworkConfig = {
   Ethereum: {
-    id: 'Ethereum',
+    id: DEFAULT_NETWORK, // Ethereum Network Id
     name: 'Ethereum',
-    unit: 'ETH' as TSymbol,
+    unit: DEFAULT_NETWORK_SYMBOL as TSymbol,
     chainId: 1,
     isCustom: false,
     color: '#007896',

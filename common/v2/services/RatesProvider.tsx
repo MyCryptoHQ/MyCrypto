@@ -98,7 +98,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
 
   useEffectOnce(() => {
     (async () => {
-      const value = await mounted(fetchDeFiReserveMappingList().then((e) => e));
+      const value = await mounted(fetchDeFiReserveMappingList());
       setReserveRateMapping(value);
     })();
   });

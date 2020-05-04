@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
 import translate, { translateRaw } from 'v2/translations';
-import { EmptyUUID } from 'v2/utils';
+import { EMPTYUUID } from 'v2/utils';
 import { TUuid } from 'v2/types';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from 'v2/theme';
 import { AssetIcon, Currency, Typography } from 'v2/components';
@@ -418,7 +418,7 @@ const createOtherTokenAsset = (otherBalances: Balance[]) => ({
   ticker: translateRaw('WALLET_BREAKDOWN_OTHER_TICKER'),
   isOther: true,
   amount: 0,
-  uuid: EmptyUUID as TUuid,
+  uuid: EMPTYUUID as TUuid,
   fiatValue: otherBalances.reduce((sum, asset) => {
     return (sum += asset.fiatValue);
   }, 0)
