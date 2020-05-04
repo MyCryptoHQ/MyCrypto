@@ -37,6 +37,7 @@ jobs:
       run: yarn build:downloadable
     
     - name: yarn build:storybook
+      if: contains(github.ref, "master") || github.event_name == 'pull_request' 
       run: yarn build:storybook
   
   
@@ -60,6 +61,7 @@ jobs:
         
     - name: S3 Sync - Storybook SHA
       uses: jakejarvis/s3-sync-action@v0.5.1
+      if: contains(github.ref, "master") || github.event_name == 'pull_request' 
       with:
         args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
       env:
@@ -67,8 +69,9 @@ jobs:
         SOURCE_DIR: 'storybook-static'
 
       
-    - name: S3 Sync - Downloadable Branch
+    - name: S3 Sync - Storybook Branch
       uses: jakejarvis/s3-sync-action@v0.5.1
+      if: contains(github.ref, "master") || github.event_name == 'pull_request' 
       with:
         args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
       env:
