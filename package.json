@@ -230,6 +230,7 @@
     "dev:electron:main": "webpack --config webpack_config/electron-main.development.js && electron dist/electron-main/main.js",
     "dev:electron:renderer": "webpack-dev-server --config webpack_config/electron-renderer.development.js",
     "storybook": "start-storybook -p 3001 --ci",
+    "build:storybook": "build-storybook",
     "tslint": "tslint --project .",
     "tscheck": "tsc",
     "start": " yarn run dev",
