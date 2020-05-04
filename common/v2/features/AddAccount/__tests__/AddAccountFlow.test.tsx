@@ -47,7 +47,7 @@ describe('AddAccountFlow', () => {
           <Switch>
             <Route
               path="*"
-              render={props => {
+              render={(props) => {
                 history = props.history;
                 location = props.location;
                 return <AddAccountFlow {...props} />;
@@ -76,6 +76,6 @@ describe('AddAccountFlow', () => {
     fireEvent.click(getByText(translateRaw(config.lid).trim()));
     expect(location.pathname).toEqual(`${expectedPath}/${config.id.toLowerCase()}`);
     expect(history.action).toEqual('REPLACE');
-    expect(getByText('Select Network and Node')).toBeInTheDocument(); // Expect to see the Network selection step
+    expect(getByText('Select Network')).toBeInTheDocument(); // Expect to see the Network selection step
   });
 });
