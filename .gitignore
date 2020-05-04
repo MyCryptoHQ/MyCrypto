@@ -6,6 +6,7 @@ npm-debug.log*
 
 # Build
 dist
+storybook-static
 
 # Runtime data
 pids
