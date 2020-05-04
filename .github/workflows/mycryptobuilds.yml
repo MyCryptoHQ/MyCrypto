@@ -63,7 +63,11 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: 'us-east-1'
         SOURCE_DIR: 'dist/download'
-        DEST_DIR: github.base_ref
+        DEST_DIR: ${{ github.base_ref }}
+        
+        
+#     - name: mycrypto-bot
+#       run: aws sns publish --topic-arn "arn:aws:sns:us-east-2:931377216814:mycrypto-bot" --message "$CODEBUILD_SOURCE_VERSION" 
         
 #     - name: mycrypto-bot
 #       if: github.ref == 'refs/heads/master'
