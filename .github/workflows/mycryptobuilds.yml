@@ -75,7 +75,7 @@ jobs:
       with:
         args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
       env:
-        DEST_DIR: 'storybook/${GITHUB_REF##*/}'
+        DEST_DIR: 'storybook/${git rev-parse --abbrev-ref HEAD}'
         SOURCE_DIR: 'storybook-static'
 
       
