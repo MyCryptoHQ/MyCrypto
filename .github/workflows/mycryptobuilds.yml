@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: mycryptobuilds
 
 env:
   AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
@@ -62,12 +62,20 @@ jobs:
 #       run: yarn install
 #     - run: yarn build:downloadable
   
-    - name: S3 Sync
+    - name: S3 Sync - Branch
       uses: jakejarvis/s3-sync-action@v0.5.1
       with:
-        args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+        args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
       env:
-        DEST_DIR: '$(git rev-parse --abbrev-ref HEAD)'
+        DEST_DIR: 'testing'
+        
+        
+#     - name: S3 Sync - Sha
+#       uses: jakejarvis/s3-sync-action@v0.5.1
+#       with:
+#         args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+#       env:
+#         DEST_DIR: '$(git rev-parse --abbrev-ref HEAD)'        
         
         
 #     - name: mycrypto-bot
