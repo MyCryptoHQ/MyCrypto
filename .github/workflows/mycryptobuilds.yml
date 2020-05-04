@@ -1,0 +1,58 @@
+name: mycryptobuilds
+
+env:
+  AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_MYCRYPTOBUILDS }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_MYCRYPTOBUILDS }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_MYCRYPTOBUILDS }}
+  AWS_REGION: 'us-east-2'
+  SOURCE_DIR: 'dist/download'
+  
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Retrieve node version from .nvmrc
+      run: echo "##[set-output name=NVMRC;]$(cat package.json | grep '\"node\":' | sed 's/^ *//;s/ *$//;s/\"node\":\ \"//;s/\",//')"
+      id: nvm
+
+    - name: Setup node ${{ steps.nvm.outputs.NVMRC }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: "${{ steps.nvm.outputs.NVMRC }}"
+
+    - run: node -v
+    - name: Install Dependencies
+      run: yarn install
+
+    - name: yarn build:downloadable
+      run: yarn build:downloadable
+  
+    - name: S3 Sync - Branch
+      uses: jakejarvis/s3-sync-action@v0.5.1
+      with:
+        args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
+      env:
+        DEST_DIR: ${GITHUB_SHA}
+        
+        
+    - name: S3 Sync - Sha
+      uses: jakejarvis/s3-sync-action@v0.5.1
+      with:
+        args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+      env:
+        DEST_DIR: ${GITHUB_REF##*/}
+        
+        
+    - name: Mycrypto-bot trigger
+      if: github.event_name == 'pull_request'
+      run: aws sns publish --topic-arn ${{ secrets.SNS_TOPIC_MYCRYPTO_BOT }} --region us-east-2 --message $(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
