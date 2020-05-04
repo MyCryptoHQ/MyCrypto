@@ -93,15 +93,3 @@ jobs:
       run: |
         echo Add other actions to build,
         echo test, and deploy your project.
-
-        
-        
-    - name: mycrypto-bot
-      if: github.event_name == 'pull_request'
-      run: aws sns publish --topic-arn "arn:aws:sns:us-east-2:931377216814:bot-test" --message $(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
-        
-#     - name: mycrypto-bot
-#       if: github.ref == 'refs/heads/master'
-
-        
-
