@@ -823,6 +823,7 @@
     "CUSTOM_NODE_SETTINGS_TABLE_NETWORK_NODE": "Default Node",
     "CUSTOM_NODE_DROPDOWN_NEW_NODE": "Custom",
     "PRIVATE_ACCOUNT": "Private Account",
-    "BACK": "Back"
+    "BACK": "Back",
+    "MISSING_PASSWORD": "Please enter a password"
   }
 }

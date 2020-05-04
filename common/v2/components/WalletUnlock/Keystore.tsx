@@ -1,9 +1,12 @@
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
+import isString from 'lodash/isString';
 
 import translate, { translateRaw } from 'v2/translations';
 import { Spinner, Input } from 'v2/components';
 import { WalletId } from 'v2/types';
 import { WalletFactory, isKeystorePassRequired } from 'v2/services/WalletService';
+import { InlineMessage } from '../InlineMessage';
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
 
 import './Keystore.scss';
@@ -14,6 +17,12 @@ export interface KeystoreValue {
   filename: string | undefined;
   valid: boolean | undefined;
 }
+
+type KeystoreState = { error?: string } & KeystoreValue;
+
+const SInput = styled(Input)`
+  margin-bottom: 0;
+`;
 
 function isPassRequired(file: string): boolean {
   let passReq = false;
@@ -41,7 +50,8 @@ export class KeystoreDecrypt extends PureComponent {
     onUnlock(param: any): void;
   };
 
-  public state: KeystoreValue = {
+  public state: KeystoreState = {
+    error: undefined,
     file: '',
     password: '',
     filename: undefined,
@@ -83,7 +93,7 @@ export class KeystoreDecrypt extends PureComponent {
 
               {isWalletPending ? <Spinner /> : ''}
               <label className="Keystore-password">Your Password</label>
-              <Input
+              <SInput
                 isValid={password ? password.length > 0 : false}
                 className={`${file.length && isWalletPending ? 'hidden' : ''}`}
                 disabled={!file}
@@ -93,6 +103,7 @@ export class KeystoreDecrypt extends PureComponent {
                 placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
                 type="password"
               />
+              {this.state.error && <InlineMessage value={this.state.error} />}
             </div>
             <div>
               <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
@@ -119,7 +130,11 @@ export class KeystoreDecrypt extends PureComponent {
       file: this.state.file,
       password: this.state.password
     });
-    this.props.onUnlock(wallet);
+    if (isString(wallet)) {
+      this.setState({ error: wallet });
+    } else {
+      this.props.onUnlock(wallet);
+    }
   };
 
   private onPasswordChange = (e: any) => {
