@@ -1,37 +1,45 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import { IAppRoute } from '@types';
 import { ROUTE_PATHS, IS_ACTIVE_FEATURE } from '@config';
-import {
-  AddAccountFlow,
-  CreateWallet,
-  Mnemonic,
-  Keystore,
-  Dashboard,
-  Settings,
-  Import,
-  Export,
-  DownloadApp,
-  NoAccounts,
-  ScreenLockNew,
-  ScreenLockLocked,
-  ScreenLockForgotPassword,
-  SendAssets,
-  ReceiveAssets,
-  SwapAssetsFlow,
-  Home,
-  SignAndVerifyMessage,
-  BroadcastTransactionFlow,
-  InteractWithContractsFlow,
-  DeployContractsFlow,
-  DeFiZapFlow,
-  PurchaseMembershipStepper,
-  MembershipEducation,
-  BuyAssets,
-  EnsDashboard
-} from '@features';
+import { Home, Dashboard, NoAccounts, EnsDashboard } from '@features';
 import { requiresDesktopApp } from './helpers';
+
+const CreateWallet = lazy(() => import('@features/CreateWallet/CreateWallet'));
+const AddAccountFlow = lazy(() => import('@features/AddAccount/AddAccountFlow'));
+const SendAssets = lazy(() => import('@features/SendAssets/SendAssets'));
+const Mnemonic = lazy(() => import('@features/CreateWallet/Mnemonic/Mnemonic'));
+const Keystore = lazy(() => import('@features/CreateWallet/Keystore/Keystore'));
+const Settings = lazy(() => import('@features/Settings/Settings'));
+const Import = lazy(() => import('@features/Settings/Import/Import'));
+const Export = lazy(() => import('@features/Settings/Export/Export'));
+const DownloadApp = lazy(() => import('@features/DownloadApp/DownloadApp'));
+const ScreenLockNew = lazy(() => import('@features/ScreenLock/ScreenLockNew'));
+const ScreenLockLocked = lazy(() => import('@features/ScreenLock/ScreenLockLocked'));
+const ScreenLockForgotPassword = lazy(() =>
+  import('@features/ScreenLock/ScreenLockForgotPassword')
+);
+const ReceiveAssets = lazy(() => import('@features/ReceiveAssets/ReceiveAssets'));
+const SwapAssetsFlow = lazy(() => import('@features/SwapAssets/SwapAssetsFlow'));
+const SignAndVerifyMessage = lazy(() =>
+  import('@features/SignAndVerifyMessage/SignAndVerifyMessage')
+);
+const BroadcastTransactionFlow = lazy(() =>
+  import('@features/BroadcastTransaction/BroadcastTransactionFlow')
+);
+const InteractWithContractsFlow = lazy(() =>
+  import('@features/InteractWithContracts/InteractWithContractsFlow')
+);
+const DeployContractsFlow = lazy(() => import('@features/DeployContracts/DeployContractsFlow'));
+const DeFiZapFlow = lazy(() => import('@features/DeFiZap/DeFiZapFlow'));
+const PurchaseMembershipStepper = lazy(() =>
+  import('@features/PurchaseMembership/PurchaseMembershipStepper')
+);
+const MembershipEducation = lazy(() =>
+  import('@features/PurchaseMembership/components/MembershipEducation')
+);
+const BuyAssets = lazy(() => import('@features/BuyAssets/BuyAssetsForm'));
 
 export interface IAppRoutes {
   [K: string]: IAppRoute;
