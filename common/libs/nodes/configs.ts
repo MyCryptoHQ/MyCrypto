@@ -348,6 +348,24 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'ethercore.io',
       url: 'https://rpc.ethercore.io'
     }
+  ],
+
+  VOLTA: [
+    {
+      name: makeNodeName('VOLTA', 'volta-rpc.energyweb.org'),
+      type: 'rpc',
+      service: 'energyweb.org',
+      url: 'https://volta-rpc.energyweb.org/'
+    }
+  ],
+
+  EnergyWebChain: [
+    {
+      name: makeNodeName('EnergyWebChain', 'rpc.energyweb.org'),
+      type: 'rpc',
+      service: 'energyweb.org',
+      url: 'https://rpc.energyweb.org/'
+    }
   ]
 };
 

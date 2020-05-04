@@ -35,7 +35,9 @@ type StaticNetworkIds =
   | 'WEB'
   | 'AUX'
   | 'ERE'
-  | 'ASK';
+  | 'ASK'
+  | 'VOLTA'
+  | 'EnergyWebChain';
 
 export interface BlockExplorerConfig {
   name: string;
