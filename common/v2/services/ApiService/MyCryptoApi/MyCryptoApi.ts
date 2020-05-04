@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 
 import { MYC_API } from 'v2/config';
-import { StoreAsset, TUuid } from 'v2/types';
+import { TUuid, ExtendedAsset } from 'v2/types';
 
 import { default as ApiService } from '../ApiService';
 
@@ -22,7 +22,7 @@ export default class MyCryptoApiService {
     }
   }
 
-  public getAssets = async (): Promise<Record<TUuid, StoreAsset>> => {
+  public getAssets = async (): Promise<Record<TUuid, ExtendedAsset>> => {
     try {
       const { data } = await this.service.get('assets.json');
       return data;

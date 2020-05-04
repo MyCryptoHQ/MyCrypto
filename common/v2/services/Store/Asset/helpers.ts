@@ -3,7 +3,7 @@ import { generateAssetUUID } from 'v2/utils';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 
 export const getAssetByTicker = (assets: Asset[]) => (symbol: string): Asset | undefined => {
-  return assets.find(asset => asset.ticker.toLowerCase() === symbol.toLowerCase());
+  return assets.find((asset) => asset.ticker.toLowerCase() === symbol.toLowerCase());
 };
 
 export const getNewDefaultAssetTemplateByNetwork = (assets: Asset[]) => (
@@ -31,8 +31,10 @@ export const getNewDefaultAssetTemplateByNetwork = (assets: Asset[]) => (
   }
 };
 
-export const getAssetByUUID = (assets: Asset[]) => (uuid: string): Asset | undefined => {
-  return assets.find(asset => asset.uuid === uuid);
+export const getAssetByUUID = (assets: ExtendedAsset[]) => (
+  uuid: string
+): ExtendedAsset | undefined => {
+  return assets.find((asset) => asset.uuid === uuid);
 };
 
 export const getAssetByContractAndNetwork = (
@@ -43,9 +45,9 @@ export const getAssetByContractAndNetwork = (
     return undefined;
   }
   return assets
-    .filter(asset => asset.networkId && asset.contractAddress)
-    .filter(asset => asset.networkId === network.id)
-    .find(asset => asset.contractAddress === contractAddress);
+    .filter((asset) => asset.networkId && asset.contractAddress)
+    .filter((asset) => asset.networkId === network.id)
+    .find((asset) => asset.contractAddress === contractAddress);
 };
 
 export const getTotalByAsset = (assets: StoreAsset[]) =>
