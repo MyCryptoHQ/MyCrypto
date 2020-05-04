@@ -56,10 +56,6 @@ jobs:
         echo "$COMMIT"
         echo "$GIT_BRANCH"
 
-    # Runs a single command using the runners shell
-#     - name: pre-build
-#       run: yarn install
-#     - run: yarn build:downloadable
   
     - name: S3 Sync - Branch
       uses: jakejarvis/s3-sync-action@v0.5.1
@@ -84,12 +80,3 @@ jobs:
 #     - name: mycrypto-bot
 #       if: github.ref == 'refs/heads/master'
 
-        
-        
-        
-
-    # Runs a set of commands using the runners shell
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
