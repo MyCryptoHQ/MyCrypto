@@ -1,4 +1,4 @@
-# MyCrypto Beta Web App
+# MyCrypto Beta Web App Test
 
 [![Build](https://github.com/MyCryptoHQ/MyCrypto/workflows/GitHub%20CI/badge.svg?branch=master)](https://github.com/MyCryptoHQ/MyCrypto/actions)
 [![Coverage Status](https://coveralls.io/repos/github/MyCryptoHQ/MyCrypto/badge.svg?branch=master)](https://coveralls.io/github/MyCryptoHQ/MyCrypto?branch=develop)
