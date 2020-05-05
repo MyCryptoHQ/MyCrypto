@@ -64,8 +64,7 @@ export default class SignTransactionMnemonic extends Component<
 
               {walletState === WalletSigningState.NOT_READY ? (
                 <div className="SignTransactionKeystore-error">
-                  The input Mnemonic Phrase's Public Address does not match Account's sender
-                  Address, please try again.
+                  {translateRaw('MNEMONIC_PHRASE_PUBLIC_ADDRESS_NOT_MATCH_ACCOUNT')}
                 </div>
               ) : null}
               <label>{translate('SIGN_TX_YOUR_WALLET', { $walletName: 'Mnemonic Phrase' })}</label>

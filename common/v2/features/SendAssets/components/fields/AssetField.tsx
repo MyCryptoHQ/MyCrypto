@@ -4,6 +4,7 @@ import { ComboBox } from '@mycrypto/ui';
 
 import { AccountContext, NetworkContext } from 'v2/services/Store';
 import { Network } from 'v2/types';
+import { translateRaw } from 'v2/translations';
 
 interface OwnProps {
   handleChange: FormikHandlers['handleChange'];
@@ -28,7 +29,7 @@ export default class AssetField extends Component<Props> {
   public render() {
     return (
       <div className="SendAssetsForm-amountAsset-asset">
-        <label htmlFor="asset">Asset</label>
+        <label htmlFor="asset">{translateRaw('SEND_ASSETS_AMOUNT_LABEL')}</label>
         <AccountContext.Consumer>
           {({ accounts }) => (
             <NetworkContext.Consumer>

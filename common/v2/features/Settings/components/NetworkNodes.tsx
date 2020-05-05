@@ -17,7 +17,7 @@ const NetworkNodes: FC<Props> = ({ networks, toggleFlipped }) => {
 
   const networkNodesTable = {
     head: [
-      translateRaw('CUSTOM_NODE_SETTINGS_TABLE_NETWORK_HEADER') || 'Network',
+      translateRaw('CUSTOM_NODE_SETTINGS_TABLE_NETWORK_HEADER'),
       translateRaw('CUSTOM_NODE_SETTINGS_TABLE_NETWORK_NODE')
     ],
     body: networks.map(({ id, name, color }: INetwork, index) => [
@@ -31,8 +31,8 @@ const NetworkNodes: FC<Props> = ({ networks, toggleFlipped }) => {
       />
     ]),
     config: {
-      primaryColumn: translateRaw('CUSTOM_NODE_SETTINGS_TABLE_NETWORK_HEADER') || 'Network',
-      sortableColumn: translateRaw('CUSTOM_NODE_SETTINGS_TABLE_NETWORK_HEADER') || 'Network',
+      primaryColumn: translateRaw('CUSTOM_NODE_SETTINGS_TABLE_NETWORK_HEADER'),
+      sortableColumn: translateRaw('CUSTOM_NODE_SETTINGS_TABLE_NETWORK_HEADER'),
       sortFunction: () => (a: any, b: any) => {
         const aLabel = a.props.label;
         const bLabel = b.props.label;

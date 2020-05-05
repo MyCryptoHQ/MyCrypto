@@ -207,7 +207,7 @@ class ScreenLockProvider extends Component<
     }
 
     this.props.history.listen((location) => {
-      if (this.state.locked === true && location.pathname.includes(ROUTE_PATHS.DASHBOARD.path)) {
+      if (this.state.locked && location.pathname.includes(ROUTE_PATHS.DASHBOARD.path)) {
         this.props.history.push(ROUTE_PATHS.SCREEN_LOCK_LOCKED.path);
       }
     });

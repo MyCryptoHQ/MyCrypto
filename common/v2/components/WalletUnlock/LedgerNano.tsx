@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
 import { Button } from '@mycrypto/ui';
+
 import { Spinner, NewTabLink } from 'v2/components';
-import translate, { translateRaw } from 'v2/translations';
+import translate, { Trans, translateRaw } from 'v2/translations';
 import { WalletId, FormData } from 'v2/types';
 import { getDPath, getDPaths } from 'v2/services';
-
+import { EXT_URLS } from 'v2/config';
 import { NetworkContext } from 'v2/services/Store';
 import { WalletFactory, ChainCodeResponse } from 'v2/services/WalletService';
 
@@ -12,7 +13,7 @@ import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWallets from './DeterministicWallets';
 import './LedgerNano.scss';
 import ledgerIcon from 'common/assets/images/icn-ledger-nano-large.svg';
-import { EXT_URLS } from 'v2/config';
+
 interface OwnProps {
   wallet: object;
   formData: FormData;
@@ -56,8 +57,12 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       return (
         <div className="Panel">
           <div className="alert alert-danger">
-            Unlocking a Ledger hardware wallet is only possible on pages served over HTTPS. You can
-            unlock your wallet at <NewTabLink href="https://mycrypto.com">MyCrypto.com</NewTabLink>
+            <Trans
+              id="UNLOCKING_LEDGER_ONLY_POSSIBLE_ON_OVER_HTTPS"
+              variables={{
+                $newTabLink: () => <NewTabLink href="https://mycrypto.com">MyCrypto.com</NewTabLink>
+              }}
+            />
           </div>
         </div>
       );
@@ -82,7 +87,8 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       return (
         <div className="Panel">
           <div className="Panel-title">
-            {translate('UNLOCK_WALLET')} {`Your ${translateRaw('X_LEDGER')}`}
+            {translate('UNLOCK_WALLET')}{' '}
+            {translateRaw('YOUR_WALLET_TYPE', { $walletType: translateRaw('X_LEDGER') })}
           </div>
           <div className="LedgerPanel-description-content">
             <div className="LedgerPanel-description">

@@ -180,7 +180,7 @@ interface FeatureProps {
   captionRight: boolean;
 }
 
-const Feature: React.SFC<FeatureProps> = props => {
+const Feature: React.FC<FeatureProps> = props => {
   const { name, description, image, mobileImage, captionRight } = props;
   return (
     <FeatureWrapper captionRight={captionRight}>

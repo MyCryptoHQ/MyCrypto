@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { SPACING } from 'v2/theme';
 import { Link } from 'v2/components';
+import { translateRaw } from 'v2/translations';
 
 const Container = styled.div`
   display: flex;
@@ -15,26 +16,22 @@ export default () => {
   return (
     <Container>
       <SubContainer>
-        <Link href="https://compound.finance">Compound:</Link>
-        {
-          'Compound is a protocol that allows you to borrow and lend assets. Lending assets yields returns in the form of an interest rate.'
-        }
+        <Link href="https://compound.finance">{translateRaw('PROTOCOLS_EXPLAINER_COMPOUND')}:</Link>
+        {translateRaw('PROTOCOLS_EXPLAINER_COMPOUND_DESC')}
       </SubContainer>
       <SubContainer>
-        <Link href="https://kyber.network">Kyber:</Link>
-        {'Kyber is a protocol that allows the exchange of cryptocurrencies.'}
+        <Link href="https://kyber.network">{translateRaw('PROTOCOLS_EXPLAINER_KYBER')}:</Link>
+        {translateRaw('PROTOCOLS_EXPLAINER_KYBER_DESC')}
       </SubContainer>
       <SubContainer>
-        <Link href="https://uniswap.io">Uniswap:</Link>
-        {
-          'Uniswap is a protocol that allows the exchange of cryptocurrencies. Uniswap allows users to contribute liquidity to pools, and liquidity providers yield returns in the form of transfer fees.'
-        }
+        <Link href="https://uniswap.io">{translateRaw('PROTOCOLS_EXPLAINER_UNISWAP')}:</Link>
+        {translateRaw('PROTOCOLS_EXPLAINER_UNISWAP_DESC')}
       </SubContainer>
       <SubContainer>
-        <Link href="https://synthetix.exchange">Synthetix:</Link>
-        {
-          'Synthetix is a synthetic asset platform that allows users to gain exposure to forex, cryptocurrencies, and commodities trading.'
-        }
+        <Link href="https://synthetix.exchange">
+          {translateRaw('PROTOCOLS_EXPLAINER_SYNTHETIX')}:
+        </Link>
+        {translateRaw('PROTOCOLS_EXPLAINER_SYNTHETIX_DESC')}
       </SubContainer>
     </Container>
   );

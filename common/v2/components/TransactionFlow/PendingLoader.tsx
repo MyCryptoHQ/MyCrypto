@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
+import { translateRaw } from 'v2/translations';
 
 const SPendingTransaction = styled.div`
   display: flex;
@@ -15,7 +16,7 @@ export const PendingTransaction: FC = () => {
     <SPendingTransaction>
       <div className="loading" />
       <span>
-        <b>Pending</b>
+        <b>{translateRaw('PENDING')}</b>
       </span>
     </SPendingTransaction>
   );

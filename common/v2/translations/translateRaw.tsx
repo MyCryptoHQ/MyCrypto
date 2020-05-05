@@ -159,3 +159,8 @@ export const Trans: FC<Props> = ({ id, variables }) => {
     return <>{resolveComponents(tString)}</>;
   }
 };
+
+/**
+ * Wrap string to export it in json language file
+ */
+export const translateMarker = (s: string) => s;

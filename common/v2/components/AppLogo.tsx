@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { COLORS } from 'v2/theme';
+import { translateRaw } from 'v2/translations';
 
 import mycLogo from 'assets/images/icn-myc.svg';
 
@@ -22,7 +23,7 @@ export default () => {
   return (
     <Container>
       <img src={mycLogo} width="18px" />
-      {'MyCrypto App'}
+      {translateRaw('MYCRYPTO_APP')}
     </Container>
   );
 };

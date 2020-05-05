@@ -37,7 +37,7 @@ interface ResourceItemWrapperProps {
   link: string;
 }
 
-const ResourceItemWrapper: React.SFC<ResourceItemWrapperProps> = ({ title, link }) => {
+const ResourceItemWrapper: React.FC<ResourceItemWrapperProps> = ({ title, link }) => {
   return (
     <a href={link} target="_blank" rel="noopener noreferrer">
       <ResourceItem secondary={true}>{title}</ResourceItem>

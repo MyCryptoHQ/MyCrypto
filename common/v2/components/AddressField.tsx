@@ -7,8 +7,10 @@ import { Network, InlineMessageType } from 'v2/types';
 import { DomainStatus } from 'v2/components';
 import { getIsValidENSAddressFunction } from 'v2/services/EthService';
 import { monospace } from 'v2/theme';
+import { translateRaw } from 'v2/translations';
 import { ResolutionError } from '@unstoppabledomains/resolution';
 import InputField from './InputField';
+
 /*
   Eth address field to be used within a Formik Form
   - the 'fieldname' must exist wihtin the Formik default fields
@@ -74,7 +76,7 @@ function ETHAddressField({
   fieldName,
   error,
   network,
-  placeholder = 'ETH Address or blockchain domain',
+  placeholder = translateRaw('ETH_ADDRESS_PLACEHOLDER'),
   isLoading,
   isError,
   resolutionError,

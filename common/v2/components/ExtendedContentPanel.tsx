@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
+import { translateRaw } from 'v2/translations';
 import Stepper from './Stepper';
 
 // Legacy
@@ -141,7 +142,9 @@ export default function ExtendedContentPanel({
           {onBack && (
             <BackButton basic={true} onClick={onBack}>
               <img src={backArrowIcon} alt="Back arrow" />{' '}
-              {backBtnText ? `Back: ${backBtnText}` : `Back`}
+              {backBtnText
+                ? translateRaw('BACK_WITH_APPEND', { $append: `: ${backBtnText}` })
+                : translateRaw('BACK')}
             </BackButton>
           )}
           {stepper && <Stepper current={stepper.current} total={stepper.total} />}

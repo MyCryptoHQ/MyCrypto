@@ -4,6 +4,7 @@ import { Heading, Typography } from '@mycrypto/ui';
 import sendIcon from 'common/assets/images/icn-send.svg';
 import { Currency } from 'v2/components';
 import { TSymbol } from 'v2/types';
+import { translateRaw } from 'v2/translations';
 
 interface Props {
   amount: string;
@@ -31,7 +32,8 @@ function TransactionValueDisplay({ amount, ticker, fiatAsset }: Props) {
       </small>
       <div className="SendAssetsForm-fieldset-youllSend-box-conversion">
         <Typography as="div">
-          {/*TRANSLATE_THIS*/} Conversion Rate <br />
+          {translateRaw('CONVERSION_RATE')}
+          <br />
           <Currency amount={'1'} symbol={ticker} decimals={0} />
           {' ≈ '}
           <Currency amount={fiatAsset.exchangeRate} symbol={fiatAsset.ticker} decimals={2} />

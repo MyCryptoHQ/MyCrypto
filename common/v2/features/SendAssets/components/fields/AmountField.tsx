@@ -1,6 +1,7 @@
 import React, { ChangeEvent, Component } from 'react';
 import { Field, FieldProps, FormikHandlers } from 'formik';
 import { Input } from '@mycrypto/ui';
+import { translateRaw } from 'v2/translations';
 //import { donationAddressMap } from '';
 
 interface OwnProps {
@@ -29,9 +30,9 @@ export default class AmountField extends Component<Props> {
       <div className="SendAssetsForm-fieldset SendAssetsForm-amountAsset">
         <div className="SendAssetsForm-amountAsset-amount">
           <label htmlFor="amount" className="SendAssetsForm-amountAsset-amount-label">
-            <div>Amount</div> {/* TRANSLATE THIS */}
+            <div>{translateRaw('SEND_ASSETS_AMOUNT_LABEL')}</div>
             <div className="SendAssetsForm-amountAsset-amount-label-sendMax">
-              send max{/* TRANSLATE THIS */}
+              {translateRaw('SEND_ASSETS_AMOUNT_LABEL_ACTION')}
             </div>
           </label>
           <Field

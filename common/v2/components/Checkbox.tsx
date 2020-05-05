@@ -71,8 +71,8 @@ const SLabel = styled('label')`
     top: 50%;
     margin-top: -1px;
     margin-left: -1px;
-    height: 0px;
-    width: 0px;
+    height: 0;
+    width: 0;
     border: ${props => `1px solid ${props.theme.GAU.COLORS.brightSkyBlue}`};
     opacity: 1;
     transform: rotate(0deg) scale(0);

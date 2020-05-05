@@ -71,7 +71,8 @@ class TrezorDecryptClass extends PureComponent<OwnProps, State> {
       return (
         <div className="Panel">
           <div className="Panel-title">
-            {translate('UNLOCK_WALLET')} {`Your ${translateRaw('X_TREZOR')}`}
+            {translate('UNLOCK_WALLET')}{' '}
+            {translateRaw('YOUR_WALLET_TYPE', { $walletType: translateRaw('X_TREZOR') })}
           </div>
           <div className="TrezorDecrypt">
             <div className="TrezorDecrypt-description">

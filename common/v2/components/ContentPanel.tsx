@@ -3,7 +3,7 @@ import { Button, Panel, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { BREAK_POINTS, SPACING } from 'v2/theme';
-import translate from 'v2/translations';
+import { translateRaw } from 'v2/translations';
 import Stepper from './Stepper';
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
@@ -133,7 +133,8 @@ export default function ContentPanel({
         <ContentPanelTop stepperOnly={stepper !== undefined && !onBack}>
           {onBack && (
             <BackButton basic={true} onClick={onBack}>
-              <img src={backArrowIcon} alt="Back arrow" /> {translate('BACK')}
+              <img src={backArrowIcon} alt="Back arrow" />
+              {translateRaw('BACK')}
               {backBtnText && `: `}
               {backBtnText && <BackButtonExtraText>{backBtnText}</BackButtonExtraText>}
             </BackButton>

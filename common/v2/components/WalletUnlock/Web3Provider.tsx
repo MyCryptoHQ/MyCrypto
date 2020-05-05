@@ -51,13 +51,14 @@ class Web3ProviderDecrypt extends ComponentProps<
     const { web3Unlocked, web3ProviderSettings: provider } = this.state;
     const { isMobile } = this.props;
     const isDefault = provider.id === WalletId.WEB3;
+    const transProps = { $walletId: provider.name };
 
     return (
       <div className="Panel">
         <div className="Panel-title">
-          {translate(isDefault ? 'ADD_ACCOUNT_WEB3_TITLE_DEFAULT' : 'ADD_ACCOUNT_WEB3_TITLE', {
-            $walletId: provider.name
-          })}
+          {isDefault
+            ? translate('ADD_ACCOUNT_WEB3_TITLE_DEFAULT', transProps)
+            : translate('ADD_ACCOUNT_WEB3_TITLE', transProps)}
         </div>
         <div className="Panel-description">{translate(`ADD_ACCOUNT_WEB3_DESC`)}</div>
         <div className="Panel-content">
@@ -67,36 +68,34 @@ class Web3ProviderDecrypt extends ComponentProps<
             </div>
           </div>
           <button className="btn btn-primary btn-lg btn-block" onClick={this.unlockWallet}>
-            {translate(isDefault ? 'ADD_WEB3_DEFAULT' : 'ADD_WEB3', { $walletId: provider.name })}
+            {isDefault
+              ? translate('ADD_WEB3_DEFAULT', transProps)
+              : translate('ADD_WEB3', transProps)}
           </button>
 
           {web3Unlocked === false && (
-            <InlineMessage>
-              {translate('WEB3_ONUNLOCK_NOT_FOUND_ERROR', { $walletId: provider.name })}
-            </InlineMessage>
+            <InlineMessage>{translate('WEB3_ONUNLOCK_NOT_FOUND_ERROR', transProps)}</InlineMessage>
           )}
         </div>
         <div className="Web3-footer">
           <div>
-            {translate(isDefault ? 'ADD_ACCOUNT_WEB3_FOOTER_DEFAULT' : 'ADD_ACCOUNT_WEB3_FOOTER', {
-              $walletId: provider.name
-            })}{' '}
+            {isDefault
+              ? translate('ADD_ACCOUNT_WEB3_FOOTER_DEFAULT', transProps)
+              : translate('ADD_ACCOUNT_WEB3_FOOTER', transProps)}{' '}
             <NewTabLink
-              content={translate(`ADD_ACCOUNT_WEB3_FOOTER_LINK`, { $walletId: provider.name })}
+              content={translate(`ADD_ACCOUNT_WEB3_FOOTER_LINK`, transProps)}
               href={
                 provider.install
                   ? provider.install.getItLink
-                  : translateRaw(
-                      isMobile
-                        ? `ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_MOBILE`
-                        : `ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_DESKTOP`
-                    )
+                  : isMobile
+                  ? translateRaw('ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_MOBILE')
+                  : translateRaw(`ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_DESKTOP`)
               }
             />
           </div>
           <div>
             <NewTabLink
-              content={translate('ADD_ACCOUNT_WEB3_HELP', { $walletId: provider.name })}
+              content={translate('ADD_ACCOUNT_WEB3_HELP', transProps)}
               href={`${provider.helpLink}`}
             />
           </div>

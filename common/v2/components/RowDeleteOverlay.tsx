@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { Button } from 'v2/components';
+import { translateRaw } from 'v2/translations';
 
 /*
   Passed to CollapisableTable and Table by AccountList and AddressBook
@@ -54,9 +55,9 @@ const RowDeleteOverlay = (props: any) => (
   <TableOverlay>
     <OverlayText>{props.prompt}</OverlayText>
     <OverlayButtons>
-      <Button onClick={props.deleteAction}>Delete</Button>
+      <Button onClick={props.deleteAction}>{translateRaw('ACTION_15')}</Button>
       <Button secondary={true} onClick={props.cancelAction}>
-        Cancel
+        {translateRaw('ACTION_2')}
       </Button>
     </OverlayButtons>
   </TableOverlay>

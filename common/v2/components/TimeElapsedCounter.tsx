@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { translateRaw } from 'v2/translations';
 
 interface Props {
   timestamp: number;
@@ -49,17 +50,21 @@ const TimeElapsedCounter = ({ timestamp, isSeconds }: Props) => {
   return (
     <>
       {elapsedTime.days !== 0 &&
-        (elapsedTime.days === 1 ? `${elapsedTime.days} day ` : `${elapsedTime.days} days `)}
+        (elapsedTime.days === 1
+          ? `${elapsedTime.days} ${translateRaw('ELAPSED_TIME_DAY')} `
+          : `${elapsedTime.days} ${translateRaw('ELAPSED_TIME_DAYS')} `)}
       {elapsedTime.hours !== 0 &&
-        (elapsedTime.hours === 1 ? `${elapsedTime.hours} hour ` : `${elapsedTime.hours} hours `)}
+        (elapsedTime.hours === 1
+          ? `${elapsedTime.hours} ${translateRaw('ELAPSED_TIME_HOUR')} `
+          : `${elapsedTime.hours} ${translateRaw('ELAPSED_TIME_HOURS')} `)}
       {elapsedTime.minutes !== 0 &&
         (elapsedTime.minutes === 1
-          ? `${elapsedTime.minutes} minute `
-          : `${elapsedTime.minutes} minutes `)}
+          ? `${elapsedTime.minutes} ${translateRaw('ELAPSED_TIME_MINUTE')} `
+          : `${elapsedTime.minutes} ${translateRaw('ELAPSED_TIME_MINUTES')} `)}
       {elapsedTime.seconds !== 0 &&
         (elapsedTime.seconds === 1
-          ? `${elapsedTime.seconds} second `
-          : `${elapsedTime.seconds} seconds `)}
+          ? `${elapsedTime.seconds} ${translateRaw('ELAPSED_TIME_SECOND')} `
+          : `${elapsedTime.seconds} ${translateRaw('ELAPSED_TIME_SECONDS')} `)}
       {'ago'}
     </>
   );

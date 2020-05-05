@@ -82,7 +82,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
           <BackButton basic={true} onClick={toggleFlipped}>
             <img src={backArrowIcon} alt="Back" />
           </BackButton>
-          Add Address
+          {translateRaw('ADDRESS_BOOK_TABLE_ADD_ADDRESS')}
         </>
       }
       padChildren={true}
@@ -105,23 +105,26 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
         {({ isSubmitting, errors }) => (
           <Form>
             <AddressFieldset>
-              <label htmlFor="label">Label</label>
+              <label htmlFor="label">{translateRaw('ACCOUNT_LIST_LABEL')}</label>
               <Field
                 name="label"
                 render={({ field }: FieldProps<string>) => (
-                  <InputField {...field} placeholder="Enter name of address" />
+                  <InputField
+                    {...field}
+                    placeholder={translateRaw('ADDRESS_BOOK_NAME_OF_ADDRESS_PLACEHOLDER')}
+                  />
                 )}
               />
             </AddressFieldset>
             <AddressFieldset>
-              <label htmlFor="address">Address</label>
+              <label htmlFor="address">{translateRaw('ADDRESSBOOK_ADDRESS')}</label>
               <Field
                 name="address"
                 render={({ field }: FieldProps<string>) => (
                   <InputField
                     inputError={errors && errors.address}
                     {...field}
-                    placeholder="Enter the address"
+                    placeholder={translateRaw('ADDRESSBOOK_ADDRESS_PLACEHOLDER')}
                   />
                 )}
               />
@@ -138,24 +141,24 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
               />
             </AddressFieldset>
             <AddressFieldset>
-              <label htmlFor="notes">Notes</label>
+              <label htmlFor="notes">{translateRaw('ADDRESSBOOK_NOTES')}</label>
               <Field
                 name="notes"
                 render={({ field }: FieldProps<string>) => (
                   <InputField
                     {...field}
                     textarea={true}
-                    placeholder="Enter a note for this address"
+                    placeholder={translateRaw('ADDRESSBOOK_NOTES_PLACEHOLDER')}
                   />
                 )}
               />
             </AddressFieldset>
             <AddressBookButtons>
               <Button type="button" secondary={true} onClick={toggleFlipped}>
-                Cancel
+                {translateRaw('ACTION_2')}
               </Button>
               <Button type="submit" disabled={isSubmitting}>
-                Add Address
+                {translateRaw('ADDRESS_BOOK_TABLE_ADD_ADDRESS')}
               </Button>
             </AddressBookButtons>
           </Form>

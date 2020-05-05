@@ -5,6 +5,7 @@ import { BannerType } from 'v2/types';
 import { Banner } from 'v2/components';
 import { BREAK_POINTS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from 'v2/theme';
 import { DrawerContext, ErrorContext } from 'v2/features';
+import { translateRaw } from 'v2/translations';
 import Header from './Header';
 import Footer from './Footer';
 
@@ -75,8 +76,7 @@ export default function Layout({ config = {}, className = '', children }: Props)
   const { centered = true, fluid, fullW = false, bgColor, paddingV } = config;
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
   const { error, shouldShowError, getErrorMessage } = useContext(ErrorContext);
-  const betaAnnouncement =
-    'Heads up: this is a beta version of the new MyCrypto. It has not been audited yet, so please practice safe sending.';
+  const betaAnnouncement = translateRaw('BETA_ANNOUNCEMENT');
 
   // Store the calculated height of STop so we can adapt the marginTop of SContainer
   // when the mobile header has a fixed positioning.

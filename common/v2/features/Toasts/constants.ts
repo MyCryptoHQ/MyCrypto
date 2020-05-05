@@ -1,4 +1,5 @@
 import { ToastConfigsProps, ToastType } from 'v2/types';
+import { translateRaw } from 'v2/translations';
 
 export const ToastTemplates = {
   addedAddress: 'added-address',
@@ -12,38 +13,38 @@ export const ToastTemplates = {
 
 export const toastConfigs: ToastConfigsProps = {
   [ToastTemplates.addedAddress]: {
-    header: 'Success!',
-    message: () => 'Address has been added to your address book.',
+    header: translateRaw('TOAST_SUCCESS'),
+    message: () => translateRaw('TOAST_MESSAGE_ADDRESS_HAS_BEEN_ADDED'),
     type: ToastType.SUCCESS,
     position: 'top-left'
   },
   [ToastTemplates.failedTransaction]: {
-    header: 'Error',
-    message: () => 'Transaction didn’t go through. Please try again.',
+    header: translateRaw('TOAST_ERROR'),
+    message: () => translateRaw('TOAST_MESSAGE_TRANSACTION_DIDNT_GO_THROUGH'),
     type: ToastType.ERROR,
     position: 'top-left'
   },
   [ToastTemplates.pleaseReload]: {
-    header: 'Error',
-    message: () => 'Please reload the app or refresh the page',
+    header: translateRaw('TOAST_ERROR'),
+    message: () => translateRaw('TOAST_MESSAGE_PLEASE_RELOAD_THE_APP'),
     type: ToastType.ERROR,
     position: 'top-left'
   },
   [ToastTemplates.offline]: {
-    header: 'You’re offline.',
-    message: () => 'Please check your internet connection and refresh the page.',
+    header: translateRaw('TOAST_OFFLINE'),
+    message: () => translateRaw('TOAST_MESSAGE_CHECK_INTERNET_CONNECTION'),
     type: ToastType.INFO,
     position: 'top-left'
   },
   [ToastTemplates.somethingWentWrong]: {
-    header: 'We’re sorry.',
-    message: () => 'Something went wrong! Please try again.',
+    header: translateRaw('TOAST_WE_ARE_SORRY'),
+    message: () => translateRaw('TOAST_MESSAGE_SOMETHING_WENT_WRONG'),
     type: ToastType.ERROR,
     position: 'top-left'
   },
   [ToastTemplates.online]: {
-    header: 'You’re online!',
-    message: () => 'All systems good to go.',
+    header: translateRaw('TOAST_ONLINE'),
+    message: () => translateRaw('TOAST_MESSAGE_ALL_SYSTEMS_GOOD'),
     type: ToastType.SUCCESS,
     position: 'top-left'
   },

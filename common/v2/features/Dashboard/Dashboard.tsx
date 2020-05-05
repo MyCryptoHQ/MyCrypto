@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { AccountList, BannerAd, Desktop, Mobile } from 'v2/components';
 import { IS_ACTIVE_FEATURE } from 'v2/config';
 import { AccountContext, StoreContext } from 'v2/services/Store';
+import { translateRaw } from 'v2/translations';
 
 import { NotificationsPanel } from '../NotificationsPanel';
 import { DashboardZapCTA } from '../DeFiZap';
@@ -81,7 +82,7 @@ export default function Dashboard() {
         <div className="Dashboard-desktop-top">
           <div className="Dashboard-desktop-top-left">
             <Heading as="h2" className="Dashboard-desktop-top-left-heading">
-              Your Dashboard
+              {translateRaw('YOUR_DASHBOARD')}
             </Heading>
             <div className="Dashboard-desktop-top-left-actions">
               {actions.map(action => (

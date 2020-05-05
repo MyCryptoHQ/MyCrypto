@@ -43,7 +43,7 @@ interface ResourceItemProps {
   link: string;
 }
 
-const ResourceItem: React.SFC<ResourceItemProps> = ({ src, title, link }) => {
+const ResourceItem: React.FC<ResourceItemProps> = ({ src, title, link }) => {
   return (
     <ResourceItemWrapper href={link} target="_blank" rel="noopener noreferrer">
       <Image src={src} />

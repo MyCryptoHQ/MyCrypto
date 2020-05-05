@@ -67,7 +67,8 @@ export class KeystoreDecrypt extends PureComponent {
     return (
       <div className="Panel">
         <div className="Panel-title">
-          {translate('UNLOCK_WALLET')} {`Your ${translateRaw('X_KEYSTORE2')}`}
+          {translate('UNLOCK_WALLET')}{' '}
+          {translateRaw('YOUR_WALLET_TYPE', { $walletType: translateRaw('X_KEYSTORE2') })}
         </div>
         <div className="Keystore">
           <form onSubmit={this.unlock}>
@@ -92,7 +93,7 @@ export class KeystoreDecrypt extends PureComponent {
               </label>
 
               {isWalletPending ? <Spinner /> : ''}
-              <label className="Keystore-password">Your Password</label>
+              <label className="Keystore-password">{translateRaw('YOUR_PASSWORD')}</label>
               <SInput
                 isValid={password ? password.length > 0 : false}
                 className={`${file.length && isWalletPending ? 'hidden' : ''}`}

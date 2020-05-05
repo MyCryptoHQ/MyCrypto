@@ -43,12 +43,12 @@ const PATHS: IRoutePath[] = [
   },
   {
     name: 'DOWNLOAD_DESKTOP_APP',
-    title: 'Download Desktop App',
+    title: translateRaw('DOWNLOAD_DESKTOP_APP'),
     path: '/download-desktop-app'
   },
   {
     name: 'NO_ACCOUNTS',
-    title: 'No Accounts',
+    title: translateRaw('NO_ACCOUNTS'),
     path: '/no-accounts'
   },
   {
@@ -58,77 +58,77 @@ const PATHS: IRoutePath[] = [
   },
   {
     name: 'SCREEN_LOCK_NEW',
-    title: 'Screen Lock New',
+    title: translateRaw('SCREEN_LOCK_NEW'),
     path: '/screen-lock/new'
   },
   {
     name: 'SCREEN_LOCK_LOCKED',
-    title: 'Screen Lock Locked',
+    title: translateRaw('SCREEN_LOCK_LOCKED'),
     path: '/screen-lock/locked'
   },
   {
     name: 'SCREEN_LOCK_FORGOT',
-    title: 'Screen Lock Forgot Password',
+    title: translateRaw('SCREEN_LOCK_FORGOT'),
     path: '/screen-lock/forgot-password'
   },
   {
     name: 'SEND',
-    title: 'Send Assets',
+    title: translateRaw('SEND_ASSETS'),
     path: '/send'
   },
   {
     name: 'DEFIZAP',
-    title: 'DeFiZap',
+    title: translateRaw('DEFIZAP'),
     path: '/defi/zap'
   },
   {
     name: 'SETTINGS',
-    title: 'Settings',
+    title: translateRaw('SETTINGS'),
     path: '/settings'
   },
   {
     name: 'SETTINGS_IMPORT',
-    title: 'Import',
+    title: translateRaw('SETTINGS_IMPORT'),
     path: '/settings/import'
   },
   {
     name: 'SETTINGS_EXPORT',
-    title: 'Export',
+    title: translateRaw('SETTINGS_EXPORT'),
     path: '/settings/export'
   },
   {
     name: 'SWAP',
-    title: 'Buy and Exchange',
+    title: translateRaw('SWAP_ROUTE_TITLE'),
     path: '/swap'
   },
   {
     name: 'SIGN_MESSAGE',
-    title: 'Sign Message',
+    title: translateRaw('SIGN_MESSAGE'),
     path: '/sign-message'
   },
   {
     name: 'VERIFY_MESSAGE',
-    title: 'Verify Message',
+    title: translateRaw('VERIFY_MESSAGE'),
     path: '/verify-message'
   },
   {
     name: 'BROADCAST_TX',
-    title: 'Broadcast Transaction',
+    title: translateRaw('BROADCAST_TX'),
     path: '/broadcast-transaction'
   },
   {
     name: 'INTERACT_WITH_CONTRACTS',
-    title: 'Interact With Contracts',
+    title: translateRaw('INTERACT_WITH_CONTRACTS'),
     path: '/interact-with-contracts'
   },
   {
     name: 'DEPLOY_CONTRACTS',
-    title: 'Deploy Contracts',
+    title: translateRaw('DEPLOY_CONTRACTS'),
     path: '/deploy-contracts'
   },
   {
     name: 'MYC_MEMBERSHIP',
-    title: 'MyCrypto Membership',
+    title: translateRaw('MYC_MEMBERSHIP'),
     path: '/membership'
   },
   {

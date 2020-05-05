@@ -77,7 +77,7 @@ export default class SignTransactionPrivateKey extends Component<
             <TogglablePassword
               value={key}
               isValid={isValidPkey}
-              placeholder="Private Key"
+              placeholder={translateRaw('PRIVATE_KEY_PLACEHOLDER')}
               onChange={this.onPkeyChange}
               onEnter={() => this.unlock}
             />

@@ -104,7 +104,7 @@ const renderAccounts = (
 ) =>
   accounts.map((account: IAccount) => {
     const addressCard = getLabelByAccount(account, addressBook);
-    const addressLabel = addressCard ? addressCard.label : 'Unknown Account';
+    const addressLabel = addressCard ? addressCard.label : translateRaw('NO_LABEL');
     return (
       <SCheckbox
         key={account.uuid}

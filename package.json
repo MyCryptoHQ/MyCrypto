@@ -92,6 +92,7 @@
     "@babel/preset-env": "7.8.3",
     "@babel/preset-react": "7.8.3",
     "@babel/preset-typescript": "7.8.3",
+    "@phenomnomnominal/tsquery": "4.0.0",
     "@storybook/addon-a11y": "5.3.13",
     "@storybook/addon-actions": "5.3.14",
     "@storybook/addon-docs": "5.3.13",
@@ -240,10 +241,12 @@
     "formatAll": "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
     "prettier:diff": "prettier --write --config ./.prettierrc --list-different \"common/**/*.ts\" \"common/**/*.tsx\"",
     "update:tokens": "parse-eth-tokens --networks all --output ./common/v2/database/data/tokens --exclude 0x5a276Aeb77bCfDAc8Ac6f31BBC7416AE1A85eEF2,0x0027449Bf0887ca3E431D263FFDeFb244D95b555",
-    "lint:css": "stylelint ./common/**/*.tsx"
+    "lint:css": "stylelint ./common/**/*.tsx",
+    "node:scripts:tsc": "tsc --project tsconfig.scripts.json",
+    "translations:extract": "npm run node:scripts:tsc && node node-scripts/translations/translations-extract.js"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
+    "!(node-scripts)/**/*.{ts,tsx}": [
       "prettier --write --config ./.prettierrc --config-precedence file-override",
       "yarn lint:css",
       "yarn tslint",

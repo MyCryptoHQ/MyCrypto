@@ -2,6 +2,7 @@ import React from 'react';
 import { OptionComponentProps } from 'react-select';
 
 import { Divider } from 'v2/components';
+import { translateRaw } from 'v2/translations';
 
 class ZapOption extends React.PureComponent<OptionComponentProps> {
   public render() {
@@ -34,7 +35,7 @@ export const ZapSummary = ({
 }) => {
   return (
     <div onClick={onClick}>
-      <p>{name && keyId ? `${name} - ${keyId}` : 'unknown'}</p>
+      <p>{name && keyId ? `${name} - ${keyId}` : translateRaw('UNKNOWN')}</p>
     </div>
   );
 };

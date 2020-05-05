@@ -47,7 +47,8 @@ export function ParitySignerDecrypt({ formData, onUnlock }: OwnProps & StateProp
   return (
     <div className="ParityPanel">
       <div className="Panel-title">
-        {translate('UNLOCK_WALLET')} {`Your ${translateRaw('X_PARITYSIGNER')}`}
+        {translate('UNLOCK_WALLET')}{' '}
+        {translateRaw('YOUR_WALLET_TYPE', { $walletType: translateRaw('X_PARITYSIGNER') })}
       </div>
       <div className="ParitySigner">
         {/* <div className="ParitySigner-title">{translate('SIGNER_SELECT_WALLET')}</div> */}

@@ -27,7 +27,7 @@
     "skipLibCheck": true
   },
   "include": ["./scripts", "./common/", "./electron-app/", "./shared/", "spec", "./jest_config"],
-  "exclude": ["jest_config/__mocks__"],
+  "exclude": ["jest_config/__mocks__", "./node-scripts"],
   "awesomeTypescriptLoaderOptions": {
     "transpileOnly": true
   }
