@@ -2,17 +2,18 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { StoreContext } from 'v2/services';
 import { TUuid } from 'v2/types';
+import { MYC_API } from 'v2/config';
 import { AssetMappingObject } from 'v2/services/Store/StoreProvider';
 
 import genericIcon from 'assets/generic.svg';
 
-const baseURL = 'https://mycryptoapi.com/api/v1/images';
+const baseURL = `${MYC_API}/images`;
 
-function buildUrl(uuid: string) {
+function buildUrl(uuid: TUuid) {
   return `${baseURL}/${uuid}.png`;
 }
 
-function getIconUrl(uuid: string, assetIconsManifest: AssetMappingObject[]) {
+function getIconUrl(uuid: TUuid, assetIconsManifest: AssetMappingObject[]) {
   const assetIconsManifestEntry = assetIconsManifest.find((item) => item.uuid === uuid);
 
   const curr = assetIconsManifestEntry ? assetIconsManifestEntry.coinGeckoId : false;
