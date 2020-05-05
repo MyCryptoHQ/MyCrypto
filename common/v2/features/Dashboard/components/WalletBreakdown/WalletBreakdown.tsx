@@ -95,7 +95,8 @@ export function WalletBreakdown() {
               address: currAccount.address,
               ticker: accAsset.ticker,
               amount: weiToFloat(accAsset.balance, accAsset.decimal),
-              fiatValue: convertToFiatFromAsset(accAsset, getAssetRate(accAsset))
+              fiatValue: convertToFiatFromAsset(accAsset, getAssetRate(accAsset)),
+              label: currAccount.label
             }))
           ];
         }

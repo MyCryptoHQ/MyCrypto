@@ -38,12 +38,24 @@ interface Props extends SProps {
   address: string;
   truncate: any;
   isCopyable?: boolean;
+  disableTooltip?: boolean;
 }
 
-function EthAddress({ address, isCopyable = true, truncate, inline = false }: Props) {
+function EthAddress({
+  address,
+  isCopyable = true,
+  truncate,
+  inline = false,
+  disableTooltip = false
+}: Props) {
   return (
     <Overrides inline={inline}>
-      <Copyable text={address.toLowerCase()} isCopyable={isCopyable} truncate={truncate} />
+      <Copyable
+        text={address.toLowerCase()}
+        isCopyable={isCopyable}
+        truncate={truncate}
+        disableTooltip={disableTooltip}
+      />
     </Overrides>
   );
 }
