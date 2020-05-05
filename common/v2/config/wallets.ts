@@ -7,7 +7,6 @@ import { KB_HELP_ARTICLE, getKBHelpArticle, HELP_ARTICLE } from './helpArticles'
 // component.
 import LedgerSVG from 'common/assets/images/wallets/ledger.svg';
 import TrezorSVG from 'common/assets/images/wallets/trezor.svg';
-import SafeTSVG from 'common/assets/images/wallets/safe-t.png';
 import ParitySignerSVG from 'common/assets/images/wallets/parity-signer.svg';
 import MetamaskIcon from 'common/assets/images/wallets/metamask.svg';
 import TrustIcon from 'common/assets/images/wallets/trust-3.svg';
@@ -145,18 +144,6 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     icon: TrezorSVG,
     description: 'ADD_HARDWAREDESC',
     helpLink: getKBHelpArticle(MIGRATE_TO_TREZOR)
-  },
-  [WalletId.SAFE_T_MINI]: {
-    id: WalletId.SAFE_T_MINI,
-    name: 'Safe-T Mini',
-    isDeterministic: true,
-    isSecure: true,
-    isDesktopOnly: false,
-    type: WalletType.HARDWARE,
-    lid: 'X_SAFE_T',
-    icon: SafeTSVG,
-    description: 'ADD_HARDWAREDESC',
-    helpLink: HELP_ARTICLE.SAFE_T_MINI
   },
   [WalletId.PARITY_SIGNER]: {
     id: WalletId.PARITY_SIGNER,
