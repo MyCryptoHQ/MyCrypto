@@ -53,7 +53,7 @@
 		"ADD_ACCOUNT_FOOTER_LINK": "Create a new account now.",
 		"ADD_ACCOUNT_NETWORK_ACTION": "Next",
 		"ADD_ACCOUNT_NETWORK_SELECT": "Select the blockchain that you want to operate with and the network it connects through. Not sure what to choose? Stick with the default choices below and click next.",
-		"ADD_ACCOUNT_NETWORK_TITLE": "Select Network and Node",
+		"ADD_ACCOUNT_NETWORK_TITLE": "Select Network",
 		"ADD_ACCOUNT_WEB3_DESC": "After you've connected, follow the instructions on the screen to access your account",
 		"ADD_ACCOUNT_WEB3_FOOTER": "Don't have $walletId?",
 		"ADD_ACCOUNT_WEB3_FOOTER_DEFAULT": "Don't have a Web3 Provider?",
