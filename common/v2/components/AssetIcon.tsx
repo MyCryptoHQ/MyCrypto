@@ -14,7 +14,8 @@ function buildUrl(uuid: TUuid) {
 }
 
 function getIconUrl(uuid: TUuid, assetIconsManifest: AssetMappingObject[]) {
-  const assetIconsManifestEntry = assetIconsManifest.find((item) => item.uuid === uuid);
+  const assetIconsManifestEntry =
+    assetIconsManifest && assetIconsManifest.find((item) => item.uuid === uuid);
 
   const curr = assetIconsManifestEntry ? assetIconsManifestEntry.coinGeckoId : false;
   return curr ? buildUrl(uuid) : genericIcon;
