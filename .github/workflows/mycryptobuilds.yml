@@ -67,10 +67,10 @@ jobs:
       env:
         DEST_DIR: ${{ github.head_ref }}
         SOURCE_DIR: 'dist/download'
-
+###
     - name: S3 Sync - Storybook SHA
       uses: jakejarvis/s3-sync-action@v0.5.1
-      if: github.ref == 'refs/heads/master' || github.event_name == 'pull_request' 
+      if: github.event_name == 'pull_request' 
       with:
         args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
       env:
@@ -78,16 +78,26 @@ jobs:
         SOURCE_DIR: 'storybook-static'
 
       
-    - name: S3 Sync - Storybook Branch
+    - name: S3 Sync - Storybook Branch - push
       uses: jakejarvis/s3-sync-action@v0.5.1
-      if: github.ref == 'refs/heads/master' || github.event_name == 'pull_request' 
+      if: github.ref == 'refs/heads/master' 
+      with:
+        args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+      env:
+        DEST_DIR: 'storybook/${GITHUB_REF##*/}'
+        SOURCE_DIR: 'storybook-static'
+
+
+    - name: S3 Sync - Storybook Branch - pull_request
+      uses: jakejarvis/s3-sync-action@v0.5.1
+      if: github.event_name == 'pull_request' 
       with:
         args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
       env:
         DEST_DIR: 'storybook/${{ github.head_ref }}'
         SOURCE_DIR: 'storybook-static'
-
-      
+        
+        
     - name: Mycrypto-bot trigger
       if: github.event_name == 'pull_request'
       run: aws sns publish --topic-arn ${{ secrets.SNS_TOPIC_MYCRYPTO_BOT }} --region us-east-2 --message $(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
