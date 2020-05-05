@@ -50,15 +50,24 @@ jobs:
         SOURCE_DIR: 'dist/download'
         
         
-    - name: S3 Sync - Downloadable Branch
+    - name: S3 Sync - Downloadable Branch - push
       uses: jakejarvis/s3-sync-action@v0.5.1
+      if: github.event_name == 'push'
+      with:
+        args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+      env:
+        DEST_DIR: ${GITHUB_REF##*/}
+        SOURCE_DIR: 'dist/download'
+
+    - name: S3 Sync - Downloadable Branch - pull_request
+      uses: jakejarvis/s3-sync-action@v0.5.1
+      if: github.event_name == 'pull_request'
       with:
         args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
       env:
         DEST_DIR: ${{ github.head_ref }}
         SOURCE_DIR: 'dist/download'
 
-        
     - name: S3 Sync - Storybook SHA
       uses: jakejarvis/s3-sync-action@v0.5.1
       if: github.ref == 'refs/heads/master' || github.event_name == 'pull_request' 
