@@ -53,10 +53,10 @@ const getFilesMatchingPattern = (pattern: string) =>
     return fs.statSync(filePath).isFile();
   });
 
-const extract = () => {
+export const translationKeysExtract = (projectFilePattern = PROJECT_FILE_PATTERN) => {
   console.log('Extracting... ');
 
-  const files = getFilesMatchingPattern(path.resolve(PROJECT_FILE_PATTERN));
+  const files = getFilesMatchingPattern(path.resolve(projectFilePattern));
   let keys: string[] = [];
 
   files.forEach((filePath: string) => {
@@ -96,11 +96,11 @@ const extract = () => {
     .reduce((acc, item) => ({ ...acc, [item]: '' }), {});
 };
 
-const updateTranslations = (translated: { [name: string]: string }) => {
+export const updateJsonTranslations = (translated: { [name: string]: string }, translationFilePattern = TRANSLATION_FILE_PATTERN) => {
   console.log(`Found ${Object.keys(translated).length} translation keys`);
   console.log('Updating translations...');
 
-  const translationFilePaths = getFilesMatchingPattern(path.resolve(TRANSLATION_FILE_PATTERN));
+  const translationFilePaths = getFilesMatchingPattern(path.resolve(translationFilePattern));
   translationFilePaths.forEach((translationFilePath: string) => {
     const translationFileJson = JSON.parse(fs.readFileSync(translationFilePath));
 
@@ -118,4 +118,7 @@ const updateTranslations = (translated: { [name: string]: string }) => {
   });
 };
 
-updateTranslations(extract());
+// Since this is a script, it should't fire when running jest tests
+if (typeof process.env.JEST_WORKER_ID !== 'string') {
+  updateJsonTranslations(translationKeysExtract());
+}
