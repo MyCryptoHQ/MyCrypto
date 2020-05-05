@@ -7,7 +7,6 @@ import { KB_HELP_ARTICLE, getKBHelpArticle, HELP_ARTICLE } from './helpArticles'
 // component.
 import LedgerSVG from 'common/assets/images/wallets/ledger.svg';
 import TrezorSVG from 'common/assets/images/wallets/trezor.svg';
-import ParitySignerSVG from 'common/assets/images/wallets/parity-signer.svg';
 import MetamaskIcon from 'common/assets/images/wallets/metamask.svg';
 import TrustIcon from 'common/assets/images/wallets/trust-3.svg';
 import Web3DefaultIcon from 'assets/images/wallets/web3-default.svg';
@@ -144,18 +143,6 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     icon: TrezorSVG,
     description: 'ADD_HARDWAREDESC',
     helpLink: getKBHelpArticle(MIGRATE_TO_TREZOR)
-  },
-  [WalletId.PARITY_SIGNER]: {
-    id: WalletId.PARITY_SIGNER,
-    name: 'Parity Signer',
-    isDeterministic: false,
-    isSecure: false,
-    isDesktopOnly: false,
-    type: WalletType.MISC,
-    lid: 'X_PARITYSIGNER',
-    icon: ParitySignerSVG,
-    description: 'ADD_PARITY_DESC',
-    helpLink: HELP_ARTICLE.PARITY
   },
   [WalletId.KEYSTORE_FILE]: {
     id: WalletId.KEYSTORE_FILE,

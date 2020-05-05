@@ -6,8 +6,7 @@ import {
   // PrivKeyWallet,
   // UtcWallet,
   // Web3Wallet,
-  AddressOnlyWallet,
-  ParitySignerWallet
+  AddressOnlyWallet
   // getUtcWallet,
   // getPrivKeyWallet
   // getKeystoreWallet
@@ -46,10 +45,6 @@ export const WalletFactory = (walletId: WalletId): WalletService | any => {
           TrezorWallet.getChainCode(dPath),
         init: (address: TAddress, dPath: string, index: number) =>
           new TrezorWallet(address, dPath, index)
-      };
-    case WalletId.PARITY_SIGNER:
-      return {
-        init: (address: TAddress) => new ParitySignerWallet(address)
       };
     case WalletId.KEYSTORE_FILE:
       return {
