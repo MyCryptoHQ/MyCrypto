@@ -17,10 +17,6 @@ export const fNetwork: Network = {
       label: 'Testnet (ETH)',
       value: "m/44'/1'/0'/0"
     },
-    SAFE_T_MINI: {
-      label: 'Testnet (ETH)',
-      value: "m/44'/1'/0'/0"
-    },
     LEDGER_NANO_S: {
       label: 'Ledger (ETH)',
       value: "m/44'/60'/0'"

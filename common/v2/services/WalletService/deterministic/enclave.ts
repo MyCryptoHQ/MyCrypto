@@ -9,7 +9,6 @@ import { HardwareWallet, ChainCodeResponse } from './hardware';
 const walletTypeNames = {
   [WalletTypes.LEDGER]: 'X_LEDGER',
   [WalletTypes.TREZOR]: 'X_TREZOR',
-  [WalletTypes.SAFE_T]: 'X_SAFE_T',
   [WalletTypes.KEEPKEY]: 'X_KEEPKEY'
 };
 
@@ -55,7 +54,7 @@ export function makeEnclaveWallet(walletType: WalletTypes) {
         walletType,
         path
       })
-        .then(res => res.success)
+        .then((res) => res.success)
         .catch(() => false);
     }
 

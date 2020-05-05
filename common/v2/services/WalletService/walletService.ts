@@ -15,7 +15,6 @@ import {
 import {
   LedgerWallet,
   TrezorWallet,
-  SafeTWallet,
   // HardwareWallet
   ChainCodeResponse
 } from './deterministic';
@@ -47,13 +46,6 @@ export const WalletFactory = (walletId: WalletId): WalletService | any => {
           TrezorWallet.getChainCode(dPath),
         init: (address: TAddress, dPath: string, index: number) =>
           new TrezorWallet(address, dPath, index)
-      };
-    case WalletId.SAFE_T_MINI:
-      return {
-        getChainCode: (dPath: string): Promise<ChainCodeResponse> =>
-          SafeTWallet.getChainCode(dPath),
-        init: (address: TAddress, dPath: string, index: number) =>
-          new SafeTWallet(address, dPath, index)
       };
     case WalletId.PARITY_SIGNER:
       return {
