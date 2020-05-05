@@ -19,6 +19,8 @@ export const DEFAULT_NETWORK_FOR_FALLBACK = 'ropsten';
 
 export const DEFAULT_NETWORK: NetworkId = 'Ethereum';
 
+export const DEFAULT_NETWORK_SYMBOL = 'ETH';
+
 export const DEFAULT_ASSET_DECIMAL = 18;
 
 export const MYC_DEXAG_COMMISSION_RATE = 2.5;

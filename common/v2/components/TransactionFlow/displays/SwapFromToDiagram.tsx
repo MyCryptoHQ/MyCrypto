@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { TSymbol } from 'v2/types';
+import { TSymbol, TUuid } from 'v2/types';
 import { AssetIcon, Currency } from 'v2/components';
 import { FONT_SIZE } from 'v2/theme';
 
@@ -10,6 +10,8 @@ import arrowIcon from 'assets/images/arrow-right.svg';
 interface Props {
   fromSymbol: TSymbol;
   toSymbol: TSymbol;
+  fromUUID: TUuid;
+  toUUID: TUuid;
   fromAmount: string;
   toAmount: string;
 }
@@ -43,26 +45,28 @@ const Arrow = styled.img`
 `;
 
 export default function SwapFromToDiagram(props: Props) {
-  const { fromSymbol, toSymbol, fromAmount, toAmount } = props;
+  const { fromSymbol, toSymbol, fromUUID, toUUID, fromAmount, toAmount } = props;
   return (
     <Wrapper>
       <AssetWrapper>
-        <AssetIcon symbol={fromSymbol} size="72px" />
+        <AssetIcon uuid={fromUUID} size="72px" />
         <Currency
           bold={true}
           fontSize={FONT_SIZE.LG}
           amount={fromAmount}
+          uuid={fromUUID}
           symbol={fromSymbol}
           decimals={6}
         />
       </AssetWrapper>
       <Arrow src={arrowIcon} />
       <AssetWrapper>
-        <AssetIcon symbol={toSymbol} size="72px" />
+        <AssetIcon uuid={toUUID} size="72px" />
         <Currency
           bold={true}
           fontSize={FONT_SIZE.LG}
           amount={toAmount}
+          uuid={toUUID}
           symbol={toSymbol}
           decimals={6}
         />

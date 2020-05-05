@@ -26,12 +26,13 @@ const DropdownContainer = styled('div')`
 class AssetOption extends React.PureComponent<OptionComponentProps> {
   public render() {
     const { option, onSelect } = this.props;
-    const { ticker, symbol, name } = option;
+    const { ticker, symbol, name, uuid } = option;
     const ref = ticker ? ticker : symbol;
     return (
       <>
         <AssetDropdownItem
           symbol={ref}
+          uuid={uuid}
           name={name}
           onClick={() => onSelect && onSelect(option, null)}
         />
@@ -45,11 +46,15 @@ class AssetOption extends React.PureComponent<OptionComponentProps> {
 class AssetOptionShort extends React.PureComponent<OptionComponentProps> {
   public render() {
     const { option, onSelect } = this.props;
-    const { ticker, symbol } = option;
+    const { ticker, symbol, uuid } = option;
     const ref = ticker ? ticker : symbol;
     return (
       <>
-        <AssetDropdownItem symbol={ref} onClick={() => onSelect && onSelect(option, null)} />
+        <AssetDropdownItem
+          symbol={ref}
+          uuid={uuid}
+          onClick={() => onSelect && onSelect(option, null)}
+        />
         <Divider />
       </>
     );
@@ -85,9 +90,11 @@ function AssetDropdown({
         optionComponent={showOnlyTicker ? AssetOptionShort : AssetOption}
         value={!isEmpty(selectedAsset) && selectedAsset}
         valueComponent={({ value: option }) => {
-          const { ticker, symbol, name } = option;
+          const { ticker, uuid, symbol, name } = option;
           const ref = ticker ? ticker : symbol;
-          return <AssetDropdownItem symbol={ref} name={!showOnlyTicker ? name : undefined} />;
+          return (
+            <AssetDropdownItem symbol={ref} uuid={uuid} name={!showOnlyTicker ? name : undefined} />
+          );
         }}
       />
     </DropdownContainer>

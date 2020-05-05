@@ -28,7 +28,7 @@ export {
   calculateMarkup,
   withCommission
 } from './convert';
-export { EtherUUID } from './constants';
+export { ETHUUID } from './constants';
 export { isArrayEqual } from './isArrayEqual';
 export { useInterval } from './useInterval';
 export * from './useStateReducer';

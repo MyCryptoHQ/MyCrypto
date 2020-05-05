@@ -13,7 +13,7 @@ import { isEthereumAccount } from 'v2/services/Store/Account/helpers';
 import { StoreContext, AssetContext, NetworkContext } from 'v2/services/Store';
 import { fetchGasPriceEstimates } from 'v2/services/ApiService';
 import { getNonce } from 'v2/services/EthService';
-import { EtherUUID, noOp } from 'v2/utils';
+import { ETHUUID, noOp } from 'v2/utils';
 import { getAccountsWithAssetBalance } from 'v2/features/SwapAssets/helpers';
 
 import MembershipDropdown from './MembershipDropdown';
@@ -57,7 +57,7 @@ const FormFieldSubmitButton = styled(Button)`
 const MembershipForm = ({ isSubmitting, onComplete }: Props) => {
   const { accounts } = useContext(StoreContext);
   const { networks } = useContext(NetworkContext);
-  const network = networks.find((n) => n.baseAsset === EtherUUID) as Network;
+  const network = networks.find((n) => n.baseAsset === ETHUUID) as Network;
   const relevantAccounts = accounts.filter(isEthereumAccount);
 
   return (
@@ -115,7 +115,11 @@ export const MembershipFormUI = ({
               .length === 0;
 
           const { amount, asset, account: selectedAccount } = values;
-          const convertedAsset = { name: asset.name, symbol: asset.ticker as TSymbol };
+          const convertedAsset = {
+            name: asset.name,
+            symbol: asset.ticker as TSymbol,
+            uuid: asset.uuid
+          };
           const filteredAccounts = getAccountsWithAssetBalance(
             relevantAccounts,
             convertedAsset,

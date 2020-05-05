@@ -1,10 +1,11 @@
 import { BigNumber } from 'bignumber.js';
 
-import { TSymbol, StoreAccount, ITxObject, ITxStatus } from 'v2/types';
+import { TSymbol, StoreAccount, ITxObject, ITxStatus, TUuid } from 'v2/types';
 
 export interface ISwapAsset {
   name: string;
   symbol: TSymbol;
+  uuid: TUuid;
 }
 
 export enum LAST_CHANGED_AMOUNT {

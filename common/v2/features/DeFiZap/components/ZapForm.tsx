@@ -12,7 +12,7 @@ import { IAccount, Network, StoreAccount, Asset } from 'v2/types';
 import { AccountDropdown, InlineMessage, AmountInput } from 'v2/components';
 import { validateAmountField } from 'v2/features/SendAssets/components/validators/validators';
 import { isEthereumAccount } from 'v2/services/Store/Account/helpers';
-import { EtherUUID } from 'v2/utils';
+import { ETHUUID } from 'v2/utils';
 
 import { ZapInteractionState, ISimpleTxFormFull } from '../types';
 import ZapSelectedBanner from './ZapSelectedBanner';
@@ -67,8 +67,8 @@ const ZapForm = ({ onComplete, zapSelected }: Props) => {
   const { accounts } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
-  const ethAsset = assets.find((asset) => asset.uuid === EtherUUID) as Asset;
-  const network = networks.find((n) => n.baseAsset === EtherUUID) as Network;
+  const ethAsset = assets.find((asset) => asset.uuid === ETHUUID) as Asset;
+  const network = networks.find((n) => n.baseAsset === ETHUUID) as Network;
   const relevantAccounts = accounts.filter(isEthereumAccount);
 
   return (

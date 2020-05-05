@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Input } from '@mycrypto/ui';
 
-import { Asset, TSymbol } from 'v2/types';
+import { Asset } from 'v2/types';
 import { sanitizeDecimalSeparator } from 'v2/utils';
 
 import AssetIcon from './AssetIcon';
@@ -41,7 +41,7 @@ function AmountInput({ asset, value, onChange, onBlur, placeholder, ...props }: 
       iconSide={'right'}
       icon={() => (
         <div>
-          {asset.ticker && <SAssetIcon symbol={asset.ticker as TSymbol} size={'1.5rem'} />}
+          {asset.ticker && <SAssetIcon uuid={asset.uuid} size={'1.5rem'} />}
           <Typography>{asset.ticker}</Typography>
         </div>
       )}

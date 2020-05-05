@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 import translate, { translateRaw } from 'v2/translations';
 import { SPACING, COLORS, FONT_SIZE } from 'v2/theme';
 import { IAccount, StoreAccount, Asset } from 'v2/types';
-import { EtherUUID, MOONPAY_ASSET_UUIDS } from 'v2/utils';
+import { ETHUUID, MOONPAY_ASSET_UUIDS } from 'v2/utils';
 import { ROUTE_PATHS, MOONPAY_API_QUERYSTRING, BUY_MYCRYPTO_WEBSITE } from 'v2/config';
 import { AccountDropdown, AssetDropdown, InlineMessage, ContentPanel } from 'v2/components';
 import { isAccountInNetwork } from 'v2/services/Store/Account/helpers';
@@ -68,7 +68,7 @@ export const BuyAssetsForm = () => {
   const history = useHistory();
   const { accounts } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
-  const ethAsset = getAssetByUUID(assets)(EtherUUID) as Asset;
+  const ethAsset = getAssetByUUID(assets)(ETHUUID) as Asset;
 
   const initialFormikValues: IBuyFormState = {
     account: {} as StoreAccount,
@@ -94,7 +94,7 @@ export const BuyAssetsForm = () => {
           }&signature=${encodeURIComponent(signature)}`;
           window.open(`${BUY_MYCRYPTO_WEBSITE}${redirectQueryParams}`, '_blank');
         })
-        .catch(err => {
+        .catch((err) => {
           console.debug('err detected: ', err);
           window.open(`${BUY_MYCRYPTO_WEBSITE}`, '_blank');
         });
@@ -114,9 +114,9 @@ export const BuyAssetsForm = () => {
       <Formik
         initialValues={initialFormikValues}
         validationSchema={BuyFormSchema}
-        onSubmit={vals => handleSubmission(vals, SubmissionType.SEND_TO_SELF)}
+        onSubmit={(vals) => handleSubmission(vals, SubmissionType.SEND_TO_SELF)}
         render={({ values, errors, touched, setFieldValue }) => {
-          const relevantAccounts = accounts.filter(account => {
+          const relevantAccounts = accounts.filter((account) => {
             return values.asset && values.asset.networkId
               ? isAccountInNetwork(account, values.asset.networkId)
               : true;

@@ -54,6 +54,8 @@ export default function ConfirmSwapMultiTx({
       <SwapFromToDiagram
         fromSymbol={fromAsset.symbol}
         toSymbol={toAsset.symbol}
+        fromUUID={fromAsset.uuid}
+        toUUID={toAsset.uuid}
         fromAmount={fromAmount.toString()}
         toAmount={toAmount.toString()}
       />

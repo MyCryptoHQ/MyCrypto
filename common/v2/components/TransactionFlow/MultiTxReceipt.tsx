@@ -67,7 +67,7 @@ export default function MultiTxReceipt({
   completeButtonText
 }: Omit<IStepComponentProps, 'txConfig' | 'txReceipt'> & Props) {
   const shouldRenderPendingBtn =
-    pendingButton && transactions.find(t => t.status === ITxStatus.PENDING);
+    pendingButton && transactions.find((t) => t.status === ITxStatus.PENDING);
 
   return (
     <div className="TransactionReceipt">
@@ -79,6 +79,8 @@ export default function MultiTxReceipt({
       {txType === ITxType.SWAP && swapDisplay && (
         <div className="TransactionReceipt-row">
           <SwapFromToDiagram
+            toUUID={swapDisplay.toAsset.uuid}
+            fromUUID={swapDisplay.fromAsset.uuid}
             fromSymbol={swapDisplay.fromAsset.symbol}
             toSymbol={swapDisplay.toAsset.symbol}
             fromAmount={swapDisplay.fromAmount.toString()}

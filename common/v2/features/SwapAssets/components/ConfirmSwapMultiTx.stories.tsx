@@ -1,14 +1,18 @@
 import React from 'react';
 
-import { TSymbol } from 'v2/types';
-import { bigify } from 'v2/utils';
+import { TSymbol, TUuid } from 'v2/types';
+import { bigify, DAIUUID, ETHUUID } from 'v2/utils';
 import ConfirmSwapMultiTx from './ConfirmSwapMultiTx';
 import { ISwapAsset, LAST_CHANGED_AMOUNT } from '../types';
 
 export default { title: 'ConfirmSwapMultiTx' };
 
-const DAI: ISwapAsset = { name: 'DAI Stablecoin v2.0', symbol: 'DAI' as TSymbol };
-const ETH: ISwapAsset = { name: 'Ethereum', symbol: 'ETH' as TSymbol };
+const DAI: ISwapAsset = {
+  name: 'DAI Stablecoin v2.0',
+  symbol: 'DAI' as TSymbol,
+  uuid: DAIUUID as TUuid
+};
+const ETH: ISwapAsset = { name: 'Ethereum', symbol: 'ETH' as TSymbol, uuid: ETHUUID as TUuid };
 const daiAmount = bigify('100');
 const ethAmount = bigify('0.5');
 const assetPair = {

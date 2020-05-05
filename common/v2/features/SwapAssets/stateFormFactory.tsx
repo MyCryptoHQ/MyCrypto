@@ -10,11 +10,17 @@ import {
   divideBNFloats,
   withCommission,
   calculateMarkup,
-  trimBN
+  trimBN,
+  generateAssetUUID
 } from 'v2/utils';
 import { DexService, NetworkContext, getNetworkById } from 'v2/services';
 import { StoreAccount } from 'v2/types';
-import { DEFAULT_NETWORK, MYC_DEXAG_COMMISSION_RATE } from 'v2/config';
+import {
+  DEFAULT_NETWORK,
+  MYC_DEXAG_COMMISSION_RATE,
+  DEFAULT_NETWORK_CHAINID,
+  DEFAULT_NETWORK_SYMBOL
+} from 'v2/config';
 
 import { ISwapAsset, LAST_CHANGED_AMOUNT, SwapFormState } from './types';
 
@@ -40,14 +46,22 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       const assets = await DexService.instance.getTokenList();
       if (assets.length < 1) return;
       // sort assets alphabetically
-      assets.sort((asset1: ISwapAsset, asset2: ISwapAsset) =>
-        (asset1.symbol as string).localeCompare(asset2.symbol)
-      );
+      const newAssets = assets
+        .map((asset: any) => ({
+          ...asset,
+          uuid:
+            asset.symbol === DEFAULT_NETWORK_SYMBOL
+              ? generateAssetUUID(DEFAULT_NETWORK_CHAINID)
+              : generateAssetUUID(DEFAULT_NETWORK_CHAINID, asset.address)
+        }))
+        .sort((asset1: ISwapAsset, asset2: ISwapAsset) =>
+          (asset1.symbol as string).localeCompare(asset2.symbol)
+        );
       // set fromAsset to default (ETH)
       const network = getNetworkById(DEFAULT_NETWORK, networks);
-      const fromAsset = assets.find((x: ISwapAsset) => x.symbol === network.baseUnit);
-      const toAsset = assets[0];
-      return [assets, fromAsset, toAsset];
+      const fromAsset = newAssets.find((x: ISwapAsset) => x.symbol === network.baseUnit);
+      const toAsset = newAssets[0];
+      return [newAssets, fromAsset, toAsset];
     } catch (e) {
       console.error(e);
     }

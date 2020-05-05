@@ -3,7 +3,7 @@ import { Typography, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { convertToFiatFromAsset } from 'v2/utils';
-import { StoreAsset, TSymbol } from 'v2/types';
+import { StoreAsset } from 'v2/types';
 import { AssetIcon, DashboardPanel, Spinner, Tooltip } from 'v2/components';
 import { translateRaw } from 'v2/translations';
 
@@ -119,7 +119,7 @@ export function TokenList(props: TokenListProps) {
           {sortedTokens.map((token) => (
             <Token key={token.uuid}>
               <Asset>
-                <AssetIcon symbol={token.ticker as TSymbol} size={'26px'} />
+                <AssetIcon uuid={token.uuid} size={'26px'} />
                 <AssetName>{token.name}</AssetName>
               </Asset>
               <TokenValueWrapper>

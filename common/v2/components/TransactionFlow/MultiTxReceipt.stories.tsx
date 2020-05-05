@@ -1,16 +1,20 @@
 import React from 'react';
 
 import { fTxConfigs, fAccount, fNetwork, fTxParcels } from '@fixtures';
-import { ITxType, TSymbol, ITxConfig } from 'v2/types';
-import { noOp, bigify } from 'v2/utils';
+import { ITxType, TSymbol, ITxConfig, TUuid } from 'v2/types';
+import { noOp, bigify, DAIUUID, ETHUUID } from 'v2/utils';
 
 import MultiTxReceipt from './MultiTxReceipt';
 import { SwapDisplayData, ISwapAsset } from 'v2/features/SwapAssets/types';
 
 // Define props
 const resetFlow = noOp;
-const DAI: ISwapAsset = { name: 'DAI Stablecoin v2.0', symbol: 'DAI' as TSymbol };
-const ETH: ISwapAsset = { name: 'Ethereum', symbol: 'ETH' as TSymbol };
+const DAI: ISwapAsset = {
+  name: 'DAI Stablecoin v2.0',
+  symbol: 'DAI' as TSymbol,
+  uuid: DAIUUID as TUuid
+};
+const ETH: ISwapAsset = { name: 'Ethereum', symbol: 'ETH' as TSymbol, uuid: ETHUUID as TUuid };
 const swapDisplay: SwapDisplayData = {
   fromAsset: DAI,
   toAsset: ETH,

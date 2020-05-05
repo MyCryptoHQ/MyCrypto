@@ -10,7 +10,7 @@ import {
   Account
 } from 'v2/components';
 import { truncate, convertToFiat } from 'v2/utils';
-import { ITxReceipt, ITxStatus, StoreAccount, Asset, TSymbol } from 'v2/types';
+import { ITxReceipt, ITxStatus, StoreAccount, Asset } from 'v2/types';
 import { RatesContext, AddressBookContext, getLabelByAddressAndNetwork } from 'v2/services';
 import { translateRaw } from 'v2/translations';
 import {
@@ -105,7 +105,7 @@ const CCircle = styled('div')`
 const SCombinedCircle = (asset: Asset) => {
   return (
     <CCircle>
-      <SAssetIcon symbol={asset.ticker as TSymbol} />
+      <SAssetIcon uuid={asset.uuid} />
     </CCircle>
   );
 };

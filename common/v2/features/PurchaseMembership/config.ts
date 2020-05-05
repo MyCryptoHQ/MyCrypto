@@ -1,7 +1,7 @@
 import { BigNumber } from 'bignumber.js';
 
 import { TAddress } from 'v2/types/address';
-import { DAIUUID, EtherUUID } from 'v2/utils';
+import { DAIUUID, ETHUUID } from 'v2/utils';
 import translate, { translateRaw } from 'v2/translations';
 
 import onemonthIcon from 'assets/images/membership/membership-onemonth.svg';
@@ -113,7 +113,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     description: '',
     icon: lifetimeIcon,
     price: '5',
-    assetUUID: EtherUUID,
+    assetUUID: ETHUUID,
     durationInDays: 36500,
     discountNotice: translateRaw('MEMBERSHIP_LIFETIME_DESC')
   }

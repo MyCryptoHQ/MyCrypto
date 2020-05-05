@@ -1,19 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
-import manifest from 'cryptocurrency-icons/manifest.json';
+import { StoreContext } from 'v2/services';
+import { TUuid } from 'v2/types';
+import { MYC_API } from 'v2/config';
+import { CoinGeckoManifest } from 'v2/services/Store/StoreProvider';
 
-import { IAsset, TSymbol } from 'v2/types';
-// Relies on https://github.com/atomiclabs/cryptocurrency-icons using fixed version number through CDN
-// @TODO: We should be using our own sprite served over a trusted CDN
-const baseURL = 'https://cdn.mycryptoapi.com/v1/icons';
+import genericIcon from 'assets/generic.svg';
 
-function buildUrl(symbol: TSymbol) {
-  return `${baseURL}/${symbol.toLowerCase()}.svg`;
+const baseURL = `${MYC_API}/images`;
+
+function buildUrl(uuid: TUuid) {
+  return `${baseURL}/${uuid}.png`;
 }
 
-function getIconUrl(symbol: TSymbol) {
-  const curr = manifest.find((c: IAsset) => c.symbol === symbol);
-  return curr ? buildUrl(symbol) : buildUrl('generic' as TSymbol);
+function getIconUrl(uuid: TUuid, assetIconsManifest: CoinGeckoManifest) {
+  const assetIconsManifestEntry = assetIconsManifest && assetIconsManifest[uuid];
+
+  const curr = assetIconsManifestEntry || false;
+  return curr ? buildUrl(uuid) : genericIcon;
 }
 
 const SImg = styled('img')`
@@ -22,15 +26,27 @@ const SImg = styled('img')`
 `;
 
 interface Props {
-  symbol: TSymbol;
+  uuid: TUuid;
   size?: string;
   className?: string;
 }
 
-function AssetIcon({ symbol, size = '32px', className }: Props) {
-  const iconUrl = getIconUrl(symbol);
-
-  return <SImg src={iconUrl} size={size} className={className} />;
+function AssetIcon({ uuid, size = '32px', className }: Props) {
+  const { coinGeckoAssetManifest } = useContext(StoreContext);
+  const iconUrl = getIconUrl(uuid, coinGeckoAssetManifest);
+  return (
+    <SImg
+      src={iconUrl}
+      size={size}
+      onError={(e) => {
+        // @ts-ignore: onError works, but ts error
+        e.target.onerror = null;
+        // @ts-ignore: onError works, but ts error
+        e.target.src = genericIcon;
+      }}
+      className={className}
+    />
+  );
 }
 
 export default AssetIcon;

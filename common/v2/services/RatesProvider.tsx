@@ -61,7 +61,6 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
   const { settings, updateSettingsRates } = useContext(SettingsContext);
   const [reserveRateMapping, setReserveRateMapping] = useState({} as ReserveMappingListObject);
   const worker = useRef<undefined | PollingService>();
-
   const currentAssets = getAssets();
   const geckoIds = currentAssets.reduce((acc, a) => {
     if (a.mappings && a.mappings.coinGeckoId) {
@@ -69,7 +68,6 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
     }
     return acc;
   }, [] as string[]);
-
   const updateRates = (data: IRates) =>
     updateSettingsRates({ ...state.rates, ...destructureCoinGeckoIds(data, currentAssets) });
 
@@ -81,9 +79,10 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
   }, [settings]);
 
   const mounted = usePromise();
+
   useEffectOnce(() => {
     (async () => {
-      const value = await mounted(fetchDeFiReserveMappingList().then((e) => e));
+      const value = await mounted(fetchDeFiReserveMappingList());
       setReserveRateMapping(value);
     })();
   });
