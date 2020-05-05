@@ -1,7 +1,7 @@
 import { Transaction as Tx } from 'ethereumjs-tx';
 import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
 import { bigNumberify, formatEther, BigNumber } from 'ethers/utils';
-import * as R from 'ramda';
+import prop from 'ramda/src/prop';
 
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { ITransaction, IHexStrTransaction } from 'v2/types';
@@ -12,7 +12,7 @@ import { hexEncodeQuantity } from './hexEncode';
 export const makeTransaction = (
   t: Partial<Tx> | Partial<ITransaction> | Partial<IHexStrTransaction> | Buffer | string
 ) => {
-  if (R.prop('chainId') !== undefined) {
+  if (prop('chainId') !== undefined) {
     // @ts-ignore
     return new Tx(t, { chain: t.chainId });
   } else {

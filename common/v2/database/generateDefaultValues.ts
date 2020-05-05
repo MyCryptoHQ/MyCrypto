@@ -1,4 +1,10 @@
-import * as R from 'ramda';
+import mapObjIndexed from 'ramda/src/mapObjIndexed';
+import pipe from 'ramda/src/pipe';
+import map from 'ramda/src/map';
+import filter from 'ramda/src/filter';
+import chain from 'ramda/src/chain';
+import reduce from 'ramda/src/reduce';
+import mergeRight from 'ramda/src/mergeRight';
 
 import { generateAssetUUID, generateContractUUID } from 'v2/utils';
 import { Fiats, DEFAULT_ASSET_DECIMAL } from 'v2/config';
@@ -64,7 +70,7 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: SeedData) => {
     );
   };
 
-  return R.mapObjIndexed(formatNetwork, networks);
+  return mapObjIndexed(formatNetwork, networks);
 });
 
 const addContracts = add(LSKeys.CONTRACTS)(
@@ -80,25 +86,25 @@ const addContracts = add(LSKeys.CONTRACTS)(
 
     // Transform { ETH: { contracts: [ {<contract>} ] }}
     // to   { <contract_uuid>: {<contract>} }
-    return R.pipe(
-      R.map(({ id, contracts }) => ({ id, contracts })),
-      R.filter(({ contracts }) => contracts),
-      R.chain(({ id, contracts }): ExtendedAsset[] => contracts.map(formatContract(id))),
-      R.reduce(toObject('uuid'), {} as any),
-      R.mergeRight(store.contracts)
+    return pipe(
+      map(({ id, contracts }) => ({ id, contracts })),
+      filter(({ contracts }) => contracts),
+      chain(({ id, contracts }): ExtendedAsset[] => contracts.map(formatContract(id))),
+      reduce(toObject('uuid'), {} as any),
+      mergeRight(store.contracts)
     )(toArray(networks));
   }
 );
 
 const addContractsToNetworks = add(LSKeys.NETWORKS)((_, store: LocalStorage) => {
   const getNetworkContracts = (n: Network) => {
-    const nContracts = R.filter((c: ExtendedContract) => c.networkId === n.id, store.contracts);
+    const nContracts = filter((c: ExtendedContract) => c.networkId === n.id, store.contracts);
     return {
       ...n,
       contracts: toArray(nContracts).map((c) => c.uuid)
     };
   };
-  return R.mapObjIndexed(getNetworkContracts, store.networks);
+  return mapObjIndexed(getNetworkContracts, store.networks);
 });
 
 const addBaseAssetsToAssets = add(LSKeys.ASSETS)((_, store: LocalStorage) => {
@@ -113,11 +119,11 @@ const addBaseAssetsToAssets = add(LSKeys.ASSETS)((_, store: LocalStorage) => {
 
   // From { <networkId>: { baseAsset: <asset_uui> } }
   // To   { <asset_uuid>: <asset> }
-  return R.pipe(
+  return pipe(
     toArray,
-    R.map(formatAsset),
-    R.reduce((acc, curr) => ({ ...acc, [curr.uuid]: curr }), {}),
-    R.mergeRight(store.assets) // Ensure we return an object with existing assets as well
+    map(formatAsset),
+    reduce((acc, curr) => ({ ...acc, [curr.uuid]: curr }), {}),
+    mergeRight(store.assets) // Ensure we return an object with existing assets as well
   )(store.networks);
 });
 
@@ -133,10 +139,10 @@ const addFiatsToAssets = add(LSKeys.ASSETS)((fiats: Fiat[], store: LocalStorage)
 
   // From { <fiat_key>: <fiat_asset> }
   // To   { <asset_uuid>: <asset> }
-  return R.pipe(
-    R.map(formatFiat),
-    R.reduce((acc, curr) => ({ ...acc, [curr.uuid]: curr }), {}),
-    R.mergeRight(store.assets)
+  return pipe(
+    map(formatFiat),
+    reduce((acc, curr) => ({ ...acc, [curr.uuid]: curr }), {}),
+    mergeRight(store.assets)
   )(fiats);
 });
 
@@ -155,12 +161,12 @@ const addTokensToAssets = add(LSKeys.ASSETS)(
 
     // From { ETH: { tokens: [ {<tokens>} ] }}
     // to   { <asset_uuid>: {<asset>} }
-    return R.pipe(
-      R.map(({ id, tokens }) => ({ id, tokens })),
-      R.filter(({ tokens }) => tokens),
-      R.chain(({ id, tokens }): ExtendedAsset[] => tokens.map(formatToken(id))),
-      R.reduce(toObject('uuid'), {} as any),
-      R.mergeRight(store.assets)
+    return pipe(
+      map(({ id, tokens }) => ({ id, tokens })),
+      filter(({ tokens }) => tokens),
+      chain(({ id, tokens }): ExtendedAsset[] => tokens.map(formatToken(id))),
+      reduce(toObject('uuid'), {} as any),
+      mergeRight(store.assets)
     )(toArray(networks));
   }
 );
@@ -175,7 +181,7 @@ const updateNetworkAssets = add(LSKeys.NETWORKS)((_, store: LocalStorage) => {
       .filter(Boolean)
       .map((a) => a.uuid);
 
-  return R.mapObjIndexed(
+  return mapObjIndexed(
     (n: Network) => ({
       ...n,
       assets: [...n.assets, ...getAssetUuid(n)]
@@ -199,5 +205,5 @@ const getDefaultTransducers = (networkConfig: NetworkConfig): StoreAction[] => [
 type Transduce = (z: LocalStorage, networkConfig: NetworkConfig) => LocalStorage;
 export const createDefaultValues: Transduce = (initialSchema: LocalStorage, networkConfig) => {
   // @ts-ignore
-  return R.pipe(...getDefaultTransducers(networkConfig))(initialSchema);
+  return pipe(...getDefaultTransducers(networkConfig))(initialSchema);
 };

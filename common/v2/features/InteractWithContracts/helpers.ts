@@ -1,4 +1,5 @@
-import { sortBy, cloneDeep } from 'lodash';
+import sortBy from 'lodash/sortBy';
+import cloneDeep from 'lodash/cloneDeep';
 import { bufferToHex } from 'ethereumjs-util';
 
 import { StoreAccount, NetworkId, ITxConfig, ITxObject } from 'v2/types';
@@ -61,7 +62,7 @@ export const generateFunctionFieldsDisplayNames = (abiFunction: ABIItem) => {
 export const setFunctionOutputValues = (abiFunction: ABIItem, outputValues: any) => {
   const tempFunction = cloneDeep(abiFunction);
 
-  tempFunction.outputs.forEach(output => {
+  tempFunction.outputs.forEach((output) => {
     let outputValue = outputValues[output.name];
     if (Buffer.isBuffer(outputValue)) {
       outputValue = bufferToHex(outputValue);
@@ -75,12 +76,12 @@ export const setFunctionOutputValues = (abiFunction: ABIItem, outputValues: any)
 
 export const getFunctionsFromABI = (pAbi: ABIItem[]) =>
   sortBy(
-    pAbi.filter(x => x.type === ABIItemType.FUNCTION),
-    item => item.name.toLowerCase()
-  ).map(x => Object.assign(x, { label: x.name }));
+    pAbi.filter((x) => x.type === ABIItemType.FUNCTION),
+    (item) => item.name.toLowerCase()
+  ).map((x) => Object.assign(x, { label: x.name }));
 
 export const getAccountsInNetwork = (accounts: StoreAccount[], networkId: NetworkId) =>
-  accounts.filter(acc => acc.networkId === networkId && WALLET_STEPS[acc.wallet]);
+  accounts.filter((acc) => acc.networkId === networkId && WALLET_STEPS[acc.wallet]);
 
 export const makeTxConfigFromTransaction = (
   rawTransaction: ITxObject,
@@ -113,7 +114,7 @@ export const makeTxConfigFromTransaction = (
 export const reduceInputParams = (submitedFunction: ABIItem) =>
   submitedFunction.inputs.reduce((accu, input) => {
     let inputValue = input.value;
-    if (inputValue && ['[', ']'].every(x => input.type.includes(x))) {
+    if (inputValue && ['[', ']'].every((x) => input.type.includes(x))) {
       inputValue = JSON.parse(inputValue);
     }
 

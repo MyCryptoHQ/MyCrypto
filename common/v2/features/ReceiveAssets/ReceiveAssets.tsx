@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
-import noop from 'lodash/noop';
 import { Copyable, Heading, Input, Tooltip } from '@mycrypto/ui';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
@@ -11,7 +10,7 @@ import {
 } from 'v2/services/EthService/utils/formatters';
 import { ContentPanel, QRCode, AccountDropdown, AssetDropdown } from 'v2/components';
 import { AssetContext, getNetworkById, StoreContext } from 'v2/services/Store';
-import { isValidAmount, sanitizeDecimalSeparator } from 'v2/utils';
+import { isValidAmount, sanitizeDecimalSeparator, noOp } from 'v2/utils';
 import { IAccount as IIAccount, StoreAccount } from 'v2/types';
 import { ROUTE_PATHS } from 'v2/config';
 import translate, { translateRaw } from 'v2/translations';
@@ -154,7 +153,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
     >
       <Formik
         initialValues={initialValues}
-        onSubmit={noop}
+        onSubmit={noOp}
         render={({
           values: { amount, recipientAddress },
           errors

@@ -1,5 +1,5 @@
 import React from 'react';
-import * as R from 'ramda';
+import path from 'ramda/src/path';
 
 import { SwapFromToDiagram } from 'v2/components/TransactionFlow/displays';
 import { VerticalStepper, Typography } from 'v2/components';
@@ -24,9 +24,9 @@ export default function ConfirmSwapMultiTx({
   onClick
 }: Props) {
   const { fromAsset, toAsset, fromAmount, toAmount } = assetPair;
-  const status = transactions.map(t => R.path(['status'], t));
+  const status = transactions.map((t) => path(['status'], t));
 
-  const broadcasting = status.findIndex(s => s === ITxStatus.BROADCASTED);
+  const broadcasting = status.findIndex((s) => s === ITxStatus.BROADCASTED);
 
   const approveTx = {
     title: translateRaw('APPROVE_SWAP'),

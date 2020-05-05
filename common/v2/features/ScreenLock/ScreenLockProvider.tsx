@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import CryptoJS, { SHA256, AES } from 'crypto-js';
-import * as R from 'ramda';
-import { isEmpty } from 'lodash';
+import pipe from 'ramda/src/pipe';
+import isEmpty from 'lodash/isEmpty';
 
 import { translateRaw } from 'v2/translations';
 import { ROUTE_PATHS } from 'v2/config';
@@ -161,8 +161,9 @@ class ScreenLockProvider extends Component<
       if (appContext.state.timeLeft === 1) {
         appContext.handleCountdownEnded();
       } else {
-        document.title = `${translateRaw('SCREEN_LOCK_TAB_TITLE_LOCKING')} ${appContext.state
-          .timeLeft - 1}`;
+        document.title = `${translateRaw('SCREEN_LOCK_TAB_TITLE_LOCKING')} ${
+          appContext.state.timeLeft - 1
+        }`;
         appContext.setState({ timeLeft: appContext.state.timeLeft - 1 });
       }
     }, 1000);
@@ -205,7 +206,7 @@ class ScreenLockProvider extends Component<
       this.props.history.push(ROUTE_PATHS.SCREEN_LOCK_LOCKED.path);
     }
 
-    this.props.history.listen(location => {
+    this.props.history.listen((location) => {
       if (this.state.locked === true && location.pathname.includes(ROUTE_PATHS.DASHBOARD.path)) {
         this.props.history.push(ROUTE_PATHS.SCREEN_LOCK_LOCKED.path);
       }
@@ -233,7 +234,7 @@ class ScreenLockProvider extends Component<
   }
 }
 
-export default R.pipe(
+export default pipe(
   withRouter,
   withContext(DataContext),
   withContext(SettingsContext)

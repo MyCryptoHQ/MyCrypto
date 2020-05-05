@@ -2,11 +2,12 @@ import React, { useContext, useState } from 'react';
 import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
-import _, { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { bigNumberify } from 'ethers/utils';
 import BN from 'bn.js';
 import styled from 'styled-components';
-import * as R from 'ramda';
+import path from 'ramda/src/path';
+import mergeDeepWith from 'ramda/src/mergeDeepWith';
 import { ValuesType } from 'utility-types';
 
 import translate, { translateRaw } from 'v2/translations';
@@ -129,7 +130,7 @@ export const getInitialFormikValues = (
   defaultNetwork: Network | undefined
 ): IFormikFields => {
   const gasPriceInGwei =
-    R.path(['rawTransaction', 'gasPrice'], s) &&
+    path(['rawTransaction', 'gasPrice'], s) &&
     bigNumGasPriceToViewableGwei(bigNumberify(s.rawTransaction.gasPrice));
   const state: Partial<IFormikFields> = {
     amount: s.amount,
@@ -145,7 +146,7 @@ export const getInitialFormikValues = (
   };
 
   const preferValueFromState = (l: FieldValue, r: FieldValue): FieldValue => (isEmpty(r) ? l : r);
-  return R.mergeDeepWith(preferValueFromState, initialFormikValues, state);
+  return mergeDeepWith(preferValueFromState, initialFormikValues, state);
 };
 
 const QueryWarning: React.FC = () => (

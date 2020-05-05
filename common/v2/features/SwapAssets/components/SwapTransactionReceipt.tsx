@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import * as R from 'ramda';
+import pick from 'ramda/src/pick';
 
 import { translateRaw } from 'v2/translations';
 import { AssetContext } from 'v2/services';
@@ -24,12 +24,12 @@ export default function SwapTransactionReceipt({
   onSuccess
 }: Props) {
   const { assets: userAssets } = useContext(AssetContext);
-  const swapDisplay: SwapDisplayData = R.pick(
+  const swapDisplay: SwapDisplayData = pick(
     ['fromAsset', 'toAsset', 'fromAmount', 'toAmount'],
     assetPair
   );
 
-  const txConfigs = transactions.map(tx => {
+  const txConfigs = transactions.map((tx) => {
     return makeTxConfigFromTransaction(userAssets)(
       tx.txRaw,
       account,

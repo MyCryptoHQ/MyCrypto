@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import * as R from 'ramda';
 import styled, { css } from 'styled-components';
+import isEmpty from 'ramda/src/isEmpty';
 
 import translate, { translateRaw } from 'v2/translations';
 import { WalletId } from 'v2/types';
@@ -32,13 +32,13 @@ const SContent = styled.div`
   text-align: center;
 `;
 const SSection = styled.div<{ center: boolean; withOverlay?: boolean }>`
-  ${props =>
+  ${(props) =>
     props.center &&
     css`
       margin: 0 auto;
     `}
 
-  ${props =>
+  ${(props) =>
     props.withOverlay &&
     css`
       display: flex;
@@ -90,13 +90,9 @@ export function WalletConnectDecrypt({ onUnlock, useWalletConnectProps }: OwnPro
           {translate('SIGNER_SELECT_WALLET_QR', { $walletId: translateRaw('X_WALLETCONNECT') })}
         </SSection>
         <SSection center={true} withOverlay={true}>
-          <Overlay
-            absolute={true}
-            center={true}
-            show={state.isConnected || !R.isEmpty(state.errors)}
-          >
+          <Overlay absolute={true} center={true} show={state.isConnected || !isEmpty(state.errors)}>
             <SContainer>
-              {!R.isEmpty(state.errors) && (
+              {!isEmpty(state.errors) && (
                 <>
                   <Typography>{translateRaw('SIGN_TX_WALLETCONNECT_SESSION_REJECTED')}</Typography>
                   <div style={{ marginTop: '1em' }}>

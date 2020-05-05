@@ -1,5 +1,5 @@
 import React, { Component as ComponentProps } from 'react';
-import * as R from 'ramda';
+import pipe from 'ramda/src/pipe';
 
 import translate, { translateRaw } from 'v2/translations';
 import { WALLETS_CONFIG, IWalletConfig } from 'v2/config';
@@ -148,7 +148,7 @@ const withResponsive = (Component: any) => (ownProps: any) => {
   return <Component {...ownProps} isMobile={isMobile} />;
 };
 
-export default R.pipe(
+export default pipe(
   withResponsive,
   withContext(SettingsContext),
   withContext(NetworkContext)

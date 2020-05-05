@@ -1,7 +1,10 @@
-import * as R from 'ramda';
-import { getUUID } from 'v2/utils';
+import map from 'ramda/src/map';
+import adjust from 'ramda/src/adjust';
+import mergeLeft from 'ramda/src/mergeLeft';
 
+import { getUUID } from 'v2/utils';
 import { ITxStatus, ITxObject } from 'v2/types';
+
 import { ActionTypes, TxMultiState, TxMultiAction } from './types';
 
 export const initialState = {
@@ -33,7 +36,7 @@ export function TxMultiReducer(state: TxMultiState, action: TxMultiAction): TxMu
         ...state,
         _isInitialized: true,
         canYield: true,
-        transactions: R.map(formatTx, txs),
+        transactions: map(formatTx, txs),
         isSubmitting: false,
         account,
         network
@@ -47,9 +50,9 @@ export function TxMultiReducer(state: TxMultiState, action: TxMultiAction): TxMu
       };
     }
     case ActionTypes.PREPARE_TX_REQUEST: {
-      const transactions = R.adjust(
+      const transactions = adjust(
         state._currentTxIdx,
-        R.mergeLeft({ status: ITxStatus.PREPARING }),
+        mergeLeft({ status: ITxStatus.PREPARING }),
         state.transactions
       );
       return {
@@ -60,9 +63,9 @@ export function TxMultiReducer(state: TxMultiState, action: TxMultiAction): TxMu
     }
     case ActionTypes.PREPARE_TX_SUCCESS: {
       const { txRaw } = payload;
-      const transactions = R.adjust(
+      const transactions = adjust(
         state._currentTxIdx,
-        R.mergeLeft({ txRaw, status: ITxStatus.READY }),
+        mergeLeft({ txRaw, status: ITxStatus.READY }),
         state.transactions
       );
       return {
@@ -81,9 +84,9 @@ export function TxMultiReducer(state: TxMultiState, action: TxMultiAction): TxMu
     }
     case ActionTypes.SEND_TX_SUCCESS: {
       const { txHash } = payload;
-      const transactions = R.adjust(
+      const transactions = adjust(
         state._currentTxIdx,
-        R.mergeLeft({ txHash, status: ITxStatus.BROADCASTED }),
+        mergeLeft({ txHash, status: ITxStatus.BROADCASTED }),
         state.transactions
       );
 
@@ -103,9 +106,9 @@ export function TxMultiReducer(state: TxMultiState, action: TxMultiAction): TxMu
     case ActionTypes.CONFIRM_TX_SUCCESS: {
       const { txReceipt, minedAt } = payload;
       const next = (curr: number) => Math.min(curr + 1, state.transactions.length - 1);
-      const transactions = R.adjust(
+      const transactions = adjust(
         state._currentTxIdx,
-        R.mergeLeft({ txReceipt, minedAt, status: ITxStatus.CONFIRMED }),
+        mergeLeft({ txReceipt, minedAt, status: ITxStatus.CONFIRMED }),
         state.transactions
       );
 

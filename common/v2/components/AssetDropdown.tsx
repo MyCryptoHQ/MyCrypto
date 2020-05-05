@@ -1,7 +1,7 @@
 import React from 'react';
 import { OptionComponentProps } from 'react-select';
 import styled from 'styled-components';
-import * as R from 'ramda';
+import isEmpty from 'ramda/src/isEmpty';
 
 import { translateRaw } from 'v2/translations';
 import { Asset, TSymbol } from 'v2/types';
@@ -15,7 +15,7 @@ const Label = styled.div`
   text-align: left;
   font-weight: normal;
   margin-bottom: 9px;
-  color: ${props => props.theme.text};
+  color: ${(props) => props.theme.text};
 `;
 
 const DropdownContainer = styled('div')`
@@ -68,7 +68,7 @@ function AssetDropdown({
 }: Props<Asset | { name: string; symbol: TSymbol }>) {
   useEffectOnce(() => {
     // Preselect first value when not provided
-    if (R.isEmpty(selectedAsset) && onSelect && !R.isEmpty(assets)) {
+    if (isEmpty(selectedAsset) && onSelect && !isEmpty(assets)) {
       onSelect(assets[0]);
     }
   });
@@ -78,12 +78,12 @@ function AssetDropdown({
       {label && <Label>{label}</Label>}
       <Dropdown
         placeholder={translateRaw('SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER')}
-        options={assets.map(a => ({ value: showOnlyTicker ? a.symbol : a.name, ...a }))}
+        options={assets.map((a) => ({ value: showOnlyTicker ? a.symbol : a.name, ...a }))}
         disabled={disabled}
         searchable={searchable}
         onChange={(option: Asset) => onSelect && onSelect(option)}
         optionComponent={showOnlyTicker ? AssetOptionShort : AssetOption}
-        value={!R.isEmpty(selectedAsset) && selectedAsset}
+        value={!isEmpty(selectedAsset) && selectedAsset}
         valueComponent={({ value: option }) => {
           const { ticker, symbol, name } = option;
           const ref = ticker ? ticker : symbol;

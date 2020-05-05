@@ -1,13 +1,13 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import noop from 'lodash/noop';
+import { Panel } from '@mycrypto/ui';
 
 import { NETWORKS_CONFIG, NODES_CONFIG } from 'v2/database/data';
 import { Network, NetworkId, WalletId } from 'v2/types';
+import { noOp } from 'v2/utils';
 
 import { ProtectTxProvider } from '../index';
 import { ProtectTxSign } from './ProtectTxSign';
-import { Panel } from '@mycrypto/ui';
 
 const ropstenId: NetworkId = 'Ropsten';
 const network: Network = {
@@ -35,7 +35,7 @@ const ProtectTxStep2 = () => (
   <div style={{ maxWidth: '375px', position: 'relative' }}>
     <Panel>
       <ProtectTxSign
-        handleProtectTxConfirmAndSend={noop}
+        handleProtectTxConfirmAndSend={noOp}
         txConfig={sampleTxConfig as any}
         network={network}
         account={account as any}
@@ -45,8 +45,8 @@ const ProtectTxStep2 = () => (
 );
 
 storiesOf('ProtectTransaction', module)
-  .addDecorator(story => <ProtectTxProvider>{story()}</ProtectTxProvider>)
-  .add('Step 2', _ => ProtectTxStep2(), {
+  .addDecorator((story) => <ProtectTxProvider>{story()}</ProtectTxProvider>)
+  .add('Step 2', (_) => ProtectTxStep2(), {
     design: {
       type: 'figma',
       url:

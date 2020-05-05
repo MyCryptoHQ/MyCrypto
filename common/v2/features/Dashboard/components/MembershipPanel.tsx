@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import * as R from 'ramda';
+import uniq from 'ramda/src/uniq';
+import flatten from 'ramda/src/flatten';
 
 import { StoreContext } from 'v2/services';
 import { DashboardPanel, Typography, Button, Link } from 'v2/components';
@@ -69,9 +70,7 @@ function MembershipPanel({ history }: Props) {
 
   const isMember = membershipState === MembershipState.MEMBER;
   const isExpired = membershipState === MembershipState.EXPIRED;
-  const allMemberships = memberships
-    ? R.uniq(R.flatten(memberships.map((m) => m.memberships)))
-    : [];
+  const allMemberships = memberships ? uniq(flatten(memberships.map((m) => m.memberships))) : [];
   const membership =
     allMemberships.length > 0 ? allMemberships[allMemberships.length - 1] : undefined;
 

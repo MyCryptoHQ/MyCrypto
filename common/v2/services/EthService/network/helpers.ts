@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import { FallbackProvider, BaseProvider } from 'ethers/providers';
-import * as R from 'ramda';
+import equals from 'ramda/src/equals';
 import isEmpty from 'lodash/isEmpty';
 
 import {
@@ -67,14 +67,14 @@ export const createFallbackNetworkProviders = (network: Network): FallbackProvid
 
   let sortedNodes = nodes;
   if (!isEmpty(selectedNode)) {
-    const sNode = nodes.find(n => n.name === selectedNode);
+    const sNode = nodes.find((n) => n.name === selectedNode);
     if (sNode) {
-      const restNodes = nodes.filter(n => n.name !== selectedNode);
+      const restNodes = nodes.filter((n) => n.name !== selectedNode);
       sortedNodes = [sNode, ...restNodes];
     }
   }
 
-  const providers: BaseProvider[] = sortedNodes.map(n => getProvider(id, n as any));
+  const providers: BaseProvider[] = sortedNodes.map((n) => getProvider(id, n as any));
 
   return new ethers.providers.FallbackProvider(providers);
 };
@@ -86,7 +86,7 @@ export const getDPath = (network: Network | undefined, type: DPathFormat): DPath
 export const getDPaths = (networks: Network[], type: DPathFormat): DPath[] =>
   networks.reduce((acc, n) => {
     const dPath = getDPath(n, type);
-    if (dPath && !acc.find(x => R.equals(x, dPath))) {
+    if (dPath && !acc.find((x) => equals(x, dPath))) {
       acc.push(dPath);
     }
     return acc;

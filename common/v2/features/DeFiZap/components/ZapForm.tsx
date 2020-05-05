@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Formik, Form, Field, FieldProps } from 'formik';
 import { Button } from '@mycrypto/ui';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import * as Yup from 'yup';
 import { parseEther } from 'ethers/utils';
 
@@ -67,8 +67,8 @@ const ZapForm = ({ onComplete, zapSelected }: Props) => {
   const { accounts } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
-  const ethAsset = assets.find(asset => asset.uuid === EtherUUID) as Asset;
-  const network = networks.find(n => n.baseAsset === EtherUUID) as Network;
+  const ethAsset = assets.find((asset) => asset.uuid === EtherUUID) as Asset;
+  const network = networks.find((n) => n.baseAsset === EtherUUID) as Network;
   const relevantAccounts = accounts.filter(isEthereumAccount);
 
   return (
@@ -108,7 +108,7 @@ export const ZapFormUI = ({
       .test(
         'check-amount',
         translateRaw('BALANCE_TOO_LOW_NO_RECOMMENDATION_ERROR', { $asset: ethAsset.ticker }),
-        function(value) {
+        function (value) {
           const account = this.parent.account;
           const asset = this.parent.asset;
           const val = value ? value : 0;
@@ -127,7 +127,7 @@ export const ZapFormUI = ({
       <Formik
         initialValues={initialFormikValues}
         validationSchema={ZapFormSchema}
-        onSubmit={fields => {
+        onSubmit={(fields) => {
           fetchGasPriceEstimates(fields.network).then(({ standard }) => {
             onComplete({ ...fields, gasPrice: standard.toString() });
           });

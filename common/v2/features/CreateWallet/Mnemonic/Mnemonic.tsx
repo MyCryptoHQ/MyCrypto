@@ -3,8 +3,8 @@ import { RouteComponentProps } from 'react-router-dom';
 import { generateMnemonic, mnemonicToSeedSync } from 'bip39';
 import { addHexPrefix, toChecksumAddress, privateToAddress } from 'ethereumjs-util';
 import HDkey from 'hdkey';
-import { uniq } from 'lodash';
-import * as R from 'ramda';
+import uniq from 'lodash/uniq';
+import pipe from 'ramda/src/pipe';
 
 import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './constants';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
@@ -177,7 +177,7 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
   };
 }
 
-export default R.pipe(
+export default pipe(
   withAccountAndNotificationsContext,
   withContext(AssetContext),
   withContext(NetworkContext)

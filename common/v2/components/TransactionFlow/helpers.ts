@@ -1,5 +1,7 @@
 import { ValuesType } from 'utility-types';
-import * as R from 'ramda';
+import isEmpty from 'ramda/src/isEmpty';
+import pick from 'ramda/src/pick';
+import mergeDeepWith from 'ramda/src/mergeDeepWith';
 
 import { ITxConfig, TAddress, StoreAccount } from 'v2/types';
 import { getAccountBalance, getStoreAccount } from 'v2/services/Store';
@@ -8,7 +10,7 @@ import { ISender } from './types';
 
 type FieldValue = ValuesType<ISender>;
 
-const preferValueFromSender = (l: FieldValue, r: FieldValue): FieldValue => (R.isEmpty(r) ? l : r);
+const preferValueFromSender = (l: FieldValue, r: FieldValue): FieldValue => (isEmpty(r) ? l : r);
 
 export const constructSenderFromTxConfig = (
   txConfig: ITxConfig,
@@ -21,10 +23,10 @@ export const constructSenderFromTxConfig = (
     network
   };
 
-  const sender: ISender = R.mergeDeepWith(
+  const sender: ISender = mergeDeepWith(
     preferValueFromSender,
     defaultSender,
-    R.pick(['address', 'assets', 'network'], {
+    pick(['address', 'assets', 'network'], {
       ...senderAccount
     })
   );

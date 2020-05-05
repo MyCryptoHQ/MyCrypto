@@ -13,7 +13,7 @@ import React, {
 } from 'react';
 import styled, { StyledComponentClass } from 'styled-components';
 import { Theme } from '@mycrypto/ui';
-import * as R from 'ramda';
+import path from 'ramda/src/path';
 import isFunction from 'lodash/isFunction';
 
 import { noOp } from 'v2/utils';
@@ -482,8 +482,7 @@ class AbstractTable extends Component<Props, State> {
     const { config, overlay, overlayRows } = this.props;
 
     // no click if overlay is shown or no handler function present
-    if ((overlay && overlayRows!.includes(rowIndex)) || !R.path(['handleRowClicked'], config))
-      return;
+    if ((overlay && overlayRows!.includes(rowIndex)) || !path(['handleRowClicked'], config)) return;
 
     config!.handleRowClicked!(rowIndex);
   };

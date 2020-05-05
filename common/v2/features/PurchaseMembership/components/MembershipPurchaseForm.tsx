@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { Formik, Form, Field, FieldProps } from 'formik';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import * as Yup from 'yup';
 
 import translate, { translateRaw } from 'v2/translations';

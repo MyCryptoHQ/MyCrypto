@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 
 import {
   NetworkSelectDropdown,
@@ -140,7 +140,7 @@ export default function Deploy(props: Props) {
       <NetworkSelectorWrapper>
         <NetworkSelectDropdown
           network={networkId}
-          onChange={network => {
+          onChange={(network) => {
             handleNetworkSelected(network);
           }}
         />

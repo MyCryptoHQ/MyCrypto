@@ -1,4 +1,9 @@
-import * as R from 'ramda';
+import mergeRight from 'ramda/src/mergeRight';
+import map from 'ramda/src/map';
+import pipe from 'ramda/src/pipe';
+import reduce from 'ramda/src/reduce';
+import concat from 'ramda/src/concat';
+import keys from 'ramda/src/keys';
 
 import { generateUUID } from 'v2/utils';
 import {
@@ -21,7 +26,7 @@ import { withUuid, toArray, toObject, add } from '../helpers';
 const addDevAssets = add(LSKeys.ASSETS)((assets: Asset[], store: LocalStorage) => {
   const assetsToAdd = assets.reduce((acc, curr) => {
     const match = toArray(store.assets).find(
-      a => a.ticker === curr.ticker && a.networkId === curr.networkId
+      (a) => a.ticker === curr.ticker && a.networkId === curr.networkId
     );
     const uuid = match ? match.uuid : curr.uuid;
     return {
@@ -30,7 +35,7 @@ const addDevAssets = add(LSKeys.ASSETS)((assets: Asset[], store: LocalStorage) =
     };
   }, {});
   // ! These assets should also be added to the correct network.
-  return R.mergeRight(store.assets, assetsToAdd);
+  return mergeRight(store.assets, assetsToAdd);
 });
 
 const addDevAccounts = add(LSKeys.ACCOUNTS)((accounts: DevAccount[], store: LocalStorage) => {
@@ -44,7 +49,7 @@ const addDevAccounts = add(LSKeys.ACCOUNTS)((accounts: DevAccount[], store: Loca
     const match: Asset =
       // @ts-ignore
       store.assets[a.uuid] ||
-      toArray(store.assets).find(sa => sa.ticker === a.ticker && sa.networkId === networkId);
+      toArray(store.assets).find((sa) => sa.ticker === a.ticker && sa.networkId === networkId);
 
     return {
       balance: a.balance,
@@ -58,12 +63,12 @@ const addDevAccounts = add(LSKeys.ACCOUNTS)((accounts: DevAccount[], store: Loca
     assets: assets.map(formatAccountAssetBalance(rest.networkId))
   });
 
-  return R.pipe(
-    R.map(withUuid(generateUUID)),
+  return pipe(
+    map(withUuid(generateUUID)),
     //@ts-ignore ie. https://github.com/DefinitelyTyped/DefinitelyTyped/issues/25581
-    R.map(updateAssetUuid),
-    R.reduce(toObject('uuid'), {} as any),
-    R.mergeRight(store.accounts)
+    map(updateAssetUuid),
+    reduce(toObject('uuid'), {} as any),
+    mergeRight(store.accounts)
   )(accounts);
 });
 
@@ -73,9 +78,9 @@ const addDevAccountsToSettings = add(LSKeys.SETTINGS)((_, store: LocalStorage) =
     ...rest
   }: ISettings) => ({
     ...rest,
-    dashboardAccounts: R.concat(dashboardAccounts, src)
+    dashboardAccounts: concat(dashboardAccounts, src)
   });
-  return R.pipe(updateDashboardAccounts(R.keys(store.accounts)))(store.settings);
+  return pipe(updateDashboardAccounts(keys(store.accounts)))(store.settings);
 });
 
 const addDevAddressBook = add(LSKeys.ADDRESS_BOOK)((contacts: Record<string, AddressBook>, _) => {
@@ -94,5 +99,5 @@ type Transduce = (z: LocalStorage) => LocalStorage;
 export const addDevSeedToSchema: Transduce = (initialStore: LocalStorage) => {
   // Ts doesn't recognise this spread as arguments.
   // @ts-ignore
-  return R.pipe(...devDataTransducers)(initialStore);
+  return pipe(...devDataTransducers)(initialStore);
 };

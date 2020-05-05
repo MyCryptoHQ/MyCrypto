@@ -1,4 +1,12 @@
-import * as R from 'ramda';
+import find from 'ramda/src/find';
+import allPass from 'ramda/src/allPass';
+import propEq from 'ramda/src/propEq';
+import values from 'ramda/src/values';
+import curry from 'ramda/src/curry';
+import prop from 'ramda/src/prop';
+import uniq from 'ramda/src/uniq';
+import map from 'ramda/src/map';
+
 import {
   LocalStorage,
   Asset,
@@ -19,11 +27,7 @@ export function migrate(prev: LocalStorage, curr: LocalStorage) {
     assets: Record<TUuid, Asset>,
     networkId: NetworkId,
     ticker: TTicker
-  ) =>
-    R.find(
-      R.allPass([R.propEq('ticker', ticker), R.propEq('networkId', networkId)]),
-      R.values(assets)
-    );
+  ) => find(allPass([propEq('ticker', ticker), propEq('networkId', networkId)]), values(assets));
 
   const updateAccountAssetsUUID = ({ networkId, assets = [], ...rest }: IAccount) => {
     const getTicker = (uuid: TUuid) => {
@@ -32,9 +36,9 @@ export function migrate(prev: LocalStorage, curr: LocalStorage) {
       return asset && asset.ticker ? asset.ticker : undefined;
     };
     const getUUID = (ticker: TTicker) => {
-      const asset = R.curry(getAssetByTickerAndNetworkID)(curr.assets)(networkId)(ticker);
+      const asset = curry(getAssetByTickerAndNetworkID)(curr.assets)(networkId)(ticker);
       //@ts-ignore
-      return R.prop('uuid', asset);
+      return prop('uuid', asset);
     };
 
     const updateUUID = (assetBalance: AssetBalanceObject) => ({
@@ -46,7 +50,7 @@ export function migrate(prev: LocalStorage, curr: LocalStorage) {
     return {
       ...rest,
       networkId,
-      assets: R.map(updateUUID, assets)
+      assets: map(updateUUID, assets)
     };
   };
 
@@ -54,17 +58,17 @@ export function migrate(prev: LocalStorage, curr: LocalStorage) {
   const accounts = Object.assign(
     {},
     curr.accounts,
-    R.map(updateAccountAssetsUUID, (prev.accounts as R.Functor<IAccount>) || {})
+    map(updateAccountAssetsUUID, (prev.accounts as R.Functor<IAccount>) || {})
   );
 
   // Add labels to address book
   const { dashboardAccounts = [] } = prev.settings;
   //@ts-ignore
-  const accountUUIDs = R.map(R.prop('uuid'), R.values(accounts));
+  const accountUUIDs = map(prop('uuid'), values(accounts));
 
   const settings = {
     ...curr.settings,
-    dashboardAccounts: R.uniq([...accountUUIDs, ...dashboardAccounts]).filter(Boolean)
+    dashboardAccounts: uniq([...accountUUIDs, ...dashboardAccounts]).filter(Boolean)
   };
 
   return Object.assign({}, curr, { accounts, settings });

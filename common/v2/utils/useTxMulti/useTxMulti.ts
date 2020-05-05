@@ -1,5 +1,7 @@
 import { useReducer } from 'reinspect';
-import * as R from 'ramda';
+import identity from 'ramda/src/identity';
+import view from 'ramda/src/view';
+import lensIndex from 'ramda/src/lensIndex';
 
 import { TxMultiReducer, initialState } from './reducer';
 import { init, initWith, stopYield, prepareTx, sendTx, reset } from './actions';
@@ -26,7 +28,7 @@ export type TUseTxMulti = () => {
 };
 
 export const useTxMulti: TUseTxMulti = () => {
-  const [state, dispatch] = useReducer(TxMultiReducer, initialState, R.identity, 'TxMulti');
+  const [state, dispatch] = useReducer(TxMultiReducer, initialState, identity, 'TxMulti');
   const getState = () => state;
 
   return {
@@ -38,7 +40,7 @@ export const useTxMulti: TUseTxMulti = () => {
     sendTx: sendTx(dispatch, getState),
     reset: reset(dispatch),
     get currentTx(): TxParcel {
-      return R.view(R.lensIndex(state._currentTxIdx), state.transactions);
+      return view(lensIndex(state._currentTxIdx), state.transactions);
     }
   };
 };
