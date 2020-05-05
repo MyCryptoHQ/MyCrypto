@@ -13,7 +13,6 @@ export interface Balance {
   amount: number;
   fiatValue: number;
   ticker: string;
-  uuid: TUuid;
   isOther?: boolean;
   accounts?: BalanceAccount[];
   uuid?: TUuid;

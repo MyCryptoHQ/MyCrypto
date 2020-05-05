@@ -1,21 +1,21 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { RatesContext } from 'v2/services';
+import { StoreContext } from 'v2/services';
 import { TUuid } from 'v2/types';
+import { AssetMappingObject } from 'v2/services/Store/StoreProvider';
+
 import genericIcon from 'assets/generic.svg';
 
-// Relies on https://github.com/atomiclabs/cryptocurrency-icons using fixed version number through CDN
-// @TODO: We should be using our own sprite served over a trusted CDN
 const baseURL = 'https://mycryptoapi.com/api/v1/images';
 
 function buildUrl(uuid: string) {
   return `${baseURL}/${uuid}.png`;
 }
 
-function getIconUrl(uuid: string, assetIconsManifest: any) {
-  const assetIconsManifestEntry =
-    assetIconsManifest && assetIconsManifest[uuid] && assetIconsManifest[uuid].coinGeckoId;
-  const curr = assetIconsManifest ? assetIconsManifestEntry : false;
+function getIconUrl(uuid: string, assetIconsManifest: AssetMappingObject[]) {
+  const assetIconsManifestEntry = assetIconsManifest.find((item) => item.uuid === uuid);
+
+  const curr = assetIconsManifestEntry ? assetIconsManifestEntry.coinGeckoId : false;
   return curr ? buildUrl(uuid) : genericIcon;
 }
 
@@ -31,9 +31,8 @@ interface Props {
 }
 
 function AssetIcon({ uuid, size = '32px', className }: Props) {
-  const { assetMapping } = useContext(RatesContext);
-  const iconUrl = getIconUrl(uuid, assetMapping);
-
+  const { coinGeckoAssetManifest } = useContext(StoreContext);
+  const iconUrl = getIconUrl(uuid, coinGeckoAssetManifest);
   return (
     <SImg
       src={iconUrl}

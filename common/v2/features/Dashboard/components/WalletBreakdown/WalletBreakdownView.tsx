@@ -343,7 +343,7 @@ export default function WalletBreakdownView({
             >
               <BreakDownBalanceAssetInfo>
                 <div>
-                  <BreakDownBalanceAssetIcon uuid={uuid} size={'26px'} />
+                  <BreakDownBalanceAssetIcon uuid={uuid as TUuid} size={'26px'} />
                 </div>
                 <div>
                   <BreakDownBalanceAssetName>{name}</BreakDownBalanceAssetName>

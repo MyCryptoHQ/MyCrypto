@@ -84,7 +84,6 @@ export function WalletBreakdown() {
       uuid: asset.uuid,
       amount: weiToFloat(asset.balance, asset.decimal),
       fiatValue: convertToFiatFromAsset(asset, getAssetRate(asset)),
-      uuid: asset.uuid,
       accounts: currentAccounts.reduce((acc, currAccount) => {
         const matchingAccAssets = currAccount.assets.filter(
           (accAsset) => accAsset.uuid === asset.uuid

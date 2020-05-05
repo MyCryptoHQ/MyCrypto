@@ -61,6 +61,13 @@ import { NetworkContext, getNetworkById } from './Network';
 import { findNextUnusedDefaultLabel, AddressBookContext } from './AddressBook';
 import { MyCryptoApiService } from '../ApiService';
 
+export interface AssetMappingObject {
+  coinGeckoId?: string;
+  cryptoCompareId?: string;
+  coinCapId?: string;
+  uuid: string;
+}
+
 interface State {
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
@@ -70,6 +77,7 @@ interface State {
   readonly membershipExpirations: BigNumber[];
   readonly currentAccounts: StoreAccount[];
   readonly userAssets: Asset[];
+  readonly coinGeckoAssetManifest: AssetMappingObject[];
   readonly accountRestore: { [name: string]: IAccount | undefined };
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
@@ -295,6 +303,10 @@ export const StoreProvider: React.FC = ({ children }) => {
     };
   }, [pendingTransactions]);
 
+  const coinGeckoAssetManifest = assets
+    .filter((asset) => !isEmpty(asset.mappings))
+    .map((asset) => ({ uuid: asset.uuid, ...asset.mappings } as AssetMappingObject));
+
   const state: State = {
     accounts,
     networks,
@@ -304,6 +316,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     membershipExpirations,
     currentAccounts,
     accountRestore,
+    coinGeckoAssetManifest,
     get userAssets() {
       const userAssets = state.accounts
         .filter((a: StoreAccount) => a.wallet !== WalletId.VIEW_ONLY)
