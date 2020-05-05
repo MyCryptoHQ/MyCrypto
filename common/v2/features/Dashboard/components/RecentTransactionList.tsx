@@ -104,7 +104,7 @@ const CCircle = styled('div')`
 const SCombinedCircle = (asset: Asset) => {
   return (
     <CCircle>
-      <SAssetIcon uuid={asset.uuid} size={'13px'} />
+      <SAssetIcon uuid={asset.uuid} size={'16px'} />
     </CCircle>
   );
 };

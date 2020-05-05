@@ -51,7 +51,7 @@ const ColumnWrapper = Styled.div<{ bold?: boolean }>`
   }
   img {
     width: auto;
-    height: 30px;
+    height: 25px;
     margin-right: 10px;
   }
 `;
