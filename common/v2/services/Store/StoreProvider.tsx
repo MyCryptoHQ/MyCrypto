@@ -61,11 +61,8 @@ import { NetworkContext, getNetworkById } from './Network';
 import { findNextUnusedDefaultLabel, AddressBookContext } from './AddressBook';
 import { MyCryptoApiService } from '../ApiService';
 
-export interface AssetMappingObject {
-  coinGeckoId?: string;
-  cryptoCompareId?: string;
-  coinCapId?: string;
-  uuid: string;
+export interface CoinGeckoManifest {
+  [uuid: string]: string;
 }
 
 interface State {
@@ -77,7 +74,7 @@ interface State {
   readonly membershipExpirations: BigNumber[];
   readonly currentAccounts: StoreAccount[];
   readonly userAssets: Asset[];
-  readonly coinGeckoAssetManifest: AssetMappingObject[];
+  readonly coinGeckoAssetManifest: CoinGeckoManifest;
   readonly accountRestore: { [name: string]: IAccount | undefined };
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
@@ -303,9 +300,13 @@ export const StoreProvider: React.FC = ({ children }) => {
     };
   }, [pendingTransactions]);
 
-  const coinGeckoAssetManifest = assets
-    .filter((asset) => !isEmpty(asset.mappings))
-    .map((asset) => ({ uuid: asset.uuid, ...asset.mappings } as AssetMappingObject));
+  const coinGeckoAssetManifest =
+    assets.reduce((manifest, asset) => {
+      if (asset && asset.mappings && asset.mappings.coinGeckoId) {
+        return { ...manifest, [asset.uuid]: asset.mappings.coinGeckoId };
+      }
+      return manifest;
+    }, {}) || {};
 
   const state: State = {
     accounts,

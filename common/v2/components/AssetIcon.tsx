@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { StoreContext } from 'v2/services';
 import { TUuid } from 'v2/types';
 import { MYC_API } from 'v2/config';
-import { AssetMappingObject } from 'v2/services/Store/StoreProvider';
+import { CoinGeckoManifest } from 'v2/services/Store/StoreProvider';
 
 import genericIcon from 'assets/generic.svg';
 
@@ -13,11 +13,10 @@ function buildUrl(uuid: TUuid) {
   return `${baseURL}/${uuid}.png`;
 }
 
-function getIconUrl(uuid: TUuid, assetIconsManifest: AssetMappingObject[]) {
-  const assetIconsManifestEntry =
-    assetIconsManifest && assetIconsManifest.find((item) => item.uuid === uuid);
+function getIconUrl(uuid: TUuid, assetIconsManifest: CoinGeckoManifest) {
+  const assetIconsManifestEntry = assetIconsManifest && assetIconsManifest[uuid];
 
-  const curr = assetIconsManifestEntry ? assetIconsManifestEntry.coinGeckoId : false;
+  const curr = assetIconsManifestEntry || false;
   return curr ? buildUrl(uuid) : genericIcon;
 }
 
