@@ -129,7 +129,20 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
     };
 
     const protectTxStepperSteps = isMyCryptoMember
-      ? [reportStep]
+      ? [
+          {
+            component: ProtectTxProtection,
+            props: {
+              sendAssetsValues: (({ values }) => values)(formCallback())
+            },
+            actions: {
+              handleProtectTxSubmit: async () => {
+                goToNextStep();
+              }
+            }
+          },
+          reportStep
+        ]
       : [
           {
             component: ProtectTxProtection,

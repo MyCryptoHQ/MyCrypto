@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Button } from '@mycrypto/ui';
 import BigNumber from 'bignumber.js';
 
 import { isWeb3Wallet } from '@utils';
@@ -16,6 +15,8 @@ import { CloseIcon, ProtectIcon, WarningIcon } from '@components/icons';
 
 import feeIcon from '@assets/images/icn-fee.svg';
 import { ProtectTxContext } from '../ProtectTxProvider';
+import { ProtectTxError } from '..';
+import { ProtectTxMissingInfo } from './ProtectTxMissingInfo';
 
 const SProtectionThisTransaction = styled(ProtectTxBase)`
   .description-text {
@@ -201,10 +202,23 @@ export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtect
     return feeAmount.amount.plus(feeAmount.fee).multipliedBy(feeAmount.rate).toFixed(2);
   }, [feeAmount]);
 
+  const hasError =
+    sendAssetsValues !== null &&
+    ProtectTxUtils.checkFormForProtectedTxErrors(
+      sendAssetsValues,
+      getAssetRate(sendAssetsValues.asset)
+    ) === ProtectTxError.INSUFFICIENT_DATA;
+
   return (
     <SProtectionThisTransaction>
       <CloseIcon size="lg" onClick={onProtectMyTransactionCancelClick} />
-      <ProtectIcon size="lg" />
+      {hasError && (
+        <>
+          <ProtectTxMissingInfo />
+          <hr />
+        </>
+      )}
+      {!hasError && <ProtectIcon size="lg" />}
       <h4>{translateRaw('PROTECTED_TX_PROTECT_THIS_TRANSACTION')}</h4>
       <h5>{translateRaw('PROTECTED_TX_PROTECT_THIS_TRANSACTION_DESC')}</h5>
       <BulletList>
@@ -236,18 +250,24 @@ export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtect
       {!web3Wallet && (
         <p className="description-text">{translateRaw('PROTECTED_TX_NOT_WEB3_WALLET_DESC')}</p>
       )}
-      <hr />
-      <h4 className="send-with-confidence">{translateRaw('PROTECTED_TX_SEND_WITH_CONFIDENCE')}</h4>
-      <FeeContainer>
-        <img src={feeIcon} alt="Fee" />
-        <p className="fee-label">{translateRaw('PROTECTED_TX_FEE')}</p>
-        <Amount assetValue={getAssetValue()} fiatValue={getFiatValue()} />
-      </FeeContainer>
+      {!hasError && (
+        <>
+          <hr />
+          <h4 className="send-with-confidence">
+            {translateRaw('PROTECTED_TX_SEND_WITH_CONFIDENCE')}
+          </h4>
+          <FeeContainer>
+            <img src={feeIcon} alt="Fee" />
+            <p className="fee-label">{translateRaw('PROTECTED_TX_FEE')}</p>
+            <Amount assetValue={getAssetValue()} fiatValue={getFiatValue()} />
+          </FeeContainer>
+        </>
+      )}
       <Button
         type="button"
         className={`protect-transaction ${isLoading ? 'loading' : ''}`}
         onClick={onProtectMyTransactionClick}
-        disabled={isLoading}
+        disabled={isLoading || hasError}
       >
         {translateRaw('PROTECTED_TX_PROTECT_MY_TX')}
       </Button>
