@@ -326,7 +326,9 @@ export const StoreProvider: React.FC = ({ children }) => {
       return sortBy(prop('ticker'), uniq);
     },
     assets: (selectedAccounts = state.accounts) =>
-      selectedAccounts.flatMap((account: StoreAccount) => account.assets),
+      selectedAccounts
+        .flatMap((account: StoreAccount) => account.assets)
+        .filter((asset) => !asset.balance.eq(0)),
     tokens: (selectedAssets = state.assets()) =>
       selectedAssets.filter((asset: StoreAsset) => asset.type !== 'base'),
     totals: (selectedAccounts = state.accounts) =>
