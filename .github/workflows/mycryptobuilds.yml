@@ -55,7 +55,7 @@ jobs:
       with:
         args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
       env:
-        DEST_DIR: ${GITHUB_REF##*/}
+        DEST_DIR: ${{ github.head_ref }}
         SOURCE_DIR: 'dist/download'
 
         
