@@ -1,4 +1,4 @@
-import { IAccount, Fiat, TAddress } from 'v2/types';
+import { IAccount, Fiat, TAddress, TUuid } from 'v2/types';
 
 export interface BalanceAccount {
   address: TAddress;
@@ -15,6 +15,7 @@ export interface Balance {
   ticker: string;
   isOther?: boolean;
   accounts?: BalanceAccount[];
+  uuid?: TUuid;
 }
 
 export interface WalletBreakdownProps {

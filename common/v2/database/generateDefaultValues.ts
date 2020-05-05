@@ -17,7 +17,6 @@ import {
   NetworkLegacy,
   WalletId,
   Network,
-  TSymbol,
   Fiat,
   ContractLegacy,
   AssetLegacy,
@@ -152,7 +151,7 @@ const addTokensToAssets = add(LSKeys.ASSETS)(
       uuid: a.uuid || generateAssetUUID(id), // In case a token doesn't have a pregenerated uuid. eg. RSK
       name: a.name,
       decimal: a.decimal,
-      ticker: (a.symbol as unknown) as TSymbol,
+      ticker: a.symbol || a.ticker,
       networkId: id,
       contractAddress: a.address,
       type: 'erc20',

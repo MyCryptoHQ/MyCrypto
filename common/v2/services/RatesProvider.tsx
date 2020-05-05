@@ -1,26 +1,18 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
-import isEmpty from 'lodash/isEmpty';
 
 import { usePromise, useEffectOnce } from 'v2/vendor';
 import { StoreContext, SettingsContext } from 'v2/services/Store';
 import { PollingService } from 'v2/workers';
-import { IRates, TTicker, Asset } from 'v2/types';
+import { IRates, TTicker, Asset, StoreAsset, ReserveAsset } from 'v2/types';
 import { notUndefined } from 'v2/utils';
-import { ReserveAsset } from 'v2/types/asset';
 
-import { AssetMapService, DeFiReserveMapService } from './ApiService';
+import { DeFiReserveMapService } from './ApiService';
 
 interface State {
   rates: IRates;
   getRate(ticker: TTicker): number | undefined;
   getAssetRate(asset: Asset): number | undefined;
   getPoolAssetReserveRate(defiPoolTokenUUID: string, assets: Asset[]): ReserveAsset[];
-}
-
-interface AssetMappingObject {
-  coinGeckoId?: string;
-  cryptoCompareId?: string;
-  coinCapId?: string;
 }
 
 interface ReserveMappingRate {
@@ -34,57 +26,52 @@ interface ReserveMappingObject {
   reserveRates: ReserveMappingRate[];
 }
 
-interface AssetMappingListObject {
-  [key: string]: AssetMappingObject;
-}
-
 interface ReserveMappingListObject {
   [key: string]: ReserveMappingObject;
 }
 
 const DEFAULT_FIAT_PAIRS = ['USD', 'EUR'] as TTicker[];
 const DEFAULT_FIAT_RATE = 0;
-const POLLING_INTERRVAL = 60000;
+const POLLING_INTERVAL = 60000;
 
 const ASSET_RATES_URL = 'https://api.coingecko.com/api/v3/simple/price';
 const buildAssetQueryUrl = (assets: string[], currencies: string[]) => `
   ${ASSET_RATES_URL}/?ids=${assets}&vs_currencies=${currencies}
 `;
 
-const fetchAssetMappingList = async (): Promise<AssetMappingListObject | any> =>
-  AssetMapService.instance.getAssetMap();
-
 const fetchDeFiReserveMappingList = async (): Promise<ReserveMappingListObject | any> =>
   DeFiReserveMapService.instance.getDeFiReserveMap();
 
-const destructureCoinGeckoIds = (rates: IRates, assetMap: AssetMappingListObject): IRates => {
+const destructureCoinGeckoIds = (rates: IRates, assets: StoreAsset[]): IRates => {
   // From: { ["ethereum"]: { "usd": 123.45,"eur": 234.56 } }
   // To: { [uuid for coinGeckoId "ethereum"]: { "usd": 123.45, "eur": 234.56 } }
   const updateRateObj = (acc: any, curValue: TTicker): IRates => {
-    const data: any = Object.keys(assetMap).find((uuid) => assetMap[uuid].coinGeckoId === curValue);
-    acc[data] = rates[curValue];
+    const asset = assets.find((a) => a.mappings && a.mappings.coinGeckoId === curValue);
+    acc[asset!.uuid] = rates[curValue];
     return acc;
   };
 
   return Object.keys(rates).reduce(updateRateObj, {} as IRates);
 };
 
-const pullCoinGeckoIDs = (assetMap: AssetMappingListObject, uuids: TTicker[]): string[] =>
-  uuids
-    .map((uuid: TTicker) => (!assetMap || !assetMap[uuid] ? undefined : assetMap[uuid].coinGeckoId))
-    .filter(notUndefined);
-
 export const RatesContext = createContext({} as State);
 
 export function RatesProvider({ children }: { children: React.ReactNode }) {
-  const { assetUUIDs } = useContext(StoreContext);
+  const { assets: getAssets } = useContext(StoreContext);
   const { settings, updateSettingsRates } = useContext(SettingsContext);
-  const [assetMapping, setAssetMapping] = useState({});
   const [reserveRateMapping, setReserveRateMapping] = useState({} as ReserveMappingListObject);
   const worker = useRef<undefined | PollingService>();
 
+  const currentAssets = getAssets();
+  const geckoIds = currentAssets.reduce((acc, a) => {
+    if (a.mappings && a.mappings.coinGeckoId) {
+      acc.push(a.mappings.coinGeckoId);
+    }
+    return acc;
+  }, [] as string[]);
+
   const updateRates = (data: IRates) =>
-    updateSettingsRates({ ...state.rates, ...destructureCoinGeckoIds(data, assetMapping) });
+    updateSettingsRates({ ...state.rates, ...destructureCoinGeckoIds(data, currentAssets) });
 
   // update rate worker success handler with updated settings context
   useEffect(() => {
@@ -93,21 +80,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
     }
   }, [settings]);
 
-  // Get our asset dict which maps myc_uuids to coingecko_ids
   const mounted = usePromise();
-  useEffectOnce(() => {
-    (async () => {
-      // The cryptocompare api that our proxie uses fails gracefully and will return a conversion rate
-      // even if some are tickers are invalid (e.g WETH, GoerliETH etc.)
-      const value = await mounted(
-        fetchAssetMappingList().then((e) => {
-          return e;
-        })
-      );
-      setAssetMapping(value);
-    })();
-  });
-
   useEffectOnce(() => {
     (async () => {
       const value = await mounted(fetchDeFiReserveMappingList().then((e) => e));
@@ -115,17 +88,10 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
     })();
   });
 
-  const currentAssetUUIDs = assetUUIDs();
-
   useEffect(() => {
-    // Wait till we have fetched our asset mapping
-    if (isEmpty(assetMapping)) return;
-
-    const formattedCoinGeckoIds = pullCoinGeckoIDs(assetMapping, currentAssetUUIDs as TTicker[]);
-
     worker.current = new PollingService(
-      buildAssetQueryUrl(formattedCoinGeckoIds, DEFAULT_FIAT_PAIRS), // @TODO: More elegant conversion then `DEFAULT_FIAT_RATE`
-      POLLING_INTERRVAL,
+      buildAssetQueryUrl(geckoIds, DEFAULT_FIAT_PAIRS), // @TODO: More elegant conversion then `DEFAULT_FIAT_RATE`
+      POLLING_INTERVAL,
       updateRates,
       (err) => console.debug('[RatesProvider]', err)
     );
@@ -139,7 +105,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
       worker.current.stop();
       worker.current.close();
     };
-  }, [assetMapping, currentAssetUUIDs.length]); //
+  }, [geckoIds.length]);
 
   const state: State = {
     get rates() {

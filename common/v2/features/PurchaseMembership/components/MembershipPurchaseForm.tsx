@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 
 import translate, { translateRaw } from 'v2/translations';
 import { SPACING } from 'v2/theme';
-import { IAccount, Network, StoreAccount, Asset, TSymbol } from 'v2/types';
+import { IAccount, Network, StoreAccount, Asset, TSymbol, TUuid } from 'v2/types';
 import { AccountDropdown, InlineMessage, AmountInput, Button } from 'v2/components';
 import { validateAmountField } from 'v2/features/SendAssets/components/validators/validators';
 import { isEthereumAccount } from 'v2/services/Store/Account/helpers';
@@ -76,9 +76,9 @@ export const MembershipFormUI = ({
   relevantAccounts,
   onComplete
 }: UIProps) => {
-  const { assets } = useContext(AssetContext);
+  const { getAssetByUUID } = useContext(AssetContext);
   const defaultMembership = MEMBERSHIP_CONFIG[IMembershipId.sixmonths];
-  const defaultAsset = assets.find((asset) => asset.uuid === defaultMembership.assetUUID) as Asset;
+  const defaultAsset = (getAssetByUUID(defaultMembership.assetUUID as TUuid) || {}) as Asset;
   const initialFormikValues: MembershipSimpleTxFormFull = {
     membershipSelected: defaultMembership,
     account: {} as StoreAccount,
@@ -101,6 +101,7 @@ export const MembershipFormUI = ({
   return (
     <div>
       <Formik
+        enableReinitialize={true}
         initialValues={initialFormikValues}
         validationSchema={MembershipFormSchema}
         onSubmit={noOp}
@@ -150,9 +151,7 @@ export const MembershipFormUI = ({
                       onSelect={(option: { label: string; value: IMembershipConfig }) => {
                         form.setFieldValue('membershipSelected', option.value); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
                         form.setFieldValue('amount', option.value.price);
-                        const newAsset = assets.find(
-                          (a) => a.uuid === option.value.assetUUID
-                        ) as Asset;
+                        const newAsset = getAssetByUUID(option.value.assetUUID as TUuid);
                         form.setFieldValue('asset', newAsset);
                       }}
                     />

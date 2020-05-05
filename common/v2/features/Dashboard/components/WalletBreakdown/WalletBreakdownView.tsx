@@ -91,7 +91,7 @@ const PanelDivider = styled.div<PanelDividerProps>`
   background: #ddd;
   display: block;
 
-  ${props =>
+  ${(props) =>
     props.mobileOnly &&
     `
   @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
@@ -220,7 +220,7 @@ export default function WalletBreakdownView({
   const [selectedAssetIndex, setSelectedAssetIndex] = useState(initialSelectedAssetIndex);
   const [isChartAnimating, setIsChartAnimating] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(true);
-  const [previousTickers, setPreviousTickers] = useState(balances.map(x => x.ticker));
+  const [previousTickers, setPreviousTickers] = useState(balances.map((x) => x.ticker));
   const chartBalances = createChartBalances(balances, totalFiatValue);
   const breakdownBalances = createBreakdownBalances(balances);
 
@@ -234,7 +234,7 @@ export default function WalletBreakdownView({
   const handleMouseLeave = () => {
     if (isChartAnimating) return;
 
-    setSelectedAssetIndex(pos => ({ ...pos, chart: -1 }));
+    setSelectedAssetIndex((pos) => ({ ...pos, chart: -1 }));
   };
 
   const allVisible = accounts.length !== 0 && accounts.length === selected.length;
@@ -253,7 +253,7 @@ export default function WalletBreakdownView({
 
   useEffect(() => {
     // enable animations and reset selected asset when order of balances change
-    const tickers = balances.map(x => x.ticker);
+    const tickers = balances.map((x) => x.ticker);
     if (
       previousTickers.length !== tickers.length ||
       previousTickers.some((x, i) => x !== tickers[i])
@@ -333,9 +333,9 @@ export default function WalletBreakdownView({
           <BreakDownMore src={moreIcon} alt="More" onClick={toggleShowChart} />
         </BreakDownHeadingWrapper>
         <BreakDownBalanceList>
-          {breakdownBalances.map(({ name, amount, fiatValue, ticker, isOther }, index) => (
+          {breakdownBalances.map(({ name, amount, fiatValue, ticker, isOther, uuid }, index) => (
             <BreakDownBalance
-              key={name}
+              key={`${uuid}${name}`}
               onMouseOver={() => handleMouseOver(index)}
               onMouseLeave={handleMouseLeave}
             >
@@ -387,10 +387,10 @@ const createChartBalances = (balances: Balance[], totalFiatValue: number) => {
   /* Construct a chartBalances array which consists of assets and a otherTokensAsset
   which combines the fiat value of all remaining tokens that are in the balances array*/
   const balancesVisibleInChart = balances.filter(
-    balanceObject => balanceObject.fiatValue / totalFiatValue >= SMALLEST_CHART_SHARE_SUPPORTED
+    (balanceObject) => balanceObject.fiatValue / totalFiatValue >= SMALLEST_CHART_SHARE_SUPPORTED
   );
   const otherBalances = balances.filter(
-    balanceObject => balanceObject.fiatValue / totalFiatValue < SMALLEST_CHART_SHARE_SUPPORTED
+    (balanceObject) => balanceObject.fiatValue / totalFiatValue < SMALLEST_CHART_SHARE_SUPPORTED
   );
   const chartBalances = balancesVisibleInChart.splice(0, NUMBER_OF_ASSETS_DISPLAYED);
   otherBalances.push(...balancesVisibleInChart);

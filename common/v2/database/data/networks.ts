@@ -32,7 +32,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: ethPlorer,
       address: ETHTokenExplorer
     },
-    tokens: require('./tokens/eth.json'),
+    tokens: [],
     contracts: require('./contracts/eth.json'),
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TREZOR,
@@ -54,7 +54,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Etherscan',
       origin: 'https://ropsten.etherscan.io'
     }),
-    tokens: require('./tokens/rop.json'),
+    tokens: [],
     contracts: require('./contracts/ropsten.json'),
     isTestnet: true,
     dPaths: {
@@ -76,7 +76,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Etherscan',
       origin: 'https://kovan.etherscan.io'
     }),
-    tokens: require('./tokens/kov.json'),
+    tokens: [],
     contracts: require('./contracts/kovan.json'),
     isTestnet: true,
     dPaths: {
@@ -98,7 +98,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Etherscan',
       origin: 'https://rinkeby.etherscan.io'
     }),
-    tokens: require('./tokens/rin.json'),
+    tokens: [],
     contracts: require('./contracts/rinkeby.json'),
     isTestnet: true,
     dPaths: {
@@ -120,7 +120,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Etherscan',
       origin: 'https://goerli.etherscan.io/'
     }),
-    tokens: require('./tokens/gor.json'),
+    tokens: [],
     contracts: [],
     isTestnet: true,
     dPaths: {
@@ -143,7 +143,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       origin: 'https://blockscout.com/etc/mainnet',
       addressPath: 'address'
     }),
-    tokens: require('./tokens/etc.json'),
+    tokens: [],
     contracts: require('./contracts/etc.json'),
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETC_TREZOR,
@@ -168,7 +168,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Ubiqscan',
       origin: 'https://ubiqscan.io'
     }),
-    tokens: require('./tokens/ubq.json'),
+    tokens: [],
     contracts: require('./contracts/ubq.json'),
     dPaths: {
       [WalletId.TREZOR]: DPaths.UBQ_DEFAULT,
@@ -193,7 +193,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Gander',
       origin: 'https://www.gander.tech'
     }),
-    tokens: require('./tokens/exp.json'),
+    tokens: [],
     contracts: require('./contracts/exp.json'),
     dPaths: {
       [WalletId.TREZOR]: DPaths.EXP_DEFAULT,
@@ -350,7 +350,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'RSK Explorer',
       origin: 'https://explorer.rsk.co'
     }),
-    tokens: require('./tokens/rsk.json'),
+    tokens: [],
     contracts: require('./contracts/rsk.json'),
     isTestnet: false,
     dPaths: {
@@ -378,7 +378,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'RSK Testnet Explorer',
       origin: 'https://explorer.testnet.rsk.co'
     }),
-    tokens: require('./tokens/rsk_testnet.json'),
+    tokens: [],
     contracts: require('./contracts/rsk_testnet.json'),
     isTestnet: true,
     dPaths: {
@@ -456,7 +456,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'ESN Explorer',
       origin: 'https://ethersocial.net'
     }),
-    tokens: require('./tokens/esn.json'),
+    tokens: [],
     contracts: require('./contracts/esn.json'),
     dPaths: {
       [WalletId.TREZOR]: DPaths.ESN_DEFAULT,

@@ -37,8 +37,9 @@ export {
   TAssetType,
   AssetBalanceObject,
   StoreAsset,
-  AssetWithDetails
+  ReserveAsset
 } from './asset';
+export { Social, AssetSocial } from './social';
 export { StoreAccount, IRawAccount, IAccount } from './account';
 export { AddressBook, ExtendedAddressBook } from './addressBook';
 export { Contract, ExtendedContract } from './contract';

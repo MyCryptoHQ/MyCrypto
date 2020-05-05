@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Field, FieldProps, Form, Formik, FastField } from 'formik';
+import { Field, FieldProps, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
 import isEmpty from 'lodash/isEmpty';
@@ -384,7 +384,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                 <label htmlFor="asset" className="input-group-header">
                   {translate('X_ASSET')}
                 </label>
-                <FastField
+                <Field
                   name="asset" // Need a way to spread option, name, symbol on sharedConfig for assets
                   component={({ field, form }: FieldProps) => (
                     <AssetDropdown

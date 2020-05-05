@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers/utils';
-import { NetworkId, TSymbol, TUuid } from 'v2/types';
+import { NetworkId, TSymbol, TUuid, AssetSocial } from 'v2/types';
 import { Brand } from 'utility-types';
 
 export type TTicker = Brand<string, 'Ticker'>;
@@ -32,7 +32,14 @@ export interface Asset {
 }
 
 export interface ExtendedAsset extends Asset {
-  uuid: TUuid;
+  website?: string;
+  whitepaper?: string;
+  social?: AssetSocial;
+  mappings?: {
+    coinGeckoId?: string;
+    cryptoCompareId?: string;
+    coinCapId?: string;
+  };
 }
 
 export interface ReserveAsset extends Asset {
@@ -46,9 +53,8 @@ export interface AssetBalanceObject {
   mtime: number;
 }
 
-export type StoreAsset = Asset & { balance: BigNumber; mtime: number };
-
-export type AssetWithDetails = StoreAsset & {
-  details: any;
-  rate: number;
+export type StoreAsset = ExtendedAsset & {
+  balance: BigNumber;
+  mtime: number;
+  rate?: number;
 };
