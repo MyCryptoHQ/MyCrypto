@@ -37,7 +37,7 @@ export default function Dashboard() {
       <Mobile className="Dashboard-mobile">
         <NotificationsPanel accounts={accounts} />
         <div className="Dashboard-mobile-actions">
-          {actions.map(action => (
+          {actions.map((action) => (
             <ActionTile key={action.title} {...action} />
           ))}
           {/*In mobile we only have 5 tiles on 2 rows. To allow 'space-between' to handle the gaps, we
@@ -85,7 +85,7 @@ export default function Dashboard() {
               {translateRaw('YOUR_DASHBOARD')}
             </Heading>
             <div className="Dashboard-desktop-top-left-actions">
-              {actions.map(action => (
+              {actions.map((action) => (
                 <ActionTile key={action.title} {...action} />
               ))}
             </div>

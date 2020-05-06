@@ -8,10 +8,10 @@ describe('isValidENSName', () => {
   ];
 
   it('returns true if the name is valid', () => {
-    valid.forEach(n => expect(isValidENSName(n)).toBe(true));
+    valid.forEach((n) => expect(isValidENSName(n)).toBe(true));
   });
 
   it('returns false if the name is invalid', () => {
-    invalid.forEach(n => expect(isValidENSName(n)).toBe(false));
+    invalid.forEach((n) => expect(isValidENSName(n)).toBe(false));
   });
 });

@@ -28,7 +28,7 @@ const SOverlay = styled.div`
         `}
   z-index: 2;
   background-color: rgba(0, 0, 0, 0.65);
-  visibility: ${props => (props.show ? 'visible' : 'hidden')};
+  visibility: ${(props) => (props.show ? 'visible' : 'hidden')};
   ${(props: SProps) =>
     props.center &&
     css`

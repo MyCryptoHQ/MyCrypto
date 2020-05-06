@@ -28,8 +28,8 @@ type LedgerError = U2FError | ErrorWithId | Error | string;
 export class LedgerWallet extends HardwareWallet {
   public static async getChainCode(dpath: string): Promise<ChainCodeResponse> {
     return makeApp()
-      .then(app => app.getAddress(dpath, false, true))
-      .then(res => {
+      .then((app) => app.getAddress(dpath, false, true))
+      .then((res) => {
         return {
           publicKey: res.publicKey,
           chainCode: res.chainCode

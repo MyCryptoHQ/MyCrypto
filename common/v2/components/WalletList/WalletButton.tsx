@@ -46,7 +46,7 @@ const WalletButtonWrapper = styled.div<{ margin?: string; isDisabled?: boolean }
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 10px ${props => props.margin};
+  margin: 10px ${(props) => props.margin};
   height: 200px;
   width: 200px;
   padding: 25px 15px;

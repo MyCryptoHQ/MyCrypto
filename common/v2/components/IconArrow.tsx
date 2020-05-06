@@ -5,7 +5,7 @@ import chevronIcon from 'assets/images/chevron-right.svg';
 
 const ArrowContainer = styled.img<{ isFlipped?: boolean }>`
   margin-left: 0.5em;
-  ${props =>
+  ${(props) =>
     props.isFlipped &&
     `
       transform: rotateX(180deg);

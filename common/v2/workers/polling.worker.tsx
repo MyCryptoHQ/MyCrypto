@@ -24,7 +24,7 @@ function startPolling(requestUrl: string, interval: number) {
 
   const getRequest = async () => {
     try {
-      const data = await fetch(requestUrl).then(res => res.json());
+      const data = await fetch(requestUrl).then((res) => res.json());
       worker.postMessage(JSON.parse(JSON.stringify(data))); // Worker can communicate via strings.
     } catch (err) {
       console.debug('[Polling Worker]: Error during fetch', err);

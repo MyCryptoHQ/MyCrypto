@@ -23,7 +23,7 @@ export function messageToData(messageToTransform: string): string {
   return (
     '0x' +
     Array.from(Buffer.from(messageToTransform, 'utf8'))
-      .map(n => padLeftEven(n.toString(16)))
+      .map((n) => padLeftEven(n.toString(16)))
       .join('')
   );
 }

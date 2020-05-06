@@ -3,6 +3,4 @@ import MembershipPanel from './MembershipPanel';
 
 export default { title: 'MembershipPanel' };
 
-export const defaultState = () => (
-  <MembershipPanel />
-);
+export const defaultState = () => <MembershipPanel />;

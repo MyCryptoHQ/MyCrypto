@@ -54,7 +54,7 @@ function TransactionDetailsDisplay({
   const {
     network: { name: networkName, color: networkColor }
   } = sender;
-  const userAssetToSend = sender.assets.find(accountAsset => {
+  const userAssetToSend = sender.assets.find((accountAsset) => {
     return accountAsset.uuid === asset.uuid;
   });
   const userAssetBalance = userAssetToSend

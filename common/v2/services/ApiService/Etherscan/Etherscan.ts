@@ -60,7 +60,7 @@ export default class EtherscanService {
       return data;
     } else if (data.status === '0' && data.result === ETHERSCAN_API_MAX_LIMIT_REACHED_TEXT) {
       // TODO: Remove after proxy
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       return await this.getBalance(address, networkId);
     }
     return null;
@@ -92,7 +92,7 @@ export default class EtherscanService {
       return data;
     } else if (data.status === '0' && data.result === ETHERSCAN_API_MAX_LIMIT_REACHED_TEXT) {
       // TODO: Remove after proxy
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       return await this.getLastTx(address, networkId);
     }
     return null;

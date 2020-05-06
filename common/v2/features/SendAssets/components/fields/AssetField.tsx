@@ -36,15 +36,15 @@ export default class AssetField extends Component<Props> {
               {({ networks }) => {
                 // Networks of all accounts
                 const relevantNetworks: string[] = [
-                  ...new Set(accounts.map(account => account.networkId))
+                  ...new Set(accounts.map((account) => account.networkId))
                 ];
 
                 const assetslist: string[] = [];
                 // For each network
-                relevantNetworks.map(en => {
+                relevantNetworks.map((en) => {
                   // get the Network
                   const network: Network | undefined = networks.find(
-                    networkEntry => networkEntry.name === en
+                    (networkEntry) => networkEntry.name === en
                   );
                   // and get associated assets
                   if (network) {

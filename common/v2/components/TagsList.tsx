@@ -16,7 +16,7 @@ const TagContainer = styled.ul`
 const TagItem = styled.li`
   display: inline-block;
   text-align: center;
-  background: ${props => props.color || COLORS.GREY_LIGHT};
+  background: ${(props) => props.color || COLORS.GREY_LIGHT};
   border-radius: 600px;
   color: ${COLORS.WHITE};
   font-size: 0.8em;

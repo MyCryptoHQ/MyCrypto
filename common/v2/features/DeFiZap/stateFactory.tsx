@@ -43,9 +43,9 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
       const provider = new ProviderHandler(txConfig.network);
       provider
         .sendRawTx(signResponse)
-        .then(retrievedTxReceipt => retrievedTxReceipt)
-        .catch(hash => provider.getTransactionByHash(hash))
-        .then(retrievedTransactionReceipt => {
+        .then((retrievedTxReceipt) => retrievedTxReceipt)
+        .catch((hash) => provider.getTransactionByHash(hash))
+        .then((retrievedTransactionReceipt) => {
           const txReceipt = fromTransactionResponseToITxReceipt(retrievedTransactionReceipt)(
             assets,
             networks

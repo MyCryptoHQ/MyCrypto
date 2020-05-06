@@ -38,7 +38,7 @@ export default function BooleanSelector(props: Props) {
             { label: 'true', name: 'true', value: true },
             { label: 'false', name: 'false', value: false }
           ]}
-          onChange={option => handleInputChange(fieldName, option.value)}
+          onChange={(option) => handleInputChange(fieldName, option.value)}
           optionComponent={ContractDropdownOption}
           valueComponent={ContractDropdownValue}
           searchable={true}

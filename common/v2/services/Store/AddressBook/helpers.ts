@@ -7,7 +7,7 @@ export const getLabelByAccount = (
 ): ExtendedAddressBook | undefined => {
   if (!account || !addressLabels) return;
   return addressLabels.find(
-    label =>
+    (label) =>
       account.address.toLowerCase() === label.address.toLowerCase() &&
       account.networkId === label.network
   );
@@ -20,7 +20,7 @@ export const getLabelByAddressAndNetwork = (
 ): AddressBook | undefined => {
   if (!address) return;
   return addressLabels.find(
-    label =>
+    (label) =>
       address.toLowerCase() === label.address.toLowerCase() &&
       (network ? network.id === label.network : true)
   );
@@ -40,14 +40,14 @@ const getUnusedLabel = (contacts: AddressBook[], generateLabel: (index: number) 
   do {
     index += 1;
     unusedLabel = generateLabel(index);
-    isFound = contacts.find(a => a.label === unusedLabel);
+    isFound = contacts.find((a) => a.label === unusedLabel);
   } while (isFound);
 
   return unusedLabel;
 };
 
 export const findNextUnusedDefaultLabel = (wallet: WalletId) => (contacts: AddressBook[]): string =>
-  getUnusedLabel(contacts, index => `${getWalletConfig(wallet).name} Account ${index}`);
+  getUnusedLabel(contacts, (index) => `${getWalletConfig(wallet).name} Account ${index}`);
 
 export const findNextRecipientLabel = (contacts: AddressBook[]) =>
-  getUnusedLabel(contacts, index => `Recipient ${index}`);
+  getUnusedLabel(contacts, (index) => `Recipient ${index}`);

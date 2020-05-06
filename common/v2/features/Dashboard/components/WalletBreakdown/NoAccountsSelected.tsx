@@ -20,7 +20,7 @@ const Header = styled.p`
   font-size: 24px;
   font-weight: bold;
   line-height: normal;
-  color: ${props => props.theme.headline};
+  color: ${(props) => props.theme.headline};
 `;
 
 const Description = styled.p`
@@ -28,7 +28,7 @@ const Description = styled.p`
   font-size: 16px;
   font-weight: normal;
   padding: 0 30px;
-  color: ${props => props.theme.text};
+  color: ${(props) => props.theme.text};
 
   @media (min-width: 700px) {
     font-size: 18px;

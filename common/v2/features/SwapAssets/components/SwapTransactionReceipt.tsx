@@ -39,7 +39,7 @@ export default function SwapTransactionReceipt({
     );
   });
 
-  const txReceipts = transactions.map(tx => fromTxParcelToTxReceipt(tx, account));
+  const txReceipts = transactions.map((tx) => fromTxParcelToTxReceipt(tx, account));
 
   return txReceipts.length === 1 ? (
     <TxReceipt

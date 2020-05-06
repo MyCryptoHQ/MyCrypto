@@ -23,8 +23,8 @@ export const getTradeOrder = (assetPair: IAssetPair, account: StoreAccount) => a
     toAsset.symbol,
     (isLastChangedTo ? toAmount : fromAmount).toString()
   )
-    .then(txs => Promise.all(txs.map(appendSender(address))))
-    .then(txs => Promise.all(txs.map(appendGasPrice(network))));
+    .then((txs) => Promise.all(txs.map(appendSender(address))))
+    .then((txs) => Promise.all(txs.map(appendGasPrice(network))));
 };
 
 export const makeTxConfigFromTransaction = (assets: Asset[]) => (
@@ -76,12 +76,12 @@ export const getAccountsWithAssetBalance = (
   fromAsset: ISwapAsset,
   fromAmount: string
 ) =>
-  accounts.filter(acc => {
+  accounts.filter((acc) => {
     if (!WALLET_STEPS[acc.wallet]) {
       return false;
     }
 
-    const asset = acc.assets.find(x => x.ticker === fromAsset.symbol);
+    const asset = acc.assets.find((x) => x.ticker === fromAsset.symbol);
     if (!asset) {
       return false;
     }
@@ -101,4 +101,4 @@ export const getUnselectedAssets = (
 ) =>
   !toAsset || !fromAsset
     ? assets
-    : assets.filter(x => fromAsset.symbol !== x.symbol && toAsset.symbol !== x.symbol);
+    : assets.filter((x) => fromAsset.symbol !== x.symbol && toAsset.symbol !== x.symbol);

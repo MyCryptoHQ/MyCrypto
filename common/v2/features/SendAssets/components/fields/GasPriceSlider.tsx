@@ -61,10 +61,10 @@ export default class SimpleGas extends Component<Props> {
               <div className="GasPriceSlider-slider">
                 <SliderWithTooltip
                   {...field}
-                  onChange={e => {
+                  onChange={(e) => {
                     this.setState({ gasPrice: e.toString() });
                   }}
-                  onAfterChange={e => {
+                  onAfterChange={(e) => {
                     form.setFieldValue('gasPriceSlider', e);
                   }}
                   min={bounds.min}

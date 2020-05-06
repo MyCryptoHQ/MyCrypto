@@ -29,7 +29,7 @@ const DashboardZapCTA = ({ className }: any) => {
       className={className}
     >
       <CTAContent>
-        {Object.values(zapConfig).map(zap => (
+        {Object.values(zapConfig).map((zap) => (
           <ZapCard config={zap} key={`key-${zap.key}`} />
         ))}
       </CTAContent>

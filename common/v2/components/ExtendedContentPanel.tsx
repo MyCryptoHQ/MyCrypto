@@ -43,12 +43,12 @@ const ContentPanelHeading = styled.div<ContentPanelHeadingProps>`
   font-size: 36px;
   width: 100%;
   display: flex;
-  justify-content: ${props => (props.centered ? 'center' : 'space-between')};
+  justify-content: ${(props) => (props.centered ? 'center' : 'space-between')};
   font-weight: bold;
   line-height: normal;
   margin-top: 0;
   margin-bottom: 15px;
-  color: ${props => props.theme.headline};
+  color: ${(props) => props.theme.headline};
 `;
 
 const ContentPanelHeadingIcon = styled.img`
@@ -60,7 +60,7 @@ const ContentPanelDescription = styled.p`
   font-size: 18px;
   line-height: 1.5;
   font-weight: normal;
-  color: ${props => props.theme.text};
+  color: ${(props) => props.theme.text};
   white-space: pre-line;
 
   strong {
@@ -85,7 +85,7 @@ interface ContentPanelTopProps {
 const ContentPanelTop = styled.div<ContentPanelTopProps>`
   display: flex;
   align-items: center;
-  justify-content: ${props => (props.stepperOnly ? 'flex-end' : 'space-between')};
+  justify-content: ${(props) => (props.stepperOnly ? 'flex-end' : 'space-between')};
   margin-bottom: 10px;
   padding: 0 30px;
 

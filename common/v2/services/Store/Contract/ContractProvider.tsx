@@ -27,13 +27,13 @@ export const ContractProvider: React.FC = ({ children }) => {
       model.createWithID(contractsData, id);
     },
     deleteContracts: (uuid: TUuid) => {
-      model.destroy(contracts.find(a => a.uuid === uuid) as ExtendedContract);
+      model.destroy(contracts.find((a) => a.uuid === uuid) as ExtendedContract);
     },
     updateContracts: (uuid: TUuid, contractsData: ExtendedContract) => {
       model.update(uuid, contractsData);
     },
     getContractsByIds: (uuids: string[]) =>
-      uuids.map(contractId => contracts.find(c => c.uuid === contractId)!).filter(Boolean)
+      uuids.map((contractId) => contracts.find((c) => c.uuid === contractId)!).filter(Boolean)
   };
   return <ContractContext.Provider value={state}>{children}</ContractContext.Provider>;
 };

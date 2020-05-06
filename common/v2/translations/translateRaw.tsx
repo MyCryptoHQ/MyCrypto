@@ -40,7 +40,7 @@ const languages: ILanguage[] = [
   require('./lang/zhtw.json')
 ];
 
-languages.forEach(l => {
+languages.forEach((l) => {
   repository[l.code] = l.data;
 });
 
@@ -51,7 +51,7 @@ export function getTranslators() {
     'TranslatorName_3',
     'TranslatorName_4',
     'TranslatorName_5'
-  ].filter(x => {
+  ].filter((x) => {
     const translated = translateRaw(x);
     return !!translated;
   });
@@ -73,7 +73,7 @@ export function translateRaw(key: string, variables?: { [name: string]: string }
   if (variables) {
     let str = translatedString.replace(/\$/g, '__');
 
-    Object.keys(variables).forEach(variable => {
+    Object.keys(variables).forEach((variable) => {
       const singleWordVariable = variable.replace(/\$/g, '__');
       const re = new RegExp(`\\b${singleWordVariable}\\b`, 'g');
 
@@ -96,7 +96,7 @@ export const Trans: FC<Props> = ({ id, variables }) => {
   let tString =
     (repository[language] && repository[language][id]) || repository[fallbackLanguage][id] || id;
 
-  const uniqueId = (counter => () => `${++counter}`)(0);
+  const uniqueId = ((counter) => () => `${++counter}`)(0);
 
   if (!variables) {
     return <>{tString}</>;

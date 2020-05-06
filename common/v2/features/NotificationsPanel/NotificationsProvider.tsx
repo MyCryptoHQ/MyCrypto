@@ -28,7 +28,7 @@ function getCurrent(notifications: ExtendedNotification[]) {
     .sort((a, b) => {
       return new Date(a.dateDisplayed).getTime() - new Date(b.dateDisplayed).getTime();
     })
-    .filter(x => {
+    .filter((x) => {
       return (
         !x.dismissed &&
         (notificationsConfigs[x.template].condition
@@ -64,7 +64,7 @@ export const NotificationsProvider: React.FC = ({ children }) => {
   const Notification = createActions(LSKeys.NOTIFICATIONS);
 
   useEffect(() => {
-    notifications.filter(isValidNotification).forEach(n =>
+    notifications.filter(isValidNotification).forEach((n) =>
       Notification.update(n.uuid, {
         ...n,
         dismissed: false,
@@ -85,7 +85,7 @@ export const NotificationsProvider: React.FC = ({ children }) => {
     // Dismiss previous notifications that need to be dismissed
     if (!notificationsConfigs[templateName].preventDismisExisting) {
       notifications
-        .filter(x => notificationsConfigs[x.template].dismissOnOverwrite && !x.dismissed)
+        .filter((x) => notificationsConfigs[x.template].dismissOnOverwrite && !x.dismissed)
         .forEach(state.dismissNotification);
     }
 
@@ -101,7 +101,7 @@ export const NotificationsProvider: React.FC = ({ children }) => {
 
     // If notification with this template already exists update it,
     // otherwise create a new one
-    const existingNotification = notifications.find(x => x.template === notification.template);
+    const existingNotification = notifications.find((x) => x.template === notification.template);
 
     if (existingNotification) {
       /* Prevent displaying notifications that have been dismissed forever and repeating notifications

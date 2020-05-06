@@ -47,7 +47,7 @@ const IconWrapper = styled.div<IconProps>`
   width: 69px;
   justify-content: center;
   align-items: center;
-  background-color: ${props => colors[props.type]};
+  background-color: ${(props) => colors[props.type]};
 
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: 14px;

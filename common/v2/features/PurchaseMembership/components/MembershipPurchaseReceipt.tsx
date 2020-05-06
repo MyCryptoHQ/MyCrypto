@@ -19,10 +19,10 @@ export default function MembershipReceipt({
   membershipSelected,
   onComplete
 }: Props) {
-  const txConfigs = transactions.map(tx =>
+  const txConfigs = transactions.map((tx) =>
     makeTxConfigFromTransaction(tx.txRaw, account, membershipSelected)
   );
-  const txReceipts = transactions.map(tx => fromTxParcelToTxReceipt(tx, account));
+  const txReceipts = transactions.map((tx) => fromTxParcelToTxReceipt(tx, account));
 
   return txReceipts.length === 1 ? (
     <TxReceipt

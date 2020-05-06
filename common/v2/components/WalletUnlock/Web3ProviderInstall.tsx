@@ -15,7 +15,7 @@ function InstallTrunk() {
   const providers = [WALLETS_CONFIG.TRUST, WALLETS_CONFIG.COINBASE];
   return (
     <div className="Web3-options">
-      {providers.map(provider => (
+      {providers.map((provider) => (
         <div key={provider.id} className="Provider-container">
           <NewTabLink href={provider.install ? provider.install.getItLink : undefined}>
             <div className="Provider-img">
@@ -75,7 +75,7 @@ function InstallMetaMask() {
 function Web3ProviderInstall() {
   useEffect(() => {
     AnalyticsService.instance.track(ANALYTICS_CATEGORIES.ADD_WEB3_ACCOUNT, `No provider detected`);
-  }, [])
+  }, []);
   const { isMobile } = useScreenSize();
   return (
     <div className="Panel">

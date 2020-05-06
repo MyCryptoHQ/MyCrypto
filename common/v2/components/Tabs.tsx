@@ -22,7 +22,7 @@ interface TabWrapperProps {
 }
 
 const TabWrapper = styled.div<TabWrapperProps>`
-  ${props =>
+  ${(props) =>
     props.selected &&
     `background-color: ${BLUE_BRIGHT};
      color: ${WHITE};`}

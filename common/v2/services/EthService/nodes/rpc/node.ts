@@ -41,7 +41,7 @@ export default class RPCNode implements INode {
     return this.client
       .call(this.requests.ethCall(txObj))
       .then(isValidCallRequest)
-      .then(response => response.result);
+      .then((response) => response.result);
   }
   public getBalance(address: string): Promise<Wei> {
     return this.client
@@ -55,7 +55,7 @@ export default class RPCNode implements INode {
       .call(this.requests.estimateGas(transaction))
       .then(isValidEstimateGas)
       .then(({ result }) => Wei(result))
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error.message);
       });
   }
@@ -73,7 +73,7 @@ export default class RPCNode implements INode {
           error: null
         };
       })
-      .catch(err => ({
+      .catch((err) => ({
         balance: TokenValue('0'),
         error: 'Caught error:' + err
       }));
@@ -84,9 +84,9 @@ export default class RPCNode implements INode {
     tokens: Token[]
   ): Promise<{ balance: TokenValue; error: string | null }[]> {
     return this.client
-      .batch(tokens.map(t => this.requests.getTokenBalance(address, t)))
-      .then(response =>
-        response.map(item => {
+      .batch(tokens.map((t) => this.requests.getTokenBalance(address, t)))
+      .then((response) =>
+        response.map((item) => {
           if (isValidTokenBalance(item)) {
             return {
               balance: TokenValue(item.result),

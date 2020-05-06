@@ -35,7 +35,7 @@ class TextArea extends React.Component<OwnProps, State> {
     return (
       <textarea
         {...htmlProps}
-        onBlur={e => {
+        onBlur={(e) => {
           this.setState({ hasBlurred: true });
           if (this.props && this.props.onBlur) {
             this.props.onBlur(e);

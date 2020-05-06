@@ -2,7 +2,7 @@ import { translateRaw } from 'v2/translations';
 import { MnemonicWallet } from '../deterministic';
 import { TUnlockMnemonic } from './types';
 
-export const unlockMnemonic: TUnlockMnemonic = async payload => {
+export const unlockMnemonic: TUnlockMnemonic = async (payload) => {
   let wallet;
   const { phrase, pass, path, address } = payload;
 

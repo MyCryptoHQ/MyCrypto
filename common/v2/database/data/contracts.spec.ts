@@ -4,7 +4,7 @@ import { NetworkId } from 'v2/types';
 import { NETWORKS_CONFIG } from '.';
 
 describe('Contracts JSON', () => {
-  Object.keys(CONTRACTS).forEach(network => {
+  Object.keys(CONTRACTS).forEach((network) => {
     const contracts: any = (CONTRACTS as any)[network];
     const addressCollisionMap: any = {};
     const networkObj = NETWORKS_CONFIG[network as NetworkId];

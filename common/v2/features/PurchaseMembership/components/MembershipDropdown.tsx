@@ -30,8 +30,8 @@ function MembershipDropdown({ name, value, onSelect }: Props) {
     <Dropdown
       name={name}
       placeholder={translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')}
-      options={Object.values(MEMBERSHIP_CONFIG).map(c => ({ label: c.title, value: c }))}
-      onChange={option => onSelect(option)}
+      options={Object.values(MEMBERSHIP_CONFIG).map((c) => ({ label: c.title, value: c }))}
+      onChange={(option) => onSelect(option)}
       optionComponent={MembershipOption}
       value={value}
       searchable={false}

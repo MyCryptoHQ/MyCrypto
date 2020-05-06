@@ -164,7 +164,7 @@ export default function AddOrEditNetworkNode({
   }, []);
 
   const onDeleteNodeClick = useCallback(
-    e => {
+    (e) => {
       e.preventDefault();
 
       deleteNode(editNode!.name, networkId);
@@ -177,16 +177,16 @@ export default function AddOrEditNetworkNode({
     Yup.object().shape({
       name: Yup.string()
         .required(translateRaw('REQUIRED'))
-        .test('check-name-available', 'Duplicated name, please change name!', name => {
+        .test('check-name-available', 'Duplicated name, please change name!', (name) => {
           return isNodeNameAvailable(values.networkId, name, editNode ? [editNode.name] : []);
         }),
       networkId: Yup.string().required(translateRaw('REQUIRED')),
       url: Yup.string().required(translateRaw('REQUIRED')),
       auth: Yup.boolean().nullable(false),
-      username: Yup.string().test('auth-required', translateRaw('REQUIRED'), username => {
+      username: Yup.string().test('auth-required', translateRaw('REQUIRED'), (username) => {
         return values.auth ? !!username : true;
       }),
-      password: Yup.string().test('auth-required', translateRaw('REQUIRED'), password => {
+      password: Yup.string().test('auth-required', translateRaw('REQUIRED'), (password) => {
         return values.auth ? !!password : true;
       })
     })
@@ -206,7 +206,7 @@ export default function AddOrEditNetworkNode({
     >
       <SubtitleRow>
         <Column>
-          {(t => {
+          {((t) => {
             const tSplit = t.split(/\$myCryptoRepo|\$letsEncrypt/);
             if (tSplit.length === 3) {
               return (
@@ -286,7 +286,7 @@ export default function AddOrEditNetworkNode({
                     {({ field, form }: FieldProps<NetworkId>) => (
                       <SNetworkSelectDropdown
                         network={field.value}
-                        onChange={e => form.setFieldValue(field.name, e)}
+                        onChange={(e) => form.setFieldValue(field.name, e)}
                         disabled={editMode}
                       />
                     )}

@@ -39,9 +39,9 @@ describe('Data Seed', () => {
       const accountAssets = toArray(testData[LSKeys.ACCOUNTS])
         .flatMap(({ assets }) => assets)
         // @ts-ignore
-        .map(a => (a.uuid ? testData.assets[a.uuid] : a));
+        .map((a) => (a.uuid ? testData.assets[a.uuid] : a));
       expect(accountAssets.length).toBeGreaterThanOrEqual(1);
-      accountAssets.forEach(a => expect(a).toBeDefined());
+      accountAssets.forEach((a) => expect(a).toBeDefined());
     });
   });
 });

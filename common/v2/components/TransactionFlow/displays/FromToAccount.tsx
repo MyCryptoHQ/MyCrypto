@@ -58,7 +58,7 @@ const Addresses = styled.div`
 `;
 
 const Label = styled(Typography)`
-  color: ${props => props.theme.text};
+  color: ${(props) => props.theme.text};
   line-height: 1;
 `;
 

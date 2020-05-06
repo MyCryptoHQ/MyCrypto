@@ -35,7 +35,7 @@ const DropdownWrapper = styled.div`
 const FieldWrapper = styled.div<FieldWraperProps>`
   display: flex;
   flex-direction: column;
-  padding-left: ${props => (props.isOutput ? '30px' : 0)};
+  padding-left: ${(props) => (props.isOutput ? '30px' : 0)};
 
   flex: 1;
   p {
@@ -141,7 +141,7 @@ export default function GeneratedInteractionForm({
 
   const handleInputChange = (fieldName: string, value: string) => {
     const updatedFunction = Object.assign({}, currentFunction);
-    const inputIndexToChange = updatedFunction.inputs.findIndex(x => x.name === fieldName);
+    const inputIndexToChange = updatedFunction.inputs.findIndex((x) => x.name === fieldName);
 
     if (updatedFunction.inputs[inputIndexToChange]) {
       updatedFunction.inputs[inputIndexToChange].value = value;
@@ -191,7 +191,7 @@ export default function GeneratedInteractionForm({
   }
 
   const { functionName: functionNameFromURL, inputs: inputsFromURL } = interactionDataFromURL;
-  const functionFromURL = functions.find(x => x.name === functionNameFromURL);
+  const functionFromURL = functions.find((x) => x.name === functionNameFromURL);
 
   if (functionFromURL && !currentFunction) {
     handleFunctionSelected(functionFromURL);
@@ -199,12 +199,12 @@ export default function GeneratedInteractionForm({
 
   useEffect(() => {
     if (!isFormFilledFromURL && currentFunction && functionNameFromURL === currentFunction.name) {
-      inputsFromURL.forEach(inputFromURL => {
+      inputsFromURL.forEach((inputFromURL) => {
         handleInputChange(inputFromURL.name, inputFromURL.value);
       });
       setIsFormFilledFromURL(true);
       //if all inputs are prefilled then trigger read button
-      if (isRead && currentFunction.inputs.every(input => input.value)) {
+      if (isRead && currentFunction.inputs.every((input) => input.value)) {
         submitFormRead(currentFunction);
       }
     }
@@ -218,7 +218,7 @@ export default function GeneratedInteractionForm({
         <Dropdown
           value={currentFunction}
           options={functions}
-          onChange={selectedFunction => {
+          onChange={(selectedFunction) => {
             handleFunctionSelected(selectedFunction);
           }}
           optionComponent={FunctionDropdownOption}

@@ -14,7 +14,7 @@ export const toObject = <T extends {}>(keyInElem: keyof T) => (
   [elem[keyInElem] as any]: elem
 });
 
-export const add: FlowTransducer = key => fn => data => store => {
+export const add: FlowTransducer = (key) => (fn) => (data) => (store) => {
   return {
     ...store,
     [key]: fn(data, store)

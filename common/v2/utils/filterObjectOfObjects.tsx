@@ -1,7 +1,7 @@
 type TFilterObjectOfObjects = (object: object) => (predicate: any) => object;
 type TFilter = ([key, value]: [any, any]) => boolean;
 
-export const filterObjectOfObjects: TFilterObjectOfObjects = object => predicate => {
+export const filterObjectOfObjects: TFilterObjectOfObjects = (object) => (predicate) => {
   const filter: TFilter =
     typeof predicate === 'function'
       ? ([_, value]) => predicate(value)

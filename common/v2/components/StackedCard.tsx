@@ -47,7 +47,7 @@ const StackedCardIcons = styled.div`
   > * {
     width: 15px;
   }
-  ${props =>
+  ${(props) =>
     props.qty &&
     css`
       width: calc(15px * ${props.qty || 1});
@@ -88,7 +88,7 @@ type StyledHTMLElement = StyledComponentClass<
 const StackedCardLabel = styled(Typography)`
   flex: 0.7;
   margin: 0;
-  color: ${props => props.theme.cardText};
+  color: ${(props) => props.theme.cardText};
   letter-spacing: 0.106875em;
   text-transform: uppercase;
   font-weight: bold;

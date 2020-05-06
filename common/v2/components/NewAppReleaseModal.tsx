@@ -59,7 +59,7 @@ const Header = styled(Typography)`
   line-height: normal;
   margin-top: 0;
   margin-bottom: 15px;
-  color: ${props => props.theme.headline};
+  color: ${(props) => props.theme.headline};
 `;
 
 interface DescriptionProps {

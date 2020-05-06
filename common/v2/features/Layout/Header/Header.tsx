@@ -241,7 +241,7 @@ const IconWrapper = styled(Icon)<IconWrapperProps>`
 
   svg {
     color: ${BLUE_BRIGHT};
-    ${props => props.subItems && 'transform: rotate(270deg);'};
+    ${(props) => props.subItems && 'transform: rotate(270deg);'};
   }
 `;
 
@@ -347,18 +347,18 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
         enter={{ left: '0' }}
         leave={{ left: '-500px' }}
       >
-        {open =>
+        {(open) =>
           open &&
           ((style: any) => (
             <Menu style={style}>
               <MenuLinks>
                 {links
-                  .filter(linkObject => linkObject.enabled)
+                  .filter((linkObject) => linkObject.enabled)
                   .map(({ title, to, subItems, icon }) => {
                     return (
                       <li
                         key={title}
-                        onClick={e => {
+                        onClick={(e) => {
                           e.stopPropagation();
 
                           if (to) {
@@ -376,7 +376,7 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
                         {subItems && visibleMenuDropdowns[title] && (
                           <ul>
                             {subItems
-                              .filter(subItem => subItem.enabled)
+                              .filter((subItem) => subItem.enabled)
                               .map(({ to: innerTo, title: innerTitle }: LinkElement) => (
                                 <li
                                   key={innerTitle}
@@ -441,7 +441,7 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
       <HeaderBottom>
         <HeaderBottomLinks>
           {links
-            .filter(link => link.enabled)
+            .filter((link) => link.enabled)
             .map(({ title, to, subItems, icon }) => {
               const liProps = to
                 ? { onClick: () => history.push(to) }
@@ -457,7 +457,7 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
                   {subItems && visibleDropdowns[title] && (
                     <ul>
                       {subItems
-                        .filter(subItem => subItem.enabled)
+                        .filter((subItem) => subItem.enabled)
                         .map(({ to: innerTo, title: innerTitle }: LinkElement) => (
                           <li key={innerTitle} onClick={() => history.push(innerTo)}>
                             {innerTitle}

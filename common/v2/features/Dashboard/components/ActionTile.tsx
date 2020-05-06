@@ -57,7 +57,7 @@ const SButton = styled(Button)<{ faded?: boolean }>`
     justify-content: space-between;
     text-align: left;
     & > img {
-      opacity: ${props => (props.faded ? '.8' : 'inherit')};
+      opacity: ${(props) => (props.faded ? '.8' : 'inherit')};
       height: 54px;
       order: 1;
     }

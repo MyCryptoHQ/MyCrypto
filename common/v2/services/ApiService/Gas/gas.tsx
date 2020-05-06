@@ -35,7 +35,7 @@ export function fetchGasEstimates(): Promise<GasEstimates> {
         'fast',
         'fastest'
       ];
-      keys.forEach(key => {
+      keys.forEach((key) => {
         if (typeof res[key] !== 'number') {
           throw new Error(
             `Gas estimate API has invalid shape: Expected numeric key '${key}' in response, got '${res[key]}' instead`

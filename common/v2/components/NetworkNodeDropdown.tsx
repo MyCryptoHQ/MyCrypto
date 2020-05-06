@@ -72,7 +72,7 @@ class NetworkOption extends React.PureComponent<NetworkOptionProps> {
         <SContainerValue onClick={() => onSelect && onSelect(option, null)}>
           <Typography value={option.label} />
           {isFunction(option.onEdit) && isEditEnabled && isCustom && (
-            <EditIcon onClick={e => this.onEdit.apply(this, [e])} src={editIcon} />
+            <EditIcon onClick={(e) => this.onEdit.apply(this, [e])} src={editIcon} />
           )}
         </SContainerValue>
       );
@@ -137,10 +137,10 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
         label: selectedNodeName === autoNodeName ? autoNodeLabel : service,
         value: selectedNode
       }}
-      options={displayNodes.map(n => ({ label: n.service, value: n, onEdit }))}
+      options={displayNodes.map((n) => ({ label: n.service, value: n, onEdit }))}
       placeholder={'Auto'}
       searchable={true}
-      onChange={option => onChange(option.value)}
+      onChange={(option) => onChange(option.value)}
       optionComponent={NetworkOption}
       valueComponent={({ value: option }) => <NetworkOption isEditEnabled={true} option={option} />}
     />

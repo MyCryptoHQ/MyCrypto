@@ -149,7 +149,7 @@ export const ProtectTxReport: FC = () => {
     if (etherscanLastTxReport && etherscanLastTxReport.result.length) {
       const { result } = etherscanLastTxReport;
       const firstSentResult = result.find(
-        r => r.from.toLowerCase() === receiverAddress!.toLowerCase()
+        (r) => r.from.toLowerCase() === receiverAddress!.toLowerCase()
       );
       if (firstSentResult) {
         const { tokenSymbol: ticker, value, timeStamp } = firstSentResult;
@@ -203,10 +203,10 @@ export const ProtectTxReport: FC = () => {
       } = cryptoScamAddressReport as CryptoScamDBInfoResponse;
       if (status === 'blocked') {
         // Malicious account
-        const accountTags = [...new Set(entries.map(e => e.type))];
+        const accountTags = [...new Set(entries.map((e) => e.type))];
         const accountComments = [
           ...new Set(
-            entries.map(e =>
+            entries.map((e) =>
               upperFirst(
                 translateRaw('PROTECTED_TX_TIMELINE_COMMENT', {
                   $reporter: e.reporter ? e.reporter : '',
@@ -238,7 +238,7 @@ export const ProtectTxReport: FC = () => {
       } else if (status === 'whitelisted') {
         // Verified account
         const accountComments = [
-          ...new Set(entries.map(e => upperFirst(`${e.type}: ${e.description}`)))
+          ...new Set(entries.map((e) => upperFirst(`${e.type}: ${e.description}`)))
         ];
 
         steps.push({

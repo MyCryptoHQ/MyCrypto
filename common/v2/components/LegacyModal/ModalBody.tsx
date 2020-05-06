@@ -53,7 +53,7 @@ export default class ModalBody extends React.Component<Props> {
         style={modalStyle}
         role="dialog"
         aria-labelledby="Modal-header-title"
-        ref={div => {
+        ref={(div) => {
           this.modal = div as HTMLElement;
         }}
       >
@@ -67,7 +67,7 @@ export default class ModalBody extends React.Component<Props> {
           </div>
         )}
 
-        <div className="Modal-content" ref={div => (this.modalContent = div as HTMLElement)}>
+        <div className="Modal-content" ref={(div) => (this.modalContent = div as HTMLElement)}>
           {children}
           <div className={`Modal-fade ${!hasButtons || hideButtons ? 'has-no-footer' : ''}`} />
         </div>

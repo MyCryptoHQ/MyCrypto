@@ -198,10 +198,7 @@ export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtect
 
   const getFiatValue = useCallback(() => {
     if (feeAmount.amount === null || feeAmount.fee === null || feeAmount.rate === null) return '--';
-    return feeAmount.amount
-      .plus(feeAmount.fee)
-      .multipliedBy(feeAmount.rate)
-      .toFixed(2);
+    return feeAmount.amount.plus(feeAmount.fee).multipliedBy(feeAmount.rate).toFixed(2);
   }, [feeAmount]);
 
   return (

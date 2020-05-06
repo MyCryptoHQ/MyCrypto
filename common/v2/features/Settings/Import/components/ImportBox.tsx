@@ -21,7 +21,7 @@ const ImportBoxContainer = styled.div<ImportBoxContainerProps>`
   background: #e8eaed;
   padding: 6rem;
   border-radius: 0.375em;
-  box-shadow: ${props => (props.dragging ? '0px 0px 0px 2px #1eb8e7;' : 'none')};
+  box-shadow: ${(props) => (props.dragging ? '0px 0px 0px 2px #1eb8e7;' : 'none')};
 `;
 
 interface ImportProps {

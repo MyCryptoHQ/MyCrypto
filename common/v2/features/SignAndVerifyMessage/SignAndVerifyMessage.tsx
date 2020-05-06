@@ -74,10 +74,10 @@ function SignAndVerifyMessage(props: RouteComponentProps<{}>) {
   const { history, location } = props;
 
   const currentRoute = tabsConfig.find(
-    tabConfig => ROUTE_PATHS[tabConfig.key].path === location.pathname
+    (tabConfig) => ROUTE_PATHS[tabConfig.key].path === location.pathname
   );
 
-  const tabs: Tab[] = tabsConfig.map(tabConfig => ({
+  const tabs: Tab[] = tabsConfig.map((tabConfig) => ({
     title: ROUTE_PATHS[tabConfig.key].title,
     onClick: () => tabClickRedirect(history, ROUTE_PATHS[tabConfig.key].path)
   }));
@@ -92,7 +92,7 @@ function SignAndVerifyMessage(props: RouteComponentProps<{}>) {
             <TabsWrapper>
               <Tabs
                 tabs={tabs}
-                selectedIndex={tabsConfig.findIndex(tab => tab.key === currentRoute.key)}
+                selectedIndex={tabsConfig.findIndex((tab) => tab.key === currentRoute.key)}
               />
             </TabsWrapper>
           </Heading>

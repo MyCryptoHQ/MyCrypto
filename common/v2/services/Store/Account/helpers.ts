@@ -6,7 +6,7 @@ export const getDashboardAccounts = (
   currentAccounts: string[]
 ): StoreAccount[] => {
   return accounts
-    .filter(account => account && 'uuid' in account)
+    .filter((account) => account && 'uuid' in account)
     .filter(({ uuid }) => currentAccounts.indexOf(uuid) >= 0);
 };
 
@@ -15,7 +15,7 @@ export const getAccountByAddressAndNetworkName = (accounts: IAccount[]) => (
   networkId: string
 ): IAccount | undefined => {
   return accounts.find(
-    account =>
+    (account) =>
       account.address.toLowerCase() === address.toLowerCase() && account.networkId === networkId
   );
 };
@@ -26,7 +26,8 @@ export const getAccountsByAsset = (
 ): StoreAccount[] =>
   accounts.filter(({ assets }) => assets.find(({ uuid }) => uuid === targetUuid));
 
-export const getBaseAsset = (account: StoreAccount) => account.assets.find(a => a.type === 'base');
+export const getBaseAsset = (account: StoreAccount) =>
+  account.assets.find((a) => a.type === 'base');
 
 export const isEthereumAccount = (account: StoreAccount | IAccount) =>
   account.networkId === DEFAULT_NETWORK;

@@ -31,22 +31,22 @@ interface BannerTypographyProps {
 }
 
 const STypography = styled(Typography)<BannerTypographyProps>`
-  color: ${props => props.color};
+  color: ${(props) => props.color};
 
   a {
-    color: ${props => props.color};
+    color: ${(props) => props.color};
     text-decoration: underline;
     font-weight: normal;
   }
 
   a:hover {
-    color: ${props => props.color};
+    color: ${(props) => props.color};
     font-weight: bold;
   }
 `;
 
 const Icon = styled.img`
-  color: ${props => props.color};
+  color: ${(props) => props.color};
   max-width: 24px;
   margin-right: ${SPACING.XS};
 `;

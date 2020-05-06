@@ -10,7 +10,7 @@ export function GasPriceField({ value, name, onChange, error }: IGasPriceField) 
         name={name}
         value={value}
         maxLength={6}
-        onChange={e => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
         placeholder="20"
         className="SendAssetsForm-fieldset-input"
         inputError={error}

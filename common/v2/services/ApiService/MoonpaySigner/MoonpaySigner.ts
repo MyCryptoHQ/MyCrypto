@@ -30,14 +30,14 @@ export default class MoonpaySignerService {
       .post('', {
         urlToSign: queryStringToSign
       })
-      .then(res => res.data)
+      .then((res) => res.data)
       .then(({ success, signature }: SignResponse) => {
         if (!success) {
           console.debug('[MoonpaySignerService]: Signing failed');
         }
         return signature;
       })
-      .catch(err => {
+      .catch((err) => {
         console.debug('[MoonpaySignerService]: Signing failed: ', err);
       });
   }

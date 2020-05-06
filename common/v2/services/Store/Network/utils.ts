@@ -12,7 +12,7 @@ export abstract class NetworkUtils {
 
   public static getSelectedNode = (network: Network): NodeOptions => {
     if (network.selectedNode) {
-      const selectedNode = network.nodes.find(n => n.name === network.selectedNode);
+      const selectedNode = network.nodes.find((n) => n.name === network.selectedNode);
       if (selectedNode) {
         return selectedNode;
       }
@@ -23,7 +23,7 @@ export abstract class NetworkUtils {
 
   public static getAutoNode = (network: Network): NodeOptions => {
     if (network.autoNode) {
-      const autoNode = network.nodes.find(n => n.name === network.autoNode);
+      const autoNode = network.nodes.find((n) => n.name === network.autoNode);
       if (autoNode) {
         return autoNode;
       }
@@ -39,7 +39,7 @@ export abstract class NetworkUtils {
     addressBook: ExtendedAddressBook[],
     getNetworkById: (name: string) => Network
   ) {
-    const addressBookNetworksIds = [...new Set(addressBook.map(a => a.network))];
-    return addressBookNetworksIds.map(id => getNetworkById(id));
+    const addressBookNetworksIds = [...new Set(addressBook.map((a) => a.network))];
+    return addressBookNetworksIds.map((id) => getNetworkById(id));
   }
 }

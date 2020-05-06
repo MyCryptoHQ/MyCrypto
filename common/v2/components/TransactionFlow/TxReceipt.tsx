@@ -103,21 +103,23 @@ export default function TxReceipt({
     if (displayTxReceipt && blockNumber === 0 && displayTxReceipt.hash) {
       const provider = new ProviderHandler(displayTxReceipt.network || txConfig.network);
       const blockNumInterval = setInterval(() => {
-        getTransactionReceiptFromHash(displayTxReceipt.hash, provider).then(transactionOutcome => {
-          if (transactionOutcome) {
-            const transactionStatus =
-              transactionOutcome.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
-            setTxStatus(prevStatusState => transactionStatus || prevStatusState);
-            setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
-            provider.getTransactionByHash(displayTxReceipt.hash).then(transactionResponse => {
-              const receipt = fromTransactionResponseToITxReceipt(transactionResponse)(
-                assets,
-                networks
-              );
-              setDisplayTxReceipt(receipt);
-            });
+        getTransactionReceiptFromHash(displayTxReceipt.hash, provider).then(
+          (transactionOutcome) => {
+            if (transactionOutcome) {
+              const transactionStatus =
+                transactionOutcome.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
+              setTxStatus((prevStatusState) => transactionStatus || prevStatusState);
+              setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
+              provider.getTransactionByHash(displayTxReceipt.hash).then((transactionResponse) => {
+                const receipt = fromTransactionResponseToITxReceipt(transactionResponse)(
+                  assets,
+                  networks
+                );
+                setDisplayTxReceipt(receipt);
+              });
+            }
           }
-        });
+        );
       }, 1000);
       return () => clearInterval(blockNumInterval);
     }

@@ -18,14 +18,14 @@ import { translateRaw } from 'v2/translations';
 
 const getAssetsByUuid = (accountAssets: AssetBalanceObject[], assets: Asset[]): StoreAsset[] =>
   accountAssets
-    .map(asset => {
-      const refAsset = assets.find(a => a.uuid === asset.uuid)!;
+    .map((asset) => {
+      const refAsset = assets.find((a) => a.uuid === asset.uuid)!;
       return {
         ...refAsset,
         ...asset
       };
     })
-    .map(asset => ({ ...asset, balance: bigNumberify(asset.balance), mtime: Date.now() }));
+    .map((asset) => ({ ...asset, balance: bigNumberify(asset.balance), mtime: Date.now() }));
 
 export const getStoreAccounts = (
   accounts: IAccount[],
@@ -33,7 +33,7 @@ export const getStoreAccounts = (
   networks: Network[],
   contacts: ExtendedAddressBook[]
 ): StoreAccount[] => {
-  return accounts.map(a => {
+  return accounts.map((a) => {
     const accountLabel = getLabelByAccount(a, contacts);
     return {
       ...a,

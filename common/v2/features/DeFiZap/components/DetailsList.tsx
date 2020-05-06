@@ -58,7 +58,7 @@ const DetailsList = ({ zapSelected }: Props) => {
     <DetailsContainer>
       <IndicatorItem />
       <DetailsBulletPoints>
-        {bulletPoints.map(bulletPoint => (
+        {bulletPoints.map((bulletPoint) => (
           <li key={bulletPoint}>{bulletPoint}</li>
         ))}
       </DetailsBulletPoints>

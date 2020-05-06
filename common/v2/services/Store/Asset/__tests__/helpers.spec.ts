@@ -55,7 +55,7 @@ describe('getTotalByAsset()', () => {
   it('sums the balances of each asset', () => {
     const totals = getTotalByAsset([...assets, ...assets]);
     const targetId = '01f2d4ec-c263-6ba8-de38-01d66c86f309';
-    const targetAsset = assets.find(a => a.uuid === targetId);
+    const targetAsset = assets.find((a) => a.uuid === targetId);
     expect(totals[targetId].balance.toString()).toEqual(targetAsset!.balance.mul('2').toString());
   });
 });

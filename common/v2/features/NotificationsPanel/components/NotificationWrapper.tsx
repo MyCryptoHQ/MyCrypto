@@ -17,7 +17,7 @@ const Wrapper = styled.div<WrapperProps>`
 
   @media (max-width: ${SCREEN_MD}) {
     flex-direction: column;
-    ${props => props.alignCenterOnSmallScreen && 'text-align: center;'};
+    ${(props) => props.alignCenterOnSmallScreen && 'text-align: center;'};
   }
 `;
 
@@ -37,15 +37,15 @@ interface LeftImageProps {
 }
 
 const LeftImage = styled.img<LeftImageProps>`
-  ${props => `width: ${props.width};`};
-  ${props => `height: ${props.height};`};
-  ${props => props.transform && `transform: ${props.transform};`};
-  ${props =>
+  ${(props) => `width: ${props.width};`};
+  ${(props) => `height: ${props.height};`};
+  ${(props) => props.transform && `transform: ${props.transform};`};
+  ${(props) =>
     props.hideOnMobile &&
     `@media (max-width: ${SCREEN_MD}) {
       display: none;
     }`};
-  ${props => (props.marginRight ? `margin-right: ${props.marginRight};` : 'margin-right: 30px;')};
+  ${(props) => (props.marginRight ? `margin-right: ${props.marginRight};` : 'margin-right: 30px;')};
 `;
 
 const Content = styled.div`

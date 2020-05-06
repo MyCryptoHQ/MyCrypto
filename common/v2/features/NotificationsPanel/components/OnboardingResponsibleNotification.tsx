@@ -69,8 +69,8 @@ interface TipIconProps {
 }
 
 const TipIcon = styled.img<TipIconProps>`
-  width: ${props => props.width}px;
-  height: ${props => props.height}px;
+  width: ${(props) => props.width}px;
+  height: ${(props) => props.height}px;
 `;
 
 const TipText = styled.p`

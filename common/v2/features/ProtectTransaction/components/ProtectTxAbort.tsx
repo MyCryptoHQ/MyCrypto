@@ -108,9 +108,9 @@ export const ProtectTxAbort: FC<AbortTransactionProps> = ({ onTxSent }) => {
   useEffect(() => {
     let protectTxTimer: ReturnType<typeof setTimeout> | null = null;
     if (protectTxCountdown > 0) {
-      protectTxTimer = setTimeout(() => setProtectTxCountdown(prevCount => prevCount - 1), 1000);
+      protectTxTimer = setTimeout(() => setProtectTxCountdown((prevCount) => prevCount - 1), 1000);
     } else if (protectTxCountdown === 0) {
-      invokeProtectTxTimeoutFunction(txReceipt => {
+      invokeProtectTxTimeoutFunction((txReceipt) => {
         onTxSent(txReceipt);
       });
     }
@@ -122,7 +122,7 @@ export const ProtectTxAbort: FC<AbortTransactionProps> = ({ onTxSent }) => {
   }, [protectTxContext, protectTxCountdown]);
 
   const onCancelClick = useCallback(
-    e => {
+    (e) => {
       e.preventDefault();
 
       setIsCanceled(true);
@@ -132,7 +132,7 @@ export const ProtectTxAbort: FC<AbortTransactionProps> = ({ onTxSent }) => {
   );
 
   const onSendClick = useCallback(
-    e => {
+    (e) => {
       e.preventDefault();
 
       setIsCanceled(false);

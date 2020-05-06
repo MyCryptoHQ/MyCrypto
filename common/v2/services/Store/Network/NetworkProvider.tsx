@@ -38,7 +38,7 @@ export const NetworkProvider: React.FC = ({ children }) => {
       }
       throw new Error(`No network found with network id: ${networkId}`);
     },
-    getNetworkByChainId: chainId => {
+    getNetworkByChainId: (chainId) => {
       return networks.find((network: Network) => network.chainId === chainId);
     },
     getNetworkNodes: (networkId: NetworkId) => {
@@ -73,7 +73,7 @@ export const NetworkProvider: React.FC = ({ children }) => {
 
       const networkUpdate = {
         ...networkToEdit,
-        nodes: [...nodes.filter(n => n.name !== nodeName), node],
+        nodes: [...nodes.filter((n) => n.name !== nodeName), node],
         selectedNode: node.name
       };
 
@@ -90,7 +90,7 @@ export const NetworkProvider: React.FC = ({ children }) => {
 
       const networkUpdate = {
         ...networkToEdit,
-        nodes: [...nodes.filter(n => n.name !== nodeName)],
+        nodes: [...nodes.filter((n) => n.name !== nodeName)],
         selectedNode:
           networkToEdit.selectedNode === nodeName
             ? networkToEdit.autoNode
@@ -121,9 +121,10 @@ export const NetworkProvider: React.FC = ({ children }) => {
       }
 
       return !foundNetwork.nodes
-        .filter(n => !ignoreNames.includes(n.name))
+        .filter((n) => !ignoreNames.includes(n.name))
         .some(
-          n => n.name.toLowerCase() === NetworkUtils.makeNodeName(networkId, nodeName).toLowerCase()
+          (n) =>
+            n.name.toLowerCase() === NetworkUtils.makeNodeName(networkId, nodeName).toLowerCase()
         );
     }
   };

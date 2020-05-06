@@ -351,9 +351,9 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       const provider = new ProviderHandler(account.network);
       provider
         .sendRawTx(signResponse)
-        .then(retrievedTxReceipt => retrievedTxReceipt)
-        .catch(hash => provider.getTransactionByHash(hash))
-        .then(retrievedTransactionReceipt => {
+        .then((retrievedTxReceipt) => retrievedTxReceipt)
+        .catch((hash) => provider.getTransactionByHash(hash))
+        .then((retrievedTransactionReceipt) => {
           const txReceipt = fromTransactionResponseToITxReceipt(retrievedTransactionReceipt)(
             assets,
             networks
