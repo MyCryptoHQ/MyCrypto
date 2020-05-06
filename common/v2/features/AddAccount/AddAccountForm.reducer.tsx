@@ -49,11 +49,6 @@ const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
         address: payload.address,
         derivationPath: ''
       };
-    case WalletId.PARITY_SIGNER:
-      return {
-        account: payload.address,
-        derivationPath: ''
-      };
     case WalletId.MNEMONIC_PHRASE:
     case WalletId.LEDGER_NANO_S:
     case WalletId.TREZOR:

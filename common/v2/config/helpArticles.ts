@@ -24,8 +24,7 @@ export enum KB_HELP_ARTICLE {
 
 export enum HELP_ARTICLE {
   DPATH = 'https://medium.com/mycrypto/wtf-is-a-derivation-path-c3493ca2eb52',
-  LEDGER = 'https://support.ledger.com/hc/en-us/articles/360008268594',
-  PARITY = 'https://wiki.parity.io/Parity-Signer-Mobile-App-MyCrypto-tutorial'
+  LEDGER = 'https://support.ledger.com/hc/en-us/articles/360008268594'
 }
 
 export const getKBHelpArticle = (article: KB_HELP_ARTICLE) => `${KB_URL}/${article}`;

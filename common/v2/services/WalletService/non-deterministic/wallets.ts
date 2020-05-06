@@ -7,7 +7,6 @@ import { signWrapper } from '../helpers';
 import { determineKeystoreType, KeystoreTypes } from './helpers';
 import Web3Wallet from './web3';
 import AddressOnlyWallet from './address';
-import ParitySignerWallet from './parity';
 
 const EncryptedPrivateKeyWallet = (encryptedPrivateKey: string, password: string) =>
   signWrapper(fromPrivateKey(decryptPrivKey(encryptedPrivateKey, password)));
@@ -61,7 +60,6 @@ export {
   UtcWallet,
   Web3Wallet,
   AddressOnlyWallet,
-  ParitySignerWallet,
   getUtcWallet,
   getPrivKeyWallet,
   getKeystoreWallet

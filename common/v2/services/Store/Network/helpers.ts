@@ -14,7 +14,6 @@ export const getNetworkById = (id: NetworkId, networks: Network[] = []): Network
 };
 
 export const isWalletFormatSupportedOnNetwork = (network: Network, format: WalletId): boolean => {
-  const chainId = network ? network.chainId : 0;
   const CHECK_FORMATS: DPathFormat[] = Object.keys(HD_WALLETS) as DPathFormat[];
   const isHDFormat = (f: string): f is DPathFormat => CHECK_FORMATS.includes(f as DPathFormat);
 
@@ -25,11 +24,6 @@ export const isWalletFormatSupportedOnNetwork = (network: Network, format: Walle
     }
     const dPath: DPath | undefined = network.dPaths && network.dPaths[format];
     return !!dPath;
-  }
-
-  // Parity signer on RSK
-  if ((chainId === 30 || chainId === 31) && format === WalletId.PARITY_SIGNER) {
-    return false;
   }
 
   // All other wallet formats are supported
