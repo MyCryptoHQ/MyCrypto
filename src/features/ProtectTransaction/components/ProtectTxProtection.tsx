@@ -117,6 +117,17 @@ const FeeContainer = styled.div`
   }
 `;
 
+const Header = styled.h4`
+  display: flex;
+  align-items: center;
+
+  && {
+    svg {
+      margin-right: ${SPACING.XS};
+    }
+  }
+`;
+
 interface Props {
   sendAssetsValues: IFormikFields | null;
   handleProtectTxSubmit(payload: IFormikFields): Promise<void>;
@@ -203,24 +214,30 @@ export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtect
     return feeAmount.amount.plus(feeAmount.fee).multipliedBy(feeAmount.rate).toFixed(2);
   }, [feeAmount]);
 
-  const hasError =
+  const error =
     sendAssetsValues !== null &&
     ProtectTxUtils.checkFormForProtectedTxErrors(
       sendAssetsValues,
       getAssetRate(sendAssetsValues.asset)
-    ) !== ProtectTxError.NO_ERROR;
+    );
+
+  const hasError = error !== ProtectTxError.NO_ERROR;
+  const hasMissingInfoError = error === ProtectTxError.INSUFFICIENT_DATA;
 
   return (
     <SProtectionThisTransaction>
       <CloseIcon size="lg" onClick={onProtectMyTransactionCancelClick} />
-      {hasError && (
+      {hasMissingInfoError && (
         <>
           <ProtectTxMissingInfo />
           <hr />
         </>
       )}
-      {!hasError && <ProtectIcon size="lg" />}
-      <h4>{translateRaw('PROTECTED_TX_PROTECT_THIS_TRANSACTION')}</h4>
+      {!hasMissingInfoError && <ProtectIcon size="lg" />}
+      <Header>
+        {hasMissingInfoError && <ProtectIcon size="sm" />}
+        {translateRaw('PROTECTED_TX_PROTECT_THIS_TRANSACTION')}
+      </Header>
       <h5>{translateRaw('PROTECTED_TX_PROTECT_THIS_TRANSACTION_DESC')}</h5>
       <BulletList>
         <li>
@@ -251,7 +268,7 @@ export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtect
       {!web3Wallet && (
         <p className="description-text">{translateRaw('PROTECTED_TX_NOT_WEB3_WALLET_DESC')}</p>
       )}
-      {!hasError && !isMyCryptoMember && (
+      {!hasMissingInfoError && !isMyCryptoMember && (
         <>
           <hr />
           <h4 className="send-with-confidence">
