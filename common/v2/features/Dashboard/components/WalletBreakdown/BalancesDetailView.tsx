@@ -10,7 +10,9 @@ import {
   AssetIcon,
   Currency,
   DashboardPanel,
-  CollapsibleTable
+  CollapsibleTable,
+  Typography,
+  Tooltip
 } from 'v2/components';
 import { CollapseIcon, ExpandIcon } from 'v2/components/icons';
 import { Balance, BalanceAccount, WalletBreakdownProps } from './types';
@@ -151,7 +153,21 @@ const createAccountRow = (
   return [
     <></>,
     <Label minWidth="140px" key={index}>
-      <EthAddress address={balanceAccount.address} truncate={truncate} />
+      <Tooltip
+        tooltip={
+          <>
+            <Typography as="div">{balanceAccount.label}</Typography>
+            <Typography as="div">{balanceAccount.address}</Typography>
+          </>
+        }
+      >
+        <EthAddress
+          address={balanceAccount.address}
+          isCopyable={true}
+          truncate={truncate}
+          disableTooltip={true}
+        />
+      </Tooltip>
     </Label>,
     <RowAlignment data-balance={balanceAccount.amount} key={index} align="right">
       {`${balanceAccount.amount.toFixed(6)} ${balanceAccount.ticker}`}

@@ -4,7 +4,7 @@ import styled, { StyledFunction } from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
 import { Checkbox } from 'v2/components';
-import { useOnClickOutside, truncate } from 'v2/utils';
+import { useOnClickOutside, truncate, trimEllipsis } from 'v2/utils';
 import { getLabelByAccount, AddressBookContext } from 'v2/services/Store';
 import { COLORS } from 'v2/theme';
 import { IAccount, ExtendedAddressBook, TUuid } from 'v2/types';
@@ -24,7 +24,7 @@ interface SDropdownProps {
 }
 
 const Divider = styled('div')`
-  border-bottom: ${props => `1px solid ${props.theme.GAU.COLORS.dividerColor}`};
+  border-bottom: ${(props) => `1px solid ${props.theme.GAU.COLORS.dividerColor}`};
   margin: 0px 20px 15px;
 `;
 
@@ -35,12 +35,12 @@ const SDropdown = dropdown`
   position: relative;
   height: 48px;
   padding: 9px 15px;
-  border: ${props => `1px solid ${props.theme.GAU.COLORS.dividerColor}`};
+  border: ${(props) => `1px solid ${props.theme.GAU.COLORS.dividerColor}`};
   border-radius: 2px;
   background-color: #ffffff;
   cursor: pointer;
 
-  ${props =>
+  ${(props) =>
     props.isOpen &&
     `{
     box-shadow: 0 7px 10px 5px rgba(50, 50, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
@@ -74,6 +74,7 @@ const LabelRow = styled.span`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  min-width: 20px;
 `;
 
 const IconWrapper = styled(Icon)`
@@ -94,6 +95,14 @@ const SCheckbox = styled(Checkbox)`
   &:hover {
     background-color: ${GREY_LIGHTEST};
   }
+
+  > label {
+    min-width: 20px;
+  }
+
+  img {
+    min-width: 30px;
+  }
 `;
 
 const renderAccounts = (
@@ -111,7 +120,7 @@ const renderAccounts = (
         name={`account-${account.uuid}`}
         checked={selected.includes(account.uuid)}
         onChange={() => handleChange(account.uuid)}
-        label={`${truncate(account.address)} - ${addressLabel}`}
+        label={`${truncate(account.address)} - ${trimEllipsis(addressLabel, 65)}`}
         icon={() => (
           <Identicon className="AccountDropdown-menu-identicon" address={account.address} />
         )}
@@ -150,14 +159,14 @@ const AccountDropdown = ({
   };
 
   const toggleAllAccounts = () => {
-    const changed = draftSelected.length < accounts.length ? accounts.map(a => a.uuid) : [];
+    const changed = draftSelected.length < accounts.length ? accounts.map((a) => a.uuid) : [];
     setDraftSelected(changed);
     onSubmit(changed);
   };
 
   const toggleSingleAccount = (uuid: TUuid) => {
     const changed = draftSelected.includes(uuid)
-      ? draftSelected.filter(entry => entry !== uuid)
+      ? draftSelected.filter((entry) => entry !== uuid)
       : draftSelected.concat([uuid]);
     setDraftSelected(changed);
     onSubmit(changed);
@@ -171,7 +180,7 @@ const AccountDropdown = ({
       </LabelRow>
 
       {isOpen && (
-        <div onClick={e => e.stopPropagation()}>
+        <div onClick={(e) => e.stopPropagation()}>
           <SCheckbox
             name="all-accounts"
             checked={allVisible}

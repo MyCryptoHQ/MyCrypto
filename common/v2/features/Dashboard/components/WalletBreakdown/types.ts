@@ -5,6 +5,7 @@ export interface BalanceAccount {
   ticker: string;
   amount: number;
   fiatValue: number;
+  label: string;
 }
 
 export interface Balance {
