@@ -6,7 +6,7 @@ import { isWeb3Wallet } from '@utils';
 import { RatesContext } from '@services';
 import { IAccount, IFormikFields } from '@types';
 import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
-import { Amount } from '@components';
+import { Amount, Button } from '@components';
 import { translateRaw } from '@translations';
 
 import { ProtectTxUtils } from '../utils';
@@ -124,6 +124,7 @@ interface Props {
 
 export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtectTxSubmit }) => {
   const { getAssetRate } = useContext(RatesContext);
+  const { isMyCryptoMember } = useContext(StoreContext);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -207,7 +208,7 @@ export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtect
     ProtectTxUtils.checkFormForProtectedTxErrors(
       sendAssetsValues,
       getAssetRate(sendAssetsValues.asset)
-    ) === ProtectTxError.INSUFFICIENT_DATA;
+    ) !== ProtectTxError.NO_ERROR;
 
   return (
     <SProtectionThisTransaction>
@@ -250,7 +251,7 @@ export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtect
       {!web3Wallet && (
         <p className="description-text">{translateRaw('PROTECTED_TX_NOT_WEB3_WALLET_DESC')}</p>
       )}
-      {!hasError && (
+      {!hasError && !isMyCryptoMember && (
         <>
           <hr />
           <h4 className="send-with-confidence">
