@@ -44,12 +44,16 @@ const Ledger: WalletLib = {
 
   async signTransaction(tx, path) {
     const app = await getEthApp();
-    const ethTx = new EthTx({
-      ...tx,
-      v: Buffer.from([tx.chainId]),
-      r: toBuffer(0),
-      s: toBuffer(0)
-    });
+    // Disable EIP155 in Ethereumjs-tx since it conflicts with Ledger
+    const ethTx = new EthTx(
+      {
+        ...tx,
+        v: Buffer.from([tx.chainId]),
+        r: toBuffer(0),
+        s: toBuffer(0)
+      },
+      { chain: tx.chainId, hardfork: 'tangerineWhistle' }
+    );
 
     if (ethTx.getChainId() === 1) {
       const tokenInfo = byContractAddress(ethTx.to.toString('hex'));
@@ -59,12 +63,16 @@ const Ledger: WalletLib = {
     }
 
     const rsv = await app.signTransaction(path, ethTx.serialize().toString('hex'));
-    const signedTx = new EthTx({
-      ...tx,
-      r: addHexPrefix(rsv.r),
-      s: addHexPrefix(rsv.s),
-      v: addHexPrefix(rsv.v)
-    });
+    // Disable EIP155 in Ethereumjs-tx since it conflicts with Ledger
+    const signedTx = new EthTx(
+      {
+        ...tx,
+        r: addHexPrefix(rsv.r),
+        s: addHexPrefix(rsv.s),
+        v: addHexPrefix(rsv.v)
+      },
+      { chain: tx.chainId, hardfork: 'tangerineWhistle' }
+    );
     return {
       signedTransaction: signedTx.serialize().toString('hex')
     };
