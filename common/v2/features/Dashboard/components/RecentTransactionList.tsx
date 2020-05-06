@@ -27,6 +27,7 @@ import newWindowIcon from 'common/assets/images/icn-new-window.svg';
 import transfer from 'common/assets/images/transactions/transfer.svg';
 import inbound from 'common/assets/images/transactions/inbound.svg';
 import outbound from 'common/assets/images/transactions/outbound.svg';
+import { COLORS } from 'v2/theme';
 
 interface Props {
   className?: string;
@@ -84,25 +85,26 @@ export const deriveTxDirection = (
 
 const SAssetIcon = styled(AssetIcon)`
   filter: grayscale(1); /* W3C */
-  position: absolute;
-  border: 3px solid white;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
 `;
 
 const CCircle = styled('div')`
   position: absolute;
-  bottom: -14px;
-  right: -14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${COLORS.GREY_LIGHTEST};
+  border: 3px solid #ffffff;
+  bottom: -9px;
+  right: -9px;
+  border-radius: 50%;
   z-index: 2;
-  height: 32px;
-  width: 32px;
+  height: 24px;
+  width: 24px;
 `;
 const SCombinedCircle = (asset: Asset) => {
   return (
     <CCircle>
-      <SAssetIcon uuid={asset.uuid} />
+      <SAssetIcon uuid={asset.uuid} size={'16px'} />
     </CCircle>
   );
 };

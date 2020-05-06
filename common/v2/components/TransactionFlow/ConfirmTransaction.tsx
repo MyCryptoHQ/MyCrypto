@@ -51,7 +51,7 @@ const ColumnWrapper = Styled.div<{ bold?: boolean }>`
   }
   img {
     width: auto;
-    height: 30px;
+    height: 25px;
     margin-right: 10px;
   }
 `;
@@ -234,7 +234,7 @@ export const ConfirmTransactionUI = ({
             : translate('CONFIRM_TX_SENDING')}
         </ColumnWrapper>
         <AmountWrapper>
-          <AssetIcon uuid={asset.uuid} size={'30px'} />
+          <AssetIcon uuid={asset.uuid} size={'25px'} />
           <Amount
             assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
             fiatValue={`$${convertToFiat(parseFloat(amount), assetRate).toFixed(2)}
@@ -247,7 +247,7 @@ export const ConfirmTransactionUI = ({
           <img src={feeIcon} alt="Fee" /> {translate('CONFIRM_TX_FEE')}
         </ColumnWrapper>
         <AmountWrapper>
-          <AssetIcon uuid={asset.uuid} size={'30px'} />
+          <AssetIcon uuid={asset.uuid} size={'25px'} />
           <Amount
             assetValue={`${maxTransactionFeeBase} ${baseAsset.ticker}`}
             fiatValue={`$${convertToFiat(parseFloat(maxTransactionFeeBase), baseAssetRate).toFixed(
@@ -265,7 +265,7 @@ export const ConfirmTransactionUI = ({
         <AmountWrapper>
           {assetType === 'base' ? (
             <>
-              <AssetIcon uuid={asset.uuid} size={'30px'} />
+              <AssetIcon uuid={asset.uuid} size={'25px'} />
               <Amount
                 assetValue={`${totalEtherEgress} ${asset.ticker}`}
                 fiatValue={`$${convertToFiat(parseFloat(totalEtherEgress), assetRate).toFixed(2)}`}
@@ -273,7 +273,7 @@ export const ConfirmTransactionUI = ({
             </>
           ) : (
             <>
-              <AssetIcon uuid={asset.uuid} size={'30px'} />
+              <AssetIcon uuid={asset.uuid} size={'25px'} />
               <Amount
                 assetValue={`${amount} ${asset.ticker}`}
                 bold={true}
