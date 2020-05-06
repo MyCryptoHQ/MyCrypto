@@ -7,12 +7,13 @@ import {
 } from '@mycrypto/eth-scan';
 import partition from 'lodash/partition';
 import { default as BN } from 'bignumber.js';
-import { bigNumberify } from 'ethers/utils';
+import { bigNumberify, BigNumber } from 'ethers/utils';
 import { BigNumber as EthScanBN } from '@ethersproject/bignumber';
 
 import { ETHSCAN_NETWORKS } from 'v2/config';
 import { TAddress, StoreAccount, StoreAsset, Asset, Network } from 'v2/types';
 import { ProviderHandler } from 'v2/services/EthService';
+import { bigify } from 'v2/utils';
 
 export type BalanceMap<T = BN> = EthScanBalanceMap<T>;
 
@@ -132,14 +133,25 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
     ETHSCAN_NETWORKS.some((supportedNetwork) => account && account.networkId === supportedNetwork)
   );
 
-  const accountBalances = await Promise.all(
+  const updatedAccounts = await Promise.all(
     [
       ...ethScanCompatibleAccounts.map(getAccountAssetsBalancesWithEthScan),
       ...jsonRPCAccounts.map(getAccountAssetsBalancesWithJsonRPC)
     ].map((p) => p.catch((e) => console.debug(e))) // convert Promise.all ie. into allSettled https://dev.to/vitalets/what-s-wrong-with-promise-allsettled-and-promise-any-5e6o
   );
 
-  return accountBalances;
+  const filterNonZeroBN = (n: BigNumber) => !bigify(n.toString()).eq(0);
+
+  const filteredUpdatedAccounts = updatedAccounts.map((updatedAccount) => ({
+    ...updatedAccount,
+    assets:
+      (updatedAccount &&
+        updatedAccount.assets &&
+        updatedAccount.assets.filter(({ balance }) => !filterNonZeroBN(balance))) ||
+      []
+  }));
+
+  return filteredUpdatedAccounts;
 };
 
 export const getAllTokensBalancesOfAccount = async (account: StoreAccount, assets: Asset[]) => {
