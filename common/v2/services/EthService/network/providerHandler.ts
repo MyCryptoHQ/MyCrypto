@@ -7,7 +7,7 @@ import {
 } from 'ethers/providers';
 import { formatEther, BigNumber } from 'ethers/utils';
 
-import { Asset, Network, IHexStrTransaction, TxObj, ITxSigned } from 'v2/types';
+import { Asset, Network, TxObj, ITxSigned, ITxObject } from 'v2/types';
 import { RPCRequests, baseToConvertedUnit, ERC20 } from 'v2/services/EthService';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { EthersJS } from './ethersJsProvider';
@@ -34,80 +34,80 @@ export class ProviderHandler {
   }
 
   public call(txObj: TxObj): Promise<string> {
-    return this.injectClient(client => {
+    return this.injectClient((client) => {
       return client.call(txObj);
     });
   }
 
   /* Tested */
   public getBalance(address: string): Promise<string> {
-    return this.getRawBalance(address).then(data => formatEther(data));
+    return this.getRawBalance(address).then((data) => formatEther(data));
   }
 
   public getRawBalance(address: string): Promise<BigNumber> {
-    return this.injectClient(client => client.getBalance(address));
+    return this.injectClient((client) => client.getBalance(address));
   }
 
   /* Tested*/
-  public estimateGas(transaction: Partial<IHexStrTransaction>): Promise<string> {
-    return this.injectClient(client =>
-      client.estimateGas(transaction).then(data => data.toString())
+  public estimateGas(transaction: Partial<ITxObject>): Promise<string> {
+    return this.injectClient((client) =>
+      client.estimateGas(transaction).then((data) => data.toString())
     );
   }
 
   public getRawTokenBalance(address: string, token: Asset): Promise<string> {
-    return this.injectClient(client =>
+    return this.injectClient((client) =>
       client
         .call({
           to: this.requests.getTokenBalance(address, token).params[0].to,
           data: this.requests.getTokenBalance(address, token).params[0].data
         })
-        .then(data => ERC20.balanceOf.decodeOutput(data))
+        .then((data) => ERC20.balanceOf.decodeOutput(data))
         .then(({ balance }) => balance)
     );
   }
 
   /* Tested */
   public getTokenBalance(address: string, token: Asset): Promise<string> {
-    return this.getRawTokenBalance(address, token).then(balance =>
+    return this.getRawTokenBalance(address, token).then((balance) =>
       baseToConvertedUnit(balance, token.decimal || DEFAULT_ASSET_DECIMAL)
     );
   }
 
   /* Tested */
   public getTransactionCount(address: string): Promise<number> {
-    return this.injectClient(client => client.getTransactionCount(address));
+    return this.injectClient((client) => client.getTransactionCount(address));
   }
 
   /* Tested */
   public getTransactionByHash(txhash: string): Promise<TransactionResponse> {
-    return this.injectClient(client => client.getTransaction(txhash));
+    return this.injectClient((client) => client.getTransaction(txhash));
   }
 
   /* Tested */
   public getTransactionReceipt(txhash: string): Promise<TransactionReceipt> {
-    return this.injectClient(client => client.getTransactionReceipt(txhash));
+    return this.injectClient((client) => client.getTransactionReceipt(txhash));
   }
 
   public getBlockByHash(blockHash: string): Promise<Block> {
-    return this.injectClient(client => client.getBlock(blockHash, false));
+    return this.injectClient((client) => client.getBlock(blockHash, false));
   }
 
   public getBlockByNumber(blockNumber: number): Promise<Block> {
-    return this.injectClient(client => client.getBlock(blockNumber, false));
+    return this.injectClient((client) => client.getBlock(blockNumber, false));
   }
 
   /* Tested */
   public getCurrentBlock(): Promise<string> {
-    return this.injectClient(client => client.getBlockNumber().then(data => data.toString()));
+    return this.injectClient((client) => client.getBlockNumber().then((data) => data.toString()));
   }
 
   public sendRawTx(signedTx: string | ITxSigned): Promise<TransactionResponse> {
-    return this.injectClient(client => client.sendTransaction(signedTx as string));
+    return this.injectClient((client) => client.sendTransaction(signedTx));
   }
 
   public waitForTransaction(txHash: string, confirmations = 1): Promise<TransactionReceipt> {
-    return this.injectClient(client => client.waitForTransaction(txHash, confirmations));
+    return this.injectClient((client) => client.waitForTransaction(txHash, confirmations));
   }
 
   protected injectClient(clientInjectCb: (client: FallbackProvider | BaseProvider) => any) {

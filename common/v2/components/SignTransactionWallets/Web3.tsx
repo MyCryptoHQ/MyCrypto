@@ -5,7 +5,7 @@ import { Web3Provider } from 'ethers/providers/web3-provider';
 import { WALLETS_CONFIG } from 'v2/config';
 import { ISignComponentProps } from 'v2/types';
 import translate, { translateRaw } from 'v2/translations';
-import { withContext, getWeb3Config } from 'v2/utils';
+import { withContext, getWeb3Config, fromTransactionReceiptToITxReceipt } from 'v2/utils';
 import { getNetworkByChainId, INetworkContext, NetworkContext } from 'v2/services/Store';
 import './Web3.scss';
 
@@ -186,7 +186,7 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
   }
 
   private async maybeSendTransaction() {
-    const { rawTransaction, onSuccess } = this.props;
+    const { rawTransaction, onSuccess, network, senderAccount } = this.props;
     this.setState({ submitting: true });
     if (!this.state.accountMatches || !this.state.networkMatches) {
       return;
@@ -200,9 +200,16 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
       // will fail https://github.com/ethers-io/ethers.js/issues/692.
       const { from, ...rawTx } = rawTransaction;
       signerWallet.sendUncheckedTransaction(rawTx).then(txHash => {
-        web3Provider.getTransactionReceipt(txHash).then(output => {
+        web3Provider.getTransactionReceipt(txHash).then(txReceipt => {
           this.setState({ submitting: false });
-          onSuccess(output !== null ? output : txHash);
+          onSuccess(
+            txReceipt !== null
+              ? fromTransactionReceiptToITxReceipt(txReceipt, rawTransaction)(
+                  network,
+                  senderAccount.assets
+                )
+              : txHash
+          );
         });
       });
     } catch (err) {

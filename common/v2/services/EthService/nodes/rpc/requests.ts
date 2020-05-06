@@ -11,7 +11,7 @@ import {
   GetTransactionReceiptRequest
 } from './types';
 import { Token } from 'shared/types/network';
-import { Asset, IHexStrTransaction, TxObj } from 'v2/types';
+import { Asset, TxObj, ITxObject } from 'v2/types';
 import { UnlockToken } from '../../contracts';
 
 export class RPCRequests {
@@ -26,7 +26,7 @@ export class RPCRequests {
     };
   }
 
-  public estimateGas(transaction: Partial<IHexStrTransaction>): EstimateGasRequest | any {
+  public estimateGas(transaction: Partial<ITxObject>): EstimateGasRequest | any {
     return {
       method: 'eth_estimateGas',
       params: [transaction]

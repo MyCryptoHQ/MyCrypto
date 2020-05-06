@@ -4,6 +4,7 @@ import {
   ITxObject,
   StoreAccount,
   ITxConfig,
+  TAddress,
   ITxReceipt,
   TxParcel,
   ITxType,
@@ -56,7 +57,7 @@ export const createPurchaseTx = (payload: MembershipSimpleTxFormFull): Partial<I
 
   return {
     from: payload.account.address,
-    to: membershipSelected.contractAddress,
+    to: membershipSelected.contractAddress as TAddress,
     value: isERC20Tx(payload.asset) ? inputValueToHex('0') : inputValueToHex(payload.amount),
     data,
     gasPrice: inputGasPriceToHex(payload.gasPrice),
@@ -103,8 +104,9 @@ export const makeTxReceiptFromTransaction = (
   return {
     ...makeTxConfigFromTransaction(tx.txRaw, account, membershipSelected),
     ...tx.txRaw,
-    hash,
-    txType: type,
+    from: tx.txRaw.from as TAddress,
+    hash: hash as ITxHash,
+    type,
     stage: ITxStatus.PENDING
   };
 };

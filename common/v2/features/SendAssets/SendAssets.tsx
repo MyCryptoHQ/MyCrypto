@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import {
   ConfirmTransaction,
@@ -6,13 +6,19 @@ import {
   TxReceipt,
   TxReceiptWithProtectTx
 } from 'v2/components';
-import { useStateReducer, isWeb3Wallet, withProtectTxProvider } from 'v2/utils';
-import { ITxReceipt, ISignedTx, IFormikFields, ITxConfig } from 'v2/types';
+import {
+  isWeb3Wallet,
+  withProtectTxProvider,
+  useTxMulti,
+  fromTxObjectToTxConfig,
+  fromTxParcelToTxReceipt,
+  getCurrentTxFromTxMulti
+} from 'v2/utils';
+import { ITxReceipt, IFormikFields, ITxConfig, ITxObject, ITxSigned, ITxHash } from 'v2/types';
 import { translateRaw } from 'v2/translations';
 import { IS_ACTIVE_FEATURE, ROUTE_PATHS } from 'v2/config';
 import { IStepperPath } from 'v2/components/GeneralStepper/types';
 
-import { txConfigInitialState, TxConfigFactory } from './stateFactory';
 import SendAssetsForm from './components/SendAssetsForm';
 import {
   ConfirmTransactionWithProtectTx,
@@ -21,17 +27,19 @@ import {
   SignTransactionWithProtectTx
 } from './components';
 import { ProtectTxContext, ProtectTxUtils } from '../ProtectTransaction';
+import { fromSendAssetFormDataToTxObject } from './helpers';
+import { bigNumGasPriceToViewableGwei, inputGasPriceToHex } from '../../services/EthService/utils';
+import { bigNumberify } from 'ethers/utils';
 
 function SendAssets() {
-  const {
-    handleFormSubmit,
-    handleConfirmAndSign,
-    handleConfirmAndSend,
-    handleSignedTx,
-    handleSignedWeb3Tx,
-    handleResubmitTx,
-    txFactoryState
-  } = useStateReducer(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: undefined });
+  const [signedTx, setSignedTx] = useState<ITxHash | ITxSigned | null>(null);
+  const { state, init, prepareTx, sendTx } = useTxMulti();
+  const { transactions, _currentTxIdx, account, network } = state;
+
+  const txParcel = getCurrentTxFromTxMulti(transactions, _currentTxIdx);
+  const { txRaw } = txParcel;
+  const txConfig = fromTxObjectToTxConfig(txRaw, account);
+  const txReceipt = fromTxParcelToTxReceipt(txParcel, account);
 
   const protectTxContext = useContext(ProtectTxContext);
   const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
@@ -42,12 +50,23 @@ function SendAssets() {
     {
       label: 'Send Assets',
       component: IS_ACTIVE_FEATURE.PROTECT_TX ? SendAssetsFormWithProtectTx : SendAssetsForm,
-      props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
-      actions: (payload: IFormikFields, cb: any) => {
+      props: ((trans, txId) => ({
+        txConfig: trans.length && trans[txId].txRaw
+      }))(transactions, _currentTxIdx),
+      actions: async (payload: IFormikFields, cb: any) => {
         if (getProTxValue(['state', 'protectTxEnabled'])) {
           payload.nonceField = (parseInt(payload.nonceField, 10) + 1).toString();
         }
-        return handleFormSubmit(payload, cb);
+
+        const { account: formAccount, network: formNetwork } = payload;
+        await init([{}], formAccount, formNetwork);
+
+        const rawTransaction: ITxObject = fromSendAssetFormDataToTxObject(payload);
+        await prepareTx(rawTransaction);
+
+        if (cb) {
+          cb();
+        }
       }
     },
     {
@@ -55,19 +74,33 @@ function SendAssets() {
       component: IS_ACTIVE_FEATURE.PROTECT_TX
         ? ConfirmTransactionWithProtectTx
         : ConfirmTransaction,
-      props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
-      actions: (payload: ITxConfig, cb: any) => handleConfirmAndSign(payload, cb)
+      props: { txConfig, signedTx },
+      actions: (_: ITxConfig, cb: any) => {
+        if (cb) {
+          cb();
+        }
+      }
     },
     {
       label: '',
       component: IS_ACTIVE_FEATURE.PROTECT_TX ? SignTransactionWithProtectTx : SignTransaction,
-      props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
-      actions: (payload: ITxReceipt | ISignedTx, cb: any) => handleSignedWeb3Tx(payload, cb)
+      props: {
+        txConfig
+      },
+      actions: async (payload: ITxSigned, cb: any) => {
+        await sendTx(payload as ITxHash);
+        if (cb) {
+          cb();
+        }
+      }
     },
     {
       label: translateRaw('TRANSACTION_BROADCASTED'),
       component: IS_ACTIVE_FEATURE.PROTECT_TX ? TxReceiptWithProtectTx : TxReceipt,
-      props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(txFactoryState)
+      props: {
+        txConfig,
+        txReceipt
+      }
     }
   ];
 
@@ -75,38 +108,56 @@ function SendAssets() {
     {
       label: 'Send Assets',
       component: IS_ACTIVE_FEATURE.PROTECT_TX ? SendAssetsFormWithProtectTx : SendAssetsForm,
-      props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
-      actions: (payload: IFormikFields, cb: any) => {
+      props: ((trans, txId) => ({
+        txConfig: trans.length && trans[txId].txRaw
+      }))(transactions, _currentTxIdx),
+      actions: async (payload: IFormikFields, cb: any) => {
         if (getProTxValue(['state', 'protectTxEnabled'])) {
           payload.nonceField = (parseInt(payload.nonceField, 10) + 1).toString();
         }
-        return handleFormSubmit(payload, cb);
+
+        const { account: formAccount, network: formNetwork } = payload;
+        await init([{}], formAccount, formNetwork);
+
+        const rawTransaction: ITxObject = fromSendAssetFormDataToTxObject(payload);
+        await prepareTx(rawTransaction);
+
+        if (cb) {
+          cb();
+        }
       }
     },
     {
       label: '',
       component: IS_ACTIVE_FEATURE.PROTECT_TX ? SignTransactionWithProtectTx : SignTransaction,
-      props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
-      actions: (payload: ITxConfig | ISignedTx, cb: any) => handleSignedTx(payload, cb)
+      props: {
+        txConfig
+      },
+      actions: async (payload: ITxSigned, cb: any) => {
+        setSignedTx(payload as ITxHash);
+        if (cb) {
+          cb();
+        }
+      }
     },
     {
       label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
       component: IS_ACTIVE_FEATURE.PROTECT_TX
         ? ConfirmTransactionWithProtectTx
         : ConfirmTransaction,
-      props: (({ txConfig, signedTx }) => ({ txConfig, signedTx }))(txFactoryState),
-      actions: (payload: ITxConfig | ISignedTx, cb: any) => {
+      props: { txConfig, signedTx },
+      actions: async (_: ITxConfig | ITxSigned, cb: any) => {
         if (getProTxValue(['setProtectTxTimeoutFunction'])) {
           getProTxValue(['setProtectTxTimeoutFunction'])(
-            (txReceiptCb?: (txReciept: ITxReceipt) => void) =>
-              handleConfirmAndSend(payload, (txReceipt: ITxReceipt) => {
-                if (txReceiptCb) {
-                  txReceiptCb(txReceipt);
-                }
-              })
+            async (txReceiptCb?: (txReciept: ITxReceipt) => void) => {
+              await sendTx(signedTx as ITxSigned);
+              if (txReceiptCb) {
+                txReceiptCb(txReceipt!);
+              }
+            }
           );
         } else {
-          handleConfirmAndSend(payload);
+          await sendTx(signedTx as ITxSigned);
         }
         if (cb) {
           cb();
@@ -116,20 +167,34 @@ function SendAssets() {
     {
       label: ' ',
       component: IS_ACTIVE_FEATURE.PROTECT_TX ? TxReceiptWithProtectTx : TxReceipt,
-      props: (({ txConfig, txReceipt }) => ({
+      props: {
         txConfig,
         txReceipt,
         pendingButton: {
           text: translateRaw('TRANSACTION_BROADCASTED_RESUBMIT'),
-          action: (cb: any) => handleResubmitTx(cb)
+          action: async (cb: any) => {
+            await init([{}], account, network);
+
+            const { gasPrice } = txRaw;
+
+            const resubmitGasPrice =
+              parseFloat(bigNumGasPriceToViewableGwei(bigNumberify(gasPrice))) + 10;
+            const hexGasPrice = inputGasPriceToHex(resubmitGasPrice.toString());
+
+            await prepareTx({
+              ...txRaw,
+              nonce: hexGasPrice
+            });
+
+            cb();
+          }
         }
-      }))(txFactoryState)
+      }
     }
   ];
 
   const getPath = () => {
-    const { senderAccount } = txFactoryState.txConfig;
-    return senderAccount && isWeb3Wallet(senderAccount.wallet) ? web3Steps : defaultSteps;
+    return account && isWeb3Wallet(account.wallet) ? web3Steps : defaultSteps;
   };
 
   return (

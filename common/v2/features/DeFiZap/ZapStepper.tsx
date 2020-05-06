@@ -5,7 +5,7 @@ import { ZapForm, ZapConfirm, ZapReceipt } from './components';
 import { default as GeneralStepper, IStepperPath } from 'v2/components/GeneralStepper';
 import { ROUTE_PATHS } from 'v2/config';
 import ZapInteractionFactory from './stateFactory';
-import { ITxReceipt, ISignedTx } from 'v2/types';
+import { ITxReceipt, ITxSigned } from 'v2/types';
 import { SignTransaction } from '../SendAssets/components';
 import { ISimpleTxFormFull } from './types';
 import { translateRaw } from 'v2/translations';
@@ -30,7 +30,7 @@ const ZapStepper = ({ selectedZap }: Props) => {
     {
       label: translateRaw('ZAP_FLOW_ADD_FUNDS'),
       component: ZapForm,
-      props: (state => state)(zapFlowState),
+      props: ((state) => state)(zapFlowState),
       actions: (formData: ISimpleTxFormFull, cb: any) => handleUserInputFormSubmit(formData, cb)
     },
     {
@@ -42,7 +42,7 @@ const ZapStepper = ({ selectedZap }: Props) => {
       label: '',
       component: SignTransaction,
       props: (({ txConfig }) => ({ txConfig }))(zapFlowState),
-      actions: (payload: ITxReceipt | ISignedTx, cb: any) => handleTxSigned(payload, cb)
+      actions: (payload: ITxReceipt | ITxSigned, cb: any) => handleTxSigned(payload, cb)
     },
     {
       label: translateRaw('BROADCAST_TX_RECEIPT_TITLE'),

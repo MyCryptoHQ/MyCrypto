@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button, Identicon } from '@mycrypto/ui';
 import { Transaction as EthTx } from 'ethereumjs-tx';
 import styled from 'styled-components';
@@ -8,7 +8,8 @@ import { toBuffer } from 'ethereumjs-util';
 import translate, { translateRaw } from 'v2/translations';
 import { InputField, CodeBlock, NetworkSelectDropdown, InlineMessage } from 'v2/components';
 import { getTransactionFields } from 'v2/services/EthService';
-import { NetworkId, ISignedTx } from 'v2/types';
+import { NetworkId, ITxSigned } from 'v2/types';
+import { DEFAULT_NETWORK } from '../../../config';
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -21,7 +22,7 @@ const Description = styled.p`
   line-height: 1.5;
   font-weight: normal;
   text-align: center;
-  color: ${props => props.theme.text};
+  color: ${(props) => props.theme.text};
   white-space: pre-line;
 
   strong {
@@ -92,14 +93,13 @@ const makeTxFromSignedTx = (signedTransaction: string) => {
 };
 
 interface Props {
-  network: NetworkId;
-  signedTx: ISignedTx;
+  signedTx: ITxSigned;
   transaction: EthTx | undefined;
-  onComplete(signedTx: string): void;
-  handleNetworkChanged(network: NetworkId): void;
+  onComplete(payload: { signedTx: string; networkId: NetworkId }): void;
 }
 
-const BroadcastTx = ({ signedTx, network, onComplete, handleNetworkChanged }: Props) => {
+const BroadcastTx = ({ signedTx, onComplete }: Props) => {
+  const [networkId, setNetworkId] = useState(DEFAULT_NETWORK);
   const [userInput, setUserInput] = useState(signedTx);
   const [inputError, setInputError] = useState('');
   const [transaction, setTransaction] = useState<EthTx | undefined>(makeTxFromSignedTx(signedTx));
@@ -119,6 +119,13 @@ const BroadcastTx = ({ signedTx, network, onComplete, handleNetworkChanged }: Pr
     setInputError('');
     setTransaction(makeTxFromSignedTx(trimmedValue));
   };
+
+  const onSend = useCallback(async () => {
+    await onComplete({
+      signedTx: userInput.trim(),
+      networkId
+    });
+  }, [userInput, networkId]);
 
   return (
     <ContentWrapper>
@@ -140,8 +147,8 @@ const BroadcastTx = ({ signedTx, network, onComplete, handleNetworkChanged }: Pr
         <React.Fragment>
           {!transaction.getChainId() && (
             <NetworkSelectWrapper>
-              <NetworkSelectDropdown network={network} onChange={handleNetworkChanged} />
-              {!network && (
+              <NetworkSelectDropdown network={networkId} onChange={setNetworkId} />
+              {!networkId && (
                 <InlineMessage>{translate('BROADCAST_TX_INVALID_CHAIN_ID')}</InlineMessage>
               )}
             </NetworkSelectWrapper>
@@ -150,9 +157,7 @@ const BroadcastTx = ({ signedTx, network, onComplete, handleNetworkChanged }: Pr
           <CodeBlockWrapper>
             <CodeBlock>{getStringifiedTx(transaction)}</CodeBlock>
           </CodeBlockWrapper>
-          <SendButton onClick={() => onComplete(userInput.trim())}>
-            {translateRaw('SEND_TRANS')}
-          </SendButton>
+          <SendButton onClick={onSend}>{translateRaw('SEND_TRANS')}</SendButton>
         </React.Fragment>
       ) : (
         <PlaceholderButton>{translateRaw('SEND_TRANS')}</PlaceholderButton>

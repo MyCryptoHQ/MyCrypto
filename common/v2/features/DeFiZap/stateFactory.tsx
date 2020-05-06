@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 
-import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
+import { TUseStateReducerFactory, fromTransactionResponseToITxReceipt } from 'v2/utils';
 import { isWeb3Wallet } from 'v2/utils/web3';
 import { Asset, ITxStatus, ITxType } from 'v2/types';
 import { hexWeiToString, ProviderHandler } from 'v2/services/EthService';
-import { AccountContext } from 'v2/services/Store';
+import { AccountContext, AssetContext, NetworkContext } from 'v2/services/Store';
 
 import { createSimpleTxObject } from './helpers';
 import { ZapInteractionState, TStepAction, ISimpleTxFormFull } from './types';
@@ -14,6 +14,8 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
   setState
 }) => {
   const { addNewTransactionToAccount } = useContext(AccountContext);
+  const { assets } = useContext(AssetContext);
+  const { networks } = useContext(NetworkContext);
 
   const handleTxSigned = async (signResponse: any, cb: any) => {
     const { txConfig } = state;
@@ -29,7 +31,7 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
         to: state.txConfig.receiverAddress,
         from: state.txConfig.senderAccount.address,
         amount: state.txConfig.amount,
-        txType: ITxType.DEFIZAP,
+        type: ITxType.DEFIZAP,
         stage: ITxStatus.PENDING
       });
       setState((prevState: ZapInteractionState) => ({
@@ -44,10 +46,13 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
         .then(retrievedTxReceipt => retrievedTxReceipt)
         .catch(hash => provider.getTransactionByHash(hash))
         .then(retrievedTransactionReceipt => {
-          const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt);
+          const txReceipt = fromTransactionResponseToITxReceipt(retrievedTransactionReceipt)(
+            assets,
+            networks
+          );
           addNewTransactionToAccount(state.txConfig.senderAccount, {
-            ...txReceipt,
-            txType: ITxType.DEFIZAP,
+            ...txReceipt!,
+            type: ITxType.DEFIZAP,
             stage: ITxStatus.PENDING
           });
           setState((prevState: ZapInteractionState) => ({

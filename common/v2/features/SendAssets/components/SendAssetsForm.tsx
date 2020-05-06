@@ -81,7 +81,7 @@ import {
   validateDataField,
   validateAmountField
 } from './validators';
-import { processFormForEstimateGas, isERC20Tx } from '../helpers';
+import { fromSendAssetFormDataToTxObjectWithGasLimit, isERC20Tx } from '../helpers';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;
@@ -322,7 +322,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
               (values.isAutoGasSet || forceEstimate)
             ) {
               setIsEstimatingGasLimit(true);
-              const finalTx = processFormForEstimateGas(values);
+              const finalTx = fromSendAssetFormDataToTxObjectWithGasLimit(values);
               const gas = await getGasEstimate(values.network, finalTx);
               setFieldValue('gasLimitField', hexToNumber(gas).toString());
               setFieldTouched('amount');
