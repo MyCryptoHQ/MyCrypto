@@ -140,14 +140,14 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
     ].map((p) => p.catch((e) => console.debug(e))) // convert Promise.all ie. into allSettled https://dev.to/vitalets/what-s-wrong-with-promise-allsettled-and-promise-any-5e6o
   );
 
-  const filterNonZeroBN = (n: BigNumber) => !bigify(n.toString()).eq(0);
+  const filterZeroBN = (n: BigNumber) => !bigify(n.toString()).eq(0);
 
   const filteredUpdatedAccounts = updatedAccounts.map((updatedAccount) => ({
     ...updatedAccount,
     assets:
       (updatedAccount &&
         updatedAccount.assets &&
-        updatedAccount.assets.filter(({ balance }) => !filterNonZeroBN(balance))) ||
+        updatedAccount.assets.filter(({ balance }) => !filterZeroBN(balance))) ||
       []
   }));
 
