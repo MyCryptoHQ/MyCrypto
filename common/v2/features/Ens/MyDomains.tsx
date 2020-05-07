@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { CollapsibleTable } from 'v2/components';
 import { QUERY_GET_ENS_DOMAINS } from './graphql/queries';
 import { useQuery } from '@apollo/react-hooks';
-import { MyDomainsProps } from './types';
+import { MyDomainsProps, DomainEntry, DomainEntryTable } from './types';
 import { Heading } from '@mycrypto/ui';
 
 const Label = styled.span`
@@ -28,14 +28,14 @@ export default function MyDomains({ userAddress }: MyDomainsProps) {
 
   const domains = data.domains;
   const topLevelDomains = domains.filter(
-    (domain) => domain.name === [domain.labelName, domain.parent.labelName].join('.')
+    (domain: DomainEntry) => domain.name === [domain.labelName, domain.parent.labelName].join('.')
   );
-  const myDomains = topLevelDomains.map((domain) => {
-    return [domain.owner.id, domain.name, '1970-01-01'];
+  const myDomains = topLevelDomains.map((domain: DomainEntry) => {
+    return { owner: domain.owner.id, domainName: domain.name, expireDate: '1970-01-01' };
   });
 
   if (myDomains.length === 0) {
-    return ``;
+    return <Heading as="h5">{userAddress} owns no top level domains</Heading>;
   }
 
   const domainTable = {
@@ -47,13 +47,13 @@ export default function MyDomains({ userAddress }: MyDomainsProps) {
         Configure
       </RowAlignment>
     ],
-    body: myDomains.map((domain, index) => {
+    body: myDomains.map((domain: DomainEntryTable, index: number) => {
       return [
-        <Label key={index}>{domain[0]}</Label>,
+        <Label key={index}>{domain.owner}</Label>,
         <RowAlignment key={index} align="left">
-          {domain[1]}
+          {domain.domainName}
         </RowAlignment>,
-        domain[2],
+        domain.expireDate,
         <RowAlignment key={index} align="right">
           [+]
         </RowAlignment>
