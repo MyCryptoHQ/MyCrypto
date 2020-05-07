@@ -3,7 +3,7 @@ import { WALLET_STEPS } from 'v2/components';
 import { getAssetByUUID, hexToString, hexWeiToString } from 'v2/services';
 
 export const getAccountsInNetwork = (accounts: StoreAccount[], networkId: NetworkId) =>
-  accounts.filter(acc => acc.networkId === networkId && WALLET_STEPS[acc.wallet]);
+  accounts.filter((acc) => acc.networkId === networkId && WALLET_STEPS[acc.wallet]);
 
 export const makeTxConfigFromTransaction = (
   rawTransaction: ITxObject,

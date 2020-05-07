@@ -28,7 +28,7 @@ const Header = styled.p`
   line-height: normal;
   margin-top: 0;
   margin-bottom: 15px;
-  color: ${props => props.theme.headline};
+  color: ${(props) => props.theme.headline};
 `;
 
 const Description = styled.p`
@@ -36,7 +36,7 @@ const Description = styled.p`
   font-weight: normal;
   line-height: 1.5;
   padding: 0 30px 0 30px;
-  color: ${props => props.theme.text};
+  color: ${(props) => props.theme.text};
 `;
 
 const ImgIcon = styled.img`
@@ -85,12 +85,12 @@ const Footer = styled.p`
   margin: 0;
 
   a {
-    color: ${props => props.theme.link};
+    color: ${(props) => props.theme.link};
     text-decoration: none;
     font-weight: bold;
 
     :hover {
-      color: ${props => props.theme.linkHover};
+      color: ${(props) => props.theme.linkHover};
     }
   }
 `;
@@ -140,13 +140,13 @@ export class DownloadApp extends Component<Props, State> {
       const { releaseUrls } = await GithubService.instance.getReleasesInfo();
       const downloadItems: AppDownloadItem[] = cloneDeep(this.state.downloadItems);
 
-      downloadItems.forEach(downloadItem => {
+      downloadItems.forEach((downloadItem) => {
         downloadItem.link = releaseUrls[downloadItem.OS] || DEFAULT_LINK;
       });
 
       this.setState({ downloadItems });
       this.trackUserLandsOnComponent(
-        downloadItems.find(x => x.OS === featuredOS) || downloadItems[0]
+        downloadItems.find((x) => x.OS === featuredOS) || downloadItems[0]
       );
     } catch (e) {
       console.error(e);
@@ -155,8 +155,8 @@ export class DownloadApp extends Component<Props, State> {
 
   public render() {
     const { downloadItems } = this.state;
-    const primaryDownload = downloadItems.find(x => x.OS === featuredOS) || downloadItems[0];
-    const secondaryDownloads = downloadItems.filter(x => x !== primaryDownload);
+    const primaryDownload = downloadItems.find((x) => x.OS === featuredOS) || downloadItems[0];
+    const secondaryDownloads = downloadItems.filter((x) => x !== primaryDownload);
 
     return (
       <ExtendedContentPanel onBack={this.props.history.goBack} className="">

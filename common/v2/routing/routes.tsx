@@ -256,7 +256,7 @@ export const STATIC_APP_ROUTES: IAppRoute[] = [
 ];
 
 // Enabled Routes
-export const APP_ROUTES = STATIC_APP_ROUTES.filter(APP_ROUTE => APP_ROUTE.enabled);
+export const APP_ROUTES = STATIC_APP_ROUTES.filter((APP_ROUTE) => APP_ROUTE.enabled);
 
 export const createAppRoutesObject = (paths: IAppRoute[]) => {
   return paths.reduce((navLinks, path) => {

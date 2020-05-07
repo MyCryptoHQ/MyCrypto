@@ -23,7 +23,7 @@ interface Props {
 export const ProtectTxShowError: FC<Props> = ({ shown, protectTxError }) => {
   if (!shown) return <></>;
 
-  const twitter = socialMediaLinks.find(s => s.text.toLowerCase() === 'twitter');
+  const twitter = socialMediaLinks.find((s) => s.text.toLowerCase() === 'twitter');
 
   if (protectTxError === ProtectTxError.ETH_ONLY) {
     return (

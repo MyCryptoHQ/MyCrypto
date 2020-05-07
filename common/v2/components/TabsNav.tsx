@@ -30,7 +30,7 @@ const Tab = styled.li`
       :hover,
       :focus {
         color: white;
-        border-bottom: ${props => '.125em solid' + props.theme.primary};
+        border-bottom: ${(props) => '.125em solid' + props.theme.primary};
       }
     }
   }
@@ -42,7 +42,7 @@ export default class TabsNav extends Component<Props, {}> {
 
     return (
       <TabsContainer {...this.props}>
-        {Children.map(children, child => (
+        {Children.map(children, (child) => (
           <Tab>
             <Typography>{child}</Typography>
           </Tab>

@@ -136,7 +136,7 @@ describe('ContactLookupField', () => {
   });
 
   test('it select existing contact from contacts book by keypress enter', async () => {
-    const contacts: ExtendedAddressBook[] = mockMappedContacts.map(x => x);
+    const contacts: ExtendedAddressBook[] = mockMappedContacts.map((x) => x);
     const [contact] = contacts;
     const inputString = 'eth.eth';
     const output = { data: { ...initialFormikValues } };

@@ -9,7 +9,7 @@ export function NonceField({ value, name, onChange, error }: INonceField) {
         {...value}
         name={name}
         value={value}
-        onChange={e => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
         placeholder="0"
         className="SendAssetsForm-fieldset-input"
         inputError={error}

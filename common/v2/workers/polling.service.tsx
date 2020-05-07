@@ -45,7 +45,7 @@ class PollingService implements IPollingService {
     this.interval = interval;
     this.url = url;
     this.worker = new PollingWorker();
-    this.worker.onerror = errorHandler ? err => errorHandler(err) : null;
+    this.worker.onerror = errorHandler ? (err) => errorHandler(err) : null;
     this.successHandler = successHandler;
     this.worker.onmessage = (message: MessageEvent) => {
       const { data } = message;

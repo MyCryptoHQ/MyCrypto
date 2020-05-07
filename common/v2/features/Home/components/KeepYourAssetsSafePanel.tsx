@@ -113,7 +113,7 @@ interface ContentItemProps {
   title: string;
 }
 
-const ContentItem: React.FC<ContentItemProps> = props => {
+const ContentItem: React.FC<ContentItemProps> = (props) => {
   const { icon, title, description } = props;
   return (
     <ContentItemWrapper>

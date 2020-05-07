@@ -40,14 +40,14 @@ const LoadingSpinnerWrapper = styled.div`
 const SButton = styled(Button)<StyledButtonProps>`
   &&& {
     font-size: 1rem;
-    ${props => props._loading && 'padding-left: calc(2.25em - 1em)'}
+    ${(props) => props._loading && 'padding-left: calc(2.25em - 1em)'}
   }
 
   div > span {
     color: ${COLORS.WHITE};
   }
 
-  ${props =>
+  ${(props) =>
     !props.inverted &&
     `
       background-color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.BLUE_LIGHT};
@@ -57,7 +57,7 @@ const SButton = styled(Button)<StyledButtonProps>`
       }
   `}
 
-  ${props =>
+  ${(props) =>
     props.inverted &&
     `
       background-color: ${COLORS.WHITE};
@@ -83,7 +83,7 @@ const SButton = styled(Button)<StyledButtonProps>`
       }
   `}
 
-  ${props =>
+  ${(props) =>
     props.fullwidth &&
     css`
       width: 100%;

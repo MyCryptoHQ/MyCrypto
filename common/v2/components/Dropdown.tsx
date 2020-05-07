@@ -22,7 +22,7 @@ interface SProps {
 const SSelect = styled(Select)`
   height: ${(props: SProps) => (props.value ? 'auto' : '54px')};
   background-color: ${(props: SProps) => (props.disabled ? COLORS.GREY_LIGHTEST : 'default')};
-  ${props => props.disabled && '.Select-arrow {display: none};'} font-size: ${FONT_SIZE.BASE};
+  ${(props) => props.disabled && '.Select-arrow {display: none};'} font-size: ${FONT_SIZE.BASE};
 
   /* Set max-height to prevent the dropdown form overflowing the footer. */
   .Select-menu {

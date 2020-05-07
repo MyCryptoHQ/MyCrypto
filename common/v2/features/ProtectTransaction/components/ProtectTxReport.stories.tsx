@@ -50,12 +50,12 @@ const ProtectTxStep3 = () => (
 );
 
 storiesOf('ProtectTransaction', module)
-  .addDecorator(story => (
+  .addDecorator((story) => (
     <ProtectTxContext.Provider value={{ state: unknownProviderState } as any}>
       {story()}
     </ProtectTxContext.Provider>
   ))
-  .add('Step 3 - Unknown', _ => ProtectTxStep3(), {
+  .add('Step 3 - Unknown', (_) => ProtectTxStep3(), {
     design: {
       type: 'figma',
       url:
@@ -140,12 +140,12 @@ const scamProviderState: Partial<ProtectTxState> = {
 };
 
 storiesOf('ProtectTransaction', module)
-  .addDecorator(story => (
+  .addDecorator((story) => (
     <ProtectTxContext.Provider value={{ state: scamProviderState } as any}>
       {story()}
     </ProtectTxContext.Provider>
   ))
-  .add('Step 3 - Scam', _ => ProtectTxStep3(), {
+  .add('Step 3 - Scam', (_) => ProtectTxStep3(), {
     design: {
       type: 'figma',
       url:
@@ -192,12 +192,12 @@ const verifiedProviderState: Partial<ProtectTxState> = {
 };
 
 storiesOf('ProtectTransaction', module)
-  .addDecorator(story => (
+  .addDecorator((story) => (
     <ProtectTxContext.Provider value={{ state: verifiedProviderState } as any}>
       {story()}
     </ProtectTxContext.Provider>
   ))
-  .add('Step 3 - Verified', _ => ProtectTxStep3(), {
+  .add('Step 3 - Verified', (_) => ProtectTxStep3(), {
     design: {
       type: 'figma',
       url:

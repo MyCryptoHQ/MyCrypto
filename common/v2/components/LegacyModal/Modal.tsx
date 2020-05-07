@@ -88,7 +88,7 @@ export class Modal extends PureComponent<Props, {}> {
           <Fade onEntered={() => this.modalBody.firstTabStop.focus()}>
             <div>
               <div className="Modal-overlay" onClick={handleClose} />
-              <ModalBody {...modalBodyProps} ref={div => (this.modalBody = div as ModalBody)} />
+              <ModalBody {...modalBodyProps} ref={(div) => (this.modalBody = div as ModalBody)} />
             </div>
           </Fade>
         )}

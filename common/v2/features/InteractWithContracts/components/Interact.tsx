@@ -153,7 +153,7 @@ const FormSchema = Yup.object().shape({
     value: Yup.string().test(
       'check-eth-address',
       translateRaw('TO_FIELD_ERROR'),
-      value => isValidETHAddress(value) || isValidENSName(value)
+      (value) => isValidETHAddress(value) || isValidENSName(value)
     )
   }).required(translateRaw('REQUIRED'))
 });
@@ -296,13 +296,14 @@ function Interact(props: CombinedProps) {
       onSubmit={() => undefined}
       render={({ errors, touched, setFieldValue }) => {
         const isValid =
-          Object.values(errors).filter(e => e !== undefined && e.value !== undefined).length === 0;
+          Object.values(errors).filter((e) => e !== undefined && e.value !== undefined).length ===
+          0;
         return (
           <>
             <NetworkSelectorWrapper>
               <NetworkSelectDropdown
                 network={network.id}
-                onChange={networkId => {
+                onChange={(networkId) => {
                   handleNetworkSelected(networkId);
                 }}
               />
@@ -321,7 +322,7 @@ function Interact(props: CombinedProps) {
                 <Dropdown
                   value={contract}
                   options={contracts}
-                  onChange={option => {
+                  onChange={(option) => {
                     if (option.address !== 'custom') {
                       setFieldValue('address', {
                         display: option.address,

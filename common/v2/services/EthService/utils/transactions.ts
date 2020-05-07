@@ -36,9 +36,9 @@ export const appendGasPrice = (network: Network) => async (
     .then(({ fast }) => fast.toString())
     .then(inputGasPriceToHex)
     .then(hexWeiToString)
-    .then(v => bigify(v).toString(16))
+    .then((v) => bigify(v).toString(16))
     .then(addHexPrefix)
-    .catch(err => {
+    .catch((err) => {
       throw new Error(`getGasPriceEstimate: ${err}`);
     });
 
@@ -70,9 +70,9 @@ export const appendNonce = (network: Network, senderAddress: TAddress) => async 
   tx: ITxObjectBeforeNonce
 ): Promise<ITxObject> => {
   const nonce = await getNonce(network, senderAddress)
-    .then(n => n.toString())
+    .then((n) => n.toString())
     .then(inputNonceToHex)
-    .catch(err => {
+    .catch((err) => {
       throw new Error(`getNonce: ${err}`);
     });
 

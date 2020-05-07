@@ -89,7 +89,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
           CryptoScamDBService.check(address),
           EtherscanService.instance.getBalance(address, network!.id),
           EtherscanService.instance.getLastTx(address, network!.id)
-        ].map(p => p.catch(e => e))
+        ].map((p) => p.catch((e) => e))
       );
 
       const cryptoScamAddressReport =
@@ -135,7 +135,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
   );
 
   const goToNextStep = useCallback(() => {
-    setState(prevState => {
+    setState((prevState) => {
       const { stepIndex } = prevState;
 
       return {
@@ -148,7 +148,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
   const goToInitialStepOrFetchReport = useCallback(
     (receiverAddress?: string, network?: Network) => {
       if (state.protectTxEnabled || isMyCryptoMember) {
-        setState(prevState => ({
+        setState((prevState) => ({
           ...prevState,
           cryptoScamAddressReport: null,
           etherscanLastTxReport: null,
@@ -159,7 +159,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
 
         handleTransactionReport(receiverAddress, network);
       } else {
-        setState(prevState => ({
+        setState((prevState) => ({
           ...prevState,
           stepIndex: 0,
           cryptoScamAddressReport: null,
@@ -173,7 +173,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
 
   const showHideProtectTx = useCallback(
     (showOrHide: boolean) => {
-      setState(prevState => ({
+      setState((prevState) => ({
         ...prevState,
         protectTxShow: showOrHide
       }));
@@ -189,7 +189,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
 
       const asset = getAssetByUUID(assets)(network.baseAsset)!;
 
-      setState(prevState => ({
+      setState((prevState) => ({
         ...prevState,
         receiverAddress,
         network,
@@ -216,7 +216,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
   );
 
   const invokeProtectTxTimeoutFunction = useCallback(
-    cb => {
+    (cb) => {
       if (protectionTxTimeoutFunction.current) {
         protectionTxTimeoutFunction.current(cb);
       }
@@ -233,7 +233,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
     (isWeb3Wallet: boolean, walletTypeId: WalletId | null = null) => {
       const web3WalletType = walletTypeId ? WALLETS_CONFIG[walletTypeId].name : null;
 
-      setState(prevState => ({
+      setState((prevState) => ({
         ...prevState,
         isWeb3Wallet,
         web3WalletName: web3WalletType
@@ -245,7 +245,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
   useEffect(() => {
     // Show tx protect in case of window resize
     if (state.protectTxEnabled) {
-      setState(prevState => ({
+      setState((prevState) => ({
         ...prevState,
         protectTxShow: isMdScreen
       }));
@@ -254,7 +254,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     if (state.stepIndex === numOfSteps - 1) {
-      setState(prevState => ({
+      setState((prevState) => ({
         ...prevState,
         protectTxEnabled: true
       }));
@@ -265,7 +265,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
     const isDisabled =
       state.protectTxShow && !state.protectTxEnabled && state.cryptoScamAddressReport === null;
 
-    setState(prevState => ({
+    setState((prevState) => ({
       ...prevState,
       mainComponentDisabled: isDisabled
     }));

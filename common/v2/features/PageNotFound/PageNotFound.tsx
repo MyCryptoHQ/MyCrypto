@@ -46,14 +46,14 @@ const Header = styled.p`
   line-height: normal;
   margin-top: 0;
   margin-bottom: 15px;
-  color: ${props => props.theme.headline};
+  color: ${(props) => props.theme.headline};
 `;
 
 const Description = styled.p`
   height: 48px;
   font-size: 16px;
   padding: 0 30px 0 30px;
-  color: ${props => props.theme.text};
+  color: ${(props) => props.theme.text};
 
   @media (min-width: 700px) {
     font-size: 18px;

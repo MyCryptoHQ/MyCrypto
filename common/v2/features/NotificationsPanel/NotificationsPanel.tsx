@@ -63,7 +63,7 @@ const NotificationsPanel = ({ accounts }: Props) => {
   };
 
   if (
-    !notifications.find(x => x.template === NotificationTemplates.onboardingResponsible) &&
+    !notifications.find((x) => x.template === NotificationTemplates.onboardingResponsible) &&
     accounts.length > 0
   ) {
     displayNotification(NotificationTemplates.onboardingResponsible, {

@@ -27,7 +27,7 @@ const Language = styled.li<LanguageProps>`
     background: #f2f2f2;
   }
 
-  ${props => props.isSelected && 'background: #f2f2f2;'};
+  ${(props) => props.isSelected && 'background: #f2f2f2;'};
 `;
 
 const handleLanguageSelect = (

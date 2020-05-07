@@ -199,8 +199,8 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
       // Calling ethers.js with a tx object containing a 'from' property
       // will fail https://github.com/ethers-io/ethers.js/issues/692.
       const { from, ...rawTx } = rawTransaction;
-      signerWallet.sendUncheckedTransaction(rawTx).then(txHash => {
-        web3Provider.getTransactionReceipt(txHash).then(txReceipt => {
+      signerWallet.sendUncheckedTransaction(rawTx).then((txHash) => {
+        web3Provider.getTransactionReceipt(txHash).then((txReceipt) => {
           this.setState({ submitting: false });
           onSuccess(
             txReceipt !== null

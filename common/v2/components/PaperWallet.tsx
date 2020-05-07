@@ -20,7 +20,7 @@ const paperWalletWidth: number = 1458;
 const paperWalletHeight: number = 612;
 
 const PaperWalletWrapper = styled.div<PaperWalletWrapperProps>`
-  ${props => props.isHidden && `position: fixed; top: -${paperWalletHeight}px;`}
+  ${(props) => props.isHidden && `position: fixed; top: -${paperWalletHeight}px;`}
   width: ${paperWalletWidth}px;
   height: ${paperWalletHeight}px;
   color: black;
@@ -40,9 +40,9 @@ const Part = styled.div<PartProps>`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  ${props => props.hasRightBorder && `border-right: ${borderStyle}`}
-  ${props => props.hasLeftBorder && `border-left: ${borderStyle}`}
-  ${props => props.hasTopBorder && `border-top: ${borderStyle}`}
+  ${(props) => props.hasRightBorder && `border-right: ${borderStyle}`}
+  ${(props) => props.hasLeftBorder && `border-left: ${borderStyle}`}
+  ${(props) => props.hasTopBorder && `border-top: ${borderStyle}`}
 `;
 
 interface PartWrapperProps {
@@ -51,7 +51,7 @@ interface PartWrapperProps {
 const PartWrapper = styled.div<PartWrapperProps>`
   display: flex;
   ${Part} {
-    ${props => props.rotateChildren && 'transform: rotate(180deg);'}
+    ${(props) => props.rotateChildren && 'transform: rotate(180deg);'}
   }
 `;
 
@@ -124,7 +124,7 @@ interface TextSubHeaderProps {
 const TextSubHeader = styled.p<TextSubHeaderProps>`
   font-size: 14px;
   font-weight: normal;
-  margin: ${props => (props.noTopMargin ? '0' : '14px')} 0 0 0;
+  margin: ${(props) => (props.noTopMargin ? '0' : '14px')} 0 0 0;
 `;
 
 interface QRAddressWrapperProps {
@@ -133,12 +133,12 @@ interface QRAddressWrapperProps {
 const QRAddressWrapper = styled.div<QRAddressWrapperProps>`
   width: 244px;
   height: 426px;
-  border: 6px solid ${props => (props.isInversed ? '#ef4747' : '#a7e07b')};
+  border: 6px solid ${(props) => (props.isInversed ? '#ef4747' : '#a7e07b')};
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: rotate(${props => props.isInversed && '-'}90deg) translate
-    ${props => (props.isInversed ? 'X' : 'Y')} (-100%);
+  transform: rotate(${(props) => props.isInversed && '-'}90deg) translate
+    ${(props) => (props.isInversed ? 'X' : 'Y')} (-100%);
   transform-origin: 0 0;
 `;
 
@@ -186,7 +186,7 @@ const Mnemonic = styled.div<MnemonicProps>`
   font-weight: normal;
   margin: 0 16px 10px 16px;
   line-height: 17px;
-  ${props => props.breakWords && 'word-break: break-all;'}
+  ${(props) => props.breakWords && 'word-break: break-all;'}
 `;
 
 interface Props {

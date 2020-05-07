@@ -187,7 +187,7 @@ const MembershipEducation = withRouter(({ history }) => {
         </ListContainer>
         <Title>{translate('WHAT_IT_COST')}</Title>
         <PlanContainer>
-          {Object.keys(MEMBERSHIP_CONFIG).map(key => (
+          {Object.keys(MEMBERSHIP_CONFIG).map((key) => (
             <MembershipPlanCard key={key} plan={MEMBERSHIP_CONFIG[key as IMembershipId]} />
           ))}
         </PlanContainer>

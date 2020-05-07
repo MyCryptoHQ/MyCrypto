@@ -4,8 +4,6 @@ export { default as SaveDashboardNotification } from './SaveDashboardNotificatio
 export { default as PrintPaperWalletNotification } from './PrintPaperWalletNotification';
 export { default as GetHardwareWalletNotification } from './GetHardwareWalletNotification';
 export { default as WalletNotAddedNotification } from './WalletNotAddedNotification';
-export {
-  default as OnboardingPleaseUnderstandNotification
-} from './OnboardingPleaseUnderstandNotification';
+export { default as OnboardingPleaseUnderstandNotification } from './OnboardingPleaseUnderstandNotification';
 export { default as OnboardingResponsibleNotification } from './OnboardingResponsibleNotification';
 export { default as UnlockVIPNotification } from './UnlockVIPDetected';

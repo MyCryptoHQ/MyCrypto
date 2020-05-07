@@ -54,7 +54,7 @@ const CostText = styled(Typography)`
 
 const MembershipSelectedBanner = ({ membershipSelected }: Props) => {
   const { assets } = useContext(AssetContext);
-  const asset = assets.find(a => a.uuid === membershipSelected.assetUUID) as Asset;
+  const asset = assets.find((a) => a.uuid === membershipSelected.assetUUID) as Asset;
   return (
     <BannerContainer>
       <MembershipWrapper>

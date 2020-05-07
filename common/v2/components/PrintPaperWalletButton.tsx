@@ -85,7 +85,7 @@ export default class PrintPaperWalletButton extends Component<Props, State> {
           mnemonic={mnemonic}
           privateKey={privateKey}
           path={path}
-          ref={c => (this.paperWallet = c)}
+          ref={(c) => (this.paperWallet = c)}
           isHidden={true}
         />
       </>

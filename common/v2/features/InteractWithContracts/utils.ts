@@ -10,7 +10,7 @@ export const getParsedQueryString = (queryString: string) => {
 
   const inputsArray: string[] = !input ? [] : Array.isArray(input) ? input : [input];
 
-  const inputsFromUrl = inputsArray.map(i => ({
+  const inputsFromUrl = inputsArray.map((i) => ({
     name: i.includes(':') ? i.substr(0, i.indexOf(':')) : '',
     value: i.includes(':') ? i.substr(i.indexOf(':') + 1, i.length) : ''
   }));

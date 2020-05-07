@@ -27,7 +27,7 @@ export class RPCClient {
         ...this.headers
       }),
       body: JSON.stringify(this.decorateRequest(request))
-    }).then(r => r.json());
+    }).then((r) => r.json());
   };
 
   public batch = (requests: RPCRequest[] | any): Promise<JsonRpcResponse[]> => {
@@ -38,7 +38,7 @@ export class RPCClient {
         ...this.headers
       }),
       body: JSON.stringify(requests.map(this.decorateRequest))
-    }).then(r => r.json());
+    }).then((r) => r.json());
   };
 
   private createHeaders = (headerObject: HeadersInit) => {

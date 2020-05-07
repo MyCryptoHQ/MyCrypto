@@ -149,11 +149,11 @@ export default class SignTransactionKeystore extends Component<
   private async getPublicKey() {
     this.setState({ isSigning: true });
     await ethers.Wallet.fromEncryptedJson(this.state.file, this.state.password)
-      .then(wallet => {
+      .then((wallet) => {
         const checkSumAddress = utils.getAddress(wallet.address);
         this.checkPublicKeyMatchesCache(checkSumAddress);
       })
-      .catch(e => {
+      .catch((e) => {
         if (e) {
           this.setState({ hasCorrectPassword: false });
         }

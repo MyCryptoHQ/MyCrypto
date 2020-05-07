@@ -274,10 +274,10 @@ export function DeterministicWalletsClass({
   };
 
   const getBaseBalances = () => {
-    const addressesToLookup = wallets.map(wallet => wallet.address);
+    const addressesToLookup = wallets.map((wallet) => wallet.address);
     try {
       return getBaseAssetBalances(addressesToLookup, network).then((balanceMapData: BalanceMap) => {
-        const walletsWithBalances: DeterministicWalletData[] = wallets.map(wallet => {
+        const walletsWithBalances: DeterministicWalletData[] = wallets.map((wallet) => {
           const balance = balanceMapData[wallet.address] || 0;
           const value = new BN(balance.toString());
           return {
@@ -446,7 +446,7 @@ export function DeterministicWalletsClass({
         selected={selectedAddressIndex}
         page={page}
         head={['#', translateRaw('ADDRESS'), symbol, translateRaw('ACTION_5')]}
-        body={wallets.map(wallet => renderWalletRow(wallet, network, symbol))}
+        body={wallets.map((wallet) => renderWalletRow(wallet, network, symbol))}
         config={{
           hiddenHeadings: ['#', translateRaw('ACTION_5')],
           handleRowClicked: selectAddress

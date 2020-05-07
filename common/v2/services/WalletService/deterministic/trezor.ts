@@ -15,7 +15,7 @@ TrezorConnect.manifest({
 
 export class TrezorWallet extends HardwareWallet {
   public static getChainCode(dpath: string): Promise<ChainCodeResponse> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       TrezorConnect.getPublicKey({
         path: dpath
       }).then((res: any) => {
@@ -78,7 +78,7 @@ export class TrezorWallet extends HardwareWallet {
   }
 
   public displayAddress(): Promise<boolean> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       TrezorConnect.ethereumGetAddress({
         path: `${this.dPath}/${this.index}`
       }).then((res: any) => {

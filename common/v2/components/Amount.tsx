@@ -16,7 +16,7 @@ const SAmount = styled.div`
 `;
 
 const Asset = styled(Typography)<{ discrete?: boolean }>`
-  ${props =>
+  ${(props) =>
     props.discrete
       ? css`
         color: ${COLORS.BLUE_GREY};

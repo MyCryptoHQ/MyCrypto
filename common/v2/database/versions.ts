@@ -41,9 +41,9 @@ export const getData = () => {
   const previousDB = getPreviousDBConfig();
   const existingDBs = Object.keys(localStorage);
   const latestExists =
-    existingDBs.findIndex(k => k === latestDB.main) >= 0 &&
+    existingDBs.findIndex((k) => k === latestDB.main) >= 0 &&
     localStorage[latestDB.main].version === latestDB.version;
-  const staleExists = existingDBs.findIndex(k => k === previousDB.main) >= 0;
+  const staleExists = existingDBs.findIndex((k) => k === previousDB.main) >= 0;
 
   if (latestExists) {
     // use the latest db when it's present

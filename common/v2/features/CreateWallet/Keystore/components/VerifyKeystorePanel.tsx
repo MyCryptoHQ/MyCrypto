@@ -28,7 +28,7 @@ const Divider = styled.div`
   width: 100%;
   text-align: center;
   font-size: 20px;
-  color: ${props => props.theme.headline};
+  color: ${(props) => props.theme.headline};
 `;
 
 const FileName = styled.div`

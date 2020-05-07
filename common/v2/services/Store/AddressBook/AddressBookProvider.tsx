@@ -46,17 +46,17 @@ export const AddressBookProvider: React.FC = ({ children }) => {
     createAddressBooksWithID: (uuid: TUuid, item: AddressBook) => model.create({ uuid, ...item }),
     updateAddressBooks: (uuid: TUuid, item: ExtendedAddressBook) => model.update(uuid, item),
     deleteAddressBooks: (uuid: TUuid) => {
-      const addressBookToDelete = addressBook.find(a => a.uuid === uuid);
+      const addressBookToDelete = addressBook.find((a) => a.uuid === uuid);
       if (isEmpty(addressBookToDelete)) {
         throw new Error(
           'Unable to delete account from address book! No account with id specified.'
         );
       }
 
-      setAddressBookRestore(prevState => ({ ...prevState, [uuid]: addressBookToDelete }));
+      setAddressBookRestore((prevState) => ({ ...prevState, [uuid]: addressBookToDelete }));
       model.destroy(addressBookToDelete!);
     },
-    getContactByAddress: address => {
+    getContactByAddress: (address) => {
       return addressBook.find(
         (contact: ExtendedAddressBook) => contact.address.toLowerCase() === address.toLowerCase()
       );
@@ -82,7 +82,7 @@ export const AddressBookProvider: React.FC = ({ children }) => {
 
       const { uuid, ...rest } = addressBookRecord!;
       state.createAddressBooksWithID(uuid, rest);
-      setAddressBookRestore(prevState => ({ ...prevState, [uuid]: undefined }));
+      setAddressBookRestore((prevState) => ({ ...prevState, [uuid]: undefined }));
     }
   };
 

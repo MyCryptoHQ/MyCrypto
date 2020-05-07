@@ -156,7 +156,7 @@ const TitleWrapper = styled.div<{ size: 'sm' | 'lg' | undefined }>`
 `;
 
 const TitleTypography = styled(Typography)<{ finished: boolean }>`
-  ${props => props.finished && `color: ${COLORS.GREY_LIGHT}`};
+  ${(props) => props.finished && `color: ${COLORS.GREY_LIGHT}`};
 `;
 
 const FinishedTypography = styled(Typography)`

@@ -66,7 +66,7 @@ interface InputProps {
 }
 
 const SInput = styled(InputField)<InputProps>`
-  ${props => props.value && `font-family: ${monospace};`}
+  ${(props) => props.value && `font-family: ${monospace};`}
   /* Override Typography from mycrypto/ui */
   font-size: 1rem !important;
 `;
@@ -108,7 +108,7 @@ function ETHAddressField({
                 marginBottom={'0'}
                 value={field.value.display}
                 placeholder={placeholder}
-                onChange={e => {
+                onChange={(e) => {
                   form.setFieldValue(fieldName, {
                     display: e.currentTarget.value,
                     value: e.currentTarget.value
@@ -117,7 +117,7 @@ function ETHAddressField({
                     onChange(e);
                   }
                 }}
-                onBlur={async e => {
+                onBlur={async (e) => {
                   if (!network || !network.chainId) {
                     return;
                   }

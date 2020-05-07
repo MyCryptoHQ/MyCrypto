@@ -24,7 +24,7 @@ class RedirectWithQuery extends React.Component<RouterProps> {
   }
 }
 
-export const LegacyRoutesHandler = withRouter(props => {
+export const LegacyRoutesHandler = withRouter((props) => {
   const { history } = props;
   const { pathname, search } = props.location;
   let { hash } = props.location;

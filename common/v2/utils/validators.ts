@@ -55,5 +55,5 @@ export const addressValidatorHash: ValidatorHash = {
 // allow warnings and info errors type for form to still be valid
 export const isFormValid = (errors: FormikErrors<object>) =>
   Object.values(errors).filter(
-    error => error !== undefined && (!error.type || error.type === InlineMessageType.ERROR)
+    (error) => error !== undefined && (!error.type || error.type === InlineMessageType.ERROR)
   ).length === 0;

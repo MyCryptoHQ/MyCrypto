@@ -128,7 +128,7 @@ export class AbiFunction {
   };
 
   private processSuppliedArgs = (suppliedArgs: ISuppliedArgs) =>
-    this.inputNames.map(name => {
+    this.inputNames.map((name) => {
       const type = this.funcParams[name].type;
       //TODO: parse args based on type
       if (typeof suppliedArgs[name] === 'undefined') {

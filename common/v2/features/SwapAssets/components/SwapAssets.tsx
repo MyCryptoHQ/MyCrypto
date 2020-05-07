@@ -52,7 +52,7 @@ const Label = styled.div`
   text-align: left;
   font-weight: normal;
   margin-bottom: 9px;
-  color: ${props => props.theme.text};
+  color: ${(props) => props.theme.text};
   & img {
     margin: 0em 0.2em;
   }
@@ -60,7 +60,7 @@ const Label = styled.div`
 
 const AccountLabel = styled(Typography)`
   line-height: 1;
-  color: ${props => props.theme.text};
+  color: ${(props) => props.theme.text};
 `;
 
 const AccountLabelWrapper = styled.div`
@@ -83,7 +83,7 @@ const StyledButton = styled(Button)`
 `;
 
 const SlippageDisplay = styled(LabelText)`
-  color: ${props => props.color};
+  color: ${(props) => props.color};
 `;
 
 const FormDisplay = styled.div`
@@ -153,8 +153,8 @@ export default function SwapAssets(props: Props) {
 
   // show only unused assets and assets owned by the user
   const filteredAssets = getUnselectedAssets(assets, fromAsset, toAsset);
-  const ownedAssets = filteredAssets.filter(a =>
-    userAssets.find(userAsset => a.symbol === userAsset.ticker)
+  const ownedAssets = filteredAssets.filter((a) =>
+    userAssets.find((userAsset) => a.symbol === userAsset.ticker)
   );
 
   // SEND AMOUNT CHANGED
@@ -196,7 +196,7 @@ export default function SwapAssets(props: Props) {
       fromAsset &&
       account &&
       !getAccountsWithAssetBalance(accounts, fromAsset, fromAmount).find(
-        a => a.uuid === account.uuid
+        (a) => a.uuid === account.uuid
       )
     ) {
       handleAccountSelected(undefined);
@@ -310,7 +310,7 @@ export default function SwapAssets(props: Props) {
           onSelect={(option: StoreAccount) => {
             handleAccountSelected(option);
           }}
-          asset={fromAsset ? userAssets.find(x => x.ticker === fromAsset.symbol) : undefined}
+          asset={fromAsset ? userAssets.find((x) => x.ticker === fromAsset.symbol) : undefined}
         />
         {!filteredAccounts.length && fromAsset && (
           <InlineMessage>{translate('ACCOUNT_SELECTION_NO_FUNDS')}</InlineMessage>

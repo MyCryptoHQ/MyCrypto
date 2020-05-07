@@ -20,7 +20,7 @@ interface Config {
 
 const Container = styled.div`
   background-color: ${(p: { config: Config }) => p.config.bgColor || 'transparent'};
-  color: ${p => p.config.color || 'inherit'};
+  color: ${(p) => p.config.color || 'inherit'};
   padding: 5px 10px;
   padding-right: 30px;
   display: flex;
@@ -53,16 +53,16 @@ interface BannerTypographyProps {
 }
 
 const STypography = styled(Typography)<BannerTypographyProps>`
-  color: ${props => props.color};
+  color: ${(props) => props.color};
 
   a {
-    color: ${props => props.color};
+    color: ${(props) => props.color};
     text-decoration: underline;
     font-weight: normal;
   }
 
   a:hover {
-    color: ${props => props.color};
+    color: ${(props) => props.color};
     font-weight: bold;
   }
 `;

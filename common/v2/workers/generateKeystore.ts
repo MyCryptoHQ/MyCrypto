@@ -11,7 +11,7 @@ export default function generateKeystore(
   password: string,
   N_FACTOR: number
 ): Promise<KeystorePayload> {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const worker = new Worker();
     worker.postMessage({ password, N_FACTOR });
     worker.onmessage = (ev: MessageEvent) => {

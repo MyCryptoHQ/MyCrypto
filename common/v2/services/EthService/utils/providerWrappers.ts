@@ -10,10 +10,10 @@ export const getStatusFromHash = async (
 ): Promise<boolean | undefined> =>
   await provider
     .getTransactionReceipt(txHash)
-    .then(receipt => {
+    .then((receipt) => {
       return receipt.status === 1 ? true : false;
     })
-    .catch(_ => {
+    .catch((_) => {
       return undefined;
     });
 
@@ -23,10 +23,10 @@ export const getTimestampFromBlockNum = async (
 ): Promise<number | undefined> =>
   await provider
     .getBlockByNumber(blockNum)
-    .then(block => {
+    .then((block) => {
       return block.timestamp;
     })
-    .catch(_ => {
+    .catch((_) => {
       return undefined;
     });
 
@@ -36,8 +36,8 @@ export const getTransactionReceiptFromHash = async (
 ): Promise<TransactionReceipt | undefined> =>
   await provider
     .getTransactionReceipt(txHash)
-    .then(receipt => receipt)
-    .catch(_ => {
+    .then((receipt) => receipt)
+    .catch((_) => {
       return undefined;
     });
 

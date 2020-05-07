@@ -47,7 +47,7 @@ const SLabel = styled('label')`
     width: ${checkboxSize};
     background-color: transparent;
     border-radius: ${borderRadius};
-    border: ${props => `1px solid ${props.theme.GAU.COLORS.borderColor}`};
+    border: ${(props) => `1px solid ${props.theme.GAU.COLORS.borderColor}`};
     transition: all 0.2s ease-out;
   }
 
@@ -56,7 +56,7 @@ const SLabel = styled('label')`
     border-radius: ${borderRadius};
     transform: rotate(0deg) scale(1);
     opacity: 1;
-    border: ${props => `1px solid ${props.theme.GAU.COLORS.borderColor}`};
+    border: ${(props) => `1px solid ${props.theme.GAU.COLORS.borderColor}`};
   }
 
   /*
@@ -73,7 +73,7 @@ const SLabel = styled('label')`
     margin-left: -1px;
     height: 0;
     width: 0;
-    border: ${props => `1px solid ${props.theme.GAU.COLORS.brightSkyBlue}`};
+    border: ${(props) => `1px solid ${props.theme.GAU.COLORS.brightSkyBlue}`};
     opacity: 1;
     transform: rotate(0deg) scale(0);
     transition: all 0.2s ease-out;
@@ -91,7 +91,7 @@ const SLabel = styled('label')`
     top: 15%;
     width: 7px;
     height: 12px;
-    border: ${props => `solid ${props.theme.GAU.COLORS.brightSkyBlue}`};
+    border: ${(props) => `solid ${props.theme.GAU.COLORS.brightSkyBlue}`};
     border-radius: 1px;
     border-width: 0 2px 2px 0;
     background-color: transparent;

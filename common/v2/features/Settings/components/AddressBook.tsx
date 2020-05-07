@@ -184,14 +184,8 @@ export default function AddressBook({
         const bLabel = b.props.label;
         return aLabel === bLabel ? true : aLabel.localeCompare(bLabel);
       },
-      hiddenHeadings: [
-        translateRaw('ADDRESSBOOK_FAVORITE'),
-        translateRaw('ADDRESSBOOK_DELETE')
-      ],
-      iconColumns: [
-        translateRaw('ADDRESSBOOK_FAVORITE'),
-        translateRaw('ADDRESSBOOK_DELETE')
-      ]
+      hiddenHeadings: [translateRaw('ADDRESSBOOK_FAVORITE'), translateRaw('ADDRESSBOOK_DELETE')],
+      iconColumns: [translateRaw('ADDRESSBOOK_FAVORITE'), translateRaw('ADDRESSBOOK_DELETE')]
     }
   };
   return (

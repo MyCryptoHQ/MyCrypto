@@ -6,7 +6,7 @@ interface RouterLinkProps {
 }
 
 const StyledRouterLink = styled(Link)<RouterLinkProps>`
-  ${props =>
+  ${(props) =>
     props.fullwidth === true &&
     css`
       width: 100%;

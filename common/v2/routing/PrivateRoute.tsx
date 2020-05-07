@@ -17,7 +17,7 @@ export const PrivateRoute = ({
   return (
     <Route
       {...rest}
-      render={props =>
+      render={(props) =>
         (accounts && accounts.length) || !requireAccounts ? (
           <Component {...props} />
         ) : (

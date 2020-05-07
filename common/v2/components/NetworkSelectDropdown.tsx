@@ -50,8 +50,8 @@ function NetworkSelectDropdown({
   // the absence of list.
   const validNetworks = networks
     // @ts-ignore CHANGE IN WALLETYPE OBJECT CAUSING accountType to error -> TODO: FIX accountType
-    .filter(options => isWalletFormatSupportedOnNetwork(options, accountType))
-    .map(n => ({ label: n.name, value: n }));
+    .filter((options) => isWalletFormatSupportedOnNetwork(options, accountType))
+    .map((n) => ({ label: n.name, value: n }));
   const network = getNetworkById(networkId);
 
   return (
@@ -65,7 +65,7 @@ function NetworkSelectDropdown({
         options={validNetworks.sort()}
         placeholder={DEFAULT_NETWORK}
         searchable={true}
-        onChange={option => onChange(option.value.id)}
+        onChange={(option) => onChange(option.value.id)}
         optionComponent={NetworkOption}
         valueComponent={({ value: option }) => <NetworkOption option={option} />}
         disabled={disabled}

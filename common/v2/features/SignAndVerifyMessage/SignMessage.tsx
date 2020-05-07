@@ -31,7 +31,7 @@ interface SignButtonProps {
   disabled?: boolean;
 }
 const SignButton = styled(Button)<SignButtonProps>`
-  ${props => props.disabled && 'opacity: 0.4;'}
+  ${(props) => props.disabled && 'opacity: 0.4;'}
 
   @media (max-width: ${SCREEN_XS}) {
     width: 100%;
@@ -50,7 +50,7 @@ const SignedMessageLabel = styled.p`
   text-align: left;
   font-weight: normal;
   margin-bottom: 9px;
-  color: ${props => props.theme.text};
+  color: ${(props) => props.theme.text};
 `;
 
 const CodeBlockWrapper = styled.div`
@@ -68,7 +68,7 @@ const BackButton = styled(ButtonUI)<BackButtonProps>`
   display: flex;
   align-items: center;
   font-size: 20px;
-  ${props => props.marginBottom && 'margin-bottom: 40px;'}
+  ${(props) => props.marginBottom && 'margin-bottom: 40px;'}
 
   img {
     margin-right: 8px;
@@ -152,7 +152,7 @@ function SignMessage(props: Props) {
     setWallet(null);
   };
 
-  const story = getStories().find(x => x.name === walletName);
+  const story = getStories().find((x) => x.name === walletName);
   const Step = story && story.steps[0];
 
   return (
@@ -183,7 +183,7 @@ function SignMessage(props: Props) {
             label={translate('MSG_MESSAGE')}
             placeholder={translateRaw('SIGN_MSG_PLACEHOLDER')}
             textarea={true}
-            onChange={event => handleOnChange(event.target.value)}
+            onChange={(event) => handleOnChange(event.target.value)}
             height="150px"
             inputError={error}
           />

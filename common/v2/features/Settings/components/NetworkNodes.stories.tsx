@@ -37,15 +37,15 @@ const someNetworkNode = () => (
 );
 
 storiesOf('NetworkNodes', module)
-  .addDecorator(story => <AppProviders>{story()}</AppProviders>)
-  .add('Empty', _ => networkNodesEmpty(), {
+  .addDecorator((story) => <AppProviders>{story()}</AppProviders>)
+  .add('Empty', (_) => networkNodesEmpty(), {
     design: {
       type: 'figma',
       url:
         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=1522%3A93762'
     }
   })
-  .add('Some networks', _ => someNetworkNode(), {
+  .add('Some networks', (_) => someNetworkNode(), {
     design: {
       type: 'figma',
       url:

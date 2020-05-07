@@ -44,17 +44,17 @@ const STop = styled.div`
 `;
 
 const SContainer = styled('div')`
-  padding: ${p =>
+  padding: ${(p) =>
     `${p.paddingV ? p.paddingV : SPACING.BASE} ${p.fluid || p.fullW ? 0 : MIN_CONTENT_PADDING}`};
   width: 100%;
-  max-width: ${p => (p.fullW ? '100%' : MAX_CONTENT_WIDTH)};
+  max-width: ${(p) => (p.fullW ? '100%' : MAX_CONTENT_WIDTH)};
   /*
   * This is the moment our header becomes sticky and shrinks.
   * Since it is aboslute positionning we move the container down.
   */
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    margin-top: ${p => (p.marginTop ? p.marginTop : 0)};
-    padding: ${p =>
+    margin-top: ${(p) => (p.marginTop ? p.marginTop : 0)};
+    padding: ${(p) =>
       `${p.paddingV ? p.paddingV : SPACING.BASE} ${p.fluid || p.fullW ? 0 : MIN_CONTENT_PADDING}`};
   }
 

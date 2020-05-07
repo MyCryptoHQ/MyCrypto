@@ -21,7 +21,7 @@ interface VerifyButtonProps {
   disabled?: boolean;
 }
 const VerifyButton = styled(Button)<VerifyButtonProps>`
-  ${props => props.disabled && 'opacity: 0.4;'}
+  ${(props) => props.disabled && 'opacity: 0.4;'}
 
   @media (max-width: ${SCREEN_XS}) {
     width: 100%;
@@ -81,7 +81,7 @@ export default function VerifyMessage() {
         label={translate('MSG_SIGNATURE')}
         placeholder={signaturePlaceholder}
         textarea={true}
-        onChange={event => handleOnChange(event.target.value)}
+        onChange={(event) => handleOnChange(event.target.value)}
         height="150px"
         inputError={error}
       />

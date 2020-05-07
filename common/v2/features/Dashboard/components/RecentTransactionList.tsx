@@ -124,7 +124,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
   const { addressBook } = useContext(AddressBookContext);
   const { getAssetRate } = useContext(RatesContext);
   const noLabel = translateRaw('NO_LABEL');
-  const transactions = accountsList.flatMap(account => account.transactions);
+  const transactions = accountsList.flatMap((account) => account.transactions);
   const accountTxs: ITxReceipt[] = getTxsFromAccount(accountsList).map((tx: ITxReceipt) => ({
     ...tx,
     direction: deriveTxDirection(accountsList, tx)

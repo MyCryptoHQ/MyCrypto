@@ -31,7 +31,7 @@ const AditionalDescription = styled.p`
   margin-top: 28px;
   line-height: 1.5;
   padding: 0 30px;
-  color: ${props => props.theme.text};
+  color: ${(props) => props.theme.text};
 
   @media (max-width: 700px) {
     padding: 0 8px;

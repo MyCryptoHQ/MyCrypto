@@ -77,7 +77,7 @@ class ScreenLockLocked extends Component<Props> {
             className=""
           >
             <ContentWrapper>
-              <FormWrapper onSubmit={e => this.handleUnlockWalletClick(decryptWithPassword, e)}>
+              <FormWrapper onSubmit={(e) => this.handleUnlockWalletClick(decryptWithPassword, e)}>
                 <InputField
                   label={translateRaw('SCREEN_LOCK_LOCKED_PASSWORD_LABEL')}
                   value={this.state.password}

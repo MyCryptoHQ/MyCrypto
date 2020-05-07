@@ -20,8 +20,8 @@ export function makeExplorer(expConfig: ExplorerConfig): BlockExplorer {
   return {
     name: config.name,
     origin: config.origin,
-    txUrl: hash => `${config.origin}/${config.txPath}/${hash}`,
-    addressUrl: address => `${config.origin}/${config.addressPath}/${address}`,
-    blockUrl: blockNum => `${config.origin}/${config.blockPath}/${blockNum}`
+    txUrl: (hash) => `${config.origin}/${config.txPath}/${hash}`,
+    addressUrl: (address) => `${config.origin}/${config.addressPath}/${address}`,
+    blockUrl: (blockNum) => `${config.origin}/${config.blockPath}/${blockNum}`
   };
 }

@@ -58,8 +58,8 @@ class Input extends React.Component<Props, State> {
     return (
       <input
         {...htmlProps}
-        ref={node => setInnerRef && setInnerRef(node)}
-        onBlur={e => {
+        ref={(node) => setInnerRef && setInnerRef(node)}
+        onBlur={(e) => {
           this.setState({ hasBlurred: true });
           if (this.props && this.props.onBlur) {
             this.props.onBlur(e);

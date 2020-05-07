@@ -38,7 +38,7 @@ interface Props {
   handleProtectTxConfirmAndSend(payload: ITxHash | ITxSigned): void;
 }
 
-export const ProtectTxSign: FC<Props> = props => {
+export const ProtectTxSign: FC<Props> = (props) => {
   const protectTxContext = useContext(ProtectTxContext);
   const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
   if (!getProTxValue()) {

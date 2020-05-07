@@ -24,12 +24,14 @@ const sortByLabel = (a: Option, b: Option) => a.label.localeCompare(b.label);
 type Option = StoreAccount & { balance: string; assetSymbol: string };
 
 function AccountDropdown({ accounts, name, value, onSelect, asset }: IAccountDropdownProps) {
-  const relevantAccounts: Option[] = accounts.map((account) => ({
-    ...account,
-    balance: formatEther(asset ? getAccountBalance(account, asset) : getAccountBalance(account)),
-    assetUUID: asset ? asset.uuid : getBaseAsset(account)!.uuid,
-    assetSymbol: asset ? asset.ticker : getBaseAsset(account)!.ticker
-  })).sort(sortByLabel);
+  const relevantAccounts: Option[] = accounts
+    .map((account) => ({
+      ...account,
+      balance: formatEther(asset ? getAccountBalance(account, asset) : getAccountBalance(account)),
+      assetUUID: asset ? asset.uuid : getBaseAsset(account)!.uuid,
+      assetSymbol: asset ? asset.ticker : getBaseAsset(account)!.ticker
+    }))
+    .sort(sortByLabel);
 
   useEffectOnce(() => {
     // preselect first value from options

@@ -4,7 +4,7 @@ import { Param, queryObject } from './types';
 
 export function isQueryTransaction(query: string): boolean {
   const params = getQueryTransactionData(query);
-  const detectedQueryParams = queryParams.filter(param => {
+  const detectedQueryParams = queryParams.filter((param) => {
     return !(param.toLowerCase() in params);
   });
   return detectedQueryParams.length > 0;

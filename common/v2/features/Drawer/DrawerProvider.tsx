@@ -49,7 +49,7 @@ export default class DrawerProvider extends Component {
           enter={{ right: '0' }}
           leave={{ right: '-500px' }}
         >
-          {show => {
+          {(show) => {
             return (
               show && ((style: any) => <Drawer {...screen} onClose={toggleVisible} style={style} />)
             );

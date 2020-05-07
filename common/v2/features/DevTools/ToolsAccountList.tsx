@@ -22,7 +22,7 @@ export interface AccountListProps {
   deleteAccount(account: IAccount): void;
 }
 
-const ToolsAccountList: React.FC<AccountListProps> = props => {
+const ToolsAccountList: React.FC<AccountListProps> = (props) => {
   const { addressBook } = useContext(AddressBookContext);
   const { accounts, deleteAccount } = props;
   const list = accounts.map((account: IAccount, index: number) => {

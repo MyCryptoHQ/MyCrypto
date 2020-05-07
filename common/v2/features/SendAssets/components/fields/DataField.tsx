@@ -14,7 +14,7 @@ export function DataField({ value, errors, name, onChange }: IDataField) {
       {...value}
       name={name}
       value={displayed}
-      onChange={e => {
+      onChange={(e) => {
         setDisplayed(e.target.value);
         onChange(e.target.value);
       }}

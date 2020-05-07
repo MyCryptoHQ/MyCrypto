@@ -15,7 +15,7 @@ const OptionWrapper = styled.div<OptionWrapperProps>`
   display: flex;
   justify-content: space-between;
   padding: 12px 15px;
-  font-weight: ${props => (props.isSelectable ? 'default' : 'bold')};
+  font-weight: ${(props) => (props.isSelectable ? 'default' : 'bold')};
 `;
 
 interface StickerProps {
@@ -23,7 +23,7 @@ interface StickerProps {
 }
 
 const Sticker = styled.div<StickerProps>`
-  background-color: ${props => (props.isRead ? COLORS.SUCCESS_GREEN : COLORS.BLUE_BRIGHT)};
+  background-color: ${(props) => (props.isRead ? COLORS.SUCCESS_GREEN : COLORS.BLUE_BRIGHT)};
   border-radius: 28px;
   color: ${COLORS.WHITE};
   padding: 2px 8px;

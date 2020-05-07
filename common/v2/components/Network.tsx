@@ -12,7 +12,7 @@ const Container = styled.div`
 `;
 
 const Color = styled.div`
-  background: ${props => props.color};
+  background: ${(props) => props.color};
 
   border-radius: 50%;
   display: inline-block;
