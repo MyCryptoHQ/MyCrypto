@@ -18,7 +18,11 @@ export default function EnsDashboard() {
       <p>Showing you a list of top-level domains you own</p>
       <ApolloProvider client={CLIENT}>
         {userAddresses.map((addr, index: number) => {
-          return <MyDomains key={index} userAddress={addr} />;
+          return (
+            <>
+              <MyDomains key={index} userAddress={addr} />
+            </>
+          );
         })}
       </ApolloProvider>
     </>

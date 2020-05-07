@@ -9,22 +9,21 @@ export interface MyDomainsProps {
 }
 
 export interface DomainEntry {
-  id: string;
+  expiryDate: string;
+  domain: DomainChild;
+}
+
+export interface DomainChild {
   isMigrated: boolean;
   labelName: string;
   labelhash: string;
   name: string;
-  owner: DomainOwner;
   parent: DomainParent;
-}
-
-export interface DomainOwner {
-  id: string;
   __typename: string;
 }
 
 export interface DomainParent {
-  labelName: string;
+  name: string;
   __typename: string;
 }
 

@@ -26,17 +26,19 @@ export default function MyDomains({ userAddress }: MyDomainsProps) {
     return `<div>${JSON.stringify(error)}</div>`;
   }
 
-  const domains = data.domains;
-  const topLevelDomains = domains.filter(
-    (domain: DomainEntry) => domain.name === [domain.labelName, domain.parent.labelName].join('.')
-  );
-  const myDomains = topLevelDomains.map((domain: DomainEntry) => {
-    return { owner: domain.owner.id, domainName: domain.name, expireDate: '1970-01-01' };
-  });
-
-  if (myDomains.length === 0) {
+  if (data.account === null) {
     return <Heading as="h5">{userAddress} owns no top level domains</Heading>;
   }
+
+  const domains = data.account.registrations;
+
+  const topLevelDomains = domains.filter(
+    (domain: DomainEntry) =>
+      domain.domain.name === [domain.domain.labelName, domain.domain.parent.name].join('.')
+  );
+  const myDomains = topLevelDomains.map((domain: DomainEntry) => {
+    return { owner: userAddress, domainName: domain.domain.name, expireDate: domain.expiryDate };
+  });
 
   const domainTable = {
     head: [
