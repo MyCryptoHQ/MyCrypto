@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import moment from 'moment';
 import { CollapsibleTable } from 'v2/components';
 import { QUERY_GET_ENS_DOMAINS } from './graphql/queries';
 import { useQuery } from '@apollo/react-hooks';
@@ -32,12 +33,14 @@ export default function MyDomains({ userAddress }: MyDomainsProps) {
 
   const domains = data.account.registrations;
 
+  const formatDate = (timestamp: number): string => moment.unix(timestamp).format('YYYY-MM-DD h:mm A');
+
   const topLevelDomains = domains.filter(
     (domain: DomainEntry) =>
       domain.domain.name === [domain.domain.labelName, domain.domain.parent.name].join('.')
   );
   const myDomains = topLevelDomains.map((domain: DomainEntry) => {
-    return { owner: userAddress, domainName: domain.domain.name, expireDate: domain.expiryDate };
+    return { owner: userAddress, domainName: domain.domain.name, expireDate: formatDate(domain.expiryDate) };
   });
 
   const domainTable = {

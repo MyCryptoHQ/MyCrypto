@@ -9,7 +9,7 @@ export interface MyDomainsProps {
 }
 
 export interface DomainEntry {
-  expiryDate: string;
+  expiryDate: number;
   domain: DomainChild;
 }
 
