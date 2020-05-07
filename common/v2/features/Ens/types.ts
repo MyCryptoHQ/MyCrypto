@@ -5,5 +5,5 @@ export interface MyDomainsTableProps {
 }
 
 export interface MyDomainsProps {
-    userAddress: string;
+  userAddress: string;
 }
