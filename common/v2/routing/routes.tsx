@@ -29,7 +29,7 @@ import {
   PurchaseMembershipStepper,
   MembershipEducation,
   BuyAssets,
-  Ens
+  EnsDashboard
 } from '@features';
 import { requiresDesktopApp } from './helpers';
 
@@ -261,7 +261,7 @@ export const STATIC_APP_ROUTES: IAppRoute[] = [
     exact: true,
     requireAccounts: true,
     enabled: IS_ACTIVE_FEATURE.ENS,
-    component: Ens
+    component: EnsDashboard
   }
 ];
 

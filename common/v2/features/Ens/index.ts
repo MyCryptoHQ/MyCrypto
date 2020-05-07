@@ -1,1 +1,1 @@
-export { default as Ens } from './Dashboard';
+export { default as EnsDashboard } from './Dashboard';
