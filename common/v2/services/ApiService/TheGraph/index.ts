@@ -1,0 +1,2 @@
+export { ENSSubgraphService } from './ENSSubgraphService'
+

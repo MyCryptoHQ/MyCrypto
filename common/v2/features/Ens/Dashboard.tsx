@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { CLIENT } from './ApolloClient';
+import { ENSSubgraphService } from 'v2/services/ApiService/TheGraph';
 import { Heading } from '@mycrypto/ui';
 import { StoreContext } from 'v2/services';
 import { ApolloProvider } from '@apollo/react-hooks';
@@ -16,7 +16,7 @@ export default function EnsDashboard() {
     <>
       <Heading as="h2">ENS Domains</Heading>
       <p>Showing you a list of top-level domains you own</p>
-      <ApolloProvider client={CLIENT}>
+      <ApolloProvider client={ENSSubgraphService}>
         {userAddresses.map((addr, index: number) => {
           return (
             <>
