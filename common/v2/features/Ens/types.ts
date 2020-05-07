@@ -3,3 +3,7 @@ export interface MyDomainsTableProps {
   owner: string;
   expireDate: number;
 }
+
+export interface MyDomainsProps {
+    userAddress: string;
+}

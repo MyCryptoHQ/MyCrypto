@@ -9,11 +9,14 @@ export default function EnsDashboard() {
   const { currentAccounts } = useContext(StoreContext);
   const { accounts } = useContext(AccountContext);
 
+  const userAddresses = currentAccounts.map((account) => { return account.address});
+
   return (
     <>
       <Heading as="h2">ENS Domains</Heading>
+      <p>Showing you a list of top-level domains you own</p>
       <ApolloProvider client={CLIENT}>
-        <MyDomains />
+        {userAddresses.map( (addr, index) => { return(<MyDomains userAddress={addr}/>) })}
       </ApolloProvider>
     </>
   );
