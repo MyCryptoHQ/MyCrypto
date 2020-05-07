@@ -13,7 +13,6 @@ import { BigNumber as EthScanBN } from '@ethersproject/bignumber';
 import { ETHSCAN_NETWORKS } from 'v2/config';
 import { TAddress, StoreAccount, StoreAsset, Asset, Network } from 'v2/types';
 import { ProviderHandler } from 'v2/services/EthService';
-import { bigify } from 'v2/utils';
 
 export type BalanceMap<T = BN> = EthScanBalanceMap<T>;
 
@@ -140,7 +139,7 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
     ].map((p) => p.catch((e) => console.debug(e))) // convert Promise.all ie. into allSettled https://dev.to/vitalets/what-s-wrong-with-promise-allsettled-and-promise-any-5e6o
   );
 
-  const filterZeroBN = (n: BigNumber) => !bigify(n.toString()).eq(0);
+  const filterZeroBN = (n: BigNumber) => n.isZero();
 
   const filteredUpdatedAccounts = updatedAccounts.map((updatedAccount) => ({
     ...updatedAccount,
