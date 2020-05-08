@@ -4,10 +4,12 @@ import { Tooltip as UITooltip } from '@mycrypto/ui';
 
 import questionSVG from '@assets/images/icn-question.svg';
 import informationalSVG from '@assets/images/icn-info-blue.svg';
+import warningSVG from '@assets/images/icn-warning.svg';
 
 export enum IconID {
   question = 'question',
-  informational = 'informational'
+  informational = 'informational',
+  warning = 'warning'
 }
 
 interface Props {
@@ -23,6 +25,8 @@ const selectIconType = (type: IconID): any => {
       return questionSVG;
     case IconID.informational:
       return informationalSVG;
+    case IconID.warning:
+      return warningSVG;
   }
 };
 
