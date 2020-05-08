@@ -56,9 +56,14 @@ export default function EnsDashboard() {
   const { accounts } = useContext(StoreContext);
   const [fetchedEnsData, setEnsData] = useState(defaultData);
 
+  // Only use the accounts on the Ethereum mainnet network
+  const accountsEthereumNetwork = accounts.filter(
+    (acc) => acc.networkId.toUpperCase() === 'ETHEREUM'
+  );
+
   useEffectOnce(() => {
     EnsSubgraphService.instance
-      .fetchOwnershipRecords(accounts)
+      .fetchOwnershipRecords(accountsEthereumNetwork)
       .then((data: DomainTableEntry[]) => setEnsData({ data: data || [], isFetched: true }));
   });
 
