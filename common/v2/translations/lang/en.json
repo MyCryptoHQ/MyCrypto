@@ -274,6 +274,8 @@
 		"ENS_MY_DOMAINS_TABLE_DOMAIN_NAME_HEADER": "Domain Name",
 		"ENS_MY_DOMAINS_TABLE_EXPIRES_HEADER": "Expires",
 		"ENS_EXPIRING_SOON": "Your ENS name is expiring within 30 days",
+		"ENS_DOMAINS_NO_DOMAINS": "You have no ENS domains",
+		"ENS_DOMAINS_NO_DOMAINS_MORE": "When you are the owner of an ENS domain, they will appear here.",
 		"ERROR_0": "Please enter a valid amount (number) you wish to send.",
 		"ERROR_10": "This seems like a very high gas price. Are you sure you know what you are doing?",
 		"ERROR_11": "Please enter a valid nonce (Must be a positive integer) ",
