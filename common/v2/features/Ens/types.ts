@@ -31,4 +31,5 @@ export interface DomainEntryTable {
   owner: string;
   domainName: string;
   expireDate: string;
+  expireSoon: boolean;
 }
