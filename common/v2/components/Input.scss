@@ -1,4 +1,4 @@
-@import 'common/sass/variables';
+@import 'sass/variables';
 
 .example-form {
   max-width: 744px;
@@ -83,7 +83,7 @@
     margin-bottom: 1rem;
 
     @media (max-width: 700px) {
-      margin-bottom: 0em; 
+      margin-bottom: 0em;
     }
 
     &[placeholder] {
