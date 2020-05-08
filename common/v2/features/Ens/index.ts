@@ -1,1 +1,2 @@
-export { default as EnsDashboard } from './Dashboard';
+export { default as EnsDashboard } from './EnsDashboard';
+export { default as EnsLogo } from './EnsLogo';

@@ -1,0 +1,31 @@
+import React from 'react';
+import styled from 'styled-components';
+
+import { translateRaw } from 'v2/translations';
+
+import enslogo from 'assets/images/ens/ensIcon.svg';
+
+const EnsLogoContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const EnsLogoImage = styled.img`
+  height: 24px;
+`;
+
+const EnsLogoText = styled.div`
+  margin-left: 0.5em;
+`;
+
+const EnsLogo = () => {
+  return (
+    <EnsLogoContainer>
+      <EnsLogoImage src={enslogo} />
+      <EnsLogoText>{translateRaw('ENS_LOGO_TEXT')}</EnsLogoText>
+    </EnsLogoContainer>
+  );
+};
+
+export default EnsLogo;

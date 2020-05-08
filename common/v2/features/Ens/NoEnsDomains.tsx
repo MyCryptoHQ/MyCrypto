@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
 import translate from 'v2/translations';
 import { COLORS, FONT_SIZE, SPACING } from 'v2/theme';
@@ -12,7 +11,7 @@ const NoDomainsWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 ${SPACING.BASE} ${SPACING.BASE} ${SPACING.BASE};
+  padding: ${SPACING.NONE} ${SPACING.BASE} ${SPACING.BASE} ${SPACING.BASE};
   width: 100%;
 `;
 
@@ -44,22 +43,13 @@ const NoDomainsDescription = styled.div`
   }
 `;
 
-const PlusIcon = styled.img`
-  width: 60px;
-  height: 60px;
-`;
-
 export default function NoDomains() {
   return (
     <NoDomainsWrapper>
-        <NoDomainsCenter>
-            <NoDomainsHeading>
-                {translate('ENS_DOMAINS_NO_DOMAINS')}
-            </NoDomainsHeading>
-            <NoDomainsDescription>
-                {translate('ENS_DOMAINS_NO_DOMAINS_MORE')}
-            </NoDomainsDescription>
-        </NoDomainsCenter>
+      <NoDomainsCenter>
+        <NoDomainsHeading>{translate('ENS_DOMAINS_NO_DOMAINS')}</NoDomainsHeading>
+        <NoDomainsDescription>{translate('ENS_DOMAINS_NO_DOMAINS_MORE')}</NoDomainsDescription>
+      </NoDomainsCenter>
     </NoDomainsWrapper>
   );
 }

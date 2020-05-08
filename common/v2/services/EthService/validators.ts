@@ -376,3 +376,5 @@ export const isValidGetNetVersion = (response: JsonRPCResponse) =>
 
 export const isValidTxHash = (hash: string) =>
   hash.substring(0, 2) === '0x' && hash.length === 66 && isValidHex(hash);
+
+export const isLabelHashENS = (stringToTest: string) => stringToTest.match(/\[[a-fA-F0-9]{64}\]/);
