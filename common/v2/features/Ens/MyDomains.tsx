@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import { CollapsibleTable } from 'v2/components';
+import { DashboardPanel, CollapsibleTable, Tooltip, LinkOut } from 'v2/components';
+import { translateRaw } from 'v2/translations';
+import { breakpointToNumber, BREAK_POINTS } from 'v2/theme';
 import { QUERY_GET_ENS_DOMAINS } from './graphql/queries';
 import { useQuery } from '@apollo/react-hooks';
 import { MyDomainsProps, DomainEntry, DomainEntryTable } from './types';
-import { Heading } from '@mycrypto/ui';
 
 const Label = styled.span`
   display: flex;
@@ -13,6 +14,12 @@ const Label = styled.span`
 `;
 const RowAlignment = styled.div`
   float: ${(props: { align?: string }) => props.align || 'inherit'};
+`;
+const TableContainer = styled.div`
+  display: block;
+  overflow: auto;
+  flex: 1;
+  max-height: 600px;
 `;
 
 export default function MyDomains({ userAddress }: MyDomainsProps) {
@@ -28,39 +35,49 @@ export default function MyDomains({ userAddress }: MyDomainsProps) {
   }
 
   if (data.account === null) {
-    return <Heading as="h5">{userAddress} owns no top level domains</Heading>;
+    return ``;
   }
 
   const domains = data.account.registrations;
 
-  const formatDate = (timestamp: number): string => moment.unix(timestamp).format('YYYY-MM-DD h:mm A');
+  const formatDate = (timestamp: number): string => moment.unix(timestamp).format('YYYY-MM-DD H:mm A');
+  const EnsManagerLink = (domain: string): string => `https://app.ens.domains/name/${domain}`;
 
   const topLevelDomains = domains.filter(
     (domain: DomainEntry) =>
       domain.domain.name === [domain.domain.labelName, domain.domain.parent.name].join('.')
   );
   const myDomains = topLevelDomains.map((domain: DomainEntry) => {
-    return { owner: userAddress, domainName: domain.domain.name, expireDate: formatDate(domain.expiryDate) };
+    return { 
+      owner: userAddress, 
+      domainName: domain.domain.name, 
+      expireDate: formatDate(domain.expiryDate),
+      expireSoon: domain.expiryDate - moment().unix() <= 2.592e+6 ? true : false
+    };
   });
 
   const domainTable = {
     head: [
-      'Owner Address',
-      'Domain Name',
-      'Expires',
-      <RowAlignment key={0} align="right">
-        Configure
-      </RowAlignment>
+      '',
+      translateRaw('ENS_MY_DOMAINS_TABLE_OWNER_ADDRESS_HEADER'),
+      translateRaw('ENS_MY_DOMAINS_TABLE_DOMAIN_NAME_HEADER'),
+      translateRaw('ENS_MY_DOMAINS_TABLE_EXPIRES_HEADER'),
+      ''
     ],
     body: myDomains.map((domain: DomainEntryTable, index: number) => {
       return [
-        <Label key={index}>{domain.owner}</Label>,
-        <RowAlignment key={index} align="left">
+        <RowAlignment key={index}>
+          { domain.expireSoon ? <Tooltip type="warning" tooltip={translateRaw('ENS_EXPIRING_SOON')} /> : ``}
+        </RowAlignment>,
+        <Label key={2}>{domain.owner}</Label>,
+        <RowAlignment key={3} align="left">
           {domain.domainName}
         </RowAlignment>,
-        domain.expireDate,
-        <RowAlignment key={index} align="right">
-          [+]
+        <RowAlignment key={4} align="left">
+          {domain.expireDate}
+        </RowAlignment>,
+        <RowAlignment key={5} align="right">
+          <LinkOut link={EnsManagerLink(domain.domainName)} />
         </RowAlignment>
       ];
     }),
@@ -72,10 +89,21 @@ export default function MyDomains({ userAddress }: MyDomainsProps) {
 
   return (
     <>
-      <Heading as="h5">
-        ENS Names for {userAddress} ({myDomains.length} domains)
-      </Heading>
-      <CollapsibleTable {...domainTable} />
+      <DashboardPanel
+        heading={
+          <>
+            {translateRaw('ENS_MY_DOMAINS_TABLE_HEADER')}
+          </>
+        }
+        className={`EarningAssetsTable`}
+      >
+        <TableContainer>
+          <CollapsibleTable
+            breakpoint={breakpointToNumber(BREAK_POINTS.SCREEN_XS)}
+            {...domainTable}
+          />
+        </TableContainer>
+      </DashboardPanel>
     </>
   );
 }
