@@ -6,6 +6,7 @@ const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const config = require('./config');
 const { generateChunkName } = require('./utils');
 
@@ -32,7 +33,9 @@ module.exports = {
     alias: {
       modernizr$: path.resolve(__dirname, '../.modernizrrc.js'),
       '@fixtures': `${config.path.root}/jest_config/__fixtures__`
-    }
+    },
+    plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, '../tsconfig.json') })]
+
   },
 
   optimization: {
