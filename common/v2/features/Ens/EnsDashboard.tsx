@@ -4,6 +4,7 @@ import { Heading } from '@mycrypto/ui';
 
 import { StoreContext } from 'v2/services';
 import { Spinner, DashboardPanel } from 'v2/components';
+import { DEFAULT_NETWORK } from 'v2/config';
 import { translateRaw } from 'v2/translations';
 import { BREAK_POINTS, SPACING } from 'v2/theme';
 import { useEffectOnce } from 'v2/vendor/react-use';
@@ -57,9 +58,7 @@ export default function EnsDashboard() {
   const [fetchedEnsData, setEnsData] = useState(defaultData);
 
   // Only use the accounts on the Ethereum mainnet network
-  const accountsEthereumNetwork = accounts.filter(
-    (acc) => acc.networkId.toUpperCase() === 'ETHEREUM'
-  );
+  const accountsEthereumNetwork = accounts.filter((acc) => acc.networkId === DEFAULT_NETWORK);
 
   useEffectOnce(() => {
     EnsSubgraphService.instance
