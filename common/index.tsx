@@ -9,7 +9,7 @@ import 'what-input'; // @TODO: Investigate utility of dependency; Used in /commo
 import React from 'react';
 import { render } from 'react-dom';
 
-import { consoleAdvertisement } from 'v2/utils';
+import { consoleAdvertisement } from '@utils';
 
 import Root from './Root';
 

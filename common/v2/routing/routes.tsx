@@ -29,7 +29,7 @@ import {
   PurchaseMembershipStepper,
   MembershipEducation,
   BuyAssets
-} from 'v2/features';
+} from '@features';
 import { requiresDesktopApp } from './helpers';
 
 export interface IAppRoutes {

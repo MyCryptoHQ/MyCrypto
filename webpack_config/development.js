@@ -9,7 +9,7 @@ const config = require('./config');
 const HTTP_PORT = 3000;
 const IS_ELECTRON = !!process.env.BUILD_ELECTRON;
 
-module.exports = merge.smart(common, {
+const v = merge.smart(common, {
   mode: 'development',
 
   devtool: 'cheap-module-eval-source-map',
@@ -83,3 +83,6 @@ module.exports = merge.smart(common, {
     hints: false
   }
 });
+
+console.log(v)
+module.exports = v

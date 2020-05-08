@@ -1,18 +1,18 @@
 import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
-import { Layout, LayoutConfig } from 'v2/features/Layout';
-import { Home, PageNotFound, ScreenLockProvider, DrawerProvider } from 'v2/features';
-import { ScrollToTop, useScreenSize } from 'v2/utils';
-import { ROUTE_PATHS } from 'v2/config/routePaths';
+import { Layout, LayoutConfig } from '@features/Layout';
+import { Home, PageNotFound, ScreenLockProvider, DrawerProvider } from '@features';
+import { ScrollToTop, useScreenSize } from '@utils';
+import { ROUTE_PATHS } from '@config/routePaths';
 import {
   APP_ROUTES,
   PageVisitsAnalytics,
   LegacyRoutesHandler,
   DefaultHomeHandler,
   PrivateRoute
-} from 'v2/routing';
-import { COLORS, SPACING } from 'v2/theme';
+} from '@routing';
+import { COLORS, SPACING } from '@theme';
 
 const layoutConfig = (path: string, isMobile: boolean): LayoutConfig => {
   switch (path) {
