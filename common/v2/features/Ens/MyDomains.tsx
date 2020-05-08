@@ -43,17 +43,15 @@ export default function MyDomains({ domainEntries }: MyDomainsProps) {
     body: domainEntries.map((domain: DomainTableEntry, index: number) => {
       return [
         <RowAlignment key={index}>
-          {domain.expireSoon ? (
+          {domain.expireSoon && (
             <Tooltip type={IconID.warning} tooltip={translateRaw('ENS_EXPIRING_SOON')} />
-          ) : (
-            ``
           )}
         </RowAlignment>,
         <Label key={2}>
           <Account title={domain.ownerLabel} address={domain.owner} truncate={truncate} />
         </Label>,
         <RowAlignment key={3} align="left">
-          {domain.domainName}
+          {domain.readableDomainName}
         </RowAlignment>,
         <RowAlignment key={4} align="left">
           {formatDate(domain.expireDate)}

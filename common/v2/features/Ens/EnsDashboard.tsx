@@ -64,7 +64,8 @@ export default function EnsDashboard() {
 
   const domainEntries = fetchedEnsData.data.map((ownedENSEntry) => ({
     ...ownedENSEntry,
-    domainName: !isLabelHashENS(ownedENSEntry.domainName)
+    domainName: ownedENSEntry.domainName,
+    readableDomainName: !isLabelHashENS(ownedENSEntry.domainName)
       ? ownedENSEntry.domainName
       : translateRaw('ENS_DOMAIN_UNKNOWN_NAME')
   }));
