@@ -160,7 +160,7 @@
     "husky": "4.2.5",
     "image-webpack-loader": "6.0.0",
     "isomorphic-fetch": "2.2.1",
-    "jest": "24.9.0",
+    "jest": "26.0.1",
     "jest-canvas-mock": "2.2.0",
     "lint-staged": "9.5.0",
     "lodash-webpack-plugin": "0.11.5",
