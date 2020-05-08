@@ -3,7 +3,7 @@
     "outDir": "./dist/",
     "sourceMap": true,
     "strictNullChecks": true,
-    "module": "ESNext",
+    "module": "esnext",
     "jsx": "react",
     "target": "es2015",
     "allowJs": true,

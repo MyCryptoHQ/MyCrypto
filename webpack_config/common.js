@@ -40,8 +40,22 @@ module.exports = {
 
   optimization: {
     splitChunks: {
-      chunks: 'all',
       cacheGroups: {
+        default: false,
+        vendors: false,
+        vendor: {
+          name: generateChunkName,
+          chunks: 'all',
+          test: new RegExp(`/[\\/]node_modules[\\/]((?!(${config.chunks.devOnly.join('|')}|${config.chunks.electronOnly.join('|')})).*)[\\/]/`),
+        },
+        common: {
+          test: /common/,
+          name: 'common',
+          minChunks: 2,
+          chunks: 'all',
+          reuseExistingChunk: true,
+          enforce: true
+        },
         vendorDev: {
           test: new RegExp(`[\\/]node_modules[\\/](${config.chunks.devOnly.join('|')})[\\/]`),
           name: generateChunkName
@@ -58,10 +72,10 @@ module.exports = {
   module: {
     rules: [
       /**
-       * TypeScript files
+       * TypeScript files without stories
        */
       {
-        test: /\.tsx?$/,
+        test: /(?!.*\.stories\.tsx?$).*\.tsx?$/,
         use: [
           {
             loader: 'babel-loader',
@@ -79,8 +93,13 @@ module.exports = {
           config.path.electron,
           config.path.testConfig
         ],
-        exclude: /node_modules/
+        exclude: [/node_modules/]
       },
+
+      /*
+       * Ignore stories files
+       */
+      { test: /\.stories\.tsx?$/, loader: 'ignore-loader' },
 
       /**
        * Workers

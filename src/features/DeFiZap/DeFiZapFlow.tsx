@@ -3,9 +3,9 @@ import { withRouter } from 'react-router-dom';
 
 import { ZapEducation } from './components';
 import { IZapConfig, ZAPS_CONFIG, IZapId } from './config';
-import { ZapStepper } from '.';
+import ZapStepper from './ZapStepper';
 
-export const DeFiZapFlow = withRouter(({ match }) => {
+const DeFiZapFlow = withRouter(({ match }) => {
   const { zapName: zapId } = match.params;
   const selectedZap: IZapConfig | undefined = zapId ? ZAPS_CONFIG[zapId as IZapId] : undefined;
 

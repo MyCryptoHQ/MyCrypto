@@ -6,40 +6,86 @@ import { ROUTE_PATHS, IS_ACTIVE_FEATURE } from '@config';
 import { Home, Dashboard, NoAccounts, EnsDashboard } from '@features';
 import { requiresDesktopApp } from './helpers';
 
-const CreateWallet = lazy(() => import('@features/CreateWallet/CreateWallet'));
-const AddAccountFlow = lazy(() => import('@features/AddAccount/AddAccountFlow'));
-const SendAssets = lazy(() => import('@features/SendAssets/SendAssets'));
-const Mnemonic = lazy(() => import('@features/CreateWallet/Mnemonic/Mnemonic'));
-const Keystore = lazy(() => import('@features/CreateWallet/Keystore/Keystore'));
-const Settings = lazy(() => import('@features/Settings/Settings'));
-const Import = lazy(() => import('@features/Settings/Import/Import'));
-const Export = lazy(() => import('@features/Settings/Export/Export'));
-const DownloadApp = lazy(() => import('@features/DownloadApp/DownloadApp'));
-const ScreenLockNew = lazy(() => import('@features/ScreenLock/ScreenLockNew'));
-const ScreenLockLocked = lazy(() => import('@features/ScreenLock/ScreenLockLocked'));
-const ScreenLockForgotPassword = lazy(() =>
-  import('@features/ScreenLock/ScreenLockForgotPassword')
+const CreateWallet = lazy(() =>
+  import(/* webpackChunkName: "CreateWallet" */ '@features/CreateWallet/CreateWallet')
 );
-const ReceiveAssets = lazy(() => import('@features/ReceiveAssets/ReceiveAssets'));
-const SwapAssetsFlow = lazy(() => import('@features/SwapAssets/SwapAssetsFlow'));
+const AddAccountFlow = lazy(() =>
+  import(/* webpackChunkName: "AddAccountFlow" */ '@features/AddAccount/AddAccountFlow')
+);
+const SendAssets = lazy(() =>
+  import(/* webpackChunkName: "SendAssets" */ '@features/SendAssets/SendAssets')
+);
+const Mnemonic = lazy(() =>
+  import(/* webpackChunkName: "Mnemonic" */ '@features/CreateWallet/Mnemonic/Mnemonic')
+);
+const Keystore = lazy(() =>
+  import(/* webpackChunkName: "Keystore" */ '@features/CreateWallet/Keystore/Keystore')
+);
+const Settings = lazy(() =>
+  import(/* webpackChunkName: "Settings" */ '@features/Settings/Settings')
+);
+const Import = lazy(() =>
+  import(/* webpackChunkName: "Import" */ '@features/Settings/Import/Import')
+);
+const Export = lazy(() =>
+  import(/* webpackChunkName: "Export" */ '@features/Settings/Export/Export')
+);
+const DownloadApp = lazy(() =>
+  import(/* webpackChunkName: "DownloadApp" */ '@features/DownloadApp/DownloadApp')
+);
+const ScreenLockNew = lazy(() =>
+  import(/* webpackChunkName: "ScreenLockNew" */ '@features/ScreenLock/ScreenLockNew')
+);
+const ScreenLockLocked = lazy(() =>
+  import(/* webpackChunkName: "ScreenLockLocked" */ '@features/ScreenLock/ScreenLockLocked')
+);
+const ScreenLockForgotPassword = lazy(() =>
+  import(
+    /* webpackChunkName: "ScreenLockForgotPassword" */ '@features/ScreenLock/ScreenLockForgotPassword'
+  )
+);
+const ReceiveAssets = lazy(() =>
+  import(/* webpackChunkName: "ReceiveAssets" */ '@features/ReceiveAssets/ReceiveAssets')
+);
+const SwapAssetsFlow = lazy(() =>
+  import(/* webpackChunkName: "SwapAssetsFlow" */ '@features/SwapAssets/SwapAssetsFlow')
+);
 const SignAndVerifyMessage = lazy(() =>
-  import('@features/SignAndVerifyMessage/SignAndVerifyMessage')
+  import(
+    /* webpackChunkName: "SignAndVerifyMessage" */ '@features/SignAndVerifyMessage/SignAndVerifyMessage'
+  )
 );
 const BroadcastTransactionFlow = lazy(() =>
-  import('@features/BroadcastTransaction/BroadcastTransactionFlow')
+  import(
+    /* webpackChunkName: "BroadcastTransactionFlow" */ '@features/BroadcastTransaction/BroadcastTransactionFlow'
+  )
 );
 const InteractWithContractsFlow = lazy(() =>
-  import('@features/InteractWithContracts/InteractWithContractsFlow')
+  import(
+    /* webpackChunkName: "InteractWithContractsFlow" */ '@features/InteractWithContracts/InteractWithContractsFlow'
+  )
 );
-const DeployContractsFlow = lazy(() => import('@features/DeployContracts/DeployContractsFlow'));
-const DeFiZapFlow = lazy(() => import('@features/DeFiZap/DeFiZapFlow'));
+const DeployContractsFlow = lazy(() =>
+  import(
+    /* webpackChunkName: "DeployContractsFlow" */ '@features/DeployContracts/DeployContractsFlow'
+  )
+);
+const DeFiZapFlow = lazy(() =>
+  import(/* webpackChunkName: "DeFiZapFlow" */ '@features/DeFiZap/DeFiZapFlow')
+);
 const PurchaseMembershipStepper = lazy(() =>
-  import('@features/PurchaseMembership/PurchaseMembershipStepper')
+  import(
+    /* webpackChunkName: "PurchaseMembershipStepper" */ '@features/PurchaseMembership/PurchaseMembershipStepper'
+  )
 );
 const MembershipEducation = lazy(() =>
-  import('@features/PurchaseMembership/components/MembershipEducation')
+  import(
+    /* webpackChunkName: "MembershipEducation" */ '@features/PurchaseMembership/components/MembershipEducation'
+  )
 );
-const BuyAssets = lazy(() => import('@features/BuyAssets/BuyAssetsForm'));
+const BuyAssets = lazy(() =>
+  import(/* webpackChunkName: "BuyAssetsForm" */ '@features/BuyAssets/BuyAssetsForm')
+);
 
 export interface IAppRoutes {
   [K: string]: IAppRoute;
