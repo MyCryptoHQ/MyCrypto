@@ -7,20 +7,10 @@ import MyDomains from './MyDomains';
 export default function EnsDashboard() {
   const { currentAccounts } = useContext(StoreContext);
 
-  const userAddresses = currentAccounts.map((account) => {
-    return account.address;
-  });
-
   return (
     <>
       <ApolloProvider client={ENSSubgraphService}>
-        {userAddresses.map((addr, index: number) => {
-          return (
-            <>
-              <MyDomains key={index} userAddress={addr} />
-            </>
-          );
-        })}
+        <MyDomains accounts={currentAccounts} />
       </ApolloProvider>
     </>
   );

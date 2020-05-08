@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import { DashboardPanel, CollapsibleTable, Tooltip, LinkOut } from 'v2/components';
+import { DashboardPanel, CollapsibleTable, Tooltip, LinkOut, Account } from 'v2/components';
 import { translateRaw } from 'v2/translations';
 import { breakpointToNumber, BREAK_POINTS } from 'v2/theme';
 import { QUERY_GET_ENS_DOMAINS } from './graphql/queries';
 import { useQuery } from '@apollo/react-hooks';
 import { MyDomainsProps, DomainEntry, DomainEntryTable } from './types';
+import NoDomains from './NoEnsDomains';
 
 const Label = styled.span`
   display: flex;
@@ -22,39 +23,54 @@ const TableContainer = styled.div`
   max-height: 600px;
 `;
 
-export default function MyDomains({ userAddress }: MyDomainsProps) {
-  const { loading, error, data } = useQuery(QUERY_GET_ENS_DOMAINS, {
-    variables: { owner: userAddress.toLowerCase() }
+export default function MyDomains({ accounts }: MyDomainsProps) {
+
+  const accountEnsData = accounts.map((account) => {
+    const { loading, error, data } = useQuery(QUERY_GET_ENS_DOMAINS, {
+      variables: { owner: account.address.toLowerCase() }
+    });
+
+    if (loading) {
+      return null;
+    }
+    if (error) {
+      //console.log(error);
+      return null;
+    }
+
+    if (data.account === null) {
+      return null;
+    }
+
+    const domains = data.account.registrations;
+
+    const formatDate = (timestamp: number): string => moment.unix(timestamp).format('YYYY-MM-DD H:mm A');
+
+    const topLevelDomains = domains.filter(
+      (domain: DomainEntry) =>
+        domain.domain.name === [domain.domain.labelName, domain.domain.parent.name].join('.')
+    );
+    const myDomains = topLevelDomains.map((domain: DomainEntry) => {
+      console.log(account.label);
+      return { 
+        owner: account.address, 
+        ownerLabel: account.label,
+        domainName: domain.domain.name, 
+        expireDate: formatDate(domain.expiryDate),
+        expireSoon: domain.expiryDate - moment().unix() <= 2.592e+6 ? true : false
+      };
+    });
+
+    return myDomains;
   });
 
-  if (loading) {
-    return `Loading ...`;
-  }
-  if (error) {
-    return `<div>${JSON.stringify(error)}</div>`;
-  }
+  const allData = [].concat.apply([], accountEnsData.filter(el => el !== null))
 
-  if (data.account === null) {
-    return ``;
+  if(allData.length === 0) {
+    return <NoDomains />
   }
 
-  const domains = data.account.registrations;
-
-  const formatDate = (timestamp: number): string => moment.unix(timestamp).format('YYYY-MM-DD H:mm A');
   const EnsManagerLink = (domain: string): string => `https://app.ens.domains/name/${domain}`;
-
-  const topLevelDomains = domains.filter(
-    (domain: DomainEntry) =>
-      domain.domain.name === [domain.domain.labelName, domain.domain.parent.name].join('.')
-  );
-  const myDomains = topLevelDomains.map((domain: DomainEntry) => {
-    return { 
-      owner: userAddress, 
-      domainName: domain.domain.name, 
-      expireDate: formatDate(domain.expiryDate),
-      expireSoon: domain.expiryDate - moment().unix() <= 2.592e+6 ? true : false
-    };
-  });
 
   const domainTable = {
     head: [
@@ -64,22 +80,24 @@ export default function MyDomains({ userAddress }: MyDomainsProps) {
       translateRaw('ENS_MY_DOMAINS_TABLE_EXPIRES_HEADER'),
       ''
     ],
-    body: myDomains.map((domain: DomainEntryTable, index: number) => {
-      return [
-        <RowAlignment key={index}>
-          { domain.expireSoon ? <Tooltip type="warning" tooltip={translateRaw('ENS_EXPIRING_SOON')} /> : ``}
-        </RowAlignment>,
-        <Label key={2}>{domain.owner}</Label>,
-        <RowAlignment key={3} align="left">
-          {domain.domainName}
-        </RowAlignment>,
-        <RowAlignment key={4} align="left">
-          {domain.expireDate}
-        </RowAlignment>,
-        <RowAlignment key={5} align="right">
-          <LinkOut link={EnsManagerLink(domain.domainName)} />
-        </RowAlignment>
-      ];
+    body: allData.map((domain: DomainEntryTable, index: number) => {
+        return [
+          <RowAlignment key={index}>
+            { domain.expireSoon ? <Tooltip type="warning" tooltip={translateRaw('ENS_EXPIRING_SOON')} /> : ``}
+          </RowAlignment>,
+          <Label key={2}>
+            <Account title={domain.ownerLabel} address={domain.owner} />
+          </Label>,
+          <RowAlignment key={3} align="left">
+            {domain.domainName}
+          </RowAlignment>,
+          <RowAlignment key={4} align="left">
+            {domain.expireDate}
+          </RowAlignment>,
+          <RowAlignment key={5} align="right">
+            <LinkOut link={EnsManagerLink(domain.domainName)} />
+          </RowAlignment>
+        ];
     }),
     config: {
       primaryColumn: 'Expires',

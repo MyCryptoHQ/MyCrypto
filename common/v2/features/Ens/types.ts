@@ -1,3 +1,5 @@
+import { StoreAccount } from 'v2/types';
+
 export interface MyDomainsTableProps {
   domainName: string;
   owner: string;
@@ -5,7 +7,7 @@ export interface MyDomainsTableProps {
 }
 
 export interface MyDomainsProps {
-  userAddress: string;
+  accounts: StoreAccount[];
 }
 
 export interface DomainEntry {
@@ -29,6 +31,7 @@ export interface DomainParent {
 
 export interface DomainEntryTable {
   owner: string;
+  ownerLabel: string;
   domainName: string;
   expireDate: string;
   expireSoon: boolean;
