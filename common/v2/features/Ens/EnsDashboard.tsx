@@ -53,12 +53,12 @@ const defaultData: MyDomainsDate = {
 };
 
 export default function EnsDashboard() {
-  const { currentAccounts } = useContext(StoreContext);
+  const { accounts } = useContext(StoreContext);
   const [fetchedEnsData, setEnsData] = useState(defaultData);
 
   useEffectOnce(() => {
     EnsSubgraphService.instance
-      .fetchOwnershipRecords(currentAccounts)
+      .fetchOwnershipRecords(accounts)
       .then((data: DomainTableEntry[]) => setEnsData({ data: data || [], isFetched: true }));
   });
 
