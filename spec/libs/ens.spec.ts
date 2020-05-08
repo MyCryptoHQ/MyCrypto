@@ -1,4 +1,4 @@
-import * as ens from 'v2/services/EthService/ens';
+import * as ens from '@services/EthService/ens';
 
 // TODO: write tests for:
 // ens.placeBid

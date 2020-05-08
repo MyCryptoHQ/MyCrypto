@@ -1,4 +1,4 @@
-import { TxParcel } from 'v2/types';
+import { TxParcel } from '@types';
 export default ([
   {
     txRaw: {

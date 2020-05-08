@@ -1,6 +1,6 @@
 import { bigNumberify } from 'ethers/utils';
 
-import { ExtendedAsset, StoreAsset } from 'v2/types';
+import { ExtendedAsset, StoreAsset } from '@types';
 
 export const fAssets = [
   {

@@ -1,4 +1,4 @@
-import { CustomNodeConfig, NodeType } from 'v2/types';
+import { CustomNodeConfig, NodeType } from '@types';
 
 const customNodeConfig: CustomNodeConfig = {
   name: 'eth_custom_node_1',

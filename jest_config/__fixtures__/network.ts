@@ -1,4 +1,4 @@
-import { Network, NodeType, TUuid, TSymbol, BlockExplorer } from 'v2/types';
+import { Network, NodeType, TUuid, TSymbol, BlockExplorer } from '@types';
 
 export const fNetwork: Network = {
   id: 'Ropsten',

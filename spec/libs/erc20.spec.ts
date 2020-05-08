@@ -1,4 +1,4 @@
-import { ERC20, toWei } from 'v2/services/EthService';
+import { ERC20, toWei } from '@services/EthService';
 
 const MYCRYPTO_ADDRESS = '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8';
 
