@@ -41,7 +41,8 @@ export {
   appendNonce,
   appendGasLimit,
   appendGasPrice,
-  appendSender
+  appendSender,
+  padLeftEven
 } from './utils';
 export {
   isValidPath,
