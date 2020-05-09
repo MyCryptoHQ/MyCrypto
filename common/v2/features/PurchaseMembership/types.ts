@@ -1,4 +1,4 @@
-import { Asset, Network, StoreAccount } from 'v2/types';
+import { Asset, Network, StoreAccount } from '@types';
 import { IMembershipConfig } from './config';
 
 export type TStepAction = (payload: any, after: () => void) => void;

@@ -2,9 +2,9 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { Panel } from '@mycrypto/ui';
 
-import { NETWORKS_CONFIG, NODES_CONFIG } from 'v2/database/data';
-import { Network, NetworkId, WalletId } from 'v2/types';
-import { noOp } from 'v2/utils';
+import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
+import { Network, NetworkId, WalletId } from '@types';
+import { noOp } from '@utils';
 
 import { ProtectTxProvider } from '../index';
 import { ProtectTxSign } from './ProtectTxSign';

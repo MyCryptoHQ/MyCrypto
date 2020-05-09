@@ -2,9 +2,9 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { Tooltip } from '@mycrypto/ui';
 
-import { WalletId } from 'v2/types';
-import { BREAK_POINTS, COLORS } from 'v2/theme';
-import translate from 'v2/translations';
+import { WalletId } from '@types';
+import { BREAK_POINTS, COLORS } from '@theme';
+import translate from '@translations';
 
 const { SCREEN_SM, SCREEN_XS } = BREAK_POINTS;
 const { WHITE } = COLORS;
@@ -31,11 +31,11 @@ interface Icon {
 type Props = OwnProps & Icon;
 
 const WalletButtonEnterAnimation = (isDisabled?: boolean) => keyframes`
-  0% { 
+  0% {
     opacity: 0;
     transform: translateY(6px);
   }
-  100% { 
+  100% {
     ${isDisabled ? 'opacity: 0.6;' : 'opacity: 1;'}
     transform: translateY(0px);
   }

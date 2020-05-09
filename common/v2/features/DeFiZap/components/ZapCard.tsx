@@ -2,13 +2,13 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { formatEther } from 'ethers/utils';
 
-import { RouterLink, Tooltip, Button } from 'v2/components';
-import { ROUTE_PATHS } from 'v2/config';
-import { COLORS, BREAK_POINTS, FONT_SIZE, SPACING } from 'v2/theme';
-import { weiToFloat, trimBN } from 'v2/utils';
-import { StoreContext, getTotalByAsset, RatesContext } from 'v2/services';
-import { translateRaw } from 'v2/translations';
-import { IconID } from 'v2/components/Tooltip';
+import { RouterLink, Tooltip, Button } from '@components';
+import { ROUTE_PATHS } from '@config';
+import { COLORS, BREAK_POINTS, FONT_SIZE, SPACING } from '@theme';
+import { weiToFloat, trimBN } from '@utils';
+import { StoreContext, getTotalByAsset, RatesContext } from '@services';
+import { translateRaw } from '@translations';
+import { IconID } from '@components/Tooltip';
 
 import { fetchZapRiskObject, IZapConfig } from '../config';
 

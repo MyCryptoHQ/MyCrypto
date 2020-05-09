@@ -11,7 +11,7 @@ import {
   InlineMessage,
   Button,
   AddressField
-} from 'v2/components';
+} from '@components';
 import {
   Contract,
   StoreAccount,
@@ -19,11 +19,11 @@ import {
   ExtendedContract,
   Network,
   IReceiverAddress
-} from 'v2/types';
-import { COLORS, BREAK_POINTS } from 'v2/theme';
-import { translateRaw } from 'v2/translations';
-import { isValidETHAddress, isCreationAddress } from 'v2/services/EthService/validators';
-import { getNetworkById, NetworkContext } from 'v2/services';
+} from '@types';
+import { COLORS, BREAK_POINTS } from '@theme';
+import { translateRaw } from '@translations';
+import { isValidETHAddress, isCreationAddress } from '@services/EthService/validators';
+import { getNetworkById, NetworkContext } from '@services';
 
 import ContractDropdownOption from './ContractDropdownOption';
 import ContractDropdownValue from './ContractDropdownValue';
@@ -31,7 +31,7 @@ import GeneratedInteractionForm from './GeneratedInteractionForm';
 import { CUSTOM_CONTRACT_ADDRESS } from '../constants';
 import { ABIItem } from '../types';
 import { getParsedQueryString } from '../utils';
-import { isValidENSName } from 'v2/services/EthService';
+import { isValidENSName } from '@services/EthService';
 
 const { BLUE_BRIGHT, WHITE, BLUE_LIGHT } = COLORS;
 const { SCREEN_SM } = BREAK_POINTS;

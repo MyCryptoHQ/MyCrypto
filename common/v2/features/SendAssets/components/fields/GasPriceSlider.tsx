@@ -3,10 +3,10 @@ import { Field, FieldProps } from 'formik';
 import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
 import styled from 'styled-components';
 
-import translate, { translateRaw } from 'v2/translations';
-import { GAS_PRICE_DEFAULT } from 'v2/config';
-import { GasEstimates, IFormikFields, Network } from 'v2/types';
-import { COLORS } from 'v2/theme';
+import translate, { translateRaw } from '@translations';
+import { GAS_PRICE_DEFAULT } from '@config';
+import { GasEstimates, IFormikFields, Network } from '@types';
+import { COLORS } from '@theme';
 import './GasPriceSlider.scss';
 
 const SliderWithTooltip = createSliderWithTooltip(Slider);

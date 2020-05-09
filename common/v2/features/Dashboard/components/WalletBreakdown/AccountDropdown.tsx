@@ -2,12 +2,12 @@ import React, { useEffect, useRef, useState, useContext } from 'react';
 import { Icon, Identicon } from '@mycrypto/ui';
 import styled, { StyledFunction } from 'styled-components';
 
-import { translateRaw } from 'v2/translations';
-import { Checkbox } from 'v2/components';
-import { useOnClickOutside, truncate, trimEllipsis } from 'v2/utils';
-import { getLabelByAccount, AddressBookContext } from 'v2/services/Store';
-import { COLORS } from 'v2/theme';
-import { IAccount, ExtendedAddressBook, TUuid } from 'v2/types';
+import { translateRaw } from '@translations';
+import { Checkbox } from '@components';
+import { useOnClickOutside, truncate, trimEllipsis } from '@utils';
+import { getLabelByAccount, AddressBookContext } from '@services/Store';
+import { COLORS } from '@theme';
+import { IAccount, ExtendedAddressBook, TUuid } from '@types';
 
 const { BLUE_BRIGHT, BLUE_LIGHT, GREY_LIGHTEST } = COLORS;
 

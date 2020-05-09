@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { ContentPanel } from 'v2/components';
-import { translateRaw } from 'v2/translations';
-import { ROUTE_PATHS } from 'v2/config';
+import { ContentPanel } from '@components';
+import { translateRaw } from '@translations';
+import { ROUTE_PATHS } from '@config';
 
 import { IStepperPath } from './types';
 

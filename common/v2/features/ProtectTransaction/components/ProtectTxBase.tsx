@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from 'v2/theme';
+import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 
 const ProtectTxBase = styled.div`
   display: flex;

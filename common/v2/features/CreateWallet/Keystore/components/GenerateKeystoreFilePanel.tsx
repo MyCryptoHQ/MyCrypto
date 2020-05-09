@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 import zxcvbn from 'zxcvbn';
 
-import { ExtendedContentPanel, InputField, Spinner } from 'v2/components';
-import { PanelProps } from 'v2/features/CreateWallet';
-import translate, { translateRaw } from 'v2/translations';
+import { ExtendedContentPanel, InputField, Spinner } from '@components';
+import { PanelProps } from '@features/CreateWallet';
+import translate, { translateRaw } from '@translations';
 
 // Legacy
 

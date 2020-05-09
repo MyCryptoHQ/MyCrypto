@@ -3,8 +3,8 @@ import { Panel } from '@mycrypto/ui';
 import Slider from 'react-slick';
 import styled from 'styled-components';
 
-import { translateRaw } from 'v2/translations';
-import { BREAK_POINTS, COLORS } from 'v2/theme';
+import { translateRaw } from '@translations';
+import { BREAK_POINTS, COLORS } from '@theme';
 
 import './SliderImports.scss';
 

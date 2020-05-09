@@ -8,25 +8,17 @@ import pipe from 'ramda/src/pipe';
 
 import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './constants';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
-import { NotificationTemplates } from 'v2/features/NotificationsPanel';
-import {
-  TAddress,
-  IRawAccount,
-  Asset,
-  DPathFormat,
-  ISettings,
-  WalletId,
-  NetworkId
-} from 'v2/types';
-import { withContext, generateAccountUUID } from 'v2/utils';
+import { NotificationTemplates } from '@features/NotificationsPanel';
+import { TAddress, IRawAccount, Asset, DPathFormat, ISettings, WalletId, NetworkId } from '@types';
+import { withContext, generateAccountUUID } from '@utils';
 import {
   NetworkContext,
   AssetContext,
   IAssetContext,
   INetworkContext,
   getNewDefaultAssetTemplateByNetwork
-} from 'v2/services/Store';
-import { DEFAULT_NETWORK, ROUTE_PATHS } from 'v2/config';
+} from '@services/Store';
+import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 
 interface Props extends RouteComponentProps<{}> {
   settings: ISettings;

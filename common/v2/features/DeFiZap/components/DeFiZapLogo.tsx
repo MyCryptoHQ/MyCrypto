@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { translateRaw } from 'v2/translations';
+import { translateRaw } from '@translations';
 
 import defizaplogo from 'assets/images/defizap/defizaplogo.svg';
 

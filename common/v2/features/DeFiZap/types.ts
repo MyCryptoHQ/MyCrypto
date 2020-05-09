@@ -1,4 +1,4 @@
-import { ITxConfig, ITxReceipt, Asset, Network, StoreAccount } from 'v2/types';
+import { ITxConfig, ITxReceipt, Asset, Network, StoreAccount } from '@types';
 import { IZapConfig } from './config';
 
 export type TStepAction = (payload: any, after: () => void) => void;

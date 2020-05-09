@@ -1,4 +1,4 @@
-import { NetworkId } from 'v2/types';
+import { NetworkId } from '@types';
 
 export const INFURA_API_KEY = 'c02fff6b5daa434d8422b8ece54c7286';
 

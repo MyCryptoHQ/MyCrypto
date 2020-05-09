@@ -4,17 +4,17 @@ import { Formik, Form, Field, FieldProps } from 'formik';
 import isEmpty from 'lodash/isEmpty';
 import * as Yup from 'yup';
 
-import translate, { translateRaw } from 'v2/translations';
-import { SPACING } from 'v2/theme';
-import { IAccount, Network, StoreAccount, Asset, TSymbol, TUuid } from 'v2/types';
-import { AccountDropdown, InlineMessage, AmountInput, Button } from 'v2/components';
-import { validateAmountField } from 'v2/features/SendAssets/components/validators/validators';
-import { isEthereumAccount } from 'v2/services/Store/Account/helpers';
-import { StoreContext, AssetContext, NetworkContext } from 'v2/services/Store';
-import { fetchGasPriceEstimates } from 'v2/services/ApiService';
-import { getNonce } from 'v2/services/EthService';
-import { ETHUUID, noOp } from 'v2/utils';
-import { getAccountsWithAssetBalance } from 'v2/features/SwapAssets/helpers';
+import translate, { translateRaw } from '@translations';
+import { SPACING } from '@theme';
+import { IAccount, Network, StoreAccount, Asset, TSymbol, TUuid } from '@types';
+import { AccountDropdown, InlineMessage, AmountInput, Button } from '@components';
+import { validateAmountField } from '@features/SendAssets/components/validators/validators';
+import { isEthereumAccount } from '@services/Store/Account/helpers';
+import { StoreContext, AssetContext, NetworkContext } from '@services/Store';
+import { fetchGasPriceEstimates } from '@services/ApiService';
+import { getNonce } from '@services/EthService';
+import { ETHUUID, noOp } from '@utils';
+import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
 
 import MembershipDropdown from './MembershipDropdown';
 import { MembershipPurchaseState, MembershipSimpleTxFormFull } from '../types';

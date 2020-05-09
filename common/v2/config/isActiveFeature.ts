@@ -1,4 +1,4 @@
-import { IS_DEV } from 'v2/utils';
+import { IS_DEV } from '@utils';
 
 export enum FEATURE_LIST {
   DASHBOARD = 'DASHBOARD',

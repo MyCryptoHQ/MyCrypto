@@ -1,5 +1,5 @@
-import { IWalletConfig, WALLETS_CONFIG } from 'v2/config';
-import { WalletId, WalletType } from 'v2/types';
+import { IWalletConfig, WALLETS_CONFIG } from '@config';
+import { WalletId, WalletType } from '@types';
 
 export function getWeb3Config(): IWalletConfig {
   if (

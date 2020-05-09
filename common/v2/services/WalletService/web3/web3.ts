@@ -1,8 +1,8 @@
-import { translateRaw } from 'v2/translations';
+import { translateRaw } from '@translations';
 
-import { isWeb3Node, setupWeb3Node } from 'v2/services/EthService';
-import { Network } from 'v2/types';
-import { getNetworkByChainId } from 'v2/services/Store';
+import { isWeb3Node, setupWeb3Node } from '@services/EthService';
+import { Network } from '@types';
+import { getNetworkByChainId } from '@services/Store';
 import { Web3Wallet } from '../non-deterministic';
 
 export const unlockWeb3 = (onSuccess: (data: any) => void) => async (networks: Network[]) => {

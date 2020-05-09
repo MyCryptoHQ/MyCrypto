@@ -5,7 +5,7 @@ import {
   getBaseAssetByNetwork,
   getAssetByContractAndNetwork,
   getStoreAccount
-} from 'v2/services/Store';
+} from '@services/Store';
 import {
   ERC20,
   fromWei,
@@ -19,9 +19,8 @@ import {
   toWei,
   getDecimalFromEtherUnit,
   gasPriceToBase
-} from 'v2/services/EthService';
-import { ITxReceipt, ExtendedAsset, Network, ITxConfig, StoreAccount } from 'v2/types';
-import { TAddress } from 'v2/types/address';
+} from '@services/EthService';
+import { ITxReceipt, ExtendedAsset, Network, ITxConfig, StoreAccount, TAddress } from '@types';
 
 export const fromTxReceiptObj = (txReceipt: ITxReceipt) => (
   assets: ExtendedAsset[],

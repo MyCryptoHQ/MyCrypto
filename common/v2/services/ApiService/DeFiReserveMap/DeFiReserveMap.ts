@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 
-import { DEFI_RESERVE_MAPPING_URL } from 'v2/config';
-import { translateRaw } from 'v2/translations';
+import { DEFI_RESERVE_MAPPING_URL } from '@config';
+import { translateRaw } from '@translations';
 
 import { default as ApiService } from '../ApiService';
 

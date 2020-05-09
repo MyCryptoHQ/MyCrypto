@@ -5,7 +5,7 @@ import reduce from 'ramda/src/reduce';
 import concat from 'ramda/src/concat';
 import keys from 'ramda/src/keys';
 
-import { generateUUID } from 'v2/utils';
+import { generateUUID } from '@utils';
 import {
   Asset,
   AssetBalanceObject,
@@ -16,7 +16,7 @@ import {
   TUuid,
   ISettings,
   LSKeys
-} from 'v2/types';
+} from '@types';
 
 import { devAccounts, DevAccount, SeedAssetBalance, devAssets, devContacts } from '../seed';
 import { StoreAction } from '../types';

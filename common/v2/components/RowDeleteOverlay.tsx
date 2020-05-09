@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { COLORS, BREAK_POINTS } from 'v2/theme';
-import { Button } from 'v2/components';
-import { translateRaw } from 'v2/translations';
+import { COLORS, BREAK_POINTS } from '@theme';
+import { Button } from '@components';
+import { translateRaw } from '@translations';
 
 /*
   Passed to CollapisableTable and Table by AccountList and AddressBook

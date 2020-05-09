@@ -1,4 +1,4 @@
-import { Fiat, TSymbol } from 'v2/types';
+import { Fiat, TSymbol } from '@types';
 
 interface FiatObject {
   [key: string]: Fiat;

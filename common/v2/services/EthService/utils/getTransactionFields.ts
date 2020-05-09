@@ -1,6 +1,6 @@
 import { Transaction as Tx } from 'ethereumjs-tx';
 
-import { IHexStrTransaction } from 'v2/types';
+import { IHexStrTransaction } from '@types';
 import { hexEncodeData, hexEncodeQuantity } from './hexEncode';
 
 export const getTransactionFields = (t: Tx): IHexStrTransaction => {

@@ -1,6 +1,6 @@
-import { getAssetByUUID } from 'v2/services/Store';
-import { Asset, DPathFormat, Network, NetworkId, WalletId } from 'v2/types';
-import { HD_WALLETS } from 'v2/config';
+import { getAssetByUUID } from '@services/Store';
+import { Asset, DPathFormat, Network, NetworkId, WalletId } from '@types';
+import { HD_WALLETS } from '@config';
 
 export const getNetworkByChainId = (
   chainId: number,

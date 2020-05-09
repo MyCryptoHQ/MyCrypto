@@ -1,4 +1,4 @@
-import { IAccount, Fiat, TAddress, TUuid } from 'v2/types';
+import { IAccount, Fiat, TAddress, TUuid } from '@types';
 
 export interface BalanceAccount {
   address: TAddress;

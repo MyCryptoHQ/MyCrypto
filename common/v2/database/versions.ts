@@ -1,5 +1,5 @@
-import { LocalStorage } from 'v2/types';
-import { noOp } from 'v2/utils';
+import { LocalStorage } from '@types';
+import { noOp } from '@utils';
 
 import { migrate } from './v1.0.0';
 import { SCHEMA_BASE } from './data';

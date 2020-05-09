@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { fTxConfig, fTxReceipt, fAccount } from '@fixtures';
-import { ITxStatus, ExtendedAddressBook, ITxType } from 'v2/types';
-import { noOp } from 'v2/utils';
-import { devContacts } from 'v2/database/seed';
-import { IZapConfig, ZAPS_CONFIG, defaultZapId } from 'v2/features/DeFiZap/config';
-import { MEMBERSHIP_CONFIG, IMembershipId } from 'v2/features/PurchaseMembership/config';
+import { ITxStatus, ExtendedAddressBook, ITxType } from '@types';
+import { noOp } from '@utils';
+import { devContacts } from '@database/seed';
+import { IZapConfig, ZAPS_CONFIG, defaultZapId } from '@features/DeFiZap/config';
+import { MEMBERSHIP_CONFIG, IMembershipId } from '@features/PurchaseMembership/config';
 
 import { TxReceiptUI } from './TxReceipt';
 import { constructSenderFromTxConfig } from './helpers';

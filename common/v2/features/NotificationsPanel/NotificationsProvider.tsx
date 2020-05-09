@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 
-import { DataContext } from 'v2/services/Store';
-import { ExtendedNotification, LSKeys } from 'v2/types';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { generateUUID, notUndefined } from 'v2/utils';
+import { DataContext } from '@services/Store';
+import { ExtendedNotification, LSKeys } from '@types';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
+import { generateUUID, notUndefined } from '@utils';
 import { notificationsConfigs } from './constants';
 
 export interface ProviderState {

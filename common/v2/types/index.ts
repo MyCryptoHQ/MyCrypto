@@ -48,7 +48,15 @@ export { NetworkId } from './networkId';
 export { NodeType } from './node';
 export { DPathFormat } from './dPath';
 export { ISettings } from './settings';
-export { LocalStorage, LSKeys, DSKeys, DataStore, DataStoreItem, DataStoreEntry } from './store';
+export {
+  LocalStorage,
+  LSKeys,
+  DSKeys,
+  DataStore,
+  DataStoreItem,
+  DataStoreEntry,
+  EncryptedDataStore
+} from './store';
 export { Notification, ExtendedNotification } from './notification';
 export { IERC20 } from './erc20';
 export { IUNLOCKLOCK } from './unlockProtocolToken';
@@ -87,6 +95,6 @@ export { ToastConfig, ToastType, ToastConfigsProps } from './toast';
 export { InlineMessageType } from './inlineMessages';
 export { ErrorObject } from './errorObject';
 export { TAction, TStateGetter } from './action';
-export { TxParcel } from 'v2/utils/useTxMulti/types'; // Specific re-export to avoid Circular deps
+export { TxParcel } from '@utils/useTxMulti/types'; // Specific re-export to avoid Circular deps
 export { TURL } from './url';
 export { TBN } from './bigNumber';

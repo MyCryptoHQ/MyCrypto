@@ -1,5 +1,5 @@
 import React from 'react';
-import { TagsList } from 'v2/components';
+import { TagsList } from '@components';
 import { getPlatformColor } from '../helpers';
 
 interface Props {

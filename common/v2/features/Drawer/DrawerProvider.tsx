@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Transition } from 'react-spring/renderprops.cjs';
 
-import { Overlay } from 'v2/components';
+import { Overlay } from '@components';
 import { default as Drawer } from './Drawer';
 
 export interface Action {

@@ -2,9 +2,9 @@ import React, { ChangeEvent, Component } from 'react';
 import { Field, FieldProps, FormikHandlers } from 'formik';
 import { ComboBox } from '@mycrypto/ui';
 
-import { AccountContext, NetworkContext } from 'v2/services/Store';
-import { Network } from 'v2/types';
-import { translateRaw } from 'v2/translations';
+import { AccountContext, NetworkContext } from '@services/Store';
+import { Network } from '@types';
+import { translateRaw } from '@translations';
 
 interface OwnProps {
   handleChange: FormikHandlers['handleChange'];

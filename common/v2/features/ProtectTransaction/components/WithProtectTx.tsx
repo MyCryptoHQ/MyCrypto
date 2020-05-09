@@ -10,12 +10,12 @@ import {
   ITxObject,
   ITxReceipt,
   ITxSigned
-} from 'v2/types';
-import { isWeb3Wallet, useTxMulti, useScreenSize } from 'v2/utils';
-import { BREAK_POINTS, COLORS } from 'v2/theme';
-import { processFormDataToTx } from 'v2/features/SendAssets/helpers';
-import { PROTECTED_TX_FEE_ADDRESS } from 'v2/config';
-import { StoreContext } from 'v2/services';
+} from '@types';
+import { isWeb3Wallet, useTxMulti, useScreenSize } from '@utils';
+import { BREAK_POINTS, COLORS } from '@theme';
+import { processFormDataToTx } from '@features/SendAssets/helpers';
+import { PROTECTED_TX_FEE_ADDRESS } from '@config';
+import { StoreContext } from '@services';
 
 import { ProtectTxProtection } from './ProtectTxProtection';
 import { ProtectTxSign } from './ProtectTxSign';

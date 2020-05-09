@@ -8,7 +8,7 @@ import Select, {
 import styled from 'styled-components';
 import { Icon } from '@mycrypto/ui';
 
-import { COLORS, FONT_SIZE } from 'v2/theme';
+import { COLORS, FONT_SIZE } from '@theme';
 
 import crossIcon from 'common/assets/images/icn-cross.svg';
 

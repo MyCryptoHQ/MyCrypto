@@ -1,4 +1,4 @@
-import { ERC20, hexEncodeData } from 'v2/services/EthService';
+import { ERC20, hexEncodeData } from '@services/EthService';
 import {
   CallRequest,
   EstimateGasRequest,
@@ -11,7 +11,7 @@ import {
   GetTransactionReceiptRequest
 } from './types';
 import { Token } from 'shared/types/network';
-import { Asset, IHexStrTransaction, TxObj } from 'v2/types';
+import { Asset, IHexStrTransaction, TxObj } from '@types';
 import { UnlockToken } from '../../contracts';
 
 export class RPCRequests {

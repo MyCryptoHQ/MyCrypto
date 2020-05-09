@@ -1,9 +1,9 @@
 import React from 'react';
 import path from 'ramda/src/path';
 
-import { ITxStatus, TxParcel } from 'v2/types';
-import { VerticalStepper } from 'v2/components';
-import { translateRaw } from 'v2/translations';
+import { ITxStatus, TxParcel } from '@types';
+import { VerticalStepper } from '@components';
+import { translateRaw } from '@translations';
 import { IMembershipConfig } from '../config';
 import MembershipSelectedBanner from './MembershipSelectedBanner';
 

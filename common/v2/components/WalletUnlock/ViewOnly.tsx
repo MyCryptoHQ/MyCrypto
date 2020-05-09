@@ -3,13 +3,13 @@ import { Formik, Form } from 'formik';
 import styled from 'styled-components';
 import equals from 'ramda/src/equals';
 
-import { translateRaw } from 'v2/translations';
-import { WalletId, FormData, IReceiverAddress, ErrorObject } from 'v2/types';
-import { Button, ContactLookupField } from 'v2/components';
-import { WalletFactory } from 'v2/services/WalletService';
-import { NetworkContext } from 'v2/services/Store';
-import { COLORS } from 'v2/theme';
-import { toChecksumAddressByChainId, isFormValid } from 'v2/utils';
+import { translateRaw } from '@translations';
+import { WalletId, FormData, IReceiverAddress, ErrorObject } from '@types';
+import { Button, ContactLookupField } from '@components';
+import { WalletFactory } from '@services/WalletService';
+import { NetworkContext } from '@services/Store';
+import { COLORS } from '@theme';
+import { toChecksumAddressByChainId, isFormValid } from '@utils';
 
 const FormWrapper = styled(Form)`
   padding: 2em 0;

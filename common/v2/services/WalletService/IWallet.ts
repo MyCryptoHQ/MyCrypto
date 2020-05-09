@@ -1,7 +1,7 @@
 import { Transaction as Tx } from 'ethereumjs-tx';
 
-import { INode } from 'v2/types';
-import { Web3Node } from 'v2/services/EthService';
+import { INode } from '@types';
+import { Web3Node } from '@services/EthService';
 
 interface IBaseWallet {
   isReadOnly?: boolean;

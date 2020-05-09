@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { truncate } from 'v2/utils';
-import { TSymbol, TUuid } from 'v2/types';
+import { truncate } from '@utils';
+import { TSymbol, TUuid } from '@types';
 import Currency from './Currency';
 import Account from './Account';
 

@@ -11,7 +11,7 @@ import {
   ISettings,
   LocalStorage,
   DSKeys
-} from 'v2/types';
+} from '@types';
 import { ActionPayload, ActionV, ActionT } from './reducer';
 import { marshallState, deMarshallState } from './utils';
 

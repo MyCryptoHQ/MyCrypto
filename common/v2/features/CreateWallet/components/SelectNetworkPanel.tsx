@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import translate, { translateRaw } from 'v2/translations';
-import { ExtendedContentPanel, InlineMessage, NetworkSelectDropdown } from 'v2/components';
-import { WalletId, NetworkId } from 'v2/types';
-import { NetworkContext } from 'v2/services/Store';
+import translate, { translateRaw } from '@translations';
+import { ExtendedContentPanel, InlineMessage, NetworkSelectDropdown } from '@components';
+import { WalletId, NetworkId } from '@types';
+import { NetworkContext } from '@services/Store';
 import { PanelProps } from '../CreateWallet';
 
 interface Props extends PanelProps {

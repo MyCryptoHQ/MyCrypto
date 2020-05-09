@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from 'react';
 
-import { ExtendedContract, LSKeys, TUuid } from 'v2/types';
+import { ExtendedContract, LSKeys, TUuid } from '@types';
 import { DataContext } from '../DataManager';
 
 export interface ProviderState {

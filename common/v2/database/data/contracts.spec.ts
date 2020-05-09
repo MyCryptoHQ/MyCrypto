@@ -1,6 +1,6 @@
-import { isValidAddress } from 'v2/services/EthService';
+import { isValidAddress } from '@services/EthService';
 import { Contracts as CONTRACTS } from './contracts';
-import { NetworkId } from 'v2/types';
+import { NetworkId } from '@types';
 import { NETWORKS_CONFIG } from '.';
 
 describe('Contracts JSON', () => {

@@ -1,7 +1,6 @@
 import { TransactionReceipt } from 'ethers/providers';
 
-import { Network, ITxStatus, StoreAccount, ITxObject, ITxHash } from 'v2/types';
-import { TUuid } from 'v2/types/uuid';
+import { Network, ITxStatus, StoreAccount, ITxObject, ITxHash, TUuid } from '@types';
 
 export interface TxParcel {
   readonly _uuid: TUuid;

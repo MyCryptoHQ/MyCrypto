@@ -1,5 +1,5 @@
-import { translateRaw } from 'v2/translations';
-import { APP_ROUTES_OBJECT } from 'v2/routing';
+import { translateRaw } from '@translations';
+import { APP_ROUTES_OBJECT } from '@routing';
 
 import settingsIcon from 'assets/images/icn-settings.svg';
 import dashboardIcon from 'common/assets/images/icn-dashboard.svg';

@@ -15,7 +15,7 @@ import {
   TTicker,
   NetworkId,
   AssetBalanceObject
-} from 'v2/types';
+} from '@types';
 
 // Migration from v0.0.1 to v1.0.0
 // We can expect the previous values to be valid, so we only need to address

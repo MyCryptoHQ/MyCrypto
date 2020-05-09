@@ -10,9 +10,9 @@ import { default as BN } from 'bignumber.js';
 import { bigNumberify } from 'ethers/utils';
 import { BigNumber as EthScanBN } from '@ethersproject/bignumber';
 
-import { ETHSCAN_NETWORKS } from 'v2/config';
-import { TAddress, StoreAccount, StoreAsset, Asset, Network, TBN } from 'v2/types';
-import { ProviderHandler } from 'v2/services/EthService';
+import { ETHSCAN_NETWORKS } from '@config';
+import { TAddress, StoreAccount, StoreAsset, Asset, Network, TBN } from '@types';
+import { ProviderHandler } from '@services/EthService';
 
 export type BalanceMap<T = BN> = EthScanBalanceMap<T>;
 

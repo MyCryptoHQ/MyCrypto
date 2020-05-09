@@ -5,7 +5,7 @@ import mergeLeft from 'ramda/src/mergeLeft';
 import map from 'ramda/src/map';
 import toPairs from 'ramda/src/toPairs';
 
-import { ExtendedAsset, LSKeys, TUuid } from 'v2/types';
+import { ExtendedAsset, LSKeys, TUuid } from '@types';
 
 import { DataContext } from '../DataManager';
 import { getAssetByUUID } from './helpers';

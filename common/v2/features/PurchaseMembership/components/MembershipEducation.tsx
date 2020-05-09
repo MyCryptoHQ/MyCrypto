@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import { withRouter, Link } from 'react-router-dom';
 import { Accordion } from '@mycrypto/ui';
 
-import { FullSizeContentPanel, Button, Typography } from 'v2/components';
-import translate from 'v2/translations';
-import { ROUTE_PATHS } from 'v2/config';
-import { BREAK_POINTS, SPACING, COLORS } from 'v2/theme';
+import { FullSizeContentPanel, Button, Typography } from '@components';
+import translate from '@translations';
+import { ROUTE_PATHS } from '@config';
+import { BREAK_POINTS, SPACING, COLORS } from '@theme';
 
 import {
   FullSizePanelSection,

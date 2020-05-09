@@ -1,8 +1,8 @@
 import React, { Component, createContext } from 'react';
-import translate from 'v2/translations';
-import { formatErrorEmail, IS_DEV } from 'v2/utils';
-import { ROUTE_PATHS } from 'v2/config';
-import { IRoutePath } from 'v2/types';
+import translate from '@translations';
+import { formatErrorEmail, IS_DEV } from '@utils';
+import { ROUTE_PATHS } from '@config';
+import { IRoutePath } from '@types';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 interface IError {

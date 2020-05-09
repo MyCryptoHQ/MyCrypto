@@ -7,7 +7,7 @@ import isEmpty from 'ramda/src/isEmpty';
 import eqBy from 'ramda/src/eqBy';
 import prop from 'ramda/src/prop';
 
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services/ApiService/Analytics';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services/ApiService/Analytics';
 
 import {
   IRawAccount,
@@ -20,7 +20,7 @@ import {
   TUuid,
   ITxStatus,
   ITxType
-} from 'v2/types';
+} from '@types';
 
 import { DataContext } from '../DataManager';
 import { SettingsContext } from '../Settings';

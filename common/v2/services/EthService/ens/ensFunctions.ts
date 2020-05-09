@@ -1,4 +1,4 @@
-import { Network } from 'v2/types';
+import { Network } from '@types';
 import { ENSProvider } from '../network';
 
 export const getResolvedENSAddress = async (network: Network, name: string) => {

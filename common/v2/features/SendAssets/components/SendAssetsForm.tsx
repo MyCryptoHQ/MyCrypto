@@ -10,7 +10,7 @@ import path from 'ramda/src/path';
 import mergeDeepWith from 'ramda/src/mergeDeepWith';
 import { ValuesType } from 'utility-types';
 
-import translate, { translateRaw } from 'v2/translations';
+import translate, { translateRaw } from '@translations';
 import {
   InlineMessage,
   AccountDropdown,
@@ -20,14 +20,14 @@ import {
   Checkbox,
   ContactLookupField,
   Tooltip
-} from 'v2/components';
+} from '@components';
 import {
   getNetworkById,
   getBaseAssetByNetwork,
   getAccountsByAsset,
   StoreContext,
   getAccountBalance
-} from 'v2/services/Store';
+} from '@services/Store';
 import {
   Asset,
   Network,
@@ -38,8 +38,9 @@ import {
   IStepComponentProps,
   ITxConfig,
   ErrorObject,
-  StoreAccount
-} from 'v2/types';
+  StoreAccount,
+  InlineMessageType
+} from '@types';
 import {
   getNonce,
   hexToNumber,
@@ -53,8 +54,8 @@ import {
   bigNumGasPriceToViewableGwei,
   fromTokenBase,
   toTokenBase
-} from 'v2/services/EthService';
-import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
+} from '@services/EthService';
+import { fetchGasPriceEstimates, getGasEstimate } from '@services/ApiService';
 import {
   GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,
@@ -62,15 +63,14 @@ import {
   GAS_PRICE_GWEI_UPPER_BOUND,
   DEFAULT_ASSET_DECIMAL,
   DEFAULT_NETWORK
-} from 'v2/config';
-import { RatesContext } from 'v2/services/RatesProvider';
-import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
-import { formatSupportEmail, isFormValid as checkFormValid, ETHUUID } from 'v2/utils';
-import { InlineMessageType } from 'v2/types/inlineMessages';
-import { ProtectTxUtils, ProtectTxError } from 'v2/features/ProtectTransaction';
-import { ProtectTxShowError, ProtectTxButton } from 'v2/features/ProtectTransaction/components';
-import { ProtectTxContext } from 'v2/features/ProtectTransaction/ProtectTxProvider';
-import { useEffectOnce } from 'v2/vendor';
+} from '@config';
+import { RatesContext } from '@services/RatesProvider';
+import TransactionFeeDisplay from '@components/TransactionFlow/displays/TransactionFeeDisplay';
+import { formatSupportEmail, isFormValid as checkFormValid, ETHUUID } from '@utils';
+import { ProtectTxUtils, ProtectTxError } from '@features/ProtectTransaction';
+import { ProtectTxShowError, ProtectTxButton } from '@features/ProtectTransaction/components';
+import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
+import { useEffectOnce } from '@vendor';
 
 import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
 import './SendAssetsForm.scss';

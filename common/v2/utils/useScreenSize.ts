@@ -1,5 +1,5 @@
 import { useMediaQuery } from 'react-responsive';
-import { BREAK_POINTS } from 'v2/theme';
+import { BREAK_POINTS } from '@theme';
 
 const useScreenSize = () => {
   const isXsScreen = useMediaQuery({ minWidth: BREAK_POINTS.SCREEN_XS });

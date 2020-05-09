@@ -2,8 +2,8 @@ import React from 'react';
 import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { translateRaw } from 'v2/translations';
-import { COLORS, BREAK_POINTS } from 'v2/theme';
+import { translateRaw } from '@translations';
+import { COLORS, BREAK_POINTS } from '@theme';
 
 import bankIcon from 'common/assets/images/illo-bank.svg';
 import myCryptoIcon from 'common/assets/images/illo-with-mycrypto.svg';

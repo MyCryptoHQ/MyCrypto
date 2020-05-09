@@ -1,5 +1,5 @@
-import { filterObjectOfObjects } from 'v2/utils/filterObjectOfObjects';
-import { WalletType, WalletId } from 'v2/types';
+import { filterObjectOfObjects } from '@utils/filterObjectOfObjects';
+import { WalletType, WalletId } from '@types';
 
 import { KB_HELP_ARTICLE, getKBHelpArticle, HELP_ARTICLE } from './helpArticles';
 

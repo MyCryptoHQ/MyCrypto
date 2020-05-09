@@ -13,9 +13,9 @@ import {
   GAS_PRICE_GWEI_UPPER_BOUND,
   CREATION_ADDRESS,
   DEFAULT_ASSET_DECIMAL
-} from 'v2/config';
-import { JsonRPCResponse, InlineMessageType } from 'v2/types';
-import translate from 'v2/translations';
+} from '@config';
+import { JsonRPCResponse, InlineMessageType } from '@types';
+import translate from '@translations';
 
 import { stripHexPrefix, gasStringsToMaxGasBN, convertedToBaseUnit } from './utils';
 import { bigNumberify } from 'ethers/utils';

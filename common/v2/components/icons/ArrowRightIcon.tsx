@@ -1,5 +1,5 @@
 import React from 'react';
-import { COLORS } from 'v2/theme';
+import { COLORS } from '@theme';
 
 interface ArrowRightIconProps {
   fillColor?: string;

@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import semver from 'semver';
 
 import Modal from './Modal';
-import { BREAK_POINTS, COLORS } from 'v2/theme';
-import { GITHUB_RELEASE_NOTES_URL, OS, VERSION as currentVersion } from 'v2/config';
-import { getFeaturedOS } from 'v2/utils';
-import { AnalyticsService, ANALYTICS_CATEGORIES, GithubService } from 'v2/services/ApiService';
-import translate from 'v2/translations';
+import { BREAK_POINTS, COLORS } from '@theme';
+import { GITHUB_RELEASE_NOTES_URL, OS, VERSION as currentVersion } from '@config';
+import { getFeaturedOS } from '@utils';
+import { AnalyticsService, ANALYTICS_CATEGORIES, GithubService } from '@services/ApiService';
+import translate from '@translations';
 
 // Legacy
 import closeIcon from 'common/assets/images/icn-close.svg';

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { TSymbol, TUuid } from 'v2/types';
+import { TSymbol, TUuid } from '@types';
 import { default as Typography } from './Typography';
 import AssetIcon from './AssetIcon';
 

@@ -13,7 +13,7 @@ import {
   TUuid,
   NetworkId,
   NetworkNodes
-} from 'v2/types';
+} from '@types';
 
 export enum LSKeys {
   ADDRESS_BOOK = 'addressBook',

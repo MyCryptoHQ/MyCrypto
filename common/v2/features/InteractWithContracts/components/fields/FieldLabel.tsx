@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { COLORS } from 'v2/theme';
-import { Typography } from 'v2/components';
+import { COLORS } from '@theme';
+import { Typography } from '@components';
 
 const { GREY } = COLORS;
 

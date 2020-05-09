@@ -3,11 +3,11 @@ import { Identicon } from '@mycrypto/ui';
 import { FieldProps, Field } from 'formik';
 import styled from 'styled-components';
 
-import { Network, InlineMessageType } from 'v2/types';
-import { DomainStatus } from 'v2/components';
-import { getIsValidENSAddressFunction } from 'v2/services/EthService';
-import { monospace } from 'v2/theme';
-import { translateRaw } from 'v2/translations';
+import { Network, InlineMessageType } from '@types';
+import { DomainStatus } from '@components';
+import { getIsValidENSAddressFunction } from '@services/EthService';
+import { monospace } from '@theme';
+import { translateRaw } from '@translations';
 import { ResolutionError } from '@unstoppabledomains/resolution';
 import InputField from './InputField';
 

@@ -2,8 +2,8 @@ import map from 'ramda/src/map';
 import adjust from 'ramda/src/adjust';
 import mergeLeft from 'ramda/src/mergeLeft';
 
-import { getUUID } from 'v2/utils';
-import { ITxStatus, ITxObject } from 'v2/types';
+import { getUUID } from '@utils';
+import { ITxStatus, ITxObject } from '@types';
 
 import { ActionTypes, TxMultiState, TxMultiAction } from './types';
 

@@ -2,14 +2,14 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { translateRaw } from 'v2/translations';
-import { AnalyticsService, ANALYTICS_CATEGORIES, RatesContext } from 'v2/services';
-import { SettingsContext, StoreContext } from 'v2/services/Store';
-import { StoreAsset, TUuid } from 'v2/types';
-import { weiToFloat, convertToFiatFromAsset } from 'v2/utils';
-import { BREAK_POINTS, SPACING } from 'v2/theme';
-import { Fiats } from 'v2/config';
-import { Tooltip } from 'v2/components';
+import { translateRaw } from '@translations';
+import { AnalyticsService, ANALYTICS_CATEGORIES, RatesContext } from '@services';
+import { SettingsContext, StoreContext } from '@services/Store';
+import { StoreAsset, TUuid } from '@types';
+import { weiToFloat, convertToFiatFromAsset } from '@utils';
+import { BREAK_POINTS, SPACING } from '@theme';
+import { Fiats } from '@config';
+import { Tooltip } from '@components';
 
 import { Balance, BalanceAccount } from './types';
 import AccountDropdown from './AccountDropdown';

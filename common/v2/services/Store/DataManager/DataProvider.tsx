@@ -1,13 +1,13 @@
 import React, { createContext, Dispatch, useReducer, useCallback, useMemo, useEffect } from 'react';
 
-import { LSKeys, DSKeys } from 'v2/types';
-import { useThrottleFn, useEvent } from 'v2/vendor';
+import { EncryptedDataStore, DataStore, LSKeys, DSKeys } from '@types';
+import { useThrottleFn, useEvent } from '@vendor';
 import {
   addDevSeedToSchema,
   removeSeedDataFromSchema,
   getCurrentDBConfig,
   getData
-} from 'v2/database';
+} from '@database';
 
 import {
   appDataReducer,
@@ -22,7 +22,6 @@ import {
 import { ActionFactory } from './actions';
 import { deMarshallState, marshallState } from './utils';
 import { DatabaseService } from './DatabaseService';
-import { EncryptedDataStore, DataStore } from 'v2/types/store';
 
 export interface DataCacheManager extends DataStore {
   createActions(k: DSKeys): ReturnType<typeof ActionFactory>;

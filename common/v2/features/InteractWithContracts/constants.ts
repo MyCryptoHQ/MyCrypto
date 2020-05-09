@@ -1,5 +1,5 @@
-import { DEFAULT_NETWORK } from 'v2/config';
-import { Contract } from 'v2/types';
+import { DEFAULT_NETWORK } from '@config';
+import { Contract } from '@types';
 
 export const CUSTOM_CONTRACT_ADDRESS = 'custom';
 

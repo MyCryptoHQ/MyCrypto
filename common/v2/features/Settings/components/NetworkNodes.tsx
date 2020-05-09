@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 
-import { DashboardPanel, CollapsibleTable, Network } from 'v2/components';
-import { CustomNodeConfig, Network as INetwork, NetworkId } from 'v2/types';
-import { translateRaw } from 'v2/translations';
-import { COLORS } from 'v2/theme';
-import NetworkNodeDropdown from 'v2/components/NetworkNodeDropdown';
-import useScreenSize from 'v2/utils/useScreenSize';
+import { DashboardPanel, CollapsibleTable, Network } from '@components';
+import { CustomNodeConfig, Network as INetwork, NetworkId } from '@types';
+import { translateRaw } from '@translations';
+import { COLORS } from '@theme';
+import NetworkNodeDropdown from '@components/NetworkNodeDropdown';
+import useScreenSize from '@utils/useScreenSize';
 
 interface Props {
   networks: INetwork[];

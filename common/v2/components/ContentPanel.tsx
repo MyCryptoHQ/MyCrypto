@@ -2,8 +2,8 @@ import React from 'react';
 import { Button, Panel, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { BREAK_POINTS, SPACING } from 'v2/theme';
-import { translateRaw } from 'v2/translations';
+import { BREAK_POINTS, SPACING } from '@theme';
+import { translateRaw } from '@translations';
 import Stepper from './Stepper';
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 

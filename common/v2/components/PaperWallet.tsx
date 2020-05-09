@@ -4,9 +4,9 @@ import jsPDF from 'jspdf';
 import styled from 'styled-components';
 import { Identicon } from '@mycrypto/ui';
 
-import { QRCode } from 'v2/components';
-import { getKBHelpArticle, KB_HELP_ARTICLE } from 'v2/config';
-import { Trans, translateRaw } from 'v2/translations';
+import { QRCode } from '@components';
+import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
+import { Trans, translateRaw } from '@translations';
 
 import walletIcon from 'common/assets/images/icn-hardware-wallet.svg';
 import myCryptoIcon from 'common/assets/images/logo-mycrypto-transparent.png';

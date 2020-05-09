@@ -1,8 +1,8 @@
 import React from 'react';
 import { OptionComponentProps } from 'react-select';
 
-import { Divider } from 'v2/components';
-import { translateRaw } from 'v2/translations';
+import { Divider } from '@components';
+import { translateRaw } from '@translations';
 
 class ZapOption extends React.PureComponent<OptionComponentProps> {
   public render() {

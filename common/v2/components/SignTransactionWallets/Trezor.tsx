@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { ISignComponentProps } from 'v2/types';
-import { translateRaw } from 'v2/translations';
+import { ISignComponentProps } from '@types';
+import { translateRaw } from '@translations';
 import ConnectTrezor from 'common/assets/images/icn-connect-trezor-new.svg';
 import HardwareSignTransaction from './Hardware';
 

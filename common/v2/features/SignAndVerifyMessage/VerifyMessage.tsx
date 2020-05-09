@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
-import { InputField } from 'v2/components';
-import { verifySignedMessage } from 'v2/services/EthService';
-import { BREAK_POINTS, COLORS } from 'v2/theme';
-import translate, { translateRaw } from 'v2/translations';
-import { ISignedMessage } from 'v2/types';
+import { InputField } from '@components';
+import { verifySignedMessage } from '@services/EthService';
+import { BREAK_POINTS, COLORS } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { ISignedMessage } from '@types';
 
 const { SCREEN_XS } = BREAK_POINTS;
 const { WHITE, SUCCESS_GREEN } = COLORS;

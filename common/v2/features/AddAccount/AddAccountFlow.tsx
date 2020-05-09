@@ -2,12 +2,12 @@ import React, { useState, useEffect, useContext, useReducer } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter } from 'react-router-dom';
 
-import { useUpdateEffect } from 'v2/vendor';
-import { ROUTE_PATHS, WALLETS_CONFIG, IWalletConfig } from 'v2/config';
-import { WalletId, IStory } from 'v2/types';
-import { ExtendedContentPanel, WalletList } from 'v2/components';
-import { StoreContext } from 'v2/services/Store';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services/ApiService';
+import { useUpdateEffect } from '@vendor';
+import { ROUTE_PATHS, WALLETS_CONFIG, IWalletConfig } from '@config';
+import { WalletId, IStory } from '@types';
+import { ExtendedContentPanel, WalletList } from '@components';
+import { StoreContext } from '@services/Store';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services/ApiService';
 
 import { NotificationsContext, NotificationTemplates } from '../NotificationsPanel';
 import { FormDataActionType as ActionType } from './types';

@@ -1,11 +1,11 @@
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
-import { Asset, StoreAccount, ITxConfig, IHexStrTransaction, ITxObject } from 'v2/types';
-import { getAssetByUUID, getAssetByTicker, DexService } from 'v2/services';
-import { hexToString, appendGasPrice, appendSender } from 'v2/services/EthService';
-import { WALLET_STEPS } from 'v2/components';
-import { weiToFloat } from 'v2/utils';
+import { Asset, StoreAccount, ITxConfig, IHexStrTransaction, ITxObject } from '@types';
+import { getAssetByUUID, getAssetByTicker, DexService } from '@services';
+import { hexToString, appendGasPrice, appendSender } from '@services/EthService';
+import { WALLET_STEPS } from '@components';
+import { weiToFloat } from '@utils';
 
 import { ISwapAsset, IAssetPair, LAST_CHANGED_AMOUNT } from './types';
 

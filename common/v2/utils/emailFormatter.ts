@@ -1,4 +1,4 @@
-import { SUPPORT_EMAIL } from 'v2/config';
+import { SUPPORT_EMAIL } from '@config';
 
 function formatEmail(email: string, subject: string, body: string): string {
   return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;

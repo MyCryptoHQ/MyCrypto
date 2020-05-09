@@ -1,5 +1,5 @@
-import { Asset, IAccount, StoreAccount } from 'v2/types';
-import { DEFAULT_NETWORK } from 'v2/config';
+import { Asset, IAccount, StoreAccount } from '@types';
+import { DEFAULT_NETWORK } from '@config';
 
 export const getDashboardAccounts = (
   accounts: StoreAccount[],

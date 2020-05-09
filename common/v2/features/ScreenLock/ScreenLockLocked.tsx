@@ -3,9 +3,9 @@ import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
-import translate, { translateRaw } from 'v2/translations';
-import { ExtendedContentPanel, InputField } from 'v2/components';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
+import translate, { translateRaw } from '@translations';
+import { ExtendedContentPanel, InputField } from '@components';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
 import { ScreenLockContext } from './ScreenLockProvider';
 
 import mainImage from 'common/assets/images/icn-unlock-wallet.svg';

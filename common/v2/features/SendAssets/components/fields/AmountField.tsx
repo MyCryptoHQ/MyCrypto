@@ -1,7 +1,7 @@
 import React, { ChangeEvent, Component } from 'react';
 import { Field, FieldProps, FormikHandlers } from 'formik';
 import { Input } from '@mycrypto/ui';
-import { translateRaw } from 'v2/translations';
+import { translateRaw } from '@translations';
 //import { donationAddressMap } from '';
 
 interface OwnProps {

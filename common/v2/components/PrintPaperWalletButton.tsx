@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 
 import PaperWallet from './PaperWallet';
-import { Spinner } from 'v2/components';
+import { Spinner } from '@components';
 
 // Legacy
 import printerIcon from 'common/assets/images/icn-printer.svg';

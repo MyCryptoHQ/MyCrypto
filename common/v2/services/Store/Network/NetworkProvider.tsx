@@ -2,7 +2,7 @@ import React, { useContext, createContext } from 'react';
 import isString from 'lodash/isString';
 import isEmpty from 'lodash/isEmpty';
 
-import { Network, NetworkId, NodeOptions, LSKeys } from 'v2/types';
+import { Network, NetworkId, NodeOptions, LSKeys } from '@types';
 
 import { DataContext } from '../DataManager';
 import { NetworkUtils } from './utils';

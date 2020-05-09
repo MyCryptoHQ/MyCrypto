@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Typography from 'v2/components/Typography';
-import { BREAK_POINTS, COLORS } from 'v2/theme';
+import Typography from '@components/Typography';
+import { BREAK_POINTS, COLORS } from '@theme';
 
-import { ToastConfig, ToastType } from 'v2/types';
+import { ToastConfig, ToastType } from '@types';
 
 import successIcon from 'assets/images/icn-toast-success.svg';
 import infoIcon from 'assets/images/icn-toast-alert.svg';

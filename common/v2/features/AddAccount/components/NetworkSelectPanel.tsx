@@ -2,13 +2,13 @@ import React, { useState, useContext } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import translate from 'v2/translations';
+import translate from '@translations';
 import { FormDataActionType as ActionType } from '../types';
-import { FormData, NetworkId } from 'v2/types';
-import { NetworkSelectDropdown } from 'v2/components';
-import { ANALYTICS_CATEGORIES, AnalyticsService } from 'v2/services';
-import { NetworkContext } from 'v2/services/Store';
-import { SPACING } from 'v2/theme';
+import { FormData, NetworkId } from '@types';
+import { NetworkSelectDropdown } from '@components';
+import { ANALYTICS_CATEGORIES, AnalyticsService } from '@services';
+import { NetworkContext } from '@services/Store';
+import { SPACING } from '@theme';
 
 const NetworkForm = styled.div`
   margin-top: ${SPACING.BASE};

@@ -11,10 +11,10 @@ import {
   FeaturesPanel,
   KeepYourAssetsSafePanel
 } from './components';
-import { getFeaturedOS } from 'v2/utils';
-import { GithubService } from 'v2/services/ApiService';
-import { BREAK_POINTS, COLORS } from 'v2/theme';
-import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK, OS } from 'v2/config';
+import { getFeaturedOS } from '@utils';
+import { GithubService } from '@services/ApiService';
+import { BREAK_POINTS, COLORS } from '@theme';
+import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK, OS } from '@config';
 
 interface SectionProps {
   color?: string;

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Network } from 'v2/types';
-import { Trans } from 'v2/translations';
+import { Network } from '@types';
+import { Trans } from '@translations';
 
 interface OwnProps {
   walletType: string | React.ReactElement<string>;

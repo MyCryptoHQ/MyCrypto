@@ -1,4 +1,4 @@
-import { StoreAccount, ITxConfig, ITxReceipt, NetworkId } from 'v2/types';
+import { StoreAccount, ITxConfig, ITxReceipt, NetworkId } from '@types';
 
 export interface DeployContractsState {
   account: StoreAccount | undefined;

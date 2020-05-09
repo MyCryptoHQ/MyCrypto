@@ -4,17 +4,17 @@ import styled from 'styled-components';
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
-import { AccountDropdown, Button, Typography, GasSelector } from 'v2/components';
-import { StoreAccount, ITxConfig, Network } from 'v2/types';
+import { AccountDropdown, Button, Typography, GasSelector } from '@components';
+import { StoreAccount, ITxConfig, Network } from '@types';
 import {
   StoreContext,
   hexToString,
   baseToConvertedUnit,
   inputGasPriceToHex,
   hexWeiToString
-} from 'v2/services';
-import { translateRaw } from 'v2/translations';
-import { COLORS } from 'v2/theme';
+} from '@services';
+import { translateRaw } from '@translations';
+import { COLORS } from '@theme';
 
 import { getAccountsInNetwork } from '../helpers';
 import { ABIItem } from '../types';

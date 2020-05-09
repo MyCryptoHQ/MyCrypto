@@ -5,10 +5,10 @@ import styled from 'styled-components';
 import { parseTransaction, Transaction } from 'ethers/utils';
 import { toBuffer } from 'ethereumjs-util';
 
-import translate, { translateRaw } from 'v2/translations';
-import { InputField, CodeBlock, NetworkSelectDropdown, InlineMessage } from 'v2/components';
-import { getTransactionFields } from 'v2/services/EthService';
-import { NetworkId, ISignedTx } from 'v2/types';
+import translate, { translateRaw } from '@translations';
+import { InputField, CodeBlock, NetworkSelectDropdown, InlineMessage } from '@components';
+import { getTransactionFields } from '@services/EthService';
+import { NetworkId, ISignedTx } from '@types';
 
 const ContentWrapper = styled.div`
   display: flex;

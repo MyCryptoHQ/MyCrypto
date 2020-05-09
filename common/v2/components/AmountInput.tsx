@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Input } from '@mycrypto/ui';
 
-import { Asset } from 'v2/types';
-import { sanitizeDecimalSeparator } from 'v2/utils';
+import { Asset } from '@types';
+import { sanitizeDecimalSeparator } from '@utils';
 
 import AssetIcon from './AssetIcon';
 import Typography from './Typography';

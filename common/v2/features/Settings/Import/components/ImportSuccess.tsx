@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import translate from 'v2/translations';
+import translate from '@translations';
 
-import { Button, RouterLink } from 'v2/components';
+import { Button, RouterLink } from '@components';
 
 const ImportSuccessContainer = styled.div`
   display: flex;

@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { translateRaw } from 'v2/translations';
-import { StoreAsset, Social } from 'v2/types';
-import { DashboardPanel, AssetIcon } from 'v2/components';
-import { getNetworkById, StoreContext } from 'v2/services/Store';
-import { COLORS, FONT_SIZE, SPACING } from 'v2/theme';
-import { weiToFloat } from 'v2/utils';
+import { translateRaw } from '@translations';
+import { StoreAsset, Social } from '@types';
+import { DashboardPanel, AssetIcon } from '@components';
+import { getNetworkById, StoreContext } from '@services/Store';
+import { COLORS, FONT_SIZE, SPACING } from '@theme';
+import { weiToFloat } from '@utils';
 
 import socialTelegram from 'common/assets/images/social-icons/social-telegram.svg';
 import socialTwitter from 'common/assets/images/social-icons/social-twitter.svg';

@@ -2,12 +2,12 @@ import React from 'react';
 import { Typography, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { convertToFiatFromAsset } from 'v2/utils';
-import { StoreAsset } from 'v2/types';
-import { AssetIcon, DashboardPanel, Spinner, Tooltip } from 'v2/components';
-import { translateRaw } from 'v2/translations';
+import { convertToFiatFromAsset } from '@utils';
+import { StoreAsset } from '@types';
+import { AssetIcon, DashboardPanel, Spinner, Tooltip } from '@components';
+import { translateRaw } from '@translations';
 
-import { FONT_SIZE, SPACING } from 'v2/theme';
+import { FONT_SIZE, SPACING } from '@theme';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
 

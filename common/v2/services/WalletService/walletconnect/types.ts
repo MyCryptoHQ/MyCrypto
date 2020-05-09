@@ -1,7 +1,7 @@
 import { ITxData } from '@walletconnect/types';
 import { ValuesType } from 'utility-types';
 
-import { ITxObject, TAddress } from 'v2/types';
+import { ITxObject, TAddress } from '@types';
 
 import { WcReducer } from './reducer';
 

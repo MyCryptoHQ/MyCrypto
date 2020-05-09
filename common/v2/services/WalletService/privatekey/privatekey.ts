@@ -1,4 +1,4 @@
-import { translateRaw } from 'v2/translations';
+import { translateRaw } from '@translations';
 import { PrivateKeyUnlockParams } from './types';
 import { getPrivKeyWallet } from '../non-deterministic';
 import { IWallet, IFullWallet } from '../IWallet';

@@ -1,14 +1,14 @@
 import React from 'react';
-import { useStateReducer } from 'v2/utils';
+import { useStateReducer } from '@utils';
 import { IZapConfig } from './config';
 import { ZapForm, ZapConfirm, ZapReceipt } from './components';
-import { default as GeneralStepper, IStepperPath } from 'v2/components/GeneralStepper';
-import { ROUTE_PATHS } from 'v2/config';
+import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
+import { ROUTE_PATHS } from '@config';
 import ZapInteractionFactory from './stateFactory';
-import { ITxReceipt, ISignedTx } from 'v2/types';
+import { ITxReceipt, ISignedTx } from '@types';
 import { SignTransaction } from '../SendAssets/components';
 import { ISimpleTxFormFull } from './types';
-import { translateRaw } from 'v2/translations';
+import { translateRaw } from '@translations';
 
 const initialZapFlowState = (initialZapSelected: IZapConfig) => ({
   zapSelected: initialZapSelected,

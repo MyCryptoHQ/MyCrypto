@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
-import { Asset, ITxReceipt, Network, WalletId } from 'v2/types';
+import { Asset, ITxReceipt, Network, WalletId } from '@types';
 import {
   GetBalanceResponse,
   GetLastTxResponse,
@@ -8,9 +8,9 @@ import {
   CryptoScamDBNoInfoResponse,
   CryptoScamDBService,
   EtherscanService
-} from 'v2/services/ApiService';
-import { AssetContext, getAssetByUUID, StoreContext } from 'v2/services/Store';
-import { useScreenSize } from 'v2/utils';
+} from '@services/ApiService';
+import { AssetContext, getAssetByUUID, StoreContext } from '@services/Store';
+import { useScreenSize } from '@utils';
 
 import { SendFormCallbackType } from './types';
 import { WALLETS_CONFIG } from '../../config';

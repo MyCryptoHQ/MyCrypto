@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import React, { useState, useEffect } from 'react';
 
-import { InputField, Dropdown, Button, Spinner, InlineMessage, Typography } from 'v2/components';
-import { StoreAccount, ITxConfig, Network } from 'v2/types';
-import { COLORS, monospace } from 'v2/theme';
-import { translateRaw } from 'v2/translations';
+import { InputField, Dropdown, Button, Spinner, InlineMessage, Typography } from '@components';
+import { StoreAccount, ITxConfig, Network } from '@types';
+import { COLORS, monospace } from '@theme';
+import { translateRaw } from '@translations';
 
 import FunctionDropdownOption from './FunctionDropdownOption';
 import FunctionDropdownValue from './FunctionDropdownValue';

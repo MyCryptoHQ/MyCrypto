@@ -1,9 +1,9 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import { Network as INetwork, NetworkId } from 'v2/types';
-import { NETWORKS_CONFIG, NODES_CONFIG } from 'v2/database/data';
-import AppProviders from 'v2/../AppProviders';
+import { Network as INetwork, NetworkId } from '@types';
+import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
+import AppProviders from '@../AppProviders';
 
 import NetworkNodes from './NetworkNodes';
 

@@ -1,5 +1,5 @@
-import { LocalStorage, LSKeys, AssetLegacy } from 'v2/types';
-import { toArray } from 'v2/utils';
+import { LocalStorage, LSKeys, AssetLegacy } from '@types';
+import { toArray } from '@utils';
 
 import { createDefaultValues } from './generateDefaultValues';
 import { SCHEMA_BASE, NETWORKS_CONFIG } from './data';

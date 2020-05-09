@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { GeneralStepper, TxReceipt, ConfirmTransaction } from 'v2/components';
-import { ROUTE_PATHS } from 'v2/config';
-import { translateRaw } from 'v2/translations';
-import { useStateReducer } from 'v2/utils';
-import { IStepperPath } from 'v2/components/GeneralStepper/types';
-import { ISignedTx } from 'v2/types';
+import { GeneralStepper, TxReceipt, ConfirmTransaction } from '@components';
+import { ROUTE_PATHS } from '@config';
+import { translateRaw } from '@translations';
+import { useStateReducer } from '@utils';
+import { IStepperPath } from '@components/GeneralStepper/types';
+import { ISignedTx } from '@types';
 
 import { BroadcastTxConfigFactory, broadcastTxInitialState } from './stateFactory';
 import { BroadcastTx } from './components';

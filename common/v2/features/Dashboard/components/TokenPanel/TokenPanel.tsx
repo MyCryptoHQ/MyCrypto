@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 
-import { StoreContext, RatesContext } from 'v2/services';
-import { ExtendedAsset, StoreAsset } from 'v2/types';
+import { StoreContext, RatesContext } from '@services';
+import { ExtendedAsset, StoreAsset } from '@types';
 
 import { TokenList } from './TokenList';
 import { TokenDetails } from './TokenDetails';

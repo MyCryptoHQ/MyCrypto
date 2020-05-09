@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
-import translate, { translateRaw } from 'v2/translations';
-import { BREAK_POINTS, COLORS } from 'v2/theme';
+import translate, { translateRaw } from '@translations';
+import { BREAK_POINTS, COLORS } from '@theme';
 import NotificationWrapper from './NotificationWrapper';
-import { CRYPTOSCAMDB, DOWNLOAD_MYCRYPTO_LINK, getKBHelpArticle, KB_HELP_ARTICLE } from 'v2/config';
+import { CRYPTOSCAMDB, DOWNLOAD_MYCRYPTO_LINK, getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 
 import privateIcon from 'common/assets/images/onboarding/icn-key-mnemonic.svg';
 import phishingIcon from 'common/assets/images/onboarding/icn-phishing.svg';

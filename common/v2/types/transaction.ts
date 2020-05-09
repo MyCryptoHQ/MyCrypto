@@ -1,7 +1,7 @@
 import { Brand } from 'utility-types';
 import BN from 'bn.js';
 
-import { Wei, Address } from 'v2/services/EthService';
+import { Wei, Address } from '@services/EthService';
 
 // By only dealing with Buffers / BN, dont have to mess around with cleaning strings
 export interface ITransaction {

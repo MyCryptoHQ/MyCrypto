@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { ethers, utils } from 'ethers';
 import { Web3Provider } from 'ethers/providers/web3-provider';
 
-import { WALLETS_CONFIG } from 'v2/config';
-import { ISignComponentProps } from 'v2/types';
-import translate, { translateRaw } from 'v2/translations';
-import { withContext, getWeb3Config } from 'v2/utils';
-import { getNetworkByChainId, INetworkContext, NetworkContext } from 'v2/services/Store';
+import { WALLETS_CONFIG } from '@config';
+import { ISignComponentProps } from '@types';
+import translate, { translateRaw } from '@translations';
+import { withContext, getWeb3Config } from '@utils';
+import { getNetworkByChainId, INetworkContext, NetworkContext } from '@services/Store';
 import './Web3.scss';
 
 declare global {

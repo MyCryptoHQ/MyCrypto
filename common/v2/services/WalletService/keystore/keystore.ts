@@ -1,4 +1,4 @@
-import { translateRaw } from 'v2/translations';
+import { translateRaw } from '@translations';
 import { signWrapper } from '../helpers';
 import {
   determineKeystoreType,

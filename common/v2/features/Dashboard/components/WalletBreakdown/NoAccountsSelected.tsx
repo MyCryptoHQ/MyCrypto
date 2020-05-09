@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import translate from 'v2/translations';
+import translate from '@translations';
 
 import sadWallet from 'common/assets/images/icn-sad-wallet.svg';
 

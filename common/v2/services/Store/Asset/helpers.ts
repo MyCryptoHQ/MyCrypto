@@ -1,6 +1,6 @@
-import { Asset, ExtendedAsset, Network, StoreAsset } from 'v2/types';
-import { generateAssetUUID } from 'v2/utils';
-import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
+import { Asset, ExtendedAsset, Network, StoreAsset } from '@types';
+import { generateAssetUUID } from '@utils';
+import { DEFAULT_ASSET_DECIMAL } from '@config';
 
 export const getAssetByTicker = (assets: Asset[]) => (symbol: string): Asset | undefined => {
   return assets.find((asset) => asset.ticker.toLowerCase() === symbol.toLowerCase());

@@ -1,16 +1,11 @@
 import React, { useContext } from 'react';
 
-import {
-  ConfirmTransaction,
-  GeneralStepper,
-  TxReceipt,
-  TxReceiptWithProtectTx
-} from 'v2/components';
-import { useStateReducer, isWeb3Wallet, withProtectTxProvider } from 'v2/utils';
-import { ITxReceipt, ISignedTx, IFormikFields, ITxConfig } from 'v2/types';
-import { translateRaw } from 'v2/translations';
-import { IS_ACTIVE_FEATURE, ROUTE_PATHS } from 'v2/config';
-import { IStepperPath } from 'v2/components/GeneralStepper/types';
+import { ConfirmTransaction, GeneralStepper, TxReceipt, TxReceiptWithProtectTx } from '@components';
+import { useStateReducer, isWeb3Wallet, withProtectTxProvider } from '@utils';
+import { ITxReceipt, ISignedTx, IFormikFields, ITxConfig } from '@types';
+import { translateRaw } from '@translations';
+import { IS_ACTIVE_FEATURE, ROUTE_PATHS } from '@config';
+import { IStepperPath } from '@components/GeneralStepper/types';
 
 import { txConfigInitialState, TxConfigFactory } from './stateFactory';
 import SendAssetsForm from './components/SendAssetsForm';

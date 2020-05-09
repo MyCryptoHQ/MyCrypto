@@ -10,17 +10,17 @@ import {
   ITxHash,
   ITxStatus,
   ITxSigned
-} from 'v2/types';
+} from '@types';
 import {
   inputValueToHex,
   inputGasPriceToHex,
   toWei,
   hexToString,
   hexWeiToString
-} from 'v2/services/EthService';
-import { DEFAULT_NETWORK_CHAINID, DEFAULT_ASSET_DECIMAL } from 'v2/config';
-import { UnlockToken, ERC20 } from 'v2/services/EthService/contracts';
-import { getAssetByUUID } from 'v2/services';
+} from '@services/EthService';
+import { DEFAULT_NETWORK_CHAINID, DEFAULT_ASSET_DECIMAL } from '@config';
+import { UnlockToken, ERC20 } from '@services/EthService/contracts';
+import { getAssetByUUID } from '@services';
 
 import { MembershipSimpleTxFormFull } from './types';
 import { isERC20Tx } from '../SendAssets';

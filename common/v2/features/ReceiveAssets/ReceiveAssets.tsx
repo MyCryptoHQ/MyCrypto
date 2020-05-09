@@ -7,13 +7,13 @@ import styled from 'styled-components';
 import {
   buildEIP681EtherRequest,
   buildEIP681TokenRequest
-} from 'v2/services/EthService/utils/formatters';
-import { ContentPanel, QRCode, AccountDropdown, AssetDropdown } from 'v2/components';
-import { AssetContext, getNetworkById, StoreContext } from 'v2/services/Store';
-import { isValidAmount, sanitizeDecimalSeparator, noOp } from 'v2/utils';
-import { IAccount as IIAccount, StoreAccount } from 'v2/types';
-import { ROUTE_PATHS } from 'v2/config';
-import translate, { translateRaw } from 'v2/translations';
+} from '@services/EthService/utils/formatters';
+import { ContentPanel, QRCode, AccountDropdown, AssetDropdown } from '@components';
+import { AssetContext, getNetworkById, StoreContext } from '@services/Store';
+import { isValidAmount, sanitizeDecimalSeparator, noOp } from '@utils';
+import { IAccount as IIAccount, StoreAccount } from '@types';
+import { ROUTE_PATHS } from '@config';
+import translate, { translateRaw } from '@translations';
 import questionToolTip from 'common/assets/images/icn-question.svg';
 
 // Legacy

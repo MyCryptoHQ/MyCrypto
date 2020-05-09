@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Dropdown } from 'v2/components';
+import { Dropdown } from '@components';
 
 import ContractDropdownOption from '../ContractDropdownOption';
 import ContractDropdownValue from '../ContractDropdownValue';

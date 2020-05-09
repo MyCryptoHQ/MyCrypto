@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import { noOp } from 'v2/utils';
+import { noOp } from '@utils';
 
 import { ProtectTxAbort } from './ProtectTxAbort';
 import { ProtectTxProvider } from '../index';

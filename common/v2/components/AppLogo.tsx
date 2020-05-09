@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { COLORS } from 'v2/theme';
-import { translateRaw } from 'v2/translations';
+import { COLORS } from '@theme';
+import { translateRaw } from '@translations';
 
 import mycLogo from 'assets/images/icn-myc.svg';
 

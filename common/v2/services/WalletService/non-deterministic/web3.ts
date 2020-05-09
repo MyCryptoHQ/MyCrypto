@@ -1,7 +1,7 @@
 import { bufferToHex } from 'ethereumjs-util';
 
-import { Web3Node, getTransactionFields, makeTransaction } from 'v2/services/EthService';
-import { INode } from 'v2/types';
+import { Web3Node, getTransactionFields, makeTransaction } from '@services/EthService';
+import { INode } from '@types';
 import { IFullWallet } from '../IWallet';
 
 export default class Web3Wallet implements IFullWallet {

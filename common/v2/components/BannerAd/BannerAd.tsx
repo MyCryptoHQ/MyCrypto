@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ads } from './constants';
-import { BREAK_POINTS } from 'v2/theme';
-import { ANALYTICS_CATEGORIES, AnalyticsService } from 'v2/services';
+import { BREAK_POINTS } from '@theme';
+import { ANALYTICS_CATEGORIES, AnalyticsService } from '@services';
 
 const { SCREEN_SM } = BREAK_POINTS;
 

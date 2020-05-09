@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
-import { translateRaw } from 'v2/translations';
+import { translateRaw } from '@translations';
 import Stepper from './Stepper';
 
 // Legacy

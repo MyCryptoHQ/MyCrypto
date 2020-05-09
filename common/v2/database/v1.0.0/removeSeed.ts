@@ -10,7 +10,7 @@ import {
   TUuid,
   ISettings,
   LSKeys
-} from 'v2/types';
+} from '@types';
 
 import { devAccounts, DevAccount, devContacts } from '../seed';
 import { toArray, toObject, add } from '../helpers';

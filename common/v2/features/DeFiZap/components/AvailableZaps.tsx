@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { SPACING } from 'v2/theme';
-import translate, { translateRaw } from 'v2/translations';
+import { SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
 
 const Container = styled.div`
   display: flex;

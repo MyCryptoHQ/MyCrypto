@@ -1,7 +1,7 @@
-import { IHexStrTransaction, ITxObject } from 'v2/types';
-import { inputValueToHex, inputGasPriceToHex, inputNonceToHex } from 'v2/services/EthService';
-import { DEFAULT_NETWORK_CHAINID } from 'v2/config';
-import { COLORS } from 'v2/theme';
+import { IHexStrTransaction, ITxObject } from '@types';
+import { inputValueToHex, inputGasPriceToHex, inputNonceToHex } from '@services/EthService';
+import { DEFAULT_NETWORK_CHAINID } from '@config';
+import { COLORS } from '@theme';
 
 import { ISimpleTxForm } from './types';
 

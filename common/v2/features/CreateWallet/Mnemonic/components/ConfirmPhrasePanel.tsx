@@ -4,9 +4,9 @@ import shuffle from 'lodash/shuffle';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel, InlineMessage } from 'v2/components';
-import { PanelProps } from 'v2/features/CreateWallet';
-import { translateRaw } from 'v2/translations';
+import { ExtendedContentPanel, InlineMessage } from '@components';
+import { PanelProps } from '@features/CreateWallet';
+import { translateRaw } from '@translations';
 
 const ActiveWords = styled.div`
   height: 200px;

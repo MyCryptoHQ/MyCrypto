@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Typography } from 'v2/components';
+import { Typography } from '@components';
 
 import FieldLabel from './FieldLabel';
 

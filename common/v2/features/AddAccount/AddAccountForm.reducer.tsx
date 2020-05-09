@@ -1,5 +1,5 @@
-import { DEFAULT_NETWORK } from 'v2/config';
-import { FormData, WalletId } from 'v2/types';
+import { DEFAULT_NETWORK } from '@config';
+import { FormData, WalletId } from '@types';
 import { FormDataAction, FormDataActionType as ActionType } from './types';
 
 export const initialState: FormData = {

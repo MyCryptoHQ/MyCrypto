@@ -3,8 +3,8 @@ import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
 import { bigNumberify, formatEther, BigNumber } from 'ethers/utils';
 import prop from 'ramda/src/prop';
 
-import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
-import { ITransaction, IHexStrTransaction } from 'v2/types';
+import { DEFAULT_ASSET_DECIMAL } from '@config';
+import { ITransaction, IHexStrTransaction } from '@types';
 
 import { gasPriceToBase, toTokenBase, fromWei, toWei, Wei } from './units';
 import { hexEncodeQuantity } from './hexEncode';

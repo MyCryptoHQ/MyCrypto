@@ -1,6 +1,6 @@
 import { ComponentType } from 'react';
 
-import { IS_ELECTRON } from 'v2/utils';
+import { IS_ELECTRON } from '@utils';
 
 export const requiresDesktopApp = (component: ComponentType) => (
   redirectComponent: ComponentType

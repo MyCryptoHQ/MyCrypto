@@ -6,7 +6,7 @@ import lensIndex from 'ramda/src/lensIndex';
 import { TxMultiReducer, initialState } from './reducer';
 import { init, initWith, stopYield, prepareTx, sendTx, reset } from './actions';
 import { TxParcel, TxMultiState } from './types';
-import { ITxObject } from 'v2/types';
+import { ITxObject } from '@types';
 
 /*
   Create a queue of transactions the need to be sent in order.

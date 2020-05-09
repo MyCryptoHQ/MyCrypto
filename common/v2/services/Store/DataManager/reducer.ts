@@ -3,8 +3,16 @@ import prop from 'ramda/src/prop';
 import unionWith from 'ramda/src/unionWith';
 import symmetricDifferenceWith from 'ramda/src/symmetricDifferenceWith';
 
-import { LSKeys, DataStoreEntry, DataStoreItem, TUuid, Network } from 'v2/types';
-import { EncryptedDataStore, DataStore, DSKeys } from 'v2/types/store';
+import {
+  LSKeys,
+  DataStoreEntry,
+  DataStoreItem,
+  TUuid,
+  Network,
+  EncryptedDataStore,
+  DataStore,
+  DSKeys
+} from '@types';
 
 export enum ActionT {
   ADD_ITEM = 'ADD_ITEM',

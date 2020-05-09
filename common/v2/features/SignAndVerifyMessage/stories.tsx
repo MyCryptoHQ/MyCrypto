@@ -1,5 +1,5 @@
-import { IStory, WalletId } from 'v2/types';
-import { IS_DEV, IS_ELECTRON, hasWeb3Provider } from 'v2/utils';
+import { IStory, WalletId } from '@types';
+import { IS_DEV, IS_ELECTRON, hasWeb3Provider } from '@utils';
 import {
   LedgerNanoSDecrypt,
   KeystoreDecrypt,
@@ -8,7 +8,7 @@ import {
   Web3ProviderDecrypt,
   Web3ProviderInstall,
   WalletConnectDecrypt
-} from 'v2/components';
+} from '@components';
 
 export const getStories = (): IStory[] => [
   {

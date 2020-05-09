@@ -1,4 +1,4 @@
-import { AddressBook } from 'v2/types';
+import { AddressBook } from '@types';
 
 export const addressBook: { [key in string]: AddressBook } = {
   'f1330cce-08e2-41ce-9231-5236e6aab702': {

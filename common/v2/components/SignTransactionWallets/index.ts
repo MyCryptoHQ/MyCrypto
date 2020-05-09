@@ -1,4 +1,4 @@
-import { WalletId, SigningComponents } from 'v2/types';
+import { WalletId, SigningComponents } from '@types';
 
 import { default as SignTransactionKeystore } from './Keystore';
 import { default as SignTransactionLedger } from './Ledger';

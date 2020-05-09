@@ -1,5 +1,5 @@
 import Resolution, { ResolutionErrorCode } from '@unstoppabledomains/resolution';
-import { MYC_API_MAINNET } from 'v2/config/constants';
+import { MYC_API_MAINNET } from '@config/constants';
 
 class UnstoppableResolution {
   private resolution: Resolution;

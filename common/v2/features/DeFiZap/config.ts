@@ -1,4 +1,4 @@
-import translate, { translateRaw } from 'v2/translations';
+import translate, { translateRaw } from '@translations';
 
 import { BearishIndicator, BullishIndicator, NeutralIndicator } from './components';
 import ProtocolsExplainer from './components/ProtocolsExplainer';

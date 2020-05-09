@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Typography } from 'v2/components';
-import { COLORS, FONT_SIZE } from 'v2/theme';
+import { Typography } from '@components';
+import { COLORS, FONT_SIZE } from '@theme';
 
 import LinkOutIcon from 'assets/images/link-out.svg';
 

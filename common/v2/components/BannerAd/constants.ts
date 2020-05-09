@@ -1,4 +1,4 @@
-import { EXT_URLS } from 'v2/config';
+import { EXT_URLS } from '@config';
 import ledgerDesktop from 'assets/images/banners/Ledger_Desktop.png';
 import ledgerMobile from 'assets/images/banners/Ledger_Mobile.png';
 import trezorDesktop from 'assets/images/banners/Trezor_Desktop.png';

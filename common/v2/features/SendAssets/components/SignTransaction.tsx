@@ -1,13 +1,7 @@
 import React, { FC } from 'react';
 
-import {
-  WalletId,
-  ITxReceipt,
-  IStepComponentProps,
-  ISignComponentProps,
-  ISignedTx
-} from 'v2/types';
-import { WALLET_STEPS } from 'v2/components';
+import { WalletId, ITxReceipt, IStepComponentProps, ISignComponentProps, ISignedTx } from '@types';
+import { WALLET_STEPS } from '@components';
 
 interface Props extends IStepComponentProps {
   protectTxButton?(): JSX.Element;

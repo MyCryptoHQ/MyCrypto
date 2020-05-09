@@ -1,5 +1,5 @@
-import { translateRaw } from 'v2/translations';
-import { ROUTE_PATHS, EXT_URLS } from 'v2/config';
+import { translateRaw } from '@translations';
+import { ROUTE_PATHS, EXT_URLS } from '@config';
 import { Action } from './types';
 
 // Legacy

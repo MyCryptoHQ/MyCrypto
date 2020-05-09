@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Copyable } from '@mycrypto/ui';
 
-import { translateRaw } from 'v2/translations';
-import { Tooltip } from 'v2/components';
+import { translateRaw } from '@translations';
+import { Tooltip } from '@components';
 
 interface Props {
   address: string;

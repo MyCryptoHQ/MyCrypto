@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Typography as UITypography } from '@mycrypto/ui';
 
-import { useScreenSize } from 'v2/utils';
-import { BREAK_POINTS } from 'v2/theme';
+import { useScreenSize } from '@utils';
+import { BREAK_POINTS } from '@theme';
 
 interface Props {
   as?: string;

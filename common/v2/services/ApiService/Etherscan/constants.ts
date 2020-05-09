@@ -1,4 +1,4 @@
-import { NetworkId } from 'v2/types';
+import { NetworkId } from '@types';
 
 export const ETHERSCAN_DEFAULT_URL = 'https://api.etherscan.io/api';
 export type ETHERSCAN_API_INVALID_KEY_MESSAGE = 'OK-Missing/Invalid API Key, rate limit of 1/sec applied';

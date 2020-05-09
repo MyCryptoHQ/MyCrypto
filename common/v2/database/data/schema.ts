@@ -1,4 +1,4 @@
-import { LSKeys, LocalStorage } from 'v2/types';
+import { LSKeys, LocalStorage } from '@types';
 
 import { defaultSettings } from './settings';
 import { defaultAddressBook } from './addressBook';

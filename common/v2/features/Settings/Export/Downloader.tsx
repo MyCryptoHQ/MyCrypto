@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-import { Button, Link } from 'v2/components';
-import { getExportFileName } from 'v2/database';
-import { makeBlob } from 'v2/utils';
-import translate from 'v2/translations';
-import { COLORS } from 'v2/theme';
+import { Button, Link } from '@components';
+import { getExportFileName } from '@database';
+import { makeBlob } from '@utils';
+import translate from '@translations';
+import { COLORS } from '@theme';
 
 interface DownloaderProps {
   appStore: string;

@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { simpleRender, fireEvent } from 'test-utils';
-import { TSymbol, TUuid } from 'v2/types';
+import { TSymbol, TUuid } from '@types';
 import AssetDropdownItem, { Props } from '../AssetDropdownItem';
-import { ETHUUID } from 'v2/utils';
+import { ETHUUID } from '@utils';
 
 const defaultProps: Props = {
   symbol: 'ETH' as TSymbol,

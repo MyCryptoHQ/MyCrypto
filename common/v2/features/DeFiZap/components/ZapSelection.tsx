@@ -4,10 +4,10 @@ import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { Accordion } from '@mycrypto/ui';
 
-import { Button, AppLogo, Typography, FullSizeContentPanel } from 'v2/components';
-import translate from 'v2/translations';
-import { ROUTE_PATHS } from 'v2/config';
-import { COLORS, BREAK_POINTS, SPACING } from 'v2/theme';
+import { Button, AppLogo, Typography, FullSizeContentPanel } from '@components';
+import translate from '@translations';
+import { ROUTE_PATHS } from '@config';
+import { COLORS, BREAK_POINTS, SPACING } from '@theme';
 
 import { FullSizePanelSection, SpacedPanelSection } from '../../../components/FullSizeContentPanel';
 

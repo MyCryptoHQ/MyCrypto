@@ -1,4 +1,4 @@
-import { ROUTE_PATHS } from 'v2/config';
+import { ROUTE_PATHS } from '@config';
 import SignMessage from './SignMessage';
 import VerifyMessage from './VerifyMessage';
 

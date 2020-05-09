@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { DashboardPanel } from 'v2/components';
-import { BREAK_POINTS, SPACING } from 'v2/theme';
-import { translateRaw } from 'v2/translations';
+import { DashboardPanel } from '@components';
+import { BREAK_POINTS, SPACING } from '@theme';
+import { translateRaw } from '@translations';
 
 import { ZAPS_CONFIG } from '../config';
 import ZapCard from './ZapCard';

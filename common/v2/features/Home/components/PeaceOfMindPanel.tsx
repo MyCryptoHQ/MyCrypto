@@ -3,10 +3,10 @@ import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import translate from 'v2/translations';
-import { COLORS, BREAK_POINTS } from 'v2/theme';
-import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from 'v2/config';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
+import translate from '@translations';
+import { COLORS, BREAK_POINTS } from '@theme';
+import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from '@config';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
 
 import vaultIcon from 'common/assets/images/icn-vault2.svg';
 import protectIcon from 'common/assets/images/icn-protect.svg';

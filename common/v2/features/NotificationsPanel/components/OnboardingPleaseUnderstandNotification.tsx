@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
-import translate, { translateRaw } from 'v2/translations';
-import { BREAK_POINTS } from 'v2/theme';
+import translate, { translateRaw } from '@translations';
+import { BREAK_POINTS } from '@theme';
 import NotificationWrapper from './NotificationWrapper';
-import { getKBHelpArticle, KB_HELP_ARTICLE } from 'v2/config';
+import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 
 import cantAccessIcon from 'common/assets/images/onboarding/icn-cant-access.svg';
 import cantModifyIcon from 'common/assets/images/onboarding/icn-cant-modify.svg';

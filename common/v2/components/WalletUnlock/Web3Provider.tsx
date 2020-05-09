@@ -1,23 +1,23 @@
 import React, { Component as ComponentProps } from 'react';
 import pipe from 'ramda/src/pipe';
 
-import translate, { translateRaw } from 'v2/translations';
-import { WALLETS_CONFIG, IWalletConfig } from 'v2/config';
-import { WalletId, FormData, Network } from 'v2/types';
-import { InlineMessage, NewTabLink } from 'v2/components';
-import { withContext, hasWeb3Provider, useScreenSize } from 'v2/utils';
+import translate, { translateRaw } from '@translations';
+import { WALLETS_CONFIG, IWalletConfig } from '@config';
+import { WalletId, FormData, Network } from '@types';
+import { InlineMessage, NewTabLink } from '@components';
+import { withContext, hasWeb3Provider, useScreenSize } from '@utils';
 import {
   SettingsContext,
   ISettingsContext,
   INetworkContext,
   NetworkContext,
   NetworkUtils
-} from 'v2/services/Store';
-import { WalletFactory } from 'v2/services/WalletService';
-import { FormDataActionType as ActionType } from 'v2/features/AddAccount/types';
+} from '@services/Store';
+import { WalletFactory } from '@services/WalletService';
+import { FormDataActionType as ActionType } from '@features/AddAccount/types';
 import './Web3Provider.scss';
-import { getWeb3Config } from 'v2/utils/web3';
-import { ANALYTICS_CATEGORIES, AnalyticsService } from 'v2/services';
+import { getWeb3Config } from '@utils/web3';
+import { ANALYTICS_CATEGORIES, AnalyticsService } from '@services';
 
 interface Props {
   formDispatch: any;

@@ -4,11 +4,11 @@ import Slider from 'react-slick';
 import styled from 'styled-components';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import translate, { translateRaw } from 'v2/translations';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { BREAK_POINTS, COLORS } from 'v2/theme';
-import { WalletId } from 'v2/types';
-import { ROUTE_PATHS } from 'v2/config';
+import translate, { translateRaw } from '@translations';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
+import { BREAK_POINTS, COLORS } from '@theme';
+import { WalletId } from '@types';
+import { ROUTE_PATHS } from '@config';
 
 import './SliderImports.scss';
 import metamaskIcon from 'common/assets/images/wallets/metamask.svg';

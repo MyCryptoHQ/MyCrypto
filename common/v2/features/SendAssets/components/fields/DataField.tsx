@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import { InputField } from 'v2/components';
-import { translateRaw } from 'v2/translations';
-import { isTransactionDataEmpty } from 'v2/utils';
+import { InputField } from '@components';
+import { translateRaw } from '@translations';
+import { isTransactionDataEmpty } from '@utils';
 
 const getNonEmptyData = (data: string) => (isTransactionDataEmpty(data) ? '' : data);
 

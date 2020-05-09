@@ -2,13 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import translate, { translateRaw } from 'v2/translations';
+import translate, { translateRaw } from '@translations';
 import { WalletButton } from './WalletButton';
-import { WalletId, IStory } from 'v2/types';
-import { ROUTE_PATHS, getWalletConfig } from 'v2/config';
-import { BREAK_POINTS, COLORS } from 'v2/theme';
-import { IS_ELECTRON, getWeb3Config } from 'v2/utils';
-import { ANALYTICS_CATEGORIES, AnalyticsService } from 'v2/services';
+import { WalletId, IStory } from '@types';
+import { ROUTE_PATHS, getWalletConfig } from '@config';
+import { BREAK_POINTS, COLORS } from '@theme';
+import { IS_ELECTRON, getWeb3Config } from '@utils';
+import { ANALYTICS_CATEGORIES, AnalyticsService } from '@services';
 
 const { SCREEN_XS } = BREAK_POINTS;
 const { BLUE_BRIGHT } = COLORS;

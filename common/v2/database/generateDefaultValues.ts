@@ -6,8 +6,8 @@ import chain from 'ramda/src/chain';
 import reduce from 'ramda/src/reduce';
 import mergeRight from 'ramda/src/mergeRight';
 
-import { generateAssetUUID, generateContractUUID } from 'v2/utils';
-import { Fiats, DEFAULT_ASSET_DECIMAL } from 'v2/config';
+import { generateAssetUUID, generateContractUUID } from '@utils';
+import { Fiats, DEFAULT_ASSET_DECIMAL } from '@config';
 import {
   Asset,
   ExtendedAsset,
@@ -22,7 +22,7 @@ import {
   AssetLegacy,
   LSKeys,
   NodeOptions
-} from 'v2/types';
+} from '@types';
 
 import { NODES_CONFIG, NETWORKS_CONFIG, NetworkConfig } from './data';
 import { SeedData, StoreAction } from './types';

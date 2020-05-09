@@ -10,11 +10,11 @@ import {
   ITxStatus,
   ITxReceipt,
   ExtendedAddressBook
-} from 'v2/types';
+} from '@types';
 
 import { getLabelByAccount } from './AddressBook';
 import { getNetworkById } from './Network';
-import { translateRaw } from 'v2/translations';
+import { translateRaw } from '@translations';
 
 const getAssetsByUuid = (accountAssets: AssetBalanceObject[], assets: Asset[]): StoreAsset[] =>
   accountAssets

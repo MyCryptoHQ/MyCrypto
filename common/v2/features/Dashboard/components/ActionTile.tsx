@@ -3,8 +3,8 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button, Typography } from '@mycrypto/ui';
 
-import { isUrl } from 'v2/utils';
-import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from 'v2/theme';
+import { isUrl } from '@utils';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import { Action } from '../types';
 
 const SContainer = styled('div')`

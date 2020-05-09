@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { SPACING } from 'v2/theme';
-import { IAccount } from 'v2/types';
+import { SPACING } from '@theme';
+import { IAccount } from '@types';
 import { NotificationsContext } from './NotificationsProvider';
 import { notificationsConfigs, NotificationTemplates } from './constants';
 

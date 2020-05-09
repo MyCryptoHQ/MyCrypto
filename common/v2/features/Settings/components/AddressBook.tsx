@@ -13,11 +13,11 @@ import {
   EditableText,
   Tooltip,
   UndoDeleteOverlay
-} from 'v2/components';
-import { ExtendedAddressBook, AddressBook as IAddressBook, TUuid } from 'v2/types';
-import { truncate } from 'v2/utils';
-import { COLORS, SPACING, BREAK_POINTS } from 'v2/theme';
-import { translateRaw } from 'v2/translations';
+} from '@components';
+import { ExtendedAddressBook, AddressBook as IAddressBook, TUuid } from '@types';
+import { truncate } from '@utils';
+import { COLORS, SPACING, BREAK_POINTS } from '@theme';
+import { translateRaw } from '@translations';
 
 interface Props {
   addressBook: ExtendedAddressBook[];

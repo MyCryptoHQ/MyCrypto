@@ -3,9 +3,9 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
-import translate, { translateRaw } from 'v2/translations';
-import { ExtendedContentPanel } from 'v2/components';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
+import translate, { translateRaw } from '@translations';
+import { ExtendedContentPanel } from '@components';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
 
 import mainImage from 'common/assets/images/icn-forgot-password.svg';
 

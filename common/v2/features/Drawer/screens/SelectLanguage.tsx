@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { AnalyticsService, ANALYTICS_CATEGORIES, SettingsContext } from 'v2/services';
-import { languages } from 'v2/config';
-import { translateRaw } from 'v2/translations';
+import { AnalyticsService, ANALYTICS_CATEGORIES, SettingsContext } from '@services';
+import { languages } from '@config';
+import { translateRaw } from '@translations';
 
 const LanguagesList = styled.ul`
   flex-grow: 1;

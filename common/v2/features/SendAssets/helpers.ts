@@ -7,7 +7,7 @@ import {
   IHexStrTransaction,
   Asset,
   IHexStrWeb3Transaction
-} from 'v2/types';
+} from '@types';
 
 import {
   Address,
@@ -18,7 +18,7 @@ import {
   inputNonceToHex,
   inputGasLimitToHex,
   encodeTransfer
-} from 'v2/services/EthService';
+} from '@services/EthService';
 
 const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
   const { network } = formData;

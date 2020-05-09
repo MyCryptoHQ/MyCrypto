@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import translate from 'v2/translations';
-import { BREAK_POINTS } from 'v2/theme';
+import translate from '@translations';
+import { BREAK_POINTS } from '@theme';
 import NotificationWrapper from './NotificationWrapper';
-import { getKBHelpArticle, KB_HELP_ARTICLE } from 'v2/config';
+import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 
 // Legacy
 import champagneIcon from 'common/assets/images/icn-champagne-2.svg';

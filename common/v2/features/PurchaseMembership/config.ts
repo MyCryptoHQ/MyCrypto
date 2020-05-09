@@ -1,8 +1,8 @@
 import { BigNumber } from 'bignumber.js';
 
-import { TAddress } from 'v2/types/address';
-import { DAIUUID, ETHUUID } from 'v2/utils';
-import translate, { translateRaw } from 'v2/translations';
+import { TAddress } from '@types';
+import { DAIUUID, ETHUUID } from '@utils';
+import translate, { translateRaw } from '@translations';
 
 import onemonthIcon from 'assets/images/membership/membership-onemonth.svg';
 import threemonthsIcon from 'assets/images/membership/membership-threemonths.svg';

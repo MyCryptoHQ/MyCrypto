@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { Typography } from 'v2/components';
-import { SPACING, COLORS, BREAK_POINTS } from 'v2/theme';
-import { AssetContext, getAssetByUUID } from 'v2/services/Store';
-import { Asset } from 'v2/types';
+import { Typography } from '@components';
+import { SPACING, COLORS, BREAK_POINTS } from '@theme';
+import { AssetContext, getAssetByUUID } from '@services/Store';
+import { Asset } from '@types';
 
 import { IMembershipConfig, IMembershipId } from '../config';
 

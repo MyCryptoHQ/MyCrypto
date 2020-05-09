@@ -7,10 +7,10 @@ import {
   ExtendedContract,
   ExtendedAsset,
   NodeOptions
-} from 'v2/types';
-import { createDefaultValues } from 'v2/database';
-import { NETWORKS_CONFIG, SCHEMA_BASE } from 'v2/database/data';
-import { generateUUID } from 'v2/utils';
+} from '@types';
+import { createDefaultValues } from '@database';
+import { NETWORKS_CONFIG, SCHEMA_BASE } from '@database/data';
+import { generateUUID } from '@utils';
 
 import { constructNetworkNodes, mergeConfigWithLocalStorage } from './utils';
 
