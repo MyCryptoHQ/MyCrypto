@@ -4867,7 +4867,7 @@ babel-plugin-react-docgen@^4.0.0:
     react-docgen "^5.0.0"
     recast "^0.14.7"
 
-babel-plugin-recharts@^1.2.1:
+babel-plugin-recharts@1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/babel-plugin-recharts/-/babel-plugin-recharts-1.2.1.tgz#bfa8c723148cbafad0796abeb36f94f0ac397011"
   integrity sha512-bIPmjP3TrF2RJk0jDBG+91aTVyLuK48T4Nqekvs/B6MdzPmHXBKB+q+8xXCSRth08Wck+X5ylgSTcr3Ab1egvw==
