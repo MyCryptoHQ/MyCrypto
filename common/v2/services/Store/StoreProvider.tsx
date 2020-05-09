@@ -31,10 +31,10 @@ import {
   isArrayEqual,
   useInterval,
   convertToFiatFromAsset,
+  fromTxReceiptObj,
   getWeb3Config,
   multiplyBNFloats,
   weiToFloat,
-  fromTransactionResponseToITxReceipt,
   generateAccountUUID
 } from 'v2/utils';
 import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from 'v2/services/EthService';
@@ -254,7 +254,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     // This interval is used to poll for status of txs.
     const txStatusLookupInterval = setInterval(() => {
       pendingTransactions.forEach((pendingTransactionObject: ITxReceipt) => {
-        const network: Network = pendingTransactionObject.network!;
+        const network: Network = pendingTransactionObject.network;
         // If network is not found in the pendingTransactionObject, we cannot continue.
         if (!network) return;
         const provider = new ProviderHandler(network);
@@ -263,7 +263,7 @@ export const StoreProvider: React.FC = ({ children }) => {
           // Fail out if tx receipt cant be found.
           // This initial check stops us from spamming node for data before there is data to fetch.
           if (!transactionReceipt) return;
-          const receipt = fromTransactionResponseToITxReceipt(transactionReceipt)(assets, networks);
+          const receipt = fromTxReceiptObj(transactionReceipt)(assets, networks);
 
           // fromTxReceiptObj will return undefined if a network config could not be found with the transaction's chainId
           if (!receipt) return;
@@ -271,23 +271,23 @@ export const StoreProvider: React.FC = ({ children }) => {
           // Get block tx success/fail and timestamp for block number, then overwrite existing tx in account.
           Promise.all([
             getTxStatus(provider, receipt.hash),
-            getTimestampFromBlockNum(receipt.blockNumber!, provider)
+            getTimestampFromBlockNum(receipt.blockNumber, provider)
           ]).then(([txStatus, txTimestamp]) => {
             // txStatus and txTimestamp return undefined on failed lookups.
             if (!isMounted || !txStatus || !txTimestamp) return;
             const senderAccount =
-              pendingTransactionObject.senderAccount! ||
-              getAccountByAddressAndNetworkName(receipt.from, pendingTransactionObject.network!.id);
+              pendingTransactionObject.senderAccount ||
+              getAccountByAddressAndNetworkName(receipt.from, pendingTransactionObject.network.id);
 
             addNewTransactionToAccount(senderAccount, {
               ...receipt,
-              type: pendingTransactionObject.type || ITxType.STANDARD,
+              txType: pendingTransactionObject.txType || ITxType.STANDARD,
               timestamp: txTimestamp,
               stage: txStatus
             });
-            if (pendingTransactionObject.type === ITxType.DEFIZAP) {
+            if (pendingTransactionObject.txType === ITxType.DEFIZAP) {
               state.scanAccountTokens(senderAccount);
-            } else if (pendingTransactionObject.type === ITxType.PURCHASE_MEMBERSHIP) {
+            } else if (pendingTransactionObject.txType === ITxType.PURCHASE_MEMBERSHIP) {
               scanForMemberships([senderAccount]);
             }
           });

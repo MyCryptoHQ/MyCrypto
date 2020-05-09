@@ -1,19 +1,18 @@
-import { ITxObject, TAddress } from 'v2/types';
+import { IHexStrTransaction, ITxObject } from 'v2/types';
 import { inputValueToHex, inputGasPriceToHex, inputNonceToHex } from 'v2/services/EthService';
 import { DEFAULT_NETWORK_CHAINID } from 'v2/config';
 import { COLORS } from 'v2/theme';
 
 import { ISimpleTxForm } from './types';
 
-export const createSimpleTxObject = (formData: ISimpleTxForm): ITxObject => {
-  const { address, amount, gasLimit, gasPrice, nonce } = formData;
+export const createSimpleTxObject = (formData: ISimpleTxForm): IHexStrTransaction | ITxObject => {
   return {
-    to: address as TAddress,
-    value: inputValueToHex(amount),
+    to: formData.address,
+    value: inputValueToHex(formData.amount),
     data: '0x',
-    gasLimit,
-    gasPrice: inputGasPriceToHex(gasPrice),
-    nonce: inputNonceToHex(nonce),
+    gasLimit: formData.gasLimit,
+    gasPrice: inputGasPriceToHex(formData.gasPrice),
+    nonce: inputNonceToHex(formData.nonce),
     chainId: DEFAULT_NETWORK_CHAINID
   };
 };

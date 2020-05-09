@@ -110,8 +110,8 @@ export const ProtectTxAbort: FC<AbortTransactionProps> = ({ onTxSent }) => {
     if (protectTxCountdown > 0) {
       protectTxTimer = setTimeout(() => setProtectTxCountdown((prevCount) => prevCount - 1), 1000);
     } else if (protectTxCountdown === 0) {
-      invokeProtectTxTimeoutFunction((txReceipt) => {
-        onTxSent(txReceipt);
+      invokeProtectTxTimeoutFunction((txReceiptCb: (txReceipt: ITxReceipt) => void) => {
+        onTxSent(txReceiptCb);
       });
     }
     return () => {

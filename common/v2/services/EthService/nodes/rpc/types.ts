@@ -1,8 +1,10 @@
-import { ITxObject } from 'v2/types';
+import { IHexStrTransaction } from 'v2/types';
 
+export type DATA = string;
+export type QUANTITY = string;
 type TX = string;
 
-export type DEFAULT_BLOCK = ('earliest' | 'latest' | 'pending') & string;
+export type DEFAULT_BLOCK = string | 'earliest' | 'latest' | 'pending';
 
 export type JSONRPC2 = '2.0';
 
@@ -28,7 +30,7 @@ export interface SendRawTxRequest extends RPCRequestBase {
 
 export interface GetBalanceRequest extends RPCRequestBase {
   method: 'eth_getBalance';
-  params: [string, DEFAULT_BLOCK];
+  params: [DATA, DEFAULT_BLOCK];
 }
 
 export interface GetTokenBalanceRequest extends RPCRequestBase {
@@ -46,12 +48,12 @@ export interface CallRequest extends RPCRequestBase {
   method: 'eth_call';
   params: [
     {
-      from?: string;
-      to: string;
-      gas?: string;
-      gasPrice?: string;
-      value?: string;
-      data?: string;
+      from?: DATA;
+      to: DATA;
+      gas?: QUANTITY;
+      gasPrice?: QUANTITY;
+      value?: QUANTITY;
+      data?: DATA;
     },
     DEFAULT_BLOCK
   ];
@@ -59,12 +61,12 @@ export interface CallRequest extends RPCRequestBase {
 
 export interface EstimateGasRequest extends RPCRequestBase {
   method: 'eth_estimateGas';
-  params: [Partial<ITxObject>];
+  params: [Partial<IHexStrTransaction>];
 }
 
 export interface GetTransactionCountRequest extends RPCRequestBase {
   method: 'eth_getTransactionCount';
-  params: [string, DEFAULT_BLOCK];
+  params: [DATA, DEFAULT_BLOCK];
 }
 
 export interface GetTransactionByHashRequest extends RPCRequestBase {

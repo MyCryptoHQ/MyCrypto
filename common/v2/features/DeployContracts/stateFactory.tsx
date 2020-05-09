@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { isHexString } from 'ethjs-util';
 
-import { TUseStateReducerFactory, fromTransactionResponseToITxReceipt } from 'v2/utils';
+import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
 import { StoreAccount, NetworkId, ITxType, ITxStatus } from 'v2/types';
 import {
   ProviderHandler,
@@ -117,7 +117,7 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
         to: state.txConfig.receiverAddress,
         from: state.txConfig.senderAccount.address,
         amount: state.txConfig.amount,
-        type: ITxType.DEPLOY_CONTRACT,
+        txType: ITxType.DEPLOY_CONTRACT,
         stage: ITxStatus.PENDING
       });
       setState((prevState: DeployContractsState) => ({
@@ -133,13 +133,10 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
         .then((retrievedTxReceipt) => retrievedTxReceipt)
         .catch((hash) => provider.getTransactionByHash(hash))
         .then((retrievedTransactionReceipt) => {
-          const txReceipt = fromTransactionResponseToITxReceipt(retrievedTransactionReceipt)(
-            assets,
-            networks
-          );
+          const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(assets, networks);
           addNewTransactionToAccount(state.txConfig.senderAccount, {
-            ...txReceipt!,
-            type: ITxType.DEPLOY_CONTRACT,
+            ...txReceipt,
+            txType: ITxType.DEPLOY_CONTRACT,
             stage: ITxStatus.PENDING
           });
           setState((prevState: DeployContractsState) => ({

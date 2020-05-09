@@ -9,29 +9,20 @@ import {
 } from 'v2/types';
 import { IZapConfig } from 'v2/features/DeFiZap/config';
 import { IMembershipConfig } from 'v2/features/PurchaseMembership/config';
-import { Optional } from 'utility-types';
 
-export type ITxSigned = string;
+export type ISignedTx = string;
 
 export interface ITxObject {
   /* Raw Transaction Object */
-  readonly to: TAddress;
+  readonly to: TAddress | string;
   readonly value: string;
+  readonly gasLimit: string;
   readonly data: string;
-  readonly gasLimit: any;
   readonly gasPrice: string;
   readonly nonce: string;
   readonly chainId: number;
   readonly from?: TAddress;
 }
-
-export type ITxObjectBeforeSender = Pick<ITxObject, 'to' | 'value' | 'data' | 'chainId'>;
-
-export type ITxObjectBeforeGasPrice = Optional<ITxObject, 'nonce' | 'gasLimit' | 'gasPrice'>;
-
-export type ITxObjectBeforeGasLimit = Optional<ITxObject, 'nonce' | 'gasLimit'>;
-
-export type ITxObjectBeforeNonce = Optional<ITxObject, 'nonce'>;
 
 export interface ITxConfig {
   readonly rawTransaction: ITxObject /* The rawTransaction object that will be signed */;
@@ -70,7 +61,7 @@ export interface ISignComponentProps {
   senderAccount: StoreAccount;
   rawTransaction: ITxObject;
   children?: never;
-  onSuccess(receipt: ITxReceipt | ITxSigned): void;
+  onSuccess(receipt: ITxReceipt | ISignedTx): void;
 }
 
 export interface IStepComponentProps {
@@ -82,7 +73,7 @@ export interface IStepComponentProps {
   membershipSelected?: IMembershipConfig;
   children?: never;
   completeButtonText?: string;
-  onComplete(data: IFormikFields | ITxReceipt | ITxSigned | null): void;
+  onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;
   resetFlow(): void;
 }
 

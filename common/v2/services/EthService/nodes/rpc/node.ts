@@ -1,6 +1,6 @@
 import BN from 'bn.js';
 
-import { INode, ITxObject, TxObj } from 'v2/types';
+import { IHexStrTransaction, INode, TxObj } from 'v2/types';
 import {
   Wei,
   TokenValue,
@@ -50,7 +50,7 @@ export default class RPCNode implements INode {
       .then(({ result }) => Wei(result));
   }
 
-  public estimateGas(transaction: Partial<ITxObject>): Promise<Wei> {
+  public estimateGas(transaction: Partial<IHexStrTransaction>): Promise<Wei> {
     return this.client
       .call(this.requests.estimateGas(transaction))
       .then(isValidEstimateGas)

@@ -7,7 +7,7 @@ import {
 } from 'ethers/providers';
 import { formatEther, BigNumber } from 'ethers/utils';
 
-import { Asset, Network, TxObj, ITxSigned, ITxObject } from 'v2/types';
+import { Asset, Network, IHexStrTransaction, TxObj, ITxSigned } from 'v2/types';
 import { RPCRequests, baseToConvertedUnit, ERC20 } from 'v2/services/EthService';
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { EthersJS } from './ethersJsProvider';
@@ -49,7 +49,7 @@ export class ProviderHandler {
   }
 
   /* Tested*/
-  public estimateGas(transaction: Partial<ITxObject>): Promise<string> {
+  public estimateGas(transaction: Partial<IHexStrTransaction>): Promise<string> {
     return this.injectClient((client) =>
       client.estimateGas(transaction).then((data) => data.toString())
     );
@@ -103,7 +103,7 @@ export class ProviderHandler {
   }
 
   public sendRawTx(signedTx: string | ITxSigned): Promise<TransactionResponse> {
-    return this.injectClient((client) => client.sendTransaction(signedTx));
+    return this.injectClient((client) => client.sendTransaction(signedTx as string));
   }
 
   public waitForTransaction(txHash: string, confirmations = 1): Promise<TransactionReceipt> {

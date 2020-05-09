@@ -5,7 +5,6 @@ import { translateRaw } from 'v2/translations';
 import { AssetContext } from 'v2/services';
 import { TxReceipt, MultiTxReceipt } from 'v2/components/TransactionFlow';
 import { StoreAccount, ITxType } from 'v2/types';
-import { fromTxParcelToTxReceipt } from 'v2/utils';
 
 import { SwapDisplayData, IAssetPair } from '../types';
 import { makeTxConfigFromTransaction } from '../helpers';
@@ -39,12 +38,18 @@ export default function SwapTransactionReceipt({
     );
   });
 
-  const txReceipts = transactions.map((tx) => fromTxParcelToTxReceipt(tx, account));
+  const txReceipts = transactions.map((tx, idx) => {
+    return {
+      ...txConfigs[idx],
+      ...tx.txRaw,
+      hash: tx.txHash
+    };
+  });
 
   return txReceipts.length === 1 ? (
     <TxReceipt
       txType={ITxType.SWAP}
-      txReceipt={txReceipts[0]!}
+      txReceipt={txReceipts[0]}
       txConfig={txConfigs[0]}
       completeButtonText={translateRaw('SWAP_START_ANOTHER')}
       resetFlow={onSuccess}
