@@ -23,10 +23,10 @@ import {
 import NoTransactions from './NoTransactions';
 import TransactionLabel from './TransactionLabel';
 import './RecentTransactionList.scss';
-import newWindowIcon from 'common/assets/images/icn-new-window.svg';
-import transfer from 'common/assets/images/transactions/transfer.svg';
-import inbound from 'common/assets/images/transactions/inbound.svg';
-import outbound from 'common/assets/images/transactions/outbound.svg';
+import newWindowIcon from '@assets/images/icn-new-window.svg';
+import transfer from '@assets/images/transactions/transfer.svg';
+import inbound from '@assets/images/transactions/inbound.svg';
+import outbound from '@assets/images/transactions/outbound.svg';
 import { COLORS } from '@theme';
 
 interface Props {

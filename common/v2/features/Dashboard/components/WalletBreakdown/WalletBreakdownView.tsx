@@ -12,8 +12,8 @@ import NoAssets from './NoAssets';
 import { WalletBreakdownProps, Balance } from './types';
 import { calculateShownIndex } from './helpers';
 
-import moreIcon from 'common/assets/images/icn-more.svg';
-import coinGeckoIcon from 'common/assets/images/credits/credits-coingecko.png';
+import moreIcon from '@assets/images/icn-more.svg';
+import coinGeckoIcon from '@assets/images/credits/credits-coingecko.png';
 
 export const SMALLEST_CHART_SHARE_SUPPORTED = 0.03; // 3%
 export const NUMBER_OF_ASSETS_DISPLAYED = 4;

@@ -18,9 +18,9 @@ import { FromToAccount } from './displays';
 import { constructSenderFromTxConfig } from './helpers';
 import { ISender } from './types';
 
-import feeIcon from 'common/assets/images/icn-fee.svg';
-import sendIcon from 'common/assets/images/icn-send.svg';
-import walletIcon from 'common/assets/images/icn-wallet.svg';
+import feeIcon from '@assets/images/icn-fee.svg';
+import sendIcon from '@assets/images/icn-send.svg';
+import walletIcon from '@assets/images/icn-wallet.svg';
 import { IStepComponentProps, ITxType, ExtendedAddressBook } from '@types';
 
 const { SCREEN_XS } = BREAK_POINTS;

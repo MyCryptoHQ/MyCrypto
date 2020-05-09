@@ -8,7 +8,7 @@ import { NotificationsContext } from './NotificationsProvider';
 import { notificationsConfigs, NotificationTemplates } from './constants';
 
 // Legacy
-import closeIcon from 'common/assets/images/icn-close.svg';
+import closeIcon from '@assets/images/icn-close.svg';
 
 const MainPanel = styled(Panel)`
   position: relative;

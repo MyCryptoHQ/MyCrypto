@@ -8,7 +8,7 @@ import { EXT_URLS } from '@config';
 import NotificationWrapper from './NotificationWrapper';
 
 // Legacy
-import walletIcon from 'common/assets/images/icn-new-wallet.svg';
+import walletIcon from '@assets/images/icn-new-wallet.svg';
 
 const { SCREEN_XS } = BREAK_POINTS;
 

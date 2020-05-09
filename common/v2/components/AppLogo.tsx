@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 
-import mycLogo from 'assets/images/icn-myc.svg';
+import mycLogo from '@assets/images/icn-myc.svg';
 
 const Container = styled.div`
   display: flex;

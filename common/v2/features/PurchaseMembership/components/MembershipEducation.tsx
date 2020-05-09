@@ -16,13 +16,13 @@ import {
 import { MEMBERSHIP_CONFIG, IMembershipId, accordionContent } from '../config';
 import { MembershipPlanCard } from '.';
 
-import membershipIllustration from 'assets/images/membership/membership-illustration.svg';
-import membershipLifetime from 'assets/images/membership/membership-lifetime.svg';
-import membershipUnlimited from 'assets/images/membership/membership-unlimited-transaction.svg';
-import membershipNoAds from 'assets/images/membership/membership-no-ads.svg';
-import membershipNoSponsor from 'assets/images/membership/membership-no-sponsor.svg';
-import membershipStickers from 'assets/images/membership/membership-stickers.svg';
-import membershipShirt from 'assets/images/membership/membership-shirt.svg';
+import membershipIllustration from '@assets/images/membership/membership-illustration.svg';
+import membershipLifetime from '@assets/images/membership/membership-lifetime.svg';
+import membershipUnlimited from '@assets/images/membership/membership-unlimited-transaction.svg';
+import membershipNoAds from '@assets/images/membership/membership-no-ads.svg';
+import membershipNoSponsor from '@assets/images/membership/membership-no-sponsor.svg';
+import membershipStickers from '@assets/images/membership/membership-stickers.svg';
+import membershipShirt from '@assets/images/membership/membership-shirt.svg';
 
 const Heading = styled(FullSizePanelSection)`
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {

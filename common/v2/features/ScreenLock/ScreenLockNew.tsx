@@ -9,7 +9,7 @@ import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
 import { ScreenLockContext } from './ScreenLockProvider';
 
 // Legacy
-import mainImage from 'common/assets/images/icn-create-pw.svg';
+import mainImage from '@assets/images/icn-create-pw.svg';
 
 const ContentWrapper = styled.div`
   display: flex;

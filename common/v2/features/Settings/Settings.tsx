@@ -15,7 +15,7 @@ import { DEFAULT_NETWORK, IS_ACTIVE_FEATURE } from '@config';
 import { BREAK_POINTS } from '@theme';
 import translate from '@translations';
 
-import settingsIcon from 'common/assets/images/icn-settings.svg';
+import settingsIcon from '@assets/images/icn-settings.svg';
 import AddToAddressBook from './components/AddToAddressBook';
 import { AddressBookPanel, GeneralSettings, DangerZone } from './components';
 import AddOrEditNetworkNode from './components/AddOrEditNetworkNode';

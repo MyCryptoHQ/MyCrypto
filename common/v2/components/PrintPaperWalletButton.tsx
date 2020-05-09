@@ -7,7 +7,7 @@ import PaperWallet from './PaperWallet';
 import { Spinner } from '@components';
 
 // Legacy
-import printerIcon from 'common/assets/images/icn-printer.svg';
+import printerIcon from '@assets/images/icn-printer.svg';
 
 const PrinterImage = styled.img`
   width: 24px;

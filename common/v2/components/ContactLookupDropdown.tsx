@@ -5,7 +5,7 @@ import { translateRaw } from '@translations';
 import { AccountSummary, AccountOption, Dropdown } from '@components';
 import { Asset, IReceiverAddress, ExtendedAddressBook } from '@types';
 
-import addressBookIcon from 'common/assets/images/icn-address-book.svg';
+import addressBookIcon from '@assets/images/icn-address-book.svg';
 
 interface IAccountLookupDropdownProps {
   contacts: ExtendedAddressBook[];

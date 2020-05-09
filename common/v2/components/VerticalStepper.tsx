@@ -9,7 +9,7 @@ import Typography from './Typography';
 import Button from './Button';
 import { COLORS, SPACING, FONT_SIZE } from '@theme';
 
-import checkmark from 'assets/images/icn-checkmark-white.svg';
+import checkmark from '@assets/images/icn-checkmark-white.svg';
 import { translateRaw } from '@translations';
 
 export interface StepData {

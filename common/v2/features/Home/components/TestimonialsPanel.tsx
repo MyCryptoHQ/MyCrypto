@@ -8,10 +8,10 @@ import { BREAK_POINTS, COLORS } from '@theme';
 
 import './SliderImports.scss';
 
-import sparkles1Icon from 'common/assets/images/icn-sparkles-1.svg';
-import sparkles2Icon from 'common/assets/images/icn-sparkles-2.svg';
-import sparkles3Icon from 'common/assets/images/icn-sparkles-3.svg';
-import moreIcon from 'common/assets/images/icn-more.svg';
+import sparkles1Icon from '@assets/images/icn-sparkles-1.svg';
+import sparkles2Icon from '@assets/images/icn-sparkles-2.svg';
+import sparkles3Icon from '@assets/images/icn-sparkles-3.svg';
+import moreIcon from '@assets/images/icn-more.svg';
 
 const { SCREEN_XS, SCREEN_SM, SCREEN_XXL } = BREAK_POINTS;
 const { GREYISH_BROWN } = COLORS;

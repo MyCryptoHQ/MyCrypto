@@ -12,7 +12,7 @@ import { WalletFactory, ChainCodeResponse } from '@services/WalletService';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWallets from './DeterministicWallets';
 import './LedgerNano.scss';
-import ledgerIcon from 'common/assets/images/icn-ledger-nano-large.svg';
+import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
 
 interface OwnProps {
   wallet: object;

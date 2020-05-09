@@ -11,8 +11,8 @@ import { getDPath, getDPaths } from '@services/EthService';
 import { NetworkContext } from '@services/Store';
 import { WalletFactory } from '@services/WalletService';
 import DeterministicWallets from './DeterministicWallets';
-import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
-import questionToolTip from 'common/assets/images/icn-question.svg';
+import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
+import questionToolTip from '@assets/images/icn-question.svg';
 
 import './Mnemonic.scss';
 

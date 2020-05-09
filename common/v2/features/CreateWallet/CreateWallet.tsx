@@ -8,7 +8,7 @@ import { ExtendedContentPanel } from '@components';
 import { ROUTE_PATHS } from '@config';
 
 // Legacy
-import newWalletIcon from 'common/assets/images/icn-new-wallet.svg';
+import newWalletIcon from '@assets/images/icn-new-wallet.svg';
 
 const DescriptionItem = styled(Typography)`
   margin-top: 18px;

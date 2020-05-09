@@ -7,7 +7,7 @@ import { PanelProps } from '@features/CreateWallet';
 import translate, { translateRaw } from '@translations';
 
 // Legacy
-import reloadIcon from 'common/assets/images/icn-reload.svg';
+import reloadIcon from '@assets/images/icn-reload.svg';
 
 const DescriptionItem = styled(Typography)`
   margin-top: 18px;

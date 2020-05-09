@@ -6,7 +6,7 @@ import { TogglablePassword, Input } from '@components';
 import { WalletId } from '@types';
 import { isValidEncryptedPrivKey, isValidPrivKey, stripHexPrefix } from '@services/EthService';
 import { WalletFactory } from '@services/WalletService';
-import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
+import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
 import './PrivateKey.scss';
 
 export interface PrivateKeyValue {

@@ -10,8 +10,8 @@ import { Typography, Dropdown } from '@components/index';
 import { translateRaw } from '@translations';
 import { SPACING, COLORS } from '@theme';
 
-import addIcon from 'assets/images/icn-add.svg';
-import editIcon from 'assets/images/icn-edit.svg';
+import addIcon from '@assets/images/icn-add.svg';
+import editIcon from '@assets/images/icn-edit.svg';
 
 const SContainer = styled.div`
   display: flex;

@@ -10,7 +10,7 @@ import { ExtendedAsset, NetworkId } from '@types';
 import { DEFAULT_NETWORK, DEFAULT_ASSET_DECIMAL } from '@config';
 import { isValidAddress } from '@services';
 
-import backArrowIcon from 'common/assets/images/icn-back.svg';
+import backArrowIcon from '@assets/images/icn-back.svg';
 
 const ActionsWrapper = styled.div`
   margin-top: 52px;

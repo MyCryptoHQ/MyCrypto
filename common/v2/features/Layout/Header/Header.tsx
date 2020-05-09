@@ -18,7 +18,7 @@ import {
 import translate from '@translations';
 
 // Legacy
-import logo from 'assets/images/logo-mycrypto.svg';
+import logo from '@assets/images/logo-mycrypto.svg';
 import { ScreenLockContext } from '@features/ScreenLock/ScreenLockProvider';
 
 const { BLUE_BRIGHT } = COLORS;

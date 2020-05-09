@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
+import backArrowIcon from '@assets/images/icn-back-arrow.svg';
 import { DashboardPanel, NetworkSelectDropdown, InputField } from '@components';
 import { AddressBook, NetworkId } from '@types';
 import { ToastContext } from '@features/Toasts';

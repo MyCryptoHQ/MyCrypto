@@ -1,7 +1,7 @@
 import React from 'react';
 import { Heading, Typography } from '@mycrypto/ui';
 
-import sendIcon from 'common/assets/images/icn-send.svg';
+import sendIcon from '@assets/images/icn-send.svg';
 import { Currency } from '@components';
 import { TSymbol } from '@types';
 import { translateRaw } from '@translations';

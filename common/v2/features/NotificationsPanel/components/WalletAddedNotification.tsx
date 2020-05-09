@@ -7,10 +7,10 @@ import NotificationWrapper from './NotificationWrapper';
 import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 
 // Legacy
-import champagneIcon from 'common/assets/images/icn-champagne-2.svg';
-import howBuyIcon from 'common/assets/images/icn-how-do-i-buy-crypto.svg';
-import dontLoseCryptoIcon from 'common/assets/images/icn-don-t-lose-crypto.svg';
-import questionsIcon from 'common/assets/images/icn-questions.svg';
+import champagneIcon from '@assets/images/icn-champagne-2.svg';
+import howBuyIcon from '@assets/images/icn-how-do-i-buy-crypto.svg';
+import dontLoseCryptoIcon from '@assets/images/icn-don-t-lose-crypto.svg';
+import questionsIcon from '@assets/images/icn-questions.svg';
 
 const { SCREEN_XS } = BREAK_POINTS;
 const { HOME, SECURING_YOUR_ETH, BUY_CRYPTO } = KB_HELP_ARTICLE;

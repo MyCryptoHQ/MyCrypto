@@ -23,7 +23,7 @@ import { MembershipReceiptBanner } from '@features/PurchaseMembership';
 
 import { SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
-import defizaplogo from 'assets/images/defizap/defizaplogo.svg';
+import defizaplogo from '@assets/images/defizap/defizaplogo.svg';
 import './TxReceipt.scss';
 import Typography from '../Typography';
 

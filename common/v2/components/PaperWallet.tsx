@@ -8,8 +8,8 @@ import { QRCode } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import { Trans, translateRaw } from '@translations';
 
-import walletIcon from 'common/assets/images/icn-hardware-wallet.svg';
-import myCryptoIcon from 'common/assets/images/logo-mycrypto-transparent.png';
+import walletIcon from '@assets/images/icn-hardware-wallet.svg';
+import myCryptoIcon from '@assets/images/logo-mycrypto-transparent.png';
 
 interface PaperWalletWrapperProps {
   isHidden?: boolean;

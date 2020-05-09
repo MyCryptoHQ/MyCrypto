@@ -6,8 +6,8 @@ import React from 'react';
 
 import { Input, TextArea } from '@components';
 import './TogglablePassword.scss';
-import openEye from 'common/assets/images/icn-show-eye.svg';
-import closedEye from 'common/assets/images/icn-show-closed-eye-svg.svg';
+import openEye from '@assets/images/icn-show-eye.svg';
+import closedEye from '@assets/images/icn-show-closed-eye-svg.svg';
 
 interface Props {
   // Shared props

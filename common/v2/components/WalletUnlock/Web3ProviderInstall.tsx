@@ -5,8 +5,8 @@ import { DOWNLOAD_MYCRYPTO_LINK, WALLETS_CONFIG } from '@config';
 import translate from '@translations';
 import { ANALYTICS_CATEGORIES, AnalyticsService } from '@services';
 
-import AppStoreBadgeIMG from 'assets/images/mobile/app-store-badge.png';
-import GooglePlayBadgeIMG from 'assets/images/mobile/google-play-badge.png';
+import AppStoreBadgeIMG from '@assets/images/mobile/app-store-badge.png';
+import GooglePlayBadgeIMG from '@assets/images/mobile/google-play-badge.png';
 import { NewTabLink } from '@components';
 import { useScreenSize } from '@utils';
 import './Web3ProviderInstall.scss';

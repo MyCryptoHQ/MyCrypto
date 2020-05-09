@@ -14,10 +14,10 @@ import { isValidAmount, sanitizeDecimalSeparator, noOp } from '@utils';
 import { IAccount as IIAccount, StoreAccount } from '@types';
 import { ROUTE_PATHS } from '@config';
 import translate, { translateRaw } from '@translations';
-import questionToolTip from 'common/assets/images/icn-question.svg';
+import questionToolTip from '@assets/images/icn-question.svg';
 
 // Legacy
-import receiveIcon from 'common/assets/images/icn-receive.svg';
+import receiveIcon from '@assets/images/icn-receive.svg';
 
 const isAssetToken = (tokenType: string) => {
   return tokenType !== 'base';

@@ -2,7 +2,7 @@ import React from 'react';
 import { COLORS } from '@theme';
 import VerticalStepper from './VerticalStepper';
 
-import step1SVG from 'assets/images/icn-unlock-wallet.svg';
+import step1SVG from '@assets/images/icn-unlock-wallet.svg';
 
 export default { title: 'VerticalStepper' };
 

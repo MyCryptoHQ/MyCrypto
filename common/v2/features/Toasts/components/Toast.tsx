@@ -6,12 +6,12 @@ import { BREAK_POINTS, COLORS } from '@theme';
 
 import { ToastConfig, ToastType } from '@types';
 
-import successIcon from 'assets/images/icn-toast-success.svg';
-import infoIcon from 'assets/images/icn-toast-alert.svg';
-import errorIcon from 'assets/images/icn-toast-error.svg';
-import progressIcon from 'assets/images/icn-toast-progress.svg';
-import swapIcon from 'assets/images/icn-toast-swap.svg';
-import closeIcon from 'assets/images/icn-toast-close.svg';
+import successIcon from '@assets/images/icn-toast-success.svg';
+import infoIcon from '@assets/images/icn-toast-alert.svg';
+import errorIcon from '@assets/images/icn-toast-error.svg';
+import progressIcon from '@assets/images/icn-toast-progress.svg';
+import swapIcon from '@assets/images/icn-toast-swap.svg';
+import closeIcon from '@assets/images/icn-toast-close.svg';
 
 interface ToastProp extends ToastConfig {
   templateData?: any;

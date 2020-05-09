@@ -8,7 +8,7 @@ import { isKeystorePassRequired } from '@services/WalletService';
 import { WALLETS_CONFIG } from '@config';
 
 import './Keystore.scss';
-import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
+import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
 
 export interface KeystoreValueState {
   file: string;

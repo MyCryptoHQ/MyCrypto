@@ -7,7 +7,7 @@ import NotificationWrapper from './NotificationWrapper';
 import { PrintPaperWalletButton } from '@components';
 
 // Legacy
-import walletIcon from 'common/assets/images/icn-wallet.svg';
+import walletIcon from '@assets/images/icn-wallet.svg';
 
 const { SCREEN_XS } = BREAK_POINTS;
 

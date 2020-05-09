@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import chevronIcon from 'assets/images/chevron-right.svg';
+import chevronIcon from '@assets/images/chevron-right.svg';
 
 const ArrowContainer = styled.img<{ isFlipped?: boolean }>`
   margin-left: 0.5em;

@@ -5,8 +5,8 @@ import classnames from 'classnames';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
 import { donationAddressMap } from '@config';
 import translate from '@translations';
-import ether from 'assets/images/ether.png';
-import bitcoin from 'assets/images/bitcoin.png';
+import ether from '@assets/images/ether.png';
+import bitcoin from '@assets/images/bitcoin.png';
 import Subscribe from './Subscribe';
 import './DonateAndSubscribe.scss';
 

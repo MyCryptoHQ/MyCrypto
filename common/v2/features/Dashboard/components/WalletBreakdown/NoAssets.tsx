@@ -5,7 +5,7 @@ import translate from '@translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
 import { COLORS } from '@theme';
 
-import addIcon from 'common/assets/images/icn-add-assets.svg';
+import addIcon from '@assets/images/icn-add-assets.svg';
 
 const { BLUE_BRIGHT } = COLORS;
 

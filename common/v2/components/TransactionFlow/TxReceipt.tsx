@@ -50,8 +50,8 @@ import { FromToAccount, SwapFromToDiagram, TransactionDetailsDisplay } from './d
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
 import { PendingTransaction } from './PendingLoader';
 
-import sentIcon from 'common/assets/images/icn-sent.svg';
-import defizaplogo from 'assets/images/defizap/defizaplogo.svg';
+import sentIcon from '@assets/images/icn-sent.svg';
+import defizaplogo from '@assets/images/defizap/defizaplogo.svg';
 import './TxReceipt.scss';
 
 interface PendingBtnAction {

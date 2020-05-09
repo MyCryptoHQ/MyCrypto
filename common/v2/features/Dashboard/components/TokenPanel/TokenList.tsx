@@ -9,7 +9,7 @@ import { translateRaw } from '@translations';
 
 import { FONT_SIZE, SPACING } from '@theme';
 
-import moreIcon from 'common/assets/images/icn-more.svg';
+import moreIcon from '@assets/images/icn-more.svg';
 
 const TokenListWrapper = styled.div`
   min-height: 0;

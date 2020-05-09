@@ -11,8 +11,8 @@ import translate, { translateRaw } from '@translations';
 import { ROUTE_PATHS, KB_HELP_ARTICLE, getKBHelpArticle } from '@config';
 import { MEMBERSHIP_CONFIG, MembershipState } from '@features/PurchaseMembership/config';
 
-import defaultIcon from 'common/assets/images/membership/membership-none.svg';
-import expiredIcon from 'common/assets/images/membership/membership-expired.svg';
+import defaultIcon from '@assets/images/membership/membership-none.svg';
+import expiredIcon from '@assets/images/membership/membership-expired.svg';
 
 const SDashboardPanel = styled(DashboardPanel)<{ isMemberOrExpired: boolean }>`
   display: flex;

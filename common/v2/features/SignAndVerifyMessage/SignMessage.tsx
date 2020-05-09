@@ -13,7 +13,7 @@ import { IFullWallet, withWalletConnect, IUseWalletConnect } from '@services/Wal
 
 import { getStories } from './stories';
 
-import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
+import backArrowIcon from '@assets/images/icn-back-arrow.svg';
 
 const { SCREEN_XS } = BREAK_POINTS;
 

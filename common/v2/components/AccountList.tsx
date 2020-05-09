@@ -31,7 +31,7 @@ import { default as Currency } from './Currency';
 import IconArrow from './IconArrow';
 import Checkbox from './Checkbox';
 import Tooltip from './Tooltip';
-import informationalSVG from 'assets/images/icn-info-blue.svg';
+import informationalSVG from '@assets/images/icn-info-blue.svg';
 
 const Label = styled.span`
   display: flex;

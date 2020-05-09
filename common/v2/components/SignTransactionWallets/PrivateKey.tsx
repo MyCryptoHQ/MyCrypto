@@ -10,7 +10,7 @@ import translate, { translateRaw } from '@translations';
 import { WALLETS_CONFIG } from '@config';
 
 import './PrivateKey.scss';
-import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
+import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
 
 export interface SignWithPrivKeyState {
   key: string;

@@ -12,7 +12,7 @@ import { AppDownloadItem } from './types';
 import translate from '@translations';
 
 // Legacy
-import desktopAppIcon from 'common/assets/images/icn-desktop-app.svg';
+import desktopAppIcon from '@assets/images/icn-desktop-app.svg';
 
 const DownloadAppWrapper = styled.div`
   display: flex;

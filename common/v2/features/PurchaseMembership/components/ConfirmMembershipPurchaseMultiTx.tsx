@@ -7,8 +7,8 @@ import { translateRaw } from '@translations';
 import { IMembershipConfig } from '../config';
 import MembershipSelectedBanner from './MembershipSelectedBanner';
 
-import step1SVG from 'assets/images/icn-send.svg';
-import step2SVG from 'assets/images/icn-receive.svg';
+import step1SVG from '@assets/images/icn-send.svg';
+import step2SVG from '@assets/images/icn-receive.svg';
 
 interface Props {
   membershipSelected: IMembershipConfig;

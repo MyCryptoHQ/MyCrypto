@@ -11,9 +11,9 @@ import { AnalyticsService, ANALYTICS_CATEGORIES, GithubService } from '@services
 import translate from '@translations';
 
 // Legacy
-import closeIcon from 'common/assets/images/icn-close.svg';
-import updateIcon from 'common/assets/images/icn-update.svg';
-import updateImportantIcon from 'common/assets/images/icn-important-update.svg';
+import closeIcon from '@assets/images/icn-close.svg';
+import updateIcon from '@assets/images/icn-update.svg';
+import updateImportantIcon from '@assets/images/icn-important-update.svg';
 
 const { SCREEN_SM } = BREAK_POINTS;
 const { PASTEL_RED } = COLORS;

@@ -12,7 +12,7 @@ import { DEFAULT_NETWORK, GITHUB_RELEASE_NOTES_URL, LETS_ENCRYPT_URL } from '@co
 import { NetworkUtils } from '@services/Store/Network';
 import { ProviderHandler } from '@services/EthService/network';
 
-import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
+import backArrowIcon from '@assets/images/icn-back-arrow.svg';
 
 const AddToNetworkNodePanel = styled(DashboardPanel)`
   padding: 0 ${SPACING.MD} ${SPACING.SM};

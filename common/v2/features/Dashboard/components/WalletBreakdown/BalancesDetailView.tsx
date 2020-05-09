@@ -20,7 +20,7 @@ import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Fiat, TUuid } from '@types';
 import { truncate } from '@utils';
 
-import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
+import backArrowIcon from '@assets/images/icn-back-arrow.svg';
 
 const { SCREEN_MD } = BREAK_POINTS;
 

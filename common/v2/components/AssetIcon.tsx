@@ -5,7 +5,7 @@ import { TUuid } from '@types';
 import { MYC_API } from '@config';
 import { CoinGeckoManifest } from '@services/Store/StoreProvider';
 
-import genericIcon from 'assets/generic.svg';
+import genericIcon from '@assets/generic.svg';
 
 const baseURL = `${MYC_API}/images`;
 

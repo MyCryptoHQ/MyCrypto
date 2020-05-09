@@ -7,7 +7,7 @@ import { BREAK_POINTS } from '@theme';
 import NotificationWrapper from './NotificationWrapper';
 
 // Legacy
-import saveIcon from 'common/assets/images/icn-save-dash-board-settings.svg';
+import saveIcon from '@assets/images/icn-save-dash-board-settings.svg';
 
 const { SCREEN_XS } = BREAK_POINTS;
 

@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import { translateRaw } from '@translations';
 import { COLORS, BREAK_POINTS } from '@theme';
 
-import bankIcon from 'common/assets/images/illo-bank.svg';
-import myCryptoIcon from 'common/assets/images/illo-with-mycrypto.svg';
+import bankIcon from '@assets/images/illo-bank.svg';
+import myCryptoIcon from '@assets/images/illo-with-mycrypto.svg';
 
 const { SCREEN_SM, SCREEN_MD, SCREEN_XXL } = BREAK_POINTS;
 const { GREYISH_BROWN } = COLORS;

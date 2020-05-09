@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { translateRaw } from '@translations';
 
-import defizaplogo from 'assets/images/defizap/defizaplogo.svg';
+import defizaplogo from '@assets/images/defizap/defizaplogo.svg';
 
 const DefiZapLogo = styled.div`
   display: flex;

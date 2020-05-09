@@ -7,7 +7,7 @@ import { ExtendedContentPanel, PrintPaperWalletButton } from '@components';
 import { PanelProps } from '@features/CreateWallet';
 import translate, { translateRaw } from '@translations';
 
-import lockSafetyIcon from 'common/assets/images/icn-lock-safety.svg';
+import lockSafetyIcon from '@assets/images/icn-lock-safety.svg';
 
 const DescriptionItem = styled(Typography)`
   margin-top: 18px;

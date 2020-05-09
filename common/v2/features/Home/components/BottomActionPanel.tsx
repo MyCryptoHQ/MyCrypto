@@ -7,9 +7,9 @@ import { Link } from 'react-router-dom';
 import { COLORS, BREAK_POINTS } from '@theme';
 import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 
-import ovalIcon from 'common/assets/images/icn-oval.svg';
-import swooshIcon from 'common/assets/images/icn-purple-swoosh.svg';
-import sparklesIcon from 'common/assets/images/icn-sparkles-4.svg';
+import ovalIcon from '@assets/images/icn-oval.svg';
+import swooshIcon from '@assets/images/icn-purple-swoosh.svg';
+import sparklesIcon from '@assets/images/icn-sparkles-4.svg';
 
 const { SCREEN_SM } = BREAK_POINTS;
 const { BLUE_DARK_SLATE, BLUE_BRIGHT } = COLORS;

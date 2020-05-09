@@ -32,9 +32,9 @@ import { COLORS, monospace, SPACING, FONT_SIZE, BREAK_POINTS } from '@theme';
 
 import { Table } from '../Table';
 
-import nextIcon from 'assets/images/next-page-button.svg';
-import prevIcon from 'assets/images/previous-page-button.svg';
-import questionSVG from 'assets/images/icn-question.svg';
+import nextIcon from '@assets/images/next-page-button.svg';
+import prevIcon from '@assets/images/previous-page-button.svg';
+import questionSVG from '@assets/images/icn-question.svg';
 
 const { GREY_LIGHTEST, BLUE_LIGHTEST, GREY_DARK } = COLORS;
 

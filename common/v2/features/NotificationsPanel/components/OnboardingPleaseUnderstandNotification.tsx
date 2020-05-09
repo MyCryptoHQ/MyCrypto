@@ -7,10 +7,10 @@ import { BREAK_POINTS } from '@theme';
 import NotificationWrapper from './NotificationWrapper';
 import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 
-import cantAccessIcon from 'common/assets/images/onboarding/icn-cant-access.svg';
-import cantModifyIcon from 'common/assets/images/onboarding/icn-cant-modify.svg';
-import cantReverseIcon from 'common/assets/images/onboarding/icn-cant-reverse.svg';
-import cantFreezeIcon from 'common/assets/images/onboarding/icn-cant-freeze.svg';
+import cantAccessIcon from '@assets/images/onboarding/icn-cant-access.svg';
+import cantModifyIcon from '@assets/images/onboarding/icn-cant-modify.svg';
+import cantReverseIcon from '@assets/images/onboarding/icn-cant-reverse.svg';
+import cantFreezeIcon from '@assets/images/onboarding/icn-cant-freeze.svg';
 
 const { SCREEN_XS, SCREEN_MD } = BREAK_POINTS;
 

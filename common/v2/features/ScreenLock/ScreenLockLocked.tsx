@@ -8,7 +8,7 @@ import { ExtendedContentPanel, InputField } from '@components';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
 import { ScreenLockContext } from './ScreenLockProvider';
 
-import mainImage from 'common/assets/images/icn-unlock-wallet.svg';
+import mainImage from '@assets/images/icn-unlock-wallet.svg';
 
 const ContentWrapper = styled.div`
   display: flex;

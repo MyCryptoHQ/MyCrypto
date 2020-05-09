@@ -7,7 +7,7 @@ import { Spinner, Input } from '@components';
 import { WalletId } from '@types';
 import { WalletFactory, isKeystorePassRequired } from '@services/WalletService';
 import { InlineMessage } from '../InlineMessage';
-import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
+import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
 
 import './Keystore.scss';
 

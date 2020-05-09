@@ -6,8 +6,8 @@ import { ExtendedContentPanel, InlineMessage } from '@components';
 import { PanelProps } from '@features/CreateWallet';
 import translate, { translateRaw } from '@translations';
 
-import keystoreIcon from 'common/assets/images/icn-keystore.svg';
-import downloadIcon from 'common/assets/images/icn-download.svg';
+import keystoreIcon from '@assets/images/icn-keystore.svg';
+import downloadIcon from '@assets/images/icn-download.svg';
 
 const DownloadImage = styled.img`
   width: 16px;

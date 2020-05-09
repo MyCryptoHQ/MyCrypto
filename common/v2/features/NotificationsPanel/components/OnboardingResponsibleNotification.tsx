@@ -7,10 +7,10 @@ import { BREAK_POINTS, COLORS } from '@theme';
 import NotificationWrapper from './NotificationWrapper';
 import { CRYPTOSCAMDB, DOWNLOAD_MYCRYPTO_LINK, getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 
-import privateIcon from 'common/assets/images/onboarding/icn-key-mnemonic.svg';
-import phishingIcon from 'common/assets/images/onboarding/icn-phishing.svg';
-import jsonIcon from 'common/assets/images/onboarding/icn-json.svg';
-import myCryptoIcon from 'common/assets/images/onboarding/icn-mnycrpto-app.svg';
+import privateIcon from '@assets/images/onboarding/icn-key-mnemonic.svg';
+import phishingIcon from '@assets/images/onboarding/icn-phishing.svg';
+import jsonIcon from '@assets/images/onboarding/icn-json.svg';
+import myCryptoIcon from '@assets/images/onboarding/icn-mnycrpto-app.svg';
 
 const { SCREEN_XS, SCREEN_MD } = BREAK_POINTS;
 const { BLUE_BRIGHT } = COLORS;

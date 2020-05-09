@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Button } from '@mycrypto/ui';
 
-import ConnectTrezor from 'common/assets/images/icn-connect-trezor-new.svg';
+import ConnectTrezor from '@assets/images/icn-connect-trezor-new.svg';
 import translate, { translateRaw } from '@translations';
 import { Spinner } from '@components';
 import { WalletId, FormData } from '@types';

@@ -14,7 +14,7 @@ import { ProtectTxUtils } from '../utils';
 import ProtectTxBase from './ProtectTxBase';
 import { CloseIcon, ProtectIcon, WarningIcon } from '@components/icons';
 
-import feeIcon from 'assets/images/icn-fee.svg';
+import feeIcon from '@assets/images/icn-fee.svg';
 import { ProtectTxContext } from '../ProtectTxProvider';
 
 const SProtectionThisTransaction = styled(ProtectTxBase)`
