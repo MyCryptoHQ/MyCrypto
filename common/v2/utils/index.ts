@@ -45,14 +45,7 @@ export {
 export { makeBlob } from './blob';
 export { default as consoleAdvertisement } from './consoleAdvertisement';
 export { tap } from './tap';
-export {
-  fromTransactionReceiptToITxReceipt,
-  fromTransactionResponseToITxReceipt,
-  fromSignedTxToTxConfig,
-  fromTxObjectToTxConfig,
-  fromTxParcelToTxReceipt,
-  fromSignedTxToTxObject
-} from './transaction';
+export { fromTxReceiptObj, makeTxConfigFromSignedTx } from './transaction';
 export {
   formatErrorEmail,
   formatSupportEmail,
@@ -65,7 +58,7 @@ export { toArray } from './toArray';
 export { objToString } from './objToString';
 export * from './constants';
 export { bigify } from './bigify';
-export { useTxMulti, getCurrentTxFromTxMulti } from './useTxMulti';
+export { useTxMulti } from './useTxMulti';
 export { withProtectTxProvider } from './withProtectTxProvider';
 export { default as useScreenSize } from './useScreenSize';
 export { sanitizeDecimalSeparator } from './sanitizeDecimalSeparator';

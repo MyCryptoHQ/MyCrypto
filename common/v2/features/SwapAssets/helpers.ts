@@ -1,7 +1,7 @@
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
-import { Asset, StoreAccount, ITxConfig, ITxObject, TAddress } from 'v2/types';
+import { Asset, StoreAccount, ITxConfig, IHexStrTransaction, ITxObject } from 'v2/types';
 import { getAssetByUUID, getAssetByTicker, DexService } from 'v2/services';
 import { hexToString, appendGasPrice, appendSender } from 'v2/services/EthService';
 import { WALLET_STEPS } from 'v2/components';
@@ -57,9 +57,9 @@ export const makeTxConfigFromTransaction = (assets: Asset[]) => (
   return txConfig;
 };
 
-export const makeTxObject = (config: ITxConfig): ITxObject => {
+export const makeTxObject = (config: ITxConfig): IHexStrTransaction => {
   return {
-    to: config.receiverAddress as TAddress,
+    to: config.receiverAddress,
     chainId: config.network.chainId,
     data: config.data,
     value: addHexPrefix(new BN(config.amount).toString(16)),

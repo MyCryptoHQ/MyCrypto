@@ -1,7 +1,7 @@
-import { ITxObject, TAddress } from 'v2/types';
+import { ITxObject } from 'v2/types';
 
 export const fTransaction: ITxObject = {
-  to: '0x909f74Ffdc223586d0d30E78016E707B6F5a45E2' as TAddress,
+  to: '0x909f74Ffdc223586d0d30E78016E707B6F5a45E2',
   value: '0x38d7ea4c68000',
   data: '0x',
   gasLimit: '21000',

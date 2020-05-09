@@ -1,16 +1,7 @@
 import { Dispatch } from 'react';
 import { TransactionResponse } from 'ethers/providers';
 
-import {
-  ITxSigned,
-  ITxObject,
-  TStateGetter,
-  StoreAccount,
-  Network,
-  ITxHash,
-  ITxObjectBeforeGasLimit,
-  ITxObjectBeforeNonce
-} from 'v2/types';
+import { ITxSigned, ITxObject, TStateGetter, StoreAccount, Network, ITxHash } from 'v2/types';
 import { isWeb3Wallet, isTxSigned, isTxHash } from 'v2/utils';
 import { ProviderHandler } from 'v2/services';
 import { appendGasLimit, appendNonce } from 'v2/services/EthService';
@@ -60,19 +51,9 @@ export const prepareTx = (
   dispatch({ type: ActionTypes.PREPARE_TX_REQUEST });
 
   try {
-    const txRaw = await Promise.resolve(tx as ITxObjectBeforeGasLimit)
-      .then(
-        (t) =>
-          (!t.gasLimit ? appendGasLimit(network!)(t) : Promise.resolve(t)) as PromiseLike<
-            ITxObjectBeforeNonce
-          >
-      )
-      .then(
-        (t) =>
-          (!t.nonce
-            ? appendNonce(network!, account!.address)(t)
-            : Promise.resolve(t)) as PromiseLike<ITxObject>
-      );
+    const txRaw = await Promise.resolve(tx)
+      .then(appendGasLimit(network!))
+      .then(appendNonce(network!, account!.address));
     dispatch({ type: ActionTypes.PREPARE_TX_SUCCESS, payload: { txRaw } });
   } catch (err) {
     dispatch({ type: ActionTypes.PREPARE_TX_FAILURE, error: true, payload: err });

@@ -1,30 +1,12 @@
+import { IHexStrWeb3Transaction } from 'v2/types';
 import { RPCRequests } from '../rpc';
 import { SendTransactionRequest, SignMessageRequest, GetAccountsRequest } from './types';
-import { ITxObject } from 'v2/types';
 
 export default class Web3Requests extends RPCRequests {
-  public sendTransaction({
-    to,
-    data,
-    from,
-    gasLimit,
-    gasPrice,
-    nonce,
-    value
-  }: ITxObject): SendTransactionRequest {
+  public sendTransaction(web3Tx: IHexStrWeb3Transaction): SendTransactionRequest {
     return {
       method: 'eth_sendTransaction',
-      params: [
-        {
-          data,
-          value,
-          from: from!,
-          gas: gasLimit,
-          gasPrice,
-          nonce,
-          to
-        }
-      ]
+      params: [web3Tx]
     };
   }
 

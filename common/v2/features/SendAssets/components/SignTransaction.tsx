@@ -5,7 +5,7 @@ import {
   ITxReceipt,
   IStepComponentProps,
   ISignComponentProps,
-  ITxSigned
+  ISignedTx
 } from 'v2/types';
 import { WALLET_STEPS } from 'v2/components';
 
@@ -31,7 +31,7 @@ const SignTransaction: FC<Props> = ({ txConfig, onComplete, protectTxButton }: P
         network={network}
         senderAccount={txConfig.senderAccount}
         rawTransaction={txConfig.rawTransaction}
-        onSuccess={(payload: ITxReceipt | ITxSigned) => onComplete(payload)}
+        onSuccess={(payload: ITxReceipt | ISignedTx) => onComplete(payload)}
       />
       {protectTxButton && protectTxButton()}
     </>

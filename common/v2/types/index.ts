@@ -53,15 +53,18 @@ export { Notification, ExtendedNotification } from './notification';
 export { IERC20 } from './erc20';
 export { IUNLOCKLOCK } from './unlockProtocolToken';
 export { ABIFunc, ABIFuncParamless } from './abiFunc';
-export { ITransaction, ITxReceipt, ITxHash, ITxDirection } from './transaction';
 export {
-  ITxSigned,
+  ITransaction,
+  IHexStrTransaction,
+  IHexStrWeb3Transaction,
+  ITxReceipt,
+  ITxHash,
+  ITxSigned
+} from './transaction';
+export {
+  ISignedTx,
   ITxObject,
   ITxConfig,
-  ITxObjectBeforeNonce,
-  ITxObjectBeforeGasLimit,
-  ITxObjectBeforeGasPrice,
-  ITxObjectBeforeSender,
   ITxStatus,
   ITxType,
   IFormikFields,

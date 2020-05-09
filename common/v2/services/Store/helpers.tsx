@@ -44,9 +44,9 @@ export const getStoreAccounts = (
   });
 };
 
-export const txIsPending = ({ stage }: { stage?: ITxStatus }) => stage === ITxStatus.PENDING;
-export const txIsSuccessful = ({ stage }: { stage?: ITxStatus }) => stage === ITxStatus.SUCCESS;
-export const txIsFailed = ({ stage }: { stage?: ITxStatus }) => stage === ITxStatus.FAILED;
+export const txIsPending = ({ stage }: { stage: ITxStatus }) => stage === ITxStatus.PENDING;
+export const txIsSuccessful = ({ stage }: { stage: ITxStatus }) => stage === ITxStatus.SUCCESS;
+export const txIsFailed = ({ stage }: { stage: ITxStatus }) => stage === ITxStatus.FAILED;
 
 export const getTxsFromAccount = (accounts: StoreAccount[]): ITxReceipt[] => {
   return accounts
