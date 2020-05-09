@@ -1,6 +1,5 @@
 import { toChecksumAddress, isValidPrivate } from 'ethereumjs-util';
 import { isValidChecksumAddress as isValidChecksumRSKAddress } from 'rskjs-util';
-import WalletAddressValidator from 'wallet-address-validator';
 import { Validator } from 'jsonschema';
 import { ResolutionError } from '@unstoppabledomains/resolution';
 import { bigNumberify } from 'ethers/utils';
@@ -155,10 +154,6 @@ export function isValidETHAddress(address: string): boolean {
 
 export const isCreationAddress = (address: string): boolean =>
   address === '0x0' || address === CREATION_ADDRESS;
-
-export function isValidBTCAddress(address: string): boolean {
-  return WalletAddressValidator.validate(address, 'BTC');
-}
 
 export function isValidXMRAddress(address: string): boolean {
   return !!address.match(

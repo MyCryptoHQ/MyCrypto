@@ -1,14 +1,12 @@
 import { DPathsList } from '@config/dpaths';
 import { valid, invalid } from '../utils/testStrings';
 import {
-  isValidBTCAddress,
   isValidETHAddress,
   isValidPath,
   isValidPrivKey,
   isValidAddress
 } from '@services/EthService/validators';
 
-const VALID_BTC_ADDRESS = '1MEWT2SGbqtz6mPCgFcnea8XmWV5Z4Wc6';
 const VALID_ETH_ADDRESS = '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8';
 const VALID_RSK_TESTNET_ADDRESS = '0x5aAeb6053F3e94c9b9A09F33669435E7EF1BEaEd';
 const VALID_RSK_MAINNET_ADDRESS = '0x5aaEB6053f3e94c9b9a09f33669435E7ef1bEAeD';
@@ -22,13 +20,6 @@ const ETH_CHAIN_ID = 1;
 const BIP49_DPATH = "m/49'/0'/0'";
 
 describe('Validator', () => {
-  it('should validate correct BTC address as true', () => {
-    expect(isValidBTCAddress(VALID_BTC_ADDRESS)).toBeTruthy();
-  });
-  it('should validate incorrect BTC address as false', () => {
-    expect(isValidBTCAddress('nonsense' + VALID_BTC_ADDRESS + 'nonsense')).toBeFalsy();
-  });
-
   it('should validate correct ETH address as true', () => {
     expect(isValidETHAddress(VALID_ETH_ADDRESS)).toBeTruthy();
   });
