@@ -69,7 +69,7 @@ module.exports = {
               cacheDirectory: true,
               cacheCompression: false,
               // allow lodash-webpack-plugin to reduce lodash size.
-              plugins: ['lodash']
+              plugins: ['lodash', 'recharts']
             }
           }
         ],
