@@ -20,6 +20,5 @@
     "jest-canvas-mock"
   ],
   "automock": false,
-  "browser": true,
   "collectCoverage": true
 }
