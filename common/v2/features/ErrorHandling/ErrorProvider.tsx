@@ -65,9 +65,9 @@ class ErrorProvider extends Component<RouteComponentProps<{}>> {
   };
 
   private getErrorMessage = (error: IError) => {
-    const path = error.path ? error.path.name : 'UNKNOWN';
+    const feature = error.path ? error.path.name : 'UNKNOWN';
     return translate('GENERIC_ERROR', {
-      $link: formatErrorEmail(`Issue with ${path}`, error.error.stack)
+      $link: formatErrorEmail(`Issue with ${feature}`, error.error.stack)
     });
   };
 }
