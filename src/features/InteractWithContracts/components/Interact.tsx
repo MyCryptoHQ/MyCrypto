@@ -354,7 +354,7 @@ const customEditingMode = contract && isSameAddress(contract.address as TAddress
                     isResolvingName={resolvingDomain}
                     onChange={({ target: { value } }) => handleAddressOrDomainChanged(value)}
                     isError={!isValid}
-                    value={contractAddress}
+                    resolvedAddress={contractAddress}
                   />
                 </InputWrapper>
               </FieldWrapper>
