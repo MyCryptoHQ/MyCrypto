@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
 
+import { SPACING } from 'v2/theme';
+
 import enslogo from 'assets/images/ens/ensIcon.svg';
 
 const EnsLogoContainer = styled.div`
@@ -16,7 +18,7 @@ const EnsLogoImage = styled.img`
 `;
 
 const EnsLogoText = styled.div`
-  margin-left: 0.5em;
+  margin-left: ${SPACING.MD};
 `;
 
 const EnsLogo = () => {

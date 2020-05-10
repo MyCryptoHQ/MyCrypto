@@ -7,6 +7,7 @@ import { translateRaw } from 'v2/translations';
 import { breakpointToNumber, BREAK_POINTS } from 'v2/theme';
 import { IconID } from 'v2/components/Tooltip';
 import { truncate } from 'v2/utils';
+import { ENS_MANAGER_URL } from 'v2/config/constants';
 
 import { MyDomainsProps, DomainTableEntry } from './types';
 
@@ -29,8 +30,6 @@ const TableContainer = styled.div`
 export default function MyDomains({ domainEntries }: MyDomainsProps) {
   const formatDate = (timestamp: number): string =>
     moment.unix(timestamp).format('YYYY-MM-DD H:mm A');
-
-  const EnsManagerLink = (domain: string): string => `https://app.ens.domains/name/${domain}`;
 
   const domainTable = {
     head: [
@@ -57,7 +56,7 @@ export default function MyDomains({ domainEntries }: MyDomainsProps) {
           {formatDate(domain.expireDate)}
         </RowAlignment>,
         <RowAlignment key={5} align="right">
-          <LinkOut link={EnsManagerLink(domain.domainName)} />
+          <LinkOut link={`${ENS_MANAGER_URL}/name/${domain.domainName}`} />
         </RowAlignment>
       ];
     }),

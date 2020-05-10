@@ -18,7 +18,7 @@ class ENSSubgraphService {
 
   constructor() {
     if (instantiated) {
-      throw new Error(`DexService has already been instantiated.`);
+      throw new Error(`ENSSubgraphService has already been instantiated.`);
     } else {
       instantiated = true;
     }

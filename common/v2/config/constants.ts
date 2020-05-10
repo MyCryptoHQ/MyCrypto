@@ -14,6 +14,8 @@ export const TOKEN_INFO_URL = 'https://api.mycryptoapi.com/tokens';
 // The URL for MYC api.
 export const MYC_API = 'https://mycryptoapi.com/api/v1';
 
+export const ENS_MANAGER_URL = 'https://app.ens.domains';
+
 // this will be changed when we figure out networks
 export const DEFAULT_NETWORK_FOR_FALLBACK = 'ropsten';
 
