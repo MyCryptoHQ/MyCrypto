@@ -7,7 +7,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 interface IError {
   error: Error;
-  path: IRoutePath;
+  path?: IRoutePath;
 }
 
 interface ProviderState {
@@ -65,8 +65,9 @@ class ErrorProvider extends Component<RouteComponentProps<{}>> {
   };
 
   private getErrorMessage = (error: IError) => {
+    const feature = error.path ? error.path.name : 'UNKNOWN';
     return translate('GENERIC_ERROR', {
-      $link: formatErrorEmail(`Issue with ${error.path.name}`, error.error.stack)
+      $link: formatErrorEmail(`Issue with ${feature}`, error.error.stack)
     });
   };
 }
