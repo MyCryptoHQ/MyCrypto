@@ -16,10 +16,10 @@ import {
 } from '@types';
 import { COLORS, BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
-import { isValidETHAddress, isCreationAddress } from '@services/EthService/validators';
+import { isValidETHAddress } from '@services/EthService/validators';
 import { getNetworkById, NetworkContext } from '@services';
 import { isValidENSName } from '@services/EthService';
-import { isSameAddress } from '@utils';
+import { isSameAddress } from '@utils';s
 
 import ContractDropdownOption from './ContractDropdownOption';
 import ContractDropdownValue from './ContractDropdownValue';
@@ -164,7 +164,6 @@ function Interact(props: CombinedProps) {
     contract,
     contracts,
     showGeneratedForm,
-    addressOrDomainInput,
     resolvingDomain,
     handleNetworkSelected,
     handleContractSelected,
@@ -348,17 +347,12 @@ function Interact(props: CombinedProps) {
                     network={network}
                     placeholder={translateRaw('CONTRACT_ADDRESS_PLACEHOLDER')}
                     isLoading={resolvingDomain}
+                    isResolvingName={resolvingDomain}
                     onChange={({ target: { value } }) => handleAddressOrDomainChanged(value)}
                     isError={!isValid}
+                    value={contractAddress}
                   />
                 </InputWrapper>
-                {contractAddress &&
-                  (isValidETHAddress(contractAddress) || isCreationAddress(contractAddress)) &&
-                  !isValidETHAddress(addressOrDomainInput) && (
-                    <div>
-                      {translateRaw('INTERACT_RESOLVED_ADDRESS')} {contractAddress}
-                    </div>
-                  )}
               </FieldWrapper>
             </ContractSelectionWrapper>
             <FieldWrapper>
