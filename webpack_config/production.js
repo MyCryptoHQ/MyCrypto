@@ -46,14 +46,6 @@ module.exports = merge.smart(common, {
     ]
   },
 
-  /*optimization: {
-    splitChunks: {
-      cacheGroups: {
-        // Caching is only useful in production. This is is where we apply the node_module caching solution
-      }
-    }
-  },*/
-
   plugins: [
     new MiniCSSExtractPlugin({
       filename: `[name].[contenthash].css`
