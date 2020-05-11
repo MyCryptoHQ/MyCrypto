@@ -1,7 +1,6 @@
 import difference from 'lodash/difference';
 
 import { InsecureWalletName, SecureWalletName, WalletName, walletNames } from 'config';
-import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
 import { stripWeb3Network, isAutoNodeConfig } from 'libs/nodes';
 import { getIsValidAddressFunction, getIsValidENSAddressFunction } from 'libs/validators';
 import { CustomNodeConfig, StaticNodeConfig, StaticNodeId, NodeConfig } from 'types/node';
@@ -131,9 +130,8 @@ export function getAllTokens(state: AppState): Token[] {
 }
 
 export function tokenExists(state: AppState, token: string): boolean {
-  const existInWhitelist = SHAPESHIFT_TOKEN_WHITELIST.includes(token);
   const existsInNetwork = !!getAllTokens(state).find(t => t.symbol === token);
-  return existsInNetwork || existInWhitelist;
+  return existsInNetwork;
 }
 
 export function isSupportedUnit(state: AppState, unit: string) {
