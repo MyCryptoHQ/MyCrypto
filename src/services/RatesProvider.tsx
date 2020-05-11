@@ -30,7 +30,7 @@ interface ReserveMappingListObject {
   [key: string]: ReserveMappingObject;
 }
 
-const DEFAULT_FIAT_PAIRS = ['USD', 'EUR'] as TTicker[];
+const DEFAULT_FIAT_PAIRS = ['USD', 'EUR', 'GBP'] as TTicker[];
 const DEFAULT_FIAT_RATE = 0;
 const POLLING_INTERVAL = 60000;
 
@@ -112,11 +112,17 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
     },
     getRate: (ticker: TTicker) => {
       // @ts-ignore until we find a solution for TS7053 error
-      return state.rates[ticker] ? state.rates[ticker].usd : DEFAULT_FIAT_RATE;
+      if (!state.rates[ticker]) return DEFAULT_FIAT_RATE;
+      return settings && settings.fiatCurrency
+        ? state.rates[ticker][settings.fiatCurrency.toLowerCase()]
+        : DEFAULT_FIAT_RATE;
     },
     getAssetRate: (asset: Asset) => {
       const uuid = asset.uuid;
-      return state.rates[uuid] ? state.rates[uuid].usd : DEFAULT_FIAT_RATE;
+      if (!state.rates[uuid]) return DEFAULT_FIAT_RATE;
+      return settings && settings.fiatCurrency
+        ? state.rates[uuid][settings.fiatCurrency.toLowerCase()]
+        : DEFAULT_FIAT_RATE;
     },
     getPoolAssetReserveRate: (uuid: string, assets: Asset[]) => {
       const reserveRateObject = reserveRateMapping[uuid];

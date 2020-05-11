@@ -8,7 +8,7 @@ import translate, { translateRaw } from '@translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
 import { ISettings } from '@types';
 import { DashboardPanel, Tooltip } from '@components';
-import { ROUTE_PATHS } from '@config';
+import { ROUTE_PATHS, Fiats } from '@config';
 
 const Divider = styled.div`
   height: 2px;
@@ -102,6 +102,13 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
     }
   };
 
+  public changeCurrencySelection = (event: React.FormEvent<HTMLSelectElement>) => {
+    const target = event.target as HTMLSelectElement;
+    const settings = this.props.globalSettings;
+    settings.fiatCurrency = target.value;
+    this.props.updateGlobalSettings(settings);
+  };
+
   public render() {
     const { globalSettings } = this.props;
     return (
@@ -148,6 +155,30 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
                 {timerOptions.map((option) => (
                   <option value={option.value} key={option.value}>
                     {option.name}
+                  </option>
+                ))}
+              </select>
+            </SelectContainer>
+          </SettingsControl>
+        </SettingsField>
+        <SettingsField>
+          <SettingsLabel>
+            {translate('SETTINGS_FIAT_SELECTION_LABEL')}{' '}
+            <Tooltip tooltip={<span>{translate('SETTINGS_FIAT_SELECTION_TOOLTIP')}</span>}>
+              <div>
+                <SettingsTooltipIcon icon="shape" />
+              </div>
+            </Tooltip>
+          </SettingsLabel>
+          <SettingsControl>
+            <SelectContainer>
+              <select
+                onChange={this.changeCurrencySelection}
+                value={String(globalSettings.fiatCurrency)}
+              >
+                {Object.keys(Fiats).map((option) => (
+                  <option value={option} key={option}>
+                    {option}
                   </option>
                 ))}
               </select>

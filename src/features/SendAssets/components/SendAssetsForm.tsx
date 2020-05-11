@@ -26,7 +26,8 @@ import {
   getBaseAssetByNetwork,
   getAccountsByAsset,
   StoreContext,
-  getAccountBalance
+  getAccountBalance,
+  SettingsContext
 } from '@services/Store';
 import {
   Asset,
@@ -62,7 +63,8 @@ import {
   GAS_PRICE_GWEI_LOWER_BOUND,
   GAS_PRICE_GWEI_UPPER_BOUND,
   DEFAULT_ASSET_DECIMAL,
-  DEFAULT_NETWORK
+  DEFAULT_NETWORK,
+  Fiats
 } from '@config';
 import { RatesContext } from '@services/RatesProvider';
 import TransactionFeeDisplay from '@components/TransactionFlow/displays/TransactionFeeDisplay';
@@ -162,6 +164,7 @@ const QueryWarning: React.FC = () => (
 const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
   const { accounts, userAssets, networks, getAccount } = useContext(StoreContext);
   const { getAssetRate } = useContext(RatesContext);
+  const { settings } = useContext(SettingsContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
@@ -512,9 +515,9 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                       values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider
                     }
                     fiatAsset={{
-                      fiat: 'USD',
+                      fiat: Fiats[settings.fiatCurrency].code || 'USD',
                       rate: (getAssetRate(baseAsset || undefined) || 0).toString(),
-                      symbol: '$'
+                      symbol: Fiats[settings.fiatCurrency].symbol || '$'
                     }}
                   />
                 </label>

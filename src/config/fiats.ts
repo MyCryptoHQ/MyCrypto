@@ -13,12 +13,14 @@ export const USD = {
 export const EUR = {
   code: 'EUR',
   name: 'Euros',
-  symbol: '€' as TSymbol
+  symbol: '€' as TSymbol,
+  prefix: true
 };
 export const GBP = {
   code: 'GBP',
   name: 'British Pounds',
-  symbol: '£' as TSymbol
+  symbol: '£' as TSymbol,
+  prefix: true
 };
 
 export const Fiats: FiatObject = { USD, EUR, GBP };

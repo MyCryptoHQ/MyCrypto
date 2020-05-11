@@ -14,6 +14,7 @@ export interface ISettingsContext {
   importStorage(importedCache: string): boolean;
   updateSettingsRates(rates: IRates): void;
   updateLanguageSelection(language: string): void;
+  updateFiatCurrency(fiatTicker: string): void;
 }
 
 const isValidImport = (importedCache: string, localStorage: string) => {
@@ -60,6 +61,7 @@ export const SettingsProvider: React.FC = ({ children }) => {
         dashboardAccounts: [...settings.dashboardAccounts, account]
       });
     },
+
     updateSettingsAccounts: (accounts: TUuid[]): void => {
       state.updateSettings({ ...settings, dashboardAccounts: accounts });
     },
@@ -71,8 +73,13 @@ export const SettingsProvider: React.FC = ({ children }) => {
     updateSettingsRates: (rates) => {
       state.updateSettings({ ...settings, rates });
     },
+
     updateLanguageSelection: (languageToChangeTo) => {
       state.updateSettings({ ...settings, language: languageToChangeTo });
+    },
+
+    updateFiatCurrency: (newFiatSelection) => {
+      state.updateSettings({ ...settings, fiatCurrency: newFiatSelection });
     }
   };
 
