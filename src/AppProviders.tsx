@@ -18,12 +18,12 @@ function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | nu
       <ErrorProvider>
         <DataProvider>
           <SettingsProvider>
-            <AddressBookProvider>
-              <AccountProvider>
-                <NotificationsProvider>
-                  <ToastProvider>
-                    <NetworkProvider>
-                      <ContractProvider>
+            <AccountProvider>
+              <NotificationsProvider>
+                <ToastProvider>
+                  <NetworkProvider>
+                    <ContractProvider>
+                      <AddressBookProvider>
                         <AssetProvider>
                           {/* StoreProvider relies on the others Providers */}
                           <StoreProvider>
@@ -31,12 +31,12 @@ function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | nu
                             <RatesProvider>{children}</RatesProvider>
                           </StoreProvider>
                         </AssetProvider>
-                      </ContractProvider>
-                    </NetworkProvider>
-                  </ToastProvider>
-                </NotificationsProvider>
-              </AccountProvider>
-            </AddressBookProvider>
+                      </AddressBookProvider>
+                    </ContractProvider>
+                  </NetworkProvider>
+                </ToastProvider>
+              </NotificationsProvider>
+            </AccountProvider>
           </SettingsProvider>
         </DataProvider>
       </ErrorProvider>

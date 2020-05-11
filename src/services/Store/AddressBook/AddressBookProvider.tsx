@@ -12,6 +12,7 @@ import {
 } from '@types';
 import { generateUUID } from '@utils';
 import { DataContext } from '../DataManager';
+import { ContractContext } from '../Contract';
 
 interface IAddressBookContext {
   addressBook: ExtendedAddressBook[];
@@ -33,11 +34,24 @@ export const AddressBookContext = createContext({} as IAddressBookContext);
 
 export const AddressBookProvider: React.FC = ({ children }) => {
   const { createActions, addressBook } = useContext(DataContext);
+  const { getContractByAddress } = useContext(ContractContext);
   const [addressBookRestore, setAddressBookRestore] = useState<{
     [name: string]: ExtendedAddressBook | undefined;
   }>({});
 
   const model = createActions(LSKeys.ADDRESS_BOOK);
+
+  const getContactFromContracts = (address: string): ExtendedAddressBook | undefined => {
+    const contract = getContractByAddress(address);
+    const contact: ExtendedAddressBook | undefined = contract && {
+      address,
+      label: contract.name,
+      network: contract.networkId,
+      notes: '',
+      uuid: contract.uuid
+    };
+    return contact;
+  };
 
   const state: IAddressBookContext = {
     addressBook,
@@ -57,16 +71,21 @@ export const AddressBookProvider: React.FC = ({ children }) => {
       model.destroy(addressBookToDelete!);
     },
     getContactByAddress: (address) => {
-      return addressBook.find(
-        (contact: ExtendedAddressBook) => contact.address.toLowerCase() === address.toLowerCase()
+      return (
+        addressBook.find(
+          (contact: ExtendedAddressBook) => contact.address.toLowerCase() === address.toLowerCase()
+        ) || getContactFromContracts(address)
       );
     },
     getContactByAddressAndNetworkId: (address, networkId) => {
-      return addressBook
-        .filter((contact: ExtendedAddressBook) => contact.network === networkId)
-        .find(
-          (contact: ExtendedAddressBook) => contact.address.toLowerCase() === address.toLowerCase()
-        );
+      return (
+        addressBook
+          .filter((contact: ExtendedAddressBook) => contact.network === networkId)
+          .find(
+            (contact: ExtendedAddressBook) =>
+              contact.address.toLowerCase() === address.toLowerCase()
+          ) || getContactFromContracts(address)
+      );
     },
     getAccountLabel: ({ address, networkId }) => {
       const addressContact = state.getContactByAddressAndNetworkId(address, networkId);
