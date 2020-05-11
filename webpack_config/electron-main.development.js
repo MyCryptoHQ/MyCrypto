@@ -2,7 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const config = require('./config');
 
 module.exports = {
@@ -11,7 +10,7 @@ module.exports = {
   devtool: 'cheap-module-source-map',
 
   entry: {
-    main: path.join(config.path.electron, 'main/index.ts')
+    main: path.join(config.path.electron, 'main/index.ts'),
   },
 
   output: {
@@ -21,8 +20,11 @@ module.exports = {
 
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
-    modules: [config.path.src, config.path.modules, config.path.root],
-    plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, '../tsconfig.json') })]
+    modules: [
+      config.path.src,
+      config.path.modules,
+      config.path.root
+    ]
   },
 
   module: {
@@ -37,12 +39,16 @@ module.exports = {
             loader: 'babel-loader',
             options: {
               cacheDirectory: true,
-              cacheCompression: false
+              cacheCompression: false,
             }
           }
         ],
-        include: [config.path.src, config.path.shared, config.path.electron],
-        exclude: /node_modules/
+        include: [
+          config.path.src,
+          config.path.shared,
+          config.path.electron
+        ],
+        exclude: /node_modules/,
       },
 
       /**
@@ -88,7 +94,10 @@ module.exports = {
             }
           }
         ],
-        include: [config.path.assets, config.path.modules]
+        include: [
+          config.path.assets,
+          config.path.modules
+        ]
       },
 
       /**
@@ -105,13 +114,16 @@ module.exports = {
     new CleanWebpackPlugin(),
 
     new webpack.EnvironmentPlugin({
-      NODE_ENV: 'development'
+      'NODE_ENV': 'development'
     }),
 
     new ForkTsCheckerWebpackPlugin({
       tsconfig: path.join(config.path.root, 'tsconfig.json'),
       tslint: path.join(config.path.root, 'tslint.json'),
-      reportFiles: ['**/*.{ts,tsx}', '!node_modules/**/*']
+      reportFiles: [
+        '**/*.{ts,tsx}',
+        '!node_modules/**/*'
+      ]
     })
   ],
 
