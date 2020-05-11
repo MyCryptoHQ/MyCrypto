@@ -83,7 +83,11 @@ module.exports = {
               cacheDirectory: true,
               cacheCompression: false,
               // allow lodash-webpack-plugin to reduce lodash size.
-              plugins: ['lodash', 'recharts']
+              // allow babel-plugin-recharts to reduce recharts size.
+              plugins: [
+                'lodash',
+                'recharts'
+              ]
             }
           }
         ],
