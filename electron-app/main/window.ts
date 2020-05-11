@@ -27,6 +27,7 @@ export default function getWindow() {
       devTools: true,
       nodeIntegration: true,
       contextIsolation: false,
+      sandbox: true,
       preload: path.join(__dirname, 'preload.js')
     }
   });
