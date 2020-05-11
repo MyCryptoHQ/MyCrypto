@@ -4,7 +4,8 @@ import {
   isValidETHRecipientAddress,
   isValidMixedCaseETHAddress,
   isValidUpperOrLowerCaseETHAddress,
-  isValidAddress
+  isValidAddress,
+  isENSLabelHash
 } from '../validators';
 
 describe('isTransactionFeeHigh', () => {
@@ -185,6 +186,50 @@ describe('isValidAddress', () => {
     const expected = false;
     const testAddress = '0x4bbeEB066eD09B7AEd07bF39EEe0460DF';
     const returned = isValidAddress(testAddress, 1);
+    expect(returned).toBe(expected);
+  });
+});
+
+describe('isENSLabelHash', () => {
+  it('returns true for cases where label hash is an ENS labelhash', () => {
+    const expected = true;
+    const testLabelhash = '[fcf95f7b04588874e96107e6cc371491b657a00e91cb3535b045031d945ebe57]';
+    const returned = isENSLabelHash(testLabelhash);
+    expect(returned).toBe(expected);
+  });
+
+  it('returns false for cases where testLabelhash is an ENS name', () => {
+    const expected = false;
+    const testLabelhash = 'mycryptoid.eth';
+    const returned = isENSLabelHash(testLabelhash);
+    expect(returned).toBe(expected);
+  });
+
+  it('returns false for cases where testLabelhash is an ENS name with subdomain', () => {
+    const expected = false;
+    const testLabelhash = 'donate.mycryptoid.eth';
+    const returned = isENSLabelHash(testLabelhash);
+    expect(returned).toBe(expected);
+  });
+
+  it('returns false for cases where testLabelhash is too long', () => {
+    const expected = false;
+    const testLabelhash = '[fcf95f7b04588874e96107e6cc371491b657a00e91cb3535b045031d945ebe57aa]';
+    const returned = isENSLabelHash(testLabelhash);
+    expect(returned).toBe(expected);
+  });
+
+  it('returns false for cases where testLabelhash is too sort', () => {
+    const expected = false;
+    const testLabelhash = '[fcf95f7b04588874e96107e6cc371491b657a00e91cb3535b045031d945ebe]';
+    const returned = isENSLabelHash(testLabelhash);
+    expect(returned).toBe(expected);
+  });
+
+  it('returns false for cases where testLabelhash is an invalid-formatted labelhash', () => {
+    const expected = false;
+    const testLabelhash = 'fcf95f7b04588874e96107e6cc371491b657a00e91cb3535b045031d945ebe57';
+    const returned = isENSLabelHash(testLabelhash);
     expect(returned).toBe(expected);
   });
 });

@@ -1,20 +1,19 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Heading } from '@mycrypto/ui';
+import moment from 'moment';
 
-import { StoreContext } from 'v2/services';
-import { Spinner, DashboardPanel } from 'v2/components';
-import { DEFAULT_NETWORK } from 'v2/config';
+import { StoreContext, EnsService } from 'v2/services';
+import { DashboardPanel } from 'v2/components';
 import { translateRaw } from 'v2/translations';
 import { BREAK_POINTS, SPACING } from 'v2/theme';
-import { useEffectOnce } from 'v2/vendor/react-use';
-import { isLabelHashENS } from 'v2/services/EthService/validators';
-import { EnsSubgraphService } from 'v2/services/ApiService/TheGraph';
+import { useEffectOnce, usePromise } from 'v2/vendor/react-use';
+import { isEthereumAccount } from 'v2/services/Store/Account/helpers';
+import { SECONDS_IN_MONTH } from 'v2/config/constants';
 
-import { DomainTableEntry } from './types';
-import MyDomains from './MyDomains';
-import NoDomains from './NoEnsDomains';
+import { DomainRecordTableEntry, DomainNameRecord } from './types';
 import EnsLogo from './EnsLogo';
+import { EnsTable } from './EnsTable';
 
 const DashboardWrapper = styled.div`
   width: 100%;
@@ -36,43 +35,42 @@ const StyledLayout = styled.div`
   }
 `;
 
-const SpinnerContainer = styled.div`
-  height: 400px;
-  display: float;
-  align-items: center;
-  justify-content: center;
-`;
+const isLessThanAMonth = (date: number, now: number) => date - now <= SECONDS_IN_MONTH;
 
-interface MyDomainsDate {
-  data: DomainTableEntry[];
+export interface MyDomainsData {
+  records: DomainRecordTableEntry[];
   isFetched: boolean;
 }
 
-const defaultData: MyDomainsDate = {
-  data: [] as DomainTableEntry[],
+const defaultData: MyDomainsData = {
+  records: [] as DomainRecordTableEntry[],
   isFetched: false
 };
 
 export default function EnsDashboard() {
   const { accounts } = useContext(StoreContext);
-  const [fetchedEnsData, setEnsData] = useState(defaultData);
+  const [ensOwnershipRecords, setEnsOwnershipRecords] = useState(defaultData);
+  const mounted = usePromise();
 
   // Only use the accounts on the Ethereum mainnet network
-  const accountsEthereumNetwork = accounts.filter((acc) => acc.networkId === DEFAULT_NETWORK);
+  const accountsEthereumNetwork = accounts.filter(isEthereumAccount);
 
   useEffectOnce(() => {
-    EnsSubgraphService.instance
-      .fetchOwnershipRecords(accountsEthereumNetwork)
-      .then((data: DomainTableEntry[]) => setEnsData({ data: data || [], isFetched: true }));
+    (async () => {
+      const ownershipRecords: MyDomainsData = await mounted(
+        EnsService.fetchOwnershipRecords(accountsEthereumNetwork).then(
+          (data: DomainNameRecord[]) => ({
+            records: data.map((record) => ({
+              ...record,
+              expireSoon: isLessThanAMonth(record.expiryDate, moment().unix())
+            })),
+            isFetched: true
+          })
+        )
+      );
+      setEnsOwnershipRecords(ownershipRecords);
+    })();
   });
-
-  const domainEntries = fetchedEnsData.data.map((ownedENSEntry) => ({
-    ...ownedENSEntry,
-    domainName: ownedENSEntry.domainName,
-    readableDomainName: !isLabelHashENS(ownedENSEntry.domainName)
-      ? ownedENSEntry.domainName
-      : translateRaw('ENS_DOMAIN_UNKNOWN_NAME')
-  }));
 
   return (
     <StyledLayout>
@@ -84,15 +82,10 @@ export default function EnsDashboard() {
           heading={translateRaw('ENS_MY_DOMAINS_TABLE_HEADER')}
           headingRight={<EnsLogo />}
         >
-          {fetchedEnsData.data.length === 0 &&
-            (fetchedEnsData.isFetched ? (
-              <NoDomains />
-            ) : (
-              <SpinnerContainer>
-                <Spinner size={'x3'} />
-              </SpinnerContainer>
-            ))}
-          {fetchedEnsData.data.length !== 0 && <MyDomains domainEntries={domainEntries} />}
+          <EnsTable
+            records={ensOwnershipRecords.records}
+            isFetched={ensOwnershipRecords.isFetched}
+          />
         </DashboardPanel>
       </DashboardWrapper>
     </StyledLayout>

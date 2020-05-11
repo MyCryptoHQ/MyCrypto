@@ -9,7 +9,7 @@ import { IconID } from 'v2/components/Tooltip';
 import { truncate } from 'v2/utils';
 import { ENS_MANAGER_URL } from 'v2/config/constants';
 
-import { MyDomainsProps, DomainTableEntry } from './types';
+import { MyDomainsProps, DomainRecordTableEntry } from './types';
 
 const Label = styled.span`
   display: flex;
@@ -27,7 +27,7 @@ const TableContainer = styled.div`
   max-height: 600px;
 `;
 
-export default function MyDomains({ domainEntries }: MyDomainsProps) {
+export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
   const formatDate = (timestamp: number): string =>
     moment.unix(timestamp).format('YYYY-MM-DD H:mm A');
 
@@ -39,7 +39,7 @@ export default function MyDomains({ domainEntries }: MyDomainsProps) {
       translateRaw('ENS_MY_DOMAINS_TABLE_EXPIRES_HEADER'),
       ''
     ],
-    body: domainEntries.map((domain: DomainTableEntry, index: number) => {
+    body: domainOwnershipRecords.map((domain: DomainRecordTableEntry, index: number) => {
       return [
         <RowAlignment key={index}>
           {domain.expireSoon && (
@@ -53,7 +53,7 @@ export default function MyDomains({ domainEntries }: MyDomainsProps) {
           {domain.readableDomainName}
         </RowAlignment>,
         <RowAlignment key={4} align="left">
-          {formatDate(domain.expireDate)}
+          {formatDate(domain.expiryDate)}
         </RowAlignment>,
         <RowAlignment key={5} align="right">
           <LinkOut link={`${ENS_MANAGER_URL}/name/${domain.domainName}`} />

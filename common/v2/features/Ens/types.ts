@@ -5,7 +5,7 @@ export interface MyDomainsTableProps {
 }
 
 export interface MyDomainsProps {
-  domainEntries: DomainTableEntry[];
+  domainOwnershipRecords: DomainRecordTableEntry[];
 }
 
 export interface DomainEntry {
@@ -27,11 +27,14 @@ export interface DomainParent {
   __typename: string;
 }
 
-export interface DomainTableEntry {
+export interface DomainNameRecord {
   owner: string;
   ownerLabel: string;
   domainName: string;
-  expireDate: number;
+  expiryDate: number;
+  readableDomainName: string;
+}
+
+export interface DomainRecordTableEntry extends DomainNameRecord {
   expireSoon: boolean;
-  readableDomainName?: string;
 }

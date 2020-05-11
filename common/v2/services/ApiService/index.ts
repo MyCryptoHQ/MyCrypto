@@ -15,3 +15,4 @@ export {
 } from './CryptoScamDB';
 export { MoonpaySignerService } from './MoonpaySigner';
 export * from './constants';
+export { EnsService } from './Ens';
