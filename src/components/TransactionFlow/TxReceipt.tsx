@@ -293,11 +293,11 @@ export const TxReceiptUI = ({
         <>
           <FromToAccount
             from={{
-              address: ((displayTxReceipt && displayTxReceipt.from) || sender.address) as TAddress,
+              address: (sender.address || (displayTxReceipt && displayTxReceipt.from)) as TAddress,
               label: senderAccountLabel
             }}
             to={{
-              address: ((displayTxReceipt && displayTxReceipt.to) || receiverAddress) as TAddress,
+              address: (receiverAddress || (displayTxReceipt && displayTxReceipt.to)) as TAddress,
               label: recipientLabel
             }}
           />
