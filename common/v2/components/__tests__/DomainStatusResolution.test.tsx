@@ -3,7 +3,7 @@ import React from 'react';
 import { simpleRender } from 'test-utils';
 import { DomainStatus, DomainStatusProps } from '../DomainStatus';
 import { ResolutionErrorCode, ResolutionError } from '@unstoppabledomains/resolution';
-import UnstoppableService from 'v2/services/UnstoppableService';
+import UnstoppableService from '@services/UnstoppableService';
 
 const defaultProps: DomainStatusProps = {
   isLoading: false,

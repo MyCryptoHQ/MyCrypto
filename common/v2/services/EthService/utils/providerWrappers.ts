@@ -1,6 +1,6 @@
 import { TransactionReceipt } from 'ethers/providers';
 
-import { ITxStatus } from 'v2/types';
+import { ITxStatus } from '@types';
 
 import { ProviderHandler } from '../network/providerHandler';
 

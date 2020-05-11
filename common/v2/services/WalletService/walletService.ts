@@ -1,4 +1,4 @@
-import { TAddress, WalletId, WalletService, Network } from 'v2/types';
+import { TAddress, WalletId, WalletService, Network } from '@types';
 import {
   // EncryptedPrivateKeyWallet,
   // PresaleWallet,

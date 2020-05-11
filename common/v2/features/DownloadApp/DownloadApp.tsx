@@ -4,15 +4,15 @@ import { Button } from '@mycrypto/ui';
 import cloneDeep from 'lodash/cloneDeep';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel } from 'v2/components';
-import { AnalyticsService, ANALYTICS_CATEGORIES, GithubService } from 'v2/services/ApiService';
-import { GITHUB_RELEASE_NOTES_URL, DOWNLOAD_MYCRYPTO_LINK, OS } from 'v2/config';
-import { getFeaturedOS } from 'v2/utils';
+import { ExtendedContentPanel } from '@components';
+import { AnalyticsService, ANALYTICS_CATEGORIES, GithubService } from '@services/ApiService';
+import { GITHUB_RELEASE_NOTES_URL, DOWNLOAD_MYCRYPTO_LINK, OS } from '@config';
+import { getFeaturedOS } from '@utils';
 import { AppDownloadItem } from './types';
-import translate from 'v2/translations';
+import translate from '@translations';
 
 // Legacy
-import desktopAppIcon from 'common/assets/images/icn-desktop-app.svg';
+import desktopAppIcon from '@assets/images/icn-desktop-app.svg';
 
 const DownloadAppWrapper = styled.div`
   display: flex;

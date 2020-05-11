@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import translate from 'v2/translations';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { COLORS } from 'v2/theme';
+import translate from '@translations';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
+import { COLORS } from '@theme';
 
-import addIcon from 'common/assets/images/icn-add-assets.svg';
+import addIcon from '@assets/images/icn-add-assets.svg';
 
 const { BLUE_BRIGHT } = COLORS;
 

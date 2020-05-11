@@ -1,5 +1,5 @@
-@import "common/sass/variables";
-@import "common/sass/mixins";
+@import "sass/variables";
+@import "sass/mixins";
 
 .BadBrowser {
   @include cover-message;

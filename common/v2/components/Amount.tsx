@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-import { COLORS, BREAK_POINTS } from 'v2/theme';
+import { COLORS, BREAK_POINTS } from '@theme';
 import { default as Typography } from './Typography';
 
 const SAmount = styled.div`

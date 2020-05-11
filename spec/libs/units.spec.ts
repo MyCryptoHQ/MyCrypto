@@ -6,8 +6,8 @@ import {
   fromTokenBase,
   getDecimalFromEtherUnit,
   TokenValue
-} from 'v2/services/EthService';
-import { convertTokenBase } from 'v2/services/EthService/utils/units';
+} from '@services/EthService';
+import { convertTokenBase } from '@services/EthService/utils/units';
 
 const Units = {
   wei: '1',
@@ -118,7 +118,7 @@ describe('Units', () => {
         }
       ];
 
-      conversions.forEach(c => {
+      conversions.forEach((c) => {
         it(`should convert decimal ${c.oldDecimal} to decimal ${c.newDecimal}`, () => {
           const tokenValue = TokenValue(c.startValue);
           const converted = convertTokenBase(tokenValue, c.oldDecimal, c.newDecimal);

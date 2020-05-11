@@ -3,12 +3,12 @@ import { Button, Icon } from '@mycrypto/ui';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { COLORS, SPACING, BREAK_POINTS, FONT_SIZE } from 'v2/theme';
-import translate, { translateRaw } from 'v2/translations';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { ISettings } from 'v2/types';
-import { DashboardPanel, Tooltip } from 'v2/components';
-import { ROUTE_PATHS } from 'v2/config';
+import { COLORS, SPACING, BREAK_POINTS, FONT_SIZE } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
+import { ISettings } from '@types';
+import { DashboardPanel, Tooltip } from '@components';
+import { ROUTE_PATHS } from '@config';
 
 const Divider = styled.div`
   height: 2px;

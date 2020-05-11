@@ -5,7 +5,7 @@ import { Button } from '@mycrypto/ui';
 
 import Spinner from './Spinner';
 import Typography from './Typography';
-import { COLORS, SPACING } from 'v2/theme';
+import { COLORS, SPACING } from '@theme';
 
 interface ButtonProps {
   children: React.ReactNode | string;

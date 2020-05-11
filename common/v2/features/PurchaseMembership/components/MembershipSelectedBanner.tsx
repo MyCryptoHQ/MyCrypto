@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { translateRaw } from 'v2/translations';
-import { COLORS, SPACING, FONT_SIZE } from 'v2/theme';
-import { Typography, Tooltip } from 'v2/components';
-import { AssetContext } from 'v2/services';
-import { Asset } from 'v2/types';
+import { translateRaw } from '@translations';
+import { COLORS, SPACING, FONT_SIZE } from '@theme';
+import { Typography, Tooltip } from '@components';
+import { AssetContext } from '@services';
+import { Asset } from '@types';
 import { IMembershipConfig } from '../config';
 
 interface Props {

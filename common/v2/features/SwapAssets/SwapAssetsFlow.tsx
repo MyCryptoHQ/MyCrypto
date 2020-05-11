@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { translateRaw } from 'v2/translations';
-import { ExtendedContentPanel, WALLET_STEPS } from 'v2/components';
-import { ROUTE_PATHS } from 'v2/config';
-import { ITxSigned, ITxHash, TxParcel } from 'v2/types';
-import { bigify, useStateReducer, useTxMulti } from 'v2/utils';
-import { useEffectOnce, usePromise } from 'v2/vendor';
+import { translateRaw } from '@translations';
+import { ExtendedContentPanel, WALLET_STEPS } from '@components';
+import { ROUTE_PATHS } from '@config';
+import { ITxSigned, ITxHash, TxParcel } from '@types';
+import { bigify, useStateReducer, useTxMulti } from '@utils';
+import { useEffectOnce, usePromise } from '@vendor';
 
 import { SwapAssets, SwapTransactionReceipt, ConfirmSwapMultiTx, ConfirmSwap } from './components';
 import { getTradeOrder } from './helpers';

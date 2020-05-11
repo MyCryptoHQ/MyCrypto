@@ -1,12 +1,12 @@
 import React, { useEffect, useContext } from 'react';
 
-import { useStateReducer, useTxMulti } from 'v2/utils';
-import { ITxReceipt, ITxConfig, TxParcel, ITxSigned, ITxHash, ITxStatus, ITxType } from 'v2/types';
-import { default as GeneralStepper, IStepperPath } from 'v2/components/GeneralStepper';
-import { ROUTE_PATHS } from 'v2/config';
-import { translateRaw } from 'v2/translations';
-import { WALLET_STEPS } from 'v2/components';
-import { AccountContext } from 'v2/services';
+import { useStateReducer, useTxMulti } from '@utils';
+import { ITxReceipt, ITxConfig, TxParcel, ITxSigned, ITxHash, ITxStatus, ITxType } from '@types';
+import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
+import { ROUTE_PATHS } from '@config';
+import { translateRaw } from '@translations';
+import { WALLET_STEPS } from '@components';
+import { AccountContext } from '@services';
 
 import { defaultMembershipObject } from './config';
 import {

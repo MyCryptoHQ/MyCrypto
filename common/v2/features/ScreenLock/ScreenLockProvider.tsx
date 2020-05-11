@@ -4,10 +4,10 @@ import CryptoJS, { SHA256, AES } from 'crypto-js';
 import pipe from 'ramda/src/pipe';
 import isEmpty from 'lodash/isEmpty';
 
-import { translateRaw } from 'v2/translations';
-import { ROUTE_PATHS } from 'v2/config';
-import { withContext } from 'v2/utils';
-import { DataContext, IDataContext, SettingsContext, ISettingsContext } from 'v2/services/Store';
+import { translateRaw } from '@translations';
+import { ROUTE_PATHS } from '@config';
+import { withContext } from '@utils';
+import { DataContext, IDataContext, SettingsContext, ISettingsContext } from '@services/Store';
 import { default as ScreenLockLocking } from './ScreenLockLocking';
 
 interface State {

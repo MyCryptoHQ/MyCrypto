@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import translate, { translateRaw } from 'v2/translations';
+import translate, { translateRaw } from '@translations';
 
-import { COLORS, BREAK_POINTS, SPACING } from 'v2/theme';
-import { truncate } from 'v2/utils';
-import { Typography, Account } from 'v2/components';
-import { StoreAccount } from 'v2/types';
+import { COLORS, BREAK_POINTS, SPACING } from '@theme';
+import { truncate } from '@utils';
+import { Typography, Account } from '@components';
+import { StoreAccount } from '@types';
 
 export interface IAddressAndLabel {
   address: string;

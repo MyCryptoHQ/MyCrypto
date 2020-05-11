@@ -12,17 +12,17 @@ import {
   AccountDropdown,
   Typography,
   GasSelector
-} from 'v2/components';
-import { NetworkId, StoreAccount, ITxConfig } from 'v2/types';
-import { translateRaw } from 'v2/translations';
+} from '@components';
+import { NetworkId, StoreAccount, ITxConfig } from '@types';
+import { translateRaw } from '@translations';
 import {
   StoreContext,
   inputGasPriceToHex,
   hexWeiToString,
   hexToString,
   baseToConvertedUnit
-} from 'v2/services';
-import { COLORS } from 'v2/theme';
+} from '@services';
+import { COLORS } from '@theme';
 
 import { getAccountsInNetwork, constructGasCallProps } from '../helpers';
 

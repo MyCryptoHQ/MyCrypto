@@ -4,15 +4,15 @@ import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { BREAK_POINTS, COLORS, SPACING } from 'v2/theme';
-import { Checkbox, DashboardPanel, InputField, NetworkSelectDropdown } from 'v2/components';
-import { CustomNodeConfig, Network, NetworkId, NodeOptions, NodeType } from 'v2/types';
-import { translateRaw } from 'v2/translations';
-import { DEFAULT_NETWORK, GITHUB_RELEASE_NOTES_URL, LETS_ENCRYPT_URL } from 'v2/config';
-import { NetworkUtils } from 'v2/services/Store/Network';
-import { ProviderHandler } from 'v2/services/EthService/network';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import { Checkbox, DashboardPanel, InputField, NetworkSelectDropdown } from '@components';
+import { CustomNodeConfig, Network, NetworkId, NodeOptions, NodeType } from '@types';
+import { translateRaw } from '@translations';
+import { DEFAULT_NETWORK, GITHUB_RELEASE_NOTES_URL, LETS_ENCRYPT_URL } from '@config';
+import { NetworkUtils } from '@services/Store/Network';
+import { ProviderHandler } from '@services/EthService/network';
 
-import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
+import backArrowIcon from '@assets/images/icn-back-arrow.svg';
 
 const AddToNetworkNodePanel = styled(DashboardPanel)`
   padding: 0 ${SPACING.MD} ${SPACING.SM};

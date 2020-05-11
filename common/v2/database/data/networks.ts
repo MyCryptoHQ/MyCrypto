@@ -1,8 +1,8 @@
 // @TODO Used for unsupportedTabs. update to unsupportedPaths
 // import { TAB } from 'components/Header/components/constants';
 
-import { WalletId, NetworkId, TSymbol, NetworkLegacy } from 'v2/types';
-import { makeExplorer } from 'v2/services/EthService/utils/makeExplorer';
+import { WalletId, NetworkId, TSymbol, NetworkLegacy } from '@types';
+import { makeExplorer } from '@services/EthService/utils/makeExplorer';
 import {
   DPathsList as DPaths,
   ethPlorer,
@@ -11,7 +11,7 @@ import {
   GAS_PRICE_DEFAULT,
   DEFAULT_NETWORK_SYMBOL,
   DEFAULT_NETWORK
-} from 'v2/config';
+} from '@config';
 
 // Temporay type to bridge the difference between v1 and v2 network definitions.
 export type NetworkConfig = {

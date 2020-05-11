@@ -1,14 +1,14 @@
-import { translateRaw } from 'v2/translations';
-import { ROUTE_PATHS, EXT_URLS } from 'v2/config';
+import { translateRaw } from '@translations';
+import { ROUTE_PATHS, EXT_URLS } from '@config';
 import { Action } from './types';
 
 // Legacy
-import buyIcon from 'common/assets/images/icn-buy.svg';
-import swapIcon from 'common/assets/images/icn-swap.svg';
-import sendIcon from 'common/assets/images/icn-send.svg';
-import receiveIcon from 'common/assets/images/icn-receive.svg';
-import ledgerIcon from 'common/assets/images/wallets/ledger.svg';
-import trezorIcon from 'common/assets/images/wallets/trezor.svg';
+import buyIcon from '@assets/images/icn-buy.svg';
+import swapIcon from '@assets/images/icn-swap.svg';
+import sendIcon from '@assets/images/icn-send.svg';
+import receiveIcon from '@assets/images/icn-receive.svg';
+import ledgerIcon from '@assets/images/wallets/ledger.svg';
+import trezorIcon from '@assets/images/wallets/trezor.svg';
 
 const selectRandomAction = (actionsList: Action[]) =>
   actionsList[Math.floor(Math.random() * actionsList.length)];

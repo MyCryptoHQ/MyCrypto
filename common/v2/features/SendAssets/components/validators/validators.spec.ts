@@ -4,7 +4,7 @@ import {
   isValidHex,
   isValidPositiveOrZeroInteger,
   isValidPositiveNumber
-} from 'v2/services/EthService';
+} from '@services/EthService';
 import { isHexPrefixed } from 'ethjs-util';
 
 describe('gasPriceValidators', () => {

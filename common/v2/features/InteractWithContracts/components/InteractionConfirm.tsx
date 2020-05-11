@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { ITxConfig } from 'v2/types';
-import { ConfirmTransaction } from 'v2/components';
+import { ITxConfig } from '@types';
+import { ConfirmTransaction } from '@components';
 
 interface Props {
   txConfig: ITxConfig;

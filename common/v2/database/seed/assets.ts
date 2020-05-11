@@ -1,5 +1,5 @@
-import { Asset, TUuid } from 'v2/types';
-import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
+import { Asset, TUuid } from '@types';
+import { DEFAULT_ASSET_DECIMAL } from '@config';
 
 export const assets: { [key in string]: Asset } = {
   '10e14757-78bb-4bb2-a17a-8333830f6698': {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Footer from 'v2/features/Layout/Footer';
+import Footer from '@features/Layout/Footer';
 
 import OfflineTab from './OfflineTab';
 import './WebTemplate.scss';

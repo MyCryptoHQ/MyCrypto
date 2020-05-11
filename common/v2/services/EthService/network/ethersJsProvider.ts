@@ -1,6 +1,6 @@
 import { FallbackProvider } from 'ethers/providers';
 
-import { Network } from 'v2/types';
+import { Network } from '@types';
 import { createFallbackNetworkProviders } from './helpers';
 
 interface InstancesObject {

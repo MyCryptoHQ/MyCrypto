@@ -1,27 +1,27 @@
-import translate, { translateRaw } from 'v2/translations';
+import translate, { translateRaw } from '@translations';
 
 import { BearishIndicator, BullishIndicator, NeutralIndicator } from './components';
 import ProtocolsExplainer from './components/ProtocolsExplainer';
 import AvailableZaps from './components/AvailableZaps';
 
-import moderateRisk from 'assets/images/defizap/moderateRisk.svg';
-import conservativeRisk from 'assets/images/defizap/conservativeRisk.svg';
-import aggressiveRisk from 'assets/images/defizap/aggressiveRisk.svg';
-import unipoolSethBreakdown from 'assets/images/defizap/breakdowns/unisethBreakdown.svg';
-import unipoolDaiBreakdown from 'assets/images/defizap/breakdowns/unidaiBreakdown.svg';
-import compoundDaiBreakdown from 'assets/images/defizap/breakdowns/cdaiBreakdown.svg';
-import smartContractIcn from 'assets/images/defizap/icn-smart-contract.svg';
-import inverstingIcn from 'assets/images/defizap/icn-investing.svg';
-import collateralizationIcn from 'assets/images/defizap/icn-collateralization.svg';
-import liquidityIcn from 'assets/images/defizap/icn-liquidity.svg';
-import innovationIcn from 'assets/images/defizap/icn-innovation.svg';
-import diversificationIcn from 'assets/images/defizap/icn-diversification.svg';
-import unisethIllustration from 'assets/images/defizap/illustrations/uniseth.svg';
-import unidaiIllustration from 'assets/images/defizap/illustrations/unidai.svg';
-import cdaiIllustration from 'assets/images/defizap/illustrations/cdai.svg';
-import unisethMobileIllustration from 'assets/images/defizap/illustrations/uniseth-mobile.svg';
-import unidaiMobileIllustration from 'assets/images/defizap/illustrations/unidai-mobile.svg';
-import cdaiMobileIllustration from 'assets/images/defizap/illustrations/cdai-mobile.svg';
+import moderateRisk from '@assets/images/defizap/moderateRisk.svg';
+import conservativeRisk from '@assets/images/defizap/conservativeRisk.svg';
+import aggressiveRisk from '@assets/images/defizap/aggressiveRisk.svg';
+import unipoolSethBreakdown from '@assets/images/defizap/breakdowns/unisethBreakdown.svg';
+import unipoolDaiBreakdown from '@assets/images/defizap/breakdowns/unidaiBreakdown.svg';
+import compoundDaiBreakdown from '@assets/images/defizap/breakdowns/cdaiBreakdown.svg';
+import smartContractIcn from '@assets/images/defizap/icn-smart-contract.svg';
+import inverstingIcn from '@assets/images/defizap/icn-investing.svg';
+import collateralizationIcn from '@assets/images/defizap/icn-collateralization.svg';
+import liquidityIcn from '@assets/images/defizap/icn-liquidity.svg';
+import innovationIcn from '@assets/images/defizap/icn-innovation.svg';
+import diversificationIcn from '@assets/images/defizap/icn-diversification.svg';
+import unisethIllustration from '@assets/images/defizap/illustrations/uniseth.svg';
+import unidaiIllustration from '@assets/images/defizap/illustrations/unidai.svg';
+import cdaiIllustration from '@assets/images/defizap/illustrations/cdai.svg';
+import unisethMobileIllustration from '@assets/images/defizap/illustrations/uniseth-mobile.svg';
+import unidaiMobileIllustration from '@assets/images/defizap/illustrations/unidai-mobile.svg';
+import cdaiMobileIllustration from '@assets/images/defizap/illustrations/cdai-mobile.svg';
 
 export enum IZapType {
   UNIPOOL = 'UNIPOOL',

@@ -2,8 +2,8 @@ import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { formatEther } from 'ethers/utils';
 
-import translate, { translateRaw } from 'v2/translations';
-import { MYC_DEXAG_COMMISSION_RATE, MYC_DEXAG_MARKUP_THRESHOLD } from 'v2/config';
+import translate, { translateRaw } from '@translations';
+import { MYC_DEXAG_COMMISSION_RATE, MYC_DEXAG_MARKUP_THRESHOLD } from '@config';
 import {
   InputField,
   AssetDropdown,
@@ -12,14 +12,14 @@ import {
   Typography,
   Tooltip,
   Button
-} from 'v2/components';
-import { SPACING, COLORS } from 'v2/theme';
-import { subtractBNFloats, trimBN } from 'v2/utils';
+} from '@components';
+import { SPACING, COLORS } from '@theme';
+import { subtractBNFloats, trimBN } from '@utils';
 
 import { ISwapAsset } from '../types';
 import { getUnselectedAssets, getAccountsWithAssetBalance } from '../helpers';
-import { StoreAccount } from 'v2/types';
-import { StoreContext } from 'v2/services/Store';
+import { StoreAccount } from '@types';
+import { StoreContext } from '@services/Store';
 
 const FormWrapper = styled.div`
   margin-top: 20px;

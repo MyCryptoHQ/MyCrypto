@@ -1,4 +1,4 @@
-import { ITxHash, ITxSigned } from 'v2/types';
+import { ITxHash, ITxSigned } from '@types';
 
 export function notUndefined<T>(x: T | undefined): x is T {
   return x !== undefined;

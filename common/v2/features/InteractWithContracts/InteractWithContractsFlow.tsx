@@ -2,13 +2,13 @@ import React, { useState, useContext } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { translateRaw } from 'v2/translations';
-import { ExtendedContentPanel, Tabs, WALLET_STEPS } from 'v2/components';
-import { ROUTE_PATHS, DEFAULT_NETWORK } from 'v2/config';
-import { useStateReducer } from 'v2/utils';
-import { ITxReceipt, ISignedTx, Tab } from 'v2/types';
-import { getNetworkById, NetworkContext } from 'v2/services/Store';
-import { BREAK_POINTS } from 'v2/theme';
+import { translateRaw } from '@translations';
+import { ExtendedContentPanel, Tabs, WALLET_STEPS } from '@components';
+import { ROUTE_PATHS, DEFAULT_NETWORK } from '@config';
+import { useStateReducer } from '@utils';
+import { ITxReceipt, ISignedTx, Tab } from '@types';
+import { getNetworkById, NetworkContext } from '@services/Store';
+import { BREAK_POINTS } from '@theme';
 
 import { interactWithContractsInitialState, InteractWithContractsFactory } from './stateFactory';
 import { Interact, InteractionReceipt } from './components';

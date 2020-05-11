@@ -8,26 +8,26 @@ import {
   AssetIcon,
   CollapsibleTable,
   Account
-} from 'v2/components';
-import { truncate, convertToFiat } from 'v2/utils';
-import { ITxReceipt, ITxStatus, StoreAccount, Asset } from 'v2/types';
-import { RatesContext, AddressBookContext, getLabelByAddressAndNetwork } from 'v2/services';
-import { translateRaw } from 'v2/translations';
+} from '@components';
+import { truncate, convertToFiat } from '@utils';
+import { ITxReceipt, ITxStatus, StoreAccount, Asset } from '@types';
+import { RatesContext, AddressBookContext, getLabelByAddressAndNetwork } from '@services';
+import { translateRaw } from '@translations';
 import {
   getTxsFromAccount,
   txIsFailed,
   txIsPending,
   txIsSuccessful
-} from 'v2/services/Store/helpers';
+} from '@services/Store/helpers';
 
 import NoTransactions from './NoTransactions';
 import TransactionLabel from './TransactionLabel';
 import './RecentTransactionList.scss';
-import newWindowIcon from 'common/assets/images/icn-new-window.svg';
-import transfer from 'common/assets/images/transactions/transfer.svg';
-import inbound from 'common/assets/images/transactions/inbound.svg';
-import outbound from 'common/assets/images/transactions/outbound.svg';
-import { COLORS } from 'v2/theme';
+import newWindowIcon from '@assets/images/icn-new-window.svg';
+import transfer from '@assets/images/transactions/transfer.svg';
+import inbound from '@assets/images/transactions/inbound.svg';
+import outbound from '@assets/images/transactions/outbound.svg';
+import { COLORS } from '@theme';
 
 interface Props {
   className?: string;

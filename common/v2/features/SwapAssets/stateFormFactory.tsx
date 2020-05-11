@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { formatEther } from 'ethers/utils';
 
-import translate from 'v2/translations';
+import translate from '@translations';
 import {
   TUseStateReducerFactory,
   formatErrorEmailMarkdown,
@@ -12,15 +12,15 @@ import {
   calculateMarkup,
   trimBN,
   generateAssetUUID
-} from 'v2/utils';
-import { DexService, NetworkContext, getNetworkById } from 'v2/services';
-import { StoreAccount } from 'v2/types';
+} from '@utils';
+import { DexService, NetworkContext, getNetworkById } from '@services';
+import { StoreAccount } from '@types';
 import {
   DEFAULT_NETWORK,
   MYC_DEXAG_COMMISSION_RATE,
   DEFAULT_NETWORK_CHAINID,
   DEFAULT_NETWORK_SYMBOL
-} from 'v2/config';
+} from '@config';
 
 import { ISwapAsset, LAST_CHANGED_AMOUNT, SwapFormState } from './types';
 

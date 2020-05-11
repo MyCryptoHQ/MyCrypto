@@ -1,8 +1,8 @@
 import { fromPrivateKey, fromEthSale, IFullWallet } from 'ethereumjs-wallet';
 import { fromEtherWallet } from 'ethereumjs-wallet/thirdparty';
 
-import { fromV3 } from 'v2/workers';
-import { decryptPrivKey } from 'v2/services/EthService/utils';
+import { fromV3 } from '@workers';
+import { decryptPrivKey } from '@services/EthService/utils';
 import { signWrapper } from '../helpers';
 import { determineKeystoreType, KeystoreTypes } from './helpers';
 import Web3Wallet from './web3';

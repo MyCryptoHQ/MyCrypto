@@ -7,9 +7,9 @@ import {
 } from 'ethers/providers';
 import { formatEther, BigNumber } from 'ethers/utils';
 
-import { Asset, Network, IHexStrTransaction, TxObj, ITxSigned } from 'v2/types';
-import { RPCRequests, baseToConvertedUnit, ERC20 } from 'v2/services/EthService';
-import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
+import { Asset, Network, IHexStrTransaction, TxObj, ITxSigned } from '@types';
+import { RPCRequests, baseToConvertedUnit, ERC20 } from '@services/EthService';
+import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { EthersJS } from './ethersJsProvider';
 import { createCustomNodeProvider } from './helpers';
 

@@ -4,8 +4,8 @@ import { Button, Identicon } from '@mycrypto/ui';
 import isNumber from 'lodash/isNumber';
 import cloneDeep from 'lodash/cloneDeep';
 
-import { translateRaw } from 'v2/translations';
-import { ROUTE_PATHS, Fiats, IS_ACTIVE_FEATURE, getWalletConfig } from 'v2/config';
+import { translateRaw } from '@translations';
+import { ROUTE_PATHS, Fiats, IS_ACTIVE_FEATURE, getWalletConfig } from '@config';
 import {
   EthAddress,
   CollapsibleTable,
@@ -14,25 +14,24 @@ import {
   RouterLink,
   EditableText,
   UndoDeleteOverlay
-} from 'v2/components';
-import { truncate } from 'v2/utils';
-import { BREAK_POINTS, COLORS, SPACING, breakpointToNumber } from 'v2/theme';
-import { IAccount, StoreAccount, ExtendedAddressBook, WalletId } from 'v2/types';
+} from '@components';
+import { truncate } from '@utils';
+import { BREAK_POINTS, COLORS, SPACING, breakpointToNumber } from '@theme';
+import { IAccount, StoreAccount, ExtendedAddressBook, WalletId, TUuid } from '@types';
 import {
   AccountContext,
   getLabelByAccount,
   StoreContext,
   SettingsContext,
   AddressBookContext
-} from 'v2/services/Store';
+} from '@services/Store';
 import { DashboardPanel } from './DashboardPanel';
-import { RatesContext } from 'v2/services';
+import { RatesContext } from '@services';
 import { default as Currency } from './Currency';
-import { TUuid } from 'v2/types/uuid';
 import IconArrow from './IconArrow';
 import Checkbox from './Checkbox';
 import Tooltip from './Tooltip';
-import informationalSVG from 'assets/images/icn-info-blue.svg';
+import informationalSVG from '@assets/images/icn-info-blue.svg';
 
 const Label = styled.span`
   display: flex;

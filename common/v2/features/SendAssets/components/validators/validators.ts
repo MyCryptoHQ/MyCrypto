@@ -4,9 +4,9 @@ import {
   gasPriceValidator,
   gasLimitValidator,
   isValidPositiveNumber
-} from 'v2/services/EthService';
-import { translateRaw } from 'v2/translations';
-import { isValidPositiveOrZeroInteger } from 'v2/services/EthService/validators';
+} from '@services/EthService';
+import { translateRaw } from '@translations';
+import { isValidPositiveOrZeroInteger } from '@services/EthService/validators';
 
 export function validateGasPriceField(value: string): string | undefined {
   if (!gasPriceValidator(value)) {

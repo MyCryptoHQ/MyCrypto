@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { CRYPTOSCAMDB, getKBHelpArticle, KB_HELP_ARTICLE, EXT_URLS } from 'v2/config';
-import { translateRaw } from 'v2/translations';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
+import { CRYPTOSCAMDB, getKBHelpArticle, KB_HELP_ARTICLE, EXT_URLS } from '@config';
+import { translateRaw } from '@translations';
 import './Linkset.scss';
 
 const LINK_COLUMNS = [

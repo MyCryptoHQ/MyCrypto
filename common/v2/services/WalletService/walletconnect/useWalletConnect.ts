@@ -1,7 +1,7 @@
 import { useState, useReducer, useEffect } from 'react';
 
-import { TAddress, ITxObject, ITxHash } from 'v2/types';
-import { useUnmount } from 'v2/vendor';
+import { TAddress, ITxObject, ITxHash } from '@types';
+import { useUnmount } from '@vendor';
 
 import { default as WalletConnectService } from './WalletConnectService';
 import { initialState, WcReducer } from './reducer';

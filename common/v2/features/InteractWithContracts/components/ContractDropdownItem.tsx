@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Contract } from 'v2/types';
+import { Contract } from '@types';
 
 const OptionWrapper = styled.div`
   padding: 12px 15px;

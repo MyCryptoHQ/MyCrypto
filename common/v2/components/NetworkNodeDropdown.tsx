@@ -4,14 +4,14 @@ import styled from 'styled-components';
 import isEmpty from 'lodash/isEmpty';
 import isFunction from 'lodash/isFunction';
 
-import { NetworkContext, NetworkUtils } from 'v2/services/Store';
-import { CustomNodeConfig, NetworkId, NodeOptions } from 'v2/types';
-import { Typography, Dropdown } from 'v2/components/index';
-import { translateRaw } from 'v2/translations';
-import { SPACING, COLORS } from 'v2/theme';
+import { NetworkContext, NetworkUtils } from '@services/Store';
+import { CustomNodeConfig, NetworkId, NodeOptions } from '@types';
+import { Typography, Dropdown } from '@components/index';
+import { translateRaw } from '@translations';
+import { SPACING, COLORS } from '@theme';
 
-import addIcon from 'assets/images/icn-add.svg';
-import editIcon from 'assets/images/icn-edit.svg';
+import addIcon from '@assets/images/icn-add.svg';
+import editIcon from '@assets/images/icn-edit.svg';
 
 const SContainer = styled.div`
   display: flex;

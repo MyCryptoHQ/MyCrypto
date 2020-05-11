@@ -9,8 +9,8 @@ import {
   LSKeys,
   TUuid,
   NetworkId
-} from 'v2/types';
-import { generateUUID } from 'v2/utils';
+} from '@types';
+import { generateUUID } from '@utils';
 import { DataContext } from '../DataManager';
 
 interface IAddressBookContext {

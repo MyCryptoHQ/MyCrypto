@@ -26,7 +26,7 @@ import {
   ITxType,
   TUuid,
   ReserveAsset
-} from 'v2/types';
+} from '@types';
 import {
   isArrayEqual,
   useInterval,
@@ -36,16 +36,16 @@ import {
   multiplyBNFloats,
   weiToFloat,
   generateAccountUUID
-} from 'v2/utils';
-import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from 'v2/services/EthService';
+} from '@utils';
+import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from '@services/EthService';
 import {
   MembershipStatus,
   MEMBERSHIP_CONFIG,
   MembershipState,
   MEMBERSHIP_CONTRACTS
-} from 'v2/features/PurchaseMembership/config';
-import { DEFAULT_NETWORK } from 'v2/config';
-import { useEffectOnce } from 'v2/vendor';
+} from '@features/PurchaseMembership/config';
+import { DEFAULT_NETWORK } from '@config';
+import { useEffectOnce } from '@vendor';
 
 import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';
 import { getStoreAccounts, getPendingTransactionsFromAccounts } from './helpers';

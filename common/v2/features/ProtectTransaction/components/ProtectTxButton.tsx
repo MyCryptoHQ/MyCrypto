@@ -1,10 +1,10 @@
 import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
 
-import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from 'v2/theme';
-import { translateRaw } from 'v2/translations';
-import { useScreenSize } from 'v2/utils';
-import { ProtectIcon, ProtectIconCheck, ArrowRightIcon } from 'v2/components/icons';
+import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
+import { translateRaw } from '@translations';
+import { useScreenSize } from '@utils';
+import { ProtectIcon, ProtectIconCheck, ArrowRightIcon } from '@components/icons';
 
 const TransactionProtectionButtonText = styled.div`
   max-width: 85%;

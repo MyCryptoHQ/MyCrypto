@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
-import translate, { translateRaw } from 'v2/translations';
+import translate, { translateRaw } from '@translations';
 
-import { ExtendedContentPanel, InputField } from 'v2/components';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
+import { ExtendedContentPanel, InputField } from '@components';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
 import { ScreenLockContext } from './ScreenLockProvider';
 
 // Legacy
-import mainImage from 'common/assets/images/icn-create-pw.svg';
+import mainImage from '@assets/images/icn-create-pw.svg';
 
 const ContentWrapper = styled.div`
   display: flex;

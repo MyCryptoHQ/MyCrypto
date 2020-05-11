@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import pick from 'ramda/src/pick';
 
-import { translateRaw } from 'v2/translations';
-import { AssetContext } from 'v2/services';
-import { TxReceipt, MultiTxReceipt } from 'v2/components/TransactionFlow';
-import { StoreAccount, ITxType } from 'v2/types';
+import { translateRaw } from '@translations';
+import { AssetContext } from '@services';
+import { TxReceipt, MultiTxReceipt } from '@components/TransactionFlow';
+import { StoreAccount, ITxType } from '@types';
 
 import { SwapDisplayData, IAssetPair } from '../types';
 import { makeTxConfigFromTransaction } from '../helpers';
-import { TxParcel } from 'v2/utils/useTxMulti/types';
+import { TxParcel } from '@utils/useTxMulti/types';
 
 interface Props {
   assetPair: IAssetPair;

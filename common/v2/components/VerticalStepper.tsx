@@ -7,10 +7,10 @@ import Steps, { Step } from 'rc-steps';
 
 import Typography from './Typography';
 import Button from './Button';
-import { COLORS, SPACING, FONT_SIZE } from 'v2/theme';
+import { COLORS, SPACING, FONT_SIZE } from '@theme';
 
-import checkmark from 'assets/images/icn-checkmark-white.svg';
-import { translateRaw } from 'v2/translations';
+import checkmark from '@assets/images/icn-checkmark-white.svg';
+import { translateRaw } from '@translations';
 
 export interface StepData {
   icon?: string;

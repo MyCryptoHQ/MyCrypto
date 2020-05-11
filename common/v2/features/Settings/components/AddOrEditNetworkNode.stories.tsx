@@ -2,10 +2,10 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { storiesOf } from '@storybook/react';
 
-import { DEFAULT_NETWORK } from 'v2/config';
-import { NETWORKS_CONFIG, NODES_CONFIG } from 'v2/database/data';
-import { Network, NetworkId } from 'v2/types';
-import { GAU_THEME } from 'v2/theme';
+import { DEFAULT_NETWORK } from '@config';
+import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
+import { Network, NetworkId } from '@types';
+import { GAU_THEME } from '@theme';
 
 import AddOrEditNetworkNode from './AddOrEditNetworkNode';
 import AppProviders from 'AppProviders';

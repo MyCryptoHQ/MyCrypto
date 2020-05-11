@@ -2,12 +2,12 @@ import React from 'react';
 import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import translate from 'v2/translations';
-import { BREAK_POINTS } from 'v2/theme';
-import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from 'v2/config';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
+import translate from '@translations';
+import { BREAK_POINTS } from '@theme';
+import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from '@config';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
 
-import champagneIcon from 'common/assets/images/icn-champagne-2.svg';
+import champagneIcon from '@assets/images/icn-champagne-2.svg';
 
 const { SCREEN_SM, SCREEN_MD, SCREEN_XXL } = BREAK_POINTS;
 

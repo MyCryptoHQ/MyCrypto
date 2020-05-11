@@ -3,12 +3,12 @@ import { withRouter, Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { translateRaw } from 'v2/translations';
-import { ExtendedContentPanel } from 'v2/components';
-import { ROUTE_PATHS } from 'v2/config';
+import { translateRaw } from '@translations';
+import { ExtendedContentPanel } from '@components';
+import { ROUTE_PATHS } from '@config';
 
 // Legacy
-import newWalletIcon from 'common/assets/images/icn-new-wallet.svg';
+import newWalletIcon from '@assets/images/icn-new-wallet.svg';
 
 const DescriptionItem = styled(Typography)`
   margin-top: 18px;

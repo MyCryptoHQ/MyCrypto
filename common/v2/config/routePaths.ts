@@ -1,5 +1,5 @@
-import { IRoutePath, IRoutePaths } from 'v2/types';
-import { translateRaw } from 'v2/translations';
+import { IRoutePath, IRoutePaths } from '@types';
+import { translateRaw } from '@translations';
 
 const PATHS: IRoutePath[] = [
   {

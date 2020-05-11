@@ -3,11 +3,11 @@ import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 import { IV3Wallet } from 'ethereumjs-wallet';
 
-import { ExtendedContentPanel, PrintPaperWalletButton } from 'v2/components';
-import { PanelProps } from 'v2/features/CreateWallet';
-import translate, { translateRaw } from 'v2/translations';
+import { ExtendedContentPanel, PrintPaperWalletButton } from '@components';
+import { PanelProps } from '@features/CreateWallet';
+import translate, { translateRaw } from '@translations';
 
-import lockSafetyIcon from 'common/assets/images/icn-lock-safety.svg';
+import lockSafetyIcon from '@assets/images/icn-lock-safety.svg';
 
 const DescriptionItem = styled(Typography)`
   margin-top: 18px;

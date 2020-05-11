@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { default as ApiService } from '../ApiService';
 import { ETHERSCAN_API_MAX_LIMIT_REACHED_TEXT, ETHERSCAN_API_URLS } from './constants';
-import { NetworkId } from 'v2/types';
+import { NetworkId } from '@types';
 import { GetBalanceResponse, GetLastTxResponse } from './types';
 
 let instantiated: boolean = false;

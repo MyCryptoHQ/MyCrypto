@@ -1,9 +1,9 @@
 import { useContext, useCallback } from 'react';
 import debounce from 'lodash/debounce';
 
-import { TUseStateReducerFactory, fromTxReceiptObj, generateContractUUID } from 'v2/utils';
-import { CREATION_ADDRESS } from 'v2/config';
-import { NetworkId, Contract, StoreAccount, ITxType, ITxStatus } from 'v2/types';
+import { TUseStateReducerFactory, fromTxReceiptObj, generateContractUUID } from '@utils';
+import { CREATION_ADDRESS } from '@config';
+import { NetworkId, Contract, StoreAccount, ITxType, ITxStatus } from '@types';
 import {
   getNetworkById,
   ContractContext,
@@ -16,10 +16,10 @@ import {
   getIsValidENSAddressFunction,
   AssetContext,
   AccountContext
-} from 'v2/services';
-import { AbiFunction } from 'v2/services/EthService/contracts/ABIFunction';
-import { isWeb3Wallet } from 'v2/utils/web3';
-import { translateRaw } from 'v2/translations';
+} from '@services';
+import { AbiFunction } from '@services/EthService/contracts/ABIFunction';
+import { isWeb3Wallet } from '@utils/web3';
+import { translateRaw } from '@translations';
 
 import { customContract, CUSTOM_CONTRACT_ADDRESS } from './constants';
 import { ABIItem, InteractWithContractState } from './types';

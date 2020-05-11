@@ -2,12 +2,12 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import isString from 'lodash/isString';
 
-import translate, { translateRaw } from 'v2/translations';
-import { Spinner, Input } from 'v2/components';
-import { WalletId } from 'v2/types';
-import { WalletFactory, isKeystorePassRequired } from 'v2/services/WalletService';
+import translate, { translateRaw } from '@translations';
+import { Spinner, Input } from '@components';
+import { WalletId } from '@types';
+import { WalletFactory, isKeystorePassRequired } from '@services/WalletService';
 import { InlineMessage } from '../InlineMessage';
-import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
+import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
 
 import './Keystore.scss';
 

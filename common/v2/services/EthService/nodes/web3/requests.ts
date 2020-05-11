@@ -1,4 +1,4 @@
-import { IHexStrWeb3Transaction } from 'v2/types';
+import { IHexStrWeb3Transaction } from '@types';
 import { RPCRequests } from '../rpc';
 import { SendTransactionRequest, SignMessageRequest, GetAccountsRequest } from './types';
 

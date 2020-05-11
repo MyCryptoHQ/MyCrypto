@@ -1,6 +1,6 @@
 import { BigNumber } from 'bignumber.js';
 
-import { TSymbol, StoreAccount, ITxObject, ITxStatus, TUuid } from 'v2/types';
+import { TSymbol, StoreAccount, ITxObject, ITxStatus, TUuid } from '@types';
 
 export interface ISwapAsset {
   name: string;

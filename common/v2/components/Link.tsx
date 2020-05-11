@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { COLORS } from 'v2/theme';
+import { COLORS } from '@theme';
 
 const getColor = (type: LinkType) => {
   switch (type) {

@@ -2,7 +2,7 @@
 // https://testing-library.com/docs/react-testing-library/setup#custom-render
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { noOp } from 'v2/utils';
+import { noOp } from '@utils';
 
 // Mock features used by react-slider
 window.matchMedia =
@@ -15,7 +15,7 @@ window.matchMedia =
 
 window.requestAnimationFrame =
   window.requestAnimationFrame ||
-  (callback => {
+  ((callback) => {
     setTimeout(callback, 0);
   });
 

@@ -3,13 +3,13 @@ import { Network, Button } from '@mycrypto/ui';
 import { bigNumberify } from 'ethers/utils';
 import styled from 'styled-components';
 
-import { Asset, ITxObject } from 'v2/types';
-import { baseToConvertedUnit, totalTxFeeToString } from 'v2/services/EthService';
-import { CopyableCodeBlock } from 'v2/components';
-import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
-import { weiToFloat, isTransactionDataEmpty } from 'v2/utils';
-import translate, { translateRaw } from 'v2/translations';
-import { COLORS } from 'v2/theme';
+import { Asset, ITxObject } from '@types';
+import { baseToConvertedUnit, totalTxFeeToString } from '@services/EthService';
+import { CopyableCodeBlock } from '@components';
+import { DEFAULT_ASSET_DECIMAL } from '@config';
+import { weiToFloat, isTransactionDataEmpty } from '@utils';
+import translate, { translateRaw } from '@translations';
+import { COLORS } from '@theme';
 
 import { ISender } from '../types';
 

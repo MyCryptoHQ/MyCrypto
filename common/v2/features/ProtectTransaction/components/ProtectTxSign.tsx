@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import isEmpty from 'lodash/isEmpty';
 import values from 'lodash/values';
 
-import { SPACING } from 'v2/theme';
-import { ProtectIcon, CloseIcon } from 'v2/components/icons';
-import { ITxConfig, ITxHash, ITxSigned, Network, StoreAccount } from 'v2/types';
-import { WALLET_STEPS } from 'v2/components/SignTransactionWallets';
+import { SPACING } from '@theme';
+import { ProtectIcon, CloseIcon } from '@components/icons';
+import { ITxConfig, ITxHash, ITxSigned, Network, StoreAccount } from '@types';
+import { WALLET_STEPS } from '@components/SignTransactionWallets';
 
 import ProtectTxBase from './ProtectTxBase';
 import { ProtectTxContext } from '../ProtectTxProvider';

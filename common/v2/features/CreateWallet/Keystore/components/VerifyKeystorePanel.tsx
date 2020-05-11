@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel, InputField, InlineMessage } from 'v2/components';
-import { PanelProps } from 'v2/features/CreateWallet';
-import translate, { translateRaw } from 'v2/translations';
+import { ExtendedContentPanel, InputField, InlineMessage } from '@components';
+import { PanelProps } from '@features/CreateWallet';
+import translate, { translateRaw } from '@translations';
 
 const ButtonsWrapper = styled.div`
   margin-top: 48px;

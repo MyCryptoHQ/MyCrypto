@@ -18,31 +18,31 @@ import {
   ITxType,
   TAddress,
   ExtendedAddressBook
-} from 'v2/types';
-import { Amount, TimeElapsedCounter, AssetIcon, LinkOut } from 'v2/components';
+} from '@types';
+import { Amount, TimeElapsedCounter, AssetIcon, LinkOut } from '@components';
 import {
   AddressBookContext,
   AccountContext,
   AssetContext,
   NetworkContext,
   StoreContext
-} from 'v2/services/Store';
-import { RatesContext } from 'v2/services/RatesProvider';
+} from '@services/Store';
+import { RatesContext } from '@services/RatesProvider';
 import {
   ProviderHandler,
   getTimestampFromBlockNum,
   getTransactionReceiptFromHash
-} from 'v2/services/EthService';
-import { ROUTE_PATHS } from 'v2/config';
-import { SwapDisplayData } from 'v2/features/SwapAssets/types';
-import translate, { translateRaw } from 'v2/translations';
-import { convertToFiat, truncate, fromTxReceiptObj } from 'v2/utils';
-import { isWeb3Wallet } from 'v2/utils/web3';
-import ProtocolTagsList from 'v2/features/DeFiZap/components/ProtocolTagsList';
-import { ProtectTxUtils, ProtectTxContext } from 'v2/features/ProtectTransaction';
-import { ProtectTxAbort } from 'v2/features/ProtectTransaction/components';
-import { MembershipReceiptBanner } from 'v2/features/PurchaseMembership';
-import { DeFiZapLogo } from 'v2/features/DeFiZap';
+} from '@services/EthService';
+import { ROUTE_PATHS } from '@config';
+import { SwapDisplayData } from '@features/SwapAssets/types';
+import translate, { translateRaw } from '@translations';
+import { convertToFiat, truncate, fromTxReceiptObj } from '@utils';
+import { isWeb3Wallet } from '@utils/web3';
+import ProtocolTagsList from '@features/DeFiZap/components/ProtocolTagsList';
+import { ProtectTxUtils, ProtectTxContext } from '@features/ProtectTransaction';
+import { ProtectTxAbort } from '@features/ProtectTransaction/components';
+import { MembershipReceiptBanner } from '@features/PurchaseMembership';
+import { DeFiZapLogo } from '@features/DeFiZap';
 
 import { ISender } from './types';
 import { constructSenderFromTxConfig } from './helpers';
@@ -50,8 +50,8 @@ import { FromToAccount, SwapFromToDiagram, TransactionDetailsDisplay } from './d
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
 import { PendingTransaction } from './PendingLoader';
 
-import sentIcon from 'common/assets/images/icn-sent.svg';
-import defizaplogo from 'assets/images/defizap/defizaplogo.svg';
+import sentIcon from '@assets/images/icn-sent.svg';
+import defizaplogo from '@assets/images/defizap/defizaplogo.svg';
 import './TxReceipt.scss';
 
 interface PendingBtnAction {

@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Arrayish, hexlify, bigNumberify } from 'ethers/utils';
 
-import { TUseStateReducerFactory, fromTxReceiptObj, makeTxConfigFromSignedTx } from 'v2/utils';
+import { TUseStateReducerFactory, fromTxReceiptObj, makeTxConfigFromSignedTx } from '@utils';
 import {
   Asset,
   ITxReceipt,
@@ -11,7 +11,7 @@ import {
   ITxObject,
   ITxStatus,
   ITxType
-} from 'v2/types';
+} from '@types';
 import {
   hexWeiToString,
   getBaseAssetByNetwork,
@@ -19,12 +19,12 @@ import {
   AssetContext,
   NetworkContext,
   StoreContext
-} from 'v2/services';
+} from '@services';
 import {
   ProviderHandler,
   inputGasPriceToHex,
   bigNumGasPriceToViewableGwei
-} from 'v2/services/EthService';
+} from '@services/EthService';
 
 import { TStepAction } from './types';
 import { processFormDataToTx } from './helpers';

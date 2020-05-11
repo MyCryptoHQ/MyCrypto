@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel, Spinner } from 'v2/components';
-import { PanelProps } from 'v2/features/CreateWallet';
-import translate, { translateRaw } from 'v2/translations';
+import { ExtendedContentPanel, Spinner } from '@components';
+import { PanelProps } from '@features/CreateWallet';
+import translate, { translateRaw } from '@translations';
 
 // Legacy
-import reloadIcon from 'common/assets/images/icn-reload.svg';
+import reloadIcon from '@assets/images/icn-reload.svg';
 
 const DescriptionItem = styled(Typography)`
   margin-top: 18px;

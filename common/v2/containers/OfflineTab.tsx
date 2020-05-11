@@ -1,5 +1,5 @@
 import React from 'react';
-import { translateRaw } from 'v2/translations';
+import { translateRaw } from '@translations';
 import './OfflineTab.scss';
 
 const OfflineTab: React.FC = () => (

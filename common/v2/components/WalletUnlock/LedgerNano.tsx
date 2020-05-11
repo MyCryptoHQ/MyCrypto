@@ -1,18 +1,18 @@
 import React, { PureComponent } from 'react';
 import { Button } from '@mycrypto/ui';
 
-import { Spinner, NewTabLink } from 'v2/components';
-import translate, { Trans, translateRaw } from 'v2/translations';
-import { WalletId, FormData } from 'v2/types';
-import { getDPath, getDPaths } from 'v2/services';
-import { EXT_URLS } from 'v2/config';
-import { NetworkContext } from 'v2/services/Store';
-import { WalletFactory, ChainCodeResponse } from 'v2/services/WalletService';
+import { Spinner, NewTabLink } from '@components';
+import translate, { Trans, translateRaw } from '@translations';
+import { WalletId, FormData } from '@types';
+import { getDPath, getDPaths } from '@services';
+import { EXT_URLS } from '@config';
+import { NetworkContext } from '@services/Store';
+import { WalletFactory, ChainCodeResponse } from '@services/WalletService';
 
 import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWallets from './DeterministicWallets';
 import './LedgerNano.scss';
-import ledgerIcon from 'common/assets/images/icn-ledger-nano-large.svg';
+import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
 
 interface OwnProps {
   wallet: object;

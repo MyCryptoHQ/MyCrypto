@@ -2,7 +2,7 @@ import React from 'react';
 
 import { simpleRender } from 'test-utils';
 import { fAssets } from '@fixtures';
-import { Asset, TSymbol } from 'v2/types';
+import { Asset, TSymbol } from '@types';
 
 import AssetDropdown, { Props } from '../AssetDropdown';
 

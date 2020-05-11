@@ -1,4 +1,4 @@
-import { IERC20 } from 'v2/types';
+import { IERC20 } from '@types';
 import { default as Contract } from './contract';
 
 const erc20Abi = [

@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { TSymbol, TUuid } from 'v2/types';
-import { AssetIcon, Currency } from 'v2/components';
-import { FONT_SIZE } from 'v2/theme';
+import { TSymbol, TUuid } from '@types';
+import { AssetIcon, Currency } from '@components';
+import { FONT_SIZE } from '@theme';
 
-import arrowIcon from 'assets/images/arrow-right.svg';
+import arrowIcon from '@assets/images/arrow-right.svg';
 
 interface Props {
   fromSymbol: TSymbol;

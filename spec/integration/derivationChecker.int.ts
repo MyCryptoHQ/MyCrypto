@@ -1,6 +1,6 @@
 import { generate, IFullWallet } from 'ethereumjs-wallet';
 
-import { stripHexPrefix } from 'v2/services';
+import { stripHexPrefix } from '@services';
 
 const { exec } = require('child_process');
 

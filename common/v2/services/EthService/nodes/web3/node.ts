@@ -1,11 +1,11 @@
-import { translateRaw } from 'v2/translations';
-import { IHexStrWeb3Transaction, INode } from 'v2/types';
+import { translateRaw } from '@translations';
+import { IHexStrWeb3Transaction, INode } from '@types';
 import {
   isValidSendTransaction,
   isValidSignMessage,
   isValidGetAccounts,
   isValidGetNetVersion
-} from 'v2/services/EthService';
+} from '@services/EthService';
 import { RPCNode } from '../rpc';
 import Web3Client from './client';
 import Web3Requests from './requests';

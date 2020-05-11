@@ -3,12 +3,12 @@ import { ethers, utils } from 'ethers';
 import { isValidMnemonic } from 'ethers/utils/hdnode';
 import styled from 'styled-components';
 
-import { ISignComponentProps } from 'v2/types';
-import translate, { translateRaw } from 'v2/translations';
-import { Button, Input } from 'v2/components';
-import { WALLETS_CONFIG } from 'v2/config';
+import { ISignComponentProps } from '@types';
+import translate, { translateRaw } from '@translations';
+import { Button, Input } from '@components';
+import { WALLETS_CONFIG } from '@config';
 
-import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
+import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
 
 interface MnemonicValueState {
   seed: string;

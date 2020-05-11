@@ -1,4 +1,4 @@
-import { StoreAccount, TUuid, TAddress, WalletId } from 'v2/types';
+import { StoreAccount, TUuid, TAddress, WalletId } from '@types';
 
 import { fNetwork } from './network';
 import { fAsset } from './assets';

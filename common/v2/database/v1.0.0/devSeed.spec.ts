@@ -1,5 +1,5 @@
-import { LocalStorage, LSKeys } from 'v2/types';
-import { toArray } from 'v2/utils';
+import { LocalStorage, LSKeys } from '@types';
+import { toArray } from '@utils';
 
 import { SCHEMA_BASE, NETWORKS_CONFIG } from '../data';
 import { createDefaultValues } from '../generateDefaultValues';

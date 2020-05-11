@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers/utils';
-import { NetworkId, TSymbol, TUuid, AssetSocial } from 'v2/types';
+import { NetworkId, TSymbol, TUuid, AssetSocial } from '@types';
 import { Brand } from 'utility-types';
 
 export type TTicker = Brand<string, 'Ticker'>;

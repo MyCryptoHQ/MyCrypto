@@ -1,10 +1,10 @@
 import { Transaction as EthTx, TxData } from 'ethereumjs-tx';
 import mapValues from 'lodash/mapValues';
 
-import { translateRaw } from 'v2/translations';
+import { translateRaw } from '@translations';
 import TrezorConnect from 'trezor-connect';
-import { getTransactionFields } from 'v2/services/EthService';
-import { stripHexPrefixAndLower, padLeftEven } from 'v2/services/EthService/utils';
+import { getTransactionFields } from '@services/EthService';
+import { stripHexPrefixAndLower, padLeftEven } from '@services/EthService/utils';
 import { HardwareWallet, ChainCodeResponse } from './hardware';
 
 // read more: https://github.com/trezor/connect/blob/develop/docs/index.md#trezor-connect-manifest

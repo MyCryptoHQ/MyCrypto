@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { translateRaw } from 'v2/translations';
-import { ExtendedContentPanel, Tabs, WALLET_STEPS } from 'v2/components';
-import { ROUTE_PATHS } from 'v2/config';
-import { useStateReducer } from 'v2/utils';
-import { ITxReceipt, ISignedTx, Tab } from 'v2/types';
-import { BREAK_POINTS } from 'v2/theme';
+import { translateRaw } from '@translations';
+import { ExtendedContentPanel, Tabs, WALLET_STEPS } from '@components';
+import { ROUTE_PATHS } from '@config';
+import { useStateReducer } from '@utils';
+import { ITxReceipt, ISignedTx, Tab } from '@types';
+import { BREAK_POINTS } from '@theme';
 
 import { deployContractsInitialState, DeployContractsFactory } from './stateFactory';
 import { Deploy, DeployConfirm, DeployReceipt } from './components';

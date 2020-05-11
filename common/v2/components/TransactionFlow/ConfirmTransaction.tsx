@@ -2,15 +2,15 @@ import React, { useContext, useState } from 'react';
 import Styled from 'styled-components';
 import BN from 'bn.js';
 
-import { AddressBookContext, StoreContext } from 'v2/services/Store';
-import { Amount, AssetIcon, Button } from 'v2/components';
-import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from 'v2/services/EthService';
-import { RatesContext } from 'v2/services/RatesProvider';
-import { convertToFiat } from 'v2/utils';
-import translate, { translateRaw } from 'v2/translations';
-import { ZapSelectedBanner, DeFiZapLogo } from 'v2/features/DeFiZap';
-import { BREAK_POINTS, SPACING, COLORS } from 'v2/theme';
-import { MembershipSelectedBanner } from 'v2/features/PurchaseMembership';
+import { AddressBookContext, StoreContext } from '@services/Store';
+import { Amount, AssetIcon, Button } from '@components';
+import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from '@services/EthService';
+import { RatesContext } from '@services/RatesProvider';
+import { convertToFiat } from '@utils';
+import translate, { translateRaw } from '@translations';
+import { ZapSelectedBanner, DeFiZapLogo } from '@features/DeFiZap';
+import { BREAK_POINTS, SPACING, COLORS } from '@theme';
+import { MembershipSelectedBanner } from '@features/PurchaseMembership';
 
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
@@ -18,10 +18,10 @@ import { FromToAccount } from './displays';
 import { constructSenderFromTxConfig } from './helpers';
 import { ISender } from './types';
 
-import feeIcon from 'common/assets/images/icn-fee.svg';
-import sendIcon from 'common/assets/images/icn-send.svg';
-import walletIcon from 'common/assets/images/icn-wallet.svg';
-import { IStepComponentProps, ITxType, ExtendedAddressBook } from 'v2/types';
+import feeIcon from '@assets/images/icn-fee.svg';
+import sendIcon from '@assets/images/icn-send.svg';
+import walletIcon from '@assets/images/icn-wallet.svg';
+import { IStepComponentProps, ITxType, ExtendedAddressBook } from '@types';
 
 const { SCREEN_XS } = BREAK_POINTS;
 

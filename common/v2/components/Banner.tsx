@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { BannerType } from 'v2/types';
-import { FONT_SIZE, BREAK_POINTS, COLORS } from 'v2/theme';
+import { BannerType } from '@types';
+import { FONT_SIZE, BREAK_POINTS, COLORS } from '@theme';
 import { default as Typography } from './Typography';
-import announcementSVG from 'assets/images/icn-announcement.svg';
-import errorSVG from 'assets/images/icn-toast-error.svg';
+import announcementSVG from '@assets/images/icn-announcement.svg';
+import errorSVG from '@assets/images/icn-toast-error.svg';
 
 interface Props {
   value: string | React.ReactElement<any>;

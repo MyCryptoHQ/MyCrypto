@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
-import translate, { translateRaw } from 'v2/translations';
-import { EMPTYUUID } from 'v2/utils';
-import { TUuid } from 'v2/types';
-import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from 'v2/theme';
-import { AssetIcon, Currency, Typography } from 'v2/components';
+import translate, { translateRaw } from '@translations';
+import { EMPTYUUID } from '@utils';
+import { TUuid } from '@types';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
+import { AssetIcon, Currency, Typography } from '@components';
 
 import BreakdownChart from './BreakdownChart';
 import NoAssets from './NoAssets';
 import { WalletBreakdownProps, Balance } from './types';
 import { calculateShownIndex } from './helpers';
 
-import moreIcon from 'common/assets/images/icn-more.svg';
-import coinGeckoIcon from 'common/assets/images/credits/credits-coingecko.png';
+import moreIcon from '@assets/images/icn-more.svg';
+import coinGeckoIcon from '@assets/images/credits/credits-coingecko.png';
 
 export const SMALLEST_CHART_SHARE_SUPPORTED = 0.03; // 3%
 export const NUMBER_OF_ASSETS_DISPLAYED = 4;

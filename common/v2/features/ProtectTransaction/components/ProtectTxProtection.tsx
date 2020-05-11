@@ -3,18 +3,18 @@ import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 import BigNumber from 'bignumber.js';
 
-import { isWeb3Wallet } from 'v2/utils';
-import { RatesContext } from 'v2/services';
-import { IAccount, IFormikFields } from 'v2/types';
-import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from 'v2/theme';
-import { Amount } from 'v2/components';
-import { translateRaw } from 'v2/translations';
+import { isWeb3Wallet } from '@utils';
+import { RatesContext } from '@services';
+import { IAccount, IFormikFields } from '@types';
+import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
+import { Amount } from '@components';
+import { translateRaw } from '@translations';
 
 import { ProtectTxUtils } from '../utils';
 import ProtectTxBase from './ProtectTxBase';
-import { CloseIcon, ProtectIcon, WarningIcon } from 'v2/components/icons';
+import { CloseIcon, ProtectIcon, WarningIcon } from '@components/icons';
 
-import feeIcon from 'assets/images/icn-fee.svg';
+import feeIcon from '@assets/images/icn-fee.svg';
 import { ProtectTxContext } from '../ProtectTxProvider';
 
 const SProtectionThisTransaction = styled(ProtectTxBase)`

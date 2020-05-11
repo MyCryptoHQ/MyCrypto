@@ -6,24 +6,24 @@ import isEmpty from 'lodash/isEmpty';
 import * as Yup from 'yup';
 import { parseEther } from 'ethers/utils';
 
-import translate, { translateRaw } from 'v2/translations';
-import { SPACING } from 'v2/theme';
-import { IAccount, Network, StoreAccount, Asset } from 'v2/types';
-import { AccountDropdown, InlineMessage, AmountInput } from 'v2/components';
-import { validateAmountField } from 'v2/features/SendAssets/components/validators/validators';
-import { isEthereumAccount } from 'v2/services/Store/Account/helpers';
-import { ETHUUID } from 'v2/utils';
+import translate, { translateRaw } from '@translations';
+import { SPACING } from '@theme';
+import { IAccount, Network, StoreAccount, Asset } from '@types';
+import { AccountDropdown, InlineMessage, AmountInput } from '@components';
+import { validateAmountField } from '@features/SendAssets/components/validators/validators';
+import { isEthereumAccount } from '@services/Store/Account/helpers';
+import { ETHUUID } from '@utils';
 
 import { ZapInteractionState, ISimpleTxFormFull } from '../types';
 import ZapSelectedBanner from './ZapSelectedBanner';
 import DeFiZapLogo from './DeFiZapLogo';
 import { IZapConfig } from '../config';
-import { StoreContext } from 'v2/services/Store/StoreProvider';
-import { AssetContext } from 'v2/services/Store/Asset';
-import { NetworkContext } from 'v2/services/Store/Network';
-import { getAccountBalance } from 'v2/services/Store';
-import { fetchGasPriceEstimates } from 'v2/services/ApiService';
-import { getNonce } from 'v2/services/EthService';
+import { StoreContext } from '@services/Store/StoreProvider';
+import { AssetContext } from '@services/Store/Asset';
+import { NetworkContext } from '@services/Store/Network';
+import { getAccountBalance } from '@services/Store';
+import { fetchGasPriceEstimates } from '@services/ApiService';
+import { getNonce } from '@services/EthService';
 
 interface Props extends ZapInteractionState {
   onComplete(fields: any): void;

@@ -8,9 +8,9 @@ import Select, {
 import styled from 'styled-components';
 import { Icon } from '@mycrypto/ui';
 
-import { COLORS, FONT_SIZE } from 'v2/theme';
+import { COLORS, FONT_SIZE } from '@theme';
 
-import crossIcon from 'common/assets/images/icn-cross.svg';
+import crossIcon from '@assets/images/icn-cross.svg';
 
 // Give a height to the input when value is defined
 // Overide custom styles common/sass/styles/overrides/react-select.scss

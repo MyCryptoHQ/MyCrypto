@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { WalletId } from 'v2/types';
-import { getWalletConfig } from 'v2/config';
-import { translateRaw } from 'v2/translations';
-import { noOp } from 'v2/utils';
+import { WalletId } from '@types';
+import { getWalletConfig } from '@config';
+import { translateRaw } from '@translations';
+import { noOp } from '@utils';
 
 import { WalletButton } from './WalletButton';
 

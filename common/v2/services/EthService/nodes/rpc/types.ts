@@ -1,4 +1,4 @@
-import { IHexStrTransaction } from 'v2/types';
+import { IHexStrTransaction } from '@types';
 
 export type DATA = string;
 export type QUANTITY = string;

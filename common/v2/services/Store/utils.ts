@@ -1,6 +1,6 @@
 import { bigNumberify, BigNumber } from 'ethers/utils';
 
-import { TAddress, NetworkId, Asset, StoreAccount } from 'v2/types';
+import { TAddress, NetworkId, Asset, StoreAccount } from '@types';
 
 // Every StoreAccount has a base asset and a balance
 const getAccountBaseBalance = (account: StoreAccount) =>

@@ -4,7 +4,7 @@ import {
   evp_kdf,
   decipherBuffer,
   decryptMnemonicToPrivKey
-} from 'v2/services/EthService/utils/decrypt';
+} from '@services/EthService/utils/decrypt';
 
 // Elements of a V1 encrypted priv key
 const v1 = {
@@ -58,7 +58,7 @@ describe('decipherBuffer', () => {
   const str = 'test string';
   const data = new Buffer(str, 'utf8');
   const decipher = {
-    update: jest.fn(d => d),
+    update: jest.fn((d) => d),
     final: jest.fn(() => new Buffer('!', 'utf8'))
   };
   const result = decipherBuffer(decipher, data);
@@ -165,7 +165,7 @@ describe('decryptMnemonicToPrivKey', () => {
   ];
 
   it('should derive correct private key from variable phrase lengths/passwords/paths', () => {
-    mocks.forEach(mock => {
+    mocks.forEach((mock) => {
       const { phrase, pass, path, privKey, address } = mock;
       const derivedPrivKey = decryptMnemonicToPrivKey(phrase, pass, path, address);
       expect(derivedPrivKey.toString('hex')).toEqual(privKey);

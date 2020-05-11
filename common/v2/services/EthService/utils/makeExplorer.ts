@@ -1,4 +1,4 @@
-import { BlockExplorer } from 'v2/types';
+import { BlockExplorer } from '@types';
 
 interface ExplorerConfig {
   name: string;

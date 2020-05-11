@@ -4,14 +4,14 @@ import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
-import { DashboardPanel, NetworkSelectDropdown, InputField } from 'v2/components';
-import { AddressBook, NetworkId } from 'v2/types';
-import { ToastContext } from 'v2/features/Toasts';
-import { translateRaw } from 'v2/translations';
-import { isValidETHAddress } from 'v2/services/EthService';
-import { AddressBookContext } from 'v2/services';
-import { DEFAULT_NETWORK } from 'v2/config/constants';
+import backArrowIcon from '@assets/images/icn-back-arrow.svg';
+import { DashboardPanel, NetworkSelectDropdown, InputField } from '@components';
+import { AddressBook, NetworkId } from '@types';
+import { ToastContext } from '@features/Toasts';
+import { translateRaw } from '@translations';
+import { isValidETHAddress } from '@services/EthService';
+import { AddressBookContext } from '@services';
+import { DEFAULT_NETWORK } from '@config/constants';
 
 const AddToAddressBookPanel = styled(DashboardPanel)`
   padding: 24px 30px;

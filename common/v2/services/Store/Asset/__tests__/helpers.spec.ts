@@ -1,5 +1,5 @@
 import { bigNumberify } from 'ethers/utils';
-import { StoreAsset, TUuid } from 'v2/types';
+import { StoreAsset, TUuid } from '@types';
 import { getTotalByAsset } from '../helpers';
 
 const DEFAULT_ASSET_DECIMAL = 18;

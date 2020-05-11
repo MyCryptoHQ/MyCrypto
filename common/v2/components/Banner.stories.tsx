@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BannerType } from 'v2/types';
+import { BannerType } from '@types';
 import { Banner } from './Banner';
 
 export default { title: 'Banner' };

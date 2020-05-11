@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
-import translate from 'v2/translations';
+import translate from '@translations';
 
-import { StoreAccount } from 'v2/types';
-import { COLORS } from 'v2/theme';
-import { Typography, Currency } from 'v2/components';
-import { FromToAccount, SwapFromToDiagram } from 'v2/components/TransactionFlow/displays';
+import { StoreAccount } from '@types';
+import { COLORS } from '@theme';
+import { Typography, Currency } from '@components';
+import { FromToAccount, SwapFromToDiagram } from '@components/TransactionFlow/displays';
 
 import { IAssetPair } from '../types';
 

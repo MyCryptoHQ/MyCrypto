@@ -4,20 +4,20 @@ import { IV3Wallet } from 'ethereumjs-wallet';
 import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 import pipe from 'ramda/src/pipe';
 
-import { withContext, makeBlob, generateAccountUUID } from 'v2/utils';
-import { generateKeystore, fromV3 } from 'v2/workers';
+import { withContext, makeBlob, generateAccountUUID } from '@utils';
+import { generateKeystore, fromV3 } from '@workers';
 import {
   INetworkContext,
   NetworkContext,
   AssetContext,
   IAssetContext,
   getNewDefaultAssetTemplateByNetwork
-} from 'v2/services/Store';
-import { stripHexPrefix } from 'v2/services/EthService';
-import { WalletFactory } from 'v2/services/WalletService';
-import { NotificationTemplates } from 'v2/features/NotificationsPanel';
-import { TAddress, IRawAccount, Asset, ISettings, NetworkId, WalletId } from 'v2/types';
-import { ROUTE_PATHS, N_FACTOR, DEFAULT_NETWORK } from 'v2/config';
+} from '@services/Store';
+import { stripHexPrefix } from '@services/EthService';
+import { WalletFactory } from '@services/WalletService';
+import { NotificationTemplates } from '@features/NotificationsPanel';
+import { TAddress, IRawAccount, Asset, ISettings, NetworkId, WalletId } from '@types';
+import { ROUTE_PATHS, N_FACTOR, DEFAULT_NETWORK } from '@config';
 
 import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { TxReceipt, MultiTxReceipt } from 'v2/components/TransactionFlow';
-import { ITxType, TxParcel, StoreAccount } from 'v2/types';
+import { TxReceipt, MultiTxReceipt } from '@components/TransactionFlow';
+import { ITxType, TxParcel, StoreAccount } from '@types';
 import { IMembershipConfig } from '../config';
 import { makeTxConfigFromTransaction } from '../helpers';
 

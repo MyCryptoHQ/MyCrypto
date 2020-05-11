@@ -5,16 +5,16 @@ import { Button, Icon } from '@mycrypto/ui';
 import * as Yup from 'yup';
 import { useHistory } from 'react-router-dom';
 
-import translate, { translateRaw } from 'v2/translations';
-import { SPACING, COLORS, FONT_SIZE } from 'v2/theme';
-import { IAccount, StoreAccount, Asset } from 'v2/types';
-import { ETHUUID, MOONPAY_ASSET_UUIDS } from 'v2/utils';
-import { ROUTE_PATHS, MOONPAY_API_QUERYSTRING, BUY_MYCRYPTO_WEBSITE } from 'v2/config';
-import { AccountDropdown, AssetDropdown, InlineMessage, ContentPanel } from 'v2/components';
-import { isAccountInNetwork } from 'v2/services/Store/Account/helpers';
-import { MoonpaySignerService } from 'v2/services/ApiService/MoonpaySigner';
-import { StoreContext } from 'v2/services/Store/StoreProvider';
-import { AssetContext, getAssetByUUID } from 'v2/services/Store/Asset';
+import translate, { translateRaw } from '@translations';
+import { SPACING, COLORS, FONT_SIZE } from '@theme';
+import { IAccount, StoreAccount, Asset } from '@types';
+import { ETHUUID, MOONPAY_ASSET_UUIDS } from '@utils';
+import { ROUTE_PATHS, MOONPAY_API_QUERYSTRING, BUY_MYCRYPTO_WEBSITE } from '@config';
+import { AccountDropdown, AssetDropdown, InlineMessage, ContentPanel } from '@components';
+import { isAccountInNetwork } from '@services/Store/Account/helpers';
+import { MoonpaySignerService } from '@services/ApiService/MoonpaySigner';
+import { StoreContext } from '@services/Store/StoreProvider';
+import { AssetContext, getAssetByUUID } from '@services/Store/Asset';
 
 const FormFieldItem = styled.fieldset`
   margin-bottom: ${SPACING.LG};

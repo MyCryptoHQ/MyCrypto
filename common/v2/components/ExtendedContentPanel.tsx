@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button, Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
-import { translateRaw } from 'v2/translations';
+import { translateRaw } from '@translations';
 import Stepper from './Stepper';
 
 // Legacy
-import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
+import backArrowIcon from '@assets/images/icn-back-arrow.svg';
 
 interface ContentPanelWrapperProps {
   centered: boolean | undefined;

@@ -10,7 +10,7 @@ import {
   DPathFormat,
   CustomNodeConfig,
   StaticNodeConfig
-} from 'v2/types';
+} from '@types';
 
 // Network names accepted by ethers.EtherscanProvider
 type TValidEtherscanNetwork = 'homestead' | 'ropsten' | 'rinkeby' | 'kovan' | 'goerli';

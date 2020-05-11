@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { translateRaw } from 'v2/translations';
+import { translateRaw } from '@translations';
 import {
   TableCell,
   TableRow,
@@ -13,14 +13,14 @@ import {
   CollapsibleTable,
   Typography,
   Tooltip
-} from 'v2/components';
-import { CollapseIcon, ExpandIcon } from 'v2/components/icons';
+} from '@components';
+import { CollapseIcon, ExpandIcon } from '@components/icons';
 import { Balance, BalanceAccount, WalletBreakdownProps } from './types';
-import { BREAK_POINTS, COLORS, SPACING } from 'v2/theme';
-import { Fiat, TUuid } from 'v2/types';
-import { truncate } from 'v2/utils';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import { Fiat, TUuid } from '@types';
+import { truncate } from '@utils';
 
-import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
+import backArrowIcon from '@assets/images/icn-back-arrow.svg';
 
 const { SCREEN_MD } = BREAK_POINTS;
 

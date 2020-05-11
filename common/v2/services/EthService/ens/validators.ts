@@ -1,4 +1,4 @@
-import { normalise } from 'v2/services/EthService';
+import { normalise } from '@services/EthService';
 export interface ITLDCollection {
   [key: string]: boolean;
 }

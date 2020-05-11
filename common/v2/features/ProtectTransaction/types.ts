@@ -1,4 +1,4 @@
-import { IFormikFields } from 'v2/types/transactionFlow';
+import { IFormikFields } from '@types';
 
 export type SendFormCallbackType = () => { isValid: boolean; values: IFormikFields | null };
 

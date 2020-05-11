@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { TSymbol, TUuid } from 'v2/types';
-import { AssetIcon, Typography } from 'v2/components';
+import { TSymbol, TUuid } from '@types';
+import { AssetIcon, Typography } from '@components';
 
 const SContainer = styled('div')`
   display: flex;

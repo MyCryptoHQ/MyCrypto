@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 
-import { BannerType } from 'v2/types';
-import { Banner } from 'v2/components';
-import { BREAK_POINTS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from 'v2/theme';
-import { DrawerContext, ErrorContext } from 'v2/features';
-import { translateRaw } from 'v2/translations';
+import { BannerType } from '@types';
+import { Banner } from '@components';
+import { BREAK_POINTS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from '@theme';
+import { DrawerContext, ErrorContext } from '@features';
+import { translateRaw } from '@translations';
 import Header from './Header';
 import Footer from './Footer';
 

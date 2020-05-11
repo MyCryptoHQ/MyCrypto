@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import { IStepComponentProps } from 'v2/types';
+import { IStepComponentProps } from '@types';
 
 export type TStepAction = (payload: any, after: () => void) => void;
 

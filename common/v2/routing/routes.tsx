@@ -1,8 +1,8 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
-import { IAppRoute } from 'v2/types';
-import { ROUTE_PATHS, IS_ACTIVE_FEATURE } from 'v2/config';
+import { IAppRoute } from '@types';
+import { ROUTE_PATHS, IS_ACTIVE_FEATURE } from '@config';
 import {
   AddAccountFlow,
   CreateWallet,
@@ -29,7 +29,7 @@ import {
   PurchaseMembershipStepper,
   MembershipEducation,
   BuyAssets
-} from 'v2/features';
+} from '@features';
 import { requiresDesktopApp } from './helpers';
 
 export interface IAppRoutes {

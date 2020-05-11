@@ -2,9 +2,9 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import find from 'lodash/find';
 
-import { NetworkId, TAddress } from 'v2/types';
-import { assets } from 'v2/database/seed/assets';
-import { GetBalanceResponse, GetLastTxResponse, CryptoScamDBNoInfoResponse } from 'v2/services';
+import { NetworkId, TAddress } from '@types';
+import { assets } from '@database/seed/assets';
+import { GetBalanceResponse, GetLastTxResponse, CryptoScamDBNoInfoResponse } from '@services';
 
 import { ProtectTxContext } from '../index';
 import { ProtectTxReport } from './ProtectTxReport';

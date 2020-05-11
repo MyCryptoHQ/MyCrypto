@@ -1,13 +1,4 @@
-import {
-  Asset,
-  AddressBook,
-  LocalStorage,
-  NetworkId,
-  Network,
-  TUuid,
-  Fiat,
-  LSKeys
-} from 'v2/types';
+import { Asset, AddressBook, LocalStorage, NetworkId, Network, TUuid, Fiat, LSKeys } from '@types';
 
 import { DevAccount } from './seed';
 import { NETWORKS_CONFIG } from './data';

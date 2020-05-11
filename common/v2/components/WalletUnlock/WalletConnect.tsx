@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import isEmpty from 'ramda/src/isEmpty';
 
-import translate, { translateRaw } from 'v2/translations';
-import { WalletId } from 'v2/types';
-import { getWalletConfig } from 'v2/config';
-import { COLORS, FONT_SIZE, BREAK_POINTS } from 'v2/theme';
-import { QRCodeContainer, Overlay, Button, Typography } from 'v2/components';
-import { WalletFactory, IUseWalletConnect } from 'v2/services/WalletService';
+import translate, { translateRaw } from '@translations';
+import { WalletId } from '@types';
+import { getWalletConfig } from '@config';
+import { COLORS, FONT_SIZE, BREAK_POINTS } from '@theme';
+import { QRCodeContainer, Overlay, Button, Typography } from '@components';
+import { WalletFactory, IUseWalletConnect } from '@services/WalletService';
 
 interface OwnProps {
   useWalletConnectProps: IUseWalletConnect;

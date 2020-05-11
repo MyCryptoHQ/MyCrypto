@@ -6,7 +6,7 @@ import { withThemesProvider } from 'storybook-addon-styled-component-theme';
 import styled from 'styled-components';
 import { light, dark } from '@mycrypto/ui';
 
-import { GAU_COLORS } from 'v2/theme';
+import { GAU_COLORS } from '@theme';
 
 import 'sass/styles'
 

@@ -7,16 +7,15 @@ import {
   NetworkUtils,
   SettingsContext,
   StoreContext
-} from 'v2/services/Store';
+} from '@services/Store';
 
-import { AccountList, FlippablePanel, Mobile, MobileNavBar, Desktop } from 'v2/components';
-import { NetworkId } from 'v2/types';
-import { CustomNodeConfig } from 'v2/types/node';
-import { DEFAULT_NETWORK, IS_ACTIVE_FEATURE } from 'v2/config';
-import { BREAK_POINTS } from 'v2/theme';
-import translate from 'v2/translations';
+import { AccountList, FlippablePanel, Mobile, MobileNavBar, Desktop } from '@components';
+import { NetworkId, CustomNodeConfig } from '@types';
+import { DEFAULT_NETWORK, IS_ACTIVE_FEATURE } from '@config';
+import { BREAK_POINTS } from '@theme';
+import translate from '@translations';
 
-import settingsIcon from 'common/assets/images/icn-settings.svg';
+import settingsIcon from '@assets/images/icn-settings.svg';
 import AddToAddressBook from './components/AddToAddressBook';
 import { AddressBookPanel, GeneralSettings, DangerZone } from './components';
 import AddOrEditNetworkNode from './components/AddOrEditNetworkNode';

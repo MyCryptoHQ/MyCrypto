@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
-import { InputField, Typography, Checkbox } from 'v2/components';
-import { translateRaw } from 'v2/translations';
+import { InputField, Typography, Checkbox } from '@components';
+import { translateRaw } from '@translations';
 import {
   fetchGasPriceEstimates,
   inputGasPriceToHex,
@@ -12,9 +12,9 @@ import {
   getNonce,
   getGasEstimate,
   hexToNumber
-} from 'v2/services';
-import { StoreAccount } from 'v2/types';
-import { COLORS, monospace } from 'v2/theme';
+} from '@services';
+import { StoreAccount } from '@types';
+import { COLORS, monospace } from '@theme';
 
 const { GREY_LIGHTER } = COLORS;
 

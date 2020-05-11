@@ -1,11 +1,11 @@
 import React from 'react';
-import { translateRaw } from 'v2/translations';
+import { translateRaw } from '@translations';
 import { formatEther } from 'ethers/utils';
 
-import { AccountSummary, AccountOption, Dropdown } from 'v2/components';
-import { StoreAccount, Asset } from 'v2/types';
-import { getAccountBalance, getBaseAsset } from 'v2/services/Store';
-import { useEffectOnce } from 'v2/vendor';
+import { AccountSummary, AccountOption, Dropdown } from '@components';
+import { StoreAccount, Asset } from '@types';
+import { getAccountBalance, getBaseAsset } from '@services/Store';
+import { useEffectOnce } from '@vendor';
 
 // Option item displayed in Dropdown menu. Props are passed by react-select Select.
 // To know: Select needs to receive a class in order to attach refs https://github.com/JedWatson/react-select/issues/2459

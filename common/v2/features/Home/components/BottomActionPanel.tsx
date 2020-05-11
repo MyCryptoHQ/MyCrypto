@@ -1,15 +1,15 @@
 import React from 'react';
 import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
-import translate from 'v2/translations';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
+import translate from '@translations';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
 import { Link } from 'react-router-dom';
-import { COLORS, BREAK_POINTS } from 'v2/theme';
-import { getKBHelpArticle, KB_HELP_ARTICLE } from 'v2/config';
+import { COLORS, BREAK_POINTS } from '@theme';
+import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 
-import ovalIcon from 'common/assets/images/icn-oval.svg';
-import swooshIcon from 'common/assets/images/icn-purple-swoosh.svg';
-import sparklesIcon from 'common/assets/images/icn-sparkles-4.svg';
+import ovalIcon from '@assets/images/icn-oval.svg';
+import swooshIcon from '@assets/images/icn-purple-swoosh.svg';
+import sparklesIcon from '@assets/images/icn-sparkles-4.svg';
 
 const { SCREEN_SM } = BREAK_POINTS;
 const { BLUE_DARK_SLATE, BLUE_BRIGHT } = COLORS;

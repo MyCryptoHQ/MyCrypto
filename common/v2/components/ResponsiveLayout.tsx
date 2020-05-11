@@ -2,7 +2,7 @@ import React from 'react';
 import Responsive from 'react-responsive';
 import pipe from 'ramda/src/pipe';
 
-import { BREAK_POINTS } from 'v2/theme';
+import { BREAK_POINTS } from '@theme';
 
 // Applies the provided numerical operation to a BREAKPOINT and
 // returns a formatted string.

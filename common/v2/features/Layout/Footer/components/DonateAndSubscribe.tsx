@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import classnames from 'classnames';
 
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { donationAddressMap } from 'v2/config';
-import translate from 'v2/translations';
-import ether from 'assets/images/ether.png';
-import bitcoin from 'assets/images/bitcoin.png';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
+import { donationAddressMap } from '@config';
+import translate from '@translations';
+import ether from '@assets/images/ether.png';
+import bitcoin from '@assets/images/bitcoin.png';
 import Subscribe from './Subscribe';
 import './DonateAndSubscribe.scss';
 

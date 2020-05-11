@@ -2,7 +2,7 @@ import React from 'react';
 import { ResolutionError } from '@unstoppabledomains/resolution';
 import styled from 'styled-components';
 
-import translate, { translateRaw } from 'v2/translations';
+import translate, { translateRaw } from '@translations';
 
 import { Spinner } from './Spinner';
 import { InlineMessage } from './InlineMessage';

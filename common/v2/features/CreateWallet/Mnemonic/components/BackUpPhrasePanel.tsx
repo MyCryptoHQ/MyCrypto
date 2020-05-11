@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel, InlineMessage, PrintPaperWalletButton } from 'v2/components';
-import lockSafetyIcon from 'common/assets/images/icn-lock-safety.svg';
-import { PanelProps } from 'v2/features/CreateWallet';
-import translate, { translateRaw } from 'v2/translations';
+import { ExtendedContentPanel, InlineMessage, PrintPaperWalletButton } from '@components';
+import lockSafetyIcon from '@assets/images/icn-lock-safety.svg';
+import { PanelProps } from '@features/CreateWallet';
+import translate, { translateRaw } from '@translations';
 
 const ImageWrapper = styled.div`
   display: flex;

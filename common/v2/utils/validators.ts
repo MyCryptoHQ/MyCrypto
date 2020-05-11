@@ -2,7 +2,7 @@ import AddressValidator from 'wallet-address-validator';
 import BN from 'bn.js';
 import { FormikErrors } from 'formik';
 
-import { InlineMessageType } from 'v2/types';
+import { InlineMessageType } from '@types';
 
 interface ValidatorHash {
   [asset: string]: (address: string) => boolean;

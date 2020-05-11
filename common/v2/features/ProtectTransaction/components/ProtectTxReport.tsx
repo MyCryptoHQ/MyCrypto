@@ -3,15 +3,15 @@ import moment from 'moment';
 import styled from 'styled-components';
 import upperFirst from 'lodash/upperFirst';
 
-import { Trans, translateRaw } from 'v2/translations';
-import { fromWei, isValidETHAddress, Wei } from 'v2/services';
-import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from 'v2/theme';
-import { CryptoScamDBBaseResponse, CryptoScamDBInfoResponse } from 'v2/services/ApiService';
-import { ProtectIconCheck, WizardIcon, CloseIcon } from 'v2/components/icons';
-import { ETHAddressExplorer } from 'v2/config';
-import { EthAddress, LinkOut, VerticalStepper } from 'v2/components';
-import { StepData } from 'v2/components/VerticalStepper';
-import { truncate, useScreenSize } from 'v2/utils';
+import { Trans, translateRaw } from '@translations';
+import { fromWei, isValidETHAddress, Wei } from '@services';
+import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
+import { CryptoScamDBBaseResponse, CryptoScamDBInfoResponse } from '@services/ApiService';
+import { ProtectIconCheck, WizardIcon, CloseIcon } from '@components/icons';
+import { ETHAddressExplorer } from '@config';
+import { EthAddress, LinkOut, VerticalStepper } from '@components';
+import { StepData } from '@components/VerticalStepper';
+import { truncate, useScreenSize } from '@utils';
 
 import ProtectTxBase from './ProtectTxBase';
 import { ProtectTxContext } from '../ProtectTxProvider';

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { OptionComponentProps } from 'react-select';
 import BN from 'bn.js';
 
-import translate, { translateRaw } from 'v2/translations';
+import translate, { translateRaw } from '@translations';
 import {
   Input,
   Spinner,
@@ -14,27 +14,27 @@ import {
   NewTabLink,
   Button,
   InlineMessage
-} from 'v2/components';
-import { truncate } from 'v2/utils';
-import { Network } from 'v2/types';
+} from '@components';
+import { truncate } from '@utils';
+import { Network } from '@types';
 import {
   getBaseAssetByNetwork,
   AddressBookContext,
   getLabelByAddressAndNetwork,
   isValidPath,
   fromWei
-} from 'v2/services';
-import { AssetContext } from 'v2/services/Store';
-import { HELP_ARTICLE } from 'v2/config';
-import { DeterministicWalletData, getDeterministicWallets } from 'v2/services/WalletService';
-import { getBaseAssetBalances, BalanceMap } from 'v2/services/Store/BalanceService';
-import { COLORS, monospace, SPACING, FONT_SIZE, BREAK_POINTS } from 'v2/theme';
+} from '@services';
+import { AssetContext } from '@services/Store';
+import { HELP_ARTICLE } from '@config';
+import { DeterministicWalletData, getDeterministicWallets } from '@services/WalletService';
+import { getBaseAssetBalances, BalanceMap } from '@services/Store/BalanceService';
+import { COLORS, monospace, SPACING, FONT_SIZE, BREAK_POINTS } from '@theme';
 
 import { Table } from '../Table';
 
-import nextIcon from 'assets/images/next-page-button.svg';
-import prevIcon from 'assets/images/previous-page-button.svg';
-import questionSVG from 'assets/images/icn-question.svg';
+import nextIcon from '@assets/images/next-page-button.svg';
+import prevIcon from '@assets/images/previous-page-button.svg';
+import questionSVG from '@assets/images/icn-question.svg';
 
 const { GREY_LIGHTEST, BLUE_LIGHTEST, GREY_DARK } = COLORS;
 

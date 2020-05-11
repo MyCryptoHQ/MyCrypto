@@ -3,9 +3,9 @@ import { Form, Formik } from 'formik';
 import { simpleRender, fireEvent, wait } from 'test-utils';
 import { fNetwork } from '@fixtures';
 
-import { AddressBookContext, AssetContext } from 'v2/services/Store';
-import { AddressBook, ExtendedAddressBook, TUuid, IReceiverAddress } from 'v2/types';
-import { addressBook } from 'v2/database/seed/addressBook';
+import { AddressBookContext, AssetContext } from '@services/Store';
+import { AddressBook, ExtendedAddressBook, TUuid, IReceiverAddress } from '@types';
+import { addressBook } from '@database/seed/addressBook';
 
 import ContactLookupField from '../ContactLookupField';
 
@@ -78,7 +78,7 @@ const mockMappedContacts: ExtendedAddressBook[] = Object.entries(addressBook).ma
 );
 
 // mock domain resolving function
-jest.mock('v2/services/UnstoppableService', () => ({
+jest.mock('@services/UnstoppableService', () => ({
   getResolvedAddress: () => mockMappedContacts[0].address
 }));
 

@@ -1,4 +1,4 @@
-import { GasPrice } from 'v2/types';
+import { GasPrice } from '@types';
 
 // Lower/upper ranges for gas limit
 export const GAS_LIMIT_LOWER_BOUND = 21000;

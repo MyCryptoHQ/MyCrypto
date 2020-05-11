@@ -1,5 +1,5 @@
-import { IStory, WalletId } from 'v2/types';
-import { IS_DEV, IS_ELECTRON, hasWeb3Provider } from 'v2/utils';
+import { IStory, WalletId } from '@types';
+import { IS_DEV, IS_ELECTRON, hasWeb3Provider } from '@utils';
 import {
   InsecureWalletWarning,
   LedgerNanoSDecrypt,
@@ -11,8 +11,8 @@ import {
   Web3ProviderInstall,
   ViewOnlyDecrypt,
   WalletConnectDecrypt
-} from 'v2/components';
-import { withWalletConnect } from 'v2/services/WalletService';
+} from '@components';
+import { withWalletConnect } from '@services/WalletService';
 
 import { NetworkSelectPanel } from './components';
 

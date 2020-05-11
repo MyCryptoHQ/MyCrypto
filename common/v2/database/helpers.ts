@@ -1,4 +1,4 @@
-import { TUuid } from 'v2/types';
+import { TUuid } from '@types';
 
 import { FlowTransducer, GenObject } from './types';
 

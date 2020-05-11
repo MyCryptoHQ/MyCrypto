@@ -1,17 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Typography from 'v2/components/Typography';
-import { BREAK_POINTS, COLORS } from 'v2/theme';
+import Typography from '@components/Typography';
+import { BREAK_POINTS, COLORS } from '@theme';
 
-import { ToastConfig, ToastType } from 'v2/types';
+import { ToastConfig, ToastType } from '@types';
 
-import successIcon from 'assets/images/icn-toast-success.svg';
-import infoIcon from 'assets/images/icn-toast-alert.svg';
-import errorIcon from 'assets/images/icn-toast-error.svg';
-import progressIcon from 'assets/images/icn-toast-progress.svg';
-import swapIcon from 'assets/images/icn-toast-swap.svg';
-import closeIcon from 'assets/images/icn-toast-close.svg';
+import successIcon from '@assets/images/icn-toast-success.svg';
+import infoIcon from '@assets/images/icn-toast-alert.svg';
+import errorIcon from '@assets/images/icn-toast-error.svg';
+import progressIcon from '@assets/images/icn-toast-progress.svg';
+import swapIcon from '@assets/images/icn-toast-swap.svg';
+import closeIcon from '@assets/images/icn-toast-close.svg';
 
 interface ToastProp extends ToastConfig {
   templateData?: any;

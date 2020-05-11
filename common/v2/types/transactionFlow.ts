@@ -6,9 +6,9 @@ import {
   WalletId,
   StoreAccount,
   TAddress
-} from 'v2/types';
-import { IZapConfig } from 'v2/features/DeFiZap/config';
-import { IMembershipConfig } from 'v2/features/PurchaseMembership/config';
+} from '@types';
+import { IZapConfig } from '@features/DeFiZap/config';
+import { IMembershipConfig } from '@features/PurchaseMembership/config';
 
 export type ISignedTx = string;
 

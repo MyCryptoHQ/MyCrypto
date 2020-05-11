@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { socialMediaLinks, SUPPORT_EMAIL } from 'v2/config';
-import { COLORS, FONT_SIZE } from 'v2/theme';
-import { Trans } from 'v2/translations';
-import { LinkOut } from 'v2/components';
+import { socialMediaLinks, SUPPORT_EMAIL } from '@config';
+import { COLORS, FONT_SIZE } from '@theme';
+import { Trans } from '@translations';
+import { LinkOut } from '@components';
 import { ProtectTxError } from '../types';
 
 const ProtectedTransactionErrorWrapper = styled.div`

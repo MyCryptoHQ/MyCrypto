@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel, ExtendedControlPanelProps } from 'v2/components';
-import { BREAK_POINTS, SPACING } from 'v2/theme';
+import { ExtendedContentPanel, ExtendedControlPanelProps } from '@components';
+import { BREAK_POINTS, SPACING } from '@theme';
 
 export const FullSizePanelSection = styled.section<{ color?: string }>`
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {

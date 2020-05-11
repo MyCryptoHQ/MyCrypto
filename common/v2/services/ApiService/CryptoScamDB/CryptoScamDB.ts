@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { ApiService } from 'v2/services/ApiService';
+import { ApiService } from '@services/ApiService';
 import { CRYPTO_SCAM_DB_BASE_URL } from './constants';
 import { CryptoScamDBInfoResponse, CryptoScamDBNoInfoResponse } from './types';
 

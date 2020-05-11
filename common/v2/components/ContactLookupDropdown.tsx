@@ -1,11 +1,11 @@
 import React from 'react';
 import { OnInputKeyDownHandler } from 'react-select';
 
-import { translateRaw } from 'v2/translations';
-import { AccountSummary, AccountOption, Dropdown } from 'v2/components';
-import { Asset, IReceiverAddress, ExtendedAddressBook } from 'v2/types';
+import { translateRaw } from '@translations';
+import { AccountSummary, AccountOption, Dropdown } from '@components';
+import { Asset, IReceiverAddress, ExtendedAddressBook } from '@types';
 
-import addressBookIcon from 'common/assets/images/icn-address-book.svg';
+import addressBookIcon from '@assets/images/icn-address-book.svg';
 
 interface IAccountLookupDropdownProps {
   contacts: ExtendedAddressBook[];

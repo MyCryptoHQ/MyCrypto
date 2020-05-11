@@ -15,10 +15,10 @@ import {
   ExtendedAsset,
   TAddress,
   NetworkNodes
-} from 'v2/types';
-import { makeExplorer } from 'v2/services/EthService';
-import { NETWORKS_CONFIG, SCHEMA_BASE, NetworkConfig } from 'v2/database/data';
-import { createDefaultValues } from 'v2/database';
+} from '@types';
+import { makeExplorer } from '@services/EthService';
+import { NETWORKS_CONFIG, SCHEMA_BASE, NetworkConfig } from '@database/data';
+import { createDefaultValues } from '@database';
 
 type ObjToArray = <T>(o: T) => ValuesType<T>[];
 const objToArray: ObjToArray = (obj) => Object.values(obj);

@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { SPACING, COLORS } from 'v2/theme';
+import { SPACING, COLORS } from '@theme';
 
-import bullishIndicator from 'assets/images/defizap/indicators/bullishIndicator.svg';
-import bearishIndicator from 'assets/images/defizap/indicators/bearishIndicator.svg';
-import neutralIndicator from 'assets/images/defizap/indicators/neutralIndicator.svg';
+import bullishIndicator from '@assets/images/defizap/indicators/bullishIndicator.svg';
+import bearishIndicator from '@assets/images/defizap/indicators/bearishIndicator.svg';
+import neutralIndicator from '@assets/images/defizap/indicators/neutralIndicator.svg';
 
 interface SProps {
   color: string;

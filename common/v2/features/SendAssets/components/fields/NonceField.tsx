@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { InputField } from 'v2/components';
+import { InputField } from '@components';
 
 export function NonceField({ value, name, onChange, error }: INonceField) {
   return (

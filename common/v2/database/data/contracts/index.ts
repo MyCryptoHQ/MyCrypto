@@ -1,4 +1,4 @@
-import { Contract } from 'v2/types';
+import { Contract } from '@types';
 
 import ETC from './etc.json';
 import Ethereum from './eth.json';

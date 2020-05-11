@@ -1,6 +1,6 @@
-import { StoreAccount, NetworkId, ITxConfig, ITxObject } from 'v2/types';
-import { WALLET_STEPS } from 'v2/components';
-import { getAssetByUUID, hexToString, hexWeiToString } from 'v2/services';
+import { StoreAccount, NetworkId, ITxConfig, ITxObject } from '@types';
+import { WALLET_STEPS } from '@components';
+import { getAssetByUUID, hexToString, hexWeiToString } from '@services';
 
 export const getAccountsInNetwork = (accounts: StoreAccount[], networkId: NetworkId) =>
   accounts.filter((acc) => acc.networkId === networkId && WALLET_STEPS[acc.wallet]);

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import translate, { translateRaw } from 'v2/translations';
-import { subscribeToMailingList } from 'v2/services/ApiService';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
+import translate, { translateRaw } from '@translations';
+import { subscribeToMailingList } from '@services/ApiService';
 
 export default class Subscribe extends Component {
   public state = { email: '', submitted: false };

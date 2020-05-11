@@ -1,5 +1,5 @@
-import { noOp } from 'v2/utils';
-import { isClient } from 'v2/vendor';
+import { noOp } from '@utils';
+import { isClient } from '@vendor';
 
 export const DatabaseService = <T>(
   key: string,

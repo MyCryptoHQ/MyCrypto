@@ -3,9 +3,9 @@ import { MemoryRouter } from 'react-router';
 import { simpleRender } from 'test-utils';
 
 // New
-import SendAssets from 'v2/features/SendAssets/SendAssets';
-import { StoreContext, AddressBookContext } from 'v2/services/Store';
-import { RatesContext } from 'v2/services/RatesProvider';
+import SendAssets from '@features/SendAssets/SendAssets';
+import { StoreContext, AddressBookContext } from '@services/Store';
+import { RatesContext } from '@services/RatesProvider';
 
 /* Test components */
 describe('SendAssetsFlow', () => {

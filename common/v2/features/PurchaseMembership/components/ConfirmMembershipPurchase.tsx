@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { ConfirmTransaction } from 'v2/components';
-import { ITxType, TxParcel, StoreAccount } from 'v2/types';
+import { ConfirmTransaction } from '@components';
+import { ITxType, TxParcel, StoreAccount } from '@types';
 import { IMembershipConfig } from '../config';
 import { makeTxConfigFromTransaction } from '../helpers';
 

@@ -1,5 +1,5 @@
 // Prints out SASS color variables as CSS variables
-@import 'common/sass/variables';
+@import 'sass/variables';
 
 @mixin theme-vars($colors) {
   @each $name, $color in $colors {

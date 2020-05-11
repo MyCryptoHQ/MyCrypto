@@ -2,10 +2,10 @@ import sortBy from 'lodash/sortBy';
 import cloneDeep from 'lodash/cloneDeep';
 import { bufferToHex } from 'ethereumjs-util';
 
-import { StoreAccount, NetworkId, ITxConfig, ITxObject } from 'v2/types';
-import { WALLET_STEPS } from 'v2/components';
-import { getAssetByUUID, hexToString, hexWeiToString, inputValueToHex } from 'v2/services';
-import { AbiFunction } from 'v2/services/EthService/contracts/ABIFunction';
+import { StoreAccount, NetworkId, ITxConfig, ITxObject } from '@types';
+import { WALLET_STEPS } from '@components';
+import { getAssetByUUID, hexToString, hexWeiToString, inputValueToHex } from '@services';
+import { AbiFunction } from '@services/EthService/contracts/ABIFunction';
 
 import { StateMutabilityType, ABIItem, ABIItemType } from './types';
 

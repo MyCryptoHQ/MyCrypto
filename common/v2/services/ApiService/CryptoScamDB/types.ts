@@ -1,4 +1,4 @@
-import { TAddress } from 'v2/types';
+import { TAddress } from '@types';
 
 export interface CryptoScamDBBaseResponse {
   input: TAddress;

@@ -1,5 +1,5 @@
-import { IAccount, AddressBook, Network, WalletId, ExtendedAddressBook } from 'v2/types';
-import { getWalletConfig } from 'v2/config';
+import { IAccount, AddressBook, Network, WalletId, ExtendedAddressBook } from '@types';
+import { getWalletConfig } from '@config';
 
 export const getLabelByAccount = (
   account: IAccount,

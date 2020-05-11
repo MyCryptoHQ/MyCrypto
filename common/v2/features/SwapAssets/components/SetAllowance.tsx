@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import translate from 'v2/translations';
+import translate from '@translations';
 
-import { StoreAccount } from 'v2/types';
-import { Spinner, Typography, WALLET_STEPS } from 'v2/components';
+import { StoreAccount } from '@types';
+import { Spinner, Typography, WALLET_STEPS } from '@components';
 
 const AllowanceWrapper = styled.div`
   display: flex;

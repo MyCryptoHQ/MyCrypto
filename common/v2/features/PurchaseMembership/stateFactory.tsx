@@ -1,4 +1,4 @@
-import { TUseStateReducerFactory } from 'v2/utils';
+import { TUseStateReducerFactory } from '@utils';
 import { MembershipPurchaseState, TStepAction, MembershipSimpleTxFormFull } from './types';
 const MembershipPurchaseFactory: TUseStateReducerFactory<MembershipPurchaseState> = ({
   state,

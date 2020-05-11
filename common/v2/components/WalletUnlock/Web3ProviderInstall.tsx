@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { Typography } from '@mycrypto/ui';
 
-import { DOWNLOAD_MYCRYPTO_LINK, WALLETS_CONFIG } from 'v2/config';
-import translate from 'v2/translations';
-import { ANALYTICS_CATEGORIES, AnalyticsService } from 'v2/services';
+import { DOWNLOAD_MYCRYPTO_LINK, WALLETS_CONFIG } from '@config';
+import translate from '@translations';
+import { ANALYTICS_CATEGORIES, AnalyticsService } from '@services';
 
-import AppStoreBadgeIMG from 'assets/images/mobile/app-store-badge.png';
-import GooglePlayBadgeIMG from 'assets/images/mobile/google-play-badge.png';
-import { NewTabLink } from 'v2/components';
-import { useScreenSize } from 'v2/utils';
+import AppStoreBadgeIMG from '@assets/images/mobile/app-store-badge.png';
+import GooglePlayBadgeIMG from '@assets/images/mobile/google-play-badge.png';
+import { NewTabLink } from '@components';
+import { useScreenSize } from '@utils';
 import './Web3ProviderInstall.scss';
 
 function InstallTrunk() {

@@ -4,22 +4,22 @@ import { Transition } from 'react-spring/renderprops.cjs';
 import { Icon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { SelectLanguage } from 'v2/features/Drawer/screens';
+import { SelectLanguage } from '@features/Drawer/screens';
 import { links } from './constants';
-import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from 'v2/theme';
-import { AnalyticsService, ANALYTICS_CATEGORIES, SettingsContext } from 'v2/services';
+import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from '@theme';
+import { AnalyticsService, ANALYTICS_CATEGORIES, SettingsContext } from '@services';
 import {
   ROUTE_PATHS,
   LATEST_NEWS_URL,
   languages,
   getKBHelpArticle,
   KB_HELP_ARTICLE
-} from 'v2/config';
-import translate from 'v2/translations';
+} from '@config';
+import translate from '@translations';
 
 // Legacy
-import logo from 'assets/images/logo-mycrypto.svg';
-import { ScreenLockContext } from 'v2/features/ScreenLock/ScreenLockProvider';
+import logo from '@assets/images/logo-mycrypto.svg';
+import { ScreenLockContext } from '@features/ScreenLock/ScreenLockProvider';
 
 const { BLUE_BRIGHT } = COLORS;
 

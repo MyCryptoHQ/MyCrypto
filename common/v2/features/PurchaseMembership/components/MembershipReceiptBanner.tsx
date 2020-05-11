@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { translateRaw } from 'v2/translations';
-import { COLORS, SPACING, FONT_SIZE } from 'v2/theme';
-import { Typography } from 'v2/components';
+import { translateRaw } from '@translations';
+import { COLORS, SPACING, FONT_SIZE } from '@theme';
+import { Typography } from '@components';
 import { IMembershipConfig, getExpiryDate } from '../config';
 
 interface Props {

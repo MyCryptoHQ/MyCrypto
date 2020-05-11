@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { COLORS, SPACING } from 'v2/theme';
+import { COLORS, SPACING } from '@theme';
 
 const TagContainer = styled.ul`
   margin-bottom: 0px;

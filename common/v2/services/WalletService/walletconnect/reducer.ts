@@ -1,6 +1,6 @@
 import { ValuesType, Overwrite } from 'utility-types';
 
-import { TAction } from 'v2/types';
+import { TAction } from '@types';
 
 import { TActionError, WalletConnectState } from './types';
 

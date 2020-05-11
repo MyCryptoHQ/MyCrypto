@@ -1,6 +1,6 @@
 import BN from 'bn.js';
 
-import { IHexStrTransaction, INode, TxObj } from 'v2/types';
+import { IHexStrTransaction, INode, TxObj } from '@types';
 import {
   Wei,
   TokenValue,
@@ -15,7 +15,7 @@ import {
   isValidCurrentBlock,
   isValidRawTxApi,
   hexToNumber
-} from 'v2/services/EthService';
+} from '@services/EthService';
 import { Token } from 'types/network';
 import { TransactionData, TransactionReceipt } from 'types/transactions';
 import { RPCClient } from './client';

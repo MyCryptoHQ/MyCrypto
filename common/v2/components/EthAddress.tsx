@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Copyable } from '@mycrypto/ui';
 
-import { COLORS, monospace } from 'v2/theme';
+import { COLORS, monospace } from '@theme';
 
 // Override styles of @mycrypto/ui in order to vertically align text and icon.
 // Ensure the icon uses the discrete color.

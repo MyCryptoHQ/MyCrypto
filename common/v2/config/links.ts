@@ -1,6 +1,6 @@
-import { translateRaw } from 'v2/translations';
+import { translateRaw } from '@translations';
 import { CRYPTOSCAMDB } from './data';
-import { TURL } from 'v2/types';
+import { TURL } from '@types';
 
 interface Link {
   link: string;

@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 import { List, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { AddressBook, IAccount } from 'v2/types';
-import { truncate } from 'v2/utils';
-import { getLabelByAccount, AddressBookContext } from 'v2/services/Store';
-import { Account } from 'v2/components';
+import { AddressBook, IAccount } from '@types';
+import { truncate } from '@utils';
+import { getLabelByAccount, AddressBookContext } from '@services/Store';
+import { Account } from '@components';
 
 const AccountContainer = styled.div`
   display: flex;

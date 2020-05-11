@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
-import translate from 'v2/translations';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { ROUTE_PATHS } from 'v2/config';
+import translate from '@translations';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
+import { ROUTE_PATHS } from '@config';
 
-import sadWallet from 'common/assets/images/icn-sad-wallet.svg';
+import sadWallet from '@assets/images/icn-sad-wallet.svg';
 
 const NoAccountsContainer = styled.div`
   display: flex;

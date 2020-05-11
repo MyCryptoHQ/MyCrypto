@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Typography from './Typography';
 import styled from 'styled-components';
 
-import editIcon from 'common/assets/images/icn-edit.svg';
-import { COLORS, SPACING } from 'v2/theme';
+import editIcon from '@assets/images/icn-edit.svg';
+import { COLORS, SPACING } from '@theme';
 
 const Wrapper = styled.div`
   display: flex;

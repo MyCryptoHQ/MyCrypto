@@ -1,4 +1,4 @@
-import { NetworkId } from 'v2/types';
+import { NetworkId } from '@types';
 
 enum EthscanSupportedNetworks {
   Ethereum = 'Ethereum',

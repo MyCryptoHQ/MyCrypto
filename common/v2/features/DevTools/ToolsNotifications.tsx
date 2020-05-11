@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { COLORS } from 'v2/theme';
+import { COLORS } from '@theme';
 
-import { NotificationsContext, NotificationTemplates } from 'v2/features/NotificationsPanel';
+import { NotificationsContext, NotificationTemplates } from '@features/NotificationsPanel';
 
 const ToolWrapper = styled.div`
   display: flex;

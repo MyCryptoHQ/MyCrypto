@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { COLORS, SPACING, FONT_SIZE } from 'v2/theme';
-import { InlineMessageType } from 'v2/types/inlineMessages';
+import { COLORS, SPACING, FONT_SIZE } from '@theme';
+import { InlineMessageType } from '@types';
 import Typography from '../Typography';
-import infoSVG from 'assets/images/icn-info.svg';
-import warningSVG from 'assets/images/icn-warning.svg';
-import arrowSVG from 'assets/images/icn-arrow-purple.svg';
+import infoSVG from '@assets/images/icn-info.svg';
+import warningSVG from '@assets/images/icn-warning.svg';
+import arrowSVG from '@assets/images/icn-arrow-purple.svg';
 
 interface Props {
   type?: InlineMessageType;

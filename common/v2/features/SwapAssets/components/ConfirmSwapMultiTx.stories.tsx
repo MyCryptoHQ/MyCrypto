@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { TSymbol, TUuid } from 'v2/types';
-import { bigify, DAIUUID, ETHUUID } from 'v2/utils';
+import { TSymbol, TUuid } from '@types';
+import { bigify, DAIUUID, ETHUUID } from '@utils';
 import ConfirmSwapMultiTx from './ConfirmSwapMultiTx';
 import { ISwapAsset, LAST_CHANGED_AMOUNT } from '../types';
 

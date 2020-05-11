@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 
-import { usePromise, useEffectOnce } from 'v2/vendor';
-import { StoreContext, SettingsContext } from 'v2/services/Store';
-import { PollingService } from 'v2/workers';
-import { IRates, TTicker, Asset, StoreAsset, ReserveAsset } from 'v2/types';
-import { notUndefined } from 'v2/utils';
+import { usePromise, useEffectOnce } from '@vendor';
+import { StoreContext, SettingsContext } from '@services/Store';
+import { PollingService } from '@workers';
+import { IRates, TTicker, Asset, StoreAsset, ReserveAsset } from '@types';
+import { notUndefined } from '@utils';
 
 import { DeFiReserveMapService } from './ApiService';
 

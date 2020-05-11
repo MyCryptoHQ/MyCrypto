@@ -16,8 +16,8 @@ import { Theme } from '@mycrypto/ui';
 import path from 'ramda/src/path';
 import isFunction from 'lodash/isFunction';
 
-import { noOp } from 'v2/utils';
-import { SPACING } from 'v2/theme';
+import { noOp } from '@utils';
+import { SPACING } from '@theme';
 
 import { default as Typography } from './Typography';
 import { default as IconArrow } from './IconArrow';

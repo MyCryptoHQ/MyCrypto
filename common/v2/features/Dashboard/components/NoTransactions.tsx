@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import translate from 'v2/translations';
-import { COLORS, FONT_SIZE, SPACING } from 'v2/theme';
+import translate from '@translations';
+import { COLORS, FONT_SIZE, SPACING } from '@theme';
 
-import addIcon from 'common/assets/images/icn-add-assets.svg';
+import addIcon from '@assets/images/icn-add-assets.svg';
 
 const { BLUE_BRIGHT } = COLORS;
 

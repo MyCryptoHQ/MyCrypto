@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Icon } from '@mycrypto/ui';
 
-import { COLORS } from 'v2/theme';
-import { InlineMessage, Spinner } from 'v2/components';
-import { InlineMessageType } from 'v2/types';
-import { sanitizeDecimalSeparator } from 'v2/utils';
+import { COLORS } from '@theme';
+import { InlineMessage, Spinner } from '@components';
+import { InlineMessageType } from '@types';
+import { sanitizeDecimalSeparator } from '@utils';
 
 const MainWrapper = styled.div<WrapperProps>`
   margin-bottom: ${(props) => props.marginBottom};

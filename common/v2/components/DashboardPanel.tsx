@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { Heading } from '@mycrypto/ui';
 
-import { COLORS, FONT_SIZE, SPACING } from 'v2/theme';
+import { COLORS, FONT_SIZE, SPACING } from '@theme';
 
-import settingsIcon from 'common/assets/images/icn-settings.svg';
+import settingsIcon from '@assets/images/icn-settings.svg';
 
 import { Panel } from './Panel';
 import RouterLink from './RouterLink';

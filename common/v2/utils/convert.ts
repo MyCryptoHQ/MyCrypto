@@ -1,8 +1,8 @@
 import BigNumberJs from 'bignumber.js';
 import { bigNumberify, BigNumber, parseEther, formatEther } from 'ethers/utils';
-import { fromTokenBase } from 'v2/services/EthService';
-import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
-import { StoreAsset } from 'v2/types';
+import { fromTokenBase } from '@services/EthService';
+import { DEFAULT_ASSET_DECIMAL } from '@config';
+import { StoreAsset } from '@types';
 import BN from 'bn.js';
 
 export const convertToFiatFromAsset = (asset: StoreAsset, rate: number = 1): number => {

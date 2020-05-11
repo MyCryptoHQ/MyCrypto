@@ -4,7 +4,7 @@ import {
   HARDWARE_WALLETS,
   INSECURE_WALLETS,
   WEB3_WALLETS
-} from 'v2/config';
+} from '@config';
 
 export type HardwareWalletId = keyof typeof HARDWARE_WALLETS;
 export type Web3WalletId = keyof typeof WEB3_WALLETS;

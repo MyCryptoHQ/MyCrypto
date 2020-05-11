@@ -1,23 +1,23 @@
 import { useContext } from 'react';
 import { isHexString } from 'ethjs-util';
 
-import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
-import { StoreAccount, NetworkId, ITxType, ITxStatus } from 'v2/types';
+import { TUseStateReducerFactory, fromTxReceiptObj } from '@utils';
+import { StoreAccount, NetworkId, ITxType, ITxStatus } from '@types';
 import {
   ProviderHandler,
   getGasEstimate,
   AssetContext,
   NetworkContext,
   AccountContext
-} from 'v2/services';
-import { isWeb3Wallet } from 'v2/utils/web3';
-import { translateRaw } from 'v2/translations';
+} from '@services';
+import { isWeb3Wallet } from '@utils/web3';
+import { translateRaw } from '@translations';
 import {
   DEFAULT_NONCE,
   GAS_LIMIT_LOWER_BOUND,
   GAS_PRICE_GWEI_DEFAULT_HEX,
   DEFAULT_NETWORK
-} from 'v2/config';
+} from '@config';
 
 import { DeployContractsState } from './types';
 import { makeTxConfigFromTransaction, constructGasCallProps } from './helpers';

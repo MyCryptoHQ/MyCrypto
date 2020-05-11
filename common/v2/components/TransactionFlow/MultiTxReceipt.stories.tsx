@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { fTxConfigs, fAccount, fNetwork, fTxParcels } from '@fixtures';
-import { ITxType, TSymbol, ITxConfig, TUuid } from 'v2/types';
-import { noOp, bigify, DAIUUID, ETHUUID } from 'v2/utils';
+import { ITxType, TSymbol, ITxConfig, TUuid } from '@types';
+import { noOp, bigify, DAIUUID, ETHUUID } from '@utils';
 
 import MultiTxReceipt from './MultiTxReceipt';
-import { SwapDisplayData, ISwapAsset } from 'v2/features/SwapAssets/types';
+import { SwapDisplayData, ISwapAsset } from '@features/SwapAssets/types';
 
 // Define props
 const resetFlow = noOp;

@@ -4,15 +4,15 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import uniq from 'ramda/src/uniq';
 import flatten from 'ramda/src/flatten';
 
-import { StoreContext } from 'v2/services';
-import { DashboardPanel, Typography, Button, Link } from 'v2/components';
-import { FONT_SIZE, COLORS, SPACING } from 'v2/theme';
-import translate, { translateRaw } from 'v2/translations';
-import { ROUTE_PATHS, KB_HELP_ARTICLE, getKBHelpArticle } from 'v2/config';
-import { MEMBERSHIP_CONFIG, MembershipState } from 'v2/features/PurchaseMembership/config';
+import { StoreContext } from '@services';
+import { DashboardPanel, Typography, Button, Link } from '@components';
+import { FONT_SIZE, COLORS, SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { ROUTE_PATHS, KB_HELP_ARTICLE, getKBHelpArticle } from '@config';
+import { MEMBERSHIP_CONFIG, MembershipState } from '@features/PurchaseMembership/config';
 
-import defaultIcon from 'common/assets/images/membership/membership-none.svg';
-import expiredIcon from 'common/assets/images/membership/membership-expired.svg';
+import defaultIcon from '@assets/images/membership/membership-none.svg';
+import expiredIcon from '@assets/images/membership/membership-expired.svg';
 
 const SDashboardPanel = styled(DashboardPanel)<{ isMemberOrExpired: boolean }>`
   display: flex;

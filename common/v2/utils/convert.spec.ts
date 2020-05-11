@@ -12,8 +12,8 @@ import {
   subtractBNFloats,
   calculateMarkup
 } from './convert';
-import { StoreAsset, TAssetType, TUuid } from 'v2/types';
-import { MYC_DEXAG_COMMISSION_RATE } from 'v2/config';
+import { StoreAsset, TAssetType, TUuid } from '@types';
+import { MYC_DEXAG_COMMISSION_RATE } from '@config';
 
 describe('it converts balance to fiat', () => {
   it('converts some balance to fiat', () => {

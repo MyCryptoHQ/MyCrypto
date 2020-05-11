@@ -3,11 +3,11 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { History } from 'history';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel, Tabs } from 'v2/components';
-import { ROUTE_PATHS } from 'v2/config';
-import { Tab } from 'v2/types';
-import { BREAK_POINTS } from 'v2/theme';
-import translate from 'v2/translations';
+import { ExtendedContentPanel, Tabs } from '@components';
+import { ROUTE_PATHS } from '@config';
+import { Tab } from '@types';
+import { BREAK_POINTS } from '@theme';
+import translate from '@translations';
 import { tabsConfig } from './constants';
 
 const { SCREEN_SM } = BREAK_POINTS;

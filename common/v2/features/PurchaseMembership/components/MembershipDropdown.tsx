@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { OptionComponentProps } from 'react-select';
 
-import { translateRaw } from 'v2/translations';
-import { Typography, Dropdown } from 'v2/components';
-import { COLORS, FONT_SIZE, SPACING } from 'v2/theme';
+import { translateRaw } from '@translations';
+import { Typography, Dropdown } from '@components';
+import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import { MEMBERSHIP_CONFIG, IMembershipConfig } from '../config';
 
 const SContainer = styled('div')`

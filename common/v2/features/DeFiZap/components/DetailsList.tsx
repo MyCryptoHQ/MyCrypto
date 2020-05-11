@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { SPACING, BREAK_POINTS } from 'v2/theme';
-import { translateRaw } from 'v2/translations';
+import { SPACING, BREAK_POINTS } from '@theme';
+import { translateRaw } from '@translations';
 
 import { IZapConfig } from '../config';
 import { ProtocolTagsList } from '..';

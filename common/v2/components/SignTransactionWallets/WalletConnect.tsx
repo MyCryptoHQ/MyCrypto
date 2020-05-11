@@ -2,16 +2,16 @@ import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 import isEmpty from 'ramda/src/isEmpty';
 
-import translate, { translateRaw } from 'v2/translations';
-import { Button, CodeBlock, QRCodeContainer, Typography, Overlay, Spinner } from 'v2/components';
-import { WalletId, ISignComponentProps, TAddress, ITxHash } from 'v2/types';
-import { getWalletConfig } from 'v2/config';
-import { COLORS, FONT_SIZE, BREAK_POINTS } from 'v2/theme';
-import { useUpdateEffect } from 'v2/vendor';
-import { noOp, truncate, objToString } from 'v2/utils';
-import { getNetworkByChainId } from 'v2/services';
-import { StoreContext } from 'v2/services/Store';
-import { useWalletConnect, WcReducer, TActionError } from 'v2/services/WalletService';
+import translate, { translateRaw } from '@translations';
+import { Button, CodeBlock, QRCodeContainer, Typography, Overlay, Spinner } from '@components';
+import { WalletId, ISignComponentProps, TAddress, ITxHash } from '@types';
+import { getWalletConfig } from '@config';
+import { COLORS, FONT_SIZE, BREAK_POINTS } from '@theme';
+import { useUpdateEffect } from '@vendor';
+import { noOp, truncate, objToString } from '@utils';
+import { getNetworkByChainId } from '@services';
+import { StoreContext } from '@services/Store';
+import { useWalletConnect, WcReducer, TActionError } from '@services/WalletService';
 
 import EthAddress from '../EthAddress';
 

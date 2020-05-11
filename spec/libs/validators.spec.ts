@@ -1,4 +1,4 @@
-import { DPathsList } from 'v2/config/dpaths';
+import { DPathsList } from '@config/dpaths';
 import { valid, invalid } from '../utils/testStrings';
 import {
   isValidBTCAddress,
@@ -6,7 +6,7 @@ import {
   isValidPath,
   isValidPrivKey,
   isValidAddress
-} from 'v2/services/EthService/validators';
+} from '@services/EthService/validators';
 
 const VALID_BTC_ADDRESS = '1MEWT2SGbqtz6mPCgFcnea8XmWV5Z4Wc6';
 const VALID_ETH_ADDRESS = '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8';
@@ -72,17 +72,17 @@ describe('Validator', () => {
 
 describe('Validator', () => {
   it('should validate correct DPaths as true', () => {
-    valid.forEach(path => {
+    valid.forEach((path) => {
       expect(isValidPath(path)).toBeTruthy();
     });
   });
   it('should validate incorrect DPaths as false', () => {
-    invalid.forEach(path => {
+    invalid.forEach((path) => {
       expect(isValidPath(path)).toBeFalsy();
     });
   });
   it('should validate hardcoded DPaths as true', () => {
-    Object.values(DPathsList).forEach(DPath => {
+    Object.values(DPathsList).forEach((DPath) => {
       expect(isValidPath(DPath.value)).toBeTruthy();
     });
   });

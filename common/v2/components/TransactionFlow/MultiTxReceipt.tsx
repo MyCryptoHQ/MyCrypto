@@ -11,19 +11,19 @@ import {
   TxParcel,
   StoreAccount,
   Network
-} from 'v2/types';
-import { TimeElapsedCounter, LinkOut } from 'v2/components';
-import { ROUTE_PATHS } from 'v2/config';
-import { SwapDisplayData } from 'v2/features/SwapAssets/types';
-import translate, { translateRaw } from 'v2/translations';
-import { truncate } from 'v2/utils';
-import { COLORS, SPACING } from 'v2/theme';
-import ProtocolTagsList from 'v2/features/DeFiZap/components/ProtocolTagsList';
-import { MembershipReceiptBanner } from 'v2/features/PurchaseMembership';
+} from '@types';
+import { TimeElapsedCounter, LinkOut } from '@components';
+import { ROUTE_PATHS } from '@config';
+import { SwapDisplayData } from '@features/SwapAssets/types';
+import translate, { translateRaw } from '@translations';
+import { truncate } from '@utils';
+import { COLORS, SPACING } from '@theme';
+import ProtocolTagsList from '@features/DeFiZap/components/ProtocolTagsList';
+import { MembershipReceiptBanner } from '@features/PurchaseMembership';
 
 import { SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
-import defizaplogo from 'assets/images/defizap/defizaplogo.svg';
+import defizaplogo from '@assets/images/defizap/defizaplogo.svg';
 import './TxReceipt.scss';
 import Typography from '../Typography';
 

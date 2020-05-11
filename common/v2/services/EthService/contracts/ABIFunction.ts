@@ -2,7 +2,7 @@ import BN from 'bn.js';
 import abi from 'ethereumjs-abi';
 import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
 
-import { toChecksumAddressByChainId } from 'v2/utils';
+import { toChecksumAddressByChainId } from '@utils';
 import {
   FuncParams,
   FunctionOutputMappings,

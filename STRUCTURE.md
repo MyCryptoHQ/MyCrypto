@@ -45,5 +45,5 @@
 ## Indexing
 
 * Every level of directory should contain an `index.ts` file which re-exports everything in the directory, recursively.
-* Externally interfacing with a directory should always be done with the most senior index file (e.g. `import { Foo } from 'v2/components';` vs. `import Foo from 'v2/components/Foo/Foo';`)
+* Externally interfacing with a directory should always be done with the most senior index file (e.g. `import { Foo } from '@components';` vs. `import Foo from '@components/Foo/Foo';`)
 * Internally interfacing with a directory should always be done with relative pathing `../../`.

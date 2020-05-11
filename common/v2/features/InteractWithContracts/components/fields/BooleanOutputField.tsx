@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Typography } from 'v2/components';
+import { Typography } from '@components';
 
 import FieldLabel from './FieldLabel';
 
-import checkmark from 'assets/images/checkmark_outline.svg';
-import cross from 'assets/images/cross_outline.svg';
+import checkmark from '@assets/images/checkmark_outline.svg';
+import cross from '@assets/images/cross_outline.svg';
 
 const Wrapper = styled.div`
   display: flex;

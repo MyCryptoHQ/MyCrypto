@@ -2,9 +2,9 @@ import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { ContentPanel } from 'v2/components';
-import { SettingsContext } from 'v2/services/Store';
-import { translateRaw } from 'v2/translations';
+import { ContentPanel } from '@components';
+import { SettingsContext } from '@services/Store';
+import { translateRaw } from '@translations';
 
 import { ImportBox, ImportSuccess } from './components';
 

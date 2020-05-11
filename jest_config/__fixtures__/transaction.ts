@@ -1,4 +1,4 @@
-import { ITxObject } from 'v2/types';
+import { ITxObject } from '@types';
 
 export const fTransaction: ITxObject = {
   to: '0x909f74Ffdc223586d0d30E78016E707B6F5a45E2',

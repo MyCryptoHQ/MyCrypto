@@ -3,11 +3,11 @@ import { storiesOf } from '@storybook/react';
 import find from 'lodash/find';
 import { Panel } from '@mycrypto/ui';
 
-import { NETWORKS_CONFIG, NODES_CONFIG } from 'v2/database/data';
-import { Network, NetworkId, WalletId } from 'v2/types';
-import { assets } from 'v2/database/seed/assets';
-import { COLORS } from 'v2/theme';
-import { noOp } from 'v2/utils';
+import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
+import { Network, NetworkId, WalletId } from '@types';
+import { assets } from '@database/seed/assets';
+import { COLORS } from '@theme';
+import { noOp } from '@utils';
 
 import { ProtectTxProvider } from '../index';
 import { ProtectTxProtection } from './ProtectTxProtection';

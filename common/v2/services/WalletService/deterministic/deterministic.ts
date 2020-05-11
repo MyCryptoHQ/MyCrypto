@@ -1,6 +1,6 @@
 import HDKey from 'hdkey';
 import { publicToAddress, toChecksumAddress } from 'ethereumjs-util';
-import { TokenValue } from 'v2/services/EthService';
+import { TokenValue } from '@services/EthService';
 
 export class DeterministicWallet {
   protected address: string;

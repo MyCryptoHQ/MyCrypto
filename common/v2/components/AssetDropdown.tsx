@@ -3,10 +3,10 @@ import { OptionComponentProps } from 'react-select';
 import styled from 'styled-components';
 import isEmpty from 'ramda/src/isEmpty';
 
-import { translateRaw } from 'v2/translations';
-import { Asset, TSymbol } from 'v2/types';
-import { AssetDropdownItem, Divider, Dropdown } from 'v2/components';
-import { useEffectOnce } from 'v2/vendor';
+import { translateRaw } from '@translations';
+import { Asset, TSymbol } from '@types';
+import { AssetDropdownItem, Divider, Dropdown } from '@components';
+import { useEffectOnce } from '@vendor';
 
 const Label = styled.div`
   font-size: 18px;

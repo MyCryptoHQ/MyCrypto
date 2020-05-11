@@ -1,10 +1,10 @@
 import React from 'react';
 import { Heading, Typography } from '@mycrypto/ui';
 
-import sendIcon from 'common/assets/images/icn-send.svg';
-import { Currency } from 'v2/components';
-import { TSymbol } from 'v2/types';
-import { translateRaw } from 'v2/translations';
+import sendIcon from '@assets/images/icn-send.svg';
+import { Currency } from '@components';
+import { TSymbol } from '@types';
+import { translateRaw } from '@translations';
 
 interface Props {
   amount: string;

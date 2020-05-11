@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Tab } from 'v2/types';
-import { COLORS } from 'v2/theme';
+import { Tab } from '@types';
+import { COLORS } from '@theme';
 
 const { WHITE, BLUE_BRIGHT } = COLORS;
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { OptionComponentProps } from 'react-select';
 
-import { AccountSummary, Divider } from 'v2/components';
+import { AccountSummary, Divider } from '@components';
 
 class AccountOption extends React.PureComponent<OptionComponentProps> {
   public render() {

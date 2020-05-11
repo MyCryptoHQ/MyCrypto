@@ -1,14 +1,14 @@
 import React from 'react';
 import path from 'ramda/src/path';
 
-import { ITxStatus, TxParcel } from 'v2/types';
-import { VerticalStepper } from 'v2/components';
-import { translateRaw } from 'v2/translations';
+import { ITxStatus, TxParcel } from '@types';
+import { VerticalStepper } from '@components';
+import { translateRaw } from '@translations';
 import { IMembershipConfig } from '../config';
 import MembershipSelectedBanner from './MembershipSelectedBanner';
 
-import step1SVG from 'assets/images/icn-send.svg';
-import step2SVG from 'assets/images/icn-receive.svg';
+import step1SVG from '@assets/images/icn-send.svg';
+import step2SVG from '@assets/images/icn-receive.svg';
 
 interface Props {
   membershipSelected: IMembershipConfig;

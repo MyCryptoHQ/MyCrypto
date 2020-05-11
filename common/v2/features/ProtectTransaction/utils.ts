@@ -2,14 +2,14 @@ import BigNumber from 'bignumber.js';
 import isNumber from 'lodash/isNumber';
 import has from 'lodash/has';
 import get from 'lodash/get';
-import { fromWei, totalTxFeeToWei, Wei } from 'v2/services/EthService/utils';
-import { IFormikFields } from 'v2/types';
-import { bigify } from 'v2/utils';
+import { fromWei, totalTxFeeToWei, Wei } from '@services/EthService/utils';
+import { IFormikFields } from '@types';
+import { bigify } from '@utils';
 import {
   PROTECTED_TX_FEE_PERCENTAGE,
   PROTECTED_TX_FIXED_FEE_AMOUNT,
   PROTECTED_TX_MIN_AMOUNT
-} from 'v2/config';
+} from '@config';
 import { ProtectTxError } from './types';
 import { ProtectTxContext } from './ProtectTxProvider';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Contract } from 'v2/types';
+import { Contract } from '@types';
 
 import ContractDropdownItem from './ContractDropdownItem';
 

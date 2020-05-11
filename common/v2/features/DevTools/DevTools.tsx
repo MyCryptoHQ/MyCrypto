@@ -1,19 +1,19 @@
 import React, { useContext } from 'react';
 import { Formik, Field, Form, FieldProps, FormikProps } from 'formik';
 import { Panel, Input } from '@mycrypto/ui';
-import { Button, Link, Checkbox } from 'v2/components';
+import { Button, Link, Checkbox } from '@components';
 import styled from 'styled-components';
 
-import { DEFAULT_NETWORK } from 'v2/config';
-import { generateUUID } from 'v2/utils';
+import { DEFAULT_NETWORK } from '@config';
+import { generateUUID } from '@utils';
 import {
   AccountContext,
   getLabelByAddressAndNetwork,
   AddressBookContext,
   DataContext,
   NetworkContext
-} from 'v2/services/Store';
-import { useDevTools } from 'v2/services';
+} from '@services/Store';
+import { useDevTools } from '@services';
 import {
   TAddress,
   IRawAccount,
@@ -22,7 +22,7 @@ import {
   AssetBalanceObject,
   ExtendedAddressBook,
   Network
-} from 'v2/types';
+} from '@types';
 
 import ToolsNotifications from './ToolsNotifications';
 import ToolsAccountList from './ToolsAccountList';

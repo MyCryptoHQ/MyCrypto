@@ -2,9 +2,9 @@ import { addHexPrefix } from 'ethereumjs-util';
 import BN from 'bn.js';
 import axios, { AxiosInstance } from 'axios';
 
-import { TSymbol, ITxObject } from 'v2/types';
-import { DEXAG_MYC_TRADE_CONTRACT, DEXAG_MYC_HANDLER_CONTRACT, DEX_BASE_URL } from 'v2/config';
-import { ERC20 } from 'v2/services/EthService';
+import { TSymbol, ITxObject } from '@types';
+import { DEXAG_MYC_TRADE_CONTRACT, DEXAG_MYC_HANDLER_CONTRACT, DEX_BASE_URL } from '@config';
+import { ERC20 } from '@services/EthService';
 
 import { default as ApiService } from '../ApiService';
 import { DexTrade } from './types';

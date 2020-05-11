@@ -1,8 +1,8 @@
 import { Optional } from 'utility-types';
 import { addHexPrefix } from 'ethereumjs-util';
 
-import { bigify } from 'v2/utils';
-import { TAddress, Network, ITxObject } from 'v2/types';
+import { bigify } from '@utils';
+import { TAddress, Network, ITxObject } from '@types';
 import {
   inputGasPriceToHex,
   inputGasLimitToHex,
@@ -10,8 +10,8 @@ import {
   hexWeiToString,
   getNonce,
   hexToNumber
-} from 'v2/services/EthService';
-import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
+} from '@services/EthService';
+import { fetchGasPriceEstimates, getGasEstimate } from '@services/ApiService';
 
 type TxBeforeSender = Pick<ITxObject, 'to' | 'value' | 'data' | 'chainId'>;
 type TxBeforeGasPrice = Optional<ITxObject, 'nonce' | 'gasLimit' | 'gasPrice'>;

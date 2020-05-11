@@ -1,5 +1,5 @@
-import { Wei } from 'v2/services';
-import { toFixedIfLarger, formatNumber, formatGasLimit, formatMnemonic } from 'v2/utils/formatters';
+import { Wei } from '@services';
+import { toFixedIfLarger, formatNumber, formatGasLimit, formatMnemonic } from '@utils/formatters';
 
 describe('toFixedIfLarger', () => {
   it('should return same value if decimal isnt longer than default', () => {
@@ -66,7 +66,7 @@ describe('formatNumber', () => {
     }
   ];
 
-  pairs.forEach(pair => {
+  pairs.forEach((pair) => {
     const digits = pair.digits;
     it(`should convert ${pair.input.toString()} to ${
       pair.output

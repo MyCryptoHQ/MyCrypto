@@ -4,19 +4,19 @@ import Slider from 'react-slick';
 import styled from 'styled-components';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import translate, { translateRaw } from 'v2/translations';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { BREAK_POINTS, COLORS } from 'v2/theme';
-import { WalletId } from 'v2/types';
-import { ROUTE_PATHS } from 'v2/config';
+import translate, { translateRaw } from '@translations';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
+import { BREAK_POINTS, COLORS } from '@theme';
+import { WalletId } from '@types';
+import { ROUTE_PATHS } from '@config';
 
 import './SliderImports.scss';
-import metamaskIcon from 'common/assets/images/wallets/metamask.svg';
-import trustIcon from 'common/assets/images/wallets/trust-2.svg';
-import ledgerIcon from 'common/assets/images/wallets/ledger.svg';
-import trezorIcon from 'common/assets/images/wallets/trezor.svg';
-import frameIcon from 'common/assets/images/wallets/frame.svg';
-import walletConnectIcon from 'common/assets/images/wallets/walletconnect.svg';
+import metamaskIcon from '@assets/images/wallets/metamask.svg';
+import trustIcon from '@assets/images/wallets/trust-2.svg';
+import ledgerIcon from '@assets/images/wallets/ledger.svg';
+import trezorIcon from '@assets/images/wallets/trezor.svg';
+import frameIcon from '@assets/images/wallets/frame.svg';
+import walletConnectIcon from '@assets/images/wallets/walletconnect.svg';
 
 const { SCREEN_SM, SCREEN_LG, SCREEN_XXL } = BREAK_POINTS;
 const { BLUE_DARK_SLATE, GREYISH_BROWN } = COLORS;

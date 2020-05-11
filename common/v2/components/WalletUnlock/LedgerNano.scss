@@ -1,4 +1,4 @@
-@import 'common/sass/variables';
+@import 'sass/variables';
 
 .LedgerPanel {
   display: flex;
@@ -17,7 +17,7 @@
 
     @media (max-width: 700px) {
       // position: absolute;
-      // bottom: 0em; 
+      // bottom: 0em;
     }
   }
 
@@ -36,7 +36,7 @@
     align-content: center;
 
     @media (max-width: 700px) {
-      height: 350px; 
+      height: 350px;
     }
 
     &-content {
@@ -51,7 +51,7 @@
 
       @media (max-width: 700px) {
         width:345px;
-        bottom: 0em; 
+        bottom: 0em;
       }
     }
   }
@@ -61,14 +61,14 @@
     padding-top: 2em;
 
     @media (max-width: 700px) {
-      margin: 0.25em; 
-      padding: 0.5em; 
+      margin: 0.25em;
+      padding: 0.5em;
     }
   }
 
   &-footer {
     @media (max-width: 700px) {
-      margin-bottom: 20px; 
+      margin-bottom: 20px;
     }
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-import { AnalyticsService } from 'v2/services';
+import { AnalyticsService } from '@services';
 
 let previousURL: string | undefined;
 export const PageVisitsAnalytics = withRouter(({ history, children }) => {

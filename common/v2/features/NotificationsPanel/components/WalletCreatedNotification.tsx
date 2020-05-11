@@ -1,16 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import translate from 'v2/translations';
-import { BREAK_POINTS } from 'v2/theme';
+import translate from '@translations';
+import { BREAK_POINTS } from '@theme';
 import NotificationWrapper from './NotificationWrapper';
-import { getKBHelpArticle, KB_HELP_ARTICLE } from 'v2/config';
+import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 
 // Legacy
-import champagneIcon from 'common/assets/images/icn-champagne-2.svg';
-import howBuyIcon from 'common/assets/images/icn-how-do-i-buy-crypto.svg';
-import dontLoseCryptoIcon from 'common/assets/images/icn-don-t-lose-crypto.svg';
-import questionsIcon from 'common/assets/images/icn-questions.svg';
+import champagneIcon from '@assets/images/icn-champagne-2.svg';
+import howBuyIcon from '@assets/images/icn-how-do-i-buy-crypto.svg';
+import dontLoseCryptoIcon from '@assets/images/icn-don-t-lose-crypto.svg';
+import questionsIcon from '@assets/images/icn-questions.svg';
 
 const { SCREEN_XS } = BREAK_POINTS;
 const { HOME, SECURING_YOUR_ETH, BUY_CRYPTO } = KB_HELP_ARTICLE;

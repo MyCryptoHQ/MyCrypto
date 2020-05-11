@@ -4,12 +4,12 @@ import 'sass/styles.scss';
 import '@babel/polyfill';
 
 import 'whatwg-fetch'; // @TODO: Investigate utility of dependency
-import 'what-input'; // @TODO: Investigate utility of dependency; Used in /common/sass/styles.scss for `data-whatintent`
+import 'what-input'; // @TODO: Investigate utility of dependency; Used in sass/styles.scss for `data-whatintent`
 
 import React from 'react';
 import { render } from 'react-dom';
 
-import { consoleAdvertisement } from 'v2/utils';
+import { consoleAdvertisement } from '@utils';
 
 import Root from './Root';
 

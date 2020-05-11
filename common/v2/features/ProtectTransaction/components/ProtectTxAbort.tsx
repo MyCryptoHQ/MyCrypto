@@ -1,9 +1,9 @@
 import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import { COLORS, FONT_SIZE } from 'v2/theme';
-import { translateRaw } from 'v2/translations';
-import { ProtectIconCheck } from 'v2/components/icons';
-import { Link } from 'v2/components';
+import { COLORS, FONT_SIZE } from '@theme';
+import { translateRaw } from '@translations';
+import { ProtectIconCheck } from '@components/icons';
+import { Link } from '@components';
 import { ITxReceipt } from '../../../types';
 import { ProtectTxContext } from '../ProtectTxProvider';
 import { ProtectTxUtils } from '../utils';

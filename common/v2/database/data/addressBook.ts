@@ -1,4 +1,4 @@
-import { AddressBook } from 'v2/types';
+import { AddressBook } from '@types';
 
 export const defaultAddressBook: { [key in string]: AddressBook } = {
   'a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe': {

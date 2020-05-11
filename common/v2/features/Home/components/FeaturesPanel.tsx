@@ -2,16 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import { Panel } from '@mycrypto/ui';
 
-import translate from 'v2/translations';
-import { COLORS, BREAK_POINTS } from 'v2/theme';
+import translate from '@translations';
+import { COLORS, BREAK_POINTS } from '@theme';
 
-import manageWalletsImage from 'common/assets/images/manage-your-wallets.svg';
-import viewDashboardImage from 'common/assets/images/view-dashboard.svg';
-import yourCryptoImage from 'common/assets/images/control-crypto.svg';
+import manageWalletsImage from '@assets/images/manage-your-wallets.svg';
+import viewDashboardImage from '@assets/images/view-dashboard.svg';
+import yourCryptoImage from '@assets/images/control-crypto.svg';
 
-import manageWalletsImageMobile from 'common/assets/images/manage-your-wallets-mobile.svg';
-import viewDashboardImageMobile from 'common/assets/images/view-dashboard-mobile.svg';
-import yourCryptoImageMobile from 'common/assets/images/control-crypto-mobile.svg';
+import manageWalletsImageMobile from '@assets/images/manage-your-wallets-mobile.svg';
+import viewDashboardImageMobile from '@assets/images/view-dashboard-mobile.svg';
+import yourCryptoImageMobile from '@assets/images/control-crypto-mobile.svg';
 
 const { SCREEN_SM, SCREEN_MD, SCREEN_LG, SCREEN_XL, SCREEN_XXL } = BREAK_POINTS;
 const { BLUE_DARK_SLATE } = COLORS;

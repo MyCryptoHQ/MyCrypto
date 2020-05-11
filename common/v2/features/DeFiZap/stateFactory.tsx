@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 
-import { TUseStateReducerFactory, fromTxReceiptObj } from 'v2/utils';
-import { isWeb3Wallet } from 'v2/utils/web3';
-import { Asset, ITxStatus, ITxType } from 'v2/types';
-import { hexWeiToString, ProviderHandler } from 'v2/services/EthService';
-import { AccountContext } from 'v2/services/Store';
+import { TUseStateReducerFactory, fromTxReceiptObj } from '@utils';
+import { isWeb3Wallet } from '@utils/web3';
+import { Asset, ITxStatus, ITxType } from '@types';
+import { hexWeiToString, ProviderHandler } from '@services/EthService';
+import { AccountContext } from '@services/Store';
 
 import { createSimpleTxObject } from './helpers';
 import { ZapInteractionState, TStepAction, ISimpleTxFormFull } from './types';

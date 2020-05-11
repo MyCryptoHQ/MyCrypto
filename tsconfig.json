@@ -7,12 +7,15 @@
     "jsx": "react",
     "target": "es2015",
     "allowJs": true,
-    "baseUrl": "./common/",
+    "baseUrl": "./common",
     "paths": {
       "shared*": ["../shared*"],
       "types*": ["../shared/types*"],
       "test-utils": ["../jest_config/test-utils"],
-      "@fixtures": ["../jest_config/__fixtures__"]
+      "@fixtures": ["../jest_config/__fixtures__"],
+      "@assets/*": ["assets/*"],
+      "@*": ["v2/*"],
+
     },
     "lib": ["esnext", "dom"],
     "allowSyntheticDefaultImports": true,
@@ -27,7 +30,7 @@
     "skipLibCheck": true
   },
   "include": ["./scripts", "./common/", "./electron-app/", "./shared/", "spec", "./jest_config"],
-  "exclude": ["jest_config/__mocks__", "./node-scripts"],
+  "exclude": ["node_modules", "jest_config/__mocks__", "./node-scripts"],
   "awesomeTypescriptLoaderOptions": {
     "transpileOnly": true
   }

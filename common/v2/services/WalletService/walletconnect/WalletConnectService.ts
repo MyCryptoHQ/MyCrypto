@@ -1,8 +1,8 @@
 import WalletConnect from '@walletconnect/browser';
 import { IWalletConnectSession, ITxData } from '@walletconnect/types';
 
-import { TAddress } from 'v2/types';
-import { noOp } from 'v2/utils';
+import { TAddress } from '@types';
+import { noOp } from '@utils';
 
 import { IWalletConnectService } from './types';
 

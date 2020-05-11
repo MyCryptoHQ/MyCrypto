@@ -9,8 +9,8 @@ import {
   pubToAddress
 } from 'ethereumjs-util';
 
-import { stripHexPrefixAndLower } from 'v2/services/EthService';
-import { ISignedMessage } from 'v2/types';
+import { stripHexPrefixAndLower } from '@services/EthService';
+import { ISignedMessage } from '@types';
 
 export function signRawTxWithPrivKey(privKey: Buffer, t: EthTx): Buffer {
   t.sign(privKey);

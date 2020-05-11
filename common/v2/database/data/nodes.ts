@@ -1,7 +1,6 @@
-import { NodeType, NetworkId } from 'v2/types';
-import { INFURA_API_KEY } from 'v2/config';
-import { StaticNodeConfig } from 'v2/types/node';
-import { NetworkUtils } from 'v2/services/Store/Network';
+import { NodeType, NetworkId, StaticNodeConfig } from '@types';
+import { INFURA_API_KEY } from '@config';
+import { NetworkUtils } from '@services/Store/Network';
 
 export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
   Ethereum: [

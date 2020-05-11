@@ -5,7 +5,7 @@ import { DrawerAction } from './components';
 import './Drawer.scss';
 
 // Legacy
-import closeIcon from 'common/assets/images/icn-close.svg';
+import closeIcon from '@assets/images/icn-close.svg';
 
 interface Action {
   icon: string;

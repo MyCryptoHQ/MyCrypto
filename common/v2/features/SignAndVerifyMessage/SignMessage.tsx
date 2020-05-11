@@ -3,17 +3,17 @@ import styled from 'styled-components';
 import { Button as ButtonUI } from '@mycrypto/ui';
 import { toChecksumAddress } from 'ethereumjs-util';
 
-import { InputField, CodeBlock, WalletList, Button } from 'v2/components';
-import { BREAK_POINTS } from 'v2/theme';
-import translate, { translateRaw } from 'v2/translations';
-import { ISignedMessage, INode, FormData, WalletId } from 'v2/types';
-import { WALLETS_CONFIG, DEFAULT_NETWORK } from 'v2/config';
-import { setupWeb3Node } from 'v2/services/EthService';
-import { IFullWallet, withWalletConnect, IUseWalletConnect } from 'v2/services/WalletService';
+import { InputField, CodeBlock, WalletList, Button } from '@components';
+import { BREAK_POINTS } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { ISignedMessage, INode, FormData, WalletId } from '@types';
+import { WALLETS_CONFIG, DEFAULT_NETWORK } from '@config';
+import { setupWeb3Node } from '@services/EthService';
+import { IFullWallet, withWalletConnect, IUseWalletConnect } from '@services/WalletService';
 
 import { getStories } from './stories';
 
-import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
+import backArrowIcon from '@assets/images/icn-back-arrow.svg';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
