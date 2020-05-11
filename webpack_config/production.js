@@ -46,18 +46,13 @@ module.exports = merge.smart(common, {
     ]
   },
 
-  optimization: {
+  /*optimization: {
     splitChunks: {
       cacheGroups: {
         // Caching is only useful in production. This is is where we apply the node_module caching solution
-        vendorIndividual: {
-          enforce: true,
-          test: new RegExp(`[\\/]node_modules[\\/](${config.chunks.individual.join('|')})[\\/]`),
-          name: generateChunkName
-        }
       }
     }
-  },
+  },*/
 
   plugins: [
     new MiniCSSExtractPlugin({

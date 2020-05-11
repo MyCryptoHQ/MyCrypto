@@ -44,47 +44,49 @@ module.exports = {
         default: false,
         vendors: false,
         vendor: {
-          name: 'vendor',
+          enforce: true,
+          name: 'vendor.bundle',
           chunks: 'all',
-          test: /node_modules/,
-          // test: new RegExp(`/[\\/]node_modules[\\/]((?!(${config.chunks.electronOnly.join('|')})).*)[\\/]/`),
-          /*test(mod) {
-            const excludeNodeModules = new RegExp(`[\\/]node_modules[\\/](${config.chunks.electronOnly.join('|')})[\\/]`);
+          test(mod) {
+            const excluded = `${config.chunks.individual.join('|')}|${config.chunks.electronOnly.join('|')}|${config.chunks.devOnly.join('|').replace(/\//, '[\\\\/]')}`;
+            const excludeNodeModules = new RegExp(`[\\\\/]node_modules[\\\\/]((${excluded})\.*)`);
             const includeCommon = new RegExp(/[\\/]common[\\/]/);
             const includeNodeModules = new RegExp(/node_modules/);
-            console.log('mod.context', mod.context);
-            console.log('!excludeNodeModules.test(mod.context)', !excludeNodeModules.test(mod.context));
-            console.log('include', mod.context
-              && (includeNodeModules.test(mod.context) && excludeNodeModules.test(mod.context) && !includeCommon.test(mod.context)))
             return mod.context
-              && (includeNodeModules.test(mod.context) && excludeNodeModules.test(mod.context) && !includeCommon.test(mod.context));
-          },*/
+              && includeNodeModules.test(mod.context) && !excludeNodeModules.test(mod.context) && !includeCommon.test(mod.context);
+          },
           priority: 20
         },
         common: {
+          name: 'common.bundle',
           test: /[\\/]common[\\/]/,
-          name: 'common',
           minChunks: 2,
           chunks: 'all',
           reuseExistingChunk: true,
           enforce: true,
           priority: 10
         },
-        /*vendor: {
+        vendorIndividual: {
           name: generateChunkName,
-          test: new RegExp(`/[\\/]node_modules[\\/]((?!(${config.chunks.devOnly.join('|')}|${config.chunks.electronOnly.join('|')})).*)[\\/]/`),
-        },*/
-        /*vendorDev: {
-          test: new RegExp(`[\\/]node_modules[\\/](${config.chunks.devOnly.join('|')})[\\/]`),
-          name: generateChunkName
-        },*/
-        /*vendorElectron: {
           enforce: true,
-          test: new RegExp(`[\\/]node_modules[\\/](${config.chunks.electronOnly.join('|')})[\\/]`),
-          // name: generateChunkName,
+          chunks: 'all',
+          test: new RegExp(`[\\\\/]node_modules[\\\\/](${config.chunks.individual.join('|')})[\\\\/]`),
+          priority: 50
+        },
+        vendorDev: {
+          name: 'vendor-dev',
+          enforce: true,
+          chunks: 'all',
+          test: new RegExp(`[\\\\/]node_modules[\\\\/](${config.chunks.devOnly.join('|').replace(/\//, '[\\\\/]')})[\\\\/]`),
+          priority: 40
+        },
+        vendorElectron: {
           name: 'vendor-electron',
+          enforce: true,
+          chunks: 'all',
+          test: new RegExp(`[\\\\/]node_modules[\\\\/](${config.chunks.electronOnly.join('|')})[\\\\/]`),
           priority: 30
-        }*/
+        }
       }
     }
   },
