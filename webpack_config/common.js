@@ -44,27 +44,47 @@ module.exports = {
         default: false,
         vendors: false,
         vendor: {
-          name: generateChunkName,
+          name: 'vendor',
           chunks: 'all',
-          test: new RegExp(`/[\\/]node_modules[\\/]((?!(${config.chunks.devOnly.join('|')}|${config.chunks.electronOnly.join('|')})).*)[\\/]/`),
+          test: /node_modules/,
+          // test: new RegExp(`/[\\/]node_modules[\\/]((?!(${config.chunks.electronOnly.join('|')})).*)[\\/]/`),
+          /*test(mod) {
+            const excludeNodeModules = new RegExp(`[\\/]node_modules[\\/](${config.chunks.electronOnly.join('|')})[\\/]`);
+            const includeCommon = new RegExp(/[\\/]common[\\/]/);
+            const includeNodeModules = new RegExp(/node_modules/);
+            console.log('mod.context', mod.context);
+            console.log('!excludeNodeModules.test(mod.context)', !excludeNodeModules.test(mod.context));
+            console.log('include', mod.context
+              && (includeNodeModules.test(mod.context) && excludeNodeModules.test(mod.context) && !includeCommon.test(mod.context)))
+            return mod.context
+              && (includeNodeModules.test(mod.context) && excludeNodeModules.test(mod.context) && !includeCommon.test(mod.context));
+          },*/
+          priority: 20
         },
         common: {
-          test: /common/,
+          test: /[\\/]common[\\/]/,
           name: 'common',
           minChunks: 2,
           chunks: 'all',
           reuseExistingChunk: true,
-          enforce: true
+          enforce: true,
+          priority: 10
         },
-        vendorDev: {
+        /*vendor: {
+          name: generateChunkName,
+          test: new RegExp(`/[\\/]node_modules[\\/]((?!(${config.chunks.devOnly.join('|')}|${config.chunks.electronOnly.join('|')})).*)[\\/]/`),
+        },*/
+        /*vendorDev: {
           test: new RegExp(`[\\/]node_modules[\\/](${config.chunks.devOnly.join('|')})[\\/]`),
           name: generateChunkName
-        },
-        vendorElectron: {
+        },*/
+        /*vendorElectron: {
           enforce: true,
           test: new RegExp(`[\\/]node_modules[\\/](${config.chunks.electronOnly.join('|')})[\\/]`),
-          name: generateChunkName
-        }
+          // name: generateChunkName,
+          name: 'vendor-electron',
+          priority: 30
+        }*/
       }
     }
   },
