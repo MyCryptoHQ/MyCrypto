@@ -5,6 +5,7 @@ import { StoreContext, SettingsContext } from '@services/Store';
 import { PollingService } from '@workers';
 import { IRates, TTicker, Asset, StoreAsset, ReserveAsset } from '@types';
 import { notUndefined } from '@utils';
+import { Fiats } from '@config/fiats';
 
 import { DeFiReserveMapService } from './ApiService';
 
@@ -30,7 +31,6 @@ interface ReserveMappingListObject {
   [key: string]: ReserveMappingObject;
 }
 
-const DEFAULT_FIAT_PAIRS = ['USD', 'EUR', 'GBP'] as TTicker[];
 const DEFAULT_FIAT_RATE = 0;
 const POLLING_INTERVAL = 60000;
 
@@ -89,7 +89,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     worker.current = new PollingService(
-      buildAssetQueryUrl(geckoIds, DEFAULT_FIAT_PAIRS), // @TODO: More elegant conversion then `DEFAULT_FIAT_RATE`
+      buildAssetQueryUrl(geckoIds, Object.keys(Fiats)), // @TODO: More elegant conversion then `DEFAULT_FIAT_RATE`
       POLLING_INTERVAL,
       updateRates,
       (err) => console.debug('[RatesProvider]', err)

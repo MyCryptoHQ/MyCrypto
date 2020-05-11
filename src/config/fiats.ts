@@ -22,5 +22,29 @@ export const GBP = {
   symbol: '£' as TSymbol,
   prefix: true
 };
+export const RUB = {
+  code: 'RUB',
+  name: 'Rubles',
+  symbol: '₽' as TSymbol,
+  prefix: true
+};
+export const INR = {
+  code: 'INR',
+  name: 'Rupee',
+  symbol: '₹' as TSymbol,
+  prefix: true
+};
+export const CNY = {
+  code: 'CNY',
+  name: 'Yuan',
+  symbol: '¥' as TSymbol,
+  prefix: true
+};
+export const TRY = {
+  code: 'TRY',
+  name: 'Turkish Lira',
+  symbol: '₺' as TSymbol,
+  prefix: true
+};
 
-export const Fiats: FiatObject = { USD, EUR, GBP };
+export const Fiats: FiatObject = { USD, EUR, GBP, RUB, INR, CNY, TRY };
