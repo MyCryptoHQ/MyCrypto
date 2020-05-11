@@ -88,7 +88,7 @@ module.exports = merge.smart(common, {
         return 'script';
       },
       include: 'allAssets',
-      fileBlacklist: [/\.(js|ttf|png|eot|jpe?g|css|svg)/]
+      fileWhitelist: [/\.(woff|woff2)$/]
     }),
 
     new PreloadWebpackPlugin({
