@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Heading } from '@mycrypto/ui';
-import moment from 'moment';
 
 import { StoreContext, EnsService } from 'v2/services';
 import { DashboardPanel } from 'v2/components';
@@ -9,9 +8,8 @@ import { translateRaw } from 'v2/translations';
 import { BREAK_POINTS, SPACING } from 'v2/theme';
 import { useEffectOnce, usePromise } from 'v2/vendor/react-use';
 import { isEthereumAccount } from 'v2/services/Store/Account/helpers';
-import { SECONDS_IN_MONTH } from 'v2/config/constants';
 
-import { DomainRecordTableEntry, DomainNameRecord } from './types';
+import { DomainNameRecord } from './types';
 import EnsLogo from './EnsLogo';
 import { EnsTable } from './EnsTable';
 
@@ -35,15 +33,13 @@ const StyledLayout = styled.div`
   }
 `;
 
-const isLessThanAMonth = (date: number, now: number) => date - now <= SECONDS_IN_MONTH;
-
 export interface MyDomainsData {
-  records: DomainRecordTableEntry[];
+  records: DomainNameRecord[];
   isFetched: boolean;
 }
 
 const defaultData: MyDomainsData = {
-  records: [] as DomainRecordTableEntry[],
+  records: [] as DomainNameRecord[],
   isFetched: false
 };
 
@@ -60,10 +56,7 @@ export default function EnsDashboard() {
       const ownershipRecords: MyDomainsData = await mounted(
         EnsService.fetchOwnershipRecords(accountsEthereumNetwork).then(
           (data: DomainNameRecord[]) => ({
-            records: data.map((record) => ({
-              ...record,
-              expireSoon: isLessThanAMonth(record.expiryDate, moment().unix())
-            })),
+            records: data,
             isFetched: true
           })
         )

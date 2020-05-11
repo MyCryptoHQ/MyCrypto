@@ -7,9 +7,9 @@ import { translateRaw } from 'v2/translations';
 import { breakpointToNumber, BREAK_POINTS } from 'v2/theme';
 import { IconID } from 'v2/components/Tooltip';
 import { truncate } from 'v2/utils';
-import { ENS_MANAGER_URL } from 'v2/config/constants';
+import { ENS_MANAGER_URL, SECONDS_IN_MONTH } from 'v2/config/constants';
 
-import { MyDomainsProps, DomainRecordTableEntry } from './types';
+import { MyDomainsProps, DomainNameRecord } from './types';
 
 const Label = styled.span`
   display: flex;
@@ -27,6 +27,8 @@ const TableContainer = styled.div`
   max-height: 600px;
 `;
 
+const isLessThanAMonth = (date: number, now: number) => date - now <= SECONDS_IN_MONTH;
+
 export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
   const formatDate = (timestamp: number): string =>
     moment.unix(timestamp).format('YYYY-MM-DD H:mm A');
@@ -39,24 +41,24 @@ export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
       translateRaw('ENS_MY_DOMAINS_TABLE_EXPIRES_HEADER'),
       ''
     ],
-    body: domainOwnershipRecords.map((domain: DomainRecordTableEntry, index: number) => {
+    body: domainOwnershipRecords.map((record: DomainNameRecord, index: number) => {
       return [
         <RowAlignment key={index}>
-          {domain.expireSoon && (
+          {isLessThanAMonth(record.expiryDate, moment().unix()) && (
             <Tooltip type={IconID.warning} tooltip={translateRaw('ENS_EXPIRING_SOON')} />
           )}
         </RowAlignment>,
         <Label key={2}>
-          <Account title={domain.ownerLabel} address={domain.owner} truncate={truncate} />
+          <Account title={record.ownerLabel} address={record.owner} truncate={truncate} />
         </Label>,
         <RowAlignment key={3} align="left">
-          {domain.readableDomainName}
+          {record.readableDomainName}
         </RowAlignment>,
         <RowAlignment key={4} align="left">
-          {formatDate(domain.expiryDate)}
+          {formatDate(record.expiryDate)}
         </RowAlignment>,
         <RowAlignment key={5} align="right">
-          <LinkOut link={`${ENS_MANAGER_URL}/name/${domain.domainName}`} />
+          <LinkOut link={`${ENS_MANAGER_URL}/name/${record.domainName}`} />
         </RowAlignment>
       ];
     }),

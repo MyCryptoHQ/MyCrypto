@@ -1,17 +1,18 @@
 import React from 'react';
 import { simpleRender } from 'test-utils';
 
-import { EnsTable } from '../EnsTable';
-import { DomainRecordTableEntry } from '../types';
 import { translateRaw } from 'v2/translations';
+
+import { EnsTable } from '../EnsTable';
+import { DomainNameRecord } from '../types';
 
 /* Test components */
 describe('ENSTable', () => {
-  const component = (records: DomainRecordTableEntry[], isFetched: boolean) => (
+  const component = (records: DomainNameRecord[], isFetched: boolean) => (
     <EnsTable records={records} isFetched={isFetched} />
   );
 
-  const renderComponent = (records: DomainRecordTableEntry[], isFetched: boolean) => {
+  const renderComponent = (records: DomainNameRecord[], isFetched: boolean) => {
     return simpleRender(component(records, isFetched));
   };
 
@@ -32,7 +33,6 @@ describe('ENSTable', () => {
         owner: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
         ownerLabel: 'MyCrypto Tip Jar',
         domainName: 'donate.mycryptoid.eth',
-        expireSoon: false,
         expiryDate: 1589234757,
         readableDomainName: 'donate.mycryptoid.eth'
       }
