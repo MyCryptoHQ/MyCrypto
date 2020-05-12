@@ -1,7 +1,7 @@
 import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
 
 import { makeExplorer } from '@services/EthService/utils/makeExplorer';
-import packageJson from '../../../package.json';
+import packageJson from '../../package.json';
 import translate from '@translations';
 
 export const languages = require('./languages.json');

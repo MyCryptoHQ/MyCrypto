@@ -3,7 +3,7 @@ import { setConfig } from 'react-hot-loader';
 import { hot } from 'react-hot-loader/root';
 import styled, { ThemeProvider } from 'styled-components';
 import { HashRouter, BrowserRouter } from 'react-router-dom';
-// v2
+
 import { BREAK_POINTS, GAU_THEME } from '@theme';
 import { IS_DEV, IS_ELECTRON, IS_DOWNLOADABLE, IS_PROD } from '@utils';
 import { NewAppReleaseModal } from '@components';

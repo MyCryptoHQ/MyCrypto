@@ -14,7 +14,7 @@
       "test-utils": ["../jest_config/test-utils"],
       "@fixtures": ["../jest_config/__fixtures__"],
       "@assets/*": ["assets/*"],
-      "@*": ["v2/*"],
+      "@*": ["./*"],
 
     },
     "lib": ["esnext", "dom"],
