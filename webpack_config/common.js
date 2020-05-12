@@ -41,12 +41,10 @@ module.exports = {
   optimization: {
     splitChunks: {
       cacheGroups: {
-        default: false,
-        vendors: false,
+        chunks: 'all',
         vendor: {
           enforce: true,
           name: 'vendor.bundle',
-          chunks: 'all',
           test(mod) {
             const excluded = `${config.chunks.individual.join('|')}|${config.chunks.electronOnly.join('|')}|${config.chunks.devOnly.join('|').replace(/\//, '[\\\\/]')}`;
             const excludeNodeModules = new RegExp(`[\\\\/]node_modules[\\\\/]((${excluded})\.*)`);
@@ -61,7 +59,6 @@ module.exports = {
           name: 'common.bundle',
           test: /[\\/]common[\\/]/,
           minChunks: 2,
-          chunks: 'all',
           reuseExistingChunk: true,
           enforce: true,
           priority: 10
@@ -69,21 +66,18 @@ module.exports = {
         vendorIndividual: {
           name: generateChunkName,
           enforce: true,
-          chunks: 'all',
           test: new RegExp(`[\\\\/]node_modules[\\\\/](${config.chunks.individual.join('|')})[\\\\/]`),
           priority: 50
         },
         vendorDev: {
           name: 'vendor-dev',
           enforce: true,
-          chunks: 'all',
           test: new RegExp(`[\\\\/]node_modules[\\\\/](${config.chunks.devOnly.join('|').replace(/\//, '[\\\\/]')})[\\\\/]`),
           priority: 40
         },
         vendorElectron: {
           name: 'vendor-electron',
           enforce: true,
-          chunks: 'all',
           test: new RegExp(`[\\\\/]node_modules[\\\\/](${config.chunks.electronOnly.join('|')})[\\\\/]`),
           priority: 30
         }
@@ -231,7 +225,7 @@ module.exports = {
       },
       metaCsp: IS_DEVELOPMENT
         ? ''
-        : "default-src 'none'; script-src 'self' https://mycryptobuilds.com https://beta.mycrypto.com; worker-src 'self' blob:; child-src 'self'; style-src 'self' 'unsafe-inline'; manifest-src 'self'; font-src 'self'; img-src 'self' data: https://mycryptoapi.com/api/v1/images/; connect-src *; frame-src 'self' https://connect.trezor.io;"
+        : "default-src 'none'; script-src 'self'; worker-src 'self' blob:; child-src 'self'; style-src 'self' 'unsafe-inline'; manifest-src 'self'; font-src 'self'; img-src 'self' data: https://mycryptoapi.com/api/v1/images/; connect-src *; frame-src 'self' https://connect.trezor.io;"
     }),
 
     new CopyWebpackPlugin([
