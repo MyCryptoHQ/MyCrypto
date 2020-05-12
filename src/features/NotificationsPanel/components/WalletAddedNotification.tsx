@@ -84,8 +84,8 @@ export default function WalletCreatedNotification({ address }: NotificationProps
       alignCenterOnSmallScreen={true}
       leftImg={{
         src: champagneIcon,
-        width: '71px',
-        height: '70px',
+        width: '100px',
+        height: '100px',
         transform: 'rotateY(180deg)',
         hideOnMobile: true
       }}
