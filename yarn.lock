@@ -2041,7 +2041,7 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-4.72.0.tgz#43df23af013ad1135407e5cf33ca6e4c4c7708d5"
   integrity sha512-o+TYF8vBcyySRsb2kqBDv/KMeme8a2nwWoG+lAWzbDmWfb2/MrVWYCVYDYvjXdSoI/Cujqy1i0gIDrkdxa9chA==
 
-"@lowb/preload-webpack-plugin@^3.0.2":
+"@lowb/preload-webpack-plugin@3.0.2":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@lowb/preload-webpack-plugin/-/preload-webpack-plugin-3.0.2.tgz#48bf4102d190f7e7de50c91623c3f05fa4df4dc3"
   integrity sha512-qJY8Ys3C+m/y622ltsba3bc4Rc+PMFwJSWdua0+n5cOMtqn4Ba+tIA2GY1dDJeGeFyLG3MQ6TbH94lCY6QyLig==
@@ -6651,7 +6651,7 @@ compressible@~2.0.16:
   dependencies:
     mime-db ">= 1.43.0 < 2"
 
-compression-webpack-plugin@^3.1.0:
+compression-webpack-plugin@3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/compression-webpack-plugin/-/compression-webpack-plugin-3.1.0.tgz#9f510172a7b5fae5aad3b670652e8bd7997aeeca"
   integrity sha512-iqTHj3rADN4yHwXMBrQa/xrncex/uEQy8QHlaTKxGchT/hC0SdlJlmL/5eRqffmWq2ep0/Romw6Ld39JjTR/ug==
@@ -10444,7 +10444,7 @@ iferr@^0.1.5:
   resolved "https://registry.yarnpkg.com/iferr/-/iferr-0.1.5.tgz#c60eed69e6d8fdb6b3104a1fcbca1c192dc5b501"
   integrity sha1-xg7taebY/bazEEofy8ocGS3FtQE=
 
-ignore-loader@^0.1.2:
+ignore-loader@0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/ignore-loader/-/ignore-loader-0.1.2.tgz#d81f240376d0ba4f0d778972c3ad25874117a463"
   integrity sha1-2B8kA3bQuk8Nd4lyw60lh0EXpGM=
