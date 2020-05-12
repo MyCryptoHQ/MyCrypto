@@ -40,6 +40,11 @@ import contractDeploy from '@assets/images/transactions/contract-deploy.svg';
 import defizap from '@assets/images/transactions/defizap.svg';
 import membershipPurchase from '@assets/images/transactions/membership-purchase.svg';
 
+const RecentTxsTableContainer = styled.div`
+  max-height: 650px;
+  overflow: auto;
+`;
+
 interface Props {
   className?: string;
   accountsList: StoreAccount[];
