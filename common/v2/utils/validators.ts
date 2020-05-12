@@ -1,21 +1,7 @@
-import AddressValidator from 'wallet-address-validator';
 import BN from 'bn.js';
 import { FormikErrors } from 'formik';
 
 import { InlineMessageType } from '@types';
-
-interface ValidatorHash {
-  [asset: string]: (address: string) => boolean;
-}
-
-export const isValidAddress = (address: string, ticker: string) =>
-  (AddressValidator as any).validate(address, ticker);
-
-export const isValidEthereumAddress = (address: string): boolean => isValidAddress(address, 'ETH');
-
-export const isValidBitcoinAddress = (address: string): boolean => isValidAddress(address, 'BTC');
-
-export const isValidMoneroAddress = (address: string): boolean => isValidAddress(address, 'XMR');
 
 export const validNumber = (num: BN) => isFinite(num.toNumber()) && num.gten(0);
 export const numberIsNotNegative = (num: BN) => validNumber(num) && !num.isNeg();
@@ -45,12 +31,6 @@ export const isValidAmount = (decimal: number) => (amount: string) => {
 };
 
 export const isTransactionDataEmpty = (data: string) => ['', '0x', '0x0', '0x00'].includes(data);
-
-export const addressValidatorHash: ValidatorHash = {
-  ETH: isValidEthereumAddress,
-  BTC: isValidBitcoinAddress,
-  XMR: isValidMoneroAddress
-};
 
 // allow warnings and info errors type for form to still be valid
 export const isFormValid = (errors: FormikErrors<object>) =>

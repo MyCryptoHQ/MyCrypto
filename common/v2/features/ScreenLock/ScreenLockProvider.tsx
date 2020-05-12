@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import CryptoJS, { SHA256, AES } from 'crypto-js';
 import pipe from 'ramda/src/pipe';
 import isEmpty from 'lodash/isEmpty';
 
 import { translateRaw } from '@translations';
 import { ROUTE_PATHS } from '@config';
-import { withContext } from '@utils';
+import { withContext, hashPassword, encrypt, decrypt } from '@utils';
 import { DataContext, IDataContext, SettingsContext, ISettingsContext } from '@services/Store';
 import { default as ScreenLockLocking } from './ScreenLockLocking';
 
@@ -55,7 +54,7 @@ class ScreenLockProvider extends Component<
 
       // If password is not hashed yet, hash it
       if (!hashed) {
-        passwordHash = SHA256(password).toString();
+        passwordHash = hashPassword(password);
         setUnlockPassword(passwordHash);
       } else {
         // If password is already set initate encryption in componentDidUpdate
@@ -75,10 +74,7 @@ class ScreenLockProvider extends Component<
       this.props.password &&
       isEmpty(this.props.encryptedDbState)
     ) {
-      const encryptedData = await AES.encrypt(
-        this.props.exportStorage(),
-        this.props.password
-      ).toString();
+      const encryptedData = encrypt(this.props.exportStorage(), this.props.password).toString();
       this.props.setEncryptedCache(encryptedData);
       this.props.resetAppDb();
       this.lockScreen();
@@ -89,12 +85,9 @@ class ScreenLockProvider extends Component<
   public decryptWithPassword = async (password: string): Promise<boolean> => {
     const { destroyEncryptedCache, encryptedDbState, importStorage } = this.props;
     try {
-      const passwordHash = SHA256(password).toString();
+      const passwordHash = hashPassword(password);
       // Decrypt the data and store it to the MyCryptoCache
-      const decryptedData = await AES.decrypt(
-        encryptedDbState.data as string,
-        passwordHash
-      ).toString(CryptoJS.enc.Utf8);
+      const decryptedData = decrypt(encryptedDbState.data as string, passwordHash);
       importStorage(decryptedData);
 
       destroyEncryptedCache();
