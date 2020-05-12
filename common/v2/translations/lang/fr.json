@@ -281,6 +281,7 @@
 		"ENS_MY_DOMAINS_TABLE_EXPIRES_HEADER": "",
 		"ENS_MY_DOMAINS_TABLE_HEADER": "",
 		"ENS_MY_DOMAINS_TABLE_OWNER_ADDRESS_HEADER": "",
+		"ENS_MY_DOMAINS_TABLE_RENEW_HEADER": "",
 		"ERROR_0": "Veuillez entrer un montant valide. ",
 		"ERROR_10": "Veuillez entrer un Montant de gaz valide. (Doit être entier. Essayez 20 GWEI / 20000000000 WEI.) ",
 		"ERROR_11": "Veuillez entrer un Nonce valide. (Doit être entier.) ",

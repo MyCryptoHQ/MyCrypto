@@ -39,7 +39,7 @@ export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
       translateRaw('ENS_MY_DOMAINS_TABLE_OWNER_ADDRESS_HEADER'),
       translateRaw('ENS_MY_DOMAINS_TABLE_DOMAIN_NAME_HEADER'),
       translateRaw('ENS_MY_DOMAINS_TABLE_EXPIRES_HEADER'),
-      ''
+      translateRaw('ENS_MY_DOMAINS_TABLE_RENEW_HEADER')
     ],
     body: domainOwnershipRecords.map((record: DomainNameRecord, index: number) => {
       return [
@@ -57,8 +57,8 @@ export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
         <RowAlignment key={4} align="left">
           {formatDate(record.expiryDate)}
         </RowAlignment>,
-        <RowAlignment key={5} align="right">
-          <LinkOut link={`${ENS_MANAGER_URL}/name/${record.domainName}`} />
+        <RowAlignment key={5} align="left">
+          <LinkOut link={`${ENS_MANAGER_URL}/name/${record.domainName}?utm_source=mycrypto`} />
         </RowAlignment>
       ];
     }),

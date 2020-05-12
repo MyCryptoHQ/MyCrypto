@@ -263,6 +263,7 @@
 		"ENS_MY_DOMAINS_TABLE_EXPIRES_HEADER": "",
 		"ENS_MY_DOMAINS_TABLE_HEADER": "",
 		"ENS_MY_DOMAINS_TABLE_OWNER_ADDRESS_HEADER": "",
+		"ENS_MY_DOMAINS_TABLE_RENEW_HEADER": "",
 		"ERROR_0": "Bitte gebe einen gültigen Betrag ein ",
 		"ERROR_10": "Bitte gebe eine gültige Gasbetrag ein. (Must be integer. Try 20 GWEI / 20000000000 WEI.) ",
 		"ERROR_11": "Bitte gebe eine gültige Nonce ein. (Must be integer.) ",

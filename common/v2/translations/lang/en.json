@@ -279,6 +279,7 @@
 		"ENS_MY_DOMAINS_TABLE_EXPIRES_HEADER": "Expires",
 		"ENS_MY_DOMAINS_TABLE_HEADER": "Your ENS Names",
 		"ENS_MY_DOMAINS_TABLE_OWNER_ADDRESS_HEADER": "Owner Address",
+		"ENS_MY_DOMAINS_TABLE_RENEW_HEADER": "Renew",
 		"ERROR_0": "Please enter a valid amount (number) you wish to send.",
 		"ERROR_10": "This seems like a very high gas price. Are you sure you know what you are doing?",
 		"ERROR_11": "Please enter a valid nonce (Must be a positive integer) ",

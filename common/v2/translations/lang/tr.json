@@ -281,6 +281,7 @@
 		"ENS_MY_DOMAINS_TABLE_EXPIRES_HEADER": "",
 		"ENS_MY_DOMAINS_TABLE_HEADER": "",
 		"ENS_MY_DOMAINS_TABLE_OWNER_ADDRESS_HEADER": "",
+		"ENS_MY_DOMAINS_TABLE_RENEW_HEADER": "",
 		"ERROR_0": "Geçerli tutar yaz. ",
 		"ERROR_10": "Yetersiz gas. (Must be integer. Try 20 GWEI / 20000000000 WEI.) ",
 		"ERROR_11": "Geçersiz veri. (Must be integer.) ",
