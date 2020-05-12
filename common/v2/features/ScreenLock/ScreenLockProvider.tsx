@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { ModeOfOperation, utils } from 'aes-js';
-import SHA256 from 'sha256';
 import pipe from 'ramda/src/pipe';
 import isEmpty from 'lodash/isEmpty';
 
 import { translateRaw } from '@translations';
 import { ROUTE_PATHS } from '@config';
-import { withContext } from '@utils';
+import { withContext, hashPassword, encrypt, decrypt } from '@utils';
 import { DataContext, IDataContext, SettingsContext, ISettingsContext } from '@services/Store';
 import { default as ScreenLockLocking } from './ScreenLockLocking';
 
@@ -48,18 +46,6 @@ class ScreenLockProvider extends Component<
     startLockCountdown: (lockingOnDemand: boolean) => this.startLockCountdown(lockingOnDemand)
   };
 
-  public decrypt = (data: string, key: number[]) => {
-    const aes = new ModeOfOperation.ctr(key);
-    const decryptedBytes = aes.decrypt(utils.hex.toBytes(data));
-    return utils.utf8.fromBytes(decryptedBytes);
-  };
-
-  public encrypt = (data: string, key: Uint8Array) => {
-    const aes = new ModeOfOperation.ctr(key);
-    const encryptedBytes = aes.encrypt(utils.utf8.toBytes(data));
-    return utils.hex.fromBytes(encryptedBytes);
-  };
-
   // causes prop changes that are being observed in componentDidUpdate
   public setPasswordAndInitiateEncryption = async (password: string, hashed: boolean) => {
     const { setUnlockPassword } = this.props;
@@ -68,8 +54,8 @@ class ScreenLockProvider extends Component<
 
       // If password is not hashed yet, hash it
       if (!hashed) {
-        passwordHash = SHA256(password, { asBytes: true });
-        setUnlockPassword(utils.hex.fromBytes(passwordHash));
+        passwordHash = hashPassword(password);
+        setUnlockPassword(passwordHash);
       } else {
         // If password is already set initate encryption in componentDidUpdate
         this.setState({ shouldAutoLock: true });
@@ -88,10 +74,7 @@ class ScreenLockProvider extends Component<
       this.props.password &&
       isEmpty(this.props.encryptedDbState)
     ) {
-      const encryptedData = this.encrypt(
-        this.props.exportStorage(),
-        utils.hex.toBytes(this.props.password)
-      ).toString();
+      const encryptedData = encrypt(this.props.exportStorage(), this.props.password).toString();
       this.props.setEncryptedCache(encryptedData);
       this.props.resetAppDb();
       this.lockScreen();
@@ -102,9 +85,9 @@ class ScreenLockProvider extends Component<
   public decryptWithPassword = async (password: string): Promise<boolean> => {
     const { destroyEncryptedCache, encryptedDbState, importStorage } = this.props;
     try {
-      const passwordHash = SHA256(password, { asBytes: true });
+      const passwordHash = hashPassword(password);
       // Decrypt the data and store it to the MyCryptoCache
-      const decryptedData = this.decrypt(encryptedDbState.data as string, passwordHash);
+      const decryptedData = decrypt(encryptedDbState.data as string, passwordHash);
       importStorage(decryptedData);
 
       destroyEncryptedCache();
