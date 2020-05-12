@@ -101,7 +101,7 @@ module.exports = {
             options: {
               hash: 'sha512',
               digest: 'hex',
-              name: 'common/assets/[name].[contenthash].[ext]'
+              name: 'src/assets/[name].[contenthash].[ext]'
             }
           },
           {
@@ -145,7 +145,7 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: 'common/assets/[name].[contenthash].[ext]'
+              name: 'src/assets/[name].[contenthash].[ext]'
             }
           }
         ],
