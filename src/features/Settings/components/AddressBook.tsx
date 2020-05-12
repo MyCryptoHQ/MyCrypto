@@ -6,13 +6,13 @@ import cloneDeep from 'lodash/cloneDeep';
 
 import {
   DashboardPanel,
-  CollapsibleTable,
   RowDeleteOverlay,
   Network,
   EthAddress,
   EditableText,
   Tooltip,
-  UndoDeleteOverlay
+  UndoDeleteOverlay,
+  FixedSizeCollapsibleTable
 } from '@components';
 import { ExtendedAddressBook, AddressBook as IAddressBook, TUuid } from '@types';
 import { truncate } from '@utils';
@@ -196,7 +196,7 @@ export default function AddressBook({
         </>
       }
     >
-      <CollapsibleTable breakpoint={450} {...addressBookTable} />
+      <FixedSizeCollapsibleTable breakpoint={450} maxHeight={'450px'} {...addressBookTable} />
       <BottomRow>
         <AddAccountButton onClick={toggleFlipped} basic={true}>
           {`+ ${translateRaw('ADDRESS_BOOK_TABLE_ADD_ADDRESS')}`}
