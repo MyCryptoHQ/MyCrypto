@@ -22,7 +22,7 @@ function getIconUrl(uuid: TUuid, assetIconsManifest: CoinGeckoManifest) {
 
 const SImg = styled('img')`
   height: ${(p: { size: string }) => p.size};
-  width: auto;
+  width: ${(p: { size: string }) => p.size};
 `;
 
 interface Props {
