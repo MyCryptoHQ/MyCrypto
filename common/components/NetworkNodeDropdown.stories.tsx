@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { DEFAULT_NETWORK } from '@config';
-import AppProviders from '../../AppProviders';
+import AppProviders from '../AppProviders';
 import NetworkNodeDropdown from './NetworkNodeDropdown';
 
 const onEdit = () => undefined;

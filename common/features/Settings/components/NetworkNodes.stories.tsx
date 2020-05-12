@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 
 import { Network as INetwork, NetworkId } from '@types';
 import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
-import AppProviders from '@../AppProviders';
+import AppProviders from '../../../AppProviders';
 
 import NetworkNodes from './NetworkNodes';
 
