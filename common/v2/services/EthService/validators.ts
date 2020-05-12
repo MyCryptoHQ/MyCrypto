@@ -3,6 +3,7 @@ import { isValidChecksumAddress as isValidChecksumRSKAddress } from 'rskjs-util'
 import WalletAddressValidator from 'wallet-address-validator';
 import { Validator } from 'jsonschema';
 import { ResolutionError } from '@unstoppabledomains/resolution';
+import { bigNumberify } from 'ethers/utils';
 
 import {
   dPathRegex,
@@ -18,7 +19,7 @@ import { JsonRPCResponse, InlineMessageType } from '@types';
 import translate from '@translations';
 
 import { stripHexPrefix, gasStringsToMaxGasBN, convertedToBaseUnit } from './utils';
-import { bigNumberify } from 'ethers/utils';
+
 import { isValidENSName } from './ens/validators';
 
 export const isValidPositiveOrZeroInteger = (value: number | string) =>
@@ -376,3 +377,5 @@ export const isValidGetNetVersion = (response: JsonRPCResponse) =>
 
 export const isValidTxHash = (hash: string) =>
   hash.substring(0, 2) === '0x' && hash.length === 66 && isValidHex(hash);
+
+export const isENSLabelHash = (stringToTest: string) => /\[[a-fA-F0-9]{64}\]/.test(stringToTest);

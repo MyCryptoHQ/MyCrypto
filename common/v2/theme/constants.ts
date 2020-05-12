@@ -85,6 +85,7 @@ export const LINE_HEIGHT = {
 };
 
 export const SPACING = {
+  NONE: '0px',
   XS: '5px',
   SM: '10px',
   BASE: '20px',

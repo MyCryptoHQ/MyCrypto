@@ -135,6 +135,11 @@ const PATHS: IRoutePath[] = [
     name: 'MYC_MEMBERSHIP_BUY',
     title: 'MyCrypto Membership',
     path: '/membership/buy'
+  },
+  {
+    name: 'ENS',
+    title: 'Ethereum Name Service',
+    path: '/ens'
   }
 ];
 

@@ -29,3 +29,4 @@ export { ErrorProvider, ErrorContext } from './ErrorHandling';
 export { DeFiZapFlow } from './DeFiZap';
 export { PurchaseMembershipStepper, MembershipEducation } from './PurchaseMembership';
 export { BuyAssets } from './BuyAssets';
+export { EnsDashboard } from './Ens';

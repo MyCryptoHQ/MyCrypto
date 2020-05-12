@@ -73,6 +73,11 @@ export const links = [
       {
         to: APP_ROUTES_OBJECT.DEFIZAP.path,
         title: 'DeFi Zap'
+      },
+      {
+        to: APP_ROUTES_OBJECT.ENS.path,
+        enabled: APP_ROUTES_OBJECT.ENS.enabled,
+        title: 'ENS'
       }
     ]
   },

@@ -28,7 +28,8 @@ import {
   DeFiZapFlow,
   PurchaseMembershipStepper,
   MembershipEducation,
-  BuyAssets
+  BuyAssets,
+  EnsDashboard
 } from '@features';
 import { requiresDesktopApp } from './helpers';
 
@@ -252,6 +253,15 @@ export const STATIC_APP_ROUTES: IAppRoute[] = [
     requireAccounts: false,
     enabled: IS_ACTIVE_FEATURE.BUY,
     component: BuyAssets
+  },
+  {
+    name: ROUTE_PATHS.ENS.name,
+    title: ROUTE_PATHS.ENS.title,
+    path: ROUTE_PATHS.ENS.path,
+    exact: true,
+    requireAccounts: true,
+    enabled: IS_ACTIVE_FEATURE.ENS,
+    component: EnsDashboard
   }
 ];
 
