@@ -12,7 +12,7 @@ import { ZapSelectedBanner, DeFiZapLogo } from '@features/DeFiZap';
 import { BREAK_POINTS, SPACING, COLORS } from '@theme';
 import { MembershipSelectedBanner } from '@features/PurchaseMembership';
 import { IStepComponentProps, ITxType, ExtendedAddressBook, ISettings } from '@types';
-import { Fiats } from '@config/fiats';
+import { getFiatObj } from '@config/fiats';
 
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
@@ -242,7 +242,7 @@ export const ConfirmTransactionUI = ({
           <AssetIcon uuid={asset.uuid} size={'25px'} />
           <Amount
             assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
-            fiatValue={`${Fiats[settings.fiatCurrency].symbol}${convertToFiat(
+            fiatValue={`${getFiatObj(settings).symbol}${convertToFiat(
               parseFloat(amount),
               assetRate
             ).toFixed(2)}
@@ -258,7 +258,7 @@ export const ConfirmTransactionUI = ({
           <AssetIcon uuid={asset.uuid} size={'25px'} />
           <Amount
             assetValue={`${maxTransactionFeeBase} ${baseAsset.ticker}`}
-            fiatValue={`${Fiats[settings.fiatCurrency].symbol}${convertToFiat(
+            fiatValue={`${getFiatObj(settings).symbol}${convertToFiat(
               parseFloat(maxTransactionFeeBase),
               baseAssetRate
             ).toFixed(2)}`}
@@ -277,7 +277,7 @@ export const ConfirmTransactionUI = ({
               <AssetIcon uuid={asset.uuid} size={'25px'} />
               <Amount
                 assetValue={`${totalEtherEgress} ${asset.ticker}`}
-                fiatValue={`${Fiats[settings.fiatCurrency].symbol}${convertToFiat(
+                fiatValue={`${getFiatObj(settings).symbol}${convertToFiat(
                   parseFloat(totalEtherEgress),
                   assetRate
                 ).toFixed(2)}`}
@@ -290,7 +290,7 @@ export const ConfirmTransactionUI = ({
                 assetValue={`${amount} ${asset.ticker}`}
                 bold={true}
                 baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
-                fiatValue={`${Fiats[settings.fiatCurrency].symbol}${(
+                fiatValue={`${getFiatObj(settings).symbol}${(
                   convertToFiat(parseFloat(amount), assetRate) +
                   convertToFiat(parseFloat(totalEtherEgress), baseAssetRate)
                 ).toFixed(2)}`}

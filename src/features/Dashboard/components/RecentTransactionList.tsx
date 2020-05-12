@@ -25,7 +25,7 @@ import {
   txIsSuccessful
 } from '@services/Store/helpers';
 import { COLORS } from '@theme';
-import { Fiats } from '@config/fiats';
+import { getFiatObj } from '@config/fiats';
 
 import NoTransactions from './NoTransactions';
 import TransactionLabel from './TransactionLabel';
@@ -175,7 +175,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           <Amount
             key={3}
             assetValue={`${parseFloat(amount).toFixed(4)} ${asset.ticker}`}
-            fiatValue={`${Fiats[settings.fiatCurrency].symbol}${convertToFiat(
+            fiatValue={`${getFiatObj(settings).symbol}${convertToFiat(
               parseFloat(amount),
               getAssetRate(asset)
             ).toFixed(2)}

@@ -1,4 +1,4 @@
-import { Fiat, TSymbol } from '@types';
+import { Fiat, TSymbol, ISettings } from '@types';
 
 interface FiatObject {
   [key: string]: Fiat;
@@ -48,3 +48,5 @@ export const TRY = {
 };
 
 export const Fiats: FiatObject = { USD, EUR, GBP, RUB, INR, CNY, TRY };
+
+export const getFiatObj = (settings: ISettings) => Fiats[settings.fiatCurrency];

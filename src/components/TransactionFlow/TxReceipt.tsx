@@ -35,7 +35,7 @@ import {
   getTimestampFromBlockNum,
   getTransactionReceiptFromHash
 } from '@services/EthService';
-import { ROUTE_PATHS, Fiats } from '@config';
+import { ROUTE_PATHS } from '@config';
 import { SwapDisplayData } from '@features/SwapAssets/types';
 import translate, { translateRaw } from '@translations';
 import { convertToFiat, truncate, fromTxReceiptObj } from '@utils';
@@ -45,6 +45,7 @@ import { ProtectTxUtils, ProtectTxContext } from '@features/ProtectTransaction';
 import { ProtectTxAbort } from '@features/ProtectTransaction/components';
 import { MembershipReceiptBanner } from '@features/PurchaseMembership';
 import { DeFiZapLogo } from '@features/DeFiZap';
+import { getFiatObj } from '@config/fiats';
 
 import { ISender } from './types';
 import { constructSenderFromTxConfig } from './helpers';
@@ -352,7 +353,7 @@ export const TxReceiptUI = ({
             <AssetIcon uuid={asset.uuid} size={'24px'} />
             <Amount
               assetValue={`${parseFloat(assetAmount()).toFixed(6)} ${assetTicker()}`}
-              fiatValue={`${Fiats[settings.fiatCurrency].symbol}${convertToFiat(
+              fiatValue={`${getFiatObj(settings).symbol}${convertToFiat(
                 parseFloat(assetAmount()),
                 assetRate()
               ).toFixed(2)}

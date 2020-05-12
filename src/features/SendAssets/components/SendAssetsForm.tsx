@@ -63,8 +63,7 @@ import {
   GAS_PRICE_GWEI_LOWER_BOUND,
   GAS_PRICE_GWEI_UPPER_BOUND,
   DEFAULT_ASSET_DECIMAL,
-  DEFAULT_NETWORK,
-  Fiats
+  DEFAULT_NETWORK
 } from '@config';
 import { RatesContext } from '@services/RatesProvider';
 import TransactionFeeDisplay from '@components/TransactionFlow/displays/TransactionFeeDisplay';
@@ -73,6 +72,7 @@ import { ProtectTxUtils, ProtectTxError } from '@features/ProtectTransaction';
 import { ProtectTxShowError, ProtectTxButton } from '@features/ProtectTransaction/components';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { useEffectOnce } from '@vendor';
+import { getFiatObj } from '@config/fiats';
 
 import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
 import './SendAssetsForm.scss';
@@ -515,9 +515,9 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                       values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider
                     }
                     fiatAsset={{
-                      fiat: Fiats[settings.fiatCurrency].code || 'USD',
+                      fiat: getFiatObj(settings).code,
                       rate: (getAssetRate(baseAsset || undefined) || 0).toString(),
-                      symbol: Fiats[settings.fiatCurrency].symbol || '$'
+                      symbol: getFiatObj(settings).symbol
                     }}
                   />
                 </label>
