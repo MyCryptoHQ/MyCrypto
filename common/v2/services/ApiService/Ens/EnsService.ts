@@ -8,10 +8,10 @@ import flatten from 'ramda/src/flatten';
 import { StoreAccount } from '@types';
 import { translateRaw } from '@translations';
 import { isENSLabelHash } from '@services/EthService/validators';
+import { DomainNameRecord } from '@features/Ens/types';
 
 import { ENS_GRAPH_ENDPOINT } from './constants';
 import { QUERY_GET_ENS_DOMAINS } from './queries';
-import { DomainNameRecord } from '@features/Ens/types';
 
 interface DomainNameObject {
   labelName: string;
