@@ -66,7 +66,7 @@ module.exports = merge.smart(common, {
       logo: path.resolve(config.path.assets, 'images/favicon.png'),
       cacheDirectory: false, // Cache makes builds nondeterministic
       inject: true,
-      prefix: 'common/assets/meta-[hash]',
+      prefix: 'src/assets/meta-[hash]',
       favicons: {
         appDescription: 'Ethereum web interface',
         display: 'standalone',

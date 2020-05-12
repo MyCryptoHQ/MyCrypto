@@ -5,7 +5,7 @@ import { LedgerWallet as LedgerWalletWeb } from './ledger';
 import { TrezorWallet as TrezorWalletWeb } from './trezor';
 
 function enclaveOrWallet<T>(type: HardwareWalletId, lib: T) {
-  // To avoid modifying enclave which is outside of v2 we use a dictionary
+  // To avoid modifying enclave which is outside of src we use a dictionary
   // to go from one enum to the other.
   const walletIdToWalletTypes = {
     [WalletId.LEDGER_NANO_S]: WalletTypes.LEDGER,

@@ -2,7 +2,7 @@
   "defaultSeverity": "error",
   "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
   "linterOptions": {
-    "exclude": ["common/vendor/**/*", "common/v2/types/vendor/*"]
+    "exclude": ["src/vendor/**/*", "src/types/vendor/*"]
   },
   "jsRules": {
     "quotemark": false,

@@ -2,7 +2,7 @@
   "rootDir": "../",
   "verbose": true,
   "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-  "moduleDirectories": ["node_modules", "common"],
+  "moduleDirectories": ["node_modules", "src"],
   "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "worker.ts", "worker.tsx"],
   "moduleNameMapper": {
     "shared/(.*)": "<rootDir>/shared/$1",
@@ -11,7 +11,7 @@
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/jest_config/__mocks__/fileMock.ts",
     "\\.(css|scss)$": "<rootDir>/jest_config/__mocks__/styleMock.ts",
     "\\.worker.(ts|tsx)": "<rootDir>/jest_config/__mocks__/workerMock.js",
-    "^@(.+)$": ["<rootDir>/node_modules/$0", "<rootDir>/common/v2/$1"]
+    "^@(.+)$": ["<rootDir>/node_modules/$0", "<rootDir>/src/$1"]
   },
   "testPathIgnorePatterns": ["node_modules", "dist"],
   "coveragePathIgnorePatterns": ["node_modules", "components", "containers", "vendor", "spec"],

@@ -4,8 +4,8 @@ import mapValues from 'lodash/mapValues';
 import { addHexPrefix } from 'ethereumjs-util';
 import { Transaction as EthTx } from 'ethereumjs-tx';
 import { WalletLib } from 'shared/enclave/types';
-import { padLeftEven } from 'v2/services/EthService/utils/padLeftEven';
-import { stripHexPrefixAndLower } from 'v2/services/EthService/utils/stripHexPrefix';
+import { padLeftEven } from 'services/EthService/utils/padLeftEven';
+import { stripHexPrefixAndLower } from 'services/EthService/utils/stripHexPrefix';
 import { showPinPrompt } from '../views/pin';
 import { showPassphrasePrompt } from '../views/passphrase';
 import config from './msg-config';
@@ -29,20 +29,20 @@ async function getSession() {
   });
   device.on('pin', (_, cb: (err?: Error, pin?: string) => void) => {
     showPinPrompt()
-      .then(pin => {
+      .then((pin) => {
         cb(undefined, pin);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error('PIN entry failed', err);
         cb(err);
       });
   });
   device.on('passphrase', (cb: (err?: Error, passphrase?: string) => void) => {
     showPassphrasePrompt()
-      .then(passphrase => {
+      .then((passphrase) => {
         cb(undefined, passphrase);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error('Passphrase entry failed', err);
         cb(err);
       });
@@ -111,8 +111,8 @@ function parseHDPath(path: string) {
   return path
     .toLowerCase()
     .split('/')
-    .filter(p => p !== 'm')
-    .map(p => {
+    .filter((p) => p !== 'm')
+    .map((p) => {
       let hardened = false;
       let n = parseInt(p, 10);
       if (p[p.length - 1] === "'") {

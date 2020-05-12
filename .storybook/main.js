@@ -3,7 +3,7 @@ const merge = require('webpack-merge');
 const custom = require('../webpack_config/development');
 
 module.exports = {
-  stories: ['../common/**/*.stories.(tsx|mdx)'],
+  stories: ['../src/**/*.stories.(tsx|mdx)'],
 
   addons: [
     'storybook-addon-designs/register',

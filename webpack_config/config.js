@@ -3,9 +3,9 @@ const path = require('path');
 
 const paths = {
   root: path.join(__dirname, '../'),
-  src: path.join(__dirname, '../common'),
+  src: path.join(__dirname, '../src'),
   output: path.join(__dirname, '../dist'),
-  assets: path.join(__dirname, '../common/assets'),
+  assets: path.join(__dirname, '../src/assets'),
   static: path.join(__dirname, '../static'),
   electron: path.join(__dirname, '../electron-app'),
   shared: path.join(__dirname, '../shared'),

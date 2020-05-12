@@ -7,7 +7,7 @@ yarn translations:extract
 
 The script will auto extract all translation keys wrapped inside `translate`, `translateRaw` and `translateMarker` functions.
 It will merge new keys, without modifying old ones and sort them alphabetically.
-It will update all *.json files inside `common/v2/translations/lang/*.json`, meaning all languages will be updated with new keys.
+It will update all *.json files inside `src/translations/lang/*.json`, meaning all languages will be updated with new keys.
 
 ### Add new translation key
 To add new translation key, just wrap the key inside `translate`, `translateRaw` or `translateMarker` functions.
