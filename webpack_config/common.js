@@ -56,28 +56,28 @@ module.exports = {
           priority: 20
         },
         common: {
+          enforce: true,
           name: 'common.bundle',
           test: /[\\/]common[\\/]/,
           minChunks: 2,
           reuseExistingChunk: true,
-          enforce: true,
           priority: 10
         },
         vendorIndividual: {
-          name: generateChunkName,
           enforce: true,
+          name: generateChunkName,
           test: new RegExp(`[\\\\/]node_modules[\\\\/](${config.chunks.individual.join('|')})[\\\\/]`),
           priority: 50
         },
         vendorDev: {
-          name: 'vendor-dev',
           enforce: true,
+          name: 'vendor-dev',
           test: new RegExp(`[\\\\/]node_modules[\\\\/](${config.chunks.devOnly.join('|').replace(/\//, '[\\\\/]')})[\\\\/]`),
           priority: 40
         },
         vendorElectron: {
-          name: 'vendor-electron',
           enforce: true,
+          name: 'vendor-electron',
           test: new RegExp(`[\\\\/]node_modules[\\\\/](${config.chunks.electronOnly.join('|')})[\\\\/]`),
           priority: 30
         }

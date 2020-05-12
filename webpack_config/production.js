@@ -8,7 +8,6 @@ const PreloadWebpackPlugin = require('@lowb/preload-webpack-plugin');
 const SriPlugin = require('webpack-subresource-integrity');
 const common = require('./common');
 const config = require('./config');
-const { generateChunkName } = require('./utils');
 
 const IS_ELECTRON = !!process.env.BUILD_ELECTRON;
 
