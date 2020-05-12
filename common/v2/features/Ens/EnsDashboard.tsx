@@ -2,12 +2,12 @@ import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Heading } from '@mycrypto/ui';
 
-import { StoreContext, EnsService } from 'v2/services';
-import { DashboardPanel } from 'v2/components';
-import { translateRaw } from 'v2/translations';
-import { BREAK_POINTS, SPACING } from 'v2/theme';
-import { useEffectOnce, usePromise } from 'v2/vendor/react-use';
-import { isEthereumAccount } from 'v2/services/Store/Account/helpers';
+import { StoreContext, EnsService } from '@services';
+import { DashboardPanel } from '@components';
+import { translateRaw } from '@translations';
+import { BREAK_POINTS, SPACING } from '@theme';
+import { useEffectOnce, usePromise } from '@vendor/react-use';
+import { isEthereumAccount } from '@services/Store/Account/helpers';
 
 import { DomainNameRecord } from './types';
 import EnsLogo from './EnsLogo';

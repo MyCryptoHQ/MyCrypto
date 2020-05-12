@@ -1,7 +1,7 @@
 import React from 'react';
 import { simpleRender } from 'test-utils';
 
-import { translateRaw } from 'v2/translations';
+import { translateRaw } from '@translations';
 
 import { EnsTable } from '../EnsTable';
 import { DomainNameRecord } from '../types';

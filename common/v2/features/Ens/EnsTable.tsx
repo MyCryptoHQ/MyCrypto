@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Spinner } from 'v2/components';
+import { Spinner } from '@components';
 
 import { MyDomainsData } from './EnsDashboard';
 import NoDomains from './NoEnsDomains';

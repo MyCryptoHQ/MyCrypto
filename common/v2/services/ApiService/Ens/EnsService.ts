@@ -5,13 +5,13 @@ import filter from 'ramda/src/filter';
 import isEmpty from 'ramda/src/isEmpty';
 import flatten from 'ramda/src/flatten';
 
-import { StoreAccount } from 'v2/types';
-import { translateRaw } from 'v2/translations';
-import { isENSLabelHash } from 'v2/services/EthService/validators';
+import { StoreAccount } from '@types';
+import { translateRaw } from '@translations';
+import { isENSLabelHash } from '@services/EthService/validators';
 
 import { ENS_GRAPH_ENDPOINT } from './constants';
 import { QUERY_GET_ENS_DOMAINS } from './queries';
-import { DomainNameRecord } from 'v2/features/Ens/types';
+import { DomainNameRecord } from '@features/Ens/types';
 
 interface DomainNameObject {
   labelName: string;

@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 
-import { CollapsibleTable, Tooltip, LinkOut, Account } from 'v2/components';
-import { translateRaw } from 'v2/translations';
-import { breakpointToNumber, BREAK_POINTS } from 'v2/theme';
-import { IconID } from 'v2/components/Tooltip';
-import { truncate } from 'v2/utils';
-import { ENS_MANAGER_URL, SECONDS_IN_MONTH } from 'v2/config/constants';
+import { CollapsibleTable, Tooltip, LinkOut, Account } from '@components';
+import { translateRaw } from '@translations';
+import { breakpointToNumber, BREAK_POINTS } from '@theme';
+import { IconID } from '@components/Tooltip';
+import { truncate } from '@utils';
+import { ENS_MANAGER_URL, SECONDS_IN_MONTH } from '@config/constants';
 
 import { MyDomainsProps, DomainNameRecord } from './types';
 
