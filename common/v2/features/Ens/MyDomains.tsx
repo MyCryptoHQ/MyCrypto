@@ -58,7 +58,7 @@ export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
           {formatDate(record.expiryDate)}
         </RowAlignment>,
         <RowAlignment key={5} align="right">
-          <LinkOut link={`${ENS_MANAGER_URL}/name/${record.domainName}`} />
+          <LinkOut link={`${ENS_MANAGER_URL}/name/${record.domainName}?utm_source=mycrypto`} />
         </RowAlignment>
       ];
     }),
