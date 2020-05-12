@@ -41,10 +41,6 @@ function getCurrent(notifications: ExtendedNotification[]) {
 
 function isValidNotification(n: ExtendedNotification) {
   const config = notificationsConfigs[n.template];
-  // if (config.showOneTime) {
-  //   state.dismissNotification(n);
-  //   return;
-  // }
 
   // Check conditions for repeating and non-repeating notifications, show notification if needed
   const shouldShowRepeatingNotification =
@@ -64,6 +60,9 @@ export const NotificationsProvider: React.FC = ({ children }) => {
   const Notification = createActions(LSKeys.NOTIFICATIONS);
 
   useEffect(() => {
+    // hide notifications that should be shown only once
+    hideShowOneTimeNotifications();
+    // update notifications that should be displayed again
     notifications.filter(isValidNotification).forEach((n) =>
       Notification.update(n.uuid, {
         ...n,
@@ -80,6 +79,15 @@ export const NotificationsProvider: React.FC = ({ children }) => {
       trackNotificationDisplayed(notificationsConfigs[current.template].analyticsEvent);
     }
   }, [notifications]);
+
+  const hideShowOneTimeNotifications = () => {
+    notifications.forEach((n) => {
+      const config = notificationsConfigs[n.template];
+      if (config.showOneTime && !n.dismissed) {
+        state.dismissNotification(n);
+      }
+    });
+  };
 
   const displayNotification = (templateName: string, templateData?: object) => {
     // Dismiss previous notifications that need to be dismissed
