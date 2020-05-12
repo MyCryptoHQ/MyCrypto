@@ -18,7 +18,7 @@ const EnsLogoImage = styled.img`
 `;
 
 const EnsLogoText = styled.div`
-  margin-left: ${SPACING.MD};
+  margin-left: ${SPACING.SM};
 `;
 
 const EnsLogo = () => {
