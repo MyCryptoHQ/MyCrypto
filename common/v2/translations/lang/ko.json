@@ -281,6 +281,7 @@
 		"ENS_MY_DOMAINS_TABLE_EXPIRES_HEADER": "",
 		"ENS_MY_DOMAINS_TABLE_HEADER": "",
 		"ENS_MY_DOMAINS_TABLE_OWNER_ADDRESS_HEADER": "",
+		"ENS_MY_DOMAINS_TABLE_RENEW_HEADER": "",
 		"ERROR_0": "올바른 금액을 입력해주세요. ",
 		"ERROR_10": "잘못된 가스 가격입니다. (정수. 20 GWEI 혹은 20000000000 WEI를 사용하세요.) ",
 		"ERROR_11": "잘못된 nonce 입니다. (정수.) ",

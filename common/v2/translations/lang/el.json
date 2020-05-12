@@ -263,6 +263,7 @@
 		"ENS_MY_DOMAINS_TABLE_EXPIRES_HEADER": "",
 		"ENS_MY_DOMAINS_TABLE_HEADER": "",
 		"ENS_MY_DOMAINS_TABLE_OWNER_ADDRESS_HEADER": "",
+		"ENS_MY_DOMAINS_TABLE_RENEW_HEADER": "",
 		"ERROR_0": "Παρακαλούμε εισαγάγετε έγκυρο ποσό. ",
 		"ERROR_10": "Λάθος ποσό αερίου. (Πρέπει να είναι ακέραιος. Δοκιμάστε 20 GWEI / 20000000000 WEI.) ",
 		"ERROR_11": "Λάθος nonce. (Πρέπει να είναι ακέραιος). ",

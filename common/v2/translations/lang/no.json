@@ -281,6 +281,7 @@
 		"ENS_MY_DOMAINS_TABLE_EXPIRES_HEADER": "",
 		"ENS_MY_DOMAINS_TABLE_HEADER": "",
 		"ENS_MY_DOMAINS_TABLE_OWNER_ADDRESS_HEADER": "",
+		"ENS_MY_DOMAINS_TABLE_RENEW_HEADER": "",
 		"ERROR_0": "Vennligst oppgi et gyldig beløp. ",
 		"ERROR_10": "Ugyldig gas-mengde. (Må være heltall. Prøv 20 GWEI / 20000000000 WEI.) ",
 		"ERROR_11": "Ugyldig nonce. (Må være heltall.) ",
