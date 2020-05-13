@@ -66,3 +66,4 @@ export { trimEllipsis } from './trimEllipsis';
 export * from './encryption';
 export { default as useAnalytics } from './useAnalytics';
 export { openLink } from './openLink';
+export { withHook } from './withHook';
