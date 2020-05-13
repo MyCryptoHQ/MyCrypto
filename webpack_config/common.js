@@ -48,17 +48,17 @@ module.exports = {
           test(mod) {
             const excluded = `${config.chunks.individual.join('|')}|${config.chunks.electronOnly.join('|')}|${config.chunks.devOnly.join('|').replace(/\//, '[\\\\/]')}`;
             const excludeNodeModules = new RegExp(`[\\\\/]node_modules[\\\\/]((${excluded})\.*)`);
-            const includeCommon = new RegExp(/[\\/]common[\\/]/);
+            const includeSrc = new RegExp(/[\\/]src[\\/]/);
             const includeNodeModules = new RegExp(/node_modules/);
             return mod.context
-              && includeNodeModules.test(mod.context) && !excludeNodeModules.test(mod.context) && !includeCommon.test(mod.context);
+              && includeNodeModules.test(mod.context) && !excludeNodeModules.test(mod.context) && !includeSrc.test(mod.context);
           },
           priority: 20
         },
         common: {
           enforce: true,
-          name: 'common.bundle',
-          test: /[\\/]common[\\/]/,
+          name: 'src.bundle',
+          test: /[\\/]src[\\/]/,
           minChunks: 2,
           reuseExistingChunk: true,
           priority: 10
