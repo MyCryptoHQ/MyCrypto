@@ -5,14 +5,14 @@ import styled from 'styled-components';
 import { Accordion } from '@mycrypto/ui';
 
 import { Button, AppLogo, Typography, FullSizeContentPanel } from '@components';
-import translate from '@translations';
+import translate, { translateRaw } from '@translations';
 import { ROUTE_PATHS } from '@config';
 import { COLORS, BREAK_POINTS, SPACING } from '@theme';
 
 import { FullSizePanelSection, SpacedPanelSection } from '../../../components/FullSizeContentPanel';
 
 import { ZAPS_CONFIG, IZapId, defaultZapId, riskAndReward, accordionContent } from '../config';
-import { RiskAndRewardCard, DetailsList } from '.';
+import { RiskAndRewardCard } from '.';
 
 const Illustration = styled.img`
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
@@ -29,9 +29,10 @@ const MobileIllustration = styled.img`
 
 const DetailsSection = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: ${SPACING.SM};
 `;
 
 const ContentPanelHeading = styled(FullSizePanelSection)`
@@ -146,8 +147,8 @@ const ZapEducation = withRouter(({ history, location }) => {
       </ContentPanelHeading>
       <SpacedPanelSection color={COLORS.WHITE}>
         <DetailsSection>
-          <Illustration src={zapSelected.illustration} width={'60%'} />
-          <DetailsList zapSelected={zapSelected} />
+          <Illustration src={zapSelected.illustration} width={'100%'} />
+          <Typography>{translateRaw('ZAP_DASHBOARD_PANEL_FOOTER')}</Typography>
         </DetailsSection>
         <Button onClick={handleSubmit}>{translate('ZAP_START_EARNING')}</Button>
         <MobileIllustration src={zapSelected.mobileIllustration} />

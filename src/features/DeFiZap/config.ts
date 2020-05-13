@@ -39,7 +39,6 @@ export interface IZapConfig {
   minimumGasLimit: number;
   risk: number;
   platformsUsed: string[];
-  bulletPoints: string[];
   illustration: any;
   mobileIllustration: any;
   zapType: IZapType;
@@ -90,10 +89,6 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     link: 'https://defizap.com/zaps/unipoolseth',
     minimumGasLimit: 1500000,
     platformsUsed: ['uniswap'],
-    bulletPoints: [
-      translateRaw('ZAP_SETH_UNIPOOL_BULLETPOINT_ONE'),
-      translateRaw('ZAP_SETH_UNIPOOL_BULLETPOINT_TWO')
-    ],
     illustration: unisethIllustration,
     mobileIllustration: unisethMobileIllustration,
     zapType: IZapType.UNIPOOL,
@@ -115,10 +110,6 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     link: 'https://defizap.com/zaps/unipooldai',
     minimumGasLimit: 1500000,
     platformsUsed: ['uniswap'],
-    bulletPoints: [
-      translateRaw('ZAP_DAI_UNIPOOL_BULLETPOINT_ONE'),
-      translateRaw('ZAP_DAI_UNIPOOL_BULLETPOINT_TWO')
-    ],
     illustration: unidaiIllustration,
     mobileIllustration: unidaiMobileIllustration,
     zapType: IZapType.UNIPOOL,
@@ -140,10 +131,6 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     link: 'https://app.compound.finance',
     minimumGasLimit: 1800000,
     platformsUsed: ['compound', 'kyber'],
-    bulletPoints: [
-      translateRaw('ZAP_COMPOUND_DAI_POOL_BULLETPOINT_ONE'),
-      translateRaw('ZAP_COMPOUND_DAI_POOL_BULLETPOINT_TWO')
-    ],
     illustration: cdaiIllustration,
     mobileIllustration: cdaiMobileIllustration,
     zapType: IZapType.COMPOUND,

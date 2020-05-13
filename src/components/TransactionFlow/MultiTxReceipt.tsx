@@ -23,7 +23,7 @@ import { MembershipReceiptBanner } from '@features/PurchaseMembership';
 
 import { SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
-import defizaplogo from '@assets/images/defizap/defizaplogo.svg';
+import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 import './TxReceipt.scss';
 import Typography from '../Typography';
 
@@ -99,7 +99,7 @@ export default function MultiTxReceipt({
           </div>
           <div className="TransactionReceipt-row">
             <div className="TransactionReceipt-row-column">
-              <SImg src={defizaplogo} size="24px" />
+              <SImg src={zapperLogo} size="24px" />
               {translateRaw('ZAP_NAME')}
             </div>
             <div className="TransactionReceipt-row-column rightAligned">{zapSelected.name}</div>
