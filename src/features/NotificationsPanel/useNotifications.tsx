@@ -5,7 +5,7 @@ import { DataContext } from '@services/Store';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
 import { ExtendedNotification, LSKeys } from '@types';
 import { generateUUID, notUndefined } from '@utils';
-import { notificationsConfigs } from './constants';
+import { NotificationTemplates, notificationsConfigs } from './constants';
 
 function trackNotificationDisplayed(event: string) {
   AnalyticsService.instance.track(
@@ -127,7 +127,8 @@ const useNotifications = () => {
     notifications,
     currentNotification,
     displayNotification,
-    dismissCurrentNotification
+    dismissCurrentNotification,
+    templates: NotificationTemplates
   };
 };
 

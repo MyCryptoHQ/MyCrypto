@@ -6,22 +6,24 @@ import HDkey from 'hdkey';
 import uniq from 'lodash/uniq';
 import pipe from 'ramda/src/pipe';
 
-import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './constants';
-import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
-import { NotificationTemplates } from '@features/NotificationsPanel';
+import { useNotifications } from '@features/NotificationsPanel';
 import { TAddress, IRawAccount, Asset, DPathFormat, ISettings, WalletId, NetworkId } from '@types';
-import { withContext, generateAccountUUID } from '@utils';
+import { withContext, withHook, generateAccountUUID } from '@utils';
 import {
   NetworkContext,
   AssetContext,
   IAssetContext,
   INetworkContext,
-  getNewDefaultAssetTemplateByNetwork
+  getNewDefaultAssetTemplateByNetwork,
+  AccountContext,
+  SettingsContext
 } from '@services/Store';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
+import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './constants';
 
 interface Props extends RouteComponentProps<{}> {
   settings: ISettings;
+  templates: Record<string, string>;
   createAccountWithID(accountData: IRawAccount, uuid: string): void;
   updateSettingsAccounts(accounts: string[]): void;
   createAssetWithID(value: Asset, id: string): void;
@@ -139,7 +141,8 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
       updateSettingsAccounts,
       createAssetWithID,
       displayNotification,
-      getNetworkById
+      getNetworkById,
+      templates
     } = this.props;
     const { network, accountType, address, dPath } = this.state;
 
@@ -162,7 +165,7 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
     updateSettingsAccounts([...settings.dashboardAccounts, accountUUID]);
     createAssetWithID(newAsset, newAsset.uuid);
 
-    displayNotification(NotificationTemplates.walletCreated, {
+    displayNotification(templates.walletCreated, {
       address: account.address
     });
     history.replace(ROUTE_PATHS.DASHBOARD.path);
@@ -170,7 +173,9 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
 }
 
 export default pipe(
-  withAccountAndNotificationsContext,
+  withHook(useNotifications),
+  withContext(AccountContext),
+  withContext(SettingsContext),
   withContext(AssetContext),
   withContext(NetworkContext)
 )(CreateMnemonic);

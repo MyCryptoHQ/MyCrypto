@@ -1,13 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { SPACING } from '@theme';
 import { IAccount } from '@types';
-import { NotificationsContext } from './NotificationsProvider';
-import { notificationsConfigs, NotificationTemplates } from './constants';
+import { notificationsConfigs } from './constants';
+import useNotifications from './useNotifications';
 
-// Legacy
 import closeIcon from '@assets/images/icn-close.svg';
 
 export const MainPanel = styled(Panel)`
@@ -35,8 +34,9 @@ const NotificationsPanel = ({ accounts }: Props) => {
     notifications,
     displayNotification,
     currentNotification,
-    dismissCurrentNotification
-  } = useContext(NotificationsContext);
+    dismissCurrentNotification,
+    templates
+  } = useNotifications();
 
   const handleCloseClick = () => {
     if (!currentNotification) {
@@ -44,13 +44,13 @@ const NotificationsPanel = ({ accounts }: Props) => {
     }
 
     switch (currentNotification.template) {
-      case NotificationTemplates.onboardingResponsible: {
+      case templates.onboardingResponsible: {
         /*  Trigger "please understand" notification after "onboarding responsible" notification.
             "previousNotificationClosedDate" is later used to show the "please understand" notification
              with a delay after the current one has been dismissed.
         */
         dismissCurrentNotification();
-        displayNotification(NotificationTemplates.onboardingPleaseUnderstand, {
+        displayNotification(templates.onboardingPleaseUnderstand, {
           previousNotificationClosedDate: new Date()
         });
         break;
@@ -63,10 +63,10 @@ const NotificationsPanel = ({ accounts }: Props) => {
   };
 
   if (
-    !notifications.find((x) => x.template === NotificationTemplates.onboardingResponsible) &&
+    !notifications.find((x) => x.template === templates.onboardingResponsible) &&
     accounts.length > 0
   ) {
-    displayNotification(NotificationTemplates.onboardingResponsible, {
+    displayNotification(templates.onboardingResponsible, {
       firstDashboardVisitDate: new Date()
     });
   }

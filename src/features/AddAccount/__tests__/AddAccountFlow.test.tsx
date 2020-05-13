@@ -2,7 +2,13 @@ import React from 'react';
 import { MemoryRouter, Route, Switch } from 'react-router';
 import { simpleRender, fireEvent } from 'test-utils';
 
-import { AccountContext, NetworkContext, INetworkContext } from '@services/Store';
+import {
+  AccountContext,
+  NetworkContext,
+  INetworkContext,
+  DataContext,
+  IDataContext
+} from '@services/Store';
 import { translateRaw } from '@translations';
 import { ROUTE_PATHS, WALLETS_CONFIG } from '@config';
 import { NetworkId, WalletId } from '@types';
@@ -26,36 +32,45 @@ describe('AddAccountFlow', () => {
 
   const component = (path?: string) => (
     <MemoryRouter initialEntries={path ? [path] : undefined}>
-      <NetworkContext.Provider
+      <DataContext.Provider
         value={
           ({
-            networks: [],
-            getNetworkById: jest.fn((id: NetworkId) => ({
-              ...NETWORKS_CONFIG[id],
-              nodes: NODES_CONFIG[id]
-            }))
-          } as unknown) as INetworkContext
+            notifications: [],
+            createActions: jest.fn()
+          } as any) as IDataContext
         }
       >
-        <AccountContext.Provider
+        <NetworkContext.Provider
           value={
             ({
-              getAccountByAddressAndNetworkName: jest.fn()
-            } as unknown) as IAccountContext
+              networks: [],
+              getNetworkById: jest.fn((id: NetworkId) => ({
+                ...NETWORKS_CONFIG[id],
+                nodes: NODES_CONFIG[id]
+              }))
+            } as unknown) as INetworkContext
           }
         >
-          <Switch>
-            <Route
-              path="*"
-              render={(props) => {
-                history = props.history;
-                location = props.location;
-                return <AddAccountFlow {...props} />;
-              }}
-            />
-          </Switch>
-        </AccountContext.Provider>
-      </NetworkContext.Provider>
+          <AccountContext.Provider
+            value={
+              ({
+                getAccountByAddressAndNetworkName: jest.fn()
+              } as unknown) as IAccountContext
+            }
+          >
+            <Switch>
+              <Route
+                path="*"
+                render={(props) => {
+                  history = props.history;
+                  location = props.location;
+                  return <AddAccountFlow {...props} />;
+                }}
+              />
+            </Switch>
+          </AccountContext.Provider>
+        </NetworkContext.Provider>
+      </DataContext.Provider>
     </MemoryRouter>
   );
 

@@ -4,23 +4,24 @@ import { IV3Wallet } from 'ethereumjs-wallet';
 import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 import pipe from 'ramda/src/pipe';
 
-import { withContext, makeBlob, generateAccountUUID } from '@utils';
+import { withHook, withContext, makeBlob, generateAccountUUID } from '@utils';
 import { generateKeystore, fromV3 } from '@workers';
 import {
   INetworkContext,
   NetworkContext,
   AssetContext,
   IAssetContext,
-  getNewDefaultAssetTemplateByNetwork
+  getNewDefaultAssetTemplateByNetwork,
+  SettingsContext,
+  AccountContext
 } from '@services/Store';
 import { stripHexPrefix } from '@services/EthService';
 import { WalletFactory } from '@services/WalletService';
-import { NotificationTemplates } from '@features/NotificationsPanel';
+import { useNotifications } from '@features/NotificationsPanel';
 import { TAddress, IRawAccount, Asset, ISettings, NetworkId, WalletId } from '@types';
 import { ROUTE_PATHS, N_FACTOR, DEFAULT_NETWORK } from '@config';
 
 import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
-import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
 
 interface State {
   password: string;
@@ -34,6 +35,7 @@ interface State {
 
 interface Props extends RouteComponentProps<{}> {
   settings: ISettings;
+  templates: Record<string, string>;
   createAccountWithID(accountData: IRawAccount, uuid: string): void;
   updateSettingsAccounts(accounts: string[]): void;
   createAssetWithID(value: Asset, id: string): void;
@@ -107,7 +109,8 @@ class CreateKeystore extends Component<Props & INetworkContext & IAssetContext, 
       createAssetWithID,
       displayNotification,
       getNetworkById,
-      assets
+      assets,
+      templates
     } = this.props;
     const { keystore, network, accountType } = this.state;
 
@@ -131,7 +134,7 @@ class CreateKeystore extends Component<Props & INetworkContext & IAssetContext, 
     updateSettingsAccounts([...settings.dashboardAccounts, accountUUID]);
     createAssetWithID(newAsset, newAsset.uuid);
 
-    displayNotification(NotificationTemplates.walletCreated, {
+    displayNotification(templates.walletCreated, {
       address: account.address
     });
     history.replace(ROUTE_PATHS.DASHBOARD.path);
@@ -180,7 +183,9 @@ class CreateKeystore extends Component<Props & INetworkContext & IAssetContext, 
 }
 
 export default pipe(
-  withAccountAndNotificationsContext,
+  withHook(useNotifications),
+  withContext(AccountContext),
+  withContext(SettingsContext),
   withContext(NetworkContext),
   withContext(AssetContext)
 )(CreateKeystore);

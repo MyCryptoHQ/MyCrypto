@@ -1,3 +1,3 @@
 export { default as NotificationsPanel } from './NotificationsPanel';
-export { NotificationTemplates, notificationsConfigs } from './constants';
-export { NotificationsContext, NotificationsProvider } from './NotificationsProvider';
+export { notificationsConfigs } from './constants';
+export { default as useNotifications } from './useNotifications';

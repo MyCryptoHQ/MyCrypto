@@ -9,7 +9,7 @@ import { ExtendedContentPanel, WalletList } from '@components';
 import { StoreContext } from '@services/Store';
 import { ANALYTICS_CATEGORIES } from '@services/ApiService';
 
-import { NotificationsContext, NotificationTemplates } from '../NotificationsPanel';
+import { useNotifications } from '@features/NotificationsPanel';
 import { FormDataActionType as ActionType } from './types';
 import { getStories } from './stories';
 import { formReducer, initialState } from './AddAccountForm.reducer';
@@ -43,7 +43,7 @@ const AddAccountFlow = withRouter(({ history, match }) => {
   const [step, setStep] = useState(0); // The current Step inside the Wallet Story.
   const [formData, updateFormState] = useReducer(formReducer, initialState); // The data that we want to save at the end.
   const { scanAccountTokens, scanForMemberships, addAccount, accounts } = useContext(StoreContext);
-  const { displayNotification } = useContext(NotificationsContext);
+  const { displayNotification, templates } = useNotifications();
   const trackNewAccountAdded = useAnalytics({
     category: ANALYTICS_CATEGORIES.ADD_ACCOUNT,
     actionName: 'New Account Added'
@@ -57,7 +57,7 @@ const AddAccountFlow = withRouter(({ history, match }) => {
   useEffect(() => {
     const { network, address, accountType, derivationPath } = formData;
     if (address && !addAccount(network, address, accountType, derivationPath)) {
-      displayNotification(NotificationTemplates.walletNotAdded, { address });
+      displayNotification(templates.walletNotAdded, { address });
       history.push(ROUTE_PATHS.DASHBOARD.path);
     }
   }, [formData.address]);
@@ -76,7 +76,7 @@ const AddAccountFlow = withRouter(({ history, match }) => {
           newAccountAddedNumOfAccounts: accounts.length
         }
       });
-      displayNotification(NotificationTemplates.walletAdded, { address });
+      displayNotification(templates.walletAdded, { address });
       scanAccountTokens(newAccount);
       scanForMemberships([newAccount]);
       history.push(ROUTE_PATHS.DASHBOARD.path);
