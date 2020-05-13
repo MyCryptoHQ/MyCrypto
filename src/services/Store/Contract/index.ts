@@ -1,1 +1,1 @@
-export { ContractContext, ContractProvider } from './ContractProvider';
+export { default as useContracts } from './useContracts';

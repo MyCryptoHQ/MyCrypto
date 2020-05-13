@@ -3,10 +3,9 @@ import debounce from 'lodash/debounce';
 
 import { TUseStateReducerFactory, fromTxReceiptObj, generateContractUUID } from '@utils';
 import { CREATION_ADDRESS } from '@config';
-import { NetworkId, Contract, StoreAccount, ITxType, ITxStatus } from '@types';
+import { NetworkId, Contract, StoreAccount, ITxType, ITxStatus, TUuid } from '@types';
 import {
   getNetworkById,
-  ContractContext,
   NetworkContext,
   isValidETHAddress,
   ProviderHandler,
@@ -15,7 +14,8 @@ import {
   EtherscanService,
   getIsValidENSAddressFunction,
   AssetContext,
-  AccountContext
+  AccountContext,
+  useContracts
 } from '@services';
 import { AbiFunction } from '@services/EthService/contracts/ABIFunction';
 import { isWeb3Wallet } from '@utils/web3';
@@ -51,7 +51,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   state,
   setState
 }) => {
-  const { getContractsByIds, createContractWithId, deleteContracts } = useContext(ContractContext);
+  const { getContractsByIds, createContractWithId, deleteContracts } = useContracts();
   const { networks, updateNetwork } = useContext(NetworkContext);
   const { assets } = useContext(AssetContext);
   const { addNewTransactionToAccount } = useContext(AccountContext);
@@ -226,7 +226,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     handleContractSelected(newContract);
   };
 
-  const handleDeleteContract = (contractUuid: string) => {
+  const handleDeleteContract = (contractUuid: TUuid) => {
     deleteContracts(contractUuid);
     const network = state.network;
     network.contracts = network.contracts.filter((item) => item !== contractUuid);

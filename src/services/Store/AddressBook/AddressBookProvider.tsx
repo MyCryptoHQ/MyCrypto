@@ -8,11 +8,11 @@ import {
   StoreAccount,
   LSKeys,
   TUuid,
+  TAddress,
   NetworkId
 } from '@types';
 import { generateUUID } from '@utils';
-import { DataContext } from '../DataManager';
-import { ContractContext } from '../Contract';
+import { DataContext, useContracts } from '@services/Store';
 
 interface IAddressBookContext {
   addressBook: ExtendedAddressBook[];
@@ -34,14 +34,14 @@ export const AddressBookContext = createContext({} as IAddressBookContext);
 
 export const AddressBookProvider: React.FC = ({ children }) => {
   const { createActions, addressBook } = useContext(DataContext);
-  const { getContractByAddress } = useContext(ContractContext);
+  const { getContractByAddress } = useContracts();
   const [addressBookRestore, setAddressBookRestore] = useState<{
     [name: string]: ExtendedAddressBook | undefined;
   }>({});
 
   const model = createActions(LSKeys.ADDRESS_BOOK);
 
-  const getContactFromContracts = (address: string): ExtendedAddressBook | undefined => {
+  const getContactFromContracts = (address: TAddress): ExtendedAddressBook | undefined => {
     const contract = getContractByAddress(address);
     const contact: ExtendedAddressBook | undefined = contract && {
       address,
@@ -74,7 +74,7 @@ export const AddressBookProvider: React.FC = ({ children }) => {
       return (
         addressBook.find(
           (contact: ExtendedAddressBook) => contact.address.toLowerCase() === address.toLowerCase()
-        ) || getContactFromContracts(address)
+        ) || getContactFromContracts(address as TAddress)
       );
     },
     getContactByAddressAndNetworkId: (address, networkId) => {
@@ -84,7 +84,7 @@ export const AddressBookProvider: React.FC = ({ children }) => {
           .find(
             (contact: ExtendedAddressBook) =>
               contact.address.toLowerCase() === address.toLowerCase()
-          ) || getContactFromContracts(address)
+          ) || getContactFromContracts(address as TAddress)
       );
     },
     getAccountLabel: ({ address, networkId }) => {
