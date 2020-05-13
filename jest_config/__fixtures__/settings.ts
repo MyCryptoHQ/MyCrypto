@@ -1,4 +1,4 @@
-import { TUuid, ISettings } from 'v2/types';
+import { TUuid, ISettings } from '@types';
 
 export const fSettings: ISettings = {
   fiatCurrency: 'USD',
