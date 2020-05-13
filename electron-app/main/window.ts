@@ -25,7 +25,7 @@ export default function getWindow() {
     titleBarStyle: 'hidden',
     webPreferences: {
       devTools: true,
-      nodeIntegration: true,
+      nodeIntegration: false,
       contextIsolation: false,
       sandbox: true,
       preload: path.join(__dirname, 'preload.js')
