@@ -54,6 +54,7 @@ export enum IMembershipId {
 
 export const MEMBERSHIP_PURCHASE_GAS_LIMIT = 1000000;
 
+// Also update eth contracts when updating membership contract addresses
 export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
   onemonth: {
     title: translateRaw('MEMBERSHIP_MONTH', { $duration: '1' }),
