@@ -941,7 +941,7 @@
 		"ZAP_COMPOUND_DAI_POOL_NAME": "Compound DAI Pool",
 		"ZAP_COMPOUND_DAI_POOL_TITLE": "Interest-earning with DAI",
 		"ZAP_COMPOUND_TOOLTIP": "This zap stores funds in the Compound money market protocol",
-		"ZAP_CONFIRM_DISCLAIMER": "Remember, there are no guarantees that you will make money if you do this. Please review the risks you are taking on [here](https://support.mycrypto.com/). You may also review the DeFi Zap protocols [here](https://defizap.com/zaps).",
+		"ZAP_CONFIRM_DISCLAIMER": "Remember, there are no guarantees that you will make money if you do this. Please review the risks you are taking on [here](https://support.mycrypto.com/how-to/defi/risks-involved-with-zapper). You may also review the DeFi Zap protocols [here](https://defizap.com/zaps).",
 		"ZAP_CONFIRM_TX_SENDING": "You'll Open Position With",
 		"ZAP_DAI_UNIPOOL_BULLETPOINT_ONE": "Reduce your exposure to changes in the price of ETH.",
 		"ZAP_DAI_UNIPOOL_BULLETPOINT_TWO": "Earn interest by lending to the DAI pool on the Uniswap exchange protocol.",
