@@ -294,7 +294,7 @@ const ZapCard = ({ config }: Props) => {
         </ZapContentAmountRow>
       </ZapCardContent>
       <ZapCardContentBottom>
-        {false ? (
+        {!humanReadableZapBalance ? (
           <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
             <ZapCardButton inverted={true}>{translateRaw('ZAP_CARD_CTA')}</ZapCardButton>
           </RouterLink>
