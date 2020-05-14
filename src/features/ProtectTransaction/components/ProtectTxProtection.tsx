@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import BigNumber from 'bignumber.js';
 
 import { isWeb3Wallet } from '@utils';
-import { RatesContext } from '@services';
+import { RatesContext, StoreContext } from '@services';
 import { IAccount, IFormikFields } from '@types';
 import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 import { Amount, Button } from '@components';
