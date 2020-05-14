@@ -93,7 +93,6 @@ export default function WalletCreatedNotification({ address }: NotificationProps
       description={translate('NOTIFICATIONS_WALLET_NOT_ADDED_DESCRIPTION', {
         $address: address
       })}
-      additionalDescription={translate('NOTIFICATIONS_WALLET_DESCRIPTION_ADD')}
       resources={getResources()}
     />
   );

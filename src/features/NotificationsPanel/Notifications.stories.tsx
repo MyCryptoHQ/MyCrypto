@@ -11,8 +11,7 @@ import {
   GetHardwareWalletNotification,
   WalletNotAddedNotification,
   OnboardingPleaseUnderstandNotification,
-  OnboardingResponsibleNotification,
-  UnlockVIPNotification
+  OnboardingResponsibleNotification
 } from './components';
 import { MainPanel, CloseButton } from './NotificationsPanel';
 
@@ -77,11 +76,5 @@ export const onboardingPleaseUnderstandNotification = () => (
 export const onboardingResponsibleNotification = () => (
   <NotificationPanel>
     <OnboardingResponsibleNotification />
-  </NotificationPanel>
-);
-
-export const unlockVIPNotification = () => (
-  <NotificationPanel>
-    <UnlockVIPNotification />
   </NotificationPanel>
 );

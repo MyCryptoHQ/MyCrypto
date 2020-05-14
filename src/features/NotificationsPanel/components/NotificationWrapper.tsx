@@ -79,6 +79,7 @@ const Description = styled.p`
   word-break: break-word;
   font-size: 16px;
   white-space: pre-line;
+  line-height: 24px;
 
   @media (max-width: ${SCREEN_XS}) {
     font-size: 14px;

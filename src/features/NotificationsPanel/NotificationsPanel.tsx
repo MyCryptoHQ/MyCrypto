@@ -12,7 +12,7 @@ import closeIcon from '@assets/images/icn-close.svg';
 
 export const MainPanel = styled(Panel)`
   position: relative;
-  padding: ${SPACING.BASE};
+  padding: ${SPACING.MD};
   margin-bottom: ${SPACING.BASE};
 `;
 
