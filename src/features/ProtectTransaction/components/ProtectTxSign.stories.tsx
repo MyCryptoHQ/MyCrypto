@@ -6,8 +6,8 @@ import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
 import { Network, NetworkId, WalletId } from '@types';
 import { noOp } from '@utils';
 
-import { ProtectTxProvider } from '../index';
 import { ProtectTxSign } from './ProtectTxSign';
+import ProtectTxProvider from '../ProtectTxProvider';
 
 const ropstenId: NetworkId = 'Ropsten';
 const network: Network = {

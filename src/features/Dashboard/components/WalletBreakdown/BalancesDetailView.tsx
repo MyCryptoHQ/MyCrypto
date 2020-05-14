@@ -14,7 +14,8 @@ import {
   Tooltip,
   FixedSizeCollapsibleTable
 } from '@components';
-import { CollapseIcon, ExpandIcon } from '@components/icons';
+import CollapseIcon from '@components/icons/CollapseIcon';
+import ExpandIcon from '@components/icons/ExpandIcon';
 import { Balance, BalanceAccount, WalletBreakdownProps } from './types';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Fiat, TUuid } from '@types';

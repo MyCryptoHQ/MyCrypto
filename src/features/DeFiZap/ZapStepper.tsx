@@ -6,9 +6,9 @@ import { default as GeneralStepper, IStepperPath } from '@components/GeneralStep
 import { ROUTE_PATHS } from '@config';
 import ZapInteractionFactory from './stateFactory';
 import { ITxReceipt, ISignedTx } from '@types';
-import { SignTransaction } from '../SendAssets/components';
 import { ISimpleTxFormFull } from './types';
 import { translateRaw } from '@translations';
+import SignTransaction from '@features/SendAssets/components/SignTransaction';
 
 const initialZapFlowState = (initialZapSelected: IZapConfig) => ({
   zapSelected: initialZapSelected,

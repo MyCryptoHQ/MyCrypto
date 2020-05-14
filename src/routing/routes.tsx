@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 
 import { IAppRoute } from '@types';
 import { ROUTE_PATHS, IS_ACTIVE_FEATURE } from '@config';
-import { Home, Dashboard, NoAccounts, EnsDashboard } from '@features';
+import { Home, Dashboard, NoAccounts } from '@features';
 import { requiresDesktopApp } from './helpers';
 
 const CreateWallet = lazy(() =>
@@ -85,6 +85,9 @@ const MembershipEducation = lazy(() =>
 );
 const BuyAssets = lazy(() =>
   import(/* webpackChunkName: "BuyAssetsForm" */ '@features/BuyAssets/BuyAssetsForm')
+);
+const EnsDashboard = lazy(() =>
+  import(/* webpackChunkName: "EnsDashboard" */ '@features/Ens/EnsDashboard')
 );
 
 export interface IAppRoutes {

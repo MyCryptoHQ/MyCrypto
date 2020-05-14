@@ -4,7 +4,8 @@ import isEmpty from 'lodash/isEmpty';
 import values from 'lodash/values';
 
 import { SPACING } from '@theme';
-import { ProtectIcon, CloseIcon } from '@components/icons';
+import CloseIcon from '@components/icons/CloseIcon';
+import ProtectIcon from '@components/icons/ProtectIcon';
 import { ITxConfig, ITxHash, ITxSigned, Network, StoreAccount } from '@types';
 import { WALLET_STEPS } from '@components/SignTransactionWallets';
 
