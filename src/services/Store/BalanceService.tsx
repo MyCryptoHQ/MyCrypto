@@ -146,7 +146,9 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
     assets:
       (updatedAccount &&
         updatedAccount.assets &&
-        updatedAccount.assets.filter(({ balance }) => !filterZeroBN(balance))) ||
+        updatedAccount.assets.filter(
+          ({ balance, type }) => !filterZeroBN(balance) || type === 'base'
+        )) ||
       []
   }));
 
