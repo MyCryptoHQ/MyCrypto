@@ -3,9 +3,12 @@ import { Redirect } from 'react-router-dom';
 
 import { IAppRoute } from '@types';
 import { ROUTE_PATHS, IS_ACTIVE_FEATURE } from '@config';
-import { Home, Dashboard, NoAccounts } from '@features';
+import { Home, NoAccounts } from '@features';
 import { requiresDesktopApp } from './helpers';
 
+const Dashboard = lazy(() =>
+  import(/* webpackChunkName: "Dashboard" */ '@features/Dashboard/Dashboard')
+);
 const CreateWallet = lazy(() =>
   import(/* webpackChunkName: "CreateWallet" */ '@features/CreateWallet/CreateWallet')
 );
