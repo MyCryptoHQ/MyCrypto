@@ -70,7 +70,7 @@ const MembershipSelectedBanner = ({ membershipSelected }: Props) => {
       </MembershipWrapper>
       <CostWrapper>
         <CostText as="div">
-          {translateRaw('COST')} <Tooltip tooltip="TODO" />
+          {translateRaw('COST')} <Tooltip tooltip={translateRaw('MEMBERSHIP_COST_TOOLTIP')} />
         </CostText>
         <Price as="div" bold={true}>
           {membershipSelected.price} {asset.ticker}
