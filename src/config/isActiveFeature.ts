@@ -48,6 +48,6 @@ export const IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE = {
   PRIVATE_TAGS: true,
   DEFIZAP: true,
   MYC_MEMBERSHIP: IS_DEV,
-  PROTECT_TX: true, // DON'T MERGE
+  PROTECT_TX: IS_DEV,
   ENS: true
 };
