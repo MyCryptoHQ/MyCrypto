@@ -74,7 +74,7 @@ module.exports = merge.smart(common, {
         return 'script';
       },
       include: 'allAssets',
-      fileWhitelist: [/\.(woff|woff2)$/]
+      fileWhitelist: [/Lato.*\.(woff|woff2)$/, /social-media.*\.(woff|woff2)$/]
     }),
 
     new PreloadWebpackPlugin({
