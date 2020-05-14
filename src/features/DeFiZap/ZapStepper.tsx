@@ -1,7 +1,9 @@
 import React from 'react';
 import { useStateReducer } from '@utils';
 import { IZapConfig } from './config';
-import { ZapForm, ZapConfirm, ZapReceipt } from './components';
+import ZapForm from './components/ZapForm';
+import ZapConfirm from './components/ZapConfirm';
+import ZapReceipt from './components/ZapReceipt';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
 import ZapInteractionFactory from './stateFactory';
