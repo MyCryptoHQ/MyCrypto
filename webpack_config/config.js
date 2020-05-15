@@ -37,12 +37,9 @@ module.exports = {
   //    https://stackoverflow.com/questions/48985780/webpack-4-create-vendor-chunk
   chunks: {
     individual: [
-      'ethers',
+      // PaperWallet deps
       'jspdf',
       'html2canvas',
-      '@walletconnect',
-      '@ledgerhq',
-      '@unstoppabledomains',
       // Apollo and graphql
       'graphql',
       'apollo-client',
@@ -63,6 +60,6 @@ module.exports = {
       'd3-shape'
     ],
     devOnly: ['@hot-loader/react-dom'],
-    electronOnly: ['zxcvbn', 'bip39']
+    electronOnly: ['zxcvbn']
   }
 };
