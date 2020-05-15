@@ -13,7 +13,7 @@ const undoDeleteOverlayMobile = () => (
     <UndoDeleteOverlay
       address={address}
       restoreAccount={noOp}
-      overlayText={translateRaw('ACCOUNT_LIST_UNDO_DELETE_OVERLAY_TEXT', {
+      overlayText={translateRaw('ACCOUNT_LIST_UNDO_REMOVE_OVERLAY_TEXT', {
         $label: 'Sample address 1',
         $walletId: 'Metamask'
       })}
@@ -26,7 +26,7 @@ const undoDeleteOverlayDesktop = () => (
     <UndoDeleteOverlay
       address={address}
       restoreAccount={noOp}
-      overlayText={translateRaw('ACCOUNT_LIST_UNDO_DELETE_OVERLAY_TEXT', {
+      overlayText={translateRaw('ACCOUNT_LIST_UNDO_REMOVE_OVERLAY_TEXT', {
         $label: 'Sample address 1',
         $walletId: 'Metamask'
       })}

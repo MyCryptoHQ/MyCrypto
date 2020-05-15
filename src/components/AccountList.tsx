@@ -413,8 +413,8 @@ const buildAccountTable = (
       <PrivateColumnLabel>{translateRaw('ACCOUNT_LIST_PRIVATE')}</PrivateColumnLabel>
       <Tooltip tooltip={translateRaw('ACCOUNT_LIST_PRIVATE_TOOLTIP')} />
     </HeaderAlignment>,
-    <HeaderAlignment key={'ACCOUNT_LIST_DELETE'} align="center">
-      {translateRaw('ACCOUNT_LIST_DELETE')}
+    <HeaderAlignment key={'ACCOUNT_LIST_REMOVE'} align="center">
+      {translateRaw('ACCOUNT_LIST_REMOVE')}
     </HeaderAlignment>
   ];
 
@@ -465,7 +465,7 @@ const buildAccountTable = (
         const { uuid, address } = account;
         return (
           <RowDeleteOverlay
-            prompt={translateRaw('ACCOUNT_LIST_DELETE_OVERLAY_TEXT', {
+            prompt={translateRaw('ACCOUNT_LIST_REMOVE_OVERLAY_TEXT', {
               $label: label(addressBookRecord),
               $address: truncate(address)
             })}
@@ -493,7 +493,7 @@ const buildAccountTable = (
         return (
           <UndoDeleteOverlay
             address={address}
-            overlayText={translateRaw('ACCOUNT_LIST_UNDO_DELETE_OVERLAY_TEXT', {
+            overlayText={translateRaw('ACCOUNT_LIST_UNDO_REMOVE_OVERLAY_TEXT', {
               $label: label(addressBookRecord),
               $walletId: getWalletConfig(wallet).name
             })}

@@ -5,10 +5,10 @@ import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
-import { Checkbox, DashboardPanel, InputField, NetworkSelectDropdown } from '@components';
+import { Checkbox, DashboardPanel, InputField, NetworkSelectDropdown, LinkOut } from '@components';
 import { CustomNodeConfig, Network, NetworkId, NodeOptions, NodeType } from '@types';
-import { translateRaw } from '@translations';
-import { DEFAULT_NETWORK, GITHUB_RELEASE_NOTES_URL, LETS_ENCRYPT_URL } from '@config';
+import { translateRaw, Trans } from '@translations';
+import { DEFAULT_NETWORK, GITHUB_RELEASE_NOTES_URL, LETS_ENCRYPT_URL, EXT_URLS } from '@config';
 import { NetworkUtils } from '@services/Store/Network';
 import { ProviderHandler } from '@services/EthService/network';
 
@@ -106,6 +106,15 @@ const DeleteButton = styled(Button)`
   background-color: ${COLORS.PASTEL_RED};
   :hover {
     background-color: ${COLORS.ERROR_RED};
+  }
+`;
+
+const ReferralLink = styled.div`
+  margin-bottom: ${SPACING.BASE};
+
+  @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    margin-bottom: 0px;
+    margin-top: ${SPACING.BASE};
   }
 `;
 
@@ -352,6 +361,24 @@ export default function AddOrEditNetworkNode({
                   </Field>
                 </AddressFieldset>
               </Column>
+            </Row>
+            <Row>
+              <ReferralLink>
+                <Trans
+                  id="CUSTOM_NODE_QUIKNODE_LINK"
+                  variables={{
+                    $link: () => (
+                      <LinkOut
+                        showIcon={false}
+                        inline={true}
+                        fontColor={COLORS.BLUE_BRIGHT}
+                        link={EXT_URLS.QUIKNODE_REFERRAL.url}
+                        text={translateRaw('CUSTOM_NODE_QUIKNODE_TEXT')}
+                      />
+                    )
+                  }}
+                />
+              </ReferralLink>
             </Row>
             <Row>
               <Column>
