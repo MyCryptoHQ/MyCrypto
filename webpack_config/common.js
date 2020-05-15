@@ -41,9 +41,10 @@ module.exports = {
   optimization: {
     splitChunks: {
       cacheGroups: {
-        chunks: 'all',
+        default: false,
+        vendors: false,
         vendor: {
-          enforce: true,
+          chunks: 'all',
           name: 'vendor.bundle',
           test(mod) {
             const excluded = `${config.chunks.individual.join('|')}|${config.chunks.electronOnly.join('|')}|${config.chunks.devOnly.join('|').replace(/\//, '[\\\\/]')}`;
@@ -53,34 +54,17 @@ module.exports = {
             return mod.context
               && includeNodeModules.test(mod.context) && !excludeNodeModules.test(mod.context) && !includeSrc.test(mod.context);
           },
+          reuseExistingChunk: true,
           priority: 20
         },
         common: {
           enforce: true,
+          chunks: 'all',
           name: 'src.bundle',
-          test: /[\\/]src[\\/]/,
           minChunks: 2,
           reuseExistingChunk: true,
           priority: 10
         },
-        vendorIndividual: {
-          enforce: true,
-          name: generateChunkName,
-          test: new RegExp(`[\\\\/]node_modules[\\\\/](${config.chunks.individual.join('|')})[\\\\/]`),
-          priority: 50
-        },
-        vendorDev: {
-          enforce: true,
-          name: 'vendor-dev',
-          test: new RegExp(`[\\\\/]node_modules[\\\\/](${config.chunks.devOnly.join('|').replace(/\//, '[\\\\/]')})[\\\\/]`),
-          priority: 40
-        },
-        vendorElectron: {
-          enforce: true,
-          name: 'vendor-electron',
-          test: new RegExp(`[\\\\/]node_modules[\\\\/](${config.chunks.electronOnly.join('|')})[\\\\/]`),
-          priority: 30
-        }
       }
     }
   },
