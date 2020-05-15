@@ -195,16 +195,15 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
   const { settings } = useContext(SettingsContext);
   const { networks } = useContext(NetworkContext);
   const noLabel = translateRaw('NO_LABEL');
-  //const transactions = accountsList.flatMap((account) => account.transactions);
+
   const accountTxs: ITxHistoryEntry[] = getTxsFromAccount(accountsList).map((tx: ITxReceipt) => {
     const network = networks.find(({ id }) => tx.asset.networkId === id) as Network;
     const toAddressBookEntry = getLabelByAddressAndNetwork(tx.to, addressBook, network);
     const fromAddressBookEntry = getLabelByAddressAndNetwork(tx.from, addressBook, network);
-    const z = deriveTxType(accountsList, tx) || ITxHistoryType.UNKNOWN;
     return {
       ...tx,
       timestamp: 'timestamp' in tx ? tx.timestamp : 0,
-      txType: z,
+      txType: deriveTxType(accountsList, tx) || ITxHistoryType.UNKNOWN,
       toLabel: toAddressBookEntry ? toAddressBookEntry.label : noLabel,
       fromLabel: fromAddressBookEntry ? fromAddressBookEntry.label : noLabel,
       network

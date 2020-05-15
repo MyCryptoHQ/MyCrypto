@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { Arrayish, hexlify, bigNumberify } from 'ethers/utils';
+import { TransactionResponse } from 'ethers/providers';
 
 import {
   TUseStateReducerFactory,
@@ -32,7 +33,6 @@ import {
 
 import { TStepAction } from './types';
 import { processFormDataToTx } from './helpers';
-import { TransactionResponse } from 'ethers/providers';
 
 const txConfigInitialState = {
   tx: {
