@@ -104,6 +104,11 @@ const ErrorWrapper = styled.div`
   margin-bottom: 12px;
 `;
 
+const ContractSelectLabelWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const DeleteLabel = styled(Label)`
   color: ${BLUE_BRIGHT};
   cursor: pointer;
@@ -301,9 +306,16 @@ const customEditingMode = contract && isSameAddress(contract.address as TAddress
             </NetworkSelectorWrapper>
             <ContractSelectionWrapper>
               <FieldWrapper>
-                <label htmlFor="address" className="input-group-header">
-                  {translateRaw('CONTRACT_TITLE')}
-                </label>
+                <ContractSelectLabelWrapper>
+                  <label htmlFor="address" className="input-group-header">
+                    {translateRaw('CONTRACT_TITLE')}
+                  </label>
+                  {contract && contract.isCustom && (
+                    <DeleteLabel onClick={() => handleDeleteContract(contract.uuid)}>
+                      {translateRaw('ACTION_15')}
+                    </DeleteLabel>
+                  )}
+                </ContractSelectLabelWrapper>
                 <ContractLookupField
                   name="address"
                   contracts={contracts}
@@ -322,11 +334,6 @@ const customEditingMode = contract && isSameAddress(contract.address as TAddress
                 />
               </FieldWrapper>
             </ContractSelectionWrapper>
-            {contract && contract.isCustom && (
-              <DeleteLabel onClick={() => handleDeleteContract(contract.uuid)}>
-                {translateRaw('ACTION_15')}
-              </DeleteLabel>
-            )}
             <FieldWrapper>
               <InputWrapper onClick={() => setWasContractInteracted(false)}>
                 <InputField
