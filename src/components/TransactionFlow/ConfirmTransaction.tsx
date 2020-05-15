@@ -255,7 +255,7 @@ export const ConfirmTransactionUI = ({
           <img src={feeIcon} alt="Fee" /> {translate('CONFIRM_TX_FEE')}
         </ColumnWrapper>
         <AmountWrapper>
-          <AssetIcon uuid={asset.uuid} size={'25px'} />
+          <AssetIcon uuid={baseAsset.uuid} size={'25px'} />
           <Amount
             assetValue={`${maxTransactionFeeBase} ${baseAsset.ticker}`}
             fiatValue={`${getFiat(settings).symbol}${convertToFiat(
