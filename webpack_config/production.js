@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
 const PreloadWebpackPlugin = require('@lowb/preload-webpack-plugin');
 const SriPlugin = require('webpack-subresource-integrity');
 const common = require('./common');
@@ -84,14 +83,6 @@ module.exports = merge.smart(common, {
       crossorigin() {
         return 'anonymous';
       }
-    }),
-
-    new CompressionPlugin({
-      filename: '[path].gz',
-      algorithm: 'gzip',
-      test: /\.js$|\.css$|\.html$/,
-      threshold: 10240,
-      minRatio: 0.8
     }),
 
     new webpack.ProgressPlugin()
