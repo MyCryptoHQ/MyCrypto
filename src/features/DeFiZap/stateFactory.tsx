@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 
-import { TUseStateReducerFactory, fromTxReceiptObj } from '@utils';
+import { TUseStateReducerFactory, constructPendingTxReceipt } from '@utils';
 import { isWeb3Wallet } from '@utils/web3';
 import { Asset, ITxStatus, ITxType } from '@types';
 import { hexWeiToString, ProviderHandler } from '@services/EthService';
-import { AccountContext } from '@services/Store';
+import { AccountContext, AssetContext } from '@services/Store';
 
 import { createSimpleTxObject } from './helpers';
 import { ZapInteractionState, TStepAction, ISimpleTxFormFull } from './types';
@@ -14,6 +14,7 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
   setState
 }) => {
   const { addNewTransactionToAccount } = useContext(AccountContext);
+  const { assets } = useContext(AssetContext);
 
   const handleTxSigned = async (signResponse: any, cb: any) => {
     const { txConfig } = state;
@@ -44,15 +45,15 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
         .then((retrievedTxReceipt) => retrievedTxReceipt)
         .catch((hash) => provider.getTransactionByHash(hash))
         .then((retrievedTransactionReceipt) => {
-          const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt);
-          addNewTransactionToAccount(state.txConfig.senderAccount, {
-            ...txReceipt,
-            txType: ITxType.DEFIZAP,
-            stage: ITxStatus.PENDING
-          });
+          const pendingTxReceipt = constructPendingTxReceipt(retrievedTransactionReceipt)(
+            ITxType.DEFIZAP,
+            txConfig,
+            assets
+          );
+          addNewTransactionToAccount(state.txConfig.senderAccount, pendingTxReceipt);
           setState((prevState: ZapInteractionState) => ({
             ...prevState,
-            txReceipt
+            txReceipt: pendingTxReceipt
           }));
           cb();
         });

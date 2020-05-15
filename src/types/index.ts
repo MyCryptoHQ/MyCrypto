@@ -67,7 +67,12 @@ export {
   IHexStrWeb3Transaction,
   ITxReceipt,
   ITxHash,
-  ITxSigned
+  ITxSigned,
+  IStandardTxReceipt,
+  IFailedTxReceipt,
+  ISuccessfulTxReceipt,
+  IPendingTxReceipt,
+  ITxReceiptConstructionObject
 } from './transaction';
 export {
   ISignedTx,
@@ -79,7 +84,8 @@ export {
   ISignComponentProps,
   IStepComponentProps,
   SigningComponents,
-  IReceiverAddress
+  IReceiverAddress,
+  ITransactionReceiptStepProps
 } from './transactionFlow';
 export { JsonRPCResponse } from './jsonRPCResponse';
 export { INode, TxObj } from './INode';

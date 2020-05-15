@@ -19,7 +19,8 @@ import {
   LSKeys,
   TUuid,
   ITxStatus,
-  ITxType
+  ITxType,
+  NetworkId
 } from '@types';
 
 import { DataContext } from '../DataManager';
@@ -34,7 +35,7 @@ export interface IAccountContext {
   deleteAccount(account: IAccount): void;
   updateAccount(uuid: TUuid, accountData: IAccount): void;
   addNewTransactionToAccount(account: IAccount, transaction: ITxReceipt): void;
-  getAccountByAddressAndNetworkName(address: string, network: string): IAccount | undefined;
+  getAccountByAddressAndNetworkName(address: string, networkId: NetworkId): IAccount | undefined;
   updateAccountAssets(account: StoreAccount, assets: Asset[]): Promise<void>;
   updateAllAccountsAssets(accounts: StoreAccount[], assets: Asset[]): Promise<void>;
   updateAccountsBalances(toUpate: IAccount[]): void;
@@ -61,15 +62,14 @@ export const AccountProvider: React.FC = ({ children }) => {
     deleteAccount: model.destroy,
     updateAccount: (uuid, a) => model.update(uuid, a),
     addNewTransactionToAccount: (accountData, newTransaction) => {
-      const { network, ...newTxWithoutNetwork } = newTransaction;
       if (
-        'stage' in newTxWithoutNetwork &&
-        [ITxStatus.SUCCESS, ITxStatus.FAILED].includes(newTxWithoutNetwork.stage)
+        'stage' in newTransaction &&
+        [ITxStatus.SUCCESS, ITxStatus.FAILED].includes(newTransaction.stage)
       ) {
         trackTxHistory({
           eventParams: {
-            txType: (newTxWithoutNetwork && newTxWithoutNetwork.txType) || ITxType.UNKNOWN,
-            txStatus: newTxWithoutNetwork.stage
+            txType: (newTransaction && newTransaction.txType) || ITxType.UNKNOWN,
+            txStatus: newTransaction.stage
           }
         });
       }
@@ -77,9 +77,10 @@ export const AccountProvider: React.FC = ({ children }) => {
         ...accountData,
         transactions: [
           ...accountData.transactions.filter((tx) => tx.hash !== newTransaction.hash),
-          newTxWithoutNetwork
+          newTransaction
         ]
       };
+      console.debug('[AddNewTransaction]: ', JSON.stringify(newTransaction, null, 4));
       state.updateAccount(accountData.uuid, newAccountData);
     },
     getAccountByAddressAndNetworkName: getAccountByAddressAndNetworkName(accounts),

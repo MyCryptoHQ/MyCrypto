@@ -1,4 +1,4 @@
-import { Asset, IAccount, StoreAccount } from '@types';
+import { Asset, IAccount, StoreAccount, NetworkId } from '@types';
 import { DEFAULT_NETWORK } from '@config';
 
 export const getDashboardAccounts = (
@@ -12,7 +12,7 @@ export const getDashboardAccounts = (
 
 export const getAccountByAddressAndNetworkName = (accounts: IAccount[]) => (
   address: string,
-  networkId: string
+  networkId: NetworkId
 ): IAccount | undefined => {
   return accounts.find(
     (account) =>

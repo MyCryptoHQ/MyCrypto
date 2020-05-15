@@ -1,7 +1,7 @@
 import { useContext, useCallback } from 'react';
 import debounce from 'lodash/debounce';
 
-import { TUseStateReducerFactory, fromTxReceiptObj, generateContractUUID } from '@utils';
+import { TUseStateReducerFactory, constructPendingTxReceipt, generateContractUUID } from '@utils';
 import { CREATION_ADDRESS } from '@config';
 import { NetworkId, Contract, StoreAccount, ITxType, ITxStatus } from '@types';
 import {
@@ -350,15 +350,15 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
         .then((retrievedTxReceipt) => retrievedTxReceipt)
         .catch((hash) => provider.getTransactionByHash(hash))
         .then((retrievedTransactionReceipt) => {
-          const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(assets, networks);
-          addNewTransactionToAccount(state.txConfig.senderAccount, {
-            ...txReceipt,
-            txType: ITxType.CONTRACT_INTERACT,
-            stage: ITxStatus.PENDING
-          });
+          const pendingTxReceipt = constructPendingTxReceipt(retrievedTransactionReceipt)(
+            ITxType.CONTRACT_INTERACT,
+            state.txConfig,
+            assets
+          );
+          addNewTransactionToAccount(state.txConfig.senderAccount, pendingTxReceipt);
           setState((prevState: InteractWithContractState) => ({
             ...prevState,
-            txReceipt
+            txReceipt: pendingTxReceipt
           }));
         })
         .finally(after);

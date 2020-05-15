@@ -1,15 +1,15 @@
 import { ethers } from 'ethers';
+import { bigNumberify } from 'ethers/utils/bignumber';
 
 import {
   ITxObject,
   StoreAccount,
   ITxConfig,
-  ITxReceipt,
   TxParcel,
   ITxType,
   ITxHash,
-  ITxStatus,
-  ITxSigned
+  TAddress,
+  IPendingTxReceipt
 } from '@types';
 import {
   inputValueToHex,
@@ -93,18 +93,32 @@ export const makeTxConfigFromTransaction = (
   return txConfig;
 };
 
-export const makeTxReceiptFromTransaction = (
+export const makePendingTxReceiptFromTransaction = (
   tx: TxParcel,
-  hash: ITxHash | ITxSigned,
+  hash: ITxHash,
   account: StoreAccount,
   membershipSelected: IMembershipConfig,
-  type: ITxType
-): ITxReceipt => {
+  txType: ITxType
+): IPendingTxReceipt => {
+  const stage = tx.status;
+  const txConfig = makeTxConfigFromTransaction(tx.txRaw, account, membershipSelected);
   return {
-    ...makeTxConfigFromTransaction(tx.txRaw, account, membershipSelected),
-    ...tx.txRaw,
+    receiverAddress: txConfig.receiverAddress,
+    amount: txConfig.amount,
+    data: tx.txRaw.data,
+
+    gasPrice: bigNumberify(tx.txRaw.gasPrice),
+    gasLimit: bigNumberify(tx.txRaw.gasLimit),
+    to: tx.txRaw.to,
+    from: tx.txRaw.from as TAddress,
+    value: bigNumberify(tx.txRaw.value || txConfig.value),
+    nonce: txConfig.nonce,
+
+    asset: txConfig.asset,
+    baseAsset: txConfig.baseAsset,
+
     hash,
-    txType: type,
-    stage: ITxStatus.PENDING
+    txType,
+    stage
   };
 };

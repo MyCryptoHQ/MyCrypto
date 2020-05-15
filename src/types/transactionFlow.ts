@@ -77,6 +77,18 @@ export interface IStepComponentProps {
   resetFlow(): void;
 }
 
+export interface ITransactionReceiptStepProps {
+  txConfig: ITxConfig;
+  txReceipt: ITxReceipt;
+  signedTx?: string;
+  zapSelected?: IZapConfig;
+  membershipSelected?: IMembershipConfig;
+  children?: never;
+  completeButtonText?: string;
+  onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;
+  resetFlow(): void;
+}
+
 export interface IReceiverAddress {
   display: string;
   value: string;

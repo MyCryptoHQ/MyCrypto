@@ -15,7 +15,8 @@ import {
   RatesContext,
   AddressBookContext,
   getLabelByAddressAndNetwork,
-  SettingsContext
+  SettingsContext,
+  NetworkContext
 } from '@services';
 import { translateRaw } from '@translations';
 import {
@@ -50,7 +51,15 @@ interface Props {
   accountsList: StoreAccount[];
 }
 
-enum ITxType {
+interface ITxHistoryEntry extends Omit<Omit<ITxReceipt, 'txType'>, 'timestamp'> {
+  network: Network;
+  toLabel: string;
+  fromLabel: string;
+  txType: ITxHistoryType;
+  timestamp: number;
+}
+
+enum IStandardTxType {
   TRANSFER = 'TRANSFER',
   OUTBOUND = 'OUTBOUND',
   INBOUND = 'INBOUND'
@@ -116,23 +125,27 @@ const TxTypeConfig: ITxTypeConfig = {
   }
 };
 
-export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt) => {
+export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt): ITxHistoryType => {
   const fromAccount =
     tx.from &&
     accountsList.find((account) => account.address.toLowerCase() === tx.from.toLowerCase());
   const toAccount =
     tx.to && accountsList.find((account) => account.address.toLowerCase() === tx.to.toLowerCase());
-  let txType = tx && tx.tx ? tx.txType : ITxHistoryType.STANDARD;
-  txType = txType === ITxHistoryType.UNKNOWN ? ITxHistoryType.STANDARD : txType;
-  if (txType === ITxHistoryType.STANDARD) {
-    txType =
-      !fromAccount || !toAccount
-        ? fromAccount
-          ? ITxHistoryType.OUTBOUND
-          : ITxHistoryType.INBOUND
-        : ITxHistoryType.TRANSFER;
+
+  const isInvalidTxHistoryType =
+    !('txType' in tx) ||
+    tx.txType === ITxHistoryType.STANDARD ||
+    tx.txType === ITxHistoryType.UNKNOWN;
+
+  if (isInvalidTxHistoryType && toAccount && fromAccount) {
+    return ITxHistoryType.TRANSFER;
+  } else if (isInvalidTxHistoryType && !toAccount && fromAccount) {
+    return ITxHistoryType.OUTBOUND;
+  } else if (isInvalidTxHistoryType && toAccount && !fromAccount) {
+    return ITxHistoryType.INBOUND;
   }
-  return txType;
+
+  return tx.txType as ITxHistoryType;
 };
 
 const SAssetIcon = styled(AssetIcon)`
@@ -163,9 +176,14 @@ const SCombinedCircle = (asset: Asset) => {
 
 const makeTxIcon = (type: ITxType, asset: Asset) => {
   const greyscaleIcon = asset && <>{SCombinedCircle(asset)}</>;
+  console.debug(type, TxTypeConfig[type]);
   const baseIcon = (
     <div className="TransactionLabel-image">
-      <img src={TxTypeConfig[type].icon} width="56px" height="56px" />
+      <img
+        src={TxTypeConfig[type] ? TxTypeConfig[type].icon : transfer}
+        width="56px"
+        height="56px"
+      />
       {greyscaleIcon}
     </div>
   );
@@ -176,45 +194,55 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
   const { addressBook } = useContext(AddressBookContext);
   const { getAssetRate } = useContext(RatesContext);
   const { settings } = useContext(SettingsContext);
+  const { networks } = useContext(NetworkContext);
   const noLabel = translateRaw('NO_LABEL');
-  const transactions = accountsList.flatMap((account) => account.transactions);
-  const accountTxs: ITxReceipt[] = getTxsFromAccount(accountsList).map((tx: ITxReceipt) => ({
-    ...tx,
-    txType: deriveTxType(accountsList, tx)
-  }));
+  //const transactions = accountsList.flatMap((account) => account.transactions);
+  const accountTxs: ITxHistoryEntry[] = getTxsFromAccount(accountsList).map((tx: ITxReceipt) => {
+    const network = networks.find(({ id }) => tx.asset.networkId === id) as Network;
+    const toAddressBookEntry = getLabelByAddressAndNetwork(tx.to, addressBook, network);
+    const fromAddressBookEntry = getLabelByAddressAndNetwork(tx.from, addressBook, network);
+    const z = deriveTxType(accountsList, tx) || ITxHistoryType.UNKNOWN;
+    console.debug('tx.receipt: ', tx.txType, z);
+    return {
+      ...tx,
+      timestamp: 'timestamp' in tx ? tx.timestamp : 0,
+      txType: z,
+      toLabel: toAddressBookEntry ? toAddressBookEntry.label : noLabel,
+      fromLabel: fromAddressBookEntry ? fromAddressBookEntry.label : noLabel,
+      network
+    };
+  });
   // TODO: Sort by relevant transactions
 
   const pending = accountTxs.filter(txIsPending);
   const completed = accountTxs.filter(txIsSuccessful);
   const failed = accountTxs.filter(txIsFailed);
 
-  const createEntries = (_: string, collection: typeof transactions) =>
+  const createEntries = (_: string, collection: ITxHistoryEntry[]) =>
     collection.map(
-      ({ timestamp, hash, stage, from, to, amount, asset, network, txType }: ITxReceipt) => {
-        const toAddressBookEntry = to && getLabelByAddressAndNetwork(to, addressBook, network);
-        const fromAddressBookEntry = getLabelByAddressAndNetwork(from, addressBook, network);
+      ({
+        timestamp,
+        hash,
+        stage,
+        from,
+        to,
+        amount,
+        asset,
+        fromLabel,
+        toLabel,
+        network,
+        txType
+      }) => {
         return [
           <TransactionLabel
             key={0}
             image={makeTxIcon(txType, asset)}
-            label={TxTypeConfig[txType as ITxType].label(asset)}
+            label={TxTypeConfig[txType].label(asset)}
             stage={stage}
             date={timestamp}
           />,
-          <Account
-            key={1}
-            title={fromAddressBookEntry ? fromAddressBookEntry.label : noLabel}
-            truncate={truncate}
-            address={from}
-          />,
-          to && (
-            <Account
-              key={2}
-              title={toAddressBookEntry ? toAddressBookEntry.label : noLabel}
-              truncate={truncate}
-              address={to}
-            />
-          ),
+          <Account key={1} title={fromLabel} truncate={truncate} address={from} />,
+          to && <Account key={2} title={toLabel} truncate={truncate} address={to} />,
           <Amount
             key={3}
             assetValue={`${parseFloat(amount).toFixed(4)} ${asset.ticker}`}

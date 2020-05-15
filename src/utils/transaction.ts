@@ -1,4 +1,5 @@
-import { Arrayish, parseTransaction } from 'ethers/utils';
+import { Arrayish, parseTransaction,bigNumberify } from 'ethers/utils';
+import { TransactionResponse, TransactionReceipt } from 'ethers/providers';
 
 import {
   getNetworkByChainId,
@@ -20,35 +21,113 @@ import {
   getDecimalFromEtherUnit,
   gasPriceToBase
 } from '@services/EthService';
-import { ITxReceipt, ExtendedAsset, Network, ITxConfig, StoreAccount, TAddress } from '@types';
+import {
+  ExtendedAsset,
+  Network,
+  ITxConfig,
+  StoreAccount,
+  TAddress,
+  ITxType,
+  ITxStatus,
+  IPendingTxReceipt,
+  ITxHash,
+  IFailedTxReceipt,
+  ISuccessfulTxReceipt,
+  ITxReceipt
+} from '@types';
 
-export const fromTxReceiptObj = (txReceipt: ITxReceipt) => (
+export const constructTxReceiptFromTransactionResponse = (txResponse: TransactionResponse) => (
+  txType: ITxType,
+  txConfig: ITxConfig,
+  assets: ExtendedAsset[]
+) => (stage: ITxStatus): ITxReceipt => {
+  const contractAsset = getAssetByContractAndNetwork(txResponse.to, txConfig.network)(assets);
+  const baseAsset = getBaseAssetByNetwork({ network: txConfig.network, assets });
+  return {
+    asset: contractAsset || txConfig.asset,
+    baseAsset: baseAsset || txConfig.baseAsset,
+    hash: txResponse.hash! as ITxHash,
+    from: txConfig.from,
+    receiverAddress: txConfig.receiverAddress,
+    value: txResponse.value,
+    amount: contractAsset
+      ? fromTokenBase(ERC20.transfer.decodeInput(txResponse.data)._value, contractAsset.decimal)
+      : fromWei(Wei(hexWeiToString(txResponse.value.toHexString())), 'ether').toString(),
+    to: contractAsset ? ERC20.transfer.decodeInput(txResponse.data)._to : txResponse.to,
+    nonce: txResponse.nonce.toString(),
+    gasLimit: txResponse.gasLimit,
+    gasPrice: txResponse.gasPrice,
+    data: txResponse.data,
+    stage,
+    txType,
+
+    blockNumber: 0,
+    timestamp: 0
+  };
+};
+
+export const constructTxReceiptFromTransactionReceipt = (txReceipt: TransactionReceipt) => (
+  txType: ITxType,
+  txConfig: ITxConfig,
   assets: ExtendedAsset[],
-  networks: Network[]
-): ITxReceipt | undefined => {
-  const chainId: number = txReceipt.networkId || txReceipt.chainId;
-  const networkDetected = getNetworkByChainId(chainId, networks);
-  if (networkDetected) {
-    const contractAsset = getAssetByContractAndNetwork(txReceipt.to, networkDetected)(assets);
-    const baseAsset = getBaseAssetByNetwork({ network: networkDetected, assets });
-    return {
-      blockNumber: txReceipt.blockNumber,
-      network: networkDetected,
-      hash: txReceipt.hash,
-      from: txReceipt.from,
-      asset: contractAsset ? contractAsset : baseAsset ? baseAsset : undefined, // If contractAsset, use contractAsset, else if baseAsset, use baseAsset, else 'undefined'
-      value: txReceipt.value.hex, // Hex - wei
-      amount: contractAsset
-        ? fromTokenBase(ERC20.transfer.decodeInput(txReceipt.data)._value, contractAsset.decimal)
-        : fromWei(Wei(hexWeiToString(txReceipt.value._hex)), 'ether').toString(),
-      to: contractAsset ? ERC20.transfer.decodeInput(txReceipt.data)._to : txReceipt.to,
-      nonce: txReceipt.nonce,
-      gasLimit: txReceipt.gasLimit, // Hex
-      gasPrice: txReceipt.gasPrice, // Hex - wei
-      data: txReceipt.data // Hex
-    };
-  }
-  return;
+  stage?: ITxStatus
+): ITxReceipt => {
+  const contractAsset = getAssetByContractAndNetwork(
+    txConfig.rawTransaction.to,
+    txConfig.network
+  )(assets);
+  const baseAsset = getBaseAssetByNetwork({ network: txConfig.network, assets });
+  const transactionStatus = txReceipt.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
+  return {
+    asset: contractAsset || txConfig.asset,
+    baseAsset: baseAsset || txConfig.baseAsset,
+    hash: txReceipt.transactionHash! as ITxHash,
+    from: txConfig.from,
+    receiverAddress: txConfig.receiverAddress,
+    value: bigNumberify(txConfig.rawTransaction.value),
+    amount: contractAsset
+      ? fromTokenBase(
+          ERC20.transfer.decodeInput(txConfig.rawTransaction.data)._value,
+          contractAsset.decimal
+        )
+      : fromWei(Wei(hexWeiToString(txConfig.rawTransaction.value)), 'ether').toString(),
+    to: contractAsset
+      ? ERC20.transfer.decodeInput(txConfig.rawTransaction.data)._to
+      : txConfig.rawTransaction.to,
+    nonce: txConfig.rawTransaction.nonce,
+    gasLimit: bigNumberify(txConfig.rawTransaction.gasLimit),
+    gasPrice: bigNumberify(txConfig.rawTransaction.gasPrice),
+    data: txConfig.rawTransaction.data,
+    stage: stage || transactionStatus,
+    txType,
+
+    blockNumber: 0,
+    timestamp: 0
+  };
+};
+
+export const constructPendingTxReceipt = (txResponse: TransactionResponse) => (
+  txType: ITxType,
+  txConfig: ITxConfig,
+  assets: ExtendedAsset[]
+): IPendingTxReceipt => {
+  return constructTxReceiptFromTransactionResponse(txResponse)(txType, txConfig, assets)(
+    ITxStatus.PENDING
+  );
+};
+
+export const updateFinishedPendingTxReceipt = (txResponse: TransactionResponse) => (
+  previousTxReceipt: IPendingTxReceipt,
+  newStage: ITxStatus,
+  timestamp?: number,
+  blockNumber?: number
+): IFailedTxReceipt | ISuccessfulTxReceipt => {
+  return {
+    ...previousTxReceipt,
+    stage: newStage,
+    timestamp: timestamp || txResponse.timestamp || 0,
+    blockNumber: blockNumber || txResponse.blockNumber || 0
+  };
 };
 
 const decodeTransaction = (signedTx: Arrayish) => {

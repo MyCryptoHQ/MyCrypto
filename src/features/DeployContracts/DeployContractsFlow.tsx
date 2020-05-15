@@ -6,7 +6,7 @@ import { translateRaw } from '@translations';
 import { ExtendedContentPanel, Tabs, WALLET_STEPS } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { useStateReducer } from '@utils';
-import { ITxReceipt, ISignedTx, Tab } from '@types';
+import { ISignedTx, IPendingTxReceipt, Tab } from '@types';
 import { BREAK_POINTS } from '@theme';
 
 import { deployContractsInitialState, DeployContractsFactory } from './stateFactory';
@@ -128,7 +128,7 @@ const DeployContractsFlow = (props: RouteComponentProps<{}>) => {
         rawTransaction
       }))(deployContractsState),
       actions: {
-        onSuccess: (payload: ITxReceipt | ISignedTx) => handleTxSigned(payload, goToNextStep)
+        onSuccess: (payload: IPendingTxReceipt | ISignedTx) => handleTxSigned(payload, goToNextStep)
       }
     },
     {

@@ -3,7 +3,7 @@ import { ethers, utils } from 'ethers';
 import { Web3Provider } from 'ethers/providers/web3-provider';
 
 import { WALLETS_CONFIG } from '@config';
-import { ISignComponentProps } from '@types';
+import { ISignComponentProps, ITxHash } from '@types';
 import translate, { translateRaw } from '@translations';
 import { withContext, getWeb3Config } from '@utils';
 import { getNetworkByChainId, INetworkContext, NetworkContext } from '@services/Store';
@@ -199,12 +199,15 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
       // Calling ethers.js with a tx object containing a 'from' property
       // will fail https://github.com/ethers-io/ethers.js/issues/692.
       const { from, ...rawTx } = rawTransaction;
-      signerWallet.sendUncheckedTransaction(rawTx).then((txHash) => {
-        web3Provider.getTransactionReceipt(txHash).then((output) => {
+      signerWallet
+        .sendUncheckedTransaction(rawTx)
+        .then((txHash) => {
           this.setState({ submitting: false });
-          onSuccess(output !== null ? output : txHash);
+          onSuccess(txHash as ITxHash);
+        })
+        .catch((err) => {
+          throw new Error(err);
         });
-      });
     } catch (err) {
       console.debug(`[SignTransactionWeb3] ${err}`);
       if (err.message.includes('User denied transaction signature')) {

@@ -66,7 +66,7 @@ export const sendTx = (
 ) => async (walletResponse: ITxHash | ITxSigned) => {
   const { account } = getState();
   dispatch({ type: ActionTypes.SEND_TX_REQUEST });
-
+  const provider = new ProviderHandler(account!.network);
   if (isTxHash(walletResponse) && isWeb3Wallet(account!.wallet)) {
     dispatch({
       type: ActionTypes.SEND_TX_SUCCESS,
@@ -74,7 +74,6 @@ export const sendTx = (
     });
     waitForConfirmation(dispatch, getState)(walletResponse);
   } else if (isTxHash(walletResponse) || isTxSigned(walletResponse)) {
-    const provider = new ProviderHandler(account!.network);
     provider
       .sendRawTx(walletResponse)
       .then((txResponse: TransactionResponse) => {

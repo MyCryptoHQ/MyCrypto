@@ -45,7 +45,7 @@ export {
 export { makeBlob } from './blob';
 export { default as consoleAdvertisement } from './consoleAdvertisement';
 export { tap } from './tap';
-export { fromTxReceiptObj, makeTxConfigFromSignedTx } from './transaction';
+export { constructPendingTxReceipt, makeTxConfigFromSignedTx } from './transaction';
 export {
   formatErrorEmail,
   formatSupportEmail,

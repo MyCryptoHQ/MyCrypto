@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { TxReceipt, MultiTxReceipt } from '@components/TransactionFlow';
-import { ITxType, TxParcel, StoreAccount } from '@types';
+import { ITxType, TxParcel, StoreAccount, ITxConfig, IStandardTxReceipt } from '@types';
 import { IMembershipConfig } from '../config';
 import { makeTxConfigFromTransaction } from '../helpers';
 
@@ -18,23 +18,21 @@ export default function MembershipReceipt({
   membershipSelected,
   onComplete
 }: Props) {
-  const txConfigs = transactions.map((tx) => {
-    return makeTxConfigFromTransaction(tx.txRaw, account, membershipSelected);
-  });
+  const txItems: { txConfig: ITxConfig; txReceipt: IStandardTxReceipt }[] = transactions.map(
+    (tx) => {
+      const txConfig = makeTxConfigFromTransaction(tx.txRaw, account, membershipSelected);
 
-  const txReceipts = transactions.map((tx, idx) => {
-    return {
-      ...txConfigs[idx],
-      ...tx.txRaw,
-      hash: tx.txHash
-    };
-  });
+      return {
+        txReceipt: {} as IStandardTxReceipt,
+        txConfig
+      };
+    }
+  );
 
-  return txReceipts.length === 1 ? (
+  return txItems.length === 1 ? (
     <TxReceipt
-      txReceipt={txReceipts[0]}
-      txConfig={txConfigs[0]}
-      txType={ITxType.PURCHASE_MEMBERSHIP}
+      txReceipt={txItems.map(({ txReceipt }) => txReceipt)[0]}
+      txConfig={txItems.map(({ txConfig }) => txConfig)[0]}
       membershipSelected={membershipSelected}
       resetFlow={onComplete}
       onComplete={onComplete}
@@ -44,7 +42,7 @@ export default function MembershipReceipt({
       txType={ITxType.PURCHASE_MEMBERSHIP}
       membershipSelected={membershipSelected}
       transactions={transactions}
-      transactionsConfigs={txConfigs}
+      transactionsConfigs={txItems.map(({ txConfig }) => txConfig)}
       account={account}
       network={account.network}
       resetFlow={onComplete}
