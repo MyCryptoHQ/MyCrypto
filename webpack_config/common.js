@@ -71,13 +71,6 @@ module.exports = {
           name: 'vendor-dev',
           test: new RegExp(`[\\\\/]node_modules[\\\\/](${config.chunks.devOnly.join('|').replace(/\//, '[\\\\/]')})[\\\\/]`),
           priority: 40
-        },
-        vendorElectron: {
-          enforce: true,
-          chunks: 'all',
-          name: 'vendor-electron',
-          test: new RegExp(`[\\\\/]node_modules[\\\\/](${config.chunks.electronOnly.join('|')})[\\\\/]`),
-          priority: 30
         }
       }
     }
