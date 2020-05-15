@@ -7,15 +7,9 @@ import { Network, IReceiverAddress, ErrorObject, InlineMessageType } from '@type
 import {
   AddressBookContext,
   findNextRecipientLabel,
-  getBaseAssetByNetwork,
-  AssetContext
 } from '@services/Store';
-import { isValidETHAddress, isValidENSName } from '@services/EthService';
-import { useEffectOnce } from '@vendor';
-import UnstoppableResolution from '@services/UnstoppableService';
-import { isValidETHRecipientAddress } from '@services/EthService/validators';
 
-import ContactLookupDropdown from './ContactLookupDropdown';
+import GenericLookupField from './GenericLookupField';
 
 interface ContactDropdownFieldComponentProps {
   resolutionError: ResolutionError | undefined;
@@ -30,9 +24,6 @@ interface ContactDropdownFieldComponentProps {
 
 const ContactDropdownField = ({
   network,
-  isResolvingName,
-  onBlur,
-  setIsResolvingDomain,
   name,
   value,
   setResolutionError,
@@ -63,14 +54,20 @@ const ContactDropdownField = ({
     };
   };
 
-  const validateAddress = (v: IReceiverAddress) => {
-    const validationResult = isValidETHRecipientAddress(v.value, resolutionError);
-    if (validationResult.success) return;
+  const handleENSname = (resolvedAddress: string, inputString: string) => {
+    const contact = getContactByAddress(resolvedAddress);
+    if (contact) return { display: contact.label, value: contact.address };
 
+    const [label] = inputString.split('.');
+    createContact({
+      address: resolvedAddress,
+      label,
+      notes: '',
+      network: network.id
+    });
     return {
-      name: validationResult.name,
-      type: validationResult.type,
-      message: validationResult.message
+      display: label,
+      value: resolvedAddress
     };
   };
 
@@ -276,6 +273,15 @@ const ContactLookupField = ({
       />
     </>
   );
+
+  /**useEffectOnce(() => {
+          if (value && value.value) {
+            const contact = getContactByAddress(value.value);
+            if (contact && value.display !== contact.label) {
+              form.setFieldValue(name, { display: contact.label, value: contact.address }, true);
+            }
+          }
+        });**/
 };
 
 export default ContactLookupField;
