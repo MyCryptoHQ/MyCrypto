@@ -103,12 +103,12 @@ export default function AddressBook({
 
   const addressBookTable = {
     head: [
-      translateRaw('ADDRESSBOOK_FAVORITE') || 'Favorite',
-      translateRaw('ADDRESSBOOK_LABEL') || 'Label',
+      translateRaw('ADDRESSBOOK_FAVORITE'),
+      translateRaw('ADDRESSBOOK_LABEL'),
       translateRaw('ADDRESSBOOK_ADDRESS'),
       translateRaw('ADDRESSBOOK_NETWORK'),
       translateRaw('ADDRESSBOOK_NOTES'),
-      translateRaw('ADDRESSBOOK_DELETE') || 'Delete'
+      translateRaw('ADDRESSBOOK_REMOVE')
     ],
     overlay: (rowIndex: number): JSX.Element => {
       if (!overlayRows) return <></>;
@@ -118,7 +118,7 @@ export default function AddressBook({
         const { uuid, label } = displayAddressBook[rowIndex];
         return (
           <RowDeleteOverlay
-            prompt={translateRaw('ADDRESS_BOOK_DELETE_OVERLAY_TEXT', {
+            prompt={translateRaw('ADDRESS_BOOK_REMOVE_OVERLAY_TEXT', {
               $label: label
             })}
             deleteAction={() => {
@@ -136,7 +136,7 @@ export default function AddressBook({
         return (
           <UndoDeleteOverlay
             address={address}
-            overlayText={translateRaw('ADDRESS_BOOK_UNDO_DELETE_OVERLAY_TEXT', {
+            overlayText={translateRaw('ADDRESS_BOOK_UNDO_REMOVE_OVERLAY_TEXT', {
               $label: label
             })}
             restoreAccount={() => {
@@ -184,8 +184,8 @@ export default function AddressBook({
         const bLabel = b.props.label;
         return aLabel === bLabel ? true : aLabel.localeCompare(bLabel);
       },
-      hiddenHeadings: [translateRaw('ADDRESSBOOK_FAVORITE'), translateRaw('ADDRESSBOOK_DELETE')],
-      iconColumns: [translateRaw('ADDRESSBOOK_FAVORITE'), translateRaw('ADDRESSBOOK_DELETE')]
+      hiddenHeadings: [translateRaw('ADDRESSBOOK_FAVORITE'), translateRaw('ADDRESSBOOK_REMOVE')],
+      iconColumns: [translateRaw('ADDRESSBOOK_FAVORITE'), translateRaw('ADDRESSBOOK_REMOVE')]
     }
   };
   return (
