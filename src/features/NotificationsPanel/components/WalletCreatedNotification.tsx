@@ -84,8 +84,8 @@ export default function WalletCreatedNotification({ address }: NotificationProps
       alignCenterOnSmallScreen={true}
       leftImg={{
         src: champagneIcon,
-        width: '71px',
-        height: '70px',
+        width: '100px',
+        height: '100px',
         transform: 'rotateY(180deg)',
         hideOnMobile: true
       }}
@@ -93,7 +93,7 @@ export default function WalletCreatedNotification({ address }: NotificationProps
       description={translate('NOTIFICATIONS_WALLET_CREATED_DESCRIPTION', {
         $address: address
       })}
-      additionalDescription={translate('NOTIFICATIONS_WALLET_DESCRIPTION_ADD')}
+      additionalDescription={translate('NOTIFICATIONS_WALLET_CREATED_DESCRIPTION_ADD')}
       resources={getResources()}
     />
   );

@@ -10,13 +10,13 @@ import { notificationsConfigs, NotificationTemplates } from './constants';
 // Legacy
 import closeIcon from '@assets/images/icn-close.svg';
 
-const MainPanel = styled(Panel)`
+export const MainPanel = styled(Panel)`
   position: relative;
-  padding: ${SPACING.BASE};
+  padding: ${SPACING.MD};
   margin-bottom: ${SPACING.BASE};
 `;
 
-const CloseButton = styled(Button)`
+export const CloseButton = styled(Button)`
   position: absolute;
   right: 17px;
   top: 6px;

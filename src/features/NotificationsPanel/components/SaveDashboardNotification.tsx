@@ -26,7 +26,7 @@ const ResourceItem = styled(Button)`
 export default function SaveDashboardNotification() {
   return (
     <NotificationWrapper
-      leftImg={{ src: saveIcon, width: '68px', height: '77px' }}
+      leftImg={{ src: saveIcon, width: 'auto', height: '100px' }}
       title={translate('NOTIFICATIONS_SAVE_DASHBOARD_TITLE')}
       description={translate('NOTIFICATIONS_SAVE_DASHBOARD_DESCRIPTION')}
       resources={

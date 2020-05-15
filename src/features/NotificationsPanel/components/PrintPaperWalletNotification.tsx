@@ -42,7 +42,7 @@ interface Props {
 export default function PrintPaperWalletNotification({ address, privateKey }: Props) {
   return (
     <NotificationWrapper
-      leftImg={{ src: walletIcon, width: '100px', height: '81px', marginRight: '18px' }}
+      leftImg={{ src: walletIcon, width: '100px', height: 'auto', marginRight: '18px' }}
       title={translate('NOTIFICATIONS_PRINT_WALLET_TITLE')}
       description={translate('NOTIFICATIONS_PRINT_WALLET_DESCRIPTION')}
       resources={

@@ -14,8 +14,7 @@ import {
   GetHardwareWalletNotification,
   WalletNotAddedNotification,
   OnboardingPleaseUnderstandNotification,
-  OnboardingResponsibleNotification,
-  UnlockVIPNotification
+  OnboardingResponsibleNotification
 } from './components';
 
 export const NotificationTemplates = {
@@ -26,8 +25,7 @@ export const NotificationTemplates = {
   printPaperWallet: 'print-paper-wallet',
   getHardwareWallet: 'get-hardware-wallet',
   onboardingPleaseUnderstand: 'onboarding-please-understand',
-  onboardingResponsible: 'onboarding-responsible',
-  unlockVIPDetected: 'unlock-vip-detected'
+  onboardingResponsible: 'onboarding-responsible'
 };
 
 export const notificationsConfigs: NotificationsConfigsProps = {
@@ -80,11 +78,5 @@ export const notificationsConfigs: NotificationsConfigsProps = {
     dismissForever: true,
     condition: onboardingResponsibleCheck,
     preventDismisExisting: true
-  },
-  [NotificationTemplates.unlockVIPDetected]: {
-    analyticsEvent: 'UnlockVIP Detected',
-    layout: UnlockVIPNotification,
-    showOneTime: true,
-    dismissOnOverwrite: true
   }
 };
