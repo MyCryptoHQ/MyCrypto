@@ -1,5 +1,6 @@
 import { Transaction as EthTx, TxData } from 'ethereumjs-tx';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
+import Transport from '@ledgerhq/hw-transport';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
 import LedgerEth from '@ledgerhq/hw-app-eth';
 
@@ -7,6 +8,8 @@ import { translateRaw } from '@translations';
 import { getTransactionFields } from '@services/EthService';
 import { HardwareWallet, ChainCodeResponse } from './hardware';
 import { byContractAddress } from '@ledgerhq/hw-app-eth/erc20';
+import TransportWebHID from '@ledgerhq/hw-transport-webhid';
+import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 
 // Ledger throws a few types of errors
 interface U2FError {
@@ -131,8 +134,24 @@ export class LedgerWallet extends HardwareWallet {
   }
 }
 
+const getTransport = async (): Promise<Transport<any>> => {
+  try {
+    if (await TransportWebHID.isSupported()) {
+      return TransportWebHID.create();
+    }
+
+    if (await TransportWebUSB.isSupported()) {
+      return TransportWebUSB.create();
+    }
+  } catch {
+    // Fallback to U2F
+  }
+
+  return TransportU2F.create();
+};
+
 async function makeApp() {
-  const transport = await TransportU2F.create();
+  const transport = await getTransport();
   return new LedgerEth(transport);
 }
 
