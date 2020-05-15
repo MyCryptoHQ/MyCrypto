@@ -10,7 +10,7 @@ import { convertToFiat } from '@utils';
 import translate, { translateRaw } from '@translations';
 import { ZapSelectedBanner, DeFiZapLogo } from '@features/DeFiZap';
 import { BREAK_POINTS, SPACING, COLORS } from '@theme';
-import { MembershipSelectedBanner } from '@features/PurchaseMembership';
+import MembershipSelectedBanner from '@features/PurchaseMembership/components/MembershipSelectedBanner';
 import { IStepComponentProps, ITxType, ExtendedAddressBook, ISettings } from '@types';
 import { getFiat } from '@config/fiats';
 
