@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { AccountList, BannerAd, Desktop, Mobile } from '@components';
+import { AccountList, Desktop, Mobile } from '@components';
+import BannerAd from '@components/BannerAd/BannerAd';
 import { IS_ACTIVE_FEATURE } from '@config';
 import { AccountContext, StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';

@@ -9,7 +9,7 @@ import {
   StoreContext
 } from '@services/Store';
 
-import { AccountList, FlippablePanel, Mobile, Desktop } from '@components';
+import { AccountList, Mobile, Desktop } from '@components';
 import { NetworkId, CustomNodeConfig } from '@types';
 import { DEFAULT_NETWORK, IS_ACTIVE_FEATURE } from '@config';
 import { BREAK_POINTS } from '@theme';
@@ -23,6 +23,7 @@ import MobileNavBar from '@components/MobileNavBar';
 import AddressBookPanel from './components/AddressBook';
 import GeneralSettings from './components/GeneralSettings';
 import DangerZone from './components/DangerZone';
+import FlippablePanel from '@features/Settings/components/FlippablePanel';
 
 const SettingsHeading = styled(Heading)<{ forwardedAs?: string }>`
   display: flex;

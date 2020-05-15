@@ -4,14 +4,7 @@ import styled from 'styled-components';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 
-import {
-  NetworkSelectDropdown,
-  InputField,
-  Dropdown,
-  InlineMessage,
-  Button,
-  AddressField
-} from '@components';
+import { NetworkSelectDropdown, InputField, Dropdown, InlineMessage, Button } from '@components';
 import {
   Contract,
   StoreAccount,
@@ -32,6 +25,7 @@ import { CUSTOM_CONTRACT_ADDRESS } from '../constants';
 import { ABIItem } from '../types';
 import { getParsedQueryString } from '../utils';
 import { isValidENSName } from '@services/EthService';
+import AddressField from './fields/AddressField';
 
 const { BLUE_BRIGHT, WHITE, BLUE_LIGHT } = COLORS;
 const { SCREEN_SM } = BREAK_POINTS;
