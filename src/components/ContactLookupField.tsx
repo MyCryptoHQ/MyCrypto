@@ -5,7 +5,7 @@ import { ResolutionError } from '@unstoppabledomains/resolution/build/resolution
 import { IReceiverAddress, Network } from '@types';
 import { AddressBookContext, findNextRecipientLabel } from '@services/Store';
 
-import GenericLookupField, { IGenericLookupFieldComponentProps } from './GenericLookupField';
+import GeneralLookupField, { IGeneralLookupFieldComponentProps } from './GeneralLookupField';
 
 interface ContactDropdownFieldComponentProps {
   resolutionError: ResolutionError | undefined;
@@ -22,7 +22,8 @@ const ContactDropdownField = ({
   name,
   value,
   ...rest
-}: ContactDropdownFieldComponentProps & Omit<IGenericLookupFieldComponentProps, "options" | "handleEthAddress" | "handleENSName">) => {
+}: ContactDropdownFieldComponentProps &
+  Omit<IGeneralLookupFieldComponentProps, 'options' | 'handleEthAddress' | 'handleENSName'>) => {
   const {
     addressBook: contacts,
     createAddressBooks: createContact,
@@ -48,7 +49,7 @@ const ContactDropdownField = ({
     };
   };
 
-  const handleENSname = (resolvedAddress: string, inputString: string) => {
+  const handleENSName = (resolvedAddress: string, inputString: string) => {
     const contact = getContactByAddress(resolvedAddress);
     if (contact) return { display: contact.label, value: contact.address };
 
@@ -247,13 +248,13 @@ const ContactLookupField = ({
   const errorType = typeof error === 'object' ? error.type : undefined;
 
   return (
-    <GenericLookupField
+    <GeneralLookupField
       name={name}
       value={value}
       network={network}
       options={contacts}
       handleEthAddress={handleEthAddress}
-      handleENSname={handleENSname}
+      handleENSName={handleENSName}
       onLoad={(form) => {
         if (value && value.value) {
           const contact = getContactByAddress(value.value);

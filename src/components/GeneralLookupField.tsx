@@ -10,15 +10,15 @@ import UnstoppableResolution from '@services/UnstoppableService';
 import { isValidETHRecipientAddress } from '@services/EthService/validators';
 import { useEffectOnce } from '@vendor';
 
-import ContactLookupDropdown from './ContactLookupDropdown';
+import GeneralLookupDropdown from './GeneralLookupDropdown';
 
-export interface IGenericLookupFieldComponentProps {
+export interface IGeneralLookupFieldComponentProps {
   error?: string | ErrorObject;
   network: Network;
   isResolvingName: boolean;
   name: string;
   value: IReceiverAddress;
-  options: IReceiverAddress[];
+  options: any[];
   onBlur?(): void;
   setIsResolvingDomain(isResolving: boolean): void;
   handleEthAddress(inputString: string): IReceiverAddress;
@@ -28,7 +28,7 @@ export interface IGenericLookupFieldComponentProps {
   onLoad?(form: FormikProps<any>): void;
 }
 
-const GenericLookupField = ({
+const GeneralLookupField = ({
   error,
   network,
   isResolvingName,
@@ -42,7 +42,7 @@ const GenericLookupField = ({
   value,
   options,
   onLoad
-}: IGenericLookupFieldComponentProps) => {
+}: IGeneralLookupFieldComponentProps) => {
   const { assets } = useContext(AssetContext);
   const errorMessage = typeof error === 'object' ? error.message : error;
   const errorType = typeof error === 'object' ? error.type : undefined;
@@ -171,10 +171,10 @@ const GenericLookupField = ({
 
         return (
           <>
-            <ContactLookupDropdown
+            <GeneralLookupDropdown
               name={name}
               value={value}
-              contacts={options}
+              options={options}
               onSelect={(option: IReceiverAddress) => {
                 form.setFieldValue(name, option, true); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
                 form.setFieldTouched(name, true, false);
@@ -210,4 +210,4 @@ const GenericLookupField = ({
   );
 };
 
-export default GenericLookupField;
+export default GeneralLookupField;

@@ -8,7 +8,7 @@ import { Asset, IReceiverAddress, ExtendedAddressBook } from '@types';
 import addressBookIcon from '@assets/images/icn-address-book.svg';
 
 interface IAccountLookupDropdownProps {
-  contacts: ExtendedAddressBook[];
+  options: IReceiverAddress[];
   name: string;
   value: IReceiverAddress;
   asset?: Asset;
@@ -20,9 +20,9 @@ interface IAccountLookupDropdownProps {
   onBlur(inputString: string): void;
 }
 
-const ContactLookupDropdown = ({
+const GeneralLookupDropdown = ({
   inputValue,
-  contacts,
+  options,
   name,
   value,
   onSelect,
@@ -36,7 +36,7 @@ const ContactLookupDropdown = ({
     inputValue={inputValue}
     name={name}
     placeholder={translateRaw('ACCOUNT_LOOKUP_SELECTION_PLACEHOLDER')}
-    options={contacts}
+    options={options}
     onChange={(option: ExtendedAddressBook) => {
       onSelect({
         display: option ? option.label : '',
@@ -57,4 +57,4 @@ const ContactLookupDropdown = ({
   />
 );
 
-export default ContactLookupDropdown;
+export default GeneralLookupDropdown;

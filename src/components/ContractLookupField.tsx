@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Network, IReceiverAddress, Contract } from '@types';
 
-import GenericLookupField, { IGenericLookupFieldComponentProps } from './GenericLookupField';
+import GeneralLookupField, { IGeneralLookupFieldComponentProps } from './GeneralLookupField';
 
 interface IContractLookupFieldComponentProps {
   network: Network;
@@ -17,7 +17,8 @@ const ContractLookupField = ({
   name,
   value,
   ...rest
-}: IContractLookupFieldComponentProps & Omit<IGenericLookupFieldComponentProps, "options" | "handleEthAddress" | "handleENSName" | "setIsResolvingDomain">) => {
+}: IContractLookupFieldComponentProps &
+  Omit<IGeneralLookupFieldComponentProps, 'options' | 'handleEthAddress' | 'handleENSName'>) => {
   const handleEthAddress = (inputString: string): IReceiverAddress => {
     return {
       display: inputString,
@@ -25,7 +26,7 @@ const ContractLookupField = ({
     };
   };
 
-  const handleENSname = (resolvedAddress: string, inputString: string) => {
+  const handleENSName = (resolvedAddress: string, inputString: string) => {
     return {
       display: inputString,
       value: resolvedAddress
@@ -33,13 +34,13 @@ const ContractLookupField = ({
   };
 
   return (
-    <GenericLookupField
+    <GeneralLookupField
       name={name}
       value={value}
       network={network}
       options={contracts}
       handleEthAddress={handleEthAddress}
-      handleENSname={handleENSname}
+      handleENSName={handleENSName}
       {...rest}
     />
   );
