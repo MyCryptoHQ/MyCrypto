@@ -12,7 +12,7 @@ import { useEffectOnce } from '@vendor';
 
 import ContactLookupDropdown from './ContactLookupDropdown';
 
-interface IContactLookupFieldComponentProps {
+export interface IGenericLookupFieldComponentProps {
   error?: string | ErrorObject;
   network: Network;
   isResolvingName: boolean;
@@ -42,7 +42,7 @@ const GenericLookupField = ({
   value,
   options,
   onLoad
-}: IContactLookupFieldComponentProps) => {
+}: IGenericLookupFieldComponentProps) => {
   const { assets } = useContext(AssetContext);
   const errorMessage = typeof error === 'object' ? error.message : error;
   const errorType = typeof error === 'object' ? error.type : undefined;
@@ -76,7 +76,7 @@ const GenericLookupField = ({
         const [inputValue, setInputValue] = useState<string>('');
 
         useEffectOnce(() => {
-          if (value && value.value) {
+          if (value && value.value && onLoad) {
             onLoad(form);
           }
         });

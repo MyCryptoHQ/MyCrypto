@@ -8,7 +8,8 @@ import {
   NetworkSelectDropdown,
   InputField,
   InlineMessage,
-  Button
+  Button,
+  ContractLookupField
 } from '@components';
 import {
   Contract,
@@ -57,7 +58,6 @@ const FieldWrapper = styled.div`
   }
 `;
 
-
 const Label = styled.div`
   line-height: 1;
   margin-bottom: 9px;
@@ -103,7 +103,6 @@ const SaveButtonWrapper = styled.div`
 const ErrorWrapper = styled.div`
   margin-bottom: 12px;
 `;
-
 
 const DeleteLabel = styled(Label)`
   color: ${BLUE_BRIGHT};
@@ -270,10 +269,6 @@ const customEditingMode = contract && isSameAddress(contract.address as TAddress
       // Hack as we don't really use Formik for this flow
       onSubmit={() => undefined}
       render={({ values, errors, touched, setFieldValue }) => {
-        const isValid =
-          Object.values(errors).filter((e) => e !== undefined && e.value !== undefined).length ===
-          0;
-
         useEffect(() => {
           if (
             !getNetworkById(networkIdFromUrl, networks) ||
@@ -309,27 +304,18 @@ const customEditingMode = contract && isSameAddress(contract.address as TAddress
                 <label htmlFor="address" className="input-group-header">
                   {translateRaw('CONTRACT_TITLE')}
                 </label>
-                <ContactLookupField
+                <ContractLookupField
                   name="address"
-                  options={contracts}
+                  contracts={contracts}
                   error={errors && touched.address && errors.address && errors.address.value}
                   network={network}
                   isResolvingName={resolvingDomain}
                   onSelect={(option) => {
-                    /**if (option.address !== 'custom') {
-                        setFieldValue('address', {
-                          display: option.address,
-                          value: option.address
-                        });
-                      } else {
-                        setFieldValue('address', initialFormikValues.address);
-                      }**/
                     handleContractSelected(option);
 
                     handleAddressOrDomainChanged(option.value);
                   }}
                   onChange={(address) => handleAddressOrDomainChanged(address)}
-                  isError={!isValid}
                   value={values.address}
                 />
               </FieldWrapper>

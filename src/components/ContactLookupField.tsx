@@ -2,19 +2,14 @@ import React, { useState, useContext, useCallback } from 'react';
 import { Field, useFormikContext } from 'formik';
 import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
 
-import { DomainStatus, InlineMessage } from '@components';
-import { Network, IReceiverAddress, ErrorObject, InlineMessageType } from '@types';
-import {
-  AddressBookContext,
-  findNextRecipientLabel,
-} from '@services/Store';
+import { IReceiverAddress, Network } from '@types';
+import { AddressBookContext, findNextRecipientLabel } from '@services/Store';
 
-import GenericLookupField from './GenericLookupField';
+import GenericLookupField, { IGenericLookupFieldComponentProps } from './GenericLookupField';
 
 interface ContactDropdownFieldComponentProps {
   resolutionError: ResolutionError | undefined;
   network: Network;
-  isResolvingName: boolean;
   name: string;
   value: IReceiverAddress;
   onBlur?(): void;
@@ -26,9 +21,8 @@ const ContactDropdownField = ({
   network,
   name,
   value,
-  setResolutionError,
-  resolutionError
-}: ContactDropdownFieldComponentProps) => {
+  ...rest
+}: ContactDropdownFieldComponentProps & Omit<IGenericLookupFieldComponentProps, "options" | "handleEthAddress" | "handleENSName">) => {
   const {
     addressBook: contacts,
     createAddressBooks: createContact,
@@ -253,35 +247,24 @@ const ContactLookupField = ({
   const errorType = typeof error === 'object' ? error.type : undefined;
 
   return (
-    <>
-      <ContactDropdownField
-        name={name}
-        value={value}
-        network={network}
-        isResolvingName={isResolvingName}
-        onBlur={onBlur}
-        setIsResolvingDomain={setIsResolvingDomain}
-        resolutionError={resolutionError}
-        setResolutionError={setResolutionError}
-      />
-      <ContactLookupError
-        resolutionError={resolutionError}
-        isResolvingName={isResolvingName}
-        value={value}
-        errorMessage={errorMessage}
-        errorType={errorType}
-      />
-    </>
-  );
-
-  /**useEffectOnce(() => {
-          if (value && value.value) {
-            const contact = getContactByAddress(value.value);
-            if (contact && value.display !== contact.label) {
-              form.setFieldValue(name, { display: contact.label, value: contact.address }, true);
-            }
+    <GenericLookupField
+      name={name}
+      value={value}
+      network={network}
+      options={contacts}
+      handleEthAddress={handleEthAddress}
+      handleENSname={handleENSname}
+      onLoad={(form) => {
+        if (value && value.value) {
+          const contact = getContactByAddress(value.value);
+          if (contact && value.display !== contact.label) {
+            form.setFieldValue(name, { display: contact.label, value: contact.address }, true);
           }
-        });**/
+        }
+      }}
+      {...rest}
+    />
+  );
 };
 
 export default ContactLookupField;

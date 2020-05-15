@@ -73,3 +73,4 @@ export {
 } from './FullSizeContentPanel';
 export { default as UndoDeleteOverlay } from './UndoDeleteOverlay';
 export { default as FixedSizeCollapsibleTable } from './FixedSizeCollapsibleTable';
+export { default as ContractLookupField } from './ContractLookupField';
