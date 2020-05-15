@@ -8,7 +8,7 @@ import { DomainStatus } from '@components';
 import { getIsValidENSAddressFunction } from '@services/EthService';
 import { monospace } from '@theme';
 import { translateRaw } from '@translations';
-import { ResolutionError } from '@unstoppabledomains/resolution';
+import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
 import InputField from '@components/InputField';
 
 /*

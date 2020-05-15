@@ -1,5 +1,5 @@
 import React from 'react';
-import { ResolutionError } from '@unstoppabledomains/resolution';
+import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
 import styled from 'styled-components';
 
 import translate, { translateRaw } from '@translations';
