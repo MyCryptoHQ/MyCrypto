@@ -277,10 +277,6 @@ const customEditingMode = contract && isSameAddress(contract.address as TAddress
 
           if (addressFromUrl) {
             handleAddressOrDomainChanged(addressFromUrl);
-            setFieldValue('address', {
-              display: addressFromUrl,
-              value: addressFromUrl
-            });
           }
           setAreFieldsPopulatedFromUrl(true);
         }, [contracts]);
