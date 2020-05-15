@@ -38,14 +38,29 @@ module.exports = {
   chunks: {
     individual: [
       'ethers',
-      'recharts',
       'jspdf',
       'html2canvas',
       '@walletconnect',
       '@ledgerhq',
       '@unstoppabledomains',
+      // Apollo and graphql
       'graphql',
-      'apollo-client'
+      'apollo-client',
+      'apollo-utilities',
+      'apollo-cache-inmemory',
+      // Recharts and dependencies
+      'recharts',
+      'd3-format',
+      'd3-path',
+      'd3-collection',
+      'd3-array',
+      'd3-time',
+      'd3-time-format',
+      'd3-color',
+      'd3-scale',
+      'd3-interpolate',
+      'd3-scale',
+      'd3-shape'
     ],
     devOnly: ['@hot-loader/react-dom'],
     electronOnly: ['zxcvbn', 'bip39']

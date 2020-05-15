@@ -1,4 +1,4 @@
-import { TransactionReceipt } from 'ethers/providers';
+import { TransactionReceipt } from 'ethers/providers/abstract-provider';
 
 import { Network, ITxStatus, StoreAccount, ITxObject, ITxHash, TUuid } from '@types';
 

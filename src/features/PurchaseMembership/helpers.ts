@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { AddressZero } from 'ethers/constants';
 
 import {
   ITxObject,
@@ -50,7 +50,7 @@ export const createPurchaseTx = (payload: MembershipSimpleTxFormFull): Partial<I
   const data = UnlockToken.purchase.encodeInput({
     _value: weiPrice,
     _recipient: payload.account.address,
-    _referrer: ethers.constants.AddressZero,
+    _referrer: AddressZero,
     _data: []
   });
 

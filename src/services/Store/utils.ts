@@ -1,4 +1,4 @@
-import { bigNumberify, BigNumber } from 'ethers/utils';
+import { bigNumberify, BigNumber } from 'ethers/utils/bignumber';
 
 import { TAddress, NetworkId, Asset, StoreAccount } from '@types';
 

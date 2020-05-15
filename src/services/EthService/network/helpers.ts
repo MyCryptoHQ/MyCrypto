@@ -1,5 +1,8 @@
-import { ethers } from 'ethers';
-import { FallbackProvider, BaseProvider } from 'ethers/providers';
+import { FallbackProvider } from 'ethers/providers/fallback-provider';
+import { BaseProvider } from 'ethers/providers/base-provider';
+import { EtherscanProvider } from 'ethers/providers/etherscan-provider';
+import { Web3Provider } from 'ethers/providers/web3-provider';
+import { JsonRpcProvider } from 'ethers/providers/json-rpc-provider';
 import equals from 'ramda/src/equals';
 import isEmpty from 'lodash/isEmpty';
 
@@ -25,12 +28,12 @@ const getProvider = (
   switch (type) {
     case NodeType.ETHERSCAN: {
       const networkName = getValidEthscanNetworkId(networkId);
-      return new ethers.providers.EtherscanProvider(networkName);
+      return new EtherscanProvider(networkName);
     }
     case NodeType.WEB3: {
       const ethereumProvider = window.ethereum;
       const networkName = getValidEthscanNetworkId(networkId);
-      return new ethers.providers.Web3Provider(ethereumProvider, networkName);
+      return new Web3Provider(ethereumProvider, networkName);
     }
 
     // Option to use the EthersJs InfuraProvider, but need figure out the apiAcessKey
@@ -41,14 +44,14 @@ const getProvider = (
     // default case covers the remaining NodeTypes.
     default: {
       if (auth) {
-        return new ethers.providers.JsonRpcProvider({
+        return new JsonRpcProvider({
           url,
           user: auth.username,
           password: auth.password,
           allowInsecure: true
         });
       }
-      return new ethers.providers.JsonRpcProvider(url);
+      return new JsonRpcProvider(url);
     }
   }
 };
@@ -76,7 +79,7 @@ export const createFallbackNetworkProviders = (network: Network): FallbackProvid
 
   const providers: BaseProvider[] = sortedNodes.map((n) => getProvider(id, n as any));
 
-  return new ethers.providers.FallbackProvider(providers);
+  return new FallbackProvider(providers);
 };
 
 export const getDPath = (network: Network | undefined, type: DPathFormat): DPath | undefined => {
