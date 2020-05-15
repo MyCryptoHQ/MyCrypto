@@ -102,7 +102,7 @@ const GeneralLookupField = ({
 
             const [label] = inputString.split('.');
 
-            if (handleENSName) return handleENSName(inputString, inputString);
+            if (handleENSName) return handleENSName(resolvedAddress, inputString);
 
             return {
               display: label,
