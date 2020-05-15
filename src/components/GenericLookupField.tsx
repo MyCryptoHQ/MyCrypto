@@ -2,15 +2,15 @@ import React, { useState, useContext } from 'react';
 import { FieldProps, Field, FormikProps } from 'formik';
 import { ResolutionError } from '@unstoppabledomains/resolution';
 
-import { DomainStatus, InlineMessage } from 'v2/components';
-import { Network, IReceiverAddress, ErrorObject } from 'v2/types';
-import { getBaseAssetByNetwork, AssetContext } from 'v2/services/Store';
-import { isValidETHAddress, isValidENSName } from 'v2/services/EthService';
-import UnstoppableResolution from 'v2/services/UnstoppableService';
-import { isValidETHRecipientAddress } from 'v2/services/EthService/validators';
+import { DomainStatus, InlineMessage } from '@components';
+import { Network, IReceiverAddress, ErrorObject } from '@types';
+import { getBaseAssetByNetwork, AssetContext } from '@services/Store';
+import { isValidETHAddress, isValidENSName } from '@services/EthService';
+import UnstoppableResolution from '@services/UnstoppableService';
+import { isValidETHRecipientAddress } from '@services/EthService/validators';
+import { useEffectOnce } from '@vendor';
 
 import ContactLookupDropdown from './ContactLookupDropdown';
-import { useEffectOnce } from 'v2/vendor';
 
 interface IContactLookupFieldComponentProps {
   error?: string | ErrorObject;
