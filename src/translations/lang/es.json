@@ -864,7 +864,7 @@
 		"VERIFY_MESSAGE_SIGNED": "**$address** signed **$msg**",
 		"VIEW_ADDR": "View Address",
 		"VIEW_ONLY_WARNING_TOOLTIP": "Note: You cannot send from a view-only account.",
-		"VISIT_DEFIZAP": "Visit [DeFiZap](https://defizap.com/) to learn more.",
+		"VISIT_DEFIZAP": "[Learn more about MyCrypto's Zapper integration.](https://support.mycrypto.com/how-to/defi/how-to-use-zapper)",
 		"WALLET_BREAKDOWN_ACCOUNTS": "",
 		"WALLET_BREAKDOWN_ALL_ACCOUNTS": "Viewing All Accounts",
 		"WALLET_BREAKDOWN_BALANCE": "Balance",
