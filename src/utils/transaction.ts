@@ -35,29 +35,38 @@ import {
   ISuccessfulTxReceipt,
   ITxReceipt
 } from '@types';
+import { isEmpty } from 'ramda';
 
 export const constructTxReceiptFromTransactionResponse = (txResponse: TransactionResponse) => (
   txType: ITxType,
   txConfig: ITxConfig,
-  assets: ExtendedAsset[]
+  assets: ExtendedAsset[],
+  txHash?: ITxHash
 ) => (stage: ITxStatus): ITxReceipt => {
-  const contractAsset = getAssetByContractAndNetwork(txResponse.to, txConfig.network)(assets);
+  const useTxResponse = txResponse && !isEmpty(txResponse) && txResponse !== null;
+
+  const to = useTxResponse ? txResponse.to : txConfig.rawTransaction.to;
+  const data = useTxResponse ? txResponse.data : txConfig.rawTransaction.data;
+  const value = useTxResponse ? txResponse.value : bigNumberify(txConfig.rawTransaction.value);
+
+  const contractAsset = getAssetByContractAndNetwork(to, txConfig.network)(assets);
   const baseAsset = getBaseAssetByNetwork({ network: txConfig.network, assets });
+
   return {
     asset: contractAsset || txConfig.asset,
     baseAsset: baseAsset || txConfig.baseAsset,
-    hash: txResponse.hash! as ITxHash,
+    hash: txHash || (txResponse.hash! as ITxHash),
     from: txConfig.from,
     receiverAddress: txConfig.receiverAddress,
-    value: txResponse.value,
     amount: contractAsset
-      ? fromTokenBase(ERC20.transfer.decodeInput(txResponse.data)._value, contractAsset.decimal)
-      : fromWei(Wei(hexWeiToString(txResponse.value.toHexString())), 'ether').toString(),
-    to: contractAsset ? ERC20.transfer.decodeInput(txResponse.data)._to : txResponse.to,
-    nonce: txResponse.nonce.toString(),
-    gasLimit: txResponse.gasLimit,
-    gasPrice: txResponse.gasPrice,
-    data: txResponse.data,
+      ? fromTokenBase(ERC20.transfer.decodeInput(data)._value, contractAsset.decimal)
+      : fromWei(Wei(hexWeiToString(value.toHexString())), 'ether').toString(),
+    to: contractAsset ? ERC20.transfer.decodeInput(data)._to : to,
+    nonce: useTxResponse ? txResponse.nonce.toString() : txConfig.rawTransaction.nonce,
+    gasLimit: useTxResponse ? txResponse.gasLimit : bigNumberify(txConfig.rawTransaction.gasLimit),
+    gasPrice: useTxResponse ? txResponse.gasPrice : bigNumberify(txConfig.rawTransaction.gasPrice),
+    data,
+    value,
     stage,
     txType,
 
@@ -109,9 +118,10 @@ export const constructTxReceiptFromTransactionReceipt = (txReceipt: TransactionR
 export const constructPendingTxReceipt = (txResponse: TransactionResponse) => (
   txType: ITxType,
   txConfig: ITxConfig,
-  assets: ExtendedAsset[]
+  assets: ExtendedAsset[],
+  txHash?: ITxHash
 ): IPendingTxReceipt => {
-  return constructTxReceiptFromTransactionResponse(txResponse)(txType, txConfig, assets)(
+  return constructTxReceiptFromTransactionResponse(txResponse)(txType, txConfig, assets, txHash)(
     ITxStatus.PENDING
   );
 };

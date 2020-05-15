@@ -162,7 +162,8 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
         const pendingTxReceipt = constructPendingTxReceipt(retrievedTransactionResponse)(
           ITxType.STANDARD,
           state.txConfig,
-          assets
+          assets,
+          payload
         );
         addNewTransactionToAccount(state.txConfig.senderAccount, pendingTxReceipt);
         setState((prevState: State) => ({

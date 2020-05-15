@@ -176,7 +176,6 @@ const SCombinedCircle = (asset: Asset) => {
 
 const makeTxIcon = (type: ITxType, asset: Asset) => {
   const greyscaleIcon = asset && <>{SCombinedCircle(asset)}</>;
-  console.debug(type, TxTypeConfig[type]);
   const baseIcon = (
     <div className="TransactionLabel-image">
       <img
@@ -202,7 +201,6 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
     const toAddressBookEntry = getLabelByAddressAndNetwork(tx.to, addressBook, network);
     const fromAddressBookEntry = getLabelByAddressAndNetwork(tx.from, addressBook, network);
     const z = deriveTxType(accountsList, tx) || ITxHistoryType.UNKNOWN;
-    console.debug('tx.receipt: ', tx.txType, z);
     return {
       ...tx,
       timestamp: 'timestamp' in tx ? tx.timestamp : 0,
