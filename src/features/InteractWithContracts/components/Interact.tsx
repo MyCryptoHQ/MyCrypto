@@ -214,15 +214,6 @@ function Interact(props: CombinedProps) {
     }
   }, [abi]);
 
-  useEffect(() => {
-    // If contract network id doesn't match the selected network id, set contract to custom and keep the address from the URL.
-    if (contract && contract.networkId !== network.id) {
-      handleAddressOrDomainChanged(contractAddress);
-    }
-
-    setError(undefined);
-  }, [contract]);
-
   const saveContract = () => {
     setError(undefined);
     try {
@@ -293,6 +284,22 @@ const customEditingMode = contract && isSameAddress(contract.address as TAddress
           }
           setAreFieldsPopulatedFromUrl(true);
         }, [contracts]);
+
+        useEffect(() => {
+          // If contract network id doesn't match the selected network id, set contract to custom and keep the address from the URL.
+          if (contract && contract.networkId !== network.id) {
+            handleAddressOrDomainChanged(contractAddress);
+          }
+
+          if (contract && contract.address !== CUSTOM_CONTRACT_ADDRESS) {
+            setFieldValue('address', {
+              display: contract.name,
+              value: contract.address
+            });
+          }
+
+          setError(undefined);
+        }, [contract]);
 
         return (
           <>
