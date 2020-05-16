@@ -324,7 +324,7 @@ export default function WalletBreakdownView({
           </>
         )}
         <PoweredBy>
-          Powered by <img src={coinGeckoIcon} title="CoinGecko" alt="CoinGecko" />
+          {translateRaw('POWERED_BY')} <img src={coinGeckoIcon} title="CoinGecko" alt="CoinGecko" />
         </PoweredBy>
       </BreakDownChartWrapper>
       <PanelDivider mobileOnly={true} />
