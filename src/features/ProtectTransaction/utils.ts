@@ -58,9 +58,9 @@ export abstract class ProtectTxUtils {
     formValues: IFormikFields,
     rate: number | undefined
   ): ProtectTxError {
-    const { asset, amount } = formValues;
+    const { asset, amount, address } = formValues;
 
-    if (!asset || !amount) return ProtectTxError.INSUFFICIENT_DATA;
+    if (!asset || !amount || !address) return ProtectTxError.INSUFFICIENT_DATA;
 
     if (asset.ticker !== 'ETH') {
       return ProtectTxError.ETH_ONLY;

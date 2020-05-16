@@ -62,11 +62,11 @@ const WithProtectTxSide = styled.div`
   min-width: 375px;
   max-width: 100vw;
   margin-top: calc(-1.5rem - 44px - 15px);
+  margin-bottom: -1.5em;
 
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     position: initial;
     width: 375px;
-    margin-top: -1.5rem;
     margin-left: 2.25rem;
     border-left: 15px solid ${COLORS.BG_GRAY};
     min-height: calc(100% + 115px);
@@ -76,7 +76,6 @@ const WithProtectTxSide = styled.div`
       position: relative;
       height: 100%;
       padding: 30px 15px 15px;
-      box-shadow: none;
     }
   }
 `;
@@ -129,7 +128,20 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
     };
 
     const protectTxStepperSteps = isMyCryptoMember
-      ? [reportStep]
+      ? [
+          {
+            component: ProtectTxProtection,
+            props: {
+              sendAssetsValues: (({ values }) => values)(formCallback())
+            },
+            actions: {
+              handleProtectTxSubmit: async () => {
+                goToNextStep();
+              }
+            }
+          },
+          reportStep
+        ]
       : [
           {
             component: ProtectTxProtection,
