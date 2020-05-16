@@ -16,6 +16,7 @@ const SAssetIconContainer = styled('span')`
 interface Props {
   amount: string;
   symbol: TSymbol;
+  code?: string;
   uuid?: TUuid;
   decimals?: number;
   icon?: boolean;
@@ -33,14 +34,16 @@ function Currency({
   prefix = false,
   bold = false,
   fontSize,
+  code,
   ...props
 }: Props) {
   const format = (value: string, decimalPlaces: number) => {
-    const v = parseFloat(value);
-    return Number(v).toLocaleString(undefined, {
+    return new Intl.NumberFormat(navigator.language, {
       minimumFractionDigits: decimalPlaces,
-      maximumFractionDigits: decimalPlaces
-    });
+      maximumFractionDigits: decimalPlaces,
+      style: code ? 'currency' : undefined,
+      currency: code
+    }).format(parseFloat(value));
     // const multiplier = Math.pow(10, decimalPlaces);
     // return Math.round(v * multiplier + Number.EPSILON) / multiplier;
   };
@@ -53,9 +56,9 @@ function Currency({
         </SAssetIconContainer>
       )}
       <Typography bold={bold} fontSize={fontSize}>
-        {prefix && `${symbol}`}
+        {/* {prefix && `${symbol}`} */}
         {format(amount, decimals)}
-        {!prefix && ` ${symbol}`}
+        {/* {!prefix && ` ${symbol}`} */}
       </Typography>
     </SContainer>
   );

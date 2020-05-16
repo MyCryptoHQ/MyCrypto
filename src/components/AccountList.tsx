@@ -557,6 +557,7 @@ const buildAccountTable = (
           amount={total.toString()}
           symbol={getFiatObj(settings).symbol}
           prefix={getFiatObj(settings).prefix}
+          code={getFiatObj(settings).code}
           decimals={2}
         />
       ];
