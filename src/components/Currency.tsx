@@ -56,9 +56,8 @@ function Currency({
         </SAssetIconContainer>
       )}
       <Typography bold={bold} fontSize={fontSize}>
-        {/* {prefix && `${symbol}`} */}
         {format(amount, decimals)}
-        {/* {!prefix && ` ${symbol}`} */}
+        {!code && !prefix && ` ${symbol}`}
       </Typography>
     </SContainer>
   );
