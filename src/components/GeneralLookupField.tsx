@@ -19,6 +19,7 @@ export interface IGeneralLookupFieldComponentProps {
   name: string;
   value: IReceiverAddress;
   options: any[];
+  placeholder?: string;
   onBlur?(): void;
   setIsResolvingDomain(isResolving: boolean): void;
   handleEthAddress(inputString: string): IReceiverAddress;
@@ -41,7 +42,8 @@ const GeneralLookupField = ({
   name,
   value,
   options,
-  onLoad
+  onLoad,
+  placeholder
 }: IGeneralLookupFieldComponentProps) => {
   const { assets } = useContext(AssetContext);
   const errorMessage = typeof error === 'object' ? error.message : error;
@@ -191,6 +193,7 @@ const GeneralLookupField = ({
               }}
               inputValue={inputValue}
               onEnterKeyDown={handleEnterKeyDown}
+              placeholder={placeholder}
             />
             {(value && isValidENSName(value.value)) || isResolvingName ? (
               <DomainStatus

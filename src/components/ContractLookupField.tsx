@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Network, IReceiverAddress, Contract } from '@types';
+import { translateRaw } from '@translations';
 
 import GeneralLookupField, { IGeneralLookupFieldComponentProps } from './GeneralLookupField';
 
@@ -41,6 +42,7 @@ const ContractLookupField = ({
       options={contracts}
       handleEthAddress={handleEthAddress}
       handleENSName={handleENSName}
+      placeholder={translateRaw('CONTRACT_SELECTION_PLACEHOLDER')}
       {...rest}
     />
   );
