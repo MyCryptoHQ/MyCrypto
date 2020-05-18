@@ -20,7 +20,6 @@ interface Props {
   uuid?: TUuid;
   decimals?: number;
   icon?: boolean;
-  prefix?: boolean;
   bold?: boolean;
   fontSize?: string;
 }
@@ -31,7 +30,6 @@ function Currency({
   uuid,
   decimals = 5,
   icon = false,
-  prefix = false,
   bold = false,
   fontSize,
   code,
@@ -57,7 +55,7 @@ function Currency({
       )}
       <Typography bold={bold} fontSize={fontSize}>
         {format(amount, decimals)}
-        {!code && !prefix && ` ${symbol}`}
+        {!code && ` ${symbol}`}
       </Typography>
     </SContainer>
   );

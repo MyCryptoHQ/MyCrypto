@@ -309,7 +309,6 @@ export default function WalletBreakdownView({
                     <Currency
                       amount={balance.fiatValue.toString()}
                       symbol={fiat.symbol}
-                      prefix={fiat.prefix}
                       code={fiat.code}
                       decimals={2}
                       bold={true}
@@ -357,7 +356,6 @@ export default function WalletBreakdownView({
                 <Currency
                   amount={fiatValue.toString()}
                   symbol={fiat.symbol}
-                  prefix={fiat.prefix}
                   code={fiat.code}
                   decimals={2}
                 />
@@ -376,7 +374,6 @@ export default function WalletBreakdownView({
               <Currency
                 amount={totalFiatValue.toString()}
                 symbol={fiat.symbol}
-                prefix={fiat.prefix}
                 code={fiat.code}
                 decimals={2}
               />

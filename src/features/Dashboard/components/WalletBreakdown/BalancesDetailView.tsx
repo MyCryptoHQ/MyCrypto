@@ -131,7 +131,6 @@ const createBalancesDetailViewRow = (
       <Currency
         amount={balance.fiatValue.toString()}
         symbol={fiat.symbol}
-        prefix={fiat.prefix}
         code={fiat.code}
         decimals={2}
       />
@@ -177,7 +176,6 @@ const createAccountRow = (
       <Currency
         amount={balanceAccount.fiatValue.toString()}
         symbol={fiat.symbol}
-        prefix={fiat.prefix}
         code={fiat.code}
         decimals={2}
       />
@@ -285,7 +283,6 @@ export default function BalancesDetailView({
             <Currency
               amount={totalFiatValue.toString()}
               symbol={fiat.symbol}
-              prefix={fiat.prefix}
               code={fiat.code}
               decimals={2}
             />

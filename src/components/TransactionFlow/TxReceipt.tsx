@@ -45,7 +45,7 @@ import { ProtectTxUtils, ProtectTxContext } from '@features/ProtectTransaction';
 import { ProtectTxAbort } from '@features/ProtectTransaction/components';
 import { MembershipReceiptBanner } from '@features/PurchaseMembership';
 import { DeFiZapLogo } from '@features/DeFiZap';
-import { getFiatObj } from '@config/fiats';
+import { getFiat } from '@config/fiats';
 
 import { ISender } from './types';
 import { constructSenderFromTxConfig } from './helpers';
@@ -353,7 +353,7 @@ export const TxReceiptUI = ({
             <AssetIcon uuid={asset.uuid} size={'24px'} />
             <Amount
               assetValue={`${parseFloat(assetAmount()).toFixed(6)} ${assetTicker()}`}
-              fiatValue={`${getFiatObj(settings).symbol}${convertToFiat(
+              fiatValue={`${getFiat(settings).symbol}${convertToFiat(
                 parseFloat(assetAmount()),
                 assetRate()
               ).toFixed(2)}

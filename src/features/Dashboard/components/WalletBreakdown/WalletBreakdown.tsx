@@ -8,7 +8,7 @@ import { SettingsContext, StoreContext } from '@services/Store';
 import { StoreAsset, TUuid } from '@types';
 import { weiToFloat, convertToFiatFromAsset } from '@utils';
 import { BREAK_POINTS, SPACING } from '@theme';
-import { getFiatObj } from '@config/fiats';
+import { getFiat } from '@config/fiats';
 import { Tooltip } from '@components';
 
 import { Balance, BalanceAccount } from './types';
@@ -113,7 +113,7 @@ export function WalletBreakdown() {
     setShowBalanceDetailView(!showBalanceDetailView);
   };
 
-  const fiat = getFiatObj(settings);
+  const fiat = getFiat(settings);
 
   return (
     <>

@@ -26,7 +26,7 @@ import {
   AddressBookContext
 } from '@services/Store';
 import { RatesContext } from '@services';
-import { getFiatObj } from '@config/fiats';
+import { getFiat } from '@config/fiats';
 
 import { DashboardPanel } from './DashboardPanel';
 import { default as Currency } from './Currency';
@@ -555,9 +555,8 @@ const buildAccountTable = (
         <CurrencyContainer
           key={index}
           amount={total.toString()}
-          symbol={getFiatObj(settings).symbol}
-          prefix={getFiatObj(settings).prefix}
-          code={getFiatObj(settings).code}
+          symbol={getFiat(settings).symbol}
+          code={getFiat(settings).code}
           decimals={2}
         />
       ];

@@ -6,7 +6,7 @@ import { Currency } from '@components';
 import { TSymbol } from '@types';
 import { translateRaw } from '@translations';
 import { SettingsContext } from '@services';
-import { getFiatObj } from '@config/fiats';
+import { getFiat } from '@config/fiats';
 
 interface Props {
   amount: string;
@@ -42,7 +42,7 @@ function TransactionValueDisplay({ amount, ticker, fiatAsset }: Props) {
           <Currency
             amount={fiatAsset.exchangeRate}
             symbol={fiatAsset.ticker}
-            code={getFiatObj(settings).code}
+            code={getFiat(settings).code}
             decimals={2}
           />
         </Typography>

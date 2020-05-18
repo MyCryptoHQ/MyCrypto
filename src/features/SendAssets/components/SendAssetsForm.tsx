@@ -72,7 +72,7 @@ import { ProtectTxUtils, ProtectTxError } from '@features/ProtectTransaction';
 import { ProtectTxShowError, ProtectTxButton } from '@features/ProtectTransaction/components';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { useEffectOnce } from '@vendor';
-import { getFiatObj } from '@config/fiats';
+import { getFiat } from '@config/fiats';
 
 import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
 import './SendAssetsForm.scss';
@@ -515,9 +515,9 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                       values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider
                     }
                     fiatAsset={{
-                      fiat: getFiatObj(settings).code,
+                      fiat: getFiat(settings).code,
                       rate: (getAssetRate(baseAsset || undefined) || 0).toString(),
-                      symbol: getFiatObj(settings).symbol
+                      symbol: getFiat(settings).symbol
                     }}
                   />
                 </label>

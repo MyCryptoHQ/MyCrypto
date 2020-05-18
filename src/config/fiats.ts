@@ -7,46 +7,39 @@ interface FiatObject {
 export const USD = {
   code: 'USD',
   name: 'US Dollars',
-  symbol: '$' as TSymbol,
-  prefix: true
+  symbol: '$' as TSymbol
 };
 export const EUR = {
   code: 'EUR',
   name: 'Euros',
-  symbol: '€' as TSymbol,
-  prefix: true
+  symbol: '€' as TSymbol
 };
 export const GBP = {
   code: 'GBP',
   name: 'British Pounds',
-  symbol: '£' as TSymbol,
-  prefix: true
+  symbol: '£' as TSymbol
 };
 export const RUB = {
   code: 'RUB',
   name: 'Rubles',
-  symbol: '₽' as TSymbol,
-  prefix: true
+  symbol: '₽' as TSymbol
 };
 export const INR = {
   code: 'INR',
   name: 'Rupee',
-  symbol: '₹' as TSymbol,
-  prefix: true
+  symbol: '₹' as TSymbol
 };
 export const CNY = {
   code: 'CNY',
   name: 'Yuan',
-  symbol: '¥' as TSymbol,
-  prefix: true
+  symbol: '¥' as TSymbol
 };
 export const TRY = {
   code: 'TRY',
   name: 'Turkish Lira',
-  symbol: '₺' as TSymbol,
-  prefix: true
+  symbol: '₺' as TSymbol
 };
 
 export const Fiats: FiatObject = { USD, EUR, GBP, RUB, INR, CNY, TRY };
 
-export const getFiatObj = (settings: ISettings) => Fiats[settings.fiatCurrency];
+export const getFiat = (settings: ISettings) => Fiats[settings.fiatCurrency];
