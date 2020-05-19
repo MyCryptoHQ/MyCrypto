@@ -34,7 +34,8 @@ import {
   ITxHash,
   IFailedTxReceipt,
   ISuccessfulTxReceipt,
-  ITxReceipt
+  ITxReceipt,
+  ITxHistoryStatus
 } from '@types';
 
 export const constructTxReceiptFromTransactionResponse = (txResponse: TransactionResponse) => (
@@ -42,7 +43,7 @@ export const constructTxReceiptFromTransactionResponse = (txResponse: Transactio
   txConfig: ITxConfig,
   assets: ExtendedAsset[],
   txHash?: ITxHash
-) => (stage: ITxStatus): ITxReceipt => {
+) => (status: ITxStatus.PENDING): IPendingTxReceipt => {
   const useTxResponse = txResponse && !isEmpty(txResponse) && txResponse !== null;
 
   const to = useTxResponse ? txResponse.to : txConfig.rawTransaction.to;
@@ -56,18 +57,18 @@ export const constructTxReceiptFromTransactionResponse = (txResponse: Transactio
     asset: contractAsset || txConfig.asset,
     baseAsset: baseAsset || txConfig.baseAsset,
     hash: txHash || (txResponse.hash! as ITxHash),
-    from: txConfig.from,
-    receiverAddress: txConfig.receiverAddress,
+    from: txConfig.from as TAddress,
+    receiverAddress: txConfig.receiverAddress as TAddress,
     amount: contractAsset
       ? fromTokenBase(ERC20.transfer.decodeInput(data)._value, contractAsset.decimal)
       : fromWei(Wei(hexWeiToString(value.toHexString())), 'ether').toString(),
-    to: contractAsset ? ERC20.transfer.decodeInput(data)._to : to,
+    to: (contractAsset ? ERC20.transfer.decodeInput(data)._to : to) as TAddress,
     nonce: useTxResponse ? txResponse.nonce.toString() : txConfig.rawTransaction.nonce,
     gasLimit: useTxResponse ? txResponse.gasLimit : bigNumberify(txConfig.rawTransaction.gasLimit),
     gasPrice: useTxResponse ? txResponse.gasPrice : bigNumberify(txConfig.rawTransaction.gasPrice),
     data,
     value,
-    stage,
+    status,
     txType,
 
     blockNumber: 0,
@@ -79,20 +80,19 @@ export const constructTxReceiptFromTransactionReceipt = (txReceipt: TransactionR
   txType: ITxType,
   txConfig: ITxConfig,
   assets: ExtendedAsset[],
-  stage?: ITxStatus
+  status: ITxHistoryStatus
 ): ITxReceipt => {
   const contractAsset = getAssetByContractAndNetwork(
     txConfig.rawTransaction.to,
     txConfig.network
   )(assets);
   const baseAsset = getBaseAssetByNetwork({ network: txConfig.network, assets });
-  const transactionStatus = txReceipt.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
   return {
     asset: contractAsset || txConfig.asset,
     baseAsset: baseAsset || txConfig.baseAsset,
     hash: txReceipt.transactionHash! as ITxHash,
-    from: txConfig.from,
-    receiverAddress: txConfig.receiverAddress,
+    from: txConfig.from as TAddress,
+    receiverAddress: txConfig.receiverAddress as TAddress,
     value: bigNumberify(txConfig.rawTransaction.value),
     amount: contractAsset
       ? fromTokenBase(
@@ -100,14 +100,14 @@ export const constructTxReceiptFromTransactionReceipt = (txReceipt: TransactionR
           contractAsset.decimal
         )
       : fromWei(Wei(hexWeiToString(txConfig.rawTransaction.value)), 'ether').toString(),
-    to: contractAsset
+    to: (contractAsset
       ? ERC20.transfer.decodeInput(txConfig.rawTransaction.data)._to
-      : txConfig.rawTransaction.to,
+      : txConfig.rawTransaction.to) as TAddress,
     nonce: txConfig.rawTransaction.nonce,
     gasLimit: bigNumberify(txConfig.rawTransaction.gasLimit),
     gasPrice: bigNumberify(txConfig.rawTransaction.gasPrice),
     data: txConfig.rawTransaction.data,
-    stage: stage || transactionStatus,
+    status,
     txType,
 
     blockNumber: 0,
@@ -120,21 +120,20 @@ export const constructPendingTxReceipt = (txResponse: TransactionResponse) => (
   txConfig: ITxConfig,
   assets: ExtendedAsset[],
   txHash?: ITxHash
-): IPendingTxReceipt => {
-  return constructTxReceiptFromTransactionResponse(txResponse)(txType, txConfig, assets, txHash)(
+): IPendingTxReceipt =>
+  constructTxReceiptFromTransactionResponse(txResponse)(txType, txConfig, assets, txHash)(
     ITxStatus.PENDING
   );
-};
 
 export const updateFinishedPendingTxReceipt = (txResponse: TransactionResponse) => (
   previousTxReceipt: IPendingTxReceipt,
-  newStage: ITxStatus,
+  newStatus: ITxStatus.FAILED | ITxStatus.SUCCESS,
   timestamp?: number,
   blockNumber?: number
 ): IFailedTxReceipt | ISuccessfulTxReceipt => {
   return {
     ...previousTxReceipt,
-    stage: newStage,
+    status: newStatus,
     timestamp: timestamp || txResponse.timestamp || 0,
     blockNumber: blockNumber || txResponse.blockNumber || 0
   };

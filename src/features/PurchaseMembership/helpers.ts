@@ -9,7 +9,8 @@ import {
   ITxType,
   ITxHash,
   TAddress,
-  IPendingTxReceipt
+  IPendingTxReceipt,
+  ITxStatus
 } from '@types';
 import {
   inputValueToHex,
@@ -100,16 +101,15 @@ export const makePendingTxReceiptFromTransaction = (
   membershipSelected: IMembershipConfig,
   txType: ITxType
 ): IPendingTxReceipt => {
-  const stage = tx.status;
   const txConfig = makeTxConfigFromTransaction(tx.txRaw, account, membershipSelected);
   return {
-    receiverAddress: txConfig.receiverAddress,
+    receiverAddress: txConfig.receiverAddress as TAddress,
     amount: txConfig.amount,
     data: tx.txRaw.data,
 
     gasPrice: bigNumberify(tx.txRaw.gasPrice),
     gasLimit: bigNumberify(tx.txRaw.gasLimit),
-    to: tx.txRaw.to,
+    to: tx.txRaw.to as TAddress,
     from: tx.txRaw.from as TAddress,
     value: bigNumberify(tx.txRaw.value || txConfig.value),
     nonce: txConfig.nonce,
@@ -119,6 +119,6 @@ export const makePendingTxReceiptFromTransaction = (
 
     hash,
     txType,
-    stage
+    status: ITxStatus.PENDING
   };
 };

@@ -4,7 +4,7 @@ import pick from 'ramda/src/pick';
 import { translateRaw } from '@translations';
 import { AssetContext } from '@services';
 import { TxReceipt, MultiTxReceipt } from '@components/TransactionFlow';
-import { StoreAccount, ITxType } from '@types';
+import { StoreAccount, ITxType, ITxStatus } from '@types';
 import { TxParcel } from '@utils/useTxMulti/types';
 import { constructTxReceiptFromTransactionReceipt } from '@utils/transaction';
 
@@ -38,15 +38,28 @@ export default function SwapTransactionReceipt({
       assetPair.fromAmount.toString()
     );
     const txType = idx === transactions.length - 1 ? ITxType.PURCHASE_MEMBERSHIP : ITxType.APPROVAL;
-    return {
-      txReceipt: constructTxReceiptFromTransactionReceipt(tx.txReceipt!)(
-        txType,
-        txConfig,
-        userAssets,
-        tx.status
-      ),
-      txConfig
-    };
+    if (!tx.txReceipt) {
+      return {
+        txReceipt: constructTxReceiptFromTransactionReceipt(tx.txReceipt!)(
+          txType,
+          txConfig,
+          account.assets,
+          ITxStatus.PENDING
+        ),
+        txConfig
+      };
+    } else {
+      const status = tx.txReceipt.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
+      return {
+        txReceipt: constructTxReceiptFromTransactionReceipt(tx.txReceipt)(
+          txType,
+          txConfig,
+          account.assets,
+          status
+        ),
+        txConfig
+      };
+    }
   });
 
   const txReceipts = txItems.map(({ txReceipt }) => txReceipt);

@@ -20,7 +20,6 @@ import {
   IAccount,
   WalletId,
   Asset,
-  ITxReceipt,
   NetworkId,
   AddressBook,
   ITxType,
@@ -264,7 +263,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     let isMounted = true;
     // This interval is used to poll for status of txs.
     const txStatusLookupInterval = setInterval(() => {
-      pendingTransactions.forEach((pendingTxReceipt: ITxReceipt) => {
+      pendingTransactions.forEach((pendingTxReceipt) => {
         const network = getNetworkById(pendingTxReceipt.asset.networkId);
         // If network is not found in the pendingTransactionObject, we cannot continue.
         if (!network) return;

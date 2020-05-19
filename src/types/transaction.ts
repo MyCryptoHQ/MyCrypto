@@ -5,7 +5,8 @@ import { BigNumber } from 'ethers/utils';
 import { Wei, Address } from '@services/EthService';
 
 import { Asset } from './asset';
-import { ITxType, ITxStatus } from './transactionFlow';
+import { ITxType, ITxStatus, ITxHistoryStatus } from './transactionFlow';
+import { TAddress } from './address';
 
 // By only dealing with Buffers / BN, dont have to mess around with cleaning strings
 export interface ITransaction {
@@ -50,38 +51,42 @@ export type ITxSigned = Brand<Uint8Array, 'TxSigned'>;
 export type ITxReceipt = IPendingTxReceipt | IFailedTxReceipt | ISuccessfulTxReceipt;
 
 export interface IStandardTxReceipt {
-  asset: Asset;
-  baseAsset: Asset;
-  txType: ITxType;
-  stage: ITxStatus;
+  readonly asset: Asset;
+  readonly baseAsset: Asset;
+  readonly txType: ITxType;
+  readonly status: ITxHistoryStatus;
 
-  receiverAddress: string;
-  amount: string;
-  data: string;
+  readonly receiverAddress: TAddress;
+  readonly amount: string;
+  readonly data: string;
 
-  gasPrice: BigNumber;
-  gasLimit: BigNumber;
-  to: string;
-  from: string;
-  value: BigNumber;
-  nonce: string;
-  hash: ITxHash;
+  readonly gasPrice: BigNumber;
+  readonly gasLimit: BigNumber;
+  readonly to: TAddress;
+  readonly from: TAddress;
+  readonly value: BigNumber;
+  readonly nonce: string;
+  readonly hash: ITxHash;
+  readonly blockNumber?: number;
+  readonly timestamp?: number;
 }
 
-export interface ITxReceiptConstructionObject {
-  txHash: ITxHash;
+export interface IPendingTxReceipt extends Omit<IStandardTxReceipt, 'status'> {
+  readonly status: ITxStatus.PENDING;
 }
 
-export type IPendingTxReceipt = IStandardTxReceipt;
-
-export interface ISuccessfulTxReceipt extends IStandardTxReceipt {
-  blockNumber: number;
-  timestamp: number;
+export interface ISuccessfulTxReceipt
+  extends Omit<IStandardTxReceipt, 'status' | 'blockNumber' | 'timestamp'> {
+  readonly status: ITxStatus.SUCCESS;
+  readonly blockNumber: number;
+  readonly timestamp: number;
 }
 
-export interface IFailedTxReceipt extends IStandardTxReceipt {
-  blockNumber: number;
-  timestamp: number;
+export interface IFailedTxReceipt
+  extends Omit<IStandardTxReceipt, 'status' | 'blockNumber' | 'timestamp'> {
+  readonly status: ITxStatus.FAILED;
+  readonly blockNumber: number;
+  readonly timestamp: number;
 }
 
 /* MM - ETH

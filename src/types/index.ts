@@ -71,14 +71,14 @@ export {
   IStandardTxReceipt,
   IFailedTxReceipt,
   ISuccessfulTxReceipt,
-  IPendingTxReceipt,
-  ITxReceiptConstructionObject
+  IPendingTxReceipt
 } from './transaction';
 export {
   ISignedTx,
   ITxObject,
   ITxConfig,
   ITxStatus,
+  ITxHistoryStatus,
   ITxType,
   IFormikFields,
   ISignComponentProps,

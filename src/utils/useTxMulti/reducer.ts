@@ -3,7 +3,7 @@ import adjust from 'ramda/src/adjust';
 import mergeLeft from 'ramda/src/mergeLeft';
 
 import { getUUID } from '@utils';
-import { ITxStatus, ITxObject, ITxReceiptConstructionObject } from '@types';
+import { ITxStatus, ITxObject, ITxHash } from '@types';
 
 import { ActionTypes, TxMultiState, TxMultiAction } from './types';
 
@@ -83,7 +83,7 @@ export function TxMultiReducer(state: TxMultiState, action: TxMultiAction): TxMu
       };
     }
     case ActionTypes.SEND_TX_SUCCESS: {
-      const { txHash }: ITxReceiptConstructionObject = payload;
+      const { txHash }: { txHash: ITxHash } = payload;
       const transactions = adjust(
         state._currentTxIdx,
         mergeLeft({ txHash, status: ITxStatus.BROADCASTED }),

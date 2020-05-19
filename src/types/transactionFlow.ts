@@ -98,6 +98,8 @@ export type SigningComponents = {
   readonly [k in WalletId]: React.ComponentType<ISignComponentProps> | null;
 };
 
+export type ITxHistoryStatus = ITxStatus.PENDING | ITxStatus.SUCCESS | ITxStatus.FAILED;
+
 export enum ITxStatus {
   SUCCESS = 'SUCCESS',
   FAILED = 'FAILED',
