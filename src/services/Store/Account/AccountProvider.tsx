@@ -7,7 +7,7 @@ import isEmpty from 'ramda/src/isEmpty';
 import eqBy from 'ramda/src/eqBy';
 import prop from 'ramda/src/prop';
 
-import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services/ApiService/Analytics';
+import { ANALYTICS_CATEGORIES } from '@services/ApiService/Analytics';
 
 import {
   IRawAccount,
@@ -26,6 +26,7 @@ import { DataContext } from '../DataManager';
 import { SettingsContext } from '../Settings';
 import { getAccountByAddressAndNetworkName } from './helpers';
 import { getAllTokensBalancesOfAccount } from '../BalanceService';
+import { useAnalytics } from '@utils';
 
 export interface IAccountContext {
   accounts: IAccount[];
@@ -46,6 +47,10 @@ export const AccountProvider: React.FC = ({ children }) => {
   const { createActions, accounts } = useContext(DataContext);
   const { addAccountToFavorites } = useContext(SettingsContext);
   const model = createActions(LSKeys.ACCOUNTS);
+  const trackTxHistory = useAnalytics({
+    category: ANALYTICS_CATEGORIES.TX_HISTORY,
+    actionName: 'Tx Made'
+  });
 
   const state: IAccountContext = {
     accounts,
@@ -61,9 +66,11 @@ export const AccountProvider: React.FC = ({ children }) => {
         'stage' in newTxWithoutNetwork &&
         [ITxStatus.SUCCESS, ITxStatus.FAILED].includes(newTxWithoutNetwork.stage)
       ) {
-        AnalyticsService.instance.track(ANALYTICS_CATEGORIES.TX_HISTORY, `Tx Made`, {
-          txType: (newTxWithoutNetwork && newTxWithoutNetwork.txType) || ITxType.UNKNOWN,
-          txStatus: newTxWithoutNetwork.stage
+        trackTxHistory({
+          eventParams: {
+            txType: (newTxWithoutNetwork && newTxWithoutNetwork.txType) || ITxType.UNKNOWN,
+            txStatus: newTxWithoutNetwork.stage
+          }
         });
       }
       const newAccountData = {

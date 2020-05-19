@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { AnalyticsService, ANALYTICS_CATEGORIES, SettingsContext } from '@services';
+import { ANALYTICS_CATEGORIES, SettingsContext } from '@services';
 import { languages } from '@config';
 import { translateRaw } from '@translations';
+import { useAnalytics } from '@utils';
 
 const LanguagesList = styled.ul`
   flex-grow: 1;
@@ -37,22 +38,31 @@ const handleLanguageSelect = (
 ) => {
   if (code !== languageSelection) {
     changeLanguage(code);
-    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.SIDEBAR, 'Language changed', {
-      lang: code
-    });
     location.reload(); // ToDo: Fix this to reload. There's an issue with nested settings for this i think.
   }
 };
 
 function LanguageSelect() {
   const { language, updateLanguageSelection } = useContext(SettingsContext);
+  const trackLangChange = useAnalytics({
+    category: ANALYTICS_CATEGORIES.SIDEBAR,
+    actionName: 'Language changed'
+  });
+
   return (
     <LanguagesList>
       {Object.entries(languages).map(([code, languageString]: [string, string]) => (
         <Language
           isSelected={language === code}
           key={code}
-          onClick={() => handleLanguageSelect(code, language, updateLanguageSelection)}
+          onClick={() => {
+            trackLangChange({
+              eventParams: {
+                lang: code
+              }
+            });
+            handleLanguageSelect(code, language, updateLanguageSelection);
+          }}
         >
           {languageString}
         </Language>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Panel, Button, Icon, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 import semver from 'semver';
@@ -6,8 +6,8 @@ import semver from 'semver';
 import Modal from './Modal';
 import { BREAK_POINTS, COLORS } from '@theme';
 import { GITHUB_RELEASE_NOTES_URL, OS, VERSION as currentVersion } from '@config';
-import { getFeaturedOS } from '@utils';
-import { AnalyticsService, ANALYTICS_CATEGORIES, GithubService } from '@services/ApiService';
+import { getFeaturedOS, useAnalytics } from '@utils';
+import { ANALYTICS_CATEGORIES, GithubService } from '@services/ApiService';
 import translate from '@translations';
 
 // Legacy
@@ -127,78 +127,104 @@ const OSNames: { [key: string]: string } = {
 
 const featuredOS = getFeaturedOS();
 
-interface State {
-  isOpen: boolean;
-  OSName: string;
+interface Props {
+  isOpen?: boolean;
+  OSName?: string;
   newVersion?: string;
   newVersionUrl?: string;
   isCritical?: boolean;
 }
 
-export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
-  public state: State = {
-    isOpen: false,
-    OSName: OSNames[featuredOS]
-  };
+const NewAppReleaseModal: FC<Props> = (props) => {
+  const [state, setState] = useState<Props>({
+    isOpen: props.isOpen || false,
+    OSName: props.OSName || OSNames[featuredOS],
+    newVersion: props.newVersion || '',
+    newVersionUrl: props.newVersionUrl || '',
+    isCritical: props.isCritical || false
+  });
+  const trackNowRightNow = useAnalytics({
+    category: ANALYTICS_CATEGORIES.UPDATE_DESKTOP,
+    actionName: 'Not Right Now button clicked'
+  });
+  const trackGetNewVersion = useAnalytics({
+    category: ANALYTICS_CATEGORIES.UPDATE_DESKTOP,
+    actionName: 'Get New Version button clicked'
+  });
 
-  public async componentDidMount() {
-    try {
-      const releasesInfo = await GithubService.instance.getReleasesInfo();
-      const { version: newVersion, name, releaseUrls } = releasesInfo;
+  useEffect(() => {
+    (async () => {
+      try {
+        const releasesInfo = await GithubService.instance.getReleasesInfo();
+        const { version: newVersion, name, releaseUrls } = releasesInfo;
 
-      const isCritical = name.toLowerCase().includes('[critical]');
-      const newVersionUrl = releaseUrls[featuredOS];
-      if (semver.lt(currentVersion, newVersion)) {
-        this.setState({
-          isOpen: true,
-          newVersion,
-          newVersionUrl,
-          isCritical
-        });
+        const isCritical = name.toLowerCase().includes('[critical]');
+        const newVersionUrl = releaseUrls[featuredOS];
+        if (semver.lt(currentVersion, newVersion)) {
+          setState((preState) => ({
+            ...preState,
+            isOpen: true,
+            newVersion,
+            newVersionUrl,
+            isCritical
+          }));
+        }
+      } catch (err) {
+        console.error('Failed to fetch latest release from GitHub:', err);
       }
-    } catch (err) {
-      console.error('Failed to fetch latest release from GitHub:', err);
-    }
-  }
+    })();
+  }, [setState]);
 
-  public render() {
-    const { isOpen, isCritical } = this.state;
+  const onClose = useCallback(() => {
+    setState((prevState) => ({
+      ...prevState,
+      isOpen: false
+    }));
+    trackNowRightNow({
+      eventParams: {
+        current_version: currentVersion,
+        new_version: state.newVersion || '',
+        os: state.OSName || ''
+      }
+    });
+  }, [state, trackNowRightNow]);
 
-    return (
-      isOpen && (
-        <Modal>
-          <MainPanel>{isCritical ? this.getCriticalModal() : this.getNonCriticalModal()}</MainPanel>
-        </Modal>
-      )
-    );
-  }
+  const downloadRelease = useCallback(() => {
+    window.open(state.newVersionUrl, '_self');
+    trackGetNewVersion({
+      eventParams: {
+        current_version: currentVersion,
+        new_version: state.newVersion || '',
+        os: state.OSName || ''
+      }
+    });
+  }, [state]);
 
-  private getNonCriticalModal = () => {
-    const { OSName, newVersion } = this.state;
-
+  const getNonCriticalModal = useCallback(() => {
     return (
       <>
-        <CloseButton basic={true} onClick={this.onClose}>
+        <CloseButton basic={true} onClick={onClose}>
           <img src={closeIcon} alt="Close" />
         </CloseButton>
         <UpdateImg src={updateIcon} />
         <Header as="h2">{translate('APP_UPDATE_TITLE')}</Header>
         <Description>{translate('APP_UPDATE_BODY')}</Description>
         <ActionsWrapper>
-          <SecondaryActionButton secondary={true} onClick={this.onClose}>
+          <SecondaryActionButton secondary={true} onClick={onClose}>
             {translate('APP_UPDATE_CANCEL')}
           </SecondaryActionButton>
-          <ActionButton onClick={this.downloadRelease}>
-            {translate('APP_UPDATE_CONFIRM', { $osName: OSName, $appVersion: `v${newVersion}` })}
+          <ActionButton onClick={downloadRelease}>
+            {translate('APP_UPDATE_CONFIRM', {
+              $osName: state.OSName,
+              $appVersion: `v${state.newVersion}`
+            })}
           </ActionButton>
         </ActionsWrapper>
       </>
     );
-  };
+  }, [state, onClose, downloadRelease]);
 
-  private getCriticalModal = () => {
-    const { OSName, newVersion } = this.state;
-
+  const getCriticalModal = useCallback(() => {
     return (
       <>
         <UpdateImg src={updateImportantIcon} />
@@ -213,31 +239,24 @@ export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
           </a>
         </ReleaseLink>
         <ActionsWrapper marginTop="41px">
-          <ActionButton onClick={this.downloadRelease}>
-            {translate('APP_UPDATE_CONFIRM', { $osName: OSName, $appVersion: `v${newVersion}` })}
+          <ActionButton onClick={downloadRelease}>
+            {translate('APP_UPDATE_CONFIRM', {
+              $osName: state.OSName,
+              $appVersion: `v${state.newVersion}`
+            })}
           </ActionButton>
         </ActionsWrapper>
       </>
     );
-  };
+  }, [state, downloadRelease]);
 
-  private onClose = () => {
-    const { OSName, newVersion } = this.state;
-    this.setState({ isOpen: false });
-    AnalyticsService.instance.track(
-      ANALYTICS_CATEGORIES.UPDATE_DESKTOP,
-      'Not Right Now button clicked',
-      { current_version: currentVersion, new_version: newVersion, os: OSName }
-    );
-  };
+  return state.isOpen ? (
+    <Modal>
+      <MainPanel>{state.isCritical ? getCriticalModal() : getNonCriticalModal()}</MainPanel>
+    </Modal>
+  ) : (
+    <></>
+  );
+};
 
-  private downloadRelease = () => {
-    const { OSName, newVersion, newVersionUrl } = this.state;
-    window.open(newVersionUrl, '_self');
-    AnalyticsService.instance.track(
-      ANALYTICS_CATEGORIES.UPDATE_DESKTOP,
-      'Get New Version button clicked',
-      { current_version: currentVersion, new_version: newVersion, os: OSName }
-    );
-  };
-}
+export default NewAppReleaseModal;

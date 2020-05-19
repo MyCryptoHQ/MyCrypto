@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
@@ -6,9 +6,10 @@ import translate from '@translations';
 import { FormDataActionType as ActionType } from '../types';
 import { FormData, NetworkId } from '@types';
 import { NetworkSelectDropdown } from '@components';
-import { ANALYTICS_CATEGORIES, AnalyticsService } from '@services';
+import { ANALYTICS_CATEGORIES } from '@services';
 import { NetworkContext } from '@services/Store';
 import { SPACING } from '@theme';
+import { useAnalytics } from '@utils';
 
 const NetworkForm = styled.div`
   margin-top: ${SPACING.BASE};
@@ -37,13 +38,18 @@ interface Props {
 function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
   const { networks } = useContext(NetworkContext);
   const [network, setNetwork] = useState<NetworkId>(formData.network);
+  const trackSelectNetwork = useAnalytics({
+    category: ANALYTICS_CATEGORIES.SELECT_NETWORK
+  });
 
   const onSubmit = () => {
     formDispatch({
       type: ActionType.SELECT_NETWORK,
       payload: { network }
     });
-    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.SELECT_NETWORK, network);
+    trackSelectNetwork({
+      actionName: network
+    });
     goToNextStep();
   };
 

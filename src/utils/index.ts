@@ -64,3 +64,4 @@ export { default as useScreenSize } from './useScreenSize';
 export { sanitizeDecimalSeparator } from './sanitizeDecimalSeparator';
 export { trimEllipsis } from './trimEllipsis';
 export * from './encryption';
+export { default as useAnalytics } from './useAnalytics';

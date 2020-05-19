@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { SelectLanguage } from '@features/Drawer/screens';
 import { links } from './constants';
 import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from '@theme';
-import { AnalyticsService, ANALYTICS_CATEGORIES, SettingsContext } from '@services';
+import { ANALYTICS_CATEGORIES, SettingsContext } from '@services';
 import {
   ROUTE_PATHS,
   LATEST_NEWS_URL,
@@ -20,6 +20,7 @@ import translate from '@translations';
 // Legacy
 import logo from '@assets/images/logo-mycrypto.svg';
 import { ScreenLockContext } from '@features/ScreenLock/ScreenLockProvider';
+import { useAnalytics } from '@utils';
 
 const { BLUE_BRIGHT } = COLORS;
 
@@ -286,6 +287,10 @@ type Props = OwnProps & RouteComponentProps;
 export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, history }: Props) {
   const { language: languageSelection } = useContext(SettingsContext);
   const { startLockCountdown } = useContext(ScreenLockContext);
+  const trackHeader = useAnalytics({
+    category: ANALYTICS_CATEGORIES.HEADER
+  });
+
   const initVisibleMenuDropdowns: DropdownType = {
     'Manage Assets': false,
     Tools: false
@@ -329,13 +334,17 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
     });
 
   const openLatestNews = (): void => {
+    trackHeader({
+      actionName: 'Latest news clicked'
+    });
     window.open(LATEST_NEWS_URL, '_blank');
-    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HEADER, 'Latest news clicked');
   };
 
   const openHelpSupportPage = (): void => {
+    trackHeader({
+      actionName: 'Help & Support clicked'
+    });
     window.open(getKBHelpArticle(KB_HELP_ARTICLE.HOME), '_blank');
-    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HEADER, 'Help & Support clicked');
   };
 
   return (

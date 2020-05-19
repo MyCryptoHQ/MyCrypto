@@ -3,8 +3,8 @@ import moment from 'moment';
 
 import { DataContext } from '@services/Store';
 import { ExtendedNotification, LSKeys } from '@types';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
-import { generateUUID, notUndefined } from '@utils';
+import { ANALYTICS_CATEGORIES } from '@services';
+import { generateUUID, notUndefined, useAnalytics } from '@utils';
 import { notificationsConfigs } from './constants';
 
 export interface ProviderState {
@@ -15,13 +15,6 @@ export interface ProviderState {
 }
 
 export const NotificationsContext = createContext({} as ProviderState);
-
-function trackNotificationDisplayed(event: string) {
-  AnalyticsService.instance.track(
-    ANALYTICS_CATEGORIES.NOTIFICATION,
-    `${event} notification displayed`
-  );
-}
 
 function getCurrent(notifications: ExtendedNotification[]) {
   const visible = notifications
@@ -58,6 +51,9 @@ export const NotificationsProvider: React.FC = ({ children }) => {
   const { notifications, createActions } = useContext(DataContext);
   const [currentNotification, setCurrentNotification] = useState<ExtendedNotification>();
   const Notification = createActions(LSKeys.NOTIFICATIONS);
+  const trackNotificationDisplayed = useAnalytics({
+    category: ANALYTICS_CATEGORIES.NOTIFICATION
+  });
 
   useEffect(() => {
     // hide notifications that should be shown only once
@@ -76,7 +72,11 @@ export const NotificationsProvider: React.FC = ({ children }) => {
     const current = getCurrent(notifications);
     setCurrentNotification(current);
     if (current) {
-      trackNotificationDisplayed(notificationsConfigs[current.template].analyticsEvent);
+      trackNotificationDisplayed({
+        actionName: `${
+          notificationsConfigs[current.template].analyticsEvent
+        } notification displayed`
+      });
     }
   }, [notifications]);
 
