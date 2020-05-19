@@ -8,6 +8,8 @@ import { SPACING } from '@theme';
 import { Typography } from '@components';
 
 const Wrapper = styled.div`
+  position: absolute;
+  bottom: ${SPACING.BASE};
   display: flex;
   justify-content: center;
   align-items: center;
