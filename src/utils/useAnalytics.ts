@@ -21,7 +21,11 @@ const useAnalytics = ({
   triggerOnMount = false,
   trackPageViews = false,
   shouldTrack = () => true
-}: Props): ((callbackProps?: AnalyticCallbackProps) => Promise<any>) => {
+}: Props): ((
+  callbackProps?: AnalyticCallbackProps
+) =>
+  | ReturnType<typeof AnalyticsService.instance.track>
+  | ReturnType<typeof AnalyticsService.instance.trackPageVisit>) => {
   const triggerAnalytics = useCallback(
     async (
       {
