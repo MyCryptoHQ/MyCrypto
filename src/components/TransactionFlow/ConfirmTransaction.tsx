@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import Styled from 'styled-components';
 import BN from 'bn.js';
 
-import { AddressBookContext, StoreContext } from '@services/Store';
+import { AddressBookContext, StoreContext, SettingsContext } from '@services/Store';
 import { Amount, AssetIcon, Button } from '@components';
 import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from '@services/EthService';
 import { RatesContext } from '@services/RatesProvider';
@@ -11,6 +11,8 @@ import translate, { translateRaw } from '@translations';
 import { ZapSelectedBanner, DeFiZapLogo } from '@features/DeFiZap';
 import { BREAK_POINTS, SPACING, COLORS } from '@theme';
 import { MembershipSelectedBanner } from '@features/PurchaseMembership';
+import { IStepComponentProps, ITxType, ExtendedAddressBook, ISettings } from '@types';
+import { getFiat } from '@config/fiats';
 
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
@@ -21,7 +23,6 @@ import { ISender } from './types';
 import feeIcon from '@assets/images/icn-fee.svg';
 import sendIcon from '@assets/images/icn-send.svg';
 import walletIcon from '@assets/images/icn-wallet.svg';
-import { IStepComponentProps, ITxType, ExtendedAddressBook } from '@types';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
@@ -108,6 +109,7 @@ export default function ConfirmTransaction({
   const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
   const { getAssetRate } = useContext(RatesContext);
   const { accounts } = useContext(StoreContext);
+  const { settings } = useContext(SettingsContext);
   /* Get contact info */
   const recipientContact = getContactByAddressAndNetworkId(receiverAddress, network.id);
   const senderContact = getContactByAddressAndNetworkId(from, network.id);
@@ -119,6 +121,7 @@ export default function ConfirmTransaction({
 
   return (
     <ConfirmTransactionUI
+      settings={settings}
       assetRate={assetRate}
       baseAssetRate={baseAssetRate}
       senderContact={senderContact}
@@ -136,6 +139,7 @@ export default function ConfirmTransaction({
 }
 
 interface DataProps {
+  settings: ISettings;
   assetRate?: number;
   baseAssetRate?: number;
   recipientContact?: ExtendedAddressBook;
@@ -145,6 +149,7 @@ interface DataProps {
 }
 
 export const ConfirmTransactionUI = ({
+  settings,
   assetRate,
   baseAssetRate,
   senderContact,
@@ -237,7 +242,10 @@ export const ConfirmTransactionUI = ({
           <AssetIcon uuid={asset.uuid} size={'25px'} />
           <Amount
             assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
-            fiatValue={`$${convertToFiat(parseFloat(amount), assetRate).toFixed(2)}
+            fiatValue={`${getFiat(settings).symbol}${convertToFiat(
+              parseFloat(amount),
+              assetRate
+            ).toFixed(2)}
           `}
           />
         </AmountWrapper>
@@ -250,9 +258,10 @@ export const ConfirmTransactionUI = ({
           <AssetIcon uuid={asset.uuid} size={'25px'} />
           <Amount
             assetValue={`${maxTransactionFeeBase} ${baseAsset.ticker}`}
-            fiatValue={`$${convertToFiat(parseFloat(maxTransactionFeeBase), baseAssetRate).toFixed(
-              2
-            )}`}
+            fiatValue={`${getFiat(settings).symbol}${convertToFiat(
+              parseFloat(maxTransactionFeeBase),
+              baseAssetRate
+            ).toFixed(2)}`}
           />
         </AmountWrapper>
       </RowWrapper>
@@ -268,7 +277,10 @@ export const ConfirmTransactionUI = ({
               <AssetIcon uuid={asset.uuid} size={'25px'} />
               <Amount
                 assetValue={`${totalEtherEgress} ${asset.ticker}`}
-                fiatValue={`$${convertToFiat(parseFloat(totalEtherEgress), assetRate).toFixed(2)}`}
+                fiatValue={`${getFiat(settings).symbol}${convertToFiat(
+                  parseFloat(totalEtherEgress),
+                  assetRate
+                ).toFixed(2)}`}
               />
             </>
           ) : (
@@ -278,7 +290,7 @@ export const ConfirmTransactionUI = ({
                 assetValue={`${amount} ${asset.ticker}`}
                 bold={true}
                 baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
-                fiatValue={`$${(
+                fiatValue={`${getFiat(settings).symbol}${(
                   convertToFiat(parseFloat(amount), assetRate) +
                   convertToFiat(parseFloat(totalEtherEgress), baseAssetRate)
                 ).toFixed(2)}`}

@@ -2,6 +2,7 @@ export { fAssets } from './assets';
 export { fAccount } from './account';
 export { fNetwork } from './network';
 export { fTransaction } from './transaction';
+export { fSettings } from './settings';
 export { default as fTxConfig } from './txConfig.json';
 export { default as fTxConfigs } from './txConfigs.json';
 export { default as fTxReceipt } from './txReceipt.json';

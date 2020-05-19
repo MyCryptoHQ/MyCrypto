@@ -26,7 +26,8 @@ import {
   getBaseAssetByNetwork,
   getAccountsByAsset,
   StoreContext,
-  getAccountBalance
+  getAccountBalance,
+  SettingsContext
 } from '@services/Store';
 import {
   Asset,
@@ -71,6 +72,7 @@ import { ProtectTxUtils } from '@features/ProtectTransaction';
 import { ProtectTxShowError, ProtectTxButton } from '@features/ProtectTransaction/components';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { useEffectOnce } from '@vendor';
+import { getFiat } from '@config/fiats';
 
 import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
 import './SendAssetsForm.scss';
@@ -162,6 +164,7 @@ const QueryWarning: React.FC = () => (
 const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
   const { accounts, userAssets, networks, getAccount } = useContext(StoreContext);
   const { getAssetRate } = useContext(RatesContext);
+  const { settings } = useContext(SettingsContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
@@ -521,9 +524,9 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                       values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider
                     }
                     fiatAsset={{
-                      fiat: 'USD',
+                      fiat: getFiat(settings).code,
                       rate: (getAssetRate(baseAsset || undefined) || 0).toString(),
-                      symbol: '$'
+                      symbol: getFiat(settings).symbol
                     }}
                   />
                 </label>

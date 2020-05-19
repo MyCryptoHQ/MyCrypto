@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { fTxConfig, fTxReceipt, fAccount } from '@fixtures';
+import { fTxConfig, fTxReceipt, fAccount, fSettings } from '@fixtures';
 import { ITxStatus, ExtendedAddressBook, ITxType } from '@types';
 import { noOp } from '@utils';
 import { devContacts } from '@database/seed';
@@ -23,6 +23,7 @@ export default { title: 'TxReceipt' };
 export const transactionReceipt = () => (
   <div className="sb-container" style={{ maxWidth: '620px' }}>
     <TxReceiptUI
+      settings={fSettings}
       txStatus={txStatus}
       displayTxReceipt={fTxReceipt}
       timestamp={timestamp}
@@ -41,6 +42,7 @@ const zapSelected: IZapConfig = ZAPS_CONFIG[defaultZapId];
 export const transactionReceiptDeFiZap = () => (
   <div className="sb-container" style={{ maxWidth: '620px' }}>
     <TxReceiptUI
+      settings={fSettings}
       txStatus={txStatus}
       txType={ITxType.DEFIZAP}
       zapSelected={zapSelected}
@@ -59,6 +61,7 @@ export const transactionReceiptDeFiZap = () => (
 export const transactionReceiptMembership = () => (
   <div className="sb-container" style={{ maxWidth: '620px' }}>
     <TxReceiptUI
+      settings={fSettings}
       txReceipt={fTxReceipt}
       txConfig={fTxConfig}
       txType={ITxType.PURCHASE_MEMBERSHIP}

@@ -706,6 +706,8 @@
 		"SETTINGS_EXPORT_INFO": "Your MyCrypto settings file is ready.",
 		"SETTINGS_EXPORT_LABEL": "Export",
 		"SETTINGS_EXPORT_LEAVE": "Back To Settings",
+		"SETTINGS_FIAT_SELECTION_LABEL": "Native Currency",
+		"SETTINGS_FIAT_SELECTION_TOOLTIP": "The native currency that will be used to display various conversions, balances, and rates.",
 		"SETTINGS_GENERAL_LABEL": "General Settings",
 		"SETTINGS_HANDLING_LABEL": "MyCrypto Settings",
 		"SETTINGS_HEADING": "Settings",

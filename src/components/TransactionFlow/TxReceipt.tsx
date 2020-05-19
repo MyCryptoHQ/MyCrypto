@@ -17,7 +17,8 @@ import {
   IStepComponentProps,
   ITxType,
   TAddress,
-  ExtendedAddressBook
+  ExtendedAddressBook,
+  ISettings
 } from '@types';
 import { Amount, TimeElapsedCounter, AssetIcon, LinkOut } from '@components';
 import {
@@ -25,7 +26,8 @@ import {
   AccountContext,
   AssetContext,
   NetworkContext,
-  StoreContext
+  StoreContext,
+  SettingsContext
 } from '@services/Store';
 import { RatesContext } from '@services/RatesProvider';
 import {
@@ -43,6 +45,7 @@ import { ProtectTxUtils, ProtectTxContext } from '@features/ProtectTransaction';
 import { ProtectTxAbort } from '@features/ProtectTransaction/components';
 import { MembershipReceiptBanner } from '@features/PurchaseMembership';
 import { DeFiZapLogo } from '@features/DeFiZap';
+import { getFiat } from '@config/fiats';
 
 import { ISender } from './types';
 import { constructSenderFromTxConfig } from './helpers';
@@ -87,6 +90,7 @@ export default function TxReceipt({
   const { accounts } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
+  const { settings } = useContext(SettingsContext);
   const [txStatus, setTxStatus] = useState(ITxStatus.PENDING);
   const [displayTxReceipt, setDisplayTxReceipt] = useState<ITxReceipt | undefined>(txReceipt);
   const [blockNumber, setBlockNumber] = useState(0);
@@ -166,6 +170,7 @@ export default function TxReceipt({
 
   return (
     <TxReceiptUI
+      settings={settings}
       txConfig={txConfig}
       txReceipt={txReceipt}
       txType={txType}
@@ -191,6 +196,7 @@ export default function TxReceipt({
 }
 
 export interface TxReceiptDataProps {
+  settings: ISettings;
   txStatus: ITxStatus;
   timestamp: number;
   displayTxReceipt?: ITxReceipt;
@@ -208,6 +214,7 @@ export interface TxReceiptDataProps {
 }
 
 export const TxReceiptUI = ({
+  settings,
   txType,
   swapDisplay,
   txConfig,
@@ -346,7 +353,10 @@ export const TxReceiptUI = ({
             <AssetIcon uuid={asset.uuid} size={'24px'} />
             <Amount
               assetValue={`${parseFloat(assetAmount()).toFixed(6)} ${assetTicker()}`}
-              fiatValue={`$${convertToFiat(parseFloat(assetAmount()), assetRate()).toFixed(2)}
+              fiatValue={`${getFiat(settings).symbol}${convertToFiat(
+                parseFloat(assetAmount()),
+                assetRate()
+              ).toFixed(2)}
             `}
             />
           </div>

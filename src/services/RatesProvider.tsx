@@ -5,6 +5,7 @@ import { StoreContext, SettingsContext } from '@services/Store';
 import { PollingService } from '@workers';
 import { IRates, TTicker, Asset, StoreAsset, ReserveAsset } from '@types';
 import { notUndefined } from '@utils';
+import { Fiats } from '@config/fiats';
 
 import { DeFiReserveMapService } from './ApiService';
 
@@ -30,7 +31,6 @@ interface ReserveMappingListObject {
   [key: string]: ReserveMappingObject;
 }
 
-const DEFAULT_FIAT_PAIRS = ['USD', 'EUR'] as TTicker[];
 const DEFAULT_FIAT_RATE = 0;
 const POLLING_INTERVAL = 60000;
 
@@ -89,7 +89,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     worker.current = new PollingService(
-      buildAssetQueryUrl(geckoIds, DEFAULT_FIAT_PAIRS), // @TODO: More elegant conversion then `DEFAULT_FIAT_RATE`
+      buildAssetQueryUrl(geckoIds, Object.keys(Fiats)), // @TODO: More elegant conversion then `DEFAULT_FIAT_RATE`
       POLLING_INTERVAL,
       updateRates,
       (err) => console.debug('[RatesProvider]', err)
@@ -112,11 +112,17 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
     },
     getRate: (ticker: TTicker) => {
       // @ts-ignore until we find a solution for TS7053 error
-      return state.rates[ticker] ? state.rates[ticker].usd : DEFAULT_FIAT_RATE;
+      if (!state.rates[ticker]) return DEFAULT_FIAT_RATE;
+      return settings && settings.fiatCurrency
+        ? state.rates[ticker][settings.fiatCurrency.toLowerCase()]
+        : DEFAULT_FIAT_RATE;
     },
     getAssetRate: (asset: Asset) => {
       const uuid = asset.uuid;
-      return state.rates[uuid] ? state.rates[uuid].usd : DEFAULT_FIAT_RATE;
+      if (!state.rates[uuid]) return DEFAULT_FIAT_RATE;
+      return settings && settings.fiatCurrency
+        ? state.rates[uuid][settings.fiatCurrency.toLowerCase()]
+        : DEFAULT_FIAT_RATE;
     },
     getPoolAssetReserveRate: (uuid: string, assets: Asset[]) => {
       const reserveRateObject = reserveRateMapping[uuid];

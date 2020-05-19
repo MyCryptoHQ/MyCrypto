@@ -4,37 +4,46 @@ import { simpleRender } from 'test-utils';
 
 // New
 import SendAssets from '@features/SendAssets/SendAssets';
-import { StoreContext, AddressBookContext } from '@services/Store';
+import { StoreContext, AddressBookContext, SettingsContext } from '@services/Store';
 import { RatesContext } from '@services/RatesProvider';
+import { fSettings } from '@fixtures';
 
 /* Test components */
 describe('SendAssetsFlow', () => {
   const component = (path?: string) => (
     <MemoryRouter initialEntries={path ? [path] : undefined}>
-      <StoreContext.Provider
+      <SettingsContext.Provider
         value={
           ({
-            userAssets: [],
-            accounts: [],
-            getAccount: jest.fn(),
-            networks: []
+            settings: fSettings
           } as unknown) as any
         }
       >
-        <RatesContext.Provider
+        <StoreContext.Provider
           value={
             ({
-              getAssetRate: jest.fn()
+              userAssets: [],
+              accounts: [],
+              getAccount: jest.fn(),
+              networks: []
             } as unknown) as any
           }
         >
-          <AddressBookContext.Provider
-            value={({ addressBook: [], getContactByAddress: jest.fn() } as unknown) as any}
+          <RatesContext.Provider
+            value={
+              ({
+                getAssetRate: jest.fn()
+              } as unknown) as any
+            }
           >
-            <SendAssets />
-          </AddressBookContext.Provider>
-        </RatesContext.Provider>
-      </StoreContext.Provider>
+            <AddressBookContext.Provider
+              value={({ addressBook: [], getContactByAddress: jest.fn() } as unknown) as any}
+            >
+              <SendAssets />
+            </AddressBookContext.Provider>
+          </RatesContext.Provider>
+        </StoreContext.Provider>
+      </SettingsContext.Provider>
     </MemoryRouter>
   );
 

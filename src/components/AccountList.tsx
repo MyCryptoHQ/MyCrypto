@@ -5,7 +5,7 @@ import isNumber from 'lodash/isNumber';
 import cloneDeep from 'lodash/cloneDeep';
 
 import { translateRaw } from '@translations';
-import { ROUTE_PATHS, Fiats, IS_ACTIVE_FEATURE, getWalletConfig } from '@config';
+import { ROUTE_PATHS, IS_ACTIVE_FEATURE, getWalletConfig } from '@config';
 import {
   EthAddress,
   CollapsibleTable,
@@ -25,8 +25,10 @@ import {
   SettingsContext,
   AddressBookContext
 } from '@services/Store';
-import { DashboardPanel } from './DashboardPanel';
 import { RatesContext } from '@services';
+import { getFiat } from '@config/fiats';
+
+import { DashboardPanel } from './DashboardPanel';
 import { default as Currency } from './Currency';
 import IconArrow from './IconArrow';
 import Checkbox from './Checkbox';
@@ -553,8 +555,8 @@ const buildAccountTable = (
         <CurrencyContainer
           key={index}
           amount={total.toString()}
-          symbol={Fiats[settings.fiatCurrency].symbol}
-          prefix={Fiats[settings.fiatCurrency].prefix}
+          symbol={getFiat(settings).symbol}
+          code={getFiat(settings).code}
           decimals={2}
         />
       ];

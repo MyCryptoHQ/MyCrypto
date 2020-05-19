@@ -11,7 +11,12 @@ import {
 } from '@components';
 import { truncate, convertToFiat } from '@utils';
 import { ITxReceipt, ITxStatus, StoreAccount, Asset } from '@types';
-import { RatesContext, AddressBookContext, getLabelByAddressAndNetwork } from '@services';
+import {
+  RatesContext,
+  AddressBookContext,
+  getLabelByAddressAndNetwork,
+  SettingsContext
+} from '@services';
 import { translateRaw } from '@translations';
 import {
   getTxsFromAccount,
@@ -19,6 +24,8 @@ import {
   txIsPending,
   txIsSuccessful
 } from '@services/Store/helpers';
+import { COLORS } from '@theme';
+import { getFiat } from '@config/fiats';
 
 import NoTransactions from './NoTransactions';
 import TransactionLabel from './TransactionLabel';
@@ -27,7 +34,6 @@ import newWindowIcon from '@assets/images/icn-new-window.svg';
 import transfer from '@assets/images/transactions/transfer.svg';
 import inbound from '@assets/images/transactions/inbound.svg';
 import outbound from '@assets/images/transactions/outbound.svg';
-import { COLORS } from '@theme';
 
 interface Props {
   className?: string;
@@ -126,6 +132,7 @@ const makeTxIcon = (type: ITxType, asset: Asset) => {
 export default function RecentTransactionList({ accountsList, className = '' }: Props) {
   const { addressBook } = useContext(AddressBookContext);
   const { getAssetRate } = useContext(RatesContext);
+  const { settings } = useContext(SettingsContext);
   const noLabel = translateRaw('NO_LABEL');
   const transactions = accountsList.flatMap((account) => account.transactions);
   const accountTxs: ITxReceipt[] = getTxsFromAccount(accountsList).map((tx: ITxReceipt) => ({
@@ -168,7 +175,10 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           <Amount
             key={3}
             assetValue={`${parseFloat(amount).toFixed(4)} ${asset.ticker}`}
-            fiatValue={`$${convertToFiat(parseFloat(amount), getAssetRate(asset)).toFixed(2)}
+            fiatValue={`${getFiat(settings).symbol}${convertToFiat(
+              parseFloat(amount),
+              getAssetRate(asset)
+            ).toFixed(2)}
         `}
           />,
           <NewTabLink
