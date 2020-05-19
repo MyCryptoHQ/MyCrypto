@@ -226,8 +226,8 @@ export const ProtectTxReport: FC = () => {
           title: translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT'),
           content: (
             <>
-              <StepperDescText className="text-error">
-                {translateRaw('PROTECTED_TX_TIMELINE_MALICIOUS', {
+              <StepperDescText className="text-no-info">
+                {translateRaw('PROTECTED_TX_TIMELINE_NANSEN_TAGS', {
                   $tags: `"${labels.join('", "')}"`
                 })}
               </StepperDescText>
