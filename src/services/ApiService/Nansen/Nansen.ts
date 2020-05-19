@@ -4,11 +4,14 @@ import { NANSEN_API } from '@config';
 import { NansenServiceResponse } from './types';
 
 export default abstract class NansenService {
-  public static check = async (address: string) => {
-    const { data } = await NansenService.service
-      .post<NansenServiceResponse>('/', { address })
-      .catch();
-    return data as NansenServiceResponse | null;
+  public static check = async (address: string): Promise<NansenServiceResponse | null> => {
+    try {
+      const { data } = await NansenService.service.post<NansenServiceResponse>('/', { address });
+      return data;
+    } catch (e) {
+      console.debug('[Nansen]: Fetching data from Nansen failed: ', e);
+      return null;
+    }
   };
 
   private static service: AxiosInstance = ApiService.generateInstance({

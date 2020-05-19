@@ -1,25 +1,19 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import { Asset, ITxReceipt, Network, WalletId } from '@types';
-import {
-  GetBalanceResponse,
-  GetLastTxResponse,
-  CryptoScamDBInfoResponse,
-  CryptoScamDBNoInfoResponse,
-  CryptoScamDBService,
-  EtherscanService
-} from '@services/ApiService';
+import { GetBalanceResponse, GetLastTxResponse, EtherscanService } from '@services/ApiService';
 import { AssetContext, getAssetByUUID, StoreContext } from '@services/Store';
 import { useScreenSize } from '@utils';
 
 import { SendFormCallbackType } from './types';
 import { WALLETS_CONFIG } from '../../config';
+import { NansenService, NansenServiceEntry } from '@services/ApiService/Nansen';
 
 export interface ProtectTxState {
   stepIndex: number;
   protectTxShow: boolean;
   protectTxEnabled: boolean;
-  cryptoScamAddressReport: CryptoScamDBNoInfoResponse | CryptoScamDBInfoResponse | null;
+  nansenAddressReport: NansenServiceEntry | null;
   etherscanBalanceReport: GetBalanceResponse | null;
   etherscanLastTxReport: GetLastTxResponse | null;
   mainComponentDisabled: boolean;
@@ -52,7 +46,7 @@ export const protectTxProviderInitialState: ProtectTxState = {
   protectTxEnabled: false,
   receiverAddress: null,
   network: null,
-  cryptoScamAddressReport: null,
+  nansenAddressReport: null,
   etherscanBalanceReport: null,
   etherscanLastTxReport: null,
   asset: null,
@@ -81,25 +75,17 @@ const ProtectTxProvider: React.FC = ({ children }) => {
       if (!address) return Promise.reject();
 
       const [
-        cryptoScamAddressReportResponse,
+        nansenAddressReportResponse,
         etherscanBalanceReportResponse,
         etherscanLastTxReportResponse
-      ] = await Promise.all(
-        [
-          CryptoScamDBService.check(address),
-          EtherscanService.instance.getBalance(address, network!.id),
-          EtherscanService.instance.getLastTx(address, network!.id)
-        ].map((p) => p.catch((e) => e))
-      );
+      ] = await Promise.all([
+        NansenService.check(address).catch((e) => e),
+        EtherscanService.instance.getBalance(address, network!.id).catch((e) => e),
+        EtherscanService.instance.getLastTx(address, network!.id).catch((e) => e)
+      ]);
 
-      const cryptoScamAddressReport =
-        cryptoScamAddressReportResponse instanceof Error
-          ? {
-              input: address,
-              message: '',
-              success: false
-            }
-          : cryptoScamAddressReportResponse;
+      const nansenAddressReport =
+        nansenAddressReportResponse instanceof Error ? [] : nansenAddressReportResponse.page[0];
 
       const etherscanBalanceReport =
         etherscanBalanceReportResponse instanceof Error ? null : etherscanBalanceReportResponse;
@@ -117,7 +103,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
 
       setState((prevState: ProtectTxState) => ({
         ...prevState,
-        cryptoScamAddressReport,
+        nansenAddressReport,
         etherscanBalanceReport,
         etherscanLastTxReport
       }));
@@ -263,13 +249,13 @@ const ProtectTxProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     const isDisabled =
-      state.protectTxShow && !state.protectTxEnabled && state.cryptoScamAddressReport === null;
+      state.protectTxShow && !state.protectTxEnabled && state.nansenAddressReport === null;
 
     setState((prevState) => ({
       ...prevState,
       mainComponentDisabled: isDisabled
     }));
-  }, [state.protectTxShow, state.stepIndex, state.cryptoScamAddressReport, state.protectTxEnabled]);
+  }, [state.protectTxShow, state.stepIndex, state.nansenAddressReport, state.protectTxEnabled]);
 
   const providerState: ProtectTxContext = {
     state,

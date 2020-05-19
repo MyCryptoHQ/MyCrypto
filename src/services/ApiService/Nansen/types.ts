@@ -1,7 +1,7 @@
 import { TAddress } from '@types';
 
 export interface NansenServiceResponse {
-  page: NansenServiceEntry[];
+  page?: NansenServiceEntry[];
 }
 
 export interface NansenServiceEntry {

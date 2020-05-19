@@ -1,15 +1,12 @@
 import React, { FC, useCallback, useContext } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
-import upperFirst from 'lodash/upperFirst';
 
 import { Trans, translateRaw } from '@translations';
 import { fromWei, isValidETHAddress, Wei } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 import { CryptoScamDBBaseResponse, CryptoScamDBInfoResponse } from '@services/ApiService';
-import ProtectIconCheck from '@components/icons/ProtectIconCheck';
-import WizardIcon from '@components/icons/WizardIcon';
-import CloseIcon from '@components/icons/CloseIcon';
+import { ProtectIconCheck, WizardIcon, CloseIcon } from '@components/icons';
 import { ETHAddressExplorer } from '@config';
 import { EthAddress, LinkOut, VerticalStepper } from '@components';
 import { StepData } from '@components/VerticalStepper';
@@ -116,7 +113,7 @@ export const ProtectTxReport: FC = () => {
     state: {
       etherscanBalanceReport,
       etherscanLastTxReport,
-      cryptoScamAddressReport,
+      nansenAddressReport,
       asset,
       receiverAddress,
       isWeb3Wallet
@@ -184,14 +181,15 @@ export const ProtectTxReport: FC = () => {
   }, [etherscanLastTxReport]);
 
   const getTimeline = useCallback(() => {
-    if (!cryptoScamAddressReport) {
+    if (!nansenAddressReport) {
       return <div className="loading" />;
     }
 
-    const { success } = cryptoScamAddressReport;
     const steps: StepData[] = [];
+    const { label: labels } = nansenAddressReport;
+    const status = 'unknown'; // TODO: Change to decide based on labels
 
-    if (!success) {
+    if (labels.length === 0) {
       // No info for account
       steps.push({
         title: translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT'),
@@ -202,69 +200,38 @@ export const ProtectTxReport: FC = () => {
         )
       });
     } else {
-      const {
-        result: { status, entries }
-      } = cryptoScamAddressReport as CryptoScamDBInfoResponse;
+      // @ts-ignore
       if (status === 'blocked') {
-        // Malicious account
-        const accountTags = [...new Set(entries.map((e) => e.type))];
-        const accountComments = [
-          ...new Set(
-            entries.map((e) =>
-              upperFirst(
-                translateRaw('PROTECTED_TX_TIMELINE_COMMENT', {
-                  $reporter: e.reporter ? e.reporter : '',
-                  $description: e.description ? e.description : ''
-                })
-              )
-            )
-          )
-        ];
-
         steps.push({
           title: translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT'),
           content: (
             <>
               <StepperDescText className="text-error">
                 {translateRaw('PROTECTED_TX_TIMELINE_MALICIOUS', {
-                  $tags: `"${accountTags.join('", "')}"`
+                  $tags: `"${labels.join('", "')}"`
                 })}
               </StepperDescText>
-              {accountComments.map((c, i) => (
-                <StepperDescText key={i} className="text-error">
-                  <br />
-                  {c}
-                </StepperDescText>
-              ))}
             </>
           )
         });
+        // @ts-ignore
       } else if (status === 'whitelisted') {
         // Verified account
-        const accountComments = [
-          ...new Set(entries.map((e) => upperFirst(`${e.type}: ${e.description}`)))
-        ];
-
         steps.push({
           title: translateRaw('PROTECTED_TX_TIMELINE_KNOWN_ACCOUNT'),
-          content: (
-            <>
-              {accountComments.map((c, i) => (
-                <StepperDescText key={i} className="text-success">
-                  {c}
-                  <br />
-                </StepperDescText>
-              ))}
-            </>
-          )
+          content: ''
         });
       } else {
         steps.push({
           title: translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT'),
           content: (
-            <StepperDescText className="text-danger">
-              {translateRaw('PROTECTED_TX_TIMELINE_NOT_SURE_ABOUT_ADDRESS')}
-            </StepperDescText>
+            <>
+              <StepperDescText className="text-error">
+                {translateRaw('PROTECTED_TX_TIMELINE_MALICIOUS', {
+                  $tags: `"${labels.join('", "')}"`
+                })}
+              </StepperDescText>
+            </>
           )
         });
       }
@@ -278,7 +245,7 @@ export const ProtectTxReport: FC = () => {
         steps={[...steps, getAccountBalanceTimelineEntry(), getLastTxReportTimelineEntry()]}
       />
     );
-  }, [cryptoScamAddressReport, getAccountBalanceTimelineEntry]);
+  }, [nansenAddressReport, getAccountBalanceTimelineEntry]);
 
   const onHideModel = useCallback(
     (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
@@ -301,11 +268,11 @@ export const ProtectTxReport: FC = () => {
           <EthAddress address={receiverAddress} truncate={truncate} isCopyable={false} />
         </SEthAddress>
       )}
-      {cryptoScamAddressReport && (
+      {nansenAddressReport && (
         <h5 className="subtitle">{translateRaw('PROTECTED_TX_REPORT_SUBTITLE')}</h5>
       )}
       <div className="timeline">{getTimeline()}</div>
-      {cryptoScamAddressReport && (
+      {nansenAddressReport && receiverAddress && (
         <>
           <p className="view-comments">
             <Trans
@@ -318,9 +285,7 @@ export const ProtectTxReport: FC = () => {
                     fontSize={FONT_SIZE.BASE}
                     fontColor={COLORS.PURPLE}
                     underline={true}
-                    link={`${ETHAddressExplorer(
-                      (cryptoScamAddressReport as CryptoScamDBBaseResponse).input
-                    )}`}
+                    link={`${ETHAddressExplorer(receiverAddress)}`}
                     text="Etherscan"
                   />
                 )
