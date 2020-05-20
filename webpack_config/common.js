@@ -8,7 +8,6 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const config = require('./config');
-const { generateChunkName } = require('./utils');
 
 const IS_DEVELOPMENT = process.env.NODE_ENV !== 'production';
 
