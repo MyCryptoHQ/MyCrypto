@@ -13,6 +13,7 @@ import {
   PrivateRoute
 } from '@routing';
 import { COLORS, SPACING } from '@theme';
+import { AppLoading } from '@AppLoading';
 
 const layoutConfig = (path: string, isMobile: boolean): LayoutConfig => {
   switch (path) {
@@ -58,7 +59,7 @@ export const AppRoutes = () => {
         <DrawerProvider>
           <PageVisitsAnalytics>
             <DefaultHomeHandler>
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<AppLoading />}>
                 <Switch>
                   {/* To avoid fiddling with layout we provide a complete route to home */}
                   <LayoutWithLocation>
