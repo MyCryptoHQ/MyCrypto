@@ -26,7 +26,7 @@ export default function getWindow() {
     webPreferences: {
       devTools: true,
       nodeIntegration: false,
-      contextIsolation: false,
+      contextIsolation: true,
       sandbox: true,
       preload: path.join(__dirname, 'preload.js')
     }
