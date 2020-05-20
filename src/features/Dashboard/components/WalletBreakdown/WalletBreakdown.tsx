@@ -1,9 +1,9 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { translateRaw } from '@translations';
-import { AnalyticsService, ANALYTICS_CATEGORIES, RatesContext } from '@services';
+import { RatesContext } from '@services';
 import { SettingsContext, StoreContext } from '@services/Store';
 import { StoreAsset, TUuid } from '@types';
 import { weiToFloat, convertToFiatFromAsset } from '@utils';
@@ -57,23 +57,11 @@ const WalletBreakdownPanel = styled(Panel)`
   }
 `;
 
-let wasNumOfAccountsTracked = false;
-
 export function WalletBreakdown() {
   const [showBalanceDetailView, setShowBalanceDetailView] = useState(false);
   const { accounts, totals, currentAccounts } = useContext(StoreContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { getAssetRate } = useContext(RatesContext);
-
-  // Track number of accounts that user has only once per session
-  useEffect(() => {
-    if (!wasNumOfAccountsTracked) {
-      wasNumOfAccountsTracked = true;
-      AnalyticsService.instance.track(ANALYTICS_CATEGORIES.WALLET_BREAKDOWN, `User has accounts`, {
-        numOfAccounts: accounts.length
-      });
-    }
-  }, []);
 
   // Adds/updates an asset in array of balances, which are later displayed in the chart, balance list and in the secondary view
   const balances: Balance[] = totals(currentAccounts)

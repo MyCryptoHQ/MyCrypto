@@ -59,7 +59,7 @@ import { AccountContext, getDashboardAccounts } from './Account';
 import { SettingsContext } from './Settings';
 import { NetworkContext, getNetworkById } from './Network';
 import { findNextUnusedDefaultLabel, AddressBookContext } from './AddressBook';
-import { MyCryptoApiService } from '../ApiService';
+import { MyCryptoApiService, AnalyticsService, ANALYTICS_CATEGORIES } from '../ApiService';
 
 export interface CoinGeckoManifest {
   [uuid: string]: string;
@@ -234,6 +234,13 @@ export const StoreProvider: React.FC = ({ children }) => {
   };
 
   useEffectOnce(() => {
+    AnalyticsService.instance.track(
+      ANALYTICS_CATEGORIES.ROOT,
+      accounts.length === 0 ? 'New User' : 'Returning User',
+      {
+        visitStartAccountNumber: accounts.length
+      }
+    );
     scanForMemberships();
   });
 
