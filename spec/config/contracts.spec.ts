@@ -14,7 +14,7 @@ describe('Contracts JSON', () => {
         if (contract.address && !isValidETHAddress(contract.address)) {
           throw Error(`Contract '${contract.name}' has invalid address '${contract.address}'`);
         }
-        if (addressCollisionMap[contract.address]) {
+        if (contract.address && addressCollisionMap[contract.address]) {
           throw Error(
             `Contract '${contract.name}' has the same address as ${
               addressCollisionMap[contract.address]
