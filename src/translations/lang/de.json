@@ -682,6 +682,7 @@
 		"SEND_SIGNED": "Signierte Transaktion ",
 		"SEND_TRANS": "Sende Transaktion ",
 		"SETTINGS": "",
+		"SETTINGS_ACCOUNTS_TOOLTIP": "",
 		"SETTINGS_DANGER_ZONE": "",
 		"SETTINGS_DANGER_ZONE_TOOLTIP": "",
 		"SETTINGS_DB_RESET_ACTION": "",
