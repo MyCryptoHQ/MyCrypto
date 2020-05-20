@@ -3,14 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme/constants';
 import { translateRaw } from '@translations';
-
-const LoadingWrapper = styled.section`
-  display: flex;
-  flex: 1;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-`;
+import Layout from '@features/Layout/Layout';
 
 const DashboardPanelLoading = styled(DashboardPanel)`
   min-height: 40rem;
@@ -54,12 +47,12 @@ const LoadingSubText = styled.h6`
 
 export const AppLoading = () => {
   return (
-    <LoadingWrapper>
+    <Layout>
       <DashboardPanelLoading>
         <Loader className="loading" />
         <LoadingText>{translateRaw('APP_LOADING')}</LoadingText>
         <LoadingSubText>{translateRaw('APP_LOADING_SUBHEADER')}</LoadingSubText>
       </DashboardPanelLoading>
-    </LoadingWrapper>
+    </Layout>
   );
 };
