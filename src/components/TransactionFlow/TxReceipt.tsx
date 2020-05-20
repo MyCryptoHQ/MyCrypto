@@ -24,14 +24,7 @@ import {
   ITxHistoryStatus
 } from '@types';
 import { Amount, TimeElapsedCounter, AssetIcon, LinkOut } from '@components';
-import {
-  AddressBookContext,
-  AccountContext,
-  AssetContext,
-  NetworkContext,
-  StoreContext,
-  SettingsContext
-} from '@services/Store';
+import { AddressBookContext, AccountContext, StoreContext, SettingsContext } from '@services/Store';
 import { RatesContext } from '@services/RatesProvider';
 import {
   ProviderHandler,
