@@ -29,7 +29,7 @@
     "skipLibCheck": true
   },
   "include": ["./scripts", "./src/", "./electron-app/", "./shared/", "spec", "./jest_config"],
-  "exclude": ["node_modules", "jest_config/__mocks__", "./node-scripts", "./src/vendor/inpage-metamask.js"],
+  "exclude": ["node_modules", "jest_config/__mocks__", "./node-scripts"],
   "awesomeTypescriptLoaderOptions": {
     "transpileOnly": true
   }
