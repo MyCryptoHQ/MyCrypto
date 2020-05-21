@@ -150,7 +150,9 @@ const ProtectTxProvider: React.FC = ({ children }) => {
           stepIndex: 0,
           cryptoScamAddressReport: null,
           etherscanLastTxReport: null,
-          etherscanBalanceReport: null
+          etherscanBalanceReport: null,
+          receiverAddress: receiverAddress ? receiverAddress : prevState.receiverAddress,
+          network: network ? network : prevState.network
         }));
       }
     },

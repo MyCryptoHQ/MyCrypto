@@ -363,13 +363,17 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
           });
 
           useEffect(() => {
-            if (getProTxValue(['state']).protectTxShow) {
-              if (getProTxValue(['goToInitialStepOrFetchReport'])) {
+            const ptxState = getProTxValue(['state']);
+            if (ptxState.protectTxShow) {
+              if (
+                getProTxValue(['goToInitialStepOrFetchReport']) &&
+                ptxState.receiverAddress !== values.address.value
+              ) {
                 const { address, network } = values;
                 getProTxValue(['goToInitialStepOrFetchReport'])(address.value, network);
               }
             }
-          }, [values]);
+          }, [values.address.value]);
 
           const toggleAdvancedOptions = () => {
             setFieldValue('advancedTransaction', !values.advancedTransaction);
