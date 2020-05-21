@@ -20,7 +20,6 @@ interface Config {
 
 interface BannerTypographyProps {
   color: string;
-  fontSize: string;
 }
 
 const Container = styled.div`
@@ -52,14 +51,12 @@ const Container = styled.div`
 `;
 
 const Icon = styled.img`
-  max-width: 16px;
-  height: 16px;
+  height: 1em;
   margin-right: ${SPACING.XS};
 `;
 
 const STypography = styled(Typography)<BannerTypographyProps>`
   color: ${(props) => props.color};
-  font-size: ${(props) => props.fontSize};
   a {
     color: ${(props) => props.color};
     text-decoration: underline;
