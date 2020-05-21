@@ -31,15 +31,6 @@ const ConversionLabel = styled(Typography)`
   color: ${COLORS.GREY};
 `;
 
-const LinkLabel = styled(Typography)`
-  color: ${COLORS.BLUE_BRIGHT};
-  cursor: pointer;
-`;
-
-const LinkLabelWrapper = styled.div`
-  margin-bottom: 8px;
-  text-align: right;
-`;
 interface Props {
   assetPair: IAssetPair;
   account: StoreAccount;
@@ -69,9 +60,6 @@ export default function ConfirmSwap({
         from={{ address: account.address, label: account.label }}
         to={{ address: account.address, label: account.label }}
       />
-      <LinkLabelWrapper>
-        <LinkLabel value={translate('SWAP_WHY_RATE')} fontSize="0.8em" />
-      </LinkLabelWrapper>
       <ConversionRateBox>
         <ConversionLabel bold={true} value={translate('SWAP_RATE')} fontSize="0.65em" />
         <div>
