@@ -133,7 +133,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
 
   const goToInitialStepOrFetchReport = useCallback(
     (receiverAddress?: string, network?: Network) => {
-      if (state.protectTxEnabled || isMyCryptoMember) {
+      if (state.protectTxEnabled || (isMyCryptoMember && state.stepIndex > 0)) {
         setState((prevState) => ({
           ...prevState,
           cryptoScamAddressReport: null,

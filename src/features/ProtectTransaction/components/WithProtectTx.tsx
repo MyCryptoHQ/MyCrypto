@@ -135,6 +135,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
             },
             actions: {
               handleProtectTxSubmit: async () => {
+                await handleTransactionReport();
                 goToNextStep();
               }
             }
