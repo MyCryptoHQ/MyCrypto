@@ -5,7 +5,7 @@ import translate, { translateRaw } from '@translations';
 import { EMPTYUUID } from '@utils';
 import { TUuid } from '@types';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
-import { AssetIcon, Currency, Typography } from '@components';
+import { AssetIcon, Currency, Typography, Tooltip } from '@components';
 
 import BreakdownChart from './BreakdownChart';
 import NoAssets from './NoAssets';
@@ -335,33 +335,43 @@ export default function WalletBreakdownView({
           <BreakDownMore src={moreIcon} alt="More" onClick={toggleShowChart} />
         </BreakDownHeadingWrapper>
         <BreakDownBalanceList>
-          {breakdownBalances.map(({ name, amount, fiatValue, ticker, isOther, uuid }, index) => (
-            <BreakDownBalance
-              key={`${uuid}${name}`}
-              onMouseOver={() => handleMouseOver(index)}
-              onMouseLeave={handleMouseLeave}
-            >
-              <BreakDownBalanceAssetInfo>
-                <div>
-                  <BreakDownBalanceAssetIcon uuid={uuid as TUuid} size={'26px'} />
-                </div>
-                <div>
-                  <BreakDownBalanceAssetName>{name}</BreakDownBalanceAssetName>
-                  <BreakDownBalanceAssetAmount silent={true}>
-                    {!isOther && `${amount.toFixed(4)} ${ticker}`}
+          {breakdownBalances.map(
+            ({ name, amount, fiatValue, ticker, isOther, exchangeRate, uuid }, index) => (
+              <BreakDownBalance
+                key={`${uuid}${name}`}
+                onMouseOver={() => handleMouseOver(index)}
+                onMouseLeave={handleMouseLeave}
+              >
+                <BreakDownBalanceAssetInfo>
+                  <div>
+                    <BreakDownBalanceAssetIcon uuid={uuid as TUuid} size={'26px'} />
+                  </div>
+                  <div>
+                    <BreakDownBalanceAssetName>{name}</BreakDownBalanceAssetName>
+                    <BreakDownBalanceAssetAmount silent={true}>
+                      {!isOther && `${amount.toFixed(4)} ${ticker}`}
+                    </BreakDownBalanceAssetAmount>
+                  </div>
+                </BreakDownBalanceAssetInfo>
+                <Tooltip
+                  tooltip={translateRaw('WALLET_BREAKDOWN_BALANCE_TOOLTIP', {
+                    $exchangeRate: (exchangeRate || 0).toFixed(3),
+                    $fiatTicker: fiat.code,
+                    $cryptoTicker: ticker
+                  })}
+                >
+                  <BreakDownBalanceAssetAmount>
+                    <Currency
+                      amount={fiatValue.toString()}
+                      symbol={fiat.symbol}
+                      code={fiat.code}
+                      decimals={2}
+                    />
                   </BreakDownBalanceAssetAmount>
-                </div>
-              </BreakDownBalanceAssetInfo>
-              <BreakDownBalanceAssetAmount>
-                <Currency
-                  amount={fiatValue.toString()}
-                  symbol={fiat.symbol}
-                  code={fiat.code}
-                  decimals={2}
-                />
-              </BreakDownBalanceAssetAmount>
-            </BreakDownBalance>
-          ))}
+                </Tooltip>
+              </BreakDownBalance>
+            )
+          )}
         </BreakDownBalanceList>
         <BalanceTotalWrapper>
           <ViewDetailsLink onClick={toggleShowChart}>
