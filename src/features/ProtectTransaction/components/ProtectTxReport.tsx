@@ -16,6 +16,7 @@ import { TAddress } from '@types';
 import ProtectTxBase from './ProtectTxBase';
 import { ProtectTxContext } from '../ProtectTxProvider';
 import { ProtectTxUtils } from '../utils';
+import { NansenReportType } from '../types';
 import PoweredByNansen from './PoweredByNansen';
 
 const formatDate = (date: number): string => moment.unix(date).format('MM/DD/YYYY');
@@ -187,7 +188,7 @@ export const ProtectTxReport: FC = () => {
 
     const steps: StepData[] = [];
     const { label: labels } = nansenAddressReport;
-    const status = 'unknown'; // TODO: Change to decide based on labels
+    const status = ProtectTxUtils.getTypeFromNansenLabels(labels);
 
     if (labels.length === 0) {
       // No info for account
@@ -200,8 +201,7 @@ export const ProtectTxReport: FC = () => {
         )
       });
     } else {
-      // @ts-ignore
-      if (status === 'blocked') {
+      if (status === NansenReportType.MALICIOUS) {
         steps.push({
           title: translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT'),
           content: (
@@ -214,12 +214,19 @@ export const ProtectTxReport: FC = () => {
             </>
           )
         });
-        // @ts-ignore
-      } else if (status === 'whitelisted') {
+      } else if (status === NansenReportType.WHITELISTED) {
         // Verified account
         steps.push({
           title: translateRaw('PROTECTED_TX_TIMELINE_KNOWN_ACCOUNT'),
-          content: ''
+          content: (
+            <>
+              <StepperDescText className="text-success">
+                {translateRaw('PROTECTED_TX_TIMELINE_NANSEN_TAGS', {
+                  $tags: `"${labels.join('", "')}"`
+                })}
+              </StepperDescText>
+            </>
+          )
         });
       } else {
         steps.push({

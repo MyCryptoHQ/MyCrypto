@@ -8,3 +8,9 @@ export enum ProtectTxError {
   LESS_THAN_MIN_AMOUNT,
   ETH_ONLY
 }
+
+export enum NansenReportType {
+  UNKNOWN,
+  MALICIOUS,
+  WHITELISTED
+}
