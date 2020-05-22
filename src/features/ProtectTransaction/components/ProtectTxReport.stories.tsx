@@ -61,7 +61,7 @@ storiesOf('ProtectTransaction', module)
 
 const nansenReport = {
   address: '0x88F7B1E26c3A52CA3cD8aF4ba1b448391eb31d88' as TAddress,
-  label: ['Phishing']
+  label: ['Scam']
 };
 
 const scamProviderState: Partial<ProtectTxState> = {
@@ -84,42 +84,13 @@ storiesOf('ProtectTransaction', module)
     }
   });
 
-const cryptoScamAddressVerifiedReport = {
-  success: true,
-  input: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-  coin: 'ETH',
-  result: {
-    status: 'whitelisted',
-    type: 'address',
-    coin: 'ETH',
-    entries: [
-      {
-        id: '635b2f',
-        name: 'MyCrypto',
-        type: 'verified',
-        url: 'https://mycrypto.com',
-        hostname: 'mycrypto.com',
-        featured: 1,
-        path: null,
-        category: null,
-        subcategory: null,
-        description:
-          'MyCrypto is a free, open-source interface for interacting with the blockchain',
-        reporter: null,
-        ip: null,
-        severity: null,
-        statusCode: null,
-        status: null,
-        updated: null
-      }
-    ]
-  }
-};
-
 const verifiedProviderState: Partial<ProtectTxState> = {
   ...unknownProviderState,
   receiverAddress: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-  nansenAddressReport: cryptoScamAddressVerifiedReport as any
+  nansenAddressReport: {
+    address: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520' as TAddress,
+    label: ['MyCrypto: Donate']
+  }
 };
 
 storiesOf('ProtectTransaction', module)
