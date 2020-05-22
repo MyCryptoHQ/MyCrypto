@@ -34,3 +34,9 @@ export const CREATION_ADDRESS = '0x0000000000000000000000000000000000000000';
 export const DEFAULT_NETWORK_CHAINID = 1;
 
 export const SECONDS_IN_MONTH = 60 * 60 * 24 * 30;
+
+// Assets that are excluded when loading assets from asset API
+export const EXCLUDED_ASSETS = [
+  '1e917c91-e52b-5997-af67-2ffd01843701',
+  '17da00cc-4901-5e04-87e0-f7e3cf9b382a'
+];
