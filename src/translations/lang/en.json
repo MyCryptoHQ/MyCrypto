@@ -872,6 +872,7 @@
 		"WALLET_BREAKDOWN_ALL_ACCOUNTS": "Viewing All Accounts",
 		"WALLET_BREAKDOWN_BALANCE": "Balance",
 		"WALLET_BREAKDOWN_BALANCES": "Balances",
+		"WALLET_BREAKDOWN_BALANCE_TOOLTIP": "$exchangeRate $fiatTicker/$cryptoTicker",
 		"WALLET_BREAKDOWN_DETAIL_ACCOUNT": "$numOfAccounts Account",
 		"WALLET_BREAKDOWN_DETAIL_ACCOUNTS": "$numOfAccounts Accounts",
 		"WALLET_BREAKDOWN_MORE": "View details",
