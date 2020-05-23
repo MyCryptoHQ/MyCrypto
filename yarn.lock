@@ -20139,9 +20139,9 @@ trezor-connect@8.1.2:
     events "^3.1.0"
     whatwg-fetch "^3.0.0"
 
-trezor-link@1.7.0, "trezor-link@https://github.com/FrederikBolding/trezor-link#176c94f":
+trezor-link@1.7.0, "trezor-link@https://github.com/MyCryptoHQ/trezor-link#176c94f":
   version "1.7.0"
-  resolved "https://github.com/FrederikBolding/trezor-link#176c94f732e6a37f07104af496d869b9e8b8fe5c"
+  resolved "https://github.com/MyCryptoHQ/trezor-link#176c94f732e6a37f07104af496d869b9e8b8fe5c"
   dependencies:
     bigi "^1.4.1"
     ecurve "^1.0.3"
