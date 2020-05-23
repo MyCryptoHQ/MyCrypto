@@ -1,7 +1,12 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import { Asset, ITxReceipt, Network, WalletId } from '@types';
-import { GetBalanceResponse, GetLastTxResponse, EtherscanService } from '@services/ApiService';
+import {
+  GetBalanceResponse,
+  GetLastTxResponse,
+  EtherscanService,
+  GetLastTokenTxResponse
+} from '@services/ApiService';
 import { AssetContext, getAssetByUUID, StoreContext } from '@services/Store';
 import { useScreenSize } from '@utils';
 
@@ -15,6 +20,7 @@ export interface ProtectTxState {
   protectTxEnabled: boolean;
   nansenAddressReport: NansenServiceEntry | null;
   etherscanBalanceReport: GetBalanceResponse | null;
+  etherscanLastTokenTxReport: GetLastTokenTxResponse | null;
   etherscanLastTxReport: GetLastTxResponse | null;
   mainComponentDisabled: boolean;
   receiverAddress: string | null;
@@ -49,6 +55,7 @@ export const protectTxProviderInitialState: ProtectTxState = {
   nansenAddressReport: null,
   etherscanBalanceReport: null,
   etherscanLastTxReport: null,
+  etherscanLastTokenTxReport: null,
   asset: null,
   isWeb3Wallet: false,
   web3WalletName: null,
@@ -77,10 +84,12 @@ const ProtectTxProvider: React.FC = ({ children }) => {
       const [
         nansenAddressReportResponse,
         etherscanBalanceReportResponse,
+        etherscanLastTokenTxReportResponse,
         etherscanLastTxReportResponse
       ] = await Promise.all([
         NansenService.check(address).catch((e) => e),
         EtherscanService.instance.getBalance(address, network!.id).catch((e) => e),
+        EtherscanService.instance.getLastTokenTx(address, network!.id).catch((e) => e),
         EtherscanService.instance.getLastTx(address, network!.id).catch((e) => e)
       ]);
 
@@ -94,6 +103,11 @@ const ProtectTxProvider: React.FC = ({ children }) => {
         console.error(etherscanBalanceReportResponse);
       }
 
+      const etherscanLastTokenTxReport =
+        etherscanLastTokenTxReportResponse instanceof Error
+          ? null
+          : etherscanLastTokenTxReportResponse;
+
       const etherscanLastTxReport =
         etherscanLastTxReportResponse instanceof Error ? null : etherscanLastTxReportResponse;
 
@@ -105,6 +119,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
         ...prevState,
         nansenAddressReport,
         etherscanBalanceReport,
+        etherscanLastTokenTxReport,
         etherscanLastTxReport
       }));
 

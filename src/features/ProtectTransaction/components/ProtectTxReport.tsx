@@ -73,7 +73,7 @@ const StepperDescText = styled.p`
   margin: 0;
 
   &.text-success {
-    color: ${COLORS.SUCCESS_GREEN_LIGHT};
+    color: ${COLORS.SUCCESS_GREEN};
   }
 
   &.text-no-info {
@@ -114,6 +114,7 @@ export const ProtectTxReport: FC = () => {
     state: {
       etherscanBalanceReport,
       etherscanLastTxReport,
+      etherscanLastTokenTxReport,
       nansenAddressReport,
       asset,
       receiverAddress,
@@ -147,15 +148,29 @@ export const ProtectTxReport: FC = () => {
   }, [etherscanBalanceReport]);
 
   const getLastTxReportTimelineEntry = useCallback((): StepData => {
-    let lastSentToken: { value: string; ticker: string; timestamp: string } | null = null;
-    if (etherscanLastTxReport && etherscanLastTxReport.result.length) {
-      const { result } = etherscanLastTxReport;
-      const firstSentResult = result.find((r) =>
+    let lastSentTx: { value: string; ticker: string; timestamp: string } | null = null;
+    if (
+      etherscanLastTxReport &&
+      etherscanLastTxReport.result.length &&
+      etherscanLastTokenTxReport &&
+      etherscanLastTokenTxReport.result.length
+    ) {
+      const { result: txResult } = etherscanLastTxReport;
+      const { result: tokenResult } = etherscanLastTokenTxReport;
+      const firstSentTx = txResult.find((r) =>
         receiverAddress ? isSameAddress(r.from as TAddress, receiverAddress as TAddress) : false
       );
-      if (firstSentResult) {
+      const firstSentToken = tokenResult.find((r) =>
+        receiverAddress ? isSameAddress(r.from as TAddress, receiverAddress as TAddress) : false
+      );
+      if (firstSentToken || firstSentTx) {
+        const firstSentResult =
+          parseInt(firstSentTx?.timeStamp || '0', 10) >
+          parseInt(firstSentToken?.timeStamp || '0', 10)
+            ? { ...firstSentTx!, tokenSymbol: 'ETH' }
+            : firstSentToken!;
         const { tokenSymbol: ticker, value, timeStamp } = firstSentResult;
-        lastSentToken = {
+        lastSentTx = {
           ticker,
           value: parseFloat(fromWei(Wei(value), 'ether')).toFixed(6),
           timestamp: formatDate(parseInt(timeStamp, 10))
@@ -168,14 +183,13 @@ export const ProtectTxReport: FC = () => {
         <>
           {translateRaw('PROTECTED_TX_RECIPIENT_ACCOUNT_ACTIVITY')}
           <br />
-          {translateRaw('PROTECTED_TX_LAST_SENT_TOKEN')}
+          {translateRaw('PROTECTED_TX_LAST_SENT_TX')}
         </>
       ),
       content: (
         <StepperDescText className="text-muted">
-          {lastSentToken &&
-            `${lastSentToken.value} ${lastSentToken.ticker} on ${lastSentToken.timestamp}`}
-          {!lastSentToken && translateRaw('PROTECTED_TX_NO_INFORMATION_AVAILABLE')}
+          {lastSentTx && `${lastSentTx.value} ${lastSentTx.ticker} on ${lastSentTx.timestamp}`}
+          {!lastSentTx && translateRaw('PROTECTED_TX_NO_INFORMATION_AVAILABLE')}
         </StepperDescText>
       )
     };
@@ -221,7 +235,7 @@ export const ProtectTxReport: FC = () => {
           content: (
             <>
               <StepperDescText className="text-success">
-                {translateRaw('PROTECTED_TX_TIMELINE_NANSEN_TAGS', {
+                {translateRaw('PROTECTED_TX_TIMELINE_TAGS', {
                   $tags: `"${labels.join('", "')}"`
                 })}
               </StepperDescText>
@@ -234,7 +248,7 @@ export const ProtectTxReport: FC = () => {
           content: (
             <>
               <StepperDescText className="text-no-info">
-                {translateRaw('PROTECTED_TX_TIMELINE_NANSEN_TAGS', {
+                {translateRaw('PROTECTED_TX_TIMELINE_TAGS', {
                   $tags: `"${labels.join('", "')}"`
                 })}
               </StepperDescText>

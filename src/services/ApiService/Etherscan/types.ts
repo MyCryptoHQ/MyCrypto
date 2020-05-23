@@ -27,6 +27,9 @@ interface GetLastTxResponseResultItem {
   cumulativeGasUsed: string;
   gasUsed: string;
   confirmations: string;
+}
+
+interface GetLastTokenTxResponseResultItem extends GetLastTxResponseResultItem {
   tokenName: string;
   tokenSymbol: string;
   tokenDecimal: string;
@@ -34,4 +37,8 @@ interface GetLastTxResponseResultItem {
 
 export interface GetLastTxResponse extends EtherScanApiBaseResponse {
   result: GetLastTxResponseResultItem[];
+}
+
+export interface GetLastTokenTxResponse extends EtherScanApiBaseResponse {
+  result: GetLastTokenTxResponseResultItem[];
 }
