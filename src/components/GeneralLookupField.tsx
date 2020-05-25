@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
-import { FieldProps, Field, FormikProps } from 'formik';
-import { ResolutionError } from '@unstoppabledomains/resolution';
+import React, { useState, useContext, useCallback } from 'react';
+import { Field, useFormikContext } from 'formik';
+import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
 
 import { DomainStatus, InlineMessage } from '@components';
 import { Network, IReceiverAddress, ErrorObject } from '@types';
@@ -26,7 +26,7 @@ export interface IGeneralLookupFieldComponentProps {
   handleENSName(resolvedAddress: string, inputString: string): IReceiverAddress;
   onSelect?(option: IReceiverAddress): void;
   onChange?(input: string): void;
-  onLoad?(form: FormikProps<any>): void;
+  onLoad?(setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void): void;
 }
 
 const GeneralLookupField = ({
@@ -45,6 +45,7 @@ const GeneralLookupField = ({
   onLoad,
   placeholder
 }: IGeneralLookupFieldComponentProps) => {
+  const { setFieldValue, setFieldTouched } = useFormikContext();
   const { assets } = useContext(AssetContext);
   const errorMessage = typeof error === 'object' ? error.message : error;
   const errorType = typeof error === 'object' ? error.type : undefined;
@@ -69,148 +70,141 @@ const GeneralLookupField = ({
     };
   };
 
-  return (
-    <Field
-      name={name}
-      value={value}
-      validate={validateAddress}
-      component={({ form }: FieldProps) => {
-        const [inputValue, setInputValue] = useState<string>('');
+  useEffectOnce(() => {
+    if (value && value.value && onLoad) {
+      onLoad(setFieldValue);
+    }
+  });
 
-        useEffectOnce(() => {
-          if (value && value.value && onLoad) {
-            onLoad(form);
-          }
-        });
+  const handleENSnameDefault = async (
+    inputString: string,
+    defaultInput: IReceiverAddress
+  ): Promise<IReceiverAddress> => {
+    try {
+      const resolvedAddress = await handleDomainResolve(inputString);
+      if (!resolvedAddress) return defaultInput;
 
-        const handleInputChange = (input: string) => {
-          setInputValue(input);
-          return input;
-        };
+      const [label] = inputString.split('.');
 
-        const handleEnterKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-          if (e.keyCode === 13) {
-            handleNewInput(inputValue);
-          }
-        };
+      if (handleENSName) return handleENSName(resolvedAddress, inputString);
 
-        const handleENSnameDefault = async (
-          inputString: string,
-          defaultInput: IReceiverAddress
-        ): Promise<IReceiverAddress> => {
-          try {
-            const resolvedAddress = await handleDomainResolve(inputString);
-            if (!resolvedAddress) return defaultInput;
+      return {
+        display: label,
+        value: resolvedAddress
+      };
+    } catch (err) {
+      console.debug(`[GenericLookupField] ${err}`);
+      return { display: '', value: '' };
+    }
+  };
 
-            const [label] = inputString.split('.');
+  const handleNewInput = async (inputString: string) => {
+    setResolutionError(undefined);
+    if (!inputString || !network || !network.id || !options) {
+      return;
+    }
 
-            if (handleENSName) return handleENSName(resolvedAddress, inputString);
+    let contact: IReceiverAddress = {
+      display: inputString,
+      value: inputString
+    };
 
-            return {
-              display: label,
-              value: resolvedAddress
-            };
-          } catch (err) {
-            console.debug(`[GenericLookupField] ${err}`);
-            return { display: '', value: '' };
-          }
-        };
+    if (isValidETHAddress(inputString)) {
+      // saves 0x address to address book labeled as "Recipient X"
+      contact = handleEthAddressDefault(inputString);
+    } else if (isValidENSName(inputString)) {
+      // resolves ENS name and saves it to address book labeled as first part of ENS name before "." (example.test.eth --> example)
+      contact = await handleENSnameDefault(inputString, contact);
+    }
 
-        const handleNewInput = async (inputString: string) => {
-          setResolutionError(undefined);
-          if (!inputString || !network || !network.id || !options) {
-            return;
-          }
+    setFieldValue(name, contact, true);
+    setFieldTouched(name, true, false);
+  };
 
-          let contact: IReceiverAddress = {
-            display: inputString,
-            value: inputString
-          };
+  const handleDomainResolve = async (domain: string): Promise<string | undefined> => {
+    if (!domain || !network) {
+      setIsResolvingDomain(false);
+      setResolutionError(undefined);
+      return;
+    }
+    setIsResolvingDomain(true);
+    setResolutionError(undefined);
+    try {
+      const unstoppableAddress = await UnstoppableResolution.getResolvedAddress(
+        domain,
+        getBaseAssetByNetwork({ network, assets })!.ticker
+      );
+      return unstoppableAddress;
+    } catch (err) {
+      // Force the field value to error so that isValidAddress is triggered!
+      setFieldValue(
+        name,
+        {
+          ...value,
+          value: ''
+        },
+        true
+      );
+      if (UnstoppableResolution.isResolutionError(err)) {
+        setResolutionError(err);
+      } else throw err;
+    } finally {
+      setIsResolvingDomain(false);
+    }
+  };
 
-          if (isValidETHAddress(inputString)) {
-            // saves 0x address to address book labeled as "Recipient X"
-            contact = handleEthAddressDefault(inputString);
-          } else if (isValidENSName(inputString)) {
-            // resolves ENS name and saves it to address book labeled as first part of ENS name before "." (example.test.eth --> example)
-            contact = await handleENSnameDefault(inputString, contact);
-          }
+  const GeneralDropdownFieldCallback = useCallback(() => {
+    const [inputValue, setInputValue] = useState<string>('');
+    const handleInputChange = (input: string) => {
+      setInputValue(input);
+      return input;
+    };
 
-          form.setFieldValue(name, contact, true);
-          form.setFieldTouched(name, true, false);
-        };
+    const handleEnterKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.keyCode === 13) {
+        handleNewInput(inputValue);
+      }
+    };
 
-        const handleDomainResolve = async (domain: string): Promise<string | undefined> => {
-          if (!domain || !network) {
-            setIsResolvingDomain(false);
-            setResolutionError(undefined);
-            return;
-          }
-          setIsResolvingDomain(true);
-          setResolutionError(undefined);
-          try {
-            const unstoppableAddress = await UnstoppableResolution.getResolvedAddress(
-              domain,
-              getBaseAssetByNetwork({ network, assets })!.ticker
-            );
-            return unstoppableAddress;
-          } catch (err) {
-            // Force the field value to error so that isValidAddress is triggered!
-            form.setFieldValue(
-              name,
-              {
-                ...value,
-                value: ''
-              },
-              true
-            );
-            if (UnstoppableResolution.isResolutionError(err)) {
-              setResolutionError(err);
-            } else throw err;
-          } finally {
-            setIsResolvingDomain(false);
-          }
-        };
-
-        return (
-          <>
-            <GeneralLookupDropdown
-              name={name}
-              value={value}
-              options={options}
-              onSelect={(option: IReceiverAddress) => {
-                form.setFieldValue(name, option, true); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
-                form.setFieldTouched(name, true, false);
-                if (onSelect) {
-                  onSelect(option);
-                }
-              }}
-              onInputChange={handleInputChange}
-              onBlur={(inputString: string) => {
-                handleNewInput(inputString);
-                form.setFieldTouched(name, true, false);
-                if (onBlur) onBlur();
-                if (onChange) onChange(inputString);
-              }}
-              inputValue={inputValue}
-              onEnterKeyDown={handleEnterKeyDown}
-              placeholder={placeholder}
-            />
-            {(value && isValidENSName(value.value)) || isResolvingName ? (
-              <DomainStatus
-                domain={value.value}
-                rawAddress={value.value}
-                isLoading={isResolvingName}
-                isError={!!errorMessage}
-                resolutionError={resolutionError}
-              />
-            ) : (
-              errorMessage && <InlineMessage type={errorType}>{errorMessage}</InlineMessage>
-            )}
-          </>
-        );
-      }}
-    />
-  );
+    return (
+      <>
+        <GeneralLookupDropdown
+          name={name}
+          value={value}
+          options={options}
+          onSelect={(option: IReceiverAddress) => {
+            setFieldValue(name, option, true); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
+            setFieldTouched(name, true, false);
+            if (onSelect) {
+              onSelect(option);
+            }
+          }}
+          onInputChange={handleInputChange}
+          onBlur={(inputString: string) => {
+            handleNewInput(inputString);
+            setFieldTouched(name, true, false);
+            if (onBlur) onBlur();
+            if (onChange) onChange(inputString);
+          }}
+          inputValue={inputValue}
+          onEnterKeyDown={handleEnterKeyDown}
+          placeholder={placeholder}
+        />
+        {(value && isValidENSName(value.value)) || isResolvingName ? (
+          <DomainStatus
+            domain={value.value}
+            rawAddress={value.value}
+            isLoading={isResolvingName}
+            isError={!!errorMessage}
+            resolutionError={resolutionError}
+          />
+        ) : (
+          errorMessage && <InlineMessage type={errorType}>{errorMessage}</InlineMessage>
+        )}
+      </>
+    );
+  }, [value.display, isResolvingName]);
+  return <Field name={name} validate={validateAddress} component={GeneralDropdownFieldCallback} />;
 };
 
 export default GeneralLookupField;
