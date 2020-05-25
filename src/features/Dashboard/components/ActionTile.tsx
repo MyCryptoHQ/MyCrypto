@@ -3,8 +3,10 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button, Typography } from '@mycrypto/ui';
 
-import { isUrl } from '@utils';
+import { isUrl, openLink } from '@utils';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
+import { TURL } from '@types';
+
 import { Action } from '../types';
 
 const SContainer = styled('div')`
@@ -96,10 +98,13 @@ const SDescription = styled('div')`
 
 type Props = RouteComponentProps<{}> & Action;
 function ActionTile({ icon, faded, title, description, link, history }: Props) {
-  const goToExternalLink = (url: string) => window.open(url, '_blank');
-  const goToAppRouter = (path: string) => history.push(path);
-
-  const action = isUrl(link) ? goToExternalLink : goToAppRouter;
+  const action = (dest: string | TURL) => {
+    if (isUrl(dest)) {
+      openLink(dest); // go to external url
+    } else {
+      history.push(dest); // go to app route
+    }
+  };
 
   return (
     <SContainer>

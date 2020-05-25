@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import translate from '@translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
 import { COLORS } from '@theme';
+import { BUY_MYCRYPTO_WEBSITE } from '@config';
+import { openLink } from '@utils';
 
 import addIcon from '@assets/images/icn-add-assets.svg';
 
@@ -48,9 +50,11 @@ const NoAssetsDescription = styled.div`
 `;
 
 const openLinkBuyMyCrypto = () => {
-  const url = 'buy.mycrypto.com';
-  window.open(`https://${url}`, '_blank');
-  AnalyticsService.instance.track(ANALYTICS_CATEGORIES.WALLET_BREAKDOWN, `Link ${url} clicked`);
+  openLink(BUY_MYCRYPTO_WEBSITE);
+  AnalyticsService.instance.track(
+    ANALYTICS_CATEGORIES.WALLET_BREAKDOWN,
+    `Link ${BUY_MYCRYPTO_WEBSITE} clicked`
+  );
 };
 
 export default function NoAssets() {

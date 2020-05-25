@@ -3,14 +3,14 @@ import { Panel, Button, Icon, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 import semver from 'semver';
 
-import Modal from './Modal';
 import { BREAK_POINTS, COLORS } from '@theme';
+import { TURL } from '@types';
 import { GITHUB_RELEASE_NOTES_URL, OS, VERSION as currentVersion } from '@config';
-import { getFeaturedOS } from '@utils';
+import { getFeaturedOS, openLink } from '@utils';
 import { AnalyticsService, ANALYTICS_CATEGORIES, GithubService } from '@services/ApiService';
 import translate from '@translations';
 
-// Legacy
+import Modal from './Modal';
 import closeIcon from '@assets/images/icn-close.svg';
 import updateIcon from '@assets/images/icn-update.svg';
 import updateImportantIcon from '@assets/images/icn-important-update.svg';
@@ -131,7 +131,7 @@ interface State {
   isOpen: boolean;
   OSName: string;
   newVersion?: string;
-  newVersionUrl?: string;
+  newVersionUrl?: TURL;
   isCritical?: boolean;
 }
 
@@ -233,7 +233,7 @@ export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
 
   private downloadRelease = () => {
     const { OSName, newVersion, newVersionUrl } = this.state;
-    window.open(newVersionUrl, '_self');
+    openLink(newVersionUrl!, '_self');
     AnalyticsService.instance.track(
       ANALYTICS_CATEGORIES.UPDATE_DESKTOP,
       'Get New Version button clicked',

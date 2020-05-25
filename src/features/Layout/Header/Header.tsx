@@ -16,8 +16,8 @@ import {
   KB_HELP_ARTICLE
 } from '@config';
 import translate from '@translations';
+import { openLink } from '@utils';
 
-// Legacy
 import logo from '@assets/images/logo-mycrypto.svg';
 import { ScreenLockContext } from '@features/ScreenLock/ScreenLockProvider';
 
@@ -329,12 +329,12 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
     });
 
   const openLatestNews = (): void => {
-    window.open(LATEST_NEWS_URL, '_blank');
+    openLink(LATEST_NEWS_URL);
     AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HEADER, 'Latest news clicked');
   };
 
   const openHelpSupportPage = (): void => {
-    window.open(getKBHelpArticle(KB_HELP_ARTICLE.HOME), '_blank');
+    openLink(getKBHelpArticle(KB_HELP_ARTICLE.HOME));
     AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HEADER, 'Help & Support clicked');
   };
 

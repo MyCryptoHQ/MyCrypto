@@ -6,6 +6,8 @@ import translate from '@translations';
 import { BREAK_POINTS } from '@theme';
 import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from '@config';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
+import { openLink } from '@utils';
+import { TURL } from '@types';
 
 import champagneIcon from '@assets/images/icn-champagne-2.svg';
 
@@ -92,7 +94,7 @@ const Image = styled.img`
 
 interface Props {
   OSName: string;
-  downloadLink: string;
+  downloadLink: TURL;
 }
 
 export default function DownloadAppPanel({ OSName, downloadLink }: Props) {
@@ -110,8 +112,8 @@ export default function DownloadAppPanel({ OSName, downloadLink }: Props) {
   );
 }
 
-const openDownloadLink = (link: string, os: string) => {
+const openDownloadLink = (link: TURL, os: string) => {
   const target = link === DEFAULT_LINK ? '_blank' : '_self';
-  window.open(link, target);
+  openLink(link, target);
   AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HOME, `${os} download button clicked`);
 };
