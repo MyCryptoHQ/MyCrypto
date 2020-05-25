@@ -7,6 +7,8 @@ import translate from '@translations';
 import { COLORS, BREAK_POINTS } from '@theme';
 import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from '@config';
 import { ANALYTICS_CATEGORIES } from '@services';
+import { TURL } from '@types';
+import { openLink } from '@utils';
 
 import vaultIcon from '@assets/images/icn-vault2.svg';
 import protectIcon from '@assets/images/icn-protect.svg';
@@ -168,7 +170,7 @@ const ContentItem: React.FC<ContentItemProps> = (props) => {
 };
 
 interface PeaceOfMindPanelProps {
-  downloadLink: string;
+  downloadLink: TURL;
 }
 
 export default function PeaceOfMindPanel(props: PeaceOfMindPanelProps) {
@@ -214,7 +216,7 @@ export default function PeaceOfMindPanel(props: PeaceOfMindPanelProps) {
   );
 }
 
-const openDownloadLink = (link: string) => {
+const openDownloadLink = (link: TURL) => {
   const target = link === DEFAULT_LINK ? '_blank' : '_self';
-  window.open(link, target);
+  openLink(link, target);
 };

@@ -1,5 +1,6 @@
+import { TURL } from '@types';
 export interface ReleaseURLs {
-  [key: string]: string;
+  [key: string]: TURL;
 }
 
 export interface ReleaseInfo {

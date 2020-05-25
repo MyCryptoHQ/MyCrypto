@@ -3,14 +3,14 @@ import { Panel, Button, Icon, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 import semver from 'semver';
 
-import Modal from './Modal';
 import { BREAK_POINTS, COLORS } from '@theme';
+import { TURL } from '@types';
 import { GITHUB_RELEASE_NOTES_URL, OS, VERSION as currentVersion } from '@config';
-import { getFeaturedOS, useAnalytics } from '@utils';
+import { getFeaturedOS, useAnalytics, openLink } from '@utils';
 import { ANALYTICS_CATEGORIES, GithubService } from '@services/ApiService';
 import translate from '@translations';
 
-// Legacy
+import Modal from './Modal';
 import closeIcon from '@assets/images/icn-close.svg';
 import updateIcon from '@assets/images/icn-update.svg';
 import updateImportantIcon from '@assets/images/icn-important-update.svg';
@@ -161,8 +161,8 @@ const NewAppReleaseModal: FC<Props> = (props) => {
         const isCritical = name.toLowerCase().includes('[critical]');
         const newVersionUrl = releaseUrls[featuredOS];
         if (semver.lt(currentVersion, newVersion)) {
-          setState((preState) => ({
-            ...preState,
+          setState((prevState) => ({
+            ...prevState,
             isOpen: true,
             newVersion,
             newVersionUrl,
@@ -190,7 +190,7 @@ const NewAppReleaseModal: FC<Props> = (props) => {
   }, [state, trackNowRightNow]);
 
   const downloadRelease = useCallback(() => {
-    window.open(state.newVersionUrl, '_self');
+    openLink(state.newVersionUrl as TURL, '_self');
     trackGetNewVersion({
       eventParams: {
         current_version: currentVersion,
