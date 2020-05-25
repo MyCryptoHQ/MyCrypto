@@ -5,7 +5,9 @@ import {
   isValidMixedCaseETHAddress,
   isValidUpperOrLowerCaseETHAddress,
   isValidAddress,
-  isENSLabelHash
+  isENSLabelHash,
+  validateTransactionFee,
+  TransactionFeeResponseType
 } from '../validators';
 
 describe('isTransactionFeeHigh', () => {
@@ -32,6 +34,63 @@ describe('isTransactionFeeHigh', () => {
     expect(isTransactionFeeHigh('0.001', 300, false, '21000*', '20')).toBe(false);
     expect(isTransactionFeeHigh('0.001', 300, false, '21000*', '20+')).toBe(false);
     expect(isTransactionFeeHigh('0.001', 300, false, '21000*', '20a')).toBe(false);
+  });
+});
+
+describe('validateTransactionFee', () => {
+  it('should return Invalid', () => {
+    expect(validateTransactionFee('-0.001', 100, false, '21000', '10000')).toMatchObject({
+      type: 'Invalid' as TransactionFeeResponseType
+    });
+    expect(validateTransactionFee('0,001', 100, true, '21000', '10000')).toMatchObject({
+      type: 'Invalid' as TransactionFeeResponseType
+    });
+    expect(validateTransactionFee('0.001', 100, false, '-21000', '10000')).toMatchObject({
+      type: 'Invalid' as TransactionFeeResponseType
+    });
+    expect(validateTransactionFee('0.001', 100, false, '21000', '+10000')).toMatchObject({
+      type: 'Invalid' as TransactionFeeResponseType
+    });
+  });
+  it('should return None for small amounts', () => {
+    expect(validateTransactionFee('0.0000001', 100, false, '21000', '10000')).toMatchObject({
+      type: 'None' as TransactionFeeResponseType
+    });
+    expect(validateTransactionFee('0.0000002', 100, false, '21000', '10000')).toMatchObject({
+      type: 'None' as TransactionFeeResponseType
+    });
+  });
+  it('should return Warning for fee bigger than amounts', () => {
+    expect(validateTransactionFee('0.000002', 100, true, '21000', '21000')).toMatchObject({
+      type: 'Warning' as TransactionFeeResponseType
+    });
+  });
+  it('return Error-Very-High-Tx-Fee', () => {
+    expect(validateTransactionFee('100', 1000, true, '21000', '10000')).toMatchObject({
+      type: 'Error-Very-High-Tx-Fee' as TransactionFeeResponseType
+    });
+    // Should take into account eth fraction 0.5
+    expect(validateTransactionFee('100', 50, true, '21000', '100000', 5000)).toMatchObject({
+      type: 'Error-Very-High-Tx-Fee' as TransactionFeeResponseType
+    });
+  });
+  it('return Error-High-Tx-Fee', () => {
+    expect(validateTransactionFee('100', 200, true, '21000', '10000')).toMatchObject({
+      type: 'Error-High-Tx-Fee' as TransactionFeeResponseType
+    });
+    // Should take into account eth fraction 0.15
+    expect(validateTransactionFee('100', 50, true, '21000', '25000', 5000)).toMatchObject({
+      type: 'Error-High-Tx-Fee' as TransactionFeeResponseType
+    });
+  });
+  it('return Error-Use-Lower', () => {
+    expect(validateTransactionFee('100', 40, true, '21000', '10000')).toMatchObject({
+      type: 'Error-Use-Lower' as TransactionFeeResponseType
+    });
+    // Should take into account eth fraction 0.025
+    expect(validateTransactionFee('100', 50, true, '21000', '5000', 5000)).toMatchObject({
+      type: 'Error-Use-Lower' as TransactionFeeResponseType
+    });
   });
 });
 
