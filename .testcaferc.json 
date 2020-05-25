@@ -1,0 +1,12 @@
+{
+  "browsers": [
+    "chrome"
+  ],
+  "src": [
+    "./__tests__/*.test.js"
+  ],
+  "proxyByPass": [
+    "localhost:3000"
+  ],
+  "developmentMode": true
+}
