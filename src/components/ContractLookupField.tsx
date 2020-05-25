@@ -22,14 +22,14 @@ const ContractLookupField = ({
   Omit<IGeneralLookupFieldComponentProps, 'options' | 'handleEthAddress' | 'handleENSName'>) => {
   const handleEthAddress = (inputString: string): IReceiverAddress => {
     return {
-      display: inputString,
+      display: 'Contract',
       value: inputString
     };
   };
 
-  const handleENSName = (resolvedAddress: string, inputString: string) => {
+  const handleENSName = (resolvedAddress: string) => {
     return {
-      display: inputString,
+      display: 'Contract',
       value: resolvedAddress
     };
   };
