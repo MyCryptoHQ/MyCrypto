@@ -8,14 +8,8 @@ import { SelectLanguage } from '@features/Drawer/screens';
 import { links } from './constants';
 import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from '@theme';
 import { ANALYTICS_CATEGORIES, SettingsContext } from '@services';
-import {
-  ROUTE_PATHS,
-  LATEST_NEWS_URL,
-  languages,
-  getKBHelpArticle,
-  KB_HELP_ARTICLE
-} from '@config';
-import translate from '@translations';
+import { ROUTE_PATHS, LATEST_NEWS_URL, getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
+import translate, { languages } from '@translations';
 
 // Legacy
 import logo from '@assets/images/logo-mycrypto.svg';

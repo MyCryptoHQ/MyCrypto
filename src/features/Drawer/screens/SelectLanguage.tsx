@@ -2,8 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { ANALYTICS_CATEGORIES, SettingsContext } from '@services';
-import { languages } from '@config';
-import { translateRaw } from '@translations';
+import { translateRaw, languages } from '@translations';
 import { useAnalytics } from '@utils';
 
 const LanguagesList = styled.ul`
