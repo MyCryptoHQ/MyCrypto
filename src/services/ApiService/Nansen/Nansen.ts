@@ -16,6 +16,6 @@ export default abstract class NansenService {
 
   private static service: AxiosInstance = ApiService.generateInstance({
     baseURL: NANSEN_API,
-    timeout: 10000
+    timeout: 15000
   });
 }
