@@ -8,5 +8,8 @@
   "proxyByPass": [
     "localhost:3000"
   ],
+  "clientScripts": [
+    { "module": "@testing-library/dom/dist/@testing-library/dom.umd.js" }
+  ],
   "developmentMode": true
 }

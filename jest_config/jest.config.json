@@ -13,7 +13,7 @@
     "\\.worker.(ts|tsx)": "<rootDir>/jest_config/__mocks__/workerMock.js",
     "^@(.+)$": ["<rootDir>/node_modules/$0", "<rootDir>/src/$1"]
   },
-  "testPathIgnorePatterns": ["node_modules", "dist"],
+  "testPathIgnorePatterns": ["node_modules", "dist", "<rootDir>/__tests__"],
   "coveragePathIgnorePatterns": ["node_modules", "components", "containers", "vendor", "spec"],
   "setupFiles": [
     "<rootDir>/jest_config/setupJest.js",

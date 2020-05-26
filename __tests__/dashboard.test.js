@@ -1,12 +1,9 @@
-import { Selector } from 'testcafe';
-import { waitForReact, ReactSelector } from 'testcafe-react-selectors';
+import { default as Test, getByText } from '@testing-library/testcafe';
 
-fixture`Getting Started`.page`https://localhost:3000/dashboard`.beforeEach(async () => {
-  await waitForReact(5000);
-});
+fixture`Getting Started`.page`https://localhost:3000/dashboard`;
 
 test('My first test', async (t) => {
-  // await t.expect(await Selector('h2').innerText).eql('Hello');
-  const header = ReactSelector('NoAccounts').find('Header');
-  await t.expect(header.innerText).eql('Hello');
+  console.log(getByText);
+  const title = getByText('No Accounts');
+  await t.expect(title).ok();
 });
