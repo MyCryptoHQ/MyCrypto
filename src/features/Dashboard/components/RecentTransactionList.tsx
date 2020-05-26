@@ -129,8 +129,10 @@ export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt): ITxH
   const fromAccount =
     tx.from &&
     accountsList.find((account) => account.address.toLowerCase() === tx.from.toLowerCase());
+  const toAddress = tx.receiverAddress || tx.to;
   const toAccount =
-    tx.to && accountsList.find((account) => account.address.toLowerCase() === tx.to.toLowerCase());
+    toAddress &&
+    accountsList.find((account) => account.address.toLowerCase() === toAddress.toLowerCase());
 
   const isInvalidTxHistoryType =
     !('txType' in tx) ||
@@ -198,7 +200,11 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
 
   const accountTxs: ITxHistoryEntry[] = getTxsFromAccount(accountsList).map((tx: ITxReceipt) => {
     const network = networks.find(({ id }) => tx.asset.networkId === id) as Network;
-    const toAddressBookEntry = getLabelByAddressAndNetwork(tx.to, addressBook, network);
+    const toAddressBookEntry = getLabelByAddressAndNetwork(
+      tx.receiverAddress || tx.to,
+      addressBook,
+      network
+    );
     const fromAddressBookEntry = getLabelByAddressAndNetwork(tx.from, addressBook, network);
     return {
       ...tx,
@@ -223,6 +229,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
         status,
         from,
         to,
+        receiverAddress,
         amount,
         asset,
         fromLabel,
@@ -239,7 +246,9 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
             date={timestamp}
           />,
           <Account key={1} title={fromLabel} truncate={truncate} address={from} />,
-          to && <Account key={2} title={toLabel} truncate={truncate} address={to} />,
+          to && (
+            <Account key={2} title={toLabel} truncate={truncate} address={receiverAddress || to} />
+          ),
           <Amount
             key={3}
             assetValue={`${parseFloat(amount).toFixed(4)} ${asset.ticker}`}

@@ -45,9 +45,8 @@ export const getAssetByContractAndNetwork = (
     return undefined;
   }
   return assets
-    .filter((asset) => asset.networkId && asset.contractAddress)
-    .filter((asset) => asset.networkId === network.id)
-    .find((asset) => asset.contractAddress === contractAddress);
+    .filter((asset) => asset.networkId && asset.contractAddress && asset.networkId === network.id)
+    .find((asset) => asset.contractAddress?.toLowerCase() === contractAddress.toLowerCase());
 };
 
 export const getTotalByAsset = (assets: StoreAsset[]) =>

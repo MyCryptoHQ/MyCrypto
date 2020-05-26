@@ -3,7 +3,7 @@ import { ethers, utils } from 'ethers';
 import { Web3Provider } from 'ethers/providers/web3-provider';
 
 import { WALLETS_CONFIG } from '@config';
-import { ISignComponentProps, ITxHash } from '@types';
+import { ISignComponentProps } from '@types';
 import translate, { translateRaw } from '@translations';
 import { withContext, getWeb3Config } from '@utils';
 import { getNetworkByChainId, INetworkContext, NetworkContext } from '@services/Store';
@@ -77,7 +77,6 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
     const networkName = detectedNetwork ? detectedNetwork.name : translateRaw('UNKNOWN_NETWORK');
     const walletConfig = getWeb3Config();
     const { accountMatches, networkMatches, walletState, submitting } = this.state;
-
     return (
       <>
         <div className="SignTransactionWeb3-title">
@@ -195,25 +194,22 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
     this.setState({ walletState: WalletSigningState.READY });
     const signerWallet = web3Provider.getSigner();
 
-    try {
-      // Calling ethers.js with a tx object containing a 'from' property
-      // will fail https://github.com/ethers-io/ethers.js/issues/692.
-      const { from, ...rawTx } = rawTransaction;
-      signerWallet
-        .sendUncheckedTransaction(rawTx)
-        .then((txHash) => {
-          this.setState({ submitting: false });
-          onSuccess(txHash as ITxHash);
-        })
-        .catch((err) => {
-          throw new Error(err);
-        });
-    } catch (err) {
-      console.debug(`[SignTransactionWeb3] ${err}`);
-      if (err.message.includes('User denied transaction signature')) {
-        this.setState({ walletState: WalletSigningState.NOT_READY });
-      }
-    }
+    // Calling ethers.js with a tx object containing a 'from' property
+    // will fail https://github.com/ethers-io/ethers.js/issues/692.
+    const { from, ...rawTx } = rawTransaction;
+    signerWallet
+      .sendUncheckedTransaction(rawTx)
+      .then((txHash) => {
+        this.setState({ submitting: false });
+        onSuccess(txHash);
+      })
+      .catch((err) => {
+        this.setState({ submitting: false });
+        console.debug(`[SignTransactionWeb3] ${err.message}`);
+        if (err.message.includes('User denied transaction signature')) {
+          this.setState({ walletState: WalletSigningState.NOT_READY });
+        }
+      });
   }
 }
 
