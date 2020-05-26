@@ -264,7 +264,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     // This interval is used to poll for status of txs.
     const txStatusLookupInterval = setInterval(() => {
       pendingTransactions.forEach((pendingTxReceipt) => {
-        const network = getNetworkById(pendingTxReceipt.asset.networkId);
+        const network = getNetworkById(pendingTxReceipt.asset.networkId, networks);
         // If network is not found in the pendingTransactionObject, we cannot continue.
         if (!network) return;
         const provider = new ProviderHandler(network);
