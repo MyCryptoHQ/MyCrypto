@@ -20,7 +20,7 @@
     "@mycrypto/unlock-scan": "0.1.0",
     "@unstoppabledomains/resolution": "1.3.5",
     "@walletconnect/browser": "1.0.0-beta.39",
-    "aes-js": "3.1.1",    
+    "aes-js": "3.1.1",
     "apollo-boost": "0.4.7",
     "axios": "0.18.1",
     "bignumber.js": "9.0.0",
@@ -172,6 +172,7 @@
     "mini-css-extract-plugin": "0.9.0",
     "nock": "11.7.2",
     "node-sass": "4.13.0",
+    "npm-run-all": "4.1.5",
     "parse-eth-tokens": "0.3.0",
     "prettier": "2.0.4",
     "raw-loader": "4.0.0",
@@ -223,9 +224,9 @@
     "build:electron:osx": "cross-env NODE_ENV=production BUILD_ELECTRON=true webpack --config webpack_config/electron.production.js && cross-env ELECTRON_OS=osx node webpack_config/buildElectron.js",
     "build:electron:windows": "cross-env NODE_ENV=production BUILD_ELECTRON=true webpack --config webpack_config/electron.production.js && cross-env ELECTRON_OS=windows node webpack_config/buildElectron.js",
     "build:electron:linux": "cross-env NODE_ENV=production BUILD_ELECTRON=true webpack --config webpack_config/electron.production.js && cross-env ELECTRON_OS=linux node webpack_config/buildElectron.js",
-    "test:coverage": "jest --config=jest_config/jest.config.json --coverage",
-    "test": "jest --config=jest_config/jest.config.json",
-    "test:single": "jest --config=jest_config/jest.config.json --coverage=false --watch",
+    "test": "jest --config=jest_config/jest.config.json --maxWorkers=2",
+    "test:coverage": "yarn test --coverage",
+    "test:single": "yarn test --coverage=false --watch",
     "report-coverage": " cat ./coverage/lcov.info | coveralls",
     "pretest": "check-node-version --package",
     "predev": "check-node-version --package",
@@ -236,7 +237,6 @@
     "dev:electron:renderer": "webpack-dev-server --config webpack_config/electron-renderer.development.js",
     "storybook": "start-storybook -p 3001 --ci",
     "build:storybook": "build-storybook",
-    "tslint": "tslint --project .",
     "tscheck": "tsc",
     "start": " yarn run dev",
     "serve": "ws -d dist/prod/ --spa index.html",
@@ -246,14 +246,16 @@
     "prettier:diff": "prettier --write --config ./.prettierrc --list-different \"src/**/*.ts\" \"src/**/*.tsx\"",
     "update:tokens": "parse-eth-tokens --networks all --output ./src/database/data/tokens --exclude 0x5a276Aeb77bCfDAc8Ac6f31BBC7416AE1A85eEF2,0x0027449Bf0887ca3E431D263FFDeFb244D95b555",
     "lint:css": "stylelint ./src/**/*.tsx",
+    "lint:ts": "tslint --project .",
     "node:scripts:tsc": "tsc --project tsconfig.scripts.json",
-    "translations:extract": "npm run node:scripts:tsc && node node-scripts/translations/translations-extract.js"
+    "translations:extract": "npm run node:scripts:tsc && node node-scripts/translations/translations-extract.js",
+    "validate": "npm-run-all --parallel lint:css lint:ts tscheck"
   },
   "lint-staged": {
     "!(node-scripts)/**/*.{ts,tsx}": [
       "prettier --write --config ./.prettierrc --config-precedence file-override",
       "yarn lint:css",
-      "yarn tslint",
+      "yarn lint:ts",
       "git add"
     ]
   },
