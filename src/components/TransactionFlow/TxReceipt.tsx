@@ -54,7 +54,7 @@ import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
 import { PendingTransaction } from './PendingLoader';
 
 import sentIcon from '@assets/images/icn-sent.svg';
-import defizaplogo from '@assets/images/defizap/defizaplogo.svg';
+import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 import './TxReceipt.scss';
 
 interface PendingBtnAction {
@@ -328,7 +328,7 @@ export const TxReceiptUI = ({
           </div>
           <div className="TransactionReceipt-row">
             <div className="TransactionReceipt-row-column">
-              <SImg src={defizaplogo} size="24px" />
+              <SImg src={zapperLogo} size="24px" />
               {translateRaw('ZAP_NAME')}
             </div>
             <div className="TransactionReceipt-row-column rightAligned">{zapSelected.title}</div>
