@@ -4,8 +4,6 @@ import { makeExplorer } from '@services/EthService/utils/makeExplorer';
 import packageJson from '../../package.json';
 import translate from '@translations';
 
-export const languages = require('./languages.json');
-
 // Displays in the footer
 export const VERSION = packageJson.version;
 export const N_FACTOR = 8192;
