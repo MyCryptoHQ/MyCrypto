@@ -46,7 +46,7 @@ const StyledInlineSVG = styled(InlineSVG)`
 
 interface Props extends Omit<InlineSVGProps, 'src'> {
   type: keyof typeof icons;
-  color: string;
+  color?: string;
 }
 
 const Icon: FunctionComponent<Props> = ({ type, ...props }) => (
