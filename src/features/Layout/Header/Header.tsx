@@ -16,9 +16,9 @@ import {
   KB_HELP_ARTICLE
 } from '@config';
 import translate from '@translations';
+import LocalIcon from 'components/Icon';
 
 // Legacy
-import logo from '@assets/images/logo-mycrypto.svg';
 import { ScreenLockContext } from '@features/ScreenLock/ScreenLockProvider';
 
 const { BLUE_BRIGHT } = COLORS;
@@ -214,7 +214,7 @@ const MobileTopLeft = styled.div`
   }
 `;
 
-const CenterImg = styled.img`
+const CenterImg = styled(LocalIcon)`
   width: 160px;
   height: 39px;
 `;
@@ -423,7 +423,7 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
         </HeaderTopLeft>
         <div>
           <Link to={ROUTE_PATHS.ROOT.path}>
-            <CenterImg src={logo} alt="Our logo" />
+            <CenterImg type="logo-mycrypto-text" alt="Our logo" />
           </Link>
         </div>
         {/* Mobile Right */}
