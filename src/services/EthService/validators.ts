@@ -259,7 +259,11 @@ export const validateTransactionFee = (
   const createTxFeeResponse = (type: TransactionFeeResponseType) => {
     return {
       type,
-      amount: baseToConvertedUnit(txAmountFiatValue.toString(), DEFAULT_DECIMAL),
+      amount: parseFloat(
+        baseToConvertedUnit(txAmountFiatValue.toString(), DEFAULT_DECIMAL + DEFAULT_RATE_DECIMAL)
+      )
+        .toFixed(4)
+        .toString(),
       fee: parseFloat(baseToConvertedUnit(txTransactionFeeFiatValue.toString(), DEFAULT_DECIMAL))
         .toFixed(4)
         .toString()
@@ -277,11 +281,6 @@ export const validateTransactionFee = (
   // In case of fractions of amount being send
   if (txAmount.lt(bigNumberify(convertedToBaseUnit('0.000001', DEFAULT_DECIMAL)))) {
     return createTxFeeResponse('None');
-  }
-
-  // Erc token where txFee is higher than amount
-  if (isERC20 && txAmount.lt(txTransactionFee)) {
-    return createTxFeeResponse('Warning');
   }
 
   // More than 100$ OR 0.5 ETH
@@ -306,6 +305,14 @@ export const validateTransactionFee = (
     isGreaterThanEthFraction(0.025)
   ) {
     return createTxFeeResponse('Error-Use-Lower');
+  }
+
+  // Erc token where txFee is higher than amount
+  if (
+    !isERC20 &&
+    txAmount.lt(convertedToBaseUnit(txTransactionFee.toString(), DEFAULT_RATE_DECIMAL))
+  ) {
+    return createTxFeeResponse('Warning');
   }
 
   return createTxFeeResponse('None');

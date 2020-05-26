@@ -61,7 +61,7 @@ describe('validateTransactionFee', () => {
     });
   });
   it('should return Warning for fee bigger than amounts', () => {
-    expect(validateTransactionFee('0.000002', 100, true, '21000', '21000')).toMatchObject({
+    expect(validateTransactionFee('0.000002', 100, false, '21000', '1000')).toMatchObject({
       type: 'Warning' as TransactionFeeResponseType
     });
   });
