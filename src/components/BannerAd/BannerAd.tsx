@@ -4,7 +4,8 @@ import styled from 'styled-components';
 
 import { ads } from './constants';
 import { BREAK_POINTS } from '@theme';
-import { ANALYTICS_CATEGORIES, AnalyticsService } from '@services';
+import { ANALYTICS_CATEGORIES } from '@services';
+import { useAnalytics } from '@utils';
 
 const { SCREEN_SM } = BREAK_POINTS;
 
@@ -31,17 +32,16 @@ const BannerImageMobile = styled.img`
   }
 `;
 
-const onAdClick = (ad: string) => {
-  AnalyticsService.instance.track(ANALYTICS_CATEGORIES.AD, `${ad} ad clicked`);
-};
-
 export default function BannerAd() {
   const randomIndex = Math.floor(Math.random() * ads.length);
   const ad = ads[randomIndex];
   const isExternalLink = ad.url.startsWith('http');
+  const trackAdd = useAnalytics({
+    category: ANALYTICS_CATEGORIES.AD
+  });
 
   return (
-    <AdWrapper onClick={() => onAdClick(ad.name)}>
+    <AdWrapper onClick={() => trackAdd({ actionName: `${ad.name} ad clicked` })}>
       {isExternalLink ? (
         <a href={ad.url} target="_blank" rel="noreferrer">
           <BannerImageDesktop src={ad.srcDesktop} />

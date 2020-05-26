@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { FC, useCallback } from 'react';
 import { Panel } from '@mycrypto/ui';
 import Slider from 'react-slick';
 import styled from 'styled-components';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import translate, { translateRaw } from '@translations';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
+import { ANALYTICS_CATEGORIES } from '@services';
 import { BREAK_POINTS, COLORS } from '@theme';
 import { WalletId } from '@types';
 import { ROUTE_PATHS } from '@config';
@@ -17,6 +17,7 @@ import ledgerIcon from '@assets/images/wallets/ledger.svg';
 import trezorIcon from '@assets/images/wallets/trezor.svg';
 import frameIcon from '@assets/images/wallets/frame.svg';
 import walletConnectIcon from '@assets/images/wallets/walletconnect.svg';
+import { useAnalytics } from '@utils';
 
 const { SCREEN_SM, SCREEN_LG, SCREEN_XXL } = BREAK_POINTS;
 const { BLUE_DARK_SLATE, GREYISH_BROWN } = COLORS;
@@ -164,38 +165,48 @@ interface WalletCardProps {
   walletId: string;
 }
 
-class WalletCard extends Component<WalletCardProps & RouteComponentProps<{}>> {
-  public handleWalletClick = (wallet: string, walletId: string) => {
-    const { history } = this.props;
-    history.push(`${ROUTE_PATHS.ADD_ACCOUNT.path}/${walletId}`);
-    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HOME, `${wallet} wallet button clicked`);
-  };
+const WalletCard: FC<WalletCardProps & RouteComponentProps> = ({
+  src,
+  text,
+  mobileSrc,
+  mobileText,
+  walletId,
+  mobileWalletId,
+  history
+}) => {
+  const trackWallet = useAnalytics({
+    category: ANALYTICS_CATEGORIES.HOME
+  });
 
-  public render() {
-    const { src, text, mobileSrc, mobileText, walletId, mobileWalletId } = this.props;
-    return (
-      <WalletCardWrapper>
+  const handleWalletClick = useCallback(
+    (walletText: string, walletIdRedirect: string) => {
+      history.push(`${ROUTE_PATHS.ADD_ACCOUNT.path}/${walletIdRedirect}`);
+      trackWallet({
+        actionName: `${walletText} wallet button clicked`
+      });
+    },
+    [history]
+  );
+
+  return (
+    <WalletCardWrapper>
+      <WalletCardContent isMobile={!!mobileSrc} onClick={() => handleWalletClick(text, walletId)}>
+        <WalletCardImg src={src} alt={text} />
+        <WalletCardDescription>{text}</WalletCardDescription>
+      </WalletCardContent>
+      {mobileSrc && (
         <WalletCardContent
-          isMobile={!!mobileSrc}
-          onClick={() => this.handleWalletClick(text, walletId)}
+          isMobile={!mobileSrc}
+          showMobile={true}
+          onClick={() => handleWalletClick(mobileText || text, mobileWalletId || walletId)}
         >
-          <WalletCardImg src={src} alt={text} />
-          <WalletCardDescription>{text}</WalletCardDescription>
+          <WalletCardImg src={mobileSrc} alt={mobileText} />
+          <WalletCardDescription>{mobileText}</WalletCardDescription>
         </WalletCardContent>
-        {mobileSrc && (
-          <WalletCardContent
-            isMobile={!mobileSrc}
-            showMobile={true}
-            onClick={() => this.handleWalletClick(mobileText || text, mobileWalletId || walletId)}
-          >
-            <WalletCardImg src={mobileSrc} alt={mobileText} />
-            <WalletCardDescription>{mobileText}</WalletCardDescription>
-          </WalletCardContent>
-        )}
-      </WalletCardWrapper>
-    );
-  }
-}
+      )}
+    </WalletCardWrapper>
+  );
+};
 const WalletCardWithRouter = withRouter(WalletCard);
 
 export default function CompatibleWalletsPanel() {

@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
+import React, { FC } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
 import translate, { translateRaw } from '@translations';
 import { ExtendedContentPanel } from '@components';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
+import { ANALYTICS_CATEGORIES } from '@services';
 
 import mainImage from '@assets/images/icn-forgot-password.svg';
+import { useAnalytics } from '@utils';
 
 const ActionButton = styled(Button)`
   width: 320px;
@@ -38,45 +39,36 @@ const AditionalDescription = styled.p`
   }
 `;
 
-type Props = RouteComponentProps<{}>;
+const ScreenLockForgotPassword: FC<RouteComponentProps> = ({ history }) => {
+  const trackScreenLock = useAnalytics({
+    category: ANALYTICS_CATEGORIES.SCREEN_LOCK
+  });
 
-class ScreenLockForgotPassword extends Component<Props> {
-  public handleImportWalletSettingsClick = () => {
-    AnalyticsService.instance.track(
-      ANALYTICS_CATEGORIES.SCREEN_LOCK,
-      'Import Wallet Settings button clicked'
-    );
-  };
-
-  public handleStartOverClick = () => {
-    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.SCREEN_LOCK, 'Start Over button clicked');
-  };
-
-  public render() {
-    return (
-      <ExtendedContentPanel
-        onBack={this.props.history.goBack}
-        heading={translateRaw('SCREEN_LOCK_FORGOT_PASSWORD_HEADING')}
-        description={translateRaw('SCREEN_LOCK_FORGOT_PASSWORD_DESCRIPTION')}
-        image={mainImage}
-        showImageOnTop={true}
-        centered={true}
-        className=""
-      >
-        <AditionalDescription>
-          {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_DESCRIPTION')}
-        </AditionalDescription>
-        <FormWrapper>
-          <ActionButton onClick={this.handleImportWalletSettingsClick}>
-            {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_IMPORT')}
-          </ActionButton>
-          <ActionButton onClick={this.handleStartOverClick}>
-            {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_START_OVER')}
-          </ActionButton>
-        </FormWrapper>
-      </ExtendedContentPanel>
-    );
-  }
-}
+  return (
+    <ExtendedContentPanel
+      onBack={history.goBack}
+      heading={translateRaw('SCREEN_LOCK_FORGOT_PASSWORD_HEADING')}
+      description={translateRaw('SCREEN_LOCK_FORGOT_PASSWORD_DESCRIPTION')}
+      image={mainImage}
+      showImageOnTop={true}
+      centered={true}
+      className=""
+    >
+      <AditionalDescription>
+        {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_DESCRIPTION')}
+      </AditionalDescription>
+      <FormWrapper>
+        <ActionButton
+          onClick={() => trackScreenLock({ actionName: 'Import Wallet Settings button clicked' })}
+        >
+          {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_IMPORT')}
+        </ActionButton>
+        <ActionButton onClick={() => trackScreenLock({ actionName: 'Start Over button clicked' })}>
+          {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_START_OVER')}
+        </ActionButton>
+      </FormWrapper>
+    </ExtendedContentPanel>
+  );
+};
 
 export default withRouter(ScreenLockForgotPassword);

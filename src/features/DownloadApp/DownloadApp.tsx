@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
 import cloneDeep from 'lodash/cloneDeep';
 import styled from 'styled-components';
 
 import { ExtendedContentPanel } from '@components';
-import { AnalyticsService, ANALYTICS_CATEGORIES, GithubService } from '@services/ApiService';
+import { ANALYTICS_CATEGORIES, GithubService } from '@services/ApiService';
 import { GITHUB_RELEASE_NOTES_URL, DOWNLOAD_MYCRYPTO_LINK, OS } from '@config';
-import { getFeaturedOS } from '@utils';
+import { getFeaturedOS, useAnalytics } from '@utils';
 import { AppDownloadItem } from './types';
 import translate from '@translations';
 
@@ -95,132 +95,122 @@ const Footer = styled.p`
   }
 `;
 
-type Props = RouteComponentProps<{}>;
-
 const DEFAULT_LINK = GITHUB_RELEASE_NOTES_URL;
 const featuredOS = getFeaturedOS();
 
-interface State {
-  downloadItems: AppDownloadItem[];
-}
-
-export class DownloadApp extends Component<Props, State> {
-  public state: State = {
-    downloadItems: [
-      {
-        OS: OS.WINDOWS,
-        name: 'Windows',
-        link: DEFAULT_LINK
-      },
-      {
-        OS: OS.MAC,
-        name: 'Mac',
-        link: DEFAULT_LINK
-      },
-      {
-        OS: OS.LINUX64,
-        name: 'Linux (64-bit)',
-        link: DEFAULT_LINK
-      },
-      {
-        OS: OS.LINUX32,
-        name: 'Linux (32-bit)',
-        link: DEFAULT_LINK
-      },
-      {
-        OS: OS.STANDALONE,
-        name: 'Stand Alone',
-        link: DEFAULT_LINK
-      }
-    ]
-  };
-
-  public async componentDidMount() {
-    try {
-      const { releaseUrls } = await GithubService.instance.getReleasesInfo();
-      const downloadItems: AppDownloadItem[] = cloneDeep(this.state.downloadItems);
-
-      downloadItems.forEach((downloadItem) => {
-        downloadItem.link = releaseUrls[downloadItem.OS] || DEFAULT_LINK;
-      });
-
-      this.setState({ downloadItems });
-      this.trackUserLandsOnComponent(
-        downloadItems.find((x) => x.OS === featuredOS) || downloadItems[0]
-      );
-    } catch (e) {
-      console.error(e);
+const DownloadApp: FC<RouteComponentProps> = ({ history }) => {
+  const [downloadItems, setDownloadItems] = useState([
+    {
+      OS: OS.WINDOWS,
+      name: 'Windows',
+      link: DEFAULT_LINK
+    },
+    {
+      OS: OS.MAC,
+      name: 'Mac',
+      link: DEFAULT_LINK
+    },
+    {
+      OS: OS.LINUX64,
+      name: 'Linux (64-bit)',
+      link: DEFAULT_LINK
+    },
+    {
+      OS: OS.LINUX32,
+      name: 'Linux (32-bit)',
+      link: DEFAULT_LINK
+    },
+    {
+      OS: OS.STANDALONE,
+      name: 'Stand Alone',
+      link: DEFAULT_LINK
     }
-  }
+  ]);
+  const trackDownloadDesktop = useAnalytics({
+    category: ANALYTICS_CATEGORIES.DOWNLOAD_DESKTOP
+  });
 
-  public render() {
-    const { downloadItems } = this.state;
-    const primaryDownload = downloadItems.find((x) => x.OS === featuredOS) || downloadItems[0];
-    const secondaryDownloads = downloadItems.filter((x) => x !== primaryDownload);
+  useEffect(() => {
+    (async () => {
+      try {
+        const { releaseUrls } = await GithubService.instance.getReleasesInfo();
+        const downloadItemsTemp = cloneDeep(downloadItems);
 
-    return (
-      <ExtendedContentPanel onBack={this.props.history.goBack} className="">
-        <DownloadAppWrapper>
-          <Header>{translate('DOWNLOAD_APP_TITLE')}</Header>
-          <Description>{translate('DOWNLOAD_APP_DESCRIPTION')}</Description>
-          <ImgIcon src={desktopAppIcon} alt="Desktop" />
-          <PrimaryButton onClick={() => this.openDownloadLink(primaryDownload)}>
-            {translate('DOWNLOAD_APP_DOWNLOAD_BUTTON')} {primaryDownload.name}
-          </PrimaryButton>
-          <OptionGroup>
-            <Option secondary={true} onClick={() => this.openDownloadLink(secondaryDownloads[0])}>
-              {secondaryDownloads[0].name}
-            </Option>
-            <Option secondary={true} onClick={() => this.openDownloadLink(secondaryDownloads[1])}>
-              {secondaryDownloads[1].name}
-            </Option>
-          </OptionGroup>
-          <OptionGroup>
-            <Option secondary={true} onClick={() => this.openDownloadLink(secondaryDownloads[2])}>
-              {secondaryDownloads[2].name}
-            </Option>
-            <Option secondary={true} onClick={() => this.openDownloadLink(secondaryDownloads[3])}>
-              {secondaryDownloads[3].name}
-            </Option>
-          </OptionGroup>
-          <Footer>
-            {translate('DOWNLOAD_APP_FOOTER_INFO')}{' '}
-            <a
-              onClick={this.trackLearnMoreClick}
-              href={DOWNLOAD_MYCRYPTO_LINK}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {translate('DOWNLOAD_APP_FOOTER_INFO_LINK')}
-            </a>
-          </Footer>
-        </DownloadAppWrapper>
-      </ExtendedContentPanel>
-    );
-  }
+        downloadItemsTemp.forEach((downloadItem) => {
+          downloadItem.link = releaseUrls[downloadItem.OS] || DEFAULT_LINK;
+        });
 
-  private openDownloadLink = (item: AppDownloadItem) => {
-    const target = item.link === DEFAULT_LINK ? '_blank' : '_self';
-    window.open(item.link, target);
-    AnalyticsService.instance.track(
-      ANALYTICS_CATEGORIES.DOWNLOAD_DESKTOP,
-      `${item.name} download button clicked`
-    );
-  };
+        setDownloadItems(downloadItemsTemp);
 
-  private trackLearnMoreClick = () => {
-    AnalyticsService.instance.track(
-      ANALYTICS_CATEGORIES.DOWNLOAD_DESKTOP,
-      'Learn more link clicked'
-    );
-  };
+        const trackItem =
+          downloadItemsTemp.find((x) => x.OS === featuredOS) || downloadItemsTemp[0];
+        trackDownloadDesktop({
+          actionName: `${trackItem.name} user lands on this component`
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  }, [setDownloadItems]);
 
-  private trackUserLandsOnComponent = (item: AppDownloadItem) => {
-    AnalyticsService.instance.track(
-      ANALYTICS_CATEGORIES.DOWNLOAD_DESKTOP,
-      `${item.name} user lands on this component`
-    );
-  };
-}
+  const openDownloadLink = useCallback(
+    (item: AppDownloadItem) => {
+      const target = item.link === DEFAULT_LINK ? '_blank' : '_self';
+      window.open(item.link, target);
+
+      trackDownloadDesktop({
+        actionName: `${item.name} download button clicked`
+      });
+    },
+    [trackDownloadDesktop]
+  );
+
+  const primaryDownload = downloadItems.find((x) => x.OS === featuredOS) || downloadItems[0];
+  const secondaryDownloads = downloadItems.filter((x) => x !== primaryDownload);
+
+  return (
+    <ExtendedContentPanel onBack={history.goBack} className="">
+      <DownloadAppWrapper>
+        <Header>{translate('DOWNLOAD_APP_TITLE')}</Header>
+        <Description>{translate('DOWNLOAD_APP_DESCRIPTION')}</Description>
+        <ImgIcon src={desktopAppIcon} alt="Desktop" />
+        <PrimaryButton onClick={() => openDownloadLink(primaryDownload)}>
+          {translate('DOWNLOAD_APP_DOWNLOAD_BUTTON')} {primaryDownload.name}
+        </PrimaryButton>
+        <OptionGroup>
+          <Option secondary={true} onClick={() => openDownloadLink(secondaryDownloads[0])}>
+            {secondaryDownloads[0].name}
+          </Option>
+          <Option secondary={true} onClick={() => openDownloadLink(secondaryDownloads[1])}>
+            {secondaryDownloads[1].name}
+          </Option>
+        </OptionGroup>
+        <OptionGroup>
+          <Option secondary={true} onClick={() => openDownloadLink(secondaryDownloads[2])}>
+            {secondaryDownloads[2].name}
+          </Option>
+          <Option secondary={true} onClick={() => openDownloadLink(secondaryDownloads[3])}>
+            {secondaryDownloads[3].name}
+          </Option>
+        </OptionGroup>
+        <Footer>
+          {translate('DOWNLOAD_APP_FOOTER_INFO')}{' '}
+          <a
+            onClick={() =>
+              trackDownloadDesktop({
+                actionName: 'Learn more link clicked'
+              })
+            }
+            href={DOWNLOAD_MYCRYPTO_LINK}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {translate('DOWNLOAD_APP_FOOTER_INFO_LINK')}
+          </a>
+        </Footer>
+      </DownloadAppWrapper>
+    </ExtendedContentPanel>
+  );
+};
 
 export default withRouter(DownloadApp);

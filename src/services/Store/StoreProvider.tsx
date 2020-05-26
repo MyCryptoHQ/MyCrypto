@@ -35,7 +35,8 @@ import {
   getWeb3Config,
   multiplyBNFloats,
   weiToFloat,
-  generateAccountUUID
+  generateAccountUUID,
+  useAnalytics
 } from '@utils';
 import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from '@services/EthService';
 import {
@@ -59,7 +60,7 @@ import { AccountContext, getDashboardAccounts } from './Account';
 import { SettingsContext } from './Settings';
 import { NetworkContext, getNetworkById } from './Network';
 import { findNextUnusedDefaultLabel, AddressBookContext } from './AddressBook';
-import { MyCryptoApiService, AnalyticsService, ANALYTICS_CATEGORIES } from '../ApiService';
+import { MyCryptoApiService, ANALYTICS_CATEGORIES } from '../ApiService';
 
 export interface CoinGeckoManifest {
   [uuid: string]: string;
@@ -233,14 +234,16 @@ export const StoreProvider: React.FC = ({ children }) => {
       });
   };
 
+  useAnalytics({
+    category: ANALYTICS_CATEGORIES.ROOT,
+    actionName: accounts.length === 0 ? 'New User' : 'Returning User',
+    eventParams: {
+      visitStartAccountNumber: accounts.length
+    },
+    triggerOnMount: true
+  });
+
   useEffectOnce(() => {
-    AnalyticsService.instance.track(
-      ANALYTICS_CATEGORIES.ROOT,
-      accounts.length === 0 ? 'New User' : 'Returning User',
-      {
-        visitStartAccountNumber: accounts.length
-      }
-    );
     scanForMemberships();
   });
 
