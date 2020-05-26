@@ -7,12 +7,11 @@ import styled from 'styled-components';
 import { ExtendedContentPanel } from '@components';
 import { ANALYTICS_CATEGORIES, GithubService } from '@services/ApiService';
 import { GITHUB_RELEASE_NOTES_URL, DOWNLOAD_MYCRYPTO_LINK, OS } from '@config';
-import { getFeaturedOS, useAnalytics } from '@utils';
-import { AppDownloadItem } from './types';
+import { getFeaturedOS, useAnalytics, openLink } from '@utils';
 import translate from '@translations';
-
-// Legacy
 import desktopAppIcon from '@assets/images/icn-desktop-app.svg';
+
+import { AppDownloadItem } from './types';
 
 const DownloadAppWrapper = styled.div`
   display: flex;
@@ -156,7 +155,7 @@ const DownloadApp: FC<RouteComponentProps> = ({ history }) => {
   const openDownloadLink = useCallback(
     (item: AppDownloadItem) => {
       const target = item.link === DEFAULT_LINK ? '_blank' : '_self';
-      window.open(item.link, target);
+      openLink(item.link, target);
 
       trackDownloadDesktop({
         actionName: `${item.name} download button clicked`

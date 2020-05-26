@@ -1,4 +1,6 @@
-export const isUrl = (url: string): boolean => {
+import { TURL } from '@types';
+
+export const isUrl = (url: string): url is TURL => {
   const protocolAndDomainRE = /^(?:\w+:)?\/\/(\S+)$/;
   const localhostDomainRE = /^localhost[\:?\d]*(?:[^\:?\d]\S*)?$/;
   const nonLocalhostDomainRE = /^[^\s\.]+\.\S{2,}$/;

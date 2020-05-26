@@ -10,11 +10,10 @@ import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from '@theme';
 import { ANALYTICS_CATEGORIES, SettingsContext } from '@services';
 import { ROUTE_PATHS, LATEST_NEWS_URL, getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import translate, { languages } from '@translations';
+import { openLink, useAnalytics } from '@utils';
 
-// Legacy
 import logo from '@assets/images/logo-mycrypto.svg';
 import { ScreenLockContext } from '@features/ScreenLock/ScreenLockProvider';
-import { useAnalytics } from '@utils';
 
 const { BLUE_BRIGHT } = COLORS;
 
@@ -331,14 +330,14 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
     trackHeader({
       actionName: 'Latest news clicked'
     });
-    window.open(LATEST_NEWS_URL, '_blank');
+    openLink(LATEST_NEWS_URL);
   };
 
   const openHelpSupportPage = (): void => {
     trackHeader({
       actionName: 'Help & Support clicked'
     });
-    window.open(getKBHelpArticle(KB_HELP_ARTICLE.HOME), '_blank');
+    openLink(getKBHelpArticle(KB_HELP_ARTICLE.HOME));
   };
 
   return (

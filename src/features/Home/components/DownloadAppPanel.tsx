@@ -6,9 +6,10 @@ import translate from '@translations';
 import { BREAK_POINTS } from '@theme';
 import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from '@config';
 import { ANALYTICS_CATEGORIES } from '@services';
+import { openLink, useAnalytics } from '@utils';
+import { TURL } from '@types';
 
 import champagneIcon from '@assets/images/icn-champagne-2.svg';
-import { useAnalytics } from '@utils';
 
 const { SCREEN_SM, SCREEN_MD, SCREEN_XXL } = BREAK_POINTS;
 
@@ -93,7 +94,7 @@ const Image = styled.img`
 
 interface Props {
   OSName: string;
-  downloadLink: string;
+  downloadLink: TURL;
 }
 
 export default function DownloadAppPanel({ OSName, downloadLink }: Props) {
@@ -122,7 +123,7 @@ export default function DownloadAppPanel({ OSName, downloadLink }: Props) {
   );
 }
 
-const openDownloadLink = (link: string) => {
+const openDownloadLink = (link: TURL) => {
   const target = link === DEFAULT_LINK ? '_blank' : '_self';
-  window.open(link, target);
+  openLink(link, target);
 };

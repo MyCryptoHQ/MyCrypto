@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import translate from '@translations';
 import { ANALYTICS_CATEGORIES } from '@services';
 import { COLORS } from '@theme';
+import { BUY_MYCRYPTO_WEBSITE } from '@config';
+import { openLink } from '@utils';
 
 import addIcon from '@assets/images/icn-add-assets.svg';
 import useAnalytics from '@utils/useAnalytics';
@@ -49,10 +51,9 @@ const NoAssetsDescription = styled.div`
 `;
 
 const openLinkBuyMyCrypto = (trackCallback: ReturnType<typeof useAnalytics>) => {
-  const url = 'buy.mycrypto.com';
-  window.open(`https://${url}`, '_blank');
+  openLink(BUY_MYCRYPTO_WEBSITE);
   trackCallback({
-    actionName: `Link ${url} clicked`
+    actionName: `Link ${BUY_MYCRYPTO_WEBSITE} clicked`
   });
 };
 

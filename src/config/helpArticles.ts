@@ -1,3 +1,5 @@
+import { TURL } from '@types';
+
 const KB_URL = 'https://support.mycrypto.com';
 
 export enum KB_HELP_ARTICLE {
@@ -28,4 +30,4 @@ export enum HELP_ARTICLE {
   LEDGER = 'https://support.ledger.com/hc/en-us/articles/360008268594'
 }
 
-export const getKBHelpArticle = (article: KB_HELP_ARTICLE) => `${KB_URL}/${article}`;
+export const getKBHelpArticle = (article: KB_HELP_ARTICLE) => `${KB_URL}/${article}` as TURL;
