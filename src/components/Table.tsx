@@ -25,17 +25,16 @@ import { default as IconArrow } from './IconArrow';
 export interface TableGroup {
   title: string;
   entries: ReactNode[][];
-  offset?: number;
 }
 
 type sortFunctionType = (heading?: string | null) => (a: any, b: any) => number;
 
 export interface TableConfig {
   sortableColumn?: string | string[];
-  hiddenHeadings?: (string | JSX.Element)[]; //Hack to allow a head to include JSX.Elements
   reversedColumns?: string[];
   sortFunction?: sortFunctionType;
   overlayRoot?: boolean;
+  maxHeight?: string;
   handleRowClicked?(index: number): void;
 }
 
@@ -78,7 +77,6 @@ const sharedCellProperties = ({ isReversed }: CellProps) => `
 `;
 
 const TableHead = styled.tr`
-  border-top: 0.0625em solid ${(props) => props.theme.tableHeadBorder};
   border-bottom: 0.0625em solid ${(props) => props.theme.tableHeadBorder};
   background: ${(props) => props.theme.tableHeadBackground};
   font-size: 0.9em;
@@ -101,14 +99,12 @@ const TableHeading = styled(Typography)<HeadingProps>`
   font-weight: normal;
   text-transform: uppercase;
   letter-spacing: 0.0625em;
+  border-top: '0px';
+  position: sticky;
+  top: 0;
+  background: ${(props) => props.theme.tableHeadBackground};
+  z-index: 9999;
   cursor: ${(props) => (props.isSortable ? 'pointer' : 'inherit')};
-    ${(props) =>
-      props.isHidden &&
-      `
-    position: fixed;
-    top: -9999em;
-    left: -9999em;
-  `};
 ` as StyledComponentClass<
   ClassAttributes<HTMLTableHeaderCellElement> &
     ThHTMLAttributes<HTMLTableHeaderCellElement> &
@@ -248,8 +244,6 @@ class AbstractTable extends Component<Props, State> {
                 getHeaderColumn(heading)
               );
               const isSortableColumn = this.isColumnSortable(getHeaderColumn(heading));
-              const isHiddenHeading =
-                config && config.hiddenHeadings && config.hiddenHeadings.includes(heading);
 
               return (
                 <TableHeading
@@ -261,7 +255,6 @@ class AbstractTable extends Component<Props, State> {
                   }
                   role={isSortableColumn ? 'button' : ''}
                   isSortable={isSortableColumn}
-                  isHidden={isHiddenHeading}
                   isReversed={isReversedColumn(heading)}
                   data-testid={isSortableColumn ? 'sortable-column-heading' : ''}
                 >
@@ -316,14 +309,10 @@ class AbstractTable extends Component<Props, State> {
               </TableRow>
             );
           })}
-          {groups!.map(({ title, entries, offset = 0 }) => (
+          {groups!.map(({ title, entries }) => (
             <React.Fragment key={title}>
               <TableGroupHead onClick={this.toggleCollapseGroup.bind(this, title)} role="button">
-                {/* Enter ghost cells to facilitate the offset. */}
-                {Array.from({ length: offset }, (_, index) => (
-                  <td key={index} />
-                ))}
-                <TableHeading colSpan={head.length - offset}>
+                <TableHeading colSpan={head.length}>
                   {title}
                   <IconArrow isFlipped={collapsedGroups[title]} />
                 </TableHeading>
@@ -391,7 +380,7 @@ class AbstractTable extends Component<Props, State> {
       }
     });
 
-    groups!.forEach(({ title, entries, offset }) => {
+    groups!.forEach(({ title, entries }) => {
       if (!title || title === '') {
         throw new Error(`Untitled group in <Table /> -- all table groups must have a title.`);
       }
@@ -403,13 +392,9 @@ class AbstractTable extends Component<Props, State> {
           );
         }
       });
-
-      if (offset && offset > columnCount - 1) {
-        throw new Error(`Bad offset in group "${title}" found in <Table />.`);
-      }
     });
 
-    const { sortableColumn, hiddenHeadings } = config!;
+    const { sortableColumn } = config!;
 
     if (sortableColumn) {
       const returnNonexistentColumn = () => {
@@ -428,14 +413,6 @@ class AbstractTable extends Component<Props, State> {
       ) {
         return returnNonexistentColumn();
       }
-    }
-
-    if (hiddenHeadings) {
-      hiddenHeadings.forEach((heading) => {
-        if (!head.includes(heading)) {
-          throw new Error(`Unused heading ${heading} found in hiddenHeadings in <Table />`);
-        }
-      });
     }
   };
 
