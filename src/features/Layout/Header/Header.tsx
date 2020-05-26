@@ -10,11 +10,10 @@ import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from '@theme';
 import { ANALYTICS_CATEGORIES, SettingsContext } from '@services';
 import { ROUTE_PATHS, LATEST_NEWS_URL, getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import translate, { languages } from '@translations';
-import { openLink } from '@utils';
+import { openLink, useAnalytics } from '@utils';
 
 import logo from '@assets/images/logo-mycrypto.svg';
 import { ScreenLockContext } from '@features/ScreenLock/ScreenLockProvider';
-import { useAnalytics } from '@utils';
 
 const { BLUE_BRIGHT } = COLORS;
 

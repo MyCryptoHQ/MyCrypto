@@ -8,12 +8,11 @@ import { COLORS, BREAK_POINTS } from '@theme';
 import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from '@config';
 import { ANALYTICS_CATEGORIES } from '@services';
 import { TURL } from '@types';
-import { openLink } from '@utils';
+import { openLink, useAnalytics } from '@utils';
 
 import vaultIcon from '@assets/images/icn-vault2.svg';
 import protectIcon from '@assets/images/icn-protect.svg';
 import openSourceIcon from '@assets/images/icn-opensource.svg';
-import { useAnalytics } from '@utils';
 
 const { SCREEN_SM, SCREEN_MD, SCREEN_XL, SCREEN_XXL } = BREAK_POINTS;
 const { GREYISH_BROWN } = COLORS;

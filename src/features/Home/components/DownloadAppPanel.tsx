@@ -6,11 +6,10 @@ import translate from '@translations';
 import { BREAK_POINTS } from '@theme';
 import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from '@config';
 import { ANALYTICS_CATEGORIES } from '@services';
-import { openLink } from '@utils';
+import { openLink, useAnalytics } from '@utils';
 import { TURL } from '@types';
 
 import champagneIcon from '@assets/images/icn-champagne-2.svg';
-import { useAnalytics } from '@utils';
 
 const { SCREEN_SM, SCREEN_MD, SCREEN_XXL } = BREAK_POINTS;
 
