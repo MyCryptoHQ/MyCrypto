@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { DashboardPanel, LinkOut, Typography } from '@components';
-import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
-import { Trans, translateRaw } from '@translations';
+import { DashboardPanel, Typography } from '@components';
+import { BREAK_POINTS, FONT_SIZE, SPACING } from '@theme';
+import { translateRaw } from '@translations';
 import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
+import translate from '@translations/translate';
 
 import { ZAPS_CONFIG } from '../config';
 import ZapCard from './ZapCard';
@@ -42,21 +43,10 @@ const DashboardZapCTA = ({ className }: any) => {
     >
       <>
         <SubHeaderText>
-          <Trans
-            id="ZAP_DASHBOARD_PANEL_SUB_HEADER"
-            variables={{
-              $readMore: () => (
-                <LinkOut
-                  showIcon={false}
-                  inline={true}
-                  fontSize={FONT_SIZE.BASE}
-                  fontColor={COLORS.BLUE_BRIGHT}
-                  link={getKBHelpArticle(KB_HELP_ARTICLE.HOW_TO_USE_ZAPPER)}
-                  text={translateRaw('READ_MORE')}
-                />
-              )
-            }}
-          />
+          {translate('ZAP_DASHBOARD_PANEL_SUB_HEADER', {
+            $readMoreLink: getKBHelpArticle(KB_HELP_ARTICLE.HOW_TO_USE_ZAPPER),
+            $readMoreText: translateRaw('READ_MORE')
+          })}
         </SubHeaderText>
         <CTAContent>
           {Object.values(zapConfig).map((zap) => (

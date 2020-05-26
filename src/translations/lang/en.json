@@ -938,7 +938,7 @@
 		"ZAP_DAI_UNIPOOL_TITLE": "Interest-earning ETH Hedge",
 		"ZAP_DASHBOARD_PANEL_FOOTER": "*Gains are subject to fluctuation relative to market values.",
 		"ZAP_DASHBOARD_PANEL_HEADER": "Put your ETH to work for you",
-		"ZAP_DASHBOARD_PANEL_SUB_HEADER": "With Zapper, you can gain exposure to multiple decentralized finance (DeFi) products and grow the funds in your MyCrypto accounts. $readMore.",
+		"ZAP_DASHBOARD_PANEL_SUB_HEADER": "With Zapper, you can gain exposure to multiple decentralized finance (DeFi) products and grow the funds in your MyCrypto accounts. [$readMoreText]($readMoreLink).",
 		"ZAP_ESTIMATED_BALANCE": "Estimated Balance",
 		"ZAP_FLOW_ADD_FUNDS": "Add Funds to Zap",
 		"ZAP_HEADER": "$zap Details",
