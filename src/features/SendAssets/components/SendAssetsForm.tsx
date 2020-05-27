@@ -85,7 +85,7 @@ import {
   validateNonceField
 } from './validators';
 import { isERC20Tx, processFormForEstimateGas } from '../helpers';
-import { validateTransactionFee } from '@services/EthService/validators';
+import { validateTxFee } from '@services/EthService/validators';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;
@@ -280,7 +280,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
       gasPrice: string,
       ethAssetRate?: number
     ) => {
-      const { type, amount: $amount, fee: $fee } = validateTransactionFee(
+      const { type, amount: $amount, fee: $fee } = validateTxFee(
         amount,
         assetRate,
         isERC20,

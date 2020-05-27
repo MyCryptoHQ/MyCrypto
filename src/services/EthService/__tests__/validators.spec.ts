@@ -6,8 +6,8 @@ import {
   isValidUpperOrLowerCaseETHAddress,
   isValidAddress,
   isENSLabelHash,
-  validateTransactionFee,
-  TransactionFeeResponseType
+  validateTxFee,
+  TxFeeResponseType
 } from '../validators';
 
 describe('isTransactionFeeHigh', () => {
@@ -39,57 +39,57 @@ describe('isTransactionFeeHigh', () => {
 
 describe('validateTransactionFee', () => {
   it('should return Invalid', () => {
-    expect(validateTransactionFee('-0.001', 100, false, '21000', '10000')).toMatchObject({
-      type: 'Invalid' as TransactionFeeResponseType
+    expect(validateTxFee('-0.001', 100, false, '21000', '10000')).toMatchObject({
+      type: 'Invalid' as TxFeeResponseType
     });
-    expect(validateTransactionFee('0,001', 100, true, '21000', '10000')).toMatchObject({
-      type: 'Invalid' as TransactionFeeResponseType
+    expect(validateTxFee('0,001', 100, true, '21000', '10000')).toMatchObject({
+      type: 'Invalid' as TxFeeResponseType
     });
-    expect(validateTransactionFee('0.001', 100, false, '-21000', '10000')).toMatchObject({
-      type: 'Invalid' as TransactionFeeResponseType
+    expect(validateTxFee('0.001', 100, false, '-21000', '10000')).toMatchObject({
+      type: 'Invalid' as TxFeeResponseType
     });
-    expect(validateTransactionFee('0.001', 100, false, '21000', '+10000')).toMatchObject({
-      type: 'Invalid' as TransactionFeeResponseType
+    expect(validateTxFee('0.001', 100, false, '21000', '+10000')).toMatchObject({
+      type: 'Invalid' as TxFeeResponseType
     });
   });
   it('should return None for small amounts', () => {
-    expect(validateTransactionFee('0.0000001', 100, false, '21000', '10000')).toMatchObject({
-      type: 'None' as TransactionFeeResponseType
+    expect(validateTxFee('0.0000001', 100, false, '21000', '10000')).toMatchObject({
+      type: 'None' as TxFeeResponseType
     });
-    expect(validateTransactionFee('0.0000002', 100, false, '21000', '10000')).toMatchObject({
-      type: 'None' as TransactionFeeResponseType
+    expect(validateTxFee('0.0000002', 100, false, '21000', '10000')).toMatchObject({
+      type: 'None' as TxFeeResponseType
     });
   });
   it('should return Warning for fee bigger than amounts', () => {
-    expect(validateTransactionFee('0.000002', 100, false, '21000', '1000')).toMatchObject({
-      type: 'Warning' as TransactionFeeResponseType
+    expect(validateTxFee('0.000002', 100, false, '21000', '1000')).toMatchObject({
+      type: 'Warning' as TxFeeResponseType
     });
   });
   it('return Error-Very-High-Tx-Fee', () => {
-    expect(validateTransactionFee('100', 1000, true, '21000', '10000')).toMatchObject({
-      type: 'Error-Very-High-Tx-Fee' as TransactionFeeResponseType
+    expect(validateTxFee('100', 1000, true, '21000', '10000')).toMatchObject({
+      type: 'Error-Very-High-Tx-Fee' as TxFeeResponseType
     });
     // Should take into account eth fraction 0.5
-    expect(validateTransactionFee('100', 50, true, '21000', '100000', 5000)).toMatchObject({
-      type: 'Error-Very-High-Tx-Fee' as TransactionFeeResponseType
+    expect(validateTxFee('100', 50, true, '21000', '100000', 5000)).toMatchObject({
+      type: 'Error-Very-High-Tx-Fee' as TxFeeResponseType
     });
   });
   it('return Error-High-Tx-Fee', () => {
-    expect(validateTransactionFee('100', 200, true, '21000', '10000')).toMatchObject({
-      type: 'Error-High-Tx-Fee' as TransactionFeeResponseType
+    expect(validateTxFee('100', 200, true, '21000', '10000')).toMatchObject({
+      type: 'Error-High-Tx-Fee' as TxFeeResponseType
     });
     // Should take into account eth fraction 0.15
-    expect(validateTransactionFee('100', 50, true, '21000', '25000', 5000)).toMatchObject({
-      type: 'Error-High-Tx-Fee' as TransactionFeeResponseType
+    expect(validateTxFee('100', 50, true, '21000', '25000', 5000)).toMatchObject({
+      type: 'Error-High-Tx-Fee' as TxFeeResponseType
     });
   });
   it('return Error-Use-Lower', () => {
-    expect(validateTransactionFee('100', 40, true, '21000', '10000')).toMatchObject({
-      type: 'Error-Use-Lower' as TransactionFeeResponseType
+    expect(validateTxFee('100', 40, true, '21000', '10000')).toMatchObject({
+      type: 'Error-Use-Lower' as TxFeeResponseType
     });
     // Should take into account eth fraction 0.025
-    expect(validateTransactionFee('100', 50, true, '21000', '5000', 5000)).toMatchObject({
-      type: 'Error-Use-Lower' as TransactionFeeResponseType
+    expect(validateTxFee('100', 50, true, '21000', '5000', 5000)).toMatchObject({
+      type: 'Error-Use-Lower' as TxFeeResponseType
     });
   });
 });

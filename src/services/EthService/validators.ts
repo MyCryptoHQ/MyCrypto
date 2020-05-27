@@ -213,27 +213,27 @@ export function isValidPath(dPath: string) {
   return dPathRegex.test(dPath);
 }
 
-export type TransactionFeeResponseType =
+export type TxFeeResponseType =
   | 'Warning'
   | 'Error-Use-Lower'
   | 'Error-High-Tx-Fee'
   | 'Error-Very-High-Tx-Fee'
   | 'None'
   | 'Invalid';
-interface TransactionFeeResponse {
-  type: TransactionFeeResponseType;
+interface TxFeeResponse {
+  type: TxFeeResponseType;
   amount?: string;
   fee?: string;
 }
 
-export const validateTransactionFee = (
+export const validateTxFee = (
   amount: string,
   assetRate: number,
   isERC20: boolean,
   gasLimit: string,
   gasPrice: string,
   ethAssetRate?: number
-): TransactionFeeResponse => {
+): TxFeeResponse => {
   const validInputRegex = /^[0-9]+(\.[0-9])?[0-9]*$/;
   if (
     !amount.match(validInputRegex) ||
@@ -250,13 +250,13 @@ export const validateTransactionFee = (
 
   const txAmount = bigNumberify(convertedToBaseUnit(amount, DEFAULT_DECIMAL));
   const txAmountFiatValue = bigNumberify(getAssetRate()).mul(txAmount);
-  const txTransactionFee = bigNumberify(gasStringsToMaxGasBN(gasPrice, gasLimit).toString());
-  const txTransactionFeeFiatValue = bigNumberify(getAssetRate()).mul(txTransactionFee);
+  const txFee = bigNumberify(gasStringsToMaxGasBN(gasPrice, gasLimit).toString());
+  const txFeeFiatValue = bigNumberify(getAssetRate()).mul(txFee);
 
   const txTransactionFeeInEthFiatValue =
-    ethAssetRate && ethAssetRate > 0 ? bigNumberify(getEthAssetRate()).mul(txTransactionFee) : null;
+    ethAssetRate && ethAssetRate > 0 ? bigNumberify(getEthAssetRate()).mul(txFee) : null;
 
-  const createTxFeeResponse = (type: TransactionFeeResponseType) => {
+  const createTxFeeResponse = (type: TxFeeResponseType) => {
     return {
       type,
       amount: parseFloat(
@@ -264,7 +264,7 @@ export const validateTransactionFee = (
       )
         .toFixed(4)
         .toString(),
-      fee: parseFloat(baseToConvertedUnit(txTransactionFeeFiatValue.toString(), DEFAULT_DECIMAL))
+      fee: parseFloat(baseToConvertedUnit(txFeeFiatValue.toString(), DEFAULT_DECIMAL))
         .toFixed(4)
         .toString()
     };
@@ -285,7 +285,7 @@ export const validateTransactionFee = (
 
   // More than 100$ OR 0.5 ETH
   if (
-    txTransactionFeeFiatValue.gt(bigNumberify(convertedToBaseUnit('100', DEFAULT_DECIMAL))) ||
+    txFeeFiatValue.gt(bigNumberify(convertedToBaseUnit('100', DEFAULT_DECIMAL))) ||
     isGreaterThanEthFraction(0.5)
   ) {
     return createTxFeeResponse('Error-Very-High-Tx-Fee');
@@ -293,7 +293,7 @@ export const validateTransactionFee = (
 
   // More than 25$ OR 0.15 ETH
   if (
-    txTransactionFeeFiatValue.gt(bigNumberify(convertedToBaseUnit('25', DEFAULT_DECIMAL))) ||
+    txFeeFiatValue.gt(bigNumberify(convertedToBaseUnit('25', DEFAULT_DECIMAL))) ||
     isGreaterThanEthFraction(0.15)
   ) {
     return createTxFeeResponse('Error-High-Tx-Fee');
@@ -301,17 +301,14 @@ export const validateTransactionFee = (
 
   // More than 5$ OR 0.025 ETH
   if (
-    txTransactionFeeFiatValue.gt(bigNumberify(convertedToBaseUnit('5', DEFAULT_DECIMAL))) ||
+    txFeeFiatValue.gt(bigNumberify(convertedToBaseUnit('5', DEFAULT_DECIMAL))) ||
     isGreaterThanEthFraction(0.025)
   ) {
     return createTxFeeResponse('Error-Use-Lower');
   }
 
   // Erc token where txFee is higher than amount
-  if (
-    !isERC20 &&
-    txAmount.lt(convertedToBaseUnit(txTransactionFee.toString(), DEFAULT_RATE_DECIMAL))
-  ) {
+  if (!isERC20 && txAmount.lt(convertedToBaseUnit(txFee.toString(), DEFAULT_RATE_DECIMAL))) {
     return createTxFeeResponse('Warning');
   }
 
