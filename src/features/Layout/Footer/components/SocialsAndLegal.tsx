@@ -7,10 +7,32 @@ import { DisclaimerModal, NewTabLink } from '@components';
 import './SocialsAndLegal.scss';
 import { useAnalytics } from '@utils';
 
-const SocialMediaLink = ({ link, text }: { link: string; text: string }) => {
+const SocialMediaLink = ({
+  link,
+  text,
+  icon
+}: {
+  link: string;
+  text: string;
+  icon: null | string;
+}) => {
   const trackSocial = useAnalytics({
     category: ANALYTICS_CATEGORIES.FOOTER
   });
+
+  if (icon) {
+    return (
+      <NewTabLink
+        className="SocialMediaLink"
+        key={link}
+        href={link}
+        aria-label={text}
+        onClick={() => trackSocialIconClicked(text, trackSocial)}
+      >
+        <img src={icon} width="18.41px" height="18px" style={{ verticalAlign: 'top' }} />
+      </NewTabLink>
+    );
+  }
 
   return (
     <NewTabLink
@@ -40,7 +62,12 @@ function Socials() {
   return (
     <section className="Socials">
       {socialMediaLinks.map((socialMediaItem, idx) => (
-        <SocialMediaLink link={socialMediaItem.link} key={idx} text={socialMediaItem.text} />
+        <SocialMediaLink
+          link={socialMediaItem.link}
+          key={idx}
+          text={socialMediaItem.text}
+          icon={socialMediaItem.icon}
+        />
       ))}
     </section>
   );

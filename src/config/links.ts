@@ -2,9 +2,12 @@ import { translateRaw } from '@translations';
 import { CRYPTOSCAMDB } from './data';
 import { TURL } from '@types';
 
+import SocialTelegramIcon from '../assets/images/social-icons/social-telegram-white.svg';
+
 interface Link {
   link: string;
   text: string;
+  icon: null | string;
 }
 
 interface IExtUrl {
@@ -17,60 +20,78 @@ export const DOWNLOAD_MYCRYPTO_LINK = 'https://download.mycrypto.com';
 export const socialMediaLinks: Link[] = [
   {
     link: 'https://twitter.com/mycrypto',
-    text: 'twitter'
+    text: 'twitter',
+    icon: null
   },
   {
     link: 'https://www.facebook.com/mycryptoHQ/',
-    text: 'facebook'
+    text: 'facebook',
+    icon: null
   },
   {
     link: 'https://medium.com/@mycrypto',
-    text: 'medium'
+    text: 'medium',
+    icon: null
   },
   {
     link: 'https://www.linkedin.com/company/mycrypto',
-    text: 'linkedin'
+    text: 'linkedin',
+    icon: null
   },
   {
     link: 'https://github.com/MyCryptoHQ',
-    text: 'github'
+    text: 'github',
+    icon: null
   },
   {
     link: 'https://www.reddit.com/r/mycrypto/',
-    text: 'reddit'
+    text: 'reddit',
+    icon: null
   },
   {
     link: 'https://discord.gg/VSaTXEA',
-    text: 'discord'
+    text: 'discord',
+    icon: null
+  },
+  {
+    link: 'https://t.me/mycryptohq',
+    text: 'telegram',
+    icon: SocialTelegramIcon
   }
 ];
 
 export const productLinks: Link[] = [
   {
     link: 'https://legacy.mycrypto.com/',
-    text: translateRaw('OLD_MYCRYPTO')
+    text: translateRaw('OLD_MYCRYPTO'),
+    icon: null
   },
   {
     link:
       'https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn',
-    text: translateRaw('ETHER_ADDRESS_LOOKUP')
+    text: translateRaw('ETHER_ADDRESS_LOOKUP'),
+    icon: null
   },
   {
     link:
       'https://chrome.google.com/webstore/detail/ethersecuritylookup/bhhfhgpgmifehjdghlbbijjaimhmcgnf',
-    text: translateRaw('ETHER_SECURITY_LOOKUP')
+    text: translateRaw('ETHER_SECURITY_LOOKUP'),
+    icon: null
   },
   {
     link: CRYPTOSCAMDB,
-    text: translateRaw('CRYPTOSCAMDB')
+    text: translateRaw('CRYPTOSCAMDB'),
+    icon: null
   },
   {
     link: 'https://legacy.mycrypto.com/helpers.html',
-    text: translateRaw('FOOTER_HELP_AND_DEBUGGING')
+    text: translateRaw('FOOTER_HELP_AND_DEBUGGING'),
+    icon: null
   },
   {
     link: 'https://hackerone.com/mycrypto',
-    text: translateRaw('FOOTER_HACKERONE')
+    text: translateRaw('FOOTER_HACKERONE'),
+    icon: null
   }
 ];
 
@@ -100,19 +121,23 @@ const affiliateLinks: IExtUrl[] = [
 export const partnerLinks: Link[] = [
   {
     link: 'https://metamask.io/',
-    text: 'MetaMask'
+    text: 'MetaMask',
+    icon: null
   },
   {
     link: 'https://infura.io/',
-    text: 'Infura'
+    text: 'Infura',
+    icon: null
   },
   {
     link: 'https://etherscan.io/',
-    text: 'Etherscan'
+    text: 'Etherscan',
+    icon: null
   },
   {
     link: 'https://etherchain.org/',
-    text: 'Etherchain'
+    text: 'Etherchain',
+    icon: null
   }
 ];
 
