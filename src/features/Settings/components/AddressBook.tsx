@@ -74,11 +74,6 @@ const SEditableText = styled(EditableText)`
   }
 `;
 
-const AddressBookTableContainer = styled.div`
-  max-height: 600px;
-  overflow: auto;
-`;
-
 export default function AddressBook({
   addressBook,
   addressBookRestore,
