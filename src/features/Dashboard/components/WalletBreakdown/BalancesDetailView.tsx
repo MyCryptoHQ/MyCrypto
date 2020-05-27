@@ -10,9 +10,9 @@ import {
   AssetIcon,
   Currency,
   DashboardPanel,
-  CollapsibleTable,
   Typography,
-  Tooltip
+  Tooltip,
+  FixedSizeCollapsibleTable
 } from '@components';
 import { CollapseIcon, ExpandIcon } from '@components/icons';
 import { Balance, BalanceAccount, WalletBreakdownProps } from './types';
@@ -297,7 +297,7 @@ export default function BalancesDetailView({
           </BalancesOnlyTotal>
         }
       >
-        <CollapsibleTable {...balancesTable} />
+        <FixedSizeCollapsibleTable {...balancesTable} maxHeight={'650px'} />
       </DashboardPanel>
     </BalancesOnly>
   );

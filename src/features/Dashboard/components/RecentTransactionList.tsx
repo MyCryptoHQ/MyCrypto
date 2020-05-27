@@ -6,8 +6,8 @@ import {
   DashboardPanel,
   NewTabLink,
   AssetIcon,
-  CollapsibleTable,
-  Account
+  Account,
+  FixedSizeCollapsibleTable
 } from '@components';
 import { truncate, convertToFiat } from '@utils';
 import { ITxReceipt, ITxStatus, StoreAccount, Asset } from '@types';
@@ -237,7 +237,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
       className={`RecentTransactionsList ${className}`}
     >
       {filteredGroups.length >= 1 ? (
-        <CollapsibleTable breakpoint={1000} {...recentTransactionsTable} />
+        <FixedSizeCollapsibleTable breakpoint={1000} {...recentTransactionsTable} />
       ) : (
         NoTransactions()
       )}
