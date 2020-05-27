@@ -7,125 +7,90 @@ import { Home, NoAccounts } from '@features';
 import { requiresDesktopApp } from './helpers';
 
 const Dashboard = lazy(() =>
-  import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "Dashboard" */ '@features/Dashboard/Dashboard'
-  )
+  import(/* webpackChunkName: "Dashboard" */ '@features/Dashboard/Dashboard')
 );
 const CreateWallet = lazy(() =>
-  import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "CreateWallet" */ '@features/CreateWallet/CreateWallet'
-  )
+  import(/* webpackChunkName: "CreateWallet" */ '@features/CreateWallet/CreateWallet')
 );
 const AddAccountFlow = lazy(() =>
-  import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "AddAccountFlow" */ '@features/AddAccount/AddAccountFlow'
-  )
+  import(/* webpackChunkName: "AddAccountFlow" */ '@features/AddAccount/AddAccountFlow')
 );
 const SendAssets = lazy(() =>
-  import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "SendAssets" */ '@features/SendAssets/SendAssets'
-  )
+  import(/* webpackChunkName: "SendAssets" */ '@features/SendAssets/SendAssets')
 );
 const Mnemonic = lazy(() =>
-  import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "Mnemonic" */ '@features/CreateWallet/Mnemonic/Mnemonic'
-  )
+  import(/* webpackChunkName: "Mnemonic" */ '@features/CreateWallet/Mnemonic/Mnemonic')
 );
 const Keystore = lazy(() =>
-  import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "Keystore" */ '@features/CreateWallet/Keystore/Keystore'
-  )
+  import(/* webpackChunkName: "Keystore" */ '@features/CreateWallet/Keystore/Keystore')
 );
 const Settings = lazy(() =>
-  import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "Settings" */ '@features/Settings/Settings'
-  )
+  import(/* webpackChunkName: "Settings" */ '@features/Settings/Settings')
 );
 const Import = lazy(() =>
-  import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "Import" */ '@features/Settings/Import/Import'
-  )
+  import(/* webpackChunkName: "Import" */ '@features/Settings/Import/Import')
 );
 const Export = lazy(() =>
-  import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "Export" */ '@features/Settings/Export/Export'
-  )
+  import(/* webpackChunkName: "Export" */ '@features/Settings/Export/Export')
 );
 const DownloadApp = lazy(() =>
-  import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "DownloadApp" */ '@features/DownloadApp/DownloadApp'
-  )
+  import(/* webpackChunkName: "DownloadApp" */ '@features/DownloadApp/DownloadApp')
 );
 const ScreenLockNew = lazy(() =>
-  import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "ScreenLockNew" */ '@features/ScreenLock/ScreenLockNew'
-  )
+  import(/* webpackChunkName: "ScreenLockNew" */ '@features/ScreenLock/ScreenLockNew')
 );
 const ScreenLockLocked = lazy(() =>
-  import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "ScreenLockLocked" */ '@features/ScreenLock/ScreenLockLocked'
-  )
+  import(/* webpackChunkName: "ScreenLockLocked" */ '@features/ScreenLock/ScreenLockLocked')
 );
 const ScreenLockForgotPassword = lazy(() =>
   import(
-    /* webpackPrefetch: true */
     /* webpackChunkName: "ScreenLockForgotPassword" */ '@features/ScreenLock/ScreenLockForgotPassword'
   )
 );
 const ReceiveAssets = lazy(() =>
-  import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "ReceiveAssets" */ '@features/ReceiveAssets/ReceiveAssets'
-  )
+  import(/* webpackChunkName: "ReceiveAssets" */ '@features/ReceiveAssets/ReceiveAssets')
 );
 const SwapAssetsFlow = lazy(() =>
-  import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "SwapAssetsFlow" */ '@features/SwapAssets/SwapAssetsFlow'
-  )
+  import(/* webpackChunkName: "SwapAssetsFlow" */ '@features/SwapAssets/SwapAssetsFlow')
 );
 const SignAndVerifyMessage = lazy(() =>
   import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "SignAndVerifyMessage" */ '@features/SignAndVerifyMessage/SignAndVerifyMessage'
+    /* webpackChunkName: "SignAndVerifyMessage" */ '@features/SignAndVerifyMessage/SignAndVerifyMessage'
   )
 );
 const BroadcastTransactionFlow = lazy(() =>
   import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "BroadcastTransactionFlow" */ '@features/BroadcastTransaction/BroadcastTransactionFlow'
+    /* webpackChunkName: "BroadcastTransactionFlow" */ '@features/BroadcastTransaction/BroadcastTransactionFlow'
   )
 );
 const InteractWithContractsFlow = lazy(() =>
   import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "InteractWithContractsFlow" */ '@features/InteractWithContracts/InteractWithContractsFlow'
+    /* webpackChunkName: "InteractWithContractsFlow" */ '@features/InteractWithContracts/InteractWithContractsFlow'
   )
 );
 const DeployContractsFlow = lazy(() =>
   import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "DeployContractsFlow" */ '@features/DeployContracts/DeployContractsFlow'
+    /* webpackChunkName: "DeployContractsFlow" */ '@features/DeployContracts/DeployContractsFlow'
   )
 );
 const DeFiZapFlow = lazy(() =>
-  import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "DeFiZapFlow" */ '@features/DeFiZap/DeFiZapFlow'
-  )
+  import(/* webpackChunkName: "DeFiZapFlow" */ '@features/DeFiZap/DeFiZapFlow')
 );
 const PurchaseMembershipStepper = lazy(() =>
   import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "PurchaseMembershipStepper" */ '@features/PurchaseMembership/PurchaseMembershipStepper'
+    /* webpackChunkName: "PurchaseMembershipStepper" */ '@features/PurchaseMembership/PurchaseMembershipStepper'
   )
 );
 const MembershipEducation = lazy(() =>
   import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "MembershipEducation" */ '@features/PurchaseMembership/components/MembershipEducation'
+    /* webpackChunkName: "MembershipEducation" */ '@features/PurchaseMembership/components/MembershipEducation'
   )
 );
 const BuyAssets = lazy(() =>
-  import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "BuyAssetsForm" */ '@features/BuyAssets/BuyAssetsForm'
-  )
+  import(/* webpackChunkName: "BuyAssetsForm" */ '@features/BuyAssets/BuyAssetsForm')
 );
 const EnsDashboard = lazy(() =>
-  import(
-    /* webpackPrefetch: true */ /* webpackChunkName: "EnsDashboard" */ '@features/Ens/EnsDashboard'
-  )
+  import(/* webpackChunkName: "EnsDashboard" */ '@features/Ens/EnsDashboard')
 );
 
 export interface IAppRoutes {
