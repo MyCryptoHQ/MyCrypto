@@ -2,17 +2,10 @@ import { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 
 import { DataContext } from '@services/Store';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
+import { ANALYTICS_CATEGORIES } from '@services';
 import { ExtendedNotification, LSKeys } from '@types';
-import { generateUUID, notUndefined } from '@utils';
+import { generateUUID, notUndefined, useAnalytics } from '@utils';
 import { NotificationTemplates, notificationsConfigs } from './constants';
-
-function trackNotificationDisplayed(event: string) {
-  AnalyticsService.instance.track(
-    ANALYTICS_CATEGORIES.NOTIFICATION,
-    `${event} notification displayed`
-  );
-}
 
 function getCurrent(notifications: ExtendedNotification[]) {
   const visible = notifications
@@ -32,10 +25,6 @@ function getCurrent(notifications: ExtendedNotification[]) {
 
 function isValidNotification(n: ExtendedNotification) {
   const config = notificationsConfigs[n.template];
-  // if (config.showOneTime) {
-  //   state.dismissNotification(n);
-  //   return;
-  // }
 
   // Check conditions for repeating and non-repeating notifications, show notification if needed
   const shouldShowRepeatingNotification =
@@ -53,8 +42,14 @@ const useNotifications = () => {
   const { notifications, createActions } = useContext(DataContext);
   const Notification = createActions(LSKeys.NOTIFICATIONS);
   const [currentNotification, setCurrentNotification] = useState<ExtendedNotification>();
+  const trackNotificationDisplayed = useAnalytics({
+    category: ANALYTICS_CATEGORIES.NOTIFICATION
+  });
 
   useEffect(() => {
+    // hide notifications that should be shown only once
+    hideShowOneTimeNotifications();
+    // update notifications that should be displayed again
     notifications.filter(isValidNotification).forEach((n) =>
       Notification.update(n.uuid, {
         ...n,
@@ -68,9 +63,22 @@ const useNotifications = () => {
     const current = getCurrent(notifications);
     setCurrentNotification(current);
     if (current) {
-      trackNotificationDisplayed(notificationsConfigs[current.template].analyticsEvent);
+      trackNotificationDisplayed({
+        actionName: `${
+          notificationsConfigs[current.template].analyticsEvent
+        } notification displayed`
+      });
     }
   }, [notifications]);
+
+  const hideShowOneTimeNotifications = () => {
+    notifications.forEach((n) => {
+      const config = notificationsConfigs[n.template];
+      if (config.showOneTime && !n.dismissed) {
+        dismissNotification(n);
+      }
+    });
+  };
 
   const displayNotification = (templateName: string, templateData?: object) => {
     // Dismiss previous notifications that need to be dismissed
