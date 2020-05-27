@@ -76,3 +76,4 @@ export { default as FixedSizeCollapsibleTable } from './FixedSizeCollapsibleTabl
 export { default as ContractLookupField } from './ContractLookupField';
 export { default as BalanceDetailsTable } from './BalanceDetailsTable';
 export { AddIcon, SubtractIcon } from './icons';
+export { default as PoweredByText } from './PoweredByText';

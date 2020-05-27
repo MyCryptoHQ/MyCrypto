@@ -8,7 +8,8 @@ import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 import { CryptoScamDBBaseResponse, CryptoScamDBInfoResponse } from '@services/ApiService';
 import { ProtectIconCheck, WizardIcon, CloseIcon } from '@components/icons';
 import { ETHAddressExplorer } from '@config';
-import { EthAddress, LinkOut, VerticalStepper } from '@components';
+import { EthAddress, LinkOut, VerticalStepper, PoweredByText } from '@components';
+import { PoweredByProvider } from '@components/PoweredByText';
 import { StepData } from '@components/VerticalStepper';
 import { truncate, useScreenSize, isSameAddress } from '@utils';
 import { TAddress } from '@types';
@@ -17,7 +18,6 @@ import ProtectTxBase from './ProtectTxBase';
 import { ProtectTxContext } from '../ProtectTxProvider';
 import { ProtectTxUtils } from '../utils';
 import { NansenReportType } from '../types';
-import PoweredByNansen from './PoweredByNansen';
 
 const formatDate = (date: number): string => moment.unix(date).format('MM/DD/YYYY');
 
@@ -331,7 +331,7 @@ export const ProtectTxReport: FC = () => {
           </p>
         </>
       )}
-      <PoweredByNansen />
+      <PoweredByText provider={PoweredByProvider.NANSEN} />
     </Wrapper>
   );
 };

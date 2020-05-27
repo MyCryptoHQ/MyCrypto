@@ -6,7 +6,8 @@ import { isWeb3Wallet } from '@utils';
 import { RatesContext, StoreContext } from '@services';
 import { IAccount, IFormikFields } from '@types';
 import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
-import { Amount, Button } from '@components';
+import { Amount, Button, PoweredByText } from '@components';
+import { PoweredByProvider } from '@components/PoweredByText';
 import { translateRaw } from '@translations';
 
 import { ProtectTxUtils } from '../utils';
@@ -19,7 +20,6 @@ import feeIcon from '@assets/images/icn-fee.svg';
 import { ProtectTxContext } from '../ProtectTxProvider';
 import { ProtectTxError } from '..';
 import { ProtectTxMissingInfo } from './ProtectTxMissingInfo';
-import PoweredByNansen from './PoweredByNansen';
 
 import bulletIcon from 'assets/images/icn-bullet.svg';
 
@@ -298,7 +298,7 @@ export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtect
       <button type="button" className="cancel" onClick={onProtectMyTransactionCancelClick}>
         {translateRaw('PROTECTED_TX_DONT_PROTECT_MY_TX')}
       </button>
-      <PoweredByNansen />
+      <PoweredByText provider={PoweredByProvider.NANSEN} />
     </SProtectionThisTransaction>
   );
 };
