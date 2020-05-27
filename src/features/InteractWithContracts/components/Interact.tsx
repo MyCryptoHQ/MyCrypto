@@ -19,7 +19,7 @@ import { translateRaw } from '@translations';
 import { isValidETHAddress, isCreationAddress } from '@services/EthService/validators';
 import { getNetworkById, NetworkContext } from '@services';
 import { isValidENSName } from '@services/EthService';
-import { isSameAddress } from '@services/Store/helpers';
+import { isSameAddress } from '@utils';
 
 import ContractDropdownOption from './ContractDropdownOption';
 import ContractDropdownValue from './ContractDropdownValue';

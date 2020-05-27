@@ -25,7 +25,7 @@ export default class AssetField extends Component<Props> {
     this.props.handleChange(e);
   };
 
-  // @TODO:SEND delete file once we determine how to store assets
+  // @todo:SEND delete file once we determine how to store assets
   public render() {
     return (
       <div className="SendAssetsForm-amountAsset-asset">

@@ -5,8 +5,7 @@ import { translateRaw } from '@translations';
 import { AssetContext } from '@services';
 import { TxReceipt, MultiTxReceipt } from '@components/TransactionFlow';
 import { StoreAccount, ITxType, ITxStatus } from '@types';
-import { TxParcel } from '@utils/useTxMulti/types';
-import { constructTxReceiptFromTransactionReceipt } from '@utils/transaction';
+import { TxParcel, constructTxReceiptFromTransactionReceipt } from '@utils';
 
 import { SwapDisplayData, IAssetPair } from '../types';
 import { makeTxConfigFromTransaction } from '../helpers';

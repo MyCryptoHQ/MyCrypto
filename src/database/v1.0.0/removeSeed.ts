@@ -12,7 +12,7 @@ import {
   LSKeys,
   TAddress
 } from '@types';
-import { isSameAddress } from '@services/Store/helpers';
+import { isSameAddress } from '@utils';
 
 import { devAccounts, DevAccount, devContacts } from '../seed';
 import { toArray, toObject, add } from '../helpers';

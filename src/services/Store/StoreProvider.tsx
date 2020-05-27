@@ -35,7 +35,8 @@ import {
   multiplyBNFloats,
   weiToFloat,
   generateAccountUUID,
-  useAnalytics
+  useAnalytics,
+  isSameAddress
 } from '@utils';
 import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from '@services/EthService';
 import {
@@ -49,7 +50,7 @@ import { useEffectOnce } from '@vendor';
 import { constructFinishedTxReceipt } from '@utils/transaction';
 
 import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';
-import { getStoreAccounts, getPendingTransactionsFromAccounts, isSameAddress } from './helpers';
+import { getStoreAccounts, getPendingTransactionsFromAccounts } from './helpers';
 import {
   AssetContext,
   getTotalByAsset,
@@ -178,7 +179,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     () => {
       // Pattern to cancel setState call if ever the component is unmounted
       // before the async requests completes.
-      // @TODO: extract into seperate hook e.g. react-use
+      // @todo: extract into seperate hook e.g. react-use
       // https://www.robinwieruch.de/react-hooks-fetch-data
       let isMounted = true;
       getAccountsAssetsBalances(currentAccounts).then((accountsWithBalances: StoreAccount[]) => {

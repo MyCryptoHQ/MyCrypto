@@ -37,7 +37,7 @@ const handleLanguageSelect = (
 ) => {
   if (code !== languageSelection) {
     changeLanguage(code);
-    location.reload(); // ToDo: Fix this to reload. There's an issue with nested settings for this i think.
+    location.reload(); // @todo: Fix this to reload. There's an issue with nested settings for this i think.
   }
 };
 

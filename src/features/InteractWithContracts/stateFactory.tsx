@@ -1,7 +1,12 @@
 import { useContext, useCallback } from 'react';
 import debounce from 'lodash/debounce';
 
-import { TUseStateReducerFactory, constructPendingTxReceipt, generateContractUUID } from '@utils';
+import {
+  TUseStateReducerFactory,
+  constructPendingTxReceipt,
+  generateContractUUID,
+  isSameAddress
+} from '@utils';
 import { CREATION_ADDRESS } from '@config';
 import { NetworkId, Contract, StoreAccount, ITxType, ITxStatus, TAddress } from '@types';
 import {
@@ -20,7 +25,6 @@ import {
 import { AbiFunction } from '@services/EthService/contracts/ABIFunction';
 import { isWeb3Wallet } from '@utils/web3';
 import { translateRaw } from '@translations';
-import { isSameAddress } from '@services/Store/helpers';
 
 import { customContract, CUSTOM_CONTRACT_ADDRESS } from './constants';
 import { ABIItem, InteractWithContractState } from './types';

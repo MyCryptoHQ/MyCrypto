@@ -1,4 +1,4 @@
 interface DPath {
   label: string;
-  value: string; // TODO determine method for more precise typing for path
+  value: string; // @todo determine method for more precise typing for path
 }

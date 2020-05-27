@@ -13,8 +13,7 @@ import CloseIcon from '@components/icons/CloseIcon';
 import { ETHAddressExplorer } from '@config';
 import { EthAddress, LinkOut, VerticalStepper } from '@components';
 import { StepData } from '@components/VerticalStepper';
-import { truncate, useScreenSize } from '@utils';
-import { isSameAddress } from '@services/Store/helpers';
+import { truncate, useScreenSize, isSameAddress } from '@utils';
 import { TAddress } from '@types';
 
 import ProtectTxBase from './ProtectTxBase';

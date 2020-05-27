@@ -70,7 +70,7 @@ export const makeTxObject = (config: ITxConfig): IHexStrTransaction => {
 };
 
 // filter accounts based on wallet type and sufficient balance
-// TODO: include fees check
+// @todo: include fees check
 export const getAccountsWithAssetBalance = (
   accounts: StoreAccount[],
   fromAsset: ISwapAsset,

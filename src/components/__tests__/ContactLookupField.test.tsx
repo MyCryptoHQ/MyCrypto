@@ -6,9 +6,9 @@ import { fNetwork } from '@fixtures';
 import { AddressBookContext, AssetContext } from '@services/Store';
 import { AddressBook, ExtendedAddressBook, TUuid, IReceiverAddress, TAddress } from '@types';
 import { addressBook } from '@database/seed/addressBook';
+import { isSameAddress } from '@utils';
 
 import ContactLookupField from '../ContactLookupField';
-import { isSameAddress } from '@services/Store/helpers';
 
 interface FormValues {
   data: {

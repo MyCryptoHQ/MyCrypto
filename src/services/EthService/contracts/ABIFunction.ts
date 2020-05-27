@@ -42,7 +42,7 @@ export class AbiFunction {
     const argBuffer = new Buffer(argString, 'hex');
     // Decode!
     const argArr = abi.rawDecode(this.inputTypes, argBuffer);
-    //TODO: parse checksummed addresses
+    //@todo: parse checksummed addresses
     return argArr.reduce((argObj, currArg, index) => {
       const currName = this.inputNames[index];
       const currType = this.inputTypes[index];
@@ -65,7 +65,7 @@ export class AbiFunction {
     // Decode!
     const argArr = abi.rawDecode(this.outputTypes, argBuffer);
 
-    //TODO: parse checksummed addresses
+    //@todo: parse checksummed addresses
     return argArr.reduce((argObj, currArg, index) => {
       const currName = this.outputNames[index];
       const currType = this.outputTypes[index];
@@ -77,7 +77,7 @@ export class AbiFunction {
   };
 
   private init(outputMappings: FunctionOutputMappings = []) {
-    //TODO: do this in O(n)
+    //@todo: do this in O(n)
     this.inputTypes = this.inputs.map(({ type }) => type);
     this.outputTypes = this.outputs.map(({ type }) => type);
     this.inputNames = this.inputs.map(({ name }, i) => name || `${i}`);
@@ -113,7 +113,7 @@ export class AbiFunction {
       const name = this.inputNames[idx];
       const type = this.inputTypes[idx];
       const inputHandler = (inputToParse: any) =>
-        //TODO: introduce typechecking and typecasting mapping for inputs
+        //@todo: introduce typechecking and typecasting mapping for inputs
         ({ name, type, value: this.parsePreEncodedValue(type, inputToParse) });
 
       return {
@@ -130,7 +130,7 @@ export class AbiFunction {
   private processSuppliedArgs = (suppliedArgs: ISuppliedArgs) =>
     this.inputNames.map((name) => {
       const type = this.funcParams[name].type;
-      //TODO: parse args based on type
+      //@todo: parse args based on type
       if (typeof suppliedArgs[name] === 'undefined') {
         throw Error(
           `Expected argument "${name}" of type "${type}" missing, suppliedArgs: ${JSON.stringify(

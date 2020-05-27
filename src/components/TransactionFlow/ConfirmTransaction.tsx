@@ -188,7 +188,7 @@ export const ConfirmTransactionUI = ({
 
   /* Calculate total base asset amount */
   const valueWei = Wei(value);
-  // @TODO: BN math, add amount + maxCost !In same symbol
+  // @todo: BN math, add amount + maxCost !In same symbol
   const totalEtherEgress = parseFloat(fromWei(valueWei.add(transactionFeeWei), 'ether')).toFixed(6);
   const senderAccountLabel = senderContact ? senderContact.label : 'Unknown Account';
   const recipientLabel = recipientContact ? recipientContact.label : 'Unknown Address';

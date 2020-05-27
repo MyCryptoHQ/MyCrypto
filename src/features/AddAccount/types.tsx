@@ -1,4 +1,4 @@
-// @ADD_ACCOUNT_TODO: move to named enum or other Set
+// @ADD_ACCOUNT_@todo: move to named enum or other Set
 export enum FormDataActionType {
   SELECT_NETWORK,
   SELECT_ACCOUNT,

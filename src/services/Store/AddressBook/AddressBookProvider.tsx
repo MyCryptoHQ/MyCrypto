@@ -11,11 +11,10 @@ import {
   NetworkId,
   TAddress
 } from '@types';
-import { generateUUID } from '@utils';
+import { generateUUID, isSameAddress } from '@utils';
 
 import { DataContext } from '../DataManager';
 import { ContractContext } from '../Contract';
-import { isSameAddress } from '../helpers';
 
 interface IAddressBookContext {
   addressBook: ExtendedAddressBook[];

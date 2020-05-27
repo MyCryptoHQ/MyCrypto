@@ -8,8 +8,7 @@ import { WalletId, IStory } from '@types';
 import { ExtendedContentPanel, WalletList } from '@components';
 import { StoreContext } from '@services/Store';
 import { ANALYTICS_CATEGORIES } from '@services/ApiService';
-import { useAnalytics } from '@utils';
-import { isSameAddress } from '@services/Store/helpers';
+import { useAnalytics, isSameAddress } from '@utils';
 
 import { NotificationsContext, NotificationTemplates } from '../NotificationsPanel';
 import { FormDataActionType as ActionType } from './types';

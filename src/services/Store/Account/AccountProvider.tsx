@@ -23,13 +23,12 @@ import {
   NetworkId,
   TAddress
 } from '@types';
-import { useAnalytics } from '@utils';
+import { useAnalytics, isSameAddress } from '@utils';
 
 import { DataContext } from '../DataManager';
 import { SettingsContext } from '../Settings';
 import { getAccountByAddressAndNetworkName } from './helpers';
 import { getAllTokensBalancesOfAccount } from '../BalanceService';
-import { isSameAddress } from '../helpers';
 
 export interface IAccountContext {
   accounts: IAccount[];

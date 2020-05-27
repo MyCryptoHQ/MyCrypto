@@ -122,7 +122,7 @@ export function deMarshallState(st: DataStore): Omit<LocalStorage, 'mtime'> {
       st[LSKeys.ACCOUNTS].map((x) => ({
         ...x,
         transactions: x.transactions.map((tx: ITxReceipt) => {
-          // ToDo: Remove this in the future (7/19/2020)
+          // @todo: Remove this in the future (7/19/2020)
           // @ts-ignore
           const { stage, ...validTx } = tx;
           return { ...validTx, status: tx.status || stage };

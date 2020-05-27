@@ -51,7 +51,7 @@ const Wrapper = styled.div<RelayedToNetworkProps>`
   }
 `;
 
-// TODO: A hacky way to change the title of content panel
+// @todo: A hacky way to change the title of content panel
 const TransactionReceiptHeaderGlobal = createGlobalStyle<RelayedToNetworkProps>`
   .send-assets-stepper {
     > section {

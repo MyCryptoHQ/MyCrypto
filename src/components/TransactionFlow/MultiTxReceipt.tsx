@@ -125,7 +125,7 @@ export default function MultiTxReceipt({
         const { asset, baseAsset } = transactionsConfigs[idx];
         const { gasPrice, gasLimit, data, nonce } = transaction.txRaw;
 
-        const timestamp = transaction.minedAt || 0; // @TODO
+        const timestamp = transaction.minedAt || 0; // @todo
         const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
 
         const txUrl =

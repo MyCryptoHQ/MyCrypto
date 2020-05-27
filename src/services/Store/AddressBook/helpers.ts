@@ -1,7 +1,6 @@
 import { IAccount, AddressBook, Network, WalletId, ExtendedAddressBook, TAddress } from '@types';
+import { isSameAddress } from '@utils';
 import { getWalletConfig } from '@config';
-
-import { isSameAddress } from '../helpers';
 
 export const getLabelByAccount = (
   account: IAccount,

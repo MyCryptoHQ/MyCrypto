@@ -2,7 +2,7 @@ import { useState, useReducer, useEffect } from 'react';
 
 import { TAddress, ITxObject, ITxHash } from '@types';
 import { useUnmount } from '@vendor';
-import { isSameAddress } from '@services/Store/helpers';
+import { isSameAddress } from '@utils';
 
 import { default as WalletConnectService } from './WalletConnectService';
 import { initialState, WcReducer } from './reducer';

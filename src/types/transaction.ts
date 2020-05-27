@@ -171,7 +171,7 @@ interface ITxLedgerETHPending {
 }
 
 interface ITxLedgerETHSuccessful {
-  blockNumber: number ; // null - TODO: This is returning null atm.
+  blockNumber: number ; // null - @todo: This is returning null atm.
   hash: string; // '0x9e5236a67a5d747358c1ffec33e7fcb74e22385347ab5e59fd4dbf0beefb2ea1'
   from: string; // '0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017'
   asset: Asset; // DAI Asset

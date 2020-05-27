@@ -1,8 +1,9 @@
 import React, { createContext, useContext } from 'react';
 
 import { ExtendedContract, LSKeys, TUuid, TAddress } from '@types';
+import { isSameAddress } from '@utils';
+
 import { DataContext } from '../DataManager';
-import { isSameAddress } from '../helpers';
 
 export interface ProviderState {
   contracts: ExtendedContract[];

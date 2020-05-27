@@ -6,7 +6,7 @@ import trimStart from 'lodash/trimStart';
 
 // When encoding QUANTITIES (integers, numbers): encode as hex, prefix with "0x", the most compact representation (slight exception: zero should be represented as "0x0").
 export function hexEncodeQuantity(value: BN | Buffer): string {
-  const trimmedValue = trimStart((value as any).toString('hex'), '0'); //TODO: fix typing
+  const trimmedValue = trimStart((value as any).toString('hex'), '0'); //@todo: fix typing
   return addHexPrefix(trimmedValue === '' ? '0' : trimmedValue);
 }
 

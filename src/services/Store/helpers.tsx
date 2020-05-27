@@ -10,8 +10,7 @@ import {
   ITxStatus,
   ITxReceipt,
   ExtendedAddressBook,
-  IPendingTxReceipt,
-  TAddress
+  IPendingTxReceipt
 } from '@types';
 
 import { getLabelByAccount } from './AddressBook';
@@ -60,6 +59,3 @@ export const getTxsFromAccount = (accounts: StoreAccount[]): ITxReceipt[] => {
 
 export const getPendingTransactionsFromAccounts = (accounts: StoreAccount[]): IPendingTxReceipt[] =>
   getTxsFromAccount(accounts).filter(txIsPending) as IPendingTxReceipt[];
-
-export const isSameAddress = (addressOne: TAddress, addressTwo: TAddress) =>
-  addressOne.toLowerCase() === addressTwo.toLowerCase();

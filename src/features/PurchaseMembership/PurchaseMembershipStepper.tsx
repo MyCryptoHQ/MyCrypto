@@ -119,7 +119,7 @@ const PurchaseMembershipStepper = () => {
       }}
       steps={steps}
       defaultBackPath={ROUTE_PATHS.MYC_MEMBERSHIP.path}
-      defaultBackPathLabel={ROUTE_PATHS.MYC_MEMBERSHIP.title} // ToDo: Change this.
+      defaultBackPathLabel={ROUTE_PATHS.MYC_MEMBERSHIP.title} // @todo: Change this.
     />
   );
 };

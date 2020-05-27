@@ -272,4 +272,4 @@ jobs:
         with:
           name: 'linus-x86-64_${{ steps.version.outputs.VERSION }}-MyCrypto.AppImage'
           path: 'dist/electron-builds/MyCrypto-${{ steps.version.outputs.VERSION }}.AppImage'
-##   TODO: Add "build electron:windows from Mac or Linux"
+##   @todo: Add "build electron:windows from Mac or Linux"

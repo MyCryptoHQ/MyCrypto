@@ -102,7 +102,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
   ) => {
     const { signedTx } = state;
     if (!signedTx) {
-      return; // ToDo: Handle this error state.
+      return; // @todo: Handle this error state.
     }
 
     const provider = new ProviderHandler(state.txConfig.network);
@@ -160,7 +160,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
       })
       .catch((e) => {
         console.debug(e);
-        // ToDo: Handle error?
+        // @todo: Handle error?
       });
   };
 

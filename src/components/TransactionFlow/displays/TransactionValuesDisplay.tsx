@@ -16,7 +16,7 @@ interface Props {
 
 function TransactionValueDisplay({ amount, ticker, fiatAsset }: Props) {
   const { settings } = useContext(SettingsContext);
-  // @TODO handle math with BN.js
+  // @todo handle math with BN.js
   const convertToFiat = (base: string, rate: string) => {
     return (parseFloat(base) * parseFloat(rate)).toString();
   };

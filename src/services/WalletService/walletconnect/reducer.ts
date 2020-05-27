@@ -4,7 +4,7 @@ import { TAction } from '@types';
 
 import { TActionError, WalletConnectState } from './types';
 
-// TODO convert to FSA compatible action type
+// @todo convert to FSA compatible action type
 type WCAction = Overwrite<
   TAction<ValuesType<typeof WcReducer.actionTypes>, any>,
   { error?: { code: TActionError } }

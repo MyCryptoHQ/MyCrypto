@@ -10,7 +10,7 @@ import {
   Account,
   FixedSizeCollapsibleTable
 } from '@components';
-import { truncate, convertToFiat } from '@utils';
+import { truncate, convertToFiat, isSameAddress } from '@utils';
 import { ITxReceipt, ITxStatus, StoreAccount, Asset, ITxType, Network } from '@types';
 import {
   RatesContext,
@@ -24,8 +24,7 @@ import {
   getTxsFromAccount,
   txIsFailed,
   txIsPending,
-  txIsSuccessful,
-  isSameAddress
+  txIsSuccessful
 } from '@services/Store/helpers';
 import { COLORS } from '@theme';
 import { getFiat } from '@config/fiats';
