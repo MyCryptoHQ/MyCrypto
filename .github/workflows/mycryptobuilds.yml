@@ -35,6 +35,15 @@ jobs:
 
     - name: yarn build:downloadable
       run: yarn build:downloadable
+
+    - name: Zip Folder
+      run: zip -r dist/download/standalone_${{ steps.version.outputs.VERSION }}_MyCrypto.zip dist/download/.
+
+    - name: 'Save standalone_${{ steps.version.outputs.VERSION }}_MyCrypto.zip to artifacts'
+      uses: actions/upload-artifact@v1
+      with:
+        name: 'standalone_${{ steps.version.outputs.VERSION }}_MyCrypto.zip'
+        path: 'dist/download/standalone_${{ steps.version.outputs.VERSION }}_MyCrypto.zip'
     
     - name: yarn build:storybook
       if: github.ref == 'refs/heads/master' || github.event_name == 'pull_request' 
