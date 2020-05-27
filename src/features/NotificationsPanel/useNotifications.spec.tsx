@@ -10,7 +10,11 @@ import useNotifications from './useNotifications';
 
 const renderUseNotifications = ({
   notifications = [] as ExtendedNotification[],
-  createActions = jest.fn()
+  createActions = jest.fn(() => {
+    return {
+      update: jest.fn()
+    };
+  })
 } = {}) => {
   const wrapper: React.FC = ({ children }) => (
     <DataContext.Provider value={({ notifications, createActions } as any) as IDataContext}>
