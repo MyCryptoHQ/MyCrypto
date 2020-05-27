@@ -204,11 +204,6 @@ jobs:
         id: version
         run: echo "##[set-output name=VERSION;]$(cat package.json | grep -m1 version | sed 's/...version....//' | sed 's/.\{2\}$//')"
 
-      - name: 'Save standalone_${{ steps.version.outputs.VERSION }}_MyCrypto.zip to artifacts'
-        uses: actions/upload-artifact@v1
-        with:
-          name: 'standalone_${{ steps.version.outputs.VERSION }}_MyCrypto.zip'
-          path: 'dist/electron-builds/MyCrypto-${{ steps.version.outputs.VERSION }}-mac.zip'
       - name: 'Save mac_${{ steps.version.outputs.VERSION }}_MyCrypto.dmg to artifacts'
         uses: actions/upload-artifact@v1
         with:
