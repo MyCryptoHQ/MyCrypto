@@ -42,6 +42,7 @@ jobs:
     - name: 'Save standalone_mycrypto.zip to artifacts'
       uses: actions/upload-artifact@v1
       with:
+        name: 'standalone_mycrypto'
         path: 'dist/download/standalone_mycrypto.zip'
     
     - name: yarn build:storybook
