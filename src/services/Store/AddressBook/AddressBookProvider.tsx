@@ -8,11 +8,14 @@ import {
   StoreAccount,
   LSKeys,
   TUuid,
-  NetworkId
+  NetworkId,
+  TAddress
 } from '@types';
 import { generateUUID } from '@utils';
+
 import { DataContext } from '../DataManager';
 import { ContractContext } from '../Contract';
+import { isSameAddress } from '../helpers';
 
 interface IAddressBookContext {
   addressBook: ExtendedAddressBook[];
@@ -72,8 +75,8 @@ export const AddressBookProvider: React.FC = ({ children }) => {
     },
     getContactByAddress: (address) => {
       return (
-        addressBook.find(
-          (contact: ExtendedAddressBook) => contact.address.toLowerCase() === address.toLowerCase()
+        addressBook.find((contact: ExtendedAddressBook) =>
+          isSameAddress(contact.address as TAddress, address as TAddress)
         ) || getContactFromContracts(address)
       );
     },
@@ -81,9 +84,8 @@ export const AddressBookProvider: React.FC = ({ children }) => {
       return (
         addressBook
           .filter((contact: ExtendedAddressBook) => contact.network === networkId)
-          .find(
-            (contact: ExtendedAddressBook) =>
-              contact.address.toLowerCase() === address.toLowerCase()
+          .find((contact: ExtendedAddressBook) =>
+            isSameAddress(contact.address as TAddress, address as TAddress)
           ) || getContactFromContracts(address)
       );
     },

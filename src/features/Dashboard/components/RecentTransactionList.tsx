@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
+import { Overwrite } from 'utility-types';
 
 import {
   Amount,
@@ -23,7 +24,8 @@ import {
   getTxsFromAccount,
   txIsFailed,
   txIsPending,
-  txIsSuccessful
+  txIsSuccessful,
+  isSameAddress
 } from '@services/Store/helpers';
 import { COLORS } from '@theme';
 import { getFiat } from '@config/fiats';
@@ -59,12 +61,11 @@ type ITxHistoryType = Exclude<
   ITxType.UNKNOWN
 >;
 
-interface ITxHistoryEntry extends Omit<Omit<ITxReceipt, 'txType'>, 'timestamp'> {
+interface ITxHistoryEntry
+  extends Overwrite<ITxReceipt, { txType: ITxHistoryType; timestamp: number }> {
   network: Network;
   toLabel: string;
   fromLabel: string;
-  txType: ITxHistoryType;
-  timestamp: number;
 }
 
 interface ITxTypeConfigObj {
@@ -129,12 +130,10 @@ const TxTypeConfig: ITxTypeConfig = {
 
 export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt): ITxHistoryType => {
   const fromAccount =
-    tx.from &&
-    accountsList.find((account) => account.address.toLowerCase() === tx.from.toLowerCase());
+    tx.from && accountsList.find(({ address }) => isSameAddress(address, tx.from));
   const toAddress = tx.receiverAddress || tx.to;
   const toAccount =
-    toAddress &&
-    accountsList.find((account) => account.address.toLowerCase() === toAddress.toLowerCase());
+    toAddress && accountsList.find(({ address }) => isSameAddress(address, toAddress));
 
   const isInvalidTxHistoryType =
     !('txType' in tx) ||

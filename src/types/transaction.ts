@@ -1,4 +1,4 @@
-import { Brand } from 'utility-types';
+import { Brand, Overwrite } from 'utility-types';
 import BN from 'bn.js';
 import { BigNumber } from 'ethers/utils';
 
@@ -48,9 +48,7 @@ export type ITxHash = Brand<string, 'TxHash'>;
 
 export type ITxSigned = Brand<Uint8Array, 'TxSigned'>;
 
-export type ITxReceipt = IPendingTxReceipt | IFailedTxReceipt | ISuccessfulTxReceipt;
-
-export interface IStandardTxReceipt {
+export interface ITxReceipt {
   readonly asset: Asset;
   readonly baseAsset: Asset;
   readonly txType: ITxType;
@@ -71,23 +69,17 @@ export interface IStandardTxReceipt {
   readonly timestamp?: number;
 }
 
-export interface IPendingTxReceipt extends Omit<IStandardTxReceipt, 'status'> {
-  readonly status: ITxStatus.PENDING;
-}
+export type IPendingTxReceipt = Overwrite<ITxReceipt, { status: ITxStatus.PENDING }>;
 
-export interface ISuccessfulTxReceipt
-  extends Omit<IStandardTxReceipt, 'status' | 'blockNumber' | 'timestamp'> {
-  readonly status: ITxStatus.SUCCESS;
-  readonly blockNumber: number;
-  readonly timestamp: number;
-}
+export type ISuccessfulTxReceipt = Overwrite<
+  ITxReceipt,
+  { status: ITxStatus.SUCCESS; timestamp: number; blockNumber: number }
+>;
 
-export interface IFailedTxReceipt
-  extends Omit<IStandardTxReceipt, 'status' | 'blockNumber' | 'timestamp'> {
-  readonly status: ITxStatus.FAILED;
-  readonly blockNumber: number;
-  readonly timestamp: number;
-}
+export type IFailedTxReceipt = Overwrite<
+  ITxReceipt,
+  { status: ITxStatus.FAILED; timestamp: number; blockNumber: number }
+>;
 
 /* MM - ETH
 interface ITxWeb3ETHPending {

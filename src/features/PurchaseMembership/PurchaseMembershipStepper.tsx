@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { useStateReducer, useTxMulti } from '@utils';
-import { ITxReceipt, ITxConfig, TxParcel, ITxSigned, ITxHash, ITxStatus } from '@types';
+import { ITxReceipt, ITxConfig, TxParcel, ITxStatus } from '@types';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
@@ -86,9 +86,7 @@ const PurchaseMembershipStepper = () => {
           network: account && account.network,
           senderAccount: account,
           rawTransaction: tx.txRaw,
-          onSuccess: (payload: ITxHash | ITxSigned) => {
-            sendTx(payload);
-          }
+          onSuccess: sendTx
         }
       }
     ]),

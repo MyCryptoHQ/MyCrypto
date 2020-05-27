@@ -46,10 +46,10 @@ import {
 } from '@features/PurchaseMembership/config';
 import { DEFAULT_NETWORK } from '@config';
 import { useEffectOnce } from '@vendor';
-import { updateFinishedPendingTxReceipt } from '@utils/transaction';
+import { constructFinishedTxReceipt } from '@utils/transaction';
 
 import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';
-import { getStoreAccounts, getPendingTransactionsFromAccounts } from './helpers';
+import { getStoreAccounts, getPendingTransactionsFromAccounts, isSameAddress } from './helpers';
 import {
   AssetContext,
   getTotalByAsset,
@@ -287,15 +287,15 @@ export const StoreProvider: React.FC = ({ children }) => {
             );
 
             if (!senderAccount) return;
-            const finishedTxReceipt = updateFinishedPendingTxReceipt(txResponse)(
+            const finishedTxReceipt = constructFinishedTxReceipt(txResponse)(
               pendingTxReceipt,
               txStatus,
               txTimestamp,
               txResponse.blockNumber
             );
             addNewTransactionToAccount(senderAccount, finishedTxReceipt);
-            const storeAccount = accounts.find(
-              (acc) => senderAccount.address === acc.address
+            const storeAccount = accounts.find((acc) =>
+              isSameAddress(senderAccount.address, acc.address)
             ) as StoreAccount;
             if (finishedTxReceipt.txType === ITxType.DEFIZAP) {
               state.scanAccountTokens(storeAccount);
@@ -423,7 +423,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     },
     getAssetByTicker: getAssetByTicker(assets),
     getAccount: ({ address, networkId }) =>
-      accounts.find((a) => a.address === address && a.networkId === networkId),
+      accounts.find((a) => isSameAddress(a.address, address) && a.networkId === networkId),
     getDeFiAssetReserveAssets: (poolAsset: StoreAsset) => (
       getPoolAssetReserveRate: (poolTokenUuid: string, assets: Asset[]) => ReserveAsset[]
     ) =>

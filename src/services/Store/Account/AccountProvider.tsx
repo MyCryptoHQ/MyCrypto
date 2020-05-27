@@ -20,14 +20,16 @@ import {
   TUuid,
   ITxStatus,
   ITxType,
-  NetworkId
+  NetworkId,
+  TAddress
 } from '@types';
+import { useAnalytics } from '@utils';
 
 import { DataContext } from '../DataManager';
 import { SettingsContext } from '../Settings';
 import { getAccountByAddressAndNetworkName } from './helpers';
 import { getAllTokensBalancesOfAccount } from '../BalanceService';
-import { useAnalytics } from '@utils';
+import { isSameAddress } from '../helpers';
 
 export interface IAccountContext {
   accounts: IAccount[];
@@ -96,7 +98,11 @@ export const AccountProvider: React.FC = ({ children }) => {
         if (existingAccount) {
           const newAssets: AssetBalanceObject[] = positiveAssetBalances.reduce(
             (tempAssets: AssetBalanceObject[], [contractAddress, balance]: [string, BigNumber]) => {
-              const tempAsset = assets.find((x) => x.contractAddress === contractAddress);
+              const tempAsset = assets.find((x) =>
+                x.contractAddress
+                  ? isSameAddress(x.contractAddress as TAddress, contractAddress as TAddress)
+                  : false
+              );
               return [
                 ...tempAssets,
                 ...(tempAsset
@@ -135,7 +141,9 @@ export const AccountProvider: React.FC = ({ children }) => {
                 tempAssets: AssetBalanceObject[],
                 [contractAddress, balance]: [string, BigNumber]
               ) => {
-                const tempAsset = assets.find((x) => x.contractAddress === contractAddress);
+                const tempAsset = assets.find((x) =>
+                  isSameAddress(x.contractAddress as TAddress, contractAddress as TAddress)
+                );
                 return [
                   ...tempAssets,
                   ...(tempAsset

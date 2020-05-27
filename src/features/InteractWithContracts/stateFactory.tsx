@@ -3,7 +3,7 @@ import debounce from 'lodash/debounce';
 
 import { TUseStateReducerFactory, constructPendingTxReceipt, generateContractUUID } from '@utils';
 import { CREATION_ADDRESS } from '@config';
-import { NetworkId, Contract, StoreAccount, ITxType, ITxStatus } from '@types';
+import { NetworkId, Contract, StoreAccount, ITxType, ITxStatus, TAddress } from '@types';
 import {
   getNetworkById,
   ContractContext,
@@ -20,6 +20,7 @@ import {
 import { AbiFunction } from '@services/EthService/contracts/ABIFunction';
 import { isWeb3Wallet } from '@utils/web3';
 import { translateRaw } from '@translations';
+import { isSameAddress } from '@services/Store/helpers';
 
 import { customContract, CUSTOM_CONTRACT_ADDRESS } from './constants';
 import { ABIItem, InteractWithContractState } from './types';
@@ -156,7 +157,9 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   };
 
   const selectExistingContract = (address: string) => {
-    const existingContract = state.contracts.find((c) => c.address === address);
+    const existingContract = state.contracts.find((c) =>
+      isSameAddress(c.address as TAddress, address as TAddress)
+    );
     if (existingContract) {
       handleContractSelected(existingContract);
       return true;

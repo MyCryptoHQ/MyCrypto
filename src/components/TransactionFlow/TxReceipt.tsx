@@ -19,7 +19,7 @@ import {
   TAddress,
   ExtendedAddressBook,
   ISettings,
-  ITransactionReceiptStepProps,
+  ITxReceiptStepProps,
   IPendingTxReceipt,
   ITxHistoryStatus
 } from '@types';
@@ -43,7 +43,7 @@ import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider
 import { DeFiZapLogo } from '@features/DeFiZap';
 import MembershipReceiptBanner from '@features/PurchaseMembership/components/MembershipReceiptBanner';
 import { getFiat } from '@config/fiats';
-import { updateFinishedPendingTxReceipt } from '@utils/transaction';
+import { constructFinishedTxReceipt } from '@utils/transaction';
 
 import { ISender } from './types';
 import { constructSenderFromTxConfig } from './helpers';
@@ -80,7 +80,7 @@ export default function TxReceipt({
   zapSelected,
   swapDisplay,
   protectTxButton
-}: ITransactionReceiptStepProps & Props) {
+}: ITxReceiptStepProps & Props) {
   const { getAssetRate } = useContext(RatesContext);
   const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
   const { addNewTransactionToAccount } = useContext(AccountContext);
@@ -110,7 +110,7 @@ export default function TxReceipt({
               setTxStatus((prevStatusState) => transactionStatus || prevStatusState);
               setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
               provider.getTransactionByHash(displayTxReceipt.hash).then((txResponse) => {
-                const receipt = updateFinishedPendingTxReceipt(txResponse)(
+                const receipt = constructFinishedTxReceipt(txResponse)(
                   txReceipt as IPendingTxReceipt,
                   transactionStatus
                 );

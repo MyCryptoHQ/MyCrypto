@@ -125,7 +125,7 @@ export const constructPendingTxReceipt = (txResponse: TransactionResponse) => (
     ITxStatus.PENDING
   );
 
-export const updateFinishedPendingTxReceipt = (txResponse: TransactionResponse) => (
+export const constructFinishedTxReceipt = (txResponse: TransactionResponse) => (
   previousTxReceipt: IPendingTxReceipt,
   newStatus: ITxStatus.FAILED | ITxStatus.SUCCESS,
   timestamp?: number,

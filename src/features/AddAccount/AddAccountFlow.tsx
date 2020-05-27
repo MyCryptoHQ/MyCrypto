@@ -8,13 +8,14 @@ import { WalletId, IStory } from '@types';
 import { ExtendedContentPanel, WalletList } from '@components';
 import { StoreContext } from '@services/Store';
 import { ANALYTICS_CATEGORIES } from '@services/ApiService';
+import { useAnalytics } from '@utils';
+import { isSameAddress } from '@services/Store/helpers';
 
 import { NotificationsContext, NotificationTemplates } from '../NotificationsPanel';
 import { FormDataActionType as ActionType } from './types';
 import { getStories } from './stories';
 import { formReducer, initialState } from './AddAccountForm.reducer';
 import './AddAccountFlow.scss';
-import { useAnalytics } from '@utils';
 
 export const getStory = (storyName: WalletId): IStory => {
   return getStories().filter((selected) => selected.name === storyName)[0];
@@ -67,7 +68,7 @@ const AddAccountFlow = withRouter(({ history, match }) => {
     const { network, address } = formData;
     if (!accounts) return;
     const newAccount = accounts.find(
-      (account) => account.address === address && account.networkId === network
+      (account) => isSameAddress(account.address, address) && account.networkId === network
     );
     if (!!newAccount) {
       trackNewAccountAdded({

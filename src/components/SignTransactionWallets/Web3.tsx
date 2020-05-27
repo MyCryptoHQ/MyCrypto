@@ -3,10 +3,12 @@ import { ethers, utils } from 'ethers';
 import { Web3Provider } from 'ethers/providers/web3-provider';
 
 import { WALLETS_CONFIG } from '@config';
-import { ISignComponentProps } from '@types';
+import { ISignComponentProps, TAddress } from '@types';
 import translate, { translateRaw } from '@translations';
 import { withContext, getWeb3Config } from '@utils';
 import { getNetworkByChainId, INetworkContext, NetworkContext } from '@services/Store';
+import { isSameAddress } from '@services/Store/helpers';
+
 import './Web3.scss';
 
 declare global {
@@ -158,7 +160,9 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
   private checkAddressMatches(Web3Address: string) {
     const { senderAccount } = this.props;
     const desiredAddress = utils.getAddress(senderAccount.address);
-    this.setState({ accountMatches: Web3Address === desiredAddress });
+    this.setState({
+      accountMatches: isSameAddress(Web3Address as TAddress, desiredAddress as TAddress)
+    });
   }
 
   private checkNetworkMatches(Web3Network: ethers.utils.Network) {

@@ -74,6 +74,7 @@ import { ProtectTxButton } from '@features/ProtectTransaction/components/Protect
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { useEffectOnce } from '@vendor';
 import { getFiat } from '@config/fiats';
+import { isSameAddress } from '@services/Store/helpers';
 
 import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
 import './SendAssetsForm.scss';
@@ -228,7 +229,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
         if (
           !isEmpty(account) &&
           value.value !== undefined &&
-          account.address.toLowerCase() === value.value.toLowerCase()
+          isSameAddress(account.address, value.value)
         ) {
           return {
             name: 'ValidationError',

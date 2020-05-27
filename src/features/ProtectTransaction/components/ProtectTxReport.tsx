@@ -14,6 +14,8 @@ import { ETHAddressExplorer } from '@config';
 import { EthAddress, LinkOut, VerticalStepper } from '@components';
 import { StepData } from '@components/VerticalStepper';
 import { truncate, useScreenSize } from '@utils';
+import { isSameAddress } from '@services/Store/helpers';
+import { TAddress } from '@types';
 
 import ProtectTxBase from './ProtectTxBase';
 import { ProtectTxContext } from '../ProtectTxProvider';
@@ -150,8 +152,8 @@ export const ProtectTxReport: FC = () => {
     let lastSentToken: { value: string; ticker: string; timestamp: string } | null = null;
     if (etherscanLastTxReport && etherscanLastTxReport.result.length) {
       const { result } = etherscanLastTxReport;
-      const firstSentResult = result.find(
-        (r) => r.from.toLowerCase() === receiverAddress!.toLowerCase()
+      const firstSentResult = result.find((r) =>
+        receiverAddress ? isSameAddress(r.from as TAddress, receiverAddress as TAddress) : false
       );
       if (firstSentResult) {
         const { tokenSymbol: ticker, value, timeStamp } = firstSentResult;

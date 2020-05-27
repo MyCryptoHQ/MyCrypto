@@ -77,7 +77,7 @@ export interface IStepComponentProps {
   resetFlow(): void;
 }
 
-export interface ITransactionReceiptStepProps {
+export interface ITxReceiptStepProps {
   txConfig: ITxConfig;
   txReceipt: ITxReceipt;
   signedTx?: string;

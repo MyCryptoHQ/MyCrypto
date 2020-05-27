@@ -68,7 +68,6 @@ export {
   ITxReceipt,
   ITxHash,
   ITxSigned,
-  IStandardTxReceipt,
   IFailedTxReceipt,
   ISuccessfulTxReceipt,
   IPendingTxReceipt
@@ -85,7 +84,7 @@ export {
   IStepComponentProps,
   SigningComponents,
   IReceiverAddress,
-  ITransactionReceiptStepProps
+  ITxReceiptStepProps
 } from './transactionFlow';
 export { JsonRPCResponse } from './jsonRPCResponse';
 export { INode, TxObj } from './INode';

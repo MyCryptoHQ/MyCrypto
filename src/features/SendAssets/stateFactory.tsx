@@ -108,7 +108,6 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
     const provider = new ProviderHandler(state.txConfig.network);
 
     provider.sendRawTx(signedTx).then((retrievedTxResponse) => {
-      console.debug('Received Transaction Response: ', retrievedTxResponse);
       const pendingTxReceipt = constructPendingTxReceipt(retrievedTxResponse)(
         ITxType.STANDARD,
         state.txConfig,
@@ -123,20 +122,6 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
         cb(pendingTxReceipt);
       }
     });
-    // .catch((txHash) => provider.getTransactionByHash(txHash))
-    // .then((retrievedTransactionResponse) => {
-    //   const pendingTxReceipt = constructPendingTxReceipt(
-    //     retrievedTransactionResponse as TransactionResponse
-    //   )(ITxType.STANDARD, state.txConfig, assets);
-    //   addNewTransactionToAccount(state.txConfig.senderAccount, pendingTxReceipt);
-    //   setState((prevState: State) => ({
-    //     ...prevState,
-    //     txReceipt: pendingTxReceipt
-    //   }));
-    //   if (cb) {
-    //     cb(pendingTxReceipt);
-    //   }
-    // });
   };
 
   const handleSignedTx: TStepAction = (payload: Arrayish, cb) => {
