@@ -1,9 +1,10 @@
 import React from 'react';
-import { KeyboardEventHandler } from 'react-select/src/types';
+import { FocusEventHandler, KeyboardEventHandler } from 'react-select/src/types';
 
 import { translateRaw } from '@translations';
 import { AccountSummary, AccountOption, Dropdown } from '@components';
 import { Asset, IReceiverAddress, ExtendedAddressBook } from '@types';
+import { SPACING } from '@theme';
 
 import addressBookIcon from '@assets/images/icn-address-book.svg';
 
@@ -14,10 +15,10 @@ interface IAccountLookupDropdownProps {
   value: IReceiverAddress;
   asset?: Asset;
   inputValue: string;
+  onBlur: FocusEventHandler;
   onSelect(option: IReceiverAddress): void;
   onChange?(e: any): void;
   onInputChange(e: any): string;
-  onBlur(inputString: string): void;
 }
 
 const ContactLookupDropdown = ({
@@ -48,7 +49,7 @@ const ContactLookupDropdown = ({
     optionComponent={AccountOption}
     value={value && value.value ? value : undefined} // Allow the value to be undefined at the start in order to display the placeholder
     valueComponent={({ value: { value: address, assetUUID, display: label } }) => (
-      <AccountSummary uuid={assetUUID} address={address} label={label} />
+      <AccountSummary uuid={assetUUID} address={address} label={label} paddingLeft={SPACING.XS} />
     )}
     searchable={true}
     clearable={true}

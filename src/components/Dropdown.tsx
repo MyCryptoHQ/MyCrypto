@@ -6,7 +6,7 @@ import Select, {
   components as ReactSelectComponents,
   Styles
 } from 'react-select';
-import { InputActionMeta } from 'react-select/src/types';
+import { FocusEventHandler, InputActionMeta } from 'react-select/src/types';
 import styled from 'styled-components';
 import { Icon } from '@mycrypto/ui';
 
@@ -30,17 +30,15 @@ interface Props<T = any> {
   inputValue?: string;
   onCloseResetsInput?: boolean;
   onBlurResetsInput?: boolean;
+  onBlur?: FocusEventHandler;
 
   onChange?(option: T): void;
-
-  onBlur?(e: string | undefined): void;
 
   onInputChange?(newValue: string, actionMeta: InputActionMeta): void;
 
   onInputKeyDown?(e: React.KeyboardEvent<HTMLElement>): void;
 }
 
-// Fixes weird placement issues for react-select
 const DropdownContainer = styled('div')`
   cursor: pointer;
 `;
@@ -137,6 +135,10 @@ const customStyles: Styles = {
     fontSize: FONT_SIZE.BASE,
     backgroundColor: state.isDisabled ? COLORS.GREY_LIGHTEST : 'default',
     paddingLeft: state.hasValue ? 0 : 5
+  }),
+  input: (provided) => ({
+    ...provided,
+    display: 'inline-block'
   })
 };
 
@@ -165,7 +167,8 @@ const Dropdown: <T = any>(p: Props<T>) => React.ReactElement<Props<T>> = (props)
     <DropdownContainer>
       <Select
         options={options}
-        defaultValue={value}
+        defaultValue={inputValue}
+        value={value}
         isDisabled={disabled}
         placeholder={placeholder}
         isSearchable={searchable}
@@ -174,13 +177,9 @@ const Dropdown: <T = any>(p: Props<T>) => React.ReactElement<Props<T>> = (props)
         blurInputOnSelect={onBlurResetsInput}
         onMenuClose={() => onCloseResetsInput}
         onChange={onChange}
-        onBlur={onBlur ? () => onBlur(inputValue) : undefined}
+        onBlur={onBlur}
         onInputChange={onInputChange}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' && onInputKeyDown) {
-            onInputKeyDown(e);
-          }
-        }}
+        onKeyDown={onInputKeyDown}
         openMenuOnClick={true}
         styles={customStyles}
         components={{

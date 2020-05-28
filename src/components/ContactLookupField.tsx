@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback } from 'react';
+import React, { useState, useContext, useCallback, useRef } from 'react';
 import { Field, useFormikContext } from 'formik';
 import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
 
@@ -165,15 +165,15 @@ const ContactDropdownField = ({
   };
 
   const ContactDropdownFieldCallback = useCallback(() => {
-    const [inputValue, setInputValue] = useState<string>('');
+    const inputValue = useRef<string>('');
     const handleInputChange = (input: string) => {
-      setInputValue(input);
+      inputValue.current = input;
       return input;
     };
 
     const handleEnterKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.keyCode === 13) {
-        handleAddAddressBookEntry(inputValue);
+        handleAddAddressBookEntry(inputValue.current);
       }
     };
 
@@ -187,12 +187,12 @@ const ContactDropdownField = ({
           setFieldTouched(name, true, false);
         }}
         onInputChange={handleInputChange}
-        onBlur={(inputString: string) => {
-          handleAddAddressBookEntry(inputString);
+        onBlur={() => {
+          handleAddAddressBookEntry(inputValue.current);
           setFieldTouched(name, true, false);
           if (onBlur) onBlur();
         }}
-        inputValue={inputValue}
+        inputValue={inputValue.current}
         onEnterKeyDown={handleEnterKeyDown}
       />
     );

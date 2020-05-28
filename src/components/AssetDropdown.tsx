@@ -22,6 +22,12 @@ const Label = styled.div`
 
 const DropdownContainer = styled('div')`
   width: ${(props: { fluid: boolean }) => (props.fluid ? '100%' : 'default')};
+  min-width: 175px;
+
+  .asset-dropdown-item {
+    padding-top: 11px;
+    padding-bottom: 11px;
+  }
 `;
 
 type AssetDropdownType = Asset & { name: string; symbol: TSymbol };

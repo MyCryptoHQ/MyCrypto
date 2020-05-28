@@ -14,7 +14,11 @@ const SContainer = styled.div<StyleProps>`
 
 function AssetDropdownItem({ uuid, symbol, name, onClick, paddingLeft }: Props) {
   return (
-    <SContainer paddingLeft={paddingLeft} {...(onClick ? { onPointerDown: onClick } : null)}>
+    <SContainer
+      className="asset-dropdown-item"
+      paddingLeft={paddingLeft}
+      {...(onClick ? { onPointerDown: onClick } : null)}
+    >
       <AssetIcon uuid={uuid} size={'1.5rem'} />
       <Typography bold={true} value={symbol} style={{ marginLeft: '10px' }} />
       {name && <span>&nbsp; - &nbsp;</span>}
