@@ -10,5 +10,5 @@ interface Props {
 
 export default function ContractDropdownValue(props: Props) {
   const { value } = props;
-  return <ContractDropdownItem option={value} />;
+  return <ContractDropdownItem data={value} />;
 }

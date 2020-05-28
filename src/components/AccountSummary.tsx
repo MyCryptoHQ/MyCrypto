@@ -6,7 +6,11 @@ import { TSymbol, TUuid } from '@types';
 import Currency from './Currency';
 import Account from './Account';
 
-interface Props {
+interface StyleProps {
+  paddingLeft?: string;
+}
+
+interface Props extends StyleProps {
   address: string;
   uuid?: TUuid;
   balance?: string;
@@ -23,9 +27,10 @@ const SCurrency = styled(Currency)`
 // https://www.styled-components.com/docs/advanced#caveat
 const SAddress = styled(Account)``;
 
-const SAccountWrapper = styled('div')`
+const SAccountWrapper = styled.div<StyleProps>`
   display: flex;
   padding: 16px 15px 16px 19px;
+  ${({ paddingLeft }) => paddingLeft && `padding-left: ${paddingLeft};`}
   flex-direction: column;
   & > div {
     line-height: 1.2;
@@ -37,9 +42,17 @@ const SAccountWrapper = styled('div')`
 `;
 
 // Display an address with it's balance
-function AccountSummary({ address, balance, assetSymbol, uuid, label, onClick }: Props) {
+function AccountSummary({
+  address,
+  balance,
+  assetSymbol,
+  uuid,
+  label,
+  onClick,
+  paddingLeft
+}: Props) {
   return (
-    <SAccountWrapper onPointerDown={onClick}>
+    <SAccountWrapper onPointerDown={onClick} paddingLeft={paddingLeft}>
       <SAddress title={label} truncate={truncate} address={address} isCopyable={false} />
       {balance && uuid && (
         <SCurrency

@@ -3,13 +3,9 @@ import React from 'react';
 import { Contract } from '@types';
 
 import ContractDropdownItem from './ContractDropdownItem';
+import { OptionProps } from 'react-select';
 
-interface Props {
-  option: Contract;
-  onSelect(option: Contract): void;
-}
-
-export default function ContractDropdownOption(props: Props) {
-  const { option, onSelect } = props;
-  return <ContractDropdownItem option={option} onSelect={onSelect} />;
+export default function ContractDropdownOption(props: OptionProps<Contract>) {
+  const { data, setValue } = props;
+  return <ContractDropdownItem data={data} setValue={setValue} />;
 }

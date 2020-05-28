@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from 'react';
 
-import { OptionComponentProps } from 'react-select';
+/*import { OptionComponentProps } from 'react-select';*/
 import styled from 'styled-components';
 import translate from '@translations';
 import { NetworkContext, isWalletFormatSupportedOnNetwork } from '@services/Store';
-import { NetworkId, WalletId } from '@types';
+import { Network, NetworkId, WalletId } from '@types';
 import { DEFAULT_NETWORK } from '@config';
 import { Typography, Dropdown, Tooltip } from '@components';
 
@@ -23,7 +23,7 @@ const SContainer = styled('div')`
   padding: 12px;
 `;
 
-const NetworkOption = ({ option, onSelect }: OptionComponentProps) => (
+const NetworkOption = ({ option, onSelect }: /*OptionComponentProps*/ any) => (
   <SContainer onClick={() => onSelect && onSelect(option, null)}>
     <Typography value={option.label} />
   </SContainer>
@@ -60,7 +60,7 @@ function NetworkSelectDropdown({
         {translate('SELECT_NETWORK_LABEL')}{' '}
         {showTooltip && <Tooltip tooltip={translate('NETWORK_TOOLTIP')} />}
       </label>
-      <Dropdown
+      <Dropdown<{ label: string; value: Network } & any>
         value={{ label: network.name }}
         options={validNetworks.sort()}
         placeholder={DEFAULT_NETWORK}

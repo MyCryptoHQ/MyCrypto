@@ -2,13 +2,13 @@ import React from 'react';
 
 import FunctionDropdownItem from './FunctionDropdownItem';
 import { ABIItem } from '../types';
+import { ActionTypes, ValueType } from 'react-select';
 
 interface Props {
-  option: ABIItem;
-  onSelect(option: ABIItem): void;
+  value: ABIItem;
+  setValue?(value: ValueType<ABIItem>, action: ActionTypes): void;
 }
 
 export default function FunctionDropdownOption(props: Props) {
-  const { option, onSelect } = props;
-  return <FunctionDropdownItem option={option} onSelect={onSelect} />;
+  return <FunctionDropdownItem {...props} />;
 }

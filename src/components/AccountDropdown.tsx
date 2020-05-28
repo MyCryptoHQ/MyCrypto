@@ -3,9 +3,10 @@ import { translateRaw } from '@translations';
 import { formatEther } from 'ethers/utils';
 
 import { AccountSummary, AccountOption, Dropdown } from '@components';
-import { StoreAccount, Asset } from '@types';
+import { StoreAccount, Asset, TUuid } from '@types';
 import { getAccountBalance, getBaseAsset } from '@services/Store';
 import { useEffectOnce } from '@vendor';
+import { SPACING } from '@theme';
 
 // Option item displayed in Dropdown menu. Props are passed by react-select Select.
 // To know: Select needs to receive a class in order to attach refs https://github.com/JedWatson/react-select/issues/2459
@@ -19,12 +20,17 @@ interface IAccountDropdownProps {
   onSelect(option: StoreAccount): void;
 }
 
-const sortByLabel = (a: Option, b: Option) => a.label.localeCompare(b.label);
+export type AccountDropdownOptionType = StoreAccount & {
+  balance: string;
+  assetSymbol: string;
+  assetUUID: TUuid;
+};
 
-type Option = StoreAccount & { balance: string; assetSymbol: string };
+const sortByLabel = (a: AccountDropdownOptionType, b: AccountDropdownOptionType) =>
+  a.label.localeCompare(b.label);
 
 function AccountDropdown({ accounts, name, value, onSelect, asset }: IAccountDropdownProps) {
-  const relevantAccounts: Option[] = accounts
+  const relevantAccounts: AccountDropdownOptionType[] = accounts
     .map((account) => ({
       ...account,
       balance: formatEther(asset ? getAccountBalance(account, asset) : getAccountBalance(account)),
@@ -41,13 +47,13 @@ function AccountDropdown({ accounts, name, value, onSelect, asset }: IAccountDro
   });
 
   return (
-    <Dropdown
+    <Dropdown<AccountDropdownOptionType>
       name={name}
       placeholder={translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')}
       options={relevantAccounts}
       onChange={(option) => onSelect(option)}
       optionComponent={AccountOption}
-      value={value && value.address ? value : undefined} // Allow the value to be undefined at the start in order to display the placeholder
+      value={value && value.address ? (value as AccountDropdownOptionType) : undefined} // Allow the value to be undefined at the start in order to display the placeholder
       valueComponent={({ value: { uuid, label, address, balance, assetSymbol, assetUUID } }) => {
         const option = relevantAccounts.find((a) => a.uuid === uuid);
         return (
@@ -57,6 +63,7 @@ function AccountDropdown({ accounts, name, value, onSelect, asset }: IAccountDro
             label={label}
             uuid={assetUUID}
             assetSymbol={option ? option.assetSymbol : assetSymbol}
+            paddingLeft={SPACING.XS}
           />
         );
       }}

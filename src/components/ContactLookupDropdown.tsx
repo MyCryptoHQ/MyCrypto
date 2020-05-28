@@ -1,5 +1,5 @@
 import React from 'react';
-import { OnInputKeyDownHandler } from 'react-select';
+import { KeyboardEventHandler } from 'react-select/src/types';
 
 import { translateRaw } from '@translations';
 import { AccountSummary, AccountOption, Dropdown } from '@components';
@@ -8,11 +8,11 @@ import { Asset, IReceiverAddress, ExtendedAddressBook } from '@types';
 import addressBookIcon from '@assets/images/icn-address-book.svg';
 
 interface IAccountLookupDropdownProps {
+  onEnterKeyDown: KeyboardEventHandler;
   contacts: ExtendedAddressBook[];
   name: string;
   value: IReceiverAddress;
   asset?: Asset;
-  onEnterKeyDown: OnInputKeyDownHandler;
   inputValue: string;
   onSelect(option: IReceiverAddress): void;
   onChange?(e: any): void;
@@ -30,7 +30,7 @@ const ContactLookupDropdown = ({
   onInputChange,
   onEnterKeyDown
 }: IAccountLookupDropdownProps) => (
-  <Dropdown
+  <Dropdown<any>
     dropdownIcon={<img src={addressBookIcon} />}
     onInputKeyDown={onEnterKeyDown}
     inputValue={inputValue}

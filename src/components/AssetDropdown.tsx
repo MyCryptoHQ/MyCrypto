@@ -1,12 +1,14 @@
-import React from 'react';
-import { OptionComponentProps } from 'react-select';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import isEmpty from 'ramda/src/isEmpty';
+import { OptionProps } from 'react-select';
 
 import { translateRaw } from '@translations';
 import { Asset, TSymbol } from '@types';
 import { AssetDropdownItem, Divider, Dropdown } from '@components';
 import { useEffectOnce } from '@vendor';
+import { ISwapAsset } from '@features/SwapAssets/types';
+import { SPACING } from '@theme';
 
 const Label = styled.div`
   font-size: 18px;
@@ -22,44 +24,40 @@ const DropdownContainer = styled('div')`
   width: ${(props: { fluid: boolean }) => (props.fluid ? '100%' : 'default')};
 `;
 
-// Class component to avoid 'Function components cannot be given refs' error
-class AssetOption extends React.PureComponent<OptionComponentProps> {
-  public render() {
-    const { option, onSelect } = this.props;
-    const { ticker, symbol, name, uuid } = option;
-    const ref = ticker ? ticker : symbol;
-    return (
-      <>
-        <AssetDropdownItem
-          symbol={ref}
-          uuid={uuid}
-          name={name}
-          onClick={() => onSelect && onSelect(option, null)}
-        />
-        <Divider />
-      </>
-    );
-  }
-}
-// Class component to avoid 'Function components cannot be given refs' error
-// tslint:disable:max-classes-per-file
-class AssetOptionShort extends React.PureComponent<OptionComponentProps> {
-  public render() {
-    const { option, onSelect } = this.props;
-    const { ticker, symbol, uuid } = option;
-    const ref = ticker ? ticker : symbol;
-    return (
-      <>
-        <AssetDropdownItem
-          symbol={ref}
-          uuid={uuid}
-          onClick={() => onSelect && onSelect(option, null)}
-        />
-        <Divider />
-      </>
-    );
-  }
-}
+type AssetDropdownType = Asset & { name: string; symbol: TSymbol };
+
+const AssetOption: FC<OptionProps<AssetDropdownType>> = (props) => {
+  const { data, selectOption } = props;
+  const { ticker, symbol, name, uuid } = data as Asset;
+  const ref = ticker ? ticker : symbol;
+  return (
+    <>
+      <AssetDropdownItem
+        symbol={ref as TSymbol}
+        uuid={uuid}
+        name={name}
+        onClick={() => selectOption && selectOption(data)}
+      />
+      <Divider />
+    </>
+  );
+};
+
+const AssetOptionShort: FC<OptionProps<AssetDropdownType>> = (props) => {
+  const { data, selectOption } = props;
+  const { ticker, symbol, uuid } = data as Asset;
+  const ref = ticker ? ticker : symbol;
+  return (
+    <>
+      <AssetDropdownItem
+        symbol={ref as TSymbol}
+        uuid={uuid}
+        onClick={() => selectOption && selectOption(data)}
+      />
+      <Divider />
+    </>
+  );
+};
 
 function AssetDropdown({
   assets,
@@ -70,7 +68,7 @@ function AssetDropdown({
   disabled = false,
   fluid = false,
   label
-}: Props<Asset | { name: string; symbol: TSymbol }>) {
+}: Props<Asset | ISwapAsset>) {
   useEffectOnce(() => {
     // Preselect first value when not provided
     if (isEmpty(selectedAsset) && onSelect && !isEmpty(assets)) {
@@ -81,19 +79,31 @@ function AssetDropdown({
   return (
     <DropdownContainer fluid={fluid}>
       {label && <Label>{label}</Label>}
-      <Dropdown
+      <Dropdown<AssetDropdownType>
         placeholder={translateRaw('SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER')}
-        options={assets.map((a) => ({ value: showOnlyTicker ? a.symbol : a.name, ...a }))}
+        options={
+          assets.map((a) => ({
+            value: showOnlyTicker ? a.symbol : a.name,
+            ...a
+          })) as AssetDropdownType[]
+        }
         disabled={disabled}
         searchable={searchable}
-        onChange={(option: Asset) => onSelect && onSelect(option)}
+        onChange={(option) => onSelect && onSelect(option)}
         optionComponent={showOnlyTicker ? AssetOptionShort : AssetOption}
-        value={!isEmpty(selectedAsset) && selectedAsset}
-        valueComponent={({ value: option }) => {
-          const { ticker, uuid, symbol, name } = option;
+        value={
+          (!isEmpty(selectedAsset) ? selectedAsset : undefined) as AssetDropdownType | undefined
+        }
+        valueComponent={({ value }) => {
+          const { ticker, uuid, symbol, name } = value;
           const ref = ticker ? ticker : symbol;
           return (
-            <AssetDropdownItem symbol={ref} uuid={uuid} name={!showOnlyTicker ? name : undefined} />
+            <AssetDropdownItem
+              symbol={ref as TSymbol}
+              uuid={uuid}
+              name={!showOnlyTicker ? name : undefined}
+              paddingLeft={SPACING.XS}
+            />
           );
         }}
       />

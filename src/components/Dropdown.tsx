@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { ComponentType, FC } from 'react';
 import Select, {
-  OptionComponentProps,
-  ArrowRendererProps,
-  OnInputChangeHandler,
-  OnInputKeyDownHandler
+  IndicatorProps,
+  OptionProps,
+  ValueContainerProps,
+  components as ReactSelectComponents,
+  Styles
 } from 'react-select';
+import { InputActionMeta } from 'react-select/src/types';
 import styled from 'styled-components';
 import { Icon } from '@mycrypto/ui';
 
@@ -12,84 +14,35 @@ import { COLORS, FONT_SIZE } from '@theme';
 
 import crossIcon from '@assets/images/icn-cross.svg';
 
-// Give a height to the input when value is defined
-// Overide custom styles common/sass/styles/overrides/react-select.scss
-interface SProps {
-  value?: string;
-  disabled?: boolean;
-}
+type OptionComponentType<T = any> = React.ComponentClass<OptionProps<T>> | React.FC<OptionProps<T>>;
 
-const SSelect = styled(Select)`
-  height: ${(props: SProps) => (props.value ? 'auto' : '54px')};
-  background-color: ${(props: SProps) => (props.disabled ? COLORS.GREY_LIGHTEST : 'default')};
-  ${(props) => props.disabled && '.Select-arrow {display: none};'} font-size: ${FONT_SIZE.BASE};
-
-  /* Set max-height to prevent the dropdown form overflowing the footer. */
-  .Select-menu {
-    max-height: 20em !important;
-  }
-
-  .Select-input {
-    width: 100%;
-    cursor: pointer;
-
-    > input {
-      width: 100% !important;
-      cursor: pointer;
-    }
-  }
-`;
-
-interface Props<T> {
+interface Props<T = any> {
   options: T[];
-  value: T;
+  value: T | undefined;
   disabled?: boolean;
   placeholder?: string;
   searchable?: boolean;
   clearable?: boolean;
   name?: string;
   dropdownIcon?: JSX.Element;
-  optionComponent:
-    | React.ComponentClass<OptionComponentProps<T>>
-    | React.StatelessComponent<OptionComponentProps<T>>;
-  valueComponent?: React.ComponentClass<T> | React.StatelessComponent<T>;
+  optionComponent: OptionComponentType<T> | any;
+  valueComponent?: ComponentType<{ value: T }>;
   inputValue?: string;
-  onInputChange?: OnInputChangeHandler;
-  onInputKeyDown?: OnInputKeyDownHandler;
   onCloseResetsInput?: boolean;
   onBlurResetsInput?: boolean;
+
   onChange?(option: T): void;
+
   onBlur?(e: string | undefined): void;
+
+  onInputChange?(newValue: string, actionMeta: InputActionMeta): void;
+
+  onInputKeyDown?(e: React.KeyboardEvent<HTMLElement>): void;
 }
 
 // Fixes weird placement issues for react-select
 const DropdownContainer = styled('div')`
   cursor: pointer;
-
-  .Select-control {
-    cursor: pointer;
-  }
-
-  .is-searchable.is-open {
-    .Select-input,
-    .Select-control {
-      cursor: text;
-
-      > input {
-        cursor: text;
-      }
-    }
-  }
-
-  .is-searchable.is-focused:not(.is-open) > .Select-control {
-    cursor: pointer;
-  }
-
-  .has-value > .Select-control > .Select-multi-value-wrapper > .Select-input:only-child {
-    transform: translateY(0%);
-    padding: 16px 15px 16px 15px;
-    position: inherit;
-  }
 `;
 
 const Chevron = styled(Icon)`
@@ -106,57 +59,140 @@ const OptionWrapper = styled.div`
   }
 `;
 
-const DropdownIndicator = (props: ArrowRendererProps) => (
-  <Chevron icon={props.isOpen ? 'chevronUp' : 'chevronDown'} />
-);
+const DropdownIndicator: (icon?: JSX.Element) => FC<IndicatorProps<any>> = (icon) => (props) => {
+  const {
+    selectProps: { menuIsOpen }
+  } = props;
+  return (
+    <ReactSelectComponents.DropdownIndicator {...props}>
+      {icon ? (
+        <IconWrapper>{icon}</IconWrapper>
+      ) : (
+        <Chevron icon={menuIsOpen ? 'chevronUp' : 'chevronDown'} />
+      )}
+    </ReactSelectComponents.DropdownIndicator>
+  );
+};
 
-const CustomDropdownIndicator = (dropdownIcon: JSX.Element) => () => (
-  <IconWrapper>{dropdownIcon}</IconWrapper>
-);
+const ClearIndicator: FC<IndicatorProps<any>> = (props) => {
+  const { clearValue } = props;
+  return (
+    <IconWrapper onClick={clearValue}>
+      <img src={crossIcon} />
+    </IconWrapper>
+  );
+};
 
-const ClearIndicator = () => (
-  <IconWrapper>
-    <img src={crossIcon} />
-  </IconWrapper>
-);
+const getValueContainer: <T = any>(
+  props: ValueContainerProps<T> & OptionProps<T>,
+  ValueComponent: ComponentType<{ value: T }> | undefined
+) => any = (props, ValueComponent) => {
+  const {
+    hasValue,
+    getValue,
+    selectProps: { inputValue }
+  } = props;
+  if (!hasValue || !ValueComponent) {
+    return <ReactSelectComponents.ValueContainer {...props} />;
+  }
+  const [data] = getValue() as any[];
+  const { children } = props;
+  return (
+    <ReactSelectComponents.ValueContainer {...props}>
+      {React.Children.map(children, (child: JSX.Element) =>
+        child && [ReactSelectComponents.SingleValue].indexOf(child.type) === -1 ? child : null
+      )}
+      {!inputValue && <ValueComponent value={data} />}
+    </ReactSelectComponents.ValueContainer>
+  );
+};
 
-const OptionComponent = (
-  props: OptionComponentProps,
-  Component:
-    | React.ComponentClass<OptionComponentProps>
-    | React.StatelessComponent<OptionComponentProps>
-) => (
+const getOption = (props: OptionProps<any>, Component: ComponentType<OptionProps<any>>) => (
   <OptionWrapper>
     <Component {...props} />
   </OptionWrapper>
 );
 
-// ContactLookup dropdown is using custom dropdown indicator (dropdownIcon) and clear field indicator.
-// When value is set, it hides dropdown icon, so that clear icon can appear instead of it.
-const getDropdownIndicator = (
-  value: Props<any>['value'],
-  dropdownIcon: Props<any>['dropdownIcon']
-) => {
-  if (!dropdownIcon) return DropdownIndicator;
-  if (!value) return CustomDropdownIndicator(dropdownIcon);
-  return null;
+const customStyles: Styles = {
+  menu: (provided, state) => ({
+    ...provided,
+    maxHeight: '65vh',
+    border: '0.125em solid rgba(0,122,153,0.65)',
+    color: state.selectProps.menuColor,
+    'div:last-child > .divider': {
+      display: 'none'
+    },
+    margin: 0,
+    borderRadius: '0.125em'
+  }),
+  control: (provided, state) => ({
+    ...provided,
+    border: '0.125em solid rgba(63,63,68,0.05)',
+    borderRadius: '0.125em',
+    boxShadow: 'none',
+    '&:hover': {
+      border: '0.125em solid rgba(0,122,153,0.65)'
+    },
+    height: state.hasValue ? 'auto' : '54px',
+    fontSize: FONT_SIZE.BASE,
+    backgroundColor: state.isDisabled ? COLORS.GREY_LIGHTEST : 'default',
+    paddingLeft: state.hasValue ? 0 : 5
+  })
 };
 
-export default function Dropdown(props: Props<any>) {
-  const { value, dropdownIcon, onBlur, inputValue, clearable = false, optionComponent } = props;
+const Dropdown: <T = any>(p: Props<T>) => React.ReactElement<Props<T>> = (props) => {
+  const {
+    options,
+    value,
+    disabled = false,
+    placeholder,
+    searchable = true,
+    clearable = false,
+    name,
+    dropdownIcon,
+    optionComponent,
+    valueComponent,
+    inputValue,
+    onCloseResetsInput,
+    onBlurResetsInput,
+    onChange,
+    onBlur,
+    onInputChange,
+    onInputKeyDown
+  } = props;
 
   return (
     <DropdownContainer>
-      <SSelect
-        {...props}
-        arrowRenderer={getDropdownIndicator(value, dropdownIcon)}
-        clearRenderer={ClearIndicator}
-        menuContainerStyle={{ maxHeight: '65vh', borderTop: '1px solid #ececec' }}
-        menuStyle={{ maxHeight: '65vh' }}
+      <Select
+        options={options}
+        defaultValue={value}
+        isDisabled={disabled}
+        placeholder={placeholder}
+        isSearchable={searchable}
+        isClearable={clearable}
+        name={name}
+        blurInputOnSelect={onBlurResetsInput}
+        onMenuClose={() => onCloseResetsInput}
+        onChange={onChange}
         onBlur={onBlur ? () => onBlur(inputValue) : undefined}
-        clearable={clearable}
-        optionComponent={(oProps: OptionComponentProps) => OptionComponent(oProps, optionComponent)}
+        onInputChange={onInputChange}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && onInputKeyDown) {
+            onInputKeyDown(e);
+          }
+        }}
+        openMenuOnClick={true}
+        styles={customStyles}
+        components={{
+          DropdownIndicator: DropdownIndicator(dropdownIcon),
+          Option: (oProps: any) => getOption(oProps, optionComponent),
+          ClearIndicator,
+          ValueContainer: (oProps: any) => getValueContainer(oProps, valueComponent),
+          IndicatorSeparator: () => null
+        }}
       />
     </DropdownContainer>
   );
-}
+};
+
+export default Dropdown;

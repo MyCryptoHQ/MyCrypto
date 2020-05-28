@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import { OptionComponentProps } from 'react-select';
+//import { OptionComponentProps } from 'react-select';
 import BN from 'bn.js';
 
 import translate, { translateRaw } from '@translations';
@@ -335,7 +335,7 @@ export function DeterministicWalletsClass({
     setPage(Math.max(page - 1, 0));
   };
 
-  const DPathOption = ({ option, onSelect }: OptionComponentProps) => (
+  const DPathOption = ({ option, onSelect }: /*OptionComponentProps*/ any) => (
     <SContainer onClick={() => onSelect && onSelect(option, null)}>
       <Typography>
         {option.label}{' '}

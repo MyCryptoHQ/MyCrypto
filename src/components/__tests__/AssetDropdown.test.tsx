@@ -2,7 +2,7 @@ import React from 'react';
 
 import { simpleRender } from 'test-utils';
 import { fAssets } from '@fixtures';
-import { Asset, TSymbol } from '@types';
+import { Asset } from '@types';
 
 import AssetDropdown, { Props } from '../AssetDropdown';
 
@@ -16,7 +16,7 @@ const defaultProps: Props<Asset> = {
   onSelect: jest.fn()
 };
 
-function getComponent(props: Props<Asset | { name: string; symbol: TSymbol }>) {
+function getComponent(props: Props<Asset>) {
   return simpleRender(<AssetDropdown {...props} />);
 }
 

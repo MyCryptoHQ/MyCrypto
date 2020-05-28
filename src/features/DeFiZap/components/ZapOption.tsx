@@ -1,28 +1,25 @@
-import React from 'react';
-import { OptionComponentProps } from 'react-select';
+import React, { FC } from 'react';
 
 import { Divider } from '@components';
+import { OptionProps } from 'react-select';
+
 import { translateRaw } from '@translations';
+import { AccountDropdownOptionType } from '@components/AccountDropdown';
 
-class ZapOption extends React.PureComponent<OptionComponentProps> {
-  public render() {
-    const { option, onSelect } = this.props;
-    return (
-      <>
-        <ZapSummary
-          name={option.name}
-          keyId={option.key}
-          onClick={() => onSelect!(option, null)} // Since it's a custom Dropdown we know onSelect is defined
-        />
-        <Divider padding={'14px'} />
-      </>
-    );
-  }
-}
+const ZapOption: FC<OptionProps<AccountDropdownOptionType>> = (props) => {
+  const { data, selectOption } = props;
+  const { name, key } = data;
 
-/* @todo: React Select doesn't seem to like these memoized components as optionComponents, figure out a solution to this. */
-/*const MemoizedZapOption = React.memo(ZapOption);
-export default MemoizedZapOption;*/
+  return (
+    <>
+      <ZapSummary name={name} keyId={key} onClick={() => selectOption(data)} />
+      <Divider padding={'14px'} />
+    </>
+  );
+};
+
+const MemoizedZapOption = React.memo(ZapOption);
+export default MemoizedZapOption;
 
 export const ZapSummary = ({
   name,
@@ -39,5 +36,3 @@ export const ZapSummary = ({
     </div>
   );
 };
-
-export default ZapOption;

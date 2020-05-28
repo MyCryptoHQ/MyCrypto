@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { OptionComponentProps } from 'react-select';
 
 import { translateRaw } from '@translations';
 import { Typography, Dropdown } from '@components';
@@ -40,7 +39,7 @@ function MembershipDropdown({ name, value, onSelect }: Props) {
   );
 }
 
-class MembershipOption extends React.PureComponent<OptionComponentProps> {
+class MembershipOption extends React.PureComponent</*OptionComponentProps*/ any> {
   public render() {
     const { option, onSelect } = this.props;
     const value = (option.value as unknown) as IMembershipConfig;
