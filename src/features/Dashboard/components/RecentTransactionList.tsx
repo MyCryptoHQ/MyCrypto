@@ -31,7 +31,10 @@ import { getFiat } from '@config/fiats';
 
 import NoTransactions from './NoTransactions';
 import TransactionLabel from './TransactionLabel';
+import { ITxHistoryType } from '../types';
+import { deriveTxType } from '../helpers';
 import './RecentTransactionList.scss';
+
 import newWindowIcon from '@assets/images/icn-new-window.svg';
 import transfer from '@assets/images/transactions/transfer.svg';
 import inbound from '@assets/images/transactions/inbound.svg';
@@ -42,8 +45,6 @@ import contractDeploy from '@assets/images/transactions/contract-deploy.svg';
 import defizap from '@assets/images/transactions/defizap.svg';
 import membershipPurchase from '@assets/images/transactions/membership-purchase.svg';
 import swap from '@assets/images/transactions/swap.svg';
-import { ITxHistoryType } from './types';
-import { deriveTxType } from './helpers';
 
 interface Props {
   className?: string;
