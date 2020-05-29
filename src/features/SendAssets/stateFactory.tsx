@@ -59,7 +59,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
   const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
   const { accounts } = useContext(StoreContext);
-  const { addNewTransactionToAccount } = useContext(AccountContext);
+  const { addNewTxToAccount } = useContext(AccountContext);
 
   const handleFormSubmit: TStepAction = (payload: IFormikFields, cb: any) => {
     const rawTransaction: ITxObject = processFormDataToTx(payload);
@@ -113,7 +113,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
         state.txConfig,
         assets
       );
-      addNewTransactionToAccount(state.txConfig.senderAccount, pendingTxReceipt);
+      addNewTxToAccount(state.txConfig.senderAccount, pendingTxReceipt);
       setState((prevState: State) => ({
         ...prevState,
         txReceipt: pendingTxReceipt
@@ -149,7 +149,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
           assets,
           payload
         );
-        addNewTransactionToAccount(state.txConfig.senderAccount, pendingTxReceipt);
+        addNewTxToAccount(state.txConfig.senderAccount, pendingTxReceipt);
         setState((prevState: State) => ({
           ...prevState,
           txReceipt: pendingTxReceipt

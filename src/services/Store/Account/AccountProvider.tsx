@@ -35,7 +35,7 @@ export interface IAccountContext {
   createAccountWithID(accountData: IRawAccount, uuid: TUuid): void;
   deleteAccount(account: IAccount): void;
   updateAccount(uuid: TUuid, accountData: IAccount): void;
-  addNewTransactionToAccount(account: IAccount, transaction: ITxReceipt): void;
+  addNewTxToAccount(account: IAccount, transaction: ITxReceipt): void;
   getAccountByAddressAndNetworkName(address: string, networkId: NetworkId): IAccount | undefined;
   updateAccountAssets(account: StoreAccount, assets: Asset[]): Promise<void>;
   updateAllAccountsAssets(accounts: StoreAccount[], assets: Asset[]): Promise<void>;
@@ -62,26 +62,19 @@ export const AccountProvider: React.FC = ({ children }) => {
     },
     deleteAccount: model.destroy,
     updateAccount: (uuid, a) => model.update(uuid, a),
-    addNewTransactionToAccount: (accountData, newTransaction) => {
-      if (
-        'status' in newTransaction &&
-        [ITxStatus.SUCCESS, ITxStatus.FAILED].includes(newTransaction.status)
-      ) {
+    addNewTxToAccount: (accountData, newTx) => {
+      if ('status' in newTx && [ITxStatus.SUCCESS, ITxStatus.FAILED].includes(newTx.status)) {
         trackTxHistory({
           eventParams: {
-            txType: (newTransaction && newTransaction.txType) || ITxType.UNKNOWN,
-            txStatus: newTransaction.status
+            txType: (newTx && newTx.txType) || ITxType.UNKNOWN,
+            txStatus: newTx.status
           }
         });
       }
       const newAccountData = {
         ...accountData,
-        transactions: [
-          ...accountData.transactions.filter((tx) => tx.hash !== newTransaction.hash),
-          newTransaction
-        ]
+        transactions: [...accountData.transactions.filter((tx) => tx.hash !== newTx.hash), newTx]
       };
-      console.debug('[AddNewTransaction]: ', JSON.stringify(newTransaction, null, 4));
       state.updateAccount(accountData.uuid, newAccountData);
     },
     getAccountByAddressAndNetworkName: getAccountByAddressAndNetworkName(accounts),

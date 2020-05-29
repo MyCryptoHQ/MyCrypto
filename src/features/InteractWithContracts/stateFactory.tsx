@@ -28,7 +28,11 @@ import { translateRaw } from '@translations';
 
 import { customContract, CUSTOM_CONTRACT_ADDRESS } from './constants';
 import { ABIItem, InteractWithContractState } from './types';
-import { makeTxConfigFromTransaction, reduceInputParams, constructGasCallProps } from './helpers';
+import {
+  reduceInputParams,
+  constructGasCallProps,
+  makeContractInteractionTxConfig
+} from './helpers';
 
 const interactWithContractsInitialState = {
   network: {},
@@ -59,7 +63,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   const { getContractsByIds, createContractWithId, deleteContracts } = useContext(ContractContext);
   const { networks, updateNetwork } = useContext(NetworkContext);
   const { assets } = useContext(AssetContext);
-  const { addNewTransactionToAccount } = useContext(AccountContext);
+  const { addNewTxToAccount } = useContext(AccountContext);
 
   const handleNetworkSelected = (networkId: NetworkId) => {
     setState((prevState: InteractWithContractState) => ({
@@ -301,7 +305,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       transaction.gasLimit = gasLimit;
       delete transaction.from;
 
-      const txConfig = makeTxConfigFromTransaction(
+      const txConfig = makeContractInteractionTxConfig(
         transaction,
         account,
         submitedFunction.payAmount
@@ -336,7 +340,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     if (isWeb3Wallet(account.wallet)) {
       const txReceipt =
         signResponse && signResponse.hash ? signResponse : { ...txConfig, hash: signResponse };
-      addNewTransactionToAccount(state.txConfig.senderAccount, {
+      addNewTxToAccount(state.txConfig.senderAccount, {
         ...txReceipt,
         to: state.txConfig.receiverAddress,
         from: state.txConfig.senderAccount.address,
@@ -362,7 +366,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
             state.txConfig,
             assets
           );
-          addNewTransactionToAccount(state.txConfig.senderAccount, pendingTxReceipt);
+          addNewTxToAccount(state.txConfig.senderAccount, pendingTxReceipt);
           setState((prevState: InteractWithContractState) => ({
             ...prevState,
             txReceipt: pendingTxReceipt

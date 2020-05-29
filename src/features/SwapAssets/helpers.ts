@@ -27,7 +27,7 @@ export const getTradeOrder = (assetPair: IAssetPair, account: StoreAccount) => a
     .then((txs) => Promise.all(txs.map(appendGasPrice(network))));
 };
 
-export const makeTxConfigFromTransaction = (assets: Asset[]) => (
+export const makeSwapTxConfig = (assets: Asset[]) => (
   transaction: ITxObject,
   account: StoreAccount,
   fromAsset: ISwapAsset,

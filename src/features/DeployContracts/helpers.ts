@@ -5,7 +5,7 @@ import { getAssetByUUID, hexToString, hexWeiToString } from '@services';
 export const getAccountsInNetwork = (accounts: StoreAccount[], networkId: NetworkId) =>
   accounts.filter((acc) => acc.networkId === networkId && WALLET_STEPS[acc.wallet]);
 
-export const makeTxConfigFromTransaction = (
+export const makeDeployContractTxConfig = (
   rawTransaction: ITxObject,
   account: StoreAccount,
   amount: string

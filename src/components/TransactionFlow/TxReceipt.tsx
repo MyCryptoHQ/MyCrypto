@@ -83,7 +83,7 @@ export default function TxReceipt({
 }: ITxReceiptStepProps & Props) {
   const { getAssetRate } = useContext(RatesContext);
   const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
-  const { addNewTransactionToAccount } = useContext(AccountContext);
+  const { addNewTxToAccount } = useContext(AccountContext);
   const { accounts } = useContext(StoreContext);
   const { settings } = useContext(SettingsContext);
   const [txStatus, setTxStatus] = useState(ITxStatus.PENDING as ITxHistoryStatus);
@@ -129,7 +129,7 @@ export default function TxReceipt({
       const timestampInterval = setInterval(() => {
         getTimestampFromBlockNum(blockNumber, provider).then((transactionTimestamp) => {
           if (sender.account) {
-            addNewTransactionToAccount(sender.account, {
+            addNewTxToAccount(sender.account, {
               ...displayTxReceipt,
               blockNumber: blockNumber || 0,
               timestamp: transactionTimestamp || 0,

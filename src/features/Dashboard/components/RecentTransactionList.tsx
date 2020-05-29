@@ -10,8 +10,8 @@ import {
   Account,
   FixedSizeCollapsibleTable
 } from '@components';
-import { truncate, convertToFiat, isSameAddress } from '@utils';
-import { ITxReceipt, ITxStatus, StoreAccount, Asset, ITxType, Network } from '@types';
+import { truncate, convertToFiat } from '@utils';
+import { ITxReceipt, ITxStatus, StoreAccount, Asset, Network } from '@types';
 import {
   RatesContext,
   AddressBookContext,
@@ -42,23 +42,13 @@ import contractDeploy from '@assets/images/transactions/contract-deploy.svg';
 import defizap from '@assets/images/transactions/defizap.svg';
 import membershipPurchase from '@assets/images/transactions/membership-purchase.svg';
 import swap from '@assets/images/transactions/swap.svg';
+import { ITxHistoryType } from './types';
+import { deriveTxType } from './helpers';
 
 interface Props {
   className?: string;
   accountsList: StoreAccount[];
 }
-
-enum IStandardTxType {
-  TRANSFER = 'TRANSFER',
-  OUTBOUND = 'OUTBOUND',
-  INBOUND = 'INBOUND'
-}
-
-const ITxHistoryType = { ...ITxType, ...IStandardTxType };
-type ITxHistoryType = Exclude<
-  Exclude<ITxType | IStandardTxType, ITxType.STANDARD>,
-  ITxType.UNKNOWN
->;
 
 interface ITxHistoryEntry
   extends Overwrite<ITxReceipt, { txType: ITxHistoryType; timestamp: number }> {
@@ -125,29 +115,6 @@ const TxTypeConfig: ITxTypeConfig = {
     label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_DEPLOY'),
     icon: contractDeploy
   }
-};
-
-export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt): ITxHistoryType => {
-  const fromAccount =
-    tx.from && accountsList.find(({ address }) => isSameAddress(address, tx.from));
-  const toAddress = tx.receiverAddress || tx.to;
-  const toAccount =
-    toAddress && accountsList.find(({ address }) => isSameAddress(address, toAddress));
-
-  const isInvalidTxHistoryType =
-    !('txType' in tx) ||
-    tx.txType === ITxHistoryType.STANDARD ||
-    tx.txType === ITxHistoryType.UNKNOWN;
-
-  if (isInvalidTxHistoryType && toAccount && fromAccount) {
-    return ITxHistoryType.TRANSFER;
-  } else if (isInvalidTxHistoryType && !toAccount && fromAccount) {
-    return ITxHistoryType.OUTBOUND;
-  } else if (isInvalidTxHistoryType && toAccount && !fromAccount) {
-    return ITxHistoryType.INBOUND;
-  }
-
-  return tx.txType as ITxHistoryType;
 };
 
 const SAssetIcon = styled(AssetIcon)`

@@ -83,7 +83,7 @@ export const getFunctionsFromABI = (pAbi: ABIItem[]) =>
 export const getAccountsInNetwork = (accounts: StoreAccount[], networkId: NetworkId) =>
   accounts.filter((acc) => acc.networkId === networkId && WALLET_STEPS[acc.wallet]);
 
-export const makeTxConfigFromTransaction = (
+export const makeContractInteractionTxConfig = (
   rawTransaction: ITxObject,
   account: StoreAccount,
   amount: string

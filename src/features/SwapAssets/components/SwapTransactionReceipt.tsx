@@ -8,7 +8,7 @@ import { StoreAccount, ITxType, ITxStatus } from '@types';
 import { TxParcel, constructTxReceiptFromTransactionReceipt } from '@utils';
 
 import { SwapDisplayData, IAssetPair } from '../types';
-import { makeTxConfigFromTransaction } from '../helpers';
+import { makeSwapTxConfig } from '../helpers';
 
 interface Props {
   assetPair: IAssetPair;
@@ -29,8 +29,9 @@ export default function SwapTransactionReceipt({
     assetPair
   );
 
+  // @todo: refactor this to be based on status of tx from StoreProvider
   const txItems = transactions.map((tx, idx) => {
-    const txConfig = makeTxConfigFromTransaction(userAssets)(
+    const txConfig = makeSwapTxConfig(userAssets)(
       tx.txRaw,
       account,
       assetPair.fromAsset,
