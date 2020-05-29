@@ -5,10 +5,13 @@
     "decimal": 18,
     "ticker": "RopDAI",
     "networkId": "Ropsten",
+    "balance": {
+      "_hex": "0x54ab1b2ceea88000"
+    },
     "contractAddress": "0xad6d458402f60fd3bd25163575031acdce07538d",
     "type": "erc20",
     "isCustom": true,
-    "mappings": {}
+    "mtime": 1590734746709
   },
   "baseAsset": {
     "ticker": "RopstenETH",
@@ -22,15 +25,15 @@
   },
   "hash": "0xac204139dec2d322ed40e24be9af205fb417cc59ab2a78e7e784ee9ad2cc4163",
   "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
-  "receiverAddress": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
+  "receiverAddress": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
   "amount": "0.01",
-  "to": "0xaD6D458402F60fD3Bd25163575031ACDce07538D",
+  "to": "0xad6d458402f60fd3bd25163575031acdce07538d",
   "nonce": "25",
   "gasLimit": {
     "_hex": "0x7d30"
   },
   "gasPrice": {
-    "_hex": "0x4a817c800"
+    "_hex": "0x04a817c800"
   },
   "data": "0xa9059cbb0000000000000000000000005197b5b062288bbf29008c92b08010a92dd677cd000000000000000000000000000000000000000000000000002386f26fc10000",
   "value": {

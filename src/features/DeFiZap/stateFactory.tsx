@@ -2,9 +2,9 @@ import { useContext } from 'react';
 
 import { TUseStateReducerFactory, makePendingTxReceipt } from '@utils';
 import { isWeb3Wallet } from '@utils/web3';
-import { Asset, ITxStatus, ITxType } from '@types';
+import { Asset, ITxStatus, ITxType, ITxHash, TAddress } from '@types';
 import { hexWeiToString, ProviderHandler } from '@services/EthService';
-import { AccountContext, AssetContext } from '@services/Store';
+import { AccountContext } from '@services/Store';
 
 import { createSimpleTxObject } from './helpers';
 import { ZapInteractionState, TStepAction, ISimpleTxFormFull } from './types';
@@ -14,7 +14,6 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
   setState
 }) => {
   const { addNewTxToAccount } = useContext(AccountContext);
-  const { assets } = useContext(AssetContext);
 
   const handleTxSigned = async (signResponse: any, cb: any) => {
     const { txConfig } = state;
@@ -42,14 +41,10 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
       const provider = new ProviderHandler(txConfig.network);
       provider
         .sendRawTx(signResponse)
-        .then((retrievedTxReceipt) => retrievedTxReceipt)
-        .catch((hash) => provider.getTransactionByHash(hash))
-        .then((retrievedTransactionReceipt) => {
-          const pendingTxReceipt = makePendingTxReceipt(retrievedTransactionReceipt)(
-            ITxType.DEFIZAP,
-            txConfig,
-            assets
-          );
+        .then((txResponse) => txResponse.hash as ITxHash)
+        .catch((hash) => hash as ITxHash)
+        .then((txHash) => {
+          const pendingTxReceipt = makePendingTxReceipt(txHash)(ITxType.DEFIZAP, txConfig);
           addNewTxToAccount(state.txConfig.senderAccount, pendingTxReceipt);
           setState((prevState: ZapInteractionState) => ({
             ...prevState,
@@ -71,7 +66,7 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
       rawTransaction,
       amount: payload.amount,
       senderAccount: payload.account,
-      receiverAddress: state.zapSelected!.contractAddress,
+      receiverAddress: state.zapSelected!.contractAddress as TAddress,
       network: payload.network,
       asset: payload.asset,
       baseAsset: payload.asset || ({} as Asset),

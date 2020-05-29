@@ -39,7 +39,7 @@ export default function SwapTransactionReceipt({
       assetPair.fromAmount.toString()
     );
     const txType = idx === transactions.length - 1 ? ITxType.PURCHASE_MEMBERSHIP : ITxType.APPROVAL;
-    return makeTxItem(txType, txConfig, currentAssets, tx.txResponse, tx.txReceipt);
+    return makeTxItem(txType, txConfig, tx.txResponse, tx.txReceipt);
   });
 
   const txReceipts = txItems.map(({ txReceipt }) => txReceipt);

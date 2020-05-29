@@ -9,13 +9,16 @@ describe('isSameAddress', () => {
     expect(isSameAddress(addressOne, addressTwo)).toBeTruthy();
   });
 
-  it('returns false if compared address is too short or too long', () => {
+  it('returns false if compared address is too short ', () => {
     const addressOne = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520' as TAddress;
     const addressTwo = '0x4bbeeb066e' as TAddress;
-    const addressThree = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520bbbbbbbbbb' as TAddress;
     expect(isSameAddress(addressOne, addressTwo)).toBeFalsy();
+  });
 
-    expect(isSameAddress(addressOne, addressThree)).toBeFalsy();
+  it('returns false if compared address is too long', () => {
+    const addressOne = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520' as TAddress;
+    const addressTwo = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520bbbbbbbbbb' as TAddress;
+    expect(isSameAddress(addressOne, addressTwo)).toBeFalsy();
   });
 
   it('returns false if either address is undefined', () => {

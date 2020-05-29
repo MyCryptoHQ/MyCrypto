@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 
-import { ITxObject, StoreAccount, ITxConfig } from '@types';
+import { ITxObject, StoreAccount, ITxConfig, TAddress } from '@types';
 import {
   inputValueToHex,
   inputGasPriceToHex,
@@ -67,7 +67,7 @@ export const makePurchaseMembershipTxConfig = (
   const txConfig: ITxConfig = {
     from: address,
     amount: membershipSelected.price,
-    receiverAddress: to,
+    receiverAddress: to as TAddress,
     senderAccount: account,
     network,
     asset,

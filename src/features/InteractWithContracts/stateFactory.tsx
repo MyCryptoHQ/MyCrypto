@@ -8,7 +8,7 @@ import {
   isSameAddress
 } from '@utils';
 import { CREATION_ADDRESS } from '@config';
-import { NetworkId, Contract, StoreAccount, ITxType, ITxStatus, TAddress } from '@types';
+import { NetworkId, Contract, StoreAccount, ITxType, ITxStatus, TAddress, ITxHash } from '@types';
 import {
   getNetworkById,
   ContractContext,
@@ -19,7 +19,6 @@ import {
   getResolvedENSAddress,
   EtherscanService,
   getIsValidENSAddressFunction,
-  AssetContext,
   AccountContext
 } from '@services';
 import { AbiFunction } from '@services/EthService/contracts/ABIFunction';
@@ -62,7 +61,6 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
 }) => {
   const { getContractsByIds, createContractWithId, deleteContracts } = useContext(ContractContext);
   const { networks, updateNetwork } = useContext(NetworkContext);
-  const { assets } = useContext(AssetContext);
   const { addNewTxToAccount } = useContext(AccountContext);
 
   const handleNetworkSelected = (networkId: NetworkId) => {
@@ -358,13 +356,12 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       const provider = new ProviderHandler(account.network);
       provider
         .sendRawTx(signResponse)
-        .then((retrievedTxReceipt) => retrievedTxReceipt)
-        .catch((hash) => provider.getTransactionByHash(hash))
-        .then((retrievedTransactionReceipt) => {
-          const pendingTxReceipt = makePendingTxReceipt(retrievedTransactionReceipt)(
+        .then((retrievedTxReceipt) => retrievedTxReceipt.hash as ITxHash)
+        .catch((hash) => hash as ITxHash)
+        .then((txHash) => {
+          const pendingTxReceipt = makePendingTxReceipt(txHash)(
             ITxType.CONTRACT_INTERACT,
-            state.txConfig,
-            assets
+            state.txConfig
           );
           addNewTxToAccount(state.txConfig.senderAccount, pendingTxReceipt);
           setState((prevState: InteractWithContractState) => ({

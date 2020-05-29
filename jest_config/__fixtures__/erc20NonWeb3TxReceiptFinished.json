@@ -7,7 +7,6 @@
     "networkId": "Ropsten",
     "contractAddress": "0xad6d458402f60fd3bd25163575031acdce07538d",
     "type": "erc20",
-    "mappings": {},
     "isCustom": true
   },
   "baseAsset": {
@@ -24,7 +23,7 @@
   "from": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
   "receiverAddress": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
   "amount": "0.01",
-  "to": "0xaD6D458402F60fD3Bd25163575031ACDce07538D",
+  "to": "0xad6d458402f60fd3bd25163575031acdce07538d",
   "nonce": "7",
   "gasLimit": {
     "_hex": "0x7d3c"
@@ -34,7 +33,7 @@
   },
   "data": "0xa9059cbb0000000000000000000000004d1f9d958afa2e96dab3f3ce7162b87daea39017000000000000000000000000000000000000000000000000002386f26fc10000",
   "value": {
-    "_hex": "0x00"
+    "_hex": "0x0"
   },
   "status": "SUCCESS",
   "txType": "STANDARD",

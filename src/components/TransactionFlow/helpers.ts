@@ -3,7 +3,7 @@ import isEmpty from 'ramda/src/isEmpty';
 import pick from 'ramda/src/pick';
 import mergeDeepWith from 'ramda/src/mergeDeepWith';
 
-import { ITxConfig, TAddress, StoreAccount } from '@types';
+import { ITxConfig, StoreAccount } from '@types';
 import { getAccountBalance, getStoreAccount } from '@services/Store';
 
 import { ISender } from './types';
@@ -18,7 +18,7 @@ export const constructSenderFromTxConfig = (
 ): ISender => {
   const { network, senderAccount, from } = txConfig;
   const defaultSender: ISender = {
-    address: from as TAddress,
+    address: from,
     assets: [],
     network
   };

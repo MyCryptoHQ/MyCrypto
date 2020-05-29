@@ -10,7 +10,8 @@ import {
   ISignedTx,
   ITxObject,
   ITxType,
-  ITxHash
+  ITxHash,
+  TAddress
 } from '@types';
 import {
   hexWeiToString,
@@ -68,7 +69,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
         rawTransaction,
         amount: payload.amount,
         senderAccount: payload.account,
-        receiverAddress: payload.address.value,
+        receiverAddress: payload.address.value as TAddress,
         network: payload.network,
         asset: payload.asset,
         baseAsset: baseAsset || ({} as Asset),
@@ -103,10 +104,9 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
     const provider = new ProviderHandler(state.txConfig.network);
 
     provider.sendRawTx(signedTx).then((retrievedTxResponse) => {
-      const pendingTxReceipt = makePendingTxReceipt(retrievedTxResponse)(
+      const pendingTxReceipt = makePendingTxReceipt(retrievedTxResponse.hash as ITxHash)(
         ITxType.STANDARD,
-        state.txConfig,
-        assets
+        state.txConfig
       );
       addNewTxToAccount(state.txConfig.senderAccount, pendingTxReceipt);
       setState((prevState: State) => ({
@@ -134,29 +134,15 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
   };
 
   const handleSignedWeb3Tx: TStepAction = (payload: ITxHash, cb) => {
-    const provider = new ProviderHandler(state.txConfig.network);
-    provider
-      .getTransactionByHash(payload)
-      .then((retrievedTransactionResponse) => {
-        const pendingTxReceipt = makePendingTxReceipt(retrievedTransactionResponse)(
-          ITxType.STANDARD,
-          state.txConfig,
-          assets,
-          payload
-        );
-        addNewTxToAccount(state.txConfig.senderAccount, pendingTxReceipt);
-        setState((prevState: State) => ({
-          ...prevState,
-          txReceipt: pendingTxReceipt
-        }));
-        if (cb) {
-          cb();
-        }
-      })
-      .catch((e) => {
-        console.debug(e);
-        // @todo: Handle error?
-      });
+    const pendingTxReceipt = makePendingTxReceipt(payload)(ITxType.STANDARD, state.txConfig);
+    addNewTxToAccount(state.txConfig.senderAccount, pendingTxReceipt);
+    setState((prevState: State) => ({
+      ...prevState,
+      txReceipt: pendingTxReceipt
+    }));
+    if (cb) {
+      cb();
+    }
   };
 
   const handleResubmitTx: TStepAction = (cb) => {

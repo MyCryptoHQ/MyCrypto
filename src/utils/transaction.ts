@@ -1,6 +1,5 @@
 import { Arrayish, parseTransaction,bigNumberify } from 'ethers/utils';
 import { TransactionResponse, TransactionReceipt } from 'ethers/providers';
-import isEmpty from 'ramda/src/isEmpty';
 
 import {
   getNetworkByChainId,
@@ -9,11 +8,7 @@ import {
   getStoreAccount
 } from '@services/Store';
 import {
-  ERC20,
-  fromWei,
   fromTokenBase,
-  Wei,
-  hexWeiToString,
   bigNumGasLimitToViewable,
   bigNumGasPriceToViewableGwei,
   bigNumValueToViewableEther,
@@ -34,56 +29,42 @@ import {
   ITxHash,
   IFailedTxReceipt,
   ISuccessfulTxReceipt,
-  ITxHistoryStatus,
-  StoreAsset
+  ITxHistoryStatus
 } from '@types';
 
-export const toTxReceipt = (txResponse: TransactionResponse, status: ITxHistoryStatus) => (
+export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
   txType: ITxType,
-  txConfig: ITxConfig,
-  assets: ExtendedAsset[],
-  txHash?: ITxHash
+  txConfig: ITxConfig
 ): IPendingTxReceipt | ISuccessfulTxReceipt | IFailedTxReceipt => {
-  const useTxResponse = txResponse && !isEmpty(txResponse) && txResponse !== null;
-
-  const to = useTxResponse ? txResponse.to : txConfig.rawTransaction.to;
-  const data = useTxResponse ? txResponse.data : txConfig.rawTransaction.data;
-  const value = useTxResponse ? txResponse.value : bigNumberify(txConfig.rawTransaction.value);
-
-  const contractAsset = getAssetByContractAndNetwork(to, txConfig.network)(assets);
-  const baseAsset = getBaseAssetByNetwork({ network: txConfig.network, assets });
+  const { data, asset, baseAsset, amount, gasPrice, gasLimit, nonce } = txConfig;
 
   const txReceipt = {
-    asset: contractAsset || txConfig.asset,
-    baseAsset: baseAsset || txConfig.baseAsset,
-    hash: txHash || (txResponse.hash! as ITxHash),
-    from: txConfig.from as TAddress,
-    receiverAddress: (contractAsset ? ERC20.transfer.decodeInput(data)._to : to) as TAddress,
-    amount: contractAsset
-      ? fromTokenBase(ERC20.transfer.decodeInput(data)._value, contractAsset.decimal)
-      : fromWei(Wei(hexWeiToString(value.toHexString())), 'ether').toString(),
-    nonce: useTxResponse ? txResponse.nonce.toString() : txConfig.rawTransaction.nonce,
-    gasLimit: useTxResponse ? txResponse.gasLimit : bigNumberify(txConfig.rawTransaction.gasLimit),
-    gasPrice: useTxResponse ? txResponse.gasPrice : bigNumberify(txConfig.rawTransaction.gasPrice),
-    data,
-    value,
-    status,
-    txType,
-    to: to as TAddress,
+    hash: txHash,
+    from: txConfig.from,
+    receiverAddress: txConfig.receiverAddress,
+    gasLimit: bigNumberify(gasLimit),
+    gasPrice: bigNumberify(gasPrice),
+    value: bigNumberify(txConfig.rawTransaction.value),
+    to: txConfig.rawTransaction.to as TAddress,
 
+    status,
+    amount,
+    nonce,
+    data,
+    txType,
+    asset,
+    baseAsset,
     blockNumber: 0,
     timestamp: 0
   };
   return txReceipt;
 };
 
-export const makePendingTxReceipt = (txResponse: TransactionResponse) => (
+export const makePendingTxReceipt = (txHash: ITxHash) => (
   txType: ITxType,
-  txConfig: ITxConfig,
-  assets: ExtendedAsset[],
-  txHash?: ITxHash
+  txConfig: ITxConfig
 ): IPendingTxReceipt =>
-  toTxReceipt(txResponse, ITxStatus.PENDING)(txType, txConfig, assets, txHash) as IPendingTxReceipt;
+  toTxReceipt(txHash, ITxStatus.PENDING)(txType, txConfig) as IPendingTxReceipt;
 
 export const makeFinishedTxReceipt = (
   previousTxReceipt: IPendingTxReceipt,
@@ -136,7 +117,9 @@ export const makeTxConfigFromSignedTx = (
 
   const txConfig = {
     rawTransaction: oldTxConfig.rawTransaction,
-    receiverAddress: contractAsset ? decodeTransfer(decodedTx.data)._to : decodedTx.to,
+    receiverAddress: (contractAsset
+      ? decodeTransfer(decodedTx.data)._to
+      : decodedTx.to) as TAddress,
     amount: contractAsset
       ? fromTokenBase(toWei(decodeTransfer(decodedTx.data)._value, 0), contractAsset.decimal)
       : decodedTx.value,
@@ -153,7 +136,7 @@ export const makeTxConfigFromSignedTx = (
     gasLimit: decodedTx.gasLimit,
     data: decodedTx.data,
     nonce: decodedTx.nonce.toString(),
-    from: decodedTx.from || oldTxConfig.from
+    from: (decodedTx.from || oldTxConfig.from) as TAddress
   };
   return txConfig;
 };
@@ -162,19 +145,18 @@ export const makeTxConfigFromSignedTx = (
 export const makeTxItem = (
   txType: ITxType,
   txConfig: ITxConfig,
-  assets: StoreAsset[],
   txResponse?: TransactionResponse,
   txReceipt?: TransactionReceipt
 ) => {
   if (!txReceipt) {
     return {
-      txReceipt: makePendingTxReceipt(txResponse!)(txType, txConfig, assets),
+      txReceipt: makePendingTxReceipt(txResponse!.hash as ITxHash)(txType, txConfig),
       txConfig
     };
   } else {
     const status = txReceipt.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
     return {
-      txReceipt: toTxReceipt(txResponse!, status)(txType, txConfig, assets),
+      txReceipt: toTxReceipt(txResponse!.hash as ITxHash, status)(txType, txConfig),
       txConfig
     };
   }

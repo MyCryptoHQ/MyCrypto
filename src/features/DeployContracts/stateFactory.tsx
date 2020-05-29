@@ -2,8 +2,8 @@ import { useContext } from 'react';
 import { isHexString } from 'ethjs-util';
 
 import { TUseStateReducerFactory, makePendingTxReceipt } from '@utils';
-import { StoreAccount, NetworkId, ITxType, ITxStatus } from '@types';
-import { ProviderHandler, getGasEstimate, AssetContext, AccountContext } from '@services';
+import { StoreAccount, NetworkId, ITxType, ITxStatus, ITxHash } from '@types';
+import { ProviderHandler, getGasEstimate, AccountContext } from '@services';
 import { isWeb3Wallet } from '@utils/web3';
 import { translateRaw } from '@translations';
 import {
@@ -33,7 +33,6 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
   state,
   setState
 }) => {
-  const { assets } = useContext(AssetContext);
   const { addNewTxToAccount } = useContext(AccountContext);
 
   const handleNetworkSelected = (networkId: NetworkId) => {
@@ -126,11 +125,9 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
         .then((retrievedTxReceipt) => retrievedTxReceipt)
         .catch((hash) => provider.getTransactionByHash(hash))
         .then((retrievedTransactionReceipt) => {
-          const pendingTxReceipt = makePendingTxReceipt(retrievedTransactionReceipt)(
-            ITxType.DEPLOY_CONTRACT,
-            txConfig,
-            assets
-          );
+          const pendingTxReceipt = makePendingTxReceipt(
+            retrievedTransactionReceipt.hash as ITxHash
+          )(ITxType.DEPLOY_CONTRACT, txConfig);
           addNewTxToAccount(state.txConfig.senderAccount, pendingTxReceipt);
           setState((prevState: DeployContractsState) => ({
             ...prevState,
