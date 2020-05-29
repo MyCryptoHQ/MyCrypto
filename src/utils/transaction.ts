@@ -34,17 +34,16 @@ import {
   ITxHash,
   IFailedTxReceipt,
   ISuccessfulTxReceipt,
-  ITxReceipt,
   ITxHistoryStatus,
-  TxParcel
+  StoreAsset
 } from '@types';
 
-export const toTxReceipt = (txResponse: TransactionResponse, status: ITxStatus.PENDING) => (
+export const toTxReceipt = (txResponse: TransactionResponse, status: ITxHistoryStatus) => (
   txType: ITxType,
   txConfig: ITxConfig,
   assets: ExtendedAsset[],
   txHash?: ITxHash
-): IPendingTxReceipt => {
+): IPendingTxReceipt | ISuccessfulTxReceipt | IFailedTxReceipt => {
   const useTxResponse = txResponse && !isEmpty(txResponse) && txResponse !== null;
 
   const to = useTxResponse ? txResponse.to : txConfig.rawTransaction.to;
@@ -54,16 +53,15 @@ export const toTxReceipt = (txResponse: TransactionResponse, status: ITxStatus.P
   const contractAsset = getAssetByContractAndNetwork(to, txConfig.network)(assets);
   const baseAsset = getBaseAssetByNetwork({ network: txConfig.network, assets });
 
-  return {
+  const txReceipt = {
     asset: contractAsset || txConfig.asset,
     baseAsset: baseAsset || txConfig.baseAsset,
     hash: txHash || (txResponse.hash! as ITxHash),
     from: txConfig.from as TAddress,
-    receiverAddress: txConfig.receiverAddress as TAddress,
+    receiverAddress: (contractAsset ? ERC20.transfer.decodeInput(data)._to : to) as TAddress,
     amount: contractAsset
       ? fromTokenBase(ERC20.transfer.decodeInput(data)._value, contractAsset.decimal)
       : fromWei(Wei(hexWeiToString(value.toHexString())), 'ether').toString(),
-    to: (contractAsset ? ERC20.transfer.decodeInput(data)._to : to) as TAddress,
     nonce: useTxResponse ? txResponse.nonce.toString() : txConfig.rawTransaction.nonce,
     gasLimit: useTxResponse ? txResponse.gasLimit : bigNumberify(txConfig.rawTransaction.gasLimit),
     gasPrice: useTxResponse ? txResponse.gasPrice : bigNumberify(txConfig.rawTransaction.gasPrice),
@@ -71,49 +69,12 @@ export const toTxReceipt = (txResponse: TransactionResponse, status: ITxStatus.P
     value,
     status,
     txType,
+    to: to as TAddress,
 
     blockNumber: 0,
     timestamp: 0
   };
-};
-
-export const makeTxReceiptFromTransactionReceipt = (txReceipt: TransactionReceipt) => (
-  txType: ITxType,
-  txConfig: ITxConfig,
-  assets: ExtendedAsset[],
-  status: ITxHistoryStatus
-): ITxReceipt => {
-  const contractAsset = getAssetByContractAndNetwork(
-    txConfig.rawTransaction.to,
-    txConfig.network
-  )(assets);
-  const baseAsset = getBaseAssetByNetwork({ network: txConfig.network, assets });
-  return {
-    asset: contractAsset || txConfig.asset,
-    baseAsset: baseAsset || txConfig.baseAsset,
-    hash: txReceipt.transactionHash! as ITxHash,
-    from: txConfig.from as TAddress,
-    receiverAddress: txConfig.receiverAddress as TAddress,
-    value: bigNumberify(txConfig.rawTransaction.value),
-    amount: contractAsset
-      ? fromTokenBase(
-          ERC20.transfer.decodeInput(txConfig.rawTransaction.data)._value,
-          contractAsset.decimal
-        )
-      : fromWei(Wei(hexWeiToString(txConfig.rawTransaction.value)), 'ether').toString(),
-    to: (contractAsset
-      ? ERC20.transfer.decodeInput(txConfig.rawTransaction.data)._to
-      : txConfig.rawTransaction.to) as TAddress,
-    nonce: txConfig.rawTransaction.nonce,
-    gasLimit: bigNumberify(txConfig.rawTransaction.gasLimit),
-    gasPrice: bigNumberify(txConfig.rawTransaction.gasPrice),
-    data: txConfig.rawTransaction.data,
-    status,
-    txType,
-
-    blockNumber: 0,
-    timestamp: 0
-  };
+  return txReceipt;
 };
 
 export const makePendingTxReceipt = (txResponse: TransactionResponse) => (
@@ -122,9 +83,9 @@ export const makePendingTxReceipt = (txResponse: TransactionResponse) => (
   assets: ExtendedAsset[],
   txHash?: ITxHash
 ): IPendingTxReceipt =>
-  toTxReceipt(txResponse, ITxStatus.PENDING)(txType, txConfig, assets, txHash);
+  toTxReceipt(txResponse, ITxStatus.PENDING)(txType, txConfig, assets, txHash) as IPendingTxReceipt;
 
-export const constructFinishedTxReceipt = (txResponse: TransactionResponse) => (
+export const makeFinishedTxReceipt = (
   previousTxReceipt: IPendingTxReceipt,
   newStatus: ITxStatus.FAILED | ITxStatus.SUCCESS,
   timestamp?: number,
@@ -132,8 +93,8 @@ export const constructFinishedTxReceipt = (txResponse: TransactionResponse) => (
 ): IFailedTxReceipt | ISuccessfulTxReceipt => ({
   ...previousTxReceipt,
   status: newStatus,
-  timestamp: timestamp || txResponse.timestamp || 0,
-  blockNumber: blockNumber || txResponse.blockNumber || 0
+  timestamp: timestamp || 0,
+  blockNumber: blockNumber || 0
 });
 
 const decodeTransaction = (signedTx: Arrayish) => {
@@ -154,6 +115,7 @@ const decodeTransaction = (signedTx: Arrayish) => {
   };
 };
 
+// needs testing
 export const makeTxConfigFromSignedTx = (
   signedTx: Arrayish,
   assets: ExtendedAsset[],
@@ -193,35 +155,26 @@ export const makeTxConfigFromSignedTx = (
     nonce: decodedTx.nonce.toString(),
     from: decodedTx.from || oldTxConfig.from
   };
-
   return txConfig;
 };
 
+// needs testing
 export const makeTxItem = (
   txType: ITxType,
   txConfig: ITxConfig,
-  tx: TxParcel,
-  account: StoreAccount
+  assets: StoreAsset[],
+  txResponse?: TransactionResponse,
+  txReceipt?: TransactionReceipt
 ) => {
-  if (!tx.txReceipt) {
+  if (!txReceipt) {
     return {
-      txReceipt: makeTxReceiptFromTransactionReceipt(tx.txReceipt!)(
-        txType,
-        txConfig,
-        account.assets,
-        ITxStatus.PENDING
-      ),
+      txReceipt: makePendingTxReceipt(txResponse!)(txType, txConfig, assets),
       txConfig
     };
   } else {
-    const status = tx.txReceipt.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
+    const status = txReceipt.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
     return {
-      txReceipt: makeTxReceiptFromTransactionReceipt(tx.txReceipt)(
-        txType,
-        txConfig,
-        account.assets,
-        status
-      ),
+      txReceipt: toTxReceipt(txResponse!, status)(txType, txConfig, assets),
       txConfig
     };
   }

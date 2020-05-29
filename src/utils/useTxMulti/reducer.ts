@@ -6,6 +6,7 @@ import { getUUID } from '@utils';
 import { ITxStatus, ITxObject, ITxHash } from '@types';
 
 import { ActionTypes, TxMultiState, TxMultiAction } from './types';
+import { TransactionResponse } from 'ethers/providers';
 
 export const initialState = {
   isSubmitting: false,
@@ -83,10 +84,10 @@ export function TxMultiReducer(state: TxMultiState, action: TxMultiAction): TxMu
       };
     }
     case ActionTypes.SEND_TX_SUCCESS: {
-      const { txHash }: { txHash: ITxHash } = payload;
+      const { txHash, txResponse }: { txHash: ITxHash; txResponse: TransactionResponse } = payload;
       const transactions = adjust(
         state._currentTxIdx,
-        mergeLeft({ txHash, status: ITxStatus.BROADCASTED }),
+        mergeLeft({ txHash, status: ITxStatus.BROADCASTED, txResponse }),
         state.transactions
       );
 

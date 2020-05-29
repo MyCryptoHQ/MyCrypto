@@ -5,7 +5,7 @@ import { BigNumber } from 'ethers/utils';
 import { Wei, Address } from '@services/EthService';
 
 import { Asset } from './asset';
-import { ITxType, ITxStatus, ITxHistoryStatus } from './transactionFlow';
+import { ITxType, ITxStatus } from './transactionFlow';
 import { TAddress } from './address';
 
 // By only dealing with Buffers / BN, dont have to mess around with cleaning strings
@@ -52,7 +52,7 @@ export interface ITxReceipt {
   readonly asset: Asset;
   readonly baseAsset: Asset;
   readonly txType: ITxType;
-  readonly status: ITxHistoryStatus;
+  readonly status: ITxStatus.PENDING | ITxStatus.SUCCESS | ITxStatus.FAILED;
 
   readonly receiverAddress: TAddress;
   readonly amount: string;

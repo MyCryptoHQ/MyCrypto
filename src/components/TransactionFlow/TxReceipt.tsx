@@ -43,7 +43,7 @@ import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider
 import { DeFiZapLogo } from '@features/DeFiZap';
 import MembershipReceiptBanner from '@features/PurchaseMembership/components/MembershipReceiptBanner';
 import { getFiat } from '@config/fiats';
-import { constructFinishedTxReceipt } from '@utils/transaction';
+import { makeFinishedTxReceipt } from '@utils/transaction';
 
 import { ISender } from './types';
 import { constructSenderFromTxConfig } from './helpers';
@@ -110,11 +110,14 @@ export default function TxReceipt({
               setTxStatus((prevStatusState) => transactionStatus || prevStatusState);
               setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
               provider.getTransactionByHash(displayTxReceipt.hash).then((txResponse) => {
-                const receipt = constructFinishedTxReceipt(txResponse)(
-                  txReceipt as IPendingTxReceipt,
-                  transactionStatus
+                setDisplayTxReceipt(
+                  makeFinishedTxReceipt(
+                    txReceipt as IPendingTxReceipt,
+                    transactionStatus,
+                    txResponse.timestamp,
+                    txResponse.blockNumber
+                  )
                 );
-                setDisplayTxReceipt(receipt);
               });
             }
           }

@@ -26,7 +26,7 @@
   },
   "hash": "0x5b8bd3deca986e4c6aa4acc561c32314a0c32c2292be95b739ee76db022cfba8",
   "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
-  "receiverAddress": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+  "receiverAddress": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
   "amount": "0.01",
   "to": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
   "nonce": "24",

@@ -47,7 +47,7 @@ import {
 } from '@features/PurchaseMembership/config';
 import { DEFAULT_NETWORK } from '@config';
 import { useEffectOnce } from '@vendor';
-import { constructFinishedTxReceipt } from '@utils/transaction';
+import { makeFinishedTxReceipt } from '@utils/transaction';
 
 import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';
 import { getStoreAccounts, getPendingTransactionsFromAccounts } from './helpers';
@@ -286,9 +286,9 @@ export const StoreProvider: React.FC = ({ children }) => {
               pendingTxReceipt.from,
               pendingTxReceipt.asset.networkId
             );
-
             if (!senderAccount) return;
-            const finishedTxReceipt = constructFinishedTxReceipt(txResponse)(
+
+            const finishedTxReceipt = makeFinishedTxReceipt(
               pendingTxReceipt,
               txStatus,
               txTimestamp,

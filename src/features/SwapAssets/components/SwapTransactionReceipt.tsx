@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import pick from 'ramda/src/pick';
 
 import { translateRaw } from '@translations';
-import { AssetContext } from '@services';
+import { StoreContext } from '@services';
 import { TxReceipt, MultiTxReceipt } from '@components/TransactionFlow';
 import { StoreAccount, ITxType } from '@types';
 import { TxParcel } from '@utils';
@@ -24,22 +24,22 @@ export default function SwapTransactionReceipt({
   account,
   onSuccess
 }: Props) {
-  const { assets: userAssets } = useContext(AssetContext);
+  const { assets: getAssets } = useContext(StoreContext);
   const swapDisplay: SwapDisplayData = pick(
     ['fromAsset', 'toAsset', 'fromAmount', 'toAmount'],
     assetPair
   );
-
+  const currentAssets = getAssets();
   // @todo: refactor this to be based on status of tx from StoreProvider
   const txItems = transactions.map((tx, idx) => {
-    const txConfig = makeSwapTxConfig(userAssets)(
+    const txConfig = makeSwapTxConfig(currentAssets)(
       tx.txRaw,
       account,
       assetPair.fromAsset,
       assetPair.fromAmount.toString()
     );
     const txType = idx === transactions.length - 1 ? ITxType.PURCHASE_MEMBERSHIP : ITxType.APPROVAL;
-    return makeTxItem(txType, txConfig, tx, account);
+    return makeTxItem(txType, txConfig, currentAssets, tx.txResponse, tx.txReceipt);
   });
 
   const txReceipts = txItems.map(({ txReceipt }) => txReceipt);

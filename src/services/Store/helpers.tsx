@@ -52,8 +52,8 @@ export const txIsFailed = ({ status }: { status: ITxStatus }) => status === ITxS
 export const getTxsFromAccount = (accounts: StoreAccount[]): ITxReceipt[] => {
   return accounts
     .filter(Boolean)
-    .flatMap(({ transactions: txs, network }: { transactions: ITxReceipt[]; network: any }) =>
-      txs.map((tx: any) => ({ ...tx, status: tx.status || tx.stage, network }))
+    .flatMap(({ transactions: txs }: { transactions: ITxReceipt[] }) =>
+      txs.map((tx: any) => ({ ...tx, status: tx.status || tx.stage }))
     );
 };
 
