@@ -27,7 +27,7 @@ export interface ITxObject {
 export interface ITxConfig {
   readonly rawTransaction: ITxObject /* The rawTransaction object that will be signed */;
   readonly amount: string;
-  readonly receiverAddress: string;
+  readonly receiverAddress: string; // Recipient of the send. NOT the tx's `to` address
   readonly senderAccount: StoreAccount;
   readonly from: string;
   readonly asset: Asset;

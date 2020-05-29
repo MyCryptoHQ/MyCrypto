@@ -82,6 +82,16 @@ export const fAssets = [
     networkId: 'TOMO',
     type: 'base',
     decimal: 18
+  },
+  {
+    uuid: '2783a9ff-d6f1-5c9e-bbab-3b74be91adb1',
+    name: 'RopDAI',
+    decimal: 18,
+    ticker: 'RopDAI',
+    networkId: 'Ropsten',
+    contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
+    type: 'erc20',
+    isCustom: true
   }
 ] as ExtendedAsset[];
 
