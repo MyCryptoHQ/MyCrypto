@@ -1,10 +1,6 @@
 import { useContext } from 'react';
 
-import {
-  TUseStateReducerFactory,
-  constructPendingTxReceipt,
-  makeTxConfigFromSignedTx
-} from '@utils';
+import { TUseStateReducerFactory, makePendingTxReceipt, makeTxConfigFromSignedTx } from '@utils';
 import { ITxReceipt, ITxConfig, ISignedTx, NetworkId, ITxType } from '@types';
 import { DEFAULT_NETWORK } from '@config';
 import { NetworkContext, AssetContext, StoreContext } from '@services/Store';
@@ -61,11 +57,7 @@ const BroadcastTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setSt
       }
       const provider = new ProviderHandler(txConfig.network);
       const response = await provider.sendRawTx(signedTx);
-      const pendingTxReceipt = constructPendingTxReceipt(response)(
-        ITxType.STANDARD,
-        txConfig,
-        assets
-      );
+      const pendingTxReceipt = makePendingTxReceipt(response)(ITxType.STANDARD, txConfig, assets);
       setState((prevState: State) => ({
         ...prevState,
         txReceipt: pendingTxReceipt

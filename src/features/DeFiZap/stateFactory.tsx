@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { TUseStateReducerFactory, constructPendingTxReceipt } from '@utils';
+import { TUseStateReducerFactory, makePendingTxReceipt } from '@utils';
 import { isWeb3Wallet } from '@utils/web3';
 import { Asset, ITxStatus, ITxType } from '@types';
 import { hexWeiToString, ProviderHandler } from '@services/EthService';
@@ -45,7 +45,7 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
         .then((retrievedTxReceipt) => retrievedTxReceipt)
         .catch((hash) => provider.getTransactionByHash(hash))
         .then((retrievedTransactionReceipt) => {
-          const pendingTxReceipt = constructPendingTxReceipt(retrievedTransactionReceipt)(
+          const pendingTxReceipt = makePendingTxReceipt(retrievedTransactionReceipt)(
             ITxType.DEFIZAP,
             txConfig,
             assets

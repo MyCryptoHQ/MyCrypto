@@ -35,15 +35,16 @@ import {
   IFailedTxReceipt,
   ISuccessfulTxReceipt,
   ITxReceipt,
-  ITxHistoryStatus
+  ITxHistoryStatus,
+  TxParcel
 } from '@types';
 
-export const constructTxReceiptFromTransactionResponse = (txResponse: TransactionResponse) => (
+export const toTxReceipt = (txResponse: TransactionResponse, status: ITxStatus.PENDING) => (
   txType: ITxType,
   txConfig: ITxConfig,
   assets: ExtendedAsset[],
   txHash?: ITxHash
-) => (status: ITxStatus.PENDING): IPendingTxReceipt => {
+): IPendingTxReceipt => {
   const useTxResponse = txResponse && !isEmpty(txResponse) && txResponse !== null;
 
   const to = useTxResponse ? txResponse.to : txConfig.rawTransaction.to;
@@ -76,7 +77,7 @@ export const constructTxReceiptFromTransactionResponse = (txResponse: Transactio
   };
 };
 
-export const constructTxReceiptFromTransactionReceipt = (txReceipt: TransactionReceipt) => (
+export const makeTxReceiptFromTransactionReceipt = (txReceipt: TransactionReceipt) => (
   txType: ITxType,
   txConfig: ITxConfig,
   assets: ExtendedAsset[],
@@ -115,29 +116,25 @@ export const constructTxReceiptFromTransactionReceipt = (txReceipt: TransactionR
   };
 };
 
-export const constructPendingTxReceipt = (txResponse: TransactionResponse) => (
+export const makePendingTxReceipt = (txResponse: TransactionResponse) => (
   txType: ITxType,
   txConfig: ITxConfig,
   assets: ExtendedAsset[],
   txHash?: ITxHash
 ): IPendingTxReceipt =>
-  constructTxReceiptFromTransactionResponse(txResponse)(txType, txConfig, assets, txHash)(
-    ITxStatus.PENDING
-  );
+  toTxReceipt(txResponse, ITxStatus.PENDING)(txType, txConfig, assets, txHash);
 
 export const constructFinishedTxReceipt = (txResponse: TransactionResponse) => (
   previousTxReceipt: IPendingTxReceipt,
   newStatus: ITxStatus.FAILED | ITxStatus.SUCCESS,
   timestamp?: number,
   blockNumber?: number
-): IFailedTxReceipt | ISuccessfulTxReceipt => {
-  return {
-    ...previousTxReceipt,
-    status: newStatus,
-    timestamp: timestamp || txResponse.timestamp || 0,
-    blockNumber: blockNumber || txResponse.blockNumber || 0
-  };
-};
+): IFailedTxReceipt | ISuccessfulTxReceipt => ({
+  ...previousTxReceipt,
+  status: newStatus,
+  timestamp: timestamp || txResponse.timestamp || 0,
+  blockNumber: blockNumber || txResponse.blockNumber || 0
+});
 
 const decodeTransaction = (signedTx: Arrayish) => {
   const decodedTransaction = parseTransaction(signedTx);
@@ -198,4 +195,34 @@ export const makeTxConfigFromSignedTx = (
   };
 
   return txConfig;
+};
+
+export const makeTxItem = (
+  txType: ITxType,
+  txConfig: ITxConfig,
+  tx: TxParcel,
+  account: StoreAccount
+) => {
+  if (!tx.txReceipt) {
+    return {
+      txReceipt: makeTxReceiptFromTransactionReceipt(tx.txReceipt!)(
+        txType,
+        txConfig,
+        account.assets,
+        ITxStatus.PENDING
+      ),
+      txConfig
+    };
+  } else {
+    const status = tx.txReceipt.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
+    return {
+      txReceipt: makeTxReceiptFromTransactionReceipt(tx.txReceipt)(
+        txType,
+        txConfig,
+        account.assets,
+        status
+      ),
+      txConfig
+    };
+  }
 };

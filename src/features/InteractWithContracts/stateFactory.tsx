@@ -3,7 +3,7 @@ import debounce from 'lodash/debounce';
 
 import {
   TUseStateReducerFactory,
-  constructPendingTxReceipt,
+  makePendingTxReceipt,
   generateContractUUID,
   isSameAddress
 } from '@utils';
@@ -361,7 +361,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
         .then((retrievedTxReceipt) => retrievedTxReceipt)
         .catch((hash) => provider.getTransactionByHash(hash))
         .then((retrievedTransactionReceipt) => {
-          const pendingTxReceipt = constructPendingTxReceipt(retrievedTransactionReceipt)(
+          const pendingTxReceipt = makePendingTxReceipt(retrievedTransactionReceipt)(
             ITxType.CONTRACT_INTERACT,
             state.txConfig,
             assets

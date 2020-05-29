@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { TxReceipt, MultiTxReceipt } from '@components/TransactionFlow';
-import { ITxType, TxParcel, StoreAccount, ITxStatus } from '@types';
-import { constructTxReceiptFromTransactionReceipt } from '@utils/transaction';
+import { ITxType, TxParcel, StoreAccount } from '@types';
+import { makeTxItem } from '@utils/transaction';
 
 import { IMembershipConfig } from '../config';
 import { makePurchaseMembershipTxConfig } from '../helpers';
@@ -23,28 +23,7 @@ export default function MembershipReceipt({
   const txItems = transactions.map((tx, idx) => {
     const txConfig = makePurchaseMembershipTxConfig(tx.txRaw, account, membershipSelected);
     const txType = idx === transactions.length - 1 ? ITxType.PURCHASE_MEMBERSHIP : ITxType.APPROVAL;
-    if (!tx.txReceipt) {
-      return {
-        txReceipt: constructTxReceiptFromTransactionReceipt(tx.txReceipt!)(
-          txType,
-          txConfig,
-          account.assets,
-          ITxStatus.PENDING
-        ),
-        txConfig
-      };
-    } else {
-      const status = tx.txReceipt.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
-      return {
-        txReceipt: constructTxReceiptFromTransactionReceipt(tx.txReceipt)(
-          txType,
-          txConfig,
-          account.assets,
-          status
-        ),
-        txConfig
-      };
-    }
+    return makeTxItem(txType, txConfig, tx, account);
   });
 
   return txItems.length === 1 ? (

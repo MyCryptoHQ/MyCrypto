@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { isHexString } from 'ethjs-util';
 
-import { TUseStateReducerFactory, constructPendingTxReceipt } from '@utils';
+import { TUseStateReducerFactory, makePendingTxReceipt } from '@utils';
 import { StoreAccount, NetworkId, ITxType, ITxStatus } from '@types';
 import { ProviderHandler, getGasEstimate, AssetContext, AccountContext } from '@services';
 import { isWeb3Wallet } from '@utils/web3';
@@ -126,7 +126,7 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
         .then((retrievedTxReceipt) => retrievedTxReceipt)
         .catch((hash) => provider.getTransactionByHash(hash))
         .then((retrievedTransactionReceipt) => {
-          const pendingTxReceipt = constructPendingTxReceipt(retrievedTransactionReceipt)(
+          const pendingTxReceipt = makePendingTxReceipt(retrievedTransactionReceipt)(
             ITxType.DEPLOY_CONTRACT,
             txConfig,
             assets
