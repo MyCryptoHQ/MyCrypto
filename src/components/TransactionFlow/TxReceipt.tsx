@@ -41,10 +41,11 @@ import translate, { translateRaw } from '@translations';
 import { convertToFiat, truncate, fromTxReceiptObj } from '@utils';
 import { isWeb3Wallet } from '@utils/web3';
 import ProtocolTagsList from '@features/DeFiZap/components/ProtocolTagsList';
-import { ProtectTxUtils, ProtectTxContext } from '@features/ProtectTransaction';
-import { ProtectTxAbort } from '@features/ProtectTransaction/components';
-import { MembershipReceiptBanner } from '@features/PurchaseMembership';
+import { ProtectTxUtils } from '@features/ProtectTransaction';
+import { ProtectTxAbort } from '@features/ProtectTransaction/components/ProtectTxAbort';
+import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { DeFiZapLogo } from '@features/DeFiZap';
+import MembershipReceiptBanner from '@features/PurchaseMembership/components/MembershipReceiptBanner';
 import { getFiat } from '@config/fiats';
 
 import { ISender } from './types';

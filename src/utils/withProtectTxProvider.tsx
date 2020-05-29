@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProtectTxProvider } from '@features/ProtectTransaction';
+import ProtectTxProvider from '@features/ProtectTransaction/ProtectTxProvider';
 
 export function withProtectTxProvider() {
   return (Component: any) => (ownProps: any) => {

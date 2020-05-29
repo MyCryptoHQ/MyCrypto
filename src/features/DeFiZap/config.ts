@@ -1,6 +1,5 @@
 import translate, { translateRaw } from '@translations';
 
-import { BearishIndicator, BullishIndicator, NeutralIndicator } from './components';
 import ProtocolsExplainer from './components/ProtocolsExplainer';
 import AvailableZaps from './components/AvailableZaps';
 
@@ -22,6 +21,7 @@ import cdaiIllustration from '@assets/images/defizap/illustrations/cdai.svg';
 import unisethMobileIllustration from '@assets/images/defizap/illustrations/uniseth-mobile.svg';
 import unidaiMobileIllustration from '@assets/images/defizap/illustrations/unidai-mobile.svg';
 import cdaiMobileIllustration from '@assets/images/defizap/illustrations/cdai-mobile.svg';
+import { BullishIndicator, NeutralIndicator, BearishIndicator } from './components/ZapIndicators';
 
 export enum IZapType {
   UNIPOOL = 'UNIPOOL',

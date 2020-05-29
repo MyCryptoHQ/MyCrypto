@@ -9,16 +9,14 @@ import { WALLET_STEPS } from '@components';
 import { AccountContext } from '@services';
 
 import { defaultMembershipObject } from './config';
-import {
-  MembershipPurchaseForm,
-  MembershipPurchaseReceipt,
-  ConfirmMembershipPurchase,
-  ConfirmMembershipPurchaseMultiTx
-} from './components';
 import MembershipInteractionFactory from './stateFactory';
 import { MembershipSimpleTxFormFull, MembershipPurchaseState } from './types';
 import { createPurchaseTx, createApproveTx, makeTxReceiptFromTransaction } from './helpers';
 import { isERC20Tx } from '../SendAssets';
+import MembershipPurchaseForm from './components/MembershipPurchaseForm';
+import ConfirmMembershipPurchaseMultiTx from './components/ConfirmMembershipPurchaseMultiTx';
+import ConfirmMembershipPurchase from './components/ConfirmMembershipPurchase';
+import MembershipPurchaseReceipt from './components/MembershipPurchaseReceipt';
 
 const initialMembershipFlowState = {
   membershipSelected: defaultMembershipObject,

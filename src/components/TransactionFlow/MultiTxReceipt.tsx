@@ -19,7 +19,7 @@ import translate, { translateRaw } from '@translations';
 import { truncate } from '@utils';
 import { COLORS, SPACING } from '@theme';
 import ProtocolTagsList from '@features/DeFiZap/components/ProtocolTagsList';
-import { MembershipReceiptBanner } from '@features/PurchaseMembership';
+import MembershipReceiptBanner from '@features/PurchaseMembership/components/MembershipReceiptBanner';
 
 import { SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';

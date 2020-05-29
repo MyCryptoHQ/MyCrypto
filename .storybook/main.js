@@ -1,4 +1,3 @@
-const path = require('path');
 const merge = require('webpack-merge');
 const custom = require('../webpack_config/development');
 
@@ -18,6 +17,23 @@ module.exports = {
 
     // Remove storybooks css config
     config.module.rules = config.module.rules.filter(rule => !rule.test.toString().includes('css'));
+
+    // Remove ignored storybook files
+    custom.module.rules = custom.module.rules.filter(rule => {
+      if(rule && rule.loader) {
+        return !rule.loader.toString() === 'ignore-loader';
+      }
+      return true;
+    });
+
+    // Rewrite babel loader test
+    const babelLoaderIndex = custom.module.rules.findIndex(rule => rule.test.toString().includes('tsx'));
+    const babelLoader = custom.module.rules.splice(babelLoaderIndex, 1)[0];
+    babelLoader.test = /\.tsx?$/;
+    custom.module.rules = [
+      babelLoader,
+      ...custom.module.rules
+    ];
 
     // Merge storybook and our custom webpack_config/development.js
     return merge.smart(

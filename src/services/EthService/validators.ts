@@ -1,8 +1,8 @@
 import { toChecksumAddress, isValidPrivate } from 'ethereumjs-util';
 import { isValidChecksumAddress as isValidChecksumRSKAddress } from 'rskjs-util';
 import { Validator } from 'jsonschema';
-import { ResolutionError } from '@unstoppabledomains/resolution';
-import { bigNumberify } from 'ethers/utils';
+import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
+import { bigNumberify } from 'ethers/utils/bignumber';
 
 import {
   dPathRegex,

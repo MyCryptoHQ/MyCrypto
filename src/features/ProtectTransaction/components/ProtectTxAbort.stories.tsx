@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/react';
 import { noOp } from '@utils';
 
 import { ProtectTxAbort } from './ProtectTxAbort';
-import { ProtectTxProvider } from '../index';
+import ProtectTxProvider from '../ProtectTxProvider';
 
 const AbortTransaction = () => (
   <div style={{ width: '700px', position: 'relative' }}>

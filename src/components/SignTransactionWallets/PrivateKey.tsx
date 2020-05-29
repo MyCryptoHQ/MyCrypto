@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { stripHexPrefix } from 'ethjs-util';
-import { ethers } from 'ethers';
+import { Wallet } from 'ethers/wallet';
 
 import { TogglablePassword, Input, Button } from '@components';
 import { isValidPrivKey, isValidEncryptedPrivKey } from '@services/EthService';
@@ -150,7 +150,7 @@ export default class SignTransactionPrivateKey extends Component<
 
     const privateKey = password.length > 0 ? decryptPrivKey(key, password) : key;
 
-    const signerWallet = new ethers.Wallet(privateKey);
+    const signerWallet = new Wallet(privateKey);
     const rawSignedTransaction: any = await signerWallet.sign(rawTransaction);
     this.props.onSuccess(rawSignedTransaction);
   };

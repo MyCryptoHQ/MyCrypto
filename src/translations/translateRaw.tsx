@@ -9,15 +9,61 @@ const repository: {
   };
 } = {};
 
-interface ILanguage {
-  code: string;
+type LanguageCode =
+  | 'en'
+  | 'de'
+  | 'el'
+  | 'es'
+  | 'fi'
+  | 'fr'
+  | 'ht'
+  | 'hu'
+  | 'id'
+  | 'it'
+  | 'ja'
+  | 'nl'
+  | 'no'
+  | 'pl'
+  | 'pt'
+  | 'ru'
+  | 'ko'
+  | 'tr'
+  | 'vi'
+  | 'zhcn'
+  | 'zhtw';
+
+interface ILanguageData {
+  code: LanguageCode;
   data: {
     [translationName: string]: string;
   };
 }
 
-const languages: ILanguage[] = [
-  require('./lang/en.json'),
+// Since only en language is used, lets remove others
+// Keep default language loaded, but dynamically load rest of the files via http request
+// Also webpack should copy rest of json files with CopyWebpackPlugin
+const languages: ILanguageData[] = [
+  require('./lang/en.json')
+  /*require('./lang/de.json'),
+  require('./lang/el.json'),
+  require('./lang/es.json'),
+  require('./lang/fi.json'),
+  require('./lang/fr.json'),
+  require('./lang/ht.json'),
+  require('./lang/hu.json'),
+  require('./lang/id.json'),
+  require('./lang/it.json'),
+  require('./lang/ja.json'),
+  require('./lang/nl.json'),
+  require('./lang/no.json'),
+  require('./lang/pl.json'),
+  require('./lang/pt.json'),
+  require('./lang/ru.json') /!*sk, sl, sv *!/,
+  require('./lang/ko.json'),
+  require('./lang/tr.json'),
+  require('./lang/vi.json'),
+  require('./lang/zhcn.json'),
+  require('./lang/zhtw.json')*/
 ];
 
 languages.forEach((l) => {

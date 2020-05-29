@@ -3,7 +3,7 @@
     "outDir": "./dist/",
     "sourceMap": true,
     "strictNullChecks": true,
-    "module": "es2015",
+    "module": "esnext",
     "jsx": "react",
     "target": "es2015",
     "allowJs": true,
@@ -14,8 +14,7 @@
       "test-utils": ["../jest_config/test-utils"],
       "@fixtures": ["../jest_config/__fixtures__"],
       "@assets/*": ["assets/*"],
-      "@*": ["./*"],
-
+      "@*": ["./*"]
     },
     "lib": ["esnext", "dom"],
     "allowSyntheticDefaultImports": true,

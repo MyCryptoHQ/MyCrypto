@@ -2041,6 +2041,11 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-4.72.0.tgz#43df23af013ad1135407e5cf33ca6e4c4c7708d5"
   integrity sha512-o+TYF8vBcyySRsb2kqBDv/KMeme8a2nwWoG+lAWzbDmWfb2/MrVWYCVYDYvjXdSoI/Cujqy1i0gIDrkdxa9chA==
 
+"@lowb/preload-webpack-plugin@3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@lowb/preload-webpack-plugin/-/preload-webpack-plugin-3.0.2.tgz#48bf4102d190f7e7de50c91623c3f05fa4df4dc3"
+  integrity sha512-qJY8Ys3C+m/y622ltsba3bc4Rc+PMFwJSWdua0+n5cOMtqn4Ba+tIA2GY1dDJeGeFyLG3MQ6TbH94lCY6QyLig==
+
 "@mdx-js/loader@^1.5.1":
   version "1.5.7"
   resolved "https://registry.yarnpkg.com/@mdx-js/loader/-/loader-1.5.7.tgz#7e3ac1cecbf085f2d23ee5aa3431f338fb67fe3b"
@@ -3213,10 +3218,10 @@
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.150.tgz#649fe44684c3f1fcb6164d943c5a61977e8cf0bd"
   integrity sha512-kMNLM5JBcasgYscD9x/Gvr6lTAv2NVgsKtet/hm93qMyf/D1pt+7jeEZklKJKxMVmXjxbRVQQGfqDSfipYCO6w==
 
-"@types/lodash@4.14.149":
-  version "4.14.149"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.149.tgz#1342d63d948c6062838fbf961012f74d4e638440"
-  integrity sha512-ijGqzZt/b7BfzcK9vTrS6MFljQRPn5BFWOx8oE0GYxribu6uV+aA9zZuXI1zc/etK9E8nrgdoF2+LgUw7+9tJQ==
+"@types/lodash@4.14.153":
+  version "4.14.153"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.153.tgz#5cb7dded0649f1df97938ac5ffc4f134e9e9df98"
+  integrity sha512-lYniGRiRfZf2gGAR9cfRC3Pi5+Q1ziJCKqPmjZocigrSJUVPWf7st1BtSJ8JOeK0FLXVndQ1IjUjTco9CXGo/Q==
 
 "@types/minimatch@*":
   version "3.0.3"
@@ -3251,9 +3256,9 @@
   integrity sha512-Exw4yUWMBXM3X+8oqzJNRqZSwUAaS4+7NdvHqQuFi/d+synz++xmX3QIf+BFqneW8N31R8Ky+sikfZUXq07ggQ==
 
 "@types/node@>=6":
-  version "13.13.5"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.13.5.tgz#96ec3b0afafd64a4ccea9107b75bf8489f0e5765"
-  integrity sha512-3ySmiBYJPqgjiHA7oEaIo2Rzz0HrOZ7yrNO5HWyaE5q0lQ3BppDZ3N53Miz8bw2I7gh1/zir2MGVZBvpb1zq9g==
+  version "14.0.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.1.tgz#5d93e0a099cd0acd5ef3d5bde3c086e1f49ff68c"
+  integrity sha512-FAYBGwC+W6F9+huFIDtn43cpy7+SzG+atzRiTfdp3inUKL2hXnd4rG8hylJLIh4+hqrQy1P17kvJByE/z825hA==
 
 "@types/node@^12.0.12":
   version "12.12.29"
@@ -4148,33 +4153,33 @@ apollo-boost@0.4.7:
     tslib "^1.10.0"
 
 apollo-cache-inmemory@^1.6.5:
-  version "1.6.5"
-  resolved "https://registry.yarnpkg.com/apollo-cache-inmemory/-/apollo-cache-inmemory-1.6.5.tgz#2ccaa3827686f6ed7fb634203dbf2b8d7015856a"
-  integrity sha512-koB76JUDJaycfejHmrXBbWIN9pRKM0Z9CJGQcBzIOtmte1JhEBSuzsOUu7NQgiXKYI4iGoMREcnaWffsosZynA==
+  version "1.6.6"
+  resolved "https://registry.yarnpkg.com/apollo-cache-inmemory/-/apollo-cache-inmemory-1.6.6.tgz#56d1f2a463a6b9db32e9fa990af16d2a008206fd"
+  integrity sha512-L8pToTW/+Xru2FFAhkZ1OA9q4V4nuvfoPecBM34DecAugUZEBhI2Hmpgnzq2hTKZ60LAMrlqiASm0aqAY6F8/A==
   dependencies:
-    apollo-cache "^1.3.4"
-    apollo-utilities "^1.3.3"
+    apollo-cache "^1.3.5"
+    apollo-utilities "^1.3.4"
     optimism "^0.10.0"
     ts-invariant "^0.4.0"
     tslib "^1.10.0"
 
-apollo-cache@1.3.4, apollo-cache@^1.3.4:
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/apollo-cache/-/apollo-cache-1.3.4.tgz#0c9f63c793e1cd6e34c450f7668e77aff58c9a42"
-  integrity sha512-7X5aGbqaOWYG+SSkCzJNHTz2ZKDcyRwtmvW4mGVLRqdQs+HxfXS4dUS2CcwrAj449se6tZ6NLUMnjko4KMt3KA==
+apollo-cache@^1.3.4, apollo-cache@^1.3.5:
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/apollo-cache/-/apollo-cache-1.3.5.tgz#9dbebfc8dbe8fe7f97ba568a224bca2c5d81f461"
+  integrity sha512-1XoDy8kJnyWY/i/+gLTEbYLnoiVtS8y7ikBr/IfmML4Qb+CM7dEEbIUOjnY716WqmZ/UpXIxTfJsY7rMcqiCXA==
   dependencies:
-    apollo-utilities "^1.3.3"
+    apollo-utilities "^1.3.4"
     tslib "^1.10.0"
 
 apollo-client@^2.6.7:
-  version "2.6.8"
-  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-2.6.8.tgz#01cebc18692abf90c6b3806414e081696b0fa537"
-  integrity sha512-0zvJtAcONiozpa5z5zgou83iEKkBaXhhSSXJebFHRXs100SecDojyUWKjwTtBPn9HbM6o5xrvC5mo9VQ5fgAjw==
+  version "2.6.9"
+  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-2.6.9.tgz#b04e4233972bb7cb8b2ad7a8c5901490fd50d476"
+  integrity sha512-l3z4Ddd82p5ezZWOlOd0TO+KyBh/EDZePNeB3fy3sjr/crvpCxNnQDdGfVadrzFX+DXRa8r8zSWANyWSDDUpdg==
   dependencies:
     "@types/zen-observable" "^0.8.0"
-    apollo-cache "1.3.4"
+    apollo-cache "^1.3.5"
     apollo-link "^1.0.0"
-    apollo-utilities "1.3.3"
+    apollo-utilities "^1.3.4"
     symbol-observable "^1.0.2"
     ts-invariant "^0.4.0"
     tslib "^1.10.0"
@@ -4217,10 +4222,10 @@ apollo-link@^1.0.0, apollo-link@^1.0.6, apollo-link@^1.2.14:
     tslib "^1.9.3"
     zen-observable-ts "^0.8.21"
 
-apollo-utilities@1.3.3, apollo-utilities@^1.3.0, apollo-utilities@^1.3.3:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.3.3.tgz#f1854715a7be80cd810bc3ac95df085815c0787c"
-  integrity sha512-F14aX2R/fKNYMvhuP2t9GD9fggID7zp5I96MF5QeKYWDWTrkRdHRp4+SVfXUVN+cXOaB/IebfvRtzPf25CM0zw==
+apollo-utilities@^1.3.0, apollo-utilities@^1.3.4:
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.3.4.tgz#6129e438e8be201b6c55b0f13ce49d2c7175c9cf"
+  integrity sha512-pk2hiWrCXMAy2fRPwEyhvka+mqwzeP60Jr1tRYi5xru+3ko94HI9o6lK0CT33/w4RDlxWchmdhDCrvdr+pHCig==
   dependencies:
     "@wry/equality" "^0.1.2"
     fast-json-stable-stringify "^2.0.0"
@@ -10426,6 +10431,11 @@ iferr@^0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/iferr/-/iferr-0.1.5.tgz#c60eed69e6d8fdb6b3104a1fcbca1c192dc5b501"
   integrity sha1-xg7taebY/bazEEofy8ocGS3FtQE=
+
+ignore-loader@0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/ignore-loader/-/ignore-loader-0.1.2.tgz#d81f240376d0ba4f0d778972c3ad25874117a463"
+  integrity sha1-2B8kA3bQuk8Nd4lyw60lh0EXpGM=
 
 ignore-walk@^3.0.1:
   version "3.0.3"

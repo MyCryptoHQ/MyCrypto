@@ -6,9 +6,8 @@ import { NetworkId, TAddress } from '@types';
 import { assets } from '@database/seed/assets';
 import { GetBalanceResponse, GetLastTxResponse, CryptoScamDBNoInfoResponse } from '@services';
 
-import { ProtectTxContext } from '../index';
 import { ProtectTxReport } from './ProtectTxReport';
-import { ProtectTxState } from '../ProtectTxProvider';
+import { ProtectTxState, ProtectTxContext } from '../ProtectTxProvider';
 import { Panel } from '@mycrypto/ui';
 
 const ropstenId: NetworkId = 'Ropsten';

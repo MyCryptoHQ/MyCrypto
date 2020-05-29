@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Network, Button } from '@mycrypto/ui';
-import { bigNumberify } from 'ethers/utils';
+import { bigNumberify } from 'ethers/utils/bignumber';
 import styled from 'styled-components';
 
 import { Asset, ITxObject } from '@types';

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
-import { Transition } from 'react-spring/renderprops.cjs';
+import { Transition } from 'react-spring/renderprops-universal.cjs';
 import { Icon } from '@mycrypto/ui';
 import styled from 'styled-components';
 

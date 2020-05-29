@@ -1,8 +1,6 @@
-import { TransactionReceipt } from 'ethers/providers';
-
+import { TransactionReceipt } from 'ethers/providers/abstract-provider';
 import { ITxStatus } from '@types';
-
-import { ProviderHandler } from '../network/providerHandler';
+import { ProviderHandler } from '@services';
 
 export const getStatusFromHash = async (
   txHash: string,
@@ -11,7 +9,7 @@ export const getStatusFromHash = async (
   await provider
     .getTransactionReceipt(txHash)
     .then((receipt) => {
-      return receipt.status === 1 ? true : false;
+      return receipt.status === 1;
     })
     .catch((_) => {
       return undefined;

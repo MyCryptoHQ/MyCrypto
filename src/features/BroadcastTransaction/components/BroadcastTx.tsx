@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Identicon } from '@mycrypto/ui';
 import { Transaction as EthTx } from 'ethereumjs-tx';
 import styled from 'styled-components';
-import { parseTransaction, Transaction } from 'ethers/utils';
+import { Transaction, parse as parseTransaction } from 'ethers/utils/transaction';
 import { toBuffer } from 'ethereumjs-util';
 
 import translate, { translateRaw } from '@translations';

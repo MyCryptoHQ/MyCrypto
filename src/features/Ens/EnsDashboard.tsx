@@ -2,7 +2,8 @@ import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Heading } from '@mycrypto/ui';
 
-import { StoreContext, EnsService } from '@services';
+import { StoreContext } from '@services';
+import EnsService from '@services/ApiService/Ens/EnsService.ts';
 import { DashboardPanel } from '@components';
 import { translateRaw } from '@translations';
 import { BREAK_POINTS, SPACING } from '@theme';

@@ -1,4 +1,5 @@
-import Resolution, { ResolutionErrorCode } from '@unstoppabledomains/resolution';
+import Resolution from '@unstoppabledomains/resolution/build/Resolution';
+import { ResolutionErrorCode } from '@unstoppabledomains/resolution/build/resolutionError';
 import { MYC_API_MAINNET } from '@config/constants';
 
 class UnstoppableResolution {

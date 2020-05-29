@@ -1,11 +1,9 @@
-import {
-  FallbackProvider,
-  TransactionReceipt,
-  TransactionResponse,
-  Block,
-  BaseProvider
-} from 'ethers/providers';
-import { formatEther, BigNumber } from 'ethers/utils';
+import { TransactionReceipt, TransactionResponse, Block } from 'ethers/providers/abstract-provider';
+import { FallbackProvider } from 'ethers/providers/fallback-provider';
+import { BaseProvider } from 'ethers/providers/base-provider';
+
+import { formatEther } from 'ethers/utils/units';
+import { BigNumber } from 'ethers/utils/bignumber';
 
 import { Asset, Network, IHexStrTransaction, TxObj, ITxSigned } from '@types';
 import { RPCRequests, baseToConvertedUnit, ERC20 } from '@services/EthService';

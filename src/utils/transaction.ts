@@ -1,4 +1,5 @@
-import { Arrayish, parseTransaction } from 'ethers/utils';
+import { Arrayish } from 'ethers/utils/bytes';
+import { parse as parseTransaction } from 'ethers/utils/transaction';
 
 import {
   getNetworkByChainId,

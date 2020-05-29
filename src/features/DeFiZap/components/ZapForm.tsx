@@ -4,7 +4,7 @@ import { Formik, Form, Field, FieldProps } from 'formik';
 import { Button } from '@mycrypto/ui';
 import isEmpty from 'lodash/isEmpty';
 import * as Yup from 'yup';
-import { parseEther } from 'ethers/utils';
+import { parseEther } from 'ethers/utils/units';
 
 import translate, { translateRaw } from '@translations';
 import { SPACING } from '@theme';

@@ -8,7 +8,6 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const config = require('./config');
-const { generateChunkName } = require('./utils');
 
 const IS_DEVELOPMENT = process.env.NODE_ENV !== 'production';
 
@@ -40,16 +39,37 @@ module.exports = {
 
   optimization: {
     splitChunks: {
-      chunks: 'all',
       cacheGroups: {
-        vendorDev: {
-          test: new RegExp(`[\\/]node_modules[\\/](${config.chunks.devOnly.join('|')})[\\/]`),
-          name: generateChunkName
+        default: false,
+        vendors: false,
+        vendor: {
+          chunks: 'all',
+          name: 'vendor.bundle',
+          test(mod) {
+            const excluded = `${config.chunks.individual.join('|')}|${config.chunks.electronOnly.join('|')}|${config.chunks.devOnly.join('|').replace(/\//, '[\\\\/]')}`;
+            const excludeNodeModules = new RegExp(`[\\\\/]node_modules[\\\\/]((${excluded})\.*)`);
+            const includeSrc = new RegExp(/[\\/]src[\\/]/);
+            const includeNodeModules = new RegExp(/node_modules/);
+            return mod.context
+              && includeNodeModules.test(mod.context) && !excludeNodeModules.test(mod.context) && !includeSrc.test(mod.context);
+          },
+          reuseExistingChunk: true,
+          priority: 20
         },
-        vendorElectron: {
+        common: {
           enforce: true,
-          test: new RegExp(`[\\/]node_modules[\\/](${config.chunks.electronOnly.join('|')})[\\/]`),
-          name: generateChunkName
+          chunks: 'all',
+          name: 'src.bundle',
+          minChunks: 2,
+          reuseExistingChunk: true,
+          priority: 10
+        },
+        vendorDev: {
+          enforce: true,
+          chunks: 'all',
+          name: 'vendor-dev',
+          test: new RegExp(`[\\\\/]node_modules[\\\\/](${config.chunks.devOnly.join('|').replace(/\//, '[\\\\/]')})[\\\\/]`),
+          priority: 40
         }
       }
     }
@@ -58,10 +78,10 @@ module.exports = {
   module: {
     rules: [
       /**
-       * TypeScript files
+       * TypeScript files without stories
        */
       {
-        test: /\.tsx?$/,
+        test: /(?!.*\.stories\.tsx?$).*\.tsx?$/,
         use: [
           {
             loader: 'babel-loader',
@@ -69,7 +89,11 @@ module.exports = {
               cacheDirectory: true,
               cacheCompression: false,
               // allow lodash-webpack-plugin to reduce lodash size.
-              plugins: ['lodash', 'recharts']
+              // allow babel-plugin-recharts to reduce recharts size.
+              plugins: [
+                'lodash',
+                'recharts'
+              ]
             }
           }
         ],
@@ -79,8 +103,13 @@ module.exports = {
           config.path.electron,
           config.path.testConfig
         ],
-        exclude: /node_modules/
+        exclude: [/node_modules/]
       },
+
+      /*
+       * Ignore stories files
+       */
+      { test: /\.stories\.tsx?$/, loader: 'ignore-loader' },
 
       /**
        * Workers

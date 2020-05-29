@@ -971,6 +971,14 @@
     "ZAP_SETH_UNIPOOL_NAME": "sETH Unipool",
     "ZAP_SETH_UNIPOOL_TITLE": "Everyday ETH Fund",
     "ZAP_START_EARNING": "Start Earning Now!",
-    "ZAP_UNISWAP_TOOLTIP": "This zap stores funds in the Uniswap exchange protocol"
+    "ZAP_UNISWAP_TOOLTIP": "This zap stores funds in the Uniswap exchange protocol",
+    "APP_LOADING": "Loading...",
+    "APP_LOADING_SUBHEADER": "Your MyCrypto dashboard is loading...",
+    "ZAP_COMPOUND_DAI_POOL_BULLETPOINT_ONE": "Remove your exposure to changes in the price of ETH.",
+    "ZAP_COMPOUND_DAI_POOL_BULLETPOINT_TWO": "Contribute your DAI to a money market protocol to earn interest of up to 8% a year.",
+    "ZAP_DAI_UNIPOOL_BULLETPOINT_ONE": "Reduce your exposure to changes in the price of ETH.",
+    "ZAP_DAI_UNIPOOL_BULLETPOINT_TWO": "Earn interest by lending to the DAI pool on the Uniswap exchange protocol.",
+    "ZAP_SETH_UNIPOOL_BULLETPOINT_ONE": "Retain 100% ETH Exposure.",
+    "ZAP_SETH_UNIPOOL_BULLETPOINT_TWO": "Earn interest by lending to the Synthetic ETH pool on the Uniswap exchange protocol."
   }
 }
