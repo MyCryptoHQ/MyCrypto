@@ -8,5 +8,6 @@ interface Props {
 }
 
 export default function FunctionDropdownValue(props: Props) {
-  return <FunctionDropdownItem {...props} />;
+  const { value } = props;
+  return <FunctionDropdownItem data={value} />;
 }

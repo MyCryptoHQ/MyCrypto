@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
+import { OptionProps } from 'react-select';
 
 import { translateRaw } from '@translations';
 import { Typography, Dropdown } from '@components';
@@ -18,10 +19,15 @@ const DiscountTypography = styled(Typography)`
   margin-left: ${SPACING.XS};
 `;
 
+interface MembershipDropdownType {
+  label: string;
+  value: IMembershipConfig;
+}
+
 interface Props {
   name: string;
-  value: { label: string; value: IMembershipConfig };
-  onSelect(option: { label: string; value: IMembershipConfig }): void;
+  value: MembershipDropdownType;
+  onSelect(option: MembershipDropdownType): void;
 }
 
 function MembershipDropdown({ name, value, onSelect }: Props) {
@@ -34,22 +40,21 @@ function MembershipDropdown({ name, value, onSelect }: Props) {
       optionComponent={MembershipOption}
       value={value}
       searchable={false}
-      valueComponent={({ value: option }) => <MembershipOption option={option} />}
+      valueComponent={({ value: option }) => <MembershipOption data={option} />}
     />
   );
 }
 
-class MembershipOption extends React.PureComponent</*OptionComponentProps*/ any> {
-  public render() {
-    const { option, onSelect } = this.props;
-    const value = (option.value as unknown) as IMembershipConfig;
-    return (
-      <SContainer onClick={() => onSelect && onSelect(option, null)}>
-        <Typography value={option.label} />
-        <DiscountTypography value={value.discountNotice} />
-      </SContainer>
-    );
-  }
-}
+const MembershipOption: FC<OptionProps<MembershipDropdownType> & any> = (props) => {
+  const { data, selectOption } = props;
+  const { value } = data;
+  const { label, discountNotice } = value;
+  return (
+    <SContainer onClick={() => selectOption && selectOption(data)}>
+      <Typography value={label} />
+      <DiscountTypography value={discountNotice} />
+    </SContainer>
+  );
+};
 
 export default MembershipDropdown;

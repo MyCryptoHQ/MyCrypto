@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Contract } from '@types';
-import { ActionTypes, ValueType } from 'react-select';
 
 const OptionWrapper = styled.div`
   padding: 12px 15px;
@@ -10,15 +9,13 @@ const OptionWrapper = styled.div`
 
 interface Props {
   data: Contract;
-  setValue?(value: ValueType<Contract>, action: ActionTypes): void;
+  selectOption?(option: Contract): void;
 }
 
 export default function ContractDropdownItem(props: Props) {
-  const { data, setValue } = props;
+  const { data, selectOption } = props;
 
   return (
-    <OptionWrapper onClick={() => setValue && setValue(data, 'select-option')}>
-      {data.name}
-    </OptionWrapper>
+    <OptionWrapper onClick={() => selectOption && selectOption(data)}>{data.name}</OptionWrapper>
   );
 }

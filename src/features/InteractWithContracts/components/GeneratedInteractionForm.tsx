@@ -215,7 +215,7 @@ export default function GeneratedInteractionForm({
       <HorizontalLine />
       <DropdownWrapper>
         <Label>{translateRaw('CONTRACT_INTERACT_TITLE')}</Label>
-        <Dropdown<any>
+        <Dropdown
           value={currentFunction}
           options={functions}
           onChange={(selectedFunction) => {

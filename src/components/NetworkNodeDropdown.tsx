@@ -54,7 +54,7 @@ const AddIcon = styled.img`
 const newNode = 'NEW_NODE';
 const autoNodeLabel = translateRaw('AUTO_NODE');
 
-interface NetworkOptionProps extends CustomNodeConfig /*OptionComponentProps<CustomNodeConfig>*/ {
+interface NetworkOptionProps extends CustomNodeConfig {
   isEditEnabled: boolean;
 }
 

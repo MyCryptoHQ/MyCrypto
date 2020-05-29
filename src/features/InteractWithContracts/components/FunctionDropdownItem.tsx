@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ActionTypes, ValueType } from 'react-select';
 
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
@@ -38,20 +37,17 @@ const Sticker = styled.div<StickerProps>`
 `;
 
 interface Props {
-  value: ABIItem;
-  setValue?(value: ValueType<ABIItem>, action: ActionTypes): void;
+  data: ABIItem;
+  selectOption?(option: ABIItem): void;
 }
 
 export default function FunctionDropdownItem(props: Props) {
-  const { value, setValue } = props;
+  const { data, selectOption } = props;
 
-  const isRead = isReadOperation(value);
+  const isRead = isReadOperation(data);
   return (
-    <OptionWrapper
-      onClick={() => setValue && setValue(value, 'select-option')}
-      isSelectable={!!setValue}
-    >
-      {value.name}
+    <OptionWrapper onClick={() => selectOption && selectOption(data)} isSelectable={!!selectOption}>
+      {data.name}
       <Sticker isRead={isRead}>
         {isRead ? translateRaw('READ').toUpperCase() : translateRaw('WRITE').toUpperCase()}
       </Sticker>

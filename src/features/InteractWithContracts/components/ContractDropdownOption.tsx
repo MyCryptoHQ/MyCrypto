@@ -1,11 +1,10 @@
 import React from 'react';
-
-import { Contract } from '@types';
-
-import ContractDropdownItem from './ContractDropdownItem';
 import { OptionProps } from 'react-select';
 
+import { Contract } from '@types';
+import ContractDropdownItem from './ContractDropdownItem';
+
 export default function ContractDropdownOption(props: OptionProps<Contract>) {
-  const { data, setValue } = props;
-  return <ContractDropdownItem data={data} setValue={setValue} />;
+  const { data, selectOption } = props;
+  return <ContractDropdownItem data={data} selectOption={selectOption} />;
 }
