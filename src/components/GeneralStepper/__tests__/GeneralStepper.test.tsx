@@ -1,8 +1,9 @@
 import React from 'react';
 import { MemoryRouter, Switch, Route } from 'react-router-dom';
 import { simpleRender, fireEvent } from 'test-utils';
+import { Required } from 'utility-types';
 
-import GeneralStepper, { StepperProps } from '../GeneralStepper';
+import { GeneralStepper, StepperProps } from '../GeneralStepper';
 
 const ExampleButtonComponent = ({ onComplete, onCompleteText }: any) => (
   <>
@@ -39,15 +40,11 @@ const testSteps = [
   }
 ];
 
-const defaultBackPath = '/dashboard';
-const defaultBackPathLabel = 'Dashboard';
-const completeBtnText = 'Finished';
-
-const defaultProps: StepperProps = {
+const defaultProps: Required<Omit<StepperProps, 'wrapperClassName' | 'onRender'>> = {
   steps: testSteps,
-  defaultBackPath,
-  defaultBackPathLabel,
-  completeBtnText
+  defaultBackPath: '/dashboard',
+  defaultBackPathLabel: 'Dashboard',
+  completeBtnText: 'Finished'
 };
 
 describe('GeneralStepper', () => {
@@ -74,14 +71,14 @@ describe('GeneralStepper', () => {
   });
   test('it renders step 1 back button correctly', async () => {
     const { getByText } = renderComponent(defaultProps);
-    const text = getByText(defaultBackPathLabel, { selector: 'span' }); // The back button from step 1
+    const text = getByText(defaultProps.defaultBackPathLabel, { selector: 'span' }); // The back button from step 1
     expect(text).toBeInTheDocument();
   });
   test('it correctly reroutes on step 1 back button click', async () => {
     const { getByText } = renderComponent(defaultProps);
-    const text = getByText(defaultBackPathLabel, { selector: 'span' }); // The back button from step 1
+    const text = getByText(defaultProps.defaultBackPathLabel, { selector: 'span' }); // The back button from step 1
     fireEvent.click(text);
-    expect(location.pathname).toEqual(defaultBackPath);
+    expect(location.pathname).toEqual(defaultProps.defaultBackPath);
   });
   test('it renders step 2 when goToNext is clicked in step 1', async () => {
     const { getByText } = renderComponent(defaultProps);
@@ -104,7 +101,7 @@ describe('GeneralStepper', () => {
     const text = getByText('Click Me');
     fireEvent.click(text); // Go to step 2
 
-    const resetFlowButton = getByText(completeBtnText); // The back button when step 2 is rendered
+    const resetFlowButton = getByText(defaultProps.completeBtnText); // The back button when step 2 is rendered
     fireEvent.click(resetFlowButton);
     const stepOneText = getByText('Test Component 1', { selector: 'p' }); // The header for step 1
     expect(stepOneText).toBeInTheDocument();
