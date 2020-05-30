@@ -78,6 +78,7 @@ const BulletList = styled.ul`
     background-repeat: no-repeat;
     text-align: left;
     max-width: 280px;
+    font-weight: 400;
 
     &:last-child {
       margin-bottom: 16px;
