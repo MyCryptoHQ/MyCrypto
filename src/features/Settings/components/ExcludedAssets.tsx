@@ -1,5 +1,4 @@
 import React, { Dispatch, SetStateAction, useState, useContext } from 'react';
-import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { translateRaw } from '@translations';
@@ -16,13 +15,12 @@ import {
 } from '@components';
 import CollapseIcon from '@components/icons/CollapseIcon';
 import ExpandIcon from '@components/icons/ExpandIcon';
-import { Balance, BalanceAccount, WalletBreakdownProps } from './types';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
-import { Fiat, TUuid } from '@types';
+import { Fiat, TUuid, IAccount } from '@types';
 import { truncate } from '@utils';
 import { SettingsContext } from '@services/Store';
 
-import backArrowIcon from '@assets/images/icn-back-arrow.svg';
+import { Balance, BalanceAccount } from '@features/Dashboard/components/WalletBreakdown/types';
 
 const { SCREEN_MD } = BREAK_POINTS;
 
@@ -32,17 +30,6 @@ const BalancesOnly = styled.div`
   > section {
     padding: 0;
     margin: 0;
-  }
-`;
-
-const BackButton = styled(Button)`
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-
-  img {
-    margin-right: 13px;
-    margin-top: 3px;
   }
 `;
 
@@ -145,7 +132,7 @@ const createBalancesDetailViewRow = (
         />
       </Tooltip>
     </RowAlignment>,
-    <HideAssetButton key={balance.id} uuid={balance.uuid as TUuid} />,
+    <UnHideAssetButton key={balance.id} uuid={balance.uuid as TUuid} />,
     <>
       {rowState === 'opened' ? (
         <CollapseIcon onClick={onCollapseOrExpand} />
@@ -196,26 +183,29 @@ const createAccountRow = (
   ];
 };
 
-const HideAssetButton = ({ uuid }: { uuid: TUuid }) => {
-  const { addAssetToExclusionList } = useContext(SettingsContext);
+const UnHideAssetButton = ({ uuid }: { uuid: TUuid }) => {
+  const { removeAssetfromExclusionList } = useContext(SettingsContext);
   return (
     <Tooltip tooltip={translateRaw('HIDE_ASSET_TOOLTIP')}>
-      <div onClick={() => addAssetToExclusionList(uuid)}>
-        <CollapseIcon fillColor={COLORS.ERROR_RED} />
+      <div onClick={() => removeAssetfromExclusionList(uuid)}>
+        <CollapseIcon fillColor={COLORS.GREEN} />
       </div>
     </Tooltip>
   );
 };
 
-export default function BalancesDetailView({
-  balances,
-  toggleShowChart,
-  totalFiatValue,
-  fiat
-}: WalletBreakdownProps) {
+interface ExcludedAssetsProps {
+  balances: Balance[];
+  totalFiatValue: number;
+  fiat: Fiat;
+  accounts: IAccount[];
+  selected: string[];
+  removeAssetfromExclusionList(assetUuidToRemove: TUuid): void;
+}
+
+export default function ExcludedAssets({ balances, totalFiatValue, fiat }: ExcludedAssetsProps) {
   const [overlayRows, setOverlayRows] = useState<string[]>([]);
 
-  const BALANCES = translateRaw('WALLET_BREAKDOWN_BALANCES');
   const TOKEN = translateRaw('WALLET_BREAKDOWN_TOKEN');
   const ACCOUNTS = translateRaw('WALLET_BREAKDOWN_ACCOUNTS');
   const BALANCE = translateRaw('WALLET_BREAKDOWN_BALANCE');
@@ -233,7 +223,7 @@ export default function BalancesDetailView({
       <HeaderAlignment key={VALUE} align="end">
         {VALUE}
       </HeaderAlignment>,
-      <React.Fragment key={'HIDE'} />,
+      <React.Fragment key={'UNHIDE'} />,
       <React.Fragment key={'EXPAND'} />
     ],
     body: balances.map((balance) => {
@@ -295,26 +285,31 @@ export default function BalancesDetailView({
   };
 
   return (
-    <BalancesOnly>
-      <DashboardPanel
-        heading={
-          <BackButton basic={true} onClick={toggleShowChart}>
-            <img src={backArrowIcon} alt="Back arrow" /> {BALANCES}
-          </BackButton>
-        }
-        headingRight={
-          <BalancesOnlyTotal>
-            <Currency
-              amount={totalFiatValue.toString()}
-              symbol={fiat.symbol}
-              code={fiat.code}
-              decimals={2}
-            />
-          </BalancesOnlyTotal>
-        }
-      >
-        <FixedSizeCollapsibleTable {...balancesTable} maxHeight={'650px'} />
-      </DashboardPanel>
-    </BalancesOnly>
+    <DashboardPanel
+      heading={
+        <>
+          {translateRaw('EXCLUDED_ASSET_TABLE_HEADER')}{' '}
+          <Tooltip tooltip={translateRaw('EXCLUDED_ASSET_TABLE_HEADER_TOOLTIP')} />
+        </>
+      }
+      className={`ExcludedAssetTableList E`}
+    >
+      <BalancesOnly>
+        <DashboardPanel
+          headingRight={
+            <BalancesOnlyTotal>
+              <Currency
+                amount={totalFiatValue.toString()}
+                symbol={fiat.symbol}
+                code={fiat.code}
+                decimals={2}
+              />
+            </BalancesOnlyTotal>
+          }
+        >
+          <FixedSizeCollapsibleTable {...balancesTable} maxHeight={'450px'} />
+        </DashboardPanel>
+      </BalancesOnly>
+    </DashboardPanel>
   );
 }

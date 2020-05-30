@@ -987,6 +987,9 @@
     "ZAP_DAI_UNIPOOL_BULLETPOINT_TWO": "Earn interest by lending to the DAI pool on the Uniswap exchange protocol.",
     "ZAP_SETH_UNIPOOL_BULLETPOINT_ONE": "Retain 100% ETH Exposure.",
     "ZAP_SETH_UNIPOOL_BULLETPOINT_TWO": "Earn interest by lending to the Synthetic ETH pool on the Uniswap exchange protocol.",
-    "HIDE_ASSET_TOOLTIP": "Hide this asset (this can be reverted in settings)."
+    "HIDE_ASSET_TOOLTIP": "Hide this asset (this can be reverted in settings).",
+    "UNHIDE_ASSET_TOOLTIP": "Unhide this asset (it will be displayed on dashboard).",
+    "EXCLUDED_ASSET_TABLE_HEADER": "Hidden Assets",
+    "EXCLUDED_ASSET_TABLE_HEADER_TOOLTIP": "You've chosen to hide these assets in the past, you can click the green buttons below to unhide them."
   }
 }

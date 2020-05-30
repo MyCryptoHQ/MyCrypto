@@ -334,14 +334,13 @@ export const StoreProvider: React.FC = ({ children }) => {
     get userAssets() {
       const userAssets = state.accounts
         .filter((a: StoreAccount) => a.wallet !== WalletId.VIEW_ONLY)
-        .flatMap((a: StoreAccount) => a.assets);
+        .flatMap((a: StoreAccount) => a.assets)
+        .filter(isExcludedAsset(settings.excludedAssets));
       const uniq = uniqBy(prop('uuid'), userAssets);
       return sortBy(prop('ticker'), uniq);
     },
     assets: (selectedAccounts = state.accounts) =>
-      selectedAccounts
-        .flatMap((account: StoreAccount) => account.assets)
-        .filter(isExcludedAsset(settings.excludedAssets)),
+      selectedAccounts.flatMap((account: StoreAccount) => account.assets),
     tokens: (selectedAssets = state.assets()) =>
       selectedAssets.filter((asset: StoreAsset) => asset.type !== 'base'),
     totals: (selectedAccounts = state.accounts) =>

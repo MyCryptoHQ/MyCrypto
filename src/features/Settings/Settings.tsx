@@ -10,10 +10,10 @@ import {
 } from '@services/Store';
 
 import { AccountList, Mobile, Desktop } from '@components';
-import { NetworkId, CustomNodeConfig } from '@types';
+import { NetworkId, CustomNodeConfig, StoreAsset } from '@types';
 import { DEFAULT_NETWORK, IS_ACTIVE_FEATURE } from '@config';
 import { BREAK_POINTS } from '@theme';
-import translate from '@translations';
+import translate, { translateRaw } from '@translations';
 
 import settingsIcon from '@assets/images/icn-settings.svg';
 import AddToAddressBook from './components/AddToAddressBook';
@@ -21,9 +21,15 @@ import AddOrEditNetworkNode from './components/AddOrEditNetworkNode';
 import NetworkNodes from './components/NetworkNodes';
 import MobileNavBar from '@components/MobileNavBar';
 import AddressBookPanel from './components/AddressBook';
+import ExcludedAssetsPanel from './components/ExcludedAssets';
 import GeneralSettings from './components/GeneralSettings';
 import DangerZone from './components/DangerZone';
 import FlippablePanel from '@features/Settings/components/FlippablePanel';
+import { RatesContext } from '@services/RatesProvider';
+import { Balance, BalanceAccount } from '@features/Dashboard/components/WalletBreakdown/types';
+import { weiToFloat, convertToFiatFromAsset } from '@utils/convert';
+import { getFiat } from '@config/fiats';
+import { isExcludedAsset } from '@services/Store/helpers';
 
 const SettingsHeading = styled(Heading)<{ forwardedAs?: string }>`
   display: flex;
@@ -48,6 +54,65 @@ const StyledLayout = styled.div`
     padding: 0;
   }
 `;
+
+function rendedExcludedAssetsPanel() {
+  const { accounts, totals, currentAccounts } = useContext(StoreContext);
+  const { settings, removeAssetfromExclusionList } = useContext(SettingsContext);
+  const { getAssetRate } = useContext(RatesContext);
+
+  const balances: Balance[] = totals(currentAccounts)
+    .filter((asset: StoreAsset) => {
+      return !isExcludedAsset(settings.excludedAssets)(asset);
+    })
+    .map((asset: StoreAsset) => {
+      const exchangeRate = getAssetRate(asset);
+      return {
+        id: `${asset.name}-${asset.ticker}`,
+        name: asset.name || translateRaw('WALLET_BREAKDOWN_UNKNOWN'),
+        ticker: asset.ticker,
+        uuid: asset.uuid,
+        amount: weiToFloat(asset.balance, asset.decimal),
+        fiatValue: convertToFiatFromAsset(asset, exchangeRate),
+        exchangeRate,
+        accounts: currentAccounts.reduce((acc, currAccount) => {
+          const matchingAccAssets = currAccount.assets.filter(
+            (accAsset) => accAsset.uuid === asset.uuid
+          );
+          if (matchingAccAssets.length) {
+            return [
+              ...acc,
+              ...matchingAccAssets.map((accAsset) => ({
+                address: currAccount.address,
+                ticker: accAsset.ticker,
+                amount: weiToFloat(accAsset.balance, accAsset.decimal),
+                fiatValue: convertToFiatFromAsset(accAsset, exchangeRate),
+                label: currAccount.label
+              }))
+            ];
+          }
+          return acc;
+        }, [] as BalanceAccount[])
+      };
+    })
+    .sort((a, b) => b.fiatValue - a.fiatValue);
+
+  const totalFiatValue = balances.reduce((sum, asset) => {
+    return sum + asset.fiatValue;
+  }, 0);
+
+  const fiat = getFiat(settings);
+
+  return (
+    <ExcludedAssetsPanel
+      balances={balances}
+      totalFiatValue={totalFiatValue}
+      fiat={fiat}
+      accounts={accounts}
+      selected={settings.dashboardAccounts}
+      removeAssetfromExclusionList={removeAssetfromExclusionList}
+    />
+  );
+}
 
 function renderAccountPanel() {
   const { accounts } = useContext(StoreContext);
@@ -196,6 +261,7 @@ export default function Settings() {
         </SettingsHeading>
         {renderAccountPanel()}
         {renderAddressPanel()}
+        {rendedExcludedAssetsPanel()}
         {renderNetworkNodes()}
         {renderGeneralSettingsPanel()}
       </Desktop>

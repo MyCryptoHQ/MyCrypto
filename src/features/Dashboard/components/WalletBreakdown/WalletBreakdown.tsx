@@ -16,6 +16,7 @@ import AccountDropdown from './AccountDropdown';
 import BalancesDetailView from './BalancesDetailView';
 import WalletBreakdownView from './WalletBreakdownView';
 import NoAccountsSelected from './NoAccountsSelected';
+import { isExcludedAsset } from '@services/Store/helpers';
 
 const WalletBreakdownTop = styled.div`
   display: flex;
@@ -65,6 +66,7 @@ export function WalletBreakdown() {
 
   // Adds/updates an asset in array of balances, which are later displayed in the chart, balance list and in the secondary view
   const balances: Balance[] = totals(currentAccounts)
+    .filter(isExcludedAsset(settings.excludedAssets))
     .map((asset: StoreAsset) => {
       const exchangeRate = getAssetRate(asset);
       return {
