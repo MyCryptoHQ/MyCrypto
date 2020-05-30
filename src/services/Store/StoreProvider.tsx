@@ -50,7 +50,7 @@ import { useEffectOnce } from '@vendor';
 import { makeFinishedTxReceipt } from '@utils/transaction';
 
 import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';
-import { getStoreAccounts, getPendingTransactionsFromAccounts } from './helpers';
+import { getStoreAccounts, getPendingTransactionsFromAccounts, isExcludedAsset } from './helpers';
 import {
   AssetContext,
   getTotalByAsset,
@@ -339,7 +339,9 @@ export const StoreProvider: React.FC = ({ children }) => {
       return sortBy(prop('ticker'), uniq);
     },
     assets: (selectedAccounts = state.accounts) =>
-      selectedAccounts.flatMap((account: StoreAccount) => account.assets),
+      selectedAccounts
+        .flatMap((account: StoreAccount) => account.assets)
+        .filter(isExcludedAsset(settings.excludedAssets)),
     tokens: (selectedAssets = state.assets()) =>
       selectedAssets.filter((asset: StoreAsset) => asset.type !== 'base'),
     totals: (selectedAccounts = state.accounts) =>

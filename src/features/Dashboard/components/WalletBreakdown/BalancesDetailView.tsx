@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useState, useContext } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
@@ -20,6 +20,7 @@ import { Balance, BalanceAccount, WalletBreakdownProps } from './types';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Fiat, TUuid } from '@types';
 import { truncate } from '@utils';
+import { SettingsContext } from '@services/Store';
 
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
 
@@ -144,6 +145,7 @@ const createBalancesDetailViewRow = (
         />
       </Tooltip>
     </RowAlignment>,
+    <HideAssetButton key={balance.id} uuid={balance.uuid as TUuid} />,
     <>
       {rowState === 'opened' ? (
         <CollapseIcon onClick={onCollapseOrExpand} />
@@ -189,8 +191,20 @@ const createAccountRow = (
         decimals={2}
       />
     </RowAlignment>,
+    <></>,
     <></>
   ];
+};
+
+const HideAssetButton = ({ uuid }: { uuid: TUuid }) => {
+  const { addAssetToExclusionList } = useContext(SettingsContext);
+  return (
+    <Tooltip tooltip={translateRaw('HIDE_ASSET_TOOLTIP')}>
+      <div onClick={() => addAssetToExclusionList(uuid)}>
+        <CollapseIcon fillColor={'red'} />
+      </div>
+    </Tooltip>
+  );
 };
 
 export default function BalancesDetailView({
@@ -219,6 +233,7 @@ export default function BalancesDetailView({
       <HeaderAlignment key={VALUE} align="end">
         {VALUE}
       </HeaderAlignment>,
+      <React.Fragment key={'HIDE'} />,
       <React.Fragment key={'EXPAND'} />
     ],
     body: balances.map((balance) => {
