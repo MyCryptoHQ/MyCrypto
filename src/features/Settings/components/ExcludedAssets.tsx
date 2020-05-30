@@ -186,7 +186,7 @@ const createAccountRow = (
 const UnHideAssetButton = ({ uuid }: { uuid: TUuid }) => {
   const { removeAssetfromExclusionList } = useContext(SettingsContext);
   return (
-    <Tooltip tooltip={translateRaw('HIDE_ASSET_TOOLTIP')}>
+    <Tooltip tooltip={translateRaw('UNHIDE_ASSET_TOOLTIP')}>
       <div onClick={() => removeAssetfromExclusionList(uuid)}>
         <CollapseIcon fillColor={COLORS.GREEN} />
       </div>

@@ -57,7 +57,7 @@ const SDropdown = dropdown`
     width: calc(100% + 4px);    // move to left to align the trigger and the dropdown.
     position: absolute;
     top: 100%;
-    z-index: 2;
+    z-index: 5;
     background: #ffffff;
     border: 2px solid ${BLUE_LIGHT};
     border-top: none;

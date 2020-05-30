@@ -103,7 +103,7 @@ const TableHeading = styled(Typography)<HeadingProps>`
   position: sticky;
   top: 0;
   background: ${(props) => props.theme.tableHeadBackground};
-  z-index: 9999;
+  z-index: 4;
   cursor: ${(props) => (props.isSortable ? 'pointer' : 'inherit')};
 ` as StyledComponentClass<
   ClassAttributes<HTMLTableHeaderCellElement> &
