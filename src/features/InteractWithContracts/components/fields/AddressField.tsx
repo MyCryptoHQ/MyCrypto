@@ -9,8 +9,8 @@ import { getIsValidENSAddressFunction, isValidENSName } from '@services/EthServi
 import { monospace } from '@theme';
 import { translateRaw } from '@translations';
 import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
-import InputField from './InputField';
-import { InlineMessage } from './InlineMessage';
+import InputField from '@components/InputField';
+import { InlineMessage } from '@components/InlineMessage';
 
 /*
   Eth address field to be used within a Formik Form
