@@ -1,9 +1,16 @@
-import { default as Test, getByText } from '@testing-library/testcafe';
+import { getByText } from '@testing-library/testcafe';
+import { PAGES } from './fixtures';
+import NoAccountsPage from './no-accounts-page.po';
+import Translations from './translations.po';
 
-fixture`Getting Started`.page`https://localhost:3000/dashboard`;
+const noAccountsPage = new NoAccountsPage();
+const translations = new Translations();
 
-test('My first test', async (t) => {
-  console.log(getByText);
-  const title = getByText('No Accounts');
+fixture('Dashboard').page(PAGES.DASHBOARD);
+
+test('Should redirect to no-accounts', async (t) => {
+  await noAccountsPage.waitPageLoaded();
+
+  const title = getByText(translations.getLanguageValueByKey('NO_ACCOUNTS_HEADER'));
   await t.expect(title).ok();
 });
