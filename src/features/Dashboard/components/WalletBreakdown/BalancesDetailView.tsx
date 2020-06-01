@@ -150,7 +150,9 @@ const createBalancesDetailViewRow = (
       {rowState === 'opened' ? (
         <CollapseIcon onClick={onCollapseOrExpand} />
       ) : (
-        <ExpandIcon onClick={onCollapseOrExpand} />
+        <Tooltip tooltip={translateRaw('WALLET_BREAKDOWN_BALANCE_TOOLTIP')}>
+          <ExpandIcon onClick={onCollapseOrExpand} />
+        </Tooltip>
       )}
     </>
   ];

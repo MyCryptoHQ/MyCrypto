@@ -14,6 +14,12 @@ import { NetworkId, CustomNodeConfig, StoreAsset } from '@types';
 import { DEFAULT_NETWORK, IS_ACTIVE_FEATURE } from '@config';
 import { BREAK_POINTS } from '@theme';
 import translate, { translateRaw } from '@translations';
+import FlippablePanel from '@features/Settings/components/FlippablePanel';
+import { RatesContext } from '@services/RatesProvider';
+import { Balance, BalanceAccount } from '@features/Dashboard/components/WalletBreakdown/types';
+import { weiToFloat, convertToFiatFromAsset } from '@utils/convert';
+import { getFiat } from '@config/fiats';
+import { isExcludedAsset } from '@services/Store/helpers';
 
 import settingsIcon from '@assets/images/icn-settings.svg';
 import AddToAddressBook from './components/AddToAddressBook';
@@ -24,12 +30,6 @@ import AddressBookPanel from './components/AddressBook';
 import ExcludedAssetsPanel from './components/ExcludedAssets';
 import GeneralSettings from './components/GeneralSettings';
 import DangerZone from './components/DangerZone';
-import FlippablePanel from '@features/Settings/components/FlippablePanel';
-import { RatesContext } from '@services/RatesProvider';
-import { Balance, BalanceAccount } from '@features/Dashboard/components/WalletBreakdown/types';
-import { weiToFloat, convertToFiatFromAsset } from '@utils/convert';
-import { getFiat } from '@config/fiats';
-import { isExcludedAsset } from '@services/Store/helpers';
 
 const SettingsHeading = styled(Heading)<{ forwardedAs?: string }>`
   display: flex;

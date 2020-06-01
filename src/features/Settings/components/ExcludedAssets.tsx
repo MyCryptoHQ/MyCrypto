@@ -19,7 +19,6 @@ import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Fiat, TUuid, IAccount } from '@types';
 import { truncate } from '@utils';
 import { SettingsContext } from '@services/Store';
-
 import { Balance, BalanceAccount } from '@features/Dashboard/components/WalletBreakdown/types';
 
 const { SCREEN_MD } = BREAK_POINTS;
@@ -137,7 +136,9 @@ const createBalancesDetailViewRow = (
       {rowState === 'opened' ? (
         <CollapseIcon onClick={onCollapseOrExpand} />
       ) : (
-        <ExpandIcon onClick={onCollapseOrExpand} />
+        <Tooltip tooltip={translateRaw('WALLET_BREAKDOWN_BALANCE_TOOLTIP')}>
+          <ExpandIcon onClick={onCollapseOrExpand} />
+        </Tooltip>
       )}
     </>
   ];
@@ -187,9 +188,7 @@ const UnHideAssetButton = ({ uuid }: { uuid: TUuid }) => {
   const { removeAssetfromExclusionList } = useContext(SettingsContext);
   return (
     <Tooltip tooltip={translateRaw('UNHIDE_ASSET_TOOLTIP')}>
-      <div onClick={() => removeAssetfromExclusionList(uuid)}>
-        <CollapseIcon fillColor={COLORS.GREEN} />
-      </div>
+      <CollapseIcon fillColor={COLORS.GREEN} onClick={() => removeAssetfromExclusionList(uuid)} />
     </Tooltip>
   );
 };
@@ -285,31 +284,35 @@ export default function ExcludedAssets({ balances, totalFiatValue, fiat }: Exclu
   };
 
   return (
-    <DashboardPanel
-      heading={
-        <>
-          {translateRaw('EXCLUDED_ASSET_TABLE_HEADER')}{' '}
-          <Tooltip tooltip={translateRaw('EXCLUDED_ASSET_TABLE_HEADER_TOOLTIP')} />
-        </>
-      }
-      className={`ExcludedAssetTableList E`}
-    >
-      <BalancesOnly>
+    <>
+      {balances.length !== 0 && (
         <DashboardPanel
-          headingRight={
-            <BalancesOnlyTotal>
-              <Currency
-                amount={totalFiatValue.toString()}
-                symbol={fiat.symbol}
-                code={fiat.code}
-                decimals={2}
-              />
-            </BalancesOnlyTotal>
+          heading={
+            <>
+              {translateRaw('EXCLUDED_ASSET_TABLE_HEADER')}{' '}
+              <Tooltip tooltip={translateRaw('EXCLUDED_ASSET_TABLE_HEADER_TOOLTIP')} />
+            </>
           }
+          className={`ExcludedAssetTableList E`}
         >
-          <FixedSizeCollapsibleTable {...balancesTable} maxHeight={'450px'} />
+          <BalancesOnly>
+            <DashboardPanel
+              headingRight={
+                <BalancesOnlyTotal>
+                  <Currency
+                    amount={totalFiatValue.toString()}
+                    symbol={fiat.symbol}
+                    code={fiat.code}
+                    decimals={2}
+                  />
+                </BalancesOnlyTotal>
+              }
+            >
+              <FixedSizeCollapsibleTable {...balancesTable} maxHeight={'450px'} />
+            </DashboardPanel>
+          </BalancesOnly>
         </DashboardPanel>
-      </BalancesOnly>
-    </DashboardPanel>
+      )}
+    </>
   );
 }

@@ -72,7 +72,6 @@ export const SettingsProvider: React.FC = ({ children }) => {
     },
 
     removeAssetfromExclusionList: (assetUuid: TUuid): void => {
-      console.debug('[removeAssetfromExclusionList]: ', assetUuid);
       state.updateSettings({
         ...settings,
         excludedAssets: (settings.excludedAssets || []).filter((uuid) => uuid !== assetUuid)
