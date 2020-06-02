@@ -1,6 +1,5 @@
 import EthTx, { TxObj } from 'ethereumjs-tx';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
-import Transport from '@ledgerhq/hw-transport';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
 import TransportUSB from '@ledgerhq/hw-transport-webusb';
 import LedgerEth from '@ledgerhq/hw-app-eth';
@@ -129,14 +128,9 @@ export class LedgerWallet extends HardwareWallet {
 }
 
 async function makeApp() {
-  let transport: Transport<any>;
-  // TODO: Remove check for Windows once Windows issues are resolved
-  if (!navigator.platform.toLowerCase().includes('win') && (await TransportUSB.isSupported())) {
-    // Use WebUSB protocol instead of U2F if it's supported
-    transport = await TransportUSB.create();
-  } else {
-    transport = await TransportU2F.create();
-  }
+  const transport = await TransportUSB.isSupported()
+    .then(isSupported => (isSupported ? TransportUSB.create() : TransportU2F.create()))
+    .catch(() => TransportU2F.create());
 
   return new LedgerEth(transport);
 }
