@@ -1,4 +1,4 @@
-import { TransactionReceipt } from 'ethers/providers';
+import { TransactionReceipt, TransactionResponse } from 'ethers/providers';
 
 import { Network, ITxStatus, StoreAccount, ITxObject, ITxHash, TUuid } from '@types';
 
@@ -9,6 +9,7 @@ export interface TxParcel {
   readonly label?: string; // name of transaction eg. 'Allowance transaction'
   readonly txHash?: ITxHash;
   readonly txReceipt?: TransactionReceipt;
+  readonly txResponse?: TransactionResponse;
   readonly minedAt?: number; // timestamp of block that included tx
 }
 
@@ -88,6 +89,7 @@ interface ASendSuccess extends DefaultAction {
   type: ActionTypes.SEND_TX_SUCCESS;
   payload: {
     txHash: ITxHash;
+    txResponse: TransactionResponse;
   };
 }
 interface AConfirmSuccess extends DefaultAction {

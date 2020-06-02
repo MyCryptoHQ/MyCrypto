@@ -45,7 +45,7 @@ export {
 export { makeBlob } from './blob';
 export { default as consoleAdvertisement } from './consoleAdvertisement';
 export { tap } from './tap';
-export { fromTxReceiptObj, makeTxConfigFromSignedTx } from './transaction';
+export { makePendingTxReceipt, makeTxConfigFromSignedTx } from './transaction';
 export {
   formatErrorEmail,
   formatSupportEmail,
@@ -58,7 +58,7 @@ export { toArray } from './toArray';
 export { objToString } from './objToString';
 export * from './constants';
 export { bigify } from './bigify';
-export { useTxMulti } from './useTxMulti';
+export { useTxMulti, TxParcel } from './useTxMulti';
 export { withProtectTxProvider } from './withProtectTxProvider';
 export { default as useScreenSize } from './useScreenSize';
 export { sanitizeDecimalSeparator } from './sanitizeDecimalSeparator';
@@ -66,3 +66,4 @@ export { trimEllipsis } from './trimEllipsis';
 export * from './encryption';
 export { default as useAnalytics } from './useAnalytics';
 export { openLink } from './openLink';
+export { isSameAddress } from './isSameAddress';

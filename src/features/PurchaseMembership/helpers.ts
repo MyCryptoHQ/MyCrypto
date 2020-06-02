@@ -1,16 +1,6 @@
 import { ethers } from 'ethers';
 
-import {
-  ITxObject,
-  StoreAccount,
-  ITxConfig,
-  ITxReceipt,
-  TxParcel,
-  ITxType,
-  ITxHash,
-  ITxStatus,
-  ITxSigned
-} from '@types';
+import { ITxObject, StoreAccount, ITxConfig, TAddress } from '@types';
 import {
   inputValueToHex,
   inputGasPriceToHex,
@@ -64,7 +54,7 @@ export const createPurchaseTx = (payload: MembershipSimpleTxFormFull): Partial<I
   };
 };
 
-export const makeTxConfigFromTransaction = (
+export const makePurchaseMembershipTxConfig = (
   rawTransaction: ITxObject,
   account: StoreAccount,
   membershipSelected: IMembershipConfig
@@ -77,7 +67,7 @@ export const makeTxConfigFromTransaction = (
   const txConfig: ITxConfig = {
     from: address,
     amount: membershipSelected.price,
-    receiverAddress: to,
+    receiverAddress: to as TAddress,
     senderAccount: account,
     network,
     asset,
@@ -91,20 +81,4 @@ export const makeTxConfigFromTransaction = (
   };
 
   return txConfig;
-};
-
-export const makeTxReceiptFromTransaction = (
-  tx: TxParcel,
-  hash: ITxHash | ITxSigned,
-  account: StoreAccount,
-  membershipSelected: IMembershipConfig,
-  type: ITxType
-): ITxReceipt => {
-  return {
-    ...makeTxConfigFromTransaction(tx.txRaw, account, membershipSelected),
-    ...tx.txRaw,
-    hash,
-    txType: type,
-    stage: ITxStatus.PENDING
-  };
 };

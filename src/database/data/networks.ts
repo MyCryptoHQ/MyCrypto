@@ -1,4 +1,4 @@
-// @TODO Used for unsupportedTabs. update to unsupportedPaths
+// @todo Used for unsupportedTabs. update to unsupportedPaths
 // import { TAB } from 'components/Header/components/constants';
 
 import { WalletId, NetworkId, TSymbol, NetworkLegacy } from '@types';

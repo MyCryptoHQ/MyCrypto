@@ -1,17 +1,16 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 
 import { useStateReducer, useTxMulti } from '@utils';
-import { ITxReceipt, ITxConfig, TxParcel, ITxSigned, ITxHash, ITxStatus, ITxType } from '@types';
+import { ITxReceipt, ITxConfig, TxParcel, ITxStatus } from '@types';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
 import { WALLET_STEPS } from '@components';
-import { AccountContext } from '@services';
 
 import { defaultMembershipObject } from './config';
 import MembershipInteractionFactory from './stateFactory';
 import { MembershipSimpleTxFormFull, MembershipPurchaseState } from './types';
-import { createPurchaseTx, createApproveTx, makeTxReceiptFromTransaction } from './helpers';
+import { createPurchaseTx, createApproveTx } from './helpers';
 import { isERC20Tx } from '../SendAssets';
 import MembershipPurchaseForm from './components/MembershipPurchaseForm';
 import ConfirmMembershipPurchaseMultiTx from './components/ConfirmMembershipPurchaseMultiTx';
@@ -33,7 +32,6 @@ const PurchaseMembershipStepper = () => {
   const { state, prepareTx, sendTx, stopYield, initWith } = useTxMulti();
   const { canYield, isSubmitting, transactions } = state;
   const { account, membershipSelected }: MembershipPurchaseState = purchaseMembershipFlowState;
-  const { addNewTransactionToAccount } = useContext(AccountContext);
 
   const steps: IStepperPath[] = [
     {
@@ -88,16 +86,7 @@ const PurchaseMembershipStepper = () => {
           network: account && account.network,
           senderAccount: account,
           rawTransaction: tx.txRaw,
-          onSuccess: (payload: ITxHash | ITxSigned) => {
-            const type =
-              idx === transactions.length - 1 ? ITxType.PURCHASE_MEMBERSHIP : ITxType.APPROVAL;
-            sendTx(payload).then(() =>
-              addNewTransactionToAccount(
-                account,
-                makeTxReceiptFromTransaction(tx, payload, account, membershipSelected!, type)
-              )
-            );
-          }
+          onSuccess: sendTx
         }
       }
     ]),
@@ -130,7 +119,7 @@ const PurchaseMembershipStepper = () => {
       }}
       steps={steps}
       defaultBackPath={ROUTE_PATHS.MYC_MEMBERSHIP.path}
-      defaultBackPathLabel={ROUTE_PATHS.MYC_MEMBERSHIP.title} // ToDo: Change this.
+      defaultBackPathLabel={ROUTE_PATHS.MYC_MEMBERSHIP.title} // @todo: Change this.
     />
   );
 };

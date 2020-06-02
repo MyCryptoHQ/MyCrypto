@@ -9,21 +9,23 @@ import {
   LocalStorage,
   TUuid,
   ISettings,
-  LSKeys
+  LSKeys,
+  TAddress
 } from '@types';
+import { isSameAddress } from '@utils';
 
 import { devAccounts, DevAccount, devContacts } from '../seed';
 import { toArray, toObject, add } from '../helpers';
 
 const removeDevAccounts = add(LSKeys.ACCOUNTS)((accounts: DevAccount[], store: LocalStorage) => {
-  const cmp = (x: IAccount, y: DevAccount) => x.address === y.address;
+  const cmp = (x: IAccount, y: DevAccount) => isSameAddress(x.address, y.address);
   const toKeep = differenceWith(cmp, toArray(store.accounts), accounts);
   return reduce(toObject('uuid'), {}, toKeep);
 });
 
 const removeDevAccountsFromSettings = add(LSKeys.SETTINGS)(
   (accounts: DevAccount[], store: LocalStorage) => {
-    const cmp = (x: IAccount, y: DevAccount) => x.address === y.address;
+    const cmp = (x: IAccount, y: DevAccount) => isSameAddress(x.address, y.address);
     const devAccountUuids = differenceWith(cmp, toArray(store.accounts), accounts).map(
       (a) => a.uuid
     );
@@ -42,7 +44,8 @@ const removeDevAccountsFromSettings = add(LSKeys.SETTINGS)(
 
 const removeDevAddressBook = add(LSKeys.ADDRESS_BOOK)(
   (contacts: Record<string, AddressBook>, store: LocalStorage) => {
-    const cmp = (x: ExtendedAddressBook, y: AddressBook) => x.address === y.address;
+    const cmp = (x: ExtendedAddressBook, y: AddressBook) =>
+      isSameAddress(x.address as TAddress, y.address as TAddress);
     const withoutDevContacts = differenceWith(cmp, toArray(store.addressBook), toArray(contacts));
     return reduce(toObject('uuid'), {}, withoutDevContacts);
   }

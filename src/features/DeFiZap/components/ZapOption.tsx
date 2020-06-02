@@ -20,7 +20,7 @@ class ZapOption extends React.PureComponent<OptionComponentProps> {
   }
 }
 
-/* ToDo: React Select doesn't seem to like these memoized components as optionComponents, figure out a solution to this. */
+/* @todo: React Select doesn't seem to like these memoized components as optionComponents, figure out a solution to this. */
 /*const MemoizedZapOption = React.memo(ZapOption);
 export default MemoizedZapOption;*/
 

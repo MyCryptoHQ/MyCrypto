@@ -67,7 +67,7 @@ import {
 } from '@config';
 import { RatesContext } from '@services/RatesProvider';
 import TransactionFeeDisplay from '@components/TransactionFlow/displays/TransactionFeeDisplay';
-import { formatSupportEmail, isFormValid as checkFormValid, ETHUUID } from '@utils';
+import { formatSupportEmail, isFormValid as checkFormValid, ETHUUID, isSameAddress } from '@utils';
 import { ProtectTxUtils } from '@features/ProtectTransaction';
 import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
 import { ProtectTxButton } from '@features/ProtectTransaction/components/ProtectTxButton';
@@ -228,7 +228,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
         if (
           !isEmpty(account) &&
           value.value !== undefined &&
-          account.address.toLowerCase() === value.value.toLowerCase()
+          isSameAddress(account.address, value.value)
         ) {
           return {
             name: 'ValidationError',
@@ -405,7 +405,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                       assets={userAssets}
                       onSelect={(option: StoreAsset) => {
                         form.setFieldValue('asset', option || {}); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
-                        //TODO get assetType onChange
+                        //@todo get assetType onChange
                         handleFieldReset();
                         if (option && option.networkId) {
                           const network = getNetworkById(option.networkId, networks);

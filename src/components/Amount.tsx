@@ -43,7 +43,7 @@ interface Props {
   bold?: boolean;
 }
 
-// @TODO:
+// @todo:
 // - use Currency component for Fiat
 // - accept BN instead of string for asset and fiat and define default decimals
 export default function Amount({ assetValue, fiatValue, baseAssetValue, bold = false }: Props) {

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { TxReceipt } from '@components/TransactionFlow';
-import { ITxReceipt, ITxConfig, ITxType } from '@types';
+import { ITxReceipt, ITxConfig } from '@types';
 import { translateRaw } from '@translations';
 import { IZapConfig } from '../config';
 
@@ -24,7 +24,6 @@ export default function ZapReceipt({
     <TxReceipt
       txReceipt={txReceipt}
       txConfig={txConfig}
-      txType={ITxType.DEFIZAP}
       zapSelected={zapSelected}
       completeButtonText={translateRaw('INTERACT_ANOTHER')}
       resetFlow={resetFlow}

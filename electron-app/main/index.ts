@@ -23,7 +23,7 @@ app.on('activate', () => {
 
 // Create main BrowserWindow when electron is ready
 app.on('ready', () => {
-  // TODO Delete next line before audit/release
+  // @todo Delete next line before audit/release
   getWindow().webContents.openDevTools();
 });
 

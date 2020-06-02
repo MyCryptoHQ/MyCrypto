@@ -4,8 +4,9 @@ import { simpleRender, fireEvent, wait } from 'test-utils';
 import { fNetwork } from '@fixtures';
 
 import { AddressBookContext, AssetContext } from '@services/Store';
-import { AddressBook, ExtendedAddressBook, TUuid, IReceiverAddress } from '@types';
+import { AddressBook, ExtendedAddressBook, TUuid, IReceiverAddress, TAddress } from '@types';
 import { addressBook } from '@database/seed/addressBook';
+import { isSameAddress } from '@utils';
 
 import ContactLookupField from '../ContactLookupField';
 
@@ -49,7 +50,9 @@ function getComponent(props: any, contacts: AddressBook[] = [], output: FormValu
           ({
             addressBook: contacts,
             getContactByAddress: (address: string) =>
-              contacts.find((x: ExtendedAddressBook) => x.address === address),
+              contacts.find((x: ExtendedAddressBook) =>
+                isSameAddress(x.address as TAddress, address as TAddress)
+              ),
             createAddressBooks: (contact: AddressBook) => contacts.push(contact)
           } as unknown) as any
         }

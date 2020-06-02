@@ -1,5 +1,6 @@
 import { bigNumberify, BigNumber } from 'ethers/utils';
 
+import { isSameAddress } from '@utils';
 import { TAddress, NetworkId, Asset, StoreAccount } from '@types';
 
 // Assume StoreAccount baseAsset balance to be 0 if asset does not exist.
@@ -19,7 +20,4 @@ export const getAccountBalance = (account: StoreAccount, token?: Asset): BigNumb
 export const getStoreAccount = (accounts: StoreAccount[]) => (
   address: TAddress,
   networkId: NetworkId
-) =>
-  accounts.find(
-    (a) => a.address.toLowerCase() === address.toLowerCase() && a.networkId === networkId
-  );
+) => accounts.find((a) => isSameAddress(a.address, address) && a.networkId === networkId);

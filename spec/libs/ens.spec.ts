@@ -1,6 +1,6 @@
 import * as ens from '@services/EthService/ens';
 
-// TODO: write tests for:
+// @todo: write tests for:
 // ens.placeBid
 // ens.unsealBid
 // ens.resolveDomainRequest

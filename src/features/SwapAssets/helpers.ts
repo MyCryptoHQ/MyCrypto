@@ -1,7 +1,7 @@
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
-import { Asset, StoreAccount, ITxConfig, IHexStrTransaction, ITxObject } from '@types';
+import { StoreAccount, ITxConfig, IHexStrTransaction, ITxObject, StoreAsset } from '@types';
 import { getAssetByUUID, getAssetByTicker, DexService } from '@services';
 import { hexToString, appendGasPrice, appendSender } from '@services/EthService';
 import { WALLET_STEPS } from '@components';
@@ -27,7 +27,7 @@ export const getTradeOrder = (assetPair: IAssetPair, account: StoreAccount) => a
     .then((txs) => Promise.all(txs.map(appendGasPrice(network))));
 };
 
-export const makeTxConfigFromTransaction = (assets: Asset[]) => (
+export const makeSwapTxConfig = (assets: StoreAsset[]) => (
   transaction: ITxObject,
   account: StoreAccount,
   fromAsset: ISwapAsset,
@@ -70,7 +70,7 @@ export const makeTxObject = (config: ITxConfig): IHexStrTransaction => {
 };
 
 // filter accounts based on wallet type and sufficient balance
-// TODO: include fees check
+// @todo: include fees check
 export const getAccountsWithAssetBalance = (
   accounts: StoreAccount[],
   fromAsset: ISwapAsset,

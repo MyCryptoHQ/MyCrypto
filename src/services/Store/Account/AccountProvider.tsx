@@ -19,22 +19,24 @@ import {
   LSKeys,
   TUuid,
   ITxStatus,
-  ITxType
+  ITxType,
+  NetworkId,
+  TAddress
 } from '@types';
+import { useAnalytics, isSameAddress } from '@utils';
 
 import { DataContext } from '../DataManager';
 import { SettingsContext } from '../Settings';
 import { getAccountByAddressAndNetworkName } from './helpers';
 import { getAllTokensBalancesOfAccount } from '../BalanceService';
-import { useAnalytics } from '@utils';
 
 export interface IAccountContext {
   accounts: IAccount[];
   createAccountWithID(accountData: IRawAccount, uuid: TUuid): void;
   deleteAccount(account: IAccount): void;
   updateAccount(uuid: TUuid, accountData: IAccount): void;
-  addNewTransactionToAccount(account: IAccount, transaction: ITxReceipt): void;
-  getAccountByAddressAndNetworkName(address: string, network: string): IAccount | undefined;
+  addNewTxToAccount(account: IAccount, transaction: ITxReceipt): void;
+  getAccountByAddressAndNetworkName(address: string, networkId: NetworkId): IAccount | undefined;
   updateAccountAssets(account: StoreAccount, assets: Asset[]): Promise<void>;
   updateAllAccountsAssets(accounts: StoreAccount[], assets: Asset[]): Promise<void>;
   updateAccountsBalances(toUpate: IAccount[]): void;
@@ -60,25 +62,18 @@ export const AccountProvider: React.FC = ({ children }) => {
     },
     deleteAccount: model.destroy,
     updateAccount: (uuid, a) => model.update(uuid, a),
-    addNewTransactionToAccount: (accountData, newTransaction) => {
-      const { network, ...newTxWithoutNetwork } = newTransaction;
-      if (
-        'stage' in newTxWithoutNetwork &&
-        [ITxStatus.SUCCESS, ITxStatus.FAILED].includes(newTxWithoutNetwork.stage)
-      ) {
+    addNewTxToAccount: (accountData, newTx) => {
+      if ('status' in newTx && [ITxStatus.SUCCESS, ITxStatus.FAILED].includes(newTx.status)) {
         trackTxHistory({
           eventParams: {
-            txType: (newTxWithoutNetwork && newTxWithoutNetwork.txType) || ITxType.UNKNOWN,
-            txStatus: newTxWithoutNetwork.stage
+            txType: (newTx && newTx.txType) || ITxType.UNKNOWN,
+            txStatus: newTx.status
           }
         });
       }
       const newAccountData = {
         ...accountData,
-        transactions: [
-          ...accountData.transactions.filter((tx) => tx.hash !== newTransaction.hash),
-          newTxWithoutNetwork
-        ]
+        transactions: [...accountData.transactions.filter((tx) => tx.hash !== newTx.hash), newTx]
       };
       state.updateAccount(accountData.uuid, newAccountData);
     },
@@ -95,7 +90,11 @@ export const AccountProvider: React.FC = ({ children }) => {
         if (existingAccount) {
           const newAssets: AssetBalanceObject[] = positiveAssetBalances.reduce(
             (tempAssets: AssetBalanceObject[], [contractAddress, balance]: [string, BigNumber]) => {
-              const tempAsset = assets.find((x) => x.contractAddress === contractAddress);
+              const tempAsset = assets.find((x) =>
+                x.contractAddress
+                  ? isSameAddress(x.contractAddress as TAddress, contractAddress as TAddress)
+                  : false
+              );
               return [
                 ...tempAssets,
                 ...(tempAsset
@@ -134,7 +133,9 @@ export const AccountProvider: React.FC = ({ children }) => {
                 tempAssets: AssetBalanceObject[],
                 [contractAddress, balance]: [string, BigNumber]
               ) => {
-                const tempAsset = assets.find((x) => x.contractAddress === contractAddress);
+                const tempAsset = assets.find((x) =>
+                  isSameAddress(x.contractAddress as TAddress, contractAddress as TAddress)
+                );
                 return [
                   ...tempAssets,
                   ...(tempAsset

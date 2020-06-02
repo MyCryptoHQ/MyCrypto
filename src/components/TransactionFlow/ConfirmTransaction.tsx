@@ -188,7 +188,7 @@ export const ConfirmTransactionUI = ({
 
   /* Calculate total base asset amount */
   const valueWei = Wei(value);
-  // @TODO: BN math, add amount + maxCost !In same symbol
+  // @todo: BN math, add amount + maxCost !In same symbol
   const totalEtherEgress = parseFloat(fromWei(valueWei.add(transactionFeeWei), 'ether')).toFixed(6);
   const senderAccountLabel = senderContact ? senderContact.label : 'Unknown Account';
   const recipientLabel = recipientContact ? recipientContact.label : 'Unknown Address';
@@ -255,7 +255,7 @@ export const ConfirmTransactionUI = ({
           <img src={feeIcon} alt="Fee" /> {translate('CONFIRM_TX_FEE')}
         </ColumnWrapper>
         <AmountWrapper>
-          <AssetIcon uuid={asset.uuid} size={'25px'} />
+          <AssetIcon uuid={baseAsset.uuid} size={'25px'} />
           <Amount
             assetValue={`${maxTransactionFeeBase} ${baseAsset.ticker}`}
             fiatValue={`${getFiat(settings).symbol}${convertToFiat(

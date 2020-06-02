@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
+import { Overwrite } from 'utility-types';
 
 import {
   Amount,
@@ -10,12 +11,13 @@ import {
   FixedSizeCollapsibleTable
 } from '@components';
 import { truncate, convertToFiat } from '@utils';
-import { ITxReceipt, ITxStatus, StoreAccount, Asset } from '@types';
+import { ITxReceipt, ITxStatus, StoreAccount, Asset, Network } from '@types';
 import {
   RatesContext,
   AddressBookContext,
   getLabelByAddressAndNetwork,
-  SettingsContext
+  SettingsContext,
+  NetworkContext
 } from '@services';
 import { translateRaw } from '@translations';
 import {
@@ -29,21 +31,31 @@ import { getFiat } from '@config/fiats';
 
 import NoTransactions from './NoTransactions';
 import TransactionLabel from './TransactionLabel';
+import { ITxHistoryType } from '../types';
+import { deriveTxType } from '../helpers';
 import './RecentTransactionList.scss';
+
 import newWindowIcon from '@assets/images/icn-new-window.svg';
 import transfer from '@assets/images/transactions/transfer.svg';
 import inbound from '@assets/images/transactions/inbound.svg';
 import outbound from '@assets/images/transactions/outbound.svg';
+import approval from '@assets/images/transactions/approval.svg';
+import contractInteract from '@assets/images/transactions/contract-interact.svg';
+import contractDeploy from '@assets/images/transactions/contract-deploy.svg';
+import defizap from '@assets/images/transactions/defizap.svg';
+import membershipPurchase from '@assets/images/transactions/membership-purchase.svg';
+import swap from '@assets/images/transactions/swap.svg';
 
 interface Props {
   className?: string;
   accountsList: StoreAccount[];
 }
 
-enum ITxType {
-  TRANSFER = 'TRANSFER',
-  OUTBOUND = 'OUTBOUND',
-  INBOUND = 'INBOUND'
+interface ITxHistoryEntry
+  extends Overwrite<ITxReceipt, { txType: ITxHistoryType; timestamp: number }> {
+  network: Network;
+  toLabel: string;
+  fromLabel: string;
 }
 
 interface ITxTypeConfigObj {
@@ -52,44 +64,59 @@ interface ITxTypeConfigObj {
 }
 
 type ITxTypeConfig = {
-  [txType in ITxType]: ITxTypeConfigObj;
+  [txType in ITxHistoryType]: ITxTypeConfigObj;
 };
 
 const TxTypeConfig: ITxTypeConfig = {
-  [ITxType.INBOUND]: {
+  [ITxHistoryType.INBOUND]: {
     label: (asset: Asset) =>
       translateRaw('RECENT_TX_LIST_LABEL_RECEIVED', {
         $ticker: asset.ticker || translateRaw('UNKNOWN')
       }),
     icon: inbound
   },
-  [ITxType.OUTBOUND]: {
+  [ITxHistoryType.OUTBOUND]: {
     label: (asset: Asset) =>
       translateRaw('RECENT_TX_LIST_LABEL_SENT', {
         $ticker: asset.ticker || translateRaw('UNKNOWN')
       }),
     icon: outbound
   },
-  [ITxType.TRANSFER]: {
+  [ITxHistoryType.TRANSFER]: {
     label: (asset: Asset) =>
       translateRaw('RECENT_TX_LIST_LABEL_TRANSFERRED', {
         $ticker: asset.ticker || translateRaw('UNKNOWN')
       }),
     icon: transfer
+  },
+  [ITxHistoryType.DEFIZAP]: {
+    label: (asset: Asset) =>
+      translateRaw('RECENT_TX_LIST_LABEL_DEFIZAP_ADD', {
+        $ticker: asset.ticker || 'Unknown'
+      }),
+    icon: defizap
+  },
+  [ITxHistoryType.PURCHASE_MEMBERSHIP]: {
+    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_MEMBERSHIP_PURCHASED'),
+    icon: membershipPurchase
+  },
+  [ITxHistoryType.SWAP]: {
+    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_SWAP'),
+    icon: swap
+  },
+  [ITxHistoryType.APPROVAL]: {
+    label: (asset: Asset) =>
+      translateRaw('RECENT_TX_LIST_LABEL_APPROVAL', { $ticker: asset.ticker }),
+    icon: approval
+  },
+  [ITxHistoryType.CONTRACT_INTERACT]: {
+    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_INTERACT'),
+    icon: contractInteract
+  },
+  [ITxHistoryType.DEPLOY_CONTRACT]: {
+    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_DEPLOY'),
+    icon: contractDeploy
   }
-};
-
-export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt) => {
-  const fromAccount =
-    tx.from &&
-    accountsList.find((account) => account.address.toLowerCase() === tx.from.toLowerCase());
-  const toAccount =
-    tx.to && accountsList.find((account) => account.address.toLowerCase() === tx.to.toLowerCase());
-  return !fromAccount || !toAccount
-    ? fromAccount
-      ? ITxType.OUTBOUND
-      : ITxType.INBOUND
-    : ITxType.TRANSFER;
 };
 
 const SAssetIcon = styled(AssetIcon)`
@@ -118,11 +145,15 @@ const SCombinedCircle = (asset: Asset) => {
   );
 };
 
-const makeTxIcon = (type: ITxType, asset: Asset) => {
+const makeTxIcon = (type: ITxHistoryType, asset: Asset) => {
   const greyscaleIcon = asset && <>{SCombinedCircle(asset)}</>;
   const baseIcon = (
     <div className="TransactionLabel-image">
-      <img src={TxTypeConfig[type].icon} width="56px" height="56px" />
+      <img
+        src={TxTypeConfig[type] ? TxTypeConfig[type].icon : transfer}
+        width="56px"
+        height="56px"
+      />
       {greyscaleIcon}
     </div>
   );
@@ -133,44 +164,58 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
   const { addressBook } = useContext(AddressBookContext);
   const { getAssetRate } = useContext(RatesContext);
   const { settings } = useContext(SettingsContext);
+  const { networks } = useContext(NetworkContext);
   const noLabel = translateRaw('NO_LABEL');
-  const transactions = accountsList.flatMap((account) => account.transactions);
-  const accountTxs: ITxReceipt[] = getTxsFromAccount(accountsList).map((tx: ITxReceipt) => ({
-    ...tx,
-    txType: deriveTxType(accountsList, tx)
-  }));
-  // TODO: Sort by relevant transactions
+
+  const accountTxs: ITxHistoryEntry[] = getTxsFromAccount(accountsList).map((tx: ITxReceipt) => {
+    const network = networks.find(({ id }) => tx.asset.networkId === id) as Network;
+    const toAddressBookEntry = getLabelByAddressAndNetwork(
+      tx.receiverAddress || tx.to,
+      addressBook,
+      network
+    );
+    const fromAddressBookEntry = getLabelByAddressAndNetwork(tx.from, addressBook, network);
+    return {
+      ...tx,
+      timestamp: tx.timestamp || 0,
+      txType: deriveTxType(accountsList, tx) || ITxHistoryType.UNKNOWN,
+      toLabel: toAddressBookEntry ? toAddressBookEntry.label : noLabel,
+      fromLabel: fromAddressBookEntry ? fromAddressBookEntry.label : noLabel,
+      network
+    };
+  });
 
   const pending = accountTxs.filter(txIsPending);
   const completed = accountTxs.filter(txIsSuccessful);
   const failed = accountTxs.filter(txIsFailed);
 
-  const createEntries = (_: string, collection: typeof transactions) =>
+  const createEntries = (_: string, collection: ITxHistoryEntry[]) =>
     collection.map(
-      ({ timestamp, hash, stage, from, to, amount, asset, network, txType }: ITxReceipt) => {
-        const toAddressBookEntry = to && getLabelByAddressAndNetwork(to, addressBook, network);
-        const fromAddressBookEntry = getLabelByAddressAndNetwork(from, addressBook, network);
+      ({
+        timestamp,
+        hash,
+        status,
+        from,
+        to,
+        receiverAddress,
+        amount,
+        asset,
+        fromLabel,
+        toLabel,
+        network,
+        txType
+      }) => {
         return [
           <TransactionLabel
             key={0}
             image={makeTxIcon(txType, asset)}
-            label={TxTypeConfig[txType as ITxType].label(asset)}
-            stage={stage}
+            label={TxTypeConfig[txType].label(asset)}
+            stage={status}
             date={timestamp}
           />,
-          <Account
-            key={1}
-            title={fromAddressBookEntry ? fromAddressBookEntry.label : noLabel}
-            truncate={truncate}
-            address={from}
-          />,
+          <Account key={1} title={fromLabel} truncate={truncate} address={from} />,
           to && (
-            <Account
-              key={2}
-              title={toAddressBookEntry ? toAddressBookEntry.label : noLabel}
-              truncate={truncate}
-              address={to}
-            />
+            <Account key={2} title={toLabel} truncate={truncate} address={receiverAddress || to} />
           ),
           <Amount
             key={3}

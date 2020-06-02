@@ -131,7 +131,7 @@ const addFiatsToAssets = add(LSKeys.ASSETS)((fiats: Fiat[], store: LocalStorage)
     uuid: generateAssetUUID(code, name),
     name,
     ticker: code,
-    networkId: undefined,
+    networkId: 'OldWorld' as NetworkId,
     type: 'fiat',
     decimal: 0
   });

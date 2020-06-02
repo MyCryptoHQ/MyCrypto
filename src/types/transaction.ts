@@ -1,7 +1,12 @@
-import { Brand } from 'utility-types';
+import { Brand, Overwrite } from 'utility-types';
 import BN from 'bn.js';
+import { BigNumber } from 'ethers/utils';
 
 import { Wei, Address } from '@services/EthService';
+
+import { Asset } from './asset';
+import { ITxType, ITxStatus } from './transactionFlow';
+import { TAddress } from './address';
 
 // By only dealing with Buffers / BN, dont have to mess around with cleaning strings
 export interface ITransaction {
@@ -44,5 +49,34 @@ export type ITxHash = Brand<string, 'TxHash'>;
 export type ITxSigned = Brand<Uint8Array, 'TxSigned'>;
 
 export interface ITxReceipt {
-  [index: string]: any;
+  readonly asset: Asset;
+  readonly baseAsset: Asset;
+  readonly txType: ITxType;
+  readonly status: ITxStatus.PENDING | ITxStatus.SUCCESS | ITxStatus.FAILED;
+
+  readonly receiverAddress: TAddress;
+  readonly amount: string;
+  readonly data: string;
+
+  readonly gasPrice: BigNumber;
+  readonly gasLimit: BigNumber;
+  readonly to: TAddress;
+  readonly from: TAddress;
+  readonly value: BigNumber;
+  readonly nonce: string;
+  readonly hash: ITxHash;
+  readonly blockNumber?: number;
+  readonly timestamp?: number;
 }
+
+export type IPendingTxReceipt = Overwrite<ITxReceipt, { status: ITxStatus.PENDING }>;
+
+export type ISuccessfulTxReceipt = Overwrite<
+  ITxReceipt,
+  { status: ITxStatus.SUCCESS; timestamp: number; blockNumber: number }
+>;
+
+export type IFailedTxReceipt = Overwrite<
+  ITxReceipt,
+  { status: ITxStatus.FAILED; timestamp: number; blockNumber: number }
+>;

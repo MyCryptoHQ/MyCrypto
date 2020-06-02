@@ -11,12 +11,15 @@ import {
   ITxConfig,
   ExtendedContract,
   Network,
-  IReceiverAddress
+  IReceiverAddress,
+  TAddress
 } from '@types';
 import { COLORS, BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
 import { isValidETHAddress, isCreationAddress } from '@services/EthService/validators';
 import { getNetworkById, NetworkContext } from '@services';
+import { isValidENSName } from '@services/EthService';
+import { isSameAddress } from '@utils';
 
 import ContractDropdownOption from './ContractDropdownOption';
 import ContractDropdownValue from './ContractDropdownValue';
@@ -24,7 +27,6 @@ import GeneratedInteractionForm from './GeneratedInteractionForm';
 import { CUSTOM_CONTRACT_ADDRESS } from '../constants';
 import { ABIItem } from '../types';
 import { getParsedQueryString } from '../utils';
-import { isValidENSName } from '@services/EthService';
 import AddressField from './fields/AddressField';
 
 const { BLUE_BRIGHT, WHITE, BLUE_LIGHT } = COLORS;
@@ -192,7 +194,8 @@ function Interact(props: CombinedProps) {
     props.location.search
   );
   const networkAndAddressMatchURL =
-    network.id === networkIdFromUrl && contractAddress === addressFromUrl;
+    network.id === networkIdFromUrl &&
+    isSameAddress(contractAddress as TAddress, addressFromUrl as TAddress);
 
   useEffect(() => {
     updateNetworkContractOptions();
@@ -273,7 +276,8 @@ function Interact(props: CombinedProps) {
     setAreFieldsPopulatedFromUrl(true);
   }, [contracts]);
 
-  const customEditingMode = contract && contract.address === CUSTOM_CONTRACT_ADDRESS;
+  const customEditingMode =
+    contract && isSameAddress(contract.address as TAddress, CUSTOM_CONTRACT_ADDRESS as TAddress);
 
   const initialFormikValues: { address: IReceiverAddress } = {
     address: {
