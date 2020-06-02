@@ -7,7 +7,7 @@ import {
 } from '@mycrypto/eth-scan';
 import partition from 'lodash/partition';
 import { default as BN } from 'bignumber.js';
-import { bigNumberify } from 'ethers/utils/bignumber';
+import { bigNumberify } from 'ethers/utils';
 import { BigNumber as EthScanBN } from '@ethersproject/bignumber';
 
 import { ETHSCAN_NETWORKS } from '@config';

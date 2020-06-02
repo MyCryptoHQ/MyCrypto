@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import { formatEther } from 'ethers/utils/units';
+import { formatEther } from 'ethers/utils';
 
 import translate, { translateRaw } from '@translations';
 import { MYC_DEXAG_COMMISSION_RATE, MYC_DEXAG_MARKUP_THRESHOLD } from '@config';

@@ -1,4 +1,4 @@
-import { BigNumber } from 'ethers/utils/bignumber';
+import { BigNumber } from 'ethers/utils';
 
 import { TAddress, StoreAsset, Network, StoreAccount } from '@types';
 

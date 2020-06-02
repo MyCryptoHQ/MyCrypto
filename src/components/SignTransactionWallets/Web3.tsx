@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { getAddress } from 'ethers/utils/address';
+import { ethers, utils } from 'ethers';
 import { Web3Provider } from 'ethers/providers/web3-provider';
-import { Network } from 'ethers/utils/networks';
 
 import { WALLETS_CONFIG } from '@config';
 import { ISignComponentProps } from '@types';
@@ -14,7 +13,7 @@ declare global {
   interface Window {
     ethereum?: any;
     web3: any;
-    Web3Provider: Web3Provider;
+    Web3Provider: ethers.providers.Web3Provider;
     Web3Signer: Web3Provider;
   }
 }
@@ -35,11 +34,11 @@ interface Web3UserState {
 }
 
 const ethereumProvider = window.ethereum;
-let web3Provider: Web3Provider;
+let web3Provider: ethers.providers.Web3Provider;
 
 async function getWeb3Provider() {
   await ethereumProvider.enable();
-  return new Web3Provider(ethereumProvider);
+  return new ethers.providers.Web3Provider(ethereumProvider);
 }
 
 class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContext, Web3UserState> {
@@ -140,7 +139,7 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
 
     const web3Signer = web3Provider.getSigner();
     const web3Address = await web3Signer.getAddress();
-    const checksumAddress = getAddress(web3Address);
+    const checksumAddress = utils.getAddress(web3Address);
 
     this.setState({ account: checksumAddress });
     this.getWeb3Network();
@@ -159,11 +158,11 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
 
   private checkAddressMatches(Web3Address: string) {
     const { senderAccount } = this.props;
-    const desiredAddress = getAddress(senderAccount.address);
+    const desiredAddress = utils.getAddress(senderAccount.address);
     this.setState({ accountMatches: Web3Address === desiredAddress });
   }
 
-  private checkNetworkMatches(Web3Network: Network) {
+  private checkNetworkMatches(Web3Network: ethers.utils.Network) {
     const {
       network: { name: networkName },
       networks

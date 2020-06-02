@@ -1,4 +1,4 @@
-import { FallbackProvider } from 'ethers/providers/fallback-provider';
+import { FallbackProvider } from 'ethers/providers';
 
 import { Network } from '@types';
 import { createFallbackNetworkProviders } from './helpers';

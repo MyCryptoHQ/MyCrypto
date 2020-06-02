@@ -1,4 +1,4 @@
-import { bigNumberify } from 'ethers/utils/bignumber';
+import { bigNumberify } from 'ethers/utils';
 import { StoreAsset, TUuid } from '@types';
 import { getTotalByAsset } from '../helpers';
 

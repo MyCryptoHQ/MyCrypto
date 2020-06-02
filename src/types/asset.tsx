@@ -1,4 +1,4 @@
-import { BigNumber } from 'ethers/utils/bignumber';
+import { BigNumber } from 'ethers/utils';
 import { NetworkId, TSymbol, TUuid, AssetSocial } from '@types';
 import { Brand } from 'utility-types';
 

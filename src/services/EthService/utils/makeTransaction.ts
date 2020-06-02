@@ -1,7 +1,6 @@
 import { Transaction as Tx } from 'ethereumjs-tx';
 import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
-import { formatEther } from 'ethers/utils/units';
-import { bigNumberify, BigNumber } from 'ethers/utils/bignumber';
+import { bigNumberify, formatEther, BigNumber } from 'ethers/utils';
 import prop from 'ramda/src/prop';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';

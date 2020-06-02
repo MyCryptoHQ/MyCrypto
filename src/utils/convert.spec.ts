@@ -1,6 +1,5 @@
 import BigNumberJs from 'bignumber.js';
-import { formatEther } from 'ethers/utils/units';
-import { BigNumber } from 'ethers/utils/bignumber';
+import { BigNumber, formatEther } from 'ethers/utils';
 
 import {
   convertToFiatFromAsset,
