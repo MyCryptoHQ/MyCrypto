@@ -1,3 +1,3 @@
-import { BigNumber } from 'ethers/utils/bignumber';
+import { BigNumber } from 'ethers/utils';
 
 export type TBN = BigNumber;

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Wallet } from 'ethers/wallet';
-import { getAddress } from 'ethers/utils/address';
+import { ethers, utils } from 'ethers';
 import { isValidMnemonic } from 'ethers/utils/hdnode';
 import styled from 'styled-components';
 
@@ -126,8 +125,8 @@ export default class SignTransactionMnemonic extends Component<
     this.setState({ isSigning: true });
     try {
       const { senderAccount } = this.props;
-      const wallet = await Wallet.fromMnemonic(this.state.phrase, senderAccount.dPath);
-      const checkSumAddress = getAddress(wallet.address);
+      const wallet = await ethers.Wallet.fromMnemonic(this.state.phrase, senderAccount.dPath);
+      const checkSumAddress = utils.getAddress(wallet.address);
       this.checkPublicKeyMatchesCache(checkSumAddress);
     } catch (err) {
       console.error(err);
@@ -138,7 +137,7 @@ export default class SignTransactionMnemonic extends Component<
 
   private checkPublicKeyMatchesCache(walletAddres: string) {
     const { senderAccount } = this.props;
-    const localCacheAddress = getAddress(senderAccount.address);
+    const localCacheAddress = utils.getAddress(senderAccount.address);
     const mnemonicAddress = walletAddres;
 
     if (localCacheAddress === mnemonicAddress) {
@@ -153,7 +152,7 @@ export default class SignTransactionMnemonic extends Component<
   private async signTransaction() {
     const { rawTransaction, senderAccount } = this.props;
 
-    const signerWallet = await Wallet.fromMnemonic(this.state.phrase, senderAccount.dPath);
+    const signerWallet = await ethers.Wallet.fromMnemonic(this.state.phrase, senderAccount.dPath);
     const rawSignedTransaction: any = await signerWallet.sign(rawTransaction);
     this.props.onSuccess(rawSignedTransaction);
   }

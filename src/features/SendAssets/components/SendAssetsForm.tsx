@@ -3,7 +3,7 @@ import { Field, FieldProps, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
 import isEmpty from 'lodash/isEmpty';
-import { bigNumberify } from 'ethers/utils/bignumber';
+import { bigNumberify } from 'ethers/utils';
 import BN from 'bn.js';
 import styled from 'styled-components';
 import path from 'ramda/src/path';

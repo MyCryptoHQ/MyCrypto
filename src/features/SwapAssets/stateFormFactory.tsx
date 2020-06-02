@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { formatEther } from 'ethers/utils/units';
+import { formatEther } from 'ethers/utils';
 
 import translate from '@translations';
 import {

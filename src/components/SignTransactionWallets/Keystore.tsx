@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Wallet } from 'ethers/wallet';
-import { getAddress } from 'ethers/utils/address';
+import { ethers, utils } from 'ethers';
 
 import { Input, Button } from '@components';
 import translate, { translateRaw } from '@translations';
@@ -149,9 +148,9 @@ export default class SignTransactionKeystore extends Component<
 
   private async getPublicKey() {
     this.setState({ isSigning: true });
-    await Wallet.fromEncryptedJson(this.state.file, this.state.password)
+    await ethers.Wallet.fromEncryptedJson(this.state.file, this.state.password)
       .then((wallet) => {
-        const checkSumAddress = getAddress(wallet.address);
+        const checkSumAddress = utils.getAddress(wallet.address);
         this.checkPublicKeyMatchesCache(checkSumAddress);
       })
       .catch((e) => {
@@ -166,7 +165,7 @@ export default class SignTransactionKeystore extends Component<
 
   private checkPublicKeyMatchesCache(walletAddres: string) {
     const { senderAccount } = this.props;
-    const localCacheAddress = getAddress(senderAccount.address);
+    const localCacheAddress = utils.getAddress(senderAccount.address);
     const keystoreFileAddress = walletAddres;
 
     if (localCacheAddress === keystoreFileAddress) {
@@ -180,7 +179,10 @@ export default class SignTransactionKeystore extends Component<
 
   private async signTransaction() {
     const { rawTransaction } = this.props;
-    const signerWallet = await Wallet.fromEncryptedJson(this.state.file, this.state.password);
+    const signerWallet = await ethers.Wallet.fromEncryptedJson(
+      this.state.file,
+      this.state.password
+    );
     const rawSignedTransaction: any = await signerWallet.sign(rawTransaction);
     this.props.onSuccess(rawSignedTransaction);
   }

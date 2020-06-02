@@ -1,6 +1,5 @@
 import BigNumberJs from 'bignumber.js';
-import { bigNumberify, BigNumber } from 'ethers/utils/bignumber';
-import { parseEther, formatEther } from 'ethers/utils/units';
+import { bigNumberify, BigNumber, parseEther, formatEther } from 'ethers/utils';
 import { fromTokenBase } from '@services/EthService';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { StoreAsset } from '@types';

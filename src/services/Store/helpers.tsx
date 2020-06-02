@@ -1,4 +1,4 @@
-import { bigNumberify } from 'ethers/utils/bignumber';
+import { bigNumberify } from 'ethers/utils';
 
 import {
   Network,

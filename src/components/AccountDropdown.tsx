@@ -1,6 +1,6 @@
 import React from 'react';
 import { translateRaw } from '@translations';
-import { formatEther } from 'ethers/utils/units';
+import { formatEther } from 'ethers/utils';
 
 import { AccountSummary, AccountOption, Dropdown } from '@components';
 import { StoreAccount, Asset } from '@types';
