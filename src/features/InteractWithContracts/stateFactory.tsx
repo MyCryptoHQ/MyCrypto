@@ -81,11 +81,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     const contractIds = state.network.contracts;
     const networkContracts = getContractsByIds(contractIds);
 
-    //const customContractOption = Object.assign({}, customContract, { networkId: state.network.id });
-
-    const contracts = networkContracts.map((x) =>
-      Object.assign({}, x, { label: x.name })
-    );
+    const contracts = networkContracts.map((x) => Object.assign({}, x, { label: x.name }));
 
     setState((prevState: InteractWithContractState) => ({
       ...prevState,
