@@ -1351,6 +1351,13 @@
     "uuid": "e03c077e-344c-5e3a-9711-aed290ad1698"
   },
   {
+    "address": "0x3A4A0D5b8dfAcd651EE28ed4fFEBf91500345489",
+    "symbol": "BRX",
+    "decimal": 18,
+    "name": "BerryX",
+    "uuid": "054937d1-af4a-56cf-b807-5394352e7be8"
+  },
+  {
     "address": "0xF26ef5E0545384b7Dcc0f297F2674189586830DF",
     "symbol": "BSDC",
     "decimal": 18,
@@ -2364,6 +2371,13 @@
     "decimal": 18,
     "name": "Centra",
     "uuid": "6d332e1a-8a2b-5fc0-9359-c5e152cb4471"
+  },
+  {
+    "address": "0x491604c0FDF08347Dd1fa4Ee062a822A5DD06B5D",
+    "symbol": "CTSI",
+    "decimal": 18,
+    "name": "Cartesi Token",
+    "uuid": "dda940b8-12e1-51bf-ab9d-5f6057d6d129"
   },
   {
     "address": "0x1A4743Cf1af4C289351390A2B3fe7c13D2F7C235",
@@ -11394,6 +11408,13 @@
     "decimal": 18,
     "name": "Xpayment",
     "uuid": "fd9fe535-7b02-5af0-9b23-f6ebd9a79f48"
+  },
+  {
+    "address": "0xD7EFB00d12C2c13131FD319336Fdf952525dA2af",
+    "symbol": "XPR",
+    "decimal": 4,
+    "name": "Proton",
+    "uuid": "22019253-5bfe-57cd-a344-0acb383f157c"
   },
   {
     "address": "0x08Aa0ed0040736dd28d4c8B16Ab453b368248d19",
