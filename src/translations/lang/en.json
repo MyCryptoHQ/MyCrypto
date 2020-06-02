@@ -621,7 +621,7 @@
     "RECENT_TX_LIST_LABEL_DEFIZAP_ADD": "DeFiZap Contribution",
     "RECENT_TX_LIST_LABEL_SWAP": "Assets Swapped",
     "RECENT_TX_LIST_LABEL_MEMBERSHIP_PURCHASED": "Membership Purchased",
-    "RECENT_TX_LIST_LABEL_APPROVAL": "ERC20 Approved",
+    "RECENT_TX_LIST_LABEL_APPROVAL": "$ticker Approved",
     "RECENT_TX_LIST_LABEL_CONTRACT_INTERACT": "Contract Interaction",
     "RECENT_TX_LIST_LABEL_CONTRACT_DEPLOY": "Contract Deployed",
     "REGENERATE_MNEMONIC": "Regenerate Phrase",

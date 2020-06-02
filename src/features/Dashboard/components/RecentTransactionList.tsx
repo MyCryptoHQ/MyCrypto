@@ -105,7 +105,8 @@ const TxTypeConfig: ITxTypeConfig = {
     icon: swap
   },
   [ITxHistoryType.APPROVAL]: {
-    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_APPROVAL'),
+    label: (asset: Asset) =>
+      translateRaw('RECENT_TX_LIST_LABEL_APPROVAL', { $ticker: asset.ticker }),
     icon: approval
   },
   [ITxHistoryType.CONTRACT_INTERACT]: {
