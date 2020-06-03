@@ -22,8 +22,8 @@ export interface IGeneralLookupFieldComponentProps {
   placeholder?: string;
   onBlur?(): void;
   setIsResolvingDomain(isResolving: boolean): void;
-  handleEthAddress(inputString: string): IReceiverAddress;
-  handleENSName(resolvedAddress: string, inputString: string): IReceiverAddress;
+  handleEthAddress?(inputString: string): IReceiverAddress;
+  handleENSName?(resolvedAddress: string, inputString: string): IReceiverAddress;
   onSelect?(option: IReceiverAddress): void;
   onChange?(input: string): void;
   onLoad?(setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void): void;

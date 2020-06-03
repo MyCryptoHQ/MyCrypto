@@ -3,12 +3,17 @@ import { OnInputKeyDownHandler } from 'react-select';
 
 import { translateRaw } from '@translations';
 import { AccountSummary, AccountOption, Dropdown } from '@components';
-import { Asset, IReceiverAddress, ExtendedAddressBook } from '@types';
+import { Asset, IReceiverAddress } from '@types';
 
 import addressBookIcon from '@assets/images/icn-address-book.svg';
 
+export interface LabeledAddress {
+  label: string;
+  address: string;
+}
+
 interface IGeneralLookupDropdownProps {
-  options: IReceiverAddress[];
+  options: LabeledAddress[];
   name: string;
   value: IReceiverAddress;
   asset?: Asset;
@@ -39,7 +44,7 @@ const GeneralLookupDropdown = ({
     name={name}
     placeholder={placeholder ? placeholder : translateRaw('ACCOUNT_LOOKUP_SELECTION_PLACEHOLDER')}
     options={options}
-    onChange={(option: ExtendedAddressBook) => {
+    onChange={(option: LabeledAddress) => {
       onSelect({
         display: option ? option.label : '',
         value: option ? option.address : ''
