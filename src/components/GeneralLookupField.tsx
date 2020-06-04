@@ -52,7 +52,6 @@ const GeneralLookupField = ({
   const [resolutionError, setResolutionError] = useState<ResolutionError>();
 
   const handleEthAddressDefault = (inputString: string): IReceiverAddress => {
-    if (handleEthAddress) return handleEthAddress(inputString);
     const found = options.find((o) => o.address === inputString);
     if (found) {
       return {
@@ -60,6 +59,7 @@ const GeneralLookupField = ({
         value: found.address
       };
     }
+    if (handleEthAddress) return handleEthAddress(inputString);
     return {
       display: inputString,
       value: inputString
