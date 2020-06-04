@@ -39,7 +39,7 @@ const ContractLookupField = ({
       name={name}
       value={value}
       network={network}
-      options={contracts}
+      options={contracts.map((c) => ({ label: c.name, ...c }))}
       handleEthAddress={handleEthAddress}
       handleENSName={handleENSName}
       placeholder={translateRaw('CONTRACT_SELECTION_PLACEHOLDER')}
