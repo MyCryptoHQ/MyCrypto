@@ -43,3 +43,8 @@ export const buildBalances = (
       };
     })
     .sort((a, b) => b.fiatValue - a.fiatValue);
+
+export const buildTotalFiatValue = (balances: Balance[]) =>
+  balances.reduce((sum, asset) => {
+    return sum + asset.fiatValue;
+  }, 0);

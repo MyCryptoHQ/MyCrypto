@@ -67,4 +67,4 @@ export * from './encryption';
 export { default as useAnalytics } from './useAnalytics';
 export { openLink } from './openLink';
 export { isSameAddress } from './isSameAddress';
-export { buildBalances } from './buildBalanceDisplays';
+export { buildBalances, buildTotalFiatValue } from './buildBalanceDisplays';

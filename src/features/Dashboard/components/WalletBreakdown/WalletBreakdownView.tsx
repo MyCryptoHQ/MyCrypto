@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
 import translate, { translateRaw } from '@translations';
-import { EMPTYUUID } from '@utils';
+import { EMPTYUUID, buildTotalFiatValue } from '@utils';
 import { TUuid, Balance } from '@types';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import { AssetIcon, Currency, Typography, Tooltip } from '@components';
@@ -429,7 +429,5 @@ const createOtherTokenAsset = (otherBalances: Balance[]) => ({
   isOther: true,
   amount: 0,
   uuid: EMPTYUUID as TUuid,
-  fiatValue: otherBalances.reduce((sum, asset) => {
-    return (sum += asset.fiatValue);
-  }, 0)
+  fiatValue: buildTotalFiatValue(otherBalances)
 });

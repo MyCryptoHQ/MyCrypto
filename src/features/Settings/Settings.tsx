@@ -9,7 +9,7 @@ import {
   SettingsContext,
   StoreContext
 } from '@services/Store';
-import { buildBalances } from '@utils';
+import { buildBalances, buildTotalFiatValue } from '@utils';
 import { AccountList, Mobile, Desktop } from '@components';
 import { NetworkId, CustomNodeConfig, Balance } from '@types';
 import { DEFAULT_NETWORK, IS_ACTIVE_FEATURE } from '@config';
@@ -66,9 +66,7 @@ function rendedExcludedAssetsPanel() {
     isExcludedAsset
   );
 
-  const totalFiatValue = balances.reduce((sum, asset) => {
-    return sum + asset.fiatValue;
-  }, 0);
+  const totalFiatValue = buildTotalFiatValue(balances);
 
   const fiat = getFiat(settings);
 

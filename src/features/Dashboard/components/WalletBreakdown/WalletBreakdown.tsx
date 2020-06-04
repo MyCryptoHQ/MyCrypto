@@ -6,7 +6,7 @@ import { translateRaw } from '@translations';
 import { RatesContext } from '@services';
 import { SettingsContext, StoreContext } from '@services/Store';
 import { TUuid, Balance } from '@types';
-import { buildBalances } from '@utils';
+import { buildBalances, buildTotalFiatValue } from '@utils';
 import { BREAK_POINTS, SPACING } from '@theme';
 import { getFiat } from '@config/fiats';
 import { Tooltip } from '@components';
@@ -72,9 +72,7 @@ export function WalletBreakdown() {
     isNotExcludedAsset
   );
 
-  const totalFiatValue = balances.reduce((sum, asset) => {
-    return sum + asset.fiatValue;
-  }, 0);
+  const totalFiatValue = buildTotalFiatValue(balances);
 
   const toggleShowChart = () => {
     setShowBalanceDetailView(!showBalanceDetailView);
