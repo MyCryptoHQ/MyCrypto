@@ -58,10 +58,7 @@ const formValuesWeb3 = {
 const ProtectTxStep1 = () => (
   <div style={{ maxWidth: '375px', position: 'relative' }}>
     <Panel>
-      <ProtectTxProtection
-        sendAssetsValues={formValues as any}
-        handleProtectTxSubmit={noopPromise}
-      />
+      <ProtectTxProtection overrideValues={formValues as any} handleProtectTxSubmit={noopPromise} />
     </Panel>
   </div>
 );
@@ -70,7 +67,7 @@ const ProtectTxStep1Web3 = () => (
   <div style={{ maxWidth: '375px', position: 'relative' }}>
     <Panel>
       <ProtectTxProtection
-        sendAssetsValues={formValuesWeb3 as any}
+        overrideValues={formValuesWeb3 as any}
         handleProtectTxSubmit={noopPromise}
       />
     </Panel>
@@ -91,7 +88,7 @@ const ProtectTxStep1Mobile = () => (
     <div style={{ maxWidth: '375px', position: 'relative' }}>
       <Panel>
         <ProtectTxProtection
-          sendAssetsValues={formValuesWeb3 as any}
+          overrideValues={formValuesWeb3 as any}
           handleProtectTxSubmit={noopPromise}
         />
       </Panel>

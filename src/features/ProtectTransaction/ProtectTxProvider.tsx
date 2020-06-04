@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
-import { Asset, ITxReceipt, Network, WalletId } from '@types';
+import { Asset, ITxReceipt, Network, WalletId, IFormikFields } from '@types';
 import {
   GetBalanceResponse,
   GetLastTxResponse,
@@ -10,7 +10,6 @@ import {
 import { AssetContext, getAssetByUUID, StoreContext } from '@services/Store';
 import { useScreenSize } from '@utils';
 
-import { SendFormCallbackType } from './types';
 import { WALLETS_CONFIG } from '../../config';
 import { NansenService, NansenServiceEntry } from '@services/ApiService/Nansen';
 
@@ -28,14 +27,13 @@ export interface ProtectTxState {
   asset: Asset | null;
   isWeb3Wallet: boolean;
   web3WalletName: string | null;
+  formValues?: IFormikFields;
 }
 
 export interface ProtectTxContext {
   state: ProtectTxState;
-  formCallback: SendFormCallbackType;
-
+  updateFormValues(values: IFormikFields): void;
   handleTransactionReport(receiverAddress?: string): Promise<void>;
-  setMainTransactionFormCallback(callback: SendFormCallbackType): void;
   goToNextStep(): void;
   goToInitialStepOrFetchReport(receiverAddress?: string, network?: Network): void;
   showHideProtectTx(showOrHide: boolean): void;
@@ -48,6 +46,7 @@ export interface ProtectTxContext {
 
 export const protectTxProviderInitialState: ProtectTxState = {
   stepIndex: 0,
+  formValues: undefined,
   protectTxShow: false,
   protectTxEnabled: false,
   receiverAddress: null,
@@ -72,7 +71,6 @@ const ProtectTxProvider: React.FC = ({ children }) => {
   const [state, setState] = useState<ProtectTxState>({ ...protectTxProviderInitialState });
   const { isMdScreen } = useScreenSize();
 
-  const formCallback = useRef<SendFormCallbackType>(() => ({ isValid: false, values: null }));
   const protectionTxTimeoutFunction = useRef<((cb: () => ITxReceipt) => void) | null>(null);
 
   const handleTransactionReport = useCallback(
@@ -128,12 +126,9 @@ const ProtectTxProvider: React.FC = ({ children }) => {
     [state.receiverAddress, setState]
   );
 
-  const setMainTransactionFormCallback = useCallback(
-    (callback: SendFormCallbackType) => {
-      formCallback.current = callback;
-    },
-    [formCallback]
-  );
+  const updateFormValues = (values: IFormikFields) => {
+    setState((prevState) => ({ ...prevState, formValues: values }));
+  };
 
   const goToNextStep = useCallback(() => {
     setState((prevState) => {
@@ -276,10 +271,8 @@ const ProtectTxProvider: React.FC = ({ children }) => {
 
   const providerState: ProtectTxContext = {
     state,
-    formCallback: formCallback.current,
-
+    updateFormValues,
     handleTransactionReport,
-    setMainTransactionFormCallback,
     goToNextStep,
     goToInitialStepOrFetchReport,
     showHideProtectTx,

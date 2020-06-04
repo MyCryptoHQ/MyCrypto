@@ -135,11 +135,11 @@ const Header = styled.h4`
 `;
 
 interface Props {
-  sendAssetsValues: IFormikFields | null;
+  overrideValues?: IFormikFields;
   handleProtectTxSubmit(payload: IFormikFields): Promise<void>;
 }
 
-export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtectTxSubmit }) => {
+export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit, overrideValues }) => {
   const { getAssetRate } = useContext(RatesContext);
   const { isMyCryptoMember } = useContext(StoreContext);
 
@@ -158,11 +158,13 @@ export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtect
   }
 
   const {
-    state: { isWeb3Wallet: web3Wallet, web3WalletName },
+    state: { isWeb3Wallet: web3Wallet, web3WalletName, formValues },
     setReceiverInfo,
     setWeb3Wallet,
     showHideProtectTx
   } = protectTxContext;
+
+  const sendAssetsValues = overrideValues ? overrideValues : formValues;
 
   useEffect(() => {
     const {
@@ -221,7 +223,7 @@ export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtect
   }, [feeAmount]);
 
   const error =
-    sendAssetsValues !== null &&
+    sendAssetsValues !== undefined &&
     ProtectTxUtils.checkFormForProtectedTxErrors(
       sendAssetsValues,
       getAssetRate(sendAssetsValues.asset)

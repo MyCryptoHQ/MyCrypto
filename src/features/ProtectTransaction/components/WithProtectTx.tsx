@@ -108,7 +108,6 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
       state: { protectTxShow, protectTxEnabled, stepIndex },
       setWeb3Wallet,
       goToNextStep,
-      formCallback,
       handleTransactionReport,
       showHideProtectTx
     } = protectTxContext;
@@ -130,9 +129,6 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
       ? [
           {
             component: ProtectTxProtection,
-            props: {
-              sendAssetsValues: (({ values }) => values)(formCallback())
-            },
             actions: {
               handleProtectTxSubmit: async () => {
                 await handleTransactionReport();
@@ -145,9 +141,6 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
       : [
           {
             component: ProtectTxProtection,
-            props: {
-              sendAssetsValues: (({ values }) => values)(formCallback())
-            },
             actions: {
               handleProtectTxSubmit: async (payload: IFormikFields) => {
                 const { account: formAccount, network: formNetwork } = payload;

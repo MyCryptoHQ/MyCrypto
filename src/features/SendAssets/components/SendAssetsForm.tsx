@@ -345,12 +345,11 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
           onComplete(fields);
         }}
         render={({ errors, setFieldValue, setFieldTouched, touched, values }) => {
-          if (getProTxValue(['setMainTransactionFormCallback'])) {
-            getProTxValue(['setMainTransactionFormCallback'])(() => ({
-              isValid: isFormValid,
-              values
-            }));
-          }
+          useEffect(() => {
+            if (getProTxValue(['updateFormValues'])) {
+              getProTxValue(['updateFormValues'])(values);
+            }
+          }, [values]);
 
           // Set gas estimates if default asset is selected
           useEffectOnce(() => {
