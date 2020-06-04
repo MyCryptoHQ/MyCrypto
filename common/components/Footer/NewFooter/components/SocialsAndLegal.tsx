@@ -6,10 +6,22 @@ import { NewTabLink } from 'components/ui';
 import DisclaimerModal from 'components/DisclaimerModal';
 import './SocialsAndLegal.scss';
 
-const SocialMediaLink = ({ link, text }: { link: string; text: string }) => {
+const SocialMediaLink = ({
+  link,
+  text,
+  icon
+}: {
+  link: string;
+  text: string;
+  icon: null | string;
+}) => {
   return (
     <NewTabLink className="SocialMediaLink" key={link} href={link} aria-label={text}>
-      <i className={`sm-icon sm-logo-${text}`} />
+      {icon !== null ? (
+        <img src={icon} width="18.41px" height="18px" style={{ verticalAlign: 'top' }} />
+      ) : (
+        <i className={`sm-icon sm-logo-${text}`} />
+      )}
     </NewTabLink>
   );
 };
@@ -18,7 +30,12 @@ function Socials() {
   return (
     <section className="Socials">
       {socialMediaLinks.map((socialMediaItem, idx) => (
-        <SocialMediaLink link={socialMediaItem.link} key={idx} text={socialMediaItem.text} />
+        <SocialMediaLink
+          link={socialMediaItem.link}
+          key={idx}
+          text={socialMediaItem.text}
+          icon={socialMediaItem.icon}
+        />
       ))}
     </section>
   );
