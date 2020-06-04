@@ -301,7 +301,7 @@
 		"ETHER_SECURITY_LOOKUP": "EtherSecurityLookup",
 		"ETH_ADDRESS_PLACEHOLDER": "ETH Address or blockchain domain",
 		"EXCLUDED_ASSET_TABLE_HEADER": "Hidden Assets",
-		"EXCLUDED_ASSET_TABLE_HEADER_TOOLTIP": "You've chosen to hide these assets in the past, you can click the green buttons below to unhide them.",
+		"EXCLUDED_ASSET_TABLE_HEADER_TOOLTIP": "These are the assets that you've hidden from the Dashboard. Click the plus sign next to an asset to return it to the Dashboard.",
 		"EXPIRED_ON": "Expired on",
 		"EXPIRES_ON": "Expires on",
 		"EXTERNAL_NAVIGATION_WARNING": "This will open buy.mycrypto.com in a new tab.",
