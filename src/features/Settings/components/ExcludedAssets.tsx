@@ -11,15 +11,15 @@ import {
   DashboardPanel,
   Typography,
   Tooltip,
-  FixedSizeCollapsibleTable
+  FixedSizeCollapsibleTable,
+  AddIcon
 } from '@components';
-import CollapseIcon from '@components/icons/CollapseIcon';
-import ExpandIcon from '@components/icons/ExpandIcon';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Fiat, TUuid, IAccount } from '@types';
 import { truncate } from '@utils';
 import { SettingsContext } from '@services/Store';
 import { Balance, BalanceAccount } from '@features/Dashboard/components/WalletBreakdown/types';
+import { CenteredIconArrow } from '@components/IconArrow';
 
 const { SCREEN_MD } = BREAK_POINTS;
 
@@ -63,6 +63,37 @@ const Label = styled.span<{ minWidth?: string }>`
 const Icon = styled(AssetIcon)`
   margin-right: 10px;
 `;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const SIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const UnHideAssetButton = ({ uuid }: { uuid: TUuid }) => {
+  const { removeAssetfromExclusionList } = useContext(SettingsContext);
+  return (
+    <ButtonContainer onClick={() => removeAssetfromExclusionList(uuid)}>
+      <Tooltip tooltip={translateRaw('UNHIDE_ASSET_TOOLTIP')}>
+        <SIconContainer>
+          <AddIcon size="xl" fillColor={COLORS.GREEN} />
+        </SIconContainer>
+      </Tooltip>
+    </ButtonContainer>
+  );
+};
+
+const AccountOverlayButton = ({ isFlipped, onClick }: { isFlipped: boolean; onClick(): void }) => (
+  <ButtonContainer onClick={() => onClick()}>
+    <Tooltip tooltip={translateRaw('WALLET_BREAKDOWN_SHOW_ACCOUNTS_TOOLTIP')}>
+      <CenteredIconArrow size="xl" isFlipped={isFlipped} />
+    </Tooltip>
+  </ButtonContainer>
+);
 
 interface BalancesDetailViewTableRowProps {
   borderBottom?: boolean;
@@ -132,15 +163,11 @@ const createBalancesDetailViewRow = (
       </Tooltip>
     </RowAlignment>,
     <UnHideAssetButton key={balance.id} uuid={balance.uuid as TUuid} />,
-    <>
-      {rowState === 'opened' ? (
-        <CollapseIcon onClick={onCollapseOrExpand} />
-      ) : (
-        <Tooltip tooltip={translateRaw('WALLET_BREAKDOWN_BALANCE_TOOLTIP')}>
-          <ExpandIcon onClick={onCollapseOrExpand} />
-        </Tooltip>
-      )}
-    </>
+    <AccountOverlayButton
+      key={balance.id}
+      isFlipped={rowState === 'opened'}
+      onClick={onCollapseOrExpand}
+    />
   ];
 };
 
@@ -182,15 +209,6 @@ const createAccountRow = (
     <></>,
     <></>
   ];
-};
-
-const UnHideAssetButton = ({ uuid }: { uuid: TUuid }) => {
-  const { removeAssetfromExclusionList } = useContext(SettingsContext);
-  return (
-    <Tooltip tooltip={translateRaw('UNHIDE_ASSET_TOOLTIP')}>
-      <CollapseIcon fillColor={COLORS.GREEN} onClick={() => removeAssetfromExclusionList(uuid)} />
-    </Tooltip>
-  );
 };
 
 interface ExcludedAssetsProps {

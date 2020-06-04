@@ -20,7 +20,7 @@ import { noOp } from '@utils';
 import { SPACING } from '@theme';
 
 import { default as Typography } from './Typography';
-import { default as IconArrow } from './IconArrow';
+import IconArrow from './IconArrow';
 
 export interface TableGroup {
   title: string;

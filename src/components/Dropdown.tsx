@@ -6,11 +6,11 @@ import Select, {
   OnInputKeyDownHandler
 } from 'react-select';
 import styled from 'styled-components';
-import { Icon } from '@mycrypto/ui';
 
 import { COLORS, FONT_SIZE } from '@theme';
 
 import crossIcon from '@assets/images/icn-cross.svg';
+import { CenteredIconArrow } from './IconArrow';
 
 // Give a height to the input when value is defined
 // Overide custom styles common/sass/styles/overrides/react-select.scss
@@ -92,10 +92,6 @@ const DropdownContainer = styled('div')`
   }
 `;
 
-const Chevron = styled(Icon)`
-  font-size: 0.75rem;
-`;
-
 const IconWrapper = styled('div')`
   width: 30px;
 `;
@@ -107,7 +103,7 @@ const OptionWrapper = styled.div`
 `;
 
 const DropdownIndicator = (props: ArrowRendererProps) => (
-  <Chevron icon={props.isOpen ? 'chevronUp' : 'chevronDown'} />
+  <CenteredIconArrow isFlipped={props.isOpen} />
 );
 
 const CustomDropdownIndicator = (dropdownIcon: JSX.Element) => () => (
