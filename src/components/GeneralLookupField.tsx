@@ -10,7 +10,7 @@ import UnstoppableResolution from '@services/UnstoppableService';
 import { isValidETHRecipientAddress } from '@services/EthService/validators';
 import { useEffectOnce } from '@vendor';
 
-import GeneralLookupDropdown from './GeneralLookupDropdown';
+import GeneralLookupDropdown, { LabeledAddress } from './GeneralLookupDropdown';
 
 export interface IGeneralLookupFieldComponentProps {
   error?: string | ErrorObject;
@@ -18,7 +18,7 @@ export interface IGeneralLookupFieldComponentProps {
   isResolvingName: boolean;
   name: string;
   value: IReceiverAddress;
-  options: any[];
+  options: LabeledAddress[];
   placeholder?: string;
   onBlur?(): void;
   setIsResolvingDomain(isResolving: boolean): void;
@@ -53,6 +53,13 @@ const GeneralLookupField = ({
 
   const handleEthAddressDefault = (inputString: string): IReceiverAddress => {
     if (handleEthAddress) return handleEthAddress(inputString);
+    const found = options.find((o) => o.address === inputString);
+    if (found) {
+      return {
+        display: found.label,
+        value: found.address
+      };
+    }
     return {
       display: inputString,
       value: inputString
@@ -110,10 +117,8 @@ const GeneralLookupField = ({
     };
 
     if (isValidETHAddress(inputString)) {
-      // saves 0x address to address book labeled as "Recipient X"
       contact = handleEthAddressDefault(inputString);
     } else if (isValidENSName(inputString)) {
-      // resolves ENS name and saves it to address book labeled as first part of ENS name before "." (example.test.eth --> example)
       contact = await handleENSnameDefault(inputString, contact);
     }
 

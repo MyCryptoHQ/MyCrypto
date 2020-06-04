@@ -43,7 +43,7 @@ const GeneralLookupDropdown = ({
     inputValue={inputValue}
     name={name}
     placeholder={placeholder ? placeholder : translateRaw('ACCOUNT_LOOKUP_SELECTION_PLACEHOLDER')}
-    options={options}
+    options={options.map((o) => ({ value: o.address, ...o }))}
     onChange={(option: LabeledAddress) => {
       onSelect({
         display: option ? option.label : '',
