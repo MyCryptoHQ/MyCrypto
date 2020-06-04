@@ -5,18 +5,17 @@ import styled from 'styled-components';
 import { translateRaw } from '@translations';
 import { RatesContext } from '@services';
 import { SettingsContext, StoreContext } from '@services/Store';
-import { StoreAsset, TUuid } from '@types';
+import { StoreAsset, TUuid, Balance, BalanceAccount } from '@types';
 import { weiToFloat, convertToFiatFromAsset } from '@utils';
 import { BREAK_POINTS, SPACING } from '@theme';
 import { getFiat } from '@config/fiats';
 import { Tooltip } from '@components';
+import { isExcludedAsset } from '@services/Store/helpers';
 
-import { Balance, BalanceAccount } from './types';
 import AccountDropdown from './AccountDropdown';
 import BalancesDetailView from './BalancesDetailView';
 import WalletBreakdownView from './WalletBreakdownView';
 import NoAccountsSelected from './NoAccountsSelected';
-import { isExcludedAsset } from '@services/Store/helpers';
 
 const WalletBreakdownTop = styled.div`
   display: flex;

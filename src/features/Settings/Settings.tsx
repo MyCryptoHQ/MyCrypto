@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Heading } from '@mycrypto/ui';
+
 import {
   AddressBookContext,
   NetworkContext,
@@ -8,15 +9,13 @@ import {
   SettingsContext,
   StoreContext
 } from '@services/Store';
-
 import { AccountList, Mobile, Desktop } from '@components';
-import { NetworkId, CustomNodeConfig, StoreAsset } from '@types';
+import { NetworkId, CustomNodeConfig, StoreAsset, BalanceAccount, Balance } from '@types';
 import { DEFAULT_NETWORK, IS_ACTIVE_FEATURE } from '@config';
 import { BREAK_POINTS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import FlippablePanel from '@features/Settings/components/FlippablePanel';
 import { RatesContext } from '@services/RatesProvider';
-import { Balance, BalanceAccount } from '@features/Dashboard/components/WalletBreakdown/types';
 import { weiToFloat, convertToFiatFromAsset } from '@utils/convert';
 import { getFiat } from '@config/fiats';
 import { isExcludedAsset } from '@services/Store/helpers';
@@ -57,7 +56,7 @@ const StyledLayout = styled.div`
 
 function rendedExcludedAssetsPanel() {
   const { accounts, totals, currentAccounts } = useContext(StoreContext);
-  const { settings, removeAssetfromExclusionList } = useContext(SettingsContext);
+  const { settings } = useContext(SettingsContext);
   const { getAssetRate } = useContext(RatesContext);
 
   const balances: Balance[] = totals(currentAccounts)
@@ -109,7 +108,6 @@ function rendedExcludedAssetsPanel() {
       fiat={fiat}
       accounts={accounts}
       selected={settings.dashboardAccounts}
-      removeAssetfromExclusionList={removeAssetfromExclusionList}
     />
   );
 }

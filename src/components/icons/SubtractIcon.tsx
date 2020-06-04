@@ -25,8 +25,8 @@ const SubtractIcon: React.FC<Props> = ({ fillColor, size, onClick }) => {
       />
       <path
         fill={fillColor || COLORS.BLUE_BRIGHT}
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6ZM8 16C8 11.5817 11.5817 8 16 8C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24C11.5817 24 8 20.4183 8 16Z"
       />
     </svg>
