@@ -9,14 +9,14 @@ import {
   SettingsContext,
   StoreContext
 } from '@services/Store';
+import { buildBalances } from '@utils';
 import { AccountList, Mobile, Desktop } from '@components';
-import { NetworkId, CustomNodeConfig, StoreAsset, BalanceAccount, Balance } from '@types';
+import { NetworkId, CustomNodeConfig, Balance } from '@types';
 import { DEFAULT_NETWORK, IS_ACTIVE_FEATURE } from '@config';
 import { BREAK_POINTS } from '@theme';
-import translate, { translateRaw } from '@translations';
+import translate from '@translations';
 import FlippablePanel from '@features/Settings/components/FlippablePanel';
 import { RatesContext } from '@services/RatesProvider';
-import { weiToFloat, convertToFiatFromAsset } from '@utils/convert';
 import { getFiat } from '@config/fiats';
 import { isExcludedAsset } from '@services/Store/helpers';
 
@@ -58,42 +58,13 @@ function rendedExcludedAssetsPanel() {
   const { accounts, totals, currentAccounts } = useContext(StoreContext);
   const { settings } = useContext(SettingsContext);
   const { getAssetRate } = useContext(RatesContext);
-
-  const balances: Balance[] = totals(currentAccounts)
-    .filter((asset: StoreAsset) => {
-      return !isExcludedAsset(settings.excludedAssets)(asset);
-    })
-    .map((asset: StoreAsset) => {
-      const exchangeRate = getAssetRate(asset);
-      return {
-        id: `${asset.name}-${asset.ticker}`,
-        name: asset.name || translateRaw('WALLET_BREAKDOWN_UNKNOWN'),
-        ticker: asset.ticker,
-        uuid: asset.uuid,
-        amount: weiToFloat(asset.balance, asset.decimal),
-        fiatValue: convertToFiatFromAsset(asset, exchangeRate),
-        exchangeRate,
-        accounts: currentAccounts.reduce((acc, currAccount) => {
-          const matchingAccAssets = currAccount.assets.filter(
-            (accAsset) => accAsset.uuid === asset.uuid
-          );
-          if (matchingAccAssets.length) {
-            return [
-              ...acc,
-              ...matchingAccAssets.map((accAsset) => ({
-                address: currAccount.address,
-                ticker: accAsset.ticker,
-                amount: weiToFloat(accAsset.balance, accAsset.decimal),
-                fiatValue: convertToFiatFromAsset(accAsset, exchangeRate),
-                label: currAccount.label
-              }))
-            ];
-          }
-          return acc;
-        }, [] as BalanceAccount[])
-      };
-    })
-    .sort((a, b) => b.fiatValue - a.fiatValue);
+  const balances: Balance[] = buildBalances(
+    totals,
+    currentAccounts,
+    settings,
+    getAssetRate,
+    isExcludedAsset
+  );
 
   const totalFiatValue = balances.reduce((sum, asset) => {
     return sum + asset.fiatValue;

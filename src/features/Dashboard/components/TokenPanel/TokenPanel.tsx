@@ -1,25 +1,29 @@
 import React, { useState, useContext } from 'react';
 
-import { StoreContext, RatesContext } from '@services';
+import { StoreContext, RatesContext, SettingsContext } from '@services';
 import { ExtendedAsset, StoreAsset } from '@types';
 
 import { TokenList } from './TokenList';
 import { TokenDetails } from './TokenDetails';
 import { AddToken } from './AddToken';
+import { isNotExcludedAsset } from '@services/Store/helpers';
 
 export function TokenPanel() {
   const { totals, currentAccounts, scanTokens } = useContext(StoreContext);
+  const { settings } = useContext(SettingsContext);
   const { getAssetRate } = useContext(RatesContext);
   const [showDetailsView, setShowDetailsView] = useState(false);
   const [showAddToken, setShowAddToken] = useState(false);
   const [currentToken, setCurrentToken] = useState<StoreAsset>();
   const [isScanning, setIsScanning] = useState(false);
-  const allTokens = totals(currentAccounts).reduce((acc, a) => {
-    if (a.contractAddress) {
-      acc.push({ ...a, rate: getAssetRate(a) || 0 });
-    }
-    return acc;
-  }, [] as StoreAsset[]);
+  const allTokens = totals(currentAccounts)
+    .reduce((acc, a) => {
+      if (a.contractAddress) {
+        acc.push({ ...a, rate: getAssetRate(a) || 0 });
+      }
+      return acc;
+    }, [] as StoreAsset[])
+    .filter(isNotExcludedAsset(settings.excludedAssets));
 
   const handleScanTokens = async (asset?: ExtendedAsset) => {
     try {
