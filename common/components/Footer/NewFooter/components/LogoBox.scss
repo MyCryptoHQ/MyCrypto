@@ -15,6 +15,7 @@ $spacing-md: 15px;
 
 .LogoBox {
   text-align: center;
+  min-width: 290px;
 
   &-image {
     @include perfectly-centered;
@@ -66,7 +67,7 @@ $spacing-md: 15px;
 
   @media (min-width: 800px) {
     flex: 1;
-    min-width: 240px;
+    min-width: 290px;
     text-align: left;
   }
 }
