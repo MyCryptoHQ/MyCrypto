@@ -208,7 +208,7 @@ const GeneralLookupField = ({
         )}
       </>
     );
-  }, [value.display, isResolvingName, options]);
+  }, [value.display, isResolvingName, options, error]);
   return <Field name={name} validate={validateAddress} component={GeneralDropdownFieldCallback} />;
 };
 
