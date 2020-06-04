@@ -1,3 +1,13 @@
+const ENV = {
+  E2E_MNEMONIC_PASSPHRASE: process.env.E2E_MNEMONIC_PASSPHRASE
+};
+
+const ENV_KEYS = Object.keys(ENV);
+if (ENV_KEYS.some(k => !ENV[k])) {
+  const envKeysUnset = ENV_KEYS.filter(k => !ENV[k]);
+  throw Error(`Required ENV variables to be set: '${envKeysUnset.join('\',\'')}'`);
+}
+
 const FIXTURES_CONST = {
   TIMEOUT: 5000,
   BASE_URL: 'https://localhost:3000'
@@ -12,19 +22,118 @@ const PAGES = {
 
 const NETWORK_NAME_FIXTURE = 'Ropsten';
 
-const ENV = {
-  E2E_MNEMONIC_PASSPHRASE: process.env.E2E_MNEMONIC_PASSPHRASE
+const FIXTURE_MYC_STORAGE_KEY = 'MYC_Storage';
+
+const FIXTURE_LOCALSTORAGE_EMPTY = {
+  'version': 'v1.0.0',
+  'accounts': {},
+  'addressBook': {
+    'a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe': {
+      'label': 'MyCrypto Tip Jar',
+      'address': '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+      'notes': 'Toss us a coin!',
+      'network': 'Ethereum',
+      'uuid': 'a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe'
+    }
+  },
+  'assets': {},
+  'contracts': {},
+  'networks': {},
+  'notifications': {},
+  'settings': {
+    'fiatCurrency': 'USD',
+    'darkMode': false,
+    'dashboardAccounts': [],
+    'inactivityTimer': 1800000,
+    'rates': {},
+    'language': 'en'
+  },
+  'password': '',
+  'networkNodes': { 'Ethereum': { 'selectedNode': 'web3' }, 'Ropsten': { 'selectedNode': 'web3' } },
+  'mtime': 1591264444786
 };
 
-const ENV_KEYS = Object.keys(ENV);
-if (ENV_KEYS.some(k => !ENV[k])) {
-  const envKeysUnset = ENV_KEYS.filter(k => !ENV[k]);
-  throw Error(`Required ENV variables to be set: '${envKeysUnset.join('\',\'')}'`);
-}
+const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
+  'version': 'v1.0.0',
+  'accounts': {
+    '256b782e-52bc-51f9-a357-602501e59700': {
+      'address': '0x88F7B1E26c3A52CA3cD8aF4ba1b448391eb31d88',
+      'networkId': 'Ropsten',
+      'wallet': 'MNEMONIC_PHRASE',
+      'dPath': 'm/44\'/1\'/0\'/0/0',
+      'assets': [{
+        'ticker': 'RopstenETH',
+        'name': 'Ropsten',
+        'decimal': 18,
+        'networkId': 'Ropsten',
+        'type': 'base',
+        'mappings': {},
+        'isCustom': false,
+        'uuid': '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7',
+        'balance': { '_hex': '0x06c11b86ae814800' },
+        'mtime': 1591264690383
+      }],
+      'transactions': [],
+      'favorite': false,
+      'mtime': 0,
+      'uuid': '256b782e-52bc-51f9-a357-602501e59700',
+      'label': 'Mnemonic Phrase Account 1'
+    }
+  },
+  'addressBook': {
+    'a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe': {
+      'label': 'MyCrypto Tip Jar',
+      'address': '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+      'notes': 'Toss us a coin!',
+      'network': 'Ethereum',
+      'uuid': 'a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe'
+    },
+    '8c7beeff-74ce-427b-e7e1-64f7ed21b98d': {
+      'label': 'Mnemonic Phrase Account 1',
+      'address': '0x88F7B1E26c3A52CA3cD8aF4ba1b448391eb31d88',
+      'notes': '',
+      'network': 'Ropsten',
+      'uuid': '8c7beeff-74ce-427b-e7e1-64f7ed21b98d'
+    }
+  },
+  'assets': {},
+  'contracts': {},
+  'networks': {},
+  'notifications': {
+    '1c44bb44-02d4-0db1-b7dd-f3d001ef877b': {
+      'uuid': '1c44bb44-02d4-0db1-b7dd-f3d001ef877b',
+      'template': 'wallet-added',
+      'templateData': { 'address': '0x88F7B1E26c3A52CA3cD8aF4ba1b448391eb31d88' },
+      'dateDisplayed': '2020-06-04T09:58:09.485Z',
+      'dismissed': false
+    },
+    '4cce94f3-f9b7-ff5f-2ad4-74d881376e7c': {
+      'uuid': '4cce94f3-f9b7-ff5f-2ad4-74d881376e7c',
+      'template': 'onboarding-responsible',
+      'templateData': { 'firstDashboardVisitDate': '2020-06-04T09:58:09.575Z' },
+      'dateDisplayed': '2020-06-04T09:58:09.575Z',
+      'dismissed': false
+    }
+  },
+  'settings': {
+    'fiatCurrency': 'USD',
+    'darkMode': false,
+    'dashboardAccounts': ['256b782e-52bc-51f9-a357-602501e59700'],
+    'inactivityTimer': 1800000,
+    'rates': {},
+    'language': 'en'
+  },
+  'password': '',
+  'networkNodes': { 'Ethereum': { 'selectedNode': 'web3' }, 'Ropsten': { 'selectedNode': 'web3' } },
+  'mtime': 1591264705862
+};
 
 export {
+  ENV,
   FIXTURES_CONST,
   PAGES,
   NETWORK_NAME_FIXTURE,
-  ENV
+  FIXTURE_LOCALSTORAGE_EMPTY,
+  FIXTURE_LOCALSTORAGE_WITH_ONE_ACC,
+  FIXTURE_MYC_STORAGE_KEY
 }

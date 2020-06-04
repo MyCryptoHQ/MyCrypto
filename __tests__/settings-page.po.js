@@ -25,4 +25,8 @@ export default class SettingsPage extends BasePage {
       .click(Selector('table tbody tr:first-child td'))
       .click(Selector('button').withText(getTransValueByKey('ACTION_6')));
   }
+
+  async expectAccountTableToMatchCount(count) {
+    await t.expect(Selector('table:first-child tbody tr').count).eql(count)
+  }
 }
