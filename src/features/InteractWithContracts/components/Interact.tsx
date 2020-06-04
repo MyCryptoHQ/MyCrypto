@@ -25,7 +25,7 @@ import { translateRaw } from '@translations';
 import { isValidETHAddress } from '@services/EthService/validators';
 import { getNetworkById, NetworkContext } from '@services';
 import { isValidENSName } from '@services/EthService';
-import { isSameAddress } from '@utils';s
+import { isSameAddress } from '@utils';
 
 import GeneratedInteractionForm from './GeneratedInteractionForm';
 import { CUSTOM_CONTRACT_ADDRESS } from '../constants';
@@ -249,7 +249,8 @@ function Interact(props: CombinedProps) {
     }
   }, []);
 
-const customEditingMode = contract && isSameAddress(contract.address as TAddress, CUSTOM_CONTRACT_ADDRESS as TAddress);
+  const customEditingMode =
+    contract && isSameAddress(contract.address as TAddress, CUSTOM_CONTRACT_ADDRESS as TAddress);
 
   const initialFormikValues: { address: IReceiverAddress } = {
     address: {
