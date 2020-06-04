@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, lazy } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 
-import PaperWallet from './PaperWallet';
+const PaperWallet = lazy(() => import(/* webpackChunkName: "PaperWallet" */ './PaperWallet'));
+
 import { Spinner } from '@components';
 
 // Legacy
@@ -62,7 +63,7 @@ export default class PrintPaperWalletButton extends Component<Props, State> {
     loading: false
   };
 
-  private paperWallet: PaperWallet | null;
+  private paperWallet: any | null;
 
   public render() {
     const { address, path, printText, mnemonic, privateKey } = this.props;

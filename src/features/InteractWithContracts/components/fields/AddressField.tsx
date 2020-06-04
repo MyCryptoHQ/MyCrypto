@@ -8,8 +8,8 @@ import { DomainStatus } from '@components';
 import { getIsValidENSAddressFunction } from '@services/EthService';
 import { monospace } from '@theme';
 import { translateRaw } from '@translations';
-import { ResolutionError } from '@unstoppabledomains/resolution';
-import InputField from './InputField';
+import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
+import InputField from '@components/InputField';
 
 /*
   Eth address field to be used within a Formik Form

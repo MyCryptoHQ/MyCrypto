@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { BannerType } from '@types';
-import { FONT_SIZE, BREAK_POINTS, COLORS } from '@theme';
+import { FONT_SIZE, BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { default as Typography } from './Typography';
 import announcementSVG from '@assets/images/icn-announcement.svg';
 import errorSVG from '@assets/images/icn-toast-error.svg';
@@ -18,6 +18,10 @@ interface Config {
   icon: string;
 }
 
+interface BannerTypographyProps {
+  color: string;
+}
+
 const Container = styled.div`
   background-color: ${(p: { config: Config }) => p.config.bgColor || 'transparent'};
   color: ${(p) => p.config.color || 'inherit'};
@@ -25,6 +29,8 @@ const Container = styled.div`
   padding-right: 30px;
   display: flex;
   align-items: flex-start;
+  flex-direction: column;
+  flex: 1;
   justify-content: center;
   font-size: ${FONT_SIZE.SM};
   & > img {
@@ -45,16 +51,12 @@ const Container = styled.div`
 `;
 
 const Icon = styled.img`
-  max-width: 1em;
+  height: 1em;
+  margin-right: ${SPACING.XS};
 `;
-
-interface BannerTypographyProps {
-  color: string;
-}
 
 const STypography = styled(Typography)<BannerTypographyProps>`
   color: ${(props) => props.color};
-
   a {
     color: ${(props) => props.color};
     text-decoration: underline;
@@ -65,6 +67,13 @@ const STypography = styled(Typography)<BannerTypographyProps>`
     color: ${(props) => props.color};
     font-weight: bold;
   }
+`;
+
+const RowContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  justify-content: center;
 `;
 
 const bannerConfig = (type: BannerType): Config => {
@@ -89,8 +98,13 @@ export const Banner = ({ value, type, ...props }: Props) => {
   const config = bannerConfig(type);
   return (
     <Container config={config} {...props}>
-      <Icon src={config.icon} alt={type} />
-      <STypography value={value} color={config.color} fontSize={FONT_SIZE.SM} />
+      <RowContainer>
+        <Icon src={config.icon} alt={type} />
+
+        <STypography color={config.color} fontSize={FONT_SIZE.SM}>
+          {value}
+        </STypography>
+      </RowContainer>
     </Container>
   );
 };

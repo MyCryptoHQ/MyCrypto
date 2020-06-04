@@ -46,10 +46,10 @@ function NetworkSelectDropdown({
     }
   }, []);
 
-  // @ADD_ACCOUNT_TODO: The difference in accountType is likely causing
+  // @ADD_ACCOUNT_@todo: The difference in accountType is likely causing
   // the absence of list.
   const validNetworks = networks
-    // @ts-ignore CHANGE IN WALLETYPE OBJECT CAUSING accountType to error -> TODO: FIX accountType
+    // @ts-ignore CHANGE IN WALLETYPE OBJECT CAUSING accountType to error -> @todo: FIX accountType
     .filter((options) => isWalletFormatSupportedOnNetwork(options, accountType))
     .map((n) => ({ label: n.name, value: n }));
   const network = getNetworkById(networkId);

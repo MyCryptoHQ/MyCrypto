@@ -1,23 +1,16 @@
-import React, { Component as ComponentProps } from 'react';
-import pipe from 'ramda/src/pipe';
-
+import React, { FC, useCallback, useContext, useState } from 'react';
 import translate, { translateRaw } from '@translations';
 import { WALLETS_CONFIG, IWalletConfig } from '@config';
 import { WalletId, FormData, Network } from '@types';
 import { InlineMessage, NewTabLink } from '@components';
-import { withContext, hasWeb3Provider, useScreenSize } from '@utils';
-import {
-  SettingsContext,
-  ISettingsContext,
-  INetworkContext,
-  NetworkContext,
-  NetworkUtils
-} from '@services/Store';
+import { hasWeb3Provider, useAnalytics, useScreenSize } from '@utils';
+import { SettingsContext, NetworkContext, NetworkUtils } from '@services/Store';
 import { WalletFactory } from '@services/WalletService';
 import { FormDataActionType as ActionType } from '@features/AddAccount/types';
-import './Web3Provider.scss';
 import { getWeb3Config } from '@utils/web3';
-import { ANALYTICS_CATEGORIES, AnalyticsService } from '@services';
+import { ANALYTICS_CATEGORIES } from '@services';
+
+import './Web3Provider.scss';
 
 interface Props {
   formDispatch: any;
@@ -27,85 +20,24 @@ interface Props {
   onUnlock(param: any): void;
 }
 
-interface State {
-  web3Unlocked: boolean | undefined;
-  web3ProviderSettings: IWalletConfig;
-}
-
 const WalletService = WalletFactory(WalletId.WEB3);
 
-class Web3ProviderDecrypt extends ComponentProps<
-  Props & ISettingsContext & INetworkContext,
-  State
-> {
-  constructor(props: Props & ISettingsContext & INetworkContext) {
-    super(props);
-    this.state = {
-      web3Unlocked: undefined,
-      web3ProviderSettings: this.getWeb3Provider()
-    };
-    this.unlockWallet = this.unlockWallet.bind(this);
-  }
+const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) => {
+  const { isMobile } = useScreenSize();
+  const { updateSettingsNode } = useContext(SettingsContext);
+  const { addNodeToNetwork, networks } = useContext(NetworkContext);
+  const trackSelectNetwork = useAnalytics({
+    category: ANALYTICS_CATEGORIES.ADD_WEB3_ACCOUNT
+  });
+  const [web3ProviderSettings] = useState<IWalletConfig>(() => {
+    if (hasWeb3Provider()) {
+      return getWeb3Config();
+    }
+    return WALLETS_CONFIG[WalletId.WEB3]; //Default to Web3
+  });
+  const [web3Unlocked, setWeb3Unlocked] = useState<boolean | undefined>(undefined);
 
-  public render() {
-    const { web3Unlocked, web3ProviderSettings: provider } = this.state;
-    const { isMobile } = this.props;
-    const isDefault = provider.id === WalletId.WEB3;
-    const transProps = { $walletId: provider.name };
-
-    return (
-      <div className="Panel">
-        <div className="Panel-title">
-          {isDefault
-            ? translate('ADD_ACCOUNT_WEB3_TITLE_DEFAULT', transProps)
-            : translate('ADD_ACCOUNT_WEB3_TITLE', transProps)}
-        </div>
-        <div className="Panel-description">{translate(`ADD_ACCOUNT_WEB3_DESC`)}</div>
-        <div className="Panel-content">
-          <div className="Web3-img-container">
-            <div className={isDefault ? 'Web3-img-default' : 'Web3-img'}>
-              <img src={provider.icon} />
-            </div>
-          </div>
-          <button className="btn btn-primary btn-lg btn-block" onClick={this.unlockWallet}>
-            {isDefault
-              ? translate('ADD_WEB3_DEFAULT', transProps)
-              : translate('ADD_WEB3', transProps)}
-          </button>
-
-          {web3Unlocked === false && (
-            <InlineMessage>{translate('WEB3_ONUNLOCK_NOT_FOUND_ERROR', transProps)}</InlineMessage>
-          )}
-        </div>
-        <div className="Web3-footer">
-          <div>
-            {isDefault
-              ? translate('ADD_ACCOUNT_WEB3_FOOTER_DEFAULT', transProps)
-              : translate('ADD_ACCOUNT_WEB3_FOOTER', transProps)}{' '}
-            <NewTabLink
-              content={translate(`ADD_ACCOUNT_WEB3_FOOTER_LINK`, transProps)}
-              href={
-                provider.install
-                  ? provider.install.getItLink
-                  : isMobile
-                  ? translateRaw('ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_MOBILE')
-                  : translateRaw(`ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_DESKTOP`)
-              }
-            />
-          </div>
-          <div>
-            <NewTabLink
-              content={translate('ADD_ACCOUNT_WEB3_HELP', transProps)}
-              href={`${provider.helpLink}`}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  public async unlockWallet() {
-    const { updateSettingsNode, addNodeToNetwork, networks } = this.props;
+  const unlockWallet = useCallback(async () => {
     const handleUnlock = (network: Network) => {
       updateSettingsNode('web3');
       addNodeToNetwork(NetworkUtils.createWeb3Node(), network);
@@ -117,38 +49,75 @@ class Web3ProviderDecrypt extends ComponentProps<
         throw new Error('Failed to unlock web3 wallet');
       }
       // If accountType is defined, we are in the AddAccountFlow
-      if (this.props.formData.accountType) {
-        AnalyticsService.instance.track(
-          ANALYTICS_CATEGORIES.ADD_WEB3_ACCOUNT,
-          `${this.state.web3ProviderSettings.name} added`
-        );
+      if (formData.accountType) {
+        trackSelectNetwork({
+          actionName: `${web3ProviderSettings.name} added`
+        });
+
         const network = walletPayload.network;
-        this.props.formDispatch({
+        formDispatch({
           type: ActionType.SELECT_NETWORK,
           payload: { network }
         });
       }
-      this.props.onUnlock(walletPayload);
+      onUnlock(walletPayload);
     } catch (e) {
-      this.setState({ ...this.state, web3Unlocked: false });
+      setWeb3Unlocked(false);
     }
-  }
+  }, [updateSettingsNode, addNodeToNetwork, formData, formDispatch, setWeb3Unlocked]);
 
-  private getWeb3Provider() {
-    if (hasWeb3Provider()) {
-      return getWeb3Config();
-    }
-    return WALLETS_CONFIG[WalletId.WEB3]; //Default to Web3
-  }
-}
+  const isDefault = web3ProviderSettings.id === WalletId.WEB3;
+  const transProps = { $walletId: web3ProviderSettings.name };
 
-const withResponsive = (Component: any) => (ownProps: any) => {
-  const { isMobile } = useScreenSize();
-  return <Component {...ownProps} isMobile={isMobile} />;
+  return (
+    <div className="Panel">
+      <div className="Panel-title">
+        {isDefault
+          ? translate('ADD_ACCOUNT_WEB3_TITLE_DEFAULT', transProps)
+          : translate('ADD_ACCOUNT_WEB3_TITLE', transProps)}
+      </div>
+      <div className="Panel-description">{translate(`ADD_ACCOUNT_WEB3_DESC`)}</div>
+      <div className="Panel-content">
+        <div className="Web3-img-container">
+          <div className={isDefault ? 'Web3-img-default' : 'Web3-img'}>
+            <img src={web3ProviderSettings.icon} />
+          </div>
+        </div>
+        <button className="btn btn-primary btn-lg btn-block" onClick={unlockWallet}>
+          {isDefault
+            ? translate('ADD_WEB3_DEFAULT', transProps)
+            : translate('ADD_WEB3', transProps)}
+        </button>
+
+        {web3Unlocked === false && (
+          <InlineMessage>{translate('WEB3_ONUNLOCK_NOT_FOUND_ERROR', transProps)}</InlineMessage>
+        )}
+      </div>
+      <div className="Web3-footer">
+        <div>
+          {isDefault
+            ? translate('ADD_ACCOUNT_WEB3_FOOTER_DEFAULT', transProps)
+            : translate('ADD_ACCOUNT_WEB3_FOOTER', transProps)}{' '}
+          <NewTabLink
+            content={translate(`ADD_ACCOUNT_WEB3_FOOTER_LINK`, transProps)}
+            href={
+              web3ProviderSettings.install
+                ? web3ProviderSettings.install.getItLink
+                : isMobile
+                ? translateRaw('ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_MOBILE')
+                : translateRaw(`ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_DESKTOP`)
+            }
+          />
+        </div>
+        <div>
+          <NewTabLink
+            content={translate('ADD_ACCOUNT_WEB3_HELP', transProps)}
+            href={`${web3ProviderSettings.helpLink}`}
+          />
+        </div>
+      </div>
+    </div>
+  );
 };
 
-export default pipe(
-  withResponsive,
-  withContext(SettingsContext),
-  withContext(NetworkContext)
-)(Web3ProviderDecrypt);
+export default Web3ProviderDecrypt;

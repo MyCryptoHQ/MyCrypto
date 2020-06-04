@@ -39,7 +39,7 @@ export function verifySignedMessage({ address, msg, sig, version }: ISignedMessa
   if (sigb.length !== 65) {
     return false;
   }
-  //TODO: explain what's going on here
+  //@todo: explain what's going on here
   sigb[64] = sigb[64] === 0 || sigb[64] === 1 ? sigb[64] + 27 : sigb[64];
   const hash = version === '2' ? hashPersonalMessage(toBuffer(msg)) : keccak(msg);
   const pubKey = ecrecover(hash, sigb[64], sigb.slice(0, 32), sigb.slice(32, 64));

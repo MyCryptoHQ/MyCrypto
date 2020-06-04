@@ -1,6 +1,8 @@
 import React, { createContext, useContext } from 'react';
 
-import { ExtendedContract, LSKeys, TUuid } from '@types';
+import { ExtendedContract, LSKeys, TUuid, TAddress } from '@types';
+import { isSameAddress } from '@utils';
+
 import { DataContext } from '../DataManager';
 
 export interface ProviderState {
@@ -35,7 +37,8 @@ export const ContractProvider: React.FC = ({ children }) => {
     },
     getContractsByIds: (uuids: string[]) =>
       uuids.map((contractId) => contracts.find((c) => c.uuid === contractId)!).filter(Boolean),
-    getContractByAddress: (address) => contracts.find((x) => x.address === address)
+    getContractByAddress: (address) =>
+      contracts.find((x) => isSameAddress(x.address as TAddress, address as TAddress))
   };
   return <ContractContext.Provider value={state}>{children}</ContractContext.Provider>;
 };

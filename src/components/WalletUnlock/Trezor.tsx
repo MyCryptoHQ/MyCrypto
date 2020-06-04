@@ -14,13 +14,13 @@ import DeterministicWallets from './DeterministicWallets';
 import './Trezor.scss';
 import UnsupportedNetwork from './UnsupportedNetwork';
 
-//todo: conflicts with comment in walletDecrypt -> onUnlock method
+//@todo: conflicts with comment in walletDecrypt -> onUnlock method
 interface OwnProps {
   formData: FormData;
   onUnlock(param: any): void;
 }
 
-// todo: nearly duplicates ledger component props
+// @todo: nearly duplicates ledger component props
 interface State {
   publicKey: string;
   chainCode: string;

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 
-import { CollapsibleTable, Tooltip, LinkOut, Account } from '@components';
+import { Tooltip, LinkOut, Account, FixedSizeCollapsibleTable } from '@components';
 import { translateRaw } from '@translations';
 import { breakpointToNumber, BREAK_POINTS } from '@theme';
 import { IconID } from '@components/Tooltip';
@@ -18,13 +18,6 @@ const Label = styled.span`
 
 const RowAlignment = styled.div`
   float: ${(props: { align?: string }) => props.align || 'inherit'};
-`;
-
-const TableContainer = styled.div`
-  display: block;
-  overflow: auto;
-  flex: 1;
-  max-height: 600px;
 `;
 
 const isLessThanAMonth = (date: number, now: number) => date - now <= SECONDS_IN_MONTH;
@@ -69,8 +62,10 @@ export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
   };
 
   return (
-    <TableContainer>
-      <CollapsibleTable breakpoint={breakpointToNumber(BREAK_POINTS.SCREEN_XS)} {...domainTable} />
-    </TableContainer>
+    <FixedSizeCollapsibleTable
+      maxHeight={'800px'}
+      breakpoint={breakpointToNumber(BREAK_POINTS.SCREEN_XS)}
+      {...domainTable}
+    />
   );
 }

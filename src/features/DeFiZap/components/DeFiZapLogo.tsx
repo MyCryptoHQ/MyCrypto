@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { translateRaw } from '@translations';
 
-import defizaplogo from '@assets/images/defizap/defizaplogo.svg';
+import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 
 const DefiZapLogo = styled.div`
   display: flex;
@@ -22,7 +22,7 @@ const DefiZapLogoText = styled.div`
 const DeFiZapLogo = () => {
   return (
     <DefiZapLogo>
-      <DefiZapLogoImage src={defizaplogo} />
+      <DefiZapLogoImage src={zapperLogo} />
       <DefiZapLogoText>{translateRaw('ZAP_POWERED_BY')}</DefiZapLogoText>
     </DefiZapLogo>
   );

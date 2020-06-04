@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Typography } from '@mycrypto/ui';
 
 import { DOWNLOAD_MYCRYPTO_LINK, WALLETS_CONFIG } from '@config';
 import translate from '@translations';
-import { ANALYTICS_CATEGORIES, AnalyticsService } from '@services';
+import { ANALYTICS_CATEGORIES } from '@services';
 
 import AppStoreBadgeIMG from '@assets/images/mobile/app-store-badge.png';
 import GooglePlayBadgeIMG from '@assets/images/mobile/google-play-badge.png';
 import { NewTabLink } from '@components';
-import { useScreenSize } from '@utils';
+import { useAnalytics, useScreenSize } from '@utils';
 import './Web3ProviderInstall.scss';
 
 function InstallTrunk() {
@@ -73,9 +73,12 @@ function InstallMetaMask() {
 }
 
 function Web3ProviderInstall() {
-  useEffect(() => {
-    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.ADD_WEB3_ACCOUNT, `No provider detected`);
-  }, []);
+  useAnalytics({
+    category: ANALYTICS_CATEGORIES.ADD_WEB3_ACCOUNT,
+    actionName: 'No provider detected',
+    triggerOnMount: true
+  });
+
   const { isMobile } = useScreenSize();
   return (
     <div className="Panel">

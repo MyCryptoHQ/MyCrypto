@@ -4,7 +4,7 @@ import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import translate, { translateRaw } from '@translations';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
+import { ANALYTICS_CATEGORIES } from '@services';
 import { COLORS, BREAK_POINTS } from '@theme';
 import { ROUTE_PATHS } from '@config';
 
@@ -13,6 +13,7 @@ import titleIllustration from '@assets/images/title-illustration.svg';
 import newWalletIcon from '@assets/images/icn-new-wallet.svg';
 import existingWalletIcon from '@assets/images/icn-existing-wallet.svg';
 import signInIcon from '@assets/images/returning.svg';
+import { useAnalytics } from '@utils';
 
 const { SCREEN_SM, SCREEN_LG, SCREEN_XL, SCREEN_XXL } = BREAK_POINTS;
 
@@ -209,20 +210,20 @@ const ActionIcon = styled.img`
 
 interface ActionCardProps {
   name: string;
-  description: React.ReactElement<any>;
+  description: React.ReactElement;
   icon: string;
   link: string;
   eventAction: string;
 }
 
-const trackButtonClick = (button: string) => {
-  AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HOME, `${button} button clicked`);
-};
-
 const ActionCard: React.FC<ActionCardProps> = (props) => {
+  const trackButton = useAnalytics({
+    category: ANALYTICS_CATEGORIES.HOME
+  });
+
   const { name, description, icon, link, eventAction } = props;
   return (
-    <ActionCardWrapper onClick={() => trackButtonClick(eventAction)}>
+    <ActionCardWrapper onClick={() => trackButton({ actionName: `${eventAction} button clicked` })}>
       <LinkWrapper to={link}>
         <ActionCaptions>
           <ActionName>{name}</ActionName>

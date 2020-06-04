@@ -1,5 +1,6 @@
-import { Asset, IAccount, StoreAccount } from '@types';
+import { Asset, IAccount, StoreAccount, NetworkId, TAddress } from '@types';
 import { DEFAULT_NETWORK } from '@config';
+import { isSameAddress } from '@utils';
 
 export const getDashboardAccounts = (
   accounts: StoreAccount[],
@@ -12,11 +13,11 @@ export const getDashboardAccounts = (
 
 export const getAccountByAddressAndNetworkName = (accounts: IAccount[]) => (
   address: string,
-  networkId: string
+  networkId: NetworkId
 ): IAccount | undefined => {
   return accounts.find(
     (account) =>
-      account.address.toLowerCase() === address.toLowerCase() && account.networkId === networkId
+      isSameAddress(account.address, address as TAddress) && account.networkId === networkId
   );
 };
 

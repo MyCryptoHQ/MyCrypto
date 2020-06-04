@@ -7,7 +7,7 @@ import isEmpty from 'ramda/src/isEmpty';
 import eqBy from 'ramda/src/eqBy';
 import prop from 'ramda/src/prop';
 
-import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services/ApiService/Analytics';
+import { ANALYTICS_CATEGORIES } from '@services/ApiService/Analytics';
 
 import {
   IRawAccount,
@@ -19,8 +19,11 @@ import {
   LSKeys,
   TUuid,
   ITxStatus,
-  ITxType
+  ITxType,
+  NetworkId,
+  TAddress
 } from '@types';
+import { useAnalytics, isSameAddress } from '@utils';
 
 import { DataContext } from '../DataManager';
 import { SettingsContext } from '../Settings';
@@ -32,8 +35,8 @@ export interface IAccountContext {
   createAccountWithID(accountData: IRawAccount, uuid: TUuid): void;
   deleteAccount(account: IAccount): void;
   updateAccount(uuid: TUuid, accountData: IAccount): void;
-  addNewTransactionToAccount(account: IAccount, transaction: ITxReceipt): void;
-  getAccountByAddressAndNetworkName(address: string, network: string): IAccount | undefined;
+  addNewTxToAccount(account: IAccount, transaction: ITxReceipt): void;
+  getAccountByAddressAndNetworkName(address: string, networkId: NetworkId): IAccount | undefined;
   updateAccountAssets(account: StoreAccount, assets: Asset[]): Promise<void>;
   updateAllAccountsAssets(accounts: StoreAccount[], assets: Asset[]): Promise<void>;
   updateAccountsBalances(toUpate: IAccount[]): void;
@@ -46,6 +49,10 @@ export const AccountProvider: React.FC = ({ children }) => {
   const { createActions, accounts } = useContext(DataContext);
   const { addAccountToFavorites } = useContext(SettingsContext);
   const model = createActions(LSKeys.ACCOUNTS);
+  const trackTxHistory = useAnalytics({
+    category: ANALYTICS_CATEGORIES.TX_HISTORY,
+    actionName: 'Tx Made'
+  });
 
   const state: IAccountContext = {
     accounts,
@@ -55,23 +62,18 @@ export const AccountProvider: React.FC = ({ children }) => {
     },
     deleteAccount: model.destroy,
     updateAccount: (uuid, a) => model.update(uuid, a),
-    addNewTransactionToAccount: (accountData, newTransaction) => {
-      const { network, ...newTxWithoutNetwork } = newTransaction;
-      if (
-        'stage' in newTxWithoutNetwork &&
-        [ITxStatus.SUCCESS, ITxStatus.FAILED].includes(newTxWithoutNetwork.stage)
-      ) {
-        AnalyticsService.instance.track(ANALYTICS_CATEGORIES.TX_HISTORY, `Tx Made`, {
-          txType: (newTxWithoutNetwork && newTxWithoutNetwork.txType) || ITxType.UNKNOWN,
-          txStatus: newTxWithoutNetwork.stage
+    addNewTxToAccount: (accountData, newTx) => {
+      if ('status' in newTx && [ITxStatus.SUCCESS, ITxStatus.FAILED].includes(newTx.status)) {
+        trackTxHistory({
+          eventParams: {
+            txType: (newTx && newTx.txType) || ITxType.UNKNOWN,
+            txStatus: newTx.status
+          }
         });
       }
       const newAccountData = {
         ...accountData,
-        transactions: [
-          ...accountData.transactions.filter((tx) => tx.hash !== newTransaction.hash),
-          newTxWithoutNetwork
-        ]
+        transactions: [...accountData.transactions.filter((tx) => tx.hash !== newTx.hash), newTx]
       };
       state.updateAccount(accountData.uuid, newAccountData);
     },
@@ -88,7 +90,11 @@ export const AccountProvider: React.FC = ({ children }) => {
         if (existingAccount) {
           const newAssets: AssetBalanceObject[] = positiveAssetBalances.reduce(
             (tempAssets: AssetBalanceObject[], [contractAddress, balance]: [string, BigNumber]) => {
-              const tempAsset = assets.find((x) => x.contractAddress === contractAddress);
+              const tempAsset = assets.find((x) =>
+                x.contractAddress
+                  ? isSameAddress(x.contractAddress as TAddress, contractAddress as TAddress)
+                  : false
+              );
               return [
                 ...tempAssets,
                 ...(tempAsset
@@ -127,7 +133,9 @@ export const AccountProvider: React.FC = ({ children }) => {
                 tempAssets: AssetBalanceObject[],
                 [contractAddress, balance]: [string, BigNumber]
               ) => {
-                const tempAsset = assets.find((x) => x.contractAddress === contractAddress);
+                const tempAsset = assets.find((x) =>
+                  isSameAddress(x.contractAddress as TAddress, contractAddress as TAddress)
+                );
                 return [
                   ...tempAssets,
                   ...(tempAsset

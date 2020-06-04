@@ -5,7 +5,7 @@ import { BannerType } from '@types';
 import { Banner } from '@components';
 import { BREAK_POINTS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from '@theme';
 import { DrawerContext, ErrorContext } from '@features';
-import { translateRaw } from '@translations';
+import translate, { translateRaw } from '@translations';
 import Header from './Header';
 import Footer from './Footer';
 
@@ -72,11 +72,26 @@ const SContainer = styled('div')`
     `}
 `;
 
+const CenteredBannerText = styled.div`
+  display: flex;
+  justify-content: center;
+  & a {
+    margin-left: ${SPACING.XS};
+  }
+`;
+
+export const ANNOUNCEMENT_MSG = () => (
+  <>
+    <CenteredBannerText>{translateRaw('BETA_ANNOUNCEMENT')}</CenteredBannerText>
+    <CenteredBannerText>{translate('BETA_ANNOUNCEMENT_LINK')}</CenteredBannerText>
+  </>
+);
+
 export default function Layout({ config = {}, className = '', children }: Props) {
   const { centered = true, fluid, fullW = false, bgColor, paddingV } = config;
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
   const { error, shouldShowError, getErrorMessage } = useContext(ErrorContext);
-  const betaAnnouncement = translateRaw('BETA_ANNOUNCEMENT');
+  const betaAnnouncement = ANNOUNCEMENT_MSG();
 
   // Store the calculated height of STop so we can adapt the marginTop of SContainer
   // when the mobile header has a fixed positioning.

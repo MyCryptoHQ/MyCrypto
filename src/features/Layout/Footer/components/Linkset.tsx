@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
+import { ANALYTICS_CATEGORIES } from '@services';
 import { CRYPTOSCAMDB, getKBHelpArticle, KB_HELP_ARTICLE, EXT_URLS } from '@config';
 import { translateRaw } from '@translations';
 import './Linkset.scss';
+import useAnalytics from '@utils/useAnalytics';
 
 const LINK_COLUMNS = [
   {
@@ -94,11 +95,11 @@ const LINK_COLUMNS = [
   }
 ];
 
-const trackLinkClicked = (linkName: string): void => {
-  AnalyticsService.instance.track(ANALYTICS_CATEGORIES.FOOTER, `${linkName} link clicked`);
-};
-
 export default function Linkset() {
+  const trackLinkClicked = useAnalytics({
+    category: ANALYTICS_CATEGORIES.FOOTER
+  });
+
   return (
     <section className="Footer-Linkset">
       {LINK_COLUMNS.map(({ heading, links }) => (
@@ -107,7 +108,12 @@ export default function Linkset() {
           <ul>
             {links.map(({ title, link, analytics_event }) => (
               <li key={title}>
-                <a href={link} onClick={() => trackLinkClicked(analytics_event)}>
+                <a
+                  href={link}
+                  onClick={() =>
+                    trackLinkClicked({ actionName: `${analytics_event} link clicked` })
+                  }
+                >
                   {title}
                 </a>
               </li>

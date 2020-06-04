@@ -2,9 +2,9 @@ import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { COLORS, FONT_SIZE } from '@theme';
 import { translateRaw } from '@translations';
-import { ProtectIconCheck } from '@components/icons';
+import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import { Link } from '@components';
-import { ITxReceipt } from '../../../types';
+import { ITxReceipt } from '@types';
 import { ProtectTxContext } from '../ProtectTxProvider';
 import { ProtectTxUtils } from '../utils';
 
@@ -51,7 +51,7 @@ const Wrapper = styled.div<RelayedToNetworkProps>`
   }
 `;
 
-// TODO: A hacky way to change the title of content panel
+// @todo: A hacky way to change the title of content panel
 const TransactionReceiptHeaderGlobal = createGlobalStyle<RelayedToNetworkProps>`
   .send-assets-stepper {
     > section {
@@ -110,8 +110,8 @@ export const ProtectTxAbort: FC<AbortTransactionProps> = ({ onTxSent }) => {
     if (protectTxCountdown > 0) {
       protectTxTimer = setTimeout(() => setProtectTxCountdown((prevCount) => prevCount - 1), 1000);
     } else if (protectTxCountdown === 0) {
-      invokeProtectTxTimeoutFunction((txReceiptCb: (txReceipt: ITxReceipt) => void) => {
-        onTxSent(txReceiptCb);
+      invokeProtectTxTimeoutFunction((txReceipt) => {
+        onTxSent(txReceipt);
       });
     }
     return () => {

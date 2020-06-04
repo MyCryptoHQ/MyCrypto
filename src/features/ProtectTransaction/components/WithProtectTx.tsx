@@ -151,7 +151,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
             actions: {
               handleProtectTxSubmit: async (payload: IFormikFields) => {
                 const { account: formAccount, network: formNetwork } = payload;
-                // TODO: initWith requires some object for every tx, because of R.adjust can't operate on empty array
+                // @todo: initWith requires some object for every tx, because of R.adjust can't operate on empty array
                 await initWith(() => Promise.resolve([{}]), formAccount, formNetwork);
                 setProtectTx({
                   ...processFormDataToTx(payload),

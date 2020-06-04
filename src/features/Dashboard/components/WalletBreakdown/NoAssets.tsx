@@ -2,10 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 
 import translate from '@translations';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
+import { ANALYTICS_CATEGORIES } from '@services';
 import { COLORS } from '@theme';
+import { BUY_MYCRYPTO_WEBSITE } from '@config';
+import { openLink } from '@utils';
 
 import addIcon from '@assets/images/icn-add-assets.svg';
+import useAnalytics from '@utils/useAnalytics';
 
 const { BLUE_BRIGHT } = COLORS;
 
@@ -47,16 +50,21 @@ const NoAssetsDescription = styled.div`
   }
 `;
 
-const openLinkBuyMyCrypto = () => {
-  const url = 'buy.mycrypto.com';
-  window.open(`https://${url}`, '_blank');
-  AnalyticsService.instance.track(ANALYTICS_CATEGORIES.WALLET_BREAKDOWN, `Link ${url} clicked`);
+const openLinkBuyMyCrypto = (trackCallback: ReturnType<typeof useAnalytics>) => {
+  openLink(BUY_MYCRYPTO_WEBSITE);
+  trackCallback({
+    actionName: `Link ${BUY_MYCRYPTO_WEBSITE} clicked`
+  });
 };
 
 export default function NoAssets() {
+  const trackLinkClicked = useAnalytics({
+    category: ANALYTICS_CATEGORIES.WALLET_BREAKDOWN
+  });
+
   return (
     <NoAssetsWrapper>
-      <NoAssetsCenter onClick={openLinkBuyMyCrypto}>
+      <NoAssetsCenter onClick={() => openLinkBuyMyCrypto(trackLinkClicked)}>
         <PlusIcon src={addIcon} />
         <NoAssetsHeading>{translate('WALLET_BREAKDOWN_NO_ASSETS')}</NoAssetsHeading>
         <NoAssetsDescription>{translate('WALLET_BREAKDOWN_NO_ASSETS_MORE')}</NoAssetsDescription>

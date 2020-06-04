@@ -10,7 +10,7 @@ export interface IDeFiStepComponentProps {
 }
 
 export interface ZapInteractionState {
-  zapSelected: undefined | IZapConfig; // ToDo: Make enum
+  zapSelected: undefined | IZapConfig; // @todo: Make enum
   txConfig: ITxConfig;
   txReceipt: ITxReceipt | undefined;
 }

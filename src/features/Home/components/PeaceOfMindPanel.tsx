@@ -6,7 +6,9 @@ import { Link } from 'react-router-dom';
 import translate from '@translations';
 import { COLORS, BREAK_POINTS } from '@theme';
 import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from '@config';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
+import { ANALYTICS_CATEGORIES } from '@services';
+import { TURL } from '@types';
+import { openLink, useAnalytics } from '@utils';
 
 import vaultIcon from '@assets/images/icn-vault2.svg';
 import protectIcon from '@assets/images/icn-protect.svg';
@@ -167,10 +169,13 @@ const ContentItem: React.FC<ContentItemProps> = (props) => {
 };
 
 interface PeaceOfMindPanelProps {
-  downloadLink: string;
+  downloadLink: TURL;
 }
 
 export default function PeaceOfMindPanel(props: PeaceOfMindPanelProps) {
+  const trackButton = useAnalytics({
+    category: ANALYTICS_CATEGORIES.HOME
+  });
   const { downloadLink } = props;
 
   return (
@@ -189,11 +194,20 @@ export default function PeaceOfMindPanel(props: PeaceOfMindPanelProps) {
       </Content>
       <Actions>
         <Link to="/add-account">
-          <ActionButton onClick={trackGetStartedClick}>
+          <ActionButton
+            onClick={() => trackButton({ actionName: 'Get Started on Web button clicked' })}
+          >
             {translate('HOME_PEACE_OF_MIND_GET_STARTED')}
           </ActionButton>
         </Link>
-        <ActionButton onClick={() => openDownloadLink(downloadLink)}>
+        <ActionButton
+          onClick={() => {
+            trackButton({
+              actionName: 'Download the Desktop App button clicked'
+            });
+            openDownloadLink(downloadLink);
+          }}
+        >
           {translate('HOME_PEACE_OF_MIND_DOWNLOAD')}
         </ActionButton>
       </Actions>
@@ -201,15 +215,7 @@ export default function PeaceOfMindPanel(props: PeaceOfMindPanelProps) {
   );
 }
 
-const trackGetStartedClick = () => {
-  AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HOME, `Get Started on Web button clicked`);
-};
-
-const openDownloadLink = (link: string) => {
+const openDownloadLink = (link: TURL) => {
   const target = link === DEFAULT_LINK ? '_blank' : '_self';
-  window.open(link, target);
-  AnalyticsService.instance.track(
-    ANALYTICS_CATEGORIES.HOME,
-    `Download the Desktop App button clicked`
-  );
+  openLink(link, target);
 };

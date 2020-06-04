@@ -3,10 +3,10 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const PreloadWebpackPlugin = require('@lowb/preload-webpack-plugin');
 const SriPlugin = require('webpack-subresource-integrity');
 const common = require('./common');
 const config = require('./config');
-const { generateChunkName } = require('./utils');
 
 const IS_ELECTRON = !!process.env.BUILD_ELECTRON;
 
@@ -44,19 +44,6 @@ module.exports = merge.smart(common, {
     ]
   },
 
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        // Caching is only useful in production. This is is where we apply the node_module caching solution
-        vendorIndividual: {
-          enforce: true,
-          test: new RegExp(`[\\/]node_modules[\\/](${config.chunks.individual.join('|')})[\\/]`),
-          name: generateChunkName
-        }
-      }
-    }
-  },
-
   plugins: [
     new MiniCSSExtractPlugin({
       filename: `[name].[contenthash].css`
@@ -77,6 +64,25 @@ module.exports = merge.smart(common, {
     new SriPlugin({
       hashFuncNames: ['sha256', 'sha384'],
       enabled: true
+    }),
+
+    new PreloadWebpackPlugin({
+      rel: 'preload',
+      as(entry) {
+        if (/\.(woff|woff2)$/.test(entry)) return 'font';
+        return 'script';
+      },
+      include: 'allAssets',
+      fileWhitelist: [/Lato.*\.(woff|woff2)$/, /social-media.*\.(woff|woff2)$/]
+    }),
+
+    new PreloadWebpackPlugin({
+      rel: 'preload',
+      include: 'allAssets',
+      fileWhitelist: [/\.worker\.js$/],
+      crossorigin() {
+        return 'anonymous';
+      }
     }),
 
     new webpack.ProgressPlugin()

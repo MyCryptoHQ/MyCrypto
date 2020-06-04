@@ -106,6 +106,8 @@
 		"ANNOUNCEMENT_MESSAGE": "Bienvenue sur le nouveau MyCrypto. Nous espérons qu'il vous plaît ! Si vous avez besoin de l'ancien site pour une urgence, vous pouvez toujours accéder à [MyCrypto Legacy](https://legacy.mycrypto.com)",
 		"APPROVE_MEMBERSHIP": "Approve Membership Contract",
 		"APPROVE_SWAP": "Approve Swap",
+		"APP_LOADING": "",
+		"APP_LOADING_SUBHEADER": "",
 		"APP_UPDATE_BODY": "We know it’s annoying, but updating your app fixes bugs, enables fun features, and ensures your app is secure.",
 		"APP_UPDATE_BODY_CRITICAL": "You can learn more about this critical update here:",
 		"APP_UPDATE_CANCEL": "Not Right Now",

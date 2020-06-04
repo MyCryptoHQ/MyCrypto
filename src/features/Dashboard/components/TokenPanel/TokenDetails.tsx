@@ -146,7 +146,8 @@ export function TokenDetails(props: Props) {
   } = currentToken;
   const { networks } = useContext(StoreContext);
   const { settings } = useContext(SettingsContext);
-  const network = getNetworkById(networkId!, networks);
+  const network = getNetworkById(networkId, networks);
+
   const contractUrl = `${
     network && network.blockExplorer ? network.blockExplorer.origin : etherscanUrl
   }/token/${currentToken.contractAddress}`;

@@ -1,23 +1,17 @@
 import React, { useState, useContext } from 'react';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
-import { Transition } from 'react-spring/renderprops.cjs';
+import { Transition } from 'react-spring/renderprops-universal.cjs';
 import { Icon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { SelectLanguage } from '@features/Drawer/screens';
 import { links } from './constants';
 import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from '@theme';
-import { AnalyticsService, ANALYTICS_CATEGORIES, SettingsContext } from '@services';
-import {
-  ROUTE_PATHS,
-  LATEST_NEWS_URL,
-  languages,
-  getKBHelpArticle,
-  KB_HELP_ARTICLE
-} from '@config';
-import translate from '@translations';
+import { ANALYTICS_CATEGORIES, SettingsContext } from '@services';
+import { ROUTE_PATHS, LATEST_NEWS_URL, getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
+import translate, { languages } from '@translations';
+import { openLink, useAnalytics } from '@utils';
 
-// Legacy
 import logo from '@assets/images/logo-mycrypto.svg';
 import { ScreenLockContext } from '@features/ScreenLock/ScreenLockProvider';
 
@@ -286,6 +280,10 @@ type Props = OwnProps & RouteComponentProps;
 export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, history }: Props) {
   const { language: languageSelection } = useContext(SettingsContext);
   const { startLockCountdown } = useContext(ScreenLockContext);
+  const trackHeader = useAnalytics({
+    category: ANALYTICS_CATEGORIES.HEADER
+  });
+
   const initVisibleMenuDropdowns: DropdownType = {
     'Manage Assets': false,
     Tools: false
@@ -329,13 +327,17 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
     });
 
   const openLatestNews = (): void => {
-    window.open(LATEST_NEWS_URL, '_blank');
-    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HEADER, 'Latest news clicked');
+    trackHeader({
+      actionName: 'Latest news clicked'
+    });
+    openLink(LATEST_NEWS_URL);
   };
 
   const openHelpSupportPage = (): void => {
-    window.open(getKBHelpArticle(KB_HELP_ARTICLE.HOME), '_blank');
-    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HEADER, 'Help & Support clicked');
+    trackHeader({
+      actionName: 'Help & Support clicked'
+    });
+    openLink(getKBHelpArticle(KB_HELP_ARTICLE.HOME));
   };
 
   return (

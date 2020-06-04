@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Arrayish, hexlify, bigNumberify } from 'ethers/utils';
 
-import { TUseStateReducerFactory, fromTxReceiptObj, makeTxConfigFromSignedTx } from '@utils';
+import { TUseStateReducerFactory, makePendingTxReceipt, makeTxConfigFromSignedTx } from '@utils';
 import {
   Asset,
   ITxReceipt,
@@ -9,8 +9,9 @@ import {
   IFormikFields,
   ISignedTx,
   ITxObject,
-  ITxStatus,
-  ITxType
+  ITxType,
+  ITxHash,
+  TAddress
 } from '@types';
 import {
   hexWeiToString,
@@ -54,7 +55,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
   const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
   const { accounts } = useContext(StoreContext);
-  const { addNewTransactionToAccount } = useContext(AccountContext);
+  const { addNewTxToAccount } = useContext(AccountContext);
 
   const handleFormSubmit: TStepAction = (payload: IFormikFields, cb: any) => {
     const rawTransaction: ITxObject = processFormDataToTx(payload);
@@ -68,7 +69,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
         rawTransaction,
         amount: payload.amount,
         senderAccount: payload.account,
-        receiverAddress: payload.address.value,
+        receiverAddress: payload.address.value as TAddress,
         network: payload.network,
         asset: payload.asset,
         baseAsset: baseAsset || ({} as Asset),
@@ -85,11 +86,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
   };
 
   // For Metamask
-  const handleConfirmAndSign: TStepAction = (payload: ITxConfig, cb) => {
-    setState((prevState: State) => ({
-      ...prevState,
-      txReceipt: payload
-    }));
+  const handleConfirmAndSign: TStepAction = (_: ITxConfig, cb) => {
     cb();
   };
 
@@ -101,34 +98,25 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
   ) => {
     const { signedTx } = state;
     if (!signedTx) {
-      return;
+      return; // @todo: Handle this error state.
     }
 
     const provider = new ProviderHandler(state.txConfig.network);
 
-    provider
-      .sendRawTx(signedTx)
-      .then((retrievedTxReceipt) => retrievedTxReceipt)
-      .catch((txHash) => provider.getTransactionByHash(txHash))
-      .then((retrievedTransactionReceipt) => {
-        const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(assets, networks);
-        addNewTransactionToAccount(state.txConfig.senderAccount, {
-          ...txReceipt,
-          to: state.txConfig.receiverAddress,
-          from: state.txConfig.senderAccount.address,
-          amount: state.txConfig.amount,
-          txType: ITxType.STANDARD,
-          stage: ITxStatus.PENDING
-        });
-        setState((prevState: State) => ({
-          ...prevState,
-          txReceipt
-        }));
-
-        if (cb) {
-          cb(txReceipt!);
-        }
-      });
+    provider.sendRawTx(signedTx).then((retrievedTxResponse) => {
+      const pendingTxReceipt = makePendingTxReceipt(retrievedTxResponse.hash as ITxHash)(
+        ITxType.STANDARD,
+        state.txConfig
+      );
+      addNewTxToAccount(state.txConfig.senderAccount, pendingTxReceipt);
+      setState((prevState: State) => ({
+        ...prevState,
+        txReceipt: pendingTxReceipt
+      }));
+      if (cb) {
+        cb(pendingTxReceipt);
+      }
+    });
   };
 
   const handleSignedTx: TStepAction = (payload: Arrayish, cb) => {
@@ -145,29 +133,16 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
     cb();
   };
 
-  const handleSignedWeb3Tx: TStepAction = (payload: ITxReceipt | string, cb) => {
-    // Payload is tx hash or receipt
-    // @ts-ignore
-    const txReceipt =
-      typeof payload === 'string'
-        ? {
-            ...state.txConfig,
-            hash: payload,
-            to: state.txConfig.receiverAddress,
-            from: state.txConfig.senderAccount.address
-          }
-        : fromTxReceiptObj(payload);
-    addNewTransactionToAccount(state.txConfig.senderAccount, {
-      ...txReceipt,
-      txType: ITxType.STANDARD,
-      stage: ITxStatus.PENDING
-    });
-
+  const handleSignedWeb3Tx: TStepAction = (payload: ITxHash, cb) => {
+    const pendingTxReceipt = makePendingTxReceipt(payload)(ITxType.STANDARD, state.txConfig);
+    addNewTxToAccount(state.txConfig.senderAccount, pendingTxReceipt);
     setState((prevState: State) => ({
       ...prevState,
-      txReceipt
+      txReceipt: pendingTxReceipt
     }));
-    cb();
+    if (cb) {
+      cb();
+    }
   };
 
   const handleResubmitTx: TStepAction = (cb) => {

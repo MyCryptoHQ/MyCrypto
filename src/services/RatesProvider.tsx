@@ -89,7 +89,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     worker.current = new PollingService(
-      buildAssetQueryUrl(geckoIds, Object.keys(Fiats)), // @TODO: More elegant conversion then `DEFAULT_FIAT_RATE`
+      buildAssetQueryUrl(geckoIds, Object.keys(Fiats)), // @todo: More elegant conversion then `DEFAULT_FIAT_RATE`
       POLLING_INTERVAL,
       updateRates,
       (err) => console.debug('[RatesProvider]', err)

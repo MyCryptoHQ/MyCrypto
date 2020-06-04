@@ -1,0 +1,754 @@
+{
+  "rawTransaction": {
+    "to": "0xad6d458402f60fd3bd25163575031acdce07538d",
+    "value": "0x0",
+    "data": "0xa9059cbb0000000000000000000000004d1f9d958afa2e96dab3f3ce7162b87daea39017000000000000000000000000000000000000000000000000002386f26fc10000",
+    "gasLimit": "0x7d3c",
+    "gasPrice": "0x12a05f200",
+    "nonce": "0x7",
+    "chainId": 3
+  },
+  "receiverAddress": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+  "amount": "0.01",
+  "network": {
+    "id": "Ropsten",
+    "name": "Ropsten",
+    "chainId": 3,
+    "isCustom": false,
+    "isTestnet": true,
+    "color": "#adc101",
+    "gasPriceSettings": {
+      "min": 0.1,
+      "max": 40,
+      "initial": 4
+    },
+    "dPaths": {
+      "TREZOR": {
+        "label": "Testnet (ETH)",
+        "value": "m/44'/1'/0'/0"
+      },
+      "LEDGER_NANO_S": {
+        "label": "Ledger (ETH)",
+        "value": "m/44'/60'/0'"
+      },
+      "MNEMONIC_PHRASE": {
+        "label": "Testnet (ETH)",
+        "value": "m/44'/1'/0'/0"
+      },
+      "default": {
+        "label": "Testnet (ETH)",
+        "value": "m/44'/1'/0'/0"
+      }
+    },
+    "contracts": [
+      "2b6414fc-2156-5b46-818e-08c9fa5ec682",
+      "bfe036e3-7307-5433-ba04-1c6b13d5859e",
+      "58d07b5b-b38d-5418-ab80-f04d6359f0eb",
+      "69bc918a-c841-5c27-9bb5-eb8aa3cb2637",
+      "d94e0018-1782-58ff-b4d9-386123acecb5",
+      "ad4a648c-0883-5471-b842-867488d380d8",
+      "77be6839-06c5-55ee-9062-0233a18436a0",
+      "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"
+    ],
+    "assets": [
+      "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+      "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"
+    ],
+    "baseAsset": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+    "baseUnit": "RopstenETH",
+    "nodes": [
+      {
+        "name": "ropsten_infura",
+        "type": "infura",
+        "service": "Infura",
+        "url": "https://ropsten.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286"
+      }
+    ],
+    "autoNode": "ropsten_infura",
+    "selectedNode": "web3",
+    "blockExplorer": {
+      "name": "Etherscan",
+      "origin": "https://ropsten.etherscan.io"
+    }
+  },
+  "value": "0",
+  "asset": {
+    "uuid": "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1",
+    "name": "RopDAI",
+    "decimal": 18,
+    "ticker": "RopDAI",
+    "networkId": "Ropsten",
+    "contractAddress": "0xad6d458402f60fd3bd25163575031acdce07538d",
+    "type": "erc20",
+    "isCustom": true
+  },
+  "baseAsset": {
+    "ticker": "RopstenETH",
+    "name": "Ropsten",
+    "decimal": 18,
+    "networkId": "Ropsten",
+    "type": "base",
+    "mappings": {},
+    "isCustom": false,
+    "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
+  },
+  "senderAccount": {
+    "address": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+    "networkId": "Ropsten",
+    "wallet": "LEDGER_NANO_S",
+    "dPath": "m/44'/60'/0'/0",
+    "assets": [
+      {
+        "uuid": "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1",
+        "name": "RopDAI",
+        "decimal": 18,
+        "ticker": "RopDAI",
+        "networkId": "Ropsten",
+        "contractAddress": "0xad6d458402f60fd3bd25163575031acdce07538d",
+        "type": "erc20",
+        "isCustom": true,
+        "balance": {
+          "_hex": "0x54ab1b2ceea88000"
+        },
+        "mtime": 1590733930901
+      },
+      {
+        "ticker": "RopstenETH",
+        "name": "Ropsten",
+        "decimal": 18,
+        "networkId": "Ropsten",
+        "type": "base",
+        "mappings": {},
+        "isCustom": false,
+        "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+        "balance": {
+          "_hex": "0x0e22e84c2c724c00"
+        },
+        "mtime": 1590733930901
+      }
+    ],
+    "transactions": [
+      {
+        "asset": {
+          "uuid": "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1",
+          "name": "RopDAI",
+          "decimal": 18,
+          "ticker": "RopDAI",
+          "networkId": "Ropsten",
+          "contractAddress": "0xad6d458402f60fd3bd25163575031acdce07538d",
+          "type": "erc20",
+          "isCustom": true
+        },
+        "baseAsset": {
+          "ticker": "RopstenETH",
+          "name": "Ropsten",
+          "decimal": 18,
+          "networkId": "Ropsten",
+          "type": "base",
+          "mappings": {},
+          "isCustom": false,
+          "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
+        },
+        "hash": "0xf8f3a1998fbd3bb37f37bdd857d90a195a37a6b6030c215bc66f487290bcd877",
+        "from": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+        "receiverAddress": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
+        "amount": "1",
+        "to": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
+        "nonce": "0",
+        "gasLimit": {
+          "_hex": "0x7d48"
+        },
+        "gasPrice": {
+          "_hex": "0xfa56ea00"
+        },
+        "data": "0xa9059cbb0000000000000000000000005197b5b062288bbf29008c92b08010a92dd677cd0000000000000000000000000000000000000000000000000de0b6b3a7640000",
+        "value": {
+          "_hex": "0x00"
+        },
+        "status": "FAILED",
+        "txType": "STANDARD",
+        "blockNumber": 7971609,
+        "timestamp": 1590450784
+      },
+      {
+        "asset": {
+          "uuid": "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1",
+          "name": "RopDAI",
+          "decimal": 18,
+          "ticker": "RopDAI",
+          "networkId": "Ropsten",
+          "contractAddress": "0xad6d458402f60fd3bd25163575031acdce07538d",
+          "type": "erc20",
+          "isCustom": true
+        },
+        "baseAsset": {
+          "ticker": "RopstenETH",
+          "name": "Ropsten",
+          "decimal": 18,
+          "networkId": "Ropsten",
+          "type": "base",
+          "mappings": {},
+          "isCustom": false,
+          "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
+        },
+        "hash": "0xd9d86ba2fd8773bc9ffcb80d475c10fe91bbd242d84589c189eedfd5e288d156",
+        "from": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+        "receiverAddress": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
+        "amount": "1",
+        "to": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
+        "nonce": "1",
+        "gasLimit": {
+          "_hex": "0x8da4"
+        },
+        "gasPrice": {
+          "_hex": "0x04a817c800"
+        },
+        "data": "0xa9059cbb0000000000000000000000005197b5b062288bbf29008c92b08010a92dd677cd0000000000000000000000000000000000000000000000000de0b6b3a7640000",
+        "value": {
+          "_hex": "0x00"
+        },
+        "status": "SUCCESS",
+        "txType": "STANDARD",
+        "blockNumber": 7971631,
+        "timestamp": 1590451056
+      },
+      {
+        "asset": {
+          "uuid": "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1",
+          "name": "RopDAI",
+          "decimal": 18,
+          "ticker": "RopDAI",
+          "networkId": "Ropsten",
+          "contractAddress": "0xad6d458402f60fd3bd25163575031acdce07538d",
+          "type": "erc20",
+          "isCustom": true
+        },
+        "baseAsset": {
+          "ticker": "RopstenETH",
+          "name": "Ropsten",
+          "decimal": 18,
+          "networkId": "Ropsten",
+          "type": "base",
+          "mappings": {},
+          "isCustom": false,
+          "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
+        },
+        "hash": "0x186c118928d2757ef552a4b9fd316af4e86ce9992bc1b9bc69e42356af4645c4",
+        "from": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+        "receiverAddress": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
+        "amount": "0.001",
+        "to": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
+        "nonce": "2",
+        "gasLimit": {
+          "_hex": "0x8da4"
+        },
+        "gasPrice": {
+          "_hex": "0x11e1a300"
+        },
+        "data": "0xa9059cbb0000000000000000000000005197b5b062288bbf29008c92b08010a92dd677cd00000000000000000000000000000000000000000000000000038d7ea4c68000",
+        "value": {
+          "_hex": "0x00"
+        },
+        "status": "SUCCESS",
+        "txType": "STANDARD",
+        "blockNumber": 7971642,
+        "timestamp": 1590451387
+      },
+      {
+        "asset": {
+          "uuid": "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1",
+          "name": "RopDAI",
+          "decimal": 18,
+          "ticker": "RopDAI",
+          "networkId": "Ropsten",
+          "contractAddress": "0xad6d458402f60fd3bd25163575031acdce07538d",
+          "type": "erc20",
+          "isCustom": true
+        },
+        "baseAsset": {
+          "ticker": "RopstenETH",
+          "name": "Ropsten",
+          "decimal": 18,
+          "networkId": "Ropsten",
+          "type": "base",
+          "mappings": {},
+          "isCustom": false,
+          "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
+        },
+        "hash": "0xcdff13359ad059f61d7ff0d15d316dc33ff787fafd72997565e330ad4d6a75e4",
+        "from": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+        "receiverAddress": "0xaD6D458402F60fD3Bd25163575031ACDce07538D",
+        "amount": "0",
+        "to": "0x0000000000000000000000000000000000000000",
+        "nonce": "3",
+        "gasLimit": {
+          "_hex": "0xabc7"
+        },
+        "gasPrice": {
+          "_hex": "0xee6b2800"
+        },
+        "data": "0x095ea7b30000000000000000000000005197b5b062288bbf29008c92b08010a92dd677cd0000000000000000000000000000000000000000000000000de0b6b3a7640000",
+        "value": {
+          "_hex": "0x00"
+        },
+        "status": "SUCCESS",
+        "txType": "CONTRACT_INTERACT",
+        "blockNumber": 7974893,
+        "timestamp": 1590502468,
+        "network": {
+          "id": "Ropsten",
+          "name": "Ropsten",
+          "chainId": 3,
+          "isCustom": false,
+          "isTestnet": true,
+          "color": "#adc101",
+          "gasPriceSettings": {
+            "min": 0.1,
+            "max": 40,
+            "initial": 4
+          },
+          "dPaths": {
+            "TREZOR": {
+              "label": "Testnet (ETH)",
+              "value": "m/44'/1'/0'/0"
+            },
+            "LEDGER_NANO_S": {
+              "label": "Ledger (ETH)",
+              "value": "m/44'/60'/0'"
+            },
+            "MNEMONIC_PHRASE": {
+              "label": "Testnet (ETH)",
+              "value": "m/44'/1'/0'/0"
+            },
+            "default": {
+              "label": "Testnet (ETH)",
+              "value": "m/44'/1'/0'/0"
+            }
+          },
+          "contracts": [
+            "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1",
+            "2b6414fc-2156-5b46-818e-08c9fa5ec682",
+            "bfe036e3-7307-5433-ba04-1c6b13d5859e",
+            "58d07b5b-b38d-5418-ab80-f04d6359f0eb",
+            "69bc918a-c841-5c27-9bb5-eb8aa3cb2637",
+            "d94e0018-1782-58ff-b4d9-386123acecb5",
+            "ad4a648c-0883-5471-b842-867488d380d8",
+            "77be6839-06c5-55ee-9062-0233a18436a0"
+          ],
+          "assets": [
+            "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+            "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"
+          ],
+          "baseAsset": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+          "baseUnit": "RopstenETH",
+          "nodes": [
+            {
+              "name": "ropsten_infura",
+              "type": "infura",
+              "service": "Infura",
+              "url": "https://ropsten.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286"
+            }
+          ],
+          "autoNode": "ropsten_infura",
+          "selectedNode": "web3",
+          "blockExplorer": {
+            "name": "Etherscan",
+            "origin": "https://ropsten.etherscan.io"
+          }
+        }
+      },
+      {
+        "asset": {
+          "uuid": "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1",
+          "name": "RopDAI",
+          "decimal": 18,
+          "ticker": "RopDAI",
+          "networkId": "Ropsten",
+          "contractAddress": "0xad6d458402f60fd3bd25163575031acdce07538d",
+          "type": "erc20",
+          "isCustom": true
+        },
+        "baseAsset": {
+          "ticker": "RopstenETH",
+          "name": "Ropsten",
+          "decimal": 18,
+          "networkId": "Ropsten",
+          "type": "base",
+          "mappings": {},
+          "isCustom": false,
+          "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
+        },
+        "hash": "0xc74d3c89b9f9696e3f87ae49f0925f30fb58c0429ec336336e9ec633ab56c2b8",
+        "from": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+        "receiverAddress": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+        "amount": "0.01",
+        "to": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+        "nonce": "4",
+        "gasLimit": {
+          "_hex": "0x7d3c"
+        },
+        "gasPrice": {
+          "_hex": "0xee6b2800"
+        },
+        "data": "0xa9059cbb0000000000000000000000004d1f9d958afa2e96dab3f3ce7162b87daea39017000000000000000000000000000000000000000000000000002386f26fc10000",
+        "value": {
+          "_hex": "0x00"
+        },
+        "status": "SUCCESS",
+        "txType": "STANDARD",
+        "blockNumber": 7990105,
+        "timestamp": 1590722634,
+        "network": {
+          "id": "Ropsten",
+          "name": "Ropsten",
+          "chainId": 3,
+          "isCustom": false,
+          "isTestnet": true,
+          "color": "#adc101",
+          "gasPriceSettings": {
+            "min": 0.1,
+            "max": 40,
+            "initial": 4
+          },
+          "dPaths": {
+            "TREZOR": {
+              "label": "Testnet (ETH)",
+              "value": "m/44'/1'/0'/0"
+            },
+            "LEDGER_NANO_S": {
+              "label": "Ledger (ETH)",
+              "value": "m/44'/60'/0'"
+            },
+            "MNEMONIC_PHRASE": {
+              "label": "Testnet (ETH)",
+              "value": "m/44'/1'/0'/0"
+            },
+            "default": {
+              "label": "Testnet (ETH)",
+              "value": "m/44'/1'/0'/0"
+            }
+          },
+          "contracts": [
+            "2b6414fc-2156-5b46-818e-08c9fa5ec682",
+            "bfe036e3-7307-5433-ba04-1c6b13d5859e",
+            "58d07b5b-b38d-5418-ab80-f04d6359f0eb",
+            "69bc918a-c841-5c27-9bb5-eb8aa3cb2637",
+            "d94e0018-1782-58ff-b4d9-386123acecb5",
+            "ad4a648c-0883-5471-b842-867488d380d8",
+            "77be6839-06c5-55ee-9062-0233a18436a0",
+            "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"
+          ],
+          "assets": [
+            "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+            "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"
+          ],
+          "baseAsset": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+          "baseUnit": "RopstenETH",
+          "nodes": [
+            {
+              "name": "ropsten_infura",
+              "type": "infura",
+              "service": "Infura",
+              "url": "https://ropsten.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286"
+            }
+          ],
+          "autoNode": "ropsten_infura",
+          "selectedNode": "web3",
+          "blockExplorer": {
+            "name": "Etherscan",
+            "origin": "https://ropsten.etherscan.io"
+          }
+        }
+      },
+      {
+        "asset": {
+          "value": "Ropsten",
+          "ticker": "RopstenETH",
+          "name": "Ropsten",
+          "decimal": 18,
+          "networkId": "Ropsten",
+          "type": "base",
+          "mappings": {},
+          "isCustom": false,
+          "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+          "balance": {
+            "_hex": "0x0e23a74a9bd96c00"
+          },
+          "mtime": 1590722655749
+        },
+        "baseAsset": {
+          "ticker": "RopstenETH",
+          "name": "Ropsten",
+          "decimal": 18,
+          "networkId": "Ropsten",
+          "type": "base",
+          "mappings": {},
+          "isCustom": false,
+          "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
+        },
+        "hash": "0xe8e3901e6f03d95e3e71a2fb4947199fcd12835682810fe6f69a617109d09b71",
+        "from": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+        "receiverAddress": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+        "amount": "0.01",
+        "to": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+        "nonce": "5",
+        "gasLimit": {
+          "_hex": "0x5208"
+        },
+        "gasPrice": {
+          "_hex": "0x012a05f200"
+        },
+        "data": "0x",
+        "value": {
+          "_hex": "0x2386f26fc10000"
+        },
+        "status": "SUCCESS",
+        "txType": "STANDARD",
+        "blockNumber": 7990119,
+        "timestamp": 1590722800,
+        "network": {
+          "id": "Ropsten",
+          "name": "Ropsten",
+          "chainId": 3,
+          "isCustom": false,
+          "isTestnet": true,
+          "color": "#adc101",
+          "gasPriceSettings": {
+            "min": 0.1,
+            "max": 40,
+            "initial": 4
+          },
+          "dPaths": {
+            "TREZOR": {
+              "label": "Testnet (ETH)",
+              "value": "m/44'/1'/0'/0"
+            },
+            "LEDGER_NANO_S": {
+              "label": "Ledger (ETH)",
+              "value": "m/44'/60'/0'"
+            },
+            "MNEMONIC_PHRASE": {
+              "label": "Testnet (ETH)",
+              "value": "m/44'/1'/0'/0"
+            },
+            "default": {
+              "label": "Testnet (ETH)",
+              "value": "m/44'/1'/0'/0"
+            }
+          },
+          "contracts": [
+            "2b6414fc-2156-5b46-818e-08c9fa5ec682",
+            "bfe036e3-7307-5433-ba04-1c6b13d5859e",
+            "58d07b5b-b38d-5418-ab80-f04d6359f0eb",
+            "69bc918a-c841-5c27-9bb5-eb8aa3cb2637",
+            "d94e0018-1782-58ff-b4d9-386123acecb5",
+            "ad4a648c-0883-5471-b842-867488d380d8",
+            "77be6839-06c5-55ee-9062-0233a18436a0",
+            "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"
+          ],
+          "assets": [
+            "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+            "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"
+          ],
+          "baseAsset": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+          "baseUnit": "RopstenETH",
+          "nodes": [
+            {
+              "name": "ropsten_infura",
+              "type": "infura",
+              "service": "Infura",
+              "url": "https://ropsten.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286"
+            }
+          ],
+          "autoNode": "ropsten_infura",
+          "selectedNode": "web3",
+          "blockExplorer": {
+            "name": "Etherscan",
+            "origin": "https://ropsten.etherscan.io"
+          }
+        }
+      },
+      {
+        "asset": {
+          "value": "Ropsten",
+          "ticker": "RopstenETH",
+          "name": "Ropsten",
+          "decimal": 18,
+          "networkId": "Ropsten",
+          "type": "base",
+          "mappings": {},
+          "isCustom": false,
+          "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+          "balance": {
+            "_hex": "0x0e2347cb6425dc00"
+          },
+          "mtime": 1590726646380
+        },
+        "baseAsset": {
+          "ticker": "RopstenETH",
+          "name": "Ropsten",
+          "decimal": 18,
+          "networkId": "Ropsten",
+          "type": "base",
+          "mappings": {},
+          "isCustom": false,
+          "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
+        },
+        "hash": "0x33d9b1b88cc48ca6da01310ab3acc86ae4cc2527bb3fc8662fd308cd63f303b1",
+        "from": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+        "receiverAddress": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+        "amount": "0.01",
+        "to": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+        "nonce": "6",
+        "gasLimit": {
+          "_hex": "0x5208"
+        },
+        "gasPrice": {
+          "_hex": "0x012a05f200"
+        },
+        "data": "0x",
+        "value": {
+          "_hex": "0x2386f26fc10000"
+        },
+        "status": "SUCCESS",
+        "txType": "STANDARD",
+        "blockNumber": 7990395,
+        "timestamp": 1590727124,
+        "network": {
+          "id": "Ropsten",
+          "name": "Ropsten",
+          "chainId": 3,
+          "isCustom": false,
+          "isTestnet": true,
+          "color": "#adc101",
+          "gasPriceSettings": {
+            "min": 0.1,
+            "max": 40,
+            "initial": 4
+          },
+          "dPaths": {
+            "TREZOR": {
+              "label": "Testnet (ETH)",
+              "value": "m/44'/1'/0'/0"
+            },
+            "LEDGER_NANO_S": {
+              "label": "Ledger (ETH)",
+              "value": "m/44'/60'/0'"
+            },
+            "MNEMONIC_PHRASE": {
+              "label": "Testnet (ETH)",
+              "value": "m/44'/1'/0'/0"
+            },
+            "default": {
+              "label": "Testnet (ETH)",
+              "value": "m/44'/1'/0'/0"
+            }
+          },
+          "contracts": [
+            "2b6414fc-2156-5b46-818e-08c9fa5ec682",
+            "bfe036e3-7307-5433-ba04-1c6b13d5859e",
+            "58d07b5b-b38d-5418-ab80-f04d6359f0eb",
+            "69bc918a-c841-5c27-9bb5-eb8aa3cb2637",
+            "d94e0018-1782-58ff-b4d9-386123acecb5",
+            "ad4a648c-0883-5471-b842-867488d380d8",
+            "77be6839-06c5-55ee-9062-0233a18436a0",
+            "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"
+          ],
+          "assets": [
+            "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+            "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"
+          ],
+          "baseAsset": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+          "baseUnit": "RopstenETH",
+          "nodes": [
+            {
+              "name": "ropsten_infura",
+              "type": "infura",
+              "service": "Infura",
+              "url": "https://ropsten.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286"
+            }
+          ],
+          "autoNode": "ropsten_infura",
+          "selectedNode": "web3",
+          "blockExplorer": {
+            "name": "Etherscan",
+            "origin": "https://ropsten.etherscan.io"
+          }
+        }
+      }
+    ],
+    "favorite": false,
+    "mtime": 0,
+    "uuid": "cd36fc7c-adda-54ce-825b-f19a55bbc1ad",
+    "label": "Ledger Nano S Account 1",
+    "balance": "0.0091292196",
+    "assetUUID": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+    "assetSymbol": "RopstenETH",
+    "network": {
+      "id": "Ropsten",
+      "name": "Ropsten",
+      "chainId": 3,
+      "isCustom": false,
+      "isTestnet": true,
+      "color": "#adc101",
+      "gasPriceSettings": {
+        "min": 0.1,
+        "max": 40,
+        "initial": 4
+      },
+      "dPaths": {
+        "TREZOR": {
+          "label": "Testnet (ETH)",
+          "value": "m/44'/1'/0'/0"
+        },
+        "LEDGER_NANO_S": {
+          "label": "Ledger (ETH)",
+          "value": "m/44'/60'/0'"
+        },
+        "MNEMONIC_PHRASE": {
+          "label": "Testnet (ETH)",
+          "value": "m/44'/1'/0'/0"
+        },
+        "default": {
+          "label": "Testnet (ETH)",
+          "value": "m/44'/1'/0'/0"
+        }
+      },
+      "contracts": [
+        "2b6414fc-2156-5b46-818e-08c9fa5ec682",
+        "bfe036e3-7307-5433-ba04-1c6b13d5859e",
+        "58d07b5b-b38d-5418-ab80-f04d6359f0eb",
+        "69bc918a-c841-5c27-9bb5-eb8aa3cb2637",
+        "d94e0018-1782-58ff-b4d9-386123acecb5",
+        "ad4a648c-0883-5471-b842-867488d380d8",
+        "77be6839-06c5-55ee-9062-0233a18436a0",
+        "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"
+      ],
+      "assets": [
+        "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+        "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"
+      ],
+      "baseAsset": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+      "baseUnit": "RopstenETH",
+      "nodes": [
+        {
+          "name": "ropsten_infura",
+          "type": "infura",
+          "service": "Infura",
+          "url": "https://ropsten.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286"
+        }
+      ],
+      "autoNode": "ropsten_infura",
+      "selectedNode": "web3",
+      "blockExplorer": {
+        "name": "Etherscan",
+        "origin": "https://ropsten.etherscan.io"
+      }
+    }
+  },
+  "gasPrice": "5000000000",
+  "gasLimit": "32060",
+  "data": "0xa9059cbb0000000000000000000000004d1f9d958afa2e96dab3f3ce7162b87daea39017000000000000000000000000000000000000000000000000002386f26fc10000",
+  "nonce": "7",
+  "from": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017"
+}

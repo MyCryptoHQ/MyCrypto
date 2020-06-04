@@ -59,7 +59,7 @@ export default class Home extends Component {
   private isMounted = false;
 
   public componentDidMount = async () => {
-    // @TODO: isMounted move to AbortController
+    // @todo: isMounted move to AbortController
     this.isMounted = true;
     try {
       const { releaseUrls } = await GithubService.instance.getReleasesInfo();

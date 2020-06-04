@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
 import translate from '@translations';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
 import { ROUTE_PATHS } from '@config';
 
 import sadWallet from '@assets/images/icn-sad-wallet.svg';
@@ -96,12 +95,6 @@ const ButtonGroup = styled.div`
 `;
 
 export const NoAccounts = () => {
-  useEffect(() => {
-    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.WALLET_BREAKDOWN, `User has no accounts`, {
-      numOfAccounts: 0
-    });
-  }, []);
-
   return (
     <NoAccountsContainer>
       <NoAccountsContent>

@@ -10,11 +10,12 @@ import {
   AssetIcon,
   Currency,
   DashboardPanel,
-  CollapsibleTable,
   Typography,
-  Tooltip
+  Tooltip,
+  FixedSizeCollapsibleTable
 } from '@components';
-import { CollapseIcon, ExpandIcon } from '@components/icons';
+import CollapseIcon from '@components/icons/CollapseIcon';
+import ExpandIcon from '@components/icons/ExpandIcon';
 import { Balance, BalanceAccount, WalletBreakdownProps } from './types';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Fiat, TUuid } from '@types';
@@ -128,12 +129,20 @@ const createBalancesDetailViewRow = (
       {`${balance.amount.toFixed(6)} ${balance.ticker}`}
     </RowAlignment>,
     <RowAlignment key={balance.id} align="right" data-value={balance.fiatValue}>
-      <Currency
-        amount={balance.fiatValue.toString()}
-        symbol={fiat.symbol}
-        code={fiat.code}
-        decimals={2}
-      />
+      <Tooltip
+        tooltip={translateRaw('WALLET_BREAKDOWN_BALANCE_TOOLTIP', {
+          $exchangeRate: (balance.exchangeRate || 0).toFixed(3),
+          $fiatTicker: fiat.code,
+          $cryptoTicker: balance.ticker
+        })}
+      >
+        <Currency
+          amount={balance.fiatValue.toString()}
+          symbol={fiat.symbol}
+          code={fiat.code}
+          decimals={2}
+        />
+      </Tooltip>
     </RowAlignment>,
     <>
       {rowState === 'opened' ? (
@@ -289,7 +298,7 @@ export default function BalancesDetailView({
           </BalancesOnlyTotal>
         }
       >
-        <CollapsibleTable {...balancesTable} />
+        <FixedSizeCollapsibleTable {...balancesTable} maxHeight={'650px'} />
       </DashboardPanel>
     </BalancesOnly>
   );

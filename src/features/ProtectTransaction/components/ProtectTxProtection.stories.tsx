@@ -8,11 +8,11 @@ import { Network, NetworkId, WalletId } from '@types';
 import { assets } from '@database/seed/assets';
 import { COLORS } from '@theme';
 import { noOp } from '@utils';
+import { RatesContext } from '@services';
 
-import { ProtectTxProvider } from '../index';
 import { ProtectTxProtection } from './ProtectTxProtection';
-import { RatesContext } from '../../../services';
 import ProtectTxModalBackdrop from './ProtectTxModalBackdrop';
+import ProtectTxProvider from '../ProtectTxProvider';
 
 const noopPromise = () => Promise.resolve();
 

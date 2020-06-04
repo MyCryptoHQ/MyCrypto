@@ -9,7 +9,8 @@ import {
   StoreAccount,
   ITxStatus,
   ITxReceipt,
-  ExtendedAddressBook
+  ExtendedAddressBook,
+  IPendingTxReceipt
 } from '@types';
 
 import { getLabelByAccount } from './AddressBook';
@@ -44,17 +45,17 @@ export const getStoreAccounts = (
   });
 };
 
-export const txIsPending = ({ stage }: { stage: ITxStatus }) => stage === ITxStatus.PENDING;
-export const txIsSuccessful = ({ stage }: { stage: ITxStatus }) => stage === ITxStatus.SUCCESS;
-export const txIsFailed = ({ stage }: { stage: ITxStatus }) => stage === ITxStatus.FAILED;
+export const txIsPending = ({ status }: { status: ITxStatus }) => status === ITxStatus.PENDING;
+export const txIsSuccessful = ({ status }: { status: ITxStatus }) => status === ITxStatus.SUCCESS;
+export const txIsFailed = ({ status }: { status: ITxStatus }) => status === ITxStatus.FAILED;
 
 export const getTxsFromAccount = (accounts: StoreAccount[]): ITxReceipt[] => {
   return accounts
     .filter(Boolean)
-    .flatMap(({ transactions: txs, network }: { transactions: any; network: any }) =>
-      txs.map((tx: any) => ({ ...tx, network }))
+    .flatMap(({ transactions: txs }: { transactions: ITxReceipt[] }) =>
+      txs.map((tx: any) => ({ ...tx, status: tx.status || tx.stage }))
     );
 };
 
-export const getPendingTransactionsFromAccounts = (accounts: StoreAccount[]): ITxReceipt[] =>
-  getTxsFromAccount(accounts).filter(txIsPending);
+export const getPendingTransactionsFromAccounts = (accounts: StoreAccount[]): IPendingTxReceipt[] =>
+  getTxsFromAccount(accounts).filter(txIsPending) as IPendingTxReceipt[];

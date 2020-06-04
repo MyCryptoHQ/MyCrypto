@@ -62,7 +62,7 @@ function getParams(method: EnclaveMethods, req: Electron.Request): EnclaveMethod
   }
 
   try {
-    // TODO: Validate params based on provided method
+    // @todo: Validate params based on provided method
     const params = JSON.parse(data.bytes.toString());
     return params as EnclaveMethodParams;
   } catch (err) {

@@ -3,7 +3,7 @@ import React from 'react';
 import { ConfirmTransaction } from '@components';
 import { ITxType, TxParcel, StoreAccount } from '@types';
 import { IMembershipConfig } from '../config';
-import { makeTxConfigFromTransaction } from '../helpers';
+import { makePurchaseMembershipTxConfig } from '../helpers';
 
 interface Props {
   membershipSelected: IMembershipConfig;
@@ -17,7 +17,7 @@ export default function ConfirmMembershipPurchase(props: Props) {
   const { membershipSelected, transactions, currentTxIdx, account, onComplete } = props;
 
   const txConfigs = transactions.map((tx) =>
-    makeTxConfigFromTransaction(tx.txRaw, account, membershipSelected)
+    makePurchaseMembershipTxConfig(tx.txRaw, account, membershipSelected)
   );
 
   const txConfig = txConfigs[currentTxIdx];

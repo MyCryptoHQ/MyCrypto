@@ -11,7 +11,9 @@ import { translateRaw } from '@translations';
 
 import { ProtectTxUtils } from '../utils';
 import ProtectTxBase from './ProtectTxBase';
-import { CloseIcon, ProtectIcon, WarningIcon } from '@components/icons';
+import CloseIcon from '@components/icons/CloseIcon';
+import ProtectIcon from '@components/icons/ProtectIcon';
+import WarningIcon from '@components/icons/WarningIcon';
 
 import feeIcon from '@assets/images/icn-fee.svg';
 import { ProtectTxContext } from '../ProtectTxProvider';

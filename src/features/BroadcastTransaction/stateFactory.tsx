@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
-import { TUseStateReducerFactory, fromTxReceiptObj, makeTxConfigFromSignedTx } from '@utils';
-import { ITxReceipt, ITxConfig, ISignedTx, NetworkId } from '@types';
+import { TUseStateReducerFactory, makePendingTxReceipt, makeTxConfigFromSignedTx } from '@utils';
+import { ITxReceipt, ITxConfig, ISignedTx, NetworkId, ITxType, ITxHash } from '@types';
 import { DEFAULT_NETWORK } from '@config';
 import { NetworkContext, AssetContext, StoreContext } from '@services/Store';
 import { ProviderHandler } from '@services/EthService';
@@ -50,15 +50,20 @@ const BroadcastTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setSt
   };
 
   const handleConfirmClick = async (cb: any) => {
-    const { txConfig, signedTx } = state;
-    const provider = new ProviderHandler(txConfig!.network);
-
     try {
+      const { txConfig, signedTx } = state;
+      if (!txConfig) {
+        throw new Error();
+      }
+      const provider = new ProviderHandler(txConfig.network);
       const response = await provider.sendRawTx(signedTx);
-      const txReceipt = fromTxReceiptObj(response)(assets, networks) || {};
+      const pendingTxReceipt = makePendingTxReceipt(response.hash as ITxHash)(
+        ITxType.STANDARD,
+        txConfig
+      );
       setState((prevState: State) => ({
         ...prevState,
-        txReceipt
+        txReceipt: pendingTxReceipt
       }));
       cb();
     } catch (err) {

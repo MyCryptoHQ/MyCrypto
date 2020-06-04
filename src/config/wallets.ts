@@ -3,7 +3,7 @@ import { WalletType, WalletId } from '@types';
 
 import { KB_HELP_ARTICLE, getKBHelpArticle, HELP_ARTICLE } from './helpArticles';
 
-// @ADD_ACCOUNT_TODO: Icons really belongs to the WalletButton or a WalletIcon
+// @ADD_ACCOUNT_@todo: Icons really belongs to the WalletButton or a WalletIcon
 // component.
 import LedgerSVG from '@assets/images/wallets/ledger.svg';
 import TrezorSVG from '@assets/images/wallets/trezor.svg';
@@ -206,7 +206,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
   }
 };
 
-// TODO research Pick with dynamic keys for better type saftey.
+// @todo research Pick with dynamic keys for better type saftey.
 // lead https://medium.com/dailyjs/typescript-create-a-condition-based-subset-types-9d902cea5b8c
 type WalletSubType = Partial<Record<WalletId, IWalletConfig>>;
 
