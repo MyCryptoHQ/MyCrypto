@@ -3,41 +3,48 @@ import { OnInputKeyDownHandler } from 'react-select';
 
 import { translateRaw } from '@translations';
 import { AccountSummary, AccountOption, Dropdown } from '@components';
-import { Asset, IReceiverAddress, ExtendedAddressBook } from '@types';
+import { Asset, IReceiverAddress } from '@types';
 
 import addressBookIcon from '@assets/images/icn-address-book.svg';
 
-interface IAccountLookupDropdownProps {
-  contacts: ExtendedAddressBook[];
+export interface LabeledAddress {
+  label: string;
+  address: string;
+}
+
+interface IGeneralLookupDropdownProps {
+  options: LabeledAddress[];
   name: string;
   value: IReceiverAddress;
   asset?: Asset;
   onEnterKeyDown: OnInputKeyDownHandler;
   inputValue: string;
+  placeholder?: string;
   onSelect(option: IReceiverAddress): void;
   onChange?(e: any): void;
   onInputChange(e: any): string;
   onBlur(inputString: string): void;
 }
 
-const ContactLookupDropdown = ({
+const GeneralLookupDropdown = ({
   inputValue,
-  contacts,
+  options,
   name,
   value,
   onSelect,
   onBlur,
   onInputChange,
-  onEnterKeyDown
-}: IAccountLookupDropdownProps) => (
+  onEnterKeyDown,
+  placeholder
+}: IGeneralLookupDropdownProps) => (
   <Dropdown
     dropdownIcon={<img src={addressBookIcon} />}
     onInputKeyDown={onEnterKeyDown}
     inputValue={inputValue}
     name={name}
-    placeholder={translateRaw('ACCOUNT_LOOKUP_SELECTION_PLACEHOLDER')}
-    options={contacts}
-    onChange={(option: ExtendedAddressBook) => {
+    placeholder={placeholder ? placeholder : translateRaw('ACCOUNT_LOOKUP_SELECTION_PLACEHOLDER')}
+    options={options.map((o) => ({ value: o.address, ...o }))}
+    onChange={(option: LabeledAddress) => {
       onSelect({
         display: option ? option.label : '',
         value: option ? option.address : ''
@@ -57,4 +64,4 @@ const ContactLookupDropdown = ({
   />
 );
 
-export default ContactLookupDropdown;
+export default GeneralLookupDropdown;

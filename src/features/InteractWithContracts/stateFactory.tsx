@@ -81,11 +81,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     const contractIds = state.network.contracts;
     const networkContracts = getContractsByIds(contractIds);
 
-    const customContractOption = Object.assign({}, customContract, { networkId: state.network.id });
-
-    const contracts = [customContractOption, ...networkContracts].map((x) =>
-      Object.assign({}, x, { label: x.name })
-    );
+    const contracts = networkContracts.map((x) => Object.assign({}, x, { label: x.name }));
 
     setState((prevState: InteractWithContractState) => ({
       ...prevState,
@@ -98,7 +94,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     let addressOrDomainInput = '';
     let contractAbi = '';
 
-    if (contract.address !== CUSTOM_CONTRACT_ADDRESS) {
+    if (contract.address !== CUSTOM_CONTRACT_ADDRESS && contract.abi) {
       contractAddress = contract.address;
       addressOrDomainInput = contract.address;
       contractAbi = contract.abi;
@@ -120,7 +116,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     [state.contracts]
   );
   const handleAddressOrDomainChanged = (value: string) => {
-    if (selectExistingContract(value)) {
+    if (selectExistingContract(value) || value === '' || value === undefined) {
       return;
     }
 

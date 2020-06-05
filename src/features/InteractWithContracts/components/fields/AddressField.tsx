@@ -5,11 +5,12 @@ import styled from 'styled-components';
 
 import { Network, InlineMessageType } from '@types';
 import { DomainStatus } from '@components';
-import { getIsValidENSAddressFunction } from '@services/EthService';
+import { getIsValidENSAddressFunction, isValidENSName } from '@services/EthService';
 import { monospace } from '@theme';
 import { translateRaw } from '@translations';
 import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
 import InputField from '@components/InputField';
+import { InlineMessage } from '@components/InlineMessage';
 
 /*
   Eth address field to be used within a Formik Form
@@ -26,10 +27,12 @@ interface Props {
   error?: string | ErrorObject;
   className?: string;
   fieldName: string;
+  resolvedAddress?: string;
   placeholder?: string;
   network?: Network;
   isLoading: boolean;
   isError: boolean;
+  isResolvingName: boolean;
   resolutionError?: ResolutionError;
   handleDomainResolve?(name: string): Promise<void>;
   onBlur?(ev: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>): void;
@@ -79,6 +82,8 @@ function ETHAddressField({
   placeholder = translateRaw('ETH_ADDRESS_PLACEHOLDER'),
   isLoading,
   isError,
+  isResolvingName,
+  resolvedAddress,
   resolutionError,
   handleDomainResolve,
   onBlur,
@@ -94,57 +99,66 @@ function ETHAddressField({
       <Field
         name={fieldName}
         validateOnChange={false}
-        render={({ field, form }: FieldProps) => (
-          <Wrapper className={className}>
-            <InputWrapper>
-              <IdenticonWrapper>
-                {field.value.value ? <Identicon address={field.value.value} /> : <EmptyIdenticon />}
-              </IdenticonWrapper>
-              <SInput
-                data-lpignore="true"
-                {...field}
-                inputErrorType={errorType}
-                inputError={errorMessage}
-                marginBottom={'0'}
-                value={field.value.display}
-                placeholder={placeholder}
-                onChange={(e) => {
-                  form.setFieldValue(fieldName, {
-                    display: e.currentTarget.value,
-                    value: e.currentTarget.value
-                  });
-                  if (onChange) {
-                    onChange(e);
-                  }
-                }}
-                onBlur={async (e) => {
-                  if (!network || !network.chainId) {
-                    return;
-                  }
-                  const isValidENSAddress = getIsValidENSAddressFunction(network.chainId);
-                  const isENSAddress = isValidENSAddress(e.currentTarget.value);
-                  const action =
-                    isENSAddress && handleDomainResolve
-                      ? (domainName: string) => handleDomainResolve(domainName)
-                      : (address: string) =>
-                          form.setFieldValue(fieldName, { display: address, value: address });
-                  await action(e.currentTarget.value);
-                  form.setFieldTouched(fieldName);
-                  if (onBlur) {
-                    onBlur(e);
-                  }
-                }}
-              />
-            </InputWrapper>
-            <DomainStatus
-              domain={form.values[fieldName].value}
-              rawAddress={form.values[fieldName].value}
-              isLoading={isLoading}
-              isError={isError}
-              resolutionError={resolutionError}
-            />
-          </Wrapper>
-        )}
+        render={({ field, form }: FieldProps) => {
+          const value = resolvedAddress ? resolvedAddress : field.value.value;
+          return (
+            <Wrapper className={className}>
+              <InputWrapper>
+                <IdenticonWrapper>
+                  {field.value.value ? (
+                    <Identicon address={field.value.value} />
+                  ) : (
+                    <EmptyIdenticon />
+                  )}
+                </IdenticonWrapper>
+                <SInput
+                  data-lpignore="true"
+                  {...field}
+                  marginBottom={'0'}
+                  value={field.value.display}
+                  placeholder={placeholder}
+                  onChange={(e) => {
+                    form.setFieldValue(fieldName, {
+                      display: e.currentTarget.value,
+                      value: e.currentTarget.value
+                    });
+                    if (onChange) {
+                      onChange(e);
+                    }
+                  }}
+                  onBlur={async (e) => {
+                    if (!network || !network.chainId) {
+                      return;
+                    }
+                    const isValidENSAddress = getIsValidENSAddressFunction(network.chainId);
+                    const isENSAddress = isValidENSAddress(e.currentTarget.value);
+                    const action =
+                      isENSAddress && handleDomainResolve
+                        ? (domainName: string) => handleDomainResolve(domainName)
+                        : (address: string) =>
+                            form.setFieldValue(fieldName, { display: address, value: address });
+                    await action(e.currentTarget.value);
+                    form.setFieldTouched(fieldName);
+                    if (onBlur) {
+                      onBlur(e);
+                    }
+                  }}
+                />
+              </InputWrapper>
+              {(field.value && isValidENSName(field.value.value)) || isResolvingName ? (
+                <DomainStatus
+                  domain={value}
+                  rawAddress={value}
+                  isLoading={isLoading}
+                  isError={isError}
+                  resolutionError={resolutionError}
+                />
+              ) : (
+                errorMessage && <InlineMessage type={errorType}>{errorMessage}</InlineMessage>
+              )}
+            </Wrapper>
+          );
+        }}
       />
     </>
   );
