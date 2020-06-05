@@ -76,7 +76,7 @@ const HeaderBottomLinks = styled.ul`
       background: #163150;
       border: 1px solid #3e546d;
       text-transform: none;
-      z-index: 1;
+      z-index: 7;
 
       li {
         padding: 13px;

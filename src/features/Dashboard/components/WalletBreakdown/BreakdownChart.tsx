@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { PieChart, Pie, Sector, Cell, PieLabelRenderProps } from 'recharts';
 import equals from 'ramda/src/equals';
 
-import { Balance } from './types';
+import { Balance } from '@types';
+
 import { SMALLEST_CHART_SHARE_SUPPORTED } from './WalletBreakdownView';
 
 const MainWrapper = styled.div`

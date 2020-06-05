@@ -5,6 +5,7 @@ export interface ISettings {
   fiatCurrency: string;
   darkMode: boolean;
   dashboardAccounts: TUuid[];
+  excludedAssets: TUuid[];
   inactivityTimer: number;
   node?: string;
   rates: IRates;

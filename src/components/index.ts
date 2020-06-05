@@ -74,3 +74,5 @@ export {
 export { default as UndoDeleteOverlay } from './UndoDeleteOverlay';
 export { default as FixedSizeCollapsibleTable } from './FixedSizeCollapsibleTable';
 export { default as ContractLookupField } from './ContractLookupField';
+export { default as BalanceDetailsTable } from './BalanceDetailsTable';
+export { AddIcon, SubtractIcon } from './icons';

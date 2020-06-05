@@ -20,7 +20,7 @@ import { noOp } from '@utils';
 import { SPACING } from '@theme';
 
 import { default as Typography } from './Typography';
-import { default as IconArrow } from './IconArrow';
+import IconArrow from './IconArrow';
 
 export interface TableGroup {
   title: string;
@@ -103,7 +103,7 @@ const TableHeading = styled(Typography)<HeadingProps>`
   position: sticky;
   top: 0;
   background: ${(props) => props.theme.tableHeadBackground};
-  z-index: 9999;
+  z-index: 4;
   cursor: ${(props) => (props.isSortable ? 'pointer' : 'inherit')};
 ` as StyledComponentClass<
   ClassAttributes<HTMLTableHeaderCellElement> &

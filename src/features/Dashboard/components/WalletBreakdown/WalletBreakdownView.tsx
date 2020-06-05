@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
 import translate, { translateRaw } from '@translations';
-import { EMPTYUUID } from '@utils';
-import { TUuid } from '@types';
+import { EMPTYUUID, buildTotalFiatValue } from '@utils';
+import { TUuid, Balance } from '@types';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import { AssetIcon, Currency, Typography, Tooltip } from '@components';
 
 import BreakdownChart from './BreakdownChart';
 import NoAssets from './NoAssets';
-import { WalletBreakdownProps, Balance } from './types';
 import { calculateShownIndex } from './helpers';
 
 import moreIcon from '@assets/images/icn-more.svg';
 import coinGeckoIcon from '@assets/images/credits/credits-coingecko.png';
+import { BalancesDetailProps } from './types';
 
 export const SMALLEST_CHART_SHARE_SUPPORTED = 0.03; // 3%
 export const NUMBER_OF_ASSETS_DISPLAYED = 4;
@@ -218,7 +218,7 @@ export default function WalletBreakdownView({
   fiat,
   accounts,
   selected
-}: WalletBreakdownProps) {
+}: BalancesDetailProps) {
   const [selectedAssetIndex, setSelectedAssetIndex] = useState(initialSelectedAssetIndex);
   const [isChartAnimating, setIsChartAnimating] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(true);
@@ -429,7 +429,5 @@ const createOtherTokenAsset = (otherBalances: Balance[]) => ({
   isOther: true,
   amount: 0,
   uuid: EMPTYUUID as TUuid,
-  fiatValue: otherBalances.reduce((sum, asset) => {
-    return (sum += asset.fiatValue);
-  }, 0)
+  fiatValue: buildTotalFiatValue(otherBalances)
 });

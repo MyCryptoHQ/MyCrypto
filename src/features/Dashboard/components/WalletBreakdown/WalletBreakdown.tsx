@@ -5,13 +5,13 @@ import styled from 'styled-components';
 import { translateRaw } from '@translations';
 import { RatesContext } from '@services';
 import { SettingsContext, StoreContext } from '@services/Store';
-import { StoreAsset, TUuid } from '@types';
-import { weiToFloat, convertToFiatFromAsset } from '@utils';
+import { TUuid, Balance } from '@types';
+import { buildBalances, buildTotalFiatValue } from '@utils';
 import { BREAK_POINTS, SPACING } from '@theme';
 import { getFiat } from '@config/fiats';
 import { Tooltip } from '@components';
+import { isNotExcludedAsset } from '@services/Store/helpers';
 
-import { Balance, BalanceAccount } from './types';
 import AccountDropdown from './AccountDropdown';
 import BalancesDetailView from './BalancesDetailView';
 import WalletBreakdownView from './WalletBreakdownView';
@@ -64,42 +64,15 @@ export function WalletBreakdown() {
   const { getAssetRate } = useContext(RatesContext);
 
   // Adds/updates an asset in array of balances, which are later displayed in the chart, balance list and in the secondary view
-  const balances: Balance[] = totals(currentAccounts)
-    .map((asset: StoreAsset) => {
-      const exchangeRate = getAssetRate(asset);
-      return {
-        id: `${asset.name}-${asset.ticker}`,
-        name: asset.name || translateRaw('WALLET_BREAKDOWN_UNKNOWN'),
-        ticker: asset.ticker,
-        uuid: asset.uuid,
-        amount: weiToFloat(asset.balance, asset.decimal),
-        fiatValue: convertToFiatFromAsset(asset, exchangeRate),
-        exchangeRate,
-        accounts: currentAccounts.reduce((acc, currAccount) => {
-          const matchingAccAssets = currAccount.assets.filter(
-            (accAsset) => accAsset.uuid === asset.uuid
-          );
-          if (matchingAccAssets.length) {
-            return [
-              ...acc,
-              ...matchingAccAssets.map((accAsset) => ({
-                address: currAccount.address,
-                ticker: accAsset.ticker,
-                amount: weiToFloat(accAsset.balance, accAsset.decimal),
-                fiatValue: convertToFiatFromAsset(accAsset, exchangeRate),
-                label: currAccount.label
-              }))
-            ];
-          }
-          return acc;
-        }, [] as BalanceAccount[])
-      };
-    })
-    .sort((a, b) => b.fiatValue - a.fiatValue);
+  const balances: Balance[] = buildBalances(
+    totals,
+    currentAccounts,
+    settings,
+    getAssetRate,
+    isNotExcludedAsset
+  );
 
-  const totalFiatValue = balances.reduce((sum, asset) => {
-    return sum + asset.fiatValue;
-  }, 0);
+  const totalFiatValue = buildTotalFiatValue(balances);
 
   const toggleShowChart = () => {
     setShowBalanceDetailView(!showBalanceDetailView);

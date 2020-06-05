@@ -7,6 +7,8 @@ export interface ISettingsContext {
   settings: ISettings;
   language: string;
   addAccountToFavorites(uuid: TUuid): void;
+  addAssetToExclusionList(uuid: TUuid): void;
+  removeAssetfromExclusionList(uuid: TUuid): void;
   updateSettings(settings: ISettings): void;
   updateSettingsAccounts(accounts: TUuid[]): void;
   updateSettingsNode(nodeId: string): void;
@@ -59,6 +61,20 @@ export const SettingsProvider: React.FC = ({ children }) => {
       state.updateSettings({
         ...settings,
         dashboardAccounts: [...settings.dashboardAccounts, account]
+      });
+    },
+
+    addAssetToExclusionList: (assetUuid: TUuid): void => {
+      state.updateSettings({
+        ...settings,
+        excludedAssets: [...(settings.excludedAssets || []), assetUuid]
+      });
+    },
+
+    removeAssetfromExclusionList: (assetUuid: TUuid): void => {
+      state.updateSettings({
+        ...settings,
+        excludedAssets: (settings.excludedAssets || []).filter((uuid) => uuid !== assetUuid)
       });
     },
 

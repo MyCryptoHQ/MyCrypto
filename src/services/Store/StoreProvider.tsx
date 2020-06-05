@@ -50,7 +50,11 @@ import { useEffectOnce } from '@vendor';
 import { makeFinishedTxReceipt } from '@utils/transaction';
 
 import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';
-import { getStoreAccounts, getPendingTransactionsFromAccounts } from './helpers';
+import {
+  getStoreAccounts,
+  getPendingTransactionsFromAccounts,
+  isNotExcludedAsset
+} from './helpers';
 import {
   AssetContext,
   getTotalByAsset,
@@ -334,7 +338,8 @@ export const StoreProvider: React.FC = ({ children }) => {
     get userAssets() {
       const userAssets = state.accounts
         .filter((a: StoreAccount) => a.wallet !== WalletId.VIEW_ONLY)
-        .flatMap((a: StoreAccount) => a.assets);
+        .flatMap((a: StoreAccount) => a.assets)
+        .filter(isNotExcludedAsset(settings.excludedAssets));
       const uniq = uniqBy(prop('uuid'), userAssets);
       return sortBy(prop('ticker'), uniq);
     },
