@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import { translateRaw } from '@translations';
 
 import nansenLogo from '@assets/images/credits/credits-nansen.svg';
-import enslogo from 'assets/images/ens/ensIcon.svg';
+import enslogo from '@assets/images/ens/ensIcon.svg';
+import coinGeckoIcon from '@assets/images/credits/credits-coingecko.png';
 import { SPACING } from '@theme';
 import { Typography } from '@components';
 
@@ -38,7 +39,8 @@ margin-right: ${SPACING.XS};
 
 export enum PoweredByProvider {
   NANSEN,
-  ENS
+  ENS,
+  COINGECKO
 }
 
 interface PoweredByProviderType {
@@ -55,7 +57,20 @@ const providers: PoweredByProviderType = {
       bottom: ${SPACING.BASE};
     `
   },
-  [PoweredByProvider.ENS]: { icon: enslogo, text: translateRaw('ENS_LOGO_TEXT'), flipped: true }
+  [PoweredByProvider.ENS]: { icon: enslogo, text: translateRaw('ENS_LOGO_TEXT'), flipped: true },
+  [PoweredByProvider.COINGECKO]: {
+    icon: coinGeckoIcon,
+    text: translateRaw('POWERED_BY'),
+    fontSize: '10px',
+    css: `
+      > span {
+      color: #b5bfc8;
+      }
+      > img {
+        height: 25px;
+      }
+      `
+  }
 };
 
 const PoweredByText = ({ provider }: { provider: PoweredByProvider }) => {
