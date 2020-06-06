@@ -79,8 +79,6 @@ export default class EtherscanService {
     const params = {
       module: 'account',
       action: 'tokentx',
-      startblock: 0,
-      endblock: 99999999,
       address,
       sort: 'desc',
       apiKey: ''
@@ -111,8 +109,6 @@ export default class EtherscanService {
     const params = {
       module: 'account',
       action: 'txlist',
-      startblock: 0,
-      endblock: 99999999,
       address,
       sort: 'desc',
       apiKey: ''
