@@ -6,6 +6,7 @@ import { translateRaw } from '@translations';
 import nansenLogo from '@assets/images/credits/credits-nansen.svg';
 import enslogo from '@assets/images/ens/ensIcon.svg';
 import coinGeckoIcon from '@assets/images/credits/credits-coingecko.png';
+import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 import { SPACING } from '@theme';
 import { Typography } from '@components';
 
@@ -40,7 +41,8 @@ margin-right: ${SPACING.XS};
 export enum PoweredByProvider {
   NANSEN,
   ENS,
-  COINGECKO
+  COINGECKO,
+  ZAPPER
 }
 
 interface PoweredByProviderType {
@@ -70,6 +72,11 @@ const providers: PoweredByProviderType = {
         height: 25px;
       }
       `
+  },
+  [PoweredByProvider.ZAPPER]: {
+    icon: zapperLogo,
+    text: translateRaw('ZAP_POWERED_BY'),
+    flipped: true
   }
 };
 

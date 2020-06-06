@@ -3,14 +3,15 @@ import Styled from 'styled-components';
 import BN from 'bn.js';
 
 import { AddressBookContext, StoreContext, SettingsContext } from '@services/Store';
-import { Amount, AssetIcon, Button } from '@components';
+import { Amount, AssetIcon, Button, PoweredByText } from '@components';
 import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from '@services/EthService';
 import { RatesContext } from '@services/RatesProvider';
 import { convertToFiat } from '@utils';
 import translate, { translateRaw } from '@translations';
-import { ZapSelectedBanner, DeFiZapLogo } from '@features/DeFiZap';
+import { ZapSelectedBanner } from '@features/DeFiZap';
 import { BREAK_POINTS, SPACING, COLORS } from '@theme';
 import MembershipSelectedBanner from '@features/PurchaseMembership/components/MembershipSelectedBanner';
+import { PoweredByProvider } from '@components/PoweredByText';
 import { IStepComponentProps, ITxType, ExtendedAddressBook, ISettings } from '@types';
 import { getFiat } from '@config/fiats';
 
@@ -323,7 +324,7 @@ export const ConfirmTransactionUI = ({
       </SendButton>
       {txType === ITxType.DEFIZAP && (
         <DeFiZapLogoContainer>
-          <DeFiZapLogo />
+          <PoweredByText provider={PoweredByProvider.ZAPPER} />
         </DeFiZapLogoContainer>
       )}
       {protectTxButton && protectTxButton()}
