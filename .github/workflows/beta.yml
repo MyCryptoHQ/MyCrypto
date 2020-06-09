@@ -1,0 +1,44 @@
+name: Beta
+
+env:
+  AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_BETA }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_BETA }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_BETA }}
+  
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Retrieve node version from .nvmrc
+      run: echo "##[set-output name=NVMRC;]$(cat package.json | grep '\"node\":' | sed 's/^ *//;s/ *$//;s/\"node\":\ \"//;s/\",//')"
+      id: nvm
+
+    - name: Setup node ${{ steps.nvm.outputs.NVMRC }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: "${{ steps.nvm.outputs.NVMRC }}"
+
+    - run: node -v
+    - name: Install Dependencies
+      run: yarn install
+
+    - name: yarn build
+      run: yarn build
+        
+    - name: S3 Sync
+      uses: jakejarvis/s3-sync-action@v0.5.1
+      with:
+        args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+      env:
+        SOURCE_DIR: 'dist/prod'
+        
+    - name: Cloudfront Cache
+      run: aws cloudfront create-invalidation --distribution-id $BETA --paths "/*"
+              
