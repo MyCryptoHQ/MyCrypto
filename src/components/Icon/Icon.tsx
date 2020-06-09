@@ -18,7 +18,7 @@ const icons = {
   twitter: require('@assets/icons/social/twitter.svg'),
 
   website: require('@assets/icons/website.svg'),
-  whitepaper: require('@assets/icons/expand.svg')
+  whitepaper: require('@assets/icons/whitepaper.svg')
 };
 
 const StyledInlineSVG = styled(InlineSVG)`
