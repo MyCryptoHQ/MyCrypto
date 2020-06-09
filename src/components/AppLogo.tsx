@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
-import Icon from 'components/Icon';
+import Icon from '@components/Icon';
 
 const Container = styled.div`
   display: flex;
