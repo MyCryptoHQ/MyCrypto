@@ -78,7 +78,7 @@ export function ActionFactory(model: DSKeys, dispatch: Dispatch<ActionV>, state:
 
   const importStorage = (data: string) => {
     const d = JSON.parse(data);
-    // @TODO: perfom version and validity check.
+    // @todo: perfom version and validity check.
     dispatch({
       type: ActionT.RESET,
       payload: createPayload(model)(marshallState(d))

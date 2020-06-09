@@ -1,3 +1,5 @@
+import { TURL } from '@types';
+
 const KB_URL = 'https://support.mycrypto.com';
 
 export enum KB_HELP_ARTICLE {
@@ -19,7 +21,8 @@ export enum KB_HELP_ARTICLE {
   WALLETCONNECT = 'general-knowledge/ethereum-blockchain/what-is-walletconnect',
   STAYING_SAFE = 'staying-safe',
   BUY_CRYPTO = 'how-to/getting-started/how-to-buy-ether-with-usd',
-  MEMBERSHIP_INFO = 'general-knowledge/about-mycrypto/membership-information'
+  MEMBERSHIP_INFO = 'general-knowledge/about-mycrypto/membership-information',
+  HOW_TO_USE_ZAPPER = 'how-to/defi/how-to-use-zapper'
 }
 
 export enum HELP_ARTICLE {
@@ -27,4 +30,4 @@ export enum HELP_ARTICLE {
   LEDGER = 'https://support.ledger.com/hc/en-us/articles/360008268594'
 }
 
-export const getKBHelpArticle = (article: KB_HELP_ARTICLE) => `${KB_URL}/${article}`;
+export const getKBHelpArticle = (article: KB_HELP_ARTICLE) => `${KB_URL}/${article}` as TURL;

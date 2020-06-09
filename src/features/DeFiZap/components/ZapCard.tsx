@@ -80,13 +80,23 @@ const ZapCardContentBottom = styled('div')`
   display: flex;
   padding: 15px 15px;
   align-items: stretch + center;
-  justify-content: center;
+  justify-content: space-between;
   width: 100%;
   flex-direction: row;
   & a {
+    width: 100%;
     &:not(:first-child) {
-      margin-left: ${SPACING.SM};
       margin-top: 0px;
+    }
+    :first-child {
+      margin-right: ${SPACING.XS};
+    }
+    :last-child {
+      margin-left: ${SPACING.XS};
+    }
+    :first-child:last-child {
+      margin-left: 0;
+      margin-right: 0;
     }
   }
   @media (min-width: ${BREAK_POINTS.SCREEN_XS}) and (max-width: ${BREAK_POINTS.SCREEN_MD}) {
@@ -139,14 +149,15 @@ const ZapCardRiskProfile = styled('div')`
   margin-left: 0.5em;
 `;
 
-const ZapCardButton = styled(Button)<{ width: string }>`
+const ZapCardButton = styled(Button)`
   @media (min-width: ${BREAK_POINTS.SCREEN_XS}) and (max-width: ${BREAK_POINTS.SCREEN_MD}) {
     width: 100%;
   }
   display: flex;
+  flex: 1 auto;
   justify-content: center;
   align-items: center;
-  width: ${(props) => props.width};
+  width: 100%;
   height: 40px;
   padding: 0;
   font-size: ${FONT_SIZE.MD};
@@ -285,21 +296,15 @@ const ZapCard = ({ config }: Props) => {
       <ZapCardContentBottom>
         {!humanReadableZapBalance ? (
           <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
-            <ZapCardButton width={'174px'} inverted={true}>
-              {translateRaw('ZAP_CARD_CTA')}
-            </ZapCardButton>
+            <ZapCardButton inverted={true}>{translateRaw('ZAP_CARD_CTA')}</ZapCardButton>
           </RouterLink>
         ) : (
           <>
             <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
-              <ZapCardButton width={'81px'} inverted={true}>
-                {translateRaw('ADD')}
-              </ZapCardButton>
+              <ZapCardButton inverted={true}>{translateRaw('ADD')}</ZapCardButton>
             </RouterLink>
             <a target="_blank" href={config.link} rel="noreferrer">
-              <ZapCardButton width={'117px'} inverted={true}>
-                {translateRaw('WITHDRAW')}
-              </ZapCardButton>
+              <ZapCardButton inverted={true}>{translateRaw('WITHDRAW')}</ZapCardButton>
             </a>
           </>
         )}

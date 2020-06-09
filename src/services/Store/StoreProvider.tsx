@@ -20,22 +20,23 @@ import {
   IAccount,
   WalletId,
   Asset,
-  ITxReceipt,
   NetworkId,
   AddressBook,
   ITxType,
   TUuid,
-  ReserveAsset
+  ReserveAsset,
+  IPendingTxReceipt
 } from '@types';
 import {
   isArrayEqual,
   useInterval,
   convertToFiatFromAsset,
-  fromTxReceiptObj,
   getWeb3Config,
   multiplyBNFloats,
   weiToFloat,
-  generateAccountUUID
+  generateAccountUUID,
+  useAnalytics,
+  isSameAddress
 } from '@utils';
 import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from '@services/EthService';
 import {
@@ -46,9 +47,14 @@ import {
 } from '@features/PurchaseMembership/config';
 import { DEFAULT_NETWORK } from '@config';
 import { useEffectOnce } from '@vendor';
+import { makeFinishedTxReceipt } from '@utils/transaction';
 
 import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';
-import { getStoreAccounts, getPendingTransactionsFromAccounts } from './helpers';
+import {
+  getStoreAccounts,
+  getPendingTransactionsFromAccounts,
+  isNotExcludedAsset
+} from './helpers';
 import {
   AssetContext,
   getTotalByAsset,
@@ -59,7 +65,7 @@ import { AccountContext, getDashboardAccounts } from './Account';
 import { SettingsContext } from './Settings';
 import { NetworkContext, getNetworkById } from './Network';
 import { findNextUnusedDefaultLabel, AddressBookContext } from './AddressBook';
-import { MyCryptoApiService } from '../ApiService';
+import { MyCryptoApiService, ANALYTICS_CATEGORIES } from '../ApiService';
 
 export interface CoinGeckoManifest {
   [uuid: string]: string;
@@ -110,7 +116,7 @@ export const StoreContext = createContext({} as State);
 export const StoreProvider: React.FC = ({ children }) => {
   const {
     accounts: rawAccounts,
-    addNewTransactionToAccount,
+    addNewTxToAccount,
     getAccountByAddressAndNetworkName,
     updateAccountAssets,
     updateAllAccountsAssets,
@@ -132,7 +138,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     {}
   );
 
-  const [pendingTransactions, setPendingTransactions] = useState([] as ITxReceipt[]);
+  const [pendingTransactions, setPendingTransactions] = useState([] as IPendingTxReceipt[]);
   // We transform rawAccounts into StoreAccount. Since the operation is exponential to the number of
   // accounts, make sure it is done only when rawAccounts change.
   const accounts = useMemo(() => getStoreAccounts(rawAccounts, assets, networks, contacts), [
@@ -177,7 +183,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     () => {
       // Pattern to cancel setState call if ever the component is unmounted
       // before the async requests completes.
-      // @TODO: extract into seperate hook e.g. react-use
+      // @todo: extract into seperate hook e.g. react-use
       // https://www.robinwieruch.de/react-hooks-fetch-data
       let isMounted = true;
       getAccountsAssetsBalances(currentAccounts).then((accountsWithBalances: StoreAccount[]) => {
@@ -233,6 +239,15 @@ export const StoreProvider: React.FC = ({ children }) => {
       });
   };
 
+  useAnalytics({
+    category: ANALYTICS_CATEGORIES.ROOT,
+    actionName: accounts.length === 0 ? 'New User' : 'Returning User',
+    eventParams: {
+      visitStartAccountNumber: accounts.length
+    },
+    triggerOnMount: true
+  });
+
   useEffectOnce(() => {
     scanForMemberships();
   });
@@ -253,42 +268,44 @@ export const StoreProvider: React.FC = ({ children }) => {
     let isMounted = true;
     // This interval is used to poll for status of txs.
     const txStatusLookupInterval = setInterval(() => {
-      pendingTransactions.forEach((pendingTransactionObject: ITxReceipt) => {
-        const network: Network = pendingTransactionObject.network;
+      pendingTransactions.forEach((pendingTxReceipt) => {
+        const network = getNetworkById(pendingTxReceipt.asset.networkId, networks);
         // If network is not found in the pendingTransactionObject, we cannot continue.
         if (!network) return;
         const provider = new ProviderHandler(network);
 
-        provider.getTransactionByHash(pendingTransactionObject.hash).then((transactionReceipt) => {
+        provider.getTransactionByHash(pendingTxReceipt.hash).then((txResponse) => {
           // Fail out if tx receipt cant be found.
           // This initial check stops us from spamming node for data before there is data to fetch.
-          if (!transactionReceipt) return;
-          const receipt = fromTxReceiptObj(transactionReceipt)(assets, networks);
-
-          // fromTxReceiptObj will return undefined if a network config could not be found with the transaction's chainId
-          if (!receipt) return;
+          if (!txResponse || !txResponse.blockNumber) return;
 
           // Get block tx success/fail and timestamp for block number, then overwrite existing tx in account.
           Promise.all([
-            getTxStatus(provider, receipt.hash),
-            getTimestampFromBlockNum(receipt.blockNumber, provider)
+            getTxStatus(provider, pendingTxReceipt.hash),
+            getTimestampFromBlockNum(txResponse.blockNumber, provider)
           ]).then(([txStatus, txTimestamp]) => {
             // txStatus and txTimestamp return undefined on failed lookups.
             if (!isMounted || !txStatus || !txTimestamp) return;
-            const senderAccount =
-              pendingTransactionObject.senderAccount ||
-              getAccountByAddressAndNetworkName(receipt.from, pendingTransactionObject.network.id);
+            const senderAccount = getAccountByAddressAndNetworkName(
+              pendingTxReceipt.from,
+              pendingTxReceipt.asset.networkId
+            );
+            if (!senderAccount) return;
 
-            addNewTransactionToAccount(senderAccount, {
-              ...receipt,
-              txType: pendingTransactionObject.txType || ITxType.STANDARD,
-              timestamp: txTimestamp,
-              stage: txStatus
-            });
-            if (pendingTransactionObject.txType === ITxType.DEFIZAP) {
-              state.scanAccountTokens(senderAccount);
-            } else if (pendingTransactionObject.txType === ITxType.PURCHASE_MEMBERSHIP) {
-              scanForMemberships([senderAccount]);
+            const finishedTxReceipt = makeFinishedTxReceipt(
+              pendingTxReceipt,
+              txStatus,
+              txTimestamp,
+              txResponse.blockNumber
+            );
+            addNewTxToAccount(senderAccount, finishedTxReceipt);
+            const storeAccount = accounts.find((acc) =>
+              isSameAddress(senderAccount.address, acc.address)
+            ) as StoreAccount;
+            if (finishedTxReceipt.txType === ITxType.DEFIZAP) {
+              state.scanAccountTokens(storeAccount);
+            } else if (finishedTxReceipt.txType === ITxType.PURCHASE_MEMBERSHIP) {
+              scanForMemberships([storeAccount]);
             }
           });
         });
@@ -321,7 +338,8 @@ export const StoreProvider: React.FC = ({ children }) => {
     get userAssets() {
       const userAssets = state.accounts
         .filter((a: StoreAccount) => a.wallet !== WalletId.VIEW_ONLY)
-        .flatMap((a: StoreAccount) => a.assets);
+        .flatMap((a: StoreAccount) => a.assets)
+        .filter(isNotExcludedAsset(settings.excludedAssets));
       const uniq = uniqBy(prop('uuid'), userAssets);
       return sortBy(prop('ticker'), uniq);
     },
@@ -411,7 +429,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     },
     getAssetByTicker: getAssetByTicker(assets),
     getAccount: ({ address, networkId }) =>
-      accounts.find((a) => a.address === address && a.networkId === networkId),
+      accounts.find((a) => isSameAddress(a.address, address) && a.networkId === networkId),
     getDeFiAssetReserveAssets: (poolAsset: StoreAsset) => (
       getPoolAssetReserveRate: (poolTokenUuid: string, assets: Asset[]) => ReserveAsset[]
     ) =>

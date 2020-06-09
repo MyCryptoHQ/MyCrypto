@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Heading } from '@mycrypto/ui';
+
 import {
   AddressBookContext,
   NetworkContext,
@@ -8,18 +9,26 @@ import {
   SettingsContext,
   StoreContext
 } from '@services/Store';
-
-import { AccountList, FlippablePanel, Mobile, MobileNavBar, Desktop } from '@components';
-import { NetworkId, CustomNodeConfig } from '@types';
+import { buildBalances, buildTotalFiatValue } from '@utils';
+import { AccountList, Mobile, Desktop } from '@components';
+import { NetworkId, CustomNodeConfig, Balance } from '@types';
 import { DEFAULT_NETWORK, IS_ACTIVE_FEATURE } from '@config';
 import { BREAK_POINTS } from '@theme';
 import translate from '@translations';
+import FlippablePanel from '@features/Settings/components/FlippablePanel';
+import { RatesContext } from '@services/RatesProvider';
+import { getFiat } from '@config/fiats';
+import { isExcludedAsset } from '@services/Store/helpers';
 
 import settingsIcon from '@assets/images/icn-settings.svg';
 import AddToAddressBook from './components/AddToAddressBook';
-import { AddressBookPanel, GeneralSettings, DangerZone } from './components';
 import AddOrEditNetworkNode from './components/AddOrEditNetworkNode';
 import NetworkNodes from './components/NetworkNodes';
+import MobileNavBar from '@components/MobileNavBar';
+import AddressBookPanel from './components/AddressBook';
+import ExcludedAssetsPanel from './components/ExcludedAssets';
+import GeneralSettings from './components/GeneralSettings';
+import DangerZone from './components/DangerZone';
 
 const SettingsHeading = styled(Heading)<{ forwardedAs?: string }>`
   display: flex;
@@ -44,6 +53,33 @@ const StyledLayout = styled.div`
     padding: 0;
   }
 `;
+
+function rendedExcludedAssetsPanel() {
+  const { accounts, totals, currentAccounts } = useContext(StoreContext);
+  const { settings } = useContext(SettingsContext);
+  const { getAssetRate } = useContext(RatesContext);
+  const balances: Balance[] = buildBalances(
+    totals,
+    currentAccounts,
+    settings,
+    getAssetRate,
+    isExcludedAsset
+  );
+
+  const totalFiatValue = buildTotalFiatValue(balances);
+
+  const fiat = getFiat(settings);
+
+  return (
+    <ExcludedAssetsPanel
+      balances={balances}
+      totalFiatValue={totalFiatValue}
+      fiat={fiat}
+      accounts={accounts}
+      selected={settings.dashboardAccounts}
+    />
+  );
+}
 
 function renderAccountPanel() {
   const { accounts } = useContext(StoreContext);
@@ -192,6 +228,7 @@ export default function Settings() {
         </SettingsHeading>
         {renderAccountPanel()}
         {renderAddressPanel()}
+        {rendedExcludedAssetsPanel()}
         {renderNetworkNodes()}
         {renderGeneralSettingsPanel()}
       </Desktop>

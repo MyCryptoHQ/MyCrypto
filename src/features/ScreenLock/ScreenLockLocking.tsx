@@ -4,9 +4,10 @@ import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import translate, { translateRaw } from '@translations';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services/ApiService';
+import { ANALYTICS_CATEGORIES } from '@services/ApiService';
 
 import { SettingsContext } from '@services/Store';
+import { useAnalytics } from '@utils';
 
 const MainWrapper = styled.div`
   display: flex;
@@ -74,21 +75,22 @@ export default function ScreenLockLocking({
   lockingOnDemand
 }: LockScreenProps) {
   const { settings } = useContext(SettingsContext);
+  const trackScreenLock = useAnalytics({
+    category: ANALYTICS_CATEGORIES.SCREEN_LOCK
+  });
 
   const handleKeepUsingDashboardClicked = () => {
     onCancelLockCountdown();
-    AnalyticsService.instance.track(
-      ANALYTICS_CATEGORIES.SCREEN_LOCK,
-      'Keep Using MyCrypto button clicked'
-    );
+    trackScreenLock({
+      actionName: 'Keep Using MyCrypto button clicked'
+    });
   };
 
   const handleTurnOnScreenLockClick = () => {
     onScreenLockClicked();
-    AnalyticsService.instance.track(
-      ANALYTICS_CATEGORIES.SCREEN_LOCK,
-      'Turn On Screenlock button clicked'
-    );
+    trackScreenLock({
+      actionName: 'Turn On Screenlock button clicked'
+    });
   };
 
   return (

@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 
-import { TUseStateReducerFactory, fromTxReceiptObj } from '@utils';
+import { TUseStateReducerFactory, makePendingTxReceipt } from '@utils';
 import { isWeb3Wallet } from '@utils/web3';
-import { Asset, ITxStatus, ITxType } from '@types';
+import { Asset, ITxStatus, ITxType, ITxHash, TAddress } from '@types';
 import { hexWeiToString, ProviderHandler } from '@services/EthService';
 import { AccountContext } from '@services/Store';
 
@@ -13,7 +13,7 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
   state,
   setState
 }) => {
-  const { addNewTransactionToAccount } = useContext(AccountContext);
+  const { addNewTxToAccount } = useContext(AccountContext);
 
   const handleTxSigned = async (signResponse: any, cb: any) => {
     const { txConfig } = state;
@@ -24,7 +24,7 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
         signResponse && signResponse.hash
           ? signResponse
           : { hash: signResponse, asset: txConfig.asset };
-      addNewTransactionToAccount(state.txConfig.senderAccount, {
+      addNewTxToAccount(state.txConfig.senderAccount, {
         ...txReceipt,
         to: state.txConfig.receiverAddress,
         from: state.txConfig.senderAccount.address,
@@ -41,18 +41,14 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
       const provider = new ProviderHandler(txConfig.network);
       provider
         .sendRawTx(signResponse)
-        .then((retrievedTxReceipt) => retrievedTxReceipt)
-        .catch((hash) => provider.getTransactionByHash(hash))
-        .then((retrievedTransactionReceipt) => {
-          const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt);
-          addNewTransactionToAccount(state.txConfig.senderAccount, {
-            ...txReceipt,
-            txType: ITxType.DEFIZAP,
-            stage: ITxStatus.PENDING
-          });
+        .then((txResponse) => txResponse.hash as ITxHash)
+        .catch((hash) => hash as ITxHash)
+        .then((txHash) => {
+          const pendingTxReceipt = makePendingTxReceipt(txHash)(ITxType.DEFIZAP, txConfig);
+          addNewTxToAccount(state.txConfig.senderAccount, pendingTxReceipt);
           setState((prevState: ZapInteractionState) => ({
             ...prevState,
-            txReceipt
+            txReceipt: pendingTxReceipt
           }));
           cb();
         });
@@ -70,7 +66,7 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
       rawTransaction,
       amount: payload.amount,
       senderAccount: payload.account,
-      receiverAddress: state.zapSelected!.contractAddress,
+      receiverAddress: state.zapSelected!.contractAddress as TAddress,
       network: payload.network,
       asset: payload.asset,
       baseAsset: payload.asset || ({} as Asset),

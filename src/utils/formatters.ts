@@ -73,7 +73,7 @@ export function formatNumber(num: string, digits?: number): string {
   return parts.join('.');
 }
 
-// TODO: Comment up this function to make it clear what's happening here.
+// @todo: Comment up this function to make it clear what's happening here.
 export function formatGasLimit(limit: Wei, transactionUnit: string = 'ETH') {
   let limitStr = limit.toString();
 
@@ -85,9 +85,9 @@ export function formatGasLimit(limit: Wei, transactionUnit: string = 'ETH') {
   }
 
   // If they've exceeded the gas limit per block, make it -1
-  // TODO: Explain why not cap at limit?
-  // TODO: Make this dynamic, potentially. Would require promisifying this fn.
-  // TODO: Figure out if this is only true for ether. Do other currencies have
+  // @todo: Explain why not cap at limit?
+  // @todo: Make this dynamic, potentially. Would require promisifying this fn.
+  // @todo: Figure out if this is only true for ether. Do other currencies have
   //       this limit?
   if (limit.gten(4000000)) {
     limitStr = '-1';

@@ -1,17 +1,17 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { translateRaw } from '@translations';
-import { AnalyticsService, ANALYTICS_CATEGORIES, RatesContext } from '@services';
+import { RatesContext } from '@services';
 import { SettingsContext, StoreContext } from '@services/Store';
-import { StoreAsset, TUuid } from '@types';
-import { weiToFloat, convertToFiatFromAsset } from '@utils';
+import { TUuid, Balance } from '@types';
+import { buildBalances, buildTotalFiatValue } from '@utils';
 import { BREAK_POINTS, SPACING } from '@theme';
-import { Fiats } from '@config';
+import { getFiat } from '@config/fiats';
 import { Tooltip } from '@components';
+import { isNotExcludedAsset } from '@services/Store/helpers';
 
-import { Balance, BalanceAccount } from './types';
 import AccountDropdown from './AccountDropdown';
 import BalancesDetailView from './BalancesDetailView';
 import WalletBreakdownView from './WalletBreakdownView';
@@ -57,63 +57,28 @@ const WalletBreakdownPanel = styled(Panel)`
   }
 `;
 
-let wasNumOfAccountsTracked = false;
-
 export function WalletBreakdown() {
   const [showBalanceDetailView, setShowBalanceDetailView] = useState(false);
   const { accounts, totals, currentAccounts } = useContext(StoreContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { getAssetRate } = useContext(RatesContext);
 
-  // Track number of accounts that user has only once per session
-  useEffect(() => {
-    if (!wasNumOfAccountsTracked) {
-      wasNumOfAccountsTracked = true;
-      AnalyticsService.instance.track(ANALYTICS_CATEGORIES.WALLET_BREAKDOWN, `User has accounts`, {
-        numOfAccounts: accounts.length
-      });
-    }
-  }, []);
-
   // Adds/updates an asset in array of balances, which are later displayed in the chart, balance list and in the secondary view
-  const balances: Balance[] = totals(currentAccounts)
-    .map((asset: StoreAsset) => ({
-      id: `${asset.name}-${asset.ticker}`,
-      name: asset.name || translateRaw('WALLET_BREAKDOWN_UNKNOWN'),
-      ticker: asset.ticker,
-      uuid: asset.uuid,
-      amount: weiToFloat(asset.balance, asset.decimal),
-      fiatValue: convertToFiatFromAsset(asset, getAssetRate(asset)),
-      accounts: currentAccounts.reduce((acc, currAccount) => {
-        const matchingAccAssets = currAccount.assets.filter(
-          (accAsset) => accAsset.uuid === asset.uuid
-        );
-        if (matchingAccAssets.length) {
-          return [
-            ...acc,
-            ...matchingAccAssets.map((accAsset) => ({
-              address: currAccount.address,
-              ticker: accAsset.ticker,
-              amount: weiToFloat(accAsset.balance, accAsset.decimal),
-              fiatValue: convertToFiatFromAsset(accAsset, getAssetRate(accAsset)),
-              label: currAccount.label
-            }))
-          ];
-        }
-        return acc;
-      }, [] as BalanceAccount[])
-    }))
-    .sort((a, b) => b.fiatValue - a.fiatValue);
+  const balances: Balance[] = buildBalances(
+    totals,
+    currentAccounts,
+    settings,
+    getAssetRate,
+    isNotExcludedAsset
+  );
 
-  const totalFiatValue = balances.reduce((sum, asset) => {
-    return sum + asset.fiatValue;
-  }, 0);
+  const totalFiatValue = buildTotalFiatValue(balances);
 
   const toggleShowChart = () => {
     setShowBalanceDetailView(!showBalanceDetailView);
   };
 
-  const fiat = Fiats[settings.fiatCurrency];
+  const fiat = getFiat(settings);
 
   return (
     <>

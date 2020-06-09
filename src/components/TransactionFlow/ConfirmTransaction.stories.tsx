@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { fTxConfig, fAccount } from '@fixtures';
+import { fTxConfig, fAccount, fSettings } from '@fixtures';
 import { ExtendedAddressBook, ITxType } from '@types';
 import { noOp } from '@utils';
 import { devContacts } from '@database/seed';
@@ -21,6 +21,7 @@ export default { title: 'ConfirmTx' };
 export const confirmTransaction = () => (
   <div className="sb-container" style={{ maxWidth: '620px' }}>
     <ConfirmTransactionUI
+      settings={fSettings}
       assetRate={assetRate}
       baseAssetRate={baseAssetRate}
       senderContact={senderContact}
@@ -38,6 +39,7 @@ const zapSelected: IZapConfig = ZAPS_CONFIG[defaultZap];
 export const confirmTransactionZap = () => (
   <div className="sb-container" style={{ maxWidth: '620px' }}>
     <ConfirmTransactionUI
+      settings={fSettings}
       assetRate={assetRate}
       baseAssetRate={baseAssetRate}
       senderContact={senderContact}

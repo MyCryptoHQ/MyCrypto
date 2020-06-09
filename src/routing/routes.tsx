@@ -1,37 +1,97 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import { IAppRoute } from '@types';
 import { ROUTE_PATHS, IS_ACTIVE_FEATURE } from '@config';
-import {
-  AddAccountFlow,
-  CreateWallet,
-  Mnemonic,
-  Keystore,
-  Dashboard,
-  Settings,
-  Import,
-  Export,
-  DownloadApp,
-  NoAccounts,
-  ScreenLockNew,
-  ScreenLockLocked,
-  ScreenLockForgotPassword,
-  SendAssets,
-  ReceiveAssets,
-  SwapAssetsFlow,
-  Home,
-  SignAndVerifyMessage,
-  BroadcastTransactionFlow,
-  InteractWithContractsFlow,
-  DeployContractsFlow,
-  DeFiZapFlow,
-  PurchaseMembershipStepper,
-  MembershipEducation,
-  BuyAssets,
-  EnsDashboard
-} from '@features';
+import { Home, NoAccounts } from '@features';
 import { requiresDesktopApp } from './helpers';
+
+const Dashboard = lazy(() =>
+  import(/* webpackChunkName: "Dashboard" */ '@features/Dashboard/Dashboard')
+);
+const CreateWallet = lazy(() =>
+  import(/* webpackChunkName: "CreateWallet" */ '@features/CreateWallet/CreateWallet')
+);
+const AddAccountFlow = lazy(() =>
+  import(/* webpackChunkName: "AddAccountFlow" */ '@features/AddAccount/AddAccountFlow')
+);
+const SendAssets = lazy(() =>
+  import(/* webpackChunkName: "SendAssets" */ '@features/SendAssets/SendAssets')
+);
+const Mnemonic = lazy(() =>
+  import(/* webpackChunkName: "Mnemonic" */ '@features/CreateWallet/Mnemonic/Mnemonic')
+);
+const Keystore = lazy(() =>
+  import(/* webpackChunkName: "Keystore" */ '@features/CreateWallet/Keystore/Keystore')
+);
+const Settings = lazy(() =>
+  import(/* webpackChunkName: "Settings" */ '@features/Settings/Settings')
+);
+const Import = lazy(() =>
+  import(/* webpackChunkName: "Import" */ '@features/Settings/Import/Import')
+);
+const Export = lazy(() =>
+  import(/* webpackChunkName: "Export" */ '@features/Settings/Export/Export')
+);
+const DownloadApp = lazy(() =>
+  import(/* webpackChunkName: "DownloadApp" */ '@features/DownloadApp/DownloadApp')
+);
+const ScreenLockNew = lazy(() =>
+  import(/* webpackChunkName: "ScreenLockNew" */ '@features/ScreenLock/ScreenLockNew')
+);
+const ScreenLockLocked = lazy(() =>
+  import(/* webpackChunkName: "ScreenLockLocked" */ '@features/ScreenLock/ScreenLockLocked')
+);
+const ScreenLockForgotPassword = lazy(() =>
+  import(
+    /* webpackChunkName: "ScreenLockForgotPassword" */ '@features/ScreenLock/ScreenLockForgotPassword'
+  )
+);
+const ReceiveAssets = lazy(() =>
+  import(/* webpackChunkName: "ReceiveAssets" */ '@features/ReceiveAssets/ReceiveAssets')
+);
+const SwapAssetsFlow = lazy(() =>
+  import(/* webpackChunkName: "SwapAssetsFlow" */ '@features/SwapAssets/SwapAssetsFlow')
+);
+const SignAndVerifyMessage = lazy(() =>
+  import(
+    /* webpackChunkName: "SignAndVerifyMessage" */ '@features/SignAndVerifyMessage/SignAndVerifyMessage'
+  )
+);
+const BroadcastTransactionFlow = lazy(() =>
+  import(
+    /* webpackChunkName: "BroadcastTransactionFlow" */ '@features/BroadcastTransaction/BroadcastTransactionFlow'
+  )
+);
+const InteractWithContractsFlow = lazy(() =>
+  import(
+    /* webpackChunkName: "InteractWithContractsFlow" */ '@features/InteractWithContracts/InteractWithContractsFlow'
+  )
+);
+const DeployContractsFlow = lazy(() =>
+  import(
+    /* webpackChunkName: "DeployContractsFlow" */ '@features/DeployContracts/DeployContractsFlow'
+  )
+);
+const DeFiZapFlow = lazy(() =>
+  import(/* webpackChunkName: "DeFiZapFlow" */ '@features/DeFiZap/DeFiZapFlow')
+);
+const PurchaseMembershipStepper = lazy(() =>
+  import(
+    /* webpackChunkName: "PurchaseMembershipStepper" */ '@features/PurchaseMembership/PurchaseMembershipStepper'
+  )
+);
+const MembershipEducation = lazy(() =>
+  import(
+    /* webpackChunkName: "MembershipEducation" */ '@features/PurchaseMembership/components/MembershipEducation'
+  )
+);
+const BuyAssets = lazy(() =>
+  import(/* webpackChunkName: "BuyAssetsForm" */ '@features/BuyAssets/BuyAssetsForm')
+);
+const EnsDashboard = lazy(() =>
+  import(/* webpackChunkName: "EnsDashboard" */ '@features/Ens/EnsDashboard')
+);
 
 export interface IAppRoutes {
   [K: string]: IAppRoute;

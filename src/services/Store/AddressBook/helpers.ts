@@ -1,4 +1,5 @@
-import { IAccount, AddressBook, Network, WalletId, ExtendedAddressBook } from '@types';
+import { IAccount, AddressBook, Network, WalletId, ExtendedAddressBook, TAddress } from '@types';
+import { isSameAddress } from '@utils';
 import { getWalletConfig } from '@config';
 
 export const getLabelByAccount = (
@@ -8,7 +9,7 @@ export const getLabelByAccount = (
   if (!account || !addressLabels) return;
   return addressLabels.find(
     (label) =>
-      account.address.toLowerCase() === label.address.toLowerCase() &&
+      isSameAddress(account.address, label.address as TAddress) &&
       account.networkId === label.network
   );
 };
@@ -21,7 +22,7 @@ export const getLabelByAddressAndNetwork = (
   if (!address) return;
   return addressLabels.find(
     (label) =>
-      address.toLowerCase() === label.address.toLowerCase() &&
+      isSameAddress(address as TAddress, label.address as TAddress) &&
       (network ? network.id === label.network : true)
   );
 };

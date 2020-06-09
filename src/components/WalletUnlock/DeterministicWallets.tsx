@@ -448,7 +448,6 @@ export function DeterministicWalletsClass({
         head={['#', translateRaw('ADDRESS'), symbol, translateRaw('ACTION_5')]}
         body={wallets.map((wallet) => renderWalletRow(wallet, network, symbol))}
         config={{
-          hiddenHeadings: ['#', translateRaw('ACTION_5')],
           handleRowClicked: selectAddress
         }}
       />

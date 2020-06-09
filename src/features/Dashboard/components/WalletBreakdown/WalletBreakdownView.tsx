@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
 import translate, { translateRaw } from '@translations';
-import { EMPTYUUID } from '@utils';
-import { TUuid } from '@types';
+import { EMPTYUUID, buildTotalFiatValue } from '@utils';
+import { TUuid, Balance } from '@types';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
-import { AssetIcon, Currency, Typography } from '@components';
+import { AssetIcon, Currency, Typography, Tooltip } from '@components';
 
 import BreakdownChart from './BreakdownChart';
 import NoAssets from './NoAssets';
-import { WalletBreakdownProps, Balance } from './types';
 import { calculateShownIndex } from './helpers';
 
 import moreIcon from '@assets/images/icn-more.svg';
 import coinGeckoIcon from '@assets/images/credits/credits-coingecko.png';
+import { BalancesDetailProps } from './types';
 
 export const SMALLEST_CHART_SHARE_SUPPORTED = 0.03; // 3%
 export const NUMBER_OF_ASSETS_DISPLAYED = 4;
@@ -218,7 +218,7 @@ export default function WalletBreakdownView({
   fiat,
   accounts,
   selected
-}: WalletBreakdownProps) {
+}: BalancesDetailProps) {
   const [selectedAssetIndex, setSelectedAssetIndex] = useState(initialSelectedAssetIndex);
   const [isChartAnimating, setIsChartAnimating] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(true);
@@ -309,7 +309,7 @@ export default function WalletBreakdownView({
                     <Currency
                       amount={balance.fiatValue.toString()}
                       symbol={fiat.symbol}
-                      prefix={fiat.prefix}
+                      code={fiat.code}
                       decimals={2}
                       bold={true}
                       fontSize={'1.3rem'}
@@ -335,33 +335,43 @@ export default function WalletBreakdownView({
           <BreakDownMore src={moreIcon} alt="More" onClick={toggleShowChart} />
         </BreakDownHeadingWrapper>
         <BreakDownBalanceList>
-          {breakdownBalances.map(({ name, amount, fiatValue, ticker, isOther, uuid }, index) => (
-            <BreakDownBalance
-              key={`${uuid}${name}`}
-              onMouseOver={() => handleMouseOver(index)}
-              onMouseLeave={handleMouseLeave}
-            >
-              <BreakDownBalanceAssetInfo>
-                <div>
-                  <BreakDownBalanceAssetIcon uuid={uuid as TUuid} size={'26px'} />
-                </div>
-                <div>
-                  <BreakDownBalanceAssetName>{name}</BreakDownBalanceAssetName>
-                  <BreakDownBalanceAssetAmount silent={true}>
-                    {!isOther && `${amount.toFixed(4)} ${ticker}`}
+          {breakdownBalances.map(
+            ({ name, amount, fiatValue, ticker, isOther, exchangeRate, uuid }, index) => (
+              <BreakDownBalance
+                key={`${uuid}${name}`}
+                onMouseOver={() => handleMouseOver(index)}
+                onMouseLeave={handleMouseLeave}
+              >
+                <BreakDownBalanceAssetInfo>
+                  <div>
+                    <BreakDownBalanceAssetIcon uuid={uuid as TUuid} size={'26px'} />
+                  </div>
+                  <div>
+                    <BreakDownBalanceAssetName>{name}</BreakDownBalanceAssetName>
+                    <BreakDownBalanceAssetAmount silent={true}>
+                      {!isOther && `${amount.toFixed(4)} ${ticker}`}
+                    </BreakDownBalanceAssetAmount>
+                  </div>
+                </BreakDownBalanceAssetInfo>
+                <Tooltip
+                  tooltip={translateRaw('WALLET_BREAKDOWN_BALANCE_TOOLTIP', {
+                    $exchangeRate: (exchangeRate || 0).toFixed(3),
+                    $fiatTicker: fiat.code,
+                    $cryptoTicker: ticker
+                  })}
+                >
+                  <BreakDownBalanceAssetAmount>
+                    <Currency
+                      amount={fiatValue.toString()}
+                      symbol={fiat.symbol}
+                      code={fiat.code}
+                      decimals={2}
+                    />
                   </BreakDownBalanceAssetAmount>
-                </div>
-              </BreakDownBalanceAssetInfo>
-              <BreakDownBalanceAssetAmount>
-                <Currency
-                  amount={fiatValue.toString()}
-                  symbol={fiat.symbol}
-                  prefix={fiat.prefix}
-                  decimals={2}
-                />
-              </BreakDownBalanceAssetAmount>
-            </BreakDownBalance>
-          ))}
+                </Tooltip>
+              </BreakDownBalance>
+            )
+          )}
         </BreakDownBalanceList>
         <BalanceTotalWrapper>
           <ViewDetailsLink onClick={toggleShowChart}>
@@ -374,7 +384,7 @@ export default function WalletBreakdownView({
               <Currency
                 amount={totalFiatValue.toString()}
                 symbol={fiat.symbol}
-                prefix={fiat.prefix}
+                code={fiat.code}
                 decimals={2}
               />
             </div>
@@ -419,7 +429,5 @@ const createOtherTokenAsset = (otherBalances: Balance[]) => ({
   isOther: true,
   amount: 0,
   uuid: EMPTYUUID as TUuid,
-  fiatValue: otherBalances.reduce((sum, asset) => {
-    return (sum += asset.fiatValue);
-  }, 0)
+  fiatValue: buildTotalFiatValue(otherBalances)
 });

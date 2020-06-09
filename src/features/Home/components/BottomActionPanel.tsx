@@ -2,7 +2,7 @@ import React from 'react';
 import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 import translate from '@translations';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
+import { ANALYTICS_CATEGORIES } from '@services';
 import { Link } from 'react-router-dom';
 import { COLORS, BREAK_POINTS } from '@theme';
 import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
@@ -10,6 +10,7 @@ import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import ovalIcon from '@assets/images/icn-oval.svg';
 import swooshIcon from '@assets/images/icn-purple-swoosh.svg';
 import sparklesIcon from '@assets/images/icn-sparkles-4.svg';
+import { useAnalytics } from '@utils';
 
 const { SCREEN_SM } = BREAK_POINTS;
 const { BLUE_DARK_SLATE, BLUE_BRIGHT } = COLORS;
@@ -85,6 +86,10 @@ const Oval = styled.img`
 `;
 
 export default function BottomActionPanel() {
+  const trackButtonClicked = useAnalytics({
+    category: ANALYTICS_CATEGORIES.HOME
+  });
+
   return (
     <>
       <MainPanel basic={true}>
@@ -93,12 +98,16 @@ export default function BottomActionPanel() {
           <Sparkles src={sparklesIcon} />
         </Title>
         <Link to="/add-account">
-          <GetStartedButton onClick={() => trackButtonClick('Get Started')}>
+          <GetStartedButton
+            onClick={() => trackButtonClicked({ actionName: 'Get Started button clicked' })}
+          >
             {translate('HOME_BOTTOM_GET_STARTED')}
           </GetStartedButton>
         </Link>
         <a href={getKBHelpArticle(KB_HELP_ARTICLE.HOME)} target="_blank" rel="noreferrer">
-          <SupportLink onClick={() => trackButtonClick('Have Questions?')}>
+          <SupportLink
+            onClick={() => trackButtonClicked({ actionName: 'Have Questions? button clicked' })}
+          >
             {translate('HOME_BOTTOM_HELP')}
           </SupportLink>
         </a>
@@ -110,7 +119,3 @@ export default function BottomActionPanel() {
     </>
   );
 }
-
-const trackButtonClick = (button: string) => {
-  AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HOME, `${button} button clicked`);
-};

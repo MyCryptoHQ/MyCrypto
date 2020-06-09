@@ -5,7 +5,9 @@ import styled from 'styled-components';
 import translate from '@translations';
 import { BREAK_POINTS } from '@theme';
 import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from '@config';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
+import { ANALYTICS_CATEGORIES } from '@services';
+import { openLink, useAnalytics } from '@utils';
+import { TURL } from '@types';
 
 import champagneIcon from '@assets/images/icn-champagne-2.svg';
 
@@ -92,16 +94,27 @@ const Image = styled.img`
 
 interface Props {
   OSName: string;
-  downloadLink: string;
+  downloadLink: TURL;
 }
 
 export default function DownloadAppPanel({ OSName, downloadLink }: Props) {
+  const trackDownload = useAnalytics({
+    category: ANALYTICS_CATEGORIES.HOME
+  });
+
   return (
     <MainPanel basic={true}>
       <CallToAction>
         <Title>{translate('HOME_DOWNLOAD_TITLE')}</Title>
         <Description>{translate('HOME_DOWNLOAD_DESCRIPTION')}</Description>
-        <DownloadButton onClick={() => openDownloadLink(downloadLink, OSName)}>
+        <DownloadButton
+          onClick={() => {
+            trackDownload({
+              actionName: `${OSName} download button clicked`
+            });
+            openDownloadLink(downloadLink);
+          }}
+        >
           {translate('HOME_DOWNLOAD_BUTTON')} {OSName}
         </DownloadButton>
       </CallToAction>
@@ -110,8 +123,7 @@ export default function DownloadAppPanel({ OSName, downloadLink }: Props) {
   );
 }
 
-const openDownloadLink = (link: string, os: string) => {
+const openDownloadLink = (link: TURL) => {
   const target = link === DEFAULT_LINK ? '_blank' : '_self';
-  window.open(link, target);
-  AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HOME, `${os} download button clicked`);
+  openLink(link, target);
 };

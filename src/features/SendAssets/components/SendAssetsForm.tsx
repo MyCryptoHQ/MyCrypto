@@ -26,7 +26,8 @@ import {
   getBaseAssetByNetwork,
   getAccountsByAsset,
   StoreContext,
-  getAccountBalance
+  getAccountBalance,
+  SettingsContext
 } from '@services/Store';
 import {
   Asset,
@@ -66,11 +67,13 @@ import {
 } from '@config';
 import { RatesContext } from '@services/RatesProvider';
 import TransactionFeeDisplay from '@components/TransactionFlow/displays/TransactionFeeDisplay';
-import { formatSupportEmail, isFormValid as checkFormValid, ETHUUID } from '@utils';
+import { formatSupportEmail, isFormValid as checkFormValid, ETHUUID, isSameAddress } from '@utils';
 import { ProtectTxUtils } from '@features/ProtectTransaction';
-import { ProtectTxShowError, ProtectTxButton } from '@features/ProtectTransaction/components';
+import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
+import { ProtectTxButton } from '@features/ProtectTransaction/components/ProtectTxButton';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { useEffectOnce } from '@vendor';
+import { getFiat } from '@config/fiats';
 
 import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
 import './SendAssetsForm.scss';
@@ -162,6 +165,7 @@ const QueryWarning: React.FC = () => (
 const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
   const { accounts, userAssets, networks, getAccount } = useContext(StoreContext);
   const { getAssetRate } = useContext(RatesContext);
+  const { settings } = useContext(SettingsContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
@@ -224,7 +228,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
         if (
           !isEmpty(account) &&
           value.value !== undefined &&
-          account.address.toLowerCase() === value.value.toLowerCase()
+          isSameAddress(account.address, value.value)
         ) {
           return {
             name: 'ValidationError',
@@ -401,7 +405,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                       assets={userAssets}
                       onSelect={(option: StoreAsset) => {
                         form.setFieldValue('asset', option || {}); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
-                        //TODO get assetType onChange
+                        //@todo get assetType onChange
                         handleFieldReset();
                         if (option && option.networkId) {
                           const network = getNetworkById(option.networkId, networks);
@@ -521,9 +525,9 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                       values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider
                     }
                     fiatAsset={{
-                      fiat: 'USD',
+                      fiat: getFiat(settings).code,
                       rate: (getAssetRate(baseAsset || undefined) || 0).toString(),
-                      symbol: '$'
+                      symbol: getFiat(settings).symbol
                     }}
                   />
                 </label>

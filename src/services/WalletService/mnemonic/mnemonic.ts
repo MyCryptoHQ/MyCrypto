@@ -9,7 +9,7 @@ export const unlockMnemonic: TUnlockMnemonic = async (payload) => {
   try {
     wallet = MnemonicWallet(phrase, pass, path, address);
   } catch (err) {
-    // TODO: use better error than 'ERROR_14' (wallet not found)
+    // @todo: use better error than 'ERROR_14' (wallet not found)
     // tslint:disable-next-line:no-console
     console.log('Error: ', translateRaw('ERROR_14'));
     return;

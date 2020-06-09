@@ -10,7 +10,7 @@ export interface IMembershipStepComponentProps {
 }
 
 export interface MembershipPurchaseState {
-  membershipSelected: undefined | IMembershipConfig; // ToDo: Make enum
+  membershipSelected: undefined | IMembershipConfig; // @todo: Make enum
   account: StoreAccount;
 }
 

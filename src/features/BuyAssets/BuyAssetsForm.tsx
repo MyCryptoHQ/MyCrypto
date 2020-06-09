@@ -7,8 +7,8 @@ import { useHistory } from 'react-router-dom';
 
 import translate, { translateRaw } from '@translations';
 import { SPACING, COLORS, FONT_SIZE } from '@theme';
-import { IAccount, StoreAccount, Asset } from '@types';
-import { ETHUUID, MOONPAY_ASSET_UUIDS } from '@utils';
+import { IAccount, StoreAccount, Asset, TURL } from '@types';
+import { ETHUUID, MOONPAY_ASSET_UUIDS, openLink } from '@utils';
 import { ROUTE_PATHS, MOONPAY_API_QUERYSTRING, BUY_MYCRYPTO_WEBSITE } from '@config';
 import { AccountDropdown, AssetDropdown, InlineMessage, ContentPanel } from '@components';
 import { isAccountInNetwork } from '@services/Store/Account/helpers';
@@ -92,14 +92,14 @@ export const BuyAssetsForm = () => {
           const redirectQueryParams = `?currencyCode=${values.asset.ticker}&walletAddress=${
             values.account.address
           }&signature=${encodeURIComponent(signature)}`;
-          window.open(`${BUY_MYCRYPTO_WEBSITE}${redirectQueryParams}`, '_blank');
+          openLink(`${BUY_MYCRYPTO_WEBSITE}${redirectQueryParams}` as TURL);
         })
         .catch((err) => {
           console.debug('err detected: ', err);
-          window.open(`${BUY_MYCRYPTO_WEBSITE}`, '_blank');
+          openLink(BUY_MYCRYPTO_WEBSITE);
         });
     } else {
-      window.open(`${BUY_MYCRYPTO_WEBSITE}`, '_blank');
+      openLink(BUY_MYCRYPTO_WEBSITE);
     }
   };
 

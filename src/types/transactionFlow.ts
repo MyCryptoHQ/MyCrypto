@@ -27,9 +27,9 @@ export interface ITxObject {
 export interface ITxConfig {
   readonly rawTransaction: ITxObject /* The rawTransaction object that will be signed */;
   readonly amount: string;
-  readonly receiverAddress: string;
+  readonly receiverAddress: TAddress; // Recipient of the send. NOT the tx's `to` address
   readonly senderAccount: StoreAccount;
-  readonly from: string;
+  readonly from: TAddress;
   readonly asset: Asset;
   readonly baseAsset: Asset;
   readonly network: INetwork;
@@ -77,6 +77,18 @@ export interface IStepComponentProps {
   resetFlow(): void;
 }
 
+export interface ITxReceiptStepProps {
+  txConfig: ITxConfig;
+  txReceipt: ITxReceipt;
+  signedTx?: string;
+  zapSelected?: IZapConfig;
+  membershipSelected?: IMembershipConfig;
+  children?: never;
+  completeButtonText?: string;
+  onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;
+  resetFlow(): void;
+}
+
 export interface IReceiverAddress {
   display: string;
   value: string;
@@ -85,6 +97,8 @@ export interface IReceiverAddress {
 export type SigningComponents = {
   readonly [k in WalletId]: React.ComponentType<ISignComponentProps> | null;
 };
+
+export type ITxHistoryStatus = ITxStatus.PENDING | ITxStatus.SUCCESS | ITxStatus.FAILED;
 
 export enum ITxStatus {
   SUCCESS = 'SUCCESS',

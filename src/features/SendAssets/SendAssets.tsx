@@ -12,10 +12,11 @@ import SendAssetsForm from './components/SendAssetsForm';
 import {
   ConfirmTransactionWithProtectTx,
   SendAssetsFormWithProtectTx,
-  SignTransaction,
   SignTransactionWithProtectTx
 } from './components';
-import { ProtectTxContext, ProtectTxUtils } from '../ProtectTransaction';
+import SignTransaction from './components/SignTransaction';
+import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
+import { ProtectTxUtils } from '@features/ProtectTransaction';
 
 function SendAssets() {
   const {

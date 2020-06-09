@@ -28,6 +28,6 @@ export const unlockKeystore = async (payload: KeystoreUnlockParams) => {
       return translateRaw('ERROR_6');
     }
   }
-  // TODO: provide a more descriptive error than the two 'ERROR_6' (invalid pass) messages above
+  // @todo: provide a more descriptive error than the two 'ERROR_6' (invalid pass) messages above
   return wallet;
 };

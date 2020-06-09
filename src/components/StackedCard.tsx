@@ -66,7 +66,7 @@ const StackedCardIcons = styled.div`
 
 // Arbitrary left margin to allow AccountList rows to align to
 // the Identicon + label display.
-// @TODO: remove arbitrary style.
+// @todo: remove arbitrary style.
 const StackedCardBody = styled.div`
   display: flex;
   flex-direction: column;

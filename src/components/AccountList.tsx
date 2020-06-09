@@ -5,15 +5,15 @@ import isNumber from 'lodash/isNumber';
 import cloneDeep from 'lodash/cloneDeep';
 
 import { translateRaw } from '@translations';
-import { ROUTE_PATHS, Fiats, IS_ACTIVE_FEATURE, getWalletConfig } from '@config';
+import { ROUTE_PATHS, IS_ACTIVE_FEATURE, getWalletConfig } from '@config';
 import {
   EthAddress,
-  CollapsibleTable,
   Network,
   RowDeleteOverlay,
   RouterLink,
   EditableText,
-  UndoDeleteOverlay
+  UndoDeleteOverlay,
+  FixedSizeCollapsibleTable
 } from '@components';
 import { truncate } from '@utils';
 import { BREAK_POINTS, COLORS, SPACING, breakpointToNumber } from '@theme';
@@ -25,8 +25,10 @@ import {
   SettingsContext,
   AddressBookContext
 } from '@services/Store';
-import { DashboardPanel } from './DashboardPanel';
 import { RatesContext } from '@services';
+import { getFiat } from '@config/fiats';
+
+import { DashboardPanel } from './DashboardPanel';
 import { default as Currency } from './Currency';
 import IconArrow from './IconArrow';
 import Checkbox from './Checkbox';
@@ -143,13 +145,6 @@ const DeleteButton = styled(Button)`
   width: 100%;
 `;
 
-const TableContainer = styled.div`
-  display: block;
-  overflow: auto;
-  flex: 1;
-  max-height: 600px;
-`;
-
 const AccountListFooterWrapper = styled.div`
   & * {
     color: ${COLORS.BLUE_BRIGHT};
@@ -242,31 +237,30 @@ export default function AccountList(props: AccountListProps) {
       heading={
         <>
           {translateRaw('ACCOUNT_LIST_TABLE_ACCOUNTS')}{' '}
-          <Tooltip tooltip={translateRaw('DASHBOARD_ACCOUNTS_TOOLTIP')} />
+          <Tooltip tooltip={translateRaw('SETTINGS_ACCOUNTS_TOOLTIP')} />
         </>
       }
       actionLink={actionLink}
       className={`AccountList ${className}`}
       footer={<Footer />}
     >
-      <TableContainer>
-        <CollapsibleTable
-          breakpoint={breakpointToNumber(BREAK_POINTS.SCREEN_XS)}
-          {...buildAccountTable(
-            getDisplayAccounts(),
-            deleteAccountFromCache,
-            updateAccount,
-            setUndoDeletingIndexes,
-            restoreDeletedAccount,
-            deletable,
-            favoritable,
-            copyable,
-            privacyCheckboxEnabled,
-            overlayRows,
-            setDeletingIndex
-          )}
-        />
-      </TableContainer>
+      <FixedSizeCollapsibleTable
+        breakpoint={breakpointToNumber(BREAK_POINTS.SCREEN_XS)}
+        maxHeight={'450px'}
+        {...buildAccountTable(
+          getDisplayAccounts(),
+          deleteAccountFromCache,
+          updateAccount,
+          setUndoDeletingIndexes,
+          restoreDeletedAccount,
+          deletable,
+          favoritable,
+          copyable,
+          privacyCheckboxEnabled,
+          overlayRows,
+          setDeletingIndex
+        )}
+      />
     </DashboardPanel>
   );
 }
@@ -553,8 +547,8 @@ const buildAccountTable = (
         <CurrencyContainer
           key={index}
           amount={total.toString()}
-          symbol={Fiats[settings.fiatCurrency].symbol}
-          prefix={Fiats[settings.fiatCurrency].prefix}
+          symbol={getFiat(settings).symbol}
+          code={getFiat(settings).code}
           decimals={2}
         />
       ];

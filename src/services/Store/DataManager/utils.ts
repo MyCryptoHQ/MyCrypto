@@ -14,7 +14,8 @@ import {
   ExtendedContract,
   ExtendedAsset,
   TAddress,
-  NetworkNodes
+  NetworkNodes,
+  ITxReceipt
 } from '@types';
 import { makeExplorer } from '@services/EthService';
 import { NETWORKS_CONFIG, SCHEMA_BASE, NetworkConfig } from '@database/data';
@@ -118,7 +119,16 @@ export function deMarshallState(st: DataStore): Omit<LocalStorage, 'mtime'> {
   return {
     version: st.version,
     [LSKeys.ACCOUNTS]: arrayToObj('uuid')(
-      st[LSKeys.ACCOUNTS].map((x) => ({ ...x, network: undefined }))
+      st[LSKeys.ACCOUNTS].map((x) => ({
+        ...x,
+        transactions: x.transactions.map((tx: ITxReceipt) => {
+          // @todo: Remove this in the future (7/19/2020)
+          // @ts-ignore
+          const { stage, ...validTx } = tx;
+          return { ...validTx, status: tx.status || stage };
+        }),
+        network: undefined
+      }))
     ),
     [LSKeys.ADDRESS_BOOK]: arrayToObj('uuid')(st[LSKeys.ADDRESS_BOOK]),
     [LSKeys.ASSETS]: arrayToObj('uuid')(st[LSKeys.ASSETS].filter((a) => a.isCustom)),

@@ -2,13 +2,14 @@ import { useState, useReducer, useEffect } from 'react';
 
 import { TAddress, ITxObject, ITxHash } from '@types';
 import { useUnmount } from '@vendor';
+import { isSameAddress } from '@utils';
 
 import { default as WalletConnectService } from './WalletConnectService';
 import { initialState, WcReducer } from './reducer';
 import { IWalletConnectService, IUseWalletConnect } from './types';
 
 const isExpectedAddress = (received: TAddress, target: TAddress): boolean =>
-  received.toLowerCase() === target.toLowerCase();
+  isSameAddress(received, target);
 const isExpectedNetwork = (received: number, target: number): boolean => received === target;
 
 export function useWalletConnect(): IUseWalletConnect {

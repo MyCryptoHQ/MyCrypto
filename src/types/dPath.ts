@@ -2,7 +2,7 @@ import { WalletId } from './walletId';
 
 export interface DPath {
   label: string;
-  value: string; // TODO determine method for more precise typing for path
+  value: string; // @todo determine method for more precise typing for path
 }
 
 // We really want to use "keyof typeof HD_WALLETS" but it gives 'never'

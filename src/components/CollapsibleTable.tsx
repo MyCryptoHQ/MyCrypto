@@ -184,8 +184,8 @@ export class CollapsibleTable extends Component<Props, State> {
           </GroupHeading>
         ) : (
           // The element being iterated on is table data.
-          <StackedCardContainer>
-            <StackedCard key={index} {...cardData} />
+          <StackedCardContainer key={index}>
+            <StackedCard {...cardData} />
             {overlay && overlayRows!.includes(index) && (
               <StackedCardOverlay>
                 {isFunction(overlay) ? overlay(index) : overlay}

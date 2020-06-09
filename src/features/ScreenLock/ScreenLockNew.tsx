@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 import translate, { translateRaw } from '@translations';
 
 import { ExtendedContentPanel, InputField } from '@components';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services';
+import { ANALYTICS_CATEGORIES } from '@services';
 import { ScreenLockContext } from './ScreenLockProvider';
 
 // Legacy
 import mainImage from '@assets/images/icn-create-pw.svg';
+import { useAnalytics } from '@utils';
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -38,119 +39,138 @@ const BottomActions = styled.div`
   line-height: 2.5;
 `;
 
-type Props = RouteComponentProps<{}>;
+const ScreenLockNew: FC<RouteComponentProps> = ({ history }) => {
+  const [state, setState] = useState({
+    password1: '',
+    password2: '',
+    password1Error: '',
+    password2Error: ''
+  });
+  const trackScreenLock = useAnalytics({
+    category: ANALYTICS_CATEGORIES.SCREEN_LOCK
+  });
 
-class ScreenLockNew extends Component<Props> {
-  public state = { password1: '', password2: '', password1Error: '', password2Error: '' };
-
-  public validateForm = () => {
-    this.setState({ password1Error: '', password2Error: '' });
-    const { password1, password2 } = this.state;
+  const validateForm = useCallback(() => {
+    setState((prevState) => ({ ...prevState, password1Error: '', password2Error: '' }));
+    const { password1, password2 } = state;
     const minLength = 8;
 
     if (password1.length > 0 && password1.length < minLength) {
-      this.setState({
-        password1Error: translate('INPUT_ERROR_PASSWORD_TOO_SHORT')
-      });
+      setState((prevState) => ({
+        ...prevState,
+        password1Error: translateRaw('INPUT_ERROR_PASSWORD_TOO_SHORT')
+      }));
     }
 
-    if (password1 !== password2) {
-      if (password2.length > 0) {
-        this.setState({
-          password2Error: translate('INPUT_ERROR_PASSWORDS_DONT_MATCH')
+    if (password1 !== password2 && password2.length > 0) {
+      setState((prevState) => ({
+        ...prevState,
+        password2Error: translateRaw('INPUT_ERROR_PASSWORDS_DONT_MATCH')
+      }));
+    }
+  }, [state, setState]);
+
+  const onPassword1Changed = useCallback(
+    (event) => {
+      setState((prevState) => ({
+        ...prevState,
+        password1: event.target.value
+      }));
+    },
+    [setState]
+  );
+
+  const onPassword2Changed = useCallback(
+    (event) => {
+      setState((prevState) => ({
+        ...prevState,
+        password2: event.target.value
+      }));
+    },
+    [setState]
+  );
+
+  const handleCreatePasswordClicked = useCallback(
+    (encryptWithPassword: (password: string, hashed: boolean) => void) => (e: any) => {
+      e.preventDefault();
+
+      const { password1, password2, password1Error, password2Error } = state;
+      if (
+        !(password1Error || password2Error) &&
+        !(password1.length === 0 || password2.length === 0) &&
+        password1 === password2
+      ) {
+        encryptWithPassword(password1, false);
+
+        trackScreenLock({
+          actionName: 'User created a screenlock'
         });
       }
-    }
-  };
+    },
+    [state, setState, trackScreenLock]
+  );
 
-  public onPassword1Changed = (event: any) => {
-    this.setState({ password1: event.target.value });
-  };
+  const onBack = useCallback(() => {
+    trackScreenLock({
+      actionName: 'Back button clicked'
+    });
+    history.goBack();
+  }, [history, trackScreenLock]);
 
-  public onPassword2Changed = (event: any) => {
-    this.setState({ password2: event.target.value });
-  };
-
-  public handleCreatePasswordClicked = (
-    encryptWithPassword: (password: string, hashed: boolean) => void
-  ) => (e: any) => {
-    e.preventDefault();
-
-    const { password1, password2, password1Error, password2Error } = this.state;
-    if (
-      !(password1Error || password2Error) &&
-      !(password1.length === 0 || password2.length === 0) &&
-      password1 === password2
-    ) {
-      encryptWithPassword(password1, false);
-      AnalyticsService.instance.track(
-        ANALYTICS_CATEGORIES.SCREEN_LOCK,
-        'User created a screenlock'
-      );
-    }
-  };
-
-  public onBack = () => {
-    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.SCREEN_LOCK, 'Back button clicked');
-    this.props.history.goBack();
-  };
-
-  public trackRecomendationClick = () => {
-    AnalyticsService.instance.track(
-      ANALYTICS_CATEGORIES.SCREEN_LOCK,
-      'Why do we recommend link clicked'
-    );
-  };
-
-  public render() {
-    return (
-      <ScreenLockContext.Consumer>
-        {({ encryptWithPassword }) => (
-          <ExtendedContentPanel
-            onBack={this.onBack}
-            heading={translateRaw('SCREEN_LOCK_NEW_HEADING')}
-            description={translateRaw('SCREEN_LOCK_NEW_DESCRIPTION')}
-            image={mainImage}
-            showImageOnTop={true}
-            centered={true}
-            className=""
-          >
-            <ContentWrapper>
-              <FormWrapper onSubmit={this.handleCreatePasswordClicked(encryptWithPassword)}>
-                <InputField
-                  label={translateRaw('SCREEN_LOCK_NEW_PASSWORD_LABEL')}
-                  value={this.state.password1}
-                  onChange={this.onPassword1Changed}
-                  validate={this.validateForm}
-                  inputError={this.state.password1Error}
-                  type={'password'}
-                />
-                <InputField
-                  label={translateRaw('SCREEN_LOCK_NEW_CONFIRM_PASSWORD_LABEL')}
-                  value={this.state.password2}
-                  onChange={this.onPassword2Changed}
-                  validate={this.validateForm}
-                  inputError={this.state.password2Error}
-                  type={'password'}
-                />
-                <ActionButton type="submit">
-                  {translate('SCREEN_LOCK_NEW_CREATE_PASSWORD_BUTTON')}
-                </ActionButton>
-              </FormWrapper>
-              <BottomActions>
-                <div>
-                  {translate('SCREEN_LOCK_LOCKED_RECOMMEND_LOCK')}{' '}
-                  <Link onClick={this.trackRecomendationClick} to="/dashboard">
-                    {translate('SCREEN_LOCK_LOCKED_LEARN_MORE')}
-                  </Link>
-                </div>
-              </BottomActions>
-            </ContentWrapper>
-          </ExtendedContentPanel>
-        )}
-      </ScreenLockContext.Consumer>
-    );
-  }
-}
+  return (
+    <ScreenLockContext.Consumer>
+      {({ encryptWithPassword }) => (
+        <ExtendedContentPanel
+          onBack={onBack}
+          heading={translateRaw('SCREEN_LOCK_NEW_HEADING')}
+          description={translateRaw('SCREEN_LOCK_NEW_DESCRIPTION')}
+          image={mainImage}
+          showImageOnTop={true}
+          centered={true}
+          className=""
+        >
+          <ContentWrapper>
+            <FormWrapper onSubmit={handleCreatePasswordClicked(encryptWithPassword)}>
+              <InputField
+                label={translateRaw('SCREEN_LOCK_NEW_PASSWORD_LABEL')}
+                value={state.password1}
+                onChange={onPassword1Changed}
+                validate={validateForm}
+                inputError={state.password1Error}
+                type={'password'}
+              />
+              <InputField
+                label={translateRaw('SCREEN_LOCK_NEW_CONFIRM_PASSWORD_LABEL')}
+                value={state.password2}
+                onChange={onPassword2Changed}
+                validate={validateForm}
+                inputError={state.password2Error}
+                type={'password'}
+              />
+              <ActionButton type="submit">
+                {translate('SCREEN_LOCK_NEW_CREATE_PASSWORD_BUTTON')}
+              </ActionButton>
+            </FormWrapper>
+            <BottomActions>
+              <div>
+                {translate('SCREEN_LOCK_LOCKED_RECOMMEND_LOCK')}{' '}
+                <Link
+                  onClick={() =>
+                    trackScreenLock({
+                      actionName: 'Why do we recommend link clicked'
+                    })
+                  }
+                  to="/dashboard"
+                >
+                  {translate('SCREEN_LOCK_LOCKED_LEARN_MORE')}
+                </Link>
+              </div>
+            </BottomActions>
+          </ContentWrapper>
+        </ExtendedContentPanel>
+      )}
+    </ScreenLockContext.Consumer>
+  );
+};
 
 export default withRouter(ScreenLockNew);

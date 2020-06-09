@@ -19,11 +19,11 @@ import translate, { translateRaw } from '@translations';
 import { truncate } from '@utils';
 import { COLORS, SPACING } from '@theme';
 import ProtocolTagsList from '@features/DeFiZap/components/ProtocolTagsList';
-import { MembershipReceiptBanner } from '@features/PurchaseMembership';
+import MembershipReceiptBanner from '@features/PurchaseMembership/components/MembershipReceiptBanner';
 
 import { SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
-import defizaplogo from '@assets/images/defizap/defizaplogo.svg';
+import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 import './TxReceipt.scss';
 import Typography from '../Typography';
 
@@ -99,7 +99,7 @@ export default function MultiTxReceipt({
           </div>
           <div className="TransactionReceipt-row">
             <div className="TransactionReceipt-row-column">
-              <SImg src={defizaplogo} size="24px" />
+              <SImg src={zapperLogo} size="24px" />
               {translateRaw('ZAP_NAME')}
             </div>
             <div className="TransactionReceipt-row-column rightAligned">{zapSelected.name}</div>
@@ -125,7 +125,7 @@ export default function MultiTxReceipt({
         const { asset, baseAsset } = transactionsConfigs[idx];
         const { gasPrice, gasLimit, data, nonce } = transaction.txRaw;
 
-        const timestamp = transaction.minedAt || 0; // @TODO
+        const timestamp = transaction.minedAt || 0; // @todo
         const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
 
         const txUrl =

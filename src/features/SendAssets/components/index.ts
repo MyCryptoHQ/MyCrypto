@@ -1,4 +1,4 @@
-import { withProtectTx } from '@features/ProtectTransaction/components';
+import { withProtectTx } from '@features/ProtectTransaction/components/WithProtectTx';
 import ConfirmTransaction from '@components/TransactionFlow/ConfirmTransaction';
 import SignTransaction from './SignTransaction';
 import SendAssetsForm from './SendAssetsForm';
@@ -10,7 +10,6 @@ const ConfirmTransactionWithProtectTx = withProtectTx(ConfirmTransaction);
 const SendAssetsFormWithProtectTx = withProtectTx(SendAssetsForm);
 
 export {
-  SignTransaction,
   SendAssetsForm,
   SignTransactionWithProtectTx,
   ConfirmTransactionWithProtectTx,

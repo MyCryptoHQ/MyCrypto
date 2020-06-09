@@ -1,0 +1,47 @@
+{
+  "asset": {
+    "value": "Ropsten",
+    "ticker": "RopstenETH",
+    "name": "Ropsten",
+    "decimal": 18,
+    "networkId": "Ropsten",
+    "type": "base",
+    "mappings": {},
+    "isCustom": false,
+    "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+    "balance": {
+      "_hex": "0x0e2347cb6425dc00"
+    },
+    "mtime": 1590726646380
+  },
+  "baseAsset": {
+    "ticker": "RopstenETH",
+    "name": "Ropsten",
+    "decimal": 18,
+    "networkId": "Ropsten",
+    "type": "base",
+    "mappings": {},
+    "isCustom": false,
+    "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
+  },
+  "hash": "0x33d9b1b88cc48ca6da01310ab3acc86ae4cc2527bb3fc8662fd308cd63f303b1",
+  "from": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+  "receiverAddress": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+  "amount": "0.01",
+  "to": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+  "nonce": "6",
+  "gasLimit": {
+    "_hex": "0x5208"
+  },
+  "gasPrice": {
+    "_hex": "0x012a05f200"
+  },
+  "data": "0x",
+  "value": {
+    "_hex": "0x2386f26fc10000"
+  },
+  "status": "PENDING",
+  "txType": "STANDARD",
+  "blockNumber": 0,
+  "timestamp": 0
+}

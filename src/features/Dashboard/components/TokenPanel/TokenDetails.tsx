@@ -3,11 +3,12 @@ import styled from 'styled-components';
 
 import { translateRaw } from '@translations';
 import { StoreAsset, Social } from '@types';
-import { DashboardPanel, AssetIcon } from '@components';
-import { getNetworkById, StoreContext } from '@services/Store';
+import { DashboardPanel, AssetIcon, Currency } from '@components';
+import { getNetworkById, StoreContext, SettingsContext } from '@services/Store';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import { weiToFloat } from '@utils';
 import Icon from 'components/Icon';
+import { getFiat } from '@config/fiats';
 
 const etherscanUrl = ' https://etherscan.io';
 
@@ -126,14 +127,16 @@ export function TokenDetails(props: Props) {
     whitepaper,
     social,
     networkId,
-    rate,
+    rate = 0,
     balance,
     decimal,
     ticker,
     contractAddress
   } = currentToken;
   const { networks } = useContext(StoreContext);
-  const network = getNetworkById(networkId!, networks);
+  const { settings } = useContext(SettingsContext);
+  const network = getNetworkById(networkId, networks);
+
   const contractUrl = `${
     network && network.blockExplorer ? network.blockExplorer.origin : etherscanUrl
   }/token/${currentToken.contractAddress}`;
@@ -167,8 +170,17 @@ export function TokenDetails(props: Props) {
     >
       <Section noMargin={true}>
         <TwoColumnsWrapper>
-          {/*TODO: Look up selected fiat currency instead of hardcoded $*/}
-          <InfoPiece title={translateRaw('LATEST_PRICE')} value={'$' + rate} />{' '}
+          <InfoPiece
+            title={translateRaw('LATEST_PRICE')}
+            value={
+              <Currency
+                symbol={getFiat(settings).symbol}
+                code={getFiat(settings).code}
+                amount={rate.toString()}
+                decimals={2}
+              />
+            }
+          />{' '}
           <InfoPiece
             title={translateRaw('BALANCE')}
             value={`${weiToFloat(balance, decimal).toFixed(6)} ${ticker}`}

@@ -14,7 +14,7 @@ import { EthersJS } from './ethersJsProvider';
 import { createCustomNodeProvider } from './helpers';
 
 export class ProviderHandler {
-  /* TODO: Needs handling for web3 providers. */
+  /* @todo: Needs handling for web3 providers. */
   public static fetchProvider(network: Network): FallbackProvider {
     return EthersJS.getEthersInstance(network);
   }

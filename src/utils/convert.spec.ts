@@ -13,7 +13,7 @@ import {
   calculateMarkup
 } from './convert';
 import { StoreAsset, TAssetType, TUuid } from '@types';
-import { MYC_DEXAG_COMMISSION_RATE } from '@config';
+import { MYC_DEXAG_COMMISSION_RATE, DEFAULT_NETWORK } from '@config';
 
 describe('it converts balance to fiat', () => {
   it('converts some balance to fiat', () => {
@@ -26,7 +26,8 @@ describe('it converts balance to fiat', () => {
       ticker: 'FTKN',
       mtime: new Date().valueOf(),
       balance: new BigNumber('34000000000000000000000'),
-      decimal: 18
+      decimal: 18,
+      networkId: DEFAULT_NETWORK
     };
     const converted = convertToFiatFromAsset(assetObject, rate);
     expect(converted).toEqual(expected);
@@ -42,7 +43,8 @@ describe('it converts balance to fiat', () => {
       ticker: 'FTKN',
       mtime: new Date().valueOf(),
       balance: new BigNumber('245434900000000000000'),
-      decimal: 18
+      decimal: 18,
+      networkId: DEFAULT_NETWORK
     };
     const converted = convertToFiatFromAsset(assetObject, rate);
     expect(converted).toEqual(expected);
@@ -58,7 +60,8 @@ describe('it converts balance to fiat', () => {
       ticker: 'FTKN',
       mtime: new Date().valueOf(),
       balance: new BigNumber('3589465613800000000'),
-      decimal: 18
+      decimal: 18,
+      networkId: DEFAULT_NETWORK
     };
     const converted = convertToFiatFromAsset(assetObject, rate);
     expect(converted).toEqual(expected);

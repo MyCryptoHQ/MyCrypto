@@ -3,8 +3,8 @@ import 'font-awesome/scss/font-awesome.scss';
 import 'sass/styles.scss';
 import '@babel/polyfill';
 
-import 'whatwg-fetch'; // @TODO: Investigate utility of dependency
-import 'what-input'; // @TODO: Investigate utility of dependency; Used in sass/styles.scss for `data-whatintent`
+import 'whatwg-fetch'; // @todo: Investigate utility of dependency
+import 'what-input'; // @todo: Investigate utility of dependency; Used in sass/styles.scss for `data-whatintent`
 
 import React from 'react';
 import { render } from 'react-dom';

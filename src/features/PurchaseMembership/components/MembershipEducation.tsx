@@ -14,7 +14,7 @@ import {
   RowPanelSection
 } from '../../../components/FullSizeContentPanel';
 import { MEMBERSHIP_CONFIG, IMembershipId, accordionContent } from '../config';
-import { MembershipPlanCard } from '.';
+import MembershipPlanCard from './MembershipPlanCard';
 
 import membershipIllustration from '@assets/images/membership/membership-illustration.svg';
 import membershipLifetime from '@assets/images/membership/membership-lifetime.svg';

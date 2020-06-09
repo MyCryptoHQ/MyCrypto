@@ -5,8 +5,9 @@ export interface ISettings {
   fiatCurrency: string;
   darkMode: boolean;
   dashboardAccounts: TUuid[];
+  excludedAssets: TUuid[];
   inactivityTimer: number;
   node?: string;
   rates: IRates;
-  language: string; // Todo: Change to enum
+  language: string; // @todo: Change to enum
 }

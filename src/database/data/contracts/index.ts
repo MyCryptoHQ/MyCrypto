@@ -13,7 +13,7 @@ import ARTIS_SIGMA1 from './artis_sigma1.json';
 import ARTIS_TAU1 from './artis_tau1.json';
 import PIRL from './pirl.json';
 
-// @TODO[Types]: key should really be a partial of NetworkId
+// @todo[Types]: key should really be a partial of NetworkId
 interface Contracts {
   [key: string]: Contract[];
 }

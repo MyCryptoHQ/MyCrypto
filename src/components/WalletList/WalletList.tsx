@@ -7,8 +7,8 @@ import { WalletButton } from './WalletButton';
 import { WalletId, IStory } from '@types';
 import { ROUTE_PATHS, getWalletConfig } from '@config';
 import { BREAK_POINTS, COLORS } from '@theme';
-import { IS_ELECTRON, getWeb3Config } from '@utils';
-import { ANALYTICS_CATEGORIES, AnalyticsService } from '@services';
+import { IS_ELECTRON, getWeb3Config, useAnalytics } from '@utils';
+import { ANALYTICS_CATEGORIES } from '@services';
 
 const { SCREEN_XS } = BREAK_POINTS;
 const { BLUE_BRIGHT } = COLORS;
@@ -87,8 +87,14 @@ interface Props {
 }
 
 export const WalletList = ({ wallets, onSelect, showHeader, calculateMargin }: Props) => {
+  const trackSelectWallet = useAnalytics({
+    category: ANALYTICS_CATEGORIES.ADD_ACCOUNT
+  });
+
   const selectWallet = (name: WalletId) => {
-    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.ADD_ACCOUNT, `${name} clicked`);
+    trackSelectWallet({
+      actionName: `${name} clicked`
+    });
     onSelect(name);
   };
   return (

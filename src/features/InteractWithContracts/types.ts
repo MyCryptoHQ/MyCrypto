@@ -6,7 +6,7 @@ export enum ABIItemType {
   CONSTRUCTOR = 'constructor'
 }
 
-// TODO: Add remaining types / use string insteand of enum
+// @todo: Add remaining types / use string insteand of enum
 export enum ABIFieldType {
   STRING = 'string',
   BOOL = 'bool',

@@ -67,19 +67,24 @@ export {
   IHexStrWeb3Transaction,
   ITxReceipt,
   ITxHash,
-  ITxSigned
+  ITxSigned,
+  IFailedTxReceipt,
+  ISuccessfulTxReceipt,
+  IPendingTxReceipt
 } from './transaction';
 export {
   ISignedTx,
   ITxObject,
   ITxConfig,
   ITxStatus,
+  ITxHistoryStatus,
   ITxType,
   IFormikFields,
   ISignComponentProps,
   IStepComponentProps,
   SigningComponents,
-  IReceiverAddress
+  IReceiverAddress,
+  ITxReceiptStepProps
 } from './transactionFlow';
 export { JsonRPCResponse } from './jsonRPCResponse';
 export { INode, TxObj } from './INode';
@@ -98,3 +103,4 @@ export { TAction, TStateGetter } from './action';
 export { TxParcel } from '@utils/useTxMulti/types'; // Specific re-export to avoid Circular deps
 export { TURL } from './url';
 export { TBN } from './bigNumber';
+export { Balance, BalanceAccount, BalanceDetailsTableProps } from './balanceDisplays';

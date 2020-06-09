@@ -3,10 +3,11 @@ import { ethers, utils } from 'ethers';
 import { Web3Provider } from 'ethers/providers/web3-provider';
 
 import { WALLETS_CONFIG } from '@config';
-import { ISignComponentProps } from '@types';
+import { ISignComponentProps, TAddress } from '@types';
 import translate, { translateRaw } from '@translations';
-import { withContext, getWeb3Config } from '@utils';
+import { withContext, getWeb3Config, isSameAddress } from '@utils';
 import { getNetworkByChainId, INetworkContext, NetworkContext } from '@services/Store';
+
 import './Web3.scss';
 
 declare global {
@@ -77,7 +78,6 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
     const networkName = detectedNetwork ? detectedNetwork.name : translateRaw('UNKNOWN_NETWORK');
     const walletConfig = getWeb3Config();
     const { accountMatches, networkMatches, walletState, submitting } = this.state;
-
     return (
       <>
         <div className="SignTransactionWeb3-title">
@@ -159,7 +159,9 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
   private checkAddressMatches(Web3Address: string) {
     const { senderAccount } = this.props;
     const desiredAddress = utils.getAddress(senderAccount.address);
-    this.setState({ accountMatches: Web3Address === desiredAddress });
+    this.setState({
+      accountMatches: isSameAddress(Web3Address as TAddress, desiredAddress as TAddress)
+    });
   }
 
   private checkNetworkMatches(Web3Network: ethers.utils.Network) {
@@ -195,22 +197,22 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
     this.setState({ walletState: WalletSigningState.READY });
     const signerWallet = web3Provider.getSigner();
 
-    try {
-      // Calling ethers.js with a tx object containing a 'from' property
-      // will fail https://github.com/ethers-io/ethers.js/issues/692.
-      const { from, ...rawTx } = rawTransaction;
-      signerWallet.sendUncheckedTransaction(rawTx).then((txHash) => {
-        web3Provider.getTransactionReceipt(txHash).then((output) => {
-          this.setState({ submitting: false });
-          onSuccess(output !== null ? output : txHash);
-        });
+    // Calling ethers.js with a tx object containing a 'from' property
+    // will fail https://github.com/ethers-io/ethers.js/issues/692.
+    const { from, ...rawTx } = rawTransaction;
+    signerWallet
+      .sendUncheckedTransaction(rawTx)
+      .then((txHash) => {
+        this.setState({ submitting: false });
+        onSuccess(txHash);
+      })
+      .catch((err) => {
+        this.setState({ submitting: false });
+        console.debug(`[SignTransactionWeb3] ${err.message}`);
+        if (err.message.includes('User denied transaction signature')) {
+          this.setState({ walletState: WalletSigningState.NOT_READY });
+        }
       });
-    } catch (err) {
-      console.debug(`[SignTransactionWeb3] ${err}`);
-      if (err.message.includes('User denied transaction signature')) {
-        this.setState({ walletState: WalletSigningState.NOT_READY });
-      }
-    }
   }
 }
 

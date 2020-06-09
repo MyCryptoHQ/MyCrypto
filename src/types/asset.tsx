@@ -22,7 +22,7 @@ export type TAssetType = 'base' | 'erc20' | 'fiat';
 export interface Asset {
   readonly uuid: TUuid;
   readonly name: string;
-  readonly networkId?: NetworkId;
+  readonly networkId: NetworkId;
   readonly ticker: string;
   readonly symbol?: TSymbol;
   readonly type: TAssetType;

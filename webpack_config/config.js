@@ -40,11 +40,14 @@ module.exports = {
       'ethers',
       'recharts',
       'jspdf',
+      'html2canvas',
       '@walletconnect',
       '@ledgerhq',
-      '@unstoppabledomains'
+      '@unstoppabledomains',
+      'graphql',
+      'apollo-client'
     ],
     devOnly: ['@hot-loader/react-dom'],
-    electronOnly: ['zxcvbn', 'bip39']
+    electronOnly: ['zxcvbn']
   }
 };

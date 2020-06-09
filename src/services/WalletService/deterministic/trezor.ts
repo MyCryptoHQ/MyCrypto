@@ -58,7 +58,7 @@ export class TrezorWallet extends HardwareWallet {
           res.payload.v += 2 * chainId + 35;
         }
 
-        // TODO: Explain what's going on here? Add tests? Adapted from:
+        // @todo: Explain what's going on here? Add tests? Adapted from:
         // https://github.com/kvhnuke/etherwallet/blob/v3.10.2.6/app/scripts/uiFuncs.js#L24
         const txToSerialize: TxData = {
           ...strTx,

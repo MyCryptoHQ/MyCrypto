@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
 import { Layout, LayoutConfig } from '@features/Layout';
@@ -13,6 +13,7 @@ import {
   PrivateRoute
 } from '@routing';
 import { COLORS, SPACING } from '@theme';
+import { AppLoading } from '@AppLoading';
 
 const layoutConfig = (path: string, isMobile: boolean): LayoutConfig => {
   switch (path) {
@@ -58,19 +59,21 @@ export const AppRoutes = () => {
         <DrawerProvider>
           <PageVisitsAnalytics>
             <DefaultHomeHandler>
-              <Switch>
-                {/* To avoid fiddling with layout we provide a complete route to home */}
-                <LayoutWithLocation>
-                  <Switch>
-                    <Route path={ROUTE_PATHS.ROOT.path} component={Home} exact={true} />
-                    <Route path={ROUTE_PATHS.HOME.path} component={Home} exact={true} />
-                    {APP_ROUTES.filter((route) => !route.seperateLayout).map((config, idx) => (
-                      <PrivateRoute key={idx} {...config} />
-                    ))}
-                    <Route component={PageNotFound} />
-                  </Switch>
-                </LayoutWithLocation>
-              </Switch>
+              <Suspense fallback={<AppLoading />}>
+                <Switch>
+                  {/* To avoid fiddling with layout we provide a complete route to home */}
+                  <LayoutWithLocation>
+                    <Switch>
+                      <Route path={ROUTE_PATHS.ROOT.path} component={Home} exact={true} />
+                      <Route path={ROUTE_PATHS.HOME.path} component={Home} exact={true} />
+                      {APP_ROUTES.filter((route) => !route.seperateLayout).map((config, idx) => (
+                        <PrivateRoute key={idx} {...config} />
+                      ))}
+                      <Route component={PageNotFound} />
+                    </Switch>
+                  </LayoutWithLocation>
+                </Switch>
+              </Suspense>
             </DefaultHomeHandler>
           </PageVisitsAnalytics>
           <LegacyRoutesHandler />

@@ -7,10 +7,9 @@ import { Formik } from 'formik';
 import {
   NetworkSelectDropdown,
   InputField,
-  Dropdown,
   InlineMessage,
   Button,
-  AddressField
+  ContractLookupField
 } from '@components';
 import {
   Contract,
@@ -18,20 +17,20 @@ import {
   ITxConfig,
   ExtendedContract,
   Network,
-  IReceiverAddress
+  IReceiverAddress,
+  TAddress
 } from '@types';
 import { COLORS, BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
-import { isValidETHAddress, isCreationAddress } from '@services/EthService/validators';
+import { isValidETHAddress } from '@services/EthService/validators';
 import { getNetworkById, NetworkContext } from '@services';
+import { isValidENSName } from '@services/EthService';
+import { isSameAddress } from '@utils';
 
-import ContractDropdownOption from './ContractDropdownOption';
-import ContractDropdownValue from './ContractDropdownValue';
 import GeneratedInteractionForm from './GeneratedInteractionForm';
 import { CUSTOM_CONTRACT_ADDRESS } from '../constants';
 import { ABIItem } from '../types';
 import { getParsedQueryString } from '../utils';
-import { isValidENSName } from '@services/EthService';
 
 const { BLUE_BRIGHT, WHITE, BLUE_LIGHT } = COLORS;
 const { SCREEN_SM } = BREAK_POINTS;
@@ -57,10 +56,6 @@ const FieldWrapper = styled.div`
   p {
     font-size: 1em;
   }
-`;
-
-const Separator = styled.div`
-  width: 22px;
 `;
 
 const Label = styled.div`
@@ -168,8 +163,6 @@ function Interact(props: CombinedProps) {
     contract,
     contracts,
     showGeneratedForm,
-    addressOrDomainInput,
-    resolvingDomain,
     handleNetworkSelected,
     handleContractSelected,
     handleAddressOrDomainChanged,
@@ -189,6 +182,7 @@ function Interact(props: CombinedProps) {
   } = props;
 
   const [error, setError] = useState<string | undefined>(undefined);
+  const [isResolvingName, setIsResolvingDomain] = useState(false);
   const [areFieldsPopulatedFromUrl, setAreFieldsPopulatedFromUrl] = useState(false);
   const [wasAbiEditedManually, setWasAbiEditedManually] = useState(false);
   const [wasContractInteracted, setWasContractInteracted] = useState(false);
@@ -198,7 +192,8 @@ function Interact(props: CombinedProps) {
     props.location.search
   );
   const networkAndAddressMatchURL =
-    network.id === networkIdFromUrl && contractAddress === addressFromUrl;
+    network.id === networkIdFromUrl &&
+    isSameAddress(contractAddress as TAddress, addressFromUrl as TAddress);
 
   useEffect(() => {
     updateNetworkContractOptions();
@@ -218,15 +213,6 @@ function Interact(props: CombinedProps) {
       });
     }
   }, [abi]);
-
-  useEffect(() => {
-    // If contract network id doesn't match the selected network id, set contract to custom and keep the address from the URL.
-    if (contract && contract.networkId !== network.id) {
-      handleAddressOrDomainChanged(contractAddress);
-    }
-
-    setError(undefined);
-  }, [contract]);
 
   const saveContract = () => {
     setError(undefined);
@@ -263,23 +249,8 @@ function Interact(props: CombinedProps) {
     }
   }, []);
 
-  useEffect(() => {
-    if (
-      !getNetworkById(networkIdFromUrl, networks) ||
-      areFieldsPopulatedFromUrl ||
-      contracts.length === 0 ||
-      !addressFromUrl
-    ) {
-      return;
-    }
-
-    if (addressFromUrl) {
-      handleAddressOrDomainChanged(addressFromUrl);
-    }
-    setAreFieldsPopulatedFromUrl(true);
-  }, [contracts]);
-
-  const customEditingMode = contract && contract.address === CUSTOM_CONTRACT_ADDRESS;
+  const customEditingMode =
+    contract && isSameAddress(contract.address as TAddress, CUSTOM_CONTRACT_ADDRESS as TAddress);
 
   const initialFormikValues: { address: IReceiverAddress } = {
     address: {
@@ -294,10 +265,39 @@ function Interact(props: CombinedProps) {
       validationSchema={FormSchema}
       // Hack as we don't really use Formik for this flow
       onSubmit={() => undefined}
-      render={({ errors, touched, setFieldValue }) => {
-        const isValid =
-          Object.values(errors).filter((e) => e !== undefined && e.value !== undefined).length ===
-          0;
+      render={({ values, errors, touched, setFieldValue }) => {
+        useEffect(() => {
+          if (
+            !getNetworkById(networkIdFromUrl, networks) ||
+            areFieldsPopulatedFromUrl ||
+            contracts.length === 0 ||
+            !addressFromUrl
+          ) {
+            return;
+          }
+
+          if (addressFromUrl) {
+            handleAddressOrDomainChanged(addressFromUrl);
+          }
+          setAreFieldsPopulatedFromUrl(true);
+        }, [contracts]);
+
+        useEffect(() => {
+          // If contract network id doesn't match the selected network id, set contract to custom and keep the address from the URL.
+          if (contract && contract.networkId !== network.id) {
+            handleAddressOrDomainChanged(contractAddress);
+          }
+
+          if (contract && contract.address !== CUSTOM_CONTRACT_ADDRESS) {
+            setFieldValue('address', {
+              display: contract.name,
+              value: contract.address
+            });
+          }
+
+          setError(undefined);
+        }, [contract]);
+
         return (
           <>
             <NetworkSelectorWrapper>
@@ -311,56 +311,31 @@ function Interact(props: CombinedProps) {
             <ContractSelectionWrapper>
               <FieldWrapper>
                 <ContractSelectLabelWrapper>
-                  <Label>{translateRaw('CONTRACT_TITLE_2')}</Label>
+                  <label htmlFor="address" className="input-group-header">
+                    {translateRaw('CONTRACT_TITLE')}
+                  </label>
                   {contract && contract.isCustom && (
                     <DeleteLabel onClick={() => handleDeleteContract(contract.uuid)}>
                       {translateRaw('ACTION_15')}
                     </DeleteLabel>
                   )}
                 </ContractSelectLabelWrapper>
-
-                <Dropdown
-                  value={contract}
-                  options={contracts}
-                  onChange={(option) => {
-                    if (option.address !== 'custom') {
-                      setFieldValue('address', {
-                        display: option.address,
-                        value: option.address
-                      });
-                    } else {
-                      setFieldValue('address', initialFormikValues.address);
-                    }
+                <ContractLookupField
+                  name="address"
+                  contracts={contracts}
+                  error={errors && touched.address && errors.address && errors.address.value}
+                  network={network}
+                  isResolvingName={isResolvingName}
+                  setIsResolvingDomain={setIsResolvingDomain}
+                  onSelect={(option) => {
+                    // @ts-ignore
                     handleContractSelected(option);
+
+                    handleAddressOrDomainChanged(option.value);
                   }}
-                  optionComponent={ContractDropdownOption}
-                  valueComponent={ContractDropdownValue}
-                  searchable={true}
+                  onChange={(address) => handleAddressOrDomainChanged(address)}
+                  value={values.address}
                 />
-              </FieldWrapper>
-              <Separator />
-              <FieldWrapper>
-                <label htmlFor="address" className="input-group-header">
-                  {translateRaw('CONTRACT_TITLE')}
-                </label>
-                <InputWrapper>
-                  <AddressField
-                    fieldName="address"
-                    error={errors && touched.address && errors.address && errors.address.value}
-                    network={network}
-                    placeholder={translateRaw('CONTRACT_ADDRESS_PLACEHOLDER')}
-                    isLoading={resolvingDomain}
-                    onChange={({ target: { value } }) => handleAddressOrDomainChanged(value)}
-                    isError={!isValid}
-                  />
-                </InputWrapper>
-                {contractAddress &&
-                  (isValidETHAddress(contractAddress) || isCreationAddress(contractAddress)) &&
-                  !isValidETHAddress(addressOrDomainInput) && (
-                    <div>
-                      {translateRaw('INTERACT_RESOLVED_ADDRESS')} {contractAddress}
-                    </div>
-                  )}
               </FieldWrapper>
             </ContractSelectionWrapper>
             <FieldWrapper>

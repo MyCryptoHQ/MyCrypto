@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { IAccount as IIAccount, ITxReceipt, ITxObject, ISignedTx } from '@types';
+import { IAccount as IIAccount, ITxObject, ISignedTx, IPendingTxReceipt } from '@types';
 import { WALLETS_CONFIG } from '@config';
 import { makeTransaction } from '@services/EthService';
 import { WalletFactory, HardwareWallet } from '@services/WalletService';
@@ -31,7 +31,7 @@ export interface IProps {
   signerDescription: string;
   senderAccount: IIAccount;
   rawTransaction: ITxObject;
-  onSuccess(receipt: ITxReceipt | ISignedTx): void;
+  onSuccess(receipt: IPendingTxReceipt | ISignedTx): void;
 }
 
 export default function HardwareSignTransaction({

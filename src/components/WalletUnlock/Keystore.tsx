@@ -29,7 +29,7 @@ function isPassRequired(file: string): boolean {
   try {
     passReq = isKeystorePassRequired(file);
   } catch (e) {
-    // TODO: communicate invalid file to user
+    // @todo: communicate invalid file to user
   }
   return passReq;
 }

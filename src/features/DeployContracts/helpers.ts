@@ -1,11 +1,11 @@
-import { StoreAccount, NetworkId, ITxConfig, ITxObject } from '@types';
+import { StoreAccount, NetworkId, ITxConfig, ITxObject, TAddress } from '@types';
 import { WALLET_STEPS } from '@components';
 import { getAssetByUUID, hexToString, hexWeiToString } from '@services';
 
 export const getAccountsInNetwork = (accounts: StoreAccount[], networkId: NetworkId) =>
   accounts.filter((acc) => acc.networkId === networkId && WALLET_STEPS[acc.wallet]);
 
-export const makeTxConfigFromTransaction = (
+export const makeDeployContractTxConfig = (
   rawTransaction: ITxObject,
   account: StoreAccount,
   amount: string
@@ -17,7 +17,7 @@ export const makeTxConfigFromTransaction = (
   const txConfig: ITxConfig = {
     from: address,
     amount,
-    receiverAddress: to || '0x',
+    receiverAddress: to as TAddress,
     senderAccount: account,
     network,
     asset: baseAsset,

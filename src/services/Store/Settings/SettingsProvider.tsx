@@ -7,6 +7,8 @@ export interface ISettingsContext {
   settings: ISettings;
   language: string;
   addAccountToFavorites(uuid: TUuid): void;
+  addAssetToExclusionList(uuid: TUuid): void;
+  removeAssetfromExclusionList(uuid: TUuid): void;
   updateSettings(settings: ISettings): void;
   updateSettingsAccounts(accounts: TUuid[]): void;
   updateSettingsNode(nodeId: string): void;
@@ -14,6 +16,7 @@ export interface ISettingsContext {
   importStorage(importedCache: string): boolean;
   updateSettingsRates(rates: IRates): void;
   updateLanguageSelection(language: string): void;
+  updateFiatCurrency(fiatTicker: string): void;
 }
 
 const isValidImport = (importedCache: string, localStorage: string) => {
@@ -60,6 +63,21 @@ export const SettingsProvider: React.FC = ({ children }) => {
         dashboardAccounts: [...settings.dashboardAccounts, account]
       });
     },
+
+    addAssetToExclusionList: (assetUuid: TUuid): void => {
+      state.updateSettings({
+        ...settings,
+        excludedAssets: [...(settings.excludedAssets || []), assetUuid]
+      });
+    },
+
+    removeAssetfromExclusionList: (assetUuid: TUuid): void => {
+      state.updateSettings({
+        ...settings,
+        excludedAssets: (settings.excludedAssets || []).filter((uuid) => uuid !== assetUuid)
+      });
+    },
+
     updateSettingsAccounts: (accounts: TUuid[]): void => {
       state.updateSettings({ ...settings, dashboardAccounts: accounts });
     },
@@ -71,8 +89,13 @@ export const SettingsProvider: React.FC = ({ children }) => {
     updateSettingsRates: (rates) => {
       state.updateSettings({ ...settings, rates });
     },
+
     updateLanguageSelection: (languageToChangeTo) => {
       state.updateSettings({ ...settings, language: languageToChangeTo });
+    },
+
+    updateFiatCurrency: (newFiatSelection) => {
+      state.updateSettings({ ...settings, fiatCurrency: newFiatSelection });
     }
   };
 

@@ -7,7 +7,8 @@ import { ROUTE_PATHS, WALLETS_CONFIG, IWalletConfig } from '@config';
 import { WalletId, IStory } from '@types';
 import { ExtendedContentPanel, WalletList } from '@components';
 import { StoreContext } from '@services/Store';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from '@services/ApiService';
+import { ANALYTICS_CATEGORIES } from '@services/ApiService';
+import { useAnalytics, isSameAddress } from '@utils';
 
 import { NotificationsContext, NotificationTemplates } from '../NotificationsPanel';
 import { FormDataActionType as ActionType } from './types';
@@ -43,6 +44,10 @@ const AddAccountFlow = withRouter(({ history, match }) => {
   const [formData, updateFormState] = useReducer(formReducer, initialState); // The data that we want to save at the end.
   const { scanAccountTokens, scanForMemberships, addAccount, accounts } = useContext(StoreContext);
   const { displayNotification } = useContext(NotificationsContext);
+  const trackNewAccountAdded = useAnalytics({
+    category: ANALYTICS_CATEGORIES.ADD_ACCOUNT,
+    actionName: 'New Account Added'
+  });
 
   const storyName: WalletId = formData.accountType; // The Wallet Story that we are tracking.
   const isDefaultView = storyName === undefined;
@@ -62,12 +67,14 @@ const AddAccountFlow = withRouter(({ history, match }) => {
     const { network, address } = formData;
     if (!accounts) return;
     const newAccount = accounts.find(
-      (account) => account.address === address && account.networkId === network
+      (account) => isSameAddress(account.address, address) && account.networkId === network
     );
     if (!!newAccount) {
-      AnalyticsService.instance.track(ANALYTICS_CATEGORIES.ADD_ACCOUNT, 'New Account Added', {
-        newAccountAddedType: newAccount.wallet,
-        newAccountAddedNumOfAccounts: accounts.length
+      trackNewAccountAdded({
+        eventParams: {
+          newAccountAddedType: newAccount.wallet,
+          newAccountAddedNumOfAccounts: accounts.length
+        }
       });
       displayNotification(NotificationTemplates.walletAdded, { address });
       scanAccountTokens(newAccount);

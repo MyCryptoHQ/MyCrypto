@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Heading, Typography } from '@mycrypto/ui';
 
 import sendIcon from '@assets/images/icn-send.svg';
 import { Currency } from '@components';
 import { TSymbol } from '@types';
 import { translateRaw } from '@translations';
+import { SettingsContext } from '@services';
+import { getFiat } from '@config/fiats';
 
 interface Props {
   amount: string;
@@ -13,7 +15,8 @@ interface Props {
 }
 
 function TransactionValueDisplay({ amount, ticker, fiatAsset }: Props) {
-  // @TODO handle math with BN.js
+  const { settings } = useContext(SettingsContext);
+  // @todo handle math with BN.js
   const convertToFiat = (base: string, rate: string) => {
     return (parseFloat(base) * parseFloat(rate)).toString();
   };
@@ -36,7 +39,12 @@ function TransactionValueDisplay({ amount, ticker, fiatAsset }: Props) {
           <br />
           <Currency amount={'1'} symbol={ticker} decimals={0} />
           {' ≈ '}
-          <Currency amount={fiatAsset.exchangeRate} symbol={fiatAsset.ticker} decimals={2} />
+          <Currency
+            amount={fiatAsset.exchangeRate}
+            symbol={fiatAsset.ticker}
+            code={getFiat(settings).code}
+            decimals={2}
+          />
         </Typography>
       </div>
     </div>

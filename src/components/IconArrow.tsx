@@ -1,23 +1,38 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import chevronIcon from '@assets/images/chevron-right.svg';
-
-const ArrowContainer = styled.img<{ isFlipped?: boolean }>`
-  margin-left: 0.5em;
-  ${(props) =>
-    props.isFlipped &&
-    `
-      transform: rotateX(180deg);
-  `};
-`;
+import CollapseIcon from './icons/CollapseIcon';
+import ExpandIcon from './icons/ExpandIcon';
+import { IconSize } from './icons/helpers';
 
 interface ArrowProps {
+  fillColor?: string;
+  size?: IconSize;
   isFlipped?: boolean;
+  onClick?(): void;
 }
 
-export const IconArrow = ({ isFlipped }: ArrowProps) => {
-  return <ArrowContainer src={chevronIcon} isFlipped={isFlipped} />;
+const SIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const IconArrow = ({ isFlipped, fillColor, size, onClick }: ArrowProps) => {
+  return (
+    <>
+      {isFlipped ? (
+        <CollapseIcon fillColor={fillColor} size={size} onClick={onClick} />
+      ) : (
+        <ExpandIcon fillColor={fillColor} size={size} onClick={onClick} />
+      )}
+    </>
+  );
 };
+
+export const CenteredIconArrow = (props: ArrowProps) => (
+  <SIconContainer>
+    <IconArrow {...props} />
+  </SIconContainer>
+);
 
 export default IconArrow;

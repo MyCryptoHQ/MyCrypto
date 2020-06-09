@@ -1,9 +1,14 @@
 import { useContext, useCallback } from 'react';
 import debounce from 'lodash/debounce';
 
-import { TUseStateReducerFactory, fromTxReceiptObj, generateContractUUID } from '@utils';
+import {
+  TUseStateReducerFactory,
+  makePendingTxReceipt,
+  generateContractUUID,
+  isSameAddress
+} from '@utils';
 import { CREATION_ADDRESS } from '@config';
-import { NetworkId, Contract, StoreAccount, ITxType, ITxStatus } from '@types';
+import { NetworkId, Contract, StoreAccount, ITxType, ITxStatus, TAddress, ITxHash } from '@types';
 import {
   getNetworkById,
   ContractContext,
@@ -14,7 +19,6 @@ import {
   getResolvedENSAddress,
   EtherscanService,
   getIsValidENSAddressFunction,
-  AssetContext,
   AccountContext
 } from '@services';
 import { AbiFunction } from '@services/EthService/contracts/ABIFunction';
@@ -23,7 +27,11 @@ import { translateRaw } from '@translations';
 
 import { customContract, CUSTOM_CONTRACT_ADDRESS } from './constants';
 import { ABIItem, InteractWithContractState } from './types';
-import { makeTxConfigFromTransaction, reduceInputParams, constructGasCallProps } from './helpers';
+import {
+  reduceInputParams,
+  constructGasCallProps,
+  makeContractInteractionTxConfig
+} from './helpers';
 
 const interactWithContractsInitialState = {
   network: {},
@@ -53,8 +61,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
 }) => {
   const { getContractsByIds, createContractWithId, deleteContracts } = useContext(ContractContext);
   const { networks, updateNetwork } = useContext(NetworkContext);
-  const { assets } = useContext(AssetContext);
-  const { addNewTransactionToAccount } = useContext(AccountContext);
+  const { addNewTxToAccount } = useContext(AccountContext);
 
   const handleNetworkSelected = (networkId: NetworkId) => {
     setState((prevState: InteractWithContractState) => ({
@@ -74,11 +81,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     const contractIds = state.network.contracts;
     const networkContracts = getContractsByIds(contractIds);
 
-    const customContractOption = Object.assign({}, customContract, { networkId: state.network.id });
-
-    const contracts = [customContractOption, ...networkContracts].map((x) =>
-      Object.assign({}, x, { label: x.name })
-    );
+    const contracts = networkContracts.map((x) => Object.assign({}, x, { label: x.name }));
 
     setState((prevState: InteractWithContractState) => ({
       ...prevState,
@@ -91,7 +94,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     let addressOrDomainInput = '';
     let contractAbi = '';
 
-    if (contract.address !== CUSTOM_CONTRACT_ADDRESS) {
+    if (contract.address !== CUSTOM_CONTRACT_ADDRESS && contract.abi) {
       contractAddress = contract.address;
       addressOrDomainInput = contract.address;
       contractAbi = contract.abi;
@@ -113,7 +116,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     [state.contracts]
   );
   const handleAddressOrDomainChanged = (value: string) => {
-    if (selectExistingContract(value)) {
+    if (selectExistingContract(value) || value === '' || value === undefined) {
       return;
     }
 
@@ -156,7 +159,9 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   };
 
   const selectExistingContract = (address: string) => {
-    const existingContract = state.contracts.find((c) => c.address === address);
+    const existingContract = state.contracts.find((c) =>
+      isSameAddress(c.address as TAddress, address as TAddress)
+    );
     if (existingContract) {
       handleContractSelected(existingContract);
       return true;
@@ -294,7 +299,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       transaction.gasLimit = gasLimit;
       delete transaction.from;
 
-      const txConfig = makeTxConfigFromTransaction(
+      const txConfig = makeContractInteractionTxConfig(
         transaction,
         account,
         submitedFunction.payAmount
@@ -329,7 +334,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     if (isWeb3Wallet(account.wallet)) {
       const txReceipt =
         signResponse && signResponse.hash ? signResponse : { ...txConfig, hash: signResponse };
-      addNewTransactionToAccount(state.txConfig.senderAccount, {
+      addNewTxToAccount(state.txConfig.senderAccount, {
         ...txReceipt,
         to: state.txConfig.receiverAddress,
         from: state.txConfig.senderAccount.address,
@@ -347,18 +352,17 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       const provider = new ProviderHandler(account.network);
       provider
         .sendRawTx(signResponse)
-        .then((retrievedTxReceipt) => retrievedTxReceipt)
-        .catch((hash) => provider.getTransactionByHash(hash))
-        .then((retrievedTransactionReceipt) => {
-          const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt)(assets, networks);
-          addNewTransactionToAccount(state.txConfig.senderAccount, {
-            ...txReceipt,
-            txType: ITxType.CONTRACT_INTERACT,
-            stage: ITxStatus.PENDING
-          });
+        .then((retrievedTxReceipt) => retrievedTxReceipt.hash as ITxHash)
+        .catch((hash) => hash as ITxHash)
+        .then((txHash) => {
+          const pendingTxReceipt = makePendingTxReceipt(txHash)(
+            ITxType.CONTRACT_INTERACT,
+            state.txConfig
+          );
+          addNewTxToAccount(state.txConfig.senderAccount, pendingTxReceipt);
           setState((prevState: InteractWithContractState) => ({
             ...prevState,
-            txReceipt
+            txReceipt: pendingTxReceipt
           }));
         })
         .finally(after);
