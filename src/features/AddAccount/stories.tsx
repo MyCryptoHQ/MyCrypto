@@ -10,7 +10,8 @@ import {
   Web3ProviderDecrypt,
   Web3ProviderInstall,
   ViewOnlyDecrypt,
-  WalletConnectDecrypt
+  WalletConnectDecrypt,
+  LedgerDecrypt
 } from '@components';
 import { withWalletConnect } from '@services/WalletService';
 
@@ -33,6 +34,10 @@ export const getStories = (): IStory[] => [
   {
     name: WalletId.LEDGER_NANO_S,
     steps: [NetworkSelectPanel, LedgerNanoSDecrypt]
+  },
+  {
+    name: WalletId.LEDGER_NANO_S_NEW,
+    steps: [NetworkSelectPanel, LedgerDecrypt]
   },
   {
     name: WalletId.TREZOR,

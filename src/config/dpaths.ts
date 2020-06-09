@@ -13,6 +13,13 @@ const ETH_LEDGER: DPath = {
   value: "m/44'/60'/0'"
 };
 
+const ETH_LEDGER_LIVE: DPath = {
+  label: 'Ledger Live (ETH)',
+  value: "m/44'/60'/0'/0/0",
+  isHardened: true,
+  getIndex: (addressIndex): string => `m/44'/60'/${addressIndex}'/0/0`
+};
+
 const ETC_LEDGER: DPath = {
   label: 'Ledger (ETC)',
   value: "m/44'/60'/160720'/0'"
@@ -186,6 +193,7 @@ export const DPathsList = {
   ETH_DEFAULT,
   ETH_TREZOR,
   ETH_LEDGER,
+  ETH_LEDGER_LIVE,
   ETC_LEDGER,
   ETC_TREZOR,
   ETH_TESTNET,
@@ -238,3 +246,23 @@ export const DPathsList = {
 // ie. "m / 44' / 0' / 0'" is valid, "m / 4 4' / 0' / 0'" is invalid
 export const dPathRegex = /m\/4[4,9]'\/[0-9]+\'\/[0-9]+(\'+$|\'+(\/[0-1]+$))/;
 // const whitespaceDPathRegex = /m\s*\/\s*44'\s*\/\s*[0-9]+\'\s*\/\s*[0-9]+(\'+$|\'+\s*(\/\s*[0-1]+$))/;
+
+/**
+ * Due to limitations in the Ledger ETH application, only derivation paths starting with
+ * `m/44'/60'` and `m/44'/1'` can be checked.
+ */
+export const LEDGER_DERIVATION_PATHS: DPath[] = [
+  ETH_DEFAULT,
+  ETH_LEDGER,
+  ETC_LEDGER,
+  ETH_TESTNET,
+  ETH_LEDGER_LIVE
+];
+
+/**
+ * While Trezor does support hardened paths, it'd be very tedious for the user to check all the
+ * paths currently, since the user would have to confirm each address individually.
+ */
+export const TREZOR_DERIVATION_PATHS: DPath[] = [
+  ...Object.values(DPathsList).filter((path) => !path.isHardened)
+];

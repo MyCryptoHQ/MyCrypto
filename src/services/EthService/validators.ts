@@ -210,6 +210,11 @@ export function isValidPath(dPath: string) {
     return true;
   }
 
+  // Ledger Live is incorrect due to using the full path instead of a prefix and overwriting the index.
+  if (dPath === DPaths.ETH_LEDGER_LIVE.value) {
+    return true;
+  }
+
   return dPathRegex.test(dPath);
 }
 

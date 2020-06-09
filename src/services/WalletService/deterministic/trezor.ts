@@ -18,14 +18,14 @@ export class TrezorWallet extends HardwareWallet {
     return new Promise((resolve) => {
       TrezorConnect.getPublicKey({
         path: dpath
-      }).then((res: any) => {
+      }).then((res) => {
         if (res.success) {
           resolve({
             publicKey: res.payload.publicKey,
             chainCode: res.payload.chainCode
           });
         } else {
-          throw new Error(res.error);
+          throw new Error(`[TrezorConnect] Error: ${res.id}`);
         }
       });
     });
