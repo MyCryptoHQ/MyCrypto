@@ -90,10 +90,7 @@ const TxTypeConfig: ITxTypeConfig = {
     icon: transfer
   },
   [ITxHistoryType.DEFIZAP]: {
-    label: (asset: Asset) =>
-      translateRaw('RECENT_TX_LIST_LABEL_DEFIZAP_ADD', {
-        $ticker: asset.ticker || 'Unknown'
-      }),
+    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_DEFIZAP_ADD'),
     icon: defizap
   },
   [ITxHistoryType.PURCHASE_MEMBERSHIP]: {
