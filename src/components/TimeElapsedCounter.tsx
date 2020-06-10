@@ -51,7 +51,7 @@ const TimeElapsedCounter = ({ timestamp, isSeconds }: Props) => {
     <>
       {elapsedTime.days !== 0 &&
         (elapsedTime.days === 1
-          ? translateRaw('ELAPSED_TIME_DAT', { $value: elapsedTime.days.toString() })
+          ? translateRaw('ELAPSED_TIME_DAY', { $value: elapsedTime.days.toString() })
           : translateRaw('ELAPSED_TIME_DAYS', { $value: elapsedTime.days.toString() }))}
       {elapsedTime.hours !== 0 &&
         (elapsedTime.hours === 1
