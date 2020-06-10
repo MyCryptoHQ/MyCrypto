@@ -10,7 +10,8 @@ export enum DWActionTypes {
   GET_ADDRESSES_REQUEST = 'GET_ADDRESSES_REQUEST',
   GET_ADDRESSES_SUCCESS = 'GET_ADDRESSES_SUCCESS',
   GET_ADDRESSES_FAILURE = 'GET_ADDRESSES_FAILURE',
-  GET_ADDRESSES_UPDATE = 'GET_ADDRESSES_UPDATE'
+  UPDATE_ACCOUNTS = 'UPDATE_ACCOUNTS',
+  ENQUEUE_ADDRESSES = 'ENQUEUE_ADDRESSES'
 }
 
 // @todo convert to FSA compatible action type
@@ -27,7 +28,8 @@ export const initialState: DeterministicWalletState = {
   detectedChainId: undefined,
   promptConnectionRetry: false,
   isGettingAccounts: false,
-  accounts: [],
+  queuedAccounts: [],
+  finishedAccounts: [],
   errors: []
 };
 
@@ -74,11 +76,21 @@ const DeterministicWalletReducer = (
         isGettingAccounts: false
       };
     }
-    case DWActionTypes.GET_ADDRESSES_UPDATE: {
+    case DWActionTypes.ENQUEUE_ADDRESSES: {
       const { accounts } = payload;
       return {
         ...state,
-        accounts: [...state.accounts, ...accounts]
+        queuedAccounts: [...state.queuedAccounts, ...accounts]
+      };
+    }
+    case DWActionTypes.UPDATE_ACCOUNTS: {
+      const { accounts } = payload;
+      return {
+        ...state,
+        queuedAccounts: [
+          ...state.queuedAccounts.filter(({ address }) => accounts.includes(address))
+        ],
+        finishedAccounts: [...state.finishedAccounts, ...accounts]
       };
     }
     case DWActionTypes.GET_ADDRESSES_FAILURE: {

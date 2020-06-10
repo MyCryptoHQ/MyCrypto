@@ -26,7 +26,7 @@ const useDeterministicWallet = (
 
   // Iniitialise DeterministicWallet and get the uri.
   useEffect(() => {
-    if (!setShouldInit) return;
+    if (!shouldInit) return;
     setShouldInit(false);
     const dwService = DeterministicWalletService({
       walletId,
@@ -48,10 +48,15 @@ const useDeterministicWallet = (
         dispatch({
           type: DWActionTypes.GET_ADDRESSES_SUCCESS
         }),
-      handleAccountsUpdate: (accounts: DWAccountDisplay[]) => {
-        console.debug('[handleAccountsUpdate]: accounts:', accounts);
+      handleEnqueueAccounts: (accounts: DWAccountDisplay[]) => {
         return dispatch({
-          type: DWActionTypes.GET_ADDRESSES_UPDATE,
+          type: DWActionTypes.ENQUEUE_ADDRESSES,
+          payload: { accounts }
+        });
+      },
+      handleAccountsUpdate: (accounts: DWAccountDisplay[]) => {
+        return dispatch({
+          type: DWActionTypes.UPDATE_ACCOUNTS,
           payload: { accounts }
         });
       },
@@ -66,7 +71,7 @@ const useDeterministicWallet = (
     //setShouldInit(false);
 
     setService(dwService);
-  }, [setShouldInit]);
+  }, [shouldInit]);
 
   useEffect(() => {
     if (!state.isConnected && state.isInit) {
@@ -75,13 +80,20 @@ const useDeterministicWallet = (
   }, [state.isInit]);
 
   useEffect(() => {
-    if (!service || shouldInit || !state.isConnected || !state.session) return;
-    console.debug('[here] service: ', service);
+    if (
+      !service ||
+      shouldInit ||
+      !state.isConnected ||
+      !state.session ||
+      state.queuedAccounts.length === 0
+    )
+      return;
+    service.handleAccountsQueue(state.queuedAccounts, network);
+  }, [state.queuedAccounts]);
 
-    dpaths.map((dpath) => {
-      // @ts-ignore
-      service.getAccounts(state.session, dpath, numOfAccountsToCheck, 0, network);
-    });
+  useEffect(() => {
+    if (!service || shouldInit || !state.isConnected || !state.session) return;
+    service.getAccounts(state.session, dpaths, numOfAccountsToCheck, 0, network);
   }, [state.isConnected]);
 
   const requestConnection = () => setShouldInit(true);

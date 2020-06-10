@@ -6,7 +6,7 @@ import { NetworkContext, getNetworkById, getAssetByUUID, AssetContext } from '@s
 import { useDeterministicWallet } from '@services/WalletService';
 import translate, { translateRaw, Trans } from '@translations';
 import { NewTabLink, Spinner, Button, DeterministicAccountList } from '@components';
-import { EXT_URLS, DPathsList } from '@config';
+import { EXT_URLS, LEDGER_DERIVATION_PATHS } from '@config';
 
 import UnsupportedNetwork from './UnsupportedNetwork';
 import './LedgerNano.scss';
@@ -19,7 +19,7 @@ interface OwnProps {
 // const WalletService = WalletFactory(WalletId.LEDGER_NANO_S);
 
 const LedgerDecrypt = ({ formData /*onUnlock*/ }: OwnProps) => {
-  const dpaths = [DPathsList.ETH_LEDGER_LIVE, DPathsList.ETH_LEDGER]; //, NewDPathsList.ETH_LEDGER
+  const dpaths = LEDGER_DERIVATION_PATHS;
   const numOfAccountsToCheck = 10;
 
   const { networks } = useContext(NetworkContext);
@@ -34,6 +34,7 @@ const LedgerDecrypt = ({ formData /*onUnlock*/ }: OwnProps) => {
     numOfAccountsToCheck,
     WalletId.LEDGER_NANO_S_NEW
   );
+
   const handleNullConnect = () => {
     requestConnection();
   };
@@ -58,12 +59,12 @@ const LedgerDecrypt = ({ formData /*onUnlock*/ }: OwnProps) => {
     );
   }
 
-  if (state.isConnected && state.accounts) {
-    console.debug('back here: ', state.accounts);
+  if (state.isConnected && (state.queuedAccounts || state.finishedAccounts)) {
     return (
       <div className="Mnemonic-dpath">
         <DeterministicAccountList
-          accounts={state.accounts}
+          finishedAccounts={[...new Set(state.finishedAccounts)]}
+          queuedAccounts={[...new Set(state.queuedAccounts)]}
           totalAccounts={dpaths.length * numOfAccountsToCheck}
         />
       </div>

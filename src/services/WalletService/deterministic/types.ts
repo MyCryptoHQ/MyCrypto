@@ -20,7 +20,8 @@ export interface DeterministicWalletState {
   isConnecting: boolean;
   isGettingAccounts: boolean;
   detectedChainId?: number | undefined;
-  accounts: DWAccountDisplay[];
+  queuedAccounts: DWAccountDisplay[];
+  finishedAccounts: DWAccountDisplay[];
   session: Wallet | undefined;
   promptConnectionRetry: boolean;
   errors: TActionError[];
@@ -33,13 +34,12 @@ export interface IUseDeterministicWallet {
 
 export interface IDeterministicWalletService {
   init(network: Network, walletId: DPathFormat): void;
-  //connect(network: Network, walletId: DPathFormat): void;
   getAccounts(
     session: Wallet,
-    dpath: DPath,
+    dpath: DPath[],
     numOfAddresses: number,
     offset: number,
     network: Network
   ): void;
-  //getAllAccounts(dpaths: DPath[], numOfAddresses: number): void;
+  handleAccountsQueue(accounts: DWAccountDisplay[], network: Network): void;
 }

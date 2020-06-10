@@ -94,8 +94,7 @@ export const BuyAssetsForm = () => {
           }&signature=${encodeURIComponent(signature)}`;
           openLink(`${BUY_MYCRYPTO_WEBSITE}${redirectQueryParams}` as TURL);
         })
-        .catch((err) => {
-          console.debug('err detected: ', err);
+        .catch(() => {
           openLink(BUY_MYCRYPTO_WEBSITE);
         });
     } else {

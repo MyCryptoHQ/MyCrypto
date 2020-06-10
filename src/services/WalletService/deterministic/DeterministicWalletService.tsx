@@ -9,6 +9,7 @@ interface EventHandlers {
   handleInit(session: Wallet): void;
   handleInitRequest(): void;
   handleAccountsUpdate(accounts: DWAccountDisplay[]): void;
+  handleEnqueueAccounts(accounts: DWAccountDisplay[]): void;
   handleAccountsError(error: string): void;
   handleAccountsSuccess(): void;
   handleReject(): void;
@@ -19,118 +20,107 @@ export const DeterministicWalletService = ({
   handleInit,
   handleReject,
   handleAccountsError,
-  handleAccountsUpdate
+  handleAccountsUpdate,
+  handleEnqueueAccounts
 }: // walletId
 EventHandlers): IDeterministicWalletService => {
   const init = async () => {
     const wallet = new LedgerUSB() as Wallet; // @todo - fix the walletId & type
     wallet
       .initialize()
-      .then((res: any) => {
-        console.debug('[init]: res', res);
+      .then(() => {
         handleInit(wallet);
       })
-      .catch((err: any) => {
-        console.debug('[init]: err', err);
+      .catch(() => {
         handleReject();
       });
     handleInitRequest();
   };
 
-  // const connect = async (network: Network, walletId: DPathFormat) => {
-  // 	const dDathTouse = getDPath(
-  // 		network,
-  // 		walletId
-  // 	) as DPath
-  // 	getWalletInstance()
-  // 	.then((data) => {
-  // 		console.debug('data: ', data)
-  // 		if (data) {
-  // 			data.getAddress(makeFindEthDPath(dDathTouse), 0).then(address => {
-  // 				console.debug('[address found in connect]: address -> ', address)
-  // 				handleConnect(address)
-  // 			})
-  // 		}
-  // 	})
-  // }
-
-  // const getAllAccounts = async(dpaths: DPath[], numOfAddresses: number) => {
-  // 	numOfAddresses
-  // }
-
-  const getAccounts = (
+  const getAccounts = async (
     session: Wallet,
-    dpath: DPath,
+    dpaths: DPath[],
     numOfAddresses: number,
-    offset: number,
-    network: Network
+    offset: number
   ) => {
-    console.debug('[here]: ');
-    const fetchAccounts = dpath.isHardened
-      ? () => getHardenedDPathAddresses(session, dpath, numOfAddresses, offset)
-      : () => getNormalDPathAddresses(session, dpath, numOfAddresses, offset);
-    fetchAccounts()
+    const hardenedDPaths = dpaths.filter(({ isHardened }) => isHardened);
+    const normalDPaths = dpaths.filter(({ isHardened }) => !isHardened);
+
+    await getNormalDPathAddresses(session, normalDPaths, numOfAddresses, offset)
       .then((accounts) => {
-        console.debug('[fetchAccounts]: SUCCESS1 accounts: ', accounts);
-        try {
-          getBaseAssetBalances(
-            accounts.map(({ address }) => address),
-            network
-          ).then((balanceMapData) => {
-            const walletsWithBalances: DWAccountDisplay[] = accounts.map((account) => {
-              const balance = balanceMapData[account.address] || 0;
-              return {
-                ...account,
-                balance: bigify(balance.toString())
-              };
-            });
-            handleAccountsUpdate(walletsWithBalances);
-          });
-        } catch {
-          handleAccountsUpdate(accounts);
-        }
+        handleEnqueueAccounts(accounts);
       })
       .catch((err) => {
-        console.debug('[fetchAccounts]: FAIL err: ', err);
+        handleAccountsError(err);
+      });
+
+    await getHardenedDPathAddresses(session, hardenedDPaths, numOfAddresses, offset)
+      .then((accounts) => {
+        handleEnqueueAccounts(accounts);
+      })
+      .catch((err) => {
         handleAccountsError(err);
       });
   };
 
+  const handleAccountsQueue = (accounts: DWAccountDisplay[], network: Network) => {
+    try {
+      getBaseAssetBalances(
+        accounts.map(({ address }) => address),
+        network
+      ).then((balanceMapData) => {
+        const walletsWithBalances: DWAccountDisplay[] = accounts.map((account) => {
+          const balance = balanceMapData[account.address] || 0;
+          return {
+            ...account,
+            balance: bigify(balance.toString())
+          };
+        });
+        handleAccountsUpdate(walletsWithBalances);
+      });
+    } catch {
+      handleAccountsUpdate(accounts);
+    }
+  };
+
   const getNormalDPathAddresses = async (
     session: Wallet,
-    dpath: DPath,
+    dpaths: DPath[],
     numOfAddresses: number,
     offset: number
   ): Promise<DWAccountDisplay[]> => {
     const outputAddresses: any[] = [];
-    for (let idx = 0; idx < numOfAddresses; idx++) {
-      await session.getAddress(dpath, idx + offset).then((data: any) => {
-        // @todo
+    for (const dpath of dpaths) {
+      for (let idx = 0; idx < numOfAddresses; idx++) {
+        const data = await session.getAddress(dpath, idx + offset);
         outputAddresses.push(data);
-      });
+      }
     }
     return outputAddresses;
   };
 
   const getHardenedDPathAddresses = async (
     session: Wallet,
-    dpath: DPath,
+    dpaths: DPath[],
     numOfAddresses: number,
     offset: number
   ): Promise<DWAccountDisplay[]> => {
     const outputAddresses: any[] = [];
-    for (let idx = 0; idx < numOfAddresses; idx++) {
-      await session.getAddress(dpath, idx + offset).then((data: any) => {
-        // @todo
-        outputAddresses.push(data);
-      });
+    for (const dpath of dpaths) {
+      for (let idx = 0; idx < numOfAddresses; idx++) {
+        await session.getAddress(dpath, idx + offset).then((data: any) => {
+          // @todo - fix this type
+          outputAddresses.push(data);
+        });
+      }
     }
     return outputAddresses;
   };
 
   return {
     init,
-    getAccounts
+    getAccounts,
+    handleAccountsQueue
   };
 };
 export default DeterministicWalletService;

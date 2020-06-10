@@ -23,7 +23,8 @@ const HeaderAlignment = styled.div`
 `;
 
 interface DeterministicAccountListProps {
-  accounts: DWAccountDisplay[];
+  finishedAccounts: DWAccountDisplay[];
+  queuedAccounts: DWAccountDisplay[];
   totalAccounts: number;
   className?: string;
   currentsOnly?: boolean;
@@ -31,13 +32,17 @@ interface DeterministicAccountListProps {
 }
 
 export default function DeterministicAccountList(props: DeterministicAccountListProps) {
-  const { accounts, totalAccounts } = props;
+  const { finishedAccounts, queuedAccounts, totalAccounts } = props;
   return (
     <>
       <>
-        {`Number of accounts: ${accounts.length} / ${totalAccounts}`}
+        {`Scanning Total: ${totalAccounts}`}
         <br />
-        {accounts.length < totalAccounts && (
+        {`Enqueued Total: ${queuedAccounts.length}`}
+        <br />
+        {`Finished Total: ${finishedAccounts.length}`}
+        <br />
+        {finishedAccounts.length < totalAccounts && (
           <>
             <Spinner /> Scanning...
           </>
@@ -47,7 +52,7 @@ export default function DeterministicAccountList(props: DeterministicAccountList
       <FixedSizeCollapsibleTable
         breakpoint={breakpointToNumber(BREAK_POINTS.SCREEN_XS)}
         maxHeight={'650px'}
-        {...buildDeterministicAccountTable(accounts)}
+        {...buildDeterministicAccountTable(finishedAccounts)}
       />
     </>
   );
