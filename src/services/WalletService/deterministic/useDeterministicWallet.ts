@@ -14,8 +14,6 @@ import { Wallet } from '..';
 // }
 
 const useDeterministicWallet = (
-  network: Network,
-  _: ExtendedAsset,
   dpaths: DPath[],
   numOfAccountsToCheck: number,
   walletId: DPathFormat
@@ -23,10 +21,12 @@ const useDeterministicWallet = (
   const [state, dispatch] = useReducer(DeterministicWalletReducer, initialState);
   const [shouldInit, setShouldInit] = useState(false);
   const [service, setService] = useState<IDeterministicWalletService | undefined>(); // Keep a reference to the session in order to send
+  const [assetToQuery, setAssetToQuery] = useState(undefined as ExtendedAsset | undefined);
+  const [network, setNetwork] = useState(undefined as Network | undefined);
 
   // Iniitialise DeterministicWallet and get the uri.
   useEffect(() => {
-    if (!shouldInit) return;
+    if (!shouldInit || !assetToQuery || !network) return;
     setShouldInit(false);
     const dwService = DeterministicWalletService({
       walletId,
@@ -34,10 +34,10 @@ const useDeterministicWallet = (
         dispatch({
           type: DWActionTypes.CONNECTION_REQUEST
         }),
-      handleInit: (session: Wallet) =>
+      handleInit: (session: Wallet, asset: ExtendedAsset) =>
         dispatch({
           type: DWActionTypes.CONNECTION_SUCCESS,
-          payload: { session }
+          payload: { session, asset }
         }),
       handleReject: () =>
         dispatch({
@@ -67,9 +67,7 @@ const useDeterministicWallet = (
         })
     });
 
-    dwService.init(network, walletId);
-    //setShouldInit(false);
-
+    dwService.init(walletId, assetToQuery);
     setService(dwService);
   }, [shouldInit]);
 
@@ -80,27 +78,44 @@ const useDeterministicWallet = (
   }, [state.isInit]);
 
   useEffect(() => {
+    const totalAccounts = dpaths.length * numOfAccountsToCheck;
     if (
       !service ||
       shouldInit ||
       !state.isConnected ||
       !state.session ||
-      state.queuedAccounts.length === 0
+      !assetToQuery ||
+      !network ||
+      state.queuedAccounts.length !== totalAccounts
     )
       return;
-    service.handleAccountsQueue(state.queuedAccounts, network);
+    service.handleAccountsQueue(state.queuedAccounts, network, assetToQuery);
   }, [state.queuedAccounts]);
 
   useEffect(() => {
-    if (!service || shouldInit || !state.isConnected || !state.session) return;
+    if (!service || shouldInit || !state.isConnected || !network || !state.session) return;
     service.getAccounts(state.session, dpaths, numOfAccountsToCheck, 0, network);
   }, [state.isConnected]);
 
-  const requestConnection = () => setShouldInit(true);
+  const requestConnection = (networkToUse: Network, asset: ExtendedAsset) => {
+    setNetwork(networkToUse);
+    setAssetToQuery(asset);
+    setShouldInit(true);
+  };
+
+  const updateAsset = (asset: ExtendedAsset) => {
+    if (!service) return;
+    setAssetToQuery(asset);
+    dispatch({
+      type: DWActionTypes.UPDATE_ASSET,
+      payload: { asset }
+    });
+  };
 
   return {
     state,
-    requestConnection
+    requestConnection,
+    updateAsset
   };
 };
 

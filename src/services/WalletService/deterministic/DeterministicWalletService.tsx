@@ -1,12 +1,12 @@
 import { IDeterministicWalletService, DWAccountDisplay } from './types';
-import { DPathFormat, Network } from '@types';
+import { DPathFormat, Network, ExtendedAsset, WalletId } from '@types';
 import { LedgerUSB, Wallet } from '..';
-import { getBaseAssetBalances } from '@services/Store/BalanceService';
+import { getBaseAssetBalances, getTokenAssetBalances } from '@services/Store/BalanceService';
 import { bigify } from '@utils';
 
 interface EventHandlers {
   walletId: DPathFormat;
-  handleInit(session: Wallet): void;
+  handleInit(session: Wallet, asset: ExtendedAsset): void;
   handleInitRequest(): void;
   handleAccountsUpdate(accounts: DWAccountDisplay[]): void;
   handleEnqueueAccounts(accounts: DWAccountDisplay[]): void;
@@ -24,14 +24,16 @@ export const DeterministicWalletService = ({
   handleEnqueueAccounts
 }: // walletId
 EventHandlers): IDeterministicWalletService => {
-  const init = async () => {
+  const init = async (_: WalletId, asset: ExtendedAsset) => {
     const wallet = new LedgerUSB() as Wallet; // @todo - fix the walletId & type
     wallet
       .initialize()
       .then(() => {
-        handleInit(wallet);
+        console.debug('[init]: success', asset);
+        handleInit(wallet, asset);
       })
       .catch(() => {
+        console.debug('[init]: failed', asset);
         handleReject();
       });
     handleInitRequest();
@@ -63,12 +65,19 @@ EventHandlers): IDeterministicWalletService => {
       });
   };
 
-  const handleAccountsQueue = (accounts: DWAccountDisplay[], network: Network) => {
+  const handleAccountsQueue = (
+    accounts: DWAccountDisplay[],
+    network: Network,
+    asset: ExtendedAsset
+  ) => {
+    const addresses = accounts.map(({ address }) => address);
+    const balanceLookup =
+      asset.type === 'base'
+        ? () => getBaseAssetBalances(addresses, network)
+        : () => getTokenAssetBalances(addresses, network, asset);
+
     try {
-      getBaseAssetBalances(
-        accounts.map(({ address }) => address),
-        network
-      ).then((balanceMapData) => {
+      balanceLookup().then((balanceMapData: any) => {
         const walletsWithBalances: DWAccountDisplay[] = accounts.map((account) => {
           const balance = balanceMapData[account.address] || 0;
           return {

@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
+import BN from 'bn.js';
+import uniqBy from 'ramda/src/uniqBy';
+import prop from 'ramda/src/prop';
 
 import { translateRaw } from '@translations';
 import { EthAddress, FixedSizeCollapsibleTable, Spinner } from '@components';
 import { truncate } from '@utils';
 import { BREAK_POINTS, SPACING, breakpointToNumber } from '@theme';
-
 import { DWAccountDisplay } from '@services/WalletService/deterministic/types';
 import IconArrow from '@components/IconArrow';
-import { bigNumValueToViewableEther } from '@services/EthService/utils';
-import { BigNumber } from 'ethers/utils';
+import { fromTokenBase } from '@services/EthService/utils';
+import { ExtendedAsset } from '@types';
 
 const HeaderAlignment = styled.div`
   ${(props: { align?: string }) => css`
@@ -26,13 +28,16 @@ interface DeterministicAccountListProps {
   finishedAccounts: DWAccountDisplay[];
   queuedAccounts: DWAccountDisplay[];
   totalAccounts: number;
+  asset: ExtendedAsset;
   className?: string;
   currentsOnly?: boolean;
   dashboard?: boolean;
 }
 
 export default function DeterministicAccountList(props: DeterministicAccountListProps) {
-  const { finishedAccounts, queuedAccounts, totalAccounts } = props;
+  const { finishedAccounts, queuedAccounts, totalAccounts, asset } = props;
+  const accountsToUse = uniqBy(prop('address'), finishedAccounts);
+
   return (
     <>
       <>
@@ -52,7 +57,7 @@ export default function DeterministicAccountList(props: DeterministicAccountList
       <FixedSizeCollapsibleTable
         breakpoint={breakpointToNumber(BREAK_POINTS.SCREEN_XS)}
         maxHeight={'650px'}
-        {...buildDeterministicAccountTable(finishedAccounts)}
+        {...buildDeterministicAccountTable(accountsToUse, asset)}
       />
     </>
   );
@@ -118,7 +123,7 @@ const initialSortingState: ISortingState = {
 //   }
 // };
 
-const buildDeterministicAccountTable = (accounts: DWAccountDisplay[]) => {
+const buildDeterministicAccountTable = (accounts: DWAccountDisplay[], asset: ExtendedAsset) => {
   const [sortingState, setSortingState] = useState(initialSortingState);
   const nonZeroAccounts = accounts.filter(({ balance }) => balance && !balance.isZero());
   const updateSortingState = (id: IColumnValues) => {
@@ -183,10 +188,10 @@ const buildDeterministicAccountTable = (accounts: DWAccountDisplay[]) => {
         {`${
           balance
             ? parseFloat(
-                bigNumValueToViewableEther(new BigNumber(balance.toString())).toString()
+                fromTokenBase(new BN(balance.toString()), asset.decimal).toString()
               ).toFixed(4)
-            : '0.000'
-        } ETH`}
+            : '0.0000'
+        } ${asset.ticker}`}
       </div>,
       <div key={index}>{path}</div>
     ]),

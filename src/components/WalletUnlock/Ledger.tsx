@@ -5,12 +5,14 @@ import { FormData, WalletId, ExtendedAsset } from '@types';
 import { NetworkContext, getNetworkById, getAssetByUUID, AssetContext } from '@services/Store';
 import { useDeterministicWallet } from '@services/WalletService';
 import translate, { translateRaw, Trans } from '@translations';
-import { NewTabLink, Spinner, Button, DeterministicAccountList } from '@components';
+import { NewTabLink, Spinner, Button, DeterministicAccountList, AssetDropdown } from '@components';
 import { EXT_URLS, LEDGER_DERIVATION_PATHS } from '@config';
 
 import UnsupportedNetwork from './UnsupportedNetwork';
 import './LedgerNano.scss';
 import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
+import { MOONPAY_ASSET_UUIDS } from '@utils';
+
 interface OwnProps {
   formData: FormData;
   onUnlock(param: any): void;
@@ -26,17 +28,22 @@ const LedgerDecrypt = ({ formData /*onUnlock*/ }: OwnProps) => {
   const { assets } = useContext(AssetContext);
   const network = getNetworkById(formData.network, networks);
   const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
-  const [assetToUse] = useState(baseAsset);
-  const { state, requestConnection } = useDeterministicWallet(
-    network,
-    assetToUse,
+  const [assetToUse, setAssetToUse] = useState(baseAsset);
+  const { state, requestConnection, updateAsset } = useDeterministicWallet(
     dpaths,
     numOfAccountsToCheck,
     WalletId.LEDGER_NANO_S_NEW
   );
+  // @todo -> Figure out which assets to display in dropdown. Dropdown is heavy with 900+ assets in it. Loads slow af.
+  const filteredAssets = assets.filter(({ uuid }) => MOONPAY_ASSET_UUIDS.includes(uuid)); // @todo - fix this.
 
   const handleNullConnect = () => {
-    requestConnection();
+    requestConnection(network, assetToUse);
+  };
+
+  const handleAssetUpdate = (newAsset: ExtendedAsset) => {
+    setAssetToUse(newAsset);
+    updateAsset(newAsset);
   };
 
   if (!network) {
@@ -59,12 +66,20 @@ const LedgerDecrypt = ({ formData /*onUnlock*/ }: OwnProps) => {
     );
   }
 
-  if (state.isConnected && (state.queuedAccounts || state.finishedAccounts)) {
+  if (state.isConnected && state.asset && (state.queuedAccounts || state.finishedAccounts)) {
     return (
       <div className="Mnemonic-dpath">
+        <AssetDropdown
+          selectedAsset={assetToUse}
+          assets={filteredAssets}
+          onSelect={(option: ExtendedAsset) => {
+            handleAssetUpdate(option);
+          }}
+        />
         <DeterministicAccountList
-          finishedAccounts={[...new Set(state.finishedAccounts)]}
-          queuedAccounts={[...new Set(state.queuedAccounts)]}
+          asset={state.asset}
+          finishedAccounts={state.finishedAccounts}
+          queuedAccounts={state.queuedAccounts}
           totalAccounts={dpaths.length * numOfAccountsToCheck}
         />
       </div>

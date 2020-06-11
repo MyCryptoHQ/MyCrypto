@@ -11,7 +11,9 @@ export enum DWActionTypes {
   GET_ADDRESSES_SUCCESS = 'GET_ADDRESSES_SUCCESS',
   GET_ADDRESSES_FAILURE = 'GET_ADDRESSES_FAILURE',
   UPDATE_ACCOUNTS = 'UPDATE_ACCOUNTS',
-  ENQUEUE_ADDRESSES = 'ENQUEUE_ADDRESSES'
+  ENQUEUE_ADDRESSES = 'ENQUEUE_ADDRESSES',
+  UPDATE_ASSET = 'UPDATE_ASSET',
+  RELOAD_QUEUES = 'RELOAD_QUEUES'
 }
 
 // @todo convert to FSA compatible action type
@@ -21,6 +23,7 @@ type DWAction = Overwrite<
 >;
 
 export const initialState: DeterministicWalletState = {
+  asset: undefined,
   isInit: false,
   isConnected: false,
   session: undefined,
@@ -55,12 +58,13 @@ const DeterministicWalletReducer = (
       };
     }
     case DWActionTypes.CONNECTION_SUCCESS: {
-      const { session } = payload;
+      const { session, asset } = payload;
       return {
         ...state,
         isConnected: true,
         isConnecting: false,
         errors: initialState.errors,
+        asset,
         session
       };
     }
@@ -97,6 +101,20 @@ const DeterministicWalletReducer = (
       return {
         ...state,
         isGettingAccounts: false
+      };
+    }
+    case DWActionTypes.UPDATE_ASSET: {
+      const { asset } = payload;
+      console.debug('[UPDATE_ASSET]: ', state.queuedAccounts, state.finishedAccounts);
+      const newQueuedAccounts = [
+        ...state.queuedAccounts,
+        ...state.finishedAccounts.map((account) => ({ ...account, balance: undefined }))
+      ];
+      return {
+        ...state,
+        asset,
+        queuedAccounts: newQueuedAccounts,
+        finishedAccounts: []
       };
     }
     default: {
