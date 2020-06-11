@@ -229,7 +229,7 @@ export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtect
 
   return (
     <SProtectionThisTransaction>
-      <CloseIcon size="lg" onClick={onProtectMyTransactionCancelClick} />
+      <CloseIcon size="md" onClick={onProtectMyTransactionCancelClick} />
       {hasMissingInfoError && (
         <>
           <ProtectTxMissingInfo />
