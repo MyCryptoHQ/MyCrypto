@@ -88,7 +88,15 @@ const DeterministicWalletReducer = (
       };
     }
     case DWActionTypes.UPDATE_ACCOUNTS: {
-      const { accounts } = payload;
+      const { accounts, asset } = payload;
+      if (asset.uuid !== state.asset!.uuid) {
+        console.debug(
+          '[UPDATE_ACCOUNTS]: failed attempting to update balances of wrong asset.',
+          asset,
+          state.asset
+        );
+        return state; // handles asset updates gracefully
+      }
       return {
         ...state,
         queuedAccounts: [
@@ -106,14 +114,13 @@ const DeterministicWalletReducer = (
     case DWActionTypes.UPDATE_ASSET: {
       const { asset } = payload;
       console.debug('[UPDATE_ASSET]: ', state.queuedAccounts, state.finishedAccounts);
-      const newQueuedAccounts = [
-        ...state.queuedAccounts,
-        ...state.finishedAccounts.map((account) => ({ ...account, balance: undefined }))
-      ];
       return {
         ...state,
         asset,
-        queuedAccounts: newQueuedAccounts,
+        queuedAccounts: [
+          ...state.queuedAccounts,
+          ...state.finishedAccounts.map((account) => ({ ...account, balance: undefined }))
+        ],
         finishedAccounts: []
       };
     }

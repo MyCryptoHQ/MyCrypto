@@ -54,10 +54,10 @@ const useDeterministicWallet = (
           payload: { accounts }
         });
       },
-      handleAccountsUpdate: (accounts: DWAccountDisplay[]) => {
+      handleAccountsUpdate: (accounts: DWAccountDisplay[], asset: ExtendedAsset) => {
         return dispatch({
           type: DWActionTypes.UPDATE_ACCOUNTS,
-          payload: { accounts }
+          payload: { accounts, asset }
         });
       },
       handleAccountsError: () =>

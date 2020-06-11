@@ -12,6 +12,8 @@ import UnsupportedNetwork from './UnsupportedNetwork';
 import './LedgerNano.scss';
 import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
 import { MOONPAY_ASSET_UUIDS } from '@utils';
+import uniqBy from 'ramda/src/uniqBy';
+import prop from 'ramda/src/prop';
 
 interface OwnProps {
   formData: FormData;
@@ -21,7 +23,7 @@ interface OwnProps {
 // const WalletService = WalletFactory(WalletId.LEDGER_NANO_S);
 
 const LedgerDecrypt = ({ formData /*onUnlock*/ }: OwnProps) => {
-  const dpaths = LEDGER_DERIVATION_PATHS;
+  const dpaths = uniqBy(prop('value'), LEDGER_DERIVATION_PATHS);
   const numOfAccountsToCheck = 10;
 
   const { networks } = useContext(NetworkContext);

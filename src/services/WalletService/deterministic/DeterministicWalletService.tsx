@@ -8,7 +8,7 @@ interface EventHandlers {
   walletId: DPathFormat;
   handleInit(session: Wallet, asset: ExtendedAsset): void;
   handleInitRequest(): void;
-  handleAccountsUpdate(accounts: DWAccountDisplay[]): void;
+  handleAccountsUpdate(accounts: DWAccountDisplay[], asset: ExtendedAsset): void;
   handleEnqueueAccounts(accounts: DWAccountDisplay[]): void;
   handleAccountsError(error: string): void;
   handleAccountsSuccess(): void;
@@ -85,10 +85,10 @@ EventHandlers): IDeterministicWalletService => {
             balance: bigify(balance.toString())
           };
         });
-        handleAccountsUpdate(walletsWithBalances);
+        handleAccountsUpdate(walletsWithBalances, asset);
       });
     } catch {
-      handleAccountsUpdate(accounts);
+      handleAccountsUpdate(accounts, asset);
     }
   };
 
