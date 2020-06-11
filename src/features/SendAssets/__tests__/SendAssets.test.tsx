@@ -5,6 +5,7 @@ import { simpleRender } from 'test-utils';
 // New
 import SendAssets from '@features/SendAssets/SendAssets';
 import { StoreContext, AddressBookContext, SettingsContext } from '@services/Store';
+import { withProtectTxProvider } from '@utils';
 import { RatesContext } from '@services/RatesProvider';
 import { fSettings } from '@fixtures';
 
@@ -39,7 +40,7 @@ describe('SendAssetsFlow', () => {
             <AddressBookContext.Provider
               value={({ addressBook: [], getContactByAddress: jest.fn() } as unknown) as any}
             >
-              <SendAssets />
+              {withProtectTxProvider()(SendAssets)}
             </AddressBookContext.Provider>
           </RatesContext.Provider>
         </StoreContext.Provider>
