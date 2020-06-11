@@ -2,10 +2,8 @@ import React from 'react';
 import { MemoryRouter } from 'react-router';
 import { simpleRender } from 'test-utils';
 
-// New
 import SendAssets from '@features/SendAssets/SendAssets';
 import { StoreContext, AddressBookContext, SettingsContext } from '@services/Store';
-import { withProtectTxProvider } from '@utils';
 import { RatesContext } from '@services/RatesProvider';
 import { fSettings } from '@fixtures';
 
@@ -40,7 +38,7 @@ describe('SendAssetsFlow', () => {
             <AddressBookContext.Provider
               value={({ addressBook: [], getContactByAddress: jest.fn() } as unknown) as any}
             >
-              {withProtectTxProvider()(SendAssets)}
+              <SendAssets />
             </AddressBookContext.Provider>
           </RatesContext.Provider>
         </StoreContext.Provider>

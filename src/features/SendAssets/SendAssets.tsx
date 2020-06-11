@@ -131,9 +131,11 @@ function SendAssets() {
       defaultBackPath={ROUTE_PATHS.DASHBOARD.path}
       defaultBackPathLabel={translateRaw('DASHBOARD')}
       completeBtnText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
-      wrapperClassName={`send-assets-stepper ${protectTx.protectTxShow ? 'has-side-panel' : ''}`}
+      wrapperClassName={`send-assets-stepper ${
+        protectTx && protectTx.protectTxShow ? 'has-side-panel' : ''
+      }`}
     />
   );
 }
 
-export default IS_ACTIVE_FEATURE.PROTECT_TX ? withProtectTxProvider()(SendAssets) : SendAssets;
+export default IS_ACTIVE_FEATURE.PROTECT_TX ? withProtectTxProvider(SendAssets) : SendAssets;
