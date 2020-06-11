@@ -11,6 +11,7 @@ import {
   CustomNodeConfig,
   StaticNodeConfig
 } from '@types';
+import { INFURA_API_KEY } from '@config';
 
 // Network names accepted by ethers.EtherscanProvider
 type TValidEtherscanNetwork = 'homestead' | 'ropsten' | 'rinkeby' | 'kovan' | 'goerli';
@@ -22,21 +23,17 @@ const getProvider = (
   networkId: NetworkId,
   { type, url, auth }: CustomNodeConfig & StaticNodeConfig
 ) => {
+  const networkName = getValidEthscanNetworkId(networkId);
   switch (type) {
     case NodeType.ETHERSCAN: {
-      const networkName = getValidEthscanNetworkId(networkId);
       return new ethers.providers.EtherscanProvider(networkName);
     }
     case NodeType.WEB3: {
       const ethereumProvider = window.ethereum;
-      const networkName = getValidEthscanNetworkId(networkId);
       return new ethers.providers.Web3Provider(ethereumProvider, networkName);
     }
-
-    // Option to use the EthersJs InfuraProvider, but need figure out the apiAcessKey
-    // https://docs.ethers.io/ethers.js/html/api-providers.html#jsonrpcprovider-inherits-from-provider
-    // case NodeType.INFURA:
-    //   return new ethers.providers.InfuraProvider(name);
+    case NodeType.INFURA:
+      return new ethers.providers.InfuraProvider(networkName, INFURA_API_KEY);
 
     // default case covers the remaining NodeTypes.
     default: {
