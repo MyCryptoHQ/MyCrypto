@@ -1,7 +1,12 @@
+import BN from 'bignumber.js';
 import { IDeterministicWalletService, DWAccountDisplay } from './types';
 import { DPathFormat, Network, ExtendedAsset, WalletId } from '@types';
 import { LedgerUSB, Wallet } from '..';
-import { getBaseAssetBalances, getTokenAssetBalances } from '@services/Store/BalanceService';
+import {
+  getBaseAssetBalances,
+  getTokenAssetBalances,
+  BalanceMap
+} from '@services/Store/BalanceService';
 import { bigify } from '@utils';
 
 interface EventHandlers {
@@ -29,11 +34,9 @@ EventHandlers): IDeterministicWalletService => {
     wallet
       .initialize()
       .then(() => {
-        console.debug('[init]: success', asset);
         handleInit(wallet, asset);
       })
       .catch(() => {
-        console.debug('[init]: failed', asset);
         handleReject();
       });
     handleInitRequest();
@@ -77,9 +80,10 @@ EventHandlers): IDeterministicWalletService => {
         : () => getTokenAssetBalances(addresses, network, asset);
 
     try {
-      balanceLookup().then((balanceMapData: any) => {
+      balanceLookup().then((balanceMapData: BalanceMap<BN>) => {
+        console.debug('[balanceLookup]: results ', balanceMapData);
         const walletsWithBalances: DWAccountDisplay[] = accounts.map((account) => {
-          const balance = balanceMapData[account.address] || 0;
+          const balance = balanceMapData[account.address] || 0; // @todo - better error handling for failed lookups.
           return {
             ...account,
             balance: bigify(balance.toString())

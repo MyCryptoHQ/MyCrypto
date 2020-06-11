@@ -78,7 +78,6 @@ const useDeterministicWallet = (
   }, [state.isInit]);
 
   useEffect(() => {
-    const totalAccounts = dpaths.length * numOfAccountsToCheck;
     if (
       !service ||
       shouldInit ||
@@ -86,7 +85,7 @@ const useDeterministicWallet = (
       !state.session ||
       !assetToQuery ||
       !network ||
-      state.queuedAccounts.length !== totalAccounts
+      state.queuedAccounts.length === 0
     )
       return;
     service.handleAccountsQueue(state.queuedAccounts, network, assetToQuery);

@@ -113,7 +113,6 @@ const DeterministicWalletReducer = (
     }
     case DWActionTypes.UPDATE_ASSET: {
       const { asset } = payload;
-      console.debug('[UPDATE_ASSET]: ', state.queuedAccounts, state.finishedAccounts);
       return {
         ...state,
         asset,

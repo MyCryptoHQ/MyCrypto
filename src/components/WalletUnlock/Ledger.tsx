@@ -22,7 +22,7 @@ interface OwnProps {
 
 // const WalletService = WalletFactory(WalletId.LEDGER_NANO_S);
 
-const LedgerDecrypt = ({ formData /*onUnlock*/ }: OwnProps) => {
+const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const dpaths = uniqBy(prop('value'), LEDGER_DERIVATION_PATHS);
   const numOfAccountsToCheck = 10;
 
@@ -79,6 +79,7 @@ const LedgerDecrypt = ({ formData /*onUnlock*/ }: OwnProps) => {
           }}
         />
         <DeterministicAccountList
+          onUnlock={onUnlock}
           asset={state.asset}
           finishedAccounts={state.finishedAccounts}
           queuedAccounts={state.queuedAccounts}

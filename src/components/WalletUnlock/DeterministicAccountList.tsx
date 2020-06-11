@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import BN from 'bn.js';
 import uniqBy from 'ramda/src/uniqBy';
 import prop from 'ramda/src/prop';
 
 import { translateRaw } from '@translations';
-import { EthAddress, FixedSizeCollapsibleTable, Spinner } from '@components';
-import { truncate } from '@utils';
+import { EthAddress, FixedSizeCollapsibleTable, Spinner, Checkbox, Button } from '@components';
+import { truncate, isSameAddress } from '@utils';
 import { BREAK_POINTS, SPACING, breakpointToNumber } from '@theme';
 import { DWAccountDisplay } from '@services/WalletService/deterministic/types';
 import IconArrow from '@components/IconArrow';
 import { fromTokenBase } from '@services/EthService/utils';
-import { ExtendedAsset } from '@types';
+import { ExtendedAsset, TAddress } from '@types';
 
 const HeaderAlignment = styled.div`
   ${(props: { align?: string }) => css`
@@ -32,11 +32,51 @@ interface DeterministicAccountListProps {
   className?: string;
   currentsOnly?: boolean;
   dashboard?: boolean;
+  onUnlock(param: any): void;
+}
+
+interface ISelectedAccount {
+  address: TAddress;
+  derivationPath: string;
 }
 
 export default function DeterministicAccountList(props: DeterministicAccountListProps) {
-  const { finishedAccounts, queuedAccounts, totalAccounts, asset } = props;
-  const accountsToUse = uniqBy(prop('address'), finishedAccounts);
+  const { finishedAccounts, queuedAccounts, totalAccounts, asset, onUnlock } = props;
+  const [selectedAccounts, setSelectedAccounts] = useState([] as ISelectedAccount[]);
+  const accountsToUse = uniqBy(prop('address'), finishedAccounts).filter(
+    ({ balance }) => balance && !balance.isZero()
+  );
+  const handleSubmit = () => {
+    onUnlock(selectedAccounts);
+  };
+
+  useEffect(() => {
+    const selected = uniqBy(
+      prop('address'),
+      accountsToUse.map(({ address, path }) => ({
+        address,
+        derivationPath: path
+      })) as ISelectedAccount[]
+    );
+    setSelectedAccounts(selected);
+  }, [accountsToUse.length]);
+
+  const toggleAccountSelection = (accountAddress: TAddress, accountPath: string) => {
+    const newSelectedAccount: ISelectedAccount = {
+      address: accountAddress,
+      derivationPath: accountPath
+    };
+    const isPresent = selectedAccounts.find(({ address }) =>
+      isSameAddress(newSelectedAccount.address, address)
+    );
+    setSelectedAccounts(
+      isPresent
+        ? selectedAccounts.filter(({ address }) =>
+            isSameAddress(newSelectedAccount.address, address)
+          )
+        : [...selectedAccounts, newSelectedAccount]
+    );
+  };
 
   return (
     <>
@@ -56,9 +96,18 @@ export default function DeterministicAccountList(props: DeterministicAccountList
       <br />
       <FixedSizeCollapsibleTable
         breakpoint={breakpointToNumber(BREAK_POINTS.SCREEN_XS)}
-        maxHeight={'650px'}
-        {...buildDeterministicAccountTable(accountsToUse, asset)}
+        maxHeight={'750px'}
+        {...buildDeterministicAccountTable(
+          accountsToUse,
+          selectedAccounts,
+          asset,
+          toggleAccountSelection
+        )}
       />
+      <br />
+      <Button disabled={selectedAccounts.length === 0} onClick={handleSubmit}>
+        {`Add ${selectedAccounts.length} Accounts`}
+      </Button>
     </>
   );
 }
@@ -123,9 +172,21 @@ const initialSortingState: ISortingState = {
 //   }
 // };
 
-const buildDeterministicAccountTable = (accounts: DWAccountDisplay[], asset: ExtendedAsset) => {
+const buildDeterministicAccountTable = (
+  accounts: DWAccountDisplay[],
+  selectedAccounts: ISelectedAccount[],
+  asset: ExtendedAsset,
+  toggleAccountSelection: (address: string, path: string) => void
+) => {
   const [sortingState, setSortingState] = useState(initialSortingState);
-  const nonZeroAccounts = accounts.filter(({ balance }) => balance && !balance.isZero());
+
+  const accountsToUse = accounts.map((account) => {
+    return {
+      ...account,
+      isSelected: selectedAccounts.map(({ address }) => address).includes(account.address)
+    };
+  });
+
   const updateSortingState = (id: IColumnValues) => {
     // In case overlay active, disable changing sorting state
 
@@ -161,6 +222,7 @@ const buildDeterministicAccountTable = (accounts: DWAccountDisplay[], asset: Ext
   );
 
   const columns = [
+    '',
     convertColumnToClickable('DETERMINISTIC_ACCOUNT_LIST_ADDRESS'),
     <HeaderAlignment
       key={'DETERMINISTIC_ACCOUNT_LIST_VALUE'}
@@ -182,7 +244,13 @@ const buildDeterministicAccountTable = (accounts: DWAccountDisplay[], asset: Ext
 
   return {
     head: columns,
-    body: nonZeroAccounts.map(({ address, balance, path }, index) => [
+    body: accountsToUse.map(({ address, balance, path, isSelected }, index) => [
+      <Checkbox
+        key={index}
+        name={address}
+        checked={isSelected}
+        onChange={() => toggleAccountSelection(address, path)}
+      />,
       <EthAddress key={index} address={address} truncate={truncate} />,
       <div key={index}>
         {`${

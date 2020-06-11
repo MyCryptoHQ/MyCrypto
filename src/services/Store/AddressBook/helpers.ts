@@ -1,6 +1,6 @@
 import { IAccount, AddressBook, Network, WalletId, ExtendedAddressBook, TAddress } from '@types';
 import { isSameAddress } from '@utils';
-import { getWalletConfig } from '@config';
+import { getWalletConfig, DEFAULT_NETWORK } from '@config';
 
 export const getLabelByAccount = (
   account: IAccount,
@@ -49,6 +49,25 @@ const getUnusedLabel = (contacts: AddressBook[], generateLabel: (index: number) 
 
 export const findNextUnusedDefaultLabel = (wallet: WalletId) => (contacts: AddressBook[]): string =>
   getUnusedLabel(contacts, (index) => `${getWalletConfig(wallet).name} Account ${index}`);
+
+export const findMultipleNextUnusedDefaultLabels = (wallet: WalletId, numOfLabels: number) => (
+  contacts: AddressBook[]
+): string[] => {
+  let tempContacts = contacts;
+  const newLabels = [];
+  for (let z = 0; z < numOfLabels; z++) {
+    const newLabel = getUnusedLabel(
+      tempContacts,
+      (index) => `${getWalletConfig(wallet).name} Account ${index}`
+    );
+    newLabels.push(newLabel);
+    tempContacts = [
+      ...tempContacts,
+      { address: '', notes: '', network: DEFAULT_NETWORK, label: newLabel }
+    ];
+  }
+  return newLabels;
+};
 
 export const findNextRecipientLabel = (contacts: AddressBook[]) =>
   getUnusedLabel(contacts, (index) => `Recipient ${index}`);

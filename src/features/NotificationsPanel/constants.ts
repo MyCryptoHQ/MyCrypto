@@ -9,10 +9,12 @@ import { NotificationsConfigsProps } from './types';
 import {
   WalletCreatedNotification,
   WalletAddedNotification,
+  WalletsAddedNotification,
   SaveDashboardNotification,
   PrintPaperWalletNotification,
   GetHardwareWalletNotification,
   WalletNotAddedNotification,
+  WalletsNotAddedNotification,
   OnboardingPleaseUnderstandNotification,
   OnboardingResponsibleNotification
 } from './components';
@@ -20,7 +22,9 @@ import {
 export const NotificationTemplates = {
   walletCreated: 'wallet-created',
   walletAdded: 'wallet-added',
+  walletsAdded: 'wallets-added',
   walletNotAdded: 'wallet-not-added',
+  walletsNotAdded: 'wallets-not-added',
   saveSettings: 'save-settings',
   printPaperWallet: 'print-paper-wallet',
   getHardwareWallet: 'get-hardware-wallet',
@@ -41,9 +45,21 @@ export const notificationsConfigs: NotificationsConfigsProps = {
     showOneTime: true,
     dismissOnOverwrite: true
   },
+  [NotificationTemplates.walletsAdded]: {
+    analyticsEvent: 'New Accounts Added',
+    layout: WalletsAddedNotification,
+    showOneTime: true,
+    dismissOnOverwrite: true
+  },
   [NotificationTemplates.walletNotAdded]: {
     analyticsEvent: 'New Account (Wallet) Could Not Be Added',
     layout: WalletNotAddedNotification,
+    showOneTime: true,
+    dismissOnOverwrite: true
+  },
+  [NotificationTemplates.walletsNotAdded]: {
+    analyticsEvent: 'New Account (Wallet) Could Not Be Added',
+    layout: WalletsNotAddedNotification,
     showOneTime: true,
     dismissOnOverwrite: true
   },
