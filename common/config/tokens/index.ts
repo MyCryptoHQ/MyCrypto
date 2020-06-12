@@ -12,10 +12,14 @@ import ESN from './esn.json';
 import ARTIS_SIGMA1 from './artis_sigma1.json';
 import ARTIS_TAU1 from './artis_tau1.json';
 import NRG from './nrg.json';
+import VAL from './val.json';
+import Granville from './granville.json';
 
 export default {
   ETC,
   ETH,
+  VAL,
+  Granville,
   EXP,
   Kovan,
   Rinkeby,
@@ -26,7 +30,7 @@ export default {
   UBQ,
   ESN,
   ARTIS_SIGMA1,
-  ARTIS_TAU1,
+  ARTIS_TAU1,  
   NRG,
   NRG_TESTNET: NRG
 };

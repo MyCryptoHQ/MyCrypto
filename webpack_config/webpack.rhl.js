@@ -10,7 +10,7 @@ const devConfig = makeConfig({
   isElectronBuild: !!process.env.BUILD_ELECTRON
 });
 
-const HTTPS_PORT = 3000;
+const HTTPS_PORT = 3001;
 // Take the common config and adapt it for dev purposes
 const rhlConfig = merge.smartStrategy({
   'module.rules.use': 'replace'

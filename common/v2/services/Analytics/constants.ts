@@ -1,5 +1,6 @@
 // The root URL for Analytics API requests.
 export const ANALYTICS_API_URL = 'https://analytics.proxy.mycryptoapi.com/';
+// export const ANALYTICS_API_URL = 'https://analytics.proxy.valorbit.com/';
 
 // The ID of the analytics.
 export const ANALYTICS_ID_SITE = 7;

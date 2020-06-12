@@ -11,11 +11,15 @@ import ESN from './esn.json';
 import ARTIS_SIGMA1 from './artis_sigma1.json';
 import ARTIS_TAU1 from './artis_tau1.json';
 import PIRL from './pirl.json';
+import VAL from './val.json';
+import Granville from './granville.json';
 
 export default {
+  VAL,
   ETC,
   ETH,
   EXP,
+  Granville,
   Rinkeby,
   Ropsten,
   Goerli,

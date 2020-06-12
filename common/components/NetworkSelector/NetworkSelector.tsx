@@ -14,9 +14,8 @@ import {
 import NetworkOption from './NetworkOption';
 import './NetworkSelector.scss';
 
-// Energi re-branding
-//const CORE_NETWORKS = ['ETH', 'Ropsten', 'Kovan', 'Rinkeby', 'Goerli', 'ETC', 'RSK'];
-const CORE_NETWORKS = ['NRG', 'NRG_TESTNET'];
+// Valorbit re-branding
+const CORE_NETWORKS = ['VAL', 'ETH', 'ETC' , 'Granville', 'Goerli' , 'Ropsten', 'Rinkeby'];
 
 interface OwnProps {
   openCustomNodeModal(): void;

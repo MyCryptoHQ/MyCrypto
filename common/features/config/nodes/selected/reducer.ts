@@ -1,7 +1,7 @@
 import { makeAutoNodeName } from 'libs/nodes';
 import * as types from './types';
 
-const DEFAULT_NODE = window.location.hostname.match(/(localhost|test3)/) ? 'NRG_TESTNET' : 'NRG';
+const DEFAULT_NODE = window.location.hostname.match(/(localhost|dev|test)/) ? 'Granville' : 'VAL';
 
 export const SELECTED_NODE_INITIAL_STATE: types.ConfigNodesSelectedState = {
   nodeId: makeAutoNodeName(DEFAULT_NODE),

@@ -45,6 +45,7 @@ const HELP_MENU: MenuItemConstructorOptions = {
       label: 'Help / FAQ',
       click() {
         shell.openExternal(`${DOCUMENTATION}`);
+        // shell.openExternal('https://wallet.valorbit.com/');
       }
     },
     {

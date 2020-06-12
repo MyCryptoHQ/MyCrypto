@@ -32,6 +32,36 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     */
   ],
 
+  VAL: [
+    {
+      name: makeNodeName('VAL', 'valorbit'),
+      type: 'rpc',
+      service: 'Valorbit',
+      url: 'https://ledger.valorbit.com/api/eth_rpc'
+    }
+    // {
+    //   name: makeNodeName('VAL', 'valorproxy'),
+    //   type: 'rpc',
+    //   service: 'Valorbit Proxy',
+    //   url: 'https://ledger.valorbit.com/rpc'
+    // }
+  ],
+
+  Granville: [
+    {
+      name: makeNodeName('Granville', 'valorbit'),
+      type: 'rpc',
+      service: 'Valorbit',
+      url: 'https://granville.valorbit.com/api/eth_rpc'
+    }
+    // {
+    //   name: makeNodeName('Granville', 'valorkeep'),
+    //   type: 'rpc',
+    //   service: 'Valorbit Keep',
+    //   url: 'https://keep.valorbit.com/granville'
+    // }
+  ],
+
   Ropsten: [
     {
       name: makeNodeName('Ropsten', 'infura'),

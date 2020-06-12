@@ -25,11 +25,13 @@ export const ANNOUNCEMENT_MESSAGE = (
 const etherScan = 'https://etherscan.io';
 const blockChainInfo = 'https://blockchain.info';
 export const ethPlorer = 'https://ethplorer.io';
+export const vaoLedger = 'https://ledger.valorbit.com';
 
 export const ETHTxExplorer = (txHash: string): string => `${etherScan}/tx/${txHash}`;
 export const BTCTxExplorer = (txHash: string): string => `${blockChainInfo}/tx/${txHash}`;
 export const ETHAddressExplorer = (address: string): string => `${etherScan}/address/${address}`;
 export const ETHTokenExplorer = (address: string): string => `${ethPlorer}/address/${address}`;
+export const VAOTokenExplorer = (address: string): string => `${vaoLedger}/address/${address}`;
 
 export const etherChainExplorerInst = makeExplorer({
   name: 'Etherchain',

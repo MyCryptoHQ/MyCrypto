@@ -16,7 +16,8 @@ export default class RPCClient {
   public decorateRequest = (req: RPCRequest) => ({
     ...req,
     id: this.id(),
-    jsonrpc: '2.0'
+    jsonrpc: '2.0',
+    params: req.params || [] // default to empty array so BlockScout doesn't error
   });
 
   public call = (request: RPCRequest | any): Promise<JsonRpcResponse> => {

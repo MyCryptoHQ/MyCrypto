@@ -1,5 +1,5 @@
-export const APP_TITLE = 'MyEnergiWallet';
-export const REPOSITORY_OWNER = 'energicryptocurrency';
-export const REPOSITORY_NAME = 'energi3-mycrypto';
+export const APP_TITLE = 'Valorbit Wallet';
+export const REPOSITORY_OWNER = 'valorbit';
+export const REPOSITORY_NAME = 'valorbit-wallet';
 export const REPOSITORY = `https://github.com/${REPOSITORY_OWNER}/${REPOSITORY_NAME}`;
-export const DOCUMENTATION = `https://docs.energi.software`;
+export const DOCUMENTATION = `http://info.valorbit.com`;

@@ -207,6 +207,31 @@ export const NRG_TESTNET: DPath = {
   value: "m/44'/49797'/0'/0"
 };
 
+export const VAL_DEFAULT: DPath = {
+  label: 'Default (VAL)',
+  value: "m/44'/538'/0'/0"
+};
+
+export const VAL_GRANVILLE: DPath = {
+  label: 'Default (VAL)',
+  value: "m/44'/538'/0'/0"
+};
+
+// export const VAL_TREZOR: DPath = {
+//   label: 'TREZOR (VAL)',
+//   value: "m/44'/538'/0'/0"
+// };
+
+// export const VAL_SAFE_T: DPath = {
+//   label: 'Safe-T (VAL)',
+//   value: "m/44'/538'/0'/0"
+// };
+
+// export const VAL_LEDGER: DPath = {
+//   label: 'Ledger (VAL)',
+//   value: "m/44'/538'/0'"
+// };
+
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -248,7 +273,8 @@ export const DPaths: DPath[] = [
   ASK_TREZOR,
   AUX_DEFAULT,
   NRG_DEFAULT,
-  NRG_TESTNET
+  NRG_TESTNET,
+  VAL_DEFAULT
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT
