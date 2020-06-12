@@ -32,7 +32,10 @@ export const DeterministicWalletService = ({
 }: // walletId
 EventHandlers): IDeterministicWalletService => {
   const init = async (_: WalletId, asset: ExtendedAsset) => {
-    const isWebUSBSupported = await TransportWebUSB.isSupported().catch(() => false);
+    const isWebUSBSupported = !navigator.platform.includes('Win')
+      ? await TransportWebUSB.isSupported().catch(() => false)
+      : false;
+    console.debug('[isWebUSBSupported]: ', isWebUSBSupported);
     const wallet = isWebUSBSupported ? new LedgerUSB() : new LedgerU2F(); // @todo - fix the walletId & type
     wallet
       .initialize()
