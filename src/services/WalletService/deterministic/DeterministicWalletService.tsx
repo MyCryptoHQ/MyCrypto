@@ -8,6 +8,8 @@ import {
   BalanceMap
 } from '@services/Store/BalanceService';
 import { bigify } from '@utils';
+import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
+import { LedgerU2F } from '../wallets';
 
 interface EventHandlers {
   walletId: DPathFormat;
@@ -30,7 +32,8 @@ export const DeterministicWalletService = ({
 }: // walletId
 EventHandlers): IDeterministicWalletService => {
   const init = async (_: WalletId, asset: ExtendedAsset) => {
-    const wallet = new LedgerUSB() as Wallet; // @todo - fix the walletId & type
+    const isWebUSBSupported = await TransportWebUSB.isSupported().catch(() => false);
+    const wallet = isWebUSBSupported ? new LedgerUSB() : new LedgerU2F(); // @todo - fix the walletId & type
     wallet
       .initialize()
       .then(() => {
