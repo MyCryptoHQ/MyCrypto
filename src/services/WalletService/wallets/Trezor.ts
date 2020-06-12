@@ -1,8 +1,10 @@
-import HardwareWallet, { KeyInfo } from './HardwareWallet';
 import TrezorConnect from 'trezor-connect';
+
 import { DPathsList, TREZOR_DERIVATION_PATHS } from '@config/dpaths';
 import { WalletId } from '@types';
+
 import { getFullPath } from './helpers';
+import HardwareWallet, { KeyInfo } from './HardwareWallet';
 
 export default class Trezor extends HardwareWallet {
   private cache: { [key: string]: KeyInfo } = {};

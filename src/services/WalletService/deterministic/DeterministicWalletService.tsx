@@ -1,14 +1,16 @@
 import BN from 'bignumber.js';
-import { IDeterministicWalletService, DWAccountDisplay } from './types';
+import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
+
 import { DPathFormat, Network, ExtendedAsset, WalletId } from '@types';
-import { LedgerUSB, Wallet } from '..';
 import {
   getBaseAssetBalances,
   getTokenAssetBalances,
   BalanceMap
 } from '@services/Store/BalanceService';
 import { bigify } from '@utils';
-import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
+
+import { LedgerUSB, Wallet } from '..';
+import { IDeterministicWalletService, DWAccountDisplay } from './types';
 import { LedgerU2F } from '../wallets';
 
 interface EventHandlers {
@@ -35,7 +37,6 @@ EventHandlers): IDeterministicWalletService => {
     const isWebUSBSupported = !navigator.platform.includes('Win')
       ? await TransportWebUSB.isSupported().catch(() => false)
       : false;
-    console.debug('[isWebUSBSupported]: ', isWebUSBSupported);
     const wallet = isWebUSBSupported ? new LedgerUSB() : new LedgerU2F(); // @todo - fix the walletId & type
     wallet
       .initialize()
@@ -87,7 +88,6 @@ EventHandlers): IDeterministicWalletService => {
 
     try {
       balanceLookup().then((balanceMapData: BalanceMap<BN>) => {
-        console.debug('[balanceLookup]: results ', balanceMapData);
         const walletsWithBalances: DWAccountDisplay[] = accounts.map((account) => {
           const balance = balanceMapData[account.address] || 0; // @todo - better error handling for failed lookups.
           return {

@@ -1,19 +1,18 @@
 import React, { useContext, useState } from 'react';
-//import styled from 'styled-components';
+import uniqBy from 'ramda/src/uniqBy';
+import prop from 'ramda/src/prop';
 
+import { MOONPAY_ASSET_UUIDS } from '@utils';
 import { FormData, WalletId, ExtendedAsset } from '@types';
-import { NetworkContext, getNetworkById, getAssetByUUID, AssetContext } from '@services/Store';
-import { useDeterministicWallet } from '@services/WalletService';
 import translate, { translateRaw, Trans } from '@translations';
 import { NewTabLink, Spinner, Button, DeterministicAccountList, AssetDropdown } from '@components';
 import { EXT_URLS, LEDGER_DERIVATION_PATHS } from '@config';
+import { NetworkContext, getNetworkById, getAssetByUUID, AssetContext } from '@services/Store';
+import { useDeterministicWallet } from '@services/WalletService';
 
+import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import './LedgerNano.scss';
-import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
-import { MOONPAY_ASSET_UUIDS } from '@utils';
-import uniqBy from 'ramda/src/uniqBy';
-import prop from 'ramda/src/prop';
 
 interface OwnProps {
   formData: FormData;

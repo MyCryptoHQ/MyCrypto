@@ -1,15 +1,15 @@
 import { Transaction as EthTx, TxData } from 'ethereumjs-tx';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
+import { byContractAddress } from '@ledgerhq/hw-app-eth/erc20';
 import Transport from '@ledgerhq/hw-transport';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
 import LedgerEth from '@ledgerhq/hw-app-eth';
+import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 
 import { translateRaw } from '@translations';
 import { getTransactionFields } from '@services/EthService';
-import { HardwareWallet, ChainCodeResponse } from './hardware';
-import { byContractAddress } from '@ledgerhq/hw-app-eth/erc20';
 
-import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
+import { HardwareWallet, ChainCodeResponse } from './hardware';
 
 // Ledger throws a few types of errors
 interface U2FError {

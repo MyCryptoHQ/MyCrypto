@@ -1,9 +1,11 @@
 import Wallet from './Wallet';
 import HDKey from 'hdkey';
 import { computeAddress } from 'ethers/utils';
+
+import { WalletId } from '@types';
+
 import { getFullPath } from './helpers';
 import { WalletResult } from './types';
-import { WalletId } from '@types';
 
 export interface KeyInfo {
   publicKey: string;

@@ -2,16 +2,10 @@ import { useState, useReducer, useEffect } from 'react';
 
 import { Network, DPathFormat, ExtendedAsset } from '@types';
 
+import { Wallet } from '..';
 import { default as DeterministicWalletService } from './DeterministicWalletService';
 import DeterministicWalletReducer, { initialState, DWActionTypes } from './reducer';
 import { IUseDeterministicWallet, IDeterministicWalletService, DWAccountDisplay } from './types';
-import { Wallet } from '..';
-
-// interface IUseDeterministicWalletProps {
-// 	network: Network;
-// 	asset: ExtendedAsset;
-// 	walletId: WalletId
-// }
 
 const useDeterministicWallet = (
   dpaths: DPath[],
@@ -24,7 +18,7 @@ const useDeterministicWallet = (
   const [assetToQuery, setAssetToQuery] = useState(undefined as ExtendedAsset | undefined);
   const [network, setNetwork] = useState(undefined as Network | undefined);
 
-  // Iniitialise DeterministicWallet and get the uri.
+  // Initialize DeterministicWallet and get the uri.
   useEffect(() => {
     if (!shouldInit || !assetToQuery || !network) return;
     setShouldInit(false);

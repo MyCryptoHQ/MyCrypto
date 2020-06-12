@@ -1,7 +1,8 @@
-import Ledger from '../Ledger';
 import Transport from '@ledgerhq/hw-transport';
 import EthereumApp from '@ledgerhq/hw-app-eth';
 import { createTransportReplayer, RecordStore } from '@ledgerhq/hw-transport-mocker';
+
+import Ledger from '../Ledger';
 
 export default class LedgerUSB extends Ledger {
   protected transport: Transport<any> | null = null;

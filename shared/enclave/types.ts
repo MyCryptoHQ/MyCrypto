@@ -1,7 +1,4 @@
 // Enclave enums
-// Enclave enums
-// Enclave enums
-// Enclave enums
 export enum EnclaveMethods {
   GET_CHAIN_CODE = 'get-chain-code',
   SIGN_TRANSACTION = 'sign-transaction',

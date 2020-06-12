@@ -1,6 +1,8 @@
 import TrezorConnect from 'trezor-connect';
-import Trezor from './Trezor';
+
 import { DPathsList } from '@config/dpaths';
+
+import Trezor from './Trezor';
 
 jest.mock('trezor-connect');
 

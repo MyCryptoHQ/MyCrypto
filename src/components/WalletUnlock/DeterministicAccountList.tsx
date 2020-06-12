@@ -5,13 +5,13 @@ import uniqBy from 'ramda/src/uniqBy';
 import prop from 'ramda/src/prop';
 
 import { translateRaw } from '@translations';
+import { ExtendedAsset, TAddress } from '@types';
 import { EthAddress, FixedSizeCollapsibleTable, Spinner, Checkbox, Button } from '@components';
 import { truncate, isSameAddress } from '@utils';
 import { BREAK_POINTS, SPACING, breakpointToNumber } from '@theme';
 import { DWAccountDisplay } from '@services/WalletService/deterministic/types';
-import IconArrow from '@components/IconArrow';
 import { fromTokenBase } from '@services/EthService/utils';
-import { ExtendedAsset, TAddress } from '@types';
+import IconArrow from '@components/IconArrow';
 
 const HeaderAlignment = styled.div`
   ${(props: { align?: string }) => css`

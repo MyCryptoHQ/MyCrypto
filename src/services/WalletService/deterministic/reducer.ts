@@ -1,7 +1,8 @@
 import { ValuesType, Overwrite } from 'utility-types';
 
-import { DeterministicWalletState, TActionError } from './types';
 import { TAction } from '@types';
+
+import { DeterministicWalletState, TActionError } from './types';
 
 export enum DWActionTypes {
   CONNECTION_REQUEST = 'CONNECTION_REQUEST',
@@ -89,13 +90,9 @@ const DeterministicWalletReducer = (
     }
     case DWActionTypes.UPDATE_ACCOUNTS: {
       const { accounts, asset } = payload;
+      // handles asset updates more-gracefully
       if (asset.uuid !== state.asset!.uuid) {
-        console.debug(
-          '[UPDATE_ACCOUNTS]: failed attempting to update balances of wrong asset.',
-          asset,
-          state.asset
-        );
-        return state; // handles asset updates gracefully
+        return state;
       }
       return {
         ...state,

@@ -1,5 +1,6 @@
-import MnemonicPhrase from './MnemonicPhrase';
 import { DPathsList } from '@config/dpaths';
+
+import MnemonicPhrase from './MnemonicPhrase';
 
 const VALID_MNEMONIC = 'measure awake inject because stay profit soup dawn rare wave news cook';
 const INVALID_MNEMONIC = 'setup safe obscure bus poem very fatal sock color design bridge garden';
