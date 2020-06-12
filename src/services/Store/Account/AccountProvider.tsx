@@ -61,9 +61,12 @@ export const AccountProvider: React.FC = ({ children }) => {
       addAccountToFavorites(uuid);
       model.create({ ...item, uuid });
     },
-    createMultipleAccountsWithIDs: (items: IAccount[]) => {
-      addMultipleAccountsToFavorites(items.map(({ uuid }) => uuid));
-      model.updateAll(items);
+    createMultipleAccountsWithIDs: (newAccounts: IAccount[]) => {
+      const allAccounts = unionWith(eqBy(prop('uuid')), newAccounts, state.accounts).filter(
+        Boolean
+      );
+      addMultipleAccountsToFavorites(newAccounts.map(({ uuid }) => uuid));
+      model.updateAll(allAccounts);
     },
     deleteAccount: model.destroy,
     updateAccount: (uuid, a) => model.update(uuid, a),

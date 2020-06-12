@@ -11,7 +11,6 @@ import sadWalletIcon from '@assets/images/icn-sad-wallet.svg';
 import howBuyIcon from '@assets/images/icn-how-do-i-buy-crypto.svg';
 import dontLoseCryptoIcon from '@assets/images/icn-don-t-lose-crypto.svg';
 import questionsIcon from '@assets/images/icn-questions.svg';
-import { IAccount } from '@types';
 
 const { SCREEN_XS } = BREAK_POINTS;
 const { HOME, SECURING_YOUR_ETH, BUY_CRYPTO } = KB_HELP_ARTICLE;
@@ -75,11 +74,7 @@ const getResources = () => {
   );
 };
 
-interface NotificationProps {
-  accounts: IAccount[];
-}
-
-export default function WalletsNotAddedNotification({ accounts }: NotificationProps) {
+export default function WalletsNotAddedNotification() {
   return (
     <NotificationWrapper
       alignCenterOnSmallScreen={true}
@@ -91,9 +86,7 @@ export default function WalletsNotAddedNotification({ accounts }: NotificationPr
         hideOnMobile: true
       }}
       title={translate('NOTIFICATIONS_WALLET_NOT_ADDED_TITLE')}
-      description={translate('NOTIFICATIONS_WALLET_NOT_ADDED_DESCRIPTION', {
-        $address: accounts[0].address
-      })}
+      description={translate('NOTIFICATIONS_WALLET_NOT_ADDED_DESCRIPTION')}
       resources={getResources()}
     />
   );

@@ -63,9 +63,7 @@ const AddAccountFlow = withRouter(({ history, match }) => {
   useEffect(() => {
     const { network, accountData, accountType } = formData;
     if (addr && accountData && !addMultipleAccounts(network, accountType, accountData)) {
-      displayNotification(NotificationTemplates.walletsNotAdded, {
-        newAccountLength: accountData.length
-      });
+      displayNotification(NotificationTemplates.walletsNotAdded);
       history.push(ROUTE_PATHS.DASHBOARD.path);
     }
   }, [addr]);
@@ -107,9 +105,8 @@ const AddAccountFlow = withRouter(({ history, match }) => {
               scanForMemberships([...newAccounts]);
             };
       handleAddition();
+      history.push(ROUTE_PATHS.DASHBOARD.path);
     }
-
-    history.push(ROUTE_PATHS.DASHBOARD.path);
   }, [accounts]);
 
   // If there is a valid walletName parameter in the URL, update state and let router effect redirect to that wallet

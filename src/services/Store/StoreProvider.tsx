@@ -421,6 +421,7 @@ export const StoreProvider: React.FC = ({ children }) => {
         mtime: 0,
         uuid: generateAccountUUID(networkId, address)
       }));
+      if (newRawAccounts.length === 0) return;
       const newLabels = findMultipleNextUnusedDefaultLabels(
         newRawAccounts[0].wallet,
         newRawAccounts.length
