@@ -6,11 +6,11 @@ import { translateRaw } from '@translations';
 import infoSVG from 'assets/images/icn-info-blue.svg';
 
 const Wrapper = styled.div`
-  margin-top: ${SPACING.MD};
+  margin-top: ${SPACING.SM};
 `;
 
 const Content = styled.p`
-  margin-bottom: ${SPACING.MD};
+  margin-bottom: ${SPACING.SM};
 `;
 
 export const ProtectTxMissingInfo: FC = () => {

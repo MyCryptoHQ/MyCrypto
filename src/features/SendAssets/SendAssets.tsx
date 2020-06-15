@@ -16,7 +16,6 @@ import {
 } from './components';
 import SignTransaction from './components/SignTransaction';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
-import { ProtectTxUtils } from '@features/ProtectTransaction';
 
 function SendAssets() {
   const {
@@ -29,8 +28,7 @@ function SendAssets() {
     txFactoryState
   } = useStateReducer(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: undefined });
 
-  const protectTxContext = useContext(ProtectTxContext);
-  const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
+  const { state: protectTx, setProtectTxTimeoutFunction } = useContext(ProtectTxContext);
 
   // Due to MetaMask deprecating eth_sign method,
   // it has different step order, where sign and send are one panel
@@ -40,7 +38,7 @@ function SendAssets() {
       component: IS_ACTIVE_FEATURE.PROTECT_TX ? SendAssetsFormWithProtectTx : SendAssetsForm,
       props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
       actions: (payload: IFormikFields, cb: any) => {
-        if (getProTxValue(['state', 'protectTxEnabled'])) {
+        if (protectTx.protectTxEnabled) {
           payload.nonceField = (parseInt(payload.nonceField, 10) + 1).toString();
         }
         return handleFormSubmit(payload, cb);
@@ -73,7 +71,7 @@ function SendAssets() {
       component: IS_ACTIVE_FEATURE.PROTECT_TX ? SendAssetsFormWithProtectTx : SendAssetsForm,
       props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
       actions: (payload: IFormikFields, cb: any) => {
-        if (getProTxValue(['state', 'protectTxEnabled'])) {
+        if (protectTx.protectTxEnabled) {
           payload.nonceField = (parseInt(payload.nonceField, 10) + 1).toString();
         }
         return handleFormSubmit(payload, cb);
@@ -92,14 +90,13 @@ function SendAssets() {
         : ConfirmTransaction,
       props: (({ txConfig, signedTx }) => ({ txConfig, signedTx }))(txFactoryState),
       actions: (payload: ITxConfig | ISignedTx, cb: any) => {
-        if (getProTxValue(['setProtectTxTimeoutFunction'])) {
-          getProTxValue(['setProtectTxTimeoutFunction'])(
-            (txReceiptCb?: (txReciept: ITxReceipt) => void) =>
-              handleConfirmAndSend(payload, (txReceipt: ITxReceipt) => {
-                if (txReceiptCb) {
-                  txReceiptCb(txReceipt);
-                }
-              })
+        if (setProtectTxTimeoutFunction) {
+          setProtectTxTimeoutFunction((txReceiptCb?: (txReciept: ITxReceipt) => void) =>
+            handleConfirmAndSend(payload, (txReceipt: ITxReceipt) => {
+              if (txReceiptCb) {
+                txReceiptCb(txReceipt);
+              }
+            })
           );
         } else {
           handleConfirmAndSend(payload);
@@ -135,10 +132,10 @@ function SendAssets() {
       defaultBackPathLabel={translateRaw('DASHBOARD')}
       completeBtnText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
       wrapperClassName={`send-assets-stepper ${
-        getProTxValue(['state', 'protectTxShow']) ? 'has-side-panel' : ''
+        protectTx && protectTx.protectTxShow ? 'has-side-panel' : ''
       }`}
     />
   );
 }
 
-export default IS_ACTIVE_FEATURE.PROTECT_TX ? withProtectTxProvider()(SendAssets) : SendAssets;
+export default IS_ACTIVE_FEATURE.PROTECT_TX ? withProtectTxProvider(SendAssets) : SendAssets;

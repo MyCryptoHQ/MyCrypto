@@ -2,7 +2,6 @@ import React from 'react';
 import { MemoryRouter } from 'react-router';
 import { simpleRender } from 'test-utils';
 
-// New
 import SendAssets from '@features/SendAssets/SendAssets';
 import { StoreContext, AddressBookContext, SettingsContext } from '@services/Store';
 import { RatesContext } from '@services/RatesProvider';
