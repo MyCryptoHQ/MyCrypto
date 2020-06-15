@@ -7,7 +7,7 @@ import { DashboardPanel, AssetIcon, Currency } from '@components';
 import { getNetworkById, StoreContext, SettingsContext } from '@services/Store';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import { weiToFloat } from '@utils';
-import Icon from 'components/Icon';
+import Icon from '@components/Icon';
 import { getFiat } from '@config/fiats';
 
 const etherscanUrl = ' https://etherscan.io';

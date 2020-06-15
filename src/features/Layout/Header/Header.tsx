@@ -11,7 +11,7 @@ import { ANALYTICS_CATEGORIES, SettingsContext } from '@services';
 import { ROUTE_PATHS, LATEST_NEWS_URL, getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import translate, { languages } from '@translations';
 import { openLink, useAnalytics } from '@utils';
-import LocalIcon from 'components/Icon';
+import LocalIcon from '@components/Icon';
 
 import { ScreenLockContext } from '@features/ScreenLock/ScreenLockProvider';
 
