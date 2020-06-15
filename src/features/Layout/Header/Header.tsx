@@ -10,8 +10,8 @@ import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from '@theme';
 import { ANALYTICS_CATEGORIES, SettingsContext } from '@services';
 import { ROUTE_PATHS, LATEST_NEWS_URL, getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import translate, { languages } from '@translations';
-import LocalIcon from 'components/Icon';
 import { openLink, useAnalytics } from '@utils';
+import LocalIcon from '@components/Icon';
 
 // Legacy
 import { ScreenLockContext } from '@features/ScreenLock/ScreenLockProvider';

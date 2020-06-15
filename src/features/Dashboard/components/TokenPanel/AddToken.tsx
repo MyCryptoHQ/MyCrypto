@@ -9,7 +9,7 @@ import { AssetContext, NetworkContext } from '@services/Store';
 import { ExtendedAsset, NetworkId } from '@types';
 import { DEFAULT_NETWORK, DEFAULT_ASSET_DECIMAL } from '@config';
 import { isValidAddress } from '@services';
-import Icon from 'components/Icon';
+import Icon from '@components/Icon';
 
 const ActionsWrapper = styled.div`
   margin-top: 52px;

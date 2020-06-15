@@ -1,7 +1,7 @@
 import React from 'react';
 
 import translate from '@translations';
-import Icon from 'components/Icon';
+import Icon from '@components/Icon';
 import SocialsAndLegal from './SocialsAndLegal';
 import './LogoBox.scss';
 
