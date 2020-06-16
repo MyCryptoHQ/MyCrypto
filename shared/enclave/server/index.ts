@@ -13,8 +13,7 @@ export function registerServer(app: App) {
         standard: true,
         secure: true,
         supportFetchAPI: true,
-        corsEnabled: true,
-        bypassCSP: true
+        corsEnabled: true
       }
     }
   ]);
