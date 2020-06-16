@@ -1,7 +1,7 @@
 import React from 'react';
 
 import translate from '@translations';
-import Icon from '@components/Icon';
+import logo from '@assets/images/logo-mycrypto.svg';
 import SocialsAndLegal from './SocialsAndLegal';
 import './LogoBox.scss';
 
@@ -9,7 +9,7 @@ export default function LogoBox() {
   return (
     <section className="LogoBox">
       <section className="LogoBox-image">
-        <Icon type="logo-mycrypto-text" alt="Logo" />
+        <img src={logo} alt="Logo" />
       </section>
       <section className="LogoBox-text">
         <p>{translate('NEW_FOOTER_TEXT_13')}</p>

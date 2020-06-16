@@ -11,8 +11,8 @@ import { ANALYTICS_CATEGORIES, SettingsContext } from '@services';
 import { ROUTE_PATHS, LATEST_NEWS_URL, getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import translate, { languages } from '@translations';
 import { openLink, useAnalytics } from '@utils';
-import LocalIcon from '@components/Icon';
 
+import logo from '@assets/images/logo-mycrypto.svg';
 import { ScreenLockContext } from '@features/ScreenLock/ScreenLockProvider';
 
 const { BLUE_BRIGHT } = COLORS;
@@ -208,7 +208,7 @@ const MobileTopLeft = styled.div`
   }
 `;
 
-const CenterImg = styled(LocalIcon)`
+const CenterImg = styled.img`
   width: 160px;
   height: 39px;
 `;
@@ -425,7 +425,7 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
         </HeaderTopLeft>
         <div>
           <Link to={ROUTE_PATHS.ROOT.path}>
-            <CenterImg type="logo-mycrypto-text" alt="Our logo" />
+            <CenterImg src={logo} alt="Our logo" />
           </Link>
         </div>
         {/* Mobile Right */}
