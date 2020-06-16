@@ -7,19 +7,8 @@ import { DashboardPanel, AssetIcon, Currency } from '@components';
 import { getNetworkById, StoreContext, SettingsContext } from '@services/Store';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import { weiToFloat } from '@utils';
+import Icon from '@components/Icon';
 import { getFiat } from '@config/fiats';
-
-import socialTelegram from '@assets/images/social-icons/social-telegram.svg';
-import socialTwitter from '@assets/images/social-icons/social-twitter.svg';
-import socialReddit from '@assets/images/social-icons/social-reddit.svg';
-import socialGithub from '@assets/images/social-icons/social-github.svg';
-import socialFacebook from '@assets/images/social-icons/social-facebook.svg';
-import socialSlack from '@assets/images/social-icons/social-slack.svg';
-import socialCmc from '@assets/images/social-icons/social-cmc.svg';
-import websiteIcon from '@assets/images/icn-website.svg';
-import whitepaperIcon from '@assets/images/icn-whitepaper.svg';
-import backArrowIcon from '@assets/images/icn-back.svg';
-import expandIcon from '@assets/images/icn-expand.svg';
 
 const etherscanUrl = ' https://etherscan.io';
 
@@ -63,7 +52,7 @@ const DetailsHeadingWrapper = styled.div`
   line-height: 1.1;
 `;
 
-const Icon = styled.img`
+const StyledIcon = styled(Icon)`
   height: auto;
   cursor: pointer;
   transition: 100ms transform;
@@ -76,7 +65,7 @@ const Icon = styled.img`
   padding: ${SPACING.SM};
 `;
 
-const BackIcon = styled(Icon)`
+const BackIcon = styled(StyledIcon)`
   margin-left: -${SPACING.SM};
 `;
 
@@ -85,13 +74,13 @@ const TokenIcon = styled.div`
   display: flex;
 `;
 
-const ResourceIcon = styled(Icon)`
+const ResourceIcon = styled(StyledIcon)`
   width: 46px;
   margin-left: -${SPACING.SM};
   margin-right: ${SPACING.SM};
 `;
 
-const SocialIcon = styled(Icon)`
+const SocialIcon = styled(StyledIcon)`
   width: 46px;
   margin-left: -${SPACING.SM};
   margin-right: ${SPACING.BASE};
@@ -117,13 +106,13 @@ type ISocialNetwork = {
 };
 
 const supportedSocialNetworks: ISocialNetwork = {
-  [Social.TELEGRAM]: socialTelegram,
-  [Social.TWITTER]: socialTwitter,
-  [Social.REDDIT]: socialReddit,
-  [Social.GITHUB]: socialGithub,
-  [Social.FACEBOOK]: socialFacebook,
-  [Social.SLACK]: socialSlack,
-  [Social.CMC]: socialCmc
+  [Social.TELEGRAM]: 'telegram',
+  [Social.TWITTER]: 'twitter',
+  [Social.REDDIT]: 'reddit',
+  [Social.GITHUB]: 'github',
+  [Social.FACEBOOK]: 'facebook',
+  [Social.SLACK]: 'slack',
+  [Social.CMC]: 'coinmarketcap'
 };
 
 interface Props {
@@ -165,7 +154,7 @@ export function TokenDetails(props: Props) {
     <DashboardPanel
       heading={
         <DetailsHeadingWrapper>
-          <BackIcon src={backArrowIcon} onClick={() => setShowDetailsView(false)} />
+          <BackIcon type="back" onClick={() => setShowDetailsView(false)} />
           <TokenIcon>
             <AssetIcon uuid={currentToken.uuid} size={'30px'} />
           </TokenIcon>
@@ -174,7 +163,7 @@ export function TokenDetails(props: Props) {
       }
       headingRight={
         <a href={contractUrl} target="_blank" rel="noreferrer">
-          <Icon src={expandIcon} />
+          <Icon type="expand" />
         </a>
       }
       padChildren={true}
@@ -217,19 +206,19 @@ export function TokenDetails(props: Props) {
               <>
                 {website && (
                   <a href={website} target="_blank" rel="noreferrer">
-                    <ResourceIcon src={websiteIcon} />
+                    <ResourceIcon type="website" />
                   </a>
                 )}
                 {whitepaper && (
                   <a href={whitepaper} target="_blank" rel="noreferrer">
-                    <ResourceIcon src={whitepaperIcon} />
+                    <ResourceIcon type="whitepaper" />
                   </a>
                 )}
                 {social &&
                   filteredSocialArray.map((s: Social) => {
                     return (
                       <a key={s} href={social[s]} target="_blank" rel="noreferrer">
-                        <SocialIcon alt={s} src={supportedSocialNetworks[s]} />
+                        <SocialIcon alt={s} type={supportedSocialNetworks[s]} />
                       </a>
                     );
                   })}
