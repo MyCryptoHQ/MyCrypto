@@ -7,7 +7,7 @@ import SocialTelegramIcon from '../assets/images/social-icons/social-telegram-wh
 interface Link {
   link: string;
   text: string;
-  icon: null | string;
+  icon?: string;
 }
 
 interface IExtUrl {
@@ -63,35 +63,29 @@ export const socialMediaLinks: Link[] = [
 export const productLinks: Link[] = [
   {
     link: 'https://legacy.mycrypto.com/',
-    text: translateRaw('OLD_MYCRYPTO'),
-    icon: null
+    text: translateRaw('OLD_MYCRYPTO')
   },
   {
     link:
       'https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn',
-    text: translateRaw('ETHER_ADDRESS_LOOKUP'),
-    icon: null
+    text: translateRaw('ETHER_ADDRESS_LOOKUP')
   },
   {
     link:
       'https://chrome.google.com/webstore/detail/ethersecuritylookup/bhhfhgpgmifehjdghlbbijjaimhmcgnf',
-    text: translateRaw('ETHER_SECURITY_LOOKUP'),
-    icon: null
+    text: translateRaw('ETHER_SECURITY_LOOKUP')
   },
   {
     link: CRYPTOSCAMDB,
-    text: translateRaw('CRYPTOSCAMDB'),
-    icon: null
+    text: translateRaw('CRYPTOSCAMDB')
   },
   {
     link: 'https://legacy.mycrypto.com/helpers.html',
-    text: translateRaw('FOOTER_HELP_AND_DEBUGGING'),
-    icon: null
+    text: translateRaw('FOOTER_HELP_AND_DEBUGGING')
   },
   {
     link: 'https://hackerone.com/mycrypto',
-    text: translateRaw('FOOTER_HACKERONE'),
-    icon: null
+    text: translateRaw('FOOTER_HACKERONE')
   }
 ];
 
@@ -121,23 +115,19 @@ const affiliateLinks: IExtUrl[] = [
 export const partnerLinks: Link[] = [
   {
     link: 'https://metamask.io/',
-    text: 'MetaMask',
-    icon: null
+    text: 'MetaMask'
   },
   {
     link: 'https://infura.io/',
-    text: 'Infura',
-    icon: null
+    text: 'Infura'
   },
   {
     link: 'https://etherscan.io/',
-    text: 'Etherscan',
-    icon: null
+    text: 'Etherscan'
   },
   {
     link: 'https://etherchain.org/',
-    text: 'Etherchain',
-    icon: null
+    text: 'Etherchain'
   }
 ];
 
