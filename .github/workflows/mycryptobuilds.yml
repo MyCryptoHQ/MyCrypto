@@ -31,7 +31,7 @@ jobs:
 
       - run: node -v
       - name: Install Dependencies
-        run: yarn install
+        run: yarn install --production=false
 
       - name: yarn build:downloadable
         run: yarn build:downloadable
