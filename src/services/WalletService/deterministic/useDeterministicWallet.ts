@@ -7,6 +7,11 @@ import { default as DeterministicWalletService } from './DeterministicWalletServ
 import DeterministicWalletReducer, { initialState, DWActionTypes } from './reducer';
 import { IUseDeterministicWallet, IDeterministicWalletService, DWAccountDisplay } from './types';
 
+interface MnemonicPhraseInputs {
+  phrase: string;
+  pass: string;
+}
+
 const useDeterministicWallet = (
   dpaths: DPath[],
   numOfAccountsToCheck: number,
@@ -17,7 +22,7 @@ const useDeterministicWallet = (
   const [service, setService] = useState<IDeterministicWalletService | undefined>(); // Keep a reference to the session in order to send
   const [assetToQuery, setAssetToQuery] = useState(undefined as ExtendedAsset | undefined);
   const [network, setNetwork] = useState(undefined as Network | undefined);
-
+  const [mnemonicInputs, setMnemonicInputs] = useState({} as MnemonicPhraseInputs);
   // Initialize DeterministicWallet and get the uri.
   useEffect(() => {
     if (!shouldInit || !assetToQuery || !network) return;
@@ -61,7 +66,7 @@ const useDeterministicWallet = (
         })
     });
 
-    dwService.init(walletId, assetToQuery);
+    dwService.init(walletId, assetToQuery, mnemonicInputs.pass, mnemonicInputs.phrase);
     setService(dwService);
   }, [shouldInit]);
 
@@ -72,6 +77,7 @@ const useDeterministicWallet = (
   }, [state.isInit]);
 
   useEffect(() => {
+    console.debug('[queued]');
     if (
       !service ||
       shouldInit ||
@@ -82,15 +88,27 @@ const useDeterministicWallet = (
       state.queuedAccounts.length === 0
     )
       return;
+    console.debug('second queued');
     service.handleAccountsQueue(state.queuedAccounts, network, assetToQuery);
   }, [state.queuedAccounts]);
 
   useEffect(() => {
+    console.debug('[connected]');
     if (!service || shouldInit || !state.isConnected || !network || !state.session) return;
+    console.debug('[connected2]');
     service.getAccounts(state.session, dpaths, numOfAccountsToCheck, 0, network);
   }, [state.isConnected]);
 
-  const requestConnection = (networkToUse: Network, asset: ExtendedAsset) => {
+  const requestConnection = (
+    networkToUse: Network,
+    asset: ExtendedAsset,
+    mnemonicPhrase?: string,
+    pass?: string
+  ) => {
+    console.debug('[requestConnection]: ', mnemonicPhrase, ' pass: ', pass);
+    if (mnemonicPhrase) {
+      setMnemonicInputs({ phrase: mnemonicPhrase, pass: pass! });
+    }
     setNetwork(networkToUse);
     setAssetToQuery(asset);
     setShouldInit(true);

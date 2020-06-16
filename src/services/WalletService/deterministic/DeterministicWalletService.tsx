@@ -11,7 +11,7 @@ import { bigify } from '@utils';
 
 import { LedgerUSB, Wallet } from '..';
 import { IDeterministicWalletService, DWAccountDisplay } from './types';
-import { LedgerU2F } from '../wallets';
+import { LedgerU2F, Trezor, MnemonicPhrase } from '../wallets';
 
 interface EventHandlers {
   walletId: DPathFormat;
@@ -24,6 +24,21 @@ interface EventHandlers {
   handleReject(): void;
 }
 
+const selectWallet = async (walletId: WalletId, mnemonic?: string, pass?: string) => {
+  switch (walletId) {
+    default:
+    case WalletId.LEDGER_NANO_S_NEW:
+      const isWebUSBSupported = !navigator.platform.includes('Win')
+        ? await TransportWebUSB.isSupported().catch(() => false)
+        : false;
+      return isWebUSBSupported ? new LedgerUSB() : new LedgerU2F(); // @todo - fix the walletId & type
+    case WalletId.TREZOR_NEW:
+      return new Trezor();
+    case WalletId.MNEMONIC_PHRASE_NEW:
+      return new MnemonicPhrase(mnemonic!, pass! || '');
+  }
+};
+
 export const DeterministicWalletService = ({
   handleInitRequest,
   handleInit,
@@ -33,19 +48,25 @@ export const DeterministicWalletService = ({
   handleEnqueueAccounts
 }: // walletId
 EventHandlers): IDeterministicWalletService => {
-  const init = async (_: WalletId, asset: ExtendedAsset) => {
-    const isWebUSBSupported = !navigator.platform.includes('Win')
-      ? await TransportWebUSB.isSupported().catch(() => false)
-      : false;
-    const wallet = isWebUSBSupported ? new LedgerUSB() : new LedgerU2F(); // @todo - fix the walletId & type
+  const init = async (
+    walletId: WalletId,
+    asset: ExtendedAsset,
+    mnemonic?: string,
+    pass?: string
+  ) => {
+    console.debug('[here]: ', walletId, asset, mnemonic, pass);
+    const wallet = await selectWallet(walletId, mnemonic, pass);
     wallet
       .initialize()
       .then(() => {
+        console.debug('[handleInit]');
         handleInit(wallet, asset);
       })
-      .catch(() => {
+      .catch((e) => {
+        console.debug('[handleReject] ', e);
         handleReject();
       });
+    console.debug('[handleInitReq]');
     handleInitRequest();
   };
 
@@ -55,6 +76,7 @@ EventHandlers): IDeterministicWalletService => {
     numOfAddresses: number,
     offset: number
   ) => {
+    console.debug('[DeterministicWalletService]: getAccounts');
     const hardenedDPaths = dpaths.filter(({ isHardened }) => isHardened);
     const normalDPaths = dpaths.filter(({ isHardened }) => !isHardened);
 

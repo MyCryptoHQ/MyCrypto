@@ -30,12 +30,17 @@ export interface DeterministicWalletState {
 
 export interface IUseDeterministicWallet {
   state: DeterministicWalletState;
-  requestConnection(network: Network, asset: ExtendedAsset): void;
+  requestConnection(
+    network: Network,
+    asset: ExtendedAsset,
+    mnemonicPhrase?: string,
+    pass?: string
+  ): void;
   updateAsset(asset: ExtendedAsset): void;
 }
 
 export interface IDeterministicWalletService {
-  init(walletId: DPathFormat, asset: ExtendedAsset): void;
+  init(walletId: DPathFormat, asset: ExtendedAsset, phrase: string, pass: string): void;
   getAccounts(
     session: Wallet,
     dpath: DPath[],
