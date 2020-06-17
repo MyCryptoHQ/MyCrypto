@@ -257,7 +257,6 @@
     "node:scripts:tsc": "tsc --project tsconfig.scripts.json",
     "translations:extract": "npm run node:scripts:tsc && node node-scripts/translations/translations-extract.js",
     "validate": "npm-run-all --parallel lint:css lint:ts tscheck",
-    "demo": "echo $E2E_BASE_URL"
   },
   "lint-staged": {
     "!(node-scripts)/**/*.{ts,tsx}": [
