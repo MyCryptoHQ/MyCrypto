@@ -2,9 +2,12 @@ import { translateRaw } from '@translations';
 import { CRYPTOSCAMDB } from './data';
 import { TURL } from '@types';
 
+import SocialTelegramIcon from '../assets/images/social-icons/social-telegram-white.svg';
+
 interface Link {
   link: string;
   text: string;
+  icon?: string;
 }
 
 interface IExtUrl {
@@ -17,31 +20,43 @@ export const DOWNLOAD_MYCRYPTO_LINK = 'https://download.mycrypto.com';
 export const socialMediaLinks: Link[] = [
   {
     link: 'https://twitter.com/mycrypto',
-    text: 'twitter'
+    text: 'twitter',
+    icon: null
   },
   {
     link: 'https://www.facebook.com/mycryptoHQ/',
-    text: 'facebook'
+    text: 'facebook',
+    icon: null
   },
   {
     link: 'https://medium.com/@mycrypto',
-    text: 'medium'
+    text: 'medium',
+    icon: null
   },
   {
     link: 'https://www.linkedin.com/company/mycrypto',
-    text: 'linkedin'
+    text: 'linkedin',
+    icon: null
   },
   {
     link: 'https://github.com/MyCryptoHQ',
-    text: 'github'
+    text: 'github',
+    icon: null
   },
   {
     link: 'https://www.reddit.com/r/mycrypto/',
-    text: 'reddit'
+    text: 'reddit',
+    icon: null
   },
   {
     link: 'https://discord.gg/VSaTXEA',
-    text: 'discord'
+    text: 'discord',
+    icon: null
+  },
+  {
+    link: 'https://t.me/mycryptohq',
+    text: 'telegram',
+    icon: SocialTelegramIcon
   }
 ];
 
