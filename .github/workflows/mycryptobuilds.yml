@@ -5,7 +5,7 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_MYCRYPTOBUILDS }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_MYCRYPTOBUILDS }}
   AWS_REGION: 'us-east-2'
-  E2E_BASE_URL: 'https://mycryptobuilds.com/pr/${{GITHUB_REF}}/#/'
+  E2E_BASE_URL: 'https://mycryptobuilds.com/pr/${env.GITHUB_REF}}/#/'
 
 on:
   pull_request:
