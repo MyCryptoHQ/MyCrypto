@@ -5,9 +5,6 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_MYCRYPTOBUILDS }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_MYCRYPTOBUILDS }}
   AWS_REGION: 'us-east-2'
-  TEST: $(echo ${{ github.ref }} | awk 'BEGIN { FS = "/" } ; { print $3 }')
-  TEST_2: ${TEST}_HELLO
-  TEST_3: $(echo $TEST'WORLD')
 
 on:
   pull_request:
@@ -43,9 +40,6 @@ jobs:
           node-version: '${{ steps.nvm.outputs.NVMRC }}'
 
       - run: node -v
-
-      - name: E2E - run
-        run: yarn demo
 
       - name: Install Dependencies
         run: yarn install
@@ -92,33 +86,36 @@ jobs:
           DEST_DIR: ${{ github.head_ref }}
           SOURCE_DIR: 'dist/download'
       ###
-      - name: S3 Sync - Storybook SHA
-        uses: jakejarvis/s3-sync-action@v0.5.1
-        if: github.event_name == 'pull_request'
-        with:
-          args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
-        env:
-          DEST_DIR: 'storybook/${GITHUB_SHA}'
-          SOURCE_DIR: 'storybook-static'
+      # - name: S3 Sync - Storybook SHA
+      #   uses: jakejarvis/s3-sync-action@v0.5.1
+      #   if: github.event_name == 'pull_request'
+      #   with:
+      #     args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
+      #   env:
+      #     DEST_DIR: 'storybook/${GITHUB_SHA}'
+      #     SOURCE_DIR: 'storybook-static'
 
-      - name: S3 Sync - Storybook Branch - push
-        uses: jakejarvis/s3-sync-action@v0.5.1
-        if: github.ref == 'refs/heads/master'
-        with:
-          args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
-        env:
-          DEST_DIR: 'storybook/${GITHUB_REF##*/}'
-          SOURCE_DIR: 'storybook-static'
+      # - name: S3 Sync - Storybook Branch - push
+      #   uses: jakejarvis/s3-sync-action@v0.5.1
+      #   if: github.ref == 'refs/heads/master'
+      #   with:
+      #     args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+      #   env:
+      #     DEST_DIR: 'storybook/${GITHUB_REF##*/}'
+      #     SOURCE_DIR: 'storybook-static'
 
-      - name: S3 Sync - Storybook Branch - pull_request
-        uses: jakejarvis/s3-sync-action@v0.5.1
-        if: github.event_name == 'pull_request'
-        with:
-          args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
-        env:
-          DEST_DIR: 'storybook/${{ github.head_ref }}'
-          SOURCE_DIR: 'storybook-static'
+      # - name: S3 Sync - Storybook Branch - pull_request
+      #   uses: jakejarvis/s3-sync-action@v0.5.1
+      #   if: github.event_name == 'pull_request'
+      #   with:
+      #     args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+      #   env:
+      #     DEST_DIR: 'storybook/${{ github.head_ref }}'
+      #     SOURCE_DIR: 'storybook-static'
 
       - name: Mycrypto-bot trigger
         if: github.event_name == 'pull_request'
         run: aws sns publish --topic-arn ${{ secrets.SNS_TOPIC_MYCRYPTO_BOT }} --region us-east-2 --message $(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+
+      - name: E2E - run
+        run: yarn test:e2e
