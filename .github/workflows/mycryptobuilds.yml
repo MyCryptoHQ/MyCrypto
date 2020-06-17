@@ -26,7 +26,7 @@ jobs:
           echo ${GITHUB_REF##*/}
           echo ${{ github.ref }}
           echo ${{ github.base_ref }}
-        run: |
+      - run: |
           PR_NUMBER=$(echo ${{ github.ref }} | awk 'BEGIN { FS = "/" } ; { print $3 }')
           echo '::set-env name=PR_NUMBER::$PR_NUMBER'
           echo $PR_NUMBER
