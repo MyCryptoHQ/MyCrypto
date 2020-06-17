@@ -22,7 +22,7 @@ jobs:
       - name: Get PR_NUMBER
         id: get-pr-number
         run: |
-          PR_NUMBER=$(echo ${{ github.head_ref }} | awk 'BEGIN { FS = "/" } ; { print $3 }')
+          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
           echo '::set-env name=PR_NUMBER::$PR_NUMBER'
       - run: |
           echo "${{steps.get-pr-number.outputs.PR_NUMBER}}"
