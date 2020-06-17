@@ -16,7 +16,7 @@ test('Should redirect to no-accounts', async (t) => {
   await t.expect(title).ok();
 });
 
-test('Should add account', async () => {
-  await settingsPage.addAccount();
-  await settingsPage.waitForPage(PAGES.DASHBOARD);
-});
+// test('Should add account', async () => {
+//   await settingsPage.addAccount();
+//   await settingsPage.waitForPage(PAGES.DASHBOARD);
+// });

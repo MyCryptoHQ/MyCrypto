@@ -3,8 +3,6 @@ const ENV = {
   E2E_BASE_URL: process.env.E2E_BASE_URL || 'https://localhost:3000'
 };
 
-console.log('HELLO', ENV.E2E_BASE_URL);
-
 const ENV_KEYS = Object.keys(ENV);
 if (ENV_KEYS.some((k) => !ENV[k])) {
   const envKeysUnset = ENV_KEYS.filter((k) => !ENV[k]);
