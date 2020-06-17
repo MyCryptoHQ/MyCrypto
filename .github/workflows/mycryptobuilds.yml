@@ -26,7 +26,7 @@ jobs:
           echo '::set-env name=PR_NUMBER::$PR_NUMBER'
       - name: Get E2E_BASE_URL
         run: |
-          E2E_BASE_URL=$('https://mycryptobuilds.com/pr/${PR_NUMBER}/#/')
+          E2E_BASE_URL='https://mycryptobuilds.com/pr/${PR_NUMBER}/#/'
           echo '::set-env name=E2E_BASE_URL::$E2E_BASE_URL'
           echo $E2E_BASE_URL
 
