@@ -5,7 +5,7 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_MYCRYPTOBUILDS }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_MYCRYPTOBUILDS }}
   AWS_REGION: 'us-east-2'
-  E2E_BASE_URL: 'https://mycryptobuilds.com/pr/${GITHUB_REF}/#/'
+  E2E_BASE_URL: 'https://mycryptobuilds.com/pr/${{GITHUB_REF}}/#/'
 
 on:
   pull_request:
@@ -20,6 +20,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: E2E - Run
+        if: github.event_name == 'pull_request'
+        run: echo $E2E_BASE_URL
+
       - uses: actions/checkout@v2
       - name: Retrieve node version from .nvmrc
         run: echo "##[set-output name=NVMRC;]$(cat package.json | grep '\"node\":' | sed 's/^ *//;s/ *$//;s/\"node\":\ \"//;s/\",//')"
@@ -107,7 +111,3 @@ jobs:
       - name: Mycrypto-bot trigger
         if: github.event_name == 'pull_request'
         run: aws sns publish --topic-arn ${{ secrets.SNS_TOPIC_MYCRYPTO_BOT }} --region us-east-2 --message $(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
-
-      - name: E2E - Run
-        if: github.event_name == 'pull_request'
-        run: echo $E2E_BASE_URL
