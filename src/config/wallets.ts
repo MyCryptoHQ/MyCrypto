@@ -163,7 +163,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isSecure: true,
     isDesktopOnly: false,
     type: WalletType.HARDWARE,
-    lid: 'X_TREZOR',
+    lid: 'Trezor New',
     icon: TrezorSVG,
     description: 'ADD_HARDWAREDESC',
     helpLink: getKBHelpArticle(MIGRATE_TO_TREZOR)
@@ -199,7 +199,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isSecure: false,
     isDesktopOnly: true,
     type: WalletType.FILE,
-    lid: 'X_MNEMONIC',
+    lid: 'Mnemonic New',
     icon: mnemonicIcon,
     description: 'brain surround have swap horror cheese file distinct',
     helpLink: getKBHelpArticle(DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE)

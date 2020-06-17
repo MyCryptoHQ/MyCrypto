@@ -11,7 +11,9 @@ import {
   Web3ProviderInstall,
   ViewOnlyDecrypt,
   WalletConnectDecrypt,
-  LedgerDecrypt
+  LedgerDecrypt,
+  TrezorUnlock,
+  MnemonicUnlock
 } from '@components';
 import { withWalletConnect } from '@services/WalletService';
 
@@ -45,6 +47,11 @@ export const getStories = (): IStory[] => [
     steps: [NetworkSelectPanel, TrezorDecrypt]
   },
   {
+    name: WalletId.TREZOR_NEW,
+    steps: [NetworkSelectPanel, TrezorUnlock]
+    //hideFromWalletList: !IS_DEV
+  },
+  {
     name: WalletId.KEYSTORE_FILE,
     steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? KeystoreDecrypt : InsecureWalletWarning],
     isDisabled: IS_NOT_ELECTRON_AND_IS_NOT_DEV
@@ -58,6 +65,12 @@ export const getStories = (): IStory[] => [
     name: WalletId.MNEMONIC_PHRASE,
     steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? MnemonicDecrypt : InsecureWalletWarning],
     isDisabled: IS_NOT_ELECTRON_AND_IS_NOT_DEV
+  },
+  {
+    name: WalletId.MNEMONIC_PHRASE_NEW,
+    steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? MnemonicUnlock : InsecureWalletWarning],
+    isDisabled: IS_NOT_ELECTRON_AND_IS_NOT_DEV
+    //hideFromWalletList: !IS_DEV
   },
   {
     name: WalletId.VIEW_ONLY,

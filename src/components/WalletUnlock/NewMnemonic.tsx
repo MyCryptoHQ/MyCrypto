@@ -31,13 +31,13 @@ interface OwnProps {
 interface MnemonicLoginState {
   phrase: string;
   formattedPhrase: string;
-  pass: string;
+  pass?: string;
 }
 
 const initialMnemonicLoginState: MnemonicLoginState = {
   phrase: '',
   formattedPhrase: '',
-  pass: ''
+  pass: undefined
 };
 
 const MnemonicDecrypt = ({ formData, onUnlock }: OwnProps) => {
@@ -60,7 +60,6 @@ const MnemonicDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const isValidMnemonic = validateMnemonic(mnemonicLoginState.formattedPhrase || '');
 
   const handleNullConnect = () => {
-    console.debug('[here]? ', mnemonicLoginState);
     requestConnection(
       network,
       assetToUse,

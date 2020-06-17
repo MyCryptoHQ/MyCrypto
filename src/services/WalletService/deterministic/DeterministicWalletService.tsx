@@ -34,8 +34,9 @@ const selectWallet = async (walletId: WalletId, mnemonic?: string, pass?: string
       return isWebUSBSupported ? new LedgerUSB() : new LedgerU2F(); // @todo - fix the walletId & type
     case WalletId.TREZOR_NEW:
       return new Trezor();
-    case WalletId.MNEMONIC_PHRASE_NEW:
-      return new MnemonicPhrase(mnemonic!, pass! || '');
+    case WalletId.MNEMONIC_PHRASE_NEW: {
+      return new MnemonicPhrase(mnemonic!, pass || '');
+    }
   }
 };
 
@@ -54,19 +55,15 @@ EventHandlers): IDeterministicWalletService => {
     mnemonic?: string,
     pass?: string
   ) => {
-    console.debug('[here]: ', walletId, asset, mnemonic, pass);
     const wallet = await selectWallet(walletId, mnemonic, pass);
     wallet
       .initialize()
       .then(() => {
-        console.debug('[handleInit]');
         handleInit(wallet, asset);
       })
-      .catch((e) => {
-        console.debug('[handleReject] ', e);
+      .catch(() => {
         handleReject();
       });
-    console.debug('[handleInitReq]');
     handleInitRequest();
   };
 
@@ -76,10 +73,8 @@ EventHandlers): IDeterministicWalletService => {
     numOfAddresses: number,
     offset: number
   ) => {
-    console.debug('[DeterministicWalletService]: getAccounts');
     const hardenedDPaths = dpaths.filter(({ isHardened }) => isHardened);
     const normalDPaths = dpaths.filter(({ isHardened }) => !isHardened);
-
     await getNormalDPathAddresses(session, normalDPaths, numOfAddresses, offset)
       .then((accounts) => {
         handleEnqueueAccounts(accounts);
@@ -119,7 +114,7 @@ EventHandlers): IDeterministicWalletService => {
         });
         handleAccountsUpdate(walletsWithBalances, asset);
       });
-    } catch {
+    } catch (err) {
       handleAccountsUpdate(accounts, asset);
     }
   };

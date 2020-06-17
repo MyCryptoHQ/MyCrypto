@@ -11,5 +11,5 @@ export { default as InsecureWalletWarning } from './InsecureWalletWarning';
 export { default as WalletConnectDecrypt } from './WalletConnect';
 export { default as LedgerDecrypt } from './Ledger';
 export { default as DeterministicAccountList } from './DeterministicAccountList';
-export { default as TrezorDecrypt } from './NewTrezor';
-export { default as MnemonicDecrypt } from './NewMnemonic';
+export { default as TrezorUnlock } from './NewTrezor';
+export { default as MnemonicUnlock } from './NewMnemonic';

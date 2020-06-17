@@ -8,6 +8,7 @@ import { MnemonicPhraseResult } from './types';
 import { getFullPath } from './helpers';
 
 export default class MnemonicPhrase implements Wallet {
+  public hdNode: HDNode;
   private readonly mnemonicPhrase: string;
   private readonly password: string;
 
@@ -16,35 +17,36 @@ export default class MnemonicPhrase implements Wallet {
     this.password = password;
   }
 
-  public async getAddress(dPath: DPath, index: number): Promise<MnemonicPhraseResult[]> {
+  public async getAddress(dPath: DPath, index: number): Promise<MnemonicPhraseResult> {
     const hdNode = await this.getHDNode();
-    const results: MnemonicPhraseResult[] = [];
+    let results: MnemonicPhraseResult;
 
     const path = getFullPath(dPath, index);
 
-    results.push({
+    results = {
       type: WalletId.MNEMONIC_PHRASE_NEW,
       address: hdNode.derivePath(path).address,
       withPassword: !!this.password,
       path
-    });
+    };
 
     // Extra check without a password if a password was specified
     if (this.password) {
       const passwordlessHdNode = await this.getHDNode(false);
 
-      results.push({
+      results = {
         type: WalletId.MNEMONIC_PHRASE_NEW,
         address: passwordlessHdNode.derivePath(path).address,
         withPassword: false,
         path
-      });
+      };
     }
 
     return results;
   }
 
   public async initialize(): Promise<void> {
+    console.debug('initialize:', this.mnemonicPhrase);
     if (!isValidMnemonic(this.mnemonicPhrase)) {
       throw new Error('The mnemonic phrase you provided is invalid.');
     }
@@ -61,6 +63,14 @@ export default class MnemonicPhrase implements Wallet {
    * @return {Promise<HDNode>} A Promise with an instance of the HDKey class.
    */
   private async getHDNode(withPassword: boolean = true): Promise<HDNode> {
-    return fromMnemonic(this.mnemonicPhrase, undefined, withPassword ? this.password : undefined);
+    if (!this.hdNode) {
+      this.hdNode = await fromMnemonic(
+        this.mnemonicPhrase,
+        undefined,
+        withPassword ? this.password : undefined
+      );
+    }
+
+    return this.hdNode;
   }
 }

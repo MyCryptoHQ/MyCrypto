@@ -66,7 +66,7 @@ const useDeterministicWallet = (
         })
     });
 
-    dwService.init(walletId, assetToQuery, mnemonicInputs.pass, mnemonicInputs.phrase);
+    dwService.init(walletId, assetToQuery, mnemonicInputs.phrase, mnemonicInputs.pass);
     setService(dwService);
   }, [shouldInit]);
 
@@ -88,7 +88,7 @@ const useDeterministicWallet = (
       state.queuedAccounts.length === 0
     )
       return;
-    console.debug('second queued');
+    console.debug('second queued', state.queuedAccounts);
     service.handleAccountsQueue(state.queuedAccounts, network, assetToQuery);
   }, [state.queuedAccounts]);
 
