@@ -22,24 +22,20 @@ jobs:
       - name: Get PR_NUMBER
         id: get-pr-number
         run: |
-          echo $GITHUB_REF
-          echo ${GITHUB_REF##*/}
-          echo ${{ github.ref }}
-          echo ${{ github.base_ref }}
-      - run: |
           PR_NUMBER=$(echo ${{ github.ref }} | awk 'BEGIN { FS = "/" } ; { print $3 }')
           echo '::set-env name=PR_NUMBER::$PR_NUMBER'
-          echo $PR_NUMBER
-      # - run: |
-      #     echo "${{steps.get-pr-number.outputs.PR_NUMBER}}"
-      #     echo $PR_NUMBER
+      - name: Get E2E_BASE_URL
+        run: |
+          E2E_BASE_URL=$('https://mycryptobuilds.com/pr/${PR_NUMBER}/#/')
+          echo '::set-env name=E2E_BASE_URL::$E2E_BASE_URL'
+          echo $E2E_BASE_URL
 
-      - name: E2E - Run
-        if: github.event_name == 'pull_request'
-        run: echo $E2E_BASE_URL $E2E_BASE_URL_2
-        env:
-          E2E_BASE_URL: 'https://mycryptobuilds.com/pr/${GITHUB_REF##*/}/#/'
-          E2E_BASE_URL_2: 'https://mycryptobuilds.com/pr/${{ github.head_ref }}/#/'
+      # - name: E2E - Run
+      #   if: github.event_name == 'pull_request'
+      #   run: echo $E2E_BASE_URL $E2E_BASE_URL_2
+      #   env:
+      #     E2E_BASE_URL: 'https://mycryptobuilds.com/pr/${}/#/'
+      #     E2E_BASE_URL_2: 'https://mycryptobuilds.com/pr/${{ github.head_ref }}/#/'
 
       - uses: actions/checkout@v2
       - name: Retrieve node version from .nvmrc
