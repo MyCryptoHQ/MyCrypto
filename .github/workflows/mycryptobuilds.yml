@@ -24,6 +24,9 @@ jobs:
         run: |
           PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
           echo '::set-env name=PR_NUMBER::$PR_NUMBER'
+          echo $PR_NUMBER
+          echo '::set-env name=PR_NUMBER_1::$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')'
+          echo $PR_NUMBER_1
       - run: |
           echo "${{steps.get-pr-number.outputs.PR_NUMBER}}"
           echo $PR_NUMBER
