@@ -30,8 +30,9 @@ jobs:
           node-version: '${{ steps.nvm.outputs.NVMRC }}'
 
       - run: node -v
+
       - name: Install Dependencies
-        run: yarn install --production=false
+        run: yarn install
 
       - name: yarn build:downloadable
         run: yarn build:downloadable
@@ -108,4 +109,4 @@ jobs:
 
       - name: E2E - Run
         if: github.event_name == 'pull_request'
-        run: cross-env E2E_BASE_URL='https://mycryptobuilds.com/pr/${GITHUB_REF}/#/' yarn test:e2e $GITHUB_REF
+        run: echo $E2E_BASE_URL
