@@ -28,8 +28,6 @@ jobs:
           E2E_BASE_URL=$( echo https://mycryptobuilds.com/pr/${PR_NUMBER}/#/ )
           echo "::set-env name=E2E_BASE_URL::$E2E_BASE_URL"
           echo $E2E_BASE_URL
-      - name: E2E - run
-        run: yarn demo
 
       - uses: actions/checkout@v2
       - name: Retrieve node version from .nvmrc
@@ -42,6 +40,9 @@ jobs:
           node-version: '${{ steps.nvm.outputs.NVMRC }}'
 
       - run: node -v
+
+      - name: E2E - run
+        run: yarn demo
 
       - name: Install Dependencies
         run: yarn install
