@@ -19,11 +19,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set PR_NUMBER
-      - id: get-pr-number
+      - name: Get PR_NUMBER
+        id: get-pr-number
         run: |
           PR_NUMBER=$(echo ${{ github.head_ref }} | awk 'BEGIN { FS = "/" } ; { print $3 })
-          echo '::set-output name=PR_NUMBER::$PR_NUMBER'
+          echo '::set-env name=PR_NUMBER::$PR_NUMBER'
       - run: |
           echo "${{steps.get-pr-number.outputs.PR_NUMBER}}"
           echo $PR_NUMBER
