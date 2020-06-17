@@ -77,7 +77,6 @@ const useDeterministicWallet = (
   }, [state.isInit]);
 
   useEffect(() => {
-    console.debug('[queued]');
     if (
       !service ||
       shouldInit ||
@@ -88,14 +87,11 @@ const useDeterministicWallet = (
       state.queuedAccounts.length === 0
     )
       return;
-    console.debug('second queued', state.queuedAccounts);
     service.handleAccountsQueue(state.queuedAccounts, network, assetToQuery);
   }, [state.queuedAccounts]);
 
   useEffect(() => {
-    console.debug('[connected]');
     if (!service || shouldInit || !state.isConnected || !network || !state.session) return;
-    console.debug('[connected2]');
     service.getAccounts(state.session, dpaths, numOfAccountsToCheck, 0, network);
   }, [state.isConnected]);
 
@@ -105,7 +101,6 @@ const useDeterministicWallet = (
     mnemonicPhrase?: string,
     pass?: string
   ) => {
-    console.debug('[requestConnection]: ', mnemonicPhrase, ' pass: ', pass);
     if (mnemonicPhrase) {
       setMnemonicInputs({ phrase: mnemonicPhrase, pass: pass! });
     }

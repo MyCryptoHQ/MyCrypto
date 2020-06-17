@@ -46,7 +46,6 @@ export default class MnemonicPhrase implements Wallet {
   }
 
   public async initialize(): Promise<void> {
-    console.debug('initialize:', this.mnemonicPhrase);
     if (!isValidMnemonic(this.mnemonicPhrase)) {
       throw new Error('The mnemonic phrase you provided is invalid.');
     }

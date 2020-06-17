@@ -1,7 +1,8 @@
 import BN from 'bignumber.js';
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
+import flatten from 'ramda/src/flatten';
 
-import { DPathFormat, Network, ExtendedAsset, WalletId } from '@types';
+import { DPathFormat, Network, ExtendedAsset, WalletId, TAddress } from '@types';
 import {
   getBaseAssetBalances,
   getTokenAssetBalances,
@@ -9,9 +10,10 @@ import {
 } from '@services/Store/BalanceService';
 import { bigify } from '@utils';
 
-import { LedgerUSB, Wallet } from '..';
-import { IDeterministicWalletService, DWAccountDisplay } from './types';
 import { LedgerU2F, Trezor, MnemonicPhrase } from '../wallets';
+import { KeyInfo } from '../wallets/HardwareWallet';
+import { LedgerUSB, Wallet, getDeterministicWallets } from '..';
+import { IDeterministicWalletService, DWAccountDisplay } from './types';
 
 interface EventHandlers {
   walletId: DPathFormat;
@@ -67,29 +69,53 @@ EventHandlers): IDeterministicWalletService => {
     handleInitRequest();
   };
 
+  interface IPrefetchBundle {
+    [key: string]: KeyInfo;
+  }
+
   const getAccounts = async (
     session: Wallet,
     dpaths: DPath[],
     numOfAddresses: number,
     offset: number
   ) => {
-    const hardenedDPaths = dpaths.filter(({ isHardened }) => isHardened);
-    const normalDPaths = dpaths.filter(({ isHardened }) => !isHardened);
-    await getNormalDPathAddresses(session, normalDPaths, numOfAddresses, offset)
-      .then((accounts) => {
-        handleEnqueueAccounts(accounts);
-      })
-      .catch((err) => {
-        handleAccountsError(err);
-      });
+    if (session.prefetch) {
+      const prefetchedBundle: IPrefetchBundle = await session.prefetch(dpaths);
+      const returnedData = flatten(
+        Object.entries(prefetchedBundle).map(([key, value]) =>
+          getDeterministicWallets({
+            dPath: key,
+            chainCode: value.chainCode,
+            publicKey: value.publicKey,
+            limit: numOfAddresses,
+            offset
+          }).map((item) => ({
+            address: item.address as TAddress,
+            path: `${key}/${item.index}`,
+            balance: undefined
+          }))
+        )
+      );
+      handleEnqueueAccounts(returnedData);
+    } else {
+      const hardenedDPaths = dpaths.filter(({ isHardened }) => isHardened);
+      const normalDPaths = dpaths.filter(({ isHardened }) => !isHardened);
+      await getNormalDPathAddresses(session, normalDPaths, numOfAddresses, offset)
+        .then((accounts) => {
+          handleEnqueueAccounts(accounts);
+        })
+        .catch((err) => {
+          handleAccountsError(err);
+        });
 
-    await getHardenedDPathAddresses(session, hardenedDPaths, numOfAddresses, offset)
-      .then((accounts) => {
-        handleEnqueueAccounts(accounts);
-      })
-      .catch((err) => {
-        handleAccountsError(err);
-      });
+      await getHardenedDPathAddresses(session, hardenedDPaths, numOfAddresses, offset)
+        .then((accounts) => {
+          handleEnqueueAccounts(accounts);
+        })
+        .catch((err) => {
+          handleAccountsError(err);
+        });
+    }
   };
 
   const handleAccountsQueue = (
