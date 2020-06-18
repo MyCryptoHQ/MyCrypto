@@ -19,15 +19,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Fetch the PR number to use it with AWS
       - name: Set PR_NUMBER
         run: |
           PR_NUMBER=$(echo ${{ github.ref }} | awk 'BEGIN { FS = "/" } ; { print $3 }')
           echo "::set-env name=PR_NUMBER::$PR_NUMBER"
+
+      # Define url as env var to be used by TestCafe.
       - name: Set E2E_BASE_URL
         run: |
           E2E_BASE_URL=$( echo https://mycryptobuilds.com/pr/${PR_NUMBER}/# )
           echo "::set-env name=E2E_BASE_URL::$E2E_BASE_URL"
-          echo $E2E_BASE_URL
 
       - uses: actions/checkout@v2
       - name: Retrieve node version from .nvmrc
@@ -115,5 +117,6 @@ jobs:
         if: github.event_name == 'pull_request'
         run: aws sns publish --topic-arn ${{ secrets.SNS_TOPIC_MYCRYPTO_BOT }} --region us-east-2 --message $(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
 
+      # Launch E2E tests. When in pull request it runs against the PR's mycryptobuilds url.
       - name: E2E - run
         run: yarn test:e2e
