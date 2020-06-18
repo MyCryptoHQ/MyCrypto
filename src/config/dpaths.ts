@@ -172,6 +172,16 @@ const ERE_DEFAULT: DPath = {
   value: "m/44'/466'/0'/0"
 };
 
+const VOLTA_DEFAULT: DPath = {
+  label: 'Default (VOLTA)',
+  value: "m/44'/73799'/0'/0"
+};
+
+const EWC_DEFAULT: DPath = {
+  label: 'Default (EWC)',
+  value: "m/44'/246'/0'/0"
+};
+
 export const DPathsList = {
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -207,7 +217,9 @@ export const DPathsList = {
   ASK_TREZOR,
   AUX_DEFAULT,
   ETH_SINGULAR,
-  ERE_DEFAULT
+  ERE_DEFAULT,
+  VOLTA_DEFAULT,
+  EWC_DEFAULT
 };
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT
