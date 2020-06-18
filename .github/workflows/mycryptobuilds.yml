@@ -39,8 +39,6 @@ jobs:
         with:
           node-version: '${{ steps.nvm.outputs.NVMRC }}'
 
-      - run: node -v
-
       - name: Install Dependencies
         run: yarn install
 
@@ -86,32 +84,32 @@ jobs:
           DEST_DIR: ${{ github.head_ref }}
           SOURCE_DIR: 'dist/download'
       ###
-      # - name: S3 Sync - Storybook SHA
-      #   uses: jakejarvis/s3-sync-action@v0.5.1
-      #   if: github.event_name == 'pull_request'
-      #   with:
-      #     args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
-      #   env:
-      #     DEST_DIR: 'storybook/${GITHUB_SHA}'
-      #     SOURCE_DIR: 'storybook-static'
+      - name: S3 Sync - Storybook SHA
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'pull_request'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
+        env:
+          DEST_DIR: 'storybook/${GITHUB_SHA}'
+          SOURCE_DIR: 'storybook-static'
 
-      # - name: S3 Sync - Storybook Branch - push
-      #   uses: jakejarvis/s3-sync-action@v0.5.1
-      #   if: github.ref == 'refs/heads/master'
-      #   with:
-      #     args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
-      #   env:
-      #     DEST_DIR: 'storybook/${GITHUB_REF##*/}'
-      #     SOURCE_DIR: 'storybook-static'
+      - name: S3 Sync - Storybook Branch - push
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.ref == 'refs/heads/master'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+        env:
+          DEST_DIR: 'storybook/${GITHUB_REF##*/}'
+          SOURCE_DIR: 'storybook-static'
 
-      # - name: S3 Sync - Storybook Branch - pull_request
-      #   uses: jakejarvis/s3-sync-action@v0.5.1
-      #   if: github.event_name == 'pull_request'
-      #   with:
-      #     args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
-      #   env:
-      #     DEST_DIR: 'storybook/${{ github.head_ref }}'
-      #     SOURCE_DIR: 'storybook-static'
+      - name: S3 Sync - Storybook Branch - pull_request
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'pull_request'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+        env:
+          DEST_DIR: 'storybook/${{ github.head_ref }}'
+          SOURCE_DIR: 'storybook-static'
 
       - name: Mycrypto-bot trigger
         if: github.event_name == 'pull_request'
