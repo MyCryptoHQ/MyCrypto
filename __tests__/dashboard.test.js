@@ -16,6 +16,7 @@ test('Should redirect to no-accounts', async (t) => {
   await t.expect(title).ok();
 });
 
+// @todo Deactivated until we figure if we want to use e2e to test Mnemonic functionnality
 // test('Should add account', async () => {
 //   await settingsPage.addAccount();
 //   await settingsPage.waitForPage(PAGES.DASHBOARD);
