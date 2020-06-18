@@ -5,7 +5,7 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_MYCRYPTOBUILDS }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_MYCRYPTOBUILDS }}
   AWS_REGION: 'us-east-2'
-  
+
 on:
   pull_request:
     branches:
@@ -19,94 +19,104 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Retrieve node version from .nvmrc
-      run: echo "##[set-output name=NVMRC;]$(cat package.json | grep '\"node\":' | sed 's/^ *//;s/ *$//;s/\"node\":\ \"//;s/\",//')"
-      id: nvm
+      # Fetch the PR number to use it with AWS
+      - name: Set PR_NUMBER
+        run: |
+          PR_NUMBER=$(echo ${{ github.ref }} | awk 'BEGIN { FS = "/" } ; { print $3 }')
+          echo "::set-env name=PR_NUMBER::$PR_NUMBER"
 
-    - name: Setup node ${{ steps.nvm.outputs.NVMRC }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: "${{ steps.nvm.outputs.NVMRC }}"
+      # Define url as env var to be used by TestCafe.
+      - name: Set E2E_BASE_URL
+        run: |
+          E2E_BASE_URL=$( echo https://mycryptobuilds.com/pr/${PR_NUMBER}/# )
+          echo "::set-env name=E2E_BASE_URL::$E2E_BASE_URL"
 
-    - run: node -v
-    - name: Install Dependencies
-      run: yarn install
+      - uses: actions/checkout@v2
+      - name: Retrieve node version from .nvmrc
+        run: echo "##[set-output name=NVMRC;]$(cat package.json | grep '\"node\":' | sed 's/^ *//;s/ *$//;s/\"node\":\ \"//;s/\",//')"
+        id: nvm
 
-    - name: yarn build:downloadable
-      run: yarn build:downloadable
+      - name: Setup node ${{ steps.nvm.outputs.NVMRC }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: '${{ steps.nvm.outputs.NVMRC }}'
 
-    - name: Zip standalone build folder
-      run: zip -r dist/download/standalone_mycrypto.zip dist/download/
+      - name: Install Dependencies
+        run: yarn install
 
-    - name: 'Save standalone_mycrypto.zip to artifacts'
-      uses: actions/upload-artifact@v1
-      with:
-        name: 'standalone_mycrypto'
-        path: 'dist/download/standalone_mycrypto.zip'
-    
-    - name: yarn build:storybook
-      if: github.ref == 'refs/heads/master' || github.event_name == 'pull_request' 
-      run: yarn build:storybook
-  
-  
-    - name: S3 Sync - Downloadable SHA
-      uses: jakejarvis/s3-sync-action@v0.5.1
-      with:
-        args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
-      env:
-        DEST_DIR: ${GITHUB_SHA}
-        SOURCE_DIR: 'dist/download'
-        
-        
-    - name: S3 Sync - Downloadable Branch - push
-      uses: jakejarvis/s3-sync-action@v0.5.1
-      if: github.event_name == 'push'
-      with:
-        args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
-      env:
-        DEST_DIR: ${GITHUB_REF##*/}
-        SOURCE_DIR: 'dist/download'
+      - name: yarn build:downloadable
+        run: yarn build:downloadable
 
-    - name: S3 Sync - Downloadable Branch - pull_request
-      uses: jakejarvis/s3-sync-action@v0.5.1
-      if: github.event_name == 'pull_request'
-      with:
-        args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
-      env:
-        DEST_DIR: ${{ github.head_ref }}
-        SOURCE_DIR: 'dist/download'
-###
-    - name: S3 Sync - Storybook SHA
-      uses: jakejarvis/s3-sync-action@v0.5.1
-      if: github.event_name == 'pull_request' 
-      with:
-        args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
-      env:
-        DEST_DIR: 'storybook/${GITHUB_SHA}'
-        SOURCE_DIR: 'storybook-static'
+      - name: Zip standalone build folder
+        run: zip -r dist/download/standalone_mycrypto.zip dist/download/
 
-      
-    - name: S3 Sync - Storybook Branch - push
-      uses: jakejarvis/s3-sync-action@v0.5.1
-      if: github.ref == 'refs/heads/master' 
-      with:
-        args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
-      env:
-        DEST_DIR: 'storybook/${GITHUB_REF##*/}'
-        SOURCE_DIR: 'storybook-static'
+      - name: 'Save standalone_mycrypto.zip to artifacts'
+        uses: actions/upload-artifact@v1
+        with:
+          name: 'standalone_mycrypto'
+          path: 'dist/download/standalone_mycrypto.zip'
 
+      - name: yarn build:storybook
+        if: github.ref == 'refs/heads/master' || github.event_name == 'pull_request'
+        run: yarn build:storybook
 
-    - name: S3 Sync - Storybook Branch - pull_request
-      uses: jakejarvis/s3-sync-action@v0.5.1
-      if: github.event_name == 'pull_request' 
-      with:
-        args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
-      env:
-        DEST_DIR: 'storybook/${{ github.head_ref }}'
-        SOURCE_DIR: 'storybook-static'
-        
-        
-    - name: Mycrypto-bot trigger
-      if: github.event_name == 'pull_request'
-      run: aws sns publish --topic-arn ${{ secrets.SNS_TOPIC_MYCRYPTO_BOT }} --region us-east-2 --message $(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+      - name: S3 Sync - Downloadable SHA
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
+        env:
+          DEST_DIR: ${GITHUB_SHA}
+          SOURCE_DIR: 'dist/download'
+
+      - name: S3 Sync - Downloadable Branch - push
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'push'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+        env:
+          DEST_DIR: ${GITHUB_REF##*/}
+          SOURCE_DIR: 'dist/download'
+
+      - name: S3 Sync - Downloadable Branch - pull_request
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'pull_request'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+        env:
+          DEST_DIR: ${{ github.head_ref }}
+          SOURCE_DIR: 'dist/download'
+      ###
+      - name: S3 Sync - Storybook SHA
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'pull_request'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
+        env:
+          DEST_DIR: 'storybook/${GITHUB_SHA}'
+          SOURCE_DIR: 'storybook-static'
+
+      - name: S3 Sync - Storybook Branch - push
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.ref == 'refs/heads/master'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+        env:
+          DEST_DIR: 'storybook/${GITHUB_REF##*/}'
+          SOURCE_DIR: 'storybook-static'
+
+      - name: S3 Sync - Storybook Branch - pull_request
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'pull_request'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+        env:
+          DEST_DIR: 'storybook/${{ github.head_ref }}'
+          SOURCE_DIR: 'storybook-static'
+
+      - name: Mycrypto-bot trigger
+        if: github.event_name == 'pull_request'
+        run: aws sns publish --topic-arn ${{ secrets.SNS_TOPIC_MYCRYPTO_BOT }} --region us-east-2 --message $(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+
+      # Launch E2E tests. When in pull request it runs against the PR's mycryptobuilds url.
+      - name: E2E - run
+        run: yarn test:e2e
