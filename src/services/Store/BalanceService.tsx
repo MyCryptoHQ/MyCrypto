@@ -9,13 +9,11 @@ import { default as BN } from 'bignumber.js';
 import { bigNumberify } from 'ethers/utils';
 import { BigNumber as EthScanBN } from '@ethersproject/bignumber';
 
-import { ETHSCAN_NETWORKS } from '@config';
+import { ETHSCAN_NETWORKS, ETH_SCAN_BATCH_SIZE } from '@config';
 import { TAddress, StoreAccount, StoreAsset, Asset, Network, TBN } from '@types';
 import { ProviderHandler } from '@services/EthService';
 
 export type BalanceMap<T = BN> = EthScanBalanceMap<T>;
-
-const ETH_SCAN_BATCH_SIZE = 300;
 
 const getAssetAddresses = (assets: Asset[] = []): (string | undefined)[] => {
   return assets.map((a) => a.contractAddress).filter((a) => a);
