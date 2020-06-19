@@ -113,6 +113,11 @@ const useDeterministicWallet = (
     setShouldInit(true);
   };
 
+  const addDPaths = (paths: ExtendedDPath[]) => {
+    if (!service || shouldInit || !state.isConnected || !network || !state.session) return;
+    service.getAccounts(state.session, paths);
+  };
+
   const updateAsset = (asset: ExtendedAsset) => {
     if (!service) return;
     setAssetToQuery(asset);
@@ -125,7 +130,8 @@ const useDeterministicWallet = (
   return {
     state,
     requestConnection,
-    updateAsset
+    updateAsset,
+    addDPaths
   };
 };
 

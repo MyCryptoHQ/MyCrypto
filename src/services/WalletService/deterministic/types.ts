@@ -42,6 +42,7 @@ export interface IUseDeterministicWallet {
     pass?: string
   ): void;
   updateAsset(asset: ExtendedAsset): void;
+  addDPaths(dpaths: ExtendedDPath[]): void;
 }
 
 export interface IDeterministicWalletService {

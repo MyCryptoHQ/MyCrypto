@@ -77,12 +77,12 @@ EventHandlers): IDeterministicWalletService => {
     if (session.prefetch) {
       const prefetchedBundle: IPrefetchBundle = await session.prefetch(dpaths);
       const returnedData = flatten(
-        Object.entries(prefetchedBundle).map(([key, keyValue]) => {
-          const dpath = dpaths.find(({ value }) => value === key) as ExtendedDPath;
+        Object.entries(prefetchedBundle).map(([key, value]) => {
+          const dpath = dpaths.find((x) => x.value === key) as ExtendedDPath;
           return getDeterministicWallets({
-            dPath: dpath.value,
-            chainCode: keyValue.chainCode,
-            publicKey: keyValue.publicKey,
+            dPath: key,
+            chainCode: value.chainCode,
+            publicKey: value.publicKey,
             limit: dpath.numOfAddresses,
             offset: dpath.offset
           }).map((item) => ({
