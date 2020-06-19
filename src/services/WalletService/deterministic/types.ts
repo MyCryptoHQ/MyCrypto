@@ -14,6 +14,11 @@ export interface DWAccountDisplay {
   balance: BigNumber | undefined;
 }
 
+export interface ExtendedDPath extends DPath {
+  offset: number;
+  numOfAddresses: number;
+}
+
 export interface DeterministicWalletState {
   isInit: boolean;
   isConnected: boolean;
@@ -41,12 +46,6 @@ export interface IUseDeterministicWallet {
 
 export interface IDeterministicWalletService {
   init(walletId: DPathFormat, asset: ExtendedAsset, phrase: string, pass: string): void;
-  getAccounts(
-    session: Wallet,
-    dpath: DPath[],
-    numOfAddresses: number,
-    offset: number,
-    network: Network
-  ): void;
+  getAccounts(session: Wallet, dpath: ExtendedDPath[]): void;
   handleAccountsQueue(accounts: DWAccountDisplay[], network: Network, asset: ExtendedAsset): void;
 }

@@ -1,4 +1,5 @@
 import { WalletResult } from './types';
+import { ExtendedDPath } from '../deterministic/types';
 
 export default interface Wallet {
   /**
@@ -12,7 +13,7 @@ export default interface Wallet {
    * @param {DPath[]} paths The derivation paths to prefetch.
    * @return {Promise<any>} Can return the pre-fetched info for unit tests.
    */
-  prefetch?(paths: DPath[]): Promise<any>;
+  prefetch?(paths: ExtendedDPath[]): Promise<any>;
 
   /**
    * Get an address or multiple addresses for a derivation path at a specific index.

@@ -43,15 +43,18 @@ const initialMnemonicLoginState: MnemonicLoginState = {
 const MnemonicDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const dpaths = uniqBy(prop('value'), Object.values(DPathsList));
   const numOfAccountsToCheck = 10;
-
+  const extendedDPaths = dpaths.map((dpath) => ({
+    ...dpath,
+    offset: 0,
+    numOfAddresses: numOfAccountsToCheck
+  }));
   const { networks } = useContext(NetworkContext);
   const { assets } = useContext(AssetContext);
   const network = getNetworkById(formData.network, networks);
   const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
   const [assetToUse, setAssetToUse] = useState(baseAsset);
   const { state, requestConnection, updateAsset } = useDeterministicWallet(
-    dpaths,
-    numOfAccountsToCheck,
+    extendedDPaths,
     WalletId.MNEMONIC_PHRASE_NEW
   );
   // @todo -> Figure out which assets to display in dropdown. Dropdown is heavy with 900+ assets in it. Loads slow af.

@@ -1,7 +1,7 @@
 import {
-  getTokenBalances as getTokenBalancesFromEthScan,
   getEtherBalances,
   getTokensBalance,
+  getTokenBalances as getTokenBalancesFromEthScan,
   BalanceMap as EthScanBalanceMap,
   ProviderLike
 } from '@mycrypto/eth-scan';

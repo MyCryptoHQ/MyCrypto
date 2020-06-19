@@ -23,15 +23,18 @@ interface OwnProps {
 const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const dpaths = uniqBy(prop('value'), TREZOR_DERIVATION_PATHS);
   const numOfAccountsToCheck = 10;
-
+  const extendedDPaths = dpaths.map((dpath) => ({
+    ...dpath,
+    offset: 0,
+    numOfAddresses: numOfAccountsToCheck
+  }));
   const { networks } = useContext(NetworkContext);
   const { assets } = useContext(AssetContext);
   const network = getNetworkById(formData.network, networks);
   const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
   const [assetToUse, setAssetToUse] = useState(baseAsset);
   const { state, requestConnection, updateAsset } = useDeterministicWallet(
-    dpaths,
-    numOfAccountsToCheck,
+    extendedDPaths,
     WalletId.TREZOR_NEW
   );
   // @todo -> Figure out which assets to display in dropdown. Dropdown is heavy with 900+ assets in it. Loads slow af.

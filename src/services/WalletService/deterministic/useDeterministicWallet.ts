@@ -5,7 +5,12 @@ import { Network, DPathFormat, ExtendedAsset } from '@types';
 import { Wallet } from '..';
 import { default as DeterministicWalletService } from './DeterministicWalletService';
 import DeterministicWalletReducer, { initialState, DWActionTypes } from './reducer';
-import { IUseDeterministicWallet, IDeterministicWalletService, DWAccountDisplay } from './types';
+import {
+  IUseDeterministicWallet,
+  IDeterministicWalletService,
+  DWAccountDisplay,
+  ExtendedDPath
+} from './types';
 
 interface MnemonicPhraseInputs {
   phrase: string;
@@ -13,8 +18,7 @@ interface MnemonicPhraseInputs {
 }
 
 const useDeterministicWallet = (
-  dpaths: DPath[],
-  numOfAccountsToCheck: number,
+  dpaths: ExtendedDPath[],
   walletId: DPathFormat
 ): IUseDeterministicWallet => {
   const [state, dispatch] = useReducer(DeterministicWalletReducer, initialState);
@@ -92,7 +96,7 @@ const useDeterministicWallet = (
 
   useEffect(() => {
     if (!service || shouldInit || !state.isConnected || !network || !state.session) return;
-    service.getAccounts(state.session, dpaths, numOfAccountsToCheck, 0, network);
+    service.getAccounts(state.session, dpaths);
   }, [state.isConnected]);
 
   const requestConnection = (
