@@ -1,9 +1,8 @@
 import {
   getEtherBalances,
   getTokensBalance,
-  getTokenBalances as getTokenBalancesFromEthScan,
-  getTokensBalances,
-  BalanceMap as EthScanBalanceMap
+  BalanceMap as EthScanBalanceMap,
+  ProviderLike
 } from '@mycrypto/eth-scan';
 import partition from 'lodash/partition';
 import { default as BN } from 'bignumber.js';
@@ -15,6 +14,8 @@ import { TAddress, StoreAccount, StoreAsset, Asset, Network, TBN } from '@types'
 import { ProviderHandler } from '@services/EthService';
 
 export type BalanceMap<T = BN> = EthScanBalanceMap<T>;
+
+const ETH_SCAN_BATCH_SIZE = 300;
 
 const getAssetAddresses = (assets: Asset[] = []): (string | undefined)[] => {
   return assets.map((a) => a.contractAddress).filter((a) => a);
@@ -71,11 +72,42 @@ const getAccountAssetsBalancesWithEthScan = async (account: StoreAccount) => {
   const list = getAssetAddresses(account.assets) as string[];
   const provider = ProviderHandler.fetchProvider(account.network);
   return Promise.all([
-    getEtherBalances(provider, [account.address]).then(toBigNumberJS),
-    getTokensBalance(provider, account.address, list).then(toBigNumberJS)
+    etherBalanceFetchWrapper(provider, account.address, { batchSize: ETH_SCAN_BATCH_SIZE }).then(
+      toBigNumberJS
+    ),
+    tokenBalanceFetchWrapper(provider, account.address, list, {
+      batchSize: ETH_SCAN_BATCH_SIZE
+    }).then(toBigNumberJS)
   ])
     .then(addBalancesToAccount(account))
     .catch((_) => account);
+};
+
+const etherBalanceFetchWrapper = async (
+  provider: ProviderLike,
+  address: string,
+  options: any
+): Promise<EthScanBalanceMap<EthScanBN>> => {
+  try {
+    const balanceMap = await getEtherBalances(provider, [address], options);
+    return balanceMap;
+  } catch {
+    return {} as EthScanBalanceMap<EthScanBN>;
+  }
+};
+
+const tokenBalanceFetchWrapper = async (
+  provider: ProviderLike,
+  address: string,
+  contractList: string[],
+  options: any
+): Promise<EthScanBalanceMap<EthScanBN>> => {
+  try {
+    const tokenBalanceMap = await getTokensBalance(provider, address, contractList, options);
+    return tokenBalanceMap;
+  } catch {
+    return {} as EthScanBalanceMap<EthScanBN>;
+  }
 };
 
 export const getBaseAssetBalances = async (addresses: string[], network: Network | undefined) => {
@@ -83,7 +115,7 @@ export const getBaseAssetBalances = async (addresses: string[], network: Network
     return ([] as unknown) as BalanceMap;
   }
   const provider = ProviderHandler.fetchProvider(network);
-  return getEtherBalances(provider, addresses)
+  return getEtherBalances(provider, addresses, { batchSize: ETH_SCAN_BATCH_SIZE })
     .then((data) => {
       return data;
     })
@@ -156,35 +188,15 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
 };
 
 export const getAllTokensBalancesOfAccount = async (account: StoreAccount, assets: Asset[]) => {
-  const provider = account.network.nodes[0];
+  const provider = new ProviderHandler(account.network);
   const assetsInNetwork = assets.filter((x) => x.networkId === account.network.id);
   const assetAddresses = getAssetAddresses(assetsInNetwork) as string[];
 
   try {
-    return getTokensBalance(provider, account.address, assetAddresses).then(toBigNumberJS);
+    return tokenBalanceFetchWrapper(provider, account.address, assetAddresses, {
+      batchSize: ETH_SCAN_BATCH_SIZE
+    }).then(toBigNumberJS);
   } catch (err) {
     throw new Error(err);
   }
-};
-
-export const getAccountsTokenBalance = async (accounts: StoreAccount[], tokenContract: string) => {
-  const provider = accounts[0].network.nodes[0];
-  try {
-    return getTokenBalancesFromEthScan(
-      provider,
-      accounts.map((account) => account.address),
-      tokenContract
-    ).then(toBigNumberJS);
-  } catch (err) {
-    throw new Error(err);
-  }
-};
-
-export const getAccountsTokenBalances = (accounts: StoreAccount[], tokenContracts: string[]) => {
-  const provider = accounts[0].network.nodes[0];
-  return getTokensBalances(
-    provider,
-    accounts.map((account) => account.address),
-    tokenContracts
-  ).then(nestedToBigNumberJS);
 };
