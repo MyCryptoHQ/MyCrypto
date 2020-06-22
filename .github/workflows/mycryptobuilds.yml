@@ -22,13 +22,23 @@ jobs:
       # Fetch the PR number to use it with AWS
       - name: Set PR_NUMBER
         run: |
-          PR_NUMBER=$(echo ${{ github.ref }} | awk 'BEGIN { FS = "/" } ; { print $3 }')
+          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
           echo "::set-env name=PR_NUMBER::$PR_NUMBER"
 
       # Define url as env var to be used by TestCafe.
       - name: Set E2E_BASE_URL
+        if: github.ref != 'refs/heads/master'
         run: |
           E2E_BASE_URL=$( echo https://mycryptobuilds.com/pr/${PR_NUMBER}/# )
+          echo $E2E_BASE_URL
+          echo "::set-env name=E2E_BASE_URL::$E2E_BASE_URL"
+
+      # Define url as env var to be used by TestCafe.
+      - name: Set E2E_BASE_URL
+        if: github.ref == 'refs/heads/master'
+        run: |
+          E2E_BASE_URL=$( echo https://mycryptobuilds.com/# )
+          echo $E2E_BASE_URL
           echo "::set-env name=E2E_BASE_URL::$E2E_BASE_URL"
 
       - uses: actions/checkout@v2
