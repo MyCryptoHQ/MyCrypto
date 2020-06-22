@@ -25,7 +25,7 @@ jobs:
           TEST=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
           PR_NUMBER=$(echo ${{ github.ref }} | awk 'BEGIN { FS = "/" } ; { print $3 }')
           echo "::set-env name=PR_NUMBER::$PR_NUMBER"
-          echo #TEST
+          echo $TEST
 
       # Define url as env var to be used by TestCafe.
       - name: Set E2E_BASE_URL
