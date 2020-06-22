@@ -864,5 +864,58 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       max: 60,
       initial: 1
     }
+  },
+  VOLTA: {
+    id: 'VOLTA',
+    name: 'Volta',
+    unit: 'VT' as TSymbol,
+    chainId: 73799,
+    isCustom: false,
+    color: '#6d2eae',
+    blockExplorer: makeExplorer({
+      name: 'Energy Web VOLTA Explorer',
+      origin: 'https://volta-explorer.energyweb.org',
+      addressPath: 'address',
+      blockPath: 'blocks'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DPaths.VOLTA_DEFAULT,
+      [WalletId.LEDGER_NANO_S]: DPaths.VOLTA_DEFAULT,
+      [WalletId.MNEMONIC_PHRASE]: DPaths.VOLTA_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 10,
+      initial: 1
+    },
+    shouldEstimateGasPrice: false
+  },
+  EnergyWebChain: {
+    id: 'EnergyWebChain',
+    name: 'EWC',
+    unit: 'EWT' as TSymbol,
+    chainId: 246,
+    isCustom: false,
+    color: '#6d2eae',
+    blockExplorer: makeExplorer({
+      name: 'Energy Web Chain Explorer',
+      origin: 'https://explorer.energyweb.org',
+      addressPath: 'address',
+      blockPath: 'blocks'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DPaths.EWC_DEFAULT,
+      [WalletId.LEDGER_NANO_S]: DPaths.EWC_DEFAULT,
+      [WalletId.MNEMONIC_PHRASE]: DPaths.EWC_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 0.01,
+      max: 10,
+      initial: 0.01
+    }
   }
 };
