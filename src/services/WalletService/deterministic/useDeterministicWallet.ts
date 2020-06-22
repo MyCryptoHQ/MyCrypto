@@ -11,6 +11,7 @@ import {
   DWAccountDisplay,
   ExtendedDPath
 } from './types';
+// import isEmpty from 'ramda/src/isEmpty';
 
 interface MnemonicPhraseInputs {
   phrase: string;
@@ -19,7 +20,8 @@ interface MnemonicPhraseInputs {
 
 const useDeterministicWallet = (
   dpaths: ExtendedDPath[],
-  walletId: DPathFormat
+  walletId: DPathFormat,
+  gap: number
 ): IUseDeterministicWallet => {
   const [state, dispatch] = useReducer(DeterministicWalletReducer, initialState);
   const [shouldInit, setShouldInit] = useState(false);
@@ -32,7 +34,6 @@ const useDeterministicWallet = (
     if (!shouldInit || !assetToQuery || !network) return;
     setShouldInit(false);
     const dwService = DeterministicWalletService({
-      walletId,
       handleInitRequest: () =>
         dispatch({
           type: DWActionTypes.CONNECTION_REQUEST
@@ -81,6 +82,11 @@ const useDeterministicWallet = (
   }, [state.isInit]);
 
   useEffect(() => {
+    if (!service || shouldInit || !state.isConnected || !network || !state.session) return;
+    service.getAccounts(state.session, dpaths);
+  }, [state.isConnected]);
+
+  useEffect(() => {
     if (
       !service ||
       shouldInit ||
@@ -95,9 +101,39 @@ const useDeterministicWallet = (
   }, [state.queuedAccounts]);
 
   useEffect(() => {
-    if (!service || shouldInit || !state.isConnected || !network || !state.session) return;
-    service.getAccounts(state.session, dpaths);
-  }, [state.isConnected]);
+    if (state.finishedAccounts.length === 0 || !service || !state.session) return;
+    const pathItems = state.finishedAccounts.map((acc) => ({
+      ...acc.pathItem,
+      balance: acc.balance
+    }));
+    const relevantIndexes = pathItems.reduce((acc, item) => {
+      const idx = item.baseDPath.value;
+      const curLastIndex = acc[idx]?.lastIndex;
+      const curLastInhabitedIndex = acc[idx]?.lastInhabitedIndex || 0;
+      const newLastInhabitedIndex =
+        curLastInhabitedIndex < item.index && item.balance && !item.balance.isZero()
+          ? item.index
+          : curLastInhabitedIndex;
+      acc[idx] = {
+        lastIndex: curLastIndex > item.index ? curLastIndex : item.index,
+        lastInhabitedIndex: newLastInhabitedIndex,
+        dpath: item.baseDPath
+      };
+      return acc;
+    }, {} as { [key: string]: { lastIndex: number; lastInhabitedIndex: number; dpath: DPath } });
+    const addNewItems = Object.values(relevantIndexes)
+      .map((indexItem) => {
+        if (indexItem.lastIndex - indexItem.lastInhabitedIndex >= gap) return undefined; // gap is satisfied, do nothing;
+        return {
+          ...indexItem.dpath,
+          offset: indexItem.lastIndex,
+          numOfAddresses: gap - (indexItem.lastIndex - indexItem.lastInhabitedIndex) + 1
+        } as ExtendedDPath;
+      })
+      .filter((e) => e !== undefined) as ExtendedDPath[];
+    if (addNewItems.length === 0) return;
+    service.getAccounts(state.session, addNewItems);
+  }, [state.finishedAccounts]);
 
   const requestConnection = (
     networkToUse: Network,

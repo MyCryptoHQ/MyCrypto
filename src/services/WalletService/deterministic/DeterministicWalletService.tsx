@@ -2,7 +2,7 @@ import BN from 'bignumber.js';
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 import flatten from 'ramda/src/flatten';
 
-import { DPathFormat, Network, ExtendedAsset, WalletId, TAddress } from '@types';
+import { Network, ExtendedAsset, WalletId, TAddress } from '@types';
 import {
   getBaseAssetBalances,
   getTokenAssetBalances,
@@ -10,13 +10,12 @@ import {
 } from '@services/Store/BalanceService';
 import { bigify } from '@utils';
 
-import { LedgerU2F, Trezor, MnemonicPhrase } from '../wallets';
+import { LedgerU2F, Trezor, MnemonicPhrase, WalletResult } from '../wallets';
 import { KeyInfo } from '../wallets/HardwareWallet';
 import { LedgerUSB, Wallet, getDeterministicWallets } from '..';
 import { IDeterministicWalletService, DWAccountDisplay, ExtendedDPath } from './types';
 
 interface EventHandlers {
-  walletId: DPathFormat;
   handleInit(session: Wallet, asset: ExtendedAsset): void;
   handleInitRequest(): void;
   handleAccountsUpdate(accounts: DWAccountDisplay[], asset: ExtendedAsset): void;
@@ -49,8 +48,7 @@ export const DeterministicWalletService = ({
   handleAccountsError,
   handleAccountsUpdate,
   handleEnqueueAccounts
-}: // walletId
-EventHandlers): IDeterministicWalletService => {
+}: EventHandlers): IDeterministicWalletService => {
   const init = async (
     walletId: WalletId,
     asset: ExtendedAsset,
@@ -87,7 +85,11 @@ EventHandlers): IDeterministicWalletService => {
             offset: dpath.offset
           }).map((item) => ({
             address: item.address as TAddress,
-            path: `${key}/${item.index}`,
+            pathItem: {
+              path: `${key}/${item.index}`,
+              baseDPath: dpath,
+              index: item.index
+            },
             balance: undefined
           }));
         })
@@ -145,11 +147,21 @@ EventHandlers): IDeterministicWalletService => {
     session: Wallet,
     dpaths: ExtendedDPath[]
   ): Promise<DWAccountDisplay[]> => {
-    const outputAddresses: any[] = [];
+    const outputAddresses: DWAccountDisplay[] = [];
     for (const dpath of dpaths) {
       for (let idx = 0; idx < dpath.numOfAddresses; idx++) {
-        const data = await session.getAddress(dpath, idx + dpath.offset);
-        outputAddresses.push(data);
+        const data = (await session.getAddress(dpath, idx + dpath.offset)) as WalletResult;
+        const outputObject = {
+          address: data.address as TAddress,
+          pathItem: {
+            path: data.path,
+            baseDPath: dpath,
+            index: idx + dpath.offset
+          },
+          balance: undefined
+        };
+        outputAddresses.push(outputObject);
+        //
       }
     }
     return outputAddresses;
@@ -162,9 +174,18 @@ EventHandlers): IDeterministicWalletService => {
     const outputAddresses: any[] = [];
     for (const dpath of dpaths) {
       for (let idx = 0; idx < dpath.numOfAddresses; idx++) {
-        await session.getAddress(dpath, idx + dpath.offset).then((data: any) => {
+        await session.getAddress(dpath, idx + dpath.offset).then((data: WalletResult) => {
           // @todo - fix this type
-          outputAddresses.push(data);
+          const outputObject = {
+            address: data.address as TAddress,
+            pathItem: {
+              path: data.path,
+              baseDPath: dpath,
+              index: idx + dpath.offset
+            },
+            balance: undefined
+          };
+          outputAddresses.push(outputObject);
         });
       }
     }

@@ -6,7 +6,12 @@ import { MOONPAY_ASSET_UUIDS } from '@utils';
 import { FormData, WalletId, ExtendedAsset } from '@types';
 import translate, { translateRaw } from '@translations';
 import { Spinner, Button, DeterministicAccountList, AssetDropdown } from '@components';
-import { EXT_URLS, TREZOR_DERIVATION_PATHS } from '@config';
+import {
+  EXT_URLS,
+  TREZOR_DERIVATION_PATHS,
+  DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN,
+  DEFAULT_GAP_TO_SCAN_FOR
+} from '@config';
 import { NetworkContext, getNetworkById, getAssetByUUID, AssetContext } from '@services/Store';
 import { useDeterministicWallet } from '@services/WalletService';
 
@@ -22,7 +27,7 @@ interface OwnProps {
 
 const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const dpaths = uniqBy(prop('value'), TREZOR_DERIVATION_PATHS);
-  const numOfAccountsToCheck = 10;
+  const numOfAccountsToCheck = DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN;
   const extendedDPaths = dpaths.map((dpath) => ({
     ...dpath,
     offset: 0,
@@ -35,7 +40,8 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const [assetToUse, setAssetToUse] = useState(baseAsset);
   const { state, requestConnection, updateAsset } = useDeterministicWallet(
     extendedDPaths,
-    WalletId.TREZOR_NEW
+    WalletId.TREZOR_NEW,
+    DEFAULT_GAP_TO_SCAN_FOR
   );
   // @todo -> Figure out which assets to display in dropdown. Dropdown is heavy with 900+ assets in it. Loads slow af.
   const filteredAssets = assets.filter(({ uuid }) => MOONPAY_ASSET_UUIDS.includes(uuid)); // @todo - fix this.

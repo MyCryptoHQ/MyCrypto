@@ -53,9 +53,9 @@ export default function DeterministicAccountList(props: DeterministicAccountList
   useEffect(() => {
     const selected = uniqBy(
       prop('address'),
-      accountsToUse.map(({ address, path }) => ({
+      accountsToUse.map(({ address, pathItem }) => ({
         address,
-        derivationPath: path
+        derivationPath: pathItem.path
       })) as ISelectedAccount[]
     );
     setSelectedAccounts(selected);
@@ -244,12 +244,12 @@ const buildDeterministicAccountTable = (
 
   return {
     head: columns,
-    body: accountsToUse.map(({ address, balance, path, isSelected }, index) => [
+    body: accountsToUse.map(({ address, balance, pathItem, isSelected }, index) => [
       <Checkbox
         key={index}
         name={address}
         checked={isSelected}
-        onChange={() => toggleAccountSelection(address, path)}
+        onChange={() => toggleAccountSelection(address, pathItem.path)}
       />,
       <EthAddress key={index} address={address} truncate={truncate} />,
       <div key={index}>
@@ -261,7 +261,7 @@ const buildDeterministicAccountTable = (
             : '0.0000'
         } ${asset.ticker}`}
       </div>,
-      <div key={index}>{path}</div>
+      <div key={index}>{pathItem.path}</div>
     ]),
     config: {
       primaryColumn: translateRaw('DETERMINISTIC_ACCOUNT_LIST_LABEL')

@@ -13,7 +13,7 @@ import {
   Tooltip,
   Input
 } from '@components';
-import { DPathsList } from '@config';
+import { DPathsList, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN, DEFAULT_GAP_TO_SCAN_FOR } from '@config';
 import { NetworkContext, getNetworkById, getAssetByUUID, AssetContext } from '@services/Store';
 import { useDeterministicWallet } from '@services/WalletService';
 
@@ -42,7 +42,7 @@ const initialMnemonicLoginState: MnemonicLoginState = {
 
 const MnemonicDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const dpaths = uniqBy(prop('value'), Object.values(DPathsList));
-  const numOfAccountsToCheck = 10;
+  const numOfAccountsToCheck = DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN;
   const extendedDPaths = dpaths.map((dpath) => ({
     ...dpath,
     offset: 0,
@@ -55,7 +55,8 @@ const MnemonicDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const [assetToUse, setAssetToUse] = useState(baseAsset);
   const { state, requestConnection, updateAsset } = useDeterministicWallet(
     extendedDPaths,
-    WalletId.MNEMONIC_PHRASE_NEW
+    WalletId.MNEMONIC_PHRASE_NEW,
+    DEFAULT_GAP_TO_SCAN_FOR
   );
   // @todo -> Figure out which assets to display in dropdown. Dropdown is heavy with 900+ assets in it. Loads slow af.
   const [mnemonicLoginState, setMnemonicLoginState] = useState(initialMnemonicLoginState);

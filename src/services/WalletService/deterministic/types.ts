@@ -10,7 +10,11 @@ export type TActionError = ValuesType<typeof DeterministicWalletReducer.errorCod
 
 export interface DWAccountDisplay {
   address: TAddress;
-  path: string;
+  pathItem: {
+    baseDPath: DPath;
+    path: string;
+    index: number;
+  };
   balance: BigNumber | undefined;
 }
 
