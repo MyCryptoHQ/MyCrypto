@@ -18,7 +18,7 @@
     "@mycrypto/eth-scan": "2.1.0",
     "@mycrypto/ui": "0.22.1",
     "@mycrypto/unlock-scan": "0.1.0",
-    "@unstoppabledomains/resolution": "1.3.5",
+    "@unstoppabledomains/resolution": "1.3.6",
     "@walletconnect/browser": "1.0.0-beta.39",
     "aes-js": "3.1.1",
     "apollo-boost": "0.4.7",
@@ -71,8 +71,9 @@
     "slick-carousel": "1.8.1",
     "styled-components": "5.0.0",
     "toasted-notes": "3.2.0",
-    "trezor-connect": "7.0.1",
-    "trezor.js": "6.17.5",
+    "trezor-connect": "8.1.2",
+    "trezor-link": "https://github.com/MyCryptoHQ/trezor-link#176c94f",
+    "trezor.js": "9.1.0",
     "u2f-api": "1.1.1",
     "url-search-params-polyfill": "7.0.0",
     "uuid": "3.2.1",
@@ -214,9 +215,6 @@
     "webpack-modernizr-loader": "5.0.0",
     "webpack-subresource-integrity": "1.4.0",
     "worker-loader": "2.0.0"
-  },
-  "resolutions": {
-    "node-fetch": "2.6.0"
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config webpack_config/production.js",
