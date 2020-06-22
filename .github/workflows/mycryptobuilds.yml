@@ -27,8 +27,13 @@ jobs:
 
       # Define url as env var to be used by TestCafe.
       - name: Set E2E_BASE_URL
+        if: github.ref != 'refs/heads/master'
         run: |
           E2E_BASE_URL=$( echo https://mycryptobuilds.com/pr/${PR_NUMBER}/# )
+          echo "::set-env name=E2E_BASE_URL::$E2E_BASE_URL"
+        if: github.ref == 'refs/heads/master'
+        run: |
+          E2E_BASE_URL=$( echo https://mycryptobuilds.com/# )
           echo "::set-env name=E2E_BASE_URL::$E2E_BASE_URL"
 
       - uses: actions/checkout@v2
