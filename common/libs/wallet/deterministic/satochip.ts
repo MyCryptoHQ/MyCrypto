@@ -9,6 +9,7 @@ import { HardwareWallet, ChainCodeResponse } from './hardware';
 
 export class SatochipWallet extends HardwareWallet {
   public static getChainCode(dpath: string): Promise<ChainCodeResponse> {
+    console.log('in common/libs/wallet/deterministic/satochip.ts'); //debugSatochip
     return Promise.reject(new Error('getChainCode via Satochip not yet supported.'));
   }
 

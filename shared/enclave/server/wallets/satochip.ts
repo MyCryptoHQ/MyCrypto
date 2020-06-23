@@ -31,6 +31,7 @@ SatochipSession.connect = () => {
   };
 
   SatochipSession.ws.onmessage = function incoming(data: any) {
+    console.log('in /shared/enclave/server/wallets/satochip.ts'); //debugSatochip
     console.log('ONMESSAGE: message received!');
     console.log('TYPEOF DATA:' + typeof data);
     console.log('TYPEOF DATA.DATA:' + typeof data.data);
