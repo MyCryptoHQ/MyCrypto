@@ -24,7 +24,7 @@ SatochipSession.connect = () => {
 
   return new Promise(resolve => {
     if (!SatochipSession.isConnected) {
-      SatochipSession.ws = new WebSocket('ws://localhost:8000/');
+      SatochipSession.ws = new WebSocket('ws://localhost:8397/');
 
       SatochipSession.ws.onopen = function open() {
         console.log('connected');
