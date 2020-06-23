@@ -25,7 +25,7 @@ export const DEFAULT_NETWORK_SYMBOL = 'ETH';
 
 export const DEFAULT_ASSET_DECIMAL = 18;
 
-export const MYC_DEXAG_COMMISSION_RATE = 2.5;
+export const MYC_DEXAG_COMMISSION_RATE = 2;
 
 export const MYC_DEXAG_MARKUP_THRESHOLD = 1.5;
 

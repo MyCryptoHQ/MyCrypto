@@ -1,9 +1,8 @@
 import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import { formatEther } from 'ethers/utils';
 
 import translate, { translateRaw } from '@translations';
-import { MYC_DEXAG_COMMISSION_RATE, MYC_DEXAG_MARKUP_THRESHOLD } from '@config';
+import { MYC_DEXAG_MARKUP_THRESHOLD } from '@config';
 import {
   InputField,
   AssetDropdown,
@@ -14,7 +13,7 @@ import {
   Button
 } from '@components';
 import { SPACING, COLORS } from '@theme';
-import { subtractBNFloats, trimBN } from '@utils';
+import { trimBN } from '@utils';
 
 import { ISwapAsset } from '../types';
 import { getUnselectedAssets, getAccountsWithAssetBalance } from '../helpers';
@@ -139,7 +138,6 @@ export default function SwapAssets(props: Props) {
     handleFromAmountChanged,
     handleToAmountChanged,
     handleAccountSelected,
-    initialToAmount,
     exchangeRate,
     markup
   } = props;
@@ -266,23 +264,6 @@ export default function SwapAssets(props: Props) {
                 $toAssetSymbol: toAsset.symbol,
                 $fromAssetSymbol: fromAsset.symbol
               })}
-            </LabelText>
-          </DisplayDataContainer>
-        )}
-        {initialToAmount && toAmount && toAsset && (
-          <DisplayDataContainer>
-            <Label>
-              <LabelText>
-                {translateRaw('SWAP_FEE_LABEL', {
-                  $commission: MYC_DEXAG_COMMISSION_RATE.toString()
-                })}
-              </LabelText>
-              <STooltip tooltip={translateRaw('SWAP_FEE_TOOLTIP')} />:
-            </Label>
-            <LabelText>
-              {`${makeDisplayString(
-                formatEther(subtractBNFloats(initialToAmount, toAmount).toString())
-              )} ${toAsset.symbol}`}
             </LabelText>
           </DisplayDataContainer>
         )}
