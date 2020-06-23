@@ -52,7 +52,7 @@ class SatochipDecryptClass extends PureComponent<OwnProps, State> {
     console.log(' dpath: ', dPath); //debugSatochip
 
     if (!dPath) {
-      return <UnsupportedNetwork walletType={translateRaw('x_Satochip')} network={network} />;
+      return <UnsupportedNetwork walletType={translateRaw('X_SATOCHIP')} network={network} />;
     }
 
     if (publicKey && chainCode) {

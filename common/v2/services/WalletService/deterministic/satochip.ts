@@ -185,7 +185,6 @@ SatochipWallet.connect = () => {
   return new Promise(resolve => {
     if (!SatochipWallet.isConnected) {
       SatochipWallet.ws = new WebSocket('ws://localhost:8000/');
-      //SatochipWallet.isConnected= true;
 
       SatochipWallet.ws.onopen = function open() {
         console.log('connected');
