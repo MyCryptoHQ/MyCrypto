@@ -11,7 +11,7 @@ import {
   CustomNodeConfig,
   StaticNodeConfig
 } from '@types';
-import { INFURA_API_KEY } from '@config';
+import { INFURA_API_KEY, ETHERSCAN_API_KEY } from '@config';
 
 // Network names accepted by ethers.EtherscanProvider
 type TValidEtherscanNetwork = 'homestead' | 'ropsten' | 'rinkeby' | 'kovan' | 'goerli';
@@ -26,7 +26,7 @@ const getProvider = (
   const networkName = getValidEthscanNetworkId(networkId);
   switch (type) {
     case NodeType.ETHERSCAN: {
-      return new ethers.providers.EtherscanProvider(networkName);
+      return new ethers.providers.EtherscanProvider(networkName, ETHERSCAN_API_KEY);
     }
     case NodeType.WEB3: {
       const ethereumProvider = window.ethereum;
