@@ -31,7 +31,8 @@ describe('SendAssetsFlow', () => {
           <RatesContext.Provider
             value={
               ({
-                getAssetRate: jest.fn()
+                getAssetRate: jest.fn(),
+                getRate: jest.fn()
               } as unknown) as any
             }
           >

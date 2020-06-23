@@ -54,6 +54,11 @@ const Icon = styled.img`
 const messageConfig = (type: InlineMessageType): Config => {
   switch (type) {
     default:
+    case InlineMessageType.WARNING:
+      return {
+        color: COLORS.WARNING_ORANGE,
+        icon: warningSVG
+      };
     case InlineMessageType.ERROR:
       return {
         color: COLORS.PASTEL_RED,
