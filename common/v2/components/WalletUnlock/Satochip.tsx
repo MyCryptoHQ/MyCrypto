@@ -28,6 +28,7 @@ interface State {
   isLoading: boolean;
 }
 
+console.log('Satochip: components/WalletUnlock/Satochip.tsx: call WalletFactory()'); //debugSatochip
 const WalletService = WalletFactory(WalletId.SATOCHIP);
 
 class SatochipDecryptClass extends PureComponent<OwnProps, State> {
@@ -51,8 +52,7 @@ class SatochipDecryptClass extends PureComponent<OwnProps, State> {
     console.log(' dpath: ', dPath); //debugSatochip
 
     if (!dPath) {
-      return <UnsupportedNetwork walletType={translateRaw('x_Satochip')} network={network} />;
-      //return <UnsupportedNetwork walletType={typeof(dPath)} network={network} />;
+      return <UnsupportedNetwork walletType={translateRaw('X_SATOCHIP')} network={network} />;
     }
 
     if (publicKey && chainCode) {

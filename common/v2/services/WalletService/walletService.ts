@@ -47,6 +47,7 @@ export const WalletFactory = (walletId: WalletId): WalletService | any => {
           new TrezorWallet(address, dPath, index)
       };
     case WalletId.SATOCHIP:
+      console.log('Satochip: in v2/services/WalletService/WalletService.js '); //debugSatochip
       return {
         getChainCode: (dPath: string): Promise<ChainCodeResponse> =>
           SatochipWallet.getChainCode(dPath),

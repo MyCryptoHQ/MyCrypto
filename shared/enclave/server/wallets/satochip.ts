@@ -9,98 +9,117 @@ const WebSocket = require('isomorphic-ws');
 export class SatochipSession {
   public static resolveMap: Map<number, any>;
   public static requestID: number;
+  public static isConnected: boolean;
   public static ws: WebSocket;
   public static reconnectInterval: number;
   public static connect: any;
 }
 
+SatochipSession.isConnected = false;
 SatochipSession.requestID = 0;
 SatochipSession.resolveMap = new Map();
 SatochipSession.reconnectInterval = (1 * 1000 * 60) / 4;
 SatochipSession.connect = () => {
-  SatochipSession.ws = new WebSocket('ws://localhost:8000/');
+  console.log('Satochip: /shared/enclave/server/wallets/satochip.ts: connect()');
 
-  SatochipSession.ws.onopen = function open() {
-    console.log('connected');
+  return new Promise(resolve => {
+    if (!SatochipSession.isConnected) {
+      SatochipSession.ws = new WebSocket('ws://localhost:8000/');
 
-    const msg: any = { requestID: SatochipSession.requestID++, action: 'get_status' };
-    const data: string = JSON.stringify(msg);
+      SatochipSession.ws.onopen = function open() {
+        console.log('connected');
+        SatochipSession.isConnected = true;
+        const msg: any = { requestID: SatochipSession.requestID++, action: 'get_status' };
+        const data: string = JSON.stringify(msg);
 
-    SatochipSession.ws.send(data);
-    console.log('Request:' + data);
-  };
+        SatochipSession.ws.send(data);
+        console.log('Request:' + data);
+        resolve(SatochipSession.ws);
+      };
 
-  SatochipSession.ws.onmessage = function incoming(data: any) {
-    console.log('ONMESSAGE: message received!');
-    console.log('TYPEOF DATA:' + typeof data);
-    console.log('TYPEOF DATA.DATA:' + typeof data.data);
-    console.log('Reply:' + data.data); // should be string
+      SatochipSession.ws.onmessage = function incoming(data: any) {
+        console.log('in /shared/enclave/server/wallets/satochip.ts'); //debugSatochip
+        console.log('ONMESSAGE: message received!');
+        //console.log('TYPEOF DATA:' + typeof data); // typeof data: object
+        //console.log('TYPEOF DATA.DATA:' + typeof data.data); // typeof data.data: string
+        console.log('Reply:' + data.data); // should be string
 
-    const response = JSON.parse(data.data);
-    console.log('Reply JSON:', response);
-    console.log('Reply requestID:', response.requestID);
+        const response = JSON.parse(data.data);
+        console.log('Reply JSON:', response);
+        console.log('Reply requestID:', response.requestID);
+        //console.log('Assert: resolveMap is a Map?'); //true
+        //console.log(SatochipSession.resolveMap instanceof Map);
 
-    console.log('Assert: resolveMap is a Map?');
-    console.log(SatochipSession.resolveMap instanceof Map);
+        try {
+          console.log(
+            'Assert: resolveMap has key: ' +
+              response.requestID +
+              '?' +
+              SatochipSession.resolveMap.has(response.requestID)
+          );
+          if (SatochipSession.resolveMap.has(response.requestID)) {
+            console.log(
+              'typeof(resolveMap.get()):' +
+                typeof SatochipSession.resolveMap.get(response.requestID)
+            );
+            SatochipSession.resolveMap.get(response.requestID)(response);
+            SatochipSession.resolveMap.delete(response.requestID);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
 
-    try {
-      console.log(
-        'Assert: resolveMap has key: ' +
-          response.requestID +
-          '?' +
-          SatochipSession.resolveMap.has(response.requestID)
-      );
-      if (SatochipSession.resolveMap.has(response.requestID)) {
-        console.log(
-          'typeof(resolveMap.get()):' + typeof SatochipSession.resolveMap.get(response.requestID)
-        );
-        SatochipSession.resolveMap.get(response.requestID)(response);
-        SatochipSession.resolveMap.delete(response.requestID);
-      }
-    } catch (error) {
-      console.error(error);
+      SatochipSession.ws.onclose = function close(event) {
+        console.log('disconnected with code:' + event.code);
+        SatochipSession.isConnected = false;
+        setTimeout(SatochipSession.connect, SatochipSession.reconnectInterval);
+      };
+
+      SatochipSession.ws.onerror = function error() {
+        console.log('disconnected with error!');
+        SatochipSession.isConnected = false;
+      };
+    } else {
+      resolve(SatochipSession.ws);
     }
-  };
+  });
+}; //end connect()
 
-  SatochipSession.ws.onclose = function close(event) {
-    console.log('disconnected with code:' + event.code);
-    setTimeout(SatochipSession.connect, SatochipSession.reconnectInterval);
-  };
-
-  SatochipSession.ws.onerror = function error() {
-    console.log('disconnected with error!');
-  };
-};
-SatochipSession.connect();
+// start connection as soon as MyCrypto launches
+//SatochipSession.connect();
 
 const Satochip: WalletLib = {
   getChainCode(dpath) {
     console.log('Satochip: /shared/enclave/server/wallets/satochip.ts: in getChainCode()'); //debugSatochip
     console.log('Satochip: /shared/enclave/server/wallets/satochip.ts: dpath:' + dpath); //debugSatochip
 
-    const msg: any = {
-      requestID: SatochipSession.requestID++,
-      action: 'get_chaincode',
-      path: dpath
-    };
-    const request: string = JSON.stringify(msg);
+    return SatochipSession.connect().then((ws: any) => {
+      const msg: any = {
+        requestID: SatochipSession.requestID++,
+        action: 'get_chaincode',
+        path: dpath
+      };
+      const request: string = JSON.stringify(msg);
 
-    return new Promise(resolve => {
-      //const ccr= {} as ChainCodeResponse;
-      // send request to device and keep a ref of the resolve function in a map
-      const response = new Promise(resolve2 => {
-        console.log('Satochip: resolveMap.size - before:' + SatochipSession.resolveMap.size);
-        SatochipSession.resolveMap.set(msg.requestID, resolve2);
-        SatochipSession.ws.send(request);
-        console.log('Satochip: request sent:' + request);
-        console.log('Satochip: typeof(resolve2):' + typeof resolve2);
-        console.log('Satochip: resolveMap.size - after:' + SatochipSession.resolveMap.size);
-      }).then((res: any) => {
-        console.log('Satochip: pubkey:' + res.pubkey);
-        console.log('Satochip: chaincode:' + res.chaincode);
-        resolve({
-          publicKey: res.pubkey,
-          chainCode: res.chaincode
+      return new Promise(resolve => {
+        //const ccr= {} as ChainCodeResponse;
+        // send request to device and keep a ref of the resolve function in a map
+        const response = new Promise(resolve2 => {
+          console.log('Satochip: resolveMap.size - before:' + SatochipSession.resolveMap.size);
+          SatochipSession.resolveMap.set(msg.requestID, resolve2);
+          //SatochipSession.ws.send(request);
+          ws.send(request);
+          console.log('Satochip: request sent:' + request);
+          //console.log('Satochip: typeof(resolve2):' + typeof resolve2); // resolve2:function
+          console.log('Satochip: resolveMap.size - after:' + SatochipSession.resolveMap.size);
+        }).then((res: any) => {
+          console.log('Satochip: pubkey:' + res.pubkey);
+          console.log('Satochip: chaincode:' + res.chaincode);
+          resolve({
+            publicKey: res.pubkey,
+            chainCode: res.chaincode
+          });
         });
       });
     });
@@ -109,6 +128,9 @@ const Satochip: WalletLib = {
   async signTransaction(tx, dpath) {
     console.log('Satochip: /shared/enclave/server/wallets/satochip.ts: in signTransaction()');
     console.log('Satochip: dpath:' + dpath);
+    if (!SatochipSession.isConnected) {
+      SatochipSession.connect();
+    }
 
     const { chainId, ...strTx } = tx;
     const signedTx = new EthTx({
@@ -180,10 +202,14 @@ const Satochip: WalletLib = {
   },
 
   async signMessage(msgToSign, keyPath) {
-    console.log('Log: /shared/enclave/server/wallets/satochip.ts: in signMessage()');
+    console.log('Satochip: /shared/enclave/server/wallets/satochip.ts: in signMessage()');
     if (!msgToSign) {
       throw Error('No message to sign');
     }
+    if (!SatochipSession.isConnected) {
+      SatochipSession.connect();
+    }
+
     const data: any = {
       requestID: SatochipSession.requestID++,
       action: 'sign_msg_hash',
@@ -213,7 +239,9 @@ const Satochip: WalletLib = {
 
   async displayAddress() {
     //throw new Error('Not yet implemented');
-    console.log('Log: shared/enclave/server/wallets/Satochip.ts: displayAddress() not implemented');
+    console.log(
+      'Satochip: shared/enclave/server/wallets/Satochip.ts: displayAddress() not implemented'
+    );
     return Promise.reject(new Error('displayAddress via Satochip not supported.'));
   }
 };
