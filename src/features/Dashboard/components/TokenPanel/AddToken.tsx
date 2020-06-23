@@ -9,8 +9,7 @@ import { AssetContext, NetworkContext } from '@services/Store';
 import { ExtendedAsset, NetworkId } from '@types';
 import { DEFAULT_NETWORK, DEFAULT_ASSET_DECIMAL } from '@config';
 import { isValidAddress } from '@services';
-
-import backArrowIcon from '@assets/images/icn-back.svg';
+import Icon from '@components/Icon';
 
 const ActionsWrapper = styled.div`
   margin-top: 52px;
@@ -26,12 +25,11 @@ const NetworkSelectorWrapper = styled.div`
   }
 `;
 
-const Icon = styled.img`
-  cursor: pointer;
-`;
-
 const BackIcon = styled(Icon)`
   margin-right: 16px;
+  cursor: pointer;
+  width: 29px;
+  height: 17px;
 `;
 
 interface Props {
@@ -110,7 +108,7 @@ export function AddToken(props: Props) {
       heading={
         <div>
           <BackIcon
-            src={backArrowIcon}
+            type="back"
             onClick={() => {
               setShowDetailsView(false);
               setShowAddToken(false);
