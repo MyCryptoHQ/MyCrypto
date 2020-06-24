@@ -1,6 +1,8 @@
 import { NetworkId, TURL } from '@types';
 
-export const INFURA_API_KEY = 'c02fff6b5daa434d8422b8ece54c7286';
+export const INFURA_API_KEY = 'f3b4711ae677488bb3c56de93c6cab1a';
+
+export const ETHERSCAN_API_KEY = '3BJCKMTC6BY9XEJPZEQ7BIWJR4MCP94UB4'
 
 export const MYC_API_MAINNET = 'https://api.mycryptoapi.com/eth';
 
