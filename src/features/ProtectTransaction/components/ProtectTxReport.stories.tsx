@@ -4,7 +4,7 @@ import find from 'lodash/find';
 
 import { NetworkId, TAddress } from '@types';
 import { assets } from '@database/seed/assets';
-import { GetBalanceResponse, GetLastTxResponse } from '@services';
+import { GetBalanceResponse, GetTxResponse } from '@services';
 
 import { ProtectTxReport } from './ProtectTxReport';
 import { ProtectTxState, ProtectTxContext } from '../ProtectTxProvider';
@@ -19,7 +19,7 @@ const etherscanBalanceReport: GetBalanceResponse = {
   result: '547876500000000000'
 };
 
-const etherscanLastTxReport: GetLastTxResponse = {
+const etherscanLastTxReport: GetTxResponse = {
   status: '1',
   message: 'OK',
   result: []

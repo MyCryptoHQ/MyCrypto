@@ -3,9 +3,9 @@ import React, { createContext, useCallback, useContext, useEffect, useRef, useSt
 import { Asset, ITxReceipt, Network, WalletId, IFormikFields } from '@types';
 import {
   GetBalanceResponse,
-  GetLastTxResponse,
+  GetTxResponse,
   EtherscanService,
-  GetLastTokenTxResponse
+  GetTokenTxResponse
 } from '@services/ApiService';
 import { AssetContext, getAssetByUUID, StoreContext } from '@services/Store';
 import { useScreenSize } from '@utils';
@@ -19,8 +19,8 @@ export interface ProtectTxState {
   protectTxEnabled: boolean;
   nansenAddressReport: NansenServiceEntry | null;
   etherscanBalanceReport: GetBalanceResponse | null;
-  etherscanLastTokenTxReport: GetLastTokenTxResponse | null;
-  etherscanLastTxReport: GetLastTxResponse | null;
+  etherscanLastTokenTxReport: GetTokenTxResponse | null;
+  etherscanLastTxReport: GetTxResponse | null;
   mainComponentDisabled: boolean;
   receiverAddress: string | null;
   network: Network | null;
@@ -87,8 +87,8 @@ const ProtectTxProvider: React.FC = ({ children }) => {
       ] = await Promise.all([
         NansenService.check(address).catch((e) => e),
         EtherscanService.instance.getBalance(address, network!.id).catch((e) => e),
-        EtherscanService.instance.getLastTokenTx(address, network!.id).catch((e) => e),
-        EtherscanService.instance.getLastTx(address, network!.id).catch((e) => e)
+        EtherscanService.instance.getTokenTransactions(address, network!.id).catch((e) => e),
+        EtherscanService.instance.getTransactions(address, network!.id).catch((e) => e)
       ]);
 
       const nansenAddressReport =

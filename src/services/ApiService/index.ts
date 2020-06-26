@@ -8,8 +8,8 @@ export { DexService } from './Dex';
 export { MyCryptoApiService } from './MyCryptoApi';
 export {
   GetBalanceResponse,
-  GetLastTxResponse,
-  GetLastTokenTxResponse,
+  GetTxResponse,
+  GetTokenTxResponse,
   EtherscanService
 } from './Etherscan';
 export {
