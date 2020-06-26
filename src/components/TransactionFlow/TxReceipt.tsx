@@ -24,7 +24,7 @@ import {
   ITxHistoryStatus
 } from '@types';
 import { Amount, TimeElapsedCounter, AssetIcon, LinkOut, PoweredByText } from '@components';
-import { PoweredByProvider } from '@components/PoweredByText';
+import { PoweredByProviders } from '@components/PoweredByText';
 import { AddressBookContext, AccountContext, StoreContext, SettingsContext } from '@services/Store';
 import { RatesContext } from '@services/RatesProvider';
 import {
@@ -435,7 +435,7 @@ export const TxReceiptUI = ({
           {translate('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')}
         </Button>
       </Link>
-      {txType === ITxType.DEFIZAP && <PoweredByText provider={PoweredByProvider.ZAPPER} />}
+      {txType === ITxType.DEFIZAP && <PoweredByText provider={PoweredByProviders.ZAPPER} />}
     </div>
   );
 };

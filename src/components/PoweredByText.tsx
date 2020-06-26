@@ -38,19 +38,23 @@ margin-right: ${SPACING.XS};
 `}
 `;
 
-export enum PoweredByProvider {
-  NANSEN,
-  ENS,
-  COINGECKO,
-  ZAPPER
+interface PoweredByProvider {
+  icon: any;
+  text: string;
+  flipped?: boolean;
+  fontSize?: string;
+  css?: string;
 }
 
-interface PoweredByProviderType {
-  [key: string]: { icon: any; text: string; flipped?: boolean; fontSize?: string; css?: string };
+export enum PoweredByProviders {
+  NANSEN = 'NANSEN',
+  ENS = 'ENS',
+  COINGECKO = 'COINGECKO',
+  ZAPPER = 'ZAPPER'
 }
 
-const providers: PoweredByProviderType = {
-  [PoweredByProvider.NANSEN]: {
+const providers: Record<string, PoweredByProvider> = {
+  NANSEN: {
     icon: nansenLogo,
     text: translateRaw('POWERED_BY'),
     fontSize: '12px',
@@ -59,8 +63,8 @@ const providers: PoweredByProviderType = {
       bottom: ${SPACING.BASE};
     `
   },
-  [PoweredByProvider.ENS]: { icon: enslogo, text: translateRaw('ENS_LOGO_TEXT'), flipped: true },
-  [PoweredByProvider.COINGECKO]: {
+  ENS: { icon: enslogo, text: translateRaw('ENS_LOGO_TEXT'), flipped: true },
+  COINGECKO: {
     icon: coinGeckoIcon,
     text: translateRaw('POWERED_BY'),
     fontSize: '10px',
@@ -73,33 +77,22 @@ const providers: PoweredByProviderType = {
       }
       `
   },
-  [PoweredByProvider.ZAPPER]: {
+  ZAPPER: {
     icon: zapperLogo,
     text: translateRaw('ZAP_POWERED_BY'),
     flipped: true
   }
 };
 
-const PoweredByText = ({ provider }: { provider: PoweredByProvider }) => {
+const PoweredByText = ({ provider }: { provider: PoweredByProviders }) => {
   const { text, icon, flipped, fontSize, css } = providers[provider];
   return (
     <Wrapper css={css}>
-      {flipped && (
-        <>
-          <Logo src={icon} />
-          <Text flipped={flipped} fontSize={fontSize}>
-            {text}
-          </Text>
-        </>
-      )}
-      {!flipped && (
-        <>
-          <Text flipped={flipped} fontSize={fontSize}>
-            {text}
-          </Text>
-          <Logo src={icon} />
-        </>
-      )}
+      {flipped && <Logo src={icon} />}
+      <Text flipped={flipped} fontSize={fontSize}>
+        {text}
+      </Text>
+      {!flipped && <Logo src={icon} />}
     </Wrapper>
   );
 };

@@ -13,7 +13,7 @@ import { AccountDropdown, InlineMessage, AmountInput, PoweredByText } from '@com
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
 import { ETHUUID } from '@utils';
-import { PoweredByProvider } from '@components/PoweredByText';
+import { PoweredByProviders } from '@components/PoweredByText';
 
 import { ZapInteractionState, ISimpleTxFormFull } from '../types';
 import ZapSelectedBanner from './ZapSelectedBanner';
@@ -193,7 +193,7 @@ export const ZapFormUI = ({
                 {translateRaw('ACTION_6')}
               </FormFieldSubmitButton>
               <DeFiZapLogoContainer>
-                <PoweredByText provider={PoweredByProvider.ZAPPER} />
+                <PoweredByText provider={PoweredByProviders.ZAPPER} />
               </DeFiZapLogoContainer>
             </Form>
           );

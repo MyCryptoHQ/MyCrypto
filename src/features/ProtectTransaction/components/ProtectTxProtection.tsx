@@ -7,7 +7,7 @@ import { RatesContext, StoreContext } from '@services';
 import { IAccount, IFormikFields } from '@types';
 import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 import { Amount, Button, PoweredByText } from '@components';
-import { PoweredByProvider } from '@components/PoweredByText';
+import { PoweredByProviders } from '@components/PoweredByText';
 import { translateRaw } from '@translations';
 
 import { ProtectTxUtils } from '../utils';
@@ -300,7 +300,7 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit, override
       <button type="button" className="cancel" onClick={onProtectMyTransactionCancelClick}>
         {translateRaw('PROTECTED_TX_DONT_PROTECT_MY_TX')}
       </button>
-      <PoweredByText provider={PoweredByProvider.NANSEN} />
+      <PoweredByText provider={PoweredByProviders.NANSEN} />
     </SProtectionThisTransaction>
   );
 };
