@@ -14,7 +14,8 @@ export enum DWActionTypes {
   UPDATE_ACCOUNTS = 'UPDATE_ACCOUNTS',
   ENQUEUE_ADDRESSES = 'ENQUEUE_ADDRESSES',
   UPDATE_ASSET = 'UPDATE_ASSET',
-  RELOAD_QUEUES = 'RELOAD_QUEUES'
+  RELOAD_QUEUES = 'RELOAD_QUEUES',
+  TRIGGER_COMPLETE = 'TRIGGER_COMPLETE'
 }
 
 // @todo convert to FSA compatible action type
@@ -32,6 +33,7 @@ export const initialState: DeterministicWalletState = {
   detectedChainId: undefined,
   promptConnectionRetry: false,
   isGettingAccounts: false,
+  completed: false,
   queuedAccounts: [],
   finishedAccounts: [],
   errors: []
@@ -113,12 +115,16 @@ const DeterministicWalletReducer = (
       return {
         ...state,
         asset,
+        completed: false,
         queuedAccounts: [
           ...state.queuedAccounts,
           ...state.finishedAccounts.map((account) => ({ ...account, balance: undefined }))
         ],
         finishedAccounts: []
       };
+    }
+    case DWActionTypes.TRIGGER_COMPLETE: {
+      return { ...state, completed: true };
     }
     default: {
       throw new Error('[DeterministicWallet]: missing action type');

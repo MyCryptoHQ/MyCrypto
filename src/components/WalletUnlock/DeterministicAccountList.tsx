@@ -26,9 +26,8 @@ const HeaderAlignment = styled.div`
 
 interface DeterministicAccountListProps {
   finishedAccounts: DWAccountDisplay[];
-  queuedAccounts: DWAccountDisplay[];
-  totalAccounts: number;
   asset: ExtendedAsset;
+  isComplete: boolean;
   className?: string;
   currentsOnly?: boolean;
   dashboard?: boolean;
@@ -41,7 +40,7 @@ interface ISelectedAccount {
 }
 
 export default function DeterministicAccountList(props: DeterministicAccountListProps) {
-  const { finishedAccounts, queuedAccounts, totalAccounts, asset, onUnlock } = props;
+  const { finishedAccounts, asset, isComplete, onUnlock } = props;
   const [selectedAccounts, setSelectedAccounts] = useState([] as ISelectedAccount[]);
   const accountsToUse = uniqBy(prop('address'), finishedAccounts).filter(
     ({ balance }) => balance && !balance.isZero()
@@ -81,13 +80,9 @@ export default function DeterministicAccountList(props: DeterministicAccountList
   return (
     <>
       <>
-        {`Scanning Total: ${totalAccounts}`}
+        {`Scanned Total: ${finishedAccounts.length}`}
         <br />
-        {`Enqueued Total: ${queuedAccounts.length}`}
-        <br />
-        {`Finished Total: ${finishedAccounts.length}`}
-        <br />
-        {finishedAccounts.length < totalAccounts && (
+        {!isComplete && (
           <>
             <Spinner /> Scanning...
           </>

@@ -68,6 +68,10 @@ const useDeterministicWallet = (
         dispatch({
           type: DWActionTypes.GET_ADDRESSES_FAILURE,
           error: { code: DeterministicWalletReducer.errorCodes.GET_ACCOUNTS_FAILED }
+        }),
+      handleComplete: () =>
+        dispatch({
+          type: DWActionTypes.TRIGGER_COMPLETE
         })
     });
 
@@ -131,7 +135,10 @@ const useDeterministicWallet = (
         } as ExtendedDPath;
       })
       .filter((e) => e !== undefined) as ExtendedDPath[];
-    if (addNewItems.length === 0) return;
+    if (addNewItems.length === 0) {
+      service.triggerComplete();
+      return;
+    }
     service.getAccounts(state.session, addNewItems);
   }, [state.finishedAccounts]);
 

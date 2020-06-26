@@ -34,6 +34,7 @@ export interface DeterministicWalletState {
   finishedAccounts: DWAccountDisplay[];
   session: Wallet | undefined;
   promptConnectionRetry: boolean;
+  completed: boolean;
   errors: TActionError[];
 }
 
@@ -53,4 +54,5 @@ export interface IDeterministicWalletService {
   init(walletId: DPathFormat, asset: ExtendedAsset, phrase: string, pass: string): void;
   getAccounts(session: Wallet, dpath: ExtendedDPath[]): void;
   handleAccountsQueue(accounts: DWAccountDisplay[], network: Network, asset: ExtendedAsset): void;
+  triggerComplete(): void;
 }

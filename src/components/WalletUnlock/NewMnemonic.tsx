@@ -113,10 +113,9 @@ const MnemonicDecrypt = ({ formData, onUnlock }: OwnProps) => {
         />
         <DeterministicAccountList
           onUnlock={onUnlock}
+          isComplete={state.completed}
           asset={state.asset}
           finishedAccounts={state.finishedAccounts}
-          queuedAccounts={state.queuedAccounts}
-          totalAccounts={dpaths.length * numOfAccountsToCheck}
         />
       </div>
     );

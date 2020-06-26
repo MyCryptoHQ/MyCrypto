@@ -23,6 +23,7 @@ interface EventHandlers {
   handleAccountsError(error: string): void;
   handleAccountsSuccess(): void;
   handleReject(): void;
+  handleComplete(): void;
 }
 
 const selectWallet = async (walletId: WalletId, mnemonic?: string, pass?: string) => {
@@ -47,7 +48,8 @@ export const DeterministicWalletService = ({
   handleReject,
   handleAccountsError,
   handleAccountsUpdate,
-  handleEnqueueAccounts
+  handleEnqueueAccounts,
+  handleComplete
 }: EventHandlers): IDeterministicWalletService => {
   const init = async (
     walletId: WalletId,
@@ -65,6 +67,10 @@ export const DeterministicWalletService = ({
         handleReject();
       });
     handleInitRequest();
+  };
+
+  const triggerComplete = () => {
+    handleComplete();
   };
 
   interface IPrefetchBundle {
@@ -195,7 +201,8 @@ export const DeterministicWalletService = ({
   return {
     init,
     getAccounts,
-    handleAccountsQueue
+    handleAccountsQueue,
+    triggerComplete
   };
 };
 export default DeterministicWalletService;
