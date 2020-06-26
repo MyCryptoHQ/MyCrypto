@@ -83,7 +83,7 @@ export abstract class ProtectTxUtils {
     };
   }
 
-  public static getTypeFromNansenLabels(labels: string[]): NansenReportType {
+  public static getNansenReportType(labels: string[]): NansenReportType {
     if (MALICIOUS_LABELS.some((l) => labels.includes(l))) {
       return NansenReportType.MALICIOUS;
     } else if (WHITELISTED_LABELS.some((l) => labels.includes(l))) {

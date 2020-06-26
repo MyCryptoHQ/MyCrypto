@@ -1,2 +1,2 @@
 export { default as NansenService } from './Nansen';
-export * from './types';
+export { NansenServiceResponse, NansenServiceEntry } from './types';

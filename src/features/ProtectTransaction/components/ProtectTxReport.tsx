@@ -203,7 +203,7 @@ export const ProtectTxReport: FC = () => {
 
     const steps: StepData[] = [];
     const { label: labels } = nansenAddressReport;
-    const status = ProtectTxUtils.getTypeFromNansenLabels(labels);
+    const status = ProtectTxUtils.getNansenReportType(labels);
 
     if (labels.length === 0) {
       // No info for account
