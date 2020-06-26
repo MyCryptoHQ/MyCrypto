@@ -134,11 +134,10 @@ const Header = styled.h4`
 `;
 
 interface Props {
-  overrideValues?: IFormikFields;
   handleProtectTxSubmit(payload: IFormikFields): Promise<void>;
 }
 
-export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit, overrideValues }) => {
+export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
   const { getAssetRate } = useContext(RatesContext);
   const { isMyCryptoMember } = useContext(StoreContext);
 
@@ -157,13 +156,11 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit, override
   }
 
   const {
-    state: { isWeb3Wallet: web3Wallet, web3WalletName, formValues },
+    state: { isWeb3Wallet: web3Wallet, web3WalletName, formValues: sendAssetsValues },
     setReceiverInfo,
     setWeb3Wallet,
     showHideProtectTx
   } = protectTxContext;
-
-  const sendAssetsValues = overrideValues ? overrideValues : formValues;
 
   useEffect(() => {
     const {
