@@ -6,7 +6,6 @@ import { EMPTYUUID, buildTotalFiatValue } from '@utils';
 import { TUuid, Balance } from '@types';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import { AssetIcon, Currency, Typography, Tooltip, PoweredByText } from '@components';
-import { PoweredByProviders } from '@components/PoweredByText';
 
 import BreakdownChart from './BreakdownChart';
 import NoAssets from './NoAssets';
@@ -318,7 +317,7 @@ export default function WalletBreakdownView({
           </>
         )}
         <PoweredBy>
-          <PoweredByText provider={PoweredByProviders.COINGECKO} />
+          <PoweredByText provider="COINGECKO" />
         </PoweredBy>
       </BreakDownChartWrapper>
       <PanelDivider mobileOnly={true} />

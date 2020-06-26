@@ -11,7 +11,6 @@ import translate, { translateRaw } from '@translations';
 import { ZapSelectedBanner } from '@features/DeFiZap';
 import { BREAK_POINTS, SPACING, COLORS } from '@theme';
 import MembershipSelectedBanner from '@features/PurchaseMembership/components/MembershipSelectedBanner';
-import { PoweredByProviders } from '@components/PoweredByText';
 import { IStepComponentProps, ITxType, ExtendedAddressBook, ISettings } from '@types';
 import { getFiat } from '@config/fiats';
 
@@ -324,7 +323,7 @@ export const ConfirmTransactionUI = ({
       </SendButton>
       {txType === ITxType.DEFIZAP && (
         <DeFiZapLogoContainer>
-          <PoweredByText provider={PoweredByProviders.ZAPPER} />
+          <PoweredByText provider="ZAPPER" />
         </DeFiZapLogoContainer>
       )}
       {protectTxButton && protectTxButton()}

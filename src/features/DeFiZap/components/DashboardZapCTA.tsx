@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { DashboardPanel, Typography, PoweredByText } from '@components';
-import { PoweredByProviders } from '@components/PoweredByText';
 import { BREAK_POINTS, FONT_SIZE, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
@@ -36,7 +35,7 @@ const DashboardZapCTA = ({ className }: any) => {
   return (
     <DashboardPanel
       heading={translateRaw('ZAP_DASHBOARD_PANEL_HEADER')}
-      headingRight={<PoweredByText provider={PoweredByProviders.ZAPPER} />}
+      headingRight={<PoweredByText provider="ZAPPER" />}
       className={className}
     >
       <>

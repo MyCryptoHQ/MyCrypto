@@ -10,7 +10,6 @@ import WizardIcon from '@components/icons/WizardIcon';
 import CloseIcon from '@components/icons/CloseIcon';
 import { ETHAddressExplorer } from '@config';
 import { EthAddress, LinkOut, VerticalStepper, PoweredByText } from '@components';
-import { PoweredByProviders } from '@components/PoweredByText';
 import { StepData } from '@components/VerticalStepper';
 import { truncate, useScreenSize, isSameAddress } from '@utils';
 import { TAddress } from '@types';
@@ -332,7 +331,7 @@ export const ProtectTxReport: FC = () => {
           </p>
         </>
       )}
-      <PoweredByText provider={PoweredByProviders.NANSEN} />
+      <PoweredByText provider="NANSEN" />
     </Wrapper>
   );
 };

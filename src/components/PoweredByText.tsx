@@ -43,13 +43,6 @@ interface PoweredByProvider {
   css?: string;
 }
 
-export enum PoweredByProviders {
-  NANSEN = 'NANSEN',
-  ENS = 'ENS',
-  COINGECKO = 'COINGECKO',
-  ZAPPER = 'ZAPPER'
-}
-
 const providers: Record<string, PoweredByProvider> = {
   NANSEN: {
     icon: 'nansenLogo',
@@ -81,6 +74,8 @@ const providers: Record<string, PoweredByProvider> = {
     flipped: true
   }
 };
+
+export type PoweredByProviders = keyof typeof providers;
 
 const PoweredByText = ({ provider }: { provider: PoweredByProviders }) => {
   const { text, icon, flipped, fontSize, css } = providers[provider];
