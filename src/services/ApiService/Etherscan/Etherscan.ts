@@ -46,19 +46,23 @@ export default class EtherscanService {
       );
     }
 
-    const params = {
-      module: 'account',
-      action: 'balance',
-      tag: 'latest',
-      address
-    };
+    try {
+      const params = {
+        module: 'account',
+        action: 'balance',
+        tag: 'latest',
+        address
+      };
 
-    const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
+      const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
 
-    if (data.status === '1') {
-      return data;
+      if (data.status === '1') {
+        return data;
+      }
+      return null;
+    } catch (e) {
+      throw e;
     }
-    return null;
   };
 
   public getTokenTransactions = async (
@@ -71,19 +75,23 @@ export default class EtherscanService {
       );
     }
 
-    const params = {
-      module: 'account',
-      action: 'tokentx',
-      address,
-      sort: 'desc'
-    };
+    try {
+      const params = {
+        module: 'account',
+        action: 'tokentx',
+        address,
+        sort: 'desc'
+      };
 
-    const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
+      const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
 
-    if (data.status === '1') {
-      return data;
+      if (data.status === '1') {
+        return data;
+      }
+      return null;
+    } catch (e) {
+      throw e;
     }
-    return null;
   };
 
   public getTransactions = async (
@@ -96,18 +104,22 @@ export default class EtherscanService {
       );
     }
 
-    const params = {
-      module: 'account',
-      action: 'txlist',
-      address,
-      sort: 'desc'
-    };
+    try {
+      const params = {
+        module: 'account',
+        action: 'txlist',
+        address,
+        sort: 'desc'
+      };
 
-    const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
+      const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
 
-    if (data.status === '1') {
-      return data;
+      if (data.status === '1') {
+        return data;
+      }
+      return null;
+    } catch (e) {
+      throw e;
     }
-    return null;
   };
 }
