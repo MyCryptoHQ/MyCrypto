@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { toChecksumAddress } from 'ethereumjs-util';
 import { Copyable } from '@mycrypto/ui';
 
 import { COLORS, monospace } from '@theme';
@@ -51,7 +52,7 @@ function EthAddress({
   return (
     <Overrides inline={inline}>
       <Copyable
-        text={address.toLowerCase()}
+        text={toChecksumAddress(address)}
         isCopyable={isCopyable}
         truncate={truncate}
         disableTooltip={disableTooltip}
