@@ -29,7 +29,7 @@ export default function ThirdSlide() {
             </li>
             <li>
               {translate('ONBOARDING_TEXT_23', {
-                $link: 'https://etherscamdb.info/'
+                $link: 'https://cryptoscamdb.org/'
               })}
             </li>
             <li>
