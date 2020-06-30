@@ -262,7 +262,8 @@
       "yarn lint:css",
       "yarn lint:ts",
       "git add"
-    ]
+    ],
+    "!(node-scripts)/**/*.json": "prettier --write --config ./.prettierrc --config-precedence file-override"
   },
   "husky": {
     "hooks": {
