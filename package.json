@@ -264,7 +264,7 @@
     "validate": "npm-run-all --parallel lint:css lint:ts tscheck"
   },
   "lint-staged": {
-    "!(node-scripts)/**/*.{ts,tsx,json}": [
+    "!(node-scripts)/**/*.{ts,tsx}": [
       "prettier --write --config ./.prettierrc --config-precedence file-override",
       "yarn lint:css",
       "yarn lint:ts",
