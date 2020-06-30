@@ -74,6 +74,7 @@ const RowContainer = styled.div`
   flex-direction: row;
   flex: 1;
   justify-content: center;
+  align-items: center;
 `;
 
 const bannerConfig = (type: BannerType): Config => {

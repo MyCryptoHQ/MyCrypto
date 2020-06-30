@@ -15,8 +15,10 @@ import LocalIcon from '@components/Icon';
 
 // Legacy
 import { ScreenLockContext } from '@features/ScreenLock/ScreenLockProvider';
+import { BannerType } from '@types';
+import { Banner } from '@components';
 
-const { BLUE_BRIGHT } = COLORS;
+const { BLUE_BRIGHT, LIGHT_PURPLE } = COLORS;
 
 const Navbar = styled.nav`
   width: 100%;
@@ -240,6 +242,23 @@ const IconWrapper = styled(Icon)<IconWrapperProps>`
   }
 `;
 
+const SBanner = styled(Banner)`
+  background-color: ${LIGHT_PURPLE};
+`;
+
+const CenteredBannerText = styled.div`
+  text-align: center;
+  & a {
+    &:hover {
+      font-weight: normal;
+    }
+  }
+`;
+
+export const ANNOUNCEMENT_MSG = () => (
+  <CenteredBannerText>{translate('BETA_ANNOUNCEMENT')}</CenteredBannerText>
+);
+
 const TitleIconWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -341,6 +360,7 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
     openLink(getKBHelpArticle(KB_HELP_ARTICLE.HOME));
   };
 
+  const announcementMessage = ANNOUNCEMENT_MSG();
   return (
     <Navbar>
       {/* Mobile Menu */}
@@ -473,6 +493,7 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
             })}
         </HeaderBottomLinks>
       </HeaderBottom>
+      <SBanner type={BannerType.ANNOUNCEMENT} value={announcementMessage} />
     </Navbar>
   );
 }
