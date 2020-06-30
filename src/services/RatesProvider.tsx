@@ -32,7 +32,7 @@ interface ReserveMappingListObject {
 }
 
 const DEFAULT_FIAT_RATE = 0;
-const POLLING_INTERVAL = 60000;
+const POLLING_INTERVAL = 90000;
 
 const ASSET_RATES_URL = 'https://api.coingecko.com/api/v3/simple/price';
 const buildAssetQueryUrl = (assets: string[], currencies: string[]) => `
