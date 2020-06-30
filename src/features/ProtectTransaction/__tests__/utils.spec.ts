@@ -1,6 +1,6 @@
 import { ProtectTxUtils, NansenReportType } from '..';
 
-describe('Nansen Report Types', () => {
+describe('getNansenReportType', () => {
   it('should be malicious if has scam label', () => {
     expect(ProtectTxUtils.getNansenReportType(['Scam', 'test', 'whatever'])).toBe(
       NansenReportType.MALICIOUS

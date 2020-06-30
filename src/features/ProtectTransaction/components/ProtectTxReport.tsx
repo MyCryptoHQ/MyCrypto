@@ -1,9 +1,8 @@
 import React, { FC, useCallback, useContext } from 'react';
-import moment from 'moment';
 import styled from 'styled-components';
 
 import { Trans, translateRaw } from '@translations';
-import { fromWei, isValidETHAddress, Wei } from '@services';
+import { isValidETHAddress } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import WizardIcon from '@components/icons/WizardIcon';
@@ -11,15 +10,12 @@ import CloseIcon from '@components/icons/CloseIcon';
 import { ETHAddressExplorer } from '@config';
 import { EthAddress, LinkOut, VerticalStepper, PoweredByText } from '@components';
 import { StepData } from '@components/VerticalStepper';
-import { truncate, useScreenSize, isSameAddress } from '@utils';
-import { TAddress } from '@types';
+import { truncate, useScreenSize } from '@utils';
 
 import ProtectTxBase from './ProtectTxBase';
 import { ProtectTxContext } from '../ProtectTxProvider';
 import { ProtectTxUtils } from '../utils';
 import { NansenReportType } from '../types';
-
-const formatDate = (date: number): string => moment.unix(date).format('MM/DD/YYYY');
 
 const Wrapper = styled(ProtectTxBase)`
   .title-address {
@@ -126,57 +122,31 @@ export const ProtectTxReport: FC = () => {
   const { isSmScreen } = useScreenSize();
 
   const getAccountBalanceTimelineEntry = useCallback((): StepData => {
-    let balance = translateRaw('PROTECTED_TX_UNKNOWN_BALANCE');
-    if (etherscanBalanceReport) {
-      const { result } = etherscanBalanceReport;
-      balance = parseFloat(fromWei(Wei(result), 'ether')).toFixed(6);
-    }
-
-    let assetTicker = '';
-    if (etherscanBalanceReport && asset) {
-      assetTicker = asset.ticker;
-    }
+    const balance = ProtectTxUtils.getBalance(etherscanBalanceReport);
+    const assetTicker = asset && asset.ticker;
 
     return {
       title: translateRaw('PROTECTED_TX_RECIPIENT_ACCOUNT_BALANCE'),
       content: (
         <StepperDescText className="text-muted">
-          {balance} {assetTicker}
+          {balance ? (
+            <>
+              {balance} {assetTicker}
+            </>
+          ) : (
+            translateRaw('PROTECTED_TX_UNKNOWN_BALANCE')
+          )}
         </StepperDescText>
       )
     };
   }, [etherscanBalanceReport]);
 
   const getLastTxReportTimelineEntry = useCallback((): StepData => {
-    let lastSentTx: { value: string; ticker: string; timestamp: string } | null = null;
-    if (
-      etherscanLastTxReport &&
-      etherscanLastTxReport.result.length &&
-      etherscanLastTokenTxReport &&
-      etherscanLastTokenTxReport.result.length
-    ) {
-      const { result: txResult } = etherscanLastTxReport;
-      const { result: tokenResult } = etherscanLastTokenTxReport;
-      const firstSentTx = txResult.find((r) =>
-        receiverAddress ? isSameAddress(r.from as TAddress, receiverAddress as TAddress) : false
-      );
-      const firstSentToken = tokenResult.find((r) =>
-        receiverAddress ? isSameAddress(r.from as TAddress, receiverAddress as TAddress) : false
-      );
-      if (firstSentToken || firstSentTx) {
-        const firstSentResult =
-          parseInt(firstSentTx?.timeStamp || '0', 10) >
-          parseInt(firstSentToken?.timeStamp || '0', 10)
-            ? { ...firstSentTx!, tokenSymbol: 'ETH' }
-            : firstSentToken!;
-        const { tokenSymbol: ticker, value, timeStamp } = firstSentResult;
-        lastSentTx = {
-          ticker,
-          value: parseFloat(fromWei(Wei(value), 'ether')).toFixed(6),
-          timestamp: formatDate(parseInt(timeStamp, 10))
-        };
-      }
-    }
+    const lastSentTx = ProtectTxUtils.getLastTx(
+      etherscanLastTxReport,
+      etherscanLastTokenTxReport,
+      receiverAddress
+    );
 
     return {
       title: (
