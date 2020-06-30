@@ -50,12 +50,13 @@ class ScreenLockProvider extends Component<
   public setPasswordAndInitiateEncryption = async (password: string, hashed: boolean) => {
     const { setUnlockPassword } = this.props;
     try {
-      let passwordHash;
-
       // If password is not hashed yet, hash it
       if (!hashed) {
-        passwordHash = hashPassword(password);
-        setUnlockPassword(passwordHash);
+        const passwordHash = hashPassword(password);
+        this.setState({ shouldAutoLock: true }, () => {
+          // Initiates encryption in componentDidUpdate
+          setUnlockPassword(passwordHash);
+        });
       } else {
         // If password is already set initate encryption in componentDidUpdate
         this.setState({ shouldAutoLock: true });
@@ -65,15 +66,11 @@ class ScreenLockProvider extends Component<
     }
   };
 
-  public async componentDidUpdate(prevProps: IDataContext) {
+  public async componentDidUpdate() {
     // locks screen after calling setPasswordAndInitiateEncryption which causes one of these cases:
-    //  - password was just set (props.password goes from undefined to defined) and enrypted local storage data does not exist
-    //  - password was already set and auto lock should happen (shouldAutoLock) and enrypted local storage data does not exist
-    if (
-      (this.state.shouldAutoLock || !prevProps.password) &&
-      this.props.password &&
-      isEmpty(this.props.encryptedDbState)
-    ) {
+    //  - password was just set (props.password goes from undefined to defined) and encrypted local storage data does not exist
+    //  - password was already set and auto lock should happen (shouldAutoLock) and encrypted local storage data does not exist
+    if (this.state.shouldAutoLock && this.props.password && isEmpty(this.props.encryptedDbState)) {
       const encryptedData = encrypt(this.props.exportStorage(), this.props.password).toString();
       this.props.setEncryptedCache(encryptedData);
       this.props.resetAppDb();
@@ -93,8 +90,9 @@ class ScreenLockProvider extends Component<
       destroyEncryptedCache();
 
       // Navigate to the dashboard and reset inactivity timer
-      this.setState({ locked: false });
-      this.props.history.replace(ROUTE_PATHS.DASHBOARD.path);
+      this.setState({ locked: false }, () => {
+        this.props.history.replace(ROUTE_PATHS.DASHBOARD.path);
+      });
       this.resetInactivityTimer();
       document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
       return true;
