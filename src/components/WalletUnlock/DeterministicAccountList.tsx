@@ -9,7 +9,7 @@ import { ExtendedAsset, TAddress } from '@types';
 import { EthAddress, FixedSizeCollapsibleTable, Spinner, Checkbox, Button } from '@components';
 import { truncate, isSameAddress } from '@utils';
 import { BREAK_POINTS, SPACING, breakpointToNumber } from '@theme';
-import { DWAccountDisplay } from '@services/WalletService/deterministic/types';
+import { DWAccountDisplay } from '@services';
 import { fromTokenBase } from '@services/EthService/utils';
 import IconArrow from '@components/IconArrow';
 

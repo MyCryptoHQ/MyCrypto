@@ -39,8 +39,8 @@ export const getStories = (): IStory[] => [
   },
   {
     name: WalletId.LEDGER_NANO_S_NEW,
-    steps: [NetworkSelectPanel, LedgerDecrypt]
-    //hideFromWalletList: !IS_DEV
+    steps: [NetworkSelectPanel, LedgerDecrypt],
+    hideFromWalletList: !IS_DEV
   },
   {
     name: WalletId.TREZOR,
@@ -48,8 +48,8 @@ export const getStories = (): IStory[] => [
   },
   {
     name: WalletId.TREZOR_NEW,
-    steps: [NetworkSelectPanel, TrezorUnlock]
-    //hideFromWalletList: !IS_DEV
+    steps: [NetworkSelectPanel, TrezorUnlock],
+    hideFromWalletList: !IS_DEV
   },
   {
     name: WalletId.KEYSTORE_FILE,
@@ -69,8 +69,8 @@ export const getStories = (): IStory[] => [
   {
     name: WalletId.MNEMONIC_PHRASE_NEW,
     steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? MnemonicUnlock : InsecureWalletWarning],
-    isDisabled: IS_NOT_ELECTRON_AND_IS_NOT_DEV
-    //hideFromWalletList: !IS_DEV
+    isDisabled: IS_NOT_ELECTRON_AND_IS_NOT_DEV,
+    hideFromWalletList: !IS_DEV
   },
   {
     name: WalletId.VIEW_ONLY,

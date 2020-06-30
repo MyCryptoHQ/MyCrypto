@@ -2,7 +2,7 @@ import { ValuesType, Overwrite } from 'utility-types';
 
 import { TAction } from '@types';
 
-import { DeterministicWalletState, TActionError } from './types';
+import { DeterministicWalletState, TDWActionError } from './types';
 
 export enum DWActionTypes {
   CONNECTION_REQUEST = 'CONNECTION_REQUEST',
@@ -21,7 +21,7 @@ export enum DWActionTypes {
 // @todo convert to FSA compatible action type
 type DWAction = Overwrite<
   TAction<ValuesType<typeof DWActionTypes>, any>,
-  { error?: { code: TActionError } }
+  { error?: { code: TDWActionError } }
 >;
 
 export const initialState: DeterministicWalletState = {

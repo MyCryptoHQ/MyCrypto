@@ -12,8 +12,13 @@ import {
   DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN,
   DEFAULT_GAP_TO_SCAN_FOR
 } from '@config';
-import { NetworkContext, getNetworkById, getAssetByUUID, AssetContext } from '@services/Store';
-import { useDeterministicWallet } from '@services/WalletService';
+import {
+  NetworkContext,
+  getNetworkById,
+  getAssetByUUID,
+  AssetContext,
+  useDeterministicWallet
+} from '@services';
 
 import ConnectTrezor from '@assets/images/icn-connect-trezor-new.svg';
 import UnsupportedNetwork from './UnsupportedNetwork';

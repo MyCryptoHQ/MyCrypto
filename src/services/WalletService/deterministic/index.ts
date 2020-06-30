@@ -22,3 +22,4 @@ export const LedgerWallet = enclaveOrWallet(WalletId.LEDGER_NANO_S, LedgerWallet
 export const TrezorWallet = enclaveOrWallet(WalletId.TREZOR, TrezorWalletWeb);
 export { default as DeterministicWalletService } from './DeterministicWalletService';
 export { default as useDeterministicWallet } from './useDeterministicWallet';
+export * from './types';

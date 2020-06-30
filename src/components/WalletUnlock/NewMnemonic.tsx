@@ -14,8 +14,13 @@ import {
   Input
 } from '@components';
 import { DPathsList, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN, DEFAULT_GAP_TO_SCAN_FOR } from '@config';
-import { NetworkContext, getNetworkById, getAssetByUUID, AssetContext } from '@services/Store';
-import { useDeterministicWallet } from '@services/WalletService';
+import {
+  NetworkContext,
+  getNetworkById,
+  getAssetByUUID,
+  AssetContext,
+  useDeterministicWallet
+} from '@services';
 
 import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
 import questionToolTip from '@assets/images/icn-question.svg';
