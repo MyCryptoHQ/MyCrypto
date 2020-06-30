@@ -193,7 +193,7 @@ export const ProtectTxReport: FC = () => {
         </StepperDescText>
       )
     };
-  }, [etherscanLastTxReport]);
+  }, [etherscanLastTxReport, etherscanLastTokenTxReport]);
 
   const getTimeline = useCallback(() => {
     if (!nansenAddressReport) {

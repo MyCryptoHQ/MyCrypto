@@ -91,8 +91,14 @@ const ProtectTxProvider: React.FC = ({ children }) => {
         EtherscanService.instance.getTransactions(address, network!.id).catch((e) => e)
       ]);
 
-      const nansenAddressReport =
-        nansenAddressReportResponse instanceof Error ? [] : nansenAddressReportResponse.page[0];
+      const nansenAddressReport = (() => {
+        if (nansenAddressReportResponse instanceof Error) {
+          return null;
+        } else if (nansenAddressReportResponse.page.length === 0) {
+          return { address, label: [] };
+        }
+        return nansenAddressReportResponse.page[0];
+      })();
 
       const etherscanBalanceReport =
         etherscanBalanceReportResponse instanceof Error ? null : etherscanBalanceReportResponse;

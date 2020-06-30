@@ -85,7 +85,7 @@ export default class EtherscanService {
 
       const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
 
-      if (data.status === '1') {
+      if (data.status === '1' || data.message === 'No transactions found') {
         return data;
       }
       return null;
@@ -114,7 +114,7 @@ export default class EtherscanService {
 
       const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
 
-      if (data.status === '1') {
+      if (data.status === '1' || data.message === 'No transactions found') {
         return data;
       }
       return null;
