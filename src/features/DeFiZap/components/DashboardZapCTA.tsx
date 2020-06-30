@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { DashboardPanel, Typography } from '@components';
+import { DashboardPanel, Typography, PoweredByText } from '@components';
 import { BREAK_POINTS, FONT_SIZE, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
@@ -9,7 +9,6 @@ import translate from '@translations/translate';
 
 import { ZAPS_CONFIG } from '../config';
 import ZapCard from './ZapCard';
-import DeFiZapLogo from './DeFiZapLogo';
 
 const CTAContent = styled.div`
   display: flex;
@@ -36,7 +35,7 @@ const DashboardZapCTA = ({ className }: any) => {
   return (
     <DashboardPanel
       heading={translateRaw('ZAP_DASHBOARD_PANEL_HEADER')}
-      headingRight={<DeFiZapLogo />}
+      headingRight={<PoweredByText provider="ZAPPER" />}
       className={className}
     >
       <>

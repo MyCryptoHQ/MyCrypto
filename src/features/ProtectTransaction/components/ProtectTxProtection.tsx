@@ -6,7 +6,7 @@ import { isWeb3Wallet } from '@utils';
 import { RatesContext, StoreContext } from '@services';
 import { IAccount, IFormikFields } from '@types';
 import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
-import { Amount, Button } from '@components';
+import { Amount, Button, PoweredByText } from '@components';
 import { translateRaw } from '@translations';
 
 import { ProtectTxUtils } from '../utils';
@@ -19,6 +19,8 @@ import feeIcon from '@assets/images/icn-fee.svg';
 import { ProtectTxContext } from '../ProtectTxProvider';
 import { ProtectTxError } from '..';
 import { ProtectTxMissingInfo } from './ProtectTxMissingInfo';
+
+import bulletIcon from 'assets/images/icn-bullet.svg';
 
 const SProtectionThisTransaction = styled(ProtectTxBase)`
   .description-text {
@@ -72,7 +74,7 @@ const BulletList = styled.ul`
     padding-left: ${SPACING.SM};
     margin-left: -${SPACING.SM};
     margin-bottom: 15px;
-    background-image: url('~assets/images/icn-bullet.svg');
+    background-image: url(${bulletIcon});
     background-position: 0 ${SPACING.SM};
     background-size: 5px 5px;
     background-repeat: no-repeat;
@@ -132,11 +134,10 @@ const Header = styled.h4`
 `;
 
 interface Props {
-  sendAssetsValues: IFormikFields | null;
   handleProtectTxSubmit(payload: IFormikFields): Promise<void>;
 }
 
-export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtectTxSubmit }) => {
+export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
   const { getAssetRate } = useContext(RatesContext);
   const { isMyCryptoMember } = useContext(StoreContext);
 
@@ -155,7 +156,7 @@ export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtect
   }
 
   const {
-    state: { isWeb3Wallet: web3Wallet, web3WalletName },
+    state: { isWeb3Wallet: web3Wallet, web3WalletName, formValues: sendAssetsValues },
     setReceiverInfo,
     setWeb3Wallet,
     showHideProtectTx
@@ -218,7 +219,7 @@ export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtect
   }, [feeAmount]);
 
   const error =
-    sendAssetsValues !== null &&
+    sendAssetsValues !== undefined &&
     ProtectTxUtils.checkFormForProtectedTxErrors(
       sendAssetsValues,
       getAssetRate(sendAssetsValues.asset)
@@ -295,6 +296,7 @@ export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtect
       <button type="button" className="cancel" onClick={onProtectMyTransactionCancelClick}>
         {translateRaw('PROTECTED_TX_DONT_PROTECT_MY_TX')}
       </button>
+      <PoweredByText provider="NANSEN" />
     </SProtectionThisTransaction>
   );
 };

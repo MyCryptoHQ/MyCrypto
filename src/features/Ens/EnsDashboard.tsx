@@ -4,14 +4,13 @@ import { Heading } from '@mycrypto/ui';
 
 import { StoreContext } from '@services';
 import EnsService from '@services/ApiService/Ens/EnsService.ts';
-import { DashboardPanel } from '@components';
+import { DashboardPanel, PoweredByText } from '@components';
 import { translateRaw } from '@translations';
 import { BREAK_POINTS, SPACING } from '@theme';
 import { useEffectOnce, usePromise } from '@vendor/react-use';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
 
 import { DomainNameRecord } from './types';
-import EnsLogo from './EnsLogo';
 import { EnsTable } from './EnsTable';
 
 const DashboardWrapper = styled.div`
@@ -74,7 +73,7 @@ export default function EnsDashboard() {
         </DashboardSubHeader>
         <DashboardPanel
           heading={translateRaw('ENS_MY_DOMAINS_TABLE_HEADER')}
-          headingRight={<EnsLogo />}
+          headingRight={<PoweredByText provider="ENS" />}
         >
           <EnsTable
             records={ensOwnershipRecords.records}

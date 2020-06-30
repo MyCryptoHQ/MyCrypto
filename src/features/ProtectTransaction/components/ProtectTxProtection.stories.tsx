@@ -4,7 +4,7 @@ import find from 'lodash/find';
 import { Panel } from '@mycrypto/ui';
 
 import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
-import { Network, NetworkId, WalletId } from '@types';
+import { Network, NetworkId, WalletId, IFormikFields } from '@types';
 import { assets } from '@database/seed/assets';
 import { COLORS } from '@theme';
 import { noOp } from '@utils';
@@ -12,7 +12,10 @@ import { RatesContext } from '@services';
 
 import { ProtectTxProtection } from './ProtectTxProtection';
 import ProtectTxModalBackdrop from './ProtectTxModalBackdrop';
-import ProtectTxProvider from '../ProtectTxProvider';
+import ProtectTxProvider, {
+  ProtectTxContext,
+  protectTxProviderInitialState
+} from '../ProtectTxProvider';
 
 const noopPromise = () => Promise.resolve();
 
@@ -55,49 +58,61 @@ const formValuesWeb3 = {
   }
 };
 
-const ProtectTxStep1 = () => (
-  <div style={{ maxWidth: '375px', position: 'relative' }}>
-    <Panel>
-      <ProtectTxProtection
-        sendAssetsValues={formValues as any}
-        handleProtectTxSubmit={noopPromise}
-      />
-    </Panel>
-  </div>
-);
-
-const ProtectTxStep1Web3 = () => (
-  <div style={{ maxWidth: '375px', position: 'relative' }}>
-    <Panel>
-      <ProtectTxProtection
-        sendAssetsValues={formValuesWeb3 as any}
-        handleProtectTxSubmit={noopPromise}
-      />
-    </Panel>
-  </div>
-);
-
-const ProtectTxStep1Mobile = () => (
-  <div
-    style={{
-      width: '700px',
-      position: 'relative',
-      backgroundColor: COLORS.BLACK,
-      display: 'flex',
-      justifyContent: 'center'
+const wrapInProvider = (component: any, values: IFormikFields) => (
+  <ProtectTxContext.Provider
+    // @ts-ignore
+    value={{
+      state: { ...protectTxProviderInitialState, formValues: values },
+      updateFormValues: noOp,
+      goToInitialStepOrFetchReport: noOp,
+      goToNextStep: noOp,
+      setWeb3Wallet: noOp
     }}
   >
-    <ProtectTxModalBackdrop onBackdropClick={noOp} />
+    {component}
+  </ProtectTxContext.Provider>
+);
+
+const ProtectTxStep1 = () =>
+  wrapInProvider(
     <div style={{ maxWidth: '375px', position: 'relative' }}>
       <Panel>
-        <ProtectTxProtection
-          sendAssetsValues={formValuesWeb3 as any}
-          handleProtectTxSubmit={noopPromise}
-        />
+        <ProtectTxProtection handleProtectTxSubmit={noopPromise} />
       </Panel>
-    </div>
-  </div>
-);
+    </div>,
+    formValues as any
+  );
+
+const ProtectTxStep1Web3 = () =>
+  wrapInProvider(
+    <div style={{ maxWidth: '375px', position: 'relative' }}>
+      <Panel>
+        <ProtectTxProtection handleProtectTxSubmit={noopPromise} />
+      </Panel>
+    </div>,
+    formValuesWeb3 as any
+  );
+
+const ProtectTxStep1Mobile = () =>
+  wrapInProvider(
+    <div
+      style={{
+        width: '700px',
+        position: 'relative',
+        backgroundColor: COLORS.BLACK,
+        display: 'flex',
+        justifyContent: 'center'
+      }}
+    >
+      <ProtectTxModalBackdrop onBackdropClick={noOp} />
+      <div style={{ maxWidth: '375px', position: 'relative' }}>
+        <Panel>
+          <ProtectTxProtection handleProtectTxSubmit={noopPromise} />
+        </Panel>
+      </div>
+    </div>,
+    formValuesWeb3 as any
+  );
 
 storiesOf('ProtectTransaction', module)
   .addDecorator((story) => (

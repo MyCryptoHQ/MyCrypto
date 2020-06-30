@@ -1,17 +1,15 @@
 import React, { FC, useCallback, useContext } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
-import upperFirst from 'lodash/upperFirst';
 
 import { Trans, translateRaw } from '@translations';
 import { fromWei, isValidETHAddress, Wei } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
-import { CryptoScamDBBaseResponse, CryptoScamDBInfoResponse } from '@services/ApiService';
 import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import WizardIcon from '@components/icons/WizardIcon';
 import CloseIcon from '@components/icons/CloseIcon';
 import { ETHAddressExplorer } from '@config';
-import { EthAddress, LinkOut, VerticalStepper } from '@components';
+import { EthAddress, LinkOut, VerticalStepper, PoweredByText } from '@components';
 import { StepData } from '@components/VerticalStepper';
 import { truncate, useScreenSize, isSameAddress } from '@utils';
 import { TAddress } from '@types';
@@ -19,6 +17,7 @@ import { TAddress } from '@types';
 import ProtectTxBase from './ProtectTxBase';
 import { ProtectTxContext } from '../ProtectTxProvider';
 import { ProtectTxUtils } from '../utils';
+import { NansenReportType } from '../types';
 
 const formatDate = (date: number): string => moment.unix(date).format('MM/DD/YYYY');
 
@@ -74,7 +73,7 @@ const StepperDescText = styled.p`
   margin: 0;
 
   &.text-success {
-    color: ${COLORS.SUCCESS_GREEN_LIGHT};
+    color: ${COLORS.SUCCESS_GREEN};
   }
 
   &.text-no-info {
@@ -115,7 +114,8 @@ export const ProtectTxReport: FC = () => {
     state: {
       etherscanBalanceReport,
       etherscanLastTxReport,
-      cryptoScamAddressReport,
+      etherscanLastTokenTxReport,
+      nansenAddressReport,
       asset,
       receiverAddress,
       isWeb3Wallet
@@ -148,15 +148,29 @@ export const ProtectTxReport: FC = () => {
   }, [etherscanBalanceReport]);
 
   const getLastTxReportTimelineEntry = useCallback((): StepData => {
-    let lastSentToken: { value: string; ticker: string; timestamp: string } | null = null;
-    if (etherscanLastTxReport && etherscanLastTxReport.result.length) {
-      const { result } = etherscanLastTxReport;
-      const firstSentResult = result.find((r) =>
+    let lastSentTx: { value: string; ticker: string; timestamp: string } | null = null;
+    if (
+      etherscanLastTxReport &&
+      etherscanLastTxReport.result.length &&
+      etherscanLastTokenTxReport &&
+      etherscanLastTokenTxReport.result.length
+    ) {
+      const { result: txResult } = etherscanLastTxReport;
+      const { result: tokenResult } = etherscanLastTokenTxReport;
+      const firstSentTx = txResult.find((r) =>
         receiverAddress ? isSameAddress(r.from as TAddress, receiverAddress as TAddress) : false
       );
-      if (firstSentResult) {
+      const firstSentToken = tokenResult.find((r) =>
+        receiverAddress ? isSameAddress(r.from as TAddress, receiverAddress as TAddress) : false
+      );
+      if (firstSentToken || firstSentTx) {
+        const firstSentResult =
+          parseInt(firstSentTx?.timeStamp || '0', 10) >
+          parseInt(firstSentToken?.timeStamp || '0', 10)
+            ? { ...firstSentTx!, tokenSymbol: 'ETH' }
+            : firstSentToken!;
         const { tokenSymbol: ticker, value, timeStamp } = firstSentResult;
-        lastSentToken = {
+        lastSentTx = {
           ticker,
           value: parseFloat(fromWei(Wei(value), 'ether')).toFixed(6),
           timestamp: formatDate(parseInt(timeStamp, 10))
@@ -169,28 +183,28 @@ export const ProtectTxReport: FC = () => {
         <>
           {translateRaw('PROTECTED_TX_RECIPIENT_ACCOUNT_ACTIVITY')}
           <br />
-          {translateRaw('PROTECTED_TX_LAST_SENT_TOKEN')}
+          {translateRaw('PROTECTED_TX_LAST_SENT_TX')}
         </>
       ),
       content: (
         <StepperDescText className="text-muted">
-          {lastSentToken &&
-            `${lastSentToken.value} ${lastSentToken.ticker} on ${lastSentToken.timestamp}`}
-          {!lastSentToken && translateRaw('PROTECTED_TX_NO_INFORMATION_AVAILABLE')}
+          {lastSentTx && `${lastSentTx.value} ${lastSentTx.ticker} on ${lastSentTx.timestamp}`}
+          {!lastSentTx && translateRaw('PROTECTED_TX_NO_INFORMATION_AVAILABLE')}
         </StepperDescText>
       )
     };
-  }, [etherscanLastTxReport]);
+  }, [etherscanLastTxReport, etherscanLastTokenTxReport]);
 
   const getTimeline = useCallback(() => {
-    if (!cryptoScamAddressReport) {
+    if (!nansenAddressReport) {
       return <div className="loading" />;
     }
 
-    const { success } = cryptoScamAddressReport;
     const steps: StepData[] = [];
+    const { label: labels } = nansenAddressReport;
+    const status = ProtectTxUtils.getNansenReportType(labels);
 
-    if (!success) {
+    if (labels.length === 0) {
       // No info for account
       steps.push({
         title: translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT'),
@@ -201,59 +215,30 @@ export const ProtectTxReport: FC = () => {
         )
       });
     } else {
-      const {
-        result: { status, entries }
-      } = cryptoScamAddressReport as CryptoScamDBInfoResponse;
-      if (status === 'blocked') {
-        // Malicious account
-        const accountTags = [...new Set(entries.map((e) => e.type))];
-        const accountComments = [
-          ...new Set(
-            entries.map((e) =>
-              upperFirst(
-                translateRaw('PROTECTED_TX_TIMELINE_COMMENT', {
-                  $reporter: e.reporter ? e.reporter : '',
-                  $description: e.description ? e.description : ''
-                })
-              )
-            )
-          )
-        ];
-
+      if (status === NansenReportType.MALICIOUS) {
         steps.push({
           title: translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT'),
           content: (
             <>
               <StepperDescText className="text-error">
                 {translateRaw('PROTECTED_TX_TIMELINE_MALICIOUS', {
-                  $tags: `"${accountTags.join('", "')}"`
+                  $tags: `"${labels.join('", "')}"`
                 })}
               </StepperDescText>
-              {accountComments.map((c, i) => (
-                <StepperDescText key={i} className="text-error">
-                  <br />
-                  {c}
-                </StepperDescText>
-              ))}
             </>
           )
         });
-      } else if (status === 'whitelisted') {
+      } else if (status === NansenReportType.WHITELISTED) {
         // Verified account
-        const accountComments = [
-          ...new Set(entries.map((e) => upperFirst(`${e.type}: ${e.description}`)))
-        ];
-
         steps.push({
           title: translateRaw('PROTECTED_TX_TIMELINE_KNOWN_ACCOUNT'),
           content: (
             <>
-              {accountComments.map((c, i) => (
-                <StepperDescText key={i} className="text-success">
-                  {c}
-                  <br />
-                </StepperDescText>
-              ))}
+              <StepperDescText className="text-success">
+                {translateRaw('PROTECTED_TX_TIMELINE_TAGS', {
+                  $tags: `"${labels.join('", "')}"`
+                })}
+              </StepperDescText>
             </>
           )
         });
@@ -261,9 +246,13 @@ export const ProtectTxReport: FC = () => {
         steps.push({
           title: translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT'),
           content: (
-            <StepperDescText className="text-danger">
-              {translateRaw('PROTECTED_TX_TIMELINE_NOT_SURE_ABOUT_ADDRESS')}
-            </StepperDescText>
+            <>
+              <StepperDescText className="text-no-info">
+                {translateRaw('PROTECTED_TX_TIMELINE_TAGS', {
+                  $tags: `"${labels.join('", "')}"`
+                })}
+              </StepperDescText>
+            </>
           )
         });
       }
@@ -277,7 +266,7 @@ export const ProtectTxReport: FC = () => {
         steps={[...steps, getAccountBalanceTimelineEntry(), getLastTxReportTimelineEntry()]}
       />
     );
-  }, [cryptoScamAddressReport, getAccountBalanceTimelineEntry]);
+  }, [nansenAddressReport, getAccountBalanceTimelineEntry]);
 
   const onHideModel = useCallback(
     (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
@@ -300,11 +289,11 @@ export const ProtectTxReport: FC = () => {
           <EthAddress address={receiverAddress} truncate={truncate} isCopyable={false} />
         </SEthAddress>
       )}
-      {cryptoScamAddressReport && (
+      {nansenAddressReport && (
         <h5 className="subtitle">{translateRaw('PROTECTED_TX_REPORT_SUBTITLE')}</h5>
       )}
       <div className="timeline">{getTimeline()}</div>
-      {cryptoScamAddressReport && (
+      {nansenAddressReport && receiverAddress && (
         <>
           <p className="view-comments">
             <Trans
@@ -317,9 +306,7 @@ export const ProtectTxReport: FC = () => {
                     fontSize={FONT_SIZE.BASE}
                     fontColor={COLORS.PURPLE}
                     underline={true}
-                    link={`${ETHAddressExplorer(
-                      (cryptoScamAddressReport as CryptoScamDBBaseResponse).input
-                    )}`}
+                    link={`${ETHAddressExplorer(receiverAddress)}`}
                     text="Etherscan"
                   />
                 )
@@ -344,6 +331,7 @@ export const ProtectTxReport: FC = () => {
           </p>
         </>
       )}
+      <PoweredByText provider="NANSEN" />
     </Wrapper>
   );
 };

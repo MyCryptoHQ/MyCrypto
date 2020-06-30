@@ -1,16 +1,14 @@
-import { ETHERSCAN_API_INVALID_KEY_MESSAGE, ETHERSCAN_API_MAX_LIMIT_REACHED } from './constants';
+import { ETHERSCAN_API_INVALID_KEY_MESSAGE } from './constants';
 
-interface EtherScanApiBaseResponse {
+interface EtherScanApiResponse<T> {
   status: ('1' | '0') & string;
   message: ('OK' | ETHERSCAN_API_INVALID_KEY_MESSAGE | 'NOTOK') & string;
-  result: any | ETHERSCAN_API_MAX_LIMIT_REACHED;
+  result: T;
 }
 
-export interface GetBalanceResponse extends EtherScanApiBaseResponse {
-  result: string;
-}
+export type GetBalanceResponse = EtherScanApiResponse<string>;
 
-interface GetLastTxResponseResultItem {
+interface GetTxResponseResultItem {
   blockNumber: string;
   timeStamp: string;
   hash: string;
@@ -27,11 +25,14 @@ interface GetLastTxResponseResultItem {
   cumulativeGasUsed: string;
   gasUsed: string;
   confirmations: string;
+}
+
+interface GetTokenTxResponseResultItem extends GetTxResponseResultItem {
   tokenName: string;
   tokenSymbol: string;
   tokenDecimal: string;
 }
 
-export interface GetLastTxResponse extends EtherScanApiBaseResponse {
-  result: GetLastTxResponseResultItem[];
-}
+export type GetTxResponse = EtherScanApiResponse<GetTxResponseResultItem[]>;
+
+export type GetTokenTxResponse = EtherScanApiResponse<GetTokenTxResponseResultItem[]>;

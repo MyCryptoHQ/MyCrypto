@@ -7,6 +7,5 @@ export { default as zapCard } from './ZapCard';
 export { default as ProtocolTagsList } from './ProtocolTagsList';
 export * from './ZapOption';
 export { default as ZapSelectedBanner } from './ZapSelectedBanner';
-export { default as DeFiZapLogo } from './DeFiZapLogo';
 export { BullishIndicator, BearishIndicator, NeutralIndicator } from './ZapIndicators';
 export { default as RiskAndRewardCard } from './RiskAndRewardCard';

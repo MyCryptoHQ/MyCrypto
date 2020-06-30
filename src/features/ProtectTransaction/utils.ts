@@ -10,7 +10,8 @@ import {
   PROTECTED_TX_FIXED_FEE_AMOUNT,
   PROTECTED_TX_MIN_AMOUNT
 } from '@config';
-import { ProtectTxError } from './types';
+import { ProtectTxError, NansenReportType } from './types';
+import { MALICIOUS_LABELS, WHITELISTED_LABELS } from './constants';
 import { ProtectTxContext } from './ProtectTxProvider';
 
 export abstract class ProtectTxUtils {
@@ -80,5 +81,14 @@ export abstract class ProtectTxUtils {
       }
       return false;
     };
+  }
+
+  public static getNansenReportType(labels: string[]): NansenReportType {
+    if (MALICIOUS_LABELS.some((l) => labels.includes(l))) {
+      return NansenReportType.MALICIOUS;
+    } else if (WHITELISTED_LABELS.some((l) => labels.includes(l))) {
+      return NansenReportType.WHITELISTED;
+    }
+    return NansenReportType.UNKNOWN;
   }
 }

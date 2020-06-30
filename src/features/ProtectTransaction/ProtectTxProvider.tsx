@@ -1,41 +1,39 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
-import { Asset, ITxReceipt, Network, WalletId } from '@types';
+import { Asset, ITxReceipt, Network, WalletId, IFormikFields } from '@types';
 import {
   GetBalanceResponse,
-  GetLastTxResponse,
-  CryptoScamDBInfoResponse,
-  CryptoScamDBNoInfoResponse,
-  CryptoScamDBService,
-  EtherscanService
+  GetTxResponse,
+  EtherscanService,
+  GetTokenTxResponse
 } from '@services/ApiService';
 import { AssetContext, getAssetByUUID, StoreContext } from '@services/Store';
 import { useScreenSize } from '@utils';
 
-import { SendFormCallbackType } from './types';
 import { WALLETS_CONFIG } from '../../config';
+import { NansenService, NansenServiceEntry } from '@services/ApiService/Nansen';
 
 export interface ProtectTxState {
   stepIndex: number;
   protectTxShow: boolean;
   protectTxEnabled: boolean;
-  cryptoScamAddressReport: CryptoScamDBNoInfoResponse | CryptoScamDBInfoResponse | null;
+  nansenAddressReport: NansenServiceEntry | null;
   etherscanBalanceReport: GetBalanceResponse | null;
-  etherscanLastTxReport: GetLastTxResponse | null;
+  etherscanLastTokenTxReport: GetTokenTxResponse | null;
+  etherscanLastTxReport: GetTxResponse | null;
   mainComponentDisabled: boolean;
   receiverAddress: string | null;
   network: Network | null;
   asset: Asset | null;
   isWeb3Wallet: boolean;
   web3WalletName: string | null;
+  formValues?: IFormikFields;
 }
 
 export interface ProtectTxContext {
   state: ProtectTxState;
-  formCallback: SendFormCallbackType;
-
+  updateFormValues(values: IFormikFields): void;
   handleTransactionReport(receiverAddress?: string): Promise<void>;
-  setMainTransactionFormCallback(callback: SendFormCallbackType): void;
   goToNextStep(): void;
   goToInitialStepOrFetchReport(receiverAddress?: string, network?: Network): void;
   showHideProtectTx(showOrHide: boolean): void;
@@ -48,13 +46,15 @@ export interface ProtectTxContext {
 
 export const protectTxProviderInitialState: ProtectTxState = {
   stepIndex: 0,
+  formValues: undefined,
   protectTxShow: false,
   protectTxEnabled: false,
   receiverAddress: null,
   network: null,
-  cryptoScamAddressReport: null,
+  nansenAddressReport: null,
   etherscanBalanceReport: null,
   etherscanLastTxReport: null,
+  etherscanLastTokenTxReport: null,
   asset: null,
   isWeb3Wallet: false,
   web3WalletName: null,
@@ -71,7 +71,6 @@ const ProtectTxProvider: React.FC = ({ children }) => {
   const [state, setState] = useState<ProtectTxState>({ ...protectTxProviderInitialState });
   const { isMdScreen } = useScreenSize();
 
-  const formCallback = useRef<SendFormCallbackType>(() => ({ isValid: false, values: null }));
   const protectionTxTimeoutFunction = useRef<((cb: () => ITxReceipt) => void) | null>(null);
 
   const handleTransactionReport = useCallback(
@@ -81,25 +80,25 @@ const ProtectTxProvider: React.FC = ({ children }) => {
       if (!address) return Promise.reject();
 
       const [
-        cryptoScamAddressReportResponse,
+        nansenAddressReportResponse,
         etherscanBalanceReportResponse,
+        etherscanLastTokenTxReportResponse,
         etherscanLastTxReportResponse
-      ] = await Promise.all(
-        [
-          CryptoScamDBService.check(address),
-          EtherscanService.instance.getBalance(address, network!.id),
-          EtherscanService.instance.getLastTx(address, network!.id)
-        ].map((p) => p.catch((e) => e))
-      );
+      ] = await Promise.all([
+        NansenService.check(address).catch((e) => e),
+        EtherscanService.instance.getBalance(address, network!.id).catch((e) => e),
+        EtherscanService.instance.getTokenTransactions(address, network!.id).catch((e) => e),
+        EtherscanService.instance.getTransactions(address, network!.id).catch((e) => e)
+      ]);
 
-      const cryptoScamAddressReport =
-        cryptoScamAddressReportResponse instanceof Error
-          ? {
-              input: address,
-              message: '',
-              success: false
-            }
-          : cryptoScamAddressReportResponse;
+      const nansenAddressReport = (() => {
+        if (nansenAddressReportResponse instanceof Error) {
+          return null;
+        } else if (nansenAddressReportResponse.page.length === 0) {
+          return { address, label: [] };
+        }
+        return nansenAddressReportResponse.page[0];
+      })();
 
       const etherscanBalanceReport =
         etherscanBalanceReportResponse instanceof Error ? null : etherscanBalanceReportResponse;
@@ -107,6 +106,11 @@ const ProtectTxProvider: React.FC = ({ children }) => {
       if (etherscanBalanceReportResponse instanceof Error) {
         console.error(etherscanBalanceReportResponse);
       }
+
+      const etherscanLastTokenTxReport =
+        etherscanLastTokenTxReportResponse instanceof Error
+          ? null
+          : etherscanLastTokenTxReportResponse;
 
       const etherscanLastTxReport =
         etherscanLastTxReportResponse instanceof Error ? null : etherscanLastTxReportResponse;
@@ -117,8 +121,9 @@ const ProtectTxProvider: React.FC = ({ children }) => {
 
       setState((prevState: ProtectTxState) => ({
         ...prevState,
-        cryptoScamAddressReport,
+        nansenAddressReport,
         etherscanBalanceReport,
+        etherscanLastTokenTxReport,
         etherscanLastTxReport
       }));
 
@@ -127,12 +132,9 @@ const ProtectTxProvider: React.FC = ({ children }) => {
     [state.receiverAddress, setState]
   );
 
-  const setMainTransactionFormCallback = useCallback(
-    (callback: SendFormCallbackType) => {
-      formCallback.current = callback;
-    },
-    [formCallback]
-  );
+  const updateFormValues = (values: IFormikFields) => {
+    setState((prevState) => ({ ...prevState, formValues: values }));
+  };
 
   const goToNextStep = useCallback(() => {
     setState((prevState) => {
@@ -147,7 +149,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
 
   const goToInitialStepOrFetchReport = useCallback(
     (receiverAddress?: string, network?: Network) => {
-      if (state.protectTxEnabled || isMyCryptoMember) {
+      if (state.protectTxEnabled || (isMyCryptoMember && state.stepIndex > 0)) {
         setState((prevState) => ({
           ...prevState,
           cryptoScamAddressReport: null,
@@ -164,7 +166,9 @@ const ProtectTxProvider: React.FC = ({ children }) => {
           stepIndex: 0,
           cryptoScamAddressReport: null,
           etherscanLastTxReport: null,
-          etherscanBalanceReport: null
+          etherscanBalanceReport: null,
+          receiverAddress: receiverAddress ? receiverAddress : prevState.receiverAddress,
+          network: network ? network : prevState.network
         }));
       }
     },
@@ -263,20 +267,18 @@ const ProtectTxProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     const isDisabled =
-      state.protectTxShow && !state.protectTxEnabled && state.cryptoScamAddressReport === null;
+      state.protectTxShow && !state.protectTxEnabled && state.nansenAddressReport === null;
 
     setState((prevState) => ({
       ...prevState,
       mainComponentDisabled: isDisabled
     }));
-  }, [state.protectTxShow, state.stepIndex, state.cryptoScamAddressReport, state.protectTxEnabled]);
+  }, [state.protectTxShow, state.stepIndex, state.nansenAddressReport, state.protectTxEnabled]);
 
   const providerState: ProtectTxContext = {
     state,
-    formCallback: formCallback.current,
-
+    updateFormValues,
     handleTransactionReport,
-    setMainTransactionFormCallback,
     goToNextStep,
     goToInitialStepOrFetchReport,
     showHideProtectTx,

@@ -19,6 +19,11 @@ import twitter from '@assets/icons/social/twitter.svg';
 import website from '@assets/icons/website.svg';
 import whitepaper from '@assets/icons/whitepaper.svg';
 
+import nansenLogo from '@assets/images/credits/credits-nansen.svg';
+import ensLogo from '@assets/images/ens/ensIcon.svg';
+import coinGeckoLogo from '@assets/images/credits/credits-coingecko.svg';
+import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
+
 const icons = {
   back,
   expand,
@@ -35,7 +40,12 @@ const icons = {
   twitter,
 
   website,
-  whitepaper
+  whitepaper,
+
+  nansenLogo,
+  ensLogo,
+  coinGeckoLogo,
+  zapperLogo
 };
 
 const StyledInlineSVG = styled(InlineSVG)`

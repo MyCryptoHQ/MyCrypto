@@ -345,12 +345,11 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
           onComplete(fields);
         }}
         render={({ errors, setFieldValue, setFieldTouched, touched, values }) => {
-          if (getProTxValue(['setMainTransactionFormCallback'])) {
-            getProTxValue(['setMainTransactionFormCallback'])(() => ({
-              isValid: isFormValid,
-              values
-            }));
-          }
+          useEffect(() => {
+            if (getProTxValue(['updateFormValues'])) {
+              getProTxValue(['updateFormValues'])(values);
+            }
+          }, [values]);
 
           // Set gas estimates if default asset is selected
           useEffectOnce(() => {
@@ -363,13 +362,17 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
           });
 
           useEffect(() => {
-            if (getProTxValue(['state']).protectTxShow) {
-              if (getProTxValue(['goToInitialStepOrFetchReport'])) {
+            const ptxState = getProTxValue(['state']);
+            if (ptxState.protectTxShow) {
+              if (
+                getProTxValue(['goToInitialStepOrFetchReport']) &&
+                ptxState.receiverAddress !== values.address.value
+              ) {
                 const { address, network } = values;
                 getProTxValue(['goToInitialStepOrFetchReport'])(address.value, network);
               }
             }
-          }, [values]);
+          }, [values.address.value]);
 
           const toggleAdvancedOptions = () => {
             setFieldValue('advancedTransaction', !values.advancedTransaction);

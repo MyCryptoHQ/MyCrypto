@@ -9,14 +9,13 @@ import { parseEther } from 'ethers/utils';
 import translate, { translateRaw } from '@translations';
 import { SPACING } from '@theme';
 import { IAccount, Network, StoreAccount, Asset } from '@types';
-import { AccountDropdown, InlineMessage, AmountInput } from '@components';
+import { AccountDropdown, InlineMessage, AmountInput, PoweredByText } from '@components';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
 import { ETHUUID } from '@utils';
 
 import { ZapInteractionState, ISimpleTxFormFull } from '../types';
 import ZapSelectedBanner from './ZapSelectedBanner';
-import DeFiZapLogo from './DeFiZapLogo';
 import { IZapConfig } from '../config';
 import { StoreContext } from '@services/Store/StoreProvider';
 import { AssetContext } from '@services/Store/Asset';
@@ -193,7 +192,7 @@ export const ZapFormUI = ({
                 {translateRaw('ACTION_6')}
               </FormFieldSubmitButton>
               <DeFiZapLogoContainer>
-                <DeFiZapLogo />
+                <PoweredByText provider="ZAPPER" />
               </DeFiZapLogoContainer>
             </Form>
           );

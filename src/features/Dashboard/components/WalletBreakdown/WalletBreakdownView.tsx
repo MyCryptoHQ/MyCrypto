@@ -5,14 +5,13 @@ import translate, { translateRaw } from '@translations';
 import { EMPTYUUID, buildTotalFiatValue } from '@utils';
 import { TUuid, Balance } from '@types';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
-import { AssetIcon, Currency, Typography, Tooltip } from '@components';
+import { AssetIcon, Currency, Typography, Tooltip, PoweredByText } from '@components';
 
 import BreakdownChart from './BreakdownChart';
 import NoAssets from './NoAssets';
 import { calculateShownIndex } from './helpers';
 
 import moreIcon from '@assets/images/icn-more.svg';
-import coinGeckoIcon from '@assets/images/credits/credits-coingecko.png';
 import { BalancesDetailProps } from './types';
 
 export const SMALLEST_CHART_SHARE_SUPPORTED = 0.03; // 3%
@@ -201,12 +200,6 @@ const PoweredBy = styled.div`
   position: absolute;
   bottom: 20px;
   left: 20px;
-  font-size: 10px;
-  color: #b5bfc8;
-
-  > img {
-    height: 25px;
-  }
 `;
 
 const initialSelectedAssetIndex = { chart: -1, balance: 0 };
@@ -324,7 +317,7 @@ export default function WalletBreakdownView({
           </>
         )}
         <PoweredBy>
-          Powered by <img src={coinGeckoIcon} title="CoinGecko" alt="CoinGecko" />
+          <PoweredByText provider="COINGECKO" />
         </PoweredBy>
       </BreakDownChartWrapper>
       <PanelDivider mobileOnly={true} />

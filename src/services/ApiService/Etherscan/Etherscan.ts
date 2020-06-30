@@ -1,8 +1,8 @@
 import { AxiosInstance } from 'axios';
 import { default as ApiService } from '../ApiService';
-import { ETHERSCAN_API_MAX_LIMIT_REACHED_TEXT, ETHERSCAN_API_URLS } from './constants';
+import { ETHERSCAN_API_URLS } from './constants';
 import { NetworkId } from '@types';
-import { GetBalanceResponse, GetLastTxResponse } from './types';
+import { GetBalanceResponse, GetTxResponse, GetTokenTxResponse } from './types';
 
 let instantiated: boolean = false;
 export default class EtherscanService {
@@ -46,55 +46,80 @@ export default class EtherscanService {
       );
     }
 
-    const params = {
-      module: 'account',
-      action: 'balance',
-      tag: 'latest',
-      address,
-      apiKey: ''
-    };
+    try {
+      const params = {
+        module: 'account',
+        action: 'balance',
+        tag: 'latest',
+        address
+      };
 
-    const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
+      const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
 
-    if (data.status === '1') {
-      return data;
-    } else if (data.status === '0' && data.result === ETHERSCAN_API_MAX_LIMIT_REACHED_TEXT) {
-      // @todo: Remove after proxy
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      return await this.getBalance(address, networkId);
+      if (data.status === '1') {
+        return data;
+      }
+      return null;
+    } catch (e) {
+      throw e;
     }
-    return null;
   };
 
-  public getLastTx = async (
+  public getTokenTransactions = async (
     address: string,
     networkId: NetworkId = 'Ethereum'
-  ): Promise<GetLastTxResponse | null> => {
+  ): Promise<GetTokenTxResponse | null> => {
     if (!Object.keys(ETHERSCAN_API_URLS).includes(networkId)) {
       throw new Error(
         `Not supported networkId. Supported: '${Object.keys(ETHERSCAN_API_URLS).join(', ')}'`
       );
     }
 
-    const params = {
-      module: 'account',
-      action: 'tokentx',
-      startblock: 0,
-      endblock: 99999999,
-      address,
-      sort: 'desc',
-      apiKey: ''
-    };
+    try {
+      const params = {
+        module: 'account',
+        action: 'tokentx',
+        address,
+        sort: 'desc'
+      };
 
-    const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
+      const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
 
-    if (data.status === '1') {
-      return data;
-    } else if (data.status === '0' && data.result === ETHERSCAN_API_MAX_LIMIT_REACHED_TEXT) {
-      // @todo: Remove after proxy
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      return await this.getLastTx(address, networkId);
+      if (data.status === '1' || data.message === 'No transactions found') {
+        return data;
+      }
+      return null;
+    } catch (e) {
+      throw e;
     }
-    return null;
+  };
+
+  public getTransactions = async (
+    address: string,
+    networkId: NetworkId = 'Ethereum'
+  ): Promise<GetTxResponse | null> => {
+    if (!Object.keys(ETHERSCAN_API_URLS).includes(networkId)) {
+      throw new Error(
+        `Not supported networkId. Supported: '${Object.keys(ETHERSCAN_API_URLS).join(', ')}'`
+      );
+    }
+
+    try {
+      const params = {
+        module: 'account',
+        action: 'txlist',
+        address,
+        sort: 'desc'
+      };
+
+      const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
+
+      if (data.status === '1' || data.message === 'No transactions found') {
+        return data;
+      }
+      return null;
+    } catch (e) {
+      throw e;
+    }
   };
 }

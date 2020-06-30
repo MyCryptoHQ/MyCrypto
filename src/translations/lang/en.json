@@ -564,7 +564,7 @@
     "PROTECTED_TX_FEE": "Protected Transaction Fee:",
     "PROTECTED_TX_GET_TX_PROTECTION": "Get Transaction Protection",
     "PROTECTED_TX_GET_TX_PROTECTION_DESC": "Gain valuable information about the recipient address and the ability to undo your transaction within 20 seconds.",
-    "PROTECTED_TX_LAST_SENT_TOKEN": "Last Sent Token:",
+    "PROTECTED_TX_LAST_SENT_TX": "Last Sent Transaction:",
     "PROTECTED_TX_MODIFY_TX": "You can undo or modify this transaction for the next $sec sec",
     "PROTECTED_TX_NOT_WEB3_WALLET_DESC": "Once you confirm and sign the transaction, you'll have 20 seconds to cancel sending if you change your mind. Still not convinced? Learn more.",
     "PROTECTED_TX_NO_INFORMATION_AVAILABLE": "No information available!",
@@ -593,6 +593,7 @@
     "PROTECTED_TX_THIS_TX_IS_PROTECTED_DESC": "Review the report for the recipient address to verify that it is safe before sending your funds.",
     "PROTECTED_TX_TIMELINE_COMMENT": "$reporter has the following note about this address: \"$description\"",
     "PROTECTED_TX_TIMELINE_KNOWN_ACCOUNT": "KNOWN ACCOUNT:",
+    "PROTECTED_TX_TIMELINE_TAGS": "The labels for this address are: $tags",
     "PROTECTED_TX_TIMELINE_MALICIOUS": "Malicious: This account has been marked as $tags",
     "PROTECTED_TX_TIMELINE_NOT_SURE_ABOUT_ADDRESS": "We are not sure what is going on with this address.",
     "PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT": "UNKNOWN ACCOUNT:",
@@ -997,6 +998,7 @@
     "ERROR_HIGH_TRANSACTION_FEE_HIGH": "Warning! High transaction fee: $fee. Please be sure you wish to proceed.",
     "ERROR_HIGH_TRANSACTION_FEE_VERY_HIGH": "Danger! Very high transaction fee: $fee. Please be sure you wish to proceed.",
     "ERROR_TRANSACTION_FEE_USE_LOWER": "Please note the transaction fee of $fee. It's recommended to use a lower transaction fee unless you need this transaction to be confirmed swiftly.",
-    "WARNING_TRANSACTION_FEE": "The transaction fee of $fee seems to be greater than the amount you are sending ($amount). It's recommended to use a lower transaction fee unless you need this transaction to be confirmed swiftly."
+    "WARNING_TRANSACTION_FEE": "The transaction fee of $fee seems to be greater than the amount you are sending ($amount). It's recommended to use a lower transaction fee unless you need this transaction to be confirmed swiftly.",
+    "POWERED_BY": "Powered By"
   }
 }

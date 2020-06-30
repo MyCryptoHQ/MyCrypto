@@ -6,7 +6,12 @@ export { DeFiReserveMapService } from './DeFiReserveMap';
 export { GithubService } from './Github';
 export { DexService } from './Dex';
 export { MyCryptoApiService } from './MyCryptoApi';
-export { GetBalanceResponse, GetLastTxResponse, EtherscanService } from './Etherscan';
+export {
+  GetBalanceResponse,
+  GetTxResponse,
+  GetTokenTxResponse,
+  EtherscanService
+} from './Etherscan';
 export {
   CryptoScamDBNoInfoResponse,
   CryptoScamDBBaseResponse,

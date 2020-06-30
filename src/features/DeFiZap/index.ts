@@ -1,1 +1,1 @@
-export { ZapSelectedBanner, DeFiZapLogo, DashboardZapCTA, ProtocolTagsList } from './components';
+export { ZapSelectedBanner, DashboardZapCTA, ProtocolTagsList } from './components';
