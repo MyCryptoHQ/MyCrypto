@@ -11,7 +11,7 @@ import { bigNumberify } from 'ethers/utils';
 import { BigNumber as EthScanBN } from '@ethersproject/bignumber';
 
 import { ETHSCAN_NETWORKS, ETH_SCAN_BATCH_SIZE } from '@config';
-import { TAddress, StoreAccount, StoreAsset, Asset, Network, TBN, ExtendedAsset  } from '@types';
+import { TAddress, StoreAccount, StoreAsset, Asset, Network, TBN, ExtendedAsset } from '@types';
 import { ProviderHandler } from '@services/EthService';
 
 export type BalanceMap<T = BN> = EthScanBalanceMap<T>;
