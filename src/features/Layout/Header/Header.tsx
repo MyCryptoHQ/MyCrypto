@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import { SelectLanguage } from '@features/Drawer/screens';
 import { links } from './constants';
-import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING, SPACING } from '@theme';
+import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from '@theme';
 import { ANALYTICS_CATEGORIES, SettingsContext } from '@services';
 import { ROUTE_PATHS, LATEST_NEWS_URL, getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import translate, { languages } from '@translations';
@@ -251,7 +251,6 @@ const CenteredBannerText = styled.div`
   justify-content: center;
 
   & a {
-    margin: 0px ${SPACING.XS};
     &:hover {
       font-weight: normal;
     }
@@ -259,7 +258,9 @@ const CenteredBannerText = styled.div`
 `;
 
 export const ANNOUNCEMENT_MSG = () => (
-  <CenteredBannerText>{translate('BETA_ANNOUNCEMENT')}</CenteredBannerText>
+  <CenteredBannerText>
+    <div>{translate('BETA_ANNOUNCEMENT')}</div>
+  </CenteredBannerText>
 );
 
 const TitleIconWrapper = styled.div`
