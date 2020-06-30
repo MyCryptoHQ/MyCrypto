@@ -247,9 +247,7 @@ const SBanner = styled(Banner)`
 `;
 
 const CenteredBannerText = styled.div`
-  display: flex;
-  justify-content: center;
-
+  text-align: center;
   & a {
     &:hover {
       font-weight: normal;
@@ -258,9 +256,7 @@ const CenteredBannerText = styled.div`
 `;
 
 export const ANNOUNCEMENT_MSG = () => (
-  <CenteredBannerText>
-    <div>{translate('BETA_ANNOUNCEMENT')}</div>
-  </CenteredBannerText>
+  <CenteredBannerText>{translate('BETA_ANNOUNCEMENT')}</CenteredBannerText>
 );
 
 const TitleIconWrapper = styled.div`
