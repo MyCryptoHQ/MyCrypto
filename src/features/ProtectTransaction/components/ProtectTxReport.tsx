@@ -2,7 +2,12 @@ import React, { FC, useCallback, useContext } from 'react';
 import styled from 'styled-components';
 
 import { Trans, translateRaw } from '@translations';
-import { isValidETHAddress } from '@services';
+import {
+  isValidETHAddress,
+  GetTxResponse,
+  GetBalanceResponse,
+  GetTokenTxResponse
+} from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import WizardIcon from '@components/icons/WizardIcon';
@@ -16,6 +21,8 @@ import ProtectTxBase from './ProtectTxBase';
 import { ProtectTxContext } from '../ProtectTxProvider';
 import { ProtectTxUtils } from '../utils';
 import { NansenReportType } from '../types';
+import { NansenServiceEntry } from '@services/ApiService/Nansen';
+import { Asset } from '@types';
 
 const Wrapper = styled(ProtectTxBase)`
   .title-address {
@@ -121,123 +128,6 @@ export const ProtectTxReport: FC = () => {
 
   const { isSmScreen } = useScreenSize();
 
-  const getAccountBalanceTimelineEntry = useCallback((): StepData => {
-    const balance = ProtectTxUtils.getBalance(etherscanBalanceReport);
-    const assetTicker = asset && asset.ticker;
-
-    return {
-      title: translateRaw('PROTECTED_TX_RECIPIENT_ACCOUNT_BALANCE'),
-      content: (
-        <StepperDescText className="text-muted">
-          {balance ? (
-            <>
-              {balance} {assetTicker}
-            </>
-          ) : (
-            translateRaw('PROTECTED_TX_UNKNOWN_BALANCE')
-          )}
-        </StepperDescText>
-      )
-    };
-  }, [etherscanBalanceReport]);
-
-  const getLastTxReportTimelineEntry = useCallback((): StepData => {
-    const lastSentTx = ProtectTxUtils.getLastTx(
-      etherscanLastTxReport,
-      etherscanLastTokenTxReport,
-      receiverAddress
-    );
-
-    return {
-      title: (
-        <>
-          {translateRaw('PROTECTED_TX_RECIPIENT_ACCOUNT_ACTIVITY')}
-          <br />
-          {translateRaw('PROTECTED_TX_LAST_SENT_TX')}
-        </>
-      ),
-      content: (
-        <StepperDescText className="text-muted">
-          {lastSentTx && `${lastSentTx.value} ${lastSentTx.ticker} on ${lastSentTx.timestamp}`}
-          {!lastSentTx && translateRaw('PROTECTED_TX_NO_INFORMATION_AVAILABLE')}
-        </StepperDescText>
-      )
-    };
-  }, [etherscanLastTxReport, etherscanLastTokenTxReport]);
-
-  const getTimeline = useCallback(() => {
-    if (!nansenAddressReport) {
-      return <div className="loading" />;
-    }
-
-    const steps: StepData[] = [];
-    const { label: labels } = nansenAddressReport;
-    const status = ProtectTxUtils.getNansenReportType(labels);
-
-    if (labels.length === 0) {
-      // No info for account
-      steps.push({
-        title: translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT'),
-        content: (
-          <StepperDescText className="text-no-info">
-            {translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT_DESC')}
-          </StepperDescText>
-        )
-      });
-    } else {
-      if (status === NansenReportType.MALICIOUS) {
-        steps.push({
-          title: translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT'),
-          content: (
-            <>
-              <StepperDescText className="text-error">
-                {translateRaw('PROTECTED_TX_TIMELINE_MALICIOUS', {
-                  $tags: `"${labels.join('", "')}"`
-                })}
-              </StepperDescText>
-            </>
-          )
-        });
-      } else if (status === NansenReportType.WHITELISTED) {
-        // Verified account
-        steps.push({
-          title: translateRaw('PROTECTED_TX_TIMELINE_KNOWN_ACCOUNT'),
-          content: (
-            <>
-              <StepperDescText className="text-success">
-                {translateRaw('PROTECTED_TX_TIMELINE_TAGS', {
-                  $tags: `"${labels.join('", "')}"`
-                })}
-              </StepperDescText>
-            </>
-          )
-        });
-      } else {
-        steps.push({
-          title: translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT'),
-          content: (
-            <>
-              <StepperDescText className="text-no-info">
-                {translateRaw('PROTECTED_TX_TIMELINE_TAGS', {
-                  $tags: `"${labels.join('", "')}"`
-                })}
-              </StepperDescText>
-            </>
-          )
-        });
-      }
-    }
-
-    return (
-      <VerticalStepper
-        currentStep={-1}
-        size="lg"
-        color={COLORS.PURPLE}
-        steps={[...steps, getAccountBalanceTimelineEntry(), getLastTxReportTimelineEntry()]}
-      />
-    );
-  }, [nansenAddressReport, getAccountBalanceTimelineEntry]);
-
   const onHideModel = useCallback(
     (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
       e.preventDefault();
@@ -247,6 +137,15 @@ export const ProtectTxReport: FC = () => {
       }
     },
     [showHideProtectTx]
+  );
+
+  const steps = getTimelineSteps(
+    nansenAddressReport,
+    etherscanLastTxReport,
+    etherscanLastTokenTxReport,
+    etherscanBalanceReport,
+    asset,
+    receiverAddress
   );
 
   return (
@@ -262,7 +161,13 @@ export const ProtectTxReport: FC = () => {
       {nansenAddressReport && (
         <h5 className="subtitle">{translateRaw('PROTECTED_TX_REPORT_SUBTITLE')}</h5>
       )}
-      <div className="timeline">{getTimeline()}</div>
+      <div className="timeline">
+        {nansenAddressReport ? (
+          <VerticalStepper currentStep={-1} size="lg" color={COLORS.PURPLE} steps={steps} />
+        ) : (
+          <div className="loading" />
+        )}
+      </div>
       {nansenAddressReport && receiverAddress && (
         <>
           <p className="view-comments">
@@ -304,4 +209,132 @@ export const ProtectTxReport: FC = () => {
       <PoweredByText provider="NANSEN" />
     </Wrapper>
   );
+};
+
+const getAccountBalanceTimelineEntry = (
+  etherscanBalanceReport: GetBalanceResponse | null,
+  asset: Asset | null
+): StepData => {
+  const balance = ProtectTxUtils.getBalance(etherscanBalanceReport);
+  const assetTicker = asset && asset.ticker;
+
+  return {
+    title: translateRaw('PROTECTED_TX_RECIPIENT_ACCOUNT_BALANCE'),
+    content: (
+      <StepperDescText className="text-muted">
+        {balance ? (
+          <>
+            {balance} {assetTicker}
+          </>
+        ) : (
+          translateRaw('PROTECTED_TX_UNKNOWN_BALANCE')
+        )}
+      </StepperDescText>
+    )
+  };
+};
+
+const getLastTxReportTimelineEntry = (
+  etherscanLastTxReport: GetTxResponse | null,
+  etherscanLastTokenTxReport: GetTokenTxResponse | null,
+  receiverAddress: string | null
+): StepData => {
+  const lastSentTx = ProtectTxUtils.getLastTx(
+    etherscanLastTxReport,
+    etherscanLastTokenTxReport,
+    receiverAddress
+  );
+
+  return {
+    title: (
+      <>
+        {translateRaw('PROTECTED_TX_RECIPIENT_ACCOUNT_ACTIVITY')}
+        <br />
+        {translateRaw('PROTECTED_TX_LAST_SENT_TX')}
+      </>
+    ),
+    content: (
+      <StepperDescText className="text-muted">
+        {lastSentTx ? (
+          <>
+            {lastSentTx.value} {lastSentTx.ticker} on {lastSentTx.timestamp}
+          </>
+        ) : (
+          translateRaw('PROTECTED_TX_NO_INFORMATION_AVAILABLE')
+        )}
+      </StepperDescText>
+    )
+  };
+};
+
+const getNansenStep = (nansenAddressReport: NansenServiceEntry | null) => {
+  if (nansenAddressReport && nansenAddressReport.label.length > 0) {
+    const { label: labels } = nansenAddressReport;
+    const status = ProtectTxUtils.getNansenReportType(labels);
+    switch (status) {
+      case NansenReportType.MALICIOUS:
+        return {
+          title: translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT'),
+          content: (
+            <>
+              <StepperDescText className="text-error">
+                {translateRaw('PROTECTED_TX_TIMELINE_MALICIOUS', {
+                  $tags: `"${labels.join('", "')}"`
+                })}
+              </StepperDescText>
+            </>
+          )
+        };
+      case NansenReportType.WHITELISTED:
+        return {
+          title: translateRaw('PROTECTED_TX_TIMELINE_KNOWN_ACCOUNT'),
+          content: (
+            <>
+              <StepperDescText className="text-success">
+                {translateRaw('PROTECTED_TX_TIMELINE_TAGS', {
+                  $tags: `"${labels.join('", "')}"`
+                })}
+              </StepperDescText>
+            </>
+          )
+        };
+      case NansenReportType.UNKNOWN:
+        return {
+          title: translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT'),
+          content: (
+            <>
+              <StepperDescText className="text-no-info">
+                {translateRaw('PROTECTED_TX_TIMELINE_TAGS', {
+                  $tags: `"${labels.join('", "')}"`
+                })}
+              </StepperDescText>
+            </>
+          )
+        };
+    }
+  }
+  // No info for account
+  return {
+    title: translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT'),
+    content: (
+      <StepperDescText className="text-no-info">
+        {translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT_DESC')}
+      </StepperDescText>
+    )
+  };
+};
+
+const getTimelineSteps = (
+  nansenAddressReport: NansenServiceEntry | null,
+  etherscanLastTxReport: GetTxResponse | null,
+  etherscanLastTokenTxReport: GetTokenTxResponse | null,
+  etherscanBalanceReport: GetBalanceResponse | null,
+  asset: Asset | null,
+  receiverAddress: string | null
+) => {
+  return [
+    getNansenStep(nansenAddressReport),
+    getAccountBalanceTimelineEntry(etherscanBalanceReport, asset),
+    getLastTxReportTimelineEntry(etherscanLastTxReport, etherscanLastTokenTxReport, receiverAddress)
+  ];
 };
