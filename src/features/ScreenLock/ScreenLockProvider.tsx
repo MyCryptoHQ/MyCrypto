@@ -134,10 +134,6 @@ class ScreenLockProvider extends Component<
       appContext.handleCountdownEnded();
       return;
     }
-    //Start the lock screen countdown only if user is on one of the dashboard pages
-    if (!this.props.location.pathname.includes(ROUTE_PATHS.DASHBOARD.path)) {
-      return;
-    }
     if (this.state.locked || this.state.locking) {
       return;
     }
@@ -188,17 +184,17 @@ class ScreenLockProvider extends Component<
     this.setState({ locking: false, locked: true });
     document.title = translateRaw('SCREEN_LOCK_TAB_TITLE_LOCKED');
 
+    const isOutsideLock = (path: string) => !path.includes('screen-lock');
+
     if (
-      this.props.location.pathname.includes(ROUTE_PATHS.DASHBOARD.path) ||
-      this.props.location.pathname.includes(ROUTE_PATHS.SCREEN_LOCK_NEW.path) ||
-      this.props.location.pathname.includes(ROUTE_PATHS.NO_ACCOUNTS.path) ||
-      this.props.location.pathname === ROUTE_PATHS.ROOT.path
+      isOutsideLock(this.props.location.pathname) ||
+      this.props.location.pathname.includes(ROUTE_PATHS.SCREEN_LOCK_NEW.path)
     ) {
       this.props.history.push(ROUTE_PATHS.SCREEN_LOCK_LOCKED.path);
     }
 
     this.props.history.listen((location) => {
-      if (this.state.locked && location.pathname.includes(ROUTE_PATHS.DASHBOARD.path)) {
+      if (this.state.locked && isOutsideLock(location.pathname)) {
         this.props.history.push(ROUTE_PATHS.SCREEN_LOCK_LOCKED.path);
       }
     });
