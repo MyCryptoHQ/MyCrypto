@@ -109,9 +109,9 @@ export abstract class ProtectTxUtils {
 
     if (
       etherscanLastTxReport &&
-      etherscanLastTxReport.result.length &&
+      etherscanLastTxReport.result.length >= 0 &&
       etherscanLastTokenTxReport &&
-      etherscanLastTokenTxReport.result.length
+      etherscanLastTokenTxReport.result.length >= 0
     ) {
       const { result: txResult } = etherscanLastTxReport;
       const { result: tokenResult } = etherscanLastTokenTxReport;
