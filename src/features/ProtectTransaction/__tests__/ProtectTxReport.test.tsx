@@ -3,88 +3,62 @@ import { simpleRender } from 'test-utils';
 import find from 'lodash/find';
 
 import { translateRaw } from '@translations';
-import { GetBalanceResponse, GetTxResponse } from '@services';
 import { TUuid, TAddress } from '@types';
-import { ETHUUID } from '@utils';
+import { ETHUUID, noOp } from '@utils';
 import { assets } from '@database/seed/assets';
 
-import { ProtectTxReport } from '../components/ProtectTxReport';
-import { ProtectTxContext, ProtectTxState } from '../ProtectTxProvider';
+import { ProtectTxReportUI } from '../components/ProtectTxReport';
+import { PTXReport, NansenReportType } from '../types';
 
-const asset = find(assets, { uuid: ETHUUID as TUuid });
+const asset = find(assets, { uuid: ETHUUID as TUuid })!;
 
-const etherscanBalanceReport: GetBalanceResponse = {
-  message: 'OK',
-  status: '1',
-  result: '547876500000000000'
-};
-
-const etherscanLastTxReport: GetTxResponse = {
-  status: '1',
-  message: 'OK',
-  result: []
-};
-
-const unknownProviderState: Partial<ProtectTxState> = {
+const unknownReport: PTXReport = {
   asset,
-  isWeb3Wallet: false,
-  receiverAddress: '0x88F7B1E26c3A52CA3cD8aF4ba1b448391eb31d88',
-  etherscanBalanceReport,
-  etherscanLastTxReport,
-  nansenAddressReport: {
-    address: '0x88F7B1E26c3A52CA3cD8aF4ba1b448391eb31d88' as TAddress,
-    label: []
-  }
+  address: '0x88F7B1E26c3A52CA3cD8aF4ba1b448391eb31d88' as TAddress,
+  labels: [],
+  status: NansenReportType.UNKNOWN,
+  balance: '0',
+  lastTransaction: { ticker: 'ETH', value: '1', timestamp: '1593632079' }
 };
 
-const scamProviderState: Partial<ProtectTxState> = {
-  ...unknownProviderState,
-  receiverAddress: '0x820C415a17Bf165a174e6B55232D956202d9470f',
-  nansenAddressReport: {
-    address: '0x88F7B1E26c3A52CA3cD8aF4ba1b448391eb31d88' as TAddress,
-    label: ['Scam']
-  }
+const scamReport: PTXReport = {
+  ...unknownReport,
+  address: '0x820C415a17Bf165a174e6B55232D956202d9470f' as TAddress,
+  labels: ['Scam'],
+  status: NansenReportType.MALICIOUS
 };
 
-const verifiedProviderState: Partial<ProtectTxState> = {
-  ...unknownProviderState,
-  receiverAddress: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-  nansenAddressReport: {
-    address: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520' as TAddress,
-    label: ['MyCrypto: Donate']
-  }
+const verifiedReport: PTXReport = {
+  ...unknownReport,
+  address: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520' as TAddress,
+  labels: ['MyCrypto: Donate'],
+  status: NansenReportType.WHITELISTED
+};
+
+const renderComponent = (report: PTXReport) => {
+  return simpleRender(<ProtectTxReportUI report={report} onHide={noOp} isWeb3={false} />);
 };
 
 /* Test components */
 describe('ProtectTxReport', () => {
-  const component = (state: Partial<ProtectTxState>) => (
-    <ProtectTxContext.Provider value={{ state } as any}>
-      <ProtectTxReport />
-    </ProtectTxContext.Provider>
-  );
-
-  const renderComponent = (state: Partial<ProtectTxState>) => {
-    return simpleRender(component(state));
-  };
-
   test('Can render unknown state', () => {
-    const { getByText } = renderComponent(unknownProviderState);
+    const { getByText } = renderComponent(unknownReport);
     const selector = translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT').trim();
     expect(getByText(selector)).toBeInTheDocument();
   });
 
   test('Can render scam state', () => {
-    const { getByText } = renderComponent(scamProviderState);
+    const { getByText } = renderComponent(scamReport);
     const selector = translateRaw('PROTECTED_TX_TIMELINE_MALICIOUS', {
-      $tags: `"${scamProviderState.nansenAddressReport?.label[0]}"`
+      $tags: `"${scamReport.labels![0]}"`
     }).trim();
     expect(getByText(selector)).toBeInTheDocument();
   });
 
   test('Can render verified state', () => {
-    const { getByText } = renderComponent(verifiedProviderState);
+    const { getByText } = renderComponent(verifiedReport);
     const selector = translateRaw('PROTECTED_TX_TIMELINE_TAGS', {
-      $tags: `"${verifiedProviderState.nansenAddressReport?.label[0]}"`
+      $tags: `"${verifiedReport.labels![0]}"`
     }).trim();
     expect(
       getByText(translateRaw('PROTECTED_TX_TIMELINE_KNOWN_ACCOUNT').trim())
