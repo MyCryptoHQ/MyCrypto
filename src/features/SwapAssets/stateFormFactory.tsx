@@ -14,7 +14,7 @@ import {
   generateAssetUUID
 } from '@utils';
 import { DexService, NetworkContext, getNetworkById } from '@services';
-import { StoreAccount } from '@types';
+import { StoreAccount, ISwapAsset } from '@types';
 import {
   DEFAULT_NETWORK,
   MYC_DEXAG_COMMISSION_RATE,
@@ -22,7 +22,7 @@ import {
   DEFAULT_NETWORK_SYMBOL
 } from '@config';
 
-import { ISwapAsset, LAST_CHANGED_AMOUNT, SwapFormState } from './types';
+import { LAST_CHANGED_AMOUNT, SwapFormState } from './types';
 
 const swapFormInitialState = {
   assets: [],

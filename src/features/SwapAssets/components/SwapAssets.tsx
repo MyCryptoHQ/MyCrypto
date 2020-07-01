@@ -15,9 +15,8 @@ import {
 import { SPACING, COLORS } from '@theme';
 import { trimBN } from '@utils';
 
-import { ISwapAsset } from '../types';
 import { getUnselectedAssets, getAccountsWithAssetBalance } from '../helpers';
-import { StoreAccount } from '@types';
+import { StoreAccount, ISwapAsset } from '@types';
 import { StoreContext } from '@services/Store';
 
 const FormWrapper = styled.div`
@@ -226,7 +225,7 @@ export default function SwapAssets(props: Props) {
           assets={ownedAssets}
           label={translateRaw('X_ASSET')}
           onSelect={handleFromAssetSelected}
-          showOnlyTicker={true}
+          showOnlySymbol={true}
           disabled={isCalculatingToAmount || isCalculatingFromAmount}
           searchable={true}
         />
@@ -249,7 +248,7 @@ export default function SwapAssets(props: Props) {
           assets={filteredAssets}
           label={translateRaw('ASSET')}
           onSelect={handleToAssetSelected}
-          showOnlyTicker={true}
+          showOnlySymbol={true}
           disabled={isCalculatingToAmount || isCalculatingFromAmount}
           searchable={true}
         />

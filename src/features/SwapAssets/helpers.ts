@@ -1,13 +1,20 @@
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
-import { StoreAccount, ITxConfig, IHexStrTransaction, ITxObject, StoreAsset } from '@types';
+import {
+  StoreAccount,
+  ITxConfig,
+  IHexStrTransaction,
+  ITxObject,
+  StoreAsset,
+  ISwapAsset
+} from '@types';
 import { getAssetByUUID, getAssetByTicker, DexService } from '@services';
 import { hexToString, appendGasPrice, appendSender } from '@services/EthService';
 import { WALLET_STEPS } from '@components';
 import { weiToFloat } from '@utils';
 
-import { ISwapAsset, IAssetPair, LAST_CHANGED_AMOUNT } from './types';
+import { IAssetPair, LAST_CHANGED_AMOUNT } from './types';
 
 export const getTradeOrder = (assetPair: IAssetPair, account: StoreAccount) => async () => {
   const { lastChangedAmount, fromAsset, fromAmount, toAsset, toAmount } = assetPair;
