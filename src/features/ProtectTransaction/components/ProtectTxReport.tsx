@@ -2,12 +2,6 @@ import React, { FC, useCallback, useContext } from 'react';
 import styled from 'styled-components';
 
 import { Trans, translateRaw } from '@translations';
-import {
-  isValidETHAddress,
-  GetTxResponse,
-  GetBalanceResponse,
-  GetTokenTxResponse
-} from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import WizardIcon from '@components/icons/WizardIcon';
@@ -20,9 +14,7 @@ import { truncate, useScreenSize } from '@utils';
 import ProtectTxBase from './ProtectTxBase';
 import { ProtectTxContext } from '../ProtectTxProvider';
 import { ProtectTxUtils } from '../utils';
-import { NansenReportType } from '../types';
-import { NansenServiceEntry } from '@services/ApiService/Nansen';
-import { Asset } from '@types';
+import { NansenReportType, PTXReport } from '../types';
 
 const Wrapper = styled(ProtectTxBase)`
   .title-address {
@@ -114,19 +106,10 @@ export const ProtectTxReport: FC = () => {
   }
 
   const {
-    state: {
-      etherscanBalanceReport,
-      etherscanLastTxReport,
-      etherscanLastTokenTxReport,
-      nansenAddressReport,
-      asset,
-      receiverAddress,
-      isWeb3Wallet
-    },
-    showHideProtectTx
+    state: { isWeb3Wallet },
+    showHideProtectTx,
+    getReport
   } = protectTxContext;
-
-  const { isSmScreen } = useScreenSize();
 
   const onHideModel = useCallback(
     (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
@@ -139,36 +122,39 @@ export const ProtectTxReport: FC = () => {
     [showHideProtectTx]
   );
 
-  const steps = getTimelineSteps(
-    nansenAddressReport,
-    etherscanLastTxReport,
-    etherscanLastTokenTxReport,
-    etherscanBalanceReport,
-    asset,
-    receiverAddress
-  );
+  const report = getReport();
+
+  return <ProtectTxReportUI report={report} isWeb3={isWeb3Wallet} onHide={onHideModel} />;
+};
+
+interface Props {
+  report: PTXReport;
+  isWeb3: boolean;
+  onHide(e: React.MouseEvent<SVGSVGElement, MouseEvent>): void;
+}
+
+export const ProtectTxReportUI = ({ report, isWeb3, onHide }: Props) => {
+  const { isSmScreen } = useScreenSize();
+  const { address, labels } = report;
+  const steps = getTimelineSteps(report);
 
   return (
     <Wrapper>
-      {!isSmScreen && <CloseIcon size="lg" onClick={onHideModel} />}
+      {!isSmScreen && <CloseIcon size="lg" onClick={onHide} />}
       <ProtectIconCheck size="lg" />
       <h4>{translateRaw('PROTECTED_TX_REPORT_TITLE')}</h4>
-      {receiverAddress && isValidETHAddress(receiverAddress) && (
-        <SEthAddress>
-          <EthAddress address={receiverAddress} truncate={truncate} isCopyable={false} />
-        </SEthAddress>
-      )}
-      {nansenAddressReport && (
-        <h5 className="subtitle">{translateRaw('PROTECTED_TX_REPORT_SUBTITLE')}</h5>
-      )}
+      <SEthAddress>
+        <EthAddress address={address} truncate={truncate} isCopyable={false} />
+      </SEthAddress>
+      {labels && <h5 className="subtitle">{translateRaw('PROTECTED_TX_REPORT_SUBTITLE')}</h5>}
       <div className="timeline">
-        {nansenAddressReport ? (
+        {labels ? (
           <VerticalStepper currentStep={-1} size="lg" color={COLORS.PURPLE} steps={steps} />
         ) : (
           <div className="loading" />
         )}
       </div>
-      {nansenAddressReport && receiverAddress && (
+      {labels && (
         <>
           <p className="view-comments">
             <Trans
@@ -181,7 +167,7 @@ export const ProtectTxReport: FC = () => {
                     fontSize={FONT_SIZE.BASE}
                     fontColor={COLORS.PURPLE}
                     underline={true}
-                    link={`${ETHAddressExplorer(receiverAddress)}`}
+                    link={`${ETHAddressExplorer(address)}`}
                     text="Etherscan"
                   />
                 )
@@ -191,7 +177,7 @@ export const ProtectTxReport: FC = () => {
           </p>
           <p className="footer-text">
             {translateRaw('PROTECTED_TX_REPORT_FOOTER_TEXT')}
-            {!isWeb3Wallet && (
+            {!isWeb3 && (
               <Trans
                 id="PROTECTED_TX_REPORT_FOOTER_TEXT_NOT_WEB3_WALLET"
                 variables={{
@@ -211,11 +197,8 @@ export const ProtectTxReport: FC = () => {
   );
 };
 
-const getAccountBalanceTimelineEntry = (
-  etherscanBalanceReport: GetBalanceResponse | null,
-  asset: Asset | null
-): StepData => {
-  const balance = ProtectTxUtils.getBalance(etherscanBalanceReport);
+const getAccountBalanceTimelineEntry = (report: PTXReport): StepData => {
+  const { balance, asset } = report;
   const assetTicker = asset && asset.ticker;
 
   return {
@@ -234,16 +217,8 @@ const getAccountBalanceTimelineEntry = (
   };
 };
 
-const getLastTxReportTimelineEntry = (
-  etherscanLastTxReport: GetTxResponse | null,
-  etherscanLastTokenTxReport: GetTokenTxResponse | null,
-  receiverAddress: string | null
-): StepData => {
-  const lastSentTx = ProtectTxUtils.getLastTx(
-    etherscanLastTxReport,
-    etherscanLastTokenTxReport,
-    receiverAddress
-  );
+const getLastTxReportTimelineEntry = (report: PTXReport): StepData => {
+  const lastSentTx = report.lastTransaction;
 
   return {
     title: (
@@ -267,10 +242,9 @@ const getLastTxReportTimelineEntry = (
   };
 };
 
-const getNansenStep = (nansenAddressReport: NansenServiceEntry | null) => {
-  if (nansenAddressReport && nansenAddressReport.label.length > 0) {
-    const { label: labels } = nansenAddressReport;
-    const status = ProtectTxUtils.getNansenReportType(labels);
+const getNansenStep = (report: PTXReport) => {
+  const { status, labels } = report;
+  if (labels && labels.length > 0) {
     switch (status) {
       case NansenReportType.MALICIOUS:
         return {
@@ -324,17 +298,10 @@ const getNansenStep = (nansenAddressReport: NansenServiceEntry | null) => {
   };
 };
 
-const getTimelineSteps = (
-  nansenAddressReport: NansenServiceEntry | null,
-  etherscanLastTxReport: GetTxResponse | null,
-  etherscanLastTokenTxReport: GetTokenTxResponse | null,
-  etherscanBalanceReport: GetBalanceResponse | null,
-  asset: Asset | null,
-  receiverAddress: string | null
-) => {
+const getTimelineSteps = (report: PTXReport) => {
   return [
-    getNansenStep(nansenAddressReport),
-    getAccountBalanceTimelineEntry(etherscanBalanceReport, asset),
-    getLastTxReportTimelineEntry(etherscanLastTxReport, etherscanLastTokenTxReport, receiverAddress)
+    getNansenStep(report),
+    getAccountBalanceTimelineEntry(report),
+    getLastTxReportTimelineEntry(report)
   ];
 };

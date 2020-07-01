@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
-import { Asset, ITxReceipt, Network, WalletId, IFormikFields } from '@types';
+import { Asset, ITxReceipt, Network, WalletId, IFormikFields, TAddress } from '@types';
 import {
   GetBalanceResponse,
   GetTxResponse,
@@ -12,6 +12,8 @@ import { useScreenSize } from '@utils';
 
 import { WALLETS_CONFIG } from '../../config';
 import { NansenService, NansenServiceEntry } from '@services/ApiService/Nansen';
+import { PTXReport } from './types';
+import { ProtectTxUtils } from './utils';
 
 export interface ProtectTxState {
   stepIndex: number;
@@ -42,6 +44,7 @@ export interface ProtectTxContext {
   invokeProtectTxTimeoutFunction(cb: (txReceipt: ITxReceipt) => void): void;
   clearProtectTxTimeoutFunction(): void;
   setWeb3Wallet(isWeb3Wallet: boolean, walletTypeId?: WalletId | null): void;
+  getReport(): PTXReport;
 }
 
 export const protectTxProviderInitialState: ProtectTxState = {
@@ -246,6 +249,25 @@ const ProtectTxProvider: React.FC = ({ children }) => {
     [setState]
   );
 
+  const getReport = useCallback(() => {
+    const address = state.receiverAddress as TAddress;
+    const {
+      nansenAddressReport,
+      etherscanLastTxReport,
+      etherscanLastTokenTxReport,
+      etherscanBalanceReport
+    } = state;
+    const labels = nansenAddressReport ? nansenAddressReport.label : null;
+    const status = labels ? ProtectTxUtils.getNansenReportType(labels) : null;
+    const lastTx = ProtectTxUtils.getLastTx(
+      etherscanLastTxReport,
+      etherscanLastTokenTxReport,
+      address
+    );
+    const balance = ProtectTxUtils.getBalance(etherscanBalanceReport);
+    return { address, status, labels, lastTransaction: lastTx, balance, asset: state.asset! };
+  }, [state]);
+
   useEffect(() => {
     // Show tx protect in case of window resize
     if (state.protectTxEnabled) {
@@ -286,7 +308,8 @@ const ProtectTxProvider: React.FC = ({ children }) => {
     setProtectTxTimeoutFunction,
     invokeProtectTxTimeoutFunction,
     clearProtectTxTimeoutFunction,
-    setWeb3Wallet
+    setWeb3Wallet,
+    getReport
   };
 
   return <ProtectTxContext.Provider value={providerState}>{children}</ProtectTxContext.Provider>;
