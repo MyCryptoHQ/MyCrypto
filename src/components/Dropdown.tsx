@@ -8,7 +8,6 @@ import Select, {
 } from 'react-select';
 import { FocusEventHandler, InputActionMeta } from 'react-select/src/types';
 import styled from 'styled-components';
-import { Icon } from '@mycrypto/ui';
 
 import { COLORS, FONT_SIZE } from '@theme';
 
@@ -17,7 +16,7 @@ import { CenteredIconArrow } from './IconArrow';
 
 type OptionComponentType<T = any> = React.ComponentClass<OptionProps<T>> | React.FC<OptionProps<T>>;
 
-interface Props<T> {
+interface DropdownProps<T> {
   options: T[];
   value?: T;
   disabled?: boolean;
@@ -28,10 +27,11 @@ interface Props<T> {
   dropdownIcon?: JSX.Element;
   optionComponent: OptionComponentType<T>;
   valueComponent?: React.ComponentType<{ value: T }>;
+  inputId?: string;
   inputValue?: string;
   onCloseResetsInput?: boolean;
   onBlurResetsInput?: boolean;
-  onBlur: FocusEventHandler;
+  onBlur?: FocusEventHandler;
   onChange?(option: T): void;
   onInputChange?(newValue: string, actionMeta: InputActionMeta): void;
   onInputKeyDown?(e: React.KeyboardEvent<HTMLElement>): void;
@@ -109,9 +109,6 @@ const customStyles: Styles = {
     maxHeight: '65vh',
     border: '0.125em solid rgba(0,122,153,0.65)',
     color: state.selectProps.menuColor,
-    'div:last-child > .divider': {
-      display: 'none'
-    },
     margin: 0,
     borderRadius: '0.125em'
   }),
@@ -134,7 +131,7 @@ const customStyles: Styles = {
   })
 };
 
-const Dropdown: <T = any>(p: Props<T>) => React.ReactElement<Props<T>> = ({
+const Dropdown: <T = any>(p: DropdownProps<T>) => React.ReactElement<DropdownProps<T>> = ({
   options,
   value,
   disabled = false,
@@ -145,6 +142,7 @@ const Dropdown: <T = any>(p: Props<T>) => React.ReactElement<Props<T>> = ({
   dropdownIcon,
   optionComponent,
   valueComponent,
+  inputId,
   inputValue,
   onCloseResetsInput,
   onBlurResetsInput,
@@ -163,6 +161,8 @@ const Dropdown: <T = any>(p: Props<T>) => React.ReactElement<Props<T>> = ({
       isSearchable={searchable}
       isClearable={clearable}
       name={name}
+      // We use inputId for aria concerns, and to target the react-select component with getByLabelText
+      inputId={inputId || name}
       blurInputOnSelect={onBlurResetsInput}
       onMenuClose={() => onCloseResetsInput}
       onChange={onChange}
