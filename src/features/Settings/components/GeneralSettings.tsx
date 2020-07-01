@@ -107,10 +107,13 @@ const GeneralSettings: FC<SettingsProps> = ({ globalSettings, updateGlobalSettin
     [trackSetInacticityTimer, globalSettings, updateGlobalSettings]
   );
 
-  const changeCurrencySelection = useCallback((event: React.FormEvent<HTMLSelectElement>) => {
-    const target = event.target as HTMLSelectElement;
-    updateGlobalSettings({ ...globalSettings, fiatCurrency: target.value });
-  }, [globalSettings, updateGlobalSettings]);
+  const changeCurrencySelection = useCallback(
+    (event: React.FormEvent<HTMLSelectElement>) => {
+      const target = event.target as HTMLSelectElement;
+      updateGlobalSettings({ ...globalSettings, fiatCurrency: target.value });
+    },
+    [globalSettings, updateGlobalSettings]
+  );
 
   return (
     <DashboardPanel heading={translate('SETTINGS_GENERAL_LABEL')}>
@@ -173,10 +176,7 @@ const GeneralSettings: FC<SettingsProps> = ({ globalSettings, updateGlobalSettin
         </SettingsLabel>
         <SettingsControl>
           <SelectContainer>
-            <select
-              onChange={changeCurrencySelection}
-              value={String(globalSettings.fiatCurrency)}
-            >
+            <select onChange={changeCurrencySelection} value={String(globalSettings.fiatCurrency)}>
               {Object.keys(Fiats).map((option) => (
                 <option value={option} key={option}>
                   {option}

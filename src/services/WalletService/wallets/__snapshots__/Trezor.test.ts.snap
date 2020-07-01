@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Trezor generates an address from a derivation path 1`] = `
+Object {
+  "address": "0x64E8A4EbF08cbAb754F9BEcBe80FA3CDFfbbdb1b",
+  "path": "m/44'/60'/0'/0/10",
+  "type": "TREZOR_NEW",
+}
+`;
+
+exports[`Trezor generates an address from a derivation path 2`] = `
+Object {
+  "address": "0xb3363c233026E498c0a651D5E577396eCAca4AcB",
+  "path": "m/44'/60'/0'/0/15",
+  "type": "TREZOR_NEW",
+}
+`;
+
+exports[`Trezor generates an address from a hardened derivation path 1`] = `
+Object {
+  "address": "0x0719f46C96047A4f8A791394E338c8108E56F246",
+  "path": "m/44'/60'/10'/0/0",
+  "type": "TREZOR_NEW",
+}
+`;
+
+exports[`Trezor generates an address from a hardened derivation path 2`] = `
+Object {
+  "address": "0xA900c74246933B5F447C96581C5554Ac1bf36A92",
+  "path": "m/44'/60'/15'/0/0",
+  "type": "TREZOR_NEW",
+}
+`;
+
+exports[`Trezor pre-fetches multiple addresses 1`] = `
+Object {
+  "m/44'/1'/0'/0": Object {
+    "chainCode": "9d73a228d784f361eed3910b1d49750b33bc8aea09180b78abb71a09a17ae689",
+    "publicKey": "02bc7ab0a01997363ba548279abf8302ecc50ed376fe74ba3133f1678346ce0c5d",
+  },
+  "m/44'/60'/0'/0": Object {
+    "chainCode": "51f696d1838ec2986b979577cc43c1098e26fe34d9abaf319df00a7eb20e0311",
+    "publicKey": "021c3e866ccb8f158431f5036319dc16f0409bd385d796fbc122a22819f0ec9017",
+  },
+}
+`;

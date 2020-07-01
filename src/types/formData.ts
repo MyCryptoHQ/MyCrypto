@@ -1,10 +1,15 @@
 import { WalletId } from './walletId';
 import { NetworkId } from './networkId';
+import { TAddress } from './address';
 
 export interface FormData {
   network: NetworkId;
-  address: string;
   accountType: WalletId | undefined;
   label: string;
-  derivationPath: string;
+  accountData: IAccountAdditionData[];
+}
+
+export interface IAccountAdditionData {
+  address: TAddress;
+  dPath: string;
 }

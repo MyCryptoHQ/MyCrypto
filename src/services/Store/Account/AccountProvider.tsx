@@ -33,6 +33,7 @@ import { getAllTokensBalancesOfAccount } from '../BalanceService';
 export interface IAccountContext {
   accounts: IAccount[];
   createAccountWithID(accountData: IRawAccount, uuid: TUuid): void;
+  createMultipleAccountsWithIDs(accountData: IAccount[]): void;
   deleteAccount(account: IAccount): void;
   updateAccount(uuid: TUuid, accountData: IAccount): void;
   addNewTxToAccount(account: IAccount, transaction: ITxReceipt): void;
@@ -47,7 +48,7 @@ export const AccountContext = createContext({} as IAccountContext);
 
 export const AccountProvider: React.FC = ({ children }) => {
   const { createActions, accounts } = useContext(DataContext);
-  const { addAccountToFavorites } = useContext(SettingsContext);
+  const { addAccountToFavorites, addMultipleAccountsToFavorites } = useContext(SettingsContext);
   const model = createActions(LSKeys.ACCOUNTS);
   const trackTxHistory = useAnalytics({
     category: ANALYTICS_CATEGORIES.TX_HISTORY,
@@ -59,6 +60,13 @@ export const AccountProvider: React.FC = ({ children }) => {
     createAccountWithID: (item, uuid) => {
       addAccountToFavorites(uuid);
       model.create({ ...item, uuid });
+    },
+    createMultipleAccountsWithIDs: (newAccounts: IAccount[]) => {
+      const allAccounts = unionWith(eqBy(prop('uuid')), newAccounts, state.accounts).filter(
+        Boolean
+      );
+      addMultipleAccountsToFavorites(newAccounts.map(({ uuid }) => uuid));
+      model.updateAll(allAccounts);
     },
     deleteAccount: model.destroy,
     updateAccount: (uuid, a) => model.update(uuid, a),

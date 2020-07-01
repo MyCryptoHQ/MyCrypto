@@ -7,3 +7,4 @@ export * from './deterministic';
 export * from './non-deterministic';
 export * from './walletconnect';
 export { WalletFactory } from './walletService';
+export * from './wallets';

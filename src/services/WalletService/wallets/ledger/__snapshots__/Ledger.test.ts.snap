@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Ledger generates an address from a derivation path 1`] = `
+Object {
+  "address": "0x55A64976d11064d0a5049Ec14ec632B921e1dBB4",
+  "path": "m/44'/60'/0'/0/10",
+  "type": "LEDGER_NANO_S_NEW",
+}
+`;
+
+exports[`Ledger generates an address from a derivation path 2`] = `
+Object {
+  "address": "0xb1B46Cfcc7c7e72B6981e8aF8EB8CceB6d76E26e",
+  "path": "m/44'/60'/0'/0/15",
+  "type": "LEDGER_NANO_S_NEW",
+}
+`;
+
+exports[`Ledger generates an address from a hardened derivation path 1`] = `
+Object {
+  "address": "0x1bD7f8d135C7565f63e6eB24E9A8704d2eB90f69",
+  "path": "m/44'/60'/10'/0/0",
+  "type": "LEDGER_NANO_S_NEW",
+}
+`;
+
+exports[`Ledger generates an address from a hardened derivation path 2`] = `
+Object {
+  "address": "0xba4Ad981A41390f56cAB43549CC15050BD0418E8",
+  "path": "m/44'/60'/15'/0/0",
+  "type": "LEDGER_NANO_S_NEW",
+}
+`;

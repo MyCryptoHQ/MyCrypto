@@ -1,6 +1,7 @@
 import HDKey from 'hdkey';
 import { publicToAddress, toChecksumAddress } from 'ethereumjs-util';
 import { TokenValue } from '@services/EthService';
+import { TAddress } from '@types';
 
 export class DeterministicWallet {
   protected address: string;
@@ -72,7 +73,7 @@ export const getDeterministicWallets = (
     const address = publicToAddress(dkey.publicKey, true).toString('hex');
     wallets.push({
       index,
-      address: toChecksumAddress(address)
+      address: toChecksumAddress(address) as TAddress
     });
   }
   return wallets;

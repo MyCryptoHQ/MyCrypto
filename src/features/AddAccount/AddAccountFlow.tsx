@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import { useUpdateEffect } from '@vendor';
 import { ROUTE_PATHS, WALLETS_CONFIG, IWalletConfig } from '@config';
-import { WalletId, IStory } from '@types';
+import { WalletId, IStory, StoreAccount } from '@types';
 import { ExtendedContentPanel, WalletList } from '@components';
 import { StoreContext } from '@services/Store';
 import { ANALYTICS_CATEGORIES } from '@services/ApiService';
@@ -42,7 +42,13 @@ export const isValidWalletId = (id: WalletId | string | undefined) => {
 const AddAccountFlow = withRouter(({ history, match }) => {
   const [step, setStep] = useState(0); // The current Step inside the Wallet Story.
   const [formData, updateFormState] = useReducer(formReducer, initialState); // The data that we want to save at the end.
-  const { scanAccountTokens, scanForMemberships, addAccount, accounts } = useContext(StoreContext);
+  const {
+    scanAccountTokens,
+    scanTokens,
+    scanForMemberships,
+    addMultipleAccounts,
+    accounts
+  } = useContext(StoreContext);
   const { displayNotification } = useContext(NotificationsContext);
   const trackNewAccountAdded = useAnalytics({
     category: ANALYTICS_CATEGORIES.ADD_ACCOUNT,
@@ -51,34 +57,54 @@ const AddAccountFlow = withRouter(({ history, match }) => {
 
   const storyName: WalletId = formData.accountType; // The Wallet Story that we are tracking.
   const isDefaultView = storyName === undefined;
-
+  const addr = formData.accountData.length > 0 ? formData.accountData[0] : '';
   // Try to add an account after unlocking the wallet
   // If we have completed the form, and add account fails we return to dashboard
   useEffect(() => {
-    const { network, address, accountType, derivationPath } = formData;
-    if (address && !addAccount(network, address, accountType, derivationPath)) {
-      displayNotification(NotificationTemplates.walletNotAdded, { address });
+    const { network, accountData, accountType } = formData;
+    if (addr && accountData && !addMultipleAccounts(network, accountType, accountData)) {
+      displayNotification(NotificationTemplates.walletsNotAdded);
       history.push(ROUTE_PATHS.DASHBOARD.path);
     }
-  }, [formData.address]);
+  }, [addr]);
 
   // If add account succeeds, accounts is updated and we can return to dashboard
   useEffect(() => {
-    const { network, address } = formData;
-    if (!accounts) return;
-    const newAccount = accounts.find(
-      (account) => isSameAddress(account.address, address) && account.networkId === network
-    );
-    if (!!newAccount) {
-      trackNewAccountAdded({
-        eventParams: {
-          newAccountAddedType: newAccount.wallet,
-          newAccountAddedNumOfAccounts: accounts.length
+    const { network, accountData } = formData;
+    if (!accounts || accounts.length === 0) return;
+    const newAccounts: StoreAccount[] = accountData
+      .map(({ address }) => {
+        const newAccount = accounts.find(
+          (account) => isSameAddress(account.address, address) && account.networkId === network
+        );
+        if (!!newAccount) {
+          trackNewAccountAdded({
+            eventParams: {
+              newAccountAddedType: newAccount.wallet,
+              newAccountAddedNumOfAccounts: accounts.length
+            }
+          });
         }
-      });
-      displayNotification(NotificationTemplates.walletAdded, { address });
-      scanAccountTokens(newAccount);
-      scanForMemberships([newAccount]);
+        return newAccount;
+      })
+      .filter((a) => a !== undefined) as StoreAccount[];
+
+    if (newAccounts.length !== 0) {
+      const handleAddition =
+        accountData.length === 1
+          ? () => {
+              displayNotification(NotificationTemplates.walletAdded, {
+                address: newAccounts[0].address
+              });
+              scanAccountTokens(newAccounts[0]);
+              scanForMemberships([newAccounts[0]]);
+            }
+          : () => {
+              displayNotification(NotificationTemplates.walletsAdded, { accounts: newAccounts });
+              scanTokens();
+              scanForMemberships([...newAccounts]);
+            };
+      handleAddition();
       history.push(ROUTE_PATHS.DASHBOARD.path);
     }
   }, [accounts]);

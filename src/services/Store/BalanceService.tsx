@@ -1,6 +1,7 @@
 import {
   getEtherBalances,
   getTokensBalance,
+  getTokenBalances as getTokenBalancesFromEthScan,
   BalanceMap as EthScanBalanceMap,
   ProviderLike
 } from '@mycrypto/eth-scan';
@@ -10,7 +11,7 @@ import { bigNumberify } from 'ethers/utils';
 import { BigNumber as EthScanBN } from '@ethersproject/bignumber';
 
 import { ETHSCAN_NETWORKS, ETH_SCAN_BATCH_SIZE } from '@config';
-import { TAddress, StoreAccount, StoreAsset, Asset, Network, TBN } from '@types';
+import { TAddress, StoreAccount, StoreAsset, Asset, Network, TBN, ExtendedAsset } from '@types';
 import { ProviderHandler } from '@services/EthService';
 
 export type BalanceMap<T = BN> = EthScanBalanceMap<T>;
@@ -110,14 +111,26 @@ const tokenBalanceFetchWrapper = async (
 
 export const getBaseAssetBalances = async (addresses: string[], network: Network | undefined) => {
   if (!network) {
-    return ([] as unknown) as BalanceMap;
+    return ([] as unknown) as Promise<BalanceMap>;
   }
   const provider = ProviderHandler.fetchProvider(network);
   return getEtherBalances(provider, addresses, { batchSize: ETH_SCAN_BATCH_SIZE })
-    .then((data) => {
-      return data;
-    })
-    .catch((_) => ([] as unknown) as BalanceMap);
+    .then(toBigNumberJS)
+    .catch((_) => ({} as BalanceMap));
+};
+
+export const getTokenAssetBalances = async (
+  addresses: string[],
+  network: Network | undefined,
+  asset: ExtendedAsset
+) => {
+  if (!network) {
+    return ([] as unknown) as Promise<BalanceMap>;
+  }
+  const provider = ProviderHandler.fetchProvider(network);
+  return getTokenBalancesFromEthScan(provider, addresses, asset.contractAddress!)
+    .then(toBigNumberJS)
+    .catch((_) => ({} as BalanceMap));
 };
 
 const getTokenBalances = (

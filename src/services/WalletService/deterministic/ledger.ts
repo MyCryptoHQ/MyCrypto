@@ -1,12 +1,15 @@
 import { Transaction as EthTx, TxData } from 'ethereumjs-tx';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
+import { byContractAddress } from '@ledgerhq/hw-app-eth/erc20';
+import Transport from '@ledgerhq/hw-transport';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
 import LedgerEth from '@ledgerhq/hw-app-eth';
+import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 
 import { translateRaw } from '@translations';
 import { getTransactionFields } from '@services/EthService';
+
 import { HardwareWallet, ChainCodeResponse } from './hardware';
-import { byContractAddress } from '@ledgerhq/hw-app-eth/erc20';
 
 // Ledger throws a few types of errors
 interface U2FError {
@@ -32,7 +35,7 @@ export class LedgerWallet extends HardwareWallet {
       .then((res) => {
         return {
           publicKey: res.publicKey,
-          chainCode: res.chainCode
+          chainCode: res.chainCode as string
         };
       })
       .catch((err: LedgerError) => {
@@ -106,6 +109,7 @@ export class LedgerWallet extends HardwareWallet {
       const msgHex = Buffer.from(msg).toString('hex');
       const ethApp = await makeApp();
       const signed = await ethApp.signPersonalMessage(this.getPath(), msgHex);
+      // @ts-ignore
       const combined = addHexPrefix(signed.r + signed.s + signed.v.toString(16));
       return combined;
     } catch (err) {
@@ -131,8 +135,25 @@ export class LedgerWallet extends HardwareWallet {
   }
 }
 
+const getTransport = async (): Promise<Transport<any>> => {
+  try {
+    // @todo - fix this import
+    // if (await TransportWebHID.isSupported()) {
+    //   return TransportWebHID.create();
+    // }
+
+    if (await TransportWebUSB.isSupported()) {
+      return TransportWebUSB.create();
+    }
+  } catch {
+    // Fallback to U2F
+  }
+
+  return TransportU2F.create();
+};
+
 async function makeApp() {
-  const transport = await TransportU2F.create();
+  const transport = await getTransport();
   return new LedgerEth(transport);
 }
 
