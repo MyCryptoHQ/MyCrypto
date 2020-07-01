@@ -15,6 +15,7 @@ const SDivider = styled('div')`
   padding-left: ${(p: Props) => (p.padding ? p.padding : 0)};
   padding-right: ${(p: Props) => (p.padding ? p.padding : 0)};
 `;
+
 function Divider({ color, height, padding, ...props }: Props) {
   return <SDivider padding={padding} color={color} height={height} {...props} />;
 }
