@@ -198,27 +198,23 @@ export const ProtectTxReportUI = ({ report, isWeb3, onHide }: Props) => {
 };
 
 const getAccountBalanceTimelineEntry = (report: PTXReport): StepData => {
-  const { balance, asset } = report;
+  const { balance: reportBalance, asset } = report;
   const assetTicker = asset && asset.ticker;
+  const balance = reportBalance
+    ? `${reportBalance} ${assetTicker}`
+    : translateRaw('PROTECTED_TX_UNKNOWN_BALANCE');
 
   return {
     title: translateRaw('PROTECTED_TX_RECIPIENT_ACCOUNT_BALANCE'),
-    content: (
-      <StepperDescText className="text-muted">
-        {balance ? (
-          <>
-            {balance} {assetTicker}
-          </>
-        ) : (
-          translateRaw('PROTECTED_TX_UNKNOWN_BALANCE')
-        )}
-      </StepperDescText>
-    )
+    content: <StepperDescText className="text-muted">{balance}</StepperDescText>
   };
 };
 
 const getLastTxReportTimelineEntry = (report: PTXReport): StepData => {
-  const lastSentTx = report.lastTransaction;
+  const lastSentTxReport = report.lastTransaction;
+  const lastSentTx = lastSentTxReport
+    ? `${lastSentTxReport.value} ${lastSentTxReport.ticker} on ${lastSentTxReport.timestamp}`
+    : translateRaw('PROTECTED_TX_NO_INFORMATION_AVAILABLE');
 
   return {
     title: (
@@ -228,23 +224,14 @@ const getLastTxReportTimelineEntry = (report: PTXReport): StepData => {
         {translateRaw('PROTECTED_TX_LAST_SENT_TX')}
       </>
     ),
-    content: (
-      <StepperDescText className="text-muted">
-        {lastSentTx ? (
-          <>
-            {lastSentTx.value} {lastSentTx.ticker} on {lastSentTx.timestamp}
-          </>
-        ) : (
-          translateRaw('PROTECTED_TX_NO_INFORMATION_AVAILABLE')
-        )}
-      </StepperDescText>
-    )
+    content: <StepperDescText className="text-muted">{lastSentTx}</StepperDescText>
   };
 };
 
 const getNansenStep = (report: PTXReport) => {
   const { status, labels } = report;
   if (labels && labels.length > 0) {
+    const tags = `"${labels.join('", "')}"`;
     switch (status) {
       case NansenReportType.MALICIOUS:
         return {
@@ -253,7 +240,7 @@ const getNansenStep = (report: PTXReport) => {
             <>
               <StepperDescText className="text-error">
                 {translateRaw('PROTECTED_TX_TIMELINE_MALICIOUS', {
-                  $tags: `"${labels.join('", "')}"`
+                  $tags: tags
                 })}
               </StepperDescText>
             </>
@@ -266,7 +253,7 @@ const getNansenStep = (report: PTXReport) => {
             <>
               <StepperDescText className="text-success">
                 {translateRaw('PROTECTED_TX_TIMELINE_TAGS', {
-                  $tags: `"${labels.join('", "')}"`
+                  $tags: tags
                 })}
               </StepperDescText>
             </>
@@ -279,7 +266,7 @@ const getNansenStep = (report: PTXReport) => {
             <>
               <StepperDescText className="text-no-info">
                 {translateRaw('PROTECTED_TX_TIMELINE_TAGS', {
-                  $tags: `"${labels.join('", "')}"`
+                  $tags: tags
                 })}
               </StepperDescText>
             </>
