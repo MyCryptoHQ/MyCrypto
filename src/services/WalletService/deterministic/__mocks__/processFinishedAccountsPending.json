@@ -1,0 +1,9 @@
+{
+  "newGapItems": [
+    { "label": "Default (ETH)", "value": "m/44'/60'/0'/0", "offset": 4, "numOfAddresses": 2 },
+    { "label": "Ledger (ETH)", "value": "m/44'/60'/0'", "offset": 4, "numOfAddresses": 6 },
+    { "label": "Ledger (ETC)", "value": "m/44'/60'/160720'/0'", "offset": 4, "numOfAddresses": 2 },
+    { "label": "Testnet (ETH)", "value": "m/44'/1'/0'/0", "offset": 4, "numOfAddresses": 2 }
+  ],
+  "customDPathItems": []
+}

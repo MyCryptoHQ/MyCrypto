@@ -1,0 +1,282 @@
+[
+  {
+    "address": "0x298Fe5fDca148135442fa7fA3C24042F038D3B5a",
+    "pathItem": {
+      "path": "m/44'/60'/0'/0/0",
+      "baseDPath": {
+        "label": "Default (ETH)",
+        "value": "m/44'/60'/0'/0",
+        "offset": 0,
+        "numOfAddresses": 5
+      },
+      "index": 0
+    },
+    "balance": "1000000"
+  },
+  {
+    "address": "0x73C4Ed979C3918D682E9CD7E80DFF3709E5f6d0c",
+    "pathItem": {
+      "path": "m/44'/60'/0'/0/1",
+      "baseDPath": {
+        "label": "Default (ETH)",
+        "value": "m/44'/60'/0'/0",
+        "offset": 0,
+        "numOfAddresses": 5
+      },
+      "index": 1
+    },
+    "balance": "0"
+  },
+  {
+    "address": "0xf63f66c71e1Afd220Ad768c9d7Cd96d7F69B5998",
+    "pathItem": {
+      "path": "m/44'/60'/0'/0/2",
+      "baseDPath": {
+        "label": "Default (ETH)",
+        "value": "m/44'/60'/0'/0",
+        "offset": 0,
+        "numOfAddresses": 5
+      },
+      "index": 2
+    },
+    "balance": "0"
+  },
+  {
+    "address": "0x86Efe81CE7B56b3134d35f2c93D8cb6fFb10157f",
+    "pathItem": {
+      "path": "m/44'/60'/0'/0/3",
+      "baseDPath": {
+        "label": "Default (ETH)",
+        "value": "m/44'/60'/0'/0",
+        "offset": 0,
+        "numOfAddresses": 5
+      },
+      "index": 3
+    },
+    "balance": "0"
+  },
+  {
+    "address": "0xe333E5697aF7e2Bf6c311307cdFb309C04F6A929",
+    "pathItem": {
+      "path": "m/44'/60'/0'/0/4",
+      "baseDPath": {
+        "label": "Default (ETH)",
+        "value": "m/44'/60'/0'/0",
+        "offset": 0,
+        "numOfAddresses": 5
+      },
+      "index": 4
+    },
+    "balance": "0"
+  },
+  {
+    "address": "0xb2bb2b958AFa2e96dab3f3Ce7162b87daEa39017",
+    "pathItem": {
+      "path": "m/44'/60'/0'/0",
+      "baseDPath": {
+        "label": "Ledger (ETH)",
+        "value": "m/44'/60'/0'",
+        "offset": 0,
+        "numOfAddresses": 5
+      },
+      "index": 0
+    },
+    "balance": "1000000"
+  },
+  {
+    "address": "0x8d84C8E14Ee8B755419F6764985437905eB6176E",
+    "pathItem": {
+      "path": "m/44'/60'/0'/1",
+      "baseDPath": {
+        "label": "Ledger (ETH)",
+        "value": "m/44'/60'/0'",
+        "offset": 0,
+        "numOfAddresses": 5
+      },
+      "index": 1
+    },
+    "balance": "1000000"
+  },
+  {
+    "address": "0x04725bF6D10046C9b6C7F6f60A52c966efD06b56",
+    "pathItem": {
+      "path": "m/44'/60'/0'/2",
+      "baseDPath": {
+        "label": "Ledger (ETH)",
+        "value": "m/44'/60'/0'",
+        "offset": 0,
+        "numOfAddresses": 5
+      },
+      "index": 2
+    },
+    "balance": "0"
+  },
+  {
+    "address": "0xB7CBC4e1979E3F42cBb603E837b0af5547AF5EC4",
+    "pathItem": {
+      "path": "m/44'/60'/0'/3",
+      "baseDPath": {
+        "label": "Ledger (ETH)",
+        "value": "m/44'/60'/0'",
+        "offset": 0,
+        "numOfAddresses": 5
+      },
+      "index": 3
+    },
+    "balance": "1000000"
+  },
+  {
+    "address": "0x255b2b3A1234561D4f32D0ED4a012b73fc32C08a",
+    "pathItem": {
+      "path": "m/44'/60'/0'/4",
+      "baseDPath": {
+        "label": "Ledger (ETH)",
+        "value": "m/44'/60'/0'",
+        "offset": 0,
+        "numOfAddresses": 5
+      },
+      "index": 4
+    },
+    "balance": "1000000"
+  },
+  {
+    "address": "0xDDd23cdC6474751C217F625033bDa2AB72A49244",
+    "pathItem": {
+      "path": "m/44'/60'/160720'/0'/0",
+      "baseDPath": {
+        "label": "Ledger (ETC)",
+        "value": "m/44'/60'/160720'/0'",
+        "offset": 0,
+        "numOfAddresses": 5
+      },
+      "index": 0
+    },
+    "balance": "0"
+  },
+  {
+    "address": "0x09F6f9916F2677f790Dd2288a163aEe05b7bD7E9",
+    "pathItem": {
+      "path": "m/44'/60'/160720'/0'/1",
+      "baseDPath": {
+        "label": "Ledger (ETC)",
+        "value": "m/44'/60'/160720'/0'",
+        "offset": 0,
+        "numOfAddresses": 5
+      },
+      "index": 1
+    },
+    "balance": "0"
+  },
+  {
+    "address": "0x1F7108949B12efD73Fd3F31EB66f319d2FF0a48D",
+    "pathItem": {
+      "path": "m/44'/60'/160720'/0'/2",
+      "baseDPath": {
+        "label": "Ledger (ETC)",
+        "value": "m/44'/60'/160720'/0'",
+        "offset": 0,
+        "numOfAddresses": 5
+      },
+      "index": 2
+    },
+    "balance": "0"
+  },
+  {
+    "address": "0xdD344f9BB3dfD7A4928361356f625be3a1Fd6876",
+    "pathItem": {
+      "path": "m/44'/60'/160720'/0'/3",
+      "baseDPath": {
+        "label": "Ledger (ETC)",
+        "value": "m/44'/60'/160720'/0'",
+        "offset": 0,
+        "numOfAddresses": 5
+      },
+      "index": 3
+    },
+    "balance": "0"
+  },
+  {
+    "address": "0x7e061Ac5099de7Df87E2773c0439C92a554f843C",
+    "pathItem": {
+      "path": "m/44'/60'/160720'/0'/4",
+      "baseDPath": {
+        "label": "Ledger (ETC)",
+        "value": "m/44'/60'/160720'/0'",
+        "offset": 0,
+        "numOfAddresses": 5
+      },
+      "index": 4
+    },
+    "balance": "0"
+  },
+  {
+    "address": "0x91DD690A5A87aAEd42B20826Cd442A0f371502d6",
+    "pathItem": {
+      "path": "m/44'/1'/0'/0/0",
+      "baseDPath": {
+        "label": "Testnet (ETH)",
+        "value": "m/44'/1'/0'/0",
+        "offset": 0,
+        "numOfAddresses": 5
+      },
+      "index": 0
+    },
+    "balance": "0"
+  },
+  {
+    "address": "0xBf6a683aF641AD7E939166dd2BE9A904F9721496",
+    "pathItem": {
+      "path": "m/44'/1'/0'/0/1",
+      "baseDPath": {
+        "label": "Testnet (ETH)",
+        "value": "m/44'/1'/0'/0",
+        "offset": 0,
+        "numOfAddresses": 5
+      },
+      "index": 1
+    },
+    "balance": "0"
+  },
+  {
+    "address": "0x2D70Fbc9e12f8c0a361AB8dAA053f27B0420AbBe",
+    "pathItem": {
+      "path": "m/44'/1'/0'/0/2",
+      "baseDPath": {
+        "label": "Testnet (ETH)",
+        "value": "m/44'/1'/0'/0",
+        "offset": 0,
+        "numOfAddresses": 5
+      },
+      "index": 2
+    },
+    "balance": "0"
+  },
+  {
+    "address": "0x20a858b9249cc929d46DCDF7eaC6fd9bff9a5825",
+    "pathItem": {
+      "path": "m/44'/1'/0'/0/3",
+      "baseDPath": {
+        "label": "Testnet (ETH)",
+        "value": "m/44'/1'/0'/0",
+        "offset": 0,
+        "numOfAddresses": 5
+      },
+      "index": 3
+    },
+    "balance": "0"
+  },
+  {
+    "address": "0x97c79DE11B0220c1d9F2Be401273AEB61F032b82",
+    "pathItem": {
+      "path": "m/44'/1'/0'/0/4",
+      "baseDPath": {
+        "label": "Testnet (ETH)",
+        "value": "m/44'/1'/0'/0",
+        "offset": 0,
+        "numOfAddresses": 5
+      },
+      "index": 4
+    },
+    "balance": "0"
+  }
+]

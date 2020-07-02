@@ -2,7 +2,7 @@ import { useState, useReducer, useEffect } from 'react';
 
 import { Network, DPathFormat, ExtendedAsset } from '@types';
 
-import { Wallet } from '..';
+import { Wallet, processFinishedAccounts } from '..';
 import { default as DeterministicWalletService } from './DeterministicWalletService';
 import DeterministicWalletReducer, { initialState, DWActionTypes } from './reducer';
 import {
@@ -106,47 +106,21 @@ const useDeterministicWallet = (
   useEffect(() => {
     // @todo: simplify and extract this out to tested function.
     if (state.finishedAccounts.length === 0 || !service || !state.session) return;
-    const pathItems = state.finishedAccounts.map((acc) => ({
-      ...acc.pathItem,
-      balance: acc.balance
-    }));
-    const relevantIndexes = pathItems.reduce((acc, item) => {
-      const idx = item.baseDPath.value;
-      const curLastIndex = acc[idx]?.lastIndex;
-      const curLastInhabitedIndex = acc[idx]?.lastInhabitedIndex || 0;
-      const newLastInhabitedIndex =
-        curLastInhabitedIndex < item.index && item.balance && !item.balance.isZero()
-          ? item.index
-          : curLastInhabitedIndex;
-      acc[idx] = {
-        lastIndex: curLastIndex > item.index ? curLastIndex : item.index,
-        lastInhabitedIndex: newLastInhabitedIndex,
-        dpath: item.baseDPath
-      };
-      return acc;
-    }, {} as { [key: string]: { lastIndex: number; lastInhabitedIndex: number; dpath: DPath } });
-    const addNewItems = Object.values(relevantIndexes)
-      .map((indexItem) => {
-        if (indexItem.lastIndex - indexItem.lastInhabitedIndex >= gap) return undefined; // gap is satisfied, do nothing;
-        return {
-          ...indexItem.dpath,
-          offset: indexItem.lastIndex,
-          numOfAddresses: gap - (indexItem.lastIndex - indexItem.lastInhabitedIndex) + 1
-        } as ExtendedDPath;
-      })
-      .filter((e) => e !== undefined) as ExtendedDPath[];
-    if (addNewItems.length === 0) {
-      const customDPathsDetected = state.customDPaths.filter(
-        (customDPath) => relevantIndexes[customDPath.value] === undefined
-      );
-      if (customDPathsDetected.length > 0) {
-        service.getAccounts(state.session, state.customDPaths);
-        return;
-      }
-      service.triggerComplete();
+    const { newGapItems, customDPathItems } = processFinishedAccounts(
+      state.finishedAccounts,
+      state.customDPaths,
+      gap
+    );
+    if (newGapItems.length !== 0) {
+      service.getAccounts(state.session, newGapItems);
       return;
     }
-    service.getAccounts(state.session, addNewItems);
+    if (customDPathItems.length > 0) {
+      service.getAccounts(state.session, customDPathItems);
+      return;
+    }
+    service.triggerComplete();
+    return;
   }, [state.finishedAccounts, state.completed]);
 
   const requestConnection = (
