@@ -803,7 +803,7 @@
     "SWAP_MARKUP_TOOLTIP": "Markup determines how good of a deal you're getting, according to available liquidity.",
     "SWAP_RATE": "Conversion Rate",
     "SWAP_RATE_LABEL": "Rate",
-    "SWAP_RATE_TOOLTIP": "The amount you receive may differ slightly from the best going rate, due to timing and fees associated with your transaction.",
+    "SWAP_RATE_TOOLTIP": "The total amount received may differ slightly from the displayed rate due to timing and fees associated with your transaction.",
     "SWAP_RATE_TEXT": "$displayString $toAssetSymbol per $fromAssetSymbol",
     "SWAP_RECEIVE_AMOUNT": "Receive Amount",
     "SWAP_ROUTE_TITLE": "Buy and Exchange",
