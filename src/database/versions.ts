@@ -57,3 +57,9 @@ export const getData = () => {
     return latestDB.defaultValues;
   }
 };
+
+export const getEncryptedData = () => {
+  const latestDB = getCurrentDBConfig();
+  // TODO: Migrations?
+  return localStorage[latestDB.vault];
+};
