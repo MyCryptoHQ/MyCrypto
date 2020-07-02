@@ -3,7 +3,7 @@ import { simpleRender } from 'test-utils';
 
 import { translateRaw } from '@translations';
 import { noOp } from '@utils';
-import { unknownReport, scamReport, verifiedReport } from '@fixtures';
+import { unknownReport, scamReport, verifiedReport, loadingReport } from '@fixtures';
 
 import { ProtectTxReportUI } from '../components/ProtectTxReport';
 import { PTXReport } from '../types';
@@ -14,6 +14,11 @@ const renderComponent = (report: PTXReport) => {
 
 /* Test components */
 describe('ProtectTxReport', () => {
+  test('Can render loading state', () => {
+    const { container } = renderComponent(loadingReport);
+    expect(container.getElementsByClassName('loading')[0]).toBeInTheDocument();
+  });
+
   test('Can render unknown state', () => {
     const { getByText } = renderComponent(unknownReport);
     const selector = translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT').trim();

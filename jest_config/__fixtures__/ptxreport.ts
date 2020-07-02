@@ -26,3 +26,10 @@ export const verifiedReport: PTXReport = {
   labels: ['MyCrypto: Donate'],
   status: NansenReportType.WHITELISTED
 };
+
+export const loadingReport: PTXReport = {
+  ...unknownReport,
+  address: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520' as TAddress,
+  labels: null,
+  status: null
+};
