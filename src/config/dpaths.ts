@@ -255,8 +255,8 @@ export const LEDGER_DERIVATION_PATHS: DPath[] = [
   ETH_DEFAULT,
   ETH_LEDGER,
   ETC_LEDGER,
-  ETH_TESTNET,
-  ETH_LEDGER_LIVE
+  ETH_TESTNET
+  //ETH_LEDGER_LIVE @todo: re-add this when custom dpath addition ui components are done
 ];
 
 /**

@@ -32,6 +32,7 @@ export interface DeterministicWalletState {
   asset?: ExtendedAsset;
   queuedAccounts: DWAccountDisplay[];
   finishedAccounts: DWAccountDisplay[];
+  customDPaths: ExtendedDPath[];
   session: Wallet | undefined;
   promptConnectionRetry: boolean;
   completed: boolean;

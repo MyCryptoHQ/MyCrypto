@@ -11,7 +11,6 @@ import {
   DWAccountDisplay,
   ExtendedDPath
 } from './types';
-// import isEmpty from 'ramda/src/isEmpty';
 
 interface MnemonicPhraseInputs {
   phrase: string;
@@ -105,6 +104,7 @@ const useDeterministicWallet = (
   }, [state.queuedAccounts]);
 
   useEffect(() => {
+    // @todo: simplify and extract this out to tested function.
     if (state.finishedAccounts.length === 0 || !service || !state.session) return;
     const pathItems = state.finishedAccounts.map((acc) => ({
       ...acc.pathItem,
@@ -136,11 +136,18 @@ const useDeterministicWallet = (
       })
       .filter((e) => e !== undefined) as ExtendedDPath[];
     if (addNewItems.length === 0) {
+      const customDPathsDetected = state.customDPaths.filter(
+        (customDPath) => relevantIndexes[customDPath.value] === undefined
+      );
+      if (customDPathsDetected.length > 0) {
+        service.getAccounts(state.session, state.customDPaths);
+        return;
+      }
       service.triggerComplete();
       return;
     }
     service.getAccounts(state.session, addNewItems);
-  }, [state.finishedAccounts]);
+  }, [state.finishedAccounts, state.completed]);
 
   const requestConnection = (
     networkToUse: Network,
@@ -156,9 +163,14 @@ const useDeterministicWallet = (
     setShouldInit(true);
   };
 
-  const addDPaths = (paths: ExtendedDPath[]) => {
-    if (!service || shouldInit || !state.isConnected || !network || !state.session) return;
-    service.getAccounts(state.session, paths);
+  const addDPaths = (customDPaths: ExtendedDPath[]) => {
+    if (!service || shouldInit || !state.isConnected || !network || !state.session) {
+      return;
+    }
+    dispatch({
+      type: DWActionTypes.ADD_CUSTOM_DPATHS,
+      payload: { dpaths: customDPaths }
+    });
   };
 
   const updateAsset = (asset: ExtendedAsset) => {

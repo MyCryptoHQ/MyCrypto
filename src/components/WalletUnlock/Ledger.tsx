@@ -44,7 +44,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const network = getNetworkById(formData.network, networks);
   const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
   const [assetToUse, setAssetToUse] = useState(baseAsset);
-  const { state, requestConnection, updateAsset } = useDeterministicWallet(
+  const { state, requestConnection, updateAsset, addDPaths } = useDeterministicWallet(
     extendedDPaths,
     WalletId.LEDGER_NANO_S_NEW,
     DEFAULT_GAP_TO_SCAN_FOR
@@ -59,6 +59,23 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const handleAssetUpdate = (newAsset: ExtendedAsset) => {
     setAssetToUse(newAsset);
     updateAsset(newAsset);
+  };
+
+  const testDPathAddition: DPath = {
+    label: 'Test Ledger Live (ETH)',
+    value: "m/44'/60'/0'/0/0",
+    isHardened: true,
+    getIndex: (addressIndex): string => `m/44'/60'/${addressIndex}'/0/0`
+  };
+
+  const handleDPathAddition = () => {
+    addDPaths([
+      {
+        ...testDPathAddition,
+        offset: 0,
+        numOfAddresses: numOfAccountsToCheck
+      }
+    ]);
   };
 
   if (!network) {
@@ -84,6 +101,9 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   if (state.isConnected && state.asset && (state.queuedAccounts || state.finishedAccounts)) {
     return (
       <div className="Mnemonic-dpath">
+        <Button onClick={() => handleDPathAddition()}>
+          {`Test Add Custom Derivation Path: ${testDPathAddition.value} - ${testDPathAddition.label} `}
+        </Button>
         <AssetDropdown
           selectedAsset={assetToUse}
           assets={filteredAssets}
