@@ -77,7 +77,11 @@ class ScreenLockProvider extends Component<
     // locks screen after calling setPasswordAndInitiateEncryption which causes one of these cases:
     //  - password was just set (props.password goes from undefined to defined) and encrypted local storage data does not exist
     //  - password was already set and auto lock should happen (shouldAutoLock) and encrypted local storage data does not exist
-    if (this.state.shouldAutoLock && this.props.password && !this.props.encryptedDbState.data) {
+    if (
+      this.state.shouldAutoLock &&
+      this.props.password &&
+      !(this.props.encryptedDbState && this.props.encryptedDbState.data)
+    ) {
       const encryptedData = encrypt(this.props.exportStorage(), this.props.password).toString();
       this.props.setEncryptedCache(encryptedData);
       this.props.resetAppDb();
@@ -89,6 +93,9 @@ class ScreenLockProvider extends Component<
   public decryptWithPassword = async (password: string): Promise<boolean> => {
     const { destroyEncryptedCache, encryptedDbState, importStorage } = this.props;
     try {
+      if (!encryptedDbState) {
+        return false;
+      }
       const passwordHash = hashPassword(password);
       // Decrypt the data and store it to the MyCryptoCache
       const decryptedData = decrypt(encryptedDbState.data as string, passwordHash);

@@ -32,7 +32,7 @@ export interface DataCacheManager extends DataStore {
 }
 
 interface EncryptedStorage {
-  encryptedDbState: EncryptedDataStore;
+  encryptedDbState?: EncryptedDataStore;
   setEncryptedCache(ls: string): void;
   destroyEncryptedCache(): void;
   setUnlockPassword(pwd: string): void;
