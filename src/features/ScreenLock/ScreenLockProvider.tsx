@@ -17,6 +17,7 @@ interface State {
   encryptWithPassword(password: string, hashed: boolean): void;
   decryptWithPassword(password: string): void;
   startLockCountdown(lockOnDemand?: boolean): void;
+  reset(): void;
 }
 
 export const ScreenLockContext = React.createContext({} as State);
@@ -42,7 +43,8 @@ class ScreenLockProvider extends Component<
     encryptWithPassword: (password: string, hashed: boolean) =>
       this.setPasswordAndInitiateEncryption(password, hashed),
     decryptWithPassword: (password: string) => this.decryptWithPassword(password),
-    startLockCountdown: (lockingOnDemand: boolean) => this.startLockCountdown(lockingOnDemand)
+    startLockCountdown: (lockingOnDemand: boolean) => this.startLockCountdown(lockingOnDemand),
+    reset: () => this.reset()
   };
 
   // causes prop changes that are being observed in componentDidUpdate
@@ -102,6 +104,16 @@ class ScreenLockProvider extends Component<
       console.error(error);
       return false;
     }
+  };
+
+  // Wipes both DBs in case of forgotten pw
+  public reset = async () => {
+    const { destroyEncryptedCache, resetAppDb } = this.props;
+    destroyEncryptedCache();
+    resetAppDb();
+    this.setState({ locked: false }, () => {
+      this.props.history.replace(ROUTE_PATHS.DASHBOARD.path);
+    });
   };
 
   public componentDidMount() {
