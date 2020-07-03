@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import { OptionComponentProps } from 'react-select';
+import { OptionProps } from 'react-select';
 import BN from 'bn.js';
 
 import translate, { translateRaw } from '@translations';
@@ -335,11 +335,12 @@ export function DeterministicWalletsClass({
     setPage(Math.max(page - 1, 0));
   };
 
-  const DPathOption = ({ option, onSelect }: OptionComponentProps) => (
-    <SContainer onClick={() => onSelect && onSelect(option, null)}>
+  type TDPathOptionProps = OptionProps<DPath> | { data: DPath; selectOption?: () => void };
+  const DPathOption = ({ data, selectOption }: TDPathOptionProps) => (
+    <SContainer onClick={selectOption && (() => selectOption(data))}>
       <Typography>
-        {option.label}{' '}
-        {option.value && <DropdownDPath>{option.value.toString().replace(' ', '')}</DropdownDPath>}
+        {data.label}{' '}
+        {data.value && <DropdownDPath>{data.value.toString().replace(' ', '')}</DropdownDPath>}
       </Typography>
     </SContainer>
   );
@@ -410,7 +411,7 @@ export function DeterministicWalletsClass({
             onChange={handleChangePath}
             options={dPaths.concat([customDPath])}
             optionComponent={DPathOption}
-            valueComponent={({ value: option }) => <DPathOption option={option} />}
+            valueComponent={({ value }) => <DPathOption data={value} />}
             clearable={false}
             searchable={false}
           />
