@@ -213,7 +213,11 @@ const getAccountBalanceTimelineEntry = (report: PTXReport): StepData => {
 const getLastTxReportTimelineEntry = (report: PTXReport): StepData => {
   const lastSentTxReport = report.lastTransaction;
   const lastSentTx = lastSentTxReport
-    ? `${lastSentTxReport.value} ${lastSentTxReport.ticker} on ${lastSentTxReport.timestamp}`
+    ? translateRaw('PROTECTED_TX_LAST_TX_DETAILS', {
+        $value: lastSentTxReport.value,
+        $ticker: lastSentTxReport.ticker,
+        $timestamp: lastSentTxReport.timestamp
+      })
     : translateRaw('PROTECTED_TX_NO_INFORMATION_AVAILABLE');
 
   return {
