@@ -463,6 +463,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                   name="asset" // Need a way to spread option, name, symbol on sharedConfig for assets
                   component={({ field, form }: FieldProps) => (
                     <AssetDropdown
+                      label="send-asset-id"
                       selectedAsset={field.value}
                       assets={userAssets}
                       onSelect={(option: StoreAsset) => {
@@ -505,7 +506,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                         name={field.name}
                         value={field.value}
                         accounts={accountsWithAsset}
-                        onSelect={(option: IAccount) => {
+                        onSelect={(option: StoreAccount) => {
                           form.setFieldValue('account', option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
                           handleNonceEstimate(option);
                           handleGasEstimate();
