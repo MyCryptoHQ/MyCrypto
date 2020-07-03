@@ -186,7 +186,6 @@ const VOLTA_DEFAULT: DPath = {
 
 const THAICHAIN_DEFAULT: DPath = {
   label: 'Default (THAICHAIN)',
-  value: "m/44'/60'/0'"
   value: "m/44'/277'/0'/0"
 };
 
