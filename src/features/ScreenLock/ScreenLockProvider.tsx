@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import pipe from 'ramda/src/pipe';
-import isEmpty from 'lodash/isEmpty';
 
 import { translateRaw } from '@translations';
 import { ROUTE_PATHS } from '@config';
@@ -53,10 +52,13 @@ class ScreenLockProvider extends Component<
       // If password is not hashed yet, hash it
       if (!hashed) {
         const passwordHash = hashPassword(password);
-        this.setState({ shouldAutoLock: true }, () => {
-          // Initiates encryption in componentDidUpdate
-          setUnlockPassword(passwordHash);
-        });
+        this.setState(
+          (prevState) => ({ ...prevState, shouldAutoLock: true }),
+          () => {
+            // Initiates encryption in componentDidUpdate
+            setUnlockPassword(passwordHash);
+          }
+        );
       } else {
         // If password is already set initate encryption in componentDidUpdate
         this.setState({ shouldAutoLock: true });
@@ -70,7 +72,7 @@ class ScreenLockProvider extends Component<
     // locks screen after calling setPasswordAndInitiateEncryption which causes one of these cases:
     //  - password was just set (props.password goes from undefined to defined) and encrypted local storage data does not exist
     //  - password was already set and auto lock should happen (shouldAutoLock) and encrypted local storage data does not exist
-    if (this.state.shouldAutoLock && this.props.password && isEmpty(this.props.encryptedDbState)) {
+    if (this.state.shouldAutoLock && this.props.password && !this.props.encryptedDbState.data) {
       const encryptedData = encrypt(this.props.exportStorage(), this.props.password).toString();
       this.props.setEncryptedCache(encryptedData);
       this.props.resetAppDb();
