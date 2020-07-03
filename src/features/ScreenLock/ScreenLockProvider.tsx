@@ -6,6 +6,7 @@ import { translateRaw } from '@translations';
 import { ROUTE_PATHS } from '@config';
 import { withContext, hashPassword, encrypt, decrypt } from '@utils';
 import { DataContext, IDataContext, SettingsContext, ISettingsContext } from '@services/Store';
+
 import { default as ScreenLockLocking } from './ScreenLockLocking';
 
 interface State {
@@ -17,7 +18,8 @@ interface State {
   encryptWithPassword(password: string, hashed: boolean): void;
   decryptWithPassword(password: string): void;
   startLockCountdown(lockOnDemand?: boolean): void;
-  reset(): void;
+  resetEncrypted(): void;
+  resetAll(): void;
 }
 
 export const ScreenLockContext = React.createContext({} as State);
@@ -44,7 +46,8 @@ class ScreenLockProvider extends Component<
       this.setPasswordAndInitiateEncryption(password, hashed),
     decryptWithPassword: (password: string) => this.decryptWithPassword(password),
     startLockCountdown: (lockingOnDemand: boolean) => this.startLockCountdown(lockingOnDemand),
-    reset: () => this.reset()
+    resetEncrypted: () => this.resetEncrypted(),
+    resetAll: () => this.resetAll()
   };
 
   // causes prop changes that are being observed in componentDidUpdate
@@ -106,8 +109,17 @@ class ScreenLockProvider extends Component<
     }
   };
 
+  // Wipes encrypted data and unlocks
+  public resetEncrypted = async () => {
+    const { destroyEncryptedCache } = this.props;
+    destroyEncryptedCache();
+    this.setState({ locked: false }, () => {
+      document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
+    });
+  };
+
   // Wipes both DBs in case of forgotten pw
-  public reset = async () => {
+  public resetAll = async () => {
     const { destroyEncryptedCache, resetAppDb } = this.props;
     destroyEncryptedCache();
     resetAppDb();
@@ -199,7 +211,8 @@ class ScreenLockProvider extends Component<
     this.setState({ locking: false, locked: true });
     document.title = translateRaw('SCREEN_LOCK_TAB_TITLE_LOCKED');
 
-    const isOutsideLock = (path: string) => !path.includes('screen-lock');
+    const isOutsideLock = (path: string) =>
+      !path.includes('screen-lock') && path !== ROUTE_PATHS.SETTINGS_IMPORT.path;
 
     if (
       isOutsideLock(this.props.location.pathname) ||

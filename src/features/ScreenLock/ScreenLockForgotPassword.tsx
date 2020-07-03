@@ -6,9 +6,10 @@ import { Button } from '@mycrypto/ui';
 import translate, { translateRaw } from '@translations';
 import { ExtendedContentPanel } from '@components';
 import { ANALYTICS_CATEGORIES } from '@services';
-
-import mainImage from '@assets/images/icn-forgot-password.svg';
+import { ROUTE_PATHS } from '@config';
 import { useAnalytics } from '@utils';
+import mainImage from '@assets/images/icn-forgot-password.svg';
+
 import { ScreenLockContext } from './ScreenLockProvider';
 
 const ActionButton = styled(Button)`
@@ -44,7 +45,7 @@ const ScreenLockForgotPassword: FC<RouteComponentProps> = ({ history }) => {
   const trackScreenLock = useAnalytics({
     category: ANALYTICS_CATEGORIES.SCREEN_LOCK
   });
-  const { reset } = useContext(ScreenLockContext);
+  const { resetAll } = useContext(ScreenLockContext);
 
   return (
     <ExtendedContentPanel
@@ -63,7 +64,7 @@ const ScreenLockForgotPassword: FC<RouteComponentProps> = ({ history }) => {
         <ActionButton
           onClick={() => {
             trackScreenLock({ actionName: 'Import Wallet Settings button clicked' });
-            // TODO: Allow import?
+            history.push(ROUTE_PATHS.SETTINGS_IMPORT.path);
           }}
         >
           {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_IMPORT')}
@@ -71,7 +72,7 @@ const ScreenLockForgotPassword: FC<RouteComponentProps> = ({ history }) => {
         <ActionButton
           onClick={() => {
             trackScreenLock({ actionName: 'Start Over button clicked' });
-            reset();
+            resetAll();
           }}
         >
           {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_START_OVER')}
