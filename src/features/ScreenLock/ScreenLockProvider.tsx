@@ -106,7 +106,7 @@ class ScreenLockProvider extends Component<
     //Determine if screen is locked and set "locked" state accordingly
     const { encryptedDbState } = this.props;
 
-    if (encryptedDbState) {
+    if (encryptedDbState && encryptedDbState.data) {
       this.lockScreen();
     }
     this.trackInactivity();
