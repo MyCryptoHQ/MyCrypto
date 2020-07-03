@@ -184,6 +184,12 @@ const VOLTA_DEFAULT: DPath = {
   value: "m/44'/73799'/0'/0"
 };
 
+const THAICHAIN_DEFAULT: DPath = {
+  label: 'Default (THAICHAIN)',
+  value: "m/44'/60'/0'"
+  value: "m/44'/277'/0'/0"
+};
+
 const EWC_DEFAULT: DPath = {
   label: 'Default (EWC)',
   value: "m/44'/246'/0'/0"
@@ -227,6 +233,7 @@ export const DPathsList = {
   ETH_SINGULAR,
   ERE_DEFAULT,
   VOLTA_DEFAULT,
+  THAICHAIN_DEFAULT,
   EWC_DEFAULT
 };
 

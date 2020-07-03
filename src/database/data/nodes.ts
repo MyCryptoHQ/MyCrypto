@@ -356,6 +356,15 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
     }
   ],
 
+  THAICHAIN: [
+    {
+      name: NetworkUtils.makeNodeName('THAICHAIN', 'rpc.dome.cloud'),
+      type: NodeType.RPC,
+      service: 'rpc.domec.loud',
+      url: 'https://rpc.dome.cloud'
+    }
+  ],
+
   EnergyWebChain: [
     {
       name: NetworkUtils.makeNodeName('EnergyWebChain', 'rpc.energyweb.org'),

@@ -35,4 +35,5 @@ export type NetworkId =
   | 'ERE'
   | 'ASK'
   | 'VOLTA'
+  | 'THAICHAIN'
   | 'EnergyWebChain';

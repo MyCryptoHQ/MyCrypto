@@ -893,6 +893,33 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     },
     shouldEstimateGasPrice: false
   },
+  THAICHAIN: {
+    id: 'THAICHAIN',
+    name: 'ThaiChain',
+    unit: 'TCH' as TSymbol,
+    chainId: 7,
+    isCustom: false,
+    color: '#6d2eae',
+    blockExplorer: makeExplorer({
+      name: 'ThaiChain Web TCH Explorer',
+      origin: 'https://exp.tch.in.th',
+      addressPath: 'address',
+      blockPath: 'blocks'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DPaths.THAICHAIN_DEFAULT,
+      [WalletId.LEDGER_NANO_S]: DPaths.THAICHAIN_DEFAULT,
+      [WalletId.MNEMONIC_PHRASE]: DPaths.THAICHAIN_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 2,
+      max: 300,
+      initial: 2
+    },
+    shouldEstimateGasPrice: false
+  },
   EnergyWebChain: {
     id: 'EnergyWebChain',
     name: 'EWC',
