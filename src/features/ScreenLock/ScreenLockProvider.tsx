@@ -112,6 +112,7 @@ class ScreenLockProvider extends Component<
     destroyEncryptedCache();
     resetAppDb();
     this.setState({ locked: false }, () => {
+      document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
       this.props.history.replace(ROUTE_PATHS.DASHBOARD.path);
     });
   };
