@@ -23,6 +23,11 @@ describe('ProtectTxReport', () => {
     const { getByText } = renderComponent(unknownReport);
     const selector = translateRaw('PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT').trim();
     expect(getByText(selector)).toBeInTheDocument();
+    expect(getByText(unknownReport.balance!, { exact: false })).toBeInTheDocument();
+    expect(getByText(unknownReport.lastTransaction!.value, { exact: false })).toBeInTheDocument();
+    expect(
+      getByText(unknownReport.lastTransaction!.timestamp, { exact: false })
+    ).toBeInTheDocument();
   });
 
   test('Can render scam state', () => {
@@ -31,6 +36,9 @@ describe('ProtectTxReport', () => {
       $tags: `"${scamReport.labels![0]}"`
     }).trim();
     expect(getByText(selector)).toBeInTheDocument();
+    expect(getByText(scamReport.balance!, { exact: false })).toBeInTheDocument();
+    expect(getByText(scamReport.lastTransaction!.value, { exact: false })).toBeInTheDocument();
+    expect(getByText(scamReport.lastTransaction!.timestamp, { exact: false })).toBeInTheDocument();
   });
 
   test('Can render verified state', () => {
@@ -42,5 +50,10 @@ describe('ProtectTxReport', () => {
       getByText(translateRaw('PROTECTED_TX_TIMELINE_KNOWN_ACCOUNT').trim())
     ).toBeInTheDocument();
     expect(getByText(selector)).toBeInTheDocument();
+    expect(getByText(verifiedReport.balance!, { exact: false })).toBeInTheDocument();
+    expect(getByText(verifiedReport.lastTransaction!.value, { exact: false })).toBeInTheDocument();
+    expect(
+      getByText(verifiedReport.lastTransaction!.timestamp, { exact: false })
+    ).toBeInTheDocument();
   });
 });
