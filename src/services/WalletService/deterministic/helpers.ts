@@ -5,12 +5,6 @@ export const processFinishedAccounts = (
   customDPaths: ExtendedDPath[],
   desiredGap: number
 ) => {
-  console.debug(
-    '[processFinishedAccounts] input: ',
-    JSON.stringify(finishedAccounts),
-    JSON.stringify(customDPaths),
-    desiredGap
-  );
   const pathItems = finishedAccounts.map((acc) => ({
     ...acc.pathItem,
     balance: acc.balance
@@ -31,20 +25,19 @@ export const processFinishedAccounts = (
     return acc;
   }, {} as { [key: string]: { lastIndex: number; lastInhabitedIndex: number; dpath: DPath } });
   const addNewItems = Object.values(relevantIndexes)
-    .map((indexItem) => {
-      if (indexItem.lastIndex - indexItem.lastInhabitedIndex >= desiredGap) return undefined; // gap is satisfied, do nothing;
-      return {
-        ...indexItem.dpath,
-        offset: indexItem.lastIndex,
-        numOfAddresses: desiredGap - (indexItem.lastIndex - indexItem.lastInhabitedIndex) + 1
-      } as ExtendedDPath;
-    })
-    .filter((e) => e !== undefined) as ExtendedDPath[];
+    .filter((idxItem) => idxItem.lastIndex - idxItem.lastInhabitedIndex < desiredGap)
+    .map(
+      (indexItem) =>
+        ({
+          ...indexItem.dpath,
+          offset: indexItem.lastIndex,
+          numOfAddresses: desiredGap - (indexItem.lastIndex - indexItem.lastInhabitedIndex) + 1
+        } as ExtendedDPath)
+    );
 
   const customDPathsDetected = customDPaths.filter(
-    (customDPath) => relevantIndexes[customDPath.value] === undefined
+    (customDPath) => !relevantIndexes[customDPath.value]
   );
-  const z = { newGapItems: addNewItems, customDPathItems: customDPathsDetected };
-  console.debug('[processFinishedAccounts] output: ', JSON.stringify(z));
-  return z;
+
+  return { newGapItems: addNewItems, customDPathItems: customDPathsDetected };
 };

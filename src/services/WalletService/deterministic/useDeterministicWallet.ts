@@ -104,7 +104,6 @@ const useDeterministicWallet = (
   }, [state.queuedAccounts]);
 
   useEffect(() => {
-    // @todo: simplify and extract this out to tested function.
     if (state.finishedAccounts.length === 0 || !service || !state.session) return;
     const { newGapItems, customDPathItems } = processFinishedAccounts(
       state.finishedAccounts,
