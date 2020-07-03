@@ -257,7 +257,10 @@ export default function SwapAssets(props: Props) {
       <FormDisplay>
         {exchangeRate && toAsset && fromAsset && (
           <DisplayDataContainer>
-            <Label>{translateRaw('SWAP_RATE_LABEL')}</Label>
+            <Label>
+              <LabelText>{translateRaw('SWAP_RATE_LABEL')}</LabelText>
+              <STooltip tooltip={translateRaw('SWAP_RATE_TOOLTIP')} />:
+            </Label>
             <LabelText>
               {translateRaw('SWAP_RATE_TEXT', {
                 $displayString: makeDisplayString(exchangeRate.toString()),
