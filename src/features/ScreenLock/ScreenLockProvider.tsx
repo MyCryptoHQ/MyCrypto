@@ -168,7 +168,11 @@ class ScreenLockProvider extends Component<
       appContext.handleCountdownEnded();
       return;
     }
-    if (this.state.locked || this.state.locking) {
+    if (
+      this.state.locked ||
+      this.state.locking ||
+      this.props.location.pathname === ROUTE_PATHS.SCREEN_LOCK_NEW.path
+    ) {
       return;
     }
 
