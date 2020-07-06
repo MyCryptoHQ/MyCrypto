@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { ContentPanel } from '@components';
 import { SettingsContext } from '@services/Store';
 import { translateRaw } from '@translations';
+import { ScreenLockContext } from '@features/ScreenLock';
 
 import { ImportBox, ImportSuccess } from './components';
 
@@ -48,9 +49,24 @@ export class Import extends React.Component<RouteComponentProps<{}>> {
         }}
       >
         <Content>
-          <SettingsContext.Consumer>
-            {({ importStorage }) => <Step onNext={this.advanceStep} importCache={importStorage} />}
-          </SettingsContext.Consumer>
+          <ScreenLockContext.Consumer>
+            {({ resetEncrypted }) => (
+              <SettingsContext.Consumer>
+                {({ importStorage }) => (
+                  <Step
+                    onNext={this.advanceStep}
+                    importCache={(cache: string) => {
+                      const result = importStorage(cache);
+                      if (result) {
+                        resetEncrypted();
+                      }
+                      return result;
+                    }}
+                  />
+                )}
+              </SettingsContext.Consumer>
+            )}
+          </ScreenLockContext.Consumer>
         </Content>
       </ContentPanel>
     );

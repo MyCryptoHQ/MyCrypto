@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import pipe from 'ramda/src/pipe';
-import isEmpty from 'lodash/isEmpty';
 
 import { translateRaw } from '@translations';
 import { ROUTE_PATHS } from '@config';
 import { withContext, hashPassword, encrypt, decrypt } from '@utils';
 import { DataContext, IDataContext, SettingsContext, ISettingsContext } from '@services/Store';
+
 import { default as ScreenLockLocking } from './ScreenLockLocking';
 
 interface State {
@@ -18,6 +18,8 @@ interface State {
   encryptWithPassword(password: string, hashed: boolean): void;
   decryptWithPassword(password: string): void;
   startLockCountdown(lockOnDemand?: boolean): void;
+  resetEncrypted(): void;
+  resetAll(): void;
 }
 
 export const ScreenLockContext = React.createContext({} as State);
@@ -43,19 +45,25 @@ class ScreenLockProvider extends Component<
     encryptWithPassword: (password: string, hashed: boolean) =>
       this.setPasswordAndInitiateEncryption(password, hashed),
     decryptWithPassword: (password: string) => this.decryptWithPassword(password),
-    startLockCountdown: (lockingOnDemand: boolean) => this.startLockCountdown(lockingOnDemand)
+    startLockCountdown: (lockingOnDemand: boolean) => this.startLockCountdown(lockingOnDemand),
+    resetEncrypted: () => this.resetEncrypted(),
+    resetAll: () => this.resetAll()
   };
 
   // causes prop changes that are being observed in componentDidUpdate
   public setPasswordAndInitiateEncryption = async (password: string, hashed: boolean) => {
     const { setUnlockPassword } = this.props;
     try {
-      let passwordHash;
-
       // If password is not hashed yet, hash it
       if (!hashed) {
-        passwordHash = hashPassword(password);
-        setUnlockPassword(passwordHash);
+        const passwordHash = hashPassword(password);
+        this.setState(
+          (prevState) => ({ ...prevState, shouldAutoLock: true }),
+          () => {
+            // Initiates encryption in componentDidUpdate
+            setUnlockPassword(passwordHash);
+          }
+        );
       } else {
         // If password is already set initate encryption in componentDidUpdate
         this.setState({ shouldAutoLock: true });
@@ -65,14 +73,14 @@ class ScreenLockProvider extends Component<
     }
   };
 
-  public async componentDidUpdate(prevProps: IDataContext) {
+  public async componentDidUpdate() {
     // locks screen after calling setPasswordAndInitiateEncryption which causes one of these cases:
-    //  - password was just set (props.password goes from undefined to defined) and enrypted local storage data does not exist
-    //  - password was already set and auto lock should happen (shouldAutoLock) and enrypted local storage data does not exist
+    //  - password was just set (props.password goes from undefined to defined) and encrypted local storage data does not exist
+    //  - password was already set and auto lock should happen (shouldAutoLock) and encrypted local storage data does not exist
     if (
-      (this.state.shouldAutoLock || !prevProps.password) &&
+      this.state.shouldAutoLock &&
       this.props.password &&
-      isEmpty(this.props.encryptedDbState)
+      !(this.props.encryptedDbState && this.props.encryptedDbState.data)
     ) {
       const encryptedData = encrypt(this.props.exportStorage(), this.props.password).toString();
       this.props.setEncryptedCache(encryptedData);
@@ -85,6 +93,9 @@ class ScreenLockProvider extends Component<
   public decryptWithPassword = async (password: string): Promise<boolean> => {
     const { destroyEncryptedCache, encryptedDbState, importStorage } = this.props;
     try {
+      if (!encryptedDbState) {
+        return false;
+      }
       const passwordHash = hashPassword(password);
       // Decrypt the data and store it to the MyCryptoCache
       const decryptedData = decrypt(encryptedDbState.data as string, passwordHash);
@@ -93,8 +104,9 @@ class ScreenLockProvider extends Component<
       destroyEncryptedCache();
 
       // Navigate to the dashboard and reset inactivity timer
-      this.setState({ locked: false });
-      this.props.history.replace(ROUTE_PATHS.DASHBOARD.path);
+      this.setState({ locked: false }, () => {
+        this.props.history.replace(ROUTE_PATHS.DASHBOARD.path);
+      });
       this.resetInactivityTimer();
       document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
       return true;
@@ -104,11 +116,31 @@ class ScreenLockProvider extends Component<
     }
   };
 
+  // Wipes encrypted data and unlocks
+  public resetEncrypted = async () => {
+    const { destroyEncryptedCache } = this.props;
+    destroyEncryptedCache();
+    this.setState({ locked: false }, () => {
+      document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
+    });
+  };
+
+  // Wipes both DBs in case of forgotten pw
+  public resetAll = async () => {
+    const { destroyEncryptedCache, resetAppDb } = this.props;
+    destroyEncryptedCache();
+    resetAppDb();
+    this.setState({ locked: false }, () => {
+      document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
+      this.props.history.replace(ROUTE_PATHS.DASHBOARD.path);
+    });
+  };
+
   public componentDidMount() {
     //Determine if screen is locked and set "locked" state accordingly
     const { encryptedDbState } = this.props;
 
-    if (encryptedDbState) {
+    if (encryptedDbState && encryptedDbState.data) {
       this.lockScreen();
     }
     this.trackInactivity();
@@ -136,11 +168,11 @@ class ScreenLockProvider extends Component<
       appContext.handleCountdownEnded();
       return;
     }
-    //Start the lock screen countdown only if user is on one of the dashboard pages
-    if (!this.props.location.pathname.includes(ROUTE_PATHS.DASHBOARD.path)) {
-      return;
-    }
-    if (this.state.locked || this.state.locking) {
+    if (
+      this.state.locked ||
+      this.state.locking ||
+      this.props.location.pathname === ROUTE_PATHS.SCREEN_LOCK_NEW.path
+    ) {
       return;
     }
 
@@ -190,17 +222,18 @@ class ScreenLockProvider extends Component<
     this.setState({ locking: false, locked: true });
     document.title = translateRaw('SCREEN_LOCK_TAB_TITLE_LOCKED');
 
+    const isOutsideLock = (path: string) =>
+      !path.includes('screen-lock') && path !== ROUTE_PATHS.SETTINGS_IMPORT.path;
+
     if (
-      this.props.location.pathname.includes(ROUTE_PATHS.DASHBOARD.path) ||
-      this.props.location.pathname.includes(ROUTE_PATHS.SCREEN_LOCK_NEW.path) ||
-      this.props.location.pathname.includes(ROUTE_PATHS.NO_ACCOUNTS.path) ||
-      this.props.location.pathname === ROUTE_PATHS.ROOT.path
+      isOutsideLock(this.props.location.pathname) ||
+      this.props.location.pathname.includes(ROUTE_PATHS.SCREEN_LOCK_NEW.path)
     ) {
       this.props.history.push(ROUTE_PATHS.SCREEN_LOCK_LOCKED.path);
     }
 
     this.props.history.listen((location) => {
-      if (this.state.locked && location.pathname.includes(ROUTE_PATHS.DASHBOARD.path)) {
+      if (this.state.locked && isOutsideLock(location.pathname)) {
         this.props.history.push(ROUTE_PATHS.SCREEN_LOCK_LOCKED.path);
       }
     });
