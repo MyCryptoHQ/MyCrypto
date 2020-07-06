@@ -463,7 +463,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                   name="asset" // Need a way to spread option, name, symbol on sharedConfig for assets
                   component={({ field, form }: FieldProps) => (
                     <AssetDropdown
-                      label="send-asset-id"
                       selectedAsset={field.value}
                       assets={userAssets}
                       onSelect={(option: StoreAsset) => {

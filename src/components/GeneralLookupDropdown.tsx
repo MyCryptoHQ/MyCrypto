@@ -53,16 +53,17 @@ const GeneralLookupDropdown = ({
     }}
     onInputChange={onInputChange}
     onBlur={onBlur}
-    optionComponent={({ data, selectOption }) => {
-      const { address, label } = data;
-      return (
-        <>
-          <AccountSummary address={address} label={label} onClick={() => selectOption(data)} />
-          <Divider padding={'14px'} />
-        </>
-      );
-    }}
-    value={!!value && { label: value.display, address: value.value }} // Allow the value to be undefined at the start in order to display the placeholder
+    optionComponent={({ data: { address, label }, selectOption }) => (
+      <>
+        <AccountSummary
+          address={address}
+          label={label}
+          onClick={() => selectOption({ address, label })}
+        />
+        <Divider padding={'14px'} />
+      </>
+    )}
+    value={value && value.value ? { label: value.display, address: value.value } : undefined} // Allow the value to be undefined at the start in order to display the placeholder
     valueComponent={({ value: { address, label } }) => (
       <AccountSummary address={address} label={label} paddingLeft={SPACING.XS} />
     )}
