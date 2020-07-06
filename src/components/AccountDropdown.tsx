@@ -82,6 +82,7 @@ function AccountDropdown({
       }}
       value={formValue && formValue.address ? getOption(formValue, options) : undefined} // Allow the value to be undefined at the start in order to display the placeholder
       valueComponent={({ value: { account: selectedAccount, asset: selectedAsset } }) => {
+        debugger;
         const { address, label } = selectedAccount;
         const { balance, assetSymbol, assetUUID } = selectedAsset;
         return (
