@@ -56,5 +56,6 @@ export type StoreAsset = ExtendedAsset & {
 export interface ISwapAsset {
   name: string;
   symbol: TSymbol;
+  ticker?: string;
   uuid: TUuid;
 }

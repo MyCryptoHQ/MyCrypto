@@ -14,8 +14,6 @@ import { COLORS, FONT_SIZE } from '@theme';
 import crossIcon from '@assets/images/icn-cross.svg';
 import { CenteredIconArrow } from './IconArrow';
 
-type OptionComponentType<T = any> = React.ComponentClass<OptionProps<T>> | React.FC<OptionProps<T>>;
-
 interface DropdownProps<T> {
   options: T[];
   value?: T;
@@ -25,8 +23,8 @@ interface DropdownProps<T> {
   clearable?: boolean;
   name?: string;
   dropdownIcon?: JSX.Element;
-  optionComponent: OptionComponentType<T>;
-  valueComponent?: React.ComponentType<{ value: T }>;
+  optionComponent: React.ComponentType<OptionProps<T>>;
+  valueComponent?: React.ComponentClass<{ value: T }> | React.StatelessComponent<{ value: T }>;
   inputId?: string;
   inputValue?: string;
   onCloseResetsInput?: boolean;
