@@ -231,7 +231,7 @@ module.exports = {
     }),
 
     // Allow tree shaking for lodash
-    new LodashModuleReplacementPlugin(),
+    new LodashModuleReplacementPlugin({ paths: true }),
 
     // Ignore all locale files of moment.js
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
