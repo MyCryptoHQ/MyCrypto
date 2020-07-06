@@ -255,6 +255,7 @@
     "prod": "npm run build && npm run serve",
     "precommit": "lint-staged",
     "formatAll": "find ./src/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
+    "prettier:write": "prettier --write --config ./.prettierrc --config-precedence file-override",
     "prettier:diff": "prettier --write --config ./.prettierrc --list-different \"src/**/*.ts\" \"src/**/*.tsx\"",
     "update:tokens": "parse-eth-tokens --networks all --output ./src/database/data/tokens --exclude 0x5a276Aeb77bCfDAc8Ac6f31BBC7416AE1A85eEF2,0x0027449Bf0887ca3E431D263FFDeFb244D95b555",
     "lint:css": "stylelint ./src/**/*.tsx",
@@ -265,11 +266,12 @@
   },
   "lint-staged": {
     "!(node-scripts)/**/*.{ts,tsx}": [
-      "prettier --write --config ./.prettierrc --config-precedence file-override",
+      "yarn prettier:write",
       "yarn lint:css",
       "yarn lint:ts",
       "git add"
-    ]
+    ],
+    "!(node-scripts)/**/*.json": "yarn prettier:write"
   },
   "husky": {
     "hooks": {
