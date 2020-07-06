@@ -603,6 +603,7 @@
     "PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT_DESC": "This doesn't necessarily mean it’s 'safe' or 'unsafe', just that no information has been collected at this time.",
     "PROTECTED_TX_UNKNOWN_BALANCE": "Unknown balance",
     "PROTECTED_TX_WEB3_WALLET_DESC": "Due to technical limitations, the 20 second cancellation timer is unavailable for transactions using $web3WalletName and other Web 3 providers.",
+    "PROTECTED_TX_LAST_TX_DETAILS": "$value $ticker on $timestamp",
     "PROTOCOLS_EXPLAINER_COMPOUND": "Compound",
     "PROTOCOLS_EXPLAINER_COMPOUND_DESC": "Compound is a protocol that allows you to borrow and lend assets. Lending assets yields returns in the form of an interest rate.",
     "PROTOCOLS_EXPLAINER_KYBER": "Kyber",
