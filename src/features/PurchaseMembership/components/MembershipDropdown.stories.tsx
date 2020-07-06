@@ -8,11 +8,10 @@ import { MEMBERSHIP_CONFIG } from '../config';
 
 export default { title: 'MembershipDropdown' };
 
-const initialForm = {
+const initialForm: { name: string; value: TMembershipOption } = {
   name: '',
-  value: undefined
+  value: {} as TMembershipOption
 };
-
 export const Dropdown = () => {
   const [formValues, setFormValues] = useState(initialForm);
 

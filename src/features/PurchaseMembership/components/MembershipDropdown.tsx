@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { OptionComponentProps } from 'react-select';
+import { OptionProps } from 'react-select';
 
 import { translateRaw } from '@translations';
 import { Typography, Dropdown } from '@components';
@@ -19,20 +19,32 @@ const DiscountTypography = styled(Typography)`
   margin-left: ${SPACING.XS};
 `;
 
-interface Props {
+// @todo check if the nesting of 'IMembershipConfig' is really necessary
+export interface TMembershipOption {
+  label: string;
+  value: IMembershipConfig;
+}
+export interface MembershipDropdownProps {
   name: string;
-  value: { label: string; value: IMembershipConfig };
-  onSelect(option: { label: string; value: IMembershipConfig }): void;
+  value?: TMembershipOption;
+  onSelect(option: TMembershipOption): void;
 }
 
-function MembershipDropdown({ name, value, onSelect }: Props) {
+function MembershipDropdown({ name, value, onSelect }: MembershipDropdownProps) {
+  const options: TMembershipOption[] = Object.values(MEMBERSHIP_CONFIG).map((c) => ({
+    label: c.title,
+    value: c
+  }));
+
   return (
-    <Dropdown
+    <Dropdown<TMembershipOption>
       name={name}
-      placeholder={translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')}
-      options={Object.values(MEMBERSHIP_CONFIG).map((c) => ({ label: c.title, value: c }))}
+      placeholder={translateRaw('MEMBERSHIP_DROPDOWN_PLACEHOLDER')}
+      options={options}
       onChange={(option) => onSelect(option)}
-      optionComponent={MembershipOption}
+      optionComponent={({ data, selectOption }: OptionProps<TMembershipOption>) => (
+        <MembershipOption option={data} onClick={selectOption} />
+      )}
       value={value}
       searchable={false}
       valueComponent={({ value: option }) => <MembershipOption option={option} />}
@@ -40,17 +52,19 @@ function MembershipDropdown({ name, value, onSelect }: Props) {
   );
 }
 
-class MembershipOption extends React.PureComponent<OptionComponentProps> {
-  public render() {
-    const { option, onSelect } = this.props;
-    const value = (option.value as unknown) as IMembershipConfig;
-    return (
-      <SContainer onClick={() => onSelect && onSelect(option, null)}>
-        <Typography value={option.label} />
-        <DiscountTypography value={value.discountNotice} />
-      </SContainer>
-    );
-  }
-}
+export const MembershipOption = ({
+  option,
+  onClick
+}: {
+  option: TMembershipOption;
+  onClick?(optoin: TMembershipOption): void;
+}) => {
+  return (
+    <SContainer onClick={() => onClick && onClick(option)}>
+      <Typography value={option.label} />
+      <DiscountTypography value={option.value.discountNotice} />
+    </SContainer>
+  );
+};
 
 export default MembershipDropdown;

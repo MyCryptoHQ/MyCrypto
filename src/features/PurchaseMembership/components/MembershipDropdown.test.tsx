@@ -3,16 +3,16 @@ import selectEvent from 'react-select-event';
 
 import { simpleRender } from 'test-utils';
 
-import MembershipDropdown, { Props } from './MembershipDropdown';
+import MembershipDropdown, { MembershipDropdownProps } from './MembershipDropdown';
 import { MEMBERSHIP_CONFIG } from '../config';
 
-const defaultProps: Props = {
+const defaultProps: MembershipDropdownProps = {
   name: 'MembershipPlan',
   value: undefined,
   onSelect: jest.fn()
 };
 
-function getComponent(props: Props) {
+function getComponent(props: MembershipDropdownProps) {
   return simpleRender(
     <form role="form">
       <label htmlFor={defaultProps.name}>Membership</label>
