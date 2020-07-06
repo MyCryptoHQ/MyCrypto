@@ -93,6 +93,7 @@ const AddAccountFlow = withRouter(({ history, match }) => {
       const handleAddition =
         accountData.length === 1
           ? () => {
+              if (accountData.length > 1) displayNotification(NotificationTemplates.saveSettings);
               displayNotification(NotificationTemplates.walletAdded, {
                 address: newAccounts[0].address
               });
