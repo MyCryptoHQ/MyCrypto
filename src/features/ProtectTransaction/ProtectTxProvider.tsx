@@ -64,12 +64,11 @@ export const protectTxProviderInitialState: ProtectTxState = {
   mainComponentDisabled: false
 };
 
-const numOfSteps = 3;
-
 export const ProtectTxContext = createContext({} as ProtectTxContext);
 
 const ProtectTxProvider: React.FC = ({ children }) => {
   const { isMyCryptoMember } = useContext(StoreContext);
+  const numOfSteps = isMyCryptoMember ? 2 : 3;
   const { assets } = useContext(AssetContext);
   const [state, setState] = useState<ProtectTxState>({ ...protectTxProviderInitialState });
   const { isMdScreen } = useScreenSize();
