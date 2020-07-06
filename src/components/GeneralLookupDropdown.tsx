@@ -1,11 +1,12 @@
 import React from 'react';
-import { OnInputKeyDownHandler } from 'react-select';
+import { FocusEventHandler, KeyboardEventHandler } from 'react-select/src/types';
 
 import { translateRaw } from '@translations';
-import { AccountSummary, AccountOption, Dropdown } from '@components';
+import { AccountSummary, Divider, Dropdown } from '@components';
 import { Asset, IReceiverAddress } from '@types';
 
 import addressBookIcon from '@assets/images/icn-address-book.svg';
+import { SPACING } from '@theme';
 
 export interface LabeledAddress {
   label: string;
@@ -17,13 +18,13 @@ interface IGeneralLookupDropdownProps {
   name: string;
   value: IReceiverAddress;
   asset?: Asset;
-  onEnterKeyDown: OnInputKeyDownHandler;
+  onEnterKeyDown: KeyboardEventHandler;
+  onBlur: FocusEventHandler;
   inputValue: string;
   placeholder?: string;
   onSelect(option: IReceiverAddress): void;
   onChange?(e: any): void;
   onInputChange(e: any): string;
-  onBlur(inputString: string): void;
 }
 
 const GeneralLookupDropdown = ({
@@ -52,10 +53,18 @@ const GeneralLookupDropdown = ({
     }}
     onInputChange={onInputChange}
     onBlur={onBlur}
-    optionComponent={AccountOption}
-    value={value && value.value ? value : undefined} // Allow the value to be undefined at the start in order to display the placeholder
-    valueComponent={({ value: { value: address, assetUUID, display: label } }) => (
-      <AccountSummary uuid={assetUUID} address={address} label={label} />
+    optionComponent={({ data, selectOption }) => {
+      const { address, label } = data;
+      return (
+        <>
+          <AccountSummary address={address} label={label} onClick={() => selectOption(data)} />
+          <Divider padding={'14px'} />
+        </>
+      );
+    }}
+    value={!!value && { label: value.display, address: value.value }} // Allow the value to be undefined at the start in order to display the placeholder
+    valueComponent={({ value: { address, label } }) => (
+      <AccountSummary address={address} label={label} paddingLeft={SPACING.XS} />
     )}
     searchable={true}
     clearable={true}
