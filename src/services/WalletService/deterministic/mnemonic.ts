@@ -13,6 +13,6 @@ export const MnemonicWallet = (
     signWrapper(fromPrivateKey(decryptMnemonicToPrivKey(phrase, pass, path, address))),
     {
       address,
-      path
+      dPath: path
     }
   );
