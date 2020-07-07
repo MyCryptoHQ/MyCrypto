@@ -6,6 +6,9 @@ import { ITxReceipt, ISignedTx, IFormikFields, ITxConfig } from '@types';
 import { translateRaw } from '@translations';
 import { IS_ACTIVE_FEATURE, ROUTE_PATHS } from '@config';
 import { IStepperPath } from '@components/GeneralStepper/types';
+import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
+import { ProtectTxUtils } from '@features/ProtectTransaction';
+import { StoreContext } from '@services';
 
 import { txConfigInitialState, TxConfigFactory } from './stateFactory';
 import SendAssetsForm from './components/SendAssetsForm';
@@ -15,8 +18,6 @@ import {
   SignTransactionWithProtectTx
 } from './components';
 import SignTransaction from './components/SignTransaction';
-import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
-import { ProtectTxUtils } from '@features/ProtectTransaction';
 
 function SendAssets() {
   const {
@@ -30,6 +31,7 @@ function SendAssets() {
   } = useStateReducer(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: undefined });
   const protectTxContext = useContext(ProtectTxContext);
   const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
+  const { isMyCryptoMember } = useContext(StoreContext);
 
   // Due to MetaMask deprecating eth_sign method,
   // it has different step order, where sign and send are one panel
@@ -39,7 +41,7 @@ function SendAssets() {
       component: IS_ACTIVE_FEATURE.PROTECT_TX ? SendAssetsFormWithProtectTx : SendAssetsForm,
       props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
       actions: (payload: IFormikFields, cb: any) => {
-        if (getProTxValue(['state', 'protectTxEnabled'])) {
+        if (getProTxValue(['state', 'protectTxEnabled']) && !isMyCryptoMember) {
           payload.nonceField = (parseInt(payload.nonceField, 10) + 1).toString();
         }
         return handleFormSubmit(payload, cb);
@@ -72,7 +74,7 @@ function SendAssets() {
       component: IS_ACTIVE_FEATURE.PROTECT_TX ? SendAssetsFormWithProtectTx : SendAssetsForm,
       props: (({ txConfig }) => ({ txConfig }))(txFactoryState),
       actions: (payload: IFormikFields, cb: any) => {
-        if (getProTxValue(['state', 'protectTxEnabled'])) {
+        if (getProTxValue(['state', 'protectTxEnabled']) && !isMyCryptoMember) {
           payload.nonceField = (parseInt(payload.nonceField, 10) + 1).toString();
         }
         return handleFormSubmit(payload, cb);
