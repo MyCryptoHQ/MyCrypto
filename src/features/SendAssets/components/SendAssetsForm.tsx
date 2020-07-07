@@ -333,11 +333,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
   const userAccountEthAsset = userAssets.find((a) => a.uuid === ETHUUID);
 
   return (
-    <div
-      className={`SendAssetsForm ${
-        getProTxValue(['state', 'mainComponentDisabled']) ? 'SendAssetsForm-disabled' : ''
-      }`}
-    >
+    <div>
       <Formik
         initialValues={getInitialFormikValues(txConfig, userAccountEthAsset, defaultNetwork)}
         validationSchema={SendAssetsSchema}

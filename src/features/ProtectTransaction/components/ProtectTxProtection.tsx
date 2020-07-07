@@ -71,6 +71,7 @@ const SProtectionThisTransaction = styled(ProtectTxBase)`
 
 const BulletList = styled.ul`
   li {
+    list-style-type: none;
     padding-left: ${SPACING.SM};
     margin-left: -${SPACING.SM};
     margin-bottom: 15px;
