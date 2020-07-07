@@ -104,21 +104,25 @@ export const DeterministicWalletService = ({
     } else {
       const hardenedDPaths = dpaths.filter(({ isHardened }) => isHardened);
       const normalDPaths = dpaths.filter(({ isHardened }) => !isHardened);
-      await getNormalDPathAddresses(session, normalDPaths)
-        .then((accounts) => {
-          handleEnqueueAccounts(accounts);
-        })
-        .catch((err) => {
-          handleAccountsError(err);
-        });
+      if (normalDPaths.length > 0) {
+        await getNormalDPathAddresses(session, normalDPaths)
+          .then((accounts) => {
+            handleEnqueueAccounts(accounts);
+          })
+          .catch((err) => {
+            handleAccountsError(err);
+          });
+      }
 
-      await getHardenedDPathAddresses(session, hardenedDPaths)
-        .then((accounts) => {
-          handleEnqueueAccounts(accounts);
-        })
-        .catch((err) => {
-          handleAccountsError(err);
-        });
+      if (hardenedDPaths.length > 0) {
+        await getHardenedDPathAddresses(session, hardenedDPaths)
+          .then((accounts) => {
+            handleEnqueueAccounts(accounts);
+          })
+          .catch((err) => {
+            handleAccountsError(err);
+          });
+      }
     }
   };
 
@@ -170,6 +174,7 @@ export const DeterministicWalletService = ({
         //
       }
     }
+
     return outputAddresses;
   };
 
@@ -180,19 +185,19 @@ export const DeterministicWalletService = ({
     const outputAddresses: any[] = [];
     for (const dpath of dpaths) {
       for (let idx = 0; idx < dpath.numOfAddresses; idx++) {
-        await session.getAddress(dpath, idx + dpath.offset).then((data: WalletResult) => {
-          // @todo - fix this type
-          const outputObject = {
-            address: data.address as TAddress,
-            pathItem: {
-              path: data.path,
-              baseDPath: dpath,
-              index: idx + dpath.offset
-            },
-            balance: undefined
-          };
-          outputAddresses.push(outputObject);
-        });
+        const data = (await session.getAddress(dpath, idx + dpath.offset)) as WalletResult;
+
+        // @todo - fix this type
+        const outputObject = {
+          address: data.address as TAddress,
+          pathItem: {
+            path: data.path,
+            baseDPath: dpath,
+            index: idx + dpath.offset
+          },
+          balance: undefined
+        };
+        outputAddresses.push(outputObject);
       }
     }
     return outputAddresses;

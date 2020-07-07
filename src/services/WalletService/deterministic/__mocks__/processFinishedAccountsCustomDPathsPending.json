@@ -1,0 +1,12 @@
+{
+  "newGapItems": [],
+  "customDPathItems": [
+    {
+      "label": "Test Ledger Live (ETH)",
+      "value": "m/44'/60'/0'/0/0",
+      "isHardened": true,
+      "offset": 0,
+      "numOfAddresses": 5
+    }
+  ]
+}

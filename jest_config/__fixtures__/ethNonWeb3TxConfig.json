@@ -1,6 +1,6 @@
 {
   "rawTransaction": {
-    "to": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+    "to": "0xb2bb2b958AFa2e96dab3f3Ce7162b87daEa39017",
     "value": "0x2386f26fc10000",
     "data": "0x",
     "gasLimit": "0x5208",
@@ -8,7 +8,7 @@
     "nonce": "0x6",
     "chainId": 3
   },
-  "receiverAddress": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+  "receiverAddress": "0xb2bb2b958AFa2e96dab3f3Ce7162b87daEa39017",
   "amount": "0.01",
   "network": {
     "id": "Ropsten",
@@ -50,10 +50,7 @@
       "77be6839-06c5-55ee-9062-0233a18436a0",
       "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"
     ],
-    "assets": [
-      "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
-      "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"
-    ],
+    "assets": ["77de68da-ecd8-53ba-bbb5-8edb1c8e14d7", "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"],
     "baseAsset": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
     "baseUnit": "RopstenETH",
     "nodes": [
@@ -98,7 +95,7 @@
     "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
   },
   "senderAccount": {
-    "address": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017",
+    "address": "0xb2bb2b958AFa2e96dab3f3Ce7162b87daEa39017",
     "networkId": "Ropsten",
     "wallet": "LEDGER_NANO_S",
     "dPath": "m/44'/60'/0'/0",
@@ -180,10 +177,7 @@
         "77be6839-06c5-55ee-9062-0233a18436a0",
         "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"
       ],
-      "assets": [
-        "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
-        "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"
-      ],
+      "assets": ["77de68da-ecd8-53ba-bbb5-8edb1c8e14d7", "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"],
       "baseAsset": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
       "baseUnit": "RopstenETH",
       "nodes": [
@@ -206,5 +200,5 @@
   "gasLimit": "21000",
   "data": "0x",
   "nonce": "6",
-  "from": "0x4d1F9d958AFa2e96dab3f3Ce7162b87daEa39017"
+  "from": "0xb2bb2b958AFa2e96dab3f3Ce7162b87daEa39017"
 }
