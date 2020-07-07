@@ -11,7 +11,6 @@ import { WALLET_STEPS } from '@components/SignTransactionWallets';
 
 import ProtectTxBase from './ProtectTxBase';
 import { ProtectTxContext } from '../ProtectTxProvider';
-import { ProtectTxUtils } from '../utils';
 
 const SignProtectedTransaction = styled(ProtectTxBase)`
   .SignTransactionKeystore {
@@ -40,12 +39,7 @@ interface Props {
 }
 
 export const ProtectTxSign: FC<Props> = (props) => {
-  const protectTxContext = useContext(ProtectTxContext);
-  const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
-  if (!getProTxValue()) {
-    throw new Error('ProtectTxProtection requires to be wrapped in ProtectTxContext!');
-  }
-  const { goToInitialStepOrFetchReport } = protectTxContext;
+  const { goToInitialStepOrFetchReport } = useContext(ProtectTxContext);
 
   const { txConfig, handleProtectTxConfirmAndSend, account, network } = props;
 

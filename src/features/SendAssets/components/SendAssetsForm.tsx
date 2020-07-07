@@ -178,8 +178,12 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
       ({} as Asset)
   );
 
-  const protectTxContext = useContext(ProtectTxContext);
-  const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
+  const {
+    state: ptxState,
+    updateFormValues,
+    goToInitialStepOrFetchReport,
+    showHideProtectTx
+  } = useContext(ProtectTxContext);
 
   const SendAssetsSchema = Yup.object().shape({
     amount: Yup.string()
@@ -342,8 +346,8 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
         }}
         render={({ errors, setFieldValue, setFieldTouched, touched, values }) => {
           useEffect(() => {
-            if (getProTxValue(['updateFormValues'])) {
-              getProTxValue(['updateFormValues'])(values);
+            if (updateFormValues) {
+              updateFormValues(values);
             }
           }, [values]);
 
@@ -358,14 +362,13 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
           });
 
           useEffect(() => {
-            const ptxState = getProTxValue(['state']);
             if (ptxState.protectTxShow) {
               if (
-                getProTxValue(['goToInitialStepOrFetchReport']) &&
+                goToInitialStepOrFetchReport &&
                 ptxState.receiverAddress !== values.address.value
               ) {
                 const { address, network } = values;
-                getProTxValue(['goToInitialStepOrFetchReport'])(address.value, network);
+                goToInitialStepOrFetchReport(address.value, network);
               }
             }
           }, [values.address.value]);
@@ -720,18 +723,18 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                 )}
               </div>
 
-              {getProTxValue() && (
+              {ptxState.protectTxFeatureFlag && (
                 <ProtectTxButton
                   onClick={(e) => {
                     e.preventDefault();
 
-                    if (getProTxValue(['goToInitialStepOrFetchReport'])) {
+                    if (goToInitialStepOrFetchReport) {
                       const { address, network } = values;
-                      getProTxValue(['goToInitialStepOrFetchReport'])(address.value, network);
+                      goToInitialStepOrFetchReport(address.value, network);
                     }
 
-                    if (getProTxValue(['showHideProtectTx'])) {
-                      getProTxValue(['showHideProtectTx'])(true);
+                    if (showHideProtectTx) {
+                      showHideProtectTx(true);
                     }
                   }}
                 />
@@ -752,7 +755,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                 {translate('ACTION_6')}
               </Button>
 
-              {getProTxValue() && (
+              {ptxState.protectTxFeatureFlag && (
                 <ProtectTxShowError
                   protectTxError={ProtectTxUtils.checkFormForProtectedTxErrors(
                     values,
