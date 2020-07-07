@@ -179,6 +179,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
   );
 
   const {
+    protectTxFeatureFlag,
     state: ptxState,
     updateFormValues,
     goToInitialStepOrFetchReport,
@@ -723,7 +724,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                 )}
               </div>
 
-              {ptxState.protectTxFeatureFlag && (
+              {protectTxFeatureFlag && (
                 <ProtectTxButton
                   onClick={(e) => {
                     e.preventDefault();
@@ -755,7 +756,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                 {translate('ACTION_6')}
               </Button>
 
-              {ptxState.protectTxFeatureFlag && (
+              {protectTxFeatureFlag && (
                 <ProtectTxShowError
                   protectTxError={ProtectTxUtils.checkFormForProtectedTxErrors(
                     values,

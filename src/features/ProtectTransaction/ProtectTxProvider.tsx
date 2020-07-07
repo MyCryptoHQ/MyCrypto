@@ -8,15 +8,15 @@ import {
   GetTokenTxResponse
 } from '@services/ApiService';
 import { AssetContext, getAssetByUUID, StoreContext } from '@services/Store';
-import { useScreenSize } from '@utils';
-
-import { WALLETS_CONFIG, IS_ACTIVE_FEATURE } from '../../config';
 import { NansenService, NansenServiceEntry } from '@services/ApiService/Nansen';
+import { useScreenSize } from '@utils';
+import { WALLETS_CONFIG } from '@config';
+
+import { IS_ACTIVE_FEATURE } from '../../config/isActiveFeature';
 import { PTXReport } from './types';
 import { ProtectTxUtils } from './utils';
 
 export interface ProtectTxState {
-  readonly protectTxFeatureFlag: boolean;
   stepIndex: number;
   protectTxShow: boolean;
   protectTxEnabled: boolean;
@@ -34,6 +34,7 @@ export interface ProtectTxState {
 }
 
 export interface ProtectTxContext {
+  readonly protectTxFeatureFlag: boolean;
   state: ProtectTxState;
   updateFormValues(values: IFormikFields): void;
   handleTransactionReport(receiverAddress?: string): Promise<void>;
@@ -49,7 +50,6 @@ export interface ProtectTxContext {
 }
 
 export const protectTxProviderInitialState: ProtectTxState = {
-  protectTxFeatureFlag: IS_ACTIVE_FEATURE.PROTECT_TX,
   stepIndex: 0,
   formValues: undefined,
   protectTxShow: false,
@@ -298,7 +298,10 @@ const ProtectTxProvider: React.FC = ({ children }) => {
     }));
   }, [state.protectTxShow, state.stepIndex, state.nansenAddressReport, state.protectTxEnabled]);
 
+  const protectTxFeatureFlag = IS_ACTIVE_FEATURE.PROTECT_TX;
+
   const providerState: ProtectTxContext = {
+    protectTxFeatureFlag,
     state,
     updateFormValues,
     handleTransactionReport,
