@@ -13,7 +13,10 @@ const SContainer = styled('div')`
 
 function AssetDropdownItem({ uuid, symbol, name, onClick }: Props) {
   return (
-    <SContainer {...(onClick ? { onPointerDown: onClick } : null)}>
+    <SContainer
+      {...(onClick ? { onPointerDown: onClick } : null)}
+      data-testid={`asset-dropdown-option-${symbol}`}
+    >
       <AssetIcon uuid={uuid} size={'1.5rem'} />
       <Typography bold={true} value={symbol} style={{ marginLeft: '10px' }} />
       {name && <span>&nbsp; - &nbsp;</span>}

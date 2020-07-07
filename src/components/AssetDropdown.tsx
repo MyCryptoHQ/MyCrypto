@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import isEmpty from 'ramda/src/isEmpty';
 import { OptionProps } from 'react-select';
@@ -52,16 +52,10 @@ function AssetDropdown({
   fluid = false,
   inputId = 'asset-dropdown'
 }: Props<Asset | ISwapAsset>) {
-  const [options, setOptions] = useState<TAssetOption[]>([]);
-
-  useEffect(() => {
-    setOptions(assets);
-  }, [assets]);
-
   useEffectOnce(() => {
     // Preselect first value when not provided
     if (!isEmpty(assets) && isEmpty(selectedAsset) && onSelect) {
-      handleSelect(options[0]);
+      handleSelect(assets[0]);
     }
   });
 
@@ -75,7 +69,7 @@ function AssetDropdown({
       <Dropdown<TAssetOption>
         inputId={inputId}
         placeholder={translateRaw('SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER')}
-        options={options}
+        options={assets}
         disabled={disabled}
         searchable={searchable}
         onChange={handleSelect}
