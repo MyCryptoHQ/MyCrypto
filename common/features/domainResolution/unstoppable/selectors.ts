@@ -11,7 +11,6 @@ export const getCurrentDomainData = (state: AppState) => {
   }
 
   const domainData = domainRequests[currentDomain].data || null;
-  console.log({ hahah: true, domainData, domainRequests });
   return domainData;
 };
 

@@ -54,7 +54,6 @@ export const getResolvingDomain = (state: AppState) => {
   const unstoppableRequests = unstoppableResolutionSelectors.getUnstoppableRequests(state);
   let ensStatus;
   let unstoppableStatus;
-  console.log({ currentDomain, unstoppableDomain });
   if (!currentDomain || !domainRequests[currentDomain]) {
     if (!unstoppableDomain || !unstoppableRequests[unstoppableDomain]) {
       return null;
