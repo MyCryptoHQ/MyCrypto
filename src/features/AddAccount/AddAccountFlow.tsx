@@ -90,8 +90,9 @@ const AddAccountFlow = withRouter(({ history, match }) => {
       .filter((a) => a !== undefined) as StoreAccount[];
 
     if (newAccounts.length !== 0) {
+      if (accounts.length > 1) displayNotification(NotificationTemplates.saveSettings);
       const handleAddition =
-        accountData.length === 1
+        newAccounts.length === 1
           ? () => {
               displayNotification(NotificationTemplates.walletAdded, {
                 address: newAccounts[0].address
