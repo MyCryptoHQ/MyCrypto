@@ -45,14 +45,16 @@ describe('AssetDropdown', () => {
 
   test('it calls the success handler with the correct value', async () => {
     const props = Object.assign({}, defaultProps);
-    const { getByTestId, getByLabelText } = getComponent(props);
+    const { getByRole, getByTestId, getByLabelText } = getComponent(props);
 
     // expect(getByRole('form')).toHaveFormValues({ [defaultProps.label!]: '' });
 
-    await selectEvent.openMenu(getByLabelText(defaultProps.label!));
-    const option = getByTestId(`asset-dropdown-option-${fAssets[0].ticker}`);
-    screen.debug(option);
-    fireEvent.click(option);
+    selectEvent.select(getByLabelText(defaultProps.label!), fAssets[0].ticker);
+
+    // await selectEvent.openMenu(getByLabelText(defaultProps.label!));
+    // const option = getByTestId(`asset-dropdown-option-${fAssets[0].ticker}`);
+    // screen.debug(option);
+    // fireEvent.click(option);
     // console.log(fAssets[0].ticker);
     // screen.debug();
     // expect(getByRole('form')).toHaveFormValues({ asset: fAssets[0] });
