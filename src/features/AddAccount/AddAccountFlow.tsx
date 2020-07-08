@@ -90,7 +90,7 @@ const AddAccountFlow = withRouter(({ history, match }) => {
       .filter((a) => a !== undefined) as StoreAccount[];
 
     if (newAccounts.length !== 0) {
-      if (accountData.length > 1) displayNotification(NotificationTemplates.saveSettings);
+      if (accounts.length > 1) displayNotification(NotificationTemplates.saveSettings);
       const handleAddition =
         newAccounts.length === 1
           ? () => {
