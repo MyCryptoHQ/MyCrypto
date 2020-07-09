@@ -10,10 +10,14 @@ import {
 } from '@services/Store/BalanceService';
 import { bigify } from '@utils';
 
+import { LedgerUSB, Wallet, getDeterministicWallets } from '..';
 import { LedgerU2F, Trezor, MnemonicPhrase, WalletResult } from '../wallets';
 import { KeyInfo } from '../wallets/HardwareWallet';
-import { LedgerUSB, Wallet, getDeterministicWallets } from '..';
 import { IDeterministicWalletService, DWAccountDisplay, ExtendedDPath } from './types';
+
+interface IPrefetchBundle {
+  [key: string]: KeyInfo;
+}
 
 interface EventHandlers {
   handleInit(session: Wallet, asset: ExtendedAsset): void;
@@ -72,10 +76,6 @@ export const DeterministicWalletService = ({
   const triggerComplete = () => {
     handleComplete();
   };
-
-  interface IPrefetchBundle {
-    [key: string]: KeyInfo;
-  }
 
   const getAccounts = async (session: Wallet, dpaths: ExtendedDPath[]) => {
     if (session.prefetch) {

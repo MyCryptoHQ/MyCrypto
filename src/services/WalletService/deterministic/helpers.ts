@@ -1,4 +1,5 @@
 import { DWAccountDisplay, ExtendedDPath } from './types';
+import { bigify } from '@utils/bigify';
 
 export const processFinishedAccounts = (
   finishedAccounts: DWAccountDisplay[],
@@ -40,4 +41,14 @@ export const processFinishedAccounts = (
   );
 
   return { newGapItems: addNewItems, customDPathItems: customDPathsDetected };
+};
+
+export const sortAccountDisplayItems = (accounts: DWAccountDisplay[]): DWAccountDisplay[] =>
+  accounts.sort((a, b) => a.pathItem.index - b.pathItem.index);
+
+export const findFinishedZeroBalanceAccounts = (
+  accounts: DWAccountDisplay[]
+): DWAccountDisplay[] => {
+  const sortedAccounts = sortAccountDisplayItems(accounts);
+  return sortedAccounts.filter(({ balance }) => balance && bigify(balance.toString()).isZero());
 };
