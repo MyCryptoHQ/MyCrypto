@@ -1,12 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import isEmpty from 'ramda/src/isEmpty';
 import { OptionProps } from 'react-select';
 
 import { translateRaw } from '@translations';
 import { Asset, ISwapAsset, TSymbol } from '@types';
 import { AssetDropdownItem, Divider, Dropdown } from '@components';
-import { useEffectOnce } from '@vendor';
 
 const Label = styled.label`
   font-size: 18px;
@@ -30,7 +28,7 @@ const DropdownContainer = styled('div')`
 export interface Props<T> {
   inputId?: string;
   assets: T[];
-  selectedAsset?: T;
+  selectedAsset: T | null;
   showOnlySymbol?: boolean;
   disabled?: boolean;
   fluid?: boolean;
@@ -52,27 +50,17 @@ function AssetDropdown({
   fluid = false,
   inputId = 'asset-dropdown'
 }: Props<Asset | ISwapAsset>) {
-  useEffectOnce(() => {
-    // Preselect first value when not provided
-    if (!isEmpty(assets) && isEmpty(selectedAsset) && onSelect) {
-      handleSelect(assets[0]);
-    }
-  });
-
-  const handleSelect = (option: TAssetOption) => {
-    onSelect(option);
-  };
-
   return (
     <DropdownContainer fluid={fluid}>
       {label && <Label htmlFor={inputId}>{label}</Label>}
       <Dropdown<TAssetOption>
         inputId={inputId}
+        name={label}
         placeholder={translateRaw('SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER')}
         options={assets}
         disabled={disabled}
         searchable={searchable}
-        onChange={handleSelect}
+        onChange={(option: TAssetOption) => onSelect(option)}
         optionComponent={({ data, selectOption }: OptionProps<TAssetOption>) => {
           const { ticker, symbol, name, uuid } = data;
           const ref = ticker ? ticker : symbol;
@@ -82,13 +70,13 @@ function AssetDropdown({
                 symbol={ref}
                 uuid={uuid}
                 name={showOnlySymbol ? undefined : name}
-                onClick={() => selectOption && selectOption(data)}
+                onClick={() => selectOption(data)}
               />
               <Divider />
             </>
           );
         }}
-        value={selectedAsset && selectedAsset}
+        value={selectedAsset}
         valueComponent={({ value: { ticker, uuid, symbol, name } }) => {
           const ref = (ticker ? ticker : symbol) as TSymbol;
           return (
