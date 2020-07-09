@@ -11,7 +11,7 @@ import { getAccountBalance, getBaseAsset } from '@services/Store';
 export interface IAccountDropdownProps {
   accounts: StoreAccount[];
   name: string;
-  value?: StoreAccount;
+  value: StoreAccount | null;
   asset?: Asset;
   clearable?: boolean;
   onSelect(option: StoreAccount): void;
@@ -33,7 +33,7 @@ const sortByLabel = (a: TAccountDropdownOption, b: TAccountDropdownOption) =>
   a.account.label.localeCompare(b.account.label);
 
 const getOption = (account: StoreAccount, options: TAccountDropdownOption[]) =>
-  options.find((o) => o.account.uuid === account.uuid);
+  options.find((o) => o.account.uuid === account.uuid)!;
 
 function AccountDropdown({
   accounts,
@@ -80,9 +80,8 @@ function AccountDropdown({
           </>
         );
       }}
-      value={formValue && formValue.address ? getOption(formValue, options) : undefined} // Allow the value to be undefined at the start in order to display the placeholder
+      value={formValue && formValue.address ? getOption(formValue, options) : null} // Allow the value to be undefined at the start in order to display the placeholder
       valueComponent={({ value: { account: selectedAccount, asset: selectedAsset } }) => {
-        debugger;
         const { address, label } = selectedAccount;
         const { balance, assetSymbol, assetUUID } = selectedAsset;
         return (

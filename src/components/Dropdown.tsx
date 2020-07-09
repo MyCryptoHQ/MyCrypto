@@ -17,7 +17,7 @@ import { CenteredIconArrow } from './IconArrow';
 interface DropdownProps<T> {
   options: T[];
   // We prefer controlled components so `value` is required prop. When it is `null`, React-Select will display the placeholder
-  value: T | null;
+  value: T | null | undefined;
   disabled?: boolean;
   placeholder?: string;
   searchable?: boolean;

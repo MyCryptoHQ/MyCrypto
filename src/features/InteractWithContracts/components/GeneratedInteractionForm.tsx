@@ -126,7 +126,7 @@ export default function GeneratedInteractionForm({
 
   useEffect(updateGasCallProps, [account]);
 
-  const handleFunctionSelected = (selectedFunction: ABIItem) => {
+  const handleFunctionSelected = (selectedFunction?: ABIItem) => {
     if (!selectedFunction) return;
 
     const newFunction = generateFunctionFieldsDisplayNames(selectedFunction);

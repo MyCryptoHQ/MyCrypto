@@ -26,7 +26,7 @@ export interface TMembershipOption {
 }
 export interface MembershipDropdownProps {
   name: string;
-  value?: TMembershipOption;
+  value: TMembershipOption | null;
   onSelect(option: TMembershipOption): void;
 }
 

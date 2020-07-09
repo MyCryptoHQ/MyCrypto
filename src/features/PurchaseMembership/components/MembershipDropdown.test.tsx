@@ -8,7 +8,7 @@ import { MEMBERSHIP_CONFIG } from '../config';
 
 const defaultProps: MembershipDropdownProps = {
   name: 'MembershipPlan',
-  value: undefined,
+  value: null,
   onSelect: jest.fn()
 };
 

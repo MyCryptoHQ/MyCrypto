@@ -23,7 +23,7 @@ const initialProps = {
 };
 
 export const Dropdown = () => {
-  const [formValues, setFormValues] = useState<{ asset?: TAssetOption }>({ asset: undefined });
+  const [formValues, setFormValues] = useState<{ asset: TAssetOption | null }>({ asset: null });
 
   const props = {
     ...initialProps,

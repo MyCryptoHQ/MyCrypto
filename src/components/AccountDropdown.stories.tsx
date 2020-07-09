@@ -12,7 +12,7 @@ const initialProps: IAccountDropdownProps = {
   accounts: [fAccount, Object.assign({}, fAccount, { address: 'demo' })],
   asset: fAssets[0],
   name: '',
-  value: undefined,
+  value: null,
   onSelect: noOp
 };
 
