@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Avatar, Identicon, scale } from '@mycrypto/ui';
 
 import { translateRaw } from '@translations';
+import { FONT_SIZE, BREAK_POINTS } from '@theme';
 
 import Typography from './Typography';
 import EthAddress from './EthAddress';
@@ -20,8 +21,11 @@ const Content = styled.div`
 
 const Title = styled(Typography)`
   display: inline;
-  font-size: ${scale(0.5)};
+  font-size: ${FONT_SIZE.BASE};
   word-break: break-word;
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    font-weight: bold;
+  }
 `;
 
 Title.defaultProps = { as: 'div' };
@@ -51,12 +55,6 @@ const SIdenticon = styled(Identicon)`
     max-width: none;
   }
 `;
-
-// const SEditedText = styled(EditableText)`
-//   display: inline;
-//   font-size: ${scale(0.5)};
-//   word-break: break-word;
-// `;
 
 interface TooltipType {
   image?: string;

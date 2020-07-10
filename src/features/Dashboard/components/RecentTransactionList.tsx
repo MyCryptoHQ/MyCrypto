@@ -202,12 +202,17 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
         network,
         txType
       }) => {
-        const editableFromLabel = fromAddressBookEntry
-          ? EditableAccountLabel({ addressBookEntry: fromAddressBookEntry })
-          : translateRaw('NO_LABEL');
-        const editableToLabel = toAddressBookEntry
-          ? EditableAccountLabel({ addressBookEntry: toAddressBookEntry })
-          : translateRaw('NO_LABEL');
+        const editableFromLabel = EditableAccountLabel({
+          addressBookEntry: fromAddressBookEntry,
+          address: from,
+          networkId: network.id
+        });
+        const editableToLabel = EditableAccountLabel({
+          addressBookEntry: toAddressBookEntry,
+          address: receiverAddress || to,
+          networkId: network.id
+        });
+
         return [
           <TransactionLabel
             key={0}
