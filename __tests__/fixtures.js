@@ -14,7 +14,7 @@ if (ENV_KEYS.some((k) => !ENV[k])) {
 }
 
 const FIXTURES_CONST = {
-  TIMEOUT: 10000,
+  TIMEOUT: 5000,
   BASE_URL: ENV.E2E_BASE_URL
 };
 
