@@ -3,6 +3,8 @@ import { toChecksumAddress } from 'ethereumjs-util';
 import styled from 'styled-components';
 import { Avatar, Identicon, scale } from '@mycrypto/ui';
 
+import { translateRaw } from '@translations';
+
 import Typography from './Typography';
 import EthAddress from './EthAddress';
 import Tooltip from './Tooltip';
@@ -50,6 +52,12 @@ const SIdenticon = styled(Identicon)`
   }
 `;
 
+// const SEditedText = styled(EditableText)`
+//   display: inline;
+//   font-size: ${scale(0.5)};
+//   word-break: break-word;
+// `;
+
 interface TooltipType {
   image?: string;
   content: ReactNode | string;
@@ -57,8 +65,8 @@ interface TooltipType {
 
 interface Props {
   address: string;
+  title?: JSX.Element | string;
   className?: string;
-  title?: string;
   isCopyable?: boolean;
   tooltip?: TooltipType;
   onSubmit?(title?: string): void;
@@ -66,7 +74,7 @@ interface Props {
 }
 
 export default function Account({
-  title,
+  title = translateRaw('NO_LABEL'),
   address,
   isCopyable = true,
   truncate,
@@ -77,13 +85,12 @@ export default function Account({
   const ImageComponent = () =>
     tooltip && tooltip.image ? <SAvatar src={tooltip.image} /> : <SIdenticon address={address} />;
 
+  const TitleItem = typeof title === 'string' ? <TitleComponent>{title}</TitleComponent> : title;
   const renderAddressContent = () => (
     <Flex className={className}>
       <ImageComponent />
       <Content>
-        <>
-          <TitleComponent>{title}</TitleComponent>
-        </>
+        <>{TitleItem}</>
         <div>
           <Address
             address={toChecksumAddress(address)}
