@@ -771,7 +771,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
           );
         }}
       />
-      <div className="SendAssetsForm-disabled-overlay" />
     </div>
   );
 };
