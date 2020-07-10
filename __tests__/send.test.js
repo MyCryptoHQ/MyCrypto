@@ -58,5 +58,5 @@ test('Should be able to continue to next step', async (t) => {
     .click(getByText(getTransValueByKey('ACTION_6')));
 
   // Has continued to next step with sign button
-  await t.expect(getByText(getTransValueByKey('DEP_SIGNTX'))).ok();
+  await t.expect(Selector('*').withText(getTransValueByKey('DEP_SIGNTX'))).ok();
 });
