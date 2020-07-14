@@ -16,26 +16,6 @@ const sendAssetsPage = new SendAssetsPage();
 
 fixture('Send').page(PAGES.SEND);
 
-// PTX
-test('Should have and support PTX', async (t) => {
-  await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
-  await setLocalStorage(FIXTURE_MYC_STORAGE_KEY, FIXTURE_LOCALSTORAGE_WITH_ONE_ACC);
-  await sendAssetsPage.navigateToPage();
-  await sendAssetsPage.waitPageLoaded();
-
-  const ptxBtn = getByText(getTransValueByKey('PROTECTED_TX_GET_TX_PROTECTION'));
-  await t.expect(ptxBtn).ok();
-
-  await t.click(ptxBtn);
-
-  const ptxNextButton = getByText(getTransValueByKey('PROTECTED_TX_PROTECT_MY_TX'));
-  await t.expect(ptxNextButton).ok();
-
-  // Information Missing since form isn't filled
-  const missingInfo = getByText(getTransValueByKey('MISSING_INFORMATION'));
-  await t.expect(missingInfo).ok();
-});
-
 test('Should be able to continue to next step', async (t) => {
   await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
   await setLocalStorage(FIXTURE_MYC_STORAGE_KEY, FIXTURE_LOCALSTORAGE_WITH_ONE_ACC);
