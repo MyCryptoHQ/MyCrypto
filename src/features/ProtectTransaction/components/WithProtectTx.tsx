@@ -202,7 +202,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
           <>
             {!isMdScreen && <ProtectTxModalBackdrop onBackdropClick={toggleProtectTxShow} />}
             <WithProtectTxSide>
-              <Panel>
+              <Panel basic={true}>
                 <ProtectTxStepper currentStepIndex={stepIndex} steps={protectTxStepperSteps} />
               </Panel>
             </WithProtectTxSide>

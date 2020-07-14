@@ -30,7 +30,6 @@ const ContentPanelWrapper = styled.div<ContentPanelProps>`
       > section {
         width: 100%;
         max-width: 100%;
-        padding-bottom: 0;
 
         > p ~ div {
           & > div:last-child {
