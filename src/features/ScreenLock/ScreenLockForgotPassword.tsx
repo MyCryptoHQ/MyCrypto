@@ -8,6 +8,7 @@ import { ExtendedContentPanel } from '@components';
 import { ANALYTICS_CATEGORIES } from '@services';
 import { ROUTE_PATHS } from '@config';
 import { useAnalytics } from '@utils';
+import { SPACING } from '@theme';
 import mainImage from '@assets/images/icn-forgot-password.svg';
 
 import { ScreenLockContext } from './ScreenLockProvider';
@@ -41,6 +42,20 @@ const AditionalDescription = styled.p`
   }
 `;
 
+const BulletList = styled.ul`
+  li {
+    padding-left: ${SPACING.SM};
+    margin-left: 0;
+    margin-bottom: 15px;
+    text-align: left;
+    font-weight: 400;
+
+    &:last-child {
+      margin-bottom: 16px;
+    }
+  }
+`;
+
 const ScreenLockForgotPassword: FC<RouteComponentProps> = ({ history }) => {
   const trackScreenLock = useAnalytics({
     category: ANALYTICS_CATEGORIES.SCREEN_LOCK
@@ -59,6 +74,10 @@ const ScreenLockForgotPassword: FC<RouteComponentProps> = ({ history }) => {
     >
       <AditionalDescription>
         {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_DESCRIPTION')}
+        <BulletList>
+          <li>{translate('SCREEN_LOCK_FORGOT_PASSWORD_LIST_ITEM1')}</li>
+          <li>{translate('SCREEN_LOCK_FORGOT_PASSWORD_LIST_ITEM2')}</li>
+        </BulletList>
       </AditionalDescription>
       <FormWrapper>
         <ActionButton
