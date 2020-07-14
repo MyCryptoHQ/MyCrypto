@@ -6,7 +6,6 @@ import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import { Link } from '@components';
 import { ITxReceipt } from '@types';
 import { ProtectTxContext } from '../ProtectTxProvider';
-import { ProtectTxUtils } from '../utils';
 
 interface RelayedToNetworkProps {
   relayedToNetwork: boolean;
@@ -97,13 +96,7 @@ export const ProtectTxAbort: FC<AbortTransactionProps> = ({ onTxSent }) => {
   const [isCanceled, setIsCanceled] = useState(false);
   const [protectTxCountdown, setProtectTxCountdown] = React.useState(20);
 
-  const protectTxContext = useContext(ProtectTxContext);
-  const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
-  if (!getProTxValue()) {
-    throw new Error('ProtectTxProtection requires to be wrapped in ProtectTxAbort!');
-  }
-
-  const { invokeProtectTxTimeoutFunction } = protectTxContext;
+  const { invokeProtectTxTimeoutFunction } = useContext(ProtectTxContext);
 
   useEffect(() => {
     let protectTxTimer: ReturnType<typeof setTimeout> | null = null;
@@ -119,7 +112,7 @@ export const ProtectTxAbort: FC<AbortTransactionProps> = ({ onTxSent }) => {
         clearTimeout(protectTxTimer);
       }
     };
-  }, [protectTxContext, protectTxCountdown]);
+  }, [protectTxCountdown]);
 
   const onCancelClick = useCallback(
     (e) => {

@@ -71,6 +71,7 @@ const SProtectionThisTransaction = styled(ProtectTxBase)`
 
 const BulletList = styled.ul`
   li {
+    list-style-type: none;
     padding-left: ${SPACING.SM};
     margin-left: -${SPACING.SM};
     margin-bottom: 15px;
@@ -149,18 +150,12 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
     rate: number | null;
   }>({ amount: null, fee: null, rate: null });
 
-  const protectTxContext = useContext(ProtectTxContext);
-  const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
-  if (!getProTxValue()) {
-    throw new Error('ProtectTxProtection requires to be wrapped in ProtectTxContext!');
-  }
-
   const {
     state: { isWeb3Wallet: web3Wallet, web3WalletName, formValues: sendAssetsValues },
     setReceiverInfo,
     setWeb3Wallet,
     showHideProtectTx
-  } = protectTxContext;
+  } = useContext(ProtectTxContext);
 
   useEffect(() => {
     const {

@@ -24,7 +24,6 @@ import { ProtectTxContext } from '../ProtectTxProvider';
 import ProtectTxModalBackdrop from './ProtectTxModalBackdrop';
 import { ProtectTxButton } from './ProtectTxButton';
 import { ProtectTxStepper } from './ProtectTxStepper';
-import { ProtectTxUtils } from '../utils';
 
 const WithProtectTxWrapper = styled.div`
   display: flex;
@@ -98,19 +97,13 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
     const { state, initWith, prepareTx, sendTx } = useTxMulti();
     const { transactions, _currentTxIdx, account, network } = state;
 
-    const protectTxContext = useContext(ProtectTxContext);
-    const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
-    if (!getProTxValue()) {
-      throw new Error('withProtectTx requires to be wrapped in ProtectTxContext!');
-    }
-
     const {
       state: { protectTxShow, protectTxEnabled, stepIndex },
       setWeb3Wallet,
       goToNextStep,
       handleTransactionReport,
       showHideProtectTx
-    } = protectTxContext;
+    } = useContext(ProtectTxContext);
 
     // Wait for useTxMulti to finish initWith
     useEffect(() => {

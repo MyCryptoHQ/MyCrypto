@@ -37,7 +37,6 @@ import translate, { translateRaw } from '@translations';
 import { convertToFiat, truncate } from '@utils';
 import { isWeb3Wallet } from '@utils/web3';
 import ProtocolTagsList from '@features/DeFiZap/components/ProtocolTagsList';
-import { ProtectTxUtils } from '@features/ProtectTransaction';
 import { ProtectTxAbort } from '@features/ProtectTransaction/components/ProtectTxAbort';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import MembershipReceiptBanner from '@features/PurchaseMembership/components/MembershipReceiptBanner';
@@ -90,8 +89,9 @@ export default function TxReceipt({
   const [blockNumber, setBlockNumber] = useState(0);
   const [timestamp, setTimestamp] = useState(0);
 
-  const protectTxContext = useContext(ProtectTxContext);
-  const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
+  const {
+    state: { protectTxEnabled, isWeb3Wallet: isPtxWeb3Wallet }
+  } = useContext(ProtectTxContext);
 
   useEffect(() => {
     setDisplayTxReceipt(txReceipt);
@@ -184,8 +184,8 @@ export default function TxReceipt({
       resetFlow={resetFlow}
       completeButtonText={completeButtonText}
       pendingButton={pendingButton}
-      protectTxEnabled={getProTxValue(['state', 'protectTxEnabled'])}
-      web3Wallet={getProTxValue(['state', 'isWeb3Wallet'])}
+      protectTxEnabled={protectTxEnabled}
+      web3Wallet={isPtxWeb3Wallet}
       protectTxButton={protectTxButton}
     />
   );

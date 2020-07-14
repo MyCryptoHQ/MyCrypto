@@ -1,8 +1,6 @@
 import BigNumber from 'bignumber.js';
 import moment from 'moment';
 import isNumber from 'lodash/isNumber';
-import has from 'lodash/has';
-import get from 'lodash/get';
 
 import { fromWei, totalTxFeeToWei, Wei } from '@services/EthService/utils';
 import {
@@ -20,7 +18,6 @@ import {
 
 import { ProtectTxError, NansenReportType } from './types';
 import { MALICIOUS_LABELS, WHITELISTED_LABELS } from './constants';
-import { ProtectTxContext } from './ProtectTxProvider';
 
 export abstract class ProtectTxUtils {
   public static getProtectTransactionFee(
@@ -80,15 +77,6 @@ export abstract class ProtectTxUtils {
     }
 
     return ProtectTxError.NO_ERROR;
-  }
-
-  public static isProtectTxDefined(protectTxContext: ProtectTxContext): any {
-    return (keys: string[] = ['state'], obj: any = protectTxContext): any => {
-      if (has(obj, keys)) {
-        return get(obj, keys);
-      }
-      return false;
-    };
   }
 
   public static getNansenReportType(labels: string[]): NansenReportType {
