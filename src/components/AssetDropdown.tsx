@@ -4,7 +4,7 @@ import { OptionProps } from 'react-select';
 
 import { translateRaw } from '@translations';
 import { Asset, ISwapAsset, TSymbol } from '@types';
-import { AssetDropdownItem, Divider, Dropdown } from '@components';
+import { AssetDropdownItem, Divider, Selector } from '@components';
 
 const Label = styled.label`
   font-size: 18px;
@@ -53,7 +53,7 @@ function AssetDropdown({
   return (
     <DropdownContainer fluid={fluid}>
       {label && <Label htmlFor={inputId}>{label}</Label>}
-      <Dropdown<TAssetOption>
+      <Selector<TAssetOption>
         inputId={inputId}
         name={label}
         placeholder={translateRaw('SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER')}

@@ -3,7 +3,7 @@ import { formatEther } from 'ethers/utils';
 import { OptionProps } from 'react-select';
 
 import { translateRaw } from '@translations';
-import { AccountSummary, Divider, Dropdown } from '@components';
+import { AccountSummary, Divider, Selector } from '@components';
 import { SPACING } from '@theme';
 import { StoreAccount, Asset, TUuid, TSymbol } from '@types';
 import { getAccountBalance, getBaseAsset } from '@services/Store';
@@ -56,7 +56,7 @@ function AccountDropdown({
   const handleFormUpdate = (option: TAccountDropdownOption) => onSelect(option.account);
 
   return (
-    <Dropdown<TAccountDropdownOption>
+    <Selector<TAccountDropdownOption>
       name={name}
       placeholder={translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')}
       searchable={true}

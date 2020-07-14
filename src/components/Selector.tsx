@@ -130,7 +130,7 @@ const customStyles: Styles = {
   })
 };
 
-const Dropdown: <T = any>(p: DropdownProps<T>) => React.ReactElement<DropdownProps<T>> = ({
+const Selector: <T = any>(p: DropdownProps<T>) => React.ReactElement<DropdownProps<T>> = ({
   options,
   value,
   disabled = false,
@@ -181,4 +181,4 @@ const Dropdown: <T = any>(p: DropdownProps<T>) => React.ReactElement<DropdownPro
   </DropdownContainer>
 );
 
-export default Dropdown;
+export default Selector;

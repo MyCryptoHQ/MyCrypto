@@ -6,7 +6,7 @@ import translate from '@translations';
 import { NetworkContext, isWalletFormatSupportedOnNetwork } from '@services/Store';
 import { NetworkId, Network, WalletId } from '@types';
 import { DEFAULT_NETWORK } from '@config';
-import { Typography, Dropdown, Tooltip } from '@components';
+import { Typography, Selector, Tooltip } from '@components';
 
 interface Props {
   network: NetworkId;
@@ -62,7 +62,7 @@ function NetworkSelectDropdown({
         {translate('SELECT_NETWORK_LABEL')}{' '}
         {showTooltip && <Tooltip tooltip={translate('NETWORK_TOOLTIP')} />}
       </label>
-      <Dropdown
+      <Selector
         placeholder={'Select Network'}
         value={network}
         options={options}

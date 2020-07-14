@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { OptionProps } from 'react-select';
 
 import { Contract } from '@types';
-import { Dropdown } from '@components';
+import { Selector } from '@components';
 
 import FieldLabel from './FieldLabel';
 
@@ -52,7 +52,7 @@ export default function BooleanSelector(props: Props) {
     <Wrapper>
       <FieldLabel fieldName={fieldDisplayName} fieldType={fieldType} />
       <DropdownWrapper>
-        <Dropdown
+        <Selector
           value={value}
           options={[
             { label: 'true', name: 'true', value: true },

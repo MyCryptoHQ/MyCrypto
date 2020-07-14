@@ -12,7 +12,7 @@ const initialForm: { name: string; value: TMembershipOption } = {
   name: '',
   value: {} as TMembershipOption
 };
-export const Dropdown = () => {
+export const Selector = () => {
   const [formValues, setFormValues] = useState(initialForm);
 
   return (

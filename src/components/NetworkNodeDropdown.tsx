@@ -6,7 +6,7 @@ import isFunction from 'lodash/isFunction';
 
 import { NetworkContext, NetworkUtils } from '@services/Store';
 import { CustomNodeConfig, NetworkId, NodeOptions } from '@types';
-import { Typography, Dropdown } from '@components/index';
+import { Typography, Selector } from '@components/index';
 import { translateRaw } from '@translations';
 import { SPACING, COLORS } from '@theme';
 
@@ -134,7 +134,7 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
   const displayNodes = [autoNode, ...nodes, ...(isFunction(onEdit) ? [{ service: newNode }] : [])];
 
   return (
-    <Dropdown<{ label: string; value: NodeOptions; onEdit: typeof onEdit } & any>
+    <Selector<{ label: string; value: NodeOptions; onEdit: typeof onEdit } & any>
       value={{
         label: selectedNodeName === autoNodeName ? autoNodeLabel : service,
         value: selectedNode

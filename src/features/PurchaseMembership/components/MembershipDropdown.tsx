@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { OptionProps } from 'react-select';
 
 import { translateRaw } from '@translations';
-import { Typography, Dropdown } from '@components';
+import { Typography, Selector } from '@components';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import { MEMBERSHIP_CONFIG, IMembershipConfig } from '../config';
 
@@ -37,7 +37,7 @@ function MembershipDropdown({ name, value, onSelect }: MembershipDropdownProps) 
   }));
 
   return (
-    <Dropdown<TMembershipOption>
+    <Selector<TMembershipOption>
       name={name}
       placeholder={translateRaw('MEMBERSHIP_DROPDOWN_PLACEHOLDER')}
       options={options}

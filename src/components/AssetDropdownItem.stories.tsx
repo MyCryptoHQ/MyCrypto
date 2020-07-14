@@ -22,7 +22,7 @@ const initialProps = {
   label: translateRaw('X_ASSET')
 };
 
-export const Dropdown = () => {
+export const Selector = () => {
   const [formValues, setFormValues] = useState<{ asset: TAssetOption | null }>({ asset: null });
 
   const props = {

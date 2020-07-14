@@ -14,7 +14,7 @@ export { default as ContentPanel } from './ContentPanel';
 export { default as Currency } from './Currency';
 export { default as RowDeleteOverlay } from './RowDeleteOverlay';
 export { default as Divider } from './Divider';
-export { default as Dropdown } from './Dropdown';
+export { default as Selector } from './Selector';
 export { default as ExtendedContentPanel, ExtendedControlPanelProps } from './ExtendedContentPanel';
 export { default as Link } from './Link';
 export { default as Typography } from './Typography';

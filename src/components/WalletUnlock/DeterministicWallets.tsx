@@ -10,7 +10,7 @@ import {
   Account,
   LinkOut,
   Typography,
-  Dropdown,
+  Selector,
   NewTabLink,
   Button,
   InlineMessage
@@ -406,7 +406,7 @@ export function DeterministicWalletsClass({
               <img src={questionSVG} />
             </NewTabLink>
           </label>
-          <Dropdown
+          <Selector
             value={currentDPath}
             onChange={handleChangePath}
             options={dPaths.concat([customDPath])}

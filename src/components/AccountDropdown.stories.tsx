@@ -16,7 +16,7 @@ const initialProps: IAccountDropdownProps = {
   onSelect: noOp
 };
 
-export const Dropdown = () => {
+export const Selector = () => {
   const [formValues, setFormValues] = useState<StoreAccount>();
 
   const props = {
