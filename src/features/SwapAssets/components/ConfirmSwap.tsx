@@ -57,8 +57,15 @@ export default function ConfirmSwap({
         toAmount={toAmount.toString(10)}
       />
       <FromToAccount
-        from={{ address: account.address, label: account.label }}
-        to={{ address: account.address, label: account.label }}
+        fromAccount={{
+          address: account.address,
+          addressBookEntry: { ...account, notes: '', network: account.networkId }
+        }}
+        toAccount={{
+          address: account.address,
+          addressBookEntry: { ...account, notes: '', network: account.networkId }
+        }}
+        networkId={account.networkId}
       />
       <ConversionRateBox>
         <ConversionLabel bold={true} value={translate('SWAP_RATE')} fontSize="0.65em" />
