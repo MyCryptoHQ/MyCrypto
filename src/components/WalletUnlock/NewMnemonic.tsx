@@ -8,7 +8,7 @@ import { FormData, WalletId, ExtendedAsset } from '@types';
 import translate, { translateRaw } from '@translations';
 import {
   DeterministicAccountList,
-  AssetDropdown,
+  AssetSelector,
   TogglablePassword,
   Tooltip,
   Input
@@ -109,7 +109,7 @@ const MnemonicDecrypt = ({ formData, onUnlock }: OwnProps) => {
   if (state.isConnected && state.asset && (state.queuedAccounts || state.finishedAccounts)) {
     return (
       <div className="Mnemonic-dpath">
-        <AssetDropdown
+        <AssetSelector
           selectedAsset={assetToUse}
           assets={filteredAssets}
           onSelect={(option: ExtendedAsset) => {

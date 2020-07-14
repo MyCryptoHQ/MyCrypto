@@ -5,7 +5,7 @@ import translate, { translateRaw } from '@translations';
 import { MYC_DEXAG_MARKUP_THRESHOLD } from '@config';
 import {
   InputField,
-  AssetDropdown,
+  AssetSelector,
   AccountDropdown,
   InlineMessage,
   Typography,
@@ -220,7 +220,7 @@ export default function SwapAssets(props: Props) {
             inputMode="decimal"
           />
         </InputWrapper>
-        <AssetDropdown
+        <AssetSelector
           selectedAsset={fromAsset}
           assets={ownedAssets}
           label={translateRaw('X_ASSET')}
@@ -243,7 +243,7 @@ export default function SwapAssets(props: Props) {
             inputMode="decimal"
           />
         </InputWrapper>
-        <AssetDropdown
+        <AssetSelector
           selectedAsset={toAsset}
           assets={filteredAssets}
           label={translateRaw('ASSET')}

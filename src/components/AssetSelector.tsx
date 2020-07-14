@@ -3,8 +3,36 @@ import styled from 'styled-components';
 import { OptionProps } from 'react-select';
 
 import { translateRaw } from '@translations';
-import { Asset, ISwapAsset, TSymbol } from '@types';
-import { AssetDropdownItem, Divider, Selector } from '@components';
+import { Asset, ISwapAsset, TSymbol, TUuid } from '@types';
+import { AssetIcon, Typography, Divider, Selector } from '@components';
+
+const SContainer = styled('div')`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 14px 15px 14px 15px;
+`;
+
+export interface ItemProps {
+  uuid: TUuid;
+  symbol: TSymbol;
+  name?: string;
+  onClick?(): void;
+}
+
+export function AssetSelectorItem({ uuid, symbol, name, onClick }: ItemProps) {
+  return (
+    <SContainer
+      {...(onClick ? { onPointerDown: onClick } : null)}
+      data-testid={`asset-dropdown-option-${symbol}`}
+    >
+      <AssetIcon uuid={uuid} size={'1.5rem'} />
+      <Typography bold={true} value={symbol} style={{ marginLeft: '10px' }} />
+      {name && <span>&nbsp; - &nbsp;</span>}
+      <Typography value={name} />
+    </SContainer>
+  );
+}
 
 const Label = styled.label`
   font-size: 18px;
@@ -16,7 +44,7 @@ const Label = styled.label`
   color: ${(props) => props.theme.text};
 `;
 
-const DropdownContainer = styled('div')`
+const Wrapper = styled('div')`
   width: ${(props: { fluid: boolean }) => (props.fluid ? '100%' : 'default')};
   min-width: 175px;
   .asset-dropdown-item {
@@ -39,7 +67,7 @@ export interface Props<T> {
 
 export type TAssetOption = Asset | ISwapAsset;
 
-function AssetDropdown({
+function AssetSelector({
   assets,
   selectedAsset,
   onSelect,
@@ -51,7 +79,7 @@ function AssetDropdown({
   inputId = 'asset-dropdown'
 }: Props<Asset | ISwapAsset>) {
   return (
-    <DropdownContainer fluid={fluid}>
+    <Wrapper fluid={fluid}>
       {label && <Label htmlFor={inputId}>{label}</Label>}
       <Selector<TAssetOption>
         inputId={inputId}
@@ -66,7 +94,7 @@ function AssetDropdown({
           const ref = ticker ? ticker : symbol;
           return (
             <>
-              <AssetDropdownItem
+              <AssetSelectorItem
                 symbol={ref}
                 uuid={uuid}
                 name={showOnlySymbol ? undefined : name}
@@ -80,12 +108,12 @@ function AssetDropdown({
         valueComponent={({ value: { ticker, uuid, symbol, name } }) => {
           const ref = (ticker ? ticker : symbol) as TSymbol;
           return (
-            <AssetDropdownItem symbol={ref} uuid={uuid} name={showOnlySymbol ? undefined : name} />
+            <AssetSelectorItem symbol={ref} uuid={uuid} name={showOnlySymbol ? undefined : name} />
           );
         }}
       />
-    </DropdownContainer>
+    </Wrapper>
   );
 }
 
-export default AssetDropdown;
+export default AssetSelector;

@@ -14,7 +14,7 @@ import translate, { translateRaw } from '@translations';
 import {
   AccountDropdown,
   AmountInput,
-  AssetDropdown,
+  AssetSelector,
   Checkbox,
   ContactLookupField,
   InlineMessage,
@@ -462,7 +462,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                 <Field
                   name="asset" // Need a way to spread option, name, symbol on sharedConfig for assets
                   component={({ field, form }: FieldProps) => (
-                    <AssetDropdown
+                    <AssetSelector
                       selectedAsset={field.value}
                       assets={userAssets}
                       onSelect={(option: StoreAsset) => {

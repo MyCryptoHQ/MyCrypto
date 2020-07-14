@@ -10,7 +10,7 @@ import { SPACING, COLORS, FONT_SIZE } from '@theme';
 import { IAccount, StoreAccount, Asset, TURL } from '@types';
 import { ETHUUID, MOONPAY_ASSET_UUIDS, openLink } from '@utils';
 import { ROUTE_PATHS, MOONPAY_API_QUERYSTRING, BUY_MYCRYPTO_WEBSITE } from '@config';
-import { AccountDropdown, AssetDropdown, InlineMessage, ContentPanel } from '@components';
+import { AccountDropdown, AssetSelector, InlineMessage, ContentPanel } from '@components';
 import { isAccountInNetwork } from '@services/Store/Account/helpers';
 import { MoonpaySignerService } from '@services/ApiService/MoonpaySigner';
 import { StoreContext } from '@services/Store/StoreProvider';
@@ -151,7 +151,7 @@ export const BuyAssetsForm = () => {
                   name="asset"
                   value={values.asset}
                   component={({ field, form }: FieldProps) => (
-                    <AssetDropdown
+                    <AssetSelector
                       selectedAsset={field.value}
                       assets={filteredAssets}
                       onSelect={(option: Asset) => {

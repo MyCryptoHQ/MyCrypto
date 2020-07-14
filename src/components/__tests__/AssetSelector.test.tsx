@@ -3,10 +3,11 @@ import selectEvent from 'react-select-event';
 
 import { simpleRender, screen, fireEvent } from 'test-utils';
 import { fAssets } from '@fixtures';
-import { Asset } from '@types';
+import { Asset, TSymbol, TUuid } from '@types';
 import { translateRaw } from '@translations';
+import { ETHUUID } from '@utils';
 
-import AssetDropdown, { Props } from '../AssetDropdown';
+import AssetSelector, { Props, ItemProps, AssetSelectorItem } from '../AssetSelector';
 
 const defaultProps: Props<Asset> = {
   assets: fAssets as Asset[],
@@ -18,12 +19,12 @@ const defaultProps: Props<Asset> = {
 function getComponent(props: Props<Asset>) {
   return simpleRender(
     <form role="form">
-      <AssetDropdown {...props} />
+      <AssetSelector {...props} />
     </form>
   );
 }
 
-describe('AssetDropdown', () => {
+describe('AssetSelector', () => {
   test('it displays placeholder text when selectedAsset is empty', async () => {
     getComponent(defaultProps);
     expect(screen.getByText(translateRaw('SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER'))).toBeDefined();
@@ -54,5 +55,38 @@ describe('AssetDropdown', () => {
     const option = screen.getByTestId(`asset-dropdown-option-${fAssets[0].ticker}`);
     fireEvent.pointerDown(option);
     expect(defaultProps.onSelect).toBeCalledWith(fAssets[0]);
+  });
+});
+
+const itemProps: ItemProps = {
+  symbol: 'ETH' as TSymbol,
+  name: 'Ether',
+  uuid: ETHUUID as TUuid,
+  onClick: jest.fn()
+};
+
+function getComponentItem({ symbol, uuid, name, onClick }: ItemProps) {
+  return simpleRender(
+    <AssetSelectorItem symbol={symbol} uuid={uuid} name={name} onClick={onClick} />
+  );
+}
+
+describe('AssetSelectorItem', () => {
+  test('it renders the asset icon', async () => {
+    const { getByRole } = getComponentItem(itemProps);
+    expect(getByRole('img').getAttribute('src')).toContain('test-file-stub');
+  });
+
+  test('it displays the asset symbol and name', async () => {
+    const { getByText } = getComponentItem(itemProps);
+    expect(getByText(itemProps.symbol)).toBeDefined();
+    expect(getByText(itemProps.name!)).toBeDefined();
+  });
+
+  test('it triggers handler on click', async () => {
+    const { container } = getComponentItem(itemProps);
+    const component = container.querySelector('div[class^="AssetSelector__SContainer"]');
+    fireEvent.pointerDown(component!);
+    expect(itemProps.onClick).toHaveBeenCalledTimes(1);
   });
 });
