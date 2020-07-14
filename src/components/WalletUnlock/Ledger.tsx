@@ -135,7 +135,11 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
           {`Test Generate Fresh Address`}
         </Button>
         {freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR && (
-          <p>{`You cant generate more than ${DEFAULT_GAP_TO_SCAN_FOR} fresh accounts for now.`}</p>
+          <p>
+            {translateRaw('DPATH_GENERATE_FRESH_ADDRESS_GAP_ERROR', {
+              $gap: DEFAULT_GAP_TO_SCAN_FOR.toString()
+            })}
+          </p>
         )}
         <br />
         <AssetDropdown
