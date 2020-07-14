@@ -14,7 +14,7 @@ import { COLORS, FONT_SIZE } from '@theme';
 import crossIcon from '@assets/images/icn-cross.svg';
 import { CenteredIconArrow } from './IconArrow';
 
-interface DropdownProps<T> {
+interface SelectorProps<T> {
   options: T[];
   // We prefer controlled components so `value` is required prop. When it is `null`, React-Select will display the placeholder
   value: T | null | undefined;
@@ -37,7 +37,7 @@ interface DropdownProps<T> {
 }
 
 // Fixes weird placement issues for react-select
-const DropdownContainer = styled('div')`
+const Wrapper = styled('div')`
   cursor: pointer;
 `;
 
@@ -130,7 +130,7 @@ const customStyles: Styles = {
   })
 };
 
-const Selector: <T = any>(p: DropdownProps<T>) => React.ReactElement<DropdownProps<T>> = ({
+const Selector: <T = any>(p: SelectorProps<T>) => React.ReactElement<SelectorProps<T>> = ({
   options,
   value,
   disabled = false,
@@ -150,7 +150,7 @@ const Selector: <T = any>(p: DropdownProps<T>) => React.ReactElement<DropdownPro
   onInputChange,
   onInputKeyDown
 }) => (
-  <DropdownContainer>
+  <Wrapper>
     <Select
       options={options}
       defaultValue={inputValue}
@@ -178,7 +178,7 @@ const Selector: <T = any>(p: DropdownProps<T>) => React.ReactElement<DropdownPro
         IndicatorSeparator: () => null
       }}
     />
-  </DropdownContainer>
+  </Wrapper>
 );
 
 export default Selector;
