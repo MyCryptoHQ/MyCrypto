@@ -44,7 +44,7 @@ export class Web3Node extends RPCNode {
       .then(({ result }) => result);
   }
 
-  public getAccounts(): Promise<string> {
+  public getAccounts(): Promise<string[]> {
     return this.client
       .call(this.requests.getAccounts())
       .then(isValidGetAccounts)

@@ -18,14 +18,13 @@ export const unlockWeb3 = (onSuccess: (data: any) => void) => async (networks: N
       throw new Error('Cannot use Web3 wallet without a Web3 node.');
     }
 
-    const accounts: string = await nodeLib.getAccounts();
-    const address = accounts[0];
-    if (!address) {
+    const accounts = await nodeLib.getAccounts();
+    if (!accounts || accounts.length === 0) {
       throw new Error('No accounts found in MetaMask / Web3.');
     }
 
     onSuccess(network);
-    return new Web3Wallet(address, network.id);
+    return accounts.map((address) => new Web3Wallet(address, network.id));
   } catch (err) {
     // unset web3 node so node dropdown isn't disabled
     console.error('Error ' + translateRaw(err.message));

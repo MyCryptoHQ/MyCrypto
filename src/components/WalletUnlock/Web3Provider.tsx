@@ -5,7 +5,7 @@ import { WalletId, FormData, Network } from '@types';
 import { InlineMessage, NewTabLink } from '@components';
 import { hasWeb3Provider, useAnalytics, useScreenSize } from '@utils';
 import { SettingsContext, NetworkContext, NetworkUtils } from '@services/Store';
-import { WalletFactory } from '@services/WalletService';
+import { WalletFactory, Web3Wallet } from '@services/WalletService';
 import { FormDataActionType as ActionType } from '@features/AddAccount/types';
 import { getWeb3Config } from '@utils/web3';
 import { ANALYTICS_CATEGORIES } from '@services';
@@ -17,7 +17,7 @@ interface Props {
   formData: FormData;
   wallet: object;
   isMobile: boolean;
-  onUnlock(param: any): void;
+  onUnlock(param: Web3Wallet[]): void;
 }
 
 const WalletService = WalletFactory(WalletId.WEB3);
@@ -44,7 +44,10 @@ const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) =>
     };
 
     try {
-      const walletPayload = await WalletService.init(networks, handleUnlock);
+      const walletPayload: Web3Wallet[] | undefined = await WalletService.init(
+        networks,
+        handleUnlock
+      );
       if (!walletPayload) {
         throw new Error('Failed to unlock web3 wallet');
       }
@@ -54,7 +57,7 @@ const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) =>
           actionName: `${web3ProviderSettings.name} added`
         });
 
-        const network = walletPayload.network;
+        const network = walletPayload[0].network;
         formDispatch({
           type: ActionType.SELECT_NETWORK,
           payload: { network }
