@@ -335,7 +335,7 @@ export function DeterministicWalletsClass({
     setPage(Math.max(page - 1, 0));
   };
 
-  type TDPathOptionProps = OptionProps<DPath> | { data: DPath; selectOption?: () => void };
+  type TDPathOptionProps = OptionProps<DPath> | { data: DPath; selectOption?(): void };
   const DPathOption = ({ data, selectOption }: TDPathOptionProps) => (
     <SContainer onClick={selectOption && (() => selectOption(data))}>
       <Typography>
