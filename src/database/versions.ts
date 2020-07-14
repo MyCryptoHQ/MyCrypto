@@ -1,3 +1,6 @@
+import moment from 'moment';
+
+import { SETTINGS_FILENAME } from '@config';
 import { LocalStorage } from '@types';
 import { noOp } from '@utils';
 
@@ -32,7 +35,7 @@ export const getPreviousDBConfig = () => dbVersions[dbHistory[1]];
 
 export const getExportFileName = () => {
   const currentDb = getCurrentDBConfig();
-  return `${currentDb.main}_${currentDb.version}.json`;
+  return `${SETTINGS_FILENAME}_${moment().format('YYYY-MM-DD')}_${currentDb.version}.json`;
 };
 
 export const getData = () => {
