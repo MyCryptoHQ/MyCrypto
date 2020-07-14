@@ -6,7 +6,16 @@ import handlers from './handlers';
 
 export function registerServer(app: App) {
   // Register protocol scheme
-  protocol.registerStandardSchemes([PROTOCOL_NAME]);
+  protocol.registerSchemesAsPrivileged([
+    {
+      scheme: PROTOCOL_NAME,
+      privileges: {
+        standard: true,
+        secure: true,
+        supportFetchAPI: true
+      }
+    }
+  ]);
 
   app.on('ready', () => {
     // Register custom protocol behavior
@@ -34,7 +43,7 @@ export function registerServer(app: App) {
   });
 }
 
-function getMethod(req: Electron.RegisterStringProtocolRequest): EnclaveMethods {
+function getMethod(req: any): EnclaveMethods {
   const urlSplit = req.url.split(`${PROTOCOL_NAME}://`);
 
   if (!urlSplit[1]) {
@@ -49,11 +58,8 @@ function getMethod(req: Electron.RegisterStringProtocolRequest): EnclaveMethods 
   return method;
 }
 
-function getParams(
-  method: EnclaveMethods,
-  req: Electron.RegisterStringProtocolRequest
-): EnclaveMethodParams {
-  const data = req.uploadData.find(d => !!d.bytes);
+function getParams(method: EnclaveMethods, req: any): EnclaveMethodParams {
+  const data = req.uploadData.find((d: any) => !!d.bytes);
 
   if (!data) {
     throw new Error(`No data provided for '${method}'`);

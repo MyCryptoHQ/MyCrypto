@@ -12,23 +12,23 @@ const MENU: MenuItemConstructorOptions[] = [
       { role: 'cut' },
       { role: 'copy' },
       { role: 'paste' },
-      { role: 'pasteandmatchstyle' },
+      { role: 'pasteAndMatchStyle' },
       { role: 'delete' },
-      { role: 'selectall' }
+      { role: 'selectAll' }
     ]
   },
   {
     label: 'View',
     submenu: [
       { role: 'reload' },
-      { role: 'forcereload' },
+      { role: 'forceReload' },
       { type: 'separator' },
-      { role: 'resetzoom' },
-      { role: 'zoomin' },
-      { role: 'zoomout' },
+      { role: 'resetZoom' },
+      { role: 'zoomIn' },
+      { role: 'zoomOut' },
       { role: 'togglefullscreen' },
       { type: 'separator' },
-      { role: 'toggledevtools' }
+      { role: 'toggleDevTools' }
     ]
   }
 ];
@@ -63,7 +63,7 @@ if (process.platform === 'darwin') {
       { role: 'about' },
       { type: 'separator' },
       { role: 'hide' },
-      { role: 'hideothers' },
+      { role: 'hideOthers' },
       { role: 'unhide' },
       { type: 'separator' },
       { role: 'quit' }
