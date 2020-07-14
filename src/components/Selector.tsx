@@ -150,7 +150,7 @@ const Selector: <T = any>(p: SelectorProps<T>) => React.ReactElement<SelectorPro
   onInputChange,
   onInputKeyDown
 }) => (
-  <Wrapper>
+  <Wrapper data-testid="selector">
     <Select
       options={options}
       defaultValue={inputValue}
