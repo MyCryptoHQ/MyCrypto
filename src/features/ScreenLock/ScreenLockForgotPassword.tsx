@@ -8,7 +8,6 @@ import { ExtendedContentPanel } from '@components';
 import { ANALYTICS_CATEGORIES } from '@services';
 import { ROUTE_PATHS } from '@config';
 import { useAnalytics } from '@utils';
-import { SPACING } from '@theme';
 import mainImage from '@assets/images/icn-forgot-password.svg';
 
 import { ScreenLockContext } from './ScreenLockProvider';
@@ -29,7 +28,8 @@ const FormWrapper = styled.div`
   margin: 14px 0;
 `;
 
-const AditionalDescription = styled.p`
+const Description = styled.p`
+  text-align: left;
   font-size: 18px;
   font-weight: normal;
   margin-top: 28px;
@@ -39,20 +39,6 @@ const AditionalDescription = styled.p`
 
   @media (max-width: 700px) {
     padding: 0 8px;
-  }
-`;
-
-const BulletList = styled.ul`
-  li {
-    padding-left: ${SPACING.SM};
-    margin-left: 0;
-    margin-bottom: 15px;
-    text-align: left;
-    font-weight: 400;
-
-    &:last-child {
-      margin-bottom: 16px;
-    }
   }
 `;
 
@@ -66,19 +52,18 @@ const ScreenLockForgotPassword: FC<RouteComponentProps> = ({ history }) => {
     <ExtendedContentPanel
       onBack={history.goBack}
       heading={translateRaw('SCREEN_LOCK_FORGOT_PASSWORD_HEADING')}
-      description={translateRaw('SCREEN_LOCK_FORGOT_PASSWORD_DESCRIPTION')}
+      description={
+        <Description>{translateRaw('SCREEN_LOCK_FORGOT_PASSWORD_DESCRIPTION')}</Description>
+      }
       image={mainImage}
       showImageOnTop={true}
       centered={true}
       className=""
     >
-      <AditionalDescription>
-        {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_DESCRIPTION')}
-        <BulletList>
-          <li>{translate('SCREEN_LOCK_FORGOT_PASSWORD_LIST_ITEM1')}</li>
-          <li>{translate('SCREEN_LOCK_FORGOT_PASSWORD_LIST_ITEM2')}</li>
-        </BulletList>
-      </AditionalDescription>
+      <Description>
+        <p>{translate('SCREEN_LOCK_FORGOT_PASSWORD_LIST_ITEM1')}</p>
+        <p>{translate('SCREEN_LOCK_FORGOT_PASSWORD_LIST_ITEM2')}</p>
+      </Description>
       <FormWrapper>
         <ActionButton
           onClick={() => {
