@@ -34,6 +34,7 @@ const ContentPanelWrapper = styled.div<ContentPanelProps>`
         > p ~ div {
           & > div:last-child {
             margin-top: calc(-0.5rem - 75px);
+            margin-bottom: calc(-0.5rem - 16px);
           }
         }
       }
