@@ -1007,6 +1007,7 @@
     "PROTECTED_TX_TIMELINE_TAGS": "The labels for this address are: $tags",
     "WARNING_TRANSACTION_FEE": "The transaction fee of $fee seems to be greater than the amount you are sending ($amount). It's recommended to use a lower transaction fee unless you need this transaction to be confirmed swiftly.",
     "POWERED_BY": "Powered By",
-    "DPATH_GENERATE_FRESH_ADDRESS_GAP_ERROR": "You cant generate more than $gap fresh accounts. Add some assets to the existing fresh addresses to open up more!"
+    "DPATH_GENERATE_FRESH_ADDRESS_GAP_ERROR": "You cant generate more than $gap fresh accounts. Add some assets to the existing fresh addresses to open up more!",
+    "ZAP_WITHDRAW_TOOLTIP": "Withdrawing from this Zap requires interacting with Uniswap. If you need assistance, please read [How To Withdraw from Unipool](https://support.mycrypto.com/how-to/defi/how-to-withdraw-from-unipool)."
   }
 }
