@@ -918,5 +918,32 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       max: 10,
       initial: 0.01
     }
+  },
+  HARDLYDIFFICULT: {
+    id: 'HARDLYDIFFICULT',
+    name: 'HardlyDifficult',
+    unit: 'HD' as TSymbol,
+    chainId: 666,
+    isCustom: false,
+    color: '#282457',
+    blockExplorer: makeExplorer({
+      name: 'HardlyDifficult Explorer',
+      origin: 'https://etherscan.io',
+      addressPath: 'address',
+      blockPath: 'blocks'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DPaths.ETH_TESTNET,
+      [WalletId.LEDGER_NANO_S]: DPaths.ETH_TESTNET,
+      [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_TESTNET
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 100,
+      initial: 1
+    },
+    shouldEstimateGasPrice: false
   }
 };
