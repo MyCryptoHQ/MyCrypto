@@ -935,9 +935,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     tokens: [],
     contracts: [],
     dPaths: {
-      [WalletId.TREZOR]: DPaths.HARDLYDIFFICULT_DEFAULT,
-      [WalletId.LEDGER_NANO_S]: DPaths.HARDLYDIFFICULT_DEFAULT,
-      [WalletId.MNEMONIC_PHRASE]: DPaths.HARDLYDIFFICULT_DEFAULT
+      [WalletId.TREZOR]: DPaths.ETH_TESTNET,
+      [WalletId.LEDGER_NANO_S]: DPaths.ETH_TESTNET,
+      [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_TESTNET
     },
     gasPriceSettings: {
       min: 1,
