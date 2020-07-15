@@ -425,7 +425,9 @@ enum API_NAME {
   Get_Accounts = 'Get Accounts',
   Net_Version = 'Net Version',
   Transaction_By_Hash = 'Transaction By Hash',
-  Transaction_Receipt = 'Transaction Receipt'
+  Transaction_Receipt = 'Transaction Receipt',
+  Request_Permissions = 'Request_Permissions',
+  Get_Permissions = 'Get_Permissions'
 }
 
 const isValidEthCall = (response: JsonRPCResponse, schemaType: typeof schema.RpcNode) => (
@@ -481,6 +483,12 @@ export const isValidGetAccounts = (response: JsonRPCResponse) =>
 
 export const isValidGetNetVersion = (response: JsonRPCResponse) =>
   isValidEthCall(response, schema.RpcNode)(API_NAME.Net_Version);
+
+export const isValidRequestPermissions = (response: JsonRPCResponse) =>
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Request_Permissions);
+
+export const isValidGetPermissions = (response: JsonRPCResponse) =>
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Get_Permissions);
 
 export const isValidTxHash = (hash: string) =>
   hash.substring(0, 2) === '0x' && hash.length === 66 && isValidHex(hash);

@@ -9,6 +9,7 @@ import {
 import { RPCNode } from '../rpc';
 import Web3Client from './client';
 import Web3Requests from './requests';
+import { isValidRequestPermissions } from '@services/EthService/validators';
 
 //const METAMASK_PERMISSION_DENIED_ERROR = ;
 
@@ -50,6 +51,20 @@ export class Web3Node extends RPCNode {
       .then(isValidGetAccounts)
       .then(({ result }) => result);
   }
+
+  public requestPermissions(): Promise<any> {
+    return this.client
+      .call(this.requests.requestPermissions())
+      .then(isValidRequestPermissions)
+      .then(({ result }) => result);
+  }
+
+  public getAccountPermissions(): Promise<any> {
+    return this.client
+      .call(this.requests.getPermissions())
+      .then(isValidRequestPermissions)
+      .then(({ result }) => result);
+  }
 }
 
 export function isWeb3Node(nodeLib: INode | Web3Node): nodeLib is Web3Node {
@@ -58,9 +73,11 @@ export function isWeb3Node(nodeLib: INode | Web3Node): nodeLib is Web3Node {
 
 export async function getChainIdAndLib() {
   const lib = new Web3Node();
+  console.debug('[getChainIdAndLib]: 1');
   const chainId = await lib.getNetVersion();
+  console.debug('[getChainIdAndLib]: 2');
   const accounts = await lib.getAccounts();
-
+  console.debug('[getChainIdAndLib]: 3', accounts);
   if (!accounts.length) {
     throw new Error('No accounts found in MetaMask / Web3.');
   }
@@ -83,8 +100,10 @@ export async function setupWeb3Node() {
     }
     try {
       // Request permission to access MetaMask accounts.
-      await ethereum.enable();
+      const web3Node = new Web3Node();
+      const permissions = await web3Node.requestPermissions();
       // Permission was granted; proceed.
+      console.debug('got here?', permissions);
       return getChainIdAndLib();
     } catch (e) {
       // Permission was denied; handle appropriately.

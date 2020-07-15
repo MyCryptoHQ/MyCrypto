@@ -20,6 +20,8 @@ export default class Web3Client extends RPCClient {
   public call = (request: RPCRequest | any): Promise<JsonRpcResponse> =>
     this.sendAsync(this.decorateRequest(request)) as Promise<JsonRpcResponse>;
 
+  public request = (request: RPCRequest | any): Promise<JsonRpcResponse> => this.request(request);
+
   public batch = (requests: RPCRequest[] | any): Promise<JsonRpcResponse[]> =>
     this.sendAsync(requests.map(this.decorateRequest)) as Promise<JsonRpcResponse[]>;
 
