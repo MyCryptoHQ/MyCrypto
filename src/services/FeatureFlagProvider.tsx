@@ -7,26 +7,19 @@ export interface IFeatureFlagContext {
   resetFeatureFlags(): void;
 }
 
-declare global {
-  interface Window {
-    setFeatureFlag(key: keyof IIS_ACTIVE_FEATURE, value: boolean): void;
-    resetFeatureFlags(): void;
-  }
-}
-
 const FeatureFlagContext = createContext({} as IFeatureFlagContext);
 
 const FeatureFlagProvider: React.FC = ({ children }) => {
   const [featureFlags, setFeatureFlags] = useState(IS_ACTIVE_FEATURE);
 
   const setFeatureFlag = (key: keyof IIS_ACTIVE_FEATURE, value: boolean): void =>
-    setFeatureFlags({ ...IS_ACTIVE_FEATURE, [key]: value });
+    setFeatureFlags({ ...featureFlags, [key]: value });
   const resetFeatureFlags = (): void => setFeatureFlags(IS_ACTIVE_FEATURE);
 
   useEffect(() => {
     // For use in E2E testing
-    window.setFeatureFlag = setFeatureFlag;
-    window.resetFeatureFlags = resetFeatureFlags;
+    (window as CustomWindow).setFeatureFlag = setFeatureFlag;
+    (window as CustomWindow).resetFeatureFlags = resetFeatureFlags;
   });
 
   const stateContext: IFeatureFlagContext = {

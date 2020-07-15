@@ -4,12 +4,14 @@ import { WalletId, WalletType } from '@types';
 export function getWeb3Config(): IWalletConfig {
   if (
     typeof window === 'undefined' ||
-    (typeof window.ethereum === 'undefined' && typeof window.web3 === 'undefined')
+    (typeof (window as CustomWindow).ethereum === 'undefined' &&
+      typeof (window as CustomWindow).web3 === 'undefined')
   ) {
     return WALLETS_CONFIG.WEB3;
   }
   // Web3 browser user detected. You can now use the provider.
-  const provider = window.ethereum || window.web3.currentProvider;
+  const provider =
+    (window as CustomWindow).ethereum || (window as CustomWindow).web3.currentProvider;
 
   if (provider.isMetaMask) return WALLETS_CONFIG.METAMASK;
 

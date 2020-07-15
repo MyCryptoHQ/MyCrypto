@@ -10,15 +10,6 @@ import { getNetworkByChainId, INetworkContext, NetworkContext } from '@services/
 
 import './Web3.scss';
 
-declare global {
-  interface Window {
-    ethereum?: any;
-    web3: any;
-    Web3Provider: ethers.providers.Web3Provider;
-    Web3Signer: Web3Provider;
-  }
-}
-
 enum WalletSigningState {
   READY, //when signerWallet is ready to sendTransaction
   NOT_READY, //use when signerWallet rejects transaction
@@ -34,7 +25,7 @@ interface Web3UserState {
   walletState: WalletSigningState;
 }
 
-const ethereumProvider = window.ethereum;
+const ethereumProvider = (window as CustomWindow).ethereum;
 let web3Provider: ethers.providers.Web3Provider;
 
 async function getWeb3Provider() {
@@ -183,7 +174,7 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
     }
   }
 
-  private watchForAccountChanges(ethereum: NonNullable<Window['ethereum']>) {
+  private watchForAccountChanges(ethereum: NonNullable<CustomWindow['ethereum']>) {
     ethereum.on('accountsChanged', this.getWeb3Account);
   }
 
