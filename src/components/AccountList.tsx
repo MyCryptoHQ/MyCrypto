@@ -5,7 +5,7 @@ import isNumber from 'lodash/isNumber';
 import cloneDeep from 'lodash/cloneDeep';
 
 import { translateRaw } from '@translations';
-import { ROUTE_PATHS, IS_ACTIVE_FEATURE, getWalletConfig } from '@config';
+import { ROUTE_PATHS, getWalletConfig } from '@config';
 import {
   EthAddress,
   Network,
@@ -25,7 +25,7 @@ import {
   SettingsContext,
   AddressBookContext
 } from '@services/Store';
-import { RatesContext } from '@services';
+import { RatesContext, useFeatureFlags } from '@services';
 import { getFiat } from '@config/fiats';
 
 import { DashboardPanel } from './DashboardPanel';
@@ -348,6 +348,7 @@ const buildAccountTable = (
   overlayRows?: [number[], [number, TUuid][]],
   setDeletingIndex?: any
 ) => {
+  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
   const [sortingState, setSortingState] = useState(initialSortingState);
   const { totalFiat } = useContext(StoreContext);
   const { getAssetRate } = useContext(RatesContext);

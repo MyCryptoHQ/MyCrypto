@@ -8,11 +8,11 @@ import {
   GetTokenTxResponse
 } from '@services/ApiService';
 import { AssetContext, getAssetByUUID, StoreContext } from '@services/Store';
+import { useFeatureFlags } from '@services';
 import { NansenService, NansenServiceEntry } from '@services/ApiService/Nansen';
 import { useScreenSize } from '@utils';
 import { WALLETS_CONFIG } from '@config';
 
-import { IS_ACTIVE_FEATURE } from '../../config/isActiveFeature';
 import { PTXReport } from './types';
 import { ProtectTxUtils } from './utils';
 
@@ -297,6 +297,8 @@ const ProtectTxProvider: React.FC = ({ children }) => {
       mainComponentDisabled: isDisabled
     }));
   }, [state.protectTxShow, state.stepIndex, state.nansenAddressReport, state.protectTxEnabled]);
+
+  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
 
   const protectTxFeatureFlag = IS_ACTIVE_FEATURE.PROTECT_TX;
 
