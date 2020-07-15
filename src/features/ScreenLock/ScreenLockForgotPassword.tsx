@@ -28,7 +28,8 @@ const FormWrapper = styled.div`
   margin: 14px 0;
 `;
 
-const AditionalDescription = styled.p`
+const Description = styled.p`
+  text-align: left;
   font-size: 18px;
   font-weight: normal;
   margin-top: 28px;
@@ -51,15 +52,18 @@ const ScreenLockForgotPassword: FC<RouteComponentProps> = ({ history }) => {
     <ExtendedContentPanel
       onBack={history.goBack}
       heading={translateRaw('SCREEN_LOCK_FORGOT_PASSWORD_HEADING')}
-      description={translateRaw('SCREEN_LOCK_FORGOT_PASSWORD_DESCRIPTION')}
+      description={
+        <Description>{translateRaw('SCREEN_LOCK_FORGOT_PASSWORD_DESCRIPTION')}</Description>
+      }
       image={mainImage}
       showImageOnTop={true}
       centered={true}
       className=""
     >
-      <AditionalDescription>
-        {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_DESCRIPTION')}
-      </AditionalDescription>
+      <Description>
+        <p>{translate('SCREEN_LOCK_FORGOT_PASSWORD_LIST_ITEM1')}</p>
+        <p>{translate('SCREEN_LOCK_FORGOT_PASSWORD_LIST_ITEM2')}</p>
+      </Description>
       <FormWrapper>
         <ActionButton
           onClick={() => {
