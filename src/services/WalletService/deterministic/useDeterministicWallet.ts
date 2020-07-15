@@ -1,4 +1,7 @@
 import { useState, useReducer, useEffect } from 'react';
+import uniqBy from 'ramda/src/uniqBy';
+import prop from 'ramda/src/prop';
+import pipe from 'ramda/src/pipe';
 
 import { Network, DPathFormat, ExtendedAsset } from '@types';
 
@@ -11,6 +14,7 @@ import {
   DWAccountDisplay,
   ExtendedDPath
 } from './types';
+import { findFinishedZeroBalanceAccounts } from './helpers';
 
 interface MnemonicPhraseInputs {
   phrase: string;
@@ -146,6 +150,30 @@ const useDeterministicWallet = (
     });
   };
 
+  const generateFreshAddress = (defaultDPath: ExtendedDPath): boolean => {
+    if (!service || shouldInit || !state.isConnected || !network || !state.session) {
+      return false;
+    }
+    const finishedDefaultDPathEntries = state.finishedAccounts.filter(
+      (account) => account.pathItem.baseDPath.value === defaultDPath.value
+    );
+    const finishedAccountFreshAddress = findFinishedZeroBalanceAccounts(
+      finishedDefaultDPathEntries
+    );
+    const filteredDefaultDPathAccounts = uniqBy(
+      pipe(prop('pathItem'), prop('index')),
+      finishedAccountFreshAddress
+    );
+    if (filteredDefaultDPathAccounts.length > defaultDPath.offset) {
+      dispatch({
+        type: DWActionTypes.DESIGNATE_FRESH_ADDRESS,
+        payload: { address: filteredDefaultDPathAccounts[defaultDPath.offset].address }
+      });
+      return true;
+    }
+    return false;
+  };
+
   const updateAsset = (asset: ExtendedAsset) => {
     if (!service) return;
     setAssetToQuery(asset);
@@ -159,7 +187,8 @@ const useDeterministicWallet = (
     state,
     requestConnection,
     updateAsset,
-    addDPaths
+    addDPaths,
+    generateFreshAddress
   };
 };
 
