@@ -15,7 +15,7 @@ describe('SendAssetsFlow', () => {
   const component = (path?: string) => (
     <MemoryRouter initialEntries={path ? [path] : undefined}>
       <FeatureFlagContext.Provider
-        value={{ IS_ACTIVE_FEATURE, setFeatureFlag: noOp, clearFeatureFlags: noOp }}
+        value={{ IS_ACTIVE_FEATURE, setFeatureFlag: noOp, resetFeatureFlags: noOp }}
       >
         <SettingsContext.Provider
           value={

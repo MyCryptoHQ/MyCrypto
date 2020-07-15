@@ -1,40 +1,42 @@
-import React, { Component, createContext } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { IIS_ACTIVE_FEATURE, IS_ACTIVE_FEATURE } from '@config/isActiveFeature';
 
-export interface ProviderState {
+export interface IFeatureFlagContext {
   IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE;
   setFeatureFlag(key: keyof IIS_ACTIVE_FEATURE, value: boolean): void;
-  clearFeatureFlags(): void;
+  resetFeatureFlags(): void;
 }
 
 declare global {
   interface Window {
     setFeatureFlag(key: keyof IIS_ACTIVE_FEATURE, value: boolean): void;
-    clearFeatureFlags(): void;
+    resetFeatureFlags(): void;
   }
 }
 
-const FeatureFlagContext = createContext({} as ProviderState);
+const FeatureFlagContext = createContext({} as IFeatureFlagContext);
 
-class FeatureFlagProvider extends Component {
-  public readonly state: ProviderState = {
-    IS_ACTIVE_FEATURE,
-    setFeatureFlag: (key: keyof IIS_ACTIVE_FEATURE, value: boolean): void =>
-      this.setState({ IS_ACTIVE_FEATURE: { ...IS_ACTIVE_FEATURE, [key]: value } }),
-    clearFeatureFlags: (): void => this.setState({ IS_ACTIVE_FEATURE })
+const FeatureFlagProvider: React.FC = ({ children }) => {
+  const [featureFlags, setFeatureFlags] = useState(IS_ACTIVE_FEATURE);
+
+  const setFeatureFlag = (key: keyof IIS_ACTIVE_FEATURE, value: boolean): void =>
+    setFeatureFlags({ ...IS_ACTIVE_FEATURE, [key]: value });
+  const resetFeatureFlags = (): void => setFeatureFlags(IS_ACTIVE_FEATURE);
+
+  useEffect(() => {
+    // For use in E2E testing
+    window.setFeatureFlag = setFeatureFlag;
+    window.resetFeatureFlags = resetFeatureFlags;
+  });
+
+  const stateContext: IFeatureFlagContext = {
+    IS_ACTIVE_FEATURE: featureFlags,
+    setFeatureFlag,
+    resetFeatureFlags
   };
 
-  public componentDidMount() {
-    // For use in E2E testing
-    window.setFeatureFlag = this.state.setFeatureFlag;
-    window.clearFeatureFlags = this.state.clearFeatureFlags;
-  }
-
-  public render() {
-    const { children } = this.props;
-    return <FeatureFlagContext.Provider value={this.state}>{children}</FeatureFlagContext.Provider>;
-  }
-}
+  return <FeatureFlagContext.Provider value={stateContext}>{children}</FeatureFlagContext.Provider>;
+};
 
 function useFeatureFlags() {
   const context = React.useContext(FeatureFlagContext);
