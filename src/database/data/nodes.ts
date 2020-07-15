@@ -363,5 +363,13 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       service: 'energyweb.org',
       url: 'https://rpc.energyweb.org'
     }
+  ],
+  HARDLYDIFFICULT: [
+    {
+      name: NetworkUtils.makeNodeName('HARDLYDIFFICULT', 'ethscan'),
+      type: NodeType.ETHERSCAN,
+      service: 'Etherscan',
+      url: 'https://api.etherscan.io/api'
+    }
   ]
 };

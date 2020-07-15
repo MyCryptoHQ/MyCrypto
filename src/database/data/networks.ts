@@ -919,7 +919,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       initial: 0.01
     }
   },
-  HardlyDifficult: {
+  HARDLYDIFFICULT: {
     id: 'HARDLYDIFFICULT',
     name: 'HardlyDifficult',
     unit: 'HD' as TSymbol,
