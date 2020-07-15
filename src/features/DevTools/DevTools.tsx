@@ -4,8 +4,7 @@ import { Panel, Input } from '@mycrypto/ui';
 import { Button, Link, Checkbox } from '@components';
 import styled from 'styled-components';
 
-import { DEFAULT_NETWORK } from '@config';
-import { IIS_ACTIVE_FEATURE } from '@config/isActiveFeature';
+import { DEFAULT_NETWORK, IIS_ACTIVE_FEATURE } from '@config';
 import { generateUUID, IS_DEV } from '@utils';
 import {
   AccountContext,
