@@ -141,6 +141,11 @@ const PoweredByWrapper = styled.div<{ hasMissingInfoError: boolean }>`
   position: absolute;
   bottom: ${SPACING.BASE};
 `}
+  ${({ hasMissingInfoError }) =>
+    hasMissingInfoError &&
+    `
+  margin-top: ${SPACING.BASE};
+`}
 `;
 
 interface Props {
