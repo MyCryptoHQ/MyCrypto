@@ -5,7 +5,14 @@ import prop from 'ramda/src/prop';
 import { MOONPAY_ASSET_UUIDS, IS_ELECTRON } from '@utils';
 import { FormData, WalletId, ExtendedAsset } from '@types';
 import translate, { translateRaw, Trans } from '@translations';
-import { NewTabLink, Spinner, Button, DeterministicAccountList, AssetSelector } from '@components';
+import {
+  NewTabLink,
+  Spinner,
+  Button,
+  DeterministicAccountList,
+  AssetDropdown,
+  Typography
+} from '@components';
 import {
   EXT_URLS,
   LEDGER_DERIVATION_PATHS,
@@ -24,12 +31,28 @@ import {
 
 import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
 import UnsupportedNetwork from './UnsupportedNetwork';
-import './LedgerNano.scss';
+import styled from 'styled-components';
+import { COLORS } from '@theme';
 
 interface OwnProps {
   formData: FormData;
   onUnlock(param: any): void;
 }
+
+const MnemonicWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Title = styled(Typography)`
+  color: ${COLORS.BLUE_DARK};
+`;
+
+const Parameters = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
 
 // const WalletService = WalletFactory(WalletId.LEDGER_NANO_S);
 
@@ -122,40 +145,68 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   }
 
   if (state.isConnected && state.asset && (state.queuedAccounts || state.finishedAccounts)) {
+    // return (
+    //   <div className="Mnemonic-dpath">
+    //     <Button onClick={() => handleDPathAddition()}>
+    //       {`Test Add Custom Derivation Path: ${testDPathAddition.value} - ${testDPathAddition.label} `}
+    //     </Button>
+    //     <br />
+    //     <Button
+    //       disabled={!state.completed || freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR}
+    //       onClick={() => handleFreshAddressGeneration()}
+    //     >
+    //       {`Test Generate Fresh Address`}
+    //     </Button>
+    //     {freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR && (
+    //       <p>
+    //         {translateRaw('DPATH_GENERATE_FRESH_ADDRESS_GAP_ERROR', {
+    //           $gap: DEFAULT_GAP_TO_SCAN_FOR.toString()
+    //         })}
+    //       </p>
+    //     )}
+    //     <br />
+    //     <AssetDropdown
+    //       selectedAsset={assetToUse}
+    //       assets={filteredAssets}
+    //       onSelect={(option: ExtendedAsset) => {
+    //         handleAssetUpdate(option);
+    //       }}
+    //     />
+    //     <DeterministicAccountList
+    //       isComplete={state.completed}
+    //       asset={state.asset}
+    //       finishedAccounts={state.finishedAccounts}
+    //       onUnlock={onUnlock}
+    //     />
+    //   </div>
+    // );
     return (
-      <div className="Mnemonic-dpath">
-        <Button onClick={() => handleDPathAddition()}>
-          {`Test Add Custom Derivation Path: ${testDPathAddition.value} - ${testDPathAddition.label} `}
-        </Button>
-        <br />
-        <Button
-          disabled={!state.completed || freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR}
-          onClick={() => handleFreshAddressGeneration()}
-        >
-          {`Test Generate Fresh Address`}
-        </Button>
-        {freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR && (
-          <p>
-            {translateRaw('DPATH_GENERATE_FRESH_ADDRESS_GAP_ERROR', {
-              $gap: DEFAULT_GAP_TO_SCAN_FOR.toString()
-            })}
-          </p>
-        )}
-        <br />
-        <AssetSelector
-          selectedAsset={assetToUse}
-          assets={filteredAssets}
-          onSelect={(option: ExtendedAsset) => {
-            handleAssetUpdate(option);
-          }}
-        />
+      <MnemonicWrapper>
+        <Title fontSize="32px" bold={true}>
+          <Trans id="MNEMONIC_TITLE" />
+        </Title>
+        <Typography>
+          <Trans id="MNEMONIC_SUBTITLE" />
+        </Typography>
+        <Parameters>
+          <AssetDropdown
+            selectedAsset={assetToUse}
+            assets={filteredAssets}
+            onSelect={(option: ExtendedAsset) => {
+              handleAssetUpdate(option);
+            }}
+          />
+          <Button onClick={handleDPathAddition} inverted={true}>
+            <Trans id="MNEMONIC_ADD_CUSTOM_DPATH" />
+          </Button>
+        </Parameters>
         <DeterministicAccountList
           isComplete={state.completed}
           asset={state.asset}
           finishedAccounts={state.finishedAccounts}
           onUnlock={onUnlock}
         />
-      </div>
+      </MnemonicWrapper>
     );
   } else {
     return (
