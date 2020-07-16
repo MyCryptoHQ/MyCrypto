@@ -43,8 +43,8 @@ const ContentPanelWrapper = styled.div<ContentPanelProps>`
 
   @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
     &.has-side-panel {
-      width: ${({ width }) => `${width ? width + 375 : width}px`};
-      max-width: ${({ width }) => `${width ? width + 375 : width}px`};
+      width: ${({ width }) => `${width ? width + 390 : width}px`};
+      max-width: ${({ width }) => `${width ? width + 390 : width}px`};
     }
   }
 `;
