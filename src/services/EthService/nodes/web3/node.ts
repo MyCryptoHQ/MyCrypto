@@ -6,10 +6,11 @@ import {
   isValidGetAccounts,
   isValidGetNetVersion
 } from '@services/EthService';
+import { isValidRequestPermissions } from '@services/EthService/validators';
+
 import { RPCNode } from '../rpc';
 import Web3Client from './client';
 import Web3Requests from './requests';
-import { isValidRequestPermissions } from '@services/EthService/validators';
 
 //const METAMASK_PERMISSION_DENIED_ERROR = ;
 
@@ -73,11 +74,8 @@ export function isWeb3Node(nodeLib: INode | Web3Node): nodeLib is Web3Node {
 
 export async function getChainIdAndLib() {
   const lib = new Web3Node();
-  console.debug('[getChainIdAndLib]: 1');
   const chainId = await lib.getNetVersion();
-  console.debug('[getChainIdAndLib]: 2');
   const accounts = await lib.getAccounts();
-  console.debug('[getChainIdAndLib]: 3', accounts);
   if (!accounts.length) {
     throw new Error('No accounts found in MetaMask / Web3.');
   }
@@ -98,17 +96,16 @@ export async function setupWeb3Node() {
     if ((window as any).Web3) {
       (window as any).web3 = new (window as any).Web3(ethereum);
     }
-    try {
-      // Request permission to access MetaMask accounts.
-      const web3Node = new Web3Node();
-      const permissions = await web3Node.requestPermissions();
-      // Permission was granted; proceed.
-      console.debug('got here?', permissions);
-      return getChainIdAndLib();
-    } catch (e) {
-      // Permission was denied; handle appropriately.
-      throw new Error(translateRaw('METAMASK_PERMISSION_DENIED'));
+    const web3Node = new Web3Node();
+    const permissions = await requestPermission(web3Node);
+    if (permissions) {
+      return await getChainIdAndLib();
     }
+    const legacyConnect = await requestLegacyConnect(ethereum);
+    if (legacyConnect) {
+      return await getChainIdAndLib();
+    }
+    throw new Error(translateRaw('METAMASK_PERMISSION_DENIED'));
   } else if ((window as any).web3) {
     // Legacy handling; will become unavailable 11/2.
     const { web3 } = window as any;
@@ -122,3 +119,20 @@ export async function setupWeb3Node() {
     throw new Error('Web3 not found. Please check that MetaMask is installed');
   }
 }
+
+const requestPermission = async (web3Node: Web3Node) => {
+  try {
+    return await web3Node.requestPermissions();
+  } catch (e) {
+    return;
+  }
+};
+
+const requestLegacyConnect = async (ethereum: any) => {
+  try {
+    await ethereum.enable();
+    return true;
+  } catch (e) {
+    return;
+  }
+};
