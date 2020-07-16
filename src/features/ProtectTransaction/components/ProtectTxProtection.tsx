@@ -134,6 +134,15 @@ const Header = styled.h4`
   }
 `;
 
+const PoweredByWrapper = styled.div<{ hasMissingInfoError: boolean }>`
+  ${({ hasMissingInfoError }) =>
+    !hasMissingInfoError &&
+    `
+  position: absolute;
+  bottom: ${SPACING.BASE};
+`}
+`;
+
 interface Props {
   handleProtectTxSubmit(payload: IFormikFields): Promise<void>;
 }
@@ -291,7 +300,9 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
       <button type="button" className="cancel" onClick={onProtectMyTransactionCancelClick}>
         {translateRaw('PROTECTED_TX_DONT_PROTECT_MY_TX')}
       </button>
-      <PoweredByText provider="NANSEN" />
+      <PoweredByWrapper hasMissingInfoError={hasMissingInfoError}>
+        <PoweredByText provider="NANSEN" />
+      </PoweredByWrapper>
     </SProtectionThisTransaction>
   );
 };

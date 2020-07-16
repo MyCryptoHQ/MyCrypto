@@ -97,6 +97,11 @@ const SEthAddress = styled.div`
   }
 `;
 
+const PoweredByWrapper = styled.div`
+  position: absolute;
+  bottom: ${SPACING.BASE};
+`;
+
 export const ProtectTxReport: FC = () => {
   const {
     state: { isWeb3Wallet },
@@ -185,7 +190,9 @@ export const ProtectTxReportUI = ({ report, isWeb3, onHide }: Props) => {
           </p>
         </>
       )}
-      <PoweredByText provider="NANSEN" />
+      <PoweredByWrapper>
+        <PoweredByText provider="NANSEN" />
+      </PoweredByWrapper>
     </Wrapper>
   );
 };

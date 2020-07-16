@@ -47,11 +47,7 @@ const providers: Record<string, PoweredByProvider> = {
   NANSEN: {
     icon: 'nansenLogo',
     text: translateRaw('POWERED_BY'),
-    fontSize: '12px',
-    css: `
-      position: absolute;
-      bottom: ${SPACING.BASE};
-    `
+    fontSize: '12px'
   },
   ENS: { icon: 'ensLogo', text: translateRaw('ENS_LOGO_TEXT'), flipped: true },
   COINGECKO: {
