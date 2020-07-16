@@ -105,6 +105,11 @@ export const getLinks = (featureFlags: IFeatureFlags) => {
           to: APP_ROUTES_OBJECT.GOLEM_TOKEN_MIGRATION.path,
           enabled: APP_ROUTES_OBJECT.GOLEM_TOKEN_MIGRATION.enabled,
           title: 'Golem Token Migration'
+        },
+        {
+          to: APP_ROUTES_OBJECT.FAUCET.path,
+          enabled: APP_ROUTES_OBJECT.FAUCET.enabled,
+          title: 'Faucet'
         }
       ]
     },
