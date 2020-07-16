@@ -70,7 +70,7 @@ const WithProtectTxSide = styled.div`
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     position: initial;
     width: 375px;
-    margin-left: 1.5rem;
+    margin-left: 1rem;
     min-height: calc(100% + 115px);
     transform: unset;
 
