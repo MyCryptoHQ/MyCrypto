@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { fAssets } from '@fixtures';
-import { Formik, Form } from 'formik';
 
 import { TSymbol } from '@types';
-import { noOp } from '@utils';
 import { translateRaw } from '@translations';
 
 import AssetSelector, { TAssetOption, AssetSelectorItem } from './AssetSelector';
@@ -12,7 +10,6 @@ export default { title: 'Selectors/AssetSelector' };
 
 const initialProps = {
   assets: fAssets,
-  selectedAsset: fAssets[0],
   showOnlySymbol: false,
   disabled: false,
   fluid: false,
@@ -20,44 +17,63 @@ const initialProps = {
   label: translateRaw('X_ASSET')
 };
 
-export const Selector = () => {
+const withForm = (Component: any) => (ownProps: any) => {
   const [formValues, setFormValues] = useState<{ asset: TAssetOption | null }>({ asset: null });
-
-  const props = {
+  const defaultProps = {
     ...initialProps,
+    selectedAsset: formValues.asset,
     onSelect: (option: TAssetOption) => setFormValues({ asset: option })
   };
+  return (
+    <div style={{ width: '300px' }}>
+      <form>
+        <Component {...defaultProps} {...ownProps} />
+      </form>
+    </div>
+  );
+};
 
-  const asset = props.selectedAsset;
+export const Selector = () => {
+  const SelectorDefault = withForm(AssetSelector);
+  const SelectorOpen = withForm(AssetSelector);
+  const SelectorSelected = withForm(AssetSelector);
 
+  const asset = fAssets[6];
   return (
     <div
-      className="sb-container"
       style={{
-        width: '50%',
         display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between'
+        flexDirection: 'column',
+        justifyContent: 'center',
+        width: '80%'
       }}
     >
-      <div style={{ width: '300px' }}>
-        <Formik
-          initialValues={formValues}
-          onSubmit={noOp}
-          render={({ values }) => (
-            <Form>
-              <AssetSelector {...props} selectedAsset={values.asset} />
-            </Form>
-          )}
-        />
-      </div>
-      <div style={{ width: '300px', display: 'flex', flexDirection: 'column' }}>
+      <div
+        className="sb-container"
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between'
+        }}
+      >
         <div>
           <AssetSelectorItem symbol={asset.ticker as TSymbol} uuid={asset.uuid} name={asset.name} />
         </div>
         <div>
           <AssetSelectorItem symbol={asset.ticker as TSymbol} uuid={asset.uuid} />
         </div>
+      </div>
+      <div
+        className="sb-container"
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between'
+        }}
+      >
+        <SelectorDefault />
+        <SelectorOpen menuIsOpen={true} />
+        <SelectorSelected selectedAsset={fAssets[0]} />
       </div>
     </div>
   );

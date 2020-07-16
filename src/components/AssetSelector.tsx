@@ -4,7 +4,7 @@ import { OptionProps } from 'react-select';
 
 import { translateRaw } from '@translations';
 import { Asset, ISwapAsset, TSymbol, TUuid } from '@types';
-import { AssetIcon, Typography, Divider, Selector } from '@components';
+import { AssetIcon, Typography, Selector } from '@components';
 
 const SContainer = styled('div')`
   display: flex;
@@ -53,7 +53,7 @@ const Wrapper = styled('div')`
   }
 `;
 
-export interface Props<T> {
+export interface AssetSelectorProps<T> {
   inputId?: string;
   assets: T[];
   selectedAsset: T | null;
@@ -76,8 +76,9 @@ function AssetSelector({
   searchable = false,
   disabled = false,
   fluid = false,
-  inputId = 'asset-dropdown'
-}: Props<Asset | ISwapAsset>) {
+  inputId = 'asset-dropdown',
+  ...props
+}: AssetSelectorProps<Asset | ISwapAsset>) {
   return (
     <Wrapper fluid={fluid}>
       {label && <Label htmlFor={inputId}>{label}</Label>}
@@ -89,19 +90,17 @@ function AssetSelector({
         disabled={disabled}
         searchable={searchable}
         onChange={(option: TAssetOption) => onSelect(option)}
+        optionDivider={true}
         optionComponent={({ data, selectOption }: OptionProps<TAssetOption>) => {
           const { ticker, symbol, name, uuid } = data;
           const ref = ticker ? ticker : symbol;
           return (
-            <>
-              <AssetSelectorItem
-                symbol={ref}
-                uuid={uuid}
-                name={showOnlySymbol ? undefined : name}
-                onClick={() => selectOption(data)}
-              />
-              <Divider />
-            </>
+            <AssetSelectorItem
+              symbol={ref}
+              uuid={uuid}
+              name={showOnlySymbol ? undefined : name}
+              onClick={() => selectOption(data)}
+            />
           );
         }}
         value={selectedAsset}
@@ -111,6 +110,7 @@ function AssetSelector({
             <AssetSelectorItem symbol={ref} uuid={uuid} name={showOnlySymbol ? undefined : name} />
           );
         }}
+        {...props}
       />
     </Wrapper>
   );

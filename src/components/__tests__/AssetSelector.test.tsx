@@ -7,16 +7,16 @@ import { Asset, TSymbol, TUuid } from '@types';
 import { translateRaw } from '@translations';
 import { ETHUUID } from '@utils';
 
-import AssetSelector, { Props, ItemProps, AssetSelectorItem } from '../AssetSelector';
+import AssetSelector, { AssetSelectorProps, ItemProps, AssetSelectorItem } from '../AssetSelector';
 
-const defaultProps: Props<Asset> = {
+const defaultProps: AssetSelectorProps<Asset> = {
   assets: fAssets as Asset[],
   selectedAsset: null,
   label: 'test-asset-dropdown',
   onSelect: jest.fn()
 };
 
-function getComponent(props: Props<Asset>) {
+function getComponent(props: AssetSelectorProps<Asset>) {
   return simpleRender(
     <form role="form">
       <AssetSelector {...props} />

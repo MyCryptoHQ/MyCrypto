@@ -31,6 +31,7 @@ interface SelectorProps<T> {
   onCloseResetsInput?: boolean;
   onBlurResetsInput?: boolean;
   onBlur?: FocusEventHandler;
+  optionDivider?: boolean;
   onChange?(option: T): void;
   onInputChange?(newValue: string, actionMeta: InputActionMeta): void;
   onInputKeyDown?(e: React.KeyboardEvent<HTMLElement>): void;
@@ -46,6 +47,16 @@ const IconWrapper = styled('div')`
 `;
 
 const OptionWrapper = styled.div`
+  ${(p: { optionDivider: boolean }) =>
+    p.optionDivider
+      ? `
+    border-bottom: 1px solid ${COLORS.GREY_LIGHTER};
+    &:last-of-type {
+      border-bottom: 0
+    }
+  `
+      : ''}
+
   &:hover {
     background-color: ${COLORS.GREY_LIGHTEST};
   }
@@ -86,6 +97,7 @@ const getValueContainer: <T = any>(
 
   const [data] = getValue() as any[];
   const { children } = props;
+
   return (
     <ReactSelectComponents.ValueContainer {...props}>
       {React.Children.map(children, (child: JSX.Element) =>
@@ -96,21 +108,26 @@ const getValueContainer: <T = any>(
   );
 };
 
-const getOption = (props: OptionProps<any>, Component: React.ComponentType<OptionProps<any>>) => (
-  <OptionWrapper>
+const getOption = (
+  { optionDivider = false, ...props }: OptionProps<any> & { optionDivider: boolean },
+  Component: React.ComponentType<OptionProps<any>>
+) => (
+  <OptionWrapper optionDivider={optionDivider}>
     <Component {...props} />
   </OptionWrapper>
 );
 
 const customStyles: Styles = {
-  menu: (provided, state) => ({
-    ...provided,
-    maxHeight: '65vh',
-    border: '0.125em solid rgba(0,122,153,0.65)',
-    color: state.selectProps.menuColor,
-    margin: 0,
-    borderRadius: '0.125em'
-  }),
+  menu: (provided, state) => {
+    return {
+      ...provided,
+      maxHeight: '65vh',
+      border: '0.125em solid rgba(0,122,153,0.65)',
+      color: state.selectProps.menuColor,
+      margin: 0,
+      borderRadius: '0.125em'
+    };
+  },
   control: (provided, state) => ({
     ...provided,
     border: '0.125em solid rgba(63,63,68,0.05)',
@@ -127,6 +144,11 @@ const customStyles: Styles = {
   input: (provided) => ({
     ...provided,
     display: 'inline-block'
+  }),
+  // Allow the valueComponent to handle it's own padding when present.
+  valueContainer: (styles, state) => ({
+    ...styles,
+    ...(state && state.hasValue && { paddingLeft: 0 })
   })
 };
 
@@ -148,7 +170,9 @@ const Selector: <T = any>(p: SelectorProps<T>) => React.ReactElement<SelectorPro
   onChange,
   onBlur,
   onInputChange,
-  onInputKeyDown
+  onInputKeyDown,
+  optionDivider,
+  ...props
 }) => (
   <Wrapper data-testid="selector">
     <Select
@@ -172,11 +196,12 @@ const Selector: <T = any>(p: SelectorProps<T>) => React.ReactElement<SelectorPro
       styles={customStyles}
       components={{
         DropdownIndicator: DropdownIndicator(dropdownIcon),
-        Option: (oProps: any) => getOption(oProps, optionComponent),
+        Option: (oProps: any) => getOption({ ...oProps, optionDivider }, optionComponent),
         ClearIndicator,
         ValueContainer: (oProps: any) => getValueContainer(oProps, valueComponent),
         IndicatorSeparator: () => null
       }}
+      {...props}
     />
   </Wrapper>
 );
