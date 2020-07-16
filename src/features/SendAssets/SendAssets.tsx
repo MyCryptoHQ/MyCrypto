@@ -4,10 +4,10 @@ import { GeneralStepper, TxReceiptWithProtectTx } from '@components';
 import { useStateReducer, isWeb3Wallet, withProtectTxProvider } from '@utils';
 import { ITxReceipt, ISignedTx, IFormikFields, ITxConfig } from '@types';
 import { translateRaw } from '@translations';
-import { ROUTE_PATHS, IS_ACTIVE_FEATURE } from '@config';
+import { ROUTE_PATHS } from '@config';
 import { IStepperPath } from '@components/GeneralStepper/types';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
-import { StoreContext } from '@services';
+import { StoreContext, useFeatureFlags } from '@services';
 
 import { txConfigInitialState, TxConfigFactory } from './stateFactory';
 import {
@@ -31,6 +31,7 @@ function SendAssets() {
     setProtectTxTimeoutFunction
   } = useContext(ProtectTxContext);
   const { isMyCryptoMember } = useContext(StoreContext);
+  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
 
   // Due to MetaMask deprecating eth_sign method,
   // it has different step order, where sign and send are one panel

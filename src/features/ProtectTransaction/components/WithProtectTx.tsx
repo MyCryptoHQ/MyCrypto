@@ -14,8 +14,8 @@ import {
 import { isWeb3Wallet, useTxMulti, useScreenSize } from '@utils';
 import { BREAK_POINTS } from '@theme';
 import { processFormDataToTx } from '@features/SendAssets/helpers';
-import { PROTECTED_TX_FEE_ADDRESS, IS_ACTIVE_FEATURE } from '@config';
-import { StoreContext } from '@services';
+import { PROTECTED_TX_FEE_ADDRESS } from '@config';
+import { StoreContext, useFeatureFlags } from '@services';
 import { ContentPanel } from '@components';
 
 import { ProtectTxProtection } from './ProtectTxProtection';
@@ -108,6 +108,8 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>, head
       handleTransactionReport,
       showHideProtectTx
     } = useContext(ProtectTxContext);
+
+    const { IS_ACTIVE_FEATURE } = useFeatureFlags();
 
     // Wait for useTxMulti to finish initWith
     useEffect(() => {
