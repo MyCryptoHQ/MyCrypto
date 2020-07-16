@@ -111,6 +111,7 @@ interface Props {
   width?: number;
   mobileMaxWidth?: string;
   backBtnText?: string;
+  basic?: boolean;
   onBack?(): void | null;
 }
 
@@ -125,6 +126,7 @@ export default function ContentPanel({
   className = '',
   width = 650,
   mobileMaxWidth = '100%',
+  basic,
   ...rest
 }: Props) {
   return (
@@ -142,8 +144,8 @@ export default function ContentPanel({
           {stepper && <Stepper current={stepper.current} total={stepper.total} />}
         </ContentPanelTop>
       )}
-      <Panel {...rest}>
-        {heading && (
+      <Panel basic={basic} {...rest}>
+        {heading && !basic && (
           <ContentPanelHeading>
             {heading}
             {icon && <ContentPanelHeadingIcon src={icon} alt="Icon" />}

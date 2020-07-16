@@ -4,7 +4,7 @@ import { GeneralStepper, TxReceiptWithProtectTx } from '@components';
 import { useStateReducer, isWeb3Wallet, withProtectTxProvider } from '@utils';
 import { ITxReceipt, ISignedTx, IFormikFields, ITxConfig } from '@types';
 import { translateRaw } from '@translations';
-import { ROUTE_PATHS } from '@config';
+import { ROUTE_PATHS, IS_ACTIVE_FEATURE } from '@config';
 import { IStepperPath } from '@components/GeneralStepper/types';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { StoreContext } from '@services';
@@ -130,6 +130,7 @@ function SendAssets() {
       defaultBackPathLabel={translateRaw('DASHBOARD')}
       completeBtnText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
       wrapperClassName={`send-assets-stepper ${protectTxShow ? 'has-side-panel' : ''}`}
+      basic={IS_ACTIVE_FEATURE.PROTECT_TX}
     />
   );
 }
