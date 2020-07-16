@@ -4,9 +4,9 @@ import { FocusEventHandler, KeyboardEventHandler } from 'react-select/src/types'
 import { translateRaw } from '@translations';
 import { AccountSummary, Divider, Selector } from '@components';
 import { Asset, IReceiverAddress } from '@types';
+import { SPACING } from '@theme';
 
 import addressBookIcon from '@assets/images/icn-address-book.svg';
-import { SPACING } from '@theme';
 
 export interface LabeledAddress {
   label: string;

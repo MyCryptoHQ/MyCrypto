@@ -36,7 +36,7 @@ describe('AssetSelector', () => {
     expect(screen.getByText(fAssets[0].ticker)).toBeInTheDocument();
   });
 
-  test('it displays the list of membership plans on click', async () => {
+  test('it displays the list of assets on click', async () => {
     const props = Object.assign({}, defaultProps);
     getComponent(props);
 
