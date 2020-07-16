@@ -69,12 +69,7 @@ const LabelWrapper = styled.div`
   margin-bottom: 9px;
 `;
 
-export const FromToAccount = ({
-  networkId,
-  fromAccount,
-  toAccount,
-  displayToAddress = true
-}: Props) => {
+const FromToAccount = ({ networkId, fromAccount, toAccount, displayToAddress = true }: Props) => {
   const editableFromAccountLabel = EditableAccountLabel({
     address: fromAccount.address,
     addressBookEntry: fromAccount.addressBookEntry,

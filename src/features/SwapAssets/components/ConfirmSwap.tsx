@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
 import translate from '@translations';
 
-import { StoreAccount } from '@types';
+import { StoreAccount, TAddress } from '@types';
 import { COLORS } from '@theme';
 import { Typography, Currency } from '@components';
 import { FromToAccount, SwapFromToDiagram } from '@components/TransactionFlow/displays';
+import { AddressBookContext } from '@services';
+import { isSameAddress } from '@utils';
 
 import { IAssetPair } from '../types';
 
@@ -45,7 +47,10 @@ export default function ConfirmSwap({
   onClick: onSuccess
 }: Props) {
   const { fromAsset, toAsset, fromAmount, toAmount, rate: exchangeRate } = assetPair;
-
+  const { addressBook } = useContext(AddressBookContext);
+  const fromAddressBookEntry = addressBook.find(({ address }) =>
+    isSameAddress(address as TAddress, account.address)
+  );
   return (
     <div>
       <SwapFromToDiagram
@@ -59,11 +64,19 @@ export default function ConfirmSwap({
       <FromToAccount
         fromAccount={{
           address: account.address,
-          addressBookEntry: { ...account, notes: '', network: account.networkId }
+          addressBookEntry: {
+            ...account,
+            notes: fromAddressBookEntry?.notes || '',
+            network: account.networkId
+          }
         }}
         toAccount={{
           address: account.address,
-          addressBookEntry: { ...account, notes: '', network: account.networkId }
+          addressBookEntry: {
+            ...account,
+            notes: fromAddressBookEntry?.notes || '',
+            network: account.networkId
+          }
         }}
         networkId={account.networkId}
       />

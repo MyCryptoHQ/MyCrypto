@@ -207,6 +207,7 @@ export const ConfirmTransactionUI = ({
           address: receiverAddress,
           addressBookEntry: recipientContact
         }}
+        displayToAddress={txType !== ITxType.DEFIZAP && txType !== ITxType.PURCHASE_MEMBERSHIP}
       />
       {txType === ITxType.DEFIZAP && zapSelected && (
         <RowWrapper>
