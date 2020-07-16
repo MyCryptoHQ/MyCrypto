@@ -22,25 +22,6 @@ const ContentPanelWrapper = styled.div<ContentPanelProps>`
     margin: 0 auto 1em;
   }
 
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    &.has-side-panel {
-      width: 100vw;
-      max-width: 100vw;
-
-      > section {
-        width: 100%;
-        max-width: 100%;
-
-        > p ~ div {
-          & > div:last-child {
-            margin-top: calc(-0.5rem - 75px);
-            margin-bottom: calc(-0.5rem - 16px);
-          }
-        }
-      }
-    }
-  }
-
   @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
     &.has-side-panel {
       width: ${({ width }) => `${width ? width + 390 : width}px`};

@@ -42,16 +42,6 @@ const WithProtectTxMain = styled.div<{ protectTxShow: boolean }>`
   width: 100%;
   max-width: 100%;
 
-  ${({ protectTxShow }) =>
-    protectTxShow &&
-    `
-    @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-      flex: 0 0 calc(100vw - 375px - 4.5rem);
-      width: calc(100vw - 375px - 4.5rem);
-      max-width: calc(100vw - 375px - 4.5rem);
-    }
-  `};
-
   @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
     flex: 0 0 calc(650px - 4.5rem);
     width: calc(650px - 4.5rem);
@@ -67,7 +57,7 @@ const WithProtectTxSide = styled.div`
   min-width: 375px;
   max-width: 100vw;
 
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+  @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
     position: initial;
     width: 375px;
     margin-left: 1rem;
