@@ -6,6 +6,7 @@ import { noOp } from '@utils';
 
 import { migrate } from './v1.0.0';
 import { SCHEMA_BASE } from './data';
+import { DBConfig } from './types';
 
 export const dbVersions = {
   'v1.0.0': {
@@ -33,9 +34,8 @@ export const getCurrentDBConfig = () => dbVersions[dbHistory[0]];
 // @ts-ignore
 export const getPreviousDBConfig = () => dbVersions[dbHistory[1]];
 
-export const getExportFileName = () => {
-  const currentDb = getCurrentDBConfig();
-  return `${SETTINGS_FILENAME}_${moment().format('YYYY-MM-DD')}_${currentDb.version}.json`;
+export const getExportFileName = (currentDb: DBConfig, m: moment.Moment) => {
+  return `${SETTINGS_FILENAME}_${m.format('YYYY-MM-DD')}_${currentDb.version}.json`;
 };
 
 export const getData = () => {
