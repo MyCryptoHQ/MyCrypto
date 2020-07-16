@@ -4,9 +4,9 @@ import styled from 'styled-components';
 
 import { AccountList, Desktop, Mobile } from '@components';
 import BannerAd from '@components/BannerAd/BannerAd';
-import { IS_ACTIVE_FEATURE } from '@config';
 import { AccountContext, StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
+import { useFeatureFlags } from '@services';
 
 import { NotificationsPanel } from '../NotificationsPanel';
 import { DashboardZapCTA } from '../DeFiZap';
@@ -30,6 +30,7 @@ const DashboardWrapper = styled.div`
 `;
 
 export default function Dashboard() {
+  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
   const { isMyCryptoMember, currentAccounts } = useContext(StoreContext);
   const { accounts } = useContext(AccountContext);
   return (

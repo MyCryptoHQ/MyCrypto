@@ -12,13 +12,14 @@ import {
 import { buildBalances, buildTotalFiatValue } from '@utils';
 import { AccountList, Mobile, Desktop } from '@components';
 import { NetworkId, CustomNodeConfig, Balance } from '@types';
-import { DEFAULT_NETWORK, IS_ACTIVE_FEATURE } from '@config';
+import { DEFAULT_NETWORK } from '@config';
 import { BREAK_POINTS } from '@theme';
 import translate from '@translations';
 import FlippablePanel from '@features/Settings/components/FlippablePanel';
 import { RatesContext } from '@services/RatesProvider';
 import { getFiat } from '@config/fiats';
 import { isExcludedAsset } from '@services/Store/helpers';
+import { useFeatureFlags } from '@services';
 
 import settingsIcon from '@assets/images/icn-settings.svg';
 import AddToAddressBook from './components/AddToAddressBook';
@@ -82,6 +83,7 @@ function rendedExcludedAssetsPanel() {
 }
 
 function renderAccountPanel() {
+  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
   const { accounts } = useContext(StoreContext);
   return (
     <AccountList

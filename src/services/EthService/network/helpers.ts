@@ -29,7 +29,7 @@ const getProvider = (
       return new ethers.providers.EtherscanProvider(networkName, ETHERSCAN_API_KEY);
     }
     case NodeType.WEB3: {
-      const ethereumProvider = window.ethereum;
+      const ethereumProvider = (window as CustomWindow).ethereum;
       return new ethers.providers.Web3Provider(ethereumProvider, networkName);
     }
     case NodeType.INFURA:

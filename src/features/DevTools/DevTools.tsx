@@ -4,8 +4,8 @@ import { Panel, Input } from '@mycrypto/ui';
 import { Button, Link, Checkbox } from '@components';
 import styled from 'styled-components';
 
-import { DEFAULT_NETWORK } from '@config';
-import { generateUUID } from '@utils';
+import { DEFAULT_NETWORK, IIS_ACTIVE_FEATURE } from '@config';
+import { generateUUID, IS_DEV } from '@utils';
 import {
   AccountContext,
   getLabelByAddressAndNetwork,
@@ -13,7 +13,7 @@ import {
   DataContext,
   NetworkContext
 } from '@services/Store';
-import { useDevTools } from '@services';
+import { useDevTools, useFeatureFlags } from '@services';
 import {
   TAddress,
   IRawAccount,
@@ -23,6 +23,7 @@ import {
   ExtendedAddressBook,
   Network
 } from '@types';
+import { BREAK_POINTS } from '@theme';
 
 import ToolsNotifications from './ToolsNotifications';
 import ToolsAccountList from './ToolsAccountList';
@@ -126,6 +127,24 @@ const ErrorTools = () => {
   );
 };
 
+const FeatureFlags = () => {
+  const { IS_ACTIVE_FEATURE, setFeatureFlag } = useFeatureFlags();
+  return (
+    <>
+      {' '}
+      {Object.entries(IS_ACTIVE_FEATURE).map((f) => (
+        <Checkbox
+          key={f[0]}
+          name={f[0]}
+          label={f[0]}
+          checked={f[1]}
+          onChange={() => setFeatureFlag(f[0] as keyof IIS_ACTIVE_FEATURE, !f[1])}
+        />
+      ))}{' '}
+    </>
+  );
+};
+
 const DevTools = () => {
   const { getNetworkById } = useContext(NetworkContext);
   const { addressBook } = useContext(AddressBookContext);
@@ -152,6 +171,7 @@ const DevTools = () => {
   return (
     <React.Fragment>
       <Panel style={{ marginBottom: 0, paddingTop: 50 }}>
+        <FeatureFlags />
         {/* DB tools*/}
         <DBTools />
         {/* Error handling tools */}
@@ -179,6 +199,27 @@ const DevTools = () => {
   );
 };
 
+const DevToolsManagerContainer = styled.div<{ isActive: boolean }>`
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  max-width: 450px;
+  height: 100vh;
+
+  ${({ isActive }) =>
+    isActive &&
+    `
+  overflow-y: scroll;
+`}
+
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    position: fixed;
+    z-index: 100;
+    max-width: 100vw;
+  }
+`;
+
 const DevToolsToggle = () => {
   const { isActive, toggleDevTools } = useDevTools();
   return (
@@ -200,14 +241,20 @@ const DevToolsToggle = () => {
 const DevToolsManager = () => {
   const { isActive } = useDevTools();
   return (
-    <div>
-      <DevToolsToggle />
-      {isActive && (
-        <div style={{ width: '400px' }}>
-          <DevTools />
+    <DevToolsManagerContainer isActive={isActive}>
+      {IS_DEV ? (
+        <div>
+          <DevToolsToggle />
+          {isActive && (
+            <div style={{ width: '400px' }}>
+              <DevTools />
+            </div>
+          )}
         </div>
+      ) : (
+        <></>
       )}
-    </div>
+    </DevToolsManagerContainer>
   );
 };
 

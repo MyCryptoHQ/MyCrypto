@@ -4,13 +4,14 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import { Layout, LayoutConfig } from '@features/Layout';
 import { Home, PageNotFound, ScreenLockProvider, DrawerProvider } from '@features';
 import { ScrollToTop, useScreenSize } from '@utils';
+import { useFeatureFlags } from '@services';
 import { ROUTE_PATHS } from '@config/routePaths';
 import {
-  APP_ROUTES,
   PageVisitsAnalytics,
   LegacyRoutesHandler,
   DefaultHomeHandler,
-  PrivateRoute
+  PrivateRoute,
+  getAppRoutes
 } from '@routing';
 import { COLORS, SPACING } from '@theme';
 import { AppLoading } from '@AppLoading';
@@ -52,6 +53,7 @@ const LayoutWithLocation = withRouter(({ location, children }) => {
 });
 
 export const AppRoutes = () => {
+  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
   return (
     <>
       <ScrollToTop />
@@ -66,9 +68,11 @@ export const AppRoutes = () => {
                     <Switch>
                       <Route path={ROUTE_PATHS.ROOT.path} component={Home} exact={true} />
                       <Route path={ROUTE_PATHS.HOME.path} component={Home} exact={true} />
-                      {APP_ROUTES.filter((route) => !route.seperateLayout).map((config, idx) => (
-                        <PrivateRoute key={idx} {...config} />
-                      ))}
+                      {getAppRoutes(IS_ACTIVE_FEATURE)
+                        .filter((route) => !route.seperateLayout)
+                        .map((config, idx) => (
+                          <PrivateRoute key={idx} {...config} />
+                        ))}
                       <Route component={PageNotFound} />
                     </Switch>
                   </LayoutWithLocation>
