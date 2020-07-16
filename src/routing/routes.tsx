@@ -90,6 +90,7 @@ const TxStatus = lazy(() =>
 const RepTokenMigration = lazy(() =>
   import(/* webpackChunkName: "TokenMigration" */ '@features/RepTokenMigration')
 );
+const Faucet = lazy(() => import(/* webpackChunkName: "Faucet" */ '@features/Faucet/Faucet'));
 
 const AaveTokenMigration = lazy(() =>
   import(/* webpackChunkName: "TokenMigration" */ '@features/AaveTokenMigration')
