@@ -41,13 +41,7 @@ export const DropdownItem = () => {
   const account = initialProps.accounts[0];
   return (
     <div className="sb-container" style={{ width: '100%', maxWidth: '300px' }}>
-      <AccountSummary
-        address={account.address}
-        // balance={}
-        // uuid={}
-        // assetSymbol={}
-        label={account.label}
-      />
+      <AccountSummary address={account.address} label={account.label} />
     </div>
   );
 };
