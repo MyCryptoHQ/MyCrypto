@@ -14,7 +14,7 @@ import {
 import { isWeb3Wallet, useTxMulti, useScreenSize } from '@utils';
 import { BREAK_POINTS } from '@theme';
 import { processFormDataToTx } from '@features/SendAssets/helpers';
-import { PROTECTED_TX_FEE_ADDRESS } from '@config';
+import { PROTECTED_TX_FEE_ADDRESS, IS_ACTIVE_FEATURE } from '@config';
 import { StoreContext } from '@services';
 import { ContentPanel } from '@components';
 
@@ -183,7 +183,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>, head
 
     return (
       <WithProtectTxWrapper>
-        <ContentPanel heading={heading}>
+        <ContentPanel heading={heading} basic={!IS_ACTIVE_FEATURE.PROTECT_TX}>
           <WithProtectTxMain protectTxShow={protectTxShow}>
             <WrappedComponent
               txConfig={txConfigMain}
