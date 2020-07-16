@@ -49,3 +49,5 @@ export const ETH_SCAN_BATCH_SIZE = 300;
 
 export const DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN = 5;
 export const DEFAULT_GAP_TO_SCAN_FOR = 5;
+
+export const SETTINGS_FILENAME = 'MyCrypto_Settings_File';

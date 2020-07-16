@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import moment from 'moment';
 
 import { Button, Link } from '@components';
-import { getExportFileName } from '@database';
+import { getExportFileName, getCurrentDBConfig } from '@database';
 import { makeBlob } from '@utils';
 import translate from '@translations';
 import { COLORS } from '@theme';
@@ -17,7 +18,7 @@ const Downloader = (props: DownloaderProps) => {
   const handleDownload = () => {
     const settingsBlob = makeBlob('text/json;charset=UTF-8', props.appStore);
     setBlob(settingsBlob);
-    setFileName(getExportFileName());
+    setFileName(getExportFileName(getCurrentDBConfig(), moment()));
   };
 
   return (
