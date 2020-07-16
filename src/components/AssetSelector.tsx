@@ -76,7 +76,7 @@ function AssetSelector({
   searchable = false,
   disabled = false,
   fluid = false,
-  inputId = 'asset-dropdown',
+  inputId = 'asset-selector',
   ...props
 }: AssetSelectorProps<Asset | ISwapAsset>) {
   return (

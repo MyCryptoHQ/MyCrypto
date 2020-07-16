@@ -12,7 +12,7 @@ import AssetSelector, { AssetSelectorProps, ItemProps, AssetSelectorItem } from 
 const defaultProps: AssetSelectorProps<Asset> = {
   assets: fAssets as Asset[],
   selectedAsset: null,
-  label: 'test-asset-dropdown',
+  label: 'test-asset-selector',
   onSelect: jest.fn()
 };
 

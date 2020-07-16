@@ -52,7 +52,7 @@ const OptionWrapper = styled.div`
       ? `
     border-bottom: 1px solid ${COLORS.GREY_LIGHTER};
     &:last-of-type {
-      border-bottom: 0
+      border-bottom: none
     }
   `
       : ''}
