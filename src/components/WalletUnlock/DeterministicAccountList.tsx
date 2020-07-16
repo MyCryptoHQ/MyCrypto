@@ -4,7 +4,7 @@ import BN from 'bn.js';
 import uniqBy from 'ramda/src/uniqBy';
 import prop from 'ramda/src/prop';
 
-import { translateRaw } from '@translations';
+import { translateRaw, Trans } from '@translations';
 import { ExtendedAsset, TAddress } from '@types';
 import { EthAddress, FixedSizeCollapsibleTable, Spinner, Checkbox, Button } from '@components';
 import { isSameAddress } from '@utils';
@@ -12,6 +12,7 @@ import { BREAK_POINTS, SPACING, breakpointToNumber } from '@theme';
 import { DWAccountDisplay } from '@services';
 import { fromTokenBase } from '@services/EthService/utils';
 import IconArrow from '@components/IconArrow';
+import { Identicon } from '@mycrypto/ui';
 
 const HeaderAlignment = styled.div`
   ${(props: { align?: string }) => css`
@@ -220,7 +221,22 @@ const buildDeterministicAccountTable = (
 
   const columns = [
     '',
+    <HeaderAlignment
+      key={'DETERMINISTIC_ACCOUNT_LIST_LABEL'}
+      align="left"
+      onClick={() => updateSortingState('DETERMINISTIC_ACCOUNT_LIST_VALUE')}
+    >
+      <Trans id="DETERMINISTIC_ACCOUNT_LIST_LABEL" />
+    </HeaderAlignment>,
     convertColumnToClickable('DETERMINISTIC_ACCOUNT_LIST_ADDRESS'),
+    <HeaderAlignment
+      key={'DETERMINISTIC_ACCOUNT_LIST_DPATH'}
+      align="center"
+      onClick={() => updateSortingState('DETERMINISTIC_ACCOUNT_LIST_DPATH')}
+    >
+      {translateRaw('DETERMINISTIC_ACCOUNT_LIST_DPATH')}
+      <IconArrow isFlipped={getColumnSortDirection('DETERMINISTIC_ACCOUNT_LIST_DPATH')} />
+    </HeaderAlignment>,
     <HeaderAlignment
       key={'DETERMINISTIC_ACCOUNT_LIST_VALUE'}
       align="center"
@@ -229,16 +245,8 @@ const buildDeterministicAccountTable = (
       {translateRaw('DETERMINISTIC_ACCOUNT_LIST_VALUE')}
       <IconArrow isFlipped={getColumnSortDirection('DETERMINISTIC_ACCOUNT_LIST_VALUE')} />
     </HeaderAlignment>,
-    <HeaderAlignment
-      key={'DETERMINISTIC_ACCOUNT_LIST_DPATH'}
-      align="center"
-      onClick={() => updateSortingState('DETERMINISTIC_ACCOUNT_LIST_DPATH')}
-    >
-      {translateRaw('DETERMINISTIC_ACCOUNT_LIST_DPATH')}
-      <IconArrow isFlipped={getColumnSortDirection('DETERMINISTIC_ACCOUNT_LIST_DPATH')} />
-    </HeaderAlignment>
+    ''
   ];
-
   return {
     head: columns,
     body: accountsToUse.map(({ address, balance, pathItem, isSelected }, index) => [
@@ -248,7 +256,16 @@ const buildDeterministicAccountTable = (
         checked={isSelected}
         onChange={() => toggleAccountSelection(address, pathItem.path)}
       />,
+<<<<<<< HEAD
       <EthAddress key={index} address={address} truncate={true} />,
+=======
+      <div key={index}>
+        <Identicon address={address} />
+        <span>I am a label</span>
+      </div>,
+      <EthAddress key={index} address={address} truncate={truncate} />,
+      <div key={index}>{pathItem.path}</div>,
+>>>>>>> start with dpath table
       <div key={index}>
         {`${
           balance
@@ -256,9 +273,9 @@ const buildDeterministicAccountTable = (
                 fromTokenBase(new BN(balance.toString()), asset.decimal).toString()
               ).toFixed(4)
             : '0.0000'
-        } ${asset.ticker}`}
+        }`}
       </div>,
-      <div key={index}>{pathItem.path}</div>
+      <div key={index}>{asset.ticker}</div>
     ]),
     config: {
       primaryColumn: translateRaw('DETERMINISTIC_ACCOUNT_LIST_LABEL')
