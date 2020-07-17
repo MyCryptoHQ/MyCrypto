@@ -9,7 +9,7 @@ const config = require('./config');
 const HTTP_PORT = 3000;
 const IS_ELECTRON = !!process.env.BUILD_ELECTRON;
 
-module.exports =  merge.smart(common, {
+module.exports = merge.smart(common, {
   mode: 'development',
 
   devtool: 'cheap-module-eval-source-map',
@@ -70,7 +70,7 @@ module.exports =  merge.smart(common, {
       clearConsole: false
     }),
 
-    new webpack.EnvironmentPlugin({ NODE_ENV: 'development' }),
+    new webpack.EnvironmentPlugin({ NODE_ENV: process.env.NODE_ENV }),
 
     new webpack.HotModuleReplacementPlugin(),
 

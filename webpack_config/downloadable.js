@@ -12,8 +12,9 @@ module.exports = merge.smart(production, {
 
   plugins: [
     new webpack.EnvironmentPlugin({
-      'BUILD_DOWNLOADABLE': 'true',
-      'BUILD_HTML': 'true'
+      BUILD_DOWNLOADABLE: 'true',
+      BUILD_HTML: 'true',
+      NODE_ENV: process.env.NODE_ENV
     })
   ]
 });
