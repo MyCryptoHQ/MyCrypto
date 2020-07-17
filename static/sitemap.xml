@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://wallet.gen3.energi.network</loc><priority>0.5</priority></url>
-<url><loc>https://wallet.gen3.energi.network/</loc><priority>0.5</priority></url>
-<url><loc>https://wallet.gen3.energi.network/account</loc><priority>0.5</priority></url>
-<url><loc>https://wallet.gen3.energi.network/generate</loc><priority>0.5</priority></url>
-<url><loc>https://wallet.gen3.energi.network/swap</loc><priority>0.5</priority></url>
-<url><loc>https://wallet.gen3.energi.network/contracts</loc><priority>0.5</priority></url>
-<url><loc>https://wallet.gen3.energi.network/ens</loc><priority>0.5</priority></url>
-<url><loc>https://wallet.gen3.energi.network/sign-and-verify-message</loc><priority>0.5</priority></url>
-<url><loc>https://wallet.gen3.energi.network/tx-status</loc><priority>0.5</priority></url>
-<url><loc>https://wallet.gen3.energi.network/pushTx</loc><priority>0.5</priority></url>
+<url><loc>https://wallet.valorbit.com</loc><priority>0.5</priority></url>
+<url><loc>https://wallet.valorbit.com/</loc><priority>0.5</priority></url>
+<url><loc>https://wallet.valorbit.com/account</loc><priority>0.5</priority></url>
+<url><loc>https://wallet.valorbit.com/generate</loc><priority>0.5</priority></url>
+<url><loc>https://wallet.valorbit.com/swap</loc><priority>0.5</priority></url>
+<url><loc>https://wallet.valorbit.com/contracts</loc><priority>0.5</priority></url>
+<url><loc>https://wallet.valorbit.com/ens</loc><priority>0.5</priority></url>
+<url><loc>https://wallet.valorbit.com/sign-and-verify-message</loc><priority>0.5</priority></url>
+<url><loc>https://wallet.valorbit.com/tx-status</loc><priority>0.5</priority></url>
+<url><loc>https://wallet.valorbit.com/pushTx</loc><priority>0.5</priority></url>
 </urlset>

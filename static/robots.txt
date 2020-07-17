@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: https://wallet.gen3.energi.network/sitemap.xml
+Sitemap: https://wallet.valorbit.com/sitemap.xml

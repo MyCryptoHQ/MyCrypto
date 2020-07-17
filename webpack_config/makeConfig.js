@@ -208,7 +208,7 @@ module.exports = function(opts = {}) {
         inject: true,
         prefix: 'common/assets/meta-[hash]',
         favicons: {
-          appDescription: 'Ethereum web interface',
+          appDescription: 'Valorbit Wallet web interface',
           display: 'standalone',
           theme_color: '#007896'
         }

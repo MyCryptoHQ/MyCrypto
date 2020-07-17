@@ -5,7 +5,7 @@ import './index.scss';
 
 const SUBJECT = 'Error!';
 const DESCRIPTION =
-  'I encountered an error while using MyCrypto. Here are the steps to re-create the issue:\n\nThe full error message:';
+  'I encountered an error while using Valorbit Wallet. Here are the steps to re-create the issue:\n\nThe full error message:';
 
 interface Props {
   error: Error;
@@ -22,13 +22,13 @@ const ErrorScreen: React.SFC<Props> = ({ error }) => {
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href={`mailto:support@energi.world?Subject=${SUBJECT}&body=${DESCRIPTION}`}
+            href={`mailto:support@valorbit.com?Subject=${SUBJECT}&body=${DESCRIPTION}`}
           >
-            support@energi.world
+            support@valorbit.com
           </a>{' '}
           if a refresh doesn't fix it (or click it anyway to open a ticket 😊). You can also submit
           an issue on our{' '}
-          <NewTabLink href="https://github.com/energicryptocurrency/energi3-mycrypto/issues">
+          <NewTabLink href="https://github.com/valorbit/valorbit-wallet/issues">
             GitHub Repository
           </NewTabLink>
           . Please attach the following error to help our team solve your issue.
@@ -37,7 +37,7 @@ const ErrorScreen: React.SFC<Props> = ({ error }) => {
         <h5>
           Please make sure the error message does not include any sensitive information before
           sending it to us. We don't want your private keys!
-        </h5>
+        </h5>      
       </div>
     </div>
   );

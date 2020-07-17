@@ -1,4 +1,4 @@
-# MyCrypto Web & Desktop Apps (Energi Cryptocurrency edition
+Valorbit Web & Desktop Apps (MyCrypto edition)
 
 ## The standard FutoIn CID workflow:
 

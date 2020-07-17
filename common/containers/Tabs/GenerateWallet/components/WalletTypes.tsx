@@ -139,10 +139,10 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
         translate('WALLET_SUGGESTION_GENERATE_2'),
         translate('WALLET_SUGGESTION_GENERATE_3'),
         translate('WALLET_SUGGESTION_GENERATE_4'),
-        <span key="warning" className="is-danger">
-          <i className="fa fa-exclamation-triangle" />
-          {translate('WALLET_SUGGESTION_GENERATE_5')}
-        </span>
+        // <span key="warning" className="is-danger">
+        //   <i className="fa fa-exclamation-triangle" />
+        //   {translate('WALLET_SUGGESTION_GENERATE_5')}
+        // </span>
       ],
       links: [
         {
@@ -169,7 +169,7 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
         <React.Fragment>
           <div className="WalletTypes-download">
             <NewTabLink
-              href="https://docs.energi.software/en/downloads/myenergiwallet"
+              href="http://info.valorbit.com/en/downloads/Valorbit"
               className="WalletTypes-download-button btn btn-primary btn-lg"
             >
               {translate('WALLET_SUGGESTION_DESKTOP_APP')}

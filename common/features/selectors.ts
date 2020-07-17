@@ -79,11 +79,11 @@ export function getDisabledWallets(state: AppState): any {
   if (process.env.BUILD_ELECTRON) {
     addReason(
       [SecureWalletName.WEB3],
-      'This wallet is not supported in the EnergiWallet desktop app'
+      'This wallet is not supported in the Valorbit Wallet desktop app'
     );
     addReason(
       [SecureWalletName.SAFE_T],
-      'Coming soon. Please use the EnergiWallet website in the meantime'
+      'Coming soon. Please use the Valorbit Wallet website in the meantime'
     );
   }
 

@@ -26,7 +26,7 @@ export default function FourthSlide() {
         </section>
         <p>
           {translate('ONBOARDING_TEXT_29', {
-            $link: 'https://docs.energi.software/'
+            $link: 'http://info.valorbit.com/'
           })}
         </p>
         <OnboardingButton />

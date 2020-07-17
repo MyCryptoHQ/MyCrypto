@@ -6,9 +6,9 @@ import { makeExplorer } from 'utils/helpers';
 import translate from 'translations';
 
 export const languages = require('./languages.json');
-// Energi re-branding
+// Valorbit re-branding
 //export const discordURL = 'https://discord.gg/VSaTXEA';
-export const discordURL = 'https://discordapp.com/invite/sCtgNC3';
+export const discordURL = 'https://discordapp.com/invite/';
 
 // Displays in the footer
 export const VERSION = packageJson.version;
@@ -25,13 +25,13 @@ export const ANNOUNCEMENT_MESSAGE = (
 const etherScan = 'https://etherscan.io';
 const blockChainInfo = 'https://blockchain.info';
 export const ethPlorer = 'https://ethplorer.io';
-export const vaoLedger = 'https://ledger.valorbit.com';
+export const valLedger = 'https://ledger.valorbit.com';
 
 export const ETHTxExplorer = (txHash: string): string => `${etherScan}/tx/${txHash}`;
 export const BTCTxExplorer = (txHash: string): string => `${blockChainInfo}/tx/${txHash}`;
 export const ETHAddressExplorer = (address: string): string => `${etherScan}/address/${address}`;
 export const ETHTokenExplorer = (address: string): string => `${ethPlorer}/address/${address}`;
-export const VAOTokenExplorer = (address: string): string => `${vaoLedger}/address/${address}`;
+export const VALTokenExplorer = (address: string): string => `${valLedger}/address/${address}`;
 
 export const etherChainExplorerInst = makeExplorer({
   name: 'Etherchain',
@@ -54,9 +54,9 @@ export const gasPriceDefaults: GasPriceSetting = {
   initial: 20
 };
 
-export const MINIMUM_PASSWORD_LENGTH = 12;
+export const MINIMUM_PASSWORD_LENGTH = 10;
 
-export const knowledgeBaseURL = 'https://docs.energi.software/';
+export const knowledgeBaseURL = 'http://info.valorbit.com/';
 export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/1985?path=/products/';
 export const trezorReferralURL = 'https://shop.trezor.io/?offer_id=10&aff_id=1735';
 // TODO - Update url

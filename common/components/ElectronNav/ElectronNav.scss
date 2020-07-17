@@ -30,14 +30,14 @@ $back-spacing: 10px;
       margin-left: -1px;
       height: 35px;
       margin-bottom: 10px;
-      background-image: url('~assets/images/logo-energi-white.svg');
+      background-image: url('~assets/images/logo-val-wallet-gold.svg');
       background-position: center;
       background-repeat: no-repeat;
       background-size: auto 100%;
       cursor: pointer;
 
-      @include theme(dark) {
-        background-image: url('~assets/images/logo-energi-white.svg');
+      @include theme(light) {
+        background-image: url('~assets/images/logo-val-wallet-gold.svg');
       }
 
       &:hover {
@@ -57,7 +57,7 @@ $back-spacing: 10px;
       opacity: 0.8;
       pointer-events: none;
 
-      @include theme(dark) {
+      @include theme(light) {
         opacity: 1;
       }
     }
@@ -113,7 +113,7 @@ $back-spacing: 10px;
       width: 100%;
       text-align: left;
       padding: $back-spacing 0 8px $back-spacing;
-      color: shade-dark(0.2);
+      color: color(brand-info-lighter);
       border-bottom: 1px solid shade-dark(0.05);
       background: color(header-bg);
 
@@ -127,7 +127,7 @@ $back-spacing: 10px;
       }
 
       &:hover {
-        color: color(brand-primary);
+        color: color(brand-info-light);
       }
     }
   }

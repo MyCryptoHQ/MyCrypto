@@ -27,7 +27,7 @@ export class InsecureWalletWarning extends React.Component<Props> {
 
         <div className="WalletWarning-buttons">
           <NewTabLink
-            href="https://docs.energi.software/en/downloads/myenergiwallet"
+            href="http://info.valorbit.com/en/downloads/Valorbit"
             className="WalletWarning-buttons-btn is-download btn btn-lg btn-primary"
           >
             {translate('WALLET_SUGGESTION_DESKTOP_APP')}

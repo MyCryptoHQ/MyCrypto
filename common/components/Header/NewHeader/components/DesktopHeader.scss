@@ -73,11 +73,15 @@
 
       & > li {
         display: inline-flex;
-        height: 58px;
+        height: 48px;
         margin: 0;
         font-weight: bold;
         letter-spacing: 1px;
         color: color(white-clear);
+        a {
+          color: color(white-clear);
+        }
+
       }
       &-item {
         position: relative;
@@ -85,7 +89,7 @@
         align-items: center;
         justify-content: center;
         padding: 0 22px;
-        height: 58px;
+        height: 48px;
 
         a {
           color: color(white-clear);
@@ -129,5 +133,22 @@
         }
       }
     }
+
+    &-left {
+      flex: 1;
+    }
+
+    &-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+    }
+    &-right {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+    }
+
   }
 }

@@ -1,6 +1,6 @@
 
 RELEASE_RAW_VER := $(shell jq -r .version futoin.json)
-RELEASE_VER := MyEnergiWallet-$(RELEASE_RAW_VER)
+RELEASE_VER := Valorbit-$(RELEASE_RAW_VER)
 RELEASE_DIR := dist/release/$(RELEASE_RAW_VER)
 
 .PHONY: release release-tools
@@ -40,7 +40,7 @@ release-macos:
 	    $(RELEASE_DIR)/$(RELEASE_VER)-macos.dmg.blockmap
 
 
-RELEASE_REPO := s3://download.energi.software/releases/mew
+RELEASE_REPO := s3://download.valorbit.com/releases/mew
 
 .PHONY: release-upload
 release-upload:

@@ -1,11 +1,11 @@
 {
-  "name": "MyEnergiWallet",
+  "name": "Valorbit",
   "manifest_version": 1,
   "start_url": ".",
-  "theme_color": "#163151",
-  "background_color": "#163151",
+  "theme_color": "#005DAF",
+  "background_color": "#005DAF",
   "display": "standalone",
-  "description": "MyEnergiWallet is a free, open-source, client-side interface for generating Energi wallets & more",
+  "description": "Valorbit is a free, open-source, client-side interface for generating Valorbit wallets & more",
   "default_locale": "en",
   "icons": [
     {
@@ -17,13 +17,13 @@
       "src": "favicon/favicon-32.png",
       "sizes": "32x32",
       "type": "image/png"
-    },
-    {
+    }
+/*   ,{
       "src": "favicon/mstile-150x150.png",
       "sizes": "150x150",
       "type": "image/png"
     },
-    {
+   {
       "src": "favicon/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
@@ -33,5 +33,6 @@
       "sizes": "384x384",
       "type": "image/png"
     }
+*/
   ]
 }

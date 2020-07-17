@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'features/reducers';
 import { onboardingSelectors } from 'features/onboarding';
 import { Modal } from 'components/v2';
-import logo from 'common/assets/images/logo-energi-white.svg';
+import logo from 'common/assets/images/logo-val-wallet-gold.svg';
 import chest from 'assets/images/icn-chest.svg';
 import bankVsMyCrypto from 'assets/images/icn-bank-vs-mycrypto.svg';
 import vault from 'assets/images/icn-vault.svg';
@@ -19,7 +19,7 @@ interface StateProps {
 
 function OnboardingModal({ currentSlide }: StateProps) {
   const images = [chest, bankVsMyCrypto, vault, champagne];
-  const logoImage = <img src={logo} alt="Energi logo" />;
+  const logoImage = <img src={logo} alt="Valorbit logo" />;
   const slideImage = <img src={images[currentSlide - 1]} alt="Slide art" />;
   const slides = [
     <FirstSlide key={1} />,

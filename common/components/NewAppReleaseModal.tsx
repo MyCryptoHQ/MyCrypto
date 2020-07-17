@@ -70,6 +70,6 @@ export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
   };
 
   private openRelease() {
-    window.open('https://docs.energi.software/en/downloads/myenergiwallet');
+    window.open('https://valorbit.com/downloads/');
   }
 }

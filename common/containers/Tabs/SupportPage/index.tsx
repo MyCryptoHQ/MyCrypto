@@ -49,8 +49,8 @@ export default class SupportPage extends React.Component<{}, State> {
 
                 <div className="SupportPage-mycrypto-legal">
                   <div className="SupportPage-mycrypto-legal-text">
-                    © {new Date().getFullYear()} MyCrypto, Inc.
-                    <br />© {new Date().getFullYear()} Energi Core Ltd.
+                    © {new Date().getFullYear()} Valorbit
+                    <br />© {new Date().getFullYear()} MyCrypto, Inc.
                   </div>
                   <div className="SupportPage-mycrypto-legal-text">
                     <a onClick={this.openDisclaimer}>{translate('DISCLAIMER')}</a>
@@ -78,6 +78,7 @@ export default class SupportPage extends React.Component<{}, State> {
               </div>
             </div>
 
+            
             <div className="col-md-6 col-sm-6 col-xs-12">
               <div className="SupportPage-affiliates Tab-content-pane">
                 <h3 className="SupportPage-affiliates-title">
@@ -95,7 +96,8 @@ export default class SupportPage extends React.Component<{}, State> {
                 ))}
               </div>
             </div>
-          </div>
+          
+          </div> 
 
           <div className="row">
             <div className="col-xs-12">

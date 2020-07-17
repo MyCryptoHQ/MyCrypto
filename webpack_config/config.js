@@ -15,15 +15,15 @@ const paths = {
 module.exports = {
   // Configuration
   port: 3000,
-  title: 'MyEnergiWallet',
+  title: 'Valorbit',
   // description < 200 characters
-  description: 'MyEnergiWallet is a free, open-source interface for interacting with the blockchain.',
-  url: 'https://wallet.gen3.energi.network/',
+  description: 'Valorbit is a free, open-source interface for interacting with the blockchain.',
+  url: 'https://wallet.valorbit.com/',
   type: 'website',
   // img < 5MB
   img: path.join(paths.assets, 'images/link-preview.png'),
   twitter: {
-    creator: '@Energicrypto'
+    creator: '@Valorbit'
   },
   path: paths,
 

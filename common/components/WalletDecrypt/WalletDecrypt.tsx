@@ -130,7 +130,7 @@ const WalletDecrypt = withRouter<Props>(
         initialParams: {},
         unlock: this.props.unlockWeb3,
         attemptUnlock: true,
-        helpLink: `${knowledgeBaseURL}en/how-to/myenergiwallet`
+        helpLink: `${knowledgeBaseURL}en/how-to/Valorbit`
       },
       [SecureWalletName.LEDGER_NANO_S]: {
         lid: 'X_LEDGER',
@@ -148,7 +148,7 @@ const WalletDecrypt = withRouter<Props>(
         component: TrezorDecrypt,
         initialParams: {},
         unlock: this.props.setWallet,
-        helpLink: `${knowledgeBaseURL}en/how-to/myenergiwallet`
+        helpLink: `${knowledgeBaseURL}en/how-to/Valorbit`
       },
       [SecureWalletName.SAFE_T]: {
         lid: 'X_SAFE_T',
@@ -178,7 +178,7 @@ const WalletDecrypt = withRouter<Props>(
           password: ''
         },
         unlock: this.props.unlockKeystore,
-        helpLink: `${knowledgeBaseURL}en/how-to/myenergiwallet`
+        helpLink: `${knowledgeBaseURL}en/how-to/Valorbit`
       },
       [InsecureWalletName.MNEMONIC_PHRASE]: {
         lid: 'X_MNEMONIC',
@@ -186,7 +186,7 @@ const WalletDecrypt = withRouter<Props>(
         component: MnemonicDecrypt,
         initialParams: {},
         unlock: this.props.unlockMnemonic,
-        helpLink: `${knowledgeBaseURL}en/how-to/myenergiwallet`
+        helpLink: `${knowledgeBaseURL}en/how-to/Valorbit`
       },
       [InsecureWalletName.PRIVATE_KEY]: {
         lid: 'X_PRIVKEY2',
@@ -197,7 +197,7 @@ const WalletDecrypt = withRouter<Props>(
           password: ''
         },
         unlock: this.props.unlockPrivateKey,
-        helpLink: `${knowledgeBaseURL}en/how-to/myenergiwallet`
+        helpLink: `${knowledgeBaseURL}en/how-to/Valorbit`
       },
       [MiscWalletName.VIEW_ONLY]: {
         lid: 'VIEW_ADDR',
@@ -426,7 +426,7 @@ const WalletDecrypt = withRouter<Props>(
 
           {this.props.showGenerateLink && (
             <div className="WalletDecrypt-wallets-generate">
-              <Link to="/generate">{translate('DONT_HAVE_WALLET_PROMPT')}</Link>
+              <h2><Link to="/generate">{translate('DONT_HAVE_WALLET_PROMPT')}</Link></h2>
             </div>
           )}
         </div>

@@ -1,389 +1,504 @@
-$energi-primary: #00E676;
-$energi-warning: #FF0C3E;
-$energi-dark-rgb: 0, 0, 0;
-$energi-light-rgb: 255, 255, 255;
-$energi-gray-base: #212121;
-$energi-gray-darkest: #1C1C1C;
-$energi-gray-darker: #333;
-$energi-gray-dark: #989898;
-$energi-gray: #BDBDBD;
-$energi-gray-light: #D1D1D4;
-$energi-gray-lighter: #EBEBEB;
-$energi-gray-lightest: #FAFAFA;
-$energi-gray-anthracite: rgba(51,51,51, 0.3);
-$energi-gray-anthracite-light: rgba(0,0,0,0.03);
-$energi-green: #00DF63;
-$energi-green-dark: #00D546;
-$energi-green-light: #26EA8B;
-$energi-green-lighter: #7BF3BB;
-$energi-green-lightest: #80F3BB;
-$energi-icons-green: #69F0AE;
-$energi-red-dark: #FF031B;
-$energi-red-light: #FF869F;
-$energi-white-base: #FFF;
-$energi-white-clear: #F4F4F6;
-$energi-white-clearer: #FFFFFF;
-$energi-white-dark: #E5ECF3;
-$energi-white-darker: #E6E6E6;
-$energi-white-addon-bg: #ECECEC;
-$energi-white-bg: #EFF5FE;
-$energi-white-border: #E5ECF3;
-$energi-deep-blue: #163151;
-$energi-light-blue: #007896;
-$energi-deep-green: #263238;
-$energi-gray-blue: #3E546D;
-$energi-hover-blue: #293F59;
-$energi-orange: #F79220;
-$energi-gray-2: #444;
-$energi-hardware: #6E9A3E;
-$energi-shapeshift: #263A52;
-$energi-simplex: #2D3139;
-$energi-banner-bg: #1EB8E7;
-$energi-error-code-bg: rgba(255, 255, 255, 0.25);
-$energi-error-code-border: rgba(255, 255, 255, 0.6);
-$energi-footer-bg: #163150;
-$energi-footer-rule: #3f546C;
-$energi-footer-text: #BBC2CB;
-$energi-donation-button-bg: #344B64;
-$energi-donation-button-border: #4A5D75;
-$energi-donation-button-shadow: rgba(232, 234, 237, 0.5);
-$energi-donate-button-check: #7AD832;
-$energi-subscribe-input-bg: #142C46;
-$energi-subscribe-input-border: #4D5F74;
-$energi-subscribe-button-bg: #027796;
-$energi-box-shadow: rgba(0, 0, 0, 0.12);
-$energi-box-shadow-2: rgba(0, 0, 0, 0.1);
-$energi-onboarding-modal-box-shadow: rgba(50, 50, 93, 0.1);
-$energi-onboarding-modal-box-shadow-2: rgba(0, 0, 0, 0.07);
-$energi-pre-footer-shadow: rgba(0, 0, 0, 0.07);
-$energi-code-block-shadow: rgba(63, 63, 68, 0.05);
-$energi-identicon-shadow: rgba(0, 0, 0, 0.15);
-$energi-wallet-button-box-shadow: rgba(0, 0, 0, 0.2);
-$energi-mobile-wallet-icon-border: rgba(0, 0, 0, 0.1);
-$energi-generate-wallet-box-shadow: rgba(0, 0, 0, 0.3);
-$energi-notifications-box-shadow: rgba(255, 255, 255, 0.4);
-$energi-notifications-border-bottom: rgba(255, 255, 255, .7);
-$energi-notifications-hover-border-color: rgba(255, 255, 255, .5);
-$energi-notifications-active-border-color: rgba(255, 255, 255, .7);
-$energi-modalz-background: rgba(0, 0, 0, 0.2);
-$energi-sidebar-border: #E9E9E9;
-$energi-sidebar-heading-text: #163150;
-$energi-sidebar-text: #000000;
-$energi-sidebar-selected-bg: #F2F2F2;
-$energi-sidebar-secondary-bg: #F7F7F7;
-$energi-ens-bg: #185475;
-$energi-ens-light-bg: #1E92BA;
-$energi-slider-bg: #CCC;
+$v-metallic-seaweed: #177E89;
+$v-zomp: #409F89; // as of nov 20
+$v-illuminated-emerald: #339689;
+$v-paris-green: #4FD653;
+$v-teal:    $v-metallic-seaweed;
+$v-red-1: #8E2800;
+$v-red-faded: #B64926;
+
+$v-rusty-red: #db2b39;
+$v-cardinal: #bb133e; // us flag
+$v-safety-orange: #fd7400; //
+$v-gold-1: #FFB03B;
+$v-gold-faded: #FFF0A5;
+
+$v-safety-yellow: #f1d302;
+$v-golden-gate: #c1292e;
+$v-anti-flash-white: #f2f2f2;
+$v-yellow: $v-safety-yellow;
+
+$v-diamond: #b9f2ff;
+$v-topaz-safe: #ffcc66;
+$v-jade-safe: #009966;
+$v-red_beryl-safe: #ff3300;
+
+
+$v-blue-twt:		#2daddc;
+$v-blue-lnkd: #0077b5;
+
+$v-blue-fb: #3b5998;
+$v-blue-fb-new: #1877f2;
+$v-blue-light-fb: #8b9dc3;
+$v-blue-lighter-fb: #dfe3ee;
+$v-blue-lightest: #f7f7f7;
+$v-blue-fb-text: #385898;
+
+$v-columbia-blue: #CEE7E6;
+$v-indigo-1: #32127A;
+
+$v-oxford-blue: #002147; 
+$v-light-cobalt-blue: #86A5D9;
+$v-maastrich-blue-2: #0B132B;
+$v-maastrich-blue: #011627;
+$v-honolulu-blue: #005DAF;
+$v-bdazzled-blue: #235789;
+$v-val-blue-1 : #253248;
+$v-japanese-indigo: #23395B;  // new looks better
+$v-japanese-indigo-dark: #263248; // was val blue // adobe 1944 mustang
+$v-shadow-blue: #7E8AA2; // adobe 1944 mustang
+$v-indigo: #32127A;
+//$v-blue: $v-oxford-blue;
+//$v-blue: $v-bdazzled-blue;
+$v-blue: $v-honolulu-blue;
+
+$v-languid-lavender: #ccc9dc;
+$v-blue-lighter: #D3D8E8;
+
+$v-vivid-gamboge: #FF9800; // adobe 1944 mustang
+$v-ucla-gold: #FFAE03;
+
+// $v-green: $origGreen;
+// $v-green-dark: $origDarkGreen;
+// $v-green-darker: $origDarkerGreen;
+
+$v-green: $v-paris-green;
+
+//$v-gray-bg: $v-anti-flash-white;
+//$v-gray-bg: $v-languid-lavender;
+$v-gray-bg: $v-blue-lightest ;
+
+//$v-orange: $v-ucla-gold;
+//$orange:  $v-vivid-gamboge;
+$v-orange: $v-safety-orange;
+
+$v-gold-base:              $v-orange;
+$v-gold-darker:            lighten($v-gold-base, 13.5%) !default; // #222
+$v-gold-dark:              lighten($v-gold-base, 20%) !default;   // #333
+// $v-gold:                   lighten($v-gold-base, 33.5%) !default; // #555
+$v-gold-light:             lighten($v-gold-base, 46.7%) !default; // #777
+$v-gold-lightish:          lighten($v-gold-base, 66.7%) !default; // #777
+$v-gold-lighter:           lighten($v-gold-base, 93.5%) !default; // #eee
+
+$v-gold:              $v-orange;
+
+$v-blue-light: $v-light-cobalt-blue;
+$v-blue-faded: $v-blue-light;
+
+$v-red-flag: $v-cardinal;
+
+//$v-red-ruby: #9B111E;
+$v-red-ruby: $v-red-flag;
+$v-red: $v-red-ruby;
+$v-red-light:           lighten($v-red, 46.7%); // #eee
+$v-red-lighter:         lighten($v-red, 93.5%); // #eee
+
+// Override everything !!!
+// $v-red: $v-green;
+// $v-gold: $v-orange;
+
+$v-emerald: $v-metallic-seaweed;
+//$v-emerald: $v-illuminated-emerald;
+$v-opal: $v-indigo;
+
+$blue:    $v-blue;
+$indigo:  $v-indigo;
+$purple:  $v-indigo;
+$pink:    $v-rusty-red;
+$red:     $v-red;
+$orange:  $v-orange;
+$yellow:  $v-yellow;
+$green:   $v-green;
+$teal:    $v-teal;
+$cyan:    $v-illuminated-emerald;
+
+
+$valorbit-primary: $blue;
+$valorbit-warning: $red;
+$valorbit-dark-rgb: 0, 0, 0;
+$valorbit-light-rgb: 255, 255, 255;
+$valorbit-gray-base: #212121;
+$valorbit-gray-darkest: #1C1C1C;
+$valorbit-gray-darker: #333;
+$valorbit-gray-dark: #989898;
+$valorbit-gray: #BDBDBD;
+$valorbit-gray-light: #D1D1D4;
+$valorbit-gray-lighter: #EBEBEB;
+$valorbit-gray-lightest: #FAFAFA;
+$valorbit-gray-anthracite: rgba(51,51,51, 0.3);
+$valorbit-gray-anthracite-light: rgba(0,0,0,0.03);
+$valorbit-green: $green;
+$valorbit-green-dark: $teal;
+$valorbit-green-light: #26EA8B;
+$valorbit-green-lighter: #7BF3BB;
+$valorbit-green-lightest: #80F3BB;
+$valorbit-icons-green: $green;
+// $valorbit-icons-green: $orange;
+$valorbit-red-dark: #FF031B;
+$valorbit-red-light: #FF869F;
+$valorbit-white-base: #FFF;
+$valorbit-white-clear: $v-gray-bg;
+$valorbit-white-clearer: #FFFFFF;
+$valorbit-white-dark: #E5ECF3;
+$valorbit-white-darker: #E6E6E6;
+$valorbit-white-addon-bg: #ECECEC;
+$valorbit-white-bg: #EFF5FE;
+$valorbit-white-border: #E5ECF3;
+$valorbit-deep-blue: $indigo;
+$valorbit-light-blue: $teal;
+$valorbit-deep-green: $teal;
+$valorbit-gray-blue: #3E546D;
+$valorbit-hover-blue: #293F59;
+$valorbit-orange: #F79220;
+$valorbit-gray-2: #444;
+$valorbit-hardware: #6E9A3E;
+$valorbit-shapeshift: #263A52;
+$valorbit-simplex: #2D3139;
+$valorbit-banner-bg: #1EB8E7;
+$valorbit-error-code-bg: rgba(255, 255, 255, 0.25);
+$valorbit-error-code-border: rgba(255, 255, 255, 0.6);
+$valorbit-footer-bg: $valorbit-gray-lighter;
+$valorbit-footer-rule: #3f546C;
+$valorbit-footer-text: $valorbit-primary;
+$valorbit-donation-button-bg: $v-oxford-blue;
+$valorbit-donation-button-border: $valorbit-primary;
+$valorbit-donation-button-shadow: $valorbit-gray-light;
+$valorbit-donate-button-check: #7AD832; 
+$valorbit-subscribe-input-bg: #142C46;
+$valorbit-subscribe-input-border: #4D5F74;
+$valorbit-subscribe-button-bg: #027796;
+$valorbit-box-shadow: rgba(0, 0, 0, 0.12);
+$valorbit-box-shadow-2: rgba(0, 0, 0, 0.1);
+$valorbit-onboarding-modal-box-shadow: rgba(50, 50, 93, 0.1);
+$valorbit-onboarding-modal-box-shadow-2: rgba(0, 0, 0, 0.07);
+$valorbit-pre-footer-shadow: rgba(0, 0, 0, 0.07);
+$valorbit-code-block-shadow: rgba(63, 63, 68, 0.05);
+$valorbit-identicon-shadow: rgba(0, 0, 0, 0.15);
+$valorbit-wallet-button-box-shadow: rgba(0, 0, 0, 0.2);
+$valorbit-mobile-wallet-icon-border: rgba(0, 0, 0, 0.1);
+$valorbit-generate-wallet-box-shadow: rgba(0, 0, 0, 0.3);
+$valorbit-notifications-box-shadow: rgba(255, 255, 255, 0.4);
+$valorbit-notifications-border-bottom: rgba(255, 255, 255, .7);
+$valorbit-notifications-hover-border-color: rgba(255, 255, 255, .5);
+$valorbit-notifications-active-border-color: rgba(255, 255, 255, .7);
+$valorbit-modalz-background: rgba(0, 0, 0, 0.2);
+$valorbit-sidebar-border: #E9E9E9;
+$valorbit-sidebar-heading-text: #163150;
+$valorbit-sidebar-text: #000000;
+$valorbit-sidebar-selected-bg: #F2F2F2;
+$valorbit-sidebar-secondary-bg: #F7F7F7;
+$valorbit-ens-bg: #185475;
+$valorbit-ens-light-bg: #1E92BA;
+$valorbit-slider-bg: #CCC;
 
 $theme-light: (
-  dark-rgb: $energi-dark-rgb,
-  light-rgb: $energi-light-rgb,
-  gray-base: $energi-gray-base,
-  gray-darker: $energi-gray-base,
-  gray-dark: $energi-gray-dark,
-  gray: $energi-gray,
-  gray-light: $energi-gray-base,
-  gray-lighter: $energi-gray-lighter,
-  gray-lightest: $energi-gray-lightest,
+  dark-rgb: $valorbit-dark-rgb,
+  light-rgb: $valorbit-light-rgb,
+  gray-base: $valorbit-gray-base,
+  gray-darker: $valorbit-gray-base,
+  gray-dark: $valorbit-gray-dark,
+  gray: $valorbit-gray,
+  gray-light: $valorbit-gray-base,
+  gray-lighter: $valorbit-gray-lighter,
+  gray-lightest: $valorbit-gray-lightest,
 
-  brand-primary: $energi-primary,
-  brand-primary-dark: $energi-green,
-  brand-primary-darker: $energi-green-dark,
-  brand-primary-light: $energi-green-light,
-  brand-primary-lighter: $energi-green-lighter,
+  brand-primary: $valorbit-primary,
+  brand-primary-dark: $valorbit-green,
+  brand-primary-darker: $valorbit-green-dark,
+  brand-primary-light: $valorbit-green-light,
+  brand-primary-lighter: $valorbit-green-lighter,
 
-  brand-success: $energi-primary,
-  brand-success-dark: $energi-green,
-  brand-success-darker: $energi-green-dark,
-  brand-success-light: $energi-green-light,
-  brand-success-lighter: $energi-green-lightest,
+  brand-success: $valorbit-green,
+  brand-success-dark: $valorbit-green,
+  brand-success-darker: $valorbit-green-dark,
+  brand-success-light: $valorbit-green-light,
+  brand-success-lighter: $valorbit-green-lightest,
 
-  brand-info: $energi-primary,
-  brand-info-dark: $energi-green,
-  brand-info-darker: $energi-green-dark,
-  brand-info-light: $energi-green-light,
-  brand-info-lighter: $energi-green-lighter,
+  brand-info: $valorbit-primary,
+  brand-info-dark: $valorbit-green,
+  brand-info-darker: $valorbit-green-dark,
+  brand-info-light: $valorbit-green-light,
+  brand-info-lighter: $valorbit-green-lighter,
 
-  brand-warning: $energi-warning,
-  brand-warning-dark: $energi-warning,
-  brand-warning-darker: $energi-red-dark,
-  brand-warning-light: $energi-red-light,
-  brand-warning-lighter: $energi-red-light,
+  brand-warning: $valorbit-warning,
+  brand-warning-dark: $valorbit-warning,
+  brand-warning-darker: $valorbit-red-dark,
+  brand-warning-light: $valorbit-red-light,
+  brand-warning-lighter: $valorbit-red-light,
 
-  brand-danger: $energi-warning,
-  brand-danger-dark: $energi-warning,
-  brand-danger-darker: $energi-red-dark,
-  brand-danger-light: $energi-red-light,
-  brand-danger-lighter: $energi-red-light,
+  brand-danger: $valorbit-warning,
+  brand-danger-dark: $valorbit-warning,
+  brand-danger-darker: $valorbit-red-dark,
+  brand-danger-light: $valorbit-red-light,
+  brand-danger-lighter: $valorbit-red-light,
 
-  white-base: $energi-white-base,
-  white-clear: $energi-white-clear,
-  white-clearer: $energi-white-clearer,
-  white-clearest: $energi-white-clearer,
+  white-base: $valorbit-white-base,
+  white-clear: $valorbit-white-clear,
+  white-clearer: $valorbit-white-clearer,
+  white-clearest: $valorbit-white-clearer,
 
-  body-bg: $energi-white-clear,
-  pane-bg: $energi-white-base,
+  body-bg: $valorbit-white-clear,
+  pane-bg: $valorbit-white-base,
 
-  footer-bg: $energi-deep-blue,
-  footer-border: $energi-light-blue,
+  footer-bg: $valorbit-footer-bg,
+  footer-border: $valorbit-light-blue,
 
-  text-color: $energi-gray-darker,
-  text-color-inverted: $energi-white-base,
+  text-color: $valorbit-gray-darker,
+  text-color-inverted: $valorbit-white-base,
 
-  link-color: $energi-deep-green,
-  link-hover-color: $energi-primary,
+  link-color: $valorbit-deep-green,
+  link-hover-color: $valorbit-primary,
 
-  tab-color: $energi-deep-green,
-  tab-border: $energi-deep-green,
-  tab-active-color: $energi-primary,
-  tab-active-border: $energi-primary,
+  tab-color: $valorbit-deep-green,
+  tab-border: $valorbit-deep-green,
+  tab-active-color: $valorbit-primary,
+  tab-active-border: $valorbit-primary,
 
-  control-bg: $energi-white-base,
-  control-color: $energi-gray-base,
-  control-border: $energi-white-dark,
-  control-disabled-bg: $energi-gray-lightest,
-  control-disabled-color: $energi-gray-base,
-  control-disabled-border: $energi-white-darker,
-  control-placeholder: $energi-gray-anthracite,
-  control-inset-shadow: $energi-gray-anthracite-light,
-  control-addon-bg: $energi-white-addon-bg,
+  control-bg: $valorbit-white-base,
+  control-color: $valorbit-gray-base,
+  control-border: $valorbit-white-dark,
+  control-disabled-bg: $valorbit-gray-lightest,
+  control-disabled-color: $valorbit-gray-base,
+  control-disabled-border: $valorbit-white-darker,
+  control-placeholder: $valorbit-gray-anthracite,
+  control-inset-shadow: $valorbit-gray-anthracite-light,
+  control-addon-bg: $valorbit-white-addon-bg,
 
-  loader-light: $energi-white-base,
-  loader-dark: $energi-deep-green,
+  loader-light: $valorbit-white-base,
+  loader-dark: $valorbit-deep-green,
 
-  code-bg: $energi-white-bg,
-  code-border: $energi-white-border,
+  code-bg: $valorbit-white-bg,
+  code-border: $valorbit-white-border,
 
-  tooltip-bg: $energi-gray-base,
-  tooltip-color: $energi-white-base,
+  tooltip-bg: $valorbit-gray-base,
+  tooltip-color: $valorbit-white-base,
 
-  component-active-color: $energi-white-base,
-  component-active-bg: $energi-light-blue,
+  component-active-color: $valorbit-white-base,
+  component-active-bg: $valorbit-light-blue,
 
-  hardware: $energi-hardware,
-  hardware-light: lighten($energi-hardware, 8%),
-  shapeshift: $energi-shapeshift,
-  shapeshift-light: lighten($energi-shapeshift, 12%),
-  simplex: $energi-simplex,
-  simplex-light: lighten($energi-simplex, 12%),
+  hardware: $valorbit-hardware,
+  hardware-light: lighten($valorbit-hardware, 8%),
+  shapeshift: $valorbit-shapeshift,
+  shapeshift-light: lighten($valorbit-shapeshift, 12%),
+  simplex: $valorbit-simplex,
+  simplex-light: lighten($valorbit-simplex, 12%),
 
-  banner-bg: $energi-banner-bg,
+  banner-bg: $valorbit-banner-bg,
 
-  error-code-bg: $energi-error-code-bg,
-  error-code-border: $energi-error-code-border,
+  error-code-bg: $valorbit-error-code-bg,
+  error-code-border: $valorbit-error-code-border,
 
-  footer-bg-new: $energi-deep-green,
-  footer-rule: $energi-gray-blue,
-  footer-border-new: $energi-gray-blue,
-  footer-text: $energi-white-clear,
-  donation-button-bg: $energi-donation-button-bg,
-  donation-button-border: $energi-donation-button-border,
-  donation-button-shadow: $energi-donation-button-shadow,
-  donate-button-check: $energi-donate-button-check,
-  subscribe-input-bg: $energi-subscribe-input-bg,
-  subscribe-input-border: $energi-subscribe-input-border,
-  subscribe-button-bg: $energi-subscribe-button-bg,
+  footer-bg-new: $valorbit-footer-bg,
+  footer-rule: $valorbit-gray-blue,
+  footer-border-new: $valorbit-gray-blue,
+  footer-text: $valorbit-primary,
+  donation-button-bg: $valorbit-donation-button-bg,
+  donation-button-border: $valorbit-donation-button-border,
+  donation-button-shadow: $valorbit-donation-button-shadow,
+  donate-button-check: $valorbit-donate-button-check,
+  subscribe-input-bg: $valorbit-subscribe-input-bg,
+  subscribe-input-border: $valorbit-subscribe-input-border,
+  subscribe-button-bg: $valorbit-subscribe-button-bg,
 
-  header-bg: $energi-deep-green,
-  header-icons: $energi-icons-green,
-  header-border: $energi-gray-blue,
-  header-dropdown-hover: $energi-hover-blue,
+  header-bg: $valorbit-primary,
+  header-icons: $valorbit-icons-green,
+  header-border: $valorbit-gray-blue,
+  header-dropdown-hover: $valorbit-hover-blue,
 
-  box-shadow: $energi-box-shadow,
-  box-shadow-2: $energi-box-shadow-2,
-  onboarding-modal-box-shadow: $energi-onboarding-modal-box-shadow,
-  onboarding-modal-box-shadow-2: $energi-onboarding-modal-box-shadow-2,
-  pre-footer-shadow: $energi-pre-footer-shadow,
-  code-block-shadow: $energi-code-block-shadow,
-  identicon-shadow: $energi-identicon-shadow,
-  wallet-button-box-shadow: $energi-wallet-button-box-shadow,
-  mobile-wallet-icon-border: $energi-mobile-wallet-icon-border,
-  generate-wallet-box-shadow: $energi-generate-wallet-box-shadow,
+  box-shadow: $valorbit-box-shadow,
+  box-shadow-2: $valorbit-box-shadow-2,
+  onboarding-modal-box-shadow: $valorbit-onboarding-modal-box-shadow,
+  onboarding-modal-box-shadow-2: $valorbit-onboarding-modal-box-shadow-2,
+  pre-footer-shadow: $valorbit-pre-footer-shadow,
+  code-block-shadow: $valorbit-code-block-shadow,
+  identicon-shadow: $valorbit-identicon-shadow,
+  wallet-button-box-shadow: $valorbit-wallet-button-box-shadow,
+  mobile-wallet-icon-border: $valorbit-mobile-wallet-icon-border,
+  generate-wallet-box-shadow: $valorbit-generate-wallet-box-shadow,
 
-  notifications-box-shadow: $energi-notifications-box-shadow,
-  notifications-border-bottom: $energi-notifications-border-bottom,
-  notifications-hover-border-color: $energi-notifications-hover-border-color,
-  notifications-active-border-color: $energi-notifications-active-border-color,
+  notifications-box-shadow: $valorbit-notifications-box-shadow,
+  notifications-border-bottom: $valorbit-notifications-border-bottom,
+  notifications-hover-border-color: $valorbit-notifications-hover-border-color,
+  notifications-active-border-color: $valorbit-notifications-active-border-color,
 
-  modalz-background: $energi-modalz-background,
+  modalz-background: $valorbit-modalz-background,
 
-  sidebar-icons: $energi-green-light,
-  sidebar-border: $energi-sidebar-border,
-  sidebar-selected-bg: $energi-sidebar-selected-bg,
-  sidebar-secondary-bg: $energi-sidebar-secondary-bg,
+  sidebar-icons: $valorbit-green-dark,
+  sidebar-border: $valorbit-sidebar-border,
+  sidebar-selected-bg: $valorbit-sidebar-selected-bg,
+  sidebar-secondary-bg: $valorbit-sidebar-secondary-bg,
 
-  ens-bg: $energi-ens-bg,
-  ens-light-bg: $energi-ens-light-bg,
+  ens-bg: $valorbit-ens-bg,
+  ens-light-bg: $valorbit-ens-light-bg,
 
-  hardware-wallet-card-top-border: $energi-icons-green,
-  metamask-card-top-border: $energi-orange,
-  parity-card-top-border: $energi-gray-2,
+  hardware-wallet-card-top-border: $valorbit-icons-green,
+  metamask-card-top-border: $valorbit-orange,
+  parity-card-top-border: $valorbit-gray-2,
 
-  slider: $energi-white-base,
-  slider-bg: $energi-slider-bg,
-  gas-slider-dot-bg: $energi-white-base,
-  gas-slider-dot-border: $energi-gray-lighter
+  slider: $valorbit-white-base,
+  slider-bg: $valorbit-slider-bg,
+  gas-slider-dot-bg: $valorbit-white-base,
+  gas-slider-dot-border: $valorbit-gray-lighter
 );
 
-$energi-gray-base-darkmode: #b8bfd0;
-$energi-gray-darker-darkmode: #8e97a9;
-$energi-gray-dark-darkmode: #4d5463;
-$energi-gray-darkmode: #393f4c;
-$energi-gray-light-darkmode: #333842;
-$energi-gray-lighter-darkmode: #282C34;
-$energi-gray-lightest-darkmode: #21252B;
+$valorbit-gray-base-darkmode: #b8bfd0;
+$valorbit-gray-darker-darkmode: #8e97a9;
+$valorbit-gray-dark-darkmode: #4d5463;
+$valorbit-gray-darkmode: #393f4c;
+$valorbit-gray-light-darkmode: #333842;
+$valorbit-gray-lighter-darkmode: #282C34;
+$valorbit-gray-lightest-darkmode: #21252B;
 
 $theme-dark: (
-  dark-rgb: $energi-light-rgb,
-  light-rgb: $energi-dark-rgb,
+  dark-rgb: $valorbit-light-rgb,
+  light-rgb: $valorbit-dark-rgb,
 
-  gray-base: $energi-gray-base-darkmode,
-  gray-darker: $energi-gray-darker-darkmode,
-  gray-dark: $energi-gray-dark-darkmode,
-  gray: $energi-gray-base-darkmode,
-  gray-light: $energi-gray-light-darkmode,
-  gray-lighter: $energi-gray-lighter-darkmode,
-  gray-lightest: $energi-gray-lightest-darkmode,
+  gray-base: $valorbit-gray-base-darkmode,
+  gray-darker: $valorbit-gray-darker-darkmode,
+  gray-dark: $valorbit-gray-dark-darkmode,
+  gray: $valorbit-gray-base-darkmode,
+  gray-light: $valorbit-gray-light-darkmode,
+  gray-lighter: $valorbit-gray-lighter-darkmode,
+  gray-lightest: $valorbit-gray-lightest-darkmode,
 
-  brand-primary: darken($energi-primary, 6%),
-  brand-primary-dark: $energi-primary,
-  brand-primary-darker: darken($energi-primary, 6%),
-  brand-primary-light: lighten($energi-primary, 12%),
-  brand-primary-lighter: lighten($energi-primary, 16%),
+  brand-primary: darken($valorbit-primary, 6%),
+  brand-primary-dark: $valorbit-primary,
+  brand-primary-darker: darken($valorbit-primary, 6%),
+  brand-primary-light: lighten($valorbit-primary, 12%),
+  brand-primary-lighter: lighten($valorbit-primary, 16%),
 
-  brand-success: lighten($energi-primary, 6%),
-  brand-success-dark: $energi-primary,
-  brand-success-darker: darken($energi-primary, 6%),
-  brand-success-light: lighten($energi-primary, 12%),
-  brand-success-lighter: lighten($energi-primary, 16%),
+  brand-success: lighten($valorbit-primary, 6%),
+  brand-success-dark: $valorbit-primary,
+  brand-success-darker: darken($valorbit-primary, 6%),
+  brand-success-light: lighten($valorbit-primary, 12%),
+  brand-success-lighter: lighten($valorbit-primary, 16%),
 
-  brand-info: lighten($energi-primary, 6%),
-  brand-info-dark: $energi-primary,
-  brand-info-darker: darken($energi-primary, 6%),
-  brand-info-light: lighten($energi-primary, 12%),
-  brand-info-lighter: lighten($energi-primary, 16%),
+  brand-info: lighten($valorbit-primary, 6%),
+  brand-info-dark: $valorbit-primary,
+  brand-info-darker: darken($valorbit-primary, 6%),
+  brand-info-light: lighten($valorbit-primary, 12%),
+  brand-info-lighter: lighten($valorbit-primary, 16%),
 
-  brand-warning: lighten($energi-warning, 6%),
-  brand-warning-dark: $energi-warning,
-  brand-warning-darker: darken($energi-warning, 6%),
-  brand-warning-light: lighten($energi-warning, 12%),
-  brand-warning-lighter: lighten($energi-warning, 16%),
+  brand-warning: lighten($valorbit-warning, 6%),
+  brand-warning-dark: $valorbit-warning,
+  brand-warning-darker: darken($valorbit-warning, 6%),
+  brand-warning-light: lighten($valorbit-warning, 12%),
+  brand-warning-lighter: lighten($valorbit-warning, 16%),
 
-  brand-danger: saturate(lighten($energi-warning, 6%), 7%),
-  brand-danger-dark: saturate($energi-warning, 7%),
-  brand-danger-darker: saturate(darken($energi-warning, 6%), 7%),
-  brand-danger-light: saturate(lighten($energi-warning, 12%), 7%),
-  brand-danger-lighter: saturate(lighten($energi-warning, 16%), 7%),
+  brand-danger: saturate(lighten($valorbit-warning, 6%), 7%),
+  brand-danger-dark: saturate($valorbit-warning, 7%),
+  brand-danger-darker: saturate(darken($valorbit-warning, 6%), 7%),
+  brand-danger-light: saturate(lighten($valorbit-warning, 12%), 7%),
+  brand-danger-lighter: saturate(lighten($valorbit-warning, 16%), 7%),
 
-  white-base: $energi-white-base,
-  white-clear: $energi-gray-base-darkmode,
-  white-clearer: rgba($energi-gray-lightest-darkmode, 0.8),
-  white-clearest: rgba($energi-gray-lightest-darkmode, 0.7),
+  white-base: $valorbit-white-base,
+  white-clear: $valorbit-gray-base-darkmode,
+  white-clearer: rgba($valorbit-gray-lightest-darkmode, 0.8),
+  white-clearest: rgba($valorbit-gray-lightest-darkmode, 0.7),
 
-  body-bg: $energi-gray-lightest-darkmode,
-  pane-bg: $energi-gray-lighter-darkmode,
+  body-bg: $valorbit-gray-lightest-darkmode,
+  pane-bg: $valorbit-gray-lighter-darkmode,
 
-  footer-bg: $energi-gray-light-darkmode,
-  footer-border: $energi-gray-light-darkmode,
+  footer-bg: $valorbit-gray-light-darkmode,
+  footer-border: $valorbit-gray-light-darkmode,
 
-  text-color: $energi-gray-base-darkmode,
-  text-color-inverted: $energi-white-base,
+  text-color: $valorbit-gray-base-darkmode,
+  text-color-inverted: $valorbit-white-base,
 
-  link-color: lighten($energi-primary, 10%),
-  link-hover-color: lighten($energi-primary, 20%),
+  link-color: lighten($valorbit-primary, 10%),
+  link-hover-color: lighten($valorbit-primary, 20%),
 
-  tab-color: $energi-gray-base-darkmode,
-  tab-border: $energi-gray-base-darkmode,
-  tab-active-color: $energi-white-base,
-  tab-active-border: $energi-white-base,
+  tab-color: $valorbit-gray-base-darkmode,
+  tab-border: $valorbit-gray-base-darkmode,
+  tab-active-color: $valorbit-white-base,
+  tab-active-border: $valorbit-white-base,
 
-  control-bg: $energi-gray-darkmode,
-  control-color: $energi-white-base,
-  control-border: $energi-gray-dark-darkmode,
-  control-disabled-bg: rgba($energi-gray-light-darkmode, 0.5),
+  control-bg: $valorbit-gray-darkmode,
+  control-color: $valorbit-white-base,
+  control-border: $valorbit-gray-dark-darkmode,
+  control-disabled-bg: rgba($valorbit-gray-light-darkmode, 0.5),
   control-disabled-color: #aaa,
-  control-disabled-border: rgba($energi-gray-light-darkmode, 0.5),
-  control-placeholder: rgba($energi-white-base, 0.3),
-  control-inset-shadow: rgba($energi-white-base, 0.03),
-  control-addon-bg: $energi-gray-dark-darkmode,
+  control-disabled-border: rgba($valorbit-gray-light-darkmode, 0.5),
+  control-placeholder: rgba($valorbit-white-base, 0.3),
+  control-inset-shadow: rgba($valorbit-white-base, 0.03),
+  control-addon-bg: $valorbit-gray-dark-darkmode,
 
-  loader-light: $energi-white-base,
-  loader-dark: $energi-white-base,
+  loader-light: $valorbit-white-base,
+  loader-dark: $valorbit-white-base,
 
-  code-bg: $energi-gray-darkmode,
-  code-border: $energi-gray-dark-darkmode,
+  code-bg: $valorbit-gray-darkmode,
+  code-border: $valorbit-gray-dark-darkmode,
 
-  tooltip-bg: $energi-gray-darkest,
-  tooltip-color: $energi-white-base,
+  tooltip-bg: $valorbit-gray-darkest,
+  tooltip-color: $valorbit-white-base,
 
-  component-active-color: $energi-gray-light-darkmode,
-  component-active-bg: $energi-primary,
+  component-active-color: $valorbit-gray-light-darkmode,
+  component-active-bg: $valorbit-primary,
 
-  hardware: $energi-hardware,
-  hardware-light: lighten($energi-hardware, 8%),
-  shapeshift: $energi-shapeshift,
-  shapeshift-light: lighten($energi-shapeshift, 12%),
-  simplex: $energi-simplex,
-  simplex-light: lighten($energi-simplex, 12%),
+  hardware: $valorbit-hardware,
+  hardware-light: lighten($valorbit-hardware, 8%),
+  shapeshift: $valorbit-shapeshift,
+  shapeshift-light: lighten($valorbit-shapeshift, 12%),
+  simplex: $valorbit-simplex,
+  simplex-light: lighten($valorbit-simplex, 12%),
 
-  banner-bg: $energi-banner-bg,
+  banner-bg: $valorbit-banner-bg,
 
-  error-code-bg: $energi-error-code-bg,
-  error-code-border: $energi-error-code-border,
+  error-code-bg: $valorbit-error-code-bg,
+  error-code-border: $valorbit-error-code-border,
 
-  footer-bg-new: $energi-deep-green,
-  footer-rule: $energi-gray-blue,
-  footer-border-new: $energi-gray-blue,
-  footer-text: $energi-gray-base-darkmode,
-  donation-button-bg: $energi-donation-button-bg,
-  donation-button-border: $energi-donation-button-border,
-  donation-button-shadow: $energi-donation-button-shadow,
-  donate-button-check: $energi-donate-button-check,
-  subscribe-input-bg: $energi-subscribe-input-bg,
-  subscribe-input-border: $energi-subscribe-input-border,
-  subscribe-button-bg: $energi-subscribe-button-bg,
+  footer-bg-new: $valorbit-deep-green,
+  footer-rule: $valorbit-gray-blue,
+  footer-border-new: $valorbit-gray-blue,
+  footer-text: $valorbit-gray-base-darkmode,
+  donation-button-bg: $valorbit-donation-button-bg,
+  donation-button-border: $valorbit-donation-button-border,
+  donation-button-shadow: $valorbit-donation-button-shadow,
+  donate-button-check: $valorbit-donate-button-check,
+  subscribe-input-bg: $valorbit-subscribe-input-bg,
+  subscribe-input-border: $valorbit-subscribe-input-border,
+  subscribe-button-bg: $valorbit-subscribe-button-bg,
 
-  header-bg: $energi-deep-green,
-  header-icons: $energi-icons-green,
-  header-border: $energi-gray-blue,
-  header-dropdown-hover: $energi-hover-blue,
+  header-bg: $valorbit-deep-green,
+  header-icons: $valorbit-icons-green,
+  header-border: $valorbit-gray-blue,
+  header-dropdown-hover: $valorbit-hover-blue,
 
-  box-shadow: $energi-box-shadow,
-  box-shadow-2: $energi-box-shadow-2,
-  onboarding-modal-box-shadow: $energi-onboarding-modal-box-shadow,
-  onboarding-modal-box-shadow-2: $energi-onboarding-modal-box-shadow-2,
-  pre-footer-shadow: $energi-pre-footer-shadow,
-  code-block-shadow: $energi-code-block-shadow,
-  identicon-shadow: $energi-identicon-shadow,
-  wallet-button-box-shadow: $energi-wallet-button-box-shadow,
-  mobile-wallet-icon-border: $energi-mobile-wallet-icon-border,
-  generate-wallet-box-shadow: $energi-generate-wallet-box-shadow,
+  box-shadow: $valorbit-box-shadow,
+  box-shadow-2: $valorbit-box-shadow-2,
+  onboarding-modal-box-shadow: $valorbit-onboarding-modal-box-shadow,
+  onboarding-modal-box-shadow-2: $valorbit-onboarding-modal-box-shadow-2,
+  pre-footer-shadow: $valorbit-pre-footer-shadow,
+  code-block-shadow: $valorbit-code-block-shadow,
+  identicon-shadow: $valorbit-identicon-shadow,
+  wallet-button-box-shadow: $valorbit-wallet-button-box-shadow,
+  mobile-wallet-icon-border: $valorbit-mobile-wallet-icon-border,
+  generate-wallet-box-shadow: $valorbit-generate-wallet-box-shadow,
 
-  notifications-box-shadow: $energi-notifications-box-shadow,
-  notifications-border-bottom: $energi-notifications-border-bottom,
-  notifications-hover-border-color: $energi-notifications-hover-border-color,
-  notifications-active-border-color: $energi-notifications-active-border-color,
+  notifications-box-shadow: $valorbit-notifications-box-shadow,
+  notifications-border-bottom: $valorbit-notifications-border-bottom,
+  notifications-hover-border-color: $valorbit-notifications-hover-border-color,
+  notifications-active-border-color: $valorbit-notifications-active-border-color,
 
-  modalz-background: $energi-modalz-background,
+  modalz-background: $valorbit-modalz-background,
 
-  sidebar-icons: $energi-icons-green,
-  sidebar-border: $energi-sidebar-border,
-  sidebar-heading-text: $energi-sidebar-heading-text,
-  sidebar-text: $energi-sidebar-text,
-  sidebar-selected-bg: $energi-sidebar-selected-bg,
-  sidebar-secondary-bg: $energi-sidebar-secondary-bg,
+  sidebar-icons: $valorbit-icons-green,
+  sidebar-border: $valorbit-sidebar-border,
+  sidebar-heading-text: $valorbit-sidebar-heading-text,
+  sidebar-text: $valorbit-sidebar-text,
+  sidebar-selected-bg: $valorbit-sidebar-selected-bg,
+  sidebar-secondary-bg: $valorbit-sidebar-secondary-bg,
 
-  ens-bg: $energi-ens-bg,
-  ens-light-bg: $energi-ens-light-bg,
+  ens-bg: $valorbit-ens-bg,
+  ens-light-bg: $valorbit-ens-light-bg,
 
-  hardware-wallet-card-top-border: $energi-icons-green,
-  metamask-card-top-border: $energi-orange,
-  parity-card-top-border: $energi-gray-2,
+  hardware-wallet-card-top-border: $valorbit-icons-green,
+  metamask-card-top-border: $valorbit-orange,
+  parity-card-top-border: $valorbit-gray-2,
 
-  slider: $energi-gray-base-darkmode,
-  slider-bg: $energi-gray-darkmode,
-  gas-slider-dot-bg: $energi-gray-base-darkmode,
-  gas-slider-dot-border: $energi-gray-base-darkmode
+  slider: $valorbit-gray-base-darkmode,
+  slider-bg: $valorbit-gray-darkmode,
+  gas-slider-dot-bg: $valorbit-gray-base-darkmode,
+  gas-slider-dot-border: $valorbit-gray-base-darkmode
 );
 
 $themes: (

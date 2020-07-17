@@ -41,8 +41,8 @@ async function build() {
       x64: true,
       ia32: true,
       config: {
-        appId: 'network.energi.wallet',
-        productName: 'MyEnergiWallet',
+        appId: 'com.valorbit.wallet',
+        productName: 'Valorbit',
         directories: {
           app: jsBuildDir,
           output: electronBuildsDir

@@ -38,7 +38,7 @@ export function parseAssetName(assetName: string) {
 }
 
 async function getGithubReleases(): Promise<Releases[]> {
-  const apiUrl = 'https://api.github.com/repos/energicryptocurrency/energi3-mycrypto/releases';
+  const apiUrl = 'https://api.github.com/repos/valorbit/valorbit-mycrypto/releases';
   const res = await fetch(apiUrl, {
     method: 'GET',
     mode: 'cors',

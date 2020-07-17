@@ -14,47 +14,49 @@ interface Link {
   text: string;
 }
 
-export const DOWNLOAD_MYCRYPTO_LINK = 'https://docs.energi.software/en/downloads/myenergiwallet';
+export const DOWNLOAD_MYCRYPTO_LINK = 'http://info.valorbit.com/en/downloads/Valorbit';
 
 export const socialMediaLinks: Link[] = [
   {
-    link: 'https://twitter.com/Energicrypto',
+    link: 'https://twitter.com/Valorbit',
     text: 'twitter'
   },
   {
-    link: 'https://www.facebook.com/energicrypto/',
+    link: 'https://www.facebook.com/valorbit/',
     text: 'facebook'
   },
   {
-    link: 'https://medium.com/energi',
+    link: 'https://medium.com/valorbit',
     text: 'medium'
   },
-  {
-    link: 'https://www.linkedin.com/company/energi-core/',
+/*  {
+    link: 'https://www.linkedin.com/company/valorbit/',
     text: 'linkedin'
-  },
+  }, */
   {
-    link: 'https://github.com/energicryptocurrency',
+    link: 'https://github.com/valorbit',
     text: 'github'
-  },
+  }
+/*,
   {
-    link: 'https://www.reddit.com/r/energicryptocurrency',
+    link: 'https://www.reddit.com/r/valorbit',
     text: 'reddit'
   },
   {
     link: discordURL,
     text: 'discord'
   }
+  */
 ];
 
 export const productLinks: Link[] = [
   {
-    link: 'https://explorer.gen3.energi.network/',
-    text: translateRaw('ENERGI_EXPLORER')
+    link: 'https://ledger.valorbit.com/',
+    text: translateRaw('VALORBIT_EXPLORER')
   },
   {
-    link: 'https://www.energi.world/',
-    text: translateRaw('ENERGI_WEBSITE')
+    link: 'https://www.valorbit.com/',
+    text: translateRaw('VALORBIT_WEBSITE')
   },
   {
     link: 'https://mycrypto.com/',
@@ -87,6 +89,7 @@ export const productLinks: Link[] = [
 ];
 
 export const affiliateLinks: Link[] = [
+/*
   {
     link: ledgerReferralURL,
     text: translateRaw('LEDGER_REFERRAL_1')
@@ -111,6 +114,7 @@ export const affiliateLinks: Link[] = [
     link: ethercardReferralURL,
     text: translateRaw('ETHERCARD_REFERAL')
   }
+  */
 ];
 
 export const partnerLinks: Link[] = [

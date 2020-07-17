@@ -34,7 +34,7 @@ export default function ThirdSlide() {
             </li>
             <li>
               {translate('ONBOARDING_TEXT_24', {
-                $link: 'https://docs.energi.software/en/downloads/myenergiwallet'
+                $link: 'http://info.valorbit.com/en/downloads/Valorbit'
               })}
             </li>
           </ul>

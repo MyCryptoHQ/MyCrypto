@@ -13,7 +13,7 @@ import {
 } from 'features/config';
 import { sidebarActions } from 'features/sidebar';
 import { walletActions } from 'features/wallet';
-import logo from 'assets/images/logo-energi-white.svg';
+import logo from 'assets/images/logo-val-wallet-gold.svg';
 import { LINKSET } from '../constants';
 import { generateCaretIcon } from '../helpers';
 import './DesktopHeader.scss';
@@ -71,39 +71,16 @@ class DesktopHeader extends Component<Props> {
     return (
       <section className="desktop-only-header">
         <section className="DesktopHeader">
-          <section className="DesktopHeader-top">
-            <section className="DesktopHeader-top-left">
-              <ul className="DesktopHeader-top-links">
-                <li>
-                  <a href="https://docs.energi.software/" target="_blank" rel="noopener noreferrer">
-                    {translateRaw('NEW_HEADER_TEXT_1')} <i className="fa fa-caret-right" />
-                  </a>
-                </li>
-                <li>
-                  <a href="https://medium.com/energi" target="_blank" rel="noopener noreferrer">
-                    {translateRaw('NEW_HEADER_TEXT_2')} <i className="fa fa-caret-right" />
-                  </a>
-                </li>
-              </ul>
-            </section>
-            <section className="DesktopHeader-top-center">
-              <Link to="/" onClick={() => setAccessMessage('')}>
-                <img src={logo} alt="Our logo" />
-              </Link>
-            </section>
-            <section className="DesktopHeader-top-right">
-              <ul className="DesktopHeader-top-links">
-                <li onClick={() => openSidebar('selectLanguage')}>
-                  {languages[languageSelection]} <i className="fa fa-caret-down" />
-                </li>
-                <li onClick={() => openSidebar('selectNetworkAndNode')}>
-                  {nodeLabel.network} ({nodeLabel.info}) <i className="fa fa-caret-down" />
-                </li>
-              </ul>
-            </section>
-          </section>
+          {/* <section className="DesktopHeader-top"></section> */}
           <section className="DesktopHeader-bottom">
+
+          <section className="DesktopHeader-bottom-center">
             <ul className="DesktopHeader-bottom-links">
+                <li>
+                  <a href="https://valorbit.com/" target="_blank" rel="noopener noreferrer">
+                    Valorbit.com <i className="fa fa-home" />
+                  </a>
+                </li>              
               <li
                 className="DesktopHeader-bottom-links-item"
                 onMouseEnter={this.toggleSendAndReceive}
@@ -166,7 +143,23 @@ class DesktopHeader extends Component<Props> {
                 </Link>
               </li>
             </ul>
+           </section>
+          
+            <section className="DesktopHeader-bottom-right">
+              <ul>
+                <li className="DesktopHeader-bottom-links-item" 
+                  onClick={() => openSidebar('selectLanguage')}>
+                  {languages[languageSelection]} <i className="fa fa-caret-down" />
+                </li>
+                <li className="DesktopHeader-bottom-links-item"
+                  onClick={() => openSidebar('selectNetworkAndNode')}>
+                  {nodeLabel.network} ({nodeLabel.info}) <i className="fa fa-caret-down" />
+                </li>
+              </ul>
+
+            </section>
           </section>
+
         </section>
       </section>
     );
