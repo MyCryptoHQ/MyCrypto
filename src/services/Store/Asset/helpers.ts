@@ -16,7 +16,7 @@ export const getNewDefaultAssetTemplateByNetwork = (assets: Asset[]) => (
       name: network.name,
       networkId: network.id,
       type: 'base',
-      ticker: network.id,
+      ticker: assets.find((a) => a.uuid === network.baseAsset)!.ticker, // @todo: determine if baseAsset is really guaranteed to exist?
       decimal: DEFAULT_ASSET_DECIMAL
     };
   } else {

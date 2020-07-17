@@ -12,7 +12,7 @@ import {
   subtractBNFloats,
   calculateMarkup
 } from './convert';
-import { StoreAsset, TAssetType, TUuid } from '@types';
+import { StoreAsset, TAssetType, TUuid, TTicker } from '@types';
 import { MYC_DEXAG_COMMISSION_RATE, DEFAULT_NETWORK } from '@config';
 
 describe('it converts balance to fiat', () => {
@@ -23,7 +23,7 @@ describe('it converts balance to fiat', () => {
       name: 'FakeToken',
       uuid: 'FakeTokenUUID' as TUuid,
       type: 'erc20' as TAssetType,
-      ticker: 'FTKN',
+      ticker: 'FTKN' as TTicker,
       mtime: new Date().valueOf(),
       balance: new BigNumber('34000000000000000000000'),
       decimal: 18,
@@ -40,7 +40,7 @@ describe('it converts balance to fiat', () => {
       name: 'FakeToken',
       uuid: 'FakeTokenUUID' as TUuid,
       type: 'erc20' as TAssetType,
-      ticker: 'FTKN',
+      ticker: 'FTKN' as TTicker,
       mtime: new Date().valueOf(),
       balance: new BigNumber('245434900000000000000'),
       decimal: 18,
@@ -57,7 +57,7 @@ describe('it converts balance to fiat', () => {
       name: 'FakeToken',
       uuid: 'FakeTokenUUID' as TUuid,
       type: 'erc20' as TAssetType,
-      ticker: 'FTKN',
+      ticker: 'FTKN' as TTicker,
       mtime: new Date().valueOf(),
       balance: new BigNumber('3589465613800000000'),
       decimal: 18,

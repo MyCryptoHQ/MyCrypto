@@ -3,10 +3,9 @@ import { NetworkId, TSymbol, TUuid, AssetSocial } from '@types';
 import { Brand } from 'utility-types';
 
 export type TTicker = Brand<string, 'Ticker'>;
-export type TCode = Brand<string, 'CurrencyCode'>;
 
 export interface Fiat {
-  code: TCode;
+  code: TTicker;
   name: string;
   symbol: TSymbol;
   prefix?: boolean;
@@ -18,8 +17,8 @@ export interface Asset {
   readonly uuid: TUuid;
   readonly name: string;
   readonly networkId: NetworkId;
-  readonly ticker: string;
-  readonly symbol?: TSymbol;
+  readonly ticker: TTicker; // The 3 letter curency code to identify an asset.
+  readonly symbol?: TSymbol; // The currency symbol to identify an asset eg. €, $
   readonly type: TAssetType;
   readonly contractAddress?: string;
   readonly decimal?: number;
