@@ -11,7 +11,7 @@ const config = require('./config');
 const IS_ELECTRON = !!process.env.BUILD_ELECTRON;
 
 module.exports = merge.smart(common, {
-  mode: 'production',
+  mode: process.env.NODE_ENV,
 
   devtool: 'cheap-module-source-map',
 
