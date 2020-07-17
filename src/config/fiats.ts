@@ -1,41 +1,41 @@
-import { Fiat, TSymbol, ISettings } from '@types';
+import { Fiat, TCode, TSymbol, ISettings } from '@types';
 
 interface FiatObject {
   [key: string]: Fiat;
 }
 
 export const USD = {
-  code: 'USD',
+  code: 'USD' as TCode,
   name: 'US Dollars',
   symbol: '$' as TSymbol
 };
 export const EUR = {
-  code: 'EUR',
+  code: 'EUR' as TCode,
   name: 'Euros',
   symbol: '€' as TSymbol
 };
 export const GBP = {
-  code: 'GBP',
+  code: 'GBP' as TCode,
   name: 'British Pounds',
   symbol: '£' as TSymbol
 };
 export const RUB = {
-  code: 'RUB',
+  code: 'RUB' as TCode,
   name: 'Rubles',
   symbol: '₽' as TSymbol
 };
 export const INR = {
-  code: 'INR',
+  code: 'INR' as TCode,
   name: 'Rupee',
   symbol: '₹' as TSymbol
 };
 export const CNY = {
-  code: 'CNY',
+  code: 'CNY' as TCode,
   name: 'Yuan',
   symbol: '¥' as TSymbol
 };
 export const TRY = {
-  code: 'TRY',
+  code: 'TRY' as TCode,
   name: 'Turkish Lira',
   symbol: '₺' as TSymbol
 };

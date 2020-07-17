@@ -6,7 +6,7 @@ export type TTicker = Brand<string, 'Ticker'>;
 export type TCode = Brand<string, 'CurrencyCode'>;
 
 export interface Fiat {
-  code: string;
+  code: TCode;
   name: string;
   symbol: TSymbol;
   prefix?: boolean;
