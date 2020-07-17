@@ -24,7 +24,7 @@ app.on('ready', () => {
 
   ipcMain.on('shapeshift-authorize', (_: any, url: string) => {
     const window = new BrowserWindow({
-      backgroundColor: '#fbfbfb',
+      backgroundColor: '#f7f7f7',
       width: 1220,
       height: process.platform === 'darwin' ? 680 : 720,
       minWidth: 480,

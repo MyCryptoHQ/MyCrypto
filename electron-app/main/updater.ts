@@ -100,7 +100,7 @@ export default function(mainWindow: BrowserWindow) {
 }
 
 function resetWindowFromUpdates(window: BrowserWindow) {
-  window.setTitle('MyEnergiWallet');
+  window.setTitle('Valorbit');
   window.setProgressBar(-1); // Clears progress bar
 }
 

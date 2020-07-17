@@ -17,12 +17,12 @@ export default function getWindow() {
 
   window = new BrowserWindow({
     title: APP_TITLE,
-    backgroundColor: '#fbfbfb',
+    backgroundColor: '#f7f7f7',
     width: 1220,
     height: process.platform === 'darwin' ? 680 : 720,
     minWidth: 480,
     minHeight: 400,
-    titleBarStyle: 'hidden',
+    titleBarStyle: 'default',
     webPreferences: {
       devTools: true,
       nodeIntegration: true,
@@ -31,7 +31,7 @@ export default function getWindow() {
     }
   });
 
-  const appUrl = isDevelopment ? `http://localhost:3000` : `file://${__dirname}/index.html`;
+  const appUrl = isDevelopment ? `http://localhost:3001` : `file://${__dirname}/index.html`;
   window.loadURL(appUrl);
 
   window.on('closed', () => {
