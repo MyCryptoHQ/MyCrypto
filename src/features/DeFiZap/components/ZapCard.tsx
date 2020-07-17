@@ -7,7 +7,7 @@ import { ROUTE_PATHS } from '@config';
 import { COLORS, BREAK_POINTS, FONT_SIZE, SPACING } from '@theme';
 import { weiToFloat, trimBN } from '@utils';
 import { StoreContext, getTotalByAsset, RatesContext } from '@services';
-import { translateRaw } from '@translations';
+import translate, { translateRaw } from '@translations';
 import { IconID } from '@components/Tooltip';
 
 import { fetchZapRiskObject, IZapConfig } from '../config';
@@ -304,7 +304,9 @@ const ZapCard = ({ config }: Props) => {
               <ZapCardButton inverted={true}>{translateRaw('ADD')}</ZapCardButton>
             </RouterLink>
             <a target="_blank" href={config.link} rel="noreferrer">
-              <ZapCardButton inverted={true}>{translateRaw('WITHDRAW')}</ZapCardButton>
+              <Tooltip tooltip={translate('ZAP_WITHDRAW_TOOLTIP')}>
+                <ZapCardButton inverted={true}>{translateRaw('WITHDRAW')}</ZapCardButton>
+              </Tooltip>
             </a>
           </>
         )}
