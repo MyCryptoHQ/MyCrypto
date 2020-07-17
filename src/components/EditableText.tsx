@@ -15,8 +15,9 @@ const EditIcon = styled.img`
   display: inline-flex;
   align-self: flex-start;
   cursor: pointer;
-  padding: ${SPACING.XS} ${SPACING.SM};
+  margin: ${SPACING.XS} ${SPACING.SM};
   opacity: 1;
+  height: 0.9em;
   &:hover {
     transition: 200ms ease all;
     transform: scale(1.02);

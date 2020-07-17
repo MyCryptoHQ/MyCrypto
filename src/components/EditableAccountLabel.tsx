@@ -8,7 +8,7 @@ import { translateRaw } from '@translations';
 
 import EditableText from './EditableText';
 
-interface Props {
+export interface Props {
   addressBookEntry?: ExtendedAddressBook;
   address: TAddress;
   networkId: NetworkId;

@@ -48,8 +48,9 @@ export default function ConfirmSwap({
 }: Props) {
   const { fromAsset, toAsset, fromAmount, toAmount, rate: exchangeRate } = assetPair;
   const { addressBook } = useContext(AddressBookContext);
-  const fromAddressBookEntry = addressBook.find(({ address }) =>
-    isSameAddress(address as TAddress, account.address)
+  const fromAddressBookEntry = addressBook.find(
+    ({ address, network }) =>
+      isSameAddress(address as TAddress, account.address) && network === account.networkId
   );
   return (
     <div>
@@ -64,19 +65,11 @@ export default function ConfirmSwap({
       <FromToAccount
         fromAccount={{
           address: account.address,
-          addressBookEntry: {
-            ...account,
-            notes: fromAddressBookEntry?.notes || '',
-            network: account.networkId
-          }
+          addressBookEntry: fromAddressBookEntry
         }}
         toAccount={{
           address: account.address,
-          addressBookEntry: {
-            ...account,
-            notes: fromAddressBookEntry?.notes || '',
-            network: account.networkId
-          }
+          addressBookEntry: fromAddressBookEntry
         }}
         networkId={account.networkId}
       />
