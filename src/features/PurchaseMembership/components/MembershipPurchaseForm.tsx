@@ -16,7 +16,7 @@ import { getNonce } from '@services/EthService';
 import { ETHUUID, noOp } from '@utils';
 import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
 
-import MembershipDropdown from './MembershipDropdown';
+import MembershipSelector from './MembershipSelector';
 import { MembershipPurchaseState, MembershipSimpleTxFormFull } from '../types';
 import { IMembershipId, IMembershipConfig, MEMBERSHIP_CONFIG } from '../config';
 
@@ -149,7 +149,7 @@ export const MembershipFormUI = ({
                   name="membershipSelected"
                   value={values.membershipSelected}
                   component={({ field, form }: FieldProps) => (
-                    <MembershipDropdown
+                    <MembershipSelector
                       name={field.name}
                       value={{ value: field.value, label: field.value.title }}
                       onSelect={(option: { label: string; value: IMembershipConfig }) => {

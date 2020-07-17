@@ -3,10 +3,10 @@ import { Formik, Form } from 'formik';
 
 import { noOp } from '@utils';
 
-import MembershipDropdown, { MembershipOption, TMembershipOption } from './MembershipDropdown';
+import MembershipSelector, { MembershipOption, TMembershipOption } from './MembershipSelector';
 import { MEMBERSHIP_CONFIG } from '../config';
 
-export default { title: 'MembershipDropdown' };
+export default { title: 'MembershipSelector' };
 
 const initialForm: { name: string; value: TMembershipOption } = {
   name: '',
@@ -22,7 +22,7 @@ export const Selector = () => {
         onSubmit={noOp}
         render={({ values }) => (
           <Form>
-            <MembershipDropdown
+            <MembershipSelector
               {...values}
               onSelect={(option) => setFormValues({ name: '', value: option })}
             />

@@ -3,25 +3,25 @@ import selectEvent from 'react-select-event';
 
 import { simpleRender } from 'test-utils';
 
-import MembershipDropdown, { MembershipDropdownProps } from './MembershipDropdown';
+import MembershipSelector, { MembershipSelectorProps } from './MembershipSelector';
 import { MEMBERSHIP_CONFIG } from '../config';
 
-const defaultProps: MembershipDropdownProps = {
+const defaultProps: MembershipSelectorProps = {
   name: 'MembershipPlan',
   value: null,
   onSelect: jest.fn()
 };
 
-function getComponent(props: MembershipDropdownProps) {
+function getComponent(props: MembershipSelectorProps) {
   return simpleRender(
     <form role="form">
       <label htmlFor={defaultProps.name}>Membership</label>
-      <MembershipDropdown {...props} />
+      <MembershipSelector {...props} />
     </form>
   );
 }
 
-describe('MembershipDropdown', () => {
+describe('MembershipSelector', () => {
   test('it displays placeholder text when selectedMembershipPlan is undefined', async () => {
     const { getByText } = getComponent(defaultProps);
     expect(getByText('Select membership plan').textContent).toBeDefined();

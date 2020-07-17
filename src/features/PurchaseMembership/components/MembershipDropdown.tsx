@@ -19,52 +19,43 @@ const DiscountTypography = styled(Typography)`
   margin-left: ${SPACING.XS};
 `;
 
-// @todo check if the nesting of 'IMembershipConfig' is really necessary
-export interface TMembershipOption {
-  label: string;
-  value: IMembershipConfig;
-}
-export interface MembershipDropdownProps {
-  name: string;
-  value: TMembershipOption | null;
-  onSelect(option: TMembershipOption): void;
-}
-
-function MembershipDropdown({ name, value, onSelect }: MembershipDropdownProps) {
-  const options: TMembershipOption[] = Object.values(MEMBERSHIP_CONFIG).map((c) => ({
-    label: c.title,
-    value: c
-  }));
-
-  return (
-    <Selector<TMembershipOption>
-      name={name}
-      placeholder={translateRaw('MEMBERSHIP_DROPDOWN_PLACEHOLDER')}
-      options={options}
-      onChange={(option) => onSelect(option)}
-      optionComponent={({ data, selectOption }: OptionProps<TMembershipOption>) => (
-        <MembershipOption option={data} onClick={selectOption} />
-      )}
-      value={value}
-      searchable={false}
-      valueComponent={({ value: option }) => <MembershipOption option={option} />}
-    />
-  );
-}
-
-export const MembershipOption = ({
+export const MembershipSelectorItem = ({
   option,
   onClick
 }: {
-  option: TMembershipOption;
-  onClick?(optoin: TMembershipOption): void;
+  option: IMembershipConfig;
+  onClick?(option: IMembershipConfig): void;
 }) => {
   return (
     <SContainer onClick={() => onClick && onClick(option)}>
-      <Typography value={option.label} />
-      <DiscountTypography value={option.value.discountNotice} />
+      <Typography value={option.title} />
+      <DiscountTypography value={option.discountNotice} />
     </SContainer>
   );
 };
 
-export default MembershipDropdown;
+export interface MembershipSelectorProps {
+  name: string;
+  value: IMembershipConfig | null;
+  onSelect(option: IMembershipConfig): void;
+}
+
+export default function MembershipSelector({ name, value, onSelect }: MembershipSelectorProps) {
+  const options: IMembershipConfig[] = Object.values(MEMBERSHIP_CONFIG);
+
+  return (
+    <Selector<IMembershipConfig>
+      name={name}
+      placeholder={translateRaw('MEMBERSHIP_DROPDOWN_PLACEHOLDER')}
+      options={options}
+      onChange={onSelect}
+      getOptionLabel={(option) => option.title}
+      optionComponent={({ data, selectOption }: OptionProps<IMembershipConfig>) => (
+        <MembershipSelectorItem option={data} onClick={selectOption} />
+      )}
+      value={value}
+      searchable={false}
+      valueComponent={({ value }) => <MembershipSelectorItem option={value} />}
+    />
+  );
+}
