@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="256px" height="256px" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Square_VHuman_b2_bo</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Square_VHuman_b2_bo" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle" stroke="#253248" stroke-width="12" fill="#FD7400" x="6" y="6" width="244" height="244" rx="8"></rect>
+        <path d="M29,128.000898 C29,182.67572 73.3246625,227 128,227 C182.675338,227 227,182.67572 227,128.000898 C227,73.324544 182.675602,29 128,29 C73.324398,29 29,73.324544 29,128.000898 Z" id="Fill-10" stroke="#253248" stroke-width="10" fill="#FD7400"></path>
+        <rect id="Rectangle" fill="#253248" x="110" y="150" width="37" height="29"></rect>
+        <polyline id="Path-3" stroke="#253248" stroke-width="24" stroke-linecap="round" stroke-linejoin="round" points="71 98 127.554455 194 184.108911 98"></polyline>
+        <circle id="Oval" fill="#FD7400" cx="127.5" cy="143.5" r="13.5"></circle>
+        <path d="M128,84.8196601 L145.09017,119 L110.90983,119 L128,84.8196601 Z" id="Triangle" stroke="#253248" stroke-width="10" fill="#253248" stroke-linejoin="round" transform="translate(128.000000, 105.000000) scale(1, -1) translate(-128.000000, -105.000000) "></path>
+    </g>
+</svg>

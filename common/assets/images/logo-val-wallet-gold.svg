@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="256px" height="256px" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Logo_VHuman_bb2_gbgg</title>
+    <g id="Logo_VHuman_bb2_gbgg" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group">
+            <rect id="Rectangle" fill="#FF8700" fill-rule="nonzero" x="0" y="0" width="256" height="256" rx="39"></rect>
+            <path d="M17.497758,128.001005 C17.497758,188.473392 66.7494172,237.497717 127.502283,237.497717 C188.255149,237.497717 237.506808,188.473392 237.506808,128.001005 C237.506808,67.5269011 188.255443,18.5022831 127.502283,18.5022831 C66.7491233,18.5022831 17.497758,67.5269011 17.497758,128.001005 Z" id="Fill-10" stroke="#253248" stroke-width="15" fill="#FF8700" fill-rule="nonzero"></path>
+            <path d="M36.4125632,127.498502 C36.4125632,177.707312 77.1955753,218.410959 127.502283,218.410959 C177.808991,218.410959 218.592003,177.707312 218.592003,127.498502 C218.592003,77.288122 177.808991,36.5844749 127.502283,36.5844749 C77.1955753,36.5844749 36.4125632,77.288122 36.4125632,127.498502 Z" id="Fill-10" stroke="#253248" stroke-width="9" fill="#FF8700" fill-rule="nonzero"></path>
+            <rect id="Rectangle" fill="#253248" fill-rule="nonzero" x="110.080752" y="148.091324" width="33.8475462" height="26.1187215"></rect>
+            <polyline id="Path-3" stroke="#253248" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" points="75.2376897 99.8721461 127.004525 187.269406 178.77136 99.8721461"></polyline>
+            <ellipse id="Oval" fill="#FF8700" fill-rule="nonzero" cx="127" cy="144" rx="12" ry="11"></ellipse>
+            <ellipse id="OvalHead" fill="#253248" fill-rule="nonzero" cx="127.004525" cy="112.931507" rx="16.9237731" ry="16.0730594"></ellipse>
+        </g>
+    </g>
+</svg>
