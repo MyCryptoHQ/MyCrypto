@@ -9,7 +9,7 @@ import RpcNode from '../libs/nodes/rpc';
 import { Wei } from '../libs/units';
 import BN from 'bn.js';
 
-const MAX_GAS_FAST = 250;
+const MAX_GAS_FAST = 2500;
 
 interface RawGasEstimates {
   safeLow: number;
