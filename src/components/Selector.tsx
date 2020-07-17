@@ -14,7 +14,7 @@ import { COLORS, FONT_SIZE } from '@theme';
 import crossIcon from '@assets/images/icn-cross.svg';
 import { CenteredIconArrow } from './IconArrow';
 
-interface SelectorProps<T> {
+export interface SelectorProps<T> {
   options: T[];
   // We prefer controlled components so `value` is required prop. When it is `null`, React-Select will display the placeholder
   value: T | null | undefined;
@@ -32,6 +32,7 @@ interface SelectorProps<T> {
   onBlurResetsInput?: boolean;
   onBlur?: FocusEventHandler;
   optionDivider?: boolean;
+  getOptionLabel?(option: T): string;
   onChange?(option: T): void;
   onInputChange?(newValue: string, actionMeta: InputActionMeta): void;
   onInputKeyDown?(e: React.KeyboardEvent<HTMLElement>): void;

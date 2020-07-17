@@ -68,6 +68,7 @@ function NetworkSelectDropdown({
         options={options}
         searchable={true}
         onChange={(option) => onChange(option.id)}
+        getOptionLabel={(option) => option.name}
         optionComponent={NetworkOption}
         valueComponent={({ value }) => <NetworkOption data={value} />}
         disabled={disabled}

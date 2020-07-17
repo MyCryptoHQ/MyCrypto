@@ -1,47 +1,44 @@
 import React, { useState } from 'react';
-import { Formik, Form } from 'formik';
 
 import { noOp } from '@utils';
 
-import MembershipSelector, { MembershipOption, TMembershipOption } from './MembershipSelector';
-import { MEMBERSHIP_CONFIG } from '../config';
+import MembershipSelector, {
+  MembershipSelectorItem,
+  MembershipSelectorProps
+} from './MembershipSelector';
+import { MEMBERSHIP_CONFIG, IMembershipConfig } from '../config';
 
-export default { title: 'MembershipSelector' };
+export default { title: 'Selector/MembershipSelector' };
 
-const initialForm: { name: string; value: TMembershipOption } = {
+const defaultProps: MembershipSelectorProps = {
   name: '',
-  value: {} as TMembershipOption
+  value: null,
+  onSelect: noOp
 };
+
 export const Selector = () => {
-  const [formValues, setFormValues] = useState(initialForm);
+  const [formValues, setFormValues] = useState<{ membership?: IMembershipConfig }>({
+    membership: undefined
+  });
 
   return (
     <div className="sb-container" style={{ width: '100%', maxWidth: '300px' }}>
-      <Formik
-        initialValues={formValues}
-        onSubmit={noOp}
-        render={({ values }) => (
-          <Form>
-            <MembershipSelector
-              {...values}
-              onSelect={(option) => setFormValues({ name: '', value: option })}
-            />
-          </Form>
-        )}
-      />
+      <form>
+        <MembershipSelector
+          {...defaultProps}
+          onSelect={(option) => setFormValues({ membership: option })}
+        />
+      </form>
       <pre>{JSON.stringify(formValues)}</pre>
     </div>
   );
 };
 
 export const DropdownItem = () => {
-  const option = Object.assign(
-    {},
-    { label: MEMBERSHIP_CONFIG.onemonth.title, value: MEMBERSHIP_CONFIG.onemonth }
-  );
+  const option = Object.assign({}, MEMBERSHIP_CONFIG.onemonth);
   return (
     <div className="sb-container" style={{ width: '100%', maxWidth: '300px' }}>
-      <MembershipOption option={option} />
+      <MembershipSelectorItem option={option} />
     </div>
   );
 };

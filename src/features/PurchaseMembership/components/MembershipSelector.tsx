@@ -48,14 +48,14 @@ export default function MembershipSelector({ name, value, onSelect }: Membership
       name={name}
       placeholder={translateRaw('MEMBERSHIP_DROPDOWN_PLACEHOLDER')}
       options={options}
-      onChange={onSelect}
+      onChange={(option) => onSelect(option)}
       getOptionLabel={(option) => option.title}
       optionComponent={({ data, selectOption }: OptionProps<IMembershipConfig>) => (
         <MembershipSelectorItem option={data} onClick={selectOption} />
       )}
+      valueComponent={({ value: option }) => <MembershipSelectorItem option={option} />}
       value={value}
       searchable={false}
-      valueComponent={({ value }) => <MembershipSelectorItem option={value} />}
     />
   );
 }
