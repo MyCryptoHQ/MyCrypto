@@ -32,16 +32,12 @@ export interface TAccountDropdownOption {
 const sortByLabel = (a: TAccountDropdownOption, b: TAccountDropdownOption) =>
   a.account.label.localeCompare(b.account.label);
 
-const getOption = (account: StoreAccount, options: TAccountDropdownOption[]) =>
-  options.find((o) => o.account.uuid === account.uuid)!;
+const getOption = (account: StoreAccount | null, options: TAccountDropdownOption[]) => {
+  if (!account) return null;
+  return options.find((o) => o.account.uuid === account.uuid)!;
+};
 
-function AccountDropdown({
-  accounts,
-  asset,
-  name,
-  value: formValue,
-  onSelect
-}: IAccountDropdownProps) {
+function AccountDropdown({ accounts, asset, name, value, onSelect }: IAccountDropdownProps) {
   const options: TAccountDropdownOption[] = accounts
     .map((a) => ({
       account: a,
@@ -52,7 +48,7 @@ function AccountDropdown({
       }
     }))
     .sort(sortByLabel);
-
+  const selected = getOption(value, options);
   const handleFormUpdate = (option: TAccountDropdownOption) => onSelect(option.account);
 
   return (
@@ -62,6 +58,7 @@ function AccountDropdown({
       searchable={true}
       options={options}
       onChange={handleFormUpdate}
+      getOptionLabel={(option) => option.account.label}
       optionComponent={({ data, selectOption }: OptionProps<TAccountDropdownOption>) => {
         const { account, asset: selectedAsset } = data;
         const { address, label } = account;
@@ -80,7 +77,7 @@ function AccountDropdown({
           </>
         );
       }}
-      value={formValue && formValue.address ? getOption(formValue, options) : null} // Allow the value to be undefined at the start in order to display the placeholder
+      value={selected}
       valueComponent={({ value: { account: selectedAccount, asset: selectedAsset } }) => {
         const { address, label } = selectedAccount;
         const { balance, assetSymbol, assetUUID } = selectedAsset;
