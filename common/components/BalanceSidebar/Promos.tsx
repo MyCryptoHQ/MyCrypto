@@ -12,7 +12,7 @@ const CarouselAnimation = ({ children, ...props }: any) => (
   </CSSTransition>
 );
 
-const promos = [HardwareWallets, Shapeshift, Simplex];
+const promos = [HardwareWallets, Shapeshift];
 
 interface State {
   activePromo: number;
