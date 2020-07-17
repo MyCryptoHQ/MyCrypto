@@ -184,15 +184,15 @@ const GeneralLookupField = ({
             // if this gets deleted, it no longer shows as selected on interface,
             // would like to set only object keys that are needed
             // instead of full object
-            // setFieldValue(name, option, true);
-            // setFieldTouched(name, true, false);
+            setFieldValue(name, option, true);
+            setFieldTouched(name, true, false);
             if (onSelect) {
               onSelect(option);
             }
           }}
           onBlur={() => {
             handleNewInput(inputValue.current);
-            // setFieldTouched(name, true, false);
+            setFieldTouched(name, true, false);
             if (onBlur) onBlur();
             if (onChange) onChange(inputValue.current);
           }}
