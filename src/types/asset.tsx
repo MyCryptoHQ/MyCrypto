@@ -3,6 +3,7 @@ import { NetworkId, TSymbol, TUuid, AssetSocial } from '@types';
 import { Brand } from 'utility-types';
 
 export type TTicker = Brand<string, 'Ticker'>;
+export type TCode = Brand<string, 'CurrencyCode'>;
 
 export interface Fiat {
   code: string;
