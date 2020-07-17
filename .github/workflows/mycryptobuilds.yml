@@ -64,8 +64,8 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install
 
-      - name: yarn build:downloadable
-        run: yarn build:downloadable
+      - name: yarn build:downloadable:dev
+        run: yarn build:downloadable:dev
 
       - name: Zip standalone build folder
         run: zip -r dist/download/standalone_mycrypto.zip dist/download/
