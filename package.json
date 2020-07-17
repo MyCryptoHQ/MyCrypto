@@ -231,6 +231,7 @@
     "build": "cross-env NODE_ENV=production webpack --config webpack_config/production.js",
     "prebuild": "check-node-version --package",
     "build:downloadable": "cross-env NODE_ENV=production webpack --config webpack_config/downloadable.js",
+    "build:downloadable:dev": "cross-env NODE_ENV=development webpack --config webpack_config/downloadable.js",
     "prebuild:downloadable": "check-node-version --package",
     "build:electron": "cross-env NODE_ENV=production BUILD_ELECTRON=true webpack --config webpack_config/electron.production.js && node webpack_config/buildElectron.js",
     "prebuild:electron": "check-node-version --package && electron-builder install-app-deps",
