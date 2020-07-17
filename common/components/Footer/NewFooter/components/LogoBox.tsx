@@ -9,7 +9,7 @@ export default function LogoBox() {
   return (
     <section className="LogoBox">
       <section className="LogoBox-title">
-        <h2>{translate('NEW_FOOTER_TEXT_16')} MyCrypto</h2>
+        {/* <h2>{translate('NEW_FOOTER_TEXT_16')}</h2> */}
         <section className="LogoBox-image-toggle">
           <ThemeToggle />
         </section>

@@ -8,8 +8,8 @@ const LINK_COLUMNS = [
     heading: translateRaw('NEW_FOOTER_TEXT_6'),
     links: [
       {
-        title: translateRaw('ENERGI_WEBSITE'),
-        link: 'https://www.energi.world/'
+        title: translateRaw('VALORBIT_WEBSITE'),
+        link: 'https://www.valorbit.com/'
       },
       {
         title: translateRaw('ORIG_MYCRYPTO'),
@@ -23,13 +23,12 @@ const LINK_COLUMNS = [
 */
       {
         title: translateRaw('NEW_FOOTER_TEXT_7'),
-        link: 'https://docs.energi.software/'
+        link: 'http://info.valorbit.com/'
       },
-      {
+   /*   {
         title: translateRaw('NEW_FOOTER_TEXT_8'),
-        link: 'https://www.energi.world/team/'
-      },
-      /*
+        link: 'https://www.valorbit.com/team/'
+      },      
       {
         title: translateRaw('NEW_FOOTER_TEXT_9'),
         link: 'mailto:press@mycrypto.com'
@@ -37,7 +36,7 @@ const LINK_COLUMNS = [
 */
       {
         title: translateRaw('NEW_FOOTER_TEXT_10'),
-        link: 'https://www.energi.world/privacy-policy/'
+        link: 'https://www.valorbit.com/site/privacy/'
       }
     ]
   },
@@ -64,8 +63,8 @@ const LINK_COLUMNS = [
     heading: translateRaw('NEW_FOOTER_TEXT_12'),
     links: [
       {
-        title: translateRaw('ENERGI_EXPLORER'),
-        link: 'https://explorer.gen3.energi.network/'
+        title: translateRaw('VALORBIT_EXPLORER'),
+        link: 'https://ledger.valorbit.com/'
       },
       /*
       {
@@ -83,8 +82,8 @@ const LINK_COLUMNS = [
       },
 */
       {
-        title: 'MyEnergiWallet Desktop App',
-        link: 'https://docs.energi.software/en/downloads/myenergiwallet'
+        title: 'Valorbit Desktop App',
+        link: 'http://info.valorbit.com/en/downloads'
       }
       /*
       {

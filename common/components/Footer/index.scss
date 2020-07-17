@@ -1,7 +1,7 @@
 @import 'common/sass/variables';
 @import 'common/sass/mixins';
 
-$footer-link-color: color(white-clear);
+$footer-link-color: color(brand-info);
 
 .Footer {
   background-color: color(footer-bg);
@@ -13,7 +13,7 @@ $footer-link-color: color(white-clear);
   border-top: 3px solid color(footer-border);
 
   &-section {
-    color: color(white-clear);
+    color: color(brand-info-darker);
     padding: $space;
   }
 

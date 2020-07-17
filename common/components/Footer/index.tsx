@@ -78,9 +78,9 @@ export default class Footer extends React.PureComponent<Props, State> {
             </NewTabLink>
 
             <div className="Footer-about-links">
-              <NewTabLink href="https://www.energi.world/">Energi.World</NewTabLink>
+              <NewTabLink href="https://www.valorbit.com/">Valorbit.com</NewTabLink>
               <NewTabLink href={knowledgeBaseURL}>{translateRaw('FOOTER_SUPPORT')}</NewTabLink>
-              <NewTabLink href="https://www.energi.world/privacy-policy/">
+              <NewTabLink href="https://www.valorbit.com/site/privacy/">
                 {translateRaw('FOOTER_PRIVACY_POLICY')}
               </NewTabLink>
             </div>
@@ -89,8 +89,8 @@ export default class Footer extends React.PureComponent<Props, State> {
 
             <div className="Footer-about-legal">
               <div className="Footer-about-legal-text">
-                © {new Date().getFullYear()} MyCrypto, Inc.
-                <br />© {new Date().getFullYear()} Energi Core Ltd.
+                © {new Date().getFullYear()} Valorbit
+                <br />© {new Date().getFullYear()} MyCrypto, Inc.
               </div>
               <div className="Footer-about-legal-text">
                 <a onClick={this.toggleModal}>{translateRaw('DISCLAIMER')}</a>

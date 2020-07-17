@@ -40,6 +40,7 @@ class Donate extends Component {
 
     return (
       <section className="Donate">
+        <h2>{translate('NEW_FOOTER_TEXT_16')} MyCrypto</h2>
         <h2>{translate('NEW_FOOTER_TEXT_1')} MyCrypto Inc.</h2>
         <section className="Donate-buttons">
           <CopyToClipboard text={donationAddressMap.ETH} onCopy={this.displayMessage}>
@@ -78,7 +79,7 @@ class Donate extends Component {
 
 export default function DonateAndSubscribe() {
   return (
-    <section className="DonateAndSubscribe">
+    <section className="DonateAndSubscribe">      
       <Donate />
       <Subscribe />
     </section>
