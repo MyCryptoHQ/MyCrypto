@@ -3,20 +3,20 @@ import selectEvent from 'react-select-event';
 
 import { simpleRender, screen, fireEvent } from 'test-utils';
 import { fAssets } from '@fixtures';
-import { Asset, TSymbol, TUuid } from '@types';
+import { Asset, TUuid, TTicker } from '@types';
 import { translateRaw } from '@translations';
 import { ETHUUID } from '@utils';
 
-import AssetSelector, { AssetSelectorProps, ItemProps, AssetSelectorItem } from '../AssetSelector';
+import AssetSelector, { AssetSelectorItem } from '../AssetSelector';
 
-const defaultProps: AssetSelectorProps<Asset> = {
+const defaultProps: React.ComponentProps<typeof AssetSelector> = {
   assets: fAssets as Asset[],
   selectedAsset: null,
   label: 'test-asset-selector',
   onSelect: jest.fn()
 };
 
-function getComponent(props: AssetSelectorProps<Asset>) {
+function getComponent(props: React.ComponentProps<typeof AssetSelector>) {
   return simpleRender(
     <form role="form">
       <AssetSelector {...props} />
@@ -58,16 +58,21 @@ describe('AssetSelector', () => {
   });
 });
 
-const itemProps: ItemProps = {
-  symbol: 'ETH' as TSymbol,
+const itemProps: React.ComponentProps<typeof AssetSelectorItem> = {
+  ticker: 'ETH' as TTicker,
   name: 'Ether',
   uuid: ETHUUID as TUuid,
   onClick: jest.fn()
 };
 
-function getComponentItem({ symbol, uuid, name, onClick }: ItemProps) {
+function getComponentItem({
+  ticker,
+  uuid,
+  name,
+  onClick
+}: React.ComponentProps<typeof AssetSelectorItem>) {
   return simpleRender(
-    <AssetSelectorItem symbol={symbol} uuid={uuid} name={name} onClick={onClick} />
+    <AssetSelectorItem ticker={ticker} uuid={uuid} name={name} onClick={onClick} />
   );
 }
 
@@ -77,9 +82,9 @@ describe('AssetSelectorItem', () => {
     expect(getByRole('img').getAttribute('src')).toContain('test-file-stub');
   });
 
-  test('it displays the asset symbol and name', async () => {
+  test('it displays the asset ticker and name', async () => {
     const { getByText } = getComponentItem(itemProps);
-    expect(getByText(itemProps.symbol)).toBeDefined();
+    expect(getByText(itemProps.ticker)).toBeDefined();
     expect(getByText(itemProps.name!)).toBeDefined();
   });
 

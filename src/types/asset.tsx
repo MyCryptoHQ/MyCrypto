@@ -1,8 +1,11 @@
 import { BigNumber } from 'ethers/utils';
-import { NetworkId, TSymbol, TUuid, AssetSocial } from '@types';
+import { NetworkId, TUuid, AssetSocial } from '@types';
 import { Brand } from 'utility-types';
 
 export type TTicker = Brand<string, 'Ticker'>;
+export type TSymbol = Brand<string, 'Symbol'>;
+export type TAssetType = 'base' | 'erc20' | 'fiat';
+export type ISwapAsset = Pick<Asset, 'name' | 'ticker' | 'uuid'>;
 
 export interface Fiat {
   code: TTicker;
@@ -10,8 +13,6 @@ export interface Fiat {
   symbol: TSymbol;
   prefix?: boolean;
 }
-
-export type TAssetType = 'base' | 'erc20' | 'fiat';
 
 export interface Asset {
   readonly uuid: TUuid;
@@ -52,10 +53,3 @@ export type StoreAsset = ExtendedAsset & {
   mtime: number;
   rate?: number;
 };
-
-export interface ISwapAsset {
-  name: string;
-  symbol: TSymbol;
-  ticker?: string;
-  uuid: TUuid;
-}

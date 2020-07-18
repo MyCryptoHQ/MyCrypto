@@ -81,8 +81,8 @@ export default function MultiTxReceipt({
           <SwapFromToDiagram
             toUUID={swapDisplay.toAsset.uuid}
             fromUUID={swapDisplay.fromAsset.uuid}
-            fromSymbol={swapDisplay.fromAsset.symbol}
-            toSymbol={swapDisplay.toAsset.symbol}
+            fromSymbol={swapDisplay.fromAsset.ticker}
+            toSymbol={swapDisplay.toAsset.ticker}
             fromAmount={swapDisplay.fromAmount.toString()}
             toAmount={swapDisplay.toAmount.toString()}
           />

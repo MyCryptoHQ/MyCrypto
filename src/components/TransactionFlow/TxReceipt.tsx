@@ -272,8 +272,8 @@ export const TxReceiptUI = ({
       {txType === ITxType.SWAP && swapDisplay && (
         <div className="TransactionReceipt-row">
           <SwapFromToDiagram
-            fromSymbol={swapDisplay.fromAsset.symbol}
-            toSymbol={swapDisplay.toAsset.symbol}
+            fromSymbol={swapDisplay.fromAsset.ticker}
+            toSymbol={swapDisplay.toAsset.ticker}
             fromAmount={swapDisplay.fromAmount.toString()}
             toAmount={swapDisplay.toAmount.toString()}
             fromUUID={swapDisplay.fromAsset.uuid}

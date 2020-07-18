@@ -50,16 +50,16 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         .map((asset: any) => ({
           ...asset,
           uuid:
-            asset.symbol === DEFAULT_NETWORK_SYMBOL
+            asset.ticker === DEFAULT_NETWORK_SYMBOL
               ? generateAssetUUID(DEFAULT_NETWORK_CHAINID)
               : generateAssetUUID(DEFAULT_NETWORK_CHAINID, asset.address)
         }))
         .sort((asset1: ISwapAsset, asset2: ISwapAsset) =>
-          (asset1.symbol as string).localeCompare(asset2.symbol)
+          (asset1.ticker as string).localeCompare(asset2.ticker)
         );
       // set fromAsset to default (ETH)
       const network = getNetworkById(DEFAULT_NETWORK, networks);
-      const fromAsset = newAssets.find((x: ISwapAsset) => x.symbol === network.baseUnit);
+      const fromAsset = newAssets.find((x: ISwapAsset) => x.ticker === network.baseUnit);
       const toAsset = newAssets[0];
       return [newAssets, fromAsset, toAsset];
     } catch (e) {
@@ -137,8 +137,8 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       );
 
       const { price, costBasis } = await DexService.instance.getTokenPriceTo(
-        fromAsset.symbol,
-        toAsset.symbol,
+        fromAsset.ticker,
+        toAsset.ticker,
         commissionIncreasedAmount.toString()
       );
 
@@ -203,8 +203,8 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       }));
 
       const { price, costBasis } = await DexService.instance.getTokenPriceFrom(
-        fromAsset.symbol,
-        toAsset.symbol,
+        fromAsset.ticker,
+        toAsset.ticker,
         value
       );
 

@@ -2,7 +2,7 @@ import { addHexPrefix } from 'ethereumjs-util';
 import BN from 'bn.js';
 import axios, { AxiosInstance } from 'axios';
 
-import { TSymbol, ITxObject } from '@types';
+import { TTicker, ITxObject } from '@types';
 import { DEXAG_MYC_TRADE_CONTRACT, DEXAG_MYC_HANDLER_CONTRACT, DEX_BASE_URL } from '@config';
 import { ERC20 } from '@services/EthService';
 
@@ -44,8 +44,8 @@ export default class DexService {
   };
 
   public getTokenPriceFrom = async (
-    from: TSymbol,
-    to: TSymbol,
+    from: TTicker,
+    to: TTicker,
     fromAmount: string
   ): Promise<{ costBasis: number; price: number }> => {
     const { costBasis, tokenPrices: price } = await this.getTokenPrice(from, to, fromAmount);
@@ -53,8 +53,8 @@ export default class DexService {
   };
 
   public getTokenPriceTo = async (
-    from: TSymbol,
-    to: TSymbol,
+    from: TTicker,
+    to: TTicker,
     toAmount: string
   ): Promise<{ costBasis: number; price: number }> => {
     const { costBasis, tokenPrices: price } = await this.getTokenPrice(
@@ -66,15 +66,15 @@ export default class DexService {
     return { costBasis: parseFloat(costBasis), price: parseFloat(price) };
   };
 
-  public getOrderDetailsFrom = async (from: TSymbol, to: TSymbol, fromAmount: string) =>
+  public getOrderDetailsFrom = async (from: TTicker, to: TTicker, fromAmount: string) =>
     this.getOrderDetails(from, to, fromAmount);
 
-  public getOrderDetailsTo = async (from: TSymbol, to: TSymbol, toAmount: string) =>
+  public getOrderDetailsTo = async (from: TTicker, to: TTicker, toAmount: string) =>
     this.getOrderDetails(from, to, undefined, toAmount);
 
   private getOrderDetails = async (
-    from: TSymbol,
-    to: TSymbol,
+    from: TTicker,
+    to: TTicker,
     fromAmount?: string,
     toAmount?: string
   ): Promise<Partial<ITxObject>[]> => {
@@ -114,8 +114,8 @@ export default class DexService {
   };
 
   private getTokenPrice = async (
-    from: TSymbol,
-    to: TSymbol,
+    from: TTicker,
+    to: TTicker,
     fromAmount?: string,
     toAmount?: string
   ) => {

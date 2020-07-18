@@ -1,15 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { TSymbol, TUuid } from '@types';
+import { TTicker, TUuid } from '@types';
 import { AssetIcon, Currency } from '@components';
 import { FONT_SIZE } from '@theme';
 
 import arrowIcon from '@assets/images/arrow-right.svg';
 
 interface Props {
-  fromSymbol: TSymbol;
-  toSymbol: TSymbol;
+  fromSymbol: TTicker;
+  toSymbol: TTicker;
   fromUUID: TUuid;
   toUUID: TUuid;
   fromAmount: string;
@@ -55,7 +55,7 @@ export default function SwapFromToDiagram(props: Props) {
           fontSize={FONT_SIZE.LG}
           amount={fromAmount}
           uuid={fromUUID}
-          symbol={fromSymbol}
+          ticker={fromSymbol}
           decimals={6}
         />
       </AssetWrapper>
@@ -67,7 +67,7 @@ export default function SwapFromToDiagram(props: Props) {
           fontSize={FONT_SIZE.LG}
           amount={toAmount}
           uuid={toUUID}
-          symbol={toSymbol}
+          ticker={toSymbol}
           decimals={6}
         />
       </AssetWrapper>

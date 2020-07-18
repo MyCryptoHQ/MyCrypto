@@ -6,9 +6,8 @@ import { GasPrice } from './gas';
 import { DPathFormats } from './dPath';
 import { NetworkId } from './networkId';
 import { TUuid } from './uuid';
-import { TSymbol } from './symbols';
 import { Contract } from './contract';
-import { Asset } from './asset';
+import { Asset, TTicker } from './asset';
 import { TAddress } from './address';
 
 type AssetPropsMissingInLegacy = Pick<Asset, 'networkId'> | Pick<Asset, 'contractAddress'>;
@@ -22,7 +21,7 @@ export interface Network {
   id: NetworkId;
   name: string;
   baseAsset: TUuid;
-  baseUnit: TSymbol;
+  baseUnit: TTicker;
   chainId: number;
   isCustom: boolean;
   isTestnet?: boolean;
@@ -46,7 +45,7 @@ interface NetworkPropsMissingInLegacy {
   nodes: NodeOptions[];
   assets: string[];
   baseAsset: TUuid;
-  baseUnit: TSymbol;
+  baseUnit: TTicker;
 }
 
 interface NetworkUnusedLegacyProps {
@@ -54,7 +53,7 @@ interface NetworkUnusedLegacyProps {
   isTestnet?: boolean;
   unsupportedTabs?: any[];
   hideEquivalentValues?: boolean;
-  unit: TSymbol;
+  unit: TTicker;
   nodes?: NodeOptions[];
 }
 
