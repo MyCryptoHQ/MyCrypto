@@ -370,7 +370,7 @@ export const StoreProvider: React.FC = ({ children }) => {
         .reduce((sum, asset) => (sum += convertToFiatFromAsset(asset, getAssetRate(asset))), 0),
 
     assetTickers: (targetAssets = state.assets()) => [
-      ...new Set(targetAssets.map((a) => a.ticker as TTicker))
+      ...new Set(targetAssets.map((a) => a.ticker))
     ],
     assetUUIDs: (targetAssets = state.assets()) => {
       return [...new Set(targetAssets.map((a: StoreAsset) => a.uuid))];
