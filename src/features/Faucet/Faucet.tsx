@@ -3,12 +3,28 @@ import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
 import { Heading, Tooltip, Input, Icon } from '@mycrypto/ui';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
+import { utils } from 'ethers';
 
-import { Button, ExtendedContentPanel, AccountDropdown, NewTabLink } from '@components';
+import {
+  Button,
+  ExtendedContentPanel,
+  AccountDropdown,
+  NewTabLink,
+  InlineMessage,
+  TxReceipt
+} from '@components';
 import { StoreContext } from '@services/Store';
+import { AssetContext, getBaseAssetByNetwork } from '@services';
 import { noOp } from '@utils';
-import { IAccount as IIAccount, StoreAccount } from '@types';
-import { ROUTE_PATHS } from '@config';
+import {
+  Asset,
+  IAccount as IIAccount,
+  StoreAccount,
+  InlineMessageType,
+  ITxType,
+  ITxStatus
+} from '@types';
+import { ROUTE_PATHS, KB_HELP_ARTICLE, getKBHelpArticle } from '@config';
 import translate, { translateRaw } from '@translations';
 import questionToolTip from '@assets/images/icn-question.svg';
 
@@ -54,6 +70,10 @@ const LearnMoreArrow = styled(Icon)`
   height: 14px;
 `;
 
+const NoTestnetAccounts = styled(InlineMessage)`
+  margin-bottom: 10px;
+`;
+
 const faucetNetworks = ['Ropsten', 'Rinkeby', 'Kovan', 'Goerli'];
 
 export function Faucet({ history }: RouteComponentProps<{}>) {
@@ -63,10 +83,19 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
   const [txResult, setTxResult] = useState({} as any);
   const [error, setError] = useState('');
 
-  const { accounts } = useContext(StoreContext);
+  const { accounts, networks } = useContext(StoreContext);
+  const { assets } = useContext(AssetContext);
 
   const initialValues = {
     recipientAddress: {} as StoreAccount
+  };
+
+  const reset = () => {
+    setChallenge({});
+    setSolution('');
+    setTxResult({});
+    setError('');
+    setStep(0);
   };
 
   const requestFunds = (recipientAddress: StoreAccount) => {
@@ -93,6 +122,70 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
 
   const validAccounts = accounts.filter((account) => faucetNetworks.includes(account.network.name));
 
+  const txConfig = (() => {
+    if (!('hash' in txResult)) {
+      return {} as any;
+    } else {
+      const network: any = networks.find((n) => n.id === 'Ropsten');
+      const baseAsset: Asset | undefined = getBaseAssetByNetwork({
+        network,
+        assets
+      });
+      return {
+        rawTransaction: {
+          to: txResult.to,
+          value: utils.bigNumberify(txResult.value).toString(),
+          gasLimit: utils.bigNumberify(txResult.gasLimit).toString(),
+          data: txResult.data,
+          gasPrice: utils.bigNumberify(txResult.gasPrice).toString(),
+          nonce: txResult.nonce.toString(),
+          chainId: txResult.chainId,
+          from: txResult.from
+        },
+        amount: utils.formatEther(utils.bigNumberify(txResult.value).toString()),
+        receiverAddress: txResult.to,
+        senderAccount: validAccounts[0],
+        from: txResult.from,
+        asset: baseAsset,
+        baseAsset,
+        network,
+        gasPrice: utils.bigNumberify(txResult.gasPrice).toString(),
+        gasLimit: utils.bigNumberify(txResult.gasLimit).toString(),
+        nonce: txResult.nonce.toString(),
+        data: txResult.data,
+        value: utils.bigNumberify(txResult.value).toString()
+      };
+    }
+  })();
+
+  const txReceipt = (() => {
+    if (!('hash' in txResult)) {
+      return {} as any;
+    } else {
+      const network: any = networks.find((n) => n.id === 'Ropsten');
+      const baseAsset: Asset | undefined = getBaseAssetByNetwork({
+        network,
+        assets
+      });
+      return {
+        asset: baseAsset,
+        baseAsset,
+        txType: ITxType.FAUCET,
+        status: ITxStatus.BROADCASTED,
+        receiverAddress: txResult.to,
+        amount: utils.formatEther(utils.bigNumberify(txResult.value).toString()),
+        data: txResult.data,
+        gasPrice: utils.bigNumberify(txResult.gasPrice),
+        gasLimit: utils.bigNumberify(txResult.gasLimit),
+        to: txResult.to,
+        from: txResult.from,
+        value: utils.bigNumberify(txResult.value),
+        nonce: txResult.nonce.toString(),
+        hash: txResult.hash
+      };
+    }
+  })();
+
   const steps = [
     <Formik
       key="recipient"
@@ -118,6 +211,14 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
               )}
             />
           </Fieldset>
+          {validAccounts.length === 0 && (
+            <NoTestnetAccounts type={InlineMessageType.ERROR}>
+              {translate('FAUCET_NO_ACCOUNTS', {
+                $link_add_account: ROUTE_PATHS.ADD_ACCOUNT.path,
+                $link_create_account: ROUTE_PATHS.CREATE_WALLET.path
+              })}
+            </NoTestnetAccounts>
+          )}
           <Button
             onClick={() => requestFunds(recipientAddress)}
             disabled={Object.keys(recipientAddress).length === 0}
@@ -127,7 +228,7 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
           </Button>
           <Divider />
           {translate('FAUCET_NOT_SURE')}{' '}
-          <NewTabLink href="https://support.mycrypto.com/how-to/getting-started/where-to-get-testnet-ether">
+          <NewTabLink href={getKBHelpArticle(KB_HELP_ARTICLE.WHERE_TO_GET_TESTNET_ETHER)}>
             {translate('LEARN_MORE')}{' '}
             <LearnMoreArrowWrapper>
               <LearnMoreArrow icon="backArrow" />
@@ -170,7 +271,17 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
         </Button>
       </div>
     </>,
-    <>{'hash' in txResult && <p>{txResult.hash}</p>}</>
+    <>
+      {'hash' in txResult && (
+        <TxReceipt
+          txConfig={txConfig}
+          txReceipt={txReceipt}
+          onComplete={() => reset()}
+          resetFlow={() => reset()}
+          completeButtonText={translateRaw('FAUCET_REQUEST_MORE')}
+        />
+      )}
+    </>
   ];
 
   return (

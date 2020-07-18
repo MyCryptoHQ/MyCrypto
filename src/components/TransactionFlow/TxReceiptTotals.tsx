@@ -20,6 +20,7 @@ interface Props {
   value: string;
   assetRate?: number;
   baseAssetRate?: number;
+  received?: boolean;
 }
 
 const SIcon = styled(Icon)`
@@ -38,7 +39,8 @@ export const TxReceiptTotals = ({
   gasPrice,
   value,
   assetRate,
-  baseAssetRate
+  baseAssetRate,
+  received
 }: Props) => {
   const feeWei = totalTxFeeToWei(gasPrice, gasUsed);
 
@@ -54,8 +56,17 @@ export const TxReceiptTotals = ({
     <>
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-column">
-          <SIcon type="tx-send" alt="Sent" />
-          {translate('CONFIRM_TX_SENT')}
+          {received ? (
+            <>
+              <SIcon type="tx-receive" alt="Received" />
+              {translate('CONFIRM_TX_RECEIVED')}
+            </>
+          ) : (
+            <>
+              <SIcon type="tx-send" alt="Sent" />
+              {translate('CONFIRM_TX_SENT')}
+            </>
+          )}
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
           <AssetIcon uuid={asset.uuid} size={'24px'} />

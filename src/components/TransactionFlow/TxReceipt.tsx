@@ -10,9 +10,10 @@ import React, {
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Body, Box, Button, LinkOut, PoweredByText, TimeElapsed, Tooltip } from '@components';
+import { Body, Box, Button, LinkOut, PoweredByText, TimeElapsed, Tooltip, NewTabLink } from '@components';
 import { SubHeading } from '@components/NewTypography';
 import { getWalletConfig, ROUTE_PATHS } from '@config';
+
 import { getFiat } from '@config/fiats';
 import { ProtectTxAbort } from '@features/ProtectTransaction/components/ProtectTxAbort';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
@@ -403,6 +404,7 @@ export const TxReceiptUI = ({
         gasPrice={gasPrice}
         gasUsed={gasAmount()}
         value={txConfig.value}
+        received={txType === ITxType.FAUCET}
       />
 
       <div className="TransactionReceipt-details-row">
@@ -471,6 +473,18 @@ export const TxReceiptUI = ({
           recipient={rawTransaction.to}
         />
       </div>
+      {txType === ITxType.FAUCET && (
+        <NewTabLink
+          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+            translateRaw('FAUCET_TWEET')
+          )}`}
+        >
+          <Button secondary={true} className="TransactionReceipt-tweet">
+            <i className="sm-icon sm-logo-twitter TransactionReceipt-tweet-icon" />{' '}
+            <span className="TransactionReceipt-tweet-text">{translate('FAUCET_SHARE')}</span>
+          </Button>
+        </NewTabLink>
+      )}
       {completeButtonText && !(txStatus === ITxStatus.PENDING) && (
         <Button secondary={true} className="TransactionReceipt-another" onClick={resetFlow}>
           {completeButtonText}

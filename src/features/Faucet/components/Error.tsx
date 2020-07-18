@@ -1,9 +1,10 @@
 import React, { FunctionComponent } from 'react';
-
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import translate from '@translations';
 import { formatSupportEmail } from '@utils';
+import { ROUTE_PATHS } from '@config';
 
 const ContactUsText = styled.p`
   font-style: italic;
@@ -20,7 +21,7 @@ const getFailureMessage = (type: string) => {
     case 'INVALID_SOLUTION':
       return (
         <p>
-          Incorrect captcha response. Please <a href="/faucet">try again</a>.
+          Incorrect captcha response. Please <Link to={ROUTE_PATHS.FAUCET.path}>try again</Link>.
         </p>
       );
     default:

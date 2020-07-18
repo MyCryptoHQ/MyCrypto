@@ -1,10 +1,9 @@
 import axios from 'axios';
 import { StoreAccount } from '@types';
-
-const FAUCET_API_URL = 'https://d3a0rurg7bu691.cloudfront.net';
+import { FAUCET_API } from '@config';
 
 const api = axios.create({
-  baseURL: FAUCET_API_URL,
+  baseURL: FAUCET_API,
   validateStatus: () => true
 });
 
