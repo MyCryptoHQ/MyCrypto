@@ -1,11 +1,12 @@
 import React, { FunctionComponent } from 'react';
-
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { InlineMessage } from '@components';
 import translate from '@translations';
 import { InlineMessageType } from '@types';
 import { formatSupportEmail } from '@utils';
+import { ROUTE_PATHS } from '@config';
 
 const Box = styled.div`
   border: 1px solid #fa863f;
