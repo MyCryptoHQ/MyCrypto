@@ -24,7 +24,7 @@ export default function getWindow() {
     minHeight: 400,
     titleBarStyle: 'default',
     webPreferences: {
-      devTools: true,
+      devTools: false,
       nodeIntegration: true,
       contextIsolation: false,
       preload: path.join(__dirname, 'preload.js')
