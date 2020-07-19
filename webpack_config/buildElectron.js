@@ -42,7 +42,7 @@ async function build() {
       ia32: false,
       config: {
         appId: 'com.valorbit.wallet',
-        productName: 'Valorbit',
+        productName: 'Valorbit Wallet',
         directories: {
           app: jsBuildDir,
           output: electronBuildsDir
