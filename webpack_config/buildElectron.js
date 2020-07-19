@@ -39,7 +39,7 @@ async function build() {
       win: shouldBuildOs('windows') ? ['nsis'] : undefined,
       linux: shouldBuildOs('linux') ? ['AppImage'] : undefined,
       x64: true,
-      ia32: true,
+      ia32: false,
       config: {
         appId: 'com.valorbit.wallet',
         productName: 'Valorbit',
