@@ -117,7 +117,7 @@
     "coveralls": "3.0.0",
     "cross-env": "6.0.3",
     "css-loader": "0.28.11",
-    "electron": "4.0.8",
+    "electron": "4.2.12",
     "electron-builder": "22.2.0",
     "empty": "0.10.1",
     "enzyme": "3.3.0",
