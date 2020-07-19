@@ -23,6 +23,11 @@ import { ProtectTxMissingInfo } from './ProtectTxMissingInfo';
 import bulletIcon from 'assets/images/icn-bullet.svg';
 
 const SProtectionThisTransaction = styled(ProtectTxBase)`
+  svg:nth-of-type(2) {
+    height: 100%;
+    max-height: 73px;
+  }
+
   .description-text {
     max-width: 300px;
     font-size: ${FONT_SIZE.BASE};
@@ -134,18 +139,10 @@ const Header = styled.h4`
   }
 `;
 
-const PoweredByWrapper = styled.div<{ hasMissingInfoError: boolean }>`
-  ${({ hasMissingInfoError }) =>
-    !hasMissingInfoError &&
-    `
-  position: absolute;
-  bottom: ${SPACING.BASE};
-`}
-  ${({ hasMissingInfoError }) =>
-    hasMissingInfoError &&
-    `
-  margin-top: ${SPACING.BASE};
-`}
+const PoweredByWrapper = styled.div`
+  display: flex;
+  height: 100%;
+  align-items: flex-end;
 `;
 
 interface Props {
@@ -305,7 +302,7 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
       <button type="button" className="cancel" onClick={onProtectMyTransactionCancelClick}>
         {translateRaw('PROTECTED_TX_DONT_PROTECT_MY_TX')}
       </button>
-      <PoweredByWrapper hasMissingInfoError={hasMissingInfoError}>
+      <PoweredByWrapper>
         <PoweredByText provider="NANSEN" />
       </PoweredByWrapper>
     </SProtectionThisTransaction>

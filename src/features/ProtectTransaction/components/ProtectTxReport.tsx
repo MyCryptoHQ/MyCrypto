@@ -15,7 +15,7 @@ import ProtectTxBase from './ProtectTxBase';
 import { ProtectTxContext } from '../ProtectTxProvider';
 import { NansenReportType, PTXReport } from '../types';
 
-const Wrapper = styled(ProtectTxBase)`
+const Wrapper = styled(ProtectTxBase)<{ isSmScreen: boolean }>`
   .title-address {
     margin: 0 0 ${SPACING.SM};
   }
@@ -24,6 +24,13 @@ const Wrapper = styled(ProtectTxBase)`
     text-align: left;
     padding: 0 20px;
   }
+
+  ${({ isSmScreen }) => `
+  svg:nth-of-type(${isSmScreen ? 1 : 2}) {
+    height: 100%;
+    max-height: 73px;
+  }
+  `}
 
   .view-comments {
     position: relative;
@@ -98,8 +105,9 @@ const SEthAddress = styled.div`
 `;
 
 const PoweredByWrapper = styled.div`
-  position: absolute;
-  bottom: ${SPACING.BASE};
+  display: flex;
+  height: 100%;
+  align-items: flex-end;
 `;
 
 export const ProtectTxReport: FC = () => {
@@ -137,7 +145,7 @@ export const ProtectTxReportUI = ({ report, isWeb3, onHide }: Props) => {
   const steps = getTimelineSteps(report);
 
   return (
-    <Wrapper>
+    <Wrapper isSmScreen={isSmScreen}>
       {!isSmScreen && <CloseIcon size="lg" onClick={onHide} />}
       <ProtectIconCheck size="lg" />
       <h4>{translateRaw('PROTECTED_TX_REPORT_TITLE')}</h4>
