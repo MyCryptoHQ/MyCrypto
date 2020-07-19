@@ -32,7 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Firefox Metamask Hack
 (() => {
-  if (!window.ethereum && !window.web3 && navigator.userAgent.includes('Firefox')) {
+  if (
+    !(window as CustomWindow).ethereum &&
+    !(window as CustomWindow).web3 &&
+    navigator.userAgent.includes('Firefox')
+  ) {
     const script = document.createElement('script');
     script.src = './inpage-metamask.js';
     script.type = 'text/javascript';
