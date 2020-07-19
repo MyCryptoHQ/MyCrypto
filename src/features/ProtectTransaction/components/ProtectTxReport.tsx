@@ -41,6 +41,7 @@ const Wrapper = styled(ProtectTxBase)<{ isSmScreen: boolean }>`
     text-align: left;
 
     > svg {
+      height: auto;
       position: absolute;
       left: -75px;
       bottom: -50px;
