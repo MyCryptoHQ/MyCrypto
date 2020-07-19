@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { translateRaw } from '@translations';
 
-import { SPACING } from '@theme';
+import { SPACING, FONT_SIZE } from '@theme';
 import { Typography } from '@components';
 import Icon from './Icon';
 
@@ -47,7 +47,7 @@ const providers: Record<string, PoweredByProvider> = {
   NANSEN: {
     icon: 'nansenLogo',
     text: translateRaw('POWERED_BY'),
-    fontSize: '12px'
+    fontSize: `${FONT_SIZE.XS}`
   },
   ENS: { icon: 'ensLogo', text: translateRaw('ENS_LOGO_TEXT'), flipped: true },
   COINGECKO: {
