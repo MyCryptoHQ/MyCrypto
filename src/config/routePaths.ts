@@ -12,11 +12,6 @@ const PATHS: IRoutePath[] = [
     path: '/buy'
   },
   {
-    name: 'HOME',
-    title: translateRaw('HOME'),
-    path: '/home'
-  },
-  {
     name: 'DASHBOARD',
     title: translateRaw('DASHBOARD'),
     path: '/dashboard'

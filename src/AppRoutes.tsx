@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
 import { Layout, LayoutConfig } from '@features/Layout';
-import { Home, PageNotFound, ScreenLockProvider, DrawerProvider } from '@features';
+import { Dashboard, PageNotFound, ScreenLockProvider, DrawerProvider } from '@features';
 import { ScrollToTop, useScreenSize } from '@utils';
 import { useFeatureFlags } from '@services';
 import { ROUTE_PATHS } from '@config/routePaths';
@@ -18,7 +18,6 @@ import { AppLoading } from '@AppLoading';
 
 const layoutConfig = (path: string, isMobile: boolean): LayoutConfig => {
   switch (path) {
-    case ROUTE_PATHS.HOME.path:
     case ROUTE_PATHS.ROOT.path:
       return {
         centered: false,
@@ -66,8 +65,7 @@ export const AppRoutes = () => {
                   {/* To avoid fiddling with layout we provide a complete route to home */}
                   <LayoutWithLocation>
                     <Switch>
-                      <Route path={ROUTE_PATHS.ROOT.path} component={Home} exact={true} />
-                      <Route path={ROUTE_PATHS.HOME.path} component={Home} exact={true} />
+                      <Route path={ROUTE_PATHS.ROOT.path} component={Dashboard} exact={true} />
                       {getAppRoutes(IS_ACTIVE_FEATURE)
                         .filter((route) => !route.seperateLayout)
                         .map((config, idx) => (

@@ -1,8 +1,8 @@
 import { PAGES } from './fixtures';
 import BasePage from './base-page.po';
 
-export default class NoAccountsPage extends BasePage {
+export default class AddAccountsPage extends BasePage {
   async waitPageLoaded() {
-    await this.waitForPage(PAGES.NO_ACCOUNTS);
+    await this.waitForPage(PAGES.ADD_ACCOUNT);
   }
 }

@@ -4,7 +4,6 @@ import { Redirect } from 'react-router-dom';
 import { IAppRoute } from '@types';
 import { ROUTE_PATHS } from '@config';
 import { IIS_ACTIVE_FEATURE } from '@config/isActiveFeature';
-import { Home, NoAccounts } from '@features';
 import { requiresDesktopApp } from './helpers';
 
 const Dashboard = lazy(() =>
@@ -109,15 +108,6 @@ const DownloadAppRedirect = () => <Redirect to={ROUTE_PATHS.DOWNLOAD_DESKTOP_APP
 
 export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE): IAppRoute[] => [
   {
-    name: ROUTE_PATHS.HOME.name,
-    title: ROUTE_PATHS.HOME.title,
-    path: ROUTE_PATHS.HOME.path,
-    enabled: true,
-    exact: true,
-    seperateLayout: true,
-    component: Home
-  },
-  {
     name: ROUTE_PATHS.DASHBOARD.name,
     title: ROUTE_PATHS.DASHBOARD.title,
     path: ROUTE_PATHS.DASHBOARD.path,
@@ -165,14 +155,6 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE): IAppR
     enabled: IS_ACTIVE_FEATURE.DOWNLOAD_DESKTOP_APP,
     exact: true,
     component: DownloadApp
-  },
-  {
-    name: ROUTE_PATHS.NO_ACCOUNTS.name,
-    title: ROUTE_PATHS.NO_ACCOUNTS.title,
-    path: ROUTE_PATHS.NO_ACCOUNTS.path,
-    enabled: true,
-    exact: true,
-    component: NoAccounts
   },
   {
     name: ROUTE_PATHS.REQUEST_ASSETS.name,
