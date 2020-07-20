@@ -18,9 +18,9 @@ const SAmount = styled.div`
   }
 `;
 
-const Asset = styled(Typography)<{ discrete?: boolean }>`
+const Asset = styled(Typography)<typeof Typography & { $discrete?: boolean }>`
   ${(props) =>
-    props.discrete
+    props.$discrete
       ? css`
         color: ${COLORS.BLUE_GREY};
         font-size: 0.9em;
@@ -58,7 +58,7 @@ export default function Amount({ assetValue, fiat, baseAssetValue, bold = false 
         {assetValue}
       </Asset>
       {baseAssetValue && (
-        <Asset as="span" discrete={true}>
+        <Asset as="span" $discrete={true}>
           {baseAssetValue}
         </Asset>
       )}

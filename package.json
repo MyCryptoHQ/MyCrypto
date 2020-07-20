@@ -20,7 +20,7 @@
     "@ledgerhq/hw-transport-webusb": "4.56.0",
     "@metamask/inpage-provider": "6.0.1",
     "@mycrypto/eth-scan": "2.1.0",
-    "@mycrypto/ui": "0.22.1",
+    "@mycrypto/ui": "https://github.com/MyCryptoHQ/ui#styled-components-v5",
     "@mycrypto/unlock-scan": "0.1.0",
     "@unstoppabledomains/resolution": "1.3.6",
     "@walletconnect/browser": "1.0.0-beta.39",

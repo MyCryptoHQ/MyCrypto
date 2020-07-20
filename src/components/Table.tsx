@@ -3,16 +3,8 @@
   In order to style the headers particularyly the Icon caret
 */
 
-import React, {
-  ClassAttributes,
-  Component,
-  DetailedHTMLProps,
-  ReactNode,
-  TdHTMLAttributes,
-  ThHTMLAttributes
-} from 'react';
-import styled, { StyledComponentClass } from 'styled-components';
-import { Theme } from '@mycrypto/ui';
+import React, { Component, ReactNode } from 'react';
+import styled from 'styled-components';
 import path from 'ramda/src/path';
 import isFunction from 'lodash/isFunction';
 
@@ -88,12 +80,13 @@ const TableHead = styled.tr`
   }
 `;
 
-interface HeadingProps extends CellProps {
+interface TableHeadingProps extends CellProps {
   isSortable?: boolean;
-  isHidden?: boolean;
+  role?: string;
+  colSpan?: number;
 }
 
-const TableHeading = styled(Typography)<HeadingProps>`
+const TableHeading = styled(Typography)<TableHeadingProps>`
   ${sharedCellProperties}
   color: ${(props) => props.theme.headline};
   font-weight: normal;
@@ -105,12 +98,7 @@ const TableHeading = styled(Typography)<HeadingProps>`
   background: ${(props) => props.theme.tableHeadBackground};
   z-index: 2;
   cursor: ${(props) => (props.isSortable ? 'pointer' : 'inherit')};
-` as StyledComponentClass<
-  ClassAttributes<HTMLTableHeaderCellElement> &
-    ThHTMLAttributes<HTMLTableHeaderCellElement> &
-    HeadingProps,
-  Theme
->;
+`;
 
 TableHeading.defaultProps = {
   as: 'th'
@@ -133,13 +121,7 @@ const TableGroupHead = styled(TableRow)`
 
 export const TableCell = styled(Typography)`
   ${sharedCellProperties};
-` as StyledComponentClass<
-  DetailedHTMLProps<
-    TdHTMLAttributes<HTMLTableDataCellElement> & CellProps,
-    HTMLTableDataCellElement
-  >,
-  Theme
->;
+`;
 
 const SortPlaceholder = styled.div`
   width: calc(9px + 0.5em);

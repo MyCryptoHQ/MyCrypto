@@ -5,38 +5,44 @@ import { Typography as UITypography } from '@mycrypto/ui';
 import { useScreenSize } from '@utils';
 import { BREAK_POINTS } from '@theme';
 
-interface Props {
+export interface Props {
   as?: string;
   value?: any;
-  children?: any;
   bold?: boolean;
   fontSize?: string;
-  style?: any;
   truncate?: boolean;
   inheritFontWeight?: boolean;
+  style?: React.CSSProperties;
   onClick?(): void;
 }
 
-type SProps = Props & { forwardedAs: string; maxCharLen: number };
+interface SProps {
+  as: string;
+  $maxCharLen: number;
+  $bold: boolean;
+  $fontSize: string;
+  $truncate: boolean;
+  $inheritFontWeight: boolean;
+  $value: string;
+}
 
-const STypography = styled(UITypography)`
+const STypography = styled(UITypography)<SProps & JSX.Element>`
   line-height: 24px;
   vertical-align: middle;
-  ${(p: SProps) => !p.inheritFontWeight && `font-weight: ${p.bold ? '600' : '400'};`}
-  font-size: ${(p: SProps) => p.fontSize} !important;
+  ${(p) => !p.$inheritFontWeight && `font-weight: ${p.$bold ? '600' : '400'};`}
+  font-size: ${(p) => p.$fontSize} !important;
   /*
     UITypography component defaults to a 'p' tag with a margin-bottom.
     To facilitate text and icon alignement we remove it here once and for all.
   */
   margin-bottom: 0px;
 
-  ${({ truncate, maxCharLen, children, value }) => {
-    const childrenLength = children && children.length;
-    const valueLength = value && value.length;
-    const charLength = childrenLength || valueLength;
+  ${({ $truncate: truncate, $maxCharLen: maxCharLen, $value: value }) => {
+    if (!truncate || !value) return;
+    const charLength = value && value.length;
 
     const styles: string[] = [];
-    if (truncate && charLength >= maxCharLen / 3) {
+    if (charLength >= maxCharLen / 3) {
       styles.push(`
           display: -webkit-box;
           -webkit-line-clamp: 3;
@@ -48,7 +54,7 @@ const STypography = styled(UITypography)`
           width: ${maxCharLen / 3}ch;
         `);
     }
-    if (truncate && charLength >= maxCharLen / 5) {
+    if (charLength >= maxCharLen / 5) {
       styles.push(`
         @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
           display: -webkit-box;
@@ -66,15 +72,16 @@ const STypography = styled(UITypography)`
   }}
 `;
 
-function Typography({
+const Typography: React.FC<Props> = ({
   as = 'span',
-  value,
   fontSize = '1rem',
+  value,
   bold,
-  children,
   truncate,
+  children,
+  inheritFontWeight,
   ...props
-}: Props) {
+}) => {
   const { isMobile } = useScreenSize();
   const maxCharLen = isMobile ? 58 : 75;
 
@@ -84,15 +91,17 @@ function Typography({
       // https://styled-components.com/docs/api#forwardedas-prop
       // @ts-ignore
       as={as}
-      bold={bold}
-      fontSize={fontSize}
-      truncate={truncate}
-      maxCharLen={maxCharLen}
+      $bold={bold}
+      $fontSize={fontSize}
+      $maxCharLen={maxCharLen}
+      $truncate={truncate}
+      $inheritFontWeight={inheritFontWeight}
+      $value={value}
       {...props}
     >
       {children ? children : value}
     </STypography>
   );
-}
+};
 
 export default Typography;

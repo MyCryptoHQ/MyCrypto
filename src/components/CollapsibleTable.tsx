@@ -3,12 +3,12 @@
   In order to style the headers particularyly the Icon caret
 */
 
-import React, { Component, DetailedHTMLProps, HTMLAttributes, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 import throttle from 'lodash/throttle';
 import isFunction from 'lodash/isFunction';
-import styled, { StyledComponentClass } from 'styled-components';
+import styled from 'styled-components';
 
-import { Theme, scale, Icon, StackedCardData, Typography } from '@mycrypto/ui';
+import { scale, Icon, StackedCardData, Typography } from '@mycrypto/ui';
 
 import { Table, TableData, TableConfig } from './Table';
 import { StackedCard } from './StackedCard';
@@ -30,11 +30,6 @@ export interface CollapsibleTableData extends TableData {
 interface CollapsedGroups {
   [title: string]: boolean;
 }
-
-type StyledHTMLElement = StyledComponentClass<
-  DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>,
-  Theme
->;
 
 interface Flippable {
   isFlipped?: boolean;
@@ -111,7 +106,7 @@ const GroupHeading = styled(Typography)`
   text-transform: uppercase;
   font-size: ${scale(2)};
   cursor: pointer;
-` as StyledHTMLElement;
+`;
 
 GroupHeading.defaultProps = {
   as: 'section',

@@ -2191,10 +2191,9 @@
     "@ethersproject/bignumber" "^5.0.0-beta.135"
     isomorphic-unfetch "^3.0.0"
 
-"@mycrypto/ui@0.22.1":
-  version "0.22.1"
-  resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.22.1.tgz#a562b30a14161dd302ae5f03352a9114a0be1fb6"
-  integrity sha512-0m4zUMl6CfPJOtcoKjSU2osl5ZBjP22496FgijNmph0NnUDNOqAoenbi9XM9hUOyMX4J1ekNbOthZTvVwFYe8g==
+"@mycrypto/ui@https://github.com/MyCryptoHQ/ui#styled-components-v5":
+  version "0.23.0"
+  resolved "https://github.com/MyCryptoHQ/ui#f2f166d13fb8e34b0800a18abe296a1f795e9ca8"
   dependencies:
     "@types/dom-clipboard-api" "^1.0.1"
     "@types/lodash.throttle" "^4.1.4"
