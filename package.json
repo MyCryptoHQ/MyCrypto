@@ -1,9 +1,9 @@
 {
-  "name": "Valorbit",
+  "name": "Valorbit-Wallet",
   "author": "Valorbit",
-  "version": "1.4.0",
+  "version": "1.4.50",
   "main": "main.js",
-  "description": "Valorbit is a free, open-source interface for interacting with the blockchain",
+  "description": "Valorbit Wallet is a free, open-source interface for interacting with the blockchain",
   "repository": "https://github.com/valorbit/valorbit-wallet",
   "engines": {
     "node": ">= 8.16.0",
