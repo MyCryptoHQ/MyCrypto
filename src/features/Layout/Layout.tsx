@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { BannerType } from '@types';
@@ -13,7 +13,6 @@ export interface LayoutConfig {
   fluid?: boolean;
   fullW?: boolean;
   bgColor?: string;
-  marginTop?: string;
   paddingV?: string;
 }
 interface Props {
@@ -42,7 +41,7 @@ const STop = styled.div`
   }
 `;
 
-const SContainer = styled('div')`
+const SContainer = styled.div`
   padding: ${(p) =>
     `${p.paddingV ? p.paddingV : SPACING.BASE} ${p.fluid || p.fullW ? 0 : MIN_CONTENT_PADDING}`};
   width: 100%;
@@ -52,7 +51,7 @@ const SContainer = styled('div')`
   * Since it is aboslute positionning we move the container down.
   */
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    margin-top: ${(p) => (p.marginTop ? p.marginTop : 0)};
+    margin-top: 159px;
     padding: ${(p) =>
       `${p.paddingV ? p.paddingV : SPACING.BASE} ${p.fluid || p.fullW ? 0 : MIN_CONTENT_PADDING}`};
   }
@@ -76,13 +75,9 @@ export default function Layout({ config = {}, className = '', children }: Props)
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
   const { error, shouldShowError, getErrorMessage } = useContext(ErrorContext);
 
-  // Store the calculated height of STop so we can adapt the marginTop of SContainer
-  // when the mobile header has a fixed positioning.
-  const [topWidth, setTopWidth] = useState('0px');
-
   return (
     <SMain className={className} bgColor={bgColor}>
-      <STop ref={(elem: any) => elem && setTopWidth(`${elem.getBoundingClientRect().height}px`)}>
+      <STop>
         {shouldShowError() && error && (
           <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
         )}
@@ -93,13 +88,7 @@ export default function Layout({ config = {}, className = '', children }: Props)
           setDrawerScreen={setScreen}
         />
       </STop>
-      <SContainer
-        centered={centered}
-        fluid={fluid}
-        fullW={fullW}
-        marginTop={topWidth}
-        paddingV={paddingV}
-      >
+      <SContainer centered={centered} fluid={fluid} fullW={fullW} paddingV={paddingV}>
         {children}
       </SContainer>
       <Footer />
