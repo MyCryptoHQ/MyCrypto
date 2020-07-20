@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { BannerType } from '@types';
@@ -12,6 +12,7 @@ export interface LayoutConfig {
   centered?: boolean;
   fluid?: boolean;
   fullW?: boolean;
+  marginTop?: number;
   bgColor?: string;
   paddingV?: string;
 }
@@ -51,7 +52,7 @@ const SContainer = styled.div`
   * Since it is aboslute positionning we move the container down.
   */
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    margin-top: 159px;
+    margin-top: ${(p) => (p.marginTop ? p.marginTop : 0)}px;
     padding: ${(p) =>
       `${p.paddingV ? p.paddingV : SPACING.BASE} ${p.fluid || p.fullW ? 0 : MIN_CONTENT_PADDING}`};
   }
@@ -75,9 +76,23 @@ export default function Layout({ config = {}, className = '', children }: Props)
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
   const { error, shouldShowError, getErrorMessage } = useContext(ErrorContext);
 
+  const [topHeight, setTopHeight] = useState(0);
+
+  const topRef = useRef<any>(null);
+
+  useLayoutEffect(() => {
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) setTopHeight(entry.contentRect.height);
+    });
+
+    resizeObserver.observe(topRef.current);
+
+    return () => resizeObserver.disconnect();
+  }, [topRef.current]);
+
   return (
     <SMain className={className} bgColor={bgColor}>
-      <STop>
+      <STop ref={topRef}>
         {shouldShowError() && error && (
           <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
         )}
@@ -88,7 +103,13 @@ export default function Layout({ config = {}, className = '', children }: Props)
           setDrawerScreen={setScreen}
         />
       </STop>
-      <SContainer centered={centered} fluid={fluid} fullW={fullW} paddingV={paddingV}>
+      <SContainer
+        centered={centered}
+        fluid={fluid}
+        fullW={fullW}
+        paddingV={paddingV}
+        marginTop={topHeight}
+      >
         {children}
       </SContainer>
       <Footer />
