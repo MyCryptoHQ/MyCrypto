@@ -95,6 +95,15 @@ jobs:
         env:
           DEST_DIR: ${{ github.head_ref }}
           SOURCE_DIR: 'dist/download'
+
+      - name: S3 Sync - Downloadable - PR Number
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'pull_request'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+        env:
+          DEST_DIR: 'pr/${PR_NUMBER}'
+          SOURCE_DIR: 'dist/download'
       ###
       - name: S3 Sync - Storybook SHA
         uses: jakejarvis/s3-sync-action@v0.5.1
@@ -122,6 +131,15 @@ jobs:
         env:
           DEST_DIR: 'storybook/${{ github.head_ref }}'
           SOURCE_DIR: 'storybook-static'
+          
+      - name: S3 Sync - Storybook - PR Number
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'pull_request'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+        env:
+          DEST_DIR: 'storybook/pr/${PR_NUMBER}'
+          SOURCE_DIR: 'dist/download'
 
       - name: Mycrypto-bot trigger
         if: github.event_name == 'pull_request'
