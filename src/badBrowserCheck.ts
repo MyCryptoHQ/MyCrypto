@@ -29,17 +29,3 @@ const isSupported = (feature: keyof typeof Modernizr): boolean => {
 document.addEventListener('DOMContentLoaded', () => {
   features.every(isSupported);
 });
-
-// Firefox Metamask Hack
-(() => {
-  if (
-    !(window as CustomWindow).ethereum &&
-    !(window as CustomWindow).web3 &&
-    navigator.userAgent.includes('Firefox')
-  ) {
-    const script = document.createElement('script');
-    script.src = './inpage-metamask.js';
-    script.type = 'text/javascript';
-    document.getElementsByTagName('head')[0].appendChild(script);
-  }
-})();

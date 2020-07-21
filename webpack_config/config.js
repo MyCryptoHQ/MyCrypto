@@ -4,6 +4,7 @@ const path = require('path');
 const paths = {
   root: path.join(__dirname, '../'),
   src: path.join(__dirname, '../src'),
+  vendor: path.join(__dirname, '../src/vendor'),
   output: path.join(__dirname, '../dist'),
   assets: path.join(__dirname, '../src/assets'),
   static: path.join(__dirname, '../static'),
