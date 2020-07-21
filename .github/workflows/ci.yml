@@ -280,7 +280,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Retrieves project from the git branch
+        uses: actions/checkout@v1
+        
       - name: Retrieve node version from .nvmrc
         run: echo "##[set-output name=NVMRC;]$(cat package.json | grep '\"node\":' | sed 's/^ *//;s/ *$//;s/\"node\":\ \"//;s/\",//')"
         id: nvm
