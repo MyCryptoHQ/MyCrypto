@@ -129,6 +129,10 @@ const customStyles: Styles = {
       borderRadius: '0.125em'
     };
   },
+  menuList: (provided) => ({
+    ...provided,
+    padding: 0
+  }),
   control: (provided, state) => ({
     ...provided,
     border: '0.125em solid rgba(63,63,68,0.05)',
