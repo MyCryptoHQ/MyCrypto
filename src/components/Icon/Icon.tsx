@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
-import InlineSVG, { IProps as InlineSVGProps } from 'react-inlinesvg';
+import InlineSVG from 'react-inlinesvg';
 
 import back from '@assets/icons/actions/back.svg';
 import expand from '@assets/icons/actions/expand.svg';
@@ -54,7 +54,7 @@ const StyledInlineSVG = styled(InlineSVG)`
   }
 `;
 
-interface Props extends Omit<InlineSVGProps, 'src'> {
+interface Props extends Omit<React.ComponentProps<typeof StyledInlineSVG>, 'src'> {
   type: keyof typeof icons;
   color?: string;
 }
