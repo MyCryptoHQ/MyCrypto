@@ -81,17 +81,17 @@ export default function Layout({ config = {}, className = '', children }: Props)
   const topRef = useRef<any>(null);
 
   useLayoutEffect(() => {
-    // Wrap with requestAnimationFrame to avoir loop limit exceeded error
-    // https://stackoverflow.com/questions/49384120/resizeobserver-loop-limit-exceeded
-    window.requestAnimationFrame(() => {
-      const resizeObserver = new ResizeObserver((entries) => {
+    const resizeObserver = new ResizeObserver((entries) => {
+      // Wrap with requestAnimationFrame to avoir loop limit exceeded error
+      // https://stackoverflow.com/questions/49384120/resizeobserver-loop-limit-exceeded
+      window.requestAnimationFrame(() => {
         for (const entry of entries) setTopHeight(entry.contentRect.height);
       });
-
-      resizeObserver.observe(topRef.current);
-
-      return () => resizeObserver.disconnect();
     });
+
+    resizeObserver.observe(topRef.current);
+
+    return () => resizeObserver.disconnect();
   }, [topRef.current]);
 
   return (
