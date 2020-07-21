@@ -6,7 +6,6 @@ import translate, { translateRaw } from 'translations';
 import { isValidPath } from 'libs/validators';
 import { AppState } from 'features/reducers';
 import { configSelectors } from 'features/config';
-import * as selectors from 'features/selectors';
 import {
   deterministicWalletsTypes,
   deterministicWalletsActions
@@ -30,16 +29,13 @@ interface OwnProps {
 interface StateProps {
   addressLabels: ReturnType<typeof addressBookSelectors.getAddressLabels>;
   wallets: AppState['deterministicWallets']['wallets'];
-  desiredToken: AppState['deterministicWallets']['desiredToken'];
   network: ReturnType<typeof configSelectors.getNetworkConfig>;
-  tokens: ReturnType<typeof selectors.getTokens>;
 }
 
 interface DispatchProps {
   getDeterministicWallets(
     args: deterministicWalletsTypes.GetDeterministicWalletsArgs
   ): deterministicWalletsTypes.GetDeterministicWalletsAction;
-  setDesiredToken(tkn: string | undefined): deterministicWalletsTypes.SetDesiredTokenAction;
   onCancel(): void;
   onConfirmAddress(address: string, addressIndex: number): void;
   onPathChange(dPath: DPath): void;
@@ -88,7 +84,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   }
 
   public render() {
-    const { wallets, desiredToken, network, tokens, dPaths, onCancel } = this.props;
+    const { wallets, network, dPaths, onCancel } = this.props;
     const { selectedAddress, customPath, page } = this.state;
 
     const buttons: IButton[] = [
@@ -157,20 +153,6 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
                   <td>#</td>
                   <td>Address</td>
                   <td>{network.unit}</td>
-                  <td>
-                    <select
-                      className="DWModal-addresses-table-token"
-                      value={desiredToken}
-                      onChange={this.handleChangeToken}
-                    >
-                      <option value="">-Token-</option>
-                      {tokens.map(t => (
-                        <option key={t.symbol} value={t.symbol}>
-                          {t.symbol}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
                   <td>{translate('ACTION_5')}</td>
                 </tr>
               </thead>
@@ -240,11 +222,6 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
     }
   };
 
-  private handleChangeToken = (ev: React.FormEvent<HTMLSelectElement>) => {
-    this.props.setDesiredToken(ev.currentTarget.value || undefined);
-    this.refreshPage();
-  };
-
   private handleConfirmAddress = () => {
     if (this.state.selectedAddress) {
       this.props.onConfirmAddress(this.state.selectedAddress, this.state.selectedAddrIndex);
@@ -254,10 +231,6 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   private selectAddress(selectedAddress: string, selectedAddrIndex: number) {
     this.setState({ selectedAddress, selectedAddrIndex });
   }
-
-  private refreshPage = () => {
-    this.setState({ page: this.state.page }, this.getAddresses);
-  };
 
   private nextPage = () => {
     this.setState({ page: this.state.page + 1 }, this.getAddresses);
@@ -280,7 +253,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   }
 
   private renderWalletRow(wallet: deterministicWalletsTypes.DeterministicWalletData) {
-    const { desiredToken, network, addressLabels } = this.props;
+    const { network, addressLabels } = this.props;
     const { selectedAddress } = this.state;
     const label = addressLabels[wallet.address.toLowerCase()];
     const spanClassName = label ? 'DWModal-addresses-table-address-text' : '';
@@ -295,9 +268,6 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
         }
       };
     }
-
-    // Get renderable values, but keep 'em short
-    const token = desiredToken ? wallet.tokenValues[desiredToken] : null;
 
     return (
       <tr
@@ -328,19 +298,6 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
           />
         </td>
         <td>
-          {desiredToken ? (
-            <UnitDisplay
-              decimal={token ? token.decimal : 0}
-              value={token ? token.value : null}
-              symbol={desiredToken}
-              displayShortBalance={true}
-              checkOffline={true}
-            />
-          ) : (
-            <span className="DWModal-addresses-table-na">N/A</span>
-          )}
-        </td>
-        <td>
           <a
             target="_blank"
             href={blockExplorer.addressUrl(wallet.address)}
@@ -358,17 +315,14 @@ function mapStateToProps(state: AppState): StateProps {
   return {
     addressLabels: addressBookSelectors.getAddressLabels(state),
     wallets: state.deterministicWallets.wallets,
-    desiredToken: state.deterministicWallets.desiredToken,
-    network: configSelectors.getNetworkConfig(state),
-    tokens: selectors.getTokens(state)
+    network: configSelectors.getNetworkConfig(state)
   };
 }
 
 const DeterministicWalletsModal = connect(
   mapStateToProps,
   {
-    getDeterministicWallets: deterministicWalletsActions.getDeterministicWallets,
-    setDesiredToken: deterministicWalletsActions.setDesiredToken
+    getDeterministicWallets: deterministicWalletsActions.getDeterministicWallets
   }
 )(DeterministicWalletsModalClass);
 
