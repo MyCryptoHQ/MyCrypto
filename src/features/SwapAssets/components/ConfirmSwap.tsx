@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
 import translate from '@translations';
 
-import { StoreAccount } from '@types';
+import { StoreAccount, TAddress } from '@types';
 import { COLORS } from '@theme';
 import { Typography, Currency } from '@components';
 import { FromToAccount, SwapFromToDiagram } from '@components/TransactionFlow/displays';
+import { AddressBookContext } from '@services';
+import { isSameAddress } from '@utils';
 
 import { IAssetPair } from '../types';
 
@@ -45,7 +47,11 @@ export default function ConfirmSwap({
   onClick: onSuccess
 }: Props) {
   const { fromAsset, toAsset, fromAmount, toAmount, rate: exchangeRate } = assetPair;
-
+  const { addressBook } = useContext(AddressBookContext);
+  const fromAddressBookEntry = addressBook.find(
+    ({ address, network }) =>
+      isSameAddress(address as TAddress, account.address) && network === account.networkId
+  );
   return (
     <div>
       <SwapFromToDiagram
@@ -57,8 +63,15 @@ export default function ConfirmSwap({
         toAmount={toAmount.toString(10)}
       />
       <FromToAccount
-        from={{ address: account.address, label: account.label }}
-        to={{ address: account.address, label: account.label }}
+        fromAccount={{
+          address: account.address,
+          addressBookEntry: fromAddressBookEntry
+        }}
+        toAccount={{
+          address: account.address,
+          addressBookEntry: fromAddressBookEntry
+        }}
+        networkId={account.networkId}
       />
       <ConversionRateBox>
         <ConversionLabel bold={true} value={translate('SWAP_RATE')} fontSize="0.65em" />

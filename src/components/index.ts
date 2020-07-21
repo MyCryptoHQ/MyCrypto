@@ -77,3 +77,4 @@ export { default as ContractLookupField } from './ContractLookupField';
 export { default as BalanceDetailsTable } from './BalanceDetailsTable';
 export { AddIcon, SubtractIcon } from './icons';
 export { default as PoweredByText } from './PoweredByText';
+export { default as EditableAccountLabel } from './EditableAccountLabel';

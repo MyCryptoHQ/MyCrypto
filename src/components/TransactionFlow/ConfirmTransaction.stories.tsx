@@ -12,8 +12,8 @@ import { constructSenderFromTxConfig } from './helpers';
 // Define props
 const assetRate = 1.34;
 const baseAssetRate = 1.54;
-const senderContact = devContacts[0] as ExtendedAddressBook;
-const recipientContact = devContacts[1] as ExtendedAddressBook;
+const senderContact = Object.values(devContacts)[0] as ExtendedAddressBook;
+const recipientContact = Object.values(devContacts)[1] as ExtendedAddressBook;
 const onComplete = noOp;
 
 export default { title: 'ConfirmTx' };
