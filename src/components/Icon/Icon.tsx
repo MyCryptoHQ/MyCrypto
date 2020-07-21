@@ -48,19 +48,19 @@ const icons = {
   zapperLogo
 };
 
-const StyledInlineSVG = styled(InlineSVG)`
+const SInlineSVG = styled(InlineSVG)`
   svg {
     color: ${(props) => props.color};
   }
 `;
 
-interface Props extends Omit<React.ComponentProps<typeof StyledInlineSVG>, 'src'> {
+interface Props extends Omit<React.ComponentProps<typeof InlineSVG>, 'src'> {
   type: keyof typeof icons;
   color?: string;
 }
 
-const Icon: FunctionComponent<Props> = ({ type, ...props }) => (
-  <StyledInlineSVG src={icons[type]} {...props} />
-);
+const Icon: FunctionComponent<Props> = ({ type, ...props }) => {
+  return <SInlineSVG src={icons[type]} {...props} />;
+};
 
 export default Icon;
