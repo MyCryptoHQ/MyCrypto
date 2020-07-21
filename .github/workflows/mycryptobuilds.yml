@@ -33,7 +33,7 @@ jobs:
           echo $E2E_BASE_URL
           echo "::set-env name=E2E_BASE_URL::$E2E_BASE_URL"
 
-      # Define url as env var to be used  TestCafe.
+      # Define url as env var to be used by TestCafe.
       - name: Set E2E_BASE_URL
         if: github.ref == 'refs/heads/master'
         run: |
