@@ -33,7 +33,7 @@ jobs:
           echo $E2E_BASE_URL
           echo "::set-env name=E2E_BASE_URL::$E2E_BASE_URL"
 
-      # Define url as env var to be used by TestCafe.
+      # Define url as env var to be used  TestCafe.
       - name: Set E2E_BASE_URL
         if: github.ref == 'refs/heads/master'
         run: |
@@ -64,8 +64,8 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install
 
-      - name: yarn build:dev
-        run: yarn build:dev
+      - name: yarn build:staging
+        run: yarn build:staging
 
       - name: Zip standalone build folder
         run: zip -r dist/web/standalone_mycrypto.zip dist/web/
