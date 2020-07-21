@@ -1,18 +1,19 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const development = require('./development');
+const production = require('./production');
 const config = require('./config');
 
-module.exports = merge.smart(development, {
+module.exports = merge.smart(production, {
   output: {
-    path: path.join(config.path.output, 'electron-js')
+    path: path.join(config.path.output, 'download'),
+    publicPath: './'
   },
 
   plugins: [
     new webpack.EnvironmentPlugin({
-      'BUILD_ELECTRON': 'true',
-      'BUILD_DOWNLOADABLE': 'true'
+      BUILD_DOWNLOADABLE: 'true',
+      BUILD_HTML: 'true'
     })
   ]
 });
