@@ -39,6 +39,7 @@ export interface TableData extends TableContent {
   head: (string | JSX.Element)[];
   overlay?: ReactNode;
   overlayRows?: (number | string)[];
+  selectedIndexes?: [];
   config?: TableConfig;
 }
 
@@ -104,7 +105,8 @@ TableHeading.defaultProps = {
   as: 'th'
 };
 
-export const TableRow = styled.tr`
+export const TableRow = styled.tr<{ selected?: boolean }>`
+  ${(p) => p.selected && 'background: rgba(179, 221, 135, 0.1);'}
   border-bottom: 0.0625em solid ${(props) => props.theme.tableRowBorder};
   & > td:first-child {
     padding-left: ${SPACING.BASE};
@@ -209,14 +211,13 @@ class AbstractTable extends Component<Props, State> {
   }
 
   public render() {
-    const { head, config, overlay, overlayRows, ...rest } = this.props;
+    const { head, config, overlay, overlayRows, selectedIndexes, ...rest } = this.props;
     const { collapsedGroups, sortedColumnDirection } = this.state;
     const { overlayRoot } = config || { overlayRoot: false };
     const { body, groups } = this.getSortedLayout();
 
     const isReversedColumn = (heading: any) =>
       config && config.reversedColumns && config.reversedColumns.includes(heading);
-
     return (
       <table {...rest}>
         <thead>
@@ -272,8 +273,14 @@ class AbstractTable extends Component<Props, State> {
             const isOverlayRowIncluded = overlay && overlayRows!.includes(rowIndex);
             const overlayRow =
               isOverlayRowIncluded && isFunction(overlay) ? overlay(rowIndex) : overlay;
+            const isSelected = (index) =>
+              selectedIndexes && selectedIndexes.includes(index) ? true : false;
             return (
-              <TableRow key={rowIndex} onClick={() => this.handleRowClicked(rowIndex)}>
+              <TableRow
+                key={rowIndex}
+                onClick={() => this.handleRowClicked(rowIndex)}
+                selected={isSelected(rowIndex)}
+              >
                 {isOverlayRowIncluded ? (
                   // @todo: Solve jump in th width when the overlay is toggled.
                   <td colSpan={head.length}>{overlayRow}</td>

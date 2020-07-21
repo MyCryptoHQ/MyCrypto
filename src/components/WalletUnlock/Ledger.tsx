@@ -54,6 +54,11 @@ const Parameters = styled.div`
   justify-content: space-between;
 `;
 
+const TableContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 // const WalletService = WalletFactory(WalletId.LEDGER_NANO_S);
 
 const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
@@ -200,12 +205,20 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
             <Trans id="MNEMONIC_ADD_CUSTOM_DPATH" />
           </Button>
         </Parameters>
-        <DeterministicAccountList
-          isComplete={state.completed}
-          asset={state.asset}
-          finishedAccounts={state.finishedAccounts}
-          onUnlock={onUnlock}
-        />
+        <TableContainer>
+          <DeterministicAccountList
+            isComplete={state.completed}
+            asset={state.asset}
+            finishedAccounts={state.finishedAccounts}
+            onUnlock={onUnlock}
+          />
+        </TableContainer>
+        <Button
+          disabled={!state.completed || freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR}
+          onClick={() => handleFreshAddressGeneration()}
+        >
+          {`Test Generate Fresh Address`}
+        </Button>
       </MnemonicWrapper>
     );
   } else {

@@ -25,6 +25,13 @@ const HeaderAlignment = styled.div`
   }
 `;
 
+const DeterministicAccountListWrapper = styled.div`
+  width: 800px;
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    width: calc(100vw - 30px);
+  }
+`;
+
 interface DeterministicAccountListProps {
   finishedAccounts: DWAccountDisplay[];
   asset: ExtendedAsset;
@@ -43,6 +50,7 @@ interface ISelectedAccount {
 export default function DeterministicAccountList(props: DeterministicAccountListProps) {
   const { finishedAccounts, asset, isComplete, onUnlock } = props;
   const [selectedAccounts, setSelectedAccounts] = useState([] as ISelectedAccount[]);
+  const [selectedIndexes, setSelectedIndexes] = useState([] as number[]);
   const accountsToUse = uniqBy(prop('address'), finishedAccounts).filter(
     ({ isFreshAddress, balance }) => (balance && !balance.isZero()) || isFreshAddress
   );
@@ -78,8 +86,19 @@ export default function DeterministicAccountList(props: DeterministicAccountList
     );
   };
 
+  const alreadyExists = (selectedIndexes: number[], rowIndex: number) =>
+    selectedIndexes.includes(rowIndex);
+
+  const selectRow = (rowIndex: number) => {
+    setSelectedIndexes(
+      alreadyExists(selectedIndexes, rowIndex)
+        ? selectedIndexes.filter((value) => value != rowIndex)
+        : [...selectedIndexes, rowIndex]
+    );
+  };
+
   return (
-    <>
+    <DeterministicAccountListWrapper>
       <>
         {`Scanned Total: ${finishedAccounts.length}`}
         <br />
@@ -99,6 +118,8 @@ export default function DeterministicAccountList(props: DeterministicAccountList
           accountsToUse,
           selectedAccounts,
           asset,
+          selectedIndexes,
+          selectRow,
           toggleAccountSelection
         )}
       />
@@ -106,7 +127,7 @@ export default function DeterministicAccountList(props: DeterministicAccountList
       <Button disabled={selectedAccounts.length === 0} onClick={handleSubmit}>
         {`Add ${selectedAccounts.length} Accounts`}
       </Button>
-    </>
+    </DeterministicAccountListWrapper>
   );
 }
 
@@ -174,6 +195,8 @@ const buildDeterministicAccountTable = (
   accounts: DWAccountDisplay[],
   selectedAccounts: ISelectedAccount[],
   asset: ExtendedAsset,
+  selectedIndexes: number[],
+  selectRow: (rowIndex: number) => void,
   toggleAccountSelection: (address: string, path: string) => void
 ) => {
   const [sortingState, setSortingState] = useState(initialSortingState);
@@ -278,7 +301,9 @@ const buildDeterministicAccountTable = (
       <div key={index}>{asset.ticker}</div>
     ]),
     config: {
-      primaryColumn: translateRaw('DETERMINISTIC_ACCOUNT_LIST_LABEL')
-    }
+      primaryColumn: translateRaw('DETERMINISTIC_ACCOUNT_LIST_LABEL'),
+      handleRowClicked: selectRow
+    },
+    selectedIndexes
   };
 };

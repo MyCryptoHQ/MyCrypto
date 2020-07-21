@@ -24,7 +24,8 @@ const FixedSizeCollapsibleTable = ({
   breakpoint,
   overlay,
   overlayRows,
-  maxHeight = '650px'
+  maxHeight = '650px',
+  selectedIndexes
 }: FixedTableProps) => (
   <TableContainer maxHeight={maxHeight}>
     <CollapsibleTable
@@ -35,6 +36,7 @@ const FixedSizeCollapsibleTable = ({
       breakpoint={breakpoint}
       overlay={overlay}
       overlayRows={overlayRows}
+      selectedIndexes={selectedIndexes}
     />
   </TableContainer>
 );
