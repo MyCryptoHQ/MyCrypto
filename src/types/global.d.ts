@@ -16,6 +16,7 @@ interface CustomWindow extends Window {
 }
 
 // Polyfill for ResizeObserver since type is missing from TS
+// https://github.com/que-etc/resize-observer-polyfill/blob/master/src/index.d.ts
 interface DOMRectReadOnly {
   readonly x: number;
   readonly y: number;
