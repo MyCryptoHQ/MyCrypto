@@ -33,6 +33,7 @@ export default function Dashboard() {
   const { IS_ACTIVE_FEATURE } = useFeatureFlags();
   const { isMyCryptoMember, currentAccounts } = useContext(StoreContext);
   const { accounts } = useContext(AccountContext);
+  console.debug('process.env: ', process.env.NODE_ENV, process.env.BUILD_DOWNLOADABLE)
   return (
     <DashboardWrapper>
       {/* Mobile only */}
