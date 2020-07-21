@@ -5,7 +5,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import { HashRouter, BrowserRouter } from 'react-router-dom';
 
 import { GAU_THEME } from '@theme';
-import { IS_ELECTRON, IS_STAGING } from '@utils';
+import { IS_ELECTRON } from '@utils';
 import { NewAppReleaseModal } from '@components';
 import { DevToolsManager } from '@features';
 import AppProviders from './AppProviders';
@@ -27,8 +27,10 @@ class RootClass extends Component {
   }
 
   public render() {
-    const Router: any = IS_STAGING ? HashRouter : BrowserRouter;
-
+    const Router: any = !!process.env.BUILD_DOWNLOADABLE ? HashRouter : BrowserRouter;
+    console.debug(
+      `is downloadable: ${!!process.env.BUILD_DOWNLOADABLE} ~~~ node env: ${!!process.env.NODE_ENV}`
+    );
     return (
       <ThemeProvider theme={GAU_THEME}>
         <Router>

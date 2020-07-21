@@ -46,7 +46,8 @@ module.exports = merge.smart(common, {
 
   plugins: [
     new webpack.EnvironmentPlugin({
-      NODE_ENV: process.env.NODE_ENV
+      NODE_ENV: process.env.NODE_ENV,
+      BUILD_DOWNLOADABLE: process.env.NODE_ENV === 'development' ? 'true' : 'false'
     }),
 
     new MiniCSSExtractPlugin({
