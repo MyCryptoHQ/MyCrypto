@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import React, { useState, useEffect } from 'react';
 
-import { InputField, Dropdown, Button, Spinner, InlineMessage, Typography } from '@components';
+import { InputField, Selector, Button, Spinner, InlineMessage, Typography } from '@components';
 import { StoreAccount, ITxConfig, Network } from '@types';
 import { COLORS, monospace } from '@theme';
 import { translateRaw } from '@translations';
@@ -126,7 +126,7 @@ export default function GeneratedInteractionForm({
 
   useEffect(updateGasCallProps, [account]);
 
-  const handleFunctionSelected = (selectedFunction: ABIItem) => {
+  const handleFunctionSelected = (selectedFunction?: ABIItem) => {
     if (!selectedFunction) return;
 
     const newFunction = generateFunctionFieldsDisplayNames(selectedFunction);
@@ -215,7 +215,7 @@ export default function GeneratedInteractionForm({
       <HorizontalLine />
       <DropdownWrapper>
         <Label>{translateRaw('CONTRACT_INTERACT_TITLE')}</Label>
-        <Dropdown
+        <Selector
           value={currentFunction}
           options={functions}
           onChange={(selectedFunction) => {

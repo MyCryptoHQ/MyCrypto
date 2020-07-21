@@ -46,7 +46,7 @@ test('Should be able to continue to next step', async (t) => {
 
   await t
     .click(
-      Selector('.Select')
+      Selector('[data-testid="selector"]')
         .find('div')
         .withText(getTransValueByKey('ACCOUNT_LOOKUP_SELECTION_PLACEHOLDER'))
     )

@@ -32,12 +32,12 @@ export {
   Fiat,
   Asset,
   ExtendedAsset,
-  IAsset,
   TTicker,
   TAssetType,
   AssetBalanceObject,
   StoreAsset,
-  ReserveAsset
+  ReserveAsset,
+  ISwapAsset
 } from './asset';
 export { Social, AssetSocial } from './social';
 export { StoreAccount, IRawAccount, IAccount } from './account';

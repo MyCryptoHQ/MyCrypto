@@ -5,7 +5,7 @@ import prop from 'ramda/src/prop';
 import { MOONPAY_ASSET_UUIDS } from '@utils';
 import { FormData, WalletId, ExtendedAsset } from '@types';
 import translate, { translateRaw } from '@translations';
-import { Spinner, Button, DeterministicAccountList, AssetDropdown } from '@components';
+import { Spinner, Button, DeterministicAccountList, AssetSelector } from '@components';
 import {
   EXT_URLS,
   TREZOR_DERIVATION_PATHS,
@@ -48,7 +48,7 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
     WalletId.TREZOR_NEW,
     DEFAULT_GAP_TO_SCAN_FOR
   );
-  // @todo -> Figure out which assets to display in dropdown. Dropdown is heavy with 900+ assets in it. Loads slow af.
+  // @todo -> Figure out which assets to display in dropdown. Selector is heavy with 900+ assets in it. Loads slow af.
   const filteredAssets = assets.filter(({ uuid }) => MOONPAY_ASSET_UUIDS.includes(uuid)); // @todo - fix this.
 
   const handleNullConnect = () => {
@@ -68,7 +68,7 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
   if (state.isConnected && state.asset && (state.queuedAccounts || state.finishedAccounts)) {
     return (
       <div className="Mnemonic-dpath">
-        <AssetDropdown
+        <AssetSelector
           selectedAsset={assetToUse}
           assets={filteredAssets}
           onSelect={(option: ExtendedAsset) => {

@@ -11,12 +11,6 @@ export interface Fiat {
   prefix?: boolean;
 }
 
-export interface IAsset {
-  symbol: TSymbol;
-  name: string;
-  network?: string;
-}
-
 export type TAssetType = 'base' | 'erc20' | 'fiat';
 
 export interface Asset {
@@ -58,3 +52,10 @@ export type StoreAsset = ExtendedAsset & {
   mtime: number;
   rate?: number;
 };
+
+export interface ISwapAsset {
+  name: string;
+  symbol: TSymbol;
+  ticker?: string;
+  uuid: TUuid;
+}

@@ -1,9 +1,10 @@
 import React from 'react';
-import { OnInputKeyDownHandler } from 'react-select';
+import { FocusEventHandler, KeyboardEventHandler } from 'react-select/src/types';
 
 import { translateRaw } from '@translations';
-import { AccountSummary, AccountOption, Dropdown } from '@components';
+import { AccountSummary, Divider, Selector } from '@components';
 import { Asset, IReceiverAddress } from '@types';
+import { SPACING } from '@theme';
 
 import addressBookIcon from '@assets/images/icn-address-book.svg';
 
@@ -17,13 +18,13 @@ interface IGeneralLookupDropdownProps {
   name: string;
   value: IReceiverAddress;
   asset?: Asset;
-  onEnterKeyDown: OnInputKeyDownHandler;
+  onEnterKeyDown: KeyboardEventHandler;
+  onBlur: FocusEventHandler;
   inputValue: string;
   placeholder?: string;
   onSelect(option: IReceiverAddress): void;
   onChange?(e: any): void;
   onInputChange(e: any): string;
-  onBlur(inputString: string): void;
 }
 
 const GeneralLookupDropdown = ({
@@ -37,7 +38,7 @@ const GeneralLookupDropdown = ({
   onEnterKeyDown,
   placeholder
 }: IGeneralLookupDropdownProps) => (
-  <Dropdown
+  <Selector
     dropdownIcon={<img src={addressBookIcon} />}
     onInputKeyDown={onEnterKeyDown}
     inputValue={inputValue}
@@ -52,10 +53,19 @@ const GeneralLookupDropdown = ({
     }}
     onInputChange={onInputChange}
     onBlur={onBlur}
-    optionComponent={AccountOption}
-    value={value && value.value ? value : undefined} // Allow the value to be undefined at the start in order to display the placeholder
-    valueComponent={({ value: { value: address, assetUUID, display: label } }) => (
-      <AccountSummary uuid={assetUUID} address={address} label={label} />
+    optionComponent={({ data: { address, label }, selectOption }) => (
+      <>
+        <AccountSummary
+          address={address}
+          label={label}
+          onClick={() => selectOption({ address, label })}
+        />
+        <Divider padding={'14px'} />
+      </>
+    )}
+    value={value && value.value ? { label: value.display, address: value.value } : undefined} // Allow the value to be undefined at the start in order to display the placeholder
+    valueComponent={({ value: { address, label } }) => (
+      <AccountSummary address={address} label={label} paddingLeft={SPACING.XS} />
     )}
     searchable={true}
     clearable={true}
