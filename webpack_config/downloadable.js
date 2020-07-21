@@ -6,7 +6,7 @@ const config = require('./config');
 
 module.exports = merge.smart(production, {
   output: {
-    path: path.join(config.path.output, 'download'),
+    path: path.join(config.path.output, 'web'),
     publicPath: './'
   },
 
