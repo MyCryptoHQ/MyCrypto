@@ -195,7 +195,7 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
         await setReceiverInfo(sendAssetsValues!.address.value, sendAssetsValues!.network);
         await handleProtectTxSubmit({
           ...sendAssetsValues!,
-          amount: feeAmount.amount ? feeAmount.amount.toString() : ''
+          amount: feeAmount.amount ? feeAmount.amount.toFixed(16) : ''
         });
       } catch (e) {
         console.error(e);
