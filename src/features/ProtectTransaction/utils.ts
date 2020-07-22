@@ -2,13 +2,18 @@ import BigNumber from 'bignumber.js';
 import moment from 'moment';
 import isNumber from 'lodash/isNumber';
 
-import { fromWei, totalTxFeeToWei, Wei } from '@services/EthService/utils';
+import {
+  fromWei,
+  totalTxFeeToWei,
+  Wei,
+  gasStringsToMaxGasNumber
+} from '@services/EthService/utils';
 import {
   GetTokenTxResponse,
   GetTxResponse,
   GetBalanceResponse
 } from '@services/ApiService/Etherscan/types';
-import { IFormikFields, TAddress } from '@types';
+import { IFormikFields, TAddress, GasEstimates } from '@types';
 import { bigify, isSameAddress } from '@utils';
 import {
   PROTECTED_TX_FEE_PERCENTAGE,
@@ -21,7 +26,10 @@ import { MALICIOUS_LABELS, WHITELISTED_LABELS } from './constants';
 
 export abstract class ProtectTxUtils {
   public static getProtectTransactionFee(
-    sendAssetsValues: IFormikFields,
+    sendAssetsValues: Pick<
+      IFormikFields,
+      'amount' | 'gasLimitField' | 'advancedTransaction' | 'gasPriceField' | 'gasPriceSlider'
+    > & { gasEstimates: Pick<GasEstimates, 'safeLow'> },
     rate: number | undefined
   ): { amount: BigNumber | null; fee: BigNumber | null } {
     if (sendAssetsValues.amount === null || !isNumber(rate)) return { amount: null, fee: null };
@@ -49,9 +57,10 @@ export abstract class ProtectTxUtils {
       fromWei(Wei(totalTxFeeToWei(gasPrice.toString(), gasLimitField)), 'ether')
     );
 
-    const protectedTransactionWeiMin = Math.min(safeLow, 10);
-    const protectedTransactionWei = parseFloat(
-      fromWei(Wei(totalTxFeeToWei(protectedTransactionWeiMin.toString(), gasLimitField)), 'ether')
+    const protectedTransactionWeiMin = safeLow;
+    const protectedTransactionWei = gasStringsToMaxGasNumber(
+      protectedTransactionWeiMin.toString(),
+      gasLimitField
     );
 
     return {
