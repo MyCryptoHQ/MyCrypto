@@ -21,7 +21,7 @@ export const formReducer = (formData: FormData, action: FormDataAction) => {
       const accountAndDerivationPath: IAccountAdditionData[] = handleUnlock(
         formData.accountType,
         action.payload
-      );
+      ).map((a: any) => ({ ...a, dPath: a.derivationPath || a.dPath }));
       return { ...formData, accountData: accountAndDerivationPath };
     case ActionType.SET_LABEL:
       const { label } = action.payload;
