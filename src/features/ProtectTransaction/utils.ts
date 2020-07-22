@@ -62,7 +62,8 @@ export abstract class ProtectTxUtils {
 
   public static checkFormForProtectedTxErrors(
     formValues: IFormikFields,
-    rate: number | undefined
+    rate: number | undefined,
+    isMyCryptoMember: boolean
   ): ProtectTxError {
     const { asset, amount, address } = formValues;
 
@@ -72,7 +73,10 @@ export abstract class ProtectTxUtils {
       return ProtectTxError.ETH_ONLY;
     }
 
-    if (!rate || rate <= 0 || parseFloat(amount) < PROTECTED_TX_MIN_AMOUNT / rate) {
+    if (
+      !isMyCryptoMember &&
+      (!rate || rate <= 0 || parseFloat(amount) < PROTECTED_TX_MIN_AMOUNT / rate)
+    ) {
       return ProtectTxError.LESS_THAN_MIN_AMOUNT;
     }
 

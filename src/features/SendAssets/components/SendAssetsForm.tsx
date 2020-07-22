@@ -164,7 +164,7 @@ const QueryWarning: React.FC = () => (
 );
 
 const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
-  const { accounts, userAssets, networks, getAccount } = useContext(StoreContext);
+  const { accounts, userAssets, networks, getAccount, isMyCryptoMember } = useContext(StoreContext);
   const { getAssetRate, getRate } = useContext(RatesContext);
   const { settings } = useContext(SettingsContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
@@ -760,7 +760,8 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                 <ProtectTxShowError
                   protectTxError={ProtectTxUtils.checkFormForProtectedTxErrors(
                     values,
-                    getAssetRate(values.asset)
+                    getAssetRate(values.asset),
+                    isMyCryptoMember
                   )}
                   shown={
                     !(isEstimatingGasLimit || isResolvingName || isEstimatingNonce || !isFormValid)

@@ -230,7 +230,8 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
     sendAssetsValues !== undefined &&
     ProtectTxUtils.checkFormForProtectedTxErrors(
       sendAssetsValues,
-      getAssetRate(sendAssetsValues.asset)
+      getAssetRate(sendAssetsValues.asset),
+      isMyCryptoMember
     );
 
   const hasError = error !== ProtectTxError.NO_ERROR;
