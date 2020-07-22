@@ -1,6 +1,38 @@
 import { ProtectTxUtils, NansenReportType } from '..';
 import { GetTxResponse, GetTokenTxResponse, GetBalanceResponse } from '@services';
 
+describe('getProtectTransactionFee', () => {
+  const rate = 250.5;
+  const formValues = {
+    amount: '0.01',
+    gasEstimates: { safeLow: 65 },
+    gasLimitField: '21000',
+    gasPriceField: '20',
+    gasPriceSlider: '72',
+    advancedTransaction: false
+  };
+  it('should return correctly calculated values', () => {
+    const { fee, amount } = ProtectTxUtils.getProtectTransactionFee(formValues, rate);
+    expect(amount?.toString()).toBe('0.002006007982519936');
+    expect(fee?.toString()).toBe('0.001365');
+  });
+
+  it('should return use correct gas prices', () => {
+    const { fee, amount } = ProtectTxUtils.getProtectTransactionFee(
+      { ...formValues, gasEstimates: { safeLow: 70 }, advancedTransaction: true },
+      rate
+    );
+    expect(amount?.toString()).toBe('0.002006007983611936');
+    expect(fee?.toString()).toBe('0.00147');
+  });
+
+  it('should return null in case of missing values', () => {
+    const { fee, amount } = ProtectTxUtils.getProtectTransactionFee(formValues, undefined);
+    expect(amount).toBe(null);
+    expect(fee).toBe(null);
+  });
+});
+
 describe('getNansenReportType', () => {
   it('should be malicious if has scam label', () => {
     expect(ProtectTxUtils.getNansenReportType(['Scam', 'test', 'whatever'])).toBe(
