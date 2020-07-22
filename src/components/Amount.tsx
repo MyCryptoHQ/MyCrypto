@@ -62,7 +62,7 @@ export default function Amount({ assetValue, fiat, baseAssetValue, bold = false 
           {baseAssetValue}
         </Asset>
       )}
-      {fiat && <Fiat amount={fiat.amount} symbol={fiat.symbol} />}
+      {fiat && <Fiat amount={fiat.amount} symbol={fiat.symbol} decimals={2} />}
     </SAmount>
   );
 }
