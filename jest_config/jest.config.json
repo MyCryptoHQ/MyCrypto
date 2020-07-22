@@ -20,6 +20,7 @@
     "<rootDir>/jest_config/__mocks__/localStorage.ts",
     "jest-canvas-mock"
   ],
+  "setupFilesAfterEnv": ["@testing-library/jest-dom/extend-expect"],
   "automock": false,
   "collectCoverage": true
 }
