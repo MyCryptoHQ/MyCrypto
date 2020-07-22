@@ -2,7 +2,7 @@ import { addHexPrefix } from 'ethereumjs-util';
 import BN from 'bn.js';
 import axios, { AxiosInstance } from 'axios';
 
-import { TTicker, ITxObject } from '@types';
+import { TTicker, ITxObject, TAddress } from '@types';
 import { DEXAG_MYC_TRADE_CONTRACT, DEXAG_MYC_HANDLER_CONTRACT, DEX_BASE_URL } from '@config';
 import { ERC20 } from '@services/EthService';
 
@@ -13,6 +13,13 @@ let instantiated: boolean = false;
 
 const CancelToken = axios.CancelToken;
 let cancel: any = null;
+
+export interface DexAsset {
+  address: TAddress;
+  decimals: number;
+  name: string;
+  symbol: TTicker;
+}
 
 export default class DexService {
   public static instance = new DexService();
@@ -33,9 +40,9 @@ export default class DexService {
     }
   }
 
-  public getTokenList = async () => {
+  public getTokenList = async (): Promise<DexAsset[]> => {
     try {
-      const { data: tokenList } = await this.service.get('token-list-full');
+      const { data: tokenList }: { data: DexAsset[] } = await this.service.get('token-list-full');
 
       return tokenList;
     } catch (e) {
@@ -88,7 +95,9 @@ export default class DexService {
         dex: 'ag',
         proxy: DEXAG_MYC_TRADE_CONTRACT
       };
-      const { data }: { data: DexTrade } = await this.service.get('trade', { params });
+      const { data }: { data: DexTrade } = await this.service.get('trade', {
+        params
+      });
       const isMultiTx = !!(data.metadata && data.metadata.input);
 
       return [

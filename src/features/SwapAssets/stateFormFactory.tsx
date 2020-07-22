@@ -13,13 +13,13 @@ import {
   trimBN,
   generateAssetUUID
 } from '@utils';
-import { DexService, NetworkContext, getNetworkById } from '@services';
+import { DexService, DexAsset, NetworkContext, getNetworkById } from '@services';
 import { StoreAccount, ISwapAsset } from '@types';
 import {
   DEFAULT_NETWORK,
   MYC_DEXAG_COMMISSION_RATE,
   DEFAULT_NETWORK_CHAINID,
-  DEFAULT_NETWORK_SYMBOL
+  DEFAULT_NETWORK_TICKER
 } from '@config';
 
 import { LAST_CHANGED_AMOUNT, SwapFormState } from './types';
@@ -47,13 +47,16 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       if (assets.length < 1) return;
       // sort assets alphabetically
       const newAssets = assets
-        .map((asset: any) => ({
-          ...asset,
-          uuid:
-            asset.ticker === DEFAULT_NETWORK_SYMBOL
-              ? generateAssetUUID(DEFAULT_NETWORK_CHAINID)
-              : generateAssetUUID(DEFAULT_NETWORK_CHAINID, asset.address)
-        }))
+        .map(
+          ({ symbol, ...asset }: DexAsset): ISwapAsset => ({
+            ...asset,
+            ticker: symbol,
+            uuid:
+              symbol === DEFAULT_NETWORK_TICKER
+                ? generateAssetUUID(DEFAULT_NETWORK_CHAINID)
+                : generateAssetUUID(DEFAULT_NETWORK_CHAINID, asset.address)
+          })
+        )
         .sort((asset1: ISwapAsset, asset2: ISwapAsset) =>
           (asset1.ticker as string).localeCompare(asset2.ticker)
         );
