@@ -2191,9 +2191,10 @@
     "@ethersproject/bignumber" "^5.0.0-beta.135"
     isomorphic-unfetch "^3.0.0"
 
-"@mycrypto/ui@https://github.com/MyCryptoHQ/ui#styled-components-v5":
-  version "0.23.0"
-  resolved "https://github.com/MyCryptoHQ/ui#f2f166d13fb8e34b0800a18abe296a1f795e9ca8"
+"@mycrypto/ui@0.24":
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.24.0.tgz#047a7e7e6a9f3845a16c835550afd6bce2755250"
+  integrity sha512-4X3j1CKDJdO/T4jZxnMPFIvDOdk7KupltGRaGVZLG8M6SzxD+6+Ifshuanulp+AWqyXn2a0d0XyS/O5Swq8FxQ==
   dependencies:
     "@types/dom-clipboard-api" "^1.0.1"
     "@types/lodash.throttle" "^4.1.4"
@@ -2201,7 +2202,7 @@
     ethereum-blockies-base64 "^1.0.2"
     lodash.throttle "^4.1.1"
     polished "^2.2.0"
-    react-inlinesvg "^0.8.4"
+    react-inlinesvg "^2.0.0"
     react-popper-tooltip "^2.10.1"
 
 "@mycrypto/unlock-scan@0.1.0":
@@ -11383,15 +11384,6 @@ http-signature@~1.2.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
-httpplease@^0.16.4:
-  version "0.16.4"
-  resolved "https://registry.yarnpkg.com/httpplease/-/httpplease-0.16.4.tgz#d382ebe230ef5079080b4e9ffebf316a9e75c0da"
-  integrity sha1-04Lr4jDvUHkIC06f/r8xap51wNo=
-  dependencies:
-    urllite "~0.5.0"
-    xmlhttprequest "*"
-    xtend "~3.0.0"
-
 https-browserify@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
@@ -17039,6 +17031,11 @@ react-from-dom@^0.4.2:
   resolved "https://registry.yarnpkg.com/react-from-dom/-/react-from-dom-0.4.2.tgz#bef41428172ca570b492b5e12ae7b592587437e0"
   integrity sha512-cVa4/w0xAyd/bbTu+xu2KKrGc+KDKvR8sSQKodd5pPrN03bN1V3JOLPW+PIzh698LzQ4aL1dfWXpsKx3ZkpT+A==
 
+react-from-dom@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/react-from-dom/-/react-from-dom-0.4.2.tgz#bef41428172ca570b492b5e12ae7b592587437e0"
+  integrity sha512-cVa4/w0xAyd/bbTu+xu2KKrGc+KDKvR8sSQKodd5pPrN03bN1V3JOLPW+PIzh698LzQ4aL1dfWXpsKx3ZkpT+A==
+
 react-helmet-async@^1.0.2:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/react-helmet-async/-/react-helmet-async-1.0.4.tgz#079ef10b7fefcaee6240fefd150711e62463cc97"
@@ -17079,13 +17076,13 @@ react-inlinesvg@2.0:
     exenv "^1.2.2"
     react-from-dom "^0.4.2"
 
-react-inlinesvg@^0.8.4:
-  version "0.8.4"
-  resolved "https://registry.yarnpkg.com/react-inlinesvg/-/react-inlinesvg-0.8.4.tgz#5cdcece95c633d924092fdcabbf4dcab8baef1bd"
-  integrity sha512-pMkYa09gsP+5mA5uYDon5TxJbu76rJqdPSQ9nTRZbVacH58Eo3tFxD0Z382cioxNrpeqWHI/hquzt00GaahnkA==
+react-inlinesvg@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-inlinesvg/-/react-inlinesvg-2.0.0.tgz#aba239c7846f8259e40c147c3842aaa00f78a556"
+  integrity sha512-GuhTqaPhaBXr+L0LV/MowJUJIvHoLZ36O7LQhX4joxdYxO+kWcdjG/y474UOj2OVfgF1WV0R8S2hgDuH6ODFyQ==
   dependencies:
-    httpplease "^0.16.4"
-    once "^1.4.0"
+    exenv "^1.2.2"
+    react-from-dom "^0.4.2"
 
 react-input-autosize@^2.2.2:
   version "2.2.2"
@@ -21108,13 +21105,6 @@ url@^0.11.0:
     punycode "1.3.2"
     querystring "0.2.0"
 
-urllite@~0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/urllite/-/urllite-0.5.0.tgz#1b7bb9ca3fb0db9520de113466bbcf7cc341451a"
-  integrity sha1-G3u5yj+w25Ug3hE0ZrvPfMNBRRo=
-  dependencies:
-    xtend "~4.0.0"
-
 use-callback-ref@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/use-callback-ref/-/use-callback-ref-1.2.1.tgz#898759ccb9e14be6c7a860abafa3ffbd826c89bb"
@@ -22007,20 +21997,15 @@ xmldom@^0.1.22:
   resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.1.31.tgz#b76c9a1bd9f0a9737e5a72dc37231cf38375e2ff"
   integrity sha512-yS2uJflVQs6n+CyjHoaBmVSqIDevTAWrzMmjG1Gc7h1qQ7uVozNhEPJAwZXWyGQ/Gafo3fCwrcaokezLPupVyQ==
 
-xmlhttprequest@*, xmlhttprequest@1.8.0:
+xmlhttprequest@1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/xmlhttprequest/-/xmlhttprequest-1.8.0.tgz#67fe075c5c24fef39f9d65f5f7b7fe75171968fc"
   integrity sha1-Z/4HXFwk/vOfnWX197f+dRcZaPw=
 
-xtend@^4.0.0, xtend@^4.0.1, xtend@~4.0.0, xtend@~4.0.1:
+xtend@^4.0.0, xtend@^4.0.1, xtend@~4.0.1:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/xtend/-/xtend-4.0.2.tgz#bb72779f5fa465186b1f438f674fa347fdb5db54"
   integrity sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==
-
-xtend@~3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/xtend/-/xtend-3.0.0.tgz#5cce7407baf642cba7becda568111c493f59665a"
-  integrity sha1-XM50B7r2Qsunvs2laBEcST9ZZlo=
 
 y18n@^3.2.1:
   version "3.2.1"
