@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import BigNumber from 'bignumber.js';
 
 import { isWeb3Wallet } from '@utils';
-import { RatesContext, StoreContext } from '@services';
+import { RatesContext, StoreContext, SettingsContext } from '@services';
 import { IAccount, IFormikFields } from '@types';
 import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 import { Amount, Button, PoweredByText } from '@components';
 import { translateRaw } from '@translations';
+import { getFiat } from '@config/fiats';
 
 import { ProtectTxUtils } from '../utils';
 import ProtectTxBase from './ProtectTxBase';
@@ -152,6 +153,7 @@ interface Props {
 export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
   const { getAssetRate } = useContext(RatesContext);
   const { isMyCryptoMember } = useContext(StoreContext);
+  const { settings } = useContext(SettingsContext);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -287,7 +289,10 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
           <FeeContainer>
             <img src={feeIcon} alt="Fee" />
             <p className="fee-label">{translateRaw('PROTECTED_TX_FEE')}</p>
-            <Amount assetValue={getAssetValue()} fiatValue={getFiatValue()} />
+            <Amount
+              assetValue={getAssetValue()}
+              fiat={{ symbol: getFiat(settings).symbol, amount: getFiatValue() }}
+            />
           </FeeContainer>
         </>
       )}

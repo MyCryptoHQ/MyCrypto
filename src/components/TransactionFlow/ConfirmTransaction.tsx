@@ -241,11 +241,10 @@ export const ConfirmTransactionUI = ({
           <AssetIcon uuid={asset.uuid} size={'25px'} />
           <Amount
             assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
-            fiatValue={`${getFiat(settings).symbol}${convertToFiat(
-              parseFloat(amount),
-              assetRate
-            ).toFixed(2)}
-          `}
+            fiat={{
+              symbol: getFiat(settings).symbol,
+              amount: convertToFiat(parseFloat(amount), assetRate).toFixed(2)
+            }}
           />
         </AmountWrapper>
       </RowWrapper>
@@ -257,10 +256,10 @@ export const ConfirmTransactionUI = ({
           <AssetIcon uuid={baseAsset.uuid} size={'25px'} />
           <Amount
             assetValue={`${maxTransactionFeeBase} ${baseAsset.ticker}`}
-            fiatValue={`${getFiat(settings).symbol}${convertToFiat(
-              parseFloat(maxTransactionFeeBase),
-              baseAssetRate
-            ).toFixed(2)}`}
+            fiat={{
+              symbol: getFiat(settings).symbol,
+              amount: convertToFiat(parseFloat(maxTransactionFeeBase), baseAssetRate).toFixed(2)
+            }}
           />
         </AmountWrapper>
       </RowWrapper>
@@ -276,10 +275,10 @@ export const ConfirmTransactionUI = ({
               <AssetIcon uuid={asset.uuid} size={'25px'} />
               <Amount
                 assetValue={`${totalEtherEgress} ${asset.ticker}`}
-                fiatValue={`${getFiat(settings).symbol}${convertToFiat(
-                  parseFloat(totalEtherEgress),
-                  assetRate
-                ).toFixed(2)}`}
+                fiat={{
+                  symbol: getFiat(settings).symbol,
+                  amount: convertToFiat(parseFloat(totalEtherEgress), assetRate).toFixed(2)
+                }}
               />
             </>
           ) : (
@@ -289,10 +288,13 @@ export const ConfirmTransactionUI = ({
                 assetValue={`${amount} ${asset.ticker}`}
                 bold={true}
                 baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
-                fiatValue={`${getFiat(settings).symbol}${(
-                  convertToFiat(parseFloat(amount), assetRate) +
-                  convertToFiat(parseFloat(totalEtherEgress), baseAssetRate)
-                ).toFixed(2)}`}
+                fiat={{
+                  symbol: getFiat(settings).symbol,
+                  amount: (
+                    convertToFiat(parseFloat(amount), assetRate) +
+                    convertToFiat(parseFloat(totalEtherEgress), baseAssetRate)
+                  ).toFixed(2)
+                }}
               />
             </>
           )}
