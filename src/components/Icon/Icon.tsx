@@ -4,14 +4,11 @@ import InlineSVG from 'react-inlinesvg';
 
 import back from '@assets/icons/actions/back.svg';
 import expand from '@assets/icons/actions/expand.svg';
-import website from '@assets/icons/website.svg';
-import whitepaper from '@assets/icons/whitepaper.svg';
+import add from '@assets/icons/actions/add.svg';
+
 import logoMyCrypto from '@assets/icons/brand/logo.svg';
 import logoMyCryptoText from '@assets/icons/brand/logo-text.svg';
-import nansenLogo from '@assets/images/credits/credits-nansen.svg';
-import ensLogo from '@assets/images/ens/ensIcon.svg';
-import coinGeckoLogo from '@assets/images/credits/credits-coingecko.svg';
-import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
+
 import coinmarketcap from '@assets/icons/social/coinmarketcap.svg';
 import facebook from '@assets/icons/social/facebook.svg';
 import github from '@assets/icons/social/github.svg';
@@ -33,6 +30,7 @@ const icons = {
   /* Action icons */
   back,
   expand,
+  add,
 
   /* Noun icons */
   website,
@@ -56,14 +54,6 @@ const icons = {
   slack,
   telegram,
   twitter,
-
-  website,
-  whitepaper,
-
-  nansenLogo,
-  ensLogo,
-  coinGeckoLogo,
-  zapperLogo,
   check
 };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useContext } from 'react';
 import styled, { css } from 'styled-components';
 import BN from 'bn.js';
 import uniqBy from 'ramda/src/uniqBy';
@@ -15,24 +15,14 @@ import {
   LinkOut,
   EditableAccountLabel
 } from '@components';
+import Icon from '@components/Icon';
 import { truncate, isSameAddress } from '@utils';
 
 import { BREAK_POINTS, SPACING, COLORS } from '@theme';
-import { DWAccountDisplay } from '@services';
+import { DWAccountDisplay, AddressBookContext } from '@services';
 import { fromTokenBase } from '@services/EthService/utils';
 import { Identicon } from '@mycrypto/ui';
 import AccountsTable from './DeterministicAccountTable';
-
-const HeaderAlignment = styled.div`
-  ${(props: { align?: string }) => css`
-    @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-      text-align: ${props.align || 'inherit'};
-    }
-  `};
-  & img {
-    margin-left: ${SPACING.XS};
-  }
-`;
 
 const DeterministicAccountListWrapper = styled.div`
   width: 800px;
@@ -41,17 +31,15 @@ const DeterministicAccountListWrapper = styled.div`
   }
 `;
 
-const ColumnName = styled(Typography)`
-  color: ${COLORS.BLUE_DARK};
-`;
-
 const LabelContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: 250px;
 `;
 
 const SIdenticon = styled(Identicon)`
+  margin-right: ${SPACING.SM};
   & > img {
     width: 30px;
     height: 30px;
@@ -77,6 +65,19 @@ const LinkContainer = styled.div`
   margin-right: 40px;
 `;
 
+const GenerateAddressButton = styled.div`
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 60px;
+  margin-left: 35px;
+`;
+
+const STypography = styled(Typography)`
+  margin-left: ${SPACING.SM};
+`;
+
 interface DeterministicAccountListProps {
   finishedAccounts: DWAccountDisplay[];
   asset: ExtendedAsset;
@@ -85,6 +86,7 @@ interface DeterministicAccountListProps {
   currentsOnly?: boolean;
   dashboard?: boolean;
   network: Network;
+  generateFreshAddress(): void;
   onUnlock(param: any): void;
 }
 
@@ -94,7 +96,8 @@ interface ISelectedAccount {
 }
 
 export default function DeterministicAccountList(props: DeterministicAccountListProps) {
-  const { finishedAccounts, asset, isComplete, onUnlock, network } = props;
+  const { finishedAccounts, asset, isComplete, onUnlock, network, generateFreshAddress } = props;
+  const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
   const [selectedAccounts, setSelectedAccounts] = useState([] as ISelectedAccount[]);
 
   const accountsToUse = uniqBy(prop('address'), finishedAccounts).filter(
@@ -138,7 +141,11 @@ export default function DeterministicAccountList(props: DeterministicAccountList
           label: (
             <LabelContainer>
               <SIdenticon address={account.address} />
-              <EditableAccountLabel address={account.address} networkId={network.id} />
+              <EditableAccountLabel
+                addressBookEntry={getContactByAddressAndNetworkId(account.address, network.id)}
+                address={account.address}
+                networkId={network.id}
+              />
             </LabelContainer>
           ),
           address: <EthAddress address={account.address} truncate={truncate} />,
@@ -190,6 +197,12 @@ export default function DeterministicAccountList(props: DeterministicAccountList
   return (
     <DeterministicAccountListWrapper>
       <AccountsTable columns={columns} data={data} />
+      <GenerateAddressButton onClick={() => generateFreshAddress()}>
+        <Icon type="add" width="30px" />
+        <STypography>
+          <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
+        </STypography>
+      </GenerateAddressButton>
     </DeterministicAccountListWrapper>
   );
 }
@@ -223,76 +236,3 @@ export default function DeterministicAccountList(props: DeterministicAccountList
 //         b.account.address.localeCompare(a.account.address);
 //   }
 // };
-
-const buildDeterministicAccountTable = (
-  accounts: DWAccountDisplay[],
-  selectedAccounts: ISelectedAccount[],
-  asset: ExtendedAsset,
-  selectedIndexes: number[],
-  selectRow: (rowIndex: number) => void,
-  toggleAccountSelection: (address: string, path: string) => void
-) => {
-  const accountsToUse = accounts.map((account) => {
-    return {
-      ...account,
-      isSelected: selectedAccounts.map(({ address }) => address).includes(account.address)
-    };
-  });
-
-  const columns = [
-    '',
-    <HeaderAlignment key={'c'} align="left">
-      <ColumnName bold={true}>
-        <Trans id="DETERMINISTIC_ACCOUNT_LIST_LABEL" />
-      </ColumnName>
-    </HeaderAlignment>,
-    <HeaderAlignment key={'DETERMINISTIC_ACCOUNT_LIST_ADDRESS'} align="left">
-      <ColumnName bold={true}>
-        <Trans id="DETERMINISTIC_ACCOUNT_LIST_ADDRESS" />
-      </ColumnName>
-    </HeaderAlignment>,
-    <HeaderAlignment key={'DETERMINISTIC_ACCOUNT_LIST_DPATH'} align="left">
-      <ColumnName bold={true}>
-        <Trans id="DETERMINISTIC_ACCOUNT_LIST_DPATH" />
-      </ColumnName>
-    </HeaderAlignment>,
-    <HeaderAlignment key={'DETERMINISTIC_ACCOUNT_LIST_VALUE'} align="center">
-      <ColumnName bold={true}>
-        <Trans id="DETERMINISTIC_ACCOUNT_LIST_VALUE" />
-      </ColumnName>
-    </HeaderAlignment>,
-    ''
-  ];
-  return {
-    head: columns,
-    body: accountsToUse.map(({ address, balance, pathItem, isSelected }, index) => [
-      <Checkbox
-        key={index}
-        name={address}
-        checked={isSelected}
-        onChange={() => toggleAccountSelection(address, pathItem.path)}
-      />,
-      <div key={index}>
-        <Identicon address={address} />
-        <EditableAccountLabel />
-      </div>,
-      <EthAddress key={index} address={address} truncate={truncate} />,
-      <div key={index}>{pathItem.path}</div>,
-      <div key={index}>
-        {`${
-          balance
-            ? parseFloat(
-                fromTokenBase(new BN(balance.toString()), asset.decimal).toString()
-              ).toFixed(4)
-            : '0.0000'
-        }`}
-      </div>,
-      <div key={index}>{asset.ticker}</div>
-    ]),
-    config: {
-      primaryColumn: translateRaw('DETERMINISTIC_ACCOUNT_LIST_LABEL'),
-      handleRowClicked: selectRow
-    },
-    selectedIndexes
-  };
-};

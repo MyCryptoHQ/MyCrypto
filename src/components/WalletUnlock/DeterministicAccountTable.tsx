@@ -26,7 +26,7 @@ const TableHead = styled.thead`
 
 const BodyRow = styled.tr<TableRowProps & UseRowSelectRowProps<any>>`
   ${(p) => p.isSelected && `background: rgba(179, 221, 135, 0.1);`}
-  height: 60px;
+  margin: 20px 0;
   border-bottom: 1px solid ${COLORS.GREY_ATHENS};
   &:hover {
     background: rgba(179, 221, 135, 0.3);
@@ -78,9 +78,11 @@ const AccountsTable = ({ columns, data }: AccountsTableProps) => {
     <Table {...getTableProps()}>
       <TableHead>
         {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
+          <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <TableHeading {...column.getHeaderProps()}>{column.render('Header')}</TableHeading>
+              <TableHeading key={column.id} {...column.getHeaderProps()}>
+                {column.render('Header')}
+              </TableHeading>
             ))}
           </tr>
         ))}
@@ -91,13 +93,16 @@ const AccountsTable = ({ columns, data }: AccountsTableProps) => {
           return (
             <BodyRow
               {...row.getRowProps()}
+              key={row.id}
               isSelected={row.isSelected}
               onClick={() => {
                 row.toggleRowSelected();
               }}
             >
               {row.cells.map((cell) => (
-                <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                <td key={cell.id} {...cell.getCellProps()}>
+                  {cell.render('Cell')}
+                </td>
               ))}
             </BodyRow>
           );

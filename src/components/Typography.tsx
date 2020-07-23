@@ -12,8 +12,7 @@ export interface Props {
   fontSize?: string;
   truncate?: boolean;
   inheritFontWeight?: boolean;
-  style?: React.CSSProperties;
-  onClick?(): void;
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 interface SProps {
@@ -91,11 +90,11 @@ const Typography: React.FC<Props> = ({
       // https://styled-components.com/docs/api#forwardedas-prop
       // @ts-ignore
       as={as}
-      $bold={bold}
+      bold={bold}
       $fontSize={fontSize}
       $maxCharLen={maxCharLen}
-      $truncate={truncate}
-      $inheritFontWeight={inheritFontWeight}
+      truncate={truncate}
+      inheritFontWeight={inheritFontWeight}
       $value={value}
       {...props}
     >

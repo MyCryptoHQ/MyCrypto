@@ -10,7 +10,7 @@ import {
   Spinner,
   Button,
   DeterministicAccountList,
-  AssetDropdown,
+  AssetSelector,
   Typography
 } from '@components';
 import {
@@ -116,7 +116,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   };
 
   const handleFreshAddressGeneration = () => {
-    if (freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR) {
+    if (freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR || !state.completed) {
       return;
     }
     const freshAddressGenerationSuccess = generateFreshAddress({
@@ -194,7 +194,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
           <Trans id="MNEMONIC_SUBTITLE" />
         </Typography>
         <Parameters>
-          <AssetDropdown
+          <AssetSelector
             selectedAsset={assetToUse}
             assets={filteredAssets}
             onSelect={(option: ExtendedAsset) => {
@@ -212,14 +212,9 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
             finishedAccounts={state.finishedAccounts}
             onUnlock={onUnlock}
             network={network}
+            generateFreshAddress={handleFreshAddressGeneration}
           />
         </TableContainer>
-        <Button
-          disabled={!state.completed || freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR}
-          onClick={() => handleFreshAddressGeneration()}
-        >
-          {`Test Generate Fresh Address`}
-        </Button>
       </MnemonicWrapper>
     );
   } else {

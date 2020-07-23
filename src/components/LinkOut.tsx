@@ -62,6 +62,7 @@ const LinkOut = ({
       rel="noreferrer"
       inline={inline}
       underline={underline}
+      onClick={(e: React.MouseEvent) => e.stopPropagation()}
     >
       <Typography fontSize={fontSize} style={{ color: fontColor }}>
         {content}
