@@ -2,7 +2,7 @@ export * from './error';
 export { notUndefined, isTxSigned, isTxHash } from './typeGuards';
 export * from './validators';
 export { IS_ELECTRON, IS_DOWNLOADABLE } from './platform';
-export { hasWeb3Provider, IS_DEV, IS_PROD } from './environment';
+export { hasWeb3Provider, IS_DEV } from './environment';
 export { getFeaturedOS } from './getFeaturedOS';
 export {
   generateUUID,
