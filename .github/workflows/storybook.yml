@@ -1,4 +1,4 @@
-name: MyCryptoBuilds
+name: Storybook
 
 env:
   AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_MYCRYPTOBUILDS }}
@@ -63,7 +63,7 @@ jobs:
         ## If no cache is found, install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install
-        
+
       - name: yarn build:storybook
         if: github.ref == 'refs/heads/master' || github.event_name == 'pull_request'
         run: yarn build:storybook
