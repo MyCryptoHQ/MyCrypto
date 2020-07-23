@@ -127,7 +127,7 @@ jobs:
           
       - name: S3 Sync - Downloadable - Latest build
         uses: jakejarvis/s3-sync-action@v0.5.1
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         with:
           args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
         env:
