@@ -763,6 +763,13 @@
     "uuid": "3f16a313-a0c5-5211-9d53-c5ac98cea3b2"
   },
   {
+    "address": "0xba100000625a3754423978a60c9317c58a424e3D",
+    "symbol": "BAL",
+    "decimal": 18,
+    "name": "Balancer",
+    "uuid": "e02a1b4e-ab8b-5894-a49e-a36b74bd99ab"
+  },
+  {
     "address": "0x013A06558f07d9E6F9A00c95a33f3a0E0255176b",
     "symbol": "BALI",
     "decimal": 18,
@@ -2126,6 +2133,13 @@
     "decimal": 18,
     "name": "Coinvest V3 Token",
     "uuid": "906a58a0-8b3b-5862-a503-79645fcd8fa0"
+  },
+  {
+    "address": "0xc00e94Cb662C3520282E6f5717214004A7f26888",
+    "symbol": "COMP",
+    "decimal": 18,
+    "name": "Compound",
+    "uuid": "c9a85d0b-5f75-5fd7-9cd2-b94ba5caceef"
   },
   {
     "address": "0x725B190Bc077FFde17Cf549AA8ba25e298550B18",
@@ -4494,6 +4508,13 @@
     "uuid": "7355b7b9-e21f-57e5-8c26-a77ebbdd0028"
   },
   {
+    "address": "0x6BFf2fE249601ed0Db3a87424a2E923118BB0312",
+    "symbol": "FYZ",
+    "decimal": 18,
+    "name": "Fyooz",
+    "uuid": "f1469c4f-fb95-5d61-9ae2-2f47aca18f58"
+  },
+  {
     "address": "0xE5aeE163513119F4F750376C718766B40fA37A5F",
     "symbol": "Fzcoin",
     "decimal": 18,
@@ -4513,6 +4534,13 @@
     "decimal": 8,
     "name": "Gambit",
     "uuid": "70365696-de5c-5160-9aba-52333681cff4"
+  },
+  {
+    "address": "0x63f88A2298a5c4AEE3c216Aa6D926B184a4b2437",
+    "symbol": "GAME",
+    "decimal": 18,
+    "name": "GAME Credits",
+    "uuid": "739e8ac5-0db5-57b9-a8c1-5555214c1db0"
   },
   {
     "address": "0x6754e21b9EAa053c62d7854dD6561ae451B0cBCf",
@@ -8225,6 +8253,13 @@
     "uuid": "cfd7b234-57bd-5306-89e8-3d477c4cbb83"
   },
   {
+    "address": "0x165B6749812900538402CD540c55be68411F8Ea0",
+    "symbol": "RBT",
+    "decimal": 18,
+    "name": "realtybits",
+    "uuid": "4b3b2bdc-e680-50cd-a950-d929558d4878"
+  },
+  {
     "address": "0xF970b8E36e23F7fC3FD752EeA86f8Be8D83375A6",
     "symbol": "RCN",
     "decimal": 18,
@@ -8524,6 +8559,13 @@
     "decimal": 18,
     "name": "Rocketchain",
     "uuid": "4f36f92a-4522-5974-bfbc-adecdac96a71"
+  },
+  {
+    "address": "0xA31B1767e09f842ECFd4bc471Fe44F830E3891AA",
+    "symbol": "ROOBEE",
+    "decimal": 18,
+    "name": "ROOBEE",
+    "uuid": "abcbd095-683b-5333-98f1-c86b309db074"
   },
   {
     "address": "0x4993CB95c7443bdC06155c5f5688Be9D8f6999a5",
@@ -10073,6 +10115,13 @@
     "uuid": "59f607ad-787d-5373-ad4e-4b6fd5a99603"
   },
   {
+    "address": "0xD9baE39c725A1864b1133Ad0eF1640d02f79B78c",
+    "symbol": "TST",
+    "decimal": 18,
+    "name": "Touch Social Token",
+    "uuid": "ce680b9f-7d9a-5abb-be85-ef6871354a22"
+  },
+  {
     "address": "0x6B87999bE87358065bBdE41e8a0fe0B7b1cd2514",
     "symbol": "TSW",
     "decimal": 18,
@@ -10827,6 +10876,13 @@
     "decimal": 18,
     "name": "Vrenelium",
     "uuid": "68ab083f-334a-57ae-86f6-df045184594d"
+  },
+  {
+    "address": "0x10BC518c32fbAE5e38Ecb50A612160571bD81e44",
+    "symbol": "VRO",
+    "decimal": 8,
+    "name": "VeraOne",
+    "uuid": "740d9cd0-ce00-58da-aae6-d22ad6c7e6fa"
   },
   {
     "address": "0x92E78dAe1315067a8819EFD6dCA432de9DCdE2e9",
