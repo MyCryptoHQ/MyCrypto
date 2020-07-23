@@ -4,7 +4,7 @@ import MENU from './menu';
 import popupContextMenu from './contextMenu';
 import { APP_TITLE } from '../constants';
 
-const IS_DEV: boolean = process.env.NODE_ENV === 'development' || !process.env.NODE_ENV;
+const IS_DEV: boolean = process.env.NODE_ENV === 'development' || process.env.BUILD_ENV === 'development' || !process.env.NODE_ENV;
 
 // Cached reference, preventing recreations
 let window: BrowserWindow | null;
