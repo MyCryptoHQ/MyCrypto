@@ -51,7 +51,17 @@ jobs:
         with:
           node-version: '${{ steps.nvm.outputs.NVMRC }}'
 
+      - name: Cache node modules
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          ## Check cache based on yarn.lock hashfile
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+
       - name: Install Dependencies
+        ## If no cache is found, install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install
 
       - name: yarn build:downloadable
@@ -131,7 +141,7 @@ jobs:
         env:
           DEST_DIR: 'storybook/${{ github.head_ref }}'
           SOURCE_DIR: 'storybook-static'
-          
+
       - name: S3 Sync - Storybook - PR Number
         uses: jakejarvis/s3-sync-action@v0.5.1
         if: github.event_name == 'pull_request'
