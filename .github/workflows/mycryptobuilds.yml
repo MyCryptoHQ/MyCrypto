@@ -12,7 +12,7 @@ on:
       - '*'
   push:
     branches:
-      - '*'
+      - master
 
 jobs:
   build:
@@ -91,8 +91,8 @@ jobs:
           args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
         env:
           DEST_DIR: ${{ github.head_ref }}
-          SOURCE_DIR: 'dist/download'
-
+          SOURCE_DIR: 'dist/web'
+####
       - name: S3 Sync - SHA Push
         uses: jakejarvis/s3-sync-action@v0.5.1
         if: github.event_name == 'push'
