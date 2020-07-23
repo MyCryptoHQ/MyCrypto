@@ -39,7 +39,7 @@ export interface TableData extends TableContent {
   head: (string | JSX.Element)[];
   overlay?: ReactNode;
   overlayRows?: (number | string)[];
-  selectedIndexes?: [];
+  selectedIndexes?: number[];
   config?: TableConfig;
 }
 
@@ -273,7 +273,7 @@ class AbstractTable extends Component<Props, State> {
             const isOverlayRowIncluded = overlay && overlayRows!.includes(rowIndex);
             const overlayRow =
               isOverlayRowIncluded && isFunction(overlay) ? overlay(rowIndex) : overlay;
-            const isSelected = (index) =>
+            const isSelected = (index: number) =>
               selectedIndexes && selectedIndexes.includes(index) ? true : false;
             return (
               <TableRow

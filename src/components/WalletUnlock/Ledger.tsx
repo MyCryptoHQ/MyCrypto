@@ -211,6 +211,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
             asset={state.asset}
             finishedAccounts={state.finishedAccounts}
             onUnlock={onUnlock}
+            network={network}
           />
         </TableContainer>
         <Button
