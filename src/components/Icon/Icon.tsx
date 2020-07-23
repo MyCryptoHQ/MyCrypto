@@ -20,6 +20,15 @@ import slack from '@assets/icons/social/slack.svg';
 import telegram from '@assets/icons/social/telegram.svg';
 import twitter from '@assets/icons/social/twitter.svg';
 
+import website from '@assets/icons/website.svg';
+import whitepaper from '@assets/icons/whitepaper.svg';
+
+import nansenLogo from '@assets/images/credits/credits-nansen.svg';
+import ensLogo from '@assets/images/ens/ensIcon.svg';
+import coinGeckoLogo from '@assets/images/credits/credits-coingecko.svg';
+import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
+import check from '@assets/images/icn-check.svg';
+
 const icons = {
   /* Action icons */
   back,
@@ -46,7 +55,16 @@ const icons = {
   reddit,
   slack,
   telegram,
-  twitter
+  twitter,
+
+  website,
+  whitepaper,
+
+  nansenLogo,
+  ensLogo,
+  coinGeckoLogo,
+  zapperLogo,
+  check
 };
 
 const SInlineSVG = styled(InlineSVG)`

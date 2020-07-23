@@ -1,6 +1,14 @@
 import React from 'react';
-import { useTable, Column } from 'react-table';
+import {
+  useTable,
+  useRowSelect,
+  Column,
+  TableRowProps,
+  UseRowSelectRowProps,
+  Row
+} from 'react-table';
 import styled from 'styled-components';
+import Icon from '@components/Icon';
 import { COLORS } from '@theme';
 
 const Table = styled.table`
@@ -16,7 +24,8 @@ const TableHead = styled.thead`
   color: ${COLORS.BLUE_DARK_SLATE};
 `;
 
-const BodyRow = styled.tr`
+const BodyRow = styled.tr<TableRowProps & UseRowSelectRowProps<any>>`
+  ${(p) => p.isSelected && `background: rgba(179, 221, 135, 0.1);`}
   height: 60px;
   border-bottom: 1px solid ${COLORS.GREY_ATHENS};
   &:hover {
@@ -28,18 +37,42 @@ const TableHeading = styled.th`
   height: 50px;
 `;
 
+const CheckContainer = styled.div<{ isSelected: boolean }>`
+  display: flex;
+  align-items: center;
+  height: 100%;
+  border-left: 6px solid ${(p) => (p.isSelected ? `${COLORS.LIGHT_GREEN}` : 'transparent')};
+  width: 30px;
+  padding-left: 10px;
+`;
+
 interface AccountsTableProps {
   data: any[];
   columns: Column<any>[];
 }
 
 const AccountsTable = ({ columns, data }: AccountsTableProps) => {
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
-    columns,
-    data
-  });
-
-  console.log(data);
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
+    {
+      columns,
+      data
+    },
+    useRowSelect,
+    (hooks) => {
+      hooks.visibleColumns.push((columns) => [
+        {
+          id: 'selection',
+          Header: '',
+          Cell: ({ row }: { row: Row & UseRowSelectRowProps<any> }) => (
+            <CheckContainer isSelected={row.isSelected}>
+              {row.isSelected && <Icon type="check" />}
+            </CheckContainer>
+          )
+        },
+        ...columns
+      ]);
+    }
+  );
 
   return (
     <Table {...getTableProps()}>
@@ -53,10 +86,16 @@ const AccountsTable = ({ columns, data }: AccountsTableProps) => {
         ))}
       </TableHead>
       <tbody {...getTableBodyProps()}>
-        {rows.map((row) => {
+        {rows.map((row: Row & UseRowSelectRowProps<any>) => {
           prepareRow(row);
           return (
-            <BodyRow {...row.getRowProps()}>
+            <BodyRow
+              {...row.getRowProps()}
+              isSelected={row.isSelected}
+              onClick={() => {
+                row.toggleRowSelected();
+              }}
+            >
               {row.cells.map((cell) => (
                 <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
               ))}
