@@ -14,7 +14,7 @@ import { useScreenSize } from '@utils';
 import { WALLETS_CONFIG } from '@config';
 
 import { PTXReport } from './types';
-import { ProtectTxUtils } from './utils';
+import { getNansenReportType, getLastTx, getBalance } from './utils';
 
 export interface ProtectTxState {
   stepIndex: number;
@@ -259,13 +259,9 @@ const ProtectTxProvider: React.FC = ({ children }) => {
       etherscanBalanceReport
     } = state;
     const labels = nansenAddressReport ? nansenAddressReport.label : null;
-    const status = labels ? ProtectTxUtils.getNansenReportType(labels) : null;
-    const lastTx = ProtectTxUtils.getLastTx(
-      etherscanLastTxReport,
-      etherscanLastTokenTxReport,
-      address
-    );
-    const balance = ProtectTxUtils.getBalance(etherscanBalanceReport);
+    const status = labels ? getNansenReportType(labels) : null;
+    const lastTx = getLastTx(etherscanLastTxReport, etherscanLastTokenTxReport, address);
+    const balance = getBalance(etherscanBalanceReport);
     return { address, status, labels, lastTransaction: lastTx, balance, asset: state.asset! };
   }, [state]);
 

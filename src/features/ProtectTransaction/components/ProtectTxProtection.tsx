@@ -10,7 +10,7 @@ import { Amount, Button, PoweredByText } from '@components';
 import { translateRaw } from '@translations';
 import { getFiat } from '@config/fiats';
 
-import { ProtectTxUtils } from '../utils';
+import { getProtectTransactionFee, checkFormForProtectedTxErrors } from '../utils';
 import ProtectTxBase from './ProtectTxBase';
 import CloseIcon from '@components/icons/CloseIcon';
 import ProtectIcon from '@components/icons/ProtectIcon';
@@ -181,7 +181,7 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
     const { asset } = sendAssetsValues!;
     const rate = getAssetRate(asset);
 
-    const { amount, fee } = ProtectTxUtils.getProtectTransactionFee(sendAssetsValues!, rate);
+    const { amount, fee } = getProtectTransactionFee(sendAssetsValues!, rate);
 
     setFeeAmount({ amount, fee, rate: rate ? rate : null });
   }, [sendAssetsValues, getAssetRate, setFeeAmount]);
@@ -228,7 +228,7 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
 
   const error =
     sendAssetsValues !== undefined &&
-    ProtectTxUtils.checkFormForProtectedTxErrors(
+    checkFormForProtectedTxErrors(
       sendAssetsValues,
       getAssetRate(sendAssetsValues.asset),
       isMyCryptoMember
