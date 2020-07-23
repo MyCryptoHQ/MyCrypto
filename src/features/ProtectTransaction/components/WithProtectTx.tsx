@@ -12,10 +12,11 @@ import {
   ITxSigned
 } from '@types';
 import { isWeb3Wallet, useTxMulti, useScreenSize } from '@utils';
-import { BREAK_POINTS, COLORS } from '@theme';
+import { BREAK_POINTS } from '@theme';
 import { processFormDataToTx } from '@features/SendAssets/helpers';
 import { PROTECTED_TX_FEE_ADDRESS } from '@config';
-import { StoreContext } from '@services';
+import { StoreContext, useFeatureFlags } from '@services';
+import { ContentPanel } from '@components';
 
 import { ProtectTxProtection } from './ProtectTxProtection';
 import { ProtectTxSign } from './ProtectTxSign';
@@ -28,6 +29,11 @@ import { ProtectTxStepper } from './ProtectTxStepper';
 const WithProtectTxWrapper = styled.div`
   display: flex;
   flex-wrap: nowrap;
+
+  div > section {
+    margin-bottom: 0;
+    height: 100%;
+  }
 `;
 
 const WithProtectTxMain = styled.div<{ protectTxShow: boolean }>`
@@ -35,16 +41,6 @@ const WithProtectTxMain = styled.div<{ protectTxShow: boolean }>`
   flex: 0 0 100%;
   width: 100%;
   max-width: 100%;
-
-  ${({ protectTxShow }) =>
-    protectTxShow &&
-    `
-    @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-      flex: 0 0 calc(100vw - 375px - 4.5rem);
-      width: calc(100vw - 375px - 4.5rem);
-      max-width: calc(100vw - 375px - 4.5rem);
-    }
-  `};
 
   @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
     flex: 0 0 calc(650px - 4.5rem);
@@ -60,13 +56,11 @@ const WithProtectTxSide = styled.div`
   width: 375px;
   min-width: 375px;
   max-width: 100vw;
-  margin-top: calc(-1.5rem - 44px - 15px);
 
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+  @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
     position: initial;
     width: 375px;
-    margin-left: 2.25rem;
-    border-left: 15px solid ${COLORS.BG_GRAY};
+    margin-left: 1rem;
     min-height: calc(100% + 115px);
     transform: unset;
 
@@ -83,7 +77,7 @@ interface Props extends IStepComponentProps {
   protectTxButton?(): JSX.Element;
 }
 
-export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
+export function withProtectTx(WrappedComponent: React.ComponentType<Props>, heading: string = '') {
   return function WithProtectTransaction({
     txConfig: txConfigMain,
     signedTx: signedTxMain,
@@ -104,6 +98,8 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
       handleTransactionReport,
       showHideProtectTx
     } = useContext(ProtectTxContext);
+
+    const { IS_ACTIVE_FEATURE } = useFeatureFlags();
 
     // Wait for useTxMulti to finish initWith
     useEffect(() => {
@@ -179,25 +175,27 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
 
     return (
       <WithProtectTxWrapper>
-        <WithProtectTxMain protectTxShow={protectTxShow}>
-          <WrappedComponent
-            txConfig={txConfigMain}
-            signedTx={signedTxMain}
-            txReceipt={txReceiptMain}
-            onComplete={(values: IFormikFields | ITxReceipt | ISignedTx | null) => {
-              onCompleteMain(values);
-            }}
-            customDetails={customDetails}
-            resetFlow={resetFlow}
-            protectTxButton={() =>
-              protectTxEnabled ? (
-                <ProtectTxButton reviewReport={true} onClick={toggleProtectTxShow} />
-              ) : (
-                <></>
-              )
-            }
-          />
-        </WithProtectTxMain>
+        <ContentPanel heading={heading} basic={!IS_ACTIVE_FEATURE.PROTECT_TX}>
+          <WithProtectTxMain protectTxShow={protectTxShow}>
+            <WrappedComponent
+              txConfig={txConfigMain}
+              signedTx={signedTxMain}
+              txReceipt={txReceiptMain}
+              onComplete={(values: IFormikFields | ITxReceipt | ISignedTx | null) => {
+                onCompleteMain(values);
+              }}
+              customDetails={customDetails}
+              resetFlow={resetFlow}
+              protectTxButton={() =>
+                protectTxEnabled ? (
+                  <ProtectTxButton reviewReport={true} onClick={toggleProtectTxShow} />
+                ) : (
+                  <></>
+                )
+              }
+            />
+          </WithProtectTxMain>
+        </ContentPanel>
         {protectTxShow && (
           <>
             {!isMdScreen && <ProtectTxModalBackdrop onBackdropClick={toggleProtectTxShow} />}

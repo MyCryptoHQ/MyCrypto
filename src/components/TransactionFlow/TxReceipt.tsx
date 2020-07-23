@@ -348,11 +348,10 @@ export const TxReceiptUI = ({
             <AssetIcon uuid={asset.uuid} size={'24px'} />
             <Amount
               assetValue={`${parseFloat(assetAmount()).toFixed(6)} ${assetTicker()}`}
-              fiatValue={`${getFiat(settings).symbol}${convertToFiat(
-                parseFloat(assetAmount()),
-                assetRate()
-              ).toFixed(2)}
-            `}
+              fiat={{
+                symbol: getFiat(settings).symbol,
+                amount: convertToFiat(parseFloat(assetAmount()), assetRate()).toFixed(2)
+              }}
             />
           </div>
         </div>

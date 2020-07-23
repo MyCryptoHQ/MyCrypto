@@ -233,11 +233,10 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           <Amount
             key={3}
             assetValue={`${parseFloat(amount).toFixed(4)} ${asset.ticker}`}
-            fiatValue={`${getFiat(settings).symbol}${convertToFiat(
-              parseFloat(amount),
-              getAssetRate(asset)
-            ).toFixed(2)}
-        `}
+            fiat={{
+              symbol: getFiat(settings).symbol,
+              amount: convertToFiat(parseFloat(amount), getAssetRate(asset)).toFixed(2)
+            }}
           />,
           <NewTabLink
             key={4}
