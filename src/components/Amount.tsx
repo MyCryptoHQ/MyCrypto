@@ -54,14 +54,8 @@ interface Props {
 export default function Amount({ assetValue, fiat, baseAssetValue, bold = false }: Props) {
   return (
     <SAmount>
-      <Asset as="span" bold={bold}>
-        {assetValue}
-      </Asset>
-      {baseAssetValue && (
-        <Asset as="span" $discrete={true}>
-          {baseAssetValue}
-        </Asset>
-      )}
+      <Asset bold={bold}>{assetValue}</Asset>
+      {baseAssetValue && <Asset $discrete={true}>{baseAssetValue}</Asset>}
       {fiat && <Fiat amount={fiat.amount} symbol={fiat.symbol} decimals={2} />}
     </SAmount>
   );
