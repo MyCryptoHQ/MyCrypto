@@ -9,10 +9,10 @@ const common = require('./common');
 const config = require('./config');
 
 const IS_ELECTRON = !!process.env.BUILD_ELECTRON;
-const NODE_ENV = process.env.NODE_ENV || 'production';
+const NODE_ENV = process.env.BUILD_ENV || 'production';
 
 module.exports = merge.smart(common, {
-  mode: 'production',
+  mode: NODE_ENV,
 
   devtool: 'cheap-module-source-map',
 
@@ -47,8 +47,8 @@ module.exports = merge.smart(common, {
 
   plugins: [
     new webpack.EnvironmentPlugin({
-      'BUILD_DOWNLOADABLE': 'true',
-      'NODE_ENV': 'production'
+      BUILD_DOWNLOADABLE: true,
+      NODE_ENV: NODE_ENV
     }),
 
     new MiniCSSExtractPlugin({
