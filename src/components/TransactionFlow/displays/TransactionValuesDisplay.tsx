@@ -3,15 +3,15 @@ import { Heading, Typography } from '@mycrypto/ui';
 
 import sendIcon from '@assets/images/icn-send.svg';
 import { Currency } from '@components';
-import { TSymbol } from '@types';
+import { TTicker } from '@types';
 import { translateRaw } from '@translations';
 import { SettingsContext } from '@services';
 import { getFiat } from '@config/fiats';
 
 interface Props {
   amount: string;
-  ticker: TSymbol;
-  fiatAsset: { ticker: TSymbol; exchangeRate: string };
+  ticker: TTicker;
+  fiatAsset: { ticker: TTicker; exchangeRate: string };
 }
 
 function TransactionValueDisplay({ amount, ticker, fiatAsset }: Props) {
@@ -27,21 +27,21 @@ function TransactionValueDisplay({ amount, ticker, fiatAsset }: Props) {
     <div className="SendAssetsForm-fieldset-youllSend-box">
       <Heading as="h2" className="SendAssetsForm-fieldset-youllSend-box-crypto">
         <img src={sendIcon} alt="Send" />
-        <Currency amount={amount} symbol={ticker} />
+        <Currency amount={amount} ticker={ticker} />
       </Heading>
       <small className="SendAssetsForm-fieldset-youllSend-box-fiat">
         {'≈ '}
-        <Currency amount={txAmountinFiat} symbol={fiatAsset.ticker} decimals={2} />
+        <Currency amount={txAmountinFiat} ticker={fiatAsset.ticker} decimals={2} />
       </small>
       <div className="SendAssetsForm-fieldset-youllSend-box-conversion">
         <Typography as="div">
           {translateRaw('CONVERSION_RATE')}
           <br />
-          <Currency amount={'1'} symbol={ticker} decimals={0} />
+          <Currency amount={'1'} ticker={ticker} decimals={0} />
           {' ≈ '}
           <Currency
             amount={fiatAsset.exchangeRate}
-            symbol={fiatAsset.ticker}
+            ticker={fiatAsset.ticker}
             code={getFiat(settings).code}
             decimals={2}
           />
