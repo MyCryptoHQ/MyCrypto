@@ -35,7 +35,8 @@ const Overrides = styled.div`
     color: ${COLORS.BLUE_GREY};
   }
 `;
-interface Props extends SProps {
+
+export interface Props extends SProps {
   address: string;
   truncate: any;
   isCopyable?: boolean;
