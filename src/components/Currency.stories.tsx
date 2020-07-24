@@ -7,7 +7,7 @@ import { FONT_SIZE } from '@theme';
 
 const defaultProps: React.ComponentProps<typeof Currency> = {
   amount: '0.00012312',
-  code: 'USD' as TTicker
+  ticker: 'USD' as TTicker
 };
 
 export default { title: 'Components/Currency' };
@@ -15,7 +15,7 @@ export default { title: 'Components/Currency' };
 export const defaultState = () => {
   return (
     <div className="sb-container">
-      <Currency amount={defaultProps.amount} code={defaultProps.code} />
+      <Currency amount={defaultProps.amount} ticker={defaultProps.ticker} />
       <Divider height={'1em'} />
       <Currency amount={defaultProps.amount} ticker={'ETH' as TTicker} />
       <Divider height={'1em'} />

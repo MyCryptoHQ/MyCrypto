@@ -5,37 +5,37 @@ interface FiatObject {
 }
 
 export const USD = {
-  code: 'USD' as TTicker,
+  ticker: 'USD' as TTicker,
   name: 'US Dollars',
   symbol: '$' as TCurrencySymbol
 };
 export const EUR = {
-  code: 'EUR' as TTicker,
+  ticker: 'EUR' as TTicker,
   name: 'Euros',
   symbol: '€' as TCurrencySymbol
 };
 export const GBP = {
-  code: 'GBP' as TTicker,
+  ticker: 'GBP' as TTicker,
   name: 'British Pounds',
   symbol: '£' as TCurrencySymbol
 };
 export const RUB = {
-  code: 'RUB' as TTicker,
+  ticker: 'RUB' as TTicker,
   name: 'Rubles',
   symbol: '₽' as TCurrencySymbol
 };
 export const INR = {
-  code: 'INR' as TTicker,
+  ticker: 'INR' as TTicker,
   name: 'Rupee',
   symbol: '₹' as TCurrencySymbol
 };
 export const CNY = {
-  code: 'CNY' as TTicker,
+  ticker: 'CNY' as TTicker,
   name: 'Yuan',
   symbol: '¥' as TCurrencySymbol
 };
 export const TRY = {
-  code: 'TRY' as TTicker,
+  ticker: 'TRY' as TTicker,
   name: 'Turkish Lira',
   symbol: '₺' as TCurrencySymbol
 };

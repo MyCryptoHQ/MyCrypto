@@ -127,10 +127,10 @@ const addBaseAssetsToAssets = add(LSKeys.ASSETS)((_, store: LocalStorage) => {
 });
 
 const addFiatsToAssets = add(LSKeys.ASSETS)((fiats: Fiat[], store: LocalStorage) => {
-  const formatFiat = ({ code, name }: Fiat): ExtendedAsset => ({
-    uuid: generateAssetUUID(code, name),
+  const formatFiat = ({ ticker, name }: Fiat): ExtendedAsset => ({
+    uuid: generateAssetUUID(ticker, name),
     name,
-    ticker: code,
+    ticker,
     networkId: 'OldWorld' as NetworkId,
     type: 'fiat',
     decimal: 0

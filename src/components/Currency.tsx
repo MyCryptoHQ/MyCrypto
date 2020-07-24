@@ -16,8 +16,7 @@ const SAssetIconContainer = styled('span')`
 interface Props {
   amount: string;
   symbol?: TCurrencySymbol;
-  ticker?: TTicker;
-  code?: TTicker; // @todo merge with ticker later
+  ticker: TTicker;
   uuid?: TUuid;
   decimals?: number;
   icon?: boolean;
@@ -34,15 +33,14 @@ function Currency({
   icon = false,
   bold = false,
   fontSize,
-  code,
   ...props
 }: Props) {
   const format = (value: string, decimalPlaces: number) => {
     return new Intl.NumberFormat(navigator.language, {
       minimumFractionDigits: decimalPlaces,
       maximumFractionDigits: decimalPlaces,
-      style: code ? 'currency' : undefined,
-      currency: code
+      style: ticker ? 'currency' : undefined,
+      currency: ticker
     }).format(parseFloat(value));
   };
 
@@ -55,7 +53,7 @@ function Currency({
       )}
       <Typography bold={bold} fontSize={fontSize}>
         {format(amount, decimals)}
-        {!code && ` ${symbol || ticker}`}
+        {!ticker && ` ${symbol || ticker}`}
       </Typography>
     </SContainer>
   );

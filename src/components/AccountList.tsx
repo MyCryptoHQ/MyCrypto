@@ -532,7 +532,7 @@ const buildAccountTable = (
           key={index}
           amount={total.toString()}
           symbol={getFiat(settings).symbol}
-          code={getFiat(settings).code}
+          ticker={getFiat(settings).ticker}
           decimals={2}
         />
       ];

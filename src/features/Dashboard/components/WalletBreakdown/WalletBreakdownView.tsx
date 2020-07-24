@@ -302,14 +302,14 @@ export default function WalletBreakdownView({
                     <Currency
                       amount={balance.fiatValue.toString()}
                       symbol={fiat.symbol}
-                      code={fiat.code}
+                      ticker={fiat.ticker}
                       decimals={2}
                       bold={true}
                       fontSize={'1.3rem'}
                     />
                   </PanelFigureValue>
                   <PanelFigureLabel>
-                    {translate('WALLET_BREAKDOWN_VALUE_IN')} {fiat.code}
+                    {translate('WALLET_BREAKDOWN_VALUE_IN')} {fiat.ticker}
                   </PanelFigureLabel>
                 </PanelFigure>
               </PanelFigures>
@@ -349,7 +349,7 @@ export default function WalletBreakdownView({
                 <Tooltip
                   tooltip={translateRaw('WALLET_BREAKDOWN_BALANCE_TOOLTIP', {
                     $exchangeRate: (exchangeRate || 0).toFixed(3),
-                    $fiatTicker: fiat.code,
+                    $fiatTicker: fiat.ticker,
                     $cryptoTicker: ticker
                   })}
                 >
@@ -357,7 +357,7 @@ export default function WalletBreakdownView({
                     <Currency
                       amount={fiatValue.toString()}
                       symbol={fiat.symbol}
-                      code={fiat.code}
+                      ticker={fiat.ticker}
                       decimals={2}
                     />
                   </BreakDownBalanceAssetAmount>
@@ -377,7 +377,7 @@ export default function WalletBreakdownView({
               <Currency
                 amount={totalFiatValue.toString()}
                 symbol={fiat.symbol}
-                code={fiat.code}
+                ticker={fiat.ticker}
                 decimals={2}
               />
             </div>

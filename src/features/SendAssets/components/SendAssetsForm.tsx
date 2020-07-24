@@ -574,7 +574,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                       values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider
                     }
                     fiatAsset={{
-                      fiat: getFiat(settings).code,
+                      fiat: getFiat(settings).ticker,
                       rate: (getAssetRate(baseAsset || undefined) || 0).toString(),
                       symbol: getFiat(settings).symbol
                     }}

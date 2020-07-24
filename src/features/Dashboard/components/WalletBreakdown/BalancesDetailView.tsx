@@ -75,7 +75,7 @@ const BalancesDetailView = (props: BalancesDetailProps) => {
             <Currency
               amount={totalFiatValue.toString()}
               symbol={fiat.symbol}
-              code={fiat.code}
+              ticker={fiat.ticker}
               decimals={2}
             />
           </BalancesOnlyTotal>

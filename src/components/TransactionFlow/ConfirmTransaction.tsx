@@ -269,6 +269,7 @@ export const ConfirmTransactionUI = ({
             assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
             fiat={{
               symbol: getFiat(settings).symbol,
+              ticker: getFiat(settings).ticker,
               amount: convertToFiat(parseFloat(amount), assetRate).toFixed(2)
             }}
           />
@@ -284,6 +285,7 @@ export const ConfirmTransactionUI = ({
             assetValue={`${maxTransactionFeeBase} ${baseAsset.ticker}`}
             fiat={{
               symbol: getFiat(settings).symbol,
+              ticker: getFiat(settings).ticker,
               amount: convertToFiat(parseFloat(maxTransactionFeeBase), baseAssetRate).toFixed(2)
             }}
           />
@@ -303,6 +305,7 @@ export const ConfirmTransactionUI = ({
                 assetValue={`${totalEtherEgress} ${asset.ticker}`}
                 fiat={{
                   symbol: getFiat(settings).symbol,
+                  ticker: getFiat(settings).ticker,
                   amount: convertToFiat(parseFloat(totalEtherEgress), assetRate).toFixed(2)
                 }}
               />
@@ -316,6 +319,7 @@ export const ConfirmTransactionUI = ({
                 baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
                 fiat={{
                   symbol: getFiat(settings).symbol,
+                  ticker: getFiat(settings).ticker,
                   amount: (
                     convertToFiat(parseFloat(amount), assetRate) +
                     convertToFiat(parseFloat(totalEtherEgress), baseAssetRate)

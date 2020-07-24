@@ -346,6 +346,7 @@ export const TxReceiptUI = ({
               assetValue={`${parseFloat(assetAmount()).toFixed(6)} ${assetTicker()}`}
               fiat={{
                 symbol: getFiat(settings).symbol,
+                ticker: getFiat(settings).ticker,
                 amount: convertToFiat(parseFloat(assetAmount()), assetRate()).toFixed(2)
               }}
             />
