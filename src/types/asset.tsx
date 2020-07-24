@@ -3,14 +3,14 @@ import { NetworkId, TUuid, AssetSocial } from '@types';
 import { Brand } from 'utility-types';
 
 export type TTicker = Brand<string, 'Ticker'>;
-export type TSymbol = Brand<string, 'Symbol'>;
+export type TCurrencySymbol = Brand<string, 'Symbol'>;
 export type TAssetType = 'base' | 'erc20' | 'fiat';
 export type ISwapAsset = Pick<Asset, 'name' | 'ticker' | 'uuid'>;
 
 export interface Fiat {
   code: TTicker;
   name: string;
-  symbol: TSymbol;
+  symbol: TCurrencySymbol;
   prefix?: boolean;
 }
 
@@ -19,7 +19,6 @@ export interface Asset {
   readonly name: string;
   readonly networkId: NetworkId;
   readonly ticker: TTicker; // The 3 letter curency code to identify an asset.
-  readonly symbol?: TSymbol; // The currency symbol to identify an asset eg. €, $
   readonly type: TAssetType;
   readonly contractAddress?: string;
   readonly decimal?: number;

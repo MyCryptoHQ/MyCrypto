@@ -112,7 +112,7 @@ interface State {
     accountType: WalletId | undefined,
     dPath: string
   ): IRawAccount | undefined;
-  getAssetByTicker(symbol: string): Asset | undefined;
+  getAssetByTicker(ticker: TTicker): Asset | undefined;
   getAccount(a: IRawAccount): StoreAccount | undefined;
   getDeFiAssetReserveAssets(
     asset: StoreAsset

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { TTicker, TSymbol, TUuid } from '@types';
+import { TTicker, TCurrencySymbol, TUuid } from '@types';
 import { default as Typography } from './Typography';
 import AssetIcon from './AssetIcon';
 
@@ -15,7 +15,7 @@ const SAssetIconContainer = styled('span')`
 
 interface Props {
   amount: string;
-  symbol?: TSymbol;
+  symbol?: TCurrencySymbol;
   ticker?: TTicker;
   code?: TTicker; // @todo merge with ticker later
   uuid?: TUuid;

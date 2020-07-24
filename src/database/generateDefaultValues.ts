@@ -21,8 +21,7 @@ import {
   ContractLegacy,
   AssetLegacy,
   LSKeys,
-  NodeOptions,
-  TTicker
+  NodeOptions
 } from '@types';
 
 import { NODES_CONFIG, NETWORKS_CONFIG, NetworkConfig } from './data';
@@ -152,7 +151,7 @@ const addTokensToAssets = add(LSKeys.ASSETS)(
       uuid: a.uuid || generateAssetUUID(id), // In case a token doesn't have a pregenerated uuid. eg. RSK
       name: a.name,
       decimal: a.decimal,
-      ticker: (a.symbol || a.ticker) as TTicker,
+      ticker: a.ticker,
       networkId: id,
       contractAddress: a.address,
       type: 'erc20',

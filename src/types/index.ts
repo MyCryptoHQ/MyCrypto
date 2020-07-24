@@ -30,7 +30,7 @@ export {
   Fiat,
   Asset,
   ExtendedAsset,
-  TSymbol,
+  TCurrencySymbol,
   TTicker,
   TAssetType,
   AssetBalanceObject,

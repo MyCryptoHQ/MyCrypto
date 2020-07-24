@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 
 import { COLORS, BREAK_POINTS } from '@theme';
-import { TSymbol } from '@types';
+import { TCurrencySymbol } from '@types';
 
 import { default as Typography } from './Typography';
 import Currency from './Currency';
@@ -45,7 +45,7 @@ interface Props {
   assetValue: string;
   fiat?: {
     amount: string;
-    symbol: TSymbol;
+    symbol: TCurrencySymbol;
   };
   baseAssetValue?: string;
   bold?: boolean;
