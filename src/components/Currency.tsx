@@ -28,6 +28,7 @@ interface Props {
 function Currency({
   amount,
   symbol,
+  ticker,
   uuid,
   decimals = 5,
   icon = false,
@@ -54,7 +55,7 @@ function Currency({
       )}
       <Typography bold={bold} fontSize={fontSize}>
         {format(amount, decimals)}
-        {!code && ` ${symbol}`}
+        {!code && ` ${symbol || ticker}`}
       </Typography>
     </SContainer>
   );

@@ -31,7 +31,7 @@ const Asset = styled(Typography)<typeof Typography & { $discrete?: boolean }>`
       : ``};
 `;
 
-const Fiat = styled(Currency)`
+const SCurrency = styled(Currency)`
   font-size: 0.9em;
   span {
     color: ${COLORS.BLUE_GREY};
@@ -58,7 +58,7 @@ export default function Amount({ assetValue, fiat, baseAssetValue, bold = false 
     <SAmount>
       <Asset bold={bold}>{assetValue}</Asset>
       {baseAssetValue && <Asset $discrete={true}>{baseAssetValue}</Asset>}
-      {fiat && <Fiat amount={fiat.amount} symbol={fiat.symbol} decimals={2} />}
+      {fiat && <SCurrency amount={fiat.amount} symbol={fiat.symbol} decimals={2} />}
     </SAmount>
   );
 }
