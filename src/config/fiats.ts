@@ -1,41 +1,41 @@
-import { Fiat, TTicker, TCurrencySymbol, ISettings } from '@types';
+import { Fiat, TFiatTicker, TCurrencySymbol, ISettings } from '@types';
 
 interface FiatObject {
   [key: string]: Fiat;
 }
 
 export const USD = {
-  ticker: 'USD' as TTicker,
+  ticker: 'USD' as TFiatTicker,
   name: 'US Dollars',
   symbol: '$' as TCurrencySymbol
 };
 export const EUR = {
-  ticker: 'EUR' as TTicker,
+  ticker: 'EUR' as TFiatTicker,
   name: 'Euros',
   symbol: '€' as TCurrencySymbol
 };
 export const GBP = {
-  ticker: 'GBP' as TTicker,
+  ticker: 'GBP' as TFiatTicker,
   name: 'British Pounds',
   symbol: '£' as TCurrencySymbol
 };
 export const RUB = {
-  ticker: 'RUB' as TTicker,
+  ticker: 'RUB' as TFiatTicker,
   name: 'Rubles',
   symbol: '₽' as TCurrencySymbol
 };
 export const INR = {
-  ticker: 'INR' as TTicker,
+  ticker: 'INR' as TFiatTicker,
   name: 'Rupee',
   symbol: '₹' as TCurrencySymbol
 };
 export const CNY = {
-  ticker: 'CNY' as TTicker,
+  ticker: 'CNY' as TFiatTicker,
   name: 'Yuan',
   symbol: '¥' as TCurrencySymbol
 };
 export const TRY = {
-  ticker: 'TRY' as TTicker,
+  ticker: 'TRY' as TFiatTicker,
   name: 'Turkish Lira',
   symbol: '₺' as TCurrencySymbol
 };

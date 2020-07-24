@@ -32,6 +32,7 @@ export {
   ExtendedAsset,
   TCurrencySymbol,
   TTicker,
+  TFiatTicker,
   TAssetType,
   AssetBalanceObject,
   StoreAsset,

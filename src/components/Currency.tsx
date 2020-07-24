@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { isFiatTicker } from '@utils';
 import { TTicker, TCurrencySymbol, TUuid } from '@types';
 import { default as Typography } from './Typography';
 import AssetIcon from './AssetIcon';
@@ -39,7 +40,7 @@ function Currency({
     return new Intl.NumberFormat(navigator.language, {
       minimumFractionDigits: decimalPlaces,
       maximumFractionDigits: decimalPlaces,
-      style: ticker ? 'currency' : undefined,
+      style: isFiatTicker(ticker) ? 'currency' : undefined,
       currency: ticker
     }).format(parseFloat(value));
   };
@@ -53,7 +54,7 @@ function Currency({
       )}
       <Typography bold={bold} fontSize={fontSize}>
         {format(amount, decimals)}
-        {!ticker && ` ${symbol || ticker}`}
+        {!isFiatTicker(ticker) && ` ${symbol || ticker}`}
       </Typography>
     </SContainer>
   );

@@ -1,14 +1,16 @@
 import { BigNumber } from 'ethers/utils';
-import { NetworkId, TUuid, AssetSocial } from '@types';
 import { Brand } from 'utility-types';
 
+import { NetworkId, TUuid, AssetSocial } from '@types';
+
 export type TTicker = Brand<string, 'Ticker'>;
+export type TFiatTicker = Brand<TTicker, 'FiatTicker'>;
 export type TCurrencySymbol = Brand<string, 'Symbol'>;
 export type TAssetType = 'base' | 'erc20' | 'fiat';
 export type ISwapAsset = Pick<Asset, 'name' | 'ticker' | 'uuid'>;
 
 export interface Fiat {
-  ticker: TTicker;
+  ticker: TFiatTicker;
   name: string;
   symbol: TCurrencySymbol;
   prefix?: boolean;
