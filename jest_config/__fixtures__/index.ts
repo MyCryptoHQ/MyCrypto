@@ -15,7 +15,12 @@ export {
   fFinishedERC20Web3TxReceipt
 } from './transaction';
 export { fSettings } from './settings';
-export { default as fTxConfig } from './txConfig.json';
+
+import { default as txConfig } from './txConfig.json';
+
+import { fNetwork as network } from './network';
+export const fTxConfig = { ...txConfig, network };
+
 export { default as fTxConfigs } from './txConfigs.json';
 export { default as fTxReceipt } from './txReceipt.json';
 export { default as fTxReceipts } from './txReceipts.json';
