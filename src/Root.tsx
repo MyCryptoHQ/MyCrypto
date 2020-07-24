@@ -27,7 +27,6 @@ class RootClass extends Component {
   }
 
   public render() {
-    console.debug('IS_DOWNLOADABLE', IS_DOWNLOADABLE);
     const Router: any = IS_DOWNLOADABLE ? HashRouter : BrowserRouter;
 
     return (
