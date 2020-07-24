@@ -71,6 +71,15 @@ describe('TxReceipt', () => {
     expect(getByText(parseFloat(fTxConfig.amount).toFixed(6), { exact: false })).toBeDefined();
   });
 
+  test('it shows pending state', async () => {
+    const { getAllByText } = getComponent({
+      ...defaultProps,
+      txStatus: ITxStatus.PENDING,
+      displayTxReceipt: undefined
+    });
+    expect(getAllByText(translateRaw('PENDING'))).toBeDefined();
+  });
+
   test('it shows DeFiZap info', async () => {
     const zap = ZAPS_CONFIG.compounddai;
     const { getByText } = getComponent({
@@ -79,6 +88,7 @@ describe('TxReceipt', () => {
       txType: ITxType.DEFIZAP
     });
     expect(getByText(zap.title)).toBeDefined();
+    expect(getByText(zap.contractAddress)).toBeDefined();
     expect(getByText(zap.platformsUsed[0], { exact: false })).toBeDefined();
   });
 
@@ -93,11 +103,13 @@ describe('TxReceipt', () => {
     expect(getByText(membership.contractAddress)).toBeDefined();
   });
 
-  test('it shows PTX button', async () => {
+  test('it shows PTX info', async () => {
     const { getByText } = getComponent({
       ...defaultProps,
-      protectTxButton: () => <>PTXBUTTON</>
+      protectTxButton: () => <>PTXBUTTON</>,
+      protectTxEnabled: true
     });
     expect(getByText('PTXBUTTON')).toBeDefined();
+    expect(getByText(translateRaw('PROTECTED_TX_CANCEL'))).toBeDefined();
   });
 });
