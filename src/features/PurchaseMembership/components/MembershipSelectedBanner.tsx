@@ -37,11 +37,6 @@ const Icon = styled.img`
   height: 48px;
 `;
 
-const Price = styled(Typography)`
-  font-size: ${FONT_SIZE.XL};
-  color: ${COLORS.BLUE_DARK};
-`;
-
 const CostWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -72,9 +67,14 @@ const MembershipSelectedBanner = ({ membershipSelected }: Props) => {
         <CostText as="div">
           {translateRaw('COST')} <Tooltip tooltip={translateRaw('MEMBERSHIP_COST_TOOLTIP')} />
         </CostText>
-        <Price as="div" bold={true}>
+        <Typography
+          as="div"
+          bold={true}
+          fontSize={FONT_SIZE.XL}
+          style={{ color: COLORS.BLUE_DARK }}
+        >
           {membershipSelected.price} {asset.ticker}
-        </Price>
+        </Typography>
       </CostWrapper>
     </BannerContainer>
   );
