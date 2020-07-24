@@ -1,9 +1,7 @@
 import { t, Selector } from 'testcafe';
 
-import { PAGES, FIXTURE_ETHEREUM, FIXTURE_VIEW_ONLY_ADDRESS } from './fixtures';
+import { PAGES, FIXTURES_CONST } from './fixtures';
 import BasePage from './base-page.po';
-import { getTransValueByKey } from './translation-utils';
-import { getByText } from '@testing-library/testcafe';
 
 export default class DashboardPage extends BasePage {
   async navigateToPage() {
@@ -16,5 +14,13 @@ export default class DashboardPage extends BasePage {
 
   async expectAccountTableToMatchCount(count) {
     await t.expect(Selector('section:first-of-type > div > table tbody tr').count).eql(count);
+  }
+
+  async expectBalanceInBalanceList(token) {
+    await t.expect(Selector('div').withExactText(token)).ok({ timeout: FIXTURES_CONST.TIMEOUT });
+  }
+
+  async expectTokenInTokenList(token) {
+    await t.expect(Selector('p').withExactText(token)).ok({ timeout: FIXTURES_CONST.TIMEOUT });
   }
 }
