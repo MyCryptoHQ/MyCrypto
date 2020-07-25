@@ -8,6 +8,7 @@ import { IAccount, IFormikFields, Fiat } from '@types';
 import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 import { Amount, Button, PoweredByText } from '@components';
 import { translateRaw } from '@translations';
+import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { getFiat } from '@config/fiats';
 
 import { getProtectTxFee, checkFormForProtectTxErrors } from '../utils';
@@ -197,7 +198,7 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
         await setReceiverInfo(sendAssetsValues!.address.value, sendAssetsValues!.network);
         await handleProtectTxSubmit({
           ...sendAssetsValues!,
-          amount: feeAmount.amount ? feeAmount.amount.toFixed(16) : ''
+          amount: feeAmount.amount ? feeAmount.amount.toFixed(DEFAULT_ASSET_DECIMAL) : ''
         });
       } catch (e) {
         console.error(e);
