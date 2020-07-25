@@ -89,9 +89,8 @@ export default function TxReceipt({
   const [blockNumber, setBlockNumber] = useState(0);
   const [timestamp, setTimestamp] = useState(0);
 
-  const {
-    state: { protectTxEnabled, isWeb3Wallet: isPtxWeb3Wallet }
-  } = useContext(ProtectTxContext);
+  // Imported in this way to handle errors where the context is missing, f.x. in Swap Flow
+  const { state: ptxState } = useContext(ProtectTxContext);
 
   useEffect(() => {
     setDisplayTxReceipt(txReceipt);
@@ -184,8 +183,8 @@ export default function TxReceipt({
       resetFlow={resetFlow}
       completeButtonText={completeButtonText}
       pendingButton={pendingButton}
-      protectTxEnabled={protectTxEnabled}
-      web3Wallet={isPtxWeb3Wallet}
+      protectTxEnabled={ptxState && ptxState.protectTxEnabled}
+      web3Wallet={ptxState && ptxState.isWeb3Wallet}
       protectTxButton={protectTxButton}
     />
   );
