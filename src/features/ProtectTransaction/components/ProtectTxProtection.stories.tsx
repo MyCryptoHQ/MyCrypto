@@ -4,7 +4,7 @@ import { Panel } from '@mycrypto/ui';
 
 import { COLORS } from '@theme';
 import { noOp, bigify } from '@utils';
-import { USD } from '@config/fiats';
+import { Fiats } from '@config';
 
 import { ProtectTxProtectionUI, UIProps } from './ProtectTxProtection';
 import ProtectTxModalBackdrop from './ProtectTxModalBackdrop';
@@ -12,7 +12,7 @@ import { ProtectTxError } from '..';
 
 const defaultProps: UIProps = {
   error: ProtectTxError.NO_ERROR,
-  fiat: USD,
+  fiat: Fiats.USD,
   isLoading: false,
   feeAmount: { rate: 250, amount: bigify('0.002'), fee: bigify('0.002') },
   web3Wallet: { isWeb3Wallet: true, name: 'MetaMask' },

@@ -2,15 +2,15 @@ import React from 'react';
 import { simpleRender, fireEvent } from 'test-utils';
 
 import { translateRaw } from '@translations';
-import { USD } from '@config/fiats';
+import { Fiats } from '@config';
 import { bigify } from '@utils';
 
-import { ProtectTxProtectionUI, UIProps } from '../components/ProtectTxProtection';
+import { ProtectTxProtectionUI } from '../components/ProtectTxProtection';
 import { ProtectTxError } from '..';
 
-const defaultProps: UIProps = {
+const defaultProps: React.ComponentProps<typeof ProtectTxProtectionUI> = {
   error: ProtectTxError.NO_ERROR,
-  fiat: USD,
+  fiat: Fiats.USD,
   isLoading: false,
   feeAmount: { rate: 250, amount: bigify('0.002'), fee: bigify('0.002') },
   web3Wallet: { isWeb3Wallet: true, name: 'MetaMask' },
@@ -19,7 +19,7 @@ const defaultProps: UIProps = {
   onProtect: jest.fn()
 };
 
-const renderComponent = (props: UIProps) => {
+const renderComponent = (props: React.ComponentProps<typeof ProtectTxProtectionUI>) => {
   return simpleRender(<ProtectTxProtectionUI {...props} />);
 };
 
