@@ -32,6 +32,7 @@ const NETWORK_NAME_FIXTURE = 'Ropsten';
 
 const FIXTURE_ETHEREUM = 'Ethereum';
 
+// MyCrypto Dev Testing Account with multiple tokens - should probably be swapped out for a dedicated E2E testing account
 const FIXTURE_VIEW_ONLY_ADDRESS = '0x82D69476357A03415E92B5780C89e5E9e972Ce75';
 
 const FIXTURE_VIEW_ONLY_TOKENS = ['Aragon', 'Basic Attention Token', 'Dai Stablecoin v2.0'];
