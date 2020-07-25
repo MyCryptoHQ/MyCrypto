@@ -24,7 +24,7 @@ import {
 import { ProtectTxError, NansenReportType } from './types';
 import { MALICIOUS_LABELS, WHITELISTED_LABELS } from './constants';
 
-export const getProtectTransactionFee = (
+export const getProtectTxFee = (
   sendAssetsValues: Pick<
     IFormikFields,
     'amount' | 'gasLimitField' | 'advancedTransaction' | 'gasPriceField' | 'gasPriceSlider'
@@ -68,7 +68,7 @@ export const getProtectTransactionFee = (
   };
 };
 
-export const checkFormForProtectedTxErrors = (
+export const checkFormForProtectTxErrors = (
   formValues: IFormikFields,
   rate: number | undefined,
   isMyCryptoMember: boolean

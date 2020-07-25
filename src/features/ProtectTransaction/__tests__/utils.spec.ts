@@ -1,10 +1,4 @@
-import {
-  NansenReportType,
-  getProtectTransactionFee,
-  getNansenReportType,
-  getLastTx,
-  getBalance
-} from '..';
+import { NansenReportType, getProtectTxFee, getNansenReportType, getLastTx, getBalance } from '..';
 import { GetTxResponse, GetTokenTxResponse, GetBalanceResponse } from '@services';
 
 describe('getProtectTransactionFee', () => {
@@ -18,13 +12,13 @@ describe('getProtectTransactionFee', () => {
     advancedTransaction: false
   };
   it('should return correctly calculated values', () => {
-    const { fee, amount } = getProtectTransactionFee(formValues, rate);
+    const { fee, amount } = getProtectTxFee(formValues, rate);
     expect(amount?.toString()).toBe('0.002006007982519936');
     expect(fee?.toString()).toBe('0.001365');
   });
 
   it('should return use correct gas prices', () => {
-    const { fee, amount } = getProtectTransactionFee(
+    const { fee, amount } = getProtectTxFee(
       { ...formValues, gasEstimates: { safeLow: 70 }, advancedTransaction: true },
       rate
     );
@@ -33,7 +27,7 @@ describe('getProtectTransactionFee', () => {
   });
 
   it('should return null in case of missing values', () => {
-    const { fee, amount } = getProtectTransactionFee(formValues, undefined);
+    const { fee, amount } = getProtectTxFee(formValues, undefined);
     expect(amount).toBe(null);
     expect(fee).toBe(null);
   });
