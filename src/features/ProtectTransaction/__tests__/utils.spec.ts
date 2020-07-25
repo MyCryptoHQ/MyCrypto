@@ -11,13 +11,13 @@ describe('getProtectTransactionFee', () => {
     gasPriceSlider: '72',
     advancedTransaction: false
   };
-  it('should return correctly calculated values', () => {
+  it('should calculate the PTX fee given form values', () => {
     const { fee, amount } = getProtectTxFee(formValues, rate);
     expect(amount?.toString()).toBe('0.002006007982519936');
     expect(fee?.toString()).toBe('0.001365');
   });
 
-  it('should return use correct gas prices', () => {
+  it('should use correct gas prices', () => {
     const { fee, amount } = getProtectTxFee(
       { ...formValues, gasEstimates: { safeLow: 70 }, advancedTransaction: true },
       rate
