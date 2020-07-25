@@ -15,7 +15,9 @@ export default class AddAccountPage extends BasePage {
   }
 
   async addViewOnly() {
-    this.navigateTo(PAGES.ADD_ACCOUNT_VIEWONLY);
+    await this.navigateToPage();
+    await this.waitPageLoaded();
+    await t.click(getByText(getTransValueByKey('VIEW_ADDR')));
     this.waitForPage(PAGES.ADD_ACCOUNT_VIEWONLY);
 
     await t
