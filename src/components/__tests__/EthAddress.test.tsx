@@ -14,9 +14,6 @@ function getComponent(props: React.ComponentProps<typeof EthAddress>) {
   return simpleRender(<EthAddress {...props} />);
 }
 
-// @ts-ignore
-navigator.clipboard = { writeText: jest.fn() };
-
 describe('EthAddress', () => {
   test('it displays the address untruncated', async () => {
     const { getByText } = getComponent({ ...defaultProps, truncate: false });
@@ -32,6 +29,10 @@ describe('EthAddress', () => {
     const { getByText } = getComponent(defaultProps);
     const element = getByText(truncate(defaultProps.address));
     expect(element).toBeDefined();
+
+    // @ts-ignore
+    navigator.clipboard = { writeText: jest.fn() };
+
     fireEvent.click(element);
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(defaultProps.address);
   });
@@ -40,6 +41,10 @@ describe('EthAddress', () => {
     const { getByText } = getComponent({ ...defaultProps, isCopyable: false });
     const element = getByText(truncate(defaultProps.address));
     expect(element).toBeDefined();
+
+    // @ts-ignore
+    navigator.clipboard = { writeText: jest.fn() };
+
     fireEvent.click(element);
     expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(0);
   });
