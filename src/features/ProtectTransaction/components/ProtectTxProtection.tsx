@@ -16,6 +16,7 @@ import ProtectTxBase from './ProtectTxBase';
 import CloseIcon from '@components/icons/CloseIcon';
 import ProtectIcon from '@components/icons/ProtectIcon';
 import WarningIcon from '@components/icons/WarningIcon';
+import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 
 import feeIcon from '@assets/images/icn-fee.svg';
 import { ProtectTxContext } from '../ProtectTxProvider';
@@ -121,8 +122,18 @@ const FeeContainer = styled.div`
     width: 24px;
   }
 
+  && svg {
+    height: 23px;
+    width: 24px;
+  }
+
+  &:nth-of-type(2) {
+    margin-top: ${SPACING.SM};
+  }
+
   .fee-label {
     flex: 0 0 140px;
+    min-width: 140px;
     max-width: 140px;
     padding-left: ${SPACING.SM};
     margin-bottom: 0;
@@ -262,15 +273,18 @@ export const ProtectTxProtectionUI = ({
   onCancel,
   onProtect
 }: UIProps) => {
-  const getAssetValue = useCallback(() => {
-    if (feeAmount.amount === null || feeAmount.fee === null) return '--';
-    return `${feeAmount.amount.plus(feeAmount.fee).toFixed(6)} ETH`;
-  }, [feeAmount]);
+  const getAssetValue = (amount: BigNumber | null) => {
+    if (amount === null) return '--';
+    return `${amount.toFixed(6)} ETH`;
+  };
 
-  const getFiatValue = useCallback(() => {
-    if (feeAmount.amount === null || feeAmount.fee === null || feeAmount.rate === null) return '--';
-    return feeAmount.amount.plus(feeAmount.fee).multipliedBy(feeAmount.rate).toFixed(2);
-  }, [feeAmount]);
+  const getFiatValue = useCallback(
+    (amount: BigNumber | null) => {
+      if (amount === null || feeAmount.rate === null) return '--';
+      return amount.multipliedBy(feeAmount.rate).toFixed(2);
+    },
+    [feeAmount]
+  );
 
   const { isWeb3Wallet, name } = web3Wallet;
 
@@ -328,11 +342,19 @@ export const ProtectTxProtectionUI = ({
             {translateRaw('PROTECTED_TX_SEND_WITH_CONFIDENCE')}
           </h4>
           <FeeContainer>
+            <ProtectIconCheck size="sm" />
+            <p className="fee-label">{translateRaw('PROTECTED_TX_PRICE')}</p>
+            <Amount
+              assetValue={getAssetValue(feeAmount.amount)}
+              fiat={{ symbol: fiat.symbol, amount: getFiatValue(feeAmount.amount) }}
+            />
+          </FeeContainer>
+          <FeeContainer>
             <img src={feeIcon} alt="Fee" />
             <p className="fee-label">{translateRaw('PROTECTED_TX_FEE')}</p>
             <Amount
-              assetValue={getAssetValue()}
-              fiat={{ symbol: fiat.symbol, amount: getFiatValue() }}
+              assetValue={getAssetValue(feeAmount.fee)}
+              fiat={{ symbol: fiat.symbol, amount: getFiatValue(feeAmount.fee) }}
             />
           </FeeContainer>
         </>

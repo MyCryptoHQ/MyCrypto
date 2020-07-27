@@ -33,7 +33,9 @@ const Asset = styled(Typography)<typeof Typography & { $discrete?: boolean }>`
 
 const Fiat = styled(Currency)`
   font-size: 0.9em;
-  color: ${COLORS.BLUE_GREY};
+  span {
+    color: ${COLORS.BLUE_GREY};
+  }
   @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
     font-size: 1em;
   }
