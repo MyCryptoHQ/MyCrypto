@@ -110,6 +110,7 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
 
   const { accounts, networks } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
+  const { getContactByAddressAndNetworkId, createAddressBooks } = useContext(AddressBookContext);
 
   const initialValues = {
     recipientAddress: {} as StoreAccount
