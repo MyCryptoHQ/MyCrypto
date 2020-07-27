@@ -14,14 +14,7 @@ const throwFailure = (message?: string) => {
 const throwApiFailure = () => throwFailure('API_FAILURE');
 
 export const possibleSolution = (solution: string) => {
-  const numSolution = parseInt(solution, 10);
-  if (isNaN(numSolution)) {
-    return false;
-  } else if (numSolution < -8 || numSolution > 18) {
-    return false;
-  } else {
-    return true;
-  }
+  return /^[a-zA-Z0-9]{4}$/.test(solution);
 };
 
 export const requestChallenge = async (recipientAddress: StoreAccount) => {
@@ -40,6 +33,18 @@ export const requestChallenge = async (recipientAddress: StoreAccount) => {
 
 export const solveChallenge = async (id: string, solution: string) => {
   const result = await api.get(`/solve/${id}/${solution}`).catch(throwApiFailure);
+
+  if (result.status !== 200) {
+    throwApiFailure();
+  } else if (!result.data.success) {
+    throwFailure(result.data.message);
+  } else {
+    return result.data.result;
+  }
+};
+
+export const regenerateChallenge = async (id: string) => {
+  const result = await api.get(`/regenerate/${id}`).catch(throwApiFailure);
 
   if (result.status !== 200) {
     throwApiFailure();
