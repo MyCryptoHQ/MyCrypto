@@ -26,7 +26,7 @@ const TableHead = styled.thead`
 
 const BodyRow = styled.tr<TableRowProps & UseRowSelectRowProps<any>>`
   ${(p) => p.isSelected && `background: rgba(179, 221, 135, 0.1);`}
-  margin: 20px 0;
+  height: 60px;
   border-bottom: 1px solid ${COLORS.GREY_ATHENS};
   &:hover {
     background: rgba(179, 221, 135, 0.3);
@@ -44,6 +44,7 @@ const CheckContainer = styled.div<{ isSelected: boolean }>`
   border-left: 6px solid ${(p) => (p.isSelected ? `${COLORS.LIGHT_GREEN}` : 'transparent')};
   width: 30px;
   padding-left: 10px;
+  margin-right: 10px;
 `;
 
 interface AccountsTableProps {
@@ -78,11 +79,9 @@ const AccountsTable = ({ columns, data }: AccountsTableProps) => {
     <Table {...getTableProps()}>
       <TableHead>
         {headerGroups.map((headerGroup) => (
-          <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
+          <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <TableHeading key={column.id} {...column.getHeaderProps()}>
-                {column.render('Header')}
-              </TableHeading>
+              <TableHeading {...column.getHeaderProps()}>{column.render('Header')}</TableHeading>
             ))}
           </tr>
         ))}
@@ -100,9 +99,7 @@ const AccountsTable = ({ columns, data }: AccountsTableProps) => {
               }}
             >
               {row.cells.map((cell) => (
-                <td key={cell.id} {...cell.getCellProps()}>
-                  {cell.render('Cell')}
-                </td>
+                <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
               ))}
             </BodyRow>
           );

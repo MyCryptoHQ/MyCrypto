@@ -25,7 +25,11 @@ import { Identicon } from '@mycrypto/ui';
 import AccountsTable from './DeterministicAccountTable';
 
 const DeterministicAccountListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 800px;
+  min-height: 500px;
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: calc(100vw - 30px);
   }
@@ -35,7 +39,7 @@ const LabelContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 250px;
+  width: 225px;
 `;
 
 const SIdenticon = styled(Identicon)`
@@ -62,7 +66,12 @@ const DPath = styled(Typography)`
 `;
 
 const LinkContainer = styled.div`
-  margin-right: 40px;
+  margin-right: 30px;
+`;
+
+const TableWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const GenerateAddressButton = styled.div`
@@ -71,11 +80,19 @@ const GenerateAddressButton = styled.div`
   flex-direction: row;
   align-items: center;
   height: 60px;
-  margin-left: 35px;
+  padding-left: 45px;
+  border-bottom: 1px solid ${COLORS.GREY_ATHENS};
 `;
 
 const STypography = styled(Typography)`
   margin-left: ${SPACING.SM};
+`;
+
+const StatusBar = styled.div`
+  width: 100%;
+  padding-top: 42px;
+  display: flex;
+  border-top: 1px solid ${COLORS.GREY_ATHENS};
 `;
 
 interface DeterministicAccountListProps {
@@ -196,13 +213,18 @@ export default function DeterministicAccountList(props: DeterministicAccountList
 
   return (
     <DeterministicAccountListWrapper>
-      <AccountsTable columns={columns} data={data} />
-      <GenerateAddressButton onClick={() => generateFreshAddress()}>
-        <Icon type="add" width="30px" />
-        <STypography>
-          <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
-        </STypography>
-      </GenerateAddressButton>
+      <TableWrapper>
+        <AccountsTable columns={columns} data={data} />
+        <GenerateAddressButton onClick={() => generateFreshAddress()}>
+          <Icon type="add" />
+          <STypography>
+            <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
+          </STypography>
+        </GenerateAddressButton>
+      </TableWrapper>
+      <StatusBar>
+        <p>bonjour</p>
+      </StatusBar>
     </DeterministicAccountListWrapper>
   );
 }
