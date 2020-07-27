@@ -3,7 +3,7 @@ import { fAccount, fAssets } from '@fixtures';
 
 import { noOp } from '@utils';
 import { StoreAccount } from '@types';
-import AccountDropdown from './AccountDropdown';
+import AccountDropdown from './AccountSelector';
 import AccountSummary from './AccountSummary';
 
 export default { title: 'AccountDropdown' };
