@@ -56,6 +56,13 @@ yarn dev:electron
 #### Staging
 
 ```bash
-# builds production app version used on mycryptobuilds.com
-yarn build:downloadable
+# builds staging app version used on mycryptobuilds.com
+yarn build:staging
+```
+
+#### Production
+
+```bash
+# builds production app version used on beta.mycrypto.com
+yarn build
 ```

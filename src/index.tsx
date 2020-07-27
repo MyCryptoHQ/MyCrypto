@@ -15,7 +15,7 @@ import Root from './Root';
 
 render(<Root />, document.getElementById('app'));
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' || !!process.env.IS_STAGING) {
   consoleAdvertisement();
 }
 

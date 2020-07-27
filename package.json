@@ -229,9 +229,8 @@
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config webpack_config/production.js",
+    "build:staging": "cross-env NODE_ENV=staging webpack --config webpack_config/staging.js",
     "prebuild": "check-node-version --package",
-    "build:downloadable": "cross-env NODE_ENV=production webpack --config webpack_config/downloadable.js",
-    "prebuild:downloadable": "check-node-version --package",
     "build:electron": "cross-env NODE_ENV=production BUILD_ELECTRON=true webpack --config webpack_config/electron.production.js && node webpack_config/buildElectron.js",
     "prebuild:electron": "check-node-version --package && electron-builder install-app-deps",
     "build:electron:osx": "cross-env NODE_ENV=production BUILD_ELECTRON=true webpack --config webpack_config/electron.production.js && cross-env ELECTRON_OS=osx node webpack_config/buildElectron.js",

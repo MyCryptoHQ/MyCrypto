@@ -274,4 +274,36 @@ jobs:
         with:
           name: 'linus-x86-64_${{ steps.version.outputs.VERSION }}-MyCrypto.AppImage'
           path: 'dist/electron-builds/MyCrypto-${{ steps.version.outputs.VERSION }}.AppImage'
+          
+  standalone:
+    name: standalone
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Retrieves project from the git branch
+        uses: actions/checkout@v1
+        
+      - name: Retrieve node version from .nvmrc
+        run: echo "##[set-output name=NVMRC;]$(cat package.json | grep '\"node\":' | sed 's/^ *//;s/ *$//;s/\"node\":\ \"//;s/\",//')"
+        id: nvm
+
+      - name: Setup node ${{ steps.nvm.outputs.NVMRC }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: '${{ steps.nvm.outputs.NVMRC }}'
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: yarn build
+        run: yarn build
+
+      - name: Zip standalone build folder
+        run: zip -r dist/web/standalone_mycrypto.zip dist/web/
+
+      - name: 'Save standalone_mycrypto.zip to artifacts'
+        uses: actions/upload-artifact@v1
+        with:
+          name: 'standalone_mycrypto'
+          path: 'dist/web/standalone_mycrypto.zip'
 ##   @todo: Add "build electron:windows from Mac or Linux"

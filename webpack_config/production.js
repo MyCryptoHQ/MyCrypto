@@ -16,7 +16,7 @@ module.exports = merge.smart(common, {
   devtool: 'cheap-module-source-map',
 
   output: {
-    path: path.join(config.path.output, 'prod'),
+    path: path.join(config.path.output, 'web'),
     filename: '[name].[contenthash].js',
     globalObject: undefined
   },
@@ -45,6 +45,7 @@ module.exports = merge.smart(common, {
   },
 
   plugins: [
+
     new MiniCSSExtractPlugin({
       filename: `[name].[contenthash].css`
     }),

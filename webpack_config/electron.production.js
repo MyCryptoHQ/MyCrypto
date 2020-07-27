@@ -10,9 +10,7 @@ const main = merge.smart(electronMain, {
   mode: 'production',
   devtool: 'none',
 
-  plugins: [
-    new DelayPlugin(500)
-  ],
+  plugins: [new DelayPlugin(500)],
 
   optimization: {
     minimize: false
@@ -43,13 +41,10 @@ const render = merge.smart(electronRender, {
     ]),
 
     new webpack.EnvironmentPlugin({
-      'BUILD_DOWNLOADABLE': 'true',
-      'BUILD_ELECTRON': 'true'
+      'BUILD_ELECTRON': 'true',
+      'BUILD_DOWNLOADABLE': 'true'
     })
   ]
 });
 
-module.exports = [
-  main,
-  render
-];
+module.exports = [main, render];

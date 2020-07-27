@@ -5,7 +5,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import { HashRouter, BrowserRouter } from 'react-router-dom';
 
 import { GAU_THEME } from '@theme';
-import { IS_ELECTRON, IS_DOWNLOADABLE, IS_PROD } from '@utils';
+import { IS_ELECTRON, IS_DOWNLOADABLE } from '@utils';
 import { NewAppReleaseModal } from '@components';
 import { DevToolsManager } from '@features';
 import AppProviders from './AppProviders';
@@ -27,7 +27,7 @@ class RootClass extends Component {
   }
 
   public render() {
-    const Router: any = IS_DOWNLOADABLE && IS_PROD ? HashRouter : BrowserRouter;
+    const Router: any = IS_DOWNLOADABLE ? HashRouter : BrowserRouter;
 
     return (
       <ThemeProvider theme={GAU_THEME}>
