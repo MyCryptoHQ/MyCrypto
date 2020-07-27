@@ -2,7 +2,7 @@ import React from 'react';
 
 import { fTxConfig, fAccount, fSettings } from '@fixtures';
 import { ExtendedAddressBook, ITxType } from '@types';
-import { noOp } from '@utils';
+import { noOp, bigify } from '@utils';
 import { devContacts } from '@database/seed';
 import { IZapConfig, ZAPS_CONFIG, IZapId } from '@features/DeFiZap/config';
 
@@ -29,6 +29,22 @@ export const confirmTransaction = () => (
       onComplete={onComplete}
       txConfig={fTxConfig}
       sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+    />
+  </div>
+);
+
+export const confirmTransactionPtx = () => (
+  <div className="sb-container" style={{ maxWidth: '620px' }}>
+    <ConfirmTransactionUI
+      settings={fSettings}
+      assetRate={assetRate}
+      baseAssetRate={baseAssetRate}
+      senderContact={senderContact}
+      recipientContact={recipientContact}
+      onComplete={onComplete}
+      txConfig={fTxConfig}
+      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+      ptxFee={{ amount: bigify('0.01'), fee: bigify('0.01'), rate: 250 }}
     />
   </div>
 );

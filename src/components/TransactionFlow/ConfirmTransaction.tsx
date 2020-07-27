@@ -9,10 +9,11 @@ import { RatesContext } from '@services/RatesProvider';
 import { convertToFiat } from '@utils';
 import translate, { translateRaw } from '@translations';
 import { ZapSelectedBanner } from '@features/DeFiZap';
-import { BREAK_POINTS, SPACING, COLORS } from '@theme';
+import { BREAK_POINTS, SPACING, COLORS, FONT_SIZE } from '@theme';
 import MembershipSelectedBanner from '@features/PurchaseMembership/components/MembershipSelectedBanner';
 import { IStepComponentProps, ITxType, ExtendedAddressBook, ISettings } from '@types';
 import { getFiat } from '@config/fiats';
+import { ProtectTxContext, IFeeAmount } from '@features/ProtectTransaction/ProtectTxProvider';
 
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
@@ -23,6 +24,7 @@ import { ISender } from './types';
 import feeIcon from '@assets/images/icn-fee.svg';
 import sendIcon from '@assets/images/icn-send.svg';
 import walletIcon from '@assets/images/icn-wallet.svg';
+import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
@@ -51,6 +53,11 @@ const ColumnWrapper = Styled.div<{ bold?: boolean }>`
     font-size: 18px;
   }
   img {
+    width: auto;
+    height: 25px;
+    margin-right: 10px;
+  }
+  svg {
     width: auto;
     height: 25px;
     margin-right: 10px;
@@ -91,6 +98,20 @@ const DeFiDisclaimerWrapper = Styled.p`
   margin-bottom: ${SPACING.MD};
 `;
 
+const PTXWrapper = Styled.div`
+  background-color: ${COLORS.GREY_LIGHTEST};
+  padding: ${SPACING.SM};
+`;
+
+const PTXHeader = Styled.p`
+  text-align: center;
+  color: ${COLORS.BLUE_GREY};
+  text-transform: uppercase;
+  font-size: ${FONT_SIZE.XS};
+  font-weight: bold;
+  margin-bottom: ${SPACING.BASE};
+`;
+
 export default function ConfirmTransaction({
   txType = ITxType.STANDARD,
   membershipSelected,
@@ -105,6 +126,13 @@ export default function ConfirmTransaction({
   const { getAssetRate } = useContext(RatesContext);
   const { accounts } = useContext(StoreContext);
   const { settings } = useContext(SettingsContext);
+  const { state: ptxState } = useContext(ProtectTxContext);
+  const ptxFee = (() => {
+    if (ptxState && ptxState.protectTxEnabled) {
+      return ptxState.feeAmount;
+    }
+    return undefined;
+  })();
   /* Get contact info */
   const recipientContact = getContactByAddressAndNetworkId(receiverAddress, network.id);
   const senderContact = getContactByAddressAndNetworkId(from, network.id);
@@ -128,6 +156,7 @@ export default function ConfirmTransaction({
       recipientContact={recipientContact}
       onComplete={onComplete}
       signedTx={signedTx}
+      ptxFee={ptxFee}
     />
   );
 }
@@ -139,6 +168,7 @@ interface DataProps {
   recipientContact?: ExtendedAddressBook;
   senderContact?: ExtendedAddressBook;
   sender: ISender;
+  ptxFee?: IFeeAmount;
 }
 
 type UIProps = Omit<IStepComponentProps, 'resetFlow'> & DataProps;
@@ -155,7 +185,8 @@ export const ConfirmTransactionUI = ({
   txType,
   txConfig,
   onComplete,
-  signedTx
+  signedTx,
+  ptxFee
 }: UIProps) => {
   const {
     asset,
@@ -294,6 +325,43 @@ export const ConfirmTransactionUI = ({
           )}
         </AmountWrapper>
       </RowWrapper>
+      {ptxFee && (
+        <PTXWrapper>
+          <PTXHeader>{translateRaw('PROTECTED_TX_RECEIPT_HEADER')}</PTXHeader>
+          <RowWrapper>
+            <ColumnWrapper>
+              <ProtectIconCheck size="sm" />
+              {translate('PROTECTED_TX_PRICE')}
+            </ColumnWrapper>
+            <AmountWrapper>
+              <AssetIcon uuid={asset.uuid} size={'25px'} />
+              <Amount
+                assetValue={`${ptxFee.amount!.toFixed(6)} ${asset.ticker}`}
+                fiat={{
+                  symbol: getFiat(settings).symbol,
+                  amount: convertToFiat(ptxFee.amount!.toNumber(), assetRate).toFixed(2)
+                }}
+              />
+            </AmountWrapper>
+          </RowWrapper>
+          <RowWrapper>
+            <ColumnWrapper>
+              <img src={feeIcon} alt="Fee" />
+              {translate('PROTECTED_TX_FEE')}
+            </ColumnWrapper>
+            <AmountWrapper>
+              <AssetIcon uuid={asset.uuid} size={'25px'} />
+              <Amount
+                assetValue={`${ptxFee.fee!.toFixed(6)} ${asset.ticker}`}
+                fiat={{
+                  symbol: getFiat(settings).symbol,
+                  amount: convertToFiat(ptxFee.fee!.toNumber(), assetRate).toFixed(2)
+                }}
+              />
+            </AmountWrapper>
+          </RowWrapper>
+        </PTXWrapper>
+      )}
       <TransactionDetailsDisplay
         baseAsset={baseAsset}
         asset={asset}

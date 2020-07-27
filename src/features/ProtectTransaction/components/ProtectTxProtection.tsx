@@ -19,7 +19,7 @@ import WarningIcon from '@components/icons/WarningIcon';
 import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 
 import feeIcon from '@assets/images/icn-fee.svg';
-import { ProtectTxContext } from '../ProtectTxProvider';
+import { ProtectTxContext, IFeeAmount } from '../ProtectTxProvider';
 import { ProtectTxError } from '..';
 import { ProtectTxMissingInfo } from './ProtectTxMissingInfo';
 
@@ -162,12 +162,6 @@ interface Props {
   handleProtectTxSubmit(payload: IFormikFields): Promise<void>;
 }
 
-interface IFeeAmount {
-  amount: BigNumber | null;
-  fee: BigNumber | null;
-  rate: number | null;
-}
-
 export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
   const { getAssetRate } = useContext(RatesContext);
   const { isMyCryptoMember } = useContext(StoreContext);
@@ -175,10 +169,9 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [feeAmount, setFeeAmount] = useState<IFeeAmount>({ amount: null, fee: null, rate: null });
-
   const {
-    state: { isWeb3Wallet: web3Wallet, web3WalletName, formValues: sendAssetsValues },
+    state: { isWeb3Wallet: web3Wallet, web3WalletName, formValues: sendAssetsValues, feeAmount },
+    setFeeAmount,
     setReceiverInfo,
     setWeb3Wallet,
     showHideProtectTx
