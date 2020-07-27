@@ -596,7 +596,7 @@
     "PROTECTED_TX_SCAN_PARTNER_DB_DESC": "We'll let you know if the recipient account is known anywhere.",
     "PROTECTED_TX_SEND_WITH_CONFIDENCE": "Send with Confidence",
     "PROTECTED_TX_THIS_TX_IS_PROTECTED": "This Transaction is Protected!",
-    "PROTECTED_TX_THIS_TX_IS_PROTECTED_DESC": "Review the report for the recipient address to verify that it is safe before sending your funds.",
+    "PROTECTED_TX_THIS_TX_IS_PROTECTED_DESC": "You have purchased Transaction Protection. Review the report for the recipient address to verify that it is safe before sending your funds.",
     "PROTECTED_TX_TIMELINE_COMMENT": "$reporter has the following note about this address: \"$description\"",
     "PROTECTED_TX_TIMELINE_KNOWN_ACCOUNT": "KNOWN ACCOUNT:",
     "PROTECTED_TX_TIMELINE_MALICIOUS": "Malicious: This account has been marked as $tags",

@@ -726,6 +726,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
 
               {protectTxFeatureFlag && (
                 <ProtectTxButton
+                  reviewReport={ptxState.protectTxEnabled}
                   onClick={(e) => {
                     e.preventDefault();
 
