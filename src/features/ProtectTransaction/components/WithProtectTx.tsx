@@ -23,7 +23,6 @@ import { ProtectTxSign } from './ProtectTxSign';
 import { ProtectTxReport } from './ProtectTxReport';
 import { ProtectTxContext } from '../ProtectTxProvider';
 import ProtectTxModalBackdrop from './ProtectTxModalBackdrop';
-import { ProtectTxButton } from './ProtectTxButton';
 import { ProtectTxStepper } from './ProtectTxStepper';
 
 const WithProtectTxWrapper = styled.div`
@@ -74,7 +73,6 @@ const WithProtectTxSide = styled.div`
 
 interface Props extends IStepComponentProps {
   customDetails?: JSX.Element;
-  protectTxButton?(): JSX.Element;
 }
 
 export function withProtectTx(WrappedComponent: React.ComponentType<Props>, heading: string = '') {
@@ -92,7 +90,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>, head
     const { transactions, _currentTxIdx, account, network } = state;
 
     const {
-      state: { protectTxShow, protectTxEnabled, stepIndex },
+      state: { protectTxShow, stepIndex },
       setWeb3Wallet,
       goToNextStep,
       handleTransactionReport,
@@ -186,13 +184,6 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>, head
               }}
               customDetails={customDetails}
               resetFlow={resetFlow}
-              protectTxButton={() =>
-                protectTxEnabled ? (
-                  <ProtectTxButton reviewReport={true} onClick={toggleProtectTxShow} />
-                ) : (
-                  <></>
-                )
-              }
             />
           </WithProtectTxMain>
         </ContentPanel>

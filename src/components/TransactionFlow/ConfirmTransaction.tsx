@@ -91,19 +91,14 @@ const DeFiDisclaimerWrapper = Styled.p`
   margin-bottom: ${SPACING.MD};
 `;
 
-interface Props extends IStepComponentProps {
-  protectTxButton?(): JSX.Element;
-}
-
 export default function ConfirmTransaction({
   txType = ITxType.STANDARD,
   membershipSelected,
   zapSelected,
   txConfig,
   onComplete,
-  signedTx,
-  protectTxButton
-}: Props) {
+  signedTx
+}: IStepComponentProps) {
   const { asset, baseAsset, receiverAddress, network, from } = txConfig;
 
   const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
@@ -133,7 +128,6 @@ export default function ConfirmTransaction({
       recipientContact={recipientContact}
       onComplete={onComplete}
       signedTx={signedTx}
-      protectTxButton={protectTxButton}
     />
   );
 }
@@ -145,7 +139,6 @@ interface DataProps {
   recipientContact?: ExtendedAddressBook;
   senderContact?: ExtendedAddressBook;
   sender: ISender;
-  protectTxButton?(): JSX.Element;
 }
 
 type UIProps = Omit<IStepComponentProps, 'resetFlow'> & DataProps;
@@ -162,8 +155,7 @@ export const ConfirmTransactionUI = ({
   txType,
   txConfig,
   onComplete,
-  signedTx,
-  protectTxButton
+  signedTx
 }: UIProps) => {
   const {
     asset,
@@ -329,7 +321,6 @@ export const ConfirmTransactionUI = ({
           <PoweredByText provider="ZAPPER" />
         </DeFiZapLogoContainer>
       )}
-      {protectTxButton && protectTxButton()}
     </ConfirmTransactionWrapper>
   );
 };
