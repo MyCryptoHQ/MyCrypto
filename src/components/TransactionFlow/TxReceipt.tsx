@@ -153,7 +153,17 @@ const TxReceipt = ({
       const provider = new ProviderHandler(txConfig.network);
       const timestampInterval = setInterval(() => {
         getTimestampFromBlockNum(blockNumber, provider).then((transactionTimestamp) => {
-          if (sender.account && !disableAddTxToAccount) {
+          if (txReceipt.txType === ITxType.FAUCET) {
+            const recipientAccount = getStoreAccount(accounts)(txReceipt.to, txConfig.network.id);
+            if (recipientAccount) {
+              addTxToAccount(recipientAccount, {
+                ...displayTxReceipt,
+                blockNumber: blockNumber || 0,
+                timestamp: transactionTimestamp || 0,
+                status: txStatus
+              });
+            }
+          } else if (sender.account && !disableAddTxToAccount) {
             addTxToAccount(sender.account, {
               ...displayTxReceipt,
               blockNumber: blockNumber || 0,
