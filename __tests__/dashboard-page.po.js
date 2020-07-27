@@ -22,10 +22,6 @@ export default class DashboardPage extends BasePage {
   }
 
   async expectBalanceInBalanceList(token) {
-    await t.expect(Selector('div').withExactText(token)).ok({ timeout: FIXTURES_CONST.TIMEOUT });
-  }
-
-  async expectTokenInTokenList(token) {
-    await t.expect(Selector('p').withExactText(token)).ok({ timeout: FIXTURES_CONST.TIMEOUT });
+    await t.expect(Selector('div').withText(token)).ok({ timeout: FIXTURES_CONST.TIMEOUT });
   }
 }
