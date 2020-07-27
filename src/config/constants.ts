@@ -64,5 +64,3 @@ export const ASSET_DROPDOWN_SIZE_THRESHOLD = 150;
 // Faucet constants
 
 export const FAUCET_API = 'https://d3a0rurg7bu691.cloudfront.net';
-
-export const FAUCET_ADDRESS = '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7';

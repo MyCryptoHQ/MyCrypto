@@ -30,11 +30,11 @@ const ContactUsText = styled(InlineMessage)`
 const getFailureMessage = (type: string) => {
   switch (type) {
     case 'API_FAILURE':
-      return <p>An API error occured. Please try again later.</p>;
+      return <p>{translate('FAUCET_API_FAILURE')}</p>;
     case 'RUNNING_LOW':
-      return <p>Our faucet is currently running low. Please try again later.</p>;
+      return <p>{translate('FAUCET_RUNNING_LOW')}</p>;
     default:
-      return <p>Oops, an unknown error occured. Please try again later.</p>;
+      return <p>{translate('FAUCET_UNKNOWN_ERROR')}</p>;
   }
 };
 

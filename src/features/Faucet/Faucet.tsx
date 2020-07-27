@@ -14,7 +14,7 @@ import {
   TxReceipt
 } from '@components';
 import { StoreContext } from '@services/Store';
-import { AssetContext, getBaseAssetByNetwork } from '@services';
+import { AssetContext, AddressBookContext, getBaseAssetByNetwork } from '@services';
 import { noOp } from '@utils';
 import {
   Asset,
@@ -109,6 +109,7 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
 
   const { accounts, networks } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
+  const { getContactByAddressAndNetworkId, createAddressBooks } = useContext(AddressBookContext);
 
   const initialValues = {
     recipientAddress: {} as StoreAccount
@@ -169,6 +170,21 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
       const network: any = networks.find(
         (n) => n.id === txResult.network.charAt(0).toUpperCase() + txResult.network.slice(1)
       );
+      const senderContact = (() => {
+        const existingContact = getContactByAddressAndNetworkId(txResult.from, network.id);
+        if (existingContact) {
+          return existingContact;
+        } else {
+          createAddressBooks({
+            address: txResult.from,
+            label: 'MyCrypto Faucet',
+            network: network.id,
+            notes: ''
+          });
+          const newContact = getContactByAddressAndNetworkId(txResult.from, network.id);
+          return newContact;
+        }
+      })();
       const baseAsset: Asset | undefined = getBaseAssetByNetwork({
         network,
         assets
@@ -186,7 +202,7 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
         },
         amount: utils.formatEther(txResult.value),
         receiverAddress: txResult.to,
-        senderAccount: validAccounts[0],
+        senderAccount: senderContact,
         from: txResult.from,
         asset: baseAsset,
         baseAsset,
