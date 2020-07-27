@@ -61,6 +61,7 @@ const ColumnWrapper = Styled.div<{ bold?: boolean }>`
     width: auto;
     height: 25px;
     margin-right: 10px;
+    vertical-align: middle;
   }
 `;
 
