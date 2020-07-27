@@ -52,6 +52,7 @@ const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
     case WalletId.MNEMONIC_PHRASE:
     case WalletId.LEDGER_NANO_S:
     case WalletId.TREZOR:
+    case WalletId.SATOCHIP:
       return {
         address: payload.address,
         derivationPath: payload.path || payload.dPath + '/' + payload.index.toString()

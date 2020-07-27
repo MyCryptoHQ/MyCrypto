@@ -7,6 +7,7 @@ import {
   MnemonicDecrypt,
   PrivateKeyDecrypt,
   TrezorDecrypt,
+  SatochipDecrypt,
   Web3ProviderDecrypt,
   Web3ProviderInstall,
   ViewOnlyDecrypt,
@@ -37,6 +38,10 @@ export const getStories = (): IStory[] => [
   {
     name: WalletId.TREZOR,
     steps: [NetworkSelectPanel, TrezorDecrypt]
+  },
+  {
+    name: WalletId.SATOCHIP,
+    steps: [NetworkSelectPanel, SatochipDecrypt]
   },
   {
     name: WalletId.KEYSTORE_FILE,

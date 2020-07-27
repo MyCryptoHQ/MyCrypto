@@ -9,6 +9,7 @@ export enum EnclaveMethods {
 export enum WalletTypes {
   LEDGER = 'ledger',
   TREZOR = 'trezor',
+  SATOCHIP = 'satochip',
   KEEPKEY = 'keepkey'
 }
 

@@ -8,6 +8,11 @@ const ETH_TREZOR: DPath = {
   value: "m/44'/60'/0'/0"
 };
 
+const ETH_SATOCHIP: DPath = {
+  label: 'SATOCHIP (ETH)',
+  value: "m/44'/60'/0'/0"
+};
+
 const ETH_LEDGER: DPath = {
   label: 'Ledger (ETH)',
   value: "m/44'/60'/0'"
@@ -20,6 +25,11 @@ const ETC_LEDGER: DPath = {
 
 const ETC_TREZOR: DPath = {
   label: 'TREZOR (ETC)',
+  value: "m/44'/61'/0'/0"
+};
+
+const ETC_SATOCHIP: DPath = {
+  label: 'SATOCHIP (ETC)',
   value: "m/44'/61'/0'/0"
 };
 
@@ -185,9 +195,11 @@ const EWC_DEFAULT: DPath = {
 export const DPathsList = {
   ETH_DEFAULT,
   ETH_TREZOR,
+  ETH_SATOCHIP,
   ETH_LEDGER,
   ETC_LEDGER,
   ETC_TREZOR,
+  ETC_SATOCHIP,
   ETH_TESTNET,
   EXP_DEFAULT,
   UBQ_DEFAULT,

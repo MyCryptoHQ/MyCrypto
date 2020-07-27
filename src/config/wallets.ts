@@ -7,6 +7,7 @@ import { KB_HELP_ARTICLE, getKBHelpArticle, HELP_ARTICLE } from './helpArticles'
 // component.
 import LedgerSVG from '@assets/images/wallets/ledger.svg';
 import TrezorSVG from '@assets/images/wallets/trezor.svg';
+import SatochipSVG from '@assets/images/wallets/satochip.svg';
 import MetamaskIcon from '@assets/images/wallets/metamask.svg';
 import TrustIcon from '@assets/images/wallets/trust-3.svg';
 import Web3DefaultIcon from '@assets/images/wallets/web3-default.svg';
@@ -21,6 +22,7 @@ import viewOnlyIcon from '@assets/images/icn-view-only.svg';
 const {
   MIGRATE_TO_METAMASK,
   MIGRATE_TO_TREZOR,
+  MIGRATE_TO_SATOCHIP,
   DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE,
   WALLETCONNECT
 } = KB_HELP_ARTICLE;
@@ -143,6 +145,18 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     icon: TrezorSVG,
     description: 'ADD_HARDWAREDESC',
     helpLink: getKBHelpArticle(MIGRATE_TO_TREZOR)
+  },
+  [WalletId.SATOCHIP]: {
+    id: WalletId.SATOCHIP,
+    name: 'Satochip',
+    isDeterministic: true,
+    isSecure: true,
+    isDesktopOnly: false,
+    type: WalletType.HARDWARE,
+    lid: 'X_SATOCHIP',
+    icon: SatochipSVG,
+    description: 'ADD_HARDWAREDESC',
+    helpLink: getKBHelpArticle(MIGRATE_TO_SATOCHIP)
   },
   [WalletId.KEYSTORE_FILE]: {
     id: WalletId.KEYSTORE_FILE,

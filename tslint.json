@@ -8,6 +8,7 @@
     "quotemark": false,
     "max-line-length": false,
     "trailing-comma": false,
+    "no-console": false, //debugSatochip
     "object-literal-sort-keys": false
   },
   "rules": {
@@ -23,7 +24,8 @@
     "jsx-no-lambda": false,
     "interface-name": false,
     "no-duplicate-imports": true,
-    "no-console": [true, "log"],
+    //"no-console": [true, "log"],
+    "no-console": false, //debugSatochip
     "no-var-requires": false,
     "jsx-wrap-multiline": false,
     "comment-format": false,

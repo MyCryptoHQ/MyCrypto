@@ -15,6 +15,7 @@ import metamaskIcon from '@assets/images/wallets/metamask.svg';
 import trustIcon from '@assets/images/wallets/trust-2.svg';
 import ledgerIcon from '@assets/images/wallets/ledger.svg';
 import trezorIcon from '@assets/images/wallets/trezor.svg';
+import satochipIcon from '@assets/images/wallets/satochip.svg';
 import frameIcon from '@assets/images/wallets/frame.svg';
 import walletConnectIcon from '@assets/images/wallets/walletconnect.svg';
 import { useAnalytics } from '@utils';
@@ -269,6 +270,11 @@ export default function CompatibleWalletsPanel() {
             src={trezorIcon}
             text={translateRaw('X_TREZOR')}
             walletId={WalletId.TREZOR}
+          />
+          <WalletCardWithRouter
+            src={satochipIcon}
+            text={translateRaw('X_SATOCHIP')}
+            walletId={WalletId.SATOCHIP}
           />
           <WalletCardWithRouter
             src={walletConnectIcon}

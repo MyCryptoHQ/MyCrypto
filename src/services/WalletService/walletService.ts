@@ -14,6 +14,7 @@ import {
 import {
   LedgerWallet,
   TrezorWallet,
+  SatochipWallet,
   // HardwareWallet
   ChainCodeResponse
 } from './deterministic';
@@ -45,6 +46,14 @@ export const WalletFactory = (walletId: WalletId): WalletService | any => {
           TrezorWallet.getChainCode(dPath),
         init: (address: TAddress, dPath: string, index: number) =>
           new TrezorWallet(address, dPath, index)
+      };
+    case WalletId.SATOCHIP:
+      console.log('Satochip: in src/services/WalletService/WalletService.js '); //debugSatochip
+      return {
+        getChainCode: (dPath: string): Promise<ChainCodeResponse> =>
+          SatochipWallet.getChainCode(dPath),
+        init: (address: TAddress, dPath: string, index: number) =>
+          new SatochipWallet(address, dPath, index)
       };
     case WalletId.KEYSTORE_FILE:
       return {

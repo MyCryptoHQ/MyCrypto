@@ -2,6 +2,7 @@ import { IStory, WalletId } from '@types';
 import { IS_DEV, IS_ELECTRON, hasWeb3Provider } from '@utils';
 import {
   LedgerNanoSDecrypt,
+  SatochipDecrypt,
   KeystoreDecrypt,
   MnemonicDecrypt,
   PrivateKeyDecrypt,
@@ -18,6 +19,10 @@ export const getStories = (): IStory[] => [
   {
     name: WalletId.LEDGER_NANO_S,
     steps: [LedgerNanoSDecrypt]
+  },
+  {
+    name: WalletId.SATOCHIP,
+    steps: [SatochipDecrypt]
   },
   {
     name: WalletId.WALLETCONNECT,

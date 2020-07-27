@@ -50,6 +50,9 @@ export default function HardwareSignTransaction({
 
   useEffect(() => {
     // Unlock Wallet
+    console.log(
+      'Satochip: /src/components/SignTransactionWallets/Hardware.tsx: in useEffect() getChainCode'
+    ); //debugSatochip
     const WalletLoginRequest = setInterval(() => {
       if (!isWalletUnlocked && !isRequestingWalletUnlock) {
         setIsRequestingWalletUnlock(true);
@@ -63,15 +66,26 @@ export default function HardwareSignTransaction({
           SigningWalletService.getChainCode(dpathObject.dpath)
             .then((_: any) => {
               // User has connected device.
+              console.log(
+                'Satochip: /src/components/SignTransactionWallets/Hardware.tsx: in useEffect() getChainCode.then()'
+              ); //debugSatochip
               setIsRequestingWalletUnlock(false);
               setIsWalletUnlocked(true);
               setWallet(walletObject);
             })
             .catch((_: any) => {
               // User hasn't connected device or there was an error. Try again
+              console.log(
+                'Satochip: /src/components/SignTransactionWallets/Hardware.tsx: in useEffect() getChainCode.catch()=',
+                _
+              ); //debugSatochip
               setIsRequestingWalletUnlock(false);
             });
         } catch (error) {
+          console.log(
+            'Satochip: /src/components/SignTransactionWallets/Hardware.tsx: in useEffect() try error= ',
+            error
+          ); //debugSatochip
           setIsRequestingWalletUnlock(false);
         }
       }
@@ -84,14 +98,25 @@ export default function HardwareSignTransaction({
     if (wallet && 'signRawTransaction' in wallet && !isRequestingTxSignature) {
       setIsRequestingTxSignature(true);
       const madeTx = makeTransaction(rawTransaction);
+      console.log(
+        'Satochip: /src/components/SignTransactionWallets/Hardware.tsx: in useEffect() signRawTransaction'
+      ); //debugSatochip
       wallet
         .signRawTransaction(madeTx)
         .then((data: any) => {
+          console.log(
+            'Satochip: /src/components/SignTransactionWallets/Hardware.tsx: in useEffect() data=',
+            data
+          ); //debugSatochip
           // User approves tx.
           setIsTxSignatureRequestDenied(false);
           onSuccess(data);
         })
         .catch((_: any) => {
+          console.log(
+            'Satochip: /src/components/SignTransactionWallets/Hardware.tsx: in useEffect() signRawTransaction catch error=',
+            _
+          ); //debugSatochip
           // User denies tx, or tx times out.
           setIsTxSignatureRequestDenied(true);
           setIsRequestingTxSignature(false);

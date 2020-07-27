@@ -11,6 +11,7 @@ export enum KB_HELP_ARTICLE {
   MIGRATE_TO_METAMASK = 'how-to/migrating/moving-from-mycrypto-to-metamask',
   MIGRATE_TO_LEDGER = 'how-to/migrating/moving-from-mycrypto-to-ledger',
   MIGRATE_TO_TREZOR = 'how-to/migrating/moving-from-mycrypto-to-trezor',
+  MIGRATE_TO_SATOCHIP = 'how-to/migrating/moving-from-mycrypto-to-satochip',
   ADDING_NEW_TOKENS = 'troubleshooting/tokens/adding-new-token-and-sending-custom-tokens',
   HARDWARE_WALLET_RECOMMENDATIONS = 'staying-safe/hardware-wallet-recommendations',
   SENDING_TO_TREZOR = 'how-to/sending/trezor-sending-to',

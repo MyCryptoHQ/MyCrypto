@@ -3,12 +3,14 @@ import { WalletId, HardwareWalletId } from '@types';
 import { makeEnclaveWallet } from './enclave';
 import { LedgerWallet as LedgerWalletWeb } from './ledger';
 import { TrezorWallet as TrezorWalletWeb } from './trezor';
+import { SatochipWallet as SatochipWalletWeb } from './satochip';
 
 function enclaveOrWallet<T>(type: HardwareWalletId, lib: T) {
   // To avoid modifying enclave which is outside of src we use a dictionary
   // to go from one enum to the other.
   const walletIdToWalletTypes = {
     [WalletId.LEDGER_NANO_S]: WalletTypes.LEDGER,
+    [WalletId.SATOCHIP]: WalletTypes.SATOCHIP,
     [WalletId.TREZOR]: WalletTypes.TREZOR
   } as Record<HardwareWalletId, WalletTypes>;
 
@@ -20,3 +22,4 @@ export * from './hardware';
 export * from './deterministic';
 export const LedgerWallet = enclaveOrWallet(WalletId.LEDGER_NANO_S, LedgerWalletWeb);
 export const TrezorWallet = enclaveOrWallet(WalletId.TREZOR, TrezorWalletWeb);
+export const SatochipWallet = enclaveOrWallet(WalletId.SATOCHIP, SatochipWalletWeb);

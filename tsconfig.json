@@ -21,8 +21,8 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "noEmitOnError": false,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false, //true, //debugSatochip
+    "noUnusedParameters": false, //true, //debugSatochip
     "pretty": true,
     "noErrorTruncation": true,
     "noImplicitAny": true,

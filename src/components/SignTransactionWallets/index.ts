@@ -6,6 +6,7 @@ import { default as SignTransactionWeb3 } from './Web3';
 import { default as SignTransactionMnemonic } from './Mnemonic';
 import { default as SignTransactionPrivateKey } from './PrivateKey';
 import { default as SignTransactionTrezor } from './Trezor';
+import { default as SignTransactionSatochip } from './Satochip';
 import { default as SignTransactionWalletConnect } from './WalletConnect';
 
 export const WALLET_STEPS: SigningComponents = {
@@ -17,6 +18,7 @@ export const WALLET_STEPS: SigningComponents = {
   [WalletId.COINBASE]: SignTransactionWeb3,
   [WalletId.LEDGER_NANO_S]: SignTransactionLedger,
   [WalletId.TREZOR]: SignTransactionTrezor,
+  [WalletId.SATOCHIP]: SignTransactionSatochip,
   [WalletId.KEYSTORE_FILE]: SignTransactionKeystore,
   [WalletId.MNEMONIC_PHRASE]: SignTransactionMnemonic,
   [WalletId.WALLETCONNECT]: SignTransactionWalletConnect,
