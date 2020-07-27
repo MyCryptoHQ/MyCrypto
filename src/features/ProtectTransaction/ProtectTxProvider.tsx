@@ -50,7 +50,7 @@ export interface ProtectTxContext {
   goToInitialStepOrFetchReport(receiverAddress?: string, network?: Network): void;
   showHideProtectTx(showOrHide: boolean): void;
   setReceiverInfo(receiverAddress: string, network: Network): Promise<void>;
-  setFeeAmount(feeAmount: IFeeAmount): Promise<void>;
+  setFeeAmount(feeAmount: IFeeAmount): void;
   setProtectTxTimeoutFunction(cb: (txReceiptCb?: (txReciept: ITxReceipt) => void) => void): void;
   invokeProtectTxTimeoutFunction(cb: (txReceipt: ITxReceipt) => void): void;
   clearProtectTxTimeoutFunction(): void;
@@ -219,21 +219,12 @@ const ProtectTxProvider: React.FC = ({ children }) => {
     [setState]
   );
 
-  const setFeeAmount = useCallback(
-    async (feeAmount: IFeeAmount) => {
-      if (!feeAmount) {
-        return Promise.reject();
-      }
-
-      setState((prevState) => ({
-        ...prevState,
-        feeAmount
-      }));
-
-      return Promise.resolve();
-    },
-    [setState]
-  );
+  const setFeeAmount = (feeAmount: IFeeAmount) => {
+    setState((prevState) => ({
+      ...prevState,
+      feeAmount
+    }));
+  };
 
   const setProtectTxTimeoutFunction = useCallback(
     (cb: (txReceiptCb?: (txReciept: ITxReceipt) => void) => void) => {
