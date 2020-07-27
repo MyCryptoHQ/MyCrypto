@@ -209,7 +209,7 @@ export interface TxReceiptDataProps {
   resetFlow(): void;
 }
 
-export type UIProps = Omit<IStepComponentProps, 'resetFlow' | 'onComplete'> & TxReceiptDataProps;
+type UIProps = Omit<IStepComponentProps, 'resetFlow' | 'onComplete'> & TxReceiptDataProps;
 
 export const TxReceiptUI = ({
   settings,

@@ -36,7 +36,7 @@ const Overrides = styled.div`
   }
 `;
 
-export interface Props extends SProps {
+interface Props extends SProps {
   address: string;
   truncate: any;
   isCopyable?: boolean;

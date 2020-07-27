@@ -148,7 +148,7 @@ interface DataProps {
   protectTxButton?(): JSX.Element;
 }
 
-export type UIProps = Omit<IStepComponentProps, 'resetFlow'> & DataProps;
+type UIProps = Omit<IStepComponentProps, 'resetFlow'> & DataProps;
 
 export const ConfirmTransactionUI = ({
   settings,

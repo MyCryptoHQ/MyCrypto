@@ -3,14 +3,14 @@ import { simpleRender, fireEvent } from 'test-utils';
 
 import { truncate } from '@utils';
 
-import EthAddress, { Props } from '../EthAddress';
+import EthAddress from '../EthAddress';
 
-const defaultProps: Props = {
+const defaultProps: React.ComponentProps<typeof EthAddress> = {
   address: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
   truncate
 };
 
-function getComponent(props: Props) {
+function getComponent(props: React.ComponentProps<typeof EthAddress>) {
   return simpleRender(<EthAddress {...props} />);
 }
 
@@ -18,21 +18,29 @@ function getComponent(props: Props) {
 navigator.clipboard = { writeText: jest.fn() };
 
 describe('EthAddress', () => {
-  test('it shows the address untruncated', async () => {
+  test('it displays the address untruncated', async () => {
     const { getByText } = getComponent({ ...defaultProps, truncate: undefined });
     expect(getByText(defaultProps.address)).toBeDefined();
   });
 
-  test('it shows the address truncated', async () => {
+  test('it displays the address truncated', async () => {
     const { getByText } = getComponent(defaultProps);
     expect(getByText(truncate(defaultProps.address))).toBeDefined();
   });
 
-  test('it is copyable', async () => {
-    const { getByText } = getComponent({ ...defaultProps, isCopyable: true });
+  test('by default it is copyable', async () => {
+    const { getByText } = getComponent(defaultProps);
     const element = getByText(truncate(defaultProps.address));
     expect(element).toBeDefined();
     fireEvent.click(element);
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(defaultProps.address);
+  });
+
+  test('it is non-copyable', async () => {
+    const { getByText } = getComponent({ ...defaultProps, isCopyable: false });
+    const element = getByText(truncate(defaultProps.address));
+    expect(element).toBeDefined();
+    fireEvent.click(element);
+    expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(0);
   });
 });

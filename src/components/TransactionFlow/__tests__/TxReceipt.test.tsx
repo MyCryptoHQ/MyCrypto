@@ -9,14 +9,14 @@ import { truncate, noOp } from '@utils';
 import { translateRaw } from '@translations';
 import { ZAPS_CONFIG } from '@features/DeFiZap/config';
 
-import { TxReceiptUI, UIProps as Props } from '../TxReceipt';
+import { TxReceiptUI } from '../TxReceipt';
 import { constructSenderFromTxConfig } from '../helpers';
 import { MEMBERSHIP_CONFIG } from '@features/PurchaseMembership/config';
 
 const senderContact = Object.values(devContacts)[0] as ExtendedAddressBook;
 const recipientContact = Object.values(devContacts)[1] as ExtendedAddressBook;
 
-const defaultProps: Props = {
+const defaultProps: React.ComponentProps<typeof TxReceiptUI> = {
   settings: fSettings,
   txConfig: fTxConfig,
   assetRate: () => 250,
@@ -29,7 +29,7 @@ const defaultProps: Props = {
   resetFlow: noOp
 };
 
-function getComponent(props: Props) {
+function getComponent(props: React.ComponentProps<typeof TxReceiptUI>) {
   return simpleRender(
     <Router>
       <TxReceiptUI {...props} />
@@ -38,25 +38,25 @@ function getComponent(props: Props) {
 }
 
 describe('TxReceipt', () => {
-  test('it shows the addresses', async () => {
+  test('it displays the addresses', async () => {
     const { getByText } = getComponent(defaultProps);
     expect(getByText(truncate(fAccount.address))).toBeDefined();
     expect(getByText(truncate(fTxConfig.receiverAddress))).toBeDefined();
   });
 
-  test('it shows the correct contact info', async () => {
+  test('it displays the correct contact info', async () => {
     const { getByText } = getComponent(defaultProps);
     expect(getByText(defaultProps.senderContact!.label)).toBeDefined();
     expect(getByText(defaultProps.recipientContact!.label)).toBeDefined();
   });
 
-  test('it shows the correct basic details', async () => {
+  test('it displays the correct basic details', async () => {
     const { getByText } = getComponent(defaultProps);
     expect(getByText(truncate(defaultProps.displayTxReceipt!.hash))).toBeDefined();
     expect(getByText(defaultProps.txStatus, { exact: false })).toBeDefined();
   });
 
-  test('it shows the correct advanced details', async () => {
+  test('it displays the correct advanced details', async () => {
     const { getByText, container } = getComponent(defaultProps);
     const btn = container.querySelector('.TransactionDetails > div > div > button');
     fireEvent.click(btn!);
@@ -66,12 +66,12 @@ describe('TxReceipt', () => {
     expect(getByText(JSON.stringify(defaultProps.txConfig.rawTransaction))).toBeDefined();
   });
 
-  test('it shows the correct send value', async () => {
+  test('it displays the correct send value', async () => {
     const { getByText } = getComponent(defaultProps);
     expect(getByText(parseFloat(fTxConfig.amount).toFixed(6), { exact: false })).toBeDefined();
   });
 
-  test('it shows pending state', async () => {
+  test('it displays pending state', async () => {
     const { getAllByText } = getComponent({
       ...defaultProps,
       txStatus: ITxStatus.PENDING,
@@ -80,7 +80,7 @@ describe('TxReceipt', () => {
     expect(getAllByText(translateRaw('PENDING'))).toBeDefined();
   });
 
-  test('it shows DeFiZap info', async () => {
+  test('it displays DeFiZap info', async () => {
     const zap = ZAPS_CONFIG.compounddai;
     const { getByText } = getComponent({
       ...defaultProps,
@@ -92,7 +92,7 @@ describe('TxReceipt', () => {
     expect(getByText(zap.platformsUsed[0], { exact: false })).toBeDefined();
   });
 
-  test('it shows membership info', async () => {
+  test('it displays membership info', async () => {
     const membership = MEMBERSHIP_CONFIG.lifetime;
     const { getByText } = getComponent({
       ...defaultProps,
@@ -103,7 +103,7 @@ describe('TxReceipt', () => {
     expect(getByText(membership.contractAddress)).toBeDefined();
   });
 
-  test('it shows PTX info', async () => {
+  test('it displays PTX info', async () => {
     const { getByText } = getComponent({
       ...defaultProps,
       protectTxButton: () => <>PTXBUTTON</>,
