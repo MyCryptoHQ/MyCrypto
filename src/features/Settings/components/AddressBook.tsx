@@ -15,7 +15,6 @@ import {
   FixedSizeCollapsibleTable
 } from '@components';
 import { ExtendedAddressBook, AddressBook as IAddressBook, TUuid } from '@types';
-import { truncate } from '@utils';
 import { COLORS, SPACING, BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
 
@@ -163,7 +162,7 @@ export default function AddressBook({
             }
           />
         </Label>,
-        <EthAddress key={2} address={address} truncate={truncate} isCopyable={true} />,
+        <EthAddress key={2} address={address} truncate={true} isCopyable={true} />,
         <Network key={3} color="#a682ff">
           {network}
         </Network>,

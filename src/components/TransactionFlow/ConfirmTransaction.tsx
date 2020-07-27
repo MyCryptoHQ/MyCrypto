@@ -148,6 +148,8 @@ interface DataProps {
   protectTxButton?(): JSX.Element;
 }
 
+type UIProps = Omit<IStepComponentProps, 'resetFlow'> & DataProps;
+
 export const ConfirmTransactionUI = ({
   settings,
   assetRate,
@@ -162,7 +164,7 @@ export const ConfirmTransactionUI = ({
   onComplete,
   signedTx,
   protectTxButton
-}: Omit<IStepComponentProps, 'resetFlow'> & DataProps) => {
+}: UIProps) => {
   const {
     asset,
     gasPrice,

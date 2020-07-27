@@ -209,6 +209,8 @@ export interface TxReceiptDataProps {
   resetFlow(): void;
 }
 
+type UIProps = Omit<IStepComponentProps, 'resetFlow' | 'onComplete'> & TxReceiptDataProps;
+
 export const TxReceiptUI = ({
   settings,
   txType,
@@ -230,7 +232,7 @@ export const TxReceiptUI = ({
   protectTxEnabled = false,
   web3Wallet = false,
   protectTxButton
-}: Omit<IStepComponentProps, 'resetFlow' | 'onComplete'> & TxReceiptDataProps) => {
+}: UIProps) => {
   /* Determining User's Contact */
   const { asset, gasPrice, gasLimit, data, nonce, baseAsset, receiverAddress } = txConfig;
 

@@ -1,4 +1,5 @@
-import { Network, NodeType, TUuid, TSymbol, BlockExplorer } from '@types';
+import { Network, NodeType, TUuid, TSymbol } from '@types';
+import { makeExplorer } from '@services';
 
 export const fNetwork: Network = {
   id: 'Ropsten',
@@ -50,8 +51,8 @@ export const fNetwork: Network = {
       url: 'https://ropsten.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286'
     }
   ],
-  blockExplorer: {
+  blockExplorer: makeExplorer({
     name: 'Etherscan',
     origin: 'https://ropsten.etherscan.io'
-  } as BlockExplorer
+  })
 };

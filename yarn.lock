@@ -2191,10 +2191,10 @@
     "@ethersproject/bignumber" "^5.0.0-beta.135"
     isomorphic-unfetch "^3.0.0"
 
-"@mycrypto/ui@0.24":
-  version "0.24.0"
-  resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.24.0.tgz#047a7e7e6a9f3845a16c835550afd6bce2755250"
-  integrity sha512-4X3j1CKDJdO/T4jZxnMPFIvDOdk7KupltGRaGVZLG8M6SzxD+6+Ifshuanulp+AWqyXn2a0d0XyS/O5Swq8FxQ==
+"@mycrypto/ui@0.24.1":
+  version "0.24.1"
+  resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.24.1.tgz#ca6b75a8089b3302e5321f4ce71352bd4af8046d"
+  integrity sha512-tj0KW9+xGjJubLbLThQnXjL/BZKv4rh+ERX98rcjVGnd44/PZb++qNu+4o5h9GgL+XXFMw5255RjygTBN+zCKA==
   dependencies:
     "@types/dom-clipboard-api" "^1.0.1"
     "@types/lodash.throttle" "^4.1.4"
@@ -17031,11 +17031,6 @@ react-from-dom@^0.4.2:
   resolved "https://registry.yarnpkg.com/react-from-dom/-/react-from-dom-0.4.2.tgz#bef41428172ca570b492b5e12ae7b592587437e0"
   integrity sha512-cVa4/w0xAyd/bbTu+xu2KKrGc+KDKvR8sSQKodd5pPrN03bN1V3JOLPW+PIzh698LzQ4aL1dfWXpsKx3ZkpT+A==
 
-react-from-dom@^0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/react-from-dom/-/react-from-dom-0.4.2.tgz#bef41428172ca570b492b5e12ae7b592587437e0"
-  integrity sha512-cVa4/w0xAyd/bbTu+xu2KKrGc+KDKvR8sSQKodd5pPrN03bN1V3JOLPW+PIzh698LzQ4aL1dfWXpsKx3ZkpT+A==
-
 react-helmet-async@^1.0.2:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/react-helmet-async/-/react-helmet-async-1.0.4.tgz#079ef10b7fefcaee6240fefd150711e62463cc97"
@@ -17068,15 +17063,7 @@ react-hotkeys@2.0.0:
   dependencies:
     prop-types "^15.6.1"
 
-react-inlinesvg@2.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/react-inlinesvg/-/react-inlinesvg-2.0.0.tgz#aba239c7846f8259e40c147c3842aaa00f78a556"
-  integrity sha512-GuhTqaPhaBXr+L0LV/MowJUJIvHoLZ36O7LQhX4joxdYxO+kWcdjG/y474UOj2OVfgF1WV0R8S2hgDuH6ODFyQ==
-  dependencies:
-    exenv "^1.2.2"
-    react-from-dom "^0.4.2"
-
-react-inlinesvg@^2.0.0:
+react-inlinesvg@2.0, react-inlinesvg@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/react-inlinesvg/-/react-inlinesvg-2.0.0.tgz#aba239c7846f8259e40c147c3842aaa00f78a556"
   integrity sha512-GuhTqaPhaBXr+L0LV/MowJUJIvHoLZ36O7LQhX4joxdYxO+kWcdjG/y474UOj2OVfgF1WV0R8S2hgDuH6ODFyQ==

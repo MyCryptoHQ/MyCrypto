@@ -20,6 +20,22 @@ const resetFlow = noOp;
 
 export default { title: 'TxReceipt' };
 
+export const transactionReceiptPending = () => (
+  <div className="sb-container" style={{ maxWidth: '620px' }}>
+    <TxReceiptUI
+      settings={fSettings}
+      txStatus={ITxStatus.PENDING}
+      timestamp={timestamp}
+      resetFlow={resetFlow}
+      assetRate={assetRate}
+      senderContact={senderContact}
+      recipientContact={recipientContact}
+      txConfig={fTxConfig}
+      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+    />
+  </div>
+);
+
 export const transactionReceipt = () => (
   <div className="sb-container" style={{ maxWidth: '620px' }}>
     <TxReceiptUI
