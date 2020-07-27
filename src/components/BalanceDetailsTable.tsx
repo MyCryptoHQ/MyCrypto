@@ -14,7 +14,6 @@ import {
 } from '@components';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Fiat, TUuid, Balance, BalanceAccount, BalanceDetailsTableProps } from '@types';
-import { truncate } from '@utils';
 import { CenteredIconArrow } from '@components/IconArrow';
 
 const HeaderAlignment = styled.div<{ align?: string }>`
@@ -148,7 +147,7 @@ const createAccountRow = (
         <EthAddress
           address={balanceAccount.address}
           isCopyable={true}
-          truncate={truncate}
+          truncate={true}
           disableTooltip={true}
         />
       </Tooltip>

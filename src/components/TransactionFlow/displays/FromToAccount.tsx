@@ -6,7 +6,6 @@ import translate from '@translations';
 import { COLORS, BREAK_POINTS, SPACING } from '@theme';
 import { Typography, EditableAccountLabel, Account } from '@components';
 import { NetworkId, TAddress, ExtendedAddressBook } from '@types';
-import { truncate } from '@utils';
 
 export interface IAddressAndLabel {
   address: TAddress;
@@ -87,11 +86,7 @@ const FromToAccount = ({ networkId, fromAccount, toAccount, displayToAddress = t
           <Label value={translate('CONFIRM_TX_FROM')} fontSize="1.13em" />
         </LabelWrapper>
         <AddressWrapper>
-          <Account
-            address={fromAccount.address}
-            title={editableFromAccountLabel}
-            truncate={truncate}
-          />
+          <Account address={fromAccount.address} title={editableFromAccountLabel} truncate={true} />
         </AddressWrapper>
       </AddressContainer>
       {displayToAddress && (
@@ -100,11 +95,7 @@ const FromToAccount = ({ networkId, fromAccount, toAccount, displayToAddress = t
             <Label value={translate('CONFIRM_TX_TO')} fontSize="1.13em" />
           </LabelWrapper>
           <AddressWrapper>
-            <Account
-              address={toAccount.address}
-              title={editableToAccountLabel}
-              truncate={truncate}
-            />
+            <Account address={toAccount.address} title={editableToAccountLabel} truncate={true} />
           </AddressWrapper>
         </AddressContainer>
       )}

@@ -7,7 +7,7 @@ import EthAddress from '../EthAddress';
 
 const defaultProps: React.ComponentProps<typeof EthAddress> = {
   address: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-  truncate
+  truncate: true
 };
 
 function getComponent(props: React.ComponentProps<typeof EthAddress>) {
@@ -19,7 +19,7 @@ navigator.clipboard = { writeText: jest.fn() };
 
 describe('EthAddress', () => {
   test('it displays the address untruncated', async () => {
-    const { getByText } = getComponent({ ...defaultProps, truncate: undefined });
+    const { getByText } = getComponent({ ...defaultProps, truncate: false });
     expect(getByText(defaultProps.address)).toBeDefined();
   });
 

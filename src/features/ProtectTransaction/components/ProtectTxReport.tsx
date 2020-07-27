@@ -9,7 +9,7 @@ import CloseIcon from '@components/icons/CloseIcon';
 import { ETHAddressExplorer } from '@config';
 import { EthAddress, LinkOut, VerticalStepper, PoweredByText } from '@components';
 import { StepData } from '@components/VerticalStepper';
-import { truncate, useScreenSize } from '@utils';
+import { useScreenSize } from '@utils';
 
 import ProtectTxBase from './ProtectTxBase';
 import { ProtectTxContext } from '../ProtectTxProvider';
@@ -151,7 +151,7 @@ export const ProtectTxReportUI = ({ report, isWeb3, onHide }: Props) => {
       <ProtectIconCheck size="lg" />
       <h4>{translateRaw('PROTECTED_TX_REPORT_TITLE')}</h4>
       <SEthAddress>
-        <EthAddress address={address} truncate={truncate} isCopyable={false} />
+        <EthAddress address={address} truncate={true} isCopyable={false} />
       </SEthAddress>
       {labels && <h5 className="subtitle">{translateRaw('PROTECTED_TX_REPORT_SUBTITLE')}</h5>}
       <div className="timeline">

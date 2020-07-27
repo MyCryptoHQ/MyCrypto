@@ -15,7 +15,6 @@ import {
   Button,
   InlineMessage
 } from '@components';
-import { truncate } from '@utils';
 import { Network } from '@types';
 import {
   getBaseAssetByNetwork,
@@ -374,7 +373,7 @@ export function DeterministicWalletsClass({
       <Account
         title={addrBook ? addrBook.label : translateRaw('NO_ADDRESS')}
         address={wallet.address}
-        truncate={truncate}
+        truncate={true}
       />,
       <div>
         {!wallet.value ? (

@@ -6,7 +6,6 @@ import { Tooltip, LinkOut, Account, FixedSizeCollapsibleTable } from '@component
 import { translateRaw } from '@translations';
 import { breakpointToNumber, BREAK_POINTS } from '@theme';
 import { IconID } from '@components/Tooltip';
-import { truncate } from '@utils';
 import { ENS_MANAGER_URL, SECONDS_IN_MONTH } from '@config/constants';
 
 import { MyDomainsProps, DomainNameRecord } from './types';
@@ -42,7 +41,7 @@ export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
           )}
         </RowAlignment>,
         <Label key={2}>
-          <Account title={record.ownerLabel} address={record.owner} truncate={truncate} />
+          <Account title={record.ownerLabel} address={record.owner} truncate={true} />
         </Label>,
         <RowAlignment key={3} align="left">
           {record.readableDomainName}
