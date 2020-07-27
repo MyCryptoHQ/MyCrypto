@@ -23,10 +23,19 @@ const PAGES = {
   NO_ACCOUNTS: `${FIXTURES_CONST.BASE_URL}/no-accounts`,
   SETTINGS: `${FIXTURES_CONST.BASE_URL}/settings`,
   ADD_ACCOUNT_MNEMONIC: `${FIXTURES_CONST.BASE_URL}/add-account/mnemonic_phrase`,
-  SEND: `${FIXTURES_CONST.BASE_URL}/send`
+  ADD_ACCOUNT_VIEWONLY: `${FIXTURES_CONST.BASE_URL}/add-account/view_only`,
+  SEND: `${FIXTURES_CONST.BASE_URL}/send`,
+  ADD_ACCOUNT: `${FIXTURES_CONST.BASE_URL}/add-account`
 };
 
 const NETWORK_NAME_FIXTURE = 'Ropsten';
+
+const FIXTURE_ETHEREUM = 'Ethereum';
+
+// MyCrypto Dev Testing Account with multiple tokens - should probably be swapped out for a dedicated E2E testing account
+const FIXTURE_VIEW_ONLY_ADDRESS = '0x82D69476357A03415E92B5780C89e5E9e972Ce75';
+
+const FIXTURE_VIEW_ONLY_TOKENS = ['ANT', 'BAT', 'DAI'];
 
 const FIXTURE_SEND_CONTACT = 'MyCrypto Tip Jar';
 
@@ -152,5 +161,8 @@ export {
   FIXTURE_SEND_AMOUNT,
   FIXTURE_LOCALSTORAGE_EMPTY,
   FIXTURE_LOCALSTORAGE_WITH_ONE_ACC,
-  FIXTURE_MYC_STORAGE_KEY
+  FIXTURE_MYC_STORAGE_KEY,
+  FIXTURE_ETHEREUM,
+  FIXTURE_VIEW_ONLY_ADDRESS,
+  FIXTURE_VIEW_ONLY_TOKENS
 };

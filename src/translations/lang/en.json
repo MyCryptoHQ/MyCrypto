@@ -212,7 +212,7 @@
     "DASHBOARD_ACTIONS_SWAP_ASSETS_TITLE": "Swap Assets",
     "DASHBOARD_TOKENS_TOOLTIP": "Use this area to view detailed information on the tokens in your account(s), scan for new tokens, or add tokens that aren’t on our default list.",
     "DATA": "Data",
-    "DECRYPT_ACCESS": "How would you like to access your assets? ",
+    "DECRYPT_ACCESS": "How would you like to access your assets?",
     "DECRYPT_PROMPT_SELECT_ADDRESS": "Select an Address",
     "DEFIZAP": "Zapper",
     "DEFIZAP_QUESTION_FIVE": "How is the MyCrypto Zapper integration different from the functionality of Zapper.fi?",
