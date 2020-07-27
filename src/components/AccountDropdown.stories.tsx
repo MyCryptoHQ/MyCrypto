@@ -3,12 +3,12 @@ import { fAccount, fAssets } from '@fixtures';
 
 import { noOp } from '@utils';
 import { StoreAccount } from '@types';
-import AccountDropdown, { IAccountDropdownProps } from './AccountDropdown';
+import AccountDropdown from './AccountDropdown';
 import AccountSummary from './AccountSummary';
 
 export default { title: 'AccountDropdown' };
 
-const initialProps: IAccountDropdownProps = {
+const initialProps: React.ComponentProps<typeof AccountDropdown> = {
   accounts: [fAccount, Object.assign({}, fAccount, { address: 'demo' })],
   asset: fAssets[0],
   name: '',
