@@ -6,7 +6,7 @@ import { MYC_DEXAG_MARKUP_THRESHOLD } from '@config';
 import {
   InputField,
   AssetSelector,
-  AccountDropdown,
+  AccountSelector,
   InlineMessage,
   Typography,
   Tooltip,
@@ -286,7 +286,7 @@ export default function SwapAssets(props: Props) {
           <AccountLabel value={translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')} fontSize="1.13em" />{' '}
           <STooltip tooltip={translateRaw('SWAP_SELECT_ACCOUNT_TOOLTIP')} />
         </AccountLabelWrapper>
-        <AccountDropdown
+        <AccountSelector
           name="account"
           value={account}
           accounts={filteredAccounts}

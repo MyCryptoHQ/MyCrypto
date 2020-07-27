@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
-import { AccountDropdown, Button, Typography, GasSelector } from '@components';
+import { AccountSelector, Button, Typography, GasSelector } from '@components';
 import { StoreAccount, ITxConfig, Network } from '@types';
 import {
   StoreContext,
@@ -25,7 +25,7 @@ const WriteActionWrapper = styled.div`
   width: 100%;
 `;
 
-const AccountDropdownWrapper = styled.div`
+const AccountSelectorWrapper = styled.div`
   margin-top: 8px;
 `;
 
@@ -88,8 +88,8 @@ export default function WriteForm(props: Props) {
   return (
     <WriteActionWrapper>
       <CustomLabel>{translateRaw('ACCOUNT')}</CustomLabel>
-      <AccountDropdownWrapper>
-        <AccountDropdown
+      <AccountSelectorWrapper>
+        <AccountSelector
           name="account"
           value={account}
           accounts={filteredAccounts}
@@ -109,7 +109,7 @@ export default function WriteForm(props: Props) {
             estimateGasCallProps={estimateGasCallProps}
           />
         )}
-      </AccountDropdownWrapper>
+      </AccountSelectorWrapper>
 
       <ActionButton color={COLORS.WHITE} onClick={() => handleSubmit(currentFunction)}>
         {translateRaw('ACTION_17')}

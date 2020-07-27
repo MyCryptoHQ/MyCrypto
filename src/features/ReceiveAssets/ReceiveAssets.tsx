@@ -8,7 +8,7 @@ import {
   buildEIP681EtherRequest,
   buildEIP681TokenRequest
 } from '@services/EthService/utils/formatters';
-import { ContentPanel, QRCode, AccountDropdown, AssetSelector } from '@components';
+import { ContentPanel, QRCode, AccountSelector, AssetSelector } from '@components';
 import { AssetContext, getNetworkById, StoreContext } from '@services/Store';
 import { isValidAmount, sanitizeDecimalSeparator, noOp } from '@utils';
 import { IAccount as IIAccount, StoreAccount } from '@types';
@@ -161,7 +161,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
               <Field
                 name="recipientAddress"
                 component={({ field, form }: FieldProps) => (
-                  <AccountDropdown
+                  <AccountSelector
                     name={field.name}
                     value={field.value}
                     accounts={accounts}

@@ -12,7 +12,7 @@ import { ValuesType } from 'utility-types';
 
 import translate, { translateRaw } from '@translations';
 import {
-  AccountDropdown,
+  AccountSelector,
   AmountInput,
   AssetSelector,
   Checkbox,
@@ -501,7 +501,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                   component={({ field, form }: FieldProps) => {
                     const accountsWithAsset = getAccountsByAsset(validAccounts, values.asset);
                     return (
-                      <AccountDropdown
+                      <AccountSelector
                         name={field.name}
                         value={field.value}
                         accounts={accountsWithAsset}

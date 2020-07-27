@@ -9,7 +9,7 @@ import { parseEther } from 'ethers/utils';
 import translate, { translateRaw } from '@translations';
 import { SPACING } from '@theme';
 import { IAccount, Network, StoreAccount, Asset } from '@types';
-import { AccountDropdown, InlineMessage, AmountInput, PoweredByText } from '@components';
+import { AccountSelector, InlineMessage, AmountInput, PoweredByText } from '@components';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
 import { ETHUUID } from '@utils';
@@ -146,7 +146,7 @@ export const ZapFormUI = ({
                   name="account"
                   value={values.account}
                   component={({ field, form }: FieldProps) => (
-                    <AccountDropdown
+                    <AccountSelector
                       name={field.name}
                       value={field.value}
                       accounts={relevantAccounts}

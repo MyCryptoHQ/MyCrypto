@@ -38,7 +38,7 @@ const getOption = (account: StoreAccount | null, options: TOption[]) => {
   return options.find((o) => o.account.uuid === account.uuid)!;
 };
 
-function AccountDropdown({ accounts, asset, name, value, onSelect }: Props) {
+function AccountSelector({ accounts, asset, name, value, onSelect }: Props) {
   const options: TOption[] = accounts
     .map((a) => ({
       account: a,
@@ -102,4 +102,4 @@ function AccountDropdown({ accounts, asset, name, value, onSelect }: Props) {
   );
 }
 
-export default AccountDropdown;
+export default AccountSelector;

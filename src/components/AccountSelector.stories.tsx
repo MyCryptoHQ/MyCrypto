@@ -3,12 +3,12 @@ import { fAccount, fAssets } from '@fixtures';
 
 import { noOp } from '@utils';
 import { StoreAccount } from '@types';
-import AccountDropdown from './AccountSelector';
+import AccountSelector from './AccountSelector';
 import AccountSummary from './AccountSummary';
 
-export default { title: 'AccountDropdown' };
+export default { title: 'AccountSelector' };
 
-const initialProps: React.ComponentProps<typeof AccountDropdown> = {
+const initialProps: React.ComponentProps<typeof AccountSelector> = {
   accounts: [fAccount, Object.assign({}, fAccount, { address: 'demo' })],
   asset: fAssets[0],
   name: '',
@@ -27,7 +27,7 @@ export const Selector = () => {
   return (
     <div className="sb-container" style={{ width: '100%', maxWidth: '300px' }}>
       <form role="form">
-        <AccountDropdown clearable={true} {...props} />
+        <AccountSelector clearable={true} {...props} />
       </form>
       <div>
         Value: {formValues ? formValues.address : 'undefined'}
