@@ -88,7 +88,7 @@ export const ProtectTxButton: FC<Props> = ({
   disabled = false,
   reviewReport = false
 }) => {
-  const { isSmScreen } = useScreenSize();
+  const { isSmScreen, isMdScreen } = useScreenSize();
 
   const onClickEvent = useCallback(
     (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -97,12 +97,16 @@ export const ProtectTxButton: FC<Props> = ({
     [onTransactionProtectionClick]
   );
 
-  if (isSmScreen && reviewReport) {
+  if (!isMdScreen && reviewReport) {
     return <></>;
   }
 
   return (
-    <STransactionProtectionButton type="button" onClick={onClickEvent} disabled={disabled}>
+    <STransactionProtectionButton
+      type="button"
+      onClick={onClickEvent}
+      disabled={disabled || reviewReport}
+    >
       {isSmScreen && <ProtectIcon size="md" />}
       {!isSmScreen && <ProtectIconCheck size="sm" />}
       <TransactionProtectionButtonText>

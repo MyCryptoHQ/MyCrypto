@@ -18,11 +18,8 @@ export const formReducer = (formData: FormData, action: FormDataAction) => {
       const { accountType } = action.payload;
       return { ...formData, accountType };
     case ActionType.ON_UNLOCK:
-      const accountAndDerivationPath: IAccountAdditionData[] = handleUnlock(
-        formData.accountType,
-        action.payload
-      );
-      return { ...formData, accountData: accountAndDerivationPath };
+      const accountWithDPath = handleUnlock(formData.accountType, action.payload);
+      return { ...formData, accountData: accountWithDPath };
     case ActionType.SET_LABEL:
       const { label } = action.payload;
       return { ...formData, label };
@@ -37,48 +34,54 @@ export const formReducer = (formData: FormData, action: FormDataAction) => {
 };
 
 const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
-  switch (walletType) {
-    case WalletId.VIEW_ONLY:
-      return [payload];
-    case WalletId.KEYSTORE_FILE:
-      return [payload];
-    case WalletId.PRIVATE_KEY:
-      return [payload];
-    case WalletId.WEB3:
-      return [
-        {
-          address: payload.getAddressString(),
-          derivationPath: ''
-        }
-      ];
-    case WalletId.WALLETCONNECT:
-      return [
-        {
-          address: payload.address,
-          derivationPath: ''
-        }
-      ];
-    case WalletId.MNEMONIC_PHRASE:
-      return [payload];
-    case WalletId.MNEMONIC_PHRASE_NEW:
-      return payload;
-    case WalletId.LEDGER_NANO_S:
-      return [payload];
-    case WalletId.LEDGER_NANO_S_NEW:
-      return payload;
-    case WalletId.TREZOR:
-      return [
-        {
-          address: payload.address,
-          derivationPath: payload.path || payload.dPath + '/' + payload.index.toString()
-        }
-      ];
+  const wallets = (() => {
+    switch (walletType) {
+      case WalletId.VIEW_ONLY:
+        return [payload];
+      case WalletId.KEYSTORE_FILE:
+        return [payload];
+      case WalletId.PRIVATE_KEY:
+        return [payload];
+      case WalletId.WEB3:
+        return [
+          {
+            address: payload.getAddressString(),
+            derivationPath: ''
+          }
+        ];
+      case WalletId.WALLETCONNECT:
+        return [
+          {
+            address: payload.address,
+            derivationPath: ''
+          }
+        ];
+      case WalletId.MNEMONIC_PHRASE:
+        return [payload];
+      case WalletId.MNEMONIC_PHRASE_NEW:
+        return payload;
+      case WalletId.LEDGER_NANO_S:
+        return [payload];
+      case WalletId.LEDGER_NANO_S_NEW:
+        return payload;
+      case WalletId.TREZOR:
+        return [
+          {
+            address: payload.address,
+            derivationPath: payload.path || payload.dPath + '/' + payload.index.toString()
+          }
+        ];
 
-    case WalletId.TREZOR_NEW:
-      return payload;
-    default:
-      throw new Error(
-        `[AddAccountReducer]: UNLOCK with wallet ${walletType} and payload ${payload} is invalid`
-      );
-  }
+      case WalletId.TREZOR_NEW:
+        return payload;
+      default:
+        throw new Error(
+          `[AddAccountReducer]: UNLOCK with wallet ${walletType} and payload ${payload} is invalid`
+        );
+    }
+  })();
+  return wallets.map((a: any) => ({
+    ...a,
+    dPath: a.derivationPath || a.dPath
+  })) as IAccountAdditionData[];
 };

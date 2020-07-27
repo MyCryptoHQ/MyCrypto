@@ -68,7 +68,7 @@ import {
 import { RatesContext } from '@services/RatesProvider';
 import TransactionFeeDisplay from '@components/TransactionFlow/displays/TransactionFeeDisplay';
 import { formatSupportEmail, isFormValid as checkFormValid, ETHUUID, isSameAddress } from '@utils';
-import { ProtectTxUtils } from '@features/ProtectTransaction';
+import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
 import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
 import { ProtectTxButton } from '@features/ProtectTransaction/components/ProtectTxButton';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
@@ -726,6 +726,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
 
               {protectTxFeatureFlag && (
                 <ProtectTxButton
+                  reviewReport={ptxState.protectTxEnabled}
                   onClick={(e) => {
                     e.preventDefault();
 
@@ -758,7 +759,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
 
               {protectTxFeatureFlag && (
                 <ProtectTxShowError
-                  protectTxError={ProtectTxUtils.checkFormForProtectedTxErrors(
+                  protectTxError={checkFormForProtectTxErrors(
                     values,
                     getAssetRate(values.asset),
                     isMyCryptoMember
