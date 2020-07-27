@@ -360,7 +360,9 @@ export const TxReceiptUI = ({
         <div className="TransactionReceipt-row">
           <div className="TransactionReceipt-row-desc">
             {protectTxEnabled && !web3Wallet && <SSpacer />}
-            {translate('TRANSACTION_BROADCASTED_DESC')}
+            {txType === ITxType.FAUCET
+              ? translate('FAUCET_SUCCESS')
+              : translate('TRANSACTION_BROADCASTED_DESC')}
           </div>
         </div>
       )}
@@ -479,7 +481,7 @@ export const TxReceiptUI = ({
             translateRaw('FAUCET_TWEET')
           )}`}
         >
-          <Button secondary={true} className="TransactionReceipt-tweet">
+          <Button className="TransactionReceipt-tweet">
             <i className="sm-icon sm-logo-twitter TransactionReceipt-tweet-icon" />{' '}
             <span className="TransactionReceipt-tweet-text">{translate('FAUCET_SHARE')}</span>
           </Button>
@@ -512,11 +514,19 @@ export const TxReceiptUI = ({
           </Button>
         </Tooltip>
       )}
-      <Link to={ROUTE_PATHS.DASHBOARD.path}>
-        <Button className="TransactionReceipt-back">
-          {translate('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')}
-        </Button>
-      </Link>
+      {txType === ITxType.FAUCET ? (
+        <Link to={ROUTE_PATHS.DASHBOARD.path}>
+          <Button secondary={true} className="TransactionReceipt-back">
+            {translate('FAUCET_CLOSE')}
+          </Button>
+        </Link>
+      ) : (
+        <Link to={ROUTE_PATHS.DASHBOARD.path}>
+          <Button className="TransactionReceipt-back">
+            {translate('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')}
+          </Button>
+        </Link>
+      )}
       {txType === ITxType.DEFIZAP && <PoweredByText provider="ZAPPER" />}
     </div>
   );

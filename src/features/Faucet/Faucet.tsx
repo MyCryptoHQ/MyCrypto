@@ -29,7 +29,7 @@ import translate, { translateRaw } from '@translations';
 import questionToolTip from '@assets/images/icn-question.svg';
 
 import { Error } from './components';
-import { possibleSolution, requestChallenge, solveChallenge } from './helpers';
+import { possibleSolution, requestChallenge, solveChallenge, regenerateChallenge } from './helpers';
 
 // Legacy
 import receiveIcon from '@assets/images/icn-receive.svg';
@@ -53,12 +53,6 @@ const CodeHeading = styled(Heading)`
   margin-top: 8px;
 `;
 
-const Divider = styled.div`
-  height: 1px;
-  margin: 30px 0;
-  background: #e3edff;
-`;
-
 const LearnMoreArrowWrapper = styled.span`
   vertical-align: middle;
   margin-left: 2px;
@@ -71,7 +65,36 @@ const LearnMoreArrow = styled(Icon)`
 `;
 
 const NoTestnetAccounts = styled(InlineMessage)`
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  a {
+    color: var(--color-link-color);
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--color-link-color);
+  }
+`;
+
+const IncorrectResponse = styled(InlineMessage)`
+  margin-top: 10px;
+`;
+
+const Description = styled.p`
+  margin-bottom: 30px;
+`;
+
+const CenterText = styled.div`
+  margin-top: 30px;
+  text-align: center;
+`;
+
+const RequestButton = styled(Button)`
+  width: 100%;
+`;
+
+const SubmitCaptchaButton = styled(Button)`
+  width: 100%;
+  margin-top: 30px;
 `;
 
 const faucetNetworks = ['Ropsten', 'Rinkeby', 'Kovan', 'Goerli'];
@@ -82,6 +105,7 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
   const [solution, setSolution] = useState('');
   const [txResult, setTxResult] = useState({} as any);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const { accounts, networks } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
@@ -110,13 +134,29 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
   };
 
   const finalizeRequestFunds = (solutionInput: string) => {
+    setLoading(true);
     solveChallenge(challenge.id, solutionInput)
       .then((result) => {
+        setLoading(false);
         setTxResult(result);
         setStep(2);
       })
       .catch((e) => {
-        setError(e.message);
+        if (e.message === 'INVALID_SOLUTION') {
+          regenerateChallenge(challenge.id)
+            .then((result) => {
+              setSolution('');
+              setChallenge(result);
+              setError(e.message);
+              setLoading(false);
+            })
+            .catch((err) => {
+              setError(err.message);
+            });
+        } else {
+          setLoading(false);
+          setError(e.message);
+        }
       });
   };
 
@@ -126,7 +166,9 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
     if (!('hash' in txResult)) {
       return {} as any;
     } else {
-      const network: any = networks.find((n) => n.id === 'Ropsten');
+      const network: any = networks.find(
+        (n) => n.id === txResult.network.charAt(0).toUpperCase() + txResult.network.slice(1)
+      );
       const baseAsset: Asset | undefined = getBaseAssetByNetwork({
         network,
         assets
@@ -134,26 +176,26 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
       return {
         rawTransaction: {
           to: txResult.to,
-          value: utils.bigNumberify(txResult.value).toString(),
-          gasLimit: utils.bigNumberify(txResult.gasLimit).toString(),
+          value: txResult.value,
+          gasLimit: txResult.gasLimit,
           data: txResult.data,
-          gasPrice: utils.bigNumberify(txResult.gasPrice).toString(),
+          gasPrice: txResult.gasPrice,
           nonce: txResult.nonce.toString(),
           chainId: txResult.chainId,
           from: txResult.from
         },
-        amount: utils.formatEther(utils.bigNumberify(txResult.value).toString()),
+        amount: utils.formatEther(txResult.value),
         receiverAddress: txResult.to,
         senderAccount: validAccounts[0],
         from: txResult.from,
         asset: baseAsset,
         baseAsset,
         network,
-        gasPrice: utils.bigNumberify(txResult.gasPrice).toString(),
-        gasLimit: utils.bigNumberify(txResult.gasLimit).toString(),
+        gasPrice: txResult.gasPrice,
+        gasLimit: txResult.gasLimit,
         nonce: txResult.nonce.toString(),
         data: txResult.data,
-        value: utils.bigNumberify(txResult.value).toString()
+        value: txResult.value
       };
     }
   })();
@@ -162,7 +204,9 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
     if (!('hash' in txResult)) {
       return {} as any;
     } else {
-      const network: any = networks.find((n) => n.id === 'Ropsten');
+      const network: any = networks.find(
+        (n) => n.id === txResult.network.charAt(0).toUpperCase() + txResult.network.slice(1)
+      );
       const baseAsset: Asset | undefined = getBaseAssetByNetwork({
         network,
         assets
@@ -171,15 +215,15 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
         asset: baseAsset,
         baseAsset,
         txType: ITxType.FAUCET,
-        status: ITxStatus.BROADCASTED,
+        status: ITxStatus.PENDING,
         receiverAddress: txResult.to,
-        amount: utils.formatEther(utils.bigNumberify(txResult.value).toString()),
+        amount: utils.formatEther(txResult.value),
         data: txResult.data,
-        gasPrice: utils.bigNumberify(txResult.gasPrice),
-        gasLimit: utils.bigNumberify(txResult.gasLimit),
+        gasPrice: txResult.gasPrice,
+        gasLimit: txResult.gasLimit,
         to: txResult.to,
         from: txResult.from,
-        value: utils.bigNumberify(txResult.value),
+        value: txResult.value,
         nonce: txResult.nonce.toString(),
         hash: txResult.hash
       };
@@ -193,8 +237,7 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
       onSubmit={noOp}
       render={({ values: { recipientAddress } }: FormikProps<typeof initialValues>) => (
         <Form>
-          <p>{translate('FAUCET_DESCRIPTION')}</p>
-          <Divider />
+          <Description>{translate('FAUCET_DESCRIPTION')}</Description>
           <Fieldset>
             <SLabel htmlFor="recipientAddress">{translate('X_RECIPIENT')}</SLabel>
             <Field
@@ -219,21 +262,21 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
               })}
             </NoTestnetAccounts>
           )}
-          <Button
+          <RequestButton
             onClick={() => requestFunds(recipientAddress)}
             disabled={Object.keys(recipientAddress).length === 0}
-            style={{ width: '100%' }}
           >
             {translate('REQUEST')}
-          </Button>
-          <Divider />
-          {translate('FAUCET_NOT_SURE')}{' '}
-          <NewTabLink href={getKBHelpArticle(KB_HELP_ARTICLE.WHERE_TO_GET_TESTNET_ETHER)}>
-            {translate('LEARN_MORE')}{' '}
-            <LearnMoreArrowWrapper>
-              <LearnMoreArrow icon="backArrow" />
-            </LearnMoreArrowWrapper>
-          </NewTabLink>
+          </RequestButton>
+          <CenterText>
+            {translate('FAUCET_NOT_SURE')}{' '}
+            <NewTabLink href={getKBHelpArticle(KB_HELP_ARTICLE.WHERE_TO_GET_TESTNET_ETHER)}>
+              {translate('LEARN_MORE')}{' '}
+              <LearnMoreArrowWrapper>
+                <LearnMoreArrow icon="backArrow" />
+              </LearnMoreArrowWrapper>
+            </NewTabLink>
+          </CenterText>
         </Form>
       )}
     />,
@@ -246,30 +289,27 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
       </CodeHeader>
       {'challenge' in challenge && (
         <div style={{ width: '100%', marginBottom: '20px' }}>
-          <img
-            style={{ width: '50%' }}
-            src={`data:image/svg+xml;base64,${Buffer.from(challenge.challenge).toString('base64')}`}
-          />
+          <img style={{ width: '100%' }} src={`data:image/png;base64,${challenge.challenge}`} />
         </div>
       )}
-      <div style={{ display: 'flex' }}>
-        <div style={{ width: '70%' }}>
-          <Input
-            value={solution}
-            type="number"
-            onChange={(e) => {
-              setSolution(e.target.value);
-            }}
-          />
-        </div>
-        <Button
-          style={{ flex: 1 }}
-          onClick={() => finalizeRequestFunds(solution)}
-          disabled={!possibleSolution(solution)}
-        >
-          Solve
-        </Button>
-      </div>
+      <Input
+        value={solution}
+        placeholder={translateRaw('FAUCET_ENTER_RESPONSE')}
+        onChange={(e) => {
+          setSolution(e.target.value);
+        }}
+      />
+      {error && error === 'INVALID_SOLUTION' && (
+        <IncorrectResponse type={InlineMessageType.ERROR}>
+          Incorrect captcha response. Please try again.
+        </IncorrectResponse>
+      )}
+      <SubmitCaptchaButton
+        onClick={() => finalizeRequestFunds(solution)}
+        disabled={loading || !possibleSolution(solution)}
+      >
+        Submit
+      </SubmitCaptchaButton>
     </>,
     <>
       {'hash' in txResult && (
@@ -278,7 +318,6 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
           txReceipt={txReceipt}
           onComplete={() => reset()}
           resetFlow={() => reset()}
-          completeButtonText={translateRaw('FAUCET_REQUEST_MORE')}
         />
       )}
     </>
@@ -292,14 +331,7 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
       stepper={{ current: step + 1, total: steps.length }}
       width="750px"
     >
-      {error ? (
-        <>
-          <Divider />
-          <Error type={error} />
-        </>
-      ) : (
-        steps[step]
-      )}
+      {error && error !== 'INVALID_SOLUTION' ? <Error type={error} /> : steps[step]}
     </ExtendedContentPanel>
   );
 }
