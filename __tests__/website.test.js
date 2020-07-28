@@ -1,11 +1,9 @@
 import { Selector, ClientFunction } from 'testcafe';
-import request from 'request';
 
 import { PAGES } from './fixtures';
 import NoAccountsPage from './no-accounts-page.po';
 
 const noAccounts = new NoAccountsPage();
-const getHost = ClientFunction(() => window.location.host);
 fixture('Dashboard').page(PAGES.DASHBOARD);
 
 test('It contains a favicon tag', async (t) => {
