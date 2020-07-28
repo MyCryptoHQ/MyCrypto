@@ -36,7 +36,7 @@ module.exports = merge.smart(common, {
           {
             loader: 'sass-loader',
             options: {
-              prependData: `$is-electron: ${TARGET_ENV === 'electron'};`
+              prependData: `$is-electron: ${TargetEnv === 'electron'};`
             }
           }
         ]
