@@ -76,11 +76,11 @@ const FIXTURE_LOCALSTORAGE_EMPTY = {
 const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
   version: 'v1.0.0',
   accounts: {
-    '256b782e-52bc-51f9-a357-602501e59700': {
-      address: '0x88F7B1E26c3A52CA3cD8aF4ba1b448391eb31d88',
+    '1782c060-8bc0-55d6-8078-ff255b4aae90': {
+      address: '0x32F08711dC8ca3EB239e01f427AE3713DB1f6Be3',
       networkId: 'Ropsten',
       wallet: 'MNEMONIC_PHRASE',
-      dPath: "m/44'/1'/0'/0/0",
+      dPath: "m/44'/60'/0'/0/0",
       assets: [
         {
           ticker: 'RopstenETH',
@@ -91,14 +91,14 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
           mappings: {},
           isCustom: false,
           uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7',
-          balance: { _hex: '0x06c11b86ae814800' },
-          mtime: 1591264690383
+          balance: { _hex: '0x3e73362871420000' },
+          mtime: 1595965134769
         }
       ],
       transactions: [],
       favorite: false,
       mtime: 0,
-      uuid: '256b782e-52bc-51f9-a357-602501e59700',
+      uuid: '1782c060-8bc0-55d6-8078-ff255b4aae90',
       label: 'Mnemonic Phrase Account 1'
     }
   },
