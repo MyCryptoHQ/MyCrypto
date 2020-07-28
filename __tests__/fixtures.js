@@ -36,7 +36,7 @@ const FIXTURE_VIEW_ONLY_ADDRESS = '0x82D69476357A03415E92B5780C89e5E9e972Ce75';
 
 const FIXTURE_VIEW_ONLY_TOKENS = ['ANT', 'BAT', 'DAI'];
 
-const FIXTURE_SEND_CONTACT = 'MyCrypto Tip Jar';
+const FIXTURE_SEND_CONTACT = 'Mnemonic Phrase Account 1';
 
 const FIXTURE_SEND_ADDRESS = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520';
 
@@ -110,12 +110,12 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
       network: 'Ethereum',
       uuid: 'a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe'
     },
-    '8c7beeff-74ce-427b-e7e1-64f7ed21b98d': {
+    'b6260cfc-c6ff-b385-af20-1cc95e308b33': {
       label: 'Mnemonic Phrase Account 1',
-      address: '0x88F7B1E26c3A52CA3cD8aF4ba1b448391eb31d88',
+      address: '0x32F08711dC8ca3EB239e01f427AE3713DB1f6Be3',
       notes: '',
       network: 'Ropsten',
-      uuid: '8c7beeff-74ce-427b-e7e1-64f7ed21b98d'
+      uuid: 'b6260cfc-c6ff-b385-af20-1cc95e308b33'
     }
   },
   assets: {},
