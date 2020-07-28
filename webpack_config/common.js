@@ -7,6 +7,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const config = require('./config');
 
 const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
@@ -209,6 +210,18 @@ module.exports = {
       files: '**/*.tsx',
       lintDirtyModulesOnly: true,
       quiet: true
+    }),
+
+    new FaviconsWebpackPlugin({
+      logo: path.resolve(config.path.assets, 'images/favicon.png'),
+      cacheDirectory: false, // Cache makes builds nondeterministic
+      inject: true,
+      prefix: 'src/assets/meta-[hash]',
+      favicons: {
+        appDescription: 'Ethereum web interface',
+        display: 'standalone',
+        theme_color: '#007896'
+      }
     }),
 
     new HtmlWebpackPlugin({
