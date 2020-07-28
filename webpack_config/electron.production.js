@@ -41,8 +41,8 @@ const render = merge.smart(electronRender, {
     ]),
 
     new webpack.EnvironmentPlugin({
-      'BUILD_ELECTRON': 'true',
-      'BUILD_DOWNLOADABLE': 'true'
+      'NODE_ENV': 'production',
+      'TARGET_ENV': 'electron'
     })
   ]
 });

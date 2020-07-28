@@ -11,8 +11,7 @@ module.exports = merge.smart(development, {
 
   plugins: [
     new webpack.EnvironmentPlugin({
-      'BUILD_DOWNLOADABLE': 'true',
-      'BUILD_ELECTRON': 'true'
+      'TARGET_ENV': 'electron'
     })
   ]
 });

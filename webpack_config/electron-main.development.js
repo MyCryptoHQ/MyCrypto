@@ -114,7 +114,8 @@ module.exports = {
     new CleanWebpackPlugin(),
 
     new webpack.EnvironmentPlugin({
-      'NODE_ENV': 'development'
+      'NODE_ENV': 'development',
+      'TARGET_ENV': 'electron'
     }),
 
     new ForkTsCheckerWebpackPlugin({

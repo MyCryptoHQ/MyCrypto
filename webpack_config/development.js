@@ -7,7 +7,7 @@ const common = require('./common');
 const config = require('./config');
 
 const HTTP_PORT = 3000;
-const IS_ELECTRON = !!process.env.BUILD_ELECTRON;
+const IS_ELECTRON = process.env.TARGET_ENV === 'electron';
 
 module.exports = merge.smart(common, {
   mode: 'development',
@@ -66,11 +66,13 @@ module.exports = merge.smart(common, {
   },
 
   plugins: [
+    new webpack.EnvironmentPlugin({
+      'TARGET_ENV': process.env.TARGET_ENV
+    }),
+
     new FriendlyErrorsPlugin({
       clearConsole: false
     }),
-
-    new webpack.EnvironmentPlugin({ NODE_ENV: 'development' }),
 
     new webpack.HotModuleReplacementPlugin(),
 

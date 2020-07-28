@@ -9,13 +9,13 @@ import 'what-input'; // @todo: Investigate utility of dependency; Used in sass/s
 import React from 'react';
 import { render } from 'react-dom';
 
-import { consoleAdvertisement } from '@utils';
+import { consoleAdvertisement, IS_STAGING, IS_PROD } from '@utils';
 
 import Root from './Root';
 
 render(<Root />, document.getElementById('app'));
 
-if (process.env.NODE_ENV === 'production' || !!process.env.IS_STAGING) {
+if (IS_PROD || IS_STAGING) {
   consoleAdvertisement();
 }
 

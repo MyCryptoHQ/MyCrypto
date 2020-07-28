@@ -7,7 +7,7 @@ const SriPlugin = require('webpack-subresource-integrity');
 const common = require('./common');
 const config = require('./config');
 
-const IS_ELECTRON = !!process.env.BUILD_ELECTRON;
+const TARGET_ENV = !!process.env.TARGET_ENV;
 
 module.exports = merge.smart(common, {
   mode: 'production',
@@ -35,7 +35,7 @@ module.exports = merge.smart(common, {
           {
             loader: 'sass-loader',
             options: {
-              prependData: `$is-electron: ${IS_ELECTRON};`
+              prependData: `$is-electron: ${TARGET_ENV === 'electron'};`
             }
           }
         ]
@@ -44,7 +44,6 @@ module.exports = merge.smart(common, {
   },
 
   plugins: [
-
     new MiniCSSExtractPlugin({
       filename: `[name].[contenthash].css`
     }),

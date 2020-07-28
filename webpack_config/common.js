@@ -11,7 +11,7 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const config = require('./config');
 
 const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
-const IS_ELECTRON = !!process.env.BUILD_ELECTRON;
+const IS_ELECTRON = process.env.TARGET_ENV === 'electron';
 
 module.exports = {
   target: 'web',
