@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { OptionProps } from 'react-select';
+import isEmpty from 'lodash/isEmpty';
 
 import { translateRaw } from '@translations';
 import { Asset, ISwapAsset, TSymbol, TUuid } from '@types';
 import { AssetIcon, Typography, Selector } from '@components';
+import { useEffectOnce } from '@vendor';
 
 const SContainer = styled('div')`
   display: flex;
@@ -79,6 +81,12 @@ function AssetSelector({
   inputId = 'asset-selector',
   ...props
 }: AssetSelectorProps<Asset | ISwapAsset>) {
+  useEffectOnce(() => {
+    if (!isEmpty(assets) && isEmpty(selectedAsset)) {
+      onSelect(assets[0]);
+    }
+  });
+
   return (
     <Wrapper fluid={fluid}>
       {label && <Label htmlFor={inputId}>{label}</Label>}

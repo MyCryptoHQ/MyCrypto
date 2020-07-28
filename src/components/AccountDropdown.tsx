@@ -1,12 +1,14 @@
 import React from 'react';
 import { formatEther } from 'ethers/utils';
 import { OptionProps } from 'react-select';
+import isEmpty from 'lodash/isEmpty';
 
 import { translateRaw } from '@translations';
 import { AccountSummary, Divider, Selector } from '@components';
 import { SPACING } from '@theme';
 import { StoreAccount, Asset, TUuid, TSymbol } from '@types';
 import { getAccountBalance, getBaseAsset } from '@services/Store';
+import { useEffectOnce } from '@vendor';
 
 export interface IAccountDropdownProps {
   accounts: StoreAccount[];
@@ -50,6 +52,12 @@ function AccountDropdown({ accounts, asset, name, value, onSelect }: IAccountDro
     .sort(sortByLabel);
   const selected = getOption(value, options);
   const handleFormUpdate = (option: TAccountDropdownOption) => onSelect(option.account);
+
+  useEffectOnce(() => {
+    if (!isEmpty(options) && isEmpty(value)) {
+      onSelect(options[0].account);
+    }
+  });
 
   return (
     <Selector<TAccountDropdownOption>
