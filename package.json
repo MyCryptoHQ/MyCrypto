@@ -229,7 +229,7 @@
   },
   "scripts": {
     "build": "cross-env TARGET_ENV=default webpack --config webpack_config/production.js",
-    "build:staging": "cross-env TARGET_ENV=staging webpack --config webpack_config/staging.js",
+    "build:staging": "cross-env TARGET_ENV=staging webpack --config webpack_config/production.js",
     "prebuild": "check-node-version --package",
     "build:electron": "cross-env NODE_ENV=production TARGET_ENV=electron webpack --config webpack_config/electron.production.js && node webpack_config/buildElectron.js",
     "prebuild:electron": "check-node-version --package && electron-builder install-app-deps",

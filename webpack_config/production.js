@@ -7,7 +7,7 @@ const SriPlugin = require('webpack-subresource-integrity');
 const common = require('./common');
 const config = require('./config');
 
-const TARGET_ENV = !!process.env.TARGET_ENV;
+const TargetEnv = process.env.TARGET_ENV || 'default';
 
 module.exports = merge.smart(common, {
   mode: 'production',
@@ -17,7 +17,8 @@ module.exports = merge.smart(common, {
   output: {
     path: path.join(config.path.output, 'web'),
     filename: '[name].[contenthash].js',
-    globalObject: undefined
+    globalObject: undefined,
+    publicPath: './'
   },
 
   module: {
@@ -44,6 +45,10 @@ module.exports = merge.smart(common, {
   },
 
   plugins: [
+    new webpack.EnvironmentPlugin({
+      'TARGET_ENV': TargetEnv
+    }),
+
     new MiniCSSExtractPlugin({
       filename: `[name].[contenthash].css`
     }),
