@@ -1,4 +1,4 @@
-import { BrowserWindow, ipcMain, IpcMessageEvent } from 'electron';
+import { BrowserWindow, ipcMain, IpcMainEvent } from 'electron';
 
 export default function showPrompt(template: string, event: string): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -24,7 +24,7 @@ export default function showPrompt(template: string, event: string): Promise<str
       reject(new Error('ENCLAVE_TREZOR_CANCELED'));
     });
 
-    ipcMain.once(event, (_: IpcMessageEvent, value: string) => {
+    ipcMain.once(event, (_: IpcMainEvent, value: string) => {
       try {
         resolve(value);
         hasResolved = true;
