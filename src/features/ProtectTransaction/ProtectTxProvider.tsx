@@ -49,7 +49,7 @@ export interface ProtectTxContext {
   goToNextStep(): void;
   goToInitialStepOrFetchReport(receiverAddress?: string, network?: Network): void;
   showHideProtectTx(showOrHide: boolean): void;
-  setReceiverInfo(receiverAddress: string, network: Network): Promise<void>;
+  setReceiverInfo(receiverAddress: string, network: Network): void;
   setFeeAmount(feeAmount: IFeeAmount): void;
   setProtectTxTimeoutFunction(cb: (txReceiptCb?: (txReciept: ITxReceipt) => void) => void): void;
   invokeProtectTxTimeoutFunction(cb: (txReceipt: ITxReceipt) => void): void;
@@ -143,14 +143,14 @@ const ProtectTxProvider: React.FC = ({ children }) => {
 
       return Promise.resolve();
     },
-    [state.receiverAddress, setState]
+    [state.receiverAddress]
   );
 
   const updateFormValues = (values: IFormikFields) => {
     setState((prevState) => ({ ...prevState, formValues: values }));
   };
 
-  const goToNextStep = useCallback(() => {
+  const goToNextStep = () => {
     setState((prevState) => {
       const { stepIndex } = prevState;
 
@@ -159,7 +159,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
         stepIndex: (stepIndex + 1) % numOfSteps
       };
     });
-  }, [setState]);
+  };
 
   const goToInitialStepOrFetchReport = useCallback(
     (receiverAddress?: string, network?: Network) => {
@@ -186,38 +186,30 @@ const ProtectTxProvider: React.FC = ({ children }) => {
         }));
       }
     },
-    [setState, state, handleTransactionReport]
+    [state, handleTransactionReport]
   );
 
-  const showHideProtectTx = useCallback(
-    (showOrHide: boolean) => {
-      setState((prevState) => ({
-        ...prevState,
-        protectTxShow: showOrHide
-      }));
-    },
-    [setState]
-  );
+  const showHideProtectTx = (showOrHide: boolean) => {
+    setState((prevState) => ({
+      ...prevState,
+      protectTxShow: showOrHide
+    }));
+  };
 
-  const setReceiverInfo = useCallback(
-    async (receiverAddress: string, network: Network) => {
-      if (!receiverAddress && !network) {
-        return Promise.reject();
-      }
+  const setReceiverInfo = (receiverAddress: string, network: Network) => {
+    if (!receiverAddress && !network) {
+      return;
+    }
 
-      const asset = getAssetByUUID(assets)(network.baseAsset)!;
+    const asset = getAssetByUUID(assets)(network.baseAsset)!;
 
-      setState((prevState) => ({
-        ...prevState,
-        receiverAddress,
-        network,
-        asset
-      }));
-
-      return Promise.resolve();
-    },
-    [setState]
-  );
+    setState((prevState) => ({
+      ...prevState,
+      receiverAddress,
+      network,
+      asset
+    }));
+  };
 
   const setFeeAmount = (feeAmount: IFeeAmount) => {
     setState((prevState) => ({
@@ -254,18 +246,15 @@ const ProtectTxProvider: React.FC = ({ children }) => {
     protectionTxTimeoutFunction.current = null;
   }, [protectionTxTimeoutFunction]);
 
-  const setWeb3Wallet = useCallback(
-    (isWeb3Wallet: boolean, walletTypeId: WalletId | null = null) => {
-      const web3WalletType = walletTypeId ? WALLETS_CONFIG[walletTypeId].name : null;
+  const setWeb3Wallet = (isWeb3Wallet: boolean, walletTypeId: WalletId | null = null) => {
+    const web3WalletType = walletTypeId ? WALLETS_CONFIG[walletTypeId].name : null;
 
-      setState((prevState) => ({
-        ...prevState,
-        isWeb3Wallet,
-        web3WalletName: web3WalletType
-      }));
-    },
-    [setState]
-  );
+    setState((prevState) => ({
+      ...prevState,
+      isWeb3Wallet,
+      web3WalletName: web3WalletType
+    }));
+  };
 
   const getReport = useCallback(() => {
     const address = state.receiverAddress as TAddress;
