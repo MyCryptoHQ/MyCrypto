@@ -8,7 +8,7 @@ import { AccountSummary, Divider, Selector } from '@components';
 import { SPACING } from '@theme';
 import { StoreAccount, Asset, TUuid, TSymbol } from '@types';
 import { getAccountBalance, getBaseAsset } from '@services/Store';
-import { useEffectOnce } from '@vendor/react-use';
+import { useEffectOnce } from '@vendor';
 
 export interface IAccountDropdownProps {
   accounts: StoreAccount[];
@@ -54,7 +54,7 @@ function AccountDropdown({ accounts, asset, name, value, onSelect }: IAccountDro
   const handleFormUpdate = (option: TAccountDropdownOption) => onSelect(option.account);
 
   useEffectOnce(() => {
-    if (isEmpty(value) && options.length > 0) {
+    if (!isEmpty(options) && isEmpty(value)) {
       onSelect(options[0].account);
     }
   });

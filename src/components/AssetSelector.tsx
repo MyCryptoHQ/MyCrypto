@@ -82,7 +82,7 @@ function AssetSelector({
   ...props
 }: AssetSelectorProps<Asset | ISwapAsset>) {
   useEffectOnce(() => {
-    if (assets.length > 0 && isEmpty(selectedAsset)) {
+    if (!isEmpty(assets) && isEmpty(selectedAsset)) {
       onSelect(assets[0]);
     }
   });
