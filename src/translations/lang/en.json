@@ -28,7 +28,7 @@
     "DETERMINISTIC_ACCOUNT_LIST_VALUE": "Asset",
     "DETERMINISTIC_ACCOUNT_LIST_ADD": "Add $total Account$plural",
     "DETERMINISTIC_GENERATE_FRESH_ADDRESS": "Generate Fresh Address",
-    "DETERMINISTIC_SCANNING_STATUS_RUNNING": "Continuing to scan your hardware wallet, $total total addresses that contain $asset scanned...",
+    "DETERMINISTIC_SCANNING_STATUS_RUNNING": "Continuing to scan your hardware wallet, $total total $asset addresses scanned...",
     "DETERMINISTIC_SCANNING_STATUS_DONE": "Here are the addresses on your hardware wallet that contain $asset. Not seeing what you expected?",
     "ACTION_10": "Done",
     "ACTION_15": "Remove",

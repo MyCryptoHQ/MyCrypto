@@ -168,7 +168,7 @@ export default function DeterministicAccountList(props: DeterministicAccountList
             <Loader className="loading" />
             <Trans
               id="DETERMINISTIC_SCANNING_STATUS_RUNNING"
-              variables={{ $total: () => finishedAccounts.length, $asset: () => asset.ticker }}
+              variables={{ $total: () => finishedAccounts.length, $asset: () => asset.name }}
             />{' '}
           </StatusWrapper>
         )}
