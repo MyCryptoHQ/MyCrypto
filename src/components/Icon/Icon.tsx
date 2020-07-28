@@ -5,6 +5,7 @@ import InlineSVG from 'react-inlinesvg';
 import back from '@assets/icons/actions/back.svg';
 import expand from '@assets/icons/actions/expand.svg';
 import add from '@assets/icons/actions/add.svg';
+import confirm from '@assets/icons/actions/confirm.svg';
 
 import logoMyCrypto from '@assets/icons/brand/logo.svg';
 import logoMyCryptoText from '@assets/icons/brand/logo-text.svg';
@@ -31,6 +32,7 @@ const icons = {
   back,
   expand,
   add,
+  confirm,
 
   /* Noun icons */
   website,

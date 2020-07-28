@@ -46,6 +46,7 @@ const MnemonicWrapper = styled.div`
 
 const Title = styled(Typography)`
   color: ${COLORS.BLUE_DARK};
+  margin-bottom: 20px;
 `;
 
 const Parameters = styled.div`
@@ -53,6 +54,7 @@ const Parameters = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 40px;
+  margin-top: 15px;
 `;
 
 const TableContainer = styled.div`

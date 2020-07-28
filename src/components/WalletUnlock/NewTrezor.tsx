@@ -80,6 +80,7 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
           isComplete={state.completed}
           asset={state.asset}
           finishedAccounts={state.finishedAccounts}
+          network={network}
         />
       </div>
     );
