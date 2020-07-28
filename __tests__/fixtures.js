@@ -1,7 +1,6 @@
 const ENV = {
   // Should be set in order to use Mnemonic in AddAccount flow
-  // @todo: activate ENV var when we decide about testing Mnemonic
-  // E2E_MNEMONIC_PASSPHRASE: process.env.E2E_MNEMONIC_PASSPHRASE,
+  E2E_MNEMONIC_PASSPHRASE: process.env.E2E_MNEMONIC_PASSPHRASE,
 
   // Defined in github/workflow to run against mycryptobuilds
   E2E_BASE_URL: process.env.E2E_BASE_URL || 'https://localhost:3000'
