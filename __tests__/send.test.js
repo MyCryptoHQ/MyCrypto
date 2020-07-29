@@ -1,11 +1,12 @@
-import { getByText } from '@testing-library/testcafe';
+import { getByText, getAllByText } from '@testing-library/testcafe';
 import { Selector } from 'testcafe';
 import {
   PAGES,
   FIXTURE_LOCALSTORAGE_WITH_ONE_ACC,
   FIXTURE_MYC_STORAGE_KEY,
   ENV,
-  FIXTURE_SEND_AMOUNT
+  FIXTURE_SEND_AMOUNT,
+  FIXTURE_SEND_CONTACT
 } from './fixtures';
 import SendAssetsPage from './send-assets-page.po';
 import { getTransValueByKey } from './translation-utils';
@@ -69,11 +70,14 @@ test('Should be able to send ETH on Ropsten', async (t) => {
 
   // Expect to reach confirm tx
   await t.expect(getByText(getTransValueByKey('CONFIRM_TX_MODAL_TITLE'))).ok();
-  //await t.expect(getByText(FIXTURE_SEND_AMOUNT)).ok();
+  await t.expect(getAllByText(FIXTURE_SEND_AMOUNT, { exact: false })).ok();
+  await t.expect(getAllByText(FIXTURE_SEND_CONTACT)).ok();
 
   // Send TX
   await t.click(getByText(getTransValueByKey('CONFIRM_AND_SEND')));
 
   // Expect to reach Tx Receipt
   await t.expect(getByText(getTransValueByKey('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD'))).ok();
+  await t.expect(getAllByText(FIXTURE_SEND_AMOUNT, { exact: false })).ok();
+  await t.expect(getAllByText(FIXTURE_SEND_CONTACT)).ok();
 });
