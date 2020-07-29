@@ -6,7 +6,7 @@ import { Trans } from '@translations';
 import { Identicon } from '@mycrypto/ui';
 import { EditableAccountLabel, EthAddress, Typography, LinkOut } from '@components';
 import { Network, ExtendedAsset, TAddress } from '@types';
-import { truncate, isSameAddress } from '@utils';
+import { isSameAddress } from '@utils';
 import BN from 'bn.js';
 import Icon from '@components/Icon';
 
@@ -173,7 +173,7 @@ const DeterministicTable = ({
               />
             </LabelContainer>
             <AddressContainer>
-              <EthAddress address={account.address} truncate={truncate} />
+              <EthAddress address={account.address} truncate={true} />
             </AddressContainer>
             <DPathContainer>
               <DPathType>{account.pathItem.baseDPath.label.replace(/\(.*?\)/, '')}</DPathType>

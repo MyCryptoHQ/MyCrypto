@@ -12,6 +12,7 @@ export interface Props {
   fontSize?: string;
   truncate?: boolean;
   inheritFontWeight?: boolean;
+  style?: React.CSSProperties;
   onClick?(e: React.MouseEvent): void;
 }
 
