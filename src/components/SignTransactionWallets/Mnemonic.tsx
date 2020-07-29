@@ -72,7 +72,7 @@ export default class SignTransactionMnemonic extends Component<
                 isValid={phrase && phrase.length > 0 ? isValidMnemonic(phrase) : false}
                 type="text"
                 onChange={this.handleMnemonicEnter}
-                placeholder={translateRaw('MNEMONIC_ENTER_PHASE')}
+                placeholder={translateRaw('MNEMONIC_ENTER_PHRASE')}
                 value={phrase}
               />
 

@@ -62,7 +62,7 @@ test('Should be able to send ETH on Ropsten', async (t) => {
   await t.expect(signBtn).ok();
 
   const inputField = Selector(
-    `input[placeholder="${getTransValueByKey('MNEMONIC_ENTER_PHASE')}"]`
+    `input[placeholder="${getTransValueByKey('MNEMONIC_ENTER_PHRASE')}"]`
   ).parent();
 
   await t.click(inputField).typeText(inputField, ENV.E2E_MNEMONIC_PASSPHRASE).click(signBtn);
