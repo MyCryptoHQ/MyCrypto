@@ -238,7 +238,7 @@
     "build:electron:linux": "cross-env NODE_ENV=production TARGET_ENV=electron webpack --config webpack_config/electron.production.js && cross-env ELECTRON_OS=linux node webpack_config/buildElectron.js",
     "test": "jest --config=jest_config/jest.config.json --maxWorkers=2",
     "test:coverage": "yarn test --coverage",
-    "test:single": "yarn test --coverage=false --watch",
+    "test:single": "cross-env DEBUG_PRINT_LIMIT=50000 yarn test --coverage=false --watch",
     "test:e2e": "testcafe chrome:headless __tests__/*.test.js",
     "test:e2e:dev": "testcafe \"chrome --start-maximized --disk-cache-size=1\" __tests__/*.test.js --live",
     "report-coverage": " cat ./coverage/lcov.info | coveralls",
