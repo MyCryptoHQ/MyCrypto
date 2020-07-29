@@ -2,15 +2,16 @@ import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 import { DWAccountDisplay, AddressBookContext, fromTokenBase } from '@services';
 import { COLORS, SPACING } from '@theme';
-import { Trans } from '@translations';
+import translate, { Trans } from '@translations';
 import { Identicon } from '@mycrypto/ui';
-import { EditableAccountLabel, EthAddress, Typography, LinkOut } from '@components';
+import { EditableAccountLabel, EthAddress, Typography, LinkOut, Button } from '@components';
 import { Network, ExtendedAsset, TAddress } from '@types';
 import { isSameAddress } from '@utils';
 import BN from 'bn.js';
 import Icon from '@components/Icon';
 
 interface DeterministicTableProps {
+  isComplete: boolean;
   accounts: DWAccountDisplay[];
   network: Network;
   asset: ExtendedAsset;
@@ -18,7 +19,9 @@ interface DeterministicTableProps {
     address: TAddress;
     derivationPath: string;
   }[];
+  generateFreshAddress?(): void;
   onSelect(account: DWAccountDisplay): void;
+  handleUpdate(asset: ExtendedAsset): void;
 }
 
 const Table = styled.div`
@@ -127,12 +130,54 @@ const LinkContainer = styled.div`
   padding: 0 15px;
 `;
 
+const GenerateAddressButton = styled.div<{ disabled: boolean }>`
+  ${(p) =>
+    p.disabled &&
+    css`
+      filter: grayscale(1);
+    `}
+  cursor: ${(p) => (p.disabled ? 'not-allowed' : 'pointer')};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 60px;
+  padding-left: 45px;
+  border-bottom: 1px solid ${COLORS.GREY_ATHENS};
+`;
+
+const STypography = styled(Typography)`
+  margin-left: ${SPACING.SM};
+`;
+
+const NoAccountContainer = styled.div`
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px 0;
+  & > *:not(:last-child) {
+    margin-bottom: 30px;
+  }
+`;
+
+const NoAccountAction = styled.span`
+  color: ${COLORS.BLUE_MYC};
+  cursor: pointer;
+  font-weight: bold;
+  &:hover {
+    color: ${COLORS.BLUE_LIGHT_DARKISH};
+  }
+`;
+
 const DeterministicTable = ({
+  isComplete,
   accounts,
   selectedAccounts,
   network,
   asset,
-  onSelect
+  onSelect,
+  generateFreshAddress,
+  handleUpdate
 }: DeterministicTableProps) => {
   const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
 
@@ -158,47 +203,81 @@ const DeterministicTable = ({
         <Label width="30px" />
         <Label width="50px" />
       </Heading>
-      <Body>
-        {accounts.map((account: DWAccountDisplay, index) => (
-          <Row key={index} onClick={() => onSelect(account)} isSelected={isSelected(account)}>
-            <SelectedContainer isSelected={isSelected(account)}>
-              <Icon type="check" />
-            </SelectedContainer>
-            <LabelContainer>
-              <SIdenticon address={account.address} />
-              <EditableAccountLabel
-                addressBookEntry={getContactByAddressAndNetworkId(account.address, network.id)}
-                address={account.address}
-                networkId={network.id}
-              />
-            </LabelContainer>
-            <AddressContainer>
-              <EthAddress address={account.address} truncate={true} />
-            </AddressContainer>
-            <DPathContainer>
-              <DPathType>{account.pathItem.baseDPath.label.replace(/\(.*?\)/, '')}</DPathType>
-              <DPath>({account.pathItem.path})</DPath>
-            </DPathContainer>
-            <ValueContainer>
-              {account.balance
-                ? parseFloat(
-                    fromTokenBase(new BN(account.balance.toString()), asset.decimal).toString()
-                  ).toFixed(4)
-                : '0.0000'}
-            </ValueContainer>
-            <TickerContainer>{asset.ticker}</TickerContainer>
-            <LinkContainer>
-              <LinkOut
-                link={
-                  network.blockExplorer
-                    ? network.blockExplorer.addressUrl(account.address)
-                    : `https://ethplorer.io/address/${account.address}`
-                }
-              />
-            </LinkContainer>
-          </Row>
-        ))}
-      </Body>
+      {isComplete && !accounts.length ? (
+        <NoAccountContainer>
+          <Icon type="info" />
+          <Typography bold={true}>
+            <Trans id="DETERMINISTIC_UNABLE_TO_FIND" variables={{ $asset: () => asset.ticker }} />
+          </Typography>
+          <Typography>
+            <Trans id="DETERMINISTIC_ALTERNATIVES_1" />{' '}
+            <NoAccountAction onClick={generateFreshAddress}>
+              <Trans id="DETERMINISTIC_ALTERNATIVES_2" />
+            </NoAccountAction>{' '}
+            <Trans id="DETERMINISTIC_ALTERNATIVES_3" />
+            <br />
+            <Trans id="DETERMINISTIC_ALTERNATIVES_4" />{' '}
+            <NoAccountAction>
+              <Trans id="DETERMINISTIC_ALTERNATIVES_5" />
+            </NoAccountAction>
+            .
+          </Typography>
+          <Button onClick={() => handleUpdate(asset)}>
+            <Trans id="DETERMINISTIC_SCAN_AGAIN" />
+          </Button>
+          <Typography>{translate('DETERMINISTIC_CONTACT_US')}</Typography>
+        </NoAccountContainer>
+      ) : (
+        <Body>
+          {accounts.map((account: DWAccountDisplay, index) => (
+            <Row key={index} onClick={() => onSelect(account)} isSelected={isSelected(account)}>
+              <SelectedContainer isSelected={isSelected(account)}>
+                <Icon type="check" />
+              </SelectedContainer>
+              <LabelContainer>
+                <SIdenticon address={account.address} />
+                <EditableAccountLabel
+                  addressBookEntry={getContactByAddressAndNetworkId(account.address, network.id)}
+                  address={account.address}
+                  networkId={network.id}
+                />
+              </LabelContainer>
+              <AddressContainer>
+                <EthAddress address={account.address} truncate={true} />
+              </AddressContainer>
+              <DPathContainer>
+                <DPathType>{account.pathItem.baseDPath.label.replace(/\(.*?\)/, '')}</DPathType>
+                <DPath>({account.pathItem.path})</DPath>
+              </DPathContainer>
+              <ValueContainer>
+                {account.balance
+                  ? parseFloat(
+                      fromTokenBase(new BN(account.balance.toString()), asset.decimal).toString()
+                    ).toFixed(4)
+                  : '0.0000'}
+              </ValueContainer>
+              <TickerContainer>{asset.ticker}</TickerContainer>
+              <LinkContainer>
+                <LinkOut
+                  link={
+                    network.blockExplorer
+                      ? network.blockExplorer.addressUrl(account.address)
+                      : `https://ethplorer.io/address/${account.address}`
+                  }
+                />
+              </LinkContainer>
+            </Row>
+          ))}
+          {generateFreshAddress && (
+            <GenerateAddressButton onClick={() => generateFreshAddress()} disabled={!isComplete}>
+              <Icon type="add" />
+              <STypography>
+                <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
+              </STypography>
+            </GenerateAddressButton>
+          )}
+        </Body>
+      )}
     </Table>
   );
 };

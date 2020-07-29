@@ -216,6 +216,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
             onUnlock={onUnlock}
             network={network}
             generateFreshAddress={handleFreshAddressGeneration}
+            handleUpdate={updateAsset}
           />
         </TableContainer>
       </MnemonicWrapper>

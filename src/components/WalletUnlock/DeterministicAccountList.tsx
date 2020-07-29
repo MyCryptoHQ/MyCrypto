@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import uniqBy from 'ramda/src/uniqBy';
 import prop from 'ramda/src/prop';
 
 import { Trans } from '@translations';
 import { ExtendedAsset, TAddress, Network } from '@types';
-import { Typography, Button } from '@components';
+import { Button, Typography } from '@components';
 import Icon from '@components/Icon';
-import { BREAK_POINTS, SPACING, COLORS } from '@theme';
+import { BREAK_POINTS, COLORS } from '@theme';
 import { DWAccountDisplay } from '@services';
 
 import DeterministicTable from './DeterministicAccountTable';
@@ -19,7 +19,7 @@ const DeterministicAccountListWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   width: 800px;
-  min-height: 620px;
+  min-height: 640px;
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: calc(100vw - 30px);
   }
@@ -28,25 +28,6 @@ const DeterministicAccountListWrapper = styled.div`
 const TableWrapper = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const GenerateAddressButton = styled.div<{ disabled: boolean }>`
-  ${(p) =>
-    p.disabled &&
-    css`
-      filter: grayscale(1);
-    `}
-  cursor: ${(p) => (p.disabled ? 'not-allowed' : 'pointer')};
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 60px;
-  padding-left: 45px;
-  border-bottom: 1px solid ${COLORS.GREY_ATHENS};
-`;
-
-const STypography = styled(Typography)`
-  margin-left: ${SPACING.SM};
 `;
 
 const StatusBar = styled.div`
@@ -73,6 +54,17 @@ const Loader = styled.div`
 
 const IconWrapper = styled.div`
   margin-right: 20px;
+  display: flex;
+  align-items: center;
+`;
+
+const ScanAgain = styled.span`
+  color: ${COLORS.BLUE_MYC};
+  cursor: pointer;
+  font-weight: bold;
+  &:hover {
+    color: ${COLORS.BLUE_LIGHT_DARKISH};
+  }
 `;
 
 interface DeterministicAccountListProps {
@@ -85,6 +77,7 @@ interface DeterministicAccountListProps {
   network: Network;
   generateFreshAddress?(): void;
   onUnlock(param: any): void;
+  handleUpdate(asset: ExtendedAsset): void;
 }
 
 interface ISelectedAccount {
@@ -93,7 +86,15 @@ interface ISelectedAccount {
 }
 
 export default function DeterministicAccountList(props: DeterministicAccountListProps) {
-  const { finishedAccounts, asset, isComplete, onUnlock, network, generateFreshAddress } = props;
+  const {
+    finishedAccounts,
+    asset,
+    isComplete,
+    onUnlock,
+    network,
+    generateFreshAddress,
+    handleUpdate
+  } = props;
 
   const [selectedAccounts, setSelectedAccounts] = useState([] as ISelectedAccount[]);
 
@@ -137,38 +138,51 @@ export default function DeterministicAccountList(props: DeterministicAccountList
     <DeterministicAccountListWrapper>
       <TableWrapper>
         <DeterministicTable
+          isComplete={isComplete}
           accounts={accountsToUse}
           selectedAccounts={selectedAccounts}
+          generateFreshAddress={generateFreshAddress}
           network={network}
           asset={asset}
           onSelect={handleSelection}
+          handleUpdate={handleUpdate}
         />
-        {generateFreshAddress && (
-          <GenerateAddressButton onClick={() => generateFreshAddress()} disabled={!isComplete}>
-            <Icon type="add" />
-            <STypography>
-              <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
-            </STypography>
-          </GenerateAddressButton>
-        )}
       </TableWrapper>
       <StatusBar>
         {isComplete ? (
-          <StatusWrapper>
-            <IconWrapper>
-              <Icon type="confirm" />
-            </IconWrapper>
-            <Trans
-              id="DETERMINISTIC_SCANNING_STATUS_DONE"
-              variables={{ $asset: () => asset.ticker }}
-            />
-          </StatusWrapper>
+          accountsToUse.length ? (
+            <StatusWrapper>
+              <IconWrapper>
+                <Icon type="confirm" />
+              </IconWrapper>
+              <Typography>
+                <Trans
+                  id="DETERMINISTIC_SCANNING_STATUS_DONE"
+                  variables={{ $asset: () => asset.ticker }}
+                />{' '}
+                <ScanAgain onClick={() => handleUpdate(asset)}>
+                  <Trans id="DETERMINISTIC_SCAN_AGAIN" />
+                </ScanAgain>
+                .
+              </Typography>
+            </StatusWrapper>
+          ) : (
+            <StatusWrapper>
+              <IconWrapper>
+                <Icon type="info-small" />
+              </IconWrapper>
+              <Trans
+                id="DETERMINISTIC_SCANNING_STATUS_EMPTY"
+                variables={{ $asset: () => asset.ticker }}
+              />
+            </StatusWrapper>
+          )
         ) : (
           <StatusWrapper>
             <Loader className="loading" />
             <Trans
               id="DETERMINISTIC_SCANNING_STATUS_RUNNING"
-              variables={{ $total: () => finishedAccounts.length, $asset: () => asset.name }}
+              variables={{ $total: () => finishedAccounts.length, $network: () => network.name }}
             />{' '}
           </StatusWrapper>
         )}

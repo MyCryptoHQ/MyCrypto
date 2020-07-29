@@ -122,6 +122,7 @@ const MnemonicDecrypt = ({ formData, onUnlock }: OwnProps) => {
           asset={state.asset}
           finishedAccounts={state.finishedAccounts}
           network={network}
+          handleUpdate={updateAsset}
         />
       </div>
     );

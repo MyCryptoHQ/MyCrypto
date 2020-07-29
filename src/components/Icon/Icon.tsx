@@ -6,6 +6,8 @@ import back from '@assets/icons/actions/back.svg';
 import expand from '@assets/icons/actions/expand.svg';
 import add from '@assets/icons/actions/add.svg';
 import confirm from '@assets/icons/actions/confirm.svg';
+import info from '@assets/icons/actions/info.svg';
+import infoSmall from '@assets/icons/actions/info-small.svg';
 
 import logoMyCrypto from '@assets/icons/brand/logo.svg';
 import logoMyCryptoText from '@assets/icons/brand/logo-text.svg';
@@ -33,6 +35,8 @@ const icons = {
   expand,
   add,
   confirm,
+  info,
+  'info-small': infoSmall,
 
   /* Noun icons */
   website,
