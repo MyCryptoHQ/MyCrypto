@@ -1,38 +1,29 @@
-import React, { useState } from 'react';
-import { fAccount, fAssets } from '@fixtures';
+import React from 'react';
+import { fAccounts, fAssets } from '@fixtures';
 
 import { noOp } from '@utils';
-import { StoreAccount } from '@types';
 import AccountSelector from './AccountSelector';
 import AccountSummary from './AccountSummary';
 
-export default { title: 'AccountSelector' };
+export default { title: 'Selectors/AccountSelector' };
 
 const initialProps: React.ComponentProps<typeof AccountSelector> = {
-  accounts: [fAccount, Object.assign({}, fAccount, { address: 'demo' })],
-  asset: fAssets[0],
+  accounts: fAccounts,
   name: '',
   value: null,
   onSelect: noOp
 };
 
 export const Selector = () => {
-  const [formValues, setFormValues] = useState<StoreAccount>();
-
-  const props = {
-    ...initialProps,
-    onSelect: setFormValues
-  };
-
+  const withAsset = { ...initialProps, asset: fAssets[0] };
   return (
-    <div className="sb-container" style={{ width: '100%', maxWidth: '300px' }}>
+    <div className="sb-container">
       <form role="form">
-        <AccountSelector clearable={true} {...props} />
+        <AccountSelector clearable={true} {...initialProps} />
       </form>
-      <div>
-        Value: {formValues ? formValues.address : 'undefined'}
-        <pre>{JSON.stringify(fAccount, null, 2)}</pre>
-      </div>
+      <form role="form">
+        <AccountSelector clearable={true} {...withAsset} />
+      </form>
     </div>
   );
 };

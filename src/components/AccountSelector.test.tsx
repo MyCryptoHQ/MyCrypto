@@ -3,6 +3,7 @@ import selectEvent from 'react-select-event';
 
 import { simpleRender, screen, fireEvent } from 'test-utils';
 import { fAccounts } from '@fixtures';
+import { sortByLabel } from '@utils';
 import AccountSelector from './AccountSelector';
 
 type Props = React.ComponentProps<typeof AccountSelector>;
@@ -15,82 +16,54 @@ function getComponent(props: Props) {
   );
 }
 
+const defaultProps = {
+  accounts: fAccounts,
+  name: '',
+  value: null,
+  onSelect: jest.fn()
+};
+
 describe('AccountSelector', () => {
-  let defaultProps: Props;
-
-  beforeEach(() => {
-    defaultProps = {
-      accounts: fAccounts,
-      name: '',
-      value: null,
-      onSelect: jest.fn()
-    };
+  test('it displays account info by default', async () => {
+    getComponent(defaultProps);
+    const accounts = sortByLabel(defaultProps.accounts);
+    // Displays the account label
+    expect(screen.getByText(new RegExp(accounts[0].label, 'i'))).toBeDefined();
+    // Displays the account networks baseAsset when no asset is provided
+    expect(screen.getByText(new RegExp(accounts[0].assets[0].ticker, 'i'))).toBeInTheDocument();
   });
 
-  test('it displays the first account by default', async () => {
+  test('it sorts the accounts alphabetically', async () => {
     getComponent(defaultProps);
-
-    expect(screen.getByText(defaultProps.accounts[0].label)).toBeDefined();
-  });
-
-  test('it displays the baseAsset ticker by default', async () => {
-    getComponent(defaultProps);
-
-    expect(screen.getByText(/RopstenETH/i)).toBeInTheDocument();
+    const accounts = sortByLabel(defaultProps.accounts);
+    expect(screen.getByText(new RegExp(accounts[0].label, 'i'))).toBeDefined();
+    // defaultProps is not sorted, so expect the first account to be absent.
+    // use queryBy to assert that element is not present
+    // https://testing-library.com/docs/guide-disappearance#asserting-elements-are-not-present
+    expect(screen.queryByText(new RegExp(defaultProps.accounts[0].label, 'i'))).toBeNull();
   });
 
   test('it displays the list of accounts on click', async () => {
-    const props = Object.assign({}, defaultProps);
-    getComponent(props);
+    getComponent(defaultProps);
+    const accounts = sortByLabel(defaultProps.accounts);
 
-    await selectEvent.openMenu(screen.getByText(defaultProps.accounts[0].label));
+    await selectEvent.openMenu(screen.getByText(accounts[0].label));
 
     defaultProps.accounts
       .map((a) => a.label)
-      .forEach((t) => expect(screen.getByText(t)).toBeInTheDocument());
+      // UI spec, says when an Account is selected it should be displayed in the input AND in the list,
+      // so we use `getAllByText` to reflect the duplication.
+      .forEach((t) => expect(screen.getAllByText(t).length).toBeGreaterThanOrEqual(1));
   });
 
-  // test('it calls the success handler with the correct value', async () => {
-  //   const props = Object.assign({}, defaultProps);
-  //   getComponent(props);
+  test('it calls the success handler with the correct value', async () => {
+    getComponent(defaultProps);
+    const accounts = sortByLabel(defaultProps.accounts);
 
-  //   expect(screen.getByRole('form')).toHaveFormValues({ [defaultProps.label!]: '' });
-  //   await selectEvent.openMenu(screen.getByLabelText(defaultProps.label!));
-  //   const option = screen.getByTestId(`asset-dropdown-option-${fAssets[0].ticker}`);
-  //   fireEvent.pointerDown(option);
-  //   expect(defaultProps.onSelect).toBeCalledWith(fAssets[0]);
-  // });
+    // expect(screen.getByRole('form')).toHaveFormValues({ [accounts[0].label!]: '' });
+    await selectEvent.openMenu(screen.getByText(new RegExp(accounts[0].label, 'i')));
+    const option = screen.getByText(new RegExp(accounts[1].label, 'i'));
+    fireEvent.pointerDown(option);
+    expect(defaultProps.onSelect).toBeCalledWith(accounts[1]);
+  });
 });
-
-// const itemProps: ItemProps = {
-//   symbol: 'ETH' as TSymbol,
-//   name: 'Ether',
-//   uuid: ETHUUID as TUuid,
-//   onClick: jest.fn()
-// };
-
-// function getComponentItem({ symbol, uuid, name, onClick }: ItemProps) {
-//   return simpleRender(
-//     <AssetSelectorItem symbol={symbol} uuid={uuid} name={name} onClick={onClick} />
-//   );
-// }
-
-// describe('AssetSelectorItem', () => {
-//   test('it renders the asset icon', async () => {
-//     const { getByRole } = getComponentItem(itemProps);
-//     expect(getByRole('img').getAttribute('src')).toContain('test-file-stub');
-//   });
-
-//   test('it displays the asset symbol and name', async () => {
-//     const { getByText } = getComponentItem(itemProps);
-//     expect(getByText(itemProps.symbol)).toBeDefined();
-//     expect(getByText(itemProps.name!)).toBeDefined();
-//   });
-
-//   test('it triggers handler on click', async () => {
-//     const { container } = getComponentItem(itemProps);
-//     const component = container.querySelector('div[class^="AssetSelector__SContainer"]');
-//     fireEvent.pointerDown(component!);
-//     expect(itemProps.onClick).toHaveBeenCalledTimes(1);
-//   });
-// });

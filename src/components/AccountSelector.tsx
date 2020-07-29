@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { formatEther } from 'ethers/utils';
 import { OptionProps } from 'react-select';
 import isEmpty from 'lodash/isEmpty';
@@ -7,8 +7,9 @@ import { translateRaw } from '@translations';
 import { AccountSummary, Divider, Selector } from '@components';
 import { SPACING } from '@theme';
 import { StoreAccount, Asset, TUuid, TTicker } from '@types';
+import { sortByLabel } from '@utils';
+import { useEffectOnce, compose, map } from '@vendor';
 import { getAccountBalance, getBaseAsset } from '@services/Store';
-import { useEffectOnce } from '@vendor';
 
 interface Props {
   accounts: StoreAccount[];
@@ -31,7 +32,7 @@ interface TOption {
   };
 }
 
-const sortByLabel = (a: TOption, b: TOption) => a.account.label.localeCompare(b.account.label);
+// const sortByLabel = (a: TOption, b: TOption) => a.account.label.localeCompare(b.account.label);
 
 const getOption = (account: StoreAccount | null, options: TOption[]) => {
   if (!account) return null;
@@ -39,24 +40,31 @@ const getOption = (account: StoreAccount | null, options: TOption[]) => {
 };
 
 function AccountSelector({ accounts, asset, name, value, onSelect }: Props) {
-  const options: TOption[] = accounts
-    .map((a) => ({
-      account: a,
-      asset: {
-        balance: formatEther(asset ? getAccountBalance(a, asset) : getAccountBalance(a)),
-        assetUUID: asset ? asset.uuid : getBaseAsset(a)!.uuid,
-        assetTicker: asset ? asset.ticker : getBaseAsset(a)!.ticker
-      }
-    }))
-    .sort(sortByLabel);
-  const selected = getOption(value, options);
-  const handleFormUpdate = (option: TOption) => onSelect(option.account);
+  const [options, setOptions] = useState<TOption[]>([]);
+  useEffect(() => {
+    const sortedOptions: TOption[] = compose(
+      map((a: StoreAccount) => ({
+        account: a,
+        asset: {
+          balance: formatEther(asset ? getAccountBalance(a, asset) : getAccountBalance(a)),
+          assetUUID: asset ? asset.uuid : getBaseAsset(a)!.uuid,
+          assetSymbol: asset ? asset.ticker : getBaseAsset(a)!.ticker
+        }
+      })),
+      sortByLabel
+    )(accounts);
+
+    setOptions(sortedOptions);
+  }, [accounts, asset]);
 
   useEffectOnce(() => {
     if (!isEmpty(options) && isEmpty(value)) {
-      onSelect(options[0].account);
+      handleFormUpdate(options[0]);
     }
   });
+
+  const selected = getOption(value, options);
+  const handleFormUpdate = (option: TOption) => onSelect(option.account);
 
   return (
     <Selector<TOption>
@@ -84,7 +92,7 @@ function AccountSelector({ accounts, asset, name, value, onSelect }: Props) {
           </>
         );
       }}
-      value={selected}
+      value={selected || options[0]}
       valueComponent={({ value: { account: selectedAccount, asset: selectedAsset } }) => {
         const { address, label } = selectedAccount;
         const { balance, assetTicker, assetUUID } = selectedAsset;
