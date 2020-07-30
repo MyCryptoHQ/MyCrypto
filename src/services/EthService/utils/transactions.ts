@@ -49,6 +49,10 @@ export const appendGasPrice = (network: Network) => async (
 export const appendGasLimit = (network: Network) => async (
   tx: TxBeforeGasLimit
 ): Promise<TxBeforeNonce> => {
+  // Respect gas limit if present
+  if (tx.gasLimit) {
+    return tx as TxBeforeNonce;
+  }
   try {
     const gasLimit = await getGasEstimate(network, tx)
       .then(hexToNumber)

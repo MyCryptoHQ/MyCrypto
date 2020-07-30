@@ -5,7 +5,6 @@ describe('getProtectTransactionFee', () => {
   const rate = 250.5;
   const formValues = {
     amount: '0.01',
-    gasEstimates: { safeLow: 65 },
     gasLimitField: '21000',
     gasPriceField: '20',
     gasPriceSlider: '72',
@@ -14,16 +13,13 @@ describe('getProtectTransactionFee', () => {
   it('should calculate the PTX fee given form values', () => {
     const { fee, amount } = getProtectTxFee(formValues, rate);
     expect(amount?.toString()).toBe('0.002006007982519936');
-    expect(fee?.toString()).toBe('0.001365');
+    expect(fee?.toString()).toBe('0.001512');
   });
 
   it('should use correct gas prices', () => {
-    const { fee, amount } = getProtectTxFee(
-      { ...formValues, gasEstimates: { safeLow: 70 }, advancedTransaction: true },
-      rate
-    );
+    const { fee, amount } = getProtectTxFee({ ...formValues, advancedTransaction: true }, rate);
     expect(amount?.toString()).toBe('0.002006007983611936');
-    expect(fee?.toString()).toBe('0.00147');
+    expect(fee?.toString()).toBe('0.00042');
   });
 
   it('should return null in case of missing values', () => {

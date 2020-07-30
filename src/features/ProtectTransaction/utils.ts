@@ -13,7 +13,7 @@ import {
   GetTxResponse,
   GetBalanceResponse
 } from '@services/ApiService/Etherscan/types';
-import { IFormikFields, TAddress, GasEstimates } from '@types';
+import { IFormikFields, TAddress } from '@types';
 import { bigify, isSameAddress } from '@utils';
 import {
   PROTECTED_TX_FEE_PERCENTAGE,
@@ -28,16 +28,12 @@ export const getProtectTxFee = (
   sendAssetsValues: Pick<
     IFormikFields,
     'amount' | 'gasLimitField' | 'advancedTransaction' | 'gasPriceField' | 'gasPriceSlider'
-  > & { gasEstimates: Pick<GasEstimates, 'safeLow'> },
+  >,
   rate: number | undefined
 ): { amount: BigNumber | null; fee: BigNumber | null } => {
   if (sendAssetsValues.amount === null || !isNumber(rate)) return { amount: null, fee: null };
 
-  const {
-    amount,
-    gasLimitField,
-    gasEstimates: { safeLow }
-  } = sendAssetsValues;
+  const { amount, gasLimitField } = sendAssetsValues;
 
   const gasPrice = sendAssetsValues.advancedTransaction
     ? sendAssetsValues.gasPriceField
@@ -53,14 +49,10 @@ export const getProtectTxFee = (
   }
 
   const mainTransactionWei = parseFloat(
-    fromWei(Wei(totalTxFeeToWei(gasPrice.toString(), gasLimitField)), 'ether')
+    fromWei(Wei(totalTxFeeToWei(gasPrice, gasLimitField)), 'ether')
   );
 
-  const protectedTransactionWeiMin = safeLow;
-  const protectedTransactionWei = gasStringsToMaxGasNumber(
-    protectedTransactionWeiMin.toString(),
-    gasLimitField
-  );
+  const protectedTransactionWei = gasStringsToMaxGasNumber(gasPrice, gasLimitField);
 
   return {
     amount: bigify((fixedHalfDollar + fixedFee - mainTransactionWei).toString()),
