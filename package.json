@@ -253,7 +253,7 @@
     "build:storybook": "build-storybook",
     "tscheck": "tsc",
     "start": " yarn run dev",
-    "serve": "ws -d dist/prod/ --spa index.html",
+    "serve": "ws -d dist/web/ --spa index.html",
     "prod": "npm run build && npm run serve",
     "precommit": "lint-staged",
     "formatAll": "find ./src/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",

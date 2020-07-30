@@ -2,7 +2,7 @@
     "environments": {
         "develop": {
             "gitUrl": "git@github.com:MyCryptoHQ/MyCrypto.git",
-            "distFolder": "dist/prod",
+            "distFolder": "dist/web",
             "buildCommand": "rm -rf node_modules && yarn && yarn build"
         },
         "beta": {
