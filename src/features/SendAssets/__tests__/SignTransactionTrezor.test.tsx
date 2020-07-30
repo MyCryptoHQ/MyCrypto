@@ -57,7 +57,54 @@ describe('SignTransaction', () => {
     act(() => {
       jest.advanceTimersByTime(3001);
     });
-    await waitFor(() => expect(defaultProps.onComplete).toBeCalledWith('txhash'));
+    await waitFor(() =>
+      expect(defaultProps.onComplete).toBeCalledWith(
+        new Buffer([
+          233,
+          50,
+          132,
+          238,
+          107,
+          40,
+          0,
+          130,
+          82,
+          8,
+          148,
+          144,
+          159,
+          116,
+          255,
+          220,
+          34,
+          53,
+          134,
+          208,
+          211,
+          14,
+          120,
+          1,
+          110,
+          112,
+          123,
+          111,
+          90,
+          69,
+          226,
+          134,
+          90,
+          243,
+          16,
+          122,
+          64,
+          0,
+          128,
+          41,
+          2,
+          4
+        ])
+      )
+    );
     expect(defaultProps.onComplete).toHaveBeenCalledTimes(1);
   });
 });
