@@ -11,7 +11,6 @@ export const IS_PROD: boolean = isProd;
 export const IS_STAGING: boolean = isStaging;
 export const IS_ELECTRON: boolean = isElectron;
 
-export const USE_HASH_ROUTER: boolean =
-  process.env.TARGET_ENV === 'electron' || process.env.TARGET_ENV === 'staging';
+export const USE_HASH_ROUTER: boolean = IS_ELECTRON || IS_STAGING;
 
 export const hasWeb3Provider = (): boolean => window && ('web3' in window || 'ethereum' in window);

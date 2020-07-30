@@ -5,12 +5,12 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const common = require('./common');
 const config = require('./config');
-const { IS_ELECTRON } = require('../environment')
+const { IS_ELECTRON, DEVELOPMENT, LOCAL } = require('../environment');
 
 const HTTP_PORT = 3000;
 
 module.exports = merge.smart(common, {
-  mode: 'development',
+  mode: DEVELOPMENT,
 
   devtool: 'cheap-module-eval-source-map',
 
@@ -67,7 +67,7 @@ module.exports = merge.smart(common, {
 
   plugins: [
     new webpack.EnvironmentPlugin({
-      'TARGET_ENV': process.env.TARGET_ENV || 'local'
+      'TARGET_ENV': process.env.TARGET_ENV || LOCAL
     }),
 
     new FriendlyErrorsPlugin({

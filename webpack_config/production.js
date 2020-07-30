@@ -6,11 +6,12 @@ const PreloadWebpackPlugin = require('@lowb/preload-webpack-plugin');
 const SriPlugin = require('webpack-subresource-integrity');
 const common = require('./common');
 const config = require('./config');
+const { PRODUCTION, ELECTRON } = require('../environment');
 
-const TargetEnv = process.env.TARGET_ENV || 'prod';
+const TargetEnv = process.env.TARGET_ENV || PRODUCTION;
 
 module.exports = merge.smart(common, {
-  mode: 'production',
+  mode: PRODUCTION,
 
   devtool: 'cheap-module-source-map',
 
@@ -36,7 +37,7 @@ module.exports = merge.smart(common, {
           {
             loader: 'sass-loader',
             options: {
-              prependData: `$is-electron: ${TargetEnv === 'electron'};`
+              prependData: `$is-electron: ${TargetEnv === ELECTRON};`
             }
           }
         ]

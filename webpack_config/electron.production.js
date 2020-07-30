@@ -5,9 +5,10 @@ const DelayPlugin = require('./plugins/delay');
 const electronMain = require('./electron-main.development');
 const electronRender = require('./production');
 const config = require('./config');
+const { PRODUCTION, ELECTRON } = require('../environment');
 
 const main = merge.smart(electronMain, {
-  mode: 'production',
+  mode: PRODUCTION,
   devtool: 'none',
 
   plugins: [new DelayPlugin(500)],
@@ -41,7 +42,7 @@ const render = merge.smart(electronRender, {
     ]),
 
     new webpack.EnvironmentPlugin({
-      'TARGET_ENV': 'electron'
+      'TARGET_ENV': ELECTRON
     })
   ]
 });
