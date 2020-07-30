@@ -3,11 +3,11 @@ const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const config = require('./config');
-const { DEVELOPMENT, ELECTRON } = require('../environment');
+const { ELECTRON } = require('../environment');
 
 module.exports = {
   target: 'electron-main',
-  mode: DEVELOPMENT,
+  mode: 'development',
   devtool: 'cheap-module-source-map',
 
   entry: {

@@ -11,7 +11,7 @@ const { PRODUCTION, ELECTRON } = require('../environment');
 const TargetEnv = process.env.TARGET_ENV || PRODUCTION;
 
 module.exports = merge.smart(common, {
-  mode: PRODUCTION,
+  mode: 'production',
 
   devtool: 'cheap-module-source-map',
 
