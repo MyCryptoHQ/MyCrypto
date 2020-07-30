@@ -37,7 +37,7 @@ jobs:
       - name: Set E2E_BASE_URL
         if: github.ref == 'refs/heads/master'
         run: |
-          E2E_BASE_URL=$( echo https://mycryptobuilds.com/# )
+          E2E_BASE_URL=$( echo https://mycryptobuilds.com/master/# )
           echo $E2E_BASE_URL
           echo "::set-env name=E2E_BASE_URL::$E2E_BASE_URL"
 
