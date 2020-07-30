@@ -4,22 +4,20 @@ import {
   INode,
   TAddress,
   Web3RequestPermissionsResult,
+  IExposedAccountsPermission,
   IWeb3Permission
 } from '@types';
 import {
   isValidSendTransaction,
   isValidSignMessage,
   isValidGetAccounts,
-  isValidGetNetVersion,
-  isValidRequestPermissions
+  isValidGetNetVersion
 } from '@services/EthService';
+import { isValidRequestPermissions } from '@services/EthService/validators';
 
 import { RPCNode } from '../rpc';
 import Web3Client from './client';
 import Web3Requests from './requests';
-import { deriveApprovedAccounts } from '@services/WalletService';
-
-//const METAMASK_PERMISSION_DENIED_ERROR = ;
 
 export class Web3Node extends RPCNode {
   // @ts-ignore
@@ -144,4 +142,12 @@ const requestLegacyConnect = async (ethereum: any) => {
   } catch (e) {
     return;
   }
+};
+
+const deriveApprovedAccounts = (walletPermissions: IWeb3Permission[] | undefined) => {
+  if (!walletPermissions) return;
+  const exposedAccounts = walletPermissions.find(
+    (caveat: any) => caveat.name === 'exposedAccounts'
+  ) as IExposedAccountsPermission | undefined;
+  return exposedAccounts && exposedAccounts.value;
 };
