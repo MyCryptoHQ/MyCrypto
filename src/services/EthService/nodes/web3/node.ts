@@ -131,6 +131,7 @@ const requestPermission = async (web3Node: Web3Node) => {
   try {
     return await web3Node.requestPermissions();
   } catch (e) {
+    console.debug('[requestPermission]: ', e);
     return;
   }
 };
@@ -140,6 +141,7 @@ const requestLegacyConnect = async (ethereum: any) => {
     await ethereum.enable();
     return true;
   } catch (e) {
+    console.debug('[requestLegacyConnect]: ', e);
     return;
   }
 };
