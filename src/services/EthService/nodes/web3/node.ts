@@ -1,16 +1,23 @@
 import { translateRaw } from '@translations';
-import { IHexStrWeb3Transaction, INode, TAddress, Web3RequestPermissionsResult } from '@types';
+import {
+  IHexStrWeb3Transaction,
+  INode,
+  TAddress,
+  Web3RequestPermissionsResult,
+  IWeb3Permission
+} from '@types';
 import {
   isValidSendTransaction,
   isValidSignMessage,
   isValidGetAccounts,
-  isValidGetNetVersion
+  isValidGetNetVersion,
+  isValidRequestPermissions
 } from '@services/EthService';
-import { isValidRequestPermissions } from '@services/EthService/validators';
 
 import { RPCNode } from '../rpc';
 import Web3Client from './client';
 import Web3Requests from './requests';
+import { deriveApprovedAccounts } from '@services/WalletService';
 
 //const METAMASK_PERMISSION_DENIED_ERROR = ;
 
@@ -46,11 +53,12 @@ export class Web3Node extends RPCNode {
       .then(({ result }) => result);
   }
 
-  public getAccounts(): Promise<TAddress[]> {
+  public getAccounts(): Promise<TAddress[] | undefined> {
     return this.client
       .call(this.requests.getAccounts())
       .then(isValidGetAccounts)
-      .then(({ result }) => result);
+      .then(({ result }) => result && result.length > 0 && result)
+      .catch(undefined);
   }
 
   public requestPermissions(): Promise<Web3RequestPermissionsResult[]> {
@@ -60,11 +68,12 @@ export class Web3Node extends RPCNode {
       .then(({ result }) => result);
   }
 
-  public getAccountPermissions(): Promise<Web3RequestPermissionsResult[]> {
+  public getApprovedAccounts(): Promise<TAddress[] | undefined> {
     return this.client
       .callWeb3(this.requests.getPermissions())
       .then(isValidRequestPermissions)
-      .then(({ result }) => result);
+      .then(({ result }) => result && result[0] && result[0].caveats)
+      .then((permissions: IWeb3Permission[] | undefined) => deriveApprovedAccounts(permissions));
   }
 }
 
@@ -76,7 +85,7 @@ export async function getChainIdAndLib() {
   const lib = new Web3Node();
   const chainId = await lib.getNetVersion();
   const accounts = await lib.getAccounts();
-  if (!accounts.length) {
+  if (!accounts || !accounts.length) {
     throw new Error('No accounts found in MetaMask / Web3.');
   }
 

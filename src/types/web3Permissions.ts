@@ -11,7 +11,7 @@ export interface Web3RequestPermissionsResult {
   parentCapability: 'eth_accounts';
   id: string;
   date: number;
-  caveats: IWeb3Permissions[];
+  caveats: IWeb3Permission[];
 }
 
 export interface Web3RequestPermissionsResponse {
@@ -20,7 +20,7 @@ export interface Web3RequestPermissionsResponse {
   result: Web3RequestPermissionsResult[];
 }
 
-export type IWeb3Permissions = IPrimaryAccountPermission | IExposedAccountsPermission;
+export type IWeb3Permission = IPrimaryAccountPermission | IExposedAccountsPermission;
 
 export interface IPrimaryAccountPermission {
   type: 'limitResponseLength';

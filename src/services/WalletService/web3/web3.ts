@@ -1,5 +1,5 @@
 import { isWeb3Node, setupWeb3Node, Web3Node } from '@services/EthService';
-import { Network, IExposedAccountsPermission } from '@types';
+import { Network } from '@types';
 import { getNetworkByChainId } from '@services/Store';
 import { Web3Wallet } from '../non-deterministic';
 
@@ -21,7 +21,7 @@ export const unlockWeb3 = (onSuccess: (data: any) => void) => async (networks: N
     return accounts.map((address) => new Web3Wallet(address, network.id));
   }
 
-  const legacyAccounts = await getLegacyAccount(nodeLib);
+  const legacyAccounts = await getLegacyAccounts(nodeLib);
   if (legacyAccounts) {
     onSuccess(network);
     return legacyAccounts.map((address) => new Web3Wallet(address, network.id));
@@ -29,28 +29,6 @@ export const unlockWeb3 = (onSuccess: (data: any) => void) => async (networks: N
   throw new Error('Could not get accounts');
 };
 
-const getAccounts = async (nodeLib: Web3Node) => {
-  try {
-    const walletPermissions = await nodeLib.getAccountPermissions();
-    const caveats = walletPermissions && walletPermissions[0] && walletPermissions[0].caveats;
-    if (!caveats) return;
-    const exposedAccounts = caveats.find(
-      (caveat: any) => caveat.name === 'exposedAccounts'
-    ) as IExposedAccountsPermission;
-    const accounts: string[] = exposedAccounts.value;
-    if (!accounts || accounts.length === 0) return;
-    return accounts;
-  } catch (e) {
-    return;
-  }
-};
+const getAccounts = async (nodeLib: Web3Node) => await nodeLib.getApprovedAccounts();
 
-const getLegacyAccount = async (nodeLib: Web3Node) => {
-  try {
-    const accounts = await nodeLib.getAccounts();
-    if (!accounts || accounts.length === 0) return;
-    return accounts;
-  } catch (e) {
-    return;
-  }
-};
+const getLegacyAccounts = async (nodeLib: Web3Node) => await nodeLib.getAccounts();

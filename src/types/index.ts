@@ -107,7 +107,7 @@ export { Balance, BalanceAccount, BalanceDetailsTableProps } from './balanceDisp
 export {
   Web3RequestPermissionsResult,
   Web3RequestPermissionsResponse,
-  IWeb3Permissions,
+  IWeb3Permission,
   IPrimaryAccountPermission,
   IExposedAccountsPermission
 } from './web3Permissions';
