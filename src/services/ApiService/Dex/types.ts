@@ -1,4 +1,4 @@
-import { TAddress, TSymbol, ITxObject } from '@types';
+import { TAddress, TTicker, ITxObject } from '@types';
 
 interface DexMetadata {
   input: {
@@ -14,8 +14,8 @@ interface DexMetadata {
     price: string;
   };
   query: {
-    from: TSymbol;
-    to: TSymbol;
+    from: TTicker;
+    to: TTicker;
     fromAmount: string;
     dex: string;
     proxy: TAddress;

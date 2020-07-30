@@ -55,8 +55,8 @@ export default function ConfirmSwap({
   return (
     <div>
       <SwapFromToDiagram
-        fromSymbol={fromAsset.symbol}
-        toSymbol={toAsset.symbol}
+        fromSymbol={fromAsset.ticker}
+        toSymbol={toAsset.ticker}
         fromUUID={fromAsset.uuid}
         toUUID={toAsset.uuid}
         fromAmount={fromAmount.toString(10)}
@@ -76,13 +76,13 @@ export default function ConfirmSwap({
       <ConversionRateBox>
         <ConversionLabel bold={true} value={translate('SWAP_RATE')} fontSize="0.65em" />
         <div>
-          <Currency bold={true} fontSize="1em" amount="1" symbol={fromAsset.symbol} decimals={6} />{' '}
+          <Currency bold={true} fontSize="1em" amount="1" ticker={fromAsset.ticker} decimals={6} />{' '}
           ≈{' '}
           <Currency
             bold={true}
             fontSize="1em"
             amount={exchangeRate.toString(10)}
-            symbol={toAsset.symbol}
+            ticker={toAsset.ticker}
             decimals={8}
           />
         </div>

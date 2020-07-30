@@ -1,9 +1,9 @@
-import { Asset, ExtendedAsset, Network, StoreAsset, TAddress } from '@types';
+import { Asset, ExtendedAsset, Network, StoreAsset, TAddress, TTicker } from '@types';
 import { generateAssetUUID, isSameAddress } from '@utils';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 
-export const getAssetByTicker = (assets: Asset[]) => (symbol: string): Asset | undefined => {
-  return assets.find((asset) => asset.ticker.toLowerCase() === symbol.toLowerCase());
+export const getAssetByTicker = (assets: Asset[]) => (ticker: TTicker): Asset | undefined => {
+  return assets.find((asset) => asset.ticker.toLowerCase() === ticker.toLowerCase());
 };
 
 export const getNewDefaultAssetTemplateByNetwork = (assets: Asset[]) => (
@@ -16,7 +16,7 @@ export const getNewDefaultAssetTemplateByNetwork = (assets: Asset[]) => (
       name: network.name,
       networkId: network.id,
       type: 'base',
-      ticker: network.id,
+      ticker: assets.find((a) => a.uuid === network.baseAsset)!.ticker, // @todo: determine if baseAsset is really guaranteed to exist?
       decimal: DEFAULT_ASSET_DECIMAL
     };
   } else {

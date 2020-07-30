@@ -1118,7 +1118,7 @@
           "label": "MetaMask Account 1",
           "balance": "2.977151268",
           "assetUUID": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
-          "assetSymbol": "RopstenETH",
+          "assetTicker": "RopstenETH",
           "network": {
             "id": "Ropsten",
             "name": "Ropsten",
@@ -1828,7 +1828,7 @@
     "label": "MetaMask Account 1",
     "balance": "26.462446176135125283",
     "assetUUID": "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1",
-    "assetSymbol": "RopDAI",
+    "assetTicker": "RopDAI",
     "network": {
       "id": "Ropsten",
       "name": "Ropsten",

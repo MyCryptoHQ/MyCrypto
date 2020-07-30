@@ -1,4 +1,4 @@
-import { TAB } from 'components/Header/components/constants';
+import { TAddress, TTicker } from '@types';
 
 type StaticNetworkIds =
   | 'ETH'
@@ -48,8 +48,8 @@ export interface BlockExplorerConfig {
 }
 
 interface Token {
-  address: string;
-  symbol: string;
+  address: TAddress;
+  symbol: TTicker;
   decimal: number;
   error?: string | null;
 }

@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 
 import translate, { translateRaw } from '@translations';
 import { SPACING } from '@theme';
-import { IAccount, Network, StoreAccount, Asset, TSymbol, TUuid } from '@types';
+import { IAccount, Network, StoreAccount, Asset, TUuid } from '@types';
 import { AccountDropdown, InlineMessage, AmountInput, Button } from '@components';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
@@ -117,7 +117,7 @@ export const MembershipFormUI = ({
           const { amount, asset, account: selectedAccount } = values;
           const convertedAsset = {
             name: asset.name,
-            symbol: asset.ticker as TSymbol,
+            ticker: asset.ticker,
             uuid: asset.uuid
           };
           const filteredAccounts = getAccountsWithAssetBalance(

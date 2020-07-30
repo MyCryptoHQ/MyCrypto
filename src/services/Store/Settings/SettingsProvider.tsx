@@ -1,6 +1,6 @@
 import React, { useContext, createContext } from 'react';
 
-import { ISettings, IRates, LSKeys, TUuid } from '@types';
+import { ISettings, IRates, LSKeys, TUuid, TFiatTicker } from '@types';
 import { DataContext } from '../DataManager';
 
 export interface ISettingsContext {
@@ -17,7 +17,7 @@ export interface ISettingsContext {
   importStorage(importedCache: string): boolean;
   updateSettingsRates(rates: IRates): void;
   updateLanguageSelection(language: string): void;
-  updateFiatCurrency(fiatTicker: string): void;
+  updateFiatCurrency(fiatTicker: TFiatTicker): void;
 }
 
 const isValidImport = (importedCache: string, localStorage: string) => {

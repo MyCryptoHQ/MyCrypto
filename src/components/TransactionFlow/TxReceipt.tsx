@@ -272,8 +272,8 @@ export const TxReceiptUI = ({
       {txType === ITxType.SWAP && swapDisplay && (
         <div className="TransactionReceipt-row">
           <SwapFromToDiagram
-            fromSymbol={swapDisplay.fromAsset.symbol}
-            toSymbol={swapDisplay.toAsset.symbol}
+            fromSymbol={swapDisplay.fromAsset.ticker}
+            toSymbol={swapDisplay.toAsset.ticker}
             fromAmount={swapDisplay.fromAmount.toString()}
             toAmount={swapDisplay.toAmount.toString()}
             fromUUID={swapDisplay.fromAsset.uuid}
@@ -346,6 +346,7 @@ export const TxReceiptUI = ({
               assetValue={`${parseFloat(assetAmount()).toFixed(6)} ${assetTicker()}`}
               fiat={{
                 symbol: getFiat(settings).symbol,
+                ticker: getFiat(settings).ticker,
                 amount: convertToFiat(parseFloat(assetAmount()), assetRate()).toFixed(2)
               }}
             />

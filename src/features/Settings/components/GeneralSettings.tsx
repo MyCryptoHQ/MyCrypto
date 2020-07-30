@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { COLORS, SPACING, BREAK_POINTS, FONT_SIZE } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ANALYTICS_CATEGORIES } from '@services';
-import { ISettings } from '@types';
+import { ISettings, TFiatTicker } from '@types';
 import { DashboardPanel, Tooltip } from '@components';
 import { ROUTE_PATHS, Fiats } from '@config';
 import { useAnalytics } from '@utils';
@@ -110,7 +110,10 @@ const GeneralSettings: FC<SettingsProps> = ({ globalSettings, updateGlobalSettin
   const changeCurrencySelection = useCallback(
     (event: React.FormEvent<HTMLSelectElement>) => {
       const target = event.target as HTMLSelectElement;
-      updateGlobalSettings({ ...globalSettings, fiatCurrency: target.value });
+      updateGlobalSettings({
+        ...globalSettings,
+        fiatCurrency: target.value as TFiatTicker
+      });
     },
     [globalSettings, updateGlobalSettings]
   );

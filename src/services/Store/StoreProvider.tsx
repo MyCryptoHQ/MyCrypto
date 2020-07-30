@@ -112,7 +112,7 @@ interface State {
     accountType: WalletId | undefined,
     dPath: string
   ): IRawAccount | undefined;
-  getAssetByTicker(symbol: string): Asset | undefined;
+  getAssetByTicker(ticker: TTicker): Asset | undefined;
   getAccount(a: IRawAccount): StoreAccount | undefined;
   getDeFiAssetReserveAssets(
     asset: StoreAsset
@@ -370,7 +370,7 @@ export const StoreProvider: React.FC = ({ children }) => {
         .reduce((sum, asset) => (sum += convertToFiatFromAsset(asset, getAssetRate(asset))), 0),
 
     assetTickers: (targetAssets = state.assets()) => [
-      ...new Set(targetAssets.map((a) => a.ticker as TTicker))
+      ...new Set(targetAssets.map((a) => a.ticker))
     ],
     assetUUIDs: (targetAssets = state.assets()) => {
       return [...new Set(targetAssets.map((a: StoreAsset) => a.uuid))];

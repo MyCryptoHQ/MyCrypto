@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ISwapAsset, TSymbol, TUuid } from '@types';
+import { ISwapAsset, TTicker, TUuid } from '@types';
 import { bigify, DAIUUID, ETHUUID } from '@utils';
 import ConfirmSwapMultiTx from './ConfirmSwapMultiTx';
 import { LAST_CHANGED_AMOUNT } from '../types';
@@ -9,10 +9,10 @@ export default { title: 'ConfirmSwapMultiTx' };
 
 const DAI: ISwapAsset = {
   name: 'DAI Stablecoin v2.0',
-  symbol: 'DAI' as TSymbol,
+  ticker: 'DAI' as TTicker,
   uuid: DAIUUID as TUuid
 };
-const ETH: ISwapAsset = { name: 'Ethereum', symbol: 'ETH' as TSymbol, uuid: ETHUUID as TUuid };
+const ETH: ISwapAsset = { name: 'Ethereum', ticker: 'ETH' as TTicker, uuid: ETHUUID as TUuid };
 const daiAmount = bigify('100');
 const ethAmount = bigify('0.5');
 const assetPair = {

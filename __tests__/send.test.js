@@ -74,7 +74,7 @@ test('Should be able to send ETH on Ropsten', async (t) => {
   await t.expect(getAllByText(FIXTURE_SEND_CONTACT)).ok();
 
   // Send TX
-  await t.click(getByText(getTransValueByKey('CONFIRM_AND_SEND')));
+  await t.click(getByText(new RegExp(getTransValueByKey('CONFIRM_AND_SEND'), 'i')));
 
   // Expect to reach Tx Receipt
   await t.expect(getByText(getTransValueByKey('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD'))).ok();

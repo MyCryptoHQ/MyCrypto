@@ -6,7 +6,7 @@ import { SCHEMA_BASE, NETWORKS_CONFIG } from './data';
 
 const DAI = {
   address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
-  symbol: 'DAI',
+  ticker: 'DAI',
   decimal: 18,
   name: 'Dai Stablecoin v2.0',
   uuid: 'e1f698bf-cb85-5405-b563-14774af14bf1'

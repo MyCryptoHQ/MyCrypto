@@ -1,8 +1,9 @@
 import { IRates } from './rates';
 import { TUuid } from './uuid';
+import { TFiatTicker } from './asset';
 
 export interface ISettings {
-  fiatCurrency: string;
+  fiatCurrency: TFiatTicker;
   darkMode: boolean;
   dashboardAccounts: TUuid[];
   excludedAssets: TUuid[];

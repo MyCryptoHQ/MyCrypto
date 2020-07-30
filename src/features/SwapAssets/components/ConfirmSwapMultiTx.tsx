@@ -31,7 +31,7 @@ export default function ConfirmSwapMultiTx({
   const approveTx = {
     title: translateRaw('APPROVE_SWAP'),
     icon: step1SVG,
-    content: translateRaw('SWAP_STEP1_TEXT', { $token: fromAsset.symbol }),
+    content: translateRaw('SWAP_STEP1_TEXT', { $token: fromAsset.ticker }),
     buttonText: `${translateRaw('APPROVE_SWAP')}`,
     loading: status[0] === ITxStatus.BROADCASTED,
     onClick
@@ -52,8 +52,8 @@ export default function ConfirmSwapMultiTx({
         {translateRaw('SWAP_INTRO')}
       </Typography>
       <SwapFromToDiagram
-        fromSymbol={fromAsset.symbol}
-        toSymbol={toAsset.symbol}
+        fromSymbol={fromAsset.ticker}
+        toSymbol={toAsset.ticker}
         fromUUID={fromAsset.uuid}
         toUUID={toAsset.uuid}
         fromAmount={fromAmount.toString()}

@@ -1,4 +1,4 @@
-export { fAssets } from './assets';
+export { fAssets, fStoreAssets } from './assets';
 export { fAccount } from './account';
 export { fNetwork } from './network';
 export {

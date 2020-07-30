@@ -1,7 +1,7 @@
-import { TUuid, ISettings } from '@types';
+import { TUuid, ISettings, TFiatTicker } from '@types';
 
 export const fSettings: ISettings = {
-  fiatCurrency: 'USD',
+  fiatCurrency: 'USD' as TFiatTicker,
   darkMode: false,
   dashboardAccounts: ['4ffb0d4a-adf3-1990-5eb9-fe78e613f70b' as TUuid],
   inactivityTimer: 1800000,

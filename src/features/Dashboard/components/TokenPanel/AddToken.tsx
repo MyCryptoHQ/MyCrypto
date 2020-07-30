@@ -6,7 +6,7 @@ import { generateAssetUUID } from '@utils';
 import { InputField, NetworkSelectDropdown, DashboardPanel } from '@components';
 import { translateRaw } from '@translations';
 import { AssetContext, NetworkContext } from '@services/Store';
-import { ExtendedAsset, NetworkId } from '@types';
+import { ExtendedAsset, NetworkId, TTicker } from '@types';
 import { DEFAULT_NETWORK, DEFAULT_ASSET_DECIMAL } from '@config';
 import { isValidAddress } from '@services';
 import Icon from '@components/Icon';
@@ -39,7 +39,7 @@ interface Props {
 }
 
 export function AddToken(props: Props) {
-  const [symbol, setSymbol] = useState('');
+  const [ticker, setTicker] = useState('');
   const [address, setAddress] = useState('');
   const [decimals, setDecimals] = useState('');
   const [symbolError, setSymbolError] = useState('');
@@ -61,7 +61,7 @@ export function AddToken(props: Props) {
 
     const network = getNetworkById(networkId);
 
-    if (symbol.length === 0) {
+    if (ticker.length === 0) {
       setSymbolError(translateRaw('ADD_TOKEN_NO_SYMBOL'));
       isValid = false;
     }
@@ -84,9 +84,9 @@ export function AddToken(props: Props) {
 
     const uuid = generateAssetUUID(networkId, address);
     const newAsset: ExtendedAsset = {
-      name: symbol,
+      name: ticker,
       networkId,
-      ticker: symbol,
+      ticker: ticker as TTicker,
       type: 'erc20',
       contractAddress: address,
       decimal: parseInt(decimals, 10),
@@ -125,8 +125,8 @@ export function AddToken(props: Props) {
       <InputField
         label={translateRaw('SYMBOL')}
         placeholder={'ETH'}
-        onChange={(e) => setSymbol(e.target.value)}
-        value={symbol}
+        onChange={(e) => setTicker(e.target.value)}
+        value={ticker}
         inputError={symbolError}
       />
       <InputField

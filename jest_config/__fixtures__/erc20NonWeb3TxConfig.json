@@ -680,7 +680,7 @@
     "label": "Ledger Nano S Account 1",
     "balance": "0.0091292196",
     "assetUUID": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
-    "assetSymbol": "RopstenETH",
+    "assetTicker": "RopstenETH",
     "network": {
       "id": "Ropsten",
       "name": "Ropsten",

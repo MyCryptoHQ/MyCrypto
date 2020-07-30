@@ -151,7 +151,7 @@ export default function SwapAssets(props: Props) {
   // show only unused assets and assets owned by the user
   const filteredAssets = getUnselectedAssets(assets, fromAsset, toAsset);
   const ownedAssets = filteredAssets.filter((a) =>
-    userAssets.find((userAsset) => a.symbol === userAsset.ticker)
+    userAssets.find((userAsset) => a.ticker === userAsset.ticker)
   );
 
   // SEND AMOUNT CHANGED
@@ -263,8 +263,8 @@ export default function SwapAssets(props: Props) {
             <LabelText>
               {translateRaw('SWAP_RATE_TEXT', {
                 $displayString: makeDisplayString(exchangeRate.toString()),
-                $toAssetSymbol: toAsset.symbol,
-                $fromAssetSymbol: fromAsset.symbol
+                $toAssetSymbol: toAsset.ticker,
+                $fromAssetSymbol: fromAsset.ticker
               })}
             </LabelText>
           </DisplayDataContainer>
@@ -293,7 +293,7 @@ export default function SwapAssets(props: Props) {
           onSelect={(option: StoreAccount) => {
             handleAccountSelected(option);
           }}
-          asset={fromAsset ? userAssets.find((x) => x.ticker === fromAsset.symbol) : undefined}
+          asset={fromAsset ? userAssets.find((x) => x.ticker === fromAsset.ticker) : undefined}
         />
         {!filteredAccounts.length && fromAsset && (
           <InlineMessage>{translate('ACCOUNT_SELECTION_NO_FUNDS')}</InlineMessage>
