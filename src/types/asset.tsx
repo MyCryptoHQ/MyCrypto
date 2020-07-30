@@ -10,8 +10,8 @@ export type TAssetType = 'base' | 'erc20' | 'fiat';
 export type ISwapAsset = Pick<Asset, 'name' | 'ticker' | 'uuid'>;
 
 export interface Fiat {
-  ticker: TFiatTicker;
   name: string;
+  ticker: TFiatTicker;
   symbol: TCurrencySymbol;
   prefix?: boolean;
 }

@@ -344,6 +344,7 @@ export const ConfirmTransactionUI = ({
                 assetValue={`${ptxFee.amount!.toFixed(6)} ${asset.ticker}`}
                 fiat={{
                   symbol: getFiat(settings).symbol,
+                  ticker: getFiat(settings).ticker,
                   amount: convertToFiat(ptxFee.amount!.toNumber(), assetRate).toFixed(2)
                 }}
               />
@@ -360,6 +361,7 @@ export const ConfirmTransactionUI = ({
                 assetValue={`${ptxFee.fee!.toFixed(6)} ${asset.ticker}`}
                 fiat={{
                   symbol: getFiat(settings).symbol,
+                  ticker: getFiat(settings).ticker,
                   amount: convertToFiat(ptxFee.fee!.toNumber(), assetRate).toFixed(2)
                 }}
               />
