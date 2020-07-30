@@ -41,7 +41,6 @@ const render = merge.smart(electronRender, {
     ]),
 
     new webpack.EnvironmentPlugin({
-      'NODE_ENV': 'production',
       'TARGET_ENV': 'electron'
     })
   ]

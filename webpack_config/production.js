@@ -7,7 +7,7 @@ const SriPlugin = require('webpack-subresource-integrity');
 const common = require('./common');
 const config = require('./config');
 
-const TargetEnv = process.env.TARGET_ENV || 'default';
+const TargetEnv = process.env.TARGET_ENV || 'prod';
 
 module.exports = merge.smart(common, {
   mode: 'production',

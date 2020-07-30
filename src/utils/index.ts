@@ -1,8 +1,14 @@
 export * from './error';
 export { notUndefined, isTxSigned, isTxHash } from './typeGuards';
 export * from './validators';
-export { IS_ELECTRON, USE_HASH_ROUTER } from './platform';
-export { hasWeb3Provider, IS_DEV, IS_STAGING, IS_PROD } from './environment';
+export {
+  hasWeb3Provider,
+  IS_DEV,
+  IS_STAGING,
+  IS_PROD,
+  USE_HASH_ROUTER,
+  IS_ELECTRON
+} from './environment';
 export { getFeaturedOS } from './getFeaturedOS';
 export {
   generateUUID,
