@@ -1,7 +1,7 @@
 import { BrowserWindow, Menu, shell } from 'electron';
 import { URL } from 'url';
 
-import { IS_DEV } from '@utils';
+import { IS_DEV } from '../../environment';
 
 import MENU from './menu';
 import popupContextMenu from './contextMenu';
