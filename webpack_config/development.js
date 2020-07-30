@@ -5,7 +5,7 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const common = require('./common');
 const config = require('./config');
-const { IS_ELECTRON } = require('.')
+const { IS_ELECTRON } = require('../environment')
 
 const HTTP_PORT = 3000;
 
