@@ -40,8 +40,7 @@ function Currency({
     return new Intl.NumberFormat(navigator.language, {
       minimumFractionDigits: decimalPlaces,
       maximumFractionDigits: decimalPlaces,
-      style: isFiatTicker(ticker) ? 'currency' : undefined,
-      currency: ticker
+      ...(isFiatTicker(ticker) && { style: 'currency', currency: ticker })
     }).format(parseFloat(value));
   };
 
