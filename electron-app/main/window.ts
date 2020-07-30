@@ -1,11 +1,11 @@
 import { BrowserWindow, Menu, shell } from 'electron';
 import { URL } from 'url';
+
+import { IS_DEV } from '../../environment';
+
 import MENU from './menu';
 import popupContextMenu from './contextMenu';
 import { APP_TITLE } from '../constants';
-
-const IS_DEV: boolean =
-  process.env.NODE_ENV === 'development' || !!process.env.IS_STAGING || !process.env.NODE_ENV;
 
 // Cached reference, preventing recreations
 let window: BrowserWindow | null;

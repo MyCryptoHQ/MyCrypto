@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const config = require('./config');
+const { ELECTRON } = require('../environment');
 
 module.exports = {
   target: 'electron-main',
@@ -114,7 +115,7 @@ module.exports = {
     new CleanWebpackPlugin(),
 
     new webpack.EnvironmentPlugin({
-      'NODE_ENV': 'development'
+      'TARGET_ENV': ELECTRON
     }),
 
     new ForkTsCheckerWebpackPlugin({

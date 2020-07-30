@@ -8,6 +8,7 @@ import { getDPath, getDPaths } from '@services';
 import { EXT_URLS } from '@config';
 import { NetworkContext } from '@services/Store';
 import { WalletFactory, ChainCodeResponse } from '@services/WalletService';
+import { IS_ELECTRON } from '@utils';
 
 import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWallets from './DeterministicWallets';
@@ -53,7 +54,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} network={network} />;
     }
 
-    if (!process.env.BUILD_ELECTRON && window.location.protocol !== 'https:') {
+    if (!IS_ELECTRON && window.location.protocol !== 'https:') {
       return (
         <div className="Panel">
           <div className="alert alert-danger">
