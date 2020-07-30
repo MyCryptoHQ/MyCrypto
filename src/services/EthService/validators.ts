@@ -14,7 +14,7 @@ import {
   CREATION_ADDRESS,
   DEFAULT_ASSET_DECIMAL
 } from '@config';
-import { JsonRPCResponse, InlineMessageType } from '@types';
+import { JsonRPCResponse, InlineMessageType, Web3RequestPermissionsResponse } from '@types';
 import translate from '@translations';
 
 import {
@@ -484,11 +484,17 @@ export const isValidGetAccounts = (response: JsonRPCResponse) =>
 export const isValidGetNetVersion = (response: JsonRPCResponse) =>
   isValidEthCall(response, schema.RpcNode)(API_NAME.Net_Version);
 
-export const isValidRequestPermissions = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Request_Permissions);
+export const isValidRequestPermissions = (response: Web3RequestPermissionsResponse) =>
+  isValidEthCall(
+    (response as unknown) as JsonRPCResponse,
+    schema.RpcNode
+  )(API_NAME.Request_Permissions) as Web3RequestPermissionsResponse;
 
 export const isValidGetPermissions = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Get_Permissions);
+  isValidEthCall(
+    response,
+    schema.RpcNode
+  )(API_NAME.Get_Permissions) as Web3RequestPermissionsResponse;
 
 export const isValidTxHash = (hash: string) =>
   hash.substring(0, 2) === '0x' && hash.length === 66 && isValidHex(hash);

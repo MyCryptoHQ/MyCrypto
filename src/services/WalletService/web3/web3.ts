@@ -1,5 +1,5 @@
 import { isWeb3Node, setupWeb3Node, Web3Node } from '@services/EthService';
-import { Network } from '@types';
+import { Network, IExposedAccountsPermission } from '@types';
 import { getNetworkByChainId } from '@services/Store';
 import { Web3Wallet } from '../non-deterministic';
 
@@ -34,7 +34,9 @@ const getAccounts = async (nodeLib: Web3Node) => {
     const walletPermissions = await nodeLib.getAccountPermissions();
     const caveats = walletPermissions && walletPermissions[0] && walletPermissions[0].caveats;
     if (!caveats) return;
-    const exposedAccounts = caveats.find((caveat: any) => caveat.name === 'exposedAccounts');
+    const exposedAccounts = caveats.find(
+      (caveat: any) => caveat.name === 'exposedAccounts'
+    ) as IExposedAccountsPermission;
     const accounts: string[] = exposedAccounts.value;
     if (!accounts || accounts.length === 0) return;
     return accounts;

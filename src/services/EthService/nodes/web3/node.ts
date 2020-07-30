@@ -1,5 +1,5 @@
 import { translateRaw } from '@translations';
-import { IHexStrWeb3Transaction, INode } from '@types';
+import { IHexStrWeb3Transaction, INode, TAddress, Web3RequestPermissionsResult } from '@types';
 import {
   isValidSendTransaction,
   isValidSignMessage,
@@ -46,23 +46,23 @@ export class Web3Node extends RPCNode {
       .then(({ result }) => result);
   }
 
-  public getAccounts(): Promise<string[]> {
+  public getAccounts(): Promise<TAddress[]> {
     return this.client
       .call(this.requests.getAccounts())
       .then(isValidGetAccounts)
       .then(({ result }) => result);
   }
 
-  public requestPermissions(): Promise<any> {
+  public requestPermissions(): Promise<Web3RequestPermissionsResult[]> {
     return this.client
-      .call(this.requests.requestPermissions())
+      .callWeb3(this.requests.requestPermissions())
       .then(isValidRequestPermissions)
       .then(({ result }) => result);
   }
 
-  public getAccountPermissions(): Promise<any> {
+  public getAccountPermissions(): Promise<Web3RequestPermissionsResult[]> {
     return this.client
-      .call(this.requests.getPermissions())
+      .callWeb3(this.requests.getPermissions())
       .then(isValidRequestPermissions)
       .then(({ result }) => result);
   }
