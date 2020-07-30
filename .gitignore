@@ -67,3 +67,5 @@ package-lock.json
 # Ignore js transpiled scripts
 node-scripts/**/*.js
 /node-scripts/translations/__mocks__/sample.json
+
+.env

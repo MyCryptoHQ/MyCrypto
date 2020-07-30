@@ -66,3 +66,21 @@ yarn build:staging
 # builds production app version used on beta.mycrypto.com
 yarn build
 ```
+
+## Testing
+
+### Unit Tests
+
+```bash
+# runs all unit tests using jest
+yarn test
+```
+
+### End-to-end Tests
+
+```bash
+# runs all e2e tests using testcafe
+yarn test:e2e
+```
+
+Running e2e tests requires a `.env` file to be defined, with the appropriate environment variables set. See `.env.example` for an example.

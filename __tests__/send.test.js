@@ -1,17 +1,17 @@
-import { getByText } from '@testing-library/testcafe';
+import { getByText, getAllByText } from '@testing-library/testcafe';
 import { Selector } from 'testcafe';
 import {
   PAGES,
   FIXTURE_LOCALSTORAGE_WITH_ONE_ACC,
   FIXTURE_MYC_STORAGE_KEY,
-  FIXTURE_SEND_CONTACT,
-  FIXTURE_SEND_ADDRESS,
-  FIXTURE_SEND_AMOUNT
+  ENV,
+  FIXTURE_SEND_AMOUNT,
+  FIXTURE_SEND_CONTACT
 } from './fixtures';
 import SendAssetsPage from './send-assets-page.po';
 import { getTransValueByKey } from './translation-utils';
 import { clearLocalStorage, setLocalStorage } from './localstorage-utils';
-import { setFeatureFlag, clearFeatureFlags } from './featureflag-utils';
+import { setFeatureFlag } from './featureflag-utils';
 
 const sendAssetsPage = new SendAssetsPage();
 
@@ -44,21 +44,40 @@ test('Should be able to continue to next step', async (t) => {
   await sendAssetsPage.navigateToPage();
   await sendAssetsPage.waitPageLoaded();
 
-  await t
-    .click(
-      Selector('[data-testid="selector"]')
-        .find('div')
-        .withText(getTransValueByKey('ACCOUNT_LOOKUP_SELECTION_PLACEHOLDER'))
-    )
-    .click(Selector('div').withText(FIXTURE_SEND_CONTACT))
-    .click(Selector('input[name="amount"]').parent())
-    .typeText(Selector('input[name="amount"]').parent(), FIXTURE_SEND_AMOUNT);
-
-  // Lose focus before trying to click next
-  await t
-    .click(getByText(getTransValueByKey('SEND_ASSETS')))
-    .click(getByText(getTransValueByKey('ACTION_6')));
+  await sendAssetsPage.fillForm();
 
   // Has continued to next step with sign button
-  await t.expect(Selector('*').withText(getTransValueByKey('DEP_SIGNTX'))).ok();
+  await t.expect(getByText(getTransValueByKey('DEP_SIGNTX'))).ok();
+});
+
+test('Should be able to send ETH on Ropsten', async (t) => {
+  await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
+  await setLocalStorage(FIXTURE_MYC_STORAGE_KEY, FIXTURE_LOCALSTORAGE_WITH_ONE_ACC);
+  await sendAssetsPage.navigateToPage();
+  await sendAssetsPage.waitPageLoaded();
+
+  await sendAssetsPage.fillForm();
+
+  // Has continued to next step with sign button
+  const signBtn = getByText(getTransValueByKey('DEP_SIGNTX'));
+  await t.expect(signBtn).ok();
+
+  const inputField = Selector(
+    `input[placeholder="${getTransValueByKey('MNEMONIC_ENTER_PHRASE')}"]`
+  ).parent();
+
+  await t.click(inputField).typeText(inputField, ENV.E2E_MNEMONIC_PASSPHRASE).click(signBtn);
+
+  // Expect to reach confirm tx
+  await t.expect(getByText(getTransValueByKey('CONFIRM_TX_MODAL_TITLE'))).ok();
+  await t.expect(getAllByText(FIXTURE_SEND_AMOUNT, { exact: false })).ok();
+  await t.expect(getAllByText(FIXTURE_SEND_CONTACT)).ok();
+
+  // Send TX
+  await t.click(getByText(getTransValueByKey('CONFIRM_AND_SEND')));
+
+  // Expect to reach Tx Receipt
+  await t.expect(getByText(getTransValueByKey('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD'))).ok();
+  await t.expect(getAllByText(FIXTURE_SEND_AMOUNT, { exact: false })).ok();
+  await t.expect(getAllByText(FIXTURE_SEND_CONTACT)).ok();
 });
