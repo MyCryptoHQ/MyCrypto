@@ -102,5 +102,7 @@ describe('SignTransaction', () => {
         ])
       )
     );
+    expect(mockGetAddress).toHaveBeenCalled();
+    expect(mockSign).toHaveBeenCalled();
   });
 });

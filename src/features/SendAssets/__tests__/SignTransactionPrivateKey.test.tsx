@@ -49,5 +49,6 @@ describe('SignTransaction', () => {
     fireEvent.click(getByText(translateRaw('DEP_SIGNTX')));
 
     await waitFor(() => expect(defaultProps.onComplete).toBeCalledWith('txhash'));
+    expect(mockSign).toHaveBeenCalled();
   });
 });
