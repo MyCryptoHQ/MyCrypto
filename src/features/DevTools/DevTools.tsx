@@ -229,7 +229,6 @@ const DevToolsToggle = () => {
         position: 'fixed',
         top: 0,
         left: 0,
-        zIndex: 1000,
         width: 112
       }}
     >
@@ -241,7 +240,12 @@ const DevToolsToggle = () => {
 const DevToolsManager = () => {
   const { isActive } = useDevTools();
   return (
-    <DevToolsManagerContainer isActive={isActive}>
+    <DevToolsManagerContainer
+      isActive={isActive}
+      style={{
+        zIndex: 1000
+      }}
+    >
       {IS_DEV || IS_STAGING ? (
         <div>
           <DevToolsToggle />
