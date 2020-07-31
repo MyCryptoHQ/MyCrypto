@@ -38,7 +38,7 @@ describe('SignTransaction', () => {
     jest.resetAllMocks();
   });
 
-  test('Can render Private Key signing', async () => {
+  test('Can handle Private Key signing', async () => {
     const { getByText, container } = getComponent();
     const selector = getHeader(WalletId.PRIVATE_KEY);
     expect(getByText(selector)).toBeInTheDocument();
