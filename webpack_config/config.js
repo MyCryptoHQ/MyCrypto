@@ -17,10 +17,10 @@ const paths = {
 module.exports = {
   // Configuration
   port: 3000,
-  title: 'MyCrypto',
+  title: 'MyCrypto - Ethereum Wallet Manager',
   // description < 200 characters
-  description: 'MyCrypto is a free, open-source interface for interacting with the blockchain.',
-  url: 'https://mycrypto.com/',
+  description: 'Securely manage ALL of your crypto accounts with MyCrypto. Swap, send, and buy crypto with your favorite wallets like Ledger, Metamask, and Trezor.',
+  url: 'https://beta.mycrypto.com/',
   type: 'website',
   // img < 5MB
   // image needs to be an absolute URL
