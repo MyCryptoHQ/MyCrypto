@@ -216,7 +216,7 @@ module.exports = {
       inject: true,
       prefix: 'src/assets/meta-[hash]',
       favicons: {
-        appDescription: 'Ethereum web interface',
+        appDescription: 'Ethereum Wallet Manager',
         display: 'standalone',
         theme_color: '#007896'
       }
