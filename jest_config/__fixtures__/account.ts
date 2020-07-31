@@ -1,5 +1,5 @@
 import { bigNumberify } from 'ethers/utils';
-import { StoreAccount, TUuid, TAddress, WalletId } from '@types';
+import { StoreAccount, TUuid, TAddress, WalletId, TTicker } from '@types';
 
 import { fNetwork } from './network';
 
@@ -15,7 +15,7 @@ export const fAccounts: StoreAccount[] = [
         name: 'Ether',
         networkId: 'Ethereum',
         type: 'base',
-        ticker: 'ETH',
+        ticker: 'ETH' as TTicker,
         decimal: 18,
         mappings: {},
         isCustom: false,
@@ -41,7 +41,7 @@ export const fAccounts: StoreAccount[] = [
         name: 'Ropsten',
         networkId: 'Ropsten',
         type: 'base',
-        ticker: 'RopstenETH',
+        ticker: 'RopstenETH' as TTicker,
         decimal: 18,
         mappings: {},
         isCustom: false,
