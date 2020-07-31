@@ -40,7 +40,7 @@ export const getStories = (): IStory[] => [
   {
     name: WalletId.LEDGER_NANO_S_NEW,
     steps: [NetworkSelectPanel, LedgerDecrypt],
-    hideFromWalletList: !IS_DEV
+    hideFromWalletList: !(IS_DEV || IS_STAGING)
   },
   {
     name: WalletId.TREZOR,
@@ -49,7 +49,7 @@ export const getStories = (): IStory[] => [
   {
     name: WalletId.TREZOR_NEW,
     steps: [NetworkSelectPanel, TrezorUnlock],
-    hideFromWalletList: !IS_DEV
+    hideFromWalletList: !(IS_DEV || IS_STAGING)
   },
   {
     name: WalletId.KEYSTORE_FILE,
