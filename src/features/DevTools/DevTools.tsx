@@ -229,7 +229,7 @@ const DevToolsToggle = () => {
         position: 'fixed',
         top: 0,
         left: 0,
-        zIndex: 99,
+        zIndex: 1000,
         width: 112
       }}
     >
