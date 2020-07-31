@@ -43,12 +43,10 @@ const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
       case WalletId.PRIVATE_KEY:
         return [payload];
       case WalletId.WEB3:
-        return [
-          {
-            address: payload.getAddressString(),
-            derivationPath: ''
-          }
-        ];
+        return payload.map((payloadItem: any) => ({
+          address: payloadItem.getAddressString(),
+          derivationPath: ''
+        }));
       case WalletId.WALLETCONNECT:
         return [
           {

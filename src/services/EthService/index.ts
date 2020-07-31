@@ -70,7 +70,8 @@ export {
   isValidAddress,
   isTransactionFeeHigh,
   isChecksumAddress,
-  isBurnAddress
+  isBurnAddress,
+  isValidRequestPermissions
 } from './validators';
 export { ProviderHandler, getDPath, getDPaths } from './network';
 export { getResolvedENSAddress } from './ens';

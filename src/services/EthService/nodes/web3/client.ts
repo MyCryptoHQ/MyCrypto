@@ -1,5 +1,6 @@
 import { RPCClient, JsonRpcResponse, RPCRequest } from '../rpc';
 import { IWeb3Provider } from './types';
+import { Web3RequestPermissionsResponse } from '@types';
 
 export default class Web3Client extends RPCClient {
   private provider: IWeb3Provider;
@@ -19,6 +20,13 @@ export default class Web3Client extends RPCClient {
 
   public call = (request: RPCRequest | any): Promise<JsonRpcResponse> =>
     this.sendAsync(this.decorateRequest(request)) as Promise<JsonRpcResponse>;
+
+  public callWeb3 = (request: RPCRequest | any): Promise<Web3RequestPermissionsResponse> =>
+    (this.sendAsync(this.decorateRequest(request)) as unknown) as Promise<
+      Web3RequestPermissionsResponse
+    >;
+
+  public request = (request: RPCRequest | any): Promise<JsonRpcResponse> => this.request(request);
 
   public batch = (requests: RPCRequest[] | any): Promise<JsonRpcResponse[]> =>
     this.sendAsync(requests.map(this.decorateRequest)) as Promise<JsonRpcResponse[]>;

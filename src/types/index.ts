@@ -104,3 +104,10 @@ export { TxParcel } from '@utils/useTxMulti/types'; // Specific re-export to avo
 export { TURL } from './url';
 export { TBN } from './bigNumber';
 export { Balance, BalanceAccount, BalanceDetailsTableProps } from './balanceDisplays';
+export {
+  Web3RequestPermissionsResult,
+  Web3RequestPermissionsResponse,
+  IWeb3Permission,
+  IPrimaryAccountPermission,
+  IExposedAccountsPermission
+} from './web3Permissions';

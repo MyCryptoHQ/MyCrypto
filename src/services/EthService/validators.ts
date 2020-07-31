@@ -14,7 +14,7 @@ import {
   CREATION_ADDRESS,
   DEFAULT_ASSET_DECIMAL
 } from '@config';
-import { JsonRPCResponse, InlineMessageType } from '@types';
+import { JsonRPCResponse, InlineMessageType, Web3RequestPermissionsResponse } from '@types';
 import translate from '@translations';
 
 import {
@@ -425,13 +425,15 @@ enum API_NAME {
   Get_Accounts = 'Get Accounts',
   Net_Version = 'Net Version',
   Transaction_By_Hash = 'Transaction By Hash',
-  Transaction_Receipt = 'Transaction Receipt'
+  Transaction_Receipt = 'Transaction Receipt',
+  Request_Permissions = 'Request_Permissions',
+  Get_Permissions = 'Get_Permissions'
 }
 
-const isValidEthCall = (response: JsonRPCResponse, schemaType: typeof schema.RpcNode) => (
-  apiName: API_NAME,
-  cb?: (res: JsonRPCResponse) => any
-) => {
+const isValidEthServiceResponse = (
+  response: JsonRPCResponse,
+  schemaType: typeof schema.RpcNode
+) => (apiName: API_NAME, cb?: (res: JsonRPCResponse) => any) => {
   if (!isValidResult(response, schemaType)) {
     if (cb) {
       return cb(response);
@@ -442,45 +444,57 @@ const isValidEthCall = (response: JsonRPCResponse, schemaType: typeof schema.Rpc
 };
 
 export const isValidGetBalance = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Get_Balance);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Get_Balance);
 
 export const isValidEstimateGas = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Estimate_Gas);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Estimate_Gas);
 
 export const isValidCallRequest = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Call_Request);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Call_Request);
 
 export const isValidTokenBalance = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Token_Balance, () => ({
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Token_Balance, () => ({
     result: 'Failed'
   }));
 
 export const isValidTransactionCount = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Transaction_Count);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Transaction_Count);
 
 export const isValidTransactionByHash = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Transaction_By_Hash);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Transaction_By_Hash);
 
 export const isValidTransactionReceipt = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Transaction_Receipt);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Transaction_Receipt);
 
 export const isValidCurrentBlock = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Current_Block);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Current_Block);
 
 export const isValidRawTxApi = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Raw_Tx);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Raw_Tx);
 
 export const isValidSendTransaction = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Send_Transaction);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Send_Transaction);
 
 export const isValidSignMessage = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Sign_Message);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Sign_Message);
 
 export const isValidGetAccounts = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Get_Accounts);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Get_Accounts);
 
 export const isValidGetNetVersion = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Net_Version);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Net_Version);
+
+export const isValidRequestPermissions = (response: Web3RequestPermissionsResponse) =>
+  isValidEthServiceResponse(
+    (response as unknown) as JsonRPCResponse,
+    schema.RpcNode
+  )(API_NAME.Request_Permissions) as Web3RequestPermissionsResponse;
+
+export const isValidGetPermissions = (response: JsonRPCResponse) =>
+  isValidEthServiceResponse(
+    response,
+    schema.RpcNode
+  )(API_NAME.Get_Permissions) as Web3RequestPermissionsResponse;
 
 export const isValidTxHash = (hash: string) =>
   hash.substring(0, 2) === '0x' && hash.length === 66 && isValidHex(hash);
