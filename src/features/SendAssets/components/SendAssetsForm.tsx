@@ -67,7 +67,13 @@ import {
 } from '@config';
 import { RatesContext } from '@services/RatesProvider';
 import TransactionFeeDisplay from '@components/TransactionFlow/displays/TransactionFeeDisplay';
-import { formatSupportEmail, isFormValid as checkFormValid, ETHUUID, isSameAddress } from '@utils';
+import {
+  formatSupportEmail,
+  isFormValid as checkFormValid,
+  ETHUUID,
+  isSameAddress,
+  sortByLabel
+} from '@utils';
 import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
 import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
 import { ProtectTxButton } from '@features/ProtectTransaction/components/ProtectTxButton';
@@ -128,17 +134,23 @@ const initialFormikValues: IFormikFields = {
 // To preserve form state between steps, we prefil the fields with state
 // values when they exits.
 type FieldValue = ValuesType<IFormikFields>;
-export const getInitialFormikValues = (
-  s: ITxConfig,
-  defaultAsset: Asset | undefined,
-  defaultNetwork: Network | undefined
-): IFormikFields => {
+const getInitialFormikValues = ({
+  s,
+  defaultAccount,
+  defaultAsset,
+  defaultNetwork
+}: {
+  s: ITxConfig;
+  defaultAccount: StoreAccount;
+  defaultAsset: Asset | undefined;
+  defaultNetwork: Network | undefined;
+}): IFormikFields => {
   const gasPriceInGwei =
     path(['rawTransaction', 'gasPrice'], s) &&
     bigNumGasPriceToViewableGwei(bigNumberify(s.rawTransaction.gasPrice));
   const state: Partial<IFormikFields> = {
     amount: s.amount,
-    account: s.senderAccount,
+    account: s.senderAccount || defaultAccount,
     network: s.network || defaultNetwork,
     asset: s.asset || defaultAsset,
     nonceField: s.nonce,
@@ -340,7 +352,12 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
   return (
     <div>
       <Formik
-        initialValues={getInitialFormikValues(txConfig, userAccountEthAsset, defaultNetwork)}
+        initialValues={getInitialFormikValues({
+          s: txConfig,
+          defaultAccount: sortByLabel(accounts)[0],
+          defaultAsset: userAccountEthAsset,
+          defaultNetwork
+        })}
         validationSchema={SendAssetsSchema}
         onSubmit={(fields) => {
           onComplete(fields);
@@ -505,9 +522,9 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                         name={field.name}
                         value={field.value}
                         accounts={accountsWithAsset}
-                        onSelect={(option: StoreAccount) => {
-                          form.setFieldValue('account', option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
-                          handleNonceEstimate(option);
+                        onSelect={(account: StoreAccount) => {
+                          form.setFieldValue('account', account); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
+                          handleNonceEstimate(account);
                           handleGasEstimate();
                         }}
                         asset={values.asset}
