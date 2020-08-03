@@ -66,12 +66,12 @@ enum SubmissionType {
 
 export const BuyAssetsForm = () => {
   const history = useHistory();
-  const { accounts } = useContext(StoreContext);
+  const { accounts, defaultAccount } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
   const ethAsset = getAssetByUUID(assets)(ETHUUID) as Asset;
 
   const initialFormikValues: IBuyFormState = {
-    account: {} as StoreAccount,
+    account: defaultAccount,
     asset: ethAsset
   };
 
