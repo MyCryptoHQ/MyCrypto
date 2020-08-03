@@ -29,6 +29,7 @@ interface DeterministicTableProps {
   generateFreshAddress?(): void;
   onSelect(account: DWAccountDisplay): void;
   handleUpdate(asset: ExtendedAsset): void;
+  downloadCSV(): void;
 }
 
 const Table = styled.div`
@@ -199,7 +200,8 @@ const DeterministicTable = ({
   asset,
   onSelect,
   generateFreshAddress,
-  handleUpdate
+  handleUpdate,
+  downloadCSV
 }: DeterministicTableProps) => {
   const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
 
@@ -240,7 +242,7 @@ const DeterministicTable = ({
               <Trans id="DETERMINISTIC_ALTERNATIVES_3" />
               <br />
               <Trans id="DETERMINISTIC_ALTERNATIVES_4" />{' '}
-              <NoAccountAction>
+              <NoAccountAction onClick={downloadCSV}>
                 <Trans id="DETERMINISTIC_ALTERNATIVES_5" />
               </NoAccountAction>
               .

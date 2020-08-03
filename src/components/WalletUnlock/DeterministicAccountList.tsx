@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { unparse } from 'papaparse';
 
 import uniqBy from 'ramda/src/uniqBy';
 import prop from 'ramda/src/prop';
@@ -13,7 +12,7 @@ import { BREAK_POINTS, COLORS } from '@theme';
 import { DWAccountDisplay } from '@services';
 
 import DeterministicTable from './DeterministicAccountTable';
-import { isSameAddress } from '@utils';
+import { isSameAddress, accountsToCSV } from '@utils';
 
 const DeterministicAccountListWrapper = styled.div`
   display: flex;
@@ -135,17 +134,7 @@ export default function DeterministicAccountList(props: DeterministicAccountList
     );
   };
 
-  const downloadCSV = (accounts: DWAccountDisplay[]) => {
-    const csv = unparse(accounts);
-    const type = 'text/csv';
-    const blob = new Blob([csv], { type });
-    const dataURI = `data:${type};charset=utf-8,${csv}`;
-
-    const URL = window.URL || window.webkitURL;
-
-    return typeof URL.createObjectURL === 'undefined' ? dataURI : URL.createObjectURL(blob);
-  };
-
+  const handleDownload = () => window.open(accountsToCSV(finishedAccounts, asset));
   return (
     <DeterministicAccountListWrapper>
       <TableWrapper>
@@ -158,6 +147,7 @@ export default function DeterministicAccountList(props: DeterministicAccountList
           asset={asset}
           onSelect={handleSelection}
           handleUpdate={handleUpdate}
+          downloadCSV={handleDownload}
         />
       </TableWrapper>
       <StatusBar>
@@ -204,10 +194,7 @@ export default function DeterministicAccountList(props: DeterministicAccountList
                       id="DETERMINISTIC_CSV"
                       variables={{ $total: () => finishedAccounts.length }}
                     />{' '}
-                    <SButton onClick={() => window.open(downloadCSV(finishedAccounts))}>
-                      here
-                    </SButton>
-                    .
+                    <SButton onClick={handleDownload}>here</SButton>.
                   </>
                 }
               />
