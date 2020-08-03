@@ -67,13 +67,7 @@ import {
 } from '@config';
 import { RatesContext } from '@services/RatesProvider';
 import TransactionFeeDisplay from '@components/TransactionFlow/displays/TransactionFeeDisplay';
-import {
-  formatSupportEmail,
-  isFormValid as checkFormValid,
-  ETHUUID,
-  isSameAddress,
-  sortByLabel
-} from '@utils';
+import { formatSupportEmail, isFormValid as checkFormValid, ETHUUID, isSameAddress } from '@utils';
 import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
 import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
 import { ProtectTxButton } from '@features/ProtectTransaction/components/ProtectTxButton';
@@ -176,7 +170,14 @@ const QueryWarning: React.FC = () => (
 );
 
 const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
-  const { accounts, userAssets, networks, getAccount, isMyCryptoMember } = useContext(StoreContext);
+  const {
+    accounts,
+    defaultAccount,
+    userAssets,
+    networks,
+    getAccount,
+    isMyCryptoMember
+  } = useContext(StoreContext);
   const { getAssetRate, getRate } = useContext(RatesContext);
   const { settings } = useContext(SettingsContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
@@ -354,7 +355,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
       <Formik
         initialValues={getInitialFormikValues({
           s: txConfig,
-          defaultAccount: sortByLabel(accounts)[0],
+          defaultAccount,
           defaultAsset: userAccountEthAsset,
           defaultNetwork
         })}
