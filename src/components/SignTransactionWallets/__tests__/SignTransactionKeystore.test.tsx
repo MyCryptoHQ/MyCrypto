@@ -20,19 +20,8 @@ const getComponent = () => {
 };
 
 jest.mock('ethers', () => {
-  return {
-    Wallet: {
-      fromEncryptedJson: jest.fn().mockImplementation(() =>
-        Promise.resolve({
-          address: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
-          sign: jest.fn().mockImplementation(() => Promise.resolve('txhash'))
-        })
-      )
-    },
-    utils: {
-      getAddress: jest.fn().mockImplementation(() => '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c')
-    }
-  };
+  const { mockFactory } = require('../__mocks__/keystore');
+  return mockFactory('0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c', 'txhash');
 });
 
 describe('SignTransactionWallets: Keystore', () => {

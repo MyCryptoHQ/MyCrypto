@@ -1,7 +1,7 @@
 import React from 'react';
 import { simpleRender, waitFor, act } from 'test-utils';
 
-import { fTxConfig, fNetwork } from '@fixtures';
+import { fTxConfig } from '@fixtures';
 import { WalletId } from '@types';
 import SignTransaction from '@features/SendAssets/components/SignTransaction';
 
@@ -19,22 +19,12 @@ const getComponent = () => {
   return simpleRender(<SignTransaction {...defaultProps} />);
 };
 
-// Mock getAddress with bogus public key and valid chain code
-const mockGetAddress = jest.fn().mockImplementation(() => ({
-  publicKey: defaultProps.txConfig.senderAccount.address,
-  chainCode: fNetwork.chainId
-}));
-
-// Mock signing result from Ledger device, device only returns v,r,s values - return as a promise to match Ledger API
-const mockSign = jest.fn().mockImplementation(() => Promise.resolve({ v: 10, r: 2, s: 4 }));
-
 // Mock out entire u2f lib
 jest.mock('@ledgerhq/hw-transport-u2f');
 jest.mock('@ledgerhq/hw-app-eth', () => {
-  return jest.fn().mockImplementation(() => ({
-    getAddress: mockGetAddress,
-    signTransaction: mockSign
-  }));
+  // Must be imported here to prevent issues with jest
+  const { mockFactory } = require('../__mocks__/ledger');
+  return mockFactory('', 3, { v: 10, r: 2, s: 4 });
 });
 
 describe('SignTransactionWallets: Ledger', () => {
@@ -102,7 +92,5 @@ describe('SignTransactionWallets: Ledger', () => {
         ])
       )
     );
-    expect(mockGetAddress).toHaveBeenCalled();
-    expect(mockSign).toHaveBeenCalled();
   });
 });

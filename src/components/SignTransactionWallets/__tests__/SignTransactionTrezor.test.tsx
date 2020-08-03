@@ -19,23 +19,11 @@ const getComponent = () => {
   return simpleRender(<SignTransaction {...defaultProps} />);
 };
 
-jest.mock('trezor-connect', () => ({
-  manifest: jest.fn(),
-  // Mock getPublicKey, use bogus publicKey and valid chaincode - return as a promise to match Trezor API
-  getPublicKey: jest.fn().mockImplementation(() =>
-    Promise.resolve({
-      payload: {
-        publicKey: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
-        chainCode: 3
-      },
-      success: true
-    })
-  ),
-  // Mock signing result from Trezor device, device only returns v,r,s values - return as a promise to match Trezor API
-  ethereumSignTransaction: jest
-    .fn()
-    .mockImplementation(() => Promise.resolve({ payload: { v: 41, r: 2, s: 4 }, success: true }))
-}));
+jest.mock('trezor-connect', () => {
+  // Must be imported here to prevent issues with jest
+  const { mockFactory } = require('../__mocks__/trezor');
+  return mockFactory('', 3, { v: 41, r: 2, s: 4 });
+});
 
 describe('SignTransactionWallets: Trezor', () => {
   beforeEach(() => {

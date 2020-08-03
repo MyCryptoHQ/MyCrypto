@@ -20,11 +20,10 @@ const getComponent = () => {
   return simpleRender(<SignTransaction {...defaultProps} />);
 };
 
-const mockSign = jest.fn().mockImplementation(() => Promise.resolve('txhash'));
 jest.mock('ethers', () => {
-  return {
-    Wallet: jest.fn().mockImplementation(() => ({ sign: mockSign }))
-  };
+  // Must be imported here to prevent issues with jest
+  const { mockFactory } = require('../__mocks__/privkey');
+  return mockFactory('txhash');
 });
 
 describe('SignTransactionWallets: PrivateKey', () => {
@@ -43,6 +42,5 @@ describe('SignTransactionWallets: PrivateKey', () => {
     fireEvent.click(getByText(translateRaw('DEP_SIGNTX')));
 
     await waitFor(() => expect(defaultProps.onComplete).toBeCalledWith('txhash'));
-    expect(mockSign).toHaveBeenCalled();
   });
 });
