@@ -69,6 +69,7 @@ import { NetworkContext, getNetworkById } from './Network';
 import { findNextUnusedDefaultLabel, AddressBookContext } from './AddressBook';
 import { MyCryptoApiService, ANALYTICS_CATEGORIES } from '../ApiService';
 import { findMultipleNextUnusedDefaultLabels } from './AddressBook/helpers';
+import { translateRaw } from '@translations';
 
 export interface CoinGeckoManifest {
   [uuid: string]: string;
@@ -434,10 +435,12 @@ export const StoreProvider: React.FC = ({ children }) => {
       newRawAccounts.forEach((rawAccount, idx) => {
         const existingContact = getContactByAddressAndNetworkId(rawAccount.address, networkId);
         if (existingContact) {
-          updateContact(existingContact.uuid, {
-            ...existingContact,
-            label: newLabels[idx]
-          });
+          if (existingContact.label === translateRaw('NO_LABEL')) {
+            updateContact(existingContact.uuid, {
+              ...existingContact,
+              label: newLabels[idx]
+            });
+          }
         } else {
           const newLabel: AddressBook = {
             label: newLabels[idx],

@@ -153,41 +153,6 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   }
 
   if (state.isConnected && state.asset && (state.queuedAccounts || state.finishedAccounts)) {
-    // return (
-    //   <div className="Mnemonic-dpath">
-    //     <Button onClick={() => handleDPathAddition()}>
-    //       {`Test Add Custom Derivation Path: ${testDPathAddition.value} - ${testDPathAddition.label} `}
-    //     </Button>
-    //     <br />
-    //     <Button
-    //       disabled={!state.completed || freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR}
-    //       onClick={() => handleFreshAddressGeneration()}
-    //     >
-    //       {`Test Generate Fresh Address`}
-    //     </Button>
-    //     {freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR && (
-    //       <p>
-    //         {translateRaw('DPATH_GENERATE_FRESH_ADDRESS_GAP_ERROR', {
-    //           $gap: DEFAULT_GAP_TO_SCAN_FOR.toString()
-    //         })}
-    //       </p>
-    //     )}
-    //     <br />
-    //     <AssetDropdown
-    //       selectedAsset={assetToUse}
-    //       assets={filteredAssets}
-    //       onSelect={(option: ExtendedAsset) => {
-    //         handleAssetUpdate(option);
-    //       }}
-    //     />
-    //     <DeterministicAccountList
-    //       isComplete={state.completed}
-    //       asset={state.asset}
-    //       finishedAccounts={state.finishedAccounts}
-    //       onUnlock={onUnlock}
-    //     />
-    //   </div>
-    // );
     return (
       <MnemonicWrapper>
         <Title fontSize="32px" bold={true}>

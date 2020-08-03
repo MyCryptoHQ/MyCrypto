@@ -3440,7 +3440,7 @@
   resolved "https://registry.yarnpkg.com/@types/npmlog/-/npmlog-4.1.2.tgz#d070fe6a6b78755d1092a3dc492d34c3d8f871c4"
   integrity sha512-4QQmOF5KlwfxJ5IGXFIudkeLCdMABz03RcUXu+LCb24zmln8QW6aDjuGl4d4XPVLf2j+FnjelHTP7dvceAFbhA==
 
-"@types/papaparse@^5.0.6":
+"@types/papaparse@5.0.6":
   version "5.0.6"
   resolved "https://registry.yarnpkg.com/@types/papaparse/-/papaparse-5.0.6.tgz#4fee1a17dc24fed839d276c807f875bd653abbb4"
   integrity sha512-fCQnycsOSviVLtxuydQ82IhTAv1lSPIA8zY3sYaRHI00lERsa7QSA616HsQZixqEF2asGXZag3hM13N8bm/jAw==
