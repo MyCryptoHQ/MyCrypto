@@ -1,5 +1,5 @@
 import React from 'react';
-import { simpleRender, waitFor, act } from 'test-utils';
+import { simpleRender, waitFor } from 'test-utils';
 
 import { fTxConfig } from '@fixtures';
 import { WalletId } from '@types';
@@ -39,14 +39,11 @@ describe('SignTransactionWallets: Ledger', () => {
     const { getByText } = getComponent();
     const selector = getHeader(WalletId.LEDGER_NANO_S);
     expect(getByText(selector)).toBeInTheDocument();
-    act(() => {
-      jest.advanceTimersByTime(3001);
-    });
 
     // Expect signed payload to be the following buffer given the v,r,s
     await waitFor(() =>
       expect(defaultProps.onComplete).toBeCalledWith(
-        new Buffer([
+        Buffer.from([
           233,
           50,
           132,
