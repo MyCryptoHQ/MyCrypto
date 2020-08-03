@@ -19,11 +19,16 @@ const getComponent = () => {
   return simpleRender(<SignTransaction {...defaultProps} />);
 };
 
+// Mock getAddress with bogus public key and valid chain code
 const mockGetAddress = jest.fn().mockImplementation(() => ({
   publicKey: defaultProps.txConfig.senderAccount.address,
   chainCode: fNetwork.chainId
 }));
+
+// Mock signing result from Ledger device, device only returns v,r,s values - return as a promise to match Ledger API
 const mockSign = jest.fn().mockImplementation(() => Promise.resolve({ v: 10, r: 2, s: 4 }));
+
+// Mock out entire u2f lib
 jest.mock('@ledgerhq/hw-transport-u2f');
 jest.mock('@ledgerhq/hw-app-eth', () => {
   return jest.fn().mockImplementation(() => ({
@@ -47,6 +52,8 @@ describe('SignTransactionWallets: Ledger', () => {
     act(() => {
       jest.advanceTimersByTime(3001);
     });
+
+    // Expect signed payload to be the following buffer given the v,r,s
     await waitFor(() =>
       expect(defaultProps.onComplete).toBeCalledWith(
         new Buffer([

@@ -21,6 +21,7 @@ const getComponent = () => {
 
 jest.mock('trezor-connect', () => ({
   manifest: jest.fn(),
+  // Mock getPublicKey, use bogus publicKey and valid chaincode - return as a promise to match Trezor API
   getPublicKey: jest.fn().mockImplementation(() =>
     Promise.resolve({
       payload: {
@@ -30,6 +31,7 @@ jest.mock('trezor-connect', () => ({
       success: true
     })
   ),
+  // Mock signing result from Trezor device, device only returns v,r,s values - return as a promise to match Trezor API
   ethereumSignTransaction: jest
     .fn()
     .mockImplementation(() => Promise.resolve({ payload: { v: 41, r: 2, s: 4 }, success: true }))
@@ -50,6 +52,8 @@ describe('SignTransactionWallets: Trezor', () => {
     act(() => {
       jest.advanceTimersByTime(3001);
     });
+
+    // Expect signed payload to be the following buffer given the v,r,s
     await waitFor(() =>
       expect(defaultProps.onComplete).toBeCalledWith(
         new Buffer([
