@@ -19,7 +19,7 @@ function getComponent(props: Props) {
 const defaultProps = {
   accounts: fAccounts,
   name: '',
-  value: null,
+  value: sortByLabel(fAccounts)[0],
   onSelect: jest.fn()
 };
 
