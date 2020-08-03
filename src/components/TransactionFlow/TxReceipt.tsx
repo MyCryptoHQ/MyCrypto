@@ -32,6 +32,7 @@ import {
   getTransactionReceiptFromHash
 } from '@services/EthService';
 import { ROUTE_PATHS } from '@config';
+import { BREAK_POINTS } from '@theme';
 import { SwapDisplayData } from '@features/SwapAssets/types';
 import translate, { translateRaw } from '@translations';
 import { convertToFiat, truncate } from '@utils';
@@ -65,6 +66,13 @@ interface Props {
 const SImg = styled('img')`
   height: ${(p: { size: string }) => p.size};
   width: ${(p: { size: string }) => p.size};
+`;
+
+const SSpacer = styled.div`
+  height: 60px;
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    height: 85px;
+  }
 `;
 
 export default function TxReceipt({
@@ -266,6 +274,7 @@ export const TxReceiptUI = ({
       )}
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-desc">
+          {protectTxEnabled && !web3Wallet && <SSpacer />}
           {translate('TRANSACTION_BROADCASTED_DESC')}
         </div>
       </div>

@@ -11,7 +11,7 @@ interface RelayedToNetworkProps {
   relayedToNetwork: boolean;
 }
 
-const Wrapper = styled.div<RelayedToNetworkProps>`
+const Wrapper = styled.div`
   display: flex;
   position: absolute;
   justify-content: flex-start;
@@ -21,28 +21,7 @@ const Wrapper = styled.div<RelayedToNetworkProps>`
   padding: 18px 40px;
   background: ${COLORS.PURPLE};
   color: ${COLORS.WHITE};
-
-  ${({ relayedToNetwork }) =>
-    relayedToNetwork
-      ? `top: calc(-0.5rem - 75px - 60px - 44px - 44px);`
-      : `top: calc(-0.5rem - 75px - 60px - 44px);`};
-
-  ${({ relayedToNetwork }) =>
-    relayedToNetwork
-      ? `
-    @media (min-width: 394px) {
-      top: calc(-0.5rem - 75px - 60px - 44px);
-    }
-    @media (min-width: 556px) {
-      top: calc(-0.5rem - 75px - 60px);
-    }
-    `
-      : `
-    @media (min-width: 462px) {
-      top: calc(-0.5rem - 75px - 60px);
-    }
-    `};
-
+  top: -1.5rem;
   p {
     margin: 0 15px 0;
     font-size: ${FONT_SIZE.BASE};
@@ -135,7 +114,7 @@ export const ProtectTxAbort: FC<AbortTransactionProps> = ({ onTxSent }) => {
   );
 
   return (
-    <Wrapper relayedToNetwork={!isCanceled && protectTxCountdown === 0}>
+    <Wrapper>
       <ProtectIconCheck fillColor={COLORS.WHITE} />
       {isCanceled && (
         <>
