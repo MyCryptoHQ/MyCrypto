@@ -39,6 +39,8 @@
     "DETERMINISTIC_ALTERNATIVES_5": "here",
     "DETERMINISTIC_CONTACT_US": "Still having trouble? [Contact us!](https://support.mycrypto.com/contact-us)",
     "DETERMINISTIC_SCAN_AGAIN": "Scan Again",
+    "DETERMINISTIC_SCANNING": "Scanning your hardware wallet for addresses with $asset balance...",
+    "DETERMINISTIC_CSV": "$total total addresses have been scanned. To view a summary of the addresses we scanned, download a CSV report",
     "ACTION_10": "Done",
     "ACTION_15": "Remove",
     "ACTION_16": "Read",

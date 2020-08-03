@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { unparse } from 'papaparse';
 
 import uniqBy from 'ramda/src/uniqBy';
 import prop from 'ramda/src/prop';
 
 import { Trans } from '@translations';
 import { ExtendedAsset, TAddress, Network } from '@types';
-import { Button, Typography } from '@components';
+import { Button, Typography, Tooltip } from '@components';
 import Icon from '@components/Icon';
 import { BREAK_POINTS, COLORS } from '@theme';
 import { DWAccountDisplay } from '@services';
@@ -58,7 +59,7 @@ const IconWrapper = styled.div`
   align-items: center;
 `;
 
-const ScanAgain = styled.span`
+const SButton = styled.span`
   color: ${COLORS.BLUE_MYC};
   cursor: pointer;
   font-weight: bold;
@@ -134,6 +135,17 @@ export default function DeterministicAccountList(props: DeterministicAccountList
     );
   };
 
+  const downloadCSV = (accounts: DWAccountDisplay[]) => {
+    const csv = unparse(accounts);
+    const type = 'text/csv';
+    const blob = new Blob([csv], { type });
+    const dataURI = `data:${type};charset=utf-8,${csv}`;
+
+    const URL = window.URL || window.webkitURL;
+
+    return typeof URL.createObjectURL === 'undefined' ? dataURI : URL.createObjectURL(blob);
+  };
+
   return (
     <DeterministicAccountListWrapper>
       <TableWrapper>
@@ -160,9 +172,9 @@ export default function DeterministicAccountList(props: DeterministicAccountList
                   id="DETERMINISTIC_SCANNING_STATUS_DONE"
                   variables={{ $asset: () => asset.ticker }}
                 />{' '}
-                <ScanAgain onClick={() => handleUpdate(asset)}>
+                <SButton onClick={() => handleUpdate(asset)}>
                   <Trans id="DETERMINISTIC_SCAN_AGAIN" />
-                </ScanAgain>
+                </SButton>
                 .
               </Typography>
             </StatusWrapper>
@@ -180,10 +192,26 @@ export default function DeterministicAccountList(props: DeterministicAccountList
         ) : (
           <StatusWrapper>
             <Loader className="loading" />
-            <Trans
-              id="DETERMINISTIC_SCANNING_STATUS_RUNNING"
-              variables={{ $total: () => finishedAccounts.length, $network: () => network.name }}
-            />{' '}
+            <div>
+              <Trans
+                id="DETERMINISTIC_SCANNING_STATUS_RUNNING"
+                variables={{ $total: () => finishedAccounts.length, $network: () => network.name }}
+              />{' '}
+              <Tooltip
+                tooltip={
+                  <>
+                    <Trans
+                      id="DETERMINISTIC_CSV"
+                      variables={{ $total: () => finishedAccounts.length }}
+                    />{' '}
+                    <SButton onClick={() => window.open(downloadCSV(finishedAccounts))}>
+                      here
+                    </SButton>
+                    .
+                  </>
+                }
+              />
+            </div>
           </StatusWrapper>
         )}
         <Button onClick={handleSubmit} disabled={!selectedAccounts.length}>

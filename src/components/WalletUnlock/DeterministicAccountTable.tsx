@@ -4,7 +4,14 @@ import { DWAccountDisplay, AddressBookContext, fromTokenBase } from '@services';
 import { COLORS, SPACING } from '@theme';
 import translate, { Trans } from '@translations';
 import { Identicon } from '@mycrypto/ui';
-import { EditableAccountLabel, EthAddress, Typography, LinkOut, Button } from '@components';
+import {
+  EditableAccountLabel,
+  EthAddress,
+  Typography,
+  LinkOut,
+  Button,
+  Tooltip
+} from '@components';
 import { Network, ExtendedAsset, TAddress } from '@types';
 import { isSameAddress } from '@utils';
 import BN from 'bn.js';
@@ -169,6 +176,21 @@ const NoAccountAction = styled.span`
   }
 `;
 
+const Loader = styled.div`
+  margin-top: calc(-6rem + 100px);
+  padding-bottom: 6rem;
+  margin-bottom: 20px;
+  transform: scale(4.75);
+
+  &&::before {
+    border-width: 0.75px;
+  }
+
+  &&::after {
+    border-width: 0.75px;
+  }
+`;
+
 const DeterministicTable = ({
   isComplete,
   accounts,
@@ -203,30 +225,37 @@ const DeterministicTable = ({
         <Label width="30px" />
         <Label width="50px" />
       </Heading>
-      {isComplete && !accounts.length ? (
-        <NoAccountContainer>
-          <Icon type="info" />
-          <Typography bold={true}>
-            <Trans id="DETERMINISTIC_UNABLE_TO_FIND" variables={{ $asset: () => asset.ticker }} />
-          </Typography>
-          <Typography>
-            <Trans id="DETERMINISTIC_ALTERNATIVES_1" />{' '}
-            <NoAccountAction onClick={generateFreshAddress}>
-              <Trans id="DETERMINISTIC_ALTERNATIVES_2" />
-            </NoAccountAction>{' '}
-            <Trans id="DETERMINISTIC_ALTERNATIVES_3" />
-            <br />
-            <Trans id="DETERMINISTIC_ALTERNATIVES_4" />{' '}
-            <NoAccountAction>
-              <Trans id="DETERMINISTIC_ALTERNATIVES_5" />
-            </NoAccountAction>
-            .
-          </Typography>
-          <Button onClick={() => handleUpdate(asset)}>
-            <Trans id="DETERMINISTIC_SCAN_AGAIN" />
-          </Button>
-          <Typography>{translate('DETERMINISTIC_CONTACT_US')}</Typography>
-        </NoAccountContainer>
+      {!accounts.length ? (
+        isComplete ? (
+          <NoAccountContainer>
+            <Icon type="info" />
+            <Typography bold={true}>
+              <Trans id="DETERMINISTIC_UNABLE_TO_FIND" variables={{ $asset: () => asset.ticker }} />
+            </Typography>
+            <Typography>
+              <Trans id="DETERMINISTIC_ALTERNATIVES_1" />{' '}
+              <NoAccountAction onClick={generateFreshAddress}>
+                <Trans id="DETERMINISTIC_ALTERNATIVES_2" />
+              </NoAccountAction>{' '}
+              <Trans id="DETERMINISTIC_ALTERNATIVES_3" />
+              <br />
+              <Trans id="DETERMINISTIC_ALTERNATIVES_4" />{' '}
+              <NoAccountAction>
+                <Trans id="DETERMINISTIC_ALTERNATIVES_5" />
+              </NoAccountAction>
+              .
+            </Typography>
+            <Button onClick={() => handleUpdate(asset)}>
+              <Trans id="DETERMINISTIC_SCAN_AGAIN" />
+            </Button>
+            <Typography>{translate('DETERMINISTIC_CONTACT_US')}</Typography>
+          </NoAccountContainer>
+        ) : (
+          <NoAccountContainer>
+            <Loader className="loading" />
+            <Trans id="DETERMINISTIC_SCANNING" variables={{ $asset: () => asset.ticker }} />
+          </NoAccountContainer>
+        )
       ) : (
         <Body>
           {accounts.map((account: DWAccountDisplay, index) => (
@@ -258,13 +287,15 @@ const DeterministicTable = ({
               </ValueContainer>
               <TickerContainer>{asset.ticker}</TickerContainer>
               <LinkContainer>
-                <LinkOut
-                  link={
-                    network.blockExplorer
-                      ? network.blockExplorer.addressUrl(account.address)
-                      : `https://ethplorer.io/address/${account.address}`
-                  }
-                />
+                <Tooltip tooltip={'View on Etherscan'}>
+                  <LinkOut
+                    link={
+                      network.blockExplorer
+                        ? network.blockExplorer.addressUrl(account.address)
+                        : `https://ethplorer.io/address/${account.address}`
+                    }
+                  />
+                </Tooltip>
               </LinkContainer>
             </Row>
           ))}

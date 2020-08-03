@@ -52,6 +52,7 @@
     "jspdf": "1.5.3",
     "lodash": "4.17.19",
     "moment": "2.22.1",
+    "papaparse": "5.2.0",
     "post-message-stream": "3.0.0",
     "qrcode": "1.4.4",
     "query-string": "6.0.0",
