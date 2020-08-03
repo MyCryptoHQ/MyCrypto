@@ -34,6 +34,7 @@ interface UIProps {
   network: Network;
   zapSelected: IZapConfig;
   relevantAccounts: StoreAccount[];
+  defaultAccount: StoreAccount;
   onComplete(fields: any): void;
 }
 
@@ -63,7 +64,7 @@ const DeFiZapLogoContainer = styled.div`
 `;
 
 const ZapForm = ({ onComplete, zapSelected }: Props) => {
-  const { accounts } = useContext(StoreContext);
+  const { accounts, defaultAccount } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
   const ethAsset = assets.find((asset) => asset.uuid === ETHUUID) as Asset;
@@ -76,6 +77,7 @@ const ZapForm = ({ onComplete, zapSelected }: Props) => {
       network={network}
       zapSelected={zapSelected as IZapConfig}
       relevantAccounts={relevantAccounts}
+      defaultAccount={defaultAccount}
       onComplete={onComplete}
     />
   );
@@ -86,10 +88,11 @@ export const ZapFormUI = ({
   network,
   zapSelected,
   relevantAccounts,
+  defaultAccount,
   onComplete
 }: UIProps) => {
   const initialFormikValues: ISimpleTxFormFull = {
-    account: {} as StoreAccount,
+    account: defaultAccount,
     amount: '',
     asset: ethAsset,
     nonce: '0',
