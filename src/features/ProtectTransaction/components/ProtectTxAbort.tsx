@@ -22,6 +22,8 @@ const Wrapper = styled.div`
   background: ${COLORS.PURPLE};
   color: ${COLORS.WHITE};
   top: -1.5rem;
+  border-top-left-radius: 0.375em;
+  border-top-right-radius: 0.375em;
   p {
     margin: 0 15px 0;
     font-size: ${FONT_SIZE.BASE};
