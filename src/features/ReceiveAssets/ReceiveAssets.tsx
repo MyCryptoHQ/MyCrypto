@@ -11,7 +11,7 @@ import {
 import { ContentPanel, QRCode, AccountSelector, AssetSelector } from '@components';
 import { AssetContext, getNetworkById, StoreContext } from '@services/Store';
 import { isValidAmount, sanitizeDecimalSeparator, noOp } from '@utils';
-import { IAccount as IIAccount, StoreAccount } from '@types';
+import { IAccount as IIAccount } from '@types';
 import { ROUTE_PATHS } from '@config';
 import translate, { translateRaw } from '@translations';
 import questionToolTip from '@assets/images/icn-question.svg';
@@ -103,7 +103,7 @@ const ErrorMessage = styled.span`
 `;
 
 export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
-  const { accounts, networks } = useContext(StoreContext);
+  const { accounts, defaultAccount, networks } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
   const [networkId, setNetworkId] = useState(accounts[0].networkId);
   const network = getNetworkById(networkId, networks);
@@ -124,7 +124,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   const initialValues = {
     amount: '',
     asset: {},
-    recipientAddress: {} as StoreAccount
+    recipientAddress: defaultAccount
   };
 
   const validateAmount = (amount: any) => {
