@@ -77,11 +77,12 @@ export const MembershipFormUI = ({
   onComplete
 }: UIProps) => {
   const { getAssetByUUID } = useContext(AssetContext);
+  const { defaultAccount } = useContext(StoreContext);
   const defaultMembership = MEMBERSHIP_CONFIG[IMembershipId.sixmonths];
   const defaultAsset = (getAssetByUUID(defaultMembership.assetUUID as TUuid) || {}) as Asset;
   const initialFormikValues: MembershipSimpleTxFormFull = {
     membershipSelected: defaultMembership,
-    account: {} as StoreAccount,
+    account: defaultAccount,
     amount: defaultMembership.price,
     asset: defaultAsset,
     nonce: '0',

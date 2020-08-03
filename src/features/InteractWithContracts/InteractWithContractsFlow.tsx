@@ -7,7 +7,7 @@ import { ExtendedContentPanel, Tabs, WALLET_STEPS } from '@components';
 import { ROUTE_PATHS, DEFAULT_NETWORK } from '@config';
 import { useStateReducer } from '@utils';
 import { ITxReceipt, ISignedTx, Tab } from '@types';
-import { getNetworkById, NetworkContext } from '@services/Store';
+import { getNetworkById, NetworkContext, StoreContext } from '@services/Store';
 import { BREAK_POINTS } from '@theme';
 
 import { interactWithContractsInitialState, InteractWithContractsFactory } from './stateFactory';
@@ -48,10 +48,11 @@ const TabsWrapper = styled.div`
 
 const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
   const [step, setStep] = useState(0);
-
+  const { defaultAccount } = useContext(StoreContext);
   const { networks } = useContext(NetworkContext);
   const initialState = {
     ...interactWithContractsInitialState,
+    account: defaultAccount,
     network: getNetworkById(DEFAULT_NETWORK, networks)
   };
   const {
