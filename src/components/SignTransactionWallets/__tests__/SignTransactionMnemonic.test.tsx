@@ -4,8 +4,9 @@ import { simpleRender, waitFor, fireEvent } from 'test-utils';
 import { fTxConfig } from '@fixtures';
 import { WalletId } from '@types';
 import { translateRaw } from '@translations';
-import { WALLETS_CONFIG } from '@config';
 import SignTransaction from '@features/SendAssets/components/SignTransaction';
+
+import { getHeader } from './helper';
 
 const defaultProps: React.ComponentProps<typeof SignTransaction> = {
   txConfig: {
@@ -17,12 +18,6 @@ const defaultProps: React.ComponentProps<typeof SignTransaction> = {
 
 const getComponent = () => {
   return simpleRender(<SignTransaction {...defaultProps} />);
-};
-
-const getHeader = (wallet: WalletId) => {
-  return translateRaw('SIGN_TX_TITLE', {
-    $walletName: WALLETS_CONFIG[wallet].name
-  });
 };
 
 jest.mock('ethers', () => {
@@ -41,7 +36,7 @@ jest.mock('ethers', () => {
   };
 });
 
-describe('SignTransaction', () => {
+describe('SignTransactionWallets: Mnemonic', () => {
   afterEach(() => {
     jest.resetAllMocks();
   });

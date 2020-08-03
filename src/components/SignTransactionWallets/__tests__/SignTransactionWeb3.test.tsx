@@ -3,10 +3,10 @@ import { simpleRender, waitFor } from 'test-utils';
 
 import { fTxConfig, fNetwork } from '@fixtures';
 import { WalletId } from '@types';
-import { translateRaw } from '@translations';
-import { WALLETS_CONFIG } from '@config';
 import { NetworkContext } from '@services';
 import SignTransaction from '@features/SendAssets/components/SignTransaction';
+
+import { getHeader } from './helper';
 
 const defaultProps: React.ComponentProps<typeof SignTransaction> = {
   txConfig: { ...fTxConfig, senderAccount: { ...fTxConfig.senderAccount, wallet: WalletId.WEB3 } },
@@ -20,12 +20,6 @@ const getComponent = () => {
       <SignTransaction {...defaultProps} />
     </NetworkContext.Provider>
   );
-};
-
-const getHeader = (wallet: WalletId) => {
-  return translateRaw('SIGN_TX_TITLE', {
-    $walletName: WALLETS_CONFIG[wallet].name
-  });
 };
 
 const mockGetSigner = jest.fn().mockImplementation(() => ({
@@ -48,7 +42,7 @@ jest.mock('ethers/providers/web3-provider', () => {
   };
 });
 
-describe('SignTransaction', () => {
+describe('SignTransactionWallets: Web3', () => {
   afterEach(() => {
     jest.resetAllMocks();
   });
