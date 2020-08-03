@@ -1,17 +1,16 @@
 import React from 'react';
-import { simpleRender, waitFor, act } from 'test-utils';
+import { simpleRender, act, waitFor } from 'test-utils';
 
-import { fTxConfig, fNetwork } from '@fixtures';
+import { fTxConfig } from '@fixtures';
 import { WalletId } from '@types';
 import { translateRaw } from '@translations';
 import { WALLETS_CONFIG } from '@config';
-
-import SignTransaction from '../components/SignTransaction';
+import SignTransaction from '@features/SendAssets/components/SignTransaction';
 
 const defaultProps: React.ComponentProps<typeof SignTransaction> = {
   txConfig: {
     ...fTxConfig,
-    senderAccount: { ...fTxConfig.senderAccount, wallet: WalletId.LEDGER_NANO_S }
+    senderAccount: { ...fTxConfig.senderAccount, wallet: WalletId.TREZOR }
   },
   onComplete: jest.fn()
 };
@@ -26,18 +25,21 @@ const getHeader = (wallet: WalletId) => {
   });
 };
 
-const mockGetAddress = jest.fn().mockImplementation(() => ({
-  publicKey: defaultProps.txConfig.senderAccount.address,
-  chainCode: fNetwork.chainId
+jest.mock('trezor-connect', () => ({
+  manifest: jest.fn(),
+  getPublicKey: jest.fn().mockImplementation(() =>
+    Promise.resolve({
+      payload: {
+        publicKey: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
+        chainCode: 3
+      },
+      success: true
+    })
+  ),
+  ethereumSignTransaction: jest
+    .fn()
+    .mockImplementation(() => Promise.resolve({ payload: { v: 41, r: 2, s: 4 }, success: true }))
 }));
-const mockSign = jest.fn().mockImplementation(() => Promise.resolve({ v: 10, r: 2, s: 4 }));
-jest.mock('@ledgerhq/hw-transport-u2f');
-jest.mock('@ledgerhq/hw-app-eth', () => {
-  return jest.fn().mockImplementation(() => ({
-    getAddress: mockGetAddress,
-    signTransaction: mockSign
-  }));
-});
 
 describe('SignTransaction', () => {
   beforeEach(() => {
@@ -47,9 +49,9 @@ describe('SignTransaction', () => {
     jest.resetAllMocks();
   });
 
-  test('Can handle Ledger signing', async () => {
+  test('Can handle Trezor signing', async () => {
     const { getByText } = getComponent();
-    const selector = getHeader(WalletId.LEDGER_NANO_S);
+    const selector = getHeader(WalletId.TREZOR);
     expect(getByText(selector)).toBeInTheDocument();
     act(() => {
       jest.advanceTimersByTime(3001);
@@ -96,13 +98,12 @@ describe('SignTransaction', () => {
           64,
           0,
           128,
-          42,
+          41,
           2,
           4
         ])
       )
     );
-    expect(mockGetAddress).toHaveBeenCalled();
-    expect(mockSign).toHaveBeenCalled();
+    expect(defaultProps.onComplete).toHaveBeenCalledTimes(1);
   });
 });

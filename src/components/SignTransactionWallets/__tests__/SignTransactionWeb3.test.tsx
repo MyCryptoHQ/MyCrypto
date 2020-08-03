@@ -5,9 +5,8 @@ import { fTxConfig, fNetwork } from '@fixtures';
 import { WalletId } from '@types';
 import { translateRaw } from '@translations';
 import { WALLETS_CONFIG } from '@config';
-
-import SignTransaction from '../components/SignTransaction';
 import { NetworkContext } from '@services';
+import SignTransaction from '@features/SendAssets/components/SignTransaction';
 
 const defaultProps: React.ComponentProps<typeof SignTransaction> = {
   txConfig: { ...fTxConfig, senderAccount: { ...fTxConfig.senderAccount, wallet: WalletId.WEB3 } },

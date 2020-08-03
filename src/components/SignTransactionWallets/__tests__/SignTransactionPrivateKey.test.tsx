@@ -5,8 +5,7 @@ import { fTxConfig } from '@fixtures';
 import { WalletId } from '@types';
 import { translateRaw } from '@translations';
 import { WALLETS_CONFIG } from '@config';
-
-import SignTransaction from '../components/SignTransaction';
+import SignTransaction from '@features/SendAssets/components/SignTransaction';
 
 const defaultProps: React.ComponentProps<typeof SignTransaction> = {
   txConfig: {
