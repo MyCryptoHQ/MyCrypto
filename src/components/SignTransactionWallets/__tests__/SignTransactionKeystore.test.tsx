@@ -20,6 +20,7 @@ const getComponent = () => {
 };
 
 jest.mock('ethers', () => {
+  // Must be imported here to prevent issues with jest
   const { mockFactory } = require('../__mocks__/keystore');
   return mockFactory('0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c', 'txhash');
 });
