@@ -11,8 +11,8 @@ export default class AddAccountPage extends BasePage {
     this.navigateTo(PAGES.ADD_ACCOUNT);
   }
 
-  async waitPageLoaded() {
-    await this.waitForPage(PAGES.ADD_ACCOUNT);
+  async waitPageLoaded(timeToWait) {
+    await this.waitForPage(PAGES.ADD_ACCOUNT, timeToWait);
   }
 
   async addViewOnly() {
@@ -65,7 +65,7 @@ export default class AddAccountPage extends BasePage {
     await t.typeText(Selector(`input`).withAttribute('placeholder', getTransValueByKey('INPUT_PASSWORD_LABEL')), FIXTURE_TEST_KEYSTORE_FILE_PASSWORD)
 
     // Lose focus
-    await t.expect(Selector('button').withText(getTransValueByKey('ADD_LABEL_6_SHORT')).hasAttribute('disabled')).notOk('ready for testing', { timeout: FIXTURES_CONST.TIMEOUT * 2 });
+    await t.expect(Selector('button').withText(getTransValueByKey('ADD_LABEL_6_SHORT')).hasAttribute('disabled')).notOk('ready for testing', { timeout: FIXTURES_CONST.TIMEOUT });
     await t.click(Selector('button').withText(getTransValueByKey('ADD_LABEL_6_SHORT')));
   }
 }
