@@ -33,7 +33,7 @@ export default function getWindow() {
     }
   });
 
-  const appUrl = IS_DEV ? `http://localhost:5000` : `file://${__dirname}/index.html`;
+  const appUrl = IS_DEV ? `https://localhost:3000` : `file://${__dirname}/index.html`;
   window.loadURL(appUrl);
 
   window.on('closed', () => {

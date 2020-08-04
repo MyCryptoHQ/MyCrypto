@@ -6,7 +6,7 @@
     "./__tests__/*.test.js"
   ],
   "proxyByPass": [
-    "localhost:5000"
+    "localhost:3000"
   ],
   "clientScripts": [
     {
