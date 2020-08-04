@@ -54,22 +54,34 @@ export const getStories = (): IStory[] => [
   },
   {
     name: WalletId.KEYSTORE_FILE,
-    steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? KeystoreDecrypt : InsecureWalletWarning],
+    steps: [
+      NetworkSelectPanel,
+      IS_DEV || IS_STAGING || IS_ELECTRON ? KeystoreDecrypt : InsecureWalletWarning
+    ],
     isDisabled: IS_NOT_ELECTRON_AND_IS_NOT_DEV_OR_STAGING
   },
   {
     name: WalletId.PRIVATE_KEY,
-    steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? PrivateKeyDecrypt : InsecureWalletWarning],
+    steps: [
+      NetworkSelectPanel,
+      IS_DEV || IS_STAGING || IS_ELECTRON ? PrivateKeyDecrypt : InsecureWalletWarning
+    ],
     isDisabled: IS_NOT_ELECTRON_AND_IS_NOT_DEV_OR_STAGING
   },
   {
     name: WalletId.MNEMONIC_PHRASE,
-    steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? MnemonicDecrypt : InsecureWalletWarning],
+    steps: [
+      NetworkSelectPanel,
+      IS_DEV || IS_STAGING || IS_ELECTRON ? MnemonicDecrypt : InsecureWalletWarning
+    ],
     isDisabled: IS_NOT_ELECTRON_AND_IS_NOT_DEV_OR_STAGING
   },
   {
     name: WalletId.MNEMONIC_PHRASE_NEW,
-    steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? MnemonicUnlock : InsecureWalletWarning],
+    steps: [
+      NetworkSelectPanel,
+      IS_DEV || IS_STAGING || IS_ELECTRON ? MnemonicUnlock : InsecureWalletWarning
+    ],
     isDisabled: IS_NOT_ELECTRON_AND_IS_NOT_DEV_OR_STAGING,
     hideFromWalletList: !IS_DEV
   },
