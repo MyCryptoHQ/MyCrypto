@@ -1,5 +1,5 @@
 import { IStory, WalletId } from '@types';
-import { IS_DEV, IS_ELECTRON, hasWeb3Provider } from '@utils';
+import { IS_DEV, IS_ELECTRON, hasWeb3Provider, IS_STAGING } from '@utils';
 import {
   InsecureWalletWarning,
   LedgerNanoSDecrypt,
@@ -21,7 +21,8 @@ import { NetworkSelectPanel } from './components';
 
 // This const is used to disable non supported wallets
 // only if it is not the Desktop App and not the Dev environment
-export const IS_NOT_ELECTRON_AND_IS_NOT_DEV: boolean = !IS_ELECTRON && !IS_DEV;
+export const IS_NOT_ELECTRON_AND_IS_NOT_DEV_OR_STAGING: boolean =
+  !IS_ELECTRON && !(IS_DEV || IS_STAGING);
 
 export const getStories = (): IStory[] => [
   {
@@ -54,22 +55,22 @@ export const getStories = (): IStory[] => [
   {
     name: WalletId.KEYSTORE_FILE,
     steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? KeystoreDecrypt : InsecureWalletWarning],
-    isDisabled: IS_NOT_ELECTRON_AND_IS_NOT_DEV
+    isDisabled: IS_NOT_ELECTRON_AND_IS_NOT_DEV_OR_STAGING
   },
   {
     name: WalletId.PRIVATE_KEY,
     steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? PrivateKeyDecrypt : InsecureWalletWarning],
-    isDisabled: IS_NOT_ELECTRON_AND_IS_NOT_DEV
+    isDisabled: IS_NOT_ELECTRON_AND_IS_NOT_DEV_OR_STAGING
   },
   {
     name: WalletId.MNEMONIC_PHRASE,
     steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? MnemonicDecrypt : InsecureWalletWarning],
-    isDisabled: IS_NOT_ELECTRON_AND_IS_NOT_DEV
+    isDisabled: IS_NOT_ELECTRON_AND_IS_NOT_DEV_OR_STAGING
   },
   {
     name: WalletId.MNEMONIC_PHRASE_NEW,
     steps: [NetworkSelectPanel, IS_DEV || IS_ELECTRON ? MnemonicUnlock : InsecureWalletWarning],
-    isDisabled: IS_NOT_ELECTRON_AND_IS_NOT_DEV,
+    isDisabled: IS_NOT_ELECTRON_AND_IS_NOT_DEV_OR_STAGING,
     hideFromWalletList: !IS_DEV
   },
   {
