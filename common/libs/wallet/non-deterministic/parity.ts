@@ -1,6 +1,6 @@
 import { IFullWallet } from '../IWallet';
 
-export const wikiLink = 'https://wiki.parity.io/Parity-Signer-Mobile-App-MyCrypto-tutorial';
+export const wikiLink = 'https://openethereum.wiki/Parity-Signer-Mobile-App-MyCrypto-tutorial/';
 
 export default class ParitySignerWallet implements IFullWallet {
   public address: string;
