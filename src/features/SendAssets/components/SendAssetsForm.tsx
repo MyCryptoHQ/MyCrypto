@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useEffect, useState } from 'react';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
@@ -67,7 +67,13 @@ import {
 } from '@config';
 import { RatesContext } from '@services/RatesProvider';
 import TransactionFeeDisplay from '@components/TransactionFlow/displays/TransactionFeeDisplay';
-import { formatSupportEmail, isFormValid as checkFormValid, ETHUUID, isSameAddress } from '@utils';
+import {
+  formatSupportEmail,
+  isFormValid as checkFormValid,
+  ETHUUID,
+  isSameAddress,
+  isVoid
+} from '@utils';
 import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
 import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
 import { ProtectTxButton } from '@features/ProtectTransaction/components/ProtectTxButton';
@@ -144,9 +150,9 @@ const getInitialFormikValues = ({
     bigNumGasPriceToViewableGwei(bigNumberify(s.rawTransaction.gasPrice));
   const state: Partial<IFormikFields> = {
     amount: s.amount,
-    account: s.senderAccount || defaultAccount,
-    network: s.network || defaultNetwork,
-    asset: s.asset || defaultAsset,
+    account: !isVoid(s.senderAccount) ? s.senderAccount : defaultAccount,
+    network: !isVoid(s.network) ? s.network : defaultNetwork,
+    asset: !isVoid(s.asset) ? s.asset : defaultAsset,
     nonceField: s.nonce,
     txDataField: s.data,
     address: { value: s.receiverAddress, display: s.receiverAddress },
@@ -349,21 +355,26 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
 
   const validAccounts = accounts.filter((account) => account.wallet !== WalletId.VIEW_ONLY);
   const userAccountEthAsset = userAssets.find((a) => a.uuid === ETHUUID);
+  const initialValues = useMemo(
+    () =>
+      getInitialFormikValues({
+        s: txConfig,
+        defaultAccount,
+        defaultAsset: userAccountEthAsset,
+        defaultNetwork
+      }),
+    []
+  );
 
   return (
     <div>
       <Formik
-        initialValues={getInitialFormikValues({
-          s: txConfig,
-          defaultAccount,
-          defaultAsset: userAccountEthAsset,
-          defaultNetwork
-        })}
+        initialValues={initialValues}
         validationSchema={SendAssetsSchema}
         onSubmit={(fields) => {
           onComplete(fields);
         }}
-        render={({ errors, setFieldValue, setFieldTouched, touched, values }) => {
+        children={({ errors, setFieldValue, setFieldTouched, touched, values }) => {
           useEffect(() => {
             if (updateFormValues) {
               updateFormValues(values);
@@ -425,16 +436,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
             }
           };
 
-          const handleFieldReset = () => {
-            const resetFields: (keyof IFormikFields)[] = [
-              'account',
-              'amount',
-              'txDataField',
-              'advancedTransaction'
-            ];
-            resetFields.forEach((field) => setFieldValue(field, initialFormikValues[field]));
-          };
-
           const setAmountFieldToAssetMax = () => {
             const account = getAccount(values.account);
             if (values.asset && account && baseAsset) {
@@ -486,7 +487,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                       onSelect={(option: StoreAsset) => {
                         form.setFieldValue('asset', option || {}); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
                         //@todo get assetType onChange
-                        handleFieldReset();
                         if (option && option.networkId) {
                           const network = getNetworkById(option.networkId, networks);
                           fetchGasPriceEstimates(network).then((data) => {
@@ -515,7 +515,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                 </label>
                 <Field
                   name="account"
-                  value={values.account}
                   component={({ field, form }: FieldProps) => {
                     const accountsWithAsset = getAccountsByAsset(validAccounts, values.asset);
                     return (
@@ -524,7 +523,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                         value={field.value}
                         accounts={accountsWithAsset}
                         onSelect={(account: StoreAccount) => {
-                          form.setFieldValue('account', account); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
+                          form.setFieldValue(field.name, account); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
                           handleNonceEstimate(account);
                           handleGasEstimate();
                         }}
@@ -560,7 +559,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                 </label>
                 <Field
                   name="amount"
-                  render={({ field, form }: FieldProps) => {
+                  children={({ field, form }: FieldProps) => {
                     return (
                       <>
                         <AmountInput
@@ -642,7 +641,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                         <Field
                           name="gasLimitField"
                           validate={validateGasLimitField}
-                          render={({ field, form }: FieldProps<string>) => (
+                          children={({ field, form }: FieldProps<string>) => (
                             <GasLimitField
                               onChange={(option: string) => {
                                 form.setFieldValue('gasLimitField', option);
@@ -665,7 +664,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                         <Field
                           name="gasPriceField"
                           validate={validateGasPriceField}
-                          render={({ field, form }: FieldProps<string>) => (
+                          children={({ field, form }: FieldProps<string>) => (
                             <GasPriceField
                               onChange={(option: string) => {
                                 form.setFieldValue('gasPriceField', option);
@@ -688,7 +687,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                         <Field
                           name="nonceField"
                           validate={validateNonceField}
-                          render={({ field, form }: FieldProps<string>) => (
+                          children={({ field, form }: FieldProps<string>) => (
                             <NonceField
                               onChange={(option: string) => {
                                 form.setFieldValue('nonceField', option);
@@ -710,7 +709,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                             <Field
                               name="txDataField"
                               validate={(value: string) => value !== '' && validateDataField(value)}
-                              render={({ field, form }: FieldProps<string>) => (
+                              children={({ field, form }: FieldProps<string>) => (
                                 <DataField
                                   onChange={(option: string) => {
                                     form.setFieldValue('txDataField', option);
