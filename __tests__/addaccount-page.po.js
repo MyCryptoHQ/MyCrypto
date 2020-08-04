@@ -50,7 +50,7 @@ export default class AddAccountPage extends BasePage {
 
   async addKeystoreFile() {
     await this.navigateToPage();
-    await this.waitPageLoaded(FIXTURES_CONST.TIMEOUT * 2);
+    await this.waitPageLoaded();
     await t.click(getByText(getTransValueByKey('X_KEYSTORE2')));
     this.waitForPage(PAGES.ADD_ACCOUNT_KEYSTORE);
 
@@ -65,7 +65,7 @@ export default class AddAccountPage extends BasePage {
     await t.typeText(Selector(`input`).withAttribute('placeholder', getTransValueByKey('INPUT_PASSWORD_LABEL')), FIXTURE_TEST_KEYSTORE_FILE_PASSWORD)
 
     // Lose focus
-    await t.expect(Selector('button').withText(getTransValueByKey('ADD_LABEL_6_SHORT')).hasAttribute('disabled')).notOk('ready for testing', { timeout: FIXTURES_CONST.TIMEOUT });
+    await t.expect(Selector('button').withText(getTransValueByKey('ADD_LABEL_6_SHORT')).hasAttribute('disabled')).notOk('ready for testing', { timeout: FIXTURES_CONST.TIMEOUT * 2 });
     await t.click(Selector('button').withText(getTransValueByKey('ADD_LABEL_6_SHORT')));
   }
 }
