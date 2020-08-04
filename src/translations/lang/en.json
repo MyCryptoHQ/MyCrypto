@@ -46,6 +46,7 @@
     "DETERMINISTIC_CUSTOM_LABEL": "Label for New Derivation Path",
     "DETERMINISTIC_CUSTOM_LABEL_DPATH": "New Derivation Path Credentials",
     "DETERMINISTIC_ADD_DPATH": "Add DPath",
+    "DETERMINISTIC_SEE_SUMMARY": "To see a summary of which addresses have been scanned download CSV report",
     "ACTION_10": "Done",
     "ACTION_15": "Remove",
     "ACTION_16": "Read",

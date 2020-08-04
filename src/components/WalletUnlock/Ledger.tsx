@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import uniqBy from 'ramda/src/uniqBy';
 import prop from 'ramda/src/prop';
 
-import { MOONPAY_ASSET_UUIDS, IS_ELECTRON } from '@utils';
+import { MOONPAY_ASSET_UUIDS, IS_ELECTRON, accountsToCSV } from '@utils';
 import { FormData, WalletId, ExtendedAsset } from '@types';
 import translate, { translateRaw, Trans } from '@translations';
 import {
@@ -69,6 +69,7 @@ const TableContainer = styled.div`
 const HeadingWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
 `;
 
 const SForm = styled.form`
@@ -82,7 +83,16 @@ const SLabel = styled.label`
 `;
 
 const SButton = styled(Button)`
-  margin-top: 30px;
+  margin: 30px 0;
+`;
+
+const SLink = styled.span`
+  color: ${COLORS.BLUE_MYC};
+  cursor: pointer;
+  font-weight: bold;
+  &:hover {
+    color: ${COLORS.BLUE_LIGHT_DARKISH};
+  }
 `;
 
 // const WalletService = WalletFactory(WalletId.LEDGER_NANO_S);
@@ -160,6 +170,8 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
     }
   };
 
+  const handleDownload = () => window.open(accountsToCSV(state.finishedAccounts, assetToUse));
+
   if (!network) {
     // @todo: make this better.
     return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} network={network} />;
@@ -184,7 +196,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
     return dpathAddView ? (
       <MnemonicWrapper>
         <HeadingWrapper>
-          <Icon type="back" />
+          <Icon type="back" width={20} onClick={() => setDpathAddView(false)} />
           <Title fontSize="32px" bold={true}>
             <Trans id="DETERMINISTIC_CUSTOM_TITLE" />
           </Title>
@@ -217,6 +229,13 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
             </SForm>
           )}
         </Formik>
+        <Typography>
+          <Trans id="DETERMINISTIC_SEE_SUMMARY" />{' '}
+          <SLink onClick={handleDownload}>
+            <Trans id="DETERMINISTIC_ALTERNATIVES_5" />
+          </SLink>
+          .
+        </Typography>
       </MnemonicWrapper>
     ) : (
       <MnemonicWrapper>
