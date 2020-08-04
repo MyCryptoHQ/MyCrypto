@@ -6065,7 +6065,7 @@
     "address": "0x80fB784B7eD66730e8b1DBd9820aFD29931aab03",
     "symbol": "LEND",
     "decimal": 18,
-    "name": "EHTLend",
+    "name": "ETHLend",
     "uuid": "1c77b322-a88c-57cc-b956-78c2bc17c360"
   },
   {
@@ -7432,6 +7432,13 @@
     "decimal": 8,
     "name": "Ormeus Coin",
     "uuid": "a3d32114-ffcd-5c7a-a463-5acb4bafa3af"
+  },
+  {
+    "address": "0x8fB00FDeBb4E83f2C58b3bcD6732AC1B6A7b7221",
+    "symbol": "ORN",
+    "decimal": 8,
+    "name": "Orion Protocol",
+    "uuid": "0eab8bd6-f2ef-5335-b09c-9b22d1dd3f03"
   },
   {
     "address": "0xEB9A4B185816C354dB92DB09cC3B50bE60b901b6",
