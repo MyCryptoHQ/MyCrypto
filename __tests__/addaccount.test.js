@@ -3,7 +3,9 @@ import {
   PAGES,
   FIXTURE_MYC_STORAGE_KEY,
   FIXTURE_VIEW_ONLY_ADDRESS,
-  FIXTURE_VIEW_ONLY_TOKENS
+  FIXTURE_PRIVATE_KEY_ADDRESS,
+  FIXTURE_VIEW_ONLY_TOKENS,
+  FIXTURE_PRIVATE_KEY_TOKENS
 } from './fixtures';
 import { getTransValueByKey } from './translation-utils';
 import { clearLocalStorage } from './localstorage-utils';
@@ -23,6 +25,7 @@ test('Should show wallet add UI', async (t) => {
   await t.expect(title).ok();
 });
 
+// Add Account - View Only
 test('Should be able to add a view only address', async (t) => {
   await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
   await addAccountPage.addViewOnly();
@@ -39,4 +42,44 @@ test('When a view only address is added should be displayed in dashboard metrics
   dashboardPage.waitPageLoaded();
 
   FIXTURE_VIEW_ONLY_TOKENS.forEach((t) => dashboardPage.expectBalanceInBalanceList(t));
+});
+
+// Add Account - Private Key
+test('Should be able to add a private key address', async (t) => {
+  await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
+  await addAccountPage.addPrivateKey();
+
+  dashboardPage.waitPageLoaded();
+
+  await dashboardPage.expectAddressToBePresent(FIXTURE_PRIVATE_KEY_ADDRESS);
+  await dashboardPage.expectAccountTableToMatchCount(1);
+});
+
+test('When a private key address is added should be displayed in dashboard metrics', async (t) => {
+  await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
+  await addAccountPage.addPrivateKey();
+
+  dashboardPage.waitPageLoaded();
+
+  FIXTURE_PRIVATE_KEY_TOKENS.forEach((t) => dashboardPage.expectBalanceInBalanceList(t));
+});
+
+// Add Account - Keystore File
+test('Should be able to add a keystore file address', async (t) => {
+  await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
+  await addAccountPage.addKeystoreFile();
+
+  dashboardPage.waitPageLoaded();
+
+  await dashboardPage.expectAddressToBePresent(FIXTURE_PRIVATE_KEY_ADDRESS);
+  await dashboardPage.expectAccountTableToMatchCount(1);
+});
+
+test('When a keystore file address is added should be displayed in dashboard metrics', async (t) => {
+  await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
+  await addAccountPage.addKeystoreFile();
+
+  dashboardPage.waitPageLoaded();
+
+  FIXTURE_PRIVATE_KEY_TOKENS.forEach((t) => dashboardPage.expectBalanceInBalanceList(t));
 });
