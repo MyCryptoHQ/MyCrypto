@@ -44,7 +44,7 @@ Then, you can run various commands depending on what you want to do:
 yarn start
 ```
 
-A development server will be available on https://localhost:3000
+A development server will be available on http://localhost:5000
 If you're using Chrome, you will get a `net::ERR_CERT_AUTHORITY_INVALID` warning.
 To disable it you can your settings in chrome: chrome://flags/#allow-insecure-localhost
 

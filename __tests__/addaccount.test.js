@@ -17,6 +17,27 @@ const dashboardPage = new DashboardPage();
 
 fixture('Add Accounts').page(PAGES.DASHBOARD);
 
+
+// Add Account - Keystore File
+test('Should be able to add a keystore file address', async (t) => {
+  await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
+  await addAccountPage.addKeystoreFile();
+
+  dashboardPage.waitPageLoaded();
+
+  await dashboardPage.expectAddressToBePresent(FIXTURE_PRIVATE_KEY_ADDRESS);
+  await dashboardPage.expectAccountTableToMatchCount(1);
+});
+
+test('When a keystore file address is added should be displayed in dashboard metrics', async (t) => {
+  await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
+  await addAccountPage.addKeystoreFile();
+
+  dashboardPage.waitPageLoaded();
+
+  FIXTURE_PRIVATE_KEY_TOKENS.forEach((t) => dashboardPage.expectBalanceInBalanceList(t));
+});
+
 test('Should show wallet add UI', async (t) => {
   await addAccountPage.navigateToPage();
   await addAccountPage.waitPageLoaded();
@@ -58,26 +79,6 @@ test('Should be able to add a private key address', async (t) => {
 test('When a private key address is added should be displayed in dashboard metrics', async (t) => {
   await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
   await addAccountPage.addPrivateKey();
-
-  dashboardPage.waitPageLoaded();
-
-  FIXTURE_PRIVATE_KEY_TOKENS.forEach((t) => dashboardPage.expectBalanceInBalanceList(t));
-});
-
-// Add Account - Keystore File
-test('Should be able to add a keystore file address', async (t) => {
-  await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
-  await addAccountPage.addKeystoreFile();
-
-  dashboardPage.waitPageLoaded();
-
-  await dashboardPage.expectAddressToBePresent(FIXTURE_PRIVATE_KEY_ADDRESS);
-  await dashboardPage.expectAccountTableToMatchCount(1);
-});
-
-test('When a keystore file address is added should be displayed in dashboard metrics', async (t) => {
-  await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
-  await addAccountPage.addKeystoreFile();
 
   dashboardPage.waitPageLoaded();
 

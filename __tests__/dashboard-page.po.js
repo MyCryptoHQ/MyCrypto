@@ -9,8 +9,8 @@ export default class DashboardPage extends BasePage {
     this.navigateTo(PAGES.DASHBOARD);
   }
 
-  async waitPageLoaded() {
-    await this.waitForPage(PAGES.DASHBOARD);
+  async waitPageLoaded(timeToWait) {
+    await this.waitForPage(PAGES.DASHBOARD, timeToWait);
   }
 
   async expectAddressToBePresent(address) {

@@ -6,10 +6,12 @@
     "./__tests__/*.test.js"
   ],
   "proxyByPass": [
-    "localhost:3000"
+    "localhost:5000"
   ],
   "clientScripts": [
-    { "module": "@testing-library/dom/dist/@testing-library/dom.umd.js" }
+    {
+      "module": "@testing-library/dom/dist/@testing-library/dom.umd.js"
+    }
   ],
   "developmentMode": true
 }

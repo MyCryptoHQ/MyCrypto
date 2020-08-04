@@ -50,7 +50,7 @@ export default class AddAccountPage extends BasePage {
 
   async addKeystoreFile() {
     await this.navigateToPage();
-    await this.waitPageLoaded();
+    await this.waitPageLoaded(FIXTURES_CONST.TIMEOUT * 2);
     await t.click(getByText(getTransValueByKey('X_KEYSTORE2')));
     this.waitForPage(PAGES.ADD_ACCOUNT_KEYSTORE);
 
