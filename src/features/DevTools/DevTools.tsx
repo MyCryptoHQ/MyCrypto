@@ -95,6 +95,14 @@ const renderAccountForm = (
 const SLink = styled(Link)`
   font-weight: 600;
 `;
+
+const SDevToolsToggle = styled.button`
+  position: 'fixed';
+  top: 0;
+  left: 0;
+  width: 112;
+`;
+
 const DBTools = () => {
   const { resetAppDb, addSeedData, removeSeedData } = useContext(DataContext);
   return (
@@ -201,7 +209,7 @@ const DevTools = () => {
 
 const DevToolsManagerContainer = styled.div<{ isActive: boolean }>`
   position: fixed;
-  z-index: 100;
+  z-index: 1000;
   top: 0;
   left: 0;
   max-width: 450px;
@@ -215,7 +223,6 @@ const DevToolsManagerContainer = styled.div<{ isActive: boolean }>`
 
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     position: fixed;
-    z-index: 100;
     max-width: 100vw;
   }
 `;
@@ -223,18 +230,9 @@ const DevToolsManagerContainer = styled.div<{ isActive: boolean }>`
 const DevToolsToggle = () => {
   const { isActive, toggleDevTools } = useDevTools();
   return (
-    <button
-      onClick={toggleDevTools}
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        zIndex: 99,
-        width: 112
-      }}
-    >
+    <SDevToolsToggle onClick={toggleDevTools}>
       {isActive ? 'DevMode On' : 'DevMode Off'}
-    </button>
+    </SDevToolsToggle>
   );
 };
 
