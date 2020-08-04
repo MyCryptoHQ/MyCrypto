@@ -11,7 +11,8 @@ import {
   Button,
   DeterministicAccountList,
   AssetSelector,
-  Typography
+  Typography,
+  Input
 } from '@components';
 import {
   EXT_URLS,
@@ -32,7 +33,9 @@ import {
 import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import styled from 'styled-components';
-import { COLORS } from '@theme';
+import { COLORS, SPACING } from '@theme';
+import { Formik } from 'formik';
+import Icon from '@components/Icon';
 
 interface OwnProps {
   formData: FormData;
@@ -62,6 +65,26 @@ const TableContainer = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+
+const HeadingWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const SForm = styled.form`
+  width: 50%;
+`;
+
+const SLabel = styled.label`
+  font-weight: normal;
+  margin-bottom: ${SPACING.SM};
+  margin-top: ${SPACING.MD};
+`;
+
+const SButton = styled(Button)`
+  margin-top: 30px;
+`;
+
 // const WalletService = WalletFactory(WalletId.LEDGER_NANO_S);
 
 const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
@@ -81,6 +104,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   }));
   const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
   const [assetToUse, setAssetToUse] = useState(baseAsset);
+  const [dpathAddView, setDpathAddView] = useState(false);
   const {
     state,
     requestConnection,
@@ -101,21 +125,25 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
     updateAsset(newAsset);
   };
 
-  const testDPathAddition: DPath = {
-    label: 'Test Ledger Live (ETH)',
-    value: "m/44'/60'/0'/0/0",
-    isHardened: true,
-    getIndex: (addressIndex): string => `m/44'/60'/${addressIndex}'/0/0`
-  };
-
-  const handleDPathAddition = () => {
+  const handleDPathAddition = (values: FormValues) => {
     addDPaths([
       {
-        ...testDPathAddition,
+        ...values,
         offset: 0,
         numOfAddresses: numOfAccountsToCheck
       }
     ]);
+    setDpathAddView(false);
+  };
+
+  interface FormValues {
+    label: string;
+    value: string;
+  }
+
+  const initialFormikValues: FormValues = {
+    label: '',
+    value: ''
   };
 
   const handleFreshAddressGeneration = () => {
@@ -153,7 +181,44 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   }
 
   if (state.isConnected && state.asset && (state.queuedAccounts || state.finishedAccounts)) {
-    return (
+    return dpathAddView ? (
+      <MnemonicWrapper>
+        <HeadingWrapper>
+          <Icon type="back" />
+          <Title fontSize="32px" bold={true}>
+            <Trans id="DETERMINISTIC_CUSTOM_TITLE" />
+          </Title>
+        </HeadingWrapper>
+        <Typography>{translate('DETERMINISTIC_CUSTOM_GET_INFORMED')}</Typography>
+        <Formik initialValues={initialFormikValues} onSubmit={handleDPathAddition}>
+          {({ handleChange, values }) => (
+            <SForm>
+              <SLabel htmlFor="label">
+                <Trans id="DETERMINISTIC_CUSTOM_LABEL" />
+              </SLabel>
+              <Input
+                placeholder="Custom Path"
+                name="label"
+                value={values.label}
+                onChange={handleChange}
+              />
+              <SLabel htmlFor="value">
+                <Trans id="DETERMINISTIC_CUSTOM_LABEL_DPATH" />
+              </SLabel>
+              <Input
+                placeholder="m/44’/60’/0’/0’"
+                name="value"
+                value={values.value}
+                onChange={handleChange}
+              />
+              <SButton onClick={() => handleDPathAddition(values)}>
+                <Trans id="DETERMINISTIC_ADD_DPATH" />
+              </SButton>
+            </SForm>
+          )}
+        </Formik>
+      </MnemonicWrapper>
+    ) : (
       <MnemonicWrapper>
         <Title fontSize="32px" bold={true}>
           <Trans id="MNEMONIC_TITLE" />
@@ -169,7 +234,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
               handleAssetUpdate(option);
             }}
           />
-          <Button onClick={handleDPathAddition} inverted={true}>
+          <Button onClick={() => setDpathAddView(true)} inverted={true}>
             <Trans id="MNEMONIC_ADD_CUSTOM_DPATH" />
           </Button>
         </Parameters>
