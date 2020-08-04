@@ -6,6 +6,7 @@ import { makeTransaction } from '@services/EthService';
 import { WalletFactory, HardwareWallet } from '@services/WalletService';
 import { InlineMessage } from '@components';
 import translate, { translateRaw } from '@translations';
+import { useInterval } from '@utils';
 
 import './Hardware.scss';
 
@@ -48,9 +49,9 @@ export default function HardwareSignTransaction({
   const [wallet, setWallet] = useState<HardwareWallet | undefined>();
   const SigningWalletService = WalletFactory(senderAccount.wallet);
 
-  useEffect(() => {
-    // Unlock Wallet
-    const WalletLoginRequest = setInterval(() => {
+  useInterval(
+    async () => {
+      // Unlock Wallet
       if (!isWalletUnlocked && !isRequestingWalletUnlock) {
         setIsRequestingWalletUnlock(true);
         const dpathObject = splitDPath(senderAccount.dPath);
@@ -60,24 +61,19 @@ export default function HardwareSignTransaction({
           dpathObject.index
         );
         try {
-          SigningWalletService.getChainCode(dpathObject.dpath)
-            .then((_: any) => {
-              // User has connected device.
-              setIsRequestingWalletUnlock(false);
-              setIsWalletUnlocked(true);
-              setWallet(walletObject);
-            })
-            .catch((_: any) => {
-              // User hasn't connected device or there was an error. Try again
-              setIsRequestingWalletUnlock(false);
-            });
+          await SigningWalletService.getChainCode(dpathObject.dpath);
+          setIsRequestingWalletUnlock(false);
+          setIsWalletUnlocked(true);
+          setWallet(walletObject);
         } catch (error) {
           setIsRequestingWalletUnlock(false);
         }
       }
-    }, 3000);
-    return () => clearInterval(WalletLoginRequest);
-  });
+    },
+    3000,
+    true,
+    []
+  );
 
   useEffect(() => {
     // Wallet has been unlocked. Attempting to sign tx now.
