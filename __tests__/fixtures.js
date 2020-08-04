@@ -5,7 +5,7 @@ const ENV = {
   E2E_MNEMONIC_PASSPHRASE: process.env.E2E_MNEMONIC_PASSPHRASE,
 
   // Defined in github/workflow to run against mycryptobuilds
-  E2E_BASE_URL: process.env.E2E_BASE_URL || 'http://localhost:3000/#'
+  E2E_BASE_URL: process.env.E2E_BASE_URL || 'https://localhost:3000'
 };
 
 const ENV_KEYS = Object.keys(ENV);
