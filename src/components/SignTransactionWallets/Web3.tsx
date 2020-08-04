@@ -25,12 +25,12 @@ interface Web3UserState {
   walletState: WalletSigningState;
 }
 
-const ethereumProvider = (window as CustomWindow).ethereum;
-let web3Provider: ethers.providers.Web3Provider;
+let web3Provider: Web3Provider;
 
 async function getWeb3Provider() {
+  const ethereumProvider = (window as CustomWindow).ethereum;
   await ethereumProvider.enable();
-  return new ethers.providers.Web3Provider(ethereumProvider);
+  return new Web3Provider(ethereumProvider);
 }
 
 class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContext, Web3UserState> {
@@ -51,6 +51,7 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
   public async initProvider() {
     web3Provider = await getWeb3Provider();
 
+    const ethereumProvider = (window as CustomWindow).ethereum;
     if (ethereumProvider) {
       this.getWeb3Account();
       this.watchForAccountChanges(ethereumProvider);

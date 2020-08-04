@@ -66,7 +66,7 @@ export class TrezorWallet extends HardwareWallet {
           r: res.payload.r,
           s: res.payload.s
         };
-        const eTx = new EthTx(txToSerialize);
+        const eTx = new EthTx(txToSerialize, { chain: chainId });
         const serializedTx = eTx.serialize();
         resolve(serializedTx);
       });

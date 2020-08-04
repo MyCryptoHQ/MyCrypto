@@ -3,10 +3,9 @@ import React, { FC } from 'react';
 import { WalletId, ITxReceipt, IStepComponentProps, ISignComponentProps, ISignedTx } from '@types';
 import { WALLET_STEPS } from '@components';
 
-const SignTransaction: FC<IStepComponentProps> = ({
-  txConfig,
-  onComplete
-}: IStepComponentProps) => {
+type Props = Pick<IStepComponentProps, 'txConfig' | 'onComplete'>;
+
+const SignTransaction: FC<Props> = ({ txConfig, onComplete }: Props) => {
   const {
     network,
     senderAccount: { wallet: walletName }

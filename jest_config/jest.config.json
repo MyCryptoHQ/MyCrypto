@@ -1,7 +1,7 @@
 {
   "rootDir": "../",
   "verbose": true,
-  "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+  "testRegex": "/*.*/?(.*).(spec|test).(jsx?|tsx?)$",
   "moduleDirectories": ["node_modules", "src"],
   "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "worker.ts", "worker.tsx"],
   "modulePathIgnorePatterns": ["<rootDir>/dist", "<rootDir>/src/types", "<rootDir>/src/assets"],
