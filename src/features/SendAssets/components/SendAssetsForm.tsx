@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo, useEffect, useState } from 'react';
+import React, { useContext, useMemo, useEffect, useState } from 'react';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
@@ -6,7 +6,6 @@ import isEmpty from 'lodash/isEmpty';
 import { bigNumberify } from 'ethers/utils';
 import BN from 'bn.js';
 import styled from 'styled-components';
-import path from 'ramda/src/path';
 import mergeDeepWith from 'ramda/src/mergeDeepWith';
 import { ValuesType } from 'utility-types';
 
@@ -59,7 +58,6 @@ import {
 import { fetchGasPriceEstimates, getGasEstimate } from '@services/ApiService';
 import {
   DEFAULT_ASSET_DECIMAL,
-  DEFAULT_NETWORK,
   GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
@@ -78,7 +76,7 @@ import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
 import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
 import { ProtectTxButton } from '@features/ProtectTransaction/components/ProtectTxButton';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
-import { useEffectOnce } from '@vendor';
+import { useEffectOnce, path } from '@vendor';
 import { getFiat } from '@config/fiats';
 
 import { DataField, GasLimitField, GasPriceField, GasPriceSlider, NonceField } from './fields';
@@ -102,6 +100,61 @@ export const AdvancedOptionsButton = styled(Button)`
 const NoMarginCheckbox = styled(Checkbox)`
   margin-bottom: 0;
 `;
+
+const getTxFeeValidation = (
+  amount: string,
+  assetRate: number,
+  isERC20: boolean,
+  gasLimit: string,
+  gasPrice: string,
+  ethAssetRate?: number
+) => {
+  const { type, amount: $amount, fee: $fee } = validateTxFee(
+    amount,
+    assetRate,
+    isERC20,
+    gasLimit,
+    gasPrice,
+    ethAssetRate
+  );
+  switch (type) {
+    case 'Warning':
+      return (
+        <InlineMessage
+          type={InlineMessageType.WARNING}
+          value={translateRaw('WARNING_TRANSACTION_FEE', {
+            $amount: `$${$amount}`,
+            $fee: `$${$fee}`
+          })}
+        />
+      );
+    case 'Error-Use-Lower':
+      return (
+        <InlineMessage
+          type={InlineMessageType.ERROR}
+          value={translateRaw('ERROR_TRANSACTION_FEE_USE_LOWER', { $fee: `$${$fee}` })}
+        />
+      );
+    case 'Error-High-Tx-Fee':
+      return (
+        <InlineMessage
+          type={InlineMessageType.ERROR}
+          value={translateRaw('ERROR_HIGH_TRANSACTION_FEE_HIGH', { $fee: `$${$fee}` })}
+        />
+      );
+    case 'Error-Very-High-Tx-Fee':
+      return (
+        <InlineMessage
+          type={InlineMessageType.ERROR}
+          value={translateRaw('ERROR_HIGH_TRANSACTION_FEE_VERY_HIGH', { $fee: `$${$fee}` })}
+        />
+      );
+    case 'Invalid':
+    case 'None':
+    default:
+      return <></>;
+  }
+};
 
 const initialFormikValues: IFormikFields = {
   address: {
@@ -189,7 +242,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
-  const defaultNetwork = networks.find((n) => n.id === DEFAULT_NETWORK);
+  const defaultNetwork = networks.find((n) => n.id === defaultAccount.networkId);
   const [baseAsset, setBaseAsset] = useState(
     (txConfig.network &&
       getBaseAssetByNetwork({ network: txConfig.network, assets: userAssets })) ||
@@ -295,64 +348,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
       )
   });
 
-  const getTxFeeValidation = useCallback(
-    (
-      amount: string,
-      assetRate: number,
-      isERC20: boolean,
-      gasLimit: string,
-      gasPrice: string,
-      ethAssetRate?: number
-    ) => {
-      const { type, amount: $amount, fee: $fee } = validateTxFee(
-        amount,
-        assetRate,
-        isERC20,
-        gasLimit,
-        gasPrice,
-        ethAssetRate
-      );
-      switch (type) {
-        case 'Warning':
-          return (
-            <InlineMessage
-              type={InlineMessageType.WARNING}
-              value={translateRaw('WARNING_TRANSACTION_FEE', {
-                $amount: `$${$amount}`,
-                $fee: `$${$fee}`
-              })}
-            />
-          );
-        case 'Error-Use-Lower':
-          return (
-            <InlineMessage
-              type={InlineMessageType.ERROR}
-              value={translateRaw('ERROR_TRANSACTION_FEE_USE_LOWER', { $fee: `$${$fee}` })}
-            />
-          );
-        case 'Error-High-Tx-Fee':
-          return (
-            <InlineMessage
-              type={InlineMessageType.ERROR}
-              value={translateRaw('ERROR_HIGH_TRANSACTION_FEE_HIGH', { $fee: `$${$fee}` })}
-            />
-          );
-        case 'Error-Very-High-Tx-Fee':
-          return (
-            <InlineMessage
-              type={InlineMessageType.ERROR}
-              value={translateRaw('ERROR_HIGH_TRANSACTION_FEE_VERY_HIGH', { $fee: `$${$fee}` })}
-            />
-          );
-        case 'Invalid':
-        case 'None':
-        default:
-          return <></>;
-      }
-    },
-    []
-  );
-
   const validAccounts = accounts.filter((account) => account.wallet !== WalletId.VIEW_ONLY);
   const userAccountEthAsset = userAssets.find((a) => a.uuid === ETHUUID);
   const initialValues = useMemo(
@@ -380,6 +375,10 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
               updateFormValues(values);
             }
           }, [values]);
+
+          useEffect(() => {
+            handleNonceEstimate(values.account);
+          }, [values.account]);
 
           // Set gas estimates if default asset is selected
           useEffectOnce(() => {
@@ -458,6 +457,16 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
             }
           };
 
+          const handleFieldReset = () => {
+            const resetFields: (keyof IFormikFields)[] = [
+              'account',
+              'amount',
+              'txDataField',
+              'advancedTransaction'
+            ];
+            resetFields.forEach((field) => setFieldValue(field, initialValues[field]));
+          };
+
           const handleNonceEstimate = async (account: IAccount) => {
             if (!values || !values.network || !account) {
               return;
@@ -486,6 +495,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                       assets={userAssets}
                       onSelect={(option: StoreAsset) => {
                         form.setFieldValue('asset', option || {}); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
+                        handleFieldReset();
                         //@todo get assetType onChange
                         if (option && option.networkId) {
                           const network = getNetworkById(option.networkId, networks);
@@ -524,7 +534,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                         accounts={accountsWithAsset}
                         onSelect={(account: StoreAccount) => {
                           form.setFieldValue(field.name, account); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
-                          handleNonceEstimate(account);
                           handleGasEstimate();
                         }}
                         asset={values.asset}
@@ -533,6 +542,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                   }}
                 />
               </fieldset>
+              {/* Receiver Address */}
               <fieldset className="SendAssetsForm-fieldset">
                 <label htmlFor="address" className="input-group-header">
                   {translate('X_RECIPIENT')}
