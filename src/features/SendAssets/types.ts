@@ -8,3 +8,18 @@ export interface IPath {
   component: FunctionComponent<IStepComponentProps>;
   action: TStepAction;
 }
+
+export interface ReducerAction {
+  type: ActionType;
+  payload: any;
+}
+
+export enum ActionType {
+  FORM_SUBMIT,
+  SIGN,
+  WEB3_SIGN,
+  SEND,
+  AFTER_SEND,
+  RESUBMIT,
+  RESET
+}
