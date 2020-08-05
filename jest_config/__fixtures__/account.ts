@@ -8,7 +8,7 @@ export const fAccounts: StoreAccount[] = [
     address: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c' as TAddress,
     networkId: 'Ethereum',
     wallet: 'WALLETCONNECT' as WalletId,
-    dPath: '',
+    dPath: "m/44'/1'/0'/0", // Mnemonic dPath
     assets: [
       {
         uuid: '356a192b-7913-504c-9457-4d18c28d46e6' as TUuid,
@@ -34,7 +34,7 @@ export const fAccounts: StoreAccount[] = [
     address: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c' as TAddress,
     networkId: 'Ropsten',
     wallet: 'LEDGER' as WalletId,
-    dPath: '',
+    dPath: "m/44'/60'/0'", // Ledger dPath
     assets: [
       {
         uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7' as TUuid,

@@ -82,7 +82,6 @@ function AccountSelector({ accounts, asset, name, value, onSelect }: Props) {
           </>
         );
       }}
-      // value={selected || options[0]}
       valueComponent={({ value: { account: selectedAccount, asset: selectedAsset } }) => {
         const { address, label } = selectedAccount;
         const { balance, assetTicker, assetUUID } = selectedAsset;

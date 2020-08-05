@@ -8,11 +8,11 @@ import { ROUTE_PATHS } from '@config';
 import { useStateReducer } from '@utils';
 import { ISignedTx, IPendingTxReceipt, Tab } from '@types';
 import { BREAK_POINTS } from '@theme';
+import { StoreContext } from '@services';
 
 import { deployContractsInitialState, DeployContractsFactory } from './stateFactory';
 import { Deploy, DeployConfirm, DeployReceipt } from './components';
 import { DeployContractsState } from './types';
-import { StoreContext } from '@services';
 
 const { SCREEN_XS } = BREAK_POINTS;
 

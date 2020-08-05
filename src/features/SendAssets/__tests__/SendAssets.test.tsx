@@ -10,6 +10,9 @@ import { fSettings } from '@fixtures';
 import { IS_ACTIVE_FEATURE } from '@config';
 import { noOp } from '@utils';
 
+// SendFlow makes RPC calls to get nonce and gas.
+jest.mock('ethers');
+
 /* Test components */
 describe('SendAssetsFlow', () => {
   const component = (path?: string) => (
@@ -29,8 +32,9 @@ describe('SendAssetsFlow', () => {
               ({
                 userAssets: [],
                 accounts: [],
+                defaultAccount: {},
                 getAccount: jest.fn(),
-                networks: []
+                networks: [{ nodes: [] }]
               } as unknown) as any
             }
           >
@@ -58,7 +62,7 @@ describe('SendAssetsFlow', () => {
     return simpleRender(component(pathToLoad));
   };
 
-  test('Can render the first step (Send Assets Form) in the flow.', () => {
+  test('Can render the first step (Send Assets Form) in the flow.', async () => {
     const { getByText } = renderComponent();
     const selector = 'Send Assets';
     expect(getByText(selector)).toBeInTheDocument();
