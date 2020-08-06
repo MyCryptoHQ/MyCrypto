@@ -1,9 +1,9 @@
 import { IFormikFields } from '@types';
-import { sendAssetsReducer } from '../SendAssets.reducer';
-import { ReducerAction, ActionType } from '../types';
 import { fAssets } from '@../jest_config/__fixtures__/assets';
 import { fAccount, fNetwork } from '@fixtures';
 import { getDefaultEstimates } from '@services';
+
+import { sendAssetsReducer, ReducerAction } from '../SendAssets.reducer';
 
 const dispatch = (action: ReducerAction) => (state: any) => sendAssetsReducer(state, action);
 
@@ -29,7 +29,9 @@ describe('SendAssetsReducer', () => {
 
       const payload = { form, assets: fAssets };
 
-      const newState = dispatch({ type: ActionType.FORM_SUBMIT, payload })(prevState);
+      const newState = dispatch({ type: sendAssetsReducer.actionTypes.FORM_SUBMIT, payload })(
+        prevState
+      );
       const txConfig = newState.txConfig!;
       expect(txConfig.senderAccount.address).toEqual(form.account.address);
       expect(txConfig.receiverAddress).toEqual(form.address.value);
@@ -52,7 +54,9 @@ describe('SendAssetsReducer', () => {
   describe('SEND', () => {
     it('sets send to true and otherwise keeps the state as is', () => {
       const prevState = { txReceipt: undefined, txConfig: undefined, signedTx: undefined };
-      const newState = dispatch({ type: ActionType.SEND, payload: undefined })(prevState);
+      const newState = dispatch({ type: sendAssetsReducer.actionTypes.SEND, payload: undefined })(
+        prevState
+      );
       expect(newState.send).toEqual(true);
 
       expect(newState.signedTx).toEqual(prevState.signedTx);

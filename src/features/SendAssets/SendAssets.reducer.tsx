@@ -1,5 +1,6 @@
 import { hexlify, bigNumberify, Arrayish } from 'ethers/utils';
 import { TransactionResponse } from 'ethers/providers';
+import { ValuesType } from 'utility-types';
 
 import {
   IFormikFields,
@@ -13,7 +14,8 @@ import {
   ITxType,
   ExtendedAsset,
   Network,
-  StoreAccount
+  StoreAccount,
+  TAction
 } from '@types';
 import {
   getBaseAssetByNetwork,
@@ -23,7 +25,6 @@ import {
 } from '@services';
 import { makePendingTxReceipt, makeTxConfigFromSignedTx } from '@utils';
 
-import { ReducerAction, ActionType } from './types';
 import { processFormDataToTx } from './helpers';
 
 interface State {
@@ -33,39 +34,51 @@ interface State {
   send?: boolean;
 }
 
+export type ReducerAction = TAction<ValuesType<typeof sendAssetsReducer.actionTypes>, any>;
+
 // @ts-ignore
 export const initialState: State = { txConfig: {} };
 
 export const sendAssetsReducer = (state: State, action: ReducerAction) => {
   switch (action.type) {
-    case ActionType.FORM_SUBMIT: {
+    case sendAssetsReducer.actionTypes.FORM_SUBMIT: {
       const txConfig = handleFormSubmit(action.payload);
       return { ...state, txConfig };
     }
-    case ActionType.SIGN: {
+    case sendAssetsReducer.actionTypes.SIGN: {
       const { txConfig, signedTx } = handleSignedTx(state, action.payload);
       return { ...state, txConfig, signedTx };
     }
-    case ActionType.WEB3_SIGN: {
+    case sendAssetsReducer.actionTypes.WEB3_SIGN: {
       const txReceipt = handleSignedWeb3Tx(state, action.payload);
       return { ...state, txReceipt };
     }
-    case ActionType.SEND: {
+    case sendAssetsReducer.actionTypes.SEND: {
       return { ...state, send: true };
     }
-    case ActionType.AFTER_SEND: {
+    case sendAssetsReducer.actionTypes.AFTER_SEND: {
       const txReceipt = handleConfirmAndSend(state, action.payload);
       return { ...state, txReceipt };
     }
-    case ActionType.RESUBMIT: {
+    case sendAssetsReducer.actionTypes.RESUBMIT: {
       const txConfig = handleResubmitTx(state);
       return { ...state, txConfig };
     }
-    case ActionType.RESET:
+    case sendAssetsReducer.actionTypes.RESET:
       return initialState;
     default:
       return state;
   }
+};
+
+sendAssetsReducer.actionTypes = {
+  FORM_SUBMIT: 'FORM_SUBMIT',
+  SIGN: 'SIGN',
+  WEB3_SIGN: 'WEB3_SIGN',
+  SEND: 'SEND',
+  AFTER_SEND: 'AFTER_SEND',
+  RESUBMIT: 'RESUBMIT',
+  RESET: 'RESET'
 };
 
 const handleFormSubmit = (payload: { form: IFormikFields; assets: ExtendedAsset[] }) => {

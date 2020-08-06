@@ -22,7 +22,6 @@ import {
   SendAssetsFormWithProtectTx,
   SignTransactionWithProtectTx
 } from './components';
-import { ActionType } from './types';
 
 function SendAssets() {
   const [reducerState, dispatch] = useReducer(sendAssetsReducer, initialState);
@@ -46,7 +45,7 @@ function SendAssets() {
         if (protectTxEnabled && !isMyCryptoMember) {
           form.nonceField = (parseInt(form.nonceField, 10) + 1).toString();
         }
-        dispatch({ type: ActionType.FORM_SUBMIT, payload: { form, assets } });
+        dispatch({ type: sendAssetsReducer.actionTypes.FORM_SUBMIT, payload: { form, assets } });
         cb();
       }
     },
@@ -61,7 +60,7 @@ function SendAssets() {
       component: SignTransactionWithProtectTx,
       props: (({ txConfig }) => ({ txConfig }))(reducerState),
       actions: (payload: ITxReceipt | ISignedTx, cb: any) => {
-        dispatch({ type: ActionType.WEB3_SIGN, payload });
+        dispatch({ type: sendAssetsReducer.actionTypes.WEB3_SIGN, payload });
         cb();
       }
     },
@@ -81,7 +80,7 @@ function SendAssets() {
         if (protectTxEnabled && !isMyCryptoMember) {
           form.nonceField = (parseInt(form.nonceField, 10) + 1).toString();
         }
-        dispatch({ type: ActionType.FORM_SUBMIT, payload: { form, assets } });
+        dispatch({ type: sendAssetsReducer.actionTypes.FORM_SUBMIT, payload: { form, assets } });
         cb();
       }
     },
@@ -91,7 +90,7 @@ function SendAssets() {
       props: (({ txConfig }) => ({ txConfig }))(reducerState),
       actions: (payload: ITxConfig | ISignedTx, cb: any) => {
         dispatch({
-          type: ActionType.SIGN,
+          type: sendAssetsReducer.actionTypes.SIGN,
           payload: { signedTx: payload, assets, networks, accounts }
         });
         cb();
@@ -103,9 +102,11 @@ function SendAssets() {
       props: (({ txConfig, signedTx }) => ({ txConfig, signedTx }))(reducerState),
       actions: (payload: ITxConfig | ISignedTx, cb: any) => {
         if (setProtectTxTimeoutFunction) {
-          setProtectTxTimeoutFunction(() => dispatch({ type: ActionType.SEND, payload }));
+          setProtectTxTimeoutFunction(() =>
+            dispatch({ type: sendAssetsReducer.actionTypes.SEND, payload })
+          );
         } else {
-          dispatch({ type: ActionType.SEND, payload });
+          dispatch({ type: sendAssetsReducer.actionTypes.SEND, payload });
         }
         if (cb) {
           cb();
@@ -121,7 +122,7 @@ function SendAssets() {
         pendingButton: {
           text: translateRaw('TRANSACTION_BROADCASTED_RESUBMIT'),
           action: (cb: any) => {
-            dispatch({ type: ActionType.RESUBMIT, payload: {} });
+            dispatch({ type: sendAssetsReducer.actionTypes.RESUBMIT, payload: {} });
             cb();
           }
         }
@@ -155,7 +156,7 @@ function SendAssets() {
 
       provider
         .sendRawTx(signedTx)
-        .then((payload) => dispatch({ type: ActionType.AFTER_SEND, payload }));
+        .then((payload) => dispatch({ type: sendAssetsReducer.actionTypes.AFTER_SEND, payload }));
     }
   }, [reducerState.send]);
 
