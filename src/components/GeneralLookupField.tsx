@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext, useCallback } from 'react';
+import React, { useRef, useState, useContext, useCallback, useEffect } from 'react';
 import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
 
 import { DomainStatus, InlineMessage } from '@components';
@@ -28,6 +28,7 @@ export interface IGeneralLookupFieldComponentProps {
   onLoad?(): void;
   setFieldValue?(field: string, value: any, shouldValidate?: boolean): void;
   setFieldTouched?(field: string, touched?: boolean, shouldValidate?: boolean): void;
+  setFieldError?(field: string, value: string | undefined): void;
 }
 
 const GeneralLookupField = ({
@@ -46,7 +47,8 @@ const GeneralLookupField = ({
   onLoad,
   placeholder,
   setFieldValue,
-  setFieldTouched
+  setFieldTouched,
+  setFieldError
 }: IGeneralLookupFieldComponentProps) => {
   const { assets } = useContext(AssetContext);
   const errorMessage = typeof error === 'object' ? error.message : error;
@@ -68,16 +70,13 @@ const GeneralLookupField = ({
     };
   };
 
-  const validateAddress = (v: IReceiverAddress) => {
-    const validationResult = isValidETHRecipientAddress(v.value, resolutionError);
-    if (validationResult.success) return;
-
-    return {
-      name: validationResult.name,
-      type: validationResult.type,
-      message: validationResult.message
-    };
-  };
+  useEffect(() => {
+    // Run validation if possible
+    if (setFieldError) {
+      const validationResult = isValidETHRecipientAddress(value.value, resolutionError);
+      setFieldError(name, validationResult.success ? undefined : validationResult.message);
+    }
+  }, [value]);
 
   useEffectOnce(() => {
     if (value && value.value && onLoad) {

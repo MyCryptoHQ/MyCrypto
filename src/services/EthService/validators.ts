@@ -15,7 +15,7 @@ import {
   DEFAULT_ASSET_DECIMAL
 } from '@config';
 import { JsonRPCResponse, InlineMessageType, Web3RequestPermissionsResponse } from '@types';
-import translate from '@translations';
+import { translateRaw } from '@translations';
 
 import {
   stripHexPrefix,
@@ -94,7 +94,7 @@ export const isValidETHRecipientAddress = (
       success: false,
       name: 'ValidationError',
       type: InlineMessageType.ERROR,
-      message: translate('TO_FIELD_ERROR')
+      message: translateRaw('TO_FIELD_ERROR')
     };
   } else if (isValidENSName(address) && !resolutionErr) {
     // Is a valid ENS name, and it can be resolved!
@@ -127,7 +127,7 @@ export const isValidETHRecipientAddress = (
       success: false,
       name: 'ValidationError',
       type: InlineMessageType.INFO_CIRCLE,
-      message: translate('CHECKSUM_ERROR')
+      message: translateRaw('CHECKSUM_ERROR')
     };
   } else if (!isValidENSName(address) && !isValidMixedCaseETHAddress(address)) {
     // Is an invalid ens name & an invalid mixed-case address.
@@ -135,7 +135,7 @@ export const isValidETHRecipientAddress = (
       success: false,
       name: 'ValidationError',
       type: InlineMessageType.ERROR,
-      message: translate('TO_FIELD_ERROR')
+      message: translateRaw('TO_FIELD_ERROR')
     };
   }
   return { success: true };

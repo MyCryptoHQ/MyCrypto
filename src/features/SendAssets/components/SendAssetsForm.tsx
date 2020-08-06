@@ -378,7 +378,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
     }
   });
 
-  const { values, setFieldValue, setFieldTouched, errors, touched } = formik;
+  const { values, setFieldValue, setFieldTouched, setFieldError, errors, touched } = formik;
 
   useEffect(() => {
     if (updateFormValues) {
@@ -550,6 +550,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
           setIsResolvingDomain={setIsResolvingDomain}
           setFieldValue={setFieldValue}
           setFieldTouched={setFieldTouched}
+          setFieldError={setFieldError}
         />
       </fieldset>
       {/* Amount */}
