@@ -145,6 +145,11 @@ const PATHS: IRoutePath[] = [
     name: 'TX_STATUS',
     title: 'Transaction Status',
     path: '/tx-status'
+  },
+  {
+    name: 'REP_TOKEN_MIGRATION',
+    title: 'REP Token Migration',
+    path: '/migrate/rep'
   }
 ];
 
