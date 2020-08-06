@@ -126,13 +126,8 @@ const handleSignedTx = (
 };
 
 const handleSignedWeb3Tx = (state: State, payload: ITxHash) => {
-  const { txConfig } = state;
   const pendingTxReceipt = makePendingTxReceipt(payload)(ITxType.STANDARD, state.txConfig!);
-  return {
-    ...pendingTxReceipt,
-    senderAccount: txConfig!.senderAccount,
-    network: txConfig!.network
-  };
+  return pendingTxReceipt;
 };
 
 const handleConfirmAndSend = (state: State, retrievedTxResponse: TransactionResponse) => {
