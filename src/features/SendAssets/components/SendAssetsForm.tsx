@@ -83,7 +83,12 @@ import { getFiat, Fiats } from '@config/fiats';
 
 import { DataField, GasLimitField, GasPriceField, GasPriceSlider, NonceField } from './fields';
 import './SendAssetsForm.scss';
-import { validateAmountField } from './validators';
+import {
+  validateAmountField,
+  validateGasLimitField,
+  validateGasPriceField,
+  validateNonceField
+} from './validators';
 import { isERC20Tx, processFormForEstimateGas } from '../helpers';
 import { validateTxFee } from '@services/EthService/validators';
 
@@ -262,7 +267,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
   const SendAssetsSchema = Yup.object().shape({
     amount: Yup.string()
       .required(translateRaw('REQUIRED'))
-      .test('check-valid-amount', translateRaw('ERROR_0'), (value) => !validateAmountField(value))
+      .test(validateAmountField())
       .test({
         name: 'check-amount',
         test(value) {
@@ -321,17 +326,20 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
       .min(GAS_LIMIT_LOWER_BOUND, translateRaw('ERROR_8'))
       .max(GAS_LIMIT_UPPER_BOUND, translateRaw('ERROR_8'))
       .required(translateRaw('REQUIRED'))
-      .typeError(translateRaw('ERROR_8')),
+      .typeError(translateRaw('ERROR_8'))
+      .test(validateGasLimitField()),
     gasPriceField: Yup.number()
       .min(GAS_PRICE_GWEI_LOWER_BOUND, translateRaw('ERROR_10'))
       .max(GAS_PRICE_GWEI_UPPER_BOUND, translateRaw('ERROR_10'))
       .required(translateRaw('REQUIRED'))
-      .typeError(translateRaw('GASPRICE_ERROR')),
+      .typeError(translateRaw('GASPRICE_ERROR'))
+      .test(validateGasPriceField()),
     nonceField: Yup.number()
       .integer(translateRaw('ERROR_11'))
       .min(0, translateRaw('ERROR_11'))
       .required(translateRaw('REQUIRED'))
       .typeError(translateRaw('ERROR_11'))
+      .test(validateNonceField())
       .test(
         'check-nonce',
         // @ts-ignore Hack to allow for returning of Markdown
@@ -739,7 +747,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
           shown={!(isEstimatingGasLimit || isResolvingName || isEstimatingNonce || !isFormValid)}
         />
       )}
-      ); />
     </div>
   );
 };
