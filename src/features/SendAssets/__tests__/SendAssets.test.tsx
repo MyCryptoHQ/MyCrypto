@@ -62,7 +62,7 @@ describe('SendAssetsFlow', () => {
     return simpleRender(component(pathToLoad));
   };
 
-  test('Can render the first step (Send Assets Form) in the flow.', async () => {
+  test('Can render the first step (Send Assets Form) in the flow.', () => {
     const { getByText } = renderComponent();
     const selector = 'Send Assets';
     expect(getByText(selector)).toBeInTheDocument();

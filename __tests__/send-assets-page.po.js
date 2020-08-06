@@ -17,7 +17,6 @@ export default class SendAssetsPage extends BasePage {
     await t
       .click(getByText(getTransValueByKey('ACCOUNT_LOOKUP_SELECTION_PLACEHOLDER')))
       .click(getAllByText(FIXTURE_SEND_CONTACT).nth(1))
-      // .click(Selector('div[data-testid="contact-selector"]').withText(FIXTURE_SEND_CONTACT))
       .click(Selector('input[name="amount"]').parent())
       .typeText(Selector('input[name="amount"]').parent(), FIXTURE_SEND_AMOUNT);
   }
