@@ -50,7 +50,7 @@ export const sendAssetsReducer = (state: State, action: ReducerAction) => {
       return { ...state, txConfig, signedTx };
     }
     case sendAssetsReducer.actionTypes.WEB3_SIGN: {
-      const txReceipt = handleSignedWeb3Tx(state, action.payload);
+      const txReceipt = handlePendingTxReceipt(state, action.payload);
       return { ...state, txReceipt };
     }
     case sendAssetsReducer.actionTypes.SEND: {
@@ -125,22 +125,17 @@ const handleSignedTx = (
   };
 };
 
-const handleSignedWeb3Tx = (state: State, payload: ITxHash) => {
+const handlePendingTxReceipt = (state: State, payload: ITxHash) => {
   const pendingTxReceipt = makePendingTxReceipt(payload)(ITxType.STANDARD, state.txConfig!);
   return pendingTxReceipt;
 };
 
 const handleConfirmAndSend = (state: State, retrievedTxResponse: TransactionResponse) => {
-  const { signedTx, txConfig } = state;
+  const { signedTx } = state;
   if (!signedTx) {
     return; // @todo: Handle this error state.
   }
-
-  const pendingTxReceipt = makePendingTxReceipt(retrievedTxResponse.hash as ITxHash)(
-    ITxType.STANDARD,
-    txConfig!
-  );
-  return pendingTxReceipt;
+  return handlePendingTxReceipt(state, retrievedTxResponse.hash as ITxHash);
 };
 
 const handleResubmitTx = (state: State) => {
