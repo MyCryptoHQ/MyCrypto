@@ -23,8 +23,22 @@ const defaultTxConfig = {
     gasPrice: bigNumberify('57000000000')
   },
   from: fAccount.address,
-  senderAccount: fAccount
+  senderAccount: fAccount,
+  receiverAddress: fAccount.address
 };
+
+jest.mock('ethers/utils', () => {
+  const { mockFactory } = require('../__mocks__/utils');
+  return mockFactory({
+    gasPrice: '57000000000',
+    gasLimit: '21000',
+    nonce: '10',
+    data: '0x',
+    receiverAddress: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
+    value: '10000000000000',
+    to: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c'
+  });
+});
 
 describe('SendAssetsReducer', () => {
   describe('FORM_SUBMIT', () => {
@@ -65,7 +79,36 @@ describe('SendAssetsReducer', () => {
     });
   });
   describe('SIGN', () => {
-    // TODO
+    it('it updates txConfig and signedTx', () => {
+      const prevState = {
+        txReceipt: undefined,
+        txConfig: defaultTxConfig,
+        signedTx: undefined
+      };
+      const payload = {
+        signedTx: '0x12345678',
+        assets: fAssets,
+        networks: [fNetwork],
+        accounts: [fAccount]
+      };
+      const newState = dispatch({
+        type: sendAssetsReducer.actionTypes.SIGN,
+        payload
+      })(prevState);
+      const txConfig = newState.txConfig!;
+      const signedTx = newState.signedTx!;
+      expect(signedTx).toBe(payload.signedTx);
+      expect(txConfig.asset.uuid).toBe(prevState.txConfig.asset.uuid);
+      expect(txConfig.baseAsset.uuid).toBe(prevState.txConfig.baseAsset.uuid);
+      expect(txConfig.data).toBe(prevState.txConfig.data);
+      expect(txConfig.receiverAddress).toBe(fAccount.address);
+      expect(txConfig.from).toBe(fAccount.address);
+      expect(txConfig.gasLimit).toEqual(prevState.txConfig.gasLimit);
+      expect(txConfig.gasPrice).toEqual(prevState.txConfig.gasPrice);
+      expect(txConfig.value).toEqual('10000000000000');
+
+      expect(newState.txReceipt).toBe(prevState.txReceipt);
+    });
   });
   describe('WEB3_SIGN', () => {
     it('it updates the txReceipt with values from txConfig', () => {
