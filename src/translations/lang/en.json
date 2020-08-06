@@ -1059,11 +1059,12 @@
     "POWERED_BY": "Powered By",
     "DPATH_GENERATE_FRESH_ADDRESS_GAP_ERROR": "You cant generate more than $gap fresh accounts. Add some assets to the existing fresh addresses to open up more!",
     "ZAP_WITHDRAW_TOOLTIP": "Withdrawing from this Zap requires interacting with Uniswap. If you need assistance, please read [How To Withdraw from Unipool](https://support.mycrypto.com/how-to/defi/how-to-withdraw-from-unipool).",
-    "REP_TOKEN_MIGRATION_STEP1_TEXT": "Before migrating your version 1 REP to version 2, you must approve the membership contract to execute the transaction.",
-    "REP_TOKEN_MIGRATION_STEP2_TEXT": "The contract you approved will complete the REP v1 to v2 migration as soon as you confirm the transaction below.",
-    "APPROVE_REP_TOKEN_MIGRATION": "Approve Version 2 REP Contract",
+    "REP_TOKEN_MIGRATION_STEP1_TEXT": "Before migrating your v1 REP to v2 REP, you must approve the v2 contract which will allow for migration.",
+    "REP_TOKEN_MIGRATION_STEP2_TEXT": "After the REP v2 contract has been approved, confirm the transaction below to conduct the actual migration. This will complete the migration.",
+    "APPROVE_REP_TOKEN_MIGRATION": "Approve REPv2 Contract",
     "COMPLETE_REP_TOKEN_MIGRATION": "Complete REP Migration",
     "REP_TOKEN_MIGRATION": "Migrate REP Tokens",
-    "REP_TOKEN_MIGRATION_RECEIPT": "REP Token Migration Receipt"
+    "REP_TOKEN_MIGRATION_RECEIPT": "REP Token Migration Receipt",
+    "REP_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP": "This tool is intended to migrate all of your REP tokens from v1 to v2, so this field cannot be modified."
   }
 }

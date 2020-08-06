@@ -12,7 +12,7 @@ import TokenMigrationInteractionFactory from './stateFactory';
 import { ISimpleTxFormFull, TokenMigrationState, ITokenMigrationFormFull } from './types';
 import { createMigrationTx, createApproveTx } from './helpers';
 import { isERC20Tx } from '../SendAssets';
-import TokenMigrationPurchaseForm from './components/TokenMigrationForm';
+import TokenMigrationForm from './components/TokenMigrationForm';
 import { TokenMigrationMultiTx } from './components';
 import TokenMigrationReceipt from './components/TokenMigrationReceipt';
 
@@ -35,7 +35,7 @@ const TokenMigrationStepper = () => {
   const steps: IStepperPath[] = [
     {
       label: translateRaw('REP_TOKEN_MIGRATION'),
-      component: TokenMigrationPurchaseForm,
+      component: TokenMigrationForm,
       props: {
         account,
         isSubmitting
@@ -113,8 +113,8 @@ const TokenMigrationStepper = () => {
         }, [canYield]);
       }}
       steps={steps}
-      defaultBackPath={ROUTE_PATHS.REP_TOKEN_MIGRATION.path}
-      defaultBackPathLabel={ROUTE_PATHS.REP_TOKEN_MIGRATION.title} // @todo: Change this.
+      defaultBackPath={ROUTE_PATHS.DASHBOARD.path}
+      defaultBackPathLabel={ROUTE_PATHS.DASHBOARD.title} // @todo: Change this.
     />
   );
 };

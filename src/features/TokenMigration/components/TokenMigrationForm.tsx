@@ -3,17 +3,18 @@ import styled from 'styled-components';
 import { Formik, Form, Field, FieldProps } from 'formik';
 import isEmpty from 'lodash/isEmpty';
 import * as Yup from 'yup';
+import { bigNumberify } from 'ethers/utils';
 
 import translate, { translateRaw } from '@translations';
 import { SPACING } from '@theme';
 import { IAccount, Network, StoreAccount, Asset } from '@types';
-import { AccountDropdown, InlineMessage, AmountInput, Button } from '@components';
+import { AccountDropdown, InlineMessage, AmountInput, Button, Tooltip } from '@components';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
 import { StoreContext, AssetContext, NetworkContext } from '@services/Store';
 import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
-import { ETHUUID, noOp } from '@utils';
+import { ETHUUID, noOp, weiToFloat } from '@utils';
 import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
 
 import { ISimpleTxFormFull } from '../types';
@@ -110,7 +111,10 @@ export const TokenMigrationFormUI = ({
             if (!accountAssetAmt) {
               return;
             }
-            setFieldValue('amount', accountAssetAmt); // this would be better as a reducer imo.
+            setFieldValue(
+              'amount',
+              weiToFloat(bigNumberify(accountAssetAmt.balance), asset.decimal).toString()
+            ); // this would be better as a reducer imo.
             setFieldValue('account', account); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
 
             handleNonceEstimate(account);
@@ -183,22 +187,26 @@ export const TokenMigrationFormUI = ({
                   render={({ field, form }: FieldProps) => {
                     return (
                       <>
-                        <AmountInput
-                          {...field}
-                          disabled={true}
-                          asset={values.asset}
-                          value={field.value}
-                          onBlur={() => {
-                            form.setFieldTouched('amount');
-                            //handleGasEstimate();
-                          }}
-                          placeholder={'0.00'}
-                        />
-                        {errors && errors.amount && touched && touched.amount ? (
-                          <InlineMessage className="SendAssetsForm-errors">
-                            {errors.amount}
-                          </InlineMessage>
-                        ) : null}
+                        <Tooltip
+                          tooltip={translateRaw('REP_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP')}
+                        >
+                          <AmountInput
+                            {...field}
+                            disabled={true}
+                            asset={values.asset}
+                            value={field.value}
+                            onBlur={() => {
+                              form.setFieldTouched('amount');
+                              //handleGasEstimate();
+                            }}
+                            placeholder={'0.00'}
+                          />
+                          {errors && errors.amount && touched && touched.amount ? (
+                            <InlineMessage className="SendAssetsForm-errors">
+                              {errors.amount}
+                            </InlineMessage>
+                          ) : null}
+                        </Tooltip>
                       </>
                     );
                   }}

@@ -16,7 +16,7 @@ import { tokenMigrationConfig } from './config';
 
 export const createApproveTx = (payload: ITokenMigrationFormFull): Partial<ITxObject> => {
   const data = ERC20.approve.encodeInput({
-    _spender: payload.tokenConfig.toContractAddress,
+    _spender: tokenMigrationConfig.toContractAddress,
     _value: toWei(payload.amount, DEFAULT_ASSET_DECIMAL)
   });
 
@@ -33,16 +33,9 @@ export const createApproveTx = (payload: ITokenMigrationFormFull): Partial<ITxOb
 
 export const createMigrationTx = (payload: ITokenMigrationFormFull): Partial<ITxObject> => {
   const data = RepV2Token.migrateFromLegacyReputationToken.encodeInput({});
-  /*UnlockToken.purchase.encodeInput({
-    _value: weiPrice,
-    _recipient: payload.account.address,
-    _referrer: ethers.constants.AddressZero,
-    _data: []
-  });*/
-
   return {
     from: payload.account.address,
-    to: payload.tokenConfig.fromContractAddress,
+    to: tokenMigrationConfig.fromContractAddress,
     value: inputValueToHex('0'),
     data,
     gasPrice: inputGasPriceToHex(payload.gasPrice),
