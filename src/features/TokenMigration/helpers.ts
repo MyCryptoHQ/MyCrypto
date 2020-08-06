@@ -22,7 +22,7 @@ export const createApproveTx = (payload: ITokenMigrationFormFull): Partial<ITxOb
 
   return {
     // @ts-ignore Contract Address should be set if asset is ERC20
-    to: payload.asset.contractAddress,
+    to: tokenMigrationConfig.fromContractAddress,
     from: payload.account.address,
     data,
     chainId: DEFAULT_NETWORK_CHAINID,
@@ -35,7 +35,7 @@ export const createMigrationTx = (payload: ITokenMigrationFormFull): Partial<ITx
   const data = RepV2Token.migrateFromLegacyReputationToken.encodeInput({});
   return {
     from: payload.account.address,
-    to: tokenMigrationConfig.fromContractAddress,
+    to: tokenMigrationConfig.toContractAddress,
     value: inputValueToHex('0'),
     data,
     gasPrice: inputGasPriceToHex(payload.gasPrice),
