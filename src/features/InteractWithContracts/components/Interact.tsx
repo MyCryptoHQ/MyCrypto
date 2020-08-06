@@ -334,6 +334,7 @@ function Interact(props: CombinedProps) {
                   }}
                   onChange={(address) => handleAddressOrDomainChanged(address)}
                   value={values.address}
+                  setFieldValue={setFieldValue}
                 />
               </FieldWrapper>
             </ContractSelectionWrapper>

@@ -15,6 +15,8 @@ const ContactLookupField = ({
   network,
   name,
   value,
+  setFieldValue,
+  setFieldTouched,
   ...rest
 }: IContactLookupFieldComponentProps &
   Omit<IGeneralLookupFieldComponentProps, 'options' | 'handleEthAddress' | 'handleENSName'>) => {
@@ -66,14 +68,16 @@ const ContactLookupField = ({
       options={contacts}
       handleEthAddress={handleEthAddress}
       handleENSName={handleENSName}
-      onLoad={(setFieldValue) => {
+      onLoad={() => {
         if (value && value.value) {
           const contact = getContactByAddress(value.value);
-          if (contact && value.display !== contact.label) {
+          if (contact && value.display !== contact.label && setFieldValue) {
             setFieldValue(name, { display: contact.label, value: contact.address }, true);
           }
         }
       }}
+      setFieldValue={setFieldValue}
+      setFieldTouched={setFieldTouched}
       {...rest}
     />
   );
