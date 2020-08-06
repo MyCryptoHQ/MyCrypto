@@ -34,17 +34,9 @@ test('Should be able to add a view only address', async (t) => {
 
   await dashboardPage.expectAddressToBePresent(FIXTURE_VIEW_ONLY_ADDRESS);
   await dashboardPage.expectAccountTableToMatchCount(1);
-});
-
-test('When a view only address is added should be displayed in dashboard metrics', async (t) => {
-  await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
-  await addAccountPage.addViewOnly();
-
-  await dashboardPage.waitPageLoaded();
 
   FIXTURE_VIEW_ONLY_TOKENS.forEach((t) => dashboardPage.expectBalanceInBalanceList(t));
 });
-
 // Add Account - Private Key
 test('Should be able to add a private key address', async (t) => {
   await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
@@ -54,13 +46,6 @@ test('Should be able to add a private key address', async (t) => {
 
   await dashboardPage.expectAddressToBePresent(FIXTURE_PRIVATE_KEY_ADDRESS);
   await dashboardPage.expectAccountTableToMatchCount(1);
-});
-
-test('When a private key address is added should be displayed in dashboard metrics', async (t) => {
-  await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
-  await addAccountPage.addPrivateKey();
-
-  await dashboardPage.waitPageLoaded();
 
   FIXTURE_PRIVATE_KEY_TOKENS.forEach((t) => dashboardPage.expectBalanceInBalanceList(t));
 });
@@ -74,13 +59,6 @@ test('Should be able to add a keystore file address', async (t) => {
 
   await dashboardPage.expectAddressToBePresent(FIXTURE_PRIVATE_KEY_ADDRESS);
   await dashboardPage.expectAccountTableToMatchCount(1);
-});
-
-test('When a keystore file address is added should be displayed in dashboard metrics', async (t) => {
-  await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
-  await addAccountPage.addKeystoreFile();
-
-  await dashboardPage.waitPageLoaded(FIXTURES_CONST.TIMEOUT * 2);
 
   FIXTURE_PRIVATE_KEY_TOKENS.forEach((t) => dashboardPage.expectBalanceInBalanceList(t));
 });
