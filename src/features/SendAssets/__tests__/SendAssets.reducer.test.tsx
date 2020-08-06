@@ -3,11 +3,28 @@ import { bigNumberify } from 'ethers/utils';
 import { IFormikFields, ITxStatus } from '@types';
 import { fAssets } from '@../jest_config/__fixtures__/assets';
 import { fAccount, fNetwork } from '@fixtures';
-import { getDefaultEstimates } from '@services';
+import { getDefaultEstimates, inputGasPriceToHex } from '@services';
 
 import { sendAssetsReducer, ReducerAction } from '../SendAssets.reducer';
 
 const dispatch = (action: ReducerAction) => (state: any) => sendAssetsReducer(state, action);
+
+const defaultTxConfig = {
+  asset: fAssets[0],
+  baseAsset: fAssets[0],
+  amount: '1',
+  gasPrice: '57000000000',
+  gasLimit: '21000',
+  nonce: '10',
+  data: '0x',
+  rawTransaction: {
+    value: '1',
+    to: fAccount.address,
+    gasPrice: bigNumberify('57000000000')
+  },
+  from: fAccount.address,
+  senderAccount: fAccount
+};
 
 describe('SendAssetsReducer', () => {
   describe('FORM_SUBMIT', () => {
@@ -54,21 +71,7 @@ describe('SendAssetsReducer', () => {
     it('it updates the txReceipt with values from txConfig', () => {
       const prevState = {
         txReceipt: undefined,
-        txConfig: {
-          asset: fAssets[0],
-          baseAsset: fAssets[0],
-          amount: '1',
-          gasPrice: '80',
-          gasLimit: '21000',
-          nonce: '10',
-          data: '0x',
-          rawTransaction: {
-            value: '1',
-            to: fAccount.address
-          },
-          from: fAccount.address,
-          senderAccount: fAccount
-        },
+        txConfig: defaultTxConfig,
         signedTx: undefined
       };
       const payload = '0x12345678';
@@ -111,6 +114,28 @@ describe('SendAssetsReducer', () => {
     // TODO
   });
   describe('RESUBMIT', () => {
-    // TODO
+    it('it updates the raw tx with a new gas price', () => {
+      const prevState = {
+        txReceipt: undefined,
+        txConfig: defaultTxConfig,
+        signedTx: undefined
+      };
+      const newState = dispatch({
+        type: sendAssetsReducer.actionTypes.RESUBMIT,
+        payload: undefined
+      })(prevState);
+      const txConfig = newState.txConfig;
+      // Only the gas price should have changed
+      expect(txConfig).toEqual({
+        ...prevState.txConfig,
+        rawTransaction: {
+          ...prevState.txConfig.rawTransaction,
+          gasPrice: inputGasPriceToHex('67')
+        }
+      });
+
+      expect(newState.signedTx).toBe(prevState.signedTx);
+      expect(newState.txReceipt).toBe(prevState.txReceipt);
+    });
   });
 });
