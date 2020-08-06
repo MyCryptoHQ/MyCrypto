@@ -111,7 +111,34 @@ describe('SendAssetsReducer', () => {
     });
   });
   describe('AFTER_SEND', () => {
-    // TODO
+    it('it updates the txReceipt with values from txConfig', () => {
+      const prevState = {
+        txReceipt: undefined,
+        txConfig: defaultTxConfig,
+        signedTx: {}
+      };
+      const payload = { hash: '0x12345678' };
+      const newState = dispatch({
+        type: sendAssetsReducer.actionTypes.AFTER_SEND,
+        payload
+      })(prevState);
+      const txConfig = prevState.txConfig;
+      const txReceipt = newState.txReceipt!;
+      expect(txReceipt.hash).toBe(payload.hash);
+      expect(txReceipt.amount).toBe(txConfig.amount);
+      expect(txReceipt.asset.uuid).toBe(txConfig.asset.uuid);
+      expect(txReceipt.baseAsset.uuid).toBe(txConfig.baseAsset.uuid);
+      expect(txReceipt.data).toBe(txConfig.data);
+      expect(txReceipt.status).toBe(ITxStatus.PENDING);
+      expect(txReceipt.to).toBe(fAccount.address);
+      expect(txReceipt.from).toBe(fAccount.address);
+      expect(txReceipt.gasLimit).toEqual(bigNumberify(txConfig.gasLimit));
+      expect(txReceipt.gasPrice).toEqual(bigNumberify(txConfig.gasPrice));
+      expect(txReceipt.value).toEqual(bigNumberify(txConfig.rawTransaction.value));
+
+      expect(newState.signedTx).toBe(prevState.signedTx);
+      expect(newState.txConfig).toBe(prevState.txConfig);
+    });
   });
   describe('RESUBMIT', () => {
     it('it updates the raw tx with a new gas price', () => {
