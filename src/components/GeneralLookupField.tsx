@@ -76,7 +76,7 @@ const GeneralLookupField = ({
       const validationResult = isValidETHRecipientAddress(value.value, resolutionError);
       setFieldError(name, validationResult.success ? undefined : validationResult.message);
     }
-  }, [value]);
+  }, [value, resolutionError]);
 
   useEffectOnce(() => {
     if (value && value.value && onLoad) {
