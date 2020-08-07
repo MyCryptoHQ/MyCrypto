@@ -370,7 +370,15 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
     []
   );
 
-  const { values, setFieldValue, setFieldTouched, setFieldError, errors, touched } = useFormik({
+  const {
+    values,
+    setFieldValue,
+    setFieldTouched,
+    setFieldError,
+    resetForm,
+    errors,
+    touched
+  } = useFormik({
     initialValues,
     validationSchema: SendAssetsSchema,
     onSubmit: (fields) => {
@@ -395,7 +403,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
   useEffect(() => {
     const asset = values.asset;
     //@todo get assetType onChange
-    handleFieldReset();
+    resetForm({ values: { ...initialValues, asset } });
     if (asset && asset.networkId) {
       const network = getNetworkById(asset.networkId, networks);
       fetchGasPriceEstimates(network).then((data) => {
@@ -446,16 +454,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
     } else {
       return;
     }
-  };
-
-  const handleFieldReset = () => {
-    const resetFields: (keyof IFormikFields)[] = [
-      'account',
-      'amount',
-      'txDataField',
-      'advancedTransaction'
-    ];
-    resetFields.forEach((field) => setFieldValue(field, initialValues[field]));
   };
 
   const setAmountFieldToAssetMax = () => {
