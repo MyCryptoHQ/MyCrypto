@@ -81,6 +81,11 @@ export const getLinks = (IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE) => {
           to: APP_ROUTES_OBJECT.ENS.path,
           enabled: APP_ROUTES_OBJECT.ENS.enabled,
           title: 'ENS'
+        },
+        {
+          to: APP_ROUTES_OBJECT.TX_STATUS.path,
+          enabled: APP_ROUTES_OBJECT.TX_STATUS.enabled,
+          title: 'TX Status'
         }
       ]
     },

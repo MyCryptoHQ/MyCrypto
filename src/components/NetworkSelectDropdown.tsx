@@ -9,7 +9,7 @@ import { DEFAULT_NETWORK } from '@config';
 import { Typography, Selector, Tooltip } from '@components';
 
 interface Props {
-  network: NetworkId;
+  network?: NetworkId;
   accountType?: WalletId;
   className?: string;
   showTooltip?: boolean;
@@ -41,7 +41,7 @@ function NetworkSelectDropdown({
   ...props
 }: Props) {
   const { networks, getNetworkById } = useContext(NetworkContext);
-  const network = getNetworkById(networkId);
+  const network = networkId && getNetworkById(networkId);
 
   // set default network if none selected
   useEffect(() => {

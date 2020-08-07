@@ -140,6 +140,11 @@ const PATHS: IRoutePath[] = [
     name: 'ENS',
     title: 'Ethereum Name Service',
     path: '/ens'
+  },
+  {
+    name: 'TX_STATUS',
+    title: 'Transaction Status',
+    path: '/tx-status'
   }
 ];
 
