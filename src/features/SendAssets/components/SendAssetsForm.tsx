@@ -370,15 +370,13 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
     []
   );
 
-  const formik = useFormik({
+  const { values, setFieldValue, setFieldTouched, setFieldError, errors, touched } = useFormik({
     initialValues,
     validationSchema: SendAssetsSchema,
     onSubmit: (fields) => {
       onComplete(fields);
     }
   });
-
-  const { values, setFieldValue, setFieldTouched, setFieldError, errors, touched } = formik;
 
   useEffect(() => {
     if (updateFormValues) {
@@ -401,6 +399,10 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
   });
 
   useEffect(() => {
+    handleGasEstimate();
+  }, [values.account, values.address]);
+
+  useEffect(() => {
     if (ptxState.protectTxShow) {
       if (goToInitialStepOrFetchReport && ptxState.receiverAddress !== values.address.value) {
         const { address, network } = values;
@@ -409,9 +411,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
     }
   }, [values.address.value]);
 
-  const toggleAdvancedOptions = () => {
-    setFieldValue('advancedTransaction', !values.advancedTransaction);
-  };
   const toggleIsAutoGasSet = () => {
     // save value because setFieldValue method is async and values are not yet updated	            // save value because setFieldValue method is async and values are not yet updated
     const isEnablingAutoGas = !values.isAutoGasSet;
@@ -531,7 +530,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
           accounts={accountsWithAsset}
           onSelect={(account: StoreAccount) => {
             setFieldValue('account', account); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
-            handleGasEstimate();
           }}
           asset={values.asset}
         />
@@ -546,7 +544,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
           error={errors && touched.address && errors.address && (errors.address as ErrorObject)}
           network={values.network}
           isResolvingName={isResolvingName}
-          onBlur={handleGasEstimate}
           setIsResolvingDomain={setIsResolvingDomain}
           setFieldValue={setFieldValue}
           setFieldTouched={setFieldTouched}
@@ -620,7 +617,10 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
       </fieldset>
       {/* Advanced Options */}
       <div className="SendAssetsForm-advancedOptions">
-        <AdvancedOptionsButton basic={true} onClick={toggleAdvancedOptions}>
+        <AdvancedOptionsButton
+          basic={true}
+          onClick={() => setFieldValue('advancedTransaction', !values.advancedTransaction)}
+        >
           {values.advancedTransaction ? translateRaw('HIDE') : translateRaw('SHOW')}{' '}
           {translate('ADVANCED_OPTIONS_LABEL')}
         </AdvancedOptionsButton>
@@ -641,7 +641,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                   />
                 </label>
 
-                {/* validateGasLimitField */}
                 <GasLimitField
                   onChange={(option: string) => {
                     setFieldValue('gasLimitField', option);
@@ -659,7 +658,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                   {translate('OFFLINE_STEP2_LABEL_3')}
                   <Tooltip tooltip={translate('GAS_PRICE_TOOLTIP')} />
                 </label>
-                {/* validateGasPriceField */}
                 <GasPriceField
                   onChange={(option: string) => {
                     setFieldValue('gasPriceField', option);
@@ -677,7 +675,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                     {translateRaw('NONCE')} <Tooltip tooltip={translate('NONCE_TOOLTIP')} />
                   </div>
                 </label>
-                {/* validateNonceField */}
                 <NonceField
                   onChange={(option: string) => {
                     setFieldValue('nonceField', option);

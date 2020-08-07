@@ -7,7 +7,6 @@ import { getBaseAssetByNetwork, AssetContext } from '@services/Store';
 import { isValidETHAddress, isValidENSName } from '@services/EthService';
 import UnstoppableResolution from '@services/UnstoppableService';
 import { isValidETHRecipientAddress } from '@services/EthService/validators';
-import { useEffectOnce } from '@vendor';
 
 import GeneralLookupDropdown, { LabeledAddress } from './GeneralLookupDropdown';
 
@@ -25,7 +24,6 @@ export interface IGeneralLookupFieldComponentProps {
   handleENSName?(resolvedAddress: string, inputString: string): IReceiverAddress;
   onSelect?(option: IReceiverAddress): void;
   onChange?(input: string): void;
-  onLoad?(): void;
   setFieldValue?(field: string, value: any, shouldValidate?: boolean): void;
   setFieldTouched?(field: string, touched?: boolean, shouldValidate?: boolean): void;
   setFieldError?(field: string, value: string | undefined): void;
@@ -44,7 +42,6 @@ const GeneralLookupField = ({
   name,
   value,
   options,
-  onLoad,
   placeholder,
   setFieldValue,
   setFieldTouched,
@@ -77,12 +74,6 @@ const GeneralLookupField = ({
       setFieldError(name, validationResult.success ? undefined : validationResult.message);
     }
   }, [value, resolutionError]);
-
-  useEffectOnce(() => {
-    if (value && value.value && onLoad) {
-      onLoad();
-    }
-  });
 
   const handleENSnameDefault = async (
     inputString: string,
