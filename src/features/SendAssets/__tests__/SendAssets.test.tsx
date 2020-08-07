@@ -11,7 +11,15 @@ import { IS_ACTIVE_FEATURE } from '@config';
 import { noOp } from '@utils';
 
 // SendFlow makes RPC calls to get nonce and gas.
-jest.mock('ethers');
+jest.mock('ethers/providers', () => {
+  return {
+    // Since there are no nodes in our StoreContext,
+    // ethers will default to FallbackProvider
+    FallbackProvider: () => ({
+      getTransactionCount: () => 10
+    })
+  };
+});
 
 /* Test components */
 describe('SendAssetsFlow', () => {
