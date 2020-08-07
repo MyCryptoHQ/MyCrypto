@@ -38,6 +38,19 @@ const StatusBar = styled.div`
   justify-content: space-evenly;
   padding-top: 42px;
   border-top: 1px solid ${COLORS.GREY_ATHENS};
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 170px;
+    flex-direction: column;
+    background: white;
+    box-shadow: 0px -1px 4px rgba(186, 186, 186, 0.25);
+    border-radius: 1.32522px;
+    padding: 15px;
+    justify-content: space-between;
+  }
 `;
 
 const StatusWrapper = styled.div`
@@ -45,6 +58,10 @@ const StatusWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   width: 65%;
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    width: 100%;
+    text-align: center;
+  }
 `;
 
 const Loader = styled.div`

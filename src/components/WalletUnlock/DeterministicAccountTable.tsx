@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 import { DWAccountDisplay, AddressBookContext, fromTokenBase } from '@services';
-import { COLORS, SPACING } from '@theme';
+import { COLORS, SPACING, BREAK_POINTS } from '@theme';
 import translate, { Trans } from '@translations';
 import { Identicon } from '@mycrypto/ui';
 import {
@@ -48,6 +48,9 @@ const Heading = styled.div`
   border-top: 1px solid ${COLORS.GREY_ATHENS};
   border-bottom: 1px solid ${COLORS.GREY_ATHENS};
   background: ${COLORS.BLUE_GREY_LIGHTEST};
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    display: none;
+  }
 `;
 
 const Label = styled.div<{ width: string }>`
@@ -78,6 +81,10 @@ const Row = styled.div<{ isSelected: boolean }>`
   align-items: center;
   min-height: 60px;
   border-bottom: 1px solid ${COLORS.GREY_ATHENS};
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const SelectedContainer = styled.div<{ isSelected: boolean }>`
@@ -95,6 +102,9 @@ const LabelContainer = styled.div`
   flex-direction: row;
   align-items: center;
   width: 225px;
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    width: 100%;
+  }
 `;
 
 const SIdenticon = styled(Identicon)`
@@ -107,12 +117,18 @@ const SIdenticon = styled(Identicon)`
 
 const AddressContainer = styled.div`
   width: 135px;
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    width: 100%;
+  }
 `;
 
 const DPathContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 125px;
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    width: 100%;
+  }
 `;
 
 const DPathType = styled(Typography)`
