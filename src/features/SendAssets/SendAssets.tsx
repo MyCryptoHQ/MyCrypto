@@ -60,7 +60,7 @@ function SendAssets() {
       component: SignTransactionWithProtectTx,
       props: (({ txConfig }) => ({ txConfig }))(reducerState),
       actions: (payload: ITxReceipt | ISignedTx, cb: any) => {
-        dispatch({ type: sendAssetsReducer.actionTypes.WEB3_SIGN, payload });
+        dispatch({ type: sendAssetsReducer.actionTypes.WEB3_SIGN_SUCCESS, payload });
         cb();
       }
     },
@@ -90,7 +90,7 @@ function SendAssets() {
       props: (({ txConfig }) => ({ txConfig }))(reducerState),
       actions: (payload: ITxConfig | ISignedTx, cb: any) => {
         dispatch({
-          type: sendAssetsReducer.actionTypes.SIGN,
+          type: sendAssetsReducer.actionTypes.SIGN_SUCCESS,
           payload: { signedTx: payload, assets, networks, accounts }
         });
         cb();
@@ -103,10 +103,10 @@ function SendAssets() {
       actions: (payload: ITxConfig | ISignedTx, cb: any) => {
         if (setProtectTxTimeoutFunction) {
           setProtectTxTimeoutFunction(() =>
-            dispatch({ type: sendAssetsReducer.actionTypes.SEND, payload })
+            dispatch({ type: sendAssetsReducer.actionTypes.REQUEST_SEND, payload })
           );
         } else {
-          dispatch({ type: sendAssetsReducer.actionTypes.SEND, payload });
+          dispatch({ type: sendAssetsReducer.actionTypes.REQUEST_SEND, payload });
         }
         if (cb) {
           cb();
@@ -122,7 +122,7 @@ function SendAssets() {
         pendingButton: {
           text: translateRaw('TRANSACTION_BROADCASTED_RESUBMIT'),
           action: (cb: any) => {
-            dispatch({ type: sendAssetsReducer.actionTypes.RESUBMIT, payload: {} });
+            dispatch({ type: sendAssetsReducer.actionTypes.REQUEST_RESUBMIT, payload: {} });
             cb();
           }
         }
@@ -156,7 +156,7 @@ function SendAssets() {
 
       provider
         .sendRawTx(signedTx)
-        .then((payload) => dispatch({ type: sendAssetsReducer.actionTypes.AFTER_SEND, payload }));
+        .then((payload) => dispatch({ type: sendAssetsReducer.actionTypes.SEND_SUCCESS, payload }));
     }
   }, [reducerState.send]);
 

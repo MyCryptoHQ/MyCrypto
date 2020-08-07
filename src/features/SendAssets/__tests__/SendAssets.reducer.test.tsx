@@ -27,6 +27,7 @@ const defaultTxConfig = {
 
 jest.mock('ethers/utils', () => {
   const { mockFactory } = require('../__mocks__/utils');
+  // Uses a similar txConfig to defaultTxConfig, but can't use the same one due to import issues with Jest
   return mockFactory({
     gasPrice: '57000000000',
     gasLimit: '21000',
@@ -76,7 +77,7 @@ describe('SendAssetsReducer', () => {
       expect(newState.txReceipt).toBe(prevState.txReceipt);
     });
   });
-  describe('SIGN', () => {
+  describe('SIGN_SUCCESS', () => {
     it('it updates txConfig and signedTx', () => {
       const prevState = {
         txReceipt: undefined,
@@ -90,7 +91,7 @@ describe('SendAssetsReducer', () => {
         accounts: [fAccount]
       };
       const newState = dispatch({
-        type: sendAssetsReducer.actionTypes.SIGN,
+        type: sendAssetsReducer.actionTypes.SIGN_SUCCESS,
         payload
       })(prevState);
       const txConfig = newState.txConfig!;
@@ -108,7 +109,7 @@ describe('SendAssetsReducer', () => {
       expect(newState.txReceipt).toBe(prevState.txReceipt);
     });
   });
-  describe('WEB3_SIGN', () => {
+  describe('WEB3_SIGN_SUCCESS', () => {
     it('it updates the txReceipt with values from txConfig', () => {
       const prevState = {
         txReceipt: undefined,
@@ -117,7 +118,7 @@ describe('SendAssetsReducer', () => {
       };
       const payload = '0x12345678';
       const newState = dispatch({
-        type: sendAssetsReducer.actionTypes.WEB3_SIGN,
+        type: sendAssetsReducer.actionTypes.WEB3_SIGN_SUCCESS,
         payload
       })(prevState);
       const txConfig = prevState.txConfig;
@@ -138,12 +139,13 @@ describe('SendAssetsReducer', () => {
       expect(newState.txConfig).toBe(prevState.txConfig);
     });
   });
-  describe('SEND', () => {
+  describe('REQUEST_SEND', () => {
     it('sets send to true and otherwise keeps the state as is', () => {
       const prevState = { txReceipt: undefined, txConfig: undefined, signedTx: undefined };
-      const newState = dispatch({ type: sendAssetsReducer.actionTypes.SEND, payload: undefined })(
-        prevState
-      );
+      const newState = dispatch({
+        type: sendAssetsReducer.actionTypes.REQUEST_SEND,
+        payload: undefined
+      })(prevState);
       expect(newState.send).toBe(true);
 
       expect(newState.signedTx).toBe(prevState.signedTx);
@@ -151,7 +153,7 @@ describe('SendAssetsReducer', () => {
       expect(newState.txConfig).toBe(prevState.txConfig);
     });
   });
-  describe('AFTER_SEND', () => {
+  describe('SEND_SUCCESS', () => {
     it('it updates the txReceipt with values from txConfig', () => {
       const prevState = {
         txReceipt: undefined,
@@ -160,7 +162,7 @@ describe('SendAssetsReducer', () => {
       };
       const payload = { hash: '0x12345678' };
       const newState = dispatch({
-        type: sendAssetsReducer.actionTypes.AFTER_SEND,
+        type: sendAssetsReducer.actionTypes.SEND_SUCCESS,
         payload
       })(prevState);
       const txConfig = prevState.txConfig;
@@ -181,7 +183,7 @@ describe('SendAssetsReducer', () => {
       expect(newState.txConfig).toBe(prevState.txConfig);
     });
   });
-  describe('RESUBMIT', () => {
+  describe('REQUEST_RESUBMIT', () => {
     it('it updates the raw tx with a new gas price', () => {
       const prevState = {
         txReceipt: undefined,
@@ -189,7 +191,7 @@ describe('SendAssetsReducer', () => {
         signedTx: undefined
       };
       const newState = dispatch({
-        type: sendAssetsReducer.actionTypes.RESUBMIT,
+        type: sendAssetsReducer.actionTypes.REQUEST_RESUBMIT,
         payload: undefined
       })(prevState);
       const txConfig = newState.txConfig;

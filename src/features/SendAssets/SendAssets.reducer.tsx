@@ -61,7 +61,7 @@ export const sendAssetsReducer = (state: State, action: ReducerAction): State =>
       return { ...state, txConfig };
     }
 
-    case sendAssetsReducer.actionTypes.SIGN: {
+    case sendAssetsReducer.actionTypes.SIGN_SUCCESS: {
       const { assets, networks, accounts } = action.payload;
       const signedTx = hexlify(action.payload.signedTx);
       // Used when signedTx is a buffer instead of a string.
@@ -77,16 +77,16 @@ export const sendAssetsReducer = (state: State, action: ReducerAction): State =>
       return { ...state, txConfig, signedTx };
     }
 
-    case sendAssetsReducer.actionTypes.WEB3_SIGN: {
+    case sendAssetsReducer.actionTypes.WEB3_SIGN_SUCCESS: {
       const txReceipt = createPendingTxReceipt(state, action.payload);
       return { ...state, txReceipt };
     }
 
-    case sendAssetsReducer.actionTypes.SEND: {
+    case sendAssetsReducer.actionTypes.REQUEST_SEND: {
       return { ...state, send: true };
     }
 
-    case sendAssetsReducer.actionTypes.AFTER_SEND: {
+    case sendAssetsReducer.actionTypes.SEND_SUCCESS: {
       const { signedTx } = state;
       // @todo: Handle this error state.
       const txReceipt = signedTx
@@ -95,7 +95,7 @@ export const sendAssetsReducer = (state: State, action: ReducerAction): State =>
       return { ...state, txReceipt };
     }
 
-    case sendAssetsReducer.actionTypes.RESUBMIT: {
+    case sendAssetsReducer.actionTypes.REQUEST_RESUBMIT: {
       const { txConfig: prevTxConfig } = state;
       const rawTransaction = prevTxConfig!.rawTransaction;
 
@@ -120,11 +120,11 @@ export const sendAssetsReducer = (state: State, action: ReducerAction): State =>
 
 sendAssetsReducer.actionTypes = {
   FORM_SUBMIT: 'FORM_SUBMIT',
-  SIGN: 'SIGN',
-  WEB3_SIGN: 'WEB3_SIGN',
-  SEND: 'SEND',
-  AFTER_SEND: 'AFTER_SEND',
-  RESUBMIT: 'RESUBMIT',
+  SIGN_SUCCESS: 'SIGN_SUCCESS',
+  WEB3_SIGN_SUCCESS: 'WEB3_SIGN_SUCCESS',
+  REQUEST_SEND: 'REQUEST_SEND',
+  SEND_SUCCESS: 'SEND_SUCCESS',
+  REQUEST_RESUBMIT: 'REQUEST_RESUBMIT',
   RESET: 'RESET'
 };
 
