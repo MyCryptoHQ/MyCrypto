@@ -55,7 +55,7 @@ export default class SimpleGas extends Component<Props> {
     return (
       <Field
         name="gasPriceSlider"
-        render={({ field, form }: FieldProps<IFormikFields>) => (
+        children={({ field, form }: FieldProps<IFormikFields>) => (
           <div className="GasPriceSlider">
             <div className="GasPriceSlider-input-group">
               <div className="GasPriceSlider-slider">

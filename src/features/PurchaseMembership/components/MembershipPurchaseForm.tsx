@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import translate, { translateRaw } from '@translations';
 import { SPACING } from '@theme';
 import { IAccount, Network, StoreAccount, Asset, TUuid } from '@types';
-import { AccountDropdown, InlineMessage, AmountInput, Button } from '@components';
+import { AccountSelector, InlineMessage, AmountInput, Button } from '@components';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
 import { StoreContext, AssetContext, NetworkContext } from '@services/Store';
@@ -77,11 +77,12 @@ export const MembershipFormUI = ({
   onComplete
 }: UIProps) => {
   const { getAssetByUUID } = useContext(AssetContext);
+  const { defaultAccount } = useContext(StoreContext);
   const defaultMembership = MEMBERSHIP_CONFIG[IMembershipId.sixmonths];
   const defaultAsset = (getAssetByUUID(defaultMembership.assetUUID as TUuid) || {}) as Asset;
   const initialFormikValues: MembershipSimpleTxFormFull = {
     membershipSelected: defaultMembership,
-    account: {} as StoreAccount,
+    account: defaultAccount,
     amount: defaultMembership.price,
     asset: defaultAsset,
     nonce: '0',
@@ -171,7 +172,7 @@ export const MembershipFormUI = ({
                   name="account"
                   value={values.account}
                   component={({ field, form }: FieldProps) => (
-                    <AccountDropdown
+                    <AccountSelector
                       name={field.name}
                       value={field.value}
                       accounts={filteredAccounts}

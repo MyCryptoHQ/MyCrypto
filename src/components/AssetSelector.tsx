@@ -26,7 +26,7 @@ export function AssetSelectorItem({ uuid, ticker, name, onClick }: ItemProps) {
   return (
     <SContainer
       {...(onClick ? { onPointerDown: onClick } : null)}
-      data-testid={`asset-dropdown-option-${ticker}`}
+      data-testid={`asset-selector-option-${ticker}`}
     >
       <AssetIcon uuid={uuid} size={'1.5rem'} />
       <Typography bold={true} value={ticker} style={{ marginLeft: '10px' }} />

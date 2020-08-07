@@ -8,7 +8,7 @@ import MembershipSelector, {
 } from './MembershipSelector';
 import { MEMBERSHIP_CONFIG, IMembershipConfig } from '../config';
 
-export default { title: 'Selector/MembershipSelector' };
+export default { title: 'Selectors/MembershipSelector' };
 
 const defaultProps: MembershipSelectorProps = {
   name: '',

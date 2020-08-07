@@ -43,7 +43,7 @@ describe('AssetSelector', () => {
     await selectEvent.openMenu(screen.getByLabelText(defaultProps.label!));
     fAssets
       .map((a) => a.ticker)
-      .forEach((t) => expect(screen.getByTestId(`asset-dropdown-option-${t}`)).toBeInTheDocument());
+      .forEach((t) => expect(screen.getByTestId(`asset-selector-option-${t}`)).toBeInTheDocument());
   });
 
   test('it calls the success handler with the correct value', async () => {
@@ -52,7 +52,7 @@ describe('AssetSelector', () => {
 
     expect(screen.getByRole('form')).toHaveFormValues({ [defaultProps.label!]: '' });
     await selectEvent.openMenu(screen.getByLabelText(defaultProps.label!));
-    const option = screen.getByTestId(`asset-dropdown-option-${fAssets[0].ticker}`);
+    const option = screen.getByTestId(`asset-selector-option-${fAssets[0].ticker}`);
     fireEvent.pointerDown(option);
     expect(defaultProps.onSelect).toBeCalledWith(fAssets[0]);
   });
