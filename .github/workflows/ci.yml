@@ -269,12 +269,12 @@ jobs:
           name: 'linux-i386_${{ steps.version.outputs.VERSION }}_MyCrypto.AppImage'
           path: 'dist/electron-builds/MyCrypto-${{ steps.version.outputs.VERSION }}-i386.AppImage'
 
-      - name: 'Save linus-x86-64_${{ steps.version.outputs.VERSION }}-MyCrypto.AppImage to artifacts'
+      - name: 'Save linux-x86-64_${{ steps.version.outputs.VERSION }}-MyCrypto.AppImage to artifacts'
         uses: actions/upload-artifact@v1
         with:
-          name: 'linus-x86-64_${{ steps.version.outputs.VERSION }}-MyCrypto.AppImage'
+          name: 'linux-x86-64_${{ steps.version.outputs.VERSION }}-MyCrypto.AppImage'
           path: 'dist/electron-builds/MyCrypto-${{ steps.version.outputs.VERSION }}.AppImage'
-          
+
   standalone:
     name: standalone
     runs-on: ubuntu-latest
@@ -282,7 +282,7 @@ jobs:
     steps:
       - name: Retrieves project from the git branch
         uses: actions/checkout@v1
-        
+
       - name: Retrieve node version from .nvmrc
         run: echo "##[set-output name=NVMRC;]$(cat package.json | grep '\"node\":' | sed 's/^ *//;s/ *$//;s/\"node\":\ \"//;s/\",//')"
         id: nvm
