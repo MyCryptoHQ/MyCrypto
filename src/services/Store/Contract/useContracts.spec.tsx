@@ -1,9 +1,10 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { innerJoin, slice, prop, map, sort, pipe, omit } from 'ramda';
 
+import { innerJoin, slice, prop, map, sort, pipe, omit } from '@vendor';
 import { fContracts } from '@fixtures';
 import { TAddress, LSKeys, ExtendedContract, TUuid } from '@types';
+
 import { DataContext, IDataContext } from '../DataManager';
 import useContracts from './useContracts';
 
