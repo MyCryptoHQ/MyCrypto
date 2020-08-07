@@ -563,6 +563,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
         </label>
         <>
           <AmountInput
+            name="amount"
             onChange={(e) => {
               setFieldValue('amount', e.target.value);
             }}
