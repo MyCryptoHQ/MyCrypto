@@ -2,7 +2,7 @@ import { ExtendedContract } from '@types';
 
 export const fContracts: ExtendedContract[] = [
   {
-    uui: '',
+    uuid: '7f4bee9a-b3a7-5f5d-9fdd-70a07fc30ccf',
     name: 'Colony Network',
     address: '0x5346D0f80e2816FaD329F2c140c870ffc3c3E2Ef',
     abi:
@@ -10,7 +10,7 @@ export const fContracts: ExtendedContract[] = [
     networkId: 'Ethereum'
   },
   {
-    uui: '',
+    uuid: 'a22967bf-7809-5318-976c-3cfd6076b44e',
     name: 'Polkadot Claims Contract',
     address: '0xa2CBa0190290aF37b7e154AEdB06d16100Ff5907',
     abi:
