@@ -39,9 +39,9 @@ const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
       case WalletId.VIEW_ONLY:
         return [payload];
       case WalletId.KEYSTORE_FILE:
-        return [payload];
+        return [{ ...payload, address: payload.getAddressString(), derivationPath: '' }];
       case WalletId.PRIVATE_KEY:
-        return [payload];
+        return [{ ...payload, address: payload.getAddressString(), derivationPath: '' }];
       case WalletId.WEB3:
         return payload.map((payloadItem: any) => ({
           address: payloadItem.getAddressString(),
