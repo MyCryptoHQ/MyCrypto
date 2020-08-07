@@ -1,12 +1,7 @@
 import { useContext, useCallback } from 'react';
 import debounce from 'lodash/debounce';
 
-import {
-  TUseStateReducerFactory,
-  makePendingTxReceipt,
-  generateContractUUID,
-  isSameAddress
-} from '@utils';
+import { TUseStateReducerFactory, makePendingTxReceipt, isSameAddress } from '@utils';
 import { CREATION_ADDRESS } from '@config';
 import {
   NetworkId,
@@ -16,7 +11,8 @@ import {
   ITxStatus,
   TAddress,
   ITxHash,
-  TUuid
+  TUuid,
+  ExtendedContract
 } from '@types';
 import {
   getNetworkById,
@@ -68,7 +64,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   state,
   setState
 }) => {
-  const { getContractsByIds, createContractWithId, deleteContracts } = useContracts();
+  const { getContractsByIds, createContract, deleteContract } = useContracts();
   const { networks, updateNetwork } = useContext(NetworkContext);
   const { addNewTxToAccount } = useContext(AccountContext);
 
@@ -221,27 +217,25 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       throw new Error(translateRaw('INTERACT_SAVE_ERROR_NAME_EXISTS'));
     }
 
-    const uuid = generateContractUUID(state.network.id, state.contractAddress);
-    const newContract = {
+    const contract: ExtendedContract = createContract({
       abi: state.abi,
       address: state.contractAddress as TAddress,
       name: state.customContractName,
       label: state.customContractName,
       networkId: state.network.id,
-      isCustom: true,
-      uuid
-    };
-
-    createContractWithId(newContract, uuid);
+      isCustom: true
+    });
+    // @todo updating networks with new contract should really be the responsability
+    // of the hook
     const network = Object.assign({}, state.network);
-    network.contracts.unshift(uuid);
+    network.contracts.unshift(contract.uuid);
     updateNetwork(network.id, network);
     updateNetworkContractOptions();
-    handleContractSelected(newContract);
+    handleContractSelected(contract);
   };
 
   const handleDeleteContract = (contractUuid: TUuid) => {
-    deleteContracts(contractUuid);
+    deleteContract(contractUuid);
     const network = state.network;
     network.contracts = network.contracts.filter((item) => item !== contractUuid);
     updateNetwork(network.id, network);

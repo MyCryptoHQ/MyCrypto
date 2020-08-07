@@ -4,6 +4,7 @@ import { TAddress } from './address';
 
 export interface Contract {
   name: string;
+  label?: string; // Added in InteractWithContracts/stateFactory.. !?
   networkId: NetworkId;
   address: TAddress;
   abi: string;
