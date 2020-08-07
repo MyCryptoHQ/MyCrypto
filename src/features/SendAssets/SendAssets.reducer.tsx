@@ -1,9 +1,7 @@
-import { hexlify, bigNumberify, Arrayish } from 'ethers/utils';
-import { TransactionResponse } from 'ethers/providers';
+import { hexlify, bigNumberify } from 'ethers/utils';
 import { ValuesType } from 'utility-types';
 
 import {
-  IFormikFields,
   ITxObject,
   Asset,
   TAddress,
@@ -12,9 +10,6 @@ import {
   ISignedTx,
   ITxHash,
   ITxType,
-  ExtendedAsset,
-  Network,
-  StoreAccount,
   TAction
 } from '@types';
 import {
@@ -39,31 +34,83 @@ export type ReducerAction = TAction<ValuesType<typeof sendAssetsReducer.actionTy
 // @ts-ignore
 export const initialState: State = { txConfig: {} };
 
-export const sendAssetsReducer = (state: State, action: ReducerAction) => {
+export const sendAssetsReducer = (state: State, action: ReducerAction): State => {
   switch (action.type) {
     case sendAssetsReducer.actionTypes.FORM_SUBMIT: {
-      const txConfig = handleFormSubmit(action.payload);
+      const { form, assets } = action.payload;
+      const rawTransaction: ITxObject = processFormDataToTx(form);
+      const baseAsset: Asset | undefined = getBaseAssetByNetwork({
+        network: form.network,
+        assets
+      });
+      const txConfig = {
+        rawTransaction,
+        amount: form.amount,
+        senderAccount: form.account,
+        receiverAddress: form.address.value as TAddress,
+        network: form.network,
+        asset: form.asset,
+        baseAsset: baseAsset || ({} as Asset),
+        from: form.account.address,
+        gasPrice: hexWeiToString(rawTransaction.gasPrice),
+        gasLimit: form.gasLimitField,
+        nonce: form.nonceField,
+        data: rawTransaction.data,
+        value: hexWeiToString(rawTransaction.value)
+      };
       return { ...state, txConfig };
     }
+
     case sendAssetsReducer.actionTypes.SIGN: {
-      const { txConfig, signedTx } = handleSignedTx(state, action.payload);
+      const { assets, networks, accounts } = action.payload;
+      const signedTx = hexlify(action.payload.signedTx);
+      // Used when signedTx is a buffer instead of a string.
+      // Hardware wallets return a buffer.´
+      const txConfig = makeTxConfigFromSignedTx(
+        action.payload.signedTx,
+        assets,
+        networks,
+        accounts,
+        state.txConfig
+      );
+
       return { ...state, txConfig, signedTx };
     }
+
     case sendAssetsReducer.actionTypes.WEB3_SIGN: {
-      const txReceipt = handlePendingTxReceipt(state, action.payload);
+      const txReceipt = createPendingTxReceipt(state, action.payload);
       return { ...state, txReceipt };
     }
+
     case sendAssetsReducer.actionTypes.SEND: {
       return { ...state, send: true };
     }
+
     case sendAssetsReducer.actionTypes.AFTER_SEND: {
-      const txReceipt = handleConfirmAndSend(state, action.payload);
+      const { signedTx } = state;
+      // @todo: Handle this error state.
+      const txReceipt = signedTx
+        ? createPendingTxReceipt(state, action.payload.hash as ITxHash)
+        : undefined;
       return { ...state, txReceipt };
     }
+
     case sendAssetsReducer.actionTypes.RESUBMIT: {
-      const txConfig = handleResubmitTx(state);
+      const { txConfig: prevTxConfig } = state;
+      const rawTransaction = prevTxConfig!.rawTransaction;
+
+      // add 10 gwei to current gas price
+      const resubmitGasPrice =
+        parseFloat(bigNumGasPriceToViewableGwei(bigNumberify(rawTransaction.gasPrice))) + 10;
+      const hexGasPrice = inputGasPriceToHex(resubmitGasPrice.toString());
+
+      const txConfig = {
+        ...prevTxConfig!,
+        rawTransaction: { ...rawTransaction, gasPrice: hexGasPrice }
+      };
       return { ...state, txConfig };
     }
+
     case sendAssetsReducer.actionTypes.RESET:
       return initialState;
     default:
@@ -81,73 +128,6 @@ sendAssetsReducer.actionTypes = {
   RESET: 'RESET'
 };
 
-const handleFormSubmit = (payload: { form: IFormikFields; assets: ExtendedAsset[] }) => {
-  const { form, assets } = payload;
-  const rawTransaction: ITxObject = processFormDataToTx(form);
-  const baseAsset: Asset | undefined = getBaseAssetByNetwork({
-    network: form.network,
-    assets
-  });
-  return {
-    rawTransaction,
-    amount: form.amount,
-    senderAccount: form.account,
-    receiverAddress: form.address.value as TAddress,
-    network: form.network,
-    asset: form.asset,
-    baseAsset: baseAsset || ({} as Asset),
-    from: form.account.address,
-    gasPrice: hexWeiToString(rawTransaction.gasPrice),
-    gasLimit: form.gasLimitField,
-    nonce: form.nonceField,
-    data: rawTransaction.data,
-    value: hexWeiToString(rawTransaction.value)
-  };
-};
-
-const handleSignedTx = (
-  state: State,
-  payload: {
-    signedTx: Arrayish;
-    assets: ExtendedAsset[];
-    networks: Network[];
-    accounts: StoreAccount[];
-  }
-) => {
-  const { assets, networks, accounts } = payload;
-  const signedTx = hexlify(payload.signedTx);
-  // Used when signedTx is a buffer instead of a string.
-  // Hardware wallets return a buffer.
-
-  return {
-    signedTx, // keep a reference to signedTx;
-    txConfig: makeTxConfigFromSignedTx(payload.signedTx, assets, networks, accounts, state.txConfig)
-  };
-};
-
-const handlePendingTxReceipt = (state: State, payload: ITxHash) => {
-  const pendingTxReceipt = makePendingTxReceipt(payload)(ITxType.STANDARD, state.txConfig!);
-  return pendingTxReceipt;
-};
-
-const handleConfirmAndSend = (state: State, retrievedTxResponse: TransactionResponse) => {
-  const { signedTx } = state;
-  if (!signedTx) {
-    return; // @todo: Handle this error state.
-  }
-  return handlePendingTxReceipt(state, retrievedTxResponse.hash as ITxHash);
-};
-
-const handleResubmitTx = (state: State) => {
-  const { txConfig } = state;
-  const rawTransaction = txConfig!.rawTransaction;
-  // add 10 gwei to current gas price
-  const resubmitGasPrice =
-    parseFloat(bigNumGasPriceToViewableGwei(bigNumberify(rawTransaction.gasPrice))) + 10;
-  const hexGasPrice = inputGasPriceToHex(resubmitGasPrice.toString());
-
-  return {
-    ...txConfig!,
-    rawTransaction: { ...rawTransaction, gasPrice: hexGasPrice }
-  };
+const createPendingTxReceipt = (state: State, payload: ITxHash) => {
+  return makePendingTxReceipt(payload)(ITxType.STANDARD, state.txConfig!);
 };
