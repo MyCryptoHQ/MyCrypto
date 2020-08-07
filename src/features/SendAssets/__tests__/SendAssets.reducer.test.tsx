@@ -1,5 +1,3 @@
-import { bigNumberify } from 'ethers/utils';
-
 import { IFormikFields, ITxStatus } from '@types';
 import { fAssets } from '@../jest_config/__fixtures__/assets';
 import { fAccount, fNetwork } from '@fixtures';
@@ -20,7 +18,7 @@ const defaultTxConfig = {
   rawTransaction: {
     value: '1',
     to: fAccount.address,
-    gasPrice: bigNumberify('57000000000')
+    gasPrice: '57000000000'
   },
   from: fAccount.address,
   senderAccount: fAccount,
@@ -132,9 +130,9 @@ describe('SendAssetsReducer', () => {
       expect(txReceipt.status).toBe(ITxStatus.PENDING);
       expect(txReceipt.to).toBe(fAccount.address);
       expect(txReceipt.from).toBe(fAccount.address);
-      expect(txReceipt.gasLimit).toEqual(bigNumberify(txConfig.gasLimit));
-      expect(txReceipt.gasPrice).toEqual(bigNumberify(txConfig.gasPrice));
-      expect(txReceipt.value).toEqual(bigNumberify(txConfig.rawTransaction.value));
+      expect(txReceipt.gasLimit.toString()).toEqual(txConfig.gasLimit);
+      expect(txReceipt.gasPrice.toString()).toEqual(txConfig.gasPrice);
+      expect(txReceipt.value.toString()).toEqual(txConfig.rawTransaction.value);
 
       expect(newState.signedTx).toBe(prevState.signedTx);
       expect(newState.txConfig).toBe(prevState.txConfig);
@@ -175,9 +173,9 @@ describe('SendAssetsReducer', () => {
       expect(txReceipt.status).toBe(ITxStatus.PENDING);
       expect(txReceipt.to).toBe(fAccount.address);
       expect(txReceipt.from).toBe(fAccount.address);
-      expect(txReceipt.gasLimit).toEqual(bigNumberify(txConfig.gasLimit));
-      expect(txReceipt.gasPrice).toEqual(bigNumberify(txConfig.gasPrice));
-      expect(txReceipt.value).toEqual(bigNumberify(txConfig.rawTransaction.value));
+      expect(txReceipt.gasLimit.toString()).toEqual(txConfig.gasLimit);
+      expect(txReceipt.gasPrice.toString()).toEqual(txConfig.gasPrice);
+      expect(txReceipt.value.toString()).toEqual(txConfig.rawTransaction.value);
 
       expect(newState.signedTx).toBe(prevState.signedTx);
       expect(newState.txConfig).toBe(prevState.txConfig);

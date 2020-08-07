@@ -70,7 +70,8 @@ import {
   isFormValid as checkFormValid,
   ETHUUID,
   isSameAddress,
-  isVoid
+  isVoid,
+  bigify
 } from '@utils';
 import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
 import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
@@ -200,7 +201,7 @@ const getInitialFormikValues = ({
 }): IFormikFields => {
   const gasPriceInGwei =
     path(['rawTransaction', 'gasPrice'], s) &&
-    bigNumGasPriceToViewableGwei(bigNumberify(s.rawTransaction.gasPrice));
+    bigNumGasPriceToViewableGwei(bigify(s.rawTransaction.gasPrice));
   const state: Partial<IFormikFields> = {
     amount: s.amount,
     account: !isVoid(s.senderAccount) ? s.senderAccount : defaultAccount,

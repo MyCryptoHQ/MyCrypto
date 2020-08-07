@@ -1,4 +1,4 @@
-import { hexlify, bigNumberify } from 'ethers/utils';
+import { hexlify } from 'ethers/utils';
 import { ValuesType } from 'utility-types';
 
 import {
@@ -18,7 +18,7 @@ import {
   bigNumGasPriceToViewableGwei,
   inputGasPriceToHex
 } from '@services';
-import { makePendingTxReceipt, makeTxConfigFromSignedTx } from '@utils';
+import { makePendingTxReceipt, makeTxConfigFromSignedTx, bigify } from '@utils';
 
 import { processFormDataToTx } from './helpers';
 
@@ -101,7 +101,7 @@ export const sendAssetsReducer = (state: State, action: ReducerAction): State =>
 
       // add 10 gwei to current gas price
       const resubmitGasPrice =
-        parseFloat(bigNumGasPriceToViewableGwei(bigNumberify(rawTransaction.gasPrice))) + 10;
+        parseFloat(bigNumGasPriceToViewableGwei(bigify(rawTransaction.gasPrice))) + 10;
       const hexGasPrice = inputGasPriceToHex(resubmitGasPrice.toString());
 
       const txConfig = {
