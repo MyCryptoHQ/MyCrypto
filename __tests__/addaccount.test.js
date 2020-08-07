@@ -1,4 +1,5 @@
 import { getByText } from '@testing-library/testcafe';
+import { t, Selector } from 'testcafe';
 import {
   PAGES,
   FIXTURE_MYC_STORAGE_KEY,
@@ -37,10 +38,19 @@ test('Should be able to add a view only address', async (t) => {
 
   FIXTURE_VIEW_ONLY_TOKENS.forEach((t) => dashboardPage.expectBalanceInBalanceList(t));
 });
+
 // Add Account - Private Key
 test('Should be able to add a private key address', async (t) => {
   await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
-  await addAccountPage.addPrivateKey();
+  await addAccountPage.selectPrivateKeyWalletType();
+
+  await addAccountPage.waitForPage(PAGES.ADD_ACCOUNT_PRIVATE_KEY);
+
+  await addAccountPage.selectEthereumNetwork();
+  await addAccountPage.inputPrivateKey()
+  // wait for cryptography to finish
+  await t.expect(Selector('button').withText(getTransValueByKey('ADD_LABEL_6_SHORT')).hasAttribute('disabled')).notOk('ready for testing', { timeout: FIXTURES_CONST.TIMEOUT });
+  await addAccountPage.submitAddAccountPrivateKey();
 
   await dashboardPage.waitPageLoaded();
 
@@ -53,7 +63,14 @@ test('Should be able to add a private key address', async (t) => {
 // Add Account - Keystore File
 test('Should be able to add a keystore file address', async (t) => {
   await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
-  await addAccountPage.addKeystoreFile();
+  await addAccountPage.selectKeystoreFileWalletType();
+
+  await addAccountPage.waitForPage(PAGES.ADD_ACCOUNT_KEYSTORE);
+
+  await addAccountPage.selectEthereumNetwork();
+  await addAccountPage.inputKeystoreFileAndPassword()
+  await t.expect(Selector('button').withText(getTransValueByKey('ADD_LABEL_6_SHORT')).hasAttribute('disabled')).notOk('ready for testing', { timeout: FIXTURES_CONST.TIMEOUT });
+  await addAccountPage.submitAddAccountKeystoreFile();
 
   await dashboardPage.waitPageLoaded(FIXTURES_CONST.TIMEOUT * 2);
 
