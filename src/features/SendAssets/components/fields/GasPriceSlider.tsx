@@ -14,7 +14,7 @@ interface OwnProps {
   gasPrice: string;
   gasEstimates: GasEstimates;
   network: Network;
-  setFieldValue(field: string, value: any, shouldValidate?: boolean): void;
+  onChange(value: number): void;
 }
 
 type Props = OwnProps;
@@ -43,7 +43,7 @@ export default class SimpleGas extends Component<Props> {
   };
 
   public render() {
-    const { gasEstimates, setFieldValue } = this.props;
+    const { gasEstimates, onChange } = this.props;
     const { gasPrice } = this.state;
     const bounds = {
       max: gasEstimates ? gasEstimates.fastest : GAS_PRICE_DEFAULT.max,
@@ -61,7 +61,7 @@ export default class SimpleGas extends Component<Props> {
                 this.setState({ gasPrice: e.toString() });
               }}
               onAfterChange={(e) => {
-                setFieldValue('gasPriceSlider', e);
+                onChange(e);
               }}
               min={bounds.min}
               max={bounds.max}
