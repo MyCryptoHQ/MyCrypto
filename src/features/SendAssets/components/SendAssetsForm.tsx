@@ -87,7 +87,8 @@ import {
   validateAmountField,
   validateGasLimitField,
   validateGasPriceField,
-  validateNonceField
+  validateNonceField,
+  validateDataField
 } from './validators';
 import { isERC20Tx, processFormForEstimateGas } from '../helpers';
 import { validateTxFee } from '@services/EthService/validators';
@@ -354,17 +355,26 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
           }
           return true;
         }
-      )
+      ),
+    dataField: Yup.string().test(validateDataField())
   });
 
   const validAccounts = accounts.filter((account) => account.wallet !== WalletId.VIEW_ONLY);
   const userAccountEthAsset = userAssets.find((a) => a.uuid === ETHUUID);
+  const defaultAsset = (() => {
+    if (userAccountEthAsset) {
+      return userAccountEthAsset;
+    } else if (userAssets.length > 0) {
+      return userAssets[0];
+    }
+    return undefined;
+  })();
   const initialValues = useMemo(
     () =>
       getInitialFormikValues({
         s: txConfig,
         defaultAccount,
-        defaultAsset: userAccountEthAsset,
+        defaultAsset,
         defaultNetwork
       }),
     []
@@ -681,7 +691,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                 <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                   <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-data">
                     <label htmlFor="data">{translate('TRANS_DATA')}</label>
-                    {/* (value: string) => value !== '' && validateDataField(value) */}
                     <DataField
                       onChange={(option: string) => {
                         setFieldValue('txDataField', option);

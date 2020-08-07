@@ -26,7 +26,7 @@ export function validateGasLimitField(): TestOptions {
 export function validateDataField(): TestOptions {
   return {
     message: translateRaw('ERROR_9'),
-    test: (value) => isValidHex(value) && isHexPrefixed(value)
+    test: (value) => value !== '' && isValidHex(value) && isHexPrefixed(value)
   };
 }
 
