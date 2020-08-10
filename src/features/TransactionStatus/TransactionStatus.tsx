@@ -13,6 +13,7 @@ import { makeTxConfigFromTransactionResponse, makePendingTxReceipt } from '@util
 import { noOp } from '@utils';
 import { useEffectOnce, useUpdateEffect } from '@vendor';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
+import { translateRaw } from '@translations';
 
 const TransactionStatus = withRouter(({ history, match }) => {
   const { assets } = useContext(AssetContext);
@@ -65,10 +66,10 @@ const TransactionStatus = withRouter(({ history, match }) => {
             network={networkId ? networkId : undefined}
             onChange={(n) => setNetwork(n)}
           />
-          <label htmlFor="txhash">TX Hash</label>
+          <label htmlFor="txhash">{translateRaw('TX_HASH')}</label>
           <Input name="txhash" value={txHash} onChange={(e) => setTxHash(e.currentTarget.value)} />
           <Button loading={loading} onClick={fetchTx} fullwidth={true}>
-            Fetch
+            {translateRaw('FETCH')}
           </Button>
         </>
       )}
