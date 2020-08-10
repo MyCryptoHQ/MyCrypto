@@ -40,7 +40,8 @@ import {
   StoreAccount,
   StoreAsset,
   TTicker,
-  WalletId
+  WalletId,
+  Fiat
 } from '@types';
 import {
   baseToConvertedUnit,
@@ -78,7 +79,7 @@ import { ProtectTxShowError } from '@features/ProtectTransaction/components/Prot
 import { ProtectTxButton } from '@features/ProtectTransaction/components/ProtectTxButton';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { useEffectOnce, path } from '@vendor';
-import { getFiat } from '@config/fiats';
+import { getFiat, Fiats } from '@config/fiats';
 
 import { DataField, GasLimitField, GasPriceField, GasPriceSlider, NonceField } from './fields';
 import './SendAssetsForm.scss';
@@ -104,15 +105,18 @@ const NoMarginCheckbox = styled(Checkbox)`
 
 const getTxFeeValidation = (
   amount: string,
-  assetRate: number,
+  assetRateUSD: number,
+  assetRateFiat: number,
   isERC20: boolean,
   gasLimit: string,
   gasPrice: string,
+  fiat: Fiat,
   ethAssetRate?: number
 ) => {
   const { type, amount: $amount, fee: $fee } = validateTxFee(
     amount,
-    assetRate,
+    assetRateUSD,
+    assetRateFiat,
     isERC20,
     gasLimit,
     gasPrice,
@@ -124,8 +128,8 @@ const getTxFeeValidation = (
         <InlineMessage
           type={InlineMessageType.WARNING}
           value={translateRaw('WARNING_TRANSACTION_FEE', {
-            $amount: `$${$amount}`,
-            $fee: `$${$fee}`
+            $amount: `${fiat.symbol}${$amount}`,
+            $fee: `${fiat.symbol}${$fee}`
           })}
         />
       );
@@ -133,21 +137,23 @@ const getTxFeeValidation = (
       return (
         <InlineMessage
           type={InlineMessageType.ERROR}
-          value={translateRaw('ERROR_TRANSACTION_FEE_USE_LOWER', { $fee: `$${$fee}` })}
+          value={translateRaw('ERROR_TRANSACTION_FEE_USE_LOWER', { $fee: `${fiat.symbol}${$fee}` })}
         />
       );
     case 'Error-High-Tx-Fee':
       return (
         <InlineMessage
           type={InlineMessageType.ERROR}
-          value={translateRaw('ERROR_HIGH_TRANSACTION_FEE_HIGH', { $fee: `$${$fee}` })}
+          value={translateRaw('ERROR_HIGH_TRANSACTION_FEE_HIGH', { $fee: `${fiat.symbol}${$fee}` })}
         />
       );
     case 'Error-Very-High-Tx-Fee':
       return (
         <InlineMessage
           type={InlineMessageType.ERROR}
-          value={translateRaw('ERROR_HIGH_TRANSACTION_FEE_VERY_HIGH', { $fee: `$${$fee}` })}
+          value={translateRaw('ERROR_HIGH_TRANSACTION_FEE_VERY_HIGH', {
+            $fee: `${fiat.symbol}${$fee}`
+          })}
         />
       );
     case 'Invalid':
@@ -238,7 +244,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
     getAccount,
     isMyCryptoMember
   } = useContext(StoreContext);
-  const { getAssetRate, getRate } = useContext(RatesContext);
+  const { getAssetRate, getRateInCurrency, getAssetRateInCurrency } = useContext(RatesContext);
   const { settings } = useContext(SettingsContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
@@ -617,13 +623,15 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                 )}
                 {getTxFeeValidation(
                   values.amount,
-                  getAssetRate(baseAsset || undefined) || 0,
+                  getAssetRateInCurrency(baseAsset || undefined, Fiats.USD.ticker) || 0,
+                  getAssetRateInCurrency(baseAsset || undefined, getFiat(settings).ticker) || 0,
                   isERC20Tx(values.asset),
                   values.gasLimitField.toString(),
                   values.advancedTransaction
                     ? values.gasPriceField.toString()
                     : values.gasPriceSlider.toString(),
-                  getRate('ETH' as TTicker)
+                  getFiat(settings),
+                  getRateInCurrency('ETH' as TTicker, Fiats.USD.ticker)
                 )}
               </fieldset>
               {/* Advanced Options */}
