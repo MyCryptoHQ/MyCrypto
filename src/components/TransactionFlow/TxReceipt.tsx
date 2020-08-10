@@ -161,10 +161,10 @@ export default function TxReceipt({
     }
   }, [displayTxReceipt, txConfig.asset]);
 
-  const senderContact = getContactByAddressAndNetworkId(
-    txConfig.senderAccount.address,
-    txConfig.network.id
-  );
+  const senderContact =
+    txConfig.senderAccount &&
+    getContactByAddressAndNetworkId(txConfig.senderAccount.address, txConfig.network.id);
+
   const recipientContact = getContactByAddressAndNetworkId(
     txConfig.receiverAddress,
     txConfig.network.id

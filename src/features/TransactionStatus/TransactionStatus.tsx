@@ -6,28 +6,17 @@ import isEmpty from 'lodash/isEmpty';
 
 import { Button, NetworkSelectDropdown, ContentPanel } from '@components';
 import { getTransactionByHash } from '@services/EthService/transaction';
-import { ITxHash, ITxStatus, NetworkId } from '@types';
-import {
-  NetworkContext,
-  AssetContext,
-  SettingsContext,
-  StoreContext,
-  AddressBookContext,
-  RatesContext
-} from '@services';
-import { TxReceiptUI } from '@components/TransactionFlow/TxReceipt';
-import { makeTxConfigFromTransactionResponse } from '@utils/transaction';
-import { constructSenderFromTxConfig } from '@components/TransactionFlow/helpers';
+import { ITxHash, NetworkId, ITxType } from '@types';
+import { NetworkContext, AssetContext, StoreContext } from '@services';
+import TxReceipt from '@components/TransactionFlow/TxReceipt';
+import { makeTxConfigFromTransactionResponse, makePendingTxReceipt } from '@utils/transaction';
 import { noOp } from '@utils';
 import { useEffectOnce } from '@vendor';
 import { DEFAULT_NETWORK } from '@config';
 
 const TransactionStatus = withRouter(({ match }) => {
-  const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
-  const { getAssetRate } = useContext(RatesContext);
   const { assets } = useContext(AssetContext);
   const { getNetworkById, networks } = useContext(NetworkContext);
-  const { settings } = useContext(SettingsContext);
   const { accounts } = useContext(StoreContext);
 
   const defaultTxHash = match.params.txHash ? match.params.txHash : '';
@@ -48,23 +37,18 @@ const TransactionStatus = withRouter(({ match }) => {
 
   const fetchTx = async () => {
     setLoading(true);
-    const tx = await getTransactionByHash(network, txHash as ITxHash);
-    setFetchedTx(tx);
+    try {
+      const tx = await getTransactionByHash(network, txHash as ITxHash);
+      setFetchedTx(tx);
+    } catch (err) {
+      console.error(err);
+    }
     setLoading(false);
   };
-
   const txConfig =
     fetchedTx && makeTxConfigFromTransactionResponse(fetchedTx, assets, networks, accounts);
 
-  const senderContact =
-    txConfig &&
-    txConfig.senderAccount &&
-    getContactByAddressAndNetworkId(txConfig.senderAccount.address, txConfig.network.id);
-  const recipientContact =
-    txConfig && getContactByAddressAndNetworkId(txConfig.receiverAddress, txConfig.network.id);
-
-  const sender = txConfig && constructSenderFromTxConfig(txConfig, accounts);
-  const assetRate = () => txConfig && getAssetRate(txConfig.asset);
+  const txReceipt = txConfig && makePendingTxReceipt(txHash)(ITxType.UNKNOWN, txConfig);
 
   return (
     <ContentPanel heading={'TX Status'}>
@@ -83,17 +67,11 @@ const TransactionStatus = withRouter(({ match }) => {
       )}
       {fetchedTx && txConfig && (
         <>
-          <TxReceiptUI
-            settings={settings}
-            sender={sender!}
+          <TxReceipt
             txConfig={txConfig}
-            timestamp={fetchedTx.timestamp ? fetchedTx.timestamp : 0}
-            senderContact={senderContact!}
-            recipientContact={recipientContact!}
-            assetRate={assetRate}
+            txReceipt={txReceipt!}
             resetFlow={noOp}
-            // TODO
-            txStatus={ITxStatus.SUCCESS}
+            onComplete={noOp}
           />
         </>
       )}
