@@ -211,6 +211,7 @@ const DeterministicWallet = ({
             network={network}
             generateFreshAddress={handleFreshAddressGeneration}
             handleUpdate={updateAsset}
+            freshAddressIndex={freshAddressIndex}
           />
         )}
       </TableContainer>

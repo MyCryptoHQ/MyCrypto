@@ -10,12 +10,13 @@ import {
   Typography,
   LinkOut,
   Button,
-  Tooltip
+  Tooltip,
+  Icon
 } from '@components';
 import { Network, ExtendedAsset, TAddress } from '@types';
-import { isSameAddress } from '@utils';
+import { isSameAddress, useScreenSize } from '@utils';
 import BN from 'bn.js';
-import Icon from '@components/Icon';
+import { DEFAULT_GAP_TO_SCAN_FOR } from '@config';
 
 interface DeterministicTableProps {
   isComplete: boolean;
@@ -26,7 +27,8 @@ interface DeterministicTableProps {
     address: TAddress;
     derivationPath: string;
   }[];
-  generateFreshAddress?(): void;
+  freshAddressIndex: number;
+  generateFreshAddress(): void;
   onSelect(account: DWAccountDisplay): void;
   handleUpdate(asset: ExtendedAsset): void;
   downloadCSV(): void;
@@ -48,7 +50,7 @@ const Heading = styled.div`
   border-top: 1px solid ${COLORS.GREY_ATHENS};
   border-bottom: 1px solid ${COLORS.GREY_ATHENS};
   background: ${COLORS.BLUE_GREY_LIGHTEST};
-  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     display: none;
   }
 `;
@@ -67,6 +69,12 @@ const Body = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    border-radius: 1.3px;
+    & > *:first-child {
+      border-top: 1px solid ${COLORS.GREY_ATHENS};
+    }
+  }
 `;
 
 const Row = styled.div<{ isSelected: boolean }>`
@@ -81,9 +89,10 @@ const Row = styled.div<{ isSelected: boolean }>`
   align-items: center;
   min-height: 60px;
   border-bottom: 1px solid ${COLORS.GREY_ATHENS};
-  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
-    flex-direction: column;
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     align-items: flex-start;
+    position: relative;
+    padding: 10px 0 10px 65px;
   }
 `;
 
@@ -95,6 +104,13 @@ const SelectedContainer = styled.div<{ isSelected: boolean }>`
   width: 25px;
   height: 60px;
   border-left: 6px solid ${COLORS.LIGHT_GREEN};
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40px;
+    height: 100%;
+  }
 `;
 
 const LabelContainer = styled.div`
@@ -102,7 +118,7 @@ const LabelContainer = styled.div`
   flex-direction: row;
   align-items: center;
   width: 225px;
-  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: 100%;
   }
 `;
@@ -113,11 +129,21 @@ const SIdenticon = styled(Identicon)`
     width: 30px;
     height: 30px;
   }
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    position: absolute;
+    top: 15px;
+    left: 13px;
+    margin-right: 0;
+    & > img {
+      width: 40px;
+      height: 40px;
+    }
+  }
 `;
 
 const AddressContainer = styled.div`
   width: 135px;
-  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: 100%;
   }
 `;
@@ -126,7 +152,7 @@ const DPathContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 125px;
-  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: 100%;
   }
 `;
@@ -142,16 +168,29 @@ const DPath = styled(Typography)`
 `;
 
 const ValueContainer = styled.div`
-  width: 80px;
-`;
-
-const TickerContainer = styled.div`
-  width: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 135px;
 `;
 
 const LinkContainer = styled.div`
   width: 50px;
   padding: 0 15px;
+`;
+
+const MobileColumn = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    min-height: 120px;
+  }
 `;
 
 const GenerateAddressButton = styled.div<{ disabled: boolean }>`
@@ -167,6 +206,12 @@ const GenerateAddressButton = styled.div<{ disabled: boolean }>`
   height: 60px;
   padding-left: 45px;
   border-bottom: 1px solid ${COLORS.GREY_ATHENS};
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    justify-content: center;
+    border-bottom: none;
+    padding-top: 45px;
+    padding-left: 0;
+  }
 `;
 
 const STypography = styled(Typography)`
@@ -178,7 +223,7 @@ const NoAccountContainer = styled.div`
   text-align: center;
   flex-direction: column;
   align-items: center;
-  padding: 100px 0;
+  padding: 100px 20px;
   & > *:not(:last-child) {
     margin-bottom: 30px;
   }
@@ -214,12 +259,14 @@ const DeterministicTable = ({
   selectedAccounts,
   network,
   asset,
+  freshAddressIndex,
   onSelect,
   generateFreshAddress,
   handleUpdate,
   downloadCSV
 }: DeterministicTableProps) => {
   const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
+  const { isMobile } = useScreenSize();
 
   const isSelected = (account: DWAccountDisplay) =>
     selectedAccounts.find(({ address }) => isSameAddress(account.address, address)) ? true : false;
@@ -263,7 +310,7 @@ const DeterministicTable = ({
               </NoAccountAction>
               .
             </Typography>
-            <Button onClick={() => handleUpdate(asset)}>
+            <Button onClick={() => handleUpdate(asset)} fullwidth={isMobile}>
               <Trans id="DETERMINISTIC_SCAN_AGAIN" />
             </Button>
             <Typography>{translate('DETERMINISTIC_CONTACT_US')}</Typography>
@@ -281,29 +328,36 @@ const DeterministicTable = ({
               <SelectedContainer isSelected={isSelected(account)}>
                 <Icon type="check" />
               </SelectedContainer>
-              <LabelContainer>
-                <SIdenticon address={account.address} />
-                <EditableAccountLabel
-                  addressBookEntry={getContactByAddressAndNetworkId(account.address, network.id)}
-                  address={account.address}
-                  networkId={network.id}
-                />
-              </LabelContainer>
-              <AddressContainer>
-                <EthAddress address={account.address} truncate={true} />
-              </AddressContainer>
-              <DPathContainer>
-                <DPathType>{account.pathItem.baseDPath.label.replace(/\(.*?\)/, '')}</DPathType>
-                <DPath>({account.pathItem.path})</DPath>
-              </DPathContainer>
-              <ValueContainer>
-                {account.balance
-                  ? parseFloat(
-                      fromTokenBase(new BN(account.balance.toString()), asset.decimal).toString()
-                    ).toFixed(4)
-                  : '0.0000'}
-              </ValueContainer>
-              <TickerContainer>{asset.ticker}</TickerContainer>
+              <MobileColumn>
+                <LabelContainer>
+                  <SIdenticon address={account.address} />
+                  <EditableAccountLabel
+                    addressBookEntry={getContactByAddressAndNetworkId(account.address, network.id)}
+                    address={account.address}
+                    networkId={network.id}
+                  />
+                </LabelContainer>
+                <AddressContainer>
+                  <EthAddress address={account.address} truncate={true} />
+                </AddressContainer>
+                <DPathContainer>
+                  <DPathType>{account.pathItem.baseDPath.label.replace(/\(.*?\)/, '')}</DPathType>
+                  <DPath>({account.pathItem.path})</DPath>
+                </DPathContainer>
+                <ValueContainer>
+                  <Typography>
+                    {account.balance
+                      ? parseFloat(
+                          fromTokenBase(
+                            new BN(account.balance.toString()),
+                            asset.decimal
+                          ).toString()
+                        ).toFixed(4)
+                      : '0.0000'}
+                  </Typography>
+                  <Typography>{asset.ticker}</Typography>
+                </ValueContainer>
+              </MobileColumn>
               <LinkContainer>
                 <Tooltip tooltip={'View on Etherscan'}>
                   <LinkOut
@@ -317,14 +371,15 @@ const DeterministicTable = ({
               </LinkContainer>
             </Row>
           ))}
-          {generateFreshAddress && (
-            <GenerateAddressButton onClick={() => generateFreshAddress()} disabled={!isComplete}>
-              <Icon type="add" />
-              <STypography>
-                <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
-              </STypography>
-            </GenerateAddressButton>
-          )}
+          <GenerateAddressButton
+            onClick={() => generateFreshAddress()}
+            disabled={!isComplete || freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR}
+          >
+            <Icon type="add" />
+            <STypography>
+              <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
+            </STypography>
+          </GenerateAddressButton>
         </Body>
       )}
     </Table>

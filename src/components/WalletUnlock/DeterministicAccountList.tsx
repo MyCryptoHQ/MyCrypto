@@ -6,13 +6,12 @@ import prop from 'ramda/src/prop';
 
 import { Trans } from '@translations';
 import { ExtendedAsset, TAddress, Network } from '@types';
-import { Button, Typography, Tooltip } from '@components';
-import Icon from '@components/Icon';
+import { Button, Typography, Tooltip, Icon } from '@components';
 import { BREAK_POINTS, COLORS } from '@theme';
 import { DWAccountDisplay } from '@services';
 
 import DeterministicTable from './DeterministicAccountTable';
-import { isSameAddress, accountsToCSV } from '@utils';
+import { isSameAddress, accountsToCSV, useScreenSize } from '@utils';
 
 const DeterministicAccountListWrapper = styled.div`
   display: flex;
@@ -22,6 +21,7 @@ const DeterministicAccountListWrapper = styled.div`
   min-height: 640px;
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: calc(100vw - 30px);
+    min-height: auto;
   }
 `;
 
@@ -38,12 +38,11 @@ const StatusBar = styled.div`
   justify-content: space-evenly;
   padding-top: 42px;
   border-top: 1px solid ${COLORS.GREY_ATHENS};
-  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100vw;
-    height: 170px;
     flex-direction: column;
     background: white;
     box-shadow: 0px -1px 4px rgba(186, 186, 186, 0.25);
@@ -58,9 +57,10 @@ const StatusWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   width: 65%;
-  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: 100%;
     text-align: center;
+    margin-bottom: 20px;
   }
 `;
 
@@ -88,11 +88,9 @@ interface DeterministicAccountListProps {
   finishedAccounts: DWAccountDisplay[];
   asset: ExtendedAsset;
   isComplete: boolean;
-  className?: string;
-  currentsOnly?: boolean;
-  dashboard?: boolean;
   network: Network;
-  generateFreshAddress?(): void;
+  freshAddressIndex: number;
+  generateFreshAddress(): void;
   onUnlock(param: any): void;
   handleUpdate(asset: ExtendedAsset): void;
 }
@@ -102,16 +100,17 @@ interface ISelectedAccount {
   derivationPath: string;
 }
 
-export default function DeterministicAccountList(props: DeterministicAccountListProps) {
-  const {
-    finishedAccounts,
-    asset,
-    isComplete,
-    onUnlock,
-    network,
-    generateFreshAddress,
-    handleUpdate
-  } = props;
+export default function DeterministicAccountList({
+  finishedAccounts,
+  asset,
+  isComplete,
+  onUnlock,
+  network,
+  freshAddressIndex,
+  generateFreshAddress,
+  handleUpdate
+}: DeterministicAccountListProps) {
+  const { isMobile } = useScreenSize();
 
   const [selectedAccounts, setSelectedAccounts] = useState([] as ISelectedAccount[]);
 
@@ -165,6 +164,7 @@ export default function DeterministicAccountList(props: DeterministicAccountList
           onSelect={handleSelection}
           handleUpdate={handleUpdate}
           downloadCSV={handleDownload}
+          freshAddressIndex={freshAddressIndex}
         />
       </TableWrapper>
       <StatusBar>
@@ -218,7 +218,7 @@ export default function DeterministicAccountList(props: DeterministicAccountList
             </div>
           </StatusWrapper>
         )}
-        <Button onClick={handleSubmit} disabled={!selectedAccounts.length}>
+        <Button onClick={handleSubmit} disabled={!selectedAccounts.length} fullwidth={isMobile}>
           <Trans
             id="DETERMINISTIC_ACCOUNT_LIST_ADD"
             variables={{
