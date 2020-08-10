@@ -1,10 +1,12 @@
 import React, { useState, useContext } from 'react';
 import { Input } from '@mycrypto/ui';
 import { TransactionResponse } from 'ethers/providers';
+import { withRouter } from 'react-router-dom';
+import isEmpty from 'lodash/isEmpty';
 
 import { Button, NetworkSelectDropdown, ContentPanel } from '@components';
 import { getTransactionByHash } from '@services/EthService/transaction';
-import { ITxHash, Network, ITxStatus } from '@types';
+import { ITxHash, ITxStatus, NetworkId } from '@types';
 import {
   NetworkContext,
   AssetContext,
@@ -17,22 +19,36 @@ import { TxReceiptUI } from '@components/TransactionFlow/TxReceipt';
 import { makeTxConfigFromTransactionResponse } from '@utils/transaction';
 import { constructSenderFromTxConfig } from '@components/TransactionFlow/helpers';
 import { noOp } from '@utils';
+import { useEffectOnce } from '@vendor';
+import { DEFAULT_NETWORK } from '@config';
 
-export default function TransactionStatus() {
+const TransactionStatus = withRouter(({ match }) => {
   const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
   const { getAssetRate } = useContext(RatesContext);
   const { assets } = useContext(AssetContext);
   const { getNetworkById, networks } = useContext(NetworkContext);
   const { settings } = useContext(SettingsContext);
   const { accounts } = useContext(StoreContext);
-  const [txHash, setTxHash] = useState('');
-  const [network, setNetwork] = useState<Network | undefined>(undefined);
+
+  const defaultTxHash = match.params.txHash ? match.params.txHash : '';
+  const defaultNetwork = match.params.network ? match.params.network : DEFAULT_NETWORK;
+
+  const [txHash, setTxHash] = useState(defaultTxHash);
+  const [networkId, setNetwork] = useState<NetworkId>(defaultNetwork);
   const [fetchedTx, setFetchedTx] = useState<TransactionResponse | undefined>(undefined);
   const [loading, setLoading] = useState(false);
 
+  const network = networkId && getNetworkById(networkId);
+
+  useEffectOnce(() => {
+    if (!isEmpty(defaultTxHash)) {
+      fetchTx();
+    }
+  });
+
   const fetchTx = async () => {
     setLoading(true);
-    const tx = await getTransactionByHash(network!, txHash as ITxHash);
+    const tx = await getTransactionByHash(network, txHash as ITxHash);
     setFetchedTx(tx);
     setLoading(false);
   };
@@ -55,10 +71,8 @@ export default function TransactionStatus() {
       {!fetchedTx && (
         <>
           <NetworkSelectDropdown
-            network={network ? network.id : undefined}
-            onChange={(n) => {
-              setNetwork(getNetworkById(n));
-            }}
+            network={networkId ? networkId : undefined}
+            onChange={(n) => setNetwork(n)}
           />
           <label htmlFor="txhash">TX Hash</label>
           <Input name="txhash" value={txHash} onChange={(e) => setTxHash(e.currentTarget.value)} />
@@ -85,4 +99,6 @@ export default function TransactionStatus() {
       )}
     </ContentPanel>
   );
-}
+});
+
+export default TransactionStatus;
