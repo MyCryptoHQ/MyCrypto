@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Formik, Field, Form, FieldProps, FormikProps } from 'formik';
 import { Panel, Input } from '@mycrypto/ui';
 import { Button, Link, Checkbox } from '@components';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { DEFAULT_NETWORK, IIS_ACTIVE_FEATURE } from '@config';
 import { generateUUID, IS_DEV, IS_STAGING } from '@utils';
@@ -213,13 +213,14 @@ const DevToolsManagerContainer = styled.div<{ isActive: boolean }>`
   top: 0;
   left: 0;
   max-width: 450px;
-  height: 100vh;
+  height: auto;
 
   ${({ isActive }) =>
     isActive &&
-    `
-  overflow-y: scroll;
-`}
+    css`
+      overflow-y: scroll;
+      height: 100vh;
+    `}
 
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     position: fixed;
