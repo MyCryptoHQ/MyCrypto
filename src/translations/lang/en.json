@@ -879,6 +879,7 @@
     "TX_FEE_SCALE_LEFT": "Cheap",
     "TX_FEE_SCALE_RIGHT": "Fast",
     "TX_HASH": "TX Hash",
+    "TX_STATUS": "TX Status",
     "U2F_NOT_SUPPORTED": "The U2F standard that hardware wallets use does not seem to be supported by your browser. Please try again using Google Chrome.",
     "UNEXPECTED_ERROR": "Something went wrong. Please refresh this page and try again or contact us at $link",
     "UNHIDE_ASSET_TOOLTIP": "Unhide this asset (will be visible on Dashboard).",

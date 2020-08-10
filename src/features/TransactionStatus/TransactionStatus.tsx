@@ -59,7 +59,7 @@ const TransactionStatus = withRouter(({ history, match }) => {
   const txReceipt = txConfig && makePendingTxReceipt(txHash)(ITxType.UNKNOWN, txConfig);
 
   return (
-    <ContentPanel heading={'TX Status'}>
+    <ContentPanel heading={translateRaw('TX_STATUS')}>
       {!fetchedTx && (
         <>
           <NetworkSelectDropdown
