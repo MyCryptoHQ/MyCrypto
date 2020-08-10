@@ -4,11 +4,9 @@ import { TransactionResponse } from 'ethers/providers';
 import { withRouter } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
 
-import { Button, NetworkSelectDropdown, ContentPanel } from '@components';
-import { getTransactionByHash } from '@services/EthService/transaction';
+import { Button, NetworkSelectDropdown, ContentPanel, TxReceipt } from '@components';
 import { ITxHash, NetworkId, ITxType } from '@types';
-import { NetworkContext, AssetContext, StoreContext } from '@services';
-import TxReceipt from '@components/TransactionFlow/TxReceipt';
+import { NetworkContext, AssetContext, StoreContext, ProviderHandler } from '@services';
 import { makeTxConfigFromTransactionResponse, makePendingTxReceipt } from '@utils/transaction';
 import { noOp } from '@utils';
 import { useEffectOnce, useUpdateEffect } from '@vendor';
@@ -45,7 +43,8 @@ const TransactionStatus = withRouter(({ history, match }) => {
   const fetchTx = async () => {
     setLoading(true);
     try {
-      const tx = await getTransactionByHash(network, txHash as ITxHash);
+      const provider = new ProviderHandler(network);
+      const tx = await provider.getTransactionByHash(txHash as ITxHash);
       setFetchedTx(tx);
     } catch (err) {
       console.error(err);
