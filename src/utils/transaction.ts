@@ -1,4 +1,4 @@
-import { Arrayish, parseTransaction, bigNumberify } from 'ethers/utils';
+import { Arrayish, parseTransaction, bigNumberify, formatEther } from 'ethers/utils';
 import { TransactionResponse, TransactionReceipt } from 'ethers/providers';
 
 import {
@@ -138,6 +138,56 @@ export const makeTxConfigFromSignedTx = (
     nonce: decodedTx.nonce.toString(),
     from: (decodedTx.from || oldTxConfig.from) as TAddress
   };
+  return txConfig;
+};
+
+// needs testing
+export const makeTxConfigFromTransactionResponse = (
+  decodedTx: TransactionResponse,
+  assets: ExtendedAsset[],
+  networks: Network[],
+  accounts: StoreAccount[]
+): ITxConfig => {
+  const networkDetected = getNetworkByChainId(decodedTx.chainId, networks);
+  const contractAsset = getAssetByContractAndNetwork(
+    decodedTx.to || undefined,
+    networkDetected
+  )(assets);
+  const baseAsset = getBaseAssetByNetwork({
+    network: networkDetected || ({} as Network),
+    assets
+  });
+
+  const txConfig = {
+    rawTransaction: {
+      to: decodedTx.to as TAddress,
+      value: decodedTx.value.toString(),
+      gasLimit: decodedTx.gasLimit.toString(),
+      data: decodedTx.data,
+      gasPrice: decodedTx.gasPrice.toString(),
+      nonce: decodedTx.nonce.toString(),
+      chainId: decodedTx.chainId,
+      from: decodedTx.from as TAddress
+    },
+    receiverAddress: (contractAsset
+      ? decodeTransfer(decodedTx.data)._to
+      : decodedTx.to) as TAddress,
+    amount: contractAsset
+      ? fromTokenBase(toWei(decodeTransfer(decodedTx.data)._value, 0), contractAsset.decimal)
+      : formatEther(decodedTx.value),
+    network: networkDetected,
+    value: toWei(decodedTx.value.toString(), getDecimalFromEtherUnit('ether')).toString(),
+    asset: contractAsset || baseAsset,
+    baseAsset,
+    senderAccount:
+      networkDetected && getStoreAccount(accounts)(decodedTx.from as TAddress, networkDetected.id),
+    gasPrice: decodedTx.gasPrice.toString(),
+    gasLimit: decodedTx.gasLimit.toString(),
+    data: decodedTx.data,
+    nonce: decodedTx.nonce.toString(),
+    from: decodedTx.from as TAddress
+  };
+  // @ts-ignore Ignore possible missing senderAccount for now
   return txConfig;
 };
 
