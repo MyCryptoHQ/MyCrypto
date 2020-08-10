@@ -1,4 +1,4 @@
-import { Arrayish, parseTransaction, bigNumberify, formatEther } from 'ethers/utils';
+import { Arrayish, parseTransaction, bigNumberify, formatEther, hexlify } from 'ethers/utils';
 import { TransactionResponse, TransactionReceipt } from 'ethers/providers';
 
 import {
@@ -161,11 +161,11 @@ export const makeTxConfigFromTransactionResponse = (
   const txConfig = {
     rawTransaction: {
       to: decodedTx.to as TAddress,
-      value: decodedTx.value.toString(),
-      gasLimit: decodedTx.gasLimit.toString(),
+      value: hexlify(decodedTx.value),
+      gasLimit: hexlify(decodedTx.gasLimit),
       data: decodedTx.data,
-      gasPrice: decodedTx.gasPrice.toString(),
-      nonce: decodedTx.nonce.toString(),
+      gasPrice: hexlify(decodedTx.gasPrice),
+      nonce: hexlify(decodedTx.nonce),
       chainId: decodedTx.chainId,
       from: decodedTx.from as TAddress
     },
