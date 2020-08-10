@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import uniqBy from 'ramda/src/uniqBy';
+import prop from 'ramda/src/prop';
 
-import { prop } from '@vendor';
 import { Trans } from '@translations';
 import { ExtendedAsset, TAddress, Network } from '@types';
 import { Button, Typography, Tooltip, Icon } from '@components';
