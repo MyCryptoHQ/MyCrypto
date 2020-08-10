@@ -1,6 +1,7 @@
 import { translateRaw } from '@translations';
 import { getAppRoutesObject } from '@routing';
 import { IIS_ACTIVE_FEATURE } from '@config/isActiveFeature';
+import { ROUTE_PATHS } from '@config';
 
 import settingsIcon from '@assets/images/icn-settings.svg';
 import dashboardIcon from '@assets/images/icn-dashboard.svg';
@@ -34,7 +35,7 @@ export const getLinks = (IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE) => {
           title: translateRaw('SWAP')
         },
         {
-          to: APP_ROUTES_OBJECT.ADD_ACCOUNT.path,
+          to: ROUTE_PATHS.ADD_ACCOUNT.path,
           enabled: APP_ROUTES_OBJECT.ADD_ACCOUNT.enabled,
           title: translateRaw('ADD_ACCOUNT')
         }
@@ -83,7 +84,7 @@ export const getLinks = (IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE) => {
           title: 'ENS'
         },
         {
-          to: APP_ROUTES_OBJECT.TX_STATUS.path,
+          to: ROUTE_PATHS.TX_STATUS.path,
           enabled: APP_ROUTES_OBJECT.TX_STATUS.enabled,
           title: 'TX Status'
         }

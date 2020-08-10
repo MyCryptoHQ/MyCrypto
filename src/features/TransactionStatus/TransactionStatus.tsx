@@ -45,6 +45,7 @@ const TransactionStatus = withRouter(({ match }) => {
     }
     setLoading(false);
   };
+
   const txConfig =
     fetchedTx && makeTxConfigFromTransactionResponse(fetchedTx, assets, networks, accounts);
 
