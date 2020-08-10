@@ -249,8 +249,7 @@ function Interact(props: CombinedProps) {
     }
   }, []);
 
-  const customEditingMode =
-    contract && isSameAddress(contract.address as TAddress, CUSTOM_CONTRACT_ADDRESS as TAddress);
+  const customEditingMode = contract && isSameAddress(contract.address, CUSTOM_CONTRACT_ADDRESS);
 
   const initialFormikValues: { address: IReceiverAddress } = {
     address: {

@@ -1,17 +1,21 @@
 import { useContext, useCallback } from 'react';
 import debounce from 'lodash/debounce';
 
-import {
-  TUseStateReducerFactory,
-  makePendingTxReceipt,
-  generateContractUUID,
-  isSameAddress
-} from '@utils';
+import { TUseStateReducerFactory, makePendingTxReceipt, isSameAddress } from '@utils';
 import { CREATION_ADDRESS } from '@config';
-import { NetworkId, Contract, StoreAccount, ITxType, ITxStatus, TAddress, ITxHash } from '@types';
+import {
+  NetworkId,
+  Contract,
+  StoreAccount,
+  ITxType,
+  ITxStatus,
+  TAddress,
+  ITxHash,
+  TUuid,
+  ExtendedContract
+} from '@types';
 import {
   getNetworkById,
-  ContractContext,
   NetworkContext,
   isValidETHAddress,
   ProviderHandler,
@@ -19,7 +23,8 @@ import {
   getResolvedENSAddress,
   EtherscanService,
   getIsValidENSAddressFunction,
-  AccountContext
+  AccountContext,
+  useContracts
 } from '@services';
 import { AbiFunction } from '@services/EthService/contracts/ABIFunction';
 import { isWeb3Wallet } from '@utils/web3';
@@ -59,7 +64,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   state,
   setState
 }) => {
-  const { getContractsByIds, createContractWithId, deleteContracts } = useContext(ContractContext);
+  const { getContractsByIds, createContract, deleteContract } = useContracts();
   const { networks, updateNetwork } = useContext(NetworkContext);
   const { addNewTxToAccount } = useContext(AccountContext);
 
@@ -160,7 +165,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
 
   const selectExistingContract = (address: string) => {
     const existingContract = state.contracts.find((c) =>
-      isSameAddress(c.address as TAddress, address as TAddress)
+      isSameAddress(c.address, address as TAddress)
     );
     if (existingContract) {
       handleContractSelected(existingContract);
@@ -212,27 +217,25 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       throw new Error(translateRaw('INTERACT_SAVE_ERROR_NAME_EXISTS'));
     }
 
-    const uuid = generateContractUUID(state.network.id, state.contractAddress);
-    const newContract = {
+    const contract: ExtendedContract = createContract({
       abi: state.abi,
-      address: state.contractAddress,
+      address: state.contractAddress as TAddress,
       name: state.customContractName,
       label: state.customContractName,
       networkId: state.network.id,
-      isCustom: true,
-      uuid
-    };
-
-    createContractWithId(newContract, uuid);
+      isCustom: true
+    });
+    // @todo updating networks with new contract should really be the responsability
+    // of the hook
     const network = Object.assign({}, state.network);
-    network.contracts.unshift(uuid);
+    network.contracts.unshift(contract.uuid);
     updateNetwork(network.id, network);
     updateNetworkContractOptions();
-    handleContractSelected(newContract);
+    handleContractSelected(contract);
   };
 
-  const handleDeleteContract = (contractUuid: string) => {
-    deleteContracts(contractUuid);
+  const handleDeleteContract = (contractUuid: TUuid) => {
+    deleteContract(contractUuid);
     const network = state.network;
     network.contracts = network.contracts.filter((item) => item !== contractUuid);
     updateNetwork(network.id, network);
