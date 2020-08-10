@@ -78,7 +78,7 @@ import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
 import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
 import { ProtectTxButton } from '@features/ProtectTransaction/components/ProtectTxButton';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
-import { useEffectOnce, path } from '@vendor';
+import { path } from '@vendor';
 import { getFiat, Fiats } from '@config/fiats';
 
 import { DataField, GasLimitField, GasPriceField, GasPriceSlider, NonceField } from './fields';
