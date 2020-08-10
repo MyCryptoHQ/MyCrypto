@@ -12,7 +12,9 @@ import { DeFiReserveMapService } from './ApiService';
 interface State {
   rates: IRates;
   getRate(ticker: TTicker): number | undefined;
+  getRateInCurrency(ticker: TTicker, currency: string): number | undefined;
   getAssetRate(asset: Asset): number | undefined;
+  getAssetRateInCurrency(asset: Asset, currency: string): number | undefined;
   getPoolAssetReserveRate(defiPoolTokenUUID: string, assets: Asset[]): ReserveAsset[];
 }
 
@@ -117,12 +119,22 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
         ? state.rates[ticker][settings.fiatCurrency.toLowerCase()]
         : DEFAULT_FIAT_RATE;
     },
+    getRateInCurrency: (ticker: TTicker, currency: string) => {
+      // @ts-ignore until we find a solution for TS7053 error
+      if (!state.rates[ticker]) return DEFAULT_FIAT_RATE;
+      return state.rates[ticker][currency.toLowerCase()];
+    },
     getAssetRate: (asset: Asset) => {
       const uuid = asset.uuid;
       if (!state.rates[uuid]) return DEFAULT_FIAT_RATE;
       return settings && settings.fiatCurrency
         ? state.rates[uuid][settings.fiatCurrency.toLowerCase()]
         : DEFAULT_FIAT_RATE;
+    },
+    getAssetRateInCurrency: (asset: Asset, currency: string) => {
+      const uuid = asset.uuid;
+      if (!state.rates[uuid]) return DEFAULT_FIAT_RATE;
+      return state.rates[uuid][currency.toLowerCase()];
     },
     getPoolAssetReserveRate: (uuid: string, assets: Asset[]) => {
       const reserveRateObject = reserveRateMapping[uuid];

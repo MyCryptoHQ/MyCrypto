@@ -50,7 +50,8 @@ describe('SendAssetsFlow', () => {
               value={
                 ({
                   getAssetRate: jest.fn(),
-                  getRate: jest.fn()
+                  getRateInCurrency: jest.fn(),
+                  getAssetRateInCurrency: jest.fn()
                 } as unknown) as any
               }
             >

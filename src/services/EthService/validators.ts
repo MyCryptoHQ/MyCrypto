@@ -233,7 +233,8 @@ interface TxFeeResponse {
 
 export const validateTxFee = (
   amount: string,
-  assetRate: number,
+  assetRateUSD: number,
+  assetRateFiat: number,
   isERC20: boolean,
   gasLimit: string,
   gasPrice: string,
@@ -249,12 +250,13 @@ export const validateTxFee = (
   }
   const DEFAULT_RATE_DECIMAL = 4;
   const DEFAULT_DECIMAL = DEFAULT_ASSET_DECIMAL + DEFAULT_RATE_DECIMAL;
-  const getAssetRate = () => convertedToBaseUnit(assetRate.toString(), DEFAULT_RATE_DECIMAL);
+  const getAssetRate = () => convertedToBaseUnit(assetRateUSD.toString(), DEFAULT_RATE_DECIMAL);
+  const getAssetRateLocal = () =>
+    convertedToBaseUnit(assetRateFiat.toString(), DEFAULT_RATE_DECIMAL);
   const getEthAssetRate = () =>
-    ethAssetRate ? convertedToBaseUnit(assetRate.toString(), DEFAULT_RATE_DECIMAL) : 0;
+    ethAssetRate ? convertedToBaseUnit(assetRateUSD.toString(), DEFAULT_RATE_DECIMAL) : 0;
 
   const txAmount = bigNumberify(convertedToBaseUnit(amount, DEFAULT_DECIMAL));
-  const txAmountFiatValue = bigNumberify(getAssetRate()).mul(txAmount);
   const txFee = bigNumberify(gasStringsToMaxGasBN(gasPrice, gasLimit).toString());
   const txFeeFiatValue = bigNumberify(getAssetRate()).mul(txFee);
 
@@ -262,14 +264,19 @@ export const validateTxFee = (
     ethAssetRate && ethAssetRate > 0 ? bigNumberify(getEthAssetRate()).mul(txFee) : null;
 
   const createTxFeeResponse = (type: TxFeeResponseType) => {
+    const txAmountFiatLocalValue = bigNumberify(getAssetRateLocal()).mul(txAmount);
+    const txFeeFiatLocalValue = bigNumberify(getAssetRateLocal()).mul(txFee);
     return {
       type,
       amount: parseFloat(
-        baseToConvertedUnit(txAmountFiatValue.toString(), DEFAULT_DECIMAL + DEFAULT_RATE_DECIMAL)
+        baseToConvertedUnit(
+          txAmountFiatLocalValue.toString(),
+          DEFAULT_DECIMAL + DEFAULT_RATE_DECIMAL
+        )
       )
         .toFixed(4)
         .toString(),
-      fee: parseFloat(baseToConvertedUnit(txFeeFiatValue.toString(), DEFAULT_DECIMAL))
+      fee: parseFloat(baseToConvertedUnit(txFeeFiatLocalValue.toString(), DEFAULT_DECIMAL))
         .toFixed(4)
         .toString()
     };
