@@ -11,10 +11,10 @@ import { NetworkContext, AssetContext, StoreContext } from '@services';
 import TxReceipt from '@components/TransactionFlow/TxReceipt';
 import { makeTxConfigFromTransactionResponse, makePendingTxReceipt } from '@utils/transaction';
 import { noOp } from '@utils';
-import { useEffectOnce } from '@vendor';
-import { DEFAULT_NETWORK } from '@config';
+import { useEffectOnce, useUpdateEffect } from '@vendor';
+import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 
-const TransactionStatus = withRouter(({ match }) => {
+const TransactionStatus = withRouter(({ history, match }) => {
   const { assets } = useContext(AssetContext);
   const { getNetworkById, networks } = useContext(NetworkContext);
   const { accounts } = useContext(StoreContext);
@@ -29,11 +29,17 @@ const TransactionStatus = withRouter(({ match }) => {
 
   const network = networkId && getNetworkById(networkId);
 
+  // Fetch TX on load if possible
   useEffectOnce(() => {
     if (!isEmpty(defaultTxHash)) {
       fetchTx();
     }
   });
+
+  // Update URL
+  useUpdateEffect(() => {
+    history.replace(`${ROUTE_PATHS.TX_STATUS.path}/${networkId}/${txHash}`);
+  }, [txHash, networkId]);
 
   const fetchTx = async () => {
     setLoading(true);
