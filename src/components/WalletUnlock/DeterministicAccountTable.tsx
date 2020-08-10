@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
-import { DWAccountDisplay, AddressBookContext, fromTokenBase } from '@services';
-import { COLORS, SPACING, BREAK_POINTS } from '@theme';
-import translate, { Trans } from '@translations';
+import BN from 'bn.js';
 import { Identicon } from '@mycrypto/ui';
+
 import {
   EditableAccountLabel,
   EthAddress,
@@ -13,9 +12,11 @@ import {
   Tooltip,
   Icon
 } from '@components';
+import { DWAccountDisplay, AddressBookContext, fromTokenBase } from '@services';
+import { COLORS, SPACING, BREAK_POINTS } from '@theme';
 import { Network, ExtendedAsset, TAddress } from '@types';
 import { isSameAddress, useScreenSize } from '@utils';
-import BN from 'bn.js';
+import translate, { Trans } from '@translations';
 import { DEFAULT_GAP_TO_SCAN_FOR } from '@config';
 
 interface DeterministicTableProps {
@@ -92,7 +93,7 @@ const Row = styled.div<{ isSelected: boolean }>`
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     align-items: flex-start;
     position: relative;
-    padding: 10px 0 10px 65px;
+    padding: ${SPACING.SM} 0 ${SPACING.SM} 65px;
   }
 `;
 
@@ -223,9 +224,9 @@ const NoAccountContainer = styled.div`
   text-align: center;
   flex-direction: column;
   align-items: center;
-  padding: 100px 20px;
+  padding: ${SPACING.XXL} ${SPACING.BASE};
   & > *:not(:last-child) {
-    margin-bottom: 30px;
+    margin-bottom: ${SPACING.MD};
   }
 `;
 
@@ -241,7 +242,7 @@ const NoAccountAction = styled.span`
 const Loader = styled.div`
   margin-top: calc(-6rem + 100px);
   padding-bottom: 6rem;
-  margin-bottom: 20px;
+  margin-bottom: ${SPACING.BASE};
   transform: scale(4.75);
 
   &&::before {

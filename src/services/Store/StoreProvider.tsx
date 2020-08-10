@@ -434,14 +434,12 @@ export const StoreProvider: React.FC = ({ children }) => {
       )(contacts);
       newRawAccounts.forEach((rawAccount, idx) => {
         const existingContact = getContactByAddressAndNetworkId(rawAccount.address, networkId);
-        if (existingContact) {
-          if (existingContact.label === translateRaw('NO_LABEL')) {
-            updateContact(existingContact.uuid, {
-              ...existingContact,
-              label: newLabels[idx]
-            });
-          }
-        } else {
+        if (existingContact && existingContact.label === translateRaw('NO_LABEL')) {
+          updateContact(existingContact.uuid, {
+            ...existingContact,
+            label: newLabels[idx]
+          });
+        } else if (!existingContact) {
           const newLabel: AddressBook = {
             label: newLabels[idx],
             address: rawAccount.address,

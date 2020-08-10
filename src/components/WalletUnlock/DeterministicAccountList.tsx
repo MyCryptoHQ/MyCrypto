@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
 import uniqBy from 'ramda/src/uniqBy';
-import prop from 'ramda/src/prop';
 
+import { prop } from '@vendor';
 import { Trans } from '@translations';
 import { ExtendedAsset, TAddress, Network } from '@types';
 import { Button, Typography, Tooltip, Icon } from '@components';
-import { BREAK_POINTS, COLORS } from '@theme';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { DWAccountDisplay } from '@services';
+import { isSameAddress, accountsToCSV, useScreenSize } from '@utils';
 
 import DeterministicTable from './DeterministicAccountTable';
-import { isSameAddress, accountsToCSV, useScreenSize } from '@utils';
 
 const DeterministicAccountListWrapper = styled.div`
   display: flex;
@@ -47,7 +46,7 @@ const StatusBar = styled.div`
     background: white;
     box-shadow: 0px -1px 4px rgba(186, 186, 186, 0.25);
     border-radius: 1.32522px;
-    padding: 15px;
+    padding: ${SPACING.SM};
     justify-content: space-between;
   }
 `;
@@ -60,17 +59,17 @@ const StatusWrapper = styled.div`
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: 100%;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: ${SPACING.BASE};
   }
 `;
 
 const Loader = styled.div`
-  padding-right: 20px;
-  margin-right: 20px;
+  padding-right: ${SPACING.BASE};
+  margin-right: ${SPACING.BASE};
 `;
 
 const IconWrapper = styled.div`
-  margin-right: 20px;
+  margin-right: ${SPACING.BASE};
   display: flex;
   align-items: center;
 `;

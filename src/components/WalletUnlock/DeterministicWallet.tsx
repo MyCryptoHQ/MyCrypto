@@ -2,33 +2,36 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Formik } from 'formik';
 
-import { Typography, Button, AssetSelector, Input } from '@components';
-import { COLORS, BREAK_POINTS, SPACING } from '@theme';
-
-import Icon from '@components/Icon';
+import { Typography, Button, AssetSelector, Input, Icon } from '@components';
+import { COLORS, BREAK_POINTS, SPACING, FONT_SIZE } from '@theme';
+import { DeterministicWalletState, ExtendedDPath } from '@services';
 import translate, { Trans } from '@translations';
 import { DEFAULT_GAP_TO_SCAN_FOR, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
-import { accountsToCSV } from '@utils';
+import { accountsToCSV, useScreenSize } from '@utils';
 import { ExtendedAsset, Network } from '@types';
+
 import DeterministicAccountList from './DeterministicAccountList';
-import { DeterministicWalletState, ExtendedDPath } from '@services';
 
 const MnemonicWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const Title = styled(Typography)`
+const Title = styled.span`
   color: ${COLORS.BLUE_DARK};
-  margin-bottom: 20px;
+  font-size: ${FONT_SIZE.XXL};
+  font-weight: bold;
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    font-size: ${FONT_SIZE.XL};
+  }
 `;
 
 const Parameters = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 40px;
-  margin-top: 15px;
+  margin-bottom: ${SPACING.LG};
+  margin-top: ${SPACING.SM};
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
     flex-direction: column;
     & > div:first-child {
@@ -47,10 +50,18 @@ const HeadingWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-bottom: ${SPACING.BASE};
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const SForm = styled.form`
   width: 50%;
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    width: 100%;
+  }
 `;
 
 const SLabel = styled.label`
@@ -60,7 +71,7 @@ const SLabel = styled.label`
 `;
 
 const SButton = styled(Button)`
-  margin: 30px 0;
+  margin: ${SPACING.MD} 0;
 `;
 
 const SLink = styled.span`
@@ -69,6 +80,14 @@ const SLink = styled.span`
   font-weight: bold;
   &:hover {
     color: ${COLORS.BLUE_LIGHT_DARKISH};
+  }
+`;
+
+const SIcon = styled(Icon)`
+  cursor: pointer;
+  margin-right: ${SPACING.SM};
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    margin-bottom: ${SPACING.SM};
   }
 `;
 
@@ -107,6 +126,8 @@ const DeterministicWallet = ({
   handleAssetUpdate,
   onUnlock
 }: DeterministicWalletProps) => {
+  const { isMobile } = useScreenSize();
+
   const [dpathAddView, setDpathAddView] = useState(false);
   const [freshAddressIndex, setFreshAddressIndex] = useState(0);
 
@@ -140,8 +161,8 @@ const DeterministicWallet = ({
   return dpathAddView ? (
     <MnemonicWrapper>
       <HeadingWrapper>
-        <Icon type="back" width={20} onClick={() => setDpathAddView(false)} />
-        <Title fontSize="32px" bold={true}>
+        <SIcon type="back" width={20} onClick={() => setDpathAddView(false)} />
+        <Title>
           <Trans id="DETERMINISTIC_CUSTOM_TITLE" />
         </Title>
       </HeadingWrapper>
@@ -167,7 +188,7 @@ const DeterministicWallet = ({
               value={values.value}
               onChange={handleChange}
             />
-            <SButton onClick={() => handleDPathAddition(values)}>
+            <SButton onClick={() => handleDPathAddition(values)} fullwidth={isMobile}>
               <Trans id="DETERMINISTIC_ADD_DPATH" />
             </SButton>
           </SForm>
@@ -183,9 +204,11 @@ const DeterministicWallet = ({
     </MnemonicWrapper>
   ) : (
     <MnemonicWrapper>
-      <Title fontSize="32px" bold={true}>
-        <Trans id="MNEMONIC_TITLE" />
-      </Title>
+      <HeadingWrapper>
+        <Title>
+          <Trans id="MNEMONIC_TITLE" />
+        </Title>
+      </HeadingWrapper>
       <Typography>
         <Trans id="MNEMONIC_SUBTITLE" />
       </Typography>
