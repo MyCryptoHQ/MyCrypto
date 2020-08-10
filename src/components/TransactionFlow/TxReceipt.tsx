@@ -277,12 +277,14 @@ export const TxReceiptUI = ({
           }}
         />
       )}
-      <div className="TransactionReceipt-row">
-        <div className="TransactionReceipt-row-desc">
-          {protectTxEnabled && !web3Wallet && <SSpacer />}
-          {translate('TRANSACTION_BROADCASTED_DESC')}
+      {txStatus === ITxStatus.PENDING && (
+        <div className="TransactionReceipt-row">
+          <div className="TransactionReceipt-row-desc">
+            {protectTxEnabled && !web3Wallet && <SSpacer />}
+            {translate('TRANSACTION_BROADCASTED_DESC')}
+          </div>
         </div>
-      </div>
+      )}
       {txType === ITxType.SWAP && swapDisplay && (
         <div className="TransactionReceipt-row">
           <SwapFromToDiagram
