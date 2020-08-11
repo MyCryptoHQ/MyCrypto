@@ -216,7 +216,7 @@ const GenerateAddressButton = styled.div<{ disabled: boolean }>`
 `;
 
 const STypography = styled(Typography)`
-  margin-left: ${SPACING.SM};
+  margin: 0 ${SPACING.SM};
 `;
 
 const NoAccountContainer = styled.div`
@@ -377,9 +377,31 @@ const DeterministicTable = ({
             disabled={!isComplete || freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR}
           >
             <Icon type="add" />
-            <STypography>
-              <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
-            </STypography>
+
+            {!isComplete ? (
+              <Tooltip tooltip={<Trans id="DETERMINISTIC_WAIT_FOR_SCAN" />}>
+                <STypography>
+                  <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
+                </STypography>
+              </Tooltip>
+            ) : freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR ? (
+              <Tooltip
+                tooltip={
+                  <Trans
+                    id="DETERMINISTIC_CANT_GENERATE_MORE"
+                    variables={{ $number: () => DEFAULT_GAP_TO_SCAN_FOR + 1 }}
+                  />
+                }
+              >
+                <STypography>
+                  <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
+                </STypography>
+              </Tooltip>
+            ) : (
+              <STypography>
+                <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
+              </STypography>
+            )}
           </GenerateAddressButton>
         </Body>
       )}

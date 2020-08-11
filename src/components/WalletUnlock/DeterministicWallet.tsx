@@ -5,7 +5,7 @@ import { Formik } from 'formik';
 import { Typography, Button, AssetSelector, Input } from '@components';
 import { COLORS, BREAK_POINTS, SPACING, FONT_SIZE } from '@theme';
 import { DeterministicWalletState, ExtendedDPath } from '@services';
-import translate, { Trans } from '@translations';
+import translate, { Trans, translateRaw } from '@translations';
 import { DEFAULT_GAP_TO_SCAN_FOR, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
 import { accountsToCSV, useScreenSize, makeBlob } from '@utils';
 import { ExtendedAsset, Network } from '@types';
@@ -61,6 +61,8 @@ const HeadingWrapper = styled.div`
 
 const SForm = styled.form`
   width: 50%;
+  display: flex;
+  flex-direction: column;
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: 100%;
   }
@@ -91,6 +93,11 @@ const SIcon = styled(Icon)`
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     margin-bottom: ${SPACING.SM};
   }
+`;
+
+const Error = styled.span`
+  min-height: 22px;
+  color: ${COLORS.ERROR_RED};
 `;
 
 interface DeterministicWalletProps {
@@ -170,9 +177,18 @@ const DeterministicWallet = ({
         </Title>
       </HeadingWrapper>
       <Typography>{translate('DETERMINISTIC_CUSTOM_GET_INFORMED')}</Typography>
-      <Formik initialValues={initialFormikValues} onSubmit={handleDPathAddition}>
-        {({ handleChange, values }) => (
-          <SForm>
+      <Formik
+        initialValues={initialFormikValues}
+        onSubmit={(values) => handleDPathAddition(values)}
+        validate={(values) => {
+          const errors: { label?: string; value?: string } = {};
+          if (!values.label || values.label === '') errors.label = translateRaw('REQUIRED');
+          if (!values.value || values.value === '') errors.value = translateRaw('REQUIRED');
+          return errors;
+        }}
+      >
+        {({ errors, touched, handleChange, handleBlur, values, isSubmitting, handleSubmit }) => (
+          <SForm onSubmit={handleSubmit}>
             <SLabel htmlFor="label">
               <Trans id="DETERMINISTIC_CUSTOM_LABEL" />
             </SLabel>
@@ -181,7 +197,10 @@ const DeterministicWallet = ({
               name="label"
               value={values.label}
               onChange={handleChange}
+              onBlur={handleBlur}
+              isValid={true}
             />
+            <Error>{errors && touched.label && errors.label}</Error>
             <SLabel htmlFor="value">
               <Trans id="DETERMINISTIC_CUSTOM_LABEL_DPATH" />
             </SLabel>
@@ -190,8 +209,11 @@ const DeterministicWallet = ({
               name="value"
               value={values.value}
               onChange={handleChange}
+              onBlur={handleBlur}
+              isValid={true}
             />
-            <SButton onClick={() => handleDPathAddition(values)} fullwidth={isMobile}>
+            <Error>{errors && touched.value && errors.value}</Error>
+            <SButton fullwidth={isMobile} disabled={isSubmitting} type="submit">
               <Trans id="DETERMINISTIC_ADD_DPATH" />
             </SButton>
           </SForm>
