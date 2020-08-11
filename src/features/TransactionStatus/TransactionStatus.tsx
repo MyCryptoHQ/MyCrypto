@@ -4,7 +4,7 @@ import { TransactionResponse } from 'ethers/providers';
 import { withRouter } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
 
-import { Button, NetworkSelectDropdown, ContentPanel, TxReceipt } from '@components';
+import { Button, NetworkSelectDropdown, ContentPanel, TxReceipt, InlineMessage } from '@components';
 import { ITxHash, NetworkId, ITxType } from '@types';
 import { NetworkContext, AssetContext, StoreContext, ProviderHandler } from '@services';
 import { makeTxConfigFromTransactionResponse, makePendingTxReceipt } from '@utils/transaction';
@@ -25,6 +25,7 @@ const TransactionStatus = withRouter(({ history, match }) => {
   const [networkId, setNetwork] = useState<NetworkId>(defaultNetwork);
   const [fetchedTx, setFetchedTx] = useState<TransactionResponse | undefined>(undefined);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const network = networkId && getNetworkById(networkId);
 
@@ -45,7 +46,11 @@ const TransactionStatus = withRouter(({ history, match }) => {
     try {
       const provider = new ProviderHandler(network);
       const tx = await provider.getTransactionByHash(txHash as ITxHash);
-      setFetchedTx(tx);
+      if (!tx) {
+        setError(translateRaw('TX_NOT_FOUND'));
+      } else {
+        setFetchedTx(tx);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -67,6 +72,7 @@ const TransactionStatus = withRouter(({ history, match }) => {
           />
           <label htmlFor="txhash">{translateRaw('TX_HASH')}</label>
           <Input name="txhash" value={txHash} onChange={(e) => setTxHash(e.currentTarget.value)} />
+          {error.length > 0 && <InlineMessage value={error} />}
           <Button loading={loading} onClick={fetchTx} fullwidth={true}>
             {translateRaw('FETCH')}
           </Button>
