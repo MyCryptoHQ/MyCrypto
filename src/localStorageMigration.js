@@ -7,6 +7,8 @@ function bindEvent(element, eventName, eventHandler) {
   }
 }
 
+document.domain = 'mycryptobuilds.com';
+
 // Listen to messages from parent window
 bindEvent(window, 'message', function (e) {
   const data = e.data;
@@ -23,6 +25,7 @@ bindEvent(window, 'message', function (e) {
       console.log('[msg capture]: setting storage');
       window.importStorage(data.data);
       window.localStorage.setItem('MYC_Storage', data.data);
+      e.source.postMessage({ type: 'migration', data: 'success' });
     }
   }
 });
