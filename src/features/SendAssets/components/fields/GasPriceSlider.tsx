@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Field, FieldProps } from 'formik';
 import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
 import styled from 'styled-components';
 
 import translate, { translateRaw } from '@translations';
 import { GAS_PRICE_DEFAULT } from '@config';
-import { GasEstimates, IFormikFields, Network } from '@types';
+import { GasEstimates, Network } from '@types';
 import { COLORS } from '@theme';
 import './GasPriceSlider.scss';
 
@@ -15,6 +14,7 @@ interface OwnProps {
   gasPrice: string;
   gasEstimates: GasEstimates;
   network: Network;
+  onChange(value: number): void;
 }
 
 type Props = OwnProps;
@@ -43,7 +43,7 @@ export default class SimpleGas extends Component<Props> {
   };
 
   public render() {
-    const { gasEstimates } = this.props;
+    const { gasEstimates, onChange } = this.props;
     const { gasPrice } = this.state;
     const bounds = {
       max: gasEstimates ? gasEstimates.fastest : GAS_PRICE_DEFAULT.max,
@@ -53,37 +53,31 @@ export default class SimpleGas extends Component<Props> {
 
     const actualGasPrice = Math.max(parseFloat(gasPrice), bounds.min);
     return (
-      <Field
-        name="gasPriceSlider"
-        children={({ field, form }: FieldProps<IFormikFields>) => (
-          <div className="GasPriceSlider">
-            <div className="GasPriceSlider-input-group">
-              <div className="GasPriceSlider-slider">
-                <SliderWithTooltip
-                  {...field}
-                  onChange={(e) => {
-                    this.setState({ gasPrice: e.toString() });
-                  }}
-                  onAfterChange={(e) => {
-                    form.setFieldValue('gasPriceSlider', e);
-                  }}
-                  min={bounds.min}
-                  max={bounds.max}
-                  marks={gasNotches}
-                  included={false}
-                  value={actualGasPrice}
-                  tipFormatter={this.formatTooltip}
-                  step={bounds.min < 1 ? 0.1 : 1}
-                />
-                <div className="GasPriceSlider-slider-labels">
-                  <Label>{translate('TX_FEE_SCALE_LEFT')}</Label>
-                  <Label>{translate('TX_FEE_SCALE_RIGHT')}</Label>
-                </div>
-              </div>
+      <div className="GasPriceSlider">
+        <div className="GasPriceSlider-input-group">
+          <div className="GasPriceSlider-slider">
+            <SliderWithTooltip
+              onChange={(e) => {
+                this.setState({ gasPrice: e.toString() });
+              }}
+              onAfterChange={(e) => {
+                onChange(e);
+              }}
+              min={bounds.min}
+              max={bounds.max}
+              marks={gasNotches}
+              included={false}
+              value={actualGasPrice}
+              tipFormatter={this.formatTooltip}
+              step={bounds.min < 1 ? 0.1 : 1}
+            />
+            <div className="GasPriceSlider-slider-labels">
+              <Label>{translate('TX_FEE_SCALE_LEFT')}</Label>
+              <Label>{translate('TX_FEE_SCALE_RIGHT')}</Label>
             </div>
           </div>
-        )}
-      />
+        </div>
+      </div>
     );
   }
 

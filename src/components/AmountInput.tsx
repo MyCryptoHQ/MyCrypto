@@ -9,6 +9,7 @@ import AssetIcon from './AssetIcon';
 import Typography from './Typography';
 
 interface Props {
+  name?: string;
   disabled?: boolean;
   asset: Asset;
   value: string;

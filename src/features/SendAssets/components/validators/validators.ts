@@ -1,3 +1,4 @@
+import { TestOptions } from 'yup';
 import { isHexPrefixed } from 'ethjs-util';
 import {
   isValidHex,
@@ -8,32 +9,37 @@ import {
 import { translateRaw } from '@translations';
 import { isValidPositiveOrZeroInteger } from '@services/EthService/validators';
 
-export function validateGasPriceField(value: string): string | undefined {
-  if (!gasPriceValidator(value)) {
-    return translateRaw('ERROR_10');
-  }
+export function validateGasPriceField(): TestOptions {
+  return {
+    message: translateRaw('ERROR_10'),
+    test: (value) => gasPriceValidator(value)
+  };
 }
 
-export function validateGasLimitField(value: string): string | undefined {
-  if (!gasLimitValidator(value)) {
-    return translateRaw('ERROR_8');
-  }
+export function validateGasLimitField(): TestOptions {
+  return {
+    message: translateRaw('ERROR_8'),
+    test: (value) => gasLimitValidator(value)
+  };
 }
 
-export function validateDataField(value: string): string | undefined {
-  if (!isValidHex(value) || !isHexPrefixed(value)) {
-    return translateRaw('ERROR_9');
-  }
+export function validateDataField(): TestOptions {
+  return {
+    message: translateRaw('ERROR_9'),
+    test: (value) => value !== '' && isValidHex(value) && isHexPrefixed(value)
+  };
 }
 
-export function validateNonceField(value: string): string | undefined {
-  if (!isValidPositiveOrZeroInteger(value)) {
-    return translateRaw('ERROR_11');
-  }
+export function validateNonceField(): TestOptions {
+  return {
+    message: translateRaw('ERROR_11'),
+    test: (value) => isValidPositiveOrZeroInteger(value)
+  };
 }
 
-export function validateAmountField(value: string): string | undefined {
-  if (!isValidPositiveNumber(value)) {
-    return translateRaw('ERROR_0');
-  }
+export function validateAmountField(): TestOptions {
+  return {
+    message: translateRaw('ERROR_0'),
+    test: (value) => isValidPositiveNumber(value)
+  };
 }

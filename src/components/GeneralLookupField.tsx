@@ -1,5 +1,4 @@
-import React, { useRef, useState, useContext, useCallback } from 'react';
-import { Field, useFormikContext } from 'formik';
+import React, { useRef, useState, useContext, useCallback, useEffect } from 'react';
 import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
 
 import { DomainStatus, InlineMessage } from '@components';
@@ -8,7 +7,6 @@ import { getBaseAssetByNetwork, AssetContext } from '@services/Store';
 import { isValidETHAddress, isValidENSName } from '@services/EthService';
 import UnstoppableResolution from '@services/UnstoppableService';
 import { isValidETHRecipientAddress } from '@services/EthService/validators';
-import { useEffectOnce } from '@vendor';
 
 import GeneralLookupDropdown, { LabeledAddress } from './GeneralLookupDropdown';
 
@@ -26,7 +24,9 @@ export interface IGeneralLookupFieldComponentProps {
   handleENSName?(resolvedAddress: string, inputString: string): IReceiverAddress;
   onSelect?(option: IReceiverAddress): void;
   onChange?(input: string): void;
-  onLoad?(setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void): void;
+  setFieldValue?(field: string, value: any, shouldValidate?: boolean): void;
+  setFieldTouched?(field: string, touched?: boolean, shouldValidate?: boolean): void;
+  setFieldError?(field: string, value: string | undefined): void;
 }
 
 const GeneralLookupField = ({
@@ -42,10 +42,11 @@ const GeneralLookupField = ({
   name,
   value,
   options,
-  onLoad,
-  placeholder
+  placeholder,
+  setFieldValue,
+  setFieldTouched,
+  setFieldError
 }: IGeneralLookupFieldComponentProps) => {
-  const { setFieldValue, setFieldTouched } = useFormikContext();
   const { assets } = useContext(AssetContext);
   const errorMessage = typeof error === 'object' ? error.message : error;
   const errorType = typeof error === 'object' ? error.type : undefined;
@@ -66,22 +67,13 @@ const GeneralLookupField = ({
     };
   };
 
-  const validateAddress = (v: IReceiverAddress) => {
-    const validationResult = isValidETHRecipientAddress(v.value, resolutionError);
-    if (validationResult.success) return;
-
-    return {
-      name: validationResult.name,
-      type: validationResult.type,
-      message: validationResult.message
-    };
-  };
-
-  useEffectOnce(() => {
-    if (value && value.value && onLoad) {
-      onLoad(setFieldValue);
+  useEffect(() => {
+    // Run validation if possible
+    if (setFieldError) {
+      const validationResult = isValidETHRecipientAddress(value.value, resolutionError);
+      setFieldError(name, validationResult.success ? undefined : validationResult.message);
     }
-  });
+  }, [value, resolutionError]);
 
   const handleENSnameDefault = async (
     inputString: string,
@@ -122,8 +114,12 @@ const GeneralLookupField = ({
       contact = await handleENSnameDefault(inputString, contact);
     }
 
-    setFieldValue(name, contact, true);
-    setFieldTouched(name, true, false);
+    if (setFieldValue) {
+      setFieldValue(name, contact, true);
+    }
+    if (setFieldTouched) {
+      setFieldTouched(name, true, false);
+    }
   };
 
   const handleDomainResolve = async (domain: string): Promise<string | undefined> => {
@@ -142,14 +138,16 @@ const GeneralLookupField = ({
       return unstoppableAddress;
     } catch (err) {
       // Force the field value to error so that isValidAddress is triggered!
-      setFieldValue(
-        name,
-        {
-          ...value,
-          value: ''
-        },
-        true
-      );
+      if (setFieldValue) {
+        setFieldValue(
+          name,
+          {
+            ...value,
+            value: ''
+          },
+          true
+        );
+      }
       if (UnstoppableResolution.isResolutionError(err)) {
         setResolutionError(err);
       } else throw err;
@@ -184,15 +182,21 @@ const GeneralLookupField = ({
             // if this gets deleted, it no longer shows as selected on interface,
             // would like to set only object keys that are needed
             // instead of full object
-            setFieldValue(name, option, true);
-            setFieldTouched(name, true, false);
+            if (setFieldValue) {
+              setFieldValue(name, option, true);
+            }
+            if (setFieldTouched) {
+              setFieldTouched(name, true, false);
+            }
             if (onSelect) {
               onSelect(option);
             }
           }}
           onBlur={() => {
             handleNewInput(inputValue.current);
-            setFieldTouched(name, true, false);
+            if (setFieldTouched) {
+              setFieldTouched(name, true, false);
+            }
             if (onBlur) onBlur();
             if (onChange) onChange(inputValue.current);
           }}
@@ -214,7 +218,7 @@ const GeneralLookupField = ({
     );
   }, [value.display, isResolvingName, options, error]);
 
-  return <Field name={name} validate={validateAddress} component={GeneralDropdownFieldCallback} />;
+  return <GeneralDropdownFieldCallback />;
 };
 
 export default GeneralLookupField;
