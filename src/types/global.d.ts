@@ -13,6 +13,9 @@ interface CustomWindow extends Window {
   // Makes FeatureFlagProvider functions available during E2E testing
   setFeatureFlag?(key: keyof IIS_ACTIVE_FEATURE, value: boolean): void;
   resetFeatureFlags?(): void;
+
+  // Used for localStorage migration
+  importStorage?(json: string): void;
 }
 
 // Polyfill for ResizeObserver since type is missing from TS

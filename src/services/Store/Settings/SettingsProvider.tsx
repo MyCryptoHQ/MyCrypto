@@ -1,4 +1,4 @@
-import React, { useContext, createContext } from 'react';
+import React, { useContext, createContext, useEffect } from 'react';
 
 import { ISettings, IRates, LSKeys, TUuid, TFiatTicker } from '@types';
 import { DataContext } from '../DataManager';
@@ -105,6 +105,11 @@ export const SettingsProvider: React.FC = ({ children }) => {
       state.updateSettings({ ...settings, fiatCurrency: newFiatSelection });
     }
   };
+
+  useEffect(() => {
+    // For use in localStorage migration
+    (window as CustomWindow).importStorage = state.importStorage;
+  });
 
   return <SettingsContext.Provider value={state}>{children}</SettingsContext.Provider>;
 };

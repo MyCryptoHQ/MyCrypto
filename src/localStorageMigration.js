@@ -15,11 +15,13 @@ bindEvent(window, 'message', function (e) {
     var existingStorage = window.localStorage.getItem('MYC_Storage');
     var storageObject = existingStorage ? JSON.parse(existingStorage) : {};
     console.log('[msg capture]: existingStorage', existingStorage);
+    // If no storage found or just default storage, replace.
     if (
       !storageObject.accounts ||
-      (storageObject.accounts && Object.values(storageObject.accounts).length == 0)
+      (storageObject.accounts && Object.values(storageObject.accounts).length === 0)
     ) {
       console.log('[msg capture]: setting storage');
+      window.importStorage(data.data);
       window.localStorage.setItem('MYC_Storage', data.data);
     }
   }
