@@ -5,8 +5,8 @@ import trezorDesktop from '@assets/images/banners/Trezor_Desktop.png';
 import trezorMobile from '@assets/images/banners/Trezor_Mobile.png';
 import coinbaseDesktop from '@assets/images/banners/Coinbase_Desktop.png';
 import coinbaseMobile from '@assets/images/banners/Coinbase_Mobile.png';
-import quiknodeDesktop from '@assets/images/banners/Quiknode_Desktop.png';
-import quiknodeMobile from '@assets/images/banners/Quiknode_Mobile.png';
+import quiknodeDesktop from '@assets/images/banners/QuikNode_Desktop.png';
+import quiknodeMobile from '@assets/images/banners/QuikNode_Mobile.png';
 import unstoppableDesktop from '@assets/images/banners/UnstoppableDomains_Desktop.png';
 import unstoppableMobile from '@assets/images/banners/UnstoppableDomains_Mobile.png';
 
