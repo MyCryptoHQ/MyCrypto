@@ -6,7 +6,7 @@ const PreloadWebpackPlugin = require('@lowb/preload-webpack-plugin');
 const SriPlugin = require('webpack-subresource-integrity');
 const common = require('./common');
 const config = require('./config');
-const { PRODUCTION, ELECTRON } = require('../environment');
+const { PRODUCTION, STAGING, ELECTRON } = require('../environment');
 
 const TargetEnv = process.env.TARGET_ENV || PRODUCTION;
 
@@ -19,7 +19,7 @@ module.exports = merge.smart(common, {
     path: path.join(config.path.output, 'web'),
     filename: '[name].[contenthash].js',
     globalObject: undefined,
-    publicPath: './'
+    publicPath: TargetEnv === STAGING || TargetEnv === ELECTRON ? './' : '/'
   },
 
   module: {
