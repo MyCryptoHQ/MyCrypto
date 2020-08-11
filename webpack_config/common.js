@@ -16,6 +16,7 @@ module.exports = {
 
   entry: {
     badBrowserCheck: path.join(config.path.src, 'badBrowserCheck.ts'),
+    localStorageMigration: path.join(config.path.src, 'localStorageMigration.js'),
     metaMaskFirefox: path.join(config.path.vendor, 'inpage-metamask.js'),
     main: path.join(config.path.src, 'index.tsx')
   },
@@ -237,8 +238,8 @@ module.exports = {
       metaCsp: IS_DEV
         ? ''
         : `default-src 'none'; script-src 'self'; worker-src 'self' blob:; child-src 'self'; style-src 'self' 'unsafe-inline'; manifest-src 'self'; font-src 'self'; img-src 'self' data: https://mycryptoapi.com/api/v1/images/; connect-src *${
-        IS_ELECTRON ? ' eth-enclave:' : ''
-        }; frame-src 'self' https://connect.trezor.io;`
+            IS_ELECTRON ? ' eth-enclave:' : ''
+          }; frame-src 'self' https://connect.trezor.io;`
     }),
 
     new CopyWebpackPlugin([
