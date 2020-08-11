@@ -1,18 +1,28 @@
 import React from 'react';
 import selectEvent from 'react-select-event';
-
 import { simpleRender, screen, fireEvent } from 'test-utils';
-import { fAccounts } from '@fixtures';
+
+import { fAccounts, fAssets } from '@fixtures';
 import { sortByLabel } from '@utils';
+import { AssetContext } from '@services';
+
 import AccountSelector from './AccountSelector';
 
 type Props = React.ComponentProps<typeof AccountSelector>;
 
 function getComponent(props: Props) {
   return simpleRender(
-    <form role="form">
-      <AccountSelector {...props} />
-    </form>
+    <AssetContext.Provider
+      value={
+        ({
+          assets: fAssets
+        } as unknown) as any
+      }
+    >
+      <form role="form">
+        <AccountSelector {...props} />
+      </form>
+    </AssetContext.Provider>
   );
 }
 
