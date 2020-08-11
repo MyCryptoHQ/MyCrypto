@@ -108,7 +108,7 @@ export const SettingsProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     // For use in localStorage migration
-    (window as CustomWindow).importStorage = state.importStorage;
+    (window as CustomWindow).importStorage = model.importStorage;
   });
 
   return <SettingsContext.Provider value={state}>{children}</SettingsContext.Provider>;
