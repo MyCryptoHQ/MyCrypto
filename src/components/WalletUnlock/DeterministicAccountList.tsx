@@ -8,7 +8,7 @@ import { ExtendedAsset, TAddress, Network } from '@types';
 import { Button, Typography, Tooltip, Icon } from '@components';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { DWAccountDisplay } from '@services';
-import { isSameAddress, accountsToCSV, useScreenSize } from '@utils';
+import { isSameAddress, accountsToCSV, useScreenSize, makeBlob } from '@utils';
 
 import DeterministicTable from './DeterministicAccountTable';
 
@@ -149,7 +149,8 @@ export default function DeterministicAccountList({
     );
   };
 
-  const handleDownload = () => window.open(accountsToCSV(finishedAccounts, asset));
+  const handleDownload = () =>
+    window.open(makeBlob('text/csv', accountsToCSV(finishedAccounts, asset)));
   return (
     <DeterministicAccountListWrapper>
       <TableWrapper>

@@ -7,7 +7,7 @@ import { COLORS, BREAK_POINTS, SPACING, FONT_SIZE } from '@theme';
 import { DeterministicWalletState, ExtendedDPath } from '@services';
 import translate, { Trans } from '@translations';
 import { DEFAULT_GAP_TO_SCAN_FOR, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
-import { accountsToCSV, useScreenSize } from '@utils';
+import { accountsToCSV, useScreenSize, makeBlob } from '@utils';
 import { ExtendedAsset, Network } from '@types';
 
 import Icon from '@components/Icon';
@@ -158,7 +158,8 @@ const DeterministicWallet = ({
     }
   };
 
-  const handleDownload = () => window.open(accountsToCSV(state.finishedAccounts, assetToUse));
+  const handleDownload = () =>
+    window.open(makeBlob('text/csv', accountsToCSV(state.finishedAccounts, assetToUse)));
 
   return dpathAddView ? (
     <MnemonicWrapper>

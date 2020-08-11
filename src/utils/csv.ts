@@ -1,12 +1,9 @@
 import BN from 'bn.js';
 import { unparse } from 'papaparse';
 import { DWAccountDisplay, fromTokenBase } from '@services';
-import { makeBlob } from '@utils';
 import { Asset } from '@types';
 
 export const accountsToCSV = (accounts: DWAccountDisplay[], asset: Asset) => {
-  const type = 'text/csv';
-
   const infos = accounts.map((account) => ({
     address: account.address,
     'dpath type': account.pathItem.baseDPath.label,
@@ -19,7 +16,5 @@ export const accountsToCSV = (accounts: DWAccountDisplay[], asset: Asset) => {
         : '0.0000') + asset.ticker
   }));
 
-  const csv = unparse(infos);
-
-  return makeBlob(type, csv);
+  return unparse(infos);
 };
