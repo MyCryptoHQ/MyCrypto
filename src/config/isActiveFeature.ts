@@ -1,5 +1,3 @@
-import { IS_DEV } from '@utils';
-
 export enum FEATURE_LIST {
   DASHBOARD = 'DASHBOARD',
   BUY = 'BUY',
@@ -47,7 +45,7 @@ export const IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE = {
   DOWNLOAD_DESKTOP_APP: true,
   PRIVATE_TAGS: true,
   DEFIZAP: true,
-  MYC_MEMBERSHIP: IS_DEV,
-  PROTECT_TX: IS_DEV,
+  MYC_MEMBERSHIP: true,
+  PROTECT_TX: true,
   ENS: true
 };
