@@ -17,7 +17,7 @@ bindEvent(window, 'message', function (e) {
     console.log('[msg capture]: existingStorage', existingStorage);
     if (
       !storageObject.accounts ||
-      (storageObject.accounts && Object.values(storageObject.accounts).length > 0)
+      (storageObject.accounts && Object.values(storageObject.accounts).length == 0)
     ) {
       console.log('[msg capture]: setting storage');
       window.localStorage.setItem('MYC_Storage', data.data);
