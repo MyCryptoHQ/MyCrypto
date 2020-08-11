@@ -10,11 +10,13 @@ function bindEvent(element, eventName, eventHandler) {
 // Listen to messages from parent window
 bindEvent(window, 'message', function (e) {
   const data = e.data;
-  console.log('[msg capture]: newStorage', data);
-  var existingStorage = window.localStorage.getItem('MYC_Storage');
-  console.log('[msg capture]: existingStorage', existingStorage);
-  if (!existingStorage) {
-    console.log('[msg capture]: setting storage');
-    window.localStorage.setItem('MYC_Storage', data);
+  if (data && data.type === 'migration') {
+    console.log('[msg capture]: newStorage', data);
+    var existingStorage = window.localStorage.getItem('MYC_Storage');
+    console.log('[msg capture]: existingStorage', existingStorage);
+    if (!existingStorage) {
+      console.log('[msg capture]: setting storage');
+      window.localStorage.setItem('MYC_Storage', data.data);
+    }
   }
 });
