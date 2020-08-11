@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useContext } from 'react';
 import { formatEther } from 'ethers/utils';
 import { OptionProps } from 'react-select';
 
@@ -8,7 +8,7 @@ import { SPACING } from '@theme';
 import { StoreAccount, Asset, TUuid, TTicker } from '@types';
 import { sortByLabel } from '@utils';
 import { compose, map } from '@vendor';
-import { getAccountBalance, getBaseAsset } from '@services/Store';
+import { getAccountBalance, getBaseAssetByNetwork, AssetContext } from '@services/Store';
 
 interface Props {
   accounts: StoreAccount[];
@@ -37,13 +37,16 @@ const getOption = (account: StoreAccount | null, options: TOption[]) => {
 };
 
 function AccountSelector({ accounts, asset, name, value, onSelect }: Props) {
+  const { assets } = useContext(AssetContext);
   const formatOptions = compose(
     map((a: StoreAccount) => ({
       account: a,
       asset: {
         balance: formatEther(asset ? getAccountBalance(a, asset) : getAccountBalance(a)),
-        assetUUID: asset ? asset.uuid : getBaseAsset(a)!.uuid,
-        assetTicker: asset ? asset.ticker : getBaseAsset(a)!.ticker
+        assetUUID: asset ? asset.uuid : getBaseAssetByNetwork({ network: a.network, assets })!.uuid,
+        assetTicker: asset
+          ? asset.ticker
+          : getBaseAssetByNetwork({ network: a.network, assets })!.ticker
       }
     })),
     sortByLabel
