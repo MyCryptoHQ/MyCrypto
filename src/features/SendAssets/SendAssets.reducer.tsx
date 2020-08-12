@@ -92,7 +92,7 @@ export const sendAssetsReducer = (state: State, action: ReducerAction): State =>
       const txReceipt = signedTx
         ? createPendingTxReceipt(state, action.payload.hash as ITxHash)
         : undefined;
-      return { ...state, txReceipt };
+      return { ...state, send: false, txReceipt };
     }
 
     case sendAssetsReducer.actionTypes.REQUEST_RESUBMIT: {

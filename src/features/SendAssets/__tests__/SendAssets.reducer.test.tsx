@@ -178,6 +178,7 @@ describe('SendAssetsReducer', () => {
       expect(txReceipt.gasLimit.toString()).toEqual(txConfig.gasLimit);
       expect(txReceipt.gasPrice.toString()).toEqual(txConfig.gasPrice);
       expect(txReceipt.value.toString()).toEqual(txConfig.rawTransaction.value);
+      expect(newState.send).toBe(false);
 
       expect(newState.signedTx).toBe(prevState.signedTx);
       expect(newState.txConfig).toBe(prevState.txConfig);
