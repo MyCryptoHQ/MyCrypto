@@ -72,7 +72,8 @@ import {
   ETHUUID,
   isSameAddress,
   isVoid,
-  bigify
+  bigify,
+  sortByLabel
 } from '@utils';
 import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
 import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
@@ -236,13 +237,46 @@ const QueryWarning: React.FC = () => (
 );
 
 const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
-  const { accounts, defaultAccount, userAssets, networks, getAccount } = useContext(StoreContext);
+  const {
+    accounts,
+    userAssets,
+    networks,
+    getAccount,
+    defaultAccount: storeDefaultAccount
+  } = useContext(StoreContext);
   const { getAssetRate, getRateInCurrency, getAssetRateInCurrency } = useContext(RatesContext);
   const { settings } = useContext(SettingsContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
-  const defaultNetwork = networks.find((n) => n.id === defaultAccount.networkId);
+
+  const validAccounts = accounts.filter((account) => account.wallet !== WalletId.VIEW_ONLY);
+  const userAccountEthAsset = userAssets.find((a) => a.uuid === ETHUUID);
+  const defaultAsset = (() => {
+    if (userAccountEthAsset) {
+      return userAccountEthAsset;
+    } else if (userAssets.length > 0) {
+      return userAssets[0];
+    }
+    return undefined;
+  })();
+
+  const getDefaultAccount = (asset?: Asset) => {
+    if (asset !== undefined && !storeDefaultAccount.assets.some((a) => a.uuid === asset.uuid)) {
+      const accountsWithDefaultAsset = validAccounts.filter((account) =>
+        account.assets.some((a) => a.uuid === asset.uuid)
+      );
+      if (accountsWithDefaultAsset.length > 0) {
+        return sortByLabel(accountsWithDefaultAsset)[0];
+      }
+    }
+    return storeDefaultAccount;
+  };
+  const getDefaultNetwork = (account: StoreAccount) =>
+    networks.find((n) => n.id === account.networkId);
+
+  const defaultAccount = getDefaultAccount(defaultAsset);
+  const defaultNetwork = getDefaultNetwork(defaultAccount);
   const [baseAsset, setBaseAsset] = useState(
     (txConfig.network &&
       getBaseAssetByNetwork({ network: txConfig.network, assets: userAssets })) ||
@@ -352,16 +386,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
     dataField: Yup.string().test(validateDataField())
   });
 
-  const validAccounts = accounts.filter((account) => account.wallet !== WalletId.VIEW_ONLY);
-  const userAccountEthAsset = userAssets.find((a) => a.uuid === ETHUUID);
-  const defaultAsset = (() => {
-    if (userAccountEthAsset) {
-      return userAccountEthAsset;
-    } else if (userAssets.length > 0) {
-      return userAssets[0];
-    }
-    return undefined;
-  })();
   const initialValues = useMemo(
     () =>
       getInitialFormikValues({
@@ -405,8 +429,15 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
 
   useEffect(() => {
     const asset = values.asset;
+    const newAccount = getDefaultAccount(asset);
+    const newInitialValues = getInitialFormikValues({
+      s: txConfig,
+      defaultAccount: newAccount,
+      defaultAsset: asset,
+      defaultNetwork: getDefaultNetwork(newAccount)
+    });
     //@todo get assetType onChange
-    resetForm({ values: { ...initialValues, asset } });
+    resetForm({ values: { ...newInitialValues, asset } });
     if (asset && asset.networkId) {
       const network = getNetworkById(asset.networkId, networks);
       fetchGasPriceEstimates(network).then((data) => {
