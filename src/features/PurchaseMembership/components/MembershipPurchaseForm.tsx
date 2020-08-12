@@ -97,6 +97,7 @@ export const MembershipFormUI = ({
       .min(0, translateRaw('ERROR_0'))
       .required(translateRaw('REQUIRED'))
       .typeError(translateRaw('ERROR_0'))
+      .test(validateAmountField())
   });
 
   return (
@@ -194,7 +195,6 @@ export const MembershipFormUI = ({
                 </FormFieldLabel>
                 <Field
                   name="amount"
-                  validate={validateAmountField}
                   render={({ field, form }: FieldProps) => {
                     return (
                       <>

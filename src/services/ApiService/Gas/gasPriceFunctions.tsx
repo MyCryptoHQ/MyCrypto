@@ -50,6 +50,7 @@ export async function fetchGasPriceEstimates(network: Network): Promise<GasEstim
     const estimates: GasEstimates = await fetchGasEstimates();
     return estimates;
   } catch (err) {
+    console.error(err);
     const defaultEstimates: GasEstimates = getDefaultEstimates(network);
     return defaultEstimates;
   }

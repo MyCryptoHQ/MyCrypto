@@ -122,6 +122,7 @@ export const ZapFormUI = ({
           return true;
         }
       )
+      .test(validateAmountField())
   });
 
   return (
@@ -167,7 +168,6 @@ export const ZapFormUI = ({
                 </FormFieldLabel>
                 <Field
                   name="amount"
-                  validate={validateAmountField}
                   render={({ field, form }: FieldProps) => {
                     return (
                       <>
