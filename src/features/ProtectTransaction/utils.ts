@@ -63,7 +63,7 @@ export const getProtectTxFee = (
 export const checkFormForProtectTxErrors = (
   formValues: IFormikFields,
   rate: number | undefined,
-  isMyCryptoMember: boolean
+  isPTXFree: boolean
 ): ProtectTxError => {
   const { asset, amount, address } = formValues;
 
@@ -73,10 +73,7 @@ export const checkFormForProtectTxErrors = (
     return ProtectTxError.ETH_ONLY;
   }
 
-  if (
-    !isMyCryptoMember &&
-    (!rate || rate <= 0 || parseFloat(amount) < PROTECTED_TX_MIN_AMOUNT / rate)
-  ) {
+  if (!isPTXFree && (!rate || rate <= 0 || parseFloat(amount) < PROTECTED_TX_MIN_AMOUNT / rate)) {
     return ProtectTxError.LESS_THAN_MIN_AMOUNT;
   }
 

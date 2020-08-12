@@ -125,11 +125,11 @@ export default function ConfirmTransaction({
 
   const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
   const { getAssetRate } = useContext(RatesContext);
-  const { accounts, isMyCryptoMember } = useContext(StoreContext);
+  const { accounts } = useContext(StoreContext);
   const { settings } = useContext(SettingsContext);
   const { state: ptxState } = useContext(ProtectTxContext);
   const ptxFee = (() => {
-    if (ptxState && ptxState.protectTxEnabled && !isMyCryptoMember) {
+    if (ptxState && ptxState.protectTxEnabled && !ptxState.isPTXFree) {
       return ptxState.feeAmount;
     }
     return undefined;

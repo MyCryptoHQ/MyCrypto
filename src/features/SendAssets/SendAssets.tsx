@@ -26,10 +26,10 @@ import {
 function SendAssets() {
   const [reducerState, dispatch] = useReducer(sendAssetsReducer, initialState);
   const {
-    state: { protectTxEnabled, protectTxShow },
+    state: { protectTxEnabled, protectTxShow, isPTXFree },
     setProtectTxTimeoutFunction
   } = useContext(ProtectTxContext);
-  const { isMyCryptoMember, accounts } = useContext(StoreContext);
+  const { accounts } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
   const { IS_ACTIVE_FEATURE } = useFeatureFlags();
@@ -42,7 +42,7 @@ function SendAssets() {
       component: SendAssetsFormWithProtectTx,
       props: (({ txConfig }) => ({ txConfig }))(reducerState),
       actions: (form: IFormikFields, cb: any) => {
-        if (protectTxEnabled && !isMyCryptoMember) {
+        if (protectTxEnabled && !isPTXFree) {
           form.nonceField = (parseInt(form.nonceField, 10) + 1).toString();
         }
         dispatch({ type: sendAssetsReducer.actionTypes.FORM_SUBMIT, payload: { form, assets } });
@@ -77,7 +77,7 @@ function SendAssets() {
       component: SendAssetsFormWithProtectTx,
       props: (({ txConfig }) => ({ txConfig }))(reducerState),
       actions: (form: IFormikFields, cb: any) => {
-        if (protectTxEnabled && !isMyCryptoMember) {
+        if (protectTxEnabled && !isPTXFree) {
           form.nonceField = (parseInt(form.nonceField, 10) + 1).toString();
         }
         dispatch({ type: sendAssetsReducer.actionTypes.FORM_SUBMIT, payload: { form, assets } });

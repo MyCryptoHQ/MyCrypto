@@ -15,7 +15,7 @@ import { isWeb3Wallet, useTxMulti, useScreenSize } from '@utils';
 import { BREAK_POINTS } from '@theme';
 import { processFormDataToTx } from '@features/SendAssets/helpers';
 import { PROTECTED_TX_FEE_ADDRESS } from '@config';
-import { StoreContext, useFeatureFlags } from '@services';
+import { useFeatureFlags } from '@services';
 import { ContentPanel } from '@components';
 
 import { ProtectTxProtection } from './ProtectTxProtection';
@@ -84,13 +84,12 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>, head
     customDetails,
     resetFlow
   }: Props) {
-    const { isMyCryptoMember } = useContext(StoreContext);
     const [protectTx, setProtectTx] = useState<ITxObject | null>(null);
     const { state, initWith, prepareTx, sendTx } = useTxMulti();
     const { transactions, _currentTxIdx, account, network } = state;
 
     const {
-      state: { protectTxShow, stepIndex },
+      state: { protectTxShow, stepIndex, isPTXFree },
       setWeb3Wallet,
       goToNextStep,
       handleTransactionReport,
@@ -112,7 +111,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>, head
       component: ProtectTxReport
     };
 
-    const protectTxStepperSteps = isMyCryptoMember
+    const protectTxStepperSteps = isPTXFree
       ? [
           {
             component: ProtectTxProtection,
