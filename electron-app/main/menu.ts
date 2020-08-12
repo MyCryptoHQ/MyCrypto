@@ -77,7 +77,7 @@ if (process.platform === 'darwin') {
       ...(HELP_MENU.submenu as MenuItemConstructorOptions[]),
       {
         label: 'Speech',
-        submenu: [{ role: 'startspeaking' }, { role: 'stopspeaking' }]
+        submenu: [{ role: 'startSpeaking' }, { role: 'stopSpeaking' }]
       }
     ]
   });
