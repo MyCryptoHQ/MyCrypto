@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import BigNumber from 'bignumber.js';
 
 import { isWeb3Wallet as checkIsWeb3Wallet } from '@utils';
-import { RatesContext, StoreContext, SettingsContext } from '@services';
+import { RatesContext, SettingsContext } from '@services';
 import { IAccount, IFormikFields, Fiat } from '@types';
 import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 import { Amount, Button, PoweredByText } from '@components';
@@ -164,13 +164,18 @@ interface Props {
 
 export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
   const { getAssetRate } = useContext(RatesContext);
-  const { isMyCryptoMember } = useContext(StoreContext);
   const { settings } = useContext(SettingsContext);
 
   const [isLoading, setIsLoading] = useState(false);
 
   const {
-    state: { isWeb3Wallet: web3Wallet, web3WalletName, formValues: sendAssetsValues, feeAmount },
+    state: {
+      isWeb3Wallet: web3Wallet,
+      web3WalletName,
+      formValues: sendAssetsValues,
+      feeAmount,
+      isPTXFree
+    },
     setFeeAmount,
     setReceiverInfo,
     setWeb3Wallet,
@@ -225,11 +230,7 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
 
   const error =
     sendAssetsValues !== undefined &&
-    checkFormForProtectTxErrors(
-      sendAssetsValues,
-      getAssetRate(sendAssetsValues.asset),
-      isMyCryptoMember
-    );
+    checkFormForProtectTxErrors(sendAssetsValues, getAssetRate(sendAssetsValues.asset), isPTXFree);
 
   return (
     <ProtectTxProtectionUI
@@ -237,7 +238,7 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
       fiat={getFiat(settings)}
       feeAmount={feeAmount}
       isLoading={isLoading}
-      isMyCryptoMember={isMyCryptoMember}
+      isPTXFree={isPTXFree}
       onProtect={onProtectMyTransactionClick}
       onCancel={onProtectMyTransactionCancelClick}
       web3Wallet={{ isWeb3Wallet: web3Wallet, name: web3WalletName }}
@@ -249,7 +250,7 @@ export interface UIProps {
   error: ProtectTxError | false;
   fiat: Fiat;
   feeAmount: IFeeAmount;
-  isMyCryptoMember: boolean;
+  isPTXFree: boolean;
   isLoading: boolean;
   web3Wallet: { isWeb3Wallet: boolean; name: string | null };
   onCancel(e: React.MouseEvent<HTMLButtonElement & SVGSVGElement, MouseEvent>): void;
@@ -261,7 +262,7 @@ export const ProtectTxProtectionUI = ({
   feeAmount,
   fiat,
   isLoading,
-  isMyCryptoMember,
+  isPTXFree,
   web3Wallet,
   onCancel,
   onProtect
@@ -328,7 +329,7 @@ export const ProtectTxProtectionUI = ({
       {!isWeb3Wallet && (
         <p className="description-text">{translateRaw('PROTECTED_TX_NOT_WEB3_WALLET_DESC')}</p>
       )}
-      {!hasMissingInfoError && !isMyCryptoMember && (
+      {!hasMissingInfoError && !isPTXFree && (
         <>
           <hr />
           <h4 className="send-with-confidence">

@@ -14,7 +14,7 @@ const defaultProps: React.ComponentProps<typeof ProtectTxProtectionUI> = {
   isLoading: false,
   feeAmount: { rate: 250, amount: bigify('0.002'), fee: bigify('0.002') },
   web3Wallet: { isWeb3Wallet: true, name: 'MetaMask' },
-  isMyCryptoMember: false,
+  isPTXFree: false,
   onCancel: jest.fn(),
   onProtect: jest.fn()
 };
@@ -39,7 +39,7 @@ describe('ProtectTxReport', () => {
   });
 
   test('Can render without fee', () => {
-    const { queryByText } = renderComponent({ ...defaultProps, isMyCryptoMember: true });
+    const { queryByText } = renderComponent({ ...defaultProps, isPTXFree: true });
     expect(queryByText(translateRaw('PROTECTED_TX_FEE'))).toBeNull();
   });
 
