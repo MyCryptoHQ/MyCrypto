@@ -242,6 +242,7 @@ const LegacyRoutes = withRouter(props => {
 });
 
 const CaptureRouteNotFound = withRouter(({ children, location }) => {
+  // @ts-ignore
   return location && location.state && location.state.error ? (
     <PageNotFound />
   ) : (

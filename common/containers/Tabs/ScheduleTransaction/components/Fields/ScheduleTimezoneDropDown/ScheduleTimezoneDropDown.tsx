@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Option } from 'react-select';
-import moment from 'moment';
-import 'moment-timezone';
+import moment from 'moment-timezone';
 
 import translate from 'translations';
 import { scheduleActions, scheduleSelectors } from 'features/schedule';
