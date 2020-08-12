@@ -8,7 +8,7 @@ import { bigNumberify } from 'ethers/utils';
 import translate, { translateRaw } from '@translations';
 import { SPACING } from '@theme';
 import { IAccount, Network, StoreAccount, Asset } from '@types';
-import { AccountDropdown, InlineMessage, AmountInput, Button, Tooltip } from '@components';
+import { AccountSelector, InlineMessage, AmountInput, Button, Tooltip } from '@components';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
 import { StoreContext, AssetContext, NetworkContext } from '@services/Store';
@@ -162,7 +162,7 @@ export const TokenMigrationFormUI = ({
                   name="account"
                   value={values.account}
                   component={({ field }: FieldProps) => (
-                    <AccountDropdown
+                    <AccountSelector
                       name={field.name}
                       value={field.value}
                       accounts={filteredAccounts}
