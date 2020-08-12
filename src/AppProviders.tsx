@@ -9,6 +9,7 @@ import {
   SettingsProvider,
   DataProvider
 } from '@services/Store';
+
 import { DevToolsProvider, RatesProvider, StoreProvider, FeatureFlagProvider } from '@services';
 
 function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | null }) {

@@ -9,6 +9,7 @@ import property from 'lodash/property';
 import { getUnlockTimestamps } from '@mycrypto/unlock-scan';
 import { BigNumber } from 'bignumber.js';
 
+import { isEmpty as isVoid } from '@vendor';
 import {
   TAddress,
   IRawAccount,
@@ -92,6 +93,7 @@ interface State {
   readonly userAssets: Asset[];
   readonly coinGeckoAssetManifest: CoinGeckoManifest;
   readonly accountRestore: { [name: string]: IAccount | undefined };
+  isEmpty: boolean;
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
@@ -353,6 +355,12 @@ export const StoreProvider: React.FC = ({ children }) => {
     coinGeckoAssetManifest,
     get defaultAccount() {
       return sortByLabel(state.accounts)[0];
+    },
+    /**
+     * Check if the user has already added an account to our persistence layer.
+     */
+    get isEmpty() {
+      return (!state.accounts || isVoid(state.accounts)) && (!contacts || isVoid(contacts));
     },
     get userAssets() {
       const userAssets = state.accounts

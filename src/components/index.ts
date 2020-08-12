@@ -78,3 +78,4 @@ export { default as PoweredByText } from './PoweredByText';
 export { default as EditableAccountLabel } from './EditableAccountLabel';
 export { default as TimeElapsed } from './TimeElapsed';
 export { default as Icon } from './Icon';
+export { default as MigrateLS } from './MigrateLS';

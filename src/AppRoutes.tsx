@@ -5,6 +5,7 @@ import { Layout, LayoutConfig } from '@features/Layout';
 import { Dashboard, PageNotFound, ScreenLockProvider, DrawerProvider } from '@features';
 import { ScrollToTop, useScreenSize } from '@utils';
 import { useFeatureFlags } from '@services';
+import { StoreContext } from '@services/Store';
 import { ROUTE_PATHS } from '@config/routePaths';
 import {
   PageVisitsAnalytics,
@@ -15,6 +16,8 @@ import {
 } from '@routing';
 import { COLORS, SPACING } from '@theme';
 import { AppLoading } from '@AppLoading';
+import { MigrateLS } from '@components';
+import { withContext } from '@utils';
 
 const layoutConfig = (path: string, isMobile: boolean): LayoutConfig => {
   switch (path) {
@@ -51,8 +54,11 @@ const LayoutWithLocation = withRouter(({ location, children }) => {
   return <Layout config={layoutConfig(location.pathname, isMobile)}>{children}</Layout>;
 });
 
+const MigrateLSComponent = withContext(StoreContext)(MigrateLS);
+
 export const AppRoutes = () => {
   const { IS_ACTIVE_FEATURE } = useFeatureFlags();
+
   return (
     <>
       <ScrollToTop />
@@ -61,6 +67,7 @@ export const AppRoutes = () => {
           <PageVisitsAnalytics>
             <DefaultHomeHandler>
               <Suspense fallback={<AppLoading />}>
+                <MigrateLSComponent />
                 <Switch>
                   {/* To avoid fiddling with layout we provide a complete route to home */}
                   <LayoutWithLocation>
