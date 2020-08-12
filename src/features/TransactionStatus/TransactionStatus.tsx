@@ -45,7 +45,7 @@ const TransactionStatus = withRouter(({ history, match }) => {
     setLoading(true);
     try {
       const provider = new ProviderHandler(network);
-      const tx = await provider.getTransactionByHash(txHash as ITxHash);
+      const tx = await provider.getTransactionByHash(txHash as ITxHash, true);
       if (!tx) {
         setError(translateRaw('TX_NOT_FOUND'));
       } else {

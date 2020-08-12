@@ -79,9 +79,27 @@ export class ProviderHandler {
     return this.injectClient((client) => client.getTransactionCount(address));
   }
 
-  /* Tested */
-  public getTransactionByHash(txhash: string): Promise<TransactionResponse> {
-    return this.injectClient((client) => client.getTransaction(txhash));
+  /* Tested - @todo Test useMultipleProviders */
+  public getTransactionByHash(
+    txhash: string,
+    useMultipleProviders = false
+  ): Promise<TransactionResponse> {
+    return this.injectClient((client) => {
+      if (!useMultipleProviders) {
+        return client.getTransaction(txhash);
+      } else {
+        return (async () => {
+          const providers = (client as FallbackProvider).providers;
+          for (const provider of providers) {
+            const tx = await provider.getTransaction(txhash);
+            if (tx) {
+              return tx;
+            }
+          }
+          return undefined;
+        })();
+      }
+    });
   }
 
   /* Tested */
