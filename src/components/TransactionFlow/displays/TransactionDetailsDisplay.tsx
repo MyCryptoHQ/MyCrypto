@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Network, Button } from '@mycrypto/ui';
-import { bigNumberify } from 'ethers/utils';
+import { bigNumberify, BigNumber } from 'ethers/utils';
 import styled from 'styled-components';
 
 import { Asset, ITxObject } from '@types';
 import { baseToConvertedUnit, totalTxFeeToString } from '@services/EthService';
 import { CopyableCodeBlock } from '@components';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
-import { weiToFloat, isTransactionDataEmpty } from '@utils';
+import { weiToFloat, isTransactionDataEmpty, bigify } from '@utils';
 import translate, { translateRaw } from '@translations';
 import { COLORS } from '@theme';
 
@@ -22,6 +22,8 @@ interface Props {
   asset: Asset;
   nonce: string;
   data: string;
+  confirmations?: number;
+  gasUsed?: BigNumber;
   gasLimit: string;
   gasPrice: string;
   rawTransaction?: ITxObject;
@@ -40,6 +42,8 @@ const SeeMoreDetailsButton = styled(Button)`
 function TransactionDetailsDisplay({
   baseAsset,
   asset,
+  confirmations,
+  gasUsed,
   nonce,
   data,
   gasLimit,
@@ -60,6 +64,15 @@ function TransactionDetailsDisplay({
   const userAssetBalance = userAssetToSend
     ? weiToFloat(bigNumberify(userAssetToSend.balance), asset.decimal).toFixed(6)
     : translateRaw('UNKNOWN_BALANCE');
+
+  const gasUsedPercentage = (() => {
+    if (gasUsed) {
+      const gasLimitBN = bigify(gasLimit);
+      const gasUsedBN = bigify(gasUsed.toString());
+      return gasUsedBN.div(gasLimitBN).multipliedBy(bigify(100));
+    }
+    return undefined;
+  })();
 
   return (
     <>
@@ -106,10 +119,22 @@ function TransactionDetailsDisplay({
                 <Network color={networkColor || 'blue'}>{networkName}</Network>
               </div>
             </div>
+            {confirmations && (
+              <div className="TransactionDetails-row">
+                <div className="TransactionDetails-row-column">Confirmations:</div>
+                <div className="TransactionDetails-row-column">{`${confirmations}`}</div>
+              </div>
+            )}
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">{translateRaw('GAS_LIMIT')}:</div>
               <div className="TransactionDetails-row-column">{`${gasLimit}`}</div>
             </div>
+            {gasUsed && (
+              <div className="TransactionDetails-row">
+                <div className="TransactionDetails-row-column">Gas Used:</div>
+                <div className="TransactionDetails-row-column">{`${gasUsed.toString()} (${gasUsedPercentage}%)`}</div>
+              </div>
+            )}
             {baseAsset && (
               <div className="TransactionDetails-row">
                 <div className="TransactionDetails-row-column">{translateRaw('GAS_PRICE')}:</div>

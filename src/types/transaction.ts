@@ -67,6 +67,9 @@ export interface ITxReceipt {
   readonly hash: ITxHash;
   readonly blockNumber?: number;
   readonly timestamp?: number;
+
+  readonly gasUsed?: BigNumber;
+  readonly confirmations?: number;
 }
 
 export type IPendingTxReceipt = Overwrite<ITxReceipt, { status: ITxStatus.PENDING }>;

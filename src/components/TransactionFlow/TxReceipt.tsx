@@ -121,7 +121,8 @@ export default function TxReceipt({
                     txReceipt as IPendingTxReceipt,
                     transactionStatus,
                     txResponse.timestamp,
-                    txResponse.blockNumber
+                    txResponse.blockNumber,
+                    transactionOutcome
                   )
                 );
               });
@@ -418,6 +419,8 @@ export const TxReceiptUI = ({
         <TransactionDetailsDisplay
           baseAsset={baseAsset}
           asset={asset}
+          confirmations={displayTxReceipt && displayTxReceipt.confirmations}
+          gasUsed={displayTxReceipt && displayTxReceipt.gasUsed}
           data={data}
           sender={sender}
           gasLimit={gasLimit}
