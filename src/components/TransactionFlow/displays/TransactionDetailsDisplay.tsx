@@ -152,10 +152,12 @@ function TransactionDetailsDisplay({
               <div className="TransactionDetails-row-column">{translateRaw('NONCE')}:</div>
               <div className="TransactionDetails-row-column">{nonce}</div>
             </div>
-            <div className="TransactionDetails-row">
+            <div className={`TransactionDetails-row ${!isTransactionDataEmpty(data) && `stacked`}`}>
               <div className="TransactionDetails-row-column">{translateRaw('DATA')}:</div>
               {!isTransactionDataEmpty(data) ? (
-                <div className="TransactionDetails-row-data">{data}</div>
+                <div className="TransactionDetails-row-data">
+                  <CopyableCodeBlock>{data}</CopyableCodeBlock>
+                </div>
               ) : (
                 <div className="TransactionDetails-row-data-empty">
                   {translate('TRANS_DATA_NONE')}
