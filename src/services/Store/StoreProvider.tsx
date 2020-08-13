@@ -80,7 +80,7 @@ interface IAddAccount {
   dPath: string;
 }
 
-interface State {
+export interface State {
   readonly defaultAccount: StoreAccount;
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
@@ -92,7 +92,7 @@ interface State {
   readonly userAssets: Asset[];
   readonly coinGeckoAssetManifest: CoinGeckoManifest;
   readonly accountRestore: { [name: string]: IAccount | undefined };
-  isEmpty: boolean;
+  isDefault: boolean;
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
@@ -358,8 +358,10 @@ export const StoreProvider: React.FC = ({ children }) => {
     /**
      * Check if the user has already added an account to our persistence layer.
      */
-    get isEmpty() {
-      return (!state.accounts || isVoid(state.accounts)) && (!contacts || isVoid(contacts));
+    get isDefault() {
+      return (
+        (!state.accounts || isVoid(state.accounts)) && (!isVoid(contacts) || contacts.length < 1)
+      );
     },
     get userAssets() {
       const userAssets = state.accounts

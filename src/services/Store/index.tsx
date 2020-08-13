@@ -5,6 +5,6 @@ export * from './Contract';
 export * from './Network';
 export * from './Settings';
 export * from './DataManager';
-export { StoreContext, StoreProvider } from './StoreProvider';
+export { StoreContext, StoreProvider, State as StoreState } from './StoreProvider';
 export { getAccountBalance, getStoreAccount } from './utils';
 export { getTxsFromAccount } from './helpers';

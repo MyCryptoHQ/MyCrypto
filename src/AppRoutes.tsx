@@ -53,7 +53,7 @@ const LayoutWithLocation = withRouter(({ location, children }) => {
   return <Layout config={layoutConfig(location.pathname, isMobile)}>{children}</Layout>;
 });
 
-const MigrateLSComponent = pipe(withContext(StoreContext), withContext(SettingsContext))(MigrateLS);
+const MigrateLSWithStore = pipe(withContext(StoreContext), withContext(SettingsContext))(MigrateLS);
 
 export const AppRoutes = () => {
   const { IS_ACTIVE_FEATURE } = useFeatureFlags();
@@ -66,7 +66,7 @@ export const AppRoutes = () => {
           <PageVisitsAnalytics>
             <DefaultHomeHandler>
               <Suspense fallback={<AppLoading />}>
-                <MigrateLSComponent />
+                <MigrateLSWithStore />
                 <Switch>
                   {/* To avoid fiddling with layout we provide a complete route to home */}
                   <LayoutWithLocation>

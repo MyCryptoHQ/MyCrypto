@@ -9,7 +9,8 @@ jest.mock('../components/IFrame', () => {
 });
 
 const defaultProps = {
-  importStorage: jest.fn()
+  importStorage: jest.fn(),
+  isValidImport: jest.fn()
 };
 
 const getComponent = (props: React.ComponentProps<typeof MigrateLS>) => {
