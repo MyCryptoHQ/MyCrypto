@@ -372,9 +372,9 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       url: 'https://api.etherscan.io/api'
     }
   ],
-  GANACHE: [
+  ganache: [
     {
-      name: NetworkUtils.makeNodeName('GANACHE', 'ganache'),
+      name: NetworkUtils.makeNodeName('ganache', 'localGanache'),
       type: NodeType.RPC,
       service: 'Ganache',
       url: 'https://21b82c790694.ngrok.io'

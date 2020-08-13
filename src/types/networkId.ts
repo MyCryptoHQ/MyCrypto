@@ -37,4 +37,4 @@ export type NetworkId =
   | 'VOLTA'
   | 'EnergyWebChain'
   | 'HARDLYDIFFICULT'
-  | 'GANACHE';
+  | 'ganache';

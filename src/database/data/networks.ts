@@ -946,9 +946,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     },
     shouldEstimateGasPrice: false
   },
-  GANACHE: {
-    id: 'GANACHE', // Ethereum Network Id
-    name: 'Ethereum',
+  ganache: {
+    id: 'ganache', // Ethereum Network Id
+    name: 'Ganache',
     unit: DEFAULT_NETWORK_TICKER,
     chainId: 5777,
     isCustom: false,
