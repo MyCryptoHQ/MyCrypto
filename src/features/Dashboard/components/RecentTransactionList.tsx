@@ -242,7 +242,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
             }}
           />,
           <div key={4}>
-            <RouterLink to={`${ROUTE_PATHS.TX_STATUS.path}/${network.id}/${hash}`}>
+            <RouterLink to={`${ROUTE_PATHS.TX_STATUS.path}/${hash}?network=${network.id}`}>
               <img src={newWindowIcon} alt="View more information about this transaction" />
             </RouterLink>
             <NewTabLink

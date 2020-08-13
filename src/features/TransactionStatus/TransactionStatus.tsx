@@ -3,6 +3,7 @@ import { Input } from '@mycrypto/ui';
 import { TransactionResponse } from 'ethers/providers';
 import { withRouter } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
+import queryString from 'query-string';
 
 import { Button, NetworkSelectDropdown, ContentPanel, TxReceipt, InlineMessage } from '@components';
 import { ITxHash, NetworkId, ITxType } from '@types';
@@ -13,13 +14,15 @@ import { useEffectOnce, useUpdateEffect } from '@vendor';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
 
-const TransactionStatus = withRouter(({ history, match }) => {
+const TransactionStatus = withRouter(({ history, match, location }) => {
+  const qs = queryString.parse(location.search);
+
   const { assets } = useContext(AssetContext);
   const { getNetworkById, networks } = useContext(NetworkContext);
   const { accounts } = useContext(StoreContext);
 
   const defaultTxHash = match.params.txHash ? match.params.txHash : '';
-  const defaultNetwork = match.params.network ? match.params.network : DEFAULT_NETWORK;
+  const defaultNetwork = qs.network ? qs.network : DEFAULT_NETWORK;
 
   const [txHash, setTxHash] = useState(defaultTxHash);
   const [networkId, setNetwork] = useState<NetworkId>(defaultNetwork);
@@ -38,7 +41,11 @@ const TransactionStatus = withRouter(({ history, match }) => {
 
   // Update URL
   useUpdateEffect(() => {
-    history.replace(`${ROUTE_PATHS.TX_STATUS.path}/${networkId}/${txHash}`);
+    if (networkId === DEFAULT_NETWORK) {
+      history.replace(`${ROUTE_PATHS.TX_STATUS.path}/${txHash}`);
+    } else {
+      history.replace(`${ROUTE_PATHS.TX_STATUS.path}/${txHash}?network=${networkId}`);
+    }
   }, [txHash, networkId]);
 
   const fetchTx = async () => {
