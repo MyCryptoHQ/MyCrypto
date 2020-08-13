@@ -13,21 +13,6 @@ import { consoleAdvertisement, IS_STAGING, IS_PROD } from '@utils';
 
 import Root from './Root';
 
-render(<Root />, document.getElementById('app'));
-
-if (IS_PROD || IS_STAGING) {
-  consoleAdvertisement();
-}
-
-const noOp = (event: DragEvent) => {
-  event.preventDefault();
-  return false;
-};
-
-// disables drag-and-drop due to potential security issues by Cure53 recommendation
-document.addEventListener('dragover', noOp, false);
-document.addEventListener('drop', noOp, false);
-
 /**
  * We use an iframe to migrate user storage from landing to app ie. <MigrateLS/>.
  * 1. Since an origin is defined as `<protocol>://<host>:<port>` and the websites have different sub-domains,
@@ -40,4 +25,18 @@ document.addEventListener('drop', noOp, false);
  *     https://developer.mozilla.org/en-US/docs/Web/API/Document/domain)
  * 4. Since we need run 3 environments we dynamically set the domain to the appropriate hostname.
  */
-document.domain = document.location.hostname;
+document.domain = document.location.hostname || 'localhost';
+
+// disables drag-and-drop due to potential security issues by Cure53 recommendation
+const doNothing = (event: DragEvent) => {
+  event.preventDefault();
+  return false;
+};
+document.addEventListener('dragover', doNothing, false);
+document.addEventListener('drop', doNothing, false);
+
+render(<Root />, document.getElementById('app'));
+
+if (IS_PROD || IS_STAGING) {
+  consoleAdvertisement();
+}

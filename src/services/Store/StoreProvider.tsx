@@ -9,7 +9,6 @@ import property from 'lodash/property';
 import { getUnlockTimestamps } from '@mycrypto/unlock-scan';
 import { BigNumber } from 'bignumber.js';
 
-import { isEmpty as isVoid } from '@vendor';
 import {
   TAddress,
   IRawAccount,
@@ -49,7 +48,7 @@ import {
   MEMBERSHIP_CONTRACTS
 } from '@features/PurchaseMembership/config';
 import { DEFAULT_NETWORK } from '@config';
-import { useEffectOnce } from '@vendor';
+import { useEffectOnce, isEmpty as isVoid } from '@vendor';
 import { makeFinishedTxReceipt } from '@utils/transaction';
 
 import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';

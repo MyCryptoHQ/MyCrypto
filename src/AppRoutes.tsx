@@ -2,10 +2,10 @@ import React, { Suspense } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
 import { Layout, LayoutConfig } from '@features/Layout';
-import { Dashboard, PageNotFound, ScreenLockProvider, DrawerProvider } from '@features';
-import { ScrollToTop, useScreenSize } from '@utils';
+import { PageNotFound, ScreenLockProvider, DrawerProvider, MigrateLS } from '@features';
+import { ScrollToTop, useScreenSize, withContext } from '@utils';
 import { useFeatureFlags } from '@services';
-import { StoreContext } from '@services/Store';
+import { StoreContext, SettingsContext } from '@services/Store';
 import { ROUTE_PATHS } from '@config/routePaths';
 import {
   PageVisitsAnalytics,
@@ -16,8 +16,7 @@ import {
 } from '@routing';
 import { COLORS, SPACING } from '@theme';
 import { AppLoading } from '@AppLoading';
-import { MigrateLS } from '@components';
-import { withContext } from '@utils';
+import { pipe } from '@vendor';
 
 const layoutConfig = (path: string, isMobile: boolean): LayoutConfig => {
   switch (path) {
@@ -54,7 +53,7 @@ const LayoutWithLocation = withRouter(({ location, children }) => {
   return <Layout config={layoutConfig(location.pathname, isMobile)}>{children}</Layout>;
 });
 
-const MigrateLSComponent = withContext(StoreContext)(MigrateLS);
+const MigrateLSComponent = pipe(withContext(StoreContext), withContext(SettingsContext))(MigrateLS);
 
 export const AppRoutes = () => {
   const { IS_ACTIVE_FEATURE } = useFeatureFlags();

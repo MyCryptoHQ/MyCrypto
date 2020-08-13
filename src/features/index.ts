@@ -7,3 +7,4 @@ export { ToastProvider } from './Toasts';
 export { ErrorProvider, ErrorContext } from './ErrorHandling';
 export { TokenMigration } from './TokenMigration';
 export { Dashboard } from './Dashboard';
+export { MigrateLS } from './MigrateLS';

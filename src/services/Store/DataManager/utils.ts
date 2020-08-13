@@ -1,4 +1,4 @@
-import { Omit, ValuesType } from 'utility-types';
+import { ValuesType } from 'utility-types';
 import isEmpty from 'ramda/src/isEmpty';
 
 import {
@@ -121,9 +121,10 @@ export const constructNetworkNodes = (networks: DataStore[LSKeys.NETWORKS]) => {
 
 // From convert back to the LocalStorage format.
 // The mtime and version are handled by useDatabase
-export function deMarshallState(st: DataStore): Omit<LocalStorage, 'mtime'> {
+export function deMarshallState(st: DataStore): LocalStorage {
   return {
     version: st.version,
+    mtime: Date.now(),
     [LSKeys.ACCOUNTS]: arrayToObj('uuid')(
       st[LSKeys.ACCOUNTS].map((x) => ({
         ...x,
