@@ -123,7 +123,9 @@ function TransactionDetailsDisplay({
             </div>
             {confirmations && (
               <div className="TransactionDetails-row">
-                <div className="TransactionDetails-row-column">Confirmations:</div>
+                <div className="TransactionDetails-row-column">
+                  {translateRaw('CONFIRMATIONS')}:
+                </div>
                 <div className="TransactionDetails-row-column">{`${confirmations}`}</div>
               </div>
             )}
@@ -133,7 +135,7 @@ function TransactionDetailsDisplay({
             </div>
             {gasUsed && (
               <div className="TransactionDetails-row">
-                <div className="TransactionDetails-row-column">Gas Used:</div>
+                <div className="TransactionDetails-row-column">{translateRaw('GAS_USED')}:</div>
                 <div className="TransactionDetails-row-column">{`${gasUsed.toString()} (${gasUsedPercentage?.toFixed(
                   2
                 )}%)`}</div>
@@ -150,7 +152,9 @@ function TransactionDetailsDisplay({
             )}
             {actualTransactionFeeBase && (
               <div className="TransactionDetails-row">
-                <div className="TransactionDetails-row-column">Transaction Fee:</div>
+                <div className="TransactionDetails-row-column">
+                  {translateRaw('TRANSACTION_FEE')}:
+                </div>
                 <div className="TransactionDetails-row-column">{`${actualTransactionFeeBase} ${baseAsset.ticker}`}</div>
               </div>
             )}
