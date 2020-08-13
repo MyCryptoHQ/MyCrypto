@@ -61,6 +61,7 @@ interface PendingBtnAction {
 interface Props {
   pendingButton?: PendingBtnAction;
   swapDisplay?: SwapDisplayData;
+  disableDynamicTxReceiptDisplay?: boolean;
   protectTxButton?(): JSX.Element;
 }
 
@@ -85,6 +86,7 @@ export default function TxReceipt({
   membershipSelected,
   zapSelected,
   swapDisplay,
+  disableDynamicTxReceiptDisplay,
   protectTxButton
 }: ITxReceiptStepProps & Props) {
   const { getAssetRate } = useContext(RatesContext);
@@ -101,7 +103,9 @@ export default function TxReceipt({
   const { state: ptxState } = useContext(ProtectTxContext);
 
   useEffect(() => {
-    setDisplayTxReceipt(txReceipt);
+    if (!disableDynamicTxReceiptDisplay) {
+      setDisplayTxReceipt(txReceipt);
+    }
   }, [setDisplayTxReceipt, txReceipt]);
 
   useEffect(() => {

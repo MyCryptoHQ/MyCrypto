@@ -92,6 +92,7 @@ const TransactionStatus = withRouter(({ history, match, location }) => {
             txReceipt={txReceipt!}
             resetFlow={noOp}
             onComplete={noOp}
+            disableDynamicTxReceiptDisplay={true}
           />
         </>
       )}
