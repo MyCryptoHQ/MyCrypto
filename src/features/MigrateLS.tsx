@@ -9,16 +9,24 @@ import { TURL, LocalStorage } from '@types';
 const DBName = prop('main', getCurrentDBConfig());
 const getHostName: (obj: Window) => string | undefined = path(['location', 'hostname']);
 const getOrigin: (obj: any) => string | undefined = path(['contentWindow', 'location', 'origin']);
-const getLS: (obj: any) => LocalStorage | undefined = path([
+
+/**
+ * Take an HTMLIFrameElement and check if the localstorage has the correct key
+ */
+export const getLS: (obj: HTMLIFrameElement) => LocalStorage | undefined = path([
   'contentWindow',
   'localStorage',
   DBName
 ]);
 
-const getIFrameSrc = (hostname: string) => {
+/**
+ * Retrieve the url of the landing page according to current execution envirionment
+ * @param hostname : TURL
+ */
+export const getIFrameSrc = (hostname: string) => {
   switch (hostname) {
     case 'mycrypto.com':
-      return 'beta.mycrypto.com' as TURL;
+      return 'https://beta.mycrypto.com' as TURL;
     case 'mycryptobuilds.com':
       return 'https://landing.mycryptobuilds.com' as TURL;
     default:
@@ -27,27 +35,38 @@ const getIFrameSrc = (hostname: string) => {
 };
 
 const MigrateLS = ({
-  isEmpty = true,
-  importStorage
+  isDefault: isDefaultStore = false,
+  importStorage = () => false,
+  isValidImport
 }: {
-  isEmpty: boolean;
+  isDefault?: boolean;
   importStorage(ls: LocalStorage): boolean;
+  isValidImport(ls: string): boolean;
 }) => {
   const [iframeRef, setIframeRef] = useState<HTMLIFrameElement>();
   const [prevStorage, setPrevStorage] = useState<LocalStorage>();
+  const [canImport, setCanImport] = useState(false);
   const [error, setError] = useState(false);
   const src = useMemo(() => getIFrameSrc(getHostName(window)!), []);
 
   useEffect(() => {
-    console.debug('PrevStorage', prevStorage);
+    if (!prevStorage) {
+      return;
+    } else if (isValidImport(prevStorage)) {
+      setCanImport(true);
+    } else {
+      console.debug(`[MYC - Migrate] ${prevStorage} is not a valid LS`);
+    }
   }, [prevStorage]);
 
   const handleLoad = (frame: HTMLIFrameElement) => {
     const storage = getLS(frame);
     if (getOrigin(frame) !== src) {
-      throw new Error(`[MYC] Iframe from unauthorized source ${getOrigin(frame)}`);
+      // We want to fail hard if ever this happens
+      throw new Error(`[MYC - Migrate] Iframe from unauthorized source ${getOrigin(frame)}`);
     } else if (!storage) {
-      console.debug(`No LS found with key ${DBName}`);
+      // For logging sake
+      console.debug(`[MYC - Migrate] No LS found with key ${DBName}`);
     } else {
       setIframeRef(frame);
       setPrevStorage(storage);
@@ -73,19 +92,15 @@ const MigrateLS = ({
 
   return (
     <>
-      {isEmpty && (
-        <>
-          <IFrame src={src} onLoad={handleLoad} hidden={true} />
-          <div>
-            You may have notice that the url changed to app.mycrypto.com We found your previous
-            storage from beta.mycrypto.com. Would you like to import your settings?
-            <button disabled={isVoid(prevStorage)} onClick={handleImport}>
-              Yes
-            </button>
-            <button onClick={handleCancel}>No</button>
-            {error && <div>Error occured</div>}
-          </div>
-        </>
+      {isDefaultStore && <IFrame src={src} onLoad={handleLoad} hidden={true} />}
+      {isDefaultStore && canImport && (
+        <div>
+          You may have notice that the url changed to app.mycrypto.com We found your previous
+          storage from beta.mycrypto.com. Would you like to import your settings?
+          <button onClick={handleImport}>Yes</button>
+          <button onClick={handleCancel}>No</button>
+          {error && <div>Error occured. Please contact support with the file</div>}
+        </div>
       )}
     </>
   );
