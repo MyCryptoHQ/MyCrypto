@@ -945,5 +945,31 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       initial: 1
     },
     shouldEstimateGasPrice: false
+  },
+  GANACHE: {
+    id: 'GANACHE', // Ethereum Network Id
+    name: 'Ethereum',
+    unit: DEFAULT_NETWORK_TICKER,
+    chainId: 5777,
+    isCustom: false,
+    color: '#007896',
+    blockExplorer: makeExplorer({
+      name: 'Etherscan',
+      origin: 'https://etherscan.io'
+    }),
+    tokenExplorer: {
+      name: ethPlorer,
+      address: ETHTokenExplorer
+    },
+    tokens: [],
+    contracts: require('./contracts/eth.json'),
+    dPaths: {
+      [WalletId.TREZOR]: DPaths.ETH_TREZOR,
+      [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_LEDGER,
+      [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_DEFAULT
+    },
+    gasPriceSettings: GAS_PRICE_DEFAULT,
+    shouldEstimateGasPrice: false
   }
 };
