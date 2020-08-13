@@ -10,13 +10,11 @@ const SIFrame = styled.iframe`
 const IFrame = ({
   src,
   onLoad,
-  onError,
   hidden = false
 }: {
   src: TURL;
   hidden?: boolean;
   onLoad(ref: HTMLIFrameElement): void;
-  onError?(): void;
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
@@ -28,14 +26,7 @@ const IFrame = ({
   };
 
   return (
-    <SIFrame
-      data-testid="iframe"
-      ref={iframeRef}
-      src={src}
-      onLoad={handleLoad}
-      onError={onError}
-      hidden={hidden}
-    />
+    <SIFrame data-testid="iframe" ref={iframeRef} src={src} onLoad={handleLoad} hidden={hidden} />
   );
 };
 

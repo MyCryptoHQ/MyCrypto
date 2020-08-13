@@ -33,11 +33,4 @@ describe('IFrame', () => {
     expect(props.onLoad).toBeCalledTimes(1);
     expect(props.onLoad).toBeCalledWith(screen.getByTestId('iframe'));
   });
-
-  // it('calls onError() when loading error', () => {
-  //   const props = { ...defaultProps, onError: jest.fn() };
-  //   getComponent(props);
-  //   fireEvent.error(screen.getByTestId('iframe'));
-  //   expect(props.onError).toBeCalledTimes(1);
-  // });
 });
