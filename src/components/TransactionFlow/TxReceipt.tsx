@@ -96,8 +96,10 @@ export default function TxReceipt({
   const { addNewTxToAccount } = useContext(AccountContext);
   const { accounts } = useContext(StoreContext);
   const { settings } = useContext(SettingsContext);
-  const [txStatus, setTxStatus] = useState(txReceipt.status);
-  const [displayTxReceipt, setDisplayTxReceipt] = useState<ITxReceipt>(txReceipt);
+  const [txStatus, setTxStatus] = useState(
+    txReceipt ? txReceipt.status : (ITxStatus.PENDING as ITxHistoryStatus)
+  );
+  const [displayTxReceipt, setDisplayTxReceipt] = useState<ITxReceipt | undefined>(txReceipt);
   const [blockNumber, setBlockNumber] = useState(0);
   const [timestamp, setTimestamp] = useState(0);
 

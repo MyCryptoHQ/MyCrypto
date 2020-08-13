@@ -79,7 +79,7 @@ export interface IStepComponentProps {
 
 export interface ITxReceiptStepProps {
   txConfig: ITxConfig;
-  txReceipt: ITxReceipt;
+  txReceipt?: ITxReceipt;
   signedTx?: string;
   zapSelected?: IZapConfig;
   membershipSelected?: IMembershipConfig;
