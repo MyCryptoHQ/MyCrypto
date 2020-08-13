@@ -7,7 +7,7 @@ import { RatesContext, SettingsContext } from '@services';
 import { IAccount, IFormikFields, Fiat } from '@types';
 import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 import { Amount, Button, PoweredByText } from '@components';
-import { translateRaw } from '@translations';
+import translate, { translateRaw } from '@translations';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { getFiat } from '@config/fiats';
 
@@ -24,7 +24,6 @@ import { ProtectTxError } from '..';
 import { ProtectTxMissingInfo } from './ProtectTxMissingInfo';
 
 import bulletIcon from 'assets/images/icn-bullet.svg';
-import translate from '@translations/translate';
 
 const SProtectionThisTransaction = styled(ProtectTxBase)`
   svg:nth-of-type(2) {
