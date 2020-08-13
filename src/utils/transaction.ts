@@ -1,4 +1,11 @@
-import { Arrayish, parseTransaction, bigNumberify, formatEther, hexlify } from 'ethers/utils';
+import {
+  Arrayish,
+  parseTransaction,
+  bigNumberify,
+  formatEther,
+  hexlify,
+  BigNumber
+} from 'ethers/utils';
 import { TransactionResponse, TransactionReceipt } from 'ethers/providers';
 
 import {
@@ -71,14 +78,15 @@ export const makeFinishedTxReceipt = (
   newStatus: ITxStatus.FAILED | ITxStatus.SUCCESS,
   timestamp?: number,
   blockNumber?: number,
-  transactionReceipt?: TransactionReceipt
+  gasUsed?: BigNumber,
+  confirmations?: number
 ): IFailedTxReceipt | ISuccessfulTxReceipt => ({
   ...previousTxReceipt,
   status: newStatus,
   timestamp: timestamp || 0,
   blockNumber: blockNumber || 0,
-  gasUsed: transactionReceipt ? transactionReceipt.gasUsed : undefined,
-  confirmations: transactionReceipt ? transactionReceipt.confirmations : undefined
+  gasUsed,
+  confirmations
 });
 
 const decodeTransaction = (signedTx: Arrayish) => {

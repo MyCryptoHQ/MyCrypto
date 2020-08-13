@@ -126,7 +126,8 @@ export default function TxReceipt({
                     transactionStatus,
                     txResponse.timestamp,
                     txResponse.blockNumber,
-                    transactionOutcome
+                    transactionOutcome.gasUsed,
+                    transactionOutcome.confirmations
                   )
                 );
               });
