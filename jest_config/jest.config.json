@@ -39,5 +39,13 @@
     "!**/vendor/**",
     "!**/spec/**",
     "!**/__tests__/**"
-  ]
+  ],
+  "coverageThreshold": {
+    "global": {
+      "statements": 30,
+      "branches": 25,
+      "functions": 20,
+      "lines": 30
+    }
+  }
 }
