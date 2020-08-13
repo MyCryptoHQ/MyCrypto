@@ -118,6 +118,9 @@ const TransactionStatus = withRouter(({ history, match, location }) => {
             disableDynamicTxReceiptDisplay={true}
             disableAddTxToAccount={true}
           />
+          <Button onClick={() => setTx(undefined)} fullwidth={true}>
+            {translateRaw('TX_STATUS_GO_BACK')}
+          </Button>
         </>
       )}
     </ContentPanel>
