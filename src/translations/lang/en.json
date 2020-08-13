@@ -1066,8 +1066,7 @@
     "REP_TOKEN_MIGRATION": "Migrate REP Tokens",
     "REP_TOKEN_MIGRATION_RECEIPT": "REP Token Migration Receipt",
     "REP_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP": "This tool is intended to migrate all of your REP tokens from v1 to v2, so this field cannot be modified.",
-    "DASHBOARD_ACTIONS_REP_MIGRATION_TITLE": "There's a new REP in town!",
-    "DASHBOARD_ACTIONS_REP_MIGRATION_SUBTITLE": "With the launch of Augur v2 you can now migrate your REP to the new REPv2 token to participate in the reporting and dispute system within Augur v2.",
-    "DASHBOARD_ACTIONS_REP_MIGRATION_CTA": "Migrate Now"
+    "DASHBOARD_ACTIONS_REP_MIGRATION_TITLE": "New: Migrate your REP!",
+    "DASHBOARD_ACTIONS_REP_MIGRATION_SUBTITLE": "Augur v2 has launched and you need to take action to migrate your REPv1 tokens to REPv2."
   }
 }

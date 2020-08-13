@@ -58,12 +58,12 @@ export const actions: Action[] = [
     link: ROUTE_PATHS.BUY.path,
     description: translateRaw('DASHBOARD_ACTIONS_BUY_SUBTITLE')
   },
+  selectRandomAction(hardwareWallets),
   {
     icon: repIcon,
     title: translateRaw('DASHBOARD_ACTIONS_REP_MIGRATION_TITLE'),
     link: ROUTE_PATHS.REP_TOKEN_MIGRATION.path,
     description: translateRaw('DASHBOARD_ACTIONS_REP_MIGRATION_SUBTITLE'),
     assetFilter: (asset: StoreAsset) => asset.uuid === REPV1UUID
-  },
-  selectRandomAction(hardwareWallets)
+  }
 ];
