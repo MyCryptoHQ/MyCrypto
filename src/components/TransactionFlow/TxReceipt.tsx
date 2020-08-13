@@ -62,6 +62,7 @@ interface Props {
   pendingButton?: PendingBtnAction;
   swapDisplay?: SwapDisplayData;
   disableDynamicTxReceiptDisplay?: boolean;
+  disableAddTxToAccount?: boolean;
   protectTxButton?(): JSX.Element;
 }
 
@@ -87,6 +88,7 @@ export default function TxReceipt({
   zapSelected,
   swapDisplay,
   disableDynamicTxReceiptDisplay,
+  disableAddTxToAccount,
   protectTxButton
 }: ITxReceiptStepProps & Props) {
   const { getAssetRate } = useContext(RatesContext);
@@ -94,7 +96,7 @@ export default function TxReceipt({
   const { addNewTxToAccount } = useContext(AccountContext);
   const { accounts } = useContext(StoreContext);
   const { settings } = useContext(SettingsContext);
-  const [txStatus, setTxStatus] = useState(ITxStatus.PENDING as ITxHistoryStatus);
+  const [txStatus, setTxStatus] = useState(txReceipt.status);
   const [displayTxReceipt, setDisplayTxReceipt] = useState<ITxReceipt>(txReceipt);
   const [blockNumber, setBlockNumber] = useState(0);
   const [timestamp, setTimestamp] = useState(0);
@@ -143,7 +145,7 @@ export default function TxReceipt({
       const provider = new ProviderHandler(txConfig.network);
       const timestampInterval = setInterval(() => {
         getTimestampFromBlockNum(blockNumber, provider).then((transactionTimestamp) => {
-          if (sender.account) {
+          if (sender.account && !disableAddTxToAccount) {
             addNewTxToAccount(sender.account, {
               ...displayTxReceipt,
               blockNumber: blockNumber || 0,

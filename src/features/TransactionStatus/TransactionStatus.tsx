@@ -1,18 +1,22 @@
 import React, { useState, useContext } from 'react';
 import { Input } from '@mycrypto/ui';
-import { TransactionResponse } from 'ethers/providers';
 import { withRouter } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
 
 import { Button, NetworkSelectDropdown, ContentPanel, TxReceipt, InlineMessage } from '@components';
-import { ITxHash, NetworkId, ITxType } from '@types';
+import { ITxHash, NetworkId, ITxType, ITxConfig, ITxReceipt } from '@types';
 import { NetworkContext, AssetContext, StoreContext, ProviderHandler } from '@services';
-import { makeTxConfigFromTransactionResponse, makePendingTxReceipt } from '@utils/transaction';
+import {
+  makeTxConfigFromTransactionResponse,
+  makePendingTxReceipt,
+  makeTxConfigFromTxReceipt
+} from '@utils/transaction';
 import { noOp } from '@utils';
 import { useEffectOnce, useUpdateEffect } from '@vendor';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
+import { getTxsFromAccount } from '@services/Store/helpers';
 
 const TransactionStatus = withRouter(({ history, match, location }) => {
   const qs = queryString.parse(location.search);
@@ -26,11 +30,16 @@ const TransactionStatus = withRouter(({ history, match, location }) => {
 
   const [txHash, setTxHash] = useState(defaultTxHash);
   const [networkId, setNetwork] = useState<NetworkId>(defaultNetwork);
-  const [fetchedTx, setFetchedTx] = useState<TransactionResponse | undefined>(undefined);
+  const [tx, setTx] = useState<{ config: ITxConfig; receipt: ITxReceipt } | undefined>(undefined);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const network = networkId && getNetworkById(networkId);
+
+  const txCache = getTxsFromAccount(accounts);
+  const cachedTx = txCache.find(
+    (t) => t.hash === (txHash as ITxHash) && t.asset.networkId === networkId
+  );
 
   // Fetch TX on load if possible
   useEffectOnce(() => {
@@ -51,12 +60,31 @@ const TransactionStatus = withRouter(({ history, match, location }) => {
   const fetchTx = async () => {
     setLoading(true);
     try {
-      const provider = new ProviderHandler(network);
-      const tx = await provider.getTransactionByHash(txHash as ITxHash, true);
-      if (!tx) {
+      const txResult = await (async () => {
+        if (!cachedTx) {
+          const provider = new ProviderHandler(network);
+          const fetchedTx = await provider.getTransactionByHash(txHash as ITxHash, true);
+          const fetchedTxConfig = makeTxConfigFromTransactionResponse(
+            fetchedTx,
+            assets,
+            networks,
+            accounts
+          );
+          return {
+            config: fetchedTxConfig,
+            receipt: makePendingTxReceipt(txHash)(ITxType.UNKNOWN, fetchedTxConfig)
+          };
+        } else {
+          return {
+            config: makeTxConfigFromTxReceipt(cachedTx, assets, networks, accounts),
+            receipt: cachedTx
+          };
+        }
+      })();
+      if (!txResult) {
         setError(translateRaw('TX_NOT_FOUND'));
       } else {
-        setFetchedTx(tx);
+        setTx(txResult);
       }
     } catch (err) {
       console.error(err);
@@ -64,14 +92,9 @@ const TransactionStatus = withRouter(({ history, match, location }) => {
     setLoading(false);
   };
 
-  const txConfig =
-    fetchedTx && makeTxConfigFromTransactionResponse(fetchedTx, assets, networks, accounts);
-
-  const txReceipt = txConfig && makePendingTxReceipt(txHash)(ITxType.UNKNOWN, txConfig);
-
   return (
     <ContentPanel heading={translateRaw('TX_STATUS')}>
-      {!fetchedTx && (
+      {!tx && (
         <>
           <NetworkSelectDropdown
             network={networkId ? networkId : undefined}
@@ -85,14 +108,15 @@ const TransactionStatus = withRouter(({ history, match, location }) => {
           </Button>
         </>
       )}
-      {fetchedTx && txConfig && (
+      {tx && (
         <>
           <TxReceipt
-            txConfig={txConfig}
-            txReceipt={txReceipt!}
+            txConfig={tx.config}
+            txReceipt={tx.receipt}
             resetFlow={noOp}
             onComplete={noOp}
             disableDynamicTxReceiptDisplay={true}
+            disableAddTxToAccount={true}
           />
         </>
       )}

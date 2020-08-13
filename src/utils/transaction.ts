@@ -12,7 +12,8 @@ import {
   getNetworkByChainId,
   getBaseAssetByNetwork,
   getAssetByContractAndNetwork,
-  getStoreAccount
+  getStoreAccount,
+  getNetworkById
 } from '@services/Store';
 import {
   fromTokenBase,
@@ -36,7 +37,8 @@ import {
   ITxHash,
   IFailedTxReceipt,
   ISuccessfulTxReceipt,
-  ITxHistoryStatus
+  ITxHistoryStatus,
+  ITxReceipt
 } from '@types';
 
 export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
@@ -197,6 +199,57 @@ export const makeTxConfigFromTransactionResponse = (
     data: decodedTx.data,
     nonce: decodedTx.nonce.toString(),
     from: decodedTx.from as TAddress
+  };
+  // @ts-ignore Ignore possible missing senderAccount for now
+  return txConfig;
+};
+
+export const makeTxConfigFromTxReceipt = (
+  txReceipt: ITxReceipt,
+  assets: ExtendedAsset[],
+  networks: Network[],
+  accounts: StoreAccount[]
+): ITxConfig => {
+  const networkDetected = getNetworkById(txReceipt.asset.networkId, networks);
+  const contractAsset = getAssetByContractAndNetwork(
+    txReceipt.to || undefined,
+    networkDetected
+  )(assets);
+  const baseAsset = getBaseAssetByNetwork({
+    network: networkDetected || ({} as Network),
+    assets
+  });
+
+  const txConfig = {
+    rawTransaction: {
+      to: txReceipt.to,
+      value: bigNumberify(txReceipt.value).toHexString(),
+      gasLimit: bigNumberify(txReceipt.gasLimit).toHexString(),
+      data: txReceipt.data,
+      gasPrice: bigNumberify(txReceipt.gasPrice).toHexString(),
+      nonce: txReceipt.nonce,
+      chainId: networkDetected.chainId,
+      from: txReceipt.from
+    },
+    receiverAddress: (contractAsset
+      ? decodeTransfer(txReceipt.data)._to
+      : txReceipt.to) as TAddress,
+    amount: contractAsset
+      ? fromTokenBase(toWei(decodeTransfer(txReceipt.data)._value, 0), contractAsset.decimal)
+      : txReceipt.amount,
+    network: networkDetected,
+    value: toWei(
+      bigNumberify(txReceipt.value).toString(),
+      getDecimalFromEtherUnit('ether')
+    ).toString(),
+    asset: contractAsset || baseAsset,
+    baseAsset,
+    senderAccount: getStoreAccount(accounts)(txReceipt.from, networkDetected.id),
+    gasPrice: bigNumberify(txReceipt.gasPrice).toString(),
+    gasLimit: bigNumberify(txReceipt.gasLimit).toString(),
+    data: txReceipt.data,
+    nonce: txReceipt.nonce,
+    from: txReceipt.from
   };
   // @ts-ignore Ignore possible missing senderAccount for now
   return txConfig;
