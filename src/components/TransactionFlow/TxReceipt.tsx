@@ -23,7 +23,7 @@ import {
   IPendingTxReceipt,
   ITxHistoryStatus
 } from '@types';
-import { Amount, TimeElapsedCounter, AssetIcon, LinkOut, PoweredByText } from '@components';
+import { Amount, TimeElapsedSimple, AssetIcon, LinkOut, PoweredByText } from '@components';
 import { AddressBookContext, AccountContext, StoreContext, SettingsContext } from '@services/Store';
 import { RatesContext } from '@services/RatesProvider';
 import {
@@ -409,7 +409,7 @@ export const TxReceiptUI = ({
             {displayTxReceipt &&
               (timestamp !== 0 ? (
                 <div>
-                  <TimeElapsedCounter timestamp={timestamp} isSeconds={true} />
+                  {<TimeElapsedSimple value={timestamp * 1000} />}
                   <br /> {localTimestamp}
                 </div>
               ) : (
