@@ -14,19 +14,27 @@ export const unlockWeb3 = (onSuccess: (data: any) => void) => async (networks: N
   if (!isWeb3Node(nodeLib)) {
     throw new Error('Cannot use Web3 wallet without a Web3 node.');
   }
-
-  const accounts = await getAccounts(nodeLib);
-  if (accounts) {
-    onSuccess(network);
-    return accounts.map((address) => new Web3Wallet(address, network.id));
+  try {
+    // try to get modern web3 permissions using wallet_getPermissions
+    const accounts = await getAccounts(nodeLib);
+    if (accounts) {
+      onSuccess(network);
+      return accounts.map((address) => new Web3Wallet(address, network.id));
+    }
+  } catch {
+    // if modern wallet_getPermissions doesn't exist,
+    console.debug('Error fetching modern web3 permissions.');
+    try {
+      const legacyAccounts = await getLegacyAccounts(nodeLib);
+      if (legacyAccounts) {
+        onSuccess(network);
+        return legacyAccounts.map((address) => new Web3Wallet(address, network.id));
+      }
+      throw new Error('Could not get accounts');
+    } catch {
+      throw new Error('Error fetching legacy web3 accounts');
+    }
   }
-
-  const legacyAccounts = await getLegacyAccounts(nodeLib);
-  if (legacyAccounts) {
-    onSuccess(network);
-    return legacyAccounts.map((address) => new Web3Wallet(address, network.id));
-  }
-  throw new Error('Could not get accounts');
 };
 
 const getAccounts = async (nodeLib: Web3Node) => await nodeLib.getApprovedAccounts();
