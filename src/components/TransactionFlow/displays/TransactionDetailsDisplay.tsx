@@ -74,6 +74,8 @@ function TransactionDetailsDisplay({
     return undefined;
   })();
 
+  const actualTransactionFeeBase = gasUsed && totalTxFeeToString(gasPrice, gasUsed.toString());
+
   return (
     <>
       <div className="TransactionDetails">
@@ -132,7 +134,9 @@ function TransactionDetailsDisplay({
             {gasUsed && (
               <div className="TransactionDetails-row">
                 <div className="TransactionDetails-row-column">Gas Used:</div>
-                <div className="TransactionDetails-row-column">{`${gasUsed.toString()} (${gasUsedPercentage}%)`}</div>
+                <div className="TransactionDetails-row-column">{`${gasUsed.toString()} (${gasUsedPercentage?.toFixed(
+                  2
+                )}%)`}</div>
               </div>
             )}
             {baseAsset && (
@@ -142,6 +146,12 @@ function TransactionDetailsDisplay({
                   ${baseToConvertedUnit(gasPrice, 9)} gwei
                   (${baseToConvertedUnit(gasPrice, DEFAULT_ASSET_DECIMAL)} ${baseAsset.ticker})
                 `}</div>
+              </div>
+            )}
+            {actualTransactionFeeBase && (
+              <div className="TransactionDetails-row">
+                <div className="TransactionDetails-row-column">Transaction Fee:</div>
+                <div className="TransactionDetails-row-column">{`${actualTransactionFeeBase} ${baseAsset.ticker}`}</div>
               </div>
             )}
             <div className="TransactionDetails-row">
