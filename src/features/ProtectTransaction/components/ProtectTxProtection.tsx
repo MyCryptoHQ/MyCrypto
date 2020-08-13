@@ -24,6 +24,7 @@ import { ProtectTxError } from '..';
 import { ProtectTxMissingInfo } from './ProtectTxMissingInfo';
 
 import bulletIcon from 'assets/images/icn-bullet.svg';
+import translate from '@translations/translate';
 
 const SProtectionThisTransaction = styled(ProtectTxBase)`
   svg:nth-of-type(2) {
@@ -327,7 +328,7 @@ export const ProtectTxProtectionUI = ({
         </div>
       )}
       {!isWeb3Wallet && (
-        <p className="description-text">{translateRaw('PROTECTED_TX_NOT_WEB3_WALLET_DESC')}</p>
+        <p className="description-text">{translate('PROTECTED_TX_NOT_WEB3_WALLET_DESC')}</p>
       )}
       {!hasMissingInfoError && !isPTXFree && (
         <>
