@@ -319,7 +319,8 @@ export default function AddOrEditNetworkNode({
                     initial: 1
                   },
                   shouldEstimateGasPrice: false,
-                  color: undefined
+                  color: undefined,
+                  selectedNode: node.name
                 };
             const provider = new ProviderHandler({ ...network, nodes: [node] }, false);
             await provider.getCurrentBlock();
