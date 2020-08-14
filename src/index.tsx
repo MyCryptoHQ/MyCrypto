@@ -9,7 +9,7 @@ import 'what-input'; // @todo: Investigate utility of dependency; Used in sass/s
 import React from 'react';
 import { render } from 'react-dom';
 
-import { consoleAdvertisement, IS_STAGING, IS_PROD } from '@utils';
+import { consoleAdvertisement, IS_STAGING, IS_PROD, getRootDomain } from '@utils';
 
 import Root from './Root';
 
@@ -25,7 +25,7 @@ import Root from './Root';
  *     https://developer.mozilla.org/en-US/docs/Web/API/Document/domain)
  * 4. Since we need run 3 environments we dynamically set the domain to the appropriate hostname.
  */
-document.domain = document.location.hostname || 'localhost';
+document.domain = getRootDomain(document.location.hostname);
 
 // disables drag-and-drop due to potential security issues by Cure53 recommendation
 const doNothing = (event: DragEvent) => {

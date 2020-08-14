@@ -85,3 +85,4 @@ export { default as isFiatTicker } from './isFiatTicker';
 export { sortByLabel } from './sort';
 export { isVoid } from './isVoid';
 export { accountsToCSV } from './csv';
+export { getRootDomain } from './getRootDomain';
