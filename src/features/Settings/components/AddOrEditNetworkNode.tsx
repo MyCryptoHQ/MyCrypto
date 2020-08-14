@@ -388,13 +388,15 @@ export default function AddOrEditNetworkNode({
               <Row>
                 <Column>
                   <AddressFieldset>
-                    <label htmlFor="networkName">Network Name</label>
+                    <label htmlFor="networkName">
+                      {translateRaw('CUSTOM_NODE_FORM_NETWORK_NAME')}
+                    </label>
                     <Field name="networkName">
                       {({ field }: FieldProps<string>) => (
                         <InputField
                           {...field}
                           inputError={errors && errors.networkName}
-                          placeholder={translateRaw('CUSTOM_NODE_FORM_NODE_NAME')}
+                          placeholder={translateRaw('CUSTOM_NODE_FORM_NETWORK_NAME_PLACEHOLDER')}
                         />
                       )}
                     </Field>
@@ -402,13 +404,13 @@ export default function AddOrEditNetworkNode({
                 </Column>
                 <Column>
                   <AddressFieldset>
-                    <label htmlFor="baseUnit">Currency</label>
+                    <label htmlFor="baseUnit"> {translateRaw('CUSTOM_NODE_FORM_BASE_UNIT')}</label>
                     <Field name="baseUnit">
                       {({ field }: FieldProps<string>) => (
                         <InputField
                           {...field}
                           inputError={errors && errors.baseUnit}
-                          placeholder={translateRaw('CUSTOM_NODE_FORM_NODE_NAME')}
+                          placeholder={translateRaw('CUSTOM_NODE_FORM_BASE_UNIT_PLACEHOLDER')}
                         />
                       )}
                     </Field>
@@ -416,13 +418,13 @@ export default function AddOrEditNetworkNode({
                 </Column>
                 <Column>
                   <AddressFieldset>
-                    <label htmlFor="chainId">Chain ID</label>
+                    <label htmlFor="chainId">{translateRaw('CUSTOM_NODE_FORM_CHAIN_ID')}</label>
                     <Field name="chainId">
                       {({ field }: FieldProps<string>) => (
                         <InputField
                           {...field}
                           inputError={errors && errors.chainId}
-                          placeholder={translateRaw('CUSTOM_NODE_FORM_NODE_NAME')}
+                          placeholder={translateRaw('CUSTOM_NODE_FORM_CHAIN_ID_PLACEHOLDER')}
                         />
                       )}
                     </Field>
