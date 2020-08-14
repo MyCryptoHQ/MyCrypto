@@ -134,7 +134,7 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
   const displayNodes = [autoNode, ...nodes, ...(isFunction(onEdit) ? [{ service: newNode }] : [])];
 
   return (
-    <Selector<{ label: string; value: NodeOptions; onEdit: typeof onEdit } & any>
+    <Selector<NodeOptions & any>
       value={{
         label: selectedNodeName === autoNodeName ? autoNodeLabel : service,
         value: selectedNode
@@ -142,7 +142,7 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
       options={displayNodes.map((n) => ({ label: n.service, value: n, onEdit }))}
       placeholder={'Auto'}
       searchable={true}
-      onChange={(option) => onChange(option.value)}
+      onChange={(option) => onChange(option)}
       optionComponent={NetworkNodeOption}
       valueComponent={({ value }) => (
         <SContainerValue>
