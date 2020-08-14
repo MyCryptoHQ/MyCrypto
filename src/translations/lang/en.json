@@ -573,7 +573,7 @@
     "PROTECTED_TX_GET_TX_PROTECTION_DESC": "Gain valuable information about the recipient address and the ability to undo your transaction within 20 seconds.",
     "PROTECTED_TX_LAST_SENT_TX": "Last Sent Transaction:",
     "PROTECTED_TX_MODIFY_TX": "You can undo or modify this transaction for the next $sec sec",
-    "PROTECTED_TX_NOT_WEB3_WALLET_DESC": "Once you confirm and sign the transaction, you'll have 20 seconds to cancel sending if you change your mind. Still not convinced? Learn more.",
+    "PROTECTED_TX_NOT_WEB3_WALLET_DESC": "Once you confirm and sign the transaction, you'll have 20 seconds to cancel sending if you change your mind. Still not convinced? [Learn more](https://support.mycrypto.com/general-knowledge/about-mycrypto/what-are-protected-transactions).",
     "PROTECTED_TX_NO_INFORMATION_AVAILABLE": "No information available!",
     "PROTECTED_TX_PROTECT_MY_TX": "Protect My Transaction",
     "PROTECTED_TX_PROTECT_THIS_TRANSACTION": "Protect This Transaction",

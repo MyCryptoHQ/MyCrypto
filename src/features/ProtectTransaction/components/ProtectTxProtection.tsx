@@ -7,7 +7,7 @@ import { RatesContext, SettingsContext } from '@services';
 import { IAccount, IFormikFields, Fiat } from '@types';
 import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 import { Amount, Button, PoweredByText } from '@components';
-import { translateRaw } from '@translations';
+import translate, { translateRaw } from '@translations';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { getFiat } from '@config/fiats';
 
@@ -327,7 +327,7 @@ export const ProtectTxProtectionUI = ({
         </div>
       )}
       {!isWeb3Wallet && (
-        <p className="description-text">{translateRaw('PROTECTED_TX_NOT_WEB3_WALLET_DESC')}</p>
+        <p className="description-text">{translate('PROTECTED_TX_NOT_WEB3_WALLET_DESC')}</p>
       )}
       {!hasMissingInfoError && !isPTXFree && (
         <>
