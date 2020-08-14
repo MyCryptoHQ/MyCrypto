@@ -6,7 +6,7 @@ import { PageNotFound, ScreenLockProvider, DrawerProvider, MigrateLS } from '@fe
 import { ScrollToTop, useScreenSize, withContext } from '@utils';
 import { useFeatureFlags } from '@services';
 import { StoreContext, SettingsContext } from '@services/Store';
-import { ROUTE_PATHS } from '@config/routePaths';
+import { ROUTE_PATHS } from '@config';
 import {
   PageVisitsAnalytics,
   LegacyRoutesHandler,
@@ -15,8 +15,9 @@ import {
   getAppRoutes
 } from '@routing';
 import { COLORS, SPACING } from '@theme';
-import { AppLoading } from '@AppLoading';
 import { pipe } from '@vendor';
+
+import { AppLoading } from './AppLoading';
 
 const layoutConfig = (path: string, isMobile: boolean): LayoutConfig => {
   switch (path) {
