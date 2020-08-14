@@ -3,11 +3,11 @@ import { Network, Button } from '@mycrypto/ui';
 import { bigNumberify, BigNumber } from 'ethers/utils';
 import styled from 'styled-components';
 
-import { Asset, ITxObject } from '@types';
+import { Asset, ITxObject, Fiat } from '@types';
 import { baseToConvertedUnit, totalTxFeeToString } from '@services/EthService';
 import { CopyableCodeBlock } from '@components';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
-import { weiToFloat, isTransactionDataEmpty, bigify } from '@utils';
+import { weiToFloat, isTransactionDataEmpty, bigify, convertToFiat } from '@utils';
 import translate, { translateRaw } from '@translations';
 import { COLORS } from '@theme';
 
@@ -29,6 +29,8 @@ interface Props {
   rawTransaction?: ITxObject;
   signedTransaction?: string;
   sender: ISender;
+  fiat: Fiat;
+  baseAssetRate: number | undefined;
 }
 
 const SeeMoreDetailsButton = styled(Button)`
@@ -50,7 +52,9 @@ function TransactionDetailsDisplay({
   gasPrice,
   rawTransaction,
   signedTransaction,
-  sender
+  sender,
+  fiat,
+  baseAssetRate
 }: Props) {
   const [showDetails, setShowDetails] = useState(false);
 
@@ -75,6 +79,15 @@ function TransactionDetailsDisplay({
   })();
 
   const actualTransactionFeeBase = gasUsed && totalTxFeeToString(gasPrice, gasUsed.toString());
+
+  const actualTransactionFeeFiat =
+    actualTransactionFeeBase &&
+    convertToFiat(parseFloat(actualTransactionFeeBase), baseAssetRate).toFixed(2);
+
+  const maxTransactionFeeFiat = convertToFiat(
+    parseFloat(maxTransactionFeeBase),
+    baseAssetRate
+  ).toFixed(2);
 
   return (
     <>
@@ -155,12 +168,14 @@ function TransactionDetailsDisplay({
                 <div className="TransactionDetails-row-column">
                   {translateRaw('TRANSACTION_FEE')}:
                 </div>
-                <div className="TransactionDetails-row-column">{`${actualTransactionFeeBase} ${baseAsset.ticker}`}</div>
+                <div className="TransactionDetails-row-column">{`${actualTransactionFeeBase} ${baseAsset.ticker} (${fiat.symbol}${actualTransactionFeeFiat})`}</div>
               </div>
             )}
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">{translateRaw('MAX_TX_FEE')}:</div>
-              <div className="TransactionDetails-row-column">{`${maxTransactionFeeBase} ${baseAsset.ticker}`}</div>
+              <div className="TransactionDetails-row-column">
+                {`${maxTransactionFeeBase} ${baseAsset.ticker} (${fiat.symbol}${maxTransactionFeeFiat})`}
+              </div>
             </div>
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">{translateRaw('NONCE')}:</div>

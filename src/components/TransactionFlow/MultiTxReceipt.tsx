@@ -10,7 +10,8 @@ import {
   ITxConfig,
   TxParcel,
   StoreAccount,
-  Network
+  Network,
+  Fiat
 } from '@types';
 import { TimeElapsedCounter, LinkOut } from '@components';
 import { ROUTE_PATHS } from '@config';
@@ -37,6 +38,8 @@ interface Props {
   transactionsConfigs: ITxConfig[];
   account: StoreAccount;
   network: Network;
+  fiat: Fiat;
+  baseAssetRate: number | undefined;
   pendingButton?: PendingBtnAction;
   swapDisplay?: SwapDisplayData;
 }
@@ -64,7 +67,9 @@ export default function MultiTxReceipt({
   resetFlow,
   account,
   network,
-  completeButtonText
+  completeButtonText,
+  fiat,
+  baseAssetRate
 }: Omit<IStepComponentProps, 'txConfig' | 'txReceipt'> & Props) {
   const shouldRenderPendingBtn =
     pendingButton && transactions.find((t) => t.status === ITxStatus.PENDING);
@@ -174,6 +179,8 @@ export default function MultiTxReceipt({
               gasPrice={gasPrice}
               nonce={nonce}
               rawTransaction={transaction.txRaw}
+              fiat={fiat}
+              baseAssetRate={baseAssetRate}
             />
           </div>
         );

@@ -21,7 +21,8 @@ import {
   ISettings,
   ITxReceiptStepProps,
   IPendingTxReceipt,
-  ITxHistoryStatus
+  ITxHistoryStatus,
+  Fiat
 } from '@types';
 import { Amount, TimeElapsedSimple, AssetIcon, LinkOut, PoweredByText } from '@components';
 import { AddressBookContext, AccountContext, StoreContext, SettingsContext } from '@services/Store';
@@ -171,6 +172,14 @@ export default function TxReceipt({
     }
   }, [displayTxReceipt, txConfig.asset]);
 
+  const baseAssetRate = useCallback(() => {
+    if (displayTxReceipt && R_path(['baseAsset'], displayTxReceipt)) {
+      return getAssetRate(displayTxReceipt.baseAsset);
+    } else {
+      return getAssetRate(txConfig.baseAsset);
+    }
+  }, [displayTxReceipt, txConfig.baseAsset]);
+
   const senderContact =
     txConfig.senderAccount &&
     getContactByAddressAndNetworkId(txConfig.senderAccount.address, txConfig.network.id);
@@ -182,12 +191,15 @@ export default function TxReceipt({
 
   const sender = constructSenderFromTxConfig(txConfig, accounts);
 
+  const fiat = getFiat(settings);
+
   return (
     <TxReceiptUI
       settings={settings}
       txConfig={txConfig}
       txReceipt={txReceipt}
       assetRate={assetRate}
+      baseAssetRate={baseAssetRate}
       zapSelected={zapSelected}
       membershipSelected={membershipSelected}
       swapDisplay={swapDisplay}
@@ -204,6 +216,7 @@ export default function TxReceipt({
       protectTxEnabled={ptxState && ptxState.protectTxEnabled}
       web3Wallet={ptxState && ptxState.isWeb3Wallet}
       protectTxButton={protectTxButton}
+      fiat={fiat}
     />
   );
 }
@@ -217,11 +230,13 @@ export interface TxReceiptDataProps {
   senderContact: ExtendedAddressBook | undefined;
   sender: ISender;
   recipientContact: ExtendedAddressBook | undefined;
+  fiat: Fiat;
   pendingButton?: PendingBtnAction;
   swapDisplay?: SwapDisplayData;
   protectTxEnabled?: boolean;
   web3Wallet?: boolean;
   assetRate(): number | undefined;
+  baseAssetRate(): number | undefined;
   resetFlow(): void;
   protectTxButton?(): JSX.Element;
 }
@@ -242,6 +257,8 @@ export const TxReceiptUI = ({
   membershipSelected,
   senderContact,
   sender,
+  baseAssetRate,
+  fiat,
   recipientContact,
   pendingButton,
   resetFlow,
@@ -436,6 +453,8 @@ export const TxReceiptUI = ({
           gasPrice={gasPrice}
           nonce={nonce}
           rawTransaction={txConfig.rawTransaction}
+          fiat={fiat}
+          baseAssetRate={baseAssetRate()}
         />
       </div>
       {shouldRenderPendingBtn && (
