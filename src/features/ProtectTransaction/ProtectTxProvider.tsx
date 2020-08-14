@@ -11,9 +11,7 @@ import {
 import { AssetContext, getAssetByUUID, StoreContext } from '@services/Store';
 import { useFeatureFlags } from '@services';
 import { NansenService, NansenServiceEntry } from '@services/ApiService/Nansen';
-import { useScreenSize } from '@utils';
 import { WALLETS_CONFIG } from '@config';
-
 import { PTXReport } from './types';
 import { getNansenReportType, getLastTx, getBalance } from './utils';
 
@@ -90,7 +88,6 @@ const ProtectTxProvider: React.FC = ({ children }) => {
     ...protectTxProviderInitialState,
     isPTXFree
   });
-  const { isMdScreen } = useScreenSize();
 
   const protectionTxTimeoutFunction = useRef<((cb: () => ITxReceipt) => void) | null>(null);
 
@@ -277,16 +274,6 @@ const ProtectTxProvider: React.FC = ({ children }) => {
     const balance = getBalance(etherscanBalanceReport);
     return { address, status, labels, lastTransaction: lastTx, balance, asset: state.asset! };
   }, [state]);
-
-  useEffect(() => {
-    // Show tx protect in case of window resize
-    if (state.protectTxEnabled) {
-      setState((prevState) => ({
-        ...prevState,
-        protectTxShow: isMdScreen
-      }));
-    }
-  }, [isMdScreen, state.protectTxEnabled]);
 
   useEffect(() => {
     if (state.stepIndex === numOfSteps - 1) {
