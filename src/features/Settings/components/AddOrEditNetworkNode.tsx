@@ -307,7 +307,7 @@ export default function AddOrEditNetworkNode({
                   isCustom: true,
                   assets: [],
                   contracts: [],
-                  nodes: [],
+                  nodes: [node],
                   dPaths: {
                     [WalletId.TREZOR]: DPaths.ETH_TESTNET,
                     [WalletId.LEDGER_NANO_S]: DPaths.ETH_TESTNET,
@@ -334,17 +334,18 @@ export default function AddOrEditNetworkNode({
               };
               addAsset(baseAsset, network.baseAsset);
               addNetwork(network);
-            }
-
-            if (editNode) {
-              updateNode(node, selectedNetworkId, editNode.name);
             } else {
-              addNodeToNetwork(node, selectedNetworkId);
+              if (editNode) {
+                updateNode(node, selectedNetworkId, editNode.name);
+              } else {
+                addNodeToNetwork(node, selectedNetworkId);
+              }
             }
 
             setIsConnectionError(false);
             onComplete();
           } catch (e) {
+            console.error(e);
             setIsConnectionError(true);
             setSubmitting(false);
           }
