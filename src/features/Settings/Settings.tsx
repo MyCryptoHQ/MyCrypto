@@ -7,7 +7,8 @@ import {
   NetworkContext,
   NetworkUtils,
   SettingsContext,
-  StoreContext
+  StoreContext,
+  AssetContext
 } from '@services/Store';
 import { buildBalances, buildTotalFiatValue } from '@utils';
 import { AccountList, Mobile, Desktop } from '@components';
@@ -133,33 +134,49 @@ function renderNetworkNodes() {
     updateNode,
     deleteNode
   } = useContext(NetworkContext);
+  const { addNetwork, networks: allNetworks } = useContext(NetworkContext);
+  const { createAssetWithID } = useContext(AssetContext);
   const { addressBook } = useContext(AddressBookContext);
   const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
   const [editNode, setEditNode] = useState<CustomNodeConfig | undefined>(undefined);
+  const [isAddingNetwork, setAddingNetwork] = useState(false);
 
   const addressBookNetworks = NetworkUtils.getDistinctNetworks(addressBook, getNetworkById);
+  const networks = allNetworks.filter(
+    (n) => n.isCustom || addressBookNetworks.some((a) => a.id === n.id)
+  );
 
   return (
     <FlippablePanel>
       {({ flipped, toggleFlipped }) =>
         flipped ? (
-          <AddOrEditNetworkNode
-            networkId={networkId}
-            editNode={editNode}
-            onComplete={toggleFlipped}
-            addNodeToNetwork={addNodeToNetwork}
-            isNodeNameAvailable={isNodeNameAvailable}
-            getNetworkById={getNetworkById}
-            updateNode={updateNode}
-            deleteNode={deleteNode}
-          />
+          <>
+            <AddOrEditNetworkNode
+              networkId={networkId}
+              editNode={editNode}
+              onComplete={toggleFlipped}
+              addNodeToNetwork={addNodeToNetwork}
+              isNodeNameAvailable={isNodeNameAvailable}
+              getNetworkById={getNetworkById}
+              updateNode={updateNode}
+              deleteNode={deleteNode}
+              addNetwork={addNetwork}
+              addAsset={createAssetWithID}
+              isAddingCustomNetwork={isAddingNetwork}
+            />
+          </>
         ) : (
           <NetworkNodes
-            networks={addressBookNetworks}
+            networks={networks}
             toggleFlipped={(id, node) => {
               setNetworkId(id);
               setEditNode(node);
+              setAddingNetwork(false);
 
+              toggleFlipped();
+            }}
+            toggleNetworkCreation={() => {
+              setAddingNetwork(true);
               toggleFlipped();
             }}
           />

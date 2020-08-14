@@ -44,8 +44,10 @@ const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) =>
   const [web3UnlockError, setWeb3UnlockError] = useState<IWeb3UnlockError | undefined>(undefined);
   const unlockWallet = useCallback(async () => {
     const handleUnlock = (network: Network) => {
-      updateSettingsNode('web3');
-      addNodeToNetwork(NetworkUtils.createWeb3Node(), network);
+      if (!network.isCustom) {
+        updateSettingsNode('web3');
+        addNodeToNetwork(NetworkUtils.createWeb3Node(), network);
+      }
     };
 
     try {

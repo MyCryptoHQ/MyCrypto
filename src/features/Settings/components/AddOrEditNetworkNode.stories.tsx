@@ -23,6 +23,8 @@ const getNetworkById = (id: NetworkId) =>
   } as unknown) as Network);
 const updateNode = () => undefined;
 const deleteNode = () => undefined;
+const addNetwork = () => undefined;
+const addAsset = () => undefined;
 
 const addNetworkNode = () => (
   <div className="sb-container" style={{ maxWidth: '800px' }}>
@@ -35,6 +37,9 @@ const addNetworkNode = () => (
       getNetworkById={getNetworkById}
       updateNode={updateNode}
       deleteNode={deleteNode}
+      addNetwork={addNetwork}
+      addAsset={addAsset}
+      isAddingCustomNetwork={false}
     />
   </div>
 );
@@ -50,6 +55,9 @@ const editNetworkNode = () => (
       getNetworkById={getNetworkById}
       updateNode={updateNode}
       deleteNode={deleteNode}
+      addNetwork={addNetwork}
+      addAsset={addAsset}
+      isAddingCustomNetwork={false}
     />
   </div>
 );

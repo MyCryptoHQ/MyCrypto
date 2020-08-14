@@ -11,6 +11,7 @@ import { getNetworkById } from './helpers';
 
 export interface INetworkContext {
   networks: Network[];
+  addNetwork(item: Network): void;
   updateNetwork(id: NetworkId, item: Network): void;
   getNetworkById(networkId: NetworkId): Network;
   getNetworkByChainId(chainId: number): Network | undefined;
@@ -30,6 +31,7 @@ export const NetworkProvider: React.FC = ({ children }) => {
 
   const state: INetworkContext = {
     networks,
+    addNetwork: model.create,
     updateNetwork: model.update,
     getNetworkById(networkId: NetworkId): Network {
       const foundNetwork = getNetworkById(networkId, networks);

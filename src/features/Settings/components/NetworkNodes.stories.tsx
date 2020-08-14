@@ -23,16 +23,25 @@ const someNetworks: INetwork[] = ([
 ] as unknown) as INetwork[];
 
 const toggleFlipped = () => undefined;
+const toggleNetworkCreation = () => undefined;
 
 const networkNodesEmpty = () => (
   <div className="sb-container" style={{ width: '100%', maxWidth: '900px' }}>
-    <NetworkNodes networks={emptyNetworks} toggleFlipped={toggleFlipped} />
+    <NetworkNodes
+      networks={emptyNetworks}
+      toggleFlipped={toggleFlipped}
+      toggleNetworkCreation={toggleNetworkCreation}
+    />
   </div>
 );
 
 const someNetworkNode = () => (
   <div className="sb-container" style={{ width: '100%', maxWidth: '900px' }}>
-    <NetworkNodes networks={someNetworks} toggleFlipped={toggleFlipped} />
+    <NetworkNodes
+      networks={someNetworks}
+      toggleFlipped={toggleFlipped}
+      toggleNetworkCreation={toggleNetworkCreation}
+    />
   </div>
 );
 
