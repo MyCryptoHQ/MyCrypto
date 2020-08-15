@@ -73,7 +73,7 @@ export const tokenBalanceHandler: ProxyHandler<IProvider> = {
     if (propKey.toString() === 'getTokenBalance') {
       return (address: string, token: Token) => tokenBalanceShim(address, token);
     } else if (propKey.toString() === 'getTokenBalances') {
-      const network = getShepherdNetwork();
+      const network = getShepherdNetwork().replace(/WEB3_/i, '');
 
       return (address: string, tokens: Token[]) => {
         if (ETH_SCAN_NETWORKS.includes(network)) {
