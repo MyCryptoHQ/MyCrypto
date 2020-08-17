@@ -18,6 +18,8 @@ import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
 import { getTxsFromAccount } from '@services/Store/helpers';
 
+const SUPPORTED_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Goerli', 'Kovan', 'ETC'];
+
 const TransactionStatus = withRouter(({ history, match, location }) => {
   const qs = queryString.parse(location.search);
 
@@ -26,7 +28,8 @@ const TransactionStatus = withRouter(({ history, match, location }) => {
   const { accounts } = useContext(StoreContext);
 
   const defaultTxHash = match.params.txHash ? match.params.txHash : '';
-  const defaultNetwork = qs.network ? qs.network : DEFAULT_NETWORK;
+  const defaultNetwork =
+    qs.network && SUPPORTED_NETWORKS.includes(qs.network) ? qs.network : DEFAULT_NETWORK;
 
   const [txHash, setTxHash] = useState(defaultTxHash);
   const [networkId, setNetwork] = useState<NetworkId>(defaultNetwork);
@@ -64,6 +67,9 @@ const TransactionStatus = withRouter(({ history, match, location }) => {
         if (!cachedTx) {
           const provider = new ProviderHandler(network);
           const fetchedTx = await provider.getTransactionByHash(txHash as ITxHash, true);
+          if (!fetchedTx) {
+            return undefined;
+          }
           const fetchedTxConfig = makeTxConfigFromTransactionResponse(
             fetchedTx,
             assets,
@@ -99,6 +105,7 @@ const TransactionStatus = withRouter(({ history, match, location }) => {
           <NetworkSelectDropdown
             network={networkId ? networkId : undefined}
             onChange={(n) => setNetwork(n)}
+            filter={(n) => SUPPORTED_NETWORKS.includes(n.id)}
           />
           <label htmlFor="txhash">{translateRaw('TX_HASH')}</label>
           <Input name="txhash" value={txHash} onChange={(e) => setTxHash(e.currentTarget.value)} />

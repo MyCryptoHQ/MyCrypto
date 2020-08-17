@@ -15,6 +15,7 @@ interface Props {
   showTooltip?: boolean;
   disabled?: boolean;
   onChange(network: NetworkId): void;
+  filter?(network: Network): boolean;
 }
 
 const SContainer = styled('div')`
@@ -38,6 +39,7 @@ function NetworkSelectDropdown({
   onChange,
   showTooltip = false,
   disabled = false,
+  filter,
   ...props
 }: Props) {
   const { networks, getNetworkById } = useContext(NetworkContext);
@@ -53,6 +55,7 @@ function NetworkSelectDropdown({
   // @ADD_ACCOUNT_@todo: The difference in accountType is likely causing
   // the absence of list.
   const options = networks
+    .filter((n) => (filter ? filter(n) : true))
     // @ts-ignore CHANGE IN WALLETYPE OBJECT CAUSING accountType to error -> @todo: FIX accountType
     .filter((n) => isWalletFormatSupportedOnNetwork(n, accountType));
 
