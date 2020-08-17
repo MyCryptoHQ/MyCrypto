@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 
 import { Typography, Button, AssetSelector, Input } from '@components';
 import { COLORS, BREAK_POINTS, SPACING, FONT_SIZE } from '@theme';
-import { DeterministicWalletState, ExtendedDPath } from '@services';
+import { DeterministicWalletState, ExtendedDPath, isValidPath } from '@services';
 import translate, { Trans, translateRaw } from '@translations';
 import { DEFAULT_GAP_TO_SCAN_FOR, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
 import { accountsToCSV, useScreenSize, makeBlob } from '@utils';
@@ -184,6 +184,8 @@ const DeterministicWallet = ({
           const errors: { label?: string; value?: string } = {};
           if (!values.label || values.label === '') errors.label = translateRaw('REQUIRED');
           if (!values.value || values.value === '') errors.value = translateRaw('REQUIRED');
+          else if (!isValidPath(values.value))
+            errors.value = translateRaw('DETERMINISTIC_INVALID_DPATH');
           return errors;
         }}
       >
@@ -198,7 +200,8 @@ const DeterministicWallet = ({
               value={values.label}
               onChange={handleChange}
               onBlur={handleBlur}
-              isValid={true}
+              isValid={!errors.label}
+              showInvalidWithoutValue={true}
             />
             <Error>{errors && touched.label && errors.label}</Error>
             <SLabel htmlFor="value">
@@ -210,7 +213,8 @@ const DeterministicWallet = ({
               value={values.value}
               onChange={handleChange}
               onBlur={handleBlur}
-              isValid={true}
+              isValid={!errors.value}
+              showInvalidWithoutValue={true}
             />
             <Error>{errors && touched.value && errors.value}</Error>
             <SButton fullwidth={isMobile} disabled={isSubmitting} type="submit">
