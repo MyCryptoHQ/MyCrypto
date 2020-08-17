@@ -60,30 +60,14 @@ type NetworkNodeOptionProps = OptionProps<CustomNodeConfig> & {
 
 const NetworkNodeOption: React.FC<NetworkNodeOptionProps> = ({
   data = { value: {} },
-  selectOption,
-  isEditEnabled = false
+  selectOption
 }) => {
-  const onEdit = useCallback(
-    (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
-      e.preventDefault();
-      data.onEdit(data.value);
-    },
-    [data]
-  );
-
   const handleSelect = (d: CustomNodeConfig) => selectOption && selectOption(d);
-
-  const {
-    value: { isCustom }
-  } = data as { value: CustomNodeConfig };
 
   if (data.label !== newNode) {
     return (
       <SContainerValue onClick={() => handleSelect(data.value)}>
         <Typography value={data.label} />
-        {isFunction(data.onEdit) && isEditEnabled && isCustom && (
-          <EditIcon onClick={(e) => onEdit(e)} src={editIcon} />
-        )}
       </SContainerValue>
     );
   } else {
@@ -114,7 +98,7 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
 
   const onChange = useCallback(
     (node: NodeOptions) => {
-      if (!isEmpty(node)) {
+      if (!isEmpty(node) && node.service !== newNode) {
         const { name } = node;
         setNetworkSelectedNode(networkId, name);
         setSelectedNode(node);
@@ -147,6 +131,9 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
       valueComponent={({ value }) => (
         <SContainerValue>
           <Typography value={value.label} />
+          {isFunction(onEdit) && value.value.isCustom && value.label !== autoNodeLabel && (
+            <EditIcon onClick={() => onEdit(value.value)} src={editIcon} />
+          )}
         </SContainerValue>
       )}
     />
