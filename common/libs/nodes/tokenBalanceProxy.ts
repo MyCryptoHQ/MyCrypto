@@ -2,6 +2,10 @@ import { Token } from 'shared/types/network';
 import ERC20 from 'libs/erc20';
 import { TokenValue } from 'libs/units';
 import { IProvider } from 'mycrypto-shepherd/dist/lib/types';
+import { getTokensBalance } from '@mycrypto/eth-scan';
+import { getShepherdNetwork } from './index';
+
+const ETH_SCAN_NETWORKS: string[] = ['ETH', 'Ropsten', 'Kovan', 'Rinkeby', 'Goerli'];
 
 export const tokenBalanceHandler: ProxyHandler<IProvider> = {
   get(target, propKey) {
@@ -69,12 +73,33 @@ export const tokenBalanceHandler: ProxyHandler<IProvider> = {
     if (propKey.toString() === 'getTokenBalance') {
       return (address: string, token: Token) => tokenBalanceShim(address, token);
     } else if (propKey.toString() === 'getTokenBalances') {
-      return (address: string, tokens: Token[]) =>
-        Promise.all(
+      const network = getShepherdNetwork().replace(/WEB3_/i, '');
+
+      return (address: string, tokens: Token[]) => {
+        if (ETH_SCAN_NETWORKS.includes(network)) {
+          return getTokensBalance(target, address, tokens.map(token => token.address))
+            .then(results => {
+              return Object.entries(results).map(([, balance]) => {
+                return {
+                  balance: TokenValue(balance.toHexString()),
+                  error: null
+                };
+              });
+            })
+            .catch(error =>
+              tokens.map(() => ({
+                balance: TokenValue('0'),
+                error: `Caught error: ${error}`
+              }))
+            );
+        }
+
+        return Promise.all(
           splitBatches(address, tokens).map(({ address: addr, tokens: tkns }) =>
             tokenBalancesShim(addr, tkns)
           )
         ).then(res => res.reduce((acc, curr) => [...acc, ...curr], []));
+      };
     } else {
       return Reflect.get(target, propKey);
     }
