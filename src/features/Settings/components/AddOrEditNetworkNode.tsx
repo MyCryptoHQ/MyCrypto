@@ -331,7 +331,8 @@ export default function AddOrEditNetworkNode({
                 name: network.baseUnit,
                 ticker: network.baseUnit,
                 type: 'base',
-                networkId: network.id
+                networkId: network.id,
+                isCustom: true
               };
               addAsset(baseAsset, network.baseAsset);
               addNetwork(network);
