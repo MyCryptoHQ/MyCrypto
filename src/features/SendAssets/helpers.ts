@@ -1,5 +1,6 @@
 import BN from 'bn.js';
 import { bufferToHex } from 'ethereumjs-util';
+import isEmpty from 'ramda/src/isEmpty';
 
 import {
   IFormikFields,
@@ -12,7 +13,13 @@ import {
   ITxGasPrice,
   ITxNonce,
   ITxToAddress,
-  ITxValue
+  ITxValue,
+  ITxFromAddress,
+  ITxConfig,
+  Network,
+  ExtendedAsset,
+  TAddress,
+  StoreAccount
 } from '@types';
 
 import {
@@ -23,8 +30,13 @@ import {
   inputValueToHex,
   inputNonceToHex,
   inputGasLimitToHex,
-  encodeTransfer
+  encodeTransfer,
+  decodeTransfer,
+  fromTokenBase
 } from '@services/EthService';
+import { isTransactionDataEmpty, isSameAddress } from '@utils';
+import { handleValues } from '@services/EthService/utils/units';
+import { CREATION_ADDRESS } from '@config';
 
 const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
   const { network } = formData;
@@ -80,4 +92,127 @@ export const processFormForEstimateGas = (formData: IFormikFields): IHexStrWeb3T
     from: formData.account.address,
     gas: inputGasLimitToHex(formData.gasLimitField)
   };
+};
+
+export const parseQueryParams = (queryParams: any) => (
+  networks: Network[],
+  assets: ExtendedAsset[],
+  accounts: StoreAccount[]
+) => {
+  if (!queryParams || isEmpty(queryParams)) return;
+  switch (queryParams.type) {
+    case 'resubmit':
+      return parseResubmitParams(queryParams)(networks, assets, accounts);
+    default:
+      return;
+  }
+};
+
+interface IMandatoryAcc {
+  [key: string]: string;
+}
+
+interface IMandatoryItem {
+  gasPrice: ITxGasPrice;
+  gasLimit: ITxGasLimit;
+  to: ITxToAddress;
+  data: ITxData;
+  nonce: ITxNonce;
+  from: ITxFromAddress;
+  value: ITxValue;
+  chainId: string;
+}
+
+const parseResubmitParams = (queryParams: any) => (
+  networks: Network[],
+  assets: ExtendedAsset[],
+  accounts: StoreAccount[]
+): ITxConfig | undefined => {
+  const mandatoryParams = [
+    'gasPrice',
+    'gasLimit',
+    'to',
+    'data',
+    'nonce',
+    'from',
+    'value',
+    'chainId'
+  ];
+  if (!mandatoryParams.every((mandatoryParam) => queryParams[mandatoryParam])) return;
+  const i = (mandatoryParams.reduce((acc, cv) => {
+    acc[cv] = queryParams[cv];
+    return acc;
+  }, {} as IMandatoryAcc) as unknown) as IMandatoryItem;
+
+  const network = networks.find((n) => n.chainId.toString() === i.chainId);
+  if (!network) return;
+  const senderAccount = accounts.find(({ address }) => isSameAddress(address, i.from));
+  if (!senderAccount) return;
+
+  const rawTransaction: ITxObject = {
+    to: i.to,
+    value: i.value,
+    gasLimit: i.gasLimit,
+    gasPrice: i.gasPrice,
+    nonce: i.nonce,
+    data: i.data,
+    chainId: parseInt(i.chainId, 16)
+  };
+
+  const erc20tx = guessIfErc20Tx(i.data);
+  const { to, amount, receiverAddress } = deriveReceiverAndAmount(erc20tx, i.data, i.to, i.value);
+  const defaultAsset = assets.find(({ uuid }) => uuid === network.baseAsset) as ExtendedAsset;
+  const asset = erc20tx
+    ? assets.find(
+        ({ contractAddress }) => contractAddress && isSameAddress(contractAddress as TAddress, to)
+      ) || defaultAsset
+    : defaultAsset;
+
+  return {
+    from: senderAccount.address,
+    baseAsset: defaultAsset,
+    gasPrice: i.gasPrice,
+    gasLimit: i.gasLimit,
+    nonce: i.nonce,
+    data: i.data,
+    amount: fromTokenBase(handleValues(amount), asset.decimal),
+    value: i.value as ITxValue,
+    rawTransaction,
+    network,
+    senderAccount,
+    asset,
+    receiverAddress
+  };
+};
+
+const guessIfErc20Tx = (data: string): boolean => {
+  if (isTransactionDataEmpty(data)) return false;
+  const { _to, _value } = decodeTransfer(data);
+  if (!_to || !_value) return false;
+  // if this isn't a valid transfer, _value will return 0 and _to will return the burn address '0x0000000000000000000000000000000000000000'
+  if (_to === CREATION_ADDRESS) return false;
+  return true;
+};
+
+const deriveReceiverAndAmount = (
+  isErc20: boolean,
+  data: ITxData,
+  toAddress: ITxToAddress,
+  value: ITxValue
+) => {
+  let to;
+  let amount;
+  let receiverAddress;
+  if (isErc20) {
+    const { _to, _value } = decodeTransfer(data);
+    amount = _value;
+    receiverAddress = _to;
+    to = toAddress;
+  } else {
+    to = toAddress;
+    amount = value;
+    receiverAddress = toAddress;
+  }
+
+  return { to, amount, receiverAddress };
 };

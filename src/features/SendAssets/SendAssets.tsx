@@ -1,5 +1,6 @@
 import React, { useContext, useReducer, useEffect } from 'react';
-
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import * as qs from 'query-string';
 import { GeneralStepper, TxReceiptWithProtectTx } from '@components';
 import { isWeb3Wallet, withProtectTxProvider } from '@utils';
 import { ITxReceipt, ISignedTx, IFormikFields, ITxConfig } from '@types';
@@ -22,8 +23,11 @@ import {
   SendAssetsFormWithProtectTx,
   SignTransactionWithProtectTx
 } from './components';
+import { parseQueryParams } from './helpers';
 
-function SendAssets() {
+type Props = RouteComponentProps<{}>;
+
+function SendAssets(props: Props) {
   const [reducerState, dispatch] = useReducer(sendAssetsReducer, initialState);
   const {
     state: { protectTxEnabled, protectTxShow, isPTXFree },
@@ -33,7 +37,9 @@ function SendAssets() {
   const { assets } = useAssets();
   const { networks } = useNetworks();
   const { IS_ACTIVE_FEATURE } = useFeatureFlags();
-
+  const { location } = props;
+  const txConfigInit = parseQueryParams(qs.parse(location.search))(networks, assets, accounts);
+  console.debug('txConfig Init - Query Params parsed: ', txConfigInit);
   // Due to MetaMask deprecating eth_sign method,
   // it has different step order, where sign and send are one panel
   const web3Steps: IStepperPath[] = [
@@ -172,4 +178,4 @@ function SendAssets() {
   );
 }
 
-export default withProtectTxProvider(SendAssets);
+export default withRouter(withProtectTxProvider(SendAssets));
