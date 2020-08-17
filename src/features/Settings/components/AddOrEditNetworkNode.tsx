@@ -309,9 +309,9 @@ export default function AddOrEditNetworkNode({
                   contracts: [],
                   nodes: [node],
                   dPaths: {
-                    [WalletId.TREZOR]: DPaths.ETH_TESTNET,
-                    [WalletId.LEDGER_NANO_S]: DPaths.ETH_TESTNET,
-                    [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_TESTNET
+                    [WalletId.TREZOR]: DPaths.ETH_DEFAULT,
+                    [WalletId.LEDGER_NANO_S]: DPaths.ETH_DEFAULT,
+                    [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_DEFAULT
                   },
                   gasPriceSettings: {
                     min: 1,
