@@ -158,18 +158,14 @@ export const makeTxConfigFromSignedTx = (
 export const makeTxConfigFromTransactionResponse = (
   decodedTx: TransactionResponse,
   assets: ExtendedAsset[],
-  networks: Network[],
+  network: Network,
   accounts: StoreAccount[]
 ): ITxConfig => {
-  const networkDetected = getNetworkByChainId(decodedTx.chainId, networks);
-  const contractAsset = getAssetByContractAndNetwork(
-    decodedTx.to || undefined,
-    networkDetected
-  )(assets);
+  const contractAsset = getAssetByContractAndNetwork(decodedTx.to || undefined, network)(assets);
   const baseAsset = getBaseAssetByNetwork({
-    network: networkDetected || ({} as Network),
+    network,
     assets
-  });
+  })!;
 
   const txConfig = {
     rawTransaction: {
@@ -188,19 +184,17 @@ export const makeTxConfigFromTransactionResponse = (
     amount: contractAsset
       ? fromTokenBase(toWei(decodeTransfer(decodedTx.data)._value, 0), contractAsset.decimal)
       : formatEther(decodedTx.value),
-    network: networkDetected,
+    network,
     value: toWei(decodedTx.value.toString(), getDecimalFromEtherUnit('ether')).toString(),
     asset: contractAsset || baseAsset,
     baseAsset,
-    senderAccount:
-      networkDetected && getStoreAccount(accounts)(decodedTx.from as TAddress, networkDetected.id),
+    senderAccount: getStoreAccount(accounts)(decodedTx.from as TAddress, network.id)!,
     gasPrice: decodedTx.gasPrice.toString(),
     gasLimit: decodedTx.gasLimit.toString(),
     data: decodedTx.data,
     nonce: decodedTx.nonce.toString(),
     from: decodedTx.from as TAddress
   };
-  // @ts-ignore Ignore possible missing senderAccount for now
   return txConfig;
 };
 
