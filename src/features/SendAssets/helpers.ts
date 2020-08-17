@@ -6,7 +6,13 @@ import {
   ITxObject,
   IHexStrTransaction,
   Asset,
-  IHexStrWeb3Transaction
+  IHexStrWeb3Transaction,
+  ITxData,
+  ITxGasLimit,
+  ITxGasPrice,
+  ITxNonce,
+  ITxToAddress,
+  ITxValue
 } from '@types';
 
 import {
@@ -23,9 +29,9 @@ import {
 const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
   const { network } = formData;
   return {
-    to: formData.address.value,
-    value: formData.amount ? inputValueToHex(formData.amount) : '0x0',
-    data: formData.txDataField ? formData.txDataField : '0x0',
+    to: formData.address.value as ITxToAddress,
+    value: formData.amount ? inputValueToHex(formData.amount) : ('0x0' as ITxValue),
+    data: formData.txDataField ? formData.txDataField : ('0x0' as ITxData),
     gasLimit: inputGasLimitToHex(formData.gasLimitField),
     gasPrice: formData.advancedTransaction
       ? inputGasPriceToHex(formData.gasPriceField)
@@ -38,19 +44,19 @@ const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxOb
 const createERC20TxObject = (formData: IFormikFields): IHexStrTransaction => {
   const { asset, network } = formData;
   return {
-    to: asset.contractAddress!,
-    value: '0x0',
+    to: asset.contractAddress! as ITxToAddress,
+    value: '0x0' as ITxValue,
     data: bufferToHex(
       encodeTransfer(
         Address(formData.address.value),
         formData.amount !== '' ? toWei(formData.amount, asset.decimal!) : TokenValue(new BN(0))
       )
-    ),
-    gasLimit: inputGasLimitToHex(formData.gasLimitField),
+    ) as ITxData,
+    gasLimit: inputGasLimitToHex(formData.gasLimitField) as ITxGasLimit,
     gasPrice: formData.advancedTransaction
-      ? inputGasPriceToHex(formData.gasPriceField)
-      : inputGasPriceToHex(formData.gasPriceSlider),
-    nonce: inputNonceToHex(formData.nonceField),
+      ? (inputGasPriceToHex(formData.gasPriceField) as ITxGasPrice)
+      : (inputGasPriceToHex(formData.gasPriceSlider) as ITxGasPrice),
+    nonce: inputNonceToHex(formData.nonceField) as ITxNonce,
     chainId: network.chainId ? network.chainId : 1
   };
 };

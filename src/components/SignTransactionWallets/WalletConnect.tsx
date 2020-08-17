@@ -4,7 +4,7 @@ import isEmpty from 'ramda/src/isEmpty';
 
 import translate, { translateRaw } from '@translations';
 import { Button, CodeBlock, QRCodeContainer, Typography, Overlay, Spinner } from '@components';
-import { WalletId, ISignComponentProps, TAddress, ITxHash } from '@types';
+import { WalletId, ISignComponentProps, TAddress, ITxHash, ITxToAddress } from '@types';
 import { getWalletConfig } from '@config';
 import { COLORS, FONT_SIZE, BREAK_POINTS } from '@theme';
 import { useUpdateEffect } from '@vendor';
@@ -122,7 +122,7 @@ export function SignTransactionWalletConnect({
 
   const sendTx = () =>
     requestSign({
-      from: senderAccount.address,
+      from: senderAccount.address as ITxToAddress,
       ...rawTransaction
     })
       .then((txHash: ITxHash) => onSuccess(txHash))

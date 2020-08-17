@@ -12,16 +12,24 @@ import { IMembershipConfig } from '@features/PurchaseMembership/config';
 
 export type ISignedTx = string;
 
+export type ITxToAddress = TAddress;
+export type ITxValue = string; // Hex - wei
+export type ITxGasLimit = string; // Hex
+export type ITxGasPrice = string; // Hex - wei
+export type ITxData = string; // Hex
+export type ITxNonce = string; // Hex
+export type ITxFromAddress = TAddress;
+
 export interface ITxObject {
   /* Raw Transaction Object */
-  readonly to: TAddress | string;
-  readonly value: string;
-  readonly gasLimit: string;
-  readonly data: string;
-  readonly gasPrice: string;
-  readonly nonce: string;
+  readonly to: ITxToAddress;
+  readonly value: ITxValue;
+  readonly gasLimit: ITxGasLimit;
+  readonly data: ITxData;
+  readonly gasPrice: ITxGasPrice;
+  readonly nonce: ITxNonce;
   readonly chainId: number;
-  readonly from?: TAddress;
+  readonly from?: ITxFromAddress;
 }
 
 export interface ITxConfig {
