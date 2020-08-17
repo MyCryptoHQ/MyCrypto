@@ -27,9 +27,9 @@ import {
 } from '@config';
 import { NetworkUtils } from '@services/Store/Network';
 import { ProviderHandler } from '@services/EthService/network';
+import { generateAssetUUID } from '@utils';
 
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
-import { generateAssetUUID } from '@utils';
 
 const AddToNetworkNodePanel = styled(DashboardPanel)`
   padding: 0 ${SPACING.MD} ${SPACING.SM};
