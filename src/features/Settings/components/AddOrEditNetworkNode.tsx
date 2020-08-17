@@ -336,12 +336,10 @@ export default function AddOrEditNetworkNode({
               };
               addAsset(baseAsset, network.baseAsset);
               addNetwork(network);
+            } else if (editNode) {
+              updateNode(node, selectedNetworkId, editNode.name);
             } else {
-              if (editNode) {
-                updateNode(node, selectedNetworkId, editNode.name);
-              } else {
-                addNodeToNetwork(node, selectedNetworkId);
-              }
+              addNodeToNetwork(node, selectedNetworkId);
             }
 
             setIsConnectionError(false);
