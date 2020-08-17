@@ -3,7 +3,7 @@ import { formatDistance } from 'date-fns';
 
 import { useInterval } from '@utils';
 
-const TimeElapsedSimple = ({ value }: { value: number }) => {
+const TimeElapsed = ({ value }: { value: number }) => {
   const formatValue = () =>
     formatDistance(value, new Date(), { addSuffix: true, includeSeconds: true });
 
@@ -21,4 +21,4 @@ const TimeElapsedSimple = ({ value }: { value: number }) => {
   return <>{timeElapsed}</>;
 };
 
-export default TimeElapsedSimple;
+export default TimeElapsed;

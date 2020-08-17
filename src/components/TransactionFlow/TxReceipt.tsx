@@ -23,7 +23,7 @@ import {
   ITxHistoryStatus,
   Fiat
 } from '@types';
-import { Amount, TimeElapsedSimple, AssetIcon, LinkOut, PoweredByText } from '@components';
+import { Amount, TimeElapsed, AssetIcon, LinkOut, PoweredByText } from '@components';
 import { AddressBookContext, AccountContext, StoreContext, SettingsContext } from '@services/Store';
 import { RatesContext } from '@services/RatesProvider';
 import {
@@ -430,7 +430,7 @@ export const TxReceiptUI = ({
             {displayTxReceipt &&
               (timestamp !== 0 ? (
                 <div>
-                  {<TimeElapsedSimple value={timestamp * 1000} />}
+                  {<TimeElapsed value={timestamp * 1000} />}
                   <br /> {localTimestamp}
                 </div>
               ) : (
