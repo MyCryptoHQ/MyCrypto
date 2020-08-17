@@ -97,16 +97,17 @@ export const ProtectTxButton: FC<Props> = ({
     [onTransactionProtectionClick]
   );
 
-  if (!isMdScreen && reviewReport) {
-    return <></>;
-  }
+  const isDisabled = (() => {
+    if (!isMdScreen && reviewReport) {
+      return false;
+    } else if (isMdScreen && reviewReport) {
+      return true;
+    }
+    return disabled;
+  })();
 
   return (
-    <STransactionProtectionButton
-      type="button"
-      onClick={onClickEvent}
-      disabled={disabled || reviewReport}
-    >
+    <STransactionProtectionButton type="button" onClick={onClickEvent} disabled={isDisabled}>
       {isSmScreen && <ProtectIcon size="md" />}
       {!isSmScreen && <ProtectIconCheck size="sm" />}
       <TransactionProtectionButtonText>
