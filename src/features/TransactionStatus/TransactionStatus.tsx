@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Input } from '@mycrypto/ui';
-import { withRouter } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import queryString from 'query-string';
 
 import { Button, NetworkSelectDropdown, ContentPanel, TxReceipt, InlineMessage } from '@components';
@@ -20,7 +20,11 @@ import { getTxsFromAccount } from '@services/Store';
 
 const SUPPORTED_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Goerli', 'Kovan', 'ETC'];
 
-const TransactionStatus = withRouter(({ history, match, location }) => {
+const TransactionStatus = ({
+  history,
+  match,
+  location
+}: RouteComponentProps<{ txHash: string }>) => {
   const qs = queryString.parse(location.search);
 
   const { assets } = useContext(AssetContext);
@@ -78,7 +82,7 @@ const TransactionStatus = withRouter(({ history, match, location }) => {
           );
           return {
             config: fetchedTxConfig,
-            receipt: makePendingTxReceipt(txHash)(ITxType.UNKNOWN, fetchedTxConfig)
+            receipt: makePendingTxReceipt(txHash as ITxHash)(ITxType.UNKNOWN, fetchedTxConfig)
           };
         } else {
           return {
@@ -132,6 +136,6 @@ const TransactionStatus = withRouter(({ history, match, location }) => {
       )}
     </ContentPanel>
   );
-});
+};
 
-export default TransactionStatus;
+export default withRouter(TransactionStatus);
