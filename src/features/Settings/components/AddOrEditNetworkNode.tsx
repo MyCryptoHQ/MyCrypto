@@ -25,9 +25,9 @@ import {
   EXT_URLS,
   DPathsList as DPaths
 } from '@config';
+import { generateAssetUUID } from '@utils';
 import { NetworkUtils } from '@services/Store/Network';
 import { ProviderHandler } from '@services/EthService/network';
-import { generateAssetUUID } from '@utils';
 
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
 
