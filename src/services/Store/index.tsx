@@ -7,3 +7,4 @@ export * from './Settings';
 export * from './DataManager';
 export { StoreContext, StoreProvider } from './StoreProvider';
 export { getAccountBalance, getStoreAccount } from './utils';
+export { getTxsFromAccount } from './helpers';

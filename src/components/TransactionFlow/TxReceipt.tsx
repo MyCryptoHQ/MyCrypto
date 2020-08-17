@@ -9,7 +9,6 @@ import React, {
 import { Link } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
-import R_path from 'ramda/src/path';
 
 import {
   ITxReceipt,
@@ -44,6 +43,7 @@ import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider
 import MembershipReceiptBanner from '@features/PurchaseMembership/components/MembershipReceiptBanner';
 import { getFiat } from '@config/fiats';
 import { makeFinishedTxReceipt } from '@utils/transaction';
+import { path } from '@vendor';
 
 import { ISender } from './types';
 import { constructSenderFromTxConfig } from './helpers';
@@ -165,7 +165,7 @@ export default function TxReceipt({
   });
 
   const assetRate = useCallback(() => {
-    if (displayTxReceipt && R_path(['asset'], displayTxReceipt)) {
+    if (displayTxReceipt && path(['asset'], displayTxReceipt)) {
       return getAssetRate(displayTxReceipt.asset);
     } else {
       return getAssetRate(txConfig.asset);
@@ -173,7 +173,7 @@ export default function TxReceipt({
   }, [displayTxReceipt, txConfig.asset]);
 
   const baseAssetRate = useCallback(() => {
-    if (displayTxReceipt && R_path(['baseAsset'], displayTxReceipt)) {
+    if (displayTxReceipt && path(['baseAsset'], displayTxReceipt)) {
       return getAssetRate(displayTxReceipt.baseAsset);
     } else {
       return getAssetRate(txConfig.baseAsset);
@@ -272,7 +272,7 @@ export const TxReceiptUI = ({
 
   const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
   const assetAmount = useCallback(() => {
-    if (displayTxReceipt && R_path(['amount'], displayTxReceipt)) {
+    if (displayTxReceipt && path(['amount'], displayTxReceipt)) {
       return displayTxReceipt.amount;
     } else {
       return txConfig.amount;
@@ -280,7 +280,7 @@ export const TxReceiptUI = ({
   }, [displayTxReceipt, txConfig.amount]);
 
   const assetTicker = useCallback(() => {
-    if (displayTxReceipt && R_path(['asset'], displayTxReceipt)) {
+    if (displayTxReceipt && path(['asset'], displayTxReceipt)) {
       return displayTxReceipt.asset.ticker;
     } else {
       return txConfig.asset.ticker;

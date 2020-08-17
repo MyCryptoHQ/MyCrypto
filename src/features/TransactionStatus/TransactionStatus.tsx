@@ -1,22 +1,22 @@
 import React, { useState, useContext } from 'react';
 import { Input } from '@mycrypto/ui';
 import { withRouter } from 'react-router-dom';
-import isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
 
 import { Button, NetworkSelectDropdown, ContentPanel, TxReceipt, InlineMessage } from '@components';
 import { ITxHash, NetworkId, ITxType, ITxConfig, ITxReceipt } from '@types';
 import { NetworkContext, AssetContext, StoreContext, ProviderHandler } from '@services';
 import {
+  noOp,
+  isVoid,
   makeTxConfigFromTransactionResponse,
   makePendingTxReceipt,
   makeTxConfigFromTxReceipt
-} from '@utils/transaction';
-import { noOp } from '@utils';
+} from '@utils';
 import { useEffectOnce, useUpdateEffect } from '@vendor';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
-import { getTxsFromAccount } from '@services/Store/helpers';
+import { getTxsFromAccount } from '@services/Store';
 
 const SUPPORTED_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Goerli', 'Kovan', 'ETC'];
 
@@ -46,7 +46,7 @@ const TransactionStatus = withRouter(({ history, match, location }) => {
 
   // Fetch TX on load if possible
   useEffectOnce(() => {
-    if (!isEmpty(defaultTxHash)) {
+    if (!isVoid(defaultTxHash)) {
       fetchTx();
     }
   });
