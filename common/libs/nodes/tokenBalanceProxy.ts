@@ -77,16 +77,21 @@ export const tokenBalanceHandler: ProxyHandler<IProvider> = {
 
       return (address: string, tokens: Token[]) => {
         if (ETH_SCAN_NETWORKS.includes(network)) {
-          return getTokensBalance(target, address, tokens.map(token => token.address)).then(
-            results => {
+          return getTokensBalance(target, address, tokens.map(token => token.address))
+            .then(results => {
               return Object.entries(results).map(([, balance]) => {
                 return {
                   balance: TokenValue(balance.toHexString()),
                   error: null
                 };
               });
-            }
-          );
+            })
+            .catch(error =>
+              tokens.map(() => ({
+                balance: TokenValue('0'),
+                error: `Caught error: ${error}`
+              }))
+            );
         }
 
         return Promise.all(
