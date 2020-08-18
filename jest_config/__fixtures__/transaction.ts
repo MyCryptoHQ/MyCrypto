@@ -38,10 +38,10 @@ const toTxReceipt = (fixtureTxReceipt: any): ITxReceipt => {
     value: bigNumberify(fixtureTxReceipt.value),
     status: fixtureTxReceipt.status as ITxStatus.PENDING | ITxStatus.SUCCESS | ITxStatus.FAILED
   };
-  if (fixtureTxReceipt.gasUsed) {
-    return { ...result, gasUsed: bigNumberify(fixtureTxReceipt.gasUsed) };
-  }
-  return result;
+  return {
+    ...result,
+    ...(fixtureTxReceipt.gasUsed && { gasUsed: bigNumberify(fixtureTxReceipt.gasUsed) })
+  };
 };
 
 export const fTransaction: ITxObject = {
