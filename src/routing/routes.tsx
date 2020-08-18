@@ -330,7 +330,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE): IAppR
   {
     name: ROUTE_PATHS.TX_STATUS.name,
     title: ROUTE_PATHS.TX_STATUS.title,
-    path: `${ROUTE_PATHS.TX_STATUS.path}/:txHash?`,
+    path: ROUTE_PATHS.TX_STATUS.path,
     exact: true,
     enabled: IS_ACTIVE_FEATURE.TX_STATUS,
     component: TxStatus

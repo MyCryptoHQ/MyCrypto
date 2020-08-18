@@ -10,19 +10,20 @@ import { noOp, isVoid } from '@utils';
 import { useEffectOnce, useUpdateEffect } from '@vendor';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
+
 import { txStatusReducer, generateInitialState } from './TxStatus.reducer';
 import { fetchTxStatus } from './helpers';
 
 const SUPPORTED_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Goerli', 'Kovan', 'ETC'];
 
-const TxStatus = ({ history, match, location }: RouteComponentProps<{ txHash: string }>) => {
+const TxStatus = ({ history, location }: RouteComponentProps) => {
   const qs = queryString.parse(location.search);
 
   const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
   const { accounts } = useContext(StoreContext);
 
-  const defaultTxHash = match.params.txHash ? match.params.txHash : '';
+  const defaultTxHash = qs.hash ? qs.hash : '';
   const defaultNetwork =
     qs.network && SUPPORTED_NETWORKS.includes(qs.network) ? qs.network : DEFAULT_NETWORK;
 
@@ -42,9 +43,9 @@ const TxStatus = ({ history, match, location }: RouteComponentProps<{ txHash: st
   // Update URL
   useUpdateEffect(() => {
     if (networkId === DEFAULT_NETWORK) {
-      history.replace(`${ROUTE_PATHS.TX_STATUS.path}/${txHash}`);
+      history.replace(`${ROUTE_PATHS.TX_STATUS.path}/?hash=${txHash}`);
     } else {
-      history.replace(`${ROUTE_PATHS.TX_STATUS.path}/${txHash}?network=${networkId}`);
+      history.replace(`${ROUTE_PATHS.TX_STATUS.path}/?hash=${txHash}&network=${networkId}`);
     }
   }, [txHash, networkId]);
 
