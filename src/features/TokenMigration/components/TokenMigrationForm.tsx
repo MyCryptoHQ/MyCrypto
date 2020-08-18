@@ -7,7 +7,7 @@ import { bigNumberify } from 'ethers/utils';
 
 import translate, { translateRaw } from '@translations';
 import { SPACING } from '@theme';
-import { IAccount, Network, StoreAccount, Asset } from '@types';
+import { IAccount, Network, StoreAccount, Asset, ISimpleTxFormFull } from '@types';
 import { AccountSelector, InlineMessage, AmountInput, Button, Tooltip } from '@components';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
 import { StoreContext, AssetContext, NetworkContext } from '@services/Store';
@@ -16,7 +16,6 @@ import { getNonce } from '@services/EthService';
 import { ETHUUID, noOp, weiToFloat } from '@utils';
 import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
 
-import { ISimpleTxFormFull } from '../types';
 import { tokenMigrationConfig } from '../config';
 
 interface Props extends ISimpleTxFormFull {

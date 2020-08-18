@@ -86,7 +86,11 @@ export {
   IStepComponentProps,
   SigningComponents,
   IReceiverAddress,
-  ITxReceiptStepProps
+  ITxReceiptStepProps,
+  ISimpleTxForm,
+  IDefaultStepComponentProps,
+  ISimpleTxFormFull,
+  TStepAction
 } from './transactionFlow';
 export { JsonRPCResponse } from './jsonRPCResponse';
 export { INode, TxObj } from './INode';

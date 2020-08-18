@@ -1,7 +1,5 @@
 import { FunctionComponent } from 'react';
-import { IStepComponentProps } from '@types';
-
-export type TStepAction = (payload: any, after: () => void) => void;
+import { IStepComponentProps, TStepAction } from '@types';
 
 export interface IPath {
   label: string;

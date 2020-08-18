@@ -64,7 +64,13 @@ export interface ISignComponentProps {
   onSuccess(receipt: ITxReceipt | ISignedTx): void;
 }
 
-export interface IStepComponentProps {
+export interface IDefaultStepComponentProps {
+  completeButtonText?: string;
+  resetFlow(): void;
+  onComplete(payload?: IFormikFields | ITxReceipt | ISignedTx | null): void;
+}
+
+export interface IStepComponentProps extends IDefaultStepComponentProps {
   txConfig: ITxConfig;
   txReceipt?: ITxReceipt;
   signedTx?: string;
@@ -72,9 +78,6 @@ export interface IStepComponentProps {
   zapSelected?: IZapConfig;
   membershipSelected?: IMembershipConfig;
   children?: never;
-  completeButtonText?: string;
-  onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;
-  resetFlow(): void;
 }
 
 export interface ITxReceiptStepProps {
@@ -131,3 +134,19 @@ export enum ITxType {
   APPROVAL = 'APPROVAL',
   REP_TOKEN_MIGRATION = 'REP_TOKEN_MIGRATION'
 }
+
+export interface ISimpleTxForm {
+  address: string; // simple eth address
+  amount: string; // in ether - ex: 1
+  gasLimit: string | number; // number - ex: 1,500,000
+  gasPrice: string; // gwei
+  nonce: string; // number - ex: 55
+  account: StoreAccount;
+}
+
+export interface ISimpleTxFormFull extends ISimpleTxForm {
+  asset: Asset;
+  network: INetwork;
+}
+
+export type TStepAction = (payload: any, after: () => void) => void;

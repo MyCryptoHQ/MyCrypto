@@ -8,13 +8,13 @@ import { parseEther } from 'ethers/utils';
 
 import translate, { translateRaw } from '@translations';
 import { SPACING } from '@theme';
-import { IAccount, Network, StoreAccount, Asset } from '@types';
+import { IAccount, Network, StoreAccount, Asset, ISimpleTxFormFull } from '@types';
 import { AccountSelector, InlineMessage, AmountInput, PoweredByText } from '@components';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
 import { ETHUUID } from '@utils';
 
-import { ZapInteractionState, ISimpleTxFormFull } from '../types';
+import { ZapInteractionState } from '../types';
 import ZapSelectedBanner from './ZapSelectedBanner';
 import { IZapConfig } from '../config';
 import { StoreContext } from '@services/Store/StoreProvider';

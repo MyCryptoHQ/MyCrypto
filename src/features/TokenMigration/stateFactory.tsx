@@ -1,5 +1,6 @@
 import { TUseStateReducerFactory } from '@utils';
-import { TokenMigrationState, TStepAction, ISimpleTxFormFull } from './types';
+import { ISimpleTxFormFull, TStepAction } from '@types';
+import { TokenMigrationState } from './types';
 const TokenMigrationFactory: TUseStateReducerFactory<TokenMigrationState> = ({
   state,
   setState

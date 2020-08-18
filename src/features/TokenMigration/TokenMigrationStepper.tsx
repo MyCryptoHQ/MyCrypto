@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { useStateReducer, useTxMulti } from '@utils';
-import { ITxReceipt, ITxConfig, TxParcel, ITxStatus } from '@types';
+import { ITxReceipt, ITxConfig, TxParcel, ITxStatus, ISimpleTxFormFull } from '@types';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
@@ -9,7 +9,7 @@ import { WALLET_STEPS } from '@components';
 
 import { tokenMigrationConfig } from './config';
 import TokenMigrationInteractionFactory from './stateFactory';
-import { ISimpleTxFormFull, TokenMigrationState, ITokenMigrationFormFull } from './types';
+import { TokenMigrationState, ITokenMigrationFormFull } from './types';
 import { createMigrationTx, createApproveTx } from './helpers';
 import { isERC20Tx } from '../SendAssets';
 import TokenMigrationForm from './components/TokenMigrationForm';
