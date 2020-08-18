@@ -22,7 +22,7 @@ export enum DWActionTypes {
 }
 
 // @todo convert to FSA compatible action type
-type DWAction = Overwrite<
+export type DWAction = Overwrite<
   TAction<ValuesType<typeof DWActionTypes>, any>,
   { error?: { code: TDWActionError } }
 >;

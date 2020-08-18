@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useReducer } from 'reinspect';
-import uniqBy from 'ramda/src/uniqBy';
-import identity from 'ramda/src/identity';
-import prop from 'ramda/src/prop';
-import pipe from 'ramda/src/pipe';
+import { uniqBy, identity, prop, pipe } from '@vendor';
 
 import { Network, DPathFormat, ExtendedAsset } from '@types';
 

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import uniqBy from 'ramda/src/uniqBy';
-import prop from 'ramda/src/prop';
 
 import { Trans } from '@translations';
 import { ExtendedAsset, TAddress, Network } from '@types';
@@ -9,6 +7,7 @@ import { Button, Typography, Tooltip, Icon } from '@components';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { DWAccountDisplay } from '@services';
 import { isSameAddress, accountsToCSV, useScreenSize, makeBlob } from '@utils';
+import { uniqBy, prop } from '@vendor';
 
 import DeterministicTable from './DeterministicAccountTable';
 
@@ -168,56 +167,65 @@ export default function DeterministicAccountList({
         />
       </TableWrapper>
       <StatusBar>
-        {isComplete ? (
-          accountsToUse.length ? (
-            <StatusWrapper>
-              <IconWrapper>
-                <Icon type="confirm" />
-              </IconWrapper>
-              <Typography>
+        {() => {
+          if (isComplete && accountsToUse.length) {
+            return (
+              <StatusWrapper>
+                <IconWrapper>
+                  <Icon type="confirm" />
+                </IconWrapper>
+                <Typography>
+                  <Trans
+                    id="DETERMINISTIC_SCANNING_STATUS_DONE"
+                    variables={{ $asset: () => asset.ticker }}
+                  />{' '}
+                  <SButton onClick={() => handleUpdate(asset)}>
+                    <Trans id="DETERMINISTIC_SCAN_AGAIN" />
+                  </SButton>
+                  .
+                </Typography>
+              </StatusWrapper>
+            );
+          } else if (isComplete && !accountsToUse.length) {
+            return (
+              <StatusWrapper>
+                <IconWrapper>
+                  <Icon type="info-small" />
+                </IconWrapper>
                 <Trans
-                  id="DETERMINISTIC_SCANNING_STATUS_DONE"
+                  id="DETERMINISTIC_SCANNING_STATUS_EMPTY"
                   variables={{ $asset: () => asset.ticker }}
-                />{' '}
-                <SButton onClick={() => handleUpdate(asset)}>
-                  <Trans id="DETERMINISTIC_SCAN_AGAIN" />
-                </SButton>
-                .
-              </Typography>
-            </StatusWrapper>
-          ) : (
-            <StatusWrapper>
-              <IconWrapper>
-                <Icon type="info-small" />
-              </IconWrapper>
-              <Trans
-                id="DETERMINISTIC_SCANNING_STATUS_EMPTY"
-                variables={{ $asset: () => asset.ticker }}
-              />
-            </StatusWrapper>
-          )
-        ) : (
-          <StatusWrapper>
-            <Loader className="loading" />
-            <div>
-              <Trans
-                id="DETERMINISTIC_SCANNING_STATUS_RUNNING"
-                variables={{ $total: () => finishedAccounts.length, $network: () => network.name }}
-              />{' '}
-              <Tooltip
-                tooltip={
-                  <>
-                    <Trans
-                      id="DETERMINISTIC_CSV"
-                      variables={{ $total: () => finishedAccounts.length }}
-                    />{' '}
-                    <SButton onClick={handleDownload}>here</SButton>.
-                  </>
-                }
-              />
-            </div>
-          </StatusWrapper>
-        )}
+                />
+              </StatusWrapper>
+            );
+          } else {
+            return (
+              <StatusWrapper>
+                <Loader className="loading" />
+                <div>
+                  <Trans
+                    id="DETERMINISTIC_SCANNING_STATUS_RUNNING"
+                    variables={{
+                      $total: () => finishedAccounts.length,
+                      $network: () => network.name
+                    }}
+                  />{' '}
+                  <Tooltip
+                    tooltip={
+                      <>
+                        <Trans
+                          id="DETERMINISTIC_CSV"
+                          variables={{ $total: () => finishedAccounts.length }}
+                        />{' '}
+                        <SButton onClick={handleDownload}>here</SButton>.
+                      </>
+                    }
+                  />
+                </div>
+              </StatusWrapper>
+            );
+          }
+        }}
         <Button onClick={handleSubmit} disabled={!selectedAccounts.length} fullwidth={isMobile}>
           <Trans
             id="DETERMINISTIC_ACCOUNT_LIST_ADD"

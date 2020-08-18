@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
-import BN from 'bn.js';
 import { Identicon } from '@mycrypto/ui';
 
 import {
@@ -10,9 +9,10 @@ import {
   LinkOut,
   Button,
   Tooltip,
-  Icon
+  Icon,
+  Amount
 } from '@components';
-import { DWAccountDisplay, AddressBookContext, fromTokenBase } from '@services';
+import { DWAccountDisplay, AddressBookContext } from '@services';
 import { COLORS, SPACING, BREAK_POINTS } from '@theme';
 import { Network, ExtendedAsset, TAddress } from '@types';
 import { isSameAddress, useScreenSize } from '@utils';
@@ -347,14 +347,7 @@ const DeterministicTable = ({
                 </DPathContainer>
                 <ValueContainer>
                   <Typography>
-                    {account.balance
-                      ? parseFloat(
-                          fromTokenBase(
-                            new BN(account.balance.toString()),
-                            asset.decimal
-                          ).toString()
-                        ).toFixed(4)
-                      : '0.0000'}
+                    <Amount assetValue={account.balance ? account.balance.toString() : '0.0000'} />
                   </Typography>
                   <Typography>{asset.ticker}</Typography>
                 </ValueContainer>
@@ -373,7 +366,7 @@ const DeterministicTable = ({
             </Row>
           ))}
           <GenerateAddressButton
-            onClick={() => generateFreshAddress()}
+            onClick={generateFreshAddress}
             disabled={!isComplete || freshAddressIndex >= DEFAULT_GAP_TO_SCAN_FOR}
           >
             <Icon type="add" />
