@@ -1,10 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext, useReducer, useEffect } from 'react';
 import { Input } from '@mycrypto/ui';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import queryString from 'query-string';
 
 import { Button, NetworkSelectDropdown, ContentPanel, TxReceipt, InlineMessage } from '@components';
-import { ITxHash, NetworkId, ITxType, ITxConfig, ITxReceipt } from '@types';
+import { ITxHash, NetworkId, ITxType } from '@types';
 import { NetworkContext, AssetContext, StoreContext, ProviderHandler } from '@services';
 import {
   noOp,
@@ -17,6 +17,7 @@ import { useEffectOnce, useUpdateEffect } from '@vendor';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
 import { getTxsFromAccount } from '@services/Store';
+import { txStatusReducer, generateInitialState } from './TxStatus.reducer';
 
 const SUPPORTED_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Goerli', 'Kovan', 'ETC'];
 
@@ -31,11 +32,11 @@ const TxStatus = ({ history, match, location }: RouteComponentProps<{ txHash: st
   const defaultNetwork =
     qs.network && SUPPORTED_NETWORKS.includes(qs.network) ? qs.network : DEFAULT_NETWORK;
 
-  const [txHash, setTxHash] = useState(defaultTxHash);
-  const [networkId, setNetwork] = useState<NetworkId>(defaultNetwork);
-  const [tx, setTx] = useState<{ config: ITxConfig; receipt: ITxReceipt } | undefined>(undefined);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const initialState = generateInitialState(defaultTxHash, defaultNetwork);
+
+  const [reducerState, dispatch] = useReducer(txStatusReducer, initialState);
+
+  const { networkId, txHash, tx, error, fetching } = reducerState;
 
   const network = networkId && getNetworkById(networkId);
 
@@ -60,43 +61,44 @@ const TxStatus = ({ history, match, location }: RouteComponentProps<{ txHash: st
     }
   }, [txHash, networkId]);
 
-  const fetchTx = async () => {
-    setLoading(true);
-    try {
-      const txResult = await (async () => {
-        if (!cachedTx) {
-          const provider = new ProviderHandler(network);
-          const fetchedTx = await provider.getTransactionByHash(txHash as ITxHash, true);
-          if (!fetchedTx) {
-            return undefined;
+  useEffect(() => {
+    if (fetching) {
+      try {
+        const txResult = await(async () => {
+          if (!cachedTx) {
+            const provider = new ProviderHandler(network);
+            const fetchedTx = await provider.getTransactionByHash(txHash as ITxHash, true);
+            if (!fetchedTx) {
+              return undefined;
+            }
+            const fetchedTxConfig = makeTxConfigFromTransactionResponse(
+              fetchedTx,
+              assets,
+              network,
+              accounts
+            );
+            return {
+              config: fetchedTxConfig,
+              receipt: makePendingTxReceipt(txHash as ITxHash)(ITxType.UNKNOWN, fetchedTxConfig)
+            };
+          } else {
+            return {
+              config: makeTxConfigFromTxReceipt(cachedTx, assets, networks, accounts),
+              receipt: cachedTx
+            };
           }
-          const fetchedTxConfig = makeTxConfigFromTransactionResponse(
-            fetchedTx,
-            assets,
-            network,
-            accounts
-          );
-          return {
-            config: fetchedTxConfig,
-            receipt: makePendingTxReceipt(txHash as ITxHash)(ITxType.UNKNOWN, fetchedTxConfig)
-          };
-        } else {
-          return {
-            config: makeTxConfigFromTxReceipt(cachedTx, assets, networks, accounts),
-            receipt: cachedTx
-          };
-        }
-      })();
-      if (!txResult) {
-        setError(translateRaw('TX_NOT_FOUND'));
-      } else {
-        setTx(txResult);
+        })();
+        dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_SUCCESS, payload: txResult });
+      } catch (err) {
+        console.error(err);
+      } finally {
+        //setLoading(false);
       }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
     }
+  }, [fetching]);
+
+  const fetchTx = async () => {
+    dispatch({ type: txStatusReducer.actionTypes.FETCH_TX });
   };
 
   return (
@@ -105,13 +107,24 @@ const TxStatus = ({ history, match, location }: RouteComponentProps<{ txHash: st
         <>
           <NetworkSelectDropdown
             network={networkId ? networkId : undefined}
-            onChange={(n) => setNetwork(n)}
+            onChange={(n) =>
+              dispatch({ type: txStatusReducer.actionTypes.SET_NETWORK, payload: n })
+            }
             filter={(n) => SUPPORTED_NETWORKS.includes(n.id)}
           />
           <label htmlFor="txhash">{translateRaw('TX_HASH')}</label>
-          <Input name="txhash" value={txHash} onChange={(e) => setTxHash(e.currentTarget.value)} />
+          <Input
+            name="txhash"
+            value={txHash}
+            onChange={(e) =>
+              dispatch({
+                type: txStatusReducer.actionTypes.SET_TX_HASH,
+                payload: e.currentTarget.value
+              })
+            }
+          />
           {error.length > 0 && <InlineMessage value={error} />}
-          <Button loading={loading} onClick={fetchTx} fullwidth={true}>
+          <Button loading={fetching} onClick={fetchTx} fullwidth={true}>
             {translateRaw('FETCH')}
           </Button>
         </>
@@ -126,7 +139,10 @@ const TxStatus = ({ history, match, location }: RouteComponentProps<{ txHash: st
             disableDynamicTxReceiptDisplay={true}
             disableAddTxToAccount={true}
           />
-          <Button onClick={() => setTx(undefined)} fullwidth={true}>
+          <Button
+            onClick={() => dispatch({ type: txStatusReducer.actionTypes.CLEAR_FORM })}
+            fullwidth={true}
+          >
             {translateRaw('TX_STATUS_GO_BACK')}
           </Button>
         </>
