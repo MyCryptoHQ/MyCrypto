@@ -7,7 +7,6 @@ const TokenMigrationFactory: TUseStateReducerFactory<TokenMigrationState> = ({
 }) => {
   const handleUserInputFormSubmit: TStepAction = (payload: ISimpleTxFormFull) => {
     const { account } = payload;
-
     setState({
       ...state,
       account

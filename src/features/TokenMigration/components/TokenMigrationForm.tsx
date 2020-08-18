@@ -1,19 +1,18 @@
 import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { useFormik } from 'formik';
-import isEmpty from 'lodash/isEmpty';
 import * as Yup from 'yup';
 import { bigNumberify } from 'ethers/utils';
 
 import translate, { translateRaw } from '@translations';
 import { SPACING } from '@theme';
-import { IAccount, Network, StoreAccount, Asset, ISimpleTxFormFull } from '@types';
+import { IAccount, Network, StoreAccount, Asset, ISimpleTxFormFull, ExtendedAsset } from '@types';
 import { AccountSelector, InlineMessage, AmountInput, Button, Tooltip } from '@components';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
 import { StoreContext, AssetContext, NetworkContext } from '@services/Store';
 import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
-import { ETHUUID, noOp, weiToFloat } from '@utils';
+import { ETHUUID, noOp, weiToFloat, isFormValid as checkFormValid } from '@utils';
 import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
 
 import { tokenMigrationConfig } from '../config';
@@ -27,6 +26,8 @@ interface Props extends ISimpleTxFormFull {
 interface UIProps {
   network: Network;
   relevantAccounts: StoreAccount[];
+  storeDefaultAccount: StoreAccount;
+  defaultAsset: ExtendedAsset;
   isSubmitting: boolean;
   onComplete(fields: any): void;
 }
@@ -53,16 +54,22 @@ const FormFieldSubmitButton = styled(Button)`
 `;
 
 const TokenMigrationForm = ({ isSubmitting, onComplete }: Props) => {
-  const { accounts } = useContext(StoreContext);
+  const { accounts, defaultAccount: defaultStoreAccount } = useContext(StoreContext);
   const { networks } = useContext(NetworkContext);
+  const { getAssetByUUID } = useContext(AssetContext);
   const network = networks.find((n) => n.baseAsset === ETHUUID) as Network;
   const relevantAccounts = accounts.filter(isEthereumAccount);
-
+  const defaultAsset = (getAssetByUUID(tokenMigrationConfig.fromAssetUuid) || {}) as Asset;
+  const defaultAccount = accounts.find((a) =>
+    a.assets.find(({ uuid }) => uuid === tokenMigrationConfig.fromAssetUuid)
+  );
   return (
     <TokenMigrationFormUI
       isSubmitting={isSubmitting}
       network={network}
       relevantAccounts={relevantAccounts}
+      storeDefaultAccount={defaultAccount || defaultStoreAccount}
+      defaultAsset={defaultAsset}
       onComplete={onComplete}
     />
   );
@@ -72,12 +79,12 @@ export const TokenMigrationFormUI = ({
   isSubmitting,
   network,
   relevantAccounts,
+  storeDefaultAccount,
+  defaultAsset,
   onComplete
 }: UIProps) => {
-  const { getAssetByUUID } = useContext(AssetContext);
-  const defaultAsset = (getAssetByUUID(tokenMigrationConfig.fromAssetUuid) || {}) as Asset;
-  const initialFormikValues: ISimpleTxFormFull = {
-    account: {} as StoreAccount,
+  const getInitialFormikValues = (storeDefaultAcc: StoreAccount): ISimpleTxFormFull => ({
+    account: storeDefaultAcc,
     amount: '0',
     asset: defaultAsset,
     nonce: '0',
@@ -85,7 +92,14 @@ export const TokenMigrationFormUI = ({
     address: '',
     gasLimit: '',
     network
+  });
+
+  const convertedAsset = {
+    name: defaultAsset.name,
+    ticker: defaultAsset.ticker,
+    uuid: defaultAsset.uuid
   };
+  const filteredAccounts = getAccountsWithAssetBalance(relevantAccounts, convertedAsset, '0.001');
 
   const TokenMigrationFormSchema = Yup.object().shape({
     amount: Yup.number()
@@ -93,43 +107,36 @@ export const TokenMigrationFormUI = ({
       .required(translateRaw('REQUIRED'))
       .typeError(translateRaw('ERROR_0'))
   });
-  const formik = useFormik({
-    initialValues: initialFormikValues,
+
+  const { values, errors, touched, setFieldValue, setFieldTouched } = useFormik({
+    initialValues: getInitialFormikValues(storeDefaultAccount),
     enableReinitialize: true,
     validationSchema: TokenMigrationFormSchema,
     onSubmit: noOp
   });
+  const { amount, asset, account: selectedAccount } = values;
 
-  const handleAccountChange = (account: IAccount) => {
-    const accountAssetAmt = account.assets.find(
+  useEffect(() => {
+    if (!values.account) return;
+    const accountAssetAmt = values.account.assets.find(
       (a) => a.uuid === tokenMigrationConfig.fromAssetUuid
     );
     if (!accountAssetAmt) {
       return;
     }
-    formik.setFieldValue(
+    setFieldValue(
       'amount',
       weiToFloat(bigNumberify(accountAssetAmt.balance), asset.decimal).toString()
     ); // this would be better as a reducer imo.
-    formik.setFieldValue('account', account); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
+    setFieldValue('account', values.account); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
 
-    handleNonceEstimate(account);
-  };
+    handleNonceEstimate(values.account);
+  }, [values.account]);
+
   const handleNonceEstimate = async (account: IAccount) => {
-    const nonce: number = await getNonce(formik.values.network, account.address);
-    formik.setFieldValue('nonce', nonce);
+    const nonce: number = await getNonce(values.network, account.address);
+    setFieldValue('nonce', nonce);
   };
-  const isValid =
-    Object.values(formik.errors).filter((error) => error !== undefined && !isEmpty(error))
-      .length === 0;
-
-  const { amount, asset, account: selectedAccount } = formik.values;
-  const convertedAsset = {
-    name: asset.name,
-    ticker: asset.ticker,
-    uuid: asset.uuid
-  };
-  const filteredAccounts = getAccountsWithAssetBalance(relevantAccounts, convertedAsset, amount);
 
   useEffect(() => {
     if (
@@ -140,67 +147,66 @@ export const TokenMigrationFormUI = ({
         (a) => a.uuid === selectedAccount.uuid
       )
     ) {
-      formik.setFieldValue('account', undefined);
+      setFieldValue('account', undefined);
     }
   }, [amount, asset]);
 
+  const isFormValid = checkFormValid(errors);
+
   return (
     <div>
-      <form>
-        <FormFieldItem>
-          <FormFieldLabel htmlFor="account">{translate('SELECT_YOUR_ACCOUNT')}</FormFieldLabel>
-          <AccountSelector
-            name={'account'}
-            value={formik.values.account}
-            accounts={filteredAccounts}
-            asset={formik.values.asset}
-            onSelect={(option: IAccount) => {
-              handleAccountChange(option);
-            }}
-          />
-          {filteredAccounts.length === 0 && (
-            <InlineMessage>{translateRaw('NO_RELEVANT_ACCOUNTS')}</InlineMessage>
-          )}
-        </FormFieldItem>
-        <FormFieldItem>
-          <FormFieldLabel htmlFor="amount">
-            <div>{translate('SEND_ASSETS_AMOUNT_LABEL')}</div>
-          </FormFieldLabel>
-          <>
-            <Tooltip tooltip={translateRaw('REP_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP')}>
-              <AmountInput
-                disabled={true}
-                asset={formik.values.asset}
-                value={formik.values.amount}
-                onChange={noOp}
-                onBlur={() => {
-                  formik.setFieldTouched('amount');
-                  //handleGasEstimate();
-                }}
-                placeholder={'0.00'}
-              />
-              {formik.errors && formik.errors.amount && formik.touched && formik.touched.amount ? (
-                <InlineMessage className="SendAssetsForm-errors">
-                  {formik.errors.amount}
-                </InlineMessage>
-              ) : null}
-            </Tooltip>
-          </>
-        </FormFieldItem>
-        <FormFieldSubmitButton
-          type="submit"
-          loading={isSubmitting}
-          onClick={() => {
-            if (isValid) {
-              fetchGasPriceEstimates(formik.values.network).then(({ fast }) => {
-                onComplete({ ...formik.values, gasPrice: fast.toString() });
-              });
-            }
+      <FormFieldItem>
+        <FormFieldLabel htmlFor="account">{translate('SELECT_YOUR_ACCOUNT')}</FormFieldLabel>
+        <AccountSelector
+          name={'account'}
+          value={values.account}
+          accounts={filteredAccounts}
+          asset={values.asset}
+          onSelect={(option: IAccount) => {
+            setFieldValue('account', option);
           }}
-        >
-          {translateRaw('REP_TOKEN_MIGRATION')}
-        </FormFieldSubmitButton>
-      </form>
+        />
+        {filteredAccounts.length === 0 && (
+          <InlineMessage>{translateRaw('NO_RELEVANT_ACCOUNTS')}</InlineMessage>
+        )}
+      </FormFieldItem>
+      <FormFieldItem>
+        <FormFieldLabel htmlFor="amount">
+          <div>{translate('SEND_ASSETS_AMOUNT_LABEL')}</div>
+        </FormFieldLabel>
+        <>
+          <Tooltip tooltip={translateRaw('REP_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP')}>
+            <AmountInput
+              disabled={true}
+              asset={values.asset}
+              value={values.amount || ''}
+              onChange={noOp}
+              onBlur={() => {
+                setFieldTouched('amount');
+                //handleGasEstimate();
+              }}
+              placeholder={'0.00'}
+            />
+            {errors && errors.amount && touched && touched.amount ? (
+              <InlineMessage className="SendAssetsForm-errors">{errors.amount}</InlineMessage>
+            ) : null}
+          </Tooltip>
+        </>
+      </FormFieldItem>
+      <FormFieldSubmitButton
+        type="submit"
+        loading={isSubmitting}
+        onClick={() => {
+          if (isFormValid) {
+            fetchGasPriceEstimates(values.network).then(({ fast }) => {
+              onComplete({ ...values, gasPrice: fast.toString() });
+            });
+          }
+        }}
+        disabled={!isFormValid}
+      >
+        {translateRaw('REP_TOKEN_MIGRATION')}
+      </FormFieldSubmitButton>
     </div>
   );
 };
