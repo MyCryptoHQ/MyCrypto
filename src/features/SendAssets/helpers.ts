@@ -37,6 +37,7 @@ import {
 import { isTransactionDataEmpty, isSameAddress } from '@utils';
 import { handleValues } from '@services/EthService/utils/units';
 import { CREATION_ADDRESS } from '@config';
+import { hexNonceToViewable, hexToString } from '@services/EthService/utils/makeTransaction';
 
 const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
   const { network } = formData;
@@ -102,9 +103,12 @@ export const parseQueryParams = (queryParams: any) => (
   if (!queryParams || isEmpty(queryParams)) return;
   switch (queryParams.type) {
     case 'resubmit':
-      return parseResubmitParams(queryParams)(networks, assets, accounts);
+      return {
+        type: 'resubmit',
+        txConfig: parseResubmitParams(queryParams)(networks, assets, accounts)
+      };
     default:
-      return;
+      return { type: 'default' };
   }
 };
 
@@ -158,22 +162,28 @@ const parseResubmitParams = (queryParams: any) => (
     data: i.data,
     chainId: parseInt(i.chainId, 16)
   };
-
+  // This is labeled as "guess" because we can only identify simple erc20 transfers for now. if this is incorrect, It'll only affect display values.
   const erc20tx = guessIfErc20Tx(i.data);
-  const { to, amount, receiverAddress } = deriveReceiverAndAmount(erc20tx, i.data, i.to, i.value);
-  const defaultAsset = assets.find(({ uuid }) => uuid === network.baseAsset) as ExtendedAsset;
-  const asset = erc20tx
-    ? assets.find(
-        ({ contractAddress }) => contractAddress && isSameAddress(contractAddress as TAddress, to)
-      ) || defaultAsset
-    : defaultAsset;
 
+  const { to, amount, receiverAddress } = deriveTxRecipientsAndAmount(
+    erc20tx,
+    i.data,
+    i.to,
+    i.value
+  );
+  const defaultAsset = assets.find(({ uuid }) => uuid === network.baseAsset) as ExtendedAsset;
+  const asset =
+    (erc20tx
+      ? assets.find(
+          ({ contractAddress }) => contractAddress && isSameAddress(contractAddress as TAddress, to)
+        )
+      : defaultAsset) || defaultAsset;
   return {
     from: senderAccount.address,
     baseAsset: defaultAsset,
-    gasPrice: i.gasPrice,
-    gasLimit: i.gasLimit,
-    nonce: i.nonce,
+    gasPrice: hexToString(i.gasPrice),
+    gasLimit: hexToString(i.gasLimit),
+    nonce: hexNonceToViewable(i.nonce),
     data: i.data,
     amount: fromTokenBase(handleValues(amount), asset.decimal),
     value: i.value as ITxValue,
@@ -188,31 +198,20 @@ const parseResubmitParams = (queryParams: any) => (
 const guessIfErc20Tx = (data: string): boolean => {
   if (isTransactionDataEmpty(data)) return false;
   const { _to, _value } = decodeTransfer(data);
-  if (!_to || !_value) return false;
   // if this isn't a valid transfer, _value will return 0 and _to will return the burn address '0x0000000000000000000000000000000000000000'
-  if (_to === CREATION_ADDRESS) return false;
+  if (!_to || !_value || _to === CREATION_ADDRESS) return false;
   return true;
 };
 
-const deriveReceiverAndAmount = (
+const deriveTxRecipientsAndAmount = (
   isErc20: boolean,
   data: ITxData,
   toAddress: ITxToAddress,
   value: ITxValue
 ) => {
-  let to;
-  let amount;
-  let receiverAddress;
   if (isErc20) {
     const { _to, _value } = decodeTransfer(data);
-    amount = _value;
-    receiverAddress = _to;
-    to = toAddress;
-  } else {
-    to = toAddress;
-    amount = value;
-    receiverAddress = toAddress;
+    return { to: toAddress, amount: _value, receiverAddress: _to };
   }
-
-  return { to, amount, receiverAddress };
+  return { to: toAddress, amount: value, receiverAddress: toAddress };
 };

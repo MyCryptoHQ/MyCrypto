@@ -24,6 +24,7 @@ import {
   SignTransactionWithProtectTx
 } from './components';
 import { parseQueryParams } from './helpers';
+import isEmpty from 'ramda/src/isEmpty';
 
 type Props = RouteComponentProps<{}>;
 
@@ -38,8 +39,22 @@ function SendAssets(props: Props) {
   const { networks } = useNetworks();
   const { IS_ACTIVE_FEATURE } = useFeatureFlags();
   const { location } = props;
-  const txConfigInit = parseQueryParams(qs.parse(location.search))(networks, assets, accounts);
-  console.debug('txConfig Init - Query Params parsed: ', txConfigInit);
+  useEffect(() => {
+    const txConfigInit = parseQueryParams(qs.parse(location.search))(networks, assets, accounts);
+    if (txConfigInit && txConfigInit.type === 'resubmit') {
+      if (!txConfigInit.txConfig || isEmpty(txConfigInit.txConfig)) {
+        console.debug(
+          '[PrefilledTxs]: Error - Missing params. Requires gasPrice, gasLimit, to, data, nonce, from, value, and chainId'
+        );
+      } else {
+        dispatch({
+          type: sendAssetsReducer.actionTypes.SET_TXCONFIG,
+          payload: { txConfig: txConfigInit.txConfig }
+        });
+      }
+    }
+  }, [assets]);
+
   // Due to MetaMask deprecating eth_sign method,
   // it has different step order, where sign and send are one panel
   const web3Steps: IStepperPath[] = [
@@ -138,7 +153,12 @@ function SendAssets(props: Props) {
 
   const getPath = () => {
     const { senderAccount } = reducerState.txConfig!;
-    return senderAccount && isWeb3Wallet(senderAccount.wallet) ? web3Steps : defaultSteps;
+    const walletSteps =
+      senderAccount && isWeb3Wallet(senderAccount.wallet) ? web3Steps : defaultSteps;
+    if (reducerState.type && reducerState.type === 'resubmit') {
+      return walletSteps.slice(1, walletSteps.length) as IStepperPath[];
+    }
+    return walletSteps;
   };
 
   const { addNewTxToAccount } = useContext(AccountContext);
