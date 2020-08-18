@@ -8,7 +8,6 @@ import { translateRaw } from '@translations';
 import TxStatus from './TxStatus';
 
 const TX_HASH = '0xb324e6630491f89aff0e8e30228741cbccc7ddfdb94c91eedc02141b1acc4df7';
-const NETWORK = 'Ropsten';
 
 /* Test components */
 describe('TxStatus', () => {
