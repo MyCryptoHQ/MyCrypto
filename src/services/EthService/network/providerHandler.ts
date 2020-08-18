@@ -6,6 +6,7 @@ import {
   BaseProvider
 } from 'ethers/providers';
 import { formatEther, BigNumber } from 'ethers/utils';
+import any from '@ungap/promise-any';
 
 import { Asset, Network, IHexStrTransaction, TxObj, ITxSigned } from '@types';
 import { RPCRequests, baseToConvertedUnit, ERC20 } from '@services/EthService';
@@ -88,16 +89,13 @@ export class ProviderHandler {
       if (!useMultipleProviders) {
         return client.getTransaction(txhash);
       } else {
-        return (async () => {
-          const providers = (client as FallbackProvider).providers;
-          for (const provider of providers) {
-            const tx = await provider.getTransaction(txhash);
-            if (tx) {
-              return tx;
-            }
-          }
-          return undefined;
-        })();
+        const providers = (client as FallbackProvider).providers;
+        return any(
+          providers.map(async (p) => {
+            const tx = await p.getTransaction(txhash);
+            return tx ? Promise.resolve(tx) : Promise.reject();
+          })
+        );
       }
     });
   }
