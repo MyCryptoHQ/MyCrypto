@@ -42,7 +42,7 @@
     "DETERMINISTIC_SCANNING": "Scanning your hardware wallet for addresses with $asset balance...",
     "DETERMINISTIC_CSV": "$total total addresses have been scanned. To view a summary of the addresses we scanned, download a CSV report",
     "DETERMINISTIC_CUSTOM_TITLE": "Add Custom Derivation Path",
-    "DETERMINISTIC_CUSTOM_GET_INFORMED": "Get informed: [Learn more](https://example.com) about derivation paths in the MyCrypto knowledge base.",
+    "DETERMINISTIC_CUSTOM_GET_INFORMED": "Get informed: [Learn more](https://support.mycrypto.com/general-knowledge/ethereum-blockchain/what-is-a-derivation-path) about derivation paths in the MyCrypto knowledge base.",
     "DETERMINISTIC_CUSTOM_LABEL": "Label for New Derivation Path",
     "DETERMINISTIC_CUSTOM_LABEL_DPATH": "New Derivation Path Credentials",
     "DETERMINISTIC_ADD_DPATH": "Add DPath",
