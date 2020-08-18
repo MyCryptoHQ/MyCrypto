@@ -152,7 +152,7 @@ const DeterministicWallet = ({
   };
 
   const handleFreshAddressGeneration = () => {
-    if (freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR || !state.completed) {
+    if (freshAddressIndex >= DEFAULT_GAP_TO_SCAN_FOR || !state.completed) {
       return;
     }
     const freshAddressGenerationSuccess = generateFreshAddress({

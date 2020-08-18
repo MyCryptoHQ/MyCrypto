@@ -82,7 +82,7 @@ export const getStories = (): IStory[] => [
       IS_DEV || IS_STAGING || IS_ELECTRON ? MnemonicUnlock : InsecureWalletWarning
     ],
     isDisabled: IS_WEB_AND_PRODUCTION,
-    hideFromWalletList: !IS_DEV
+    hideFromWalletList: !(IS_DEV || IS_STAGING)
   },
   {
     name: WalletId.VIEW_ONLY,

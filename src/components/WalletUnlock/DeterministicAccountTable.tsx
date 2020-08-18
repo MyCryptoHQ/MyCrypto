@@ -374,7 +374,7 @@ const DeterministicTable = ({
           ))}
           <GenerateAddressButton
             onClick={() => generateFreshAddress()}
-            disabled={!isComplete || freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR}
+            disabled={!isComplete || freshAddressIndex >= DEFAULT_GAP_TO_SCAN_FOR}
           >
             <Icon type="add" />
 
@@ -384,12 +384,12 @@ const DeterministicTable = ({
                   <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
                 </STypography>
               </Tooltip>
-            ) : freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR ? (
+            ) : freshAddressIndex >= DEFAULT_GAP_TO_SCAN_FOR ? (
               <Tooltip
                 tooltip={
                   <Trans
                     id="DETERMINISTIC_CANT_GENERATE_MORE"
-                    variables={{ $number: () => DEFAULT_GAP_TO_SCAN_FOR + 1 }}
+                    variables={{ $number: () => DEFAULT_GAP_TO_SCAN_FOR }}
                   />
                 }
               >
