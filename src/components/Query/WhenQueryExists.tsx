@@ -1,16 +1,38 @@
 import React from 'react';
 
-import { Query, Param } from './Query';
+import { Query, Param, IQueryResults } from './Query';
+import { MANDATORY_RESUBMIT_QUERY_PARAMS } from '@config';
 
 interface Props {
-  whenQueryExists: React.ReactElement<any> | null;
+  whenQueryExists(id?: string): JSX.Element | null;
 }
 
-const params: Param[] = ['to', 'data', 'tokenSymbol', 'value', 'gaslimit', 'limit', 'readOnly'];
+const params: Param[] = [
+  'type',
+  'gasPrice',
+  'gasLimit',
+  'to',
+  'data',
+  'nonce',
+  'from',
+  'value',
+  'chainId'
+];
 
-export const WhenQueryExists: React.FC<Props> = ({ whenQueryExists }) => (
-  <Query
-    params={params}
-    withQuery={(queries) => (Object.values(queries).some((v) => !!v) ? whenQueryExists : null)}
-  />
-);
+export const WhenQueryExists = ({ whenQueryExists }: Props) => {
+  const deriveQueryMsg = (queries: IQueryResults) => {
+    const queriesArePresent = Object.values(queries).some((v) => !!v);
+    const resubmitQueriesArePresent = MANDATORY_RESUBMIT_QUERY_PARAMS.every(
+      (resubmitParam) => queries[resubmitParam]
+    );
+    if (!queriesArePresent) return null;
+    if (resubmitQueriesArePresent) {
+      return whenQueryExists('WARN_SEND_UNDETECTED_NETWORK_OR_ACCOUNT');
+    }
+    if (queries.type && queries.type === 'resubmit') {
+      return whenQueryExists('WARN_SEND_INCORRECT_PROPS');
+    }
+    return whenQueryExists();
+  };
+  return <Query params={params} withQuery={deriveQueryMsg} />;
+};

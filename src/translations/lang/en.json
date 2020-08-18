@@ -1026,8 +1026,11 @@
     "REP_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP": "This tool is intended to migrate all of your REP tokens from v1 to v2, so this field cannot be modified.",
     "DASHBOARD_ACTIONS_REP_MIGRATION_TITLE": "New: Migrate your REP!",
     "DASHBOARD_ACTIONS_REP_MIGRATION_SUBTITLE": "Augur v2 has launched and you need to take action to migrate your REPv1 tokens to REPv2.",
-    "ZAP_WITHDRAW_TOOLTIP": "Withdrawing from this Zap requires interacting with Uniswap. If you need assistance, please read [How To Withdraw from Unipool](https://support.mycrypto.com/how-to/defi/how-to-withdraw-from-unipool).",
     "NO_ACCOUNTS_SELECTED_HEADER": "You have no accounts selected.",
-    "NO_ACCOUNTS_SELECTED_DESCRIPTION": "To view your balances, select at least one account in the dropdown above."
+    "NO_ACCOUNTS_SELECTED_DESCRIPTION": "To view your balances, select at least one account in the dropdown above.",
+    "ZAP_WITHDRAW_TOOLTIP": "Withdrawing from this Zap requires interacting with Uniswap. If you need assistance, please read [How To Withdraw from Unipool](https://support.mycrypto.com/how-to/defi/how-to-withdraw-from-unipool).",
+    "GENERIC_ERC20_NAME": "Unknown ERC20 Token",
+    "WARN_SEND_INCORRECT_PROPS": "You arrived via a **resubmit transaction**, but the transaction parameters were incomplete. Read [this article]() on how to construct transaction resubmission links correctly.",
+    "WARN_SEND_UNDETECTED_NETWORK_OR_ACCOUNT": "You arrived via a **resubmit transaction**, but we could not detect your account or the specified network. Please add this account to your dashboard first, then make sure the chainId specified in your url is valid."
   }
 }

@@ -9,23 +9,21 @@ const parse = (location: RouteComponentProps<any>['location']): Query => {
   return query;
 };
 
-interface IQueryResults {
+export interface IQueryResults {
   [key: string]: string | null;
 }
 
 export type Param =
   | 'to'
   | 'data'
-  | 'readOnly'
-  | 'tokenSymbol'
+  | 'type'
+  | 'gasPrice'
   | 'value'
-  | 'gaslimit'
-  | 'limit'
-  | 'windowSize'
-  | 'windowStart'
-  | 'scheduleTimestamp'
-  | 'timeBounty'
-  | 'network';
+  | 'gasLimit'
+  | 'nonce'
+  | 'gasPrice'
+  | 'from'
+  | 'chainId';
 
 interface Props extends RouteComponentProps<{}> {
   params: Param[];

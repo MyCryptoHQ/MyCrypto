@@ -19,7 +19,9 @@ import {
   Network,
   ExtendedAsset,
   TAddress,
-  StoreAccount
+  StoreAccount,
+  NetworkId,
+  TTicker
 } from '@types';
 
 import {
@@ -34,10 +36,11 @@ import {
   decodeTransfer,
   fromTokenBase
 } from '@services/EthService';
-import { isTransactionDataEmpty, isSameAddress } from '@utils';
+import { isTransactionDataEmpty, isSameAddress, generateAssetUUID } from '@utils';
 import { handleValues } from '@services/EthService/utils/units';
-import { CREATION_ADDRESS } from '@config';
+import { CREATION_ADDRESS, MANDATORY_RESUBMIT_QUERY_PARAMS } from '@config';
 import { hexNonceToViewable, hexToString } from '@services/EthService/utils/makeTransaction';
+import { translateRaw } from '@translations';
 
 const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
   const { network } = formData;
@@ -132,18 +135,9 @@ const parseResubmitParams = (queryParams: any) => (
   assets: ExtendedAsset[],
   accounts: StoreAccount[]
 ): ITxConfig | undefined => {
-  const mandatoryParams = [
-    'gasPrice',
-    'gasLimit',
-    'to',
-    'data',
-    'nonce',
-    'from',
-    'value',
-    'chainId'
-  ];
-  if (!mandatoryParams.every((mandatoryParam) => queryParams[mandatoryParam])) return;
-  const i = (mandatoryParams.reduce((acc, cv) => {
+  if (!MANDATORY_RESUBMIT_QUERY_PARAMS.every((mandatoryParam) => queryParams[mandatoryParam]))
+    return;
+  const i = (MANDATORY_RESUBMIT_QUERY_PARAMS.reduce((acc, cv) => {
     acc[cv] = queryParams[cv];
     return acc;
   }, {} as IMandatoryAcc) as unknown) as IMandatoryItem;
@@ -172,12 +166,11 @@ const parseResubmitParams = (queryParams: any) => (
     i.value
   );
   const defaultAsset = assets.find(({ uuid }) => uuid === network.baseAsset) as ExtendedAsset;
-  const asset =
-    (erc20tx
-      ? assets.find(
-          ({ contractAddress }) => contractAddress && isSameAddress(contractAddress as TAddress, to)
-        )
-      : defaultAsset) || defaultAsset;
+  const asset = erc20tx
+    ? assets.find(
+        ({ contractAddress }) => contractAddress && isSameAddress(contractAddress as TAddress, to)
+      ) || generateGenericErc20(to, i.chainId, network.id)
+    : defaultAsset;
   return {
     from: senderAccount.address,
     baseAsset: defaultAsset,
@@ -215,3 +208,15 @@ const deriveTxRecipientsAndAmount = (
   }
   return { to: toAddress, amount: value, receiverAddress: toAddress };
 };
+
+const generateGenericErc20 = (
+  contractAddress: TAddress,
+  chainId: string,
+  networkId: NetworkId
+): ExtendedAsset => ({
+  uuid: generateAssetUUID(chainId, contractAddress),
+  name: translateRaw('GENERIC_ERC20_NAME'),
+  ticker: 'Unknown ERC20' as TTicker,
+  type: 'erc20',
+  networkId
+});
