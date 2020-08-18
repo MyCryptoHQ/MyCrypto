@@ -93,10 +93,8 @@ const BuyAssets = lazy(() =>
 const EnsDashboard = lazy(() =>
   import(/* webpackChunkName: "EnsDashboard" */ '@features/Ens/EnsDashboard')
 );
-const TransactionStatus = lazy(() =>
-  import(
-    /* webpackChunkName: "TransactionStatus" */ '@features/TransactionStatus/TransactionStatus'
-  )
+const TxStatus = lazy(() =>
+  import(/* webpackChunkName: "TxStatus" */ '@features/TxStatus/TxStatus')
 );
 
 export interface IAppRoutes {
@@ -335,7 +333,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE): IAppR
     path: `${ROUTE_PATHS.TX_STATUS.path}/:txHash?`,
     exact: true,
     enabled: IS_ACTIVE_FEATURE.TX_STATUS,
-    component: TransactionStatus
+    component: TxStatus
   }
 ];
 

@@ -20,11 +20,7 @@ import { getTxsFromAccount } from '@services/Store';
 
 const SUPPORTED_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Goerli', 'Kovan', 'ETC'];
 
-const TransactionStatus = ({
-  history,
-  match,
-  location
-}: RouteComponentProps<{ txHash: string }>) => {
+const TxStatus = ({ history, match, location }: RouteComponentProps<{ txHash: string }>) => {
   const qs = queryString.parse(location.search);
 
   const { assets } = useContext(AssetContext);
@@ -139,4 +135,4 @@ const TransactionStatus = ({
   );
 };
 
-export default withRouter(TransactionStatus);
+export default withRouter(TxStatus);
