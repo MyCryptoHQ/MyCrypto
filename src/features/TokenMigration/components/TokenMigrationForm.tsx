@@ -17,7 +17,7 @@ import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
 
 import { tokenMigrationConfig } from '../config';
 
-interface Props extends ISimpleTxFormFull {
+export interface TokenMigrationProps extends ISimpleTxFormFull {
   isSubmitting: boolean;
   onComplete(fields: any): void;
   handleUserInputFormSubmit(fields: any): void;
@@ -53,7 +53,7 @@ const FormFieldSubmitButton = styled(Button)`
   }
 `;
 
-const TokenMigrationForm = ({ isSubmitting, onComplete }: Props) => {
+const TokenMigrationForm = ({ isSubmitting, onComplete }: TokenMigrationProps) => {
   const { accounts, defaultAccount: defaultStoreAccount } = useContext(StoreContext);
   const { networks } = useContext(NetworkContext);
   const { getAssetByUUID } = useContext(AssetContext);
