@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import * as Yup from 'yup';
 import { Formik } from 'formik';
 
 import { Typography, Button, AssetSelector, Input } from '@components';
@@ -168,6 +169,15 @@ const DeterministicWallet = ({
   const handleDownload = () =>
     window.open(makeBlob('text/csv', accountsToCSV(state.finishedAccounts, assetToUse)));
 
+  const Schema = Yup.object().shape({
+    label: Yup.string().required(translateRaw('REQUIRED')),
+    value: Yup.string()
+      .required(translateRaw('REQUIRED'))
+      .test('check-valid-path', translateRaw('DETERMINISTIC_INVALID_DPATH'), (value) =>
+        isValidPath(value)
+      )
+  });
+
   return dpathAddView ? (
     <MnemonicWrapper>
       <HeadingWrapper>
@@ -180,14 +190,7 @@ const DeterministicWallet = ({
       <Formik
         initialValues={initialFormikValues}
         onSubmit={(values) => handleDPathAddition(values)}
-        validate={(values) => {
-          const errors: { label?: string; value?: string } = {};
-          if (!values.label || values.label === '') errors.label = translateRaw('REQUIRED');
-          if (!values.value || values.value === '') errors.value = translateRaw('REQUIRED');
-          else if (!isValidPath(values.value))
-            errors.value = translateRaw('DETERMINISTIC_INVALID_DPATH');
-          return errors;
-        }}
+        validationSchema={Schema}
       >
         {({ errors, touched, handleChange, handleBlur, values, isSubmitting, handleSubmit }) => (
           <SForm onSubmit={handleSubmit}>
