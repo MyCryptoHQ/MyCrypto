@@ -24,26 +24,20 @@ export const fetchTxStatus = async ({
   const cachedTx = txCache.find(
     (t) => t.hash === (txHash as ITxHash) && t.asset.networkId === networkId
   );
-  if (!cachedTx) {
-    const provider = new ProviderHandler(network);
-    const fetchedTx = await provider.getTransactionByHash(txHash as ITxHash, true);
-    if (!fetchedTx) {
-      return undefined;
-    }
-    const fetchedTxConfig = makeTxConfigFromTransactionResponse(
-      fetchedTx,
-      assets,
-      network,
-      accounts
-    );
-    return {
-      config: fetchedTxConfig,
-      receipt: makePendingTxReceipt(txHash as ITxHash)(ITxType.UNKNOWN, fetchedTxConfig)
-    };
-  } else {
+  if (cachedTx) {
     return {
       config: makeTxConfigFromTxReceipt(cachedTx, assets, networks, accounts),
       receipt: cachedTx
     };
   }
+  const provider = new ProviderHandler(network);
+  const fetchedTx = await provider.getTransactionByHash(txHash as ITxHash, true);
+  if (!fetchedTx) {
+    return undefined;
+  }
+  const fetchedTxConfig = makeTxConfigFromTransactionResponse(fetchedTx, assets, network, accounts);
+  return {
+    config: fetchedTxConfig,
+    receipt: makePendingTxReceipt(txHash as ITxHash)(ITxType.UNKNOWN, fetchedTxConfig)
+  };
 };
