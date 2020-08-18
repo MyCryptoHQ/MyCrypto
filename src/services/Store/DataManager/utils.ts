@@ -20,6 +20,7 @@ import {
 import { makeExplorer } from '@services/EthService';
 import { NETWORKS_CONFIG, SCHEMA_BASE, NetworkConfig } from '@database/data';
 import { createDefaultValues } from '@database';
+import { merge } from '@vendor';
 
 type ObjToArray = <T>(o: T) => ValuesType<T>[];
 const objToArray: ObjToArray = (obj) => Object.values(obj);
@@ -33,32 +34,35 @@ export const mergeConfigWithLocalStorage = (
   defaultConfig: NetworkConfig,
   ls: LocalStorage
 ): LocalStorage => {
+  const customNetworks = (Object.fromEntries(
+    Object.entries(ls.networks).filter((n) => n[1].isCustom)
+  ) as unknown) as NetworkConfig;
+  const config = merge(defaultConfig, customNetworks);
+
   // add contracts and assets from localstorage
   const lsContracts = objToArray(ls[LSKeys.CONTRACTS]) as ExtendedContract[];
   const lsAssets = objToArray(ls[LSKeys.ASSETS]) as ExtendedAsset[];
-  lsContracts.forEach(
-    (c) => defaultConfig[c.networkId] && defaultConfig[c.networkId].contracts.push(c)
-  );
+  lsContracts.forEach((c) => config[c.networkId] && config[c.networkId].contracts.push(c));
   lsAssets.forEach(
     (a) =>
       a.networkId &&
-      defaultConfig[a.networkId] &&
-      defaultConfig[a.networkId].tokens.push({ ...a, address: a.contractAddress as TAddress })
+      config[a.networkId] &&
+      config[a.networkId].tokens.push({ ...a, address: a.contractAddress as TAddress })
   );
 
   // add selected and custom nodes per network
   if (ls[LSKeys.NETWORK_NODES]) {
     Object.entries(ls[LSKeys.NETWORK_NODES]).forEach(
       ([networkId, networkSetup]: [NetworkId, NetworkNodes]) => {
-        defaultConfig[networkId].selectedNode = networkSetup.selectedNode;
+        config[networkId].selectedNode = networkSetup.selectedNode;
         if (networkSetup.nodes) {
-          defaultConfig[networkId].nodes = networkSetup.nodes;
+          config[networkId].nodes = networkSetup.nodes;
         }
       }
     );
   }
 
-  return createDefaultValues(SCHEMA_BASE, defaultConfig);
+  return createDefaultValues(SCHEMA_BASE, config);
 };
 
 // From LocalStorage to the state we want to use within the app.

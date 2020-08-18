@@ -6,9 +6,26 @@ import styled from 'styled-components';
 
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Checkbox, DashboardPanel, InputField, NetworkSelectDropdown, LinkOut } from '@components';
-import { CustomNodeConfig, Network, NetworkId, NodeOptions, NodeType } from '@types';
+import {
+  CustomNodeConfig,
+  Network,
+  NetworkId,
+  NodeOptions,
+  NodeType,
+  WalletId,
+  TTicker,
+  ExtendedAsset,
+  TUuid
+} from '@types';
 import { translateRaw, Trans } from '@translations';
-import { DEFAULT_NETWORK, GITHUB_RELEASE_NOTES_URL, LETS_ENCRYPT_URL, EXT_URLS } from '@config';
+import {
+  DEFAULT_NETWORK,
+  GITHUB_RELEASE_NOTES_URL,
+  LETS_ENCRYPT_URL,
+  EXT_URLS,
+  DPathsList as DPaths
+} from '@config';
+import { generateAssetUUID } from '@utils';
 import { NetworkUtils } from '@services/Store/Network';
 import { ProviderHandler } from '@services/EthService/network';
 
@@ -125,12 +142,20 @@ interface NetworkNodeFields {
   auth: boolean;
   username: string;
   password: string;
+
+  // CUSTOM NETWORK
+  networkName?: string;
+  baseUnit?: string;
+  chainId?: string;
 }
 
 interface Props {
   networkId: NetworkId;
   editNode: CustomNodeConfig | undefined;
+  isAddingCustomNetwork: boolean;
   onComplete(): void;
+  addNetwork(network: Network): void;
+  addAsset(asset: ExtendedAsset, id: TUuid): void;
   addNodeToNetwork(node: NodeOptions, network: Network | NetworkId): void;
   isNodeNameAvailable(networkId: NetworkId, nodeName: string, ignoreNames?: string[]): boolean;
   getNetworkById(networkId: NetworkId): Network;
@@ -140,8 +165,11 @@ interface Props {
 
 export default function AddOrEditNetworkNode({
   networkId,
+  isAddingCustomNetwork,
   onComplete,
   addNodeToNetwork,
+  addNetwork,
+  addAsset,
   isNodeNameAvailable,
   getNetworkById,
   editNode,
@@ -240,7 +268,21 @@ export default function AddOrEditNetworkNode({
         validationSchema={Schema}
         initialValues={initialState()}
         onSubmit={async (values: NetworkNodeFields, { setSubmitting }) => {
-          const { url, username, password, name, auth, networkId: selectedNetworkId } = values;
+          const {
+            url,
+            username,
+            password,
+            name,
+            auth,
+            networkId: formSelectedNetworkId,
+            networkName,
+            chainId,
+            baseUnit
+          } = values;
+
+          const selectedNetworkId = isAddingCustomNetwork
+            ? (networkName! as NetworkId)
+            : formSelectedNetworkId;
 
           const node = Object.assign(
             {
@@ -254,11 +296,47 @@ export default function AddOrEditNetworkNode({
           ) as CustomNodeConfig;
 
           try {
-            const network = getNetworkById(selectedNetworkId);
+            const network: Network = !isAddingCustomNetwork
+              ? getNetworkById(selectedNetworkId)
+              : {
+                  id: selectedNetworkId,
+                  name: networkName!,
+                  chainId: parseInt(chainId!, 10),
+                  baseUnit: baseUnit as TTicker,
+                  baseAsset: generateAssetUUID(chainId!),
+                  isCustom: true,
+                  assets: [],
+                  contracts: [],
+                  nodes: [node],
+                  dPaths: {
+                    [WalletId.TREZOR]: DPaths.ETH_DEFAULT,
+                    [WalletId.LEDGER_NANO_S]: DPaths.ETH_DEFAULT,
+                    [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_DEFAULT
+                  },
+                  gasPriceSettings: {
+                    min: 1,
+                    max: 100,
+                    initial: 1
+                  },
+                  shouldEstimateGasPrice: false,
+                  color: undefined,
+                  selectedNode: node.name
+                };
             const provider = new ProviderHandler({ ...network, nodes: [node] }, false);
             await provider.getCurrentBlock();
 
-            if (editNode) {
+            if (isAddingCustomNetwork) {
+              const baseAsset: ExtendedAsset = {
+                uuid: network.baseAsset,
+                name: network.baseUnit,
+                ticker: network.baseUnit,
+                type: 'base',
+                networkId: network.id,
+                isCustom: true
+              };
+              addAsset(baseAsset, network.baseAsset);
+              addNetwork(network);
+            } else if (editNode) {
               updateNode(node, selectedNetworkId, editNode.name);
             } else {
               addNodeToNetwork(node, selectedNetworkId);
@@ -267,6 +345,7 @@ export default function AddOrEditNetworkNode({
             setIsConnectionError(false);
             onComplete();
           } catch (e) {
+            console.error(e);
             setIsConnectionError(true);
             setSubmitting(false);
           }
@@ -289,20 +368,70 @@ export default function AddOrEditNetworkNode({
                   </Field>
                 </AddressFieldset>
               </Column>
-              <Column>
-                <AddressFieldset>
-                  <Field name="networkId">
-                    {({ field, form }: FieldProps<NetworkId>) => (
-                      <SNetworkSelectDropdown
-                        network={field.value}
-                        onChange={(e) => form.setFieldValue(field.name, e)}
-                        disabled={editMode}
-                      />
-                    )}
-                  </Field>
-                </AddressFieldset>
-              </Column>
+              {!isAddingCustomNetwork && (
+                <Column>
+                  <AddressFieldset>
+                    <Field name="networkId">
+                      {({ field, form }: FieldProps<NetworkId>) => (
+                        <SNetworkSelectDropdown
+                          network={field.value}
+                          onChange={(e) => form.setFieldValue(field.name, e)}
+                          disabled={editMode}
+                        />
+                      )}
+                    </Field>
+                  </AddressFieldset>
+                </Column>
+              )}
             </Row>
+            {isAddingCustomNetwork && (
+              <Row>
+                <Column>
+                  <AddressFieldset>
+                    <label htmlFor="networkName">
+                      {translateRaw('CUSTOM_NODE_FORM_NETWORK_NAME')}
+                    </label>
+                    <Field name="networkName">
+                      {({ field }: FieldProps<string>) => (
+                        <InputField
+                          {...field}
+                          inputError={errors && errors.networkName}
+                          placeholder={translateRaw('CUSTOM_NODE_FORM_NETWORK_NAME_PLACEHOLDER')}
+                        />
+                      )}
+                    </Field>
+                  </AddressFieldset>
+                </Column>
+                <Column>
+                  <AddressFieldset>
+                    <label htmlFor="baseUnit"> {translateRaw('CUSTOM_NODE_FORM_BASE_UNIT')}</label>
+                    <Field name="baseUnit">
+                      {({ field }: FieldProps<string>) => (
+                        <InputField
+                          {...field}
+                          inputError={errors && errors.baseUnit}
+                          placeholder={translateRaw('CUSTOM_NODE_FORM_BASE_UNIT_PLACEHOLDER')}
+                        />
+                      )}
+                    </Field>
+                  </AddressFieldset>
+                </Column>
+                <Column>
+                  <AddressFieldset>
+                    <label htmlFor="chainId">{translateRaw('CUSTOM_NODE_FORM_CHAIN_ID')}</label>
+                    <Field name="chainId">
+                      {({ field }: FieldProps<string>) => (
+                        <InputField
+                          {...field}
+                          inputError={errors && errors.chainId}
+                          placeholder={translateRaw('CUSTOM_NODE_FORM_CHAIN_ID_PLACEHOLDER')}
+                        />
+                      )}
+                    </Field>
+                  </AddressFieldset>
+                </Column>
+              </Row>
+            )}
             <Row>
               <Column>
                 <AddressFieldset>

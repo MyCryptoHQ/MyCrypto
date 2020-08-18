@@ -16,3 +16,4 @@ export { default as omit } from 'ramda/src/omit';
 export { default as slice } from 'ramda/src/slice';
 export { default as innerJoin } from 'ramda/src/innerJoin';
 export { default as sort } from 'ramda/src/sort';
+export { default as merge } from 'ramda/src/merge';
