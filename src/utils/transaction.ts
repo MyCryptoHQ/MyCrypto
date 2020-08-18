@@ -155,7 +155,7 @@ export const makeTxConfigFromSignedTx = (
 };
 
 // needs testing
-export const makeTxConfigFromTransactionResponse = (
+export const makeTxConfigFromTxResponse = (
   decodedTx: TransactionResponse,
   assets: ExtendedAsset[],
   network: Network,

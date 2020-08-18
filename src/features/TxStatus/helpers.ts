@@ -1,6 +1,6 @@
 import { ProviderHandler, getTxsFromAccount } from '@services';
 import {
-  makeTxConfigFromTransactionResponse,
+  makeTxConfigFromTxResponse,
   makePendingTxReceipt,
   makeTxConfigFromTxReceipt
 } from '@utils';
@@ -35,7 +35,7 @@ export const fetchTxStatus = async ({
   if (!fetchedTx) {
     return undefined;
   }
-  const fetchedTxConfig = makeTxConfigFromTransactionResponse(fetchedTx, assets, network, accounts);
+  const fetchedTxConfig = makeTxConfigFromTxResponse(fetchedTx, assets, network, accounts);
   return {
     config: fetchedTxConfig,
     receipt: makePendingTxReceipt(txHash as ITxHash)(ITxType.UNKNOWN, fetchedTxConfig)

@@ -55,7 +55,7 @@ export {
   makePendingTxReceipt,
   makeTxConfigFromSignedTx,
   makeTxConfigFromTxReceipt,
-  makeTxConfigFromTransactionResponse,
+  makeTxConfigFromTxResponse,
   makeFinishedTxReceipt
 } from './transaction';
 export {
