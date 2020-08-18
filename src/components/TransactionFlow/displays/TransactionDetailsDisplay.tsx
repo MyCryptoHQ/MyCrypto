@@ -4,10 +4,14 @@ import { bigNumberify, BigNumber } from 'ethers/utils';
 import styled from 'styled-components';
 
 import { Asset, ITxObject, Fiat } from '@types';
-import { baseToConvertedUnit, totalTxFeeToString } from '@services/EthService';
+import {
+  baseToConvertedUnit,
+  totalTxFeeToString,
+  calculateGasUsedPercentage
+} from '@services/EthService';
 import { CopyableCodeBlock } from '@components';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
-import { weiToFloat, isTransactionDataEmpty, bigify, convertToFiat } from '@utils';
+import { weiToFloat, isTransactionDataEmpty, convertToFiat } from '@utils';
 import translate, { translateRaw } from '@translations';
 import { COLORS } from '@theme';
 
@@ -69,14 +73,7 @@ function TransactionDetailsDisplay({
     ? weiToFloat(bigNumberify(userAssetToSend.balance), asset.decimal).toFixed(6)
     : translateRaw('UNKNOWN_BALANCE');
 
-  const gasUsedPercentage = (() => {
-    if (gasUsed) {
-      const gasLimitBN = bigify(gasLimit);
-      const gasUsedBN = bigify(gasUsed.toString());
-      return gasUsedBN.div(gasLimitBN).multipliedBy(bigify(100));
-    }
-    return undefined;
-  })();
+  const gasUsedPercentage = gasUsed && calculateGasUsedPercentage(gasLimit, gasUsed.toString());
 
   const actualTransactionFeeBase = gasUsed && totalTxFeeToString(gasPrice, gasUsed.toString());
 
