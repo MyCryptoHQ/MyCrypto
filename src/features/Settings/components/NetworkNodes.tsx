@@ -6,6 +6,7 @@ import { DashboardPanel, CollapsibleTable, Network } from '@components';
 import { CustomNodeConfig, Network as INetwork, NetworkId } from '@types';
 import { translateRaw } from '@translations';
 import { COLORS, SPACING } from '@theme';
+import { useFeatureFlags } from '@services';
 import NetworkNodeDropdown from '@components/NetworkNodeDropdown';
 import useScreenSize from '@utils/useScreenSize';
 
@@ -32,6 +33,7 @@ const BottomRow = styled.div`
 `;
 
 const NetworkNodes: FC<Props> = ({ networks, toggleFlipped, toggleNetworkCreation }) => {
+  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
   const { isXsScreen } = useScreenSize();
 
   const networkNodesTable = {
@@ -62,11 +64,13 @@ const NetworkNodes: FC<Props> = ({ networks, toggleFlipped, toggleNetworkCreatio
   return (
     <DashboardPanel heading={isXsScreen ? <>{translateRaw('NETWORK_AND_NODES')}</> : null}>
       <CollapsibleTable breakpoint={450} {...networkNodesTable} />
-      <BottomRow>
-        <AddNetworkButton onClick={toggleNetworkCreation} basic={true}>
-          {`+ ${translateRaw('ADD_NETWORK')}`}
-        </AddNetworkButton>
-      </BottomRow>
+      {IS_ACTIVE_FEATURE.CUSTOM_NETWORKS && (
+        <BottomRow>
+          <AddNetworkButton onClick={toggleNetworkCreation} basic={true}>
+            {`+ ${translateRaw('ADD_NETWORK')}`}
+          </AddNetworkButton>
+        </BottomRow>
+      )}
     </DashboardPanel>
   );
 };
