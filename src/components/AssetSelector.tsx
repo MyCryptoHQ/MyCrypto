@@ -98,6 +98,7 @@ function AssetSelector({
         disabled={disabled}
         searchable={searchable}
         onChange={(option: TAssetOption) => onSelect(option)}
+        getOptionLabel={(option) => (showOnlySymbol ? option.ticker : option.name)}
         optionDivider={true}
         optionComponent={({ data, selectOption }: OptionProps<TAssetOption>) => {
           const { ticker, name, uuid } = data;

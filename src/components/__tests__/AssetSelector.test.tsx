@@ -36,6 +36,20 @@ describe('AssetSelector', () => {
     expect(screen.getByText(fAssets[0].ticker)).toBeInTheDocument();
   });
 
+  test('it is searchable by name', async () => {
+    const props = Object.assign({}, defaultProps, { searchable: true });
+    const { container } = getComponent(props);
+    fireEvent.change(container.querySelector('input')!, { target: { value: fAssets[0].name } });
+    expect(screen.getAllByText(fAssets[0].name).length).toBe(2);
+  });
+
+  test('it is searchable by symbol', async () => {
+    const props = Object.assign({}, defaultProps, { searchable: true, showOnlySymbol: true });
+    const { container } = getComponent(props);
+    fireEvent.change(container.querySelector('input')!, { target: { value: fAssets[5].ticker } });
+    expect(screen.getAllByText(fAssets[5].ticker).length).toBe(2);
+  });
+
   test('it displays the list of assets on click', async () => {
     const props = Object.assign({}, defaultProps);
     getComponent(props);
