@@ -4,12 +4,10 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Typography } from '@mycrypto/ui';
 
 import translate, { translateRaw } from '@translations';
-import { ContentPanel, Button, RouterLink } from '@components';
+import { ContentPanel, Downloader, Button, RouterLink } from '@components';
 import { SettingsContext } from '@services/Store';
 import { ROUTE_PATHS } from '@config';
 import { COLORS } from '@theme';
-
-import Downloader from './Downloader';
 
 const CenteredContentPanel = styled(ContentPanel)`
   width: 35rem;

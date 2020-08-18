@@ -80,3 +80,4 @@ export { default as TimeElapsed } from './TimeElapsed';
 export { default as Icon } from './Icon';
 export { default as MigrateLS } from './MigrateLS';
 export { default as IFrame } from './IFrame';
+export { default as Downloader } from './Downloader';
