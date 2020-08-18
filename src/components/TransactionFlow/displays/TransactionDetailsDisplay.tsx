@@ -62,7 +62,7 @@ function TransactionDetailsDisplay({
 }: Props) {
   const [showDetails, setShowDetails] = useState(false);
 
-  const maxTransactionFeeBase: string = totalTxFeeToString(gasPrice, gasLimit);
+  const maxTxFeeBase: string = totalTxFeeToString(gasPrice, gasLimit);
   const {
     network: { name: networkName, color: networkColor }
   } = sender;
@@ -75,16 +75,12 @@ function TransactionDetailsDisplay({
 
   const gasUsedPercentage = gasUsed && calculateGasUsedPercentage(gasLimit, gasUsed.toString());
 
-  const actualTransactionFeeBase = gasUsed && totalTxFeeToString(gasPrice, gasUsed.toString());
+  const actualTxFeeBase = gasUsed && totalTxFeeToString(gasPrice, gasUsed.toString());
 
-  const actualTransactionFeeFiat =
-    actualTransactionFeeBase &&
-    convertToFiat(parseFloat(actualTransactionFeeBase), baseAssetRate).toFixed(2);
+  const actualTxFeeFiat =
+    actualTxFeeBase && convertToFiat(parseFloat(actualTxFeeBase), baseAssetRate).toFixed(2);
 
-  const maxTransactionFeeFiat = convertToFiat(
-    parseFloat(maxTransactionFeeBase),
-    baseAssetRate
-  ).toFixed(2);
+  const maxTxFeeFiat = convertToFiat(parseFloat(maxTxFeeBase), baseAssetRate).toFixed(2);
 
   return (
     <>
@@ -160,18 +156,18 @@ function TransactionDetailsDisplay({
                 `}</div>
               </div>
             )}
-            {actualTransactionFeeBase && (
+            {actualTxFeeBase && (
               <div className="TransactionDetails-row">
                 <div className="TransactionDetails-row-column">
                   {translateRaw('TRANSACTION_FEE')}:
                 </div>
-                <div className="TransactionDetails-row-column">{`${actualTransactionFeeBase} ${baseAsset.ticker} (${fiat.symbol}${actualTransactionFeeFiat})`}</div>
+                <div className="TransactionDetails-row-column">{`${actualTxFeeBase} ${baseAsset.ticker} (${fiat.symbol}${actualTxFeeFiat})`}</div>
               </div>
             )}
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">{translateRaw('MAX_TX_FEE')}:</div>
               <div className="TransactionDetails-row-column">
-                {`${maxTransactionFeeBase} ${baseAsset.ticker} (${fiat.symbol}${maxTransactionFeeFiat})`}
+                {`${maxTxFeeBase} ${baseAsset.ticker} (${fiat.symbol}${maxTxFeeFiat})`}
               </div>
             </div>
             <div className="TransactionDetails-row">
