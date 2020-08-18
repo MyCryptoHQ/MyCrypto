@@ -31,13 +31,14 @@ export { fContracts } from './contracts';
 export { unknownReport, scamReport, verifiedReport, loadingReport } from './ptxreport';
 
 // Non-Web3 ERC20 Tx Items
-export { default as fERC20NonWeb3TxConfig } from './erc20NonWeb3TxConfig.json';
+export { default as fERC20NonWeb3TxConfigJSON } from './erc20NonWeb3TxConfig.json';
+export { fERC20NonWeb3TxConfig, fETHNonWeb3TxConfig } from './txConfig';
 
 // Web3 ERC20 Tx Items
-export { default as fERC20Web3TxConfig } from './erc20Web3TxConfig.json';
+export { default as fERC20Web3TxConfigJSON } from './erc20Web3TxConfig.json';
 
 // Non-Web3 ETH Tx Items
-export { default as fETHNonWeb3TxConfig } from './ethNonWeb3TxConfig.json';
+export { default as fETHNonWeb3TxConfigJSON } from './ethNonWeb3TxConfig.json';
 
 // Web3 ETH Tx Items
-export { default as fETHWeb3TxConfig } from './ethWeb3TxConfig.json';
+export { default as fETHWeb3TxConfigJSON } from './ethWeb3TxConfig.json';

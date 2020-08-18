@@ -38,9 +38,17 @@ import {
   IFailedTxReceipt,
   ISuccessfulTxReceipt,
   ITxHistoryStatus,
+<<<<<<< HEAD
   ITxReceipt,
   IUnknownTxReceipt
+=======
+  ITxData,
+  ITxToAddress,
+  ITxValue
+>>>>>>> some unit tests
 } from '@types';
+import { isTransactionDataEmpty } from './validators';
+import { CREATION_ADDRESS } from '@config';
 
 export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
   txType: ITxType,
@@ -275,4 +283,25 @@ export const makeTxItem = (
       txConfig
     };
   }
+};
+
+export const guessIfErc20Tx = (data: string): boolean => {
+  if (isTransactionDataEmpty(data)) return false;
+  const { _to, _value } = decodeTransfer(data);
+  // if this isn't a valid transfer, _value will return 0 and _to will return the burn address '0x0000000000000000000000000000000000000000'
+  if (!_to || !_value || _to === CREATION_ADDRESS) return false;
+  return true;
+};
+
+export const deriveTxRecipientsAndAmount = (
+  isErc20: boolean,
+  data: ITxData,
+  toAddress: ITxToAddress,
+  value: ITxValue
+) => {
+  if (isErc20) {
+    const { _to, _value } = decodeTransfer(data);
+    return { to: toAddress, amount: _value, receiverAddress: _to };
+  }
+  return { to: toAddress, amount: value, receiverAddress: toAddress };
 };

@@ -14,7 +14,6 @@ import {
   ITxNonce,
   ITxToAddress,
   ITxValue,
-  ITxFromAddress,
   ITxConfig,
   Network,
   ExtendedAsset,
@@ -23,7 +22,6 @@ import {
   NetworkId,
   TTicker
 } from '@types';
-
 import {
   Address,
   toWei,
@@ -33,14 +31,19 @@ import {
   inputNonceToHex,
   inputGasLimitToHex,
   encodeTransfer,
-  decodeTransfer,
   fromTokenBase
 } from '@services/EthService';
-import { isTransactionDataEmpty, isSameAddress, generateAssetUUID } from '@utils';
+import {
+  isSameAddress,
+  generateAssetUUID,
+  guessIfErc20Tx,
+  deriveTxRecipientsAndAmount
+} from '@utils';
 import { handleValues } from '@services/EthService/utils/units';
-import { CREATION_ADDRESS, MANDATORY_RESUBMIT_QUERY_PARAMS } from '@config';
+import { MANDATORY_RESUBMIT_QUERY_PARAMS } from '@config';
 import { hexNonceToViewable, hexToString } from '@services/EthService/utils/makeTransaction';
 import { translateRaw } from '@translations';
+import { IMandatoryAcc, IMandatoryItem } from './types';
 
 const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
   const { network } = formData;
@@ -115,28 +118,15 @@ export const parseQueryParams = (queryParams: any) => (
   }
 };
 
-interface IMandatoryAcc {
-  [key: string]: string;
-}
-
-interface IMandatoryItem {
-  gasPrice: ITxGasPrice;
-  gasLimit: ITxGasLimit;
-  to: ITxToAddress;
-  data: ITxData;
-  nonce: ITxNonce;
-  from: ITxFromAddress;
-  value: ITxValue;
-  chainId: string;
-}
-
-const parseResubmitParams = (queryParams: any) => (
+export const parseResubmitParams = (queryParams: any) => (
   networks: Network[],
   assets: ExtendedAsset[],
   accounts: StoreAccount[]
 ): ITxConfig | undefined => {
+  // if resubmit tx does not contain all the necessary parameters to construct a tx config
   if (!MANDATORY_RESUBMIT_QUERY_PARAMS.every((mandatoryParam) => queryParams[mandatoryParam]))
     return;
+  // @todo: combine the below with the above.
   const i = (MANDATORY_RESUBMIT_QUERY_PARAMS.reduce((acc, cv) => {
     acc[cv] = queryParams[cv];
     return acc;
@@ -156,7 +146,8 @@ const parseResubmitParams = (queryParams: any) => (
     data: i.data,
     chainId: parseInt(i.chainId, 16)
   };
-  // This is labeled as "guess" because we can only identify simple erc20 transfers for now. if this is incorrect, It'll only affect display values.
+
+  // This is labeled as "guess" because we can only identify simple erc20 transfers for now. If this is incorrect, It only affects displayed amounts - not the actual tx.
   const erc20tx = guessIfErc20Tx(i.data);
 
   const { to, amount, receiverAddress } = deriveTxRecipientsAndAmount(
@@ -165,48 +156,27 @@ const parseResubmitParams = (queryParams: any) => (
     i.to,
     i.value
   );
-  const defaultAsset = assets.find(({ uuid }) => uuid === network.baseAsset) as ExtendedAsset;
+  const baseAsset = assets.find(({ uuid }) => uuid === network.baseAsset) as ExtendedAsset;
   const asset = erc20tx
     ? assets.find(
         ({ contractAddress }) => contractAddress && isSameAddress(contractAddress as TAddress, to)
       ) || generateGenericErc20(to, i.chainId, network.id)
-    : defaultAsset;
+    : baseAsset;
   return {
     from: senderAccount.address,
-    baseAsset: defaultAsset,
     gasPrice: hexToString(i.gasPrice),
     gasLimit: hexToString(i.gasLimit),
     nonce: hexNonceToViewable(i.nonce),
     data: i.data,
     amount: fromTokenBase(handleValues(amount), asset.decimal),
-    value: i.value as ITxValue,
+    value: hexToString(i.value),
     rawTransaction,
     network,
     senderAccount,
+    baseAsset,
     asset,
     receiverAddress
   };
-};
-
-const guessIfErc20Tx = (data: string): boolean => {
-  if (isTransactionDataEmpty(data)) return false;
-  const { _to, _value } = decodeTransfer(data);
-  // if this isn't a valid transfer, _value will return 0 and _to will return the burn address '0x0000000000000000000000000000000000000000'
-  if (!_to || !_value || _to === CREATION_ADDRESS) return false;
-  return true;
-};
-
-const deriveTxRecipientsAndAmount = (
-  isErc20: boolean,
-  data: ITxData,
-  toAddress: ITxToAddress,
-  value: ITxValue
-) => {
-  if (isErc20) {
-    const { _to, _value } = decodeTransfer(data);
-    return { to: toAddress, amount: _value, receiverAddress: _to };
-  }
-  return { to: toAddress, amount: value, receiverAddress: toAddress };
 };
 
 const generateGenericErc20 = (

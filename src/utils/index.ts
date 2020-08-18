@@ -55,10 +55,15 @@ export { tap } from './tap';
 export {
   makePendingTxReceipt,
   makeTxConfigFromSignedTx,
+<<<<<<< HEAD
   makeTxConfigFromTxReceipt,
   makeTxConfigFromTxResponse,
   makeFinishedTxReceipt,
   makeUnknownTxReceipt
+=======
+  guessIfErc20Tx,
+  deriveTxRecipientsAndAmount
+>>>>>>> some unit tests
 } from './transaction';
 export {
   formatErrorEmail,

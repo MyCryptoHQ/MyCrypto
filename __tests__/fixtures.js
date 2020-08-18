@@ -84,7 +84,7 @@ const FIXTURE_LOCALSTORAGE_EMPTY = {
   },
   password: '',
   networkNodes: { Ethereum: { selectedNode: 'web3' }, Ropsten: { selectedNode: 'web3' } },
-  mtime: 1591264444786
+  mtime: 1581530607024
 };
 
 const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
@@ -106,7 +106,7 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
           isCustom: false,
           uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7',
           balance: { _hex: '0x3e73362871420000' },
-          mtime: 1595965134769
+          mtime: 1581530607024
         }
       ],
       transactions: [],
@@ -161,7 +161,7 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
   },
   password: '',
   networkNodes: { Ethereum: { selectedNode: 'web3' }, Ropsten: { selectedNode: 'web3' } },
-  mtime: 1591264705862
+  mtime: 1581530607024
 };
 
 export {

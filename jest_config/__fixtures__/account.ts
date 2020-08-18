@@ -58,6 +58,45 @@ export const fAccounts: StoreAccount[] = [
     uuid: '4ffb0d4a-adf3-1990-5eb9-fe78e613f70b' as TUuid,
     network: fNetwork,
     label: 'Ledger Account'
+  },
+  {
+    address: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017' as TAddress,
+    networkId: 'Ropsten',
+    wallet: 'LEDGER_NANO_S' as WalletId,
+    dPath: "m/44'/60'/0'/0", // Ledger dPath
+    assets: [
+      {
+        uuid: '2783a9ff-d6f1-5c9e-bbab-3b74be91adb1' as TUuid,
+        name: 'RopDAI',
+        decimal: 18,
+        ticker: 'RopDAI' as TTicker,
+        mappings: {},
+        networkId: 'Ropsten',
+        contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
+        type: 'erc20',
+        isCustom: true,
+        balance: bigNumberify('0x54ab1b2ceea88000'),
+        mtime: 1581530607024
+      },
+      {
+        uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7' as TUuid,
+        name: 'Ropsten',
+        networkId: 'Ropsten',
+        type: 'base',
+        ticker: 'RopstenETH' as TTicker,
+        decimal: 18,
+        mappings: {},
+        isCustom: false,
+        balance: bigNumberify('0x0e2347cb6425dc00'),
+        mtime: 1581530607024
+      }
+    ],
+    transactions: [],
+    favorite: false,
+    mtime: 0,
+    uuid: 'cd36fc7c-adda-54ce-825b-f19a55bbc1ad' as TUuid,
+    network: fNetwork,
+    label: 'Ledger Nano S Account 1'
   }
 ];
 
