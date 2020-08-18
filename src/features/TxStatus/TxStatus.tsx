@@ -4,20 +4,14 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import queryString from 'query-string';
 
 import { Button, NetworkSelectDropdown, ContentPanel, TxReceipt, InlineMessage } from '@components';
-import { ITxHash, NetworkId, ITxType } from '@types';
-import { NetworkContext, AssetContext, StoreContext, ProviderHandler } from '@services';
-import {
-  noOp,
-  isVoid,
-  makeTxConfigFromTransactionResponse,
-  makePendingTxReceipt,
-  makeTxConfigFromTxReceipt
-} from '@utils';
+import { NetworkId } from '@types';
+import { NetworkContext, AssetContext, StoreContext } from '@services';
+import { noOp, isVoid } from '@utils';
 import { useEffectOnce, useUpdateEffect } from '@vendor';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
-import { getTxsFromAccount } from '@services/Store';
 import { txStatusReducer, generateInitialState } from './TxStatus.reducer';
+import { fetchTxStatus } from './helpers';
 
 const SUPPORTED_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Goerli', 'Kovan', 'ETC'];
 
@@ -25,7 +19,7 @@ const TxStatus = ({ history, match, location }: RouteComponentProps<{ txHash: st
   const qs = queryString.parse(location.search);
 
   const { assets } = useContext(AssetContext);
-  const { getNetworkById, networks } = useContext(NetworkContext);
+  const { networks } = useContext(NetworkContext);
   const { accounts } = useContext(StoreContext);
 
   const defaultTxHash = match.params.txHash ? match.params.txHash : '';
@@ -37,13 +31,6 @@ const TxStatus = ({ history, match, location }: RouteComponentProps<{ txHash: st
   const [reducerState, dispatch] = useReducer(txStatusReducer, initialState);
 
   const { networkId, txHash, tx, error, fetching } = reducerState;
-
-  const network = networkId && getNetworkById(networkId);
-
-  const txCache = getTxsFromAccount(accounts);
-  const cachedTx = txCache.find(
-    (t) => t.hash === (txHash as ITxHash) && t.asset.networkId === networkId
-  );
 
   // Fetch TX on load if possible
   useEffectOnce(() => {
@@ -63,37 +50,12 @@ const TxStatus = ({ history, match, location }: RouteComponentProps<{ txHash: st
 
   useEffect(() => {
     if (fetching) {
-      try {
-        const txResult = await(async () => {
-          if (!cachedTx) {
-            const provider = new ProviderHandler(network);
-            const fetchedTx = await provider.getTransactionByHash(txHash as ITxHash, true);
-            if (!fetchedTx) {
-              return undefined;
-            }
-            const fetchedTxConfig = makeTxConfigFromTransactionResponse(
-              fetchedTx,
-              assets,
-              network,
-              accounts
-            );
-            return {
-              config: fetchedTxConfig,
-              receipt: makePendingTxReceipt(txHash as ITxHash)(ITxType.UNKNOWN, fetchedTxConfig)
-            };
-          } else {
-            return {
-              config: makeTxConfigFromTxReceipt(cachedTx, assets, networks, accounts),
-              receipt: cachedTx
-            };
-          }
-        })();
-        dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_SUCCESS, payload: txResult });
-      } catch (err) {
-        console.error(err);
-      } finally {
-        //setLoading(false);
-      }
+      fetchTxStatus({ assets, accounts, networks, txHash, networkId })
+        .then((t) => dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_SUCCESS, payload: t }))
+        .catch((e) => {
+          console.error(e);
+          dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_SUCCESS });
+        });
     }
   }, [fetching]);
 
