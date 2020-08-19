@@ -7,8 +7,7 @@ import ZapReceipt from './components/ZapReceipt';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
 import ZapInteractionFactory from './stateFactory';
-import { ITxReceipt, ISignedTx } from '@types';
-import { ISimpleTxFormFull } from './types';
+import { ITxReceipt, ISignedTx, ISimpleTxFormFull } from '@types';
 import { translateRaw } from '@translations';
 import SignTransaction from '@features/SendAssets/components/SignTransaction';
 

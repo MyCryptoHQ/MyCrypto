@@ -679,6 +679,7 @@
     "RECENT_TX_LIST_LABEL_SENT": "$ticker Sent",
     "RECENT_TX_LIST_LABEL_SWAP": "Assets Swapped",
     "RECENT_TX_LIST_LABEL_TRANSFERRED": "$ticker Transferred",
+    "RECENT_TX_LIST_LABEL_REP_MIGRATION": "Migrated REP v1 to v2",
     "RECENT_TX_LIST_NO_TRANSACTIONS": "Your MyCrypto Transactions Will Appear Here!",
     "RECENT_TX_LIST_NO_TRANSACTIONS_MORE": "You can send ETH or Tokens with any of your accounts on MyCrypto to see your transactions.",
     "REGENERATE_MNEMONIC": "Regenerate Phrase",
@@ -1057,6 +1058,15 @@
     "WARNING_TRANSACTION_FEE": "The transaction fee of $fee seems to be greater than the amount you are sending ($amount). It's recommended to use a lower transaction fee unless you need this transaction to be confirmed swiftly.",
     "POWERED_BY": "Powered By",
     "DPATH_GENERATE_FRESH_ADDRESS_GAP_ERROR": "You cant generate more than $gap fresh accounts. Add some assets to the existing fresh addresses to open up more!",
-    "ZAP_WITHDRAW_TOOLTIP": "Withdrawing from this Zap requires interacting with Uniswap. If you need assistance, please read [How To Withdraw from Unipool](https://support.mycrypto.com/how-to/defi/how-to-withdraw-from-unipool)."
+    "ZAP_WITHDRAW_TOOLTIP": "Withdrawing from this Zap requires interacting with Uniswap. If you need assistance, please read [How To Withdraw from Unipool](https://support.mycrypto.com/how-to/defi/how-to-withdraw-from-unipool).",
+    "REP_TOKEN_MIGRATION_STEP1_TEXT": "Before migrating your v1 REP to v2 REP, you must approve the v2 contract which will allow for migration.",
+    "REP_TOKEN_MIGRATION_STEP2_TEXT": "After the REP v2 contract has been approved, confirm the transaction below to conduct the actual migration. This will complete the migration.",
+    "APPROVE_REP_TOKEN_MIGRATION": "Approve REPv2 Contract",
+    "COMPLETE_REP_TOKEN_MIGRATION": "Complete REP Migration",
+    "REP_TOKEN_MIGRATION": "Migrate REP Tokens",
+    "REP_TOKEN_MIGRATION_RECEIPT": "REP Token Migration Receipt",
+    "REP_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP": "This tool is intended to migrate all of your REP tokens from v1 to v2, so this field cannot be modified.",
+    "DASHBOARD_ACTIONS_REP_MIGRATION_TITLE": "New: Migrate your REP!",
+    "DASHBOARD_ACTIONS_REP_MIGRATION_SUBTITLE": "Augur v2 has launched and you need to take action to migrate your REPv1 tokens to REPv2."
   }
 }

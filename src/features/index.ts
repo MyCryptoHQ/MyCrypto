@@ -7,3 +7,4 @@ export { default as PageNotFound } from './PageNotFound';
 export { NotificationsProvider } from './NotificationsPanel';
 export { ToastProvider } from './Toasts';
 export { ErrorProvider, ErrorContext } from './ErrorHandling';
+export { TokenMigration } from './TokenMigration';
