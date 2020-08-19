@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
 import { Layout, LayoutConfig } from '@features/Layout';
-import { PageNotFound, ScreenLockProvider, DrawerProvider, MigrateLS } from '@features';
+import { PageNotFound, Dashboard, ScreenLockProvider, DrawerProvider, MigrateLS } from '@features';
 import { ScrollToTop, useScreenSize, withContext } from '@utils';
 import { useFeatureFlags } from '@services';
 import { StoreContext, SettingsContext } from '@services/Store';
