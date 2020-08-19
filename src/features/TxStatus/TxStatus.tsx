@@ -5,8 +5,8 @@ import queryString from 'query-string';
 
 import { Button, NetworkSelectDropdown, ContentPanel, TxReceipt, InlineMessage } from '@components';
 import { NetworkId } from '@types';
-import { NetworkContext, AssetContext, StoreContext } from '@services';
-import { noOp, isVoid } from '@utils';
+import { NetworkContext, AssetContext, StoreContext, ANALYTICS_CATEGORIES } from '@services';
+import { noOp, isVoid, useAnalytics } from '@utils';
 import { useEffectOnce, useUpdateEffect } from '@vendor';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
@@ -18,6 +18,10 @@ const SUPPORTED_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Goerli', 'Kovan
 
 const TxStatus = ({ history, location }: RouteComponentProps) => {
   const qs = queryString.parse(location.search);
+
+  const trackPageLoad = useAnalytics({
+    category: ANALYTICS_CATEGORIES.TX_STATUS
+  });
 
   const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
@@ -37,6 +41,13 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   useEffectOnce(() => {
     if (!isVoid(defaultTxHash)) {
       handleSubmit();
+      trackPageLoad({
+        actionName: `Used link sharing`
+      });
+    } else {
+      trackPageLoad({
+        actionName: `Didnt use link sharing`
+      });
     }
   });
 
