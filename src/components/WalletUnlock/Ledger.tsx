@@ -5,7 +5,7 @@ import prop from 'ramda/src/prop';
 import { MOONPAY_ASSET_UUIDS, IS_ELECTRON } from '@utils';
 import { FormData, WalletId, ExtendedAsset } from '@types';
 import translate, { translateRaw, Trans } from '@translations';
-import { NewTabLink, Spinner, Button, DeterministicAccountList, AssetSelector } from '@components';
+import { NewTabLink, Spinner, Button, RouterLink } from '@components';
 import {
   EXT_URLS,
   LEDGER_DERIVATION_PATHS,
@@ -24,7 +24,7 @@ import {
 
 import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
 import UnsupportedNetwork from './UnsupportedNetwork';
-import './LedgerNano.scss';
+import DeterministicWallet from './DeterministicWallet';
 
 interface OwnProps {
   formData: FormData;
@@ -57,48 +57,17 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
     addDPaths,
     generateFreshAddress
   } = useDeterministicWallet(extendedDPaths, WalletId.LEDGER_NANO_S_NEW, DEFAULT_GAP_TO_SCAN_FOR);
-  const [freshAddressIndex, setFreshAddressIndex] = useState(0);
+
   // @todo -> Figure out which assets to display in dropdown. Dropdown is heavy with 900+ assets in it. Loads slow af.
   const filteredAssets = assets.filter(({ uuid }) => MOONPAY_ASSET_UUIDS.includes(uuid)); // @todo - fix this.
-
-  const handleNullConnect = () => {
-    requestConnection(network, assetToUse);
-  };
 
   const handleAssetUpdate = (newAsset: ExtendedAsset) => {
     setAssetToUse(newAsset);
     updateAsset(newAsset);
   };
 
-  const testDPathAddition: DPath = {
-    label: 'Test Ledger Live (ETH)',
-    value: "m/44'/60'/0'/0/0",
-    isHardened: true,
-    getIndex: (addressIndex): string => `m/44'/60'/${addressIndex}'/0/0`
-  };
-
-  const handleDPathAddition = () => {
-    addDPaths([
-      {
-        ...testDPathAddition,
-        offset: 0,
-        numOfAddresses: numOfAccountsToCheck
-      }
-    ]);
-  };
-
-  const handleFreshAddressGeneration = () => {
-    if (freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR) {
-      return;
-    }
-    const freshAddressGenerationSuccess = generateFreshAddress({
-      ...defaultDPath,
-      offset: freshAddressIndex,
-      numOfAddresses: 1
-    });
-    if (freshAddressGenerationSuccess) {
-      setFreshAddressIndex(freshAddressIndex + 1);
-    }
+  const handleNullConnect = () => {
+    requestConnection(network, assetToUse);
   };
 
   if (!network) {
@@ -123,39 +92,18 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
 
   if (state.isConnected && state.asset && (state.queuedAccounts || state.finishedAccounts)) {
     return (
-      <div className="Mnemonic-dpath">
-        <Button onClick={() => handleDPathAddition()}>
-          {`Test Add Custom Derivation Path: ${testDPathAddition.value} - ${testDPathAddition.label} `}
-        </Button>
-        <br />
-        <Button
-          disabled={!state.completed || freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR}
-          onClick={() => handleFreshAddressGeneration()}
-        >
-          {`Test Generate Fresh Address`}
-        </Button>
-        {freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR && (
-          <p>
-            {translateRaw('DPATH_GENERATE_FRESH_ADDRESS_GAP_ERROR', {
-              $gap: DEFAULT_GAP_TO_SCAN_FOR.toString()
-            })}
-          </p>
-        )}
-        <br />
-        <AssetSelector
-          selectedAsset={assetToUse}
-          assets={filteredAssets}
-          onSelect={(option: ExtendedAsset) => {
-            handleAssetUpdate(option);
-          }}
-        />
-        <DeterministicAccountList
-          isComplete={state.completed}
-          asset={state.asset}
-          finishedAccounts={state.finishedAccounts}
-          onUnlock={onUnlock}
-        />
-      </div>
+      <DeterministicWallet
+        state={state}
+        defaultDPath={defaultDPath}
+        assets={filteredAssets}
+        assetToUse={assetToUse}
+        network={network}
+        updateAsset={updateAsset}
+        addDPaths={addDPaths}
+        generateFreshAddress={generateFreshAddress}
+        handleAssetUpdate={handleAssetUpdate}
+        onUnlock={onUnlock}
+      />
     );
   } else {
     return (
@@ -189,6 +137,17 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
           </div>
           <div className="LedgerPanel-footer">
             {translate('LEDGER_REFERRAL_2', { $url: EXT_URLS.LEDGER_REFERRAL.url })}
+            <br />
+            <Trans
+              id="USE_OLD_INTERFACE"
+              variables={{
+                $link: () => (
+                  <RouterLink to="/add-account/ledger_nano_s">
+                    {translateRaw('TRY_OLD_INTERFACE')}
+                  </RouterLink>
+                )
+              }}
+            />
             {/*<br />
 						{translate('LEDGER_HELP_LINK')} */}
           </div>

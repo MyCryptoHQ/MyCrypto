@@ -17,3 +17,5 @@ export { default as slice } from 'ramda/src/slice';
 export { default as innerJoin } from 'ramda/src/innerJoin';
 export { default as sort } from 'ramda/src/sort';
 export { default as merge } from 'ramda/src/merge';
+export { default as uniqBy } from 'ramda/src/uniqBy';
+export { default as identity } from 'ramda/src/identity';

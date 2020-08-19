@@ -35,21 +35,21 @@ export const getStories = (): IStory[] => [
   },
   {
     name: WalletId.LEDGER_NANO_S,
-    steps: [NetworkSelectPanel, LedgerNanoSDecrypt]
+    steps: [NetworkSelectPanel, LedgerNanoSDecrypt],
+    hideFromWalletList: true
   },
   {
     name: WalletId.LEDGER_NANO_S_NEW,
-    steps: [NetworkSelectPanel, LedgerDecrypt],
-    hideFromWalletList: !(IS_DEV || IS_STAGING)
+    steps: [NetworkSelectPanel, LedgerDecrypt]
   },
   {
     name: WalletId.TREZOR,
-    steps: [NetworkSelectPanel, TrezorDecrypt]
+    steps: [NetworkSelectPanel, TrezorDecrypt],
+    hideFromWalletList: true
   },
   {
     name: WalletId.TREZOR_NEW,
-    steps: [NetworkSelectPanel, TrezorUnlock],
-    hideFromWalletList: !(IS_DEV || IS_STAGING)
+    steps: [NetworkSelectPanel, TrezorUnlock]
   },
   {
     name: WalletId.KEYSTORE_FILE,
@@ -73,7 +73,8 @@ export const getStories = (): IStory[] => [
       NetworkSelectPanel,
       IS_DEV || IS_STAGING || IS_ELECTRON ? MnemonicDecrypt : InsecureWalletWarning
     ],
-    isDisabled: IS_WEB_AND_PRODUCTION
+    isDisabled: IS_WEB_AND_PRODUCTION,
+    hideFromWalletList: true
   },
   {
     name: WalletId.MNEMONIC_PHRASE_NEW,
@@ -81,8 +82,7 @@ export const getStories = (): IStory[] => [
       NetworkSelectPanel,
       IS_DEV || IS_STAGING || IS_ELECTRON ? MnemonicUnlock : InsecureWalletWarning
     ],
-    isDisabled: IS_WEB_AND_PRODUCTION,
-    hideFromWalletList: !IS_DEV
+    isDisabled: IS_WEB_AND_PRODUCTION
   },
   {
     name: WalletId.VIEW_ONLY,

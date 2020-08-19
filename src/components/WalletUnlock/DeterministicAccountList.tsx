@@ -1,26 +1,84 @@
 import React, { useState, useEffect } from 'react';
-import styled, { css } from 'styled-components';
-import BN from 'bn.js';
-import uniqBy from 'ramda/src/uniqBy';
-import prop from 'ramda/src/prop';
+import styled from 'styled-components';
 
-import { translateRaw } from '@translations';
-import { ExtendedAsset, TAddress } from '@types';
-import { EthAddress, FixedSizeCollapsibleTable, Spinner, Checkbox, Button } from '@components';
-import { isSameAddress } from '@utils';
-import { BREAK_POINTS, SPACING, breakpointToNumber } from '@theme';
+import { Trans } from '@translations';
+import { ExtendedAsset, TAddress, Network } from '@types';
+import { Button, Typography, Tooltip, Icon } from '@components';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { DWAccountDisplay } from '@services';
-import { fromTokenBase } from '@services/EthService/utils';
-import IconArrow from '@components/IconArrow';
+import { isSameAddress, accountsToCSV, useScreenSize, makeBlob } from '@utils';
+import { uniqBy, prop } from '@vendor';
 
-const HeaderAlignment = styled.div`
-  ${(props: { align?: string }) => css`
-    @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-      text-align: ${props.align || 'inherit'};
-    }
-  `};
-  & img {
-    margin-left: ${SPACING.XS};
+import DeterministicTable from './DeterministicAccountTable';
+
+const DeterministicAccountListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 800px;
+  min-height: 640px;
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    width: calc(100vw - 30px);
+    min-height: auto;
+  }
+`;
+
+const TableWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const StatusBar = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  padding-top: 42px;
+  border-top: 1px solid ${COLORS.GREY_ATHENS};
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    flex-direction: column;
+    background: white;
+    box-shadow: 0px -1px 4px rgba(186, 186, 186, 0.25);
+    border-radius: 1.32522px;
+    padding: ${SPACING.SM};
+    justify-content: space-between;
+  }
+`;
+
+const StatusWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 65%;
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    width: 100%;
+    text-align: center;
+    margin-bottom: ${SPACING.BASE};
+  }
+`;
+
+const Loader = styled.div`
+  padding-right: ${SPACING.BASE};
+  margin-right: ${SPACING.BASE};
+`;
+
+const IconWrapper = styled.div`
+  margin-right: ${SPACING.BASE};
+  display: flex;
+  align-items: center;
+`;
+
+const SButton = styled.span`
+  color: ${COLORS.BLUE_MYC};
+  cursor: pointer;
+  font-weight: bold;
+  &:hover {
+    color: ${COLORS.BLUE_LIGHT_DARKISH};
   }
 `;
 
@@ -28,10 +86,11 @@ interface DeterministicAccountListProps {
   finishedAccounts: DWAccountDisplay[];
   asset: ExtendedAsset;
   isComplete: boolean;
-  className?: string;
-  currentsOnly?: boolean;
-  dashboard?: boolean;
+  network: Network;
+  freshAddressIndex: number;
+  generateFreshAddress(): void;
   onUnlock(param: any): void;
+  handleUpdate(asset: ExtendedAsset): void;
 }
 
 interface ISelectedAccount {
@@ -39,15 +98,23 @@ interface ISelectedAccount {
   derivationPath: string;
 }
 
-export default function DeterministicAccountList(props: DeterministicAccountListProps) {
-  const { finishedAccounts, asset, isComplete, onUnlock } = props;
+export default function DeterministicAccountList({
+  finishedAccounts,
+  asset,
+  isComplete,
+  onUnlock,
+  network,
+  freshAddressIndex,
+  generateFreshAddress,
+  handleUpdate
+}: DeterministicAccountListProps) {
+  const { isMobile } = useScreenSize();
+
   const [selectedAccounts, setSelectedAccounts] = useState([] as ISelectedAccount[]);
+
   const accountsToUse = uniqBy(prop('address'), finishedAccounts).filter(
     ({ isFreshAddress, balance }) => (balance && !balance.isZero()) || isFreshAddress
   );
-  const handleSubmit = () => {
-    onUnlock(selectedAccounts);
-  };
 
   useEffect(() => {
     const selected = uniqBy(
@@ -60,84 +127,112 @@ export default function DeterministicAccountList(props: DeterministicAccountList
     setSelectedAccounts(selected);
   }, [accountsToUse.length]);
 
-  const toggleAccountSelection = (accountAddress: TAddress, accountPath: string) => {
+  const handleSubmit = () => {
+    onUnlock(selectedAccounts);
+  };
+
+  const handleSelection = (account: DWAccountDisplay) => {
     const newSelectedAccount: ISelectedAccount = {
-      address: accountAddress,
-      derivationPath: accountPath
+      address: account.address,
+      derivationPath: account.pathItem.path
     };
     const isPresent = selectedAccounts.find(({ address }) =>
       isSameAddress(newSelectedAccount.address, address)
     );
     setSelectedAccounts(
       isPresent
-        ? selectedAccounts.filter(({ address }) =>
-            isSameAddress(newSelectedAccount.address, address)
+        ? selectedAccounts.filter(
+            ({ address }) => !isSameAddress(newSelectedAccount.address, address)
           )
         : [...selectedAccounts, newSelectedAccount]
     );
   };
 
+  const handleDownload = () =>
+    window.open(makeBlob('text/csv', accountsToCSV(finishedAccounts, asset)));
   return (
-    <>
-      <>
-        {`Scanned Total: ${finishedAccounts.length}`}
-        <br />
-        {`isComplete: ${isComplete}`}
-        <br />
+    <DeterministicAccountListWrapper>
+      <TableWrapper>
+        <DeterministicTable
+          isComplete={isComplete}
+          accounts={accountsToUse}
+          selectedAccounts={selectedAccounts}
+          generateFreshAddress={generateFreshAddress}
+          network={network}
+          asset={asset}
+          onSelect={handleSelection}
+          handleUpdate={handleUpdate}
+          downloadCSV={handleDownload}
+          freshAddressIndex={freshAddressIndex}
+        />
+      </TableWrapper>
+      <StatusBar>
+        {isComplete && !!accountsToUse.length && (
+          <StatusWrapper>
+            <IconWrapper>
+              <Icon type="confirm" />
+            </IconWrapper>
+            <Typography>
+              <Trans
+                id="DETERMINISTIC_SCANNING_STATUS_DONE"
+                variables={{ $asset: () => asset.ticker }}
+              />{' '}
+              <SButton onClick={() => handleUpdate(asset)}>
+                <Trans id="DETERMINISTIC_SCAN_AGAIN" />
+              </SButton>
+              .
+            </Typography>
+          </StatusWrapper>
+        )}
+        {isComplete && !accountsToUse.length && (
+          <StatusWrapper>
+            <IconWrapper>
+              <Icon type="info-small" />
+            </IconWrapper>
+            <Trans
+              id="DETERMINISTIC_SCANNING_STATUS_EMPTY"
+              variables={{ $asset: () => asset.ticker }}
+            />
+          </StatusWrapper>
+        )}
         {!isComplete && (
-          <>
-            <Spinner /> Scanning...
-          </>
+          <StatusWrapper>
+            <Loader className="loading" />
+            <div>
+              <Trans
+                id="DETERMINISTIC_SCANNING_STATUS_RUNNING"
+                variables={{
+                  $total: () => finishedAccounts.length,
+                  $network: () => network.name
+                }}
+              />{' '}
+              <Tooltip
+                tooltip={
+                  <>
+                    <Trans
+                      id="DETERMINISTIC_CSV"
+                      variables={{ $total: () => finishedAccounts.length }}
+                    />{' '}
+                    <SButton onClick={handleDownload}>here</SButton>.
+                  </>
+                }
+              />
+            </div>
+          </StatusWrapper>
         )}
-      </>
-      <br />
-      <FixedSizeCollapsibleTable
-        breakpoint={breakpointToNumber(BREAK_POINTS.SCREEN_XS)}
-        maxHeight={'750px'}
-        {...buildDeterministicAccountTable(
-          accountsToUse,
-          selectedAccounts,
-          asset,
-          toggleAccountSelection
-        )}
-      />
-      <br />
-      <Button disabled={selectedAccounts.length === 0} onClick={handleSubmit}>
-        {`Add ${selectedAccounts.length} Accounts`}
-      </Button>
-    </>
+        <Button onClick={handleSubmit} disabled={!selectedAccounts.length} fullwidth={isMobile}>
+          <Trans
+            id="DETERMINISTIC_ACCOUNT_LIST_ADD"
+            variables={{
+              $total: () => (selectedAccounts.length ? selectedAccounts.length : ''),
+              $plural: () => (selectedAccounts.length > 1 ? 's' : '')
+            }}
+          />
+        </Button>
+      </StatusBar>
+    </DeterministicAccountListWrapper>
   );
 }
-
-type ISortTypes =
-  | 'dpath'
-  | 'dpath-reverse'
-  | 'address'
-  | 'address-reverse'
-  | 'value'
-  | 'value-reverse';
-type IColumnValues =
-  | 'DETERMINISTIC_ACCOUNT_LIST_DPATH'
-  | 'DETERMINISTIC_ACCOUNT_LIST_ADDRESS'
-  | 'DETERMINISTIC_ACCOUNT_LIST_VALUE';
-
-export interface ISortingState {
-  sortState: {
-    DETERMINISTIC_ACCOUNT_LIST_DPATH: 'dpath' | 'dpath-reverse';
-    DETERMINISTIC_ACCOUNT_LIST_ADDRESS: 'address' | 'address-reverse';
-    DETERMINISTIC_ACCOUNT_LIST_VALUE: 'value' | 'value-reverse';
-  };
-  activeSort: ISortTypes;
-}
-
-const initialSortingState: ISortingState = {
-  sortState: {
-    DETERMINISTIC_ACCOUNT_LIST_DPATH: 'dpath',
-    DETERMINISTIC_ACCOUNT_LIST_ADDRESS: 'address',
-    DETERMINISTIC_ACCOUNT_LIST_VALUE: 'value'
-  },
-  activeSort: 'value'
-};
 
 // @todo - sorting
 // interface ITableFullDeterministicAccountType {
@@ -168,100 +263,3 @@ const initialSortingState: ISortingState = {
 //         b.account.address.localeCompare(a.account.address);
 //   }
 // };
-
-const buildDeterministicAccountTable = (
-  accounts: DWAccountDisplay[],
-  selectedAccounts: ISelectedAccount[],
-  asset: ExtendedAsset,
-  toggleAccountSelection: (address: string, path: string) => void
-) => {
-  const [sortingState, setSortingState] = useState(initialSortingState);
-
-  const accountsToUse = accounts.map((account) => {
-    return {
-      ...account,
-      isSelected: selectedAccounts.map(({ address }) => address).includes(account.address)
-    };
-  });
-
-  const updateSortingState = (id: IColumnValues) => {
-    // In case overlay active, disable changing sorting state
-
-    const currentBtnState = sortingState.sortState[id];
-    if (currentBtnState.indexOf('-reverse') > -1) {
-      const newActiveSort = currentBtnState.split('-reverse')[0] as ISortTypes;
-      setSortingState({
-        sortState: {
-          ...sortingState.sortState,
-          [id]: newActiveSort
-        },
-        activeSort: newActiveSort
-      });
-    } else {
-      const newActiveSort = (currentBtnState + '-reverse') as ISortTypes;
-      setSortingState({
-        sortState: {
-          ...sortingState.sortState,
-          [id]: newActiveSort
-        },
-        activeSort: newActiveSort
-      });
-    }
-  };
-
-  const getColumnSortDirection = (id: IColumnValues): boolean =>
-    sortingState.sortState[id].indexOf('-reverse') > -1;
-
-  const convertColumnToClickable = (id: IColumnValues) => (
-    <div key={id} onClick={() => updateSortingState(id)}>
-      {translateRaw(id)} <IconArrow isFlipped={getColumnSortDirection(id)} />
-    </div>
-  );
-
-  const columns = [
-    '',
-    convertColumnToClickable('DETERMINISTIC_ACCOUNT_LIST_ADDRESS'),
-    <HeaderAlignment
-      key={'DETERMINISTIC_ACCOUNT_LIST_VALUE'}
-      align="center"
-      onClick={() => updateSortingState('DETERMINISTIC_ACCOUNT_LIST_VALUE')}
-    >
-      {translateRaw('DETERMINISTIC_ACCOUNT_LIST_VALUE')}
-      <IconArrow isFlipped={getColumnSortDirection('DETERMINISTIC_ACCOUNT_LIST_VALUE')} />
-    </HeaderAlignment>,
-    <HeaderAlignment
-      key={'DETERMINISTIC_ACCOUNT_LIST_DPATH'}
-      align="center"
-      onClick={() => updateSortingState('DETERMINISTIC_ACCOUNT_LIST_DPATH')}
-    >
-      {translateRaw('DETERMINISTIC_ACCOUNT_LIST_DPATH')}
-      <IconArrow isFlipped={getColumnSortDirection('DETERMINISTIC_ACCOUNT_LIST_DPATH')} />
-    </HeaderAlignment>
-  ];
-
-  return {
-    head: columns,
-    body: accountsToUse.map(({ address, balance, pathItem, isSelected }, index) => [
-      <Checkbox
-        key={index}
-        name={address}
-        checked={isSelected}
-        onChange={() => toggleAccountSelection(address, pathItem.path)}
-      />,
-      <EthAddress key={index} address={address} truncate={true} />,
-      <div key={index}>
-        {`${
-          balance
-            ? parseFloat(
-                fromTokenBase(new BN(balance.toString()), asset.decimal).toString()
-              ).toFixed(4)
-            : '0.0000'
-        } ${asset.ticker}`}
-      </div>,
-      <div key={index}>{pathItem.path}</div>
-    ]),
-    config: {
-      primaryColumn: translateRaw('DETERMINISTIC_ACCOUNT_LIST_LABEL')
-    }
-  };
-};

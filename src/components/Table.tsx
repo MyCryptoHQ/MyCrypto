@@ -216,7 +216,6 @@ class AbstractTable extends Component<Props, State> {
 
     const isReversedColumn = (heading: any) =>
       config && config.reversedColumns && config.reversedColumns.includes(heading);
-
     return (
       <table {...rest}>
         <thead>

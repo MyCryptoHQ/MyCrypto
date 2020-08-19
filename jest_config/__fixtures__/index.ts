@@ -1,5 +1,5 @@
 export { fAssets, fStoreAssets } from './assets';
-export { fAccount, fAccounts } from './account';
+export { fAccount, fAccounts, fDWAccounts } from './account';
 export { fNetwork } from './network';
 export {
   fTransaction,
