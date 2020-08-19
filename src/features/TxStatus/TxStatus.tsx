@@ -55,7 +55,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
         .then((t) => dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_SUCCESS, payload: t }))
         .catch((e) => {
           console.error(e);
-          dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_SUCCESS });
+          dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_ERROR });
         });
     }
   }, [fetching]);

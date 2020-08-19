@@ -40,6 +40,10 @@ export const txStatusReducer = (state: State, action: ReducerAction): State => {
       return { ...state, fetching: false, tx, error: !tx ? translateRaw('TX_NOT_FOUND') : '' };
     }
 
+    case txStatusReducer.actionTypes.FETCH_TX_ERROR: {
+      return { ...state, fetching: false, error: translateRaw('TX_NOT_FOUND') };
+    }
+
     case txStatusReducer.actionTypes.CLEAR_FORM: {
       return { tx: undefined, txHash: '', networkId: DEFAULT_NETWORK, fetching: false, error: '' };
     }
@@ -54,5 +58,6 @@ txStatusReducer.actionTypes = {
   SET_TX_HASH: 'SET_TX_HASH',
   FETCH_TX: 'FETCH_TX',
   FETCH_TX_SUCCESS: 'FETCH_TX_SUCCESS',
+  FETCH_TX_ERROR: 'FETCH_TX_ERROR',
   CLEAR_FORM: 'CLEAR_FORM'
 };
