@@ -1,36 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useReducer } from 'react';
 
-import { useStateReducer, useTxMulti } from '@utils';
-import { ITxReceipt, ITxConfig, TxParcel, ITxStatus, ISimpleTxFormFull } from '@types';
+import { useTxMulti } from '@utils';
+import { TxParcel, ITxStatus, ISimpleTxFormFull } from '@types';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
 import { WALLET_STEPS } from '@components';
 
-import { tokenMigrationConfig } from './config';
-import TokenMigrationInteractionFactory from './stateFactory';
 import { TokenMigrationState, ITokenMigrationFormFull } from './types';
 import { createMigrationTx, createApproveTx } from './helpers';
 import { isERC20Tx } from '../SendAssets';
 import TokenMigrationForm from './components/TokenMigrationForm';
 import { TokenMigrationMultiTx } from './components';
 import TokenMigrationReceipt from './components/TokenMigrationReceipt';
-
-const initialTokenMigrationFlowState = {
-  tokenConfig: tokenMigrationConfig,
-  txConfig: (undefined as unknown) as ITxConfig,
-  txReceipt: (undefined as unknown) as ITxReceipt
-};
+import { tokenMigrationReducer } from './TokenMigrationStepper.reducer';
 
 const TokenMigrationStepper = () => {
-  const { tokenMigrationFlowState, handleUserInputFormSubmit } = useStateReducer(
-    TokenMigrationInteractionFactory,
-    initialTokenMigrationFlowState
-  );
+  const [reducerState, dispatch] = useReducer(tokenMigrationReducer, {});
 
   const { state, prepareTx, sendTx, stopYield, initWith } = useTxMulti();
   const { canYield, isSubmitting, transactions } = state;
-  const { account }: TokenMigrationState = tokenMigrationFlowState;
+  const { account }: TokenMigrationState = reducerState;
 
   const steps: IStepperPath[] = [
     {
@@ -52,7 +42,7 @@ const TokenMigrationStepper = () => {
           formData.account,
           formData.account.network
         );
-        handleUserInputFormSubmit(formData);
+        dispatch({ type: tokenMigrationReducer.actionTypes.FORM_SUBMIT, payload: formData });
       }
     },
     ...transactions.flatMap((tx: Required<TxParcel>, idx) => [

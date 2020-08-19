@@ -2,7 +2,7 @@ import { StoreAccount, ISimpleTxFormFull } from '@types';
 import { ITokenMigrationConfig } from './config';
 
 export interface TokenMigrationState {
-  account: StoreAccount;
+  account?: StoreAccount;
 }
 
 export interface ITokenMigrationFormFull extends ISimpleTxFormFull {
