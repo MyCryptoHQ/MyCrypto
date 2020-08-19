@@ -1,13 +1,13 @@
 import { Selector, ClientFunction } from 'testcafe';
 
 import { PAGES } from './fixtures';
-import NoAccountsPage from './no-accounts-page.po';
+import AddAccountPage from './addaccount-page.po';
 
-const noAccounts = new NoAccountsPage();
+const addAccount = new AddAccountPage();
 fixture('Dashboard').page(PAGES.DASHBOARD);
 
 test('It contains a favicon tag', async (t) => {
-  await noAccounts.waitPageLoaded();
+  await addAccount.waitPageLoaded();
 
   const favicon = Selector('head link[rel=icon]');
   const hasHref = await favicon.hasAttribute('href');

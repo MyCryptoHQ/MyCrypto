@@ -3,10 +3,8 @@ import { getByText } from '@testing-library/testcafe';
 import { PAGES } from './fixtures';
 import { getTransValueByKey } from './translation-utils';
 
-import AddAccountPage from './add-account-page.po';
-import SettingsPage from './settings-page.po';
 import AddAccountPage from './addaccount-page.po';
-import DashboardPage from './dashboard-page.po';
+import SettingsPage from './settings-page.po';
 
 const addAccountPage = new AddAccountPage();
 const settingsPage = new SettingsPage();

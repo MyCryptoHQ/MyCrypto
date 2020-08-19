@@ -5,7 +5,7 @@ import {
   FIXTURE_MYC_STORAGE_KEY,
   PAGES
 } from './fixtures';
-import AddAccountPage from './add-account-page.po';
+import AddAccountPage from './addaccount-page.po';
 import SettingsPage from './settings-page.po';
 import { getTransValueByKey } from './translation-utils';
 import { clearLocalStorage, setLocalStorage } from './localstorage-utils';
