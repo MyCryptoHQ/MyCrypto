@@ -34,4 +34,12 @@ describe('IFrame', () => {
     expect(props.onLoad).toBeCalledTimes(1);
     expect(props.onLoad).toBeCalledWith(screen.getByTestId('iframe'));
   });
+
+  // it('triggers reload on prop change', () => {
+  //   const props = { ...defaultProps };
+  //   getComponent(props);
+  //   screen.rerender(<IFrame {...props} reload={true} />);
+  //   expect(props.onLoad).toBeCalledTimes(1);
+  //   expect(props.onLoad).toBeCalledWith(screen.getByTestId('iframe'));
+  // });
 });

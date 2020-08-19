@@ -1,9 +1,8 @@
-import React, { useContext, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
-import { StoreContext } from '@services/Store';
 import translate from '@translations';
 import { ROUTE_PATHS } from '@config';
 

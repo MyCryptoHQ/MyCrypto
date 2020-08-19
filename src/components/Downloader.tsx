@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 
 import { Button, Link } from '@components';
@@ -7,18 +7,21 @@ import { makeBlob } from '@utils';
 import translate from '@translations';
 import { COLORS } from '@theme';
 
-const Downloader: React.FC<{ appStore: string | object; onClick?(): void }> = ({
-  appStore,
+const Downloader: React.FC<{ data: string | object; onClick?(): void }> = ({
+  data,
   onClick,
   children
 }) => {
   const [blob, setBlob] = useState('');
   const [fileName, setFileName] = useState('');
 
-  const handleDownload = () => {
-    const settingsBlob = makeBlob('text/json;charset=UTF-8', appStore);
+  useEffect(() => {
+    const settingsBlob = makeBlob('text/json;charset=UTF-8', data);
     setBlob(settingsBlob);
     setFileName(getExportFileName(getCurrentDBConfig(), moment()));
+  }, [data]);
+
+  const handleDownload = () => {
     // Callback triggered after download
     if (onClick) onClick();
   };

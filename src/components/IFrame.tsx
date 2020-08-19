@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { TURL } from '@types';
@@ -10,13 +10,22 @@ const SIFrame = styled.iframe`
 const IFrame = ({
   src,
   onLoad,
+  reload = false,
   hidden = false
 }: {
   src: TURL;
   hidden?: boolean;
+  reload?: boolean;
   onLoad(ref: HTMLIFrameElement): void;
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  useEffect(() => {
+    if (iframeRef && iframeRef.current && reload) {
+      iframeRef.current.contentWindow?.location.reload();
+      onLoad(iframeRef.current);
+    }
+  }, [reload]);
 
   const handleLoad = () => {
     if (!iframeRef.current) {

@@ -13,6 +13,7 @@ interface State {
   readonly storage?: string;
   readonly isLoading: boolean;
   readonly canDestroy: boolean;
+  readonly canReset: boolean;
   readonly uiState: UIStates;
 }
 
@@ -21,7 +22,8 @@ export const defaultState: State = {
   iframeRef: undefined,
   uiState: 'default',
   isLoading: false,
-  canDestroy: false
+  canDestroy: false,
+  canReset: false
 };
 
 export type MigrateLSAction = TAction<string, any>;
@@ -76,6 +78,14 @@ const MigrateLSReducer = (state: State, action?: MigrateLSAction): State => {
         canDestroy: true
       };
     }
+    case MigrateLSReducer.actionTypes.DESTROY_SUCCESS: {
+      return {
+        ...state,
+        uiState: 'default',
+        canDestroy: false,
+        canReset: true
+      };
+    }
     case MigrateLSReducer.actionTypes.RESET:
     default:
       return defaultState;
@@ -92,6 +102,8 @@ MigrateLSReducer.actionTypes = {
   CANCEL_REQUEST: 'CANCEL_REQUEST',
   CANCEL_CONFIRM: 'CANCEL_CONFIRM',
   CANCEL_ABORT: 'CANCEL_ABORT',
+
+  DESTROY_SUCCESS: 'DESTROY_SUCCESS',
   RESET: 'RESET'
 };
 

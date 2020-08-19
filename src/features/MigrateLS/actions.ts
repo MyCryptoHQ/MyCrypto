@@ -2,7 +2,7 @@ import { Dispatch } from 'react';
 
 import { TURL } from '@types';
 
-import { getLS, getOrigin, DBName } from './helpers';
+import { getLS, getOrigin } from './helpers';
 import { default as Reducer, MigrateLSAction } from './reducer';
 
 const getStorage = (dispatch: Dispatch<MigrateLSAction>) => (
@@ -21,13 +21,6 @@ const getStorage = (dispatch: Dispatch<MigrateLSAction>) => (
   }
 };
 
-const destroyStorage = (dispatch: Dispatch<MigrateLSAction>) => (frame: HTMLIFrameElement) => {
-  frame.contentWindow?.localStorage.removeItem(DBName);
-  dispatch({
-    type: Reducer.actionTypes.RESET
-  });
-};
-
 const migrateStorage = (dispatch: Dispatch<MigrateLSAction>) => (
   storage: string,
   importFn: (ls: string) => boolean
@@ -41,7 +34,6 @@ const migrateStorage = (dispatch: Dispatch<MigrateLSAction>) => (
     } else {
       throw new Error(`[MYC-Migrate] Import failed`);
     }
-    // destroyStorage(state.iframeRef);
   } catch (err) {
     dispatch({ type: Reducer.actionTypes.MIGRATE_FAILURE, payload: { error: err } });
   }
@@ -55,15 +47,23 @@ const downloadAndDestroy = (dispatch: Dispatch<MigrateLSAction>) => () => {
   dispatch({ type: Reducer.actionTypes.CANCEL_CONFIRM });
 };
 
+const destroySuccess = (dispatch: Dispatch<MigrateLSAction>) => () =>
+  dispatch({ type: Reducer.actionTypes.DESTROY_SUCCESS });
+
+const reset = (dispatch: Dispatch<MigrateLSAction>) => () => {
+  dispatch({ type: Reducer.actionTypes.RESET });
+};
+
 const abortCancel = (dispatch: Dispatch<MigrateLSAction>) => () => {
   dispatch({ type: Reducer.actionTypes.CANCEL_ABORT });
 };
 
 export const bindActions = (dispatch: Dispatch<MigrateLSAction>) => ({
   getStorage: getStorage(dispatch),
-  destroyStorage: destroyStorage(dispatch),
   migrateStorage: migrateStorage(dispatch),
   cancelMigration: cancelMigration(dispatch),
   downloadAndDestroy: downloadAndDestroy(dispatch),
-  abortCancel: abortCancel(dispatch)
+  abortCancel: abortCancel(dispatch),
+  destroySuccess: destroySuccess(dispatch),
+  reset: reset(dispatch)
 });

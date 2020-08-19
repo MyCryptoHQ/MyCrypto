@@ -94,6 +94,19 @@ describe('MigrateLSReducer', () => {
     expect(state.uiState).toEqual('default');
   });
 
+  it('DESTROY_SUCCESS', () => {
+    const action = {
+      type: MigrateLSReducer.actionTypes.DESTROY_SUCCESS
+    };
+    const state = dispatch(action)({
+      ...defaultState,
+      iframeRef: ('<iframe />' as any) as HTMLIFrameElement
+    });
+    expect(state.isLoading).toEqual(false);
+    expect(state.canDestroy).toEqual(false);
+    expect(state.uiState).toEqual('default');
+  });
+
   it('RESET', () => {
     const action = {
       type: MigrateLSReducer.actionTypes.RESET
