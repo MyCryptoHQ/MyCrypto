@@ -32,10 +32,10 @@ const SBanner = styled.div`
 /**
  *  Use an IFrame to check if the old url contains a localstorage that we need to import.
  *  Validate the schema, and prompt the user to import their previous settings.
- *  If user accepts and migratation succeds:
+ *  If user accepts and migration succeeds:
  *    - destroy the previous storage so they aren't prompted again.
  *    - let `NO_ACCOUNTS` handle the redirect, after `Store` is hydrated.
- *  If user cacels:
+ *  If user cancels:
  *    - prompt to confirm cancel and inform that it will download a json
  *    - destroy previous storage.
  */
