@@ -1,4 +1,4 @@
-import { IS_PROD, IS_DEV } from '@utils';
+import { IS_DEV } from '@utils';
 
 export enum FEATURE_LIST {
   DASHBOARD = 'DASHBOARD',
@@ -53,5 +53,5 @@ export const IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE = {
   PROTECT_TX: true,
   ENS: true,
   CUSTOM_NETWORKS: IS_DEV,
-  TX_STATUS: !IS_PROD
+  TX_STATUS: true
 };
