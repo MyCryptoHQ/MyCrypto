@@ -11,21 +11,17 @@ export type UIStates =
 interface State {
   readonly iframeRef?: HTMLIFrameElement;
   readonly storage?: string;
-  readonly error?: Error;
   readonly isLoading: boolean;
   readonly canDestroy: boolean;
-  readonly canDownload: boolean;
   readonly uiState: UIStates;
 }
 
 export const defaultState: State = {
   storage: undefined,
   iframeRef: undefined,
-  error: undefined,
   uiState: 'default',
   isLoading: false,
-  canDestroy: false,
-  canDownload: false
+  canDestroy: false
 };
 
 export type MigrateLSAction = TAction<string, any>;
@@ -58,15 +54,13 @@ const MigrateLSReducer = (state: State, action?: MigrateLSAction): State => {
       return {
         ...state,
         uiState: 'migrate-error',
-        isLoading: false,
-        error: payload.error
+        isLoading: false
       };
     }
     case MigrateLSReducer.actionTypes.CANCEL_REQUEST: {
       return {
         ...state,
-        uiState: 'confirm-cancel',
-        isLoading: true
+        uiState: 'confirm-cancel'
       };
     }
     case MigrateLSReducer.actionTypes.CANCEL_ABORT: {
@@ -79,12 +73,9 @@ const MigrateLSReducer = (state: State, action?: MigrateLSAction): State => {
       return {
         ...state,
         uiState: 'default',
-        isLoading: false,
-        canDownload: true,
         canDestroy: true
       };
     }
-
     case MigrateLSReducer.actionTypes.RESET:
     default:
       return defaultState;
