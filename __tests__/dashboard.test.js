@@ -3,19 +3,18 @@ import { getByText } from '@testing-library/testcafe';
 import { PAGES } from './fixtures';
 import { getTransValueByKey } from './translation-utils';
 
-import NoAccountsPage from './no-accounts-page.po';
-import SettingsPage from './settings-page.po';
 import AddAccountPage from './addaccount-page.po';
-import DashboardPage from './dashboard-page.po';
+import SettingsPage from './settings-page.po';
 
-const noAccountsPage = new NoAccountsPage();
+const addAccountPage = new AddAccountPage();
+const settingsPage = new SettingsPage();
 
 fixture('Dashboard').page(PAGES.DASHBOARD);
 
-test('Should redirect to no-accounts', async (t) => {
-  await noAccountsPage.waitPageLoaded();
+test('Should redirect to add-account', async (t) => {
+  await addAccountPage.waitPageLoaded();
 
-  const title = getByText(getTransValueByKey('NO_ACCOUNTS_HEADER'));
+  const title = getByText(getTransValueByKey('DECRYPT_ACCESS'));
   await t.expect(title).ok();
 });
 

@@ -5,12 +5,12 @@ import {
   FIXTURE_MYC_STORAGE_KEY,
   PAGES
 } from './fixtures';
-import NoAccountsPage from './no-accounts-page.po';
+import AddAccountPage from './addaccount-page.po';
 import SettingsPage from './settings-page.po';
 import { getTransValueByKey } from './translation-utils';
 import { clearLocalStorage, setLocalStorage } from './localstorage-utils';
 
-const noAccountsPage = new NoAccountsPage();
+const addAccountPage = new AddAccountPage();
 const settingsPage = new SettingsPage();
 
 fixture('Storage').page(PAGES.DASHBOARD);
@@ -20,10 +20,10 @@ test('Should apply empty storage', async (t) => {
   await setLocalStorage(FIXTURE_MYC_STORAGE_KEY, FIXTURE_LOCALSTORAGE_EMPTY);
 
   // localStorage is set after page load, so first navigation should happen
-  await noAccountsPage.navigateTo(PAGES.DASHBOARD);
-  await noAccountsPage.waitPageLoaded();
+  await addAccountPage.navigateTo(PAGES.DASHBOARD);
+  await addAccountPage.waitPageLoaded();
 
-  const title = getByText(getTransValueByKey('NO_ACCOUNTS_HEADER'));
+  const title = getByText(getTransValueByKey('DECRYPT_ACCESS'));
   await t.expect(title).ok();
 });
 

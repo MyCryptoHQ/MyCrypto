@@ -21,7 +21,7 @@ export const PrivateRoute = ({
         (accounts && accounts.length) || !requireAccounts ? (
           <Component {...props} />
         ) : (
-          <Redirect to={ROUTE_PATHS.NO_ACCOUNTS.path} />
+          <Redirect to={ROUTE_PATHS.ADD_ACCOUNT.path} />
         )
       }
     />
