@@ -1,5 +1,7 @@
 import { translateRaw } from '@translations';
 import { ROUTE_PATHS, EXT_URLS } from '@config';
+import { StoreAsset } from '@types';
+import { REPV1UUID } from '@utils';
 import { Action } from './types';
 
 // Legacy
@@ -10,8 +12,6 @@ import receiveIcon from '@assets/images/icn-receive.svg';
 import repIcon from '@assets/images/rep-logo.svg';
 import ledgerIcon from '@assets/images/wallets/ledger.svg';
 import trezorIcon from '@assets/images/wallets/trezor.svg';
-import { StoreAsset } from '@types';
-import { REPV1UUID } from '@utils';
 
 const selectRandomAction = (actionsList: Action[]) =>
   actionsList[Math.floor(Math.random() * actionsList.length)];

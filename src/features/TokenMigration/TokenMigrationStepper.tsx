@@ -65,7 +65,7 @@ const TokenMigrationStepper = () => {
         }
       },
       {
-        label: translateRaw('CONFIRM_TRANSACTION'),
+        label: '',
         backBtnText: translateRaw('CONFIRM_TRANSACTION'),
         component: account && WALLET_STEPS[account.wallet],
         props: {
@@ -104,7 +104,7 @@ const TokenMigrationStepper = () => {
       }}
       steps={steps}
       defaultBackPath={ROUTE_PATHS.DASHBOARD.path}
-      defaultBackPathLabel={ROUTE_PATHS.DASHBOARD.title} // @todo: Change this.
+      defaultBackPathLabel={ROUTE_PATHS.DASHBOARD.title}
     />
   );
 };

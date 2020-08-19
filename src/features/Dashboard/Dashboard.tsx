@@ -18,8 +18,9 @@ import {
   MembershipPanel
 } from './components';
 import { actions } from './constants';
-import './Dashboard.scss';
 import { filterDashboardActions } from './helpers';
+
+import './Dashboard.scss';
 
 // Keep the same mobile width as an ActionTile
 const EmptyTile = styled.div`

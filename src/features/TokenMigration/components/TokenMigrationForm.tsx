@@ -179,11 +179,10 @@ export const TokenMigrationFormUI = ({
             <AmountInput
               disabled={true}
               asset={values.asset}
-              value={values.amount || ''}
+              value={values.amount || '0'}
               onChange={noOp}
               onBlur={() => {
                 setFieldTouched('amount');
-                //handleGasEstimate();
               }}
               placeholder={'0.00'}
             />
