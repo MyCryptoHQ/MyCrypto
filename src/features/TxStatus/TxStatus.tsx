@@ -19,7 +19,7 @@ const SUPPORTED_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Goerli', 'Kovan
 
 const Loader = styled.div`
   padding-bottom: 6rem;
-  transform: scale(4.75);
+  transform: scale(3.75);
 
   &&::before {
     border-width: 0.75px;
@@ -28,6 +28,16 @@ const Loader = styled.div`
   &&::after {
     border-width: 0.75px;
   }
+`;
+
+const Wrapper = styled.div<{ fullPageLoading: boolean }>`
+  ${({ fullPageLoading }) =>
+    fullPageLoading &&
+    `
+    display: flex;
+    justify-content: center;
+`}
+  min-height: 600px;
 `;
 
 const TxStatus = ({ history, location }: RouteComponentProps) => {
@@ -93,50 +103,54 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
     dispatch({ type: txStatusReducer.actionTypes.CLEAR_FORM });
   };
 
+  const fullPageLoading = fromLink && !tx;
+
   return (
     <ContentPanel heading={translateRaw('TX_STATUS')}>
-      {!tx && !fromLink && (
-        <>
-          <NetworkSelectDropdown
-            network={networkId ? networkId : undefined}
-            onChange={(n) =>
-              dispatch({ type: txStatusReducer.actionTypes.SET_NETWORK, payload: n })
-            }
-            filter={(n) => SUPPORTED_NETWORKS.includes(n.id)}
-          />
-          <label htmlFor="txhash">{translateRaw('TX_HASH')}</label>
-          <Input
-            name="txhash"
-            value={txHash}
-            onChange={(e) =>
-              dispatch({
-                type: txStatusReducer.actionTypes.SET_TX_HASH,
-                payload: e.currentTarget.value
-              })
-            }
-          />
-          {error && <InlineMessage value={error} />}
-          <Button loading={fetching} onClick={() => handleSubmit(false)} fullwidth={true}>
-            {translateRaw('FETCH')}
-          </Button>
-        </>
-      )}
-      {!tx && fromLink && <Loader className="loading" />}
-      {tx && (
-        <>
-          <TxReceipt
-            txConfig={tx.config}
-            txReceipt={tx.receipt}
-            resetFlow={noOp}
-            onComplete={noOp}
-            disableDynamicTxReceiptDisplay={true}
-            disableAddTxToAccount={true}
-          />
-          <Button onClick={clearForm} fullwidth={true}>
-            {translateRaw('TX_STATUS_GO_BACK')}
-          </Button>
-        </>
-      )}
+      <Wrapper fullPageLoading={fullPageLoading || false}>
+        {!tx && !fromLink && (
+          <>
+            <NetworkSelectDropdown
+              network={networkId ? networkId : undefined}
+              onChange={(n) =>
+                dispatch({ type: txStatusReducer.actionTypes.SET_NETWORK, payload: n })
+              }
+              filter={(n) => SUPPORTED_NETWORKS.includes(n.id)}
+            />
+            <label htmlFor="txhash">{translateRaw('TX_HASH')}</label>
+            <Input
+              name="txhash"
+              value={txHash}
+              onChange={(e) =>
+                dispatch({
+                  type: txStatusReducer.actionTypes.SET_TX_HASH,
+                  payload: e.currentTarget.value
+                })
+              }
+            />
+            {error && <InlineMessage value={error} />}
+            <Button loading={fetching} onClick={() => handleSubmit(false)} fullwidth={true}>
+              {translateRaw('FETCH')}
+            </Button>
+          </>
+        )}
+        {fullPageLoading && <Loader className="loading" />}
+        {tx && (
+          <>
+            <TxReceipt
+              txConfig={tx.config}
+              txReceipt={tx.receipt}
+              resetFlow={noOp}
+              onComplete={noOp}
+              disableDynamicTxReceiptDisplay={true}
+              disableAddTxToAccount={true}
+            />
+            <Button onClick={clearForm} fullwidth={true}>
+              {translateRaw('TX_STATUS_GO_BACK')}
+            </Button>
+          </>
+        )}
+      </Wrapper>
     </ContentPanel>
   );
 };
