@@ -22,20 +22,16 @@ const getStorage = (dispatch: Dispatch<MigrateLSAction>) => (
 };
 
 const migrateStorage = (dispatch: Dispatch<MigrateLSAction>) => (
-  storage: string,
-  importFn: (ls: string) => boolean
+  storage: string | object,
+  importFn: (ls: string | object) => boolean
 ) => {
   // Start loading spinner
   dispatch({ type: Reducer.actionTypes.MIGRATE_REQUEST });
-  try {
-    const success = importFn(storage);
-    if (success) {
-      dispatch({ type: Reducer.actionTypes.MIGRATE_SUCCESS });
-    } else {
-      throw new Error(`[MYC-Migrate] Import failed`);
-    }
-  } catch (err) {
-    dispatch({ type: Reducer.actionTypes.MIGRATE_FAILURE, payload: { error: err } });
+  const success = importFn(storage);
+  if (success) {
+    dispatch({ type: Reducer.actionTypes.MIGRATE_SUCCESS });
+  } else {
+    dispatch({ type: Reducer.actionTypes.MIGRATE_FAILURE });
   }
 };
 
