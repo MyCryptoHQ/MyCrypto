@@ -9,7 +9,6 @@ import { WALLET_STEPS } from '@components';
 
 import { TokenMigrationState, ITokenMigrationFormFull } from './types';
 import { createMigrationTx, createApproveTx } from './helpers';
-import { isERC20Tx } from '../SendAssets';
 import TokenMigrationForm from './components/TokenMigrationForm';
 import { TokenMigrationMultiTx } from './components';
 import TokenMigrationReceipt from './components/TokenMigrationReceipt';
@@ -35,9 +34,7 @@ const TokenMigrationStepper = () => {
           () => {
             const purchaseTx = createMigrationTx(formData);
             const approveTx = createApproveTx(formData);
-            return Promise.resolve(
-              isERC20Tx(formData.asset) ? [approveTx, purchaseTx] : [purchaseTx]
-            );
+            return Promise.resolve([approveTx, purchaseTx]);
           },
           formData.account,
           formData.account.network
