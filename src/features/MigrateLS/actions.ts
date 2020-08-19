@@ -13,23 +13,10 @@ const getStorage = (dispatch: Dispatch<MigrateLSAction>) => (
   const storage = getLS(frame);
   const origin = getOrigin(frame);
 
-  if (origin !== src) {
-    // This is a security risk. We want to fail hard if ever this happens
-    dispatch({
-      type: Reducer.actionTypes.IFRAME_LOAD_FAILURE,
-      payload: { error: new Error(`[MYC-Migrate] invalid iFrame origin ${origin}`) }
-    });
-    return;
-  } else if (storage && validate(storage)) {
+  if (origin === src && storage && validate(storage)) {
     dispatch({
       type: Reducer.actionTypes.IFRAME_LOAD_SUCCESS,
       payload: { frame, storage }
-    });
-  } else {
-    // The user has no storage to migrate
-    dispatch({
-      type: Reducer.actionTypes.IFRAME_LOAD_FAILURE,
-      payload: { error: new Error(`[MYC-Migrate] storage from ${origin} is invalid ${storage}`) }
     });
   }
 };

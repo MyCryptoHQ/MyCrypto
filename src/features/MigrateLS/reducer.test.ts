@@ -8,7 +8,7 @@ describe('MigrateLSReducer', () => {
     expect(MigrateLSReducer(defaultState)).toEqual(defaultState);
   });
 
-  it('handles LOAD_SUCCESS', () => {
+  it('LOAD_SUCCESS', () => {
     const action = {
       type: MigrateLSReducer.actionTypes.IFRAME_LOAD_SUCCESS,
       payload: {
@@ -22,7 +22,7 @@ describe('MigrateLSReducer', () => {
     expect(state.uiState).toEqual('migrate-prompt');
   });
 
-  it('handles LOAD_FAILURE', () => {
+  it('LOAD_FAILURE', () => {
     const action = {
       type: MigrateLSReducer.actionTypes.IFRAME_LOAD_FAILURE
     };
@@ -30,7 +30,7 @@ describe('MigrateLSReducer', () => {
     expect(state.uiState).toEqual('load-error');
   });
 
-  it('handles MIGRATE_REQUEST', () => {
+  it('MIGRATE_REQUEST', () => {
     const action = {
       type: MigrateLSReducer.actionTypes.MIGRATE_REQUEST
     };
@@ -39,7 +39,7 @@ describe('MigrateLSReducer', () => {
     expect(state.uiState).toEqual('migrate-prompt');
   });
 
-  it('handles MIGRATE_SUCCESS', () => {
+  it('MIGRATE_SUCCESS', () => {
     const action = {
       type: MigrateLSReducer.actionTypes.MIGRATE_SUCCESS
     };

@@ -84,7 +84,6 @@ const MigrateLS = ({
 
   const UI_STATES: Record<UIStates, JSX.Element> = {
     default: <></>,
-    'load-error': <SBanner>Something went terrible wrong. Please contact support</SBanner>,
     'migrate-prompt': (
       <SBanner>
         We found your previous settings from beta.mycrypto.com. Would you like to import them?
@@ -100,8 +99,13 @@ const MigrateLS = ({
       </SBanner>
     ),
     'migrate-success': <SBanner>All done!</SBanner>,
-    'migrate-error': <></>,
-    'confirm-success': <></>,
+    'migrate-error': (
+      <SBanner>
+        The migration failed. Please contact support with your settings file
+        <Downloader appStore={storage}>settings.json</Downloader>
+      </SBanner>
+    ),
+    'confirm-success': <SBanner>All done!</SBanner>,
     'confirm-cancel': (
       <SBanner>
         This will download a copy of your settings and clear the storage at beta.mycrypto.com.

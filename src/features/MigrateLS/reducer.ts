@@ -5,7 +5,6 @@ export type UIStates =
   | 'migrate-prompt'
   | 'migrate-success'
   | 'migrate-error'
-  | 'load-error'
   | 'confirm-cancel'
   | 'confirm-success';
 
@@ -34,11 +33,6 @@ export type MigrateLSAction = TAction<string, any>;
 const MigrateLSReducer = (state: State, action?: MigrateLSAction): State => {
   const { type, payload } = action || {};
   switch (type) {
-    case MigrateLSReducer.actionTypes.IFRAME_LOAD_FAILURE:
-      return {
-        ...state,
-        uiState: 'load-error'
-      };
     case MigrateLSReducer.actionTypes.IFRAME_LOAD_SUCCESS:
       return {
         ...state,
@@ -99,7 +93,6 @@ const MigrateLSReducer = (state: State, action?: MigrateLSAction): State => {
 
 MigrateLSReducer.actionTypes = {
   IFRAME_LOAD_SUCCESS: 'IFRAME_LOAD_SUCCESS',
-  IFRAME_LOAD_FAILURE: 'IFRAME_LOAD_FAILURE',
 
   MIGRATE_REQUEST: 'MIGRATE_REQUEST',
   MIGRATE_SUCCESS: 'MIGRATE_SUCCESS',
