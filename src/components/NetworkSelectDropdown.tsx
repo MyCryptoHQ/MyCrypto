@@ -28,7 +28,10 @@ const NetworkOption = ({
   data,
   selectOption
 }: OptionProps<Network> | { data: Network; selectOption?(): void }) => (
-  <SContainer onClick={() => selectOption && selectOption(data)}>
+  <SContainer
+    data-testid={`network-selector-option-${data.id}`}
+    onClick={() => selectOption && selectOption(data)}
+  >
     <Typography value={data.name} />
   </SContainer>
 );
@@ -61,11 +64,12 @@ function NetworkSelectDropdown({
 
   return (
     <div {...props}>
-      <label>
+      <label htmlFor="network">
         {translate('SELECT_NETWORK_LABEL')}{' '}
         {showTooltip && <Tooltip tooltip={translate('NETWORK_TOOLTIP')} />}
       </label>
       <Selector
+        name={'network'}
         placeholder={'Select Network'}
         value={network}
         options={options}

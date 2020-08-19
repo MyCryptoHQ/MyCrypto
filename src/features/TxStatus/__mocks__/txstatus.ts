@@ -1,4 +1,4 @@
-export const mockFactory = () => {
+export const mockFactory = (validHash: string) => {
   const txResponse = {
     hash: '0x5b8bd3deca986e4c6aa4acc561c32314a0c32c2292be95b739ee76db022cfba8',
     blockHash: null,
@@ -25,7 +25,13 @@ export const mockFactory = () => {
     InfuraProvider: () => ({}),
     FallbackProvider: () => ({
       providers: [
-        { getTransaction: jest.fn().mockImplementation(() => Promise.resolve(txResponse)) }
+        {
+          getTransaction: jest
+            .fn()
+            .mockImplementation((hash) =>
+              hash === validHash ? Promise.resolve(txResponse) : Promise.resolve(undefined)
+            )
+        }
       ]
     })
   };

@@ -1,6 +1,7 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router';
-import { simpleRender, waitFor } from 'test-utils';
+import { simpleRender, waitFor, fireEvent, screen } from 'test-utils';
+import selectEvent from 'react-select-event';
 
 import {
   NetworkContext,
@@ -15,11 +16,12 @@ import { fAccount, fNetwork, fAssets } from '@fixtures';
 
 import TxStatus from './TxStatus';
 
-const TX_HASH = '0x6a705a2943f19079dd712fa0b2ae1f7b036454ca6df881afc9e17573ee6ede8a ';
+const TX_HASH = '0x6a705a2943f19079dd712fa0b2ae1f7b036454ca6df881afc9e17573ee6ede8a';
+const INVALID_TX_HASH = '0xb324e6630491f89aff0e8e30228741cbccc7ddfdb94c91eedc02141b1acc4df7';
 
 jest.mock('ethers/providers', () => {
   const { mockFactory } = require('./__mocks__/txstatus');
-  return mockFactory();
+  return mockFactory('0x6a705a2943f19079dd712fa0b2ae1f7b036454ca6df881afc9e17573ee6ede8a');
 });
 
 /* Test components */
@@ -59,6 +61,34 @@ describe('TxStatus', () => {
     const { getByText } = renderComponent();
     const selector = translateRaw('TX_STATUS');
     expect(getByText(selector)).toBeInTheDocument();
+  });
+
+  test('Can render error state', async () => {
+    const { getByText, container } = renderComponent('/tx-status?network=Ropsten');
+    const selector = translateRaw('TX_STATUS');
+    expect(getByText(selector)).toBeInTheDocument();
+    fireEvent.change(container.querySelector('input[name="txhash"]')!, {
+      target: { value: INVALID_TX_HASH }
+    });
+    fireEvent.click(container.querySelector('button')!);
+    await waitFor(() =>
+      expect(
+        getByText('No transaction found with that hash.', { exact: false })
+      ).toBeInTheDocument()
+    );
+  });
+
+  test('When information is given in form fetching is done correctly', async () => {
+    const { getByText, container } = renderComponent();
+    const selector = translateRaw('TX_STATUS');
+    expect(getByText(selector)).toBeInTheDocument();
+    await selectEvent.openMenu(screen.getByLabelText('Network'));
+    fireEvent.click(screen.getByTestId(`network-selector-option-${fNetwork.id}`));
+    fireEvent.change(container.querySelector('input[name="txhash"]')!, {
+      target: { value: TX_HASH }
+    });
+    fireEvent.click(container.querySelector('button')!);
+    await waitFor(() => expect(getByText(fAssets[1].ticker, { exact: false })).toBeInTheDocument());
   });
 
   test('When information given in query string handles fetching correctly', async () => {
