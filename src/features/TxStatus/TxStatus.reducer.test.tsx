@@ -1,6 +1,6 @@
 import { txStatusReducer, ReducerAction } from './TxStatus.reducer';
 import { DEFAULT_NETWORK } from '@config';
-import { translateRaw } from '@translations';
+import translate from '@translations';
 import { fTxConfig, fTxReceipt } from '@fixtures';
 
 const dispatch = (action: ReducerAction) => (state: any) => txStatusReducer(state, action);
@@ -52,7 +52,7 @@ describe('TxStatusReducer', () => {
       );
 
       expect(newState.fetching).toBe(false);
-      expect(newState.error).toBe('');
+      expect(newState.error).toBe(undefined);
       expect(newState.tx).toBe(payload);
       expect(newState.txHash).toBe(prevState.txHash);
       expect(newState.networkId).toBe(prevState.networkId);
@@ -65,7 +65,7 @@ describe('TxStatusReducer', () => {
       const newState = dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_ERROR })(prevState);
 
       expect(newState.fetching).toBe(false);
-      expect(newState.error).toBe(translateRaw('TX_NOT_FOUND'));
+      expect(newState.error).toStrictEqual(translate('TX_NOT_FOUND'));
       expect(newState.tx).toBe(undefined);
     });
   });
@@ -76,7 +76,7 @@ describe('TxStatusReducer', () => {
       const newState = dispatch({ type: txStatusReducer.actionTypes.CLEAR_FORM })(prevState);
 
       expect(newState.fetching).toBe(false);
-      expect(newState.error).toBe('');
+      expect(newState.error).toBe(undefined);
       expect(newState.txHash).toBe('');
       expect(newState.tx).toBe(undefined);
       expect(newState.networkId).toBe(DEFAULT_NETWORK);

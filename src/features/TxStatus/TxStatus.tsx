@@ -90,7 +90,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
               })
             }
           />
-          {error.length > 0 && <InlineMessage value={error} />}
+          {error && <InlineMessage value={error} />}
           <Button loading={fetching} onClick={handleSubmit} fullwidth={true}>
             {translateRaw('FETCH')}
           </Button>

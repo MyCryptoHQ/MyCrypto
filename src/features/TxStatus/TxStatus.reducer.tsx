@@ -2,14 +2,14 @@ import { ValuesType } from 'utility-types';
 
 import { ITxConfig, ITxReceipt, TAction, NetworkId } from '@types';
 import { DEFAULT_NETWORK } from '@config';
-import { translateRaw } from '@translations';
+import translate from '@translations';
 
 interface State {
   txHash: string;
   networkId: NetworkId;
   tx?: { config: ITxConfig; receipt: ITxReceipt };
   fetching: boolean;
-  error: string;
+  error?: JSX.Element;
 }
 
 export type ReducerAction = TAction<ValuesType<typeof txStatusReducer.actionTypes>, any>;
@@ -18,7 +18,7 @@ export const generateInitialState = (txHash: string, networkId: NetworkId) => ({
   txHash,
   networkId,
   fetching: false,
-  error: ''
+  error: undefined
 });
 
 export const txStatusReducer = (state: State, action: ReducerAction): State => {
@@ -37,15 +37,21 @@ export const txStatusReducer = (state: State, action: ReducerAction): State => {
 
     case txStatusReducer.actionTypes.FETCH_TX_SUCCESS: {
       const tx = action.payload;
-      return { ...state, fetching: false, tx, error: !tx ? translateRaw('TX_NOT_FOUND') : '' };
+      return { ...state, fetching: false, tx, error: !tx ? translate('TX_NOT_FOUND') : undefined };
     }
 
     case txStatusReducer.actionTypes.FETCH_TX_ERROR: {
-      return { ...state, fetching: false, error: translateRaw('TX_NOT_FOUND') };
+      return { ...state, fetching: false, error: translate('TX_NOT_FOUND') };
     }
 
     case txStatusReducer.actionTypes.CLEAR_FORM: {
-      return { tx: undefined, txHash: '', networkId: DEFAULT_NETWORK, fetching: false, error: '' };
+      return {
+        tx: undefined,
+        txHash: '',
+        networkId: DEFAULT_NETWORK,
+        fetching: false,
+        error: undefined
+      };
     }
 
     default:
