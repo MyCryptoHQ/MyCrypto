@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { TxReceipt, MultiTxReceipt } from '@components/TransactionFlow';
 import { ITxType, TxParcel, StoreAccount } from '@types';
 import { makeTxItem } from '@utils/transaction';
+import { RatesContext, AssetContext, SettingsContext } from '@services';
+import { getFiat } from '@config/fiats';
 
 import { IMembershipConfig } from '../config';
 import { makePurchaseMembershipTxConfig } from '../helpers';
@@ -20,11 +22,21 @@ export default function MembershipReceipt({
   membershipSelected,
   onComplete
 }: Props) {
+  const { getAssetByUUID } = useContext(AssetContext);
+  const { settings } = useContext(SettingsContext);
+  const { getAssetRate } = useContext(RatesContext);
+
   const txItems = transactions.map((tx, idx) => {
     const txConfig = makePurchaseMembershipTxConfig(tx.txRaw, account, membershipSelected);
     const txType = idx === transactions.length - 1 ? ITxType.PURCHASE_MEMBERSHIP : ITxType.APPROVAL;
     return makeTxItem(txType, txConfig, tx.txResponse, tx.txReceipt);
   });
+
+  const baseAsset = getAssetByUUID(txItems[0].txConfig.network.baseAsset)!;
+
+  const baseAssetRate = getAssetRate(baseAsset);
+
+  const fiat = getFiat(settings);
 
   return txItems.length === 1 ? (
     <TxReceipt
@@ -44,6 +56,8 @@ export default function MembershipReceipt({
       network={account.network}
       resetFlow={onComplete}
       onComplete={onComplete}
+      fiat={fiat}
+      baseAssetRate={baseAssetRate}
     />
   );
 }

@@ -30,13 +30,19 @@ const toTxResponse = (fixtureTxResponse: any): TransactionResponse => ({
   value: bigNumberify(fixtureTxResponse.value)
 });
 
-const toTxReceipt = (fixtureTxReceipt: any): ITxReceipt => ({
-  ...fixtureTxReceipt,
-  gasPrice: bigNumberify(fixtureTxReceipt.gasPrice),
-  gasLimit: bigNumberify(fixtureTxReceipt.gasLimit),
-  value: bigNumberify(fixtureTxReceipt.value),
-  status: fixtureTxReceipt.status as ITxStatus.PENDING | ITxStatus.SUCCESS | ITxStatus.FAILED
-});
+const toTxReceipt = (fixtureTxReceipt: any): ITxReceipt => {
+  const result = {
+    ...fixtureTxReceipt,
+    gasPrice: bigNumberify(fixtureTxReceipt.gasPrice),
+    gasLimit: bigNumberify(fixtureTxReceipt.gasLimit),
+    value: bigNumberify(fixtureTxReceipt.value),
+    status: fixtureTxReceipt.status as ITxStatus.PENDING | ITxStatus.SUCCESS | ITxStatus.FAILED
+  };
+  return {
+    ...result,
+    ...(fixtureTxReceipt.gasUsed && { gasUsed: bigNumberify(fixtureTxReceipt.gasUsed) })
+  };
+};
 
 export const fTransaction: ITxObject = {
   to: '0x909f74Ffdc223586d0d30E78016E707B6F5a45E2',

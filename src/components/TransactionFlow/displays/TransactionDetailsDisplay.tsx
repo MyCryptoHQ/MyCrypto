@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { Network, Button } from '@mycrypto/ui';
-import { bigNumberify } from 'ethers/utils';
+import { bigNumberify, BigNumber } from 'ethers/utils';
 import styled from 'styled-components';
 
-import { Asset, ITxObject } from '@types';
-import { baseToConvertedUnit, totalTxFeeToString } from '@services/EthService';
+import { Asset, ITxObject, Fiat } from '@types';
+import {
+  baseToConvertedUnit,
+  totalTxFeeToString,
+  calculateGasUsedPercentage
+} from '@services/EthService';
 import { CopyableCodeBlock } from '@components';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
-import { weiToFloat, isTransactionDataEmpty } from '@utils';
+import { weiToFloat, isTransactionDataEmpty, convertToFiat } from '@utils';
 import translate, { translateRaw } from '@translations';
 import { COLORS } from '@theme';
 
@@ -22,11 +26,15 @@ interface Props {
   asset: Asset;
   nonce: string;
   data: string;
+  confirmations?: number;
+  gasUsed?: BigNumber;
   gasLimit: string;
   gasPrice: string;
   rawTransaction?: ITxObject;
   signedTransaction?: string;
   sender: ISender;
+  fiat: Fiat;
+  baseAssetRate: number | undefined;
 }
 
 const SeeMoreDetailsButton = styled(Button)`
@@ -40,17 +48,21 @@ const SeeMoreDetailsButton = styled(Button)`
 function TransactionDetailsDisplay({
   baseAsset,
   asset,
+  confirmations,
+  gasUsed,
   nonce,
   data,
   gasLimit,
   gasPrice,
   rawTransaction,
   signedTransaction,
-  sender
+  sender,
+  fiat,
+  baseAssetRate
 }: Props) {
   const [showDetails, setShowDetails] = useState(false);
 
-  const maxTransactionFeeBase: string = totalTxFeeToString(gasPrice, gasLimit);
+  const maxTxFeeBase: string = totalTxFeeToString(gasPrice, gasLimit);
   const {
     network: { name: networkName, color: networkColor }
   } = sender;
@@ -60,6 +72,15 @@ function TransactionDetailsDisplay({
   const userAssetBalance = userAssetToSend
     ? weiToFloat(bigNumberify(userAssetToSend.balance), asset.decimal).toFixed(6)
     : translateRaw('UNKNOWN_BALANCE');
+
+  const gasUsedPercentage = gasUsed && calculateGasUsedPercentage(gasLimit, gasUsed.toString());
+
+  const actualTxFeeBase = gasUsed && totalTxFeeToString(gasPrice, gasUsed.toString());
+
+  const actualTxFeeFiat =
+    actualTxFeeBase && convertToFiat(parseFloat(actualTxFeeBase), baseAssetRate).toFixed(2);
+
+  const maxTxFeeFiat = convertToFiat(parseFloat(maxTxFeeBase), baseAssetRate).toFixed(2);
 
   return (
     <>
@@ -106,10 +127,26 @@ function TransactionDetailsDisplay({
                 <Network color={networkColor || 'blue'}>{networkName}</Network>
               </div>
             </div>
+            {confirmations && (
+              <div className="TransactionDetails-row">
+                <div className="TransactionDetails-row-column">
+                  {translateRaw('CONFIRMATIONS')}:
+                </div>
+                <div className="TransactionDetails-row-column">{`${confirmations}`}</div>
+              </div>
+            )}
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">{translateRaw('GAS_LIMIT')}:</div>
               <div className="TransactionDetails-row-column">{`${gasLimit}`}</div>
             </div>
+            {gasUsed && (
+              <div className="TransactionDetails-row">
+                <div className="TransactionDetails-row-column">{translateRaw('GAS_USED')}:</div>
+                <div className="TransactionDetails-row-column">{`${gasUsed.toString()} (${gasUsedPercentage?.toFixed(
+                  2
+                )}%)`}</div>
+              </div>
+            )}
             {baseAsset && (
               <div className="TransactionDetails-row">
                 <div className="TransactionDetails-row-column">{translateRaw('GAS_PRICE')}:</div>
@@ -119,18 +156,30 @@ function TransactionDetailsDisplay({
                 `}</div>
               </div>
             )}
+            {actualTxFeeBase && (
+              <div className="TransactionDetails-row">
+                <div className="TransactionDetails-row-column">
+                  {translateRaw('TRANSACTION_FEE')}:
+                </div>
+                <div className="TransactionDetails-row-column">{`${actualTxFeeBase} ${baseAsset.ticker} (${fiat.symbol}${actualTxFeeFiat})`}</div>
+              </div>
+            )}
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">{translateRaw('MAX_TX_FEE')}:</div>
-              <div className="TransactionDetails-row-column">{`${maxTransactionFeeBase} ${baseAsset.ticker}`}</div>
+              <div className="TransactionDetails-row-column">
+                {`${maxTxFeeBase} ${baseAsset.ticker} (${fiat.symbol}${maxTxFeeFiat})`}
+              </div>
             </div>
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">{translateRaw('NONCE')}:</div>
               <div className="TransactionDetails-row-column">{nonce}</div>
             </div>
-            <div className="TransactionDetails-row">
+            <div className={`TransactionDetails-row ${!isTransactionDataEmpty(data) && `stacked`}`}>
               <div className="TransactionDetails-row-column">{translateRaw('DATA')}:</div>
               {!isTransactionDataEmpty(data) ? (
-                <div className="TransactionDetails-row-data">{data}</div>
+                <div className="TransactionDetails-row-data">
+                  <CopyableCodeBlock>{data}</CopyableCodeBlock>
+                </div>
               ) : (
                 <div className="TransactionDetails-row-data-empty">
                   {translate('TRANS_DATA_NONE')}

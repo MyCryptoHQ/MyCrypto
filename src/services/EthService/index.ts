@@ -81,6 +81,7 @@ export {
   Address,
   toWei,
   getDecimalFromEtherUnit,
-  toTokenBase
+  toTokenBase,
+  calculateGasUsedPercentage
 } from './utils/units';
 export * from './ens';

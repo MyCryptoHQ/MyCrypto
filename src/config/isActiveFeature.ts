@@ -1,4 +1,4 @@
-import { IS_DEV } from '@utils';
+import { IS_PROD, IS_DEV } from '@utils';
 
 export enum FEATURE_LIST {
   DASHBOARD = 'DASHBOARD',
@@ -22,7 +22,8 @@ export enum FEATURE_LIST {
   MYC_MEMBERSHIP = 'MYC_MEMBERSHIP',
   PROTECT_TX = 'PROTECT_TX',
   ENS = 'ENS',
-  CUSTOM_NETWORKS = 'CUSTOM_NETWORKS'
+  CUSTOM_NETWORKS = 'CUSTOM_NETWORKS',
+  TX_STATUS = 'TX_STATUS'
 }
 
 export type IIS_ACTIVE_FEATURE = {
@@ -51,5 +52,6 @@ export const IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE = {
   MYC_MEMBERSHIP: true,
   PROTECT_TX: true,
   ENS: true,
-  CUSTOM_NETWORKS: IS_DEV
+  CUSTOM_NETWORKS: IS_DEV,
+  TX_STATUS: !IS_PROD
 };

@@ -38,5 +38,9 @@
   "status": "SUCCESS",
   "txType": "STANDARD",
   "blockNumber": 7990974,
-  "timestamp": 1590734231
+  "timestamp": 1590734231,
+  "gasUsed": {
+    "_hex": "0x7d3c"
+  },
+  "confirmations": 1
 }

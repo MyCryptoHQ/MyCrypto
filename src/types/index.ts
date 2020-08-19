@@ -70,7 +70,8 @@ export {
   ITxSigned,
   IFailedTxReceipt,
   ISuccessfulTxReceipt,
-  IPendingTxReceipt
+  IPendingTxReceipt,
+  IUnknownTxReceipt
 } from './transaction';
 export {
   ISignedTx,

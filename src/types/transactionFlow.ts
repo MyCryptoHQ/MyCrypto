@@ -79,7 +79,7 @@ export interface IStepComponentProps {
 
 export interface ITxReceiptStepProps {
   txConfig: ITxConfig;
-  txReceipt: ITxReceipt;
+  txReceipt?: ITxReceipt;
   signedTx?: string;
   zapSelected?: IZapConfig;
   membershipSelected?: IMembershipConfig;
@@ -98,7 +98,11 @@ export type SigningComponents = {
   readonly [k in WalletId]: React.ComponentType<ISignComponentProps> | null;
 };
 
-export type ITxHistoryStatus = ITxStatus.PENDING | ITxStatus.SUCCESS | ITxStatus.FAILED;
+export type ITxHistoryStatus =
+  | ITxStatus.PENDING
+  | ITxStatus.SUCCESS
+  | ITxStatus.FAILED
+  | ITxStatus.UNKNOWN;
 
 export enum ITxStatus {
   SUCCESS = 'SUCCESS',
@@ -111,7 +115,9 @@ export enum ITxStatus {
   SIGNED = 'SIGNED',
   BROADCASTED = 'BROADCASTED',
   CONFIRMING = 'CONFIRMING',
-  CONFIRMED = 'CONFIRMED'
+  CONFIRMED = 'CONFIRMED',
+
+  UNKNOWN = 'UNKNOWN'
 }
 
 export enum ITxType {

@@ -1,11 +1,19 @@
-import { Arrayish, parseTransaction, bigNumberify } from 'ethers/utils';
+import {
+  Arrayish,
+  parseTransaction,
+  bigNumberify,
+  formatEther,
+  hexlify,
+  BigNumber
+} from 'ethers/utils';
 import { TransactionResponse, TransactionReceipt } from 'ethers/providers';
 
 import {
   getNetworkByChainId,
   getBaseAssetByNetwork,
   getAssetByContractAndNetwork,
-  getStoreAccount
+  getStoreAccount,
+  getNetworkById
 } from '@services/Store';
 import {
   fromTokenBase,
@@ -29,13 +37,15 @@ import {
   ITxHash,
   IFailedTxReceipt,
   ISuccessfulTxReceipt,
-  ITxHistoryStatus
+  ITxHistoryStatus,
+  ITxReceipt,
+  IUnknownTxReceipt
 } from '@types';
 
 export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
   txType: ITxType,
   txConfig: ITxConfig
-): IPendingTxReceipt | ISuccessfulTxReceipt | IFailedTxReceipt => {
+): IPendingTxReceipt | ISuccessfulTxReceipt | IFailedTxReceipt | IUnknownTxReceipt => {
   const { data, asset, baseAsset, amount, gasPrice, gasLimit, nonce } = txConfig;
 
   const txReceipt = {
@@ -66,16 +76,26 @@ export const makePendingTxReceipt = (txHash: ITxHash) => (
 ): IPendingTxReceipt =>
   toTxReceipt(txHash, ITxStatus.PENDING)(txType, txConfig) as IPendingTxReceipt;
 
+export const makeUnknownTxReceipt = (txHash: ITxHash) => (
+  txType: ITxType,
+  txConfig: ITxConfig
+): IPendingTxReceipt =>
+  toTxReceipt(txHash, ITxStatus.UNKNOWN)(txType, txConfig) as IPendingTxReceipt;
+
 export const makeFinishedTxReceipt = (
   previousTxReceipt: IPendingTxReceipt,
   newStatus: ITxStatus.FAILED | ITxStatus.SUCCESS,
   timestamp?: number,
-  blockNumber?: number
+  blockNumber?: number,
+  gasUsed?: BigNumber,
+  confirmations?: number
 ): IFailedTxReceipt | ISuccessfulTxReceipt => ({
   ...previousTxReceipt,
   status: newStatus,
   timestamp: timestamp || 0,
-  blockNumber: blockNumber || 0
+  blockNumber: blockNumber || 0,
+  gasUsed,
+  confirmations
 });
 
 const decodeTransaction = (signedTx: Arrayish) => {
@@ -138,6 +158,101 @@ export const makeTxConfigFromSignedTx = (
     nonce: decodedTx.nonce.toString(),
     from: (decodedTx.from || oldTxConfig.from) as TAddress
   };
+  return txConfig;
+};
+
+// needs testing
+export const makeTxConfigFromTxResponse = (
+  decodedTx: TransactionResponse,
+  assets: ExtendedAsset[],
+  network: Network,
+  accounts: StoreAccount[]
+): ITxConfig => {
+  const contractAsset = getAssetByContractAndNetwork(decodedTx.to || undefined, network)(assets);
+  const baseAsset = getBaseAssetByNetwork({
+    network,
+    assets
+  })!;
+
+  const txConfig = {
+    rawTransaction: {
+      to: decodedTx.to as TAddress,
+      value: hexlify(decodedTx.value),
+      gasLimit: hexlify(decodedTx.gasLimit),
+      data: decodedTx.data,
+      gasPrice: hexlify(decodedTx.gasPrice),
+      nonce: hexlify(decodedTx.nonce),
+      chainId: decodedTx.chainId,
+      from: decodedTx.from as TAddress
+    },
+    receiverAddress: (contractAsset
+      ? decodeTransfer(decodedTx.data)._to
+      : decodedTx.to) as TAddress,
+    amount: contractAsset
+      ? fromTokenBase(toWei(decodeTransfer(decodedTx.data)._value, 0), contractAsset.decimal)
+      : formatEther(decodedTx.value),
+    network,
+    value: toWei(decodedTx.value.toString(), getDecimalFromEtherUnit('ether')).toString(),
+    asset: contractAsset || baseAsset,
+    baseAsset,
+    senderAccount: getStoreAccount(accounts)(decodedTx.from as TAddress, network.id)!,
+    gasPrice: decodedTx.gasPrice.toString(),
+    gasLimit: decodedTx.gasLimit.toString(),
+    data: decodedTx.data,
+    nonce: decodedTx.nonce.toString(),
+    from: decodedTx.from as TAddress
+  };
+  return txConfig;
+};
+
+export const makeTxConfigFromTxReceipt = (
+  txReceipt: ITxReceipt,
+  assets: ExtendedAsset[],
+  networks: Network[],
+  accounts: StoreAccount[]
+): ITxConfig => {
+  const networkDetected = getNetworkById(txReceipt.asset.networkId, networks);
+  const contractAsset = getAssetByContractAndNetwork(
+    txReceipt.to || undefined,
+    networkDetected
+  )(assets);
+  const baseAsset = getBaseAssetByNetwork({
+    network: networkDetected || ({} as Network),
+    assets
+  });
+
+  const txConfig = {
+    rawTransaction: {
+      to: txReceipt.to,
+      value: bigNumberify(txReceipt.value).toHexString(),
+      gasLimit: bigNumberify(txReceipt.gasLimit).toHexString(),
+      data: txReceipt.data,
+      gasPrice: bigNumberify(txReceipt.gasPrice).toHexString(),
+      nonce: txReceipt.nonce,
+      chainId: networkDetected.chainId,
+      from: txReceipt.from
+    },
+    receiverAddress: (contractAsset
+      ? decodeTransfer(txReceipt.data)._to
+      : txReceipt.to) as TAddress,
+    amount: contractAsset
+      ? fromTokenBase(toWei(decodeTransfer(txReceipt.data)._value, 0), contractAsset.decimal)
+      : txReceipt.amount,
+    network: networkDetected,
+    value: toWei(
+      bigNumberify(txReceipt.value).toString(),
+      getDecimalFromEtherUnit('ether')
+    ).toString(),
+    asset: contractAsset || baseAsset,
+    baseAsset,
+    senderAccount: getStoreAccount(accounts)(txReceipt.from, networkDetected.id),
+    gasPrice: bigNumberify(txReceipt.gasPrice).toString(),
+    gasLimit: bigNumberify(txReceipt.gasLimit).toString(),
+    data: txReceipt.data,
+    nonce: txReceipt.nonce,
+    from: txReceipt.from
+  };
+  // @ts-ignore Ignore possible missing senderAccount for now
   return txConfig;
 };
 

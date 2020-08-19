@@ -9,7 +9,8 @@ import {
   AssetIcon,
   Account,
   FixedSizeCollapsibleTable,
-  EditableAccountLabel
+  EditableAccountLabel,
+  RouterLink
 } from '@components';
 import { convertToFiat } from '@utils';
 import { ITxReceipt, ITxStatus, StoreAccount, Asset, Network, ExtendedAddressBook } from '@types';
@@ -29,6 +30,7 @@ import {
 } from '@services/Store/helpers';
 import { COLORS } from '@theme';
 import { getFiat } from '@config/fiats';
+import { ROUTE_PATHS } from '@config';
 
 import NoTransactions from './NoTransactions';
 import TransactionLabel from './TransactionLabel';
@@ -239,16 +241,20 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
               amount: convertToFiat(parseFloat(amount), getAssetRate(asset)).toFixed(2)
             }}
           />,
-          <NewTabLink
-            key={4}
-            href={
-              !network || !('blockExplorer' in network) || !network.blockExplorer
-                ? `https://etherscan.io/tx/${hash}`
-                : network.blockExplorer.txUrl(hash)
-            }
-          >
-            <img src={newWindowIcon} alt="View more information about this transaction" />
-          </NewTabLink>
+          <div key={4}>
+            <RouterLink to={`${ROUTE_PATHS.TX_STATUS.path}/${hash}?network=${network.id}`}>
+              <img src={newWindowIcon} alt="View more information about this transaction" />
+            </RouterLink>
+            <NewTabLink
+              href={
+                !network || !('blockExplorer' in network) || !network.blockExplorer
+                  ? `https://etherscan.io/tx/${hash}`
+                  : network.blockExplorer.txUrl(hash)
+              }
+            >
+              <img src={newWindowIcon} alt="View more information about this transaction" />
+            </NewTabLink>
+          </div>
         ];
       }
     );

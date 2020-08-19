@@ -93,6 +93,9 @@ const BuyAssets = lazy(() =>
 const EnsDashboard = lazy(() =>
   import(/* webpackChunkName: "EnsDashboard" */ '@features/Ens/EnsDashboard')
 );
+const TxStatus = lazy(() =>
+  import(/* webpackChunkName: "TxStatus" */ '@features/TxStatus/TxStatus')
+);
 
 export interface IAppRoutes {
   [K: string]: IAppRoute;
@@ -323,6 +326,14 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE): IAppR
     requireAccounts: true,
     enabled: IS_ACTIVE_FEATURE.ENS,
     component: EnsDashboard
+  },
+  {
+    name: ROUTE_PATHS.TX_STATUS.name,
+    title: ROUTE_PATHS.TX_STATUS.title,
+    path: ROUTE_PATHS.TX_STATUS.path,
+    exact: true,
+    enabled: IS_ACTIVE_FEATURE.TX_STATUS,
+    component: TxStatus
   }
 ];
 

@@ -3,9 +3,10 @@ import React from 'react';
 import { fTxConfigs, fAccount, fNetwork, fTxParcels } from '@fixtures';
 import { ITxType, TTicker, ITxConfig, TUuid, ISwapAsset } from '@types';
 import { noOp, bigify, DAIUUID, ETHUUID } from '@utils';
+import { SwapDisplayData } from '@features/SwapAssets/types';
+import { Fiats } from '@config';
 
 import MultiTxReceipt from './MultiTxReceipt';
-import { SwapDisplayData } from '@features/SwapAssets/types';
 
 // Define props
 const resetFlow = noOp;
@@ -23,6 +24,7 @@ const swapDisplay: SwapDisplayData = {
 };
 
 const transactionsConfigs: ITxConfig[] = fTxConfigs;
+const baseAssetRate = 250;
 
 export default { title: 'MultiTxReceipt' };
 
@@ -37,6 +39,8 @@ export const swapTransactionReceipt = () => (
       resetFlow={resetFlow}
       onComplete={resetFlow}
       swapDisplay={swapDisplay}
+      baseAssetRate={baseAssetRate}
+      fiat={Fiats.USD}
     />
   </div>
 );

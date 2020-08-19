@@ -2,6 +2,7 @@ import BN from 'bn.js';
 import { toBuffer, addHexPrefix } from 'ethereumjs-util';
 import { stripHexPrefix } from '@services/EthService';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
+import { bigify } from '@utils';
 
 type UnitKey = keyof typeof Units;
 type Wei = BN;
@@ -109,6 +110,12 @@ const convertTokenBase = (value: TokenValue, oldDecimal: number, newDecimal: num
   return toTokenBase(fromTokenBase(value, oldDecimal), newDecimal);
 };
 
+const calculateGasUsedPercentage = (gasLimit: string, gasUsed: string) => {
+  const gasLimitBN = bigify(gasLimit);
+  const gasUsedBN = bigify(gasUsed);
+  return gasUsedBN.div(gasLimitBN).multipliedBy(bigify(100));
+};
+
 const gasPriceToBase = (price: number) => toWei(price.toString(), getDecimalFromEtherUnit('gwei'));
 
 const totalTxFeeToString = (gasPriceEther: string, gasLimit: string): string =>
@@ -148,5 +155,6 @@ export {
   totalTxFeeToString,
   totalTxFeeToWei,
   gasStringsToMaxGasBN,
-  gasStringsToMaxGasNumber
+  gasStringsToMaxGasNumber,
+  calculateGasUsedPercentage
 };

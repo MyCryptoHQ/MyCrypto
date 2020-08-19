@@ -27,7 +27,8 @@ export enum ANALYTICS_CATEGORIES {
   ADD_ACCOUNT = 'Add Account',
   ADD_WEB3_ACCOUNT = 'Add web3 account',
   SELECT_NETWORK = 'Select network',
-  TX_HISTORY = 'Tx History'
+  TX_HISTORY = 'Tx History',
+  TX_STATUS = 'TX Status'
 }
 
 /* Previous Params from 'develop'

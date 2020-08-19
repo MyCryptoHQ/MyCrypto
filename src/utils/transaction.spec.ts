@@ -90,11 +90,15 @@ describe('makeFinishedTxReceipt', () => {
   it('updates pending erc20 web3 tx to finished', () => {
     const finishedTimestamp = 1590735286;
     const finishedBlock = 7991049;
+    const finishedGasUsed = fERC20Web3TxReceipt.gasLimit;
+    const confirmations = 1;
     const finishedTxReceipt = makeFinishedTxReceipt(
       fERC20Web3TxReceipt,
       ITxStatus.SUCCESS,
       finishedTimestamp,
-      finishedBlock
+      finishedBlock,
+      finishedGasUsed,
+      confirmations
     );
     expect(finishedTxReceipt).toStrictEqual(fFinishedERC20Web3TxReceipt);
   });
@@ -102,11 +106,15 @@ describe('makeFinishedTxReceipt', () => {
   it('updates pending erc20 non-web3 tx to finished', () => {
     const finishedTimestamp = 1590734231;
     const finishedBlock = 7990974;
+    const finishedGasUsed = fERC20NonWeb3TxReceipt.gasLimit;
+    const confirmations = 1;
     const finishedTxReceipt = makeFinishedTxReceipt(
       fERC20NonWeb3TxReceipt,
       ITxStatus.SUCCESS,
       finishedTimestamp,
-      finishedBlock
+      finishedBlock,
+      finishedGasUsed,
+      confirmations
     );
     expect(finishedTxReceipt).toStrictEqual(fFinishedERC20NonWeb3TxReceipt);
   });

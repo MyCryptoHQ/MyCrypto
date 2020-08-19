@@ -221,6 +221,8 @@ export const ConfirmTransactionUI = ({
   // @todo: BN math, add amount + maxCost !In same symbol
   const totalEtherEgress = parseFloat(fromWei(valueWei.add(transactionFeeWei), 'ether')).toFixed(6);
 
+  const fiat = getFiat(settings);
+
   return (
     <ConfirmTransactionWrapper>
       {txType === ITxType.DEFIZAP && zapSelected && <ZapSelectedBanner zapSelected={zapSelected} />}
@@ -382,6 +384,8 @@ export const ConfirmTransactionUI = ({
         gasPrice={gasPrice}
         nonce={nonce}
         signedTransaction={signedTx}
+        fiat={fiat}
+        baseAssetRate={baseAssetRate}
       />
       {txType === ITxType.DEFIZAP && (
         <DeFiDisclaimerWrapper>{translate('ZAP_CONFIRM_DISCLAIMER')}</DeFiDisclaimerWrapper>
