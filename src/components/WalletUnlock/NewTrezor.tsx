@@ -4,8 +4,8 @@ import prop from 'ramda/src/prop';
 
 import { MOONPAY_ASSET_UUIDS } from '@utils';
 import { FormData, WalletId, ExtendedAsset } from '@types';
-import translate, { translateRaw } from '@translations';
-import { Spinner, Button } from '@components';
+import translate, { translateRaw, Trans } from '@translations';
+import { Spinner, Button, RouterLink } from '@components';
 import {
   EXT_URLS,
   TREZOR_DERIVATION_PATHS,
@@ -118,6 +118,17 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
           )}
           <div className="TrezorDecrypt-footer">
             {translate('ORDER_TREZOR', { $url: EXT_URLS.TREZOR_REFERRAL.url })} <br />
+            <Trans
+              id="USE_OLD_INTERFACE"
+              variables={{
+                $link: () => (
+                  <RouterLink to="/add-account/trezor">
+                    {translateRaw('TRY_OLD_INTERFACE')}
+                  </RouterLink>
+                )
+              }}
+            />
+            <br />
             {translate('HOWTO_TREZOR')}
           </div>
         </div>

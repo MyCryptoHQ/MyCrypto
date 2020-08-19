@@ -5,8 +5,8 @@ import { validateMnemonic } from 'bip39';
 
 import { MOONPAY_ASSET_UUIDS, formatMnemonic } from '@utils';
 import { FormData, WalletId, ExtendedAsset } from '@types';
-import translate, { translateRaw } from '@translations';
-import { TogglablePassword, Tooltip, Input } from '@components';
+import translate, { translateRaw, Trans } from '@translations';
+import { TogglablePassword, Tooltip, Input, RouterLink } from '@components';
 import { DPathsList, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN, DEFAULT_GAP_TO_SCAN_FOR } from '@config';
 import {
   NetworkContext,
@@ -173,7 +173,20 @@ const MnemonicDecrypt = ({ formData, onUnlock }: OwnProps) => {
                 {translate('MNEMONIC_CHOOSE_ADDR')}
               </button>
             </div>
-            <div className="Mnemonic-help">{translate('MNEMONIC_HELP')}</div>
+            <div className="Mnemonic-help">
+              {translate('MNEMONIC_HELP')}
+              <br />
+              <Trans
+                id="USE_OLD_INTERFACE_ALT"
+                variables={{
+                  $link: () => (
+                    <RouterLink to="/add-account/mnemonic_phrase">
+                      {translateRaw('TRY_OLD_INTERFACE_ALT')}
+                    </RouterLink>
+                  )
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>

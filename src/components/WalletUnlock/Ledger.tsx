@@ -5,7 +5,7 @@ import prop from 'ramda/src/prop';
 import { MOONPAY_ASSET_UUIDS, IS_ELECTRON } from '@utils';
 import { FormData, WalletId, ExtendedAsset } from '@types';
 import translate, { translateRaw, Trans } from '@translations';
-import { NewTabLink, Spinner, Button } from '@components';
+import { NewTabLink, Spinner, Button, RouterLink } from '@components';
 import {
   EXT_URLS,
   LEDGER_DERIVATION_PATHS,
@@ -137,6 +137,17 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
           </div>
           <div className="LedgerPanel-footer">
             {translate('LEDGER_REFERRAL_2', { $url: EXT_URLS.LEDGER_REFERRAL.url })}
+            <br />
+            <Trans
+              id="USE_OLD_INTERFACE"
+              variables={{
+                $link: () => (
+                  <RouterLink to="/add-account/ledger_nano_s">
+                    {translateRaw('TRY_OLD_INTERFACE')}
+                  </RouterLink>
+                )
+              }}
+            />
             {/*<br />
 						{translate('LEDGER_HELP_LINK')} */}
           </div>
