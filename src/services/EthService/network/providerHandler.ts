@@ -91,9 +91,11 @@ export class ProviderHandler {
       } else {
         const providers = (client as FallbackProvider).providers;
         return any(
-          providers.map(async (p) => {
-            const tx = await p.getTransaction(txhash);
-            return tx ? Promise.resolve(tx) : Promise.reject();
+          providers.map((p) => {
+            return new Promise(async (resolve, reject) => {
+              const tx = await p.getTransaction(txhash);
+              return tx ? resolve(tx) : reject();
+            });
           })
         );
       }
