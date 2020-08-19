@@ -56,7 +56,8 @@ export {
   makeTxConfigFromSignedTx,
   makeTxConfigFromTxReceipt,
   makeTxConfigFromTxResponse,
-  makeFinishedTxReceipt
+  makeFinishedTxReceipt,
+  makeUnknownTxReceipt
 } from './transaction';
 export {
   formatErrorEmail,

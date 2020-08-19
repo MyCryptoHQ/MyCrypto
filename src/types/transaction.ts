@@ -52,7 +52,7 @@ export interface ITxReceipt {
   readonly asset: Asset;
   readonly baseAsset: Asset;
   readonly txType: ITxType;
-  readonly status: ITxStatus.PENDING | ITxStatus.SUCCESS | ITxStatus.FAILED;
+  readonly status: ITxStatus.PENDING | ITxStatus.SUCCESS | ITxStatus.FAILED | ITxStatus.UNKNOWN;
 
   readonly receiverAddress: TAddress;
   readonly amount: string;
@@ -73,6 +73,8 @@ export interface ITxReceipt {
 }
 
 export type IPendingTxReceipt = Overwrite<ITxReceipt, { status: ITxStatus.PENDING }>;
+
+export type IUnknownTxReceipt = Overwrite<ITxReceipt, { status: ITxStatus.UNKNOWN }>;
 
 export type ISuccessfulTxReceipt = Overwrite<
   ITxReceipt,

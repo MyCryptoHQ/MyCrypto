@@ -1,8 +1,8 @@
 import { ProviderHandler, getTxsFromAccount } from '@services';
 import {
   makeTxConfigFromTxResponse,
-  makePendingTxReceipt,
-  makeTxConfigFromTxReceipt
+  makeTxConfigFromTxReceipt,
+  makeUnknownTxReceipt
 } from '@utils';
 import { ITxType, ITxHash, NetworkId, StoreAccount, Asset, Network } from '@types';
 
@@ -38,6 +38,6 @@ export const fetchTxStatus = async ({
   const fetchedTxConfig = makeTxConfigFromTxResponse(fetchedTx, assets, network, accounts);
   return {
     config: fetchedTxConfig,
-    receipt: makePendingTxReceipt(txHash as ITxHash)(ITxType.UNKNOWN, fetchedTxConfig)
+    receipt: makeUnknownTxReceipt(txHash as ITxHash)(ITxType.UNKNOWN, fetchedTxConfig)
   };
 };

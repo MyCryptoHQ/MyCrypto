@@ -38,13 +38,14 @@ import {
   IFailedTxReceipt,
   ISuccessfulTxReceipt,
   ITxHistoryStatus,
-  ITxReceipt
+  ITxReceipt,
+  IUnknownTxReceipt
 } from '@types';
 
 export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
   txType: ITxType,
   txConfig: ITxConfig
-): IPendingTxReceipt | ISuccessfulTxReceipt | IFailedTxReceipt => {
+): IPendingTxReceipt | ISuccessfulTxReceipt | IFailedTxReceipt | IUnknownTxReceipt => {
   const { data, asset, baseAsset, amount, gasPrice, gasLimit, nonce } = txConfig;
 
   const txReceipt = {
@@ -74,6 +75,12 @@ export const makePendingTxReceipt = (txHash: ITxHash) => (
   txConfig: ITxConfig
 ): IPendingTxReceipt =>
   toTxReceipt(txHash, ITxStatus.PENDING)(txType, txConfig) as IPendingTxReceipt;
+
+export const makeUnknownTxReceipt = (txHash: ITxHash) => (
+  txType: ITxType,
+  txConfig: ITxConfig
+): IPendingTxReceipt =>
+  toTxReceipt(txHash, ITxStatus.UNKNOWN)(txType, txConfig) as IPendingTxReceipt;
 
 export const makeFinishedTxReceipt = (
   previousTxReceipt: IPendingTxReceipt,
