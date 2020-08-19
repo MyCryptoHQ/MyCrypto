@@ -37,9 +37,23 @@ describe('TxStatusReducer', () => {
     it('can update fetching flag', () => {
       const prevState = { networkId: DEFAULT_NETWORK, txHash: TX_HASH };
 
-      const newState = dispatch({ type: txStatusReducer.actionTypes.FETCH_TX })(prevState);
+      const payload = true;
+
+      const newState = dispatch({ type: txStatusReducer.actionTypes.FETCH_TX, payload })(prevState);
 
       expect(newState.fetching).toBe(true);
+      expect(newState.fromLink).toBe(payload);
+    });
+
+    it('can update fromLink flag', () => {
+      const prevState = { networkId: DEFAULT_NETWORK, txHash: TX_HASH };
+
+      const payload = false;
+
+      const newState = dispatch({ type: txStatusReducer.actionTypes.FETCH_TX, payload })(prevState);
+
+      expect(newState.fetching).toBe(true);
+      expect(newState.fromLink).toBe(payload);
     });
   });
   describe('FETCH_TX_SUCCESS', () => {

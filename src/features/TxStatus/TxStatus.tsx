@@ -2,6 +2,7 @@ import React, { useContext, useReducer, useEffect } from 'react';
 import { Input } from '@mycrypto/ui';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import queryString from 'query-string';
+import styled from 'styled-components';
 
 import { Button, NetworkSelectDropdown, ContentPanel, TxReceipt, InlineMessage } from '@components';
 import { NetworkId } from '@types';
@@ -15,6 +16,19 @@ import { txStatusReducer, generateInitialState } from './TxStatus.reducer';
 import { fetchTxStatus } from './helpers';
 
 const SUPPORTED_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Goerli', 'Kovan', 'ETC'];
+
+const Loader = styled.div`
+  padding-bottom: 6rem;
+  transform: scale(4.75);
+
+  &&::before {
+    border-width: 0.75px;
+  }
+
+  &&::after {
+    border-width: 0.75px;
+  }
+`;
 
 const TxStatus = ({ history, location }: RouteComponentProps) => {
   const qs = queryString.parse(location.search);
@@ -35,12 +49,12 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
 
   const [reducerState, dispatch] = useReducer(txStatusReducer, initialState);
 
-  const { networkId, txHash, tx, error, fetching } = reducerState;
+  const { networkId, txHash, tx, error, fetching, fromLink } = reducerState;
 
   // Fetch TX on load if possible
   useEffectOnce(() => {
     if (!isVoid(defaultTxHash)) {
-      handleSubmit();
+      handleSubmit(true);
       trackPageLoad({
         actionName: `Used link sharing`
       });
@@ -71,8 +85,8 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
     }
   }, [fetching]);
 
-  const handleSubmit = () => {
-    dispatch({ type: txStatusReducer.actionTypes.FETCH_TX });
+  const handleSubmit = (fromLinkSharing: boolean) => {
+    dispatch({ type: txStatusReducer.actionTypes.FETCH_TX, payload: fromLinkSharing });
   };
 
   const clearForm = () => {
@@ -81,7 +95,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
 
   return (
     <ContentPanel heading={translateRaw('TX_STATUS')}>
-      {!tx && (
+      {!tx && !fromLink && (
         <>
           <NetworkSelectDropdown
             network={networkId ? networkId : undefined}
@@ -102,11 +116,12 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
             }
           />
           {error && <InlineMessage value={error} />}
-          <Button loading={fetching} onClick={handleSubmit} fullwidth={true}>
+          <Button loading={fetching} onClick={() => handleSubmit(false)} fullwidth={true}>
             {translateRaw('FETCH')}
           </Button>
         </>
       )}
+      {!tx && fromLink && <Loader className="loading" />}
       {tx && (
         <>
           <TxReceipt

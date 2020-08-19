@@ -9,6 +9,7 @@ interface State {
   networkId: NetworkId;
   tx?: { config: ITxConfig; receipt: ITxReceipt };
   fetching: boolean;
+  fromLink?: boolean;
   error?: JSX.Element;
 }
 
@@ -32,7 +33,8 @@ export const txStatusReducer = (state: State, action: ReducerAction): State => {
     }
 
     case txStatusReducer.actionTypes.FETCH_TX: {
-      return { ...state, fetching: true };
+      const fromLink = action.payload;
+      return { ...state, fetching: true, fromLink };
     }
 
     case txStatusReducer.actionTypes.FETCH_TX_SUCCESS: {
