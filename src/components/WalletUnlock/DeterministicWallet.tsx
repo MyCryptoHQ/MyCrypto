@@ -101,6 +101,10 @@ const Error = styled.span`
   color: ${COLORS.ERROR_RED};
 `;
 
+const SInput = styled(Input)`
+  margin-bottom: ${SPACING.XS};
+`;
+
 interface DeterministicWalletProps {
   state: DeterministicWalletState;
   defaultDPath: DPath;
@@ -197,7 +201,7 @@ const DeterministicWallet = ({
             <SLabel htmlFor="label">
               <Trans id="DETERMINISTIC_CUSTOM_LABEL" />
             </SLabel>
-            <Input
+            <SInput
               placeholder="Custom Path"
               name="label"
               value={values.label}
@@ -210,7 +214,7 @@ const DeterministicWallet = ({
             <SLabel htmlFor="value">
               <Trans id="DETERMINISTIC_CUSTOM_LABEL_DPATH" />
             </SLabel>
-            <Input
+            <SInput
               placeholder="m/44’/60’/0’/0’"
               name="value"
               value={values.value}

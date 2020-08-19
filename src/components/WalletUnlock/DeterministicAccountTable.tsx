@@ -12,12 +12,13 @@ import {
   Icon,
   Amount
 } from '@components';
-import { DWAccountDisplay, AddressBookContext } from '@services';
+import { DWAccountDisplay, AddressBookContext, fromTokenBase } from '@services';
 import { COLORS, SPACING, BREAK_POINTS } from '@theme';
 import { Network, ExtendedAsset, TAddress } from '@types';
 import { isSameAddress, useScreenSize } from '@utils';
 import translate, { Trans } from '@translations';
 import { DEFAULT_GAP_TO_SCAN_FOR } from '@config';
+import BN from 'bn.js';
 
 interface DeterministicTableProps {
   isComplete: boolean;
@@ -347,7 +348,18 @@ const DeterministicTable = ({
                 </DPathContainer>
                 <ValueContainer>
                   <Typography>
-                    <Amount assetValue={account.balance ? account.balance.toString() : '0.0000'} />
+                    <Amount
+                      assetValue={
+                        account.balance
+                          ? parseFloat(
+                              fromTokenBase(
+                                new BN(account.balance.toString()),
+                                asset.decimal
+                              ).toString()
+                            ).toFixed(4)
+                          : '0.0000'
+                      }
+                    />
                   </Typography>
                   <Typography>{asset.ticker}</Typography>
                 </ValueContainer>
