@@ -102,7 +102,7 @@ const MigrateLS = ({
     'migrate-error': (
       <SBanner>
         The migration failed. Please contact support with your settings file
-        <Downloader appStore={storage}>settings.json</Downloader>
+        <Downloader appStore={storage!}>settings.json</Downloader>
       </SBanner>
     ),
     'confirm-success': <SBanner>All done!</SBanner>,

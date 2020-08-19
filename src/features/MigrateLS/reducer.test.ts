@@ -22,14 +22,6 @@ describe('MigrateLSReducer', () => {
     expect(state.uiState).toEqual('migrate-prompt');
   });
 
-  it('LOAD_FAILURE', () => {
-    const action = {
-      type: MigrateLSReducer.actionTypes.IFRAME_LOAD_FAILURE
-    };
-    const state = dispatch(action)(defaultState);
-    expect(state.uiState).toEqual('load-error');
-  });
-
   it('MIGRATE_REQUEST', () => {
     const action = {
       type: MigrateLSReducer.actionTypes.MIGRATE_REQUEST
