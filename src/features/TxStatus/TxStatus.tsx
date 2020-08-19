@@ -36,7 +36,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   // Fetch TX on load if possible
   useEffectOnce(() => {
     if (!isVoid(defaultTxHash)) {
-      fetchTx();
+      handleSubmit();
     }
   });
 
@@ -60,8 +60,12 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
     }
   }, [fetching]);
 
-  const fetchTx = async () => {
+  const handleSubmit = () => {
     dispatch({ type: txStatusReducer.actionTypes.FETCH_TX });
+  };
+
+  const clearForm = () => {
+    dispatch({ type: txStatusReducer.actionTypes.CLEAR_FORM });
   };
 
   return (
@@ -87,7 +91,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
             }
           />
           {error.length > 0 && <InlineMessage value={error} />}
-          <Button loading={fetching} onClick={fetchTx} fullwidth={true}>
+          <Button loading={fetching} onClick={handleSubmit} fullwidth={true}>
             {translateRaw('FETCH')}
           </Button>
         </>
@@ -102,10 +106,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
             disableDynamicTxReceiptDisplay={true}
             disableAddTxToAccount={true}
           />
-          <Button
-            onClick={() => dispatch({ type: txStatusReducer.actionTypes.CLEAR_FORM })}
-            fullwidth={true}
-          >
+          <Button onClick={clearForm} fullwidth={true}>
             {translateRaw('TX_STATUS_GO_BACK')}
           </Button>
         </>
