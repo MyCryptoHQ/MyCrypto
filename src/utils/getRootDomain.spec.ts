@@ -1,6 +1,6 @@
 import { getRootDomain } from './getRootDomain';
 
-test('it handles undefiend', () => {
+test('it handles undefined', () => {
   const hostname = undefined;
   const res = getRootDomain(hostname);
   expect(res).toEqual('');
