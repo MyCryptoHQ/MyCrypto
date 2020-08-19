@@ -5,6 +5,13 @@ import { simpleRender, screen } from 'test-utils';
 import { default as MigrateLS } from './MigrateLS';
 // import { getIFrameSrc } from './helpers';
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useHistory: () => ({
+    push: jest.fn()
+  })
+}));
+
 const defaultProps = {
   importStorage: jest.fn(),
   isValidImport: jest.fn()
@@ -18,7 +25,7 @@ describe('MigrateLS', () => {
   test('it is empty by default', () => {
     const props = { ...defaultProps };
     getComponent(props);
-    expect(screen.queryByTestId('iframe')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('iframe')).toBeInTheDocument();
   });
 
   // test('it places a hidden iframe when the user had no custom settings', () => {
