@@ -7,7 +7,7 @@ import { translateRaw } from '@translations';
 
 import TxStatus from './TxStatus';
 
-const TX_HASH = '0xb324e6630491f89aff0e8e30228741cbccc7ddfdb94c91eedc02141b1acc4df7';
+const TX_HASH = '0x949b7cbfcc4d7a82c83221de4f9e153ce5a161e10722216dae3bcb6eadd9b34c';
 
 /* Test components */
 describe('TxStatus', () => {
