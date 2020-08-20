@@ -84,7 +84,8 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>, head
     txReceipt: txReceiptMain,
     onComplete: onCompleteMain,
     customDetails,
-    resetFlow
+    resetFlow,
+    ...props
   }: Props) {
     const [protectTx, setProtectTx] = useState<ITxObject | null>(null);
     const { state, initWith, prepareTx, sendTx } = useTxMulti();
@@ -192,6 +193,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>, head
                   <></>
                 )
               }
+              {...props}
             />
           </WithProtectTxMain>
         </ContentPanel>
