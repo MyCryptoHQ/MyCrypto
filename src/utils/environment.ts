@@ -1,5 +1,3 @@
-import { contains } from '@vendor';
-
 import {
   IS_DEV as isDev,
   IS_PROD as isProd,
@@ -19,5 +17,4 @@ export const hasWeb3Provider = (): boolean => window && ('web3' in window || 'et
 
 // MigrateLS: loading an iframe in testcafe fails the same-origin policies. Set a flag to deactivate
 // the feature when running with testcafe
-export const isE2E: (origin: string) => boolean = (origin) =>
-  !contains(origin, ['localhost', 'mycryptobuilds', 'mycrypto']);
+export const IS_E2E = window && 'testcafe|request-barrier' in window;

@@ -3,7 +3,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 
 import { Layout, LayoutConfig } from '@features/Layout';
 import { PageNotFound, Dashboard, ScreenLockProvider, DrawerProvider, MigrateLS } from '@features';
-import { ScrollToTop, useScreenSize, withContext, isE2E } from '@utils';
+import { ScrollToTop, useScreenSize, withContext, IS_E2E } from '@utils';
 import { useFeatureFlags } from '@services';
 import { StoreContext, SettingsContext } from '@services/Store';
 import { ROUTE_PATHS } from '@config';
@@ -15,7 +15,7 @@ import {
   getAppRoutes
 } from '@routing';
 import { COLORS, SPACING } from '@theme';
-import { pipe, equals } from '@vendor';
+import { pipe } from '@vendor';
 
 import { AppLoading } from './AppLoading';
 
@@ -67,7 +67,7 @@ export const AppRoutes = () => {
           <PageVisitsAnalytics>
             <DefaultHomeHandler>
               <Suspense fallback={<AppLoading />}>
-                {equals(!isE2E(document.location.hostname)) && <MigrateLSWithStore />}
+                {!IS_E2E && <MigrateLSWithStore />}
                 <Switch>
                   {/* To avoid fiddling with layout we provide a complete route to home */}
                   <LayoutWithLocation>
