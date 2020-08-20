@@ -39,11 +39,17 @@ export const txStatusReducer = (state: State, action: ReducerAction): State => {
 
     case txStatusReducer.actionTypes.FETCH_TX_SUCCESS: {
       const tx = action.payload;
-      return { ...state, fetching: false, tx, error: !tx ? translate('TX_NOT_FOUND') : undefined };
+      return {
+        ...state,
+        fetching: false,
+        tx,
+        error: !tx ? translate('TX_NOT_FOUND') : undefined,
+        fromLink: false
+      };
     }
 
     case txStatusReducer.actionTypes.FETCH_TX_ERROR: {
-      return { ...state, fetching: false, error: translate('TX_NOT_FOUND') };
+      return { ...state, fetching: false, error: translate('TX_NOT_FOUND'), fromLink: false };
     }
 
     case txStatusReducer.actionTypes.CLEAR_FORM: {
