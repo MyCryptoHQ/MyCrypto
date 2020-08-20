@@ -51,8 +51,6 @@ const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
           }
         ];
       case WalletId.MNEMONIC_PHRASE:
-        return [payload];
-      case WalletId.MNEMONIC_PHRASE_NEW:
         return payload;
       case WalletId.LEDGER_NANO_S:
         return [
@@ -61,17 +59,9 @@ const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
             dPath: payload.getPath()
           }
         ];
-      case WalletId.LEDGER_NANO_S_NEW:
+      case WalletId.LEDGER_NANO_S:
         return payload;
       case WalletId.TREZOR:
-        return [
-          {
-            address: payload.address,
-            derivationPath: payload.path || payload.dPath + '/' + payload.index.toString()
-          }
-        ];
-
-      case WalletId.TREZOR_NEW:
         return payload;
       default:
         throw new Error(

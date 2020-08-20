@@ -24,7 +24,7 @@ export default class MnemonicPhrase implements Wallet {
     const path = getFullPath(dPath, index);
 
     results = {
-      type: WalletId.MNEMONIC_PHRASE_NEW,
+      type: WalletId.MNEMONIC_PHRASE,
       address: hdNode.derivePath(path).address,
       withPassword: !!this.password,
       path
@@ -35,7 +35,7 @@ export default class MnemonicPhrase implements Wallet {
       const passwordlessHdNode = await this.getHDNode(false);
 
       results = {
-        type: WalletId.MNEMONIC_PHRASE_NEW,
+        type: WalletId.MNEMONIC_PHRASE,
         address: passwordlessHdNode.derivePath(path).address,
         withPassword: false,
         path

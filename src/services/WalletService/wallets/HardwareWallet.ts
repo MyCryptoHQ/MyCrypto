@@ -43,7 +43,7 @@ export default abstract class HWWallet implements Wallet {
    *
    * @return {WalletType} The type of wallet.
    */
-  protected abstract getWalletType(): WalletId.LEDGER_NANO_S_NEW | WalletId.TREZOR_NEW;
+  protected abstract getWalletType(): WalletId.LEDGER_NANO_S | WalletId.TREZOR;
 
   /**
    * Get KeyInfo (public key, chain code) from the device.

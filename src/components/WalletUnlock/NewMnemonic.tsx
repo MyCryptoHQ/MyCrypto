@@ -61,7 +61,7 @@ const MnemonicDecrypt = ({ formData, onUnlock }: OwnProps) => {
     updateAsset,
     addDPaths,
     generateFreshAddress
-  } = useDeterministicWallet(extendedDPaths, WalletId.MNEMONIC_PHRASE_NEW, DEFAULT_GAP_TO_SCAN_FOR);
+  } = useDeterministicWallet(extendedDPaths, WalletId.MNEMONIC_PHRASE, DEFAULT_GAP_TO_SCAN_FOR);
   const [mnemonicLoginState, setMnemonicLoginState] = useState(initialMnemonicLoginState);
   const isValidMnemonic = validateMnemonic(mnemonicLoginState.formattedPhrase || '');
 

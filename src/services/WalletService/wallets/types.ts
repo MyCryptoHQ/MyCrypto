@@ -7,12 +7,12 @@ export interface AbstractWalletResult {
 }
 
 export interface MnemonicPhraseResult extends AbstractWalletResult {
-  type: WalletId.MNEMONIC_PHRASE_NEW;
+  type: WalletId.MNEMONIC_PHRASE;
   withPassword: boolean;
 }
 
 export interface HardwareWalletResult extends AbstractWalletResult {
-  type: WalletId.LEDGER_NANO_S_NEW | WalletId.TREZOR_NEW;
+  type: WalletId.LEDGER_NANO_S | WalletId.TREZOR;
 }
 
 export type WalletResult = MnemonicPhraseResult | HardwareWalletResult;

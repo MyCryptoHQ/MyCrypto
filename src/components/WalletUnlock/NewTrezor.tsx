@@ -52,7 +52,7 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
     updateAsset,
     generateFreshAddress,
     addDPaths
-  } = useDeterministicWallet(extendedDPaths, WalletId.TREZOR_NEW, DEFAULT_GAP_TO_SCAN_FOR);
+  } = useDeterministicWallet(extendedDPaths, WalletId.TREZOR, DEFAULT_GAP_TO_SCAN_FOR);
 
   const handleNullConnect = () => {
     requestConnection(network, assetToUse);

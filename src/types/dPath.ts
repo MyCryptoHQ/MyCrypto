@@ -15,12 +15,6 @@ export interface DPath {
 }
 
 // We really want to use "keyof typeof HD_WALLETS" but it gives 'never'
-export type DPathFormat =
-  | WalletId.LEDGER_NANO_S
-  | WalletId.TREZOR
-  | WalletId.MNEMONIC_PHRASE
-  | WalletId.LEDGER_NANO_S_NEW
-  | WalletId.TREZOR_NEW
-  | WalletId.MNEMONIC_PHRASE_NEW;
+export type DPathFormat = WalletId.LEDGER_NANO_S | WalletId.TREZOR | WalletId.MNEMONIC_PHRASE;
 
 export type DPathFormats = Partial<Record<DPathFormat | 'default', DPath>>;

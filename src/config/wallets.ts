@@ -126,18 +126,6 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isSecure: true,
     isDesktopOnly: false,
     type: WalletType.HARDWARE,
-    lid: 'X_LEDGER',
-    icon: LedgerSVG,
-    description: 'ADD_HARDWAREDESC',
-    helpLink: HELP_ARTICLE.LEDGER
-  },
-  [WalletId.LEDGER_NANO_S_NEW]: {
-    id: WalletId.LEDGER_NANO_S_NEW,
-    name: 'Ledger',
-    isDeterministic: true,
-    isSecure: true,
-    isDesktopOnly: false,
-    type: WalletType.HARDWARE,
     lid: 'Ledger',
     icon: LedgerSVG,
     description: 'ADD_HARDWAREDESC',
@@ -151,18 +139,6 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isDesktopOnly: false,
     type: WalletType.HARDWARE,
     lid: 'X_TREZOR',
-    icon: TrezorSVG,
-    description: 'ADD_HARDWAREDESC',
-    helpLink: getKBHelpArticle(MIGRATE_TO_TREZOR)
-  },
-  [WalletId.TREZOR_NEW]: {
-    id: WalletId.TREZOR_NEW,
-    name: 'Trezor',
-    isDeterministic: true,
-    isSecure: true,
-    isDesktopOnly: false,
-    type: WalletType.HARDWARE,
-    lid: 'Trezor',
     icon: TrezorSVG,
     description: 'ADD_HARDWAREDESC',
     helpLink: getKBHelpArticle(MIGRATE_TO_TREZOR)
@@ -187,18 +163,6 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isDesktopOnly: true,
     type: WalletType.FILE,
     lid: 'X_MNEMONIC',
-    icon: mnemonicIcon,
-    description: 'brain surround have swap horror cheese file distinct',
-    helpLink: getKBHelpArticle(DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE)
-  },
-  [WalletId.MNEMONIC_PHRASE_NEW]: {
-    id: WalletId.MNEMONIC_PHRASE_NEW,
-    name: 'Mnemonic Phrase',
-    isDeterministic: true,
-    isSecure: false,
-    isDesktopOnly: true,
-    type: WalletType.FILE,
-    lid: 'Mnemonic Phrase',
     icon: mnemonicIcon,
     description: 'brain surround have swap horror cheese file distinct',
     helpLink: getKBHelpArticle(DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE)

@@ -37,8 +37,8 @@ export default class Trezor extends HardwareWallet {
     return TREZOR_DERIVATION_PATHS;
   }
 
-  protected getWalletType(): WalletId.TREZOR_NEW {
-    return WalletId.TREZOR_NEW;
+  protected getWalletType(): WalletId.TREZOR {
+    return WalletId.TREZOR;
   }
 
   protected async getKeyInfo(path: DPath): Promise<KeyInfo> {

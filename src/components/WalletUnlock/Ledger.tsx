@@ -57,7 +57,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
     updateAsset,
     addDPaths,
     generateFreshAddress
-  } = useDeterministicWallet(extendedDPaths, WalletId.LEDGER_NANO_S_NEW, DEFAULT_GAP_TO_SCAN_FOR);
+  } = useDeterministicWallet(extendedDPaths, WalletId.LEDGER_NANO_S, DEFAULT_GAP_TO_SCAN_FOR);
 
   const handleAssetUpdate = (newAsset: ExtendedAsset) => {
     setAssetToUse(newAsset);

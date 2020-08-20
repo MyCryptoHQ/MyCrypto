@@ -17,7 +17,6 @@ export const WalletFactory = (walletId: WalletId): WalletService | any => {
           return unlockWeb3(onSuccess)(networks);
         }
       };
-    case WalletId.LEDGER_NANO_S_NEW:
     case WalletId.LEDGER_NANO_S:
       return {
         getChainCode: (dPath: string): Promise<ChainCodeResponse> =>

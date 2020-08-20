@@ -33,15 +33,15 @@ interface EventHandlers {
 const selectWallet = async (walletId: WalletId, mnemonic?: string, pass?: string) => {
   switch (walletId) {
     default:
-    case WalletId.LEDGER_NANO_S_NEW: {
+    case WalletId.LEDGER_NANO_S: {
       const isWebUSBSupported = !navigator.platform.includes('Win')
         ? await TransportWebUSB.isSupported().catch(() => false)
         : false;
       return isWebUSBSupported ? new LedgerUSB() : new LedgerU2F(); // @todo - fix the walletId & type
     }
-    case WalletId.TREZOR_NEW:
+    case WalletId.TREZOR:
       return new Trezor();
-    case WalletId.MNEMONIC_PHRASE_NEW: {
+    case WalletId.MNEMONIC_PHRASE: {
       return new MnemonicPhrase(mnemonic!, pass || '');
     }
   }

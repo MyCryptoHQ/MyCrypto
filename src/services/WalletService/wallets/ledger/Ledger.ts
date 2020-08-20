@@ -22,8 +22,8 @@ export default abstract class Ledger extends HardwareWallet {
     return LEDGER_DERIVATION_PATHS;
   }
 
-  protected getWalletType(): WalletId.LEDGER_NANO_S_NEW {
-    return WalletId.LEDGER_NANO_S_NEW;
+  protected getWalletType(): WalletId.LEDGER_NANO_S {
+    return WalletId.LEDGER_NANO_S;
   }
 
   protected abstract async checkConnection(): Promise<void>;

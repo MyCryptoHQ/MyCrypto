@@ -61,7 +61,7 @@ describe('AddAccountFlow', () => {
 
   test('Can select a wallet and adds the walletId to the path', () => {
     const { getByText } = renderComponent();
-    const config = WALLETS_CONFIG[WalletId.LEDGER_NANO_S_NEW];
+    const config = WALLETS_CONFIG[WalletId.LEDGER_NANO_S];
     const expectedPath = `${ROUTE_PATHS.ADD_ACCOUNT.path}`;
     fireEvent.click(getByText(translateRaw(config.lid).trim()));
     expect(location.pathname).toEqual(`${expectedPath}/${config.id.toLowerCase()}`);
