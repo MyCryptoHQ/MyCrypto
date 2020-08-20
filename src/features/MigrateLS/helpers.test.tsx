@@ -18,6 +18,12 @@ describe('getIFrameSrc()', () => {
     const res = getIFrameSrc(doc);
     expect(res).toEqual('https://beta.mycrypto.com');
   });
+
+  test('it returns the correct url for prod-staging', () => {
+    const win = { location: { hostname: 'rc.app.mycrypto.com' } } as Window;
+    const res = getIFrameSrc(win);
+    expect(res).toEqual('https://landing.mycryptobuilds.com');
+  });
 });
 
 describe('getLS', () => {
