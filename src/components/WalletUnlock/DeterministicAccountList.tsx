@@ -7,7 +7,7 @@ import prop from 'ramda/src/prop';
 import { translateRaw } from '@translations';
 import { ExtendedAsset, TAddress } from '@types';
 import { EthAddress, FixedSizeCollapsibleTable, Spinner, Checkbox, Button } from '@components';
-import { truncate, isSameAddress } from '@utils';
+import { isSameAddress } from '@utils';
 import { BREAK_POINTS, SPACING, breakpointToNumber } from '@theme';
 import { DWAccountDisplay } from '@services';
 import { fromTokenBase } from '@services/EthService/utils';
@@ -248,7 +248,7 @@ const buildDeterministicAccountTable = (
         checked={isSelected}
         onChange={() => toggleAccountSelection(address, pathItem.path)}
       />,
-      <EthAddress key={index} address={address} truncate={truncate} />,
+      <EthAddress key={index} address={address} truncate={true} />,
       <div key={index}>
         {`${
           balance

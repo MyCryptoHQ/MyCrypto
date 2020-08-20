@@ -13,6 +13,7 @@ export interface StepperProps {
   defaultBackPathLabel?: string;
   completeBtnText?: string; // Text for btn to navigate out of flow in last step.
   wrapperClassName?: string;
+  basic?: boolean;
   onRender?(goToNextStep: () => void): void;
 }
 
@@ -22,6 +23,7 @@ export function GeneralStepper({
   defaultBackPathLabel,
   completeBtnText,
   wrapperClassName = '',
+  basic = false,
   onRender
 }: StepperProps) {
   const history = useHistory();
@@ -71,6 +73,7 @@ export function GeneralStepper({
       heading={label}
       stepper={{ current: step + 1, total: currentPath.length }}
       className={wrapperClassName}
+      basic={basic}
     >
       <Step
         onComplete={(payload: any) =>

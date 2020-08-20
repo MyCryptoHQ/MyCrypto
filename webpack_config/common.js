@@ -17,6 +17,7 @@ module.exports = {
 
   entry: {
     badBrowserCheck: path.join(config.path.src, 'badBrowserCheck.ts'),
+    metaMaskFirefox: path.join(config.path.vendor, 'inpage-metamask.js'),
     main: path.join(config.path.src, 'index.tsx')
   },
 
@@ -35,7 +36,6 @@ module.exports = {
       '@fixtures': `${config.path.root}/jest_config/__fixtures__`
     },
     plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, '../tsconfig.json') })]
-
   },
 
   optimization: {
@@ -47,12 +47,20 @@ module.exports = {
           chunks: 'all',
           name: 'vendor.bundle',
           test(mod) {
-            const excluded = `${config.chunks.individual.join('|')}|${config.chunks.electronOnly.join('|')}|${config.chunks.devOnly.join('|').replace(/\//, '[\\\\/]')}`;
+            const excluded = `${config.chunks.individual.join(
+              '|'
+            )}|${config.chunks.electronOnly.join('|')}|${config.chunks.devOnly
+              .join('|')
+              .replace(/\//, '[\\\\/]')}`;
             const excludeNodeModules = new RegExp(`[\\\\/]node_modules[\\\\/]((${excluded})\.*)`);
             const includeSrc = new RegExp(/[\\/]src[\\/]/);
             const includeNodeModules = new RegExp(/node_modules/);
-            return mod.context
-              && includeNodeModules.test(mod.context) && !excludeNodeModules.test(mod.context) && !includeSrc.test(mod.context);
+            return (
+              mod.context &&
+              includeNodeModules.test(mod.context) &&
+              !excludeNodeModules.test(mod.context) &&
+              !includeSrc.test(mod.context)
+            );
           },
           reuseExistingChunk: true,
           priority: 20
@@ -69,7 +77,11 @@ module.exports = {
           enforce: true,
           chunks: 'all',
           name: 'vendor-dev',
-          test: new RegExp(`[\\\\/]node_modules[\\\\/](${config.chunks.devOnly.join('|').replace(/\//, '[\\\\/]')})[\\\\/]`),
+          test: new RegExp(
+            `[\\\\/]node_modules[\\\\/](${config.chunks.devOnly
+              .join('|')
+              .replace(/\//, '[\\\\/]')})[\\\\/]`
+          ),
           priority: 40
         }
       }
@@ -91,10 +103,7 @@ module.exports = {
               cacheCompression: false,
               // allow lodash-webpack-plugin to reduce lodash size.
               // allow babel-plugin-recharts to reduce recharts size.
-              plugins: [
-                'lodash',
-                'recharts'
-              ]
+              plugins: ['lodash', 'recharts']
             }
           }
         ],
@@ -216,7 +225,9 @@ module.exports = {
       },
       metaCsp: IS_DEVELOPMENT
         ? ''
-        : `default-src 'none'; script-src 'self'; worker-src 'self' blob:; child-src 'self'; style-src 'self' 'unsafe-inline'; manifest-src 'self'; font-src 'self'; img-src 'self' data: https://mycryptoapi.com/api/v1/images/; connect-src *${IS_ELECTRON ? ' eth-enclave:' : ''}; frame-src 'self' https://connect.trezor.io;`
+        : `default-src 'none'; script-src 'self'; worker-src 'self' blob:; child-src 'self'; style-src 'self' 'unsafe-inline'; manifest-src 'self'; font-src 'self'; img-src 'self' data: https://mycryptoapi.com/api/v1/images/; connect-src *${
+            IS_ELECTRON ? ' eth-enclave:' : ''
+          }; frame-src 'self' https://connect.trezor.io;`
     }),
 
     new CopyWebpackPlugin([

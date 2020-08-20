@@ -8,7 +8,7 @@ import { WalletId, ISignComponentProps, TAddress, ITxHash } from '@types';
 import { getWalletConfig } from '@config';
 import { COLORS, FONT_SIZE, BREAK_POINTS } from '@theme';
 import { useUpdateEffect } from '@vendor';
-import { noOp, truncate, objToString } from '@utils';
+import { noOp, objToString } from '@utils';
 import { getNetworkByChainId } from '@services';
 import { StoreContext } from '@services/Store';
 import { useWalletConnect, WcReducer, TActionError } from '@services/WalletService';
@@ -170,7 +170,7 @@ export function SignTransactionWalletConnect({
                   inline={true}
                   isCopyable={false}
                   address={state.detectedAddress!}
-                  truncate={truncate}
+                  truncate={true}
                 />{' '}
                 {translateRaw('SIGN_TX_WALLETCONNECT_SESSION_NETWORK')}{' '}
                 {getNetworkByChainId(state.detectedChainId!, networks)!.name}

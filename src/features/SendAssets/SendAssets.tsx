@@ -7,7 +7,7 @@ import { translateRaw } from '@translations';
 import { ROUTE_PATHS } from '@config';
 import { IStepperPath } from '@components/GeneralStepper/types';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
-import { StoreContext } from '@services';
+import { StoreContext, useFeatureFlags } from '@services';
 
 import { txConfigInitialState, TxConfigFactory } from './stateFactory';
 import {
@@ -31,6 +31,7 @@ function SendAssets() {
     setProtectTxTimeoutFunction
   } = useContext(ProtectTxContext);
   const { isMyCryptoMember } = useContext(StoreContext);
+  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
 
   // Due to MetaMask deprecating eth_sign method,
   // it has different step order, where sign and send are one panel
@@ -130,6 +131,7 @@ function SendAssets() {
       defaultBackPathLabel={translateRaw('DASHBOARD')}
       completeBtnText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
       wrapperClassName={`send-assets-stepper ${protectTxShow ? 'has-side-panel' : ''}`}
+      basic={IS_ACTIVE_FEATURE.PROTECT_TX}
     />
   );
 }

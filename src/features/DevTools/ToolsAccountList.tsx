@@ -3,7 +3,6 @@ import { List, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { AddressBook, IAccount } from '@types';
-import { truncate } from '@utils';
 import { getLabelByAccount, AddressBookContext } from '@services/Store';
 import { Account } from '@components';
 
@@ -30,7 +29,7 @@ const ToolsAccountList: React.FC<AccountListProps> = (props) => {
     const label = detectedLabel ? detectedLabel.label : 'Unknown Account';
     return (
       <AccountContainer key={index}>
-        <Account title={label} address={account.address} truncate={truncate} />
+        <Account title={label} address={account.address} truncate={true} />
         <DeleteButton onClick={() => deleteAccount(account)} icon="exit" />
       </AccountContainer>
     );

@@ -22,29 +22,10 @@ const ContentPanelWrapper = styled.div<ContentPanelProps>`
     margin: 0 auto 1em;
   }
 
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    &.has-side-panel {
-      width: 100vw;
-      max-width: 100vw;
-
-      > section {
-        width: 100%;
-        max-width: 100%;
-        padding-bottom: 0;
-
-        > p ~ div {
-          & > div:last-child {
-            margin-top: calc(-0.5rem - 75px);
-          }
-        }
-      }
-    }
-  }
-
   @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
     &.has-side-panel {
-      width: ${({ width }) => `${width ? width + 375 : width}px`};
-      max-width: ${({ width }) => `${width ? width + 375 : width}px`};
+      width: ${({ width }) => `${width ? width + 390 : width}px`};
+      max-width: ${({ width }) => `${width ? width + 390 : width}px`};
     }
   }
 `;
@@ -111,6 +92,7 @@ interface Props {
   width?: number;
   mobileMaxWidth?: string;
   backBtnText?: string;
+  basic?: boolean;
   onBack?(): void | null;
 }
 
@@ -125,6 +107,7 @@ export default function ContentPanel({
   className = '',
   width = 650,
   mobileMaxWidth = '100%',
+  basic,
   ...rest
 }: Props) {
   return (
@@ -142,8 +125,8 @@ export default function ContentPanel({
           {stepper && <Stepper current={stepper.current} total={stepper.total} />}
         </ContentPanelTop>
       )}
-      <Panel {...rest}>
-        {heading && (
+      <Panel basic={basic} {...rest}>
+        {heading && !basic && (
           <ContentPanelHeading>
             {heading}
             {icon && <ContentPanelHeadingIcon src={icon} alt="Icon" />}

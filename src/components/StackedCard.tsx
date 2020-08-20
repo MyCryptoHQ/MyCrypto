@@ -1,6 +1,6 @@
-import React, { DetailedHTMLProps, HTMLAttributes, ReactNode } from 'react';
-import styled, { StyledComponentClass, css } from 'styled-components';
-import { Theme, scale } from '@mycrypto/ui';
+import React, { ReactNode } from 'react';
+import styled, { css } from 'styled-components';
+import { scale } from '@mycrypto/ui';
 
 import Typography from './Typography';
 
@@ -80,11 +80,6 @@ const StackedCardEntry = styled.dl`
   align-items: center;
 `;
 
-type StyledHTMLElement = StyledComponentClass<
-  DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>,
-  Theme
->;
-
 const StackedCardLabel = styled(Typography)`
   flex: 0.7;
   margin: 0;
@@ -94,7 +89,7 @@ const StackedCardLabel = styled(Typography)`
   font-weight: bold;
   font-size: 0.856em;
   line-height: 1em;
-` as StyledHTMLElement;
+`;
 
 StackedCardLabel.defaultProps = {
   as: 'dt'
@@ -103,7 +98,7 @@ StackedCardLabel.defaultProps = {
 const StackedCardValue = styled(Typography)`
   flex: 1;
   margin: 0;
-` as StyledHTMLElement;
+`;
 
 StackedCardValue.defaultProps = {
   as: 'dd'

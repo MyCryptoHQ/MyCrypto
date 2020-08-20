@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import { Icon, Identicon } from '@mycrypto/ui';
-import styled, { StyledFunction } from 'styled-components';
+import styled from 'styled-components';
 
 import { translateRaw } from '@translations';
 import { Checkbox } from '@components';
@@ -28,8 +28,7 @@ const Divider = styled('div')`
   margin: 0px 20px 15px;
 `;
 
-const dropdown: StyledFunction<SDropdownProps & React.HTMLProps<HTMLInputElement>> = styled('div');
-const SDropdown = dropdown`
+const SDropdown = styled('div')<SDropdownProps>`
   display: flex;
   align-items: center;
   position: relative;
@@ -53,8 +52,8 @@ const SDropdown = dropdown`
   & > div {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    left: -2px;                 // border-box isn't satisfying so we increase width and
-    width: calc(100% + 4px);    // move to left to align the trigger and the dropdown.
+    left: -2px; /* border-box isn't satisfying so we increase width and */
+    width: calc(100% + 4px); /* move to left to align the trigger and the dropdown. */
     position: absolute;
     top: 100%;
     z-index: 5;

@@ -51,7 +51,17 @@ jobs:
         with:
           node-version: '${{ steps.nvm.outputs.NVMRC }}'
 
+      - name: Cache node modules
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          ## Check cache based on yarn.lock hashfile
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+
       - name: Install Dependencies
+        ## If no cache is found, install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install
 
       - name: yarn build:downloadable
@@ -69,14 +79,6 @@ jobs:
       - name: yarn build:storybook
         if: github.ref == 'refs/heads/master' || github.event_name == 'pull_request'
         run: yarn build:storybook
-
-      - name: S3 Sync - Downloadable SHA
-        uses: jakejarvis/s3-sync-action@v0.5.1
-        with:
-          args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
-        env:
-          DEST_DIR: ${GITHUB_SHA}
-          SOURCE_DIR: 'dist/download'
 
       - name: S3 Sync - Downloadable Branch - push
         uses: jakejarvis/s3-sync-action@v0.5.1
@@ -96,6 +98,24 @@ jobs:
           DEST_DIR: ${{ github.head_ref }}
           SOURCE_DIR: 'dist/download'
 
+      - name: S3 Sync - SHA Push
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'push'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
+        env:
+          DEST_DIR: ${GITHUB_SHA}
+          SOURCE_DIR: 'dist/download'
+          
+      - name: S3 Sync - SHA Pull Request
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'pull_request'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
+        env:
+          DEST_DIR: ${{ github.event.pull_request.head.sha }}
+          SOURCE_DIR: 'dist/download' 
+
       - name: S3 Sync - Downloadable - PR Number
         uses: jakejarvis/s3-sync-action@v0.5.1
         if: github.event_name == 'pull_request'
@@ -104,7 +124,15 @@ jobs:
         env:
           DEST_DIR: 'pr/${PR_NUMBER}'
           SOURCE_DIR: 'dist/download'
-      ###
+          
+      - name: S3 Sync - Downloadable - Latest build
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
+        env:
+          SOURCE_DIR: 'dist/download'
+
       - name: S3 Sync - Storybook SHA
         uses: jakejarvis/s3-sync-action@v0.5.1
         if: github.event_name == 'pull_request'
@@ -131,7 +159,7 @@ jobs:
         env:
           DEST_DIR: 'storybook/${{ github.head_ref }}'
           SOURCE_DIR: 'storybook-static'
-          
+
       - name: S3 Sync - Storybook - PR Number
         uses: jakejarvis/s3-sync-action@v0.5.1
         if: github.event_name == 'pull_request'

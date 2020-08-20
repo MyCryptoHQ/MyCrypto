@@ -228,7 +228,9 @@ const Lock = styled.li`
 `;
 
 interface IconWrapperProps {
-  subItems?: boolean;
+  // use transient props from styled-components 5.1.0 to avoid "React doesn't recognize 'subItems' prop on a DOM element
+  // https://styled-components.com/releases#v5.1.0
+  $subItems?: boolean;
 }
 
 const IconWrapper = styled(Icon)<IconWrapperProps>`
@@ -238,7 +240,7 @@ const IconWrapper = styled(Icon)<IconWrapperProps>`
 
   svg {
     color: ${BLUE_BRIGHT};
-    ${(props) => props.subItems && 'transform: rotate(270deg);'};
+    ${(props) => props.$subItems && 'transform: rotate(270deg);'};
   }
 `;
 
@@ -396,7 +398,7 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
                       >
                         <TitleIconWrapper>
                           {icon && <PrefixIcon {...icon} />} {title}
-                          {!icon && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
+                          {!icon && <IconWrapper $subItems={!subItems} icon="navDownCaret" />}
                         </TitleIconWrapper>
                         {subItems && visibleMenuDropdowns[title] && (
                           <ul>
@@ -420,16 +422,16 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
                   })}
               </MenuLinks>
               <MenuMid onClick={onLanguageClick}>
-                {languages[languageSelection]} <IconWrapper subItems={true} icon="navDownCaret" />
+                {languages[languageSelection]} <IconWrapper $subItems={true} icon="navDownCaret" />
               </MenuMid>
               <MenuLinks>
                 <li onClick={openHelpSupportPage}>
                   {translate('NEW_HEADER_TEXT_1')}
-                  <IconWrapper subItems={true} icon="navDownCaret" />
+                  <IconWrapper $subItems={true} icon="navDownCaret" />
                 </li>
                 <li>
                   {translate('NEW_HEADER_TEXT_2')}
-                  <IconWrapper subItems={true} icon="navDownCaret" />
+                  <IconWrapper $subItems={true} icon="navDownCaret" />
                 </li>
               </MenuLinks>
             </Menu>
@@ -478,7 +480,7 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
               return (
                 <li key={title} {...liProps}>
                   {icon && <PrefixIcon {...icon} />} {title}{' '}
-                  {!icon && subItems && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
+                  {!icon && subItems && <IconWrapper $subItems={!subItems} icon="navDownCaret" />}
                   {subItems && visibleDropdowns[title] && (
                     <ul>
                       {subItems

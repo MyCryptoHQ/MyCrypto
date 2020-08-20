@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import BigNumber from 'bignumber.js';
 
 import { Asset, ITxReceipt, Network, WalletId, IFormikFields, TAddress } from '@types';
 import {
@@ -14,7 +15,13 @@ import { useScreenSize } from '@utils';
 import { WALLETS_CONFIG } from '@config';
 
 import { PTXReport } from './types';
-import { ProtectTxUtils } from './utils';
+import { getNansenReportType, getLastTx, getBalance } from './utils';
+
+export interface IFeeAmount {
+  amount: BigNumber | null;
+  fee: BigNumber | null;
+  rate: number | null;
+}
 
 export interface ProtectTxState {
   stepIndex: number;
@@ -31,6 +38,7 @@ export interface ProtectTxState {
   isWeb3Wallet: boolean;
   web3WalletName: string | null;
   formValues?: IFormikFields;
+  feeAmount: IFeeAmount;
 }
 
 export interface ProtectTxContext {
@@ -42,6 +50,7 @@ export interface ProtectTxContext {
   goToInitialStepOrFetchReport(receiverAddress?: string, network?: Network): void;
   showHideProtectTx(showOrHide: boolean): void;
   setReceiverInfo(receiverAddress: string, network: Network): Promise<void>;
+  setFeeAmount(feeAmount: IFeeAmount): void;
   setProtectTxTimeoutFunction(cb: (txReceiptCb?: (txReciept: ITxReceipt) => void) => void): void;
   invokeProtectTxTimeoutFunction(cb: (txReceipt: ITxReceipt) => void): void;
   clearProtectTxTimeoutFunction(): void;
@@ -63,7 +72,8 @@ export const protectTxProviderInitialState: ProtectTxState = {
   asset: null,
   isWeb3Wallet: false,
   web3WalletName: null,
-  mainComponentDisabled: false
+  mainComponentDisabled: false,
+  feeAmount: { amount: null, fee: null, rate: null }
 };
 
 export const ProtectTxContext = createContext({} as ProtectTxContext);
@@ -209,6 +219,13 @@ const ProtectTxProvider: React.FC = ({ children }) => {
     [setState]
   );
 
+  const setFeeAmount = (feeAmount: IFeeAmount) => {
+    setState((prevState) => ({
+      ...prevState,
+      feeAmount
+    }));
+  };
+
   const setProtectTxTimeoutFunction = useCallback(
     (cb: (txReceiptCb?: (txReciept: ITxReceipt) => void) => void) => {
       const { protectTxEnabled, isWeb3Wallet } = state;
@@ -259,13 +276,9 @@ const ProtectTxProvider: React.FC = ({ children }) => {
       etherscanBalanceReport
     } = state;
     const labels = nansenAddressReport ? nansenAddressReport.label : null;
-    const status = labels ? ProtectTxUtils.getNansenReportType(labels) : null;
-    const lastTx = ProtectTxUtils.getLastTx(
-      etherscanLastTxReport,
-      etherscanLastTokenTxReport,
-      address
-    );
-    const balance = ProtectTxUtils.getBalance(etherscanBalanceReport);
+    const status = labels ? getNansenReportType(labels) : null;
+    const lastTx = getLastTx(etherscanLastTxReport, etherscanLastTokenTxReport, address);
+    const balance = getBalance(etherscanBalanceReport);
     return { address, status, labels, lastTransaction: lastTx, balance, asset: state.asset! };
   }, [state]);
 
@@ -311,6 +324,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
     goToInitialStepOrFetchReport,
     showHideProtectTx,
     setReceiverInfo,
+    setFeeAmount,
     setProtectTxTimeoutFunction,
     invokeProtectTxTimeoutFunction,
     clearProtectTxTimeoutFunction,

@@ -11,7 +11,7 @@ import {
   FixedSizeCollapsibleTable,
   EditableAccountLabel
 } from '@components';
-import { truncate, convertToFiat } from '@utils';
+import { convertToFiat } from '@utils';
 import { ITxReceipt, ITxStatus, StoreAccount, Asset, Network, ExtendedAddressBook } from '@types';
 import {
   RatesContext,
@@ -221,23 +221,22 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
             stage={status}
             date={timestamp}
           />,
-          <Account key={1} title={editableFromLabel} truncate={truncate} address={from} />,
+          <Account key={1} title={editableFromLabel} truncate={true} address={from} />,
           to && (
             <Account
               key={2}
               title={editableToLabel}
-              truncate={truncate}
+              truncate={true}
               address={receiverAddress || to}
             />
           ),
           <Amount
             key={3}
             assetValue={`${parseFloat(amount).toFixed(4)} ${asset.ticker}`}
-            fiatValue={`${getFiat(settings).symbol}${convertToFiat(
-              parseFloat(amount),
-              getAssetRate(asset)
-            ).toFixed(2)}
-        `}
+            fiat={{
+              symbol: getFiat(settings).symbol,
+              amount: convertToFiat(parseFloat(amount), getAssetRate(asset)).toFixed(2)
+            }}
           />,
           <NewTabLink
             key={4}

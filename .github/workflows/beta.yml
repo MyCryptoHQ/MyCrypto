@@ -1,0 +1,60 @@
+name: Beta
+
+env:
+  AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_BUILDS_APP }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_BETA }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_BETA }}
+  AWS_REGION: 'us-east-1'
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Retrieve node version from .nvmrc
+        run: echo "##[set-output name=NVMRC;]$(cat package.json | grep '\"node\":' | sed 's/^ *//;s/ *$//;s/\"node\":\ \"//;s/\",//')"
+        id: nvm
+
+      - name: Setup node ${{ steps.nvm.outputs.NVMRC }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: '${{ steps.nvm.outputs.NVMRC }}'
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: yarn build
+        run: yarn build
+
+      - name: Zip standalone build folder
+        run: zip -r dist/prod/standalone_mycrypto.zip dist/prod/
+
+      - name: 'Save standalone_mycrypto.zip to artifacts'
+        uses: actions/upload-artifact@v1
+        with:
+          name: 'standalone_mycrypto'
+          path: 'dist/prod/standalone_mycrypto.zip'
+          
+      - name: S3 Sync - SHA Push
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'push'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
+        env:
+          DEST_DIR: ${GITHUB_SHA}
+          SOURCE_DIR: 'dist/prod'
+          
+      - name: S3 Sync - SHA Pull Request
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'pull_request'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
+        env:
+          DEST_DIR: ${{ github.event.pull_request.head.sha }}
+          SOURCE_DIR: 'dist/prod'    

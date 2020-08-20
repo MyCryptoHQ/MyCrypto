@@ -60,7 +60,6 @@ interface PendingBtnAction {
 interface Props {
   pendingButton?: PendingBtnAction;
   swapDisplay?: SwapDisplayData;
-  protectTxButton?(): JSX.Element;
 }
 
 const SImg = styled('img')`
@@ -76,8 +75,7 @@ export default function TxReceipt({
   pendingButton,
   membershipSelected,
   zapSelected,
-  swapDisplay,
-  protectTxButton
+  swapDisplay
 }: ITxReceiptStepProps & Props) {
   const { getAssetRate } = useContext(RatesContext);
   const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
@@ -89,9 +87,8 @@ export default function TxReceipt({
   const [blockNumber, setBlockNumber] = useState(0);
   const [timestamp, setTimestamp] = useState(0);
 
-  const {
-    state: { protectTxEnabled, isWeb3Wallet: isPtxWeb3Wallet }
-  } = useContext(ProtectTxContext);
+  // Imported in this way to handle errors where the context is missing, f.x. in Swap Flow
+  const { state: ptxState } = useContext(ProtectTxContext);
 
   useEffect(() => {
     setDisplayTxReceipt(txReceipt);
@@ -184,9 +181,8 @@ export default function TxReceipt({
       resetFlow={resetFlow}
       completeButtonText={completeButtonText}
       pendingButton={pendingButton}
-      protectTxEnabled={protectTxEnabled}
-      web3Wallet={isPtxWeb3Wallet}
-      protectTxButton={protectTxButton}
+      protectTxEnabled={ptxState && ptxState.protectTxEnabled}
+      web3Wallet={ptxState && ptxState.isWeb3Wallet}
     />
   );
 }
@@ -205,9 +201,10 @@ export interface TxReceiptDataProps {
   protectTxEnabled?: boolean;
   web3Wallet?: boolean;
   assetRate(): number | undefined;
-  protectTxButton?(): JSX.Element;
   resetFlow(): void;
 }
+
+type UIProps = Omit<IStepComponentProps, 'resetFlow' | 'onComplete'> & TxReceiptDataProps;
 
 export const TxReceiptUI = ({
   settings,
@@ -228,9 +225,8 @@ export const TxReceiptUI = ({
   resetFlow,
   completeButtonText,
   protectTxEnabled = false,
-  web3Wallet = false,
-  protectTxButton
-}: Omit<IStepComponentProps, 'resetFlow' | 'onComplete'> & TxReceiptDataProps) => {
+  web3Wallet = false
+}: UIProps) => {
   /* Determining User's Contact */
   const { asset, gasPrice, gasLimit, data, nonce, baseAsset, receiverAddress } = txConfig;
 
@@ -348,11 +344,10 @@ export const TxReceiptUI = ({
             <AssetIcon uuid={asset.uuid} size={'24px'} />
             <Amount
               assetValue={`${parseFloat(assetAmount()).toFixed(6)} ${assetTicker()}`}
-              fiatValue={`${getFiat(settings).symbol}${convertToFiat(
-                parseFloat(assetAmount()),
-                assetRate()
-              ).toFixed(2)}
-            `}
+              fiat={{
+                symbol: getFiat(settings).symbol,
+                amount: convertToFiat(parseFloat(assetAmount()), assetRate()).toFixed(2)
+              }}
             />
           </div>
         </div>
@@ -400,8 +395,6 @@ export const TxReceiptUI = ({
             {!displayTxReceipt && <PendingTransaction />}
           </div>
         </div>
-
-        {protectTxButton && protectTxButton()}
 
         <TransactionDetailsDisplay
           baseAsset={baseAsset}

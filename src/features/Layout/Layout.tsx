@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { BannerType } from '@types';
@@ -12,8 +12,8 @@ export interface LayoutConfig {
   centered?: boolean;
   fluid?: boolean;
   fullW?: boolean;
+  marginTop?: number;
   bgColor?: string;
-  marginTop?: string;
   paddingV?: string;
 }
 interface Props {
@@ -42,7 +42,7 @@ const STop = styled.div`
   }
 `;
 
-const SContainer = styled('div')`
+const SContainer = styled.div`
   padding: ${(p) =>
     `${p.paddingV ? p.paddingV : SPACING.BASE} ${p.fluid || p.fullW ? 0 : MIN_CONTENT_PADDING}`};
   width: 100%;
@@ -52,7 +52,7 @@ const SContainer = styled('div')`
   * Since it is aboslute positionning we move the container down.
   */
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    margin-top: ${(p) => (p.marginTop ? p.marginTop : 0)};
+    margin-top: ${(p) => (p.marginTop ? p.marginTop : 0)}px;
     padding: ${(p) =>
       `${p.paddingV ? p.paddingV : SPACING.BASE} ${p.fluid || p.fullW ? 0 : MIN_CONTENT_PADDING}`};
   }
@@ -76,13 +76,27 @@ export default function Layout({ config = {}, className = '', children }: Props)
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
   const { error, shouldShowError, getErrorMessage } = useContext(ErrorContext);
 
-  // Store the calculated height of STop so we can adapt the marginTop of SContainer
-  // when the mobile header has a fixed positioning.
-  const [topWidth, setTopWidth] = useState('0px');
+  const [topHeight, setTopHeight] = useState(0);
+
+  const topRef = useRef<any>(null);
+
+  useLayoutEffect(() => {
+    const resizeObserver = new ResizeObserver((entries) => {
+      // Wrap with requestAnimationFrame to avoir loop limit exceeded error
+      // https://stackoverflow.com/questions/49384120/resizeobserver-loop-limit-exceeded
+      window.requestAnimationFrame(() => {
+        for (const entry of entries) setTopHeight(entry.contentRect.height);
+      });
+    });
+
+    resizeObserver.observe(topRef.current);
+
+    return () => resizeObserver.disconnect();
+  }, [topRef.current]);
 
   return (
     <SMain className={className} bgColor={bgColor}>
-      <STop ref={(elem: any) => elem && setTopWidth(`${elem.getBoundingClientRect().height}px`)}>
+      <STop ref={topRef}>
         {shouldShowError() && error && (
           <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
         )}
@@ -97,8 +111,8 @@ export default function Layout({ config = {}, className = '', children }: Props)
         centered={centered}
         fluid={fluid}
         fullW={fullW}
-        marginTop={topWidth}
         paddingV={paddingV}
+        marginTop={topHeight}
       >
         {children}
       </SContainer>

@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { truncate } from '@utils';
 import { TSymbol, TUuid } from '@types';
 import Currency from './Currency';
 import Account from './Account';
@@ -53,7 +52,7 @@ function AccountSummary({
 }: Props & StyleProps) {
   return (
     <SAccountWrapper onPointerDown={onClick} paddingLeft={paddingLeft}>
-      <SAddress title={label} truncate={truncate} address={address} isCopyable={false} />
+      <SAddress title={label} truncate={true} address={address} isCopyable={false} />
       {balance && uuid && (
         <SCurrency
           amount={balance}

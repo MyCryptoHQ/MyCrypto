@@ -67,8 +67,8 @@ interface Props {
   className?: string;
   isCopyable?: boolean;
   tooltip?: TooltipType;
+  truncate: boolean;
   onSubmit?(title?: string): void;
-  truncate?(text: string): string;
 }
 
 export default function Account({

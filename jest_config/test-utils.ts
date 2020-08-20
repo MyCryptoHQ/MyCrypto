@@ -1,7 +1,6 @@
 // Setup react-testing-library
 // https://testing-library.com/docs/react-testing-library/setup#custom-render
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import { noOp } from '@utils';
 
 // Mock features used by react-slider

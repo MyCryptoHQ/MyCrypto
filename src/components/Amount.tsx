@@ -2,7 +2,10 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 
 import { COLORS, BREAK_POINTS } from '@theme';
+import { TSymbol } from '@types';
+
 import { default as Typography } from './Typography';
+import Currency from './Currency';
 
 const SAmount = styled.div`
   display: flex;
@@ -15,9 +18,9 @@ const SAmount = styled.div`
   }
 `;
 
-const Asset = styled(Typography)<{ discrete?: boolean }>`
+const Asset = styled(Typography)<typeof Typography & { $discrete?: boolean }>`
   ${(props) =>
-    props.discrete
+    props.$discrete
       ? css`
         color: ${COLORS.BLUE_GREY};
         font-size: 0.9em;
@@ -28,9 +31,11 @@ const Asset = styled(Typography)<{ discrete?: boolean }>`
       : ``};
 `;
 
-const Fiat = styled(Typography)`
+const Fiat = styled(Currency)`
   font-size: 0.9em;
-  color: ${COLORS.BLUE_GREY};
+  span {
+    color: ${COLORS.BLUE_GREY};
+  }
   @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
     font-size: 1em;
   }
@@ -38,26 +43,22 @@ const Fiat = styled(Typography)`
 
 interface Props {
   assetValue: string;
-  fiatValue?: string;
+  fiat?: {
+    amount: string;
+    symbol: TSymbol;
+  };
   baseAssetValue?: string;
   bold?: boolean;
 }
 
 // @todo:
-// - use Currency component for Fiat
 // - accept BN instead of string for asset and fiat and define default decimals
-export default function Amount({ assetValue, fiatValue, baseAssetValue, bold = false }: Props) {
+export default function Amount({ assetValue, fiat, baseAssetValue, bold = false }: Props) {
   return (
     <SAmount>
-      <Asset as="span" bold={bold}>
-        {assetValue}
-      </Asset>
-      {baseAssetValue && (
-        <Asset as="span" discrete={true}>
-          {baseAssetValue}
-        </Asset>
-      )}
-      {fiatValue && <Fiat as="span">{fiatValue}</Fiat>}
+      <Asset bold={bold}>{assetValue}</Asset>
+      {baseAssetValue && <Asset $discrete={true}>{baseAssetValue}</Asset>}
+      {fiat && <Fiat amount={fiat.amount} symbol={fiat.symbol} decimals={2} />}
     </SAmount>
   );
 }
