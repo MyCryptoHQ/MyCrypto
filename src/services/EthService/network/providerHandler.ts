@@ -93,8 +93,12 @@ export class ProviderHandler {
         return any(
           providers.map((p) => {
             return new Promise(async (resolve, reject) => {
-              const tx = await p.getTransaction(txhash);
-              return tx ? resolve(tx) : reject();
+              try {
+                const tx = await p.getTransaction(txhash);
+                return tx ? resolve(tx) : reject();
+              } catch (err) {
+                reject(err);
+              }
             });
           })
         );
