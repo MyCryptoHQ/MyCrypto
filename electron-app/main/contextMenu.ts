@@ -84,7 +84,11 @@ function popupContextMenu(
         label: 'Inspect Element',
         click: () => {
           window.webContents.inspectElement(props.x, props.y);
-          if (window.webContents.isDevToolsOpened()) {
+          if (
+            window.webContents &&
+            window.webContents.devToolsWebContents &&
+            window.webContents.isDevToolsOpened()
+          ) {
             window.webContents.devToolsWebContents.focus();
           }
         }
