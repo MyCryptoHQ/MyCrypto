@@ -140,7 +140,7 @@ function SignMessage(props: Props) {
   };
 
   const onUnlock = (selectedWallet: any) => {
-    setWallet(selectedWallet);
+    setWallet(Array.isArray(selectedWallet) ? selectedWallet[0] : selectedWallet);
   };
 
   const resetWalletSelectionAndForm = () => {
