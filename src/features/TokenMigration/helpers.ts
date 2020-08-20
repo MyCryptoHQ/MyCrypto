@@ -1,4 +1,4 @@
-import { ITxObject, StoreAccount, ITxConfig, TAddress } from '@types';
+import { ITxObject, StoreAccount, ITxConfig, TAddress, ITxData } from '@types';
 import {
   inputValueToHex,
   inputGasPriceToHex,
@@ -24,7 +24,7 @@ export const createApproveTx = (payload: ITokenMigrationFormFull): Partial<ITxOb
     // @ts-ignore Contract Address should be set if asset is ERC20
     to: tokenMigrationConfig.fromContractAddress,
     from: payload.account.address,
-    data,
+    data: data as ITxData,
     chainId: DEFAULT_NETWORK_CHAINID,
     gasPrice: inputGasPriceToHex(payload.gasPrice),
     value: inputValueToHex('0')
@@ -37,7 +37,7 @@ export const createMigrationTx = (payload: ITokenMigrationFormFull): Partial<ITx
     from: payload.account.address,
     to: tokenMigrationConfig.toContractAddress,
     value: inputValueToHex('0'),
-    data,
+    data: data as ITxData,
     gasPrice: inputGasPriceToHex(payload.gasPrice),
     chainId: DEFAULT_NETWORK_CHAINID
   };

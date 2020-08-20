@@ -7,7 +7,12 @@ import {
   IHexStrTransaction,
   ITxObject,
   StoreAsset,
-  ISwapAsset
+  ISwapAsset,
+  ITxValue,
+  ITxGasPrice,
+  ITxGasLimit,
+  ITxNonce,
+  ITxData
 } from '@types';
 import { getAssetByUUID, getAssetByTicker, DexService } from '@services';
 import { hexToString, appendGasPrice, appendSender } from '@services/EthService';
@@ -68,11 +73,11 @@ export const makeTxObject = (config: ITxConfig): IHexStrTransaction => {
   return {
     to: config.receiverAddress,
     chainId: config.network.chainId,
-    data: config.data,
-    value: addHexPrefix(new BN(config.amount).toString(16)),
-    gasPrice: addHexPrefix(new BN(config.gasPrice).toString(16)),
-    gasLimit: config.gasLimit,
-    nonce: config.nonce
+    data: config.data as ITxData,
+    value: addHexPrefix(new BN(config.amount).toString(16)) as ITxValue,
+    gasPrice: addHexPrefix(new BN(config.gasPrice).toString(16)) as ITxGasPrice,
+    gasLimit: config.gasLimit as ITxGasLimit,
+    nonce: config.nonce as ITxNonce
   };
 };
 

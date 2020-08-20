@@ -33,16 +33,16 @@ export const makeTransaction = (
 export const inputGasPriceToHex = (
   gasPriceGwei: string
 ): ITxGasPrice /* Converts to wei from gwei */ =>
-  addHexPrefix(gasPriceToBase(parseFloat(gasPriceGwei)).toString(16));
+  addHexPrefix(gasPriceToBase(parseFloat(gasPriceGwei)).toString(16)) as ITxGasPrice;
 
 export const inputGasLimitToHex = (gasLimit: string): ITxGasLimit =>
-  bigNumberify(gasLimit).toHexString();
+  bigNumberify(gasLimit).toHexString() as ITxGasLimit;
 
 export const inputValueToHex = (valueEther: string): ITxValue =>
-  hexEncodeQuantity(toTokenBase(valueEther, DEFAULT_ASSET_DECIMAL));
+  hexEncodeQuantity(toTokenBase(valueEther, DEFAULT_ASSET_DECIMAL)) as ITxValue;
 
 export const inputNonceToHex = (nonce: string): ITxNonce =>
-  addHexPrefix(parseInt(nonce, 10).toString(16));
+  addHexPrefix(parseInt(nonce, 10).toString(16)) as ITxNonce;
 /* region:end User Input to Hex */
 
 /* region:start Hex to User Viewable */

@@ -1,3 +1,5 @@
+import { Brand } from 'utility-types';
+
 import {
   Asset,
   Network as INetwork,
@@ -13,12 +15,12 @@ import { IMembershipConfig } from '@features/PurchaseMembership/config';
 export type ISignedTx = string;
 
 export type ITxToAddress = TAddress;
-export type ITxValue = string; // Hex - wei
-export type ITxGasLimit = string; // Hex
-export type ITxGasPrice = string; // Hex - wei
-export type ITxData = string; // Hex
-export type ITxNonce = string; // Hex
 export type ITxFromAddress = TAddress;
+export type ITxValue = Brand<string, 'Value'>; // Hex - wei
+export type ITxGasLimit = Brand<string, 'GasLimit'>; // Hex
+export type ITxGasPrice = Brand<string, 'GasPrice'>; // Hex - wei
+export type ITxData = Brand<string, 'Data'>; // Hex
+export type ITxNonce = Brand<string, 'Nonce'>; // Hex
 
 export interface ITxObject {
   /* Raw Transaction Object */

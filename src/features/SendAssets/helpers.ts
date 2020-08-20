@@ -1,6 +1,5 @@
 import BN from 'bn.js';
 import { bufferToHex } from 'ethereumjs-util';
-import isEmpty from 'ramda/src/isEmpty';
 
 import {
   IFormikFields,
@@ -9,9 +8,6 @@ import {
   Asset,
   IHexStrWeb3Transaction,
   ITxData,
-  ITxGasLimit,
-  ITxGasPrice,
-  ITxNonce,
   ITxToAddress,
   ITxValue,
   ITxConfig,
@@ -43,6 +39,8 @@ import { handleValues } from '@services/EthService/utils/units';
 import { MANDATORY_RESUBMIT_QUERY_PARAMS } from '@config';
 import { hexNonceToViewable, hexToString } from '@services/EthService/utils/makeTransaction';
 import { translateRaw } from '@translations';
+import { isEmpty } from '@vendor';
+
 import { IMandatoryAcc, IMandatoryItem } from './types';
 
 const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
@@ -50,7 +48,7 @@ const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxOb
   return {
     to: formData.address.value as ITxToAddress,
     value: formData.amount ? inputValueToHex(formData.amount) : ('0x0' as ITxValue),
-    data: formData.txDataField ? formData.txDataField : ('0x0' as ITxData),
+    data: formData.txDataField ? (formData.txDataField as ITxData) : ('0x0' as ITxData),
     gasLimit: inputGasLimitToHex(formData.gasLimitField),
     gasPrice: formData.advancedTransaction
       ? inputGasPriceToHex(formData.gasPriceField)
@@ -71,11 +69,11 @@ const createERC20TxObject = (formData: IFormikFields): IHexStrTransaction => {
         formData.amount !== '' ? toWei(formData.amount, asset.decimal!) : TokenValue(new BN(0))
       )
     ) as ITxData,
-    gasLimit: inputGasLimitToHex(formData.gasLimitField) as ITxGasLimit,
+    gasLimit: inputGasLimitToHex(formData.gasLimitField),
     gasPrice: formData.advancedTransaction
-      ? (inputGasPriceToHex(formData.gasPriceField) as ITxGasPrice)
-      : (inputGasPriceToHex(formData.gasPriceSlider) as ITxGasPrice),
-    nonce: inputNonceToHex(formData.nonceField) as ITxNonce,
+      ? inputGasPriceToHex(formData.gasPriceField)
+      : inputGasPriceToHex(formData.gasPriceSlider),
+    nonce: inputNonceToHex(formData.nonceField),
     chainId: network.chainId ? network.chainId : 1
   };
 };

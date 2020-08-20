@@ -40,7 +40,7 @@ const invalidResubmitQuery = {
   nonce: '0x60'
 };
 
-describe('Query string bs', () => {
+describe('Query string parsing', () => {
   it('parses valid erc20 tx query parameters correctly', () => {
     const parsedQueryParams = parseQueryParams(validERC20ResubmitQuery)(
       [fNetwork],

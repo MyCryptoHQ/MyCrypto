@@ -12,7 +12,8 @@ import {
   ITxValue,
   ITxData,
   ITxGasPrice,
-  ITxNonce
+  ITxNonce,
+  ITxGasLimit
 } from '@types';
 
 import { default as ethNonWeb3TxResponse } from './ethNonWeb3TxResponse.json';
@@ -53,7 +54,7 @@ export const fTransaction: ITxObject = {
   to: '0x909f74Ffdc223586d0d30E78016E707B6F5a45E2' as ITxToAddress,
   value: '0x38d7ea4c68000' as ITxValue,
   data: '0x' as ITxData,
-  gasLimit: '21000' as ITxGasPrice,
+  gasLimit: '21000' as ITxGasLimit,
   gasPrice: '0xee6b2800' as ITxGasPrice,
   nonce: '0x9' as ITxNonce,
   chainId: 3

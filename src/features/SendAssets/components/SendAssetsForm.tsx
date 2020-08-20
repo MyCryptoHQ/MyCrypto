@@ -232,7 +232,7 @@ const createQueryWarning = (translationId?: string) => (
   </div>
 );
 
-const QueryWarning = () => <WhenQueryExists whenQueryExists={createQueryWarning} />;
+const QueryWarning = () => <WhenQueryExists displayQueryMessage={createQueryWarning} />;
 
 interface ISendFormProps extends IStepComponentProps {
   type?: 'resubmit';

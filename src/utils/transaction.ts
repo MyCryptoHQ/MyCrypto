@@ -42,7 +42,11 @@ import {
   IUnknownTxReceipt,
   ITxData,
   ITxToAddress,
-  ITxValue
+  ITxValue,
+  ITxGasLimit,
+  ITxGasPrice,
+  ITxNonce,
+  ITxFromAddress
 } from '@types';
 import { isTransactionDataEmpty } from './validators';
 import { CREATION_ADDRESS } from '@config';
@@ -60,7 +64,7 @@ export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
     gasLimit: bigNumberify(gasLimit),
     gasPrice: bigNumberify(gasPrice),
     value: bigNumberify(txConfig.rawTransaction.value),
-    to: txConfig.rawTransaction.to as TAddress,
+    to: txConfig.rawTransaction.to,
 
     status,
     amount,
@@ -181,14 +185,14 @@ export const makeTxConfigFromTxResponse = (
 
   const txConfig = {
     rawTransaction: {
-      to: decodedTx.to as TAddress,
-      value: hexlify(decodedTx.value),
-      gasLimit: hexlify(decodedTx.gasLimit),
-      data: decodedTx.data,
-      gasPrice: hexlify(decodedTx.gasPrice),
-      nonce: hexlify(decodedTx.nonce),
+      to: decodedTx.to as ITxToAddress,
+      value: hexlify(decodedTx.value) as ITxValue,
+      gasLimit: hexlify(decodedTx.gasLimit) as ITxGasLimit,
+      data: decodedTx.data as ITxData,
+      gasPrice: hexlify(decodedTx.gasPrice) as ITxGasPrice,
+      nonce: hexlify(decodedTx.nonce) as ITxNonce,
       chainId: decodedTx.chainId,
-      from: decodedTx.from as TAddress
+      from: decodedTx.from as ITxFromAddress
     },
     receiverAddress: (contractAsset
       ? decodeTransfer(decodedTx.data)._to

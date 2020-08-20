@@ -28,7 +28,7 @@
     "arrow-return-shorthand": true,
     "prefer-method-signature": true,
     "arrow-parens": false,
-    "no-unnecessary-type-assertion": false,
+    "no-unnecessary-type-assertion": true,
     "array-type": [
       true,
       "array"

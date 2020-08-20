@@ -25,10 +25,7 @@ import {
 } from './components';
 import { parseQueryParams } from './helpers';
 import isEmpty from 'ramda/src/isEmpty';
-
-type Props = RouteComponentProps<{}>;
-
-function SendAssets(props: Props) {
+function SendAssets({ location }: RouteComponentProps) {
   const [reducerState, dispatch] = useReducer(sendAssetsReducer, initialState);
   const {
     state: { protectTxEnabled, protectTxShow, isPTXFree },
@@ -38,7 +35,7 @@ function SendAssets(props: Props) {
   const { assets } = useAssets();
   const { networks } = useNetworks();
   const { IS_ACTIVE_FEATURE } = useFeatureFlags();
-  const { location } = props;
+
   useEffect(() => {
     const txConfigInit = parseQueryParams(qs.parse(location.search))(networks, assets, accounts);
     if (txConfigInit && txConfigInit.type === 'resubmit') {
@@ -156,7 +153,7 @@ function SendAssets(props: Props) {
     const walletSteps =
       senderAccount && isWeb3Wallet(senderAccount.wallet) ? web3Steps : defaultSteps;
     if (reducerState.type && reducerState.type === 'resubmit') {
-      return walletSteps.slice(1, walletSteps.length) as IStepperPath[];
+      return walletSteps.slice(1, walletSteps.length);
     }
     return walletSteps;
   };
