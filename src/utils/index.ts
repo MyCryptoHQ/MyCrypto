@@ -6,6 +6,7 @@ export {
   IS_DEV,
   IS_STAGING,
   IS_PROD,
+  IS_E2E,
   USE_HASH_ROUTER,
   IS_ELECTRON
 } from './environment';
