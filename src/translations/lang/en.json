@@ -1030,7 +1030,7 @@
     "NO_ACCOUNTS_SELECTED_DESCRIPTION": "To view your balances, select at least one account in the dropdown above.",
     "ZAP_WITHDRAW_TOOLTIP": "Withdrawing from this Zap requires interacting with Uniswap. If you need assistance, please read [How To Withdraw from Unipool](https://support.mycrypto.com/how-to/defi/how-to-withdraw-from-unipool).",
     "GENERIC_ERC20_NAME": "Unknown ERC20 Token",
-    "WARN_SEND_INCORRECT_PROPS": "You arrived via a **resubmit transaction**, but the transaction parameters were incomplete. Read [this article]() on how to construct transaction resubmission links correctly.",
-    "WARN_SEND_UNDETECTED_NETWORK_OR_ACCOUNT": "You arrived via a **resubmit transaction**, but we could not detect your account or the specified network. Please add this account to your dashboard first, then make sure the chainId specified in your url is valid."
+    "WARN_SEND_INCORRECT_PROPS": "The transaction resubmission settings in the URL are incorrect - they may be incomplete or constructed improperly. Please reconstruct the URL and try again. [Learn how to construct transaction resubmission links](https://support.mycrypto.com/how-to/sending/creating-prefilled-transaction).",
+    "WARN_SEND_UNDETECTED_NETWORK_OR_ACCOUNT": "We couldn't resolve your transaction resubmission settings - either you do not have the 'Sender' account added to your dashboard or you're not on the specified network. Please double check that these are correct and try again. [Learn more about resubmitting a transaction](https://support.mycrypto.com/how-to/sending/checking-or-replacing-a-transaction-after-it-has-been-sent)."
   }
 }

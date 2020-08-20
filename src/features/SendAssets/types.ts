@@ -22,6 +22,7 @@ export interface IMandatoryAcc {
 }
 
 export interface IMandatoryItem {
+  invalid?: true;
   gasPrice: ITxGasPrice;
   gasLimit: ITxGasLimit;
   to: ITxToAddress;

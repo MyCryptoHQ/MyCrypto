@@ -1,4 +1,4 @@
-import { StoreAccount, NetworkId, ITxConfig, ITxObject, TAddress } from '@types';
+import { StoreAccount, NetworkId, ITxConfig, ITxObject } from '@types';
 import { WALLET_STEPS } from '@components';
 import { getAssetByUUID, hexToString, hexWeiToString } from '@services';
 
@@ -17,7 +17,7 @@ export const makeDeployContractTxConfig = (
   const txConfig: ITxConfig = {
     from: address,
     amount,
-    receiverAddress: to as TAddress,
+    receiverAddress: to,
     senderAccount: account,
     network,
     asset: baseAsset,

@@ -121,17 +121,17 @@ export const parseResubmitParams = (queryParams: any) => (
   assets: ExtendedAsset[],
   accounts: StoreAccount[]
 ): ITxConfig | undefined => {
-  // if resubmit tx does not contain all the necessary parameters to construct a tx config
-  if (!MANDATORY_RESUBMIT_QUERY_PARAMS.every((mandatoryParam) => queryParams[mandatoryParam]))
-    return;
-  // @todo: combine the below with the above.
+  // if resubmit tx does not contain all the necessary parameters to construct a tx config return undefined
   const i = (MANDATORY_RESUBMIT_QUERY_PARAMS.reduce((acc, cv) => {
+    if (queryParams[cv] === undefined) return { ...acc, invalid: true };
     acc[cv] = queryParams[cv];
     return acc;
   }, {} as IMandatoryAcc) as unknown) as IMandatoryItem;
+  if (i.invalid) return;
 
   const network = networks.find((n) => n.chainId.toString() === i.chainId);
   if (!network) return;
+
   const senderAccount = accounts.find(({ address }) => isSameAddress(address, i.from));
   if (!senderAccount) return;
 
