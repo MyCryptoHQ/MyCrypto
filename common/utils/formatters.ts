@@ -1,5 +1,5 @@
 import BN from 'bn.js';
-import { toChecksumAddress as toETHChecksumAddress } from 'ethereumjs-util';
+import { toChecksumAddress as toETHChecksumAddress, addHexPrefix } from 'ethereumjs-util';
 import { toChecksumAddress as toRSKChecksumAddress } from 'rskjs-util';
 import { Wei } from 'libs/units';
 import { stripHexPrefix } from 'libs/formatters';
@@ -127,7 +127,7 @@ export function getChecksumAddressFunction(chainId: number) {
   if (chainId === 30 || chainId === 31) {
     return (addr: string) => toRSKChecksumAddress(addr, chainId);
   }
-  return toETHChecksumAddress;
+  return (address: string) => toETHChecksumAddress(addHexPrefix(address));
 }
 
 export function toChecksumAddressByChainId(address: string, chainId: number) {

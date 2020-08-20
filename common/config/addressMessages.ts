@@ -1,4 +1,4 @@
-import { toChecksumAddress } from 'ethereumjs-util';
+import { toChecksumAddress, addHexPrefix } from 'ethereumjs-util';
 
 export interface AddressMessage {
   msg: string;
@@ -189,6 +189,6 @@ export const ADDRESS_MESSAGES: { [key: string]: AddressMessage } = {
 
 export function getAddressMessage(address: string): AddressMessage | undefined {
   const lowerAddr = address.toLowerCase();
-  const checksumAddr = toChecksumAddress(address);
+  const checksumAddr = toChecksumAddress(addHexPrefix(address));
   return ADDRESS_MESSAGES[lowerAddr] || ADDRESS_MESSAGES[checksumAddr];
 }
