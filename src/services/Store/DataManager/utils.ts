@@ -37,7 +37,7 @@ export const mergeConfigWithLocalStorage = (
   const customNetworks = (Object.fromEntries(
     Object.entries(ls.networks)
       .filter((n) => n[1].isCustom)
-      .map((n) => [n[0], { ...n[1], tokens: [] }])
+      .map(([k, v]) => [k, { ...v, tokens: [] }])
   ) as unknown) as NetworkConfig;
   const config = merge(defaultConfig, customNetworks);
 
