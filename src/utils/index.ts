@@ -3,6 +3,7 @@ export { notUndefined, isTxSigned, isTxHash } from './typeGuards';
 export * from './validators';
 export {
   hasWeb3Provider,
+  IS_E2E,
   IS_DEV,
   IS_STAGING,
   IS_PROD,
@@ -85,3 +86,4 @@ export { default as isFiatTicker } from './isFiatTicker';
 export { sortByLabel } from './sort';
 export { isVoid } from './isVoid';
 export { accountsToCSV } from './csv';
+export { getRootDomain } from './getRootDomain';

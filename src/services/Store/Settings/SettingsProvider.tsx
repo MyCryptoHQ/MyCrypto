@@ -18,6 +18,7 @@ export interface ISettingsContext {
   updateSettingsRates(rates: IRates): void;
   updateLanguageSelection(language: string): void;
   updateFiatCurrency(fiatTicker: TFiatTicker): void;
+  isValidImport(toValidate: string): boolean;
 }
 
 const isValidImport = (importedCache: string, localStorage: string) => {
@@ -103,7 +104,9 @@ export const SettingsProvider: React.FC = ({ children }) => {
 
     updateFiatCurrency: (newFiatSelection) => {
       state.updateSettings({ ...settings, fiatCurrency: newFiatSelection });
-    }
+    },
+
+    isValidImport: (toValidate) => isValidImport(toValidate, state.exportStorage())
   };
 
   return <SettingsContext.Provider value={state}>{children}</SettingsContext.Provider>;

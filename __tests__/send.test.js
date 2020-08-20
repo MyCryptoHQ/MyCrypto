@@ -9,7 +9,7 @@ import {
   FIXTURE_SEND_CONTACT
 } from './fixtures';
 import SendAssetsPage from './send-assets-page.po';
-import { getTransValueByKey } from './translation-utils';
+import { getTransValueByKey, findByTKey } from './translation-utils';
 import { clearLocalStorage, setLocalStorage } from './localstorage-utils';
 import { setFeatureFlag } from './featureflag-utils';
 
@@ -26,16 +26,16 @@ test('Complete SendFlow', async (t) => {
   /* Should have and support PTX */
   await setFeatureFlag('PROTECT_TX', true);
 
-  const ptxBtn = getByText(getTransValueByKey('PROTECTED_TX_GET_TX_PROTECTION'));
+  const ptxBtn = getByText(findByTKey('PROTECTED_TX_GET_TX_PROTECTION'));
   await t.expect(ptxBtn).ok();
 
   await t.click(ptxBtn);
 
-  const ptxNextButton = getByText(getTransValueByKey('PROTECTED_TX_PROTECT_MY_TX'));
+  const ptxNextButton = getByText(findByTKey('PROTECTED_TX_PROTECT_MY_TX'));
   await t.expect(ptxNextButton).ok();
 
   // Information Missing since form isn't filled
-  const missingInfo = getByText(getTransValueByKey('MISSING_INFORMATION'));
+  const missingInfo = getByText(findByTKey('MISSING_INFORMATION'));
   await t.expect(missingInfo).ok();
 
   // Close the PTX modal and reset flag.
@@ -47,7 +47,7 @@ test('Complete SendFlow', async (t) => {
   await sendAssetsPage.submitForm();
 
   // Has continued to next step with sign button
-  const signBtn = getByText(getTransValueByKey('DEP_SIGNTX'));
+  const signBtn = getByText(findByTKey('DEP_SIGNTX'));
   await t.expect(signBtn).ok();
 
   const inputField = Selector(
@@ -57,15 +57,15 @@ test('Complete SendFlow', async (t) => {
   await t.click(inputField).typeText(inputField, ENV.E2E_MNEMONIC_PASSPHRASE).click(signBtn);
 
   // Expect to reach confirm tx
-  await t.expect(getByText(getTransValueByKey('CONFIRM_TX_MODAL_TITLE'))).ok();
+  await t.expect(getByText(findByTKey('CONFIRM_TX_MODAL_TITLE'))).ok();
   await t.expect(getAllByText(FIXTURE_SEND_AMOUNT, { exact: false })).ok();
   await t.expect(getAllByText(FIXTURE_SEND_CONTACT)).ok();
 
   // Send TX
-  await t.click(getByText(new RegExp(getTransValueByKey('CONFIRM_AND_SEND'), 'i')));
+  await t.click(getByText(findByTKey('CONFIRM_AND_SEND')));
 
   // Expect to reach Tx Receipt
-  await t.expect(getByText(getTransValueByKey('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD'))).ok();
+  await t.expect(getByText(findByTKey('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD'))).ok();
   await t.expect(getAllByText(FIXTURE_SEND_AMOUNT, { exact: false })).ok();
   await t.expect(getAllByText(FIXTURE_SEND_CONTACT)).ok();
 });
