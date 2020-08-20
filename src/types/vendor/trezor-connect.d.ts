@@ -1,6 +1,4 @@
 declare module 'trezor-connect' {
-  type Path = number[] | string;
-
   interface TxSignature {
     r: number;
     s: string;
@@ -35,24 +33,47 @@ declare module 'trezor-connect' {
     chainId: number | null;
   }
 
+  interface TrezorData<Payload> {
+    id: number;
+    payload: Payload;
+    success: boolean;
+  }
+
+  interface GetPublicKeyPayload {
+    serializedPath: string;
+    chainCode: string;
+    publicKey: string;
+  }
+
   interface pathObj {
-    path: Path;
+    path: string | number[];
   }
 
   interface ErrorResponse {
     success: false;
     error: string;
   }
+
   type SuccessResponse<T> = {
     success: true;
     error: undefined;
   } & T;
+
   type Response<T> = ErrorResponse | SuccessResponse<T>;
 
-  namespace TrezorConnect {
-    export function manifest(data): void;
+  interface EthereumGetAddressPayload {
+    address: string;
+    path: number[];
+    serializedPath: string;
+  }
 
-    export function getPublicKey(pathObj): any;
+  namespace TrezorConnect {
+    export function manifest(manifest: { email: string; appUrl: string }): void;
+
+    export function getPublicKey(params: Path): Promise<TrezorData<GetPublicKeyPayload>>;
+    export function getPublicKey(params: {
+      bundle: Path[];
+    }): Promise<TrezorData<GetPublicKeyPayload[]>>;
 
     export function ethereumSignTransaction(signTransactionMessage): any;
 
@@ -64,7 +85,7 @@ declare module 'trezor-connect' {
       minFirmware?: string
     ): any;
 
-    export function ethereumGetAddress(pathObj): any;
+    export function ethereumGetAddress(pathObj): Promise<TrezorData<EthereumGetAddressPayload>>;
   }
 
   export default TrezorConnect;

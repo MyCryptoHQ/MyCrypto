@@ -5,7 +5,7 @@ import TransportNodeHid from '@ledgerhq/hw-transport-node-hid-noevents';
 import LedgerEth from '@ledgerhq/hw-app-eth';
 
 import { WalletLib } from 'shared/enclave/types';
-import { byContractAddress } from '@ledgerhq/hw-app-eth/erc20';
+import { byContractAddress, TokenInfo } from '@ledgerhq/hw-app-eth/erc20';
 
 let transport: LedgerTransport<string> | null;
 
@@ -34,7 +34,7 @@ const Ledger: WalletLib = {
       const res = await app.getAddress(dpath, false, true);
       return {
         publicKey: res.publicKey,
-        chainCode: res.chainCode
+        chainCode: res.chainCode as string // @todo - figure out the cause of this `string | undefined`
       };
     } catch (err) {
       console.error('Failed to get chain code from ledger:', err);
@@ -56,7 +56,9 @@ const Ledger: WalletLib = {
     );
 
     if (ethTx.getChainId() === 1) {
-      const tokenInfo = byContractAddress(ethTx.to.toString('hex'));
+      const tokenInfo = (byContractAddress(ethTx.to.toString('hex')) as unknown) as
+        | TokenInfo
+        | undefined; // @todo - figure out the cause of this
       if (tokenInfo) {
         await app.provideERC20TokenInformation(tokenInfo);
       }
@@ -82,7 +84,7 @@ const Ledger: WalletLib = {
     const app = await getEthApp();
     const msgHex = Buffer.from(msg).toString('hex');
     const signed = await app.signPersonalMessage(path, msgHex);
-    const combined = addHexPrefix(signed.r + signed.s + signed.v.toString(16));
+    const combined = addHexPrefix(signed.r + signed.s + signed.v.toString()); // @todo - this toString() should be toString(16)
     return {
       signedMessage: combined
     };

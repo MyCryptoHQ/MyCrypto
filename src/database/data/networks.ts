@@ -40,6 +40,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.TREZOR]: DPaths.ETH_TREZOR,
       [WalletId.SATOCHIP]: DPaths.ETH_SATOCHIP,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_LEDGER,
       [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_DEFAULT
     },
     gasPriceSettings: GAS_PRICE_DEFAULT,

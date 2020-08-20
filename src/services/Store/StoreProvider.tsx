@@ -25,7 +25,8 @@ import {
   ITxType,
   TUuid,
   ReserveAsset,
-  IPendingTxReceipt
+  IPendingTxReceipt,
+  IAccountAdditionData
 } from '@types';
 import {
   isArrayEqual,
@@ -66,9 +67,15 @@ import { SettingsContext } from './Settings';
 import { NetworkContext, getNetworkById } from './Network';
 import { findNextUnusedDefaultLabel, AddressBookContext } from './AddressBook';
 import { MyCryptoApiService, ANALYTICS_CATEGORIES } from '../ApiService';
+import { findMultipleNextUnusedDefaultLabels } from './AddressBook/helpers';
 
 export interface CoinGeckoManifest {
   [uuid: string]: string;
+}
+
+interface IAddAccount {
+  address: TAddress;
+  dPath: string;
 }
 
 interface State {
@@ -94,6 +101,11 @@ interface State {
   scanTokens(asset?: ExtendedAsset): Promise<void>;
   deleteAccountFromCache(account: IAccount): void;
   restoreDeletedAccount(accountId: TUuid): void;
+  addMultipleAccounts(
+    networkId: NetworkId,
+    walletId: WalletId | undefined,
+    accounts: IAccountAdditionData[]
+  ): IAccount[] | undefined;
   addAccount(
     networkId: NetworkId,
     address: string,
@@ -122,7 +134,8 @@ export const StoreProvider: React.FC = ({ children }) => {
     updateAllAccountsAssets,
     updateAccountsBalances,
     deleteAccount,
-    createAccountWithID
+    createAccountWithID,
+    createMultipleAccountsWithIDs
   } = useContext(AccountContext);
   const { assets, addAssetsFromAPI } = useContext(AssetContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
@@ -383,6 +396,55 @@ export const StoreProvider: React.FC = ({ children }) => {
       const { uuid, ...restAccount } = account!;
       createAccountWithID(restAccount, uuid);
       setAccountRestore((prevState) => ({ ...prevState, [uuid]: undefined }));
+    },
+    addMultipleAccounts: (
+      networkId: NetworkId,
+      accountType: WalletId | undefined,
+      newAccounts: IAddAccount[]
+    ) => {
+      const network: Network | undefined = getNetworkById(networkId, networks);
+      if (!network || newAccounts.length === 0) return;
+      const accountsToAdd = newAccounts.filter(
+        ({ address }) => !getAccountByAddressAndNetworkName(address, networkId)
+      );
+      const walletType =
+        accountType! === WalletId.WEB3 ? WalletId[getWeb3Config().id] : accountType!;
+      const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(assets)(network);
+      const newRawAccounts = accountsToAdd.map(({ address, dPath }) => ({
+        address,
+        networkId,
+        wallet: walletType,
+        dPath,
+        assets: [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
+        transactions: [],
+        favorite: false,
+        mtime: 0,
+        uuid: generateAccountUUID(networkId, address)
+      }));
+      if (newRawAccounts.length === 0) return;
+      const newLabels = findMultipleNextUnusedDefaultLabels(
+        newRawAccounts[0].wallet,
+        newRawAccounts.length
+      )(contacts);
+      newRawAccounts.forEach((rawAccount, idx) => {
+        const existingContact = getContactByAddressAndNetworkId(rawAccount.address, networkId);
+        if (existingContact) {
+          updateContact(existingContact.uuid, {
+            ...existingContact,
+            label: newLabels[idx]
+          });
+        } else {
+          const newLabel: AddressBook = {
+            label: newLabels[idx],
+            address: rawAccount.address,
+            notes: '',
+            network: rawAccount.networkId
+          };
+          createContact(newLabel);
+        }
+      });
+      createMultipleAccountsWithIDs(newRawAccounts);
+      return newRawAccounts;
     },
     addAccount: (
       networkId: NetworkId,

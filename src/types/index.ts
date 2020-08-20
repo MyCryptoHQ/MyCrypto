@@ -92,7 +92,7 @@ export { IAppRoute, IRoutePath, IRoutePaths } from './routes';
 export { Tab } from './tab';
 export { ISignedMessage } from './signing';
 export { IStory } from './story';
-export { FormData } from './formData';
+export { FormData, IAccountAdditionData } from './formData';
 export { BlockExplorer } from './blockExplorer';
 export { GasPrice, GasEstimates } from './gas';
 export { BannerType } from './banner';

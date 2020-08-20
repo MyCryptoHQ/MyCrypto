@@ -41,6 +41,10 @@ export default function HardwareSignTransaction({
   rawTransaction,
   onSuccess
 }: IProps) {
+  console.log(
+    'Satochip: /src/components/SignTransactionWallets/Hardware.tsx: in HardwareSignTransaction() senderAccount.dPath= ',
+    senderAccount.dPath
+  ); //debugSatochip
   const [isRequestingWalletUnlock, setIsRequestingWalletUnlock] = useState(false);
   const [isWalletUnlocked, setIsWalletUnlocked] = useState(false);
   const [isRequestingTxSignature, setIsRequestingTxSignature] = useState(false);
@@ -56,6 +60,18 @@ export default function HardwareSignTransaction({
     const WalletLoginRequest = setInterval(() => {
       if (!isWalletUnlocked && !isRequestingWalletUnlock) {
         setIsRequestingWalletUnlock(true);
+        console.log(
+          'Satochip: /src/components/SignTransactionWallets/Hardware.tsx: in useEffect() senderAccount.dPath= ',
+          senderAccount.dPath
+        ); //debugSatochip
+        console.log(
+          'Satochip: /src/components/SignTransactionWallets/Hardware.tsx: in useEffect() senderAccount.address= ',
+          senderAccount.address
+        ); //debugSatochip
+        console.log(
+          'Satochip: /src/components/SignTransactionWallets/Hardware.tsx: in useEffect() senderAccount.wallet= ',
+          senderAccount.wallet
+        ); //debugSatochip
         const dpathObject = splitDPath(senderAccount.dPath);
         const walletObject = SigningWalletService.init(
           senderAccount.address,

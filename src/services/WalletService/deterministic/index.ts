@@ -23,3 +23,6 @@ export * from './deterministic';
 export const LedgerWallet = enclaveOrWallet(WalletId.LEDGER_NANO_S, LedgerWalletWeb);
 export const TrezorWallet = enclaveOrWallet(WalletId.TREZOR, TrezorWalletWeb);
 export const SatochipWallet = enclaveOrWallet(WalletId.SATOCHIP, SatochipWalletWeb);
+export { default as DeterministicWalletService } from './DeterministicWalletService';
+export { default as useDeterministicWallet } from './useDeterministicWallet';
+export * from './types';
