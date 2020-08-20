@@ -24,7 +24,7 @@ export const getIFrameSrc = (doc: Document) => {
     case 'localhost':
       return 'https://localhost:8000' as TURL;
     default:
-      return undefined;
+      return;
   }
 };
 
