@@ -1,56 +1,52 @@
-import nock from 'nock';
+import mockAxios from 'jest-mock-axios';
+import { waitFor } from '@testing-library/react';
+
 import AnalyticsService from './Analytics';
-import { ANALYTICS_API_URL } from './constants';
 
 let category: string;
 let eventAction: string;
 let appUrl: string;
 
 describe('AnalyticsService', () => {
-  nock.back.setMode('record');
-
   beforeEach(() => {
     category = 'Category';
     eventAction = 'Name of Event';
     appUrl = 'App route url';
-
-    nock(ANALYTICS_API_URL)
-      .defaultReplyHeaders({ 'access-control-allow-origin': '*' })
-      .get(/.*/)
-      .reply(200, {}); // responses are handled by nock.
   });
 
   it('should send an action name', async () => {
-    const {
-      status,
-      config: { params }
-    } = await AnalyticsService.instance.track(category, eventAction);
+    AnalyticsService.instance
+      .track(category, eventAction)
+      .then(({ status, config: { params } }) => {
+        expect(status).toBe(200);
+        expect(params.e_c).toBe(category);
+        expect(params.action_name).toBe(eventAction);
+      });
 
-    expect(status).toBe(200);
-    expect(params.e_c).toBe(category);
-    expect(params.action_name).toBe(eventAction);
+    await waitFor(() => expect(mockAxios.get).toBeCalled());
+    mockAxios.mockResponse({ data: '' });
   });
 
   it('should add Legacy_ prefix to legacy event', async () => {
-    const {
-      status,
-      config: { params }
-    } = await AnalyticsService.instance.trackLegacy(category, eventAction);
+    AnalyticsService.instance
+      .trackLegacy(category, eventAction)
+      .then(({ status, config: { params } }) => {
+        expect(status).toBe(200);
+        expect(params.e_c).toBe(category);
+        expect(params.action_name).toBe(`Legacy_${eventAction}`);
+      });
 
-    expect(status).toBe(200);
-    expect(params.e_c).toBe(category);
-    expect(params.action_name).toBe(`Legacy_${eventAction}`);
+    await waitFor(() => expect(mockAxios.get).toBeCalled());
+    mockAxios.mockResponse({ data: '' });
   });
 
   it('should add page url param to page visit event', async () => {
-    const {
-      status,
-      config: { params }
-    } = await AnalyticsService.instance.trackPageVisit(appUrl);
+    AnalyticsService.instance.trackPageVisit(appUrl).then(({ status, config: { params } }) => {
+      expect(status).toBe(200);
+      expect(params.url).toBe(appUrl);
+    });
 
-    expect(status).toBe(200);
-    expect(params.url).toBe(appUrl);
+    await waitFor(() => expect(mockAxios.get).toBeCalled());
+    mockAxios.mockResponse({ data: '' });
   });
-
-  nock.back.setMode('wild');
 });
