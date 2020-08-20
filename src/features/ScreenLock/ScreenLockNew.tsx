@@ -72,9 +72,10 @@ const ScreenLockNew: FC<RouteComponentProps> = ({ history }) => {
 
   const onPassword1Changed = useCallback(
     (event) => {
+      const { value } = event.target;
       setState((prevState) => ({
         ...prevState,
-        password1: event.target.value
+        password1: value
       }));
     },
     [setState]
@@ -82,9 +83,10 @@ const ScreenLockNew: FC<RouteComponentProps> = ({ history }) => {
 
   const onPassword2Changed = useCallback(
     (event) => {
+      const { value } = event.target;
       setState((prevState) => ({
         ...prevState,
-        password2: event.target.value
+        password2: value
       }));
     },
     [setState]

@@ -1,15 +1,23 @@
 import BigNumber from 'bignumber.js';
+import moment from 'moment';
 import isNumber from 'lodash/isNumber';
 import has from 'lodash/has';
 import get from 'lodash/get';
+
 import { fromWei, totalTxFeeToWei, Wei } from '@services/EthService/utils';
-import { IFormikFields } from '@types';
-import { bigify } from '@utils';
+import {
+  GetTokenTxResponse,
+  GetTxResponse,
+  GetBalanceResponse
+} from '@services/ApiService/Etherscan/types';
+import { IFormikFields, TAddress } from '@types';
+import { bigify, isSameAddress } from '@utils';
 import {
   PROTECTED_TX_FEE_PERCENTAGE,
   PROTECTED_TX_FIXED_FEE_AMOUNT,
   PROTECTED_TX_MIN_AMOUNT
 } from '@config';
+
 import { ProtectTxError, NansenReportType } from './types';
 import { MALICIOUS_LABELS, WHITELISTED_LABELS } from './constants';
 import { ProtectTxContext } from './ProtectTxProvider';
@@ -90,5 +98,51 @@ export abstract class ProtectTxUtils {
       return NansenReportType.WHITELISTED;
     }
     return NansenReportType.UNKNOWN;
+  }
+
+  public static getLastTx(
+    etherscanLastTxReport: GetTxResponse | null,
+    etherscanLastTokenTxReport: GetTokenTxResponse | null,
+    receiverAddress: string | null
+  ) {
+    const formatDate = (date: number): string => moment.unix(date).format('MM/DD/YYYY');
+
+    if (
+      etherscanLastTxReport &&
+      etherscanLastTxReport.result.length >= 0 &&
+      etherscanLastTokenTxReport &&
+      etherscanLastTokenTxReport.result.length >= 0
+    ) {
+      const { result: txResult } = etherscanLastTxReport;
+      const { result: tokenResult } = etherscanLastTokenTxReport;
+      const firstSentTx = txResult.find((r) =>
+        receiverAddress ? isSameAddress(r.from as TAddress, receiverAddress as TAddress) : false
+      );
+      const firstSentToken = tokenResult.find((r) =>
+        receiverAddress ? isSameAddress(r.from as TAddress, receiverAddress as TAddress) : false
+      );
+      if (firstSentToken || firstSentTx) {
+        const firstSentResult =
+          parseInt(firstSentTx?.timeStamp || '0', 10) >
+          parseInt(firstSentToken?.timeStamp || '0', 10)
+            ? { ...firstSentTx!, tokenSymbol: 'ETH' }
+            : firstSentToken!;
+        const { tokenSymbol: ticker, value, timeStamp } = firstSentResult;
+        return {
+          ticker,
+          value: parseFloat(fromWei(Wei(value), 'ether')).toFixed(6),
+          timestamp: formatDate(parseInt(timeStamp, 10))
+        };
+      }
+    }
+    return null;
+  }
+
+  public static getBalance(balanceReport: GetBalanceResponse | null) {
+    if (balanceReport) {
+      const { result } = balanceReport;
+      return parseFloat(fromWei(Wei(result), 'ether')).toFixed(6);
+    }
+    return null;
   }
 }

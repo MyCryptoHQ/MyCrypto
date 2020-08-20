@@ -6,7 +6,8 @@ import {
   addDevSeedToSchema,
   removeSeedDataFromSchema,
   getCurrentDBConfig,
-  getData
+  getData,
+  getEncryptedData
 } from '@database';
 
 import {
@@ -31,7 +32,7 @@ export interface DataCacheManager extends DataStore {
 }
 
 interface EncryptedStorage {
-  encryptedDbState: EncryptedDataStore;
+  encryptedDbState?: EncryptedDataStore;
   setEncryptedCache(ls: string): void;
   destroyEncryptedCache(): void;
   setUnlockPassword(pwd: string): void;
@@ -50,10 +51,15 @@ export const DataProvider: React.FC = ({ children }) => {
    */
   const currentDB = useMemo(() => getCurrentDBConfig(), []);
   const currentDBValues = useMemo(() => getData(), []);
+  const currentEncryptedDBValues = useMemo(() => getEncryptedData(), []);
   const { db, updateDb, resetDb, defaultValues } = DatabaseService(
     currentDB.main,
     currentDBValues,
     currentDB.defaultValues
+  );
+  const { db: encryptedDb, updateDb: setEncryptedDb } = DatabaseService(
+    currentDB.vault,
+    currentEncryptedDBValues
   );
 
   const [appState, dispatch]: [DataStore, Dispatch<ActionV>] = useReducer(
@@ -65,7 +71,7 @@ export const DataProvider: React.FC = ({ children }) => {
   const [encryptedDbState, dispatchEncryptedDb]: [
     EncryptedDataStore,
     Dispatch<ActionZ>
-  ] = useReducer(encryptedDbReducer, (undefined as unknown) as EncryptedDataStore);
+  ] = useReducer(encryptedDbReducer, encryptedDb);
 
   const resetAppDb = useCallback(
     (newDb = defaultValues) => {
@@ -122,7 +128,6 @@ export const DataProvider: React.FC = ({ children }) => {
   /*
    *  Handle db encryption on ScreenLock
    */
-  const { updateDb: setEncryptedDb } = DatabaseService(currentDB.vault);
   const setEncryptedCache = (data: string) => {
     dispatchEncryptedDb({
       type: ActionY.SET_DATA,

@@ -1,6 +1,4 @@
-import { IFormikFields } from '@types';
-
-export type SendFormCallbackType = () => { isValid: boolean; values: IFormikFields | null };
+import { TAddress, Asset } from '@types';
 
 export enum ProtectTxError {
   NO_ERROR,
@@ -13,4 +11,13 @@ export enum NansenReportType {
   UNKNOWN,
   MALICIOUS,
   WHITELISTED
+}
+
+export interface PTXReport {
+  address: TAddress;
+  asset: Asset;
+  balance: string | null;
+  labels: string[] | null;
+  status: NansenReportType | null;
+  lastTransaction: { ticker: string; value: string; timestamp: string } | null;
 }

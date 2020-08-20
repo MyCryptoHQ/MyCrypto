@@ -26,3 +26,4 @@ export const SatochipWallet = enclaveOrWallet(WalletId.SATOCHIP, SatochipWalletW
 export { default as DeterministicWalletService } from './DeterministicWalletService';
 export { default as useDeterministicWallet } from './useDeterministicWallet';
 export * from './types';
+export * from './helpers';
