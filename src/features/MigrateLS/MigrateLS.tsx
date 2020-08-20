@@ -54,7 +54,7 @@ const MigrateLS = ({
 
   // We only need to get the iFrame src url once
   const src = useMemo(() => getIFrameSrc(window), []);
-  console.debug('[MigrateLS]: src', src);
+
   const [{ storage, iframeRef, uiState, canDestroy, canReset }, dispatch] = useReducer(
     MigrateLSReducer,
     defaultState,
