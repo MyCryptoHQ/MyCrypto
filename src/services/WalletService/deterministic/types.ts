@@ -16,6 +16,7 @@ export interface DWAccountDisplay {
     index: number;
   };
   balance: BigNumber | undefined;
+  isFreshAddress?: boolean;
 }
 
 export interface ExtendedDPath extends DPath {
@@ -49,6 +50,7 @@ export interface IUseDeterministicWallet {
   ): void;
   updateAsset(asset: ExtendedAsset): void;
   addDPaths(dpaths: ExtendedDPath[]): void;
+  generateFreshAddress(defaultDPath: ExtendedDPath): boolean;
 }
 
 export interface IDeterministicWalletService {

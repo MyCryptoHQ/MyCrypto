@@ -13,7 +13,6 @@ import { truncate, useScreenSize } from '@utils';
 
 import ProtectTxBase from './ProtectTxBase';
 import { ProtectTxContext } from '../ProtectTxProvider';
-import { ProtectTxUtils } from '../utils';
 import { NansenReportType, PTXReport } from '../types';
 
 const Wrapper = styled(ProtectTxBase)`
@@ -99,17 +98,11 @@ const SEthAddress = styled.div`
 `;
 
 export const ProtectTxReport: FC = () => {
-  const protectTxContext = useContext(ProtectTxContext);
-  const getProTxValue = ProtectTxUtils.isProtectTxDefined(protectTxContext);
-  if (!getProTxValue()) {
-    throw new Error('ProtectTxProtection requires to be wrapped in ProtectTxContext!');
-  }
-
   const {
     state: { isWeb3Wallet },
     showHideProtectTx,
     getReport
-  } = protectTxContext;
+  } = useContext(ProtectTxContext);
 
   const onHideModel = useCallback(
     (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {

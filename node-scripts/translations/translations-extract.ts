@@ -11,17 +11,17 @@ const TRANSLATION_FILE_PATTERN = './src/translations/lang/*.json';
 const TRANSLATE_FUNCTIONS = ['translateRaw', 'translate', 'translateMarker'];
 const JSX_ELEMENTS_WITH_PROP: [string, string][] = [['Trans', 'id']];
 
-const replaceApostrophe = (s: string) => s
-  .replace(/'/g, '')
-  .replace(/`/g, '')
-  .replace(/"/g, '');
+const replaceApostrophe = (s: string) => s.replace(/'/g, '').replace(/`/g, '').replace(/"/g, '');
 
 const findCallExpressions = (node: ts.Node, functionName: string): ts.CallExpression[] => {
   const functionsQuery = `CallExpression:has(Identifier[name="${functionName}"]):not(:has(PropertyAccessExpression))`;
   return tsquery(node, functionsQuery, { visitAllChildren: true });
 };
 
-const findIinsideTemplateCallExpressions = (node: ts.Node, functionName: string): ts.CallExpression[] => {
+const findIinsideTemplateCallExpressions = (
+  node: ts.Node,
+  functionName: string
+): ts.CallExpression[] => {
   const insideTemplateQuery = `JsxExpression CallExpression:has(Identifier[name="${functionName}"])`;
   return tsquery(node, insideTemplateQuery, { visitAllChildren: true });
 };
@@ -63,13 +63,13 @@ export const translationKeysExtract = (projectFilePattern = PROJECT_FILE_PATTERN
     const fileContent = fs.readFileSync(filePath, 'utf-8');
     const ast = tsquery.ast(fileContent, 'filePath', ts.ScriptKind.TSX);
 
-    const callExpressions = TRANSLATE_FUNCTIONS.map(transFunc => [
+    const callExpressions = TRANSLATE_FUNCTIONS.map((transFunc) => [
       ...findCallExpressions(ast, transFunc),
       ...findIinsideTemplateCallExpressions(ast, transFunc)
     ]).flat();
 
     if (callExpressions.length) {
-      callExpressions.forEach(callExpression => {
+      callExpressions.forEach((callExpression) => {
         const [firstArg] = callExpression.arguments;
         if (!firstArg) {
           return;
@@ -78,12 +78,12 @@ export const translationKeysExtract = (projectFilePattern = PROJECT_FILE_PATTERN
       });
     }
 
-    const jsxExpressions = JSX_ELEMENTS_WITH_PROP.map(identifierArray =>
+    const jsxExpressions = JSX_ELEMENTS_WITH_PROP.map((identifierArray) =>
       findJxsElementExpressions(ast, identifierArray)
     ).flat();
 
     if (jsxExpressions.length) {
-      jsxExpressions.forEach(callExpression => {
+      jsxExpressions.forEach((callExpression) => {
         keys = [...keys, ...getStringFromExpression(callExpression)];
       });
     }
@@ -91,12 +91,15 @@ export const translationKeysExtract = (projectFilePattern = PROJECT_FILE_PATTERN
 
   // Get unique object
   return [...new Set(keys)]
-    .map(k => replaceApostrophe(k))
-    .filter(k => k.length)
+    .map((k) => replaceApostrophe(k))
+    .filter((k) => k.length)
     .reduce((acc, item) => ({ ...acc, [item]: '' }), {});
 };
 
-export const updateJsonTranslations = (translated: { [name: string]: string }, translationFilePattern = TRANSLATION_FILE_PATTERN) => {
+export const updateJsonTranslations = (
+  translated: { [name: string]: string },
+  translationFilePattern = TRANSLATION_FILE_PATTERN
+) => {
   console.log(`Found ${Object.keys(translated).length} translation keys`);
   console.log('Updating translations...');
 
@@ -109,7 +112,7 @@ export const updateJsonTranslations = (translated: { [name: string]: string }, t
       ...translationFileJson.data
     };
     translationFileJson.data = Object.keys(translationJson)
-      .map(k => replaceApostrophe(k))
+      .map((k) => replaceApostrophe(k))
       .sort()
       .reduce((acc, key) => ({ ...acc, [key]: translationJson[key] || '' }), {});
 

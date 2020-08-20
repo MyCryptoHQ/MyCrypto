@@ -8,10 +8,11 @@ import {
   GetTokenTxResponse
 } from '@services/ApiService';
 import { AssetContext, getAssetByUUID, StoreContext } from '@services/Store';
-import { useScreenSize } from '@utils';
-
-import { WALLETS_CONFIG } from '../../config';
 import { NansenService, NansenServiceEntry } from '@services/ApiService/Nansen';
+import { useScreenSize } from '@utils';
+import { WALLETS_CONFIG } from '@config';
+
+import { IS_ACTIVE_FEATURE } from '../../config/isActiveFeature';
 import { PTXReport } from './types';
 import { ProtectTxUtils } from './utils';
 
@@ -33,6 +34,7 @@ export interface ProtectTxState {
 }
 
 export interface ProtectTxContext {
+  readonly protectTxFeatureFlag: boolean;
   state: ProtectTxState;
   updateFormValues(values: IFormikFields): void;
   handleTransactionReport(receiverAddress?: string): Promise<void>;
@@ -64,12 +66,11 @@ export const protectTxProviderInitialState: ProtectTxState = {
   mainComponentDisabled: false
 };
 
-const numOfSteps = 3;
-
 export const ProtectTxContext = createContext({} as ProtectTxContext);
 
 const ProtectTxProvider: React.FC = ({ children }) => {
   const { isMyCryptoMember } = useContext(StoreContext);
+  const numOfSteps = isMyCryptoMember ? 2 : 3;
   const { assets } = useContext(AssetContext);
   const [state, setState] = useState<ProtectTxState>({ ...protectTxProviderInitialState });
   const { isMdScreen } = useScreenSize();
@@ -297,7 +298,10 @@ const ProtectTxProvider: React.FC = ({ children }) => {
     }));
   }, [state.protectTxShow, state.stepIndex, state.nansenAddressReport, state.protectTxEnabled]);
 
+  const protectTxFeatureFlag = IS_ACTIVE_FEATURE.PROTECT_TX;
+
   const providerState: ProtectTxContext = {
+    protectTxFeatureFlag,
     state,
     updateFormValues,
     handleTransactionReport,

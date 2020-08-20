@@ -10,14 +10,16 @@ import {
   EXT_URLS,
   LEDGER_DERIVATION_PATHS,
   DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN,
-  DEFAULT_GAP_TO_SCAN_FOR
+  DEFAULT_GAP_TO_SCAN_FOR,
+  DPathsList
 } from '@config';
 import {
   NetworkContext,
   getNetworkById,
   getAssetByUUID,
   AssetContext,
-  useDeterministicWallet
+  useDeterministicWallet,
+  getDPaths
 } from '@services';
 
 import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
@@ -32,23 +34,30 @@ interface OwnProps {
 // const WalletService = WalletFactory(WalletId.LEDGER_NANO_S);
 
 const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
-  const dpaths = uniqBy(prop('value'), LEDGER_DERIVATION_PATHS);
+  const { networks } = useContext(NetworkContext);
+  const { assets } = useContext(AssetContext);
+  const network = getNetworkById(formData.network, networks);
+  const dpaths = uniqBy(prop('value'), [
+    ...getDPaths([network], WalletId.LEDGER_NANO_S),
+    ...LEDGER_DERIVATION_PATHS
+  ]);
+  const defaultDPath = network.dPaths[WalletId.LEDGER_NANO_S] || DPathsList.ETH_LEDGER;
   const numOfAccountsToCheck = DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN;
   const extendedDPaths = dpaths.map((dpath) => ({
     ...dpath,
     offset: 0,
     numOfAddresses: numOfAccountsToCheck
   }));
-  const { networks } = useContext(NetworkContext);
-  const { assets } = useContext(AssetContext);
-  const network = getNetworkById(formData.network, networks);
   const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
   const [assetToUse, setAssetToUse] = useState(baseAsset);
-  const { state, requestConnection, updateAsset, addDPaths } = useDeterministicWallet(
-    extendedDPaths,
-    WalletId.LEDGER_NANO_S_NEW,
-    DEFAULT_GAP_TO_SCAN_FOR
-  );
+  const {
+    state,
+    requestConnection,
+    updateAsset,
+    addDPaths,
+    generateFreshAddress
+  } = useDeterministicWallet(extendedDPaths, WalletId.LEDGER_NANO_S_NEW, DEFAULT_GAP_TO_SCAN_FOR);
+  const [freshAddressIndex, setFreshAddressIndex] = useState(0);
   // @todo -> Figure out which assets to display in dropdown. Dropdown is heavy with 900+ assets in it. Loads slow af.
   const filteredAssets = assets.filter(({ uuid }) => MOONPAY_ASSET_UUIDS.includes(uuid)); // @todo - fix this.
 
@@ -78,6 +87,20 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
     ]);
   };
 
+  const handleFreshAddressGeneration = () => {
+    if (freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR) {
+      return;
+    }
+    const freshAddressGenerationSuccess = generateFreshAddress({
+      ...defaultDPath,
+      offset: freshAddressIndex,
+      numOfAddresses: 1
+    });
+    if (freshAddressGenerationSuccess) {
+      setFreshAddressIndex(freshAddressIndex + 1);
+    }
+  };
+
   if (!network) {
     // @todo: make this better.
     return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} network={network} />;
@@ -104,6 +127,21 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
         <Button onClick={() => handleDPathAddition()}>
           {`Test Add Custom Derivation Path: ${testDPathAddition.value} - ${testDPathAddition.label} `}
         </Button>
+        <br />
+        <Button
+          disabled={!state.completed || freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR}
+          onClick={() => handleFreshAddressGeneration()}
+        >
+          {`Test Generate Fresh Address`}
+        </Button>
+        {freshAddressIndex > DEFAULT_GAP_TO_SCAN_FOR && (
+          <p>
+            {translateRaw('DPATH_GENERATE_FRESH_ADDRESS_GAP_ERROR', {
+              $gap: DEFAULT_GAP_TO_SCAN_FOR.toString()
+            })}
+          </p>
+        )}
+        <br />
         <AssetDropdown
           selectedAsset={assetToUse}
           assets={filteredAssets}

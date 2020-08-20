@@ -43,7 +43,7 @@ export default function DeterministicAccountList(props: DeterministicAccountList
   const { finishedAccounts, asset, isComplete, onUnlock } = props;
   const [selectedAccounts, setSelectedAccounts] = useState([] as ISelectedAccount[]);
   const accountsToUse = uniqBy(prop('address'), finishedAccounts).filter(
-    ({ balance }) => balance && !balance.isZero()
+    ({ isFreshAddress, balance }) => (balance && !balance.isZero()) || isFreshAddress
   );
   const handleSubmit = () => {
     onUnlock(selectedAccounts);
@@ -81,6 +81,8 @@ export default function DeterministicAccountList(props: DeterministicAccountList
     <>
       <>
         {`Scanned Total: ${finishedAccounts.length}`}
+        <br />
+        {`isComplete: ${isComplete}`}
         <br />
         {!isComplete && (
           <>

@@ -4,7 +4,11 @@ import { clone } from 'ramda';
 import { TAddress } from '@types';
 
 import { fixtures } from './__mocks__';
-import { processFinishedAccounts as process } from './helpers';
+import {
+  processFinishedAccounts as process,
+  sortAccountDisplayItems,
+  findFinishedZeroBalanceAccounts
+} from './helpers';
 import { DWAccountDisplay } from './types';
 
 interface TInputToSerialize {
@@ -55,5 +59,19 @@ describe('deterministic wallets helpers - processFinishedAccounts', () => {
       GAP_TO_USE
     );
     expect(output).toStrictEqual(fixtures.processFinishedAccountsCustomDPathsPending);
+  });
+});
+
+describe('deterministic wallets helpers - sortAccountDisplayItems', () => {
+  it('sorts account display items correctly based on index', () => {
+    const outputArr = sortAccountDisplayItems(fixtures.finishedAccountsDone);
+    expect(outputArr).toMatchSnapshot();
+  });
+});
+
+describe('deterministic wallets helpers - findFinishedZeroBalanceAccounts', () => {
+  it('returns first account display item with 0 balance', () => {
+    const outputArr = findFinishedZeroBalanceAccounts(fixtures.finishedAccountsDone);
+    expect(outputArr).toMatchSnapshot();
   });
 });

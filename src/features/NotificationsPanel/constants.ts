@@ -66,13 +66,13 @@ export const notificationsConfigs: NotificationsConfigsProps = {
   [NotificationTemplates.saveSettings]: {
     analyticsEvent: 'Save Your Dashboard Settings',
     layout: SaveDashboardNotification,
-    repeatInterval: 15778463,
+    repeatInterval: 86400,
     condition: saveSettingsCheck
   },
   [NotificationTemplates.printPaperWallet]: {
     analyticsEvent: 'Print Your Paper Wallet',
     layout: PrintPaperWalletNotification,
-    repeatInterval: 15778463,
+    repeatInterval: 86400,
     condition: printPaperWalletCheck
   },
   [NotificationTemplates.getHardwareWallet]: {

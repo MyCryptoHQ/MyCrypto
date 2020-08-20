@@ -13,12 +13,11 @@ import { clearLocalStorage, setLocalStorage } from './localstorage-utils';
 const noAccountsPage = new NoAccountsPage();
 const settingsPage = new SettingsPage();
 
-fixture('Storage')
-  .page(PAGES.DASHBOARD);
+fixture('Storage').page(PAGES.DASHBOARD);
 
 test('Should apply empty storage', async (t) => {
-  await clearLocalStorage();
-  await setLocalStorage(FIXTURE_LOCALSTORAGE_EMPTY);
+  await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
+  await setLocalStorage(FIXTURE_MYC_STORAGE_KEY, FIXTURE_LOCALSTORAGE_EMPTY);
 
   // localStorage is set after page load, so first navigation should happen
   await noAccountsPage.navigateTo(PAGES.DASHBOARD);
