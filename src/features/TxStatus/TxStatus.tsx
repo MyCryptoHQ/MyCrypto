@@ -3,6 +3,7 @@ import { Input } from '@mycrypto/ui';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import queryString from 'query-string';
 import styled from 'styled-components';
+import { isHexString } from 'ethers/utils';
 
 import { Button, NetworkSelectDropdown, ContentPanel, TxReceipt, InlineMessage } from '@components';
 import { NetworkId } from '@types';
@@ -105,6 +106,8 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
 
   const fullPageLoading = fromLink && !tx;
 
+  const isFormValid = txHash.length > 0 && isHexString(txHash);
+
   return (
     <ContentPanel heading={translateRaw('TX_STATUS')}>
       <Wrapper fullPageLoading={fullPageLoading || false}>
@@ -129,7 +132,12 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
               }
             />
             {error && <InlineMessage value={error} />}
-            <Button loading={fetching} onClick={() => handleSubmit(false)} fullwidth={true}>
+            <Button
+              disabled={!isFormValid}
+              loading={fetching}
+              onClick={() => handleSubmit(false)}
+              fullwidth={true}
+            >
               {translateRaw('FETCH')}
             </Button>
           </>

@@ -59,13 +59,14 @@ describe('TxStatusReducer', () => {
   describe('FETCH_TX_SUCCESS', () => {
     it('can update values', () => {
       const payload = { txConfig: fTxConfig, txReceipt: fTxReceipt };
-      const prevState = { networkId: DEFAULT_NETWORK, txHash: TX_HASH };
+      const prevState = { networkId: DEFAULT_NETWORK, txHash: TX_HASH, fromLink: true };
 
       const newState = dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_SUCCESS, payload })(
         prevState
       );
 
       expect(newState.fetching).toBe(false);
+      expect(newState.fromLink).toBe(false);
       expect(newState.error).toBe(undefined);
       expect(newState.tx).toBe(payload);
       expect(newState.txHash).toBe(prevState.txHash);
@@ -74,11 +75,12 @@ describe('TxStatusReducer', () => {
   });
   describe('FETCH_TX_ERROR', () => {
     it('can update values with error', () => {
-      const prevState = { networkId: DEFAULT_NETWORK, txHash: TX_HASH };
+      const prevState = { networkId: DEFAULT_NETWORK, txHash: TX_HASH, fromLink: true };
 
       const newState = dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_ERROR })(prevState);
 
       expect(newState.fetching).toBe(false);
+      expect(newState.fromLink).toBe(false);
       expect(newState.error).toStrictEqual(translate('TX_NOT_FOUND'));
       expect(newState.tx).toBe(undefined);
     });
