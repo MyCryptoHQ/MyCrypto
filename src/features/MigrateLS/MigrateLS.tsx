@@ -54,7 +54,7 @@ const MigrateLS = ({
 
   // We only need to get the iFrame src url once
   const src = useMemo(() => getIFrameSrc(window), []);
-
+  console.debug('[MigrateLS]: src', src);
   const [{ storage, iframeRef, uiState, canDestroy, canReset }, dispatch] = useReducer(
     MigrateLSReducer,
     defaultState,
@@ -94,7 +94,7 @@ const MigrateLS = ({
     }
   }, [canDestroy, iframeRef]);
 
-  const handleLoad = (frame: HTMLIFrameElement) => getStorage(frame, src, isValidImport);
+  const handleLoad = (frame: HTMLIFrameElement) => src && getStorage(frame, src, isValidImport);
   const handleCancel = () => cancelMigration();
   const handleMigrate = () => {
     if (!storage) return;
@@ -143,7 +143,7 @@ const MigrateLS = ({
 
   return (
     <>
-      <IFrame src={src} onLoad={handleLoad} hidden={true} reload={reload} />
+      {src && <IFrame src={src} onLoad={handleLoad} hidden={true} reload={reload} />}
       {isDefaultStore && UI_STATES[uiState]}
     </>
   );

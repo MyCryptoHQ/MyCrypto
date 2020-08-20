@@ -22,8 +22,12 @@ const IFrame = ({
 
   useEffect(() => {
     if (iframeRef && iframeRef.current && reload) {
-      iframeRef.current.contentWindow?.location.reload();
-      onLoad(iframeRef.current);
+      try {
+        iframeRef.current.contentWindow?.location.reload();
+        onLoad(iframeRef.current);
+      } catch (err) {
+        console.debug('[IFrame]: ', err);
+      }
     }
   }, [reload]);
 

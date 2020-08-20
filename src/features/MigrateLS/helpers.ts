@@ -15,24 +15,34 @@ export const getIFrameSrc = (win: Window) => {
   switch (hostname) {
     case 'mycrypto.com':
       return 'https://beta.mycrypto.com' as TURL;
+    case 'app.mycrypto.com':
+      return 'https://beta.mycrypto.com' as TURL;
     case 'mycryptobuilds.com':
       return 'https://landing.mycryptobuilds.com' as TURL;
-    default:
+    case 'rc.app.mycrypto.com':
+      return 'https://landing.mycryptobuilds.com' as TURL;
+    case 'localhost':
       return 'https://localhost:8000' as TURL;
+    default:
+      return undefined;
   }
 };
 
 /**
  * Take an HTMLIFrameElement and check if the localstorage has the correct key
  */
-export const getLS: (obj: HTMLIFrameElement) => string | undefined = path([
-  'contentWindow',
-  'localStorage',
-  DBName
-]);
+export const getLS = (obj: HTMLIFrameElement): string | undefined => {
+  try {
+    return path(['contentWindow', 'localStorage', DBName])(obj) as string | undefined;
+  } catch (err) {
+    console.debug('[getLS]: ', err);
+  }
+};
 
-export const getOrigin: (obj: any) => string | undefined = path([
-  'contentWindow',
-  'location',
-  'origin'
-]);
+export const getOrigin = (obj: any): string | undefined => {
+  try {
+    return path(['contentWindow', 'location', 'origin'])(obj) as string | undefined;
+  } catch (err) {
+    console.debug('[getOrigin]: ', err);
+  }
+};
