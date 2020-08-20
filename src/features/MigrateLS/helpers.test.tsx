@@ -4,6 +4,12 @@ describe('getIFrameSrc()', () => {
   test('it returns the landing page dev port by default', () => {
     const win = { location: { hostname: '' } } as Window;
     const res = getIFrameSrc(win);
+    expect(res).toEqual(undefined);
+  });
+
+  test('it returns the landing page dev port by default', () => {
+    const win = { location: { hostname: 'localhost' } } as Window;
+    const res = getIFrameSrc(win);
     expect(res).toEqual('https://localhost:8000');
   });
 
@@ -17,6 +23,12 @@ describe('getIFrameSrc()', () => {
     const win = { location: { hostname: 'mycrypto.com' } } as Window;
     const res = getIFrameSrc(win);
     expect(res).toEqual('https://beta.mycrypto.com');
+  });
+
+  test('it returns the correct url for prod-staging', () => {
+    const win = { location: { hostname: 'rc.app.mycrypto.com' } } as Window;
+    const res = getIFrameSrc(win);
+    expect(res).toEqual('https://landing.mycryptobuilds.com');
   });
 });
 
