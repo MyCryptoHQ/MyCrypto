@@ -8,14 +8,13 @@ describe('NoAccountsSelected', () => {
   test('Translations are rendered', () => {
     const { getByText } = simpleRender(<NoAccountsSelected />);
 
-    expect(getByText(translateRaw('NO_ACCOUNTS_SELECTED_HEADER'))).toBeInTheDocument();
-    expect(getByText(translateRaw('NO_ACCOUNTS_SELECTED_HEADER'))).not.toEqual(
-      'NO_ACCOUNTS_SELECTED_HEADER'
-    );
+    const headerText = getByText(translateRaw('NO_ACCOUNTS_SELECTED_HEADER'));
+    const descriptionText = getByText(translateRaw('NO_ACCOUNTS_SELECTED_DESCRIPTION'));
 
-    expect(getByText(translateRaw('NO_ACCOUNTS_SELECTED_DESCRIPTION'))).toBeInTheDocument();
-    expect(getByText(translateRaw('NO_ACCOUNTS_SELECTED_DESCRIPTION'))).not.toEqual(
-      'NO_ACCOUNTS_SELECTED_DESCRIPTION'
-    );
+    expect(headerText).toBeInTheDocument();
+    expect(headerText).not.toEqual('NO_ACCOUNTS_SELECTED_HEADER');
+
+    expect(descriptionText).toBeInTheDocument();
+    expect(descriptionText).not.toEqual('NO_ACCOUNTS_SELECTED_DESCRIPTION');
   });
 });
