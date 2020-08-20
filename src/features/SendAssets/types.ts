@@ -11,8 +11,6 @@ import {
   ITxFromAddress
 } from '@types';
 
-export type TStepAction = (payload: any, after: () => void) => void;
-
 export interface IPath {
   label: string;
   component: FunctionComponent<IStepComponentProps>;

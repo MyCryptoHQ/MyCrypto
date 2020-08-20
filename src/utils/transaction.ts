@@ -38,14 +38,11 @@ import {
   IFailedTxReceipt,
   ISuccessfulTxReceipt,
   ITxHistoryStatus,
-<<<<<<< HEAD
   ITxReceipt,
-  IUnknownTxReceipt
-=======
+  IUnknownTxReceipt,
   ITxData,
   ITxToAddress,
   ITxValue
->>>>>>> some unit tests
 } from '@types';
 import { isTransactionDataEmpty } from './validators';
 import { CREATION_ADDRESS } from '@config';
