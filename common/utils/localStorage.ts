@@ -58,7 +58,7 @@ export function loadWalletConfig(wallet: IWallet): WalletConfig {
 
 function getWalletConfigKey(wallet: IWallet): string {
   const address = wallet.getAddressString();
-  return sha256(`${address}-mycrypto`).toString('hex');
+  return sha256(Buffer.from(`${address}-mycrypto`)).toString('hex');
 }
 
 export function isBetaUser() {
