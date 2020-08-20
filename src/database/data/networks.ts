@@ -973,6 +973,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,
+      [WalletId.SATOCHIP]: DPaths.ETH_TESTNET,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_TESTNET,
       [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_TESTNET
     },
