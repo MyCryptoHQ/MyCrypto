@@ -3,7 +3,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 
 import { Layout, LayoutConfig } from '@features/Layout';
 import { PageNotFound, Dashboard, ScreenLockProvider, DrawerProvider, MigrateLS } from '@features';
-import { IS_E2E, ScrollToTop, useScreenSize, withContext } from '@utils';
+import { ScrollToTop, useScreenSize, withContext, isE2E } from '@utils';
 import { useFeatureFlags } from '@services';
 import { StoreContext, SettingsContext } from '@services/Store';
 import { ROUTE_PATHS } from '@config';
@@ -15,7 +15,7 @@ import {
   getAppRoutes
 } from '@routing';
 import { COLORS, SPACING } from '@theme';
-import { pipe } from '@vendor';
+import { pipe, equals } from '@vendor';
 
 import { AppLoading } from './AppLoading';
 
@@ -58,6 +58,7 @@ const MigrateLSWithStore = pipe(withContext(StoreContext), withContext(SettingsC
 
 export const AppRoutes = () => {
   const { IS_ACTIVE_FEATURE } = useFeatureFlags();
+
   return (
     <>
       <ScrollToTop />
@@ -66,7 +67,7 @@ export const AppRoutes = () => {
           <PageVisitsAnalytics>
             <DefaultHomeHandler>
               <Suspense fallback={<AppLoading />}>
-                {!IS_E2E && IS_ACTIVE_FEATURE.MIGRATE_LS && <MigrateLSWithStore />}
+                {equals(!isE2E(document.location.hostname)) && <MigrateLSWithStore />}
                 <Switch>
                   {/* To avoid fiddling with layout we provide a complete route to home */}
                   <LayoutWithLocation>

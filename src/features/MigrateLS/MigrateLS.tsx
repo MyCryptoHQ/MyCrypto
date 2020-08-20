@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { ROUTE_PATHS } from '@config';
 import { IFrame, Downloader, Link } from '@components';
 import { useUpdateEffect } from '@vendor';
+
 import MigrateLSReducer, { defaultState, UIStates } from './reducer';
 import { bindActions } from './actions';
 import { getIFrameSrc, DBName } from './helpers';

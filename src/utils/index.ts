@@ -3,10 +3,10 @@ export { notUndefined, isTxSigned, isTxHash } from './typeGuards';
 export * from './validators';
 export {
   hasWeb3Provider,
+  isE2E,
   IS_DEV,
   IS_STAGING,
   IS_PROD,
-  IS_E2E,
   USE_HASH_ROUTER,
   IS_ELECTRON
 } from './environment';

@@ -20,3 +20,4 @@ export { default as merge } from 'ramda/src/merge';
 export { default as uniqBy } from 'ramda/src/uniqBy';
 export { default as identity } from 'ramda/src/identity';
 export { default as contains } from 'ramda/src/contains';
+export { default as equals } from 'ramda/src/equals';
