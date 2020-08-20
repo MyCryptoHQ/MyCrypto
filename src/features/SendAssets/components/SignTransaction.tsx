@@ -3,10 +3,11 @@ import React, { FC } from 'react';
 import { WalletId, ITxReceipt, IStepComponentProps, ISignComponentProps, ISignedTx } from '@types';
 import { WALLET_STEPS } from '@components';
 
-const SignTransaction: FC<IStepComponentProps> = ({
-  txConfig,
-  onComplete
-}: IStepComponentProps) => {
+type Props = Pick<IStepComponentProps, 'txConfig' | 'onComplete'> & {
+  protectTxButton?(): JSX.Element;
+};
+
+const SignTransaction: FC<Props> = ({ txConfig, onComplete, protectTxButton }: Props) => {
   const {
     network,
     senderAccount: { wallet: walletName }
@@ -26,6 +27,7 @@ const SignTransaction: FC<IStepComponentProps> = ({
         rawTransaction={txConfig.rawTransaction}
         onSuccess={(payload: ITxReceipt | ISignedTx) => onComplete(payload)}
       />
+      {protectTxButton && protectTxButton()}
     </>
   );
 };

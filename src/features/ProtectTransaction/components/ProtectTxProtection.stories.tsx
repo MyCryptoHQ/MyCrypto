@@ -16,7 +16,7 @@ const defaultProps: UIProps = {
   isLoading: false,
   feeAmount: { rate: 250, amount: bigify('0.002'), fee: bigify('0.002') },
   web3Wallet: { isWeb3Wallet: true, name: 'MetaMask' },
-  isMyCryptoMember: false,
+  isPTXFree: false,
   onCancel: noOp,
   onProtect: noOp
 };

@@ -37,7 +37,8 @@ import {
   weiToFloat,
   generateAccountUUID,
   useAnalytics,
-  isSameAddress
+  isSameAddress,
+  sortByLabel
 } from '@utils';
 import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from '@services/EthService';
 import {
@@ -79,6 +80,7 @@ interface IAddAccount {
 }
 
 interface State {
+  readonly defaultAccount: StoreAccount;
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
   readonly isMyCryptoMember: boolean;
@@ -348,6 +350,9 @@ export const StoreProvider: React.FC = ({ children }) => {
     currentAccounts,
     accountRestore,
     coinGeckoAssetManifest,
+    get defaultAccount() {
+      return sortByLabel(state.accounts)[0];
+    },
     get userAssets() {
       const userAssets = state.accounts
         .filter((a: StoreAccount) => a.wallet !== WalletId.VIEW_ONLY)

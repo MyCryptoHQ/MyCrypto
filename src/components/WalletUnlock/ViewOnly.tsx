@@ -53,7 +53,7 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
       <Formik
         initialValues={initialFormikValues}
         onSubmit={onSubmit}
-        render={({ errors, touched, values }) => (
+        render={({ errors, touched, values, setFieldError, setFieldTouched, setFieldValue }) => (
           <FormWrapper>
             <ContactLookupField
               name="address"
@@ -62,6 +62,9 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
               network={network}
               isResolvingName={isResolvingDomain}
               setIsResolvingDomain={setIsResolvingDomain}
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
+              setFieldError={setFieldError}
             />
             <ButtonWrapper
               type="submit"

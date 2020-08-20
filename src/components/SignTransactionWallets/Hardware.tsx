@@ -6,6 +6,7 @@ import { makeTransaction } from '@services/EthService';
 import { WalletFactory, HardwareWallet } from '@services/WalletService';
 import { InlineMessage } from '@components';
 import translate, { translateRaw } from '@translations';
+import { useInterval } from '@utils';
 
 import './Hardware.scss';
 
@@ -52,12 +53,12 @@ export default function HardwareSignTransaction({
   const [wallet, setWallet] = useState<HardwareWallet | undefined>();
   const SigningWalletService = WalletFactory(senderAccount.wallet);
 
-  useEffect(() => {
-    // Unlock Wallet
-    console.log(
-      'Satochip: /src/components/SignTransactionWallets/Hardware.tsx: in useEffect() getChainCode'
-    ); //debugSatochip
-    const WalletLoginRequest = setInterval(() => {
+  useInterval(
+    async () => {
+      // Unlock Wallet
+      console.log(
+        'Satochip: /src/components/SignTransactionWallets/Hardware.tsx: in useEffect() getChainCode'
+      ); //debugSatochip
       if (!isWalletUnlocked && !isRequestingWalletUnlock) {
         setIsRequestingWalletUnlock(true);
         console.log(
@@ -79,24 +80,13 @@ export default function HardwareSignTransaction({
           dpathObject.index
         );
         try {
-          SigningWalletService.getChainCode(dpathObject.dpath)
-            .then((_: any) => {
-              // User has connected device.
-              console.log(
-                'Satochip: /src/components/SignTransactionWallets/Hardware.tsx: in useEffect() getChainCode.then()'
-              ); //debugSatochip
-              setIsRequestingWalletUnlock(false);
-              setIsWalletUnlocked(true);
-              setWallet(walletObject);
-            })
-            .catch((_: any) => {
-              // User hasn't connected device or there was an error. Try again
-              console.log(
-                'Satochip: /src/components/SignTransactionWallets/Hardware.tsx: in useEffect() getChainCode.catch()=',
-                _
-              ); //debugSatochip
-              setIsRequestingWalletUnlock(false);
-            });
+          await SigningWalletService.getChainCode(dpathObject.dpath);
+          console.log(
+            'Satochip: /src/components/SignTransactionWallets/Hardware.tsx: in useEffect() getChainCode.then()'
+          ); //debugSatochip
+          setIsRequestingWalletUnlock(false);
+          setIsWalletUnlocked(true);
+          setWallet(walletObject);
         } catch (error) {
           console.log(
             'Satochip: /src/components/SignTransactionWallets/Hardware.tsx: in useEffect() try error= ',
@@ -105,9 +95,11 @@ export default function HardwareSignTransaction({
           setIsRequestingWalletUnlock(false);
         }
       }
-    }, 3000);
-    return () => clearInterval(WalletLoginRequest);
-  });
+    },
+    3000,
+    true,
+    []
+  );
 
   useEffect(() => {
     // Wallet has been unlocked. Attempting to sign tx now.

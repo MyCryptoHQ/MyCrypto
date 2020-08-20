@@ -39,16 +39,14 @@ const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
       case WalletId.VIEW_ONLY:
         return [payload];
       case WalletId.KEYSTORE_FILE:
-        return [payload];
+        return [{ ...payload, address: payload.getAddressString(), derivationPath: '' }];
       case WalletId.PRIVATE_KEY:
-        return [payload];
+        return [{ ...payload, address: payload.getAddressString(), derivationPath: '' }];
       case WalletId.WEB3:
-        return [
-          {
-            address: payload.getAddressString(),
-            derivationPath: ''
-          }
-        ];
+        return payload.map((payloadItem: any) => ({
+          address: payloadItem.getAddressString(),
+          derivationPath: ''
+        }));
       case WalletId.WALLETCONNECT:
         return [
           {
@@ -61,7 +59,12 @@ const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
       case WalletId.MNEMONIC_PHRASE_NEW:
         return payload;
       case WalletId.LEDGER_NANO_S:
-        return [payload];
+        return [
+          {
+            address: payload.address,
+            dPath: payload.getPath()
+          }
+        ];
       case WalletId.LEDGER_NANO_S_NEW:
         return payload;
       case WalletId.TREZOR:

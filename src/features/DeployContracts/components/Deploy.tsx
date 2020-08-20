@@ -9,7 +9,7 @@ import {
   InputField,
   Button,
   InlineMessage,
-  AccountDropdown,
+  AccountSelector,
   Typography,
   GasSelector
 } from '@components';
@@ -161,7 +161,7 @@ export default function Deploy(props: Props) {
 
       <CustomLabel>{translateRaw('ACCOUNT')}</CustomLabel>
       <MarginWrapper>
-        <AccountDropdown
+        <AccountSelector
           name="account"
           value={account}
           accounts={filteredAccounts}

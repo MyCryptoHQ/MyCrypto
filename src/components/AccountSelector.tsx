@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { formatEther } from 'ethers/utils';
 import { OptionProps } from 'react-select';
-import isEmpty from 'lodash/isEmpty';
 
 import { translateRaw } from '@translations';
 import { AccountSummary, Divider, Selector } from '@components';
 import { SPACING } from '@theme';
 import { StoreAccount, Asset, TUuid, TTicker } from '@types';
+import { sortByLabel } from '@utils';
+import { compose, map } from '@vendor';
 import { getAccountBalance, getBaseAsset } from '@services/Store';
-import { useEffectOnce } from '@vendor';
 
-export interface IAccountDropdownProps {
+interface Props {
   accounts: StoreAccount[];
   name: string;
   value: StoreAccount | null;
@@ -22,7 +22,7 @@ export interface IAccountDropdownProps {
 // Combine Account and Asset into Option to simplify prop
 // passing. The form still expects `StoreAccount` as value,
 // so we make sure that we only return `option.account`
-export interface TAccountDropdownOption {
+interface TOption {
   account: StoreAccount;
   asset: {
     balance: string;
@@ -31,43 +31,40 @@ export interface TAccountDropdownOption {
   };
 }
 
-const sortByLabel = (a: TAccountDropdownOption, b: TAccountDropdownOption) =>
-  a.account.label.localeCompare(b.account.label);
-
-const getOption = (account: StoreAccount | null, options: TAccountDropdownOption[]) => {
+const getOption = (account: StoreAccount | null, options: TOption[]) => {
   if (!account) return null;
   return options.find((o) => o.account.uuid === account.uuid)!;
 };
 
-function AccountDropdown({ accounts, asset, name, value, onSelect }: IAccountDropdownProps) {
-  const options: TAccountDropdownOption[] = accounts
-    .map((a) => ({
+function AccountSelector({ accounts, asset, name, value, onSelect }: Props) {
+  const formatOptions = compose(
+    map((a: StoreAccount) => ({
       account: a,
       asset: {
         balance: formatEther(asset ? getAccountBalance(a, asset) : getAccountBalance(a)),
         assetUUID: asset ? asset.uuid : getBaseAsset(a)!.uuid,
         assetTicker: asset ? asset.ticker : getBaseAsset(a)!.ticker
       }
-    }))
-    .sort(sortByLabel);
-  const selected = getOption(value, options);
-  const handleFormUpdate = (option: TAccountDropdownOption) => onSelect(option.account);
+    })),
+    sortByLabel
+  );
 
-  useEffectOnce(() => {
-    if (!isEmpty(options) && isEmpty(value)) {
-      onSelect(options[0].account);
-    }
-  });
+  const options = useMemo(() => formatOptions(accounts), [accounts, asset]);
+
+  const handleFormUpdate = (option: TOption) => {
+    onSelect(option.account);
+  };
 
   return (
-    <Selector<TAccountDropdownOption>
+    <Selector<TOption>
       name={name}
       placeholder={translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')}
+      value={getOption(value, options)}
       searchable={true}
       options={options}
       onChange={handleFormUpdate}
       getOptionLabel={(option) => option.account.label}
-      optionComponent={({ data, selectOption }: OptionProps<TAccountDropdownOption>) => {
+      optionComponent={({ data, selectOption }: OptionProps<TOption>) => {
         const { account, asset: selectedAsset } = data;
         const { address, label } = account;
         const { balance, assetUUID, assetTicker } = selectedAsset;
@@ -85,7 +82,6 @@ function AccountDropdown({ accounts, asset, name, value, onSelect }: IAccountDro
           </>
         );
       }}
-      value={selected}
       valueComponent={({ value: { account: selectedAccount, asset: selectedAsset } }) => {
         const { address, label } = selectedAccount;
         const { balance, assetTicker, assetUUID } = selectedAsset;
@@ -103,4 +99,4 @@ function AccountDropdown({ accounts, asset, name, value, onSelect }: IAccountDro
   );
 }
 
-export default AccountDropdown;
+export default AccountSelector;

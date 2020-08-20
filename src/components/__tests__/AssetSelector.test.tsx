@@ -36,6 +36,20 @@ describe('AssetSelector', () => {
     expect(screen.getByText(fAssets[0].ticker)).toBeInTheDocument();
   });
 
+  test('it is searchable by name', async () => {
+    const props = Object.assign({}, defaultProps, { searchable: true });
+    const { container } = getComponent(props);
+    fireEvent.change(container.querySelector('input')!, { target: { value: fAssets[0].name } });
+    expect(screen.getAllByText(fAssets[0].name).length).toBe(2);
+  });
+
+  test('it is searchable by symbol', async () => {
+    const props = Object.assign({}, defaultProps, { searchable: true, showOnlySymbol: true });
+    const { container } = getComponent(props);
+    fireEvent.change(container.querySelector('input')!, { target: { value: fAssets[5].ticker } });
+    expect(screen.getAllByText(fAssets[5].ticker).length).toBe(2);
+  });
+
   test('it displays the list of assets on click', async () => {
     const props = Object.assign({}, defaultProps);
     getComponent(props);
@@ -43,7 +57,7 @@ describe('AssetSelector', () => {
     await selectEvent.openMenu(screen.getByLabelText(defaultProps.label!));
     fAssets
       .map((a) => a.ticker)
-      .forEach((t) => expect(screen.getByTestId(`asset-dropdown-option-${t}`)).toBeInTheDocument());
+      .forEach((t) => expect(screen.getByTestId(`asset-selector-option-${t}`)).toBeInTheDocument());
   });
 
   test('it calls the success handler with the correct value', async () => {
@@ -52,7 +66,7 @@ describe('AssetSelector', () => {
 
     expect(screen.getByRole('form')).toHaveFormValues({ [defaultProps.label!]: '' });
     await selectEvent.openMenu(screen.getByLabelText(defaultProps.label!));
-    const option = screen.getByTestId(`asset-dropdown-option-${fAssets[0].ticker}`);
+    const option = screen.getByTestId(`asset-selector-option-${fAssets[0].ticker}`);
     fireEvent.pointerDown(option);
     expect(defaultProps.onSelect).toBeCalledWith(fAssets[0]);
   });

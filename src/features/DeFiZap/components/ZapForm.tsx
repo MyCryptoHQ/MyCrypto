@@ -9,7 +9,7 @@ import { parseEther } from 'ethers/utils';
 import translate, { translateRaw } from '@translations';
 import { SPACING } from '@theme';
 import { IAccount, Network, StoreAccount, Asset } from '@types';
-import { AccountDropdown, InlineMessage, AmountInput, PoweredByText } from '@components';
+import { AccountSelector, InlineMessage, AmountInput, PoweredByText } from '@components';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
 import { ETHUUID } from '@utils';
@@ -34,6 +34,7 @@ interface UIProps {
   network: Network;
   zapSelected: IZapConfig;
   relevantAccounts: StoreAccount[];
+  defaultAccount: StoreAccount;
   onComplete(fields: any): void;
 }
 
@@ -63,7 +64,7 @@ const DeFiZapLogoContainer = styled.div`
 `;
 
 const ZapForm = ({ onComplete, zapSelected }: Props) => {
-  const { accounts } = useContext(StoreContext);
+  const { accounts, defaultAccount } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
   const ethAsset = assets.find((asset) => asset.uuid === ETHUUID) as Asset;
@@ -76,6 +77,7 @@ const ZapForm = ({ onComplete, zapSelected }: Props) => {
       network={network}
       zapSelected={zapSelected as IZapConfig}
       relevantAccounts={relevantAccounts}
+      defaultAccount={defaultAccount}
       onComplete={onComplete}
     />
   );
@@ -86,10 +88,11 @@ export const ZapFormUI = ({
   network,
   zapSelected,
   relevantAccounts,
+  defaultAccount,
   onComplete
 }: UIProps) => {
   const initialFormikValues: ISimpleTxFormFull = {
-    account: {} as StoreAccount,
+    account: defaultAccount,
     amount: '',
     asset: ethAsset,
     nonce: '0',
@@ -119,6 +122,7 @@ export const ZapFormUI = ({
           return true;
         }
       )
+      .test(validateAmountField())
   });
 
   return (
@@ -146,7 +150,7 @@ export const ZapFormUI = ({
                   name="account"
                   value={values.account}
                   component={({ field, form }: FieldProps) => (
-                    <AccountDropdown
+                    <AccountSelector
                       name={field.name}
                       value={field.value}
                       accounts={relevantAccounts}
@@ -164,7 +168,6 @@ export const ZapFormUI = ({
                 </FormFieldLabel>
                 <Field
                   name="amount"
-                  validate={validateAmountField}
                   render={({ field, form }: FieldProps) => {
                     return (
                       <>

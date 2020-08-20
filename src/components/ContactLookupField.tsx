@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 
 import { IReceiverAddress, Network } from '@types';
 import { AddressBookContext, findNextRecipientLabel } from '@services/Store';
+import { useEffectOnce } from '@vendor';
 
 import GeneralLookupField, { IGeneralLookupFieldComponentProps } from './GeneralLookupField';
 
@@ -15,6 +16,7 @@ const ContactLookupField = ({
   network,
   name,
   value,
+  setFieldValue,
   ...rest
 }: IContactLookupFieldComponentProps &
   Omit<IGeneralLookupFieldComponentProps, 'options' | 'handleEthAddress' | 'handleENSName'>) => {
@@ -58,6 +60,15 @@ const ContactLookupField = ({
     };
   };
 
+  useEffectOnce(() => {
+    if (value && value.value) {
+      const contact = getContactByAddress(value.value);
+      if (contact && value.display !== contact.label && setFieldValue) {
+        setFieldValue(name, { display: contact.label, value: contact.address }, true);
+      }
+    }
+  });
+
   return (
     <GeneralLookupField
       name={name}
@@ -66,14 +77,7 @@ const ContactLookupField = ({
       options={contacts}
       handleEthAddress={handleEthAddress}
       handleENSName={handleENSName}
-      onLoad={(setFieldValue) => {
-        if (value && value.value) {
-          const contact = getContactByAddress(value.value);
-          if (contact && value.display !== contact.label) {
-            setFieldValue(name, { display: contact.label, value: contact.address }, true);
-          }
-        }
-      }}
+      setFieldValue={setFieldValue}
       {...rest}
     />
   );

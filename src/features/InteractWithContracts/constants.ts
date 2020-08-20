@@ -1,7 +1,7 @@
 import { DEFAULT_NETWORK } from '@config';
-import { Contract } from '@types';
+import { Contract, TAddress } from '@types';
 
-export const CUSTOM_CONTRACT_ADDRESS = 'custom';
+export const CUSTOM_CONTRACT_ADDRESS = 'custom' as TAddress;
 
 export const customContract: Contract = {
   name: 'Custom',

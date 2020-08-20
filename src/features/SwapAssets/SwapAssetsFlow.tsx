@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { translateRaw } from '@translations';
@@ -7,6 +7,7 @@ import { ROUTE_PATHS } from '@config';
 import { ITxSigned, ITxHash, TxParcel } from '@types';
 import { bigify, useStateReducer, useTxMulti } from '@utils';
 import { useEffectOnce, usePromise } from '@vendor';
+import { StoreContext } from '@services';
 
 import { SwapAssets, SwapTransactionReceipt, ConfirmSwapMultiTx, ConfirmSwap } from './components';
 import { getTradeOrder } from './helpers';
@@ -23,6 +24,7 @@ interface TStep {
 }
 
 const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
+  const { defaultAccount } = useContext(StoreContext);
   const {
     fetchSwapAssets,
     setSwapAssets,
@@ -34,7 +36,7 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     handleToAmountChanged,
     handleAccountSelected,
     formState
-  } = useStateReducer(SwapFormFactory, swapFormInitialState);
+  } = useStateReducer(SwapFormFactory, { ...swapFormInitialState, account: defaultAccount });
   const {
     assets,
     account,

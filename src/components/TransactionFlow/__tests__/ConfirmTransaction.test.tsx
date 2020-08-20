@@ -73,4 +73,12 @@ describe('ConfirmTransaction', () => {
     expect(getByText(zap.title)).toBeDefined();
     expect(getByText(zap.outlook, { exact: false })).toBeDefined();
   });
+
+  test('it displays PTX button', async () => {
+    const { getByText } = getComponent({
+      ...defaultProps,
+      protectTxButton: () => <>PTXBUTTON</>
+    });
+    expect(getByText('PTXBUTTON')).toBeDefined();
+  });
 });

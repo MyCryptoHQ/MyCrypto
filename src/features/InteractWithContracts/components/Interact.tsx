@@ -249,8 +249,7 @@ function Interact(props: CombinedProps) {
     }
   }, []);
 
-  const customEditingMode =
-    contract && isSameAddress(contract.address as TAddress, CUSTOM_CONTRACT_ADDRESS as TAddress);
+  const customEditingMode = contract && isSameAddress(contract.address, CUSTOM_CONTRACT_ADDRESS);
 
   const initialFormikValues: { address: IReceiverAddress } = {
     address: {
@@ -265,7 +264,7 @@ function Interact(props: CombinedProps) {
       validationSchema={FormSchema}
       // Hack as we don't really use Formik for this flow
       onSubmit={() => undefined}
-      render={({ values, errors, touched, setFieldValue }) => {
+      render={({ values, errors, touched, setFieldValue, setFieldError, setFieldTouched }) => {
         useEffect(() => {
           if (
             !getNetworkById(networkIdFromUrl, networks) ||
@@ -335,6 +334,9 @@ function Interact(props: CombinedProps) {
                   }}
                   onChange={(address) => handleAddressOrDomainChanged(address)}
                   value={values.address}
+                  setFieldValue={setFieldValue}
+                  setFieldTouched={setFieldTouched}
+                  setFieldError={setFieldError}
                 />
               </FieldWrapper>
             </ContractSelectionWrapper>

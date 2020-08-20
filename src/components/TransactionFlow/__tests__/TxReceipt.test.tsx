@@ -102,4 +102,14 @@ describe('TxReceipt', () => {
     expect(getByText(translateRaw('NEW_MEMBER'))).toBeDefined();
     expect(getByText(membership.contractAddress)).toBeDefined();
   });
+
+  test('it displays PTX info', async () => {
+    const { getByText } = getComponent({
+      ...defaultProps,
+      protectTxButton: () => <>PTXBUTTON</>,
+      protectTxEnabled: true
+    });
+    expect(getByText('PTXBUTTON')).toBeDefined();
+    expect(getByText(translateRaw('PROTECTED_TX_CANCEL'))).toBeDefined();
+  });
 });

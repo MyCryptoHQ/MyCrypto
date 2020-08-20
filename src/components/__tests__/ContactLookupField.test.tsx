@@ -1,5 +1,4 @@
 import React from 'react';
-import { Form, Formik } from 'formik';
 import { simpleRender, fireEvent, wait } from 'test-utils';
 import { fNetwork } from '@fixtures';
 
@@ -32,9 +31,13 @@ const initialFormikValues: { address: IReceiverAddress } = {
   }
 };
 
-function getComponent(props: any, contacts: AddressBook[] = [], output: FormValues = { data: {} }) {
-  const mapFormValues = (values: { address: IReceiverAddress }) => {
-    output.data = values;
+function getComponent(
+  props: any,
+  contacts: AddressBook[] = [],
+  output: FormValues = { data: { address: { value: '', display: '' } } }
+) {
+  const setFormValue = (address: IReceiverAddress) => {
+    output.data = { address };
   };
 
   return simpleRender(
@@ -57,16 +60,12 @@ function getComponent(props: any, contacts: AddressBook[] = [], output: FormValu
           } as unknown) as any
         }
       >
-        <Formik
-          validate={mapFormValues}
-          initialValues={initialFormikValues}
-          onSubmit={jest.fn()}
-          render={({ values }) => (
-            <Form>
-              <ContactLookupField {...props} value={values.address} />
-            </Form>
-          )}
+        <ContactLookupField
+          {...props}
+          value={output.data.address}
+          setFieldValue={(_, value) => setFormValue(value)}
         />
+        )} />
       </AddressBookContext.Provider>
     </AssetContext.Provider>
   );

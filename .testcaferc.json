@@ -9,7 +9,9 @@
     "localhost:3000"
   ],
   "clientScripts": [
-    { "module": "@testing-library/dom/dist/@testing-library/dom.umd.js" }
+    {
+      "module": "@testing-library/dom/dist/@testing-library/dom.umd.js"
+    }
   ],
   "developmentMode": true
 }

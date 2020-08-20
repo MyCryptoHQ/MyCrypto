@@ -119,17 +119,18 @@ export default function ConfirmTransaction({
   zapSelected,
   txConfig,
   onComplete,
-  signedTx
-}: IStepComponentProps) {
+  signedTx,
+  protectTxButton
+}: IStepComponentProps & { protectTxButton?(): JSX.Element }) {
   const { asset, baseAsset, receiverAddress, network, from } = txConfig;
 
   const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
   const { getAssetRate } = useContext(RatesContext);
-  const { accounts, isMyCryptoMember } = useContext(StoreContext);
+  const { accounts } = useContext(StoreContext);
   const { settings } = useContext(SettingsContext);
   const { state: ptxState } = useContext(ProtectTxContext);
   const ptxFee = (() => {
-    if (ptxState && ptxState.protectTxEnabled && !isMyCryptoMember) {
+    if (ptxState && ptxState.protectTxEnabled && !ptxState.isPTXFree) {
       return ptxState.feeAmount;
     }
     return undefined;
@@ -158,6 +159,7 @@ export default function ConfirmTransaction({
       onComplete={onComplete}
       signedTx={signedTx}
       ptxFee={ptxFee}
+      protectTxButton={protectTxButton}
     />
   );
 }
@@ -170,6 +172,7 @@ interface DataProps {
   senderContact?: ExtendedAddressBook;
   sender: ISender;
   ptxFee?: IFeeAmount;
+  protectTxButton?(): JSX.Element;
 }
 
 type UIProps = Omit<IStepComponentProps, 'resetFlow'> & DataProps;
@@ -187,7 +190,8 @@ export const ConfirmTransactionUI = ({
   txConfig,
   onComplete,
   signedTx,
-  ptxFee
+  ptxFee,
+  protectTxButton
 }: UIProps) => {
   const {
     asset,
@@ -382,6 +386,7 @@ export const ConfirmTransactionUI = ({
       {txType === ITxType.DEFIZAP && (
         <DeFiDisclaimerWrapper>{translate('ZAP_CONFIRM_DISCLAIMER')}</DeFiDisclaimerWrapper>
       )}
+      {protectTxButton && protectTxButton()}
       <SendButton
         onClick={handleApprove}
         disabled={isBroadcastingTx}

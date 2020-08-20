@@ -1,16 +1,23 @@
 import { translateRaw } from '@translations';
-import { IHexStrWeb3Transaction, INode } from '@types';
+import {
+  IHexStrWeb3Transaction,
+  INode,
+  TAddress,
+  Web3RequestPermissionsResult,
+  IExposedAccountsPermission,
+  IWeb3Permission
+} from '@types';
 import {
   isValidSendTransaction,
   isValidSignMessage,
   isValidGetAccounts,
   isValidGetNetVersion
 } from '@services/EthService';
+import { isValidRequestPermissions } from '@services/EthService/validators';
+
 import { RPCNode } from '../rpc';
 import Web3Client from './client';
 import Web3Requests from './requests';
-
-//const METAMASK_PERMISSION_DENIED_ERROR = ;
 
 export class Web3Node extends RPCNode {
   // @ts-ignore
@@ -44,11 +51,27 @@ export class Web3Node extends RPCNode {
       .then(({ result }) => result);
   }
 
-  public getAccounts(): Promise<string> {
+  public getAccounts(): Promise<TAddress[] | undefined> {
     return this.client
       .call(this.requests.getAccounts())
       .then(isValidGetAccounts)
+      .then(({ result }) => result && result.length > 0 && result)
+      .catch(undefined);
+  }
+
+  public requestPermissions(): Promise<Web3RequestPermissionsResult[]> {
+    return this.client
+      .callWeb3(this.requests.requestPermissions())
+      .then(isValidRequestPermissions)
       .then(({ result }) => result);
+  }
+
+  public getApprovedAccounts(): Promise<TAddress[] | undefined> {
+    return this.client
+      .callWeb3(this.requests.getPermissions())
+      .then(isValidRequestPermissions)
+      .then(({ result }) => result && result[0] && result[0].caveats)
+      .then((permissions: IWeb3Permission[] | undefined) => deriveApprovedAccounts(permissions));
   }
 }
 
@@ -60,8 +83,7 @@ export async function getChainIdAndLib() {
   const lib = new Web3Node();
   const chainId = await lib.getNetVersion();
   const accounts = await lib.getAccounts();
-
-  if (!accounts.length) {
+  if (!accounts || !accounts.length) {
     throw new Error('No accounts found in MetaMask / Web3.');
   }
 
@@ -81,15 +103,16 @@ export async function setupWeb3Node() {
     if ((window as any).Web3) {
       (window as any).web3 = new (window as any).Web3(ethereum);
     }
-    try {
-      // Request permission to access MetaMask accounts.
-      await ethereum.enable();
-      // Permission was granted; proceed.
-      return getChainIdAndLib();
-    } catch (e) {
-      // Permission was denied; handle appropriately.
-      throw new Error(translateRaw('METAMASK_PERMISSION_DENIED'));
+    const web3Node = new Web3Node();
+    const permissions = await requestPermission(web3Node);
+    if (permissions) {
+      return await getChainIdAndLib();
     }
+    const legacyConnect = await requestLegacyConnect(ethereum);
+    if (legacyConnect) {
+      return await getChainIdAndLib();
+    }
+    throw new Error(translateRaw('METAMASK_PERMISSION_DENIED'));
   } else if ((window as any).web3) {
     // Legacy handling; will become unavailable 11/2.
     const { web3 } = window as any;
@@ -103,3 +126,30 @@ export async function setupWeb3Node() {
     throw new Error('Web3 not found. Please check that MetaMask is installed');
   }
 }
+
+const requestPermission = async (web3Node: Web3Node) => {
+  try {
+    return await web3Node.requestPermissions();
+  } catch (e) {
+    console.debug('[requestPermission]: ', e);
+    return;
+  }
+};
+
+const requestLegacyConnect = async (ethereum: any) => {
+  try {
+    await ethereum.enable();
+    return true;
+  } catch (e) {
+    console.debug('[requestLegacyConnect]: ', e);
+    return;
+  }
+};
+
+const deriveApprovedAccounts = (walletPermissions: IWeb3Permission[] | undefined) => {
+  if (!walletPermissions) return;
+  const exposedAccounts = walletPermissions.find(
+    (caveat: any) => caveat.name === 'exposedAccounts'
+  ) as IExposedAccountsPermission | undefined;
+  return exposedAccounts && exposedAccounts.value;
+};

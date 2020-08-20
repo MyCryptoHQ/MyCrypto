@@ -32,6 +32,7 @@ import {
   getTransactionReceiptFromHash
 } from '@services/EthService';
 import { ROUTE_PATHS } from '@config';
+import { BREAK_POINTS } from '@theme';
 import { SwapDisplayData } from '@features/SwapAssets/types';
 import translate, { translateRaw } from '@translations';
 import { convertToFiat, truncate } from '@utils';
@@ -60,11 +61,19 @@ interface PendingBtnAction {
 interface Props {
   pendingButton?: PendingBtnAction;
   swapDisplay?: SwapDisplayData;
+  protectTxButton?(): JSX.Element;
 }
 
 const SImg = styled('img')`
   height: ${(p: { size: string }) => p.size};
   width: ${(p: { size: string }) => p.size};
+`;
+
+const SSpacer = styled.div`
+  height: 60px;
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
+    height: 85px;
+  }
 `;
 
 export default function TxReceipt({
@@ -75,7 +84,8 @@ export default function TxReceipt({
   pendingButton,
   membershipSelected,
   zapSelected,
-  swapDisplay
+  swapDisplay,
+  protectTxButton
 }: ITxReceiptStepProps & Props) {
   const { getAssetRate } = useContext(RatesContext);
   const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
@@ -183,6 +193,7 @@ export default function TxReceipt({
       pendingButton={pendingButton}
       protectTxEnabled={ptxState && ptxState.protectTxEnabled}
       web3Wallet={ptxState && ptxState.isWeb3Wallet}
+      protectTxButton={protectTxButton}
     />
   );
 }
@@ -202,6 +213,7 @@ export interface TxReceiptDataProps {
   web3Wallet?: boolean;
   assetRate(): number | undefined;
   resetFlow(): void;
+  protectTxButton?(): JSX.Element;
 }
 
 type UIProps = Omit<IStepComponentProps, 'resetFlow' | 'onComplete'> & TxReceiptDataProps;
@@ -225,7 +237,8 @@ export const TxReceiptUI = ({
   resetFlow,
   completeButtonText,
   protectTxEnabled = false,
-  web3Wallet = false
+  web3Wallet = false,
+  protectTxButton
 }: UIProps) => {
   /* Determining User's Contact */
   const { asset, gasPrice, gasLimit, data, nonce, baseAsset, receiverAddress } = txConfig;
@@ -266,6 +279,7 @@ export const TxReceiptUI = ({
       )}
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-desc">
+          {protectTxEnabled && !web3Wallet && <SSpacer />}
           {translate('TRANSACTION_BROADCASTED_DESC')}
         </div>
       </div>
@@ -396,6 +410,8 @@ export const TxReceiptUI = ({
             {!displayTxReceipt && <PendingTransaction />}
           </div>
         </div>
+
+        {protectTxButton && protectTxButton()}
 
         <TransactionDetailsDisplay
           baseAsset={baseAsset}

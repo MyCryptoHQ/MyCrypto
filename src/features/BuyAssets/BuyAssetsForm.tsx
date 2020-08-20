@@ -10,7 +10,7 @@ import { SPACING, COLORS, FONT_SIZE } from '@theme';
 import { IAccount, StoreAccount, Asset, TURL } from '@types';
 import { ETHUUID, MOONPAY_ASSET_UUIDS, openLink } from '@utils';
 import { ROUTE_PATHS, MOONPAY_API_QUERYSTRING, BUY_MYCRYPTO_WEBSITE } from '@config';
-import { AccountDropdown, AssetSelector, InlineMessage, ContentPanel } from '@components';
+import { AccountSelector, AssetSelector, InlineMessage, ContentPanel } from '@components';
 import { isAccountInNetwork } from '@services/Store/Account/helpers';
 import { MoonpaySignerService } from '@services/ApiService/MoonpaySigner';
 import { StoreContext } from '@services/Store/StoreProvider';
@@ -66,12 +66,12 @@ enum SubmissionType {
 
 export const BuyAssetsForm = () => {
   const history = useHistory();
-  const { accounts } = useContext(StoreContext);
+  const { accounts, defaultAccount } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
   const ethAsset = getAssetByUUID(assets)(ETHUUID) as Asset;
 
   const initialFormikValues: IBuyFormState = {
-    account: {} as StoreAccount,
+    account: defaultAccount,
     asset: ethAsset
   };
 
@@ -129,7 +129,7 @@ export const BuyAssetsForm = () => {
                   name="account"
                   value={values.account}
                   component={({ field }: FieldProps) => (
-                    <AccountDropdown
+                    <AccountSelector
                       name={field.name}
                       value={field.value}
                       accounts={relevantAccounts}

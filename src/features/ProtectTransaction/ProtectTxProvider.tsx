@@ -11,9 +11,7 @@ import {
 import { AssetContext, getAssetByUUID, StoreContext } from '@services/Store';
 import { useFeatureFlags } from '@services';
 import { NansenService, NansenServiceEntry } from '@services/ApiService/Nansen';
-import { useScreenSize } from '@utils';
 import { WALLETS_CONFIG } from '@config';
-
 import { PTXReport } from './types';
 import { getNansenReportType, getLastTx, getBalance } from './utils';
 
@@ -39,6 +37,7 @@ export interface ProtectTxState {
   web3WalletName: string | null;
   formValues?: IFormikFields;
   feeAmount: IFeeAmount;
+  isPTXFree: boolean;
 }
 
 export interface ProtectTxContext {
@@ -73,17 +72,22 @@ export const protectTxProviderInitialState: ProtectTxState = {
   isWeb3Wallet: false,
   web3WalletName: null,
   mainComponentDisabled: false,
-  feeAmount: { amount: null, fee: null, rate: null }
+  feeAmount: { amount: null, fee: null, rate: null },
+  isPTXFree: false
 };
 
 export const ProtectTxContext = createContext({} as ProtectTxContext);
 
 const ProtectTxProvider: React.FC = ({ children }) => {
   const { isMyCryptoMember } = useContext(StoreContext);
-  const numOfSteps = isMyCryptoMember ? 2 : 3;
+  // FREE FOR NOW
+  const isPTXFree = isMyCryptoMember || true;
+  const numOfSteps = isPTXFree ? 2 : 3;
   const { assets } = useContext(AssetContext);
-  const [state, setState] = useState<ProtectTxState>({ ...protectTxProviderInitialState });
-  const { isMdScreen } = useScreenSize();
+  const [state, setState] = useState<ProtectTxState>({
+    ...protectTxProviderInitialState,
+    isPTXFree
+  });
 
   const protectionTxTimeoutFunction = useRef<((cb: () => ITxReceipt) => void) | null>(null);
 
@@ -163,7 +167,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
 
   const goToInitialStepOrFetchReport = useCallback(
     (receiverAddress?: string, network?: Network) => {
-      if (state.protectTxEnabled || (isMyCryptoMember && state.stepIndex > 0)) {
+      if (state.protectTxEnabled || (isPTXFree && state.stepIndex > 0)) {
         setState((prevState) => ({
           ...prevState,
           cryptoScamAddressReport: null,
@@ -270,16 +274,6 @@ const ProtectTxProvider: React.FC = ({ children }) => {
     const balance = getBalance(etherscanBalanceReport);
     return { address, status, labels, lastTransaction: lastTx, balance, asset: state.asset! };
   }, [state]);
-
-  useEffect(() => {
-    // Show tx protect in case of window resize
-    if (state.protectTxEnabled) {
-      setState((prevState) => ({
-        ...prevState,
-        protectTxShow: isMdScreen
-      }));
-    }
-  }, [isMdScreen, state.protectTxEnabled]);
 
   useEffect(() => {
     if (state.stepIndex === numOfSteps - 1) {

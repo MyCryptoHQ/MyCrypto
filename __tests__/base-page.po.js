@@ -8,8 +8,8 @@ export default class BasePage {
     await t.navigateTo(url);
   }
 
-  async waitForPage(url) {
+  async waitForPage(url, timeout) {
     await t.expect(this.getCurrentLocation()).eql(url,
-      { timeout: FIXTURES_CONST.TIMEOUT });
+      { timeout: timeout || FIXTURES_CONST.TIMEOUT });
   }
 }

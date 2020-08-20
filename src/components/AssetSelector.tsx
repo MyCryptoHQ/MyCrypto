@@ -26,7 +26,7 @@ export function AssetSelectorItem({ uuid, ticker, name, onClick }: ItemProps) {
   return (
     <SContainer
       {...(onClick ? { onPointerDown: onClick } : null)}
-      data-testid={`asset-dropdown-option-${ticker}`}
+      data-testid={`asset-selector-option-${ticker}`}
     >
       <AssetIcon uuid={uuid} size={'1.5rem'} />
       <Typography bold={true} value={ticker} style={{ marginLeft: '10px' }} />
@@ -98,6 +98,7 @@ function AssetSelector({
         disabled={disabled}
         searchable={searchable}
         onChange={(option: TAssetOption) => onSelect(option)}
+        getOptionLabel={(option) => (showOnlySymbol ? option.ticker : option.name)}
         optionDivider={true}
         optionComponent={({ data, selectOption }: OptionProps<TAssetOption>) => {
           const { ticker, name, uuid } = data;

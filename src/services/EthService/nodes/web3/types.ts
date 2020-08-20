@@ -27,6 +27,14 @@ export interface GetAccountsRequest extends RPCRequestBase {
   method: 'eth_accounts';
 }
 
+export interface GetPermissionsRequest extends RPCRequestBase {
+  method: 'wallet_getPermissions';
+}
+
+export interface RequestPermissionsRequest extends RPCRequestBase {
+  method: 'wallet_requestPermissions';
+}
+
 type TWeb3ProviderCallback = (error: string, result: JsonRpcResponse | JsonRpcResponse[]) => any;
 type TSendAsync = (request: RPCRequest | any, callback: TWeb3ProviderCallback) => void;
 

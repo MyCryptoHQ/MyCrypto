@@ -1,6 +1,12 @@
 import { IHexStrWeb3Transaction } from '@types';
 import { RPCRequests } from '../rpc';
-import { SendTransactionRequest, SignMessageRequest, GetAccountsRequest } from './types';
+import {
+  SendTransactionRequest,
+  SignMessageRequest,
+  GetAccountsRequest,
+  GetPermissionsRequest,
+  RequestPermissionsRequest
+} from './types';
 
 export default class Web3Requests extends RPCRequests {
   public sendTransaction(web3Tx: IHexStrWeb3Transaction): SendTransactionRequest {
@@ -20,6 +26,23 @@ export default class Web3Requests extends RPCRequests {
   public getAccounts(): GetAccountsRequest {
     return {
       method: 'eth_accounts'
+    };
+  }
+
+  public getPermissions(): GetPermissionsRequest {
+    return {
+      method: 'wallet_getPermissions'
+    };
+  }
+
+  public requestPermissions(): RequestPermissionsRequest {
+    return {
+      method: 'wallet_requestPermissions',
+      params: [
+        {
+          eth_accounts: {}
+        }
+      ]
     };
   }
 }

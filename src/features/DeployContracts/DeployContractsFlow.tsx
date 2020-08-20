@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -8,6 +8,7 @@ import { ROUTE_PATHS } from '@config';
 import { useStateReducer } from '@utils';
 import { ISignedTx, IPendingTxReceipt, Tab } from '@types';
 import { BREAK_POINTS } from '@theme';
+import { StoreContext } from '@services';
 
 import { deployContractsInitialState, DeployContractsFactory } from './stateFactory';
 import { Deploy, DeployConfirm, DeployReceipt } from './components';
@@ -46,6 +47,7 @@ const TabsWrapper = styled.div`
 
 const DeployContractsFlow = (props: RouteComponentProps<{}>) => {
   const [step, setStep] = useState(0);
+  const { defaultAccount } = useContext(StoreContext);
   const {
     handleNetworkSelected,
     handleDeploySubmit,
@@ -54,7 +56,10 @@ const DeployContractsFlow = (props: RouteComponentProps<{}>) => {
     handleTxSigned,
     handleGasSelectorChange,
     deployContractsState
-  } = useStateReducer(DeployContractsFactory, deployContractsInitialState);
+  } = useStateReducer(DeployContractsFactory, {
+    ...deployContractsInitialState,
+    account: defaultAccount
+  });
 
   const { account }: DeployContractsState = deployContractsState;
   const { history, location } = props;

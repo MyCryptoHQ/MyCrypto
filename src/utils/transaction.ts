@@ -80,9 +80,9 @@ export const makeFinishedTxReceipt = (
 
 const decodeTransaction = (signedTx: Arrayish) => {
   const decodedTransaction = parseTransaction(signedTx);
-  const gasLimit = bigNumGasLimitToViewable(decodedTransaction.gasLimit);
-  const gasPriceGwei = bigNumGasPriceToViewableGwei(decodedTransaction.gasPrice);
-  const amountToSendEther = bigNumValueToViewableEther(decodedTransaction.value);
+  const gasLimit = bigNumGasLimitToViewable(decodedTransaction.gasLimit.toString());
+  const gasPriceGwei = bigNumGasPriceToViewableGwei(decodedTransaction.gasPrice.toString());
+  const amountToSendEther = bigNumValueToViewableEther(decodedTransaction.value.toString());
 
   return {
     to: decodedTransaction.to,

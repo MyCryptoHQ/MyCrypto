@@ -53,6 +53,7 @@ describe('mergeConfigWithLocalStorage()', () => {
     const emptyLs = ({
       [LSKeys.CONTRACTS]: [{}],
       [LSKeys.ASSETS]: [],
+      [LSKeys.NETWORKS]: {},
       [LSKeys.NETWORK_NODES]: []
     } as unknown) as LocalStorage;
     const mergedLs = mergeConfigWithLocalStorage(NETWORKS_CONFIG, emptyLs);
@@ -71,7 +72,8 @@ describe('mergeConfigWithLocalStorage()', () => {
       [LSKeys.CONTRACTS]: {
         [customContract.uuid]: customContract
       },
-      [LSKeys.ASSETS]: {}
+      [LSKeys.ASSETS]: {},
+      [LSKeys.NETWORKS]: {}
     } as unknown) as LocalStorage;
     const mergedLs = mergeConfigWithLocalStorage(NETWORKS_CONFIG, ls);
 
@@ -91,6 +93,7 @@ describe('mergeConfigWithLocalStorage()', () => {
     };
     const ls = ({
       [LSKeys.CONTRACTS]: {},
+      [LSKeys.NETWORKS]: {},
       [LSKeys.ASSETS]: { [customAsset.uuid]: customAsset }
     } as unknown) as LocalStorage;
     const mergedLs = mergeConfigWithLocalStorage(NETWORKS_CONFIG, ls);
@@ -108,6 +111,7 @@ describe('mergeConfigWithLocalStorage()', () => {
     const ls = ({
       [LSKeys.CONTRACTS]: {},
       [LSKeys.ASSETS]: {},
+      [LSKeys.NETWORKS]: {},
       [LSKeys.NETWORK_NODES]: constructNetworkNodes([customNetwork])
     } as unknown) as LocalStorage;
     const mergedLs = mergeConfigWithLocalStorage(NETWORKS_CONFIG, ls);

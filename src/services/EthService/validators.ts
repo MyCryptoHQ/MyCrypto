@@ -14,8 +14,8 @@ import {
   CREATION_ADDRESS,
   DEFAULT_ASSET_DECIMAL
 } from '@config';
-import { JsonRPCResponse, InlineMessageType } from '@types';
-import translate from '@translations';
+import { JsonRPCResponse, InlineMessageType, Web3RequestPermissionsResponse } from '@types';
+import { translateRaw } from '@translations';
 
 import {
   stripHexPrefix,
@@ -94,7 +94,7 @@ export const isValidETHRecipientAddress = (
       success: false,
       name: 'ValidationError',
       type: InlineMessageType.ERROR,
-      message: translate('TO_FIELD_ERROR')
+      message: translateRaw('TO_FIELD_ERROR')
     };
   } else if (isValidENSName(address) && !resolutionErr) {
     // Is a valid ENS name, and it can be resolved!
@@ -127,7 +127,7 @@ export const isValidETHRecipientAddress = (
       success: false,
       name: 'ValidationError',
       type: InlineMessageType.INFO_CIRCLE,
-      message: translate('CHECKSUM_ERROR')
+      message: translateRaw('CHECKSUM_ERROR')
     };
   } else if (!isValidENSName(address) && !isValidMixedCaseETHAddress(address)) {
     // Is an invalid ens name & an invalid mixed-case address.
@@ -135,7 +135,7 @@ export const isValidETHRecipientAddress = (
       success: false,
       name: 'ValidationError',
       type: InlineMessageType.ERROR,
-      message: translate('TO_FIELD_ERROR')
+      message: translateRaw('TO_FIELD_ERROR')
     };
   }
   return { success: true };
@@ -233,7 +233,8 @@ interface TxFeeResponse {
 
 export const validateTxFee = (
   amount: string,
-  assetRate: number,
+  assetRateUSD: number,
+  assetRateFiat: number,
   isERC20: boolean,
   gasLimit: string,
   gasPrice: string,
@@ -249,12 +250,13 @@ export const validateTxFee = (
   }
   const DEFAULT_RATE_DECIMAL = 4;
   const DEFAULT_DECIMAL = DEFAULT_ASSET_DECIMAL + DEFAULT_RATE_DECIMAL;
-  const getAssetRate = () => convertedToBaseUnit(assetRate.toString(), DEFAULT_RATE_DECIMAL);
+  const getAssetRate = () => convertedToBaseUnit(assetRateUSD.toString(), DEFAULT_RATE_DECIMAL);
+  const getAssetRateLocal = () =>
+    convertedToBaseUnit(assetRateFiat.toString(), DEFAULT_RATE_DECIMAL);
   const getEthAssetRate = () =>
-    ethAssetRate ? convertedToBaseUnit(assetRate.toString(), DEFAULT_RATE_DECIMAL) : 0;
+    ethAssetRate ? convertedToBaseUnit(assetRateUSD.toString(), DEFAULT_RATE_DECIMAL) : 0;
 
   const txAmount = bigNumberify(convertedToBaseUnit(amount, DEFAULT_DECIMAL));
-  const txAmountFiatValue = bigNumberify(getAssetRate()).mul(txAmount);
   const txFee = bigNumberify(gasStringsToMaxGasBN(gasPrice, gasLimit).toString());
   const txFeeFiatValue = bigNumberify(getAssetRate()).mul(txFee);
 
@@ -262,14 +264,19 @@ export const validateTxFee = (
     ethAssetRate && ethAssetRate > 0 ? bigNumberify(getEthAssetRate()).mul(txFee) : null;
 
   const createTxFeeResponse = (type: TxFeeResponseType) => {
+    const txAmountFiatLocalValue = bigNumberify(getAssetRateLocal()).mul(txAmount);
+    const txFeeFiatLocalValue = bigNumberify(getAssetRateLocal()).mul(txFee);
     return {
       type,
       amount: parseFloat(
-        baseToConvertedUnit(txAmountFiatValue.toString(), DEFAULT_DECIMAL + DEFAULT_RATE_DECIMAL)
+        baseToConvertedUnit(
+          txAmountFiatLocalValue.toString(),
+          DEFAULT_DECIMAL + DEFAULT_RATE_DECIMAL
+        )
       )
         .toFixed(4)
         .toString(),
-      fee: parseFloat(baseToConvertedUnit(txFeeFiatValue.toString(), DEFAULT_DECIMAL))
+      fee: parseFloat(baseToConvertedUnit(txFeeFiatLocalValue.toString(), DEFAULT_DECIMAL))
         .toFixed(4)
         .toString()
     };
@@ -379,7 +386,7 @@ const v = new Validator();
 export const schema = {
   RpcNode: {
     type: 'object',
-    additionalProperties: false,
+    additionalProperties: true,
     properties: {
       jsonrpc: { type: 'string' },
       id: { oneOf: [{ type: 'string' }, { type: 'integer' }] },
@@ -425,13 +432,15 @@ enum API_NAME {
   Get_Accounts = 'Get Accounts',
   Net_Version = 'Net Version',
   Transaction_By_Hash = 'Transaction By Hash',
-  Transaction_Receipt = 'Transaction Receipt'
+  Transaction_Receipt = 'Transaction Receipt',
+  Request_Permissions = 'Request_Permissions',
+  Get_Permissions = 'Get_Permissions'
 }
 
-const isValidEthCall = (response: JsonRPCResponse, schemaType: typeof schema.RpcNode) => (
-  apiName: API_NAME,
-  cb?: (res: JsonRPCResponse) => any
-) => {
+const isValidEthServiceResponse = (
+  response: JsonRPCResponse,
+  schemaType: typeof schema.RpcNode
+) => (apiName: API_NAME, cb?: (res: JsonRPCResponse) => any) => {
   if (!isValidResult(response, schemaType)) {
     if (cb) {
       return cb(response);
@@ -442,45 +451,57 @@ const isValidEthCall = (response: JsonRPCResponse, schemaType: typeof schema.Rpc
 };
 
 export const isValidGetBalance = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Get_Balance);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Get_Balance);
 
 export const isValidEstimateGas = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Estimate_Gas);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Estimate_Gas);
 
 export const isValidCallRequest = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Call_Request);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Call_Request);
 
 export const isValidTokenBalance = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Token_Balance, () => ({
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Token_Balance, () => ({
     result: 'Failed'
   }));
 
 export const isValidTransactionCount = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Transaction_Count);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Transaction_Count);
 
 export const isValidTransactionByHash = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Transaction_By_Hash);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Transaction_By_Hash);
 
 export const isValidTransactionReceipt = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Transaction_Receipt);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Transaction_Receipt);
 
 export const isValidCurrentBlock = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Current_Block);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Current_Block);
 
 export const isValidRawTxApi = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Raw_Tx);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Raw_Tx);
 
 export const isValidSendTransaction = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Send_Transaction);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Send_Transaction);
 
 export const isValidSignMessage = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Sign_Message);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Sign_Message);
 
 export const isValidGetAccounts = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Get_Accounts);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Get_Accounts);
 
 export const isValidGetNetVersion = (response: JsonRPCResponse) =>
-  isValidEthCall(response, schema.RpcNode)(API_NAME.Net_Version);
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Net_Version);
+
+export const isValidRequestPermissions = (response: Web3RequestPermissionsResponse) =>
+  isValidEthServiceResponse(
+    (response as unknown) as JsonRPCResponse,
+    schema.RpcNode
+  )(API_NAME.Request_Permissions) as Web3RequestPermissionsResponse;
+
+export const isValidGetPermissions = (response: JsonRPCResponse) =>
+  isValidEthServiceResponse(
+    response,
+    schema.RpcNode
+  )(API_NAME.Get_Permissions) as Web3RequestPermissionsResponse;
 
 export const isValidTxHash = (hash: string) =>
   hash.substring(0, 2) === '0x' && hash.length === 66 && isValidHex(hash);

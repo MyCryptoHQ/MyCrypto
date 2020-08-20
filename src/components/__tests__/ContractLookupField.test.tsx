@@ -1,5 +1,4 @@
 import React from 'react';
-import { Form, Formik } from 'formik';
 import { simpleRender, fireEvent, wait } from 'test-utils';
 import { fNetwork, fContracts } from '@fixtures';
 
@@ -31,9 +30,12 @@ const initialFormikValues: { address: IReceiverAddress } = {
   }
 };
 
-function getComponent(props: any, output: FormValues = { data: {} }) {
-  const mapFormValues = (values: { address: IReceiverAddress }) => {
-    output.data = values;
+function getComponent(
+  props: any,
+  output: FormValues = { data: { address: { value: '', display: '' } } }
+) {
+  const setFormValue = (address: IReceiverAddress) => {
+    output.data = { address };
   };
 
   return simpleRender(
@@ -44,16 +46,12 @@ function getComponent(props: any, output: FormValues = { data: {} }) {
         } as unknown) as any
       }
     >
-      <Formik
-        validate={mapFormValues}
-        initialValues={initialFormikValues}
-        onSubmit={jest.fn()}
-        render={({ values }) => (
-          <Form>
-            <ContractLookupField {...props} value={values.address} />
-          </Form>
-        )}
+      <ContractLookupField
+        {...props}
+        value={output.data.address}
+        setFieldValue={(_, value) => setFormValue(value)}
       />
+      )} />
     </AssetContext.Provider>
   );
 }
