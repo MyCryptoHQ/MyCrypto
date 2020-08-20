@@ -4,7 +4,7 @@ export { subscribeToMailingList } from './emails';
 export { getDefaultEstimates, fetchGasPriceEstimates, getGasEstimate } from './Gas';
 export { DeFiReserveMapService } from './DeFiReserveMap';
 export { GithubService } from './Github';
-export { DexService } from './Dex';
+export { DexService, DexAsset } from './Dex';
 export { MyCryptoApiService } from './MyCryptoApi';
 export {
   GetBalanceResponse,

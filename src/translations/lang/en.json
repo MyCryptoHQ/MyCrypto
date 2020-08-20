@@ -456,6 +456,7 @@
     "MNEMONIC_VERIFY_ERROR": "Please verify mnemonic phrase.",
     "MNEMONIC_VERIFY_TITLE": "Verify Mnemonic Phrase",
     "MNEMONIC_YOUR_PHRASE_LABEL": "Your Mnemonic Phrase",
+    "MNEMONIC_ENTER_PHRASE": "Please enter mnemonic phrase",
     "MSG_DATE": "Date ",
     "MSG_MESSAGE": "Message ",
     "MSG_SIGNATURE": "Signature ",

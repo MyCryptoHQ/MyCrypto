@@ -5,7 +5,7 @@ import { Button, Link, Checkbox } from '@components';
 import styled from 'styled-components';
 
 import { DEFAULT_NETWORK, IIS_ACTIVE_FEATURE } from '@config';
-import { generateUUID, IS_DEV } from '@utils';
+import { generateUUID, IS_DEV, IS_STAGING } from '@utils';
 import {
   AccountContext,
   getLabelByAddressAndNetwork,
@@ -242,7 +242,7 @@ const DevToolsManager = () => {
   const { isActive } = useDevTools();
   return (
     <DevToolsManagerContainer isActive={isActive}>
-      {IS_DEV ? (
+      {IS_DEV || IS_STAGING ? (
         <div>
           <DevToolsToggle />
           {isActive && (

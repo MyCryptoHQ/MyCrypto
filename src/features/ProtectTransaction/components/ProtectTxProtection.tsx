@@ -339,7 +339,11 @@ export const ProtectTxProtectionUI = ({
             <p className="fee-label">{translateRaw('PROTECTED_TX_PRICE')}</p>
             <Amount
               assetValue={getAssetValue(feeAmount.amount)}
-              fiat={{ symbol: fiat.symbol, amount: getFiatValue(feeAmount.amount) }}
+              fiat={{
+                symbol: fiat.symbol,
+                amount: getFiatValue(feeAmount.amount),
+                ticker: fiat.ticker
+              }}
             />
           </FeeContainer>
           <FeeContainer>
@@ -347,7 +351,11 @@ export const ProtectTxProtectionUI = ({
             <p className="fee-label">{translateRaw('PROTECTED_TX_FEE')}</p>
             <Amount
               assetValue={getAssetValue(feeAmount.fee)}
-              fiat={{ symbol: fiat.symbol, amount: getFiatValue(feeAmount.fee) }}
+              fiat={{
+                symbol: fiat.symbol,
+                amount: getFiatValue(feeAmount.fee),
+                ticker: fiat.ticker
+              }}
             />
           </FeeContainer>
         </>

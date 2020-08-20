@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { fAssets } from '@fixtures';
 
-import { TSymbol } from '@types';
 import { translateRaw } from '@translations';
 
 import AssetSelector, { TAssetOption, AssetSelectorItem } from './AssetSelector';
@@ -57,10 +56,10 @@ export const Selector = () => {
         }}
       >
         <div>
-          <AssetSelectorItem symbol={asset.ticker as TSymbol} uuid={asset.uuid} name={asset.name} />
+          <AssetSelectorItem ticker={asset.ticker} uuid={asset.uuid} name={asset.name} />
         </div>
         <div>
-          <AssetSelectorItem symbol={asset.ticker as TSymbol} uuid={asset.uuid} />
+          <AssetSelectorItem ticker={asset.ticker} uuid={asset.uuid} />
         </div>
       </div>
       <div

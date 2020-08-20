@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 
 import { COLORS, BREAK_POINTS } from '@theme';
-import { TSymbol } from '@types';
+import { TCurrencySymbol, TTicker } from '@types';
 
 import { default as Typography } from './Typography';
 import Currency from './Currency';
@@ -31,7 +31,7 @@ const Asset = styled(Typography)<typeof Typography & { $discrete?: boolean }>`
       : ``};
 `;
 
-const Fiat = styled(Currency)`
+const SCurrency = styled(Currency)`
   font-size: 0.9em;
   span {
     color: ${COLORS.BLUE_GREY};
@@ -45,7 +45,8 @@ interface Props {
   assetValue: string;
   fiat?: {
     amount: string;
-    symbol: TSymbol;
+    symbol: TCurrencySymbol;
+    ticker: TTicker;
   };
   baseAssetValue?: string;
   bold?: boolean;
@@ -58,7 +59,9 @@ export default function Amount({ assetValue, fiat, baseAssetValue, bold = false 
     <SAmount>
       <Asset bold={bold}>{assetValue}</Asset>
       {baseAssetValue && <Asset $discrete={true}>{baseAssetValue}</Asset>}
-      {fiat && <Fiat amount={fiat.amount} symbol={fiat.symbol} decimals={2} />}
+      {fiat && (
+        <SCurrency amount={fiat.amount} symbol={fiat.symbol} ticker={fiat.ticker} decimals={2} />
+      )}
     </SAmount>
   );
 }

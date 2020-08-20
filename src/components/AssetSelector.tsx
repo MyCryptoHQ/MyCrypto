@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { OptionProps } from 'react-select';
+import isEmpty from 'lodash/isEmpty';
 
 import { translateRaw } from '@translations';
-import { Asset, ISwapAsset, TSymbol, TUuid } from '@types';
+import { Asset, ISwapAsset, TTicker, TUuid } from '@types';
 import { AssetIcon, Typography, Selector } from '@components';
+import { useEffectOnce } from '@vendor';
 
 const SContainer = styled('div')`
   display: flex;
@@ -13,21 +15,21 @@ const SContainer = styled('div')`
   padding: 14px 15px 14px 15px;
 `;
 
-export interface ItemProps {
+interface ItemProps {
   uuid: TUuid;
-  symbol: TSymbol;
+  ticker: TTicker;
   name?: string;
   onClick?(): void;
 }
 
-export function AssetSelectorItem({ uuid, symbol, name, onClick }: ItemProps) {
+export function AssetSelectorItem({ uuid, ticker, name, onClick }: ItemProps) {
   return (
     <SContainer
       {...(onClick ? { onPointerDown: onClick } : null)}
-      data-testid={`asset-dropdown-option-${symbol}`}
+      data-testid={`asset-dropdown-option-${ticker}`}
     >
       <AssetIcon uuid={uuid} size={'1.5rem'} />
-      <Typography bold={true} value={symbol} style={{ marginLeft: '10px' }} />
+      <Typography bold={true} value={ticker} style={{ marginLeft: '10px' }} />
       {name && <span>&nbsp; - &nbsp;</span>}
       <Typography value={name} />
     </SContainer>
@@ -53,7 +55,7 @@ const Wrapper = styled('div')`
   }
 `;
 
-export interface AssetSelectorProps<T> {
+interface AssetSelectorProps<T> {
   inputId?: string;
   assets: T[];
   selectedAsset: T | null;
@@ -79,6 +81,12 @@ function AssetSelector({
   inputId = 'asset-selector',
   ...props
 }: AssetSelectorProps<Asset | ISwapAsset>) {
+  useEffectOnce(() => {
+    if (!isEmpty(assets) && isEmpty(selectedAsset)) {
+      onSelect(assets[0]);
+    }
+  });
+
   return (
     <Wrapper fluid={fluid}>
       {label && <Label htmlFor={inputId}>{label}</Label>}
@@ -92,11 +100,10 @@ function AssetSelector({
         onChange={(option: TAssetOption) => onSelect(option)}
         optionDivider={true}
         optionComponent={({ data, selectOption }: OptionProps<TAssetOption>) => {
-          const { ticker, symbol, name, uuid } = data;
-          const ref = ticker ? ticker : symbol;
+          const { ticker, name, uuid } = data;
           return (
             <AssetSelectorItem
-              symbol={ref}
+              ticker={ticker}
               uuid={uuid}
               name={showOnlySymbol ? undefined : name}
               onClick={() => selectOption(data)}
@@ -104,10 +111,13 @@ function AssetSelector({
           );
         }}
         value={selectedAsset}
-        valueComponent={({ value: { ticker, uuid, symbol, name } }) => {
-          const ref = (ticker ? ticker : symbol) as TSymbol;
+        valueComponent={({ value: { ticker, uuid, name } }) => {
           return (
-            <AssetSelectorItem symbol={ref} uuid={uuid} name={showOnlySymbol ? undefined : name} />
+            <AssetSelectorItem
+              ticker={ticker}
+              uuid={uuid}
+              name={showOnlySymbol ? undefined : name}
+            />
           );
         }}
         {...props}

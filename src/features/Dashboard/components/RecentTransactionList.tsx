@@ -235,6 +235,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
             assetValue={`${parseFloat(amount).toFixed(4)} ${asset.ticker}`}
             fiat={{
               symbol: getFiat(settings).symbol,
+              ticker: getFiat(settings).ticker,
               amount: convertToFiat(parseFloat(amount), getAssetRate(asset)).toFixed(2)
             }}
           />,

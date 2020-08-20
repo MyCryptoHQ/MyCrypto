@@ -7,10 +7,9 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const config = require('./config');
-
-const IS_DEVELOPMENT = process.env.NODE_ENV !== 'production';
-const IS_ELECTRON = !!process.env.BUILD_ELECTRON;
+const { IS_DEV, IS_ELECTRON } = require('../environment');
 
 module.exports = {
   target: 'web',
@@ -211,6 +210,18 @@ module.exports = {
       quiet: true
     }),
 
+    new FaviconsWebpackPlugin({
+      logo: path.resolve(config.path.assets, 'images/favicon.png'),
+      cacheDirectory: false, // Cache makes builds nondeterministic
+      inject: true,
+      prefix: 'src/assets/meta-[hash]',
+      favicons: {
+        appDescription: 'Ethereum web interface',
+        display: 'standalone',
+        theme_color: '#007896'
+      }
+    }),
+
     new HtmlWebpackPlugin({
       template: path.resolve(config.path.src, 'index.html'),
       inject: true,
@@ -223,11 +234,11 @@ module.exports = {
         site: config.twitter.creator,
         creator: config.twitter.creator
       },
-      metaCsp: IS_DEVELOPMENT
+      metaCsp: IS_DEV
         ? ''
         : `default-src 'none'; script-src 'self'; worker-src 'self' blob:; child-src 'self'; style-src 'self' 'unsafe-inline'; manifest-src 'self'; font-src 'self'; img-src 'self' data: https://mycryptoapi.com/api/v1/images/; connect-src *${
-            IS_ELECTRON ? ' eth-enclave:' : ''
-          }; frame-src 'self' https://connect.trezor.io;`
+        IS_ELECTRON ? ' eth-enclave:' : ''
+        }; frame-src 'self' https://connect.trezor.io;`
     }),
 
     new CopyWebpackPlugin([

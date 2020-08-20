@@ -563,19 +563,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                   }}
                 />
               </fieldset>
-              {/* You'll Send */}
-              {/* <fieldset className="SendAssetsForm-fieldset SendAssetsForm-fieldset-youllSend">
-                <label>You'll Send</label>
-                <TransactionValueDisplay
-                  amount={values.amount || '0.00'}
-                  ticker={
-                    values.asset && values.asset.ticker
-                      ? (values.asset.ticker as TSymbol)
-                      : ('ETH' as TSymbol)
-                  }
-                  fiatAsset={{ ticker: 'USD' as TSymbol, exchangeRate: '250' }}
-                />
-              </fieldset> */}
               {/* Transaction Fee */}
               <fieldset className="SendAssetsForm-fieldset">
                 <label htmlFor="transactionFee" className="SendAssetsForm-fieldset-transactionFee">
@@ -587,7 +574,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                       values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider
                     }
                     fiatAsset={{
-                      fiat: getFiat(settings).code,
+                      fiat: getFiat(settings).ticker,
                       rate: (getAssetRate(baseAsset || undefined) || 0).toString(),
                       symbol: getFiat(settings).symbol
                     }}

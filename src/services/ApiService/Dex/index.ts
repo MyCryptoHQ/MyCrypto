@@ -1,1 +1,1 @@
-export { default as DexService } from './Dex';
+export { default as DexService, DexAsset } from './Dex';

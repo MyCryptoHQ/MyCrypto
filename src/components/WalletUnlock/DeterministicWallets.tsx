@@ -15,7 +15,7 @@ import {
   Button,
   InlineMessage
 } from '@components';
-import { Network } from '@types';
+import { Network, TTicker } from '@types';
 import {
   getBaseAssetByNetwork,
   AddressBookContext,
@@ -24,7 +24,7 @@ import {
   fromWei
 } from '@services';
 import { AssetContext } from '@services/Store';
-import { HELP_ARTICLE } from '@config';
+import { HELP_ARTICLE, DEFAULT_NETWORK_TICKER } from '@config';
 import { DeterministicWalletData, getDeterministicWallets } from '@services/WalletService';
 import { getBaseAssetBalances, BalanceMap } from '@services/Store/BalanceService';
 import { COLORS, monospace, SPACING, FONT_SIZE, BREAK_POINTS } from '@theme';
@@ -349,7 +349,7 @@ export function DeterministicWalletsClass({
     // tslint:disable-next-line: no-shadowed-variable
     network: Network | undefined,
     // tslint:disable-next-line: no-shadowed-variable
-    symbol: string
+    ticker: TTicker
   ) => {
     const addrBook = getLabelByAddressAndNetwork(
       wallet.address.toLowerCase(),
@@ -379,7 +379,7 @@ export function DeterministicWalletsClass({
         {!wallet.value ? (
           <Spinner />
         ) : (
-          `${parseFloat(fromWei(wallet.value, 'ether')).toFixed(4)} ${symbol}`
+          `${parseFloat(fromWei(wallet.value, 'ether')).toFixed(4)} ${ticker}`
         )}
       </div>,
       <LinkOut link={blockExplorer.addressUrl(wallet.address)} />
@@ -387,11 +387,11 @@ export function DeterministicWalletsClass({
     // tslint:enable:jsx-key
   };
 
-  let baseAssetSymbol: string | undefined;
+  let baseAssetTicker: TTicker | undefined;
   if (network) {
-    baseAssetSymbol = getBaseAssetByNetwork({ network, assets })!.ticker;
+    baseAssetTicker = getBaseAssetByNetwork({ network, assets })!.ticker;
   }
-  const symbol: string = baseAssetSymbol ? baseAssetSymbol : 'ETH';
+  const ticker: TTicker = baseAssetTicker ? baseAssetTicker : DEFAULT_NETWORK_TICKER;
   const isCustom = currentDPath.label === customDPath.label;
 
   return (
@@ -445,8 +445,8 @@ export function DeterministicWalletsClass({
         disabled={isCustom && !currentDPath.value}
         selected={selectedAddressIndex}
         page={page}
-        head={['#', translateRaw('ADDRESS'), symbol, translateRaw('ACTION_5')]}
-        body={wallets.map((wallet) => renderWalletRow(wallet, network, symbol))}
+        head={['#', translateRaw('ADDRESS'), ticker, translateRaw('ACTION_5')]}
+        body={wallets.map((wallet) => renderWalletRow(wallet, network, ticker))}
         config={{
           handleRowClicked: selectAddress
         }}

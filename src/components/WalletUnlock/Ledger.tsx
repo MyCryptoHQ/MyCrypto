@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import uniqBy from 'ramda/src/uniqBy';
 import prop from 'ramda/src/prop';
 
-import { MOONPAY_ASSET_UUIDS } from '@utils';
+import { MOONPAY_ASSET_UUIDS, IS_ELECTRON } from '@utils';
 import { FormData, WalletId, ExtendedAsset } from '@types';
 import translate, { translateRaw, Trans } from '@translations';
 import { NewTabLink, Spinner, Button, DeterministicAccountList, AssetSelector } from '@components';
@@ -106,7 +106,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
     return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} network={network} />;
   }
 
-  if (!process.env.BUILD_ELECTRON && window.location.protocol !== 'https:') {
+  if (!IS_ELECTRON && window.location.protocol !== 'https:') {
     return (
       <div className="Panel">
         <div className="alert alert-danger">

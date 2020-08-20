@@ -1,12 +1,14 @@
 import React from 'react';
 import { formatEther } from 'ethers/utils';
 import { OptionProps } from 'react-select';
+import isEmpty from 'lodash/isEmpty';
 
 import { translateRaw } from '@translations';
 import { AccountSummary, Divider, Selector } from '@components';
 import { SPACING } from '@theme';
-import { StoreAccount, Asset, TUuid, TSymbol } from '@types';
+import { StoreAccount, Asset, TUuid, TTicker } from '@types';
 import { getAccountBalance, getBaseAsset } from '@services/Store';
+import { useEffectOnce } from '@vendor';
 
 export interface IAccountDropdownProps {
   accounts: StoreAccount[];
@@ -24,7 +26,7 @@ export interface TAccountDropdownOption {
   account: StoreAccount;
   asset: {
     balance: string;
-    assetSymbol: TSymbol;
+    assetTicker: TTicker;
     assetUUID: TUuid;
   };
 }
@@ -44,12 +46,18 @@ function AccountDropdown({ accounts, asset, name, value, onSelect }: IAccountDro
       asset: {
         balance: formatEther(asset ? getAccountBalance(a, asset) : getAccountBalance(a)),
         assetUUID: asset ? asset.uuid : getBaseAsset(a)!.uuid,
-        assetSymbol: (asset ? asset.ticker : getBaseAsset(a)!.ticker) as TSymbol
+        assetTicker: asset ? asset.ticker : getBaseAsset(a)!.ticker
       }
     }))
     .sort(sortByLabel);
   const selected = getOption(value, options);
   const handleFormUpdate = (option: TAccountDropdownOption) => onSelect(option.account);
+
+  useEffectOnce(() => {
+    if (!isEmpty(options) && isEmpty(value)) {
+      onSelect(options[0].account);
+    }
+  });
 
   return (
     <Selector<TAccountDropdownOption>
@@ -62,14 +70,14 @@ function AccountDropdown({ accounts, asset, name, value, onSelect }: IAccountDro
       optionComponent={({ data, selectOption }: OptionProps<TAccountDropdownOption>) => {
         const { account, asset: selectedAsset } = data;
         const { address, label } = account;
-        const { balance, assetUUID, assetSymbol } = selectedAsset;
+        const { balance, assetUUID, assetTicker } = selectedAsset;
         return (
           <>
             <AccountSummary
               address={address}
               balance={balance}
               uuid={assetUUID}
-              assetSymbol={assetSymbol}
+              assetTicker={assetTicker}
               label={label}
               onClick={() => selectOption(data)}
             />
@@ -80,14 +88,14 @@ function AccountDropdown({ accounts, asset, name, value, onSelect }: IAccountDro
       value={selected}
       valueComponent={({ value: { account: selectedAccount, asset: selectedAsset } }) => {
         const { address, label } = selectedAccount;
-        const { balance, assetSymbol, assetUUID } = selectedAsset;
+        const { balance, assetTicker, assetUUID } = selectedAsset;
         return (
           <AccountSummary
             address={address}
             balance={balance}
             label={label}
             uuid={assetUUID}
-            assetSymbol={assetSymbol}
+            assetTicker={assetTicker}
           />
         );
       }}

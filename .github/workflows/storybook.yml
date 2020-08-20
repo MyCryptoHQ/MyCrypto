@@ -1,0 +1,89 @@
+name: Storybook
+
+env:
+  AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_MYCRYPTOBUILDS }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_MYCRYPTOBUILDS }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_MYCRYPTOBUILDS }}
+  AWS_REGION: 'us-east-2'
+
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Fetch the PR number to use it with AWS
+      - name: Set PR_NUMBER
+        run: |
+          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+          echo "::set-env name=PR_NUMBER::$PR_NUMBER"
+
+      - uses: actions/checkout@v2
+      - name: Retrieve node version from .nvmrc
+        run: echo "##[set-output name=NVMRC;]$(cat package.json | grep '\"node\":' | sed 's/^ *//;s/ *$//;s/\"node\":\ \"//;s/\",//')"
+        id: nvm
+
+      - name: Setup node ${{ steps.nvm.outputs.NVMRC }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: '${{ steps.nvm.outputs.NVMRC }}'
+
+      - name: Cache node modules
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          ## Check cache based on yarn.lock hashfile
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install Dependencies
+        ## If no cache is found, install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn install
+
+      - name: yarn build:storybook
+        if: github.ref == 'refs/heads/master' || github.event_name == 'pull_request'
+        run: yarn build:storybook
+
+      - name: S3 Sync - Storybook SHA
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'pull_request'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
+        env:
+          DEST_DIR: 'storybook/${GITHUB_SHA}'
+          SOURCE_DIR: 'storybook-static'
+
+      - name: S3 Sync - Storybook Branch - push
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.ref == 'refs/heads/master'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+        env:
+          DEST_DIR: 'storybook/${GITHUB_REF##*/}'
+          SOURCE_DIR: 'storybook-static'
+
+      - name: S3 Sync - Storybook Branch - pull_request
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'pull_request'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+        env:
+          DEST_DIR: 'storybook/${{ github.head_ref }}'
+          SOURCE_DIR: 'storybook-static'
+
+      - name: S3 Sync - Storybook - PR Number
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'pull_request'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+        env:
+          DEST_DIR: 'storybook/pr/${PR_NUMBER}'
+          SOURCE_DIR: 'storybook-static'

@@ -175,7 +175,7 @@ export function TokenDetails(props: Props) {
             value={
               <Currency
                 symbol={getFiat(settings).symbol}
-                code={getFiat(settings).code}
+                ticker={getFiat(settings).ticker}
                 amount={rate.toString()}
                 decimals={2}
               />

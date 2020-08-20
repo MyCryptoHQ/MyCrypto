@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { fTxConfigs, fAccount, fNetwork, fTxParcels } from '@fixtures';
-import { ITxType, TSymbol, ITxConfig, TUuid, ISwapAsset } from '@types';
+import { ITxType, TTicker, ITxConfig, TUuid, ISwapAsset } from '@types';
 import { noOp, bigify, DAIUUID, ETHUUID } from '@utils';
 
 import MultiTxReceipt from './MultiTxReceipt';
@@ -11,10 +11,10 @@ import { SwapDisplayData } from '@features/SwapAssets/types';
 const resetFlow = noOp;
 const DAI: ISwapAsset = {
   name: 'DAI Stablecoin v2.0',
-  symbol: 'DAI' as TSymbol,
+  ticker: 'DAI' as TTicker,
   uuid: DAIUUID as TUuid
 };
-const ETH: ISwapAsset = { name: 'Ethereum', symbol: 'ETH' as TSymbol, uuid: ETHUUID as TUuid };
+const ETH: ISwapAsset = { name: 'Ethereum', ticker: 'ETH' as TTicker, uuid: ETHUUID as TUuid };
 const swapDisplay: SwapDisplayData = {
   fromAsset: DAI,
   toAsset: ETH,

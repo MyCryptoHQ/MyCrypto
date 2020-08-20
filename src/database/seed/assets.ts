@@ -1,4 +1,4 @@
-import { Asset, TUuid } from '@types';
+import { Asset, TUuid, TTicker } from '@types';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 
 export const assets: { [key in string]: Asset } = {
@@ -7,7 +7,7 @@ export const assets: { [key in string]: Asset } = {
     name: 'WrappedETH',
     networkId: 'Ethereum',
     type: 'erc20',
-    ticker: 'WETH',
+    ticker: 'WETH' as TTicker,
     contractAddress: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
     decimal: DEFAULT_ASSET_DECIMAL
   },
@@ -16,7 +16,7 @@ export const assets: { [key in string]: Asset } = {
     name: 'Ether',
     networkId: 'Ethereum',
     type: 'base',
-    ticker: 'ETH',
+    ticker: 'ETH' as TTicker,
     decimal: DEFAULT_ASSET_DECIMAL
   },
   '12d3cbf2-de3a-4050-a0c6-521592e4b85a': {
@@ -24,7 +24,7 @@ export const assets: { [key in string]: Asset } = {
     name: 'GoerliETH',
     networkId: 'Goerli',
     type: 'base',
-    ticker: 'GoerliETH',
+    ticker: 'GoerliETH' as TTicker,
     decimal: DEFAULT_ASSET_DECIMAL
   },
   '01f2d4ec-c263-6ba8-de38-01d66c86f309': {
@@ -32,7 +32,7 @@ export const assets: { [key in string]: Asset } = {
     name: 'RopstenETH',
     networkId: 'Ropsten',
     type: 'base',
-    ticker: 'RopstenETH',
+    ticker: 'RopstenETH' as TTicker,
     decimal: DEFAULT_ASSET_DECIMAL
   },
   '89397517-5dcb-9cd1-76b5-224e3f0ace80': {
@@ -40,7 +40,7 @@ export const assets: { [key in string]: Asset } = {
     name: 'RinkebyETH',
     networkId: 'Rinkeby',
     type: 'base',
-    ticker: 'RinkebyETH',
+    ticker: 'RinkebyETH' as TTicker,
     decimal: DEFAULT_ASSET_DECIMAL
   },
   '4d8b9524-e2c8-243b-cdca-c0a9f27a3b01': {
@@ -48,7 +48,7 @@ export const assets: { [key in string]: Asset } = {
     name: 'KovanETH',
     networkId: 'Kovan',
     type: 'base',
-    ticker: 'KovanETH',
+    ticker: 'KovanETH' as TTicker,
     decimal: DEFAULT_ASSET_DECIMAL
   },
   'ffb050ad-968c-1b7a-66d1-376e1e446e2f': {
@@ -56,7 +56,7 @@ export const assets: { [key in string]: Asset } = {
     name: 'DAI',
     networkId: 'Ropsten',
     type: 'erc20',
-    ticker: 'DAI',
+    ticker: 'DAI' as TTicker,
     contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
     decimal: DEFAULT_ASSET_DECIMAL
   },
@@ -65,7 +65,7 @@ export const assets: { [key in string]: Asset } = {
     name: 'Basic Attention Token',
     networkId: 'Ropsten',
     type: 'erc20',
-    ticker: 'BAT',
+    ticker: 'BAT' as TTicker,
     contractAddress: '0xdb0040451f373949a4be60dcd7b6b8d6e42658b6',
     decimal: DEFAULT_ASSET_DECIMAL
   },
@@ -74,7 +74,7 @@ export const assets: { [key in string]: Asset } = {
     name: 'OmiseGO',
     networkId: 'Ropsten',
     type: 'erc20',
-    ticker: 'OMG',
+    ticker: 'OMG' as TTicker,
     contractAddress: '0x4BFBa4a8F28755Cb2061c413459EE562c6B9c51b',
     decimal: DEFAULT_ASSET_DECIMAL
   },
@@ -84,7 +84,7 @@ export const assets: { [key in string]: Asset } = {
     name: 'Dai Stablecoin',
     networkId: 'Rinkeby',
     type: 'erc20',
-    ticker: 'DAI',
+    ticker: 'DAI' as TTicker,
     contractAddress: '0x2448ee2641d78cc42d7ad76498917359d961a783',
     decimal: DEFAULT_ASSET_DECIMAL
   },
@@ -93,7 +93,7 @@ export const assets: { [key in string]: Asset } = {
     name: 'Basic Attention Token',
     networkId: 'Rinkeby',
     type: 'erc20',
-    ticker: 'BAT',
+    ticker: 'BAT' as TTicker,
     contractAddress: '0xda5b056cfb861282b4b59d29c9b395bcc238d29b',
     decimal: DEFAULT_ASSET_DECIMAL
   },
@@ -102,7 +102,7 @@ export const assets: { [key in string]: Asset } = {
     name: 'OMGToken',
     networkId: 'Rinkeby',
     type: 'erc20',
-    ticker: 'OMG',
+    ticker: 'OMG' as TTicker,
     contractAddress: '0x879884c3c46a24f56089f3bbbe4d5e38db5788c0',
     decimal: DEFAULT_ASSET_DECIMAL
   },
@@ -112,7 +112,7 @@ export const assets: { [key in string]: Asset } = {
     name: 'DAI Stablecoin Kovan',
     networkId: 'Kovan',
     type: 'erc20',
-    ticker: 'DAI',
+    ticker: 'DAI' as TTicker,
     contractAddress: '0x4c38cdc08f1260f5c4b21685654393bb1e66a858',
     decimal: DEFAULT_ASSET_DECIMAL
   },
@@ -121,7 +121,7 @@ export const assets: { [key in string]: Asset } = {
     name: 'Maker Kovan',
     networkId: 'Kovan',
     type: 'erc20',
-    ticker: 'MKR',
+    ticker: 'MKR' as TTicker,
     contractAddress: '0xac94ea989f6955c67200dd67f0101e1865a560ea',
     decimal: DEFAULT_ASSET_DECIMAL
   }

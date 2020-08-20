@@ -1,5 +1,7 @@
+import { TFiatTicker } from '@types';
+
 export const defaultSettings = {
-  fiatCurrency: 'USD',
+  fiatCurrency: 'USD' as TFiatTicker,
   darkMode: false,
   dashboardAccounts: [],
   excludedAssets: [],

@@ -1,4 +1,4 @@
-import { NetworkId, TURL } from '@types';
+import { NetworkId, TURL, TTicker } from '@types';
 
 export const INFURA_API_KEY = 'f3b4711ae677488bb3c56de93c6cab1a';
 
@@ -25,7 +25,7 @@ export const DEFAULT_NETWORK_FOR_FALLBACK = 'ropsten';
 
 export const DEFAULT_NETWORK: NetworkId = 'Ethereum';
 
-export const DEFAULT_NETWORK_SYMBOL = 'ETH';
+export const DEFAULT_NETWORK_TICKER = 'ETH' as TTicker;
 
 export const DEFAULT_ASSET_DECIMAL = 18;
 

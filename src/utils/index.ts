@@ -1,8 +1,14 @@
 export * from './error';
 export { notUndefined, isTxSigned, isTxHash } from './typeGuards';
 export * from './validators';
-export { IS_ELECTRON, IS_DOWNLOADABLE } from './platform';
-export { hasWeb3Provider, IS_DEV, IS_PROD } from './environment';
+export {
+  hasWeb3Provider,
+  IS_DEV,
+  IS_STAGING,
+  IS_PROD,
+  USE_HASH_ROUTER,
+  IS_ELECTRON
+} from './environment';
 export { getFeaturedOS } from './getFeaturedOS';
 export {
   generateUUID,
@@ -68,3 +74,4 @@ export { default as useAnalytics } from './useAnalytics';
 export { openLink } from './openLink';
 export { isSameAddress } from './isSameAddress';
 export { buildBalances, buildTotalFiatValue } from './buildBalanceDisplays';
+export { default as isFiatTicker } from './isFiatTicker';

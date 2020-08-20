@@ -1,6 +1,5 @@
 import { TAddress as IAddress } from './address';
 import { TUuid as IUuid } from './uuid';
-import { TSymbol as ISymbol } from './symbols';
 import { IRates as Rates } from './rates';
 import {
   NodeConfig as INodeConfig,
@@ -13,7 +12,6 @@ export type NodeConfig = INodeConfig;
 export type CustomNodeConfig = ICustomNodeConfig;
 export type StaticNodeConfig = IStaticNodeConfig;
 export type NodeOptions = INodeOptions;
-export type TSymbol = ISymbol;
 export type IRates = Rates;
 export type TAddress = IAddress;
 export type TUuid = IUuid;
@@ -32,7 +30,9 @@ export {
   Fiat,
   Asset,
   ExtendedAsset,
+  TCurrencySymbol,
   TTicker,
+  TFiatTicker,
   TAssetType,
   AssetBalanceObject,
   StoreAsset,

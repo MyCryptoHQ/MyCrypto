@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { TSymbol, TUuid } from '@types';
+import { isFiatTicker } from '@utils';
+import { TTicker, TCurrencySymbol, TUuid } from '@types';
 import { default as Typography } from './Typography';
 import AssetIcon from './AssetIcon';
 
@@ -15,8 +16,8 @@ const SAssetIconContainer = styled('span')`
 
 interface Props {
   amount: string;
-  symbol: TSymbol;
-  code?: string;
+  symbol?: TCurrencySymbol;
+  ticker: TTicker;
   uuid?: TUuid;
   decimals?: number;
   icon?: boolean;
@@ -27,23 +28,20 @@ interface Props {
 function Currency({
   amount,
   symbol,
+  ticker,
   uuid,
   decimals = 5,
   icon = false,
   bold = false,
   fontSize,
-  code,
   ...props
 }: Props) {
   const format = (value: string, decimalPlaces: number) => {
     return new Intl.NumberFormat(navigator.language, {
       minimumFractionDigits: decimalPlaces,
       maximumFractionDigits: decimalPlaces,
-      style: code ? 'currency' : undefined,
-      currency: code
+      ...(isFiatTicker(ticker) && { style: 'currency', currency: ticker })
     }).format(parseFloat(value));
-    // const multiplier = Math.pow(10, decimalPlaces);
-    // return Math.round(v * multiplier + Number.EPSILON) / multiplier;
   };
 
   return (
@@ -55,7 +53,7 @@ function Currency({
       )}
       <Typography bold={bold} fontSize={fontSize}>
         {format(amount, decimals)}
-        {!code && ` ${symbol}`}
+        {!isFiatTicker(ticker) && ` ${symbol || ticker}`}
       </Typography>
     </SContainer>
   );
