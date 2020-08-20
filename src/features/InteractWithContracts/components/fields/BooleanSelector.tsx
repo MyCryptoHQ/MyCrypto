@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { OptionProps } from 'react-select';
 
-import { Dropdown } from '@components';
+import { Contract } from '@types';
+import { Selector } from '@components';
 
-import ContractDropdownOption from '../ContractDropdownOption';
-import ContractDropdownValue from '../ContractDropdownValue';
 import FieldLabel from './FieldLabel';
 
 const Wrapper = styled.div`
@@ -26,13 +26,33 @@ interface Props {
   handleInputChange(name: string, option: any): void;
 }
 
+const ContractDropdownItem = ({
+  option,
+  onSelect
+}: {
+  option: Contract;
+  onSelect?(option: Contract): void;
+}) => (
+  <div style={{ padding: '12px 15px' }} onClick={() => onSelect && onSelect(option)}>
+    {option.name}
+  </div>
+);
+
+const ContractDropdownOption = ({ data, selectOption }: OptionProps<Contract>) => (
+  <ContractDropdownItem option={data} onSelect={selectOption} />
+);
+
+const ContractDropdownValue = ({ value }: { value: Contract }) => (
+  <ContractDropdownItem option={value} />
+);
+
 export default function BooleanSelector(props: Props) {
   const { fieldName, fieldType, fieldDisplayName, value, handleInputChange } = props;
   return (
     <Wrapper>
       <FieldLabel fieldName={fieldDisplayName} fieldType={fieldType} />
       <DropdownWrapper>
-        <Dropdown
+        <Selector
           value={value}
           options={[
             { label: 'true', name: 'true', value: true },

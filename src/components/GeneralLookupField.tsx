@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback } from 'react';
+import React, { useRef, useState, useContext, useCallback } from 'react';
 import { Field, useFormikContext } from 'formik';
 import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
 
@@ -159,15 +159,16 @@ const GeneralLookupField = ({
   };
 
   const GeneralDropdownFieldCallback = useCallback(() => {
-    const [inputValue, setInputValue] = useState<string>('');
+    const inputValue = useRef<string>('');
+
     const handleInputChange = (input: string) => {
-      setInputValue(input);
+      inputValue.current = input;
       return input;
     };
 
     const handleEnterKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.keyCode === 13) {
-        handleNewInput(inputValue);
+        handleNewInput(inputValue.current);
       }
     };
 
@@ -177,21 +178,24 @@ const GeneralLookupField = ({
           name={name}
           value={value}
           options={options}
+          inputValue={inputValue.current}
+          onInputChange={handleInputChange}
           onSelect={(option: IReceiverAddress) => {
-            setFieldValue(name, option, true); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
+            // if this gets deleted, it no longer shows as selected on interface,
+            // would like to set only object keys that are needed
+            // instead of full object
+            setFieldValue(name, option, true);
             setFieldTouched(name, true, false);
             if (onSelect) {
               onSelect(option);
             }
           }}
-          onInputChange={handleInputChange}
-          onBlur={(inputString: string) => {
-            handleNewInput(inputString);
+          onBlur={() => {
+            handleNewInput(inputValue.current);
             setFieldTouched(name, true, false);
             if (onBlur) onBlur();
-            if (onChange) onChange(inputString);
+            if (onChange) onChange(inputValue.current);
           }}
-          inputValue={inputValue}
           onEnterKeyDown={handleEnterKeyDown}
           placeholder={placeholder}
         />
@@ -209,6 +213,7 @@ const GeneralLookupField = ({
       </>
     );
   }, [value.display, isResolvingName, options, error]);
+
   return <Field name={name} validate={validateAddress} component={GeneralDropdownFieldCallback} />;
 };
 

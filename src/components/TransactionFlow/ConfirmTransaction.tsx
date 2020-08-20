@@ -190,8 +190,6 @@ export const ConfirmTransactionUI = ({
   const valueWei = Wei(value);
   // @todo: BN math, add amount + maxCost !In same symbol
   const totalEtherEgress = parseFloat(fromWei(valueWei.add(transactionFeeWei), 'ether')).toFixed(6);
-  const senderAccountLabel = senderContact ? senderContact.label : 'Unknown Account';
-  const recipientLabel = recipientContact ? recipientContact.label : 'Unknown Address';
 
   return (
     <ConfirmTransactionWrapper>
@@ -200,13 +198,14 @@ export const ConfirmTransactionUI = ({
         <MembershipSelectedBanner membershipSelected={membershipSelected} />
       )}
       <FromToAccount
-        from={{
+        networkId={sender.network.id}
+        fromAccount={{
           address: sender.address,
-          label: senderAccountLabel
+          addressBookEntry: senderContact
         }}
-        to={{
-          address: (receiverAddress || 'Unknown') as never,
-          label: recipientLabel
+        toAccount={{
+          address: receiverAddress,
+          addressBookEntry: recipientContact
         }}
         displayToAddress={txType !== ITxType.DEFIZAP && txType !== ITxType.PURCHASE_MEMBERSHIP}
       />

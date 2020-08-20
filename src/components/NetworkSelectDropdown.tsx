@@ -1,12 +1,12 @@
 import React, { useContext, useEffect } from 'react';
 
-import { OptionComponentProps } from 'react-select';
+import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 import translate from '@translations';
 import { NetworkContext, isWalletFormatSupportedOnNetwork } from '@services/Store';
-import { NetworkId, WalletId } from '@types';
+import { NetworkId, Network, WalletId } from '@types';
 import { DEFAULT_NETWORK } from '@config';
-import { Typography, Dropdown, Tooltip } from '@components';
+import { Typography, Selector, Tooltip } from '@components';
 
 interface Props {
   network: NetworkId;
@@ -23,9 +23,12 @@ const SContainer = styled('div')`
   padding: 12px;
 `;
 
-const NetworkOption = ({ option, onSelect }: OptionComponentProps) => (
-  <SContainer onClick={() => onSelect && onSelect(option, null)}>
-    <Typography value={option.label} />
+const NetworkOption = ({
+  data,
+  selectOption
+}: OptionProps<Network> | { data: Network; selectOption?(): void }) => (
+  <SContainer onClick={() => selectOption && selectOption(data)}>
+    <Typography value={data.name} />
   </SContainer>
 );
 
@@ -38,6 +41,7 @@ function NetworkSelectDropdown({
   ...props
 }: Props) {
   const { networks, getNetworkById } = useContext(NetworkContext);
+  const network = getNetworkById(networkId);
 
   // set default network if none selected
   useEffect(() => {
@@ -48,11 +52,9 @@ function NetworkSelectDropdown({
 
   // @ADD_ACCOUNT_@todo: The difference in accountType is likely causing
   // the absence of list.
-  const validNetworks = networks
+  const options = networks
     // @ts-ignore CHANGE IN WALLETYPE OBJECT CAUSING accountType to error -> @todo: FIX accountType
-    .filter((options) => isWalletFormatSupportedOnNetwork(options, accountType))
-    .map((n) => ({ label: n.name, value: n }));
-  const network = getNetworkById(networkId);
+    .filter((n) => isWalletFormatSupportedOnNetwork(n, accountType));
 
   return (
     <div {...props}>
@@ -60,14 +62,15 @@ function NetworkSelectDropdown({
         {translate('SELECT_NETWORK_LABEL')}{' '}
         {showTooltip && <Tooltip tooltip={translate('NETWORK_TOOLTIP')} />}
       </label>
-      <Dropdown
-        value={{ label: network.name }}
-        options={validNetworks.sort()}
-        placeholder={DEFAULT_NETWORK}
+      <Selector
+        placeholder={'Select Network'}
+        value={network}
+        options={options}
         searchable={true}
-        onChange={(option) => onChange(option.value.id)}
+        onChange={(option) => onChange(option.id)}
+        getOptionLabel={(option) => option.name}
         optionComponent={NetworkOption}
-        valueComponent={({ value: option }) => <NetworkOption option={option} />}
+        valueComponent={({ value }) => <NetworkOption data={value} />}
         disabled={disabled}
       />
     </div>

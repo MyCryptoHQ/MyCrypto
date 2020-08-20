@@ -2,7 +2,8 @@ import React, { lazy } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import { IAppRoute } from '@types';
-import { ROUTE_PATHS, IS_ACTIVE_FEATURE } from '@config';
+import { ROUTE_PATHS } from '@config';
+import { IIS_ACTIVE_FEATURE } from '@config/isActiveFeature';
 import { Home, NoAccounts } from '@features';
 import { requiresDesktopApp } from './helpers';
 
@@ -99,7 +100,7 @@ export interface IAppRoutes {
 
 const DownloadAppRedirect = () => <Redirect to={ROUTE_PATHS.DOWNLOAD_DESKTOP_APP.path} />;
 
-export const STATIC_APP_ROUTES: IAppRoute[] = [
+export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE): IAppRoute[] => [
   {
     name: ROUTE_PATHS.HOME.name,
     title: ROUTE_PATHS.HOME.title,
@@ -326,7 +327,8 @@ export const STATIC_APP_ROUTES: IAppRoute[] = [
 ];
 
 // Enabled Routes
-export const APP_ROUTES = STATIC_APP_ROUTES.filter((APP_ROUTE) => APP_ROUTE.enabled);
+export const getAppRoutes = (IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE) =>
+  getStaticAppRoutes(IS_ACTIVE_FEATURE).filter((APP_ROUTE) => APP_ROUTE.enabled);
 
 export const createAppRoutesObject = (paths: IAppRoute[]) => {
   return paths.reduce((navLinks, path) => {
@@ -336,4 +338,5 @@ export const createAppRoutesObject = (paths: IAppRoute[]) => {
 };
 
 // APP_ROUTE_OBJECT is for ALL routes, even disabled ones.
-export const APP_ROUTES_OBJECT = createAppRoutesObject(STATIC_APP_ROUTES);
+export const getAppRoutesObject = (IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE) =>
+  createAppRoutesObject(getStaticAppRoutes(IS_ACTIVE_FEATURE));

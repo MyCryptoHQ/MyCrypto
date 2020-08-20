@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { TSymbol, TUuid } from '@types';
+import { ISwapAsset, TSymbol, TUuid } from '@types';
 import { bigify, DAIUUID, ETHUUID } from '@utils';
 import ConfirmSwapMultiTx from './ConfirmSwapMultiTx';
-import { ISwapAsset, LAST_CHANGED_AMOUNT } from '../types';
+import { LAST_CHANGED_AMOUNT } from '../types';
 
 export default { title: 'ConfirmSwapMultiTx' };
 

@@ -5,9 +5,9 @@ import { Icon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { SelectLanguage } from '@features/Drawer/screens';
-import { links } from './constants';
+import { getLinks } from './constants';
 import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from '@theme';
-import { ANALYTICS_CATEGORIES, SettingsContext } from '@services';
+import { ANALYTICS_CATEGORIES, SettingsContext, useFeatureFlags } from '@services';
 import { ROUTE_PATHS, LATEST_NEWS_URL, getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import translate, { languages } from '@translations';
 import { openLink, useAnalytics } from '@utils';
@@ -361,6 +361,8 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
   };
 
   const announcementMessage = ANNOUNCEMENT_MSG();
+  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
+  const links = getLinks(IS_ACTIVE_FEATURE);
   return (
     <Navbar>
       {/* Mobile Menu */}

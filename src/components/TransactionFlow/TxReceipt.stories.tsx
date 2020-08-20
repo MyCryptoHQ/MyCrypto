@@ -14,8 +14,8 @@ import { constructSenderFromTxConfig } from './helpers';
 const assetRate = () => 1.34;
 const timestamp = 1583266291;
 const txStatus = ITxStatus.SUCCESS;
-const senderContact = devContacts[0] as ExtendedAddressBook;
-const recipientContact = devContacts[1] as ExtendedAddressBook;
+const senderContact = Object.values(devContacts)[0] as ExtendedAddressBook;
+const recipientContact = Object.values(devContacts)[1] as ExtendedAddressBook;
 const resetFlow = noOp;
 
 export default { title: 'TxReceipt' };

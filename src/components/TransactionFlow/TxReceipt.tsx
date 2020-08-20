@@ -233,8 +233,6 @@ export const TxReceiptUI = ({
 }: Omit<IStepComponentProps, 'resetFlow' | 'onComplete'> & TxReceiptDataProps) => {
   /* Determining User's Contact */
   const { asset, gasPrice, gasLimit, data, nonce, baseAsset, receiverAddress } = txConfig;
-  const recipientLabel = recipientContact ? recipientContact.label : translateRaw('NO_ADDRESS');
-  const senderAccountLabel = senderContact ? senderContact.label : translateRaw('NO_LABEL');
 
   const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
   const assetAmount = useCallback(() => {
@@ -295,13 +293,14 @@ export const TxReceiptUI = ({
       {txType !== ITxType.PURCHASE_MEMBERSHIP && (
         <>
           <FromToAccount
-            from={{
+            networkId={sender.network.id}
+            fromAccount={{
               address: (sender.address || (displayTxReceipt && displayTxReceipt.from)) as TAddress,
-              label: senderAccountLabel
+              addressBookEntry: senderContact
             }}
-            to={{
+            toAccount={{
               address: (receiverAddress || (displayTxReceipt && displayTxReceipt.to)) as TAddress,
-              label: recipientLabel
+              addressBookEntry: recipientContact
             }}
           />
         </>

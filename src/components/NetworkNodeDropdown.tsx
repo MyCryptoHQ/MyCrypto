@@ -1,12 +1,12 @@
 import React, { useCallback, useContext, FC, useState, useEffect } from 'react';
-import { OptionComponentProps } from 'react-select';
+import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 import isEmpty from 'lodash/isEmpty';
 import isFunction from 'lodash/isFunction';
 
 import { NetworkContext, NetworkUtils } from '@services/Store';
 import { CustomNodeConfig, NetworkId, NodeOptions } from '@types';
-import { Typography, Dropdown } from '@components/index';
+import { Typography, Selector } from '@components/index';
 import { translateRaw } from '@translations';
 import { SPACING, COLORS } from '@theme';
 
@@ -54,45 +54,47 @@ const AddIcon = styled.img`
 const newNode = 'NEW_NODE';
 const autoNodeLabel = translateRaw('AUTO_NODE');
 
-interface NetworkOptionProps extends OptionComponentProps<CustomNodeConfig> {
+type NetworkNodeOptionProps = OptionProps<CustomNodeConfig> & {
   isEditEnabled: boolean;
-}
+};
 
-class NetworkOption extends React.PureComponent<NetworkOptionProps> {
-  public render() {
-    const { option, onSelect } = this.props;
+const NetworkNodeOption: React.FC<NetworkNodeOptionProps> = ({
+  data = { value: {} },
+  selectOption,
+  isEditEnabled = false
+}) => {
+  const onEdit = useCallback(
+    (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+      e.preventDefault();
+      data.onEdit(data.value);
+    },
+    [data]
+  );
 
-    const isEditEnabled = this.props.isEditEnabled === undefined || false;
-    const {
-      value: { isCustom }
-    } = option as { value: CustomNodeConfig };
+  const handleSelect = (d: CustomNodeConfig) => selectOption && selectOption(d);
 
-    if (option.label !== newNode) {
-      return (
-        <SContainerValue onClick={() => onSelect && onSelect(option, null)}>
-          <Typography value={option.label} />
-          {isFunction(option.onEdit) && isEditEnabled && isCustom && (
-            <EditIcon onClick={(e) => this.onEdit.apply(this, [e])} src={editIcon} />
-          )}
-        </SContainerValue>
-      );
-    } else {
-      return (
-        <SContainerOption onClick={() => onSelect && onSelect({}, null)}>
-          <AddIcon src={addIcon} />
-          {translateRaw('CUSTOM_NODE_DROPDOWN_NEW_NODE')}
-        </SContainerOption>
-      );
-    }
+  const {
+    value: { isCustom }
+  } = data as { value: CustomNodeConfig };
+
+  if (data.label !== newNode) {
+    return (
+      <SContainerValue onClick={() => handleSelect(data.value)}>
+        <Typography value={data.label} />
+        {isFunction(data.onEdit) && isEditEnabled && isCustom && (
+          <EditIcon onClick={(e) => onEdit(e)} src={editIcon} />
+        )}
+      </SContainerValue>
+    );
+  } else {
+    return (
+      <SContainerOption onClick={() => handleSelect(data.value)}>
+        <AddIcon src={addIcon} />
+        {translateRaw('CUSTOM_NODE_DROPDOWN_NEW_NODE')}
+      </SContainerOption>
+    );
   }
-
-  private onEdit(e: React.MouseEvent<HTMLImageElement, MouseEvent>) {
-    e.preventDefault();
-
-    const { option } = this.props;
-    option.onEdit(option.value);
-  }
-}
+};
 
 interface Props {
   networkId: NetworkId;
@@ -132,7 +134,7 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
   const displayNodes = [autoNode, ...nodes, ...(isFunction(onEdit) ? [{ service: newNode }] : [])];
 
   return (
-    <Dropdown
+    <Selector<{ label: string; value: NodeOptions; onEdit: typeof onEdit } & any>
       value={{
         label: selectedNodeName === autoNodeName ? autoNodeLabel : service,
         value: selectedNode
@@ -141,8 +143,12 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
       placeholder={'Auto'}
       searchable={true}
       onChange={(option) => onChange(option.value)}
-      optionComponent={NetworkOption}
-      valueComponent={({ value: option }) => <NetworkOption isEditEnabled={true} option={option} />}
+      optionComponent={NetworkNodeOption}
+      valueComponent={({ value }) => (
+        <SContainerValue>
+          <Typography value={value.label} />
+        </SContainerValue>
+      )}
     />
   );
 };

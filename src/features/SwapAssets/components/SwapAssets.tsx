@@ -5,7 +5,7 @@ import translate, { translateRaw } from '@translations';
 import { MYC_DEXAG_MARKUP_THRESHOLD } from '@config';
 import {
   InputField,
-  AssetDropdown,
+  AssetSelector,
   AccountDropdown,
   InlineMessage,
   Typography,
@@ -15,9 +15,8 @@ import {
 import { SPACING, COLORS } from '@theme';
 import { trimBN } from '@utils';
 
-import { ISwapAsset } from '../types';
 import { getUnselectedAssets, getAccountsWithAssetBalance } from '../helpers';
-import { StoreAccount } from '@types';
+import { StoreAccount, ISwapAsset } from '@types';
 import { StoreContext } from '@services/Store';
 
 const FormWrapper = styled.div`
@@ -221,12 +220,12 @@ export default function SwapAssets(props: Props) {
             inputMode="decimal"
           />
         </InputWrapper>
-        <AssetDropdown
+        <AssetSelector
           selectedAsset={fromAsset}
           assets={ownedAssets}
           label={translateRaw('X_ASSET')}
           onSelect={handleFromAssetSelected}
-          showOnlyTicker={true}
+          showOnlySymbol={true}
           disabled={isCalculatingToAmount || isCalculatingFromAmount}
           searchable={true}
         />
@@ -244,12 +243,12 @@ export default function SwapAssets(props: Props) {
             inputMode="decimal"
           />
         </InputWrapper>
-        <AssetDropdown
+        <AssetSelector
           selectedAsset={toAsset}
           assets={filteredAssets}
           label={translateRaw('ASSET')}
           onSelect={handleToAssetSelected}
-          showOnlyTicker={true}
+          showOnlySymbol={true}
           disabled={isCalculatingToAmount || isCalculatingFromAmount}
           searchable={true}
         />

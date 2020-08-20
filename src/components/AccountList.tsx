@@ -5,15 +5,15 @@ import isNumber from 'lodash/isNumber';
 import cloneDeep from 'lodash/cloneDeep';
 
 import { translateRaw } from '@translations';
-import { ROUTE_PATHS, IS_ACTIVE_FEATURE, getWalletConfig } from '@config';
+import { ROUTE_PATHS, getWalletConfig } from '@config';
 import {
   EthAddress,
   Network,
   RowDeleteOverlay,
   RouterLink,
-  EditableText,
   UndoDeleteOverlay,
-  FixedSizeCollapsibleTable
+  FixedSizeCollapsibleTable,
+  EditableAccountLabel
 } from '@components';
 import { truncate } from '@utils';
 import { BREAK_POINTS, COLORS, SPACING, breakpointToNumber } from '@theme';
@@ -25,7 +25,7 @@ import {
   SettingsContext,
   AddressBookContext
 } from '@services/Store';
-import { RatesContext } from '@services';
+import { RatesContext, useFeatureFlags } from '@services';
 import { getFiat } from '@config/fiats';
 
 import { DashboardPanel } from './DashboardPanel';
@@ -348,11 +348,12 @@ const buildAccountTable = (
   overlayRows?: [number[], [number, TUuid][]],
   setDeletingIndex?: any
 ) => {
+  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
   const [sortingState, setSortingState] = useState(initialSortingState);
   const { totalFiat } = useContext(StoreContext);
   const { getAssetRate } = useContext(RatesContext);
   const { settings } = useContext(SettingsContext);
-  const { addressBook, updateAddressBooks, createAddressBooks } = useContext(AddressBookContext);
+  const { addressBook } = useContext(AddressBookContext);
   const { toggleAccountPrivacy } = useContext(AccountContext);
   const overlayRowsFlat = [...overlayRows![0], ...overlayRows![1].map((row) => row[0])];
 
@@ -416,8 +417,7 @@ const buildAccountTable = (
     .map((account, index) => {
       const addressCard: ExtendedAddressBook | undefined = getLabelByAccount(account, addressBook);
       const total = totalFiat([account])(getAssetRate);
-      const label = addressCard ? addressCard.label : translateRaw('NO_LABEL');
-      return { account, index, label, total, addressCard };
+      return { account, index, total, addressCard };
     })
     .sort(getSortingFunction(sortingState.activeSort));
 
@@ -501,26 +501,15 @@ const buildAccountTable = (
       return <></>;
     },
     overlayRows: overlayRowsFlat,
-    body: getFullTableData.map(({ account, index, label, total, addressCard }) => {
+    body: getFullTableData.map(({ account, index, total, addressCard }) => {
       let bodyContent = [
         <Label key={index}>
           <SIdenticon address={account.address} />
           <LabelWithWallet>
-            <EditableText
-              truncate={true}
-              saveValue={(value) => {
-                if (addressCard) {
-                  updateAddressBooks(addressCard.uuid, { ...addressCard, label: value });
-                } else {
-                  createAddressBooks({
-                    address: account.address,
-                    label: value,
-                    network: account.networkId,
-                    notes: ''
-                  });
-                }
-              }}
-              value={label}
+            <EditableAccountLabel
+              addressBookEntry={addressCard}
+              address={account.address}
+              networkId={account.networkId}
             />
             <WalletLabelContainer>
               {account.wallet === WalletId.VIEW_ONLY && (

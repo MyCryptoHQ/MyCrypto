@@ -5,7 +5,7 @@ import prop from 'ramda/src/prop';
 import { MOONPAY_ASSET_UUIDS } from '@utils';
 import { FormData, WalletId, ExtendedAsset } from '@types';
 import translate, { translateRaw, Trans } from '@translations';
-import { NewTabLink, Spinner, Button, DeterministicAccountList, AssetDropdown } from '@components';
+import { NewTabLink, Spinner, Button, DeterministicAccountList, AssetSelector } from '@components';
 import {
   EXT_URLS,
   LEDGER_DERIVATION_PATHS,
@@ -142,7 +142,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
           </p>
         )}
         <br />
-        <AssetDropdown
+        <AssetSelector
           selectedAsset={assetToUse}
           assets={filteredAssets}
           onSelect={(option: ExtendedAsset) => {

@@ -16,9 +16,9 @@ export const getLabelByAccount = (
 
 export const getLabelByAddressAndNetwork = (
   address: string | undefined,
-  addressLabels: AddressBook[],
+  addressLabels: ExtendedAddressBook[],
   network: Network | undefined
-): AddressBook | undefined => {
+): ExtendedAddressBook | undefined => {
   if (!address) return;
   return addressLabels.find(
     (label) =>

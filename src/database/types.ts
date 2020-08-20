@@ -11,3 +11,12 @@ export type StoreAction = (store: LocalStorage) => LocalStorage;
 type FlowReducer = (data?: SeedData, store?: LocalStorage) => StoreProp;
 export type FlowTransducer = (key: LSKeys) => (fn: FlowReducer) => (data?: SeedData) => StoreAction;
 export type GenObject<T> = Record<keyof T, T> | T;
+
+export interface DBConfig {
+  version: string;
+  main: string;
+  vault: string;
+  defaultValues?: LocalStorage;
+  schema: {};
+  migrate?(prev: LocalStorage, curr: LocalStorage): LocalStorage;
+}

@@ -406,6 +406,7 @@
     "MANAGE_MEMBERSHIP": "View Membership",
     "MAX_TX_FEE": "Max TX Fee",
     "MEMBERSHIP": "MyCrypto Membership",
+    "MEMBERSHIP_DROPDOWN_PLACEHOLDER": "Select membership plan",
     "MEMBERSHIP_ACCORDION_FIRST_CONTENT": "The MyCrypto Membership is a monthly subscription that gives you additional features and helps to support MyCrypto’s future developments.",
     "MEMBERSHIP_ACCORDION_FIRST_TITLE": "What is the MyCrypto Membership?",
     "MEMBERSHIP_ACCORDION_FORTH_CONTENT": "As we continue to add features to the MyCrypto Membership, we may adjust the prices. However, if you have an active membership at the time we add new features, you will get access to those new features for no extra cost until your existing membership expires.",
@@ -1007,6 +1008,7 @@
     "PROTECTED_TX_TIMELINE_TAGS": "The labels for this address are: $tags",
     "WARNING_TRANSACTION_FEE": "The transaction fee of $fee seems to be greater than the amount you are sending ($amount). It's recommended to use a lower transaction fee unless you need this transaction to be confirmed swiftly.",
     "POWERED_BY": "Powered By",
-    "DPATH_GENERATE_FRESH_ADDRESS_GAP_ERROR": "You cant generate more than $gap fresh accounts. Add some assets to the existing fresh addresses to open up more!"
+    "DPATH_GENERATE_FRESH_ADDRESS_GAP_ERROR": "You cant generate more than $gap fresh accounts. Add some assets to the existing fresh addresses to open up more!",
+    "ZAP_WITHDRAW_TOOLTIP": "Withdrawing from this Zap requires interacting with Uniswap. If you need assistance, please read [How To Withdraw from Unipool](https://support.mycrypto.com/how-to/defi/how-to-withdraw-from-unipool)."
   }
 }

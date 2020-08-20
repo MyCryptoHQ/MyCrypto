@@ -4,8 +4,8 @@ import { hot } from 'react-hot-loader/root';
 import styled, { ThemeProvider } from 'styled-components';
 import { HashRouter, BrowserRouter } from 'react-router-dom';
 
-import { BREAK_POINTS, GAU_THEME } from '@theme';
-import { IS_DEV, IS_ELECTRON, IS_DOWNLOADABLE, IS_PROD } from '@utils';
+import { GAU_THEME } from '@theme';
+import { IS_ELECTRON, IS_DOWNLOADABLE, IS_PROD } from '@utils';
 import { NewAppReleaseModal } from '@components';
 import { DevToolsManager } from '@features';
 import AppProviders from './AppProviders';
@@ -19,20 +19,6 @@ const AppRouterContainer = styled.div`
   flex: 1;
   max-width: 100vw;
   max-height: 100vh;
-`;
-const DevToolsManagerContainer = styled.div`
-  position: fixed;
-  z-index: 100;
-  top: 0;
-  left: 0;
-  max-width: 450px;
-  height: 100vh;
-
-  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    position: fixed;
-    z-index: 100;
-    max-width: 100vw;
-  }
 `;
 
 class RootClass extends Component {
@@ -49,9 +35,7 @@ class RootClass extends Component {
           <AppProviders>
             <AppProvidersInnerContainer>
               {/* DevToolsManager */}
-              <DevToolsManagerContainer>
-                {IS_DEV ? <DevToolsManager /> : <></>}
-              </DevToolsManagerContainer>
+              <DevToolsManager />
 
               {/* Router */}
               <AppRouterContainer>

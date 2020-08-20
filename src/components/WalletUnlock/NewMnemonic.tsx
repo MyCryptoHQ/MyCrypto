@@ -8,7 +8,7 @@ import { FormData, WalletId, ExtendedAsset } from '@types';
 import translate, { translateRaw } from '@translations';
 import {
   DeterministicAccountList,
-  AssetDropdown,
+  AssetSelector,
   TogglablePassword,
   Tooltip,
   Input
@@ -63,7 +63,7 @@ const MnemonicDecrypt = ({ formData, onUnlock }: OwnProps) => {
     WalletId.MNEMONIC_PHRASE_NEW,
     DEFAULT_GAP_TO_SCAN_FOR
   );
-  // @todo -> Figure out which assets to display in dropdown. Dropdown is heavy with 900+ assets in it. Loads slow af.
+  // @todo -> Figure out which assets to display in dropdown. Selector is heavy with 900+ assets in it. Loads slow af.
   const [mnemonicLoginState, setMnemonicLoginState] = useState(initialMnemonicLoginState);
   const filteredAssets = assets.filter(({ uuid }) => MOONPAY_ASSET_UUIDS.includes(uuid)); // @todo - fix this.
   const isValidMnemonic = validateMnemonic(mnemonicLoginState.formattedPhrase || '');
@@ -109,7 +109,7 @@ const MnemonicDecrypt = ({ formData, onUnlock }: OwnProps) => {
   if (state.isConnected && state.asset && (state.queuedAccounts || state.finishedAccounts)) {
     return (
       <div className="Mnemonic-dpath">
-        <AssetDropdown
+        <AssetSelector
           selectedAsset={assetToUse}
           assets={filteredAssets}
           onSelect={(option: ExtendedAsset) => {
