@@ -139,8 +139,8 @@ function SignMessage(props: Props) {
     setShowSubtitle(false);
   };
 
-  const onUnlock = (selectedWallet: any) => {
-    setWallet(selectedWallet);
+  const onUnlock = (selectedWallet: IFullWallet | [IFullWallet]) => {
+    setWallet(Array.isArray(selectedWallet) ? selectedWallet[0] : selectedWallet);
   };
 
   const resetWalletSelectionAndForm = () => {

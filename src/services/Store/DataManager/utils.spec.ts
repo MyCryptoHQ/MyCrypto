@@ -124,4 +124,28 @@ describe('mergeConfigWithLocalStorage()', () => {
       mergedNetwork.nodes.find((n: NodeOptions) => n.name === customNodeConfig.name)
     ).toBeTruthy();
   });
+
+  it('should add custom network from LS to merged object', () => {
+    const customNetwork = {
+      ...fNetwork,
+      id: 'MyCustomNetwork' as NetworkId,
+      nodes: [customNodeConfig],
+      selectedNode: customNodeConfig.name,
+      isCustom: true
+    };
+    const ls = ({
+      [LSKeys.CONTRACTS]: {},
+      [LSKeys.ASSETS]: {},
+      [LSKeys.NETWORKS]: { [customNetwork.id]: customNetwork },
+      [LSKeys.NETWORK_NODES]: constructNetworkNodes([customNetwork])
+    } as unknown) as LocalStorage;
+    const mergedLs = mergeConfigWithLocalStorage(NETWORKS_CONFIG, ls);
+
+    const mergedNetwork = mergedLs[LSKeys.NETWORKS][customNetwork.id];
+    expect(mergedNetwork).toBeTruthy();
+    expect(mergedNetwork.nodes.length).toEqual(1);
+    expect(
+      mergedNetwork.nodes.find((n: NodeOptions) => n.name === customNodeConfig.name)
+    ).toBeTruthy();
+  });
 });
