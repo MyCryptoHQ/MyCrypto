@@ -155,9 +155,9 @@ jobs:
 
       ##    NOT WORKING
       - name: Coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   electron-osx:
     name: Build el:osx
