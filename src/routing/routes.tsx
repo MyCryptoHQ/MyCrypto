@@ -97,6 +97,10 @@ const TxStatus = lazy(() =>
   import(/* webpackChunkName: "TxStatus" */ '@features/TxStatus/TxStatus')
 );
 
+const RepTokenMigration = lazy(() =>
+  import(/* webpackChunkName: "TokenMigration" */ '@features/TokenMigration/TokenMigrationStepper')
+);
+
 export interface IAppRoutes {
   [K: string]: IAppRoute;
 }
@@ -334,6 +338,15 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE): IAppR
     exact: true,
     enabled: IS_ACTIVE_FEATURE.TX_STATUS,
     component: TxStatus
+  },
+  {
+    name: ROUTE_PATHS.REP_TOKEN_MIGRATION.name,
+    title: ROUTE_PATHS.REP_TOKEN_MIGRATION.title,
+    path: ROUTE_PATHS.REP_TOKEN_MIGRATION.path,
+    exact: true,
+    requireAccounts: true,
+    enabled: IS_ACTIVE_FEATURE.REP_TOKEN_MIGRATION,
+    component: RepTokenMigration
   }
 ];
 

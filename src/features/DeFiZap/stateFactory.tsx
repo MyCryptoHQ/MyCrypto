@@ -2,12 +2,20 @@ import { useContext } from 'react';
 
 import { TUseStateReducerFactory, makePendingTxReceipt } from '@utils';
 import { isWeb3Wallet } from '@utils/web3';
-import { Asset, ITxStatus, ITxType, ITxHash, TAddress } from '@types';
+import {
+  Asset,
+  ITxStatus,
+  ITxType,
+  ITxHash,
+  TAddress,
+  ISimpleTxFormFull,
+  TStepAction
+} from '@types';
 import { hexWeiToString, ProviderHandler } from '@services/EthService';
 import { AccountContext } from '@services/Store';
 
 import { createSimpleTxObject } from './helpers';
-import { ZapInteractionState, TStepAction, ISimpleTxFormFull } from './types';
+import { ZapInteractionState } from './types';
 
 const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
   state,

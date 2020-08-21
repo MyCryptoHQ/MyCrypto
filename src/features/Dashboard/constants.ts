@@ -1,5 +1,7 @@
 import { translateRaw } from '@translations';
 import { ROUTE_PATHS, EXT_URLS } from '@config';
+import { StoreAsset } from '@types';
+import { REPV1UUID } from '@utils';
 import { Action } from './types';
 
 // Legacy
@@ -7,6 +9,7 @@ import buyIcon from '@assets/images/icn-buy.svg';
 import swapIcon from '@assets/images/icn-swap.svg';
 import sendIcon from '@assets/images/icn-send.svg';
 import receiveIcon from '@assets/images/icn-receive.svg';
+import repIcon from '@assets/images/rep-logo.svg';
 import ledgerIcon from '@assets/images/wallets/ledger.svg';
 import trezorIcon from '@assets/images/wallets/trezor.svg';
 
@@ -55,5 +58,12 @@ export const actions: Action[] = [
     link: ROUTE_PATHS.BUY.path,
     description: translateRaw('DASHBOARD_ACTIONS_BUY_SUBTITLE')
   },
-  selectRandomAction(hardwareWallets)
+  selectRandomAction(hardwareWallets),
+  {
+    icon: repIcon,
+    title: translateRaw('DASHBOARD_ACTIONS_REP_MIGRATION_TITLE'),
+    link: ROUTE_PATHS.REP_TOKEN_MIGRATION.path,
+    description: translateRaw('DASHBOARD_ACTIONS_REP_MIGRATION_SUBTITLE'),
+    assetFilter: (asset: StoreAsset) => asset.uuid === REPV1UUID
+  }
 ];

@@ -18,6 +18,8 @@ import {
   MembershipPanel
 } from './components';
 import { actions } from './constants';
+import { filterDashboardActions } from './helpers';
+
 import './Dashboard.scss';
 
 // Keep the same mobile width as an ActionTile
@@ -31,15 +33,17 @@ const DashboardWrapper = styled.div`
 
 export default function Dashboard() {
   const { IS_ACTIVE_FEATURE } = useFeatureFlags();
-  const { isMyCryptoMember, currentAccounts } = useContext(StoreContext);
+  const { isMyCryptoMember, currentAccounts, assets } = useContext(StoreContext);
   const { accounts } = useContext(AccountContext);
+  const relevantActions = filterDashboardActions(actions, assets());
+
   return (
     <DashboardWrapper>
       {/* Mobile only */}
       <Mobile className="Dashboard-mobile">
         <NotificationsPanel accounts={accounts} />
         <div className="Dashboard-mobile-actions">
-          {actions.map((action) => (
+          {relevantActions.map((action) => (
             <ActionTile key={action.title} {...action} />
           ))}
           {/*In mobile we only have 5 tiles on 2 rows. To allow 'space-between' to handle the gaps, we
@@ -87,7 +91,7 @@ export default function Dashboard() {
               {translateRaw('YOUR_DASHBOARD')}
             </Heading>
             <div className="Dashboard-desktop-top-left-actions">
-              {actions.map((action) => (
+              {relevantActions.map((action) => (
                 <ActionTile key={action.title} {...action} />
               ))}
             </div>

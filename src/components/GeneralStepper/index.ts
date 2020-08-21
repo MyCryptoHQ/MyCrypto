@@ -1,2 +1,2 @@
 export { default } from './GeneralStepper';
-export { IStepperComponentProps, IStepperPath } from './types';
+export { IStepperPath } from './types';
