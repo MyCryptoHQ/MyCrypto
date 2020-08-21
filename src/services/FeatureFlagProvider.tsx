@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { IIS_ACTIVE_FEATURE, IS_ACTIVE_FEATURE } from '@config/isActiveFeature';
+import { IIS_ACTIVE_FEATURE, IS_ACTIVE_FEATURE } from '@config';
 
 export interface IFeatureFlagContext {
   IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE;

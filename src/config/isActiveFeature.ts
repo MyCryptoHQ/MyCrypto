@@ -57,5 +57,8 @@ export const IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE = {
   CUSTOM_NETWORKS: IS_DEV,
   TX_STATUS: true,
   REP_TOKEN_MIGRATION: true,
-  MIGRATE_LS: true
+  // This features requires a landing page, same root host to be running simultaneously.
+  // While this can be expected in staging and in production we SHOULD not expect every developper
+  // to run both projects while working. Deactivate feature in dev by default.
+  MIGRATE_LS: !IS_DEV
 };
