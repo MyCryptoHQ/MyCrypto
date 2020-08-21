@@ -2,13 +2,13 @@ import React from 'react';
 import { MemoryRouter, Route, Switch } from 'react-router';
 import { simpleRender, fireEvent } from 'test-utils';
 
-import { AccountContext, NetworkContext, INetworkContext } from '@services/Store';
+import { AccountContext, DataContext } from '@services/Store';
 import { translateRaw } from '@translations';
 import { ROUTE_PATHS, WALLETS_CONFIG } from '@config';
-import { NetworkId, WalletId } from '@types';
+import { WalletId } from '@types';
 import AddAccountFlow, { isValidWalletId } from '@features/AddAccount/AddAccountFlow';
 import { IAccountContext } from '@services/Store/Account/AccountProvider';
-import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
+import { fNetworks } from '@fixtures';
 
 /* Test helpers */
 describe('isValidWalletId()', () => {
@@ -26,15 +26,12 @@ describe('AddAccountFlow', () => {
 
   const component = (path?: string) => (
     <MemoryRouter initialEntries={path ? [path] : undefined}>
-      <NetworkContext.Provider
+      <DataContext.Provider
         value={
-          ({
-            networks: [],
-            getNetworkById: jest.fn((id: NetworkId) => ({
-              ...NETWORKS_CONFIG[id],
-              nodes: NODES_CONFIG[id]
-            }))
-          } as unknown) as INetworkContext
+          {
+            networks: fNetworks,
+            createActions: jest.fn()
+          } as any
         }
       >
         <AccountContext.Provider
@@ -55,7 +52,7 @@ describe('AddAccountFlow', () => {
             />
           </Switch>
         </AccountContext.Provider>
-      </NetworkContext.Provider>
+      </DataContext.Provider>
     </MemoryRouter>
   );
 

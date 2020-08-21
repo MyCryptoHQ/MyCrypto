@@ -11,7 +11,7 @@ import {
   DataContext
 } from '@services';
 import { translateRaw } from '@translations';
-import { fAccount, fNetwork, fAssets } from '@fixtures';
+import { fAccount, fNetwork, fAssets, fNetworks } from '@fixtures';
 
 import TxStatus from './TxStatus';
 
@@ -31,7 +31,7 @@ describe('TxStatus', () => {
         value={
           {
             assets: fAssets,
-            networks: [fNetwork],
+            networks: fNetworks,
             createActions: jest.fn()
           } as any
         }

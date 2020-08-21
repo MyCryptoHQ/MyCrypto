@@ -1,6 +1,54 @@
 import { makeExplorer } from '@services';
 import { Network, NodeType, TUuid, TTicker } from '@types';
 
+const Ethereum: Network = {
+  id: 'Ethereum',
+  name: 'Ethereum',
+  chainId: 1,
+  isCustom: false,
+  isTestnet: false,
+  color: '#007896',
+  gasPriceSettings: {
+    min: 1,
+    max: 60,
+    initial: 20
+  },
+  dPaths: {
+    TREZOR: {
+      label: 'Trezor (ETH)',
+      value: "m/44'/60'/0'/0"
+    },
+    LEDGER_NANO_S: {
+      label: 'Ledger (ETH)',
+      value: "m/44'/60'/0'"
+    },
+    MNEMONIC_PHRASE: {
+      label: 'Default (ETH)',
+      value: "m/44'/60'/0'/0"
+    },
+    default: {
+      label: 'Default (ETH)',
+      value: "m/44'/60'/0'/0"
+    }
+  },
+  contracts: [],
+  assets: ['356a192b-7913-504c-9457-4d18c28d46e6'] as TUuid[],
+  baseAsset: '356a192b-7913-504c-9457-4d18c28d46e6' as TUuid,
+  baseUnit: 'ETH' as TTicker,
+  nodes: [
+    {
+      name: 'eth_mycrypto',
+      type: NodeType.RPC,
+      service: 'MyCrypto',
+      url: 'https://api.mycryptoapi.com/eth'
+    }
+  ],
+  blockExplorer: makeExplorer({
+    name: 'Etherscan',
+    origin: 'https://etherscan.io'
+  })
+};
+
 export const fNetwork: Network = {
   id: 'Ropsten',
   name: 'Ropsten',
@@ -56,3 +104,5 @@ export const fNetwork: Network = {
     origin: 'https://ropsten.etherscan.io'
   })
 };
+
+export const fNetworks = [Ethereum, fNetwork];
