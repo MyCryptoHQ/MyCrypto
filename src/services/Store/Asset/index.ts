@@ -1,4 +1,4 @@
-export { IAssetContext, AssetContext, AssetProvider } from './AssetProvider';
+export { default as useAssets, IAssetContext } from './useAssets';
 export {
   getTotalByAsset,
   getAssetByTicker,
