@@ -14,7 +14,7 @@ export const DefaultHomeHandler = withRouter(({ history, children }) => {
     if (accounts.length > 0 || locked) {
       history.push(ROUTE_PATHS.DASHBOARD.path);
     } else {
-      history.push(ROUTE_PATHS.HOME.path);
+      history.push(ROUTE_PATHS.ADD_ACCOUNT.path);
     }
   }
   return <React.Fragment>{children}</React.Fragment>;

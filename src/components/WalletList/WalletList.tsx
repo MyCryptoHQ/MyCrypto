@@ -137,6 +137,12 @@ export const WalletList = ({ wallets, onSelect, showHeader, calculateMargin }: P
             </Link>
           </Info>
         )}
+        <Info showInOneLine={true}>
+          {translateRaw('ADD_ACCOUNT_IMPORT_SETTINGS_LABEL')}{' '}
+          <Link to={ROUTE_PATHS.SETTINGS_IMPORT.path}>
+            {translateRaw('ADD_ACCOUNT_IMPORT_SETTINGS_LINK')}
+          </Link>
+        </Info>
       </InfoWrapper>
     </div>
   );

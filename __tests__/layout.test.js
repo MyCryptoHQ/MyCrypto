@@ -1,8 +1,8 @@
 import { Selector } from 'testcafe';
 import { PAGES } from './fixtures';
-import NoAccountsPage from './no-accounts-page.po';
+import AddAccountPage from './addaccount-page.po';
 
-const noAccountsPage = new NoAccountsPage();
+const addAccountPage = new AddAccountPage();
 
 fixture('Layout').page(PAGES.DASHBOARD);
 
@@ -11,7 +11,7 @@ test
   .after(async (t) => await t.maximizeWindow())(
   'Should add top magin to layout that equals to header height',
   async (t) => {
-    await noAccountsPage.waitPageLoaded();
+    await addAccountPage.waitPageLoaded();
 
     const header = Selector('nav');
     const layoutMargin = Selector('main').child(1).getStyleProperty('margin-top');

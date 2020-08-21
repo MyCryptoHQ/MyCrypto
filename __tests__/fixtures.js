@@ -21,7 +21,6 @@ const FIXTURES_CONST = {
 
 const PAGES = {
   DASHBOARD: `${FIXTURES_CONST.BASE_URL}/dashboard`,
-  NO_ACCOUNTS: `${FIXTURES_CONST.BASE_URL}/no-accounts`,
   SETTINGS: `${FIXTURES_CONST.BASE_URL}/settings`,
   ADD_ACCOUNT_MNEMONIC: `${FIXTURES_CONST.BASE_URL}/add-account/mnemonic_phrase`,
   ADD_ACCOUNT_VIEWONLY: `${FIXTURES_CONST.BASE_URL}/add-account/view_only`,
