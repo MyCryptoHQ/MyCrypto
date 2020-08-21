@@ -49,7 +49,7 @@ export { default as Network } from './Network';
 export { Banner } from './Banner';
 export * from './SignTransactionWallets';
 export { default as TextArea } from './TextArea';
-export { WhenQueryExists, GasQuery, Query } from './Query';
+export { WhenQueryExists, Query } from './Query';
 export { default as TogglablePassword } from './TogglablePassword';
 export { default as DisclaimerModal } from './DisclaimerModal';
 export { default as HelpLink } from './HelpLink';

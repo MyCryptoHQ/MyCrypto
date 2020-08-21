@@ -12,6 +12,7 @@ import SendAssetsPage from './send-assets-page.po';
 import { getTransValueByKey, findByTKey } from './translation-utils';
 import { clearLocalStorage, setLocalStorage } from './localstorage-utils';
 import { setFeatureFlag } from './featureflag-utils';
+import { selectMnemonicInput } from './selectors';
 
 const sendAssetsPage = new SendAssetsPage();
 
@@ -59,11 +60,8 @@ test('Complete SendFlow', async (t) => {
   const signBtn = getByText(findByTKey('DEP_SIGNTX'));
   await t.expect(signBtn).ok();
 
-  const inputField = Selector(
-    `input[placeholder="${getTransValueByKey('MNEMONIC_ENTER_PHRASE')}"]`
-  ).parent();
 
-  await t.click(inputField).typeText(inputField, ENV.E2E_MNEMONIC_PASSPHRASE).click(signBtn);
+  await t.click(selectMnemonicInput).typeText(selectMnemonicInput, ENV.E2E_MNEMONIC_PASSPHRASE).click(signBtn);
 
   // Expect to reach confirm tx
   await t.expect(getByText(findByTKey('CONFIRM_TX_MODAL_TITLE'))).ok();
@@ -91,11 +89,7 @@ test('Send assets valid query params', async (t) => {
   const signBtn = getByText(findByTKey('DEP_SIGNTX'));
   await t.expect(signBtn).ok();
 
-  const inputField = Selector(
-    `input[placeholder="${getTransValueByKey('MNEMONIC_ENTER_PHRASE')}"]`
-  ).parent();
-
-  await t.click(inputField).typeText(inputField, ENV.E2E_MNEMONIC_PASSPHRASE).click(signBtn);
+  await t.click(selectMnemonicInput).typeText(selectMnemonicInput, ENV.E2E_MNEMONIC_PASSPHRASE).click(signBtn);
 
   // Expect to reach confirm tx and correctly interpret amount field for erc20 tx
   await t.expect(getByText(findByTKey('CONFIRM_TX_MODAL_TITLE'))).ok();

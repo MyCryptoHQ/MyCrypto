@@ -16,6 +16,7 @@ import {
   useAssets,
   useNetworks
 } from '@services';
+import { isEmpty } from '@vendor';
 
 import { sendAssetsReducer, initialState } from './SendAssets.reducer';
 import {
@@ -24,7 +25,7 @@ import {
   SignTransactionWithProtectTx
 } from './components';
 import { parseQueryParams } from './helpers';
-import isEmpty from 'ramda/src/isEmpty';
+
 function SendAssets({ location }: RouteComponentProps) {
   const [reducerState, dispatch] = useReducer(sendAssetsReducer, initialState);
   const {
@@ -46,7 +47,7 @@ function SendAssets({ location }: RouteComponentProps) {
       } else {
         dispatch({
           type: sendAssetsReducer.actionTypes.SET_TXCONFIG,
-          payload: { txConfig: txConfigInit.txConfig }
+          payload: { txConfig: txConfigInit.txConfig, type: txConfigInit.type }
         });
       }
     }

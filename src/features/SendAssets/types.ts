@@ -17,11 +17,7 @@ export interface IPath {
   action: TStepAction;
 }
 
-export interface IMandatoryAcc {
-  [key: string]: string;
-}
-
-export interface IMandatoryItem {
+export interface IFullTxParam {
   invalid?: true;
   gasPrice: ITxGasPrice;
   gasLimit: ITxGasLimit;

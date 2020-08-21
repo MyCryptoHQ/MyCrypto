@@ -1,13 +1,15 @@
 import React from 'react';
 
-import { Query, Param, IQueryResults } from './Query';
-import { MANDATORY_RESUBMIT_QUERY_PARAMS } from '@config';
+import { MANDATORY_TRANSACTION_QUERY_PARAMS } from '@config';
+
+import { Query, IQueryResults } from './Query';
+import { TxParam } from '@features/SendAssets/preFillTx';
 
 interface Props {
   displayQueryMessage(id?: string): JSX.Element | null;
 }
 
-const params: Param[] = [
+const params: TxParam[] = [
   'type',
   'gasPrice',
   'gasLimit',
@@ -20,9 +22,13 @@ const params: Param[] = [
 ];
 
 export const WhenQueryExists = ({ displayQueryMessage }: Props) => {
-  const deriveQueryMsg = (queries: IQueryResults) => {
+  // This message banner is shown on the send form.
+  // When passing in a complete transaction as query params the user will never reach the send form because the
+  // stepper will slice out the first step UNLESS they don't have an associated network or account with the specified details
+  // Therefore, we only display errors / messages.
+  const deriveSendFormQueryWarning = (queries: IQueryResults) => {
     const queriesArePresent = Object.values(queries).some((v) => !!v);
-    const resubmitQueriesArePresent = MANDATORY_RESUBMIT_QUERY_PARAMS.every(
+    const resubmitQueriesArePresent = MANDATORY_TRANSACTION_QUERY_PARAMS.every(
       (resubmitParam) => queries[resubmitParam]
     );
     if (!queriesArePresent) return null;
@@ -34,5 +40,5 @@ export const WhenQueryExists = ({ displayQueryMessage }: Props) => {
     }
     return displayQueryMessage();
   };
-  return <Query params={params} withQuery={deriveQueryMsg} />;
+  return <Query params={params} withQuery={deriveSendFormQueryWarning} />;
 };

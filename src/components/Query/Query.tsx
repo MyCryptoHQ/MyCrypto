@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import queryString from 'query-string';
 import { getParam } from '@utils';
+import { TxParam } from '@features/SendAssets/preFillTx';
 
 const parse = (location: RouteComponentProps<any>['location']): Query => {
   const searchStr = location.search;
@@ -13,20 +14,8 @@ export interface IQueryResults {
   [key: string]: string | null;
 }
 
-export type Param =
-  | 'to'
-  | 'data'
-  | 'type'
-  | 'gasPrice'
-  | 'value'
-  | 'gasLimit'
-  | 'nonce'
-  | 'gasPrice'
-  | 'from'
-  | 'chainId';
-
 interface Props extends RouteComponentProps<{}> {
-  params: Param[];
+  params: TxParam[];
   withQuery(query: IQueryResults): React.ReactElement<any> | null;
 }
 

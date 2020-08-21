@@ -48,8 +48,9 @@ import {
   ITxNonce,
   ITxFromAddress
 } from '@types';
-import { isTransactionDataEmpty } from './validators';
 import { CREATION_ADDRESS } from '@config';
+
+import { isTransactionDataEmpty } from './validators';
 
 export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
   txType: ITxType,
@@ -286,6 +287,8 @@ export const makeTxItem = (
   }
 };
 
+// We can't interpret every transaction's data field so this interprets only if a data field is a simple erc20 transfer.
+//Therefore, we're guessing if it's a simple erc20 transfer using the data field.
 export const guessIfErc20Tx = (data: string): boolean => {
   if (isTransactionDataEmpty(data)) return false;
   const { _to, _value } = decodeTransfer(data);

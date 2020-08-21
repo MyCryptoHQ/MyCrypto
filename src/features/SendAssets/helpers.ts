@@ -36,12 +36,13 @@ import {
   deriveTxRecipientsAndAmount
 } from '@utils';
 import { handleValues } from '@services/EthService/utils/units';
-import { MANDATORY_RESUBMIT_QUERY_PARAMS } from '@config';
+import { MANDATORY_TRANSACTION_QUERY_PARAMS } from '@config';
 import { hexNonceToViewable, hexToString } from '@services/EthService/utils/makeTransaction';
 import { translateRaw } from '@translations';
 import { isEmpty } from '@vendor';
 
-import { IMandatoryAcc, IMandatoryItem } from './types';
+import { IFullTxParam } from './types';
+import { TxParam, TTxQueryParam } from './preFillTx';
 
 const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
   const { network } = formData;
@@ -122,11 +123,11 @@ export const parseResubmitParams = (queryParams: any) => (
   accounts: StoreAccount[]
 ): ITxConfig | undefined => {
   // if resubmit tx does not contain all the necessary parameters to construct a tx config return undefined
-  const i = (MANDATORY_RESUBMIT_QUERY_PARAMS.reduce((acc, cv) => {
+  const i = MANDATORY_TRANSACTION_QUERY_PARAMS.reduce((acc, cv) => {
     if (queryParams[cv] === undefined) return { ...acc, invalid: true };
     acc[cv] = queryParams[cv];
     return acc;
-  }, {} as IMandatoryAcc) as unknown) as IMandatoryItem;
+  }, {} as Record<TxParam, TTxQueryParam>) as IFullTxParam;
   if (i.invalid) return;
 
   const network = networks.find((n) => n.chainId.toString() === i.chainId);

@@ -1,17 +1,30 @@
-export type Param =
+import {
+  ITxGasLimit,
+  ITxGasPrice,
+  ITxNonce,
+  ITxValue,
+  ITxToAddress,
+  ITxFromAddress,
+  ITxData
+} from '@types';
+
+export type TxParam =
   | 'to'
   | 'data'
-  | 'readOnly'
-  | 'readonly'
-  | 'tokenSymbol'
-  | 'tokensymbol'
   | 'value'
   | 'gasLimit'
-  | 'gaslimit'
   | 'gasPrice'
-  | 'gasprice'
-  | 'gas'
-  | 'sendMode'
-  | 'sendmode';
+  | 'from'
+  | 'chainId'
+  | 'nonce'
+  | 'type';
 
-export type queryObject = { [key in Param]: string };
+export type TTxQueryParam =
+  | string
+  | ITxValue
+  | ITxNonce
+  | ITxGasLimit
+  | ITxGasPrice
+  | ITxToAddress
+  | ITxFromAddress
+  | ITxData;

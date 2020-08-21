@@ -1,4 +1,6 @@
-export const MANDATORY_RESUBMIT_QUERY_PARAMS = [
+import { TxParam } from '@features/SendAssets/preFillTx';
+
+export const MANDATORY_TRANSACTION_QUERY_PARAMS: TxParam[] = [
   'gasPrice',
   'gasLimit',
   'to',
