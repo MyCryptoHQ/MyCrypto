@@ -1026,6 +1026,8 @@
     "REP_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP": "This tool is intended to migrate all of your REP tokens from v1 to v2, so this field cannot be modified.",
     "DASHBOARD_ACTIONS_REP_MIGRATION_TITLE": "New: Migrate your REP!",
     "DASHBOARD_ACTIONS_REP_MIGRATION_SUBTITLE": "Augur v2 has launched and you need to take action to migrate your REPv1 tokens to REPv2.",
-    "ZAP_WITHDRAW_TOOLTIP": "Withdrawing from this Zap requires interacting with Uniswap. If you need assistance, please read [How To Withdraw from Unipool](https://support.mycrypto.com/how-to/defi/how-to-withdraw-from-unipool)."
+    "ZAP_WITHDRAW_TOOLTIP": "Withdrawing from this Zap requires interacting with Uniswap. If you need assistance, please read [How To Withdraw from Unipool](https://support.mycrypto.com/how-to/defi/how-to-withdraw-from-unipool).",
+    "NO_ACCOUNTS_SELECTED_HEADER": "You have no accounts selected.",
+    "NO_ACCOUNTS_SELECTED_DESCRIPTION": "To view your balances, select at least one account in the dropdown above."
   }
 }

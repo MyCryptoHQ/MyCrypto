@@ -48,7 +48,7 @@ import {
   MEMBERSHIP_CONTRACTS
 } from '@features/PurchaseMembership/config';
 import { DEFAULT_NETWORK } from '@config';
-import { useEffectOnce } from '@vendor';
+import { useEffectOnce, isEmpty as isVoid } from '@vendor';
 import { makeFinishedTxReceipt } from '@utils/transaction';
 
 import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';
@@ -80,7 +80,7 @@ interface IAddAccount {
   dPath: string;
 }
 
-interface State {
+export interface State {
   readonly defaultAccount: StoreAccount;
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
@@ -92,6 +92,7 @@ interface State {
   readonly userAssets: Asset[];
   readonly coinGeckoAssetManifest: CoinGeckoManifest;
   readonly accountRestore: { [name: string]: IAccount | undefined };
+  isDefault: boolean;
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
@@ -353,6 +354,14 @@ export const StoreProvider: React.FC = ({ children }) => {
     coinGeckoAssetManifest,
     get defaultAccount() {
       return sortByLabel(state.accounts)[0];
+    },
+    /**
+     * Check if the user has already added an account to our persistence layer.
+     */
+    get isDefault() {
+      return (
+        (!state.accounts || isVoid(state.accounts)) && (!isVoid(contacts) || contacts.length < 1)
+      );
     },
     get userAssets() {
       const userAssets = state.accounts

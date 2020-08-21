@@ -1,15 +1,10 @@
 import moment from 'moment';
 
-import { getExportFileName } from '@database';
+import { getExportFileName, getCurrentDBConfig } from '@database';
 import { SETTINGS_FILENAME } from '@config';
 
 describe('getExportFileName', () => {
-  const dbConfig = {
-    version: 'v1.0.0',
-    main: 'MYC_Storage',
-    vault: 'MYC_Vault',
-    schema: {}
-  };
+  const dbConfig = getCurrentDBConfig();
 
   const now = moment();
 

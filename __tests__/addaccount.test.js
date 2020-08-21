@@ -9,7 +9,7 @@ import {
   FIXTURE_PRIVATE_KEY_TOKENS,
   FIXTURES_CONST
 } from './fixtures';
-import { getTransValueByKey } from './translation-utils';
+import { findByTKey } from './translation-utils';
 import { clearLocalStorage } from './localstorage-utils';
 import AddAccountPage from './addaccount-page.po';
 import DashboardPage from './dashboard-page.po';
@@ -23,7 +23,7 @@ test('Should show wallet add UI', async (t) => {
   await addAccountPage.navigateToPage();
   await addAccountPage.waitPageLoaded();
 
-  const title = getByText(getTransValueByKey('DECRYPT_ACCESS'));
+  const title = getByText(findByTKey('DECRYPT_ACCESS'));
   await t.expect(title).ok();
 });
 
@@ -47,9 +47,11 @@ test('Should be able to add a private key address', async (t) => {
   await addAccountPage.waitForPage(PAGES.ADD_ACCOUNT_PRIVATE_KEY);
 
   await addAccountPage.selectEthereumNetwork();
-  await addAccountPage.inputPrivateKey()
+  await addAccountPage.inputPrivateKey();
   // wait for cryptography to finish
-  await t.expect(Selector('button').withText(getTransValueByKey('ADD_LABEL_6_SHORT')).hasAttribute('disabled')).notOk('ready for testing', { timeout: FIXTURES_CONST.TIMEOUT });
+  await t
+    .expect(Selector('button').withText(findByTKey('ADD_LABEL_6_SHORT')).hasAttribute('disabled'))
+    .notOk('ready for testing', { timeout: FIXTURES_CONST.TIMEOUT });
   await addAccountPage.submitAddAccountPrivateKey();
 
   await dashboardPage.waitPageLoaded();
@@ -68,8 +70,10 @@ test('Should be able to add a keystore file address', async (t) => {
   await addAccountPage.waitForPage(PAGES.ADD_ACCOUNT_KEYSTORE);
 
   await addAccountPage.selectEthereumNetwork();
-  await addAccountPage.inputKeystoreFileAndPassword()
-  await t.expect(Selector('button').withText(getTransValueByKey('ADD_LABEL_6_SHORT')).hasAttribute('disabled')).notOk('ready for testing', { timeout: FIXTURES_CONST.TIMEOUT });
+  await addAccountPage.inputKeystoreFileAndPassword();
+  await t
+    .expect(Selector('button').withText(findByTKey('ADD_LABEL_6_SHORT')).hasAttribute('disabled'))
+    .notOk('ready for testing', { timeout: FIXTURES_CONST.TIMEOUT });
   await addAccountPage.submitAddAccountKeystoreFile();
 
   await dashboardPage.waitPageLoaded(FIXTURES_CONST.TIMEOUT * 2);

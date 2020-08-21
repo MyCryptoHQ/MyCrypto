@@ -93,8 +93,14 @@ export class ProviderHandler {
         return any(
           providers.map((p) => {
             return new Promise(async (resolve, reject) => {
-              const tx = await p.getTransaction(txhash);
-              return tx ? resolve(tx) : reject();
+              try {
+                const tx = await p.getTransaction(txhash);
+                // If the node returns undefined, the TX isn't present, but we don't want to resolve the promise with undefined as that would return undefined in the any() promise
+                // Instead, we reject if the tx is undefined such that we keep searching in other nodes
+                return tx ? resolve(tx) : reject();
+              } catch (err) {
+                reject(err);
+              }
             });
           })
         );
