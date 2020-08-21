@@ -7,7 +7,7 @@ import { BREAK_POINTS } from '@theme';
 
 export interface Props {
   as?: string;
-  value?: any;
+  value?: string | React.ReactElement;
   bold?: boolean;
   fontSize?: string;
   truncate?: boolean;
@@ -17,7 +17,6 @@ export interface Props {
 }
 
 interface SProps {
-  as: string;
   $maxCharLen: number;
   $bold: boolean;
   $fontSize: string;
@@ -26,10 +25,10 @@ interface SProps {
   $value: string;
 }
 
-const STypography = styled(UITypography)<SProps & JSX.Element>`
+const STypography = styled(UITypography)`
   line-height: 24px;
   vertical-align: middle;
-  ${(p) => !p.$inheritFontWeight && `font-weight: ${p.$bold ? '600' : '400'};`}
+  ${(p: SProps) => !p.$inheritFontWeight && `font-weight: ${p.$bold ? '600' : '400'};`}
   font-size: ${(p) => p.$fontSize} !important;
   /*
     UITypography component defaults to a 'p' tag with a margin-bottom.
@@ -37,7 +36,7 @@ const STypography = styled(UITypography)<SProps & JSX.Element>`
   */
   margin-bottom: 0px;
 
-  ${({ $truncate: truncate, $maxCharLen: maxCharLen, $value: value }) => {
+  ${({ $truncate: truncate, $maxCharLen: maxCharLen, $value: value }: SProps) => {
     if (!truncate || !value) return;
     const charLength = value && value.length;
 
@@ -86,9 +85,9 @@ const Typography: React.FC<Props> = ({
   const maxCharLen = isMobile ? 58 : 75;
 
   return (
+    // ForwardedAs is not respected so use SC as
+    // https://styled-components.com/docs/api#forwardedas-prop
     <STypography
-      // ForwardedAs is not respected so use SC as
-      // https://styled-components.com/docs/api#forwardedas-prop
       // @ts-ignore
       as={as}
       $bold={bold}

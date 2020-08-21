@@ -3,14 +3,7 @@ import { FallbackProvider, BaseProvider } from 'ethers/providers';
 import equals from 'ramda/src/equals';
 import isEmpty from 'lodash/isEmpty';
 
-import {
-  Network,
-  NetworkId,
-  NodeType,
-  DPathFormat,
-  CustomNodeConfig,
-  StaticNodeConfig
-} from '@types';
+import { Network, NetworkId, NodeType, NodeOptions, DPathFormat } from '@types';
 import { INFURA_API_KEY, ETHERSCAN_API_KEY } from '@config';
 
 // Network names accepted by ethers.EtherscanProvider
@@ -19,11 +12,9 @@ type TValidEtherscanNetwork = 'homestead' | 'ropsten' | 'rinkeby' | 'kovan' | 'g
 const getValidEthscanNetworkId = (id: NetworkId): TValidEtherscanNetwork =>
   id === 'Ethereum' ? 'homestead' : (id.toLowerCase() as TValidEtherscanNetwork);
 
-const getProvider = (
-  networkId: NetworkId,
-  { type, url, auth }: CustomNodeConfig & StaticNodeConfig
-) => {
+const getProvider = (networkId: NetworkId, node: NodeOptions) => {
   const networkName = getValidEthscanNetworkId(networkId);
+  const { type, url } = node;
   switch (type) {
     case NodeType.ETHERSCAN: {
       return new ethers.providers.EtherscanProvider(networkName, ETHERSCAN_API_KEY);
@@ -37,11 +28,11 @@ const getProvider = (
 
     // default case covers the remaining NodeTypes.
     default: {
-      if (auth) {
+      if ('auth' in node && node.auth) {
         return new ethers.providers.JsonRpcProvider({
           url,
-          user: auth.username,
-          password: auth.password,
+          user: node.auth.username,
+          password: node.auth.password,
           allowInsecure: true
         });
       }
