@@ -23,3 +23,9 @@ test('it handles multiple sub-domains', () => {
   const res = getRootDomain(hostname);
   expect(res).toEqual('root.com');
 });
+
+test('it handles multiple rc hostname', () => {
+  const hostname = 'rc.app.mycrypto.com';
+  const res = getRootDomain(hostname);
+  expect(res).toEqual('mycrypto.com');
+});

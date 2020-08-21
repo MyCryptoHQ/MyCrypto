@@ -2,17 +2,17 @@ import { prop, path } from '@vendor';
 import { TURL } from '@types';
 import { getCurrentDBConfig } from '@database';
 
-const getHostName: (obj: Window) => string | undefined = path(['location', 'hostname']);
-
+const getDomain: (obj: Document) => string | undefined = prop('domain');
 export const DBName = prop('main', getCurrentDBConfig());
 
 /**
  * Retrieve the url of the landing page according to current execution envirionment
+ * Relies on setting document.domain in src/index.tsx
  * @param hostname : TURL
  */
-export const getIFrameSrc = (win: Window) => {
-  const hostname = getHostName(win);
-  switch (hostname) {
+export const getIFrameSrc = (doc: Document) => {
+  const domain = getDomain(doc);
+  switch (domain) {
     case 'mycrypto.com':
       return 'https://beta.mycrypto.com' as TURL;
     case 'mycryptobuilds.com':
