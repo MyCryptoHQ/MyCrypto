@@ -22,7 +22,7 @@ export enum DWActionTypes {
 }
 
 // @todo convert to FSA compatible action type
-type DWAction = Overwrite<
+export type DWAction = Overwrite<
   TAction<ValuesType<typeof DWActionTypes>, any>,
   { error?: { code: TDWActionError } }
 >;
@@ -85,7 +85,8 @@ const DeterministicWalletReducer = (
     case DWActionTypes.GET_ADDRESSES_SUCCESS: {
       return {
         ...state,
-        isGettingAccounts: false
+        isGettingAccounts: false,
+        errors: initialState.errors
       };
     }
     case DWActionTypes.ENQUEUE_ADDRESSES: {
@@ -110,9 +111,12 @@ const DeterministicWalletReducer = (
       };
     }
     case DWActionTypes.GET_ADDRESSES_FAILURE: {
+      const { code } = error!;
       return {
         ...state,
-        isGettingAccounts: false
+        completed: true,
+        isGettingAccounts: false,
+        errors: [code]
       };
     }
     case DWActionTypes.UPDATE_ASSET: {

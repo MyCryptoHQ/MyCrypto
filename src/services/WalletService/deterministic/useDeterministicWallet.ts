@@ -1,7 +1,6 @@
-import { useState, useReducer, useEffect } from 'react';
-import uniqBy from 'ramda/src/uniqBy';
-import prop from 'ramda/src/prop';
-import pipe from 'ramda/src/pipe';
+import { useState, useEffect } from 'react';
+import { useReducer } from 'reinspect';
+import { uniqBy, identity, prop, pipe } from '@vendor';
 
 import { Network, DPathFormat, ExtendedAsset } from '@types';
 
@@ -26,7 +25,12 @@ const useDeterministicWallet = (
   walletId: DPathFormat,
   gap: number
 ): IUseDeterministicWallet => {
-  const [state, dispatch] = useReducer(DeterministicWalletReducer, initialState);
+  const [state, dispatch] = useReducer(
+    DeterministicWalletReducer,
+    initialState,
+    identity,
+    'DeterministicWallet'
+  );
   const [shouldInit, setShouldInit] = useState(false);
   const [service, setService] = useState<IDeterministicWalletService | undefined>(); // Keep a reference to the session in order to send
   const [assetToQuery, setAssetToQuery] = useState(undefined as ExtendedAsset | undefined);

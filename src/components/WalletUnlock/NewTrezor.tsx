@@ -4,13 +4,14 @@ import prop from 'ramda/src/prop';
 
 import { MOONPAY_ASSET_UUIDS } from '@utils';
 import { FormData, WalletId, ExtendedAsset } from '@types';
-import translate, { translateRaw } from '@translations';
-import { Spinner, Button, DeterministicAccountList, AssetSelector } from '@components';
+import translate, { translateRaw, Trans } from '@translations';
+import { Spinner, Button, RouterLink } from '@components';
 import {
   EXT_URLS,
   TREZOR_DERIVATION_PATHS,
   DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN,
-  DEFAULT_GAP_TO_SCAN_FOR
+  DEFAULT_GAP_TO_SCAN_FOR,
+  DPathsList
 } from '@config';
 import {
   NetworkContext,
@@ -23,6 +24,7 @@ import {
 import ConnectTrezor from '@assets/images/icn-connect-trezor-new.svg';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import './NewTrezor.scss';
+import DeterministicWallet from './DeterministicWallet';
 
 //@todo: conflicts with comment in walletDecrypt -> onUnlock method
 interface OwnProps {
@@ -42,12 +44,15 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const { assets } = useContext(AssetContext);
   const network = getNetworkById(formData.network, networks);
   const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
+  const defaultDPath = network.dPaths[WalletId.TREZOR] || DPathsList.ETH_TREZOR;
   const [assetToUse, setAssetToUse] = useState(baseAsset);
-  const { state, requestConnection, updateAsset } = useDeterministicWallet(
-    extendedDPaths,
-    WalletId.TREZOR_NEW,
-    DEFAULT_GAP_TO_SCAN_FOR
-  );
+  const {
+    state,
+    requestConnection,
+    updateAsset,
+    generateFreshAddress,
+    addDPaths
+  } = useDeterministicWallet(extendedDPaths, WalletId.TREZOR_NEW, DEFAULT_GAP_TO_SCAN_FOR);
   // @todo -> Figure out which assets to display in dropdown. Selector is heavy with 900+ assets in it. Loads slow af.
   const filteredAssets = assets.filter(({ uuid }) => MOONPAY_ASSET_UUIDS.includes(uuid)); // @todo - fix this.
 
@@ -67,21 +72,18 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
 
   if (state.isConnected && state.asset && (state.queuedAccounts || state.finishedAccounts)) {
     return (
-      <div className="Mnemonic-dpath">
-        <AssetSelector
-          selectedAsset={assetToUse}
-          assets={filteredAssets}
-          onSelect={(option: ExtendedAsset) => {
-            handleAssetUpdate(option);
-          }}
-        />
-        <DeterministicAccountList
-          onUnlock={onUnlock}
-          isComplete={state.completed}
-          asset={state.asset}
-          finishedAccounts={state.finishedAccounts}
-        />
-      </div>
+      <DeterministicWallet
+        state={state}
+        defaultDPath={defaultDPath}
+        assets={filteredAssets}
+        assetToUse={assetToUse}
+        network={network}
+        updateAsset={updateAsset}
+        addDPaths={addDPaths}
+        generateFreshAddress={generateFreshAddress}
+        handleAssetUpdate={handleAssetUpdate}
+        onUnlock={onUnlock}
+      />
     );
   } else {
     return (
@@ -116,6 +118,17 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
           )}
           <div className="TrezorDecrypt-footer">
             {translate('ORDER_TREZOR', { $url: EXT_URLS.TREZOR_REFERRAL.url })} <br />
+            <Trans
+              id="USE_OLD_INTERFACE"
+              variables={{
+                $link: () => (
+                  <RouterLink to="/add-account/trezor">
+                    {translateRaw('TRY_OLD_INTERFACE')}
+                  </RouterLink>
+                )
+              }}
+            />
+            <br />
             {translate('HOWTO_TREZOR')}
           </div>
         </div>

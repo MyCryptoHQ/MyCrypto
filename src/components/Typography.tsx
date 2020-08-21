@@ -13,7 +13,7 @@ export interface Props {
   truncate?: boolean;
   inheritFontWeight?: boolean;
   style?: React.CSSProperties;
-  onClick?(): void;
+  onClick?(e: React.MouseEvent): void;
 }
 
 interface SProps {

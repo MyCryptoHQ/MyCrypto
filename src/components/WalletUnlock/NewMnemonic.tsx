@@ -5,14 +5,8 @@ import { validateMnemonic } from 'bip39';
 
 import { MOONPAY_ASSET_UUIDS, formatMnemonic } from '@utils';
 import { FormData, WalletId, ExtendedAsset } from '@types';
-import translate, { translateRaw } from '@translations';
-import {
-  DeterministicAccountList,
-  AssetSelector,
-  TogglablePassword,
-  Tooltip,
-  Input
-} from '@components';
+import translate, { translateRaw, Trans } from '@translations';
+import { TogglablePassword, Tooltip, Input, RouterLink } from '@components';
 import { DPathsList, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN, DEFAULT_GAP_TO_SCAN_FOR } from '@config';
 import {
   NetworkContext,
@@ -26,6 +20,7 @@ import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
 import questionToolTip from '@assets/images/icn-question.svg';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import './NewTrezor.scss';
+import DeterministicWallet from './DeterministicWallet';
 
 //@todo: conflicts with comment in walletDecrypt -> onUnlock method
 interface OwnProps {
@@ -57,12 +52,15 @@ const MnemonicDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const { assets } = useContext(AssetContext);
   const network = getNetworkById(formData.network, networks);
   const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
+  const defaultDPath = network.dPaths[WalletId.MNEMONIC_PHRASE] || DPathsList.ETH_DEFAULT;
   const [assetToUse, setAssetToUse] = useState(baseAsset);
-  const { state, requestConnection, updateAsset } = useDeterministicWallet(
-    extendedDPaths,
-    WalletId.MNEMONIC_PHRASE_NEW,
-    DEFAULT_GAP_TO_SCAN_FOR
-  );
+  const {
+    state,
+    requestConnection,
+    updateAsset,
+    addDPaths,
+    generateFreshAddress
+  } = useDeterministicWallet(extendedDPaths, WalletId.MNEMONIC_PHRASE_NEW, DEFAULT_GAP_TO_SCAN_FOR);
   // @todo -> Figure out which assets to display in dropdown. Selector is heavy with 900+ assets in it. Loads slow af.
   const [mnemonicLoginState, setMnemonicLoginState] = useState(initialMnemonicLoginState);
   const filteredAssets = assets.filter(({ uuid }) => MOONPAY_ASSET_UUIDS.includes(uuid)); // @todo - fix this.
@@ -108,21 +106,18 @@ const MnemonicDecrypt = ({ formData, onUnlock }: OwnProps) => {
 
   if (state.isConnected && state.asset && (state.queuedAccounts || state.finishedAccounts)) {
     return (
-      <div className="Mnemonic-dpath">
-        <AssetSelector
-          selectedAsset={assetToUse}
-          assets={filteredAssets}
-          onSelect={(option: ExtendedAsset) => {
-            handleAssetUpdate(option);
-          }}
-        />
-        <DeterministicAccountList
-          onUnlock={onUnlock}
-          isComplete={state.completed}
-          asset={state.asset}
-          finishedAccounts={state.finishedAccounts}
-        />
-      </div>
+      <DeterministicWallet
+        state={state}
+        defaultDPath={defaultDPath}
+        assets={filteredAssets}
+        assetToUse={assetToUse}
+        network={network}
+        updateAsset={updateAsset}
+        addDPaths={addDPaths}
+        generateFreshAddress={generateFreshAddress}
+        handleAssetUpdate={handleAssetUpdate}
+        onUnlock={onUnlock}
+      />
     );
   } else {
     return (
@@ -178,7 +173,20 @@ const MnemonicDecrypt = ({ formData, onUnlock }: OwnProps) => {
                 {translate('MNEMONIC_CHOOSE_ADDR')}
               </button>
             </div>
-            <div className="Mnemonic-help">{translate('MNEMONIC_HELP')}</div>
+            <div className="Mnemonic-help">
+              {translate('MNEMONIC_HELP')}
+              <br />
+              <Trans
+                id="USE_OLD_INTERFACE_ALT"
+                variables={{
+                  $link: () => (
+                    <RouterLink to="/add-account/mnemonic_phrase">
+                      {translateRaw('TRY_OLD_INTERFACE_ALT')}
+                    </RouterLink>
+                  )
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>

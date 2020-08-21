@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Typography from './Typography';
+import { Typography } from '@components';
 import styled from 'styled-components';
 
 import editIcon from '@assets/images/icn-edit.svg';
@@ -66,7 +66,8 @@ function EditableText({ saveValue, value, className, bold, truncate }: Props) {
     setEditValue(value);
   }, [value]);
 
-  const edit = () => {
+  const edit = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setEditMode(true);
   };
 
@@ -86,6 +87,7 @@ function EditableText({ saveValue, value, className, bold, truncate }: Props) {
         <SInputField
           autoFocus={true}
           value={editValue}
+          onClick={(e: React.MouseEvent) => e.stopPropagation()}
           onChange={(e) => setEditValue(e.currentTarget.value)}
           onBlur={save}
           onKeyDown={handleKeyDown}
