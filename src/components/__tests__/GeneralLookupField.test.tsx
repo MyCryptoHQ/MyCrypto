@@ -1,5 +1,5 @@
 import React from 'react';
-import { simpleRender, fireEvent, wait } from 'test-utils';
+import { simpleRender, fireEvent, waitFor } from 'test-utils';
 import { fNetwork } from '@fixtures';
 
 import { AssetContext } from '@services/Store';
@@ -104,7 +104,7 @@ describe('GeneralLookupField', () => {
     const input = container.querySelector('input');
     fireEvent.click(input!);
     fireEvent.change(input!, { target: { value: ens } });
-    await wait(() => fireEvent.keyDown(input!, enter));
+    await waitFor(() => fireEvent.keyDown(input!, enter));
 
     expect(output.data.address.value).toBe(address);
     expect(output.data.address.display).toBe(ens.split('.')[0]);
@@ -130,7 +130,7 @@ describe('GeneralLookupField', () => {
     const input = container.querySelector('input');
     fireEvent.click(input!);
     fireEvent.change(input!, { target: { value: option.address } });
-    await wait(() => fireEvent.keyDown(input!, enter));
+    await waitFor(() => fireEvent.keyDown(input!, enter));
 
     expect(output.data.address).toStrictEqual({ display: option.label, value: option.address });
   });
