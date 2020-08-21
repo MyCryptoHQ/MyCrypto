@@ -25,14 +25,18 @@ export const getIFrameSrc = (doc: Document) => {
 /**
  * Take an HTMLIFrameElement and check if the localstorage has the correct key
  */
-export const getLS: (obj: HTMLIFrameElement) => string | undefined = path([
-  'contentWindow',
-  'localStorage',
-  DBName
-]);
+export const getLS = (obj: HTMLIFrameElement): string | undefined => {
+  try {
+    return path(['contentWindow', 'localStorage', DBName])(obj) as string | undefined;
+  } catch (err) {
+    console.debug('[getLS]: ', err);
+  }
+};
 
-export const getOrigin: (obj: any) => string | undefined = path([
-  'contentWindow',
-  'location',
-  'origin'
-]);
+export const getOrigin = (obj: any): string | undefined => {
+  try {
+    return path(['contentWindow', 'location', 'origin'])(obj) as string | undefined;
+  } catch (err) {
+    console.debug('[getOrigin]: ', err);
+  }
+};
