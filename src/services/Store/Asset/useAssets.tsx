@@ -1,13 +1,8 @@
 import { useContext } from 'react';
-import pipe from 'ramda/src/pipe';
-import reduce from 'ramda/src/reduce';
-import mergeLeft from 'ramda/src/mergeLeft';
-import map from 'ramda/src/map';
-import toPairs from 'ramda/src/toPairs';
-import omitBy from 'lodash/omitBy';
 
 import { ExtendedAsset, LSKeys, TUuid } from '@types';
 import { EXCLUDED_ASSETS } from '@config';
+import { pipe, map, mergeLeft, toPairs, reduce, pickBy } from '@vendor';
 
 import { DataContext } from '../DataManager';
 import { getAssetByUUID as getAssetByUUIDFunc } from './helpers';
@@ -36,13 +31,13 @@ function useAssets() {
         {} as Record<TUuid, ExtendedAsset>
       ), // Transform user custom assets into object
       mergeLeft(
-        map<any, any>(
+        map(
           setIsCustom,
-          omitBy(newAssets, (_, key) => EXCLUDED_ASSETS.includes(key))
+          pickBy((_, key) => !EXCLUDED_ASSETS.includes(key), newAssets)
         )
       ), // UUID is unique so we can merge user and api assets
       toPairs, // Equivalent of Object.entries -> [k, v]
-      map(([uuid, a]) => ({ ...a, uuid })) // We Need to add the uuid key to the api asset.
+      map(([uuid, a]) => ({ ...a, uuid } as ExtendedAsset)) // We Need to add the uuid key to the api asset.
     );
     model.updateAll(mergeAssets(assets));
   };
