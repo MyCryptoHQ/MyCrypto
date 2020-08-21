@@ -153,7 +153,6 @@ jobs:
       - name: yarn test:coverage
         run: yarn test:coverage
 
-      ##    NOT WORKING
       - name: CodeCov
         uses: codecov/codecov-action@v1
 
