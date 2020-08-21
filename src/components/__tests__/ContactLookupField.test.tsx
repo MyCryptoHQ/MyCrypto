@@ -66,7 +66,6 @@ function getComponent(
           value={output.data.address}
           setFieldValue={(_, value) => setFormValue(value)}
         />
-        )} />
       </AddressBookContext.Provider>
     </DataContext.Provider>
   );
