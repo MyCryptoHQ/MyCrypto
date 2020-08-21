@@ -6,7 +6,6 @@ describe('opneLink', () => {
   const url = 'https://example.com' as TURL;
 
   beforeEach(() => {
-    delete window.open;
     window.open = jest.fn();
   });
 

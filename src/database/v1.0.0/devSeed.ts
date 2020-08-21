@@ -1,9 +1,4 @@
-import mergeRight from 'ramda/src/mergeRight';
-import map from 'ramda/src/map';
-import pipe from 'ramda/src/pipe';
-import reduce from 'ramda/src/reduce';
-import concat from 'ramda/src/concat';
-import keys from 'ramda/src/keys';
+import { mergeRight, map, pipe, reduce, concat, keys } from '@vendor';
 
 import { generateUUID } from '@utils';
 import {
@@ -69,6 +64,7 @@ const addDevAccounts = add(LSKeys.ACCOUNTS)((accounts: DevAccount[], store: Loca
     map(updateAssetUuid),
     reduce(toObject('uuid'), {} as any),
     mergeRight(store.accounts)
+    //@ts-ignore
   )(accounts);
 });
 

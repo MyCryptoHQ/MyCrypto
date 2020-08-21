@@ -25,3 +25,6 @@ export { default as mergeLeft } from 'ramda/src/mergeLeft';
 export { default as toPairs } from 'ramda/src/toPairs';
 export { default as reduce } from 'ramda/src/reduce';
 export { default as pickBy } from 'ramda/src/pickBy';
+export { default as mergeRight } from 'ramda/src/mergeRight';
+export { default as concat } from 'ramda/src/concat';
+export { default as keys } from 'ramda/src/keys';

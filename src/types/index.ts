@@ -1,20 +1,7 @@
-import { TAddress as IAddress } from './address';
-import { TUuid as IUuid } from './uuid';
-import { IRates as Rates } from './rates';
-import {
-  NodeConfig as INodeConfig,
-  CustomNodeConfig as ICustomNodeConfig,
-  NodeOptions as INodeOptions,
-  StaticNodeConfig as IStaticNodeConfig
-} from './node';
-
-export type NodeConfig = INodeConfig;
-export type CustomNodeConfig = ICustomNodeConfig;
-export type StaticNodeConfig = IStaticNodeConfig;
-export type NodeOptions = INodeOptions;
-export type IRates = Rates;
-export type TAddress = IAddress;
-export type TUuid = IUuid;
+export { TAddress } from './address';
+export { TUuid } from './uuid';
+export { IRates } from './rates';
+export { NodeConfig, CustomNodeConfig, NodeOptions, StaticNodeConfig } from './node';
 
 export {
   HardwareWalletId,

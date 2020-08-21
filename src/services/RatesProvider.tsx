@@ -113,14 +113,12 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
       return settings.rates;
     },
     getRate: (ticker: TTicker) => {
-      // @ts-ignore until we find a solution for TS7053 error
       if (!state.rates[ticker]) return DEFAULT_FIAT_RATE;
       return settings && settings.fiatCurrency
-        ? state.rates[ticker][settings.fiatCurrency.toLowerCase()]
+        ? state.rates[ticker][(settings.fiatCurrency as string).toLowerCase()]
         : DEFAULT_FIAT_RATE;
     },
     getRateInCurrency: (ticker: TTicker, currency: string) => {
-      // @ts-ignore until we find a solution for TS7053 error
       if (!state.rates[ticker]) return DEFAULT_FIAT_RATE;
       return state.rates[ticker][currency.toLowerCase()];
     },
@@ -128,7 +126,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
       const uuid = asset.uuid;
       if (!state.rates[uuid]) return DEFAULT_FIAT_RATE;
       return settings && settings.fiatCurrency
-        ? state.rates[uuid][settings.fiatCurrency.toLowerCase()]
+        ? state.rates[uuid][(settings.fiatCurrency as string).toLowerCase()]
         : DEFAULT_FIAT_RATE;
     },
     getAssetRateInCurrency: (asset: Asset, currency: string) => {

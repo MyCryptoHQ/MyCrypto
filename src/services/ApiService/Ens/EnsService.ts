@@ -27,13 +27,19 @@ interface DomainRegistration {
   domain: DomainNameObject;
 }
 
+interface OwnershipRecord {
+  address: string;
+  label: string;
+  registrations: DomainRegistration[];
+}
+
 const service = new ApolloClient({ uri: ENS_GRAPH_ENDPOINT });
 
 const recordRegistrations = path(['account', 'registrations']);
 
 const fetchOwnershipRecords = (accounts: StoreAccount[]): Promise<DomainNameRecord[]> => {
   return Promise.all(map(fetchOwnershipRecord, accounts))
-    .then(filter((r) => !isEmpty(r.registrations)))
+    .then(filter((r: OwnershipRecord) => !isEmpty(r.registrations)))
     .then(map(processRecord))
     .then(flatten);
 };
@@ -44,7 +50,7 @@ const fetchOwnershipRecord = ({
 }: {
   label: string;
   address: string;
-}): Promise<{ address: string; label: string; registrations: DomainRegistration[] }> => {
+}): Promise<OwnershipRecord> => {
   return service
     .query({
       query: QUERY_GET_ENS_DOMAINS,
