@@ -1,7 +1,7 @@
 # MyCrypto Beta Web App
 
 [![Build](https://github.com/MyCryptoHQ/MyCrypto/workflows/GitHub%20CI/badge.svg?branch=master)](https://github.com/MyCryptoHQ/MyCrypto/actions)
-[![Coverage Status](https://coveralls.io/repos/github/MyCryptoHQ/MyCrypto/badge.svg?branch=master)](https://coveralls.io/github/MyCryptoHQ/MyCrypto?branch=develop)
+[![codecov](https://codecov.io/gh/MyCryptoHQ/MyCrypto/branch/master/graph/badge.svg)](https://codecov.io/gh/MyCryptoHQ/MyCrypto)
 
 This repo stores both the beta and production versions of the MyCrypto codebase.
 
