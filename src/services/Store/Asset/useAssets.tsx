@@ -23,7 +23,8 @@ function useAssets() {
   const { createActions, assets } = useContext(DataContext);
   const model = createActions(LSKeys.ASSETS);
 
-  const createAssetWithID = model.createWithID;
+  const createAssetWithID = (assetData: ExtendedAsset, id: TUuid) =>
+    model.createWithID(assetData, id);
 
   const getAssetByUUID = (uuid: TUuid) => getAssetByUUIDFunc(assets)(uuid);
 

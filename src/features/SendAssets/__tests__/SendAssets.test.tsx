@@ -28,9 +28,7 @@ describe('SendAssetsFlow', () => {
       <DataContext.Provider
         value={
           {
-            createActions: jest.fn(() => ({
-              createWithId: jest.fn()
-            }))
+            createActions: jest.fn()
           } as any
         }
       >

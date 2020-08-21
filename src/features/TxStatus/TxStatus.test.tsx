@@ -32,9 +32,7 @@ describe('TxStatus', () => {
         value={
           {
             assets: fAssets,
-            createActions: jest.fn(() => ({
-              createWithId: jest.fn()
-            }))
+            createActions: jest.fn()
           } as any
         }
       >
