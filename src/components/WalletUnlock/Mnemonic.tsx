@@ -3,12 +3,14 @@ import { mnemonicToSeedSync, validateMnemonic } from 'bip39';
 import { Tooltip } from '@mycrypto/ui';
 
 import translate, { translateRaw } from '@translations';
-import { formatMnemonic } from '@utils';
+import { formatMnemonic, withHook } from '@utils';
 import { TogglablePassword, Input } from '@components';
-
 import { FormData, WalletId } from '@types';
 import { getDPath, getDPaths } from '@services/EthService';
 import { WalletFactory } from '@services/WalletService';
+import { useNetworks, INetworkContext } from '@services';
+import { pipe } from '@vendor';
+
 import DeterministicWallets from './DeterministicWallets';
 import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
 import questionToolTip from '@assets/images/icn-question.svg';
@@ -30,25 +32,22 @@ interface State {
 
 const WalletService = WalletFactory(WalletId.MNEMONIC_PHRASE);
 
-class MnemonicDecryptClass extends PureComponent<OwnProps, State> {
-  public static contextType = NetworkContext;
+class MnemonicDecryptClass extends PureComponent<OwnProps & INetworkContext, State> {
   public state: State = {
     seed: undefined,
     phrase: undefined,
     formattedPhrase: undefined,
     pass: undefined,
     selectedDPath:
-      getDPath(
-        this.context.getNetworkById(this.props.formData.network),
-        WalletId.MNEMONIC_PHRASE
-      ) || getDPaths(this.context.networks, WalletId.MNEMONIC_PHRASE)[0]
+      getDPath(this.props.getNetworkById(this.props.formData.network), WalletId.MNEMONIC_PHRASE) ||
+      getDPaths(this.props.networks, WalletId.MNEMONIC_PHRASE)[0]
   };
 
   public render() {
     const { seed, phrase, formattedPhrase, pass, selectedDPath } = this.state;
     const isValidMnemonic = validateMnemonic(formattedPhrase || '');
-    const networks = this.context.networks;
-    const network = this.context.getNetworkById(this.props.formData.network);
+    const networks = this.props.networks;
+    const network = this.props.getNetworkById(this.props.formData.network);
 
     if (seed) {
       return (
@@ -173,4 +172,4 @@ class MnemonicDecryptClass extends PureComponent<OwnProps, State> {
   };
 }
 
-export const MnemonicDecrypt = MnemonicDecryptClass;
+export const MnemonicDecrypt = pipe(withHook(useNetworks))(MnemonicDecryptClass);
