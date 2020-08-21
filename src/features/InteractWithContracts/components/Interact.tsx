@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 import * as Yup from 'yup';
@@ -23,7 +23,7 @@ import {
 import { COLORS, BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
 import { isValidETHAddress } from '@services/EthService/validators';
-import { getNetworkById, NetworkContext } from '@services';
+import { getNetworkById, useNetworks } from '@services';
 import { isValidENSName } from '@services/EthService';
 import { isSameAddress } from '@utils';
 
@@ -187,7 +187,7 @@ function Interact(props: CombinedProps) {
   const [wasAbiEditedManually, setWasAbiEditedManually] = useState(false);
   const [wasContractInteracted, setWasContractInteracted] = useState(false);
   const [interactionDataFromURL, setInteractionDataFromURL] = useState<any>({});
-  const { networks } = useContext(NetworkContext);
+  const { networks } = useNetworks();
   const { networkIdFromUrl, addressFromUrl, functionFromUrl, inputsFromUrl } = getParsedQueryString(
     props.location.search
   );

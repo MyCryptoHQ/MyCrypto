@@ -8,7 +8,6 @@ import { TogglablePassword, Input } from '@components';
 
 import { FormData, WalletId } from '@types';
 import { getDPath, getDPaths } from '@services/EthService';
-import { NetworkContext } from '@services/Store';
 import { WalletFactory } from '@services/WalletService';
 import DeterministicWallets from './DeterministicWallets';
 import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';

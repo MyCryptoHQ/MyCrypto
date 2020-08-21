@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 import translate from '@translations';
-import { NetworkContext, isWalletFormatSupportedOnNetwork } from '@services/Store';
+import { isWalletFormatSupportedOnNetwork, useNetworks } from '@services/Store';
 import { NetworkId, Network, WalletId } from '@types';
 import { DEFAULT_NETWORK } from '@config';
 import { Typography, Selector, Tooltip } from '@components';
@@ -45,7 +45,7 @@ function NetworkSelectDropdown({
   filter,
   ...props
 }: Props) {
-  const { networks, getNetworkById } = useContext(NetworkContext);
+  const { networks, getNetworkById } = useNetworks();
   const network = networkId && getNetworkById(networkId);
 
   // set default network if none selected

@@ -11,7 +11,7 @@ import {
   getLabelByAddressAndNetwork,
   AddressBookContext,
   DataContext,
-  NetworkContext
+  useNetworks
 } from '@services/Store';
 import { useDevTools, useFeatureFlags } from '@services';
 import {
@@ -154,7 +154,7 @@ const FeatureFlags = () => {
 };
 
 const DevTools = () => {
-  const { getNetworkById } = useContext(NetworkContext);
+  const { getNetworkById } = useNetworks();
   const { addressBook } = useContext(AddressBookContext);
   const { accounts, createAccountWithID, deleteAccount } = useContext(AccountContext);
   const dummyAccount = {

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 import isEmpty from 'ramda/src/isEmpty';
 
@@ -10,7 +10,7 @@ import { COLORS, FONT_SIZE, BREAK_POINTS } from '@theme';
 import { useUpdateEffect } from '@vendor';
 import { noOp, objToString } from '@utils';
 import { getNetworkByChainId } from '@services';
-import { NetworkContext } from '@services/Store';
+import { useNetworks } from '@services/Store';
 import { useWalletConnect, WcReducer, TActionError } from '@services/WalletService';
 
 import EthAddress from '../EthAddress';
@@ -118,7 +118,7 @@ export function SignTransactionWalletConnect({
   onSuccess
 }: ISignComponentProps) {
   const { state, requestConnection, requestSign } = useWalletConnect();
-  const { networks } = useContext(NetworkContext);
+  const { networks } = useNetworks();
 
   const sendTx = () =>
     requestSign({

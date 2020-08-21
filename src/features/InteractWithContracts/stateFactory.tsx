@@ -16,7 +16,6 @@ import {
 } from '@types';
 import {
   getNetworkById,
-  NetworkContext,
   isValidETHAddress,
   ProviderHandler,
   getGasEstimate,
@@ -24,7 +23,8 @@ import {
   EtherscanService,
   getIsValidENSAddressFunction,
   AccountContext,
-  useContracts
+  useContracts,
+  useNetworks
 } from '@services';
 import { AbiFunction } from '@services/EthService/contracts/ABIFunction';
 import { isWeb3Wallet } from '@utils/web3';
@@ -65,7 +65,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   setState
 }) => {
   const { getContractsByIds, createContract, deleteContract } = useContracts();
-  const { networks, updateNetwork } = useContext(NetworkContext);
+  const { networks, updateNetwork } = useNetworks();
   const { addNewTxToAccount } = useContext(AccountContext);
 
   const handleNetworkSelected = (networkId: NetworkId) => {

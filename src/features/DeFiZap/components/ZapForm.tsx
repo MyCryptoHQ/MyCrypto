@@ -18,7 +18,7 @@ import { ZapInteractionState } from '../types';
 import ZapSelectedBanner from './ZapSelectedBanner';
 import { IZapConfig } from '../config';
 import { StoreContext } from '@services/Store/StoreProvider';
-import { NetworkContext } from '@services/Store/Network';
+import { useNetworks } from '@services/Store/Network';
 import { getAccountBalance, useAssets } from '@services/Store';
 import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
@@ -65,7 +65,7 @@ const DeFiZapLogoContainer = styled.div`
 const ZapForm = ({ onComplete, zapSelected }: Props) => {
   const { accounts, defaultAccount } = useContext(StoreContext);
   const { assets } = useAssets();
-  const { networks } = useContext(NetworkContext);
+  const { networks } = useNetworks();
   const ethAsset = assets.find((asset) => asset.uuid === ETHUUID) as Asset;
   const network = networks.find((n) => n.baseAsset === ETHUUID) as Network;
   const relevantAccounts = accounts.filter(isEthereumAccount);

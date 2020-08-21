@@ -4,11 +4,11 @@ import { Heading } from '@mycrypto/ui';
 
 import {
   AddressBookContext,
-  NetworkContext,
   NetworkUtils,
   SettingsContext,
   StoreContext,
-  useAssets
+  useAssets,
+  useNetworks
 } from '@services/Store';
 import { buildBalances, buildTotalFiatValue } from '@utils';
 import { AccountList, Mobile, Desktop } from '@components';
@@ -128,13 +128,14 @@ function renderAddressPanel() {
 
 function renderNetworkNodes() {
   const {
+    addNetwork,
+    networks: allNetworks,
     addNodeToNetwork,
     isNodeNameAvailable,
     getNetworkById,
     updateNode,
     deleteNode
-  } = useContext(NetworkContext);
-  const { addNetwork, networks: allNetworks } = useContext(NetworkContext);
+  } = useNetworks();
   const { createAssetWithID } = useAssets();
   const { addressBook } = useContext(AddressBookContext);
   const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);

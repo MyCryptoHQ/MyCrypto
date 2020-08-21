@@ -6,7 +6,6 @@ import translate, { Trans, translateRaw } from '@translations';
 import { WalletId, FormData } from '@types';
 import { getDPath, getDPaths } from '@services';
 import { EXT_URLS } from '@config';
-import { NetworkContext } from '@services/Store';
 import { WalletFactory, ChainCodeResponse } from '@services/WalletService';
 import { IS_ELECTRON } from '@utils';
 

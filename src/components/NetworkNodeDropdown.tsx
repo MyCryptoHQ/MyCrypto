@@ -1,10 +1,10 @@
-import React, { useCallback, useContext, FC, useState, useEffect } from 'react';
+import React, { useCallback, FC, useState, useEffect } from 'react';
 import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 import isEmpty from 'lodash/isEmpty';
 import isFunction from 'lodash/isFunction';
 
-import { NetworkContext, NetworkUtils } from '@services/Store';
+import { NetworkUtils, useNetworks } from '@services/Store';
 import { CustomNodeConfig, NetworkId, NodeOptions } from '@types';
 import { Typography, Selector } from '@components/index';
 import { translateRaw } from '@translations';
@@ -86,7 +86,7 @@ interface Props {
 }
 
 const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
-  const { networks, getNetworkById, setNetworkSelectedNode } = useContext(NetworkContext);
+  const { networks, getNetworkById, setNetworkSelectedNode } = useNetworks();
   const [network, setNetwork] = useState(() => getNetworkById(networkId));
   const [selectedNode, setSelectedNode] = useState(() => NetworkUtils.getSelectedNode(network));
 

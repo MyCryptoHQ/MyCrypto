@@ -1,11 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
 import { generateAssetUUID } from '@utils';
 import { InputField, NetworkSelectDropdown, DashboardPanel } from '@components';
 import { translateRaw } from '@translations';
-import { NetworkContext, useAssets } from '@services/Store';
+import { useAssets, useNetworks } from '@services/Store';
 import { ExtendedAsset, NetworkId, TTicker } from '@types';
 import { DEFAULT_NETWORK, DEFAULT_ASSET_DECIMAL } from '@config';
 import { isValidAddress } from '@services';
@@ -48,7 +48,7 @@ export function AddToken(props: Props) {
   const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
 
   const { createAssetWithID } = useAssets();
-  const { getNetworkById } = useContext(NetworkContext);
+  const { getNetworkById } = useNetworks();
 
   const { setShowAddToken, scanTokens, setShowDetailsView } = props;
 

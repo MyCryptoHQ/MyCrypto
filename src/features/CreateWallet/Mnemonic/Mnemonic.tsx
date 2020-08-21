@@ -10,13 +10,13 @@ import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './co
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
 import { NotificationTemplates } from '@features/NotificationsPanel';
 import { TAddress, IRawAccount, Asset, DPathFormat, ISettings, WalletId, NetworkId } from '@types';
-import { withContext, generateAccountUUID, withHook } from '@utils';
+import { generateAccountUUID, withHook } from '@utils';
 import {
-  NetworkContext,
   IAssetContext,
   INetworkContext,
   getNewDefaultAssetTemplateByNetwork,
-  useAssets
+  useAssets,
+  useNetworks
 } from '@services/Store';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 
@@ -172,5 +172,5 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
 export default pipe(
   withAccountAndNotificationsContext,
   withHook(useAssets),
-  withContext(NetworkContext)
+  withHook(useNetworks)
 )(CreateMnemonic);

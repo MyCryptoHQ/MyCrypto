@@ -65,7 +65,7 @@ import {
 } from './Asset';
 import { AccountContext, getDashboardAccounts } from './Account';
 import { SettingsContext } from './Settings';
-import { NetworkContext, getNetworkById } from './Network';
+import { getNetworkById, useNetworks } from './Network';
 import { findNextUnusedDefaultLabel, AddressBookContext } from './AddressBook';
 import { MyCryptoApiService, ANALYTICS_CATEGORIES } from '../ApiService';
 import { findMultipleNextUnusedDefaultLabels } from './AddressBook/helpers';
@@ -143,7 +143,7 @@ export const StoreProvider: React.FC = ({ children }) => {
   } = useContext(AccountContext);
   const { assets, addAssetsFromAPI } = useAssets();
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
-  const { networks } = useContext(NetworkContext);
+  const { networks } = useNetworks();
   const {
     createAddressBooks: createContact,
     addressBook: contacts,

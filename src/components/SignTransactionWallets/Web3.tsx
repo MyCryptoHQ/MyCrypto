@@ -5,8 +5,8 @@ import { Web3Provider } from 'ethers/providers/web3-provider';
 import { WALLETS_CONFIG } from '@config';
 import { ISignComponentProps, TAddress } from '@types';
 import translate, { translateRaw } from '@translations';
-import { withContext, getWeb3Config, isSameAddress } from '@utils';
-import { getNetworkByChainId, INetworkContext, NetworkContext } from '@services/Store';
+import { getWeb3Config, isSameAddress, withHook } from '@utils';
+import { getNetworkByChainId, INetworkContext, useNetworks } from '@services/Store';
 
 import './Web3.scss';
 
@@ -208,4 +208,4 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
   }
 }
 
-export default withContext(NetworkContext)(SignTransactionWeb3);
+export default withHook(useNetworks)(SignTransactionWeb3);
