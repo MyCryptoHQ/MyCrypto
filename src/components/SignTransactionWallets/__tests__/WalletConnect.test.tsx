@@ -15,7 +15,7 @@ const defaultProps = {
 
 const getComponent = ({ ...props }: typeof defaultProps) =>
   simpleRender(
-    <DataContext.Provider value={{ networks: [fNetwork] } as any}>
+    <DataContext.Provider value={{ networks: [fNetwork], createActions: jest.fn() } as any}>
       <WalletConnectComponent {...props} />
     </DataContext.Provider>
   );

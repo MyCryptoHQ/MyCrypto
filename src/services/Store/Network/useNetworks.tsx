@@ -27,8 +27,8 @@ function useNetworks() {
   const { createActions, networks } = useContext(DataContext);
   const model = createActions(LSKeys.NETWORKS);
 
-  const addNetwork = model.create;
-  const updateNetwork = model.update;
+  const addNetwork = (network: Network) => model.create(network);
+  const updateNetwork = (id: NetworkId, item: Network) => model.update(id, item);
   const getNetworkById = (networkId: NetworkId) => {
     const foundNetwork = getNetworkByIdFunc(networkId, networks);
     if (foundNetwork) {

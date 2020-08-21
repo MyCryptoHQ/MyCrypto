@@ -16,7 +16,7 @@ const defaultProps: React.ComponentProps<typeof SignTransaction> = {
 
 const getComponent = () => {
   return simpleRender(
-    <DataContext.Provider value={{ networks: [fNetwork] } as any}>
+    <DataContext.Provider value={{ networks: [fNetwork], createActions: jest.fn() } as any}>
       <SignTransaction {...defaultProps} />
     </DataContext.Provider>
   );
