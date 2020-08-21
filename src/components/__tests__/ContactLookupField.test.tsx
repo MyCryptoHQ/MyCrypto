@@ -45,7 +45,9 @@ function getComponent(
       value={
         ({
           assets: [{ uuid: fNetwork.baseAsset }],
-          createActions: jest.fn()
+          createActions: jest.fn(() => ({
+            createWithId: jest.fn()
+          }))
         } as unknown) as any
       }
     >

@@ -28,7 +28,16 @@ jest.mock('ethers/providers', () => {
 describe('TxStatus', () => {
   const component = (path?: string) => (
     <MemoryRouter initialEntries={path ? [path] : undefined}>
-      <DataContext.Provider value={{ assets: fAssets, createActions: jest.fn() } as any}>
+      <DataContext.Provider
+        value={
+          {
+            assets: fAssets,
+            createActions: jest.fn(() => ({
+              createWithId: jest.fn()
+            }))
+          } as any
+        }
+      >
         <StoreContext.Provider value={{ accounts: [fAccount] } as any}>
           <NetworkContext.Provider
             value={
