@@ -153,9 +153,9 @@ jobs:
       - name: yarn test:coverage
         run: yarn test:coverage
 
-  ##    NOT WORKING
-  #     - name: yarn report-coverage
-  #       run: yarn report-coverage
+      ##    NOT WORKING
+      - name: yarn report-coverage
+        run: yarn report-coverage
 
   electron-osx:
     name: Build el:osx
