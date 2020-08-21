@@ -2,7 +2,7 @@ import React from 'react';
 import { simpleRender, fireEvent, waitFor } from 'test-utils';
 import { fNetwork } from '@fixtures';
 
-import { AddressBookContext, AssetContext } from '@services/Store';
+import { AddressBookContext, DataContext } from '@services/Store';
 import { AddressBook, ExtendedAddressBook, TUuid, IReceiverAddress, TAddress } from '@types';
 import { addressBook } from '@database/seed/addressBook';
 import { isSameAddress } from '@utils';
@@ -41,10 +41,11 @@ function getComponent(
   };
 
   return simpleRender(
-    <AssetContext.Provider
+    <DataContext.Provider
       value={
         ({
-          assets: [{ uuid: fNetwork.baseAsset }]
+          assets: [{ uuid: fNetwork.baseAsset }],
+          createActions: jest.fn()
         } as unknown) as any
       }
     >
@@ -67,7 +68,7 @@ function getComponent(
         />
         )} />
       </AddressBookContext.Provider>
-    </AssetContext.Provider>
+    </DataContext.Provider>
   );
 }
 

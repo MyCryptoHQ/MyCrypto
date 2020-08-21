@@ -2,7 +2,7 @@ import React from 'react';
 import { simpleRender, fireEvent, waitFor } from 'test-utils';
 import { fNetwork, fContracts } from '@fixtures';
 
-import { AssetContext } from '@services/Store';
+import { DataContext } from '@services/Store';
 import { ExtendedAddressBook, TUuid, IReceiverAddress } from '@types';
 import { addressBook } from '@database/seed/addressBook';
 
@@ -39,10 +39,11 @@ function getComponent(
   };
 
   return simpleRender(
-    <AssetContext.Provider
+    <DataContext.Provider
       value={
         ({
-          assets: [{ uuid: fNetwork.baseAsset }]
+          assets: [{ uuid: fNetwork.baseAsset }],
+          createActions: jest.fn()
         } as unknown) as any
       }
     >
@@ -52,7 +53,7 @@ function getComponent(
         setFieldValue={(_, value) => setFormValue(value)}
       />
       )} />
-    </AssetContext.Provider>
+    </DataContext.Provider>
   );
 }
 

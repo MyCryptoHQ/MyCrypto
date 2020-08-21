@@ -58,10 +58,10 @@ import {
   isNotExcludedAsset
 } from './helpers';
 import {
-  AssetContext,
   getTotalByAsset,
   getAssetByTicker,
-  getNewDefaultAssetTemplateByNetwork
+  getNewDefaultAssetTemplateByNetwork,
+  useAssets
 } from './Asset';
 import { AccountContext, getDashboardAccounts } from './Account';
 import { SettingsContext } from './Settings';
@@ -141,7 +141,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     createAccountWithID,
     createMultipleAccountsWithIDs
   } = useContext(AccountContext);
-  const { assets, addAssetsFromAPI } = useContext(AssetContext);
+  const { assets, addAssetsFromAPI } = useAssets();
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { networks } = useContext(NetworkContext);
   const {

@@ -7,7 +7,7 @@ import { isHexString } from 'ethers/utils';
 
 import { Button, NetworkSelectDropdown, ContentPanel, TxReceipt, InlineMessage } from '@components';
 import { NetworkId } from '@types';
-import { NetworkContext, AssetContext, StoreContext, ANALYTICS_CATEGORIES } from '@services';
+import { NetworkContext, StoreContext, ANALYTICS_CATEGORIES, useAssets } from '@services';
 import { noOp, isVoid, useAnalytics } from '@utils';
 import { useEffectOnce, useUpdateEffect } from '@vendor';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
@@ -48,7 +48,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
     category: ANALYTICS_CATEGORIES.TX_STATUS
   });
 
-  const { assets } = useContext(AssetContext);
+  const { assets } = useAssets();
   const { networks } = useContext(NetworkContext);
   const { accounts } = useContext(StoreContext);
 

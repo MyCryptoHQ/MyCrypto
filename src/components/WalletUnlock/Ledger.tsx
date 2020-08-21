@@ -17,9 +17,9 @@ import {
   NetworkContext,
   getNetworkById,
   getAssetByUUID,
-  AssetContext,
   useDeterministicWallet,
-  getDPaths
+  getDPaths,
+  useAssets
 } from '@services';
 
 import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
@@ -35,7 +35,7 @@ interface OwnProps {
 
 const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const { networks } = useContext(NetworkContext);
-  const { assets } = useContext(AssetContext);
+  const { assets } = useAssets();
   const network = getNetworkById(formData.network, networks);
   const dpaths = uniqBy(prop('value'), [
     ...getDPaths([network], WalletId.LEDGER_NANO_S),

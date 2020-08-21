@@ -6,10 +6,10 @@ import selectEvent from 'react-select-event';
 import {
   NetworkContext,
   StoreContext,
-  AssetContext,
   AddressBookContext,
   SettingsContext,
-  RatesContext
+  RatesContext,
+  DataContext
 } from '@services';
 import { translateRaw } from '@translations';
 import { fAccount, fNetwork, fAssets } from '@fixtures';
@@ -28,8 +28,15 @@ jest.mock('ethers/providers', () => {
 describe('TxStatus', () => {
   const component = (path?: string) => (
     <MemoryRouter initialEntries={path ? [path] : undefined}>
-      <StoreContext.Provider value={{ accounts: [fAccount] } as any}>
-        <AssetContext.Provider value={{ assets: fAssets } as any}>
+      <DataContext.Provider
+        value={
+          {
+            assets: fAssets,
+            createActions: jest.fn()
+          } as any
+        }
+      >
+        <StoreContext.Provider value={{ accounts: [fAccount] } as any}>
           <NetworkContext.Provider
             value={
               {
@@ -48,8 +55,8 @@ describe('TxStatus', () => {
               </SettingsContext.Provider>
             </AddressBookContext.Provider>
           </NetworkContext.Provider>
-        </AssetContext.Provider>
-      </StoreContext.Provider>
+        </StoreContext.Provider>
+      </DataContext.Provider>
     </MemoryRouter>
   );
 

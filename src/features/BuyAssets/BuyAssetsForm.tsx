@@ -14,7 +14,7 @@ import { AccountSelector, AssetSelector, InlineMessage, ContentPanel } from '@co
 import { isAccountInNetwork } from '@services/Store/Account/helpers';
 import { MoonpaySignerService } from '@services/ApiService/MoonpaySigner';
 import { StoreContext } from '@services/Store/StoreProvider';
-import { AssetContext, getAssetByUUID } from '@services/Store/Asset';
+import { getAssetByUUID, useAssets } from '@services/Store/Asset';
 
 const FormFieldItem = styled.fieldset`
   margin-bottom: ${SPACING.LG};
@@ -67,7 +67,7 @@ enum SubmissionType {
 export const BuyAssetsForm = () => {
   const history = useHistory();
   const { accounts, defaultAccount } = useContext(StoreContext);
-  const { assets } = useContext(AssetContext);
+  const { assets } = useAssets();
   const ethAsset = getAssetByUUID(assets)(ETHUUID) as Asset;
 
   const initialFormikValues: IBuyFormState = {

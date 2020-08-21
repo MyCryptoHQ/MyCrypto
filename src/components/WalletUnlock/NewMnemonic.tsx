@@ -12,8 +12,8 @@ import {
   NetworkContext,
   getNetworkById,
   getAssetByUUID,
-  AssetContext,
-  useDeterministicWallet
+  useDeterministicWallet,
+  useAssets
 } from '@services';
 
 import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
@@ -49,7 +49,7 @@ const MnemonicDecrypt = ({ formData, onUnlock }: OwnProps) => {
     numOfAddresses: numOfAccountsToCheck
   }));
   const { networks } = useContext(NetworkContext);
-  const { assets } = useContext(AssetContext);
+  const { assets } = useAssets();
   const network = getNetworkById(formData.network, networks);
   const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
   const defaultDPath = network.dPaths[WalletId.MNEMONIC_PHRASE] || DPathsList.ETH_DEFAULT;

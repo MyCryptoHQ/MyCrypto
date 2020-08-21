@@ -23,7 +23,7 @@ import {
   isValidPath,
   fromWei
 } from '@services';
-import { AssetContext } from '@services/Store';
+import { useAssets } from '@services/Store';
 import { HELP_ARTICLE, DEFAULT_NETWORK_TICKER } from '@config';
 import { DeterministicWalletData, getDeterministicWallets } from '@services/WalletService';
 import { getBaseAssetBalances, BalanceMap } from '@services/Store/BalanceService';
@@ -223,7 +223,7 @@ export function DeterministicWalletsClass({
   const [page, setPage] = useState(0);
   const [wallets, setWallets] = useState([] as DeterministicWalletData[]);
   const { addressBook } = useContext(AddressBookContext);
-  const { assets } = useContext(AssetContext);
+  const { assets } = useAssets();
 
   /* Used to update addresses displayed */
   useEffect(() => {

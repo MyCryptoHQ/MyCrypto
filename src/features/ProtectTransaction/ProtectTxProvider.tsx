@@ -8,7 +8,7 @@ import {
   EtherscanService,
   GetTokenTxResponse
 } from '@services/ApiService';
-import { AssetContext, getAssetByUUID, StoreContext } from '@services/Store';
+import { getAssetByUUID, StoreContext, useAssets } from '@services/Store';
 import { useFeatureFlags } from '@services';
 import { NansenService, NansenServiceEntry } from '@services/ApiService/Nansen';
 import { WALLETS_CONFIG } from '@config';
@@ -83,7 +83,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
   // FREE FOR NOW
   const isPTXFree = isMyCryptoMember || true;
   const numOfSteps = isPTXFree ? 2 : 3;
-  const { assets } = useContext(AssetContext);
+  const { assets } = useAssets();
   const [state, setState] = useState<ProtectTxState>({
     ...protectTxProviderInitialState,
     isPTXFree

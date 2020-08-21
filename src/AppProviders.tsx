@@ -4,7 +4,6 @@ import { NotificationsProvider, ToastProvider, ErrorProvider } from '@features';
 import {
   AccountProvider,
   AddressBookProvider,
-  AssetProvider,
   NetworkProvider,
   SettingsProvider,
   DataProvider
@@ -24,13 +23,11 @@ function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | nu
                   <ToastProvider>
                     <NetworkProvider>
                       <AddressBookProvider>
-                        <AssetProvider>
-                          {/* StoreProvider relies on the others Providers */}
-                          <StoreProvider>
-                            {/* RatesProvider relies on the Store */}
-                            <RatesProvider>{children}</RatesProvider>
-                          </StoreProvider>
-                        </AssetProvider>
+                        {/* StoreProvider relies on the others Providers */}
+                        <StoreProvider>
+                          {/* RatesProvider relies on the Store */}
+                          <RatesProvider>{children}</RatesProvider>
+                        </StoreProvider>
                       </AddressBookProvider>
                     </NetworkProvider>
                   </ToastProvider>

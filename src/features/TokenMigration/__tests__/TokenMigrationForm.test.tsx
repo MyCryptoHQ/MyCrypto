@@ -8,7 +8,7 @@ import {
   default as TokenMigrationForm
 } from '@features/TokenMigration/components/TokenMigrationForm';
 import { FeatureFlagContext } from '@services';
-import { StoreContext, SettingsContext, NetworkContext, AssetContext } from '@services/Store';
+import { StoreContext, SettingsContext, NetworkContext, DataContext } from '@services/Store';
 import { fSettings, fAssets, fNetwork, fAccount } from '@fixtures';
 import { IS_ACTIVE_FEATURE } from '@config';
 import { noOp } from '@utils';
@@ -30,48 +30,48 @@ const defaultProps: TokenMigrationProps = {
 function getComponent(props: TokenMigrationProps) {
   return simpleRender(
     <MemoryRouter initialEntries={undefined}>
-      <FeatureFlagContext.Provider
-        value={{ IS_ACTIVE_FEATURE, setFeatureFlag: noOp, resetFeatureFlags: noOp }}
+      <DataContext.Provider
+        value={
+          ({
+            assets: [{ uuid: fNetwork.baseAsset }],
+            createActions: jest.fn()
+          } as unknown) as any
+        }
       >
-        <SettingsContext.Provider
-          value={
-            ({
-              settings: fSettings
-            } as unknown) as any
-          }
+        <FeatureFlagContext.Provider
+          value={{ IS_ACTIVE_FEATURE, setFeatureFlag: noOp, resetFeatureFlags: noOp }}
         >
-          <StoreContext.Provider
+          <SettingsContext.Provider
             value={
               ({
-                userAssets: [],
-                accounts: [],
-                defaultAccount: { assets: [] },
-                getAccount: jest.fn(),
-                networks: [{ nodes: [] }]
+                settings: fSettings
               } as unknown) as any
             }
           >
-            <NetworkContext.Provider
+            <StoreContext.Provider
               value={
                 ({
-                  networks: [fNetwork]
+                  userAssets: [],
+                  accounts: [],
+                  defaultAccount: { assets: [] },
+                  getAccount: jest.fn(),
+                  networks: [{ nodes: [] }]
                 } as unknown) as any
               }
             >
-              <AssetContext.Provider
+              <NetworkContext.Provider
                 value={
                   ({
-                    assets: [{ uuid: fNetwork.baseAsset }],
-                    getAssetByUUID: jest.fn()
+                    networks: [fNetwork]
                   } as unknown) as any
                 }
               >
                 <TokenMigrationForm {...((props as unknown) as any)} />
-              </AssetContext.Provider>
-            </NetworkContext.Provider>
-          </StoreContext.Provider>
-        </SettingsContext.Provider>
-      </FeatureFlagContext.Provider>
+              </NetworkContext.Provider>
+            </StoreContext.Provider>
+          </SettingsContext.Provider>
+        </FeatureFlagContext.Provider>
+      </DataContext.Provider>
     </MemoryRouter>
   );
 }

@@ -4,7 +4,7 @@ import { simpleRender } from 'test-utils';
 
 import SendAssets from '@features/SendAssets/SendAssets';
 import { FeatureFlagContext } from '@services';
-import { StoreContext, AddressBookContext, SettingsContext } from '@services/Store';
+import { StoreContext, AddressBookContext, SettingsContext, DataContext } from '@services/Store';
 import { RatesContext } from '@services/RatesProvider';
 import { fSettings } from '@fixtures';
 import { IS_ACTIVE_FEATURE } from '@config';
@@ -25,45 +25,53 @@ jest.mock('ethers/providers', () => {
 describe('SendAssetsFlow', () => {
   const component = (path?: string) => (
     <MemoryRouter initialEntries={path ? [path] : undefined}>
-      <FeatureFlagContext.Provider
-        value={{ IS_ACTIVE_FEATURE, setFeatureFlag: noOp, resetFeatureFlags: noOp }}
+      <DataContext.Provider
+        value={
+          {
+            createActions: jest.fn()
+          } as any
+        }
       >
-        <SettingsContext.Provider
-          value={
-            ({
-              settings: fSettings
-            } as unknown) as any
-          }
+        <FeatureFlagContext.Provider
+          value={{ IS_ACTIVE_FEATURE, setFeatureFlag: noOp, resetFeatureFlags: noOp }}
         >
-          <StoreContext.Provider
+          <SettingsContext.Provider
             value={
               ({
-                userAssets: [],
-                accounts: [],
-                defaultAccount: { assets: [] },
-                getAccount: jest.fn(),
-                networks: [{ nodes: [] }]
+                settings: fSettings
               } as unknown) as any
             }
           >
-            <RatesContext.Provider
+            <StoreContext.Provider
               value={
                 ({
-                  getAssetRate: jest.fn(),
-                  getRateInCurrency: jest.fn(),
-                  getAssetRateInCurrency: jest.fn()
+                  userAssets: [],
+                  accounts: [],
+                  defaultAccount: { assets: [] },
+                  getAccount: jest.fn(),
+                  networks: [{ nodes: [] }]
                 } as unknown) as any
               }
             >
-              <AddressBookContext.Provider
-                value={({ addressBook: [], getContactByAddress: jest.fn() } as unknown) as any}
+              <RatesContext.Provider
+                value={
+                  ({
+                    getAssetRate: jest.fn(),
+                    getRateInCurrency: jest.fn(),
+                    getAssetRateInCurrency: jest.fn()
+                  } as unknown) as any
+                }
               >
-                <SendAssets />
-              </AddressBookContext.Provider>
-            </RatesContext.Provider>
-          </StoreContext.Provider>
-        </SettingsContext.Provider>
-      </FeatureFlagContext.Provider>
+                <AddressBookContext.Provider
+                  value={({ addressBook: [], getContactByAddress: jest.fn() } as unknown) as any}
+                >
+                  <SendAssets />
+                </AddressBookContext.Provider>
+              </RatesContext.Provider>
+            </StoreContext.Provider>
+          </SettingsContext.Provider>
+        </FeatureFlagContext.Provider>
+      </DataContext.Provider>
     </MemoryRouter>
   );
 

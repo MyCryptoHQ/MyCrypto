@@ -17,8 +17,8 @@ import {
   NetworkContext,
   getNetworkById,
   getAssetByUUID,
-  AssetContext,
-  useDeterministicWallet
+  useDeterministicWallet,
+  useAssets
 } from '@services';
 
 import ConnectTrezor from '@assets/images/icn-connect-trezor-new.svg';
@@ -41,7 +41,7 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
     numOfAddresses: numOfAccountsToCheck
   }));
   const { networks } = useContext(NetworkContext);
-  const { assets } = useContext(AssetContext);
+  const { assets } = useAssets();
   const network = getNetworkById(formData.network, networks);
   const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
   const defaultDPath = network.dPaths[WalletId.TREZOR] || DPathsList.ETH_TREZOR;

@@ -21,3 +21,7 @@ export { default as uniqBy } from 'ramda/src/uniqBy';
 export { default as identity } from 'ramda/src/identity';
 export { default as contains } from 'ramda/src/contains';
 export { default as equals } from 'ramda/src/equals';
+export { default as mergeLeft } from 'ramda/src/mergeLeft';
+export { default as toPairs } from 'ramda/src/toPairs';
+export { default as reduce } from 'ramda/src/reduce';
+export { default as pickBy } from 'ramda/src/pickBy';

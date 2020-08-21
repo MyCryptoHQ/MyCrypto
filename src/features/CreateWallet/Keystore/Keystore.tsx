@@ -4,14 +4,14 @@ import { IV3Wallet } from 'ethereumjs-wallet';
 import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 import pipe from 'ramda/src/pipe';
 
-import { withContext, makeBlob, generateAccountUUID } from '@utils';
+import { withContext, makeBlob, generateAccountUUID, withHook } from '@utils';
 import { generateKeystore, fromV3 } from '@workers';
 import {
   INetworkContext,
   NetworkContext,
-  AssetContext,
   IAssetContext,
-  getNewDefaultAssetTemplateByNetwork
+  getNewDefaultAssetTemplateByNetwork,
+  useAssets
 } from '@services/Store';
 import { stripHexPrefix } from '@services/EthService';
 import { WalletFactory } from '@services/WalletService';
@@ -182,5 +182,5 @@ class CreateKeystore extends Component<Props & INetworkContext & IAssetContext, 
 export default pipe(
   withAccountAndNotificationsContext,
   withContext(NetworkContext),
-  withContext(AssetContext)
+  withHook(useAssets)
 )(CreateKeystore);
