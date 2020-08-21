@@ -46,8 +46,9 @@ describe('useAssets', () => {
 
   it('addAssetsFromAPI() calls model.updateAll', () => {
     const mockUpdateAll = jest.fn();
+    const customAssets = fAssets.filter((a) => a.isCustom);
     const { result } = renderUseAssets({
-      assets: [],
+      assets: customAssets,
       createActions: jest.fn(() => ({ updateAll: mockUpdateAll }))
     });
     const defaultAssets = fAssets.filter((a) => !a.isCustom);
@@ -57,6 +58,6 @@ describe('useAssets', () => {
       return obj;
     }, {});
     result.current.addAssetsFromAPI(assets);
-    expect(mockUpdateAll).toBeCalledWith(defaultAssets);
+    expect(mockUpdateAll).toBeCalledWith(expect.arrayContaining(fAssets));
   });
 });
