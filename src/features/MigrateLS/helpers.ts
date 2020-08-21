@@ -15,16 +15,10 @@ export const getIFrameSrc = (doc: Document) => {
   switch (domain) {
     case 'mycrypto.com':
       return 'https://beta.mycrypto.com' as TURL;
-    case 'app.mycrypto.com':
-      return 'https://beta.mycrypto.com' as TURL;
     case 'mycryptobuilds.com':
       return 'https://landing.mycryptobuilds.com' as TURL;
-    case 'rc.app.mycrypto.com':
-      return 'https://landing.mycryptobuilds.com' as TURL;
-    case 'localhost':
-      return 'https://localhost:8000' as TURL;
     default:
-      return;
+      return 'https://localhost:8000' as TURL;
   }
 };
 
