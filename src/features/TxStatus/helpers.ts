@@ -4,9 +4,10 @@ import { ProviderHandler, getTxsFromAccount } from '@services';
 import {
   makeTxConfigFromTxResponse,
   makeTxConfigFromTxReceipt,
-  makeUnknownTxReceipt
+  makeUnknownTxReceipt,
+  makePendingTxReceipt
 } from '@utils';
-import { ITxType, ITxHash, NetworkId, StoreAccount, Asset, Network, ITxReceipt } from '@types';
+import { ITxType, ITxHash, NetworkId, StoreAccount, Asset, Network, ITxReceipt, ITxConfig } from '@types';
 
 export const fetchTxStatus = async ({
   txHash,
@@ -30,7 +31,7 @@ export const fetchTxStatus = async ({
   const provider = new ProviderHandler(network);
   const fetchedTx = await provider.getTransactionByHash(txHash as ITxHash, true);
   if (!fetchedTx) {
-    return undefined;
+    return;
   }
   return { fetchedTx, cachedTx: undefined };
 };

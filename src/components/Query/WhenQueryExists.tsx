@@ -28,14 +28,14 @@ export const WhenQueryExists = ({ displayQueryMessage }: Props) => {
   // Therefore, we only display errors / messages.
   const deriveSendFormQueryWarning = (queries: IQueryResults) => {
     const queriesArePresent = Object.values(queries).some((v) => !!v);
-    const resubmitQueriesArePresent = MANDATORY_TRANSACTION_QUERY_PARAMS.every(
+    const txQueriesArePresent = MANDATORY_TRANSACTION_QUERY_PARAMS.every(
       (resubmitParam) => queries[resubmitParam]
     );
     if (!queriesArePresent) return null;
-    if (resubmitQueriesArePresent) {
+    if (txQueriesArePresent) {
       return displayQueryMessage('WARN_SEND_UNDETECTED_NETWORK_OR_ACCOUNT');
     }
-    if (queries.type && queries.type === 'resubmit') {
+    if (queries.type && ['resubmit', 'cancel'].includes(queries.type)) {
       return displayQueryMessage('WARN_SEND_INCORRECT_PROPS');
     }
     return displayQueryMessage();

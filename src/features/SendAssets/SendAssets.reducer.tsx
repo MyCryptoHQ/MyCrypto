@@ -23,7 +23,7 @@ import { makePendingTxReceipt, makeTxConfigFromSignedTx, bigify } from '@utils';
 import { processFormDataToTx } from './helpers';
 
 interface State {
-  type?: 'resubmit';
+  type?: 'resubmit' | 'cancel';
   txConfig?: ITxConfig;
   txReceipt?: ITxReceipt;
   signedTx?: ISignedTx;

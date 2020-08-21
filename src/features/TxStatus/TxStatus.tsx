@@ -5,16 +5,31 @@ import queryString from 'query-string';
 import styled from 'styled-components';
 import { isHexString } from 'ethers/utils';
 
-import { Button, NetworkSelectDropdown, ContentPanel, TxReceipt, InlineMessage } from '@components';
-import { NetworkId } from '@types';
-import { StoreContext, ANALYTICS_CATEGORIES, useAssets, useNetworks } from '@services';
-import { noOp, isVoid, useAnalytics } from '@utils';
+import {
+  Button,
+  NetworkSelectDropdown,
+  ContentPanel,
+  TxReceipt,
+  InlineMessage,
+  Tooltip
+} from '@components';
+import { NetworkId, ITxStatus, WalletId } from '@types';
+import {
+  StoreContext,
+  ANALYTICS_CATEGORIES,
+  useAssets,
+  useNetworks,
+  fetchGasPriceEstimates,
+  inputGasPriceToHex,
+  inputGasLimitToHex
+} from '@services';
+import { noOp, isVoid, useAnalytics, isSameAddress } from '@utils';
 import { useEffectOnce, useUpdateEffect } from '@vendor';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
 
 import { txStatusReducer, generateInitialState } from './TxStatus.reducer';
-import { fetchTxStatus, makeTx } from './helpers';
+import { fetchTxStatus, makeTx, createQueryParams } from './helpers';
 
 const SUPPORTED_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Goerli', 'Kovan', 'ETC'];
 
@@ -61,7 +76,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   const [reducerState, dispatch] = useReducer(txStatusReducer, initialState);
 
   const { networkId, txHash, tx: txState, error, fetching, fromLink } = reducerState;
-
+  const network = networks.find((n) => n.id === networkId)!;
   // Fetch TX on load if possible
   useEffectOnce(() => {
     if (!isVoid(defaultTxHash)) {
@@ -100,6 +115,42 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
     dispatch({ type: txStatusReducer.actionTypes.FETCH_TX, payload: fromLinkSharing });
   };
 
+  const handleTxResubmitRedirect = async () => {
+    dispatch({ type: txStatusReducer.actionTypes.TRIGGER_RESUBMIT });
+    const { fast } = await fetchGasPriceEstimates(network);
+    const unfinishedResubmitTxQueryParams = tx && createQueryParams(tx?.config, 'resubmit');
+    if (!unfinishedResubmitTxQueryParams) {
+      dispatch({ type: txStatusReducer.actionTypes.TRIGGER_RESUBMIT_SUCCESS });
+      return;
+    }
+    const query = queryString.stringify({
+      ...unfinishedResubmitTxQueryParams,
+      gasPrice: inputGasPriceToHex(fast.toString())
+    });
+    dispatch({ type: txStatusReducer.actionTypes.TRIGGER_RESUBMIT_SUCCESS });
+    history.replace(`${ROUTE_PATHS.SEND.path}/?${query}`);
+  };
+
+  const handleTxCancelRedirect = async () => {
+    dispatch({ type: txStatusReducer.actionTypes.TRIGGER_RESUBMIT });
+    const { fast } = await fetchGasPriceEstimates(network);
+    const unfinishedResubmitTxQueryParams = tx && createQueryParams(tx?.config, 'cancel');
+    if (!unfinishedResubmitTxQueryParams) {
+      dispatch({ type: txStatusReducer.actionTypes.TRIGGER_RESUBMIT_SUCCESS });
+      return;
+    }
+    const query = queryString.stringify({
+      ...unfinishedResubmitTxQueryParams,
+      to: unfinishedResubmitTxQueryParams.from,
+      value: '0x0',
+      gasLimit: inputGasLimitToHex('21000'),
+      gasPrice: inputGasPriceToHex(fast.toString())
+    });
+
+    dispatch({ type: txStatusReducer.actionTypes.TRIGGER_RESUBMIT_SUCCESS });
+    history.replace(`${ROUTE_PATHS.SEND.path}/?${query}`);
+  };
+
   const clearForm = () => {
     dispatch({ type: txStatusReducer.actionTypes.CLEAR_FORM });
   };
@@ -109,6 +160,20 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   const isFormValid = txHash.length > 0 && isHexString(txHash);
 
   const tx = txState && makeTx({ txHash, networkId, accounts, assets, networks, ...txState });
+  // cannot send from web3 or walletconnect wallets because they overwrite gas and nonce inputs.
+  const isSenderAccountPresent =
+    tx &&
+    accounts.find(
+      ({ address, wallet }) =>
+        isSameAddress(address, tx.config?.senderAccount?.address) &&
+        [
+          WalletId.WEB3,
+          WalletId.METAMASK,
+          WalletId.COINBASE,
+          WalletId.FRAME,
+          WalletId.VIEW_ONLY
+        ].includes(wallet)
+    );
 
   return (
     <ContentPanel heading={translateRaw('TX_STATUS')}>
@@ -158,6 +223,40 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
             <Button onClick={clearForm} fullwidth={true}>
               {translateRaw('TX_STATUS_GO_BACK')}
             </Button>
+            <br />
+            {tx.receipt.status === ITxStatus.PENDING && tx.config && (
+              <Tooltip
+                tooltip={
+                  "You can speed up or cancel pending transactions from accounts that you have added to your dashboard. Web3 and WalletConnect accounts will not work because they don't allow us to set gas settings."
+                }
+              >
+                <Button
+                  onClick={handleTxResubmitRedirect}
+                  disabled={!isSenderAccountPresent || resubmitting}
+                  fullwidth={true}
+                  inverted={true}
+                >
+                  {'Speed up transaction'}
+                </Button>
+              </Tooltip>
+            )}
+            <br />
+            {tx.receipt.status === ITxStatus.PENDING && tx.config && (
+              <Tooltip
+                tooltip={
+                  "You can speed up or cancel pending transactions from accounts that you have added to your dashboard. Web3 and WalletConnect accounts will not work because they don't allow us to set gas settings."
+                }
+              >
+                <Button
+                  onClick={handleTxCancelRedirect}
+                  disabled={!isSenderAccountPresent || cancelling}
+                  fullwidth={true}
+                  inverted={true}
+                >
+                  {'Cancel transaction'}
+                </Button>
+              </Tooltip>
+            )}
           </>
         )}
       </Wrapper>

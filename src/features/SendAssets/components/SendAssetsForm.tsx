@@ -236,7 +236,7 @@ const createQueryWarning = (translationId?: string) => (
 const QueryWarning = () => <WhenQueryExists displayQueryMessage={createQueryWarning} />;
 
 interface ISendFormProps extends IStepComponentProps {
-  type?: 'resubmit';
+  type?: 'resubmit' | 'cancel';
 }
 
 const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {

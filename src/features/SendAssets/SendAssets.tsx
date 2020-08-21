@@ -39,7 +39,7 @@ function SendAssets({ location }: RouteComponentProps) {
 
   useEffect(() => {
     const txConfigInit = parseQueryParams(qs.parse(location.search))(networks, assets, accounts);
-    if (txConfigInit && txConfigInit.type === 'resubmit') {
+    if (txConfigInit && ['resubmit', 'cancel'].includes(txConfigInit.type)) {
       if (!txConfigInit.txConfig || isEmpty(txConfigInit.txConfig)) {
         console.debug(
           '[PrefilledTxs]: Error - Missing params. Requires gasPrice, gasLimit, to, data, nonce, from, value, and chainId'

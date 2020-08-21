@@ -110,14 +110,19 @@ export const parseQueryParams = (queryParams: any) => (
     case 'resubmit':
       return {
         type: 'resubmit',
-        txConfig: parseResubmitParams(queryParams)(networks, assets, accounts)
+        txConfig: parseTransactionQueryParams(queryParams)(networks, assets, accounts)
+      };
+    case 'cancel':
+      return {
+        type: 'cancel',
+        txConfig: parseTransactionQueryParams(queryParams)(networks, assets, accounts)
       };
     default:
       return { type: 'default' };
   }
 };
 
-export const parseResubmitParams = (queryParams: any) => (
+export const parseTransactionQueryParams = (queryParams: any) => (
   networks: Network[],
   assets: ExtendedAsset[],
   accounts: StoreAccount[]
@@ -158,8 +163,8 @@ export const parseResubmitParams = (queryParams: any) => (
   const baseAsset = assets.find(({ uuid }) => uuid === network.baseAsset) as ExtendedAsset;
   const asset = erc20tx
     ? assets.find(
-        ({ contractAddress }) => contractAddress && isSameAddress(contractAddress as TAddress, to)
-      ) || generateGenericErc20(to, i.chainId, network.id)
+      ({ contractAddress }) => contractAddress && isSameAddress(contractAddress as TAddress, to)
+    ) || generateGenericErc20(to, i.chainId, network.id)
     : baseAsset;
   return {
     from: senderAccount.address,
