@@ -66,4 +66,17 @@ export const makeTx = ({
       receipt: makeUnknownTxReceipt(txHash as ITxHash)(ITxType.UNKNOWN, fetchedTxConfig)
     };
   }
-};
+  export const createQueryParams = (txConfig: ITxConfig, type: 'resubmit' | 'cancel') => {
+    const { to, from, gasLimit, nonce, chainId, value, data } = txConfig.rawTransaction;
+    const senderAddress = txConfig.senderAccount?.address;
+    return {
+      from: from || senderAddress,
+      type,
+      to,
+      gasLimit,
+      nonce,
+      chainId,
+      value,
+      data
+    };
+  };
