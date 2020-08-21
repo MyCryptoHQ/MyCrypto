@@ -14,6 +14,7 @@ export const getIFrameSrc = (win: Window) => {
   const hostname = getHostName(win);
   switch (hostname) {
     case 'mycrypto.com':
+    case 'rc.app.mycrypto.com':
       return 'https://beta.mycrypto.com' as TURL;
     case 'mycryptobuilds.com':
       return 'https://landing.mycryptobuilds.com' as TURL;
