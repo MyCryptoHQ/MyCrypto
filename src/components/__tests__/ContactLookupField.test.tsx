@@ -1,5 +1,5 @@
 import React from 'react';
-import { simpleRender, fireEvent, wait } from 'test-utils';
+import { simpleRender, fireEvent, waitFor } from 'test-utils';
 import { fNetwork } from '@fixtures';
 
 import { AddressBookContext, AssetContext } from '@services/Store';
@@ -115,7 +115,7 @@ describe('ContactLookupField', () => {
     const input = container.querySelector('input');
     fireEvent.click(input!);
     fireEvent.change(input!, { target: { value: ens } });
-    await wait(() => fireEvent.keyDown(input!, enter));
+    await waitFor(() => fireEvent.keyDown(input!, enter));
 
     expect(contacts.length).toBe(1);
     expect(output.data.address.value).toBe(address);
@@ -146,7 +146,7 @@ describe('ContactLookupField', () => {
     const input = container.querySelector('input');
     fireEvent.click(input!);
     fireEvent.change(input!, { target: { value: inputString } });
-    await wait(() => fireEvent.keyDown(input!, enter));
+    await waitFor(() => fireEvent.keyDown(input!, enter));
 
     expect(contacts.length).toBe(2);
     expect(output.data.address).toStrictEqual({
