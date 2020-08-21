@@ -166,7 +166,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
     accounts.find(
       ({ address, wallet }) =>
         isSameAddress(address, tx.config?.senderAccount?.address) &&
-        [
+        ![
           WalletId.WEB3,
           WalletId.METAMASK,
           WalletId.COINBASE,
