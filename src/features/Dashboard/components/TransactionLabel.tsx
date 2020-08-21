@@ -28,6 +28,7 @@ const txStatusConfig: ITxStatusConfig = {
   [ITxStatus.SUCCESS]: { color: '#75b433' },
   [ITxStatus.FAILED]: { color: '#F05424' },
   [ITxStatus.PENDING]: { color: '#424242' },
+  [ITxStatus.UNKNOWN]: { color: '#424242' },
   [ITxStatus.EMPTY]: { color: '#424242' },
   [ITxStatus.PREPARING]: { color: '#424242' },
   [ITxStatus.READY]: { color: '#424242' },

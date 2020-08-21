@@ -9,12 +9,13 @@ import { DEFAULT_NETWORK } from '@config';
 import { Typography, Selector, Tooltip } from '@components';
 
 interface Props {
-  network: NetworkId;
+  network?: NetworkId;
   accountType?: WalletId;
   className?: string;
   showTooltip?: boolean;
   disabled?: boolean;
   onChange(network: NetworkId): void;
+  filter?(network: Network): boolean;
 }
 
 const SContainer = styled('div')`
@@ -27,7 +28,10 @@ const NetworkOption = ({
   data,
   selectOption
 }: OptionProps<Network> | { data: Network; selectOption?(): void }) => (
-  <SContainer onClick={() => selectOption && selectOption(data)}>
+  <SContainer
+    data-testid={`network-selector-option-${data.id}`}
+    onClick={() => selectOption && selectOption(data)}
+  >
     <Typography value={data.name} />
   </SContainer>
 );
@@ -38,10 +42,11 @@ function NetworkSelectDropdown({
   onChange,
   showTooltip = false,
   disabled = false,
+  filter,
   ...props
 }: Props) {
   const { networks, getNetworkById } = useContext(NetworkContext);
-  const network = getNetworkById(networkId);
+  const network = networkId && getNetworkById(networkId);
 
   // set default network if none selected
   useEffect(() => {
@@ -53,16 +58,18 @@ function NetworkSelectDropdown({
   // @ADD_ACCOUNT_@todo: The difference in accountType is likely causing
   // the absence of list.
   const options = networks
+    .filter((n) => (filter ? filter(n) : true))
     // @ts-ignore CHANGE IN WALLETYPE OBJECT CAUSING accountType to error -> @todo: FIX accountType
     .filter((n) => isWalletFormatSupportedOnNetwork(n, accountType));
 
   return (
     <div {...props}>
-      <label>
+      <label htmlFor="network">
         {translate('SELECT_NETWORK_LABEL')}{' '}
         {showTooltip && <Tooltip tooltip={translate('NETWORK_TOOLTIP')} />}
       </label>
       <Selector
+        name={'network'}
         placeholder={'Select Network'}
         value={network}
         options={options}

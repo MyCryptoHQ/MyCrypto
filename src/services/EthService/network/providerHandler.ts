@@ -6,6 +6,7 @@ import {
   BaseProvider
 } from 'ethers/providers';
 import { formatEther, BigNumber } from 'ethers/utils';
+import any from '@ungap/promise-any';
 
 import { Asset, Network, IHexStrTransaction, TxObj, ITxSigned } from '@types';
 import { RPCRequests, baseToConvertedUnit, ERC20 } from '@services/EthService';
@@ -79,9 +80,26 @@ export class ProviderHandler {
     return this.injectClient((client) => client.getTransactionCount(address));
   }
 
-  /* Tested */
-  public getTransactionByHash(txhash: string): Promise<TransactionResponse> {
-    return this.injectClient((client) => client.getTransaction(txhash));
+  /* Tested - @todo Test useMultipleProviders */
+  public getTransactionByHash(
+    txhash: string,
+    useMultipleProviders = false
+  ): Promise<TransactionResponse> {
+    return this.injectClient((client) => {
+      if (!useMultipleProviders) {
+        return client.getTransaction(txhash);
+      } else {
+        const providers = (client as FallbackProvider).providers;
+        return any(
+          providers.map((p) => {
+            return new Promise(async (resolve, reject) => {
+              const tx = await p.getTransaction(txhash);
+              return tx ? resolve(tx) : reject();
+            });
+          })
+        );
+      }
+    });
   }
 
   /* Tested */

@@ -2,14 +2,15 @@ import React, { useContext } from 'react';
 import pick from 'ramda/src/pick';
 
 import { translateRaw } from '@translations';
-import { StoreContext } from '@services';
+import { StoreContext, RatesContext, SettingsContext, AssetContext } from '@services';
 import { TxReceipt, MultiTxReceipt } from '@components/TransactionFlow';
 import { StoreAccount, ITxType } from '@types';
 import { TxParcel } from '@utils';
+import { makeTxItem } from '@utils/transaction';
+import { getFiat } from '@config/fiats';
 
 import { SwapDisplayData, IAssetPair } from '../types';
 import { makeSwapTxConfig } from '../helpers';
-import { makeTxItem } from '@utils/transaction';
 
 interface Props {
   assetPair: IAssetPair;
@@ -25,6 +26,9 @@ export default function SwapTransactionReceipt({
   onSuccess
 }: Props) {
   const { assets: getAssets } = useContext(StoreContext);
+  const { getAssetByUUID } = useContext(AssetContext);
+  const { settings } = useContext(SettingsContext);
+  const { getAssetRate } = useContext(RatesContext);
   const swapDisplay: SwapDisplayData = pick(
     ['fromAsset', 'toAsset', 'fromAmount', 'toAmount'],
     assetPair
@@ -43,6 +47,12 @@ export default function SwapTransactionReceipt({
   });
 
   const txReceipts = txItems.map(({ txReceipt }) => txReceipt);
+
+  const baseAsset = getAssetByUUID(txItems[0].txConfig.network.baseAsset)!;
+
+  const baseAssetRate = getAssetRate(baseAsset);
+
+  const fiat = getFiat(settings);
 
   return txReceipts.length === 1 ? (
     <TxReceipt
@@ -64,6 +74,8 @@ export default function SwapTransactionReceipt({
       resetFlow={onSuccess}
       onComplete={onSuccess}
       swapDisplay={swapDisplay}
+      fiat={fiat}
+      baseAssetRate={baseAssetRate}
     />
   );
 }

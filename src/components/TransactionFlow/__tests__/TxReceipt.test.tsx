@@ -8,10 +8,11 @@ import { ExtendedAddressBook, ITxType, ITxStatus } from '@types';
 import { truncate, noOp } from '@utils';
 import { translateRaw } from '@translations';
 import { ZAPS_CONFIG } from '@features/DeFiZap/config';
+import { MEMBERSHIP_CONFIG } from '@features/PurchaseMembership/config';
+import { Fiats } from '@config';
 
 import { TxReceiptUI } from '../TxReceipt';
 import { constructSenderFromTxConfig } from '../helpers';
-import { MEMBERSHIP_CONFIG } from '@features/PurchaseMembership/config';
 
 const senderContact = Object.values(devContacts)[0] as ExtendedAddressBook;
 const recipientContact = Object.values(devContacts)[1] as ExtendedAddressBook;
@@ -26,7 +27,9 @@ const defaultProps: React.ComponentProps<typeof TxReceiptUI> = {
   txStatus: ITxStatus.SUCCESS,
   timestamp: 1583266291,
   displayTxReceipt: fTxReceipt,
-  resetFlow: noOp
+  resetFlow: noOp,
+  baseAssetRate: () => 250,
+  fiat: Fiats.USD
 };
 
 function getComponent(props: React.ComponentProps<typeof TxReceiptUI>) {

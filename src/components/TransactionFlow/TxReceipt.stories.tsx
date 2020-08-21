@@ -6,6 +6,7 @@ import { noOp } from '@utils';
 import { devContacts } from '@database/seed';
 import { IZapConfig, ZAPS_CONFIG, defaultZapId } from '@features/DeFiZap/config';
 import { MEMBERSHIP_CONFIG, IMembershipId } from '@features/PurchaseMembership/config';
+import { Fiats } from '@config';
 
 import { TxReceiptUI } from './TxReceipt';
 import { constructSenderFromTxConfig } from './helpers';
@@ -32,6 +33,8 @@ export const transactionReceiptPending = () => (
       recipientContact={recipientContact}
       txConfig={fTxConfig}
       sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+      baseAssetRate={assetRate}
+      fiat={Fiats.USD}
     />
   </div>
 );
@@ -49,6 +52,8 @@ export const transactionReceipt = () => (
       recipientContact={recipientContact}
       txConfig={fTxConfig}
       sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+      baseAssetRate={assetRate}
+      fiat={Fiats.USD}
     />
   </div>
 );
@@ -70,6 +75,8 @@ export const transactionReceiptDeFiZap = () => (
       recipientContact={recipientContact}
       txConfig={fTxConfig}
       sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+      baseAssetRate={assetRate}
+      fiat={Fiats.USD}
     />
   </div>
 );
@@ -90,6 +97,8 @@ export const transactionReceiptMembership = () => (
       recipientContact={recipientContact}
       sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
       resetFlow={resetFlow}
+      baseAssetRate={assetRate}
+      fiat={Fiats.USD}
     />
   </div>
 );
