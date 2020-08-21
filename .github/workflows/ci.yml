@@ -153,9 +153,8 @@ jobs:
       - name: yarn test:coverage
         run: yarn test:coverage
 
-  ##    NOT WORKING
-  #     - name: yarn report-coverage
-  #       run: yarn report-coverage
+      - name: CodeCov
+        uses: codecov/codecov-action@v1
 
   electron-osx:
     name: Build el:osx

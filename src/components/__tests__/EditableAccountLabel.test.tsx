@@ -1,5 +1,5 @@
 import React from 'react';
-import { simpleRender, fireEvent, wait } from 'test-utils';
+import { simpleRender, fireEvent, waitFor } from 'test-utils';
 
 import { translateRaw } from '@translations';
 import { DEFAULT_NETWORK } from '@config';
@@ -65,7 +65,7 @@ describe('EditableAccountLabel', () => {
     expect(input).toBeDefined();
     fireEvent.click(input);
     fireEvent.change(input, { target: { value: inputString } });
-    await wait(() => fireEvent.keyDown(input, enter));
+    await waitFor(() => fireEvent.keyDown(input, enter));
     expect(mockMappedContacts.length).toBe(initialContactsLength + 1);
   });
 
