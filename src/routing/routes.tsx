@@ -47,8 +47,8 @@ const ScreenLockForgotPassword = lazy(() =>
     /* webpackChunkName: "ScreenLockForgotPassword" */ '@features/ScreenLock/ScreenLockForgotPassword'
   )
 );
-const ReceiveAssets = lazy(() =>
-  import(/* webpackChunkName: "ReceiveAssets" */ '@features/ReceiveAssets/ReceiveAssets')
+const RequestAssets = lazy(() =>
+  import(/* webpackChunkName: "RequestAssets" */ '@features/RequestAssets/RequestAssets')
 );
 const SwapAssetsFlow = lazy(() =>
   import(/* webpackChunkName: "SwapAssetsFlow" */ '@features/SwapAssets/SwapAssetsFlow')
@@ -163,7 +163,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE): IAppR
     enabled: IS_ACTIVE_FEATURE.REQUEST_ASSETS,
     exact: true,
     requireAccounts: true,
-    component: ReceiveAssets
+    component: RequestAssets
   },
   {
     name: ROUTE_PATHS.SCREEN_LOCK_NEW.name,
