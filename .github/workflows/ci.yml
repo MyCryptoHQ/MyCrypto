@@ -154,8 +154,10 @@ jobs:
         run: yarn test:coverage
 
       ##    NOT WORKING
-      - name: yarn report-coverage
-        run: yarn report-coverage
+      - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
 
   electron-osx:
     name: Build el:osx
