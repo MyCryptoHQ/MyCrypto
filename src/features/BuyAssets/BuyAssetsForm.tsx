@@ -114,7 +114,8 @@ export const BuyAssetsForm = () => {
         initialValues={initialFormikValues}
         validationSchema={BuyFormSchema}
         onSubmit={(vals) => handleSubmission(vals, SubmissionType.SEND_TO_SELF)}
-        render={({ values, errors, touched, setFieldValue }) => {
+      >
+        {({ values, errors, touched, setFieldValue }) => {
           const relevantAccounts = accounts.filter((account) => {
             return values.asset && values.asset.networkId
               ? isAccountInNetwork(account, values.asset.networkId)
@@ -183,7 +184,7 @@ export const BuyAssetsForm = () => {
             </Form>
           );
         }}
-      />
+      </Formik>
     </ContentPanel>
   );
 };

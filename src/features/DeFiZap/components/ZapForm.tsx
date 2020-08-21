@@ -134,7 +134,8 @@ export const ZapFormUI = ({
             onComplete({ ...fields, gasPrice: standard.toString() });
           });
         }}
-        render={({ values, errors, touched, setFieldValue }) => {
+      >
+        {({ values, errors, touched, setFieldValue }) => {
           const handleNonceEstimate = async (account: IAccount) => {
             const nonce: number = await getNonce(values.network, account.address);
             setFieldValue('nonce', nonce);
@@ -199,7 +200,7 @@ export const ZapFormUI = ({
             </Form>
           );
         }}
-      />
+      </Formik>
     </div>
   );
 };

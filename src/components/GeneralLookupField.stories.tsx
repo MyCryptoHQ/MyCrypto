@@ -30,15 +30,13 @@ export default { title: 'GeneralLookupField' };
 export const defaultState = () => {
   return (
     <div className="sb-container" style={{ width: '100%', maxWidth: '300px' }}>
-      <Formik
-        initialValues={initialFormikValues}
-        onSubmit={() => undefined}
-        render={({ values }) => (
+      <Formik initialValues={initialFormikValues} onSubmit={() => undefined}>
+        {({ values }) => (
           <Form>
             <GeneralLookupField {...customProps} value={values.address} />
           </Form>
         )}
-      />
+      </Formik>
     </div>
   );
 };

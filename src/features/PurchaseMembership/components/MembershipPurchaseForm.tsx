@@ -107,7 +107,8 @@ export const MembershipFormUI = ({
         initialValues={initialFormikValues}
         validationSchema={MembershipFormSchema}
         onSubmit={noOp}
-        render={({ values, errors, touched, setFieldValue }) => {
+      >
+        {({ values, errors, touched, setFieldValue }) => {
           const handleNonceEstimate = async (account: IAccount) => {
             const nonce: number = await getNonce(values.network, account.address);
             setFieldValue('nonce', nonce);
@@ -235,7 +236,7 @@ export const MembershipFormUI = ({
             </Form>
           );
         }}
-      />
+      </Formik>
     </div>
   );
 };
