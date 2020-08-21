@@ -66,6 +66,7 @@ export {
   formatEmailMarkdown,
   formatErrorEmailMarkdown
 } from './emailFormatter';
+export { withHook } from './withHook';
 export { withContext } from './withContext';
 export { getWeb3Config, isWeb3Wallet } from './web3';
 export { toArray } from './toArray';

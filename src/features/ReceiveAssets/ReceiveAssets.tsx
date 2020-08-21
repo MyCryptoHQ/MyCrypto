@@ -9,7 +9,7 @@ import {
   buildEIP681TokenRequest
 } from '@services/EthService/utils/formatters';
 import { ContentPanel, QRCode, AccountSelector, AssetSelector } from '@components';
-import { AssetContext, getNetworkById, StoreContext } from '@services/Store';
+import { getNetworkById, StoreContext, useAssets } from '@services/Store';
 import { isValidAmount, sanitizeDecimalSeparator, noOp } from '@utils';
 import { IAccount as IIAccount } from '@types';
 import { ROUTE_PATHS } from '@config';
@@ -104,7 +104,7 @@ const ErrorMessage = styled.span`
 
 export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   const { accounts, defaultAccount, networks } = useContext(StoreContext);
-  const { assets } = useContext(AssetContext);
+  const { assets } = useAssets();
   const [networkId, setNetworkId] = useState(accounts[0].networkId);
   const network = getNetworkById(networkId, networks);
   const filteredAssets = network

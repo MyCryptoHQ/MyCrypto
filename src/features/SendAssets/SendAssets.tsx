@@ -11,9 +11,9 @@ import {
   StoreContext,
   useFeatureFlags,
   AccountContext,
-  AssetContext,
   NetworkContext,
-  ProviderHandler
+  ProviderHandler,
+  useAssets
 } from '@services';
 
 import { sendAssetsReducer, initialState } from './SendAssets.reducer';
@@ -30,7 +30,7 @@ function SendAssets() {
     setProtectTxTimeoutFunction
   } = useContext(ProtectTxContext);
   const { accounts } = useContext(StoreContext);
-  const { assets } = useContext(AssetContext);
+  const { assets } = useAssets();
   const { networks } = useContext(NetworkContext);
   const { IS_ACTIVE_FEATURE } = useFeatureFlags();
 

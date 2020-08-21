@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import { Typography } from '@components';
 import { SPACING, COLORS, BREAK_POINTS } from '@theme';
-import { AssetContext, getAssetByUUID } from '@services/Store';
+import { useAssets, getAssetByUUID } from '@services/Store';
 import { Asset } from '@types';
 
 import { IMembershipConfig, IMembershipId } from '../config';
@@ -43,7 +43,7 @@ const STypography = styled(Typography)`
 `;
 
 export default ({ plan }: { plan: IMembershipConfig }) => {
-  const { assets } = useContext(AssetContext);
+  const { assets } = useAssets();
   const planAsset = getAssetByUUID(assets)(plan.assetUUID) || ({} as Asset);
 
   return (

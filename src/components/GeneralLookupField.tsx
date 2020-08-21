@@ -1,9 +1,9 @@
-import React, { useRef, useState, useContext, useCallback, useEffect } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
 
 import { DomainStatus, InlineMessage } from '@components';
 import { Network, IReceiverAddress, ErrorObject } from '@types';
-import { getBaseAssetByNetwork, AssetContext } from '@services/Store';
+import { getBaseAssetByNetwork, useAssets } from '@services/Store';
 import { isValidETHAddress, isValidENSName } from '@services/EthService';
 import UnstoppableResolution from '@services/UnstoppableService';
 import { isValidETHRecipientAddress } from '@services/EthService/validators';
@@ -47,7 +47,7 @@ const GeneralLookupField = ({
   setFieldTouched,
   setFieldError
 }: IGeneralLookupFieldComponentProps) => {
-  const { assets } = useContext(AssetContext);
+  const { assets } = useAssets();
   const errorMessage = typeof error === 'object' ? error.message : error;
   const errorType = typeof error === 'object' ? error.type : undefined;
   const [resolutionError, setResolutionError] = useState<ResolutionError>();

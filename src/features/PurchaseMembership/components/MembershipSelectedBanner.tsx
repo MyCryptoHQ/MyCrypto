@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import { translateRaw } from '@translations';
 import { COLORS, SPACING, FONT_SIZE } from '@theme';
 import { Typography, Tooltip } from '@components';
-import { AssetContext } from '@services';
+import { useAssets } from '@services';
 import { Asset } from '@types';
 import { IMembershipConfig } from '../config';
 
@@ -48,7 +48,7 @@ const CostText = styled(Typography)`
 `;
 
 const MembershipSelectedBanner = ({ membershipSelected }: Props) => {
-  const { assets } = useContext(AssetContext);
+  const { assets } = useAssets();
   const asset = assets.find((a) => a.uuid === membershipSelected.assetUUID) as Asset;
   return (
     <BannerContainer>

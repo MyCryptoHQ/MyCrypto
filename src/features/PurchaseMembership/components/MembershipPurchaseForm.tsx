@@ -10,7 +10,7 @@ import { IAccount, Network, StoreAccount, Asset, TUuid } from '@types';
 import { AccountSelector, InlineMessage, AmountInput, Button } from '@components';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
-import { StoreContext, AssetContext, NetworkContext } from '@services/Store';
+import { StoreContext, NetworkContext, useAssets } from '@services/Store';
 import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
 import { ETHUUID, noOp } from '@utils';
@@ -76,7 +76,7 @@ export const MembershipFormUI = ({
   relevantAccounts,
   onComplete
 }: UIProps) => {
-  const { getAssetByUUID } = useContext(AssetContext);
+  const { getAssetByUUID } = useAssets();
   const { defaultAccount } = useContext(StoreContext);
   const defaultMembership = MEMBERSHIP_CONFIG[IMembershipId.sixmonths];
   const defaultAsset = (getAssetByUUID(defaultMembership.assetUUID as TUuid) || {}) as Asset;

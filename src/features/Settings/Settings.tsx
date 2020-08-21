@@ -8,7 +8,7 @@ import {
   NetworkUtils,
   SettingsContext,
   StoreContext,
-  AssetContext
+  useAssets
 } from '@services/Store';
 import { buildBalances, buildTotalFiatValue } from '@utils';
 import { AccountList, Mobile, Desktop } from '@components';
@@ -135,7 +135,7 @@ function renderNetworkNodes() {
     deleteNode
   } = useContext(NetworkContext);
   const { addNetwork, networks: allNetworks } = useContext(NetworkContext);
-  const { createAssetWithID } = useContext(AssetContext);
+  const { createAssetWithID } = useAssets();
   const { addressBook } = useContext(AddressBookContext);
   const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
   const [editNode, setEditNode] = useState<CustomNodeConfig | undefined>(undefined);

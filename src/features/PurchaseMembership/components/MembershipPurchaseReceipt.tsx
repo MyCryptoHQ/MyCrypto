@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { TxReceipt, MultiTxReceipt } from '@components/TransactionFlow';
 import { ITxType, TxParcel, StoreAccount } from '@types';
 import { makeTxItem } from '@utils/transaction';
-import { RatesContext, AssetContext, SettingsContext } from '@services';
+import { RatesContext, SettingsContext, useAssets } from '@services';
 import { getFiat } from '@config/fiats';
 
 import { IMembershipConfig } from '../config';
@@ -22,7 +22,7 @@ export default function MembershipReceipt({
   membershipSelected,
   onComplete
 }: Props) {
-  const { getAssetByUUID } = useContext(AssetContext);
+  const { getAssetByUUID } = useAssets();
   const { settings } = useContext(SettingsContext);
   const { getAssetRate } = useContext(RatesContext);
 
