@@ -154,10 +154,8 @@ jobs:
         run: yarn test:coverage
 
       ##    NOT WORKING
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: CodeCov
+        uses: codecov/codecov-action@v1
 
   electron-osx:
     name: Build el:osx
