@@ -25,14 +25,12 @@ export default { title: 'ContractLookupField' };
 
 export const defaultState = () => (
   <div className="sb-container" style={{ width: '100%', maxWidth: '300px' }}>
-    <Formik
-      initialValues={initialFormikValues}
-      onSubmit={() => undefined}
-      render={({ values }) => (
+    <Formik initialValues={initialFormikValues} onSubmit={() => undefined}>
+      {({ values }) => (
         <Form>
           <ContractLookupField {...props} value={values.address} />
         </Form>
       )}
-    />
+    </Formik>
   </div>
 );
