@@ -144,6 +144,4 @@ describe('useNetworks', () => {
     expect(result.current.isNodeNameAvailable(fNetwork.id, 'infura')).toBe(false);
     expect(result.current.isNodeNameAvailable(fNetwork.id, 'mycustomnode')).toBe(true);
   });
-
-  // TODO: MORE TESTS
 });
