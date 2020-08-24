@@ -41,15 +41,22 @@ const Ethereum: Network = {
       type: NodeType.RPC,
       service: 'MyCrypto',
       url: 'https://api.mycryptoapi.com/eth'
+    },
+    {
+      name: 'eth_ethscan',
+      type: NodeType.ETHERSCAN,
+      service: 'Etherscan',
+      url: 'https://api.etherscan.io/api'
     }
   ],
   blockExplorer: makeExplorer({
     name: 'Etherscan',
     origin: 'https://etherscan.io'
-  })
+  }),
+  selectedNode: 'eth_mycrypto'
 };
 
-export const fNetwork: Network = {
+const Ropsten: Network = {
   id: 'Ropsten',
   name: 'Ropsten',
   chainId: 3,
@@ -105,4 +112,6 @@ export const fNetwork: Network = {
   })
 };
 
-export const fNetworks = [Ethereum, fNetwork];
+export const fNetworks = [Ethereum, Ropsten];
+
+export const fNetwork = fNetworks[1];

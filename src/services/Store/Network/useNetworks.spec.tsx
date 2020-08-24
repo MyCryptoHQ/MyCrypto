@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 
-import { fNetwork, fNetworks } from '@fixtures';
+import { fNetwork, fNetworks, customNodeConfig } from '@fixtures';
 import { LSKeys, Network } from '@types';
 
 import { DataContext, IDataContext } from '../DataManager';
@@ -27,11 +27,6 @@ describe('useNetworks', () => {
     const createActions = jest.fn();
     renderUseNetworks({ createActions });
     expect(createActions).toBeCalledWith(LSKeys.NETWORKS);
-  });
-
-  it('uses get networks from DataContext ', () => {
-    const { result } = renderUseNetworks({ networks: [fNetwork] });
-    expect(result.current.networks).toEqual([fNetwork]);
   });
 
   it('addNetwork() calls model.create', () => {
@@ -76,6 +71,78 @@ describe('useNetworks', () => {
       createActions: jest.fn()
     });
     expect(result.current.getNetworkNodes(fNetworks[0].id)).toBe(fNetworks[0].nodes);
+  });
+
+  it('addNodeToNetwork() adds node to network', () => {
+    const mockUpdate = jest.fn();
+    const { result } = renderUseNetworks({
+      networks: fNetworks,
+      createActions: jest.fn(() => ({
+        update: mockUpdate
+      }))
+    });
+    result.current.addNodeToNetwork(customNodeConfig, fNetwork.id);
+    expect(mockUpdate).toBeCalledWith(fNetwork.id, {
+      ...fNetwork,
+      nodes: [...fNetwork.nodes, customNodeConfig],
+      selectedNode: customNodeConfig.name
+    });
+  });
+
+  it('updateNode() adds node to network', () => {
+    const mockUpdate = jest.fn();
+    const { result } = renderUseNetworks({
+      networks: fNetworks,
+      createActions: jest.fn(() => ({
+        update: mockUpdate
+      }))
+    });
+    result.current.updateNode(customNodeConfig, fNetworks[0].id, fNetworks[0].nodes[0].name);
+    expect(mockUpdate).toBeCalledWith(fNetworks[0].id, {
+      ...fNetworks[0],
+      nodes: [fNetworks[0].nodes[1], customNodeConfig],
+      selectedNode: customNodeConfig.name
+    });
+  });
+
+  it('deleteNode() deletes node from network', () => {
+    const mockUpdate = jest.fn();
+    const { result } = renderUseNetworks({
+      networks: fNetworks,
+      createActions: jest.fn(() => ({
+        update: mockUpdate
+      }))
+    });
+    result.current.deleteNode(fNetworks[0].nodes[0].name, fNetworks[0].id);
+    expect(mockUpdate).toBeCalledWith(fNetworks[0].id, {
+      ...fNetworks[0],
+      nodes: [fNetworks[0].nodes[1]],
+      selectedNode: fNetworks[0].nodes[1].name
+    });
+  });
+
+  it('setNetworkSelectedNode() sets the network property selectedNode', () => {
+    const mockUpdate = jest.fn();
+    const { result } = renderUseNetworks({
+      networks: fNetworks,
+      createActions: jest.fn(() => ({
+        update: mockUpdate
+      }))
+    });
+    result.current.setNetworkSelectedNode(fNetworks[0].id, fNetworks[0].nodes[1].name);
+    expect(mockUpdate).toBeCalledWith(fNetworks[0].id, {
+      ...fNetworks[0],
+      selectedNode: fNetworks[0].nodes[1].name
+    });
+  });
+
+  it('isNodeNameAvailable() detects availability of node names', () => {
+    const { result } = renderUseNetworks({
+      networks: fNetworks,
+      createActions: jest.fn()
+    });
+    expect(result.current.isNodeNameAvailable(fNetwork.id, 'infura')).toBe(false);
+    expect(result.current.isNodeNameAvailable(fNetwork.id, 'mycustomnode')).toBe(true);
   });
 
   // TODO: MORE TESTS

@@ -88,13 +88,25 @@ function useNetworks() {
 
     const { nodes } = networkToEdit;
 
+    const newNodes = [...nodes.filter((n) => n.name !== nodeName)];
+
+    const newSelectedNode = (() => {
+      if (
+        networkToEdit.selectedNode === nodeName &&
+        (networkToEdit.selectedNode === networkToEdit.autoNode ||
+          networkToEdit.autoNode === undefined)
+      ) {
+        return newNodes[0]?.name;
+      } else if (networkToEdit.selectedNode === nodeName) {
+        return networkToEdit.autoNode;
+      }
+      return networkToEdit.selectedNode;
+    })();
+
     const networkUpdate = {
       ...networkToEdit,
-      nodes: [...nodes.filter((n) => n.name !== nodeName)],
-      selectedNode:
-        networkToEdit.selectedNode === nodeName
-          ? networkToEdit.autoNode
-          : networkToEdit.selectedNode
+      nodes: newNodes,
+      selectedNode: newSelectedNode
     };
 
     updateNetwork(networkToEdit.id, networkUpdate);
