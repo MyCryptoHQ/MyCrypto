@@ -17,10 +17,9 @@ import { DEFAULT_NETWORK } from '@config';
 import { BREAK_POINTS } from '@theme';
 import translate from '@translations';
 import FlippablePanel from '@features/Settings/components/FlippablePanel';
-import { RatesContext } from '@services/RatesProvider';
 import { getFiat } from '@config/fiats';
 import { isExcludedAsset } from '@services/Store/helpers';
-import { useFeatureFlags } from '@services';
+import { useFeatureFlags, useRates } from '@services';
 
 import settingsIcon from '@assets/images/icn-settings.svg';
 import AddToAddressBook from './components/AddToAddressBook';
@@ -59,7 +58,7 @@ const StyledLayout = styled.div`
 function rendedExcludedAssetsPanel() {
   const { accounts, totals, currentAccounts } = useContext(StoreContext);
   const { settings } = useContext(SettingsContext);
-  const { getAssetRate } = useContext(RatesContext);
+  const { getAssetRate } = useRates();
   const balances: Balance[] = buildBalances(
     totals,
     currentAccounts,

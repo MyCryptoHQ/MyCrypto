@@ -3,7 +3,7 @@ import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { translateRaw } from '@translations';
-import { RatesContext } from '@services';
+import { useRates } from '@services';
 import { SettingsContext, StoreContext } from '@services/Store';
 import { TUuid, Balance } from '@types';
 import { buildBalances, buildTotalFiatValue } from '@utils';
@@ -61,7 +61,7 @@ export function WalletBreakdown() {
   const [showBalanceDetailView, setShowBalanceDetailView] = useState(false);
   const { accounts, totals, currentAccounts } = useContext(StoreContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
-  const { getAssetRate } = useContext(RatesContext);
+  const { getAssetRate } = useRates();
 
   // Adds/updates an asset in array of balances, which are later displayed in the chart, balance list and in the secondary view
   const balances: Balance[] = buildBalances(

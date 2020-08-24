@@ -6,7 +6,7 @@ import { RouterLink, Tooltip, Button } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { COLORS, BREAK_POINTS, FONT_SIZE, SPACING } from '@theme';
 import { weiToFloat, trimBN } from '@utils';
-import { StoreContext, getTotalByAsset, RatesContext } from '@services';
+import { StoreContext, getTotalByAsset, useRates } from '@services';
 import translate, { translateRaw } from '@translations';
 import { IconID } from '@components/Tooltip';
 
@@ -212,7 +212,7 @@ interface Props {
 }
 
 const ZapCard = ({ config }: Props) => {
-  const { getPoolAssetReserveRate } = useContext(RatesContext);
+  const { getPoolAssetReserveRate } = useRates();
   const { currentAccounts, assets, getDeFiAssetReserveAssets } = useContext(StoreContext);
   const IndicatorItem = config.positionDetails;
   const defiPoolBalances = assets(currentAccounts).filter(

@@ -5,11 +5,11 @@ import BN from 'bn.js';
 import { StoreContext, SettingsContext, useContacts } from '@services/Store';
 import { Amount, AssetIcon, Button, PoweredByText } from '@components';
 import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from '@services/EthService';
-import { RatesContext } from '@services/RatesProvider';
 import { convertToFiat } from '@utils';
 import translate, { translateRaw } from '@translations';
 import { ZapSelectedBanner } from '@features/DeFiZap';
 import { BREAK_POINTS, SPACING, COLORS, FONT_SIZE } from '@theme';
+import { useRates } from '@services';
 import MembershipSelectedBanner from '@features/PurchaseMembership/components/MembershipSelectedBanner';
 import { IStepComponentProps, ITxType, ExtendedContact, ISettings } from '@types';
 import { getFiat } from '@config/fiats';
@@ -125,7 +125,7 @@ export default function ConfirmTransaction({
   const { asset, baseAsset, receiverAddress, network, from } = txConfig;
 
   const { getContactByAddressAndNetworkId } = useContacts();
-  const { getAssetRate } = useContext(RatesContext);
+  const { getAssetRate } = useRates();
   const { accounts } = useContext(StoreContext);
   const { settings } = useContext(SettingsContext);
   const { state: ptxState } = useContext(ProtectTxContext);

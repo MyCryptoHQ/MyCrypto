@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import { useContext, useState, useEffect, useRef } from 'react';
 
 import { usePromise, useEffectOnce } from '@vendor';
 import { StoreContext, SettingsContext } from '@services/Store';
@@ -9,7 +9,7 @@ import { Fiats } from '@config/fiats';
 
 import { DeFiReserveMapService } from './ApiService';
 
-interface IRatesContext {
+export interface IRatesContext {
   rates: IRates;
   getRate(ticker: TTicker): number | undefined;
   getRateInCurrency(ticker: TTicker, currency: string): number | undefined;

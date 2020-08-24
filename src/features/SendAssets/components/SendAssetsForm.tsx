@@ -56,6 +56,7 @@ import {
   isValidPositiveNumber,
   toTokenBase
 } from '@services/EthService';
+import { useRates } from '@services';
 import { fetchGasPriceEstimates, getGasEstimate } from '@services/ApiService';
 import {
   DEFAULT_ASSET_DECIMAL,
@@ -64,7 +65,6 @@ import {
   GAS_PRICE_GWEI_LOWER_BOUND,
   GAS_PRICE_GWEI_UPPER_BOUND
 } from '@config';
-import { RatesContext } from '@services/RatesProvider';
 import TransactionFeeDisplay from '@components/TransactionFlow/displays/TransactionFeeDisplay';
 import {
   formatSupportEmail,
@@ -246,7 +246,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
     getAccount,
     defaultAccount: storeDefaultAccount
   } = useContext(StoreContext);
-  const { getAssetRate, getRateInCurrency, getAssetRateInCurrency } = useContext(RatesContext);
+  const { getAssetRate, getRateInCurrency, getAssetRateInCurrency } = useRates();
   const { settings } = useContext(SettingsContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.

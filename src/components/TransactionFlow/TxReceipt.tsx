@@ -25,7 +25,7 @@ import {
 } from '@types';
 import { Amount, TimeElapsed, AssetIcon, LinkOut, PoweredByText } from '@components';
 import { AccountContext, StoreContext, SettingsContext, useContacts } from '@services/Store';
-import { RatesContext } from '@services/RatesProvider';
+import { useRates } from '@services';
 import {
   ProviderHandler,
   getTimestampFromBlockNum,
@@ -92,7 +92,7 @@ export default function TxReceipt({
   disableAddTxToAccount,
   protectTxButton
 }: ITxReceiptStepProps & Props) {
-  const { getAssetRate } = useContext(RatesContext);
+  const { getAssetRate } = useRates();
   const { getContactByAddressAndNetworkId } = useContacts();
   const { addNewTxToAccount } = useContext(AccountContext);
   const { accounts } = useContext(StoreContext);

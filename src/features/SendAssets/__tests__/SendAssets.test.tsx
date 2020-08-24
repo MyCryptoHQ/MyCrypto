@@ -5,7 +5,6 @@ import { simpleRender } from 'test-utils';
 import SendAssets from '@features/SendAssets/SendAssets';
 import { FeatureFlagContext } from '@services';
 import { StoreContext, SettingsContext, DataContext } from '@services/Store';
-import { RatesContext } from '@services/RatesProvider';
 import { fSettings } from '@fixtures';
 import { IS_ACTIVE_FEATURE } from '@config';
 import { noOp } from '@utils';
@@ -54,17 +53,7 @@ describe('SendAssetsFlow', () => {
                 } as unknown) as any
               }
             >
-              <RatesContext.Provider
-                value={
-                  ({
-                    getAssetRate: jest.fn(),
-                    getRateInCurrency: jest.fn(),
-                    getAssetRateInCurrency: jest.fn()
-                  } as unknown) as any
-                }
-              >
-                <SendAssets />
-              </RatesContext.Provider>
+              <SendAssets />
             </StoreContext.Provider>
           </SettingsContext.Provider>
         </FeatureFlagContext.Provider>

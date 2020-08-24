@@ -25,7 +25,7 @@ import {
   SettingsContext,
   useContacts
 } from '@services/Store';
-import { RatesContext, useFeatureFlags } from '@services';
+import { useFeatureFlags, useRates } from '@services';
 import { getFiat } from '@config/fiats';
 
 import { DashboardPanel } from './DashboardPanel';
@@ -351,7 +351,7 @@ const buildAccountTable = (
   const { IS_ACTIVE_FEATURE } = useFeatureFlags();
   const [sortingState, setSortingState] = useState(initialSortingState);
   const { totalFiat } = useContext(StoreContext);
-  const { getAssetRate } = useContext(RatesContext);
+  const { getAssetRate } = useRates();
   const { settings } = useContext(SettingsContext);
   const { contacts } = useContacts();
   const { toggleAccountPrivacy } = useContext(AccountContext);
