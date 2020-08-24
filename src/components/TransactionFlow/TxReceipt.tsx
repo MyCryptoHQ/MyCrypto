@@ -136,6 +136,8 @@ export default function TxReceipt({
                   )
                 );
               });
+            } else if (txStatus === ITxStatus.UNKNOWN) {
+              setTxStatus(ITxStatus.PENDING);
             }
           }
         );
