@@ -8,7 +8,6 @@ import { getDPath, getDPaths, useNetworks, INetworkContext } from '@services';
 import { EXT_URLS } from '@config';
 import { WalletFactory, ChainCodeResponse } from '@services/WalletService';
 import { IS_ELECTRON, withHook } from '@utils';
-import { pipe } from '@vendor';
 
 import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWallets from './DeterministicWallets';
@@ -177,4 +176,4 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
   }
 }
 
-export const LedgerNanoSDecrypt = pipe(withHook(useNetworks))(LedgerNanoSDecryptClass);
+export const LedgerNanoSDecrypt = withHook(useNetworks)(LedgerNanoSDecryptClass);

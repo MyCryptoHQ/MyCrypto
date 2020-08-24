@@ -9,7 +9,6 @@ import { FormData, WalletId } from '@types';
 import { getDPath, getDPaths } from '@services/EthService';
 import { WalletFactory } from '@services/WalletService';
 import { useNetworks, INetworkContext } from '@services';
-import { pipe } from '@vendor';
 
 import DeterministicWallets from './DeterministicWallets';
 import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
@@ -172,4 +171,4 @@ class MnemonicDecryptClass extends PureComponent<OwnProps & INetworkContext, Sta
   };
 }
 
-export const MnemonicDecrypt = pipe(withHook(useNetworks))(MnemonicDecryptClass);
+export const MnemonicDecrypt = withHook(useNetworks)(MnemonicDecryptClass);

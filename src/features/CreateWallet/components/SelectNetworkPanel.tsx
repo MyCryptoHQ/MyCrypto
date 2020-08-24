@@ -6,7 +6,6 @@ import translate, { translateRaw } from '@translations';
 import { ExtendedContentPanel, InlineMessage, NetworkSelectDropdown } from '@components';
 import { WalletId, NetworkId } from '@types';
 import { INetworkContext, useNetworks } from '@services';
-import { pipe } from '@vendor';
 import { withHook } from '@utils';
 import { PanelProps } from '../CreateWallet';
 
@@ -78,4 +77,4 @@ class SelectNetworkPanel extends Component<Props & INetworkContext> {
   }
 }
 
-export default pipe(withHook(useNetworks))(SelectNetworkPanel);
+export default withHook(useNetworks)(SelectNetworkPanel);

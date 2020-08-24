@@ -8,7 +8,6 @@ import { WalletId, FormData } from '@types';
 import { getDPath, getDPaths, useNetworks, INetworkContext } from '@services';
 import { WalletFactory, ChainCodeResponse } from '@services/WalletService';
 import { EXT_URLS } from '@config';
-import { pipe } from '@vendor';
 import { withHook } from '@utils';
 
 import DeterministicWallets from './DeterministicWallets';
@@ -159,4 +158,4 @@ class TrezorDecryptClass extends PureComponent<OwnProps & INetworkContext, State
   }
 }
 
-export const TrezorDecrypt = pipe(withHook(useNetworks))(TrezorDecryptClass);
+export const TrezorDecrypt = withHook(useNetworks)(TrezorDecryptClass);
