@@ -180,16 +180,14 @@ export default function TxReceipt({
     }
   }, [displayTxReceipt, txConfig.baseAsset]);
 
-  const senderContact =
-    txConfig.senderAccount &&
-    getContactByAddressAndNetworkId(txConfig.senderAccount.address, txConfig.network.id);
+  const sender = constructSenderFromTxConfig(txConfig, accounts);
+
+  const senderContact = getContactByAddressAndNetworkId(sender.address, txConfig.network.id);
 
   const recipientContact = getContactByAddressAndNetworkId(
     txConfig.receiverAddress,
     txConfig.network.id
   );
-
-  const sender = constructSenderFromTxConfig(txConfig, accounts);
 
   const fiat = getFiat(settings);
 
