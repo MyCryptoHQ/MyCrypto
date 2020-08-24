@@ -9,7 +9,7 @@ import { Fiats } from '@config/fiats';
 
 import { DeFiReserveMapService } from './ApiService';
 
-interface State {
+interface IRatesContext {
   rates: IRates;
   getRate(ticker: TTicker): number | undefined;
   getRateInCurrency(ticker: TTicker, currency: string): number | undefined;
@@ -56,11 +56,10 @@ const destructureCoinGeckoIds = (rates: IRates, assets: StoreAsset[]): IRates =>
   return Object.keys(rates).reduce(updateRateObj, {} as IRates);
 };
 
-export const RatesContext = createContext({} as State);
-
-export function RatesProvider({ children }: { children: React.ReactNode }) {
+function useRates() {
   const { assets: getAssets } = useContext(StoreContext);
   const { settings, updateSettingsRates } = useContext(SettingsContext);
+  const rates = settings.rates;
   const [reserveRateMapping, setReserveRateMapping] = useState({} as ReserveMappingListObject);
   const worker = useRef<undefined | PollingService>();
   const currentAssets = getAssets();
@@ -71,7 +70,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
     return acc;
   }, [] as string[]);
   const updateRates = (data: IRates) =>
-    updateSettingsRates({ ...state.rates, ...destructureCoinGeckoIds(data, currentAssets) });
+    updateSettingsRates({ ...rates, ...destructureCoinGeckoIds(data, currentAssets) });
 
   // update rate worker success handler with updated settings context
   useEffect(() => {
@@ -108,45 +107,53 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
     };
   }, [geckoIds.length]);
 
-  const state: State = {
-    get rates() {
-      return settings.rates;
-    },
-    getRate: (ticker: TTicker) => {
-      if (!state.rates[ticker]) return DEFAULT_FIAT_RATE;
-      return settings && settings.fiatCurrency
-        ? state.rates[ticker][(settings.fiatCurrency as string).toLowerCase()]
-        : DEFAULT_FIAT_RATE;
-    },
-    getRateInCurrency: (ticker: TTicker, currency: string) => {
-      if (!state.rates[ticker]) return DEFAULT_FIAT_RATE;
-      return state.rates[ticker][currency.toLowerCase()];
-    },
-    getAssetRate: (asset: Asset) => {
-      const uuid = asset.uuid;
-      if (!state.rates[uuid]) return DEFAULT_FIAT_RATE;
-      return settings && settings.fiatCurrency
-        ? state.rates[uuid][(settings.fiatCurrency as string).toLowerCase()]
-        : DEFAULT_FIAT_RATE;
-    },
-    getAssetRateInCurrency: (asset: Asset, currency: string) => {
-      const uuid = asset.uuid;
-      if (!state.rates[uuid]) return DEFAULT_FIAT_RATE;
-      return state.rates[uuid][currency.toLowerCase()];
-    },
-    getPoolAssetReserveRate: (uuid: string, assets: Asset[]) => {
-      const reserveRateObject = reserveRateMapping[uuid];
-      if (!reserveRateObject) return [];
-      return reserveRateObject.reserveRates
-        .map((item: ReserveMappingRate) => {
-          const detectedReserveAsset = assets.find((asset) => asset.uuid === item.assetId);
-          if (!detectedReserveAsset) return;
-
-          return { ...detectedReserveAsset, reserveExchangeRate: item.rate };
-        })
-        .filter(notUndefined);
-    }
+  const getRate = (ticker: TTicker) => {
+    if (!rates[ticker]) return DEFAULT_FIAT_RATE;
+    return settings && settings.fiatCurrency
+      ? rates[ticker][(settings.fiatCurrency as string).toLowerCase()]
+      : DEFAULT_FIAT_RATE;
   };
 
-  return <RatesContext.Provider value={state}>{children}</RatesContext.Provider>;
+  const getRateInCurrency = (ticker: TTicker, currency: string) => {
+    if (!rates[ticker]) return DEFAULT_FIAT_RATE;
+    return rates[ticker][currency.toLowerCase()];
+  };
+
+  const getAssetRate = (asset: Asset) => {
+    const uuid = asset.uuid;
+    if (!rates[uuid]) return DEFAULT_FIAT_RATE;
+    return settings && settings.fiatCurrency
+      ? rates[uuid][(settings.fiatCurrency as string).toLowerCase()]
+      : DEFAULT_FIAT_RATE;
+  };
+
+  const getAssetRateInCurrency = (asset: Asset, currency: string) => {
+    const uuid = asset.uuid;
+    if (!rates[uuid]) return DEFAULT_FIAT_RATE;
+    return rates[uuid][currency.toLowerCase()];
+  };
+
+  const getPoolAssetReserveRate = (uuid: string, assets: Asset[]) => {
+    const reserveRateObject = reserveRateMapping[uuid];
+    if (!reserveRateObject) return [];
+    return reserveRateObject.reserveRates
+      .map((item: ReserveMappingRate) => {
+        const detectedReserveAsset = assets.find((asset) => asset.uuid === item.assetId);
+        if (!detectedReserveAsset) return;
+
+        return { ...detectedReserveAsset, reserveExchangeRate: item.rate };
+      })
+      .filter(notUndefined);
+  };
+
+  return {
+    rates,
+    getRate,
+    getRateInCurrency,
+    getAssetRate,
+    getAssetRateInCurrency,
+    getPoolAssetReserveRate
+  };
 }
+
+export default useRates;
