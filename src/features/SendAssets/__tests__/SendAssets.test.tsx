@@ -4,7 +4,7 @@ import { simpleRender } from 'test-utils';
 
 import SendAssets from '@features/SendAssets/SendAssets';
 import { FeatureFlagContext } from '@services';
-import { StoreContext, AddressBookContext, SettingsContext, DataContext } from '@services/Store';
+import { StoreContext, SettingsContext, DataContext } from '@services/Store';
 import { RatesContext } from '@services/RatesProvider';
 import { fSettings } from '@fixtures';
 import { IS_ACTIVE_FEATURE } from '@config';
@@ -28,6 +28,7 @@ describe('SendAssetsFlow', () => {
       <DataContext.Provider
         value={
           {
+            addressBook: [],
             createActions: jest.fn()
           } as any
         }
@@ -62,11 +63,7 @@ describe('SendAssetsFlow', () => {
                   } as unknown) as any
                 }
               >
-                <AddressBookContext.Provider
-                  value={({ addressBook: [], getContactByAddress: jest.fn() } as unknown) as any}
-                >
-                  <SendAssets />
-                </AddressBookContext.Provider>
+                <SendAssets />
               </RatesContext.Provider>
             </StoreContext.Provider>
           </SettingsContext.Provider>

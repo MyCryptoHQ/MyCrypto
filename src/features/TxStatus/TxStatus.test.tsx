@@ -3,13 +3,7 @@ import { MemoryRouter } from 'react-router';
 import { simpleRender, waitFor, fireEvent, screen } from 'test-utils';
 import selectEvent from 'react-select-event';
 
-import {
-  StoreContext,
-  AddressBookContext,
-  SettingsContext,
-  RatesContext,
-  DataContext
-} from '@services';
+import { StoreContext, SettingsContext, RatesContext, DataContext } from '@services';
 import { translateRaw } from '@translations';
 import { fAccount, fNetwork, fAssets, fNetworks } from '@fixtures';
 
@@ -32,20 +26,18 @@ describe('TxStatus', () => {
           {
             assets: fAssets,
             networks: fNetworks,
+            addressBook: [],
+            contracts: [],
             createActions: jest.fn()
           } as any
         }
       >
         <StoreContext.Provider value={{ accounts: [fAccount] } as any}>
-          <AddressBookContext.Provider
-            value={{ getContactByAddressAndNetworkId: jest.fn() } as any}
-          >
-            <SettingsContext.Provider value={{ settings: { fiatCurrency: 'USD' } } as any}>
-              <RatesContext.Provider value={{ getAssetRate: jest.fn() } as any}>
-                <TxStatus />
-              </RatesContext.Provider>
-            </SettingsContext.Provider>
-          </AddressBookContext.Provider>
+          <SettingsContext.Provider value={{ settings: { fiatCurrency: 'USD' } } as any}>
+            <RatesContext.Provider value={{ getAssetRate: jest.fn() } as any}>
+              <TxStatus />
+            </RatesContext.Provider>
+          </SettingsContext.Provider>
         </StoreContext.Provider>
       </DataContext.Provider>
     </MemoryRouter>

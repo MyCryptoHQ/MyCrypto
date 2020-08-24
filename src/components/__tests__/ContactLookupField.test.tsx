@@ -2,10 +2,9 @@ import React from 'react';
 import { simpleRender, fireEvent, waitFor } from 'test-utils';
 import { fNetwork } from '@fixtures';
 
-import { AddressBookContext, DataContext } from '@services/Store';
-import { AddressBook, ExtendedAddressBook, TUuid, IReceiverAddress, TAddress } from '@types';
+import { DataContext } from '@services/Store';
+import { AddressBook, ExtendedAddressBook, TUuid, IReceiverAddress } from '@types';
 import { addressBook } from '@database/seed/addressBook';
-import { isSameAddress } from '@utils';
 
 import ContactLookupField from '../ContactLookupField';
 
@@ -45,28 +44,17 @@ function getComponent(
       value={
         ({
           assets: [{ uuid: fNetwork.baseAsset }],
-          createActions: jest.fn()
+          addressBook: contacts,
+          contracts: [],
+          createActions: jest.fn(() => ({ create: (c: ExtendedAddressBook) => contacts.push(c) }))
         } as unknown) as any
       }
     >
-      <AddressBookContext.Provider
-        value={
-          ({
-            addressBook: contacts,
-            getContactByAddress: (address: string) =>
-              contacts.find((x: ExtendedAddressBook) =>
-                isSameAddress(x.address as TAddress, address as TAddress)
-              ),
-            createAddressBooks: (contact: AddressBook) => contacts.push(contact)
-          } as unknown) as any
-        }
-      >
-        <ContactLookupField
-          {...props}
-          value={output.data.address}
-          setFieldValue={(_, value) => setFormValue(value)}
-        />
-      </AddressBookContext.Provider>
+      <ContactLookupField
+        {...props}
+        value={output.data.address}
+        setFieldValue={(_, value) => setFormValue(value)}
+      />
     </DataContext.Provider>
   );
 }

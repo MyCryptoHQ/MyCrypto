@@ -7,6 +7,7 @@ import { ExtendedAddressBook, ITxType } from '@types';
 import { truncate } from '@utils';
 import { translateRaw } from '@translations';
 import { ZAPS_CONFIG } from '@features/DeFiZap/config';
+import { DataContext } from '@services';
 
 import { ConfirmTransactionUI } from '../ConfirmTransaction';
 import { constructSenderFromTxConfig } from '../helpers';
@@ -26,7 +27,13 @@ const defaultProps: React.ComponentProps<typeof ConfirmTransactionUI> = {
 };
 
 function getComponent(props: React.ComponentProps<typeof ConfirmTransactionUI>) {
-  return simpleRender(<ConfirmTransactionUI {...props} />);
+  return simpleRender(
+    <DataContext.Provider
+      value={{ addressBook: [], contracts: [], createActions: jest.fn() } as any}
+    >
+      <ConfirmTransactionUI {...props} />
+    </DataContext.Provider>
+  );
 }
 
 describe('ConfirmTransaction', () => {

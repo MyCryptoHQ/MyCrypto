@@ -10,6 +10,7 @@ import { translateRaw } from '@translations';
 import { ZAPS_CONFIG } from '@features/DeFiZap/config';
 import { MEMBERSHIP_CONFIG } from '@features/PurchaseMembership/config';
 import { Fiats } from '@config';
+import { DataContext } from '@services';
 
 import { TxReceiptUI } from '../TxReceipt';
 import { constructSenderFromTxConfig } from '../helpers';
@@ -35,7 +36,11 @@ const defaultProps: React.ComponentProps<typeof TxReceiptUI> = {
 function getComponent(props: React.ComponentProps<typeof TxReceiptUI>) {
   return simpleRender(
     <Router>
-      <TxReceiptUI {...props} />
+      <DataContext.Provider
+        value={{ addressBook: [], contracts: [], createActions: jest.fn() } as any}
+      >
+        <TxReceiptUI {...props} />
+      </DataContext.Provider>
     </Router>
   );
 }
