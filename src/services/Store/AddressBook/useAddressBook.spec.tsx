@@ -3,6 +3,7 @@ import { renderHook, act } from '@testing-library/react-hooks';
 
 import { fAddressBook } from '@fixtures';
 import { LSKeys, TUuid, ExtendedAddressBook, TAddress } from '@types';
+import { omit } from '@vendor';
 
 import { DataContext, IDataContext } from '../DataManager';
 import useAddressBook from './useAddressBook';
@@ -39,7 +40,7 @@ describe('useAddressBook', () => {
       createActions: jest.fn(() => ({ create: mockCreate }))
     });
     result.current.createAddressBooks(fAddressBook[0]);
-    expect(mockCreate).toBeCalledWith(fAddressBook[0]);
+    expect(mockCreate).toBeCalledWith(expect.objectContaining(omit(['uuid'], fAddressBook[0])));
   });
 
   it('createAddressBooksWithID() calls model.createWithId', () => {
@@ -118,14 +119,15 @@ describe('useAddressBook', () => {
 
   it('restoreDeletedAddressBook() calls model.createWithID', () => {
     const mockCreate = jest.fn();
+    const mockDestroy = jest.fn();
     const { result } = renderUseAddressBook({
       addressBook: fAddressBook,
-      createActions: jest.fn(() => ({ createWithID: mockCreate }))
+      createActions: jest.fn(() => ({ createWithID: mockCreate, destroy: mockDestroy }))
     });
     act(() => {
       result.current.deleteAddressBooks(fAddressBook[0].uuid);
     });
-    expect(result.current.addressBook.length).toBe(1);
+    expect(mockDestroy).toBeCalledWith(fAddressBook[0]);
     act(() => {
       result.current.restoreDeletedAddressBook(fAddressBook[0].uuid);
     });
