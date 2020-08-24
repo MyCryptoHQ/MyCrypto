@@ -1,7 +1,7 @@
 import { bufferToHex } from 'ethereumjs-util';
 
 import { Web3Node, getTransactionFields, makeTransaction } from '@services/EthService';
-import { INode } from '@types';
+import { INode, ITxFromAddress } from '@types';
 import { IFullWallet } from '../IWallet';
 
 export default class Web3Wallet implements IFullWallet {
@@ -45,7 +45,7 @@ export default class Web3Wallet implements IFullWallet {
     const { to, value, gasLimit: gas, gasPrice, data, nonce, chainId } = getTransactionFields(
       transactionInstance
     );
-    const from = this.address;
+    const from = this.address as ITxFromAddress;
     const web3Tx = {
       from,
       to,

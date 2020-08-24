@@ -5,12 +5,12 @@ import BasePage from './base-page.po';
 import { getTransValueByKey } from './translation-utils';
 
 export default class SendAssetsPage extends BasePage {
-  async navigateToPage() {
-    this.navigateTo(PAGES.SEND);
+  async navigateToPage(queryString) {
+    this.navigateTo(`${PAGES.SEND}/${queryString}`);
   }
 
-  async waitPageLoaded() {
-    await this.waitForPage(PAGES.SEND);
+  async waitPageLoaded(queryString) {
+    await this.waitForPage(`${PAGES.SEND}/${queryString}`);
   }
 
   async fillForm() {

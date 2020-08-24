@@ -1,8 +1,15 @@
 {
   "defaultSeverity": "error",
-  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "extends": [
+    "tslint:recommended",
+    "tslint-react",
+    "tslint-config-prettier"
+  ],
   "linterOptions": {
-    "exclude": ["src/vendor/**/*", "src/types/vendor/*"]
+    "exclude": [
+      "src/vendor/**/*",
+      "src/types/vendor/*"
+    ]
   },
   "jsRules": {
     "quotemark": false,
@@ -13,24 +20,38 @@
   "rules": {
     "quotemark": false,
     "trailing-comma": false,
-    "curly": ["true", "same-line-single-line"],
+    "curly": [
+      "true",
+      "same-line-single-line"
+    ],
     "object-literal-sort-keys": false,
     "arrow-return-shorthand": true,
     "prefer-method-signature": true,
     "arrow-parens": false,
     "no-unnecessary-type-assertion": true,
-    "array-type": [true, "array"],
+    "array-type": [
+      true,
+      "array"
+    ],
     "jsx-no-lambda": false,
     "interface-name": false,
     "no-duplicate-imports": true,
-    "no-console": [true, "log"],
+    "no-console": [
+      true,
+      "log"
+    ],
     "no-var-requires": false,
     "jsx-wrap-multiline": false,
     "comment-format": false,
     "ordered-imports": false,
     "react-anchor-blank-noopener": true,
-    "no-http-string": [true, "http://localhost:.*"],
+    "no-http-string": [
+      true,
+      "http://localhost:.*"
+    ],
     "react-no-dangerous-html": true
   },
-  "rulesDirectory": ["node_modules/tslint-microsoft-contrib"]
+  "rulesDirectory": [
+    "node_modules/tslint-microsoft-contrib"
+  ]
 }

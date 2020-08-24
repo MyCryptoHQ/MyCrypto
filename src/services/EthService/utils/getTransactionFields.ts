@@ -1,6 +1,14 @@
 import { Transaction as Tx } from 'ethereumjs-tx';
 
-import { IHexStrTransaction } from '@types';
+import {
+  IHexStrTransaction,
+  ITxToAddress,
+  ITxNonce,
+  ITxGasLimit,
+  ITxGasPrice,
+  ITxData,
+  ITxValue
+} from '@types';
 import { hexEncodeData, hexEncodeQuantity } from './hexEncode';
 
 export const getTransactionFields = (t: Tx): IHexStrTransaction => {
@@ -9,14 +17,14 @@ export const getTransactionFields = (t: Tx): IHexStrTransaction => {
   const chainId = t.getChainId();
 
   return {
-    value: hexEncodeQuantity(value),
-    data: hexEncodeData(data),
+    value: hexEncodeQuantity(value) as ITxValue,
+    data: hexEncodeData(data) as ITxData,
     // To address is unchecksummed, which could cause mismatches in comparisons
-    to: hexEncodeData(to),
+    to: hexEncodeData(to) as ITxToAddress,
     // Everything else is as-is
-    nonce: hexEncodeQuantity(nonce),
-    gasPrice: hexEncodeQuantity(gasPrice),
-    gasLimit: hexEncodeQuantity(gasLimit),
+    nonce: hexEncodeQuantity(nonce) as ITxNonce,
+    gasPrice: hexEncodeQuantity(gasPrice) as ITxGasPrice,
+    gasLimit: hexEncodeQuantity(gasLimit) as ITxGasLimit,
     chainId
   };
 };

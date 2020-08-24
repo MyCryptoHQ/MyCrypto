@@ -58,7 +58,9 @@ export {
   makeTxConfigFromTxReceipt,
   makeTxConfigFromTxResponse,
   makeFinishedTxReceipt,
-  makeUnknownTxReceipt
+  makeUnknownTxReceipt,
+  guessIfErc20Tx,
+  deriveTxRecipientsAndAmount
 } from './transaction';
 export {
   formatErrorEmail,

@@ -23,6 +23,7 @@ import { makePendingTxReceipt, makeTxConfigFromSignedTx, bigify } from '@utils';
 import { processFormDataToTx } from './helpers';
 
 interface State {
+  type?: 'resubmit';
   txConfig?: ITxConfig;
   txReceipt?: ITxReceipt;
   signedTx?: ISignedTx;
@@ -59,6 +60,11 @@ export const sendAssetsReducer = (state: State, action: ReducerAction): State =>
         value: hexWeiToString(rawTransaction.value)
       };
       return { ...state, txConfig };
+    }
+
+    case sendAssetsReducer.actionTypes.SET_TXCONFIG: {
+      const { txConfig, type } = action.payload;
+      return { ...state, type, txConfig };
     }
 
     case sendAssetsReducer.actionTypes.SIGN_SUCCESS: {
@@ -125,7 +131,8 @@ sendAssetsReducer.actionTypes = {
   REQUEST_SEND: 'REQUEST_SEND',
   SEND_SUCCESS: 'SEND_SUCCESS',
   REQUEST_RESUBMIT: 'REQUEST_RESUBMIT',
-  RESET: 'RESET'
+  RESET: 'RESET',
+  SET_TXCONFIG: 'SET_TXCONFIG'
 };
 
 const createPendingTxReceipt = (state: State, payload: ITxHash) => {

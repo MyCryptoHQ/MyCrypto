@@ -5,7 +5,16 @@ import { BigNumber } from 'ethers/utils';
 import { Wei, Address } from '@services/EthService';
 
 import { Asset } from './asset';
-import { ITxType, ITxStatus } from './transactionFlow';
+import {
+  ITxType,
+  ITxStatus,
+  ITxToAddress,
+  ITxValue,
+  ITxGasPrice,
+  ITxData,
+  ITxNonce,
+  ITxFromAddress
+} from './transactionFlow';
 import { TAddress } from './address';
 
 // By only dealing with Buffers / BN, dont have to mess around with cleaning strings
@@ -24,23 +33,23 @@ export interface ITransaction {
 }
 
 export interface IHexStrTransaction {
-  to: string;
-  value: string;
-  data: string;
+  to: ITxToAddress;
+  value: ITxValue;
+  data: ITxData;
   gasLimit: any; // number? string?
-  gasPrice: string;
-  nonce: string;
+  gasPrice: ITxGasPrice;
+  nonce: ITxNonce;
   chainId: number;
 }
 
 export interface IHexStrWeb3Transaction {
-  from: string;
-  to: string;
-  value: string;
-  data: string;
-  gas: string;
-  gasPrice: string;
-  nonce: string;
+  from: ITxFromAddress;
+  to: ITxToAddress;
+  value: ITxValue;
+  data: ITxData;
+  gas: string; // 21000 - not hex
+  gasPrice: ITxGasPrice;
+  nonce: ITxNonce;
   chainId: number;
 }
 

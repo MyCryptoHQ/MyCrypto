@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 
-import { ITxObject, StoreAccount, ITxConfig, TAddress } from '@types';
+import { ITxObject, StoreAccount, ITxConfig, ITxToAddress, ITxData } from '@types';
 import {
   inputValueToHex,
   inputGasPriceToHex,
@@ -26,7 +26,7 @@ export const createApproveTx = (payload: MembershipSimpleTxFormFull): Partial<IT
     // @ts-ignore Contract Address should be set if asset is ERC20
     to: payload.asset.contractAddress,
     from: payload.account.address,
-    data,
+    data: data as ITxData,
     chainId: DEFAULT_NETWORK_CHAINID,
     gasPrice: inputGasPriceToHex(payload.gasPrice),
     value: inputValueToHex('0')
@@ -46,9 +46,9 @@ export const createPurchaseTx = (payload: MembershipSimpleTxFormFull): Partial<I
 
   return {
     from: payload.account.address,
-    to: membershipSelected.contractAddress,
+    to: membershipSelected.contractAddress as ITxToAddress,
     value: isERC20Tx(payload.asset) ? inputValueToHex('0') : inputValueToHex(payload.amount),
-    data,
+    data: data as ITxData,
     gasPrice: inputGasPriceToHex(payload.gasPrice),
     chainId: DEFAULT_NETWORK_CHAINID
   };
@@ -67,7 +67,7 @@ export const makePurchaseMembershipTxConfig = (
   const txConfig: ITxConfig = {
     from: address,
     amount: membershipSelected.price,
-    receiverAddress: to as TAddress,
+    receiverAddress: to,
     senderAccount: account,
     network,
     asset,

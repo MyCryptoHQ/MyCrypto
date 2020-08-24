@@ -2,7 +2,7 @@ import sortBy from 'lodash/sortBy';
 import cloneDeep from 'lodash/cloneDeep';
 import { bufferToHex } from 'ethereumjs-util';
 
-import { StoreAccount, NetworkId, ITxConfig, ITxObject, TAddress } from '@types';
+import { StoreAccount, NetworkId, ITxConfig, ITxObject } from '@types';
 import { WALLET_STEPS } from '@components';
 import { getAssetByUUID, hexToString, hexWeiToString, inputValueToHex } from '@services';
 import { AbiFunction } from '@services/EthService/contracts/ABIFunction';
@@ -95,7 +95,7 @@ export const makeContractInteractionTxConfig = (
   const txConfig: ITxConfig = {
     from: address,
     amount,
-    receiverAddress: to as TAddress,
+    receiverAddress: to,
     senderAccount: account,
     network,
     asset: baseAsset,

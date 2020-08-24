@@ -64,6 +64,13 @@ export {
 export {
   ISignedTx,
   ITxObject,
+  ITxToAddress,
+  ITxValue,
+  ITxGasLimit,
+  ITxGasPrice,
+  ITxData,
+  ITxNonce,
+  ITxFromAddress,
   ITxConfig,
   ITxStatus,
   ITxHistoryStatus,

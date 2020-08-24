@@ -9,7 +9,8 @@ import {
   ITxHash,
   ITxObject,
   ITxReceipt,
-  ITxSigned
+  ITxSigned,
+  ITxToAddress
 } from '@types';
 import { isWeb3Wallet, useTxMulti, useScreenSize } from '@utils';
 import { BREAK_POINTS } from '@theme';
@@ -137,7 +138,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>, head
                 await initWith(() => Promise.resolve([{}]), formAccount, formNetwork);
                 setProtectTx({
                   ...processFormDataToTx(payload),
-                  to: PROTECTED_TX_FEE_ADDRESS
+                  to: PROTECTED_TX_FEE_ADDRESS as ITxToAddress
                 });
               }
             }

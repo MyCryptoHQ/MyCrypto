@@ -2,7 +2,7 @@ import { addHexPrefix } from 'ethereumjs-util';
 import BN from 'bn.js';
 import axios, { AxiosInstance } from 'axios';
 
-import { TTicker, ITxObject, TAddress } from '@types';
+import { TTicker, ITxObject, TAddress, ITxValue, ITxData } from '@types';
 import { DEXAG_MYC_TRADE_CONTRACT, DEXAG_MYC_HANDLER_CONTRACT, DEX_BASE_URL } from '@config';
 import { ERC20 } from '@services/EthService';
 
@@ -107,7 +107,7 @@ export default class DexService {
           ? [
               formatApproveTx({
                 to: data.metadata.input.address,
-                value: data.metadata.input.amount
+                value: data.metadata.input.amount as ITxValue
               })
             ]
           : []),
@@ -178,9 +178,9 @@ export const formatApproveTx = ({ to, value }: Partial<ITxObject>): Partial<ITxO
 
   return {
     to,
-    data,
+    data: data as ITxData,
     chainId: 1,
-    value: addHexPrefix(new BN('0').toString())
+    value: addHexPrefix(new BN('0').toString()) as ITxValue
   };
 };
 
@@ -188,7 +188,7 @@ export const formatTradeTx = ({ to, data, value }: Partial<ITxObject>): Partial<
   return {
     to,
     data,
-    value: addHexPrefix(new BN(value || '0').toString(16)),
+    value: addHexPrefix(new BN(value || '0').toString(16)) as ITxValue,
     chainId: 1
   };
 };

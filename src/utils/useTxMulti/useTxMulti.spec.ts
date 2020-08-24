@@ -1,14 +1,14 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import isEmpty from 'ramda/src/isEmpty';
 import { fAccount, fNetwork } from '@fixtures';
+import { ITxObject, ITxToAddress, ITxValue, ITxData } from '@types';
 
 import { useTxMulti } from './useTxMulti';
-import { ITxObject } from '@types';
 
 const createTxRaw = (idx: number): Partial<ITxObject> => ({
-  to: 'address' + idx,
-  value: 'any',
-  data: 'empty'
+  to: ('address' + idx) as ITxToAddress,
+  value: 'any' as ITxValue,
+  data: 'empty' as ITxData
 });
 
 describe('useTxMulti', () => {

@@ -1,5 +1,6 @@
 import React, { useContext, useReducer, useEffect } from 'react';
-
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import * as qs from 'query-string';
 import { GeneralStepper, TxReceiptWithProtectTx } from '@components';
 import { isWeb3Wallet, withProtectTxProvider } from '@utils';
 import { ITxReceipt, ISignedTx, IFormikFields, ITxConfig } from '@types';
@@ -15,6 +16,7 @@ import {
   useAssets,
   useNetworks
 } from '@services';
+import { isEmpty } from '@vendor';
 
 import { sendAssetsReducer, initialState } from './SendAssets.reducer';
 import {
@@ -22,8 +24,9 @@ import {
   SendAssetsFormWithProtectTx,
   SignTransactionWithProtectTx
 } from './components';
+import { parseQueryParams } from './helpers';
 
-function SendAssets() {
+function SendAssets({ location }: RouteComponentProps) {
   const [reducerState, dispatch] = useReducer(sendAssetsReducer, initialState);
   const {
     state: { protectTxEnabled, protectTxShow, isPTXFree },
@@ -33,6 +36,22 @@ function SendAssets() {
   const { assets } = useAssets();
   const { networks } = useNetworks();
   const { IS_ACTIVE_FEATURE } = useFeatureFlags();
+
+  useEffect(() => {
+    const txConfigInit = parseQueryParams(qs.parse(location.search))(networks, assets, accounts);
+    if (txConfigInit && txConfigInit.type === 'resubmit') {
+      if (!txConfigInit.txConfig || isEmpty(txConfigInit.txConfig)) {
+        console.debug(
+          '[PrefilledTxs]: Error - Missing params. Requires gasPrice, gasLimit, to, data, nonce, from, value, and chainId'
+        );
+      } else {
+        dispatch({
+          type: sendAssetsReducer.actionTypes.SET_TXCONFIG,
+          payload: { txConfig: txConfigInit.txConfig, type: txConfigInit.type }
+        });
+      }
+    }
+  }, [assets]);
 
   // Due to MetaMask deprecating eth_sign method,
   // it has different step order, where sign and send are one panel
@@ -132,7 +151,12 @@ function SendAssets() {
 
   const getPath = () => {
     const { senderAccount } = reducerState.txConfig!;
-    return senderAccount && isWeb3Wallet(senderAccount.wallet) ? web3Steps : defaultSteps;
+    const walletSteps =
+      senderAccount && isWeb3Wallet(senderAccount.wallet) ? web3Steps : defaultSteps;
+    if (reducerState.type && reducerState.type === 'resubmit') {
+      return walletSteps.slice(1, walletSteps.length);
+    }
+    return walletSteps;
   };
 
   const { addNewTxToAccount } = useContext(AccountContext);
@@ -172,4 +196,4 @@ function SendAssets() {
   );
 }
 
-export default withProtectTxProvider(SendAssets);
+export default withRouter(withProtectTxProvider(SendAssets));

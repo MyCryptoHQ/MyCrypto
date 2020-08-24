@@ -5,7 +5,14 @@ import prop from 'ramda/src/prop';
 import BigNumber from 'bignumber.js';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
-import { ITransaction, IHexStrTransaction } from '@types';
+import {
+  ITransaction,
+  IHexStrTransaction,
+  ITxGasPrice,
+  ITxGasLimit,
+  ITxValue,
+  ITxNonce
+} from '@types';
 import { bigify } from '@utils';
 
 import { gasPriceToBase, toTokenBase, fromWei, toWei, Wei } from './units';
@@ -23,17 +30,19 @@ export const makeTransaction = (
 };
 
 /* region:start User Input to Hex */
-export const inputGasPriceToHex = (gasPriceGwei: string): string /* Converts to wei from gwei */ =>
-  addHexPrefix(gasPriceToBase(parseFloat(gasPriceGwei)).toString(16));
+export const inputGasPriceToHex = (
+  gasPriceGwei: string
+): ITxGasPrice /* Converts to wei from gwei */ =>
+  addHexPrefix(gasPriceToBase(parseFloat(gasPriceGwei)).toString(16)) as ITxGasPrice;
 
-export const inputGasLimitToHex = (gasLimit: string): string =>
-  bigNumberify(gasLimit).toHexString();
+export const inputGasLimitToHex = (gasLimit: string): ITxGasLimit =>
+  bigNumberify(gasLimit).toHexString() as ITxGasLimit;
 
-export const inputValueToHex = (valueEther: string): string =>
-  hexEncodeQuantity(toTokenBase(valueEther, DEFAULT_ASSET_DECIMAL));
+export const inputValueToHex = (valueEther: string): ITxValue =>
+  hexEncodeQuantity(toTokenBase(valueEther, DEFAULT_ASSET_DECIMAL)) as ITxValue;
 
-export const inputNonceToHex = (nonce: string): string =>
-  addHexPrefix(parseInt(nonce, 10).toString(16));
+export const inputNonceToHex = (nonce: string): ITxNonce =>
+  addHexPrefix(parseInt(nonce, 10).toString(16)) as ITxNonce;
 /* region:end User Input to Hex */
 
 /* region:start Hex to User Viewable */

@@ -226,17 +226,19 @@ const getInitialFormikValues = ({
   return mergeDeepWith(preferValueFromState, initialFormikValues, state);
 };
 
-const QueryWarning: React.FC = () => (
-  <WhenQueryExists
-    whenQueryExists={
-      <div className="alert alert-info">
-        <p>{translate('WARN_SEND_LINK')}</p>
-      </div>
-    }
-  />
+const createQueryWarning = (translationId?: string) => (
+  <div className="alert alert-info">
+    <p>{translate(translationId || 'WARN_SEND_LINK')}</p>
+  </div>
 );
 
-const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
+const QueryWarning = () => <WhenQueryExists displayQueryMessage={createQueryWarning} />;
+
+interface ISendFormProps extends IStepComponentProps {
+  type?: 'resubmit';
+}
+
+const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
   const {
     accounts,
     userAssets,

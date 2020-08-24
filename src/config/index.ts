@@ -43,3 +43,4 @@ export { Fiats } from './fiats';
 export { IS_ACTIVE_FEATURE, IIS_ACTIVE_FEATURE } from './isActiveFeature';
 export { ROUTE_PATHS } from './routePaths';
 export { IWalletConfig } from './wallets';
+export * from './queryParams';

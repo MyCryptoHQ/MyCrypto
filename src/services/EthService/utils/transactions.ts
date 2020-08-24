@@ -2,7 +2,7 @@ import { Optional } from 'utility-types';
 import { addHexPrefix } from 'ethereumjs-util';
 
 import { bigify } from '@utils';
-import { TAddress, Network, ITxObject } from '@types';
+import { TAddress, Network, ITxObject, ITxGasPrice, ITxFromAddress } from '@types';
 import {
   inputGasPriceToHex,
   inputGasLimitToHex,
@@ -18,7 +18,7 @@ type TxBeforeGasPrice = Optional<ITxObject, 'nonce' | 'gasLimit' | 'gasPrice'>;
 type TxBeforeGasLimit = Optional<ITxObject, 'nonce' | 'gasLimit'>;
 type TxBeforeNonce = Optional<ITxObject, 'nonce'>;
 
-export const appendSender = (senderAddress: TAddress) => async (
+export const appendSender = (senderAddress: ITxFromAddress) => async (
   tx: TxBeforeSender
 ): Promise<TxBeforeGasPrice> => {
   return {
@@ -42,7 +42,7 @@ export const appendGasPrice = (network: Network) => async (
 
   return {
     ...tx,
-    gasPrice
+    gasPrice: gasPrice as ITxGasPrice
   };
 };
 

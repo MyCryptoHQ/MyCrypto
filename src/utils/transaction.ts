@@ -39,8 +39,18 @@ import {
   ISuccessfulTxReceipt,
   ITxHistoryStatus,
   ITxReceipt,
-  IUnknownTxReceipt
+  IUnknownTxReceipt,
+  ITxData,
+  ITxToAddress,
+  ITxValue,
+  ITxGasLimit,
+  ITxGasPrice,
+  ITxNonce,
+  ITxFromAddress
 } from '@types';
+import { CREATION_ADDRESS } from '@config';
+
+import { isTransactionDataEmpty } from './validators';
 
 export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
   txType: ITxType,
@@ -55,7 +65,7 @@ export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
     gasLimit: bigNumberify(gasLimit),
     gasPrice: bigNumberify(gasPrice),
     value: bigNumberify(txConfig.rawTransaction.value),
-    to: txConfig.rawTransaction.to as TAddress,
+    to: txConfig.rawTransaction.to,
 
     status,
     amount,
@@ -176,14 +186,14 @@ export const makeTxConfigFromTxResponse = (
 
   const txConfig = {
     rawTransaction: {
-      to: decodedTx.to as TAddress,
-      value: hexlify(decodedTx.value),
-      gasLimit: hexlify(decodedTx.gasLimit),
-      data: decodedTx.data,
-      gasPrice: hexlify(decodedTx.gasPrice),
-      nonce: hexlify(decodedTx.nonce),
+      to: decodedTx.to as ITxToAddress,
+      value: hexlify(decodedTx.value) as ITxValue,
+      gasLimit: hexlify(decodedTx.gasLimit) as ITxGasLimit,
+      data: decodedTx.data as ITxData,
+      gasPrice: hexlify(decodedTx.gasPrice) as ITxGasPrice,
+      nonce: hexlify(decodedTx.nonce) as ITxNonce,
       chainId: decodedTx.chainId,
-      from: decodedTx.from as TAddress
+      from: decodedTx.from as ITxFromAddress
     },
     receiverAddress: (contractAsset
       ? decodeTransfer(decodedTx.data)._to
@@ -275,4 +285,27 @@ export const makeTxItem = (
       txConfig
     };
   }
+};
+
+// We can't interpret every transaction's data field so this interprets only if a data field is a simple erc20 transfer.
+//Therefore, we're guessing if it's a simple erc20 transfer using the data field.
+export const guessIfErc20Tx = (data: string): boolean => {
+  if (isTransactionDataEmpty(data)) return false;
+  const { _to, _value } = decodeTransfer(data);
+  // if this isn't a valid transfer, _value will return 0 and _to will return the burn address '0x0000000000000000000000000000000000000000'
+  if (!_to || !_value || _to === CREATION_ADDRESS) return false;
+  return true;
+};
+
+export const deriveTxRecipientsAndAmount = (
+  isErc20: boolean,
+  data: ITxData,
+  toAddress: ITxToAddress,
+  value: ITxValue
+) => {
+  if (isErc20) {
+    const { _to, _value } = decodeTransfer(data);
+    return { to: toAddress, amount: _value, receiverAddress: _to };
+  }
+  return { to: toAddress, amount: value, receiverAddress: toAddress };
 };
