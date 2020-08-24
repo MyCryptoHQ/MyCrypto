@@ -7,7 +7,8 @@ import {
   PrivateKeyDecrypt,
   Web3ProviderDecrypt,
   Web3ProviderInstall,
-  WalletConnectDecrypt
+  WalletConnectDecrypt,
+  TrezorDecrypt
 } from '@components';
 
 export const getStories = (): IStory[] => [
@@ -18,6 +19,10 @@ export const getStories = (): IStory[] => [
   {
     name: WalletId.LEDGER_NANO_S,
     steps: [LedgerNanoSDecrypt]
+  },
+  {
+    name: WalletId.TREZOR,
+    steps: [TrezorDecrypt]
   },
   {
     name: WalletId.WALLETCONNECT,
