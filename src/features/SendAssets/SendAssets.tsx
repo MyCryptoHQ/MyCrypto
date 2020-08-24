@@ -11,9 +11,9 @@ import {
   StoreContext,
   useFeatureFlags,
   AccountContext,
-  NetworkContext,
   ProviderHandler,
-  useAssets
+  useAssets,
+  useNetworks
 } from '@services';
 
 import { sendAssetsReducer, initialState } from './SendAssets.reducer';
@@ -31,7 +31,7 @@ function SendAssets() {
   } = useContext(ProtectTxContext);
   const { accounts } = useContext(StoreContext);
   const { assets } = useAssets();
-  const { networks } = useContext(NetworkContext);
+  const { networks } = useNetworks();
   const { IS_ACTIVE_FEATURE } = useFeatureFlags();
 
   // Due to MetaMask deprecating eth_sign method,

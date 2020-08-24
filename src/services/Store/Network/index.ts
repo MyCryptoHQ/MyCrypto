@@ -1,4 +1,4 @@
-export { INetworkContext, NetworkContext, NetworkProvider } from './NetworkProvider';
+export { INetworkContext, default as useNetworks } from './useNetworks';
 export {
   getNetworkByChainId,
   getNetworkById,

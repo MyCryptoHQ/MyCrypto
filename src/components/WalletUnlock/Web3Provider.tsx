@@ -4,7 +4,7 @@ import { WALLETS_CONFIG, IWalletConfig } from '@config';
 import { WalletId, FormData, Network } from '@types';
 import { InlineMessage, NewTabLink } from '@components';
 import { hasWeb3Provider, useAnalytics, useScreenSize } from '@utils';
-import { SettingsContext, NetworkContext, NetworkUtils } from '@services/Store';
+import { SettingsContext, NetworkUtils, useNetworks } from '@services/Store';
 import { WalletFactory, Web3Wallet } from '@services/WalletService';
 import { FormDataActionType as ActionType } from '@features/AddAccount/types';
 import { getWeb3Config } from '@utils/web3';
@@ -29,7 +29,7 @@ const WalletService = WalletFactory(WalletId.WEB3);
 const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) => {
   const { isMobile } = useScreenSize();
   const { updateSettingsNode } = useContext(SettingsContext);
-  const { addNodeToNetwork, networks } = useContext(NetworkContext);
+  const { addNodeToNetwork, networks } = useNetworks();
   const trackSelectNetwork = useAnalytics({
     category: ANALYTICS_CATEGORIES.ADD_WEB3_ACCOUNT
   });

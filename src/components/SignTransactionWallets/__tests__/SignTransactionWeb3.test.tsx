@@ -3,7 +3,7 @@ import { simpleRender, waitFor } from 'test-utils';
 
 import { fTxConfig, fNetwork } from '@fixtures';
 import { WalletId } from '@types';
-import { NetworkContext } from '@services';
+import { DataContext } from '@services';
 import SignTransaction from '@features/SendAssets/components/SignTransaction';
 
 import { getHeader } from './helper';
@@ -16,10 +16,9 @@ const defaultProps: React.ComponentProps<typeof SignTransaction> = {
 
 const getComponent = () => {
   return simpleRender(
-    // @ts-ignore
-    <NetworkContext.Provider value={{ networks: [fNetwork] }}>
+    <DataContext.Provider value={{ networks: [fNetwork], createActions: jest.fn() } as any}>
       <SignTransaction {...defaultProps} />
-    </NetworkContext.Provider>
+    </DataContext.Provider>
   );
 };
 

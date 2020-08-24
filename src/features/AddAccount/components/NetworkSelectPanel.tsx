@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
@@ -7,7 +7,7 @@ import { FormDataActionType as ActionType } from '../types';
 import { FormData, NetworkId } from '@types';
 import { NetworkSelectDropdown } from '@components';
 import { ANALYTICS_CATEGORIES } from '@services';
-import { NetworkContext } from '@services/Store';
+import { useNetworks } from '@services/Store';
 import { SPACING } from '@theme';
 import { useAnalytics } from '@utils';
 
@@ -36,7 +36,7 @@ interface Props {
 }
 
 function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
-  const { networks } = useContext(NetworkContext);
+  const { networks } = useNetworks();
   const [network, setNetwork] = useState<NetworkId>(formData.network);
   const trackSelectNetwork = useAnalytics({
     category: ANALYTICS_CATEGORIES.SELECT_NETWORK

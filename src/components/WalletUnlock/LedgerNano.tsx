@@ -4,11 +4,10 @@ import { Button } from '@mycrypto/ui';
 import { Spinner, NewTabLink } from '@components';
 import translate, { Trans, translateRaw } from '@translations';
 import { WalletId, FormData } from '@types';
-import { getDPath, getDPaths } from '@services';
+import { getDPath, getDPaths, useNetworks, INetworkContext } from '@services';
 import { EXT_URLS } from '@config';
-import { NetworkContext } from '@services/Store';
 import { WalletFactory, ChainCodeResponse } from '@services/WalletService';
-import { IS_ELECTRON } from '@utils';
+import { IS_ELECTRON, withHook } from '@utils';
 
 import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWallets from './DeterministicWallets';
@@ -33,22 +32,21 @@ type Props = OwnProps;
 
 const WalletService = WalletFactory(WalletId.LEDGER_NANO_S);
 
-class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
-  public static contextType = NetworkContext;
+class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
     dPath:
-      getDPath(this.context.getNetworkById(this.props.formData.network), WalletId.LEDGER_NANO_S) ||
-      getDPaths(this.context.networks, WalletId.LEDGER_NANO_S)[0],
+      getDPath(this.props.getNetworkById(this.props.formData.network), WalletId.LEDGER_NANO_S) ||
+      getDPaths(this.props.networks, WalletId.LEDGER_NANO_S)[0],
     error: null,
     isLoading: false
   };
 
   public render() {
     const { dPath, publicKey, chainCode, isLoading } = this.state;
-    const networks = this.context.networks;
-    const network = this.context.getNetworkById(this.props.formData.network);
+    const networks = this.props.networks;
+    const network = this.props.getNetworkById(this.props.formData.network);
 
     if (!dPath) {
       return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} network={network} />;
@@ -167,8 +165,8 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   };
 
   private reset() {
-    const networks = this.context.networks;
-    const network = this.context.getNetworkById(this.props.formData.network);
+    const networks = this.props.networks;
+    const network = this.props.getNetworkById(this.props.formData.network);
     this.setState({
       publicKey: '',
       chainCode: '',
@@ -178,4 +176,4 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   }
 }
 
-export const LedgerNanoSDecrypt = LedgerNanoSDecryptClass;
+export const LedgerNanoSDecrypt = withHook(useNetworks)(LedgerNanoSDecryptClass);

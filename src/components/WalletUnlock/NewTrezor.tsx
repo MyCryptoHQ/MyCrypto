@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import uniqBy from 'ramda/src/uniqBy';
 import prop from 'ramda/src/prop';
 
@@ -14,11 +14,11 @@ import {
   DPathsList
 } from '@config';
 import {
-  NetworkContext,
   getNetworkById,
   getAssetByUUID,
   useDeterministicWallet,
-  useAssets
+  useAssets,
+  useNetworks
 } from '@services';
 
 import ConnectTrezor from '@assets/images/icn-connect-trezor-new.svg';
@@ -40,7 +40,7 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
     offset: 0,
     numOfAddresses: numOfAccountsToCheck
   }));
-  const { networks } = useContext(NetworkContext);
+  const { networks } = useNetworks();
   const { assets } = useAssets();
   const network = getNetworkById(formData.network, networks);
   const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;

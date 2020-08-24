@@ -5,10 +5,10 @@ import ConnectTrezor from '@assets/images/icn-connect-trezor-new.svg';
 import translate, { translateRaw } from '@translations';
 import { Spinner } from '@components';
 import { WalletId, FormData } from '@types';
-import { NetworkContext } from '@services/Store';
-import { getDPath, getDPaths } from '@services';
+import { getDPath, getDPaths, useNetworks, INetworkContext } from '@services';
 import { WalletFactory, ChainCodeResponse } from '@services/WalletService';
 import { EXT_URLS } from '@config';
+import { withHook } from '@utils';
 
 import DeterministicWallets from './DeterministicWallets';
 import './Trezor.scss';
@@ -31,22 +31,21 @@ interface State {
 
 const WalletService = WalletFactory(WalletId.TREZOR);
 
-class TrezorDecryptClass extends PureComponent<OwnProps, State> {
-  public static contextType = NetworkContext;
+class TrezorDecryptClass extends PureComponent<OwnProps & INetworkContext, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
     dPath:
-      getDPath(this.context.getNetworkById(this.props.formData.network), WalletId.TREZOR) ||
-      getDPaths(this.context.networks, WalletId.TREZOR)[0],
+      getDPath(this.props.getNetworkById(this.props.formData.network), WalletId.TREZOR) ||
+      getDPaths(this.props.networks, WalletId.TREZOR)[0],
     error: null,
     isLoading: false
   };
 
   public render() {
     const { dPath, publicKey, chainCode, isLoading } = this.state;
-    const networks = this.context.networks;
-    const network = this.context.getNetworkById(this.props.formData.network);
+    const networks = this.props.networks;
+    const network = this.props.getNetworkById(this.props.formData.network);
 
     if (!dPath) {
       return <UnsupportedNetwork walletType={translateRaw('x_Trezor')} network={network} />;
@@ -149,8 +148,8 @@ class TrezorDecryptClass extends PureComponent<OwnProps, State> {
   };
 
   private reset() {
-    const networks = this.context.networks;
-    const network = this.context.getNetworkById(this.props.formData.network);
+    const networks = this.props.networks;
+    const network = this.props.getNetworkById(this.props.formData.network);
     this.setState({
       publicKey: '',
       chainCode: '',
@@ -159,4 +158,4 @@ class TrezorDecryptClass extends PureComponent<OwnProps, State> {
   }
 }
 
-export const TrezorDecrypt = TrezorDecryptClass;
+export const TrezorDecrypt = withHook(useNetworks)(TrezorDecryptClass);

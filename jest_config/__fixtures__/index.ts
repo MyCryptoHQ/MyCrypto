@@ -1,6 +1,6 @@
 export { fAssets, fStoreAssets } from './assets';
 export { fAccount, fAccounts, fDWAccounts } from './account';
-export { fNetwork } from './network';
+export { fNetwork, fNetworks } from './network';
 export {
   fTransaction,
   fETHNonWeb3TxResponse,

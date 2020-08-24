@@ -7,7 +7,7 @@ import { isHexString } from 'ethers/utils';
 
 import { Button, NetworkSelectDropdown, ContentPanel, TxReceipt, InlineMessage } from '@components';
 import { NetworkId } from '@types';
-import { NetworkContext, StoreContext, ANALYTICS_CATEGORIES, useAssets } from '@services';
+import { StoreContext, ANALYTICS_CATEGORIES, useAssets, useNetworks } from '@services';
 import { noOp, isVoid, useAnalytics } from '@utils';
 import { useEffectOnce, useUpdateEffect } from '@vendor';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
@@ -49,7 +49,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   });
 
   const { assets } = useAssets();
-  const { networks } = useContext(NetworkContext);
+  const { networks } = useNetworks();
   const { accounts } = useContext(StoreContext);
 
   const defaultTxHash = qs.hash ? qs.hash : '';

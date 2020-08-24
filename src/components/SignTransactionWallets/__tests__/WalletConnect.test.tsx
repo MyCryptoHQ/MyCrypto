@@ -2,7 +2,7 @@ import React from 'react';
 
 import { simpleRender, waitFor } from 'test-utils';
 import { fAccount, fTransaction, fNetwork } from '@fixtures';
-import { NetworkContext } from '@services';
+import { DataContext } from '@services';
 
 import { default as WalletConnectComponent } from '../WalletConnect';
 
@@ -15,10 +15,9 @@ const defaultProps = {
 
 const getComponent = ({ ...props }: typeof defaultProps) =>
   simpleRender(
-    // @ts-ignore
-    <NetworkContext.Provider value={{ networks: [fNetwork] }}>
+    <DataContext.Provider value={{ networks: [fNetwork], createActions: jest.fn() } as any}>
       <WalletConnectComponent {...props} />
-    </NetworkContext.Provider>
+    </DataContext.Provider>
   );
 
 const mockCreateSession = jest.fn().mockResolvedValue('uri');

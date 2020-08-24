@@ -8,7 +8,7 @@ import {
   default as TokenMigrationForm
 } from '@features/TokenMigration/components/TokenMigrationForm';
 import { FeatureFlagContext } from '@services';
-import { StoreContext, SettingsContext, NetworkContext, DataContext } from '@services/Store';
+import { StoreContext, SettingsContext, DataContext } from '@services/Store';
 import { fSettings, fAssets, fNetwork, fAccount } from '@fixtures';
 import { IS_ACTIVE_FEATURE } from '@config';
 import { noOp } from '@utils';
@@ -34,6 +34,7 @@ function getComponent(props: TokenMigrationProps) {
         value={
           ({
             assets: [{ uuid: fNetwork.baseAsset }],
+            networks: [fNetwork],
             createActions: jest.fn()
           } as unknown) as any
         }
@@ -59,15 +60,7 @@ function getComponent(props: TokenMigrationProps) {
                 } as unknown) as any
               }
             >
-              <NetworkContext.Provider
-                value={
-                  ({
-                    networks: [fNetwork]
-                  } as unknown) as any
-                }
-              >
-                <TokenMigrationForm {...((props as unknown) as any)} />
-              </NetworkContext.Provider>
+              <TokenMigrationForm {...((props as unknown) as any)} />
             </StoreContext.Provider>
           </SettingsContext.Provider>
         </FeatureFlagContext.Provider>

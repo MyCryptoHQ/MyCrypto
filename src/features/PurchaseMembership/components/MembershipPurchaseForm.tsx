@@ -10,7 +10,7 @@ import { IAccount, Network, StoreAccount, Asset, TUuid } from '@types';
 import { AccountSelector, InlineMessage, AmountInput, Button } from '@components';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
-import { StoreContext, NetworkContext, useAssets } from '@services/Store';
+import { StoreContext, useAssets, useNetworks } from '@services/Store';
 import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
 import { ETHUUID, noOp } from '@utils';
@@ -56,7 +56,7 @@ const FormFieldSubmitButton = styled(Button)`
 
 const MembershipForm = ({ isSubmitting, onComplete }: Props) => {
   const { accounts } = useContext(StoreContext);
-  const { networks } = useContext(NetworkContext);
+  const { networks } = useNetworks();
   const network = networks.find((n) => n.baseAsset === ETHUUID) as Network;
   const relevantAccounts = accounts.filter(isEthereumAccount);
 

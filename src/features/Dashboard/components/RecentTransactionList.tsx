@@ -19,7 +19,7 @@ import {
   AddressBookContext,
   getLabelByAddressAndNetwork,
   SettingsContext,
-  NetworkContext
+  useNetworks
 } from '@services';
 import { translateRaw } from '@translations';
 import {
@@ -168,7 +168,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
   const { addressBook } = useContext(AddressBookContext);
   const { getAssetRate } = useContext(RatesContext);
   const { settings } = useContext(SettingsContext);
-  const { networks } = useContext(NetworkContext);
+  const { networks } = useNetworks();
 
   const accountTxs: ITxHistoryEntry[] = getTxsFromAccount(accountsList).map((tx: ITxReceipt) => {
     const network = networks.find(({ id }) => tx.asset.networkId === id) as Network;

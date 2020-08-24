@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { formatEther } from 'ethers/utils';
 
 import translate from '@translations';
@@ -13,7 +12,7 @@ import {
   trimBN,
   generateAssetUUID
 } from '@utils';
-import { DexService, DexAsset, NetworkContext, getNetworkById } from '@services';
+import { DexService, DexAsset, getNetworkById, useNetworks } from '@services';
 import { StoreAccount, ISwapAsset } from '@types';
 import {
   DEFAULT_NETWORK,
@@ -39,7 +38,7 @@ const swapFormInitialState = {
 };
 
 const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setState }) => {
-  const { networks } = useContext(NetworkContext);
+  const { networks } = useNetworks();
 
   const fetchSwapAssets = async () => {
     try {

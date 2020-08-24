@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import uniqBy from 'ramda/src/uniqBy';
 import prop from 'ramda/src/prop';
 
@@ -14,12 +14,12 @@ import {
   DPathsList
 } from '@config';
 import {
-  NetworkContext,
   getNetworkById,
   getAssetByUUID,
   useDeterministicWallet,
   getDPaths,
-  useAssets
+  useAssets,
+  useNetworks
 } from '@services';
 
 import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
@@ -34,7 +34,7 @@ interface OwnProps {
 // const WalletService = WalletFactory(WalletId.LEDGER_NANO_S);
 
 const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
-  const { networks } = useContext(NetworkContext);
+  const { networks } = useNetworks();
   const { assets } = useAssets();
   const network = getNetworkById(formData.network, networks);
   const dpaths = uniqBy(prop('value'), [

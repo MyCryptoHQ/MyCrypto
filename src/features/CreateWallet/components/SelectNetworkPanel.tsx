@@ -5,7 +5,8 @@ import styled from 'styled-components';
 import translate, { translateRaw } from '@translations';
 import { ExtendedContentPanel, InlineMessage, NetworkSelectDropdown } from '@components';
 import { WalletId, NetworkId } from '@types';
-import { NetworkContext } from '@services/Store';
+import { INetworkContext, useNetworks } from '@services';
+import { withHook } from '@utils';
 import { PanelProps } from '../CreateWallet';
 
 interface Props extends PanelProps {
@@ -32,13 +33,12 @@ interface Props extends PanelProps {
   selectNetwork(network: string): void;
 }
 
-export default class SelectNetworkPanel extends Component<Props> {
-  public static contextType = NetworkContext;
+class SelectNetworkPanel extends Component<Props & INetworkContext> {
   public state = { error: false };
 
   public handleSubmitClick = () => {
     const { network, onNext } = this.props;
-    if (this.context.getNetworkById(network)) {
+    if (this.props.getNetworkById(network)) {
       onNext();
     } else {
       this.setState({ error: true });
@@ -76,3 +76,5 @@ export default class SelectNetworkPanel extends Component<Props> {
     );
   }
 }
+
+export default withHook(useNetworks)(SelectNetworkPanel);

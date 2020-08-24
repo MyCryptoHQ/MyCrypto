@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
 import styled from 'styled-components';
 import equals from 'ramda/src/equals';
@@ -7,7 +7,7 @@ import { translateRaw } from '@translations';
 import { WalletId, FormData, IReceiverAddress, ErrorObject } from '@types';
 import { Button, ContactLookupField } from '@components';
 import { WalletFactory } from '@services/WalletService';
-import { NetworkContext } from '@services/Store';
+import { useNetworks } from '@services/Store';
 import { COLORS } from '@theme';
 import { toChecksumAddressByChainId, isFormValid } from '@utils';
 
@@ -38,7 +38,7 @@ const initialFormikValues: FormValues = {
 };
 
 export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
-  const { getNetworkById } = useContext(NetworkContext);
+  const { getNetworkById } = useNetworks();
   const [isResolvingDomain, setIsResolvingDomain] = useState(false);
   const [network] = useState(getNetworkById(formData.network));
 

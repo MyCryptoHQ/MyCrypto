@@ -4,7 +4,6 @@ import { simpleRender, waitFor, fireEvent, screen } from 'test-utils';
 import selectEvent from 'react-select-event';
 
 import {
-  NetworkContext,
   StoreContext,
   AddressBookContext,
   SettingsContext,
@@ -12,7 +11,7 @@ import {
   DataContext
 } from '@services';
 import { translateRaw } from '@translations';
-import { fAccount, fNetwork, fAssets } from '@fixtures';
+import { fAccount, fNetwork, fAssets, fNetworks } from '@fixtures';
 
 import TxStatus from './TxStatus';
 
@@ -32,29 +31,21 @@ describe('TxStatus', () => {
         value={
           {
             assets: fAssets,
+            networks: fNetworks,
             createActions: jest.fn()
           } as any
         }
       >
         <StoreContext.Provider value={{ accounts: [fAccount] } as any}>
-          <NetworkContext.Provider
-            value={
-              {
-                getNetworkById: jest.fn(),
-                networks: [fNetwork]
-              } as any
-            }
+          <AddressBookContext.Provider
+            value={{ getContactByAddressAndNetworkId: jest.fn() } as any}
           >
-            <AddressBookContext.Provider
-              value={{ getContactByAddressAndNetworkId: jest.fn() } as any}
-            >
-              <SettingsContext.Provider value={{ settings: { fiatCurrency: 'USD' } } as any}>
-                <RatesContext.Provider value={{ getAssetRate: jest.fn() } as any}>
-                  <TxStatus />
-                </RatesContext.Provider>
-              </SettingsContext.Provider>
-            </AddressBookContext.Provider>
-          </NetworkContext.Provider>
+            <SettingsContext.Provider value={{ settings: { fiatCurrency: 'USD' } } as any}>
+              <RatesContext.Provider value={{ getAssetRate: jest.fn() } as any}>
+                <TxStatus />
+              </RatesContext.Provider>
+            </SettingsContext.Provider>
+          </AddressBookContext.Provider>
         </StoreContext.Provider>
       </DataContext.Provider>
     </MemoryRouter>
