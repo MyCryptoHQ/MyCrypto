@@ -94,7 +94,7 @@ const MigrateLS = ({
     }
   }, [canDestroy, iframeRef]);
 
-  const handleLoad = (frame: HTMLIFrameElement) => src && getStorage(frame, src, isValidImport);
+  const handleLoad = (frame: HTMLIFrameElement) => getStorage(frame, src, isValidImport);
   const handleCancel = () => cancelMigration();
   const handleMigrate = () => {
     if (!storage) return;
@@ -143,7 +143,7 @@ const MigrateLS = ({
 
   return (
     <>
-      {src && <IFrame src={src} onLoad={handleLoad} hidden={true} reload={reload} />}
+      <IFrame src={src} onLoad={handleLoad} hidden={true} reload={reload} />
       {isDefaultStore && UI_STATES[uiState]}
     </>
   );

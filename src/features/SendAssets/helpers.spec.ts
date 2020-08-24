@@ -5,8 +5,10 @@ import {
   fERC20NonWeb3TxConfig,
   fETHNonWeb3TxConfig
 } from '@fixtures';
+import { translateRaw } from '@translations';
+import { TTicker, TAddress } from '@types';
 
-import { parseQueryParams } from './helpers';
+import { parseQueryParams, parseResubmitParams, generateGenericErc20 } from './helpers';
 
 const validETHResubmitQuery = {
   type: 'resubmit',
@@ -76,5 +78,52 @@ describe('Query string parsing', () => {
   it('fails to derive txConfig when there is no added account with from address', () => {
     const parsedQueryParams = parseQueryParams(validETHResubmitQuery)([fNetwork], fAssets, []);
     expect(parsedQueryParams).toStrictEqual({ type: 'resubmit', txConfig: undefined });
+  });
+});
+
+describe('parseResubmitParams', () => {
+  it('correctly parses valid erc20 resubmit query params', () => {
+    const parsedResubmitParams = parseResubmitParams(validERC20ResubmitQuery)(
+      [fNetwork],
+      fAssets,
+      fAccounts
+    );
+    expect(parsedResubmitParams).toEqual(fERC20NonWeb3TxConfig);
+  });
+
+  it('correctly parses valid eth resubmit query params', () => {
+    const parsedResubmitParams = parseResubmitParams(validETHResubmitQuery)(
+      [fNetwork],
+      fAssets,
+      fAccounts
+    );
+    expect(parsedResubmitParams).toEqual(fETHNonWeb3TxConfig);
+  });
+
+  it('correctly handles invalid resubmit query params', () => {
+    const parsedResubmitParams = parseResubmitParams(invalidResubmitQuery)(
+      [fNetwork],
+      fAssets,
+      fAccounts
+    );
+    expect(parsedResubmitParams).toBeUndefined();
+  });
+});
+
+describe('generateGenericErc20', () => {
+  it('creates a generic erc20 token from contract address and chainID', () => {
+    const testGenericERC20 = {
+      uuid: 'e1f698bf-cb85-5405-b563-14774af14bf1',
+      name: translateRaw('GENERIC_ERC20_NAME'),
+      ticker: 'Unknown ERC20' as TTicker,
+      type: 'erc20',
+      networkId: 'Ethereum'
+    };
+    const genericERC20 = generateGenericErc20(
+      '0x6B175474E89094C44Da98b954EedeAC495271d0F' as TAddress,
+      '1',
+      'Ethereum'
+    );
+    expect(genericERC20).toStrictEqual(testGenericERC20);
   });
 });

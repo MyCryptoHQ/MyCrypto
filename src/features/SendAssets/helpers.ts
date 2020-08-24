@@ -178,7 +178,7 @@ export const parseResubmitParams = (queryParams: any) => (
   };
 };
 
-const generateGenericErc20 = (
+export const generateGenericErc20 = (
   contractAddress: TAddress,
   chainId: string,
   networkId: NetworkId

@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { MANDATORY_TRANSACTION_QUERY_PARAMS } from '@config';
+import { TxParam } from '@features/SendAssets/preFillTx';
 
 import { Query, IQueryResults } from './Query';
-import { TxParam } from '@features/SendAssets/preFillTx';
 
 interface Props {
   displayQueryMessage(id?: string): JSX.Element | null;
