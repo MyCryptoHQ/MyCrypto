@@ -55,7 +55,7 @@ function useAddressBook() {
 
   const createAddressBooks = (item: AddressBook) => model.create({ ...item, uuid: generateUUID() });
   const createAddressBooksWithID = (uuid: TUuid, item: AddressBook) =>
-    model.create({ uuid, ...item });
+    model.createWithID({ uuid, ...item }, uuid);
   const updateAddressBooks = (uuid: TUuid, item: ExtendedAddressBook) => model.update(uuid, item);
   const deleteAddressBooks = (uuid: TUuid) => {
     const addressBookToDelete = addressBook.find((a) => a.uuid === uuid);
