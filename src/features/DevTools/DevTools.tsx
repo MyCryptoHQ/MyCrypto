@@ -9,9 +9,9 @@ import { generateUUID, IS_DEV, IS_STAGING } from '@utils';
 import {
   AccountContext,
   getLabelByAddressAndNetwork,
-  AddressBookContext,
   DataContext,
-  useNetworks
+  useNetworks,
+  useAddressBook
 } from '@services/Store';
 import { useDevTools, useFeatureFlags } from '@services';
 import {
@@ -155,7 +155,7 @@ const FeatureFlags = () => {
 
 const DevTools = () => {
   const { getNetworkById } = useNetworks();
-  const { addressBook } = useContext(AddressBookContext);
+  const { addressBook } = useAddressBook();
   const { accounts, createAccountWithID, deleteAccount } = useContext(AccountContext);
   const dummyAccount = {
     label: 'Foo',

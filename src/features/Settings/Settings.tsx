@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import { Heading } from '@mycrypto/ui';
 
 import {
-  AddressBookContext,
   NetworkUtils,
   SettingsContext,
   StoreContext,
   useAssets,
-  useNetworks
+  useNetworks,
+  useAddressBook
 } from '@services/Store';
 import { buildBalances, buildTotalFiatValue } from '@utils';
 import { AccountList, Mobile, Desktop } from '@components';
@@ -104,7 +104,7 @@ function renderAddressPanel() {
     deleteAddressBooks,
     updateAddressBooks,
     restoreDeletedAddressBook
-  } = useContext(AddressBookContext);
+  } = useAddressBook();
 
   return (
     <FlippablePanel>
@@ -137,7 +137,7 @@ function renderNetworkNodes() {
     deleteNode
   } = useNetworks();
   const { createAssetWithID } = useAssets();
-  const { addressBook } = useContext(AddressBookContext);
+  const { addressBook } = useAddressBook();
   const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
   const [editNode, setEditNode] = useState<CustomNodeConfig | undefined>(undefined);
   const [isAddingNetwork, setAddingNetwork] = useState(false);

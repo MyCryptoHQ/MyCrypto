@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import Styled from 'styled-components';
 import BN from 'bn.js';
 
-import { AddressBookContext, StoreContext, SettingsContext } from '@services/Store';
+import { StoreContext, SettingsContext, useAddressBook } from '@services/Store';
 import { Amount, AssetIcon, Button, PoweredByText } from '@components';
 import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from '@services/EthService';
 import { RatesContext } from '@services/RatesProvider';
@@ -124,7 +124,7 @@ export default function ConfirmTransaction({
 }: IStepComponentProps & { protectTxButton?(): JSX.Element }) {
   const { asset, baseAsset, receiverAddress, network, from } = txConfig;
 
-  const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
+  const { getContactByAddressAndNetworkId } = useAddressBook();
   const { getAssetRate } = useContext(RatesContext);
   const { accounts } = useContext(StoreContext);
   const { settings } = useContext(SettingsContext);

@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState, useContext } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Icon, Identicon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { translateRaw } from '@translations';
 import { Checkbox } from '@components';
 import { useOnClickOutside, truncate, trimEllipsis } from '@utils';
-import { getLabelByAccount, AddressBookContext } from '@services/Store';
+import { getLabelByAccount, useAddressBook } from '@services/Store';
 import { COLORS } from '@theme';
 import { IAccount, ExtendedAddressBook, TUuid } from '@types';
 
@@ -133,7 +133,7 @@ const AccountDropdown = ({
   onSubmit,
   ...props
 }: AccountDropdownProps) => {
-  const { addressBook } = useContext(AddressBookContext);
+  const { addressBook } = useAddressBook();
   const ref = useRef<HTMLElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [draftSelected, setDraftSelected] = useState<TUuid[]>([]);

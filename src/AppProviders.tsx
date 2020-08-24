@@ -1,12 +1,7 @@
 import React from 'react';
 
 import { NotificationsProvider, ToastProvider, ErrorProvider } from '@features';
-import {
-  AccountProvider,
-  AddressBookProvider,
-  SettingsProvider,
-  DataProvider
-} from '@services/Store';
+import { AccountProvider, SettingsProvider, DataProvider } from '@services/Store';
 
 import { DevToolsProvider, RatesProvider, StoreProvider, FeatureFlagProvider } from '@services';
 
@@ -20,13 +15,11 @@ function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | nu
               <AccountProvider>
                 <NotificationsProvider>
                   <ToastProvider>
-                    <AddressBookProvider>
-                      {/* StoreProvider relies on the others Providers */}
-                      <StoreProvider>
-                        {/* RatesProvider relies on the Store */}
-                        <RatesProvider>{children}</RatesProvider>
-                      </StoreProvider>
-                    </AddressBookProvider>
+                    {/* StoreProvider relies on the others Providers */}
+                    <StoreProvider>
+                      {/* RatesProvider relies on the Store */}
+                      <RatesProvider>{children}</RatesProvider>
+                    </StoreProvider>
                   </ToastProvider>
                 </NotificationsProvider>
               </AccountProvider>

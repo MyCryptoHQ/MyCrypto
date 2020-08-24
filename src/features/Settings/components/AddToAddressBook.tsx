@@ -10,7 +10,7 @@ import { AddressBook, NetworkId } from '@types';
 import { ToastContext } from '@features/Toasts';
 import { translateRaw } from '@translations';
 import { isValidETHAddress } from '@services/EthService';
-import { AddressBookContext } from '@services';
+import { useAddressBook } from '@services';
 import { DEFAULT_NETWORK } from '@config/constants';
 
 const AddToAddressBookPanel = styled(DashboardPanel)`
@@ -54,7 +54,7 @@ interface Props {
 }
 
 export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: Props) {
-  const { getContactByAddress } = useContext(AddressBookContext);
+  const { getContactByAddress } = useAddressBook();
 
   const Schema = Yup.object().shape({
     label: Yup.string().required(translateRaw('REQUIRED')),

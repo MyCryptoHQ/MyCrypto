@@ -23,7 +23,7 @@ import {
   getLabelByAccount,
   StoreContext,
   SettingsContext,
-  AddressBookContext
+  useAddressBook
 } from '@services/Store';
 import { RatesContext, useFeatureFlags } from '@services';
 import { getFiat } from '@config/fiats';
@@ -353,7 +353,7 @@ const buildAccountTable = (
   const { totalFiat } = useContext(StoreContext);
   const { getAssetRate } = useContext(RatesContext);
   const { settings } = useContext(SettingsContext);
-  const { addressBook } = useContext(AddressBookContext);
+  const { addressBook } = useAddressBook();
   const { toggleAccountPrivacy } = useContext(AccountContext);
   const overlayRowsFlat = [...overlayRows![0], ...overlayRows![1].map((row) => row[0])];
 

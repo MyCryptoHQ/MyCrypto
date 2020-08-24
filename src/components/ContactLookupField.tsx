@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import { IReceiverAddress, Network } from '@types';
-import { AddressBookContext, findNextRecipientLabel } from '@services/Store';
+import { IReceiverAddress, Network, TAddress } from '@types';
+import { findNextRecipientLabel, useAddressBook } from '@services/Store';
 import { useEffectOnce } from '@vendor';
 
 import GeneralLookupField, { IGeneralLookupFieldComponentProps } from './GeneralLookupField';
@@ -24,10 +24,10 @@ const ContactLookupField = ({
     addressBook: contacts,
     createAddressBooks: createContact,
     getContactByAddress
-  } = useContext(AddressBookContext);
+  } = useAddressBook();
 
   const handleEthAddress = (inputString: string): IReceiverAddress => {
-    const contact = getContactByAddress(inputString);
+    const contact = getContactByAddress(inputString as TAddress);
     if (contact) return { display: contact.label, value: contact.address };
 
     const label = findNextRecipientLabel(contacts);
@@ -44,7 +44,7 @@ const ContactLookupField = ({
   };
 
   const handleENSName = (resolvedAddress: string, inputString: string) => {
-    const contact = getContactByAddress(resolvedAddress);
+    const contact = getContactByAddress(resolvedAddress as TAddress);
     if (contact) return { display: contact.label, value: contact.address };
 
     const [label] = inputString.split('.');
@@ -62,7 +62,7 @@ const ContactLookupField = ({
 
   useEffectOnce(() => {
     if (value && value.value) {
-      const contact = getContactByAddress(value.value);
+      const contact = getContactByAddress(value.value as TAddress);
       if (contact && value.display !== contact.label && setFieldValue) {
         setFieldValue(name, { display: contact.label, value: contact.address }, true);
       }

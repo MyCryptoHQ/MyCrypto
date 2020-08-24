@@ -66,7 +66,7 @@ import {
 import { AccountContext, getDashboardAccounts } from './Account';
 import { SettingsContext } from './Settings';
 import { getNetworkById, useNetworks } from './Network';
-import { findNextUnusedDefaultLabel, AddressBookContext } from './AddressBook';
+import { findNextUnusedDefaultLabel, useAddressBook } from './AddressBook';
 import { MyCryptoApiService, ANALYTICS_CATEGORIES } from '../ApiService';
 import { findMultipleNextUnusedDefaultLabels } from './AddressBook/helpers';
 import { translateRaw } from '@translations';
@@ -149,7 +149,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     addressBook: contacts,
     getContactByAddressAndNetworkId,
     updateAddressBooks: updateContact
-  } = useContext(AddressBookContext);
+  } = useAddressBook();
 
   const [accountRestore, setAccountRestore] = useState<{ [name: string]: IAccount | undefined }>(
     {}

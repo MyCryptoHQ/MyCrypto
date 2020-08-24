@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import { ExtendedAddressBook, TAddress, NetworkId } from '@types';
-import { AddressBookContext } from '@services';
+import { useAddressBook } from '@services';
 import { BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
 
@@ -21,7 +21,7 @@ const SWrapper = styled.span`
 `;
 
 const EditableAccountLabel = ({ addressBookEntry, address, networkId }: Props) => {
-  const { updateAddressBooks, createAddressBooks } = useContext(AddressBookContext);
+  const { updateAddressBooks, createAddressBooks } = useAddressBook();
   return (
     <SWrapper>
       <EditableText

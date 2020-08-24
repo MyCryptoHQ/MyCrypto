@@ -1,4 +1,4 @@
-export { AddressBookContext, AddressBookProvider } from './AddressBookProvider';
+export { default as useAddressBook, IAddressBookContext } from './useAddressBook';
 export {
   getLabelByAccount,
   getLabelByAddressAndNetwork,
