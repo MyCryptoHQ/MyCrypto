@@ -344,7 +344,7 @@ export const StoreProvider: React.FC = ({ children }) => {
 
   useEffectOnce(() => {
     HistoryService.instance.getHistory(accounts.map((a) => a.address)).then((history) => {
-      console.log(history);
+      console.debug(history);
       if (history !== null) {
         setTxHistory(history);
       }
