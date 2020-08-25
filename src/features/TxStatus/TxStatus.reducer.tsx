@@ -8,7 +8,11 @@ import translate from '@translations';
 interface State {
   txHash: string;
   networkId: NetworkId;
+<<<<<<< HEAD
   tx?: { cachedTx?: ITxReceipt; fetchedTx?: TransactionResponse };
+=======
+  tx?: { config: ITxConfig; receipt: ITxReceipt };
+>>>>>>> migrated to txReceipt component
   fetching: boolean;
   fromLink?: boolean;
   error?: JSX.Element;
@@ -19,8 +23,6 @@ export type ReducerAction = TAction<ValuesType<typeof txStatusReducer.actionType
 export const generateInitialState = (txHash: string, networkId: NetworkId) => ({
   txHash,
   networkId,
-  resubmitting: false,
-  cancelling: false,
   fetching: false,
   error: undefined
 });
@@ -61,37 +63,7 @@ export const txStatusReducer = (state: State, action: ReducerAction): State => {
         txHash: '',
         networkId: DEFAULT_NETWORK,
         fetching: false,
-        resubmitting: false,
-        cancelling: false,
         error: undefined
-      };
-    }
-
-    case txStatusReducer.actionTypes.TRIGGER_RESUBMIT: {
-      return {
-        ...state,
-        resubmitting: true
-      };
-    }
-
-    case txStatusReducer.actionTypes.TRIGGER_RESUBMIT_SUCCESS: {
-      return {
-        ...state,
-        resubmitting: false
-      };
-    }
-
-    case txStatusReducer.actionTypes.TRIGGER_CANCEL: {
-      return {
-        ...state,
-        cancelling: true
-      };
-    }
-
-    case txStatusReducer.actionTypes.TRIGGER_CANCEL_SUCCESS: {
-      return {
-        ...state,
-        cancelling: false
       };
     }
 
@@ -106,9 +78,5 @@ txStatusReducer.actionTypes = {
   FETCH_TX: 'FETCH_TX',
   FETCH_TX_SUCCESS: 'FETCH_TX_SUCCESS',
   FETCH_TX_ERROR: 'FETCH_TX_ERROR',
-  CLEAR_FORM: 'CLEAR_FORM',
-  TRIGGER_RESUBMIT: 'TRIGGER_RESUBMIT',
-  TRIGGER_RESUBMIT_SUCCESS: 'TRIGGER_RESUBMIT_SUCCESS',
-  TRIGGER_CANCEL: 'TRIGGER_CANCEL',
-  TRIGGER_CANCEL_SUCCESS: 'TRIGGER_CANCEL_SUCCESS'
+  CLEAR_FORM: 'CLEAR_FORM'
 };

@@ -1031,6 +1031,9 @@
     "ZAP_WITHDRAW_TOOLTIP": "Withdrawing from this Zap requires interacting with Uniswap. If you need assistance, please read [How To Withdraw from Unipool](https://support.mycrypto.com/how-to/defi/how-to-withdraw-from-unipool).",
     "GENERIC_ERC20_NAME": "Unknown ERC20 Token",
     "WARN_SEND_INCORRECT_PROPS": "The pre-filled transaction settings in the URL are incorrect - they may be incomplete or constructed improperly. Please reconstruct the URL and try again. [Learn how to construct transaction resubmission links](https://support.mycrypto.com/how-to/sending/creating-prefilled-transaction).",
-    "WARN_SEND_UNDETECTED_NETWORK_OR_ACCOUNT": "We couldn't resolve your pre-filled transaction settings - either you do not have the 'Sender' account added to your dashboard or you're not on the specified network. Please double check that these are correct and try again. [Learn more about resubmitting a transaction](https://support.mycrypto.com/how-to/sending/checking-or-replacing-a-transaction-after-it-has-been-sent)."
+    "WARN_SEND_UNDETECTED_NETWORK_OR_ACCOUNT": "We couldn't resolve your pre-filled transaction settings - either you do not have the 'Sender' account added to your dashboard or you're not on the specified network. Please double check that these are correct and try again. [Learn more about resubmitting a transaction](https://support.mycrypto.com/how-to/sending/checking-or-replacing-a-transaction-after-it-has-been-sent).",
+    "SPEED_UP_TX_BTN": "Speed up transaction",
+    "CANCEL_TX_BTN": "Cancel transaction",
+    "RESUBMIT_TOOLTIP": "You can speed up or cancel pending transactions from accounts that you have added to your dashboard. Web3 and WalletConnect accounts will not work because they don't allow us to set gas settings."
   }
 }

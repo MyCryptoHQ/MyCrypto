@@ -6,9 +6,9 @@ import React, {
   Dispatch,
   SetStateAction
 } from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from '@mycrypto/ui';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
+import queryString from 'query-string';
 
 import {
   ITxReceipt,
@@ -21,21 +21,33 @@ import {
   ITxReceiptStepProps,
   IPendingTxReceipt,
   ITxHistoryStatus,
-  Fiat
+  Fiat,
+  WalletId,
+  StoreAccount
 } from '@types';
-import { Amount, TimeElapsed, AssetIcon, LinkOut, PoweredByText } from '@components';
+import {
+  Amount,
+  TimeElapsed,
+  AssetIcon,
+  LinkOut,
+  PoweredByText,
+  Tooltip,
+  Button
+} from '@components';
 import { AccountContext, StoreContext, SettingsContext, useContacts } from '@services/Store';
 import { useRates } from '@services';
 import {
   ProviderHandler,
   getTimestampFromBlockNum,
-  getTransactionReceiptFromHash
+  getTransactionReceiptFromHash,
+  inputGasPriceToHex,
+  inputGasLimitToHex
 } from '@services/EthService';
 import { ROUTE_PATHS } from '@config';
 import { BREAK_POINTS } from '@theme';
 import { SwapDisplayData } from '@features/SwapAssets/types';
 import translate, { translateRaw } from '@translations';
-import { convertToFiat, truncate } from '@utils';
+import { convertToFiat, truncate, isSameAddress } from '@utils';
 import { isWeb3Wallet } from '@utils/web3';
 import ProtocolTagsList from '@features/DeFiZap/components/ProtocolTagsList';
 import { ProtectTxAbort } from '@features/ProtectTransaction/components/ProtectTxAbort';
@@ -44,6 +56,8 @@ import MembershipReceiptBanner from '@features/PurchaseMembership/components/Mem
 import { getFiat } from '@config/fiats';
 import { makeFinishedTxReceipt } from '@utils/transaction';
 import { path } from '@vendor';
+import { fetchGasPriceEstimates } from '@services';
+import { createQueryParams } from '@features/TxStatus/helpers';
 
 import { ISender } from './types';
 import { constructSenderFromTxConfig } from './helpers';
@@ -79,10 +93,9 @@ const SSpacer = styled.div`
   }
 `;
 
-export default function TxReceipt({
+const TxReceipt = ({
   txReceipt,
   txConfig,
-  resetFlow,
   completeButtonText,
   pendingButton,
   membershipSelected,
@@ -90,8 +103,10 @@ export default function TxReceipt({
   swapDisplay,
   disableDynamicTxReceiptDisplay,
   disableAddTxToAccount,
+  history,
+  resetFlow,
   protectTxButton
-}: ITxReceiptStepProps & Props) {
+}: ITxReceiptStepProps & RouteComponentProps & Props) => {
   const { getAssetRate } = useRates();
   const { getContactByAddressAndNetworkId } = useContacts();
   const { addNewTxToAccount } = useContext(AccountContext);
@@ -182,6 +197,42 @@ export default function TxReceipt({
     }
   })();
 
+  const handleTxResubmitRedirect = async () => {
+    //dispatch({ type: txStatusReducer.actionTypes.TRIGGER_RESUBMIT });
+    const { fast } = await fetchGasPriceEstimates(txConfig.network);
+    const unfinishedResubmitTxQueryParams = txConfig && createQueryParams(txConfig, 'resubmit');
+    if (!unfinishedResubmitTxQueryParams) {
+      //dispatch({ type: txStatusReducer.actionTypes.TRIGGER_RESUBMIT_SUCCESS });
+      return;
+    }
+    const query = queryString.stringify({
+      ...unfinishedResubmitTxQueryParams,
+      gasPrice: inputGasPriceToHex(fast.toString())
+    });
+    //dispatch({ type: txStatusReducer.actionTypes.TRIGGER_RESUBMIT_SUCCESS });
+    history.replace(`${ROUTE_PATHS.SEND.path}/?${query}`);
+  };
+
+  const handleTxCancelRedirect = async () => {
+    //dispatch({ type: txStatusReducer.actionTypes.TRIGGER_RESUBMIT });
+    const { fast } = await fetchGasPriceEstimates(txConfig.network);
+    const unfinishedResubmitTxQueryParams = txConfig && createQueryParams(txConfig, 'cancel');
+    if (!unfinishedResubmitTxQueryParams) {
+      //dispatch({ type: txStatusReducer.actionTypes.TRIGGER_RESUBMIT_SUCCESS });
+      return;
+    }
+    const query = queryString.stringify({
+      ...unfinishedResubmitTxQueryParams,
+      to: unfinishedResubmitTxQueryParams.from,
+      value: '0x0',
+      gasLimit: inputGasLimitToHex('21000'),
+      gasPrice: inputGasPriceToHex(fast.toString())
+    });
+
+    //dispatch({ type: txStatusReducer.actionTypes.TRIGGER_RESUBMIT_SUCCESS });
+    history.replace(`${ROUTE_PATHS.SEND.path}/?${query}`);
+  };
+
   const sender = constructSenderFromTxConfig(txConfig, accounts);
 
   const senderContact = getContactByAddressAndNetworkId(sender.address, txConfig.network.id);
@@ -191,35 +242,53 @@ export default function TxReceipt({
     txConfig.network.id
   );
 
+  // cannot send from web3 or walletconnect wallets because they overwrite gas and nonce inputs.
+  const isSenderAccountPresent =
+    txConfig &&
+    accounts.find(
+      ({ address, wallet }) =>
+        isSameAddress(address, txConfig.senderAccount?.address) &&
+        ![
+          WalletId.WEB3,
+          WalletId.METAMASK,
+          WalletId.COINBASE,
+          WalletId.FRAME,
+          WalletId.VIEW_ONLY
+        ].includes(wallet)
+    );
+
   const fiat = getFiat(settings);
 
   return (
     <TxReceiptUI
       settings={settings}
-      txConfig={txConfig}
-      txReceipt={txReceipt}
-      assetRate={assetRate}
-      baseAssetRate={baseAssetRate}
-      zapSelected={zapSelected}
-      membershipSelected={membershipSelected}
-      swapDisplay={swapDisplay}
       txStatus={txStatus}
       timestamp={timestamp}
       senderContact={senderContact}
       sender={sender}
       recipientContact={recipientContact}
       displayTxReceipt={displayTxReceipt}
-      setDisplayTxReceipt={setDisplayTxReceipt}
-      resetFlow={resetFlow}
-      completeButtonText={completeButtonText}
-      pendingButton={pendingButton}
       protectTxEnabled={ptxState && ptxState.protectTxEnabled}
       web3Wallet={ptxState && ptxState.isWeb3Wallet}
-      protectTxButton={protectTxButton}
       fiat={fiat}
+      isSenderAccountPresent={isSenderAccountPresent}
+      txConfig={txConfig}
+      txReceipt={txReceipt}
+      zapSelected={zapSelected}
+      membershipSelected={membershipSelected}
+      swapDisplay={swapDisplay}
+      completeButtonText={completeButtonText}
+      pendingButton={pendingButton}
+      setDisplayTxReceipt={setDisplayTxReceipt}
+      resetFlow={resetFlow}
+      protectTxButton={protectTxButton}
+      assetRate={assetRate}
+      baseAssetRate={baseAssetRate}
+      handleTxCancelRedirect={handleTxCancelRedirect}
+      handleTxResubmitRedirect={handleTxResubmitRedirect}
     />
   );
-}
+};
 
 export interface TxReceiptDataProps {
   settings: ISettings;
@@ -231,10 +300,13 @@ export interface TxReceiptDataProps {
   sender: ISender;
   recipientContact: ExtendedContact | undefined;
   fiat: Fiat;
+  isSenderAccountPresent: StoreAccount | undefined;
   pendingButton?: PendingBtnAction;
   swapDisplay?: SwapDisplayData;
   protectTxEnabled?: boolean;
   web3Wallet?: boolean;
+  handleTxCancelRedirect(): void;
+  handleTxResubmitRedirect(): void;
   assetRate: number | undefined;
   baseAssetRate: number | undefined;
   resetFlow(): void;
@@ -263,6 +335,9 @@ export const TxReceiptUI = ({
   pendingButton,
   resetFlow,
   completeButtonText,
+  isSenderAccountPresent,
+  handleTxCancelRedirect,
+  handleTxResubmitRedirect,
   protectTxEnabled = false,
   web3Wallet = false,
   protectTxButton
@@ -434,8 +509,8 @@ export const TxReceiptUI = ({
                   <br /> {localTimestamp}
                 </div>
               ) : (
-                translate('UNKNOWN')
-              ))}
+                  translate('UNKNOWN')
+                ))}
             {!displayTxReceipt && <PendingTransaction />}
           </div>
         </div>
@@ -471,6 +546,29 @@ export const TxReceiptUI = ({
           {completeButtonText}
         </Button>
       )}
+      {txStatus === ITxStatus.PENDING && txConfig && (
+        <Tooltip tooltip={translateRaw('RESUBMIT_TOOLTIP')}>
+          <Button
+            className="TransactionReceipt-another"
+            onClick={handleTxResubmitRedirect}
+            disabled={!isSenderAccountPresent}
+          >
+            {translateRaw('SPEED_UP_TX_BTN')}
+          </Button>
+        </Tooltip>
+      )}
+      <br />
+      {txStatus === ITxStatus.PENDING && txConfig && (
+        <Tooltip tooltip={translateRaw('RESUBMIT_TOOLTIP')}>
+          <Button
+            className="TransactionReceipt-another"
+            onClick={handleTxCancelRedirect}
+            disabled={!isSenderAccountPresent}
+          >
+            {translateRaw('CANCEL_TX_BTN')}
+          </Button>
+        </Tooltip>
+      )}
       <Link to={ROUTE_PATHS.DASHBOARD.path}>
         <Button className="TransactionReceipt-back">
           {translate('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')}
@@ -480,3 +578,5 @@ export const TxReceiptUI = ({
     </div>
   );
 };
+
+export default withRouter(TxReceipt);

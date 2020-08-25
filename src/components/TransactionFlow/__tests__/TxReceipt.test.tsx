@@ -29,7 +29,14 @@ const defaultProps: React.ComponentProps<typeof TxReceiptUI> = {
   timestamp: 1583266291,
   displayTxReceipt: fTxReceipt,
   resetFlow: noOp,
+<<<<<<< HEAD
   baseAssetRate: 250,
+=======
+  handleTxCancelRedirect: noOp,
+  handleTxResubmitRedirect: noOp,
+  isSenderAccountPresent: undefined,
+  baseAssetRate: () => 250,
+>>>>>>> migrated to txReceipt component
   fiat: Fiats.USD
 };
 
