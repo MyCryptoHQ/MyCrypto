@@ -148,13 +148,8 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
       onBack={() => history.push(ROUTE_PATHS.DASHBOARD.path)}
       mobileMaxWidth="100%;"
     >
-      <Formik
-        initialValues={initialValues}
-        onSubmit={noOp}
-        render={({
-          values: { amount, recipientAddress },
-          errors
-        }: FormikProps<typeof initialValues>) => (
+      <Formik initialValues={initialValues} onSubmit={noOp}>
+        {({ values: { amount, recipientAddress }, errors }: FormikProps<typeof initialValues>) => (
           <Form>
             <Fieldset>
               <SLabel htmlFor="recipientAddress">{translate('X_RECIPIENT')}</SLabel>
@@ -278,7 +273,7 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
             )}
           </Form>
         )}
-      />
+      </Formik>
     </ContentPanel>
   );
 }

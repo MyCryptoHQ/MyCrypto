@@ -50,10 +50,8 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
   return (
     <div className="Panel">
       <div className="Panel-title">{translateRaw('INPUT_PUBLIC_ADDRESS_LABEL')}</div>
-      <Formik
-        initialValues={initialFormikValues}
-        onSubmit={onSubmit}
-        render={({ errors, touched, values, setFieldError, setFieldTouched, setFieldValue }) => (
+      <Formik initialValues={initialFormikValues} onSubmit={onSubmit}>
+        {({ errors, touched, values, setFieldError, setFieldTouched, setFieldValue }) => (
           <FormWrapper>
             <ContactLookupField
               name="address"
@@ -77,7 +75,7 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
             </ButtonWrapper>
           </FormWrapper>
         )}
-      />
+      </Formik>
     </div>
   );
 }
