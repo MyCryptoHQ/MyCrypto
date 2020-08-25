@@ -417,7 +417,13 @@ const buildAccountTable = (
     .map((account, index) => {
       const addressCard: ExtendedContact | undefined = getLabelByAccount(account, contacts);
       const total = totalFiat([account])(getAssetRate);
-      return { account, index, total, addressCard };
+      return {
+        account,
+        index,
+        total,
+        addressCard,
+        label: addressCard ? addressCard.label : translateRaw('NO_LABEL')
+      };
     })
     .sort(getSortingFunction(sortingState.activeSort));
 
