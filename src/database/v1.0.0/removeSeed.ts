@@ -3,9 +3,9 @@ import reduce from 'ramda/src/reduce';
 import pipe from 'ramda/src/pipe';
 
 import {
-  AddressBook,
+  Contact,
   IAccount,
-  ExtendedAddressBook,
+  ExtendedContact,
   LocalStorage,
   TUuid,
   ISettings,
@@ -43,8 +43,8 @@ const removeDevAccountsFromSettings = add(LSKeys.SETTINGS)(
 );
 
 const removeDevAddressBook = add(LSKeys.ADDRESS_BOOK)(
-  (contacts: Record<string, AddressBook>, store: LocalStorage) => {
-    const cmp = (x: ExtendedAddressBook, y: AddressBook) =>
+  (contacts: Record<string, Contact>, store: LocalStorage) => {
+    const cmp = (x: ExtendedContact, y: Contact) =>
       isSameAddress(x.address as TAddress, y.address as TAddress);
     const withoutDevContacts = differenceWith(cmp, toArray(store.addressBook), toArray(contacts));
     return reduce(toObject('uuid'), {}, withoutDevContacts);

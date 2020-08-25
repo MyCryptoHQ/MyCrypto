@@ -3,8 +3,8 @@ import { simpleRender, fireEvent, waitFor } from 'test-utils';
 import { fNetwork } from '@fixtures';
 
 import { DataContext } from '@services/Store';
-import { AddressBook, ExtendedAddressBook, TUuid, IReceiverAddress } from '@types';
-import { addressBook } from '@database/seed/addressBook';
+import { Contact, ExtendedContact, TUuid, IReceiverAddress } from '@types';
+import { contacts as seedContacts } from '@database/seed/contacts';
 
 import ContactLookupField from '../ContactLookupField';
 
@@ -32,7 +32,7 @@ const initialFormikValues: { address: IReceiverAddress } = {
 
 function getComponent(
   props: any,
-  contacts: AddressBook[] = [],
+  contacts: Contact[] = [],
   output: FormValues = { data: { address: { value: '', display: '' } } }
 ) {
   const setFormValue = (address: IReceiverAddress) => {
@@ -46,7 +46,7 @@ function getComponent(
           assets: [{ uuid: fNetwork.baseAsset }],
           addressBook: contacts,
           contracts: [],
-          createActions: jest.fn(() => ({ create: (c: ExtendedAddressBook) => contacts.push(c) }))
+          createActions: jest.fn(() => ({ create: (c: ExtendedContact) => contacts.push(c) }))
         } as unknown) as any
       }
     >
@@ -60,12 +60,10 @@ function getComponent(
 }
 
 const enter = { key: 'Enter', keyCode: 13 };
-const mockMappedContacts: ExtendedAddressBook[] = Object.entries(addressBook).map(
-  ([key, value]) => ({
-    ...value,
-    uuid: key as TUuid
-  })
-);
+const mockMappedContacts: ExtendedContact[] = Object.entries(seedContacts).map(([key, value]) => ({
+  ...value,
+  uuid: key as TUuid
+}));
 
 // mock domain resolving function
 jest.mock('@services/UnstoppableService', () => ({
@@ -81,7 +79,7 @@ describe('ContactLookupField', () => {
 
   test('it adds unknown address to contact book and select it after blur', async () => {
     const address = mockMappedContacts[0].address;
-    const contacts: ExtendedAddressBook[] = [];
+    const contacts: ExtendedContact[] = [];
     const output = { data: { ...initialFormikValues } };
     const { container } = getComponent(getDefaultProps(), contacts, output);
     const input = container.querySelector('input');
@@ -95,7 +93,7 @@ describe('ContactLookupField', () => {
   });
 
   test('it adds unknown ens to contact book and select it by keypress enter', async () => {
-    const contacts: ExtendedAddressBook[] = [];
+    const contacts: ExtendedContact[] = [];
     const address = mockMappedContacts[0].address;
     const ens = 'eth.eth';
     const output = { data: { ...initialFormikValues } };
@@ -111,7 +109,7 @@ describe('ContactLookupField', () => {
   });
 
   test('it select unresolved input and not add it into contacts book', async () => {
-    const contacts: ExtendedAddressBook[] = [];
+    const contacts: ExtendedContact[] = [];
     const inputString = '0x1234';
     const output = { data: { ...initialFormikValues } };
     const { container } = getComponent(getDefaultProps(), contacts, output);
@@ -126,7 +124,7 @@ describe('ContactLookupField', () => {
   });
 
   test('it select existing contact from contacts book by keypress enter', async () => {
-    const contacts: ExtendedAddressBook[] = mockMappedContacts.map((x) => x);
+    const contacts: ExtendedContact[] = mockMappedContacts.map((x) => x);
     const [contact] = contacts;
     const inputString = 'eth.eth';
     const output = { data: { ...initialFormikValues } };

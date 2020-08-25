@@ -1,11 +1,11 @@
-import { IAccount, AddressBook, Network, WalletId, ExtendedAddressBook, TAddress } from '@types';
+import { IAccount, Contact, Network, WalletId, ExtendedContact, TAddress } from '@types';
 import { isSameAddress } from '@utils';
 import { getWalletConfig, DEFAULT_NETWORK } from '@config';
 
 export const getLabelByAccount = (
   account: IAccount,
-  addressLabels: ExtendedAddressBook[]
-): ExtendedAddressBook | undefined => {
+  addressLabels: ExtendedContact[]
+): ExtendedContact | undefined => {
   if (!account || !addressLabels) return;
   return addressLabels.find(
     (label) =>
@@ -16,9 +16,9 @@ export const getLabelByAccount = (
 
 export const getLabelByAddressAndNetwork = (
   address: string | undefined,
-  addressLabels: ExtendedAddressBook[],
+  addressLabels: ExtendedContact[],
   network: Network | undefined
-): ExtendedAddressBook | undefined => {
+): ExtendedContact | undefined => {
   if (!address) return;
   return addressLabels.find(
     (label) =>
@@ -34,9 +34,9 @@ export const getLabelByAddressAndNetwork = (
 / `New Ethereum Account 1` vs `New Ethereum Account 2` vs `New Ethereum Classic Account 1`
 */
 
-const getUnusedLabel = (contacts: AddressBook[], generateLabel: (index: number) => string) => {
+const getUnusedLabel = (contacts: Contact[], generateLabel: (index: number) => string) => {
   let index = 0;
-  let isFound: AddressBook | undefined;
+  let isFound: Contact | undefined;
   let unusedLabel: string;
   do {
     index += 1;
@@ -47,11 +47,11 @@ const getUnusedLabel = (contacts: AddressBook[], generateLabel: (index: number) 
   return unusedLabel;
 };
 
-export const findNextUnusedDefaultLabel = (wallet: WalletId) => (contacts: AddressBook[]): string =>
+export const findNextUnusedDefaultLabel = (wallet: WalletId) => (contacts: Contact[]): string =>
   getUnusedLabel(contacts, (index) => `${getWalletConfig(wallet).name} Account ${index}`);
 
 export const findMultipleNextUnusedDefaultLabels = (wallet: WalletId, numOfLabels: number) => (
-  contacts: AddressBook[]
+  contacts: Contact[]
 ): string[] => {
   let tempContacts = contacts;
   const newLabels = [];
@@ -69,5 +69,5 @@ export const findMultipleNextUnusedDefaultLabels = (wallet: WalletId, numOfLabel
   return newLabels;
 };
 
-export const findNextRecipientLabel = (contacts: AddressBook[]) =>
+export const findNextRecipientLabel = (contacts: Contact[]) =>
   getUnusedLabel(contacts, (index) => `Recipient ${index}`);

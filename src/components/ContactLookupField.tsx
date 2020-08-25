@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { IReceiverAddress, Network, TAddress } from '@types';
-import { findNextRecipientLabel, useAddressBook } from '@services/Store';
+import { findNextRecipientLabel, useContacts } from '@services/Store';
 import { useEffectOnce } from '@vendor';
 
 import GeneralLookupField, { IGeneralLookupFieldComponentProps } from './GeneralLookupField';
@@ -20,11 +20,7 @@ const ContactLookupField = ({
   ...rest
 }: IContactLookupFieldComponentProps &
   Omit<IGeneralLookupFieldComponentProps, 'options' | 'handleEthAddress' | 'handleENSName'>) => {
-  const {
-    addressBook: contacts,
-    createAddressBooks: createContact,
-    getContactByAddress
-  } = useAddressBook();
+  const { contacts, createContact, getContactByAddress } = useContacts();
 
   const handleEthAddress = (inputString: string): IReceiverAddress => {
     const contact = getContactByAddress(inputString as TAddress);

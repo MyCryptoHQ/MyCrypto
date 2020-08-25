@@ -1,5 +1,5 @@
 export * from './Account';
-export * from './AddressBook';
+export * from './Contact';
 export * from './Asset';
 export * from './Contract';
 export * from './Network';

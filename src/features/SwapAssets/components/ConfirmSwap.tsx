@@ -8,7 +8,7 @@ import { StoreAccount, TAddress } from '@types';
 import { COLORS } from '@theme';
 import { Typography, Currency } from '@components';
 import { FromToAccount, SwapFromToDiagram } from '@components/TransactionFlow/displays';
-import { useAddressBook } from '@services';
+import { useContacts } from '@services';
 import { isSameAddress } from '@utils';
 
 import { IAssetPair } from '../types';
@@ -47,8 +47,8 @@ export default function ConfirmSwap({
   onClick: onSuccess
 }: Props) {
   const { fromAsset, toAsset, fromAmount, toAmount, rate: exchangeRate } = assetPair;
-  const { addressBook } = useAddressBook();
-  const fromAddressBookEntry = addressBook.find(
+  const { contacts } = useContacts();
+  const fromContact = contacts.find(
     ({ address, network }) =>
       isSameAddress(address as TAddress, account.address) && network === account.networkId
   );
@@ -65,11 +65,11 @@ export default function ConfirmSwap({
       <FromToAccount
         fromAccount={{
           address: account.address,
-          addressBookEntry: fromAddressBookEntry
+          addressBookEntry: fromContact
         }}
         toAccount={{
           address: account.address,
-          addressBookEntry: fromAddressBookEntry
+          addressBookEntry: fromContact
         }}
         networkId={account.networkId}
       />

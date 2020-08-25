@@ -1,12 +1,12 @@
 import { SymmetricDifference, ValuesType, $ElementType } from 'utility-types';
 import {
   Asset,
-  AddressBook,
+  Contact,
   ExtendedContract,
   ISettings,
   Network,
   Notification,
-  ExtendedAddressBook,
+  ExtendedContact,
   IAccount,
   ExtendedAsset,
   ExtendedNotification,
@@ -35,7 +35,7 @@ export interface LocalStorage {
   readonly [LSKeys.ASSETS]: Record<TUuid, Asset>;
   readonly [LSKeys.NETWORKS]: Record<NetworkId, Network>;
   readonly [LSKeys.CONTRACTS]: Record<TUuid, ExtendedContract>;
-  readonly [LSKeys.ADDRESS_BOOK]: Record<TUuid, AddressBook>;
+  readonly [LSKeys.ADDRESS_BOOK]: Record<TUuid, Contact>;
   readonly [LSKeys.NOTIFICATIONS]: Record<TUuid, Notification>;
   readonly [LSKeys.PASSWORD]: string;
   readonly [LSKeys.NETWORK_NODES]: Record<NetworkId, NetworkNodes>;
@@ -49,7 +49,7 @@ export interface DataStore {
   readonly [LSKeys.ASSETS]: ExtendedAsset[];
   readonly [LSKeys.NETWORKS]: Network[];
   readonly [LSKeys.CONTRACTS]: ExtendedContract[];
-  readonly [LSKeys.ADDRESS_BOOK]: ExtendedAddressBook[];
+  readonly [LSKeys.ADDRESS_BOOK]: ExtendedContact[];
   readonly [LSKeys.NOTIFICATIONS]: ExtendedNotification[];
   readonly [LSKeys.SETTINGS]: ISettings;
   readonly [LSKeys.PASSWORD]: string;

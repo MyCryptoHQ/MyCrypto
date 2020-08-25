@@ -9,12 +9,12 @@ import {
   StoreAccount,
   ITxStatus,
   ITxReceipt,
-  ExtendedAddressBook,
+  ExtendedContact,
   IPendingTxReceipt,
   TUuid
 } from '@types';
 
-import { getLabelByAccount } from './AddressBook';
+import { getLabelByAccount } from './Contact';
 import { getNetworkById } from './Network';
 import { translateRaw } from '@translations';
 
@@ -33,7 +33,7 @@ export const getStoreAccounts = (
   accounts: IAccount[],
   assets: Asset[],
   networks: Network[],
-  contacts: ExtendedAddressBook[]
+  contacts: ExtendedContact[]
 ): StoreAccount[] => {
   return accounts.map((a) => {
     const accountLabel = getLabelByAccount(a, contacts);

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { fTxConfig, fAccount, fSettings } from '@fixtures';
-import { ExtendedAddressBook, ITxType } from '@types';
+import { ExtendedContact, ITxType } from '@types';
 import { noOp, bigify } from '@utils';
 import { devContacts } from '@database/seed';
 import { IZapConfig, ZAPS_CONFIG, IZapId } from '@features/DeFiZap/config';
@@ -12,8 +12,8 @@ import { constructSenderFromTxConfig } from './helpers';
 // Define props
 const assetRate = 1.34;
 const baseAssetRate = 1.54;
-const senderContact = Object.values(devContacts)[0] as ExtendedAddressBook;
-const recipientContact = Object.values(devContacts)[1] as ExtendedAddressBook;
+const senderContact = Object.values(devContacts)[0] as ExtendedContact;
+const recipientContact = Object.values(devContacts)[1] as ExtendedContact;
 const onComplete = noOp;
 
 export default { title: 'ConfirmTx' };

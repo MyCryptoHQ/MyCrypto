@@ -12,7 +12,7 @@ import {
   Icon,
   Amount
 } from '@components';
-import { DWAccountDisplay, fromTokenBase, useAddressBook } from '@services';
+import { DWAccountDisplay, fromTokenBase, useContacts } from '@services';
 import { COLORS, SPACING, BREAK_POINTS } from '@theme';
 import { Network, ExtendedAsset, TAddress } from '@types';
 import { isSameAddress, useScreenSize } from '@utils';
@@ -267,7 +267,7 @@ const DeterministicTable = ({
   handleUpdate,
   downloadCSV
 }: DeterministicTableProps) => {
-  const { getContactByAddressAndNetworkId } = useAddressBook();
+  const { getContactByAddressAndNetworkId } = useContacts();
   const { isMobile } = useScreenSize();
 
   const isSelected = (account: DWAccountDisplay) =>

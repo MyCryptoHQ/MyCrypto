@@ -1,7 +1,7 @@
-import { ExtendedAddressBook, TUuid } from '@types';
+import { ExtendedContact, TUuid } from '@types';
 import { fNetwork, fNetworks } from './network';
 
-export const fAddressBook: ExtendedAddressBook[] = [
+export const fContacts: ExtendedContact[] = [
   {
     uuid: '4ffb0d4a-adf3-1990-5eb9-fe78e613f70b' as TUuid,
     label: 'WalletConnect Account 1',

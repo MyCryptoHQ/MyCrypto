@@ -1,15 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { ExtendedAddressBook, TAddress, NetworkId } from '@types';
-import { useAddressBook } from '@services';
+import { ExtendedContact, TAddress, NetworkId } from '@types';
+import { useContacts } from '@services';
 import { BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
 
 import EditableText from './EditableText';
 
 export interface Props {
-  addressBookEntry?: ExtendedAddressBook;
+  addressBookEntry?: ExtendedContact;
   address: TAddress;
   networkId: NetworkId;
 }
@@ -21,16 +21,16 @@ const SWrapper = styled.span`
 `;
 
 const EditableAccountLabel = ({ addressBookEntry, address, networkId }: Props) => {
-  const { updateAddressBooks, createAddressBooks } = useAddressBook();
+  const { updateContact, createContact } = useContacts();
   return (
     <SWrapper>
       <EditableText
         truncate={true}
         saveValue={(value) => {
           if (addressBookEntry) {
-            updateAddressBooks(addressBookEntry.uuid, { ...addressBookEntry, label: value });
+            updateContact(addressBookEntry.uuid, { ...addressBookEntry, label: value });
           } else {
-            createAddressBooks({
+            createContact({
               address,
               label: value,
               network: networkId,

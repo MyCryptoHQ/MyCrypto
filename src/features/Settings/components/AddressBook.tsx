@@ -14,17 +14,17 @@ import {
   UndoDeleteOverlay,
   FixedSizeCollapsibleTable
 } from '@components';
-import { ExtendedAddressBook, AddressBook as IAddressBook, TUuid } from '@types';
+import { Contact as IContact, TUuid, ExtendedContact } from '@types';
 import { COLORS, SPACING, BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
 
 interface Props {
-  addressBook: ExtendedAddressBook[];
-  addressBookRestore: { [name: string]: ExtendedAddressBook | undefined };
+  contacts: ExtendedContact[];
+  contactRestore: { [name: string]: ExtendedContact | undefined };
   toggleFlipped(): void;
-  deleteAddressBooks(uuid: string): void;
-  updateAddressBooks(uuid: string, addressBooksData: IAddressBook): void;
-  restoreDeletedAddressBook(addressBookId: TUuid): void;
+  deleteContact(uuid: string): void;
+  updateContact(uuid: string, addressBooksData: IContact): void;
+  restoreDeletedContact(id: TUuid): void;
 }
 
 const DeleteButton = styled(Button)`
@@ -74,12 +74,12 @@ const SEditableText = styled(EditableText)`
 `;
 
 export default function AddressBook({
-  addressBook,
-  addressBookRestore,
+  contacts,
+  contactRestore,
   toggleFlipped,
-  deleteAddressBooks,
-  updateAddressBooks,
-  restoreDeletedAddressBook
+  deleteContact,
+  updateContact,
+  restoreDeletedContact
 }: Props) {
   const [deletingIndex, setDeletingIndex] = useState<number>();
   const [undoDeletingIndexes, setUndoDeletingIndexes] = useState<[number, TUuid][]>([]);
@@ -89,12 +89,12 @@ export default function AddressBook({
   ];
   const overlayRowsFlat = [...overlayRows[0], ...overlayRows[1].map((row) => row[0])];
 
-  const getDisplayAddressBook = (): ExtendedAddressBook[] => {
-    const accountsTemp = cloneDeep(addressBook);
+  const getDisplayAddressBook = (): ExtendedContact[] => {
+    const accountsTemp = cloneDeep(contacts);
     overlayRows[1]
       .sort((a, b) => a[0] - b[0])
       .forEach((index) => {
-        accountsTemp.splice(index[0], 0, addressBookRestore[index[1]] as ExtendedAddressBook);
+        accountsTemp.splice(index[0], 0, contactRestore[index[1]] as ExtendedContact);
       });
     return accountsTemp.sort((a, b) => a.uuid.localeCompare(b.uuid));
   };
@@ -123,7 +123,7 @@ export default function AddressBook({
             deleteAction={() => {
               setDeletingIndex(undefined);
               setUndoDeletingIndexes((prev) => [...prev, [rowIndex, uuid]]);
-              deleteAddressBooks(uuid);
+              deleteContact(uuid);
             }}
             cancelAction={() => setDeletingIndex(undefined)}
           />
@@ -139,7 +139,7 @@ export default function AddressBook({
               $label: label
             })}
             restoreAccount={() => {
-              restoreDeletedAddressBook(uuid);
+              restoreDeletedContact(uuid);
               setUndoDeletingIndexes((prev) => prev.filter((i) => i[0] !== rowIndex));
             }}
           />
@@ -150,16 +150,14 @@ export default function AddressBook({
     },
     overlayRows: overlayRowsFlat,
     body: displayAddressBook.map(
-      ({ uuid, address, label, network, notes }: ExtendedAddressBook, index) => [
+      ({ uuid, address, label, network, notes }: ExtendedContact, index) => [
         <Icon key={0} icon="star" />,
         <Label key={1}>
           <SIdenticon address={address} />
           <SEditableText
             truncate={true}
             value={label}
-            saveValue={(value) =>
-              updateAddressBooks(uuid, { address, label: value, network, notes })
-            }
+            saveValue={(value) => updateContact(uuid, { address, label: value, network, notes })}
           />
         </Label>,
         <EthAddress key={2} address={address} truncate={true} isCopyable={true} />,
@@ -170,7 +168,7 @@ export default function AddressBook({
           key={4}
           truncate={true}
           value={notes}
-          saveValue={(value) => updateAddressBooks(uuid, { address, label, network, notes: value })}
+          saveValue={(value) => updateContact(uuid, { address, label, network, notes: value })}
         />,
         <DeleteButton key={5} onClick={() => setDeletingIndex(index)} icon="exit" />
       ]

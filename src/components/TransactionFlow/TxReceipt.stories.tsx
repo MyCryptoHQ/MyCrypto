@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { fTxConfig, fTxReceipt, fAccount, fSettings } from '@fixtures';
-import { ITxStatus, ExtendedAddressBook, ITxType } from '@types';
+import { ITxStatus, ExtendedContact, ITxType } from '@types';
 import { noOp } from '@utils';
 import { devContacts } from '@database/seed';
 import { IZapConfig, ZAPS_CONFIG, defaultZapId } from '@features/DeFiZap/config';
@@ -15,8 +15,8 @@ import { constructSenderFromTxConfig } from './helpers';
 const assetRate = () => 1.34;
 const timestamp = 1583266291;
 const txStatus = ITxStatus.SUCCESS;
-const senderContact = Object.values(devContacts)[0] as ExtendedAddressBook;
-const recipientContact = Object.values(devContacts)[1] as ExtendedAddressBook;
+const senderContact = Object.values(devContacts)[0] as ExtendedContact;
+const recipientContact = Object.values(devContacts)[1] as ExtendedContact;
 const resetFlow = noOp;
 
 export default { title: 'TxReceipt' };

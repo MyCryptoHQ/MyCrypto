@@ -1,10 +1,10 @@
-import { Asset, AddressBook, LocalStorage, NetworkId, Network, TUuid, Fiat, LSKeys } from '@types';
+import { Asset, Contact, LocalStorage, NetworkId, Network, TUuid, Fiat, LSKeys } from '@types';
 
 import { DevAccount } from './seed';
 import { NETWORKS_CONFIG } from './data';
 
 /* Types */
-type DevData = Asset[] | DevAccount[] | Record<string | TUuid, AddressBook>;
+type DevData = Asset[] | DevAccount[] | Record<string | TUuid, Contact>;
 export type SeedData = typeof NETWORKS_CONFIG | Fiat[] | DevData;
 type StoreProp = Record<NetworkId, Network> | any;
 export type StoreAction = (store: LocalStorage) => LocalStorage;

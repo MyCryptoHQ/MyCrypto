@@ -4,7 +4,7 @@ import { MemoryRouter as Router } from 'react-router-dom';
 
 import { fSettings, fTxConfig, fAccount, fTxReceipt } from '@fixtures';
 import { devContacts } from '@database/seed';
-import { ExtendedAddressBook, ITxType, ITxStatus } from '@types';
+import { ExtendedContact, ITxType, ITxStatus } from '@types';
 import { truncate, noOp } from '@utils';
 import { translateRaw } from '@translations';
 import { ZAPS_CONFIG } from '@features/DeFiZap/config';
@@ -15,8 +15,8 @@ import { DataContext } from '@services';
 import { TxReceiptUI } from '../TxReceipt';
 import { constructSenderFromTxConfig } from '../helpers';
 
-const senderContact = Object.values(devContacts)[0] as ExtendedAddressBook;
-const recipientContact = Object.values(devContacts)[1] as ExtendedAddressBook;
+const senderContact = Object.values(devContacts)[0] as ExtendedContact;
+const recipientContact = Object.values(devContacts)[1] as ExtendedContact;
 
 const defaultProps: React.ComponentProps<typeof TxReceiptUI> = {
   settings: fSettings,

@@ -5,7 +5,7 @@ import {
   Asset,
   AssetBalanceObject,
   IAccount,
-  AddressBook,
+  Contact,
   LocalStorage,
   NetworkId,
   TUuid,
@@ -79,7 +79,7 @@ const addDevAccountsToSettings = add(LSKeys.SETTINGS)((_, store: LocalStorage) =
   return pipe(updateDashboardAccounts(keys(store.accounts)))(store.settings);
 });
 
-const addDevAddressBook = add(LSKeys.ADDRESS_BOOK)((contacts: Record<string, AddressBook>, _) => {
+const addDevAddressBook = add(LSKeys.ADDRESS_BOOK)((contacts: Record<string, Contact>, _) => {
   return contacts;
 });
 
