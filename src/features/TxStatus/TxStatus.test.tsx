@@ -3,9 +3,9 @@ import { MemoryRouter } from 'react-router';
 import { simpleRender, waitFor, fireEvent, screen } from 'test-utils';
 import selectEvent from 'react-select-event';
 
-import { NetworkContext, StoreContext, SettingsContext, DataContext } from '@services';
+import { StoreContext, SettingsContext, DataContext, RatesContext } from '@services';
 import { translateRaw } from '@translations';
-import { fAccount, fNetwork, fAssets, fNetworks } from '@fixtures';
+import { fAccount, fNetwork, fAssets, fNetworks, fSettings } from '@fixtures';
 
 import TxStatus from './TxStatus';
 
@@ -33,8 +33,10 @@ describe('TxStatus', () => {
         }
       >
         <StoreContext.Provider value={{ accounts: [fAccount] } as any}>
-          <SettingsContext.Provider value={{ settings: { fiatCurrency: 'USD' } } as any}>
-            <TxStatus />
+          <SettingsContext.Provider value={{ settings: fSettings } as any}>
+            <RatesContext.Provider value={{ rates: {} } as any}>
+              <TxStatus />
+            </RatesContext.Provider>
           </SettingsContext.Provider>
         </StoreContext.Provider>
       </DataContext.Provider>

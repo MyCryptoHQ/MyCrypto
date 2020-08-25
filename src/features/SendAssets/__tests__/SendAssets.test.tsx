@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router';
 import { simpleRender } from 'test-utils';
 
 import SendAssets from '@features/SendAssets/SendAssets';
-import { FeatureFlagContext } from '@services';
+import { FeatureFlagContext, RatesContext } from '@services';
 import { StoreContext, SettingsContext, DataContext } from '@services/Store';
 import { fSettings } from '@fixtures';
 import { IS_ACTIVE_FEATURE } from '@config';
@@ -19,7 +19,7 @@ jest.mock('ethers/providers', () => {
     })
   };
 });
-
+// BLA
 /* Test components */
 describe('SendAssetsFlow', () => {
   const component = (path?: string) => (
@@ -53,7 +53,9 @@ describe('SendAssetsFlow', () => {
                 } as unknown) as any
               }
             >
-              <SendAssets />
+              <RatesContext.Provider value={{ rates: {} } as any}>
+                <SendAssets />
+              </RatesContext.Provider>
             </StoreContext.Provider>
           </SettingsContext.Provider>
         </FeatureFlagContext.Provider>
