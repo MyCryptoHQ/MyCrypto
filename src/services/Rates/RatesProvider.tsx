@@ -1,21 +1,15 @@
-import { useContext, useState, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 
 import { usePromise, useEffectOnce } from '@vendor';
 import { StoreContext, SettingsContext } from '@services/Store';
 import { PollingService } from '@workers';
-import { IRates, TTicker, Asset, StoreAsset, ReserveAsset } from '@types';
-import { notUndefined } from '@utils';
+import { IRates, TTicker, StoreAsset } from '@types';
 import { Fiats } from '@config/fiats';
+import { DeFiReserveMapService } from '@services';
 
-import { DeFiReserveMapService } from './ApiService';
-
-export interface IRatesContext {
+interface State {
   rates: IRates;
-  getRate(ticker: TTicker): number | undefined;
-  getRateInCurrency(ticker: TTicker, currency: string): number | undefined;
-  getAssetRate(asset: Asset): number | undefined;
-  getAssetRateInCurrency(asset: Asset, currency: string): number | undefined;
-  getPoolAssetReserveRate(defiPoolTokenUUID: string, assets: Asset[]): ReserveAsset[];
+  reserveRateMapping: ReserveMappingListObject;
 }
 
 interface ReserveMappingRate {
@@ -33,7 +27,6 @@ interface ReserveMappingListObject {
   [key: string]: ReserveMappingObject;
 }
 
-const DEFAULT_FIAT_RATE = 0;
 const POLLING_INTERVAL = 90000;
 
 const ASSET_RATES_URL = 'https://api.coingecko.com/api/v3/simple/price';
@@ -56,10 +49,11 @@ const destructureCoinGeckoIds = (rates: IRates, assets: StoreAsset[]): IRates =>
   return Object.keys(rates).reduce(updateRateObj, {} as IRates);
 };
 
-function useRates() {
+export const RatesContext = createContext({} as State);
+
+export function RatesProvider({ children }: { children: React.ReactNode }) {
   const { assets: getAssets } = useContext(StoreContext);
   const { settings, updateSettingsRates } = useContext(SettingsContext);
-  const rates = settings.rates;
   const [reserveRateMapping, setReserveRateMapping] = useState({} as ReserveMappingListObject);
   const worker = useRef<undefined | PollingService>();
   const currentAssets = getAssets();
@@ -70,7 +64,7 @@ function useRates() {
     return acc;
   }, [] as string[]);
   const updateRates = (data: IRates) =>
-    updateSettingsRates({ ...rates, ...destructureCoinGeckoIds(data, currentAssets) });
+    updateSettingsRates({ ...state.rates, ...destructureCoinGeckoIds(data, currentAssets) });
 
   // update rate worker success handler with updated settings context
   useEffect(() => {
@@ -107,53 +101,12 @@ function useRates() {
     };
   }, [geckoIds.length]);
 
-  const getRate = (ticker: TTicker) => {
-    if (!rates[ticker]) return DEFAULT_FIAT_RATE;
-    return settings && settings.fiatCurrency
-      ? rates[ticker][(settings.fiatCurrency as string).toLowerCase()]
-      : DEFAULT_FIAT_RATE;
+  const state: State = {
+    get rates() {
+      return settings.rates;
+    },
+    reserveRateMapping
   };
 
-  const getRateInCurrency = (ticker: TTicker, currency: string) => {
-    if (!rates[ticker]) return DEFAULT_FIAT_RATE;
-    return rates[ticker][currency.toLowerCase()];
-  };
-
-  const getAssetRate = (asset: Asset) => {
-    const uuid = asset.uuid;
-    if (!rates[uuid]) return DEFAULT_FIAT_RATE;
-    return settings && settings.fiatCurrency
-      ? rates[uuid][(settings.fiatCurrency as string).toLowerCase()]
-      : DEFAULT_FIAT_RATE;
-  };
-
-  const getAssetRateInCurrency = (asset: Asset, currency: string) => {
-    const uuid = asset.uuid;
-    if (!rates[uuid]) return DEFAULT_FIAT_RATE;
-    return rates[uuid][currency.toLowerCase()];
-  };
-
-  const getPoolAssetReserveRate = (uuid: string, assets: Asset[]) => {
-    const reserveRateObject = reserveRateMapping[uuid];
-    if (!reserveRateObject) return [];
-    return reserveRateObject.reserveRates
-      .map((item: ReserveMappingRate) => {
-        const detectedReserveAsset = assets.find((asset) => asset.uuid === item.assetId);
-        if (!detectedReserveAsset) return;
-
-        return { ...detectedReserveAsset, reserveExchangeRate: item.rate };
-      })
-      .filter(notUndefined);
-  };
-
-  return {
-    rates,
-    getRate,
-    getRateInCurrency,
-    getAssetRate,
-    getAssetRateInCurrency,
-    getPoolAssetReserveRate
-  };
+  return <RatesContext.Provider value={state}>{children}</RatesContext.Provider>;
 }
-
-export default useRates;

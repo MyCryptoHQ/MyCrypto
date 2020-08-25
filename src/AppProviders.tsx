@@ -3,7 +3,7 @@ import React from 'react';
 import { NotificationsProvider, ToastProvider, ErrorProvider } from '@features';
 import { AccountProvider, SettingsProvider, DataProvider } from '@services/Store';
 
-import { DevToolsProvider, StoreProvider, FeatureFlagProvider } from '@services';
+import { DevToolsProvider, StoreProvider, FeatureFlagProvider, RatesProvider } from '@services';
 
 function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | null }) {
   return (
