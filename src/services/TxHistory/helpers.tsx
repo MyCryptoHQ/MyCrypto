@@ -1,8 +1,10 @@
 import { bigNumberify, parseEther } from 'ethers/utils';
 
 import { ITxHistoryApiResponse } from '@services/ApiService/History';
-import { ITxReceipt, Network, Asset } from '@types';
+import { ITxReceipt, Network, Asset, StoreAccount } from '@types';
 import { getAssetByContractAndNetwork, getBaseAssetByNetwork } from '@services';
+import { ITxHistoryType } from '@features/Dashboard/types';
+import { isSameAddress } from '@utils';
 
 export const makeTxReceipt = (
   tx: ITxHistoryApiResponse,
@@ -33,4 +35,31 @@ export const makeTxReceipt = (
 export const merge = (apiTxs: ITxReceipt[], accountTxs: ITxReceipt[]): ITxReceipt[] => {
   // @todo
   return apiTxs.concat(accountTxs);
+};
+
+export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt): ITxHistoryType => {
+  const fromAccount =
+    tx.from && accountsList.find(({ address }) => isSameAddress(address, tx.from));
+  const toAddress = tx.receiverAddress || tx.to;
+  const toAccount =
+    toAddress && accountsList.find(({ address }) => isSameAddress(address, toAddress));
+
+  const isInvalidTxHistoryType =
+    !('txType' in tx) ||
+    tx.txType === ITxHistoryType.STANDARD ||
+    tx.txType === ITxHistoryType.UNKNOWN;
+
+  if (isInvalidTxHistoryType && toAccount && fromAccount) {
+    return ITxHistoryType.TRANSFER;
+  } else if (isInvalidTxHistoryType && !toAccount && fromAccount) {
+    return ITxHistoryType.OUTBOUND;
+  } else if (isInvalidTxHistoryType && toAccount && !fromAccount) {
+    return ITxHistoryType.INBOUND;
+  }
+
+  if (!Object.values(ITxHistoryType).some((t) => t === tx.txType)) {
+    // @todo: fix
+    return ITxHistoryType.INBOUND;
+  }
+  return tx.txType as ITxHistoryType;
 };

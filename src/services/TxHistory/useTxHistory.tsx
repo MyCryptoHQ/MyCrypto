@@ -6,8 +6,7 @@ import { ITxHistoryType } from '@features/Dashboard/types';
 
 import { StoreContext, getTxsFromAccount, useNetworks, useContacts, useAssets } from '../Store';
 import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
-import { deriveTxType } from '@features/Dashboard';
-import { makeTxReceipt, merge } from './helpers';
+import { makeTxReceipt, merge, deriveTxType } from './helpers';
 import { ITxHistoryEntry } from './types';
 
 function useTxHistory() {
