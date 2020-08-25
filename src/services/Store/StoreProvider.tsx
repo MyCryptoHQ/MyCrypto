@@ -21,7 +21,7 @@ import {
   WalletId,
   Asset,
   NetworkId,
-  AddressBook,
+  Contact,
   ITxType,
   TUuid,
   ReserveAsset,
@@ -66,9 +66,9 @@ import {
 import { AccountContext, getDashboardAccounts } from './Account';
 import { SettingsContext } from './Settings';
 import { getNetworkById, useNetworks } from './Network';
-import { findNextUnusedDefaultLabel, AddressBookContext } from './AddressBook';
+import { findNextUnusedDefaultLabel, useContacts } from './Contact';
 import { MyCryptoApiService, ANALYTICS_CATEGORIES } from '../ApiService';
-import { findMultipleNextUnusedDefaultLabels } from './AddressBook/helpers';
+import { findMultipleNextUnusedDefaultLabels } from './Contact/helpers';
 import { translateRaw } from '@translations';
 
 export interface CoinGeckoManifest {
@@ -144,12 +144,7 @@ export const StoreProvider: React.FC = ({ children }) => {
   const { assets, addAssetsFromAPI } = useAssets();
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { networks } = useNetworks();
-  const {
-    createAddressBooks: createContact,
-    addressBook: contacts,
-    getContactByAddressAndNetworkId,
-    updateAddressBooks: updateContact
-  } = useContext(AddressBookContext);
+  const { createContact, contacts, getContactByAddressAndNetworkId, updateContact } = useContacts();
 
   const [accountRestore, setAccountRestore] = useState<{ [name: string]: IAccount | undefined }>(
     {}
@@ -449,7 +444,7 @@ export const StoreProvider: React.FC = ({ children }) => {
             label: newLabels[idx]
           });
         } else if (!existingContact) {
-          const newLabel: AddressBook = {
+          const newLabel: Contact = {
             label: newLabels[idx],
             address: rawAccount.address,
             notes: '',
@@ -492,7 +487,7 @@ export const StoreProvider: React.FC = ({ children }) => {
           label: findNextUnusedDefaultLabel(account.wallet)(contacts)
         });
       } else {
-        const newLabel: AddressBook = {
+        const newLabel: Contact = {
           label: findNextUnusedDefaultLabel(account.wallet)(contacts),
           address: account.address,
           notes: '',

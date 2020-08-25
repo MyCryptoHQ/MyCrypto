@@ -9,18 +9,18 @@ import { generateUUID, IS_DEV, IS_STAGING } from '@utils';
 import {
   AccountContext,
   getLabelByAddressAndNetwork,
-  AddressBookContext,
   DataContext,
-  useNetworks
+  useNetworks,
+  useContacts
 } from '@services/Store';
 import { useDevTools, useFeatureFlags } from '@services';
 import {
   TAddress,
   IRawAccount,
-  AddressBook,
+  Contact,
   WalletId,
   AssetBalanceObject,
-  ExtendedAddressBook,
+  ExtendedContact,
   Network
 } from '@types';
 import { BREAK_POINTS } from '@theme';
@@ -34,12 +34,12 @@ const DevToolsInput = styled(Input)`
 `;
 
 const renderAccountForm = (
-  addressBook: ExtendedAddressBook[],
+  contacts: ExtendedContact[],
   getNetworkById: (name: string) => Network | undefined
 ) => ({ values, handleChange, handleBlur, isSubmitting }: FormikProps<IRawAccount>) => {
-  const detectedLabel: AddressBook | undefined = getLabelByAddressAndNetwork(
+  const detectedLabel: Contact | undefined = getLabelByAddressAndNetwork(
     values.address,
-    addressBook,
+    contacts,
     getNetworkById(values.networkId)
   );
   const label = detectedLabel ? detectedLabel.label : 'Unknown Account';
@@ -155,7 +155,7 @@ const FeatureFlags = () => {
 
 const DevTools = () => {
   const { getNetworkById } = useNetworks();
-  const { addressBook } = useContext(AddressBookContext);
+  const { contacts } = useContacts();
   const { accounts, createAccountWithID, deleteAccount } = useContext(AccountContext);
   const dummyAccount = {
     label: 'Foo',
@@ -200,7 +200,7 @@ const DevTools = () => {
             setSubmitting(false);
           }}
         >
-          {renderAccountForm(addressBook, getNetworkById)}
+          {renderAccountForm(contacts, getNetworkById)}
         </Formik>
       </Panel>
     </React.Fragment>

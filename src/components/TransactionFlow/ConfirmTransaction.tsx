@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import Styled from 'styled-components';
 import BN from 'bn.js';
 
-import { AddressBookContext, StoreContext, SettingsContext } from '@services/Store';
+import { StoreContext, SettingsContext, useContacts } from '@services/Store';
 import { Amount, AssetIcon, Button, PoweredByText } from '@components';
 import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from '@services/EthService';
 import { RatesContext } from '@services/RatesProvider';
@@ -11,7 +11,7 @@ import translate, { translateRaw } from '@translations';
 import { ZapSelectedBanner } from '@features/DeFiZap';
 import { BREAK_POINTS, SPACING, COLORS, FONT_SIZE } from '@theme';
 import MembershipSelectedBanner from '@features/PurchaseMembership/components/MembershipSelectedBanner';
-import { IStepComponentProps, ITxType, ExtendedAddressBook, ISettings } from '@types';
+import { IStepComponentProps, ITxType, ExtendedContact, ISettings } from '@types';
 import { getFiat } from '@config/fiats';
 import { ProtectTxContext, IFeeAmount } from '@features/ProtectTransaction/ProtectTxProvider';
 
@@ -124,7 +124,7 @@ export default function ConfirmTransaction({
 }: IStepComponentProps & { protectTxButton?(): JSX.Element }) {
   const { asset, baseAsset, receiverAddress, network, from } = txConfig;
 
-  const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
+  const { getContactByAddressAndNetworkId } = useContacts();
   const { getAssetRate } = useContext(RatesContext);
   const { accounts } = useContext(StoreContext);
   const { settings } = useContext(SettingsContext);
@@ -168,8 +168,8 @@ interface DataProps {
   settings: ISettings;
   assetRate?: number;
   baseAssetRate?: number;
-  recipientContact?: ExtendedAddressBook;
-  senderContact?: ExtendedAddressBook;
+  recipientContact?: ExtendedContact;
+  senderContact?: ExtendedContact;
   sender: ISender;
   ptxFee?: IFeeAmount;
   protectTxButton?(): JSX.Element;

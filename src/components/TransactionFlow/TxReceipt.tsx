@@ -16,7 +16,7 @@ import {
   IStepComponentProps,
   ITxType,
   TAddress,
-  ExtendedAddressBook,
+  ExtendedContact,
   ISettings,
   ITxReceiptStepProps,
   IPendingTxReceipt,
@@ -24,7 +24,7 @@ import {
   Fiat
 } from '@types';
 import { Amount, TimeElapsed, AssetIcon, LinkOut, PoweredByText } from '@components';
-import { AddressBookContext, AccountContext, StoreContext, SettingsContext } from '@services/Store';
+import { AccountContext, StoreContext, SettingsContext, useContacts } from '@services/Store';
 import { RatesContext } from '@services/RatesProvider';
 import {
   ProviderHandler,
@@ -93,7 +93,7 @@ export default function TxReceipt({
   protectTxButton
 }: ITxReceiptStepProps & Props) {
   const { getAssetRate } = useContext(RatesContext);
-  const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
+  const { getContactByAddressAndNetworkId } = useContacts();
   const { addNewTxToAccount } = useContext(AccountContext);
   const { accounts } = useContext(StoreContext);
   const { settings } = useContext(SettingsContext);
@@ -227,9 +227,9 @@ export interface TxReceiptDataProps {
   timestamp: number;
   displayTxReceipt?: ITxReceipt;
   setDisplayTxReceipt?: Dispatch<SetStateAction<ITxReceipt | undefined>>;
-  senderContact: ExtendedAddressBook | undefined;
+  senderContact: ExtendedContact | undefined;
   sender: ISender;
-  recipientContact: ExtendedAddressBook | undefined;
+  recipientContact: ExtendedContact | undefined;
   fiat: Fiat;
   pendingButton?: PendingBtnAction;
   swapDisplay?: SwapDisplayData;

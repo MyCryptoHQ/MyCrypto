@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { OptionProps } from 'react-select';
 import BN from 'bn.js';
@@ -18,12 +18,11 @@ import {
 import { Network, TTicker } from '@types';
 import {
   getBaseAssetByNetwork,
-  AddressBookContext,
   getLabelByAddressAndNetwork,
   isValidPath,
   fromWei
 } from '@services';
-import { useAssets } from '@services/Store';
+import { useAssets, useContacts } from '@services/Store';
 import { HELP_ARTICLE, DEFAULT_NETWORK_TICKER } from '@config';
 import { DeterministicWalletData, getDeterministicWallets } from '@services/WalletService';
 import { getBaseAssetBalances, BalanceMap } from '@services/Store/BalanceService';
@@ -222,7 +221,7 @@ export function DeterministicWalletsClass({
   const [currentDPath, setCurrentDPath] = useState(dPath);
   const [page, setPage] = useState(0);
   const [wallets, setWallets] = useState([] as DeterministicWalletData[]);
-  const { addressBook } = useContext(AddressBookContext);
+  const { contacts } = useContacts();
   const { assets } = useAssets();
 
   /* Used to update addresses displayed */
@@ -351,11 +350,7 @@ export function DeterministicWalletsClass({
     // tslint:disable-next-line: no-shadowed-variable
     ticker: TTicker
   ) => {
-    const addrBook = getLabelByAddressAndNetwork(
-      wallet.address.toLowerCase(),
-      addressBook,
-      network
-    );
+    const addrBook = getLabelByAddressAndNetwork(wallet.address.toLowerCase(), contacts, network);
     let blockExplorer;
     if (network && !network.isCustom && network.blockExplorer) {
       blockExplorer = network.blockExplorer;

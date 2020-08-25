@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import { Heading } from '@mycrypto/ui';
 
 import {
-  AddressBookContext,
   NetworkUtils,
   SettingsContext,
   StoreContext,
   useAssets,
-  useNetworks
+  useNetworks,
+  useContacts
 } from '@services/Store';
 import { buildBalances, buildTotalFiatValue } from '@utils';
 import { AccountList, Mobile, Desktop } from '@components';
@@ -98,27 +98,27 @@ function renderAccountPanel() {
 
 function renderAddressPanel() {
   const {
-    createAddressBooks,
-    addressBook,
-    addressBookRestore,
-    deleteAddressBooks,
-    updateAddressBooks,
-    restoreDeletedAddressBook
-  } = useContext(AddressBookContext);
+    createContact,
+    contacts,
+    contactRestore,
+    deleteContact,
+    updateContact,
+    restoreDeletedContact
+  } = useContacts();
 
   return (
     <FlippablePanel>
       {({ flipped, toggleFlipped }) =>
         flipped ? (
-          <AddToAddressBook toggleFlipped={toggleFlipped} createAddressBooks={createAddressBooks} />
+          <AddToAddressBook toggleFlipped={toggleFlipped} createContact={createContact} />
         ) : (
           <AddressBookPanel
-            addressBook={addressBook}
+            contacts={contacts}
             toggleFlipped={toggleFlipped}
-            updateAddressBooks={updateAddressBooks}
-            deleteAddressBooks={deleteAddressBooks}
-            restoreDeletedAddressBook={restoreDeletedAddressBook}
-            addressBookRestore={addressBookRestore}
+            updateContact={updateContact}
+            deleteContact={deleteContact}
+            restoreDeletedContact={restoreDeletedContact}
+            contactRestore={contactRestore}
           />
         )
       }
@@ -137,14 +137,14 @@ function renderNetworkNodes() {
     deleteNode
   } = useNetworks();
   const { createAssetWithID } = useAssets();
-  const { addressBook } = useContext(AddressBookContext);
+  const { contacts } = useContacts();
   const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
   const [editNode, setEditNode] = useState<CustomNodeConfig | undefined>(undefined);
   const [isAddingNetwork, setAddingNetwork] = useState(false);
 
-  const addressBookNetworks = NetworkUtils.getDistinctNetworks(addressBook, getNetworkById);
+  const contactNetworks = NetworkUtils.getDistinctNetworks(contacts, getNetworkById);
   const networks = allNetworks.filter(
-    (n) => n.isCustom || addressBookNetworks.some((a) => a.id === n.id)
+    (n) => n.isCustom || contactNetworks.some((a) => a.id === n.id)
   );
 
   return (

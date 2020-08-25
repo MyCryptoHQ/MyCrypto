@@ -17,13 +17,13 @@ import {
 } from '@components';
 import { truncate } from '@utils';
 import { BREAK_POINTS, COLORS, SPACING, breakpointToNumber } from '@theme';
-import { IAccount, StoreAccount, ExtendedAddressBook, WalletId, TUuid } from '@types';
+import { IAccount, StoreAccount, ExtendedContact, WalletId, TUuid } from '@types';
 import {
   AccountContext,
   getLabelByAccount,
   StoreContext,
   SettingsContext,
-  AddressBookContext
+  useContacts
 } from '@services/Store';
 import { RatesContext, useFeatureFlags } from '@services';
 import { getFiat } from '@config/fiats';
@@ -305,7 +305,7 @@ interface ITableFullAccountType {
   index: number;
   label: string;
   total: number;
-  addressCard: ExtendedAddressBook;
+  addressCard: ExtendedContact;
 }
 
 type TSortFunction = (a: ITableFullAccountType, b: ITableFullAccountType) => number;
@@ -353,7 +353,7 @@ const buildAccountTable = (
   const { totalFiat } = useContext(StoreContext);
   const { getAssetRate } = useContext(RatesContext);
   const { settings } = useContext(SettingsContext);
-  const { addressBook } = useContext(AddressBookContext);
+  const { contacts } = useContacts();
   const { toggleAccountPrivacy } = useContext(AccountContext);
   const overlayRowsFlat = [...overlayRows![0], ...overlayRows![1].map((row) => row[0])];
 
@@ -415,7 +415,7 @@ const buildAccountTable = (
 
   const getFullTableData = accounts
     .map((account, index) => {
-      const addressCard: ExtendedAddressBook | undefined = getLabelByAccount(account, addressBook);
+      const addressCard: ExtendedContact | undefined = getLabelByAccount(account, contacts);
       const total = totalFiat([account])(getAssetRate);
       return { account, index, total, addressCard };
     })
@@ -451,10 +451,7 @@ const buildAccountTable = (
 
       if (overlayRows && overlayRows[0].length && overlayRows[0][0] === rowIndex) {
         // Row delete overlay
-        const addressBookRecord = getLabelByAccount(
-          getFullTableData[rowIndex].account,
-          addressBook
-        )!;
+        const addressBookRecord = getLabelByAccount(getFullTableData[rowIndex].account, contacts)!;
         const { account } = getFullTableData[rowIndex];
         const { uuid, address } = account;
         return (
@@ -477,10 +474,7 @@ const buildAccountTable = (
         overlayRows[1].map((row) => row[0]).includes(rowIndex)
       ) {
         // Undo delete overlay
-        const addressBookRecord = getLabelByAccount(
-          getFullTableData[rowIndex].account,
-          addressBook
-        )!;
+        const addressBookRecord = getLabelByAccount(getFullTableData[rowIndex].account, contacts)!;
         const {
           account: { uuid, address, wallet }
         } = getFullTableData[rowIndex];

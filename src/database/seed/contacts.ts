@@ -1,6 +1,6 @@
-import { AddressBook } from '@types';
+import { Contact } from '@types';
 
-export const addressBook: { [key in string]: AddressBook } = {
+export const contacts: { [key in string]: Contact } = {
   'f1330cce-08e2-41ce-9231-5236e6aab702': {
     label: 'Goerli ETH Test 1',
     address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912',

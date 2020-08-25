@@ -6,11 +6,11 @@ import styled from 'styled-components';
 
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
 import { DashboardPanel, NetworkSelectDropdown, InputField } from '@components';
-import { AddressBook, NetworkId } from '@types';
+import { Contact, NetworkId } from '@types';
 import { ToastContext } from '@features/Toasts';
 import { translateRaw } from '@translations';
 import { isValidETHAddress } from '@services/EthService';
-import { AddressBookContext } from '@services';
+import { useContacts } from '@services';
 import { DEFAULT_NETWORK } from '@config/constants';
 
 const AddToAddressBookPanel = styled(DashboardPanel)`
@@ -50,11 +50,11 @@ const SNetworkSelectDropdown = styled(NetworkSelectDropdown)`
 
 interface Props {
   toggleFlipped(): void;
-  createAddressBooks(values: AddressBook): void;
+  createContact(values: Contact): void;
 }
 
-export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: Props) {
-  const { getContactByAddress } = useContext(AddressBookContext);
+export default function AddToAddressBook({ toggleFlipped, createContact }: Props) {
+  const { getContactByAddress } = useContacts();
 
   const Schema = Yup.object().shape({
     label: Yup.string().required(translateRaw('REQUIRED')),
@@ -95,8 +95,8 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
           notes: '',
           network: DEFAULT_NETWORK
         }}
-        onSubmit={(values: AddressBook, { setSubmitting }) => {
-          createAddressBooks(values);
+        onSubmit={(values: Contact, { setSubmitting }) => {
+          createContact(values);
           setSubmitting(false);
           displayToast(toastTemplates.addedAddress, { label: values.label });
           toggleFlipped();

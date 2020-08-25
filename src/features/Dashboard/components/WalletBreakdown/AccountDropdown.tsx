@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState, useContext } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Icon, Identicon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { translateRaw } from '@translations';
 import { Checkbox } from '@components';
 import { useOnClickOutside, truncate, trimEllipsis } from '@utils';
-import { getLabelByAccount, AddressBookContext } from '@services/Store';
+import { getLabelByAccount, useContacts } from '@services/Store';
 import { COLORS } from '@theme';
-import { IAccount, ExtendedAddressBook, TUuid } from '@types';
+import { IAccount, ExtendedContact, TUuid } from '@types';
 
 const { BLUE_BRIGHT, BLUE_LIGHT, GREY_LIGHTEST } = COLORS;
 
@@ -107,11 +107,11 @@ const SCheckbox = styled(Checkbox)`
 const renderAccounts = (
   accounts: IAccount[],
   selected: string[],
-  addressBook: ExtendedAddressBook[],
+  contacts: ExtendedContact[],
   handleChange: (uuid: string) => void
 ) =>
   accounts.map((account: IAccount) => {
-    const addressCard = getLabelByAccount(account, addressBook);
+    const addressCard = getLabelByAccount(account, contacts);
     const addressLabel = addressCard ? addressCard.label : translateRaw('NO_LABEL');
     return (
       <SCheckbox
@@ -133,7 +133,7 @@ const AccountDropdown = ({
   onSubmit,
   ...props
 }: AccountDropdownProps) => {
-  const { addressBook } = useContext(AddressBookContext);
+  const { contacts } = useContacts();
   const ref = useRef<HTMLElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [draftSelected, setDraftSelected] = useState<TUuid[]>([]);
@@ -187,7 +187,7 @@ const AccountDropdown = ({
             label={`${translateRaw('ACCOUNTS_DROPDOWN_ALL_ACCOUNTS')}`}
           />
           <Divider />
-          {renderAccounts(accounts, draftSelected, addressBook, toggleSingleAccount)}
+          {renderAccounts(accounts, draftSelected, contacts, toggleSingleAccount)}
         </div>
       )}
     </SDropdown>

@@ -28,7 +28,7 @@ export {
 } from './asset';
 export { Social, AssetSocial } from './social';
 export { StoreAccount, IRawAccount, IAccount } from './account';
-export { AddressBook, ExtendedAddressBook } from './addressBook';
+export { Contact, ExtendedContact } from './contact';
 export { Contract, ExtendedContract } from './contract';
 export { Network, NetworkLegacy, AssetLegacy, ContractLegacy, NetworkNodes } from './network';
 export { NetworkId } from './networkId';

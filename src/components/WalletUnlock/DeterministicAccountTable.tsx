@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 import { Identicon } from '@mycrypto/ui';
 
@@ -12,7 +12,7 @@ import {
   Icon,
   Amount
 } from '@components';
-import { DWAccountDisplay, AddressBookContext, fromTokenBase } from '@services';
+import { DWAccountDisplay, fromTokenBase, useContacts } from '@services';
 import { COLORS, SPACING, BREAK_POINTS } from '@theme';
 import { Network, ExtendedAsset, TAddress } from '@types';
 import { isSameAddress, useScreenSize } from '@utils';
@@ -267,7 +267,7 @@ const DeterministicTable = ({
   handleUpdate,
   downloadCSV
 }: DeterministicTableProps) => {
-  const { getContactByAddressAndNetworkId } = useContext(AddressBookContext);
+  const { getContactByAddressAndNetworkId } = useContacts();
   const { isMobile } = useScreenSize();
 
   const isSelected = (account: DWAccountDisplay) =>

@@ -5,11 +5,11 @@ import translate from '@translations';
 
 import { COLORS, BREAK_POINTS, SPACING } from '@theme';
 import { Typography, EditableAccountLabel, Account } from '@components';
-import { NetworkId, TAddress, ExtendedAddressBook } from '@types';
+import { NetworkId, TAddress, ExtendedContact } from '@types';
 
 export interface IAddressAndLabel {
   address: TAddress;
-  addressBookEntry?: ExtendedAddressBook;
+  addressBookEntry?: ExtendedContact;
 }
 
 interface Props {

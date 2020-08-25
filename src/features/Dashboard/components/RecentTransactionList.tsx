@@ -13,13 +13,13 @@ import {
   RouterLink
 } from '@components';
 import { convertToFiat } from '@utils';
-import { ITxReceipt, ITxStatus, StoreAccount, Asset, Network, ExtendedAddressBook } from '@types';
+import { ITxReceipt, ITxStatus, StoreAccount, Asset, Network, ExtendedContact } from '@types';
 import {
   RatesContext,
-  AddressBookContext,
   getLabelByAddressAndNetwork,
   SettingsContext,
-  useNetworks
+  useNetworks,
+  useContacts
 } from '@services';
 import { translateRaw } from '@translations';
 import {
@@ -57,8 +57,8 @@ interface Props {
 interface ITxHistoryEntry
   extends Overwrite<ITxReceipt, { txType: ITxHistoryType; timestamp: number }> {
   network: Network;
-  toAddressBookEntry?: ExtendedAddressBook;
-  fromAddressBookEntry?: ExtendedAddressBook;
+  toAddressBookEntry?: ExtendedContact;
+  fromAddressBookEntry?: ExtendedContact;
 }
 
 interface ITxTypeConfigObj {
@@ -165,25 +165,21 @@ const makeTxIcon = (type: ITxHistoryType, asset: Asset) => {
 };
 
 export default function RecentTransactionList({ accountsList, className = '' }: Props) {
-  const { addressBook } = useContext(AddressBookContext);
+  const { contacts } = useContacts();
   const { getAssetRate } = useContext(RatesContext);
   const { settings } = useContext(SettingsContext);
   const { networks } = useNetworks();
 
   const accountTxs: ITxHistoryEntry[] = getTxsFromAccount(accountsList).map((tx: ITxReceipt) => {
     const network = networks.find(({ id }) => tx.asset.networkId === id) as Network;
-    const toAddressBookEntry = getLabelByAddressAndNetwork(
-      tx.receiverAddress || tx.to,
-      addressBook,
-      network
-    );
-    const fromAddressBookEntry = getLabelByAddressAndNetwork(tx.from, addressBook, network);
+    const toContact = getLabelByAddressAndNetwork(tx.receiverAddress || tx.to, contacts, network);
+    const fromContact = getLabelByAddressAndNetwork(tx.from, contacts, network);
     return {
       ...tx,
       timestamp: tx.timestamp || 0,
       txType: deriveTxType(accountsList, tx) || ITxHistoryType.UNKNOWN,
-      toAddressBookEntry,
-      fromAddressBookEntry,
+      toContact,
+      fromContact,
       network
     };
   });

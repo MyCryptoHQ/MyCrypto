@@ -3,10 +3,9 @@ import { simpleRender, fireEvent, waitFor } from 'test-utils';
 
 import { translateRaw } from '@translations';
 import { DEFAULT_NETWORK } from '@config';
-import { AddressBookContext } from '@services/Store';
-import { ExtendedAddressBook, TUuid, TAddress } from '@types';
-import { addressBook } from '@database/seed/addressBook';
-import { isSameAddress } from '@utils';
+import { DataContext } from '@services/Store';
+import { ExtendedContact, TUuid, TAddress } from '@types';
+import { contacts as seedContacts } from '@database/seed/contacts';
 
 import EditableAccountLabel, { Props } from '../EditableAccountLabel';
 
@@ -16,29 +15,24 @@ const defaultProps: Props = {
   addressBookEntry: undefined
 };
 
-const mockMappedContacts: ExtendedAddressBook[] = Object.entries(addressBook).map(
-  ([key, value]) => ({
-    ...value,
-    uuid: key as TUuid
-  })
-);
+const mockMappedContacts: ExtendedContact[] = Object.entries(seedContacts).map(([key, value]) => ({
+  ...value,
+  uuid: key as TUuid
+}));
 
-function getComponent(contacts: ExtendedAddressBook[], props: Props) {
+function getComponent(contacts: ExtendedContact[], props: Props) {
   return simpleRender(
-    <AddressBookContext.Provider
+    <DataContext.Provider
       value={
         ({
           addressBook: contacts,
-          getContactByAddress: (address: string) =>
-            contacts.find((x: ExtendedAddressBook) =>
-              isSameAddress(x.address as TAddress, address as TAddress)
-            ),
-          createAddressBooks: (contact: ExtendedAddressBook) => contacts.push(contact)
+          contracts: [],
+          createActions: jest.fn(() => ({ create: (c: ExtendedContact) => contacts.push(c) }))
         } as unknown) as any
       }
     >
       <EditableAccountLabel {...props} />
-    </AddressBookContext.Provider>
+    </DataContext.Provider>
   );
 }
 

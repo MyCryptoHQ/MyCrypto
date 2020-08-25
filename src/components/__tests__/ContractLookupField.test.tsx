@@ -3,8 +3,8 @@ import { simpleRender, fireEvent, waitFor } from 'test-utils';
 import { fNetwork, fContracts } from '@fixtures';
 
 import { DataContext } from '@services/Store';
-import { ExtendedAddressBook, TUuid, IReceiverAddress } from '@types';
-import { addressBook } from '@database/seed/addressBook';
+import { ExtendedContact, TUuid, IReceiverAddress } from '@types';
+import { contacts } from '@database/seed/contacts';
 
 import ContractLookupField from '@components/ContractLookupField';
 
@@ -57,12 +57,10 @@ function getComponent(
 }
 
 const enter = { key: 'Enter', keyCode: 13 };
-const mockMappedContacts: ExtendedAddressBook[] = Object.entries(addressBook).map(
-  ([key, value]) => ({
-    ...value,
-    uuid: key as TUuid
-  })
-);
+const mockMappedContacts: ExtendedContact[] = Object.entries(contacts).map(([key, value]) => ({
+  ...value,
+  uuid: key as TUuid
+}));
 
 // mock domain resolving function
 jest.mock('@services/UnstoppableService', () => ({
