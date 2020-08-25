@@ -8,7 +8,7 @@ import {
 import { translateRaw } from '@translations';
 import { TTicker, TAddress } from '@types';
 
-import { parseQueryParams, parseResubmitParams, generateGenericErc20 } from './helpers';
+import { parseQueryParams, parseTransactionQueryParams, generateGenericErc20 } from './helpers';
 
 const validETHResubmitQuery = {
   type: 'resubmit',
@@ -81,9 +81,9 @@ describe('Query string parsing', () => {
   });
 });
 
-describe('parseResubmitParams', () => {
+describe('parseTransactionQueryParams', () => {
   it('correctly parses valid erc20 resubmit query params', () => {
-    const parsedResubmitParams = parseResubmitParams(validERC20ResubmitQuery)(
+    const parsedResubmitParams = parseTransactionQueryParams(validERC20ResubmitQuery)(
       [fNetwork],
       fAssets,
       fAccounts
@@ -92,7 +92,7 @@ describe('parseResubmitParams', () => {
   });
 
   it('correctly parses valid eth resubmit query params', () => {
-    const parsedResubmitParams = parseResubmitParams(validETHResubmitQuery)(
+    const parsedResubmitParams = parseTransactionQueryParams(validETHResubmitQuery)(
       [fNetwork],
       fAssets,
       fAccounts
@@ -101,7 +101,7 @@ describe('parseResubmitParams', () => {
   });
 
   it('correctly handles invalid resubmit query params', () => {
-    const parsedResubmitParams = parseResubmitParams(invalidResubmitQuery)(
+    const parsedResubmitParams = parseTransactionQueryParams(invalidResubmitQuery)(
       [fNetwork],
       fAssets,
       fAccounts
