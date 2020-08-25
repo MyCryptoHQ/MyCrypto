@@ -20,6 +20,9 @@ export const unlockWeb3 = (onSuccess: (data: any) => void) => async (networks: N
     if (accounts) {
       onSuccess(network);
       return accounts.map((address) => new Web3Wallet(address, network.id));
+    } else {
+      // Coinbase Wallet returns undefined when using wallet_getPermissions, it doesn't fail. Therefore fail if accounts == undefined
+      throw new Error('Failed to get web3 accounts via wallet_getPermissions');
     }
   } catch {
     // if modern wallet_getPermissions doesn't exist,
