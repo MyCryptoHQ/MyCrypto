@@ -48,7 +48,8 @@ export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt): ITxH
   const isInvalidTxHistoryType =
     !('txType' in tx) ||
     tx.txType === ITxHistoryType.STANDARD ||
-    tx.txType === ITxHistoryType.UNKNOWN;
+    tx.txType === ITxHistoryType.UNKNOWN ||
+    !Object.values(ITxHistoryType).some((t) => t === tx.txType);
 
   if (isInvalidTxHistoryType && toAccount && fromAccount) {
     return ITxHistoryType.TRANSFER;
@@ -58,9 +59,5 @@ export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt): ITxH
     return ITxHistoryType.INBOUND;
   }
 
-  if (!Object.values(ITxHistoryType).some((t) => t === tx.txType)) {
-    // @todo: fix
-    return ITxHistoryType.INBOUND;
-  }
   return tx.txType as ITxHistoryType;
 };
