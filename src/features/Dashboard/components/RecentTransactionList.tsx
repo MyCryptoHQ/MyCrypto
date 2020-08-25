@@ -5,7 +5,6 @@ import { Overwrite } from 'utility-types';
 import {
   Amount,
   DashboardPanel,
-  NewTabLink,
   AssetIcon,
   Account,
   FixedSizeCollapsibleTable,
@@ -38,7 +37,7 @@ import { ITxHistoryType } from '../types';
 import { deriveTxType } from '../helpers';
 import './RecentTransactionList.scss';
 
-import newWindowIcon from '@assets/images/icn-new-window.svg';
+import moreIcon from '@assets/images/icn-more.svg';
 import transfer from '@assets/images/transactions/transfer.svg';
 import inbound from '@assets/images/transactions/inbound.svg';
 import outbound from '@assets/images/transactions/outbound.svg';
@@ -241,20 +240,12 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
               amount: convertToFiat(parseFloat(amount), getAssetRate(asset)).toFixed(2)
             }}
           />,
-          <div key={4}>
-            <RouterLink to={`${ROUTE_PATHS.TX_STATUS.path}/?hash=${hash}&network=${network.id}`}>
-              <img src={newWindowIcon} alt="View more information about this transaction" />
-            </RouterLink>
-            <NewTabLink
-              href={
-                !network || !('blockExplorer' in network) || !network.blockExplorer
-                  ? `https://etherscan.io/tx/${hash}`
-                  : network.blockExplorer.txUrl(hash)
-              }
-            >
-              <img src={newWindowIcon} alt="View more information about this transaction" />
-            </NewTabLink>
-          </div>
+          <RouterLink
+            key={4}
+            to={`${ROUTE_PATHS.TX_STATUS.path}/?hash=${hash}&network=${network.id}`}
+          >
+            <img src={moreIcon} alt="View more information about this transaction" />
+          </RouterLink>
         ];
       }
     );
@@ -281,7 +272,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
       translateRaw('RECENT_TRANSACTIONS_FROM_ADDRESS'),
       translateRaw('RECENT_TRANSACTIONS_TO_ADDRESS'),
       translateRaw('RECENT_TRANSACTIONS_TO_AMOUNT'),
-      translateRaw('RECENT_TRANSACTIONS_VIEW_MORE') || 'View More'
+      ''
     ],
     body: [],
     groups: filteredGroups,
