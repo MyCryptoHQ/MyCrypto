@@ -23,6 +23,10 @@ export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt): ITxH
     return ITxHistoryType.INBOUND;
   }
 
+  if (!Object.values(ITxHistoryType).some((t) => t === tx.txType)) {
+    // @todo: fix
+    return ITxHistoryType.INBOUND;
+  }
   return tx.txType as ITxHistoryType;
 };
 

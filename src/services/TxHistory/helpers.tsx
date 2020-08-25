@@ -1,7 +1,8 @@
+import { bigNumberify, parseEther } from 'ethers/utils';
+
 import { ITxHistoryApiResponse } from '@services/ApiService/History';
 import { ITxReceipt, Network, Asset } from '@types';
 import { getAssetByContractAndNetwork, getBaseAssetByNetwork } from '@services';
-import { bigNumberify } from 'ethers/utils';
 
 export const makeTxReceipt = (
   tx: ITxHistoryApiResponse,
@@ -24,7 +25,7 @@ export const makeTxReceipt = (
     gasPrice: bigNumberify(tx.gasPrice),
     gasLimit: bigNumberify(tx.gasLimit),
     gasUsed: bigNumberify(tx.gasUsed || 0),
-    value: bigNumberify(tx.value),
+    value: parseEther(tx.value.toString()),
     nonce: tx.nonce.toString()
   };
 };

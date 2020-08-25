@@ -1,6 +1,6 @@
 import { TransactionResponse } from 'ethers/providers';
 
-import { ProviderHandler, getTxsFromAccount } from '@services';
+import { ProviderHandler, ITxHistoryEntry } from '@services';
 import {
   makeTxConfigFromTxResponse,
   makeTxConfigFromTxReceipt,
@@ -12,15 +12,14 @@ export const fetchTxStatus = async ({
   txHash,
   networkId,
   networks,
-  accounts
+  txCache
 }: {
   txHash: string;
   networkId: NetworkId;
   networks: Network[];
-  accounts: StoreAccount[];
+  txCache: ITxHistoryEntry[];
 }) => {
   const network = networks.find((n) => n.id === networkId)!;
-  const txCache = getTxsFromAccount(accounts);
   const cachedTx = txCache.find(
     (t) => t.hash === (txHash as ITxHash) && t.asset.networkId === networkId
   );

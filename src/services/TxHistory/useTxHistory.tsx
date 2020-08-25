@@ -8,6 +8,8 @@ import { StoreContext, getTxsFromAccount, useNetworks, useContacts, useAssets } 
 import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
 import { deriveTxType } from '@features/Dashboard';
 import { makeTxReceipt, merge } from './helpers';
+import { ITxHistoryEntry } from './types';
+
 function useTxHistory() {
   const { accounts } = useContext(StoreContext);
   const { assets } = useAssets();
@@ -31,7 +33,7 @@ function useTxHistory() {
 
   const accountTxs = getTxsFromAccount(accounts);
 
-  const mergedTxHistory = merge(apiTxs, accountTxs).map((tx: ITxReceipt) => {
+  const mergedTxHistory: ITxHistoryEntry[] = merge(apiTxs, accountTxs).map((tx: ITxReceipt) => {
     const network = networks.find(({ id }) => tx.asset.networkId === id) as Network;
     const toAddressBookEntry = getContactByAddressAndNetworkId(
       tx.receiverAddress || tx.to,
