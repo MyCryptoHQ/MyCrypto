@@ -19,7 +19,6 @@ jest.mock('ethers/providers', () => {
     })
   };
 });
-// BLA
 /* Test components */
 describe('SendAssetsFlow', () => {
   const component = (path?: string) => (

@@ -26,7 +26,8 @@ import {
   getBaseAssetByNetwork,
   getNetworkById,
   SettingsContext,
-  StoreContext
+  StoreContext,
+  useAssets
 } from '@services/Store';
 import {
   Asset,
@@ -39,9 +40,9 @@ import {
   Network,
   StoreAccount,
   StoreAsset,
-  TTicker,
   WalletId,
-  Fiat
+  Fiat,
+  TUuid
 } from '@types';
 import {
   baseToConvertedUnit,
@@ -246,11 +247,14 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
     getAccount,
     defaultAccount: storeDefaultAccount
   } = useContext(StoreContext);
-  const { getAssetRate, getRateInCurrency, getAssetRateInCurrency } = useRates();
+  const { getAssetRate, getAssetRateInCurrency } = useRates();
+  const { getAssetByUUID } = useAssets();
   const { settings } = useContext(SettingsContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
+
+  const EthAsset = getAssetByUUID(ETHUUID as TUuid)!;
 
   const validAccounts = accounts.filter((account) => account.wallet !== WalletId.VIEW_ONLY);
   const userAccountEthAsset = userAssets.find((a) => a.uuid === ETHUUID);
@@ -638,7 +642,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
             ? values.gasPriceField.toString()
             : values.gasPriceSlider.toString(),
           getFiat(settings),
-          getRateInCurrency('ETH' as TTicker, Fiats.USD.ticker)
+          getAssetRateInCurrency(EthAsset, Fiats.USD.ticker)
         )}
       </fieldset>
       {/* Advanced Options */}

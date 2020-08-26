@@ -1,15 +1,16 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 
-import { usePromise, useEffectOnce } from '@vendor';
-import { StoreContext, SettingsContext } from '@services/Store';
+import { usePromise, useEffectOnce, prop, uniqBy } from '@vendor';
+import { StoreContext, SettingsContext, useAssets } from '@services/Store';
 import { PollingService } from '@workers';
-import { IRates, TTicker, StoreAsset } from '@types';
+import { IRates, TTicker, TUuid, ExtendedAsset } from '@types';
 import { Fiats } from '@config/fiats';
 import { DeFiReserveMapService } from '@services';
 
 interface State {
   rates: IRates;
   reserveRateMapping: ReserveMappingListObject;
+  trackAsset(id: TUuid): void;
 }
 
 interface ReserveMappingRate {
@@ -37,7 +38,7 @@ const buildAssetQueryUrl = (assets: string[], currencies: string[]) => `
 const fetchDeFiReserveMappingList = async (): Promise<ReserveMappingListObject | any> =>
   DeFiReserveMapService.instance.getDeFiReserveMap();
 
-const destructureCoinGeckoIds = (rates: IRates, assets: StoreAsset[]): IRates => {
+const destructureCoinGeckoIds = (rates: IRates, assets: ExtendedAsset[]): IRates => {
   // From: { ["ethereum"]: { "usd": 123.45,"eur": 234.56 } }
   // To: { [uuid for coinGeckoId "ethereum"]: { "usd": 123.45, "eur": 234.56 } }
   const updateRateObj = (acc: any, curValue: TTicker): IRates => {
@@ -53,16 +54,26 @@ export const RatesContext = createContext({} as State);
 
 export function RatesProvider({ children }: { children: React.ReactNode }) {
   const { assets: getAssets } = useContext(StoreContext);
+  const { getAssetByUUID } = useAssets();
   const { settings, updateSettingsRates } = useContext(SettingsContext);
   const [reserveRateMapping, setReserveRateMapping] = useState({} as ReserveMappingListObject);
   const worker = useRef<undefined | PollingService>();
-  const currentAssets = getAssets();
+  const [currentAssets, setCurrentAssets] = useState<ExtendedAsset[]>(getAssets());
+
+  const trackAsset = (uuid: TUuid) => {
+    const asset = getAssetByUUID(uuid);
+    if (asset && !currentAssets.find((a) => a.uuid === uuid)) {
+      setCurrentAssets((prevState) => uniqBy(prop('uuid'), [...prevState, asset]));
+    }
+  };
+
   const geckoIds = currentAssets.reduce((acc, a) => {
     if (a.mappings && a.mappings.coinGeckoId) {
       acc.push(a.mappings.coinGeckoId);
     }
     return acc;
   }, [] as string[]);
+
   const updateRates = (data: IRates) =>
     updateSettingsRates({ ...state.rates, ...destructureCoinGeckoIds(data, currentAssets) });
 
@@ -105,7 +116,8 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
     get rates() {
       return settings.rates;
     },
-    reserveRateMapping
+    reserveRateMapping,
+    trackAsset
   };
 
   return <RatesContext.Provider value={state}>{children}</RatesContext.Provider>;
