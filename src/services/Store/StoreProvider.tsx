@@ -343,12 +343,14 @@ export const StoreProvider: React.FC = ({ children }) => {
   const [txHistory, setTxHistory] = useState<ITxHistoryApiResponse[]>([]);
 
   useEffectOnce(() => {
-    HistoryService.instance.getHistory(accounts.map((a) => a.address)).then((history) => {
-      console.debug(history);
-      if (history !== null) {
-        setTxHistory(history);
-      }
-    });
+    HistoryService.instance
+      .getHistory(accounts.filter((a) => a.networkId === DEFAULT_NETWORK).map((a) => a.address))
+      .then((history) => {
+        console.debug(history);
+        if (history !== null) {
+          setTxHistory(history);
+        }
+      });
   });
 
   const state: State = {
