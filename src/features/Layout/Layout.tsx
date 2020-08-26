@@ -6,7 +6,7 @@ import { Banner } from '@components';
 import { COLORS, BREAK_POINTS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from '@theme';
 import { DrawerContext, ErrorContext, MigrateLS } from '@features';
 import { pipe } from '@vendor';
-import { withContext } from '@utils';
+import { withContext, IS_E2E } from '@utils';
 import { useFeatureFlags } from '@services';
 import { StoreContext, SettingsContext } from '@services/Store';
 
@@ -105,7 +105,7 @@ export default function Layout({ config = {}, className = '', children }: Props)
   return (
     <SMain className={className} bgColor={bgColor}>
       <STop ref={topRef}>
-        {IS_ACTIVE_FEATURE.MIGRATE_LS && <MigrateLSWithStore />}
+        {!IS_E2E && IS_ACTIVE_FEATURE.MIGRATE_LS && <MigrateLSWithStore />}
         {shouldShowError() && error && (
           <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
         )}
