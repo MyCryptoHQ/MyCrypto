@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { ExtendedContact, TAddress, NetworkId } from '@types';
-import { useContacts } from '@services';
+import { ExtendedContact, TAddress, NetworkId, TUuid, Contact } from '@types';
 import { BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
 
@@ -12,6 +11,8 @@ export interface Props {
   addressBookEntry?: ExtendedContact;
   address: TAddress;
   networkId: NetworkId;
+  createContact(contact: Contact): void;
+  updateContact(uuid: TUuid, contact: ExtendedContact): void;
 }
 
 const SWrapper = styled.span`
@@ -20,8 +21,13 @@ const SWrapper = styled.span`
   }
 `;
 
-const EditableAccountLabel = ({ addressBookEntry, address, networkId }: Props) => {
-  const { updateContact, createContact } = useContacts();
+const EditableAccountLabel = ({
+  addressBookEntry,
+  address,
+  networkId,
+  updateContact,
+  createContact
+}: Props) => {
   return (
     <SWrapper>
       <EditableText

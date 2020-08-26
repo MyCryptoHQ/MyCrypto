@@ -12,7 +12,7 @@ import {
 } from '@components';
 import { convertToFiat, isSameAddress } from '@utils';
 import { ITxStatus, StoreAccount, Asset } from '@types';
-import { useRates, SettingsContext, useTxHistory, ITxHistoryEntry } from '@services';
+import { useRates, SettingsContext, useTxHistory, ITxHistoryEntry, useContacts } from '@services';
 import { translateRaw } from '@translations';
 import { txIsFailed, txIsPending, txIsSuccessful } from '@services/Store/helpers';
 import { COLORS } from '@theme';
@@ -147,6 +147,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
   const { getAssetRate } = useRates();
   const { settings } = useContext(SettingsContext);
   const { txHistory } = useTxHistory();
+  const { createContact, updateContact } = useContacts();
 
   const accountTxs = txHistory.filter((tx) =>
     accountsList.some((a) => isSameAddress(a.address, tx.to) || isSameAddress(a.address, tx.from))
@@ -175,12 +176,16 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
         const editableFromLabel = EditableAccountLabel({
           addressBookEntry: fromAddressBookEntry,
           address: from,
-          networkId: network.id
+          networkId: network.id,
+          createContact,
+          updateContact
         });
         const editableToLabel = EditableAccountLabel({
           addressBookEntry: toAddressBookEntry,
           address: receiverAddress || to,
-          networkId: network.id
+          networkId: network.id,
+          createContact,
+          updateContact
         });
 
         return [
