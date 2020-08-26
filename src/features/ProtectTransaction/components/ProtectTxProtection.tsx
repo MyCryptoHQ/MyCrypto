@@ -196,7 +196,7 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
     const { amount, fee } = getProtectTxFee(sendAssetsValues!, rate);
 
     setFeeAmount({ amount, fee, rate: rate ? rate : null });
-  }, [sendAssetsValues, getAssetRate]);
+  }, [sendAssetsValues]);
 
   const onProtectMyTransactionClick = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
