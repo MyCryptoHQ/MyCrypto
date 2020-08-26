@@ -3,8 +3,9 @@ import { useHistory } from 'react-router-dom';
 import { useReducer } from 'reinspect';
 import styled from 'styled-components';
 
+import { BREAK_POINTS } from '@theme';
 import { ROUTE_PATHS } from '@config';
-import { IFrame, Downloader, Link } from '@components';
+import { IFrame, Downloader, Link, NewTabLink, RouterLink } from '@components';
 import { useUpdateEffect } from '@vendor';
 
 import MigrateLSReducer, { defaultState, UIStates } from './reducer';
@@ -23,11 +24,22 @@ const SActionContainer = styled.div`
 `;
 
 const SBanner = styled.div`
-  height: 3em;
+  min-height: 3em;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
+`;
+
+const SBannerMultiline = styled.div`
+  display: block;
+  text-align: center;
+  padding: 0.5em 1em;
+  justify-content: center;
+  align-items: center;
+  /* @media (min-width: ${BREAK_POINTS.SCREEN_LG}) {
+    max-width: ${BREAK_POINTS.SCREEN_LG};
+  } */
 `;
 
 /**
@@ -55,13 +67,8 @@ const MigrateLS = ({
   // We only need to get the iFrame src url once
   const src = useMemo(() => getIFrameSrc(window.document), []);
 
-  const [{ storage, iframeRef, uiState, canDestroy, canReset }, dispatch] = useReducer(
-    MigrateLSReducer,
-    defaultState,
-    (state) => state,
-    'MigrateLS'
-  );
-
+  const [state, dispatch] = useReducer(MigrateLSReducer, defaultState, (s) => s, 'MigrateLS');
+  const { storage, iframeRef, uiState, canDestroy, canReset } = state;
   // Connect our actions to the store
   const {
     getStorage,
@@ -103,8 +110,20 @@ const MigrateLS = ({
   const handleConfirm = () => downloadAndDestroy();
   const handleAbort = () => abortCancel();
 
+  const mailTo =
+    'mailto:support@mycrypto.com?subject=Accounts%20Missing&body=I%20came%20back%20to%20MyCrypto%20and%20my%20accounts%20are%20suddenly%20missing.%20Help%2C%20please!';
   const UI_STATES: Record<UIStates, JSX.Element> = {
-    default: <></>,
+    default: (
+      <SBannerMultiline>
+        MyCrypto is better with accounts! Add one{' '}
+        <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>now</RouterLink> using MetaMask or even just
+        an address. <br />
+        If you've previously added accounts and they are no longer showing, shoot a message to{' '}
+        <NewTabLink href={mailTo}>support@mycrypto.com</NewTabLink> or ping us on{' '}
+        <NewTabLink href={'https://t.me/mycryptohq'}>Telegram</NewTabLink> and we'll walk you
+        through how to get them back asap.
+      </SBannerMultiline>
+    ),
     'migrate-prompt': (
       <SBanner>
         We found your previous settings from beta.mycrypto.com. Would you like to import them?
