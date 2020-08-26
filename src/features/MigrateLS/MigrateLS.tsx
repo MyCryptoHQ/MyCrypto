@@ -1,6 +1,5 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useReducer } from 'reinspect';
 import styled from 'styled-components';
 
 import { BREAK_POINTS } from '@theme';
@@ -67,8 +66,11 @@ const MigrateLS = ({
   // We only need to get the iFrame src url once
   const src = useMemo(() => getIFrameSrc(window.document), []);
 
-  const [state, dispatch] = useReducer(MigrateLSReducer, defaultState, (s) => s, 'MigrateLS');
-  const { storage, iframeRef, uiState, canDestroy, canReset } = state;
+  const [{ storage, iframeRef, uiState, canDestroy, canReset }, dispatch] = useReducer(
+    MigrateLSReducer,
+    defaultState
+  );
+
   // Connect our actions to the store
   const {
     getStorage,
