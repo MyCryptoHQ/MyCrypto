@@ -1,4 +1,4 @@
-import { IS_DEV, IS_E2E, IS_PROD } from '@utils';
+import { IS_DEV, IS_E2E } from '@utils';
 
 export enum FEATURE_LIST {
   DASHBOARD = 'DASHBOARD',
@@ -60,5 +60,5 @@ export const IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE = {
   // This features requires a landing page, same root host to be running simultaneously.
   // While this can be expected in staging and in production we SHOULD not expect every developper
   // to run both projects while working. Deactivate feature in dev by default.
-  MIGRATE_LS: !IS_E2E && (IS_DEV || IS_PROD)
+  MIGRATE_LS: !IS_E2E || !IS_DEV
 };
