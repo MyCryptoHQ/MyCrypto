@@ -34,7 +34,7 @@ describe('TxStatus', () => {
       >
         <StoreContext.Provider value={{ accounts: [fAccount] } as any}>
           <SettingsContext.Provider value={{ settings: fSettings } as any}>
-            <RatesContext.Provider value={{ rates: {} } as any}>
+            <RatesContext.Provider value={{ rates: fSettings.rates, trackAsset: jest.fn() } as any}>
               <TxStatus />
             </RatesContext.Provider>
           </SettingsContext.Provider>

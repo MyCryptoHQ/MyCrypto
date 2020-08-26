@@ -5,7 +5,7 @@ import { simpleRender } from 'test-utils';
 import SendAssets from '@features/SendAssets/SendAssets';
 import { FeatureFlagContext, RatesContext } from '@services';
 import { StoreContext, SettingsContext, DataContext } from '@services/Store';
-import { fSettings } from '@fixtures';
+import { fSettings, fAssets } from '@fixtures';
 import { IS_ACTIVE_FEATURE } from '@config';
 import { noOp } from '@utils';
 
@@ -27,6 +27,7 @@ describe('SendAssetsFlow', () => {
         value={
           {
             addressBook: [],
+            assets: fAssets,
             createActions: jest.fn()
           } as any
         }
@@ -52,7 +53,7 @@ describe('SendAssetsFlow', () => {
                 } as unknown) as any
               }
             >
-              <RatesContext.Provider value={{ rates: {} } as any}>
+              <RatesContext.Provider value={{ rates: {}, trackAsset: jest.fn() } as any}>
                 <SendAssets />
               </RatesContext.Provider>
             </StoreContext.Provider>
