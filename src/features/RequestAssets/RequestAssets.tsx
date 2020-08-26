@@ -173,10 +173,8 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
             <AssetFields>
               <Amount>
                 <SLabel htmlFor="amount">{translate('X_AMOUNT')}</SLabel>
-                <Field
-                  name="amount"
-                  validate={validateAmount}
-                  render={({ field, form }: FieldProps<string>) => (
+                <Field name="amount" validate={validateAmount}>
+                  {({ field, form }: FieldProps<string>) => (
                     <FullWidthInput
                       data-lpignore="true"
                       value={field.value}
@@ -187,7 +185,7 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
                       inputMode="decimal"
                     />
                   )}
-                />
+                </Field>
               </Amount>
               {errors.amount && <ErrorMessage>{errors.amount}</ErrorMessage>}
               <Asset>
