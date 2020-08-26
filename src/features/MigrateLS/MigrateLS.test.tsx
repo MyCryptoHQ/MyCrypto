@@ -1,4 +1,5 @@
 import React from 'react';
+import { MemoryRouter as Router } from 'react-router-dom';
 
 import { simpleRender, screen } from 'test-utils';
 import { default as MigrateLS } from './MigrateLS';
@@ -16,7 +17,11 @@ const defaultProps = {
 };
 
 const getComponent = (props: React.ComponentProps<typeof MigrateLS>) => {
-  return simpleRender(<MigrateLS {...props} />);
+  return simpleRender(
+    <Router>
+      <MigrateLS {...props} />
+    </Router>
+  );
 };
 
 describe('MigrateLS', () => {
@@ -24,5 +29,10 @@ describe('MigrateLS', () => {
     const props = { ...defaultProps };
     getComponent(props);
     expect(screen.queryByTestId('iframe')).toBeInTheDocument();
+  });
+  test('it displays a support prompt by default', () => {
+    const props = { ...defaultProps, isDefault: true };
+    getComponent(props);
+    expect(screen.getByText(/MyCrypto is better with accounts!/i)).toBeInTheDocument();
   });
 });
