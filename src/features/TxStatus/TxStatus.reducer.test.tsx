@@ -1,7 +1,7 @@
 import { txStatusReducer, ReducerAction } from './TxStatus.reducer';
 import { DEFAULT_NETWORK } from '@config';
 import translate from '@translations';
-import { fTxConfig, fTxReceipt } from '@fixtures';
+import { fTxReceipt } from '@fixtures';
 
 const dispatch = (action: ReducerAction) => (state: any) => txStatusReducer(state, action);
 
@@ -58,7 +58,7 @@ describe('TxStatusReducer', () => {
   });
   describe('FETCH_TX_SUCCESS', () => {
     it('can update values', () => {
-      const payload = { txConfig: fTxConfig, txReceipt: fTxReceipt };
+      const payload = { cachedTx: fTxReceipt };
       const prevState = { networkId: DEFAULT_NETWORK, txHash: TX_HASH, fromLink: true };
 
       const newState = dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_SUCCESS, payload })(

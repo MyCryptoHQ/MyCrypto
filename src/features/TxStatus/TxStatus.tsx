@@ -14,7 +14,7 @@ import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
 
 import { txStatusReducer, generateInitialState } from './TxStatus.reducer';
-import { fetchTxStatus } from './helpers';
+import { fetchTxStatus, makeTx } from './helpers';
 
 const SUPPORTED_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Goerli', 'Kovan', 'ETC'];
 
@@ -60,7 +60,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
 
   const [reducerState, dispatch] = useReducer(txStatusReducer, initialState);
 
-  const { networkId, txHash, tx, error, fetching, fromLink } = reducerState;
+  const { networkId, txHash, tx: txState, error, fetching, fromLink } = reducerState;
 
   // Fetch TX on load if possible
   useEffectOnce(() => {
@@ -87,14 +87,14 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
 
   useEffect(() => {
     if (fetching) {
-      fetchTxStatus({ assets, accounts, networks, txHash, networkId })
+      fetchTxStatus({ accounts, networks, txHash, networkId })
         .then((t) => dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_SUCCESS, payload: t }))
         .catch((e) => {
           console.error(e);
           dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_ERROR });
         });
     }
-  }, [fetching, assets]);
+  }, [fetching]);
 
   const handleSubmit = (fromLinkSharing: boolean) => {
     dispatch({ type: txStatusReducer.actionTypes.FETCH_TX, payload: fromLinkSharing });
@@ -104,9 +104,11 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
     dispatch({ type: txStatusReducer.actionTypes.CLEAR_FORM });
   };
 
-  const fullPageLoading = fromLink && !tx;
+  const fullPageLoading = fromLink && !txState;
 
   const isFormValid = txHash.length > 0 && isHexString(txHash);
+
+  const tx = txState && makeTx({ txHash, networkId, accounts, assets, networks, ...txState });
 
   return (
     <ContentPanel heading={translateRaw('TX_STATUS')}>
