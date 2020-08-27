@@ -48,7 +48,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
     category: ANALYTICS_CATEGORIES.TX_STATUS
   });
 
-  const { assets } = useAssets();
+  const { assets, isAssetsPopulated } = useAssets();
   const { networks } = useNetworks();
   const { accounts } = useContext(StoreContext);
 
@@ -86,7 +86,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   }, [txHash, networkId]);
 
   useEffect(() => {
-    if (fetching) {
+    if (fetching && isAssetsPopulated) {
       fetchTxStatus({ assets, accounts, networks, txHash, networkId })
         .then((t) => dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_SUCCESS, payload: t }))
         .catch((e) => {
@@ -94,7 +94,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
           dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_ERROR });
         });
     }
-  }, [fetching]);
+  }, [fetching, isAssetsPopulated]);
 
   const handleSubmit = (fromLinkSharing: boolean) => {
     dispatch({ type: txStatusReducer.actionTypes.FETCH_TX, payload: fromLinkSharing });
@@ -106,7 +106,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
 
   const fullPageLoading = fromLink && !tx;
 
-  const isFormValid = txHash.length > 0 && isHexString(txHash);
+  const isFormValid = txHash.length > 0 && isHexString(txHash) && isAssetsPopulated;
 
   return (
     <ContentPanel heading={translateRaw('TX_STATUS')}>

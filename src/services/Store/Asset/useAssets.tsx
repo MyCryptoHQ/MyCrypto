@@ -41,7 +41,10 @@ function useAssets() {
     );
     model.updateAll(mergeAssets(assets));
   };
-  return { assets, createAssetWithID, getAssetByUUID, addAssetsFromAPI };
+
+  const isAssetsPopulated = assets.length > 1000;
+
+  return { assets, isAssetsPopulated, createAssetWithID, getAssetByUUID, addAssetsFromAPI };
 }
 
 export default useAssets;
