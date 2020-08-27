@@ -33,7 +33,7 @@ function useTxHistory() {
       txType: deriveTxType(accounts, tx) || ITxHistoryType.UNKNOWN,
       toAddressBookEntry,
       fromAddressBookEntry,
-      network
+      networkId: network.id
     };
   });
 
