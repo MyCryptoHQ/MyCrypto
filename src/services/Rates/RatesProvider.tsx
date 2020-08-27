@@ -56,12 +56,15 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
   const { settings, updateSettingsRates } = useContext(SettingsContext);
   const [reserveRateMapping, setReserveRateMapping] = useState({} as ReserveMapping);
   const worker = useRef<undefined | PollingService>();
-  const [currentAssets, setCurrentAssets] = useState<ExtendedAsset[]>(getAssets());
+  const accountAssets = getAssets();
+  const [trackedAssets, setTrackedAssets] = useState<ExtendedAsset[]>([]);
+
+  const currentAssets = [...accountAssets, ...trackedAssets];
 
   const trackAsset = (uuid: TUuid) => {
     const asset = getAssetByUUID(uuid);
     if (asset && !currentAssets.find((a) => a.uuid === uuid)) {
-      setCurrentAssets((prevState) => uniqBy(prop('uuid'), [...prevState, asset]));
+      setTrackedAssets((prevState) => uniqBy(prop('uuid'), [...prevState, asset]));
     }
   };
 
