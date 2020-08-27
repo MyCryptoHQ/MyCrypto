@@ -23,7 +23,7 @@ export const makeTxReceipt = (
     baseAsset: baseAsset!,
     receiverAddress: tx.recipientAddress,
     amount: tx.value.toString(),
-    data: '0x', // @todo: FIX
+    data: tx.data,
     gasPrice: bigNumberify(tx.gasPrice),
     gasLimit: bigNumberify(tx.gasLimit),
     gasUsed: bigNumberify(tx.gasUsed || 0),

@@ -2,6 +2,7 @@ import { ITxStatus, TAddress, ITxHash, ITxType } from '@types';
 
 export interface ITxHistoryApiResponse {
   readonly blockNumber?: number;
+  readonly data: string;
   readonly erc20Transfers?: ITxHistoryERC20Transfer[];
   readonly from: TAddress;
   readonly gasLimit: number;
@@ -19,7 +20,6 @@ export interface ITxHistoryApiResponse {
 
   // @todo: NOT PRESENT ATM
   //readonly confirmations?: number;
-  //   readonly data: string;
 }
 
 export interface ITxHistoryERC20Transfer {
