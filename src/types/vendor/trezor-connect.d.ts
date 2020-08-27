@@ -1,3 +1,8 @@
+/**
+ * TODO: These declarations are pretty broken since `Path` is not defined. Adding a definition for
+ * `Path`, e.g. `type Path = string | number[];` results in other code being broken, so this should
+ * be fixed in the future.
+ */
 declare module 'trezor-connect' {
   interface TxSignature {
     r: number;
@@ -49,18 +54,6 @@ declare module 'trezor-connect' {
     path: string | number[];
   }
 
-  interface ErrorResponse {
-    success: false;
-    error: string;
-  }
-
-  type SuccessResponse<T> = {
-    success: true;
-    error: undefined;
-  } & T;
-
-  type Response<T> = ErrorResponse | SuccessResponse<T>;
-
   interface EthereumGetAddressPayload {
     address: string;
     path: number[];
@@ -76,14 +69,10 @@ declare module 'trezor-connect' {
     }): Promise<TrezorData<GetPublicKeyPayload[]>>;
 
     export function ethereumSignTransaction(signTransactionMessage): any;
-
-    export function signMessage(
-      path: Path,
-      message: string,
-      cb: (res: Response<MessageSignature>) => void,
-      coin?: string,
-      minFirmware?: string
-    ): any;
+    export function ethereumSignMessage(params: {
+      path: string | number[];
+      message: string;
+    }): Promise<TrezorData<MessageSignature>>;
 
     export function ethereumGetAddress(pathObj): Promise<TrezorData<EthereumGetAddressPayload>>;
   }
