@@ -1,12 +1,24 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
+import { bigNumberify, parseEther } from 'ethers/utils';
 
-import { fNetworks, fAccounts, fAccount, fTxReceipt, fContacts, fContracts } from '@fixtures';
-import { DataContext, IDataContext } from '@services';
+import {
+  fNetworks,
+  fAccounts,
+  fAccount,
+  fTxReceipt,
+  fContacts,
+  fContracts,
+  fNetwork,
+  fTxHistoryAPI,
+  fAssets
+} from '@fixtures';
+import { DataContext, IDataContext, StoreContext } from '@services';
+import { ITxHistoryApiResponse } from '@services/ApiService/History';
+import { ITxHistoryType } from '@features/Dashboard/types';
+import { DEFAULT_NETWORK } from '@config';
 
 import useTxHistory from './useTxHistory';
-import { StoreContext } from '@services/Store';
-import { ITxHistoryApiResponse } from '@services/ApiService/History';
 
 const renderUseTxHistory = ({
   apiTransactions = [] as ITxHistoryApiResponse[],
@@ -20,6 +32,7 @@ const renderUseTxHistory = ({
           addressBook: fContacts,
           contracts: fContracts,
           networks: fNetworks,
+          assets: fAssets,
           createActions
         } as any) as IDataContext
       }
@@ -35,16 +48,81 @@ const renderUseTxHistory = ({
 
 describe('useTxHistory', () => {
   it('uses tx history from StoreProvider ', () => {
-    const { result } = renderUseTxHistory();
-    // @todo: Add fixture and test properly
-    expect(result.current.txHistory).toEqual([]);
+    const { result } = renderUseTxHistory({ apiTransactions: [fTxHistoryAPI] });
+    expect(result.current.txHistory).toEqual([
+      {
+        ...fTxHistoryAPI,
+        amount: fTxHistoryAPI.value.toString(),
+        asset: fAssets[0],
+        baseAsset: fAssets[0],
+        fromAddressBookEntry: undefined,
+        toAddressBookEntry: undefined,
+        receiverAddress: fTxHistoryAPI.recipientAddress,
+        nonce: fTxHistoryAPI.nonce.toString(),
+        networkId: DEFAULT_NETWORK,
+        gasLimit: bigNumberify(fTxHistoryAPI.gasLimit),
+        gasPrice: bigNumberify(fTxHistoryAPI.gasPrice),
+        gasUsed: bigNumberify(fTxHistoryAPI.gasUsed || 0),
+        value: parseEther(fTxHistoryAPI.value.toString())
+      }
+    ]);
   });
 
   it('uses transactions from Account', () => {
     const { result } = renderUseTxHistory({
       accounts: [{ ...fAccount, transactions: [fTxReceipt] }]
     });
+    expect(result.current.txHistory).toEqual([
+      {
+        ...fTxReceipt,
+        networkId: fNetwork.id,
+        timestamp: 0,
+        toAddressBookEntry: undefined,
+        txType: ITxHistoryType.OUTBOUND,
+        fromAddressBookEntry: fContacts[0]
+      }
+    ]);
+  });
+
+  it('merges transactions and prioritizes account txs', () => {
+    const { result } = renderUseTxHistory({
+      accounts: [
+        {
+          ...fAccount,
+          transactions: [
+            {
+              ...fTxReceipt,
+              hash: '0xbc9a016464ac9d52d29bbe9feec9e5cb7eb3263567a1733650fe8588d426bf40'
+            }
+          ]
+        }
+      ],
+      apiTransactions: [fTxHistoryAPI]
+    });
     expect(result.current.txHistory.length).toEqual(1);
-    // @todo: Test typing more
+    expect(result.current.txHistory).toEqual([
+      {
+        ...fTxReceipt,
+        hash: '0xbc9a016464ac9d52d29bbe9feec9e5cb7eb3263567a1733650fe8588d426bf40',
+        networkId: fNetwork.id,
+        timestamp: 0,
+        toAddressBookEntry: undefined,
+        txType: ITxHistoryType.OUTBOUND,
+        fromAddressBookEntry: fContacts[0]
+      }
+    ]);
+  });
+
+  it('merges transactions', () => {
+    const { result } = renderUseTxHistory({
+      accounts: [
+        {
+          ...fAccount,
+          transactions: [fTxReceipt]
+        }
+      ],
+      apiTransactions: [fTxHistoryAPI]
+    });
+    expect(result.current.txHistory.length).toEqual(2);
   });
 });
