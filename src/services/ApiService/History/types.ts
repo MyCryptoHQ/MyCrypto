@@ -17,9 +17,6 @@ export interface ITxHistoryApiResponse {
   readonly value: number;
 
   readonly txType: ITxType;
-
-  // @todo: NOT PRESENT ATM
-  //readonly confirmations?: number;
 }
 
 export interface ITxHistoryERC20Transfer {
