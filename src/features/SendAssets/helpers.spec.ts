@@ -6,12 +6,12 @@ import {
   fETHNonWeb3TxConfig
 } from '@fixtures';
 import { translateRaw } from '@translations';
-import { TTicker, TAddress } from '@types';
+import { TTicker, TAddress, TxQueryTypes } from '@types';
 
 import { parseQueryParams, parseTransactionQueryParams, generateGenericErc20 } from './helpers';
 
-const validETHResubmitQuery = {
-  type: 'resubmit',
+const validETHSpeedUpQuery = {
+  type: TxQueryTypes.SPEEDUP,
   gasLimit: '0x5208',
   chainId: '3',
   nonce: '0x6',
@@ -22,8 +22,8 @@ const validETHResubmitQuery = {
   data: '0x'
 };
 
-const validERC20ResubmitQuery = {
-  type: 'resubmit',
+const validERC20SpeedUpQuery = {
+  type: TxQueryTypes.SPEEDUP,
   gasLimit: '0x7d3c',
   chainId: '3',
   nonce: '0x7',
@@ -35,8 +35,8 @@ const validERC20ResubmitQuery = {
     '0xa9059cbb000000000000000000000000b2bb2b958AFa2e96dab3f3Ce7162b87daEa39017000000000000000000000000000000000000000000000000002386f26fc10000' // Transfer method call
 };
 
-const invalidResubmitQuery = {
-  type: 'resubmit',
+const invalidSpeedUpQuery = {
+  type: TxQueryTypes.SPEEDUP,
   gasLimit: '0x5208',
   chainId: '3',
   nonce: '0x60'
@@ -44,69 +44,71 @@ const invalidResubmitQuery = {
 
 describe('Query string parsing', () => {
   it('parses valid erc20 tx query parameters correctly', () => {
-    const parsedQueryParams = parseQueryParams(validERC20ResubmitQuery)(
+    const parsedQueryParams = parseQueryParams(validERC20SpeedUpQuery)(
       [fNetwork],
       fAssets,
       fAccounts
     );
-    expect(parsedQueryParams).toStrictEqual({ type: 'resubmit', txConfig: fERC20NonWeb3TxConfig });
+    expect(parsedQueryParams).toStrictEqual({
+      type: TxQueryTypes.SPEEDUP,
+      txConfig: fERC20NonWeb3TxConfig
+    });
   });
 
   it('parses valid eth tx query parameters correctly', () => {
-    const parsedQueryParams = parseQueryParams(validETHResubmitQuery)(
+    const parsedQueryParams = parseQueryParams(validETHSpeedUpQuery)(
       [fNetwork],
       fAssets,
       fAccounts
     );
-    expect(parsedQueryParams).toStrictEqual({ type: 'resubmit', txConfig: fETHNonWeb3TxConfig });
+    expect(parsedQueryParams).toStrictEqual({
+      type: TxQueryTypes.SPEEDUP,
+      txConfig: fETHNonWeb3TxConfig
+    });
   });
 
   it('fails to derive txConfig when invalid eth tx query parameters are included', () => {
-    const parsedQueryParams = parseQueryParams(invalidResubmitQuery)(
-      [fNetwork],
-      fAssets,
-      fAccounts
-    );
-    expect(parsedQueryParams).toStrictEqual({ type: 'resubmit', txConfig: undefined });
+    const parsedQueryParams = parseQueryParams(invalidSpeedUpQuery)([fNetwork], fAssets, fAccounts);
+    expect(parsedQueryParams).toStrictEqual({ type: TxQueryTypes.SPEEDUP, txConfig: undefined });
   });
 
   it('fails to derive txConfig when there is no network config for specified chainID', () => {
-    const parsedQueryParams = parseQueryParams(validETHResubmitQuery)([], fAssets, fAccounts);
-    expect(parsedQueryParams).toStrictEqual({ type: 'resubmit', txConfig: undefined });
+    const parsedQueryParams = parseQueryParams(validETHSpeedUpQuery)([], fAssets, fAccounts);
+    expect(parsedQueryParams).toStrictEqual({ type: TxQueryTypes.SPEEDUP, txConfig: undefined });
   });
 
   it('fails to derive txConfig when there is no added account with from address', () => {
-    const parsedQueryParams = parseQueryParams(validETHResubmitQuery)([fNetwork], fAssets, []);
-    expect(parsedQueryParams).toStrictEqual({ type: 'resubmit', txConfig: undefined });
+    const parsedQueryParams = parseQueryParams(validETHSpeedUpQuery)([fNetwork], fAssets, []);
+    expect(parsedQueryParams).toStrictEqual({ type: TxQueryTypes.SPEEDUP, txConfig: undefined });
   });
 });
 
 describe('parseTransactionQueryParams', () => {
-  it('correctly parses valid erc20 resubmit query params', () => {
-    const parsedResubmitParams = parseTransactionQueryParams(validERC20ResubmitQuery)(
+  it('correctly parses valid erc20 speedup query params', () => {
+    const parsedSpeedUpParams = parseTransactionQueryParams(validERC20SpeedUpQuery)(
       [fNetwork],
       fAssets,
       fAccounts
     );
-    expect(parsedResubmitParams).toEqual(fERC20NonWeb3TxConfig);
+    expect(parsedSpeedUpParams).toEqual(fERC20NonWeb3TxConfig);
   });
 
-  it('correctly parses valid eth resubmit query params', () => {
-    const parsedResubmitParams = parseTransactionQueryParams(validETHResubmitQuery)(
+  it('correctly parses valid eth speedup query params', () => {
+    const parsedSpeedUpParams = parseTransactionQueryParams(validETHSpeedUpQuery)(
       [fNetwork],
       fAssets,
       fAccounts
     );
-    expect(parsedResubmitParams).toEqual(fETHNonWeb3TxConfig);
+    expect(parsedSpeedUpParams).toEqual(fETHNonWeb3TxConfig);
   });
 
-  it('correctly handles invalid resubmit query params', () => {
-    const parsedResubmitParams = parseTransactionQueryParams(invalidResubmitQuery)(
+  it('correctly handles invalid speedup query params', () => {
+    const parsedSpeedUpParams = parseTransactionQueryParams(invalidSpeedUpQuery)(
       [fNetwork],
       fAssets,
       fAccounts
     );
-    expect(parsedResubmitParams).toBeUndefined();
+    expect(parsedSpeedUpParams).toBeUndefined();
   });
 });
 

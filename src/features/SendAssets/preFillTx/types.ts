@@ -5,7 +5,8 @@ import {
   ITxValue,
   ITxToAddress,
   ITxFromAddress,
-  ITxData
+  ITxData,
+  TxQueryTypes
 } from '@types';
 
 export type TxParam =
@@ -20,6 +21,7 @@ export type TxParam =
   | 'type';
 
 export type TTxQueryParam =
+  | TxQueryTypes
   | string
   | ITxValue
   | ITxNonce

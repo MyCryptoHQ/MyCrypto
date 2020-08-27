@@ -30,7 +30,7 @@ const defaultProps: React.ComponentProps<typeof TxReceiptUI> = {
   displayTxReceipt: fTxReceipt,
   resetFlow: noOp,
   handleTxCancelRedirect: noOp,
-  handleTxResubmitRedirect: noOp,
+  handleTxSpeedUpRedirect: noOp,
   isSenderAccountPresent: undefined,
   baseAssetRate: 250,
   fiat: Fiats.USD

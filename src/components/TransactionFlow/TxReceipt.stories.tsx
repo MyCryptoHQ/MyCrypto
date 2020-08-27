@@ -19,7 +19,7 @@ const senderContact = Object.values(devContacts)[0] as ExtendedContact;
 const recipientContact = Object.values(devContacts)[1] as ExtendedContact;
 const resetFlow = noOp;
 const handleTxCancelRedirect = noOp;
-const handleTxResubmitRedirect = noOp;
+const handleTxSpeedUpRedirect = noOp;
 const isSenderAccountPresent = undefined;
 
 export default { title: 'TxReceipt' };
@@ -39,7 +39,7 @@ export const transactionReceiptPending = () => (
       baseAssetRate={assetRate}
       fiat={Fiats.USD}
       handleTxCancelRedirect={handleTxCancelRedirect}
-      handleTxResubmitRedirect={handleTxResubmitRedirect}
+      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
       isSenderAccountPresent={isSenderAccountPresent}
     />
   </div>
@@ -61,7 +61,7 @@ export const transactionReceipt = () => (
       baseAssetRate={assetRate}
       fiat={Fiats.USD}
       handleTxCancelRedirect={handleTxCancelRedirect}
-      handleTxResubmitRedirect={handleTxResubmitRedirect}
+      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
       isSenderAccountPresent={isSenderAccountPresent}
     />
   </div>
@@ -87,7 +87,7 @@ export const transactionReceiptDeFiZap = () => (
       baseAssetRate={assetRate}
       fiat={Fiats.USD}
       handleTxCancelRedirect={handleTxCancelRedirect}
-      handleTxResubmitRedirect={handleTxResubmitRedirect}
+      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
       isSenderAccountPresent={isSenderAccountPresent}
     />
   </div>
@@ -112,7 +112,7 @@ export const transactionReceiptMembership = () => (
       baseAssetRate={assetRate}
       fiat={Fiats.USD}
       handleTxCancelRedirect={handleTxCancelRedirect}
-      handleTxResubmitRedirect={handleTxResubmitRedirect}
+      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
       isSenderAccountPresent={isSenderAccountPresent}
     />
   </div>

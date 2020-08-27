@@ -7,7 +7,21 @@ import {
   makeUnknownTxReceipt,
   makePendingTxReceipt
 } from '@utils';
+<<<<<<< HEAD
 import { ITxType, ITxHash, NetworkId, StoreAccount, Asset, Network, ITxReceipt, ITxConfig } from '@types';
+=======
+import {
+  ITxType,
+  ITxHash,
+  NetworkId,
+  StoreAccount,
+  Asset,
+  Network,
+  ITxReceipt,
+  ITxConfig,
+  TxQueryTypes
+} from '@types';
+>>>>>>> added banner and cleaned up
 
 export const fetchTxStatus = async ({
   txHash,
@@ -36,6 +50,7 @@ export const fetchTxStatus = async ({
   return { fetchedTx, cachedTx: undefined };
 };
 
+<<<<<<< HEAD
 export const makeTx = ({
   txHash,
   networkId,
@@ -79,4 +94,18 @@ export const makeTx = ({
       value,
       data
     };
+=======
+export const createQueryParams = (txConfig: ITxConfig, type: TxQueryTypes) => {
+  const { to, from, gasLimit, nonce, chainId, value, data } = txConfig.rawTransaction;
+  const senderAddress = txConfig.senderAccount?.address;
+  return {
+    from: from || senderAddress,
+    type,
+    to,
+    gasLimit,
+    nonce,
+    chainId,
+    value,
+    data
+>>>>>>> added banner and cleaned up
   };

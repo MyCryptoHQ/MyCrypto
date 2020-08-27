@@ -22,7 +22,7 @@ test('Complete SendFlow', async (t) => {
   await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
   await setLocalStorage(FIXTURE_MYC_STORAGE_KEY, FIXTURE_LOCALSTORAGE_WITH_ONE_ACC);
 
-  const invalidQueryParams = '?type=resubmit&chainId=1'
+  const invalidQueryParams = '?type=speedup&chainId=1'
 
   await sendAssetsPage.navigateToPage(invalidQueryParams);
   await sendAssetsPage.waitPageLoaded(invalidQueryParams);
@@ -35,9 +35,9 @@ test('Complete SendFlow', async (t) => {
   await t.expect(ptxBtn).ok();
 
 
-  // Should show invalid resubmit query params message
-  const invalidResubmitQueryParamsMessage = Selector('.alert-info')
-  await t.expect(invalidResubmitQueryParamsMessage).ok();
+  // Should show invalid speedup query params message
+  const invalidSpeedUpQueryParamsMessage = Selector('.alert-info')
+  await t.expect(invalidSpeedUpQueryParamsMessage).ok();
 
   await t.click(ptxBtn);
 
@@ -78,7 +78,7 @@ test('Complete SendFlow', async (t) => {
 });
 
 test('Valid transaction query params are correctly parsed and loaded into send flow', async (t) => {
-  const validQueryParams = '?type=resubmit&gasLimit=0xcb56&chainId=1&nonce=0xD8&gasPrice=0x059682f000&from=0x32F08711dC8ca3EB239e01f427AE3713DB1f6Be3&to=0x6B175474E89094C44Da98b954EedeAC495271d0F&value=0x0&data=0xa9059cbb0000000000000000000000005dd6e754d37bababeb95f34639568812900fec7900000000000000000000000000000000000000000000000000038D7EA4C68000'
+  const validQueryParams = '?type=speedup&gasLimit=0xcb56&chainId=1&nonce=0xD8&gasPrice=0x059682f000&from=0x32F08711dC8ca3EB239e01f427AE3713DB1f6Be3&to=0x6B175474E89094C44Da98b954EedeAC495271d0F&value=0x0&data=0xa9059cbb0000000000000000000000005dd6e754d37bababeb95f34639568812900fec7900000000000000000000000000000000000000000000000000038D7EA4C68000'
 
   await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
   await setLocalStorage(FIXTURE_MYC_STORAGE_KEY, FIXTURE_LOCALSTORAGE_WITH_ONE_ACC);

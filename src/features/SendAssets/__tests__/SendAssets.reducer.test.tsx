@@ -184,7 +184,7 @@ describe('SendAssetsReducer', () => {
       expect(newState.txConfig).toBe(prevState.txConfig);
     });
   });
-  describe('REQUEST_RESUBMIT', () => {
+  describe('REQUEST_SPEED_UP', () => {
     it('it updates the raw tx with a new gas price', () => {
       const prevState = {
         txReceipt: undefined,
@@ -192,7 +192,7 @@ describe('SendAssetsReducer', () => {
         signedTx: undefined
       };
       const newState = dispatch({
-        type: sendAssetsReducer.actionTypes.REQUEST_RESUBMIT,
+        type: sendAssetsReducer.actionTypes.REQUEST_SPEED_UP,
         payload: undefined
       })(prevState);
       const txConfig = newState.txConfig;

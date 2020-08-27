@@ -23,7 +23,8 @@ import {
   ITxHistoryStatus,
   Fiat,
   WalletId,
-  StoreAccount
+  StoreAccount,
+  TxQueryTypes
 } from '@types';
 import {
   Amount,
@@ -35,7 +36,7 @@ import {
   Button
 } from '@components';
 import { AccountContext, StoreContext, SettingsContext, useContacts } from '@services/Store';
-import { useRates } from '@services';
+import { useRates, fetchGasPriceEstimates } from '@services';
 import {
   ProviderHandler,
   getTimestampFromBlockNum,
@@ -56,7 +57,6 @@ import MembershipReceiptBanner from '@features/PurchaseMembership/components/Mem
 import { getFiat } from '@config/fiats';
 import { makeFinishedTxReceipt } from '@utils/transaction';
 import { path } from '@vendor';
-import { fetchGasPriceEstimates } from '@services';
 import { createQueryParams } from '@features/TxStatus/helpers';
 
 import { ISender } from './types';
@@ -197,39 +197,41 @@ const TxReceipt = ({
     }
   })();
 
-  const handleTxResubmitRedirect = async () => {
-    //dispatch({ type: txStatusReducer.actionTypes.TRIGGER_RESUBMIT });
+  const handleTxSpeedUpRedirect = async () => {
+    //dispatch({ type: txStatusReducer.actionTypes.TRIGGER_SPEED_UP });
     const { fast } = await fetchGasPriceEstimates(txConfig.network);
-    const unfinishedResubmitTxQueryParams = txConfig && createQueryParams(txConfig, 'resubmit');
-    if (!unfinishedResubmitTxQueryParams) {
-      //dispatch({ type: txStatusReducer.actionTypes.TRIGGER_RESUBMIT_SUCCESS });
+    const unfinishedSpeedUpTxQueryParams =
+      txConfig && createQueryParams(txConfig, TxQueryTypes.SPEEDUP);
+    if (!unfinishedSpeedUpTxQueryParams) {
+      //dispatch({ type: txStatusReducer.actionTypes.TRIGGER_SPEED_UP_SUCCESS });
       return;
     }
     const query = queryString.stringify({
-      ...unfinishedResubmitTxQueryParams,
+      ...unfinishedSpeedUpTxQueryParams,
       gasPrice: inputGasPriceToHex(fast.toString())
     });
-    //dispatch({ type: txStatusReducer.actionTypes.TRIGGER_RESUBMIT_SUCCESS });
+    //dispatch({ type: txStatusReducer.actionTypes.TRIGGER_SPEED_UP_SUCCESS });
     history.replace(`${ROUTE_PATHS.SEND.path}/?${query}`);
   };
 
   const handleTxCancelRedirect = async () => {
-    //dispatch({ type: txStatusReducer.actionTypes.TRIGGER_RESUBMIT });
+    //dispatch({ type: txStatusReducer.actionTypes.TRIGGER_SPEED_UP });
     const { fast } = await fetchGasPriceEstimates(txConfig.network);
-    const unfinishedResubmitTxQueryParams = txConfig && createQueryParams(txConfig, 'cancel');
-    if (!unfinishedResubmitTxQueryParams) {
-      //dispatch({ type: txStatusReducer.actionTypes.TRIGGER_RESUBMIT_SUCCESS });
+    const unfinishedSpeedUpTxQueryParams =
+      txConfig && createQueryParams(txConfig, TxQueryTypes.CANCEL);
+    if (!unfinishedSpeedUpTxQueryParams) {
+      //dispatch({ type: txStatusReducer.actionTypes.TRIGGER_SPEED_UP_SUCCESS });
       return;
     }
     const query = queryString.stringify({
-      ...unfinishedResubmitTxQueryParams,
-      to: unfinishedResubmitTxQueryParams.from,
+      ...unfinishedSpeedUpTxQueryParams,
+      to: unfinishedSpeedUpTxQueryParams.from,
       value: '0x0',
       gasLimit: inputGasLimitToHex('21000'),
       gasPrice: inputGasPriceToHex(fast.toString())
     });
 
-    //dispatch({ type: txStatusReducer.actionTypes.TRIGGER_RESUBMIT_SUCCESS });
+    //dispatch({ type: txStatusReducer.actionTypes.TRIGGER_SPEED_UP_SUCCESS });
     history.replace(`${ROUTE_PATHS.SEND.path}/?${query}`);
   };
 
@@ -285,7 +287,7 @@ const TxReceipt = ({
       assetRate={assetRate}
       baseAssetRate={baseAssetRate}
       handleTxCancelRedirect={handleTxCancelRedirect}
-      handleTxResubmitRedirect={handleTxResubmitRedirect}
+      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
     />
   );
 };
@@ -305,10 +307,10 @@ export interface TxReceiptDataProps {
   swapDisplay?: SwapDisplayData;
   protectTxEnabled?: boolean;
   web3Wallet?: boolean;
-  handleTxCancelRedirect(): void;
-  handleTxResubmitRedirect(): void;
   assetRate: number | undefined;
   baseAssetRate: number | undefined;
+  handleTxCancelRedirect(): void;
+  handleTxSpeedUpRedirect(): void;
   resetFlow(): void;
   protectTxButton?(): JSX.Element;
 }
@@ -337,7 +339,7 @@ export const TxReceiptUI = ({
   completeButtonText,
   isSenderAccountPresent,
   handleTxCancelRedirect,
-  handleTxResubmitRedirect,
+  handleTxSpeedUpRedirect,
   protectTxEnabled = false,
   web3Wallet = false,
   protectTxButton
@@ -509,8 +511,8 @@ export const TxReceiptUI = ({
                   <br /> {localTimestamp}
                 </div>
               ) : (
-                  translate('UNKNOWN')
-                ))}
+                translate('UNKNOWN')
+              ))}
             {!displayTxReceipt && <PendingTransaction />}
           </div>
         </div>
@@ -547,10 +549,10 @@ export const TxReceiptUI = ({
         </Button>
       )}
       {txStatus === ITxStatus.PENDING && txConfig && (
-        <Tooltip tooltip={translateRaw('RESUBMIT_TOOLTIP')}>
+        <Tooltip tooltip={translateRaw('SPEED_UP_TOOLTIP')}>
           <Button
             className="TransactionReceipt-another"
-            onClick={handleTxResubmitRedirect}
+            onClick={handleTxSpeedUpRedirect}
             disabled={!isSenderAccountPresent}
           >
             {translateRaw('SPEED_UP_TX_BTN')}
@@ -559,7 +561,7 @@ export const TxReceiptUI = ({
       )}
       <br />
       {txStatus === ITxStatus.PENDING && txConfig && (
-        <Tooltip tooltip={translateRaw('RESUBMIT_TOOLTIP')}>
+        <Tooltip tooltip={translateRaw('SPEED_UP_TOOLTIP')}>
           <Button
             className="TransactionReceipt-another"
             onClick={handleTxCancelRedirect}

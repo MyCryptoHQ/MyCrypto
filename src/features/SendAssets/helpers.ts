@@ -16,7 +16,8 @@ import {
   TAddress,
   StoreAccount,
   NetworkId,
-  TTicker
+  TTicker,
+  TxQueryTypes
 } from '@types';
 import {
   Address,
@@ -107,18 +108,18 @@ export const parseQueryParams = (queryParams: any) => (
 ) => {
   if (!queryParams || isEmpty(queryParams)) return;
   switch (queryParams.type) {
-    case 'resubmit':
+    case TxQueryTypes.SPEEDUP:
       return {
-        type: 'resubmit',
+        type: TxQueryTypes.SPEEDUP,
         txConfig: parseTransactionQueryParams(queryParams)(networks, assets, accounts)
       };
-    case 'cancel':
+    case TxQueryTypes.CANCEL:
       return {
-        type: 'cancel',
+        type: TxQueryTypes.CANCEL,
         txConfig: parseTransactionQueryParams(queryParams)(networks, assets, accounts)
       };
     default:
-      return { type: 'default' };
+      return { type: TxQueryTypes.DEFAULT };
   }
 };
 
@@ -127,7 +128,7 @@ export const parseTransactionQueryParams = (queryParams: any) => (
   assets: ExtendedAsset[],
   accounts: StoreAccount[]
 ): ITxConfig | undefined => {
-  // if resubmit tx does not contain all the necessary parameters to construct a tx config return undefined
+  // if speedup tx does not contain all the necessary parameters to construct a tx config return undefined
   const i = MANDATORY_TRANSACTION_QUERY_PARAMS.reduce((acc, cv) => {
     if (queryParams[cv] === undefined) return { ...acc, invalid: true };
     acc[cv] = queryParams[cv];
@@ -163,8 +164,8 @@ export const parseTransactionQueryParams = (queryParams: any) => (
   const baseAsset = assets.find(({ uuid }) => uuid === network.baseAsset) as ExtendedAsset;
   const asset = erc20tx
     ? assets.find(
-      ({ contractAddress }) => contractAddress && isSameAddress(contractAddress as TAddress, to)
-    ) || generateGenericErc20(to, i.chainId, network.id)
+        ({ contractAddress }) => contractAddress && isSameAddress(contractAddress as TAddress, to)
+      ) || generateGenericErc20(to, i.chainId, network.id)
     : baseAsset;
   return {
     from: senderAccount.address,
