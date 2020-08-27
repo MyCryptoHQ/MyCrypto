@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import pick from 'ramda/src/pick';
 
 import { translateRaw } from '@translations';
-import { StoreContext, RatesContext, SettingsContext, useAssets } from '@services';
+import { StoreContext, SettingsContext, useAssets, useRates } from '@services';
 import { TxReceipt, MultiTxReceipt } from '@components/TransactionFlow';
 import { StoreAccount, ITxType } from '@types';
 import { TxParcel } from '@utils';
@@ -28,7 +28,7 @@ export default function SwapTransactionReceipt({
   const { assets: getAssets } = useContext(StoreContext);
   const { getAssetByUUID } = useAssets();
   const { settings } = useContext(SettingsContext);
-  const { getAssetRate } = useContext(RatesContext);
+  const { getAssetRate } = useRates();
   const swapDisplay: SwapDisplayData = pick(
     ['fromAsset', 'toAsset', 'fromAmount', 'toAmount'],
     assetPair

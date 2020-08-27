@@ -21,7 +21,7 @@ const recipientContact = Object.values(devContacts)[1] as ExtendedContact;
 const defaultProps: React.ComponentProps<typeof TxReceiptUI> = {
   settings: fSettings,
   txConfig: fTxConfig,
-  assetRate: () => 250,
+  assetRate: 250,
   sender: constructSenderFromTxConfig(fTxConfig, [fAccount]),
   senderContact,
   recipientContact,
@@ -29,7 +29,7 @@ const defaultProps: React.ComponentProps<typeof TxReceiptUI> = {
   timestamp: 1583266291,
   displayTxReceipt: fTxReceipt,
   resetFlow: noOp,
-  baseAssetRate: () => 250,
+  baseAssetRate: 250,
   fiat: Fiats.USD
 };
 

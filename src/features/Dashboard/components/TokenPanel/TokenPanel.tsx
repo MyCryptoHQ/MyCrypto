@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 
-import { StoreContext, RatesContext, SettingsContext } from '@services';
+import { StoreContext, SettingsContext, useRates } from '@services';
 import { ExtendedAsset, StoreAsset } from '@types';
 
 import { TokenList } from './TokenList';
@@ -11,7 +11,7 @@ import { isNotExcludedAsset } from '@services/Store/helpers';
 export function TokenPanel() {
   const { totals, currentAccounts, scanTokens } = useContext(StoreContext);
   const { settings } = useContext(SettingsContext);
-  const { getAssetRate } = useContext(RatesContext);
+  const { getAssetRate } = useRates();
   const [showDetailsView, setShowDetailsView] = useState(false);
   const [showAddToken, setShowAddToken] = useState(false);
   const [currentToken, setCurrentToken] = useState<StoreAsset>();

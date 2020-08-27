@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { TxReceipt, MultiTxReceipt } from '@components/TransactionFlow';
 import { ITxType, TxParcel, StoreAccount } from '@types';
 import { makeTxItem } from '@utils/transaction';
-import { RatesContext, SettingsContext, useAssets } from '@services';
+import { SettingsContext, useAssets, useRates } from '@services';
 import { getFiat } from '@config/fiats';
 
 import { IMembershipConfig } from '../config';
@@ -24,7 +24,7 @@ export default function MembershipReceipt({
 }: Props) {
   const { getAssetByUUID } = useAssets();
   const { settings } = useContext(SettingsContext);
-  const { getAssetRate } = useContext(RatesContext);
+  const { getAssetRate } = useRates();
 
   const txItems = transactions.map((tx, idx) => {
     const txConfig = makePurchaseMembershipTxConfig(tx.txRaw, account, membershipSelected);

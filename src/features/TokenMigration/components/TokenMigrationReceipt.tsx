@@ -4,7 +4,7 @@ import { MultiTxReceipt } from '@components/TransactionFlow';
 import { ITxType, TxParcel, StoreAccount } from '@types';
 import { makeTxItem } from '@utils/transaction';
 import { getFiat } from '@config/fiats';
-import { SettingsContext, RatesContext, useAssets } from '@services';
+import { SettingsContext, useAssets, useRates } from '@services';
 
 import { makeTokenMigrationTxConfig } from '../helpers';
 
@@ -17,7 +17,7 @@ interface Props {
 export default function TokenMigrationReceipt({ account, transactions, onComplete }: Props) {
   const { settings } = useContext(SettingsContext);
   const { getAssetByUUID } = useAssets();
-  const { getAssetRate } = useContext(RatesContext);
+  const { getAssetRate } = useRates();
   const txItems = transactions.map((tx, idx) => {
     const txConfig = makeTokenMigrationTxConfig(tx.txRaw, account);
     const txType = idx === transactions.length - 1 ? ITxType.REP_TOKEN_MIGRATION : ITxType.APPROVAL;

@@ -14,11 +14,11 @@ import {
 import { convertToFiat } from '@utils';
 import { ITxReceipt, ITxStatus, StoreAccount, Asset, Network, ExtendedContact } from '@types';
 import {
-  RatesContext,
   getLabelByAddressAndNetwork,
   SettingsContext,
   useNetworks,
-  useContacts
+  useContacts,
+  useRates
 } from '@services';
 import { translateRaw } from '@translations';
 import {
@@ -165,7 +165,7 @@ const makeTxIcon = (type: ITxHistoryType, asset: Asset) => {
 
 export default function RecentTransactionList({ accountsList, className = '' }: Props) {
   const { contacts } = useContacts();
-  const { getAssetRate } = useContext(RatesContext);
+  const { getAssetRate } = useRates();
   const { settings } = useContext(SettingsContext);
   const { networks } = useNetworks();
 

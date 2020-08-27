@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import BigNumber from 'bignumber.js';
 
 import { isWeb3Wallet as checkIsWeb3Wallet } from '@utils';
-import { RatesContext, SettingsContext } from '@services';
+import { SettingsContext, useRates } from '@services';
 import { IAccount, IFormikFields, Fiat } from '@types';
 import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 import { Amount, Button, PoweredByText } from '@components';
@@ -163,7 +163,7 @@ interface Props {
 }
 
 export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
-  const { getAssetRate } = useContext(RatesContext);
+  const { getAssetRate } = useRates();
   const { settings } = useContext(SettingsContext);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -196,7 +196,7 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
     const { amount, fee } = getProtectTxFee(sendAssetsValues!, rate);
 
     setFeeAmount({ amount, fee, rate: rate ? rate : null });
-  }, [sendAssetsValues, getAssetRate]);
+  }, [sendAssetsValues]);
 
   const onProtectMyTransactionClick = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

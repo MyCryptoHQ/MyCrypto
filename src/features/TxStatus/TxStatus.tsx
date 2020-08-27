@@ -94,7 +94,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
           dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_ERROR });
         });
     }
-  }, [fetching]);
+  }, [fetching, assets]);
 
   const handleSubmit = (fromLinkSharing: boolean) => {
     dispatch({ type: txStatusReducer.actionTypes.FETCH_TX, payload: fromLinkSharing });

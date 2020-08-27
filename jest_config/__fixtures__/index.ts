@@ -43,3 +43,5 @@ export { default as fETHNonWeb3TxConfigJSON } from './ethNonWeb3TxConfig.json';
 
 // Web3 ETH Tx Items
 export { default as fETHWeb3TxConfigJSON } from './ethWeb3TxConfig.json';
+
+export { fDefiReserveRates } from './defiRates';

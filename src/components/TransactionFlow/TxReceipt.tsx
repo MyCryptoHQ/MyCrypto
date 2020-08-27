@@ -25,7 +25,7 @@ import {
 } from '@types';
 import { Amount, TimeElapsed, AssetIcon, LinkOut, PoweredByText } from '@components';
 import { AccountContext, StoreContext, SettingsContext, useContacts } from '@services/Store';
-import { RatesContext } from '@services/RatesProvider';
+import { useRates } from '@services';
 import {
   ProviderHandler,
   getTimestampFromBlockNum,
@@ -92,7 +92,7 @@ export default function TxReceipt({
   disableAddTxToAccount,
   protectTxButton
 }: ITxReceiptStepProps & Props) {
-  const { getAssetRate } = useContext(RatesContext);
+  const { getAssetRate } = useRates();
   const { getContactByAddressAndNetworkId } = useContacts();
   const { addNewTxToAccount } = useContext(AccountContext);
   const { accounts } = useContext(StoreContext);
@@ -166,21 +166,21 @@ export default function TxReceipt({
     }
   });
 
-  const assetRate = useCallback(() => {
+  const assetRate = (() => {
     if (displayTxReceipt && path(['asset'], displayTxReceipt)) {
       return getAssetRate(displayTxReceipt.asset);
     } else {
       return getAssetRate(txConfig.asset);
     }
-  }, [displayTxReceipt, txConfig.asset]);
+  })();
 
-  const baseAssetRate = useCallback(() => {
+  const baseAssetRate = (() => {
     if (displayTxReceipt && path(['baseAsset'], displayTxReceipt)) {
       return getAssetRate(displayTxReceipt.baseAsset);
     } else {
       return getAssetRate(txConfig.baseAsset);
     }
-  }, [displayTxReceipt, txConfig.baseAsset]);
+  })();
 
   const sender = constructSenderFromTxConfig(txConfig, accounts);
 
@@ -235,8 +235,8 @@ export interface TxReceiptDataProps {
   swapDisplay?: SwapDisplayData;
   protectTxEnabled?: boolean;
   web3Wallet?: boolean;
-  assetRate(): number | undefined;
-  baseAssetRate(): number | undefined;
+  assetRate: number | undefined;
+  baseAssetRate: number | undefined;
   resetFlow(): void;
   protectTxButton?(): JSX.Element;
 }
@@ -390,7 +390,7 @@ export const TxReceiptUI = ({
               fiat={{
                 symbol: getFiat(settings).symbol,
                 ticker: getFiat(settings).ticker,
-                amount: convertToFiat(parseFloat(assetAmount()), assetRate()).toFixed(2)
+                amount: convertToFiat(parseFloat(assetAmount()), assetRate).toFixed(2)
               }}
             />
           </div>
@@ -454,7 +454,7 @@ export const TxReceiptUI = ({
           nonce={nonce}
           rawTransaction={txConfig.rawTransaction}
           fiat={fiat}
-          baseAssetRate={baseAssetRate()}
+          baseAssetRate={baseAssetRate}
         />
       </div>
       {shouldRenderPendingBtn && (

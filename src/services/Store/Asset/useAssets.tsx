@@ -41,6 +41,7 @@ function useAssets() {
     );
     model.updateAll(mergeAssets(assets));
   };
+
   return { assets, createAssetWithID, getAssetByUUID, addAssetsFromAPI };
 }
 

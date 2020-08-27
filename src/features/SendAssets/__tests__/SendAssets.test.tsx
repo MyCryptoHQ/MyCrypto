@@ -3,10 +3,9 @@ import { MemoryRouter } from 'react-router';
 import { simpleRender } from 'test-utils';
 
 import SendAssets from '@features/SendAssets/SendAssets';
-import { FeatureFlagContext } from '@services';
+import { FeatureFlagContext, RatesContext } from '@services';
 import { StoreContext, SettingsContext, DataContext } from '@services/Store';
-import { RatesContext } from '@services/RatesProvider';
-import { fSettings } from '@fixtures';
+import { fSettings, fAssets } from '@fixtures';
 import { IS_ACTIVE_FEATURE } from '@config';
 import { noOp } from '@utils';
 
@@ -20,7 +19,6 @@ jest.mock('ethers/providers', () => {
     })
   };
 });
-
 /* Test components */
 describe('SendAssetsFlow', () => {
   const component = (path?: string) => (
@@ -29,6 +27,7 @@ describe('SendAssetsFlow', () => {
         value={
           {
             addressBook: [],
+            assets: fAssets,
             createActions: jest.fn()
           } as any
         }
@@ -54,15 +53,7 @@ describe('SendAssetsFlow', () => {
                 } as unknown) as any
               }
             >
-              <RatesContext.Provider
-                value={
-                  ({
-                    getAssetRate: jest.fn(),
-                    getRateInCurrency: jest.fn(),
-                    getAssetRateInCurrency: jest.fn()
-                  } as unknown) as any
-                }
-              >
+              <RatesContext.Provider value={{ rates: {}, trackAsset: jest.fn() } as any}>
                 <SendAssets />
               </RatesContext.Provider>
             </StoreContext.Provider>

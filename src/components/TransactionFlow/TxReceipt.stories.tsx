@@ -12,7 +12,7 @@ import { TxReceiptUI } from './TxReceipt';
 import { constructSenderFromTxConfig } from './helpers';
 
 // Define props
-const assetRate = () => 1.34;
+const assetRate = 1.34;
 const timestamp = 1583266291;
 const txStatus = ITxStatus.SUCCESS;
 const senderContact = Object.values(devContacts)[0] as ExtendedContact;
