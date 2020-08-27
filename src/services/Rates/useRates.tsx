@@ -1,12 +1,11 @@
 import { useContext } from 'react';
 
 import { SettingsContext } from '@services/Store';
-import { IRates, Asset, ReserveAsset, TUuid } from '@types';
+import { Asset, ReserveAsset, TUuid } from '@types';
 import { notUndefined } from '@utils';
 import { RatesContext } from './RatesProvider';
 
 export interface IRatesContext {
-  rates: IRates;
   getAssetRate(asset: Asset): number | undefined;
   getAssetRateInCurrency(asset: Asset, currency: string): number | undefined;
   getPoolAssetReserveRate(defiPoolTokenUUID: string, assets: Asset[]): ReserveAsset[];
@@ -52,7 +51,6 @@ function useRates() {
   };
 
   return {
-    rates,
     getAssetRate,
     getAssetRateInCurrency,
     getPoolAssetReserveRate

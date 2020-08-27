@@ -27,11 +27,6 @@ const renderUseRates = ({
 };
 
 describe('useRates', () => {
-  it('uses get rates from SettingsContext', () => {
-    const { result } = renderUseRates({ rates: fSettings.rates });
-    expect(result.current.rates).toEqual(fSettings.rates);
-  });
-
   it('getAssetRate() gets correct rate from settings', () => {
     const { result } = renderUseRates({ rates: fSettings.rates });
     expect(result.current.getAssetRate(fAssets[2])).toBe(195.04);
