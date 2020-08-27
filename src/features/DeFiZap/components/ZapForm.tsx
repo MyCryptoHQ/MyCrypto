@@ -175,7 +175,6 @@ export const ZapFormUI = ({
                         value={field.value}
                         onBlur={() => {
                           form.setFieldTouched('amount');
-                          //handleGasEstimate();
                         }}
                         placeholder={'0.00'}
                       />
