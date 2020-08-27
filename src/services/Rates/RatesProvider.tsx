@@ -9,7 +9,7 @@ import { DeFiReserveMapService } from '@services';
 
 interface State {
   rates: IRates;
-  reserveRateMapping: ReserveMappingListObject;
+  reserveRateMapping: ReserveMapping;
   trackAsset(id: TUuid): void;
 }
 
@@ -24,9 +24,7 @@ interface ReserveMappingObject {
   reserveRates: ReserveMappingRate[];
 }
 
-interface ReserveMappingListObject {
-  [key: string]: ReserveMappingObject;
-}
+export type ReserveMapping = Record<string, ReserveMappingObject>;
 
 const POLLING_INTERVAL = 90000;
 
@@ -35,7 +33,7 @@ const buildAssetQueryUrl = (assets: string[], currencies: string[]) => `
   ${ASSET_RATES_URL}/?ids=${assets}&vs_currencies=${currencies}
 `;
 
-const fetchDeFiReserveMappingList = async (): Promise<ReserveMappingListObject | any> =>
+const fetchDeFiReserveMappingList = async (): Promise<ReserveMapping | any> =>
   DeFiReserveMapService.instance.getDeFiReserveMap();
 
 const destructureCoinGeckoIds = (rates: IRates, assets: ExtendedAsset[]): IRates => {
@@ -56,7 +54,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
   const { assets: getAssets } = useContext(StoreContext);
   const { getAssetByUUID } = useAssets();
   const { settings, updateSettingsRates } = useContext(SettingsContext);
-  const [reserveRateMapping, setReserveRateMapping] = useState({} as ReserveMappingListObject);
+  const [reserveRateMapping, setReserveRateMapping] = useState({} as ReserveMapping);
   const worker = useRef<undefined | PollingService>();
   const [currentAssets, setCurrentAssets] = useState<ExtendedAsset[]>(getAssets());
 

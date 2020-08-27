@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
 import { SettingsContext } from '@services/Store';
-import { IRates, Asset, ReserveAsset } from '@types';
+import { IRates, Asset, ReserveAsset, TUuid } from '@types';
 import { notUndefined } from '@utils';
 import { RatesContext } from './RatesProvider';
 
@@ -38,7 +38,7 @@ function useRates() {
     return rates[uuid][currency.toLowerCase()];
   };
 
-  const getPoolAssetReserveRate = (uuid: string, assets: Asset[]) => {
+  const getPoolAssetReserveRate = (uuid: TUuid, assets: Asset[]) => {
     const reserveRateObject = reserveRateMapping[uuid];
     if (!reserveRateObject) return [];
     return reserveRateObject.reserveRates
