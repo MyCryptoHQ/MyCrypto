@@ -50,10 +50,7 @@
       "77be6839-06c5-55ee-9062-0233a18436a0",
       "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"
     ],
-    "assets": [
-      "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
-      "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"
-    ],
+    "assets": ["77de68da-ecd8-53ba-bbb5-8edb1c8e14d7", "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"],
     "baseAsset": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
     "baseUnit": "RopstenETH",
     "nodes": [
@@ -713,10 +710,7 @@
         "77be6839-06c5-55ee-9062-0233a18436a0",
         "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"
       ],
-      "assets": [
-        "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
-        "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"
-      ],
+      "assets": ["77de68da-ecd8-53ba-bbb5-8edb1c8e14d7", "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1"],
       "baseAsset": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
       "baseUnit": "RopstenETH",
       "nodes": [

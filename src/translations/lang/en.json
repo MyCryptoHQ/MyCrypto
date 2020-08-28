@@ -1035,11 +1035,11 @@
     "SPEED_UP_TX_BTN": "Speed up transaction",
     "CANCEL_TX_BTN": "Cancel transaction",
     "SPEED_UP_TOOLTIP": "You can speed up or cancel pending transactions from accounts that you have added to your dashboard. Web3 and WalletConnect accounts will not work because they don't allow us to set gas settings.",
-    "TX_QUERY_DEFAULT_BANNER": "You are attempting to send a transaction with pre-filled query parameters.",
+    "TX_QUERY_DEFAULT_BANNER": "You're attempting to send a transaction with pre-filled settings.",
     "TX_QUERY_SPEED_UP_BANNER": "You are attempting to speed up a transaction.",
     "TX_QUERY_CANCEL_BANNER": "You are attempting to cancel a transaction.",
-    "TX_QUERY_DEFAULT_TOOLTIP": "This is a pre-filled transaction. Go [here](https://support.mycrypto.com/how-to/sending/creating-prefilled-transaction) to learn more.",
-    "TX_QUERY_SPEED_UP_TOOLTIP": "This transaction will speed up a previously pending transaction with the same nonce. It does so by sending the same transaction with a higher gas price.",
-    "TX_QUERY_CANCEL_TOOLTIP": "This transaction will cancel a previously pending transaction with the same nonce. It does so by sending a 0 ETH transaction to the same address as it's sending from."
+    "TX_QUERY_DEFAULT_TOOLTIP": "You've arrived here from a pre-filled transaction link. Make sure the settings are correct before continuing. [Learn more](https://support.mycrypto.com/how-to/sending/creating-prefilled-transaction).",
+    "TX_QUERY_SPEED_UP_TOOLTIP": "This transaction will speed up a previously pending transaction with the same nonce. It does so by sending the same transaction but with a higher gas price.",
+    "TX_QUERY_CANCEL_TOOLTIP": "This transaction aims to cancel a previously pending transaction. It does so by sending a 0.00 ETH transaction to yourself (with the same nonce as the previous transaction) with the purpose of being mined before the original transaction."
   }
 }
