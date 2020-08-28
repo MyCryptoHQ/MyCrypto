@@ -1,13 +1,14 @@
 import { ValuesType } from 'utility-types';
+import { TransactionResponse } from 'ethers/providers';
 
-import { ITxConfig, ITxReceipt, TAction, NetworkId } from '@types';
+import { ITxReceipt, TAction, NetworkId } from '@types';
 import { DEFAULT_NETWORK } from '@config';
 import translate from '@translations';
 
 interface State {
   txHash: string;
   networkId: NetworkId;
-  tx?: { config: ITxConfig; receipt: ITxReceipt };
+  tx?: { cachedTx?: ITxReceipt; fetchedTx?: TransactionResponse };
   fetching: boolean;
   fromLink?: boolean;
   error?: JSX.Element;
