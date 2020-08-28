@@ -106,52 +106,48 @@ export default function AddToAddressBook({ toggleFlipped, createContact }: Props
           <Form>
             <AddressFieldset>
               <label htmlFor="label">{translateRaw('ACCOUNT_LIST_LABEL')}</label>
-              <Field
-                name="label"
-                render={({ field }: FieldProps<string>) => (
+              <Field name="label">
+                {({ field }: FieldProps<string>) => (
                   <InputField
                     {...field}
                     placeholder={translateRaw('ADDRESS_BOOK_NAME_OF_ADDRESS_PLACEHOLDER')}
                   />
                 )}
-              />
+              </Field>
             </AddressFieldset>
             <AddressFieldset>
               <label htmlFor="address">{translateRaw('ADDRESSBOOK_ADDRESS')}</label>
-              <Field
-                name="address"
-                render={({ field }: FieldProps<string>) => (
+              <Field name="address">
+                {({ field }: FieldProps<string>) => (
                   <InputField
                     inputError={errors && errors.address}
                     {...field}
                     placeholder={translateRaw('ADDRESSBOOK_ADDRESS_PLACEHOLDER')}
                   />
                 )}
-              />
+              </Field>
             </AddressFieldset>
             <AddressFieldset>
-              <Field
-                name="network"
-                render={({ field, form }: FieldProps<NetworkId>) => (
+              <Field name="network">
+                {({ field, form }: FieldProps<NetworkId>) => (
                   <SNetworkSelectDropdown
                     network={field.value}
                     onChange={(e) => form.setFieldValue(field.name, e)}
                   />
                 )}
-              />
+              </Field>
             </AddressFieldset>
             <AddressFieldset>
               <label htmlFor="notes">{translateRaw('ADDRESSBOOK_NOTES')}</label>
-              <Field
-                name="notes"
-                render={({ field }: FieldProps<string>) => (
+              <Field name="notes">
+                {({ field }: FieldProps<string>) => (
                   <InputField
                     {...field}
                     textarea={true}
                     placeholder={translateRaw('ADDRESSBOOK_NOTES_PLACEHOLDER')}
                   />
                 )}
-              />
+              </Field>
             </AddressFieldset>
             <AddressBookButtons>
               <Button type="button" secondary={true} onClick={toggleFlipped}>

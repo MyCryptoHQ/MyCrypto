@@ -166,30 +166,26 @@ export const ZapFormUI = ({
                 <FormFieldLabel htmlFor="amount">
                   <div>{translate('SEND_ASSETS_AMOUNT_LABEL')}</div>
                 </FormFieldLabel>
-                <Field
-                  name="amount"
-                  render={({ field, form }: FieldProps) => {
-                    return (
-                      <>
-                        <AmountInput
-                          {...field}
-                          asset={ethAsset}
-                          value={field.value}
-                          onBlur={() => {
-                            form.setFieldTouched('amount');
-                            //handleGasEstimate();
-                          }}
-                          placeholder={'0.00'}
-                        />
-                        {errors && errors.amount && touched && touched.amount ? (
-                          <InlineMessage className="SendAssetsForm-errors">
-                            {errors.amount}
-                          </InlineMessage>
-                        ) : null}
-                      </>
-                    );
-                  }}
-                />
+                <Field name="amount">
+                  {({ field, form }: FieldProps) => (
+                    <>
+                      <AmountInput
+                        {...field}
+                        asset={ethAsset}
+                        value={field.value}
+                        onBlur={() => {
+                          form.setFieldTouched('amount');
+                        }}
+                        placeholder={'0.00'}
+                      />
+                      {errors && errors.amount && touched && touched.amount ? (
+                        <InlineMessage className="SendAssetsForm-errors">
+                          {errors.amount}
+                        </InlineMessage>
+                      ) : null}
+                    </>
+                  )}
+                </Field>
               </FormFieldItem>
               <FormFieldSubmitButton type="submit">
                 {translateRaw('ACTION_6')}

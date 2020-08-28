@@ -96,10 +96,8 @@ function ETHAddressField({
   // the Inputs 'value' and 'onChange' props to Formiks handlers.
   return (
     <>
-      <Field
-        name={fieldName}
-        validateOnChange={false}
-        render={({ field, form }: FieldProps) => {
+      <Field name={fieldName} validateOnChange={false}>
+        {({ field, form }: FieldProps) => {
           const value = resolvedAddress ? resolvedAddress : field.value.value;
           return (
             <Wrapper className={className}>
@@ -159,7 +157,7 @@ function ETHAddressField({
             </Wrapper>
           );
         }}
-      />
+      </Field>
     </>
   );
 }

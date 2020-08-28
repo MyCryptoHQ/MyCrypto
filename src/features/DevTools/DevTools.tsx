@@ -47,9 +47,8 @@ const renderAccountForm = (
     <Form>
       <fieldset>
         Address:{' '}
-        <Field
-          name="address"
-          render={({ field }: FieldProps<Account>) => (
+        <Field name="address">
+          {({ field }: FieldProps<Account>) => (
             <DevToolsInput
               {...field}
               onChange={handleChange}
@@ -57,24 +56,22 @@ const renderAccountForm = (
               value={values.address}
             />
           )}
-        />
+        </Field>
       </fieldset>
       <br />
       <fieldset>
         Label:{' '}
-        <Field
-          name="label"
-          render={({ field }: FieldProps<Account>) => (
+        <Field name="label">
+          {({ field }: FieldProps<Account>) => (
             <DevToolsInput {...field} onChange={handleChange} onBlur={handleBlur} value={label} />
           )}
-        />
+        </Field>
       </fieldset>
       <br />
       <fieldset>
         Network:{' '}
-        <Field
-          name="network"
-          render={({ field }: FieldProps<Account>) => (
+        <Field name="network">
+          {({ field }: FieldProps<Account>) => (
             <DevToolsInput
               {...field}
               onChange={handleChange}
@@ -82,7 +79,7 @@ const renderAccountForm = (
               value={values.networkId}
             />
           )}
-        />
+        </Field>
       </fieldset>
       <br />
       <Button type="submit" disabled={isSubmitting}>
