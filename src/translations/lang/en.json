@@ -54,7 +54,7 @@
     "ACTION_15": "Remove",
     "ACTION_16": "Read",
     "ACTION_17": "Write",
-    "ACTION_2": "Cancel",
+    "CANCEL_ACTION": "Cancel",
     "ACTION_5": "More",
     "ACTION_6": "Next",
     "ACTION_8": "Details",

@@ -137,14 +137,7 @@ function SendAssets({ location }: RouteComponentProps) {
       component: TxReceiptWithProtectTx,
       props: (({ txConfig, txReceipt }) => ({
         txConfig,
-        txReceipt,
-        pendingButton: {
-          text: translateRaw('TRANSACTION_BROADCASTED_SPEED_UP'),
-          action: (cb: any) => {
-            dispatch({ type: sendAssetsReducer.actionTypes.REQUEST_SPEED_UP, payload: {} });
-            cb();
-          }
-        }
+        txReceipt
       }))(reducerState)
     }
   ];

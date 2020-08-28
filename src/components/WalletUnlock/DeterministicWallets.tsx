@@ -454,7 +454,7 @@ export function DeterministicWalletsClass({
         </Nav>
         <ButtonsGroup>
           <CancelButton onClick={onCancel} inverted={true}>
-            {translate('ACTION_2')}
+            {translate('CANCEL_ACTION')}
           </CancelButton>
           <Button onClick={handleConfirmAddress} disabled={!selectedAddress}>
             {translate('ACTION_6')}

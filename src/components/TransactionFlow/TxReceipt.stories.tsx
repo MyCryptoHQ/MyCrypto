@@ -20,7 +20,7 @@ const recipientContact = Object.values(devContacts)[1] as ExtendedContact;
 const resetFlow = noOp;
 const handleTxCancelRedirect = noOp;
 const handleTxSpeedUpRedirect = noOp;
-const isSenderAccountPresent = undefined;
+const isSenderAccountPresent = false;
 
 export default { title: 'TxReceipt' };
 

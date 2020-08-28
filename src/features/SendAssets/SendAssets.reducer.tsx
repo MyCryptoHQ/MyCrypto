@@ -13,13 +13,8 @@ import {
   TAction,
   TxQueryTypes
 } from '@types';
-import {
-  getBaseAssetByNetwork,
-  hexWeiToString,
-  bigNumGasPriceToViewableGwei,
-  inputGasPriceToHex
-} from '@services';
-import { makePendingTxReceipt, makeTxConfigFromSignedTx, bigify } from '@utils';
+import { getBaseAssetByNetwork, hexWeiToString } from '@services';
+import { makePendingTxReceipt, makeTxConfigFromSignedTx } from '@utils';
 
 import { processFormDataToTx } from './helpers';
 
@@ -102,22 +97,6 @@ export const sendAssetsReducer = (state: State, action: ReducerAction): State =>
       return { ...state, send: false, txReceipt };
     }
 
-    case sendAssetsReducer.actionTypes.REQUEST_SPEED_UP: {
-      const { txConfig: prevTxConfig } = state;
-      const rawTransaction = prevTxConfig!.rawTransaction;
-
-      // add 10 gwei to current gas price
-      const speedupGasPrice =
-        parseFloat(bigNumGasPriceToViewableGwei(bigify(rawTransaction.gasPrice))) + 10;
-      const hexGasPrice = inputGasPriceToHex(speedupGasPrice.toString());
-
-      const txConfig = {
-        ...prevTxConfig!,
-        rawTransaction: { ...rawTransaction, gasPrice: hexGasPrice }
-      };
-      return { ...state, txConfig };
-    }
-
     case sendAssetsReducer.actionTypes.RESET:
       return initialState;
     default:
@@ -131,7 +110,6 @@ sendAssetsReducer.actionTypes = {
   WEB3_SIGN_SUCCESS: 'WEB3_SIGN_SUCCESS',
   REQUEST_SEND: 'REQUEST_SEND',
   SEND_SUCCESS: 'SEND_SUCCESS',
-  REQUEST_SPEED_UP: 'REQUEST_SPEED_UP',
   RESET: 'RESET',
   SET_TXCONFIG: 'SET_TXCONFIG'
 };

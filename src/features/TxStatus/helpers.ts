@@ -8,6 +8,7 @@ import {
   makePendingTxReceipt
 } from '@utils';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { ITxType, ITxHash, NetworkId, StoreAccount, Asset, Network, ITxReceipt, ITxConfig } from '@types';
 =======
 import {
@@ -22,6 +23,9 @@ import {
   TxQueryTypes
 } from '@types';
 >>>>>>> added banner and cleaned up
+=======
+import { ITxType, ITxHash, NetworkId, StoreAccount, Asset, Network } from '@types';
+>>>>>>> cleaned up and added a few more unit tests
 
 export const fetchTxStatus = async ({
   txHash,
@@ -49,6 +53,7 @@ export const fetchTxStatus = async ({
   }
   return { fetchedTx, cachedTx: undefined };
 };
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 export const makeTx = ({
@@ -109,3 +114,5 @@ export const createQueryParams = (txConfig: ITxConfig, type: TxQueryTypes) => {
     data
 >>>>>>> added banner and cleaned up
   };
+=======
+>>>>>>> cleaned up and added a few more unit tests

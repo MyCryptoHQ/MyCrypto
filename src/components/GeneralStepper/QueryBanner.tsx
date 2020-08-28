@@ -56,15 +56,13 @@ const createQueryWarning = ({
       <Tooltip type={IconID.question} tooltip={translateRaw(tooltipTranslationKey)} />
     </BannerContent>
     <Link to={ROUTE_PATHS.DASHBOARD.path}>
-      <CancelBtn>CANCEL</CancelBtn>
+      <CancelBtn>{translateRaw('CANCEL_ACTION')}</CancelBtn>
     </Link>
   </BannerContainer>
 );
 
 const deriveTxQueryBanner = (queries: IQueryResults) => {
-  const txQueriesArePresent = MANDATORY_TRANSACTION_QUERY_PARAMS.every(
-    (speedupParam) => queries[speedupParam]
-  );
+  const txQueriesArePresent = MANDATORY_TRANSACTION_QUERY_PARAMS.every((param) => queries[param]);
   if (!queries.type || !txQueriesArePresent) return null;
   switch (queries.type) {
     case TxQueryTypes.SPEEDUP:

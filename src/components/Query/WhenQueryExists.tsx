@@ -16,9 +16,7 @@ export const WhenQueryExists = ({ displayQueryMessage }: Props) => {
   // Therefore, we only display errors / messages.
   const deriveSendFormQueryWarning = (queries: IQueryResults) => {
     const queriesArePresent = Object.values(queries).some((v) => !!v);
-    const txQueriesArePresent = MANDATORY_TRANSACTION_QUERY_PARAMS.every(
-      (speedupParam) => queries[speedupParam]
-    );
+    const txQueriesArePresent = MANDATORY_TRANSACTION_QUERY_PARAMS.every((param) => queries[param]);
     if (!queriesArePresent) return null;
     if (txQueriesArePresent) {
       return displayQueryMessage('WARN_SEND_UNDETECTED_NETWORK_OR_ACCOUNT');
