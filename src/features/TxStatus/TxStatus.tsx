@@ -14,7 +14,7 @@ import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
 
 import { txStatusReducer, generateInitialState } from './TxStatus.reducer';
-import { fetchTxStatus, makeTx, createQueryParams } from './helpers';
+import { fetchTxStatus, makeTx } from './helpers';
 
 const SUPPORTED_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Goerli', 'Kovan', 'ETC'];
 
@@ -61,7 +61,6 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   const [reducerState, dispatch] = useReducer(txStatusReducer, initialState);
 
   const { networkId, txHash, tx: txState, error, fetching, fromLink } = reducerState;
-  const network = networks.find((n) => n.id === networkId)!;
   // Fetch TX on load if possible
   useEffectOnce(() => {
     if (!isVoid(defaultTxHash)) {
@@ -109,20 +108,6 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   const isFormValid = txHash.length > 0 && isHexString(txHash);
 
   const tx = txState && makeTx({ txHash, networkId, accounts, assets, networks, ...txState });
-  // cannot send from web3 or walletconnect wallets because they overwrite gas and nonce inputs.
-  const isSenderAccountPresent =
-    tx &&
-    accounts.find(
-      ({ address, wallet }) =>
-        isSameAddress(address, tx.config?.senderAccount?.address) &&
-        ![
-          WalletId.WEB3,
-          WalletId.METAMASK,
-          WalletId.COINBASE,
-          WalletId.FRAME,
-          WalletId.VIEW_ONLY
-        ].includes(wallet)
-    );
 
   return (
     <ContentPanel heading={translateRaw('TX_STATUS')}>

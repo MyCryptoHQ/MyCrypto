@@ -8,11 +8,7 @@ import translate from '@translations';
 interface State {
   txHash: string;
   networkId: NetworkId;
-<<<<<<< HEAD
   tx?: { cachedTx?: ITxReceipt; fetchedTx?: TransactionResponse };
-=======
-  tx?: { config: ITxConfig; receipt: ITxReceipt };
->>>>>>> migrated to txReceipt component
   fetching: boolean;
   fromLink?: boolean;
   error?: JSX.Element;
