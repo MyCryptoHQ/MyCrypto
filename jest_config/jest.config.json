@@ -1,7 +1,8 @@
 {
   "rootDir": "../",
   "transform": {
-    "^.+\\.tsx?$": "ts-jest"
+    "^.+\\.tsx?$": "babel-jest",
+    "^.+\\.jsx?$": "babel-jest"
   },
   "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
   "moduleDirectories": ["node_modules", "common"],
@@ -22,6 +23,5 @@
   ],
   "automock": false,
   "snapshotSerializers": ["enzyme-to-json/serializer"],
-  "browser": true,
-  "collectCoverage": true
+  "collectCoverage": false
 }

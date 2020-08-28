@@ -35,7 +35,7 @@ describe('Meta Sagas', () => {
       const tokenValue: any = {
         value: 'value2'
       };
-      const data: any = 'data';
+      const data: any = '0x1234';
 
       const gens: any = {};
       gens.gen = cloneableGenerator(sagas.handleTokenTo)(action);
