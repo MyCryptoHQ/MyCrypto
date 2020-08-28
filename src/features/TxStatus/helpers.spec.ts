@@ -22,7 +22,7 @@ jest.mock('ethers/providers', () => {
 describe('fetchTxStatus', () => {
   it('fetches tx from ls', async () => {
     const result = await fetchTxStatus({
-      accounts: [{ ...fAccounts[0], transactions: [fTxReceipt] }],
+      txCache: [fTxReceipt],
       networks: fNetworks,
       networkId: fNetworks[1].id,
       txHash: fTxReceipt.hash
@@ -32,7 +32,7 @@ describe('fetchTxStatus', () => {
   });
   it('fetches tx from nodes', async () => {
     const result = await fetchTxStatus({
-      accounts: [{ ...fAccounts[0] }],
+      txCache: [],
       networks: fNetworks,
       networkId: fNetworks[1].id,
       txHash: fTxReceipt.hash
