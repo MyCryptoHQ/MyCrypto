@@ -1,7 +1,11 @@
 import { WalletId, TAddress } from '@types';
 import { fAccounts } from '@fixtures';
 
-import { isViewOnlyWallet, isSenderAccountPresent } from './wallets';
+import {
+  isViewOnlyWallet,
+  isSenderAccountPresent,
+  isSenderAccountPresentAndOfMainType
+} from './wallets';
 
 describe('isViewOnlyWallet', () => {
   it('correctly identifies a viewOnly wallet', () => {
@@ -13,24 +17,56 @@ describe('isViewOnlyWallet', () => {
   });
 });
 
-describe('isSenderAccount', () => {
-  it('correctly identifies a sender account is present', () => {
-    const walletConnectSenderAddress = '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c' as TAddress;
-    expect(isSenderAccountPresent(fAccounts, walletConnectSenderAddress)).toBeTruthy();
+describe('isSenderAccountPresentAndOfMainType', () => {
+  it('correctly identifies a valid sender account is present when address is of type ledger', () => {
+    const ledgerSenderAccountAddress = '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017' as TAddress;
+    expect(isSenderAccountPresentAndOfMainType(fAccounts, ledgerSenderAccountAddress)).toBeTruthy();
   });
 
-  it('correctly identifies a sender account is not present when address is empty', () => {
+  it('correctly identifies a valid sender account is not present when address is empty', () => {
+    const emptySenderAddress = '' as TAddress;
+    expect(isSenderAccountPresentAndOfMainType(fAccounts, emptySenderAddress)).toBeFalsy();
+  });
+
+  it('correctly identifies a validsender account is not present when account is of type viewOnly', () => {
+    const viewOnlySenderAddress = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520' as TAddress;
+    expect(isSenderAccountPresentAndOfMainType(fAccounts, viewOnlySenderAddress)).toBeFalsy();
+  });
+
+  it('correctly identifies a valid sender account is not present when account is of type web3', () => {
+    const web3SenderAddress = '0x9458a933f00da9a927dbbb9cc2ae3fe7dfa9aed5' as TAddress;
+    expect(isSenderAccountPresentAndOfMainType(fAccounts, web3SenderAddress)).toBeFalsy();
+  });
+
+  it('correctly identifies a valid sender account is not present when accout is of type walletconnect', () => {
+    const walletConnectSenderAddress = '0x03a0775e92dc3ad2d2cb3eaf58af5ee99b183d49' as TAddress;
+    expect(isSenderAccountPresentAndOfMainType(fAccounts, walletConnectSenderAddress)).toBeFalsy();
+  });
+});
+
+describe('isSenderAccountPresent', () => {
+  it('correctly identifies a valid sender account is present when address is of type ledger', () => {
+    const ledgerSenderAccountAddress = '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017' as TAddress;
+    expect(isSenderAccountPresent(fAccounts, ledgerSenderAccountAddress)).toBeTruthy();
+  });
+
+  it('correctly identifies a valid sender account is not present when address is empty', () => {
     const emptySenderAddress = '' as TAddress;
     expect(isSenderAccountPresent(fAccounts, emptySenderAddress)).toBeFalsy();
   });
 
-  it('correctly identifies a sender account is not present when account is of type viewOnly', () => {
+  it('correctly identifies a validsender account is not present when account is of type viewOnly', () => {
     const viewOnlySenderAddress = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520' as TAddress;
     expect(isSenderAccountPresent(fAccounts, viewOnlySenderAddress)).toBeFalsy();
   });
 
-  it('correctly identifies a sender account is not present when account is of type web3', () => {
+  it('correctly identifies a valid sender account is  present when account is of type web3', () => {
     const web3SenderAddress = '0x9458a933f00da9a927dbbb9cc2ae3fe7dfa9aed5' as TAddress;
-    expect(isSenderAccountPresent(fAccounts, web3SenderAddress)).toBeFalsy();
+    expect(isSenderAccountPresent(fAccounts, web3SenderAddress)).toBeTruthy();
+  });
+
+  it('correctly identifies a valid sender account is present when account is of type walletconnect', () => {
+    const walletConnectSenderAddress = '0x03a0775e92dc3ad2d2cb3eaf58af5ee99b183d49' as TAddress;
+    expect(isSenderAccountPresent(fAccounts, walletConnectSenderAddress)).toBeTruthy();
   });
 });

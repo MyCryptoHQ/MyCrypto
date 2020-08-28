@@ -10,7 +10,6 @@ export const fAssets = [
     type: 'base',
     ticker: 'ETH',
     decimal: 18,
-    mappings: {},
     isCustom: false
   },
   {
@@ -20,7 +19,6 @@ export const fAssets = [
     type: 'base',
     ticker: 'RopstenETH',
     decimal: 18,
-    mappings: {},
     isCustom: false
   },
   {
@@ -30,7 +28,6 @@ export const fAssets = [
     type: 'base',
     ticker: 'KovanETH',
     decimal: 18,
-    mappings: {},
     isCustom: false
   },
   {
@@ -40,7 +37,6 @@ export const fAssets = [
     type: 'base',
     ticker: 'RinkebyETH',
     decimal: 18,
-    mappings: {},
     isCustom: false
   },
   {
@@ -50,7 +46,6 @@ export const fAssets = [
     type: 'base',
     ticker: 'GoerliETH',
     decimal: 18,
-    mappings: {},
     isCustom: false
   },
   {
@@ -60,7 +55,6 @@ export const fAssets = [
     networkId: 'ETC',
     type: 'base',
     decimal: 18,
-    mappings: {},
     isCustom: false
   },
   {
@@ -70,7 +64,6 @@ export const fAssets = [
     networkId: 'UBQ',
     type: 'base',
     decimal: 18,
-    mappings: {},
     isCustom: false
   },
   {
@@ -80,7 +73,6 @@ export const fAssets = [
     networkId: 'EXP',
     type: 'base',
     decimal: 18,
-    mappings: {},
     isCustom: false
   },
   {
@@ -90,7 +82,6 @@ export const fAssets = [
     networkId: 'POA',
     type: 'base',
     decimal: 18,
-    mappings: {},
     isCustom: false
   },
   {
@@ -100,7 +91,6 @@ export const fAssets = [
     networkId: 'TOMO',
     type: 'base',
     decimal: 18,
-    mappings: {},
     isCustom: false
   },
   {
@@ -110,7 +100,6 @@ export const fAssets = [
     ticker: 'RopDAI',
     networkId: 'Ropsten',
     contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
-    mappings: {},
     isCustom: true,
     type: 'erc20'
   }

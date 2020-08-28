@@ -44,8 +44,11 @@ describe('constructSpeedUpTxQuery', () => {
 
 describe('createQueryParamsDefaultObject', () => {
   it('correctly constructs a speed up tx param object for an erc20 transfer', () => {
-    const zed = createQueryParamsDefaultObject(fERC20NonWeb3TxConfig, TxQueryTypes.SPEEDUP);
-    expect(zed).toStrictEqual({
+    const defaultQueryParam = createQueryParamsDefaultObject(
+      fERC20NonWeb3TxConfig,
+      TxQueryTypes.SPEEDUP
+    );
+    expect(defaultQueryParam).toStrictEqual({
       chainId: 3,
       data:
         '0xa9059cbb000000000000000000000000b2bb2b958AFa2e96dab3f3Ce7162b87daEa39017000000000000000000000000000000000000000000000000002386f26fc10000',
@@ -59,8 +62,11 @@ describe('createQueryParamsDefaultObject', () => {
   });
 
   it('correctly constructs a speed up tx param object for an eth transaction', () => {
-    const zed = createQueryParamsDefaultObject(fETHNonWeb3TxConfig, TxQueryTypes.SPEEDUP);
-    expect(zed).toStrictEqual({
+    const defaultQueryParam = createQueryParamsDefaultObject(
+      fETHNonWeb3TxConfig,
+      TxQueryTypes.SPEEDUP
+    );
+    expect(defaultQueryParam).toStrictEqual({
       chainId: 3,
       data: '0x',
       from: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017',
@@ -73,8 +79,11 @@ describe('createQueryParamsDefaultObject', () => {
   });
 
   it('correctly constructs a cancel tx param object for an erc20 transfer', () => {
-    const zed = createQueryParamsDefaultObject(fERC20NonWeb3TxConfig, TxQueryTypes.CANCEL);
-    expect(zed).toStrictEqual({
+    const defaultQueryParam = createQueryParamsDefaultObject(
+      fERC20NonWeb3TxConfig,
+      TxQueryTypes.CANCEL
+    );
+    expect(defaultQueryParam).toStrictEqual({
       chainId: 3,
       data:
         '0xa9059cbb000000000000000000000000b2bb2b958AFa2e96dab3f3Ce7162b87daEa39017000000000000000000000000000000000000000000000000002386f26fc10000',
@@ -88,8 +97,11 @@ describe('createQueryParamsDefaultObject', () => {
   });
 
   it('correctly constructs a cancel tx param object for an eth transaction', () => {
-    const zed = createQueryParamsDefaultObject(fETHNonWeb3TxConfig, TxQueryTypes.CANCEL);
-    expect(zed).toStrictEqual({
+    const defaultQueryParam = createQueryParamsDefaultObject(
+      fETHNonWeb3TxConfig,
+      TxQueryTypes.CANCEL
+    );
+    expect(defaultQueryParam).toStrictEqual({
       chainId: 3,
       data: '0x',
       from: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017',

@@ -102,7 +102,6 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
           decimal: 18,
           networkId: 'Ropsten',
           type: 'base',
-          mappings: {},
           isCustom: false,
           uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7',
           balance: { _hex: '0x3e73362871420000' },

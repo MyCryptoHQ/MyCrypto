@@ -38,8 +38,7 @@ export const fERC20NonWeb3TxConfig: ITxConfig = {
     networkId: 'Ropsten',
     contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
     type: 'erc20',
-    isCustom: true,
-    mappings: {}
+    isCustom: true
   },
   baseAsset: {
     ticker: 'RopstenETH' as TTicker,
@@ -48,8 +47,7 @@ export const fERC20NonWeb3TxConfig: ITxConfig = {
     networkId: 'Ropsten',
     type: 'base',
     isCustom: false,
-    uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7' as TUuid,
-    mappings: {}
+    uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7' as TUuid
   },
   senderAccount: fAccounts.find(({ address }) =>
     isSameAddress('0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017' as TAddress, address)
@@ -83,8 +81,7 @@ export const fETHNonWeb3TxConfig: ITxConfig = {
     networkId: 'Ropsten',
     type: 'base',
     isCustom: false,
-    uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7' as TUuid,
-    mappings: {}
+    uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7' as TUuid
   },
   baseAsset: {
     ticker: 'RopstenETH' as TTicker,
@@ -93,8 +90,7 @@ export const fETHNonWeb3TxConfig: ITxConfig = {
     networkId: 'Ropsten',
     type: 'base',
     isCustom: false,
-    uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7' as TUuid,
-    mappings: {}
+    uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7' as TUuid
   },
   senderAccount: fAccounts.find(({ address }) =>
     isSameAddress('0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017' as TAddress, address)

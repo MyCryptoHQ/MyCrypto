@@ -42,11 +42,7 @@ import { ROUTE_PATHS } from '@config';
 import { BREAK_POINTS } from '@theme';
 import { SwapDisplayData } from '@features/SwapAssets/types';
 import translate, { translateRaw } from '@translations';
-import {
-  convertToFiat,
-  truncate,
-  isSenderAccountPresent as isSenderAccountConfiguredForAddress
-} from '@utils';
+import { convertToFiat, truncate, isSenderAccountPresentAndOfMainType } from '@utils';
 import ProtocolTagsList from '@features/DeFiZap/components/ProtocolTagsList';
 import { ProtectTxAbort } from '@features/ProtectTransaction/components/ProtectTxAbort';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
@@ -218,7 +214,7 @@ const TxReceipt = ({
 
   // cannot send from web3 or walletconnect wallets because they overwrite gas and nonce inputs.
   const isSenderAccountPresent =
-    txConfig && isSenderAccountConfiguredForAddress(accounts, txConfig.senderAccount?.address);
+    txConfig && isSenderAccountPresentAndOfMainType(accounts, txConfig.senderAccount?.address);
 
   const fiat = getFiat(settings);
 

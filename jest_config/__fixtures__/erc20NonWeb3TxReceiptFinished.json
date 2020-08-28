@@ -16,7 +16,6 @@
     "decimal": 18,
     "networkId": "Ropsten",
     "type": "base",
-    "mappings": {},
     "isCustom": false
   },
   "hash": "0x13ca764cb3f852dc6b95118e32d5ff589fb9fccd987d0f7818d6baf3b1ae1a26",

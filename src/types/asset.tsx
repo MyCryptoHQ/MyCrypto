@@ -31,13 +31,13 @@ export interface Asset {
   readonly contractAddress?: string;
   readonly decimal?: number;
   readonly isCustom?: boolean;
-  readonly mappings?: IMappings;
 }
 
 export interface ExtendedAsset extends Asset {
   website?: string;
   whitepaper?: string;
   social?: AssetSocial;
+  mappings?: IMappings;
 }
 
 export interface ReserveAsset extends Asset {
