@@ -39,7 +39,7 @@ export const makeTxReceipt = (
 export const merge = (apiTxs: ITxReceipt[], accountTxs: ITxReceipt[]): ITxReceipt[] => {
   // Prioritize Account TX - needs to be more advanced?
   const filteredApiTxs = apiTxs.filter((tx) => !accountTxs.find((a) => a.hash === tx.hash));
-  return filteredApiTxs.concat(accountTxs); //.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+  return filteredApiTxs.concat(accountTxs);
 };
 
 export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt): ITxHistoryType => {
