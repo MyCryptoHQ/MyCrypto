@@ -2,9 +2,9 @@ import { bigNumberify, parseEther } from 'ethers/utils';
 
 import { ITxHistoryApiResponse } from '@services/ApiService/History';
 import { ITxReceipt, Network, Asset, StoreAccount } from '@types';
-import { getAssetByContractAndNetwork, getBaseAssetByNetwork } from '@services';
+import { getAssetByContractAndNetwork, getBaseAssetByNetwork, Wei, fromWei } from '@services';
 import { ITxHistoryType } from '@features/Dashboard/types';
-import { isSameAddress } from '@utils';
+import { isSameAddress, isVoid } from '@utils';
 
 export const makeTxReceipt = (
   tx: ITxHistoryApiResponse,
@@ -17,25 +17,29 @@ export const makeTxReceipt = (
     assets
   });
 
+  const value = fromWei(Wei(bigNumberify(tx.value).toString()), 'ether');
+  // @todo: Handle erc20 transfer array
+
   return {
     ...tx,
     asset: contractAsset || baseAsset!,
     baseAsset: baseAsset!,
     receiverAddress: tx.recipientAddress,
-    amount: tx.value.toString(),
+    amount: value,
     data: tx.data,
     gasPrice: bigNumberify(tx.gasPrice),
     gasLimit: bigNumberify(tx.gasLimit),
-    gasUsed: bigNumberify(tx.gasUsed || 0),
-    value: parseEther(tx.value.toString()),
-    nonce: tx.nonce.toString()
+    gasUsed: !isVoid(tx.gasUsed) ? bigNumberify(tx.gasUsed!) : undefined,
+    value: parseEther(value),
+    nonce: bigNumberify(tx.nonce).toString(),
+    blockNumber: !isVoid(tx.blockNumber) ? bigNumberify(tx.blockNumber!).toNumber() : undefined
   };
 };
 
 export const merge = (apiTxs: ITxReceipt[], accountTxs: ITxReceipt[]): ITxReceipt[] => {
   // Prioritize Account TX - needs to be more advanced?
   const filteredApiTxs = apiTxs.filter((tx) => !accountTxs.find((a) => a.hash === tx.hash));
-  return filteredApiTxs.concat(accountTxs).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+  return filteredApiTxs.concat(accountTxs); //.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
 };
 
 export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt): ITxHistoryType => {

@@ -4,26 +4,26 @@ import { ITxStatus, TAddress, ITxHash, ITxType } from '@types';
 export const fTxHistoryAPI: ITxHistoryApiResponse = {
   to: '0x7a250d5630b4cf539739df2c5dacb4c659f2488d' as TAddress,
   from: '0x5197b5b062288bbf29008c92b08010a92dd677cd' as TAddress,
-  value: 2.25,
-  blockNumber: 10672990,
+  value: '0x1f399b1438a10000',
+  blockNumber: '0xa2db5e',
   timestamp: 1597606012,
-  gasLimit: 165578,
-  gasUsed: 124949,
-  gasPrice: 104000000000,
+  gasLimit: '0x0286ca',
+  gasUsed: '0x01e815',
+  gasPrice: '0x1836e21000',
   status: ITxStatus.SUCCESS,
-  nonce: 244,
+  nonce: '0xf4',
   erc20Transfers: [
     {
       from: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D' as TAddress,
       to: '0x8878Df9E1A7c87dcBf6d3999D997f262C05D8C70' as TAddress,
       contractAddress: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' as TAddress,
-      amount: 2250000000000000000
+      amount: '0x1f399b1438a10000'
     },
     {
       from: '0x8878Df9E1A7c87dcBf6d3999D997f262C05D8C70' as TAddress,
       to: '0x5197B5b062288Bbf29008C92B08010a92Dd677CD' as TAddress,
       contractAddress: '0xbbbbca6a901c926f240b89eacb641d8aec7aeafd' as TAddress,
-      amount: 5029531896446052666699
+      amount: '0x0110a6c6c43733b70d4b'
     }
   ],
   recipientAddress: '0x7a250d5630b4cf539739df2c5dacb4c659f2488d' as TAddress,

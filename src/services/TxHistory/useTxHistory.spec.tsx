@@ -19,6 +19,7 @@ import { ITxHistoryType } from '@features/Dashboard/types';
 import { DEFAULT_NETWORK } from '@config';
 
 import useTxHistory from './useTxHistory';
+import { fromWei, Wei } from '@services/EthService';
 
 const renderUseTxHistory = ({
   apiTransactions = [] as ITxHistoryApiResponse[],
@@ -49,21 +50,23 @@ const renderUseTxHistory = ({
 describe('useTxHistory', () => {
   it('uses tx history from StoreProvider ', () => {
     const { result } = renderUseTxHistory({ apiTransactions: [fTxHistoryAPI] });
+
     expect(result.current.txHistory).toEqual([
       {
         ...fTxHistoryAPI,
-        amount: fTxHistoryAPI.value.toString(),
+        amount: fromWei(Wei(bigNumberify(fTxHistoryAPI.value).toString()), 'ether'),
         asset: fAssets[0],
         baseAsset: fAssets[0],
         fromAddressBookEntry: undefined,
         toAddressBookEntry: undefined,
         receiverAddress: fTxHistoryAPI.recipientAddress,
-        nonce: fTxHistoryAPI.nonce.toString(),
+        nonce: bigNumberify(fTxHistoryAPI.nonce).toString(),
         networkId: DEFAULT_NETWORK,
+        blockNumber: bigNumberify(fTxHistoryAPI.blockNumber!).toNumber(),
         gasLimit: bigNumberify(fTxHistoryAPI.gasLimit),
         gasPrice: bigNumberify(fTxHistoryAPI.gasPrice),
         gasUsed: bigNumberify(fTxHistoryAPI.gasUsed || 0),
-        value: parseEther(fTxHistoryAPI.value.toString())
+        value: parseEther(fromWei(Wei(bigNumberify(fTxHistoryAPI.value).toString()), 'ether'))
       }
     ]);
   });
