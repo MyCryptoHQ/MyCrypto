@@ -835,7 +835,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     tokens: [],
     contracts: [],
     dPaths: {
-      [WalletId.MNEMONIC_PHRASE]: DPaths.AUX_DEFAULT
+      [WalletId.MNEMONIC_PHRASE]: DPaths.AUX_DEFAULT,
+      [WalletId.TREZOR]: DPaths.AUX_DEFAULT
     },
     gasPriceSettings: {
       min: 0.1,
