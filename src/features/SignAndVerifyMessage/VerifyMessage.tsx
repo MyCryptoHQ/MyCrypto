@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
+import { parse } from 'query-string';
 
 import { InputField } from '@components';
 import { verifySignedMessage } from '@services/EthService';
 import { BREAK_POINTS, COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ISignedMessage } from '@types';
+import { VerifyParams } from '@features/SignAndVerifyMessage/types';
 
 const { SCREEN_XS } = BREAK_POINTS;
 const { WHITE, SUCCESS_GREEN } = COLORS;
@@ -20,6 +22,7 @@ const Content = styled.div`
 interface VerifyButtonProps {
   disabled?: boolean;
 }
+
 const VerifyButton = styled(Button)<VerifyButtonProps>`
   ${(props) => props.disabled && 'opacity: 0.4;'}
 
@@ -73,6 +76,28 @@ export default function VerifyMessage() {
     setError(undefined);
     setSignedMessage(null);
   };
+
+  useEffect(() => {
+    const { address, message: queryMessage, signature } = parse(location.search) as {
+      [key in VerifyParams]?: string;
+    };
+
+    if (address && queryMessage && signature) {
+      setMessage(
+        JSON.stringify(
+          {
+            address,
+            msg: queryMessage,
+            sig: signature,
+            version: '2'
+          },
+          null,
+          2
+        )
+      );
+      handleVerifySignedMessage();
+    }
+  }, []);
 
   return (
     <Content>
