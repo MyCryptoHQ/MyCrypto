@@ -1,5 +1,6 @@
 // @ADD_ACCOUNT_@todo: Icons really belongs to the WalletButton or a WalletIcon
 // component.
+import myCryptoIcon from '@assets/icons/brand/logo.svg';
 import viewOnlyIcon from '@assets/images/icn-view-only.svg';
 import CoinbaseWalletIcon from '@assets/images/wallets/coinbase.svg';
 import FrameIcon from '@assets/images/wallets/frame.svg';
@@ -254,6 +255,21 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     helpLink: '',
     flags: {
       supportsNonce: true
+    }
+  },
+  [WalletId.DESKTOP_SIGNER]: {
+    id: WalletId.DESKTOP_SIGNER,
+    name: 'Desktop Signer',
+    isDeterministic: false,
+    isSecure: true,
+    isDesktopOnly: false,
+    type: WalletType.WEB3,
+    lid: 'Desktop Signer',
+    icon: myCryptoIcon,
+    description: '',
+    helpLink: '',
+    flags: {
+      supportsNonce: false
     }
   }
 };
