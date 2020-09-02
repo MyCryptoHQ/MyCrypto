@@ -2,7 +2,7 @@ import { Omit } from 'react-redux';
 
 import { checkHttpStatus, parseJSON } from './utils';
 
-const MAX_GAS_FAST = 250;
+const MAX_GAS_FAST = 1000;
 
 interface RawGasEstimates {
   safeLow: number;
