@@ -806,10 +806,10 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
-"@babel/runtime@^7.9.2":
-  version "7.9.2"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.9.2.tgz#d90df0583a3a252f09aaa619665367bae518db06"
-  integrity sha512-NE2DtOdufG7R5vnfQUTehdTfNycfUANEtCa9PssN9O/xmTzP4E08UI797ixaei6hBEVL9BI/PsdJS5x7mWoB9Q==
+"@babel/runtime@^7.11.0":
+  version "7.11.2"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.11.2.tgz#f549c13c754cc40b87644b9fa9f09a6a95fe0736"
+  integrity sha512-TeWkU52so0mPtDcaCTxNBI/IHiz0pZgr8VEFqXFtZWpYD08ZB6FaSwVAS8MKRQAP3bYKiVjwysOJgMFY28o6Tw==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -1172,10 +1172,10 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@trezor/utxo-lib@0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@trezor/utxo-lib/-/utxo-lib-0.1.0.tgz#f7a60d514ab75bef2f2206200cf0317d2d8523b2"
-  integrity sha512-jkqFRKL++xTga3xUgu5pWw1ArzTfraK0unXuj31V9g6wu+MKPbvcXW1+tMOVh+WNZZ3QUSGSQNNflSyh+qD0Vw==
+"@trezor/utxo-lib@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@trezor/utxo-lib/-/utxo-lib-0.1.1.tgz#63cb4b3accc90352a42a1c866fce8bfbb1c94b26"
+  integrity sha512-Wonj9ldKCeoajCV6lSE6+hJ2hdPxmVaysWRO9GxhnKyiOdRhiOIQcdKOiXYqpcxwkIbbL9eLGDg73tfn3MUa6w==
   dependencies:
     bech32 "0.0.3"
     bigi "^1.4.0"
@@ -5454,10 +5454,10 @@ events@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/events/-/events-3.0.0.tgz#9a0a0dfaf62893d92b875b8f2698ca4114973e88"
 
-events@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/events/-/events-3.1.0.tgz#84279af1b34cb75aa88bf5ff291f6d0bd9b31a59"
-  integrity sha512-Rv+u8MLHNOdMjTAFeT3nCjHn2aGlx435FP/sDHNaRhDEMwyI/aB22Kj2qIN8R0cw3z28psEQLYwxVKLsKrMgWg==
+events@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/events/-/events-3.2.0.tgz#93b87c18f8efcd4202a461aec4dfc0556b639379"
+  integrity sha512-/46HWwbfCX2xTawVfkKLGxMifJYQBWMwY1mjywRtb4c9x8l5NP3KoJtnIOiL1hfdRkIuYhETxQlo62IF8tcnlg==
 
 eventsource@^1.0.7:
   version "1.0.7"
@@ -14124,19 +14124,18 @@ tree-kill@^1.1.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/tree-kill/-/tree-kill-1.2.0.tgz#5846786237b4239014f05db156b643212d4c6f36"
 
-trezor-connect@8.1.2:
-  version "8.1.2"
-  resolved "https://registry.yarnpkg.com/trezor-connect/-/trezor-connect-8.1.2.tgz#c81e6db313d8a07af3fc569722e18e484cb4464f"
-  integrity sha512-grWwws0JsLBJdkikOLwe8GDzqQgcpJtJ4LyV9PQNISDqTgnhD6LzrnW0aBpW1LakNdOwGXeyryZL0x0jl7YcxA==
+trezor-connect@8.1.13:
+  version "8.1.13"
+  resolved "https://registry.yarnpkg.com/trezor-connect/-/trezor-connect-8.1.13.tgz#9175b9d56dd793ee270dc842f0333a2f14567667"
+  integrity sha512-B3CJ8se79rVzFLO8YcL4GOvGlOMtOUjlKC6dvecfZIy9zGXy5PErfXi5WwHh/MAqpxzqUW5Dll3sxvn1LKf9tQ==
   dependencies:
-    "@babel/runtime" "^7.9.2"
-    events "^3.1.0"
-    whatwg-fetch "^3.0.0"
+    "@babel/runtime" "^7.11.0"
+    events "^3.2.0"
+    whatwg-fetch "^3.3.1"
 
-trezor-link@1.7.0:
+trezor-link@1.7.0, "trezor-link@https://github.com/MyCryptoHQ/trezor-link#176c94f":
   version "1.7.0"
-  resolved "https://registry.yarnpkg.com/trezor-link/-/trezor-link-1.7.0.tgz#6119de00f4fc57fff0cd4d4d214353c761fad896"
-  integrity sha512-JJ4vVp5md8SVn3kLRkjMbxCUbqPTf78MH5fVXPa0yvUhsPKElCP0PjeEmCwJZ4f0tmnorkUE/9+ZlZDoUjLBKQ==
+  resolved "https://github.com/MyCryptoHQ/trezor-link#176c94f732e6a37f07104af496d869b9e8b8fe5c"
   dependencies:
     bigi "^1.4.1"
     ecurve "^1.0.3"
@@ -14147,12 +14146,12 @@ trezor-link@1.7.0:
     semver-compare "^1.0.0"
     whatwg-fetch "^3.0.0"
 
-trezor.js@9.1.0:
-  version "9.1.0"
-  resolved "https://registry.yarnpkg.com/trezor.js/-/trezor.js-9.1.0.tgz#15835b3ecd07bb10b62f250edc058dd5fe00b345"
-  integrity sha512-fgGXEShrFc8Tq/vUH2RZG65zM+Cyk2aDHufUBLx/SOKn6tR7pW/zZ2eQJz81XsSYUZZl0N0IDBMxPTr1THsNCA==
+trezor.js@9.2.3:
+  version "9.2.3"
+  resolved "https://registry.yarnpkg.com/trezor.js/-/trezor.js-9.2.3.tgz#b7ca4a537a85eb56c2bc92fa84c7bd9fff1c96bb"
+  integrity sha512-bffVc7F2dndzI1UJ4/jEgxdkjiDTaNR9xGbmdp3Tjmb3LDJBcZNyIEQH0XbfFLHJj7YfC5WyAPN0iocLk89ZQA==
   dependencies:
-    "@trezor/utxo-lib" "0.1.0"
+    "@trezor/utxo-lib" "0.1.1"
     bchaddrjs "^0.2.1"
     ecurve "^1.0.2"
     node-fetch "^1.6.0"
@@ -15139,6 +15138,11 @@ whatwg-fetch@>=0.10.0, whatwg-fetch@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-3.0.0.tgz#fc804e458cc460009b1a2b966bc8817d2578aefb"
   integrity sha512-9GSJUgz1D4MfyKU7KRqwOjXCXTqWdFNvEr7eUBYchQiVc744mqK/MzXPNR2WsPkmkOa4ywfg8C2n8h+13Bey1Q==
+
+whatwg-fetch@^3.3.1:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-3.4.0.tgz#e11de14f4878f773fbebcde8871b2c0699af8b30"
+  integrity sha512-rsum2ulz2iuZH08mJkT0Yi6JnKhwdw4oeyMjokgxd+mmqYSd9cPpOQf01TIWgjxG/U4+QR+AwKq6lSbXVxkyoQ==
 
 whatwg-mimetype@^2.0.0, whatwg-mimetype@^2.1.0:
   version "2.1.0"
