@@ -64,6 +64,11 @@ const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
       case WalletId.TREZOR_NEW:
       case WalletId.GRIDPLUS:
         return payload;
+      case WalletId.DESKTOP_SIGNER:
+        return payload.map((address: any) => ({
+          address,
+          derivationPath: ''
+        }));
       default:
         throw new Error(
           `[AddAccountReducer]: UNLOCK with wallet ${walletType} and payload ${payload} is invalid`
