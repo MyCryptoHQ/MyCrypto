@@ -82,7 +82,7 @@
     "toasted-notes": "3.2.0",
     "uuid": "3.2.1",
     "uuid-by-string": "MyCryptoHQ/uuid-by-string#36afddc",
-    "web3-providers-ws": "^1.2.11",
+    "web3-providers-ws": "1.2.11",
     "what-input": "5.2.6",
     "whatwg-fetch": "2.0.3",
     "ws": "7.5.3",
