@@ -1,4 +1,5 @@
 import {
+  DesktopSignerUnlock,
   GridPlusUnlock,
   LegderUnlock,
   TrezorUnlock,
@@ -38,7 +39,7 @@ export const getStories = (): IStory[] => [
   },
   {
     name: WalletId.DESKTOP_SIGNER,
-    steps: [NetworkSelectPanel, MnemonicUnlock]
+    steps: [NetworkSelectPanel, DesktopSignerUnlock]
   },
   {
     name: WalletId.VIEW_ONLY,
