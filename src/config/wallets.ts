@@ -245,7 +245,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isDeterministic: false,
     isSecure: true,
     isDesktopOnly: false,
-    type: WalletType.WEB3,
+    type: WalletType.MISC,
     lid: 'Desktop Signer',
     icon: myCryptoIcon,
     description: '',
