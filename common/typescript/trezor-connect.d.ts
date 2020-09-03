@@ -41,13 +41,10 @@ declare module 'trezor-connect' {
 
     export function ethereumSignTransaction(signTransactionMessage): any;
 
-    export function signMessage(
-      path: Path,
-      message: string,
-      cb: (res: Response<MessageSignature>) => void,
-      coin?: string,
-      minFirmware?: string
-    ): any;
+    export function ethereumSignMessage(params: {
+      path: string;
+      message: string;
+    }): Promise<Response<{ payload: MessageSignature }>>;
 
     export function ethereumGetAddress(pathObj): any;
   }
