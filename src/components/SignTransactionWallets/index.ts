@@ -1,5 +1,6 @@
 import { SigningComponents, WalletId } from '@types';
 
+import { default as SignTransactionDesktopSigner } from './DesktopSigner';
 import SignTransactionGridPlus from './GridPlus';
 import { default as SignTransactionLedger } from './Ledger';
 import { default as SignTransactionTrezor } from './Trezor';
@@ -19,6 +20,7 @@ export const WALLET_STEPS: SigningComponents = {
   [WalletId.TREZOR_NEW]: SignTransactionTrezor,
   [WalletId.WALLETCONNECT]: SignTransactionWalletConnect,
   [WalletId.GRIDPLUS]: SignTransactionGridPlus,
+  [WalletId.DESKTOP_SIGNER]: SignTransactionDesktopSigner,
   [WalletId.VIEW_ONLY]: null
 };
 export { default as HardwareSignTransaction } from './Hardware';
