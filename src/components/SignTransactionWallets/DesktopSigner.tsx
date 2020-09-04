@@ -34,7 +34,6 @@ const SignTransactionDesktopSigner = ({ rawTransaction, onSuccess }: ISignCompon
         .getSigner()
         .provider.send('eth_signTransaction', [rawTransaction])
         .then((txHash) => {
-          setSubmitting(false);
           onSuccess(txHash);
         })
         .catch((err) => {
