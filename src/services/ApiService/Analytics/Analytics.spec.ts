@@ -14,39 +14,58 @@ describe('AnalyticsService', () => {
     appUrl = 'App route url';
   });
 
-  it('should send an action name', async () => {
-    AnalyticsService.instance
-      .track(category, eventAction)
-      .then(({ status, config: { params } }) => {
-        expect(status).toBe(200);
-        expect(params.e_c).toBe(category);
-        expect(params.action_name).toBe(eventAction);
-      });
+  afterEach(() => {
+    mockAxios.reset();
+  });
 
-    await waitFor(() => expect(mockAxios.get).toBeCalled());
-    mockAxios.mockResponse({ data: '' });
+  it('should send an action name', async () => {
+    const promise = AnalyticsService.instance.track(category, eventAction);
+
+    await waitFor(() =>
+      expect(mockAxios.get).toBeCalledWith('', {
+        params: expect.objectContaining({ e_c: category, action_name: eventAction })
+      })
+    );
+
+    mockAxios.mockResponse();
+
+    const result = await promise;
+
+    const { status } = result;
+
+    expect(status).toBe(200);
   });
 
   it('should add Legacy_ prefix to legacy event', async () => {
-    AnalyticsService.instance
-      .trackLegacy(category, eventAction)
-      .then(({ status, config: { params } }) => {
-        expect(status).toBe(200);
-        expect(params.e_c).toBe(category);
-        expect(params.action_name).toBe(`Legacy_${eventAction}`);
-      });
+    const promise = AnalyticsService.instance.trackLegacy(category, eventAction);
 
-    await waitFor(() => expect(mockAxios.get).toBeCalled());
-    mockAxios.mockResponse({ data: '' });
+    await waitFor(() =>
+      expect(mockAxios.get).toBeCalledWith('', {
+        params: expect.objectContaining({ e_c: category, action_name: `Legacy_${eventAction}` })
+      })
+    );
+
+    mockAxios.mockResponse();
+
+    const result = await promise;
+
+    const { status } = result;
+
+    expect(status).toBe(200);
   });
 
   it('should add page url param to page visit event', async () => {
-    AnalyticsService.instance.trackPageVisit(appUrl).then(({ status, config: { params } }) => {
-      expect(status).toBe(200);
-      expect(params.url).toBe(appUrl);
-    });
+    const promise = AnalyticsService.instance.trackPageVisit(appUrl);
 
-    await waitFor(() => expect(mockAxios.get).toBeCalled());
-    mockAxios.mockResponse({ data: '' });
+    await waitFor(() =>
+      expect(mockAxios.get).toBeCalledWith('', { params: expect.objectContaining({ url: appUrl }) })
+    );
+
+    mockAxios.mockResponse();
+
+    const result = await promise;
+
+    const { status } = result;
+    expect(status).toBe(200);
   });
 });
