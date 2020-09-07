@@ -1,6 +1,5 @@
 import React, { Component, ReactType } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { IV3Wallet } from 'ethereumjs-wallet';
 import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 import pipe from 'ramda/src/pipe';
 
@@ -16,7 +15,7 @@ import {
 import { stripHexPrefix } from '@services/EthService';
 import { WalletFactory } from '@services/WalletService';
 import { NotificationTemplates } from '@features/NotificationsPanel';
-import { TAddress, IRawAccount, Asset, ISettings, NetworkId, WalletId } from '@types';
+import { TAddress, IRawAccount, Asset, ISettings, NetworkId, WalletId, V3Keystore } from '@types';
 import { ROUTE_PATHS, N_FACTOR, DEFAULT_NETWORK } from '@config';
 
 import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
@@ -25,7 +24,7 @@ import { withAccountAndNotificationsContext } from '../components/withAccountAnd
 interface State {
   password: string;
   privateKey: string;
-  keystore?: IV3Wallet;
+  keystore?: V3Keystore;
   filename: string;
   network: NetworkId;
   stage: KeystoreStages;

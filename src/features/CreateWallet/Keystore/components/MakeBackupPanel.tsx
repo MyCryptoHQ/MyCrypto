@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
-import { IV3Wallet } from 'ethereumjs-wallet';
 
 import { ExtendedContentPanel, PrintPaperWalletButton } from '@components';
 import { PanelProps } from '@features/CreateWallet';
 import translate, { translateRaw } from '@translations';
+import { V3Keystore } from '@types';
 
 import lockSafetyIcon from '@assets/images/icn-lock-safety.svg';
 
@@ -65,7 +65,7 @@ const PrivateKeyField = styled.div`
 
 interface Props extends PanelProps {
   privateKey: string;
-  keystore: IV3Wallet;
+  keystore: V3Keystore;
 }
 
 export default class MakeBackupPanel extends Component<Props> {

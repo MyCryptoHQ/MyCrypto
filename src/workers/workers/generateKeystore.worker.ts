@@ -1,4 +1,5 @@
-import { generate } from 'ethereumjs-wallet';
+import '@babel/polyfill';
+import { default as Wallet } from 'ethereumjs-wallet';
 
 const worker: Worker = self as any;
 
@@ -7,12 +8,12 @@ interface GenerateParameters {
   N_FACTOR: number;
 }
 
-worker.onmessage = (event: MessageEvent) => {
+worker.onmessage = async (event: MessageEvent) => {
   const info: GenerateParameters = event.data;
-  const wallet = generate();
+  const wallet = Wallet.generate();
   const filename = wallet.getV3Filename();
   const privateKey = wallet.getPrivateKeyString();
-  const keystore = wallet.toV3(info.password, { n: info.N_FACTOR });
+  const keystore = await wallet.toV3(info.password, { n: info.N_FACTOR });
 
   worker.postMessage({ keystore, filename, privateKey });
 };
