@@ -6,6 +6,7 @@ import { translateRaw } from '@translations';
 import { ROUTE_PATHS } from '@config';
 
 import { IStepperPath } from './types';
+import QueryBanner from './QueryBanner';
 
 export interface StepperProps {
   steps: IStepperPath[];
@@ -75,6 +76,7 @@ export function GeneralStepper({
       className={wrapperClassName}
       basic={basic}
     >
+      <QueryBanner />
       <Step
         onComplete={(payload: any) =>
           stepAction ? stepAction(payload, goToNextStep, goToPrevStep) : goToNextStep()

@@ -1,7 +1,7 @@
 import { IFormikFields, ITxStatus } from '@types';
 import { fAssets } from '@../jest_config/__fixtures__/assets';
 import { fAccount, fNetwork } from '@fixtures';
-import { getDefaultEstimates, inputGasPriceToHex } from '@services';
+import { getDefaultEstimates } from '@services';
 
 import { sendAssetsReducer, ReducerAction } from '../SendAssets.reducer';
 
@@ -182,31 +182,6 @@ describe('SendAssetsReducer', () => {
 
       expect(newState.signedTx).toBe(prevState.signedTx);
       expect(newState.txConfig).toBe(prevState.txConfig);
-    });
-  });
-  describe('REQUEST_RESUBMIT', () => {
-    it('it updates the raw tx with a new gas price', () => {
-      const prevState = {
-        txReceipt: undefined,
-        txConfig: defaultTxConfig,
-        signedTx: undefined
-      };
-      const newState = dispatch({
-        type: sendAssetsReducer.actionTypes.REQUEST_RESUBMIT,
-        payload: undefined
-      })(prevState);
-      const txConfig = newState.txConfig;
-      // Only the gas price should have changed
-      expect(txConfig).toEqual({
-        ...prevState.txConfig,
-        rawTransaction: {
-          ...prevState.txConfig.rawTransaction,
-          gasPrice: inputGasPriceToHex('67')
-        }
-      });
-
-      expect(newState.signedTx).toBe(prevState.signedTx);
-      expect(newState.txReceipt).toBe(prevState.txReceipt);
     });
   });
 });

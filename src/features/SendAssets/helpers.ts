@@ -16,7 +16,8 @@ import {
   TAddress,
   StoreAccount,
   NetworkId,
-  TTicker
+  TTicker,
+  TxQueryTypes
 } from '@types';
 import {
   Address,
@@ -107,22 +108,27 @@ export const parseQueryParams = (queryParams: any) => (
 ) => {
   if (!queryParams || isEmpty(queryParams)) return;
   switch (queryParams.type) {
-    case 'resubmit':
+    case TxQueryTypes.SPEEDUP:
       return {
-        type: 'resubmit',
-        txConfig: parseResubmitParams(queryParams)(networks, assets, accounts)
+        type: TxQueryTypes.SPEEDUP,
+        txConfig: parseTransactionQueryParams(queryParams)(networks, assets, accounts)
+      };
+    case TxQueryTypes.CANCEL:
+      return {
+        type: TxQueryTypes.CANCEL,
+        txConfig: parseTransactionQueryParams(queryParams)(networks, assets, accounts)
       };
     default:
-      return { type: 'default' };
+      return { type: TxQueryTypes.DEFAULT };
   }
 };
 
-export const parseResubmitParams = (queryParams: any) => (
+export const parseTransactionQueryParams = (queryParams: any) => (
   networks: Network[],
   assets: ExtendedAsset[],
   accounts: StoreAccount[]
 ): ITxConfig | undefined => {
-  // if resubmit tx does not contain all the necessary parameters to construct a tx config return undefined
+  // if speedup tx does not contain all the necessary parameters to construct a tx config return undefined
   const i = MANDATORY_TRANSACTION_QUERY_PARAMS.reduce((acc, cv) => {
     if (queryParams[cv] === undefined) return { ...acc, invalid: true };
     acc[cv] = queryParams[cv];

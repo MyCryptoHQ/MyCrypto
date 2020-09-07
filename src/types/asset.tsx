@@ -16,6 +16,12 @@ export interface Fiat {
   prefix?: boolean;
 }
 
+export interface IMappings {
+  readonly coinGeckoId?: string;
+  readonly cryptoCompareId?: string;
+  readonly coinCapId?: string;
+}
+
 export interface Asset {
   readonly uuid: TUuid;
   readonly name: string;
@@ -31,11 +37,7 @@ export interface ExtendedAsset extends Asset {
   website?: string;
   whitepaper?: string;
   social?: AssetSocial;
-  mappings?: {
-    coinGeckoId?: string;
-    cryptoCompareId?: string;
-    coinCapId?: string;
-  };
+  mappings?: IMappings;
 }
 
 export interface ReserveAsset extends Asset {

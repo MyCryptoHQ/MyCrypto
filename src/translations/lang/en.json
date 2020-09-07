@@ -54,7 +54,7 @@
     "ACTION_15": "Remove",
     "ACTION_16": "Read",
     "ACTION_17": "Write",
-    "ACTION_2": "Cancel",
+    "CANCEL_ACTION": "Cancel",
     "ACTION_5": "More",
     "ACTION_6": "Next",
     "ACTION_8": "Details",
@@ -858,7 +858,7 @@
     "TRANSACTION_BROADCASTED": "Transaction Broadcasted",
     "TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD": "Back to Dashboard",
     "TRANSACTION_BROADCASTED_DESC": "Your transaction has been sent to the network to be mined. Your assets will typically be sent in ~15 seconds, as long as the network is not busy and there is not an error in the transaction. Read More: [Error in Transaction, Network is Not Busy](https://support.mycrypto.com/troubleshooting/sending/transactions-not-showing-or-pending)",
-    "TRANSACTION_BROADCASTED_RESUBMIT": "Re-Submit Transaction",
+    "TRANSACTION_BROADCASTED_SPEED_UP": "Re-Submit Transaction",
     "TRANSACTION_ID": "Transaction ID",
     "TRANSACTION_PERFORMED_VIA_CONTRACT": "Transaction performed via $contractName contract",
     "TRANSACTION_RELAYED": "Transaction Relayed to Network",
@@ -1030,7 +1030,16 @@
     "NO_ACCOUNTS_SELECTED_DESCRIPTION": "To view your balances, select at least one account in the dropdown above.",
     "ZAP_WITHDRAW_TOOLTIP": "Withdrawing from this Zap requires interacting with Uniswap. If you need assistance, please read [How To Withdraw from Unipool](https://support.mycrypto.com/how-to/defi/how-to-withdraw-from-unipool).",
     "GENERIC_ERC20_NAME": "Unknown ERC20 Token",
-    "WARN_SEND_INCORRECT_PROPS": "The transaction resubmission settings in the URL are incorrect - they may be incomplete or constructed improperly. Please reconstruct the URL and try again. [Learn how to construct transaction resubmission links](https://support.mycrypto.com/how-to/sending/creating-prefilled-transaction).",
-    "WARN_SEND_UNDETECTED_NETWORK_OR_ACCOUNT": "We couldn't resolve your transaction resubmission settings - either you do not have the 'Sender' account added to your dashboard or you're not on the specified network. Please double check that these are correct and try again. [Learn more about resubmitting a transaction](https://support.mycrypto.com/how-to/sending/checking-or-replacing-a-transaction-after-it-has-been-sent)."
+    "WARN_SEND_INCORRECT_PROPS": "The pre-filled transaction settings in the URL are incorrect - they may be incomplete or constructed improperly. Please reconstruct the URL and try again. [Learn how to construct transaction resubmission links](https://support.mycrypto.com/how-to/sending/creating-prefilled-transaction).",
+    "WARN_SEND_UNDETECTED_NETWORK_OR_ACCOUNT": "We couldn't resolve your pre-filled transaction settings - either you do not have the 'Sender' account added to your dashboard or you're not on the specified network. Please double check that these are correct and try again. [Learn more about speedupting a transaction](https://support.mycrypto.com/how-to/sending/checking-or-replacing-a-transaction-after-it-has-been-sent).",
+    "SPEED_UP_TX_BTN": "Speed up transaction",
+    "CANCEL_TX_BTN": "Cancel transaction",
+    "SPEED_UP_TOOLTIP": "You can speed up or cancel pending transactions from accounts that you have added to your dashboard. Web3 and WalletConnect accounts will not work because they don't allow us to set gas settings.",
+    "TX_QUERY_DEFAULT_BANNER": "You're attempting to send a transaction with pre-filled settings.",
+    "TX_QUERY_SPEED_UP_BANNER": "You are attempting to speed up a transaction.",
+    "TX_QUERY_CANCEL_BANNER": "You are attempting to cancel a transaction.",
+    "TX_QUERY_DEFAULT_TOOLTIP": "You've arrived here from a pre-filled transaction link. Make sure the settings are correct before continuing. [Learn more](https://support.mycrypto.com/how-to/sending/creating-prefilled-transaction).",
+    "TX_QUERY_SPEED_UP_TOOLTIP": "This transaction will speed up a previously pending transaction with the same nonce. It does so by sending the same transaction but with a higher gas price.",
+    "TX_QUERY_CANCEL_TOOLTIP": "This transaction aims to cancel a previously pending transaction. It does so by sending a 0.00 ETH transaction to yourself (with the same nonce as the previous transaction) with the purpose of being mined before the original transaction."
   }
 }

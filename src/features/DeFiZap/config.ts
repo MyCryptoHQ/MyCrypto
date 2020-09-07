@@ -3,9 +3,9 @@ import translate, { translateRaw } from '@translations';
 import ProtocolsExplainer from './components/ProtocolsExplainer';
 import AvailableZaps from './components/AvailableZaps';
 
-import moderateRisk from '@assets/images/defizap/moderateRisk.svg';
-import conservativeRisk from '@assets/images/defizap/conservativeRisk.svg';
-import aggressiveRisk from '@assets/images/defizap/aggressiveRisk.svg';
+import moderateRisk from '@assets/images/icn-jogging.svg';
+import conservativeRisk from '@assets/images/icn-walking.svg';
+import aggressiveRisk from '@assets/images/icn-running.svg';
 import unipoolSethBreakdown from '@assets/images/defizap/breakdowns/unisethBreakdown.svg';
 import unipoolDaiBreakdown from '@assets/images/defizap/breakdowns/unidaiBreakdown.svg';
 import compoundDaiBreakdown from '@assets/images/defizap/breakdowns/cdaiBreakdown.svg';

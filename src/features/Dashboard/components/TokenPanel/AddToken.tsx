@@ -146,7 +146,7 @@ export function AddToken(props: Props) {
       />
       <ActionsWrapper>
         <Button onClick={handleCancelClick} secondary={true}>
-          {translateRaw('ACTION_2')}
+          {translateRaw('CANCEL_ACTION')}
         </Button>
         <Button onClick={handleAddTokenClick}>{translateRaw('ADD_TOKEN')}</Button>
       </ActionsWrapper>

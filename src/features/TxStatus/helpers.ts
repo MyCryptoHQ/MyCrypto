@@ -30,7 +30,7 @@ export const fetchTxStatus = async ({
   const provider = new ProviderHandler(network);
   const fetchedTx = await provider.getTransactionByHash(txHash as ITxHash, true);
   if (!fetchedTx) {
-    return undefined;
+    return;
   }
   return { fetchedTx, cachedTx: undefined };
 };

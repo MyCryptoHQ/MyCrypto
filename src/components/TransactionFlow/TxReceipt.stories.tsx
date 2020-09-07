@@ -18,6 +18,9 @@ const txStatus = ITxStatus.SUCCESS;
 const senderContact = Object.values(devContacts)[0] as ExtendedContact;
 const recipientContact = Object.values(devContacts)[1] as ExtendedContact;
 const resetFlow = noOp;
+const handleTxCancelRedirect = noOp;
+const handleTxSpeedUpRedirect = noOp;
+const isSenderAccountPresent = false;
 
 export default { title: 'TxReceipt' };
 
@@ -35,6 +38,9 @@ export const transactionReceiptPending = () => (
       sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
       baseAssetRate={assetRate}
       fiat={Fiats.USD}
+      handleTxCancelRedirect={handleTxCancelRedirect}
+      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
+      isSenderAccountPresent={isSenderAccountPresent}
     />
   </div>
 );
@@ -54,6 +60,9 @@ export const transactionReceipt = () => (
       sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
       baseAssetRate={assetRate}
       fiat={Fiats.USD}
+      handleTxCancelRedirect={handleTxCancelRedirect}
+      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
+      isSenderAccountPresent={isSenderAccountPresent}
     />
   </div>
 );
@@ -77,6 +86,9 @@ export const transactionReceiptDeFiZap = () => (
       sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
       baseAssetRate={assetRate}
       fiat={Fiats.USD}
+      handleTxCancelRedirect={handleTxCancelRedirect}
+      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
+      isSenderAccountPresent={isSenderAccountPresent}
     />
   </div>
 );
@@ -99,6 +111,9 @@ export const transactionReceiptMembership = () => (
       resetFlow={resetFlow}
       baseAssetRate={assetRate}
       fiat={Fiats.USD}
+      handleTxCancelRedirect={handleTxCancelRedirect}
+      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
+      isSenderAccountPresent={isSenderAccountPresent}
     />
   </div>
 );

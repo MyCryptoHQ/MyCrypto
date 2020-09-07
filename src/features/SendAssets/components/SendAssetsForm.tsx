@@ -42,7 +42,8 @@ import {
   StoreAsset,
   WalletId,
   Fiat,
-  TUuid
+  TUuid,
+  TxQueryTypes
 } from '@types';
 import {
   baseToConvertedUnit,
@@ -236,7 +237,7 @@ const createQueryWarning = (translationId?: string) => (
 const QueryWarning = () => <WhenQueryExists displayQueryMessage={createQueryWarning} />;
 
 interface ISendFormProps extends IStepComponentProps {
-  type?: 'resubmit';
+  type?: TxQueryTypes;
 }
 
 const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {

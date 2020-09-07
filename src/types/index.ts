@@ -84,7 +84,8 @@ export {
   ISimpleTxForm,
   IDefaultStepComponentProps,
   ISimpleTxFormFull,
-  TStepAction
+  TStepAction,
+  TxQueryTypes
 } from './transactionFlow';
 export { JsonRPCResponse } from './jsonRPCResponse';
 export { INode, TxObj } from './INode';
