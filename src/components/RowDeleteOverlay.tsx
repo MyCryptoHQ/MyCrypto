@@ -57,7 +57,7 @@ const RowDeleteOverlay = (props: any) => (
     <OverlayButtons>
       <Button onClick={props.deleteAction}>{translateRaw('ACTION_15')}</Button>
       <Button secondary={true} onClick={props.cancelAction}>
-        {translateRaw('ACTION_2')}
+        {translateRaw('CANCEL_ACTION')}
       </Button>
     </OverlayButtons>
   </TableOverlay>

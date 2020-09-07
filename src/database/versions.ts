@@ -2,7 +2,7 @@ import moment from 'moment';
 
 import { SETTINGS_FILENAME } from '@config';
 import { LocalStorage } from '@types';
-import { noOp } from '@utils';
+import { noOp } from '@utils/noOp';
 
 import { migrate } from './v1.0.0';
 import { SCHEMA_BASE } from './data';

@@ -61,7 +61,6 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   const [reducerState, dispatch] = useReducer(txStatusReducer, initialState);
 
   const { networkId, txHash, tx: txState, error, fetching, fromLink } = reducerState;
-
   // Fetch TX on load if possible
   useEffectOnce(() => {
     if (!isVoid(defaultTxHash)) {
@@ -155,7 +154,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
               disableDynamicTxReceiptDisplay={true}
               disableAddTxToAccount={true}
             />
-            <Button onClick={clearForm} fullwidth={true}>
+            <Button onClick={clearForm} fullwidth={true} inverted={true}>
               {translateRaw('TX_STATUS_GO_BACK')}
             </Button>
           </>

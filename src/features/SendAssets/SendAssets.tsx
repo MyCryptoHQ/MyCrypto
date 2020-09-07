@@ -3,7 +3,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import * as qs from 'query-string';
 import { GeneralStepper, TxReceiptWithProtectTx } from '@components';
 import { isWeb3Wallet, withProtectTxProvider } from '@utils';
-import { ITxReceipt, ISignedTx, IFormikFields, ITxConfig } from '@types';
+import { ITxReceipt, ISignedTx, IFormikFields, ITxConfig, TxQueryTypes } from '@types';
 import { translateRaw } from '@translations';
 import { ROUTE_PATHS } from '@config';
 import { IStepperPath } from '@components/GeneralStepper/types';
@@ -39,7 +39,7 @@ function SendAssets({ location }: RouteComponentProps) {
 
   useEffect(() => {
     const txConfigInit = parseQueryParams(qs.parse(location.search))(networks, assets, accounts);
-    if (txConfigInit && txConfigInit.type === 'resubmit') {
+    if (txConfigInit && [TxQueryTypes.SPEEDUP, TxQueryTypes.CANCEL].includes(txConfigInit.type)) {
       if (!txConfigInit.txConfig || isEmpty(txConfigInit.txConfig)) {
         console.debug(
           '[PrefilledTxs]: Error - Missing params. Requires gasPrice, gasLimit, to, data, nonce, from, value, and chainId'
@@ -137,14 +137,7 @@ function SendAssets({ location }: RouteComponentProps) {
       component: TxReceiptWithProtectTx,
       props: (({ txConfig, txReceipt }) => ({
         txConfig,
-        txReceipt,
-        pendingButton: {
-          text: translateRaw('TRANSACTION_BROADCASTED_RESUBMIT'),
-          action: (cb: any) => {
-            dispatch({ type: sendAssetsReducer.actionTypes.REQUEST_RESUBMIT, payload: {} });
-            cb();
-          }
-        }
+        txReceipt
       }))(reducerState)
     }
   ];
@@ -153,7 +146,10 @@ function SendAssets({ location }: RouteComponentProps) {
     const { senderAccount } = reducerState.txConfig!;
     const walletSteps =
       senderAccount && isWeb3Wallet(senderAccount.wallet) ? web3Steps : defaultSteps;
-    if (reducerState.type && reducerState.type === 'resubmit') {
+    if (
+      reducerState.type &&
+      [TxQueryTypes.CANCEL, TxQueryTypes.SPEEDUP].includes(reducerState.type)
+    ) {
       return walletSteps.slice(1, walletSteps.length);
     }
     return walletSteps;

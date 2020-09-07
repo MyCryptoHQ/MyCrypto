@@ -160,3 +160,9 @@ export interface ISimpleTxFormFull extends ISimpleTxForm {
 }
 
 export type TStepAction = (payload: any, after: () => void) => void;
+
+export enum TxQueryTypes {
+  SPEEDUP = 'speedup',
+  CANCEL = 'cancel',
+  DEFAULT = 'default'
+}
