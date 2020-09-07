@@ -353,7 +353,7 @@ const buildAccountTable = (
   const { totalFiat } = useContext(StoreContext);
   const { getAssetRate } = useRates();
   const { settings } = useContext(SettingsContext);
-  const { contacts } = useContacts();
+  const { contacts, createContact, updateContact } = useContacts();
   const { toggleAccountPrivacy } = useContext(AccountContext);
   const overlayRowsFlat = [...overlayRows![0], ...overlayRows![1].map((row) => row[0])];
 
@@ -510,6 +510,8 @@ const buildAccountTable = (
               addressBookEntry={addressCard}
               address={account.address}
               networkId={account.networkId}
+              createContact={createContact}
+              updateContact={updateContact}
             />
             <WalletLabelContainer>
               {account.wallet === WalletId.VIEW_ONLY && (
