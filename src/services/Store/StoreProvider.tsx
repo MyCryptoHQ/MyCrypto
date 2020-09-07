@@ -70,6 +70,7 @@ import { findNextUnusedDefaultLabel, useContacts } from './Contact';
 import { MyCryptoApiService, ANALYTICS_CATEGORIES } from '../ApiService';
 import { findMultipleNextUnusedDefaultLabels } from './Contact/helpers';
 import { translateRaw } from '@translations';
+import { ITxHistoryApiResponse, HistoryService } from '@services/ApiService/History';
 
 export interface CoinGeckoManifest {
   [uuid: string]: string;
@@ -91,6 +92,7 @@ export interface State {
   readonly currentAccounts: StoreAccount[];
   readonly userAssets: Asset[];
   readonly coinGeckoAssetManifest: CoinGeckoManifest;
+  readonly txHistory: ITxHistoryApiResponse[];
   readonly accountRestore: { [name: string]: IAccount | undefined };
   isDefault: boolean;
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
@@ -337,6 +339,19 @@ export const StoreProvider: React.FC = ({ children }) => {
       return manifest;
     }, {}) || {};
 
+  // TX HISTORY
+  const [txHistory, setTxHistory] = useState<ITxHistoryApiResponse[]>([]);
+
+  useEffectOnce(() => {
+    HistoryService.instance
+      .getHistory(accounts.filter((a) => a.networkId === DEFAULT_NETWORK).map((a) => a.address))
+      .then((history) => {
+        if (history !== null) {
+          setTxHistory(history);
+        }
+      });
+  });
+
   const state: State = {
     accounts,
     networks,
@@ -347,6 +362,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     currentAccounts,
     accountRestore,
     coinGeckoAssetManifest,
+    txHistory,
     get defaultAccount() {
       return sortByLabel(state.accounts)[0];
     },

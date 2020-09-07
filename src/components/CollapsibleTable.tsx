@@ -106,6 +106,7 @@ const GroupHeading = styled(Typography)`
   text-transform: uppercase;
   font-size: ${scale(2)};
   cursor: pointer;
+  z-index: 3;
 `;
 
 GroupHeading.defaultProps = {

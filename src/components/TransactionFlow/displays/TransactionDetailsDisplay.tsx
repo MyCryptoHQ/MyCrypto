@@ -127,26 +127,24 @@ function TransactionDetailsDisplay({
                 <Network color={networkColor || 'blue'}>{networkName}</Network>
               </div>
             </div>
-            {confirmations && (
-              <div className="TransactionDetails-row">
-                <div className="TransactionDetails-row-column">
-                  {translateRaw('CONFIRMATIONS')}:
-                </div>
-                <div className="TransactionDetails-row-column">{`${confirmations}`}</div>
+            <div className="TransactionDetails-row">
+              <div className="TransactionDetails-row-column">{translateRaw('CONFIRMATIONS')}:</div>
+              <div className="TransactionDetails-row-column">
+                {confirmations ? `${confirmations}` : translate('UNKNOWN')}
               </div>
-            )}
+            </div>
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">{translateRaw('GAS_LIMIT')}:</div>
               <div className="TransactionDetails-row-column">{`${gasLimit}`}</div>
             </div>
-            {gasUsed && (
-              <div className="TransactionDetails-row">
-                <div className="TransactionDetails-row-column">{translateRaw('GAS_USED')}:</div>
-                <div className="TransactionDetails-row-column">{`${gasUsed.toString()} (${gasUsedPercentage?.toFixed(
-                  2
-                )}%)`}</div>
+            <div className="TransactionDetails-row">
+              <div className="TransactionDetails-row-column">{translateRaw('GAS_USED')}:</div>
+              <div className="TransactionDetails-row-column">
+                {gasUsed
+                  ? `${gasUsed.toString()} (${gasUsedPercentage?.toFixed(2)}%)`
+                  : translate('UNKNOWN')}
               </div>
-            )}
+            </div>
             {baseAsset && (
               <div className="TransactionDetails-row">
                 <div className="TransactionDetails-row-column">{translateRaw('GAS_PRICE')}:</div>
@@ -156,14 +154,16 @@ function TransactionDetailsDisplay({
                 `}</div>
               </div>
             )}
-            {actualTxFeeBase && (
-              <div className="TransactionDetails-row">
-                <div className="TransactionDetails-row-column">
-                  {translateRaw('TRANSACTION_FEE')}:
-                </div>
-                <div className="TransactionDetails-row-column">{`${actualTxFeeBase} ${baseAsset.ticker} (${fiat.symbol}${actualTxFeeFiat})`}</div>
+            <div className="TransactionDetails-row">
+              <div className="TransactionDetails-row-column">
+                {translateRaw('TRANSACTION_FEE')}:
               </div>
-            )}
+              <div className="TransactionDetails-row-column">
+                {actualTxFeeBase
+                  ? `${actualTxFeeBase} ${baseAsset.ticker} (${fiat.symbol}${actualTxFeeFiat})`
+                  : translate('UNKNOWN')}
+              </div>
+            </div>
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">{translateRaw('MAX_TX_FEE')}:</div>
               <div className="TransactionDetails-row-column">

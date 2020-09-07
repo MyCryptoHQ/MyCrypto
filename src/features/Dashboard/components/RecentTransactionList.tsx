@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { Overwrite } from 'utility-types';
 
 import {
   Amount,
@@ -11,22 +10,11 @@ import {
   EditableAccountLabel,
   RouterLink
 } from '@components';
-import { convertToFiat } from '@utils';
-import { ITxReceipt, ITxStatus, StoreAccount, Asset, Network, ExtendedContact } from '@types';
-import {
-  getLabelByAddressAndNetwork,
-  SettingsContext,
-  useNetworks,
-  useContacts,
-  useRates
-} from '@services';
+import { convertToFiat, isSameAddress } from '@utils';
+import { ITxStatus, StoreAccount, Asset } from '@types';
+import { useRates, SettingsContext, useTxHistory, ITxHistoryEntry, useContacts } from '@services';
 import { translateRaw } from '@translations';
-import {
-  getTxsFromAccount,
-  txIsFailed,
-  txIsPending,
-  txIsSuccessful
-} from '@services/Store/helpers';
+import { txIsFailed, txIsPending, txIsSuccessful } from '@services/Store/helpers';
 import { COLORS } from '@theme';
 import { getFiat } from '@config/fiats';
 import { ROUTE_PATHS } from '@config';
@@ -34,7 +22,6 @@ import { ROUTE_PATHS } from '@config';
 import NoTransactions from './NoTransactions';
 import TransactionLabel from './TransactionLabel';
 import { ITxHistoryType } from '../types';
-import { deriveTxType } from '../helpers';
 import './RecentTransactionList.scss';
 
 import moreIcon from '@assets/images/icn-more.svg';
@@ -51,13 +38,6 @@ import swap from '@assets/images/transactions/swap.svg';
 interface Props {
   className?: string;
   accountsList: StoreAccount[];
-}
-
-interface ITxHistoryEntry
-  extends Overwrite<ITxReceipt, { txType: ITxHistoryType; timestamp: number }> {
-  network: Network;
-  toAddressBookEntry?: ExtendedContact;
-  fromAddressBookEntry?: ExtendedContact;
 }
 
 interface ITxTypeConfigObj {
@@ -164,24 +144,14 @@ const makeTxIcon = (type: ITxHistoryType, asset: Asset) => {
 };
 
 export default function RecentTransactionList({ accountsList, className = '' }: Props) {
-  const { contacts } = useContacts();
   const { getAssetRate } = useRates();
   const { settings } = useContext(SettingsContext);
-  const { networks } = useNetworks();
+  const { txHistory } = useTxHistory();
+  const { createContact, updateContact } = useContacts();
 
-  const accountTxs: ITxHistoryEntry[] = getTxsFromAccount(accountsList).map((tx: ITxReceipt) => {
-    const network = networks.find(({ id }) => tx.asset.networkId === id) as Network;
-    const toContact = getLabelByAddressAndNetwork(tx.receiverAddress || tx.to, contacts, network);
-    const fromContact = getLabelByAddressAndNetwork(tx.from, contacts, network);
-    return {
-      ...tx,
-      timestamp: tx.timestamp || 0,
-      txType: deriveTxType(accountsList, tx) || ITxHistoryType.UNKNOWN,
-      toContact,
-      fromContact,
-      network
-    };
-  });
+  const accountTxs = txHistory.filter((tx) =>
+    accountsList.some((a) => isSameAddress(a.address, tx.to) || isSameAddress(a.address, tx.from))
+  );
 
   const pending = accountTxs.filter(txIsPending);
   const completed = accountTxs.filter(txIsSuccessful);
@@ -200,18 +170,22 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
         asset,
         fromAddressBookEntry,
         toAddressBookEntry,
-        network,
+        networkId,
         txType
       }) => {
         const editableFromLabel = EditableAccountLabel({
           addressBookEntry: fromAddressBookEntry,
           address: from,
-          networkId: network.id
+          networkId,
+          createContact,
+          updateContact
         });
         const editableToLabel = EditableAccountLabel({
           addressBookEntry: toAddressBookEntry,
           address: receiverAddress || to,
-          networkId: network.id
+          networkId,
+          createContact,
+          updateContact
         });
 
         return [
@@ -242,7 +216,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           />,
           <RouterLink
             key={4}
-            to={`${ROUTE_PATHS.TX_STATUS.path}/?hash=${hash}&network=${network.id}`}
+            to={`${ROUTE_PATHS.TX_STATUS.path}/?hash=${hash}&network=${networkId}`}
           >
             <img src={moreIcon} alt="View more information about this transaction" />
           </RouterLink>

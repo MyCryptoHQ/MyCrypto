@@ -96,7 +96,7 @@ const TableHeading = styled(Typography)<TableHeadingProps>`
   position: sticky;
   top: 0;
   background: ${(props) => props.theme.tableHeadBackground};
-  z-index: 2;
+  z-index: 3;
   cursor: ${(props) => (props.isSortable ? 'pointer' : 'inherit')};
 `;
 
