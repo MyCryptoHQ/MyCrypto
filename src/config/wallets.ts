@@ -122,7 +122,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
   },
   [WalletId.LEDGER_NANO_S]: {
     id: WalletId.LEDGER_NANO_S,
-    name: 'Ledger Nano S',
+    name: 'Ledger',
     isDeterministic: true,
     isSecure: true,
     isDesktopOnly: false,
@@ -134,7 +134,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
   },
   [WalletId.LEDGER_NANO_S_NEW]: {
     id: WalletId.LEDGER_NANO_S_NEW,
-    name: 'Ledger Nano S',
+    name: 'Ledger',
     isDeterministic: true,
     isSecure: true,
     isDesktopOnly: false,
