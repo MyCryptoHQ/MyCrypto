@@ -346,7 +346,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     HistoryService.instance
       .getHistory(accounts.filter((a) => a.networkId === DEFAULT_NETWORK).map((a) => a.address))
       .then((history) => {
-        console.debug(history);
         if (history !== null) {
           setTxHistory(history);
         }
