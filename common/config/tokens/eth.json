@@ -136,7 +136,7 @@
     "address": "0x0E8d6b471e332F140e7d9dbB99E5E3822F728DA6",
     "symbol": "ABYSS",
     "decimal": 18,
-    "name": "The Abyss",
+    "name": "Abyss Token",
     "uuid": "b1ffe8f8-4687-5d1d-8260-47e3e3f9ce4f"
   },
   {
@@ -224,10 +224,17 @@
     "uuid": "72584235-bff2-553d-92b9-be54bd3c68ff"
   },
   {
-    "address": "0x4470BB87d77b963A013DB939BE332f927f2b992e",
+    "address": "0xADE00C28244d5CE17D72E40330B1c318cD12B7c3",
     "symbol": "ADX",
-    "decimal": 4,
+    "decimal": 18,
     "name": "AdEx Network",
+    "uuid": "a6191380-522b-5759-bade-99c8b66f896b"
+  },
+  {
+    "address": "0x4470BB87d77b963A013DB939BE332f927f2b992e",
+    "symbol": "ADXL",
+    "decimal": 4,
+    "name": "AdEx Network (legacy)",
     "uuid": "41f95538-49ae-5c4c-b6f1-34c46e3ac340"
   },
   {
@@ -537,6 +544,13 @@
     "decimal": 8,
     "name": "Aeron",
     "uuid": "f933ccaf-bdf1-5c7b-836b-b2af48b97756"
+  },
+  {
+    "address": "0x0C37Bcf456bC661C14D596683325623076D7e283",
+    "symbol": "ARNX",
+    "decimal": 18,
+    "name": "Aeron",
+    "uuid": "410dd4ca-4337-5f3b-9fd2-88bd1ec8ee34"
   },
   {
     "address": "0xfec0cF7fE078a500abf15F1284958F22049c2C7e",
@@ -7140,6 +7154,13 @@
     "uuid": "f8b70eed-bcd3-5894-9560-68aa62a16b66"
   },
   {
+    "address": "0x4fE83213D56308330EC302a8BD641f1d0113A4Cc",
+    "symbol": "NU",
+    "decimal": 18,
+    "name": "NuCypher Network",
+    "uuid": "b14040c2-908c-5ef5-a96c-e435cc857a60"
+  },
+  {
     "address": "0x245ef47D4d0505ECF3Ac463F4d81f41ADE8f1fd1",
     "symbol": "NUG",
     "decimal": 18,
@@ -7215,6 +7236,13 @@
     "decimal": 18,
     "name": "Original Crypto Coin",
     "uuid": "2147c3c9-b482-5e35-9392-7b78c4b2c6af"
+  },
+  {
+    "address": "0x7AFeBBB46fDb47ed17b22ed075Cde2447694fB9e",
+    "symbol": "OCEAN",
+    "decimal": 18,
+    "name": "Ocean Token",
+    "uuid": "f94baa2a-b190-5362-857f-f899b818fd72"
   },
   {
     "address": "0x4092678e4E78230F46A1534C0fbc8fA39780892B",
@@ -8379,6 +8407,13 @@
     "uuid": "eba42057-322d-5273-a48f-d903aa4520d2"
   },
   {
+    "address": "0x221657776846890989a759BA2973e427DfF5C9bB",
+    "symbol": "REPv2",
+    "decimal": 18,
+    "name": "Reputation",
+    "uuid": "3dcbc269-fa47-5707-b180-4cb0ba6e5cdf"
+  },
+  {
     "address": "0x8f8221aFbB33998d8584A2B05749bA73c37a938a",
     "symbol": "REQ",
     "decimal": 18,
@@ -8890,8 +8925,15 @@
     "uuid": "e2de73bf-cbff-5da4-b6a8-2aba5753b0e7"
   },
   {
-    "address": "0xd248B0D48E44aaF9c49aea0312be7E13a6dc1468",
+    "address": "0x616C281CD8effF8c0354723BE399c809e97A7bf4",
     "symbol": "SGT (1)",
+    "decimal": 18,
+    "name": "SelfieYo Gold Token",
+    "uuid": "be0873d2-8171-5e42-99ee-619c867bdd72"
+  },
+  {
+    "address": "0xd248B0D48E44aaF9c49aea0312be7E13a6dc1468",
+    "symbol": "SGT (2)",
     "decimal": 1,
     "name": "SGT",
     "uuid": "5747b665-e964-5cb8-8f87-d8d8e53b8b77"
@@ -9644,6 +9686,13 @@
     "decimal": 18,
     "name": "Synapse",
     "uuid": "ddb1bcc0-3160-5a5f-8dcd-f7d951bbc6d9"
+  },
+  {
+    "address": "0x3A0D746B3EA1d8ccDf19aD915913BD68391133Ca",
+    "symbol": "SYSX",
+    "decimal": 8,
+    "name": "SyscoinToken",
+    "uuid": "1e318d21-68ed-5739-b9e1-510ad5d53f32"
   },
   {
     "address": "0xE7775A6e9Bcf904eb39DA2b68c5efb4F9360e08C",
@@ -11219,6 +11268,13 @@
     "decimal": 18,
     "name": "X8X",
     "uuid": "ddc3040f-5410-523b-a6a4-e850d7631dd3"
+  },
+  {
+    "address": "0xf911a7ec46a2c6fa49193212fe4a2a9B95851c27",
+    "symbol": "XAMP",
+    "decimal": 9,
+    "name": "Antiample",
+    "uuid": "30e9354b-4dbf-5e14-9cb6-5d7c80033a14"
   },
   {
     "address": "0x4DF812F6064def1e5e029f1ca858777CC98D2D81",

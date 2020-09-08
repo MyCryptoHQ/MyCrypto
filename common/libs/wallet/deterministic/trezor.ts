@@ -74,8 +74,21 @@ export class TrezorWallet extends HardwareWallet {
     });
   }
 
-  public signMessage() {
-    return Promise.reject(new Error('Signing via Trezor not yet supported.'));
+  public async signMessage(message: string): Promise<string> {
+    if (!message) {
+      throw Error('No message to sign');
+    }
+
+    const response = await TrezorConnect.ethereumSignMessage({
+      message,
+      path: this.getPath()
+    });
+
+    if (response.error || !response.success) {
+      throw Error(response.error);
+    }
+
+    return response.payload.signature;
   }
 
   public displayAddress(): Promise<boolean> {
