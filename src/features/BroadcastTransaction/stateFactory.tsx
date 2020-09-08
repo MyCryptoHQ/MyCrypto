@@ -5,7 +5,7 @@ import { ITxReceipt, ITxConfig, ISignedTx, NetworkId, ITxType, ITxHash } from '@
 import { DEFAULT_NETWORK } from '@config';
 import { StoreContext, useAssets, useNetworks } from '@services/Store';
 import { ProviderHandler } from '@services/EthService';
-import { ToastContext } from '@features/Toasts';
+import { useToasts } from '@features/Toasts';
 
 const broadcastTxInitialState: State = {
   network: DEFAULT_NETWORK,
@@ -24,7 +24,7 @@ interface State {
 const BroadcastTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) => {
   const { networks, getNetworkById } = useNetworks();
   const { assets } = useAssets();
-  const { displayToast, toastTemplates } = useContext(ToastContext);
+  const { displayToast, toastTemplates } = useToasts();
   const { accounts } = useContext(StoreContext);
 
   const handleNetworkChanged = (network: NetworkId) => {
