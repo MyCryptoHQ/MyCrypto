@@ -1,9 +1,9 @@
-import { V3Keystore } from '@types';
+import { IV3Wallet } from 'ethereumjs-wallet';
 import Worker from 'worker-loader!./workers/generateKeystore.worker.ts';
 
 interface KeystorePayload {
   filename: string;
-  keystore: V3Keystore;
+  keystore: IV3Wallet;
   privateKey: string;
 }
 

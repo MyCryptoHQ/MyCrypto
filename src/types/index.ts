@@ -112,5 +112,3 @@ export {
   IPrimaryAccountPermission,
   IExposedAccountsPermission
 } from './web3Permissions';
-
-export { V3Keystore } from './vendor/ethereumjs-wallet';

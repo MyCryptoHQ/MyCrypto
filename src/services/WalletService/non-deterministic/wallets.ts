@@ -1,4 +1,5 @@
-import { default as Wallet, thirdparty } from 'ethereumjs-wallet';
+import { default as Wallet } from 'ethereumjs-wallet';
+import { fromEtherWallet } from 'ethereumjs-wallet/thirdparty';
 
 import { fromV3 } from '@workers';
 import { decryptPrivKey } from '@services/EthService/utils';
@@ -14,7 +15,7 @@ const PresaleWallet = (keystore: string, password: string) =>
   signWrapper(Wallet.fromEthSale(keystore, password));
 
 const MewV1Wallet = (keystore: string, password: string) =>
-  signWrapper(thirdparty.fromEtherWallet(keystore, password));
+  signWrapper(fromEtherWallet(keystore, password));
 
 const PrivKeyWallet = (privkey: Buffer) => signWrapper(Wallet.fromPrivateKey(privkey));
 

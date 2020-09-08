@@ -7,10 +7,10 @@ interface DecryptionParameters {
   nonStrict: boolean;
 }
 
-worker.onmessage = async (event: MessageEvent) => {
+worker.onmessage = (event: MessageEvent) => {
   const info: DecryptionParameters = event.data;
   try {
-    const rawKeystore: Wallet = await Wallet.fromV3(info.keystore, info.password, info.nonStrict);
+    const rawKeystore: Wallet = Wallet.fromV3(info.keystore, info.password, info.nonStrict);
     worker.postMessage(rawKeystore.getPrivateKeyString());
   } catch (e) {
     worker.postMessage(e.message);

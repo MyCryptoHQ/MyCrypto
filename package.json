@@ -40,7 +40,7 @@
     "ethereumjs-abi": "0.6.8",
     "ethereumjs-tx": "2.1.1",
     "ethereumjs-util": "6.0.0",
-    "ethereumjs-wallet": "1.0.0",
+    "ethereumjs-wallet": "0.6.5",
     "ethers": "4.0.44",
     "font-awesome": "4.7.0",
     "formik": "2.1.4",
