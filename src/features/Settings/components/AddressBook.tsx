@@ -74,35 +74,44 @@ const SEditableText = styled(EditableText)`
   }
 `;
 
-type ISortTypes = 'label' | 'label-reverse';
-type IColumnValues = 'ADDRESSBOOK_LABEL';
+type ISortTypes = 'label' | 'label-reverse' | 'address' | 'address-reverse';
+type IColumnValues = 'ADDRESSBOOK_LABEL' | 'ADDRESSBOOK_ADDRESS';
 
 export interface ISortingState {
   sortState: {
     ADDRESSBOOK_LABEL: 'label' | 'label-reverse';
+    ADDRESSBOOK_ADDRESS: 'address' | 'address-reverse';
   };
   activeSort: ISortTypes;
 }
 
 const initialSortingState: ISortingState = {
   sortState: {
-    ADDRESSBOOK_LABEL: 'label'
+    ADDRESSBOOK_LABEL: 'label',
+    ADDRESSBOOK_ADDRESS: 'address'
   },
   activeSort: 'label'
 };
 
-interface ITableFullAccountType {
+interface ITableFullContactType {
   label: string;
+  address: string;
 }
 
-type TSortFunction = (a: ITableFullAccountType, b: ITableFullAccountType) => number;
+type TSortFunction = (a: ITableFullContactType, b: ITableFullContactType) => number;
 
 const getSortingFunction = (sortKey: ISortTypes): TSortFunction => {
   switch (sortKey) {
     case 'label':
-      return (a: ITableFullAccountType, b: ITableFullAccountType) => a.label.localeCompare(b.label);
+      return (a: ITableFullContactType, b: ITableFullContactType) => a.label.localeCompare(b.label);
     case 'label-reverse':
-      return (a: ITableFullAccountType, b: ITableFullAccountType) => b.label.localeCompare(a.label);
+      return (a: ITableFullContactType, b: ITableFullContactType) => b.label.localeCompare(a.label);
+    case 'address':
+      return (a: ITableFullContactType, b: ITableFullContactType) =>
+        a.address.localeCompare(b.address);
+    case 'address-reverse':
+      return (a: ITableFullContactType, b: ITableFullContactType) =>
+        b.address.localeCompare(a.address);
   }
 };
 
@@ -170,11 +179,12 @@ export default function AddressBook({
       {translateRaw(id)} <IconArrow isFlipped={getColumnSortDirection(id)} />
     </div>
   );
+
   const addressBookTable = {
     head: [
       translateRaw('ADDRESSBOOK_FAVORITE'),
       convertColumnToClickable('ADDRESSBOOK_LABEL'),
-      translateRaw('ADDRESSBOOK_ADDRESS'),
+      convertColumnToClickable('ADDRESSBOOK_ADDRESS'),
       translateRaw('ADDRESSBOOK_NETWORK'),
       translateRaw('ADDRESSBOOK_NOTES'),
       translateRaw('ADDRESSBOOK_REMOVE')
