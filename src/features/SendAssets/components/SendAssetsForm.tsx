@@ -43,7 +43,8 @@ import {
   WalletId,
   Fiat,
   TUuid,
-  TxQueryTypes
+  TxQueryTypes,
+  TAddress
 } from '@types';
 import {
   baseToConvertedUnit,
@@ -249,7 +250,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
     defaultAccount: storeDefaultAccount
   } = useContext(StoreContext);
   const { getAssetRate, getAssetRateInCurrency } = useRates();
-  const { getAssetByUUID } = useAssets();
+  const { getAssetByUUID, assets } = useAssets();
   const { settings } = useContext(SettingsContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
@@ -353,6 +354,21 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
             name: 'ValidationError',
             type: InlineMessageType.INFO_CIRCLE,
             message: translateRaw('SENDING_TO_YOURSELF')
+          };
+        }
+        return true;
+      })
+      // @ts-ignore Hack as Formik doesn't officially support warnings
+      // tslint:disable-next-line
+      .test('check-sending-to-token-address', translateRaw('SENDING_TO_TOKEN_ADDRESS'), function (
+        value
+      ) {
+        const token = assets.find((a) => isSameAddress(a.contractAddress as TAddress, value.value));
+        if (value.value !== undefined && token) {
+          return {
+            name: 'ValidationError',
+            type: InlineMessageType.INFO_CIRCLE,
+            message: translateRaw('SENDING_TO_TOKEN_ADDRESS', { $token: token.ticker })
           };
         }
         return true;
