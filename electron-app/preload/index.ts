@@ -1,2 +1,2 @@
-import { registerProtocol } from 'shared/enclave/preload';
-registerProtocol();
+// import { registerProtocol } from 'shared/enclave/preload';
+// registerProtocol();

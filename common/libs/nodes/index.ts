@@ -50,7 +50,7 @@ export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): 
 
 let shepherdProvider: INode;
 shepherd
-  .init({ queueTimeout: 10000 })
+  .init({ queueTimeout: 20000 })
   .then(
     provider => (shepherdProvider = (new Proxy(provider, tokenBalanceHandler) as any) as INode)
   );
