@@ -10911,6 +10911,24 @@ mycrypto-shepherd@^1.4.0:
     remote-redux-devtools "^0.5.12"
     url-search-params "^0.10.0"
 
+"mycrypto-shepherd@https://github.com/MyCryptoHQ/shepherd.git#ts-declarations":
+  version "1.5.0"
+  resolved "https://github.com/MyCryptoHQ/shepherd.git#6e016b983056bbe32408a68540a5f7e80aadc49a"
+  dependencies:
+    "@types/jest" "^22.2.2"
+    "@types/node" "^9.6.2"
+    "@types/remote-redux-devtools" "^0.5.2"
+    "@types/url-search-params" "^0.10.1"
+    bn.js "^4.11.8"
+    btoa "^1.2.1"
+    isomorphic-fetch "^2.2.1"
+    jsonschema "^1.2.4"
+    randombytes "^2.0.6"
+    redux "^3.7.2"
+    redux-saga "^0.16.0"
+    remote-redux-devtools "^0.5.12"
+    url-search-params "^0.10.0"
+
 nan@^2.12.1, nan@^2.13.2, nan@^2.14.0, nan@^2.2.1:
   version "2.14.1"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.1.tgz#d7be34dfa3105b91494c3147089315eff8874b01"
