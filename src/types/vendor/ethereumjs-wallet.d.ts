@@ -1,7 +1,3 @@
-/**
- * Incomplete -- Provider-engine needs its own typings
- */
-
 declare module 'ethereumjs-wallet/thirdparty' {
   import { Wallet, IEtherWalletLocked, IEtherWalletUnlocked } from 'ethereumjs-wallet';
   /**
