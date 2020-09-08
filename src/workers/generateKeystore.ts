@@ -17,7 +17,7 @@ export default function generateKeystore(
     worker.onmessage = (ev: MessageEvent) => {
       const filename: string = ev.data.filename;
       const privateKey: string = ev.data.privateKey;
-      const keystore: IV3Wallet = ev.data.keystore;
+      const keystore = ev.data.keystore;
       resolve({ keystore, filename, privateKey });
     };
   });
