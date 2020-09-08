@@ -36,6 +36,6 @@ describe('hexEncodeData', () => {
   });
   it('Can take strings as an input', () => {
     expect(hexEncodeData('0xFEED')).toEqual('0xfeed');
-    expect(hexEncodeData('FEED')).toEqual('0xfeed');
+    expect(hexEncodeData('FEED')).toEqual('0x46454544');
   });
 });

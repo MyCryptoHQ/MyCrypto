@@ -12,7 +12,7 @@ export function hexEncodeQuantity(value: BN | Buffer): string {
 
 export function withPrefix(value: string | Buffer): string | Buffer {
   if (typeof value === 'string' && !value.startsWith('0x')) {
-    return `0x${value}`;
+    return Buffer.from(value);
   }
 
   return value;
