@@ -1,6 +1,6 @@
 import { SagaIterator } from 'redux-saga';
 import { select, apply, call } from 'redux-saga/effects';
-import ethUtil from 'ethereumjs-util';
+import { addHexPrefix, keccak256 } from 'ethereumjs-util';
 
 import { INode } from 'libs/nodes/INode';
 import ENS from 'libs/ens/contracts';
@@ -110,9 +110,9 @@ export function* resolveEndDomainRequest(name: string): SagaIterator {
   const nameHash: string = getNameHash(`${lowercaseName}.${ensTLD}`);
 
   if (splitName.length === 2) {
-    hash = ethUtil.sha3(splitName[1]);
+    hash = keccak256(Buffer.from(splitName[1]));
   } else {
-    hash = ethUtil.sha3(splitName[0]);
+    hash = keccak256(Buffer.from(splitName[0]));
   }
   const domainData: typeof ENS.auction.entries.outputType = yield call(makeEthCallAndDecode, {
     to: ensAddresses.public.ethAuction,
@@ -144,7 +144,7 @@ export function* resolveEndDomainRequest(name: string): SagaIterator {
     name,
     ...domainData,
     ...result,
-    labelHash: ethUtil.addHexPrefix(hash.toString('hex')),
+    labelHash: addHexPrefix(hash.toString('hex')),
     nameHash
   };
   return returnValue;

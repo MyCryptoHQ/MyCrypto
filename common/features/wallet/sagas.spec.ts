@@ -1,6 +1,6 @@
 import { apply, call, fork, put, select, take, cancel } from 'redux-saga/effects';
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
-import { IFullWallet, IV3Wallet, fromV3 } from 'ethereumjs-wallet';
+import Wallet from 'ethereumjs-wallet';
 
 import { translateRaw } from 'translations';
 import configuredStore from 'features/store';
@@ -46,7 +46,7 @@ const token2: Token = {
 };
 const tokens = [token1, token2];
 
-const utcKeystore: IV3Wallet = {
+const utcKeystore = {
   version: 3,
   id: 'cb788af4-993d-43ad-851b-0d2031e52c61',
   address: '25a24679f35e447f778cf54a3823facf39904a63',
@@ -241,7 +241,7 @@ describe('unlockKeystore*', () => {
 
   //keystore in this case decrypts quickly, so use fromV3 in ethjs-wallet to avoid testing with promises
   it('should call stopLoadingSpinner', () => {
-    const mockWallet: IFullWallet = fromV3(action.payload.file, action.payload.password, true);
+    const mockWallet = Wallet.fromV3(action.payload.file, action.payload.password, true);
     expect(gen.next(mockWallet).value).toEqual(call(sagas.stopLoadingSpinner, mockTask));
   });
 

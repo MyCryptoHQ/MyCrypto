@@ -114,10 +114,14 @@ export function isValidPrivKey(privkey: string | Buffer): boolean {
     const initialCheck = strippedKey.length === 64;
     if (initialCheck) {
       const keyBuffer = Buffer.from(strippedKey, 'hex');
-      return isValidPrivate(keyBuffer);
+      try {
+        return isValidPrivate(Uint8Array.from(keyBuffer) as Buffer);
+      } catch {
+        return false;
+      }
     }
     return false;
-  } else if (Buffer.isBuffer(privkey)) {
+  } else if (privkey instanceof Uint8Array) {
     return privkey.length === 32 && isValidPrivate(privkey);
   } else {
     return false;

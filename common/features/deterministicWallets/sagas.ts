@@ -25,12 +25,12 @@ export function* getDeterministicWalletsSaga(
   // if pubKey & chainCode present, treat as HW wallet
 
   if (seed) {
-    hdk = HDKey.fromMasterSeed(new Buffer(seed, 'hex'));
+    hdk = HDKey.fromMasterSeed(Buffer.from(seed, 'hex'));
     pathBase = dPath;
   } else if (publicKey && chainCode) {
     hdk = new HDKey();
-    hdk.publicKey = new Buffer(publicKey, 'hex');
-    hdk.chainCode = new Buffer(chainCode, 'hex');
+    hdk.publicKey = Buffer.from(publicKey, 'hex');
+    hdk.chainCode = Buffer.from(chainCode, 'hex');
     pathBase = 'm';
   } else {
     return;

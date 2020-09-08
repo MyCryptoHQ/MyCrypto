@@ -36,7 +36,7 @@ export function unlockWeb3(): types.UnlockWeb3Action {
 }
 
 export type TSetWallet = typeof setWallet;
-export function setWallet(value: IWallet): types.SetWalletAction {
+export function setWallet(value: IWallet | null): types.SetWalletAction {
   return {
     type: types.WalletActions.SET,
     payload: value

@@ -1,4 +1,4 @@
-import { fromPrivateKey, IFullWallet, fromV3 } from 'ethereumjs-wallet';
+import Wallet from 'ethereumjs-wallet';
 import { isValidPrivKey } from 'libs/validators';
 import { stripHexPrefix } from 'libs/formatters';
 import { makeBlob } from 'utils/blob';
@@ -9,18 +9,18 @@ export interface KeystoreFile {
   blob: string;
 }
 
-export function makeKeystoreWalletBlob(wallet: IFullWallet, password: string): string {
+export function makeKeystoreWalletBlob(wallet: Wallet, password: string): string {
   const keystore = wallet.toV3(password, { n: N_FACTOR });
   return makeBlob('text/json;charset=UTF-8', keystore);
 }
 
-export function checkKeystoreWallet(
-  wallet: IFullWallet,
+export async function checkKeystoreWallet(
+  wallet: Wallet,
   privateKey: string,
   password: string
-): boolean {
-  const keystore = wallet.toV3(password, { n: N_FACTOR });
-  const backToWallet = fromV3(keystore, password, true);
+): Promise<boolean> {
+  const keystore = await wallet.toV3(password, { n: N_FACTOR });
+  const backToWallet = await Wallet.fromV3(keystore, password, true);
   return stripHexPrefix(backToWallet.getPrivateKeyString()) === stripHexPrefix(privateKey);
 }
 
@@ -34,10 +34,10 @@ export async function generateKeystoreFileInfo(
 
   // Make the wallet from their private key
   const keyBuffer = Buffer.from(stripHexPrefix(privateKey), 'hex');
-  const wallet = fromPrivateKey(keyBuffer);
+  const wallet = Wallet.fromPrivateKey(keyBuffer);
 
   // Validate the password and keystore generation
-  if (!checkKeystoreWallet(wallet, privateKey, password)) {
+  if (!(await checkKeystoreWallet(wallet, privateKey, password))) {
     throw new Error('Keystore file generation failed, keystore wallet didn’t match private key');
   }
 

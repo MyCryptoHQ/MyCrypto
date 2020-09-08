@@ -1,4 +1,4 @@
-import { fromV3, IFullWallet } from 'ethereumjs-wallet';
+import Wallet from 'ethereumjs-wallet';
 
 const worker: Worker = self as any;
 interface DecryptionParameters {
@@ -7,10 +7,10 @@ interface DecryptionParameters {
   nonStrict: boolean;
 }
 
-worker.onmessage = (event: MessageEvent) => {
+worker.onmessage = async (event: MessageEvent) => {
   const info: DecryptionParameters = event.data;
   try {
-    const rawKeystore: IFullWallet = fromV3(info.keystore, info.password, info.nonStrict);
+    const rawKeystore: Wallet = await Wallet.fromV3(info.keystore, info.password, info.nonStrict);
     worker.postMessage(rawKeystore.getPrivateKeyString());
   } catch (e) {
     worker.postMessage(e.message);

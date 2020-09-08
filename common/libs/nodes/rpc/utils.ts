@@ -10,6 +10,14 @@ export function hexEncodeQuantity(value: BN | Buffer): string {
   return addHexPrefix(trimmedValue === '' ? '0' : trimmedValue);
 }
 
+export function withPrefix(value: string | Buffer): string | Buffer {
+  if (typeof value === 'string' && !value.startsWith('0x')) {
+    return `0x${value}`;
+  }
+
+  return value;
+}
+
 // When encoding UNFORMATTED DATA (byte arrays, account addresses, hashes, bytecode arrays): encode as hex, prefix with "0x", two hex digits per byte.
 export function hexEncodeData(value: string | Buffer): string {
   // convert the value to a buffer
@@ -17,5 +25,5 @@ export function hexEncodeData(value: string | Buffer): string {
   // strip the hex prefix
   // pad the data to even (two hex digits per byte)
   // add the hex prefix back in
-  return addHexPrefix(padToEven(stripHexPrefix(bufferToHex(toBuffer(value)))));
+  return addHexPrefix(padToEven(stripHexPrefix(bufferToHex(toBuffer(withPrefix(value))))));
 }

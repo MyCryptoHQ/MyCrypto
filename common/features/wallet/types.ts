@@ -69,7 +69,7 @@ export interface UnlockWeb3Action {
 
 export interface SetWalletAction {
   type: WalletActions.SET;
-  payload: IWallet;
+  payload: IWallet | null;
 }
 
 export interface ResetWalletAction {

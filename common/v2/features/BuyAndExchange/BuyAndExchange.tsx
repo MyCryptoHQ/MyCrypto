@@ -60,10 +60,7 @@ export class BuyAndExchange extends Component<RouteComponentProps<any>> {
                 A platform that gives you the power to quickly swap between assets in a seamless,
                 safe, and secure environment.
               </BuyAndExchangeOption>
-              <BuyAndExchangeOption 
-                option="0x Instant" 
-                logo={zeroExLogo} 
-                route="/swap/0x">
+              <BuyAndExchangeOption option="0x Instant" logo={zeroExLogo} route="/swap/0x">
                 Quick and secure token purchasing.
               </BuyAndExchangeOption>
             </section>

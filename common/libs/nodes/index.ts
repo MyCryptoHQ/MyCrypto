@@ -42,7 +42,7 @@ export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): 
     ...defaultConfig,
     ...options,
     supportedMethods: {
-      ...defaultConfig.supportedMethods,
+      ...(defaultConfig.supportedMethods as any),
       ...(options.supportedMethods ? options.supportedMethods : {})
     }
   };

@@ -16,7 +16,7 @@ describe('Fields Saga', () => {
   };
 
   describe('handleDataInput*', () => {
-    const payload = 'payload';
+    const payload = '0xf00f00';
     const action: any = { payload };
     const validData = true;
 

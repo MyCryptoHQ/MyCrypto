@@ -1,5 +1,4 @@
-import { fromPrivateKey, fromEthSale, IFullWallet } from 'ethereumjs-wallet';
-import { fromEtherWallet } from 'ethereumjs-wallet/thirdparty';
+import Wallet, { thirdparty } from 'ethereumjs-wallet';
 
 import { decryptPrivKey } from 'libs/decrypt';
 import { fromV3 } from 'libs/web-workers';
@@ -9,20 +8,20 @@ import AddressOnlyWallet from './address';
 import ParitySignerWallet from './parity';
 
 const EncryptedPrivateKeyWallet = (encryptedPrivateKey: string, password: string) =>
-  signWrapper(fromPrivateKey(decryptPrivKey(encryptedPrivateKey, password)));
+  signWrapper(Wallet.fromPrivateKey(decryptPrivKey(encryptedPrivateKey, password)));
 
 const PresaleWallet = (keystore: string, password: string) =>
-  signWrapper(fromEthSale(keystore, password));
+  signWrapper(Wallet.fromEthSale(keystore, password));
 
 const MewV1Wallet = (keystore: string, password: string) =>
-  signWrapper(fromEtherWallet(keystore, password));
+  signWrapper(thirdparty.fromEtherWallet(keystore, password));
 
-const PrivKeyWallet = (privkey: Buffer) => signWrapper(fromPrivateKey(privkey));
+const PrivKeyWallet = (privkey: Buffer) => signWrapper(Wallet.fromPrivateKey(privkey));
 
 const UtcWallet = (keystore: string, password: string) => fromV3(keystore, password, true);
 
 // Getters
-const getUtcWallet = (file: string, password: string): Promise<IFullWallet> => {
+const getUtcWallet = (file: string, password: string): Promise<Wallet> => {
   return UtcWallet(file, password);
 };
 

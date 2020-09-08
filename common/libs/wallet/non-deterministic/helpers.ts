@@ -1,4 +1,4 @@
-import { IFullWallet } from 'ethereumjs-wallet';
+import Wallet from 'ethereumjs-wallet';
 import Tx from 'ethereumjs-tx';
 
 import { signMessageWithPrivKeyV2, signRawTxWithPrivKey } from 'libs/signing';
@@ -17,9 +17,9 @@ interface ISignWrapper {
   unlock(): Promise<void>;
 }
 
-export type WrappedWallet = IFullWallet & ISignWrapper;
+export type WrappedWallet = Wallet & ISignWrapper;
 
-export const signWrapper = (walletToWrap: IFullWallet): WrappedWallet =>
+export const signWrapper = (walletToWrap: Wallet): WrappedWallet =>
   Object.assign(walletToWrap, {
     signRawTransaction: (t: Tx) => signRawTxWithPrivKey(walletToWrap.getPrivateKey(), t),
     signMessage: (msg: string) => signMessageWithPrivKeyV2(walletToWrap.getPrivateKey(), msg),

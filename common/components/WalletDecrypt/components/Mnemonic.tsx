@@ -65,7 +65,9 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
             />
           </div>
           <div className="form-group">
-            <p>{translate('ADD_LABEL_8')} <MnemonicPasswordSaltWarning /></p>
+            <p>
+              {translate('ADD_LABEL_8')} <MnemonicPasswordSaltWarning />
+            </p>
             <Input
               isValid={true}
               showValidAsPlain={true}

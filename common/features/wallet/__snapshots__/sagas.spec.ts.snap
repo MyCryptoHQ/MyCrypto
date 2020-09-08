@@ -5,45 +5,7 @@ Object {
   "@@redux-saga/IO": true,
   "PUT": Object {
     "action": Object {
-      "payload": Wallet {
-        "_privKey": Object {
-          "data": Array [
-            139,
-            203,
-            68,
-            86,
-            239,
-            3,
-            86,
-            206,
-            6,
-            44,
-            133,
-            124,
-            239,
-            221,
-            62,
-            209,
-            186,
-            180,
-            84,
-            50,
-            207,
-            118,
-            214,
-            213,
-            52,
-            8,
-            153,
-            207,
-            208,
-            247,
-            2,
-            232,
-          ],
-          "type": "Buffer",
-        },
-        "_pubKey": undefined,
+      "payload": Promise {
         "signMessage": [Function],
         "signRawTransaction": [Function],
         "unlock": [Function],
@@ -61,7 +23,7 @@ Object {
   "PUT": Object {
     "action": Object {
       "payload": Wallet {
-        "_privKey": Object {
+        "privateKey": Object {
           "data": Array [
             49,
             233,
@@ -98,7 +60,7 @@ Object {
           ],
           "type": "Buffer",
         },
-        "_pubKey": undefined,
+        "publicKey": undefined,
         "signMessage": [Function],
         "signRawTransaction": [Function],
         "unlock": [Function],
@@ -116,7 +78,7 @@ Object {
   "PUT": Object {
     "action": Object {
       "payload": Wallet {
-        "_privKey": Object {
+        "privateKey": Object {
           "data": Array [
             49,
             233,
@@ -153,7 +115,7 @@ Object {
           ],
           "type": "Buffer",
         },
-        "_pubKey": undefined,
+        "publicKey": undefined,
         "signMessage": [Function],
         "signRawTransaction": [Function],
         "unlock": [Function],

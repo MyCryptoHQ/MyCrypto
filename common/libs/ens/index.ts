@@ -1,5 +1,5 @@
 import uts46 from 'idna-uts46';
-import ethUtil from 'ethereumjs-util';
+import { keccak256 } from 'ethereumjs-util';
 
 export function normalise(name: string): string {
   try {
@@ -15,11 +15,10 @@ export const getNameHash = (name: string = ''): string => {
   }
 
   const normalizedName = normalise(name);
-  const sha3 = ethUtil.sha3;
   const labels = normalizedName.split('.');
   const emptyNode = Buffer.alloc(32);
   const rawNode = labels.reduceRight((node, currentLabel) => {
-    return sha3(Buffer.concat([node, sha3(currentLabel)]));
+    return keccak256(Buffer.concat([node, keccak256(Buffer.from(currentLabel))]));
   }, emptyNode);
 
   return `0x${rawNode.toString('hex')}`;
