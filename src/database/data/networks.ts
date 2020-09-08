@@ -945,5 +945,30 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       initial: 1
     },
     shouldEstimateGasPrice: false
+  },
+  SmartChain: {
+    id: 'SmartChain',
+    name: 'BNB Smart Chain',
+    unit: 'BNB' as TTicker,
+    chainId: 56,
+    isCustom: false,
+    color: '#f0b90b',
+    blockExplorer: makeExplorer({
+      name: 'BscScan Explorer',
+      origin: 'https://bscscan.com'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.LEDGER_NANO_S]: DPaths.SMART_CHAIN_DEFAULT,
+      [WalletId.TREZOR]: DPaths.SMART_CHAIN_DEFAULT,
+      [WalletId.LEDGER_NANO_S]: DPaths.SMART_CHAIN_DEFAULT,
+      [WalletId.MNEMONIC_PHRASE]: DPaths.SMART_CHAIN_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 20,
+      max: 60,
+      initial: 20
+    }
   }
 };

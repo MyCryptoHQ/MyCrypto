@@ -371,5 +371,13 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       service: 'Etherscan',
       url: 'https://api.etherscan.io/api'
     }
+  ],
+  SmartChain: [
+    {
+      name: NetworkUtils.makeNodeName('SmartChain', 'bsc-dataseed1.binance.org'),
+      type: NodeType.RPC,
+      service: 'BscScan',
+      url: 'https://bscscan.com'
+    }
   ]
 };

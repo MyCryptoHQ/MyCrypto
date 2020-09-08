@@ -36,4 +36,5 @@ export type NetworkId =
   | 'ASK'
   | 'VOLTA'
   | 'EnergyWebChain'
-  | 'HARDLYDIFFICULT';
+  | 'HARDLYDIFFICULT'
+  | 'SmartChain';
