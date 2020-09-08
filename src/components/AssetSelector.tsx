@@ -43,7 +43,7 @@ const Label = styled.label`
   text-align: left;
   font-weight: normal;
   margin-bottom: 9px;
-  color: ${(props) => props.theme.text};
+  color: ${(props) => props.theme.colors.GREYISH_BROWN};
 `;
 
 const Wrapper = styled('div')`

@@ -5,7 +5,7 @@ import { storiesOf } from '@storybook/react';
 import { DEFAULT_NETWORK } from '@config';
 import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
 import { Network, NetworkId } from '@types';
-import { GAU_THEME } from '@theme';
+import { theme } from '@theme';
 
 import AddOrEditNetworkNode from './AddOrEditNetworkNode';
 import AppProviders from 'AppProviders';
@@ -63,7 +63,7 @@ const editNetworkNode = () => (
 );
 
 storiesOf('NetworkNodeForm', module)
-  .addDecorator((story) => <ThemeProvider theme={GAU_THEME}>{story()}</ThemeProvider>)
+  .addDecorator((story) => <ThemeProvider theme={theme}>{story()}</ThemeProvider>)
   .addDecorator((story) => <AppProviders>{story()}</AppProviders>)
   .add('Add node', (_) => addNetworkNode(), {
     design: {

@@ -4,7 +4,7 @@ import { hot } from 'react-hot-loader/root';
 import styled, { ThemeProvider } from 'styled-components';
 import { HashRouter, BrowserRouter } from 'react-router-dom';
 
-import { GAU_THEME } from '@theme';
+import { theme } from '@theme';
 import { IS_ELECTRON, USE_HASH_ROUTER } from '@utils';
 import { NewAppReleaseModal } from '@components';
 import { DevToolsManager } from '@features';
@@ -28,9 +28,8 @@ class RootClass extends Component {
 
   public render() {
     const Router: any = USE_HASH_ROUTER ? HashRouter : BrowserRouter;
-
     return (
-      <ThemeProvider theme={GAU_THEME}>
+      <ThemeProvider theme={theme}>
         <Router>
           <AppProviders>
             <AppProvidersInnerContainer>
