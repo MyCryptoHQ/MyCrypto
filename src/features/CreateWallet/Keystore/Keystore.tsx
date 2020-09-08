@@ -1,7 +1,7 @@
 import React, { Component, ReactType } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { IV3Wallet } from 'ethereumjs-wallet';
 import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
+import { IV3Wallet } from 'ethereumjs-wallet';
 import pipe from 'ramda/src/pipe';
 
 import { makeBlob, generateAccountUUID, withHook } from '@utils';
