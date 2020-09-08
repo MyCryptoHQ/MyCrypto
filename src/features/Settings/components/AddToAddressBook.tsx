@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Formik, Form, Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
 import { DashboardPanel, NetworkSelectDropdown, InputField } from '@components';
 import { Contact, NetworkId } from '@types';
-import { ToastContext } from '@features/Toasts';
+import { useToasts } from '@features/Toasts';
 import { translateRaw } from '@translations';
 import { isValidETHAddress } from '@services/EthService';
 import { useContacts } from '@services';
@@ -73,7 +73,7 @@ export default function AddToAddressBook({ toggleFlipped, createContact }: Props
       })
   });
 
-  const { displayToast, toastTemplates } = useContext(ToastContext);
+  const { displayToast, toastTemplates } = useToasts();
 
   return (
     <AddToAddressBookPanel
