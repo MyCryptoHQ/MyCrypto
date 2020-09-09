@@ -30,8 +30,6 @@ const RootClass = () => {
         <AppProviders>
           <FullHeight>
             <DevToolsManager />
-
-            {/* Router */}
             <FullScreen>
               <AppRoutes />
               <div id="ModalContainer" />
