@@ -51,23 +51,14 @@ module.exports = merge.smart(common, {
 
       {
         test: /\.scss$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          {
-            loader: 'sass-loader',
-            options: {
-              additionalData: `$is-electron: ${IS_ELECTRON};`
-            }
-          }
-        ]
+        use: ['style-loader', 'css-loader', 'sass-loader']
       }
     ]
   },
 
   plugins: [
     new webpack.EnvironmentPlugin({
-      'TARGET_ENV': process.env.TARGET_ENV || LOCAL
+      TARGET_ENV: process.env.TARGET_ENV || LOCAL
     }),
 
     new FriendlyErrorsPlugin({

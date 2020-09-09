@@ -53,8 +53,6 @@ class RootClass extends Component {
     const classes: string[] = [];
 
     if (IS_ELECTRON) {
-      classes.push('is-electron');
-
       if (navigator.appVersion.includes('Win')) {
         classes.push('is-windows');
       } else if (navigator.appVersion.includes('Mac')) {
