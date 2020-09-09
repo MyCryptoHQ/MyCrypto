@@ -53,3 +53,5 @@ export const DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN = 5;
 export const DEFAULT_GAP_TO_SCAN_FOR = 5;
 
 export const SETTINGS_FILENAME = 'MyCrypto_Settings_File';
+
+export const ASSET_DROPDOWN_SIZE_THRESHOLD = 150;

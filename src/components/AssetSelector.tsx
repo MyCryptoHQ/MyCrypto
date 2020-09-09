@@ -18,17 +18,24 @@ const SContainer = styled('div')`
 interface ItemProps {
   uuid: TUuid;
   ticker: TTicker;
+  showAssetIcon?: boolean;
   name?: string;
   onClick?(): void;
 }
 
-export function AssetSelectorItem({ uuid, ticker, name, onClick }: ItemProps) {
+export function AssetSelectorItem({
+  showAssetIcon = true,
+  uuid,
+  ticker,
+  name,
+  onClick
+}: ItemProps) {
   return (
     <SContainer
       {...(onClick ? { onPointerDown: onClick } : null)}
       data-testid={`asset-selector-option-${ticker}`}
     >
-      <AssetIcon uuid={uuid} size={'1.5rem'} />
+      {showAssetIcon && <AssetIcon uuid={uuid} size={'1.5rem'} />}
       <Typography bold={true} value={ticker} style={{ marginLeft: '10px' }} />
       {name && <span>&nbsp; - &nbsp;</span>}
       <Typography value={name} />
@@ -59,7 +66,8 @@ interface AssetSelectorProps<T> {
   inputId?: string;
   assets: T[];
   selectedAsset: T | null;
-  showOnlySymbol?: boolean;
+  showAssetName?: boolean;
+  showAssetIcon?: boolean;
   disabled?: boolean;
   fluid?: boolean;
   searchable?: boolean;
@@ -74,7 +82,8 @@ function AssetSelector({
   selectedAsset,
   onSelect,
   label,
-  showOnlySymbol = false,
+  showAssetName = false,
+  showAssetIcon = true,
   searchable = false,
   disabled = false,
   fluid = false,
@@ -98,15 +107,21 @@ function AssetSelector({
         disabled={disabled}
         searchable={searchable}
         onChange={(option: TAssetOption) => onSelect(option)}
-        getOptionLabel={(option) => (showOnlySymbol ? option.ticker : option.name)}
+        getOptionLabel={(option) => (showAssetName ? option.name : option.ticker)}
         optionDivider={true}
-        optionComponent={({ data, selectOption }: OptionProps<TAssetOption>) => {
+        optionComponent={({
+          data,
+          selectOption,
+          innerProps: { onMouseMove, onMouseOver, ...newInnerProps }
+        }: OptionProps<TAssetOption>) => {
           const { ticker, name, uuid } = data;
           return (
             <AssetSelectorItem
+              {...newInnerProps}
+              showAssetIcon={showAssetIcon}
               ticker={ticker}
               uuid={uuid}
-              name={showOnlySymbol ? undefined : name}
+              name={showAssetName && name}
               onClick={() => selectOption(data)}
             />
           );
@@ -117,7 +132,8 @@ function AssetSelector({
             <AssetSelectorItem
               ticker={ticker}
               uuid={uuid}
-              name={showOnlySymbol ? undefined : name}
+              showAssetIcon={showAssetIcon}
+              name={showAssetName ? name : undefined}
             />
           );
         }}

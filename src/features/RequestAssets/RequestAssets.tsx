@@ -10,7 +10,7 @@ import {
 } from '@services/EthService/utils/formatters';
 import { ContentPanel, QRCode, AccountSelector, AssetSelector } from '@components';
 import { getNetworkById, StoreContext, useAssets } from '@services/Store';
-import { isValidAmount, sanitizeDecimalSeparator, noOp } from '@utils';
+import { isValidAmount, sanitizeDecimalSeparator, noOp, filterDropdownAssets } from '@utils';
 import { IAccount as IIAccount } from '@types';
 import { ROUTE_PATHS } from '@config';
 import translate, { translateRaw } from '@translations';
@@ -107,11 +107,12 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
   const { assets } = useAssets();
   const [networkId, setNetworkId] = useState(accounts[0].networkId);
   const network = getNetworkById(networkId, networks);
-  const filteredAssets = network
-    ? assets
-        .filter((asset) => asset.networkId === network.id)
-        .filter((asset) => asset.type === 'base' || asset.type === 'erc20')
+  const relevantAssets = network
+    ? assets.filter(
+        ({ networkId: id, type }) => (type === 'base' || type === 'erc20') && id === network.id
+      )
     : [];
+  const filteredAssets = filterDropdownAssets(relevantAssets);
   const assetOptions = filteredAssets.map((asset) => ({
     label: asset.name,
     id: asset.uuid,
@@ -196,6 +197,8 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
                     <AssetSelector
                       selectedAsset={field.value}
                       assets={assetOptions}
+                      showAssetName={true}
+                      showAssetIcon={false}
                       searchable={true}
                       onSelect={(option) => {
                         form.setFieldValue(field.name, option);
