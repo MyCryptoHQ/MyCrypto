@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 import { parse } from 'query-string';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { InputField } from '@components';
 import { verifySignedMessage } from '@services/EthService';
@@ -49,7 +50,11 @@ const signatureExample: ISignedMessage = {
 };
 const signaturePlaceholder = JSON.stringify(signatureExample, null, 2);
 
-export default function VerifyMessage() {
+interface Props {
+  setShowSubtitle(show: boolean): void;
+}
+
+const VerifyMessage: FunctionComponent<RouteComponentProps & Props> = ({ location }) => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState<string | undefined>(undefined);
   const [signedMessage, setSignedMessage] = useState<ISignedMessage | null>(null);
@@ -123,4 +128,6 @@ export default function VerifyMessage() {
       )}
     </Content>
   );
-}
+};
+
+export default withRouter(VerifyMessage);
