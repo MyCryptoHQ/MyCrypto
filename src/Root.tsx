@@ -33,7 +33,7 @@ const RootClass = () => {
             <FullScreen>
               <AppRoutes />
               <div id="ModalContainer" />
-              {IS_ELECTRON ? <NewAppReleaseModal /> : <></>}
+              {IS_ELECTRON && <NewAppReleaseModal />}
             </FullScreen>
           </FullHeight>
         </AppProviders>
