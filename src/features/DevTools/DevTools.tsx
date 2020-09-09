@@ -136,16 +136,9 @@ const FeatureFlags = () => {
   const { IS_ACTIVE_FEATURE, setFeatureFlag } = useFeatureFlags();
   return (
     <>
-      {' '}
-      {Object.entries(IS_ACTIVE_FEATURE).map((f) => (
-        <Checkbox
-          key={f[0]}
-          name={f[0]}
-          label={f[0]}
-          checked={f[1]}
-          onChange={() => setFeatureFlag(f[0] as keyof IIS_ACTIVE_FEATURE, !f[1])}
-        />
-      ))}{' '}
+      {Object.entries(IS_ACTIVE_FEATURE).map(([k, v]: [keyof IIS_ACTIVE_FEATURE, boolean]) => (
+        <Checkbox key={k} name={k} label={k} checked={v} onChange={() => setFeatureFlag(k, !v)} />
+      ))}
     </>
   );
 };
