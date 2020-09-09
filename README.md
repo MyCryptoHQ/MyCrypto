@@ -21,13 +21,13 @@ This repo stores both the beta and production versions of the MyCrypto codebase.
 
 - Node 12.14.1\*
 - Yarn >= 1.19.1\*\*
-- Python 2.7.X\*\*\*
+
+On systems where a pre-built version of node-hid is not available (e.g. 32-bit versions of Windows and Linux), you additionally need Python (3+) and node-gyp installed.
 
 <sub>\*Higher versions should work fine, but may cause inconsistencies.</sub>
 <br />
 <sub>**npm is NOT supported for package management. MyCrypto uses yarn.lock to ensure sub-dependency versions are pinned, so yarn is required to install node_modules</sub>
 <br />
-<sub>\***Python 3 is **not** supported, since our dependencies use `node-gyp`.</sub>
 <br />
 <sub>\*\*\*For users trying to build with WSL, you'll need to have install libpng via `sudo apt-get install libpng16-dev`.</sub>
 
