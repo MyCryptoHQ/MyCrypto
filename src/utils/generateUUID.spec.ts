@@ -1,9 +1,8 @@
-import { validate as uuidValidate } from 'uuid';
-
 import { DEFAULT_NETWORK, DEFAULT_NETWORK_CHAINID } from '@config';
 
 import { DAIUUID, ETHUUID } from './constants';
 import { generateAssetUUID, generateDeterministicAddressUUID, generateUUID } from './generateUUID';
+import { isValidUuid } from './validators';
 
 describe('it generates valid uuids deterministically from inputs', () => {
   const networkId = DEFAULT_NETWORK;
@@ -13,7 +12,7 @@ describe('it generates valid uuids deterministically from inputs', () => {
 
   it('generates a non-deterministic, but valid, uuid', () => {
     const uuid = generateUUID();
-    expect(uuidValidate(uuid)).toBeTruthy();
+    expect(isValidUuid(uuid)).toBeTruthy();
   });
 
   it('generates a deterministic asset uuid for a token', () => {
