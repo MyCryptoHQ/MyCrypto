@@ -10,7 +10,7 @@ const renderUseFeatureFlags = () => {
 describe('useFeatureFlags', () => {
   it('uses the features config file ', () => {
     const { result } = renderUseFeatureFlags();
-    expect(result.current.IS_ACTIVE_FEATURE).toEqual(FEATURE_FLAGS);
+    expect(result.current.featureFlags).toEqual(FEATURE_FLAGS);
   });
 
   it('can set a feature flag value to false', () => {
@@ -18,7 +18,7 @@ describe('useFeatureFlags', () => {
     const { setFeatureFlag } = result.current;
     const target = 'DASHBOARD';
     act(() => setFeatureFlag(target, false));
-    expect(result.current.IS_ACTIVE_FEATURE[target]).toEqual(false);
+    expect(result.current.featureFlags[target]).toEqual(false);
   });
 
   it('can set a feature flag value to true', () => {
@@ -26,7 +26,7 @@ describe('useFeatureFlags', () => {
     const { setFeatureFlag } = result.current;
     const target = 'DASHBOARD';
     act(() => setFeatureFlag(target, true));
-    expect(result.current.IS_ACTIVE_FEATURE[target]).toEqual(true);
+    expect(result.current.featureFlags[target]).toEqual(true);
   });
 
   it('can reset the values to default', () => {
@@ -35,15 +35,15 @@ describe('useFeatureFlags', () => {
     const target = 'DASHBOARD';
     act(() => setFeatureFlag(target, false));
     act(() => resetFeatureFlags());
-    expect(result.current.IS_ACTIVE_FEATURE[target]).toEqual(true);
+    expect(result.current.featureFlags[target]).toEqual(true);
   });
 
   it('can toggle a value', () => {
     const { result } = renderUseFeatureFlags();
-    const { toggleFeatureFlag, IS_ACTIVE_FEATURE } = result.current;
+    const { toggleFeatureFlag, featureFlags } = result.current;
     const target = 'DASHBOARD';
-    const original = IS_ACTIVE_FEATURE[target];
+    const original = featureFlags[target];
     act(() => toggleFeatureFlag(target));
-    expect(result.current.IS_ACTIVE_FEATURE[target]).toEqual(!original);
+    expect(result.current.featureFlags[target]).toEqual(!original);
   });
 });

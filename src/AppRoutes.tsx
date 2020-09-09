@@ -53,7 +53,7 @@ const LayoutWithLocation = withRouter(({ location, children }) => {
 });
 
 export const AppRoutes = () => {
-  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
+  const { featureFlags } = useFeatureFlags();
 
   return (
     <>
@@ -68,7 +68,7 @@ export const AppRoutes = () => {
                   <LayoutWithLocation>
                     <Switch>
                       <Route path={ROUTE_PATHS.ROOT.path} component={Dashboard} exact={true} />
-                      {getAppRoutes(IS_ACTIVE_FEATURE)
+                      {getAppRoutes(featureFlags)
                         .filter((route) => !route.seperateLayout)
                         .map((config, idx) => (
                           <PrivateRoute key={idx} {...config} />

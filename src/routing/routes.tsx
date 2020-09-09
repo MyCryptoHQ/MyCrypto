@@ -105,12 +105,12 @@ export interface IAppRoutes {
 
 const DownloadAppRedirect = () => <Redirect to={ROUTE_PATHS.DOWNLOAD_DESKTOP_APP.path} />;
 
-export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[] => [
+export const getStaticAppRoutes = (featureFlags: IFeatureFlags): IAppRoute[] => [
   {
     name: ROUTE_PATHS.DASHBOARD.name,
     title: ROUTE_PATHS.DASHBOARD.title,
     path: ROUTE_PATHS.DASHBOARD.path,
-    enabled: IS_ACTIVE_FEATURE.DASHBOARD,
+    enabled: featureFlags.DASHBOARD,
     exact: true,
     requireAccounts: true,
     component: Dashboard
@@ -119,7 +119,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     name: ROUTE_PATHS.ADD_ACCOUNT.name,
     title: ROUTE_PATHS.ADD_ACCOUNT.title,
     path: `${ROUTE_PATHS.ADD_ACCOUNT.path}/:walletId?`,
-    enabled: IS_ACTIVE_FEATURE.ADD_ACCOUNT,
+    enabled: featureFlags.ADD_ACCOUNT,
     exact: true,
     component: AddAccountFlow
   },
@@ -127,7 +127,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     name: ROUTE_PATHS.CREATE_WALLET.name,
     title: ROUTE_PATHS.CREATE_WALLET.title,
     path: ROUTE_PATHS.CREATE_WALLET.path,
-    enabled: IS_ACTIVE_FEATURE.CREATE_WALLET,
+    enabled: featureFlags.CREATE_WALLET,
     exact: true,
     component: requiresDesktopApp(CreateWallet)(DownloadAppRedirect)
   },
@@ -135,7 +135,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     name: ROUTE_PATHS.CREATE_WALLET_MNEMONIC.name,
     title: ROUTE_PATHS.CREATE_WALLET_MNEMONIC.title,
     path: ROUTE_PATHS.CREATE_WALLET_MNEMONIC.path,
-    enabled: IS_ACTIVE_FEATURE.CREATE_WALLET,
+    enabled: featureFlags.CREATE_WALLET,
     exact: true,
     component: requiresDesktopApp(Mnemonic)(DownloadAppRedirect)
   },
@@ -143,7 +143,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     name: ROUTE_PATHS.CREATE_WALLET_KEYSTORE.name,
     title: ROUTE_PATHS.CREATE_WALLET_KEYSTORE.title,
     path: ROUTE_PATHS.CREATE_WALLET_KEYSTORE.path,
-    enabled: IS_ACTIVE_FEATURE.CREATE_WALLET,
+    enabled: featureFlags.CREATE_WALLET,
     exact: true,
     component: requiresDesktopApp(Keystore)(DownloadAppRedirect)
   },
@@ -151,7 +151,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     name: ROUTE_PATHS.DOWNLOAD_DESKTOP_APP.name,
     title: ROUTE_PATHS.DOWNLOAD_DESKTOP_APP.title,
     path: ROUTE_PATHS.DOWNLOAD_DESKTOP_APP.path,
-    enabled: IS_ACTIVE_FEATURE.DOWNLOAD_DESKTOP_APP,
+    enabled: featureFlags.DOWNLOAD_DESKTOP_APP,
     exact: true,
     component: DownloadApp
   },
@@ -159,7 +159,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     name: ROUTE_PATHS.REQUEST_ASSETS.name,
     title: ROUTE_PATHS.REQUEST_ASSETS.title,
     path: ROUTE_PATHS.REQUEST_ASSETS.path,
-    enabled: IS_ACTIVE_FEATURE.REQUEST_ASSETS,
+    enabled: featureFlags.REQUEST_ASSETS,
     exact: true,
     requireAccounts: true,
     component: RequestAssets
@@ -168,7 +168,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     name: ROUTE_PATHS.SCREEN_LOCK_NEW.name,
     title: ROUTE_PATHS.SCREEN_LOCK_NEW.title,
     path: ROUTE_PATHS.SCREEN_LOCK_NEW.path,
-    enabled: IS_ACTIVE_FEATURE.DASHBOARD,
+    enabled: featureFlags.DASHBOARD,
     exact: true,
     component: ScreenLockNew
   },
@@ -176,7 +176,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     name: ROUTE_PATHS.SCREEN_LOCK_LOCKED.name,
     title: ROUTE_PATHS.SCREEN_LOCK_LOCKED.title,
     path: ROUTE_PATHS.SCREEN_LOCK_LOCKED.path,
-    enabled: IS_ACTIVE_FEATURE.SCREEN_LOCK,
+    enabled: featureFlags.SCREEN_LOCK,
     exact: true,
     component: ScreenLockLocked
   },
@@ -184,7 +184,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     name: ROUTE_PATHS.SCREEN_LOCK_FORGOT.name,
     title: ROUTE_PATHS.SCREEN_LOCK_FORGOT.title,
     path: ROUTE_PATHS.SCREEN_LOCK_FORGOT.path,
-    enabled: IS_ACTIVE_FEATURE.SCREEN_LOCK,
+    enabled: featureFlags.SCREEN_LOCK,
     exact: true,
     component: ScreenLockForgotPassword
   },
@@ -192,7 +192,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     name: ROUTE_PATHS.SEND.name,
     title: ROUTE_PATHS.SEND.title,
     path: ROUTE_PATHS.SEND.path,
-    enabled: IS_ACTIVE_FEATURE.SEND_ASSETS,
+    enabled: featureFlags.SEND_ASSETS,
     exact: true,
     requireAccounts: true,
     component: SendAssets
@@ -201,7 +201,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     name: ROUTE_PATHS.SETTINGS.name,
     title: ROUTE_PATHS.SETTINGS.title,
     path: ROUTE_PATHS.SETTINGS.path,
-    enabled: IS_ACTIVE_FEATURE.SETTINGS,
+    enabled: featureFlags.SETTINGS,
     exact: true,
     component: Settings
   },
@@ -209,7 +209,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     name: ROUTE_PATHS.SETTINGS_IMPORT.name,
     title: ROUTE_PATHS.SETTINGS_IMPORT.title,
     path: ROUTE_PATHS.SETTINGS_IMPORT.path,
-    enabled: IS_ACTIVE_FEATURE.SETTINGS,
+    enabled: featureFlags.SETTINGS,
     exact: true,
     component: Import
   },
@@ -217,7 +217,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     name: ROUTE_PATHS.SETTINGS_EXPORT.name,
     title: ROUTE_PATHS.SETTINGS_EXPORT.title,
     path: ROUTE_PATHS.SETTINGS_EXPORT.path,
-    enabled: IS_ACTIVE_FEATURE.SETTINGS,
+    enabled: featureFlags.SETTINGS,
     exact: true,
     component: Export
   },
@@ -225,7 +225,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     name: ROUTE_PATHS.SWAP.name,
     title: ROUTE_PATHS.SWAP.title,
     path: ROUTE_PATHS.SWAP.path,
-    enabled: IS_ACTIVE_FEATURE.SWAP,
+    enabled: featureFlags.SWAP,
     requireAccounts: true,
     exact: true,
     component: SwapAssetsFlow
@@ -234,7 +234,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     name: ROUTE_PATHS.SIGN_MESSAGE.name,
     title: ROUTE_PATHS.SIGN_MESSAGE.title,
     path: ROUTE_PATHS.SIGN_MESSAGE.path,
-    enabled: IS_ACTIVE_FEATURE.SIGN_MESSAGE,
+    enabled: featureFlags.SIGN_MESSAGE,
     exact: true,
     component: SignAndVerifyMessage
   },
@@ -242,7 +242,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     name: ROUTE_PATHS.VERIFY_MESSAGE.name,
     title: ROUTE_PATHS.VERIFY_MESSAGE.title,
     path: ROUTE_PATHS.VERIFY_MESSAGE.path,
-    enabled: IS_ACTIVE_FEATURE.VERIFY_MESSAGE,
+    enabled: featureFlags.VERIFY_MESSAGE,
     exact: true,
     component: SignAndVerifyMessage
   },
@@ -250,21 +250,21 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     name: ROUTE_PATHS.BROADCAST_TX.name,
     title: ROUTE_PATHS.BROADCAST_TX.title,
     path: ROUTE_PATHS.BROADCAST_TX.path,
-    enabled: IS_ACTIVE_FEATURE.BROADCAST_TX,
+    enabled: featureFlags.BROADCAST_TX,
     component: BroadcastTransactionFlow
   },
   {
     name: ROUTE_PATHS.INTERACT_WITH_CONTRACTS.name,
     title: ROUTE_PATHS.INTERACT_WITH_CONTRACTS.title,
     path: ROUTE_PATHS.INTERACT_WITH_CONTRACTS.path,
-    enabled: IS_ACTIVE_FEATURE.CONTRACT_INTERACT,
+    enabled: featureFlags.CONTRACT_INTERACT,
     component: InteractWithContractsFlow
   },
   {
     name: ROUTE_PATHS.DEPLOY_CONTRACTS.name,
     title: ROUTE_PATHS.DEPLOY_CONTRACTS.title,
     path: ROUTE_PATHS.DEPLOY_CONTRACTS.path,
-    enabled: IS_ACTIVE_FEATURE.CONTRACT_DEPLOY,
+    enabled: featureFlags.CONTRACT_DEPLOY,
     component: DeployContractsFlow
   },
   {
@@ -273,7 +273,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     path: `${ROUTE_PATHS.DEFIZAP.path}/:zapName?`,
     exact: true,
     requireAccounts: true,
-    enabled: IS_ACTIVE_FEATURE.DEFIZAP,
+    enabled: featureFlags.DEFIZAP,
     component: DeFiZapFlow
   },
   {
@@ -282,7 +282,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     path: ROUTE_PATHS.MYC_MEMBERSHIP.path,
     exact: true,
     requireAccounts: false,
-    enabled: IS_ACTIVE_FEATURE.MYC_MEMBERSHIP,
+    enabled: featureFlags.MYC_MEMBERSHIP,
     component: MembershipEducation
   },
   {
@@ -291,7 +291,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     path: `${ROUTE_PATHS.MYC_MEMBERSHIP_BUY.path}`,
     exact: true,
     requireAccounts: false,
-    enabled: IS_ACTIVE_FEATURE.MYC_MEMBERSHIP,
+    enabled: featureFlags.MYC_MEMBERSHIP,
     component: PurchaseMembershipStepper
   },
   {
@@ -300,7 +300,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     path: ROUTE_PATHS.BUY.path,
     exact: true,
     requireAccounts: false,
-    enabled: IS_ACTIVE_FEATURE.BUY,
+    enabled: featureFlags.BUY,
     component: BuyAssets
   },
   {
@@ -309,7 +309,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     path: ROUTE_PATHS.ENS.path,
     exact: true,
     requireAccounts: true,
-    enabled: IS_ACTIVE_FEATURE.ENS,
+    enabled: featureFlags.ENS,
     component: EnsDashboard
   },
   {
@@ -317,7 +317,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     title: ROUTE_PATHS.TX_STATUS.title,
     path: ROUTE_PATHS.TX_STATUS.path,
     exact: true,
-    enabled: IS_ACTIVE_FEATURE.TX_STATUS,
+    enabled: featureFlags.TX_STATUS,
     component: TxStatus
   },
   {
@@ -326,14 +326,14 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[
     path: ROUTE_PATHS.REP_TOKEN_MIGRATION.path,
     exact: true,
     requireAccounts: true,
-    enabled: IS_ACTIVE_FEATURE.REP_TOKEN_MIGRATION,
+    enabled: featureFlags.REP_TOKEN_MIGRATION,
     component: RepTokenMigration
   }
 ];
 
 // Enabled Routes
-export const getAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags) =>
-  getStaticAppRoutes(IS_ACTIVE_FEATURE).filter((APP_ROUTE) => APP_ROUTE.enabled);
+export const getAppRoutes = (featureFlags: IFeatureFlags) =>
+  getStaticAppRoutes(featureFlags).filter((APP_ROUTE) => APP_ROUTE.enabled);
 
 export const createAppRoutesObject = (paths: IAppRoute[]) => {
   return paths.reduce((navLinks, path) => {
@@ -343,5 +343,5 @@ export const createAppRoutesObject = (paths: IAppRoute[]) => {
 };
 
 // APP_ROUTE_OBJECT is for ALL routes, even disabled ones.
-export const getAppRoutesObject = (IS_ACTIVE_FEATURE: IFeatureFlags) =>
-  createAppRoutesObject(getStaticAppRoutes(IS_ACTIVE_FEATURE));
+export const getAppRoutesObject = (featureFlags: IFeatureFlags) =>
+  createAppRoutesObject(getStaticAppRoutes(featureFlags));

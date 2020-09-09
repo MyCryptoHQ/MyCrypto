@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useState } from 'react';
 import { IFeatureFlags, FEATURE_FLAGS } from '@config';
 
 export interface IFeatureFlagContext {
-  IS_ACTIVE_FEATURE: IFeatureFlags;
+  featureFlags: IFeatureFlags;
   setFeatureFlag(key: keyof IFeatureFlags, value: boolean): void;
   resetFeatureFlags(): void;
   toggleFeatureFlag(key: keyof IFeatureFlags): void;
@@ -29,10 +29,10 @@ export const FeatureFlagProvider: React.FC = ({ children }) => {
   });
 
   const stateContext: IFeatureFlagContext = {
-    IS_ACTIVE_FEATURE: featureFlags,
+    featureFlags,
     setFeatureFlag,
-    resetFeatureFlags,
-    toggleFeatureFlag
+    toggleFeatureFlag,
+    resetFeatureFlags
   };
 
   return <FeatureFlagContext.Provider value={stateContext}>{children}</FeatureFlagContext.Provider>;

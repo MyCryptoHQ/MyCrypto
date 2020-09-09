@@ -5,8 +5,8 @@ import { ROUTE_PATHS, IFeatureFlags } from '@config';
 import settingsIcon from '@assets/images/icn-settings.svg';
 import dashboardIcon from '@assets/images/icn-dashboard.svg';
 
-export const getLinks = (IS_ACTIVE_FEATURE: IFeatureFlags) => {
-  const APP_ROUTES_OBJECT = getAppRoutesObject(IS_ACTIVE_FEATURE);
+export const getLinks = (featureFlags: IFeatureFlags) => {
+  const APP_ROUTES_OBJECT = getAppRoutesObject(featureFlags);
   return [
     {
       title: 'Dashboard',

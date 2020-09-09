@@ -133,10 +133,10 @@ const ErrorTools = () => {
 };
 
 const FeatureFlags = () => {
-  const { IS_ACTIVE_FEATURE, setFeatureFlag } = useFeatureFlags();
+  const { featureFlags, setFeatureFlag } = useFeatureFlags();
   return (
     <>
-      {Object.entries(IS_ACTIVE_FEATURE).map(([k, v]: [keyof IFeatureFlags, boolean]) => (
+      {Object.entries(featureFlags).map(([k, v]: [keyof IFeatureFlags, boolean]) => (
         <Checkbox key={k} name={k} label={k} checked={v} onChange={() => setFeatureFlag(k, !v)} />
       ))}
     </>
