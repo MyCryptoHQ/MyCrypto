@@ -12,6 +12,7 @@ import AssetSelector, { AssetSelectorItem } from '../AssetSelector';
 const defaultProps: React.ComponentProps<typeof AssetSelector> = {
   assets: fAssets as Asset[],
   selectedAsset: null,
+  showAssetName: true,
   label: 'test-asset-selector',
   onSelect: jest.fn()
 };
@@ -44,7 +45,7 @@ describe('AssetSelector', () => {
   });
 
   test('it is searchable by symbol', async () => {
-    const props = Object.assign({}, defaultProps, { searchable: true, showOnlySymbol: true });
+    const props = Object.assign({}, defaultProps, { searchable: true, showAssetName: false });
     const { container } = getComponent(props);
     fireEvent.change(container.querySelector('input')!, { target: { value: fAssets[5].ticker } });
     expect(screen.getAllByText(fAssets[5].ticker).length).toBe(2);
