@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { setConfig } from 'react-hot-loader';
 import { hot } from 'react-hot-loader/root';
 import styled, { ThemeProvider } from 'styled-components';
@@ -11,40 +11,38 @@ import { DevToolsManager } from '@features';
 import AppProviders from './AppProviders';
 import { AppRoutes } from './AppRoutes';
 
-const AppProvidersInnerContainer = styled.div`
+const FullHeight = styled.div`
   display: flex;
   min-height: 100%;
 `;
-const AppRouterContainer = styled.div`
+const FullScreen = styled.div`
   flex: 1;
   max-width: 100vw;
   max-height: 100vh;
 `;
 
-class RootClass extends Component {
-  public render() {
-    const Router: any = USE_HASH_ROUTER ? HashRouter : BrowserRouter;
-    return (
-      <ThemeProvider theme={theme}>
-        <Router>
-          <AppProviders>
-            <AppProvidersInnerContainer>
-              {/* DevToolsManager */}
-              <DevToolsManager />
+const RootClass = () => {
+  const Router: any = USE_HASH_ROUTER ? HashRouter : BrowserRouter;
 
-              {/* Router */}
-              <AppRouterContainer>
-                <AppRoutes />
-                <div id="ModalContainer" />
-                {IS_ELECTRON ? <NewAppReleaseModal /> : <></>}
-              </AppRouterContainer>
-            </AppProvidersInnerContainer>
-          </AppProviders>
-        </Router>
-      </ThemeProvider>
-    );
-  }
-}
+  return (
+    <ThemeProvider theme={theme}>
+      <Router>
+        <AppProviders>
+          <FullHeight>
+            <DevToolsManager />
+
+            {/* Router */}
+            <FullScreen>
+              <AppRoutes />
+              <div id="ModalContainer" />
+              {IS_ELECTRON ? <NewAppReleaseModal /> : <></>}
+            </FullScreen>
+          </FullHeight>
+        </AppProviders>
+      </Router>
+    </ThemeProvider>
+  );
+};
 
 // Silence RHL 'reconciliation failed' errors
 // https://github.com/gatsbyjs/gatsby/issues/7209#issuecomment-415807021
