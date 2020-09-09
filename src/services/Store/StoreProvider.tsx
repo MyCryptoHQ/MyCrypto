@@ -354,7 +354,7 @@ export const StoreProvider: React.FC = ({ children }) => {
         }
       });
     }
-  }, [mainnetAccounts]);
+  }, [mainnetAccounts.length]);
 
   const state: State = {
     accounts,
