@@ -1,12 +1,11 @@
 import { translateRaw } from '@translations';
 import { getAppRoutesObject } from '@routing';
-import { IIS_ACTIVE_FEATURE } from '@config/isActiveFeature';
-import { ROUTE_PATHS } from '@config';
+import { ROUTE_PATHS, IFeatures } from '@config';
 
 import settingsIcon from '@assets/images/icn-settings.svg';
 import dashboardIcon from '@assets/images/icn-dashboard.svg';
 
-export const getLinks = (IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE) => {
+export const getLinks = (IS_ACTIVE_FEATURE: IFeatures) => {
   const APP_ROUTES_OBJECT = getAppRoutesObject(IS_ACTIVE_FEATURE);
   return [
     {

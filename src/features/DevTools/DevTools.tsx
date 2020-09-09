@@ -4,7 +4,7 @@ import { Panel, Input } from '@mycrypto/ui';
 import { Button, Link, Checkbox } from '@components';
 import styled, { css } from 'styled-components';
 
-import { DEFAULT_NETWORK, IIS_ACTIVE_FEATURE } from '@config';
+import { DEFAULT_NETWORK, IFeatures } from '@config';
 import { generateUUID, IS_DEV, IS_STAGING } from '@utils';
 import {
   AccountContext,
@@ -136,7 +136,7 @@ const FeatureFlags = () => {
   const { IS_ACTIVE_FEATURE, setFeatureFlag } = useFeatureFlags();
   return (
     <>
-      {Object.entries(IS_ACTIVE_FEATURE).map(([k, v]: [keyof IIS_ACTIVE_FEATURE, boolean]) => (
+      {Object.entries(IS_ACTIVE_FEATURE).map(([k, v]: [keyof IFeatures, boolean]) => (
         <Checkbox key={k} name={k} label={k} checked={v} onChange={() => setFeatureFlag(k, !v)} />
       ))}
     </>

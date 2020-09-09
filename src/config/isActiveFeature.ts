@@ -28,11 +28,11 @@ export enum FEATURE_LIST {
   MIGRATE_LS = 'MIGRATE_LS'
 }
 
-export type IIS_ACTIVE_FEATURE = {
+export type IFeatures = {
   readonly [k in FEATURE_LIST]: boolean;
 };
 
-export const IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE = {
+export const IS_ACTIVE_FEATURE: IFeatures = {
   DASHBOARD: true,
   BUY: true,
   SEND_ASSETS: true,
