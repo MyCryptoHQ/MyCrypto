@@ -22,10 +22,6 @@ const AppRouterContainer = styled.div`
 `;
 
 class RootClass extends Component {
-  public componentDidMount() {
-    this.addBodyClasses();
-  }
-
   public render() {
     const Router: any = USE_HASH_ROUTER ? HashRouter : BrowserRouter;
     return (
@@ -47,22 +43,6 @@ class RootClass extends Component {
         </Router>
       </ThemeProvider>
     );
-  }
-
-  private addBodyClasses() {
-    const classes: string[] = [];
-
-    if (IS_ELECTRON) {
-      if (navigator.appVersion.includes('Win')) {
-        classes.push('is-windows');
-      } else if (navigator.appVersion.includes('Mac')) {
-        classes.push('is-osx');
-      } else {
-        classes.push('is-linux');
-      }
-    }
-
-    document.body.className += ` ${classes.join(' ')}`;
   }
 }
 
