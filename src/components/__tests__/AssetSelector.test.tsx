@@ -1,5 +1,4 @@
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
 import selectEvent from 'react-select-event';
 
 import { simpleRender, screen, fireEvent } from 'test-utils';
@@ -7,7 +6,6 @@ import { fAssets } from '@fixtures';
 import { Asset, TUuid, TTicker } from '@types';
 import { translateRaw } from '@translations';
 import { ETHUUID } from '@utils';
-import { theme } from '@theme';
 
 import AssetSelector, { AssetSelectorItem } from '../AssetSelector';
 
@@ -20,11 +18,9 @@ const defaultProps: React.ComponentProps<typeof AssetSelector> = {
 
 function getComponent(props: React.ComponentProps<typeof AssetSelector>) {
   return simpleRender(
-    <ThemeProvider theme={theme}>
-      <form role="form">
-        <AssetSelector {...props} />
-      </form>
-    </ThemeProvider>
+    <form role="form">
+      <AssetSelector {...props} />
+    </form>
   );
 }
 
