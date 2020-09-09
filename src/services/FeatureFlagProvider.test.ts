@@ -35,7 +35,7 @@ describe('useFeatureFlags', () => {
     const target = 'DASHBOARD';
     act(() => setFeatureFlag(target, false));
     act(() => resetFeatureFlags());
-    expect(result.current.featureFlags[target]).toEqual(true);
+    expect(result.current.featureFlags[target]).toEqual(FEATURE_FLAGS[target]);
   });
 
   it('can toggle a value', () => {

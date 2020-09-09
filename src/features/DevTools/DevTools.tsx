@@ -135,11 +135,22 @@ const ErrorTools = () => {
 const FeatureFlags = () => {
   const { featureFlags, setFeatureFlag } = useFeatureFlags();
   return (
-    <>
-      {Object.entries(featureFlags).map(([k, v]: [keyof IFeatureFlags, boolean]) => (
-        <Checkbox key={k} name={k} label={k} checked={v} onChange={() => setFeatureFlag(k, !v)} />
-      ))}
-    </>
+    <div style={{ marginBottom: '1em' }}>
+      <p style={{ fontWeight: 600 }}>Feature Flags</p>
+      <div>
+        {Object.entries(featureFlags)
+          .filter(([_, v]) => v !== 'core')
+          .map(([k, v]: [keyof IFeatureFlags, boolean]) => (
+            <Checkbox
+              key={k}
+              name={k}
+              label={k}
+              checked={v}
+              onChange={() => setFeatureFlag(k, !v)}
+            />
+          ))}
+      </div>
+    </div>
   );
 };
 
