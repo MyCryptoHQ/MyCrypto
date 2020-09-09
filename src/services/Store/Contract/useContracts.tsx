@@ -1,8 +1,7 @@
 import { useContext } from 'react';
-
+import { isSameAddress, generateDeterministicAddressUUID } from '@utils';
 import { DataContext } from '@services/Store';
 import { Contract, ExtendedContract, LSKeys, TAddress, TUuid } from '@types';
-import { generateContractUUID, isSameAddress } from '@utils';
 
 function useContracts() {
   const { contracts, createActions } = useContext(DataContext);
@@ -14,7 +13,7 @@ function useContracts() {
    * @param contract
    */
   const createContract = (contract: Contract): ExtendedContract => {
-    const uuid = generateContractUUID(contract.networkId, contract.address);
+    const uuid = generateDeterministicAddressUUID(contract.networkId, contract.address);
     const contractWithUUID: ExtendedContract = { ...contract, uuid };
     model.create(contractWithUUID);
     return contractWithUUID;

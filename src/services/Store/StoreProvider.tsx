@@ -42,12 +42,12 @@ import {
 } from '@types';
 import {
   convertToFiatFromAsset,
-  generateAccountUUID,
   getWeb3Config,
   isArrayEqual,
   isSameAddress,
   multiplyBNFloats,
-  sortByLabel,
+  weiToFloat,
+  generateDeterministicAddressUUID,
   useAnalytics,
   useInterval,
   weiToFloat
@@ -126,8 +126,8 @@ export interface State {
   getDeFiAssetReserveAssets(
     asset: StoreAsset
   ): (
-    getPoolAssetReserveRate: (poolTokenUUID: string, assets: Asset[]) => ReserveAsset[]
-  ) => StoreAsset[];
+      getPoolAssetReserveRate: (poolTokenUUID: string, assets: Asset[]) => ReserveAsset[]
+    ) => StoreAsset[];
   scanForMemberships(accounts: StoreAccount[]): void;
 }
 export const StoreContext = createContext({} as State);
@@ -174,8 +174,8 @@ export const StoreProvider: React.FC = ({ children }) => {
 
   const membershipExpirations = memberships
     ? flatten(
-        Object.values(memberships).map((m) => Object.values(m.memberships).map((e) => e.expiry))
-      )
+      Object.values(memberships).map((m) => Object.values(m.memberships).map((e) => e.expiry))
+    )
     : [];
 
   const membershipState = (() => {
@@ -469,7 +469,7 @@ export const StoreProvider: React.FC = ({ children }) => {
         transactions: [],
         favorite: false,
         mtime: 0,
-        uuid: generateAccountUUID(networkId, address)
+        uuid: generateDeterministicAddressUUID(networkId, address)
       }));
       if (newRawAccounts.length === 0) return;
       const newLabels = findMultipleNextUnusedDefaultLabels(
@@ -508,7 +508,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       const walletType =
         accountType! === WalletId.WEB3 ? WalletId[getWeb3Config().id] : accountType!;
       const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(assets)(network);
-      const accountUUID = generateAccountUUID(networkId, address);
+      const accountUUID = generateDeterministicAddressUUID(networkId, address);
       const account: IRawAccount = {
         address,
         networkId,

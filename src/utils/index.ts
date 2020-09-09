@@ -14,8 +14,7 @@ export { getFeaturedOS } from './getFeaturedOS';
 export {
   generateUUID,
   generateAssetUUID,
-  generateContractUUID,
-  generateAccountUUID,
+  generateDeterministicAddressUUID,
   getUUID
 } from './generateUUID';
 export { isUrl } from './isUrl';
@@ -47,12 +46,7 @@ export {
   createQueryParamsDefaultObject
 } from './queries';
 export { noOp } from './noOp';
-export {
-  formatGasLimit,
-  formatNumber,
-  formatMnemonic,
-  toChecksumAddressByChainId
-} from './formatters';
+export { formatMnemonic, toChecksumAddressByChainId } from './formatters';
 export { makeBlob } from './blob';
 export { default as consoleAdvertisement } from './consoleAdvertisement';
 export { tap } from './tap';

@@ -8,6 +8,8 @@ import { RouteComponentProps } from 'react-router-dom';
 import { DEFAULT_NETWORK, N_FACTOR, ROUTE_PATHS } from '@config';
 import { NotificationTemplates } from '@features/NotificationsPanel';
 import { stripHexPrefix } from '@services/EthService';
+import { makeBlob, generateDeterministicAddressUUID, withHook } from '@utils';
+import { generateKeystore, fromV3 } from '@workers';
 import {
   getNewDefaultAssetTemplateByNetwork,
   IAssetContext,
@@ -17,8 +19,6 @@ import {
 } from '@services/Store';
 import { WalletFactory } from '@services/WalletService';
 import { Asset, IRawAccount, ISettings, NetworkId, TAddress, WalletId } from '@types';
-import { generateAccountUUID, makeBlob, withHook } from '@utils';
-import { fromV3, generateKeystore } from '@workers';
 
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
 import { keystoreFlow, KeystoreStages, keystoreStageToComponentHash } from './constants';
@@ -127,7 +127,7 @@ class CreateKeystore extends Component<Props & INetworkContext & IAssetContext, 
       favorite: false,
       mtime: 0
     };
-    const accountUUID = generateAccountUUID(network, account.address);
+    const accountUUID = generateDeterministicAddressUUID(network, account.address);
     createAccountWithID(account, accountUUID);
     updateSettingsAccounts([...settings.dashboardAccounts, accountUUID]);
     createAssetWithID(newAsset, newAsset.uuid);
