@@ -1,8 +1,8 @@
 import { IS_DEV } from '@utils';
 
-export type IFeatures = typeof IS_ACTIVE_FEATURE;
+export type IFeatures = typeof FEATURE_FLAGS;
 
-export const IS_ACTIVE_FEATURE = {
+export const FEATURE_FLAGS = {
   DASHBOARD: true,
   BUY: true,
   SEND_ASSETS: true,

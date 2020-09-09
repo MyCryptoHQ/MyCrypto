@@ -6,7 +6,7 @@ import SendAssets from '@features/SendAssets/SendAssets';
 import { FeatureFlagContext, RatesContext } from '@services';
 import { StoreContext, SettingsContext, DataContext } from '@services/Store';
 import { fSettings, fAssets } from '@fixtures';
-import { IS_ACTIVE_FEATURE } from '@config';
+import { FEATURE_FLAGS } from '@config';
 import { noOp } from '@utils';
 
 // SendFlow makes RPC calls to get nonce and gas.
@@ -33,7 +33,11 @@ describe('SendAssetsFlow', () => {
         }
       >
         <FeatureFlagContext.Provider
-          value={{ IS_ACTIVE_FEATURE, setFeatureFlag: noOp, resetFeatureFlags: noOp }}
+          value={{
+            IS_ACTIVE_FEATURE: FEATURE_FLAGS,
+            setFeatureFlag: noOp,
+            resetFeatureFlags: noOp
+          }}
         >
           <SettingsContext.Provider
             value={

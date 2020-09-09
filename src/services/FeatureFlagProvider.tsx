@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { IFeatures, IS_ACTIVE_FEATURE } from '@config';
+import { IFeatures, FEATURE_FLAGS } from '@config';
 
 export interface IFeatureFlagContext {
   IS_ACTIVE_FEATURE: IFeatures;
@@ -10,11 +10,11 @@ export interface IFeatureFlagContext {
 const FeatureFlagContext = createContext({} as IFeatureFlagContext);
 
 const FeatureFlagProvider: React.FC = ({ children }) => {
-  const [featureFlags, setFeatureFlags] = useState(IS_ACTIVE_FEATURE);
+  const [featureFlags, setFeatureFlags] = useState(FEATURE_FLAGS);
 
   const setFeatureFlag = (key: keyof IFeatures, value: boolean): void =>
     setFeatureFlags({ ...featureFlags, [key]: value });
-  const resetFeatureFlags = (): void => setFeatureFlags(IS_ACTIVE_FEATURE);
+  const resetFeatureFlags = (): void => setFeatureFlags(FEATURE_FLAGS);
 
   useEffect(() => {
     // For use in E2E testing
