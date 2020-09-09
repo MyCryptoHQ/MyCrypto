@@ -17,6 +17,7 @@ import {
 import { Contact as IContact, TUuid, ExtendedContact } from '@types';
 import { COLORS, SPACING, BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
+import IconArrow from '@components/IconArrow';
 
 interface Props {
   contacts: ExtendedContact[];
@@ -73,6 +74,47 @@ const SEditableText = styled(EditableText)`
   }
 `;
 
+type ISortTypes = 'label' | 'label-reverse' | 'address' | 'address-reverse';
+type IColumnValues = 'ADDRESSBOOK_LABEL' | 'ADDRESSBOOK_ADDRESS';
+
+export interface ISortingState {
+  sortState: {
+    ADDRESSBOOK_LABEL: 'label' | 'label-reverse';
+    ADDRESSBOOK_ADDRESS: 'address' | 'address-reverse';
+  };
+  activeSort: ISortTypes;
+}
+
+const initialSortingState: ISortingState = {
+  sortState: {
+    ADDRESSBOOK_LABEL: 'label',
+    ADDRESSBOOK_ADDRESS: 'address'
+  },
+  activeSort: 'label'
+};
+
+interface ITableFullContactType {
+  label: string;
+  address: string;
+}
+
+type TSortFunction = (a: ITableFullContactType, b: ITableFullContactType) => number;
+
+const getSortingFunction = (sortKey: ISortTypes): TSortFunction => {
+  switch (sortKey) {
+    case 'label':
+      return (a: ITableFullContactType, b: ITableFullContactType) => a.label.localeCompare(b.label);
+    case 'label-reverse':
+      return (a: ITableFullContactType, b: ITableFullContactType) => b.label.localeCompare(a.label);
+    case 'address':
+      return (a: ITableFullContactType, b: ITableFullContactType) =>
+        a.address.localeCompare(b.address);
+    case 'address-reverse':
+      return (a: ITableFullContactType, b: ITableFullContactType) =>
+        b.address.localeCompare(a.address);
+  }
+};
+
 export default function AddressBook({
   contacts,
   contactRestore,
@@ -81,6 +123,7 @@ export default function AddressBook({
   updateContact,
   restoreDeletedContact
 }: Props) {
+  const [sortingState, setSortingState] = useState(initialSortingState);
   const [deletingIndex, setDeletingIndex] = useState<number>();
   const [undoDeletingIndexes, setUndoDeletingIndexes] = useState<[number, TUuid][]>([]);
   const overlayRows: [number[], [number, TUuid][]] = [
@@ -98,13 +141,50 @@ export default function AddressBook({
       });
     return accountsTemp.sort((a, b) => a.uuid.localeCompare(b.uuid));
   };
-  const displayAddressBook = getDisplayAddressBook();
+  const displayAddressBook = getDisplayAddressBook().sort(
+    getSortingFunction(sortingState.activeSort)
+  );
+
+  const updateSortingState = (id: IColumnValues) => {
+    // In case overlay active, disable changing sorting state
+    if (overlayRowsFlat.length) return;
+
+    const currentBtnState = sortingState.sortState[id];
+    if (currentBtnState.indexOf('-reverse') > -1) {
+      const newActiveSort = currentBtnState.split('-reverse')[0] as ISortTypes;
+      setSortingState({
+        sortState: {
+          ...sortingState.sortState,
+          [id]: newActiveSort
+        },
+        activeSort: newActiveSort
+      });
+    } else {
+      const newActiveSort = (currentBtnState + '-reverse') as ISortTypes;
+      setSortingState({
+        sortState: {
+          ...sortingState.sortState,
+          [id]: newActiveSort
+        },
+        activeSort: newActiveSort
+      });
+    }
+  };
+
+  const getColumnSortDirection = (id: IColumnValues): boolean =>
+    sortingState.sortState[id].indexOf('-reverse') > -1;
+
+  const convertColumnToClickable = (id: IColumnValues) => (
+    <div key={id} onClick={() => updateSortingState(id)}>
+      {translateRaw(id)} <IconArrow isFlipped={getColumnSortDirection(id)} />
+    </div>
+  );
 
   const addressBookTable = {
     head: [
       translateRaw('ADDRESSBOOK_FAVORITE'),
-      translateRaw('ADDRESSBOOK_LABEL'),
-      translateRaw('ADDRESSBOOK_ADDRESS'),
+      convertColumnToClickable('ADDRESSBOOK_LABEL'),
+      convertColumnToClickable('ADDRESSBOOK_ADDRESS'),
       translateRaw('ADDRESSBOOK_NETWORK'),
       translateRaw('ADDRESSBOOK_NOTES'),
       translateRaw('ADDRESSBOOK_REMOVE')
@@ -175,12 +255,6 @@ export default function AddressBook({
     ),
     config: {
       primaryColumn: translateRaw('ADDRESSBOOK_LABEL'),
-      sortableColumn: overlayRowsFlat.length ? '' : translateRaw('ADDRESSBOOK_LABEL'),
-      sortFunction: () => (a: any, b: any) => {
-        const aLabel = a.props.label;
-        const bLabel = b.props.label;
-        return aLabel === bLabel ? true : aLabel.localeCompare(bLabel);
-      },
       hiddenHeadings: [translateRaw('ADDRESSBOOK_FAVORITE'), translateRaw('ADDRESSBOOK_REMOVE')],
       iconColumns: [translateRaw('ADDRESSBOOK_FAVORITE'), translateRaw('ADDRESSBOOK_REMOVE')]
     }
