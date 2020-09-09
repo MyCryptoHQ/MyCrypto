@@ -5,16 +5,22 @@ export interface IFeatureFlagContext {
   IS_ACTIVE_FEATURE: IFeatureFlags;
   setFeatureFlag(key: keyof IFeatureFlags, value: boolean): void;
   resetFeatureFlags(): void;
+  toggleFeatureFlag(key: keyof IFeatureFlags): void;
 }
 
-const FeatureFlagContext = createContext({} as IFeatureFlagContext);
+export const FeatureFlagContext = createContext({} as IFeatureFlagContext);
 
-const FeatureFlagProvider: React.FC = ({ children }) => {
+export const FeatureFlagProvider: React.FC = ({ children }) => {
   const [featureFlags, setFeatureFlags] = useState(FEATURE_FLAGS);
 
-  const setFeatureFlag = (key: keyof IFeatureFlags, value: boolean): void =>
+  const setFeatureFlag: IFeatureFlagContext['setFeatureFlag'] = (key, value) =>
     setFeatureFlags({ ...featureFlags, [key]: value });
-  const resetFeatureFlags = (): void => setFeatureFlags(FEATURE_FLAGS);
+
+  const toggleFeatureFlag: IFeatureFlagContext['toggleFeatureFlag'] = (key) =>
+    setFeatureFlag(key, !featureFlags[key]);
+
+  const resetFeatureFlags: IFeatureFlagContext['resetFeatureFlags'] = () =>
+    setFeatureFlags(FEATURE_FLAGS);
 
   useEffect(() => {
     // For use in E2E testing
@@ -25,18 +31,17 @@ const FeatureFlagProvider: React.FC = ({ children }) => {
   const stateContext: IFeatureFlagContext = {
     IS_ACTIVE_FEATURE: featureFlags,
     setFeatureFlag,
-    resetFeatureFlags
+    resetFeatureFlags,
+    toggleFeatureFlag
   };
 
   return <FeatureFlagContext.Provider value={stateContext}>{children}</FeatureFlagContext.Provider>;
 };
 
-function useFeatureFlags() {
+export function useFeatureFlags() {
   const context = React.useContext(FeatureFlagContext);
   if (context === undefined) {
     throw new Error('useFeatureFlags must be used with a Feature Flag Provider');
   }
   return context;
 }
-
-export { FeatureFlagProvider, FeatureFlagContext, useFeatureFlags };
