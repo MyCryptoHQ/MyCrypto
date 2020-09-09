@@ -167,5 +167,6 @@ describe('useTxMulti', () => {
         })
       )
     );
+    expect(mockAddTX).toBeCalledTimes(1);
   });
 });
