@@ -342,10 +342,11 @@ export const StoreProvider: React.FC = ({ children }) => {
   // TX HISTORY
   const [txHistory, setTxHistory] = useState<ITxHistoryApiResponse[]>([]);
 
-  useEffectOnce(() => {
-    const mainnetAccounts = accounts
-      .filter((a) => a.networkId === DEFAULT_NETWORK)
-      .map((a) => a.address);
+  const mainnetAccounts = accounts
+    .filter((a) => a.networkId === DEFAULT_NETWORK)
+    .map((a) => a.address);
+
+  useEffect(() => {
     if (mainnetAccounts.length > 0) {
       HistoryService.instance.getHistory(mainnetAccounts).then((history) => {
         if (history !== null) {
@@ -353,7 +354,7 @@ export const StoreProvider: React.FC = ({ children }) => {
         }
       });
     }
-  });
+  }, [mainnetAccounts]);
 
   const state: State = {
     accounts,
