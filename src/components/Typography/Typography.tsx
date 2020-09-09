@@ -14,3 +14,43 @@ export const Heading = ({
     {children}
   </Text>
 );
+
+export const SubHeading = ({
+  children,
+  as = 'h2',
+  ...props
+}: TypographyProps & Omit<TextProps, 'variant'>) => (
+  <Text as={as} variant="subHeading" {...props}>
+    {children}
+  </Text>
+);
+
+export const Body = ({
+  children,
+  as = 'p',
+  ...props
+}: TypographyProps & Omit<TextProps, 'variant'>) => (
+  <Text as={as} variant="body" {...props}>
+    {children}
+  </Text>
+);
+
+export const InlineLink = ({
+  children,
+  as = 'a',
+  ...props
+}: TypographyProps & Omit<TextProps, 'variant'>) => (
+  <Text as={as} variant="inlineLink" {...props}>
+    {children}
+  </Text>
+);
+
+export const Link = ({
+  children,
+  as = 'a',
+  ...props
+}: TypographyProps & Omit<TextProps, 'variant'>) => (
+  <Text as={as} variant="link" {...props}>
+    {children}
+  </Text>
+);

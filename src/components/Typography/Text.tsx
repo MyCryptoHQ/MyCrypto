@@ -41,7 +41,7 @@ export type TextProps = SpaceProps &
     as?: keyof JSX.IntrinsicElements | React.ComponentType<any>;
   };
 
-const Text: React.FC<TextProps> = styled.div<TextProps>`
+const Text: React.FC<TextProps> = styled.p<TextProps>`
   ${space}
   ${fontSize}
   ${fontStyle}

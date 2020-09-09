@@ -63,15 +63,38 @@ const theme = Object.assign({}, light, {
 
     BG_GRAY: '#f6f8fa'
   },
-  fontSizes: ['12px', '14px', '16px', '18px', '20px', '24px', '34px'],
-  lineHeights: ['12px', '14px', '16px', '18px', '20px', '24px', '36px']
+  fontSizes: ['12px', '16px', '18px', '24px', '40px'],
+  lineHeights: ['16px', '24px', '30px', '32px', '48px']
 });
 
 const variants = {
   heading: {
-    fontSize: 6,
-    color: 'BLUE_DARK_SLATE',
+    fontSize: { _: 3, sm: 4 },
+    lineHeight: { _: 2, sm: 4 },
+    fontWeight: { _: 900, sm: 'bold' },
+    color: 'BLUE_DARK_SLATE'
+  },
+  subHeading: {
+    fontSize: 2,
+    lineHeight: { _: 2, sm: 3 },
+    color: 'GREYISH_BROWN',
     fontWeight: 'bold'
+  },
+  body: {
+    fontSize: 1,
+    lineHeight: 1,
+    color: { _: 'BLUE_DARK_SLATE', sm: 'GREYISH_BROWN' }
+  },
+  inlineLink: {
+    fontSize: 1,
+    lineHeight: 1,
+    color: 'BLUE_BRIGHT',
+    fontWeight: 'bold'
+  },
+  link: {
+    fontSize: { _: 0, sm: 1 },
+    lineHeight: { _: 0, sm: 1 },
+    color: 'BLUE_BRIGHT'
   }
 };
 
