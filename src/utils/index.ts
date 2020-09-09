@@ -1,4 +1,3 @@
-export * from './error';
 export { notUndefined, isTxSigned, isTxHash } from './typeGuards';
 export * from './validators';
 export {
@@ -20,7 +19,6 @@ export {
 export { isUrl } from './isUrl';
 export { truncate } from './truncate';
 export { useOnClickOutside } from './useOnClickOutside';
-export { trace } from './trace';
 export {
   convertToFiat,
   convertToFiatFromAsset,
@@ -49,7 +47,6 @@ export { noOp } from './noOp';
 export { formatMnemonic, toChecksumAddressByChainId } from './formatters';
 export { makeBlob } from './blob';
 export { default as consoleAdvertisement } from './consoleAdvertisement';
-export { tap } from './tap';
 export {
   makePendingTxReceipt,
   makeTxConfigFromSignedTx,

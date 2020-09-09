@@ -10,13 +10,13 @@ describe('isUrl', () => {
   it('identifies protocol-prefixed app.mycrypto.com url value as valid', () => {
     expect(isUrl('https://app.mycrypto.com')).toBeTruthy();
   });
-  it('identifies localhost url value as valid', () => {
+  it('identifies localhost url value as invalid', () => {
     expect(isUrl('localhost:3000')).toBeFalsy();
   });
-  it('identifies mycrypto.com url value as valid', () => {
+  it('identifies mycrypto.com url value as invalid', () => {
     expect(isUrl('mycrypto.com')).toBeFalsy();
   });
-  it('identifies app.mycrypto.com url value as valid', () => {
+  it('identifies app.mycrypto.com url value as invalid', () => {
     expect(isUrl('mycrypto.com')).toBeFalsy();
   });
   it('identifies empty string as invalid', () => {
