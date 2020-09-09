@@ -59,9 +59,11 @@ const VerifyMessage: FunctionComponent<RouteComponentProps & Props> = ({ locatio
   const [error, setError] = useState<string | undefined>(undefined);
   const [signedMessage, setSignedMessage] = useState<ISignedMessage | null>(null);
 
-  const handleVerifySignedMessage = () => {
+  const handleClick = () => handleVerifySignedMessage();
+
+  const handleVerifySignedMessage = (json?: string) => {
     try {
-      const parsedSignature: ISignedMessage = JSON.parse(message);
+      const parsedSignature: ISignedMessage = JSON.parse(json ?? message);
       const isValid = verifySignedMessage(parsedSignature);
 
       if (!isValid) {
@@ -88,19 +90,19 @@ const VerifyMessage: FunctionComponent<RouteComponentProps & Props> = ({ locatio
     };
 
     if (address && queryMessage && signature) {
-      setMessage(
-        JSON.stringify(
-          {
-            address,
-            msg: queryMessage,
-            sig: signature,
-            version: '2'
-          },
-          null,
-          2
-        )
+      const json = JSON.stringify(
+        {
+          address,
+          msg: queryMessage,
+          sig: signature,
+          version: '2'
+        },
+        null,
+        2
       );
-      handleVerifySignedMessage();
+
+      setMessage(json);
+      handleVerifySignedMessage(json);
     }
   }, []);
 
@@ -115,7 +117,7 @@ const VerifyMessage: FunctionComponent<RouteComponentProps & Props> = ({ locatio
         height="150px"
         inputError={error}
       />
-      <VerifyButton disabled={!message} onClick={handleVerifySignedMessage}>
+      <VerifyButton disabled={!message} onClick={handleClick}>
         {translate('MSG_VERIFY')}
       </VerifyButton>
       {signedMessage && (
