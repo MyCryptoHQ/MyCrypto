@@ -1,9 +1,13 @@
+import { useContext, useEffect } from 'react';
+
 import identity from 'ramda/src/identity';
 import lensIndex from 'ramda/src/lensIndex';
 import view from 'ramda/src/view';
 import { useReducer } from 'reinspect';
 
-import { ITxObject } from '@types';
+import { StoreContext, useAccounts, useAssets, useNetworks } from '@services';
+import { ITxObject, ITxStatus, ITxType } from '@types';
+import { makePendingTxReceipt, makeTxConfigFromTxResponse } from '@utils';
 
 import { init, initWith, prepareTx, reset, sendTx, stopYield } from './actions';
 import { initialState, TxMultiReducer } from './reducer';
@@ -31,6 +35,34 @@ export type TUseTxMulti = () => {
 export const useTxMulti: TUseTxMulti = () => {
   const [state, dispatch] = useReducer(TxMultiReducer, initialState, identity, 'TxMulti');
   const getState = () => state;
+  const { accounts } = useContext(StoreContext);
+  const { addTxToAccount } = useAccounts();
+  const { assets } = useAssets();
+  const { getNetworkByChainId } = useNetworks();
+  const { account } = state;
+
+  const currentTx: TxParcel = view(lensIndex(state._currentTxIdx), state.transactions);
+
+  useEffect(() => {
+    if (
+      currentTx &&
+      currentTx.txResponse &&
+      currentTx.txHash &&
+      currentTx.status === ITxStatus.BROADCASTED
+    ) {
+      if (account && currentTx && currentTx.txResponse) {
+        const network = getNetworkByChainId(currentTx.txRaw.chainId)!;
+        const txConfig = makeTxConfigFromTxResponse(
+          currentTx.txResponse,
+          assets,
+          network,
+          accounts
+        );
+        const pendingTxReceipt = makePendingTxReceipt(currentTx.txHash)(ITxType.UNKNOWN, txConfig);
+        addTxToAccount(account, pendingTxReceipt);
+      }
+    }
+  }, [currentTx]);
 
   return {
     state,
@@ -40,8 +72,6 @@ export const useTxMulti: TUseTxMulti = () => {
     prepareTx: prepareTx(dispatch, getState),
     sendTx: sendTx(dispatch, getState),
     reset: reset(dispatch),
-    get currentTx(): TxParcel {
-      return view(lensIndex(state._currentTxIdx), state.transactions);
-    }
+    currentTx
   };
 };
