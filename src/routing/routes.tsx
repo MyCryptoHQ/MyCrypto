@@ -2,7 +2,7 @@ import React, { lazy } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import { IAppRoute } from '@types';
-import { IFeatures, ROUTE_PATHS } from '@config';
+import { IFeatureFlags, ROUTE_PATHS } from '@config';
 import { requiresDesktopApp } from './helpers';
 
 const Dashboard = lazy(() =>
@@ -105,7 +105,7 @@ export interface IAppRoutes {
 
 const DownloadAppRedirect = () => <Redirect to={ROUTE_PATHS.DOWNLOAD_DESKTOP_APP.path} />;
 
-export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatures): IAppRoute[] => [
+export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags): IAppRoute[] => [
   {
     name: ROUTE_PATHS.DASHBOARD.name,
     title: ROUTE_PATHS.DASHBOARD.title,
@@ -332,7 +332,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IFeatures): IAppRoute[] =>
 ];
 
 // Enabled Routes
-export const getAppRoutes = (IS_ACTIVE_FEATURE: IFeatures) =>
+export const getAppRoutes = (IS_ACTIVE_FEATURE: IFeatureFlags) =>
   getStaticAppRoutes(IS_ACTIVE_FEATURE).filter((APP_ROUTE) => APP_ROUTE.enabled);
 
 export const createAppRoutesObject = (paths: IAppRoute[]) => {
@@ -343,5 +343,5 @@ export const createAppRoutesObject = (paths: IAppRoute[]) => {
 };
 
 // APP_ROUTE_OBJECT is for ALL routes, even disabled ones.
-export const getAppRoutesObject = (IS_ACTIVE_FEATURE: IFeatures) =>
+export const getAppRoutesObject = (IS_ACTIVE_FEATURE: IFeatureFlags) =>
   createAppRoutesObject(getStaticAppRoutes(IS_ACTIVE_FEATURE));

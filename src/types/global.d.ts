@@ -11,7 +11,7 @@ interface CustomWindow extends Window {
   Web3Signer?: Web3Provider;
 
   // Makes FeatureFlagProvider functions available during E2E testing
-  setFeatureFlag?(key: keyof IFeatures, value: boolean): void;
+  setFeatureFlag?(key: keyof IFeatureFlags, value: boolean): void;
   resetFeatureFlags?(): void;
 }
 

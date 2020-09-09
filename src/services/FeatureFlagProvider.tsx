@@ -1,9 +1,9 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { IFeatures, FEATURE_FLAGS } from '@config';
+import { IFeatureFlags, FEATURE_FLAGS } from '@config';
 
 export interface IFeatureFlagContext {
-  IS_ACTIVE_FEATURE: IFeatures;
-  setFeatureFlag(key: keyof IFeatures, value: boolean): void;
+  IS_ACTIVE_FEATURE: IFeatureFlags;
+  setFeatureFlag(key: keyof IFeatureFlags, value: boolean): void;
   resetFeatureFlags(): void;
 }
 
@@ -12,7 +12,7 @@ const FeatureFlagContext = createContext({} as IFeatureFlagContext);
 const FeatureFlagProvider: React.FC = ({ children }) => {
   const [featureFlags, setFeatureFlags] = useState(FEATURE_FLAGS);
 
-  const setFeatureFlag = (key: keyof IFeatures, value: boolean): void =>
+  const setFeatureFlag = (key: keyof IFeatureFlags, value: boolean): void =>
     setFeatureFlags({ ...featureFlags, [key]: value });
   const resetFeatureFlags = (): void => setFeatureFlags(FEATURE_FLAGS);
 

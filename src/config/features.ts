@@ -1,6 +1,6 @@
 import { IS_DEV } from '@utils';
 
-export type IFeatures = typeof FEATURE_FLAGS;
+export type IFeatureFlags = typeof FEATURE_FLAGS;
 
 export const FEATURE_FLAGS = {
   DASHBOARD: true,
