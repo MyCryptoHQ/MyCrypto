@@ -30,9 +30,8 @@ const RootClass = () => {
         <AppProviders>
           <FullHeight>
             <DevToolsManager />
-            <FullScreen>
+            <FullScreen id="ModalContainer">
               <AppRoutes />
-              <div id="ModalContainer" />
               {IS_ELECTRON && <NewAppReleaseModal />}
             </FullScreen>
           </FullHeight>
