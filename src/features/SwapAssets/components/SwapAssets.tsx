@@ -225,7 +225,6 @@ export default function SwapAssets(props: Props) {
           assets={ownedAssets}
           label={translateRaw('X_ASSET')}
           onSelect={handleFromAssetSelected}
-          showOnlySymbol={true}
           disabled={isCalculatingToAmount || isCalculatingFromAmount}
           searchable={true}
         />
@@ -248,7 +247,6 @@ export default function SwapAssets(props: Props) {
           assets={filteredAssets}
           label={translateRaw('ASSET')}
           onSelect={handleToAssetSelected}
-          showOnlySymbol={true}
           disabled={isCalculatingToAmount || isCalculatingFromAmount}
           searchable={true}
         />

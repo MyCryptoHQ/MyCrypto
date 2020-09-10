@@ -8,9 +8,15 @@ import { COLORS, BREAK_POINTS, SPACING, FONT_SIZE } from '@theme';
 import { DeterministicWalletState, ExtendedDPath, isValidPath } from '@services';
 import translate, { Trans, translateRaw } from '@translations';
 import { DEFAULT_GAP_TO_SCAN_FOR, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
-import { accountsToCSV, useScreenSize, makeBlob } from '@utils';
+import {
+  accountsToCSV,
+  useScreenSize,
+  makeBlob,
+  filterDropdownAssets,
+  filterValidAssets,
+  sortByTicker
+} from '@utils';
 import { ExtendedAsset, Network } from '@types';
-
 import Icon from '@components/Icon';
 
 import DeterministicAccountList from './DeterministicAccountList';
@@ -181,6 +187,8 @@ const DeterministicWallet = ({
         isValidPath(value)
       )
   });
+  const relevantAssets = network ? filterValidAssets(assets, network.id) : [];
+  const filteredAssets = sortByTicker(filterDropdownAssets(relevantAssets));
 
   return dpathAddView ? (
     <MnemonicWrapper>
@@ -251,7 +259,10 @@ const DeterministicWallet = ({
       <Parameters>
         <AssetSelector
           selectedAsset={assetToUse}
-          assets={assets}
+          showAssetIcon={true}
+          showAssetName={true}
+          searchable={true}
+          assets={filteredAssets}
           onSelect={(option: ExtendedAsset) => {
             handleAssetUpdate(option);
           }}

@@ -3,7 +3,7 @@ import uniqBy from 'ramda/src/uniqBy';
 import prop from 'ramda/src/prop';
 import { validateMnemonic } from 'bip39';
 
-import { MOONPAY_ASSET_UUIDS, formatMnemonic } from '@utils';
+import { formatMnemonic } from '@utils';
 import { FormData, WalletId, ExtendedAsset } from '@types';
 import translate, { translateRaw, Trans } from '@translations';
 import { TogglablePassword, Tooltip, Input, RouterLink } from '@components';
@@ -61,9 +61,7 @@ const MnemonicDecrypt = ({ formData, onUnlock }: OwnProps) => {
     addDPaths,
     generateFreshAddress
   } = useDeterministicWallet(extendedDPaths, WalletId.MNEMONIC_PHRASE_NEW, DEFAULT_GAP_TO_SCAN_FOR);
-  // @todo -> Figure out which assets to display in dropdown. Selector is heavy with 900+ assets in it. Loads slow af.
   const [mnemonicLoginState, setMnemonicLoginState] = useState(initialMnemonicLoginState);
-  const filteredAssets = assets.filter(({ uuid }) => MOONPAY_ASSET_UUIDS.includes(uuid)); // @todo - fix this.
   const isValidMnemonic = validateMnemonic(mnemonicLoginState.formattedPhrase || '');
 
   const handleNullConnect = () => {
@@ -109,7 +107,7 @@ const MnemonicDecrypt = ({ formData, onUnlock }: OwnProps) => {
       <DeterministicWallet
         state={state}
         defaultDPath={defaultDPath}
-        assets={filteredAssets}
+        assets={assets}
         assetToUse={assetToUse}
         network={network}
         updateAsset={updateAsset}
