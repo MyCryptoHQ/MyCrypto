@@ -82,7 +82,7 @@ export default function Layout({ config = {}, className = '', children }: Props)
   const { centered = true, fluid, fullW = false, bgColor, paddingV } = config;
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
   const { error, shouldShowError, getErrorMessage } = useContext(ErrorContext);
-  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
+  const { featureFlags } = useFeatureFlags();
 
   const [topHeight, setTopHeight] = useState(0);
 
@@ -105,7 +105,7 @@ export default function Layout({ config = {}, className = '', children }: Props)
   return (
     <SMain className={className} bgColor={bgColor}>
       <STop ref={topRef}>
-        {!IS_E2E && IS_ACTIVE_FEATURE.MIGRATE_LS && <MigrateLSWithStore />}
+        {!IS_E2E && featureFlags.MIGRATE_LS && <MigrateLSWithStore />}
         {shouldShowError() && error && (
           <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
         )}

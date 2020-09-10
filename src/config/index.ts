@@ -40,7 +40,7 @@ export {
   MYC_DEXAG_COMMISSION_RATE
 } from './constants';
 export { Fiats } from './fiats';
-export { IS_ACTIVE_FEATURE, IIS_ACTIVE_FEATURE } from './isActiveFeature';
+export { FEATURE_FLAGS, IFeatureFlags } from './features';
 export { ROUTE_PATHS } from './routePaths';
 export { IWalletConfig } from './wallets';
 export {

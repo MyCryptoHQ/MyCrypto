@@ -100,7 +100,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>, head
       showHideProtectTx
     } = useContext(ProtectTxContext);
 
-    const { IS_ACTIVE_FEATURE } = useFeatureFlags();
+    const { featureFlags } = useFeatureFlags();
 
     // Wait for useTxMulti to finish initWith
     useEffect(() => {
@@ -176,7 +176,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>, head
 
     return (
       <WithProtectTxWrapper>
-        <ContentPanel heading={heading} basic={!IS_ACTIVE_FEATURE.PROTECT_TX}>
+        <ContentPanel heading={heading} basic={!featureFlags.PROTECT_TX}>
           <WithProtectTxMain protectTxShow={protectTxShow}>
             <WrappedComponent
               txConfig={txConfigMain}

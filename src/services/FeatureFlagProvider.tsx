@@ -1,20 +1,26 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { IIS_ACTIVE_FEATURE, IS_ACTIVE_FEATURE } from '@config';
+import { IFeatureFlags, FEATURE_FLAGS } from '@config';
 
 export interface IFeatureFlagContext {
-  IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE;
-  setFeatureFlag(key: keyof IIS_ACTIVE_FEATURE, value: boolean): void;
+  featureFlags: IFeatureFlags;
+  setFeatureFlag(key: keyof IFeatureFlags, value: boolean): void;
   resetFeatureFlags(): void;
+  toggleFeatureFlag(key: keyof IFeatureFlags): void;
 }
 
-const FeatureFlagContext = createContext({} as IFeatureFlagContext);
+export const FeatureFlagContext = createContext({} as IFeatureFlagContext);
 
-const FeatureFlagProvider: React.FC = ({ children }) => {
-  const [featureFlags, setFeatureFlags] = useState(IS_ACTIVE_FEATURE);
+export const FeatureFlagProvider: React.FC = ({ children }) => {
+  const [featureFlags, setFeatureFlags] = useState(FEATURE_FLAGS);
 
-  const setFeatureFlag = (key: keyof IIS_ACTIVE_FEATURE, value: boolean): void =>
+  const setFeatureFlag: IFeatureFlagContext['setFeatureFlag'] = (key, value) =>
     setFeatureFlags({ ...featureFlags, [key]: value });
-  const resetFeatureFlags = (): void => setFeatureFlags(IS_ACTIVE_FEATURE);
+
+  const toggleFeatureFlag: IFeatureFlagContext['toggleFeatureFlag'] = (key) =>
+    setFeatureFlag(key, !featureFlags[key]);
+
+  const resetFeatureFlags: IFeatureFlagContext['resetFeatureFlags'] = () =>
+    setFeatureFlags(FEATURE_FLAGS);
 
   useEffect(() => {
     // For use in E2E testing
@@ -23,20 +29,19 @@ const FeatureFlagProvider: React.FC = ({ children }) => {
   });
 
   const stateContext: IFeatureFlagContext = {
-    IS_ACTIVE_FEATURE: featureFlags,
+    featureFlags,
     setFeatureFlag,
+    toggleFeatureFlag,
     resetFeatureFlags
   };
 
   return <FeatureFlagContext.Provider value={stateContext}>{children}</FeatureFlagContext.Provider>;
 };
 
-function useFeatureFlags() {
+export function useFeatureFlags() {
   const context = React.useContext(FeatureFlagContext);
   if (context === undefined) {
     throw new Error('useFeatureFlags must be used with a Feature Flag Provider');
   }
   return context;
 }
-
-export { FeatureFlagProvider, FeatureFlagContext, useFeatureFlags };

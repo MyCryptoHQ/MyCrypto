@@ -83,14 +83,14 @@ function rendedExcludedAssetsPanel() {
 }
 
 function renderAccountPanel() {
-  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
+  const { featureFlags } = useFeatureFlags();
   const { accounts } = useContext(StoreContext);
   return (
     <AccountList
       accounts={accounts}
       deletable={true}
       copyable={true}
-      privacyCheckboxEnabled={IS_ACTIVE_FEATURE.PRIVATE_TAGS}
+      privacyCheckboxEnabled={featureFlags.PRIVATE_TAGS}
     />
   );
 }

@@ -4,7 +4,7 @@ import { Panel, Input } from '@mycrypto/ui';
 import { Button, Link, Checkbox } from '@components';
 import styled, { css } from 'styled-components';
 
-import { DEFAULT_NETWORK, IIS_ACTIVE_FEATURE } from '@config';
+import { DEFAULT_NETWORK, IFeatureFlags } from '@config';
 import { generateUUID, IS_DEV, IS_STAGING } from '@utils';
 import {
   AccountContext,
@@ -133,20 +133,24 @@ const ErrorTools = () => {
 };
 
 const FeatureFlags = () => {
-  const { IS_ACTIVE_FEATURE, setFeatureFlag } = useFeatureFlags();
+  const { featureFlags, setFeatureFlag } = useFeatureFlags();
   return (
-    <>
-      {' '}
-      {Object.entries(IS_ACTIVE_FEATURE).map((f) => (
-        <Checkbox
-          key={f[0]}
-          name={f[0]}
-          label={f[0]}
-          checked={f[1]}
-          onChange={() => setFeatureFlag(f[0] as keyof IIS_ACTIVE_FEATURE, !f[1])}
-        />
-      ))}{' '}
-    </>
+    <div style={{ marginBottom: '1em' }}>
+      <p style={{ fontWeight: 600 }}>Feature Flags</p>
+      <div>
+        {Object.entries(featureFlags)
+          .filter(([_, v]) => v !== 'core')
+          .map(([k, v]: [keyof IFeatureFlags, boolean]) => (
+            <Checkbox
+              key={k}
+              name={k}
+              label={k}
+              checked={v}
+              onChange={() => setFeatureFlag(k, !v)}
+            />
+          ))}
+      </div>
+    </div>
   );
 };
 
