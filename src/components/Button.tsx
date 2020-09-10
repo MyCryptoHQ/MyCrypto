@@ -79,7 +79,9 @@ const SButton = styled(Button)<StyledButtonProps>`
         background-color: ${COLORS.BLUE_LIGHT_DARKISH};
       }
       &:focus {
-        background-color: ${COLORS.WHITE};
+        div > span {
+          color: ${COLORS.WHITE};
+        }
       }
   `}
 
