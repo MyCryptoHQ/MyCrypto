@@ -18,7 +18,9 @@ export default class DashboardPage extends BasePage {
   }
 
   async expectAccountTableToMatchCount(count) {
-    await t.expect(Selector('section:first-of-type > div > table tbody tr').count).eql(count);
+    await t
+      .expect(Selector('section[data-testid="account-list"] > div > table tbody tr').count)
+      .eql(count);
   }
 
   async expectBalanceInBalanceList(token) {
