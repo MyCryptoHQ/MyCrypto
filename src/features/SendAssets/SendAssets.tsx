@@ -35,7 +35,7 @@ function SendAssets({ location }: RouteComponentProps) {
   const { accounts } = useContext(StoreContext);
   const { assets } = useAssets();
   const { networks } = useNetworks();
-  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
+  const { featureFlags } = useFeatureFlags();
 
   useEffect(() => {
     const txConfigInit = parseQueryParams(qs.parse(location.search))(networks, assets, accounts);
@@ -187,7 +187,7 @@ function SendAssets({ location }: RouteComponentProps) {
       defaultBackPathLabel={translateRaw('DASHBOARD')}
       completeBtnText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
       wrapperClassName={`send-assets-stepper ${protectTxShow ? 'has-side-panel' : ''}`}
-      basic={IS_ACTIVE_FEATURE.PROTECT_TX}
+      basic={featureFlags.PROTECT_TX}
     />
   );
 }

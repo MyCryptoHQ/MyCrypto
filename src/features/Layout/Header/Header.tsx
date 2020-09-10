@@ -363,8 +363,8 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
   };
 
   const announcementMessage = ANNOUNCEMENT_MSG();
-  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
-  const links = getLinks(IS_ACTIVE_FEATURE);
+  const { featureFlags } = useFeatureFlags();
+  const links = getLinks(featureFlags);
   return (
     <Navbar>
       {/* Mobile Menu */}

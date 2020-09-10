@@ -348,7 +348,7 @@ const buildAccountTable = (
   overlayRows?: [number[], [number, TUuid][]],
   setDeletingIndex?: any
 ) => {
-  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
+  const { featureFlags } = useFeatureFlags();
   const [sortingState, setSortingState] = useState(initialSortingState);
   const { totalFiat } = useContext(StoreContext);
   const { getAssetRate } = useRates();
@@ -520,7 +520,7 @@ const buildAccountTable = (
                 </Tooltip>
               )}
               <WalletTypeLabel>{getWalletConfig(account.wallet).name}</WalletTypeLabel>
-              {IS_ACTIVE_FEATURE.PRIVATE_TAGS && account.isPrivate && (
+              {featureFlags.PRIVATE_TAGS && account.isPrivate && (
                 <PrivateWalletLabel>{translateRaw('PRIVATE_ACCOUNT')}</PrivateWalletLabel>
               )}
             </WalletLabelContainer>

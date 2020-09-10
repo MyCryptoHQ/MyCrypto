@@ -33,7 +33,7 @@ const BottomRow = styled.div`
 `;
 
 const NetworkNodes: FC<Props> = ({ networks, toggleFlipped, toggleNetworkCreation }) => {
-  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
+  const { featureFlags } = useFeatureFlags();
   const { isXsScreen } = useScreenSize();
 
   const networkNodesTable = {
@@ -64,7 +64,7 @@ const NetworkNodes: FC<Props> = ({ networks, toggleFlipped, toggleNetworkCreatio
   return (
     <DashboardPanel heading={isXsScreen ? <>{translateRaw('NETWORK_AND_NODES')}</> : null}>
       <CollapsibleTable breakpoint={450} {...networkNodesTable} />
-      {IS_ACTIVE_FEATURE.CUSTOM_NETWORKS && (
+      {featureFlags.CUSTOM_NETWORKS && (
         <BottomRow>
           <AddNetworkButton onClick={toggleNetworkCreation} basic={true}>
             {`+ ${translateRaw('ADD_NETWORK')}`}

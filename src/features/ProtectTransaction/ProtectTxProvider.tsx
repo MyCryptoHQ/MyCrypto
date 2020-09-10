@@ -294,9 +294,9 @@ const ProtectTxProvider: React.FC = ({ children }) => {
     }));
   }, [state.protectTxShow, state.stepIndex, state.nansenAddressReport, state.protectTxEnabled]);
 
-  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
+  const { featureFlags } = useFeatureFlags();
 
-  const protectTxFeatureFlag = IS_ACTIVE_FEATURE.PROTECT_TX;
+  const protectTxFeatureFlag = featureFlags.PROTECT_TX;
 
   const providerState: ProtectTxContext = {
     protectTxFeatureFlag,

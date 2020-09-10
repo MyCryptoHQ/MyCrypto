@@ -3,11 +3,9 @@ import { MemoryRouter } from 'react-router';
 import { simpleRender } from 'test-utils';
 
 import SendAssets from '@features/SendAssets/SendAssets';
-import { FeatureFlagContext, RatesContext } from '@services';
+import { FeatureFlagProvider, RatesContext } from '@services';
 import { StoreContext, SettingsContext, DataContext } from '@services/Store';
 import { fSettings, fAssets } from '@fixtures';
-import { IS_ACTIVE_FEATURE } from '@config';
-import { noOp } from '@utils';
 
 // SendFlow makes RPC calls to get nonce and gas.
 jest.mock('ethers/providers', () => {
@@ -32,9 +30,7 @@ describe('SendAssetsFlow', () => {
           } as any
         }
       >
-        <FeatureFlagContext.Provider
-          value={{ IS_ACTIVE_FEATURE, setFeatureFlag: noOp, resetFeatureFlags: noOp }}
-        >
+        <FeatureFlagProvider>
           <SettingsContext.Provider
             value={
               ({
@@ -58,7 +54,7 @@ describe('SendAssetsFlow', () => {
               </RatesContext.Provider>
             </StoreContext.Provider>
           </SettingsContext.Provider>
-        </FeatureFlagContext.Provider>
+        </FeatureFlagProvider>
       </DataContext.Provider>
     </MemoryRouter>
   );
