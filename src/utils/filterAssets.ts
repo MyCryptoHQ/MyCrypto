@@ -1,4 +1,4 @@
-import { Asset, ExtendedAsset } from '@types';
+import { Asset, ExtendedAsset, NetworkId } from '@types';
 import { ASSET_DROPDOWN_SIZE_THRESHOLD } from '@config';
 
 import { USEFUL_ASSETS } from './constants';
@@ -12,3 +12,8 @@ export const filterDropdownAssets = (assets: Asset[] | ExtendedAsset[]) => {
       : assets;
   return filteredAssets;
 };
+
+export const filterValidAssets = (assets: Asset[] | ExtendedAsset[], networkId: NetworkId) =>
+  assets.filter(
+    ({ networkId: id, type }) => (type === 'base' || type === 'erc20') && id === networkId
+  );

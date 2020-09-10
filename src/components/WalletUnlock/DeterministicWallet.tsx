@@ -8,7 +8,14 @@ import { COLORS, BREAK_POINTS, SPACING, FONT_SIZE } from '@theme';
 import { DeterministicWalletState, ExtendedDPath, isValidPath } from '@services';
 import translate, { Trans, translateRaw } from '@translations';
 import { DEFAULT_GAP_TO_SCAN_FOR, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
-import { accountsToCSV, useScreenSize, makeBlob, filterDropdownAssets, sortByTicker } from '@utils';
+import {
+  accountsToCSV,
+  useScreenSize,
+  makeBlob,
+  filterDropdownAssets,
+  sortByTicker,
+  filterValidAssets
+} from '@utils';
 import { ExtendedAsset, Network } from '@types';
 import Icon from '@components/Icon';
 
@@ -180,11 +187,7 @@ const DeterministicWallet = ({
         isValidPath(value)
       )
   });
-  const relevantAssets = network
-    ? assets.filter(
-        ({ networkId: id, type }) => (type === 'base' || type === 'erc20') && id === network.id
-      )
-    : [];
+  const relevantAssets = network ? filterValidAssets(assets, network.id) : [];
   const filteredAssets = filterDropdownAssets(relevantAssets);
   const sortedList = sortByTicker(filteredAssets);
 

@@ -97,4 +97,4 @@ export { accountsToCSV } from './csv';
 export { getRootDomain } from './getRootDomain';
 export * from './wallets';
 export { isTruthy } from './isTruthy';
-export { filterDropdownAssets } from './filterAssets';
+export { filterDropdownAssets, filterValidAssets } from './filterAssets';

@@ -10,13 +10,18 @@ import {
 } from '@services/EthService/utils/formatters';
 import { ContentPanel, QRCode, AccountSelector, AssetSelector } from '@components';
 import { getNetworkById, StoreContext, useAssets } from '@services/Store';
-import { isValidAmount, sanitizeDecimalSeparator, noOp, filterDropdownAssets } from '@utils';
+import {
+  isValidAmount,
+  sanitizeDecimalSeparator,
+  noOp,
+  filterDropdownAssets,
+  filterValidAssets
+} from '@utils';
 import { IAccount as IIAccount } from '@types';
 import { ROUTE_PATHS } from '@config';
 import translate, { translateRaw } from '@translations';
-import questionToolTip from '@assets/images/icn-question.svg';
 
-// Legacy
+import questionToolTip from '@assets/images/icn-question.svg';
 import receiveIcon from '@assets/images/icn-receive.svg';
 
 const isAssetToken = (tokenType: string) => {
@@ -107,11 +112,7 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
   const { assets } = useAssets();
   const [networkId, setNetworkId] = useState(accounts[0].networkId);
   const network = getNetworkById(networkId, networks);
-  const relevantAssets = network
-    ? assets.filter(
-        ({ networkId: id, type }) => (type === 'base' || type === 'erc20') && id === network.id
-      )
-    : [];
+  const relevantAssets = network ? filterValidAssets(assets, network.id) : [];
   const filteredAssets = filterDropdownAssets(relevantAssets);
   const assetOptions = filteredAssets.map((asset) => ({
     label: asset.name,
