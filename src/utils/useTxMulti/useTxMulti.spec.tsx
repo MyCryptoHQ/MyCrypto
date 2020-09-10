@@ -21,17 +21,32 @@ jest.mock('ethers/providers', () => {
     // Since there are no nodes in our StoreContext,
     // ethers will default to FallbackProvider
     FallbackProvider: () => ({
-      sendTransaction: jest.fn().mockImplementation(() =>
-        Promise.resolve({
-          hash: '0x',
-          value: '0x',
-          gasLimit: '0x',
-          gasPrice: '0x',
-          nonce: '0x',
-          to: '0x',
-          from: '0x'
-        })
-      )
+      sendTransaction: jest
+        .fn()
+        .mockImplementationOnce(() =>
+          Promise.resolve({
+            hash: '0x1',
+            value: '0x',
+            gasLimit: '0x',
+            gasPrice: '0x',
+            nonce: '0x',
+            to: '0x',
+            from: '0x'
+          })
+        )
+        .mockImplementationOnce(() =>
+          Promise.resolve({
+            hash: '0x2',
+            value: '0x',
+            gasLimit: '0x',
+            gasPrice: '0x',
+            nonce: '0x',
+            to: '0x',
+            from: '0x'
+          })
+        ),
+      waitForTransaction: jest.fn().mockImplementation(() => Promise.resolve({})),
+      getBlock: jest.fn().mockImplementation(() => Promise.resolve({}))
     }),
     InfuraProvider: () => ({})
   };
@@ -135,7 +150,7 @@ describe('useTxMulti', () => {
     expect(isEmpty(state.transactions)).toBeTruthy();
   });
 
-  it('adds the tx to the tx history', async () => {
+  it('adds the txs to the tx history', async () => {
     const mockAddTX = jest.fn();
     const { result: r } = renderUseTxMulti({
       createActions: jest.fn()
@@ -149,7 +164,22 @@ describe('useTxMulti', () => {
     };
 
     await act(async () => {
-      await r.current.initWith(() => Promise.resolve([rawTx]), fAccount, fNetwork);
+      await r.current.initWith(
+        () =>
+          Promise.resolve([
+            { ...rawTx, value: '0x1' as ITxValue },
+            { ...rawTx, value: '0x2' as ITxValue }
+          ]),
+        fAccount,
+        fNetwork
+      );
+      await r.current.prepareTx(r.current.currentTx.txRaw);
+      await r.current.sendTx('0x' as ITxHash);
+    });
+
+    await waitFor(() => expect(r.current.currentTx.txRaw.value).toBe('0x2'));
+
+    await act(async () => {
       await r.current.prepareTx(r.current.currentTx.txRaw);
       await r.current.sendTx('0x' as ITxHash);
     });
@@ -161,12 +191,26 @@ describe('useTxMulti', () => {
           amount: '0.0',
           asset: fAssets[1],
           baseAsset: fAssets[1],
-          hash: '0x',
+          hash: '0x1',
           txType: ITxType.UNKNOWN,
           status: ITxStatus.PENDING
         })
       )
     );
-    expect(mockAddTX).toBeCalledTimes(1);
+
+    await waitFor(() =>
+      expect(mockAddTX).toBeCalledWith(
+        fAccount,
+        expect.objectContaining({
+          amount: '0.0',
+          asset: fAssets[1],
+          baseAsset: fAssets[1],
+          hash: '0x2',
+          txType: ITxType.UNKNOWN,
+          status: ITxStatus.PENDING
+        })
+      )
+    );
+    expect(mockAddTX).toBeCalledTimes(2);
   });
 });
