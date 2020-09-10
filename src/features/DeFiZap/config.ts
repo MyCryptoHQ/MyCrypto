@@ -45,6 +45,7 @@ export interface IZapConfig {
   poolTokenUUID: string;
   breakdownImage: any;
   breakdownTooltip: string;
+  withdrawTooltip?: React.ReactElement | string;
   positionDetails(): JSX.Element;
 }
 
@@ -96,7 +97,8 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     breakdownImage: unipoolSethBreakdown,
     breakdownTooltip: translateRaw('ZAP_UNISWAP_TOOLTIP'),
     positionDetails: () =>
-      BullishIndicator({ text: translateRaw('ZAP_POSITION_BULLISH', { $asset: 'ETH' }) })
+      BullishIndicator({ text: translateRaw('ZAP_POSITION_BULLISH', { $asset: 'ETH' }) }),
+    withdrawTooltip: translate('ZAP_WITHDRAW_TOOLTIP')
   },
 
   unipooldai: {
@@ -117,7 +119,8 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     breakdownImage: unipoolDaiBreakdown,
     breakdownTooltip: translateRaw('ZAP_UNISWAP_TOOLTIP'),
     positionDetails: () =>
-      NeutralIndicator({ text: translateRaw('ZAP_POSITION_NEUTRAL', { $asset: 'ETH' }) })
+      NeutralIndicator({ text: translateRaw('ZAP_POSITION_NEUTRAL', { $asset: 'ETH' }) }),
+    withdrawTooltip: translate('ZAP_WITHDRAW_TOOLTIP')
   },
 
   compounddai: {
