@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import uniqBy from 'ramda/src/uniqBy';
 import prop from 'ramda/src/prop';
 
-import { MOONPAY_ASSET_UUIDS, IS_ELECTRON } from '@utils';
+import { IS_ELECTRON } from '@utils';
 import { FormData, WalletId, ExtendedAsset } from '@types';
 import translate, { translateRaw, Trans } from '@translations';
 import { NewTabLink, Spinner, Button, RouterLink } from '@components';
@@ -58,9 +58,6 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
     generateFreshAddress
   } = useDeterministicWallet(extendedDPaths, WalletId.LEDGER_NANO_S_NEW, DEFAULT_GAP_TO_SCAN_FOR);
 
-  // @todo -> Figure out which assets to display in dropdown. Dropdown is heavy with 900+ assets in it. Loads slow af.
-  const filteredAssets = assets.filter(({ uuid }) => MOONPAY_ASSET_UUIDS.includes(uuid)); // @todo - fix this.
-
   const handleAssetUpdate = (newAsset: ExtendedAsset) => {
     setAssetToUse(newAsset);
     updateAsset(newAsset);
@@ -95,7 +92,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
       <DeterministicWallet
         state={state}
         defaultDPath={defaultDPath}
-        assets={filteredAssets}
+        assets={assets}
         assetToUse={assetToUse}
         network={network}
         updateAsset={updateAsset}
