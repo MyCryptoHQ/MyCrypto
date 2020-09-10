@@ -243,6 +243,7 @@ export default function AccountList(props: AccountListProps) {
       actionLink={actionLink}
       className={`AccountList ${className}`}
       footer={<Footer />}
+      data-testid="account-list"
     >
       <FixedSizeCollapsibleTable
         breakpoint={breakpointToNumber(BREAK_POINTS.SCREEN_XS)}
