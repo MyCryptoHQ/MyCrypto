@@ -15,7 +15,8 @@ import {
   sanitizeDecimalSeparator,
   noOp,
   filterDropdownAssets,
-  filterValidAssets
+  filterValidAssets,
+  sortByLabel
 } from '@utils';
 import { IAccount as IIAccount } from '@types';
 import { ROUTE_PATHS } from '@config';
@@ -114,11 +115,13 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
   const network = getNetworkById(networkId, networks);
   const relevantAssets = network ? filterValidAssets(assets, network.id) : [];
   const filteredAssets = filterDropdownAssets(relevantAssets);
-  const assetOptions = filteredAssets.map((asset) => ({
-    label: asset.name,
-    id: asset.uuid,
-    ...asset
-  }));
+  const assetOptions = sortByLabel(
+    filteredAssets.map((asset) => ({
+      label: asset.name,
+      id: asset.uuid,
+      ...asset
+    }))
+  );
 
   const [chosenAssetName, setAssetName] = useState(filteredAssets[0].name);
   const selectedAsset = filteredAssets.find((asset) => asset.name === chosenAssetName);
@@ -199,7 +202,6 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
                       selectedAsset={field.value}
                       assets={assetOptions}
                       showAssetName={true}
-                      showAssetIcon={false}
                       searchable={true}
                       onSelect={(option) => {
                         form.setFieldValue(field.name, option);

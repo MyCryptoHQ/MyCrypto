@@ -36,7 +36,11 @@ export function AssetSelectorItem({
       data-testid={`asset-selector-option-${ticker}`}
     >
       {showAssetIcon && <AssetIcon uuid={uuid} size={'1.5rem'} />}
-      <Typography bold={true} value={ticker} style={{ marginLeft: '10px' }} />
+      <Typography
+        bold={true}
+        value={ticker}
+        style={{ marginLeft: showAssetIcon ? '10px' : '0px' }}
+      />
       {name && <span>&nbsp; - &nbsp;</span>}
       <Typography value={name} />
     </SContainer>
