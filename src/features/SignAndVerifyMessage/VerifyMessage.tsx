@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
+import { parse } from 'query-string';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { InputField } from '@components';
 import { verifySignedMessage } from '@services/EthService';
 import { BREAK_POINTS, COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ISignedMessage } from '@types';
+import { VerifyParams } from '@features/SignAndVerifyMessage/types';
 
 const { SCREEN_XS } = BREAK_POINTS;
 const { WHITE, SUCCESS_GREEN } = COLORS;
@@ -20,6 +23,7 @@ const Content = styled.div`
 interface VerifyButtonProps {
   disabled?: boolean;
 }
+
 const VerifyButton = styled(Button)<VerifyButtonProps>`
   ${(props) => props.disabled && 'opacity: 0.4;'}
 
@@ -46,14 +50,20 @@ const signatureExample: ISignedMessage = {
 };
 const signaturePlaceholder = JSON.stringify(signatureExample, null, 2);
 
-export default function VerifyMessage() {
+interface Props {
+  setShowSubtitle(show: boolean): void;
+}
+
+const VerifyMessage: FunctionComponent<RouteComponentProps & Props> = ({ location }) => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState<string | undefined>(undefined);
   const [signedMessage, setSignedMessage] = useState<ISignedMessage | null>(null);
 
-  const handleVerifySignedMessage = () => {
+  const handleClick = () => handleVerifySignedMessage();
+
+  const handleVerifySignedMessage = (json?: string) => {
     try {
-      const parsedSignature: ISignedMessage = JSON.parse(message);
+      const parsedSignature: ISignedMessage = JSON.parse(json ?? message);
       const isValid = verifySignedMessage(parsedSignature);
 
       if (!isValid) {
@@ -74,6 +84,28 @@ export default function VerifyMessage() {
     setSignedMessage(null);
   };
 
+  useEffect(() => {
+    const { address, message: queryMessage, signature } = parse(location.search) as {
+      [key in VerifyParams]?: string;
+    };
+
+    if (address && queryMessage && signature) {
+      const json = JSON.stringify(
+        {
+          address,
+          msg: queryMessage,
+          sig: signature,
+          version: '2'
+        },
+        null,
+        2
+      );
+
+      setMessage(json);
+      handleVerifySignedMessage(json);
+    }
+  }, []);
+
   return (
     <Content>
       <InputField
@@ -85,7 +117,7 @@ export default function VerifyMessage() {
         height="150px"
         inputError={error}
       />
-      <VerifyButton disabled={!message} onClick={handleVerifySignedMessage}>
+      <VerifyButton disabled={!message} onClick={handleClick}>
         {translate('MSG_VERIFY')}
       </VerifyButton>
       {signedMessage && (
@@ -98,4 +130,6 @@ export default function VerifyMessage() {
       )}
     </Content>
   );
-}
+};
+
+export default withRouter(VerifyMessage);
