@@ -1,4 +1,4 @@
-export { AccountContext, AccountProvider } from './AccountProvider';
+export { default as useAccounts } from './useAccounts';
 export {
   getBaseAsset,
   getAccountByAddressAndNetworkName,
