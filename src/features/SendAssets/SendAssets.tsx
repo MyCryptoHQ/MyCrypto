@@ -155,12 +155,12 @@ function SendAssets({ location }: RouteComponentProps) {
     return walletSteps;
   };
 
-  const { addNewTxToAccount } = useAccounts();
+  const { addTxToAccount } = useAccounts();
 
   // Adds TX to history
   useEffect(() => {
     if (reducerState.txReceipt) {
-      addNewTxToAccount(reducerState.txConfig!.senderAccount, reducerState.txReceipt);
+      addTxToAccount(reducerState.txConfig!.senderAccount, reducerState.txReceipt);
     }
   }, [reducerState.txReceipt]);
 

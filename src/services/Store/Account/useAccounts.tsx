@@ -68,7 +68,7 @@ function useAccounts() {
 
   const updateAccount = (uuid: TUuid, account: IAccount) => model.update(uuid, account);
 
-  const addNewTxToAccount = (accountData: IAccount, newTx: ITxReceipt) => {
+  const addTxToAccount = (accountData: IAccount, newTx: ITxReceipt) => {
     if ('status' in newTx && [ITxStatus.SUCCESS, ITxStatus.FAILED].includes(newTx.status)) {
       trackTxHistory({
         eventParams: {
@@ -189,7 +189,7 @@ function useAccounts() {
     createMultipleAccountsWithIDs,
     deleteAccount,
     updateAccount,
-    addNewTxToAccount,
+    addTxToAccount,
     getAccountByAddressAndNetworkName,
     updateAccountAssets,
     updateAllAccountsAssets,

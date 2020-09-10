@@ -134,7 +134,7 @@ export const StoreContext = createContext({} as State);
 export const StoreProvider: React.FC = ({ children }) => {
   const {
     accounts: rawAccounts,
-    addNewTxToAccount,
+    addTxToAccount,
     getAccountByAddressAndNetworkName,
     updateAccountAssets,
     updateAllAccountsAssets,
@@ -312,7 +312,7 @@ export const StoreProvider: React.FC = ({ children }) => {
               txTimestamp,
               txResponse.blockNumber
             );
-            addNewTxToAccount(senderAccount, finishedTxReceipt);
+            addTxToAccount(senderAccount, finishedTxReceipt);
             const storeAccount = accounts.find((acc) =>
               isSameAddress(senderAccount.address, acc.address)
             ) as StoreAccount;

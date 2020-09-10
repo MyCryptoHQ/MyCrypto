@@ -19,7 +19,7 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
   state,
   setState
 }) => {
-  const { addNewTxToAccount } = useAccounts();
+  const { addTxToAccount } = useAccounts();
 
   const handleTxSigned = async (signResponse: any, cb: any) => {
     const { txConfig } = state;
@@ -30,7 +30,7 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
         signResponse && signResponse.hash
           ? signResponse
           : { hash: signResponse, asset: txConfig.asset };
-      addNewTxToAccount(state.txConfig.senderAccount, {
+      addTxToAccount(state.txConfig.senderAccount, {
         ...txReceipt,
         to: state.txConfig.receiverAddress,
         from: state.txConfig.senderAccount.address,
@@ -51,7 +51,7 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
         .catch((hash) => hash as ITxHash)
         .then((txHash) => {
           const pendingTxReceipt = makePendingTxReceipt(txHash)(ITxType.DEFIZAP, txConfig);
-          addNewTxToAccount(state.txConfig.senderAccount, pendingTxReceipt);
+          addTxToAccount(state.txConfig.senderAccount, pendingTxReceipt);
           setState((prevState: ZapInteractionState) => ({
             ...prevState,
             txReceipt: pendingTxReceipt

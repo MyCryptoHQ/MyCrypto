@@ -32,7 +32,7 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
   state,
   setState
 }) => {
-  const { addNewTxToAccount } = useAccounts();
+  const { addTxToAccount } = useAccounts();
 
   const handleNetworkSelected = (networkId: NetworkId) => {
     setState((prevState: DeployContractsState) => ({
@@ -103,7 +103,7 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
     if (isWeb3Wallet(account.wallet)) {
       const txReceipt =
         signResponse && signResponse.hash ? signResponse : { ...txConfig, hash: signResponse };
-      addNewTxToAccount(state.txConfig.senderAccount, {
+      addTxToAccount(state.txConfig.senderAccount, {
         ...txReceipt,
         to: state.txConfig.receiverAddress,
         from: state.txConfig.senderAccount.address,
@@ -127,7 +127,7 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
           const pendingTxReceipt = makePendingTxReceipt(
             retrievedTransactionReceipt.hash as ITxHash
           )(ITxType.DEPLOY_CONTRACT, txConfig);
-          addNewTxToAccount(state.txConfig.senderAccount, pendingTxReceipt);
+          addTxToAccount(state.txConfig.senderAccount, pendingTxReceipt);
           setState((prevState: DeployContractsState) => ({
             ...prevState,
             txReceipt: pendingTxReceipt
