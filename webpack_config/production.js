@@ -31,23 +31,14 @@ module.exports = merge.smart(common, {
 
       {
         test: /\.scss$/,
-        use: [
-          MiniCSSExtractPlugin.loader,
-          'css-loader',
-          {
-            loader: 'sass-loader',
-            options: {
-              additionalData: `$is-electron: ${TargetEnv === ELECTRON};`
-            }
-          }
-        ]
+        use: [MiniCSSExtractPlugin.loader, 'css-loader', 'sass-loader']
       }
     ]
   },
 
   plugins: [
     new webpack.EnvironmentPlugin({
-      'TARGET_ENV': TargetEnv
+      TARGET_ENV: TargetEnv
     }),
 
     new MiniCSSExtractPlugin({
