@@ -64,9 +64,9 @@ function useAccounts() {
     model.updateAll(allAccounts);
   };
 
-  const deleteAccount = model.destroy;
+  const deleteAccount = (account: IAccount) => model.destroy(account);
 
-  const updateAccount = (uuid: TUuid, a: IAccount) => model.update(uuid, a);
+  const updateAccount = (uuid: TUuid, account: IAccount) => model.update(uuid, account);
 
   const addNewTxToAccount = (accountData: IAccount, newTx: ITxReceipt) => {
     if ('status' in newTx && [ITxStatus.SUCCESS, ITxStatus.FAILED].includes(newTx.status)) {
