@@ -24,7 +24,7 @@ interface SDropdownProps {
 }
 
 const Divider = styled('div')`
-  border-bottom: ${(props) => `1px solid ${props.theme.GAU.COLORS.dividerColor}`};
+  border-bottom: ${(props) => `1px solid ${props.theme.colors.GREY_ATHENS}`};
   margin: 0px 20px 15px;
 `;
 
@@ -34,7 +34,7 @@ const SDropdown = styled('div')<SDropdownProps>`
   position: relative;
   height: 48px;
   padding: 9px 15px;
-  border: ${(props) => `1px solid ${props.theme.GAU.COLORS.dividerColor}`};
+  border: ${(props) => `1px solid ${props.theme.colors.GREY_ATHENS}`};
   border-radius: 2px;
   background-color: #ffffff;
   cursor: pointer;
