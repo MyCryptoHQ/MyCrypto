@@ -32,7 +32,7 @@ import { getAllTokensBalancesOfAccount } from '../BalanceService';
 
 export interface IAccountContext {
   accounts: IAccount[];
-  createAccountWithID(accountData: IRawAccount, uuid: TUuid): void;
+  createAccountWithID(uuid: TUuid, accountData: IRawAccount): void;
   createMultipleAccountsWithIDs(accountData: IAccount[]): void;
   deleteAccount(account: IAccount): void;
   updateAccount(uuid: TUuid, accountData: IAccount): void;
@@ -53,9 +53,9 @@ function useAccounts() {
     actionName: 'Tx Made'
   });
 
-  const createAccountWithID = (item: IRawAccount, uuid: TUuid) => {
+  const createAccountWithID = (uuid: TUuid, item: IRawAccount) => {
     addAccountToFavorites(uuid);
-    model.create({ ...item, uuid });
+    model.createWithID({ ...item, uuid }, uuid);
   };
 
   const createMultipleAccountsWithIDs = (newAccounts: IAccount[]) => {

@@ -420,7 +420,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       }
 
       const { uuid, ...restAccount } = account!;
-      createAccountWithID(restAccount, uuid);
+      createAccountWithID(uuid, restAccount);
       setAccountRestore((prevState) => ({ ...prevState, [uuid]: undefined }));
     },
     addMultipleAccounts: (
@@ -511,7 +511,7 @@ export const StoreProvider: React.FC = ({ children }) => {
         };
         createContact(newLabel);
       }
-      createAccountWithID(account, accountUUID);
+      createAccountWithID(accountUUID, account);
 
       return account;
     },

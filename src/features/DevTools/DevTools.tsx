@@ -197,7 +197,7 @@ const DevTools = () => {
         <Formik
           initialValues={dummyAccount}
           onSubmit={(values: IRawAccount, { setSubmitting }) => {
-            createAccountWithID(values, generateUUID());
+            createAccountWithID(generateUUID(), values);
             setSubmitting(false);
           }}
         >
