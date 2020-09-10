@@ -53,7 +53,7 @@ function useAccounts() {
     actionName: 'Tx Made'
   });
 
-  const createAccountWithID = (item: IAccount, uuid: TUuid) => {
+  const createAccountWithID = (item: IRawAccount, uuid: TUuid) => {
     addAccountToFavorites(uuid);
     model.create({ ...item, uuid });
   };

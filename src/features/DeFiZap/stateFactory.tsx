@@ -1,5 +1,3 @@
-import { useContext } from 'react';
-
 import { TUseStateReducerFactory, makePendingTxReceipt } from '@utils';
 import { isWeb3Wallet } from '@utils/web3';
 import {
@@ -12,7 +10,7 @@ import {
   TStepAction
 } from '@types';
 import { hexWeiToString, ProviderHandler } from '@services/EthService';
-import { AccountContext } from '@services/Store';
+import { useAccounts } from '@services/Store';
 
 import { createSimpleTxObject } from './helpers';
 import { ZapInteractionState } from './types';
@@ -21,7 +19,7 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
   state,
   setState
 }) => {
-  const { addNewTxToAccount } = useContext(AccountContext);
+  const { addNewTxToAccount } = useAccounts();
 
   const handleTxSigned = async (signResponse: any, cb: any) => {
     const { txConfig } = state;

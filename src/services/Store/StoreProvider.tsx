@@ -63,7 +63,7 @@ import {
   getNewDefaultAssetTemplateByNetwork,
   useAssets
 } from './Asset';
-import { AccountContext, getDashboardAccounts } from './Account';
+import { useAccounts, getDashboardAccounts } from './Account';
 import { SettingsContext } from './Settings';
 import { getNetworkById, useNetworks } from './Network';
 import { findNextUnusedDefaultLabel, useContacts } from './Contact';
@@ -142,7 +142,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     deleteAccount,
     createAccountWithID,
     createMultipleAccountsWithIDs
-  } = useContext(AccountContext);
+  } = useAccounts();
   const { assets, addAssetsFromAPI } = useAssets();
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { networks } = useNetworks();

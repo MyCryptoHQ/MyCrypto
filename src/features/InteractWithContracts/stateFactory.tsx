@@ -1,4 +1,4 @@
-import { useContext, useCallback } from 'react';
+import { useCallback } from 'react';
 import debounce from 'lodash/debounce';
 
 import { TUseStateReducerFactory, makePendingTxReceipt, isSameAddress } from '@utils';
@@ -22,7 +22,7 @@ import {
   getResolvedENSAddress,
   EtherscanService,
   getIsValidENSAddressFunction,
-  AccountContext,
+  useAccounts,
   useContracts,
   useNetworks
 } from '@services';
@@ -66,7 +66,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
 }) => {
   const { getContractsByIds, createContract, deleteContract } = useContracts();
   const { networks, updateNetwork } = useNetworks();
-  const { addNewTxToAccount } = useContext(AccountContext);
+  const { addNewTxToAccount } = useAccounts();
 
   const handleNetworkSelected = (networkId: NetworkId) => {
     setState((prevState: InteractWithContractState) => ({

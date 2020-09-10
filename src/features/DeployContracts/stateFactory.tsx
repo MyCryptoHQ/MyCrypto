@@ -1,9 +1,8 @@
-import { useContext } from 'react';
 import { isHexString } from 'ethjs-util';
 
 import { TUseStateReducerFactory, makePendingTxReceipt } from '@utils';
 import { StoreAccount, NetworkId, ITxType, ITxStatus, ITxHash } from '@types';
-import { ProviderHandler, getGasEstimate, AccountContext } from '@services';
+import { ProviderHandler, getGasEstimate, useAccounts } from '@services';
 import { isWeb3Wallet } from '@utils/web3';
 import { translateRaw } from '@translations';
 import {
@@ -33,7 +32,7 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
   state,
   setState
 }) => {
-  const { addNewTxToAccount } = useContext(AccountContext);
+  const { addNewTxToAccount } = useAccounts();
 
   const handleNetworkSelected = (networkId: NetworkId) => {
     setState((prevState: DeployContractsState) => ({

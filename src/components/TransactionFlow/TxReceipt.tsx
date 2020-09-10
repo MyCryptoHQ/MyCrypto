@@ -31,7 +31,7 @@ import {
   Tooltip,
   Button
 } from '@components';
-import { AccountContext, StoreContext, SettingsContext, useContacts } from '@services/Store';
+import { useAccounts, StoreContext, SettingsContext, useContacts } from '@services/Store';
 import { useRates, fetchGasPriceEstimates } from '@services';
 import {
   ProviderHandler,
@@ -101,7 +101,7 @@ const TxReceipt = ({
 }: ITxReceiptStepProps & RouteComponentProps & Props) => {
   const { getAssetRate } = useRates();
   const { getContactByAddressAndNetworkId } = useContacts();
-  const { addNewTxToAccount } = useContext(AccountContext);
+  const { addNewTxToAccount } = useAccounts();
   const { accounts } = useContext(StoreContext);
   const { settings } = useContext(SettingsContext);
   const [txStatus, setTxStatus] = useState(

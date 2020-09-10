@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { AccountList, Desktop, Mobile } from '@components';
 import BannerAd from '@components/BannerAd/BannerAd';
-import { AccountContext, StoreContext } from '@services/Store';
+import { useAccounts, StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 import { useFeatureFlags } from '@services';
 
@@ -34,7 +34,7 @@ const DashboardWrapper = styled.div`
 export default function Dashboard() {
   const { featureFlags } = useFeatureFlags();
   const { isMyCryptoMember, currentAccounts, assets } = useContext(StoreContext);
-  const { accounts } = useContext(AccountContext);
+  const { accounts } = useAccounts();
   const relevantActions = filterDashboardActions(actions, assets());
 
   return (

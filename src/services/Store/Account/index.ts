@@ -1,4 +1,4 @@
-export { default as useAccounts } from './useAccounts';
+export { default as useAccounts, IAccountContext } from './useAccounts';
 export {
   getBaseAsset,
   getAccountByAddressAndNetworkName,
