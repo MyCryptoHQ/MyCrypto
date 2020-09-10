@@ -31,7 +31,7 @@ const Title = styled(Typography)`
 Title.defaultProps = { as: 'div' };
 
 const MissingTitle = styled(Title)`
-  color: ${(props) => props.theme.textLight};
+  color: ${(props) => props.theme.colors.GREYISH_BROWN};
   font-style: italic;
 `;
 

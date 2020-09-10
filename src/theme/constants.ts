@@ -1,17 +1,3 @@
-import { light } from '@mycrypto/ui';
-
-// Combine the themes in a single object to be consummed by SC ThemeProvider
-export const GAU_THEME = Object.assign({}, light, {
-  GAU: {
-    COLORS: {
-      borderColor: 'rgb(232, 234, 237)',
-      brightSkyBlue: 'rgb(30, 184, 231)',
-      cloudyBlue: 'rgb(181, 191, 199)',
-      dividerColor: 'rgb(229, 236, 243)'
-    }
-  }
-});
-
 export const COLORS = {
   BLUE_BRIGHT: '#1eb8e7',
   BLUE_LIGHT: '#007896',
