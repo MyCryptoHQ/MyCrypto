@@ -13,8 +13,8 @@ import {
   useScreenSize,
   makeBlob,
   filterDropdownAssets,
-  sortByTicker,
-  filterValidAssets
+  filterValidAssets,
+  sortByTicker
 } from '@utils';
 import { ExtendedAsset, Network } from '@types';
 import Icon from '@components/Icon';
@@ -188,8 +188,7 @@ const DeterministicWallet = ({
       )
   });
   const relevantAssets = network ? filterValidAssets(assets, network.id) : [];
-  const filteredAssets = filterDropdownAssets(relevantAssets);
-  const sortedList = sortByTicker(filteredAssets);
+  const filteredAssets = sortByTicker(filterDropdownAssets(relevantAssets));
 
   return dpathAddView ? (
     <MnemonicWrapper>
@@ -263,7 +262,7 @@ const DeterministicWallet = ({
           showAssetIcon={true}
           showAssetName={true}
           searchable={true}
-          assets={sortedList}
+          assets={filteredAssets}
           onSelect={(option: ExtendedAsset) => {
             handleAssetUpdate(option);
           }}
