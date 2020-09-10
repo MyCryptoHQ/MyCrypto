@@ -1,12 +1,14 @@
 import { light } from '@mycrypto/ui';
 
-// Direct require to customise the webpack default scss loader
-export const GAU_COLORS = require('sass-extract-loader?{"plugins": ["sass-extract-js"]}!./colors.scss');
-
 // Combine the themes in a single object to be consummed by SC ThemeProvider
 export const GAU_THEME = Object.assign({}, light, {
   GAU: {
-    COLORS: GAU_COLORS
+    COLORS: {
+      borderColor: 'rgb(232, 234, 237)',
+      brightSkyBlue: 'rgb(30, 184, 231)',
+      cloudyBlue: 'rgb(181, 191, 199)',
+      dividerColor: 'rgb(229, 236, 243)'
+    }
   }
 });
 
