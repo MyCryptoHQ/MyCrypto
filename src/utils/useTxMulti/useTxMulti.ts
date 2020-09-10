@@ -1,13 +1,11 @@
 import { useContext, useEffect } from 'react';
 
-import identity from 'ramda/src/identity';
-import lensIndex from 'ramda/src/lensIndex';
-import view from 'ramda/src/view';
 import { useReducer } from 'reinspect';
 
 import { StoreContext, useAccounts, useAssets, useNetworks } from '@services';
 import { ITxObject, ITxStatus, ITxType } from '@types';
 import { makePendingTxReceipt, makeTxConfigFromTxResponse } from '@utils';
+import { identity, lensIndex, view } from '@vendor';
 
 import { init, initWith, prepareTx, reset, sendTx, stopYield } from './actions';
 import { initialState, TxMultiReducer } from './reducer';
