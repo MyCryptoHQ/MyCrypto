@@ -48,7 +48,7 @@ const renderUseTxHistory = ({
 };
 
 describe('useTxHistory', () => {
-  it('uses tx history from StoreProvider ', () => {
+  it('uses tx history from StoreProvider', () => {
     const { result } = renderUseTxHistory({ apiTransactions: [fTxHistoryAPI] });
 
     expect(result.current.txHistory).toEqual([
@@ -102,7 +102,7 @@ describe('useTxHistory', () => {
       ],
       apiTransactions: [fTxHistoryAPI]
     });
-    expect(result.current.txHistory.length).toEqual(1);
+    expect(result.current.txHistory).toHaveLength(1);
     expect(result.current.txHistory).toEqual([
       {
         ...fTxReceipt,
@@ -126,6 +126,6 @@ describe('useTxHistory', () => {
       ],
       apiTransactions: [fTxHistoryAPI]
     });
-    expect(result.current.txHistory.length).toEqual(2);
+    expect(result.current.txHistory).toHaveLength(2);
   });
 });

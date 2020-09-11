@@ -27,7 +27,7 @@ describe('AppStateReducer', () => {
       };
 
       const newState = dispatch({ type: ActionT.ADD_ITEM, payload })(prevState);
-      expect(newState[LSKeys.ACCOUNTS].length).toEqual(2);
+      expect(newState[LSKeys.ACCOUNTS]).toHaveLength(2);
       expect(newState[LSKeys.ACCOUNTS]).toContainEqual(account2);
     });
 

@@ -28,7 +28,7 @@ describe('fetchTxStatus', () => {
       txHash: fTxReceipt.hash
     });
     expect(result?.cachedTx).toStrictEqual(fTxReceipt);
-    expect(result?.fetchedTx).toBe(undefined);
+    expect(result?.fetchedTx).toBeUndefined();
   });
   it('fetches tx from nodes', async () => {
     const result = await fetchTxStatus({
@@ -37,7 +37,7 @@ describe('fetchTxStatus', () => {
       networkId: fNetworks[1].id,
       txHash: fTxReceipt.hash
     });
-    expect(result?.cachedTx).toBe(undefined);
+    expect(result?.cachedTx).toBeUndefined();
     expect({
       ...result?.fetchedTx,
       gasLimit: bigNumberify(result?.fetchedTx?.gasLimit || 0),

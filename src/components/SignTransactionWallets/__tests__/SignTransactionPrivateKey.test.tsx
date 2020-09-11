@@ -41,6 +41,6 @@ describe('SignTransactionWallets: PrivateKey', () => {
     fireEvent.change(input!, { target: { value: 'privkey' } });
     fireEvent.click(getByText(translateRaw('DEP_SIGNTX')));
 
-    await waitFor(() => expect(defaultProps.onComplete).toBeCalledWith('txhash'));
+    await waitFor(() => expect(defaultProps.onComplete).toHaveBeenCalledWith('txhash'));
   });
 });

@@ -10,7 +10,7 @@ import {
 } from './constants';
 import { CvarEntry, Params } from './types';
 
-let instantiated: boolean = false;
+let instantiated = false;
 let analyticsId: number = IS_ELECTRON ? ANALYTICS_ID_DESKTOP : ANALYTICS_ID_SITE;
 
 export default class AnalyticsService {

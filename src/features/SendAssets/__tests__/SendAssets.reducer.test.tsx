@@ -78,7 +78,7 @@ describe('SendAssetsReducer', () => {
     });
   });
   describe('SIGN_SUCCESS', () => {
-    it('it updates txConfig and signedTx', () => {
+    it('updates txConfig and signedTx', () => {
       const prevState = {
         txReceipt: undefined,
         txConfig: defaultTxConfig,
@@ -110,7 +110,7 @@ describe('SendAssetsReducer', () => {
     });
   });
   describe('WEB3_SIGN_SUCCESS', () => {
-    it('it updates the txReceipt with values from txConfig', () => {
+    it('updates the txReceipt with values from txConfig', () => {
       const prevState = {
         txReceipt: undefined,
         txConfig: defaultTxConfig,
@@ -154,7 +154,7 @@ describe('SendAssetsReducer', () => {
     });
   });
   describe('SEND_SUCCESS', () => {
-    it('it updates the txReceipt with values from txConfig', () => {
+    it('updates the txReceipt with values from txConfig', () => {
       const prevState = {
         txReceipt: undefined,
         txConfig: defaultTxConfig,

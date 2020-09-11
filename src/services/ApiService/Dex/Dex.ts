@@ -9,7 +9,7 @@ import { ERC20 } from '@services/EthService';
 import { default as ApiService } from '../ApiService';
 import { DexTrade } from './types';
 
-let instantiated: boolean = false;
+let instantiated = false;
 
 const CancelToken = axios.CancelToken;
 let cancel: any = null;

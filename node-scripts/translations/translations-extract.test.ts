@@ -43,7 +43,7 @@ describe('Translations extract', () => {
     // Write empty file
     writeFile(JSON_MOCK_FILE_PATH, JSON_MOCK_EMPTY_FIXTURE);
     const emptyFile = readFile(JSON_MOCK_FILE_PATH);
-    expect(Object.keys(emptyFile.data).length).toBe(0);
+    expect(Object.keys(emptyFile.data)).toHaveLength(0);
 
     // Write keys with empty values
     const translationObjEmptyKeys = TRANSLATE_KEYS_FIXTURE.slice(1).reduce(

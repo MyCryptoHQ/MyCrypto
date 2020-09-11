@@ -31,8 +31,8 @@ describe('IFrame', () => {
     const props = { ...defaultProps };
     getComponent(props);
     fireEvent.load(screen.getByTestId('iframe'));
-    expect(props.onLoad).toBeCalledTimes(1);
-    expect(props.onLoad).toBeCalledWith(screen.getByTestId('iframe'));
+    expect(props.onLoad).toHaveBeenCalledTimes(1);
+    expect(props.onLoad).toHaveBeenCalledWith(screen.getByTestId('iframe'));
   });
 
   // it('triggers reload on prop change', () => {

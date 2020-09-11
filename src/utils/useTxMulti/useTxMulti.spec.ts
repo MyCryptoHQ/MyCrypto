@@ -28,7 +28,7 @@ describe('useTxMulti', () => {
     expect(state.network).toEqual(fNetwork);
     expect(state.isSubmitting).toBeFalsy();
     // Check that the transactions are correctly formatted.
-    expect(state.transactions.length).toEqual(rawTxs.length);
+    expect(state.transactions).toHaveLength(rawTxs.length);
     expect(state.transactions).toContainEqual({
       txRaw: { to: 'address1', value: 'any', data: 'empty' },
       _uuid: 'cc85a4c4-8c65-54a7-b286-bac7096b012a',
@@ -50,7 +50,7 @@ describe('useTxMulti', () => {
     expect(state.network).toEqual(fNetwork);
     expect(state.isSubmitting).toBeFalsy();
     // Check that the transactions are correctly formatted.
-    expect(state.transactions.length).toEqual(rawTxs.length);
+    expect(state.transactions).toHaveLength(rawTxs.length);
     expect(state.transactions).toContainEqual({
       txRaw: { to: 'address1', value: 'any', data: 'empty' },
       _uuid: 'cc85a4c4-8c65-54a7-b286-bac7096b012a',

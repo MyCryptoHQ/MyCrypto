@@ -5,7 +5,7 @@ import { TUuid, ExtendedAsset } from '@types';
 
 import { default as ApiService } from '../ApiService';
 
-let instantiated: boolean = false;
+let instantiated = false;
 
 export default class MyCryptoApiService {
   public static instance = new MyCryptoApiService();

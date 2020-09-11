@@ -59,9 +59,9 @@ describe('SignTransactionWallets: WalletConnect', () => {
     expect(getByText(footerText)).toBeDefined();
 
     // Ensure service is triggered
-    expect(mockCreateSession).toBeCalledTimes(1);
+    expect(mockCreateSession).toHaveBeenCalledTimes(1);
 
-    await waitFor(() => expect(defaultProps.onSuccess).toBeCalledWith('txhash'));
+    await waitFor(() => expect(defaultProps.onSuccess).toHaveBeenCalledWith('txhash'));
     expect(mockSend).toHaveBeenCalled();
   });
 });

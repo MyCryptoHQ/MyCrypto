@@ -4,7 +4,7 @@ import { ETHERSCAN_API_URLS } from './constants';
 import { NetworkId } from '@types';
 import { GetBalanceResponse, GetTxResponse, GetTokenTxResponse } from './types';
 
-let instantiated: boolean = false;
+let instantiated = false;
 export default class EtherscanService {
   public static instance = new EtherscanService();
   private service: AxiosInstance = ApiService.generateInstance();

@@ -19,7 +19,7 @@ describe('useToasts', () => {
   it('calls toasted-notes to display toast', () => {
     const { result } = renderUseToasts();
     result.current.displayToast(ToastTemplates.addedAddress);
-    expect(toast.notify).toBeCalledWith(expect.anything(), {
+    expect(toast.notify).toHaveBeenCalledWith(expect.anything(), {
       duration: undefined,
       position: 'top-left'
     });

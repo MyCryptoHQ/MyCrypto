@@ -40,7 +40,7 @@ describe('SignTransactionWallets: Trezor', () => {
 
     // Expect signed payload to be the following buffer given the v,r,s
     await waitFor(() =>
-      expect(defaultProps.onComplete).toBeCalledWith(
+      expect(defaultProps.onComplete).toHaveBeenCalledWith(
         Buffer.from([
           233,
           50,

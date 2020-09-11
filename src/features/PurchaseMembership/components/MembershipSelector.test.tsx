@@ -45,6 +45,6 @@ describe('MembershipSelector', () => {
 
     expect(getByRole('form')).toHaveFormValues({ [defaultProps.name]: '' });
     await selectEvent.select(getByLabelText('Membership'), MEMBERSHIP_CONFIG.onemonth.title);
-    expect(defaultProps.onSelect).toBeCalledWith(MEMBERSHIP_CONFIG.onemonth);
+    expect(defaultProps.onSelect).toHaveBeenCalledWith(MEMBERSHIP_CONFIG.onemonth);
   });
 });

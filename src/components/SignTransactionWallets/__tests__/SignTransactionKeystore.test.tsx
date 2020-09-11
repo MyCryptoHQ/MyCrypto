@@ -42,9 +42,9 @@ describe('SignTransactionWallets: Keystore', () => {
     });
     fireEvent.change(input!);
     const btn = container.querySelector('button[type="submit"]');
-    await waitFor(() => expect(btn!.getAttribute('disabled')).toBe(null));
+    await waitFor(() => expect(btn!.getAttribute('disabled')).toBeNull());
     fireEvent.click(btn!);
 
-    await waitFor(() => expect(defaultProps.onComplete).toBeCalledWith('txhash'));
+    await waitFor(() => expect(defaultProps.onComplete).toHaveBeenCalledWith('txhash'));
   });
 });

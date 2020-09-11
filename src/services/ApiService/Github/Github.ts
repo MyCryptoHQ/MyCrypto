@@ -5,7 +5,7 @@ import { default as ApiService } from '../ApiService';
 import { GITHUB_RELEASES_URL } from './constants';
 import { ReleaseURLs, ReleaseInfo } from './types';
 
-let instantiated: boolean = false;
+let instantiated = false;
 let releaseInfo: ReleaseInfo;
 export default class GithubService {
   public static instance = new GithubService();
