@@ -138,7 +138,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     getAccountByAddressAndNetworkName,
     updateAccountAssets,
     updateAllAccountsAssets,
-    updateAccountsBalances,
+    updateAccounts,
     deleteAccount,
     createAccountWithID,
     createMultipleAccountsWithIDs
@@ -203,7 +203,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       getAccountsAssetsBalances(currentAccounts).then((accountsWithBalances: StoreAccount[]) => {
         // Avoid the state change if the balances are identical.
         if (isMounted && !isArrayEqual(currentAccounts, accountsWithBalances.filter(Boolean))) {
-          updateAccountsBalances(accountsWithBalances);
+          updateAccounts(accountsWithBalances);
         }
       });
 

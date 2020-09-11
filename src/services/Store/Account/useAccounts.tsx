@@ -36,11 +36,11 @@ export interface IAccountContext {
   createMultipleAccountsWithIDs(accountData: IAccount[]): void;
   deleteAccount(account: IAccount): void;
   updateAccount(uuid: TUuid, accountData: IAccount): void;
-  addNewTxToAccount(account: IAccount, transaction: ITxReceipt): void;
+  addTxToAccount(account: IAccount, transaction: ITxReceipt): void;
   getAccountByAddressAndNetworkName(address: string, networkId: NetworkId): IAccount | undefined;
   updateAccountAssets(account: StoreAccount, assets: Asset[]): Promise<void>;
   updateAllAccountsAssets(accounts: StoreAccount[], assets: Asset[]): Promise<void>;
-  updateAccountsBalances(toUpate: IAccount[]): void;
+  updateAccounts(toUpdate: IAccount[]): void;
   toggleAccountPrivacy(uuid: TUuid): void;
 }
 
@@ -169,7 +169,7 @@ function useAccounts() {
         console.debug('[AccountProvider]: Scan Tokens Error:', err);
       });
 
-  const updateAccountsBalances = (toUpdate: IAccount[]) => {
+  const updateAccounts = (toUpdate: IAccount[]) => {
     const newAccounts = unionWith(eqBy(prop('uuid')), toUpdate, accounts).filter(Boolean);
     model.updateAll(newAccounts);
   };
@@ -193,7 +193,7 @@ function useAccounts() {
     getAccountByAddressAndNetworkName,
     updateAccountAssets,
     updateAllAccountsAssets,
-    updateAccountsBalances,
+    updateAccounts,
     toggleAccountPrivacy
   };
 }
