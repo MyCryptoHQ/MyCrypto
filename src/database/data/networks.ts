@@ -11,7 +11,7 @@ import {
   GAS_PRICE_TESTNET
 } from '@config';
 import { NetworkId, NetworkLegacy, TTicker, WalletId } from '@types';
-import { makeExplorer } from '@utils';
+import { makeExplorer } from '@utils/makeExplorer';
 
 // Temporay type to bridge the difference between v1 and v2 network definitions.
 export type NetworkConfig = {

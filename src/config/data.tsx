@@ -2,7 +2,7 @@ import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
 
 import translate from '@translations';
 import { TURL } from '@types';
-import { makeExplorer } from '@utils';
+import { makeExplorer } from '@utils/makeExplorer';
 
 import packageJson from '../../package.json';
 
