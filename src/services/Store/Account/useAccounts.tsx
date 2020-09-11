@@ -119,8 +119,8 @@ function useAccounts() {
           []
         );
 
-        existingAccount.assets = unionBy(newAssets, existingAccount.assets, property('uuid'));
-        updateAccount(existingAccount.uuid, existingAccount);
+        const unionedAssets = unionBy(newAssets, existingAccount.assets, property('uuid'));
+        updateAccount(existingAccount.uuid, { ...existingAccount, assets: unionedAssets });
       }
     });
   };
