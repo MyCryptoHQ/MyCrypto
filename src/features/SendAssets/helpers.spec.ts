@@ -3,12 +3,21 @@ import {
   fNetwork,
   fAccounts,
   fERC20NonWeb3TxConfig,
-  fETHNonWeb3TxConfig
+  fETHNonWeb3TxConfig,
+  fETHTxSendFormikFields,
+  fERC20TxSendFormikFields
 } from '@fixtures';
 import { translateRaw } from '@translations';
 import { TTicker, TAddress, TxQueryTypes } from '@types';
 
-import { parseQueryParams, parseTransactionQueryParams, generateGenericErc20 } from './helpers';
+import {
+  parseQueryParams,
+  parseTransactionQueryParams,
+  generateGenericErc20,
+  isERC20Asset,
+  processFormDataToTx,
+  processFormForEstimateGas
+} from './helpers';
 
 const validETHSpeedUpQuery = {
   type: TxQueryTypes.SPEEDUP,
@@ -196,3 +205,40 @@ describe('generateGenericErc20', () => {
     expect(genericERC20).toStrictEqual(testGenericERC20);
   });
 });
+
+describe('isERC20Asset', () => {
+  it('correctly determines base asset', () => {
+    expect(isERC20Asset(fAssets[0])).toBe(false);
+  });
+
+  it('correctly determines erc20 asset', () => {
+    // Expects ropsten dai to be the last asset in fAssets
+    expect(isERC20Asset(fAssets[fAssets.length - 1])).toBe(true);
+  });
+});
+
+describe('processFormDataToTx', () => {
+  it('correctly process eth form data to eth tx', () => {
+    expect(processFormDataToTx(fETHTxSendFormikFields)).toMatchSnapshot();
+  });
+
+  it('correctly process erc20 form data to erc20 tx', () => {
+    expect(processFormDataToTx(fERC20TxSendFormikFields)).toMatchSnapshot();
+  });
+});
+
+describe('processFormForEstimateGas', () => {
+  it('correctly process eth form data for gas limit estimate', () => {
+    expect(processFormForEstimateGas(fETHTxSendFormikFields)).toMatchSnapshot();
+  });
+
+  it('correctly process erc20 form data for gas limit estimate', () => {
+    expect(processFormForEstimateGas(fERC20TxSendFormikFields)).toMatchSnapshot();
+  });
+});
+
+// describe('processFormForEstimateGas', () => {
+//   it('', () => {
+
+//   });
+// })

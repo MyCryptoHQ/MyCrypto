@@ -46,3 +46,5 @@ export { default as fETHWeb3TxConfigJSON } from './ethWeb3TxConfig.json';
 
 export { fDefiReserveRates } from './defiRates';
 export { fTxHistoryAPI } from './txHistory';
+
+export { fERC20TxSendFormikFields, fETHTxSendFormikFields } from './sendFormFields';

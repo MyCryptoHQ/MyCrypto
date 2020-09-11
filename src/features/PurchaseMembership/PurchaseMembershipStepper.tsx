@@ -11,7 +11,7 @@ import { defaultMembershipObject } from './config';
 import MembershipInteractionFactory from './stateFactory';
 import { MembershipSimpleTxFormFull, MembershipPurchaseState } from './types';
 import { createPurchaseTx, createApproveTx } from './helpers';
-import { isERC20Tx } from '../SendAssets';
+import { isERC20Asset } from '../SendAssets';
 import MembershipPurchaseForm from './components/MembershipPurchaseForm';
 import ConfirmMembershipPurchaseMultiTx from './components/ConfirmMembershipPurchaseMultiTx';
 import ConfirmMembershipPurchase from './components/ConfirmMembershipPurchase';
@@ -48,7 +48,7 @@ const PurchaseMembershipStepper = () => {
             const purchaseTx = createPurchaseTx(formData);
             const approveTx = createApproveTx(formData);
             return Promise.resolve(
-              isERC20Tx(formData.asset) ? [approveTx, purchaseTx] : [purchaseTx]
+              isERC20Asset(formData.asset) ? [approveTx, purchaseTx] : [purchaseTx]
             );
           },
           formData.account,
