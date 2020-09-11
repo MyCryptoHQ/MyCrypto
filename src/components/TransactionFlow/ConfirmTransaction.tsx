@@ -13,12 +13,12 @@ import { ZapSelectedBanner } from '@features/DeFiZap';
 import { IFeeAmount, ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import MembershipSelectedBanner from '@features/PurchaseMembership/components/MembershipSelectedBanner';
 import { useRates } from '@services';
-import { fromWei, totalTxFeeToString, totalTxFeeToWei, Wei } from '@services/EthService';
 import { StoreContext, useContacts, useSettings } from '@services/Store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ExtendedContact, ISettings, IStepComponentProps, ITxType } from '@types';
-import { convertToFiat } from '@utils';
+import { convertToFiat, fromWei, totalTxFeeToString, totalTxFeeToWei, Wei } from '@utils';
+
 
 import { FromToAccount } from './displays';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
@@ -317,23 +317,23 @@ export const ConfirmTransactionUI = ({
               />
             </>
           ) : (
-            <>
-              <AssetIcon uuid={asset.uuid} size={'25px'} />
-              <Amount
-                assetValue={`${amount} ${asset.ticker}`}
-                bold={true}
-                baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
-                fiat={{
-                  symbol: getFiat(settings).symbol,
-                  ticker: getFiat(settings).ticker,
-                  amount: (
-                    convertToFiat(parseFloat(amount), assetRate) +
-                    convertToFiat(parseFloat(totalEtherEgress), baseAssetRate)
-                  ).toFixed(2)
-                }}
-              />
-            </>
-          )}
+              <>
+                <AssetIcon uuid={asset.uuid} size={'25px'} />
+                <Amount
+                  assetValue={`${amount} ${asset.ticker}`}
+                  bold={true}
+                  baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
+                  fiat={{
+                    symbol: getFiat(settings).symbol,
+                    ticker: getFiat(settings).ticker,
+                    amount: (
+                      convertToFiat(parseFloat(amount), assetRate) +
+                      convertToFiat(parseFloat(totalEtherEgress), baseAssetRate)
+                    ).toFixed(2)
+                  }}
+                />
+              </>
+            )}
         </AmountWrapper>
       </RowWrapper>
       {ptxFee && (

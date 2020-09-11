@@ -14,16 +14,12 @@ import {
   NetworkSelectDropdown,
   Typography
 } from '@components';
-import {
-  baseToConvertedUnit,
-  hexToString,
-  hexWeiToString,
-  inputGasPriceToHex,
-  StoreContext
-} from '@services';
+import { StoreContext } from '@services';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import { ITxConfig, NetworkId, StoreAccount } from '@types';
+import { baseToConvertedUnit, hexToString, hexWeiToString, inputGasPriceToHex } from '@utils';
+
 
 import { constructGasCallProps, getAccountsInNetwork } from '../helpers';
 

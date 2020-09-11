@@ -6,11 +6,12 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { InputField } from '@components';
-import { VerifyParams } from '@features/SignAndVerifyMessage/types';
-import { verifySignedMessage } from '@services/EthService';
 import { BREAK_POINTS, COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ISignedMessage } from '@types';
+import { verifySignedMessage } from '@utils';
+
+import { VerifyParams } from './types';
 
 const { SCREEN_XS } = BREAK_POINTS;
 const { WHITE, SUCCESS_GREEN } = COLORS;
@@ -25,7 +26,7 @@ interface VerifyButtonProps {
   disabled?: boolean;
 }
 
-const VerifyButton = styled(Button)<VerifyButtonProps>`
+const VerifyButton = styled(Button) <VerifyButtonProps>`
   ${(props) => props.disabled && 'opacity: 0.4;'}
 
   @media (max-width: ${SCREEN_XS}) {

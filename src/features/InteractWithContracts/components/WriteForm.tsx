@@ -5,16 +5,11 @@ import { addHexPrefix } from 'ethereumjs-util';
 import styled from 'styled-components';
 
 import { AccountSelector, Button, GasSelector, Typography } from '@components';
-import {
-  baseToConvertedUnit,
-  hexToString,
-  hexWeiToString,
-  inputGasPriceToHex,
-  StoreContext
-} from '@services';
+import { StoreContext } from '@services';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import { ITxConfig, Network, StoreAccount } from '@types';
+import { baseToConvertedUnit, hexToString, hexWeiToString, inputGasPriceToHex } from '@utils';
 
 import { getAccountsInNetwork } from '../helpers';
 import { ABIItem } from '../types';

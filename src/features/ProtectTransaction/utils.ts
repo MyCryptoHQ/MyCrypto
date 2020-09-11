@@ -11,14 +11,16 @@ import {
   GetTokenTxResponse,
   GetTxResponse
 } from '@services/ApiService/Etherscan/types';
+import { IFormikFields, TAddress } from '@types';
 import {
+  bigify,
+  formatDate,
   fromWei,
   gasStringsToMaxGasNumber,
+  isSameAddress,
   totalTxFeeToWei,
   Wei
-} from '@services/EthService/utils';
-import { IFormikFields, TAddress } from '@types';
-import { bigify, formatDate, isSameAddress } from '@utils';
+} from '@utils';
 
 import { MALICIOUS_LABELS, WHITELISTED_LABELS } from './constants';
 import { NansenReportType, ProtectTxError } from './types';

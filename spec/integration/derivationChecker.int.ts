@@ -1,7 +1,7 @@
 import { exec } from 'child_process';
 import { default as Wallet } from 'ethereumjs-wallet';
 
-import { stripHexPrefix } from '@services';
+import { stripHexPrefix } from '@utils';
 
 // FIXME pick a less magic number
 const derivationRounds = 500;

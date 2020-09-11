@@ -6,8 +6,8 @@ import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 import { Transaction as EthTx, TxData } from 'ethereumjs-tx';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 
-import { getTransactionFields } from '@services/EthService';
 import { translateRaw } from '@translations';
+import { getTransactionFields } from '@utils';
 
 import { ChainCodeResponse, HardwareWallet } from './hardware';
 

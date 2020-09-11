@@ -3,7 +3,6 @@ import { Token } from 'types/network';
 import { TransactionData, TransactionReceipt } from 'types/transactions';
 
 import {
-  hexToNumber,
   isValidCallRequest,
   isValidCurrentBlock,
   isValidEstimateGas,
@@ -12,12 +11,10 @@ import {
   isValidTokenBalance,
   isValidTransactionByHash,
   isValidTransactionCount,
-  isValidTransactionReceipt,
-  stripHexPrefix,
-  TokenValue,
-  Wei
+  isValidTransactionReceipt
 } from '@services/EthService';
 import { IHexStrTransaction, INode, TxObj } from '@types';
+import { hexToNumber, stripHexPrefix, TokenValue, Wei } from '@utils';
 
 import { RPCClient } from './client';
 import { RPCRequests } from './requests';

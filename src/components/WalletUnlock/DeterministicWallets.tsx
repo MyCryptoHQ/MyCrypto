@@ -19,18 +19,14 @@ import {
   Typography
 } from '@components';
 import { DEFAULT_NETWORK_TICKER, HELP_ARTICLE } from '@config';
-import {
-  fromWei,
-  getBaseAssetByNetwork,
-  getLabelByAddressAndNetwork,
-  isValidPath
-} from '@services';
+import { getBaseAssetByNetwork, getLabelByAddressAndNetwork, isValidPath } from '@services';
 import { useAssets, useContacts } from '@services/Store';
 import { BalanceMap, getBaseAssetBalances } from '@services/Store/BalanceService';
 import { DeterministicWalletData, getDeterministicWallets } from '@services/WalletService';
 import { BREAK_POINTS, COLORS, FONT_SIZE, monospace, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Network, TTicker } from '@types';
+import { fromWei } from '@utils';
 
 import { Table } from '../Table';
 
@@ -104,7 +100,7 @@ const InputField = styled(Input)`
   }
 `;
 
-const DWTable = styled(Table)<{ selected: number; page: number; disabled: boolean }>`
+const DWTable = styled(Table) <{ selected: number; page: number; disabled: boolean }>`
   ${({ disabled }) =>
     disabled &&
     `opacity: 0.5;
@@ -116,16 +112,16 @@ const DWTable = styled(Table)<{ selected: number; page: number; disabled: boolea
 
       /* Highlight selected row */
       ${({ selected, page }) =>
-        Math.trunc(selected / WALLETS_PER_PAGE) === page &&
-        `:nth-child(${(selected % WALLETS_PER_PAGE) + 1}) {
+    Math.trunc(selected / WALLETS_PER_PAGE) === page &&
+    `:nth-child(${(selected % WALLETS_PER_PAGE) + 1}) {
       background: ${BLUE_LIGHTEST};
     }`};
 
       /* On hover don't highlight selected row */
       :not(:nth-child(${({ selected, page }) =>
-              Math.trunc(selected / WALLETS_PER_PAGE) === page
-                ? (selected % WALLETS_PER_PAGE) + 1
-                : 0}))
+    Math.trunc(selected / WALLETS_PER_PAGE) === page
+      ? (selected % WALLETS_PER_PAGE) + 1
+      : 0}))
         :hover {
         background-color: ${GREY_LIGHTEST};
       }
@@ -374,8 +370,8 @@ export function DeterministicWalletsClass({
         {!wallet.value ? (
           <Spinner />
         ) : (
-          `${parseFloat(fromWei(wallet.value, 'ether')).toFixed(4)} ${ticker}`
-        )}
+            `${parseFloat(fromWei(wallet.value, 'ether')).toFixed(4)} ${ticker}`
+          )}
       </div>,
       <LinkOut key="wallet-row-3" link={blockExplorer.addressUrl(wallet.address)} />
     ];

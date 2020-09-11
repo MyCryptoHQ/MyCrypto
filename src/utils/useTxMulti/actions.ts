@@ -2,18 +2,9 @@ import { Dispatch } from 'react';
 
 import { TransactionResponse } from 'ethers/providers';
 
-import { ProviderHandler } from '@services';
-import { appendGasLimit, appendNonce, ERC20 } from '@services/EthService';
-import {
-  ITxHash,
-  ITxObject,
-  ITxSigned,
-  ITxType,
-  Network,
-  StoreAccount,
-  TStateGetter
-} from '@types';
-import { bigify, isTxHash, isTxSigned, isWeb3Wallet } from '@utils';
+import { ERC20, ProviderHandler } from '@services';
+import { ITxHash, ITxObject, ITxSigned, ITxType, Network, StoreAccount, TStateGetter } from '@types';
+import { appendGasLimit, appendNonce, bigify, isTxHash, isTxSigned, isWeb3Wallet } from '@utils';
 import { filterAsync } from '@utils/asyncFilter';
 
 import { ActionTypes, TxMultiAction, TxMultiState } from './types';

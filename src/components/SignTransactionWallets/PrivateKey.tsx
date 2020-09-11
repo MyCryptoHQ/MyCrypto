@@ -7,9 +7,9 @@ import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
 import { Button, Input, TogglablePassword } from '@components';
 import { WALLETS_CONFIG } from '@config';
 import { isValidEncryptedPrivKey, isValidPrivKey } from '@services/EthService';
-import { decryptPrivKey } from '@services/EthService/utils';
 import translate, { translateRaw } from '@translations';
 import { ISignComponentProps } from '@types';
+import { decryptPrivKey } from '@utils';
 
 import './PrivateKey.scss';
 
@@ -51,7 +51,7 @@ function validatePkeyAndPass(pkey: string, pass: string): Validated {
 export default class SignTransactionPrivateKey extends Component<
   ISignComponentProps,
   SignWithPrivKeyState
-> {
+  > {
   public state = {
     key: '',
     password: '',

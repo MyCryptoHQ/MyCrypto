@@ -2,15 +2,9 @@ import { ethers } from 'ethers';
 
 import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK_CHAINID } from '@config';
 import { getAssetByUUID } from '@services';
-import {
-  hexToString,
-  hexWeiToString,
-  inputGasPriceToHex,
-  inputValueToHex,
-  toWei
-} from '@services/EthService';
 import { ERC20, UnlockToken } from '@services/EthService/contracts';
 import { ITxConfig, ITxData, ITxObject, ITxToAddress, StoreAccount } from '@types';
+import { hexToString, hexWeiToString, inputGasPriceToHex, inputValueToHex, toWei } from '@utils';
 
 import { isERC20Asset } from '../SendAssets';
 import { IMembershipConfig } from './config';

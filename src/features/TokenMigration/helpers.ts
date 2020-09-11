@@ -1,5 +1,7 @@
 import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK_CHAINID } from '@config';
 import { getAssetByUUID } from '@services';
+import { decodeTransfer, ERC20, RepV2Token } from '@services/EthService';
+import { ITxConfig, ITxData, ITxObject, StoreAccount, TAddress } from '@types';
 import {
   fromTokenBase,
   hexToString,
@@ -7,9 +9,9 @@ import {
   inputGasPriceToHex,
   inputValueToHex,
   toWei
-} from '@services/EthService';
-import { decodeTransfer, ERC20, RepV2Token } from '@services/EthService/contracts';
-import { ITxConfig, ITxData, ITxObject, StoreAccount, TAddress } from '@types';
+} from '@utils';
+
+
 
 import { tokenMigrationConfig } from './config';
 import { ITokenMigrationFormFull } from './types';

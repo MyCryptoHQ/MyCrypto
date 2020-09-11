@@ -1,6 +1,128 @@
 import { toChecksumAddress as toETHChecksumAddress } from 'ethereumjs-util';
 import { toChecksumAddress as toRSKChecksumAddress } from 'rskjs-util';
 
+import { padLeftEven } from './padLeftEven';
+import { toTokenBase, Wei } from './units';
+
+export const buildEIP681EtherRequest = (
+  recipientAddr: string,
+  chainId: number,
+  etherValue: string
+) => `ethereum:${recipientAddr}${chainId !== 1 ? `@${chainId}` : ''}?value=${etherValue}e18`;
+
+export const buildEIP681TokenRequest = (
+  recipientAddr: string,
+  contractAddr: string,
+  chainId: number,
+  tokenValue: string,
+  decimal: number
+) =>
+  `ethereum:${contractAddr}${chainId !== 1 ? `@${chainId}` : ''
+  }/transfer?address=${recipientAddr}&uint256=${toTokenBase(tokenValue, decimal)}
+  }`;
+
+export function messageToData(messageToTransform: string): string {
+  return (
+    '0x' +
+    Array.from(Buffer.from(messageToTransform, 'utf8'))
+      .map((n) => padLeftEven(n.toString(16)))
+      .join('')
+  );
+}
+
+export function toFixedIfLarger(num: number, fixedSize: number = 6): string {
+  return parseFloat(num.toFixed(fixedSize)).toString();
+}
+
+export function combineAndUpper(...args: string[]) {
+  return args.reduce((acc, item) => acc.concat(item.toUpperCase()), '');
+}
+
+const toFixed = (num: string, digits: number = 3) => {
+  const [integerPart, fractionPart = ''] = num.split('.');
+  if (fractionPart.length === digits) {
+    return num;
+  }
+  if (fractionPart.length < digits) {
+    return `${integerPart}.${fractionPart.padEnd(digits, '0')}`;
+  }
+
+  let decimalPoint = integerPart.length;
+
+  const formattedFraction = fractionPart.slice(0, digits);
+
+  const integerArr = `${integerPart}${formattedFraction}`.split('').map((str) => +str);
+
+  let carryOver = Math.floor((+fractionPart[digits] + 5) / 10);
+
+  // grade school addition / rounding
+
+  for (let i = integerArr.length - 1; i >= 0; i--) {
+    const currVal = integerArr[i] + carryOver;
+    const newVal = currVal % 10;
+    carryOver = Math.floor(currVal / 10);
+    integerArr[i] = newVal;
+    if (i === 0 && carryOver > 0) {
+      integerArr.unshift(0);
+      decimalPoint++;
+      i++;
+    }
+  }
+
+  const strArr = integerArr.map((n) => n.toString());
+
+  strArr.splice(decimalPoint, 0, '.');
+
+  if (strArr[strArr.length - 1] === '.') {
+    strArr.pop();
+  }
+
+  return strArr.join('');
+};
+
+// Use in place of angular number filter
+export function formatNumber(num: string, digits?: number): string {
+  const parts = toFixed(num, digits).split('.');
+
+  // Remove trailing zeroes on decimal (If there is a decimal)
+  if (parts[1]) {
+    parts[1] = parts[1].replace(/0+$/, '');
+
+    // If there's nothing left, remove decimal altogether
+    if (!parts[1]) {
+      parts.pop();
+    }
+  }
+
+  // Commafy the whole numbers
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+  return parts.join('.');
+}
+
+// @todo: Comment up this function to make it clear what's happening here.
+export function formatGasLimit(limit: Wei, transactionUnit: string = 'ETH') {
+  let limitStr = limit.toString();
+
+  // I'm guessing this is some known off-by-one-error from the node?
+  // 21k is only the limit for ethereum though, so make sure they're
+  // sending ether if we're going to fix it for them.
+  if (limitStr === '21001' && transactionUnit === 'ETH') {
+    limitStr = '21000';
+  }
+
+  // If they've exceeded the gas limit per block, make it -1
+  // @todo: Explain why not cap at limit?
+  // @todo: Make this dynamic, potentially. Would require promisifying this fn.
+  // @todo: Figure out if this is only true for ether. Do other currencies have
+  //       this limit?
+  if (limit.gten(4000000)) {
+    limitStr = '-1';
+  }
+
+  return limitStr;
+}
+
 // Regex modified from this stackoverflow answer
 // https://stackoverflow.com/a/10805198, with the comma character added as a
 // delimiter (in the case of csv style mnemonic phrases) as well as any stray

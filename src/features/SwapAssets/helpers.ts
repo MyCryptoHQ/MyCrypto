@@ -3,7 +3,6 @@ import { addHexPrefix } from 'ethereumjs-util';
 
 import { WALLET_STEPS } from '@components';
 import { DexService, getAssetByTicker, getAssetByUUID } from '@services';
-import { appendGasPrice, appendSender, hexToString } from '@services/EthService';
 import {
   IHexStrTransaction,
   ISwapAsset,
@@ -17,7 +16,7 @@ import {
   StoreAccount,
   StoreAsset
 } from '@types';
-import { weiToFloat } from '@utils';
+import { appendGasPrice, appendSender, hexToString, weiToFloat } from '@utils';
 
 import { IAssetPair, LAST_CHANGED_AMOUNT } from './types';
 

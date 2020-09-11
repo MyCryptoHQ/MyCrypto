@@ -2,16 +2,17 @@ import { addHexPrefix } from 'ethereumjs-util';
 import { Optional } from 'utility-types';
 
 import { fetchGasPriceEstimates, getGasEstimate } from '@services/ApiService';
+import { getNonce } from '@services/EthService';
+import { ITxFromAddress, ITxGasPrice, ITxObject, Network, TAddress } from '@types';
+
+import { bigify } from './bigify';
+import { hexToNumber } from './hexToNumber';
 import {
-  getNonce,
-  hexToNumber,
   hexWeiToString,
   inputGasLimitToHex,
   inputGasPriceToHex,
   inputNonceToHex
-} from '@services/EthService';
-import { ITxFromAddress, ITxGasPrice, ITxObject, Network, TAddress } from '@types';
-import { bigify } from '@utils';
+} from './makeTransaction';
 
 type TxBeforeSender = Pick<ITxObject, 'to' | 'value' | 'data' | 'chainId'>;
 type TxBeforeGasPrice = Optional<ITxObject, 'nonce' | 'gasLimit' | 'gasPrice'>;

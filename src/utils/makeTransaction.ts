@@ -13,10 +13,11 @@ import {
   ITxNonce,
   ITxValue
 } from '@types';
-import { bigify } from '@utils';
 
+import { bigify } from './bigify';
 import { hexEncodeQuantity } from './hexEncode';
 import { fromWei, gasPriceToBase, toTokenBase, toWei, Wei } from './units';
+
 
 export const makeTransaction = (
   t: Partial<Tx> | Partial<ITransaction> | Partial<IHexStrTransaction> | Buffer | string

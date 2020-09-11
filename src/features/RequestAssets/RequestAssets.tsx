@@ -9,14 +9,12 @@ import questionToolTip from '@assets/images/icn-question.svg';
 import receiveIcon from '@assets/images/icn-receive.svg';
 import { AccountSelector, AssetSelector, ContentPanel, QRCode } from '@components';
 import { ROUTE_PATHS } from '@config';
-import {
-  buildEIP681EtherRequest,
-  buildEIP681TokenRequest
-} from '@services/EthService/utils/formatters';
 import { getNetworkById, StoreContext, useAssets } from '@services/Store';
 import translate, { translateRaw } from '@translations';
 import { IAccount as IIAccount } from '@types';
 import {
+  buildEIP681EtherRequest,
+  buildEIP681TokenRequest,
   filterDropdownAssets,
   filterValidAssets,
   isValidAmount,
@@ -24,6 +22,7 @@ import {
   sanitizeDecimalSeparator,
   sortByTicker
 } from '@utils';
+
 
 const isAssetToken = (tokenType: string) => {
   return tokenType !== 'base';
@@ -223,20 +222,20 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
                     <QRCode
                       data={
                         isAssetToken(selectedAsset.type) &&
-                        selectedAsset.contractAddress &&
-                        selectedAsset.decimal
+                          selectedAsset.contractAddress &&
+                          selectedAsset.decimal
                           ? buildEIP681TokenRequest(
-                              recipientAddress.address,
-                              selectedAsset.contractAddress,
-                              network.chainId,
-                              amount,
-                              selectedAsset.decimal
-                            )
+                            recipientAddress.address,
+                            selectedAsset.contractAddress,
+                            network.chainId,
+                            amount,
+                            selectedAsset.decimal
+                          )
                           : buildEIP681EtherRequest(
-                              recipientAddress.address,
-                              network.chainId,
-                              amount
-                            )
+                            recipientAddress.address,
+                            network.chainId,
+                            amount
+                          )
                       }
                     />
                   </QRDisplay>
@@ -247,20 +246,20 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
                     <Copyable
                       text={
                         isAssetToken(selectedAsset.type) &&
-                        selectedAsset.contractAddress &&
-                        selectedAsset.decimal
+                          selectedAsset.contractAddress &&
+                          selectedAsset.decimal
                           ? buildEIP681TokenRequest(
-                              recipientAddress.address,
-                              selectedAsset.contractAddress,
-                              network.chainId,
-                              amount,
-                              selectedAsset.decimal
-                            )
+                            recipientAddress.address,
+                            selectedAsset.contractAddress,
+                            network.chainId,
+                            amount,
+                            selectedAsset.decimal
+                          )
                           : buildEIP681EtherRequest(
-                              recipientAddress.address,
-                              network.chainId,
-                              amount
-                            )
+                            recipientAddress.address,
+                            network.chainId,
+                            amount
+                          )
                       }
                       isCopyable={true}
                     />

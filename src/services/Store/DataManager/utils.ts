@@ -3,7 +3,6 @@ import { ValuesType } from 'utility-types';
 
 import { createDefaultValues } from '@database';
 import { NetworkConfig, NETWORKS_CONFIG, SCHEMA_BASE } from '@database/data';
-import { makeExplorer } from '@services/EthService';
 import {
   DataStore,
   ExtendedAsset,
@@ -20,6 +19,7 @@ import {
   TAddress,
   TUuid
 } from '@types';
+import { makeExplorer } from '@utils';
 import { merge } from '@vendor';
 
 type ObjToArray = <T>(o: T) => ValuesType<T>[];

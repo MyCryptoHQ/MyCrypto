@@ -1,5 +1,5 @@
-import { hexWeiToString, ProviderHandler } from '@services/EthService';
-import { useAccounts } from '@services/Store';
+import { useAccounts } from '@services';
+import { ProviderHandler } from '@services/EthService';
 import {
   Asset,
   ISimpleTxFormFull,
@@ -9,8 +9,12 @@ import {
   TAddress,
   TStepAction
 } from '@types';
-import { makePendingTxReceipt, TUseStateReducerFactory } from '@utils';
-import { isWeb3Wallet } from '@utils/web3';
+import {
+  hexWeiToString,
+  isWeb3Wallet,
+  makePendingTxReceipt,
+  TUseStateReducerFactory
+} from '@utils';
 
 import { createSimpleTxObject } from './helpers';
 import { ZapInteractionState } from './types';

@@ -1,7 +1,7 @@
 import { hexlify } from 'ethers/utils';
 import { ValuesType } from 'utility-types';
 
-import { getBaseAssetByNetwork, hexWeiToString } from '@services';
+import { getBaseAssetByNetwork } from '@services';
 import {
   Asset,
   ISignedTx,
@@ -14,7 +14,7 @@ import {
   TAddress,
   TxQueryTypes
 } from '@types';
-import { makePendingTxReceipt, makeTxConfigFromSignedTx } from '@utils';
+import { hexWeiToString, makePendingTxReceipt, makeTxConfigFromSignedTx } from '@utils';
 
 import { processFormDataToTx } from './helpers';
 

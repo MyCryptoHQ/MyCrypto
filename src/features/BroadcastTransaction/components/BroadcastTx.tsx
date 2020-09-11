@@ -7,9 +7,9 @@ import { parseTransaction, Transaction } from 'ethers/utils';
 import styled from 'styled-components';
 
 import { CodeBlock, InlineMessage, InputField, NetworkSelectDropdown } from '@components';
-import { getTransactionFields } from '@services/EthService';
 import translate, { translateRaw } from '@translations';
 import { ISignedTx, NetworkId } from '@types';
+import { getTransactionFields } from '@utils';
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -156,8 +156,8 @@ const BroadcastTx = ({ signedTx, network, onComplete, handleNetworkChanged }: Pr
           </SendButton>
         </React.Fragment>
       ) : (
-        <PlaceholderButton>{translateRaw('SEND_TRANS')}</PlaceholderButton>
-      )}
+          <PlaceholderButton>{translateRaw('SEND_TRANS')}</PlaceholderButton>
+        )}
     </ContentWrapper>
   );
 };

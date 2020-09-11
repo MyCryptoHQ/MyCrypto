@@ -24,32 +24,17 @@ import TransactionFeeDisplay from '@components/TransactionFlow/displays/Transact
 import {
   DEFAULT_ASSET_DECIMAL,
   ETHUUID,
-  GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,
-  GAS_PRICE_GWEI_LOWER_BOUND,
-  GAS_PRICE_GWEI_UPPER_BOUND
+  GAS_PRICE_GWEI_LOWER_BOUND
 } from '@config';
 import { Fiats, getFiat } from '@config/fiats';
 import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
 import { ProtectTxButton } from '@features/ProtectTransaction/components/ProtectTxButton';
 import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
-import { useRates } from '@services';
+import { getNonce, useRates } from '@services';
 import { fetchGasPriceEstimates, getGasEstimate } from '@services/ApiService';
-import {
-  baseToConvertedUnit,
-  bigNumGasPriceToViewableGwei,
-  convertedToBaseUnit,
-  fromTokenBase,
-  gasStringsToMaxGasBN,
-  getNonce,
-  hexToNumber,
-  isBurnAddress,
-  isValidETHAddress,
-  isValidPositiveNumber,
-  toTokenBase
-} from '@services/EthService';
-import { validateTxFee } from '@services/EthService/validators';
+import { isBurnAddress, isValidETHAddress, isValidPositiveNumber, validateTxFee } from '@services/EthService/validators';
 import {
   getAccountBalance,
   getAccountsByAsset,
@@ -78,12 +63,19 @@ import {
   WalletId
 } from '@types';
 import {
+  baseToConvertedUnit,
   bigify,
+  bigNumGasPriceToViewableGwei,
   isFormValid as checkFormValid,
+  convertedToBaseUnit,
   formatSupportEmail,
+  fromTokenBase,
+  gasStringsToMaxGasBN,
+  hexToNumber,
   isSameAddress,
   isVoid,
-  sortByLabel
+  sortByLabel,
+  toTokenBase
 } from '@utils';
 import { path } from '@vendor';
 
@@ -289,8 +281,8 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
   const [baseAsset, setBaseAsset] = useState(
     (txConfig.network &&
       getBaseAssetByNetwork({ network: txConfig.network, assets: userAssets })) ||
-      (defaultNetwork && getBaseAssetByNetwork({ network: defaultNetwork, assets: userAssets })) ||
-      ({} as Asset)
+    (defaultNetwork && getBaseAssetByNetwork({ network: defaultNetwork, assets: userAssets })) ||
+    ({} as Asset)
   );
 
   const {
@@ -375,14 +367,14 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
         return true;
       }),
     gasLimitField: number()
-      .min(GAS_LIMIT_LOWER_BOUND, translateRaw('ERROR_8'))
+      .min(GAS_LIMIT_UPPER_BOUND, translateRaw('ERROR_8'))
       .max(GAS_LIMIT_UPPER_BOUND, translateRaw('ERROR_8'))
       .required(translateRaw('REQUIRED'))
       .typeError(translateRaw('ERROR_8'))
       .test(validateGasLimitField()),
     gasPriceField: number()
       .min(GAS_PRICE_GWEI_LOWER_BOUND, translateRaw('ERROR_10'))
-      .max(GAS_PRICE_GWEI_UPPER_BOUND, translateRaw('ERROR_10'))
+      .max(GAS_PRICE_GWEI_LOWER_BOUND, translateRaw('ERROR_10'))
       .required(translateRaw('REQUIRED'))
       .typeError(translateRaw('GASPRICE_ERROR'))
       .test(validateGasPriceField()),
@@ -524,11 +516,11 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
       const amount = isERC20 // subtract gas cost from balance when sending a base asset
         ? balance
         : baseToConvertedUnit(
-            new BN(convertedToBaseUnit(balance.toString(), DEFAULT_ASSET_DECIMAL))
-              .sub(gasStringsToMaxGasBN(gasPrice, values.gasLimitField))
-              .toString(),
-            DEFAULT_ASSET_DECIMAL
-          );
+          new BN(convertedToBaseUnit(balance.toString(), DEFAULT_ASSET_DECIMAL))
+            .sub(gasStringsToMaxGasBN(gasPrice, values.gasLimitField))
+            .toString(),
+          DEFAULT_ASSET_DECIMAL
+        );
       setFieldValue('amount', amount);
       handleGasEstimate();
     }
