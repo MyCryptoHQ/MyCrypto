@@ -271,13 +271,13 @@
     "validate": "npm-run-all --parallel lint:css lint:eslint tscheck"
   },
   "lint-staged": {
-    "!(node-scripts)/**/*.{ts,tsx}": [
+    "**/*.{ts,tsx}": [
       "yarn prettier:write",
       "yarn lint:css",
       "eslint --fix",
       "git add"
     ],
-    "!(node-scripts)/**/*.{js,json}": "yarn prettier:write"
+    "**/*.{js,json}": "yarn prettier:write"
   },
   "husky": {
     "hooks": {

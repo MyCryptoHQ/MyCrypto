@@ -1,4 +1,3 @@
-
 const PRODUCTION = 'prod';
 const DEVELOPMENT = 'development';
 const STAGING = 'staging';
@@ -22,4 +21,4 @@ module.exports = {
   IS_PROD,
   IS_STAGING,
   IS_ELECTRON
-}
+};

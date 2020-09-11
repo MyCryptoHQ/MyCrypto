@@ -20,7 +20,8 @@ const TRANSLATE_KEYS_FIXTURE = [
   'TRANSLATE_TEST_6'
 ];
 
-const writeFile = (filePath: string, json: any) => fs.writeFileSync(filePath, JSON.stringify(json, null, '\t'));
+const writeFile = (filePath: string, json: any) =>
+  fs.writeFileSync(filePath, JSON.stringify(json, null, '\t'));
 const readFile = (filePath: string) => JSON.parse(fs.readFileSync(filePath));
 const deleteFile = (filePath: string) => fs.unlinkSync(filePath);
 
@@ -28,10 +29,13 @@ describe('Translations extract', () => {
   it('Should extract keys', () => {
     const extractedKeys = translationKeysExtract(MOCKS_FILE_PATTERN);
     expect(extractedKeys).toStrictEqual(
-      TRANSLATE_KEYS_FIXTURE.reduce((acc, key) => ({
-        ...acc,
-        [key]: ''
-      }), {})
+      TRANSLATE_KEYS_FIXTURE.reduce(
+        (acc, key) => ({
+          ...acc,
+          [key]: ''
+        }),
+        {}
+      )
     );
   });
 
@@ -42,20 +46,24 @@ describe('Translations extract', () => {
     expect(Object.keys(emptyFile.data).length).toBe(0);
 
     // Write keys with empty values
-    const translationObjEmptyKeys = TRANSLATE_KEYS_FIXTURE.slice(1)
-      .reduce((acc, key) => ({
+    const translationObjEmptyKeys = TRANSLATE_KEYS_FIXTURE.slice(1).reduce(
+      (acc, key) => ({
         ...acc,
         [key]: ''
-      }), {});
+      }),
+      {}
+    );
     updateJsonTranslations(translationObjEmptyKeys, JSON_MOCK_FILE_PATH);
     expect(readFile(JSON_MOCK_FILE_PATH).data).toStrictEqual(translationObjEmptyKeys);
 
     // Write keys with values
-    const translationObjValueKeys = TRANSLATE_KEYS_FIXTURE.slice(1)
-      .reduce((acc, key) => ({
+    const translationObjValueKeys = TRANSLATE_KEYS_FIXTURE.slice(1).reduce(
+      (acc, key) => ({
         ...acc,
         [key]: 'Value'
-      }), {});
+      }),
+      {}
+    );
     writeFile(JSON_MOCK_FILE_PATH, {
       ...JSON_MOCK_EMPTY_FIXTURE,
       data: { ...translationObjValueKeys }
@@ -70,11 +78,13 @@ describe('Translations extract', () => {
     expect(readFile(JSON_MOCK_FILE_PATH).data).toStrictEqual(translationObjValueKeys);
 
     // Add key
-    const translationObjUpdate = TRANSLATE_KEYS_FIXTURE.slice(0, 1)
-      .reduce((acc, key) => ({
+    const translationObjUpdate = TRANSLATE_KEYS_FIXTURE.slice(0, 1).reduce(
+      (acc, key) => ({
         ...acc,
         [key]: 'Value'
-      }), {});
+      }),
+      {}
+    );
 
     // Should add new key
     updateJsonTranslations(translationObjUpdate, JSON_MOCK_FILE_PATH);

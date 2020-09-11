@@ -248,7 +248,6 @@ module.exports = {
 
     new ForkTsCheckerWebpackPlugin({
       tsconfig: path.join(config.path.root, 'tsconfig.json'),
-      tslint: path.join(config.path.root, 'tslint.json'),
       reportFiles: ['**/*.{ts,tsx}', '!node_modules/**/*']
     }),
 
