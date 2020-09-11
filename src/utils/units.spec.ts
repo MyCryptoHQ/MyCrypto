@@ -7,7 +7,7 @@ import {
   toTokenBase,
   toWei,
   Wei
-} from '@utils';
+} from './units';
 
 const Units = {
   wei: '1',
