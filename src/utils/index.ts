@@ -51,7 +51,8 @@ export {
   formatMnemonic,
   toChecksumAddressByChainId,
   buildEIP681EtherRequest,
-  buildEIP681TokenRequest
+  buildEIP681TokenRequest,
+  hexToNumber
 } from './formatters';
 export { makeBlob } from './blob';
 export { default as consoleAdvertisement } from './consoleAdvertisement';
@@ -146,6 +147,5 @@ export {
   bigNumValueToViewableEther
 } from './makeTransaction';
 export { hexEncodeData, hexEncodeQuantity } from './hexEncode';
-export { hexToNumber } from './hexToNumber';
 export * from '../services/EthService/utils/providerWrappers';
 export { appendNonce, appendGasLimit, appendGasPrice, appendSender } from './transactions';

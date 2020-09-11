@@ -6,13 +6,14 @@ import { getNonce } from '@services/EthService';
 import { ITxFromAddress, ITxGasPrice, ITxObject, Network, TAddress } from '@types';
 
 import { bigify } from './bigify';
-import { hexToNumber } from './hexToNumber';
+import { hexToNumber } from './formatters';
 import {
   hexWeiToString,
   inputGasLimitToHex,
   inputGasPriceToHex,
   inputNonceToHex
 } from './makeTransaction';
+
 
 type TxBeforeSender = Pick<ITxObject, 'to' | 'value' | 'data' | 'chainId'>;
 type TxBeforeGasPrice = Optional<ITxObject, 'nonce' | 'gasLimit' | 'gasPrice'>;
