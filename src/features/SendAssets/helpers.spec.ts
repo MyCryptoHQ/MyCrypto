@@ -5,7 +5,9 @@ import {
   fERC20NonWeb3TxConfig,
   fETHNonWeb3TxConfig,
   fETHTxSendFormikFields,
-  fERC20TxSendFormikFields
+  fERC20TxSendFormikFields,
+  fAdvancedETHTxSendFormikFields,
+  fAdvancedERC20TxSendFormikFields
 } from '@fixtures';
 import { translateRaw } from '@translations';
 import { TTicker, TAddress, TxQueryTypes } from '@types';
@@ -222,8 +224,16 @@ describe('processFormDataToTx', () => {
     expect(processFormDataToTx(fETHTxSendFormikFields)).toMatchSnapshot();
   });
 
+  it('correctly process advanced eth form data to eth tx', () => {
+    expect(processFormDataToTx(fAdvancedETHTxSendFormikFields)).toMatchSnapshot();
+  });
+
   it('correctly process erc20 form data to erc20 tx', () => {
     expect(processFormDataToTx(fERC20TxSendFormikFields)).toMatchSnapshot();
+  });
+
+  it('correctly process advanced erc20 form data to erc20 tx', () => {
+    expect(processFormDataToTx(fAdvancedERC20TxSendFormikFields)).toMatchSnapshot();
   });
 });
 
@@ -235,10 +245,12 @@ describe('processFormForEstimateGas', () => {
   it('correctly process erc20 form data for gas limit estimate', () => {
     expect(processFormForEstimateGas(fERC20TxSendFormikFields)).toMatchSnapshot();
   });
+
+  it('correctly process advanced eth form data for gas limit estimate', () => {
+    expect(processFormForEstimateGas(fAdvancedETHTxSendFormikFields)).toMatchSnapshot();
+  });
+
+  it('correctly process advanced erc20 form data for gas limit estimate', () => {
+    expect(processFormForEstimateGas(fAdvancedERC20TxSendFormikFields)).toMatchSnapshot();
+  });
 });
-
-// describe('processFormForEstimateGas', () => {
-//   it('', () => {
-
-//   });
-// })
