@@ -1,18 +1,17 @@
 import { ETHUUID } from '@utils';
-import { isValidUuid, isTransactionDataEmpty, isValidAmount } from './validators';
+import { isUuid, isTransactionDataEmpty, isValidAmount } from './validators';
 
-describe('isValidUuid', () => {
+describe('isUuid', () => {
   it('correctly identifies a uuid', () => {
-    const testUuid = ETHUUID;
-    expect(isValidUuid(testUuid)).toBeTruthy();
+    expect(isUuid(ETHUUID)).toBe(true);
   });
 
   it('correctly identifies an empty string to be an invalid uuid', () => {
-    expect(isValidUuid('')).toBeFalsy();
+    expect(isUuid('')).toBe(false);
   });
 
   it('correctly identifies an invalid uuid to be an invalid uuid', () => {
-    expect(isValidUuid(`${ETHUUID}12345`)).toBeFalsy();
+    expect(isUuid(`${ETHUUID}12345`)).toBe(false);
   });
 });
 
@@ -20,29 +19,29 @@ describe('isTransactionDataEmpty', () => {
   const config = [
     {
       value: '0x',
-      result: true
+      expected: true
     },
     {
       value: '0x0',
-      result: true
+      expected: true
     },
     {
       value: '0x00',
-      result: true
+      expected: true
     },
     {
       value: '',
-      result: true
+      expected: true
     },
     {
       value:
         '0xa9059cbb0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000156478f26d25f2de8a2',
-      result: false
+      expected: false
     }
   ];
   config.map((item) => {
-    it(`correctly identifies transaction data field ${item.value} as ${item.result}`, () => {
-      expect(isTransactionDataEmpty(item.value)).toEqual(item.result);
+    it(`correctly identifies transaction data field ${item.value} as ${item.expected}`, () => {
+      expect(isTransactionDataEmpty(item.value)).toEqual(item.expected);
     });
   });
 });
@@ -51,28 +50,28 @@ describe('isValidAmount', () => {
   const config = [
     {
       value: '1',
-      result: true
+      expected: true
     },
     {
       value: '0',
-      result: true
+      expected: true
     },
     {
       value: '1.1',
-      result: true
+      expected: true
     },
     {
       value: '-1',
-      result: false
+      expected: false
     },
     {
       value: '-1.1',
-      result: false
+      expected: false
     }
   ];
   config.map((item) => {
-    it(`correctly validates isValidAmount of amount ${item.value} as ${item.result}`, () => {
-      expect(isValidAmount(18)(item.value)).toEqual(item.result);
+    it(`correctly validates isValidAmount of amount ${item.value} as ${item.expected}`, () => {
+      expect(isValidAmount(18)(item.value)).toEqual(item.expected);
     });
   });
 });

@@ -11,15 +11,15 @@ const filterFalse = (_: TUuid[]) => (__: StoreAsset) => false;
 
 describe('buildBalances', () => {
   it('builds balances', () => {
-    const balances = buildBalances(totals, fAccounts, fSettings, getAssetRate, filterTrue);
-    expect(balances.length).toBe(4);
+    const actual = buildBalances(totals, fAccounts, fSettings, getAssetRate, filterTrue);
+    expect(actual).toMatchSnapshot();
   });
 });
 
 describe('buildTotalFiatValue', () => {
   it('builds total fiat values ', () => {
     const balances = buildBalances(totals, fAccounts, fSettings, getAssetRate, filterFalse);
-    const totalFiatValue = buildTotalFiatValue(balances);
-    expect(totalFiatValue).toBe(0);
+    const actual = buildTotalFiatValue(balances);
+    expect(actual).toMatchSnapshot();
   });
 });
