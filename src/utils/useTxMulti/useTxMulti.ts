@@ -37,6 +37,7 @@ export const useTxMulti: TUseTxMulti = () => {
   const { addTxToAccount, getAccountByAddressAndNetworkName } = useAccounts();
   const { assets } = useAssets();
   const { network, account: stateAccount } = state;
+  // Fetch latest account since the one in state can be outdated
   const account =
     stateAccount && getAccountByAddressAndNetworkName(stateAccount.address, stateAccount.networkId);
 
