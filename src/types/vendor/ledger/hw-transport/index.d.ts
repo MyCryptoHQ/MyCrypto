@@ -23,6 +23,7 @@ declare module '@ledgerhq/hw-transport' {
     unsubscribe(): void;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   export default class Transport<Descriptor> {
     /**
      * Whether or not this transport method is supported by the browser or platform.
