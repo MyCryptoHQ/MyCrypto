@@ -58,7 +58,9 @@ describe('AnalyticsService', () => {
     const promise = AnalyticsService.instance.trackPageVisit(appUrl);
 
     await waitFor(() =>
-      expect(mockAxios.get).toHaveBeenCalledWith('', { params: expect.objectContaining({ url: appUrl }) })
+      expect(mockAxios.get).toHaveBeenCalledWith('', {
+        params: expect.objectContaining({ url: appUrl })
+      })
     );
 
     mockAxios.mockResponse();

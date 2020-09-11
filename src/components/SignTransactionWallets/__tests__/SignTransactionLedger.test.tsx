@@ -23,6 +23,7 @@ const getComponent = () => {
 jest.mock('@ledgerhq/hw-transport-u2f');
 jest.mock('@ledgerhq/hw-app-eth', () => {
   // Must be imported here to prevent issues with jest
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, jest/no-mocks-import
   const { mockFactory } = require('../__mocks__/ledger');
   return mockFactory('', 3, { v: 10, r: 2, s: 4 });
 });

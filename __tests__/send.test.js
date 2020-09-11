@@ -9,7 +9,7 @@ import {
   FIXTURE_SEND_CONTACT
 } from './fixtures';
 import SendAssetsPage from './send-assets-page.po';
-import { getTransValueByKey, findByTKey } from './translation-utils';
+import { findByTKey } from './translation-utils';
 import { clearLocalStorage, setLocalStorage } from './localstorage-utils';
 import { setFeatureFlag } from './featureflag-utils';
 import { selectMnemonicInput } from './selectors';

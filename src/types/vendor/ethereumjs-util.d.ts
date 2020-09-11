@@ -1,6 +1,7 @@
 declare module 'ethereumjs-util' {
   import { Buffer } from 'buffer';
   import BN from 'bn.js';
+  //eslint-disable-next-line @typescript-eslint/no-unused-vars
   export import rlp = require('rlp');
   export * from 'ethjs-util';
   //@todo: missing types for secp256k1, defineProperties, isZeroAddress, ethjs-util package

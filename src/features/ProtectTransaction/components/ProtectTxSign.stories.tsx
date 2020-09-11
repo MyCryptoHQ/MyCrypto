@@ -46,7 +46,7 @@ const ProtectTxStep2 = () => (
 
 storiesOf('ProtectTransaction', module)
   .addDecorator((story) => <ProtectTxProvider>{story()}</ProtectTxProvider>)
-  .add('Step 2', (_) => ProtectTxStep2(), {
+  .add('Step 2', () => ProtectTxStep2(), {
     design: {
       type: 'figma',
       url:

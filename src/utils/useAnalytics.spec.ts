@@ -11,7 +11,7 @@ const appUrlFixture = '/sample/route';
 
 describe('useAnalytics', () => {
   it('Should track on mount', async () => {
-    const {} = renderHook(() =>
+    renderHook(() =>
       useAnalytics({
         category: categoryFixture,
         actionName: actionNameFixture,
@@ -35,7 +35,7 @@ describe('useAnalytics', () => {
   });
 
   it('Should track page view on mount', async () => {
-    const {} = renderHook(() =>
+    renderHook(() =>
       useAnalytics({
         trackPageViews: true,
         actionName: appUrlFixture,

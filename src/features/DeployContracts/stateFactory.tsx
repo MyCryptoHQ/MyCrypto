@@ -6,14 +6,14 @@ import { ProviderHandler, getGasEstimate, useAccounts } from '@services';
 import { isWeb3Wallet } from '@utils/web3';
 import { translateRaw } from '@translations';
 import {
+  DEFAULT_NETWORK,
   DEFAULT_NONCE,
   GAS_LIMIT_LOWER_BOUND,
-  GAS_PRICE_GWEI_DEFAULT_HEX,
-  DEFAULT_NETWORK
+  GAS_PRICE_GWEI_DEFAULT_HEX
 } from '@config';
 
 import { DeployContractsState } from './types';
-import { makeDeployContractTxConfig, constructGasCallProps } from './helpers';
+import { constructGasCallProps, makeDeployContractTxConfig } from './helpers';
 
 const deployContractsInitialState = {
   account: undefined,
@@ -61,31 +61,27 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
       throw new Error(translateRaw('DEPLOY_ERROR_NO_ACCOUNT'));
     }
 
-    try {
-      const { network } = account;
-      const { gasPrice, gasLimit, nonce } = rawTransaction;
-      const transaction: any = Object.assign(constructGasCallProps(byteCode, account), {
-        gasPrice,
-        chainId: network.chainId,
-        nonce
-      });
-      // check if transaction fails everytime
-      await getGasEstimate(network, transaction);
-      transaction.gasLimit = gasLimit;
-      delete transaction.from;
+    const { network } = account;
+    const { gasPrice, gasLimit, nonce } = rawTransaction;
+    const transaction: any = Object.assign(constructGasCallProps(byteCode, account), {
+      gasPrice,
+      chainId: network.chainId,
+      nonce
+    });
+    // check if transaction fails everytime
+    await getGasEstimate(network, transaction);
+    transaction.gasLimit = gasLimit;
+    delete transaction.from;
 
-      const txConfig = makeDeployContractTxConfig(transaction, account, '0');
+    const txConfig = makeDeployContractTxConfig(transaction, account, '0');
 
-      setState((prevState: DeployContractsState) => ({
-        ...prevState,
-        rawTransaction: transaction,
-        txConfig
-      }));
+    setState((prevState: DeployContractsState) => ({
+      ...prevState,
+      rawTransaction: transaction,
+      txConfig
+    }));
 
-      after();
-    } catch (e) {
-      throw e;
-    }
+    after();
   };
 
   const handleAccountSelected = (account: StoreAccount | undefined) => {

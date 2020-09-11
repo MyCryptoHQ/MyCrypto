@@ -23,10 +23,6 @@ export default class DeFiReserveMapService {
   }
 
   public getDeFiReserveMap = () => {
-    try {
-      return this.service.get('').then((res) => res.data);
-    } catch (e) {
-      throw e;
-    }
+    return this.service.get('').then((res) => res.data);
   };
 }

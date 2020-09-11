@@ -27,6 +27,7 @@ const defaultAsset = {
 } as StoreAsset;
 
 describe('it converts balance to fiat', () => {
+  /* eslint-disable jest/no-identical-title */
   it('converts some balance to fiat', () => {
     const expected = 2.86756;
     const rate = 0.00008434;

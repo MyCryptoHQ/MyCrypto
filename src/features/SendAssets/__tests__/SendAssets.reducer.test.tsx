@@ -26,6 +26,7 @@ const defaultTxConfig = {
 };
 
 jest.mock('ethers/utils', () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, jest/no-mocks-import
   const { mockFactory } = require('../__mocks__/utils');
   // Uses a similar txConfig to defaultTxConfig, but can't use the same one due to import issues with Jest
   return mockFactory({

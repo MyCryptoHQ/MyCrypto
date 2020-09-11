@@ -7,6 +7,7 @@ import { DataContext } from '@services';
 import SignTransaction from '@features/SendAssets/components/SignTransaction';
 
 import { getHeader } from './helper';
+// eslint-disable-next-line jest/no-mocks-import
 import { mockWindow } from '../__mocks__/web3';
 
 const defaultProps: React.ComponentProps<typeof SignTransaction> = {
@@ -24,6 +25,7 @@ const getComponent = () => {
 
 jest.mock('ethers/providers/web3-provider', () => {
   // Must be imported here to prevent issues with jest
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, jest/no-mocks-import
   const { mockFactory } = require('../__mocks__/web3');
   return mockFactory('0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c', 3, 'txhash');
 });

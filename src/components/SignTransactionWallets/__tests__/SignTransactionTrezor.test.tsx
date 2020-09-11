@@ -21,6 +21,7 @@ const getComponent = () => {
 
 jest.mock('trezor-connect', () => {
   // Must be imported here to prevent issues with jest
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, jest/no-mocks-import
   const { mockFactory } = require('../__mocks__/trezor');
   return mockFactory('', 3, { v: 41, r: 2, s: 4 });
 });

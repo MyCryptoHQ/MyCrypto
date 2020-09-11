@@ -258,7 +258,7 @@ class AbstractTable extends Component<Props, State> {
               overlayRoot &&
               row.length &&
               row[0] &&
-              row[0].hasOwnProperty('key') &&
+              Object.prototype.hasOwnProperty.call(row[0], 'key') &&
               (row[0] as any).key;
             if (primaryRowKey && overlayRows!.includes(primaryRowKey)) {
               return (

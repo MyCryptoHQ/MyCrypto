@@ -2,11 +2,7 @@ import uts46 from 'idna-uts46';
 import { keccak } from 'ethereumjs-util';
 
 export function normalise(name: string): string {
-  try {
-    return uts46.toUnicode(name, { useStd3ASCII: true, transitional: false });
-  } catch (e) {
-    throw e;
-  }
+  return uts46.toUnicode(name, { useStd3ASCII: true, transitional: false });
 }
 
 export const getNameHash = (name: string = ''): string => {

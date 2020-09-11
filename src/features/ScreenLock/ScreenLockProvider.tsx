@@ -161,11 +161,13 @@ class ScreenLockProvider extends Component<
   };
 
   public startLockCountdown = (lockingOnDemand = false) => {
+    // TODO: Refactor to use .bind() probably
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const appContext = this;
 
     // Lock immediately if password is already set after clicking "Lock" button
     if (lockingOnDemand && this.props.getUnlockPassword()) {
-      appContext.handleCountdownEnded();
+      this.handleCountdownEnded();
       return;
     }
     if (

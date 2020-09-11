@@ -65,14 +65,14 @@ const editNetworkNode = () => (
 storiesOf('NetworkNodeForm', module)
   .addDecorator((story) => <ThemeProvider theme={theme}>{story()}</ThemeProvider>)
   .addDecorator((story) => <AppProviders>{story()}</AppProviders>)
-  .add('Add node', (_) => addNetworkNode(), {
+  .add('Add node', () => addNetworkNode(), {
     design: {
       type: 'figma',
       url:
         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=1522%3A93762'
     }
   })
-  .add('Edit node', (_) => editNetworkNode(), {
+  .add('Edit node', () => editNetworkNode(), {
     design: {
       type: 'figma',
       url:

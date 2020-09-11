@@ -362,7 +362,8 @@ export function DeterministicWalletsClass({
       };
     }
 
-    // tslint:disable:jsx-key
+    // TODO: This should be fixed
+    /* eslint-disable react/jsx-key */
     return [
       <div>{wallet.index + 1}</div>,
       <Account
@@ -379,7 +380,7 @@ export function DeterministicWalletsClass({
       </div>,
       <LinkOut link={blockExplorer.addressUrl(wallet.address)} />
     ];
-    // tslint:enable:jsx-key
+    /* eslint-enable react/jsx-key */
   };
 
   let baseAssetTicker: TTicker | undefined;

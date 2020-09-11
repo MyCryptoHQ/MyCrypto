@@ -35,3 +35,5 @@ const Translate: React.FC = () => {
     </div>
   );
 };
+
+export default Translate;

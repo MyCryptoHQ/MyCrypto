@@ -1,10 +1,9 @@
 /* tslint:disable:no-console */
 import { tsquery } from '@phenomnomnominal/tsquery';
-import * as ts from 'typescript';
-
-const fs = require('fs');
-const glob = require('glob');
-const path = require('path');
+import ts from 'typescript';
+import fs from 'fs';
+import glob from 'glob';
+import path from 'path';
 
 const PROJECT_FILE_PATTERN = './src/**/*.{ts,tsx}';
 const TRANSLATION_FILE_PATTERN = './src/translations/lang/*.json';
@@ -105,7 +104,7 @@ export const updateJsonTranslations = (
 
   const translationFilePaths = getFilesMatchingPattern(path.resolve(translationFilePattern));
   translationFilePaths.forEach((translationFilePath: string) => {
-    const translationFileJson = JSON.parse(fs.readFileSync(translationFilePath));
+    const translationFileJson = JSON.parse(fs.readFileSync(translationFilePath, 'utf-8'));
 
     const translationJson = {
       ...translated,

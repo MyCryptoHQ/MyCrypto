@@ -31,8 +31,20 @@
             "ignoreParameters": true
           }
         ],
+        "@typescript-eslint/no-empty-function": [
+          "error",
+          {
+            "allow": ["private-constructors"]
+          }
+        ],
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          {
+            "ignoreRestSiblings": true
+          }
+        ],
         "react/display-name": "off",
         "react/no-unescaped-entities": "off",
         "react/prop-types": "off",
@@ -56,13 +68,16 @@
       }
     },
     {
-      "files": ["*.test.{ts,tsx}", "*.spec.{ts,tsx}", "jest.config.js", "jest/**/*"],
+      "files": ["*.test.{ts,tsx}", "*.spec.{ts,tsx}", "jest_config/**/*"],
       "env": {
         "node": true,
         "jest": true
       },
       "extends": ["plugin:eslint-plugin-jest/recommended", "plugin:eslint-plugin-jest/style"],
-      "plugins": ["eslint-plugin-jest"]
+      "plugins": ["eslint-plugin-jest"],
+      "rules": {
+        "jest/no-commented-out-tests": "off"
+      }
     },
     {
       "files": ["__tests__/**/*.js"],

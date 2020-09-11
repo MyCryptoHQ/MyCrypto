@@ -1,5 +1,5 @@
 import { getByText } from '@testing-library/testcafe';
-import { t, Selector } from 'testcafe';
+import { Selector } from 'testcafe';
 import {
   PAGES,
   FIXTURE_MYC_STORAGE_KEY,
@@ -28,7 +28,7 @@ test('Should show wallet add UI', async (t) => {
 });
 
 // Add Account - View Only
-test('Should be able to add a view only address', async (t) => {
+test('Should be able to add a view only address', async () => {
   await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
   await addAccountPage.addViewOnly();
   await dashboardPage.waitPageLoaded();

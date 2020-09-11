@@ -248,7 +248,7 @@ export default function AccountList(props: AccountListProps) {
       <FixedSizeCollapsibleTable
         breakpoint={breakpointToNumber(BREAK_POINTS.SCREEN_XS)}
         maxHeight={'450px'}
-        {...buildAccountTable(
+        {...BuildAccountTable(
           getDisplayAccounts(),
           deleteAccountFromCache,
           updateAccount,
@@ -336,7 +336,7 @@ const getSortingFunction = (sortKey: ISortTypes): TSortFunction => {
   }
 };
 
-const buildAccountTable = (
+const BuildAccountTable = (
   accounts: StoreAccount[],
   deleteAccount: (a: IAccount) => void,
   updateAccount: (u: TUuid, a: IAccount) => void,

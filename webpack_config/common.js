@@ -51,7 +51,7 @@ module.exports = {
             )}|${config.chunks.electronOnly.join('|')}|${config.chunks.devOnly
               .join('|')
               .replace(/\//, '[\\\\/]')}`;
-            const excludeNodeModules = new RegExp(`[\\\\/]node_modules[\\\\/]((${excluded})\.*)`);
+            const excludeNodeModules = new RegExp(`[\\\\/]node_modules[\\\\/]((${excluded}).*)`);
             const includeSrc = new RegExp(/[\\/]src[\\/]/);
             const includeNodeModules = new RegExp(/node_modules/);
             return (

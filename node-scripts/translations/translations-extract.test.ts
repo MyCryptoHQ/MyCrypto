@@ -1,6 +1,6 @@
 import { translationKeysExtract, updateJsonTranslations } from './translations-extract';
 
-const fs = require('fs');
+import fs from 'fs';
 
 const BASE_DIR = 'node-scripts/translations/__mocks__/';
 const MOCKS_FILE_PATTERN = `${BASE_DIR}**/*.{ts,tsx}`;
@@ -22,7 +22,7 @@ const TRANSLATE_KEYS_FIXTURE = [
 
 const writeFile = (filePath: string, json: any) =>
   fs.writeFileSync(filePath, JSON.stringify(json, null, '\t'));
-const readFile = (filePath: string) => JSON.parse(fs.readFileSync(filePath));
+const readFile = (filePath: string) => JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 const deleteFile = (filePath: string) => fs.unlinkSync(filePath);
 
 describe('Translations extract', () => {

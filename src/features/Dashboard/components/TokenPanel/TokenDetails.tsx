@@ -145,7 +145,8 @@ export function TokenDetails(props: Props) {
   const filteredSocial = social || {};
   Object.keys(filteredSocial).forEach(
     (key: Social) =>
-      (!filteredSocial[key] || !supportedSocialNetworks.hasOwnProperty(key)) &&
+      (!filteredSocial[key] ||
+        !Object.prototype.hasOwnProperty.call(supportedSocialNetworks, key)) &&
       delete filteredSocial[key]
   );
   const filteredSocialArray = Object.keys(filteredSocial);
