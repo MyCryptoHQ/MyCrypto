@@ -135,25 +135,24 @@ describe('useAccounts', () => {
 
   it('updateAllAccountsAssets()', async () => {
     const mockUpdate = jest.fn();
+    const accounts = [fAccounts[1], { ...fAccounts[2], assets: [] }];
     const { result } = renderUseAccounts({
-      accounts: fAccounts,
+      accounts,
       createActions: jest.fn(() => ({ updateAll: mockUpdate }))
     });
-    result.current.updateAllAccountsAssets(fAccounts, fAssets);
+    result.current.updateAllAccountsAssets(accounts, fAssets);
     await waitFor(() =>
       expect(mockUpdate).toBeCalledWith(
-        expect.arrayContaining([
-          {
-            ...fAccounts[1],
-            assets: [
-              ...fAccounts[1].assets,
-              expect.objectContaining({
-                uuid: fAssets[10].uuid,
-                balance: '0x0e22e84c2c724c00'
-              })
-            ]
-          }
-        ])
+        accounts.map((a) => ({
+          ...a,
+          assets: [
+            expect.objectContaining({
+              uuid: fAssets[10].uuid,
+              balance: '1018631879600000000'
+            }),
+            ...a.assets
+          ]
+        }))
       )
     );
   });
