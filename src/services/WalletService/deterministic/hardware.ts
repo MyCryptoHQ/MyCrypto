@@ -1,6 +1,7 @@
 import { Transaction as EthTx } from 'ethereumjs-tx';
 
-import { DeterministicWallet, IFullWallet } from '@services';
+import { IFullWallet } from '../IWallet';
+import { DeterministicWallet } from './deterministic';
 
 export interface ChainCodeResponse {
   chainCode: string;
