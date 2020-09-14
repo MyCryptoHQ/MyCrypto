@@ -28,13 +28,10 @@ export const createQueryParamsDefaultObject = (txConfig: ITxConfig, type: TxQuer
 };
 
 export const constructCancelTxQuery = (txConfig: ITxConfig, newGasPrice: number): string => {
-  const unfinishedSpeedUpTxQueryParams = createQueryParamsDefaultObject(
-    txConfig,
-    TxQueryTypes.CANCEL
-  );
+  const cancelTxQueryParams = createQueryParamsDefaultObject(txConfig, TxQueryTypes.CANCEL);
   return queryString.stringify({
-    ...unfinishedSpeedUpTxQueryParams,
-    to: unfinishedSpeedUpTxQueryParams.from,
+    ...cancelTxQueryParams,
+    to: cancelTxQueryParams.from,
     data: '0x',
     value: '0x0',
     gasLimit: inputGasLimitToHex('21000'),
