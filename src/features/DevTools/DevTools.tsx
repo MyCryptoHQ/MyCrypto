@@ -7,7 +7,7 @@ import styled, { css } from 'styled-components';
 import { DEFAULT_NETWORK, IFeatureFlags } from '@config';
 import { generateUUID, IS_DEV, IS_STAGING } from '@utils';
 import {
-  AccountContext,
+  useAccounts,
   getLabelByAddressAndNetwork,
   DataContext,
   useNetworks,
@@ -157,7 +157,7 @@ const FeatureFlags = () => {
 const DevTools = () => {
   const { getNetworkById } = useNetworks();
   const { contacts } = useContacts();
-  const { accounts, createAccountWithID, deleteAccount } = useContext(AccountContext);
+  const { accounts, createAccountWithID, deleteAccount } = useAccounts();
   const dummyAccount = {
     label: 'Foo',
     address: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d' as TAddress,
@@ -197,7 +197,7 @@ const DevTools = () => {
         <Formik
           initialValues={dummyAccount}
           onSubmit={(values: IRawAccount, { setSubmitting }) => {
-            createAccountWithID(values, generateUUID());
+            createAccountWithID(generateUUID(), values);
             setSubmitting(false);
           }}
         >

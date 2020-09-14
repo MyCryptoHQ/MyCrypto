@@ -63,7 +63,7 @@ import {
   getNewDefaultAssetTemplateByNetwork,
   useAssets
 } from './Asset';
-import { AccountContext, getDashboardAccounts } from './Account';
+import { useAccounts, getDashboardAccounts } from './Account';
 import { SettingsContext } from './Settings';
 import { getNetworkById, useNetworks } from './Network';
 import { findNextUnusedDefaultLabel, useContacts } from './Contact';
@@ -134,15 +134,15 @@ export const StoreContext = createContext({} as State);
 export const StoreProvider: React.FC = ({ children }) => {
   const {
     accounts: rawAccounts,
-    addNewTxToAccount,
+    addTxToAccount,
     getAccountByAddressAndNetworkName,
     updateAccountAssets,
     updateAllAccountsAssets,
-    updateAccountsBalances,
+    updateAccounts,
     deleteAccount,
     createAccountWithID,
     createMultipleAccountsWithIDs
-  } = useContext(AccountContext);
+  } = useAccounts();
   const { assets, addAssetsFromAPI } = useAssets();
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { networks } = useNetworks();
@@ -203,7 +203,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       getAccountsAssetsBalances(currentAccounts).then((accountsWithBalances: StoreAccount[]) => {
         // Avoid the state change if the balances are identical.
         if (isMounted && !isArrayEqual(currentAccounts, accountsWithBalances.filter(Boolean))) {
-          updateAccountsBalances(accountsWithBalances);
+          updateAccounts(accountsWithBalances);
         }
       });
 
@@ -312,7 +312,7 @@ export const StoreProvider: React.FC = ({ children }) => {
               txTimestamp,
               txResponse.blockNumber
             );
-            addNewTxToAccount(senderAccount, finishedTxReceipt);
+            addTxToAccount(senderAccount, finishedTxReceipt);
             const storeAccount = accounts.find((acc) =>
               isSameAddress(senderAccount.address, acc.address)
             ) as StoreAccount;
@@ -424,7 +424,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       }
 
       const { uuid, ...restAccount } = account!;
-      createAccountWithID(restAccount, uuid);
+      createAccountWithID(uuid, restAccount);
       setAccountRestore((prevState) => ({ ...prevState, [uuid]: undefined }));
     },
     addMultipleAccounts: (
@@ -515,7 +515,7 @@ export const StoreProvider: React.FC = ({ children }) => {
         };
         createContact(newLabel);
       }
-      createAccountWithID(account, accountUUID);
+      createAccountWithID(accountUUID, account);
 
       return account;
     },

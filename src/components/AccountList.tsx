@@ -19,7 +19,7 @@ import { truncate } from '@utils';
 import { BREAK_POINTS, COLORS, SPACING, breakpointToNumber } from '@theme';
 import { IAccount, StoreAccount, ExtendedContact, WalletId, TUuid } from '@types';
 import {
-  AccountContext,
+  useAccounts,
   getLabelByAccount,
   StoreContext,
   SettingsContext,
@@ -199,7 +199,7 @@ export default function AccountList(props: AccountListProps) {
   const { deleteAccountFromCache, restoreDeletedAccount, accountRestore } = useContext(
     StoreContext
   );
-  const { updateAccount } = useContext(AccountContext);
+  const { updateAccount } = useAccounts();
   const [deletingIndex, setDeletingIndex] = useState<number | undefined>();
   const [undoDeletingIndexes, setUndoDeletingIndexes] = useState<[number, TUuid][]>([]);
   const overlayRows: [number[], [number, TUuid][]] = [
@@ -355,7 +355,7 @@ const buildAccountTable = (
   const { getAssetRate } = useRates();
   const { settings } = useContext(SettingsContext);
   const { contacts, createContact, updateContact } = useContacts();
-  const { toggleAccountPrivacy } = useContext(AccountContext);
+  const { toggleAccountPrivacy } = useAccounts();
   const overlayRowsFlat = [...overlayRows![0], ...overlayRows![1].map((row) => row[0])];
 
   const updateSortingState = (id: IColumnValues) => {

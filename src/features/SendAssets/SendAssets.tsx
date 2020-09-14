@@ -11,7 +11,7 @@ import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider
 import {
   StoreContext,
   useFeatureFlags,
-  AccountContext,
+  useAccounts,
   ProviderHandler,
   useAssets,
   useNetworks
@@ -155,12 +155,12 @@ function SendAssets({ location }: RouteComponentProps) {
     return walletSteps;
   };
 
-  const { addNewTxToAccount } = useContext(AccountContext);
+  const { addTxToAccount } = useAccounts();
 
   // Adds TX to history
   useEffect(() => {
     if (reducerState.txReceipt) {
-      addNewTxToAccount(reducerState.txConfig!.senderAccount, reducerState.txReceipt);
+      addTxToAccount(reducerState.txConfig!.senderAccount, reducerState.txReceipt);
     }
   }, [reducerState.txReceipt]);
 

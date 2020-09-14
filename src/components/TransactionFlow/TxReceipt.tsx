@@ -31,7 +31,7 @@ import {
   Tooltip,
   Button
 } from '@components';
-import { AccountContext, StoreContext, SettingsContext, useContacts } from '@services/Store';
+import { useAccounts, StoreContext, SettingsContext, useContacts } from '@services/Store';
 import { useRates, fetchGasPriceEstimates } from '@services';
 import {
   ProviderHandler,
@@ -101,7 +101,7 @@ const TxReceipt = ({
 }: ITxReceiptStepProps & RouteComponentProps & Props) => {
   const { getAssetRate } = useRates();
   const { getContactByAddressAndNetworkId } = useContacts();
-  const { addNewTxToAccount } = useContext(AccountContext);
+  const { addTxToAccount } = useAccounts();
   const { accounts } = useContext(StoreContext);
   const { settings } = useContext(SettingsContext);
   const [txStatus, setTxStatus] = useState(
@@ -158,7 +158,7 @@ const TxReceipt = ({
       const timestampInterval = setInterval(() => {
         getTimestampFromBlockNum(blockNumber, provider).then((transactionTimestamp) => {
           if (sender.account && !disableAddTxToAccount) {
-            addNewTxToAccount(sender.account, {
+            addTxToAccount(sender.account, {
               ...displayTxReceipt,
               blockNumber: blockNumber || 0,
               timestamp: transactionTimestamp || 0,
