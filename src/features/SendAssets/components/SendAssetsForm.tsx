@@ -94,7 +94,7 @@ import {
   validateNonceField,
   validateDataField
 } from './validators';
-import { isERC20Tx, processFormForEstimateGas } from '../helpers';
+import { isERC20Asset, processFormForEstimateGas } from '../helpers';
 import { validateTxFee } from '@services/EthService/validators';
 
 export const AdvancedOptionsButton = styled(Button)`
@@ -517,7 +517,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
     const account = getAccount(values.account);
     if (values.asset && account && baseAsset) {
       const accountBalance = getAccountBalance(account, values.asset).toString();
-      const isERC20 = isERC20Tx(values.asset);
+      const isERC20 = isERC20Asset(values.asset);
       const balance = fromTokenBase(new BN(accountBalance), values.asset.decimal);
       const gasPrice = values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider;
       const amount = isERC20 // subtract gas cost from balance when sending a base asset
@@ -653,7 +653,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
           values.amount,
           getAssetRateInCurrency(baseAsset || undefined, Fiats.USD.ticker) || 0,
           getAssetRateInCurrency(baseAsset || undefined, getFiat(settings).ticker) || 0,
-          isERC20Tx(values.asset),
+          isERC20Asset(values.asset),
           values.gasLimitField.toString(),
           values.advancedTransaction
             ? values.gasPriceField.toString()
@@ -733,7 +733,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
               </div>
             </div>
 
-            {!isERC20Tx(values.asset) && (
+            {!isERC20Asset(values.asset) && (
               <fieldset className="SendAssetsForm-fieldset">
                 <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                   <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-data">

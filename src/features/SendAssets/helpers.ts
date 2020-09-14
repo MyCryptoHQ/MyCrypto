@@ -80,17 +80,17 @@ const createERC20TxObject = (formData: IFormikFields): IHexStrTransaction => {
   };
 };
 
-export const isERC20Tx = (asset: Asset): boolean => {
+export const isERC20Asset = (asset: Asset): boolean => {
   return !!(asset.type === 'erc20' && asset.contractAddress && asset.decimal);
 };
 
 export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
-  const transform = isERC20Tx(formData.asset) ? createERC20TxObject : createBaseTxObject;
+  const transform = isERC20Asset(formData.asset) ? createERC20TxObject : createBaseTxObject;
   return transform(formData);
 };
 
 export const processFormForEstimateGas = (formData: IFormikFields): IHexStrWeb3Transaction => {
-  const transform = isERC20Tx(formData.asset) ? createERC20TxObject : createBaseTxObject;
+  const transform = isERC20Asset(formData.asset) ? createERC20TxObject : createBaseTxObject;
   // First we use destructuring to remove the `gasLimit` field from the object that is not used by IHexStrWeb3Transaction
   // then we add the extra properties required.
   const { gasLimit, ...tx } = transform(formData);
