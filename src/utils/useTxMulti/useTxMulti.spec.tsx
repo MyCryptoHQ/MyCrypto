@@ -31,7 +31,8 @@ jest.mock('ethers/providers', () => {
             gasPrice: '0x',
             nonce: '0x',
             to: '0x',
-            from: '0x'
+            from: '0x',
+            data: '0x'
           })
         )
         .mockImplementationOnce(() =>
@@ -42,7 +43,8 @@ jest.mock('ethers/providers', () => {
             gasPrice: '0x',
             nonce: '0x',
             to: '0x',
-            from: '0x'
+            from: '0x',
+            data: '0x'
           })
         ),
       waitForTransaction: jest.fn().mockImplementation(() => Promise.resolve({})),
