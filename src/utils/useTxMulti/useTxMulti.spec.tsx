@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { act, renderHook } from '@testing-library/react-hooks';
-import isEmpty from 'ramda/src/isEmpty';
 import { waitFor } from 'test-utils';
 
 import { fAccount, fAccounts, fAssets, fNetwork, fNetworks } from '@fixtures';
 import { DataContext, IDataContext, StoreContext } from '@services';
 import { ITxData, ITxHash, ITxObject, ITxStatus, ITxToAddress, ITxType, ITxValue } from '@types';
+import { isEmpty } from '@vendor';
 
 import { useTxMulti } from './useTxMulti';
 
