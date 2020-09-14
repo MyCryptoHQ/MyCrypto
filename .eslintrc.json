@@ -68,10 +68,7 @@
         "jest": true
       },
       "extends": ["plugin:eslint-plugin-jest/recommended", "plugin:eslint-plugin-jest/style"],
-      "plugins": ["eslint-plugin-jest"],
-      "rules": {
-        "jest/no-commented-out-tests": "off"
-      }
+      "plugins": ["eslint-plugin-jest"]
     },
     {
       "files": ["__tests__/**/*.js"],
