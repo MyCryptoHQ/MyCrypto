@@ -169,8 +169,8 @@ describe('useTxMulti', () => {
       await r.current.initWith(
         () =>
           Promise.resolve([
-            { ...rawTx, value: '0x1' as ITxValue },
-            { ...rawTx, value: '0x2' as ITxValue }
+            { ...rawTx, value: '0x1' as ITxValue, type: ITxType.APPROVAL },
+            { ...rawTx, value: '0x2' as ITxValue, type: ITxType.PURCHASE_MEMBERSHIP }
           ]),
         fAccount,
         fNetwork
@@ -194,7 +194,7 @@ describe('useTxMulti', () => {
           asset: fAssets[1],
           baseAsset: fAssets[1],
           hash: '0x1',
-          txType: ITxType.UNKNOWN,
+          txType: ITxType.APPROVAL,
           status: ITxStatus.PENDING
         })
       )
@@ -208,7 +208,7 @@ describe('useTxMulti', () => {
           asset: fAssets[1],
           baseAsset: fAssets[1],
           hash: '0x2',
-          txType: ITxType.UNKNOWN,
+          txType: ITxType.PURCHASE_MEMBERSHIP,
           status: ITxStatus.PENDING
         })
       )
