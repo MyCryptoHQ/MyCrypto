@@ -90,7 +90,7 @@ function useAccounts() {
     // Find all tokens with a positive balance for given account, and add those tokens to the assets array of the account
     return getAllTokensBalancesOfAccount(storeAccount, assets).then((assetBalances) => {
       const positiveAssetBalances = Object.entries(assetBalances).filter(
-        ([_, value]) => !value.isZero()
+        ([, value]) => !value.isZero()
       );
 
       const existingAccount = accounts.find((x) => x.uuid === storeAccount.uuid);
@@ -131,7 +131,7 @@ function useAccounts() {
         // Find all tokens with a positive balance for given account, and add those tokens to the assets array of the account
         return getAllTokensBalancesOfAccount(storeAccount, assets).then((assetBalances) => {
           const positiveAssetBalances = Object.entries(assetBalances).filter(
-            ([_, value]) => !value.isZero()
+            ([, value]) => !value.isZero()
           );
 
           const existingAccount = accounts.find((x) => x.uuid === storeAccount.uuid);
