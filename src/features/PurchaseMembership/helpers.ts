@@ -13,7 +13,7 @@ import { UnlockToken, ERC20 } from '@services/EthService/contracts';
 import { getAssetByUUID } from '@services';
 
 import { MembershipSimpleTxFormFull } from './types';
-import { isERC20Tx } from '../SendAssets';
+import { isERC20Asset } from '../SendAssets';
 import { IMembershipConfig } from './config';
 
 export const createApproveTx = (payload: MembershipSimpleTxFormFull): Partial<ITxObject> => {
@@ -47,7 +47,7 @@ export const createPurchaseTx = (payload: MembershipSimpleTxFormFull): Partial<I
   return {
     from: payload.account.address,
     to: membershipSelected.contractAddress as ITxToAddress,
-    value: isERC20Tx(payload.asset) ? inputValueToHex('0') : inputValueToHex(payload.amount),
+    value: isERC20Asset(payload.asset) ? inputValueToHex('0') : inputValueToHex(payload.amount),
     data: data as ITxData,
     gasPrice: inputGasPriceToHex(payload.gasPrice),
     chainId: DEFAULT_NETWORK_CHAINID
