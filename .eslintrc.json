@@ -62,12 +62,6 @@
       }
     },
     {
-      "files": ["gatsby-config.js", "gatsby/**/*"],
-      "env": {
-        "node": true
-      }
-    },
-    {
       "files": ["*.test.{ts,tsx}", "*.spec.{ts,tsx}", "jest_config/**/*"],
       "env": {
         "node": true,
