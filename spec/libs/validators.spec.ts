@@ -59,9 +59,7 @@ describe('Validator', () => {
   it('should validate private key buffer type as true', () => {
     expect(isValidPrivKey(VALID_ETH_PRIVATE_BUFFER)).toBeTruthy();
   });
-});
 
-describe('Validator', () => {
   it('should validate correct DPaths as true', () => {
     valid.forEach((path) => {
       expect(isValidPath(path)).toBeTruthy();

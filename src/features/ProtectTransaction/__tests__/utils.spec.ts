@@ -24,8 +24,8 @@ describe('getProtectTransactionFee', () => {
 
   it('should return null in case of missing values', () => {
     const { fee, amount } = getProtectTxFee(formValues, undefined);
-    expect(amount).toBe(null);
-    expect(fee).toBe(null);
+    expect(amount).toBeNull();
+    expect(fee).toBeNull();
   });
 });
 
@@ -46,9 +46,9 @@ describe('getNansenReportType', () => {
 describe('getLastTx', () => {
   const receiverAddress = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520';
   it('should null if either report has failed', () => {
-    expect(getLastTx(null, null, receiverAddress)).toBe(null);
-    expect(getLastTx(null, generateMockTokenReport('15000000'), receiverAddress)).toBe(null);
-    expect(getLastTx(generateMockTxReport('15000000'), null, receiverAddress)).toBe(null);
+    expect(getLastTx(null, null, receiverAddress)).toBeNull();
+    expect(getLastTx(null, generateMockTokenReport('15000000'), receiverAddress)).toBeNull();
+    expect(getLastTx(generateMockTxReport('15000000'), null, receiverAddress)).toBeNull();
   });
 
   it('should return single possibility if only one available', () => {
@@ -87,7 +87,7 @@ describe('getBalance', () => {
     message: 'OK'
   };
   it('should null if report has failed', () => {
-    expect(getBalance(null)).toBe(null);
+    expect(getBalance(null)).toBeNull();
   });
   it('should return properly formatted value if if report is valid', () => {
     expect(getBalance(mockBalanceReport)).toBe('963.281665');

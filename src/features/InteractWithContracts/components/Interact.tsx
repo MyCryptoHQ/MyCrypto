@@ -266,6 +266,7 @@ function Interact(props: CombinedProps) {
       onSubmit={() => undefined}
     >
       {({ values, errors, touched, setFieldValue, setFieldError, setFieldTouched }) => {
+        /* eslint-disable react-hooks/rules-of-hooks */
         useEffect(() => {
           if (
             !getNetworkById(networkIdFromUrl, networks) ||
@@ -297,6 +298,7 @@ function Interact(props: CombinedProps) {
 
           setError(undefined);
         }, [contract]);
+        /* eslint-enable react-hooks/rules-of-hooks */
 
         return (
           <>

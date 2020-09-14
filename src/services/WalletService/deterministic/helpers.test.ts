@@ -3,6 +3,7 @@ import { clone } from 'ramda';
 
 import { TAddress } from '@types';
 
+// eslint-disable-next-line jest/no-mocks-import
 import { fixtures } from './__mocks__';
 import {
   processFinishedAccounts as process,

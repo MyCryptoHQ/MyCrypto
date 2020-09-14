@@ -8,7 +8,7 @@ import { light, dark } from '@mycrypto/ui';
 
 import { GAU_COLORS } from '@theme';
 
-import 'sass/styles'
+import 'sass/styles';
 
 const LIGHT_THEME = {
   name: 'Light',
@@ -28,4 +28,4 @@ const DARK_THEME = {
 
 addDecorator(withThemesProvider([LIGHT_THEME, DARK_THEME]));
 addDecorator(withA11y);
-addDecorator(StoryRouter())
+addDecorator(StoryRouter());

@@ -67,7 +67,7 @@ describe('ConfirmTransaction', () => {
     const { getByText } = getComponent(defaultProps);
     const btn = getByText(translateRaw('CONFIRM_AND_SEND'));
     fireEvent.click(btn);
-    expect(defaultProps.onComplete).toBeCalledWith(null);
+    expect(defaultProps.onComplete).toHaveBeenCalledWith(null);
   });
 
   test('it displays DeFiZap info', async () => {

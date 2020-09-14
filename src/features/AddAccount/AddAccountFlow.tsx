@@ -77,7 +77,7 @@ const AddAccountFlow = withRouter(({ history, match }) => {
         const newAccount = accounts.find(
           (account) => isSameAddress(account.address, address) && account.networkId === network
         );
-        if (!!newAccount) {
+        if (newAccount) {
           trackNewAccountAdded({
             eventParams: {
               newAccountAddedType: newAccount.wallet,

@@ -87,7 +87,7 @@ describe('ContactLookupField', () => {
     fireEvent.change(input!, { target: { value: address } });
     fireEvent.blur(input!);
 
-    expect(contacts.length).toBe(1);
+    expect(contacts).toHaveLength(1);
     expect(output.data.address.value).toBe(address);
     expect(output.data.address.display).toBe(contacts[0].label);
   });
@@ -103,7 +103,7 @@ describe('ContactLookupField', () => {
     fireEvent.change(input!, { target: { value: ens } });
     await waitFor(() => fireEvent.keyDown(input!, enter));
 
-    expect(contacts.length).toBe(1);
+    expect(contacts).toHaveLength(1);
     expect(output.data.address.value).toBe(address);
     expect(output.data.address.display).toBe(ens.split('.')[0]);
   });
@@ -118,7 +118,7 @@ describe('ContactLookupField', () => {
     fireEvent.change(input!, { target: { value: inputString } });
     fireEvent.blur(input!);
 
-    expect(contacts.length).toBe(0);
+    expect(contacts).toHaveLength(0);
     expect(output.data.address.value).toBe(inputString);
     expect(output.data.address.display).toBe(inputString);
   });
@@ -134,7 +134,7 @@ describe('ContactLookupField', () => {
     fireEvent.change(input!, { target: { value: inputString } });
     await waitFor(() => fireEvent.keyDown(input!, enter));
 
-    expect(contacts.length).toBe(2);
+    expect(contacts).toHaveLength(2);
     expect(output.data.address).toStrictEqual({
       display: contact.label,
       value: contact.address

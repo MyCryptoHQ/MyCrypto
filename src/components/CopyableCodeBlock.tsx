@@ -6,7 +6,7 @@ interface Props {
   children?: React.ReactNode;
 }
 
-const truncate = (_: string) => {
+const truncate = () => {
   return '';
 };
 

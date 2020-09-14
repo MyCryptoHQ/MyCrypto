@@ -156,9 +156,8 @@ const GeneralLookupField = ({
     }
   };
 
+  const inputValue = useRef<string>('');
   const GeneralDropdownFieldCallback = useCallback(() => {
-    const inputValue = useRef<string>('');
-
     const handleInputChange = (input: string) => {
       inputValue.current = input;
       return input;

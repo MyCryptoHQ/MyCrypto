@@ -1,31 +1,31 @@
 {
-    "amount": "0.0001",
-    "receiverAddress": "0x909f74Ffdc223586d0d30E78016E707B6F5a45E2",
-    "asset": {
-        "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
-        "name": "RopstenETH",
-        "networkId": "Ropsten",
-        "type": "base",
-        "ticker": "RopstenETH",
-        "decimal": 18,
-        "mtime": 1582563685097
-    },
-    "baseAsset": {
-        "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
-        "name": "RopstenETH",
-        "networkId": "Ropsten",
-        "type": "base",
-        "ticker": "RopstenETH",
-        "decimal": 18
-    },
-    "txType": "STANDARD",
-    "status": "PENDING",
-    "gasPrice": "4000000000",
-    "gasLimit": "21000",
-    "nonce": "50",
-    "data": "0x",
-	"value": "100000000000000",
-	"hash": "0xa63c5a2249d919eabc4ab38ed47846d4c01c261f1bf2f7dc5e6a7fe8860ac87d",
-	"to": "0x909f74Ffdc223586d0d30E78016E707B6F5a45E2",
-	"from": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c"
+  "amount": "0.0001",
+  "receiverAddress": "0x909f74Ffdc223586d0d30E78016E707B6F5a45E2",
+  "asset": {
+    "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+    "name": "RopstenETH",
+    "networkId": "Ropsten",
+    "type": "base",
+    "ticker": "RopstenETH",
+    "decimal": 18,
+    "mtime": 1582563685097
+  },
+  "baseAsset": {
+    "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+    "name": "RopstenETH",
+    "networkId": "Ropsten",
+    "type": "base",
+    "ticker": "RopstenETH",
+    "decimal": 18
+  },
+  "txType": "STANDARD",
+  "status": "PENDING",
+  "gasPrice": "4000000000",
+  "gasLimit": "21000",
+  "nonce": "50",
+  "data": "0x",
+  "value": "100000000000000",
+  "hash": "0xa63c5a2249d919eabc4ab38ed47846d4c01c261f1bf2f7dc5e6a7fe8860ac87d",
+  "to": "0x909f74Ffdc223586d0d30E78016E707B6F5a45E2",
+  "from": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c"
 }

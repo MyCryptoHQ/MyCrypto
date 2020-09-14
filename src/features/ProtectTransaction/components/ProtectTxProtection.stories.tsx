@@ -57,21 +57,21 @@ const ProtectTxStep1Mobile = () => (
   </>
 );
 storiesOf('ProtectTransaction', module)
-  .add('Step 1', (_) => ProtectTxStep1(), {
+  .add('Step 1', () => ProtectTxStep1(), {
     design: {
       type: 'figma',
       url:
         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
     }
   })
-  .add('Step 1 - Web 3', (_) => ProtectTxStep1Web3(), {
+  .add('Step 1 - Web 3', () => ProtectTxStep1Web3(), {
     design: {
       type: 'figma',
       url:
         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
     }
   })
-  .add('Step 1 - Mobile', (_) => ProtectTxStep1Mobile(), {
+  .add('Step 1 - Mobile', () => ProtectTxStep1Mobile(), {
     design: {
       type: 'figma',
       url:

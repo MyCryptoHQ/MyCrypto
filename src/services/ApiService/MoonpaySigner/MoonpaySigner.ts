@@ -3,7 +3,7 @@ import { AxiosInstance } from 'axios';
 import { ApiService } from '@services/ApiService';
 import { MOONPAY_SIGNER_API } from '@config/data';
 
-let instantiated: boolean = false;
+let instantiated = false;
 
 interface SignResponse {
   success: boolean;

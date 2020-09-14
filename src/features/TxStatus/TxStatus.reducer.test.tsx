@@ -67,7 +67,7 @@ describe('TxStatusReducer', () => {
 
       expect(newState.fetching).toBe(false);
       expect(newState.fromLink).toBe(false);
-      expect(newState.error).toBe(undefined);
+      expect(newState.error).toBeUndefined();
       expect(newState.tx).toBe(payload);
       expect(newState.txHash).toBe(prevState.txHash);
       expect(newState.networkId).toBe(prevState.networkId);
@@ -82,7 +82,7 @@ describe('TxStatusReducer', () => {
       expect(newState.fetching).toBe(false);
       expect(newState.fromLink).toBe(false);
       expect(newState.error).toStrictEqual(translate('TX_NOT_FOUND'));
-      expect(newState.tx).toBe(undefined);
+      expect(newState.tx).toBeUndefined();
     });
   });
   describe('CLEAR_FORM', () => {
@@ -92,9 +92,9 @@ describe('TxStatusReducer', () => {
       const newState = dispatch({ type: txStatusReducer.actionTypes.CLEAR_FORM })(prevState);
 
       expect(newState.fetching).toBe(false);
-      expect(newState.error).toBe(undefined);
+      expect(newState.error).toBeUndefined();
       expect(newState.txHash).toBe('');
-      expect(newState.tx).toBe(undefined);
+      expect(newState.tx).toBeUndefined();
       expect(newState.networkId).toBe(DEFAULT_NETWORK);
     });
   });

@@ -286,38 +286,34 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       throw new Error(translateRaw('INTERACT_WRITE_ERROR_NO_ACCOUNT'));
     }
 
-    try {
-      const { network } = account;
-      const { gasPrice, gasLimit, nonce } = rawTransaction;
-      const transaction: any = Object.assign(
-        constructGasCallProps(contractAddress, submitedFunction, account),
-        {
-          gasPrice,
-          chainId: network.chainId,
-          nonce
-        }
-      );
-      // check if transaction fails everytime
-      await getGasEstimate(network, transaction);
-      transaction.gasLimit = gasLimit;
-      delete transaction.from;
+    const { network } = account;
+    const { gasPrice, gasLimit, nonce } = rawTransaction;
+    const transaction: any = Object.assign(
+      constructGasCallProps(contractAddress, submitedFunction, account),
+      {
+        gasPrice,
+        chainId: network.chainId,
+        nonce
+      }
+    );
+    // check if transaction fails everytime
+    await getGasEstimate(network, transaction);
+    transaction.gasLimit = gasLimit;
+    delete transaction.from;
 
-      const txConfig = makeContractInteractionTxConfig(
-        transaction,
-        account,
-        submitedFunction.payAmount
-      );
+    const txConfig = makeContractInteractionTxConfig(
+      transaction,
+      account,
+      submitedFunction.payAmount
+    );
 
-      setState((prevState: InteractWithContractState) => ({
-        ...prevState,
-        rawTransaction: transaction,
-        txConfig
-      }));
+    setState((prevState: InteractWithContractState) => ({
+      ...prevState,
+      rawTransaction: transaction,
+      txConfig
+    }));
 
-      after();
-    } catch (e) {
-      throw e;
-    }
+    after();
   };
 
   const handleAccountSelected = (account: StoreAccount | undefined) => {

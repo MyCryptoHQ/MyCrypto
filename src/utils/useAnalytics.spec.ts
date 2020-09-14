@@ -11,7 +11,7 @@ const appUrlFixture = '/sample/route';
 
 describe('useAnalytics', () => {
   it('Should track on mount', async () => {
-    const {} = renderHook(() =>
+    renderHook(() =>
       useAnalytics({
         category: categoryFixture,
         actionName: actionNameFixture,
@@ -19,7 +19,7 @@ describe('useAnalytics', () => {
       })
     );
 
-    await waitFor(() => expect(mockAxios.get).toBeCalled());
+    await waitFor(() => expect(mockAxios.get).toHaveBeenCalled());
   });
 
   it('Should track on callback', async () => {
@@ -31,11 +31,11 @@ describe('useAnalytics', () => {
     );
 
     result.current();
-    await waitFor(() => expect(mockAxios.get).toBeCalled());
+    await waitFor(() => expect(mockAxios.get).toHaveBeenCalled());
   });
 
   it('Should track page view on mount', async () => {
-    const {} = renderHook(() =>
+    renderHook(() =>
       useAnalytics({
         trackPageViews: true,
         actionName: appUrlFixture,
@@ -43,7 +43,7 @@ describe('useAnalytics', () => {
       })
     );
 
-    await waitFor(() => expect(mockAxios.get).toBeCalled());
+    await waitFor(() => expect(mockAxios.get).toHaveBeenCalled());
   });
 
   it('Should track page view on callback', async () => {
@@ -56,6 +56,6 @@ describe('useAnalytics', () => {
     result.current({
       actionName: appUrlFixture
     });
-    await waitFor(() => expect(mockAxios.get).toBeCalled());
+    await waitFor(() => expect(mockAxios.get).toHaveBeenCalled());
   });
 });

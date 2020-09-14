@@ -41,7 +41,7 @@ interface ResizeObserver {
   disconnect(): void;
 }
 
-declare var ResizeObserver: {
+declare const ResizeObserver: {
   prototype: ResizeObserver;
   new (callback: ResizeObserverCallback): ResizeObserver;
 };

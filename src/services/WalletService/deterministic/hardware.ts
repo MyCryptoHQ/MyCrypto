@@ -11,6 +11,7 @@ export interface ChainCodeResponse {
 export abstract class HardwareWallet extends DeterministicWallet implements IFullWallet {
   // Static functions can't be abstract, so implement an errorous one
   // @ts-ignore
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public static getChainCode(dpath: string): Promise<ChainCodeResponse> {
     throw new Error(`getChainCode is not implemented in ${this.constructor.name}`);
   }

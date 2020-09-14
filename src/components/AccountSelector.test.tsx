@@ -65,6 +65,6 @@ describe('AccountSelector', () => {
     await selectEvent.openMenu(screen.getByText(new RegExp(accounts[0].label, 'i')));
     const option = screen.getByText(new RegExp(accounts[1].label, 'i'));
     fireEvent.pointerDown(option);
-    expect(defaultProps.onSelect).toBeCalledWith(accounts[1]);
+    expect(defaultProps.onSelect).toHaveBeenCalledWith(accounts[1]);
   });
 });

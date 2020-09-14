@@ -79,7 +79,7 @@ const getAccountAssetsBalancesWithEthScan = async (account: StoreAccount) => {
     }).then(toBigNumberJS)
   ])
     .then(addBalancesToAccount(account))
-    .catch((_) => account);
+    .catch(() => account);
 };
 
 const etherBalanceFetchWrapper = async (
@@ -116,7 +116,7 @@ export const getBaseAssetBalances = async (addresses: string[], network: Network
   const provider = ProviderHandler.fetchProvider(network);
   return getEtherBalances(provider, addresses, { batchSize: ETH_SCAN_BATCH_SIZE })
     .then(toBigNumberJS)
-    .catch((_) => ({} as BalanceMap));
+    .catch(() => ({} as BalanceMap));
 };
 
 export const getTokenAssetBalances = async (
@@ -130,7 +130,7 @@ export const getTokenAssetBalances = async (
   const provider = ProviderHandler.fetchProvider(network);
   return getTokenBalancesFromEthScan(provider, addresses, asset.contractAddress!)
     .then(toBigNumberJS)
-    .catch((_) => ({} as BalanceMap));
+    .catch(() => ({} as BalanceMap));
 };
 
 const getTokenBalances = (
@@ -165,7 +165,7 @@ const getAccountAssetsBalancesWithJsonRPC = async (
     getTokenBalances(provider, address, tokens)
   ])
     .then(addBalancesToAccount(account))
-    .catch((_) => account);
+    .catch(() => account);
 };
 
 export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {

@@ -22,7 +22,7 @@ describe('AnalyticsService', () => {
     const promise = AnalyticsService.instance.track(category, eventAction);
 
     await waitFor(() =>
-      expect(mockAxios.get).toBeCalledWith('', {
+      expect(mockAxios.get).toHaveBeenCalledWith('', {
         params: expect.objectContaining({ e_c: category, action_name: eventAction })
       })
     );
@@ -40,7 +40,7 @@ describe('AnalyticsService', () => {
     const promise = AnalyticsService.instance.trackLegacy(category, eventAction);
 
     await waitFor(() =>
-      expect(mockAxios.get).toBeCalledWith('', {
+      expect(mockAxios.get).toHaveBeenCalledWith('', {
         params: expect.objectContaining({ e_c: category, action_name: `Legacy_${eventAction}` })
       })
     );
@@ -58,7 +58,9 @@ describe('AnalyticsService', () => {
     const promise = AnalyticsService.instance.trackPageVisit(appUrl);
 
     await waitFor(() =>
-      expect(mockAxios.get).toBeCalledWith('', { params: expect.objectContaining({ url: appUrl }) })
+      expect(mockAxios.get).toHaveBeenCalledWith('', {
+        params: expect.objectContaining({ url: appUrl })
+      })
     );
 
     mockAxios.mockResponse();

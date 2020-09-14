@@ -5,7 +5,7 @@ import { default as ApiService } from '../ApiService';
 import { GITHUB_RELEASES_URL } from './constants';
 import { ReleaseURLs, ReleaseInfo } from './types';
 
-let instantiated: boolean = false;
+let instantiated = false;
 let releaseInfo: ReleaseInfo;
 export default class GithubService {
   public static instance = new GithubService();
@@ -35,22 +35,18 @@ export default class GithubService {
       [OS.STANDALONE]: /^standalone.*\.zip$/
     };
 
-    try {
-      const response = await this.service.get('');
-      const { assets, tag_name: version, name } = response.data;
+    const response = await this.service.get('');
+    const { assets, tag_name: version, name } = response.data;
 
-      const releaseUrls: ReleaseURLs = {};
-      Object.entries(ASSET_REG_EXPS).forEach(([key, regex]) => {
-        const asset = assets.find((a: any) => regex.test(a.name));
-        if (asset) {
-          releaseUrls[key] = asset.browser_download_url;
-        }
-      });
+    const releaseUrls: ReleaseURLs = {};
+    Object.entries(ASSET_REG_EXPS).forEach(([key, regex]) => {
+      const asset = assets.find((a: any) => regex.test(a.name));
+      if (asset) {
+        releaseUrls[key] = asset.browser_download_url;
+      }
+    });
 
-      releaseInfo = { version, name, releaseUrls };
-      return releaseInfo;
-    } catch (e) {
-      throw e;
-    }
+    releaseInfo = { version, name, releaseUrls };
+    return releaseInfo;
   };
 }

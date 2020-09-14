@@ -362,24 +362,23 @@ export function DeterministicWalletsClass({
       };
     }
 
-    // tslint:disable:jsx-key
     return [
-      <div>{wallet.index + 1}</div>,
+      <div key="wallet-row-0">{wallet.index + 1}</div>,
       <Account
+        key="wallet-row-1"
         title={addrBook ? addrBook.label : translateRaw('NO_ADDRESS')}
         address={wallet.address}
         truncate={true}
       />,
-      <div>
+      <div key="wallet-row-2">
         {!wallet.value ? (
           <Spinner />
         ) : (
           `${parseFloat(fromWei(wallet.value, 'ether')).toFixed(4)} ${ticker}`
         )}
       </div>,
-      <LinkOut link={blockExplorer.addressUrl(wallet.address)} />
+      <LinkOut key="wallet-row-3" link={blockExplorer.addressUrl(wallet.address)} />
     ];
-    // tslint:enable:jsx-key
   };
 
   let baseAssetTicker: TTicker | undefined;

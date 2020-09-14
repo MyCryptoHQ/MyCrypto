@@ -139,7 +139,7 @@ const FeatureFlags = () => {
       <p style={{ fontWeight: 600 }}>Feature Flags</p>
       <div>
         {Object.entries(featureFlags)
-          .filter(([_, v]) => v !== 'core')
+          .filter(([, v]) => v !== 'core')
           .map(([k, v]: [keyof IFeatureFlags, boolean]) => (
             <Checkbox
               key={k}

@@ -9,7 +9,8 @@ export default class BasePage {
   }
 
   async waitForPage(url, timeout) {
-    await t.expect(this.getCurrentLocation()).eql(url,
-      { timeout: timeout || FIXTURES_CONST.TIMEOUT });
+    await t
+      .expect(this.getCurrentLocation())
+      .eql(url, { timeout: timeout || FIXTURES_CONST.TIMEOUT });
   }
 }

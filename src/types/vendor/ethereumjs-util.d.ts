@@ -1,7 +1,7 @@
 declare module 'ethereumjs-util' {
   import { Buffer } from 'buffer';
   import BN from 'bn.js';
-  export import rlp = require('rlp');
+  export { default as rlp } from 'rlp';
   export * from 'ethjs-util';
   //@todo: missing types for secp256k1, defineProperties, isZeroAddress, ethjs-util package
   interface Signature {

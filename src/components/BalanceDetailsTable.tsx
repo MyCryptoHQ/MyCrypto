@@ -244,18 +244,15 @@ export default function BalanceDetailsTable({
       sortFunction: (column: typeof TOKEN | typeof BALANCE | typeof VALUE) => (a: any, b: any) => {
         switch (column) {
           case VALUE:
-            const aValue = a.props['data-value'];
-            const bValue = b.props['data-value'];
-            return aValue - bValue;
+            return a.props['data-value'] - b.props['data-value'];
           case BALANCE:
-            const aBalance = a.props['data-balance'];
-            const bBalance = b.props['data-balance'];
-            return aBalance - bBalance;
+            return a.props['data-balance'] - b.props['data-balance'];
           case TOKEN:
-          default:
+          default: {
             const aLabel = a.props.children[1];
             const bLabel = b.props.children[1];
             return aLabel === bLabel ? true : aLabel.localeCompare(bLabel);
+          }
         }
       },
       hiddenHeadings: [],

@@ -31,7 +31,7 @@ describe('Schema', () => {
 
   it('excludes testAccounts by default', () => {
     const accounts = toArray(defaultData[LSKeys.ACCOUNTS]);
-    expect(accounts.length).toEqual(0);
+    expect(accounts).toHaveLength(0);
   });
 
   describe('Seed: Contracts', () => {
@@ -49,7 +49,7 @@ describe('Schema', () => {
 
     it('adds Nodes to each Network', () => {
       const nodes = toArray(defaultData[LSKeys.NETWORKS]).flatMap((n) => n.nodes);
-      expect(nodes.length).toBe(43);
+      expect(nodes).toHaveLength(43);
     });
 
     it('adds BaseAssets to Networks', () => {
@@ -76,7 +76,7 @@ describe('Schema', () => {
         .filter(Boolean); // Not all networks have assets!
 
       expect(networkAssets.length).toBeGreaterThan(0);
-      expect(networkAssets.length).toEqual(tokens.length);
+      expect(networkAssets).toHaveLength(tokens.length);
     });
   });
 
@@ -84,7 +84,7 @@ describe('Schema', () => {
     it("adds each Network's baseAsset to Assets", () => {
       const networks = toArray(defaultData[LSKeys.NETWORKS]);
       const baseAssets = toArray(defaultData[LSKeys.ASSETS]).filter(({ type }) => type === 'base');
-      expect(baseAssets.length).toEqual(networks.length);
+      expect(baseAssets).toHaveLength(networks.length);
     });
 
     it('adds default Fiats as Assets', () => {

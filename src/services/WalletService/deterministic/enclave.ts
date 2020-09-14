@@ -21,10 +21,6 @@ export function makeEnclaveWallet(walletType: WalletTypes) {
       });
     }
 
-    constructor(address: string, dPath: string, index: number) {
-      super(address, dPath, index);
-    }
-
     public async signRawTransaction(tx: EthTx): Promise<Buffer> {
       // Disable EIP155 in Ethereumjs-tx since it conflicts with Ledger
       const t =

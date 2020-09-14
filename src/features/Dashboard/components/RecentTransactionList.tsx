@@ -72,19 +72,19 @@ const TxTypeConfig: ITxTypeConfig = {
     icon: transfer
   },
   [ITxHistoryType.REP_TOKEN_MIGRATION]: {
-    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_REP_MIGRATION'),
+    label: () => translateRaw('RECENT_TX_LIST_LABEL_REP_MIGRATION'),
     icon: transfer
   },
   [ITxHistoryType.DEFIZAP]: {
-    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_DEFIZAP_ADD'),
+    label: () => translateRaw('RECENT_TX_LIST_LABEL_DEFIZAP_ADD'),
     icon: defizap
   },
   [ITxHistoryType.PURCHASE_MEMBERSHIP]: {
-    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_MEMBERSHIP_PURCHASED'),
+    label: () => translateRaw('RECENT_TX_LIST_LABEL_MEMBERSHIP_PURCHASED'),
     icon: membershipPurchase
   },
   [ITxHistoryType.SWAP]: {
-    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_SWAP'),
+    label: () => translateRaw('RECENT_TX_LIST_LABEL_SWAP'),
     icon: swap
   },
   [ITxHistoryType.APPROVAL]: {
@@ -93,11 +93,11 @@ const TxTypeConfig: ITxTypeConfig = {
     icon: approval
   },
   [ITxHistoryType.CONTRACT_INTERACT]: {
-    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_INTERACT'),
+    label: () => translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_INTERACT'),
     icon: contractInteract
   },
   [ITxHistoryType.DEPLOY_CONTRACT]: {
-    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_DEPLOY'),
+    label: () => translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_DEPLOY'),
     icon: contractDeploy
   }
 };

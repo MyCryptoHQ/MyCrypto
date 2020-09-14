@@ -26,8 +26,8 @@ export const ScreenLockContext = React.createContext({} as State);
 
 let inactivityTimer: any = null;
 let countDownTimer: any = null;
-const defaultCountDownDuration: number = 59;
-const onDemandLockCountDownDuration: number = 5;
+const defaultCountDownDuration = 59;
+const onDemandLockCountDownDuration = 5;
 
 // Would be better to have in services/Store but circular dependencies breaks
 // Jest test. Consider adopting such as importing from a 'internal.js'
@@ -161,11 +161,13 @@ class ScreenLockProvider extends Component<
   };
 
   public startLockCountdown = (lockingOnDemand = false) => {
+    // @todo: Refactor to use .bind() probably
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const appContext = this;
 
     // Lock immediately if password is already set after clicking "Lock" button
     if (lockingOnDemand && this.props.getUnlockPassword()) {
-      appContext.handleCountdownEnded();
+      this.handleCountdownEnded();
       return;
     }
     if (

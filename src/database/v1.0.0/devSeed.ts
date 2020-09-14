@@ -79,7 +79,7 @@ const addDevAccountsToSettings = add(LSKeys.SETTINGS)((_, store: LocalStorage) =
   return pipe(updateDashboardAccounts(keys(store.accounts)))(store.settings);
 });
 
-const addDevAddressBook = add(LSKeys.ADDRESS_BOOK)((contacts: Record<string, Contact>, _) => {
+const addDevAddressBook = add(LSKeys.ADDRESS_BOOK)((contacts: Record<string, Contact>) => {
   return contacts;
 });
 

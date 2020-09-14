@@ -25,7 +25,7 @@ describe('decryptPrivKey', () => {
 
     expect(decrypt).toBeInstanceOf(Buffer);
     expect(decrypt.toString('hex')).toEqual(v1.pkey);
-    expect(decrypt.length).toEqual(32);
+    expect(decrypt).toHaveLength(32);
   });
 });
 

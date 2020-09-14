@@ -231,7 +231,7 @@ export const StoreProvider: React.FC = ({ children }) => {
         contracts: Object.values(MEMBERSHIP_CONFIG).map((membership) => membership.contractAddress)
       }
     )
-      .catch((_) => {
+      .catch(() => {
         setMemberships(undefined);
       })
       .then(nestedToBigNumberJS)

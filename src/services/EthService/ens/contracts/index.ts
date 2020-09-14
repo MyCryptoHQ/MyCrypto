@@ -1,17 +1,17 @@
 import { Contract } from '@services';
-const auctionABI = require('./auction/auction.json');
+import auctionABI from './auction/auction.json';
 import auctionOutputMappings from './auction/outputMappings';
 import { IAuction } from './auction/auction';
 
-const deedABI = require('./deed/deed.json');
+import deedABI from './auction/deed.json';
 import deedOutputMappings from './deed/outputMappings';
 import { IDeed } from './deed/deed';
 
-const registryABI = require('./registry/registry.json');
+import registryABI from './auction/registry.json';
 import registryOutputMappings from './registry/outputMappings';
 import { IRegistry } from './registry/registry';
 
-const resolverABI = require('./resolver/resolver.json');
+import resolverABI from './auction/resolver.json';
 import resolverOutputMappings from './resolver/outputMappings';
 import { IResolver } from './resolver/resolver';
 
