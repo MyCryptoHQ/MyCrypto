@@ -158,6 +158,8 @@
     "@types/webpack-env": "1.15.0",
     "@types/yup": "0.26.27",
     "@types/zxcvbn": "4.4.0",
+    "@typescript-eslint/eslint-plugin": "4.1.0",
+    "@typescript-eslint/parser": "4.1.0",
     "@walletconnect/types": "1.0.0-beta.47",
     "babel-jest": "24.9.0",
     "babel-loader": "8.0.6",
@@ -173,6 +175,12 @@
     "electron": "7.1.9",
     "electron-builder": "22.2.0",
     "empty": "0.10.1",
+    "eslint": "7.8.1",
+    "eslint-config-prettier": "6.11.0",
+    "eslint-plugin-jest": "24.0.0",
+    "eslint-plugin-react": "7.20.6",
+    "eslint-plugin-react-hooks": "4.1.2",
+    "eslint-plugin-testcafe": "0.2.1",
     "favicons-webpack-plugin": "1.0.2",
     "file-loader": "5.0.2",
     "fork-ts-checker-webpack-plugin": "3.1.1",
@@ -211,12 +219,7 @@
     "stylelint-processor-styled-components": "1.10.0",
     "stylelint-webpack-plugin": "1.2.3",
     "testcafe": "1.8.5",
-    "ts-jest": "24.3.0",
     "tsconfig-paths-webpack-plugin": "3.2.0",
-    "tslint": "5.20.1",
-    "tslint-config-prettier": "1.18.0",
-    "tslint-microsoft-contrib": "6.2.0",
-    "tslint-react": "4.1.0",
     "types-rlp": "0.0.1",
     "typescript": "4.0.2",
     "utility-types": "3.10.0",
@@ -262,19 +265,19 @@
     "prettier:diff": "prettier --write --config ./.prettierrc --list-different \"src/**/*.ts\" \"src/**/*.tsx\"",
     "update:tokens": "parse-eth-tokens --networks all --output ./src/database/data/tokens --exclude 0x5a276Aeb77bCfDAc8Ac6f31BBC7416AE1A85eEF2,0x0027449Bf0887ca3E431D263FFDeFb244D95b555",
     "lint:css": "stylelint ./src/**/*.tsx",
-    "lint:ts": "tslint --project .",
+    "lint:eslint": "eslint . --ignore-path .gitignore --ext .ts,.tsx,.js,.jsx",
     "node:scripts:tsc": "tsc --project tsconfig.scripts.json",
     "translations:extract": "npm run node:scripts:tsc && node node-scripts/translations/translations-extract.js",
-    "validate": "npm-run-all --parallel lint:css lint:ts tscheck"
+    "validate": "npm-run-all --parallel lint:css lint:eslint tscheck"
   },
   "lint-staged": {
-    "!(node-scripts)/**/*.{ts,tsx}": [
+    "**/*.{ts,tsx}": [
       "yarn prettier:write",
       "yarn lint:css",
-      "yarn lint:ts",
+      "eslint --fix",
       "git add"
     ],
-    "!(node-scripts)/**/*.json": "yarn prettier:write"
+    "**/*.{js,json}": "yarn prettier:write"
   },
   "husky": {
     "hooks": {

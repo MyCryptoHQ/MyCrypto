@@ -66,7 +66,7 @@ describe('EditableAccountLabel', () => {
     fireEvent.click(input);
     fireEvent.change(input, { target: { value: inputString } });
     await waitFor(() => fireEvent.keyDown(input, enter));
-    expect(mockMappedContacts.length).toBe(initialContactsLength + 1);
+    expect(mockMappedContacts).toHaveLength(initialContactsLength + 1);
   });
 
   test('it enters edit mode when clicked and exits when focus lost', async () => {

@@ -105,6 +105,7 @@ const PurchaseMembershipStepper = () => {
     <GeneralStepper
       onRender={(goToNextStep) => {
         // Allows to execute code when state has been updated after MTX hook has run
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         useEffect(() => {
           if (!canYield) return;
           // Make sure to prepare ETH tx before showing to user

@@ -22,6 +22,7 @@ const getComponent = () => {
 
 jest.mock('ethers', () => {
   // Must be imported here to prevent issues with jest
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, jest/no-mocks-import
   const { mockFactory } = require('../__mocks__/mnemonic');
   return mockFactory('0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c', 'txhash');
 });
@@ -41,6 +42,6 @@ describe('SignTransactionWallets: Mnemonic', () => {
     fireEvent.change(input!, { target: { value: 'mnemonicphrase' } });
     fireEvent.click(getByText(translateRaw('DEP_SIGNTX')));
 
-    await waitFor(() => expect(defaultProps.onComplete).toBeCalledWith('txhash'));
+    await waitFor(() => expect(defaultProps.onComplete).toHaveBeenCalledWith('txhash'));
   });
 });

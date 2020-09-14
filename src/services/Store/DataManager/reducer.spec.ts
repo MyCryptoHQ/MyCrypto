@@ -27,37 +27,8 @@ describe('AppStateReducer', () => {
       };
 
       const newState = dispatch({ type: ActionT.ADD_ITEM, payload })(prevState);
-      expect(newState[LSKeys.ACCOUNTS].length).toEqual(2);
+      expect(newState[LSKeys.ACCOUNTS]).toHaveLength(2);
       expect(newState[LSKeys.ACCOUNTS]).toContainEqual(account2);
     });
-
-    // it('avoids duplicates in the array', () => {
-    //   const account1 = { address: '0x1', uuid: 'fakeUUID' } as IAccount;
-    //   const account2 = { address: '0x1', uuid: 'fakeUUID' } as IAccount;
-    //   const prevState = { [LSKeys.ACCOUNTS]: [account1] };
-    //   const payload = {
-    //     model: LSKeys.ACCOUNTS,
-    //     data: account2
-    //   };
-    //
-    //   const newState = dispatch({ type: ActionT.ADD_ITEM, payload })(prevState);
-    //   expect(newState[LSKeys.ACCOUNTS].length).toEqual(1);
-    // });
-    //
-    // it('throws when trying to change SETTINGS', () => {
-    //   const prevState = { [LSKeys.SETTINGS]: { dashboardAccounts: ['fakeUUid'] } };
-    //   const payload = {
-    //     model: LSKeys.SETTINGS,
-    //     data: { dashboardAccounts: ['fakeUUID2'] } as ISettings
-    //   };
-    //
-    //   const newState = dispatch({ type: ActionT.ADD_ITEM, payload });
-    //   expect(newState.call(prevState)).toThrowError();
-    // });
   });
-
-  // describe('DELETE_ITEM', () => {});
-  // describe('ADD_ENTRY', () => {});
-  // describe('DELETE_ENTRY', () => {});
-  // describe('RESET', () => {});
 });

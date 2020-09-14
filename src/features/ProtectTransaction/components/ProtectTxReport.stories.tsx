@@ -18,7 +18,7 @@ const ProtectTxStep3 = (report: PTXReport) => (
 
 storiesOf('ProtectTransaction', module).add(
   'Step 3 - Unknown',
-  (_) => ProtectTxStep3(unknownReport),
+  () => ProtectTxStep3(unknownReport),
   {
     design: {
       type: 'figma',
@@ -28,7 +28,7 @@ storiesOf('ProtectTransaction', module).add(
   }
 );
 
-storiesOf('ProtectTransaction', module).add('Step 3 - Scam', (_) => ProtectTxStep3(scamReport), {
+storiesOf('ProtectTransaction', module).add('Step 3 - Scam', () => ProtectTxStep3(scamReport), {
   design: {
     type: 'figma',
     url:
@@ -38,7 +38,7 @@ storiesOf('ProtectTransaction', module).add('Step 3 - Scam', (_) => ProtectTxSte
 
 storiesOf('ProtectTransaction', module).add(
   'Step 3 - Verified',
-  (_) => ProtectTxStep3(verifiedReport),
+  () => ProtectTxStep3(verifiedReport),
   {
     design: {
       type: 'figma',
@@ -50,7 +50,7 @@ storiesOf('ProtectTransaction', module).add(
 
 storiesOf('ProtectTransaction', module).add(
   'Step 3 - Loading',
-  (_) => ProtectTxStep3(loadingReport),
+  () => ProtectTxStep3(loadingReport),
   {
     design: {
       type: 'figma',

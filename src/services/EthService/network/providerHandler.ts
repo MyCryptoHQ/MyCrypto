@@ -92,6 +92,7 @@ export class ProviderHandler {
         const providers = (client as FallbackProvider).providers;
         return any(
           providers.map((p) => {
+            // eslint-disable-next-line no-async-promise-executor
             return new Promise(async (resolve, reject) => {
               try {
                 const tx = await p.getTransaction(txhash);

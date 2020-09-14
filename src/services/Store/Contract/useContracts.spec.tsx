@@ -22,7 +22,7 @@ const renderUseContract = ({
 };
 
 describe('useContract', () => {
-  it('uses get contracts from DataContext ', () => {
+  it('uses get contracts from DataContext', () => {
     const { result } = renderUseContract();
     expect(result.current.contracts).toEqual([]);
   });
@@ -30,7 +30,7 @@ describe('useContract', () => {
   it('uses a valid data model', () => {
     const createActions = jest.fn();
     renderUseContract({ createActions });
-    expect(createActions).toBeCalledWith(LSKeys.CONTRACTS);
+    expect(createActions).toHaveBeenCalledWith(LSKeys.CONTRACTS);
   });
 
   it('getContractsByIds(): can filter contracts by a list of uuids', () => {
@@ -74,7 +74,7 @@ describe('useContract', () => {
     result.current.createContract(omit(['uuid'], target));
     // Since uuid are deterministic we can asset that it will be the same
     // as the fixture.
-    expect(createActions().create).toBeCalledWith(target);
+    expect(createActions().create).toHaveBeenCalledWith(target);
   });
 
   it('createContract(): returns the contract with the generated uuid', () => {
@@ -96,6 +96,6 @@ describe('useContract', () => {
     const { result } = renderUseContract({ contracts: [target], createActions });
 
     result.current.deleteContract(target.uuid);
-    expect(createActions().destroy).toBeCalledWith(target);
+    expect(createActions().destroy).toHaveBeenCalledWith(target);
   });
 });

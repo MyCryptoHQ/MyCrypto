@@ -180,7 +180,7 @@ export default function GeneratedInteractionForm({
     }
   };
 
-  let isRead: boolean = true;
+  let isRead = true;
   let inputs: ABIField[] = [];
   let outputs: ABIField[] = [];
 

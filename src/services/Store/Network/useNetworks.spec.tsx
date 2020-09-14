@@ -18,7 +18,7 @@ const renderUseNetworks = ({ networks = [] as Network[], createActions = jest.fn
 };
 
 describe('useNetworks', () => {
-  it('uses get networks from DataContext ', () => {
+  it('uses get networks from DataContext', () => {
     const { result } = renderUseNetworks({ networks: [fNetwork] });
     expect(result.current.networks).toEqual([fNetwork]);
   });
@@ -26,7 +26,7 @@ describe('useNetworks', () => {
   it('uses a valid data model', () => {
     const createActions = jest.fn();
     renderUseNetworks({ createActions });
-    expect(createActions).toBeCalledWith(LSKeys.NETWORKS);
+    expect(createActions).toHaveBeenCalledWith(LSKeys.NETWORKS);
   });
 
   it('addNetwork() calls model.create', () => {
@@ -36,7 +36,7 @@ describe('useNetworks', () => {
       createActions: jest.fn(() => ({ create: mockCreate }))
     });
     result.current.addNetwork(fNetworks[0]);
-    expect(mockCreate).toBeCalledWith(fNetworks[0]);
+    expect(mockCreate).toHaveBeenCalledWith(fNetworks[0]);
   });
 
   it('updateNetwork() calls model.update', () => {
@@ -46,7 +46,7 @@ describe('useNetworks', () => {
       createActions: jest.fn(() => ({ update: mockUpdate }))
     });
     result.current.updateNetwork(fNetworks[0].id, fNetworks[0]);
-    expect(mockUpdate).toBeCalledWith(fNetworks[0].id, fNetworks[0]);
+    expect(mockUpdate).toHaveBeenCalledWith(fNetworks[0].id, fNetworks[0]);
   });
 
   it('getNetworkById() finds network with id', () => {
@@ -82,7 +82,7 @@ describe('useNetworks', () => {
       }))
     });
     result.current.addNodeToNetwork(customNodeConfig, fNetwork.id);
-    expect(mockUpdate).toBeCalledWith(fNetwork.id, {
+    expect(mockUpdate).toHaveBeenCalledWith(fNetwork.id, {
       ...fNetwork,
       nodes: [...fNetwork.nodes, customNodeConfig],
       selectedNode: customNodeConfig.name
@@ -98,7 +98,7 @@ describe('useNetworks', () => {
       }))
     });
     result.current.updateNode(customNodeConfig, fNetworks[0].id, fNetworks[0].nodes[0].name);
-    expect(mockUpdate).toBeCalledWith(fNetworks[0].id, {
+    expect(mockUpdate).toHaveBeenCalledWith(fNetworks[0].id, {
       ...fNetworks[0],
       nodes: [fNetworks[0].nodes[1], customNodeConfig],
       selectedNode: customNodeConfig.name
@@ -114,7 +114,7 @@ describe('useNetworks', () => {
       }))
     });
     result.current.deleteNode(fNetworks[0].nodes[0].name, fNetworks[0].id);
-    expect(mockUpdate).toBeCalledWith(fNetworks[0].id, {
+    expect(mockUpdate).toHaveBeenCalledWith(fNetworks[0].id, {
       ...fNetworks[0],
       nodes: [fNetworks[0].nodes[1]],
       selectedNode: fNetworks[0].nodes[1].name
@@ -130,7 +130,7 @@ describe('useNetworks', () => {
       }))
     });
     result.current.setNetworkSelectedNode(fNetworks[0].id, fNetworks[0].nodes[1].name);
-    expect(mockUpdate).toBeCalledWith(fNetworks[0].id, {
+    expect(mockUpdate).toHaveBeenCalledWith(fNetworks[0].id, {
       ...fNetworks[0],
       selectedNode: fNetworks[0].nodes[1].name
     });

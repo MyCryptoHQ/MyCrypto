@@ -1,0 +1,86 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "extends": ["eslint:recommended", "eslint-config-prettier"],
+  "plugins": ["eslint-plugin-react"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:eslint-plugin-react/recommended",
+        "plugin:eslint-plugin-react-hooks/recommended",
+        "eslint-config-prettier/@typescript-eslint"
+      ],
+      "plugins": ["@typescript-eslint"],
+      "rules": {
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/ban-types": "off",
+        "@typescript-eslint/consistent-type-assertions": [
+          "error",
+          {
+            "assertionStyle": "as"
+          }
+        ],
+        "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/method-signature-style": ["error", "method"],
+        "@typescript-eslint/no-inferrable-types": [
+          "error",
+          {
+            "ignoreParameters": true
+          }
+        ],
+        "@typescript-eslint/no-empty-function": [
+          "error",
+          {
+            "allow": ["private-constructors"]
+          }
+        ],
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          {
+            "ignoreRestSiblings": true
+          }
+        ],
+        "react/display-name": "off",
+        "react/no-unescaped-entities": "off",
+        "react/prop-types": "off",
+        "react-hooks/exhaustive-deps": "off"
+      },
+      "settings": {
+        "react": {
+          "version": "detect"
+        }
+      },
+      "parserOptions": {
+        "ecmaFeatures": {
+          "jsx": true
+        }
+      }
+    },
+    {
+      "files": ["*.test.{ts,tsx}", "*.spec.{ts,tsx}", "jest_config/**/*"],
+      "env": {
+        "node": true,
+        "jest": true
+      },
+      "extends": ["plugin:eslint-plugin-jest/recommended", "plugin:eslint-plugin-jest/style"],
+      "plugins": ["eslint-plugin-jest"]
+    },
+    {
+      "files": ["__tests__/**/*.js"],
+      "extends": ["plugin:testcafe/recommended"],
+      "plugins": ["eslint-plugin-testcafe"]
+    }
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2020
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  }
+}

@@ -22,6 +22,7 @@ const getComponent = () => {
 
 jest.mock('ethers', () => {
   // Must be imported here to prevent issues with jest
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, jest/no-mocks-import
   const { mockFactory } = require('../__mocks__/privkey');
   return mockFactory('txhash');
 });
@@ -41,6 +42,6 @@ describe('SignTransactionWallets: PrivateKey', () => {
     fireEvent.change(input!, { target: { value: 'privkey' } });
     fireEvent.click(getByText(translateRaw('DEP_SIGNTX')));
 
-    await waitFor(() => expect(defaultProps.onComplete).toBeCalledWith('txhash'));
+    await waitFor(() => expect(defaultProps.onComplete).toHaveBeenCalledWith('txhash'));
   });
 });

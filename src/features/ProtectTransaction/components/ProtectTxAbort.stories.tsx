@@ -14,7 +14,7 @@ const AbortTransaction = () => (
 
 storiesOf('ProtectTransaction', module)
   .addDecorator((story) => <ProtectTxProvider>{story()}</ProtectTxProvider>)
-  .add('Abort transaction', (_) => AbortTransaction(), {
+  .add('Abort transaction', () => AbortTransaction(), {
     design: {
       type: 'figma',
       url:

@@ -6,7 +6,7 @@ export function makeRequest<T>(type: EnclaveMethods, params: EnclaveMethodParams
     method: 'POST',
     body: JSON.stringify(params)
   })
-    .then(res => res.json())
+    .then((res) => res.json())
     .then((res: EnclaveResponse<T>) => {
       const { error, data } = res;
       if (data) {

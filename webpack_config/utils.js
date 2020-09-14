@@ -1,4 +1,4 @@
-const generateChunkName = module => {
+const generateChunkName = (module) => {
   // get the name. E.g. node_modules/packageName/not/this/part.js
   // or node_modules/packageName
   const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];

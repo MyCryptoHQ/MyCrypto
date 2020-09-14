@@ -35,7 +35,7 @@ describe('Selector', () => {
     expect(style.borderBottom).toBe('');
   });
 
-  test('it can include an optionDivider ', async () => {
+  test('it can include an optionDivider', async () => {
     getComponent({ ...defaultProps, optionDivider: true });
     await selectEvent.openMenu(screen.getByLabelText(defaultProps.label));
     const optionWrapper = screen.getByText(defaultProps.options[0]).parentElement as Element;

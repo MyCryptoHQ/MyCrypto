@@ -2,8 +2,8 @@ import { TURL } from '@types';
 
 export const isUrl = (url: string): url is TURL => {
   const protocolAndDomainRE = /^(?:\w+:)?\/\/(\S+)$/;
-  const localhostDomainRE = /^localhost[\:?\d]*(?:[^\:?\d]\S*)?$/;
-  const nonLocalhostDomainRE = /^[^\s\.]+\.\S{2,}$/;
+  const localhostDomainRE = /^localhost[:?\d]*(?:[^:?\d]\S*)?$/;
+  const nonLocalhostDomainRE = /^[^\s.]+\.\S{2,}$/;
 
   const match = url.match(protocolAndDomainRE);
   if (!match) {

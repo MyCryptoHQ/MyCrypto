@@ -7,7 +7,7 @@ import { displayAddress } from './displayAddress';
 type EnclaveHandlers = {
   [key in EnclaveMethods]: (
     params: EnclaveMethodParams
-  ) => EnclaveMethodResponse | Promise<EnclaveMethodResponse>
+  ) => EnclaveMethodResponse | Promise<EnclaveMethodResponse>;
 };
 
 const handlers: EnclaveHandlers = {

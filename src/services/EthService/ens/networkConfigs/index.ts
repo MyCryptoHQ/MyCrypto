@@ -1,7 +1,7 @@
-const main: IEnsAddresses = require('./main.json');
-const rinkeby: IEnsAddresses = require('./rinkeby.json');
-const ropsten: IEnsAddresses = require('./ropsten.json');
-const rsk: IEnsAddresses = require('./rsk.json');
+import main from './main.json';
+import rinkeby from './rinkeby.json';
+import ropsten from './ropsten.json';
+import rsk from './rsk.json';
 
 interface IEnsAddresses {
   public: {

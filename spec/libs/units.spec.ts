@@ -93,7 +93,7 @@ describe('Units', () => {
         expect(converted).toEqual('0.00008');
       });
       it('toTokenBase should equal 8000', () => {
-        expect(toTokenBase(converted, decimal));
+        expect(toTokenBase(converted, decimal).toString()).toEqual('8000');
       });
     });
     describe('convertTokenBase', () => {

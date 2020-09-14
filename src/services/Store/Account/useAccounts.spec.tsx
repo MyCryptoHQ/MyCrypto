@@ -36,7 +36,7 @@ const renderUseAccounts = ({ accounts = [] as IAccount[], createActions = jest.f
 };
 
 describe('useAccounts', () => {
-  it('uses get addressbook from DataContext ', () => {
+  it('uses get addressbook from DataContext', () => {
     const { result } = renderUseAccounts({ accounts: fAccounts });
     expect(result.current.accounts).toEqual(fAccounts);
   });
@@ -44,7 +44,7 @@ describe('useAccounts', () => {
   it('uses a valid data model', () => {
     const createActions = jest.fn();
     renderUseAccounts({ createActions });
-    expect(createActions).toBeCalledWith(LSKeys.ACCOUNTS);
+    expect(createActions).toHaveBeenCalledWith(LSKeys.ACCOUNTS);
   });
 
   it('createAccountWithID() calls model.createWithId', () => {
@@ -54,7 +54,7 @@ describe('useAccounts', () => {
       createActions: jest.fn(() => ({ createWithID: mockCreate }))
     });
     result.current.createAccountWithID('uuid' as TUuid, fAccounts[0]);
-    expect(mockCreate).toBeCalledWith({ ...fAccounts[0], uuid: 'uuid' }, 'uuid');
+    expect(mockCreate).toHaveBeenCalledWith({ ...fAccounts[0], uuid: 'uuid' }, 'uuid');
   });
 
   it('createMultipleAccountsWithIDs() calls model.updateAll with multiple accounts', () => {
@@ -64,7 +64,7 @@ describe('useAccounts', () => {
       createActions: jest.fn(() => ({ updateAll: mockUpdate }))
     });
     result.current.createMultipleAccountsWithIDs(fAccounts);
-    expect(mockUpdate).toBeCalledWith(fAccounts);
+    expect(mockUpdate).toHaveBeenCalledWith(fAccounts);
   });
 
   it('deleteAccount() calls model.destroy', () => {
@@ -74,7 +74,7 @@ describe('useAccounts', () => {
       createActions: jest.fn(() => ({ destroy: mockDestroy }))
     });
     result.current.deleteAccount(fAccounts[0]);
-    expect(mockDestroy).toBeCalledWith(fAccounts[0]);
+    expect(mockDestroy).toHaveBeenCalledWith(fAccounts[0]);
   });
 
   it('updateAccount() calls model.update', () => {
@@ -84,7 +84,7 @@ describe('useAccounts', () => {
       createActions: jest.fn(() => ({ update: mockUpdate }))
     });
     result.current.updateAccount(fAccounts[0].uuid, fAccounts[0]);
-    expect(mockUpdate).toBeCalledWith(fAccounts[0].uuid, fAccounts[0]);
+    expect(mockUpdate).toHaveBeenCalledWith(fAccounts[0].uuid, fAccounts[0]);
   });
 
   it('addTxToAccount() updates account with tx', () => {
@@ -94,7 +94,7 @@ describe('useAccounts', () => {
       createActions: jest.fn(() => ({ update: mockUpdate }))
     });
     result.current.addTxToAccount(fAccounts[0], fTxReceipt);
-    expect(mockUpdate).toBeCalledWith(fAccounts[0].uuid, {
+    expect(mockUpdate).toHaveBeenCalledWith(fAccounts[0].uuid, {
       ...fAccounts[0],
       transactions: [fTxReceipt]
     });
@@ -120,7 +120,7 @@ describe('useAccounts', () => {
     });
     result.current.updateAccountAssets(fAccounts[1], fAssets);
     await waitFor(() =>
-      expect(mockUpdate).toBeCalledWith(fAccounts[1].uuid, {
+      expect(mockUpdate).toHaveBeenCalledWith(fAccounts[1].uuid, {
         ...fAccounts[1],
         assets: [
           expect.objectContaining({
@@ -142,7 +142,7 @@ describe('useAccounts', () => {
     });
     result.current.updateAllAccountsAssets(accounts, fAssets);
     await waitFor(() =>
-      expect(mockUpdate).toBeCalledWith(
+      expect(mockUpdate).toHaveBeenCalledWith(
         accounts.map((a) => ({
           ...a,
           assets: [
@@ -164,7 +164,7 @@ describe('useAccounts', () => {
       createActions: jest.fn(() => ({ updateAll: mockUpdate }))
     });
     result.current.updateAccounts(fAccounts.slice(0, 3));
-    await waitFor(() => expect(mockUpdate).toBeCalledWith(fAccounts));
+    await waitFor(() => expect(mockUpdate).toHaveBeenCalledWith(fAccounts));
   });
 
   it('toggleAccountPrivacy() updates account with isPrivate', () => {
@@ -174,7 +174,7 @@ describe('useAccounts', () => {
       createActions: jest.fn(() => ({ update: mockUpdate }))
     });
     result.current.toggleAccountPrivacy(fAccounts[0].uuid);
-    expect(mockUpdate).toBeCalledWith(fAccounts[0].uuid, {
+    expect(mockUpdate).toHaveBeenCalledWith(fAccounts[0].uuid, {
       ...fAccounts[0],
       isPrivate: true
     });

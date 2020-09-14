@@ -56,7 +56,7 @@ export default class Trezor extends HardwareWallet {
 
   protected async getHardenedAddress(path: DPath, index: number): Promise<string> {
     /**
-     * TODO: Add support for getting multiple addresses at the same time. For reference:
+     * @todo: Add support for getting multiple addresses at the same time. For reference:
      * https://github.com/trezor/connect/blob/develop/docs/methods/ethereumGetAddress.md
      */
     const response = await TrezorConnect.ethereumGetAddress({ path: getFullPath(path, index) });

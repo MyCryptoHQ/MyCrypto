@@ -55,7 +55,7 @@ const StyledLayout = styled.div`
   }
 `;
 
-function rendedExcludedAssetsPanel() {
+function RendedExcludedAssetsPanel() {
   const { accounts, totals, currentAccounts } = useContext(StoreContext);
   const { settings } = useContext(SettingsContext);
   const { getAssetRate } = useRates();
@@ -82,7 +82,7 @@ function rendedExcludedAssetsPanel() {
   );
 }
 
-function renderAccountPanel() {
+function RenderAccountPanel() {
   const { featureFlags } = useFeatureFlags();
   const { accounts } = useContext(StoreContext);
   return (
@@ -95,7 +95,7 @@ function renderAccountPanel() {
   );
 }
 
-function renderAddressPanel() {
+function RenderAddressPanel() {
   const {
     createContact,
     contacts,
@@ -125,7 +125,7 @@ function renderAddressPanel() {
   );
 }
 
-function renderNetworkNodes() {
+function RenderNetworkNodes() {
   const {
     addNetwork,
     networks: allNetworks,
@@ -186,7 +186,7 @@ function renderNetworkNodes() {
   );
 }
 
-function renderGeneralSettingsPanel() {
+function RenderGeneralSettingsPanel() {
   const { updateSettings, settings } = useContext(SettingsContext);
   return (
     <>
@@ -204,10 +204,10 @@ export default function Settings() {
   // In Mobile view we display a tab instead
   const [tab, setTab] = useState('accounts');
   const tabOptions: TabOptions = {
-    ['accounts']: renderAccountPanel(),
-    ['addresses']: renderAddressPanel(),
-    ['general']: renderGeneralSettingsPanel(),
-    ['nodes']: renderNetworkNodes()
+    ['accounts']: RenderAccountPanel(),
+    ['addresses']: RenderAddressPanel(),
+    ['general']: RenderGeneralSettingsPanel(),
+    ['nodes']: RenderNetworkNodes()
   };
   const currentTab = tabOptions[tab];
 
@@ -245,11 +245,11 @@ export default function Settings() {
           <SettingsHeadingIcon src={settingsIcon} alt="Settings" />
           {translate('SETTINGS_HEADING')}
         </SettingsHeading>
-        {renderAccountPanel()}
-        {renderAddressPanel()}
-        {rendedExcludedAssetsPanel()}
-        {renderNetworkNodes()}
-        {renderGeneralSettingsPanel()}
+        {RenderAccountPanel()}
+        {RenderAddressPanel()}
+        {RendedExcludedAssetsPanel()}
+        {RenderNetworkNodes()}
+        {RenderGeneralSettingsPanel()}
       </Desktop>
     </StyledLayout>
   );

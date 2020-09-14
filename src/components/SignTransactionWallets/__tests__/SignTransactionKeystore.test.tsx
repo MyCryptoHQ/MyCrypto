@@ -21,6 +21,7 @@ const getComponent = () => {
 
 jest.mock('ethers', () => {
   // Must be imported here to prevent issues with jest
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, jest/no-mocks-import
   const { mockFactory } = require('../__mocks__/keystore');
   return mockFactory('0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c', 'txhash');
 });
@@ -42,9 +43,9 @@ describe('SignTransactionWallets: Keystore', () => {
     });
     fireEvent.change(input!);
     const btn = container.querySelector('button[type="submit"]');
-    await waitFor(() => expect(btn!.getAttribute('disabled')).toBe(null));
+    await waitFor(() => expect(btn!.getAttribute('disabled')).toBeNull());
     fireEvent.click(btn!);
 
-    await waitFor(() => expect(defaultProps.onComplete).toBeCalledWith('txhash'));
+    await waitFor(() => expect(defaultProps.onComplete).toHaveBeenCalledWith('txhash'));
   });
 });

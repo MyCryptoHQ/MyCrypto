@@ -5,8 +5,7 @@ import {
   FIXTURE_ETHEREUM,
   FIXTURE_VIEW_ONLY_ADDRESS,
   FIXTURE_TEST_PRIVATE_KEY,
-  FIXTURE_TEST_KEYSTORE_FILE_PASSWORD,
-  FIXTURES_CONST
+  FIXTURE_TEST_KEYSTORE_FILE_PASSWORD
 } from './fixtures';
 import BasePage from './base-page.po';
 import { findByTKey, getTransValueByKey } from './translation-utils';

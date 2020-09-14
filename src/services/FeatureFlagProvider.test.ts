@@ -8,7 +8,7 @@ const renderUseFeatureFlags = () => {
 };
 
 describe('useFeatureFlags', () => {
-  it('uses the features config file ', () => {
+  it('uses the features config file', () => {
     const { result } = renderUseFeatureFlags();
     expect(result.current.featureFlags).toEqual(FEATURE_FLAGS);
   });

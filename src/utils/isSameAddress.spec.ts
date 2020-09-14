@@ -9,7 +9,7 @@ describe('isSameAddress', () => {
     expect(isSameAddress(addressOne, addressTwo)).toBeTruthy();
   });
 
-  it('returns false if compared address is too short ', () => {
+  it('returns false if compared address is too short', () => {
     const addressOne = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520' as TAddress;
     const addressTwo = '0x4bbeeb066e' as TAddress;
     expect(isSameAddress(addressOne, addressTwo)).toBeFalsy();
