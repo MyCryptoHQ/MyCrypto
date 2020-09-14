@@ -26,8 +26,7 @@ const defaultAsset = {
   networkId: DEFAULT_NETWORK
 } as StoreAsset;
 
-describe('it converts balance to fiat', () => {
-  /* eslint-disable jest/no-identical-title */
+describe('convert()', () => {
   it('converts some balance to fiat', () => {
     const expected = 2.86756;
     const rate = 0.00008434;
@@ -38,7 +37,7 @@ describe('it converts balance to fiat', () => {
     expect(converted).toEqual(expected);
   });
 
-  it('converts some balance to fiat', () => {
+  it('converts some balance to fiat (1)', () => {
     const expected = 0.4582269583;
     const rate = 0.001867;
     const assetObject: StoreAsset = Object.assign({}, defaultAsset, {
@@ -48,7 +47,7 @@ describe('it converts balance to fiat', () => {
     expect(converted).toEqual(expected);
   });
 
-  it('converts some balance to fiat', () => {
+  it('converts some balance to fiat (2)', () => {
     const expected = 608.342632226824;
     const rate = 169.48;
     const assetObject: StoreAsset = Object.assign({}, defaultAsset, {
