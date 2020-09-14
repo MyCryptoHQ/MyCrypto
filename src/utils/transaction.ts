@@ -297,7 +297,7 @@ export const deriveTxFields = (
   baseAsset: Asset,
   contractAsset?: Asset
 ) => {
-  const isERC20 = ercType !== ERCType.NONE;
+  const isERC20Transfer = ercType === ERCType.TRANSFER;
   const { to, amount: rawAmount, receiverAddress } = deriveTxRecipientsAndAmount(
     ercType,
     data,
@@ -306,11 +306,11 @@ export const deriveTxFields = (
   );
 
   const amount =
-    isERC20 && contractAsset
+    isERC20Transfer && contractAsset
       ? fromTokenBase(toWei(rawAmount, 0), contractAsset.decimal)
       : formatEther(value);
 
-  const asset = isERC20 && contractAsset ? contractAsset : baseAsset;
+  const asset = isERC20Transfer && contractAsset ? contractAsset : baseAsset;
   return { to, amount, receiverAddress, asset };
 };
 

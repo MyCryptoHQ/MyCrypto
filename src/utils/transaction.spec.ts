@@ -209,5 +209,43 @@ describe('deriveTxFields', () => {
       asset: fAssets[10]
     });
   });
-  // TODO: Test ERC20 Approve and non ERC20
+  it("interprets an erc20 approve's fields correctly", () => {
+    const erc20DataField =
+      '0x095ea7b30000000000000000000000007a250d5630b4cf539739df2c5dacb4c659f2488dffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+    const toAddress = '0x6B175474E89094C44Da98b954EedeAC495271d0F';
+    const value = '0x0';
+    const result = deriveTxFields(
+      ERCType.APPROVAL,
+      erc20DataField as ITxData,
+      toAddress as ITxToAddress,
+      value as ITxValue,
+      fAssets[1],
+      fAssets[10]
+    );
+    expect(result).toStrictEqual({
+      to: toAddress,
+      receiverAddress: toAddress,
+      amount: '0.0',
+      asset: fAssets[1]
+    });
+  });
+  it("interprets an eth tx's fields correctly", () => {
+    const erc20DataField = '0x';
+    const toAddress = '0x6B175474E89094C44Da98b954EedeAC495271d0F';
+    const value = '0x54ab1b2ceea88000';
+    const result = deriveTxFields(
+      ERCType.NONE,
+      erc20DataField as ITxData,
+      toAddress as ITxToAddress,
+      value as ITxValue,
+      fAssets[1],
+      fAssets[10]
+    );
+    expect(result).toStrictEqual({
+      to: toAddress,
+      receiverAddress: toAddress,
+      amount: '6.101',
+      asset: fAssets[1]
+    });
+  });
 });
