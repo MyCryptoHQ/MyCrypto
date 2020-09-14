@@ -35,7 +35,7 @@ export const constructCancelTxQuery = (txConfig: ITxConfig, newGasPrice: number)
   return queryString.stringify({
     ...unfinishedSpeedUpTxQueryParams,
     to: unfinishedSpeedUpTxQueryParams.from,
-    data: '0x0',
+    data: '0x',
     value: '0x0',
     gasLimit: inputGasLimitToHex('21000'),
     gasPrice: inputGasPriceToHex(newGasPrice.toString())
