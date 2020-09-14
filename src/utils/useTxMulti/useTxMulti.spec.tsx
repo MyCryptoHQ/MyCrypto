@@ -153,9 +153,11 @@ describe('useTxMulti', () => {
   });
 
   it('adds the txs to the tx history', async () => {
-    const mockAddTX = jest.fn();
+    const mockUpdate = jest.fn();
     const { result: r } = renderUseTxMulti({
-      createActions: jest.fn()
+      createActions: jest.fn().mockImplementation(() => ({
+        update: mockUpdate
+      }))
     });
 
     const rawTx = {
@@ -187,32 +189,36 @@ describe('useTxMulti', () => {
     });
 
     await waitFor(() =>
-      expect(mockAddTX).toBeCalledWith(
-        fAccount,
-        expect.objectContaining({
-          amount: '0.0',
-          asset: fAssets[1],
-          baseAsset: fAssets[1],
-          hash: '0x1',
-          txType: ITxType.APPROVAL,
-          status: ITxStatus.PENDING
-        })
-      )
+      expect(mockUpdate).toHaveBeenCalledWith(fAccount.uuid, {
+        ...fAccount,
+        transactions: expect.arrayContaining([
+          expect.objectContaining({
+            amount: '0.0',
+            asset: fAssets[1],
+            baseAsset: fAssets[1],
+            hash: '0x1',
+            txType: ITxType.APPROVAL,
+            status: ITxStatus.PENDING
+          })
+        ])
+      })
     );
 
     await waitFor(() =>
-      expect(mockAddTX).toBeCalledWith(
-        fAccount,
-        expect.objectContaining({
-          amount: '0.0',
-          asset: fAssets[1],
-          baseAsset: fAssets[1],
-          hash: '0x2',
-          txType: ITxType.PURCHASE_MEMBERSHIP,
-          status: ITxStatus.PENDING
-        })
-      )
+      expect(mockUpdate).toHaveBeenCalledWith(fAccount.uuid, {
+        ...fAccount,
+        transactions: expect.arrayContaining([
+          expect.objectContaining({
+            amount: '0.0',
+            asset: fAssets[1],
+            baseAsset: fAssets[1],
+            hash: '0x2',
+            txType: ITxType.PURCHASE_MEMBERSHIP,
+            status: ITxStatus.PENDING
+          })
+        ])
+      })
     );
-    expect(mockAddTX).toBeCalledTimes(2);
+    expect(mockUpdate).toHaveBeenCalledTimes(2);
   });
 });
