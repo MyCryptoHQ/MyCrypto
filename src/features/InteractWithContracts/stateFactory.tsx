@@ -1,4 +1,4 @@
-import { useContext, useCallback } from 'react';
+import { useCallback } from 'react';
 import debounce from 'lodash/debounce';
 
 import { TUseStateReducerFactory, makePendingTxReceipt, isSameAddress } from '@utils';
@@ -22,7 +22,7 @@ import {
   getResolvedENSAddress,
   EtherscanService,
   getIsValidENSAddressFunction,
-  AccountContext,
+  useAccounts,
   useContracts,
   useNetworks
 } from '@services';
@@ -66,7 +66,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
 }) => {
   const { getContractsByIds, createContract, deleteContract } = useContracts();
   const { networks, updateNetwork } = useNetworks();
-  const { addNewTxToAccount } = useContext(AccountContext);
+  const { addTxToAccount } = useAccounts();
 
   const handleNetworkSelected = (networkId: NetworkId) => {
     setState((prevState: InteractWithContractState) => ({
@@ -337,7 +337,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     if (isWeb3Wallet(account.wallet)) {
       const txReceipt =
         signResponse && signResponse.hash ? signResponse : { ...txConfig, hash: signResponse };
-      addNewTxToAccount(state.txConfig.senderAccount, {
+      addTxToAccount(state.txConfig.senderAccount, {
         ...txReceipt,
         to: state.txConfig.receiverAddress,
         from: state.txConfig.senderAccount.address,
@@ -362,7 +362,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
             ITxType.CONTRACT_INTERACT,
             state.txConfig
           );
-          addNewTxToAccount(state.txConfig.senderAccount, pendingTxReceipt);
+          addTxToAccount(state.txConfig.senderAccount, pendingTxReceipt);
           setState((prevState: InteractWithContractState) => ({
             ...prevState,
             txReceipt: pendingTxReceipt
