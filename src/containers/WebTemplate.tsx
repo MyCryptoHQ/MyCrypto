@@ -19,7 +19,7 @@ class WebTemplate extends Component<Props, {}> {
         <div className="WebTemplate">
           <div className="Tab container">
             {children}
-            {/* TODO */}
+            {/* @todo */}
             {/*{isUnavailableOffline && false ? <OfflineTab /> : children}*/}
           </div>
           <div className="WebTemplate-spacer" />

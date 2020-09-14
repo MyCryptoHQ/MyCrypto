@@ -63,6 +63,6 @@ export const getData = () => {
 
 export const getEncryptedData = () => {
   const latestDB = getCurrentDBConfig();
-  // TODO: Migrations?
+  // @todo: Migrations?
   return localStorage[latestDB.vault];
 };

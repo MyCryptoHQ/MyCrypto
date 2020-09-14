@@ -362,7 +362,7 @@ export function DeterministicWalletsClass({
       };
     }
 
-    // TODO: This should be fixed
+    // @todo: This should be fixed
     /* eslint-disable react/jsx-key */
     return [
       <div>{wallet.index + 1}</div>,
